@@ -1,181 +1,126 @@
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D4F232456;
-	Tue, 14 Jan 2025 17:33:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736876006; cv=none; b=iTNnqD+6GqkAkWpDbhMy2jZvvYyGvSSmnlwStf9raNmDYFiZKLM14C3Zxg1j+TkeQLn1PX9QRcrzgFiAGRsVdlWjdDb7h9J9ErR6SMgokjyS8fW318Fkpt2PbUPi1F0SQsiKG48SWUq0KcQLG26vITnf51mfHWiLMSNwPaOsy5g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736876006; c=relaxed/simple;
-	bh=Go+HPsqAkrd7V4BZPxEq7qnamGXMmpNB9QPBtK4Q5ms=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pRhKUIeSQhSuvKsy9bB8dMppVozg3864AVciSDaxQqk6bBQaivuYHF08uZuXpOy6SW0+0v5mBDpWEVp5CW5ccXlJtTbL1p3UNgNX5ys3G8HqVWflssfl0Z6cB7L29bwZILsoJd/gxfEJt41Wdj1VTw2dWDNE/Cv0GpW1/iacExE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hXDQVzE1; arc=none smtp.client-ip=209.85.208.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5361F18952C;
+	Tue, 14 Jan 2025 18:35:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736879740; cv=pass; b=gUxHMbDuP5Ox/yccCwpCsZEG05tJDZm7aiPCGCjJasmAicOyxZjTAfwg0YoORrm5lJUf05qO4xfHBpAzeAsQBfcGigIC13StYBSkpSIU4oqX7TLkEWdnd4TZJLpszCkf9WbKEwBeQV/GeEnpEnwNJE8QHqyq/MDQPfpeoXPLpjg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736879740; c=relaxed/simple;
+	bh=ZvpPH7nDu9JN/Adq5BM8r904dVXoEKaxJBeB/snJOco=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=P/vIXuj1IE3BmemXbP5oN1j/a9ptCKLUhVhcBe6xXhCpdM5tc41qmnYcHQvaHSjnIqvvtyWCDJFMSW6HgC3nG2eNsUhq8gfgh8tEHS5b/9gnud0I1Ex7YHH5r0ntGpnkuWa2RLTnf8S/l0COOSXVWPcDbEjyfCmnMpl3hSw3XuE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=lCLwQ4gX; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hXDQVzE1"
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-30167f4c1e3so50337251fa.3;
-        Tue, 14 Jan 2025 09:33:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736876003; x=1737480803; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O4Y+Vd+wqvusM5jGu3HnrPWM0LbLyq4kOrjb+M22BsI=;
-        b=hXDQVzE1oua/jb8Khblk2bT1P2a9a7o38R/tbm8m7jx6KAD8M2PGBMCgZeTZWXqeuV
-         JcQRAB3S/ckuK/Ixh7MJfGSj6GugYGX7etpnbbaA/JnWmYtsk10W/p/ewroeaoW4jbfH
-         GdXQWEZI4oWYmOef+PKjOWJzTVib+6jDDa8G1y8h2WEDSKTpj+GHwWUVT0CrA7slFd5R
-         qwdB246g9CXxHGeS18qNnDnsMxV/uHxRaAwQd/XkJiJw6trvpeknRyP6LDf5kyIs1E3I
-         XN3Nf7ci/SXTRSkHFCDaTho7FvuJfVdg+BXsryZGRsBol10Dy4O6XWqhsa2qhCzjaI6v
-         L69A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736876003; x=1737480803;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=O4Y+Vd+wqvusM5jGu3HnrPWM0LbLyq4kOrjb+M22BsI=;
-        b=rMVnY3LZkmY05moopZxqwzuAIwBz7k+Fs3+ll7e868nrQef01mtNDriev0Zz2n4nWC
-         YF3dvqLIq3q93DfctauimSDR25GZ/e5Jr6szbDbUSgMHPRY2s05uqAmHYTWWzGwluzxH
-         sFXKmoadlWRfX/nZZgUMygcCB+WmRyjHcnztVadlleJoLxvMpUiQHJGoH8IcpyfTzLUA
-         I1M+L+ZAmBcFnlVS+MeGXvJCCSE533HJYVD/tKJln0GIkVVL/pmEFF/H44RbhAgb0ysn
-         h0tsJJVznjXflUxTdaS4eseGy8md7oxeKRdH09jz8/7XbxdbTuYy/NQkYztSqN7Mvqw6
-         avcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWyRxoZcgb3Pc6fZGWlFtcJQ0mhEXpko18U/QTbCZMbh+LggHFE+r2I0KG2+IjAnOZNOqaiBRXvIGTyODdp5w8=@vger.kernel.org, AJvYcCXxSfmfwGMdBz/436Tf+2kP8WbRzDnQloMj0XSusHogelL2mGQd+Qj+00LuUTV72WMIjD0YY1nRF3B19Pc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZWEHvcMkaGJaBEnBZvD/7i51OStI88ScsFKSthdrD3/2EuvHd
-	+ewWSAaTgJaxFMDrB08uY/P6bze19Fg14tQs8bBw+u6A2dbDvTYUaqC5S7FZtmSl6+luHkcoHXm
-	I277QNjNNZ24UdFT0Rl9bVB6D5OY=
-X-Gm-Gg: ASbGncurtMIMGc2WruPNz8BU7PaLjYKU9q0hzFXsVZeRIvHFad790XpHa49ahy/Gtqb
-	xnG814vKfQ0H6crY9hfK2KU3vI+vcIEYBK0Ed3/4KTbWD95cC8yfxRSaNsvRDB+h7mqfEp0E=
-X-Google-Smtp-Source: AGHT+IHlsRTmsZKIlvCMUdFfWGCoBKyVnJ234IMfduOJ4+2Pue+UMuctdOklwTfM4/BiMvTCRJFShFnK7NxJzlheaP4=
-X-Received: by 2002:a05:651c:1a0c:b0:2fc:9622:794b with SMTP id
- 38308e7fff4ca-305f45a4294mr81782431fa.24.1736876001696; Tue, 14 Jan 2025
- 09:33:21 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="lCLwQ4gX"
+ARC-Seal: i=1; a=rsa-sha256; t=1736879714; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=hOgZOX6CR6rtvRSUhxRa/sxG7BzoyMh1ANi4DYoKDvHrlE3DVNTSykXZfuTFolXGVxc+I8X0aovCXutP+XnoQg0LZ2xMijRZQQj8m9G34FS2N82aZByTzVR3lGJAysq37xjcl1d4UIRQsh6H5B5BMiaeU4Y4zNFI6cnlvR2I40s=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1736879714; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=QMGV4ISAS45VBctJkrm+593eB2VFHDKOzOQuZxLy1FY=; 
+	b=ENeZMPiWqp4R+AM7BDVPwQCtJLyJf6IOLKZZqLZhKbNjbqMRCTM5tWodQ/RITvDTA+qF5ZpQ3sXsnRU4kGLn7fFcxC44PE0t+9YBEJs+OoRdo3tRmxucLJqMtmTQlW/9bLVcMKwABZ0xfvTcBQgMkd1EDN/Whs7/rEnkQ/G8cQs=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1736879714;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=QMGV4ISAS45VBctJkrm+593eB2VFHDKOzOQuZxLy1FY=;
+	b=lCLwQ4gXO//SGLpsLflLU9ifJSqRwVbjYg6xg47icU4C4MExxfsm8SOzFUYMXpCm
+	MHZRG27+oFqtm8o0SBXGpsjZpQOj6TnaVBketn374rV9V3s0L+yE4/MH9qiGFo9DWE+
+	ax44UOEaHZekGpnDjcZcyS0CTcm37R12iZc40v3E=
+Received: by mx.zohomail.com with SMTPS id 1736879712257954.5708857779471;
+	Tue, 14 Jan 2025 10:35:12 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250110-hrtimer-v3-v6-12-rc2-v6-0-f71d50f16482@kernel.org> <20250110-hrtimer-v3-v6-12-rc2-v6-5-f71d50f16482@kernel.org>
-In-Reply-To: <20250110-hrtimer-v3-v6-12-rc2-v6-5-f71d50f16482@kernel.org>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Tue, 14 Jan 2025 12:32:45 -0500
-X-Gm-Features: AbW1kvZDvBNZF_8W4CaKyr31Wy894Gd1rSWv3n3_FCzTYf8xjFWQQ3LOSNPWfgM
-Message-ID: <CAJ-ks9=0HRjwqqrLZ2QjyjYw6frK=zu5_ZG5Jmb=fCRXefBmLQ@mail.gmail.com>
-Subject: Re: [PATCH v6 05/14] rust: hrtimer: allow timer restart from timer handler
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
-	Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>, 
-	Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
+Subject: Re: [PATCH] rust: irq: add support for request_irq()
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <CAH5fLggjAu+YPBxJh0_K933McnnSC=pEBhVV9YxMbUGzukE3ng@mail.gmail.com>
+Date: Tue, 14 Jan 2025 15:34:56 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <04864DC4-FA5B-4D7A-8EE5-BDA1E8F88007@collabora.com>
+References: <20241024-topic-panthor-rs-request_irq-v1-1-7cbc51c182ca@collabora.com>
+ <CAH5fLggjAu+YPBxJh0_K933McnnSC=pEBhVV9YxMbUGzukE3ng@mail.gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+X-Mailer: Apple Mail (2.3826.300.87.4.3)
+X-ZohoMailClient: External
 
-On Fri, Jan 10, 2025 at 3:17=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
->
-> This patch allows timer handlers to report that they want a timer to be
-> restarted after the timer handler has finished executing.
->
-> Also update the `hrtimer` documentation to showcase the new feature.
->
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
->  rust/kernel/time/hrtimer.rs     | 37 +++++++++++++++++++++++++++++++++++=
-+-
->  rust/kernel/time/hrtimer/arc.rs |  4 +---
->  2 files changed, 37 insertions(+), 4 deletions(-)
->
-> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-> index d0842c7c4c6ddffeef9a79cbf9727819060e4333..50e8c23578b5cf7196893ac88=
-d9547fc027f1f04 100644
-> --- a/rust/kernel/time/hrtimer.rs
-> +++ b/rust/kernel/time/hrtimer.rs
-> @@ -167,7 +167,7 @@ pub trait HrTimerCallback {
->      type CallbackTargetParameter<'a>;
->
->      /// Called by the timer logic when the timer fires.
-> -    fn run(this: Self::CallbackTargetParameter<'_>)
-> +    fn run(this: Self::CallbackTargetParameter<'_>) -> HrTimerRestart
->      where
->          Self: Sized;
->  }
-> @@ -262,6 +262,41 @@ unsafe fn start(self_ptr: *const Self, expires: Ktim=
-e) {
->      }
->  }
->
-> +/// Restart policy for timers.
-> +pub enum HrTimerRestart {
-> +    /// Timer should not be restarted.
-> +    NoRestart,
-> +    /// Timer should be restarted.
-> +    Restart,
-> +}
-> +
-> +impl From<u32> for HrTimerRestart {
-> +    fn from(value: u32) -> Self {
-> +        match value {
-> +            0 =3D> Self::NoRestart,
-> +            _ =3D> Self::Restart,
-> +        }
-> +    }
-> +}
-> +
-> +impl From<i32> for HrTimerRestart {
-> +    fn from(value: i32) -> Self {
-> +        match value {
-> +            0 =3D> Self::NoRestart,
-> +            _ =3D> Self::Restart,
-> +        }
-> +    }
-> +}
+Hi Alice,
 
-These are for converting from bindings to our enum, right? Why do we
-need both signed and unsigned, and why do we hardcode 0 rather than
-using the generated constants?
+> On 13 Jan 2025, at 11:42, Alice Ryhl <aliceryhl@google.com> wrote:
+>=20
+> On Thu, Oct 24, 2024 at 4:20=E2=80=AFPM Daniel Almeida
+> <daniel.almeida@collabora.com> wrote:
+>>=20
+>> +impl<T: Handler> Registration<T> {
+>> +    /// Registers the IRQ handler with the system for the given IRQ =
+number. The
+>> +    /// handler must be able to be called as soon as this function =
+returns.
+>> +    pub fn register(
+>> +        irq: u32,
+>> +        flags: Flags,
+>> +        name: &'static CStr,
+>> +        handler: T,
+>> +    ) -> impl PinInit<Self, Error> {
+>> +        try_pin_init!(Self {
+>> +            irq,
+>> +            handler: Opaque::new(handler)
+>> +        })
+>> +        .pin_chain(move |slot| {
+>> +            // SAFETY:
+>> +            // - `handler` points to a valid function defined below.
+>> +            // - only valid flags can be constructed using the =
+`flags` module.
+>> +            // - `devname` is a nul-terminated string with a 'static =
+lifetime.
+>> +            // - `ptr` is a cookie used to identify the handler. The =
+same cookie is
+>> +            // passed back when the system calls the handler.
+>> +            to_result(unsafe {
+>> +                bindings::request_irq(
+>> +                    irq,
+>> +                    Some(handle_irq_callback::<T>),
+>> +                    flags.0,
+>> +                    name.as_char_ptr(),
+>> +                    &*slot as *const _ as *mut core::ffi::c_void,
+>> +                )
+>> +            })?;
+>> +
+>> +            Ok(())
+>> +        })
+>=20
+> I think this does not run the destructor of `handler` when
+> `request_irq` returns an error.
+>=20
+> Alice
 
-> +
-> +impl From<HrTimerRestart> for bindings::hrtimer_restart {
-> +    fn from(value: HrTimerRestart) -> Self {
-> +        match value {
-> +            HrTimerRestart::NoRestart =3D> bindings::hrtimer_restart_HRT=
-IMER_NORESTART,
-> +            HrTimerRestart::Restart =3D> bindings::hrtimer_restart_HRTIM=
-ER_RESTART,
-> +        }
-> +    }
-> +}
-> +
->  /// Use to implement the [`HasHrTimer<T>`] trait.
->  ///
->  /// See [`module`] documentation for an example.
-> diff --git a/rust/kernel/time/hrtimer/arc.rs b/rust/kernel/time/hrtimer/a=
-rc.rs
-> index 4c1812f190bc7a9e0b2fcd5ea2e320f45ba584bc..cee143b04aa21fa6c60c3363c=
-d95f7a67360cbf8 100644
-> --- a/rust/kernel/time/hrtimer/arc.rs
-> +++ b/rust/kernel/time/hrtimer/arc.rs
-> @@ -82,8 +82,6 @@ impl<U> RawHrTimerCallback for Arc<U>
->          // timer. This `U` is contained in an `Arc`.
->          let receiver =3D unsafe { ArcBorrow::from_raw(data_ptr) };
->
-> -        U::run(receiver);
-> -
-> -        bindings::hrtimer_restart_HRTIMER_NORESTART
-> +        U::run(receiver).into()
->      }
->  }
->
-> --
-> 2.47.0
->
->
->
+How? T is passed by value, so if request_irq() fails and thus =
+Registration::register() returns Err,
+I assume T is dropped.
+
+Or is the pin_init! stuff somehow special here?
+
+=E2=80=94 Daniel
+
