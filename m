@@ -1,133 +1,115 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BEBB24333A
-	for <rust-for-linux@vger.kernel.org>; Tue, 14 Jan 2025 09:50:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906221ADC84
+	for <rust-for-linux@vger.kernel.org>; Tue, 14 Jan 2025 10:02:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736848220; cv=none; b=X5SLaLT/U6IiaQlpUeTFU9awgKFDhh+hr3j05kosDK42yNRXbSHYGIi7omYHPuTKy2wwhy4fRsU+KaYZn9VevlkTFhy01qSoTvQkf4g89reEFcJKp+eUJ6Vb84rW0VP0lJJMfECqqn0UDN73JetSnDpo66xh6MF1A1r6TBFZwuQ=
+	t=1736848960; cv=none; b=iiHKPjE9ZeQn3/+XE/Ylq6SCLeDIeddzNFLsfwhpfpjFSqPMsI29HgtnQKTnvj3xX/6N9fttXvQ/bKl49BAlSjYveMsMhk6SwQGcm8VOy/qiVGIa5+WjD+tnwnpumoaMn3VUgqgnyjnSkoZpyj3Pac58BvkjTMPRsQfFMd+Gu2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736848220; c=relaxed/simple;
-	bh=KTwukl8uOiX4y5FD75Tj1+wGTsO1S/cvv2mZ6R8n1/c=;
+	s=arc-20240116; t=1736848960; c=relaxed/simple;
+	bh=rzrq47YYXSkQJ9utKcLYFbYgc2e3YH5q1tXBGESkApE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Xa+iDDKxEFMkGBi0TXmDywol+lK+dbBXQw1UidHN1jIFpbPXQKayNu+YP6MjAEBVCTcXddPtuEuPKJiE+T3bxRkmODO3DSke7JY6F9QgDp48m5wHnUCZ5cEv5R2ClTedsJrAZyAlJa3EGd3kynZFDojkcGFPlwkM2MFmp/CV4Ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=umYUeCxW; arc=none smtp.client-ip=209.85.221.54
+	 To:Cc:Content-Type; b=sX5tC2oWLUj0UOkdILUODXHgEdhiZAQuOH2sXShdwLeLVWp4kit8TmwZaCXpwTPFRuYQPAwIA32PPZYnAzo9w0vNE+z8pQXveqld0Zynz0s9gGOazT3xpmImJh7DGayMcUq4hfv8n9Hko/1ubBSYwZtF76aFoHUV2/W7xG4uBqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tXgSVWar; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="umYUeCxW"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-385e06af753so2641401f8f.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 14 Jan 2025 01:50:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tXgSVWar"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-436202dd730so37417205e9.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 14 Jan 2025 02:02:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736848215; x=1737453015; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1736848957; x=1737453757; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KTwukl8uOiX4y5FD75Tj1+wGTsO1S/cvv2mZ6R8n1/c=;
-        b=umYUeCxWee+sBNvFrrHoAqConvt9wSptHckIcmLMxdlyivX4Ao9l26uwlwp5SlbPKQ
-         FoCAe6SKi8eqTyGBEQEcmNG0eg0KOllInem/J5YcACyGmvC9k9LSOrWNuwqTmYjmrnsN
-         4QLn+bwMCWqckQoOTPPy/krf/fpHF97GvIRNO9LPEVDkSM+Y0YQUDlcFyB9AUJBAFkDG
-         Ha+3vNw3nim7CMc7Tahku08ebo8wnKlmkutJwC8EbHNTs/WagAqtAKycYJ2uTBPwkEfe
-         bfVIjRKoRSeJadMRsaqtJEUVZCDTEXTRmMwYE3yffXt1xqdUHSt8TM6akRdvRby/FpeN
-         YWBw==
+        bh=+hAnPM4gNIGuB4WE/pw1j86p4Zb/k88JNNK4kLdk5f8=;
+        b=tXgSVWarkamr32FPFw9k5f8VZxJd2smeSmy/7CqPUuH+f3bLAjnuJcMlkghpofMpze
+         0oEJwD/7LGPoehgLLlVayd1vLLArVAeWabCwo72jtkRWR9syv85XdIThZhhA7uOclcEE
+         Y82g6ti2ClOD4nFrc3htfrbu1gAqwXgvtMNOuydpROzDs6Joo5UUjQPTzL8pACr+B9bj
+         PBYDlaytYRxNGm22TVJXr1yifAQaYoJMkNQ/YL0AHy20+oYYWLq3SDjzHxAwcrP/WPSc
+         pTjT1/g7Ccb8ngwZeMdJFaqCUhQKeNMeD14m44dBE6gimAMLMEADBaJhDN5Y6xQGhoUe
+         no/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736848215; x=1737453015;
+        d=1e100.net; s=20230601; t=1736848957; x=1737453757;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KTwukl8uOiX4y5FD75Tj1+wGTsO1S/cvv2mZ6R8n1/c=;
-        b=UOSzdWBdsnbtWqCTqAKgQjBktOop5zDrwSWTfUxw54OM8jCxDsa2AUU4tNX2/uHkmO
-         GKudYs9J0tVsfCDkp1zUUDJktLFNEMgHPwHmd783tX2kewl71MN9y0zA8gQLCu8M+jYF
-         oG8Z8l3xPtdV7xs+xu8UexFPNTfi07m87sLEimzJjrfCyoWh4kCWxa+zeK0ngPjHcs0H
-         s2QHYlaICnIrQFHKi5GFRU1zA9LFvxLGh7isYp3h5zia0kKTCkudD5zEFn+4zpjg/y14
-         q37mspdi6WTEvIhzJJAGe1IhNBCKJEsdzXAHrxfgnQVjrqLk5fVMhFucJRZmcZnQ6J6c
-         r64g==
-X-Forwarded-Encrypted: i=1; AJvYcCVdlsIBrUAJ8C2fOv8ds8gmIok7/pipEjSaHsQYQUHe6fozh2aHOaZMdJifeGIT+MU8NOB7DGbIgcG5zv4Pnw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8Sg96yIAiAegVvNcvGMAu2YpNyqttcMAiiNdKE3zlwNWV/BoY
-	6FNVkaxYXQbbCWBRJVfRUgEIK1e2arvAYMr0cQQCX6e+N1ukfKxMf0dk7WypzyFHBtqtKY4mxN9
-	atkhedxfGfhRHyonR4jFphuqhyATVI2gjBkIG
-X-Gm-Gg: ASbGncvGRZ0NsXq4YAbHYnNpLBcBeSn7BqzfXKEk/Kmrckr/qhhOhdR/3Fo6H2Wv0NG
-	bZLiDtei1uUhITQNtIH2bhxzj5Bzmy6v+uwQ4r8SLQreDGojhQwbTZ13JPPG/IOKLrdu2
-X-Google-Smtp-Source: AGHT+IGKzl5z5Ha3pO1yRtNB3GUeQr+rw3Ekmo6cq91+iIv18Us3DjGDX/jVaDV82Hu1TqkdZrRFwHqkHA0xgmPfkxY=
-X-Received: by 2002:a05:6000:156a:b0:38b:e26d:ea0b with SMTP id
- ffacd0b85a97d-38be26dea6dmr1638433f8f.25.1736848213829; Tue, 14 Jan 2025
- 01:50:13 -0800 (PST)
+        bh=+hAnPM4gNIGuB4WE/pw1j86p4Zb/k88JNNK4kLdk5f8=;
+        b=Uuiyp+hFMMdHVEXpvZQjGUpKtEKDpDsatEGnpOgc4bDSpRE1jPwZMzjGbB9IHdM/S2
+         hy6jjetJh7+1aSaUqwy24kAEi2otu44L/YG/F6R8iBy2gr4KvAJ72hk1QZSEo1LvD5eU
+         X251MEbJr8wmNZogh+hlcCBnIo66vy9rr75wD1d7BRGWkj2mdf8zXvgfRCRkEAJ3+H6F
+         PgCD+93ZzGJsNW9HjPAcwQ73pkDxRn+2iOQFSVrnS43vypOfE6ZpczGYsJoXity9DoQA
+         wYZLWyTF5D/Ky96hxnWOIYPCbODxroGnIhda0BpKoCPoCCIf/RvoQl/bngz8JIxjE6Dj
+         sJ6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWNj1SDspWxv0ALvKqK7TTbNR1WkjdvpbGA2zHZB0ERV1VZRIxOasuoa6y9iQZ77xTByVXGs94CHTn/j98BTA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwF8QjisL4w/uP1Ls4kFlSIaafR4m+GSuhtW6Yy9V6SiMU+JInw
+	LkHD84d3heNTehvgI/67UetHewzAE1S3Eq/NTA3bbDm0/9Ddh9EpHFmtH6W9y98oWkVvXy16wLK
+	AE3BGE6TY/xVZj5Joj85dQViz2NVHVohnnijA
+X-Gm-Gg: ASbGncvW5va9xriAdijXrulNkcbuvgeJJGkllQCoqLiv9L7E9WizyONyawLeJxs2LN3
+	cyUofAyNy3aumoxrluVKQjyechtfguc/1GF7yI5EmG3i7ILckZDM7Ta+XRvBwkKlifMCW
+X-Google-Smtp-Source: AGHT+IF3daPtVTmXioen3B3cUV8DgIHpdvif6E24QUjslo4B9aDd8h9rplJmNv2owOFcVEGAmWecHD0HjBkwLigFuxM=
+X-Received: by 2002:a05:6000:1a8c:b0:38a:4b8b:c57a with SMTP id
+ ffacd0b85a97d-38a87336f7amr24250979f8f.44.1736848956759; Tue, 14 Jan 2025
+ 02:02:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <874j33ddxt.fsf@kernel.org> <51PsGz5tctBZlyC7TWAGRwZbM13r71BM1gtm1Y8F4j2w3FtKSXtkVrsvwILAqvSBPrFJzahyUVDum-JXO3yZUw==@protonmail.internalid>
- <CAH5fLgiS_=MiMcnyC2z8kXQW0Kpn36h6EaHs9g7Zaw85mLn2jA@mail.gmail.com>
- <87frlsbekc.fsf@kernel.org> <vH_JjBon9WfW7x7OzrUfhGFluWCiBwsPZDkHbFt77nth4SFWJ-4W2vXXBYmE8WEaEJsibxx2N4iXS8Vx6RbAQA==@protonmail.internalid>
- <18bc911a-ede5-410b-9955-5382bcef975c@lucifer.local> <87msg09uzu.fsf@kernel.org>
- <qG6w11OwPsgdMa-EKR7V-NiBoOsQocuJDWurazcGSwtN601gK8RP1_un0Gx5MF0pPoKPnEL4ssYKiJUUIkF_Hw==@protonmail.internalid>
- <8b803030-0ca3-4591-b2f3-bb9bcc2aca21@lucifer.local> <871pxcgg02.fsf@kernel.org>
- <ec1e87e9-2d84-435a-8e2a-1d426a9c13a0@lucifer.local>
-In-Reply-To: <ec1e87e9-2d84-435a-8e2a-1d426a9c13a0@lucifer.local>
+References: <20241221183024.3929500-1-gary@garyguo.net> <20241221183024.3929500-3-gary@garyguo.net>
+In-Reply-To: <20241221183024.3929500-3-gary@garyguo.net>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 14 Jan 2025 10:50:01 +0100
-X-Gm-Features: AbW1kvZk9d573jFK8FkPwpKd3ZWRv8D3huYFVncUO-UnxuorvJMOstGtGDK6cu4
-Message-ID: <CAH5fLggntnvMLoZHTm6zx3nSP4nq7iruK2c6iXBX-CXtVPYbcA@mail.gmail.com>
-Subject: Re: [PATCH v11 2/8] mm: rust: add vm_area_struct methods that require
- read access
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@suse.cz>, John Hubbard <jhubbard@nvidia.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Christian Brauner <brauner@kernel.org>, Jann Horn <jannh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, rust-for-linux@vger.kernel.org
+Date: Tue, 14 Jan 2025 11:02:25 +0100
+X-Gm-Features: AbW1kvY2OVSyYu-6j1cvxSGAxGrpmxA1gVzSFKxK6Ju2CMAjIcQeVt08kC7sspI
+Message-ID: <CAH5fLgjOfw2otu4FJ1XHhjsSx3Fj3iQA25Hh-Anz5jXaLamrAQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] rust: convert `Arc` to use `Refcount`
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Wedson Almeida Filho <walmeida@microsoft.com>, 
+	Valentin Obst <kernel@valentinobst.de>, Alex Mantel <alexmantel93@mailbox.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Mark Rutland <mark.rutland@arm.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 13, 2025 at 3:45=E2=80=AFPM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
-> > >> > For a series at v11 where there is broad agreement with maintainer=
-s within
-> > >> > the subsystem which it wraps, perhaps the priority should be to tr=
-y to have
-> > >> > the series merged unless there is significant technical objection =
-from the
-> > >> > rust side?
-> > >> >
-> > >> >>
-> > >> >> How about this:
-> > >> >>
-> > >> >> This clears the virtual memory map for the range given by `start`=
- and
-> > >> >> `size`, dropping refcounts to memory held by the mappings in this=
- range. That
-> > >> >> is, anonymous memory is completely freed, file-backed memory has =
-its
-> > >> >> reference count on page cache folio's dropped, any dirty data wil=
-l still
-> > >> >> be written back to disk as usual.
-> > >> >
-> > >> > Sorry I object to this, 'clears the virtual memory map' is really
-> > >> > vague. What is already there is better.
-> > >>
-> > >> Would you like the proposed paragraph if we replaced "virtual memory
-> > >> map" with "page table mappings", or do you object to the entirety of=
- the
-> > >> new suggestion?
-> > >
-> > > I object to the suggestion in general. The description is fine as it =
-is.
-> >
-> > Ok. I'm raising a flag because I had more questions after reading the
-> > docstring than before.
+On Sat, Dec 21, 2024 at 7:31=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
 >
-> Sure and so I think this is valuable information, and indicates it's
-> probably worthwhile adding a little extra information on mentioning page
-> tables.
+> With `Refcount` type created, `Arc` can use `Refcount` instead of
+> calling into FFI directly.
+>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
 
-Sorry, I'm a bit lost. What would you like me to add? Perhaps there's
-an existing file in Documentation/ that I can link to?
+[...]
+
+> -    pub fn into_unique_or_drop(self) -> Option<Pin<UniqueArc<T>>> {
+> +    pub fn into_unique_or_drop(this: Self) -> Option<Pin<UniqueArc<T>>> =
+{
+>          // We will manually manage the refcount in this method, so we di=
+sable the destructor.
+> -        let me =3D ManuallyDrop::new(self);
+> +        let this =3D ManuallyDrop::new(this);
+>          // SAFETY: We own a refcount, so the pointer is still valid.
+> -        let refcount =3D unsafe { me.ptr.as_ref() }.refcount.get();
+> +        let refcount =3D unsafe { &this.ptr.as_ref().refcount };
+>
+> -        // If the refcount reaches a non-zero value, then we have destro=
+yed this `Arc` and will
+> -        // return without further touching the `Arc`. If the refcount re=
+aches zero, then there are
+> -        // no other arcs, and we can create a `UniqueArc`.
+> -        //
+> -        // SAFETY: We own a refcount, so the pointer is not dangling.
+> -        let is_zero =3D unsafe { bindings::refcount_dec_and_test(refcoun=
+t) };
+> +        if !refcount.dec_not_one() {
+
+This is wrong. The into_unique_or_drop function must establish an
+acqrel ordering when a UniqueArc is created, but dec_not_one() does
+not do so. You need to use refcount_dec_and_test() instead.
 
 Alice
