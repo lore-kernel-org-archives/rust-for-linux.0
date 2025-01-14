@@ -1,72 +1,71 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201661F866F
-	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 23:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979E029B0
+	for <rust-for-linux@vger.kernel.org>; Tue, 14 Jan 2025 00:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736812653; cv=none; b=c/H05hQ71GBjulZ3ydGRAbBZDl4Kl6Zm0kiLGKNqvO9k+U0X5bxrJ7v91u8eVEGtyt6/n7RyHU/TOUldflZdmVKD89+1J+SEjzNNh7DnAwZvLXYpV31Ym4JqfhfQdeyOTl4/HGDaYfY6SL+jVaP52h+WYfwkKtyXvF3A0gUu4lM=
+	t=1736813035; cv=none; b=rmihI/hkrkQlSiTKflYAyQ0OKTA7vnrMn1lcGKLrKKwnjoP4NHarAZxqddRNc+jbd/fd/UI1Gp8ICTMoNOr9jN12BWKRPCL1ERnSOwL0TaFSs7ysCre97r4myTRWTZTU1yThv1frl0CeInav3TYvBPQI687rTlS+hkk4g0gXarw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736812653; c=relaxed/simple;
-	bh=wCoey/JIYvcxhhMJsvoF1U2exmXYi6PBJ+qJ2XLXvfc=;
+	s=arc-20240116; t=1736813035; c=relaxed/simple;
+	bh=LfLe3pOav4UBXWdhXMzbfFsPA8rrx1//DT9MmpZBAJI=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ejdAdSEbcTkt1QxfiLBrKUy0ZTV0yRriOEEImQ2DlMTyxUDuz+GZZ3iynkuLZEQ8oORiLxqi3FB0dgiWQjI7VOglM4V5K8Tujci4+boGs4CoG1MywVtb3/6GxH3JV0likGUQGJUr4JeDcTNLSi/MDIY0mrb/p8ohTB9UynN1rIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MCsJE5VZ; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=YBuftyXUeE6LcwrhdUUxCD6TZl/fsI7qm35OnxksF0NN7whE5dXdeMbr5ulhINyeKWSe01XOBPxrXj++J7qR/SNAD3AUn+tHW6IC59CXlyGQDrW6QI+HmqjJesl6UZz7ygVi11gbMt7BtpE4BPjF1KIrkKmrTM7IpvQjvaOTTB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VQ/m7d7t; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MCsJE5VZ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VQ/m7d7t"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736812650;
+	s=mimecast20190719; t=1736813032;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mmzlmAYQDbaYnHCEKRQa5ooCUue11mQHDsUORSpx37Q=;
-	b=MCsJE5VZvo2G8+m7BkTxYbqMvkJXoGyN9x02SDBP/0QkZz+QHZqSUXjtZpJ+570QGT3lYG
-	aQUSem8JVqPCZ1T/RoXXW0RtWiaZf9RXOJfEGWNP7jUJTH2B2eovI6BqHwcOm99QYSgcNP
-	3H8WT7DXjZuG4pkKx3C+82khckO7erc=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=LaiRtkc0us/2g1zO/5SGlZYWHgAQDQHQjwQ2q+7nyiI=;
+	b=VQ/m7d7t/cXaK6YC4wytcN1mR1RB5Hoq90NyfpZGCUCqiz4DktKcrOepb5B4PDmJu0Zlc7
+	NuWNRx3aaevOMaj03ecYY0R03keVKJLoeqXzwbuse2kfI2Fv20dnub4ITnuV662oVjbkFp
+	gIu9npx6Rc5QU2hoRoMLesba0T+qUXM=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-190-muUbMNbLOvCcQJlGSIMMmw-1; Mon, 13 Jan 2025 18:57:28 -0500
-X-MC-Unique: muUbMNbLOvCcQJlGSIMMmw-1
-X-Mimecast-MFC-AGG-ID: muUbMNbLOvCcQJlGSIMMmw
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7b6e9fb0436so1396322885a.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 15:57:28 -0800 (PST)
+ us-mta-538-0QLqW65vPZiD4AyQG7YWNg-1; Mon, 13 Jan 2025 19:03:50 -0500
+X-MC-Unique: 0QLqW65vPZiD4AyQG7YWNg-1
+X-Mimecast-MFC-AGG-ID: 0QLqW65vPZiD4AyQG7YWNg
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-6d8f94518c9so105134536d6.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 16:03:50 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736812648; x=1737417448;
+        d=1e100.net; s=20230601; t=1736813030; x=1737417830;
         h=mime-version:user-agent:content-transfer-encoding:organization
          :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mmzlmAYQDbaYnHCEKRQa5ooCUue11mQHDsUORSpx37Q=;
-        b=R4qjeSQWpYx+IvYModLiuweHOIyPLPbVDNa6r+wi/XJQOBa4DLC9edpgjCcw51vpaR
-         zpPSLJl8qI6kFSecNYTmnkWWSB0/A+gGmks5q+LDmkEhj9XJV0FjlpyJ+G93w/volA3E
-         jop67F10haxe23OAZxjhA0Z95j1OI9Nffda6Iy5qbALv5FmjPGrChkixUA9fTOQ+4Gkl
-         6Ei+FApY8da8G6tEnXzMIbJzpNI8TQJVRsyuJ9oXEKN8LREkoZRCTSY3wxgSgROgWxIY
-         mdt7hZacTBup0uPWG0lTiYwY2Hp7kP7cLSZw1SMRBCQ88obG5qdKxs1Vz1S4YWb1WpOF
-         ufJw==
-X-Forwarded-Encrypted: i=1; AJvYcCW5/R133f6JUgA0flXGQnOKTL/I54tPfxhn5mpItBEFyeZo4HpqwsaHkNd03TNdR607h7dVYcSuFXmFoNPyRA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxj283UO0CjHfsJmuUh4KsvCqI3UhO31LKxWD2h1f9EJh7IZ22G
-	wQc2gl8gnaj83D3Kb4jXUKubu5hRbM5QD2uN73wgWsFzKCCafZuWp2nvibbl4/VWO8eZgJ4bYhe
-	MzCL0upX/RYWjYryqfCJJu095siivEArpl7FjXWBSTUzfm+N0C+H4wsnBpyz3/eog
-X-Gm-Gg: ASbGncscLBthwyVRm2DTo0N9mSGQFvtttCd5Z1M9weowgMt26k9v3HkSjeUc/KCperD
-	x/bYnwg0yX1mh35WY6KoULujefLr5GxEvPs9G9lidD2RC5g3B3A5NLBOk4/qn5voQyvXNVj3BKy
-	m7KzZF89H2UZY5dGm7KdPgLy4XN1pUflfZN99ofgKcDs1TqtzozqOOIMhQRCC/kBvKgqExW/6w3
-	g/PteXbo8QT/z+BdvOBG5MQoriMFl6Rei5LLAgaifFGjRd1d0xLi5ANMpasmDvEgLTGeafh47Be
-	Un8pZOmzXC3Q6Oz/TY9t8u3Bneo=
-X-Received: by 2002:a05:620a:5d8e:b0:7bd:bafc:32a8 with SMTP id af79cd13be357-7bdbafc35d3mr985340385a.24.1736812648433;
-        Mon, 13 Jan 2025 15:57:28 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGZ4yzz8tQiGfGPcss6eaK0wqSBP1yjUalrX6t53Tf7hH3xN8W77zMYEknciX6xn8Jr4LX3TA==
-X-Received: by 2002:a05:620a:5d8e:b0:7bd:bafc:32a8 with SMTP id af79cd13be357-7bdbafc35d3mr985338485a.24.1736812648096;
-        Mon, 13 Jan 2025 15:57:28 -0800 (PST)
+        bh=LaiRtkc0us/2g1zO/5SGlZYWHgAQDQHQjwQ2q+7nyiI=;
+        b=gX7Ja3zFHYjQE2iFPlXzjBEH9XwZ+j7zgo1ue2Q7Mc5l1eL40CTlOu8TZ2PTCzzlyZ
+         eZ7E+V1TlBEwZLnMMJDcIumasmEb0LOopOmYN9satvvFVccx37T1LP8B8E1AHYclus6H
+         rYsTkdfHkADiqd2GrLHYuN0pI0eMTWu7KBxnwSC1/AG4QClC0A0IK02gtAHN5pCFmHfh
+         mB7czgElEqU0+GsOg8bNfmkxyUNVnKrxs1MILC65mEVJV/c73STgT3Zh5HL7auXfsTPZ
+         z4/AZ5GmtGPokUf27m0CcjGth0UO4xG7dwutrr7jVWb/UsC/GlzpQGms5lR/VCVd2gz6
+         EQpg==
+X-Forwarded-Encrypted: i=1; AJvYcCV7yWXpvaqjO+xerWZdcSuX1p02TB8G33N/YXp1HgoZVnyrI9BACVlfRiYSaIh0FZkNGO6W+83xhYLzzXLTYQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwIoS5n3w0gLzcqJYuP/5xnLt/2B9Q0B+5hOb5yLr5Jn8537yNz
+	Ol02u/dvpaETa7pKsgeyTTrOxcvY9iQJx5ddIY+yU5qUsrtN79WvNhIZQuh7rMcCG6LS7Oi/Qhf
+	hCRck1jwRrX1DKqtjrWwT2XA7fu8RZjkj1k1lY2UJwY4BG13OTVJWjrJAf0sKJlPn
+X-Gm-Gg: ASbGncsEvPFqvGlFgtVp2zMz9nVeJQLitg0WrKJZgNvWdqOsaTcx4wCo1RLbf9tsZjt
+	QQqnCeQ5NtYOggXaqac9Dk0MEhUOl5Db+WsSBvaV6g4VTlmGtIEFKKbnEeBigUSDspt2vE8X+FG
+	y09aBqxHClHIUfYM1Mrfpl3O0nIZgWb7debslAGLNhfgqtmdlnto8ZIwZ7XIvjG7t1wrR9Dfk6a
+	aiOhuGY8hEXeS0C9Oysur7zGK72vYtP9NsWwgfYY9A1unvKLgyFfipPF2ouKA3n7vwpAMdYq5Bu
+	OfsNZqtnqWzsK/LUg0ttLd1RPs8=
+X-Received: by 2002:a05:6214:1bc6:b0:6d8:7e5d:ef1c with SMTP id 6a1803df08f44-6df9b25c356mr366544666d6.21.1736813030425;
+        Mon, 13 Jan 2025 16:03:50 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFIgVvJPOrfEvsL3y+0FhYC/KlJOZHRtGB6SGscDuRG6rQEPTYBM3fjQHeJMDosObHpyTCYIQ==
+X-Received: by 2002:a05:6214:1bc6:b0:6d8:7e5d:ef1c with SMTP id 6a1803df08f44-6df9b25c356mr366544436d6.21.1736813030109;
+        Mon, 13 Jan 2025 16:03:50 -0800 (PST)
 Received: from ?IPv6:2600:4040:5c4c:a000:e00f:8b38:a80e:5592? ([2600:4040:5c4c:a000:e00f:8b38:a80e:5592])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7bce323967fsm548286785a.19.2025.01.13.15.57.26
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6dfad880b54sm46933236d6.29.2025.01.13.16.03.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jan 2025 15:57:27 -0800 (PST)
-Message-ID: <697716119af55f806b24678343abb320261802c0.camel@redhat.com>
-Subject: Re: [WIP RFC v2 26/35] WIP: rust: drm/kms: Add
- RawPlaneState::atomic_helper_check()
+        Mon, 13 Jan 2025 16:03:49 -0800 (PST)
+Message-ID: <9610a92438629dc6976dc40cd54d4f8e907d23c1.camel@redhat.com>
+Subject: Re: [WIP RFC v2 28/35] rust: drm/kms: Add RawPlane::framebuffer()
 From: Lyude Paul <lyude@redhat.com>
 To: Daniel Almeida <daniel.almeida@collabora.com>
 Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, Asahi
@@ -79,11 +78,11 @@ Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, Asahi
  <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice
  Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,  open list
  <linux-kernel@vger.kernel.org>
-Date: Mon, 13 Jan 2025 18:57:25 -0500
-In-Reply-To: <7148C7F5-6412-44CB-B92A-4ABAE4A4D5C3@collabora.com>
+Date: Mon, 13 Jan 2025 19:03:48 -0500
+In-Reply-To: <ABEE04BD-5136-4F83-A46D-62595D1D3B9B@collabora.com>
 References: <20240930233257.1189730-1-lyude@redhat.com>
-	 <20240930233257.1189730-27-lyude@redhat.com>
-	 <7148C7F5-6412-44CB-B92A-4ABAE4A4D5C3@collabora.com>
+	 <20240930233257.1189730-29-lyude@redhat.com>
+	 <ABEE04BD-5136-4F83-A46D-62595D1D3B9B@collabora.com>
 Organization: Red Hat Inc.
 User-Agent: Evolution 3.52.4 (3.52.4-2.fc40)
 Precedence: bulk
@@ -93,107 +92,74 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Tv5bwpKY0oaHDsOKvkQ2y-1Eixb-a_7lIs6W0vKLupk_1736812648
+X-Mimecast-MFC-PROC-ID: oK7V-abO3l3_rC9Dz_xyPlP2Fd0QbIVoaKW7msbJjLI_1736813030
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 2024-11-28 at 11:04 -0300, Daniel Almeida wrote:
+On Thu, 2024-11-28 at 11:29 -0300, Daniel Almeida wrote:
 > Hi Lyude,
 >=20
 > > On 30 Sep 2024, at 20:10, Lyude Paul <lyude@redhat.com> wrote:
 > >=20
-> > Add a binding for drm_atomic_helper_check_plane_state(). Since we want =
-to
-> > make sure that the user is passing in the new state for a Crtc instead =
-of
-> > an old state, we explicitly ask for a reference to a BorrowedCrtcState.
-> >=20
-> > Signed-off-by: Lyude Paul <lyude@redhat.com>
-> >=20
-> > ---
-> >=20
-> > TODO:
-> > * Add support for scaling options
+> > Returns the Framebuffer currently assigned in an atomic plane state.
 >=20
-> Can / should this be a separate commit? This would allow this one to go i=
-n earlier.
+> A bit unrelated to this patch, but can you have more than one framebuffer=
+ active?=20
 
-It could be but I don't have any implementation of this yet, which is why i=
-t's
-mentioned as a todo.
+Not on a single display plane, but you can have multiple display planes act=
+ive
+on the same CRTC that each have their own framebuffer. Also, some framebuff=
+ers
+can have more than a single buffer object attached to them (for stuff like
+stereoscopic displays).
 
 >=20
+> i.e.: for things like overlays, etc
+
+JFYI an overlay is basically just a type of display plane, but has limitati=
+ons
+a universal display plane doesn't have. You see it mostly on older hardware=
+,
+where I think the common usecase was to do video decoding and isolate it to=
+ a
+single display plane to lower the resource usage of actually compositing th=
+e
+resulting video onto the display.
+
+>=20
 > >=20
 > > Signed-off-by: Lyude Paul <lyude@redhat.com>
 > > ---
-> > rust/kernel/drm/kms/plane.rs | 25 +++++++++++++++++++++++++
-> > 1 file changed, 25 insertions(+)
+> > rust/kernel/drm/kms/plane.rs | 8 ++++++++
+> > 1 file changed, 8 insertions(+)
 > >=20
 > > diff --git a/rust/kernel/drm/kms/plane.rs b/rust/kernel/drm/kms/plane.r=
 s
-> > index 4d16d53179fca..cd5167e6441f1 100644
+> > index cd5167e6441f1..15efa53fda8d3 100644
 > > --- a/rust/kernel/drm/kms/plane.rs
 > > +++ b/rust/kernel/drm/kms/plane.rs
-> > @@ -496,6 +496,31 @@ fn crtc<'a, 'b: 'a>(&'a self) -> Option<&'b Opaque=
-Crtc<<Self::Plane as ModeObjec
-> >         // SAFETY: This cast is guaranteed safe by `OpaqueCrtc`s invari=
-ants.
-> >         NonNull::new(self.as_raw().crtc).map(|c| unsafe { OpaqueCrtc::f=
-rom_raw(c.as_ptr()) })
+> > @@ -31,6 +31,7 @@
+> >     StaticModeObject,
+> >     atomic::*,
+> >     crtc::*,
+> > +    framebuffer::*,
+> > };
+> >=20
+> > /// The main trait for implementing the [`struct drm_plane`] API for [`=
+Plane`]
+> > @@ -521,6 +522,13 @@ fn atomic_helper_check<S>(
+> >             )
+> >         })
 > >     }
 > > +
-> > +    /// Run the atomic check helper for this plane and the given CRTC =
-state
-> > +    fn atomic_helper_check<S>(
-> > +        &mut self,
-> > +        crtc_state: &BorrowedCrtcState<'_, S>,
-> > +        can_position: bool,
-> > +        can_update_disabled: bool
-> > +    ) -> Result
->=20
-> Some docs on the arguments would be nice IMHO. Things like `can_position`=
- and `can_update_disabled`
-> seem a bit opaque.
->=20
-
-I'm curious if you have any idea whether we can link back to kernel docs in
-rust? We have pretty extensive documentation written up on almost all of th=
-is
-already, I just have no idea how to incorporate it on the rust side.
-
-> > +    where
-> > +        S: FromRawCrtcState,
-> > +        S::Crtc: AsRawCrtc<Driver =3D <Self::Plane as ModeObject>::Dri=
-ver>
-> > +    {
-> > +        // SAFETY: We're passing the mutable reference from `self.as_r=
-aw_mut()` directly to DRM,
-> > +        // which is safe.
-> > +        to_result(unsafe {
-> > +            bindings::drm_atomic_helper_check_plane_state(
-> > +                self.as_raw_mut(),
-> > +                crtc_state.as_raw(),
-> > +                bindings::DRM_PLANE_NO_SCALING as _, // TODO: add para=
-meters for scaling
-> > +                bindings::DRM_PLANE_NO_SCALING as _,
->=20
-> No scaling means that you can only select the display=E2=80=99s highest r=
-esolution?
-
-No, I believe (correct me if I'm wrong here chat) that this is about plane
-scaling rather than resolution. A lot of display hardware has the ability t=
-o
-do hardware-scaling of individual display planes, so that the input
-framebuffer for a plane can be larger than the actual display plane that's =
-on-
-screen.
-
->=20
-> > +                can_position,
-> > +                can_update_disabled
-> > +            )
-> > +        })
+> > +    /// Return the framebuffer currently set for this plane state
+> > +    #[inline]
+> > +    fn framebuffer(&self) -> Option<&Framebuffer<<Self::Plane as ModeO=
+bject>::Driver>> {
+> > +        // SAFETY: The layout of Framebuffer<T> is identical to `fb`
+> > +        unsafe { self.as_raw().fb.as_ref().map(|fb| Framebuffer::from_=
+raw(fb)) }
 > > +    }
 > > }
 > > impl<T: AsRawPlaneState + ?Sized> RawPlaneState for T {}
@@ -201,8 +167,9 @@ screen.
 > > --=20
 > > 2.46.1
 > >=20
+> >=20
 >=20
-> Barring the comment above about the docs, this looks good.
+> LGTM
 >=20
 > =E2=80=94 Daniel
 >=20
