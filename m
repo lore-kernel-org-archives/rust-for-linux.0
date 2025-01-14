@@ -1,115 +1,51 @@
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7E515ECDF;
-	Tue, 14 Jan 2025 15:52:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342F01885BF;
+	Tue, 14 Jan 2025 16:33:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736869922; cv=none; b=e+dd9Jc+omQF08A/QDxz9GETLmYo0SlQWYNMuBxY4KiVfLOeWbj9h41GYqTVoUdoPO39qZUtmMHoWnaZ4+4AGo7C9KiNM5s7K2bkKW/etiEnpv0yq4LcYNl4Xw49rEkMxzBqfIOsUqMpjWxxQ29WUGWH/iOcNbQc++t1Jy6b6UM=
+	t=1736872426; cv=none; b=GR2hysQA7btCumeLPv3RWp+qGSSLLZsqfupy+We1I3daT6hjmGtQTAG/e8mTtSFHPBre5i+FFYP8Bx91/TTzD1vrBC/JQap9xlZjsNsTBAHWOCiHsdk1zaeKNCOPr1kkYjVwwX2wBxzus7NugxKVg0fU4ArMX5auFZQesxBtAVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736869922; c=relaxed/simple;
-	bh=VuDI8gaXPtJ0h1qKEvM8NRNZi/S6Ba+bK1BQzdiomvg=;
+	s=arc-20240116; t=1736872426; c=relaxed/simple;
+	bh=KVUmaLRhmiiEcQyF5SAfptVzJKeJAVpd3dFJ7EyCHPE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ObaqyUz4ayA5Yax0LirTEDkD+brRfie3O/3xwgWAfMFP2/HbrbTkwnt5dSsFR7p7addUIA9ATsQor8AAFCy2JIOyMEqWJFmSn+Iwvq30Mx5juXJkWea9ArsjecoZRIRPw8DdNb3Ft1XDoRsvPk5qLOzl/O0eiWP4e1S2RhHIAD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RZ1wHdMP; arc=none smtp.client-ip=209.85.219.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=CmuGr7U+ILsfJPHoi/q9l7ZBtwTg5wXjdmpqw4ypRktCJZVSVX5yNjtjq9rPMl9i+pWyvcudVVWw65KNJe6+qpZ1qDF+qKmXlq9H2i13UdUnjVxl+1Bck1dbrAPkcSaDMPnP/ezBB+qfAHFt7Lj6EUsjeip+Mp1A72Qu46LOX+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BuSNBXZd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RZ1wHdMP"
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6dd049b5428so45526956d6.2;
-        Tue, 14 Jan 2025 07:52:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736869919; x=1737474719; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HrN/XIDqZQ1PfOXKErSTYKQ3Rt3IxRwrBOukCrfpSF0=;
-        b=RZ1wHdMP3vwbUkAgqcyPmotuG8xhevjjDRmU77VvJLAgLg1jqgOnXuL6aHj5qrWUmk
-         b1BGfBMeZ0HOxBL7gQLAvdmCnlpUfl0ZW37ToTGFrASoaA9YO3vjU5A3C40QcWj1RCh4
-         OE6kDNWqmMLMlsBUSFgOuYEI2gBPQ1qF1IVJ9gUsV8iPgqjC8TYIM75bQhbNa7bCcwMH
-         WyismVwhoP2B/CZGBO7SbUc/Kx8SlJ3QN0t3QllhPcgGVAERfMam0qrECZt66pEu78hE
-         ayfarWVLMfkS103oPXoNXffHygujaCm+DlOwOnYNIxHHgxb++siZXyTM/qTCEtzBfd2W
-         RD8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736869919; x=1737474719;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HrN/XIDqZQ1PfOXKErSTYKQ3Rt3IxRwrBOukCrfpSF0=;
-        b=UMkOPmtrbDzpbXKX8clRkCueM3JIX7yqIuoFg0qiPsl8XGS3lq7C8wi6HRWSXpKEAu
-         dXoTS3ic3qTvEXjbxM9vpk639itynGeTIDv6ey0eLGIKxZOkae5OeZRtRFdSGlyneuGE
-         nCvX34VGHN31l52xlVdZbM4VgLDL0gv7hT1IwqkzQMn+ZgSsoqmI7oSdlyCpSmvnFOxa
-         YrPZAtsTUqM1YeEoIVkLoEJugUekywQy3iliW9BVFLBfxxQs9XQA+9lq1zeu9Lt1De2X
-         mhBrq+MZlumJMYno7L0iJnyQ5dDIuF0KosWMsDY2JHke4miEryt8+4gls7PLiZTIUuQh
-         leog==
-X-Forwarded-Encrypted: i=1; AJvYcCUqv8P4TBCzrgu+jFmZG+J2y0uSQpGM5x+oByj50SPtpAl2rI1ARz8SlOfd4WsS4HGT20I6Vbcb8SIjQAI=@vger.kernel.org, AJvYcCWTlWiaNf28pxEJxwvMxz6r6CR65k3RHem4ZHvanZhfNzTulYx1Ui9gkVrHFkqgBDX9qYKc0k/+aYpReonPFNQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyb2zqnurAkghFmjhUnJSNEEyp+aIzhENcBFMomecb2onkhieVn
-	UO1r1TR7A/gvkKhCMu8y1IQHGetkY7SNly9KbYBt9OjJ+W2pjIyB
-X-Gm-Gg: ASbGncsyLSLv9tFn89sdO2w5umxlPEhfCe/PpmAs+mgLnz5XIGsmtiog1BJMt+ABeg6
-	HvvvdnQK/ujXKfZQGRuqMU+adm4h7mFxBKmnKw/vft3vKlND9Qf95LLg+EAW42hKvVskgix/6JI
-	jEOgyqgwRcjwbHFJCxg3axBIbrNUaQGimuNKrera1PkEOK4HOkKJgXi56ymB2yJaXysTwqOxtxj
-	c4R8o3Fb1NPfSZilh75OTb8LvM0V4OOeH1l4VLMHiuIwwwJNwTkyCW4GUC+JybijyycSeD485cY
-	gi2LTmuzXWWJnHnTzw71MyKpZssSM8lQCex2pJzgY++kod8=
-X-Google-Smtp-Source: AGHT+IHAFAvHGRJjhXPt5XHN3c4vaglQkvaOGNpl9SXgdeJla3GT/gB8GRzf2j/Gk8E7sS45ut82cg==
-X-Received: by 2002:a05:6214:dca:b0:6d8:9ab7:adcc with SMTP id 6a1803df08f44-6df9b1f6c6cmr388988546d6.22.1736869919170;
-        Tue, 14 Jan 2025 07:51:59 -0800 (PST)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6dfade89283sm53783396d6.105.2025.01.14.07.51.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jan 2025 07:51:58 -0800 (PST)
-Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 289BC120006C;
-	Tue, 14 Jan 2025 10:51:58 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Tue, 14 Jan 2025 10:51:58 -0500
-X-ME-Sender: <xms:HoiGZ73LfGz3Nc089rvXD0l4D4qBO63FY2wIJu_sq0yRcPq29lYcSA>
-    <xme:HoiGZ6GpYFBNwf-AApkl2wre2TzOhlwavZsnVx7NqCzf-bq-gQHa2Sc53atkiGaQ_
-    TjRgsp1jqZagsdtSg>
-X-ME-Received: <xmr:HoiGZ743WwfVxaoM0_HArcn-gOBMMfAXizShpq2-7q6NnbvULsxL57PrjFg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudehiedgkeduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
-    gtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleei
-    vedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhi
-    thihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmh
-    grihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudeipdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprh
-    gtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidr
-    ghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepsghjohhrnhefpghghhesph
-    hrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtohepsggvnhhnohdrlhhoshhsihhnsehp
-    rhhothhonhdrmhgvpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdroh
-    hrghdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphht
-    thhopehtmhhgrhhoshhssehumhhitghhrdgvughupdhrtghpthhtohepthgrmhhirhguse
-    hgmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:HoiGZw3c9oFP9RIBz_6Hpo3YWK6K5qpIqrS92DWy3c66D_BMRTKeog>
-    <xmx:HoiGZ-EjD36YEWkvdVi0dZTUjKLpEPQnynEx-GHHtHjOJ-xZAos1AQ>
-    <xmx:HoiGZx8JAfmm0T6Y50fNBbRsCAD4yJQex67EaUvL7WjV6wBJoDLmoA>
-    <xmx:HoiGZ7lN1LBtKberl0aOXDsAihd0O9S2P0qckW49fZn5OAnRrsl3pg>
-    <xmx:HoiGZ6EadiWj1iqSMDL4AQAcHyv5rLudwUmv4b7ieJC3I6sde5gCNi5W>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 14 Jan 2025 10:51:57 -0500 (EST)
-Date: Tue, 14 Jan 2025 07:50:41 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] rust: implement `kernel::sync::Refcount`
-Message-ID: <Z4aH0aK1IA7_E2ix@boqun-archlinux>
-References: <20241221183024.3929500-1-gary@garyguo.net>
- <20241221183024.3929500-2-gary@garyguo.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BuSNBXZd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C3BC4CEDD;
+	Tue, 14 Jan 2025 16:33:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736872425;
+	bh=KVUmaLRhmiiEcQyF5SAfptVzJKeJAVpd3dFJ7EyCHPE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BuSNBXZdQ0ZNDBmy/o0/hbmUxaJ0eS8W+atRLHoWNLKyLvTfu1h+Ybl0S89OnIOCu
+	 dmNyUDmRn/BIoI/+259dFtpwEfeRKiVvXipgnDW7tY4xC2YgP+e6FX9IQ1SZeRdJgQ
+	 VN/Gr/EBqutCR6RRQAys7F40zN/l+Cw3mNCzGF7ACipSaZT+5fkhG8q9bXxdu6itjg
+	 D+2jNh17C2z+gLVbkkgpslNqlsO82DMGCVrpU3B4Yj9XQVmz4pKtqSlqvKAZotBc0w
+	 qzE+claz2bULPMGNl5esAgaH/yhM+NojZO3Bv61ifjK11IxRZL5q6TNyhORQ+sT39t
+	 seOEZvmS77NYA==
+Date: Tue, 14 Jan 2025 17:33:36 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Gary Guo <gary@garyguo.net>, gregkh@linuxfoundation.org
+Cc: rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, tmgross@umich.edu,
+	a.hindborg@samsung.com, aliceryhl@google.com, airlied@gmail.com,
+	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com,
+	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org,
+	daniel.almeida@collabora.com, saravanak@google.com,
+	dirk.behme@de.bosch.com, j@jannau.net, fabien.parent@linaro.org,
+	chrisi.schrefl@gmail.com, paulmck@kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
+	rcu@vger.kernel.org
+Subject: Re: [PATCH v7 08/16] rust: add devres abstraction
+Message-ID: <Z4aR4OrCQMoF6Boo@pollux>
+References: <20241219170425.12036-1-dakr@kernel.org>
+ <20241219170425.12036-9-dakr@kernel.org>
+ <20241224215323.560f17a9.gary@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -118,94 +54,183 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241221183024.3929500-2-gary@garyguo.net>
+In-Reply-To: <20241224215323.560f17a9.gary@garyguo.net>
 
-On Sat, Dec 21, 2024 at 06:29:44PM +0000, Gary Guo wrote:
-> This is a wrapping layer of `include/linux/refcount.h`. Currently the
-> kernel refcount has already been used in `Arc`, however it calls into
-> FFI directly.
+On Tue, Dec 24, 2024 at 09:53:23PM +0000, Gary Guo wrote:
+> On Thu, 19 Dec 2024 18:04:10 +0100
+> Danilo Krummrich <dakr@kernel.org> wrote:
 > 
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-> ---
->  rust/helpers/refcount.c      | 10 ++++
->  rust/kernel/sync.rs          |  2 +
->  rust/kernel/sync/refcount.rs | 97 ++++++++++++++++++++++++++++++++++++
->  3 files changed, 109 insertions(+)
->  create mode 100644 rust/kernel/sync/refcount.rs
+> > Add a Rust abstraction for the kernel's devres (device resource
+> > management) implementation.
+> > 
+> > The Devres type acts as a container to manage the lifetime and
+> > accessibility of device bound resources. Therefore it registers a
+> > devres callback and revokes access to the resource on invocation.
+> > 
+> > Users of the Devres abstraction can simply free the corresponding
+> > resources in their Drop implementation, which is invoked when either the
+> > Devres instance goes out of scope or the devres callback leads to the
+> > resource being revoked, which implies a call to drop_in_place().
+> > 
+> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> > ---
+> >  MAINTAINERS            |   1 +
+> >  rust/helpers/device.c  |  10 +++
+> >  rust/helpers/helpers.c |   1 +
+> >  rust/kernel/devres.rs  | 178 +++++++++++++++++++++++++++++++++++++++++
+> >  rust/kernel/lib.rs     |   1 +
+> >  5 files changed, 191 insertions(+)
+> >  create mode 100644 rust/helpers/device.c
+> >  create mode 100644 rust/kernel/devres.rs
+> > 
+> > <snip>
+> >
+> > +pub struct Devres<T>(Arc<DevresInner<T>>);
+> > +
+> > +impl<T> DevresInner<T> {
+> > +    fn new(dev: &Device, data: T, flags: Flags) -> Result<Arc<DevresInner<T>>> {
+> > +        let inner = Arc::pin_init(
+> > +            pin_init!( DevresInner {
+> > +                data <- Revocable::new(data),
+> > +            }),
+> > +            flags,
+> > +        )?;
+> > +
+> > +        // Convert `Arc<DevresInner>` into a raw pointer and make devres own this reference until
+> > +        // `Self::devres_callback` is called.
+> > +        let data = inner.clone().into_raw();
+> > +
+> > +        // SAFETY: `devm_add_action` guarantees to call `Self::devres_callback` once `dev` is
+> > +        // detached.
+> > +        let ret = unsafe {
+> > +            bindings::devm_add_action(dev.as_raw(), Some(Self::devres_callback), data as _)
+> > +        };
+> > +
+> > +        if ret != 0 {
+> > +            // SAFETY: We just created another reference to `inner` in order to pass it to
+> > +            // `bindings::devm_add_action`. If `bindings::devm_add_action` fails, we have to drop
+> > +            // this reference accordingly.
+> > +            let _ = unsafe { Arc::from_raw(data) };
+> > +            return Err(Error::from_errno(ret));
+> > +        }
+> > +
+> > +        Ok(inner)
+> > +    }
+> > +
+> > +    #[allow(clippy::missing_safety_doc)]
+> > +    unsafe extern "C" fn devres_callback(ptr: *mut kernel::ffi::c_void) {
+> > +        let ptr = ptr as *mut DevresInner<T>;
+> > +        // Devres owned this memory; now that we received the callback, drop the `Arc` and hence the
+> > +        // reference.
+> > +        // SAFETY: Safe, since we leaked an `Arc` reference to devm_add_action() in
+> > +        //         `DevresInner::new`.
+> > +        let inner = unsafe { Arc::from_raw(ptr) };
+> > +
+> > +        inner.data.revoke();
+> > +    }
+> > +}
+> > +
+> > +impl<T> Devres<T> {
+> > +    /// Creates a new [`Devres`] instance of the given `data`. The `data` encapsulated within the
+> > +    /// returned `Devres` instance' `data` will be revoked once the device is detached.
+> > +    pub fn new(dev: &Device, data: T, flags: Flags) -> Result<Self> {
+> > +        let inner = DevresInner::new(dev, data, flags)?;
+> > +
+> > +        Ok(Devres(inner))
+> > +    }
+> > +
+> > +    /// Same as [`Devres::new`], but does not return a `Devres` instance. Instead the given `data`
+> > +    /// is owned by devres and will be revoked / dropped, once the device is detached.
+> > +    pub fn new_foreign_owned(dev: &Device, data: T, flags: Flags) -> Result {
+> > +        let _ = DevresInner::new(dev, data, flags)?;
+> > +
+> > +        Ok(())
+> > +    }
+> > +}
+> > +
+> > +impl<T> Deref for Devres<T> {
+> > +    type Target = Revocable<T>;
+> > +
+> > +    fn deref(&self) -> &Self::Target {
+> > +        &self.0.data
+> > +    }
+> > +}
+> > +
+> > +impl<T> Drop for Devres<T> {
+> > +    fn drop(&mut self) {
+> > +        // Revoke the data, such that it gets dropped already and the actual resource is freed.
+> > +        //
+> > +        // `DevresInner` has to stay alive until the devres callback has been called. This is
+> > +        // necessary since we don't know when `Devres` is dropped and calling
+> > +        // `devm_remove_action()` instead could race with `devres_release_all()`.
 > 
-> diff --git a/rust/helpers/refcount.c b/rust/helpers/refcount.c
-> index d6adbd2e45a1..d175898ad7b8 100644
-> --- a/rust/helpers/refcount.c
-> +++ b/rust/helpers/refcount.c
-> @@ -7,11 +7,21 @@ refcount_t rust_helper_REFCOUNT_INIT(int n)
->  	return (refcount_t)REFCOUNT_INIT(n);
->  }
->  
-> +void rust_helper_refcount_set(refcount_t *r, int n)
-> +{
-> +	refcount_set(r, n);
-> +}
-> +
->  void rust_helper_refcount_inc(refcount_t *r)
->  {
->  	refcount_inc(r);
->  }
->  
-> +void rust_helper_refcount_dec(refcount_t *r)
-> +{
-> +	refcount_dec(r);
-> +}
-> +
->  bool rust_helper_refcount_dec_and_test(refcount_t *r)
->  {
->  	return refcount_dec_and_test(r);
-> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-> index 1eab7ebf25fd..b76b04e16eac 100644
-> --- a/rust/kernel/sync.rs
-> +++ b/rust/kernel/sync.rs
-> @@ -12,6 +12,7 @@
->  pub mod lock;
->  mod locked_by;
->  pub mod poll;
-> +mod refcount;
->  
->  pub use arc::{Arc, ArcBorrow, UniqueArc};
->  pub use condvar::{new_condvar, CondVar, CondVarTimeoutResult};
-> @@ -19,6 +20,7 @@
->  pub use lock::mutex::{new_mutex, Mutex};
->  pub use lock::spinlock::{new_spinlock, SpinLock};
->  pub use locked_by::LockedBy;
-> +pub use refcount::Refcount;
->  
->  /// Represents a lockdep class. It's a wrapper around C's `lock_class_key`.
->  #[repr(transparent)]
-> diff --git a/rust/kernel/sync/refcount.rs b/rust/kernel/sync/refcount.rs
-> new file mode 100644
-> index 000000000000..2198b1598b60
-> --- /dev/null
-> +++ b/rust/kernel/sync/refcount.rs
+> IIUC, the outcome of that race is the `WARN` if
+> devres_release_all takes the spinlock first and has already remvoed the
+> action?
+> 
+> Could you do a custom devres_release here that mimick
+> `devm_remove_action` but omit the `WARN`? This way it allows the memory
+> behind DevresInner to be freed early without keeping it allocated until
+> the end of device lifetime.
 
-Could you add this file into the entry of "ATOMIC INFRASTRUCTURE"? I
-would also suggest you to add yourself as a reviewer or maintainer in
-that entry (given your expertise on atomic and related compiler
-behaviors), but that's totally up to you.
+Better late than never, I now remember what's the *actual* race I was preventing
+here:
 
-> @@ -0,0 +1,97 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Atomic reference counting.
-> +//!
-> +//! C header: [`include/linux/refcount.h`](srctree/include/linux/refcount.h)
-> +
-> +use crate::types::Opaque;
-> +use core::sync::atomic::AtomicI32;
-> +
+  | Task 0                               | Task 1
+--|----------------------------------------------------------------------------
+1 | Devres::drop() {                     | devres_release_all() {
+2 |    DevresInner::remove_action() {    |    spin_lock_irqsave();
+3 |                                      |    remove_nodes(&todo);
+4 |                                      |    spin_unlock_irqrestore();
+5 |       devm_remove_action_nowarn();   |
+6 |       let _ = Arc::from_raw();       |
+7 |    }                                 |
+8 | }                                    |
+9 |                                      |    release_nodes(&todo);
+10|                                      | }
 
-Could you move this "use" into patch #3, where it gets used?
+So, if devres_release_all() wins the race it stores the devres action within the
+temporary todo list. Which means that in 9 we enter
+DevresInner::devres_callback() even though DevresInner has been freed already.
 
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+Unfortunately, this race can happen with [1], but not with this original version
+of Devres.
 
-Regards,
-Boqun
+I see two ways to fix it:
 
-[...]
+1) Just revert [1] and stick with the original version.
+
+2) Use devm_release_action() instead of devm_remove_action() and don't drop the
+   reference in DevresInner::remove_action() (6). This way the reference is
+   always dropped from the callback.
+
+With 2) we still have an unnecessary call to revoke() if Devres is dropped
+before the device is detached from the driver, but that's still better than
+keeping DevresInner alive until the device is detached from the driver, which
+the original version did. Hence, I'll go ahead and prepare a patch for this,
+unless there are any concerns.
+
+- Danilo
+
+[1] https://lore.kernel.org/rust-for-linux/20250107122609.8135-2-dakr@kernel.org/
+
+> 
+> > +        //
+> > +        // SAFETY: When `drop` runs, it's guaranteed that nobody is accessing the revocable data
+> > +        // anymore, hence it is safe not to wait for the grace period to finish.
+> > +        unsafe { self.revoke_nosync() };
+> > +    }
+> > +}
+> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> > index 6c836ab73771..2b61bf99d1ee 100644
+> > --- a/rust/kernel/lib.rs
+> > +++ b/rust/kernel/lib.rs
+> > @@ -41,6 +41,7 @@
+> >  pub mod cred;
+> >  pub mod device;
+> >  pub mod device_id;
+> > +pub mod devres;
+> >  pub mod driver;
+> >  pub mod error;
+> >  #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
+> 
