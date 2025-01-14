@@ -1,236 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342F01885BF;
-	Tue, 14 Jan 2025 16:33:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26ADF1E529;
+	Tue, 14 Jan 2025 17:04:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736872426; cv=none; b=GR2hysQA7btCumeLPv3RWp+qGSSLLZsqfupy+We1I3daT6hjmGtQTAG/e8mTtSFHPBre5i+FFYP8Bx91/TTzD1vrBC/JQap9xlZjsNsTBAHWOCiHsdk1zaeKNCOPr1kkYjVwwX2wBxzus7NugxKVg0fU4ArMX5auFZQesxBtAVg=
+	t=1736874290; cv=none; b=ne0YlFnZIFN3ofxgQnzaqNqE25yQ6l5QXfpR51DAdZITOOwjYXVV/olS9Pnqhi1g/tIRxXMntEA2MIwDsUBo0NEOHxsafzcdyxphgCm2VMiSZM1dKt8V4DMwnrF7MFssiCEhNkCSEYAX4YPshwZdzxYGyeck+wbxsgzD9go96Rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736872426; c=relaxed/simple;
-	bh=KVUmaLRhmiiEcQyF5SAfptVzJKeJAVpd3dFJ7EyCHPE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CmuGr7U+ILsfJPHoi/q9l7ZBtwTg5wXjdmpqw4ypRktCJZVSVX5yNjtjq9rPMl9i+pWyvcudVVWw65KNJe6+qpZ1qDF+qKmXlq9H2i13UdUnjVxl+1Bck1dbrAPkcSaDMPnP/ezBB+qfAHFt7Lj6EUsjeip+Mp1A72Qu46LOX+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BuSNBXZd; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736874290; c=relaxed/simple;
+	bh=erU1c/KSHyKWmFtCaJlMk13iJ0ijAFLV5JJN9zQIaJ4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=j3MnqQxTR+xtKpzA5f/Em/EYMpcAinqbQnbHNSfVQDR/eP4iDelst6JRtixwDBhkuQv+MFKjfR0b/ZV8J2PeThOTTbX6CupAKDR6iQ94Oh15jUkllX6UwQTAO4uIsmxV+vtMrjoPb1lRw7yk/zCbIT6/1klFatiZ1ZVmyFVaPzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DRbiPDV3; arc=none smtp.client-ip=209.85.208.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BuSNBXZd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C3BC4CEDD;
-	Tue, 14 Jan 2025 16:33:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736872425;
-	bh=KVUmaLRhmiiEcQyF5SAfptVzJKeJAVpd3dFJ7EyCHPE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BuSNBXZdQ0ZNDBmy/o0/hbmUxaJ0eS8W+atRLHoWNLKyLvTfu1h+Ybl0S89OnIOCu
-	 dmNyUDmRn/BIoI/+259dFtpwEfeRKiVvXipgnDW7tY4xC2YgP+e6FX9IQ1SZeRdJgQ
-	 VN/Gr/EBqutCR6RRQAys7F40zN/l+Cw3mNCzGF7ACipSaZT+5fkhG8q9bXxdu6itjg
-	 D+2jNh17C2z+gLVbkkgpslNqlsO82DMGCVrpU3B4Yj9XQVmz4pKtqSlqvKAZotBc0w
-	 qzE+claz2bULPMGNl5esAgaH/yhM+NojZO3Bv61ifjK11IxRZL5q6TNyhORQ+sT39t
-	 seOEZvmS77NYA==
-Date: Tue, 14 Jan 2025 17:33:36 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Gary Guo <gary@garyguo.net>, gregkh@linuxfoundation.org
-Cc: rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, tmgross@umich.edu,
-	a.hindborg@samsung.com, aliceryhl@google.com, airlied@gmail.com,
-	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com,
-	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org,
-	daniel.almeida@collabora.com, saravanak@google.com,
-	dirk.behme@de.bosch.com, j@jannau.net, fabien.parent@linaro.org,
-	chrisi.schrefl@gmail.com, paulmck@kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
-	rcu@vger.kernel.org
-Subject: Re: [PATCH v7 08/16] rust: add devres abstraction
-Message-ID: <Z4aR4OrCQMoF6Boo@pollux>
-References: <20241219170425.12036-1-dakr@kernel.org>
- <20241219170425.12036-9-dakr@kernel.org>
- <20241224215323.560f17a9.gary@garyguo.net>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DRbiPDV3"
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-3061f1e534bso21596181fa.1;
+        Tue, 14 Jan 2025 09:04:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736874287; x=1737479087; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iQBCDSAfVJL5JFoiPM+aYcMPlG50D5F2AQTYLu9KJTs=;
+        b=DRbiPDV3NiYPnEAK/3lQI5ATp9L84IUfZn2w3VhyIHX611LqgH9vCdWAndKrfiUHhF
+         CZq7Osb1QRVBDylb2gauMTyuCBwd+aazRGq5TgrwYt8n84pZrJWD+h55sdpO1zc/TRNz
+         vQ+0KeNDXORmzt/QOOokDhdt/HRb48/tRqqXKKyxrR1c9M4H9QlpNl/rmNZ2EEdrX8fn
+         N6zJ+XvPFCounAjOhRYinKp8hNsQKR8aFYMF/LF3nnaMtU+x65cpxJIuq6hf0Ufr5JBH
+         /T9yd5Tjp70vGAlIpFO1mBxI0YpRl9gQT0/roy7qY5tTq2owrrI4teKBs/I/XpughpI0
+         I7lA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736874287; x=1737479087;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iQBCDSAfVJL5JFoiPM+aYcMPlG50D5F2AQTYLu9KJTs=;
+        b=ihZ/XTz1PFuEfU7R6cZvzl38kqBg6eTfsxqtTl9fu35LyAhJH+RMLdgeJFcTPLgGWm
+         AGFI8g8zVWUtuaDvAM44UIWsTchZQ9oXg8zwynJgTCpf9HpO4V7nRmdPwz4JvsiJg0uZ
+         H+jLE7fbw4M0PVyFnIfQXVEA3Lg5xacsKsL4byYn0olEQbA7VRXwexrqQPxaSbM/d5+h
+         exMcZ8rrjajtmB3mSzvPdYAo6k5VdCW2SC54F0d8b6X5sw67UUnoyqDHU4uAc2kryvLx
+         pRY0JMMJPLtldRhRGHWA8Q+McjfBq/+rQCfu5/ZowJ7AYx1Hi/SlzjmAecf5Usip/oi8
+         VzWA==
+X-Forwarded-Encrypted: i=1; AJvYcCXcG1fmq8wwNEEQEOsuCOjY1aI1izV/0TVbCfzDRxwJdHgzWnergKAxMWC7VblxYnTH1fDyoaUoUDDyuy57hgM=@vger.kernel.org, AJvYcCXmn43SQiLCxIj7L/XsmYVCGm7EpyNcyI+5C6UkHz7Wup4uIoJz7sU2lobyOgIbvzMiRpRDIjCvB+DvVLA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5XDA/dBZzOjo87znOMK741sNHwCxYSksflyk0UgjR9RHF0hNm
+	QB7E2UNYuFEXoTeOOrhPRF4o0CbY7AqUZFvHwQYgrPqfkn8KfN2cf25fVLm923GBKjKGv0ICUSP
+	N0HII4LX9ptzHWmpmklpHvBa8/B8=
+X-Gm-Gg: ASbGncv+7nOouI5ui7ZRzpFSacWlgArO4x1EwsE4d3InRYGmQzsf8l2oH41QaJu9hbu
+	y69G8Edyf75JnCfFRqM49ArVGtZjDtiYitqYKIwXRuXVpb27aXHuAD3WTk3tsSZlFFBcHdxg=
+X-Google-Smtp-Source: AGHT+IFFH5cNcO3yqqxCuNjkdP2MQBf1u50X8yr0+6euEKiuvwOs0h6twPS8aUQqbBQKHbdt07qMgl9wt4cx16BUi7Q=
+X-Received: by 2002:a2e:bc04:0:b0:302:336a:89f7 with SMTP id
+ 38308e7fff4ca-305f459ae71mr107065491fa.18.1736874286875; Tue, 14 Jan 2025
+ 09:04:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241224215323.560f17a9.gary@garyguo.net>
+References: <20250110-hrtimer-v3-v6-12-rc2-v6-0-f71d50f16482@kernel.org> <20250110-hrtimer-v3-v6-12-rc2-v6-1-f71d50f16482@kernel.org>
+In-Reply-To: <20250110-hrtimer-v3-v6-12-rc2-v6-1-f71d50f16482@kernel.org>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Tue, 14 Jan 2025 12:04:10 -0500
+X-Gm-Features: AbW1kvZB0IG_6JrK1_iWkP3L6xinb0A1TDUqJ2gxYpr7to9fTFq2Mlh92gGDAEo
+Message-ID: <CAJ-ks9nwiWo0T5rQdQEMGg-9X1oEQVfTa6HY+Jan6aTwtsuSFg@mail.gmail.com>
+Subject: Re: [PATCH v6 01/14] rust: time: Add Ktime::from_ns()
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+	Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>, 
+	Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 24, 2024 at 09:53:23PM +0000, Gary Guo wrote:
-> On Thu, 19 Dec 2024 18:04:10 +0100
-> Danilo Krummrich <dakr@kernel.org> wrote:
-> 
-> > Add a Rust abstraction for the kernel's devres (device resource
-> > management) implementation.
-> > 
-> > The Devres type acts as a container to manage the lifetime and
-> > accessibility of device bound resources. Therefore it registers a
-> > devres callback and revokes access to the resource on invocation.
-> > 
-> > Users of the Devres abstraction can simply free the corresponding
-> > resources in their Drop implementation, which is invoked when either the
-> > Devres instance goes out of scope or the devres callback leads to the
-> > resource being revoked, which implies a call to drop_in_place().
-> > 
-> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> > ---
-> >  MAINTAINERS            |   1 +
-> >  rust/helpers/device.c  |  10 +++
-> >  rust/helpers/helpers.c |   1 +
-> >  rust/kernel/devres.rs  | 178 +++++++++++++++++++++++++++++++++++++++++
-> >  rust/kernel/lib.rs     |   1 +
-> >  5 files changed, 191 insertions(+)
-> >  create mode 100644 rust/helpers/device.c
-> >  create mode 100644 rust/kernel/devres.rs
-> > 
-> > <snip>
-> >
-> > +pub struct Devres<T>(Arc<DevresInner<T>>);
-> > +
-> > +impl<T> DevresInner<T> {
-> > +    fn new(dev: &Device, data: T, flags: Flags) -> Result<Arc<DevresInner<T>>> {
-> > +        let inner = Arc::pin_init(
-> > +            pin_init!( DevresInner {
-> > +                data <- Revocable::new(data),
-> > +            }),
-> > +            flags,
-> > +        )?;
-> > +
-> > +        // Convert `Arc<DevresInner>` into a raw pointer and make devres own this reference until
-> > +        // `Self::devres_callback` is called.
-> > +        let data = inner.clone().into_raw();
-> > +
-> > +        // SAFETY: `devm_add_action` guarantees to call `Self::devres_callback` once `dev` is
-> > +        // detached.
-> > +        let ret = unsafe {
-> > +            bindings::devm_add_action(dev.as_raw(), Some(Self::devres_callback), data as _)
-> > +        };
-> > +
-> > +        if ret != 0 {
-> > +            // SAFETY: We just created another reference to `inner` in order to pass it to
-> > +            // `bindings::devm_add_action`. If `bindings::devm_add_action` fails, we have to drop
-> > +            // this reference accordingly.
-> > +            let _ = unsafe { Arc::from_raw(data) };
-> > +            return Err(Error::from_errno(ret));
-> > +        }
-> > +
-> > +        Ok(inner)
-> > +    }
-> > +
-> > +    #[allow(clippy::missing_safety_doc)]
-> > +    unsafe extern "C" fn devres_callback(ptr: *mut kernel::ffi::c_void) {
-> > +        let ptr = ptr as *mut DevresInner<T>;
-> > +        // Devres owned this memory; now that we received the callback, drop the `Arc` and hence the
-> > +        // reference.
-> > +        // SAFETY: Safe, since we leaked an `Arc` reference to devm_add_action() in
-> > +        //         `DevresInner::new`.
-> > +        let inner = unsafe { Arc::from_raw(ptr) };
-> > +
-> > +        inner.data.revoke();
-> > +    }
-> > +}
-> > +
-> > +impl<T> Devres<T> {
-> > +    /// Creates a new [`Devres`] instance of the given `data`. The `data` encapsulated within the
-> > +    /// returned `Devres` instance' `data` will be revoked once the device is detached.
-> > +    pub fn new(dev: &Device, data: T, flags: Flags) -> Result<Self> {
-> > +        let inner = DevresInner::new(dev, data, flags)?;
-> > +
-> > +        Ok(Devres(inner))
-> > +    }
-> > +
-> > +    /// Same as [`Devres::new`], but does not return a `Devres` instance. Instead the given `data`
-> > +    /// is owned by devres and will be revoked / dropped, once the device is detached.
-> > +    pub fn new_foreign_owned(dev: &Device, data: T, flags: Flags) -> Result {
-> > +        let _ = DevresInner::new(dev, data, flags)?;
-> > +
-> > +        Ok(())
-> > +    }
-> > +}
-> > +
-> > +impl<T> Deref for Devres<T> {
-> > +    type Target = Revocable<T>;
-> > +
-> > +    fn deref(&self) -> &Self::Target {
-> > +        &self.0.data
-> > +    }
-> > +}
-> > +
-> > +impl<T> Drop for Devres<T> {
-> > +    fn drop(&mut self) {
-> > +        // Revoke the data, such that it gets dropped already and the actual resource is freed.
-> > +        //
-> > +        // `DevresInner` has to stay alive until the devres callback has been called. This is
-> > +        // necessary since we don't know when `Devres` is dropped and calling
-> > +        // `devm_remove_action()` instead could race with `devres_release_all()`.
-> 
-> IIUC, the outcome of that race is the `WARN` if
-> devres_release_all takes the spinlock first and has already remvoed the
-> action?
-> 
-> Could you do a custom devres_release here that mimick
-> `devm_remove_action` but omit the `WARN`? This way it allows the memory
-> behind DevresInner to be freed early without keeping it allocated until
-> the end of device lifetime.
+On Fri, Jan 10, 2025 at 3:20=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
+.org> wrote:
+>
+> From: Lyude Paul <lyude@redhat.com>
+>
+> A simple function to turn the provided value in nanoseconds into a Ktime
+> value. We allow any type which implements Into<bindings::ktime_t>, which
+> resolves to Into<i64>.
+>
+> This is useful for some of the older DRM APIs that never got moved to Kti=
+me
 
-Better late than never, I now remember what's the *actual* race I was preventing
-here:
+Missing period.
 
-  | Task 0                               | Task 1
---|----------------------------------------------------------------------------
-1 | Devres::drop() {                     | devres_release_all() {
-2 |    DevresInner::remove_action() {    |    spin_lock_irqsave();
-3 |                                      |    remove_nodes(&todo);
-4 |                                      |    spin_unlock_irqrestore();
-5 |       devm_remove_action_nowarn();   |
-6 |       let _ = Arc::from_raw();       |
-7 |    }                                 |
-8 | }                                    |
-9 |                                      |    release_nodes(&todo);
-10|                                      | }
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> ---
+>  rust/kernel/time.rs | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>
+> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+> index 379c0f5772e575c9ceacb9c85255b13501db8f30..f59e0fea79d3acfddd922f601=
+f569353609aeec1 100644
+> --- a/rust/kernel/time.rs
+> +++ b/rust/kernel/time.rs
+> @@ -8,6 +8,8 @@
+>  //! C header: [`include/linux/jiffies.h`](srctree/include/linux/jiffies.=
+h).
+>  //! C header: [`include/linux/ktime.h`](srctree/include/linux/ktime.h).
+>
+> +use core::convert::Into;
+> +
+>  /// The number of nanoseconds per millisecond.
+>  pub const NSEC_PER_MSEC: i64 =3D bindings::NSEC_PER_MSEC as i64;
+>
+> @@ -63,6 +65,12 @@ pub fn to_ns(self) -> i64 {
+>      pub fn to_ms(self) -> i64 {
+>          self.divns_constant::<NSEC_PER_MSEC>()
+>      }
+> +
+> +    /// Creates a new Ktime from the given duration in nanoseconds
+> +    #[inline]
+> +    pub fn from_ns(ns: impl Into<bindings::ktime_t>) -> Self {
+> +        Self { inner: ns.into() }
+> +    }
+>  }
 
-So, if devres_release_all() wins the race it stores the devres action within the
-temporary todo list. Which means that in 9 we enter
-DevresInner::devres_callback() even though DevresInner has been freed already.
+Should this be called `from_nanos` to be consistent with
+`core::time::Duration::from_nanos`?
 
-Unfortunately, this race can happen with [1], but not with this original version
-of Devres.
-
-I see two ways to fix it:
-
-1) Just revert [1] and stick with the original version.
-
-2) Use devm_release_action() instead of devm_remove_action() and don't drop the
-   reference in DevresInner::remove_action() (6). This way the reference is
-   always dropped from the callback.
-
-With 2) we still have an unnecessary call to revoke() if Devres is dropped
-before the device is detached from the driver, but that's still better than
-keeping DevresInner alive until the device is detached from the driver, which
-the original version did. Hence, I'll go ahead and prepare a patch for this,
-unless there are any concerns.
-
-- Danilo
-
-[1] https://lore.kernel.org/rust-for-linux/20250107122609.8135-2-dakr@kernel.org/
-
-> 
-> > +        //
-> > +        // SAFETY: When `drop` runs, it's guaranteed that nobody is accessing the revocable data
-> > +        // anymore, hence it is safe not to wait for the grace period to finish.
-> > +        unsafe { self.revoke_nosync() };
-> > +    }
-> > +}
-> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> > index 6c836ab73771..2b61bf99d1ee 100644
-> > --- a/rust/kernel/lib.rs
-> > +++ b/rust/kernel/lib.rs
-> > @@ -41,6 +41,7 @@
-> >  pub mod cred;
-> >  pub mod device;
-> >  pub mod device_id;
-> > +pub mod devres;
-> >  pub mod driver;
-> >  pub mod error;
-> >  #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
-> 
+>
+>  /// Returns the number of milliseconds between two ktimes.
+>
+> --
+> 2.47.0
