@@ -1,196 +1,133 @@
-Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com [209.85.217.44])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C7924022E;
-	Tue, 14 Jan 2025 06:02:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BEBB24333A
+	for <rust-for-linux@vger.kernel.org>; Tue, 14 Jan 2025 09:50:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736834564; cv=none; b=hWd3Akwn38vPQc8bSrQcSBOSuWrP//RRtTjAQB4dG+EIVG/SNt5vM9IC+L7h9Af8g7O/mvhQsax39lwXPY5kbSmfkmdVK3pxFPWeUjcYm4/2HHea/uZocDvC5JrH7bEP6NbluwMiXqoqRyMo0k8ZF3LMxd4ETJIeZ6Wsp3h4+x4=
+	t=1736848220; cv=none; b=X5SLaLT/U6IiaQlpUeTFU9awgKFDhh+hr3j05kosDK42yNRXbSHYGIi7omYHPuTKy2wwhy4fRsU+KaYZn9VevlkTFhy01qSoTvQkf4g89reEFcJKp+eUJ6Vb84rW0VP0lJJMfECqqn0UDN73JetSnDpo66xh6MF1A1r6TBFZwuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736834564; c=relaxed/simple;
-	bh=EglESEDjJAvBxMyYsCyMQ/hc2dz+8A+8RM+JV7U3WIQ=;
+	s=arc-20240116; t=1736848220; c=relaxed/simple;
+	bh=KTwukl8uOiX4y5FD75Tj1+wGTsO1S/cvv2mZ6R8n1/c=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XCmkDdVsh9pXahnIqS2LZHn9R/0lOTJ2+FDxUf7fnwXLJz0hx3tq49TM2YWOjRGmiYpW3u84N1TSXnj5BP7UuWPnzAJXVwwgPdhQRUSArYhfNkphsFB5KIckM3vqj08p4rMQCv2pavCUrE8/mQ2gAcdyW0+LE3CAFoO+WfcfTnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LomXt7aW; arc=none smtp.client-ip=209.85.217.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=Xa+iDDKxEFMkGBi0TXmDywol+lK+dbBXQw1UidHN1jIFpbPXQKayNu+YP6MjAEBVCTcXddPtuEuPKJiE+T3bxRkmODO3DSke7JY6F9QgDp48m5wHnUCZ5cEv5R2ClTedsJrAZyAlJa3EGd3kynZFDojkcGFPlwkM2MFmp/CV4Ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=umYUeCxW; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LomXt7aW"
-Received: by mail-vs1-f44.google.com with SMTP id ada2fe7eead31-4b6398d477fso607749137.0;
-        Mon, 13 Jan 2025 22:02:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="umYUeCxW"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-385e06af753so2641401f8f.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 14 Jan 2025 01:50:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736834562; x=1737439362; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1736848215; x=1737453015; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WkiGGN3usxKGcjHnnfjxo/y86ISLASVjG3WOea2vePc=;
-        b=LomXt7aW8Dxd5Y5OVyvP0z63h35W/mkVx5Y+McrWZ9bSGYgQWjC+eaTjSjt/LZWPFd
-         a1Xu09ayGFaeHWiBMG2Vvp8kK8ixjg1Zdx4MSyIAs32vAfHXLDEU6JM6rf5OLFZ3Ivkf
-         YiZ0CMPnz5Ylb43VPdkLcAa5Ue4n3qVnyhAbTgSkv+sCuzgvde97TYKb8HhCD+4/9fiT
-         /Zscul/zUuJ0I6OpU/KHWy1EC07biriiJThjEDtILodmYK113AwSz293ayHX8w0e2rJ1
-         lpLT7asuX0wP8LEbq9dPLR8480nKbogNn92bvCQ1ikvWMp/mLAamJAYeX84C5IZN5SQf
-         yWkA==
+        bh=KTwukl8uOiX4y5FD75Tj1+wGTsO1S/cvv2mZ6R8n1/c=;
+        b=umYUeCxWee+sBNvFrrHoAqConvt9wSptHckIcmLMxdlyivX4Ao9l26uwlwp5SlbPKQ
+         FoCAe6SKi8eqTyGBEQEcmNG0eg0KOllInem/J5YcACyGmvC9k9LSOrWNuwqTmYjmrnsN
+         4QLn+bwMCWqckQoOTPPy/krf/fpHF97GvIRNO9LPEVDkSM+Y0YQUDlcFyB9AUJBAFkDG
+         Ha+3vNw3nim7CMc7Tahku08ebo8wnKlmkutJwC8EbHNTs/WagAqtAKycYJ2uTBPwkEfe
+         bfVIjRKoRSeJadMRsaqtJEUVZCDTEXTRmMwYE3yffXt1xqdUHSt8TM6akRdvRby/FpeN
+         YWBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736834562; x=1737439362;
+        d=1e100.net; s=20230601; t=1736848215; x=1737453015;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WkiGGN3usxKGcjHnnfjxo/y86ISLASVjG3WOea2vePc=;
-        b=gpRuFkF9riYeRXTnrkQor/aV3nzn8zkC8x7tJ6U233hvDkfdd98heqTAA6zZ8eD8a4
-         +9Jn1StEUr1a6mTYRp0OJqi9aGtEd3mh7I9oW2VppV5Mr9H7uu2JAV3OiNehw38Vov1u
-         +1gZnD/4sXVwoTLbc6CDWQpBBhUZh0zjcziW8r67w6P6A+1vrKsbhvF7Tp9zzG8f72Qm
-         hAQdsUdBjFtKIJaFODgc38TwnBLC1KHhfq4ugvCELE8Q6F/wgHv8Wp4ezN5GRJNFgIft
-         Zb75Dyg1QvDq+hJvBO4Oy665cfXeyy+s4djZDIZc71NLR0TEL+X0zFd891E/hMP0IuDs
-         Yi/w==
-X-Forwarded-Encrypted: i=1; AJvYcCUGXWnL/7l5BBTQVqN8DjV8W6wHYEgiBxvZ3pkriiLuZUFQqK89yvXwwO49Oc3HpCxRunZgCFWLJdk=@vger.kernel.org, AJvYcCVi74pXoMOILh49fx1BNkT7rfzL65k31kLWrj6X+3xrtreN49o5ssw3fPiFAzdffGpFmbG3SQB/yPlDbUuKnBQ=@vger.kernel.org, AJvYcCX/GVZBJvXdoZZCdHJ+a3F9Q9zO2nlfrm8ReQmHLkCO/QaQlhDLYqjHqQA1Tr8uQygztkGuGfT8DRJ8A/nO@vger.kernel.org, AJvYcCX7z1wOZD6L18lUKUqLVLfVqwlqYt+dh//1nTNtlDZMSvIkqT550tZLOYJkplKFuH0Z1StZH+gpc9Ls@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjZs6CGC6n6jy0CG8Le4fr3UGRvyoMM4c0dx/PLCjnPapq6UtR
-	ywjwSxGFXMClj7unlAhBfSTSGwkcioM5hmHTgnVDz4QnEl9mHAOL9ZUED+t5YQy2siD7D4wisxq
-	ItSnqF0eJ4gpf0oojoYB+yQNH3w0=
-X-Gm-Gg: ASbGncvLlANV/zY9sH9QbN2vRenAwPAMqfpJjmQ2DoKUBZ0JuTWIEF2yS8h4QxhUIum
-	XluEjmfwVx+w7lj7zMv8Ddexy52yWG8T5nlZeG+hvYBD/kHCpddL6z8+1rkl72++Qpn4=
-X-Google-Smtp-Source: AGHT+IHEfYgDdv4MvgwCPy7Cw0PJrNHEjYl4IU6F+ST7c1cmi65B6mLtjuX1z9erY0mlCQTZWxTRLgZgxRx7j+yvZr8=
-X-Received: by 2002:a05:6102:390c:b0:4b4:6988:b12b with SMTP id
- ada2fe7eead31-4b635e2272cmr7559631137.23.1736834561988; Mon, 13 Jan 2025
- 22:02:41 -0800 (PST)
+        bh=KTwukl8uOiX4y5FD75Tj1+wGTsO1S/cvv2mZ6R8n1/c=;
+        b=UOSzdWBdsnbtWqCTqAKgQjBktOop5zDrwSWTfUxw54OM8jCxDsa2AUU4tNX2/uHkmO
+         GKudYs9J0tVsfCDkp1zUUDJktLFNEMgHPwHmd783tX2kewl71MN9y0zA8gQLCu8M+jYF
+         oG8Z8l3xPtdV7xs+xu8UexFPNTfi07m87sLEimzJjrfCyoWh4kCWxa+zeK0ngPjHcs0H
+         s2QHYlaICnIrQFHKi5GFRU1zA9LFvxLGh7isYp3h5zia0kKTCkudD5zEFn+4zpjg/y14
+         q37mspdi6WTEvIhzJJAGe1IhNBCKJEsdzXAHrxfgnQVjrqLk5fVMhFucJRZmcZnQ6J6c
+         r64g==
+X-Forwarded-Encrypted: i=1; AJvYcCVdlsIBrUAJ8C2fOv8ds8gmIok7/pipEjSaHsQYQUHe6fozh2aHOaZMdJifeGIT+MU8NOB7DGbIgcG5zv4Pnw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8Sg96yIAiAegVvNcvGMAu2YpNyqttcMAiiNdKE3zlwNWV/BoY
+	6FNVkaxYXQbbCWBRJVfRUgEIK1e2arvAYMr0cQQCX6e+N1ukfKxMf0dk7WypzyFHBtqtKY4mxN9
+	atkhedxfGfhRHyonR4jFphuqhyATVI2gjBkIG
+X-Gm-Gg: ASbGncvGRZ0NsXq4YAbHYnNpLBcBeSn7BqzfXKEk/Kmrckr/qhhOhdR/3Fo6H2Wv0NG
+	bZLiDtei1uUhITQNtIH2bhxzj5Bzmy6v+uwQ4r8SLQreDGojhQwbTZ13JPPG/IOKLrdu2
+X-Google-Smtp-Source: AGHT+IGKzl5z5Ha3pO1yRtNB3GUeQr+rw3Ekmo6cq91+iIv18Us3DjGDX/jVaDV82Hu1TqkdZrRFwHqkHA0xgmPfkxY=
+X-Received: by 2002:a05:6000:156a:b0:38b:e26d:ea0b with SMTP id
+ ffacd0b85a97d-38be26dea6dmr1638433f8f.25.1736848213829; Tue, 14 Jan 2025
+ 01:50:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <PsAMnW6hScU1fLV8ucb6wOkHECGXCrwXeSEfeVs3Hc-zbwrML674jGT8H_XNvWiF6EdymYJZSusanBrtAsZjAg==@protonmail.internalid>
- <20250107035058.818539-1-alistair@alistair23.me> <878qrm6e2p.fsf@kernel.org>
-In-Reply-To: <878qrm6e2p.fsf@kernel.org>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Tue, 14 Jan 2025 16:02:16 +1000
-X-Gm-Features: AbW1kvaISrrHWVCve7qN8lWuuI74XwUdVsKcEayIn9m2IPJ66xG_6P9XF0a_KuU
-Message-ID: <CAKmqyKO+O6H8+Y2ybz+qiAtgGbLeHMzswo9weWbg0Wc--gEiMA@mail.gmail.com>
-Subject: Re: [PATCH v5 00/11] rust: bindings: Auto-generate inline static functions
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Alistair Francis <alistair@alistair23.me>, bhelgaas@google.com, 
-	rust-for-linux@vger.kernel.org, lukas@wunner.de, gary@garyguo.net, 
-	akpm@linux-foundation.org, tmgross@umich.edu, boqun.feng@gmail.com, 
-	ojeda@kernel.org, linux-cxl@vger.kernel.org, bjorn3_gh@protonmail.com, 
-	me@kloenk.dev, linux-kernel@vger.kernel.org, aliceryhl@google.com, 
-	alistair.francis@wdc.com, linux-pci@vger.kernel.org, benno.lossin@proton.me, 
-	alex.gaynor@gmail.com, Jonathan.Cameron@huawei.com, wilfred.mallawa@wdc.com
+References: <874j33ddxt.fsf@kernel.org> <51PsGz5tctBZlyC7TWAGRwZbM13r71BM1gtm1Y8F4j2w3FtKSXtkVrsvwILAqvSBPrFJzahyUVDum-JXO3yZUw==@protonmail.internalid>
+ <CAH5fLgiS_=MiMcnyC2z8kXQW0Kpn36h6EaHs9g7Zaw85mLn2jA@mail.gmail.com>
+ <87frlsbekc.fsf@kernel.org> <vH_JjBon9WfW7x7OzrUfhGFluWCiBwsPZDkHbFt77nth4SFWJ-4W2vXXBYmE8WEaEJsibxx2N4iXS8Vx6RbAQA==@protonmail.internalid>
+ <18bc911a-ede5-410b-9955-5382bcef975c@lucifer.local> <87msg09uzu.fsf@kernel.org>
+ <qG6w11OwPsgdMa-EKR7V-NiBoOsQocuJDWurazcGSwtN601gK8RP1_un0Gx5MF0pPoKPnEL4ssYKiJUUIkF_Hw==@protonmail.internalid>
+ <8b803030-0ca3-4591-b2f3-bb9bcc2aca21@lucifer.local> <871pxcgg02.fsf@kernel.org>
+ <ec1e87e9-2d84-435a-8e2a-1d426a9c13a0@lucifer.local>
+In-Reply-To: <ec1e87e9-2d84-435a-8e2a-1d426a9c13a0@lucifer.local>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 14 Jan 2025 10:50:01 +0100
+X-Gm-Features: AbW1kvZk9d573jFK8FkPwpKd3ZWRv8D3huYFVncUO-UnxuorvJMOstGtGDK6cu4
+Message-ID: <CAH5fLggntnvMLoZHTm6zx3nSP4nq7iruK2c6iXBX-CXtVPYbcA@mail.gmail.com>
+Subject: Re: [PATCH v11 2/8] mm: rust: add vm_area_struct methods that require
+ read access
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@suse.cz>, John Hubbard <jhubbard@nvidia.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Christian Brauner <brauner@kernel.org>, Jann Horn <jannh@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 7, 2025 at 9:48=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel.=
-org> wrote:
+On Mon, Jan 13, 2025 at 3:45=E2=80=AFPM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+> > >> > For a series at v11 where there is broad agreement with maintainer=
+s within
+> > >> > the subsystem which it wraps, perhaps the priority should be to tr=
+y to have
+> > >> > the series merged unless there is significant technical objection =
+from the
+> > >> > rust side?
+> > >> >
+> > >> >>
+> > >> >> How about this:
+> > >> >>
+> > >> >> This clears the virtual memory map for the range given by `start`=
+ and
+> > >> >> `size`, dropping refcounts to memory held by the mappings in this=
+ range. That
+> > >> >> is, anonymous memory is completely freed, file-backed memory has =
+its
+> > >> >> reference count on page cache folio's dropped, any dirty data wil=
+l still
+> > >> >> be written back to disk as usual.
+> > >> >
+> > >> > Sorry I object to this, 'clears the virtual memory map' is really
+> > >> > vague. What is already there is better.
+> > >>
+> > >> Would you like the proposed paragraph if we replaced "virtual memory
+> > >> map" with "page table mappings", or do you object to the entirety of=
+ the
+> > >> new suggestion?
+> > >
+> > > I object to the suggestion in general. The description is fine as it =
+is.
+> >
+> > Ok. I'm raising a flag because I had more questions after reading the
+> > docstring than before.
 >
-> "Alistair Francis" <alistair@alistair23.me> writes:
->
-> > The kernel includes a large number of static inline functions that are
-> > defined in header files. One example is the crypto_shash_descsize()
-> > function which is defined in hash.h as
-> >
-> > ```
-> > static inline unsigned int crypto_shash_descsize(struct crypto_shash *t=
-fm)
-> > {
-> >         return tfm->descsize;
-> > }
-> > ```
-> >
-> > bindgen is currently unable to generate bindings to these functions as
-> > they are not publically exposed (they are static after all).
-> >
-> > The Rust code currently uses rust_helper_* functions, such as
-> > rust_helper_alloc_pages() for example to call the static inline
-> > functions. But this is a hassle as someone needs to write a C helper
-> > function.
-> >
-> > Instead we can use the bindgen wrap-static-fns feature. The feature
-> > is marked as experimental, but has recently been promoted to
-> > non-experimental (depending on your version of bindgen).
-> >
-> > By supporting wrap-static-fns we automatically generate a C file called
-> > extern.c that exposes the static inline functions, for example like thi=
-s
-> >
-> > ```
-> > unsigned int crypto_shash_descsize__extern(struct crypto_shash *tfm) { =
-return crypto_shash_descsize(tfm); }
-> > ```
-> >
-> > The nice part is that this is auto-generated.
-> >
-> > We then also get a bindings_generate_static.rs file with the Rust
-> > binding, like this
-> >
-> > ```
-> > extern "C" {
-> >     #[link_name =3D "crypto_shash_descsize__extern"]
-> >     pub fn crypto_shash_descsize(tfm: *mut crypto_shash) -> core::ffi::=
-c_uint;
-> > }
-> > ```
-> >
-> > So now we can use the static inline functions just like normal
-> > functions.
-> >
-> > There are a bunch of static inline functions that don't work though, be=
-cause
-> > the C compiler fails to build extern.c:
-> >  * functions with inline asm generate "operand probably does not match =
-constraints"
-> >    errors (rip_rel_ptr() for example)
-> >  * functions with bit masks (u32_encode_bits() and friends) result in
-> >    "call to =E2=80=98__bad_mask=E2=80=99 declared with attribute error:=
- bad bitfield mask"
-> >    errors
-> >
-> > As well as that any static inline function that calls a function that h=
-as been
-> > kconfig-ed out will fail to link as the function being called isn't bui=
-lt
-> > (mdio45_ethtool_gset_npage for example)
-> >
-> > Due to these failures we use a allow-list system (where functions must
-> > be manually enabled).
-> >
-> > This series adds support for bindgen generating wrappers for inline sta=
-tics and
-> > then converts the existing helper functions to this new method. This do=
-esn't
-> > work for C macros, so we can't reamove all of the helper functions, but=
- we
-> > can remove most.
-> >
-> > v5:
-> >  - Rebase on latest rust-next on top of v6.13-rc6
-> >  - Allow support for LTO inlining (not in this series, see
-> >    https://github.com/alistair23/linux/commit/e6b847324b4f5e904e007c0e2=
-88c88d2483928a8)
->
-> Thanks! Since Gary just sent v2 of the LTO patch [1], could you rebase
-> on that and list it as a dependency? If you are using b4 there is a nice
+> Sure and so I think this is valuable information, and indicates it's
+> probably worthwhile adding a little extra information on mentioning page
+> tables.
 
-I can't get Gary's series to apply on rust-next (it does apply on
-master though).
+Sorry, I'm a bit lost. What would you like me to add? Perhaps there's
+an existing file in Documentation/ that I can link to?
 
-I might just wait until Gary's series gets picked up to rust-next as
-there is already a lot of manual rebasing going on and my series
-currently applies on rust-next.
-
-Unfortunately there are just constant conflicts as the number of
-manual C helpers are continually growing.
-
-Obviously when/if this series is approved I can do a final rebase, I
-would just like to avoid unnecessary churn in the meantime
-
-Alistair
-
-> feature for that [2].
->
->
-> Best regards,
-> Andreas Hindborg
->
->
-> [1] https://lore.kernel.org/all/20250105194054.545201-1-gary@garyguo.net/
-> [2] https://b4.docs.kernel.org/en/latest/contributor/prep.html#working-wi=
-th-series-dependencies
->
+Alice
