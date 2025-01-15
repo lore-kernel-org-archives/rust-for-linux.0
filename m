@@ -1,84 +1,178 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013007.outbound.protection.outlook.com [40.107.162.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09E11E32BF;
-	Wed, 15 Jan 2025 02:56:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736909767; cv=none; b=hJDEZGSVvQ/BBGibvJBWACyunRrF209snMGtAohZJP96tt2l5z6hPhCTfgZBXRQJiIerxLWOtKTIYOZNQBXZsryyto4H1JJYjtcWp1cb3aUlFzgHaobuQfXMQKW50gFNyJe3ZH/hd6vjcL+f4ei6SG2zAffNUfKEofDBWQzEbjk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736909767; c=relaxed/simple;
-	bh=b1D/84dPUMBe220vbJMcnbOIxZdg5O2ChLT4aFfY+yc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WTgrsAY2vKiZZ4xoDqMt2D98GZ8QqWM6sbV7VbxfW1BGICh9VC/tTFLhlx74NKCGba/GnRLCSetq2NTNw3KS+eEtpf9YqKtWv6LRIiCZYby1hOzAJ5WF4P4NLF8H0Ha2hajyi/CktbSb1IN90zkUJ1hXzurSoCoVJhAhh3LTEgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OBIcCM6+; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2F78BE7
+	for <rust-for-linux@vger.kernel.org>; Wed, 15 Jan 2025 06:26:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736922383; cv=fail; b=P0dqSgxogiXw8kEGZZ4Q+rY+hP5jp5tXsco09F5/sFjI4hQ/H11/ZSJpg6bOcx+fBxnHI7g4AFQ+iKoIDCbAzoY5BI08X+ZVWcl/Pp72Imq/83RmHxFNevmOzHXiYwhxjyAHPy1NOu+XjaNRfLYOYe7meSBJN37iyc8fmJweeFI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736922383; c=relaxed/simple;
+	bh=RXdqveWbGH20ZPhkFJXyHoG/qMGuBxRfzR/8ukbHWvg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=C6CuHOb0+14U4JlPCtDVSlDBKqweB1HpzC37nTBVV+AHnce72PI26pt/ws8M8MGfQmwHMsAylrXrlyW8U1l/N37CLqLYN/WkTDWlXcNKi0BP/2SHaxaEhh9Ri3RFGVrTO0au0RV9pLJ9+IMU3sUsf4mjd97KCphic8qNF/0VAys=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=snhMcNdH; arc=fail smtp.client-ip=40.107.162.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OBIcCM6+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6714FC4CEE6;
-	Wed, 15 Jan 2025 02:56:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736909766;
-	bh=b1D/84dPUMBe220vbJMcnbOIxZdg5O2ChLT4aFfY+yc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=OBIcCM6+oaj9KLFplmpEVD4/80cRA4OiBp60v5IR1D2yZdu6vRQDYKHyiMzsgHC4k
-	 YTgZK+NA4FbtOPvII3WPpCyzavbKX/JzEQrNWPACH3R9zbwi80g07Id8LzXSqZI0qA
-	 XeDCakto21NyxW8mc/Ah4kPWbN44ex8yuduxX0x/LfxndTlse8h0iZpnRAkc4dxkdD
-	 M7zlLdmNJyjXqoDN6up1g19XFCURZKaTDTxLEZnGFEwkH2jVfMBjKIUVYW6d80oZvv
-	 n61q0Jsk7359sqdPxgIsACW4h/VdvsQxALh1gUCIPjnTm00vDBBeh6j9fvinhdXP/2
-	 SrmkfrlI5Pa1g==
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-30225b2586cso3920951fa.0;
-        Tue, 14 Jan 2025 18:56:06 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUlV8MLOV77vL53tFmdvxGOdPpWK0wWTcOgbMCB0AajGsXtyyXL8nsiJ+f2hbBKj+Lb+X8pkK8BoIQ=@vger.kernel.org, AJvYcCW68GpsJWtFyhtF4kg6xLeo+L44lvC5okRUSYHToNXZvbFqRquXaBUn52iD5moD4iVUz/i7wtT+CJm9T9ji@vger.kernel.org, AJvYcCWChq43Hu935/3Qa3IN7eVwEQJzyAtutsJLRkh0cNuGoUG7CCheGRziKLlVuE1rzDL6PXHPTc1hMOPn+dCo@vger.kernel.org, AJvYcCXukr13lNYbRq3Qyf4kRwnXszxicUHt0Xbmd3b0oux4+m3E6jNKVyGCkAu/XoWSywIaVwmepozQD2e7MeZ5xTY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwmdD9yUfX6bMr6xQhZb+uw/Oc6hSuouqzE4cn/X9g/xhQhZ4If
-	iBJWE+TXSHlc5YCgwB9VSPfbT/9UqOlQOu2KpM1nqoUUnbe39+zLkahJCEN4736MT1CkT0TlZeu
-	TKHQvTgUO6r0MlPFCSu+Fjqep1MU=
-X-Google-Smtp-Source: AGHT+IEbKF7/p4jXX2Y6c4kqW+fI5K4N8QYbyrqp8XXUV/YZnWVH3r/4hFyXitJa+p0igPBJC9MwYK7VAnxehvdzjSw=
-X-Received: by 2002:a2e:a544:0:b0:302:4a8f:428b with SMTP id
- 38308e7fff4ca-3063068737cmr2821231fa.15.1736909765029; Tue, 14 Jan 2025
- 18:56:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="snhMcNdH"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=v0zzER9N4nsodT+CRXn5wF0xZyOTFlWIaowxsp52kFtQ8RgaRKRrRJddTw218DekGwN7BOToYMeHSbvEoINA1gwOztJ+P9x+hEzubpf2Ye7h2cfPR+wue4PmQxxmma15bGo10scGH66YTYw4lfKdCN/fyYu+gpzgJg2R9H1nSEg7MIUgpJQOXZk/xUYDGQRv/ORR+/Je6SPNI+FVbUeVVUe1NacsJeLNqbUVyrtrurB0Z5GABhmqg/aGf86u+6FjhsIFE+L9NEBf5v9sU6vzfVj/58jVSLBpHH6io+5yC9W/F+cMKUlko3RgRKNm2PT39jh/ra8mx+k9ut7kjJSi+Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JbniFiOiB68uP0QnPUCg47Ok7qunJYCBjv1CPphQw04=;
+ b=e3PB8oyGHwGUAx+jD4VlB3Sr5bF6lCQc9EDw+144LyvyxCkO9zdE4Pgk5HFWavupzseO1luP8r3/RWbgqb5tTFq9yFP5VvOPHZoskRjwmYp+DL4M5ivZBrxU/74doGXhoC1pRzuTJgc8IMkz6zDDA59q2ZF++skBZRQMpnWHjcatyU2N7iDxv9A65arAX56TtZCEhY0IfIjF/OJK+FOiu8LIOit9RkhJKUc77c2EF1HkfOdieGzj9Ws1ozVTHx6sOvvE4SwDFOM8xtmgA0FvY4IVD+27ZSEMOWPDh/+ZQ68uY09d7Rab0pMDvOFr1EZD3s8H6Z32O4o/qE99oSkHpQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.206) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JbniFiOiB68uP0QnPUCg47Ok7qunJYCBjv1CPphQw04=;
+ b=snhMcNdHrk2vQ+a6Rh6SK7IZvadxgh4UEfI2MTcdAbDve2ad9ViyapBBjDVZVgFD+ltQ4oA22+HPlvHi0hbFcQpLcOsBdqT+/31mGkOzgnKYj23neWPla7uvUHrNVhcXiOKhGaSubfA7/AobKewaBHPQYMWcgxmj0CCeclHT9+PZQFqwlndTiF7z+/yVDXEhbCVp0keO0TrQmNx32leOaq0LkM5e8T0zUXLqDDcTASQ0fHzoaGfYIL9l67MObWcH9UYOvbolQ/jYbNYIplXpVmVGH+mEmrOr78D29shQLsT6AnLar5SXxFTr/2cJjXobfVmXRrqWBDMkb+rkS6+aDw==
+Received: from DU7PR01CA0042.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:50e::26) by DB8PR10MB3749.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:10:167::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.13; Wed, 15 Jan
+ 2025 06:26:16 +0000
+Received: from DB5PEPF00014B98.eurprd02.prod.outlook.com
+ (2603:10a6:10:50e:cafe::7) by DU7PR01CA0042.outlook.office365.com
+ (2603:10a6:10:50e::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8356.13 via Frontend Transport; Wed,
+ 15 Jan 2025 06:26:16 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.206)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.206 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.206; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.206) by
+ DB5PEPF00014B98.mail.protection.outlook.com (10.167.8.165) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8356.11 via Frontend Transport; Wed, 15 Jan 2025 06:26:16 +0000
+Received: from FE-EXCAS2000.de.bosch.com (10.139.217.199) by eop.bosch-org.com
+ (139.15.153.206) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.13; Wed, 15 Jan
+ 2025 07:26:05 +0100
+Received: from HI7-C-0001H.de.bosch.com (10.139.217.196) by
+ FE-EXCAS2000.de.bosch.com (10.139.217.199) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.43; Wed, 15 Jan 2025 07:26:05 +0100
+From: Dirk Behme <dirk.behme@de.bosch.com>
+To: <rust-for-linux@vger.kernel.org>
+CC: <dirk.behme@de.bosch.com>, <ojeda@kernel.org>
+Subject: [PATCH v2] docs: rust: Add error handling sections
+Date: Wed, 15 Jan 2025 07:25:52 +0100
+Message-ID: <20250115062552.1970768-1-dirk.behme@de.bosch.com>
+X-Mailer: git-send-email 2.48.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241112184455.855133-1-ojeda@kernel.org> <CANiq72m+k07miKu=vHfp1-A+nu092R+khau5b95Ugq8M8sksFQ@mail.gmail.com>
-In-Reply-To: <CANiq72m+k07miKu=vHfp1-A+nu092R+khau5b95Ugq8M8sksFQ@mail.gmail.com>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Wed, 15 Jan 2025 11:55:28 +0900
-X-Gmail-Original-Message-ID: <CAK7LNASXLdya8d2Cjo9H2j5J2d8ukj27aDNStqWEVbDQFgsP2w@mail.gmail.com>
-X-Gm-Features: AbW1kvZlCoUAFxXw5sPs1DKJmHRvk0hzaEaGSs6dBB0CiAx9p8qI6YLajE6H3Tc
-Message-ID: <CAK7LNASXLdya8d2Cjo9H2j5J2d8ukj27aDNStqWEVbDQFgsP2w@mail.gmail.com>
-Subject: Re: [PATCH v3] kbuild: rust: add PROCMACROLDFLAGS
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, HONG Yifan <elsk@google.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB5PEPF00014B98:EE_|DB8PR10MB3749:EE_
+X-MS-Office365-Filtering-Correlation-Id: 100cbfa6-a5db-4e87-66ca-08dd352d846f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?71IPPViPeJ8rqy8lMZO4o6OV86QV3+VG05fXOmkz6rU8TFbPmY7ru232scPS?=
+ =?us-ascii?Q?1bshJROPAqC3LO63oo4pBi+0CYB69FNY7Pq18O8J5FzlpGOpuzuA/BsBVaJs?=
+ =?us-ascii?Q?C5i5haBCTy0xOrELlcmBLJElmsiuM3J1FpFg00xICX97b5OpQqrhYM1QmJbI?=
+ =?us-ascii?Q?30O6/UO2pkxN6k0wYW00LAAjB1Ll8UCFylwtQF0svk+ZYLSCJvd54HaPzHsz?=
+ =?us-ascii?Q?XaisitUORFpt5xHeg0c8woqU4/FAWJXHsAmvd6aSRxqL6MVRJ6OJYQpQrC0g?=
+ =?us-ascii?Q?5yLKocy7yS0gfRdrY49ARF5xZW8bwf5LZONXLfn9R6+gNyCcOR+wVSbBNrMh?=
+ =?us-ascii?Q?wm7vYiplapaQA1dw4B41GwVtQCN/sjLeWM4BXNz+hPqgspNfBwReh2iTths0?=
+ =?us-ascii?Q?i865CCD2Kzn6+97Eiqnh3rfsP9lP+qjaPCYiyX1/9FN5zXpWNsfpnNqmWut7?=
+ =?us-ascii?Q?emc9NSnxkNX3IEkFO/oEC/7J5SIsBvqmR4jzRy4qyTTDKvf76vwDTgkfPxmh?=
+ =?us-ascii?Q?w1S+WfJceI1cvxvfvdf7PHBqEKwzoLI0FgMCAqEpl18X9fhmKO6rbVeiJ3m/?=
+ =?us-ascii?Q?SKo6aOeCJYQ/J3P8GcuTPQtKWFbznRaGKaV+BOtidDP2eqgTrc97wybCCUeC?=
+ =?us-ascii?Q?nlg5ORKQt5KfObYhukMBeDKx7TjcuRuKlCHoKWsflu46FEsaRSRD69tegA5J?=
+ =?us-ascii?Q?9JwH/ac7rwuIsGGTvGDQUhkkS+GMGD06Vviq9Fat5ZoRy+lViIcniV826SYw?=
+ =?us-ascii?Q?6ZCqbonz50qRpvzC9MKZPkwZCZp7K+pbHsfGRZGKzHjMRQ/LcS4NT160mcUd?=
+ =?us-ascii?Q?05um9XMs7cpdrRCn3IAPFskVU22ATkkvypAqZ4hHu9Bz4fiA8sH7A9N9qy9g?=
+ =?us-ascii?Q?+qLgX2ixPGmcblr4ad4Xl8i37JXKyNIpAPUmzq1m/EGsajqY+Pv4Gm3ynrzA?=
+ =?us-ascii?Q?BmrpyZ0hKxNxw7xAeWY1f5+2RTjUHZiCLuZj7bkv5qPy7egw9diMrC5n2bMo?=
+ =?us-ascii?Q?EFnmGh37OcvP14Ax2W32uXlEbq6PP1MZGzFRai8BZxCppt1Vlt8s0XuiwENU?=
+ =?us-ascii?Q?RugDtG2lYylNjSW1gpRF2YVKs4I+Wtykq6/LFuqCpncYhd2zKuTb6sjj8DFK?=
+ =?us-ascii?Q?5mmBjfxRwBnYV8O17onrTeQ18k9cfKDHdBA5cTPCFlR4lYfup4eiTlzd7hzb?=
+ =?us-ascii?Q?6ohMnEGc0HQAAPeLU2IY2krroQbC7XvPsbQoG0lkZimgXrTwkdgp/WEqJpTY?=
+ =?us-ascii?Q?oUbwhZzhK5jTArkbIYKTSG0tfNJJnmp67nt18OZoIOGWQX/5Iint9nm2dH05?=
+ =?us-ascii?Q?C6BrUaSw7PeBFVxM98bsqA4x1oo1TbFIEdTbavGg3dfqyt7bGdZiEXbhBNr6?=
+ =?us-ascii?Q?ZhcfQRYMRmY+hdsVemGCvihunhHd3ZmppIxrGE+8Jq/ju8NP6tG0vRtv56M3?=
+ =?us-ascii?Q?Bzk0JD2wNlE=3D?=
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2025 06:26:16.7234
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 100cbfa6-a5db-4e87-66ca-08dd352d846f
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.206];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB5PEPF00014B98.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR10MB3749
 
-On Wed, Jan 15, 2025 at 8:05=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Tue, Nov 12, 2024 at 7:45=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> w=
-rote:
-> >
-> > To distinguish between the two, introduce this new variable to stand
-> > out from KBUILD_HOSTLDFLAGS used to link other host progs.
->
-> Applied to `rust-next` -- thanks everyone!
->
-> Masahiro: if you wanted to pick this up through Kbuild or to give an
-> Acked-by, please let me know!
+Add error handling sections to the documentation and use it
+to link to the existing code documentation. This will allow
+to extend that documentation, use intra-doc links and test
+the examples.
 
-Acked-by: Masahiro Yamada <masahiroy@kernel.org>
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://lore.kernel.org/rust-for-linux/CANiq72keOdXy0LFKk9SzYWwSjiD710v=hQO4xi+5E4xNALa6cA@mail.gmail.com/
+Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+---
 
---=20
-Best Regards
-Masahiro Yamada
+Changes in v2: Rephrase the sentence about "real code" (Miguel)
+
+ Documentation/rust/coding-guidelines.rst | 8 ++++++++
+ Documentation/rust/testing.rst           | 8 ++++++++
+ 2 files changed, 16 insertions(+)
+
+diff --git a/Documentation/rust/coding-guidelines.rst b/Documentation/rust/coding-guidelines.rst
+index a2e326b42410f..27f2a7bb5a4a2 100644
+--- a/Documentation/rust/coding-guidelines.rst
++++ b/Documentation/rust/coding-guidelines.rst
+@@ -373,3 +373,11 @@ triggered due to non-local changes (such as ``dead_code``).
+ For more information about diagnostics in Rust, please see:
+ 
+ 	https://doc.rust-lang.org/stable/reference/attributes/diagnostics.html
++
++Error handling
++--------------
++
++For some background and guidelines about Rust for Linux specific error handling,
++please see:
++
++	https://rust.docs.kernel.org/kernel/error/type.Result.html#error-codes-in-c-and-rust
+diff --git a/Documentation/rust/testing.rst b/Documentation/rust/testing.rst
+index 568b71b415a45..78b66b67b03fe 100644
+--- a/Documentation/rust/testing.rst
++++ b/Documentation/rust/testing.rst
+@@ -123,6 +123,14 @@ A current limitation is that KUnit does not support assertions in other tasks.
+ Thus, we presently simply print an error to the kernel log if an assertion
+ actually failed. Additionally, doctests are not run for nonpublic functions.
+ 
++Since these tests are examples, i.e. they are part of the documentation, they
++should generally be written like "real code". Thus, for example, instead of
++using ``unwrap()``/``expect()`` use the ``?``-operator. See:
++
++	https://rust.docs.kernel.org/kernel/error/type.Result.html#error-codes-in-c-and-rust
++
++for some background.
++
+ The ``#[test]`` tests
+ ---------------------
+ 
+-- 
+2.48.0
+
