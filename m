@@ -1,27 +1,27 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013007.outbound.protection.outlook.com [40.107.162.7])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013042.outbound.protection.outlook.com [40.107.159.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2F78BE7
-	for <rust-for-linux@vger.kernel.org>; Wed, 15 Jan 2025 06:26:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DFA22F3AF
+	for <rust-for-linux@vger.kernel.org>; Wed, 15 Jan 2025 06:26:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736922383; cv=fail; b=P0dqSgxogiXw8kEGZZ4Q+rY+hP5jp5tXsco09F5/sFjI4hQ/H11/ZSJpg6bOcx+fBxnHI7g4AFQ+iKoIDCbAzoY5BI08X+ZVWcl/Pp72Imq/83RmHxFNevmOzHXiYwhxjyAHPy1NOu+XjaNRfLYOYe7meSBJN37iyc8fmJweeFI=
+	t=1736922416; cv=fail; b=BbxVlEW/einjwUt2S066AmEVl4pjcUHUw06rdPmsYt3UgcMSDDkixgCq+BiHUvJEM0DGFTrMUtBmeVKqT/PUTeuBStCDRNAq9tZeLqF6+lYnA0H0fT0LIQ30iA2PMUMgb+tf+pfWHNehOvubBnlVqOLLFZxctC/THE9MiSFa3sU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736922383; c=relaxed/simple;
-	bh=RXdqveWbGH20ZPhkFJXyHoG/qMGuBxRfzR/8ukbHWvg=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=C6CuHOb0+14U4JlPCtDVSlDBKqweB1HpzC37nTBVV+AHnce72PI26pt/ws8M8MGfQmwHMsAylrXrlyW8U1l/N37CLqLYN/WkTDWlXcNKi0BP/2SHaxaEhh9Ri3RFGVrTO0au0RV9pLJ9+IMU3sUsf4mjd97KCphic8qNF/0VAys=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=snhMcNdH; arc=fail smtp.client-ip=40.107.162.7
+	s=arc-20240116; t=1736922416; c=relaxed/simple;
+	bh=WaoFR2K6a9pEAyJNoDDPBeywIWlp3JTIVbZuR+Umrtg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LUPGzmTkm48LKxgYmfNkw37Pk7xET/dHvAIufxmxIrGoz94G52Xk1gcFyDAOBXIu4jyvxHE6ajgQ/X90KyGt4QuNBb1picx9niL4Bq3SS49yV2GM6hK6lhrAm8HJYEihRvtQSlWmfinhrD4Kl0X7E4LdbhSxqvBEyAw7d4B0FBY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=Fk/yRdzQ; arc=fail smtp.client-ip=40.107.159.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="snhMcNdH"
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="Fk/yRdzQ"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=v0zzER9N4nsodT+CRXn5wF0xZyOTFlWIaowxsp52kFtQ8RgaRKRrRJddTw218DekGwN7BOToYMeHSbvEoINA1gwOztJ+P9x+hEzubpf2Ye7h2cfPR+wue4PmQxxmma15bGo10scGH66YTYw4lfKdCN/fyYu+gpzgJg2R9H1nSEg7MIUgpJQOXZk/xUYDGQRv/ORR+/Je6SPNI+FVbUeVVUe1NacsJeLNqbUVyrtrurB0Z5GABhmqg/aGf86u+6FjhsIFE+L9NEBf5v9sU6vzfVj/58jVSLBpHH6io+5yC9W/F+cMKUlko3RgRKNm2PT39jh/ra8mx+k9ut7kjJSi+Q==
+ b=oYPBAEAWDuRN1GUpHx9ub0IO9poEE6J7UOUlbi0GzYkt8PWbRLl+HLRESGAwmSUv4T2wzv2DcOifbhyFKMkvdLtLbn5x4aRDxfmqZFtkJAiiCTVXrbrQitkdCFOwPm6ffessnCwV7yuO3J1BqQetQUp7M0AMMxHZT/VWPwCmHEryhojoLeD9xxyM4/JsOohNNQKEgmUzngSRXPdn1hgdUcr1s/NGKNhEGQmavuClTeIirjPp3oe9xH0cLqut5kXPORxohsEK1vNjSf2CCmcfgoCKH0l793BiWIC+PLQ/p98qdGrN++2l747Xjgq0OzZqlpGnliI/e6WBPTQfIfcZOA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JbniFiOiB68uP0QnPUCg47Ok7qunJYCBjv1CPphQw04=;
- b=e3PB8oyGHwGUAx+jD4VlB3Sr5bF6lCQc9EDw+144LyvyxCkO9zdE4Pgk5HFWavupzseO1luP8r3/RWbgqb5tTFq9yFP5VvOPHZoskRjwmYp+DL4M5ivZBrxU/74doGXhoC1pRzuTJgc8IMkz6zDDA59q2ZF++skBZRQMpnWHjcatyU2N7iDxv9A65arAX56TtZCEhY0IfIjF/OJK+FOiu8LIOit9RkhJKUc77c2EF1HkfOdieGzj9Ws1ozVTHx6sOvvE4SwDFOM8xtmgA0FvY4IVD+27ZSEMOWPDh/+ZQ68uY09d7Rab0pMDvOFr1EZD3s8H6Z32O4o/qE99oSkHpQ==
+ bh=eyL4K5zS944oIa65KU/njtdpbUN1khXWI3o+WYW7qXA=;
+ b=rldI/PZVvnZHlfq3DNVYfmwhu+TfzbIT6XOIUAHCKEiziGShdThOgHghBPpR/h9NCywzcY/DEmGXfl/FyAIgclWOZ1HQ5b83mkD64c3h2zB6ZIMarzgH4vTFZCFEdsdK/5uEmUSw6uWWx9xLtJ8jDs9izXCzHZvujKouw1nzP8OsDQxpNC/swfNB7fZHGTruNE4Q9L924cnJkj+6xk45Qn5NPeJPLAqJqz8rYAonBlNplslyM9CYu44NcXJei8jVcw/YWFFpU+dWc++hiyI3SI+bSNuSN2AV8U1O9+1FMPO8ae//qyEfeXF3kVhsJ4PEprlfpw9hKxgYfTEBoe2Brw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  139.15.153.206) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=de.bosch.com;
  dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
@@ -29,18 +29,17 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JbniFiOiB68uP0QnPUCg47Ok7qunJYCBjv1CPphQw04=;
- b=snhMcNdHrk2vQ+a6Rh6SK7IZvadxgh4UEfI2MTcdAbDve2ad9ViyapBBjDVZVgFD+ltQ4oA22+HPlvHi0hbFcQpLcOsBdqT+/31mGkOzgnKYj23neWPla7uvUHrNVhcXiOKhGaSubfA7/AobKewaBHPQYMWcgxmj0CCeclHT9+PZQFqwlndTiF7z+/yVDXEhbCVp0keO0TrQmNx32leOaq0LkM5e8T0zUXLqDDcTASQ0fHzoaGfYIL9l67MObWcH9UYOvbolQ/jYbNYIplXpVmVGH+mEmrOr78D29shQLsT6AnLar5SXxFTr/2cJjXobfVmXRrqWBDMkb+rkS6+aDw==
-Received: from DU7PR01CA0042.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:50e::26) by DB8PR10MB3749.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:10:167::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.13; Wed, 15 Jan
- 2025 06:26:16 +0000
-Received: from DB5PEPF00014B98.eurprd02.prod.outlook.com
- (2603:10a6:10:50e:cafe::7) by DU7PR01CA0042.outlook.office365.com
- (2603:10a6:10:50e::26) with Microsoft SMTP Server (version=TLS1_3,
+ bh=eyL4K5zS944oIa65KU/njtdpbUN1khXWI3o+WYW7qXA=;
+ b=Fk/yRdzQtbFYd49hEzIINLWkgQRWwxVwiBaDw/5VxTmz2m+xq1JSjuCnNMHLdi2JI/LVXO5ySy8VK3y8BijQKIUPrHJFCocnFG95qKUf5mECHmu/EL9y9QmFhz+KcbnMJjV8EoWt0x6JQk5OgjdyjSaPwxHu6JD6yuxuEDrEdFV4joDTbfxMmF2GsZEMEMJg9vjB7Kax7oFwI2CitvMY/VcjshHPeJ9829QEv7Og55+W6UmbhFtPJHi5/Vtpw5cFl6gk2wdgT+klVuA/Pbt6uDoVAwTs4Omgui26xyrzHrC18Gbf2CvgN/Qgib0M/EIa1+ovFKDImRmxybHZ/5RquQ==
+Received: from DU7P195CA0013.EURP195.PROD.OUTLOOK.COM (2603:10a6:10:54d::8) by
+ DB4PR10MB6918.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:3fe::13) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8356.13; Wed, 15 Jan 2025 06:26:49 +0000
+Received: from DB5PEPF00014B9F.eurprd02.prod.outlook.com
+ (2603:10a6:10:54d:cafe::30) by DU7P195CA0013.outlook.office365.com
+ (2603:10a6:10:54d::8) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.8356.13 via Frontend Transport; Wed,
- 15 Jan 2025 06:26:16 +0000
+ 15 Jan 2025 06:26:49 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.206)
  smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=de.bosch.com;
@@ -48,23 +47,24 @@ Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
  139.15.153.206 as permitted sender) receiver=protection.outlook.com;
  client-ip=139.15.153.206; helo=eop.bosch-org.com; pr=C
 Received: from eop.bosch-org.com (139.15.153.206) by
- DB5PEPF00014B98.mail.protection.outlook.com (10.167.8.165) with Microsoft
+ DB5PEPF00014B9F.mail.protection.outlook.com (10.167.8.169) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8356.11 via Frontend Transport; Wed, 15 Jan 2025 06:26:16 +0000
+ 15.20.8356.11 via Frontend Transport; Wed, 15 Jan 2025 06:26:49 +0000
 Received: from FE-EXCAS2000.de.bosch.com (10.139.217.199) by eop.bosch-org.com
  (139.15.153.206) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.13; Wed, 15 Jan
- 2025 07:26:05 +0100
+ 2025 07:26:38 +0100
 Received: from HI7-C-0001H.de.bosch.com (10.139.217.196) by
  FE-EXCAS2000.de.bosch.com (10.139.217.199) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.43; Wed, 15 Jan 2025 07:26:05 +0100
+ 15.1.2507.43; Wed, 15 Jan 2025 07:26:38 +0100
 From: Dirk Behme <dirk.behme@de.bosch.com>
 To: <rust-for-linux@vger.kernel.org>
-CC: <dirk.behme@de.bosch.com>, <ojeda@kernel.org>
-Subject: [PATCH v2] docs: rust: Add error handling sections
-Date: Wed, 15 Jan 2025 07:25:52 +0100
-Message-ID: <20250115062552.1970768-1-dirk.behme@de.bosch.com>
+CC: <dirk.behme@de.bosch.com>, <ojeda@kernel.org>, <daniel@sedlak.dev>,
+	<aliceryhl@google.com>
+Subject: [PATCH v2] rust: error: Extend the Result documentation
+Date: Wed, 15 Jan 2025 07:26:26 +0100
+Message-ID: <20250115062626.1971211-1-dirk.behme@de.bosch.com>
 X-Mailer: git-send-email 2.48.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -76,103 +76,207 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB5PEPF00014B98:EE_|DB8PR10MB3749:EE_
-X-MS-Office365-Filtering-Correlation-Id: 100cbfa6-a5db-4e87-66ca-08dd352d846f
+X-MS-TrafficTypeDiagnostic: DB5PEPF00014B9F:EE_|DB4PR10MB6918:EE_
+X-MS-Office365-Filtering-Correlation-Id: a9984a07-7ef1-4796-8f4e-08dd352d97c7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|376014;
+	BCL:0;ARA:13230040|1800799024|376014|36860700013|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?71IPPViPeJ8rqy8lMZO4o6OV86QV3+VG05fXOmkz6rU8TFbPmY7ru232scPS?=
- =?us-ascii?Q?1bshJROPAqC3LO63oo4pBi+0CYB69FNY7Pq18O8J5FzlpGOpuzuA/BsBVaJs?=
- =?us-ascii?Q?C5i5haBCTy0xOrELlcmBLJElmsiuM3J1FpFg00xICX97b5OpQqrhYM1QmJbI?=
- =?us-ascii?Q?30O6/UO2pkxN6k0wYW00LAAjB1Ll8UCFylwtQF0svk+ZYLSCJvd54HaPzHsz?=
- =?us-ascii?Q?XaisitUORFpt5xHeg0c8woqU4/FAWJXHsAmvd6aSRxqL6MVRJ6OJYQpQrC0g?=
- =?us-ascii?Q?5yLKocy7yS0gfRdrY49ARF5xZW8bwf5LZONXLfn9R6+gNyCcOR+wVSbBNrMh?=
- =?us-ascii?Q?wm7vYiplapaQA1dw4B41GwVtQCN/sjLeWM4BXNz+hPqgspNfBwReh2iTths0?=
- =?us-ascii?Q?i865CCD2Kzn6+97Eiqnh3rfsP9lP+qjaPCYiyX1/9FN5zXpWNsfpnNqmWut7?=
- =?us-ascii?Q?emc9NSnxkNX3IEkFO/oEC/7J5SIsBvqmR4jzRy4qyTTDKvf76vwDTgkfPxmh?=
- =?us-ascii?Q?w1S+WfJceI1cvxvfvdf7PHBqEKwzoLI0FgMCAqEpl18X9fhmKO6rbVeiJ3m/?=
- =?us-ascii?Q?SKo6aOeCJYQ/J3P8GcuTPQtKWFbznRaGKaV+BOtidDP2eqgTrc97wybCCUeC?=
- =?us-ascii?Q?nlg5ORKQt5KfObYhukMBeDKx7TjcuRuKlCHoKWsflu46FEsaRSRD69tegA5J?=
- =?us-ascii?Q?9JwH/ac7rwuIsGGTvGDQUhkkS+GMGD06Vviq9Fat5ZoRy+lViIcniV826SYw?=
- =?us-ascii?Q?6ZCqbonz50qRpvzC9MKZPkwZCZp7K+pbHsfGRZGKzHjMRQ/LcS4NT160mcUd?=
- =?us-ascii?Q?05um9XMs7cpdrRCn3IAPFskVU22ATkkvypAqZ4hHu9Bz4fiA8sH7A9N9qy9g?=
- =?us-ascii?Q?+qLgX2ixPGmcblr4ad4Xl8i37JXKyNIpAPUmzq1m/EGsajqY+Pv4Gm3ynrzA?=
- =?us-ascii?Q?BmrpyZ0hKxNxw7xAeWY1f5+2RTjUHZiCLuZj7bkv5qPy7egw9diMrC5n2bMo?=
- =?us-ascii?Q?EFnmGh37OcvP14Ax2W32uXlEbq6PP1MZGzFRai8BZxCppt1Vlt8s0XuiwENU?=
- =?us-ascii?Q?RugDtG2lYylNjSW1gpRF2YVKs4I+Wtykq6/LFuqCpncYhd2zKuTb6sjj8DFK?=
- =?us-ascii?Q?5mmBjfxRwBnYV8O17onrTeQ18k9cfKDHdBA5cTPCFlR4lYfup4eiTlzd7hzb?=
- =?us-ascii?Q?6ohMnEGc0HQAAPeLU2IY2krroQbC7XvPsbQoG0lkZimgXrTwkdgp/WEqJpTY?=
- =?us-ascii?Q?oUbwhZzhK5jTArkbIYKTSG0tfNJJnmp67nt18OZoIOGWQX/5Iint9nm2dH05?=
- =?us-ascii?Q?C6BrUaSw7PeBFVxM98bsqA4x1oo1TbFIEdTbavGg3dfqyt7bGdZiEXbhBNr6?=
- =?us-ascii?Q?ZhcfQRYMRmY+hdsVemGCvihunhHd3ZmppIxrGE+8Jq/ju8NP6tG0vRtv56M3?=
- =?us-ascii?Q?Bzk0JD2wNlE=3D?=
+	=?us-ascii?Q?rvvKTHDA9YOqDY1nw76AtgcUiLrLWDjH4hMzWc9GdbVRd4uYUCXOKrPWV+I3?=
+ =?us-ascii?Q?/wGX3o5qS2GU6TMWr2mZKoMl5BrWiVxbme1X74nfJSNtmm4AjGEzzFuPweCS?=
+ =?us-ascii?Q?SuDQ5I2TfWnhWZtUhtuzlcNXrydbViqaMAgU8+uka8DWHqiiBXf7BqPMxBLU?=
+ =?us-ascii?Q?Hc+zygg7bY4VVXPJUnA0OqEtkIUgPNOR8jHg8G0rQs7kzUjrWutMx+05lNP5?=
+ =?us-ascii?Q?cpawJgp9rOi+Ta9Z8/YvSf27hD1Ru28ZNTxS91oVvjQ7SUpcCP8VRyX/fgT6?=
+ =?us-ascii?Q?FqdsAGQI2EMoBXNoIXx/f3aiJWu77fWoMCNjnOk0NYFtiBRwljePT/eKoIZg?=
+ =?us-ascii?Q?BeoDs+m5S7oxclSTZI6fpkz+4bNjyLWhCqRji0/8VXY2YHL/sYrNSWbNp4gH?=
+ =?us-ascii?Q?UONP+1Yomsut5Xu5lOsZxZxHUGgsGPSFnhfs4XECE0t2X54Xbum7r+9M6scO?=
+ =?us-ascii?Q?j8bsadfm22PiXUe3fhBrGTiotD8Etq2C84K7meUhtDMBDk8y6WyfzK53j3WE?=
+ =?us-ascii?Q?S/seFBJIyn2QO4rqfvrrouWTcsv7OJi3G649xZhHj4OhwFGtK8F+W3j5x7Fo?=
+ =?us-ascii?Q?oAzXd7Qfe4427PF8Y2gwB3CbcYYXOgvdL5IWF22Ro5ZoH+SZYFaujUP4oaZY?=
+ =?us-ascii?Q?4vtnTW5MxQnVgmGocWcI8gQzi9CvjhTvO4dL/OyIzgR++zjhQjltcR3dSF9T?=
+ =?us-ascii?Q?jX8R9vBrcH7aZ0fUWktt27Nosy8buXMOWeulfacfrNnjtzA4MYFmGktyjGMN?=
+ =?us-ascii?Q?uWFoutE12KpkH1TgqaWJErn/8iSB4lilGztUPnwNCWv7U3MUygfIbyNb0xyH?=
+ =?us-ascii?Q?YI/uPlzzszYmGSUKgEMoNYL/js8AQDizOKp47qvS9tFhDLm2RHqe9l2U+lYn?=
+ =?us-ascii?Q?L+43wUoLarQzF3Fb6xSiHFoBWyTJ07XrrbTvNMlg3DrFhtXTKIO+sr4zd/eH?=
+ =?us-ascii?Q?NrAL4PR++ZNkyQwwNKSimO4KqslBY8NEJJHtwLvD/C+zz6QVbFe6ryTqac0n?=
+ =?us-ascii?Q?lWB2n/iFlHeZMxCqmVVhd9JnHP3PKR76/svt1wsLsjsecdqOVA1yOTIj55iW?=
+ =?us-ascii?Q?mfsfgPuXsIJNytCANYUC2jS84LoKCfuSOKeQUNkV2gHYU0G7LJbenOUc+Ex2?=
+ =?us-ascii?Q?jJHJtX4j9v4WGTO2onnqNYDHyVt5uGa69Hc3Ds36CE1MIO2M+mthz+8EYqot?=
+ =?us-ascii?Q?JhOnkCStdM3XMrTTql2+Psu92YtEH/n5TqQx7dlDKCKY2Q7yO6s96fUib9/D?=
+ =?us-ascii?Q?50xejvm15Pb4a9jBo3zmD0IxuO0mfF4VkV/w4EoQMuJIBUkccPAXgtKgYYEU?=
+ =?us-ascii?Q?5CkZlDylxy163XhDyiBnvExCcKnVYMRN3KHxD1BfJSJXlJmafvYJoHzPtn7c?=
+ =?us-ascii?Q?gBU9sJBF1kb1y8Ea3SP3fOOE7rHk92KMAfdZgi2AsXUjusOxeiR4CuWBxg8A?=
+ =?us-ascii?Q?JpLBfAEZUGk=3D?=
 X-Forefront-Antispam-Report:
-	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(376014);DIR:OUT;SFP:1101;
+	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(36860700013)(82310400026);DIR:OUT;SFP:1101;
 X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2025 06:26:16.7234
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2025 06:26:49.1779
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 100cbfa6-a5db-4e87-66ca-08dd352d846f
+X-MS-Exchange-CrossTenant-Network-Message-Id: a9984a07-7ef1-4796-8f4e-08dd352d97c7
 X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.206];Helo=[eop.bosch-org.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	DB5PEPF00014B98.eurprd02.prod.outlook.com
+	DB5PEPF00014B9F.eurprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR10MB3749
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB4PR10MB6918
 
-Add error handling sections to the documentation and use it
-to link to the existing code documentation. This will allow
-to extend that documentation, use intra-doc links and test
-the examples.
+Extend the Result documentation by some guidelines and examples how
+to handle Result error cases gracefully. And how to not handle them.
 
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+While at it fix one missing `Result` link in the existing documentation.
+
 Link: https://lore.kernel.org/rust-for-linux/CANiq72keOdXy0LFKk9SzYWwSjiD710v=hQO4xi+5E4xNALa6cA@mail.gmail.com/
 Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
 ---
 
-Changes in v2: Rephrase the sentence about "real code" (Miguel)
+Changes in v2:
+ * Improve the linkage (Daniel & Alice)
+ * Reformat the examples, add if let, drop "automatically",
+   call the example(), improve the formatting, etc (Miguel)
 
- Documentation/rust/coding-guidelines.rst | 8 ++++++++
- Documentation/rust/testing.rst           | 8 ++++++++
- 2 files changed, 16 insertions(+)
+   @Miguel: I'm somehow unclear what you like to have linked with
 
-diff --git a/Documentation/rust/coding-guidelines.rst b/Documentation/rust/coding-guidelines.rst
-index a2e326b42410f..27f2a7bb5a4a2 100644
---- a/Documentation/rust/coding-guidelines.rst
-+++ b/Documentation/rust/coding-guidelines.rst
-@@ -373,3 +373,11 @@ triggered due to non-local changes (such as ``dead_code``).
- For more information about diagnostics in Rust, please see:
+   "By the way, it may make sense to link to the relevant chapter of
+    the online book or similar somewhere in the explanation (on top of
+    the Rust reference)."
+
+   ?
+
+ rust/kernel/error.rs | 118 ++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 117 insertions(+), 1 deletion(-)
+
+diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+index 0b01975c2286c..f7186606a3243 100644
+--- a/rust/kernel/error.rs
++++ b/rust/kernel/error.rs
+@@ -254,8 +254,124 @@ fn from(e: core::convert::Infallible) -> Error {
+ /// [`Error`] as its error type.
+ ///
+ /// Note that even if a function does not return anything when it succeeds,
+-/// it should still be modeled as returning a `Result` rather than
++/// it should still be modeled as returning a [`Result`] rather than
+ /// just an [`Error`].
++///
++/// Calling a function that returns [`Result`] needs the caller to handle
++/// the returned [`Result`].
++///
++/// This can be done "manually" by using [`match`]. Using [`match`] to decode
++/// the [`Result`] is similar to C where all the return value decoding and the
++/// error handling is done explicitly by writing handling code for each
++/// error to cover. Using [`match`] the error and success handling can be
++/// implemented in all detail as required. For example (inspired by
++/// [samples/rust/rust_minimal.rs]):
++///
++/// ```
++/// fn example() -> Result {
++///     let mut numbers = KVec::new();
++///
++///     match numbers.push(72, GFP_KERNEL) {
++///         Err(e) => {
++///             pr_err!("Error pushing 72: {e:?}");
++///             return Err(e.into());
++///         }
++///         // Do nothing, continue.
++///         Ok(()) => (),
++///     }
++///
++///     match numbers.push(108, GFP_KERNEL) {
++///         Err(e) => {
++///             pr_err!("Error pushing 108: {e:?}");
++///             return Err(e.into());
++///         }
++///         // Do nothing, continue.
++///         Ok(()) => (),
++///     }
++///
++///     match numbers.push(200, GFP_KERNEL) {
++///         Err(e) => {
++///             pr_err!("Error pushing 200: {e:?}");
++///             return Err(e.into());
++///         }
++///         // Do nothing, continue.
++///         Ok(()) => (),
++///     }
++///
++///     Ok(())
++/// }
++/// # example();
++/// ```
++///
++/// An alternative to be more concise is the [`if let`] syntax:
++///
++/// ```
++/// fn example() -> Result {
++///     let mut numbers = KVec::new();
++///
++///     if let Err(e) = numbers.push(72, GFP_KERNEL) {
++///         pr_err!("Error pushing 72: {e:?}");
++///         return Err(e.into());
++///     }
++///
++///     if let Err(e) = numbers.push(108, GFP_KERNEL) {
++///         pr_err!("Error pushing 108: {e:?}");
++///         return Err(e.into());
++///     }
++///
++///     if let Err(e) = numbers.push(200, GFP_KERNEL) {
++///         pr_err!("Error pushing 200: {e:?}");
++///         return Err(e.into());
++///     }
++///
++///     Ok(())
++/// }
++/// # example();
++/// ```
++///
++/// Instead of these verbose [`match`]/[`if let`] the [`?`]-operator or
++/// [`unwrap()`](Result::unwrap)/[`expect()`](Result::expect) can be used to
++/// handle the [`Result`] . However, in the kernel context, the usage of
++/// [`unwrap()`](Result::unwrap) or [`expect()`](Result::expect) has a side
++/// effect which is often not wanted: The [`panic`] called when using
++/// [`unwrap()`](Result::unwrap) or [`expect()`](Result::expect). While
++/// the console output from [`panic`] is nice and quite helpful for debugging the
++/// error, stopping the whole Linux system due to the kernel panic is often **not**
++/// desired:
++///
++/// ```
++/// fn example () -> Result {
++///     let mut numbers = KVec::new();
++///     numbers.push(72, GFP_KERNEL).expect("Error pushing 72");  // Panics the system in case of an error
++///     numbers.push(108, GFP_KERNEL).expect("Error pushing 108"); // Panics the system in case of an error
++///     numbers.push(200, GFP_KERNEL).expect("Error pushing 200"); // Panics the system in case of an error
++///     Ok(())
++/// }
++/// # example();
++/// ```
++///
++/// In consequence, using the [`?`]-operator is often the best choice to handle
++/// [`Result`] in a non-verbose way as done in [samples/rust/rust_minimal.rs]:
++///
++/// ```
++/// fn example () -> Result {
++///     let mut numbers = KVec::new();
++///     numbers.push(72, GFP_KERNEL)?;
++///     numbers.push(108, GFP_KERNEL)?;
++///     numbers.push(200, GFP_KERNEL)?;
++///     Ok(())
++/// }
++/// # example();
++/// ```
++/// Depending on the use case using [`unwrap_or()`](Result::unwrap_or),
++/// [`unwrap_or_else()`](Result::unwrap_or_else) or
++/// [`unwrap_or_default()`](Result::unwrap_or_default) might be an alternative, as well.
++///
++/// [`?`]: https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator
++/// [`match`]: https://doc.rust-lang.org/reference/expressions/match-expr.html
++/// [`panic`]: https://docs.kernel.org/driver-api/basics.html#c.panic
++/// [`if let`]: https://doc.rust-lang.org/reference/expressions/if-expr.html#if-let-expressions
++/// [samples/rust/rust_minimal.rs]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/samples/rust/rust_minimal.rs
+ pub type Result<T = (), E = Error> = core::result::Result<T, E>;
  
- 	https://doc.rust-lang.org/stable/reference/attributes/diagnostics.html
-+
-+Error handling
-+--------------
-+
-+For some background and guidelines about Rust for Linux specific error handling,
-+please see:
-+
-+	https://rust.docs.kernel.org/kernel/error/type.Result.html#error-codes-in-c-and-rust
-diff --git a/Documentation/rust/testing.rst b/Documentation/rust/testing.rst
-index 568b71b415a45..78b66b67b03fe 100644
---- a/Documentation/rust/testing.rst
-+++ b/Documentation/rust/testing.rst
-@@ -123,6 +123,14 @@ A current limitation is that KUnit does not support assertions in other tasks.
- Thus, we presently simply print an error to the kernel log if an assertion
- actually failed. Additionally, doctests are not run for nonpublic functions.
- 
-+Since these tests are examples, i.e. they are part of the documentation, they
-+should generally be written like "real code". Thus, for example, instead of
-+using ``unwrap()``/``expect()`` use the ``?``-operator. See:
-+
-+	https://rust.docs.kernel.org/kernel/error/type.Result.html#error-codes-in-c-and-rust
-+
-+for some background.
-+
- The ``#[test]`` tests
- ---------------------
- 
+ /// Converts an integer as returned by a C kernel function to an error if it's negative, and
 -- 
 2.48.0
 
