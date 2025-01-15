@@ -1,63 +1,63 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A491E1DB125
-	for <rust-for-linux@vger.kernel.org>; Wed, 15 Jan 2025 07:15:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA051DB120
+	for <rust-for-linux@vger.kernel.org>; Wed, 15 Jan 2025 07:20:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736925343; cv=none; b=g7cTMJZBgM3emvJEJbMW31kTT0/30S97qkkrrEwoc4LvRVQXgTRtecE1tX8Zwu8mIMLRNPPS52E74KSZKkbeM81DjoKJagDedet4D7mYds3imwef8DG2VW1eeKuRheI9Yjp4oIEsUGR5ZkzDwJPYYve5aJ4WpmOyNMratXQBuQA=
+	t=1736925655; cv=none; b=mZFRFmjb3eM9F3jYVlcQVq7zcA4G2PzsWh6vt6FtYtsATnCuw+zaiy/TQ7WFG3FH6JG85WWzQcSvjtCkbmNCnqOdPVvxF4BU1fiVfIc1ST3qDz4MAPLZS1lgpdzFCQrRfNOjESzkDbs5xY4nwClrd1A3kOkOoOBeyaD1voUUtRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736925343; c=relaxed/simple;
-	bh=Ib+u5MR6k4UAHdSEp3lNmJns4do26Mvrgubj25Hvqwg=;
+	s=arc-20240116; t=1736925655; c=relaxed/simple;
+	bh=XzikTHESV/Ntd+QZJyGj4RIIfngi4sP47YjuqZnhzsY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G8hmLO+kSDi5Ib7tBNHWuXnin6DngAmkr1WzXu8NRGiOmRQmOR6dxolSQ4NSgw6tRJyk18NukS9sKd3ppeYjENwhTgFLJJ25nMqoHLzaKQgTxsabBL36RQXAXrFWM5lQZ1UgB1yeafskOQj9xIEADsVrOyVmYCb+IhtZ/m29l/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=epUlkQJ0; arc=none smtp.client-ip=209.85.214.174
+	 Content-Type:Content-Disposition:In-Reply-To; b=s8I78EbRsXaSdotwYWCP260kRTuWj2jnrMClw3qlPT4ZEIMJjyzzU80mvsUczJ1vCXuxwEouPrIsb0hSiMjdKOQUF30JXEOzi17NvBoTJGUQ9Yh1mOsyuxm6z4AY8UtEnezMLaQOkEq87EFaIpRkBV1K428zzUefk6b6qiad/pI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sBTntoxq; arc=none smtp.client-ip=209.85.214.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="epUlkQJ0"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2166022c5caso99620945ad.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 14 Jan 2025 23:15:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sBTntoxq"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2167141dfa1so9769675ad.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 14 Jan 2025 23:20:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736925341; x=1737530141; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1736925653; x=1737530453; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4elwR80YWGNJ6Nyq6UNTgoYtaoLWlXGYjf44MSc4x3M=;
-        b=epUlkQJ0DowDJz11ftl0du9ujWiC9JypuJs+w2EAn5JtdRVD7HCwCIpTdMRU43nhSf
-         8mbvhLnJUSdtgAQlrFnIFe/nH8v2ffWElVvTCzKPtzSn5dabUJFUSa3dlXvzR4Ff5Him
-         TL8a7P/tnZysVYTYndEKfS5BTJIMlk5A4Uko2yaXZ27xI0l6ExgG9ydfjKcGUEvZ7wOn
-         PUY+7LniTGWoJGvw8a9+zrVXgoYOpjGZ4mLMoFm59GP9mSABketCTE5PrDsFKlMY7ROF
-         9mJyaGVRpemDoVoeWcUMrjelMpIjBWI83m7RB7RAU3QEn7Q3ArNnCqWtlhx6zGG4tfbK
-         IGgA==
+        bh=1kjwDObLIoNVLT9aFZMLc7L3foW+ny81wcgNGFNn03E=;
+        b=sBTntoxq5KeDz82lfHjRkFxW5bsG8iOykuHHptVsbVwRr2mfomjgqZSw8tAVpnBKvP
+         uHBmmcnYkeS5QRdU9AePviTTj1CbxjX/bbIXv2e0V5KXD3YCRC5bdNMw1njxbKl4obdw
+         2EsebPrG1xeW80Jpj+Ht5NrqPPzBBnLmliNmXcVYcverLtjmMvcuNjxR3J12H3GNsG/B
+         B8fPUplYtvrmimHFgohh3QOj1rWZsVGWhgwPT1+nhUPQ0g3nangZUfq1VKewAFvd58RX
+         o+O1UlK7viqoTT12h5x0eQgrY36BKfzfTZtQT+9anjs428a0WdHe3bdHYszqp2n4ETJh
+         sm/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736925341; x=1737530141;
+        d=1e100.net; s=20230601; t=1736925653; x=1737530453;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4elwR80YWGNJ6Nyq6UNTgoYtaoLWlXGYjf44MSc4x3M=;
-        b=MOiYOq16+0nNhFqtcvjjhPsNIw2oF+ZBxbgon0Wypy8A8nEnvBOeZNeVQv1MBNA3BP
-         Ihd12plTQ1ZCOEH66tJszT4F4DSJhu86+F0fAA/7dlvSoUkyLaapx+I73+CKtIAoDNy2
-         h9eC/JjllRL102vtt6ZA9GVG6exADYUGgzX3m14GOIRtqPARFBfl/4yfj+mMiDQl63Do
-         2OBrtg+Ec001selRpi3TPGqQNDByuTUGjfBW2wH7IIm3QsF4F2r854ee5153RDDbNFdi
-         3UK8JGNQtBOelNKyfIx+XShobMeOoZ2BmBJMMBE7MrB/Ndf7piov++4gL3OWLlsU0Ul+
-         6GvA==
-X-Forwarded-Encrypted: i=1; AJvYcCX0EcUUPcrdR//BrV3NrmrDTlorw5lIctZtgec1rxpOiQSUzH0kDd3u11SJB96qh2IAyH8niNf81fqU1ukOUQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNsWLlDyQrBbmkcOTxNU+XxWaRLTyQLpOg9TAMQA1ssB3ll8c1
-	RSlETixr3iXBN0mPqyYqOJT4cnQWp1Zod5VX/NTdqLBXiGhsSyh1vwy2YjysJ1c=
-X-Gm-Gg: ASbGnctNOfN3kr7kb7VF/oplhe0yDhcuT2Sqd0m0w6Y3WbXkgiZbmayTVYa7jn0B2CQ
-	YTAjdIOH7ntkHq4HTabEHjL+o+2v61US9IUThDgjuVjgltNonpKrCJM+OFruXF/rwEuPVpy05e3
-	fxk9/Fbxs9wLaSmXcbYhFm0ye9XlHHzVjKcXj0cUKBBeZV4x8psKaR+HJbQCe4NCI0jw7ah7k6i
-	rkJMrIecZs7Nyg7ARe/eHxDTS+UqPEsfBnXLJhYNPBK6x0uGw1rGMcwKS8=
-X-Google-Smtp-Source: AGHT+IGJWbPUigQF/i94EGZcZQuKJ/jjgSn8IplW+yDqF4/5alk96s5viXPr/Xi2mlc7gVZQN1spqw==
-X-Received: by 2002:a17:902:e746:b0:216:7aab:71f0 with SMTP id d9443c01a7336-21a83fde39fmr423050065ad.38.1736925341051;
-        Tue, 14 Jan 2025 23:15:41 -0800 (PST)
+        bh=1kjwDObLIoNVLT9aFZMLc7L3foW+ny81wcgNGFNn03E=;
+        b=V9fHLdIzk6r3K8Ton4x+ys4BQFMZqu6+uvQC5HrnW2KVCrqWlXcrAYuaKvMMJ6V6Eb
+         MDeLLc3q5CrQquHxOlTVYLOzb/q98AOcZ2BCQNnQSXMzRcfJvcuzhAUiQYiHTBd4smVR
+         f0VqlGhkyiis5oome4lAL7ol5uwvYjblPWQCCgK7bPjEFDYdGN+YwH8BkbElumbfUrGd
+         oIj0ZYKhAKN1f4thsCO1j+BP1d+nfAeG+lP3CEHensyKs4MHNLcv/RjAdraYYGdMAUOL
+         +mCdqQwXIv2473E6dAb8AHAvOd0GBN4w3hXosKvEgtpVSoRiACmdSdXb40336ntep/6n
+         eXbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWBNXBDG+P13pmY7sysIaB3jcZL2irNvfSo0/Ous9P5Ep4SlMxwLXAoJiu9MSl55mlVO/dcmUzl1kLnZX/M+w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAdZQCi5DIimUka6vTsa7CC//axIcp+Iji+M0H6KbzcNshemDG
+	vaOmlb/0RrFejEjCNf0L2qvtcEZoE6ORkhMPU4wih3NOvL5yKCmgjdhQsP3WgQI=
+X-Gm-Gg: ASbGncvNv/h1ULJIVlusTG/MzT2rmsjeZRlUPPrWLXtPOgw5FO/IgFE4jrCX1SEh1lL
+	0Klwtzc7Cq4FAhs6CsikN+obKGFRAi5icccUbMS5kTLD0i6hM27yRw2UgYKUvteesXQ6QjM5B16
+	mH5G4SDFXwjP5x8bnmrZF8e1oj/zVi95EiZ9qlP8wGOO58bq+Kb7xyJpt3LStmDimrn1ZUVe4jZ
+	CRo3fVygdKRQfwjCDk/4a+PwLKyUnbA08NhzizacH7/VIzA4ru1e/jkN9w=
+X-Google-Smtp-Source: AGHT+IGy0vxxfR2SOnmLvnPHhpqikTCttSEjAwtRnd7DHfkn+LzyHQjPCuHwPcNBKZdRnrNDHmESvA==
+X-Received: by 2002:a17:902:e54a:b0:215:7287:67bb with SMTP id d9443c01a7336-21befecb4dcmr38318775ad.0.1736925653297;
+        Tue, 14 Jan 2025 23:20:53 -0800 (PST)
 Received: from localhost ([122.172.84.139])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21a9f25cd50sm77260375ad.250.2025.01.14.23.15.40
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21bd2b910a1sm19109225ad.157.2025.01.14.23.20.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jan 2025 23:15:40 -0800 (PST)
-Date: Wed, 15 Jan 2025 12:45:38 +0530
+        Tue, 14 Jan 2025 23:20:52 -0800 (PST)
+Date: Wed, 15 Jan 2025 12:50:50 +0530
 From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Greg KH <gregkh@linuxfoundation.org>
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
@@ -66,14 +66,14 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-pm@vger.kernel.org,
+	linux-pm@vger.kernel.org,
 	Vincent Guittot <vincent.guittot@linaro.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V7 04/16] rust: device: Add property_present()
-Message-ID: <20250115071538.efb2ipmbmynvwt3p@vireshk-i7>
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH V7 03/16] rust: cpu: Add from_cpu()
+Message-ID: <20250115072050.72oeibi735k3pjdq@vireshk-i7>
 References: <cover.1736766672.git.viresh.kumar@linaro.org>
- <f43fe3f7b3151a89c261ad728b0f3bb2fc24caef.1736766672.git.viresh.kumar@linaro.org>
- <2025011429-gossip-hash-12e3@gregkh>
+ <854f7b8c9cbcc7f38fe5ed548290f41224478b40.1736766672.git.viresh.kumar@linaro.org>
+ <2025011430-humiliate-expansive-2ea4@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -82,24 +82,23 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2025011429-gossip-hash-12e3@gregkh>
+In-Reply-To: <2025011430-humiliate-expansive-2ea4@gregkh>
 
-On 14-01-25, 19:42, Greg Kroah-Hartman wrote:
-> On Mon, Jan 13, 2025 at 04:52:59PM +0530, Viresh Kumar wrote:
-> > This implements Device::property_present(), which calls C APIs
-> > device_property_present() helper.
-> > 
-> > The new helper will be used by Rust based cpufreq drivers.
-> > 
-> > Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-> > ---
-> >  rust/bindings/bindings_helper.h | 1 +
-> >  rust/kernel/device.rs           | 7 +++++++
-> >  2 files changed, 8 insertions(+)
+On 14-01-25, 19:44, Greg KH wrote:
+> > +pub fn from_cpu(cpu: u32) -> Result<&'static Device> {
+> > +    // SAFETY: The pointer returned by `get_cpu_device()`, if not `NULL`, is a valid pointer to
+> > +    // a `struct device` and is never freed by the C code.
 > 
-> Want me to take this in my driver-core tree now for 6.14-rc1?
+> I thought it was pointed out that it could be freed when a cpu was
+> hot-unplugged?  Or is that a different device in the cpu code?  We seem
+> to have 2 of them and it's not obvious which is which :(
 
-Sure, Thanks.
+I did reply [1] to that earlier. The CPU can get unregistered but the
+memory for the device is never freed (it is part of struct cpu). Some
+calls on the CPU device may fail later on (if called for an unregisted
+dev), but should never crash the kernel.
 
 -- 
 viresh
+
+[1] https://lore.kernel.org/all/20250109063605.gmykltd6bnjaspwm@vireshk-i7/
