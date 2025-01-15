@@ -1,137 +1,96 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9210524A7CC
-	for <rust-for-linux@vger.kernel.org>; Wed, 15 Jan 2025 14:42:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC7A24A7D3;
+	Wed, 15 Jan 2025 15:26:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736952181; cv=none; b=iBhpWiLc0CxydogfwXt2tNc0H8wUO+D+03Vr4lhbPVKmZHJkF9zlTGDxxATINqmVVwM2udSPaZmw1SNg3sCuzWNCWzOhsF2q6LxPRHp+rLnQRd9Pz6TYUUUJl/AmXk3xomtu0nHeaxGcRl7XNfIDQCf12HUwdaIsiLW2cUY8N/U=
+	t=1736954765; cv=none; b=Bj0YUmoOD5UrDa1aFBGJq4jmFBXj1LXUHkbcpSMWwCItLODUf0ZGxWhpzpQE0ES5DYW5/Ny2BhAAQNOcEW7ps4h0U9vrvY8i9xBYO2Fh6jxLdeL2AnujBDnf/eXTZc/iBWsvUENND3kvWXTdG1d7qbmK6MzXOKrhXxXlZL/Zznk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736952181; c=relaxed/simple;
-	bh=NfPWSrHIC689+bD5UsrSX2pw3s2b+fl6k0/Q9byTPmY=;
+	s=arc-20240116; t=1736954765; c=relaxed/simple;
+	bh=oS5Bu0PKeMi1oxl+u86jkjs1sd8YAhS/wSqvsUauqe0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ockbbqnv5rMdGuE1bnhKW8L7D+hrgdX/biCaQj3niQ784ul7R5gRVqlEnE3TGYieRfBALuMuhy16rlzns3y7hsAdKQbgtXjUL5zom3QFBwseRuSMcD35SktHsYRoLda7w81ryxjKwUxq58loZQXgjbq6JdkUJfo0mejc7xXJ9eU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=F1Z3IJZm; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=bEgXtiZtwOhK1AwkZC14iSNgn7fj6H8w1YoJXe5o7Gk65Rwqx2XM07RuUmSCJzaRgLlXX5nlZDCFrAJo+rTBqFcyxtYFhiikY1+HRBxmoYU11NwCUMW3lYsJZ+k2ln2NDbs3GajsPMeUq+sOcXnp6EsRps1YATsxcwYa86jNU8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cHpNyWhT; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="F1Z3IJZm"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4368a293339so77144285e9.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 15 Jan 2025 06:42:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cHpNyWhT"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2ee94a2d8d0so1389255a91.2;
+        Wed, 15 Jan 2025 07:26:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736952178; x=1737556978; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1736954764; x=1737559564; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NfPWSrHIC689+bD5UsrSX2pw3s2b+fl6k0/Q9byTPmY=;
-        b=F1Z3IJZmtoWSbz4anvaRe5P+CH1wRsPcbP9H2f0VMcH72a53apSDMl+fNnzF7nHuk+
-         TBE4T0gkTnAfmrhtjLTmOMekk3AMplvHaLCQAgTOdxwn+tWWrXUSsljkU6sKYdgHlqKB
-         IMbCfsTFGZeoOpoIPzumVAVT/d/A0v6XEaUz7xn/cn0hecVV5REh4LGD6nr4SOxRokqm
-         MUdM0AF3S2WdQQZfqfdENSonAT14KYJNC4CBq1CJjwTROFjZmevdFejuIAwj3u4kOEvK
-         7uWNPhtMyitd+P9HHb1VS8+UoW5s0h1UATPUVOq3QkdZkVXdNrD0p0UARtWawLdxNWs2
-         N1mA==
+        bh=oS5Bu0PKeMi1oxl+u86jkjs1sd8YAhS/wSqvsUauqe0=;
+        b=cHpNyWhTLOUbwR6kimNi+QLv6QG21LZ8H+VJfJ4ADuHl6AhhnCjd1/knEjHFXkLYc+
+         bbYVAYreEUoMqi2tJ9SHFp8n/OPjFKZD6tstW6ORdw6DPNzt2a7w4UMnmA0EU+hrzhAZ
+         Fe/cx7IKSZzNzEbyDY8l5h5mIDxB0UxlMytx682uAQT7k//vjq3rN+18fUnpwP6mYYf3
+         Oh+B6ABPtMCAlSwD0BTX+HdD9iFmdHomNCibtble6x5CWIo33EPGnBgFyoMUoaOZiR4N
+         dCEk0vPzKsEiCUwQ+8w9q7ix2mObkqJdqcseqklLuoi+kaA2dfu+yWCCU1EZNQNq4R6v
+         7vQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736952178; x=1737556978;
+        d=1e100.net; s=20230601; t=1736954764; x=1737559564;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=NfPWSrHIC689+bD5UsrSX2pw3s2b+fl6k0/Q9byTPmY=;
-        b=V/u/yetBYhpjth4aAo7N+HN3fRXho3EtlMklFJRD89qqDFSaM+Rtld/OQSv7nxe+l5
-         aeYffJYh68ARVShVPjrAZL6z4lJ8OgwAJFZm2OBlp6FcD6TN9gHZHq8AKF4/97Y1aShv
-         GJQbr5HBBV+FHUe4NP6dWRxpgunSDWyFC7x1BYXMEI8RnmKsMiwSUOuzGHdM3ldagfWR
-         6Ksu5FXo6/OHZaDAX+MncRUmxK9FcPfnV9C0ZQnxNIdpoHU27pwWM+BZgjxHqePPHHm+
-         vKmwbd58qbmmsxLUiuNYH+fKs3jRR7Wjslur6Ds0XfT+1jkAlywvGcAqUWfkBHmbowut
-         NGEA==
-X-Forwarded-Encrypted: i=1; AJvYcCXCOCGbfQm/2IR+9zePdR4xT1ROX2p1WSZwJKGQSXYTavi+HDlgWJWd469+1WfuZg/3p7JC/likwLMxpKu66w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyuAcviMLbb404eFaAaasKAMcjjKX2cl9ldXWJq0i/7y99SuSV1
-	Qhl76NLUHqf3yBUshgQrVPbNr+E8fSmXAXSJw0j7hd0TxBh+192fh5dqCUgWk/rJWDkzCE1o7nv
-	E1+OlIUrlz6WiVwEPTh3Vog1Ypw8HqTWAmTge
-X-Gm-Gg: ASbGncvKNmMmPxA1f1reOyfv/nIAR2RpUPpBltaVjz78m6ySMUYB1xGS3hNuAPV1hBM
-	FlJ3C2QZ1fgUTlL16johN8uLA235CDbZaYU8ltgk=
-X-Google-Smtp-Source: AGHT+IHu9Udu/vPBRUK3l8lMGiSfXE7Fphn+ktYKzxMmCRYfwdy3Z8KY6u5ywgXA46jiRY+Ync/XwYBG0ObW47vnUIU=
-X-Received: by 2002:a5d:6d89:0:b0:38a:8ace:85e8 with SMTP id
- ffacd0b85a97d-38a8ace860fmr26918498f8f.44.1736952177744; Wed, 15 Jan 2025
- 06:42:57 -0800 (PST)
+        bh=oS5Bu0PKeMi1oxl+u86jkjs1sd8YAhS/wSqvsUauqe0=;
+        b=OTT2PbLlvmvdoeGvxUJGtOkdZ/VcnEETAvW/xQEfldD1drauYJE+Nhm3WkfQ3md5No
+         1C1rFP0XB2/gVT80PSW2XsqxRlmfhy+sO55RLWB0IdVWbe2TexlL/ovmSCvqvxROFwI7
+         +PEm8ZnhzZrktzU35ewyu7DX+d4yUx3IZpx/ZKEldqy4cypETNUwWQAAN+6ekJNpW1sy
+         uk+Mku8JuSX68N9yKKhDYbrGNYAyEm4Ns5H/KYq+QqfRJTsVL4lsu0FW8SwGPlp0rjXE
+         lnRLbgc5Z617PoHzFPg3ulIcpHshglzbkINQ62SKqJPGeTNqUyk7Shw0tIAy7UmNYMYP
+         EJlg==
+X-Forwarded-Encrypted: i=1; AJvYcCUAfhcOvun+xriduhFsUt1BfOWDSZGOCKmCLA6dQPpBFg/FPHlw6pvuToqNvAekgr0NVpoKbtKp2xnd98UkDD8=@vger.kernel.org, AJvYcCVwMO3P+cTscDKDwcrBxzBTQjVB1EKXAyXAPVx6c2cvVrY0uGCrBnQMGTzl92kY+nrMWR2OL4XypuHG+BsN@vger.kernel.org, AJvYcCW7nASygtZ4mrEwhSCVmlNGhI2fd9KfAV2i3iKbTw/yzlR0qxs+oe+U7GHDt6fbGakXkodf/5GUoexHOPul@vger.kernel.org, AJvYcCWyl9cQLUMxggcxI4IV1iBUNAZPZzLI5DckkufyWu8T0aqYOG9BOHADo9ORjRZTSmNcbGQBBrGVY24=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxK5sxX5wNdF2LlHnp5RBr2FIkDLfSiuQ0urH+ncgG1pP0+52+i
+	Vt2q0PrbgGDVdu2Kn1C9QiHMLaGHHbS5aVXjzloZWonZ6FJWd3TV3B0onBMpMqzP/l3dDshbV8S
+	RQN12WfcvoWaL2qKdW9dOrTo8Uk9NGfnB
+X-Gm-Gg: ASbGncsPwOmT+FHnfRLl/I2+lke20Xic5A6qxjgQGqxJ/elS7nEJOXgPlPQFdCQWfvQ
+	XL4SNqN1Aqq77d59CsjhzcNX4MAWGJTU3lL3u3Q==
+X-Google-Smtp-Source: AGHT+IEuvaHjinrYdSDGGIHqYQ1y21shSye1Mm1xAH9Bg2IFjYO6qBwnOAGewySKKnoaj5WrOGhqbHAClvlRG3RF3c8=
+X-Received: by 2002:a17:90a:d88c:b0:2ea:c2d3:a079 with SMTP id
+ 98e67ed59e1d1-2f548f3fc41mr16367753a91.3.1736954763662; Wed, 15 Jan 2025
+ 07:26:03 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241024-topic-panthor-rs-request_irq-v1-1-7cbc51c182ca@collabora.com>
- <CAH5fLggjAu+YPBxJh0_K933McnnSC=pEBhVV9YxMbUGzukE3ng@mail.gmail.com>
- <04864DC4-FA5B-4D7A-8EE5-BDA1E8F88007@collabora.com> <CAH5fLgiaVg1+PZxGr0Y_oyu9pJfTSRuN9n4EomFGhnvnZXC4cg@mail.gmail.com>
- <20499935-B328-4DE3-AFBF-B692FA3434E5@collabora.com> <Z4cFO5NIW-E07Vl5@boqun-archlinux>
- <CAH5fLgge1pp10a8w4xp1eDobMJUHpnM1Ezh+JHmVmfF=6_vpTQ@mail.gmail.com> <Z4fIi_Gr0XZog4Ye@boqun-archlinux>
-In-Reply-To: <Z4fIi_Gr0XZog4Ye@boqun-archlinux>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 15 Jan 2025 15:42:44 +0100
-X-Gm-Features: AbW1kvYcl2pht93-O_xpTLQ2AAU6rkhrACuRwlq7EgtXIytCTqUv1WkDv28Z2A8
-Message-ID: <CAH5fLgj6Wnrn6Ois+MbX16j2szRsBEgqVyArcGwhjEK52JnD3Q@mail.gmail.com>
-Subject: Re: [PATCH] rust: irq: add support for request_irq()
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+References: <20241112184455.855133-1-ojeda@kernel.org> <CANiq72=BvnriScFay8SpLNe9mNhjvGsBJ9W9UtdzU_6v_i+woA@mail.gmail.com>
+ <CAABy=s12gOZadhYC+=6=TbbyN9j5L0B19ZLSGR_VFEdt1jhwEA@mail.gmail.com> <CANiq72kQKGG7j61bpsORnE0vzNo_dzwMZMLx=Z0xOnY0wefv6g@mail.gmail.com>
+In-Reply-To: <CANiq72kQKGG7j61bpsORnE0vzNo_dzwMZMLx=Z0xOnY0wefv6g@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 15 Jan 2025 16:25:51 +0100
+X-Gm-Features: AbW1kvZUpcYldFjbwOBXy94o_6lTFAyj-QS9S6GkQe2OruPN52aGDmHoW0Pxiqk
+Message-ID: <CANiq72k3YfiEGT6JV5semYJWn5St8GMF3nhDW0Bt6rX1z+oDng@mail.gmail.com>
+Subject: Re: [PATCH v3] kbuild: rust: add PROCMACROLDFLAGS
+To: "Hong, Yifan" <elsk@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 15, 2025 at 3:39=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
+On Tue, Jan 14, 2025 at 11:46=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> On Wed, Jan 15, 2025 at 09:27:39AM +0100, Alice Ryhl wrote:
-> > On Wed, Jan 15, 2025 at 1:47=E2=80=AFAM Boqun Feng <boqun.feng@gmail.co=
-m> wrote:
-> > >
-> > > On Tue, Jan 14, 2025 at 03:57:57PM -0300, Daniel Almeida wrote:
-> > > >
-> > > > >
-> > > > > It's not the pin_init! stuff, but the Opaque stuff. If it fails, =
-then
-> > > > > it runs the destructor of Opaque<T>, which does *not* run the
-> > > > > destructor of T.
-> > > > >
-> > > > > Alice
-> > > >
-> > > > This is pretty unintuitive if you take into account trivial example=
-s like
-> > > >
-> > > > ```
-> > > > struct Foo(T)
-> > > > ```
-> > > >
-> > > > Where dropping Foo drops T.
-> > > >
-> > > > Is there any reason why dropping Opaque<T> doesn=E2=80=99t behave s=
-imilarly?
-> > > >
-> > >
-> > > Because `Opaque` implies the value may not be initialized, it's simil=
-ar
-> > > to `MaybeUninit`.
-> > >
-> > > Do you really need the `Opaque` here? C code won't touch `handler` if
-> > > I'm not missing anything.
-> >
-> > The irq callback is given access to handler, so it could touch it at an=
-y time.
-> >
->
-> You're right it could, but would it? C code doesn't know the concrete
-> type of the handler, so what it usually does is just passing the
-> pointers to the Rust code (again).
->
-> A similar case the `func` field in `ClosureWork`: it doesn't need to be
-> `Opaque`, although workqueue callback may access it.
->
-> Am I missing something here? Daniel, why this has to be `Opaque`? Could
-> you explain?
+> On second thought, #731 probably only applies to `rustc` native flags
+> only, rather than those that are passed to the linker (e.g. if I pass
+> a dummy flag, it is passed as-is, so I doubt they will start checking,
+> and probably they shouldn't), so it may not help here after all.
 
-It needs to be !Unpin, otherwise it's not safe for Rust to access the
-pointer. ClosureWork is not the same because there are no *other*
-references to it than the workqueue.
+For completeness: `-Clink-args=3D` appends (and is allowed to be passed
+several times), rather than override. Moreover, the docs say so
+explicitly. So it is unlikely that one would change or that #731
+applies to it (i.e. as a whole vs. individual options inside it).
 
-Alice
+Cheers,
+Miguel
