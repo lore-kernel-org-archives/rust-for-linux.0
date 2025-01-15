@@ -1,52 +1,79 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3952222FAE9;
-	Wed, 15 Jan 2025 06:42:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A491E1DB125
+	for <rust-for-linux@vger.kernel.org>; Wed, 15 Jan 2025 07:15:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736923323; cv=none; b=T75O4P19THSzJr6UXro+fQNGpYLnrGG1uJu2ka3Hg2sJD1dAODls/LM5Axtqu1ZhfE6NFW7NP9hEyBztWPMSjr9hrTB3C3XV3h5tQcXc0TQJI09Q8unADff3Wh2jlMPGcZVZkVUMJ0efz57NojON8zrEfA//XBc2KeUy2qMLZ5A=
+	t=1736925343; cv=none; b=g7cTMJZBgM3emvJEJbMW31kTT0/30S97qkkrrEwoc4LvRVQXgTRtecE1tX8Zwu8mIMLRNPPS52E74KSZKkbeM81DjoKJagDedet4D7mYds3imwef8DG2VW1eeKuRheI9Yjp4oIEsUGR5ZkzDwJPYYve5aJ4WpmOyNMratXQBuQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736923323; c=relaxed/simple;
-	bh=bgY+YVYRDmnRUhd9hC0XPzyVCgfpIC4kE0RT+1d1CSg=;
+	s=arc-20240116; t=1736925343; c=relaxed/simple;
+	bh=Ib+u5MR6k4UAHdSEp3lNmJns4do26Mvrgubj25Hvqwg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XeWxXINzupzsis8jEJ+WHbXN5/wJUpaLyiDf1lNBSmB8RYis3He0a9/xmxL33TXgIyJ8nd10NMpeLplWnYTOnSNVK5s/Y0HXQ8tC+YoFGVVKAWTNtzU7roue0071c4yFHXBvBSl/c2jYouL9uzxe3Xr4AH3LmPtpZAtqCy24hMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WAIS5RJ+; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=G8hmLO+kSDi5Ib7tBNHWuXnin6DngAmkr1WzXu8NRGiOmRQmOR6dxolSQ4NSgw6tRJyk18NukS9sKd3ppeYjENwhTgFLJJ25nMqoHLzaKQgTxsabBL36RQXAXrFWM5lQZ1UgB1yeafskOQj9xIEADsVrOyVmYCb+IhtZ/m29l/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=epUlkQJ0; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WAIS5RJ+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC216C4CEDF;
-	Wed, 15 Jan 2025 06:41:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736923322;
-	bh=bgY+YVYRDmnRUhd9hC0XPzyVCgfpIC4kE0RT+1d1CSg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WAIS5RJ+HciZXjtPxrtNebxVZbWYP1lfFRhP/crDreCXBFfUDrzK0wNb9glRR1qZl
-	 LW53WAm4IeNqKEnkKyzUSBnah+iQpY2qOINnoyyWnnZhasfIq5mLTCffq7FrITc8et
-	 CHC+MzefHzpBM9jDk7P/AhZJ4sswnjwFIXLYhHxAfs9Di3Nj0tY/o1f1IPZKaoDeaF
-	 EqavdYtUzKy9yDL5PrOfLolemyOdXs+Io1rWeiqYb7jiYSMyTVzPMwJcC9ZNhtfrUE
-	 /UQK1QoKSCrXiCxQ6/ZLX2Rr14aplknkYmSWbTW1Ra9cB4FiYmkxEuqdan3fBbHjJx
-	 8bn90llk/oU1w==
-Date: Wed, 15 Jan 2025 07:41:54 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Gary Guo <gary@garyguo.net>, gregkh@linuxfoundation.org
-Cc: rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, tmgross@umich.edu,
-	a.hindborg@samsung.com, aliceryhl@google.com, airlied@gmail.com,
-	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com,
-	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org,
-	daniel.almeida@collabora.com, saravanak@google.com,
-	dirk.behme@de.bosch.com, j@jannau.net, fabien.parent@linaro.org,
-	chrisi.schrefl@gmail.com, paulmck@kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
-	rcu@vger.kernel.org
-Subject: Re: [PATCH v7 08/16] rust: add devres abstraction
-Message-ID: <Z4dYsoKrbP4_Nz_v@pollux>
-References: <20241219170425.12036-1-dakr@kernel.org>
- <20241219170425.12036-9-dakr@kernel.org>
- <20241224215323.560f17a9.gary@garyguo.net>
- <Z4aR4OrCQMoF6Boo@pollux>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="epUlkQJ0"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2166022c5caso99620945ad.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 14 Jan 2025 23:15:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1736925341; x=1737530141; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4elwR80YWGNJ6Nyq6UNTgoYtaoLWlXGYjf44MSc4x3M=;
+        b=epUlkQJ0DowDJz11ftl0du9ujWiC9JypuJs+w2EAn5JtdRVD7HCwCIpTdMRU43nhSf
+         8mbvhLnJUSdtgAQlrFnIFe/nH8v2ffWElVvTCzKPtzSn5dabUJFUSa3dlXvzR4Ff5Him
+         TL8a7P/tnZysVYTYndEKfS5BTJIMlk5A4Uko2yaXZ27xI0l6ExgG9ydfjKcGUEvZ7wOn
+         PUY+7LniTGWoJGvw8a9+zrVXgoYOpjGZ4mLMoFm59GP9mSABketCTE5PrDsFKlMY7ROF
+         9mJyaGVRpemDoVoeWcUMrjelMpIjBWI83m7RB7RAU3QEn7Q3ArNnCqWtlhx6zGG4tfbK
+         IGgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736925341; x=1737530141;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4elwR80YWGNJ6Nyq6UNTgoYtaoLWlXGYjf44MSc4x3M=;
+        b=MOiYOq16+0nNhFqtcvjjhPsNIw2oF+ZBxbgon0Wypy8A8nEnvBOeZNeVQv1MBNA3BP
+         Ihd12plTQ1ZCOEH66tJszT4F4DSJhu86+F0fAA/7dlvSoUkyLaapx+I73+CKtIAoDNy2
+         h9eC/JjllRL102vtt6ZA9GVG6exADYUGgzX3m14GOIRtqPARFBfl/4yfj+mMiDQl63Do
+         2OBrtg+Ec001selRpi3TPGqQNDByuTUGjfBW2wH7IIm3QsF4F2r854ee5153RDDbNFdi
+         3UK8JGNQtBOelNKyfIx+XShobMeOoZ2BmBJMMBE7MrB/Ndf7piov++4gL3OWLlsU0Ul+
+         6GvA==
+X-Forwarded-Encrypted: i=1; AJvYcCX0EcUUPcrdR//BrV3NrmrDTlorw5lIctZtgec1rxpOiQSUzH0kDd3u11SJB96qh2IAyH8niNf81fqU1ukOUQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNsWLlDyQrBbmkcOTxNU+XxWaRLTyQLpOg9TAMQA1ssB3ll8c1
+	RSlETixr3iXBN0mPqyYqOJT4cnQWp1Zod5VX/NTdqLBXiGhsSyh1vwy2YjysJ1c=
+X-Gm-Gg: ASbGnctNOfN3kr7kb7VF/oplhe0yDhcuT2Sqd0m0w6Y3WbXkgiZbmayTVYa7jn0B2CQ
+	YTAjdIOH7ntkHq4HTabEHjL+o+2v61US9IUThDgjuVjgltNonpKrCJM+OFruXF/rwEuPVpy05e3
+	fxk9/Fbxs9wLaSmXcbYhFm0ye9XlHHzVjKcXj0cUKBBeZV4x8psKaR+HJbQCe4NCI0jw7ah7k6i
+	rkJMrIecZs7Nyg7ARe/eHxDTS+UqPEsfBnXLJhYNPBK6x0uGw1rGMcwKS8=
+X-Google-Smtp-Source: AGHT+IGJWbPUigQF/i94EGZcZQuKJ/jjgSn8IplW+yDqF4/5alk96s5viXPr/Xi2mlc7gVZQN1spqw==
+X-Received: by 2002:a17:902:e746:b0:216:7aab:71f0 with SMTP id d9443c01a7336-21a83fde39fmr423050065ad.38.1736925341051;
+        Tue, 14 Jan 2025 23:15:41 -0800 (PST)
+Received: from localhost ([122.172.84.139])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21a9f25cd50sm77260375ad.250.2025.01.14.23.15.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jan 2025 23:15:40 -0800 (PST)
+Date: Wed, 15 Jan 2025 12:45:38 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, linux-pm@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V7 04/16] rust: device: Add property_present()
+Message-ID: <20250115071538.efb2ipmbmynvwt3p@vireshk-i7>
+References: <cover.1736766672.git.viresh.kumar@linaro.org>
+ <f43fe3f7b3151a89c261ad728b0f3bb2fc24caef.1736766672.git.viresh.kumar@linaro.org>
+ <2025011429-gossip-hash-12e3@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -55,74 +82,24 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z4aR4OrCQMoF6Boo@pollux>
+In-Reply-To: <2025011429-gossip-hash-12e3@gregkh>
 
-On Tue, Jan 14, 2025 at 05:33:45PM +0100, Danilo Krummrich wrote:
-> > > +impl<T> Drop for Devres<T> {
-> > > +    fn drop(&mut self) {
-> > > +        // Revoke the data, such that it gets dropped already and the actual resource is freed.
-> > > +        //
-> > > +        // `DevresInner` has to stay alive until the devres callback has been called. This is
-> > > +        // necessary since we don't know when `Devres` is dropped and calling
-> > > +        // `devm_remove_action()` instead could race with `devres_release_all()`.
+On 14-01-25, 19:42, Greg Kroah-Hartman wrote:
+> On Mon, Jan 13, 2025 at 04:52:59PM +0530, Viresh Kumar wrote:
+> > This implements Device::property_present(), which calls C APIs
+> > device_property_present() helper.
 > > 
-> > IIUC, the outcome of that race is the `WARN` if
-> > devres_release_all takes the spinlock first and has already remvoed the
-> > action?
+> > The new helper will be used by Rust based cpufreq drivers.
 > > 
-> > Could you do a custom devres_release here that mimick
-> > `devm_remove_action` but omit the `WARN`? This way it allows the memory
-> > behind DevresInner to be freed early without keeping it allocated until
-> > the end of device lifetime.
+> > Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+> > ---
+> >  rust/bindings/bindings_helper.h | 1 +
+> >  rust/kernel/device.rs           | 7 +++++++
+> >  2 files changed, 8 insertions(+)
 > 
-> Better late than never, I now remember what's the *actual* race I was preventing
-> here:
-> 
->   | Task 0                               | Task 1
-> --|----------------------------------------------------------------------------
-> 1 | Devres::drop() {                     | devres_release_all() {
-> 2 |    DevresInner::remove_action() {    |    spin_lock_irqsave();
-> 3 |                                      |    remove_nodes(&todo);
-> 4 |                                      |    spin_unlock_irqrestore();
-> 5 |       devm_remove_action_nowarn();   |
-> 6 |       let _ = Arc::from_raw();       |
-> 7 |    }                                 |
-> 8 | }                                    |
-> 9 |                                      |    release_nodes(&todo);
-> 10|                                      | }
-> 
-> So, if devres_release_all() wins the race it stores the devres action within the
-> temporary todo list. Which means that in 9 we enter
-> DevresInner::devres_callback() even though DevresInner has been freed already.
-> 
-> Unfortunately, this race can happen with [1], but not with this original version
-> of Devres.
+> Want me to take this in my driver-core tree now for 6.14-rc1?
 
-Well, actually this can't happen, since obviously we know whether Devres:drop
-removed it or whether it will be released by devres_release_all() and we only
-free DevresInner conditionally.
+Sure, Thanks.
 
-So, the code in [1] is fine; I somehow managed to confuse myself.
-
-Sorry for the noise.
-
-- Danilo
-
-> 
-> I see two ways to fix it:
-> 
-> 1) Just revert [1] and stick with the original version.
-> 
-> 2) Use devm_release_action() instead of devm_remove_action() and don't drop the
->    reference in DevresInner::remove_action() (6). This way the reference is
->    always dropped from the callback.
-> 
-> With 2) we still have an unnecessary call to revoke() if Devres is dropped
-> before the device is detached from the driver, but that's still better than
-> keeping DevresInner alive until the device is detached from the driver, which
-> the original version did. Hence, I'll go ahead and prepare a patch for this,
-> unless there are any concerns.
-> 
-> - Danilo
-> 
-> [1] https://lore.kernel.org/rust-for-linux/20250107122609.8135-2-dakr@kernel.org/
+-- 
+viresh
