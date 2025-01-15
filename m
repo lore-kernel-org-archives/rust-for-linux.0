@@ -1,58 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B870924225A;
-	Wed, 15 Jan 2025 11:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88462241691;
+	Wed, 15 Jan 2025 11:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736939044; cv=none; b=imWQbSxXb3CzEqonM6+9ICv7xEZbHcgedopq8DzhpHH/scpsidDTODbD+U2xwgYQuSPS/IO8oytO4VJMUmRORCs9/z/TPAiWlM+8baUIWdOqATUY4qrGsqXK33+VxpapKtMQIPsyppJVZn9pEtbQlW4QTrBeyVZZFUv6CaSmD3w=
+	t=1736939050; cv=none; b=TPw+C/4OxiPJcjiRiseC0vrNgmJLdO+Ex2CwU3Jl8btEl/bo9elFPK9XvK9nk+S5iM6tPwUxyDTn+A0pJs9YocDKmPQfKz5KcdlBDOB/Na+oTUkkIOf43O+MLlKm5U1tCGzBPEDScJVVrqoep/7njK04iBwJy2k5/GUY+4gAemw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736939044; c=relaxed/simple;
-	bh=yvllrWEnteI3wxvUxsEtwU29GRVsf9tYU28D6ya1s2Q=;
+	s=arc-20240116; t=1736939050; c=relaxed/simple;
+	bh=hkRFo3uTdbREugXqIkyYEWEUEBU0dTtp3fPfcRlTA9M=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=g3+SDsKfb/cZaCMQJnatHitDafspTaoknxhe9//YPJYe6m2CpOg2euR7ezYgFUbV9WGAayjUtpfnGz7o16jRNJernLnQpZjAOS4H6NJ13El86Q+cJ33Y/uCSEiu7sPXWC6fHmyx7eFuK0Vl5RtMkestqk4yoLgqThxg+6yRL4QA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G/5SLi4z; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=UeM0JD397ZRv7H5z7id891fuknexDHbkBoj2GTtOiTsrD/P5Ho3A+USuyHFlqggXZ3it5TWEUgJSuTBYT14HeVFgtbfg7UFBuqEozNWlOEbIf9bEOa+dirblrlg58x6JmtBZa7GcG9XncXb0pWr/4WHzg6Swq+QYFGnNJQcSzNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VC2bhh+G; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G/5SLi4z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC32AC4CEDF;
-	Wed, 15 Jan 2025 11:03:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VC2bhh+G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D9F6C4CEE2;
+	Wed, 15 Jan 2025 11:04:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736939044;
-	bh=yvllrWEnteI3wxvUxsEtwU29GRVsf9tYU28D6ya1s2Q=;
+	s=k20201202; t=1736939050;
+	bh=hkRFo3uTdbREugXqIkyYEWEUEBU0dTtp3fPfcRlTA9M=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=G/5SLi4zUtDk82qW5kEd1XbZNtCB3cnoks7gzB4KyAxTLMOq+jz4aZn6leHXk5EEL
-	 hArAAEVUuESVZQd7Zih4KLlceL8+M8TjF44J1KQahwISHGZQ7zNLVcHKG0fHLxMPfe
-	 pB2tqAiWnT+Yv8Hgvtr0YawZjSxOs9+8JhVMQTsnsddBCLz/BER3nZOZ/cd/a4HYBs
-	 A9Nn+yLnPigMQJeGrP5a5EjeaKj8ZyMRX2EuachEsjCsDbrd2rqUJauyqViXhDIXFU
-	 VPfZ9DtszuSmQbT3RDSfmdBMEJHjU+98mM8GsXuk+TZA+MUvgR1z03yHvi9ohouLIA
-	 9NhBvmKTEs1ww==
+	b=VC2bhh+GY4NLpy+BWOvTA2yBwzQp6icpa5jKq0+VtFxmhergYso4CkZFYdP6A1I1D
+	 brraymeP9XIFPCFzGCcuspw9flSaAcCGyXLkVsdaLXJ0C/fW0/bBkW2YP3KG883HtO
+	 uwQn2zEWetjmlmbU91iRGZgOk6QX4Me6NFxZ0EMlCBZvdrCUsrsybRZcAJWqcATAw0
+	 nSO1YArgUad8qvqATWgUzcJKCDEcKjKGWbz0cRsUvblYmN54yY+nC3uHwwubijGt6V
+	 cUia+kyZIQzPPmBvIgSWKpkL874drTjMnkGOCl2atmZj9THHSr92kSBDlQhQCjdlfX
+	 lOvZSbMptSO8w==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: "Alice Ryhl" <aliceryhl@google.com>
-Cc: "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,  "Miguel Ojeda"
- <ojeda@kernel.org>,  "Matthew Wilcox" <willy@infradead.org>,  "Vlastimil
- Babka" <vbabka@suse.cz>,  "John Hubbard" <jhubbard@nvidia.com>,  "Liam R.
- Howlett" <Liam.Howlett@oracle.com>,  "Andrew Morton"
- <akpm@linux-foundation.org>,  "Greg Kroah-Hartman"
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Matthew Wilcox"
+ <willy@infradead.org>,  "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+  "Vlastimil Babka" <vbabka@suse.cz>,  "John Hubbard"
+ <jhubbard@nvidia.com>,  "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+  "Andrew Morton" <akpm@linux-foundation.org>,  "Greg Kroah-Hartman"
  <gregkh@linuxfoundation.org>,  "Arnd Bergmann" <arnd@arndb.de>,
   "Christian Brauner" <brauner@kernel.org>,  "Jann Horn"
  <jannh@google.com>,  "Suren Baghdasaryan" <surenb@google.com>,  "Alex
  Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,
-  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?=
+  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
  <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
   "Trevor Gross" <tmgross@umich.edu>,  <linux-kernel@vger.kernel.org>,
   <linux-mm@kvack.org>,  <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v11 1/8] mm: rust: add abstraction for struct mm_struct
-In-Reply-To: <CAH5fLginc=uNPVp1-T-oBrgtE1oi_cBMd65sPkDgqSDjH_CNfA@mail.gmail.com>
+Subject: Re: [PATCH v11 4/8] mm: rust: add lock_vma_under_rcu
+In-Reply-To: <CAH5fLghYSL7TWUKa+Nj5_wyBBJpfo=0AStHSbC=aDD9Hj6VEfQ@mail.gmail.com>
  (Alice
-	Ryhl's message of "Mon, 13 Jan 2025 10:53:33 +0100")
+	Ryhl's message of "Mon, 13 Jan 2025 11:04:36 +0100")
 References: <20241211-vma-v11-0-466640428fc3@google.com>
-	<ZzO0HNA5jlZZgU1ib_SP36HWHny8QNidES3cXM_ogVTtqArMPzPfDlQCFslPrZAVESJzfzFOVfOkoZHKiG-ivQ==@protonmail.internalid>
-	<20241211-vma-v11-1-466640428fc3@google.com> <878qsfdftg.fsf@kernel.org>
-	<ArX-UzegU4cf4AOS9ENB7MdrYE35c_oYLBa1Q5kq7S0e3nQt06TDKyZblbuXYY89G-qbqo444gu7uEhGzr4r9Q==@protonmail.internalid>
-	<CAH5fLginc=uNPVp1-T-oBrgtE1oi_cBMd65sPkDgqSDjH_CNfA@mail.gmail.com>
+	<zLgtayXoZAk9UcN1xyPVa-vRd7F8sqv12X8fKo4pIXbs0xFLULWuH5tBEbOiIuktvkf7o4PNsNvDli037vcxnQ==@protonmail.internalid>
+	<20241211-vma-v11-4-466640428fc3@google.com> <87jzbzbxrk.fsf@kernel.org>
+	<OZo8vZlKdHeseYL2zJkTA6pdliNtnmkYTxRCzRM7BsEGoGcsMf8L29x4KDfNVcrLey6jowuwYiwYGRtnRFwCrA==@protonmail.internalid>
+	<CAH5fLghYSL7TWUKa+Nj5_wyBBJpfo=0AStHSbC=aDD9Hj6VEfQ@mail.gmail.com>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Wed, 15 Jan 2025 11:36:56 +0100
-Message-ID: <87a5bse52v.fsf@kernel.org>
+Date: Wed, 15 Jan 2025 10:34:15 +0100
+Message-ID: <87wmewe7zc.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -69,136 +69,85 @@ el.org> wrote:
 >>
 >> "Alice Ryhl" <aliceryhl@google.com> writes:
 >>
->> > These abstractions allow you to reference a `struct mm_struct` using
->> > both mmgrab and mmget refcounts. This is done using two Rust types:
+>> > Currently, the binder driver always uses the mmap lock to make changes
+>> > to its vma. Because the mmap lock is global to the process, this can
+>> > involve significant contention. However, the kernel has a feature call=
+ed
+>> > per-vma locks, which can significantly reduce contention. For example,
+>> > you can take a vma lock in parallel with an mmap write lock. This is
+>> > important because contention on the mmap lock has been a long-term
+>> > recurring challenge for the Binder driver.
 >> >
->> > * Mm - represents an mm_struct where you don't know anything about the
->> >   value of mm_users.
->> > * MmWithUser - represents an mm_struct where you know at compile time
->> >   that mm_users is non-zero.
->> >
->> > This allows us to encode in the type system whether a method requires
->> > that mm_users is non-zero or not. For instance, you can always call
->> > `mmget_not_zero` but you can only call `mmap_read_lock` when mm_users =
-is
->> > non-zero.
->> >
->> > It's possible to access current->mm without a refcount increment, but
->> > that is added in a later patch of this series.
+>> > This patch introduces support for using `lock_vma_under_rcu` from Rust.
+>> > The Rust Binder driver will be able to use this to reduce contention on
+>> > the mmap lock.
 >> >
 >> > Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com> (for mm bits)
+>> > Reviewed-by: Jann Horn <jannh@google.com>
 >> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 >> > ---
->> >  rust/helpers/helpers.c |   1 +
->> >  rust/helpers/mm.c      |  39 +++++++++
->> >  rust/kernel/lib.rs     |   1 +
->> >  rust/kernel/mm.rs      | 219 ++++++++++++++++++++++++++++++++++++++++=
+>> >  rust/helpers/mm.c |  5 +++++
+>> >  rust/kernel/mm.rs | 56 ++++++++++++++++++++++++++++++++++++++++++++++=
 +++++++++
->> >  4 files changed, 260 insertions(+)
+>> >  2 files changed, 61 insertions(+)
 >> >
+>> > diff --git a/rust/helpers/mm.c b/rust/helpers/mm.c
+>> > index 7b72eb065a3e..81b510c96fd2 100644
+>> > --- a/rust/helpers/mm.c
+>> > +++ b/rust/helpers/mm.c
+>> > @@ -43,3 +43,8 @@ struct vm_area_struct *rust_helper_vma_lookup(struct=
+ mm_struct *mm,
+>> >  {
+>> >       return vma_lookup(mm, addr);
+>> >  }
+>> > +
+>> > +void rust_helper_vma_end_read(struct vm_area_struct *vma)
+>> > +{
+>> > +     vma_end_read(vma);
+>> > +}
 >> > diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
->> > new file mode 100644
->> > index 000000000000..84cba581edaa
->> > --- /dev/null
+>> > index ace8e7d57afe..425b73a9dfe6 100644
+>> > --- a/rust/kernel/mm.rs
 >> > +++ b/rust/kernel/mm.rs
->> > @@ -0,0 +1,219 @@
->> > +// SPDX-License-Identifier: GPL-2.0
->> > +
->> > +// Copyright (C) 2024 Google LLC.
->> > +
->> > +//! Memory management.
+>> > @@ -13,6 +13,7 @@
+>> >  use core::{ops::Deref, ptr::NonNull};
+>> >
+>> >  pub mod virt;
+>> > +use virt::VmAreaRef;
+>> >
+>> >  /// A wrapper for the kernel's `struct mm_struct`.
+>> >  ///
+>> > @@ -170,6 +171,32 @@ pub unsafe fn from_raw<'a>(ptr: *const bindings::=
+mm_struct) -> &'a MmWithUser {
+>> >          unsafe { &*ptr.cast() }
+>> >      }
+>> >
+>> > +    /// Attempt to access a vma using the vma read lock.
+>> > +    ///
+>> > +    /// This is an optimistic trylock operation, so it may fail if th=
+ere is contention. In that
+>> > +    /// case, you should fall back to taking the mmap read lock.
+>> > +    ///
+>> > +    /// When per-vma locks are disabled, this always returns `None`.
+>> > +    #[inline]
+>> > +    pub fn lock_vma_under_rcu(&self, vma_addr: usize) -> Option<VmaRe=
+adGuard<'_>> {
+>> > +        #[cfg(CONFIG_PER_VMA_LOCK)]
+>> > +        {
+>> > +            // SAFETY: Calling `bindings::lock_vma_under_rcu` is alwa=
+ys okay given an mm where
+>> > +            // `mm_users` is non-zero.
+>> > +            let vma =3D unsafe { bindings::lock_vma_under_rcu(self.as=
+_raw(), vma_addr as _) };
 >>
->> Could you add a little more context here?
+>> Is `as _` the right approach here?
 >
-> How about this?
->
-> //! Memory management.
-> //!
-> //! This module deals with managing the address space of userspace
-> processes. Each process has an
-> //! instance of [`Mm`], which keeps track of multiple VMAs (virtual
-> memory areas). Each VMA
-> //! corresponds to a region of memory that the userspace process can
-> access, and the VMA lets you
-> //! control what happens when userspace reads or writes to that region
-> of memory.
-> //!
-> //! C header: [`include/linux/mm.h`](srctree/include/linux/mm.h)
+> We can drop it once the FFI integer types are fixed. It's late in the
+> cycle, so this patch probably won't make it for 6.14. This means I can
+> remove the casts entirely before this is merged. Otherwise we can
+> remove them in a follow-up.
 
-Nice =F0=9F=91=8D
-
->
->> > +//!
->> > +//! C header: [`include/linux/mm.h`](srctree/include/linux/mm.h)
->> > +
->> > +use crate::{
->> > +    bindings,
->> > +    types::{ARef, AlwaysRefCounted, NotThreadSafe, Opaque},
->> > +};
->> > +use core::{ops::Deref, ptr::NonNull};
->> > +
->> > +/// A wrapper for the kernel's `struct mm_struct`.
->>
->> Could you elaborate the data structure use case? When do I need it, what
->> does it do?
->
-> How about this?
->
-> /// A wrapper for the kernel's `struct mm_struct`.
-> ///
-> /// This represents the address space of a userspace process, so each
-> process has one `Mm`
-> /// instance. It may hold many VMAs internally.
-> ///
-> /// There is a counter called `mm_users` that counts the users of the
-> address space; this includes
-> /// the userspace process itself, but can also include kernel threads
-> accessing the address space.
-> /// Once `mm_users` reaches zero, this indicates that the address
-> space can be destroyed. To access
-> /// the address space, you must prevent `mm_users` from reaching zero
-> while you are accessing it.
-> /// The [`MmWithUser`] type represents an address space where this is
-> guaranteed, and you can
-> /// create one using [`mmget_not_zero`].
-> ///
-> /// The `ARef<Mm>` smart pointer holds an `mmgrab` refcount. Its
-> destructor may sleep.
-
-Cool =F0=9F=91=8D
-
->
->> > +///
->> > +/// Since `mm_users` may be zero, the associated address space may no=
-t exist anymore. You can use
->> > +/// [`mmget_not_zero`] to be able to access the address space.
->> > +///
->> > +/// The `ARef<Mm>` smart pointer holds an `mmgrab` refcount. Its dest=
-ructor may sleep.
->> > +///
->> > +/// # Invariants
->> > +///
->> > +/// Values of this type are always refcounted using `mmgrab`.
->> > +///
->> > +/// [`mmget_not_zero`]: Mm::mmget_not_zero
->> > +#[repr(transparent)]
->> > +pub struct Mm {
->>
->> Could we come up with a better name? `MemoryMap` or `MemoryMapping`?. You
->> use `MMapReadGuard` later.
->
-> Those names seem really confusing to me. The mmap syscall creates a
-> new VMA, but MemoryMap sounds like it's the thing that mmap creates.
->
-> Lorenzo, what do you think? I'm inclined to just call it Mm since
-> that's what C calls it.
-
-Well I guess there is value in using same names as C. The additional
-docs you sent help a lot so I guess it is fine.
-
-If we were writing from scratch I would have held hard on `AddressSpace`
-or `MemoryMap` over `Mm`. `Mm` has got to be one of the least
-descriptive names we can come up with.
+Sounds good to me =F0=9F=91=8D
 
 
 Best regards,
