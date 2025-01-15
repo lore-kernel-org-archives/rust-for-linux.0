@@ -1,214 +1,214 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021080.outbound.protection.outlook.com [52.101.100.80])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5F92475D0;
-	Wed, 15 Jan 2025 12:32:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.80
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736944363; cv=fail; b=TgI3KkZXzr1UYv/D1oPcsvjWmQshEJwVY/jTAY4jytjuJgYY/+4PrEo4bvgg6qegn3oOL5XvdRLrJPYYWuvNJN1IK9LfU0bCblsZUkGpfWx7lQjndA8QEFD1uhRGIBr4QsAZ4JtEMh8lfOeYS9e1ty7uBIO3tUdk76eliouu4TA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736944363; c=relaxed/simple;
-	bh=AW0rFfqdOPKb6DYTmms0tVZZtgQ+dmEqNNuYYwqDBKY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fsCY+cUEIrHYb83rWmasADBbA7EJE8PW07i8+0leIBV1PCAEndiyC17jYVmGeejpLYIBsmVmajfMGH+y7wxvBp+GsGquYe0gja6Ux9RWhUj5t5werInLknlXDxvzHcgznI7fiT3hyA9yGkVJvmFkNRf4PbK0xcYGJo+2T8Imy9U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=spAD8vZG; arc=fail smtp.client-ip=52.101.100.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A211236EDE
+	for <rust-for-linux@vger.kernel.org>; Wed, 15 Jan 2025 13:36:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736948168; cv=none; b=gwhYGnC9t6rbljPG9fmho9qJSq9QWv91iXdU76M36PFJeQ45MfcHRzA3wklvUkCtsPB41CF/BiRWWoXKDDq3FG9dqx/eXioWWTuhaHJCRUegD2W3eKkKttVgmA11fJQ5TbasepQPWAWqOgrRDdvsts4AMFIj8uLYk715ZV4/UMo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736948168; c=relaxed/simple;
+	bh=Vm4YeMs1sTGWonvj+6yAEU1SHf+sI2+UBVeCMDhl7q4=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=L2bV304NHD5GZmxIWfxRNaKrjfc5zxFSgYaDnvpKXBpUGObxKaOK2I7EuMrMUYyxOXCqG7PVYW6XKqiC6Bmlv3iovrt2ldGt2CDHecIOlmmV/l0adlQGelSj/vfCeIWNhita7o4r2LjoMoDsRtwSaDXuREqgj0ldIPq2Vez8jDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=faj8tNTW; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="spAD8vZG"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ATir9sLoJ24ih/x/mMJ7XqovSGkY+cKmctoLcUzHHLICU3Wz7Nc0kyoGt4t43nkrkvQW8w/OQouZzM90jFcVnjH4+IrO2V5OsJS9iQyaCoHH27N+Mq4xrr+fdVT2kNDwYh1/+Uw+2x+3Mm/H5zN6FrZ2bWycj0it1Q5QWSpmR4RA/r+EbW3eOMj2BOJuwHCJV0b2QoXmmWyQIjoRgmxS3U3FfaWzvbaxDzvfo0RNG6XVGnIcDwHQzT8tk7kTRGXwPZu/fsng5yG5iNiX5hYTbDRJbVE7DbM2EW9HSGQp2eFCJttGc4b3MI/yKZV+Dj8i7IrrMK3VUPxCm2ZEZCvDcQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OjRKi280JJ/8zmUTz6XrCJsqTy+92nHp1+R3kZRQU5I=;
- b=PmO/0d05PkILU0mbkp5ych2Wcwpx8y9vJzZ3cUlykM6FFzmVDD7DY/1ukemHU6AmDGkn1wK+3y8qOlz5cFfXInL2a9uNLGGOU5bay4lzTR+uj0i/2w22ntdVvlTxDWWGjfwk/M5U6ocqIhuvykaUwwLkcylDhurxnLGxbcg7HCrt+HVKRfS8bvPebk7xpm4bnGqJ8J6cPoe7m7dYrYJbdDmtSTAuRTKlGsQfqhO4QrYT0ApQC7Q10AzZ1Gi+0+1Od8V7Wdx+GhSM26LDPQ62MgISLvCxSWETfXNw+JewS/SpAXAl8Kk305g3+6AtiDcaR8I8N+RXQ2Um8vLRw3Q/rA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OjRKi280JJ/8zmUTz6XrCJsqTy+92nHp1+R3kZRQU5I=;
- b=spAD8vZGRy9KWXMf3CSh93KoCBjNuU6qlRszE7BeFwPEydK0imYyOWoDdY59yCrtPjqetVHPr1FwW8lDkfGKoKtnEym9Oc0pmVKtLRLqdBtOE6GA2nXdRn4XMG8jPYwpQJS4obwfpv6CIBv2Dd3NeDbINOQQ8wAydMK9YnHVoZI=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO0P265MB2617.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:14e::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.18; Wed, 15 Jan
- 2025 12:32:39 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7%5]) with mapi id 15.20.8356.010; Wed, 15 Jan 2025
- 12:32:39 +0000
-Date: Wed, 15 Jan 2025 12:32:34 +0000
-From: Gary Guo <gary@garyguo.net>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?B?QmrDtnJu?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
- Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Wedson
- Almeida Filho <walmeida@microsoft.com>, Valentin Obst
- <kernel@valentinobst.de>, Alex Mantel <alexmantel93@mailbox.org>, Danilo
- Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] rust: convert `Arc` to use `Refcount`
-Message-ID: <20250115123234.6d3bba78.gary@garyguo.net>
-In-Reply-To: <CAH5fLgjOfw2otu4FJ1XHhjsSx3Fj3iQA25Hh-Anz5jXaLamrAQ@mail.gmail.com>
-References: <20241221183024.3929500-1-gary@garyguo.net>
-	<20241221183024.3929500-3-gary@garyguo.net>
-	<CAH5fLgjOfw2otu4FJ1XHhjsSx3Fj3iQA25Hh-Anz5jXaLamrAQ@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: HE1PR0102CA0004.eurprd01.prod.exchangelabs.com
- (2603:10a6:7:14::17) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="faj8tNTW"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-436723bf7ffso28581895e9.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 15 Jan 2025 05:36:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1736948164; x=1737552964; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=QJt0NwnF+zEPIT7s9Z05/9x45r5eY4ar9nsfpGZZ6/4=;
+        b=faj8tNTWAfE3Sv2G1g5FD9Dh/+5ceBcEz6vsKLjOhK/NTtoWzYjLkyekimXiOXEtMU
+         hQgyRdPZjszyBSy4MskjXW+2tD7bwYkX1PEGE48h5bZHRXn8pvXoZDcdxFMbp9cwHD4U
+         Vjurdh2Br1JNZa4vhYeVz4cayEM5V2aE8CCAoWHOZRlVzQKux52fnKYttXByY9K4CPQv
+         XdvuaEBZLdxt6u0Dl+gzWryNHaXoUl+x2hXSxBjyKyxkwVVX6bgsqiDOoaO0bDKOSU7O
+         kdNVmbCfSxaPnVw3qBEmumcWWMhxhlXydS+V1K/AYdDgJuy0Yonl5CgDwlSSYrcdmwhn
+         nXeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736948164; x=1737552964;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QJt0NwnF+zEPIT7s9Z05/9x45r5eY4ar9nsfpGZZ6/4=;
+        b=tNN/x6AOlAZZCxA3yz1wRlol2ZpaXCmbCo+CJjVTUKlmJ0YCYjYztjd7+8gm4VtGTg
+         PMn4hIA6e8awgM8FA5qYnyFSbpFoj605TFNw0wH8ccFJpjC9YiQJgU0PwUqTyAoTaYE9
+         T65+VYuHkMbqy9Q9pBdUY0t8PWoWllaDHZcei4iu6gl9T4+c/jDPT8qKClSGJHzcNvvS
+         Ap1+IaDRHbodwENEq/f5ue3OSOaJUhmMSYEEGxAxfRwawMO6ZFYZahxJDSwukAN7a/6u
+         VRuzzooAZcs9NP+7YC1/wsO+oXLznh38bl/f+abfvuexiitOvHqHrOo4Kr5VMZVNSKIc
+         faiA==
+X-Forwarded-Encrypted: i=1; AJvYcCWHDvr8bTuSqgzTE9WQ3OvW/9oHyfKOdGL37jaLMEvEpWfz+abx9o9b1qBqW1WLO9NCx7AU0QE6kqbyKGy+3w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjnmsvRrTXlTSgDA+XVtjHOyJj1Hy2Lsph2LIjA5CELP4gBZ5i
+	q/M1OtcOoZy0vmuEtascSeqlRgbFFhjGcoWaDeMKrgOeIpvbpdHXldJaXOnCDaFRgFiR2m+Zw3R
+	fYBvv6+0RrlNkvw==
+X-Google-Smtp-Source: AGHT+IGK1xZTOtHdTgRlhLDWD+ToXxEeoqzsoT3aptOIZ7komuwsaBRBJNe5QrfIeGYwbIsagNZ6Ds4T0K+ARh4=
+X-Received: from wmbfk15.prod.google.com ([2002:a05:600c:ccf:b0:435:dde5:2c3b])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1987:b0:434:fddf:5c0c with SMTP id 5b1f17b1804b1-436e2679e05mr275323325e9.4.1736948164552;
+ Wed, 15 Jan 2025 05:36:04 -0800 (PST)
+Date: Wed, 15 Jan 2025 13:35:03 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO0P265MB2617:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9e9dd8b9-ffd5-4c60-c81e-08dd3560b2c0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|10070799003|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Q1pYNTBSMHRCbEdWWElpaEsyYmxVOWxkZWNVc1Z6SkxmdXlKSThPY0U4Wnpw?=
- =?utf-8?B?ZWJaZWtEUjREaysrenQyMVV5K1gvUUd0SGkvVzdxV3VmSWFERWozRE5zUUQw?=
- =?utf-8?B?dzdkMEFPcjJ0ajZ3dHV2OFlXSXpIVENic3pjSllKMVBoOFNDYVdPL0o3NzI3?=
- =?utf-8?B?dVhXTzZuRERQVUpjSTZlTUg3UTRUNC9sMm1yL0hiRGlUMW9PZkFpVDBpQ3hj?=
- =?utf-8?B?dGNCZEdhL0E0OVB6WGVoUGU2R2FYb1J0WFZTVS8rTE9RcWx1eEl4MjRZaGlJ?=
- =?utf-8?B?N2JVcHBmMzI1VzkyWEcyNjZGd09QczY2Nkh3RVZ5QzRwcCs1bzZDMzNDd0k5?=
- =?utf-8?B?SFhpdUF3TVpVZ0YwQzBOeDlMTTVNYTNtc1hFaUpyNFE4M1pFQnlZUkw0RGNi?=
- =?utf-8?B?b1hwNW1NbVVrc3NJeVd2UEFQZXowOTNuZVhyQnlLdDQ5aGF6M2s5UTZPbVl1?=
- =?utf-8?B?STRUUXFsQ2lweVJrTmFLZm1pQy9XbHpQTlhuT1QzZ1JWdEM1aFFlQjI5SnZL?=
- =?utf-8?B?dmFBZ2NhZnorejU1cklMOTBod0p0MGZVcGpDeEMzcnl6NHc0Q01jcm5HQ2h1?=
- =?utf-8?B?Z1hkeThnS1dORlZCTjVBQUxYYkZ4SjAxMWhUZUxxL05wTFE0V2JpdGtWeEs3?=
- =?utf-8?B?Q0NhVExZZU9aTlorQjMyMG43citIR2ExNkI2QnNIYkJqTWZxWDA0NVZuQ3lR?=
- =?utf-8?B?eFBwRklSQjl1bmhJNHhlaWFmWlQwSTVwcWZqd1I2TTA1VXEyTjY1bFZtNUhG?=
- =?utf-8?B?OHN4V2xrTVUxVXVTQnZuQ2RYV3lYUEpMY05KR2M3UDVGRjRVVjNEaS9iTHRm?=
- =?utf-8?B?V1h3S0tPakRkazA3UGtXSVBHVThRN1d0WDhiNE8zblRGOUZPUXMzR2lBUzJD?=
- =?utf-8?B?Y1MvTWZzeHAxWWhiYWFGd1RCSlQvS2thZTZ4UXpDdU93eUFRRXVtSGVkYUw1?=
- =?utf-8?B?MER5TDdQWUpIdFRUWTh1YlBaQmNLbGRrbnYwN3BJcXhmbUlvMWxiRURJWHB0?=
- =?utf-8?B?bTJtWE5pdVRpUHlWL0Z0VGswUUhEa05vc3k3WGh1SmlKQ1lyd20wK21ianRu?=
- =?utf-8?B?dGFNU3JzMU83aGRwUFA4OERWNTJkeEtmeGlPaG5KT3FORm0rc21DeUxBTUpn?=
- =?utf-8?B?OWdBaWxTMFVBbXVxQ1FtWGgxQW9GZGtDTHYzUklsSnE3TU9RSzd6RkhmVFlZ?=
- =?utf-8?B?cW44MU5HRy9iMVNCYWQrY01YR1A4VGRoOHJJTnRVUmVWM1RWcXoxNFgrUHdx?=
- =?utf-8?B?QTEwTnJ2S1lEa2RmSDJlUHdqZHlJcENjUHpiaWtSWFJVTncxQkxSRzFBZUF6?=
- =?utf-8?B?eDhseng0ZUdxOWE1U21wZ21Xd3lLU05Ka0w4dzBUaC8vanYzNE0zTCtVSXdS?=
- =?utf-8?B?YzdzU05oaWlIWXJrY2RqM3J2VUYxMzRuSkc4dlpYOHFvL2FtcnlwempEWjR4?=
- =?utf-8?B?NjdWRWlpVFZEV2owQ293dGZSL0VGNmwxMmxKajZrTDBHSlNSNGt4Qjk4UU9h?=
- =?utf-8?B?dVR3VnIrSjRrVXhuQlhNN3dIMng0RzlUcnlyS3NLcU1SU2RReXhnZEhlUDFq?=
- =?utf-8?B?WVdaMnZiK2hrMVlZNU96ZmltYXFxWXhhMm5nNjdqcUlwNFRCL3BxTGhZU3Nu?=
- =?utf-8?B?NjgySFdNdUU1TGZlSVFWc1RVYURnRnRpRVhTeUVQSW5sOFlMbjZobjBEMGEv?=
- =?utf-8?B?cm1jUHpVTFJnUVdYQURROXZ3M0o3MXRsNjZjeXdCaDFsSzM5dk8zWFFydWg1?=
- =?utf-8?B?Z09IdWhCM2E3QjBxRnRFYXl0ZXEzZmgrRmpHWmZNeXZibytHcEZNUFJFQVdM?=
- =?utf-8?B?eDZ1YUUvem45TjB6L1ZOZ2M0YVRjYmxHb1JCalVFclpjbW9Vcng5VkltWDBx?=
- =?utf-8?Q?Evp/uMbrSmKrC?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ekN1VWNWSGZURzJqWXlxcGpEQWt3T29tWndxQmI3d1BKOUxpRmZUWmlad0c0?=
- =?utf-8?B?UWhkWTk1bHlwOExSN2EwcVhmNHlXaVZHck5lSGRpT0Q1aS9GbSttU2Q5TFM4?=
- =?utf-8?B?QnBpbTFxem95ZjE0MDQ2bFMyaHB6WHQwUklHZWVkNXpvSDJhTzlPMGVJeE1k?=
- =?utf-8?B?QUEybCtHWWtZZ2J6SS8vOG1VL2FVa29STzFmTlI3MERTVmJndTNPejdwckYx?=
- =?utf-8?B?MmVBdTd3ckFLbTBnd1VpUHlhbVkwYm8waVhPWFRxUXY1S2hDSk1Xa3lrdXNo?=
- =?utf-8?B?U0xZUHh4bG1CM0I3aE0rVWlSOUlRYzB4Y0J3ZUVVTkFhaE1GZVZxZm1CWUtP?=
- =?utf-8?B?aHV2Wi82Z3E2bFlpcnNEYU1JYmVwVzRQY3lUMVR3NjBEZWtkUlNMdk5mUUp1?=
- =?utf-8?B?RlhNWUNJWDd5YklLVVpHNGJlUUhweXlZK2FPU2hOTUp2QlN5cDhZZWdxakxQ?=
- =?utf-8?B?TnpJdzZvZlJCKzVHOHhOajNHZElFU3lwMUordDFoNjdZK0tPK2tPM0xFbk5h?=
- =?utf-8?B?dUpJcW93ajAvWUJhZ1dJMDFrOFdnZlNFYlp0cEVLNy9QMjFWSGF5ZGFLLzY1?=
- =?utf-8?B?TDZvemJnWkFRUGI5SHloOTU5T3NJbVZyL3JDN1Z1Q1pNWUVrT1hPS3Q2WWcz?=
- =?utf-8?B?TXNNZUllOGs3cG1FYnlNMCt1UDhsbGxMNm1vNnNwcUVqRy94UHRIbzNBcVFT?=
- =?utf-8?B?NmdTS2hZRGtQNkUrVStpYVRIaGFpLzBCMjRoOTdFQktMUmJ2TmxGMVFqZ3pu?=
- =?utf-8?B?bWZwc3p4blBVTllTNXBZRWRHNHE3N1dBUTJmZnl5WXpxeWkxR1kwQ0gvWFlX?=
- =?utf-8?B?cTlSdzdtekxYT240T0JwSDhqTGVHU3pPWFFFRkJtRXhoTXRKUHFDZ05pVnlv?=
- =?utf-8?B?YUNWREE3SVlybnhNaHV2V2RubGhNWDdCd3BzOXRLUW5QSUgxRzBvYlZCRGpU?=
- =?utf-8?B?YXB2TFAvdzVpdGczT0ZVeGVST3lYejBxazJwcGNENS9QcmxXU2VSN1g1b2k0?=
- =?utf-8?B?c2orTlpNSGpzRzVYVjk2SldTK0FmczVvL0c1cVNnbFZOcHRnVHNwWlZ5bVly?=
- =?utf-8?B?TG5BM1N1K2p1Rjh3VWZHSEx5YjN2MDlzUzBCeDRuU2JrTUhpYllzZkhtOVMx?=
- =?utf-8?B?UXNybWgwbWY4K2owaXk5cThrKzJNV3hoWUg1dnhneEJ3eUh1enFxbE5uUWgz?=
- =?utf-8?B?WkE2dEI3L3VoaVRjRUd0eURvTlZBSG9ldHVvZGJSZW9lTGViYTJBYytJR29s?=
- =?utf-8?B?eHZNd1RoeVNMcHZxMUlsTHBVRnJIOGJnelFLeURmaVEyZUhmejZIUzhVWlpR?=
- =?utf-8?B?Y2dBdDUzV3dKa2wyaVpkeWEzRjMvNDcrZitqWGVVc1FaUllpN0xiek9HdGFk?=
- =?utf-8?B?Yy9uQzFYZ25VRnZjSWp4T3k5WnIyS053WCtPcGZHb3NtNWhkVXA5Y3E4LzJz?=
- =?utf-8?B?VEsrRzhzS3FsaWZjTWJtUWtHU3hLZ09McEM3VDBFREc5MWZNZSsxeVRQeGI2?=
- =?utf-8?B?VjBLUENJL3NyQlA1cHBqSlg2VW1zRU9nKzM4M2EyNGlzUWpvcVhwNko3WE4x?=
- =?utf-8?B?L0RnWXYvd2k3MzVEeWRZcDcyNWJvU2daWFBPSGdFa1hMZ2RBeUxiUFg4V0lJ?=
- =?utf-8?B?QkI0SkRpdWNkdDJvVnRQZExtR2psKytRamtsbDY4Rk9DWTZuSTEwS3VYZTUw?=
- =?utf-8?B?L3VscngwdE5tWm1VRXlGVTFpYU5NZ0JhZU9IR0MwS3hCYU1pRHFXVm8rU0xs?=
- =?utf-8?B?ZlJyb2I0YVJrZjlOY3ZnQmh2UUlhMFlNbGhmQW9rS2hXS0tVVlNFbEtLSEhO?=
- =?utf-8?B?MGxjV0pUZTRVbENFSEZvVVBCVGZEUXRWZW03eEZ2UUgyRFZuMEdTM2FVaXdZ?=
- =?utf-8?B?L0Nxdis3YUZQZVc3S0JOKytBYWluZFhxb2cvYVo3S0tFSWxUOGR4M0x2SDg3?=
- =?utf-8?B?S2kwSFJNaHVqbEtwb3lKRDVpcjRqYTJQVGNMUkdmVmxhTGdZbG1kdHFsM0ly?=
- =?utf-8?B?Nmt5MWx1Z1hOTTlPV1YvNjVOanNva2Rsei8rbEF1d0VPWkxWVWt0V1J0YmNC?=
- =?utf-8?B?bkhkWWVSZFZXNHJ3Ymc0REZ3M0R4VHB1S0hUWHNybjROVzJibHdGN2d5L2VH?=
- =?utf-8?B?aEczajY2ZTBKcUVEWTZiNnRmemkvcGVoMk1teGhObU5tenZMMHBmU1NMMWVr?=
- =?utf-8?B?dEE9PQ==?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9e9dd8b9-ffd5-4c60-c81e-08dd3560b2c0
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2025 12:32:38.9447
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +2Bm1o474eIWcdzOQFAKsMgXQ8sEw696z/2Q7RnHNRK1/oXRNbhsMP9Vnhk8MUE+KDpoTA7By9AOlgoHODwmgg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB2617
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAIe5h2cC/2XSzW7DIAwH8FepOI/JNt877T2mHSBAG2ltqmSKN
+ lV997lNtKbihED8jOU/FzGVsS+TeNtdxFjmfuqHE2+QXnaiO8TTvsg+84EgIA2OlJyPUVYPiKG
+ GmpQRfPM8ltr/3Mt8fPL+0E/fw/h7rzrj7fTZzyhRKorZRC7kS3nfD8P+q7x2w1HcCsy0RW5Bx
+ CgmVUwglzsVG6QeiBtckGKUk+2wg1hzDA3SW0QL0owgYPQOjI9aNchskV2QuSEN6CuYXCg1yP4
+ jBIQFWQky+wAqJFuNa19yW6QX5BgBFkXVW87BNMg/ENL6kmdUkkJNJkdr2/bCFq2DCIwckku1y 9noNieErQprutye1LlWnkSKnFbLHp8CCdeoeGVmrdWgydfueRjX6/UPCdAc6q4CAAA=
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5088; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=Vm4YeMs1sTGWonvj+6yAEU1SHf+sI2+UBVeCMDhl7q4=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnh7mXx5k0dTMzrixzQLfhcBrHgnBgjhc8I71tE
+ XISPleDzzKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ4e5lwAKCRAEWL7uWMY5
+ RvY4D/97j/AY3Cb9bMxXhA8VWbU1gQuoE+LTkDzBYjjw/YhPkUUC3lOSNwEzLWe7mU+gnO7Yamm
+ PKqfYJR6B6vExINgT6GedzLsLeYFU5F25C4HJb/1rp72hzTQZjjVnlyYC++MkqHH1ellZIxDVRw
+ c3qqW2pzroTxGnmrr74253bfU8YMaRQ9MyejixpAzzNAtB5MkQ6qx/WTzAlXNrqFCSl0gc8kX/M
+ ULLqdwjFxVSXuLfG+xzuDarYvJ6JsdbxlsYvmRaFA3h5TjpTjd/119njvINJ5+BUx9EYDasVlXl
+ ZtOZnTdSDamkf+wXl7b3v1OTs2h3QZlHvefMW0TcThqc215Zxedd060BamISqBEAfSLDoBCTzag
+ jO5wqbxmKBbDDJLRLk/GzQNawga3cGhzj2pFIjDUM1NNRwW1u50DwiWkuvMJe+v+TDd1hrVxJpL
+ hgOYmHlaHeRcVd47cwool0h7cH9orvaH9eIStkJo914On0HRoY6pDj6LCccZ3rSa1+nrAXI1pWs
+ h+FR6s7U8zG+22dqvINnvWvl04+813qW+X/NO115f9sxD1GxEGpb/7+yZpkGVf8c0USxCKmMVw9
+ 9nFXQhim7uY4EpKryrPdcIggkAw7ei3gUekABuGxQk23IM1Qo66C3UOVcnv9wyTyZT+YYxDjODC S5AM3yOpgY9CZ0A==
+X-Mailer: b4 0.13.0
+Message-ID: <20250115-vma-v12-0-375099ae017a@google.com>
+Subject: [PATCH v12 0/8] Rust support for mm_struct, vm_area_struct, and mmap
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>, Suren Baghdasaryan <surenb@google.com>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, 14 Jan 2025 11:02:25 +0100
-Alice Ryhl <aliceryhl@google.com> wrote:
+This updates the vm_area_struct support to use the approach we discussed
+at LPC where there are several different Rust wrappers for
+vm_area_struct depending on the kind of access you have to the vma. Each
+case allows a different set of operations on the vma.
 
-> On Sat, Dec 21, 2024 at 7:31=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote=
-:
-> >
-> > With `Refcount` type created, `Arc` can use `Refcount` instead of
-> > calling into FFI directly.
-> >
-> > Signed-off-by: Gary Guo <gary@garyguo.net> =20
->=20
-> [...]
->=20
-> > -    pub fn into_unique_or_drop(self) -> Option<Pin<UniqueArc<T>>> {
-> > +    pub fn into_unique_or_drop(this: Self) -> Option<Pin<UniqueArc<T>>=
-> {
-> >          // We will manually manage the refcount in this method, so we =
-disable the destructor.
-> > -        let me =3D ManuallyDrop::new(self);
-> > +        let this =3D ManuallyDrop::new(this);
-> >          // SAFETY: We own a refcount, so the pointer is still valid.
-> > -        let refcount =3D unsafe { me.ptr.as_ref() }.refcount.get();
-> > +        let refcount =3D unsafe { &this.ptr.as_ref().refcount };
-> >
-> > -        // If the refcount reaches a non-zero value, then we have dest=
-royed this `Arc` and will
-> > -        // return without further touching the `Arc`. If the refcount =
-reaches zero, then there are
-> > -        // no other arcs, and we can create a `UniqueArc`.
-> > -        //
-> > -        // SAFETY: We own a refcount, so the pointer is not dangling.
-> > -        let is_zero =3D unsafe { bindings::refcount_dec_and_test(refco=
-unt) };
-> > +        if !refcount.dec_not_one() { =20
->=20
-> This is wrong. The into_unique_or_drop function must establish an
-> acqrel ordering when a UniqueArc is created, but dec_not_one() does
-> not do so. You need to use refcount_dec_and_test() instead.
->=20
-> Alice
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v12:
+- Add additional documentation to modules at the top of mm.rs and virt.rs.
+- Explain why the name Mm is used in commit message of patch 1.
+- Expand zap_page_range_single with docs suggested by Lorenzo.
+- Update safety comment in vm_insert_page
+- Mention that VmAreaMixedMap is identical to VmAreaRef except for VM_MIXEDMAP.
+- Update docs for as_mixedmap_vma.
+- Add additional docs for VmAreaNew struct.
+- Rename `get_read` -> `readable` and equivalent for write/exec.
+- Use mut pointers for `from_raw` for VMAs.
+- Update safety comment for fops_mmap.
+- Add additional docs for MiscDevice::mmap.
+- Don't introduce and immediately delete mmgrab_current.
+- Reduce active_pid_ns comment at Andreas's suggestion and link to get_pid_ns.
+- Fix documentation test in rust/kernel/task.rs.
+- Fix warning about unused variables in lock_vma_under_rcu when
+  CONFIG_PER_VMA_LOCK=n.
+- Fix minor typos.
+- Link to v11: https://lore.kernel.org/r/20241211-vma-v11-0-466640428fc3@google.com
 
-Ah, good catch. In this case I think an acquire fence in the unique
-path would be sufficient? Or would you prefer to use `dec_and_test` and
-`set`?
+Changes in v11:
+- Add accessor for the vm_mm field of vm_area_struct.
+- Pass the file to MiscDevice::mmap for consistency with
+  https://lore.kernel.org/r/20241210-miscdevice-file-param-v3-1-b2a79b666dc5@google.com
+- Link to v10: https://lore.kernel.org/r/20241129-vma-v10-0-4dfff05ba927@google.com
 
-Best,
-Gary
+Changes in v10:
+- Update docs for `set_io`.
+- Check address in `zap_page_range_single`.
+- Completely redo the last patch.
+- Link to v9: https://lore.kernel.org/r/20241122-vma-v9-0-7127bfcdd54e@google.com
+
+Changes in v9:
+- Be more explicit about VmAreaNew being used with f_ops->mmap().
+- Point out that clearing VM_MAYWRITE is irreversible.
+- Use __vm_flags to set the flags.
+- Use as_ and into_ prefixes for conversions.
+- Update lock_vma_under_rcu docs and commit msg
+- Mention that VmAreaRef::end is exclusive.
+- Reword docs for zap_page_range_single.
+- Minor fixes to flag docs.
+- Add way to access current->mm without a refcount increment.
+- Link to v8: https://lore.kernel.org/r/20241120-vma-v8-0-eb31425da66b@google.com
+
+Changes in v8:
+- Split series into more commits to ease review.
+- Improve read locks based on Lorenzo's doc: either the mmap or vma lock
+  can be used.
+- Get rid of mmap write lock because it's possible to avoid the need for
+  it.
+- Do not allow invalid flag combinations on VmAreaNew.
+- Link to v7: https://lore.kernel.org/r/20241014-vma-v7-0-01e32f861195@google.com
+
+Changes in v7:
+- Make the mmap read/write lock guards respect strict owner semantics.
+- Link to v6: https://lore.kernel.org/r/20241010-vma-v6-0-d89039b6f573@google.com
+
+Changes in v6:
+- Introduce VmArea{Ref,Mut,New} distinction.
+- Add a second patchset for miscdevice.
+- Rebase on char-misc-next (currently on v6.12-rc2).
+- Link to v5: https://lore.kernel.org/r/20240806-vma-v5-1-04018f05de2b@google.com
+
+Changes in v5:
+- Rename VmArea::from_raw_vma to from_raw.
+- Use Pin for mutable VmArea references.
+- Go through `ARef::from` in `mmgrab_current`.
+- Link to v4: https://lore.kernel.org/r/20240802-vma-v4-1-091a87058a43@google.com
+
+Changes in v4:
+- Pull out ARef::into_raw into a separate patch.
+- Update invariants and struct documentation.
+- Rename from_raw_mm to from_raw.
+- Link to v3: https://lore.kernel.org/r/20240801-vma-v3-1-db6c1c0afda9@google.com
+
+Changes in v3:
+- Reorder entries in mm.rs.
+- Use ARef for mmput_async helper.
+- Clarify that VmArea requires you to hold the mmap read or write lock.
+- Link to v2: https://lore.kernel.org/r/20240727-vma-v2-1-ab3e5927dc3a@google.com
+
+Changes in v2:
+- mm.rs is redesigned from scratch making use of AsRef
+- Add notes about whether destructors may sleep
+- Rename Area to VmArea
+- Link to v1: https://lore.kernel.org/r/20240723-vma-v1-1-32ad5a0118ee@google.com
+
+---
+Alice Ryhl (8):
+      mm: rust: add abstraction for struct mm_struct
+      mm: rust: add vm_area_struct methods that require read access
+      mm: rust: add vm_insert_page
+      mm: rust: add lock_vma_under_rcu
+      mm: rust: add mmput_async support
+      mm: rust: add VmAreaNew for f_ops->mmap()
+      rust: miscdevice: add mmap support
+      task: rust: rework how current is accessed
+
+ rust/helpers/helpers.c    |   1 +
+ rust/helpers/mm.c         |  50 +++++
+ rust/kernel/lib.rs        |   1 +
+ rust/kernel/miscdevice.rs |  45 +++++
+ rust/kernel/mm.rs         | 339 +++++++++++++++++++++++++++++++++
+ rust/kernel/mm/virt.rs    | 476 ++++++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/task.rs       | 247 ++++++++++++------------
+ 7 files changed, 1041 insertions(+), 118 deletions(-)
+---
+base-commit: fac04efc5c793dccbd07e2d59af9f90b7fc0dca4
+change-id: 20240723-vma-f80119f9fb35
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
