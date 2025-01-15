@@ -1,90 +1,170 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569E4246A35;
-	Wed, 15 Jan 2025 09:10:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631F51E98F2;
+	Wed, 15 Jan 2025 11:03:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736932248; cv=none; b=uOWOJQK3W9UoLUYayq/wTTJ64FvGNF9sgD4RwmKRzJuqEexfZ1Y3Oj7dscZMj0RjdIabJ8n84g4wLwiOfWeo1U3tGijCN7PEsQzhJBmiZriCEmRJkHmlPsH1PVgkK3MOa3SR21IIDdXZGrU2+SgfJMssRjWlOLooOAkE82Pz1pc=
+	t=1736939022; cv=none; b=tRCZIFfeLLlrd0cqwNH+5WX/GXeH/z9IXO+wnKLYiccJL0isgVboeevWppBaF1HB3SF/tv13iVDcdAf1djJoi0NrF5LsL4fWIcj7wAq+YAB2d33/STdZ2Sn/KhVwGrG3rQ8dVsaIYXI4mEPtH1O6HX7yCoy46DQiMoKoVeH713E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736932248; c=relaxed/simple;
-	bh=s4gowUCkR8ThPcXmpLKlGclM8lC6TIMzjSkqs9savQ8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hqAs5hb+BpqifvBarFHovWDjCFkXe7MxNWQni1Ssy82r12bWsIsgPA9XKI+fYuWtpf8KT/M0LVKsY7dujmmMZbN8VJFYcZFbTMuZ+NxK8zesWANH5C50jrCvkARTX9bKibFodo9ne34VdOgO+DOwQmlly1RaD43SDgQzUjzwn80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PH89h/Yu; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1736939022; c=relaxed/simple;
+	bh=bZF9qYZjTl2qAZfueZxY25UdxHzQzc1tBlZt6AOUrKw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=lK5QFN9wqchDfAei9MTlk1moIC0cK1VfMZISDv9m/GVQb00a6KpnzicKIW1hJTbqXMKIWmdjSphBYL9X1iGd3+fAqlRb6M7bdG7Ojp+OiZsznOzelMbORyln74zBBOTp9sgJUpHV+oDsg+Znc+BhblmfOUf8vYnyyzgDfOcIKJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JMYT7ldS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PH89h/Yu"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2ef05d0ef18so1345839a91.0;
-        Wed, 15 Jan 2025 01:10:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736932246; x=1737537046; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=s4gowUCkR8ThPcXmpLKlGclM8lC6TIMzjSkqs9savQ8=;
-        b=PH89h/YuSRAissrvXDNSVWYeb4oOxps/RbuOu/+snzNfis1qxCHbxQYMO8b9YufGhM
-         ZFpcpIbCDHz6O6yon+Q+5D/90QviirEY3zTWvXyyMDegCZlorXQTuv1uQrUM7wUrK+jS
-         5jNdXPy/Y3eXG8qNWUl69SYbl3jZlr9vv678M0HFwdVLVYYewwv1LkYWLFfErjaXUjwd
-         CNZDk03yKUUS2WGVzH6p3PopBAo7bpEUV5mwpkqxJChTVRdpLyqGWkBXAMa8DRlxrleI
-         NZGirZtU05/lBIdHelPGGwOnM/lVa1fAckzKPWvpArcq/QaAvK3sMNXIcNCPozb9ryw+
-         Juiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736932246; x=1737537046;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=s4gowUCkR8ThPcXmpLKlGclM8lC6TIMzjSkqs9savQ8=;
-        b=sIWMv5U/HoKpfy0sJmrnLbhx3U073y4U6TNvDfq6fKbXygO8DQuSr/IRuvEZ/D3FGj
-         zOyLXu67t/PMnXYWozdP93G0noXavHc0UwCHkTwYSoSdG99l8gKdGEAzYAyOAJ7bIi9g
-         aR9TGV/Uo92wjJsfcoV5dYaDdFU/n6yIyoc7hvOpivivgRwJmyjt3WHA6e3pfuorqi7f
-         xkWLv8IvdKA6q0KLBRvOs1brKEHF3OjRy9sm8FQrridOxEqdXzdzgJEKnItKtXLmdEGI
-         Rr7/xG6GXEdjt8ZeMiBPPrCeN5jd2pY7eSTUIkW2BOtn5T+MJvRXO6Gb6p1QxOTUpoj0
-         9YYw==
-X-Forwarded-Encrypted: i=1; AJvYcCWdnCwndlNuTlD82kuCgGijBCIYVG1MKnwP+aEgYTmMcveorrho7vfTfhgbhqzoLuDwvbFOZvyeXM0V4GXCko8=@vger.kernel.org, AJvYcCX0GOMqbYQYrYFyC5UrCZhCMQgw0A89PHdB7BAo2v8+DTIZr9fSKKugozVsCMD4cbsN6BAhxraIHO0OFAxy@vger.kernel.org, AJvYcCXWc66fug2wCr6FHiqZDiBGp8UpRFz8H9MZhAeaOJFK/XEvmbBY5V/NsjHH/Ae0tW4FS4AxblAEgBm84ML6@vger.kernel.org, AJvYcCXdWyEg1K6e/yY4AaLcSDB5JMD527XKR7qz1o9GCjnFTYBw20Q9onFuEeNersCLyQMiCekaDQqaQzA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTaafdp0ek5RKT1DNDDfQ1Yhc/JKRjHlTO5PdwZ1TZd8d4pk0K
-	nS/ydJMDUhVyO1zaG+zVnsY0DCwQr5SFwpMqf9gmIaAP5ZFkjMpZJtOLpOPusgyNkfY2lRmS6jo
-	k3/JVCKUnwviYK9rwReueT5sq2s4=
-X-Gm-Gg: ASbGnctkjI52v6a773LMXB6B1zNT/7oG8y4LTu42tlL5sn3oiJi+kiVen+2Yrn84e7c
-	HiQYwLiOJ3JsIxwzmheTOVjBU/SXk9sRLB8rpFA==
-X-Google-Smtp-Source: AGHT+IF5o5Fngx9F8mAKdkHS+kf8BLRmpwBINYjoHVCcfYVIb4s1YvcCTtZ+OZrv6w6UeWm6DL+Xl1deyoXsqkgUcPY=
-X-Received: by 2002:a17:90b:37c3:b0:2f2:f6e5:d28e with SMTP id
- 98e67ed59e1d1-2f548f1c677mr15527940a91.3.1736932246563; Wed, 15 Jan 2025
- 01:10:46 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JMYT7ldS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BA57C4CEDF;
+	Wed, 15 Jan 2025 11:03:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736939022;
+	bh=bZF9qYZjTl2qAZfueZxY25UdxHzQzc1tBlZt6AOUrKw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=JMYT7ldScx4SnmhBtVbPoHO/pcHEHtTyIrh3477NpQPk0BEwAK0UJxHIo+KxflQWC
+	 qkHQ3XIJolOkU25tLDoF340aTnYHlIgDRq7DQmRCdyxXOahYniSpsFA96RVUvCy0gL
+	 u606RIVVGdvyqkmJ0L1dEqqCvubkQ88DwIJ6rLE3pxez/Ha44FsY5jUtU/RfXXV/vm
+	 Es8kVZ8TCpoNICndnQBysEGI9iTwO/OehJuk0ftL/BuS2KNyDy7uOQgBy+eJ5a1PW7
+	 AKaaqV1a1fqr01ufAdHMWwa2n8CvQ2YvwdCHEw5qOvQidBaeRaA91CrMmTmFLwmyLM
+	 F2LBBhtCLiCFQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>
+Cc: "Alice Ryhl" <aliceryhl@google.com>,  "Miguel Ojeda" <ojeda@kernel.org>,
+  "Matthew Wilcox" <willy@infradead.org>,  "Vlastimil Babka"
+ <vbabka@suse.cz>,  "John Hubbard" <jhubbard@nvidia.com>,  "Liam R.
+ Howlett" <Liam.Howlett@oracle.com>,  "Andrew Morton"
+ <akpm@linux-foundation.org>,  "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>,  "Arnd Bergmann" <arnd@arndb.de>,
+  "Christian Brauner" <brauner@kernel.org>,  "Jann Horn"
+ <jannh@google.com>,  "Suren Baghdasaryan" <surenb@google.com>,  "Alex
+ Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,
+  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
+  "Trevor Gross" <tmgross@umich.edu>,  <linux-kernel@vger.kernel.org>,
+  <linux-mm@kvack.org>,  <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v11 2/8] mm: rust: add vm_area_struct methods that
+ require read access
+In-Reply-To: <195559a2-8c5e-40f7-b60a-8534dc177d9b@lucifer.local> (Lorenzo
+	Stoakes's message of "Tue, 14 Jan 2025 11:57:23 +0000")
+References: <CAH5fLgiS_=MiMcnyC2z8kXQW0Kpn36h6EaHs9g7Zaw85mLn2jA@mail.gmail.com>
+	<87frlsbekc.fsf@kernel.org>
+	<vH_JjBon9WfW7x7OzrUfhGFluWCiBwsPZDkHbFt77nth4SFWJ-4W2vXXBYmE8WEaEJsibxx2N4iXS8Vx6RbAQA==@protonmail.internalid>
+	<18bc911a-ede5-410b-9955-5382bcef975c@lucifer.local>
+	<87msg09uzu.fsf@kernel.org>
+	<qG6w11OwPsgdMa-EKR7V-NiBoOsQocuJDWurazcGSwtN601gK8RP1_un0Gx5MF0pPoKPnEL4ssYKiJUUIkF_Hw==@protonmail.internalid>
+	<8b803030-0ca3-4591-b2f3-bb9bcc2aca21@lucifer.local>
+	<871pxcgg02.fsf@kernel.org>
+	<ec1e87e9-2d84-435a-8e2a-1d426a9c13a0@lucifer.local>
+	<CAH5fLggntnvMLoZHTm6zx3nSP4nq7iruK2c6iXBX-CXtVPYbcA@mail.gmail.com>
+	<ft9bqx-YTXpiym3AWq1aScaB44OScx2nUbYOA2Aw7H54H_-cxSwrb4FhwIy9eIS5LIhqZZBDbyXAnzujUkbA-w==@protonmail.internalid>
+	<195559a2-8c5e-40f7-b60a-8534dc177d9b@lucifer.local>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Wed, 15 Jan 2025 12:02:14 +0100
+Message-ID: <874j20e3wp.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241112184455.855133-1-ojeda@kernel.org> <CANiq72m+k07miKu=vHfp1-A+nu092R+khau5b95Ugq8M8sksFQ@mail.gmail.com>
- <CAK7LNASXLdya8d2Cjo9H2j5J2d8ukj27aDNStqWEVbDQFgsP2w@mail.gmail.com>
-In-Reply-To: <CAK7LNASXLdya8d2Cjo9H2j5J2d8ukj27aDNStqWEVbDQFgsP2w@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 15 Jan 2025 10:10:33 +0100
-X-Gm-Features: AbW1kvablhI2XqwtFDUl4ZnT060edaVgVSWH6gDoFIWIPktYypdDmv7lacp_u_Q
-Message-ID: <CANiq72kpCMcDgpRuUA-5oJq5dYgtLW2bVkk+H7fU6CTtKAw4SA@mail.gmail.com>
-Subject: Re: [PATCH v3] kbuild: rust: add PROCMACROLDFLAGS
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, HONG Yifan <elsk@google.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 15, 2025 at 3:56=E2=80=AFAM Masahiro Yamada <masahiroy@kernel.o=
-rg> wrote:
+"Lorenzo Stoakes" <lorenzo.stoakes@oracle.com> writes:
+
+> On Tue, Jan 14, 2025 at 10:50:01AM +0100, Alice Ryhl wrote:
+>> On Mon, Jan 13, 2025 at 3:45=E2=80=AFPM Lorenzo Stoakes
+>> <lorenzo.stoakes@oracle.com> wrote:
+>> > > >> > For a series at v11 where there is broad agreement with maintai=
+ners within
+>> > > >> > the subsystem which it wraps, perhaps the priority should be to=
+ try to have
+>> > > >> > the series merged unless there is significant technical objecti=
+on from the
+>> > > >> > rust side?
+>> > > >> >
+>> > > >> >>
+>> > > >> >> How about this:
+>> > > >> >>
+>> > > >> >> This clears the virtual memory map for the range given by `sta=
+rt` and
+>> > > >> >> `size`, dropping refcounts to memory held by the mappings in t=
+his range. That
+>> > > >> >> is, anonymous memory is completely freed, file-backed memory h=
+as its
+>> > > >> >> reference count on page cache folio's dropped, any dirty data =
+will still
+>> > > >> >> be written back to disk as usual.
+>> > > >> >
+>> > > >> > Sorry I object to this, 'clears the virtual memory map' is real=
+ly
+>> > > >> > vague. What is already there is better.
+>> > > >>
+>> > > >> Would you like the proposed paragraph if we replaced "virtual mem=
+ory
+>> > > >> map" with "page table mappings", or do you object to the entirety=
+ of the
+>> > > >> new suggestion?
+>> > > >
+>> > > > I object to the suggestion in general. The description is fine as =
+it is.
+>> > >
+>> > > Ok. I'm raising a flag because I had more questions after reading the
+>> > > docstring than before.
+>> >
+>> > Sure and so I think this is valuable information, and indicates it's
+>> > probably worthwhile adding a little extra information on mentioning pa=
+ge
+>> > tables.
+>>
+>> Sorry, I'm a bit lost. What would you like me to add? Perhaps there's
+>> an existing file in Documentation/ that I can link to?
 >
-> Acked-by: Masahiro Yamada <masahiroy@kernel.org>
+> Sure no problem, I propose expanding:
+>
+> /// This clears page table mappings for the range at the leaf level, leav=
+ing all other page
+> /// tables intact,
+> /// anonymous memory is completely freed, file-backed memory has its refe=
+rence count on page
+> /// cache folio's dropped, any dirty data will still be written back to d=
+isk as usual.
+>
+> To include information on page tables. I suggest something like:
+>
+> /// It may seem odd that we clear at the leaf level, this is however a pr=
+oduct
+> /// of the page table structure used to map physical memory into a virtual
+> /// address space - each virtual address actually consists of a bitmap of=
+ array
+> /// indices into page tables, which form a hierarchical page table level
+> /// structure.
+> ///
+> /// As a result, each page table level maps a multiple of page table leve=
+ls
+> /// below, and thus span ever increasing ranges of pages. At the leaf or =
+PTE
+> /// level, we map the actual physical memory.
+> ///
+> /// It is here where a zap operates, as it the only place we can be certa=
+in of
+> /// clearing without impacting any other virtual mappings. It is an
+> /// implementation detail as to whether the kernel goes further in freeing
+> /// unused page tables, but for the purposes of this operation we must on=
+ly
+> /// assume that the leaf level is cleared.
+>
+> Alice, Andreas - please let me know if this makes sense/is clear or needs
+> further clarification.
 
-Added, thanks a lot!
+Sounds good to me - thanks.
 
-Cheers,
-Miguel
+@Alice - can we add PTE, PTE entry, PMD, PUD to the vocabulary at the
+top? Not sure if it should go here in virt.rs or in mm.rs. If you have
+no cycles I can try to add it down the road.
+
+
+Best regards,
+Andreas Hindborg
+
+
+
