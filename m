@@ -1,308 +1,195 @@
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022125.outbound.protection.outlook.com [52.101.96.125])
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2053.outbound.protection.outlook.com [40.107.100.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3F71D5AC3;
-	Wed, 15 Jan 2025 19:42:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.125
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F38D1D88CA;
+	Wed, 15 Jan 2025 20:20:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736970156; cv=fail; b=VpenQ+l9Y7OxQIvJ5yzM1jVspRijaUwWCVPU3B8wk/iirPlDaN+0hDW64FGKb2YO4PXcsRdng7cxFPjHeehjqrEhRLx1wzUpgXajBIMdv5wLW6IZec5wtSk6jjPmYJg+AqBNMDDBVEqj+YodjAy+ZpejhO1+Ax1CWASlgGUhqWw=
+	t=1736972461; cv=fail; b=IcgFGkuy3o9+FnfqlwmMJGx2rlDNqxz9gy7CVJ4NwmnVccOLbqDf3TWrUg4YrfXpTSZtac5jwHeGYlTNC+TJ9Qt+RW56QIpBGrxQYw+B+p1IzIRQVYivwQ/2GQA8xZA63npYl6GebowARMXDfvTN1CtzjRBIip/+t1UZkFrrVsg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736970156; c=relaxed/simple;
-	bh=3cVDv46WhssFxWTBRQKQgO6hvO7CsBbzK/Mr9berkZM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=NNbH9TNP5i6WylnSDU3yHf2ccxGXIexshQJjsu4OLDg/Jml9HiLLhk5XWCik7bpFlRo7hW1wi12Hfvsl/fiBKRmMYpOYtN8YkaMMPey74mQfZZTSg3H+BIR3LS+GMtDzmtPwQqrUpafy0Nb/pjvqEwc5gxJ+SBDlDQ4R9lYpb0U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=xDIPDpbl; arc=fail smtp.client-ip=52.101.96.125
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1736972461; c=relaxed/simple;
+	bh=5wHGz/H1XK/wVRJ0kq3xHiUUp5bDiZ8FXJkpcAfQGbQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=KgDQPaBvZlvxVx/MdrqDnGeC2srvK0GerzpG0ADib/tFDUYW/4MCoP3TGAy2BPbCHI8lX2GJJErfBi9xM5Aa/l4ykjD9qARRdMr9qf2ZEXacIXOV9e68ULi3Cstx2REfqd0uNKNE4yVpfgkhjq3jIylkHODtiLRo0t/KnOJy558=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=XmSlxGc5; arc=fail smtp.client-ip=40.107.100.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="xDIPDpbl"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="XmSlxGc5"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=u1MW9XEt3xI/WUwdc2m0xkmXNvWCzTXrA6eY4YunqOk/dyJ3OgYDVXoqFde1xpAmd6pTtFc6FgnSXIJxiG0C2+cT2Bkz1Z6HvXskM2H5arLXPa9jUEwCgEq1ieZYtklpBzA9//y41y4pomuk8rKvjGranCKzavoz1qSTcS9muIAZSRuAHSKb9sD0x54S+38Cw0vpqrKMqCEmpJ78jZsQSnO4H5LpoI/YsI0b2dtNIucCw8wiJmpU4ZwCPpX2R+jO2yNwkq6dHdjsjr1oRzz1Drq/01pPiwX1dQ/pDWoyQ1xdqficosu861t8CgIM4X8AtVloB2Vc45zsbzM6gVf2/w==
+ b=vaKu7ebuZEYWw55vKMHdrwPOcQ4voUdkM+Bv+CxPjuNia1ahYwzXHQ1MPuxph5BOKXvEN0qtSV0rQ2JNuOGiY2o+UjHIBefoTukqppIcd9Byvkhws45xsqjDwymJdFH6HfVyEDiurgl4fNNtRVoGQ66IaVpMCkU4u2b5iJ54+kMlcoFLIrSIeqg85oyzYAN1rQZvAEQFXZVQEYIMXQouJFD2BECzVYGpBhuznZgPI0boOozNvy3Jmt0bpofMj9MqEaTLXkNwg1etxJeM/rGRQ7uzpMyoOLs0nw9NzWxe86AtMQ9BqRVlKHhosB3oPiAEOpbLlcXI2JjbcyxoesqJXA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+lYbatbeqIuDwdjhewBDe9mfh9q5h0/eFIbz7WRo1O0=;
- b=gXAkYeQO/LBGgakTXMi0LwfEHfHAR9iRI9Zeay1fuyQ9zbVBXiGygSCTeNueb6xl/SIlU9hgK4dkQk5IHShTaebjL3HsqrLUTdh+In76jCWHyM6ivOfk+/Jrrt/sL91KV2tPdpuqUqh8sPvqP2pqmLo/s6Eul+SfIOx/ye81Fv7Gatenze7ZHIBNwmVPLdnS/5aCv9P4JsWr9ip1yntaUpQk6GwN9MiXU0AXHqm+0Phgu8ZzIZefUptBOMZYMd2u82EAx8qjR/aRe5lGIUUJPcRSOChUQjvJRWkBs06zcIjSD6SKyKVuS8sY/6LgjsQly8AuPmDe9ek7tI7yFYDD5Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
+ bh=kUWM+BOqztMAyBfw2xpMKjrtZ4A4+9nPIVDSp2MIin4=;
+ b=TCBhRn1JlrT9VWxzBa9BRtUFIKgm16ufELNbA4uzrMHLSXAgcpT3JxvnpGiLDdTsDz6u3/Oped/hECbLxi45OAjatjScn4GRgCXfPjx9RPiFETXLOj5JhMkuqEjAa8906Xnf+KFPnXeCNm3MN1wWM6A2+hghZbVFtjAKBKoM8/Hwhedj67LlEoigo5DY5M3f6lNQODSz0ZQINFoEDwCCnFsWskszV55h9BgP2O5Rzyy/6hZLNLHSPXysq2wBILmxiyK3189TDb+RyTSq75BQlf8eFCVBAVzvBU/TzIl/Ca1WyL58BjNEOGX3YMNwhj/F/45xOCqZgY3FKl4XNfAhrQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+lYbatbeqIuDwdjhewBDe9mfh9q5h0/eFIbz7WRo1O0=;
- b=xDIPDpblOsue23Vypi5+MySalLSL06L2i/TtJZBXoOMbuWbLIEdhAJIW+VBpJG9nS+2qPFvK3y4nR+36jzS9Oj0M1WPlOMOVERz49wQBpfyshqfk070y9tH3f/oapV3KM8n2M64Pt0QKMIAzWAUNqgz/pRELpGyGMFm96cKd+vU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO3P265MB2092.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:103::12) with
+ bh=kUWM+BOqztMAyBfw2xpMKjrtZ4A4+9nPIVDSp2MIin4=;
+ b=XmSlxGc5BdiRooc/ws4Ylfc7gl+lqzsYw1Gdpy3f9AXLknojuzP4uYUh0crJU4GQqAvawnkV5vuufXzbNUnYDJsd8flZWQiGPquwRy2oeKqV1GsMtpNgl4o842bBaWDRQaQ5QWqWRgoIdBsd36NJ3CzwtUnsoCudOozsI3FrUBBlQ6DQeX2g7n3ud1t10nE3dCqZ2IO+BoYEM8jYyoy2pDUVVpBC1BSFn1AO7SdfoT1/aVQ5N9gCEQrPXhc28No+ErZQ1uXFo0IRqN4pZ3l5NaxU1mrsCHyCvjG9FV+rlnNDe+GQDRgHulKqkGxpUy9tbtK/443RKIdNUr6E3XJUUg==
+Received: from CH0PR07CA0023.namprd07.prod.outlook.com (2603:10b6:610:32::28)
+ by MN2PR12MB4191.namprd12.prod.outlook.com (2603:10b6:208:1d3::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.13; Wed, 15 Jan
- 2025 19:42:31 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7%5]) with mapi id 15.20.8356.010; Wed, 15 Jan 2025
- 19:42:31 +0000
-Date: Wed, 15 Jan 2025 19:42:29 +0000
-From: Gary Guo <gary@garyguo.net>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?B?QmrDtnJu?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Alice
- Ryhl <aliceryhl@google.com>, Masahiro Yamada <masahiroy@kernel.org>, Nathan
- Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Luis
- Chamberlain <mcgrof@kernel.org>, Trevor Gross <tmgross@umich.edu>, Adam
- Bratschi-Kaye <ark.email@gmail.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, Petr Pavlu
- <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, Daniel
- Gomez <da.gomez@samsung.com>, Simona Vetter <simona.vetter@ffwll.ch>, Greg
- KH <gregkh@linuxfoundation.org>, linux-modules@vger.kernel.org
-Subject: Re: [PATCH v4 3/4] rust: str: add radix prefixed integer parsing
- functions
-Message-ID: <20250115194229.04cd1068.gary@garyguo.net>
-In-Reply-To: <20250109-module-params-v3-v4-3-c208bcfbe11f@kernel.org>
-References: <20250109-module-params-v3-v4-0-c208bcfbe11f@kernel.org>
-	<20250109-module-params-v3-v4-3-c208bcfbe11f@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO2P265CA0222.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:b::18) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+ 2025 20:20:56 +0000
+Received: from CH2PEPF0000009C.namprd02.prod.outlook.com
+ (2603:10b6:610:32:cafe::8e) by CH0PR07CA0023.outlook.office365.com
+ (2603:10b6:610:32::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8356.14 via Frontend Transport; Wed,
+ 15 Jan 2025 20:20:56 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ CH2PEPF0000009C.mail.protection.outlook.com (10.167.244.24) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8356.11 via Frontend Transport; Wed, 15 Jan 2025 20:20:55 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 15 Jan
+ 2025 12:20:41 -0800
+Received: from [10.110.48.28] (10.126.231.35) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 15 Jan
+ 2025 12:20:40 -0800
+Message-ID: <9d2a7149-445c-4084-b88c-4c7833afa894@nvidia.com>
+Date: Wed, 15 Jan 2025 12:20:39 -0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 1/8] mm: rust: add abstraction for struct mm_struct
+To: Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
+	<aliceryhl@google.com>
+CC: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Miguel Ojeda
+	<ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, Vlastimil Babka
+	<vbabka@suse.cz>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arnd Bergmann <arnd@arndb.de>, Christian Brauner <brauner@kernel.org>, "Jann
+ Horn" <jannh@google.com>, Suren Baghdasaryan <surenb@google.com>, Alex Gaynor
+	<alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
+	<gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+	<bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, "Trevor
+ Gross" <tmgross@umich.edu>, <linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>, <rust-for-linux@vger.kernel.org>
+References: <20241211-vma-v11-0-466640428fc3@google.com>
+ <ZzO0HNA5jlZZgU1ib_SP36HWHny8QNidES3cXM_ogVTtqArMPzPfDlQCFslPrZAVESJzfzFOVfOkoZHKiG-ivQ==@protonmail.internalid>
+ <20241211-vma-v11-1-466640428fc3@google.com> <878qsfdftg.fsf@kernel.org>
+ <ArX-UzegU4cf4AOS9ENB7MdrYE35c_oYLBa1Q5kq7S0e3nQt06TDKyZblbuXYY89G-qbqo444gu7uEhGzr4r9Q==@protonmail.internalid>
+ <CAH5fLginc=uNPVp1-T-oBrgtE1oi_cBMd65sPkDgqSDjH_CNfA@mail.gmail.com>
+ <87a5bse52v.fsf@kernel.org>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <87a5bse52v.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO3P265MB2092:EE_
-X-MS-Office365-Filtering-Correlation-Id: f3fd9302-fa1f-4b8e-2e6e-08dd359cc052
+X-MS-TrafficTypeDiagnostic: CH2PEPF0000009C:EE_|MN2PR12MB4191:EE_
+X-MS-Office365-Filtering-Correlation-Id: b362759b-e23d-4fc5-ee3b-08dd35a21df8
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|10070799003|376014|7416014|7053199007;
+	BCL:0;ARA:13230040|1800799024|36860700013|7416014|376014|82310400026|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?kglXaiiiHCSlqGtCRlQvX4SOx6WVh1rTWcOsHx1W147iNTKqTKKc23ZW4/f5?=
- =?us-ascii?Q?heOsEEpAuczhPgkSBHTP+39lu70Z8+veTM9EzbqddCCWv6z2PRWsUTA7Dn9K?=
- =?us-ascii?Q?QSpIzx/4NZJYIyxqco1f37/K7N7FJYDG5uOwVVnALvIY7J2d8btHbZFf9XOo?=
- =?us-ascii?Q?FsrG56urAyQDFiZm97nCl5dAtOco44M0Ttj6cDTSXKr0oCPwROLaGLqlrB+x?=
- =?us-ascii?Q?V8K2mAxDwRt3dTipafeVF6qvzhHL95v6uH4OPMYrFqXPDEP9Yic2MOaUtzAT?=
- =?us-ascii?Q?eJL3YLFGq8V032F3UzKtLTFdU75LzexeCZcywq7GTw12yraRiraHyjyvDpBJ?=
- =?us-ascii?Q?3gtunWvxVb5HtGDoWfZrpDHpTxxSz6T9WRLt+mc+E88j/BoF/MLAXMDMyyGy?=
- =?us-ascii?Q?AEWOy8CKcbPM9TYJJ7AolF9caY50tlR+yw32KNTf4MHNX4gJe8jWHvz+4HpK?=
- =?us-ascii?Q?aq/Ap7GAvyGJ3GxdY6qujglLc0W1Hskut+u5ycViMWDYsnKzzQCAC7Zz6VCU?=
- =?us-ascii?Q?LTGQKKUuWnutalsoXxJvPxdszIw/+Uadg6xYhTY3xXw02IZ8X8W2yldev+lj?=
- =?us-ascii?Q?aa34ThRo2lSyxuhSsQ8EMavq5vmKJsY34I6+N+tg9PsOz6U4+BGQIolUuUBI?=
- =?us-ascii?Q?RMvtFqeu/jd2vuBqtBfj/qrGbAqCMINCIHBYrxewpQ/ubOW8lWLa2oAUho2A?=
- =?us-ascii?Q?p272S+BA2BISC85holkd6wFQ8h85KXpwrxH/zcE5iDMuVd3VsTjnaZFrEZ3v?=
- =?us-ascii?Q?3XlYrA5R4TzKpIpZdKSLiQ3RqWGcRLn05nLrD0jkNR46BHwFq2hyo79XrlgV?=
- =?us-ascii?Q?8RjU5nauE5RKndfCrO8OuNTSDTQiSdASlUmNJKWTxg5S3EwVhOVKL2c/QbYT?=
- =?us-ascii?Q?x2i6yCzT5g7xiZ05ul8DV3xegTuqpbdYxuBqtXL9WfvABpN32CHN2Cwxyodx?=
- =?us-ascii?Q?x/I4z/Uk28JtowhBToA4VgwBiTxlnymxw7QvLFtnSqWkvmmnO6K5BjPCfTxY?=
- =?us-ascii?Q?k7JTIr6yIaXQLTnGqvPj9v+DrREm6l4C6YYpWSe9JYyah6lx4VL5faHPSWRf?=
- =?us-ascii?Q?T/bEj6PNoivUh2ipnKPbJ/iNjJVEVKrUBz12czZK6r3Qe5c7bCIJ0wV3xOyG?=
- =?us-ascii?Q?Su0Z/x1U8ModqKmrpAXhXyc6O7AB+BBn1+AuhLXyaGRSBEZiLfFOJnqfVIuO?=
- =?us-ascii?Q?CAYyNuC97aZ6c5/xUOQWpiQX2ANUea9VSfdUwXb2i69wNHiCioH/XsrxI96L?=
- =?us-ascii?Q?00RjR+1kAkwmLodwpmxP6xRG2nMhdmhf7AgDsXfSvEOQnIHrozoB6Vinpdaz?=
- =?us-ascii?Q?/PlAj+NS7O5IrMfECRSx3FyqH51T3VAimj+62Pk9TE3NCg=3D=3D?=
+	=?utf-8?B?R3IxbkxSWkdkYk04di9LS1Y2aWVsbDVrQWRPL2VsOGgxOEkzeWlJNW9QSUJZ?=
+ =?utf-8?B?Tkx2amI4clpESkdWaXIvRjdjYlFzdFdlZVYwYjdOcVEzNDAralNGaEhwVkp4?=
+ =?utf-8?B?ZTBIUXFVVmR1MUFnMk1zeHRwSVhBSEwwd2c5ak5KdWgwZlNIZTc1K3BkQ3Bi?=
+ =?utf-8?B?anZKUHl2ZjFXbFBOdjB2RmFPYXpCQ0o4WXJYV3FXcGtyYlM1cW9Sc2hINnFW?=
+ =?utf-8?B?bFZaSVY5SG1JUnF0dnhyOVh4M2ZxVjZ2V3VRR2ZaSUxHSHVEZVd4SzlVa2dY?=
+ =?utf-8?B?RGd6by9mZE5NY3RUbDgyZnhHUUxxc0V6Q3JZVDZBNzJrbE4zSmlkbXk4bzFs?=
+ =?utf-8?B?Q3RLY2NmSTFXUC9aai9CQ0dReEF2Vi9hVTV4MHJaTDd0Z2k3MkJZZUNmU2s1?=
+ =?utf-8?B?TEt1ME9UNXhSNUFKMXprZW5UZjRtN3hCVC82N1RINlBESmdwUEE3akFXS1pG?=
+ =?utf-8?B?YTgrNVVWV3A3YWhXMlBwTDlJR1NSTE9GWWV0L2RvRTRhWU5CcUlWZlJDVmRL?=
+ =?utf-8?B?UmZ6bnl4YldqTktHaS9MZzJVdlZSM2RsTW9SYzMxY1pDbzN5Vjg4ZVlaZ0E3?=
+ =?utf-8?B?aXl5NjRBU2kwNEtDTGJLSUYzalA1Y2lmWVdYbTIwQVNoZHlJZXVCSW9GT1NI?=
+ =?utf-8?B?Vk42ektENUNsOEE5M3d5UVZEK3lJS1dGR3hCbzZXNVg0dlN1NTUzMDU2VTVq?=
+ =?utf-8?B?STFEUEJHQ25ycWVnUi9PUzFHNmtBRUk0TGl6bUFWVHh3eDY5ejZSTUJXTmhO?=
+ =?utf-8?B?WTVvZTBseUdOZ3JjLzRSQko0QjBRbWQwSGhYakFtc3ZMc1pGRFlab3B6WGJY?=
+ =?utf-8?B?OUgyZUlhRE9yWCtYNWI5ajZjMFNyMnJsekJ6NXhsSFJCemFEQnNNbEd0V2dv?=
+ =?utf-8?B?dWR2WHVack4xeXMrcmxBRm5pSHFOZE03cDVIZjBOWmhzd3hQTG9lZkpnT2Ra?=
+ =?utf-8?B?TjRnaWYxTGllZDQ5QzVTd20zenluZVl3ZVhudHhlVkpYYmpDZFgweFN1elNy?=
+ =?utf-8?B?WlVlVlhFQWxTS2pmWWsvVDVhTFZhaUxNNTZERXcxL0VLMGJHVGg2bzFtOFZM?=
+ =?utf-8?B?NlYxRzZ6NFRoUldJMkYvY1l3Y3RKblpNUWVzVU04NTdvU2lvOHBMU0Z4VGFp?=
+ =?utf-8?B?MWY5OHlsYlFQbnhGL0NHcGJMai9UZ2tLU09wYkxvWHpaMEZLaXVSWitLZ3Ju?=
+ =?utf-8?B?WitrYUJaOS9Zdlc1MEVDNzV2eEEydGN0MVlTVXh3UUV5RzRJK1BKRHV2Tkdv?=
+ =?utf-8?B?cEtDd3JLdmhnemhDb3N6Vm11dTgydEJQcUwrZW15QkZ6cWd0QlQ3MitqdUVE?=
+ =?utf-8?B?Y2cwV0R6WHIrNE5vdHh5MTh0QnhOZ3VBbE1keVJmcmhDRjFWM243RVBPbWlj?=
+ =?utf-8?B?KzFrc2lvRVk2RWxmUWUvVGRiYU8xdGlQN215NitlRzljeUt1U1ZlTTVzelN4?=
+ =?utf-8?B?ZUdPTVRnYUhhK0tLNHE5b211RE04SDJkSUNFVC96UG1iMnBmbU95MEIrZEd5?=
+ =?utf-8?B?cVVsd0lSa0NrdzcvRFJWMU42eHpXckt1YTZWMHU0eVlIUE5mZXFhRTlJU0pY?=
+ =?utf-8?B?bXhMb1BCSEg2a29GYlRGRzNtMFAycEU2VmhIKzEzL1BmcHR4d1BRKzBQa2FX?=
+ =?utf-8?B?TnRPelZnOWppK0NGaDAwRUt2OVFLd3E4RnEyZHpabTBlakJXWWpyWEVOa2xm?=
+ =?utf-8?B?MlpLVUhJWnJ6SGhYV0xVTFltdGp3TDYwN045SGxLT21zZWpxdCs5R3FnMU5X?=
+ =?utf-8?B?Y3pLWUdUR0dMREx1N3AwYkIydzgyVjFoMHdaWlRDaFpOcENyb0VyY0cxRmpy?=
+ =?utf-8?B?aS9qL2VhdW9ZWHczUE0yNEw3UzF2eDM1ZFpFMW5KNVAxd0VkRHRQMmNJV1VC?=
+ =?utf-8?B?STV5SlVqRDE2TDY0a2dBY2dFTkFmWUNxN3Y2azJQRU5SYWNwNVVyakZjWDlV?=
+ =?utf-8?B?WDRyeWVGeERndFhpK29UdjhTRmdDN0JzaDVJbDlVYWEzSzdwSUlqTUV5aG5l?=
+ =?utf-8?Q?pqlpW7d4Epf9Q7xFq/wysPQ3BOJxxw=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(376014)(7416014)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?45YE3EgA6w8uepbjPlC57BIF55YgftP1i/NrqdnBJIMDu9mAN4mnBRv59NuD?=
- =?us-ascii?Q?J0jdCYmY1F238ZE48ySBnO+V1EKNzfWcxJ3RCecU3Xo4Nn979Ht4fn72dJcm?=
- =?us-ascii?Q?AApbjU2X+3196Gr89eRKqxwoL3cMJgWWsiF62F468a8AyRfYEio0VXDX4e4A?=
- =?us-ascii?Q?oBbv8n5KMJSiZvCE4engULzqK3DXgfL5e2r9rW9nlVtB5B1OnfFb2Yp0PxaD?=
- =?us-ascii?Q?48Vk7tKHjfrN3QORYatxAhekLZx6LJNiviC74t8l7y4MRjQjimeKLZe5PB0e?=
- =?us-ascii?Q?jKuTjU5vlV0TsLzS/UUou4aaFO7+4lAGEg9z5P2afFSJhap3mGJEkM+lDwIU?=
- =?us-ascii?Q?LgppN6rJ4mNk8rNqdIEbMOjYesbCcdwtcRacNcm68DcvrtHZoDoIXc7ZFpJt?=
- =?us-ascii?Q?dRjc87k6Trk2/NzPMPwX3FZZSefo2u6aU24gDLm0+A4WiaG+Ml185oW9dDyR?=
- =?us-ascii?Q?cf+wAvH1reK7IeTTQ1q46t2dAyl2TZU+p8xyAGEWA4kDNyUd083Y3Yu31mYz?=
- =?us-ascii?Q?iYTVM70gkL7XTkdjHKeL7iXhyNNMWomhxxZ51maXxNMUNCjugO3LqzzU5vIt?=
- =?us-ascii?Q?YRUNtjlKXDPNjADGo7C2Bk1rLC7fsuI27SyCI2ZqEL64wuzUtcGByzucuDQi?=
- =?us-ascii?Q?fx/B1PzFUjmUaiTZHOAneXlFd0TPBPJBuAj+reL/t5VvNjCVJUCQ5kZ//qQU?=
- =?us-ascii?Q?jqHYbuKGlRQTOH9dMi/dkCm/1KPDa4rJbcpinDZDQYhG0W8HM1jkJN/M9oM7?=
- =?us-ascii?Q?uek4sO0vhREf6BHu/DyETHLXT5WTn6qKLa/e+TYypE1sZRmM16adLSOc59rm?=
- =?us-ascii?Q?6GcRbKLT1x4OoR3ZU+kJPDm1HEW+hymQqz6DzurbG8l7Uc7GLYyTOT0jMAUq?=
- =?us-ascii?Q?fo6BWTGdDhS5RRoSwtOWGIhKeL4fkk984huje/alNfeVRctTz37QYiXm6V0Z?=
- =?us-ascii?Q?Ki66fC4VNow6dQxM8nqCvaf4rKXnMQnqGO6WYqMF0Ifwb65d7Gsat0otGjPR?=
- =?us-ascii?Q?iGDy6oxS2AcVYE0tHyWchtPqYzDCEs5My3AVWv7KyT/IsQdKmpYLStCKNzHi?=
- =?us-ascii?Q?cW0+G2VtdmaO4GGQbiGXLqbGL4rmKSQ6D9C2WXTsIGOqhYMv7VafrGEC1fR2?=
- =?us-ascii?Q?0Ciu8u/dSSykFrG8MYOqvTHV7sKQb7WWbAJEZOLoBIVffIkukmFeZIkwUa7+?=
- =?us-ascii?Q?c6Kv3BQ5BeQf0eHSDbD/bX5HY1tsHrleHnLK8I+xCnjUVarqmLaOjayOBrSR?=
- =?us-ascii?Q?PPQOduMN6pGnN1oUO5NDwovsi5q2lZTqvcZZj5tXlIOBrIlMcZl+w70ciWFD?=
- =?us-ascii?Q?OqYCoc5Qf1kaYVBrQu1YI7+YsCJop/6CMsmjS+8Kof8Z5/CJ4TJXojJs90T0?=
- =?us-ascii?Q?RH1TFHNBTnvtuu+pq4DJw3pvz2Y7M0QT0uf33GljKOO15cMLKGmsS4ESGQ0L?=
- =?us-ascii?Q?b0KXZkynwTXjSFck8VEJ0lu/ZQAxTZw+c4WAzdkkuJV/j3E1jYwzbmfF9+Ha?=
- =?us-ascii?Q?U4WXgWufPsGjyIg49xnWMD+sATSMp08ofGQoHb8BlxA1km7kpiF1OrGUQp53?=
- =?us-ascii?Q?lBR5anhCRyywtJoMxXN4mybH7k7vR/v2IkWnh1gbxT52vZa3wc+aOTMbzpNz?=
- =?us-ascii?Q?uA=3D=3D?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: f3fd9302-fa1f-4b8e-2e6e-08dd359cc052
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2025 19:42:31.5598
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(7416014)(376014)(82310400026)(7053199007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2025 20:20:55.8743
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 44y+62XBdTDTRj4YnBWKyA8H6EhJyqlW60+/wx807K4+jgYtwnqaDr1zPRTFnnxaT5ySyx91NctGZNR7z8/AwQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO3P265MB2092
+X-MS-Exchange-CrossTenant-Network-Message-Id: b362759b-e23d-4fc5-ee3b-08dd35a21df8
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF0000009C.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4191
 
-On Thu, 09 Jan 2025 11:54:58 +0100
-Andreas Hindborg <a.hindborg@kernel.org> wrote:
-
-> Add the trait `ParseInt` for parsing string representations of integers
-> where the string representations are optionally prefixed by a radix
-> specifier. Implement the trait for the primitive integer types.
+On 1/15/25 2:36 AM, Andreas Hindborg wrote:
+> "Alice Ryhl" <aliceryhl@google.com> writes:
+>> On Mon, Dec 16, 2024 at 3:50 PM Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>>> "Alice Ryhl" <aliceryhl@google.com> writes:
+...
+>>>> +/// [`mmget_not_zero`]: Mm::mmget_not_zero
+>>>> +#[repr(transparent)]
+>>>> +pub struct Mm {
+>>>
+>>> Could we come up with a better name? `MemoryMap` or `MemoryMapping`?. You
+>>> use `MMapReadGuard` later.
+>>
+>> Those names seem really confusing to me. The mmap syscall creates a
+>> new VMA, but MemoryMap sounds like it's the thing that mmap creates.
+>>
+>> Lorenzo, what do you think? I'm inclined to just call it Mm since
+>> that's what C calls it.
 > 
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
->  rust/kernel/str.rs | 118 +++++++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 118 insertions(+)
+> Well I guess there is value in using same names as C. The additional
+> docs you sent help a lot so I guess it is fine.
+
+Hi Andreas!
+
 > 
-> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-> index 9c446ff1ad7adba7ca09a5ae9df00fd369a32899..14da40213f9eafa07a104eba3129efe07c8343f3 100644
-> --- a/rust/kernel/str.rs
-> +++ b/rust/kernel/str.rs
-> @@ -914,3 +914,121 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
->  macro_rules! fmt {
->      ($($f:tt)*) => ( core::format_args!($($f)*) )
->  }
-> +
-> +pub mod parse_int {
-> +    //! Integer parsing functions for parsing signed and unsigned integers
-> +    //! potentially prefixed with `0x`, `0o`, or `0b`.
-> +
-> +    use crate::alloc::flags;
-> +    use crate::prelude::*;
-> +    use crate::str::BStr;
-> +
-> +    /// Trait that allows parsing a [`&BStr`] to an integer with a radix.
-> +    ///
-> +    /// [`&BStr`]: kernel::str::BStr
-> +    // This is required because the `from_str_radix` function on the primitive
-> +    // integer types is not part of any trait.
-> +    pub trait FromStrRadix: Sized {
-> +        /// Parse `src` to `Self` using radix `radix`.
-> +        fn from_str_radix(src: &BStr, radix: u32) -> Result<Self, crate::error::Error>;
-> +    }
-> +
-> +    /// Extract the radix from an integer literal optionally prefixed with
-> +    /// one of `0x`, `0X`, `0o`, `0O`, `0b`, `0B`, `0`.
-> +    fn strip_radix(src: &BStr) -> (u32, &BStr) {
-> +        if let Some(n) = src.strip_prefix(b_str!("0x")) {
-> +            (16, n)
-> +        } else if let Some(n) = src.strip_prefix(b_str!("0X")) {
-> +            (16, n)
-> +        } else if let Some(n) = src.strip_prefix(b_str!("0o")) {
-> +            (8, n)
-> +        } else if let Some(n) = src.strip_prefix(b_str!("0O")) {
-> +            (8, n)
-> +        } else if let Some(n) = src.strip_prefix(b_str!("0b")) {
-> +            (2, n)
-> +        } else if let Some(n) = src.strip_prefix(b_str!("0B")) {
-> +            (2, n)
-> +        } else if let Some(n) = src.strip_prefix(b_str!("0")) {
-> +            (8, n)
-> +        } else {
-> +            (10, src)
-> +        }
-
-This can be done better with a match:
-
-match src.deref() {
-    [b'0', b'x' | b'X', ..] => (16, &src[2..]),
-    [b'0', b'o' | b'O', ..] => (8, &src[2..]),
-    [b'0', b'b' | b'B', ..] => (2, &src[2..]),
-    [b'0', ..] => (8, &src[1..]),
-    _ => (10, src),
-}
-
-> +    }
-> +
-> +    /// Trait for parsing string representations of integers.
-> +    ///
-> +    /// Strings beginning with `0x`, `0o`, or `0b` are parsed as hex, octal, or
-> +    /// binary respectively. Strings beginning with `0` otherwise are parsed as
-> +    /// octal. Anything else is parsed as decimal. A leading `+` or `-` is also
-> +    /// permitted. Any string parsed by [`kstrtol()`] or [`kstrtoul()`] will be
-> +    /// successfully parsed.
-> +    ///
-> +    /// [`kstrtol()`]: https://www.kernel.org/doc/html/latest/core-api/kernel-api.html#c.kstrtol
-> +    /// [`kstrtoul()`]: https://www.kernel.org/doc/html/latest/core-api/kernel-api.html#c.kstrtoul
-> +    ///
-> +    /// # Example
-> +    /// ```
-> +    /// use kernel::str::parse_int::ParseInt;
-> +    /// use kernel::b_str;
-> +    ///
-> +    /// assert_eq!(Ok(0xa2u8), u8::from_str(b_str!("0xa2")));
-> +    /// assert_eq!(Ok(-0xa2i32), i32::from_str(b_str!("-0xa2")));
-> +    ///
-> +    /// assert_eq!(Ok(-0o57i8), i8::from_str(b_str!("-0o57")));
-> +    /// assert_eq!(Ok(0o57i8), i8::from_str(b_str!("057")));
-> +    ///
-> +    /// assert_eq!(Ok(0b1001i16), i16::from_str(b_str!("0b1001")));
-> +    /// assert_eq!(Ok(-0b1001i16), i16::from_str(b_str!("-0b1001")));
-> +    ///
-> +    /// assert_eq!(Ok(127), i8::from_str(b_str!("127")));
-> +    /// assert!(i8::from_str(b_str!("128")).is_err());
-> +    /// assert_eq!(Ok(-128), i8::from_str(b_str!("-128")));
-> +    /// assert!(i8::from_str(b_str!("-129")).is_err());
-> +    /// assert_eq!(Ok(255), u8::from_str(b_str!("255")));
-> +    /// assert!(u8::from_str(b_str!("256")).is_err());
-> +    /// ```
-> +    pub trait ParseInt: FromStrRadix {
-> +        /// Parse a string according to the description in [`Self`].
-> +        fn from_str(src: &BStr) -> Result<Self> {
-> +            match src.iter().next() {
-> +                None => Err(EINVAL),
-> +                Some(sign @ b'-') | Some(sign @ b'+') => {
-> +                    let (radix, digits) = strip_radix(BStr::from_bytes(&src[1..]));
-> +                    let mut n_digits: KVec<u8> =
-> +                        KVec::with_capacity(digits.len() + 1, flags::GFP_KERNEL)?;
-
-I don't think we should allocate for parsing. This can trivially be a
-non-allocating. Just check that the next byte is an ASCII digit (reject
-if so, in case people give multiple signs), and then from_str_radix and
-return as is or use `checked_neg`.
-
-> +                    n_digits.push(*sign, flags::GFP_KERNEL)?;
-> +                    n_digits.extend_from_slice(digits, flags::GFP_KERNEL)?;
-> +                    Self::from_str_radix(BStr::from_bytes(&n_digits), radix).map_err(|_| EINVAL)
-> +                }
-> +                Some(_) => {
-> +                    let (radix, digits) = strip_radix(src);
-> +                    Self::from_str_radix(digits, radix).map_err(|_| EINVAL)
-> +                }
-> +            }
-> +        }
-> +    }
-> +
-> +    macro_rules! impl_parse_int {
-> +        ($ty:ty) => {
-> +            impl FromStrRadix for $ty {
-> +                fn from_str_radix(src: &BStr, radix: u32) -> Result<Self, crate::error::Error> {
-> +                    <$ty>::from_str_radix(core::str::from_utf8(src).map_err(|_| EINVAL)?, radix)
-> +                        .map_err(|_| EINVAL)
-> +                }
-> +            }
-> +
-> +            impl ParseInt for $ty {}
-> +        };
-> +    }
-> +
-> +    impl_parse_int!(i8);
-> +    impl_parse_int!(u8);
-> +    impl_parse_int!(i16);
-> +    impl_parse_int!(u16);
-> +    impl_parse_int!(i32);
-> +    impl_parse_int!(u32);
-> +    impl_parse_int!(i64);
-> +    impl_parse_int!(u64);
-> +    impl_parse_int!(isize);
-> +    impl_parse_int!(usize);
-> +}
+> If we were writing from scratch I would have held hard on `AddressSpace`
+> or `MemoryMap` over `Mm`. `Mm` has got to be one of the least
+> descriptive names we can come up with.
 > 
+
+...but, see the other thread: "Mm" is actually very effective in the context
+of kernel development. And we are doing a perfect mix of kernel and Rust
+development here. So it's not from scratch at all.
+
+Kernel engineers will immediately know what "Mm" means! Really.
+
+
+thanks,
+-- 
+John Hubbard
 
