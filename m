@@ -1,181 +1,131 @@
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559A524A7D5;
-	Wed, 15 Jan 2025 18:53:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9561B1D6DA1
+	for <rust-for-linux@vger.kernel.org>; Wed, 15 Jan 2025 19:01:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736967200; cv=none; b=uOyWlyY3PAg9uygAqjbkFIYfwWaMsLyf8xqfGEbWW8C6YYLgzED8jyNfn935AEfdS3ka/NgGiSYlsqny885yTUI6hXFgOBtkUJ0EVjzhTE3ojqLDS/x0TOqkteHr1ViViFRNf8HgOIAvK/7mFk3Ghzeva0gm/mIU/T1VkD+ApQg=
+	t=1736967682; cv=none; b=dk3tJv24Vmw7xf8kZOcxawBQ7bVb+a24BsOCANhFCuRdc2rUJZXbYwK1Vx6AKnoe+80GZMhCw20uhh0cmiXEZ/r/Yhmf/WmF48UHl8LsCkslkzYDSIVAto7WQgA88jhRZumte71JPCcsrZrBUA8PERLaoppn3NjrmIuGeXF81dM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736967200; c=relaxed/simple;
-	bh=rnpmFGKwy1JEAJdyKRREr2Lkx9FCNYXNwuJpd0bxkM0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aVwixsVLIA5WZoD5n8e8dAcanNLFdl6Yy878smHbDgfEReGGYOgGendeW0oqywIJu6Gern8Q8bDpYIMUrNIJS6upjWZBlkJD99tKpf31FvcWwudCqkhNAqt5I7qG020xwb65cL5BEWA97bsqEuEuS74TkcXkbSuU8XBEPB1mG+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iWQEpFNm; arc=none smtp.client-ip=209.85.219.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1736967682; c=relaxed/simple;
+	bh=z+F0K6zpGAY6m64tbqwJUCSdmoEwd5tbbTNZenDMxAk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=A0XxLUB10fW6hRJTFTpScURC4UyeMoF0H7mJbBpVHkqH5/s/JrIK0+S6U5Oqh1jQuFeDXpUz3jWzZ+U5nv3wYV6eqCFtXqA9WRW2a/NL/6kAANo0Udm2bkur0MyLOOxbME1A8F2m1LZk0guINmS1umjR8CHG2DcD9y1IiDbnijA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=C4OB3Ull; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iWQEpFNm"
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6d8a3e99e32so1634176d6.2;
-        Wed, 15 Jan 2025 10:53:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="C4OB3Ull"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-38a25d4b9d4so96286f8f.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 15 Jan 2025 11:01:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736967198; x=1737571998; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=CK8NLy/FIs3dxNk9nw+pqfZZfgHqZ+rsTM+Gr9reXDk=;
-        b=iWQEpFNmkvQ974mhvfx63CVKsjrtYAJy4woMjsp6aWW9/nos8iR3sP91v2mC6N4aWk
-         uO8EmDyNUgUOXH7WDl4AQ7SmZ3+ox5etLOsdZQuveQ1D9wZN8YH8s9sdf32u9rrv3RtW
-         x3kj4qbBNL2FQe/rm+3P3W6NjUIkzNairJK/1mikt73uwTD3LRixbNsYwX2BpOuLgNjo
-         OlTjT8YVcDJc07CrnaqIf8bYY8HzycTB7634OgEMwjtdjZsAZzkNAOSHUmCRwxL8RqO9
-         TxGpXe5J6lPnikHavYejdcjy1wewVhwp9hTuUtphm/5FAK8xasq/Pfja/DdunHqCiYoM
-         S0pw==
+        d=google.com; s=20230601; t=1736967678; x=1737572478; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5RQoZ89wygUmQPDQumFzGgrFUnZf1tx1WhZ3rTHnw9U=;
+        b=C4OB3Ull26HjRyWJISgPbW6R97oHaR+SpdvxIe9L4WPTUKKKln/k95rGp9iY0q35Ba
+         qD5lTvVcmDAuSQpqbP369KRn1ReZIC/Abg2Ij/i+kNDKVYtt+jvmRUWgkcKh9W+Zc4oi
+         JWzcj1u5pACM8G9sf3R+CcTv37dLSBTybGTyA4+AO255gubfCqoE7BrJ9uhBpyjFVFLT
+         AZJTA/LVcL69uWxQx4fVCRqRWmuyDwTGE5ZnBtQlG5InG3SimsmZKibq/qf+qzr3mHnD
+         +rzjPNonXgiwUQ5cWMDt1RvF/1qd4IP4svd6dG+SO8WcOOqau5dPDAGYVuEFAd4EmyD4
+         156w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736967198; x=1737571998;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CK8NLy/FIs3dxNk9nw+pqfZZfgHqZ+rsTM+Gr9reXDk=;
-        b=VDvQNyO6CZDkUFDovYGnZEk7zNEpEe70Gfr50dER/3rQ2G+MQpKeGXU+h2cd0RjANi
-         B+az8WFqq4N25bMJqUftauAAsUs3ZZkx/VtOTTvN/KMHiUMgS4VMU3Hiv/j7r20/0TS8
-         WUfzMVS+Mm2Lfu+gOF3BdiZqQ8xWgvW6KeuLv4X0xvwcd7GesEh1migoi1qQDQcyTfF+
-         GuFXZ+S9QQ71Is8V+djwmEk+j9pcNVUPMa3Bfn+dMbbBMGFLDa5X8YJeskFqHR+OrY4Y
-         HmI60/P67i6v5PA1Si+I7F6gS4gOLJp1T7Y+ntinZUnaQI7R/yX+aHafbCXB4I7Kchej
-         e5Jw==
-X-Forwarded-Encrypted: i=1; AJvYcCU0tP0iPNWy4a8ZUBbR4jYJD5yLKytRYB7Os1uJeUI5icnlxnPoUEaYrg78lP/KoshzaBSS+zWdGKhUc/UfbkU=@vger.kernel.org, AJvYcCUck9njKDnJn38tAqr8l6wUYEGXaswvrrbEWJBhf9D+/pNkyGTSRulu3afGX6RF5TeCvbKKgrZ6gQ+MU0s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBhzRs43O7DzPEXxYJmBCxkDIJ/cZ35t1241IrbhOOLRfJCItx
-	kV85by4vFuol4NtXS5P1JCnuflbvq9Aedu40kIusl6wH5QOmcRl4
-X-Gm-Gg: ASbGncsOoVJTAz9PHvt980HCOzRxVwIE1NCyLUfoyiYGGsQOW4j5n5PG+h8ky8w7ZQk
-	f5urkWqExrHqWf4L/24xsiNlx+N/rl1Ayqjy4cgFTrLBrdXxwi7ZYIKjuctKveePgujB0fADhwm
-	cvF0ZRjep/idfx5LHXhuVxtgmCy38V1pDk2bzYy+TVhK/kc1ByWx0SQDdPTl1spJ+RForZlWCnY
-	77gGf/YzCQkqSmi7fqBdZ6jprT3DRjucJLGQ6zohdF6elsVN8VCj84DfgYvpr3xBQ732TNkGN63
-	IYtXEf0pILxY/RaQ4iAq3CqSk9T7Bx83sViVRFPx76NGkh0=
-X-Google-Smtp-Source: AGHT+IHqFfoW5jeKEXGk4zIT6DaqgIftIUjaK0OrSCR+1DiNjT7OFIbfxpnq7WhaapiJGSU55vs5OA==
-X-Received: by 2002:a05:6214:4506:b0:6d8:8874:2126 with SMTP id 6a1803df08f44-6df9b1da0dcmr421622206d6.11.1736967198143;
-        Wed, 15 Jan 2025 10:53:18 -0800 (PST)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6dfade72b59sm67403166d6.87.2025.01.15.10.53.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jan 2025 10:53:17 -0800 (PST)
-Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 70239120006A;
-	Wed, 15 Jan 2025 13:53:16 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Wed, 15 Jan 2025 13:53:16 -0500
-X-ME-Sender: <xms:HASIZ32ChzJMBVc-96lmgcC2-ZX6Wd0H2thdUaXmcWOxf1B9zR4iaw>
-    <xme:HASIZ2H5IDym4JQnHN5sOcu6Ee7w0LjmgT4zy9pXc6RmXdi48SumVJy2l_Egw6Z7B
-    o7St_amPDkWepDtEg>
-X-ME-Received: <xmr:HASIZ36s4zRQkY4gQsB6spvU1vLYpUaepv_XznPHKhFNf1KUfMgir9X6Ip0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudehledgledtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdej
-    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
-    drtghomheqnecuggftrfgrthhtvghrnheptedvkefgieejgfegudeludejleektedtjeei
-    udelffelhfdugfffffeljeeukeeknecuffhomhgrihhnpehpthhrrdgrshenucevlhhush
-    htvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghs
-    mhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhe
-    dvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdp
-    nhgspghrtghpthhtohepudekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehgrg
-    hrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohho
-    ghhlvgdrtghomhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtph
-    htthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepsghj
-    ohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtohepsggvnhhnoh
-    drlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtoheprgdrhhhinhgusghorhhg
-    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopehtmhhgrhhoshhssehumhhitghhrdgvug
-    hupdhrtghpthhtohepfigrlhhmvghiuggrsehmihgtrhhoshhofhhtrdgtohhm
-X-ME-Proxy: <xmx:HASIZ80R9Z6TwJVo0Ekfmq2QXAMiYXzEADHfQjELD1cH7OdTWyGWKQ>
-    <xmx:HASIZ6GGlkcCDIxs_Uga5RqRdTru2xZfWVSnUrOMYrjojN23_EB92w>
-    <xmx:HASIZ9-UXvOP5Qm3WHW72xiG20FXRs1gHAcWVkVeJtUAOCHhgtKK3A>
-    <xmx:HASIZ3lON6tOAtkxUgccZobYmiDAYi7N8nHtMV1TFkoRvR6eEyfoSg>
-    <xmx:HASIZ2HsSeVfhnveVg_FPl2HOu2DmBeIEJL7_MJiC0bQbUtTdxZO2suL>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 15 Jan 2025 13:53:15 -0500 (EST)
-Date: Wed, 15 Jan 2025 10:53:14 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Wedson Almeida Filho <walmeida@microsoft.com>,
-	Valentin Obst <kernel@valentinobst.de>,
-	Alex Mantel <alexmantel93@mailbox.org>,
-	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] rust: convert `Arc` to use `Refcount`
-Message-ID: <Z4gEGjiloy-fNkDf@tardis.local>
-References: <20241221183024.3929500-1-gary@garyguo.net>
- <20241221183024.3929500-3-gary@garyguo.net>
- <CAH5fLgjOfw2otu4FJ1XHhjsSx3Fj3iQA25Hh-Anz5jXaLamrAQ@mail.gmail.com>
- <20250115123234.6d3bba78.gary@garyguo.net>
+        d=1e100.net; s=20230601; t=1736967678; x=1737572478;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5RQoZ89wygUmQPDQumFzGgrFUnZf1tx1WhZ3rTHnw9U=;
+        b=o6M+YwEZyCyd8enuJpKGs8Q4Xx6bu3/rrVMR8l+hQ+uLtSwy/a6j62+ceEfN/CRobP
+         JIXU2kjadooUiiQhCQp8Ma3RVPcGkXOYjtL/p427xoCNr2sovApm9arZmxWG8R50oMrS
+         iGPs3vkMveq8DmF89fe3sq+S7AJESDnvncCB9IOpbseN4emeXUfbp/O9kPI2wa0JCnS4
+         3mfDup9hJkKoMI/YFUqqfSiUJHQMlMyIt2UEEX8ij9VupCt5ZxSbd1xaS89c/CGi6aNb
+         hiEROr3sS6E2fV3Y/kTjzCcQSR5gsPZZDqDyoBcjbNuEyJyes2mnge1JRA3f6qI7Gfi6
+         Uhgg==
+X-Forwarded-Encrypted: i=1; AJvYcCWRVUeMTjmgrqZeobj5jZjrOfrLzVuhwFoq81b+o1zZ4sj1b7xlkw5biGjki6thQjqumRdFcom6GaYIZSLNgQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+OvyxbngB9G2RVHMhaU1DNNkPs3zM3b0+zlly2qMqfuUQf4C9
+	pfQ8AvuxZ3w/BPHuaTmrHsmjGau/jSc5LeJN+U1cEsHdFsTDgZsRFN2VD1zhlcnwZMJ/TYMttNl
+	N7QLlHxP4JDuDBbNmSmlagrwoeq7M7h8Xcwsw
+X-Gm-Gg: ASbGncu+jUzWMydD/21h+X2wODBtY54TbuSBL4u/gNPp2GzhYbsMpXkGf7m9NOo9UQk
+	LQ29E0p88Heu2TISMDORawbluttq/lmBtrtl4Twc=
+X-Google-Smtp-Source: AGHT+IE8vT+zrOIqo/JciTsuo+w9AeFMv8A6T7qu11MmfE2XYjG6cUx4dJ9/wXEhElSQW39GBzvAOSD1UDLbhEDx14k=
+X-Received: by 2002:a05:6000:144d:b0:38a:615b:9ec0 with SMTP id
+ ffacd0b85a97d-38a873122edmr27844243f8f.54.1736967677806; Wed, 15 Jan 2025
+ 11:01:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+References: <20241221183024.3929500-1-gary@garyguo.net> <20241221183024.3929500-3-gary@garyguo.net>
+ <CAH5fLgjOfw2otu4FJ1XHhjsSx3Fj3iQA25Hh-Anz5jXaLamrAQ@mail.gmail.com> <20250115123234.6d3bba78.gary@garyguo.net>
 In-Reply-To: <20250115123234.6d3bba78.gary@garyguo.net>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 15 Jan 2025 20:01:06 +0100
+X-Gm-Features: AbW1kvYYHqLER1cSh0xW_2W5YPOBbC9XI3CC9PU2VzJrsQdS-3wkrTDtwgFyDzA
+Message-ID: <CAH5fLgg3+15i3jOuviQ6JVdT1sVVipUzO-sBLb0AsZQeQ2PXJw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] rust: convert `Arc` to use `Refcount`
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Wedson Almeida Filho <walmeida@microsoft.com>, 
+	Valentin Obst <kernel@valentinobst.de>, Alex Mantel <alexmantel93@mailbox.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Mark Rutland <mark.rutland@arm.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 15, 2025 at 12:32:34PM +0000, Gary Guo wrote:
+On Wed, Jan 15, 2025 at 1:32=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+>
 > On Tue, 14 Jan 2025 11:02:25 +0100
 > Alice Ryhl <aliceryhl@google.com> wrote:
-> 
-> > On Sat, Dec 21, 2024 at 7:31 PM Gary Guo <gary@garyguo.net> wrote:
+>
+> > On Sat, Dec 21, 2024 at 7:31=E2=80=AFPM Gary Guo <gary@garyguo.net> wro=
+te:
 > > >
 > > > With `Refcount` type created, `Arc` can use `Refcount` instead of
 > > > calling into FFI directly.
 > > >
-> > > Signed-off-by: Gary Guo <gary@garyguo.net>  
-> > 
+> > > Signed-off-by: Gary Guo <gary@garyguo.net>
+> >
 > > [...]
-> > 
+> >
 > > > -    pub fn into_unique_or_drop(self) -> Option<Pin<UniqueArc<T>>> {
-> > > +    pub fn into_unique_or_drop(this: Self) -> Option<Pin<UniqueArc<T>>> {
-> > >          // We will manually manage the refcount in this method, so we disable the destructor.
-> > > -        let me = ManuallyDrop::new(self);
-> > > +        let this = ManuallyDrop::new(this);
+> > > +    pub fn into_unique_or_drop(this: Self) -> Option<Pin<UniqueArc<T=
+>>> {
+> > >          // We will manually manage the refcount in this method, so w=
+e disable the destructor.
+> > > -        let me =3D ManuallyDrop::new(self);
+> > > +        let this =3D ManuallyDrop::new(this);
 > > >          // SAFETY: We own a refcount, so the pointer is still valid.
-> > > -        let refcount = unsafe { me.ptr.as_ref() }.refcount.get();
-> > > +        let refcount = unsafe { &this.ptr.as_ref().refcount };
+> > > -        let refcount =3D unsafe { me.ptr.as_ref() }.refcount.get();
+> > > +        let refcount =3D unsafe { &this.ptr.as_ref().refcount };
 > > >
-> > > -        // If the refcount reaches a non-zero value, then we have destroyed this `Arc` and will
-> > > -        // return without further touching the `Arc`. If the refcount reaches zero, then there are
+> > > -        // If the refcount reaches a non-zero value, then we have de=
+stroyed this `Arc` and will
+> > > -        // return without further touching the `Arc`. If the refcoun=
+t reaches zero, then there are
 > > > -        // no other arcs, and we can create a `UniqueArc`.
 > > > -        //
-> > > -        // SAFETY: We own a refcount, so the pointer is not dangling.
-> > > -        let is_zero = unsafe { bindings::refcount_dec_and_test(refcount) };
-> > > +        if !refcount.dec_not_one() {  
-> > 
+> > > -        // SAFETY: We own a refcount, so the pointer is not dangling=
+.
+> > > -        let is_zero =3D unsafe { bindings::refcount_dec_and_test(ref=
+count) };
+> > > +        if !refcount.dec_not_one() {
+> >
 > > This is wrong. The into_unique_or_drop function must establish an
 > > acqrel ordering when a UniqueArc is created, but dec_not_one() does
 > > not do so. You need to use refcount_dec_and_test() instead.
-> > 
+> >
 > > Alice
-> 
+>
 > Ah, good catch. In this case I think an acquire fence in the unique
-
-Note that we don't have an acquire fence in LKMM, so you may need to use
-a smp_mb() here.
-
 > path would be sufficient? Or would you prefer to use `dec_and_test` and
 > `set`?
-> 
 
-using `dec_and_test()` + `set` should be cheaper than dec_not_one() +
-smp_mb().
+The existing approach is what I prefer.
 
-Regards,
-Boqun
-
-> Best,
-> Gary
+Alice
