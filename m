@@ -1,69 +1,65 @@
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022109.outbound.protection.outlook.com [52.101.96.109])
+Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021089.outbound.protection.outlook.com [52.101.100.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB131E7C27;
-	Wed, 15 Jan 2025 11:38:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.109
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F4223F266;
+	Wed, 15 Jan 2025 11:42:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.89
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736941124; cv=fail; b=O77dLQ1jjUI4Bt7fKK4fL7fHQBhHewHVFB/c5cv48WrhXLfmSZ/EcSfWwZWyfdjXrt6/+wTslLFLNbDLWoEmf+L5AfhGQJ+MeU4fQ+GBedH20P1xUJlbWLm8KzWznPVIErZNpbY591lou7n1qpXWzDq1cUX0J+ycJ5N0kiByAAE=
+	t=1736941366; cv=fail; b=sQokOvP2lXffROtK92lpsUd+hvQ50n/9rDifTsUYxrGIxV4TTZvwU3vfypzfgJX+P6vAtHE8yN+FjzAxqaCMSYLXc6ETqx42O2/iMcbLI7r+WOyUiq4gYLvsU8uqsxTBRDWonI0rRPcfeZlqUpm3Tr5/sxobyaPeaLKQ8vP8nyk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736941124; c=relaxed/simple;
-	bh=HNk+n9SDKWqJHp6xWM8jKImeBaBUzcZ3bEGRkeCVLP0=;
+	s=arc-20240116; t=1736941366; c=relaxed/simple;
+	bh=7pR7QlH0rqQYjsMx0cRAJxguTgICNLUqGmmL+C09dDo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=JbdSuVAcyRqFnvmOZ5WFopo0B2kyqziiT76rW/nd6QLxKmq4XmWDz60gT1UM3gvWY7cdmBnliMu5hyyjSBOXhigosLencSbn+yVA4HFOcE8c6sJ85xg+nIWpaWFh7z3m7yjQw9smDzYueUQ0FHC/F3ROujzuDn/SEVKiP8qjZ38=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=DsZYStTj; arc=fail smtp.client-ip=52.101.96.109
+	 Content-Type:MIME-Version; b=RPn6ZT6DotmpHtUznyH1yY9VEKkwQMTUg+Cnu2QOkpx471yYe/33UfNJMGbEGvR3P/a5h05bgZ3cslJEG+GEjQdBrR2/36uptNccBK2wVTdTk+8dqkbfFdIrt/1U447+92fNwyS1wxC/D2KA4HRhaLoDvUUWO8kTXOwe8ZHAhwE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=h9UvUckO; arc=fail smtp.client-ip=52.101.100.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="DsZYStTj"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="h9UvUckO"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=loBRDlhGWrpGMFnIaXuE1bxahuJs30SK40eD45ok+rzOvdi9abl6DUsrm4AzaogDXTfwQEn9OrqL+og2SQBOK6EOH/o4eCFG+0BaPiAMyvzgFJMvXcLWuB0KOdCaUN00tdar+tV4u1PnVhpp6KOQsTMhO2Pr1kDzdbQFrtJTH09a/7p4+ztsxqHLRR1khJUZllkRpm9TswnDtTsh0NHOk8sWVUf3CBDQ01Y/iKvTYOOzHrVCTIlo98NJt+0POUAbI+fy0bVu9SHjX4Kwql+EBPklpZdXbKp80iOCXNNoMeEpd0knZtrSf/RqC+rie/EIdLrQQ1HLhFWoQO5PjSlpTQ==
+ b=yDqhBdmHuiCNSj8Xb4bxUC5uJzg0LeFhiVXMtWK6N0HwsD+Y5b+L+nWHZqhO94oQGKvtrdFTxOLu7/7802iMXECJ0B+fAwUdUjmE+IMCyJe/EzwOv9AZFo2VNBWFNz9FwYTkusm24wQNzFnVz6RusWw5MEktlbaU30gSvwmIE3PwpEmYJmW5bO3xA6I1Hu3z1RJ23AZXhTyZY7WqVV5+ASmJbI51z8giKpDgBUaO1HsXcylb9t39glck1Q+Y+bTUehflWPIHrn4u1Bge7KLFkxU+jOLi1QVQ9ZaxZxfi3hRcP56s30VxfEanzFt+DXKcG1UsLaq8NQRQodFfhg5IxA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HNk+n9SDKWqJHp6xWM8jKImeBaBUzcZ3bEGRkeCVLP0=;
- b=IPQNBF0bZ27DrtLReyxc3SLNrA0EaOHau6dcgITFefOgGbkZ2fsEOc5ExZf56y4uzXHnIsMNbjvI9dMtjSRaryxfFIY64fD2u/R0ppdTIj9vDLLPYwSW6jbn+zmXuZRdcsdAiIa/EF0FNQgYmRkHFbKWfDDSsoH4XFhN0UcYm1H9eiobdxixqQciyWA6GaYdD07xcq5zGnZ+wVvaLTzhf4QmTe5LzdP9daIeWn+JX0nrr5qUx109pDOgu8epTyOgu4U2VusEQvDfzVZy+C5Ckb4otYBTL6SwboNHmIMVEBOW7wXQFsJKLVFmMTgu2PMhMox03zzF9LX7FomERlPLTg==
+ bh=07lwWwfGF2F1JFzhKt9PApm2AB1PzDI0vv7zwp/f9C4=;
+ b=Ibg9rwP2ati6Kcq512+Wi4+U2SqewaXDXkngJEkVOtlpZSbWbuFbv+I69HYs8vSxtTC5lo/qZLb1tMfQroZQR9WW3v8du3aqCzCbmaITYHJ7BFVhcIHIsmcwYt6OO5Ev4TOY3dD60FDjwmVt5G2/ajfe2aEhB0ZrVDrTQskqyosTgbEH6cBpHdSswOteXFaICwh6TvQNZMi4G7iALj/kv2UPEABScS6ppaQQBLj3hFlsxxwXFx3SLZV7rVEHsjxFyxXo4bXtrAQTJKTXq0I0rdXeYGPUHwJYdO0QwxyxniS+UmUG7mbh5ofNroyHPL389jISvoRYTz1ujfruo8vZfw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HNk+n9SDKWqJHp6xWM8jKImeBaBUzcZ3bEGRkeCVLP0=;
- b=DsZYStTjj2e2r690n4//gXRHGFjXuuSECwGGqVXlfaZttoy+JmNteWX+86706f+O3AFXZ92uVSECj0skqhMX57AO55tumE4qIX95XLqkMC9XaEFwJ9rem5Q1PxacWg8dUEt+/bt5ifv88jqko0YGLo0DnmeftCS+mVoKdvWVKs8=
+ bh=07lwWwfGF2F1JFzhKt9PApm2AB1PzDI0vv7zwp/f9C4=;
+ b=h9UvUckOwKH/esKTDfJgSw5qAMV/I2rXjNDxnbvOyqprWEyjTIwqcP+6FMnjtigGlyw9xWCRMI6CK8PRQ3yiZDFcEVO+s9EPZAzmDur4z7w3FLst7yKZMQxS0Im5of2z1cwf/T6y666PEGRzSJBqYm8NB9CZzIlnQduE//019IM=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
  by LO0P265MB7331.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2ec::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.13; Wed, 15 Jan
- 2025 11:38:38 +0000
+ 2025 11:42:42 +0000
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1818:a2bf:38a7:a1e7%5]) with mapi id 15.20.8356.010; Wed, 15 Jan 2025
- 11:38:38 +0000
-Date: Wed, 15 Jan 2025 11:38:36 +0000
+ 11:42:42 +0000
+Date: Wed, 15 Jan 2025 11:42:38 +0000
 From: Gary Guo <gary@garyguo.net>
 To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex
- Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?B?QmrDtnJu?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
+ Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
  Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
  rust-for-linux@vger.kernel.org
 Subject: Re: [PATCH] rust: irq: add support for request_irq()
-Message-ID: <20250115113836.18992e92.gary@garyguo.net>
-In-Reply-To: <20499935-B328-4DE3-AFBF-B692FA3434E5@collabora.com>
+Message-ID: <20250115114238.3ff83439.gary@garyguo.net>
+In-Reply-To: <20241024-topic-panthor-rs-request_irq-v1-1-7cbc51c182ca@collabora.com>
 References: <20241024-topic-panthor-rs-request_irq-v1-1-7cbc51c182ca@collabora.com>
-	<CAH5fLggjAu+YPBxJh0_K933McnnSC=pEBhVV9YxMbUGzukE3ng@mail.gmail.com>
-	<04864DC4-FA5B-4D7A-8EE5-BDA1E8F88007@collabora.com>
-	<CAH5fLgiaVg1+PZxGr0Y_oyu9pJfTSRuN9n4EomFGhnvnZXC4cg@mail.gmail.com>
-	<20499935-B328-4DE3-AFBF-B692FA3434E5@collabora.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: LO6P123CA0058.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:310::19) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: ZR2P278CA0011.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:50::16) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -73,123 +69,411 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO0P265MB7331:EE_
-X-MS-Office365-Filtering-Correlation-Id: c2981c57-3595-4fd2-6a4e-08dd35592757
+X-MS-Office365-Filtering-Correlation-Id: 74929462-6f51-4051-fe07-08dd3559b85f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|366016|376014|7416014|10070799003|1800799024|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?OWxUa2RmNmo4TGtQcVB3OEtZb2FCNHJJMFdVUmhRUDFFZWNkN1dNMExZcHB1?=
- =?utf-8?B?c3duckpTekpQV2IyWXMrcGpraGFaaS9vSnZQdnU1bktmcU1KQnkzdDBWdFYw?=
- =?utf-8?B?OXg1aEZwdkg0Z2kxTzBsWEdKWUw4M1doWHJybmE2eTZ0ZEpaWFdxYURuVnZ6?=
- =?utf-8?B?QUQxLzNYZFd3S2ZWVWhkWFhVL1ZidGtGYUErR1NTVGZydXprRnd6UmFaKzZX?=
- =?utf-8?B?d1U1b1k1eDFsU3BUZTRxVXd1cWJ1cXlqN3R3YzM1UmI2bG5WcStVRVlHRlpU?=
- =?utf-8?B?d1lNK0RzazJCYm11eFdxVURoU3EvaEExK0NBblBNbXpodnlGaGJtLzZZa05w?=
- =?utf-8?B?dGxjQzBZeEFSanpKczNIcjVFNmJQU0RpdFNXa05EemxSV21uZEFoQ2RPcXdq?=
- =?utf-8?B?ZkY0dVpZaHZkaE44R1ZTZ0dIQkl1TEEwV0NSQ2hKcW9UWWp1TWlTZXJNQzdM?=
- =?utf-8?B?ZUhlR29uN1VIMXNnNitkMWpGb0IreW5BTHl3RHZiTHU3SEp5VUg0QmVoKzhw?=
- =?utf-8?B?SEkvV0VRbmtUMFI0M3dmem9zSzJLWldpZXQ2OTdXWkgrdGFHM3Nmb3lwbmlo?=
- =?utf-8?B?NVFmWUQ4OW8vZGFsRWhBdGxEM1l1ZWN2WGl5TUM0dnBrUjdvQit5RTZyTWla?=
- =?utf-8?B?cDMrQ0x1SVNyTXFlRWdIcjdGUVNCRDJ4eGZtNmxTSkNjdHNNUXVESmxhcnRu?=
- =?utf-8?B?RmpTQ1VBa1o0NWxYdE41Zk5HZjlJVitmeEExbXp3Q2ppNlpBQkxaelNZMThw?=
- =?utf-8?B?TTBISWh0VUFLS295dXp5Mmk4R3Q5bWp0N3JHT0FiSVhTcTRVSXhPRTNCV2Fz?=
- =?utf-8?B?TFNTZEpid2k0dlNpSVFPQzdoL25jLzBNTHVBZHhSTnpVdkpTYlFSQUpiN2Nh?=
- =?utf-8?B?ZFhiU0ZUQnBHQmIxa0tRdjFzbWhOazJLN2lWbkxocU8xQ0ozUm1ZSnBUUmJE?=
- =?utf-8?B?RDN3VzZENXUrbkdrOVg5NDdkM0MxT1VvN1FlM0kxNDBqVytNZjRndWZVVXNj?=
- =?utf-8?B?TDJkU0NDRk9neXM3RUdOSkdQYklrWThmY0srYUIvZmw3OFhvZUdZdWZsMVN3?=
- =?utf-8?B?RUkwMEFEbGNqRUFSS0hiODh2QzNjb3JNV0x2ZGFUWHc5RHc3UndWR1JVVmVO?=
- =?utf-8?B?RWdyTDdLdEdHQU5nam5hVDh2QjFSR2c2SDFjT1FaaXhZenJrVUlrZG9kMTAr?=
- =?utf-8?B?dExWbGFMWnlvVVFzVDllamRlN05jT2xSYXE3SnYyMVRUaHVPckw0NlN4bm42?=
- =?utf-8?B?RUdiVklxWmJCYUNFQitJdENqaVpkbUVhSEYrWGJhYWFhUjE4Tm4rZVFkUVdk?=
- =?utf-8?B?S1pVWVZCUFFjU0lnTm8xbVFuWEFOS2dUSmFzQUw2OXJZZ243TkxSR29mMTl5?=
- =?utf-8?B?dXdQNjhRai9tWVRxYng5aG51ZWlEVk9oNU1vY1llV3l2MVBwZzRQRDNJUlFz?=
- =?utf-8?B?Y0J3MkR3VDdvODE5MzhUd1Vqc2s2Y012eStFTXhtY0s0N09qajdYcXRtbW80?=
- =?utf-8?B?NGp2Z3dNZUltL0FBd2VTaEJoaDl0VDkwekxmTWhIbWM3Zy8yT0VQeWhxUHFX?=
- =?utf-8?B?ell2aS84dEZkZ3RUWmt0OHpocFhmZWltcnNPaDYxTGtkcUx0WFRyOTJIN1dp?=
- =?utf-8?B?eWVVSzZWUmpSQ0pBSnZSRHc3NGYzdTVrOU1jWHFXQjUwOFlWMk5VZHNUcExS?=
- =?utf-8?B?bHp2bXpoZzNSeFNMVU1wUUVQcnZtbU1nS1JHSzJ3RWdHbE44NlpoR09PQjBP?=
- =?utf-8?B?cUdzYVlwbGhOb2RaTEd1bzZ2Z01GSXJkbnNQQ2VOcG5PdnJzNFExV0pCUDY3?=
- =?utf-8?B?QlRkVlJaVUppd2NvTGlhaEI4Z2xMaTBVeERVL1JKSGlYNEkybXE3eWFPQmVw?=
- =?utf-8?Q?nnIvx9oHYoXhU?=
+	=?us-ascii?Q?6EWhn8Qxo70jWxbtemoYzOtc5oP+l6c8aEvFkuta98mKnSF+txvchXapE1QL?=
+ =?us-ascii?Q?ShL1H8XSJ0akrTvkjg26aKMu4ZdFf2YSrIMoLoPRFi/pRShTuhoG27236vVZ?=
+ =?us-ascii?Q?kc6RyDYVq2eWe2jMcFqsw2RP5riHz5kkuGSdPWyvwWfxeCqyWtKbyWOR072d?=
+ =?us-ascii?Q?QRpsyyWSRSol4mr2fDDc5ljGd7MluYqAPVM34UcGPHfcDQPiYgS1guoR9SNI?=
+ =?us-ascii?Q?KHiGS3nGDQdUuOrifFMHt9E3whqYlzLbyqE24X4ApPvxDU9P6mF3R7vzjnaD?=
+ =?us-ascii?Q?C6nnRECBzWCnGNNkhri38uDgDgoBgr/+NbKeFl3u9WOcoTcuNKrO+1UP37Gr?=
+ =?us-ascii?Q?arWPVpL0Mk9q6DYvmm5Y3pSuv+009VKbQ9sAcjm3nk2PnnHmnkY+U7uWZt/K?=
+ =?us-ascii?Q?juW5gLW90h5YcTqmvWzZakdaxfWs6PaZmUXQ04pUHYcOypGpSF+GHfl2Z6Tr?=
+ =?us-ascii?Q?YpGE0mdsHXRh0IeAV3hYJnwEc0kA6GcPxsotiExt29m5HarEQbNUS4nW5u6I?=
+ =?us-ascii?Q?TuK1Ok20O5ft2/49NFnZPt3Ddk+q5zPjDsu24gt5awekKMVAvYT89/P6ieKN?=
+ =?us-ascii?Q?7czJ/K8LFP+tlAyo00tlmMDerLuEWXTATA15AGVtMGm5Jzc4BBgDjgZlrxdG?=
+ =?us-ascii?Q?iqYpkAcLDrqHidiQGPmpP5fvgboOJTMVz399nBAJHidBumIxgiFjGUPGfVfg?=
+ =?us-ascii?Q?jLXUERoPa8e6IvTy4wYApDyStdCXrZyL3SJKdQpgQY9OijzzcprkeL8JanA+?=
+ =?us-ascii?Q?cWSWQioiUmlPFAxM9N4XNJGH/sx5GlRj2A4Ck0BnhHAE9Si3HCVGM32YGUo0?=
+ =?us-ascii?Q?RrMKjWpLN3iah+6IhiL51CWo8Ep7L1FYghTJ9JtT5EcThbdHmwOPiekY74dP?=
+ =?us-ascii?Q?PixiMRtBWdQKRyQREnsLZdy5HRsxMqvXjXrYbzW5HnJM34dVPxiDz2zKkyhl?=
+ =?us-ascii?Q?IumeUx+qcE59RHJJA3q/GE5Bi33vhXhfmHuE+qshriSmcMkAcrDGdQF2K/Mm?=
+ =?us-ascii?Q?vmJYmPqu2SzE33nO+3ahv7lWAG4sUPLliy3FG6kWUSA57FTapZel6KlafYT2?=
+ =?us-ascii?Q?LhiE1JJIwhi8cMHXkKBbOF9UP4Ma0UHkj6dO0NF0kwK2/CDevi1M7m95mdKU?=
+ =?us-ascii?Q?0CBNF6J1FhBpQ4ZCp3jMt9lsfqBOJnUlGdujy+Mqqnl6djyjWe+XzLoqjZTW?=
+ =?us-ascii?Q?5ivGgMs4GtGp84Yz0DZFZKFcaXnIhblCkkWWAHPAru0lq+enapJ78rnbwMG9?=
+ =?us-ascii?Q?SNYSxd4DyshJxZDIOe4FlQmkhSka9W6oH324vnsSB2ls1nXtnNr+Y7GwwXar?=
+ =?us-ascii?Q?dlwtwBGLeANLrRBrzJpEdykX4fRszWjuHyyrqu4tqBJFUuRSzSMQnQM60ik+?=
+ =?us-ascii?Q?mbx6CGlJOGeqDAHE2nuutqiG7CFa?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(10070799003)(1800799024)(7053199007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RGkvcWdUSm9OMTRPb3IrSXdkOHVtRElEWjBHdUtzdVlEZWo2dkFXUExsRHhQ?=
- =?utf-8?B?ekd2cG0zZDdTQmtqZ0NwSTNPRE1pN1VtWHJMUGFCMjA5cVJlRmRkTWF0dFhK?=
- =?utf-8?B?bnM2TjZ6N0VBd3dScTlzTFMzeEo1dE43ODVVY3hKOFJybS9qL1IybFh5Y3Bl?=
- =?utf-8?B?UDRFbFZTNVl3czR3QndvbHF3NFRzYnpYTkhRcjVhK0JRaExIZlkvOFk0Rmhp?=
- =?utf-8?B?dW9ROSs1VHRYNDQ1WXpVcnlQT0R2cEFhbDNPOVMwMC9IdWZxYmdXUUUzaHE0?=
- =?utf-8?B?cnlqcWZWSFkwYlhUT1pJL29aaUpWK2tvQXE4ckNSRzlzUjRZNTJsM2FFaGJN?=
- =?utf-8?B?TzNVaC9WZHgydjFSSlcwa21pZGc2czNkNlFDdy81VTJZWHloVHd1OUwvUVZK?=
- =?utf-8?B?Nk1GbnorUnF1dVpqeWNoVm9MMjlGRkJIaFROZ2hhMnUzWS9PNE5HVC8wWDJH?=
- =?utf-8?B?TmlsY2d6VHVJZFl0bGI2WG1qU05QbU5zTC9ndDNHNnM2MU5Ud3JrSzdORGk3?=
- =?utf-8?B?OXE0cXJzSWJsQlEzck1ybGFTMlFlNGZ1UmVSSUt4YkVSL3UxVDEyZlZ3Y1p4?=
- =?utf-8?B?U2tsR3BHK2gyckluZ21vVGhKQTZ1aVAvc09FN3pGYzRPMXpYRWVPOEJwaDJp?=
- =?utf-8?B?T2c3YWVuYlJPNGJQUXpXNGx6MUV5OHpZajZRbGpNWFlwMm9GK3FiTWxaa3Ux?=
- =?utf-8?B?Q1VFZFNzNWFNNTR6K253U1g3T29RTmQ5MHZLZ3haeHYxTmxZb1N5MnhrOUdm?=
- =?utf-8?B?QzQ5eVBlZ1VqanVJOWJJckVwQ2ZFT1JCMVlJUU0rM1h4OUZVbWtFQ2syMVN3?=
- =?utf-8?B?eVBCamxsSWNGMVYyQWI5dUo1bW1pUHc3aDJvVjZhOU03ZFpadXo1SER1US9l?=
- =?utf-8?B?cFk0VUtkaitIZXpMMC9Hemx2eXhLMzVVd3hSQjRvalNZdEpyeGFIL0pMbno0?=
- =?utf-8?B?UFBJYkkraGQ5aUFaR25Bc25vTG5KUlhWaWFjMU9NZzhsZ2d0UmdhVlRJdnV2?=
- =?utf-8?B?aERDdUpaRlVGYVM2L2hBdjZNaUMrYlJjNGQ0RkcweG9DK3FMRzdSNklFdGNV?=
- =?utf-8?B?WlRyT002MXdiV0NJb1ZoRFNHTVNHNUdOR0NvMGpta0Exdkx5RGJwa09NUFRS?=
- =?utf-8?B?WUhra1hNejJUd2x4amRiWHJNNVh6QTVhbXpKSHBNWllXYTJmZElrU3p3cWhw?=
- =?utf-8?B?MDNMYXE3cElBbDkyRVZ1OXFlOFhCOXRpTFllMGJBYjViTFFTNVA3dW5Jc3lU?=
- =?utf-8?B?TkpEYVB6c013S1FPb3VJZTdNV3VBRU5zRitYQmxQUTBncXFHaE1DemlHb0wv?=
- =?utf-8?B?THQyQit2WEdOb094VGJ2S0NlaWVRVENhSnlpSnhZdUlUSzhvSWtSMUFjaS84?=
- =?utf-8?B?WUIrZ0ZSRjZ3WGFvdDhIdjJvMXNpSDBhNzdidGtxalpPNWF5US83d2J6R3d0?=
- =?utf-8?B?MUtNKzJrWW5CakNMQldsYXZubitIeGtRdFBhYzBsYmM3QkN2U1NrZWJHQlRK?=
- =?utf-8?B?dU9wVTh1cUdhZUwxbkN6cm9YTjhZTDVrTEliSkdZaUtGMGV0c3h3R2xrZG0y?=
- =?utf-8?B?Q0N5NGg3UTV5ci91TDBtOG82dWR6YVFjdUl5QUFxbWFYRnpRSis0YXVUU08x?=
- =?utf-8?B?ZnEyS21BZ3VnVDdFUzJxOTVucEdtczdZcHd2V01icEtqdDJHeVRaeGtRV21t?=
- =?utf-8?B?ZVRPMUtuNVBXc0IwYjVhZGw5b3BvTWxPRldLM0wwWXhkY1hiUGZwYnFrZXZG?=
- =?utf-8?B?Sk5CWldzYUxyaHpJaUwzK3BGWEJGL2wvQjlBdTByWEdTc0pkcUp2RkVQNDZi?=
- =?utf-8?B?OGxqNUEweFpja1dydTEvT0Vhd1VKSFNsSEp3QWZrekpPZ2lFdHMxbDVBSTVw?=
- =?utf-8?B?aGxreklveWtFYWJuRms3SEMxZ1BGSVQrRlNTTElHV3UzNHk0QXZLd1MvYVZk?=
- =?utf-8?B?ZWZ0a0wxK0p2OWc5NFdxaUdvaXBKOWh4TDh3UTVNc2MvQk52QkY5SHU4cXY3?=
- =?utf-8?B?RWNPQjlTYkRzNGdxNWpwS2lRT2lXTE1xUm9DRThyakl2M3FhV1UwdGVTVlVF?=
- =?utf-8?B?bDk4Y3JaZU5EVStEOGVSTUtMQzVXUzVSSnBBUVNadUxaeGVxZjd5ZnhWZnQ3?=
- =?utf-8?B?S1loODF2SXVDRkVkM0crOVh2RFFJNmprSCswTWVNQTFTUTFMSTdwblI4ZTRJ?=
- =?utf-8?B?Tmc9PQ==?=
+	=?us-ascii?Q?IReCasgyaw5IXnV4i7/mAzHrm7yAjrtenPsQLlIZZXjoVfwkKSsqGGH5ck56?=
+ =?us-ascii?Q?yKCDQOaYk+5rCwNfLpCnm8oekkkjm4pDV0VEsaZUaENaPoV1veNAGpeTCEf7?=
+ =?us-ascii?Q?e2PiajS390b86DmpvzWygQoA6Ih38V1bTkhVwLNPE8CJXLCYhN3m4OdbbKlZ?=
+ =?us-ascii?Q?B4nbsUAQfCjdOHLz2/vpQu0xFY8l3m9vC7ipCuTpWCfhAXucVDci1qbOHfL3?=
+ =?us-ascii?Q?CCvRK+gKutXrWBhfMv7B9xbXYNu/U3DNGZSflacUqfhicU+U6dNExEZMfElz?=
+ =?us-ascii?Q?BTNBXgtBkbQqp6KqIXELP/uiO7e+TQ5ydLdKhmJwx3sihUwsP0znXBLSRclS?=
+ =?us-ascii?Q?m2khGkSKXWXLkuizbDUB95N4P3fyu44bCapy9rPksj18aa+fuBopXDg+OzmX?=
+ =?us-ascii?Q?SnS0MRWr0dOld6oSsSavMrh4fv+wpIZxmSBQls391NQWoaGTNwaY3Ndfw1T0?=
+ =?us-ascii?Q?5YQykXu1dVxFihr+T0G4TrocPhhJRZAmY0/LuUZA4yWQbhgrjcm9KSdT+byo?=
+ =?us-ascii?Q?qEBGyQqFSSocY58CweqoWlB4+dlyestN2tIpngb+gX08kl2PwAoEgjeTw8PD?=
+ =?us-ascii?Q?SFfzeZkTwiFTSb5BZ9rtXi7kKW2bGA+s621FG9GOVywKCWpc6fzvMqjYbgz5?=
+ =?us-ascii?Q?xy35rYfeEnbK0+bTxMWzFIibtitq24b7GK33U4T+R9P30nV5koOFvkAn8WSa?=
+ =?us-ascii?Q?Osnc6nDspfCvTRfbvNjcOD0qCrblAnJUR9YDWRZOLfW3B6RXZu4GeG9BYAmZ?=
+ =?us-ascii?Q?KYOCtr6S3Zx5ZXlkK4Vu7iL6nGOEaPwRt/eCZjl098PvcqwhfQwCfk5YbT/v?=
+ =?us-ascii?Q?C9Sad9+temxWiH5bRBKTe6jEbe2LIhoNp6HQp18aQ1cukxq6s56U9ZoOe8u1?=
+ =?us-ascii?Q?WWjjs6nhP3002Uq86Ms/XIjL3Mx5IfrXqQ0Nizee8IMIdw2cssmWtWZbeB5l?=
+ =?us-ascii?Q?obd9fTRT9UphTm3RI/nKYD3TOODxavyTsY1MmnDtDWarDjNpxgfI/9PqJRlg?=
+ =?us-ascii?Q?8edXUQKdp2hmdLCMklaMjbqijaO7n5cmQDnf/a303JU9NX0Sa0ViNgk3V7vv?=
+ =?us-ascii?Q?MnOwgEi5bqXWKtpxazV8oJ/fSfUXpAjVbMKhiWVQ+a2m97tdAfo438TVgd0Z?=
+ =?us-ascii?Q?ggANcuD6XS//CrUUNyT7ytMFglyHGB5lR2rzZkfaw8rgpX7QoVSSl4EgbXVm?=
+ =?us-ascii?Q?3LcI//asg5EjOlQgZrhY5vJQ0/ytKosCgf7t0iuRtepWr+ELg1FffNoewDdD?=
+ =?us-ascii?Q?tr6GMmz7btpkqbxjAEb5ruHWUEpI34y0HDB6uSRgwYe6K0KlsiwOaDy+OjKN?=
+ =?us-ascii?Q?TFThN8uZebZuhTbw2ikQupmNifvRXnrKkpcLd4uedJwd+Qjd98ZBWzT7yDEA?=
+ =?us-ascii?Q?dkv4UV4DrJTe+wGvvM/vQRZu1PmvBXG6VNxQy/gkcNTW/UT6UudOtEEQ4km7?=
+ =?us-ascii?Q?me8hCt43nCc6esx4JJK9RNVynOokMy6ACmekFpNkxHDuJoQXc2D5NR/NUVWn?=
+ =?us-ascii?Q?XP0ObHy3LHscqjPsA5LDkpNj6N0p+th975J8GGlsMWTq+cKEfPAQCapx2oYH?=
+ =?us-ascii?Q?mRtFl90UTrkO+sIhyJlpOdfvEGVtsM+Z9z3a5pMKxu8u2Rrcq/AMFuSWdAVz?=
+ =?us-ascii?Q?TA=3D=3D?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: c2981c57-3595-4fd2-6a4e-08dd35592757
+X-MS-Exchange-CrossTenant-Network-Message-Id: 74929462-6f51-4051-fe07-08dd3559b85f
 X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2025 11:38:38.6596
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2025 11:42:41.9428
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RHyY3K8heDGJAf+BkjketxxjAREFds1KhZJh+l6xxIj7f3qDK9tULPsMJEVl5WwLQOHmQBs4YLQyN6iXzhf1NQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: Bnlw+tUAojk1VDrEfusBwEj/ll4j8n8TKTOBGDMyoGyrwRB9ae0YUMdaDN3DYV5FzbZQz9LxyW1dCouvH3GGzw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB7331
 
-On Tue, 14 Jan 2025 15:57:57 -0300
+On Thu, 24 Oct 2024 11:20:02 -0300
 Daniel Almeida <daniel.almeida@collabora.com> wrote:
 
-> >=20
-> > It's not the pin_init! stuff, but the Opaque stuff. If it fails, then
-> > it runs the destructor of Opaque<T>, which does *not* run the
-> > destructor of T.
-> >=20
-> > Alice =20
->=20
-> This is pretty unintuitive if you take into account trivial examples like
->=20
-> ```
-> struct Foo(T)
-> ```
->=20
-> Where dropping Foo drops T.
->=20
-> Is there any reason why dropping Opaque<T> doesn=E2=80=99t behave similar=
-ly?
->=20
-> =E2=80=94 Daniel
+> Both regular and threaded versions are supported.
+> 
+> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+> ---
+>  rust/bindings/bindings_helper.h |   1 +
+>  rust/helpers/helpers.c          |   1 +
+>  rust/helpers/irq.c              |   9 +
+>  rust/kernel/irq.rs              |   6 +
+>  rust/kernel/irq/request.rs      | 450 ++++++++++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs              |   1 +
+>  6 files changed, 468 insertions(+)
+> 
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index ae82e9c941afa17c48737d2b2e49ac6d26f670b1..f1c35b334f5f7d2adcacb1def72182a09db2ac6c 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -13,6 +13,7 @@
+>  #include <linux/errname.h>
+>  #include <linux/ethtool.h>
+>  #include <linux/firmware.h>
+> +#include <linux/interrupt.h>
+>  #include <linux/jiffies.h>
+>  #include <linux/mdio.h>
+>  #include <linux/phy.h>
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index 30f40149f3a969f9e8eb747aabdc17a8cb06936b..0bb48df454bd87def8271444ea58c781b792e34c 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -12,6 +12,7 @@
+>  #include "build_assert.c"
+>  #include "build_bug.c"
+>  #include "err.c"
+> +#include "irq.c"
+>  #include "kunit.c"
+>  #include "mutex.c"
+>  #include "page.c"
+> diff --git a/rust/helpers/irq.c b/rust/helpers/irq.c
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..1faca428e2c047a656dec3171855c1508d67e60b
+> --- /dev/null
+> +++ b/rust/helpers/irq.c
+> @@ -0,0 +1,9 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/interrupt.h>
+> +
+> +int rust_helper_request_irq(unsigned int irq, irq_handler_t handler,
+> +			    unsigned long flags, const char *name, void *dev)
+> +{
+> +	return request_irq(irq, handler, flags, name, dev);
+> +}
+> diff --git a/rust/kernel/irq.rs b/rust/kernel/irq.rs
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..3ab83c5bdb831e84f5e035d9ef56f8e373fa572d
+> --- /dev/null
+> +++ b/rust/kernel/irq.rs
+> @@ -0,0 +1,6 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! IRQ abstractions
+> +
+> +/// IRQ allocation and handling
+> +pub mod request;
+> diff --git a/rust/kernel/irq/request.rs b/rust/kernel/irq/request.rs
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..4b5c5b80c3f43d482132423c2c52cfa5696b7661
+> --- /dev/null
+> +++ b/rust/kernel/irq/request.rs
+> @@ -0,0 +1,450 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +// SPDX-FileCopyrightText: Copyright 2019 Collabora ltd.
+> +
+> +//! IRQ allocation and handling
+> +
+> +use crate::error::to_result;
+> +use crate::prelude::*;
+> +use crate::str::CStr;
+> +use crate::types::Opaque;
+> +
+> +/// Flags to be used when registering IRQ handlers.
+> +///
+> +/// They can be combined with the operators `|`, `&`, and `!`.
+> +///
+> +/// Values can be used from the [`flags`] module.
+> +#[derive(Clone, Copy)]
+> +pub struct Flags(u64);
+> +
+> +impl core::ops::BitOr for Flags {
+> +    type Output = Self;
+> +    fn bitor(self, rhs: Self) -> Self::Output {
+> +        Self(self.0 | rhs.0)
+> +    }
+> +}
+> +
+> +impl core::ops::BitAnd for Flags {
+> +    type Output = Self;
+> +    fn bitand(self, rhs: Self) -> Self::Output {
+> +        Self(self.0 & rhs.0)
+> +    }
+> +}
+> +
+> +impl core::ops::Not for Flags {
+> +    type Output = Self;
+> +    fn not(self) -> Self::Output {
+> +        Self(!self.0)
+> +    }
+> +}
+> +
+> +/// The flags that can be used when registering an IRQ handler.
+> +pub mod flags {
+> +    use super::Flags;
+> +
+> +    use crate::bindings;
+> +
+> +    /// Use the interrupt line as already configured.
+> +    pub const TRIGGER_NONE: Flags = Flags(bindings::IRQF_TRIGGER_NONE as _);
+> +
+> +    /// The interrupt is triggered when the signal goes from low to high.
+> +    pub const TRIGGER_RISING: Flags = Flags(bindings::IRQF_TRIGGER_RISING as _);
+> +
+> +    /// The interrupt is triggered when the signal goes from high to low.
+> +    pub const TRIGGER_FALLING: Flags = Flags(bindings::IRQF_TRIGGER_FALLING as _);
+> +
+> +    /// The interrupt is triggered while the signal is held high.
+> +    pub const TRIGGER_HIGH: Flags = Flags(bindings::IRQF_TRIGGER_HIGH as _);
+> +
+> +    /// The interrupt is triggered while the signal is held low.
+> +    pub const TRIGGER_LOW: Flags = Flags(bindings::IRQF_TRIGGER_LOW as _);
+> +
+> +    /// Allow sharing the irq among several devices.
+> +    pub const SHARED: Flags = Flags(bindings::IRQF_SHARED as _);
+> +
+> +    /// Set by callers when they expect sharing mismatches to occur.
+> +    pub const PROBE_SHARED: Flags = Flags(bindings::IRQF_PROBE_SHARED as _);
+> +
+> +    /// Flag to mark this interrupt as timer interrupt.
+> +    pub const TIMER: Flags = Flags(bindings::IRQF_TIMER as _);
+> +
+> +    /// Interrupt is per cpu.
+> +    pub const PERCPU: Flags = Flags(bindings::IRQF_PERCPU as _);
+> +
+> +    /// Flag to exclude this interrupt from irq balancing.
+> +    pub const NOBALANCING: Flags = Flags(bindings::IRQF_NOBALANCING as _);
+> +
+> +    /// Interrupt is used for polling (only the interrupt that is registered
+> +    /// first in a shared interrupt is considered for performance reasons).
+> +    pub const IRQPOLL: Flags = Flags(bindings::IRQF_IRQPOLL as _);
+> +
+> +    /// Interrupt is not reenabled after the hardirq handler finished. Used by
+> +    /// threaded interrupts which need to keep the irq line disabled until the
+> +    /// threaded handler has been run.
+> +    pub const ONESHOT: Flags = Flags(bindings::IRQF_ONESHOT as _);
+> +
+> +    /// Do not disable this IRQ during suspend. Does not guarantee that this
+> +    /// interrupt will wake the system from a suspended state.
+> +    pub const NO_SUSPEND: Flags = Flags(bindings::IRQF_NO_SUSPEND as _);
+> +
+> +    /// Force enable it on resume even if [`NO_SUSPEND`] is set.
+> +    pub const FORCE_RESUME: Flags = Flags(bindings::IRQF_FORCE_RESUME as _);
+> +
+> +    /// Interrupt cannot be threaded.
+> +    pub const NO_THREAD: Flags = Flags(bindings::IRQF_NO_THREAD as _);
+> +
+> +    /// Resume IRQ early during syscore instead of at device resume time.
+> +    pub const EARLY_RESUME: Flags = Flags(bindings::IRQF_EARLY_RESUME as _);
+> +
+> +    /// If the IRQ is shared with a NO_SUSPEND user, execute this interrupt
+> +    /// handler after suspending interrupts. For system wakeup devices users
+> +    /// need to implement wakeup detection in their interrupt handlers.
+> +    pub const COND_SUSPEND: Flags = Flags(bindings::IRQF_COND_SUSPEND as _);
+> +
+> +    /// Don't enable IRQ or NMI automatically when users request it. Users will
+> +    /// enable it explicitly by `enable_irq` or `enable_nmi` later.
+> +    pub const NO_AUTOEN: Flags = Flags(bindings::IRQF_NO_AUTOEN as _);
+> +
+> +    /// Exclude from runnaway detection for IPI and similar handlers, depends on
+> +    /// `PERCPU`.
+> +    pub const NO_DEBUG: Flags = Flags(bindings::IRQF_NO_DEBUG as _);
+> +}
+> +
+> +/// The value that can be returned from an IrqHandler;
+> +pub enum IrqReturn {
+> +    /// The interrupt was not from this device or was not handled.
+> +    None = bindings::irqreturn_IRQ_NONE as _,
+> +
+> +    /// The interrupt was handled by this device.
+> +    Handled = bindings::irqreturn_IRQ_HANDLED as _,
+> +}
+> +
+> +/// Callbacks for an IRQ handler.
+> +pub trait Handler: Sync {
+> +    /// The actual handler function. As usual, sleeps are not allowed in IRQ
+> +    /// context.
+> +    fn handle_irq(&self) -> IrqReturn;
+> +}
+> +
+> +/// A registration of an IRQ handler for a given IRQ line.
+> +///
+> +/// # Invariants
+> +///
+> +/// * We own an irq handler using `&self` as its private data.
+> +///
+> +/// # Examples
+> +///
+> +/// The following is an example of using `Registration`:
+> +///
+> +/// ```
+> +/// use kernel::prelude::*;
+> +/// use kernel::irq;
+> +/// use kernel::irq::Registration;
+> +/// use kernel::sync::Arc;
+> +/// use kernel::sync::lock::SpinLock;
+> +///
+> +/// // Declare a struct that will be passed in when the interrupt fires. The u32
+> +/// // merely serves as an example of some internal data.
+> +/// struct Data(u32);
+> +///
+> +/// // [`handle_irq`] returns &self. This example illustrates interior
+> +/// // mutability can be used when share the data between process context and IRQ
+> +/// // context.
+> +/// //
+> +/// // Ideally, this example would be using a version of SpinLock that is aware
+> +/// // of `spin_lock_irqsave` and `spin_lock_irqrestore`, but that is not yet
+> +/// // implemented.
+> +///
+> +/// type Handler = SpinLock<Data>;
+> +///
+> +/// impl kernel::irq::Handler for Handler {
+> +///     // This is executing in IRQ context in some CPU. Other CPUs can still
+> +///     // try to access to data.
+> +///     fn handle_irq(&self) -> irq::IrqReturn {
+> +///         // We now have exclusive access to the data by locking the SpinLock.
+> +///         let mut handler = self.lock();
+> +///         handler.0 += 1;
+> +///
+> +///         IrqReturn::Handled
+> +///     }
+> +/// }
+> +///
+> +/// // This is running in process context.
+> +/// fn register_irq(irq: u32, handler: Handler) -> Result<irq::Registration<Handler>> {
+> +///     let registration = Registration::register(irq, irq::flags::SHARED, "my-device", handler)?;
+> +///
+> +///     // You can have as many references to the registration as you want, so
+> +///     // multiple parts of the driver can access it.
+> +///     let registration = Arc::pin_init(registration)?;
+> +///
+> +///     // The handler may be called immediately after the function above
+> +///     // returns, possibly in a different CPU.
+> +///
+> +///     // The data can be accessed from the process context too.
+> +///     registration.handler().lock().0 = 42;
+> +///
+> +///     Ok(registration)
+> +/// }
+> +///
+> +/// # Ok::<(), Error>(())
+> +///```
+> +#[pin_data(PinnedDrop)]
+> +pub struct Registration<T: Handler> {
+> +    irq: u32,
+> +    #[pin]
+> +    handler: Opaque<T>,
+> +}
+> +
+> +impl<T: Handler> Registration<T> {
+> +    /// Registers the IRQ handler with the system for the given IRQ number. The
+> +    /// handler must be able to be called as soon as this function returns.
+> +    pub fn register(
+> +        irq: u32,
+> +        flags: Flags,
+> +        name: &'static CStr,
+> +        handler: T,
+> +    ) -> impl PinInit<Self, Error> {
+> +        try_pin_init!(Self {
+> +            irq,
+> +            handler: Opaque::new(handler)
+> +        })
 
-`Opaque` means that "this is a blob of bytes and don't touch it". It
-can be uninitialized, so no meaningful action can be performed when
-it's dropped.
+This creates `Self` immediately which is problematic because destructor
+of `Self` will be executed regardless if `request_irq` returns
+successfully or not.
+
+> +        .pin_chain(move |slot| {
+> +            // SAFETY:
+> +            // - `handler` points to a valid function defined below.
+> +            // - only valid flags can be constructed using the `flags` module.
+> +            // - `devname` is a nul-terminated string with a 'static lifetime.
+> +            // - `ptr` is a cookie used to identify the handler. The same cookie is
+> +            // passed back when the system calls the handler.
+> +            to_result(unsafe {
+> +                bindings::request_irq(
+> +                    irq,
+> +                    Some(handle_irq_callback::<T>),
+> +                    flags.0,
+> +                    name.as_char_ptr(),
+> +                    &*slot as *const _ as *mut core::ffi::c_void,
+> +                )
+> +            })?;
+> +
+> +            Ok(())
+> +        })
+> +    }
+> +
+> +    /// Returns a reference to the handler that was registered with the system.
+> +    pub fn handler(&self) -> &T {
+> +        // SAFETY: `handler` is initialized in `register`.
+> +        unsafe { &*self.handler.get() }
+> +    }
+> +}
+> +
+> +#[pinned_drop]
+> +impl<T: Handler> PinnedDrop for Registration<T> {
+> +    fn drop(self: Pin<&mut Self>) {
+> +        // SAFETY:
+> +        // - `self.irq` is the same as the one passed to `reques_irq`.
+> +        // -  `&self` was passed to `request_irq` as the cookie. It is
+> +        // guaranteed to be unique by the type system, since each call to
+> +        // `register` will return a different instance of `Registration`.
+> +        //
+> +        // Notice that this will block until all handlers finish executing, so,
+> +        // at no point will &self be invalid while the handler is running.
+> +        unsafe { bindings::free_irq(self.irq, &*self as *const _ as *mut core::ffi::c_void) };
+> +    }
+> +}
+
+In addition to what Alice said I think this doesn't drop `handler` in
+any circumstance at all.
 
 Best,
 Gary
