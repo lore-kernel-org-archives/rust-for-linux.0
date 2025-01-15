@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E2822F82E;
-	Wed, 15 Jan 2025 11:03:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CDFB23F28F;
+	Wed, 15 Jan 2025 11:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736939028; cv=none; b=MeJDhpYp2Fjj3syr8F4qKPqhcRJwP0DCz5ZwFI5nA+TEuC6Zo7zNw7rFWYx0i4U/ALVybVGXGLObbmuWKBs1tz8grdYWlX8d9etiiGu3wMJ1QtEXqCEVd2SixCjoz3g5LMCvpo+XcMHFZP8MzIoCiMPiRSHn/qHPqWISQ262KG0=
+	t=1736939033; cv=none; b=hrSutB7NxVow+YtfLADkZ2qURpj6tlkrIFRCtpyRYMPws5sCdg/l76wkHGYPiOy4rOcIEIT1eqZ4oj1livHHIAtgP4FUtelOerXEiSZoVuzMQoTlfZ4/I5dBF8Kp53xQuFhx4Oi9bPl7Z5TCaOvZJyra1NILhEpJeaju6dFUskI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736939028; c=relaxed/simple;
-	bh=2mzV9xftHa8ZCv5+6EBT2YCEpW+sOtYrUsyHCKAgMmo=;
+	s=arc-20240116; t=1736939033; c=relaxed/simple;
+	bh=iM/ufShMeANIyjcRrOoDegM0Bsoxs3dzLR1kEoW8C1w=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=GieYyV0aoapwCrK1dGx6wF9454cXi5eON7jIcYQ0o362TzNJDZa8mD5FUIz2x3yT8LbXpT98B8ik+W9NxCgNOJNLP+JmYmpWuzd5t4RXBr3FPv5kusK0DIuVRlnSsk1IttYQYFtrppN7Qc7pAg0v8kEQE+7zMfPcaiTWzLYtvD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bj9C7rCH; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=jbDEdpgRYv9X5orYhQPJrjom9Uwg3ziv0eYgstuaGcOsdYqP3k3Y8GmCbeuJerZB6zUn92FS8dkMVQADqvQ5lpviwAGJn2ZgfyiVRUmqgZejSYZHyqdycH0uqCnwQtyU157riZ6Rnh/X5FoH0RzNTcK91Skb9OZ2Kgkqwk3phdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ALRZgHh4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bj9C7rCH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08CC9C4CEE2;
-	Wed, 15 Jan 2025 11:03:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ALRZgHh4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 960A9C4CEE4;
+	Wed, 15 Jan 2025 11:03:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736939027;
-	bh=2mzV9xftHa8ZCv5+6EBT2YCEpW+sOtYrUsyHCKAgMmo=;
+	s=k20201202; t=1736939033;
+	bh=iM/ufShMeANIyjcRrOoDegM0Bsoxs3dzLR1kEoW8C1w=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=bj9C7rCHFl7bq3lQ/xaW5rt9NKgWlFNFsAwRoUKPsBCRiusHcjlU/9zF5D1HuLkt7
-	 rKJe85U+AO3EJwMj/P69Wl68hNqXbN33EsYbzS3wAOMv8LFU76sbqT/NSqXChiA9lx
-	 +GXxhzipCwDL5DOLbQ34SdHZNjZ/vbK7vCOp86SZjxQJeJfUHDVH2UkxCWfr38mKJj
-	 7ClbOqXvYw0b6u5bTHMXcpFAQYU1vQwXWWLTLDYnDlaU++2+WeRJEFzn9AAw2cOiOc
-	 jQ2WEvcHffEvfhF6HlqrqzEcB3FSs4dUgdF2v6jCvvZ3FIc1WueRzAl9/WrmI7Ssnd
-	 gSWvtkW6rOUhQ==
+	b=ALRZgHh434RCRIA1UqIBaRe/NXU5ncICjYcBki3iZ6LnjUIawa2s8VKqZyIZRYOuw
+	 MKGss0LBMtbskZgwNACkZFv5CxjQtGpgCnOPa9uItyYDaYQgezoIgOq06CfZkc1cHZ
+	 +OsOyCsOwCRENcvgLkSuTQVsxMUTh0cATzjMq6gLyzdMljiSG8QjiXuEzUtYrAO2Xc
+	 TZhHHGxB1dGTm+Fc1bPvu8mIySILB9BiieQhrJ/S7sxK9XYeRj+3H1mQga7+Nto/Hy
+	 wB7b5z0a8Lg7lzV1QZWuHwcCTqv1Qk987A1M5B7/3rLz8d9f7awGU00Td5ZSjpM/kC
+	 szEO2vMKlAvaw==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: "Alice Ryhl" <aliceryhl@google.com>
 Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Matthew Wilcox"
@@ -41,21 +41,21 @@ Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Matthew Wilcox"
  <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
   "Trevor Gross" <tmgross@umich.edu>,  <linux-kernel@vger.kernel.org>,
   <linux-mm@kvack.org>,  <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v11 6/8] mm: rust: add VmAreaNew for f_ops->mmap()
-In-Reply-To: <CAH5fLgiFzFyVPNSjAkEBvK5Uk-OgaOHDujdXHBeLRZBVaf=Fhg@mail.gmail.com>
+Subject: Re: [PATCH v11 8/8] task: rust: rework how current is accessed
+In-Reply-To: <CAH5fLgh6J41JkaD23_Br6nLkznAfzaivVY=xRpr1jzpUZNZgKA@mail.gmail.com>
  (Alice
-	Ryhl's message of "Mon, 13 Jan 2025 11:17:06 +0100")
+	Ryhl's message of "Mon, 13 Jan 2025 11:26:42 +0100")
 References: <20241211-vma-v11-0-466640428fc3@google.com>
-	<f8bp5f3T5_3_0LpabBpwjSarzhZTp1CbAvcTBI6lHlaKpPAAFiofsNI2iJxK9kuXwnqvTkky9uvpS0rqRpa_RA==@protonmail.internalid>
-	<20241211-vma-v11-6-466640428fc3@google.com> <87o71bagpf.fsf@kernel.org>
-	<vdoUDPvED_7e_bvzaMNFhBpC-6TLpsrA9cfX8LWc-w69rv1whT7EnYLMtUn_MNlJ2R-e3LrKOfHNnacUsHivFg==@protonmail.internalid>
-	<CAH5fLgh8g3d+v-am=VRdExZug6hTJf-3CWPoxxYCZLpyiXnKdg@mail.gmail.com>
-	<87a5c0bdr0.fsf@kernel.org>
-	<xEcmxFvFInZYyvtRiUX7xYv4-xhX23j6JPWfqONth_GfFU8eTub-bBK61vTLtxTwKTkiK78RuXhNrvdMAC6eGA==@protonmail.internalid>
-	<CAH5fLgiFzFyVPNSjAkEBvK5Uk-OgaOHDujdXHBeLRZBVaf=Fhg@mail.gmail.com>
+	<mSBxLtHQ2_lBeEYTQNS-AoAdOXj-UH7mEb48SlHQZJMlUBwpqzIP4UB9nZv439lfseuIL27p3QnFOMFjV2wk-g==@protonmail.internalid>
+	<20241211-vma-v11-8-466640428fc3@google.com> <87frmnadmk.fsf@kernel.org>
+	<5qXA_x0NK0TzOkDwdQ8RYbk3SboUQiD0qflQhsoPRyhFxpD7fZHC7uVjI7RQBvvHPVEO1zlMRBq3F8BBImHrYQ==@protonmail.internalid>
+	<CAH5fLgiBsW-sZ8LW4aqK1Eux71qdB3ERr6RdE3gX2uka+GRrew@mail.gmail.com>
+	<87y0zk9y4h.fsf@kernel.org>
+	<ZLsAHugV1zYzvy9Kf58keOm3JZk3-7ZwaVCBuSpQLQA6C_VSQ5q6PlAqiRRvhaMNjYFe1q4MMXrKF1eW_u5oUQ==@protonmail.internalid>
+	<CAH5fLgh6J41JkaD23_Br6nLkznAfzaivVY=xRpr1jzpUZNZgKA@mail.gmail.com>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Wed, 15 Jan 2025 10:57:49 +0100
-Message-ID: <87o708e6w2.fsf@kernel.org>
+Date: Wed, 15 Jan 2025 11:24:23 +0100
+Message-ID: <87frlke5ns.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -67,7 +67,7 @@ Content-Transfer-Encoding: quoted-printable
 
 "Alice Ryhl" <aliceryhl@google.com> writes:
 
-> On Thu, Jan 9, 2025 at 9:19=E2=80=AFAM Andreas Hindborg <a.hindborg@kerne=
+> On Thu, Jan 9, 2025 at 9:42=E2=80=AFAM Andreas Hindborg <a.hindborg@kerne=
 l.org> wrote:
 >>
 >> "Alice Ryhl" <aliceryhl@google.com> writes:
@@ -76,117 +76,152 @@ l.org> wrote:
 ernel.org> wrote:
 >> >>
 >> >> "Alice Ryhl" <aliceryhl@google.com> writes:
+>> >> > +    #[inline]
+>> >> > +    pub fn active_pid_ns(&self) -> Option<&PidNamespace> {
+>> >> > +        // SAFETY: It is safe to call `task_active_pid_ns` without=
+ RCU protection when calling it
+>> >> > +        // on the current task.
+>> >> > +        let active_ns =3D unsafe { bindings::task_active_pid_ns(se=
+lf.as_ptr()) };
+>> >> > +
+>> >> > +        if active_ns.is_null() {
+>> >> > +            return None;
+>> >> > +        }
+>> >> > +
+>> >> > +        // The lifetime of `PidNamespace` is bound to `Task` and `=
+struct pid`.
+>> >> > +        //
+>> >> > +        // The `PidNamespace` of a `Task` doesn't ever change once=
+ the `Task` is alive. A
+>> >> > +        // `unshare(CLONE_NEWPID)` or `setns(fd_pidns/pidfd, CLONE=
+_NEWPID)` will not have an effect
+>> >> > +        // on the calling `Task`'s pid namespace. It will only eff=
+ect the pid namespace of children
+>> >> > +        // created by the calling `Task`. This invariant guarantee=
+s that after having acquired a
+>> >> > +        // reference to a `Task`'s pid namespace it will remain un=
+changed.
+>> >> > +        //
+>> >> > +        // When a task has exited and been reaped `release_task()`=
+ will be called. This will set
+>> >> > +        // the `PidNamespace` of the task to `NULL`. So retrieving=
+ the `PidNamespace` of a task
+>> >> > +        // that is dead will return `NULL`. Note, that neither hol=
+ding the RCU lock nor holding a
+>> >> > +        // referencing count to the `Task` will prevent `release_t=
+ask()` being called.
+>> >> > +        //
+>> >> > +        // In order to retrieve the `PidNamespace` of a `Task` the=
+ `task_active_pid_ns()` function
+>> >> > +        // can be used. There are two cases to consider:
+>> >> > +        //
+>> >> > +        // (1) retrieving the `PidNamespace` of the `current` task
+>> >> > +        // (2) retrieving the `PidNamespace` of a non-`current` ta=
+sk
+>> >> > +        //
+>> >> > +        // From system call context retrieving the `PidNamespace` =
+for case (1) is always safe and
+>> >> > +        // requires neither RCU locking nor a reference count to b=
+e held. Retrieving the
+>> >> > +        // `PidNamespace` after `release_task()` for current will =
+return `NULL` but no codepath
+>> >> > +        // like that is exposed to Rust.
+>> >> > +        //
+>> >> > +        // Retrieving the `PidNamespace` from system call context =
+for (2) requires RCU protection.
+>> >> > +        // Accessing `PidNamespace` outside of RCU protection requ=
+ires a reference count that
+>> >> > +        // must've been acquired while holding the RCU lock. Note =
+that accessing a non-`current`
+>> >> > +        // task means `NULL` can be returned as the non-`current` =
+task could have already passed
+>> >> > +        // through `release_task()`.
+>> >> > +        //
+>> >> > +        // To retrieve (1) the `&CurrentTask` type should be used =
+which ensures that the returned
+>> >> > +        // `PidNamespace` cannot outlive the current task context.=
+ The `CurrentTask::active_pid_ns`
+>> >> > +        // function allows Rust to handle the common case of acces=
+sing `current`'s `PidNamespace`
+>> >> > +        // without RCU protection and without having to acquire a =
+reference count.
+>> >> > +        //
+>> >> > +        // For (2) the `task_get_pid_ns()` method must be used. Th=
+is will always acquire a
+>> >> > +        // reference on `PidNamespace` and will return an `Option`=
+ to force the caller to
+>> >> > +        // explicitly handle the case where `PidNamespace` is `Non=
+e`, something that tends to be
+>> >> > +        // forgotten when doing the equivalent operation in `C`. M=
+issing RCU primitives make it
+>> >> > +        // difficult to perform operations that are otherwise safe=
+ without holding a reference
+>> >> > +        // count as long as RCU protection is guaranteed. But it i=
+s not important currently. But we
+>> >> > +        // do want it in the future.
+>> >> > +        //
+>> >> > +        // Note for (2) the required RCU protection around calling=
+ `task_active_pid_ns()`
+>> >> > +        // synchronizes against putting the last reference of the =
+associated `struct pid` of
+>> >> > +        // `task->thread_pid`. The `struct pid` stored in that fie=
+ld is used to retrieve the
+>> >> > +        // `PidNamespace` of the caller. When `release_task()` is =
+called `task->thread_pid` will be
+>> >> > +        // `NULL`ed and `put_pid()` on said `struct pid` will be d=
+elayed in `free_pid()` via
+>> >> > +        // `call_rcu()` allowing everyone with an RCU protected ac=
+cess to the `struct pid` acquired
+>> >> > +        // from `task->thread_pid` to finish.
 >> >>
->> >> > This type will be used when setting up a new vma in an f_ops->mmap()
->> >> > hook. Using a separate type from VmAreaRef allows us to have a sepa=
-rate
->> >> > set of operations that you are only able to use during the mmap() h=
-ook.
->> >> > For example, the VM_MIXEDMAP flag must not be changed after the ini=
-tial
->> >> > setup that happens during the f_ops->mmap() hook.
->> >> >
->> >> > To avoid setting invalid flag values, the methods for clearing
->> >> > VM_MAYWRITE and similar involve a check of VM_WRITE, and return an =
-error
->> >> > if VM_WRITE is set. Trying to use `try_clear_maywrite` without chec=
-king
->> >> > the return value results in a compilation error because the `Result`
->> >> > type is marked #[must_use].
->> >> >
->> >> > For now, there's only a method for VM_MIXEDMAP and not VM_PFNMAP. W=
-hen
->> >> > we add a VM_PFNMAP method, we will need some way to prevent you from
->> >> > setting both VM_MIXEDMAP and VM_PFNMAP on the same vma.
->> >> >
->> >> > Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com> (for mm bits)
->> >> > Reviewed-by: Jann Horn <jannh@google.com>
->> >> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
->> >> > ---
->> >> >  rust/kernel/mm/virt.rs | 181 +++++++++++++++++++++++++++++++++++++=
-+++++++++++-
->> >> >  1 file changed, 180 insertions(+), 1 deletion(-)
->> >> >
->> >> > diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
->> >> > index 3a23854e14f4..6d9ba56d4f95 100644
->> >> > --- a/rust/kernel/mm/virt.rs
->> >> > +++ b/rust/kernel/mm/virt.rs
->> >> > @@ -6,7 +6,7 @@
->> >> >
->> >> >  use crate::{
->> >> >      bindings,
->> >> > -    error::{to_result, Result},
->> >> > +    error::{code::EINVAL, to_result, Result},
->> >> >      mm::MmWithUser,
->> >> >      page::Page,
->> >> >      types::Opaque,
->> >> > @@ -171,6 +171,185 @@ pub fn vm_insert_page(&self, address: usize, =
-page: &Page) -> Result {
->> >> >      }
->> >> >  }
->> >> >
->> >> > +/// A builder for setting up a vma in an `f_ops->mmap()` hook.
->> >>
->> >> Reading this line, I would expect to be able to chain update methods =
-as
->> >> in `Builder::new().prop_a().prop_b().build()`. Could/should this type
->> >> accommodate a proper builder pattern? Or is "builder" not the right w=
-ord
->> >> to use here?
+>> >> While this comment is a nice piece of documentation, I think we should
+>> >> move it elsewhere, or restrict it to paragraphs pertaining to (1), si=
+nce
+>> >> that is the only case we consider here?
 >> >
->> > You cannot create values of this type yourself. Only the C
->> > infrastructure can do so.
->> >
->> > What would you call it if not "builder"?
+>> > Where would you move it?
 >>
->> It looks more like a newtype with a bunch of setters and getters. It
->> also does not have a method to instantiate (`build()` or similar). So
->> how about newtype?
+>> The info about (2) should probably be with the implementation for that
+>> case, when it lands. Perhaps we can move it hen?
 >
-> I don't think newtype is helpful. Ultimately, the f_ops->mmap() hook
-> is a *constructor* for a VMA, and the VmAreaNew type represents a VMA
-> whose constructor is currently running. The "method to instantiate" is
-> called "return".
->
-> fn mmap(new_vma: &VmAreaNew) -> Result {
->     // VMAs for this driver must not be mapped as executable
->     new_vma.try_clear_may_exec()?;
->
->     // we are done constructing the vma, so return
->     Ok(())
-> }
->
-> Alice
+> The function already exists. It's called Task::get_pid_ns(). I think
+> the comment makes sense here: get_pid_ns() is the normal case where
+> you don't skip synchronization, and active_pid_ns() is the special
+> case where you can skip RCU due to reasons. This comment explains that
+> normally you cannot skip RCU, but in this special case you can.
 
-Right. Let's update the docs for the `mmap` hook then:
+Reading this again I think it should simply be cut down in size:
 
-+    /// Handle for mmap.
-+    fn mmap(
-+        _device: <Self::Ptr as ForeignOwnable>::Borrowed<'_>,
-+        _file: &File,
-+        _vma: &VmAreaNew,
-+    ) -> Result {
-+        kernel::build_error!(VTABLE_DEFAULT_ERROR)
-+    }
-+
 
 ```
-Handle for mmap.
+The lifetime of `PidNamespace` is bound to `Task` and `struct pid`.
 
-This function is invoked when a user space process invokes the `mmap`
-system call on `_file`. The function is a callback that is part of the
-VMA initializer. The kernel will do initial setup of the VMA before
-calling this function. The function can then interact with the VMA
-initialization by calling methods of `_vma`. If the function does not
-return an error, the kernel will complete intialization of the VMA
-according to the properties of `_vma`.
+The `PidNamespace` of a `Task` doesn't ever change once the `Task` is alive.
+
+From system call context retrieving the `PidNamespace` for the current
+task is always safe and requires neither RCU locking nor a reference
+count to be held. Retrieving the `PidNamespace` after `release_task()`
+for current will return `NULL` but no codepath like that is exposed to
+Rust.
 ```
 
-But I still do not think "builder" is the right term. `VmAreaNew` is
-more like a configuration object to pass initialization properties of
-the VMA back to the kernel.
+The rest is not relevant to this function and it does not help
+understanding the function.
 
-How about "configuration object"?
+
+Another thought - add a link to `get_pid_ns`:
+
+@@ -307,6 +307,8 @@ pub fn mm(&self) -> Option<&MmWithUser> {
+     /// Access the pid namespace of the current task.
+     ///
+     /// This function does not touch the refcount of the namespace or use =
+RCU protection.
++    ///
++    /// To access the pid namespace of another task, see [`Task::get_pid_n=
+s`].
+     #[doc(alias =3D "task_active_pid_ns")]
+     #[inline]
+     pub fn active_pid_ns(&self) -> Option<&PidNamespace> {
 
 
 Best regards,
