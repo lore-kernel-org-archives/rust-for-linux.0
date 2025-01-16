@@ -1,136 +1,103 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67BEA1D86F6
-	for <rust-for-linux@vger.kernel.org>; Thu, 16 Jan 2025 11:43:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F022824A7C2;
+	Thu, 16 Jan 2025 11:49:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737027792; cv=none; b=s2hQvScrfMGwMxZ2lOlluTbHCCu6QQNotiS9GplmOiB2Zq2VthOYpgUy31h/8kX9ZHG5KT7FW9uLEiCbZ3e7k/PMd4HsXFh8/75FV6XWqLUzRgC4RGmMgkaD3uXQTHn8w+XzoEgRpylKKJBzh970+fpBtO9YANOGbwweopMkrlw=
+	t=1737028176; cv=none; b=ALxthYr/gSzVBNusGNoADgwDhOZ3i/9AnmOyu1s1G2PLakV/4ox1rBbbK82mdxsnW1ha+ZiNDE1wTqGDbcV7nTSvdedMx9U8Dd8V0SL7b3pCwYLICixj2ST6lvDID6orJgKl/3PVKYOo+pJWn4F0RRZZnyLeuSXArgpZP+TGnXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737027792; c=relaxed/simple;
-	bh=/ZOkrmzJPzjEvO1p9wMx7ZOpN1MK6QtCsFlC20KTxu0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UvfYJ31prtUVT83odKG8NQHJH4JINSTmqYIYNZSRnVcPsb9HsCP4sCGnMObMVR0w3qUYB8+Ex40m2T1fkQ0J8yljXcyPlaVWAIHKK+8ApEix1jqJXNpBRwjp5yL271eaAWmS1xzk79xrJWw2+j6J//0N/LacKlc5evn01jM0IjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=y7ppyAff; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1737028176; c=relaxed/simple;
+	bh=dGCCs0wZljmzF+WoZHjxEVm1mblSgrgaAI14RgXrxyg=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=oE3NSTVXboXU0Qiwd0IjqXbv6ZBD7ssDslfx0NS9kCikJvHr1zmnzE8aHyKUQzwm887cEWAQcKBYsQwh1HwP994u4kURmxqM6KtVkRcP258mueeyGsdy80BcK/UVRgj2L7AOhd3YRItHl5rf0Tz2H8uHJO9HJrB9tpBVAmnbxzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dD/XW26x; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="y7ppyAff"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3862d161947so433493f8f.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 16 Jan 2025 03:43:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dD/XW26x"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2ef70c7efa5so1207212a91.2;
+        Thu, 16 Jan 2025 03:49:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737027789; x=1737632589; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bn4lZsunIzxRfnnBOD/wSjWgozy9RANf06sOosGkdb8=;
-        b=y7ppyAffCXvT+bt4FYkcYz5Zka0AQ7OjAfcXW12QSEwrMz+3Jk3h6scjQJI96X/91T
-         wW5c7VF1q3jdmx/mVuIXTmN+T7e0/Lz8IlTCLnh4D5D6645NA9FkFWpV2a9jtkoqPnyl
-         5/Ix0zASkwa9o8pLUE10tt/0pRs8OHhZFEJWNtM9VLKtJ8JnyrbSIqqTWBIsXSVIUIA8
-         c4U1JPLw5g3bSjZtu+GNz/N5PSwamWreWiVbiXS5XV3IRRgp3Whn1XJIxj88V38Yoq6u
-         BDrwj1h4S2fIsnU/niuakRjF64+Jfg1Rwv/5ip5M/Gr9KGa11V5yDNVKQP06aODyeu+b
-         Gq3Q==
+        d=gmail.com; s=20230601; t=1737028174; x=1737632974; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MgM6c5VN8iYPpN/9zUMPAKnu4jX/hwo/oYFrBgCwh84=;
+        b=dD/XW26xh7ZpftBOKXK6H5V9FpXZWz0mHCn+A1mCyfmdc2QMcwPo9vI5SOoprAv+Um
+         Y2F8fOrf/UeqLYvtLwYoCuIOfAWiFZlddzd6FZExHYKB/LnGViCbn274G/nW3FZtl3Lb
+         +BeVkPwjaZL5X4G6LbmXg3xEhd4VHNhoF1Zui1mTIkOzLanh6DRpnNRHxF0fWkEYYe70
+         BoFYsvgp1K/uQfEilr7V777i9fcVYS6u5KDgD9l7tvtVT1z50w5e+ZzrG/ijDKvNFC5+
+         d6e7JsEU+W+UDkDKBVij+Vj9k5z1uoxYzD1WM86zION4RCIGPdYXD0L8T9+KebxodjR6
+         JKcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737027789; x=1737632589;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bn4lZsunIzxRfnnBOD/wSjWgozy9RANf06sOosGkdb8=;
-        b=G6vJls4q5LrCgDcJTc1r6RdaYHk7f8fWEALLrdyR6tCCfdU90qEVAdoV8sk+hcjP5p
-         SajSgD/B7NOVTIpmE+0tmsWwrrC4Rj1jC9V1D6EJ2+bD8Lnc8ysIZGLYFB4CK/Z9DlIG
-         FYVUraNjk8mfQ5b/EdGp1nyLrIMP7qcQ2WB3J1IEWgCqsvV07CPowaFJbvOkrOFcIFMz
-         DAEuQj5hoL/MvQNwDZdtXi2uS8bwInQvV//vqKQdhrP1x6LEnEPsHH/NyUjSZzs6KcOf
-         JRSozPn+UvVen+8inpajCCAFB0+XYm0GjIi3quOGqFHXah2VeF18EbAFrHqbIaqtI9IO
-         OvAw==
-X-Forwarded-Encrypted: i=1; AJvYcCV7dtdiCyE/pGXZG5JbcGB3I8W6h3McUPVXPs3Y5vG84QNN5W2rCEHrmpplvAsTnFCc/pA3t8+b3rXb8MWVVw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNut0BRGyK6Ez8SY3AgJ0hzJsMBbY5kUJLmLSWWWPodMi2iIjn
-	apRThyT9u4dlsPZQl20ASV6br941DG4LCjtu2vbQLNcwswZCjFeszUdu1HQ+JHBHarQGEUCxEob
-	ppjTWWvqg4akNlGL1pxh4q2hQjt1LmXYzTZeK
-X-Gm-Gg: ASbGncvc6GnOYZ3NYrCytaQ9MjfaLEyEjxSe4H67Oh8OL8YWtPh+xCl4ymnmycIy39r
-	rYIB4nFSLlMWZ4TZ9im32YzOS5Tlb22cUf372YyOZ/qon0qTHZnCuD3taidlOfPe50U4=
-X-Google-Smtp-Source: AGHT+IHDcN0YedaoyFvVSl8TgyMvYnEOVuMoAFM9lYaTPopQ/r4AiJCGaWAHy0cwaaehAImpzjeALrSTYUkp5n/q2G4=
-X-Received: by 2002:a05:6000:4615:b0:385:e013:39ef with SMTP id
- ffacd0b85a97d-38a872f6993mr26719362f8f.6.1737027788587; Thu, 16 Jan 2025
- 03:43:08 -0800 (PST)
+        d=1e100.net; s=20230601; t=1737028174; x=1737632974;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=MgM6c5VN8iYPpN/9zUMPAKnu4jX/hwo/oYFrBgCwh84=;
+        b=t438YXbE53vNARNynns2d7BulnB1cK5mslWwNPz3bFJaWt8+HYjXZsWrLlucQS240f
+         AZRgzUClsG7Knt5vu7KElkfFGAC7r77pBHBusQja5evkwGq7zbw0yYRR2qNNgikrldVH
+         C5b/xWsTs2Yreb+wo15x+7UU4Ae4oXLI4Gfh24FfRC0lZstosRid+6l6yHCVh5DznNgE
+         K4TH514eRoAzCDQVBUP6TTcUqUaYqsRVe9GP07BmkE6Gu9QT6SI/+YGV6mjlkGdRfJxJ
+         cJaQ74Np2IpZCLKRIJW2gTRxTaOtWnP3HAJw9NhfdzHTuOCJbHklRRYvU2dZnuiqWPs/
+         2lpA==
+X-Forwarded-Encrypted: i=1; AJvYcCXOPZompv6MRvwfbN/yL8JY5hMP25sWsw5qotGpba/DbH4ozKWtVyquj+atnsilI6udz4fhI8JH@vger.kernel.org, AJvYcCXpaPkutX2tsDcVp3hsWzXbk54XUcdZtKjn/OYk12B0xJmu3QHboI5gZa8lvKIDfFRPCa2pkFJKPp725A4=@vger.kernel.org, AJvYcCXz9fE0w+7F46QjOrQovYVmljiGivvwe239qFvSYkPGAwBhAHaF2/+YyLDUpirO2ZBFHum+XHlBsZVvgFZvWeQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJQHLQ+uXHsRigGa2J/OOXAUa1HvA2MDAFypWcWEj2issKVp8M
+	ZM8I7nAPaXB2e+ZvGdQEg6xLZ9mWDk7SPgTRWkyC9IsamzZ/nr1L
+X-Gm-Gg: ASbGncsDQ7aZIwuUAXPQH41bK+sIoNLprm/iB7eZLMUvnhA3gN3A8d2wF9kQsrRfYTP
+	dTGtZAhSiSNfRxPrJwBae5bnItIjbHt8Wsf8iXJ4TBpDCEjeNCrm18QapZ9Jd1stuyZ5rJAP627
+	ZuXyh3Sx2eyo+GJces96o2BOqFDv2biHhA1y2iVzVL6TTzS2KfwU1MjRbVPDUqMwJKY07d00DoQ
+	tb+IDe3QIM/DbvCe1ymwOT6LGXC6vwVHJyv/sQXTSsDJ5ESQIDUISnFG9xPiQnQ7H6tb3Uvf0P3
+	fIbfkj2hNxvjCr1lQ3+O/rpcqdlOnP+gxbi5CA==
+X-Google-Smtp-Source: AGHT+IEBfXT0HtMfkQVT0nFAjlNbzqIzXFA/zdzKTQdrGqEfkabMVAmFFj54uC2VMiE0tbSt+mgtyw==
+X-Received: by 2002:a17:90a:f94b:b0:2f6:d266:f45e with SMTP id 98e67ed59e1d1-2f6d266fa49mr29618473a91.2.1737028174252;
+        Thu, 16 Jan 2025 03:49:34 -0800 (PST)
+Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f72c15012asm3099701a91.9.2025.01.16.03.49.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jan 2025 03:49:33 -0800 (PST)
+Date: Thu, 16 Jan 2025 20:49:25 +0900 (JST)
+Message-Id: <20250116.204925.363421369123965269.fujita.tomonori@gmail.com>
+To: aliceryhl@google.com
+Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
+ boqun.feng@gmail.com, rust-for-linux@vger.kernel.org,
+ netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, anna-maria@linutronix.de, frederic@kernel.org,
+ tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
+ mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+ vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
+ bsegall@google.com, mgorman@suse.de, vschneid@redhat.com
+Subject: Re: [PATCH v8 6/7] rust: Add read_poll_timeout functions
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CAH5fLggF2oXV=p5iO7HvEOitd38XxNnKhZuinhk2A=OdmVfuFg@mail.gmail.com>
+References: <CAH5fLgjoAzv1Q0w+ifgYZ-YttHMiJ9GV95aEumLw4LeFoHOcyg@mail.gmail.com>
+	<20250116.203224.774687694231808904.fujita.tomonori@gmail.com>
+	<CAH5fLggF2oXV=p5iO7HvEOitd38XxNnKhZuinhk2A=OdmVfuFg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250116044100.80679-1-fujita.tomonori@gmail.com>
- <20250116044100.80679-7-fujita.tomonori@gmail.com> <CAH5fLgjoAzv1Q0w+ifgYZ-YttHMiJ9GV95aEumLw4LeFoHOcyg@mail.gmail.com>
- <20250116.203224.774687694231808904.fujita.tomonori@gmail.com>
-In-Reply-To: <20250116.203224.774687694231808904.fujita.tomonori@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 16 Jan 2025 12:42:57 +0100
-X-Gm-Features: AbW1kvY-aX7saWx3Ako7sLM3Mtdo2m7-IF4OQp8nxR7hF9Tggj5tOYZnNK6ndqc
-Message-ID: <CAH5fLggF2oXV=p5iO7HvEOitd38XxNnKhZuinhk2A=OdmVfuFg@mail.gmail.com>
-Subject: Re: [PATCH v8 6/7] rust: Add read_poll_timeout functions
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: linux-kernel@vger.kernel.org, boqun.feng@gmail.com, 
-	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, andrew@lunn.ch, 
-	hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@samsung.com, anna-maria@linutronix.de, 
-	frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, 
-	sboyd@kernel.org, mingo@redhat.com, peterz@infradead.org, 
-	juri.lelli@redhat.com, vincent.guittot@linaro.org, dietmar.eggemann@arm.com, 
-	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de, vschneid@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jan 16, 2025 at 12:32=E2=80=AFPM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> On Thu, 16 Jan 2025 10:45:00 +0100
-> Alice Ryhl <aliceryhl@google.com> wrote:
->
-> >> +void __might_sleep(const char *file, int line)
-> >> +{
-> >> +       long len =3D strlen(file);
-> >> +
-> >> +       __might_sleep_precision(file, len, line);
-> >>  }
-> >>  EXPORT_SYMBOL(__might_sleep);
-> >
-> > I think these strlen() calls could be pretty expensive. You run them
-> > every time might_sleep() runs even if the check does not fail.
->
-> Ah, yes.
->
-> > How about changing __might_resched_precision() to accept a length of
-> > -1 for nul-terminated strings, and having it compute the length with
-> > strlen only *if* we know that we actually need the length?
-> >
-> > if (len < 0) len =3D strlen(file);
-> > pr_err("BUG: sleeping function called from invalid context at %.*s:%d\n=
-",
-> >        len, file, line);
->
-> Works for me.
->
-> > Another option might be to compile the lengths at compile-time by
-> > having the macros use sizeof on __FILE__, but that sounds more tricky
-> > to get right.
->
-> Yeah.
->
-> By the way, from what I saw in the discussion about Location::file(),
-> I got the impression that the feature for a null-terminated string
-> seems likely to be supported in the near future. Am I correct?
+On Thu, 16 Jan 2025 12:42:57 +0100
+Alice Ryhl <aliceryhl@google.com> wrote:
 
-There's a good chance, but it's also not guaranteed.
+>> If so, rather than adding a Rust-specific helper function to the C
+>> side, it would be better to solve the problem on the Rust side like
+>> the previous versions with c_str()! and file()! for now?
+> 
+> I would be okay with a scenario where older compilers just reference
+> the read_poll_timeout() function in the error message, and only newer
+> compilers reference the location of the caller. Of course, right now,
+> only older compilers exist. But if we don't get nul-terminated
+> location strings, then I do think we should make the change you're
+> currently making.
 
-> If so, rather than adding a Rust-specific helper function to the C
-> side, it would be better to solve the problem on the Rust side like
-> the previous versions with c_str()! and file()! for now?
-
-I would be okay with a scenario where older compilers just reference
-the read_poll_timeout() function in the error message, and only newer
-compilers reference the location of the caller. Of course, right now,
-only older compilers exist. But if we don't get nul-terminated
-location strings, then I do think we should make the change you're
-currently making.
-
-Alice
+Okay, let's see if we can get ACK from the scheduler maintainers with
+your version, which has less impact on the C code.
