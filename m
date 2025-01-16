@@ -1,151 +1,90 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A581A0731
-	for <rust-for-linux@vger.kernel.org>; Thu, 16 Jan 2025 08:29:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD3119D8A0
+	for <rust-for-linux@vger.kernel.org>; Thu, 16 Jan 2025 08:32:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737016200; cv=none; b=YiKJPt75nnC2q4f5QukF+kCRGZ2PtdPAMqqcAU4t1sPM//kq87GkkyQ/pWLP5QAKXrF6OnWSnbnRsnNV4ff+Dqo51dpPELAYlGuSWzynqTqxkeVHIH2S522mRnJT2P73FWI6EbD0Sfv+6vIXIQnwa+yyUTp8eeWjqUzCKm0pbEo=
+	t=1737016376; cv=none; b=sOHxHubayOyyUNycvJAhBMyYZpmg0lL6hvnZHrUa3s8WKqNOadLZ+E8lVreiIT0bZfwIV7NzObVXPDMAxyGO0367v9gctW9JEsF5MqSWAqqIH03MQ72Md+MDvhPO6PR6xZwV7JovmO6dhPk7Sc4aGZScAtRae+kgo+XDj+DxXcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737016200; c=relaxed/simple;
-	bh=ylTSZQkjE7+o3ovRDys5NiQ4oqpfrTJz7hFzcs9PWLU=;
+	s=arc-20240116; t=1737016376; c=relaxed/simple;
+	bh=kJ6CIe/Y4H7WjuSViRjZaVlg02+ifEvjHsN/NCSpWIA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PB6nXQAUXc7KB2YVOUhdaSqW33H7cPkQ1hZGssi1/cv7kJl0wAZHnLEawQBtRExn6TEzbfuSSl/u/5hBmu/p0TxdrTxhkAVSc0/zqTAlaTPMGe3q8la2SZh6cHu+Ubb9H/hK8mG2CiQGi77S4yDjK16CffOLYg/t9CViQ9wAq1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o7EdiCTx; arc=none smtp.client-ip=209.85.221.52
+	 To:Cc:Content-Type; b=dpQsSiZy46hqe195cDyWu7dKdZBQob10fF7jvluqv2h3DqlSLK2NRMDgqXGTALVfeFQ9WmTzIxkhAi8LMKWkvOXED8amuwAPbMxW1ce1DMoKG5afSQt74tFef8vXBKcs7Mfh5hB0/7s4cbDkMegth31FdrCHeuJcuMLkyJFX2Tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aKEUsfLq; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o7EdiCTx"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-38be3bfb045so1047113f8f.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 16 Jan 2025 00:29:58 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aKEUsfLq"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-385f07cd1a4so573415f8f.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 16 Jan 2025 00:32:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737016197; x=1737620997; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1737016373; x=1737621173; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eBobQ3Q647iXpiJsjz+yqsPG1ZsmtbrlFsEwdYOlN84=;
-        b=o7EdiCTxjzrd7A00lzMDJv0vGjt7L3LJBFTioGTtWrDW0mTRAw4u18GFDc3/xqxsRn
-         QuxPQyBbqheAp/MLa9LsEDtJA9grDPLE0DgXLx0RmsJNNXuBok0KfhQVMzSPwRaBDbBi
-         9iLIvY8DQWik+y1iQnaAdbhZZA8DhmU5AM/7SI98ZRD8g0JHJjENNjA7Akp7u2GzN04/
-         0rA1Of3iPAdE/vLrri0w6YoaM47N+nT0Po9WZqE5MRaM1Qt+CswAvQINCpLEeW68YEoD
-         Ywc45eCfKs/GtMNzFTMxcUKKKgIec7+9yui6xbjmrHw8uQzMneQ6ltQFHYZiOQnOGNgH
-         sGUA==
+        bh=kJ6CIe/Y4H7WjuSViRjZaVlg02+ifEvjHsN/NCSpWIA=;
+        b=aKEUsfLqfk8/fOnFvOEGk55nJ0K/1w2uUVgZ76rle33eQSLbFnooykJxgE8nyzkgE7
+         ESxpsjjOPyInxU637HJjYqm5PM3Iwx9FwTnEI7KoczZPeuvBL6qagqKcSZf7YYXcqUPb
+         yDshcA/u0yH2OQfd3uOimg8+7x/2rzzS98tguNdcGOlDZ1gVW5qSBXxKXE6OWr27iTKg
+         4rnibIH4eN8xUFmhtRvMr1omzbfW3daoEySuPVpjA/aKB3UwcAb8ok0phhR1Z3N/fgwe
+         w6t+n71ETuX0qvudAj0nfMALytrd+TrewNb3nSDp8U0k1EuyF9+SfZlUBLmDNLC1YfIc
+         HRKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737016197; x=1737620997;
+        d=1e100.net; s=20230601; t=1737016373; x=1737621173;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eBobQ3Q647iXpiJsjz+yqsPG1ZsmtbrlFsEwdYOlN84=;
-        b=p/s7tQqNk+QAkluPNoiWNygI055s18Ur55Znpku0Q1TfaKisfUfuAocAFWQk2ApsDW
-         MVva5yOB1BzRtarA8ovsEj3X7dgkbRCO91qE7vE8iRQB0mlCbVqgCDfuZ3v6ZWEkPPRw
-         wKXCJNZwrul4zI1opFGhKnWyxQQ625uTrHcVkfwrnWaFHSHKX6zOzW1lfOus0ntrTcP1
-         pLlopBfrOTQF72ZADUz1kFe32Fu887pLMhM8/yAM/gpkSsF54BQR7unxMbbeqeD8vWlq
-         e0r5N5vNHqD4bgnNp47vb1lO2sqx4hEHmZwzHe0O0uDW9h5qhvNFmH8Xjn1cORZkX5p7
-         msww==
-X-Forwarded-Encrypted: i=1; AJvYcCV+YrqH9tmGkf/WGk56Tp48m2TX7pG+IzlEmiDyzfXItvKfw53XBAUVgIHHRJQ6TlMZLJruo4OpOKDyeFFz8Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxciTeoCJ5fI+J50s6k8T2STiU8MdgRriTmZNVEFHnYFT8EgHZY
-	Qftc5h/fLVBxLQhwwt8piPZQSrvekyLk1cT73XxGELSpFQRUDSevwnxmapXzynfVNhkwmmlA5pz
-	c47mZvJJkSuBGIl8E8rIjhzNkX/rRmihqYKLq
-X-Gm-Gg: ASbGncsW4ot2fnyvY7Toa4ehxKg3ybXdIkRNSP3Qgm6EBSFUArcKI6tEnD2pKUH/nXU
-	YGrUc5S0OZ4S1B/Lf5rfiGR8Cr4jOYCxQpxvLC2D4wDbdN3m+NCVEHFpjM+Tqw4//U14=
-X-Google-Smtp-Source: AGHT+IGwvue67hHv7P6VmT7VnVKvjmTORGRTQPx6s7qNC7a66JfzC0s2w0x+tVA9e61/KfIwJcQfTG8/HJJBfG37CYY=
-X-Received: by 2002:a05:6000:18ad:b0:38a:6183:77b9 with SMTP id
- ffacd0b85a97d-38bec4eecb3mr1291243f8f.6.1737016196767; Thu, 16 Jan 2025
- 00:29:56 -0800 (PST)
+        bh=kJ6CIe/Y4H7WjuSViRjZaVlg02+ifEvjHsN/NCSpWIA=;
+        b=AC9JkvntqDBWI7r/L866jUwzZkQg0H1I2qxmAAPmg+QaA9MMGHncEfwCexFqvFJdKH
+         PbzP1uFVDCKVYC+Nnb1AmEp1eO3blT2bO2KhBwa4Leo5Y0QCSVBhaXJre80XPT/w1hPH
+         ja3Igt9DzWNhvBEOEQ4FRH3o9FfOuUEYomAj3Q51ZxA3FUuf4HxrrdiO+THyr30KbR6e
+         HxaVdluUdPwMCF2Qyqf1lApopW0S0M90dRwJAlDGOpVdHFLIPyxf5ttrceOjvYCFFh1R
+         P/LCcnuQyvdfTOYM5tDLwYxoI6/dpbB7IDwjCkgDroS7+UZh8I/nGnUZtoY6RShi+8cO
+         TCCA==
+X-Forwarded-Encrypted: i=1; AJvYcCX7R9Q8pMT+rBFTgqvUNhnN+2IwtMc4hw0neU40NNdk8ZmD+DopTaWIFun32bwkgFdM+sHiOcC8QBcdm17P1w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVTM7zWWqmVeOTroJH3DnfPoOUvmPbbrJ9V/sine+wHDvK6a7C
+	25L9YuQcbXhi53uDAZVZtv6qgtHuAqWesjZNWMR2R692INMX7tsBisYysClDDjNw8HcfLn9hXtc
+	pT0V/EUsV/DQghU7kMHv6gpdIz1N0qyeTZn7+
+X-Gm-Gg: ASbGncu5iAPJihwCZLt++yveeWtRtxgKpHOg7AuisppnSv3fZn59AU1dYHIEUaphSRi
+	RIhckgiw07afT/7JYrGjsSD2febn3Bo2CqDMhG9VGoM7IyV/WuHEGQwTD0LAYPwY43ng=
+X-Google-Smtp-Source: AGHT+IE+jsBrPXZGdbayPbLY/juwtdV1VqWJKNOBWq8IuOIMNKuq9E3g4Mq1uE3OxPN8wLJ5UzDSOrorgrze70of89w=
+X-Received: by 2002:a5d:648a:0:b0:385:f0c9:4b66 with SMTP id
+ ffacd0b85a97d-38a87313097mr28319779f8f.33.1737016373051; Thu, 16 Jan 2025
+ 00:32:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241024-topic-panthor-rs-request_irq-v1-1-7cbc51c182ca@collabora.com>
- <CAH5fLggjAu+YPBxJh0_K933McnnSC=pEBhVV9YxMbUGzukE3ng@mail.gmail.com>
- <04864DC4-FA5B-4D7A-8EE5-BDA1E8F88007@collabora.com> <CAH5fLgiaVg1+PZxGr0Y_oyu9pJfTSRuN9n4EomFGhnvnZXC4cg@mail.gmail.com>
- <20499935-B328-4DE3-AFBF-B692FA3434E5@collabora.com> <20250115113836.18992e92.gary@garyguo.net>
- <71A92388-A636-47F4-9B1C-0154D9AA9839@collabora.com>
-In-Reply-To: <71A92388-A636-47F4-9B1C-0154D9AA9839@collabora.com>
+References: <20250116044100.80679-1-fujita.tomonori@gmail.com> <20250116044100.80679-8-fujita.tomonori@gmail.com>
+In-Reply-To: <20250116044100.80679-8-fujita.tomonori@gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 16 Jan 2025 09:29:44 +0100
-X-Gm-Features: AbW1kvZLm4-FFBAXNEVElZ4j9aTK-_34eBqQ-gWMTk7WDTqWVhDQw78xM2-sgYw
-Message-ID: <CAH5fLgiOASgjoYKFz6kWwzLaH07DqP2ph+3YyCDh2+gYqGpABA@mail.gmail.com>
-Subject: Re: [PATCH] rust: irq: add support for request_irq()
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
+Date: Thu, 16 Jan 2025 09:32:40 +0100
+X-Gm-Features: AbW1kvZbmRmM2Oa_zh0mN65XvGmmvLS9EV3qIH4ExHRuACPP5fFY6xEcjuHFX4M
+Message-ID: <CAH5fLgiAJL12HHxRmmJNer4JirJ8Fex0Jbazem17uafp2gtidQ@mail.gmail.com>
+Subject: Re: [PATCH v8 7/7] net: phy: qt2025: Wait until PHY becomes ready
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: linux-kernel@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>, 
+	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, hkallweit1@gmail.com, 
+	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
+	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de, 
+	arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, mingo@redhat.com, 
+	peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, 
+	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, 
+	mgorman@suse.de, vschneid@redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 15, 2025 at 1:31=E2=80=AFPM Daniel Almeida
-<daniel.almeida@collabora.com> wrote:
+On Thu, Jan 16, 2025 at 5:43=E2=80=AFAM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
 >
+> Wait until a PHY becomes ready in the probe callback by
+> using read_poll_timeout function.
 >
->
-> > On 15 Jan 2025, at 08:38, Gary Guo <gary@garyguo.net> wrote:
-> >
-> > On Tue, 14 Jan 2025 15:57:57 -0300
-> > Daniel Almeida <daniel.almeida@collabora.com> wrote:
-> >
-> >>>
-> >>> It's not the pin_init! stuff, but the Opaque stuff. If it fails, then
-> >>> it runs the destructor of Opaque<T>, which does *not* run the
-> >>> destructor of T.
-> >>>
-> >>> Alice
-> >>
-> >> This is pretty unintuitive if you take into account trivial examples l=
-ike
-> >>
-> >> ```
-> >> struct Foo(T)
-> >> ```
-> >>
-> >> Where dropping Foo drops T.
-> >>
-> >> Is there any reason why dropping Opaque<T> doesn=E2=80=99t behave simi=
-larly?
-> >>
-> >> =E2=80=94 Daniel
-> >
-> > `Opaque` means that "this is a blob of bytes and don't touch it". It
-> > can be uninitialized, so no meaningful action can be performed when
-> > it's dropped.
-> >
-> > Best,
-> > Gary
-> >
->
-> I really think that the documentation for this type has to be improved so=
-mehow.
->
-> How is this a blob of bytes that can=E2=80=99t be touched, if it gives ou=
-t a *mut T?
->
-> I think I=E2=80=99ve consistently seen code that either accesses or mutat=
-es the inner T through
-> the pointer.
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-It's not a problem to give out a *mut T. A Opaque is a blob of bytes
-that *might* or *might not* contain a valid `T`. When you dereference
-a raw pointer to the inner value, you are unsafely asserting that
-*right now*, it does in fact contain a valid T.
-
-The problem we're running into here is that Opaque is intended for
-wrapping C types, but you're using it to wrap a Rust type instead. I
-think we should have a new container type called `Aliased<T>` defined
-like Opaque but without the MaybeUninit.
-
-#[repr(transparent)]
-pub struct Aliased<T> {
-    value: UnsafeCell<T>,
-    _pin: PhantomPinned,
-}
-
-This type can then serve the purpose of a Rust type that might be
-accessed in weird ways, but *is* guaranteed to hold a valid Rust type.
-It's destructor will run the destructor of T.
-
-Alice
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
