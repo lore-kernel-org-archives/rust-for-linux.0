@@ -1,196 +1,108 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB871DBB3A;
-	Thu, 16 Jan 2025 13:06:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737032769; cv=pass; b=i7MI4UgBmw159ahoyBwdYgQbtVNrrA6M0cD5NC8x2VHbFzeY9z1Iz3QdtzCrZr2gnJKNrWMGVemDwCtSK29OFfEDbMK2kerz7lwVCclZHjG6nspJHJAQo9x5S43BFwnfS3Jv2CP3hctDZ6knadqk+141rfxzMxwem+E+kQZEMSQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737032769; c=relaxed/simple;
-	bh=PSU/A3EW/CGdM9iFGZ5hiABQAZI/f3/Re6CzRih2/ps=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uv/DgjnRUtTaXYsS5sE6Y9hKBdJ34Gxgkm7F8ob9XHwgZTZ+XgUIXi7ZlEES6hplNEiFLnRg0UXvpm7/E4mdlbAjQjb0RILAKbdb8EyZqHaB9JrxDUaxnfIOQHgB8uJsRRToZ6JhCnNvikcmwQ1QSI1r9BJEn6tO5O5i7Q/nOO0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=UmXR/wqm; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D91322A1D5;
+	Thu, 16 Jan 2025 13:17:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737033451; cv=none; b=Bi2B+eKTzLrOnbmVsFfoGGgOvOcBJu17UTMMr8ZaNFJjuUYyfVSATPCxbE4OSK2T8GLXRl9tyg6YkzGKTKaRNl8Ra78/MBUvE5CdZeJR834oiiDpaK++Mgdt/ckeNED3DXy+MzHBEYZqzRsdJ6Mpf+Xp4VW2Wf1mfGRaYbd/fMY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737033451; c=relaxed/simple;
+	bh=98YfFK3FLo/r2IcUebkfZNsNhdLdmUle6ZwkLclRkw0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qrSaXzsFbXc/YGuVs0Lc++1RLOu7dGsnHz40kWT67vIEYEJa4BgfxoYZQ/x/pOmfsnYo/x3K8XWQ/up4ZnJunJhRa3GpiE7qbyg38FvmFkuQ3iCAy6QRFQtQGjW42hv0tVt/UNxVTBsxRLhgStNk1znrHeI8iMX18t2Vxb8T08w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gvlIMcNP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="UmXR/wqm"
-ARC-Seal: i=1; a=rsa-sha256; t=1737032711; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=DC1pxCwrixFOo2bPPVbHaoFL109Ngq5UA9tU0nZ3r248V7gINGylAfWgcVQTmBZmTGSv9HoxXPqDfD6K3TwHnKmxXQLwAPAXuIFPiNJfchgRU75gmYSSICVO/mYJuhI9t4tdgQSuZP00Mqp6HbJq6BHVVUU/JAgjmK8dhouRCWY=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1737032711; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=tIv/wFu5hcAqXTHXWRB0ajm+LYWHFrBqdBacTD2Yu5A=; 
-	b=ExVWwch7nzMMj1b02ww0TwOjcu7z+W/2PRbWx7882R8+85c0lHY5sfnQG4ne0qb68V5MfpTh8rEc0I8A6KdN7d3vUz8ycVwXzo6ast1ZCIo+av2QRBjN7Mz+M9DZNTnUikWdL+4gDBb6ohmJyrMFfitAc7XsG9ytr0NIvNurRy0=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1737032711;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=tIv/wFu5hcAqXTHXWRB0ajm+LYWHFrBqdBacTD2Yu5A=;
-	b=UmXR/wqmNbtGWELytcEdcJzK/YYZ/Gy7N15oAvAkVjIlwxlEZ6Fy6h7ANId6CIUc
-	MtvgOnLgfR4GfupiuACPCEaMum3CoVvYexh1lOjWiDFA2MStgKSFbi0bm2a4Bq+XyiL
-	UV5NV4oQLEFezoGu9jNQ8zzqapkAsL84goDBsT1s=
-Received: by mx.zohomail.com with SMTPS id 1737032710144449.185524274169;
-	Thu, 16 Jan 2025 05:05:10 -0800 (PST)
-From: Daniel Almeida <daniel.almeida@collabora.com>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.mco,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	dakr@kernel.org,
-	boris.brezillon@collabora.com,
-	robh@kernel.org
-Cc: Daniel Almeida <daniel.almeida@collabora.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH RESEND v5 1/3] rust: io: add resource abstraction
-Date: Thu, 16 Jan 2025 09:56:24 -0300
-Message-ID: <20250116125632.65017-2-daniel.almeida@collabora.com>
-X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250116125632.65017-1-daniel.almeida@collabora.com>
-References: <20250116125632.65017-1-daniel.almeida@collabora.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gvlIMcNP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D97D4C4CED6;
+	Thu, 16 Jan 2025 13:17:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737033451;
+	bh=98YfFK3FLo/r2IcUebkfZNsNhdLdmUle6ZwkLclRkw0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gvlIMcNPuW5PC6LunsMB/wk7ePhtPVrxSC2lErrCYeI+qwk3QofD1uzYzx57/6Wq0
+	 3OsXZT8yw/pnQbTE05e1CG0vPLHOEh3oBBHCXzwsmkFC+DfItlWAhF4QtWlfxKvwin
+	 seC+XCs9VFUN58Hf3dOrvT1KQGA5PwnxnPhD4tidr3aR+cDeGQq5zXIC4uXZfAAOXD
+	 Nvu1PHjZpOgTg7f8507h6FEJu5uPciO/HhpeicBeNkvA+RXeft2CbbyBZp6TxAhQCr
+	 W8FQiQzl4DRNmEfXT1dc81p6vGIiOlU1x1qMDJxsXQjTIqkNetLuxU8/U/YD+T8cRc
+	 qqbBQclPjbHyw==
+Date: Thu, 16 Jan 2025 14:17:24 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	daniel.almeida@collabora.com, aliceryhl@google.com,
+	robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Valentin Obst <kernel@valentinobst.de>,
+	open list <linux-kernel@vger.kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
+	Greg KH <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH v8 2/2] rust: add dma coherent allocator abstraction.
+Message-ID: <Z4kG5AcVeQKegLnb@pollux>
+References: <20250108122825.136021-1-abdiel.janulgue@gmail.com>
+ <20250108122825.136021-3-abdiel.janulgue@gmail.com>
+ <20250108135951.GA18074@lst.de>
+ <CANiq72=R2N+QiCiHZQu-6YJ9aYpn_bik3BW3U=nAW3jL7unzLw@mail.gmail.com>
+ <20250108151858.GB24499@lst.de>
+ <Z36X_ZnCmBQBMoZ6@pollux>
+ <20250109080812.GA20431@lst.de>
+ <Z3-NqwAG_96yq8VD@pollux>
+ <20250110083955.GA5395@lst.de>
+ <Z4D5a5NYrAbNxUL6@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z4D5a5NYrAbNxUL6@pollux>
 
-In preparation for ioremap support, add a Rust abstraction for struct
-resource.
+On Fri, Jan 10, 2025 at 11:41:54AM +0100, Danilo Krummrich wrote:
+> On Fri, Jan 10, 2025 at 09:39:55AM +0100, Christoph Hellwig wrote:
+> > On Thu, Jan 09, 2025 at 09:49:47AM +0100, Danilo Krummrich wrote:
+> > > On Thu, Jan 09, 2025 at 09:08:12AM +0100, Christoph Hellwig wrote:
+> > > > On Wed, Jan 08, 2025 at 04:21:33PM +0100, Danilo Krummrich wrote:
+> > > > > What does "your code" mean? Duplicated in every driver?
+> > > > 
+> > > > Yes, interfaces to the DMA API should stay in readable C code and not
+> > > > in weird bindings so that it reminds greppable and maintainable.
+> > > > 
+> > > 
+> > > Rust drivers shouldn't use C APIs directly, but rather use an abstraction of the
+> > > corresponding C API.
+> > 
+> > Don't force me to deal with your shiny language of the day.
+> 
+> Again, no one asks you to deal with or maintain this piece of Rust code.
+> 
+> > Maintaining
+> > multi-language projects is a pain I have no interest in dealing with.
+> > If you want to use something that's not C, be that assembly or rust you
+> > write to C interfaces and deal with the impedence mismatch yourself as
+> > far as I'm concerned.
+> > 
+> 
+> This is exactly what we're doing and proposing here, isn't it?
+> 
+> We wrote a single piece of Rust code that abstracts the C API for all Rust
+> drivers, which we offer to maintain ourselves.
+> 
+> What else are you asking for?
 
-A future commit will introduce the Rust API to ioremap a resource from a
-platform device. The current abstraction, therefore, adds only the
-minimum API needed to get that done.
+Since there hasn't been a reply so far, I assume that we're good with
+maintaining the DMA Rust abstractions separately.
 
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
----
- rust/bindings/bindings_helper.h |  1 +
- rust/helpers/io.c               |  7 +++++
- rust/kernel/io.rs               |  2 ++
- rust/kernel/io/resource.rs      | 53 +++++++++++++++++++++++++++++++++
- 4 files changed, 63 insertions(+)
- create mode 100644 rust/kernel/io/resource.rs
+Hence, the next version of this patch series will have the corresponding
+maintainer entry.
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index e9fdceb568b8..f9c2eedb5b9b 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -16,6 +16,7 @@
- #include <linux/file.h>
- #include <linux/firmware.h>
- #include <linux/fs.h>
-+#include <linux/ioport.h>
- #include <linux/jiffies.h>
- #include <linux/jump_label.h>
- #include <linux/mdio.h>
-diff --git a/rust/helpers/io.c b/rust/helpers/io.c
-index 4c2401ccd720..3cb47bd01942 100644
---- a/rust/helpers/io.c
-+++ b/rust/helpers/io.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- 
- #include <linux/io.h>
-+#include <linux/ioport.h>
- 
- void __iomem *rust_helper_ioremap(phys_addr_t offset, size_t size)
- {
-@@ -99,3 +100,9 @@ void rust_helper_writeq_relaxed(u64 value, volatile void __iomem *addr)
- 	writeq_relaxed(value, addr);
- }
- #endif
-+
-+resource_size_t rust_helper_resource_size(struct resource *res)
-+{
-+	return resource_size(res);
-+}
-+
-diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-index d4a73e52e3ee..566d8b177e01 100644
---- a/rust/kernel/io.rs
-+++ b/rust/kernel/io.rs
-@@ -7,6 +7,8 @@
- use crate::error::{code::EINVAL, Result};
- use crate::{bindings, build_assert};
- 
-+pub mod resource;
-+
- /// Raw representation of an MMIO region.
- ///
- /// By itself, the existence of an instance of this structure does not provide any guarantees that
-diff --git a/rust/kernel/io/resource.rs b/rust/kernel/io/resource.rs
-new file mode 100644
-index 000000000000..ca92f9af613b
---- /dev/null
-+++ b/rust/kernel/io/resource.rs
-@@ -0,0 +1,53 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Abstraction for system resources.
-+//!
-+//! C header: [`include/linux/ioport.h`](srctree/include/linux/ioport.h)
-+
-+use crate::str::CStr;
-+use crate::types::Opaque;
-+
-+/// A resource abstraction.
-+///
-+/// # Invariants
-+///
-+/// `Resource` is a transparent wrapper around a valid `bindings::resource`.
-+#[repr(transparent)]
-+pub struct Resource(Opaque<bindings::resource>);
-+
-+impl Resource {
-+    /// Creates a reference to a [`Resource`] from a valid pointer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must ensure that for the duration of 'a, the pointer will
-+    /// point at a valid `bindings::resource`
-+    ///
-+    /// The caller must also ensure that the `Resource` is only accessed via the
-+    /// returned reference for the duration of 'a.
-+    pub(crate) unsafe fn from_ptr<'a>(ptr: *mut bindings::resource) -> &'a Self {
-+        // SAFETY: Self is a transparent wrapper around `Opaque<bindings::resource>`.
-+        unsafe { &*ptr.cast() }
-+    }
-+
-+    /// Returns the size of the resource.
-+    pub fn size(&self) -> bindings::resource_size_t {
-+        let inner = self.0.get();
-+        // SAFETY: safe as per the invariants of `Resource`
-+        unsafe { bindings::resource_size(inner) }
-+    }
-+
-+    /// Returns the start address of the resource.
-+    pub fn start(&self) -> u64 {
-+        let inner = self.0.get();
-+        // SAFETY: safe as per the invariants of `Resource`
-+        unsafe { *inner }.start
-+    }
-+
-+    /// Returns the name of the resource.
-+    pub fn name(&self) -> &CStr {
-+        let inner = self.0.get();
-+        // SAFETY: safe as per the invariants of `Resource`
-+        unsafe { CStr::from_char_ptr((*inner).name) }
-+    }
-+}
--- 
-2.48.0
-
+- Danilo
