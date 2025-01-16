@@ -1,120 +1,142 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA351D86D6
-	for <rust-for-linux@vger.kernel.org>; Thu, 16 Jan 2025 09:36:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DCA1DC98C
+	for <rust-for-linux@vger.kernel.org>; Thu, 16 Jan 2025 09:45:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737020184; cv=none; b=SfgnuCuDxiPde8aZVAMv/ibWoqrRZ//yv5bArxykYtPE588WNoUCvAaNuGyisvmVsKY4ULvrDSA/PmJZCcycR0GveIEXM/vJQBm7Axva+EF15zczXH7mYLbS3NZ1pDO79YyFUyxmBQQVjN8xLrUIgsd0AvNshhAKt4niEyAh9Nw=
+	t=1737020716; cv=none; b=Oetbxd56drp0sqMfEEdiC59HAwTeQbmx5YfHfmS24X41iR1gZcI5t16XRigCuGwPyqjaKXAwLlNcYOJbRZ7xjq6yU0ntt5QKFveDP6AFtaKgrTfUIi9UZ5SVmOUKyy5zlWXhn5Ba3TOl8cetfTSa42l/21uRsGSFe5K8IZssV0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737020184; c=relaxed/simple;
-	bh=x/mDAob75h28oX6ccAJKmni+dnVWhR84tnTbvU+U1vY=;
+	s=arc-20240116; t=1737020716; c=relaxed/simple;
+	bh=SL6zWPg7b13eNNbqzfJiEUxNOGH87kbqXmMqxrNyzZk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=m5OlogYYznPu1jXxKX4++xxMPhrH7DKF5cPP0/L9JuabEhcktdBJKASiZBOjAfHS3Mv7Sp3GGPRi4qznVKHdUGKnK31Hf7y6yIJd5WibCdwkV70RRNjfoBNGikfuQjs3X/opKBM0PaLjzVrPVMmTVPL546X+PWty083GpBNHi90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T6CS2MHk; arc=none smtp.client-ip=209.85.128.44
+	 To:Cc:Content-Type; b=qts2JMfnsxVpD4EFyAi41t9t6Bf/MDnpKz4l/M4a2+LcUJCmzuCvdkA46fcOcbwJtYn+yQKu8SVTrJe31GAit7rU+EMl9+bM5wPILX88a96RVXQ5ZiqUT5DkqHZiCyeU4bTXBn/pxkxz2ohuOiBhHYDPTOxUl5sGS8bI/tTnspM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UUYJkrB1; arc=none smtp.client-ip=209.85.221.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T6CS2MHk"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-436ce2ab251so3814405e9.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 16 Jan 2025 01:36:22 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UUYJkrB1"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-38a8b35e168so469405f8f.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 16 Jan 2025 01:45:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737020180; x=1737624980; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1737020713; x=1737625513; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Dbx4Gz+1RqxxtjhSs2rAX1eej4evyNrfejfv4dzq+ns=;
-        b=T6CS2MHk+KYttP/1ctqErQWp1igQoN6uy6WoNlSn4+e8kUxmxDqhzkxIE+1/O+CwC/
-         6Tlg4aF42G0pEMmUxvB/1BOP9vaMXOEUns3nRAji0kUfzmrKbluC+esD+7qaHJXiJT6v
-         MflV21Mm+q0MG0mgpd5Yy5OeF/39HMFN0+wc2LBVXOBc1JL4R9XMbzecuDw8qJquoBwW
-         R+Hq0xGkmHk4lFup0yD+iB2YCG+PFRHJChNs0F0RKUQwNRvZJLvraaYCW7SyukjWj7GF
-         90GNcGEbx1HEw1BrGANLAU9LErD9AxqmZBLuttKoKMr/gAjqfNP98eoP88utR9EeET+5
-         Ub7w==
+        bh=G97hjMfDtUXj+Is0oUFrqTtwBK3UMNwO8cqTTqcsyh8=;
+        b=UUYJkrB1mawCcaNGcpqxeOBj7pe564ermYi41DCx0dppMlg6yzWv02OQ6GkDf+XdAr
+         aYmmSELOPZ0Zjueg7QDnx6SaoP7iNXVxp5JSDZeavwvrWVEhzdG9p20XI3rxXUGx9zRj
+         mKvr8GgqvlQX3F1OMV8RAqRWSoAL4kOz3FJEDX61BaXZ4Z/w4sL8p2VTOAZELXfqW8Bo
+         xzlYoXjKs9IMA/r0lMhAE+3MPFU1/j17iLrUcdnagIEIVTyiKt26B68NGb0RsVyFy3Ur
+         v0UAVFamK56XQefUT61hiEM9KZbbW7eZ4qIfw3r7bXimPGn7NBPQyTK7dJk34qLmPiDd
+         l3zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737020180; x=1737624980;
+        d=1e100.net; s=20230601; t=1737020713; x=1737625513;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Dbx4Gz+1RqxxtjhSs2rAX1eej4evyNrfejfv4dzq+ns=;
-        b=BAJC8WkSmJB8PI/HhXzumX/+/fEwBnmC2iHzcMe7PCfgb3uvlwc7no9JiFWT1XuGqs
-         WFB3IwyO77w3fw6qFkMS+Ev92LpQ7dHwGxQQDE6DthakhSXdtT6h+jBjBntPN0MBB021
-         gtC7eZH8kc39LGC0ClUCi5lCZJiUEbNwgJWUnTQk+aMyOOVyIMn2t5JJslZ5T6biDbSU
-         JlldEa15jmPfhoNjXQ/AEugTaBv6c/7QALgCqhWV6AaUmLJXesTlp/HCOUsZoAmmlwoE
-         q/BcUqb9AnwIvZEcSvelDDfET0QX8P5Lr7Kv9DzTwlulWBHc+VXM1v+lcpmfqKMvbDCH
-         alVg==
-X-Forwarded-Encrypted: i=1; AJvYcCUUTTIFobmw4BCl1LS387hQtxZv2UinqFzlC6mySIWDq8cI5FakqlOaBNxxvEXw0tgaMX82zKnPGH3jl7H8jA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqS/27ZUebscbZq6dlemQnzpzXF4V70UjLIN4Ds0lpl3CqpYDO
-	J0dVTwYOZcgh26NgAmZ2S93gCiCAsAGpMnqWoRwRlhPCOlUvUKypUov2LoaaCxvcgZ9P2FzBSIO
-	tkYrrPpQzS/DxanrlYJxAiq+mDvRnZK+5DaZR
-X-Gm-Gg: ASbGncvV5zU/0CFa6pM8d8nlFvVPB6ibmPFEd2/nZnWpMGzMEuN1PB40WlxLDNst7qt
-	yleLzY1Tu0XlkpjA8i1OKnyu20aMO0rPRd3l5JU/1cLlWYxHsh1BPUtVrdFOdvosN3u8=
-X-Google-Smtp-Source: AGHT+IHzfSiPAGevk8eOGlqQbe+ZpnfT+o2XolTqPMDZydhRpoQ5A88b3a9IDfBFqVdVzssZFiTdG6CwrZDbCaRCLYk=
-X-Received: by 2002:a05:600c:1c8b:b0:434:f5c0:32b1 with SMTP id
- 5b1f17b1804b1-436e26a7578mr311927325e9.15.1737020179104; Thu, 16 Jan 2025
- 01:36:19 -0800 (PST)
+        bh=G97hjMfDtUXj+Is0oUFrqTtwBK3UMNwO8cqTTqcsyh8=;
+        b=MjImVBYMDwBPk5EMCUeOQcNOOM7xhzHR5g72Dfn0zGXhRJ5fdcryKoSKHqaVuzcWYT
+         RSlEqW336a2oSIEbyRmZvHfo387K1iz8d0GfB3ZDBixNvHpYiZ19Wdc5GdoNuZj0glQZ
+         Hf9YwyzO3EWJadg3ZbNvtMW7hBgLfNvFXCo6A++KVzrvUjnpOySvTpJ8V/Jt1XH5MG3U
+         y/r4WATz5jPiW4s5X0D3ZKZI0Qvx9NzQfBPiaHswCKlYOgz2x7SGvV4SFlFZ9+x5wVem
+         ooAvuju4lUfuDQGqU3gRAp/rUBjCmq7lqCx/p2HshGCMINjq0LWjPNREGjYY65UFDvmv
+         eNZA==
+X-Forwarded-Encrypted: i=1; AJvYcCVJJM5BlQ9fgC9KXNNL2zsIg89Pl9Dn2RqBiZAHygh+tsYMrU2wo9e3ZVsg5unKU4laYGqyyxSp/3Tz30nMhg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YylWKUDWDHTb6Vglqs2/sKK6I49uKt7AXW4jltDCIQOqY2wYcuG
+	dUlQhtsbcUKLoAGXewh5vkrfHlkgwWa39Fc82zdNy+3kyTVe+n1SLjzQ0cYEs/oZgaKNzGmxBW7
+	gm/WMXMetsWYrk7EjZFPeFiI/jvr3L2KW89HD
+X-Gm-Gg: ASbGnctBAtbXlQsX/pT+zJthFsTQGndsr6oTqEGyT3jtkXyvW8MNPk1aeBaRlj/P9Bw
+	ID5d//+a+zd5tFxEgt3ZQK8NZ+oEVEPv9yq1Y1VlyJyQ/30/4zsaYE+9Sl9iu6fTFrzQ=
+X-Google-Smtp-Source: AGHT+IHyJ8nvs2yvNcmDYbDwEp1qMKTZrUw/yqDAC3Hebhph+3mCuJ7v/Xmj4uOyJRH25eESP+IdpuvrTHkRcNm9laQ=
+X-Received: by 2002:a05:6000:184f:b0:38a:a117:3dbe with SMTP id
+ ffacd0b85a97d-38bec507323mr1823023f8f.21.1737020712688; Thu, 16 Jan 2025
+ 01:45:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250116044100.80679-1-fujita.tomonori@gmail.com> <20250116044100.80679-3-fujita.tomonori@gmail.com>
-In-Reply-To: <20250116044100.80679-3-fujita.tomonori@gmail.com>
+References: <20250116044100.80679-1-fujita.tomonori@gmail.com> <20250116044100.80679-7-fujita.tomonori@gmail.com>
+In-Reply-To: <20250116044100.80679-7-fujita.tomonori@gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 16 Jan 2025 10:36:07 +0100
-X-Gm-Features: AbW1kvaXJCb1m1shYmY-XBFLwJar9iXu8ps3uKY_yBt8I-PolyqVbWMrSVJpWtw
-Message-ID: <CAH5fLghAfovcm0ZJBByswXRSM4dRQY4ht7N7YGscWOaT+fN9OA@mail.gmail.com>
-Subject: Re: [PATCH v8 2/7] rust: time: Introduce Delta type
+Date: Thu, 16 Jan 2025 10:45:00 +0100
+X-Gm-Features: AbW1kvYdQi8ZJtKAP6jrR98YMJn2YEu4b49Q0-p39jnMzgaoN3yho_fE7k21c3M
+Message-ID: <CAH5fLgjoAzv1Q0w+ifgYZ-YttHMiJ9GV95aEumLw4LeFoHOcyg@mail.gmail.com>
+Subject: Re: [PATCH v8 6/7] rust: Add read_poll_timeout functions
 To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: linux-kernel@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>, 
-	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, hkallweit1@gmail.com, 
-	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
-	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de, 
-	arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, mingo@redhat.com, 
-	peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, 
-	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, 
-	mgorman@suse.de, vschneid@redhat.com
+Cc: linux-kernel@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>, 
+	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, andrew@lunn.ch, 
+	hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@samsung.com, anna-maria@linutronix.de, 
+	frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, 
+	sboyd@kernel.org, mingo@redhat.com, peterz@infradead.org, 
+	juri.lelli@redhat.com, vincent.guittot@linaro.org, dietmar.eggemann@arm.com, 
+	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de, vschneid@redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 16, 2025 at 5:42=E2=80=AFAM FUJITA Tomonori
+On Thu, Jan 16, 2025 at 5:43=E2=80=AFAM FUJITA Tomonori
 <fujita.tomonori@gmail.com> wrote:
 >
-> Introduce a type representing a span of time. Define our own type
-> because `core::time::Duration` is large and could panic during
-> creation.
+> Add read_poll_timeout functions which poll periodically until a
+> condition is met or a timeout is reached.
 >
-> time::Ktime could be also used for time duration but timestamp and
-> timedelta are different so better to use a new type.
+> C's read_poll_timeout (include/linux/iopoll.h) is a complicated macro
+> and a simple wrapper for Rust doesn't work. So this implements the
+> same functionality in Rust.
 >
-> i64 is used instead of u64 to represent a span of time; some C drivers
-> uses negative Deltas and i64 is more compatible with Ktime using i64
-> too (e.g., ktime_[us|ms]_delta() APIs return i64 so we create Delta
-> object without type conversion.
+> The C version uses usleep_range() while the Rust version uses
+> fsleep(), which uses the best sleep method so it works with spans that
+> usleep_range() doesn't work nicely with.
 >
-> i64 is used instead of bindings::ktime_t because when the ktime_t
-> type is used as timestamp, it represents values from 0 to
-> KTIME_MAX, which different from Delta.
+> Unlike the C version, __might_sleep() is used instead of might_sleep()
+> to show proper debug info; the file name and line
+> number. might_resched() could be added to match what the C version
+> does but this function works without it.
 >
-> Delta::from_[millis|secs] APIs take i64. When a span of time
-> overflows, i64::MAX is used.
+> The sleep_before_read argument isn't supported since there is no user
+> for now. It's rarely used in the C version.
 >
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> core::panic::Location::file() doesn't provide a null-terminated string
+> so add __might_sleep_precision() helper function, which takes a
+> pointer to a string with its length.
+>
+> read_poll_timeout() can only be used in a nonatomic context. This
+> requirement is not checked by these abstractions, but it is intended
+> that klint [1] or a similar tool will be used to check it in the
+> future.
+>
+> Link: https://rust-for-linux.com/klint [1]
+> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-One nit below, otherwise LGTM
+[...]
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> +void __might_sleep(const char *file, int line)
+> +{
+> +       long len =3D strlen(file);
+> +
+> +       __might_sleep_precision(file, len, line);
+>  }
+>  EXPORT_SYMBOL(__might_sleep);
 
-> +    /// Return the number of nanoseconds in the `Delta`.
-> +    #[inline]
-> +    pub fn as_nanos(self) -> i64 {
-> +        self.nanos
-> +    }
+I think these strlen() calls could be pretty expensive. You run them
+every time might_sleep() runs even if the check does not fail.
 
-I added the ktime_ms_delta() function because I was going to use it.
-Can you add an `as_millis()` function too? That way I can use
-start_time.elapsed().as_millis() for my use-case.
+How about changing __might_resched_precision() to accept a length of
+-1 for nul-terminated strings, and having it compute the length with
+strlen only *if* we know that we actually need the length?
+
+if (len < 0) len =3D strlen(file);
+pr_err("BUG: sleeping function called from invalid context at %.*s:%d\n",
+       len, file, line);
+
+Another option might be to compile the lengths at compile-time by
+having the macros use sizeof on __FILE__, but that sounds more tricky
+to get right.
 
 Alice
