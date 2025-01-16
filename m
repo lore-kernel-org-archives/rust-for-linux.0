@@ -1,63 +1,63 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4711F1D6DD4;
-	Thu, 16 Jan 2025 21:15:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9A818FC8F;
+	Thu, 16 Jan 2025 21:24:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737062126; cv=none; b=kM8A3ANxC7fLtmuqeXMCvXHThDn7djc1q5nl1JtcTT6Mn8RWa4lsvoEc+wfFNO+wj5ZogJGNKjTNewj6xEy7BLsQZJ22TEsPqAH8HiZh1aud3gSv3MJ91RN/DjBHTMyzNCo4DE/Um/JvRgP1GeDzcdYPn5MYYadL/7/73kVnkeA=
+	t=1737062695; cv=none; b=qEU1GKLo1AdKmM7PZLaGDDKDZtaJkohKcV9zkQNGspe4cVGF/sbDrj6Bm024LVXG5yAsu1VRS7pl6DHAoGfMxNgRFzhU3zEyVkn5RgFN3Evh6RCYeswS/TmX/1dnqVDR2iMns/qrswaWZOFyxV4KNECypqaprDDRqRqNHWjZNDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737062126; c=relaxed/simple;
-	bh=nAsmj3B3+mricAINxi2nKqLcu48gS+D2KMS6j1SWKQI=;
+	s=arc-20240116; t=1737062695; c=relaxed/simple;
+	bh=azL/aAShsEW3acbFvA+7rVFTUF1pBIKwpH99GRCC2xg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bN9Gdi10d1fLQff5Tg1e/UfmrEyIvbQub3LNbb7ln01nTsToe+OXVfjB74ZZzB7JWApi+e8Qh9ZSHDypTOtj5C//ywj1Gg6ilvJYYqcDnpLsUg8srAnWM0bmPdaqh3wU356o1SzyjaBJBBEuQCRX5r39V3NGvPq1IGesZyrFEgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jCQNTjtK; arc=none smtp.client-ip=209.85.128.41
+	 In-Reply-To:Content-Type; b=cs89sEt3Rlot1NnjXJnhZD1zzt0eZU776hGBabB0UN6uoy5SIx8yFawj1e1mBrSLv16+scIopKVb7CuTcUyM0z7ds4Jo3z4vZH6/gZ/cBHD6MSFGkSaQwg8eLXTZ3f43gy+rjU3Tnl5sYGZr2476fN8S2hnDXpem9OGPmrQMNR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eoD6XJKN; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jCQNTjtK"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4362f61757fso13368695e9.2;
-        Thu, 16 Jan 2025 13:15:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eoD6XJKN"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4361c705434so9298755e9.3;
+        Thu, 16 Jan 2025 13:24:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737062122; x=1737666922; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1737062692; x=1737667492; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=wgXNESa0LW3t3iYTMKhcMjVCU8z75J1a0aMzskYvB44=;
-        b=jCQNTjtKIgnUe0F9uCy1IGjzuds1lhSJj6GOpvU/loKSMrLR6aeaI/onq3jfn0nZC8
-         Xsp2hPpqCqot36UrBBsGUdDuhp0r3bN77UOEt8H6sB12a7InB+nvBSKDD9adpN0aMoCo
-         E7N4+wEjTtdQnpRUbRlCC3dX3hUaapRUUo5L/ExwVJAR7OrbV5mkOVi7+vKFqJl+5Pou
-         IpgdnlLHLHwMuBnqCtyz9/NtrHcAEWKdQ4d3TSRWKdApCAgd9GUFZvI6/6CVmOPUJh1L
-         JPbJgfpgGHpd3seuGOL5mVC6RbqH51ZGg/K+cP+cruyOfw0kU0tkJdlYLUdgMWSWUTaT
-         TlBw==
+        bh=q7R0SoA3/qMgAN0yJ3TePjKJZUaCZcdlE5WOQYEN2ec=;
+        b=eoD6XJKNaPti/pGbAZUm5JaUe0/dGyL8ZegDLajPRAVuAOPmHZnp4TxvCDcuUONkTI
+         tEPVXim65W35EsDBceOwVkbLwz1+F7NNKopgfXm+EdsOx32faLHa6RgffLMYNV811LQq
+         WpcxG7q7AI8t5SXZbBWVbDG1zXJpfLDUHy6ZrwohaJTwzVCPvLTV8Qna6DZAM8NFyETT
+         cc00/SxM5F4BesdqY2npjPjz9wMloQX2Lffs4shzrwiKkcr/RE/bHots01kQ7CKJOFRC
+         nCdlMPO020oYDDZ2QvwXtF/2J+L6cEG8RoiE5W65sMjptAtHNzGTtPXXIMIayNQ9On/E
+         FZbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737062122; x=1737666922;
+        d=1e100.net; s=20230601; t=1737062692; x=1737667492;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wgXNESa0LW3t3iYTMKhcMjVCU8z75J1a0aMzskYvB44=;
-        b=fGXfJ3J85GFPjA7PimWql8eLKs958JJo+cVkKgka+OkbxQLvW6f5LxtGKcdixLaXbo
-         xTkZP1djyUEYb6Ud/tOWkQHK1ByYh4HYVhN7sgVQm5+wmxYbeaxfKsIz7lkN3NqQsckG
-         M3Ycx6SBAL39pTQ1ZNwgXvBgj10eM4m9faEFrdHM1tL/rjuyVU4qd2SJhOqzG38a/XOA
-         I4OwFeylZEoLx+TGwUgRz/RfuHepYK7bAEHQGbL6Nyte3rBI8I0IyJnWBmfUzYwarUoP
-         PzurF8x7gR7xKbqUnoBYR10xXXXUwhS8AkcVKFtr956li1jubEK4RzuKnag9bjYSpF//
-         8kRA==
-X-Forwarded-Encrypted: i=1; AJvYcCX5+rTFZ/3OiOQj7D7MJsuj4UR5441FHicfsfhX2sxOz7DXXHEfQnA6yMKWStsbdxTPd+n/fwQXtK1pyLY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynJrjVuwhKlaUJtTvXdvQPQDdMWk94nVnLMrHTx7N3obXoyGI2
-	qOxiV5Y49kpr/oWesBZteDHjJoGWKOh5Z8yY/ApUJ5xtsWCV4WVd
-X-Gm-Gg: ASbGncu5QEtWC1XZOFz9jPKveJpdGrG1XX3IJ0lHs2cp/KAPUdYL8UCumz4WZ2Z6ar2
-	ULJrFUSrw4fC3n0XJl/Hcql3tE0G4n6YlixsvVQ9p6FDsyfkDrM4gsS/FiLbYGFL04BCyEFhKKY
-	zo5/ZNfthpgUxk63CmO/8bSMNRqK+16/y4yMe8ZqdBSuXGbOoNoH32OLx4zr0ctfPrmIMMPs+EK
-	wzgKU7z8SeC3HKLcdI1P1nKfaM7bA6Ysph0mDhIZ8QW5q9xhAI9s8iNjTqqDPhzuUEYbA==
-X-Google-Smtp-Source: AGHT+IFDwjljwZmzjBl9+OQtKpm2FM43EFhs/r+YO70KEfsef7w4xsLlXjnrnUsosr5FT4Uw6W61cQ==
-X-Received: by 2002:a05:600c:5027:b0:434:f5c0:3288 with SMTP id 5b1f17b1804b1-43891430ed1mr1873705e9.29.1737062122309;
-        Thu, 16 Jan 2025 13:15:22 -0800 (PST)
+        bh=q7R0SoA3/qMgAN0yJ3TePjKJZUaCZcdlE5WOQYEN2ec=;
+        b=J9hXplpC5QgjcCpAKz4OdnHmZiTi72UixXDqKXGo4z+72igTbP70A7SOjzQ60VU6dX
+         AvYAx98pJi7GCOL9X9lB1Tw3nVaAwKyfHUq77Mj+ek1gU45nLPpZQPmMnuJjZ3ofpiFu
+         lK8tN0Q430TdXUhkVLm9ENlRjVucLd3jWedIxO+gpPw7KPhE0u7Nw5qyLPWkfYFQDGr6
+         n8qd+dqfDqgjt7ULzmrzobHOngFB1XoHiWBZiIpk3hxWbDPBu8ZzGoDsJRouA+KouEoD
+         NAGUr9cfSw9KEgJEZDl2cdqbXGXhVSFkLActuSQFtreSc/ik+Y4beTEX+gt0yC5t6aGF
+         95KQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWHbWtFoi8laFqxtl/IH/8gGrn3PwUp4mYFzgnLzt24f7myR08fgSucVCVFoc1aysn7/bzmU2dX5i914VY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOfj7mtGBeGPrcYPYtTqpXOioMIYutcG4aJZbJ0ebN6Tn6wHdh
+	XCyBJ0DMmQFc5Fwk5WjR6EbVVz6Rdt9QgXC19onFHBsww+FArDcl
+X-Gm-Gg: ASbGncs9DgiITD7XM8njWCDFONMErNvPkl6miqeOT8pVAl5KmmFVY9TNP8L4yJlUym7
+	ijBgvtm3sJlBRJrBbJWlzK+96Z3wMvVr4TWbLzMagEUtZUBxx4AT+LL5V3PJ/WXfT+p3XfekvfK
+	kqpz2KSmhMQtNqZ3vc2OIDLN+VKqkxJtxDqUDLdenVt8oINIhpxf27hEaJNeN6dt5S+Y5mkNbKk
+	AKMuOjzw617/NpnuynUynSRPtxJky2J2u9m9shi7swNlS7SURbcOQTIgJRw2Nw3DvykqA==
+X-Google-Smtp-Source: AGHT+IGUVfELr0ArYKh/K3cWTr9jrHQ3wA/FfkPw4+Qp6motHMUxyrVSQvNOK8Yy4O7N7YXY+4OmaQ==
+X-Received: by 2002:a05:600c:5486:b0:434:f1e9:afae with SMTP id 5b1f17b1804b1-438913bfa0fmr1889465e9.1.1737062692025;
+        Thu, 16 Jan 2025 13:24:52 -0800 (PST)
 Received: from ?IPV6:2001:871:22a:8634::1ad1? ([2001:871:22a:8634::1ad1])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38bf3275901sm782403f8f.61.2025.01.16.13.15.21
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4389040854bsm11443295e9.7.2025.01.16.13.24.51
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Jan 2025 13:15:21 -0800 (PST)
-Message-ID: <25ac9fd7-7c4a-4936-bc20-4b2105b6df91@gmail.com>
-Date: Thu, 16 Jan 2025 22:15:21 +0100
+        Thu, 16 Jan 2025 13:24:51 -0800 (PST)
+Message-ID: <45db2a00-bd57-4fad-8845-6d9109622160@gmail.com>
+Date: Thu, 16 Jan 2025 22:24:50 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -65,8 +65,7 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND v5 2/3] rust: io: mem: add a generic iomem
- abstraction
+Subject: Re: [PATCH RESEND v5 0/3] rust: platform: add Io support
 To: Daniel Almeida <daniel.almeida@collabora.com>, ojeda@kernel.org,
  alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
  bjorn3_gh@protonmail.mco, benno.lossin@proton.me, a.hindborg@kernel.org,
@@ -75,175 +74,95 @@ To: Daniel Almeida <daniel.almeida@collabora.com>, ojeda@kernel.org,
  robh@kernel.org
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20250116125632.65017-1-daniel.almeida@collabora.com>
- <20250116125632.65017-3-daniel.almeida@collabora.com>
 Content-Language: en-US
 From: Christian Schrefl <chrisi.schrefl@gmail.com>
-In-Reply-To: <20250116125632.65017-3-daniel.almeida@collabora.com>
+In-Reply-To: <20250116125632.65017-1-daniel.almeida@collabora.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+
 
 Hi Daniel
 
 On 16.01.25 1:56 PM, Daniel Almeida wrote:
-> Add a generic iomem abstraction to safely read and write ioremapped
-> regions.
+> Changes in v5:
 > 
-> The reads and writes are done through IoRaw, and are thus checked either
-> at compile-time, if the size of the region is known at that point, or at
-> runtime otherwise.
+> - resend v5, as the r4l list was not cc'd
+> - use srctree where applicable in the docs (Alice)
+> - Remove 'mut' in Resource::from_ptr() (Alice)
+> - Add 'invariants' section for Resource (Alice)
+> - Fix typos in mem.rs (Alice)
+> - Turn 'exclusive' into a const generic (Alice)
+> - Fix example in platform.rs (Alice)
+> - Rework the resource.is_null() check (Alice)
+> - Refactor IoMem::new() to return DevRes<IoMem> directly (Danilo)
 > 
-> Non-exclusive access to the underlying memory region is made possible to
-> cater to cases where overlapped regions are unavoidable.
+> link to v4: https://lore.kernel.org/rust-for-linux/20250109133057.243751-1-daniel.almeida@collabora.com/
 > 
-> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-> ---
->  rust/helpers/io.c     | 10 +++++
->  rust/kernel/io.rs     |  1 +
->  rust/kernel/io/mem.rs | 98 +++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 109 insertions(+)
+> Changes in v4:
+> 
+> - Rebased on top of driver-core-next
+> - Split series in multiple patches (Danilo)
+> - Move IoMem and Resource into its own files (Danilo)
+> - Fix a missing "if exclusive {...}" check (Danilo)
+> - Fixed the example, since it was using the old API (Danilo)
+> - Use Opaque in `Resource`, instead of NonNull and PhantomData (Boqun)
+> - Highlight that non-exclusive access to the iomem might be required in some cases
+> - Fixed the safety comment in IoMem::deref()
+> 
+> Link to v3: https://lore.kernel.org/rust-for-linux/20241211-topic-panthor-rs-platform_io_support-v3-1-08ba707e5e3b@collabora.com/
+> 
+> Changes in v3:
+> - Rebased on top of v5 for the PCI/Platform abstractions
+> - platform_get_resource is now called only once when calling ioremap
+> - Introduced a platform::Resource type, which is bound to the lifetime of the
+>  platform Device
+> - Allow retrieving resources from the platform device either by index or
+>  name
+> - Make request_mem_region() optional
+> - Use resource.name() in request_mem_region
+> - Reword the example to remove an unaligned, out-of-bounds offset
+> - Update the safety requirements of platform::IoMem
+> 
+> Changes in v2:
+> - reworked the commit message
+> - added missing request_mem_region call (Thanks Alice, Danilo)
+> - IoMem::new() now takes the platform::Device, the resource number and
+>  the name, instead of an address and a size (thanks, Danilo)
+> - Added a new example for both sized and unsized versions of IoMem.
+> - Compiled the examples using kunit.py (thanks for the tip, Alice!)
+> - Removed instances of `foo as _`. All `as` casts now spell out the actual
+>  type.
+> - Now compiling with CLIPPY=1 (I realized I had forgotten, sorry)
+> - Rebased on top of rust-next to check for any warnings given the new
+>  unsafe lints.
+> 
+> Daniel Almeida (3):
+>   rust: io: add resource abstraction
+>   rust: io: mem: add a generic iomem abstraction
+>   rust: platform: allow ioremap of platform resources
+> 
+>  rust/bindings/bindings_helper.h |   1 +
+>  rust/helpers/io.c               |  17 ++++++
+>  rust/kernel/io.rs               |   3 +
+>  rust/kernel/io/mem.rs           |  98 +++++++++++++++++++++++++++++
+>  rust/kernel/io/resource.rs      |  53 ++++++++++++++++
+>  rust/kernel/platform.rs         | 105 +++++++++++++++++++++++++++++++-
+>  6 files changed, 276 insertions(+), 1 deletion(-)
 >  create mode 100644 rust/kernel/io/mem.rs
+>  create mode 100644 rust/kernel/io/resource.rs
 > 
-> diff --git a/rust/helpers/io.c b/rust/helpers/io.c
-> index 3cb47bd01942..cb10060c08ae 100644
-> --- a/rust/helpers/io.c
-> +++ b/rust/helpers/io.c
-> @@ -106,3 +106,13 @@ resource_size_t rust_helper_resource_size(struct resource *res)
->  	return resource_size(res);
->  }
->  
-> +struct resource *rust_helper_request_mem_region(resource_size_t start, resource_size_t n,
-> +				    const char *name)
-> +{
-> +	return request_mem_region(start, n, name);
-> +}
-> +
-> +void rust_helper_release_mem_region(resource_size_t start, resource_size_t n)
-> +{
-> +	release_mem_region(start, n);
-> +}
-> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-> index 566d8b177e01..9ce3482b5ecd 100644
-> --- a/rust/kernel/io.rs
-> +++ b/rust/kernel/io.rs
-> @@ -7,6 +7,7 @@
->  use crate::error::{code::EINVAL, Result};
->  use crate::{bindings, build_assert};
->  
-> +pub mod mem;
->  pub mod resource;
->  
->  /// Raw representation of an MMIO region.
-> diff --git a/rust/kernel/io/mem.rs b/rust/kernel/io/mem.rs
-> new file mode 100644
-> index 000000000000..a287dc0898e0
-> --- /dev/null
-> +++ b/rust/kernel/io/mem.rs
-> @@ -0,0 +1,98 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Generic memory-mapped IO.
-> +
-> +use core::ops::Deref;
-> +
-> +use crate::device::Device;
-> +use crate::devres::Devres;
-> +use crate::io::resource::Resource;
-> +use crate::io::Io;
-> +use crate::io::IoRaw;
-> +use crate::prelude::*;
-> +
-> +/// A generic memory-mapped IO region.
-> +///
-> +/// Accesses to the underlying region is checked either at compile time, if the
-> +/// region's size is known at that point, or at runtime otherwise.
-> +///
-> +/// Whether `IoMem` represents an exclusive access to the underlying memory
-> +/// region is determined by the caller at creation time, as overlapping access
-> +/// may be needed in some cases.
-> +///
-> +/// # Invariants
-> +///
-> +/// `IoMem` always holds an `IoRaw` inststance that holds a valid pointer to the
-> +/// start of the I/O memory mapped region.
-> +pub struct IoMem<const SIZE: usize = 0, const EXCLUSIVE: bool = true> {
-> +    io: IoRaw<SIZE>,
-> +    res_start: u64,
 
-Please use bindings::resource_size_t here to to be compatible with 32-bit architectures.
 
-> +}
-> +
-> +impl<const SIZE: usize, const EXCLUSIVE: bool> IoMem<SIZE, EXCLUSIVE> {
-> +    /// Creates a new `IoMem` instance.
-> +    pub(crate) fn new(resource: &Resource, device: &Device) -> Result<Devres<Self>> {
-> +        let size = resource.size();
-> +        if size == 0 {
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        let res_start = resource.start();
-> +
-> +        if EXCLUSIVE {
-> +            // SAFETY:
-> +            // - `res_start` and `size` are read from a presumably valid `struct resource`.
-> +            // - `size` is known not to be zero at this point.
-> +            // - `resource.name()` returns a valid C string.
-> +            let mem_region = unsafe {
-> +                bindings::request_mem_region(res_start, size, resource.name().as_char_ptr())
-> +            };
-> +
-> +            if mem_region.is_null() {
-> +                return Err(EBUSY);
-> +            }
-> +        }
-> +
-> +        // SAFETY:
-> +        // - `res_start` and `size` are read from a presumably valid `struct resource`.
-> +        // - `size` is known not to be zero at this point.
-> +        let addr = unsafe { bindings::ioremap(res_start, size as kernel::ffi::c_ulong) };
-> +        if addr.is_null() {
-> +            if EXCLUSIVE {
-> +                // SAFETY:
-> +                // - `res_start` and `size` are read from a presumably valid `struct resource`.
-> +                // - `size` is the same as the one passed to `request_mem_region`.
-> +                unsafe { bindings::release_mem_region(res_start, size) };
-> +            }
-> +            return Err(ENOMEM);
-> +        }
-> +
-> +        let io = IoRaw::new(addr as usize, size as usize)?;
-> +        let io = IoMem { io, res_start };
-> +        let devres = Devres::new(device, io, GFP_KERNEL)?;
-> +
-> +        Ok(devres)
-> +    }
-> +}
-> +
-> +impl<const SIZE: usize, const EXCLUSIVE: bool> Drop for IoMem<SIZE, EXCLUSIVE> {
-> +    fn drop(&mut self) {
-> +        if EXCLUSIVE {
-> +            // SAFETY: `res_start` and `io.maxsize()` were the values passed to
-> +            // `request_mem_region`.
-> +            unsafe { bindings::release_mem_region(self.res_start, self.io.maxsize() as u64) }
+I've tested this patch-set with my ARM 32-bit arm patches[0] on a De1Soc (Fpga + Arm Cortex A9).
 
-Please use bindings::resource_size_t here as well.
+I've got it to work by changing the three instances of u64 (mentioned on the individual patches) to bindings::resource_size_t.
+I used a small Fpga configuration that allows me to change a led from the kernel driver.
 
-> +        }
-> +
-> +        // SAFETY: Safe as by the invariant of `Io`.
-> +        unsafe { bindings::iounmap(self.io.addr() as *mut core::ffi::c_void) }
-> +    }
-> +}
-> +
-> +impl<const SIZE: usize, const EXCLUSIVE: bool> Deref for IoMem<SIZE, EXCLUSIVE> {
-> +    type Target = Io<SIZE>;
-> +
-> +    fn deref(&self) -> &Self::Target {
-> +        // SAFETY: Safe as by the invariant of `IoMem`.
-> +        unsafe { Io::from_raw(&self.io) }
-> +    }
-> +}
+So with these fixed:
+
+Tested-by: Christian Schrefl <chrisi.schrefl@gmail.com>
+
+[0]: https://github.com/onestacked/linux/commit/f84be45f7311ea5b5a76123028f9fb8fda9f9e7f
 
 Cheers
 Christian
-
