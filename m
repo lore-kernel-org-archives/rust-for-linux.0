@@ -1,96 +1,138 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FEF1DE892;
-	Thu, 16 Jan 2025 12:43:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737031434; cv=none; b=VvOFHiMlGCGt2Fxb+uGXcrod9blNqShUfMH2V/u2lTzr1hmZfkkP8b/R0QThaDzn5NOEJgweHpLY1cyt4YdxrkbjojkC2mK6Sjnbn7Q3k4PTmvR3uwpw3cOXngBo3ZXWtAeM+v8HaE17h1Sh1rN464hClvhoa3b02JLjUpsM6Ns=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737031434; c=relaxed/simple;
-	bh=91faCPnI6BFBNuEQ1W5ciAABK9q4SQ7lWA8dOZ2SPLg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UohYdieOTg8BHTlG/jkszrn6zq1zfyMQ7YkFU6HQBLaJ5A8ggPjemwF/tqOzIfVsL9bOVio0nTFLtmR2+vobYARWgLqN1VFb4x8l/8k8WQ1tnrnOCBbmTDoP7g5kqvQyQpx2M0EQJRyxhm7g6oHaM8u19ZOo8xc7ECnkMuQNO8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z1yHZtm3; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4011DBB3A;
+	Thu, 16 Jan 2025 13:05:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737032726; cv=pass; b=RgcJPHgMQXjjwKW1PGJNw0UZ2mIMeencS+mXSPeisv+YcHLskTnQY0NrWq8glUGoD9AyFJ8zqYoJEbn7XVRHMzHdXnqH06PmQ+QOpKk8gOAfgaVIanpDgODZUpzkqclY04K2Qu/eL3wfLpCorq0eEGiPScGlqeB3U5l5LZHVl2E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737032726; c=relaxed/simple;
+	bh=bO9dr0NHjG4+GYkcSnjjinWCQq1IiEVNQUZXEbCeCAg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=af+zK9g6cmdDy0IxVIHHCcojcAcT+pe26VUBNjG/ZzIkAQr+dkyouz1cokAFHiSd1FtqhjfyMNHp8OWbMXN+VrYjPrvU+weCrUWGvMvtCjdxExSpzxA6EQ8Mnmx1luXtuqU26aiUYokW4sbSQqelOuz5WSEVzddOZEw+YkC4X/4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=TKxoWhKH; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z1yHZtm3"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2ef05d0ef18so195495a91.0;
-        Thu, 16 Jan 2025 04:43:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737031432; x=1737636232; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=91faCPnI6BFBNuEQ1W5ciAABK9q4SQ7lWA8dOZ2SPLg=;
-        b=Z1yHZtm3LG9yAvOkLZkq3vJ7UTqVbQNYfEYQ3Jr2ROMSunP1iKS1y7Q+NLns1Eohq8
-         VSsRxUcvozl2vV2/ypvD3X9PGtov4SlUDiIMrcdaKHdt+iFvrpzLkkvfN1ldak9Kt7wB
-         CgTaOZWkHzQ3NgPr3KwUViP3HU6UdndyeoKBUJyOcw6yTpE9xiNk2MLUjnHfJEPCnWo/
-         VsR30cQNvtC28cdnmjjSYnm0vakXyFN6I8QBTrknjzKc06ZvtyG3YnDpOsZZI8jbPv8N
-         8/rrjdxmUjbFURokE3ws7b+UVTFXnwypfhgEn4NmhJj3u9cMZMbyHKra6CoUONBH8Vtl
-         QC4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737031432; x=1737636232;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=91faCPnI6BFBNuEQ1W5ciAABK9q4SQ7lWA8dOZ2SPLg=;
-        b=AsXVnCMkM4P8CKhx5JA13/KZcD7xdMWLE4UbCqXyFVCJmkXTQlL9X1VfD76PL7ufZG
-         AVFlDpogCjoCDu7Nab/OafKXX1rpDzLAftfW8cGrDeBQJs+c+NBGvkcihyAfntArIhNX
-         ABZslgCwbhRtzraOG8VV4exSTmYHnBwVWFpbpHU9+D3x741j7zThV6aOM+VLjGOhz7Sw
-         yB6ZyLTHEpkxeN6IhFwW/W/4LdxfEyfZYhmAO0C9GVa7Cb67ZHkF3hnM+Vuc83os/xwI
-         94c0H7EwUBrvid5NdZ/rzyQXybgt/+sebxnFcvZqsXFnfzdcc8KK0D4ikCkxJG2xlwPx
-         zBrw==
-X-Forwarded-Encrypted: i=1; AJvYcCUDBbv5gqnArkKV9O61x+jAkog2xtIRrRfR5ibBwFy7d9q9cjnLuUmt1k/X5uX44cFZtU8+CXrYa5ODNWc=@vger.kernel.org, AJvYcCWrbtzuF5ae5gTAasba8dclKHGrGKHqqzaOj30z6Bp0n3k/Uw/pwufkCtit2Md8AWDZkNbIaesJr0uu2WZ23Is=@vger.kernel.org, AJvYcCWz6jGsDONSmCeg47vz1diMCYrQVQD5iCUfCAB76MtPbJI+WcgQhMdFBVQHrPzGkORKC39gGEGj@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHUj8MvSl8/1F8T1N/PGtAEQ+Qu0bwH0497MZXHCYztniYzzz9
-	/6jd9bqKF4Z67FMk7OZ0ZX/92cuvDDmaCF3L6R9i1cHKiKFG/n1d3RrUmozqtc7zDn+vWhEGTxQ
-	Wj1yZwPzybMy3zTkDFgH5oMKeYUs=
-X-Gm-Gg: ASbGncvljBunWH11DX2v1RHQWLoG5v5VGPRDseYubp5NGDcn75CbLJuWyth6UE0X6Pe
-	V3bWvqW/zgPdaxoTRwfV2r18iqoXZfbQKOd/KRw==
-X-Google-Smtp-Source: AGHT+IEfMzPUH0Gcuohd1YVqNHc9QJARY1WRjsvRhqrqjLIaqstfyo2D9zD8jhIfd+ioQeb52klag3s731FmZfSIpPI=
-X-Received: by 2002:a17:90b:2811:b0:2ee:cbc9:d50b with SMTP id
- 98e67ed59e1d1-2f5490ac695mr18452301a91.4.1737031432299; Thu, 16 Jan 2025
- 04:43:52 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="TKxoWhKH"
+ARC-Seal: i=1; a=rsa-sha256; t=1737032709; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Zf6WvWo2Fy4mDxrnsUjKklK+h9Q3xlnJiaXPK80CytXXmiG7hJKPaml+Cw9/1/PDkE1n2YLEWkhu/Jsj54E6DPxnS9HiQCEdnDsgQoOD8VLKcAH+YuMs657eb8PJrKwNesui4mQnM73qFa68r/6q+7G0X9FCLyRrvOfhEHhwoGc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1737032709; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=Z/JsH7ar+beFrQAVET27B2gZx3QA+MLdTasQKsjE6cU=; 
+	b=AwVrPjYGGOie5UCkXPuLorTsVdAFOtNUXU30bBgGaIWotM8H6hcnHFooKgtN2VEjXgQ8tHTQ7fj6jWYfom6ZW+/6zfx0zDU/oWzBQZJrmU7XF+Rzc+wtoEj/8duuSd04eN1qq5UmeYcrQLlwV2PwgDKmCPhJOY0V74awOr8iuL0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1737032709;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=Z/JsH7ar+beFrQAVET27B2gZx3QA+MLdTasQKsjE6cU=;
+	b=TKxoWhKHW+c54nTaSiPi3jZmJT0hhdKuvHi4u7rFtnHvqDOr6kK57mJxvfKa4D//
+	Xcb5pS5lQenGMIg8D700nJebOTdtBH2kFiqI/B6gFUNOsonTWfIK9rCWfJREljbHlCU
+	/0Uag0t0qkhZ1XmHogaz8+06tSZ94SZGpA1NwuPY=
+Received: by mx.zohomail.com with SMTPS id 1737032706703772.5466433825862;
+	Thu, 16 Jan 2025 05:05:06 -0800 (PST)
+From: Daniel Almeida <daniel.almeida@collabora.com>
+To: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.mco,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	dakr@kernel.org,
+	boris.brezillon@collabora.com,
+	robh@kernel.org
+Cc: Daniel Almeida <daniel.almeida@collabora.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH RESEND v5 0/3] rust: platform: add Io support
+Date: Thu, 16 Jan 2025 09:56:23 -0300
+Message-ID: <20250116125632.65017-1-daniel.almeida@collabora.com>
+X-Mailer: git-send-email 2.48.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250116044100.80679-1-fujita.tomonori@gmail.com>
- <20250116044100.80679-3-fujita.tomonori@gmail.com> <CAH5fLghAfovcm0ZJBByswXRSM4dRQY4ht7N7YGscWOaT+fN9OA@mail.gmail.com>
- <20250116.210042.151459337736478197.fujita.tomonori@gmail.com>
-In-Reply-To: <20250116.210042.151459337736478197.fujita.tomonori@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 16 Jan 2025 13:43:39 +0100
-X-Gm-Features: AbW1kvYt7d_iVfTVjqvF1od81AQIPrtxluUDw4bnVHdFin9wcMRIoz8lfthzIrA
-Message-ID: <CANiq72k8=M-9HLedMatqA1U7vTa981MFpQYivYOh+PFWA27OQQ@mail.gmail.com>
-Subject: Re: [PATCH v8 2/7] rust: time: Introduce Delta type
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: aliceryhl@google.com, linux-kernel@vger.kernel.org, andrew@lunn.ch, 
-	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, hkallweit1@gmail.com, 
-	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
-	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de, 
-	arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, mingo@redhat.com, 
-	peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, 
-	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, 
-	mgorman@suse.de, vschneid@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-On Thu, Jan 16, 2025 at 1:00=E2=80=AFPM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> I dropped as_millis() method in v4 because I followed the rule, don't
-> add an API that may not be used.
+Changes in v5:
 
-Yeah, please mention the intended/expected use case in the commit
-message so that it is clear, and then it should be OK (at least for
-something simple like `as_millis()` here).
+- resend v5, as the r4l list was not cc'd
+- use srctree where applicable in the docs (Alice)
+- Remove 'mut' in Resource::from_ptr() (Alice)
+- Add 'invariants' section for Resource (Alice)
+- Fix typos in mem.rs (Alice)
+- Turn 'exclusive' into a const generic (Alice)
+- Fix example in platform.rs (Alice)
+- Rework the resource.is_null() check (Alice)
+- Refactor IoMem::new() to return DevRes<IoMem> directly (Danilo)
 
-Thanks!
+link to v4: https://lore.kernel.org/rust-for-linux/20250109133057.243751-1-daniel.almeida@collabora.com/
 
-Cheers,
-Miguel
+Changes in v4:
+
+- Rebased on top of driver-core-next
+- Split series in multiple patches (Danilo)
+- Move IoMem and Resource into its own files (Danilo)
+- Fix a missing "if exclusive {...}" check (Danilo)
+- Fixed the example, since it was using the old API (Danilo)
+- Use Opaque in `Resource`, instead of NonNull and PhantomData (Boqun)
+- Highlight that non-exclusive access to the iomem might be required in some cases
+- Fixed the safety comment in IoMem::deref()
+
+Link to v3: https://lore.kernel.org/rust-for-linux/20241211-topic-panthor-rs-platform_io_support-v3-1-08ba707e5e3b@collabora.com/
+
+Changes in v3:
+- Rebased on top of v5 for the PCI/Platform abstractions
+- platform_get_resource is now called only once when calling ioremap
+- Introduced a platform::Resource type, which is bound to the lifetime of the
+ platform Device
+- Allow retrieving resources from the platform device either by index or
+ name
+- Make request_mem_region() optional
+- Use resource.name() in request_mem_region
+- Reword the example to remove an unaligned, out-of-bounds offset
+- Update the safety requirements of platform::IoMem
+
+Changes in v2:
+- reworked the commit message
+- added missing request_mem_region call (Thanks Alice, Danilo)
+- IoMem::new() now takes the platform::Device, the resource number and
+ the name, instead of an address and a size (thanks, Danilo)
+- Added a new example for both sized and unsized versions of IoMem.
+- Compiled the examples using kunit.py (thanks for the tip, Alice!)
+- Removed instances of `foo as _`. All `as` casts now spell out the actual
+ type.
+- Now compiling with CLIPPY=1 (I realized I had forgotten, sorry)
+- Rebased on top of rust-next to check for any warnings given the new
+ unsafe lints.
+
+Daniel Almeida (3):
+  rust: io: add resource abstraction
+  rust: io: mem: add a generic iomem abstraction
+  rust: platform: allow ioremap of platform resources
+
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers/io.c               |  17 ++++++
+ rust/kernel/io.rs               |   3 +
+ rust/kernel/io/mem.rs           |  98 +++++++++++++++++++++++++++++
+ rust/kernel/io/resource.rs      |  53 ++++++++++++++++
+ rust/kernel/platform.rs         | 105 +++++++++++++++++++++++++++++++-
+ 6 files changed, 276 insertions(+), 1 deletion(-)
+ create mode 100644 rust/kernel/io/mem.rs
+ create mode 100644 rust/kernel/io/resource.rs
+
+-- 
+2.48.0
+
