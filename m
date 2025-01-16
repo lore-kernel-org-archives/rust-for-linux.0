@@ -1,168 +1,143 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9A818FC8F;
-	Thu, 16 Jan 2025 21:24:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDED1CEAD3;
+	Thu, 16 Jan 2025 23:17:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737062695; cv=none; b=qEU1GKLo1AdKmM7PZLaGDDKDZtaJkohKcV9zkQNGspe4cVGF/sbDrj6Bm024LVXG5yAsu1VRS7pl6DHAoGfMxNgRFzhU3zEyVkn5RgFN3Evh6RCYeswS/TmX/1dnqVDR2iMns/qrswaWZOFyxV4KNECypqaprDDRqRqNHWjZNDs=
+	t=1737069471; cv=none; b=hFeocsQUFZECckcpWReKn50j/DAXeQTYDpArVr//fLFRpP//35WkGQmN7aRDhNBH92ZnM65WKeVQ+5Rpiavd1xBCDSblt+rHEfoM6zdlmqPUqYgu+dHb3MtE9+2mgsSA07ddIcYuK1RuHR/onOrYAXg4aFctfaj+h+wDxT15uo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737062695; c=relaxed/simple;
-	bh=azL/aAShsEW3acbFvA+7rVFTUF1pBIKwpH99GRCC2xg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cs89sEt3Rlot1NnjXJnhZD1zzt0eZU776hGBabB0UN6uoy5SIx8yFawj1e1mBrSLv16+scIopKVb7CuTcUyM0z7ds4Jo3z4vZH6/gZ/cBHD6MSFGkSaQwg8eLXTZ3f43gy+rjU3Tnl5sYGZr2476fN8S2hnDXpem9OGPmrQMNR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eoD6XJKN; arc=none smtp.client-ip=209.85.128.45
+	s=arc-20240116; t=1737069471; c=relaxed/simple;
+	bh=FfUq54H03xjexAUIe51Syc546vxz1uVbAHyNgZAfTyU=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=MByMh7PRoqoR1opxF7/0eshruDrVzcGuEC/oCAo/Mv8djjxlWgE0v1v8ow5I6nlKENo9aCrag0dorqWPESsS36yW3Fz2j7ONbQJI3L3LZvVvu7bPkNxGrNXNjV0vMVebsE9of4OauzL5K4VXm40fXtSfJ7nRgn1Z1cvl/muoMXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XGQyeJJD; arc=none smtp.client-ip=209.85.216.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eoD6XJKN"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4361c705434so9298755e9.3;
-        Thu, 16 Jan 2025 13:24:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XGQyeJJD"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2f441791e40so2150742a91.3;
+        Thu, 16 Jan 2025 15:17:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737062692; x=1737667492; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=q7R0SoA3/qMgAN0yJ3TePjKJZUaCZcdlE5WOQYEN2ec=;
-        b=eoD6XJKNaPti/pGbAZUm5JaUe0/dGyL8ZegDLajPRAVuAOPmHZnp4TxvCDcuUONkTI
-         tEPVXim65W35EsDBceOwVkbLwz1+F7NNKopgfXm+EdsOx32faLHa6RgffLMYNV811LQq
-         WpcxG7q7AI8t5SXZbBWVbDG1zXJpfLDUHy6ZrwohaJTwzVCPvLTV8Qna6DZAM8NFyETT
-         cc00/SxM5F4BesdqY2npjPjz9wMloQX2Lffs4shzrwiKkcr/RE/bHots01kQ7CKJOFRC
-         nCdlMPO020oYDDZ2QvwXtF/2J+L6cEG8RoiE5W65sMjptAtHNzGTtPXXIMIayNQ9On/E
-         FZbw==
+        d=gmail.com; s=20230601; t=1737069469; x=1737674269; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4VtWgIUdBoCsFOaUo/x/+qW/JCRHugt233b8azu8aiY=;
+        b=XGQyeJJD3dBEVcmvga+L7MuLxqYqGky5NRP/ghMACixzGOpLeG6p/scbm6XaivCYe0
+         IKozN9HeDW4bSUKjww6XJuTp5rbZWgjWbLaITSELHoleOsgymncQdJTTPi1P8djVfoNP
+         nFMYgPs0LA9+arlV7VBiNor28ixr6OuR++xa/LgT7xnzRFU2DQwmwaARoSGMl8rH2mFf
+         1mugJawHuMNInnvQHejLySKcIfPn5hmNvS5dqJKQKPPqs1XaVQCYMjXeJKvjrhTKnOwr
+         OQzHPIOtYEzAMrKdnn9nNMWyuEOG7ruo4aSANbibcx9PRA1i3QOCD902apF9ZtnH8/Aq
+         hF2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737062692; x=1737667492;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=q7R0SoA3/qMgAN0yJ3TePjKJZUaCZcdlE5WOQYEN2ec=;
-        b=J9hXplpC5QgjcCpAKz4OdnHmZiTi72UixXDqKXGo4z+72igTbP70A7SOjzQ60VU6dX
-         AvYAx98pJi7GCOL9X9lB1Tw3nVaAwKyfHUq77Mj+ek1gU45nLPpZQPmMnuJjZ3ofpiFu
-         lK8tN0Q430TdXUhkVLm9ENlRjVucLd3jWedIxO+gpPw7KPhE0u7Nw5qyLPWkfYFQDGr6
-         n8qd+dqfDqgjt7ULzmrzobHOngFB1XoHiWBZiIpk3hxWbDPBu8ZzGoDsJRouA+KouEoD
-         NAGUr9cfSw9KEgJEZDl2cdqbXGXhVSFkLActuSQFtreSc/ik+Y4beTEX+gt0yC5t6aGF
-         95KQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWHbWtFoi8laFqxtl/IH/8gGrn3PwUp4mYFzgnLzt24f7myR08fgSucVCVFoc1aysn7/bzmU2dX5i914VY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOfj7mtGBeGPrcYPYtTqpXOioMIYutcG4aJZbJ0ebN6Tn6wHdh
-	XCyBJ0DMmQFc5Fwk5WjR6EbVVz6Rdt9QgXC19onFHBsww+FArDcl
-X-Gm-Gg: ASbGncs9DgiITD7XM8njWCDFONMErNvPkl6miqeOT8pVAl5KmmFVY9TNP8L4yJlUym7
-	ijBgvtm3sJlBRJrBbJWlzK+96Z3wMvVr4TWbLzMagEUtZUBxx4AT+LL5V3PJ/WXfT+p3XfekvfK
-	kqpz2KSmhMQtNqZ3vc2OIDLN+VKqkxJtxDqUDLdenVt8oINIhpxf27hEaJNeN6dt5S+Y5mkNbKk
-	AKMuOjzw617/NpnuynUynSRPtxJky2J2u9m9shi7swNlS7SURbcOQTIgJRw2Nw3DvykqA==
-X-Google-Smtp-Source: AGHT+IGUVfELr0ArYKh/K3cWTr9jrHQ3wA/FfkPw4+Qp6motHMUxyrVSQvNOK8Yy4O7N7YXY+4OmaQ==
-X-Received: by 2002:a05:600c:5486:b0:434:f1e9:afae with SMTP id 5b1f17b1804b1-438913bfa0fmr1889465e9.1.1737062692025;
-        Thu, 16 Jan 2025 13:24:52 -0800 (PST)
-Received: from ?IPV6:2001:871:22a:8634::1ad1? ([2001:871:22a:8634::1ad1])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4389040854bsm11443295e9.7.2025.01.16.13.24.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Jan 2025 13:24:51 -0800 (PST)
-Message-ID: <45db2a00-bd57-4fad-8845-6d9109622160@gmail.com>
-Date: Thu, 16 Jan 2025 22:24:50 +0100
+        d=1e100.net; s=20230601; t=1737069469; x=1737674269;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=4VtWgIUdBoCsFOaUo/x/+qW/JCRHugt233b8azu8aiY=;
+        b=UxEgGp9njJ9b2dlBlDcT/g5lprr3jwWLv0FdA28EQKezgKxiXf1SplLP7mH0rEHf9l
+         jz/BJngko42L674Rpp7ea1PHSUi2TuWLaIf5gqe/Gq0cxeTwMaoSaHvveIuAT4QJt02k
+         3Jw6Glw7vL8y889Bmy5JTAptzwI5nFNHVqpcYmnGyhz5FPG/NsL9ifqlsJ91KtGoeqOk
+         ZDtsA5wEoxCM9ykUoT25yY0hzbgukS8Q9twGmhRmSUWuZL2wQq18bBkIfnmPasG/HHxY
+         8VYzhYGO5XS2yuB78ihuhETm8znQXKBmKNXn/2qmmJLGJNrrI8qn6Gj5ju6u4wjPjl9p
+         kC3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUjEMWkfv6CQdFPp9aBeCD76VvvrPFNn1rFsc1FfGDtSEUuADG4JASvdW7BvDjNOPEWdPvUbJgV7uNFdBw=@vger.kernel.org, AJvYcCVcBIb7aEO/074Hi35a5gPS97vhcFVJiD+fCqT/MlknXdF/JbTConKgrsXvkeHqthik5CsILXckGMFgecpiiV8=@vger.kernel.org, AJvYcCWKEOkYE6iiiFNnZxVsO7YihgqveRO0k7H4RNj4CWmk/GOa6naFUWC0+7NYKbb/nE+Mq9hX8cAD@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmJqW/TJsFlRUWEVEVCO4PFPKUVo6Zkz5tFe0VbJS6qcm7d5y2
+	nkvO6BvtG6pRjNcxtQifW4zqYOf9A6PdZyXCWdt5m0GS+MvzrnPO
+X-Gm-Gg: ASbGncv9+N/po4fcR7ut9YqABMgXUiAPsGJ4SwJjeo7Wl5IvtIUSXvbqSi4SR7dh7vI
+	hslbM3QxNdZBD4/mLT5OwEA+zY5gVOSoqVtzf9I62NJmLjr1vrC5KIy5XJQKLTg/ZgEE9Wxmlh/
+	YiNHeHT1gmhIGI9Cdd5Qit46JmloHHtBLS7YZFNkBlqe2zv9fDE0P8ixodtloP465LTzweAbYVA
+	/2F7zLx2sYIMbYbMSoFyYLi7bN4T6K1rM9KaWiK6YcLR/XqPkc3qqRryE32F7Tc2ott5sZQcfpV
+	H/2VLTWeECMI951e0T5vj6PEVQaky+QEOWKO/g==
+X-Google-Smtp-Source: AGHT+IGWMCut7HqX0AyGnAll4X5fhXNPN/yJXecnwe2sVan7vi1V+MoWrYw2UrtY4PbzvH0HBWAUFQ==
+X-Received: by 2002:a17:90b:2809:b0:2ea:a9ac:eee1 with SMTP id 98e67ed59e1d1-2f782c92bd9mr631024a91.10.1737069469089;
+        Thu, 16 Jan 2025 15:17:49 -0800 (PST)
+Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f77629ac59sm655268a91.33.2025.01.16.15.17.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jan 2025 15:17:48 -0800 (PST)
+Date: Fri, 17 Jan 2025 08:17:39 +0900 (JST)
+Message-Id: <20250117.081739.728610723513479492.fujita.tomonori@gmail.com>
+To: tgunders@redhat.com
+Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
+ boqun.feng@gmail.com, rust-for-linux@vger.kernel.org,
+ netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, aliceryhl@google.com, anna-maria@linutronix.de,
+ frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de,
+ jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
+ peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
+ dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com
+Subject: Re: [PATCH v8 3/7] rust: time: Introduce Instant type
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CAKdorCq9R-Agco1LwfRdbRGaK5gkQebb2ks_4sHf2SBCw8PmbA@mail.gmail.com>
+References: <20250116044100.80679-1-fujita.tomonori@gmail.com>
+	<20250116044100.80679-4-fujita.tomonori@gmail.com>
+	<CAKdorCq9R-Agco1LwfRdbRGaK5gkQebb2ks_4sHf2SBCw8PmbA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND v5 0/3] rust: platform: add Io support
-To: Daniel Almeida <daniel.almeida@collabora.com>, ojeda@kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.mco, benno.lossin@proton.me, a.hindborg@kernel.org,
- aliceryhl@google.com, tmgross@umich.edu, gregkh@linuxfoundation.org,
- rafael@kernel.org, dakr@kernel.org, boris.brezillon@collabora.com,
- robh@kernel.org
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250116125632.65017-1-daniel.almeida@collabora.com>
-Content-Language: en-US
-From: Christian Schrefl <chrisi.schrefl@gmail.com>
-In-Reply-To: <20250116125632.65017-1-daniel.almeida@collabora.com>
-Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 
+On Thu, 16 Jan 2025 12:17:15 +0000
+Tom Gundersen <tgunders@redhat.com> wrote:
 
-Hi Daniel
+>> -/// A Rust wrapper around a `ktime_t`.
+>> +/// A specific point in time.
+>>  #[repr(transparent)]
+>>  #[derive(Copy, Clone, PartialEq, PartialOrd, Eq, Ord)]
+>> -pub struct Ktime {
+>> +pub struct Instant {
+>> +    // Range from 0 to `KTIME_MAX`.
+>>      inner: bindings::ktime_t,
+>>  }
+>>
+>> -impl Ktime {
+>> -    /// Create a `Ktime` from a raw `ktime_t`.
+>> +impl Instant {
+>> +    /// Create a `Instant` from a raw `ktime_t`.
+>>      #[inline]
+>> -    pub fn from_raw(inner: bindings::ktime_t) -> Self {
+>> +    fn from_raw(inner: bindings::ktime_t) -> Self {
+>>
+> 
+> How do we know inner is between 0 and KTIME_MAX?
 
-On 16.01.25 1:56 PM, Daniel Almeida wrote:
-> Changes in v5:
-> 
-> - resend v5, as the r4l list was not cc'd
-> - use srctree where applicable in the docs (Alice)
-> - Remove 'mut' in Resource::from_ptr() (Alice)
-> - Add 'invariants' section for Resource (Alice)
-> - Fix typos in mem.rs (Alice)
-> - Turn 'exclusive' into a const generic (Alice)
-> - Fix example in platform.rs (Alice)
-> - Rework the resource.is_null() check (Alice)
-> - Refactor IoMem::new() to return DevRes<IoMem> directly (Danilo)
-> 
-> link to v4: https://lore.kernel.org/rust-for-linux/20250109133057.243751-1-daniel.almeida@collabora.com/
-> 
-> Changes in v4:
-> 
-> - Rebased on top of driver-core-next
-> - Split series in multiple patches (Danilo)
-> - Move IoMem and Resource into its own files (Danilo)
-> - Fix a missing "if exclusive {...}" check (Danilo)
-> - Fixed the example, since it was using the old API (Danilo)
-> - Use Opaque in `Resource`, instead of NonNull and PhantomData (Boqun)
-> - Highlight that non-exclusive access to the iomem might be required in some cases
-> - Fixed the safety comment in IoMem::deref()
-> 
-> Link to v3: https://lore.kernel.org/rust-for-linux/20241211-topic-panthor-rs-platform_io_support-v3-1-08ba707e5e3b@collabora.com/
-> 
-> Changes in v3:
-> - Rebased on top of v5 for the PCI/Platform abstractions
-> - platform_get_resource is now called only once when calling ioremap
-> - Introduced a platform::Resource type, which is bound to the lifetime of the
->  platform Device
-> - Allow retrieving resources from the platform device either by index or
->  name
-> - Make request_mem_region() optional
-> - Use resource.name() in request_mem_region
-> - Reword the example to remove an unaligned, out-of-bounds offset
-> - Update the safety requirements of platform::IoMem
-> 
-> Changes in v2:
-> - reworked the commit message
-> - added missing request_mem_region call (Thanks Alice, Danilo)
-> - IoMem::new() now takes the platform::Device, the resource number and
->  the name, instead of an address and a size (thanks, Danilo)
-> - Added a new example for both sized and unsized versions of IoMem.
-> - Compiled the examples using kunit.py (thanks for the tip, Alice!)
-> - Removed instances of `foo as _`. All `as` casts now spell out the actual
->  type.
-> - Now compiling with CLIPPY=1 (I realized I had forgotten, sorry)
-> - Rebased on top of rust-next to check for any warnings given the new
->  unsafe lints.
-> 
-> Daniel Almeida (3):
->   rust: io: add resource abstraction
->   rust: io: mem: add a generic iomem abstraction
->   rust: platform: allow ioremap of platform resources
-> 
->  rust/bindings/bindings_helper.h |   1 +
->  rust/helpers/io.c               |  17 ++++++
->  rust/kernel/io.rs               |   3 +
->  rust/kernel/io/mem.rs           |  98 +++++++++++++++++++++++++++++
->  rust/kernel/io/resource.rs      |  53 ++++++++++++++++
->  rust/kernel/platform.rs         | 105 +++++++++++++++++++++++++++++++-
->  6 files changed, 276 insertions(+), 1 deletion(-)
->  create mode 100644 rust/kernel/io/mem.rs
->  create mode 100644 rust/kernel/io/resource.rs
-> 
+In my understanding, the kernel assumes that the range of the ktime_t
+type is from 0 to KTIME_MAX. The ktime APIs guarantees to give a valid
+ktime_t. The Rust abstraction creates ktime_t via ktime_get() so it's
+fine now.
+
+However, if we makes from_raw() public, a caller can create invalid
+ktime_t by not using ktime APIs. Then from_raw() needs ceiling like
+C's ktime_set(), I think.
 
 
-I've tested this patch-set with my ARM 32-bit arm patches[0] on a De1Soc (Fpga + Arm Cortex A9).
+>          Self { inner }
+>>      }
+>>
+>>      /// Get the current time using `CLOCK_MONOTONIC`.
+>>      #[inline]
+>> -    pub fn ktime_get() -> Self {
+>> +    pub fn now() -> Self {
+>>          // SAFETY: It is always safe to call `ktime_get` outside of NMI
+>> context.
+>>
+> 
+> Similarly, should there be a comment here about the range being guaranteed
+> to be correct?
+> 
+>          Self::from_raw(unsafe { bindings::ktime_get() })
 
-I've got it to work by changing the three instances of u64 (mentioned on the individual patches) to bindings::resource_size_t.
-I used a small Fpga configuration that allows me to change a led from the kernel driver.
+We could add something like "The ktime API guarantees a valid
+ktime_t". But adding similar comments to all the places where the
+ktime API is called is redundant?
 
-So with these fixed:
-
-Tested-by: Christian Schrefl <chrisi.schrefl@gmail.com>
-
-[0]: https://github.com/onestacked/linux/commit/f84be45f7311ea5b5a76123028f9fb8fda9f9e7f
-
-Cheers
-Christian
+The comment on Instant struct must be improved instead, I think.
