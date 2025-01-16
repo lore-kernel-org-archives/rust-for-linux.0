@@ -1,90 +1,118 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD3119D8A0
-	for <rust-for-linux@vger.kernel.org>; Thu, 16 Jan 2025 08:32:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E181D19E7ED
+	for <rust-for-linux@vger.kernel.org>; Thu, 16 Jan 2025 08:34:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737016376; cv=none; b=sOHxHubayOyyUNycvJAhBMyYZpmg0lL6hvnZHrUa3s8WKqNOadLZ+E8lVreiIT0bZfwIV7NzObVXPDMAxyGO0367v9gctW9JEsF5MqSWAqqIH03MQ72Md+MDvhPO6PR6xZwV7JovmO6dhPk7Sc4aGZScAtRae+kgo+XDj+DxXcA=
+	t=1737016493; cv=none; b=OpOh1C5pmVgarF4OLORzoY+CMPb3jvZY3oKk7pg9XrD4kxmvMklYNKpL9Oh+WtNx/6u7QlehK3UMN3TYVGHG35cr3W1JidEL3hffI0puPR/JoRv7SmYB8A6v7yH64p4XfIXPfrb7XJ31okoEM/rFrQJP8LY6rGKmjDwD9/qfIp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737016376; c=relaxed/simple;
-	bh=kJ6CIe/Y4H7WjuSViRjZaVlg02+ifEvjHsN/NCSpWIA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dpQsSiZy46hqe195cDyWu7dKdZBQob10fF7jvluqv2h3DqlSLK2NRMDgqXGTALVfeFQ9WmTzIxkhAi8LMKWkvOXED8amuwAPbMxW1ce1DMoKG5afSQt74tFef8vXBKcs7Mfh5hB0/7s4cbDkMegth31FdrCHeuJcuMLkyJFX2Tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aKEUsfLq; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1737016493; c=relaxed/simple;
+	bh=LIjmW2FX1zEGqj0YeZsDzNV2nEB9HFE9TnEvmxtVOmM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Vvy98qMXz5h2XVgA32wtTSFCukDee488HQWarzubqWbvYf16h//Bb4T4rNBzzNKBwjhm362HRZjkvbUOSUCQrJw2HT8UIpp5ByvzlJgvDNrTLK31z0v8xEfJFrP1YN9FdadfzY+Ymj+nRGOQmUpjRZ6eZhO83V4UEPHhZQkxSeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=no4QiVI2; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aKEUsfLq"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-385f07cd1a4so573415f8f.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 16 Jan 2025 00:32:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="no4QiVI2"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2166f1e589cso13717155ad.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 16 Jan 2025 00:34:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737016373; x=1737621173; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1737016491; x=1737621291; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kJ6CIe/Y4H7WjuSViRjZaVlg02+ifEvjHsN/NCSpWIA=;
-        b=aKEUsfLqfk8/fOnFvOEGk55nJ0K/1w2uUVgZ76rle33eQSLbFnooykJxgE8nyzkgE7
-         ESxpsjjOPyInxU637HJjYqm5PM3Iwx9FwTnEI7KoczZPeuvBL6qagqKcSZf7YYXcqUPb
-         yDshcA/u0yH2OQfd3uOimg8+7x/2rzzS98tguNdcGOlDZ1gVW5qSBXxKXE6OWr27iTKg
-         4rnibIH4eN8xUFmhtRvMr1omzbfW3daoEySuPVpjA/aKB3UwcAb8ok0phhR1Z3N/fgwe
-         w6t+n71ETuX0qvudAj0nfMALytrd+TrewNb3nSDp8U0k1EuyF9+SfZlUBLmDNLC1YfIc
-         HRKQ==
+        bh=7KNwF2TEt3KRdmvW9wJLK96ErGUWCHdu1SXXWgMYjIM=;
+        b=no4QiVI228QW59lxM3oNEVBl5FuR7kk+SMIGpcNjNbJoMY3zNFWJd6CEVWD+NA3d/u
+         waO3e3bfSx8614uGGLZJuHOu+50cHrCom496Ob2FdEFkAbSzubL2ojnxcC1McFvZlzW6
+         uCnqALDPLP8A+7gF9Y9jFqEdcYgMbb4xyve4jO88PkTSvRIN6fX/1/50K7GB9VGFOzow
+         wuOTk6fEgs+NidABcuN5kV7Db22TcpEYNDW8OC7ZMWkzuzaZ/9kR1bzx2AResLnd6FqJ
+         FaVL8+9GHauoYdgYvl1EbJHNJujsGWVVpLC5fwCd7N2Ce+ICMGtRoV4FjRj8c5tTKgj0
+         WP7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737016373; x=1737621173;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1737016491; x=1737621291;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kJ6CIe/Y4H7WjuSViRjZaVlg02+ifEvjHsN/NCSpWIA=;
-        b=AC9JkvntqDBWI7r/L866jUwzZkQg0H1I2qxmAAPmg+QaA9MMGHncEfwCexFqvFJdKH
-         PbzP1uFVDCKVYC+Nnb1AmEp1eO3blT2bO2KhBwa4Leo5Y0QCSVBhaXJre80XPT/w1hPH
-         ja3Igt9DzWNhvBEOEQ4FRH3o9FfOuUEYomAj3Q51ZxA3FUuf4HxrrdiO+THyr30KbR6e
-         HxaVdluUdPwMCF2Qyqf1lApopW0S0M90dRwJAlDGOpVdHFLIPyxf5ttrceOjvYCFFh1R
-         P/LCcnuQyvdfTOYM5tDLwYxoI6/dpbB7IDwjCkgDroS7+UZh8I/nGnUZtoY6RShi+8cO
-         TCCA==
-X-Forwarded-Encrypted: i=1; AJvYcCX7R9Q8pMT+rBFTgqvUNhnN+2IwtMc4hw0neU40NNdk8ZmD+DopTaWIFun32bwkgFdM+sHiOcC8QBcdm17P1w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzVTM7zWWqmVeOTroJH3DnfPoOUvmPbbrJ9V/sine+wHDvK6a7C
-	25L9YuQcbXhi53uDAZVZtv6qgtHuAqWesjZNWMR2R692INMX7tsBisYysClDDjNw8HcfLn9hXtc
-	pT0V/EUsV/DQghU7kMHv6gpdIz1N0qyeTZn7+
-X-Gm-Gg: ASbGncu5iAPJihwCZLt++yveeWtRtxgKpHOg7AuisppnSv3fZn59AU1dYHIEUaphSRi
-	RIhckgiw07afT/7JYrGjsSD2febn3Bo2CqDMhG9VGoM7IyV/WuHEGQwTD0LAYPwY43ng=
-X-Google-Smtp-Source: AGHT+IE+jsBrPXZGdbayPbLY/juwtdV1VqWJKNOBWq8IuOIMNKuq9E3g4Mq1uE3OxPN8wLJ5UzDSOrorgrze70of89w=
-X-Received: by 2002:a5d:648a:0:b0:385:f0c9:4b66 with SMTP id
- ffacd0b85a97d-38a87313097mr28319779f8f.33.1737016373051; Thu, 16 Jan 2025
- 00:32:53 -0800 (PST)
+        bh=7KNwF2TEt3KRdmvW9wJLK96ErGUWCHdu1SXXWgMYjIM=;
+        b=kBsz9Ns0iBHpYLpb5pEsKUSsDYUw3jVYmXoKy61s1BKL/xC/6pwOXeyyyxLfrMV16P
+         nxsysYeXnCr3WlhGZhg2GgMBzomptVzfPrRCv1/y4DNInqS0MjWe9RoZCY5fJvU/lvCN
+         Ito/shwqySiXb0KNIMNU+BusJ3E3OnFDJx3cgjBem77I0mO+0P9OexLgFnTG2dSF/cLE
+         76AROvdDlWsojiKI3TiyPhrYw6KunOe19OvWhqiDlUDOrhZ4C8pW/a4Ftq7WSe0ffIV3
+         FL7Mq69sBF54MgftgRAliZFQn78IURiPayX0izRQRoIZR0Byc6bD3eExpB03+HhWWgXR
+         ch8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXqhytxEx+u7XnyCO/sKdr205kCWIjff81GqSe1ZDwYgsIEouqgMiY/qMrZdbGaBo+h0Ij/j/KYh2BzzG+WYQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+YWoR9709zg4heNVVUfcEkewbDvGLQY/w5ntfAOHWtHNpGmXx
+	9+5K77YfBwSv19G8BYYOgPfEAwiNoihOsWkcdzFdRPfx82PltzHjgvjcmalfaIE=
+X-Gm-Gg: ASbGncvJXtZwbrQsa0/m5/VXxokae5/pPdgO1j7jp00riWfei67A8NUySF90VvQm3Br
+	4Sji9+3Nrs3Ui7QsfRnMvmVlnz+I00Ua7ZQMRwtOWUJ9zLNiwKPsGLhWRj85eMdPsg15dJYK4Fv
+	JtLuUWwSLcl7H4oAf6KGgMR8+afPGVZWHqnQfnJtmb2EhO0egNwLqKhYp+EIrxWRyVLHl/vcqQn
+	TGgWOkpQnBT2GFF/ghpaJ/UHkc4aSsmfTcurBamiIFx6SNkSb4zFOl4LYU=
+X-Google-Smtp-Source: AGHT+IHrny54ToSeVWMN2zsKMOrjl0BmIDaedi0byUk0NpOqTVW2IMKN3OfazwOByuRgeZtt0iGMvw==
+X-Received: by 2002:a05:6a00:92a0:b0:72d:9cbc:730d with SMTP id d2e1a72fcca58-72d9cbc7c5amr3212241b3a.11.1737016491063;
+        Thu, 16 Jan 2025 00:34:51 -0800 (PST)
+Received: from localhost ([122.172.84.139])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72d406a5684sm10372061b3a.165.2025.01.16.00.34.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jan 2025 00:34:50 -0800 (PST)
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] rust: device: Use as_char_ptr() to avoid explicit cast
+Date: Thu, 16 Jan 2025 14:04:43 +0530
+Message-Id: <a88cd29bf01c8fbafd5c2608357f54ea10f6e492.1737016320.git.viresh.kumar@linaro.org>
+X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
+In-Reply-To: <e97dcbe0418cc1053fb4bcfac65cc02a0afcdf78.1737005078.git.viresh.kumar@linaro.org>
+References: <e97dcbe0418cc1053fb4bcfac65cc02a0afcdf78.1737005078.git.viresh.kumar@linaro.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250116044100.80679-1-fujita.tomonori@gmail.com> <20250116044100.80679-8-fujita.tomonori@gmail.com>
-In-Reply-To: <20250116044100.80679-8-fujita.tomonori@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 16 Jan 2025 09:32:40 +0100
-X-Gm-Features: AbW1kvZbmRmM2Oa_zh0mN65XvGmmvLS9EV3qIH4ExHRuACPP5fFY6xEcjuHFX4M
-Message-ID: <CAH5fLgiAJL12HHxRmmJNer4JirJ8Fex0Jbazem17uafp2gtidQ@mail.gmail.com>
-Subject: Re: [PATCH v8 7/7] net: phy: qt2025: Wait until PHY becomes ready
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: linux-kernel@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>, 
-	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, hkallweit1@gmail.com, 
-	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
-	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de, 
-	arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, mingo@redhat.com, 
-	peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, 
-	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, 
-	mgorman@suse.de, vschneid@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jan 16, 2025 at 5:43=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> Wait until a PHY becomes ready in the probe callback by
-> using read_poll_timeout function.
->
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Use as_char_ptr() to avoid explicit cast.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Suggested-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+---
+Rebased over:
+
+https://lore.kernel.org/all/e97dcbe0418cc1053fb4bcfac65cc02a0afcdf78.1737005078.git.viresh.kumar@linaro.org/
+
+ rust/kernel/device.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+index c775266ae164..db2d9658ba47 100644
+--- a/rust/kernel/device.rs
++++ b/rust/kernel/device.rs
+@@ -185,7 +185,7 @@ unsafe fn printk(&self, klevel: &[u8], msg: fmt::Arguments<'_>) {
+     /// Checks if property is present or not.
+     pub fn property_present(&self, name: &CStr) -> bool {
+         // SAFETY: By the invariant of `CStr`, `name` is null-terminated.
+-        unsafe { bindings::device_property_present(self.as_raw().cast_const(), name.as_ptr() as *const _) }
++        unsafe { bindings::device_property_present(self.as_raw().cast_const(), name.as_char_ptr()) }
+     }
+ }
+ 
+-- 
+2.31.1.272.g89b43f80a514
+
