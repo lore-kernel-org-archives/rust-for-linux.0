@@ -1,167 +1,192 @@
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A3279EA;
-	Thu, 16 Jan 2025 00:21:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6F94A01;
+	Thu, 16 Jan 2025 04:42:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736986903; cv=none; b=DrxzpQVcMwIZq/zNOiFxv83951b/0dBITxDVxvhrFb1QmVjyVaaUS3QYZ15BzzX4L82uRK+19BprDtYrT4DInlSvXORyVYz+zbg4SzfC3ktLEtG4ZLXSf8XsuupKCq3Fs3NjK1sQpdr+4/bs6kxOL9OqxLvl42ZbfPMfvR3SSPA=
+	t=1737002550; cv=none; b=I0kYr+rYT2bOg8/vkPEqixSzOMxfb3FaPYsIBjQMgV8Yix8lTJFYZ73MKkCLPSdxAGHBLMQYPNMif12o+c30RlXF5872DLVwMDWfG7QaQHxZJA5EgLTO2Cc6bjTQC2+MUQrwBRpFiEBwk3WW0zNIbwTUc3AhbnyN4dGJO1PlGeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736986903; c=relaxed/simple;
-	bh=a4DcDiRTElWBWVGLWT0WV7y8JB7U4aPgJfXO+9gdXl4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RM7pHq0CZaW+ea4Zt4KLDM1PFIQVSI0CU2u1HFFkujEuCO/XBHXCPjtKAoohFDlS79c8cyhlpjNbL0CBhGk4p7KsqRQdgn1Ij8ybs+0dK7q7nXtxe5t7/JrCoQAn+XDI7C7740W/z6mjdy1IGNOGtOg0AQN80nRFww5/xy1xyLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DLWIbyE8; arc=none smtp.client-ip=209.85.208.169
+	s=arc-20240116; t=1737002550; c=relaxed/simple;
+	bh=TtJJvzWs7F7tD18OHj+o0NVgHy8zTK+iUWvkOzunM8c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MuoVlhnBukoWvn58ywT0/t4CtJfJBH5lht8DoPeAeX1FXLlURMnma9P7ZM23NKhYcTaGVfepun4GWzeSOp+6nPEU7fa5WuuV2y3dDcK0o9K5jlplCZ9v1APO4nsKNNQps5l8R8k7VDRKlsD2TApZElIfoEKAELjhnfQ7SwC4TI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bj2NA0Uq; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DLWIbyE8"
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-30034ad2ca3so3163201fa.1;
-        Wed, 15 Jan 2025 16:21:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bj2NA0Uq"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2166360285dso7684395ad.1;
+        Wed, 15 Jan 2025 20:42:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736986899; x=1737591699; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oED3ozgHy/GOiyTIzXuqCCiUcuTEdpn16Kr0//PAJzY=;
-        b=DLWIbyE8Bl8F/s4GSFoV90BSqCOwyNFPsmT70X0P3rPa2HTqpO2BXcrZWJJtPGgeBv
-         CCA7F/pSNTYQMWOSsiRmFeQ88RLvFfOhWDmKxPMR+dXrWWTVfqhUVeCI0CNZZjW74hor
-         O2FdRlkyeFkzHAYhCdRt2KNuVQ9VXEm7dghMhx5CG4SQyfHGwVbG2YkuBBvUyfbJdkFP
-         ig+z/sL2X9w34VEai7g0MtGNEchlsQyC9Q4nODaScoMoqs3VbXgx1L7d8q730m0it62h
-         IwRK/EbpVBgxxw9esyNyFJbNzB2FTKTfZuVWocEQxB0k9Q3Zbd6OsoatTICSKUh/xk78
-         g9EQ==
+        d=gmail.com; s=20230601; t=1737002547; x=1737607347; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=uKkZs7JfQG3Yl8zQ/sYVk0Dv0KT/LUZVeu7NHKqRR20=;
+        b=bj2NA0Uqjv/qHvnWchKrCaEg53nuUY74YH2vuWsxrOpC0Nc3DyQ1BKL/QF0+WKB+SN
+         aer1BjTGih6z4dOaeAf9zqqQVNEGBtSYCZsOJ1vBkHHf9bSBSRVaK6rw0aC1qEvtq4C5
+         g3yef9qyNRgFxmq9+cVmLu/5G6xhpK5d13YUhY+l6MA1v7y+6nkC68XQ3WSDsUoF47VP
+         LFn/Vu+eWrRmFQ7A0XciXRPBFYSm9kUd+rNUcvjG0tmwvps00na/62mywJjds1bwxoiR
+         ry0ZuD5ZAu1LSIOz60ZlOZ/+MfG0xXN8b0brVa+2tqbeB31PR7rvUPdg7cxVbwbYWGbl
+         aKmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736986899; x=1737591699;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oED3ozgHy/GOiyTIzXuqCCiUcuTEdpn16Kr0//PAJzY=;
-        b=P1k0ZQa2PDqHQrQpBdpsoMbEKpRDfzFONLnFF0MrV2DkaDcdCay92GePzCnjVy+z3O
-         vIWnMIbs/cg9fVsqZrx2uLf91IsgUrPDqF/dNmOUv/2jgrrlv7K9aaUXSlSVaV+WYxrv
-         N6PGxPyZ5pgCKVEl+60ZtQJZENROnSaUQM2SeNAp2zjBnHJ70KFdHFrt+oOCHqcVpOTP
-         bTYQQe6IvOerCxHvmhRJJcMDlJEGdou3IY5ovZaHDfruPIM0gmcSdEOKM4uhrA3s7SS4
-         BcN3WyjDH/4aQBGDj60+BgOSmQsKh8WGb3Qp5AILITdVfDRQ/tZh2GM+/LVYeWi2GvYV
-         1uEg==
-X-Forwarded-Encrypted: i=1; AJvYcCVB/85aiE8O71WuEPAWU0VwNeDs1gymrZNGBq8fd0J+knOZ6aaLkyOGloDOBnFAuwKFYfYHUn29gBEgrQs=@vger.kernel.org, AJvYcCXy+Mo03Js0XOz+7nTH3YUEeiIsf6JWrxMOAjaqLzr3gc6zbUkGyfYtIR+GZikcJZNdRAzI1WrWqNC0yBLN78w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx06pkaXJX51lpLKKDJdlu83nUn3MD4lmquCF775sb096rD4bpW
-	6e+F9o4RPzCHoTAUDBQcc6v/RWcPYHMBMm8R4GYK7czNYwa6F+pd7OlkHFGvHh3PImtxWFIt1/8
-	ppRy/zwA/vxKHbJYJb3fnDdGGOCY=
-X-Gm-Gg: ASbGnctTstHedoy+xDU/i/PhoPMcDSacT0a5giNxjxMf2TtkXxwVHKQHKx0KMKXpHhR
-	1wmU/lvIGJeKOZMbiP5IRkeiPBVLA4fZeUlDk/0cyGlOzjK124alrc/WgzDZ3sMfYyYEAY6Pj
-X-Google-Smtp-Source: AGHT+IFKgpAL+6Ip2b0t8/68uR3LzL0LYq0YUxy7ESgGGhlKB8eJ/mKSJZCMNs8zG8mzt9IRSbaWS2nUuotPXHDTdvQ=
-X-Received: by 2002:a2e:a70e:0:b0:302:2c61:a1d3 with SMTP id
- 38308e7fff4ca-305f45f4be3mr77136471fa.36.1736986898985; Wed, 15 Jan 2025
- 16:21:38 -0800 (PST)
+        d=1e100.net; s=20230601; t=1737002547; x=1737607347;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uKkZs7JfQG3Yl8zQ/sYVk0Dv0KT/LUZVeu7NHKqRR20=;
+        b=AiAdfQh6M3P5QumKn0HPf4DeJsdA5CMMDG86ahUJWZEeuIaYdtzvL1bszZNvvEIG8b
+         ++zt/81F7wVwbb3Ie0XDi2GTk+OxxABDuYz4lYd3TzZbwsS7Ri5Q/Letcvasz6GdnofP
+         oNIBWEbCTCRvSZ4mkJ9iIakPDno8k/lizwu3DMFmrAc4oYyv0i5LeQY6h5/bxsqf3aTU
+         kYtdMfkAxpiTjziJv7ByU93iQlqOrjz2Dmt2BlRtT8NUUCsNawLvoGa4L8c6yOE6yGDW
+         3A4bHOJJztPx0hVyvRPI8LlQqcjYtYC+Z2GP8wH+LpjiBU4c/f0iFGR/IpfQUxvVnkRv
+         MPLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVdT2d3K035lnmP0edH0sJMqf/0xhDe/LFAotXawW2jqr1aAFU7v/SFpTzCKMjUVm1iU7J0zuQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyahcLZuLumT5S6VEzwY/zQzXifJHWyXPUYtuMdmgRR0r1cxt88
+	60S1mloGyNZ1mpL9V+pO4n2aXHgzQrzrRep/yE52dowIG8Asr3lgSLzcDKcj
+X-Gm-Gg: ASbGncv84JfSvhn4Ie+w2Tg+GFWkDqiPzY+ZyhF6CrQbQXcACkWjuzwVXQP3hpMjI00
+	sguSfLd1ndnBMvaF2+vlrdUrVq8WpvfFG4+SH89FqJiEwN6lD7PmtD8R/zGjlYmrsCKATk5U/FU
+	1/kEaOrEmfBjmvIB4JJHpE4rI+bUYkk6NYGDINHPJfMZtxS4+Azrntjq3QQALWN2yNG9BpsC6iD
+	TH1HcibfRMVUusnS41H87wQVd49Bc4cUS6T5wcIt8CG1WmbaRLqc6IHyI83RJFbqizxiu33Glg5
+	6IxO7veLtzpJFkjvIFNp6s06h1DFW0HI
+X-Google-Smtp-Source: AGHT+IHSnSWnZsTgSwEjwh48bIPFxZ1s8keNVhfwgqXnJvoLwdMA4fxLV2UAEnpG39uORz5l8wyRHA==
+X-Received: by 2002:a17:902:f706:b0:216:6c88:efd9 with SMTP id d9443c01a7336-21a83f4bbf8mr497649205ad.15.1737002546671;
+        Wed, 15 Jan 2025 20:42:26 -0800 (PST)
+Received: from mew.. (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21a9f217a60sm89161045ad.158.2025.01.15.20.42.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jan 2025 20:42:26 -0800 (PST)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: linux-kernel@vger.kernel.org
+Cc: rust-for-linux@vger.kernel.org,
+	netdev@vger.kernel.org,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	tmgross@umich.edu,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@samsung.com,
+	aliceryhl@google.com,
+	anna-maria@linutronix.de,
+	frederic@kernel.org,
+	tglx@linutronix.de,
+	arnd@arndb.de,
+	jstultz@google.com,
+	sboyd@kernel.org,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	dietmar.eggemann@arm.com,
+	rostedt@goodmis.org,
+	bsegall@google.com,
+	mgorman@suse.de,
+	vschneid@redhat.com
+Subject: [PATCH v8 0/7] rust: Add IO polling
+Date: Thu, 16 Jan 2025 13:40:52 +0900
+Message-ID: <20250116044100.80679-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250110-hrtimer-v3-v6-12-rc2-v6-0-f71d50f16482@kernel.org>
- <20250110-hrtimer-v3-v6-12-rc2-v6-5-f71d50f16482@kernel.org>
- <Qz3-uMYVmDmNuj3wUnPV5wK3iFA5J7TfKSByEYeFChySo0SY1m6hAIvqhxzFUD1Qu1QBmtm5DZffaJ4qKG4Bcg==@protonmail.internalid>
- <CAJ-ks9=0HRjwqqrLZ2QjyjYw6frK=zu5_ZG5Jmb=fCRXefBmLQ@mail.gmail.com> <87y0zccog2.fsf@kernel.org>
-In-Reply-To: <87y0zccog2.fsf@kernel.org>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 15 Jan 2025 19:21:02 -0500
-X-Gm-Features: AbW1kvYbambiiibm7nqFPStEjUBzV08HgEuAbYzcyBuGCmSxJvZ-fYt3vBB7zJU
-Message-ID: <CAJ-ks9=3y9EOjyDfAj6Rx9YUg-vGvm=SrPi2XGOa9Okt5hh6ug@mail.gmail.com>
-Subject: Re: [PATCH v6 05/14] rust: hrtimer: allow timer restart from timer handler
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
-	Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>, 
-	Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jan 15, 2025 at 6:21=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
->
-> "Tamir Duberstein" <tamird@gmail.com> writes:
->
-> > On Fri, Jan 10, 2025 at 3:17=E2=80=AFPM Andreas Hindborg <a.hindborg@ke=
-rnel.org> wrote:
-> >>
-> >> This patch allows timer handlers to report that they want a timer to b=
-e
-> >> restarted after the timer handler has finished executing.
-> >>
-> >> Also update the `hrtimer` documentation to showcase the new feature.
-> >>
-> >> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> >> ---
-> >>  rust/kernel/time/hrtimer.rs     | 37 ++++++++++++++++++++++++++++++++=
-++++-
-> >>  rust/kernel/time/hrtimer/arc.rs |  4 +---
-> >>  2 files changed, 37 insertions(+), 4 deletions(-)
-> >>
-> >> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-> >> index d0842c7c4c6ddffeef9a79cbf9727819060e4333..50e8c23578b5cf7196893a=
-c88d9547fc027f1f04 100644
-> >> --- a/rust/kernel/time/hrtimer.rs
-> >> +++ b/rust/kernel/time/hrtimer.rs
-> >> @@ -167,7 +167,7 @@ pub trait HrTimerCallback {
-> >>      type CallbackTargetParameter<'a>;
-> >>
-> >>      /// Called by the timer logic when the timer fires.
-> >> -    fn run(this: Self::CallbackTargetParameter<'_>)
-> >> +    fn run(this: Self::CallbackTargetParameter<'_>) -> HrTimerRestart
-> >>      where
-> >>          Self: Sized;
-> >>  }
-> >> @@ -262,6 +262,41 @@ unsafe fn start(self_ptr: *const Self, expires: K=
-time) {
-> >>      }
-> >>  }
-> >>
-> >> +/// Restart policy for timers.
-> >> +pub enum HrTimerRestart {
-> >> +    /// Timer should not be restarted.
-> >> +    NoRestart,
-> >> +    /// Timer should be restarted.
-> >> +    Restart,
-> >> +}
-> >> +
-> >> +impl From<u32> for HrTimerRestart {
-> >> +    fn from(value: u32) -> Self {
-> >> +        match value {
-> >> +            0 =3D> Self::NoRestart,
-> >> +            _ =3D> Self::Restart,
-> >> +        }
-> >> +    }
-> >> +}
-> >> +
-> >> +impl From<i32> for HrTimerRestart {
-> >> +    fn from(value: i32) -> Self {
-> >> +        match value {
-> >> +            0 =3D> Self::NoRestart,
-> >> +            _ =3D> Self::Restart,
-> >> +        }
-> >> +    }
-> >> +}
-> >
-> > These are for converting from bindings to our enum, right? Why do we
-> > need both signed and unsigned,
->
-> Depending on kernel (target arch) configuration, the enum type will be
-> either signed or unsigned on C side.
->
-> I guess I could try to figure out what kernel configs effect the change
-> and then do conditional compilation on Rust side, but it seems overkill.
+Add a helper function to poll periodically until a condition is met or
+a timeout is reached. By using the function, the 7th patch fixes
+QT2025 PHY driver to sleep until the hardware becomes ready.
 
-The bindings seem to contain a type alias:
+As a result of the past discussion, this introduces two new types,
+Instant and Delta, which represent a specific point in time and a span
+of time, respectively.
 
-pub const hrtimer_restart_HRTIMER_NORESTART: hrtimer_restart =3D 0;
-pub const hrtimer_restart_HRTIMER_RESTART: hrtimer_restart =3D 1;
-pub type hrtimer_restart =3D ffi::c_uint;
+Unlike the old rust branch, This adds a wrapper for fsleep() instead
+of msleep(). fsleep() automatically chooses the best sleep method
+based on a duration.
 
-Perhaps you could impl `From<bindings:: hrtimer_restart>` instead?
+Add __might_sleep_precision(), rust friendly version of
+__might_sleep(), which takes a pointer to a string with the length.
+core::panic::Location::file() doesn't provide a null-terminated string
+so a work around is necessary to use __might_sleep(). Providing a
+null-terminated string for better C interoperability is under
+discussion [1].
 
-Tamir
+[1]: https://github.com/rust-lang/libs-team/issues/466
+
+v8:
+- fix compile warnings
+v7: https://lore.kernel.org/lkml/20241220061853.2782878-1-fujita.tomonori@gmail.com/
+- rebased on rust-next
+- use crate::ffi instead of core::ffi
+v6: https://lore.kernel.org/lkml/20241114070234.116329-1-fujita.tomonori@gmail.com/
+- use super::Delta in delay.rs
+- improve the comments
+- add Delta's is_negative() method
+- rename processor.rs to cpu.rs for cpu_relax()
+- add __might_sleep_precision() taking pointer to a string with the length
+- implement read_poll_timeout as normal function instead of macro
+v5: https://lore.kernel.org/lkml/20241101010121.69221-1-fujita.tomonori@gmail.com/
+- set the range of Delta for fsleep function
+- update comments
+v4: https://lore.kernel.org/lkml/20241025033118.44452-1-fujita.tomonori@gmail.com/
+- rebase on the tip tree's timers/core
+- add Instant instead of using Ktime
+- remove unused basic methods
+- add Delta as_micros_ceil method
+- use const fn for Delta from_* methods
+- add more comments based on the feedback
+- add a safe wrapper for cpu_relax()
+- add __might_sleep() macro
+v3: https://lore.kernel.org/lkml/20241016035214.2229-1-fujita.tomonori@gmail.com/
+- Update time::Delta methods (use i64 for everything)
+- Fix read_poll_timeout to show the proper debug info (file and line)
+- Move fsleep to rust/kernel/time/delay.rs
+- Round up delta for fsleep
+- Access directly ktime_t instead of using ktime APIs
+- Add Eq and Ord with PartialEq and PartialOrd
+v2: https://lore.kernel.org/lkml/20241005122531.20298-1-fujita.tomonori@gmail.com/
+- Introduce time::Delta instead of core::time::Duration
+- Add some trait to Ktime for calculating timeout
+- Use read_poll_timeout in QT2025 driver instead of using fsleep directly
+v1: https://lore.kernel.org/netdev/20241001112512.4861-1-fujita.tomonori@gmail.com/
+
+FUJITA Tomonori (7):
+  rust: time: Add PartialEq/Eq/PartialOrd/Ord trait to Ktime
+  rust: time: Introduce Delta type
+  rust: time: Introduce Instant type
+  rust: time: Add wrapper for fsleep function
+  MAINTAINERS: rust: Add TIMEKEEPING and TIMER abstractions
+  rust: Add read_poll_timeout functions
+  net: phy: qt2025: Wait until PHY becomes ready
+
+ MAINTAINERS               |   2 +
+ drivers/net/phy/qt2025.rs |  10 +++-
+ include/linux/kernel.h    |   2 +
+ kernel/sched/core.c       |  28 +++++++++--
+ rust/helpers/helpers.c    |   2 +
+ rust/helpers/kernel.c     |  13 +++++
+ rust/helpers/time.c       |   8 +++
+ rust/kernel/cpu.rs        |  13 +++++
+ rust/kernel/error.rs      |   1 +
+ rust/kernel/io.rs         |   5 ++
+ rust/kernel/io/poll.rs    |  84 +++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs        |   2 +
+ rust/kernel/time.rs       | 103 ++++++++++++++++++++++++++++----------
+ rust/kernel/time/delay.rs |  43 ++++++++++++++++
+ 14 files changed, 283 insertions(+), 33 deletions(-)
+ create mode 100644 rust/helpers/kernel.c
+ create mode 100644 rust/helpers/time.c
+ create mode 100644 rust/kernel/cpu.rs
+ create mode 100644 rust/kernel/io.rs
+ create mode 100644 rust/kernel/io/poll.rs
+ create mode 100644 rust/kernel/time/delay.rs
+
+
+base-commit: ceff0757f5dafb5be5205988171809c877b1d3e3
+-- 
+2.43.0
+
