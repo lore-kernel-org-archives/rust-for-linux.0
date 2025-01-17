@@ -1,244 +1,126 @@
-Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E32A95C;
-	Fri, 17 Jan 2025 18:03:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1194B1A83E0;
+	Fri, 17 Jan 2025 18:59:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737136999; cv=none; b=nIZhD2Q/q55wNvyKwfLpuydwO/Opjwem+Y59o6cJirGyNByqv4+mfZzMbY7IFBUUli0iJpRfmbJEsmImWINJuTgNuHSHFf2SQ/zCl/0Er5GNxHd4m+dGS9p/5HhaQF+ksGaAEk/fQ8kjx6fHsiYL0RBJl9On7odTTZfA0XnqK1A=
+	t=1737140371; cv=none; b=L0QxBvOsbZV+w0ZK7LlnYjQyZ9K07z071AasiFY8JVzH0F4nhdxynfOjk3rXsVfkhG5BjjcNw1Ie0QZBg4zU6Tkj7YdCmoeD5HLD6hqVBuF6WztByTdnXWQBLvVb5qtqRdPqlzrRxrmBrzsx3oJGBmzELX8n2aknRjdspiO8T4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737136999; c=relaxed/simple;
-	bh=Qnp3hMrfLMKq3Wf2Ocd9yYmSCpS1w9GszMjuONZFVas=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=BDmvQRqz/YDC8E7MbojFbEXkbBkA+5fnsraXoGGpp0T+vI5ow4YoWyAnP+0QU2j3BoqGSTCgoiXXdu7qsSTXnUmhdvPQfKdDROMMWgbupvYE/nQgVTmjt4Zcfad2FcqrDr4vuphFog8xcPgPQU5pUyeRSS7zxMte2qV9q+DTJVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca; spf=pass smtp.mailfrom=squebb.ca; dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b=gpPIezug; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=oSAl/pVQ; arc=none smtp.client-ip=103.168.172.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=squebb.ca
+	s=arc-20240116; t=1737140371; c=relaxed/simple;
+	bh=eXYNr/48i/aaYksD9OzMxyZSyXsx3MIUMhnS4fyk6Ak=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cV4NFtbhZO/Sb6c2u9cBB3ymbl+dVq1Fba0qe+U3WJ4gZ2R0O+Jq/89sTa8fCDA5CJK3bhRQehcMoBng3WIHo3wlPxTcqbd9vmIvtOMHsjDgnNDqnyuI6YiEyi8NlSwx82Fh86TFBFFFhKdscQ9NRgfq06lJRGsTDL/kvXAqbEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bJLLmxV8; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b="gpPIezug";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="oSAl/pVQ"
-Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 99A0C114020B;
-	Fri, 17 Jan 2025 13:03:15 -0500 (EST)
-Received: from phl-imap-10 ([10.202.2.85])
-  by phl-compute-02.internal (MEProxy); Fri, 17 Jan 2025 13:03:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=squebb.ca; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1737136995;
-	 x=1737223395; bh=Hkif9yEdlFdPGZ9gD2yW+n/UPPl7TSgmUfKSNtrrPgI=; b=
-	gpPIezugwyzOdanB3ah2Mvi6t1wTtEj+lv+I6g322bz2EfpRKQi8Fk0LmdSyE8fb
-	CExa/kyCdQsQjgOsxhEDqo18IBM4M0YPpSeyN8KqqMUYokCfPrOLM64KmJWtizv6
-	BHVanCDLv0rLz3oFr2j6zROH8IbcQSbJz+YYCL0hnB19R3gQOYFd2OTDo0/uDMpF
-	DyOEK4eisMvjEh1WUtbZh8TpnDrWXgWyilgCxfkinPjvflRxXp06Y2eWAWptFxXI
-	TIP1DOIRWpJWRHkQWGhupkUW1CntJV9mdYtI4zsqInhno7HkjrYViDT7bE4pw+9R
-	wxVt3yl23NKlHAYQEwEkxw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1737136995; x=
-	1737223395; bh=Hkif9yEdlFdPGZ9gD2yW+n/UPPl7TSgmUfKSNtrrPgI=; b=o
-	SAl/pVQRfx2cd+C0dwxjztUxnu1j/jwW1O6sJCK9k3zxb+YjMorpHsNw1VJo+GPf
-	IKdleELQhIjS7YXcqbQ3zemVxQ30VDTyyNozLk6Cdfwv23Dy4//Twvg3H4K+Hm3Y
-	2souhUDIN8zkcC0io52uXf0RD719nzQdXyjzHGu90KZlPUlyIeVilPLjTisD7rOj
-	I5THEHUvY95CdzJ7QvYBOG/GdjtCxktu4TKitY8LdgfXEpsGcKb0ExnIELgS9gGy
-	i3584FAmj0XSKss9ATefjjdCroZP2vjAP9Zk4XHZce9QCxfIBiLNbfoN0CmiqtNG
-	Ccox0M0CBAmXxlCFWXJGw==
-X-ME-Sender: <xms:Y5uKZ-h68x05RlnSo18wGJUvz4nc1_u4etRMj5FmjtKgJaG7j1X_Bw>
-    <xme:Y5uKZ_Dg7UYfT3OwyBjc4VpJHDTrEDEigoxaZn3vzTXZcAmTBUg4pXzcxlPs_F1PH
-    ocGDoqvv17wgFXRC1w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudeifedguddtiecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredt
-    tdenucfhrhhomhepfdforghrkhcurfgvrghrshhonhdfuceomhhpvggrrhhsohhnqdhlvg
-    hnohhvohesshhquhgvsggsrdgtrgeqnecuggftrfgrthhtvghrnhephfeiieeuueeggfdt
-    hedtudehteffffehgeevkeejjeegkeduteetgeduudettedvnecuffhomhgrihhnpegthh
-    gvtghkpghshihsthgvmhdrihhsnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghm
-    pehmrghilhhfrhhomhepmhhpvggrrhhsohhnqdhlvghnohhvohesshhquhgvsggsrdgtrg
-    dpnhgspghrtghpthhtohepudejpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehg
-    rghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegrlhgvgidrghgrhihnohhrse
-    hgmhgrihhlrdgtohhmpdhrtghpthhtohepsghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgt
-    ohhmpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpth
-    htoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlvggv
-    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrgh
-    dprhgtphhtthhopehmvgeskhhlohgvnhhkrdguvghvpdhrtghpthhtohepphhkohgthhes
-    lhgvnhhovhhordgtohhm
-X-ME-Proxy: <xmx:Y5uKZ2G-AGCfqVGpeJ0VqaSNFYhSrUnqwsllhLv7SsKPN-SmBjIE5Q>
-    <xmx:Y5uKZ3Shq2-Usd0k3HeOwSSB51UcSXR5qEFYz8yXeBndvdqJVlq3Ng>
-    <xmx:Y5uKZ7y6VWrmPWxyl0ycqipllCVgz3n-OsA-TXRpYzaZHm4nReXuJg>
-    <xmx:Y5uKZ14GfPqEm6pE56DAkbfDsnOFHjWLWNrBeEoi9DymANqoLgK4Dw>
-    <xmx:Y5uKZ4gHnJvP59Utu1Y-VQw-U17WfzQtoGtK2p7iuaceQaCt1MBgqbnc>
-Feedback-ID: ibe194615:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 329823C0068; Fri, 17 Jan 2025 13:03:15 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bJLLmxV8"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2161a4f86a3so5173705ad.1;
+        Fri, 17 Jan 2025 10:59:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737140369; x=1737745169; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nqFBXydFnLhZM4frEu4cymiWTyJgjozk//5gsSaQ+Fs=;
+        b=bJLLmxV80TfuMqNeyIBCwYB4QvWG1m2qjno9JeJG95KvHaQ7CcB/hr7/AS910tbZUQ
+         FsnHsljBXTvUtBLhR7mQEhp/gJhQ8aNr0/wNAiUXX2uPMSGg01a/P0HQBdCT+mmTWQWC
+         CP2yFLNq5AL2l2Hn4X2oDXzX7qt8k1VgIEoMfvLtle8ZbVug5aNF3LE5pPzKSJBLzGzv
+         oAm1G0D2nkWdt5VVSEbVNSTVSdl0ryv2lIgQIJD2w1pGlM/nB4sWfBLgC/11QC8aLU1J
+         d2FBnfOonkpMxasSYMBL2/kyhaNRnxqBBVUF1CZNPS1ZZt6Ban/FclFk4Z7wGttvTKBE
+         7xZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737140369; x=1737745169;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nqFBXydFnLhZM4frEu4cymiWTyJgjozk//5gsSaQ+Fs=;
+        b=PO0OB0Ri7p7VeZoLR5RfZ/Xxf7i2LlDX+mC0sZP0COQuGyJEwFdg52sZfHq3VczPEU
+         idfbTR/CzpUKw6xy+XL0PzdKAkEQLwS9ewc6bkovh2m78zXJqhWAc8wY8mqXYR4u7CC4
+         SvyIvFoJnny7vFVLZYmEw3BIHbUA6s4g2UNHj1amuVUD/Ib18RLKJ3JTEffuVyRlu/cL
+         gHA0DzA+J2ue2t9kTDrM4w4NJjlA8VmAq0dAT1JdtQ2XAEnQO374IVjL2jYXPhWec5bw
+         kdqQ9c4Aw/OhpYHcoPP2RmOLL/9s8Mg/G2Kza5+98KPZIaBF0vz/+hbI7jv24m1KrBlf
+         8srg==
+X-Forwarded-Encrypted: i=1; AJvYcCUm6RPMRm5AVi3NXRX1PN9qAw6GgPjTWYsYXnXuq6jLcJQxYMNlP7507DG9n9JRRGftwTpL4wtKs/eoR7JOfy8=@vger.kernel.org, AJvYcCVzNhDvysEAPJnuRc6V6NFnf7mCJjIpiHaGtM2eTBKpLxDehO5nneL66ww6xtazzwu/a14YDr8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuPXuXkAcJwYOHxVS/PXsWdOhaKQYTmMo6IzET5ydsbRT5yOsp
+	DXrIcqp1xJYBnsBCDlF+30iWir0Wyh8fqQaFNNTrj2j460AXUU5tCrSM3mAx6U0jBp3im0hPbAv
+	+twp5ZNNoWoR+8syxwNDca1x6Hks=
+X-Gm-Gg: ASbGncs3iW7vJWgctk7+AHOdKDnUWp48o6jFe2rcZ016hlSis24h4Ld5sAZT1soKZqF
+	UJuOWe17LLwFBNNHoB6NVl1Yj/iwzudvlaMhkeA==
+X-Google-Smtp-Source: AGHT+IHnyqsxERIH281CNhfuF6aMltGraei5kNhX1Qo6K+ndkZPeJ1YS9sP1Awf6jAUaMo3MxorxuqMuSpoLG3aGBtA=
+X-Received: by 2002:a17:902:ec8f:b0:215:a57e:88d6 with SMTP id
+ d9443c01a7336-21c34cc5dc0mr19878875ad.0.1737140369211; Fri, 17 Jan 2025
+ 10:59:29 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 17 Jan 2025 13:02:53 -0500
-From: "Mark Pearson" <mpearson-lenovo@squebb.ca>
-To: "Fiona Behrens" <me@kloenk.dev>, "Miguel Ojeda" <ojeda@kernel.org>
-Cc: "Alex Gaynor" <alex.gaynor@gmail.com>, "Pavel Machek" <pavel@ucw.cz>,
- "Lee Jones" <lee@kernel.org>, "Jean Delvare" <jdelvare@suse.com>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- "Benno Lossin" <benno.lossin@proton.me>,
- "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Peter Koch" <pkoch@lenovo.com>, rust-for-linux@vger.kernel.org,
- linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org
-Message-Id: <4cba946d-f0ef-4ac8-bbdf-bcf2e3d0550b@app.fastmail.com>
-In-Reply-To: <28103BB4-F415-45E1-8611-89C02E53E3CE@kloenk.dev>
-References: <20250113121620.21598-1-me@kloenk.dev>
- <20250113121620.21598-6-me@kloenk.dev>
- <fe71a5b6-c544-449e-ab50-c85e1ffc0145@app.fastmail.com>
- <28103BB4-F415-45E1-8611-89C02E53E3CE@kloenk.dev>
-Subject: Re: [PATCH v2 5/5] leds: leds_lenovo_se10: LED driver for Lenovo SE10 platform
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+References: <20250116044100.80679-1-fujita.tomonori@gmail.com> <20250116044100.80679-5-fujita.tomonori@gmail.com>
+In-Reply-To: <20250116044100.80679-5-fujita.tomonori@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 17 Jan 2025 19:59:15 +0100
+X-Gm-Features: AbW1kvYZY1LzSO_FSmJ660_EhBSD71Q0--c8IzXuHIQIJoosuhQDRNT-Q2J_dfU
+Message-ID: <CANiq72nNsmuQz1mEx2ov8SXj_UAEURDZFtLotf4qP2pf+r97eQ@mail.gmail.com>
+Subject: Re: [PATCH v8 4/7] rust: time: Add wrapper for fsleep function
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com, 
+	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
+	aliceryhl@google.com, anna-maria@linutronix.de, frederic@kernel.org, 
+	tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, 
+	mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com, 
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org, 
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi
+On Thu, Jan 16, 2025 at 5:42=E2=80=AFAM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
+>
+> +/// `delta` must be 0 or greater and no more than `u32::MAX / 2` microse=
+conds.
+> +/// If a value outside the range is given, the function will sleep
+> +/// for `u32::MAX / 2` microseconds (=3D ~2147 seconds or ~36 minutes) a=
+t least.
 
-On Fri, Jan 17, 2025, at 12:31 PM, Fiona Behrens wrote:
-> Hi,
->
-> On 17 Jan 2025, at 18:21, Mark Pearson wrote:
->
->> Hi Fiona,
->>
->> On Mon, Jan 13, 2025, at 7:16 AM, Fiona Behrens wrote:
->>> Add driver for the Lenovo ThinkEdge SE10 LED.
->>>
->>> This driver supports controlling the red LED located on the front panel of the
->>> Lenovo SE10 hardware. Additionally, it supports the hardware-triggered
->>> functionality of the LED, which by default is tied to the WWAN trigger.
->>>
->>> The driver is written in Rust and adds basic LED support for the SE10 platform.
->>>
->>> Signed-off-by: Fiona Behrens <me@kloenk.dev>
->>> ---
->>>  drivers/leds/Kconfig             |  10 +++
->>>  drivers/leds/Makefile            |   1 +
->>>  drivers/leds/leds_lenovo_se10.rs | 132 +++++++++++++++++++++++++++++++
->>
->> All the other files are called leds-<name>. Should this be leds-lenovo-se10.rs?
->
-> This does not work with rust, as the rust makefile converts this 
-> filename to a rust crate name, and those crate name cannot have dashes 
-> in them.
-> Not sure if we should fix this to hold to the file name conventions, 
-> maybe something for @Miguel to decide
+I would emphasize with something like:
 
-Ah - thanks for the clarification (and to Miguel in the follow up)
+    `delta` must be within [0, `u32::MAX / 2`] microseconds;
+otherwise, it is erroneous behavior. That is, it is considered a bug
+to call this function with an out-of-range value, in which case the
+function will sleep for at least the maximum value in the range and
+may warn in the future.
 
->
->>
->>>  3 files changed, 143 insertions(+)
->>>  create mode 100644 drivers/leds/leds_lenovo_se10.rs
->>>
->>> diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
->>> index b784bb74a837..89d9e98189d6 100644
->>> --- a/drivers/leds/Kconfig
->>> +++ b/drivers/leds/Kconfig
->>> @@ -223,6 +223,16 @@ config LEDS_TURRIS_OMNIA
->>>  	  side of CZ.NIC's Turris Omnia router. There are 12 RGB LEDs on the
->>>  	  front panel.
->>>
->>> +config LEDS_LENOVO_SE10
->>> +       tristate "LED support for Lenovo ThinkEdge SE10"
->>> +       depends on RUST
->>> +       depends on (X86 && DMI) || COMPILE_TEST
->>> +       depends on HAS_IOPORT
->>> +       imply LEDS_TRIGGERS
->>> +       help
->>> +	This option enables basic support for the LED found on the front of
->>> +	Lenovo's SE10 ThinkEdge. There is one user controlable LED on the
->>> front panel.
->>> +
->>>  config LEDS_LM3530
->>>  	tristate "LCD Backlight driver for LM3530"
->>>  	depends on LEDS_CLASS
->>> diff --git a/drivers/leds/Makefile b/drivers/leds/Makefile
->>> index 18afbb5a23ee..2cff22cbafcf 100644
->>> --- a/drivers/leds/Makefile
->>> +++ b/drivers/leds/Makefile
->>> @@ -37,6 +37,7 @@ obj-$(CONFIG_LEDS_IP30)			+= leds-ip30.o
->>>  obj-$(CONFIG_LEDS_IPAQ_MICRO)		+= leds-ipaq-micro.o
->>>  obj-$(CONFIG_LEDS_IS31FL319X)		+= leds-is31fl319x.o
->>>  obj-$(CONFIG_LEDS_IS31FL32XX)		+= leds-is31fl32xx.o
->>> +obj-$(CONFIG_LEDS_LENOVO_SE10)		+= leds_lenovo_se10.o
->>
->> Same note above on name formatting.
->>
->>>  obj-$(CONFIG_LEDS_LM3530)		+= leds-lm3530.o
->>>  obj-$(CONFIG_LEDS_LM3532)		+= leds-lm3532.o
->>>  obj-$(CONFIG_LEDS_LM3533)		+= leds-lm3533.o
->>> diff --git a/drivers/leds/leds_lenovo_se10.rs
->>> b/drivers/leds/leds_lenovo_se10.rs
->>> new file mode 100644
->>> index 000000000000..d704125610a4
->>> --- /dev/null
->>> +++ b/drivers/leds/leds_lenovo_se10.rs
->>> @@ -0,0 +1,132 @@
->>> +// SPDX-License-Identifier: GPL-2.0
->>> +//! LED driver for  Lenovo ThinkEdge SE10.
->>> +
->>> +use kernel::ioport::{Region, ResourceSize};
->>> +#[cfg(CONFIG_LEDS_TRIGGERS)]
->>> +use kernel::leds::triggers;
->>> +use kernel::leds::{Led, LedConfig, Operations};
->>> +use kernel::prelude::*;
->>> +use kernel::time::Delta;
->>> +use kernel::{c_str, dmi_device_table};
->>> +
->>> +module! {
->>> +    type: SE10,
->>> +    name: "leds_lenovo_se10",
->>> +    author: "Fiona Behrens <me@kloenk.dev>",
->>> +    description: "LED driver for Lenovo ThinkEdge SE10",
->>> +    license: "GPL",
->>> +}
->>> +
->>> +dmi_device_table!(5, SE10_DMI_TABLE, [
->>> +    "LENOVO-SE10": [SysVendor: "LENOVO", ProductName: "12NH"],
->>> +    "LENOVO-SE10": [SysVendor: "LENOVO", ProductName: "12NJ"],
->>> +    "LENOVO-SE10": [SysVendor: "LENOVO", ProductName: "12NK"],
->>> +    "LENOVO-SE10": [SysVendor: "LENOVO", ProductName: "12NL"],
->>> +    "LENOVO-SE10": [SysVendor: "LENOVO", ProductName: "12NM"],
->>> +]);
->>> +
->>> +struct SE10 {
->>> +    /// Led registration
->>> +    _led: Pin<KBox<Led<LedSE10>>>,
->>> +}
->>> +
->>> +impl kernel::Module for SE10 {
->>> +    fn init(_module: &'static ThisModule) -> Result<Self> {
->>> +        if SE10_DMI_TABLE.check_system().is_none() {
->>> +            return Err(ENODEV);
->>> +        }
->>> +
->>> +        let led = KBox::try_pin_init(
->>> +            Led::register(
->>> +                None,
->>> +                LedConfig {
->>> +                    name: Some(c_str!("platform:red:user")),
->>> +                    #[cfg(CONFIG_LEDS_TRIGGERS)]
->>> +                    hardware_trigger: Some(kernel::sync::Arc::pin_init(
->>> +                        triggers::Hardware::register(c_str!("wwan")),
->>
->> I was curious as to why the "wwan" in here.
->
-> This is the hardware trigger, as to the documentation I found from 
-> Lenovo the trigger mode gives hardware control to the wwan module if 
-> installed in the hardware.
->
-Ah - I should probably have known that :) All good.
+In addition, I would add a new paragraph how the behavior differs
+w.r.t. the C `fsleep()`, i.e. IIRC from the past discussions,
+`fsleep()` would do an infinite sleep instead. So I think it is
+important to highlight that.
 
-Mark
+> +    // The argument of fsleep is an unsigned long, 32-bit on 32-bit arch=
+itectures.
+> +    // Considering that fsleep rounds up the duration to the nearest mil=
+lisecond,
+> +    // set the maximum value to u32::MAX / 2 microseconds.
+
+Nit: please use Markdown code spans in normal comments (no need for
+intra-doc links there).
+
+> +    let duration =3D if delta > MAX_DURATION || delta.is_negative() {
+> +        // TODO: add WARN_ONCE() when it's supported.
+
+Ditto (also "Add").
+
+By the way, can this be written differently maybe? e.g. using a range
+since it is `const`?
+
+You can probably reuse `delta` as the new bindings name, since we
+don't need the old one after this step.
+
+Thanks!
+
+Cheers,
+Miguel
