@@ -1,118 +1,134 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411D21FE47F
-	for <rust-for-linux@vger.kernel.org>; Fri, 17 Jan 2025 12:47:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840CB1FF1DB
+	for <rust-for-linux@vger.kernel.org>; Fri, 17 Jan 2025 13:06:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737118041; cv=none; b=k6U0cPe0o/nEaVcbznPp3GToepum6F+y930SpSOhk2weOThSyAw8wdW5bPlJvmVycRYR/G7dkdthM6bP84ICQnAP8c/OAqGzBt4uj2gCAXRmHu54EvlAA+1LtzdLG2otLKAHYO92D4TWtGbP6aNnFYKmHEG4fppiCUl4PBjiYpk=
+	t=1737119169; cv=none; b=CGczq3N6FNH9c4MdJkq4MWKlSwx+iBJwKeFWS2yVPykrKcfPAyVK5bDYFni1oqsesTlW6XlKCr5SUWUOqcql540qtJwC++TLvhanRR8JaaCmDRhGlvziHIkyT3fQlXPQc5GQ8r+FmGkVC5m9ovv6M4ptz98LMXqaqzsjN56LrTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737118041; c=relaxed/simple;
-	bh=qBn8HirZN8Cyg2IQ4Z6nrN9vWkKOuYsOkKbvTSXKOgw=;
+	s=arc-20240116; t=1737119169; c=relaxed/simple;
+	bh=hQ9e6rbR6HiF0VYlbEEItopkOeT1txabxJnTwEAQWtI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CGwpfRtPjJHAFNaldzLPkWFSHdsGVV57NZlrBl4lX6a3DixVieGBfi1FZ22j3PjrRFSlEu3ZNOZu1X6U5UeHjFBqxbDjKgC/DJHn/Ns4ai2pyM50ES/fIiiffsLS3icaW0HWdHJ516FwcUU1h1HTk/mqgD1o7oaqf2XcObln1a4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lf7MkggQ; arc=none smtp.client-ip=209.85.128.42
+	 To:Cc:Content-Type; b=T7zxYeHKz6Zpuo6C6mocsHcGQXwwFFB6HyxkGv0kwrngypfe7mXgTte5zOGH3HZ+aVQRN4Tlm5+0b+LMDa3NogVoVUjoS32PxnSUforQWbhaFL4tJUI3QQwanSJ55wFbjzsfIltwIMy/gz40XUVS35Wml2yHzvuOqTvKI0eV9j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HkBoyQep; arc=none smtp.client-ip=209.85.221.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lf7MkggQ"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-436281c8a38so13599745e9.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 17 Jan 2025 04:47:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HkBoyQep"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-385dece873cso1147119f8f.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 17 Jan 2025 05:06:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737118037; x=1737722837; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1737119164; x=1737723964; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xTsFM3xsW1rkvVQ1D071Ox1vp1fq+BLVH0DDYFb7YP4=;
-        b=lf7MkggQHA7SoX5DeVVcOakaRqZUyYFteCa5zhcGWPDKUE5OdQkKWT+m//HTW3XKTs
-         tMUNMPaVoRNPVIa6x4tP+aCS25mtlj8+uKXLBcYpNbxnUFgYK5eitRLmYo2zwHpDuqZG
-         3PyMblehGARLV+adThrMKQQKqQN0b3CCZ63de+8lwN/swfM3hmZ0lPtWmjOiR8Y++14h
-         o5z+7ZiDSKvU5sb8+7IVelFl5au7Xk93kPsad2Ozui7GK8yMNYfJC5BmToB7AEz48Nzg
-         0lS81Qa55xiPX+R3UYstct2eGZr0bKF37IbHjznup8M7KOx1OOUXEDq38G2pP3ZFXj+/
-         DH+w==
+        bh=MffWZy2qG7Y6JWmoh4iHVpcAaSZTVr3Q5Le/78Z0tU4=;
+        b=HkBoyQepFj8rA5LGyw8tTJKgtRmFNoVD9Y8hi45fLgT11oV9fEnnPbgx94MHnRmjcH
+         09lzG3ZtHg2HBruL6G57oD8pLqWF/ECuo/e37bNxraU6ZI7BgjEV9QsP7Lh01bDOwQoJ
+         zD/xbykgjgMct0c5Nnjb2wx9TO6oLm+5jz7f7R8shtyhJf6uEf6quonrXHeKuAe5642N
+         SIGgBb6FkDIB9zC7uGqBWDHSOocTevDQ1uzZohY754ItlHOG3nrtAA+Z1k9n0XSmSMgZ
+         Syn7BCgX4S8j4yynsJD6LFGWzCH9/y03WkPwFmsFEB4AgbJY0dDsKDiJfIt4B4siNaCW
+         Qs9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737118037; x=1737722837;
+        d=1e100.net; s=20230601; t=1737119164; x=1737723964;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xTsFM3xsW1rkvVQ1D071Ox1vp1fq+BLVH0DDYFb7YP4=;
-        b=w2DKiUqeHOF657xX+D/bgjCGTGCQT3HLyI9Zf0pl+YsVuHDp2oqXCKlET2Us8nwLv1
-         giWI5Tw6wYX57Tf1Tc7BBNEgOeLe2IaAxNJRudoMUZEnWevmF3rfYpYwC7D3WMDNlneM
-         4FCRbMRUs5TWivPly/8EAQBuPJixL5Mpp+YrPWHVx8crK5IYk5kbVJCu1ifc8lI4yP1H
-         Fe1aimKD0saDStSSBZmbdPpttNaPrtwKmKVS4rD641idqZsaa6R8lM+255eYrlIstkBJ
-         a2XZfHFQGAq/c2IBY+8eRY96k7poLy84aFX9cMcb4px1hwLnGvE0WtQNw+tkhUPXXWNR
-         G8bw==
-X-Forwarded-Encrypted: i=1; AJvYcCVoKN9li5GtxucMdL7N9FvxLOwbcuEbHUFd987PwLVMMOyyEPeS8KafXAKMMvcEv7g+YEk7ndbessvuxLReXg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywb7VFzF47Z/KoeoIZBpLOI9bY0pXA/kN1su7ZIprAT2Ztn+90k
-	L+DXJwlL4yBLLrvKbWUVHIdAQdDHzAF1pbrGA4OgnwE9DhjudDZSz4lTzFfNbfoh4WCvI+VMP28
-	Vi9RTTLuVakoPrv6YPl8GRexCHz7vqSEUBwc2
-X-Gm-Gg: ASbGnctkbIPUpr1y4oJSNHiplfr7OF5R7i7sYIR50CQLPP+6nS5BjQpnNXX/sbvfsml
-	IsLEYvwjICM3Qfnc5mkk9diw4KU0O9qmYXARd+WY=
-X-Google-Smtp-Source: AGHT+IHrIhAKGXIqeHt/cUeyGtUugRtfxylw0ZlQpSabDdEBD/SAKou24gHW5sEFv1nvjVcY6H8O3Y85JY3ERj+mSv4=
-X-Received: by 2002:a05:6000:178e:b0:38a:a043:eacc with SMTP id
- ffacd0b85a97d-38bf5655a55mr1892926f8f.1.1737118037519; Fri, 17 Jan 2025
- 04:47:17 -0800 (PST)
+        bh=MffWZy2qG7Y6JWmoh4iHVpcAaSZTVr3Q5Le/78Z0tU4=;
+        b=g11T5wzDNbIycnsmGChYUYLarPgiT/SMoNkI5y7RChKtv4yC124s6mdVSda0kRH4aH
+         8pwY+ABjHErk/EljiXpY4fZD1e5ej8yLEd4wzRye1Ojs9TD6CPVrkKWf2TEGAbzYbJ8y
+         NrcaJAaGlPoJsepQ3HZ1ju7nb3Wu7Jv+/TMPeJ5rFpaba9IDZeRVN0wF85v8HZ/dqA1j
+         cOjZ9Pf1t4c5/1QPRukWBCtK+CPyjd2xIXRLhdJuIz8saN8Q9g+YwU7vUDWeyD7prvt7
+         5UKDdaf8+dMI/ywVDzxzlcROVnJNn6WNnhpx/Y+nnjRueiEFQ0Egm6cJxBcif0Aw2juD
+         /aow==
+X-Forwarded-Encrypted: i=1; AJvYcCUQWZNpIMJoFMRgta6x6GQ7zzgo1jTtBGRlZqiWRsRJFwyfFVtQ0BNAMUghPkt1EeOHbbwE25Dr6wmNUxGuxg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yweh2DHtE0RilrISUdMfoWC6FKutkHN0wTlvSOcNtYsLfWR/16v
+	0oEbhikw5ph9tQ0zMfEKscmzwwSIWn+weAyvdCD5TaGLtTSbRY8iH2FCPE0VfxLZXxRtViOTZ2T
+	iqS593QI6dsVftouS8YtwXXpEfn2SN351szSy
+X-Gm-Gg: ASbGncvp3f9gPmvKebDXY+QjBlvszv1aqC68UaTqDUB299cCphpycnnnveg+Q1qQEPY
+	Kx3dcW00ZmhnKmNXTe4tH0iemc6EUvZhIY3tJYMA=
+X-Google-Smtp-Source: AGHT+IFIrgN0kXkKi1laseLg/MV2oUQuJQaUgpoC2ZJDGiSWy3dT9jT1ButtO2C/XovaEoCIWMhN7wBieoH1VVtyfF8=
+X-Received: by 2002:a05:6000:2a9:b0:38a:2798:c3e0 with SMTP id
+ ffacd0b85a97d-38bf57c9b83mr2372799f8f.54.1737119163705; Fri, 17 Jan 2025
+ 05:06:03 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241211-vma-v11-0-466640428fc3@google.com> <20241211-vma-v11-1-466640428fc3@google.com>
- <a5f26615-b27d-4e7a-a371-0bf8cba03d2c@nvidia.com>
-In-Reply-To: <a5f26615-b27d-4e7a-a371-0bf8cba03d2c@nvidia.com>
+References: <20250117.165326.1882417578898126323.fujita.tomonori@gmail.com>
+ <20250117.180147.1155447135795143952.fujita.tomonori@gmail.com>
+ <CAH5fLggUGT83saC++M-kd57bGvWj5dwAgbWZ95r+PHz_B67NLQ@mail.gmail.com> <20250117.185501.1171065234025373111.fujita.tomonori@gmail.com>
+In-Reply-To: <20250117.185501.1171065234025373111.fujita.tomonori@gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 17 Jan 2025 13:47:05 +0100
-X-Gm-Features: AbW1kvYWqYRF6L9bNPtcxy-n6pkNZgee56h_AAgcgyZH1ftUtuKcO9sA-D3BhZw
-Message-ID: <CAH5fLggTisDuOndJKYNHYQoXeind+MGD8veyGfj4A-39H1KQAg@mail.gmail.com>
-Subject: Re: [PATCH v11 1/8] mm: rust: add abstraction for struct mm_struct
-To: Balbir Singh <balbirs@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Christian Brauner <brauner@kernel.org>, Jann Horn <jannh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org
+Date: Fri, 17 Jan 2025 14:05:52 +0100
+X-Gm-Features: AbW1kvbrFl85FFffgJR887ohWA8nRSfhdN_SJdP7V78TZ56SODUNWQNtZKv4CjU
+Message-ID: <CAH5fLghqbY4UKQ2n1XVKPtvnLfJ4ceh+2aNpVmm9WxbUTu8-GQ@mail.gmail.com>
+Subject: Re: [PATCH v8 4/7] rust: time: Add wrapper for fsleep function
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com, 
+	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
+	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de, 
+	arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, mingo@redhat.com, 
+	peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, 
+	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, 
+	mgorman@suse.de, vschneid@redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 17, 2025 at 1:45=E2=80=AFAM Balbir Singh <balbirs@nvidia.com> w=
-rote:
+On Fri, Jan 17, 2025 at 10:55=E2=80=AFAM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
 >
-> On 12/11/24 21:37, Alice Ryhl wrote:
-> > These abstractions allow you to reference a `struct mm_struct` using
-> > both mmgrab and mmget refcounts. This is done using two Rust types:
-> >
-> > * Mm - represents an mm_struct where you don't know anything about the
-> >   value of mm_users.
-> > * MmWithUser - represents an mm_struct where you know at compile time
-> >   that mm_users is non-zero.
-> >
-> > This allows us to encode in the type system whether a method requires
-> > that mm_users is non-zero or not. For instance, you can always call
-> > `mmget_not_zero` but you can only call `mmap_read_lock` when mm_users i=
-s
-> > non-zero.
-> >
-> > It's possible to access current->mm without a refcount increment, but
-> > that is added in a later patch of this series.
-> >
-> > Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com> (for mm bits)
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
+> On Fri, 17 Jan 2025 10:13:08 +0100
+> Alice Ryhl <aliceryhl@google.com> wrote:
 >
-> It might be good to add some #Examples similar to kernel/task.rs
+> > On Fri, Jan 17, 2025 at 10:01=E2=80=AFAM FUJITA Tomonori
+> > <fujita.tomonori@gmail.com> wrote:
+> >>
+> >> On Fri, 17 Jan 2025 16:53:26 +0900 (JST)
+> >> FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
+> >>
+> >> > On Thu, 16 Jan 2025 10:27:02 +0100
+> >> > Alice Ryhl <aliceryhl@google.com> wrote:
+> >> >
+> >> >>> +/// This function can only be used in a nonatomic context.
+> >> >>> +pub fn fsleep(delta: Delta) {
+> >> >>> +    // The argument of fsleep is an unsigned long, 32-bit on 32-b=
+it architectures.
+> >> >>> +    // Considering that fsleep rounds up the duration to the near=
+est millisecond,
+> >> >>> +    // set the maximum value to u32::MAX / 2 microseconds.
+> >> >>> +    const MAX_DURATION: Delta =3D Delta::from_micros(u32::MAX as =
+i64 >> 1);
+> >> >>
+> >> >> Hmm, is this value correct on 64-bit platforms?
+> >> >
+> >> > You meant that the maximum can be longer on 64-bit platforms? 214748=
+4
+> >> > milliseconds is long enough for fsleep's duration?
+> >> >
+> >> > If you prefer, I use different maximum durations for 64-bit and 32-b=
+it
+> >> > platforms, respectively.
+> >>
+> >> How about the following?
+> >>
+> >> const MAX_DURATION: Delta =3D Delta::from_micros(usize::MAX as i64 >> =
+1);
+> >
+> > Why is there a maximum in the first place? Are you worried about
+> > overflow on the C side?
+>
+> Yeah, Boqun is concerned that an incorrect input (a negative value or
+> an overflow on the C side) leads to unintentional infinite sleep:
+>
+> https://lore.kernel.org/lkml/ZxwVuceNORRAI7FV@Boquns-Mac-mini.local/
 
-You're probably right.
-
-> Acked-by: Balbir Singh <balbirs@nvidia.com>
-
-I'll pick this up for v13 since I already sent v12. Thanks!
-
+Okay, can you explain in the comment that this maximum value prevents
+integer overflow inside fsleep?
 
 Alice
