@@ -1,81 +1,80 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9263149DF4;
-	Fri, 17 Jan 2025 07:53:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 651491F790B;
+	Fri, 17 Jan 2025 09:01:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737100418; cv=none; b=kdKQraIZPIyFRwOoW/3LuNl01oIA17oQGu58LlQJ0q75YFKtxA+uBEPGNYzt6A221VDrbGlQJvbnc7mQZpfB1Et4uEuMRMDITzHHc8Davv72TijyCFCtKr5KWkGB9vUSGB/uLeFRTjVXm9hdJ+huHHfhSiv9+XTyfn95K2hqbiw=
+	t=1737104518; cv=none; b=WthdoI7bRt9D4UofL6FcUFSOc4FTgHN5ZFIu31E6nmA3uyYmrvNGAkJTlp7bHYptp2LguInW5GoztJb4MukPO1ftAxkKmSmnuRDniVCJmVKIpDSNZjSp++PsIkNCCdW03C6CqBksoEcAw40Asmjr3ROoYXQbl16GR8/h64wvXkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737100418; c=relaxed/simple;
-	bh=wYRSYuEZTmOdDWgZDM41um78SI6chB+p+eqgLJZBK/o=;
+	s=arc-20240116; t=1737104518; c=relaxed/simple;
+	bh=hFcJTz5hsr8kdPCQH3dsbYIvJogJXcoHdr7EvQHqxEU=;
 	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=mz15KDqiW87qkw1gTQ1mwzaZFFsKGJEBx2CA2iZ6fliW/PzgD1QQRBldoCFkFmCLjo3Y9+7Mrpetegt5uwHYlPQlSAMIYl5I/+VLmEcf6R4zwvJrbTT8cXP44i70pP/KZm9aAdkzTD6Y5zSa2klC3NVq59KIITcZLKdk2VkMkQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W4qd+Mmw; arc=none smtp.client-ip=209.85.214.179
+	 Mime-Version:Content-Type; b=opqz6SHdvvvNZH6O1NJ1XS9LSFgi4UOhRljDCesLCzS0A1G98znpQ7AfXj5JucgJsQs1ETSdzCs3qfplkhFGQjvg3WGmomxRwUKlgSQFgR1/X1hN+/OX2Ewd6DFEFsOSfPJnlSJd8RYSR5+ufvf2tusu7cQ4htI0VEf+/25Sfdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fO796tFA; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W4qd+Mmw"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-21654fdd5daso30736565ad.1;
-        Thu, 16 Jan 2025 23:53:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fO796tFA"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2162c0f6a39so57533015ad.0;
+        Fri, 17 Jan 2025 01:01:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737100416; x=1737705216; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1737104516; x=1737709316; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=w4GmvjHNeM4m/IxyHTTfCfV+4PNJd7FbqxnQuFVomQA=;
-        b=W4qd+MmwNs04r0H3wV6mP5WlMvu2kp8/Ev0zAs0WYUeBJcKi80DVaW7X+VK+jbG+nE
-         e5ipkwSkZyRD8L9EcZpDNMYwRrP7Esq6mXmCdSXnbl3FOw2nZLuV+eEmSDBIprCsCt4v
-         Z/ptyHkS416+idZctkpNYLq9Ww6rtzcDd33nA7RxOaoDR01t6+uBCDtnlM5QancpjisQ
-         axCRvLSXhyy9Q4zB1QDXeQyWWVHSGZP/7PCuwgRrfp3uWAZsDIpy0GwtOsGX1WbWBany
-         Ap+WIPvhJrIiuHlTdFjQ0NyNUyTBrJnZR578Hus9uYBAI8O69yUbMQmxYBXPowNiSvwU
-         Ji1g==
+        bh=3A0m5QKzpyHbRzSR3DmcgEE5q5ElazaIe2Cv7srEXQQ=;
+        b=fO796tFAunrm0NFeFp8H/PYsDbzgx7ndO3nOxSHgbl0f6Z9yrq/Zy7WPaxvS565EH4
+         CmaU0lrYVkMVItc7fFqOKdqVND7uKAOGR9T5y5WD0uQuqJZ5KdGT09rKmC7fbipnXpnV
+         0TVwTrwPlkTk6nlLcQ6PeWUchd15XpepA2RitQRtRDZsKq+9ivTwKAirLhj4Xhku5+KM
+         72ItCGGQ7uYWeVwpd+BF49FxMNGWqgrsa8qj82z+YG3bXAm1K/rZoqC5H+trgE2qNRw0
+         TGYQtUEVW2ikA/mr7z8DQdZuBwnuzyIYY0KZiApiZ/EKWE+WAoGS7jxIhWfZ6nvWvWx/
+         BdRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737100416; x=1737705216;
+        d=1e100.net; s=20230601; t=1737104516; x=1737709316;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=w4GmvjHNeM4m/IxyHTTfCfV+4PNJd7FbqxnQuFVomQA=;
-        b=R9WqxwA0sE0jehhEHi5bciOlvC0RFPqgvPx1MIZhfGxV/wcEZR5KVwBe/b89e8AfLo
-         MMP85YVhG4Y24NkxrKT1I79NCSzbPTRT271ZFnbcDLm8kAkiELKzAFQwoJN2xyoL+xuk
-         bmvMy68GuKuuGXEBCZ70+gc2LVzE4vWYyzHk6/IJlF/6oyagkmy+8lVMO0T5UJatNWrH
-         96K1hiyZvuMw3XgiviKN6qC5g6qNtyEYsmKN77R0FO1itj2AdidC2j/eJivijCTC254v
-         YZJioWuMjaNkWMccNkTlfZ8roUN2eIEm9wU4Rd/l25cytr0xw4fRsSDIsrAB3ubtEqP2
-         CytQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU8SJ2yU7sjmTKJ3h4+LWvTq/veDAs/Bzg60RIrcQqbFi7XpMXmA4LXMbbk7JhT4hDMpMdEFN4B@vger.kernel.org, AJvYcCUttcQ6s13qenYo49sOoJ6jo2f/b9lHqk3TMg3KrSL727DVel80kOfGXIrnMYG64ejgdZRxnm2V809w8oo=@vger.kernel.org, AJvYcCWH45oOqwwwPM7V+CV9iReJfeeo/dnvETU91WK+FcEbHZCKC4lLiRNukPGchxzfcFyTvfA7UnFHJq8n7dw+ZIk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyk+TE2AdORwxHuhVvsvyT70u0H1qtZk7nxsaYpt7JRr1WPwaFc
-	n7Wh9fq26+98IWyCFfgJIb154moMX9HRaP6IsqmMDQkCKmN+tPaU
-X-Gm-Gg: ASbGncsSIo31+ij7D4/AcqIjDbPLd3O/Q06G0Zfs+TjUvzJM1Jc+RssjtRJiymHbqBx
-	UdItgWYXn02KFngd69b2J6BnyOytQlgK8w1PsPqkNJcpXbmAqpEXqF2EENMeAtULdYwNou8JBp2
-	BrmZUFhwoqAykoTfa7iwBe7ELhIQAwow6Eyl6DkAM+L8xff3s0QwGuruup8IF4ycLZFQb4IdXvn
-	tQ7/qICry41wlcMWayU8jMMCu8CqviYSmGdFQY2SBDnltAtXxgO0/huT6UHXvIOmF0seFLk7em6
-	sTDpDcZ/GA3G+t8T6XqY5G6r9rSzElGks/dsAg==
-X-Google-Smtp-Source: AGHT+IHta8LtnsQXgmf6GtcGNuqhh/LR/rBpDLR2JJJZ9Ntk8sL6h8FnxqNApdxEMN5yutdLxyafiA==
-X-Received: by 2002:a17:902:d487:b0:215:e98c:c5b5 with SMTP id d9443c01a7336-21c352c9f30mr28014775ad.1.1737100415960;
-        Thu, 16 Jan 2025 23:53:35 -0800 (PST)
+        bh=3A0m5QKzpyHbRzSR3DmcgEE5q5ElazaIe2Cv7srEXQQ=;
+        b=VVzGeepUMU4OoZGwEbZf/SKNGjECQk35FjTaeU9H/1HaFqQM4IeqbXkCl2IaowTzFT
+         SHyR+E659I+BsjBvo+PMT1du9HkGtW59MJkOa0x/FZ0AQSf9padtgzij/n9/HAVg+aT2
+         LrmXfcGPARSvEp1AGXXABnp8BGRwRAuwYCTAkqeC/XyIcOtc/HKbpz0rtnhPa8pyhMQ/
+         AA32SQ3vYMOrML3pX6aON8OHqSV5kUuszAJdvrbHpE9RbmQgGz+rnQmpnSADYHUgyXz5
+         S3kEaxW+KJv5dxMSrbxZo3FXEtsU+d+NCLT0VwvtQjp/6OrSnHrRDepWo7vANr9pzdU9
+         XIJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV8ZYydPPLRVYMOzU1NgYSKbcLdIZIpScVPhBMyPgpoL7+QUIsaxnUEdLazhnmlAvK3YWQFSGveLrEFkwp6Zxs=@vger.kernel.org, AJvYcCWokDo6Bb1+gC+9ifVeIqrhNwUXnnytuQQqwicBRPFh2sT0uppjMwYgL/vzlKpG6DOFWj+j90s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHBqTyDhzAlziaF5NF07PTwD+Dtkv53P4cKNiKnGr9QcazbrVd
+	u4BIBqB/07cS1tIuCdKHteXmj65UM1S+GUHONMe26IMdqcqnuSlH
+X-Gm-Gg: ASbGncvUMOORN3HpfpSPg3ll5SlsSvIQ9jW2raObEOe30MC4hHIIlgkm0QJQexTSR3Z
+	z3iYIQRIAQaZTm5UoFhX2CzXx3Co+PhZurn4F4+Zq6oulfIjufzEVni6A0gQO4vmdL4wjIiCo1A
+	2sDMd9yl8h9jcw5DF0+AVt0Qc+A/ftXLD1Xjjs+g5ukyigmeOXylsOSOtyJWosd+SNt/XI33nPM
+	LnlO+fZaCVKUfdE+7yVnhESdj5o7t8x6UKMD3AFZ9SJrC0iB+7zdPthVmGAYdHl0ixd/aH0P4n6
+	3llPJNjFdP5oOfSq2BxinlXhr8thO6C2CxYGXQ==
+X-Google-Smtp-Source: AGHT+IGVkMn+CkArooloRAbkXppERQH1xx/5PHNjh7Qg2q97Sxprfpx6+xFfk8/WAi4k9KXg9LKinw==
+X-Received: by 2002:a05:6a00:ad2:b0:725:f359:4641 with SMTP id d2e1a72fcca58-72db1b311cemr2398551b3a.1.1737104516470;
+        Fri, 17 Jan 2025 01:01:56 -0800 (PST)
 Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21c2ce9efb9sm10664315ad.45.2025.01.16.23.53.28
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72dab7f0436sm1355361b3a.22.2025.01.17.01.01.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jan 2025 23:53:35 -0800 (PST)
-Date: Fri, 17 Jan 2025 16:53:26 +0900 (JST)
-Message-Id: <20250117.165326.1882417578898126323.fujita.tomonori@gmail.com>
+        Fri, 17 Jan 2025 01:01:56 -0800 (PST)
+Date: Fri, 17 Jan 2025 18:01:47 +0900 (JST)
+Message-Id: <20250117.180147.1155447135795143952.fujita.tomonori@gmail.com>
 To: aliceryhl@google.com
-Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, andrew@lunn.ch,
- hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
- alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- benno.lossin@proton.me, a.hindborg@samsung.com, anna-maria@linutronix.de,
- frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de,
- jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
- peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
- dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
- mgorman@suse.de, vschneid@redhat.com
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, anna-maria@linutronix.de, frederic@kernel.org,
+ tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
+ mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+ vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
+ bsegall@google.com, mgorman@suse.de, vschneid@redhat.com
 Subject: Re: [PATCH v8 4/7] rust: time: Add wrapper for fsleep function
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CAH5fLgjwTiR+qX0XbTrtv71UnKorSJKW26dTt2nPro6DmZiJ-g@mail.gmail.com>
-References: <20250116044100.80679-1-fujita.tomonori@gmail.com>
-	<20250116044100.80679-5-fujita.tomonori@gmail.com>
+In-Reply-To: <20250117.165326.1882417578898126323.fujita.tomonori@gmail.com>
+References: <20250116044100.80679-5-fujita.tomonori@gmail.com>
 	<CAH5fLgjwTiR+qX0XbTrtv71UnKorSJKW26dTt2nPro6DmZiJ-g@mail.gmail.com>
+	<20250117.165326.1882417578898126323.fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -85,37 +84,29 @@ Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 
-On Thu, 16 Jan 2025 10:27:02 +0100
-Alice Ryhl <aliceryhl@google.com> wrote:
+On Fri, 17 Jan 2025 16:53:26 +0900 (JST)
+FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
 
->> +/// This function can only be used in a nonatomic context.
->> +pub fn fsleep(delta: Delta) {
->> +    // The argument of fsleep is an unsigned long, 32-bit on 32-bit architectures.
->> +    // Considering that fsleep rounds up the duration to the nearest millisecond,
->> +    // set the maximum value to u32::MAX / 2 microseconds.
->> +    const MAX_DURATION: Delta = Delta::from_micros(u32::MAX as i64 >> 1);
+> On Thu, 16 Jan 2025 10:27:02 +0100
+> Alice Ryhl <aliceryhl@google.com> wrote:
 > 
-> Hmm, is this value correct on 64-bit platforms?
-
-You meant that the maximum can be longer on 64-bit platforms? 2147484
-milliseconds is long enough for fsleep's duration?
-
-If you prefer, I use different maximum durations for 64-bit and 32-bit
-platforms, respectively.
-
-
->> +    let duration = if delta > MAX_DURATION || delta.is_negative() {
->> +        // TODO: add WARN_ONCE() when it's supported.
->> +        MAX_DURATION
->> +    } else {
->> +        delta
->> +    };
->> +
->> +    // SAFETY: FFI call.
->> +    unsafe {
+>>> +/// This function can only be used in a nonatomic context.
+>>> +pub fn fsleep(delta: Delta) {
+>>> +    // The argument of fsleep is an unsigned long, 32-bit on 32-bit architectures.
+>>> +    // Considering that fsleep rounds up the duration to the nearest millisecond,
+>>> +    // set the maximum value to u32::MAX / 2 microseconds.
+>>> +    const MAX_DURATION: Delta = Delta::from_micros(u32::MAX as i64 >> 1);
+>> 
+>> Hmm, is this value correct on 64-bit platforms?
 > 
-> This safety comment is incomplete. You can say this:
+> You meant that the maximum can be longer on 64-bit platforms? 2147484
+> milliseconds is long enough for fsleep's duration?
 > 
-> // SAFETY: It is always safe to call fsleep with any duration.
+> If you prefer, I use different maximum durations for 64-bit and 32-bit
+> platforms, respectively.
 
-Thanks, I'll use your safety comment.
+How about the following?
+
+const MAX_DURATION: Delta = Delta::from_micros(usize::MAX as i64 >> 1);
+
+
