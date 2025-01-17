@@ -1,437 +1,161 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E1C3B1A2
-	for <rust-for-linux@vger.kernel.org>; Fri, 17 Jan 2025 14:22:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8691013CA81
+	for <rust-for-linux@vger.kernel.org>; Fri, 17 Jan 2025 14:31:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737123779; cv=none; b=HQxX0uJoZrizNHV7H4rGjUkIddCpaUQ7u0jcFhGUiBZHlFxOj+mLetaxbmNV6VLY+n70WUkytpnZ2SWWbJTCgy/2oEmpopJaeeJle34YPJaH55T8OfbGnVc5MCLk84eVGvnLzfFIxEBqNxk71ATPviMYM1Tdr96Xd1SzsbnVoiw=
+	t=1737124282; cv=none; b=pwEh6RQmNCqiQA909aBWZ5GoNj6JpyIgN7rusYvswu+1U4LdX8oPyqcwNUoujolPPJyKbrEv/lk3fzAmaswQQGtyKWhb790iDZhc4tOGXLDuTdfrt3Mhm8as5LFscr5nesiioTkUrpBOIlrDNUF4vIneQNI2ONefN2RK7lKNT1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737123779; c=relaxed/simple;
-	bh=k4Xpn2RmY6NCWHMXL/iKfqAqRheyeJPA8UiAb1hhX9Q=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=D+IJuc4mkadZu+x75/N7zuOD3UbBg1ql2O/LapGhKuqdxPJCNQPytWJp+hdWpqOjUFbVOW2pxPw1T3BPJXWbbxaKl2tVp4mNT5aAtE+HEkCAnOWmL72PmzJxGRLpqxUL47AkoboYnnKJ8IVJ5IBGa2sEZjuU2R4enXHj5yeDyAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=juLpm+S+; arc=none smtp.client-ip=209.85.221.73
+	s=arc-20240116; t=1737124282; c=relaxed/simple;
+	bh=3ao/GWH5Tc2xAnwaRzHtnnwvVkVRW9lwqtS8ByvomIQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CulZP51vozMG7fJV0LQXqPFNKfrXDVVJGbpvKgsed6BwczdTt39Y1lZ4Sy/FnATC+Vjk9dfptC3XiXKuDN9uNjitkRzzMKXb0UD1PYuIffV6gh58BzJSHI/CXewbQNcmTinTAXEoHxgnsJO3qd/dxjfARrjOJXBpCme1NK1olcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rSxBdML6; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="juLpm+S+"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-38a2140a400so1759815f8f.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 17 Jan 2025 06:22:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rSxBdML6"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-43618283d48so14814675e9.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 17 Jan 2025 06:31:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737123776; x=1737728576; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=KMDIxJKKFqAnFYferYlNcN4gVN8VQWHhPTDkuCDbFUY=;
-        b=juLpm+S+5cCiKKtKAy8h16GDcErL3I2lh6y3+hf8y6Wdvg6TuK7v1FT4ox1QT9/5qw
-         OAfqyAOuRfFqKntmQ5KXzUSOZc0voskc7fhdIHgfWelfM6NRIcSf89LGHQRoLyN695OY
-         kAt4fAr+rwk6t6g6UKM8OCKQc2SovS44uPbVG25zrqxdYnXgrBPxhAwYZ1ArdLHDyLO9
-         Mdnq4ZG6gZOk2ThPPwt4/i+ArxYJmMQQ2kELIixCCl+XqP6xi/tQC2opEMjqieZX0lDb
-         qg/hOMBZELUGh5B5pqv0RxHNHnOq73//pwe1VCim09fobwvasjmyW78h52CwvgQWXXQb
-         fipQ==
+        d=google.com; s=20230601; t=1737124279; x=1737729079; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SR55i3HkYctE7pnXIlYdROvAQkAqVIwUg/mFNkzAzc0=;
+        b=rSxBdML6vUtDXjGNOQefMmw+vp2iczk7QX6SeqbM2/iRpEuEc740x6SMjVwL0osccM
+         0RM8metTvwvQA8DwgfGaHcHhY0crrDMwFKHio0PF+49TJCHkz+JW3KMlcsO64fUUzAco
+         URBr8G4wEumubQRwJcjyLHLLosyrkIGJpSvuXnP/hODVm92IobrmkGvpmqaZHLPna8w2
+         kNujZDyHxDQZdcC4XIhyQq6AgT06IPjTunWC9s29uRkJKSVdykCT7mQSVEU2lwlBwpOV
+         NgpgMuW5QfkdPuXV1kEg2YbZDKRSDOxMgfKQ++QnF5JU+HrG8P8pOw7kVRvs3sRVQHQ5
+         YS4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737123776; x=1737728576;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=KMDIxJKKFqAnFYferYlNcN4gVN8VQWHhPTDkuCDbFUY=;
-        b=i/piDH2rQDEZl5U5B4fr78zHHRVx43HuABLpgAO6QH/HOfVst551kcluNYhKkL9hcO
-         gsEbT1ePdjiGVYjYT/0oofd8jfS14DbV5/JgvqM9rMf86UTq7Kw+CpAPN+2LNzTQ5D3c
-         Y0phRN3gTU04hY1uo3giklGcm33BHcK8FFl27nvHgX7R6l5ZFp+hRpfHF/g0txTZEhLH
-         Xrk5YrSbFNvSpFUoIfG1uM7F7anP2zyZb+Y5mVYXGcOTD8a7zz6jt/aL7Qg5hv5GIT+Y
-         fdpJc7prtX55CJjiFwCuqWdmJtgO4FmFRfTh667M2DaCJiKgsBuMh4ClkMrDMrBR3S/2
-         tRvw==
-X-Forwarded-Encrypted: i=1; AJvYcCURCHZKlIKNqyNcwdNkPmWuS1fHdOKEaYfaqFJtp1ihoYSo+UHlL5FMU+uWYPGczUBKUXK0zO/OfYIYAg0/bw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6hFMhU5v3ni2JpchgO7Uoi55jlds0LK1Tv3LUO5YXNDETvAIR
-	h+tqsqy6AmPuPUajIf3zgORklvqv1LQKWC4rRa0TorfkqR5Kuse+OP5WjDk4SV9jRWOBwvyXV8o
-	ERrAAXqzibH359Q==
-X-Google-Smtp-Source: AGHT+IEHnEo27D6Xsau2YhGT46bG5LyVTfwZZeX6wiKnxjGwLHKC+EVmwP3+zlOCVGOY0M4JOUv83UQPRG2gzwg=
-X-Received: from wmbg17.prod.google.com ([2002:a05:600c:a411:b0:434:f513:bb24])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:1ac6:b0:385:f07b:93da with SMTP id ffacd0b85a97d-38bf57bf69bmr2558965f8f.47.1737123776195;
- Fri, 17 Jan 2025 06:22:56 -0800 (PST)
-Date: Fri, 17 Jan 2025 14:22:32 +0000
+        d=1e100.net; s=20230601; t=1737124279; x=1737729079;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SR55i3HkYctE7pnXIlYdROvAQkAqVIwUg/mFNkzAzc0=;
+        b=vPLgEevgWXIhGJ05E0gdlmtOAODFu5fxa2f7pUg0dt+eLdMKcrDHjOyu2TiT8Y6Vcx
+         PFCZ+Lqczs6exmAqJv5QQ/60RQuUGzDzyA+nPLhwoTuBk0KzCPP3DpRYMBzrPp3SqQ1i
+         mxdt4IsfkoyiqxdyE0ry0ETLdqUBycyh36/4F1INIlyj8+cbnd1/0cC4fFvTXYQLV/MP
+         xtkaK1eApCdMscHtUpc0CO64t77CMPDugvgVIEUJyehhBZGFy2nKZEqHRUJ8oJu2zdgx
+         r4pB/gO5f8S+DNtMQfEe8RCdqMWAlhqeNaC+bsWhlSO5vbrF2rc14RfCrM8SBoUsZNYJ
+         TGWg==
+X-Forwarded-Encrypted: i=1; AJvYcCXms0vM3E0ETY5N+HHv8sf1DEaTNoYrDLa/QL3ZtGLXyr5TTf8UDe2N8S1GuXgpxBnEW+LbyMn2T84b2bKrkA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwtajENc2IFI20FgI0f87GmZfY8mqF3645WpxXNRcHICDGVtaqR
+	3uvtmlK/R65arncwBY+V+2cPO9lFKcV3808zSzq3y9Py+kGOqgDt+xV9bnShAm8RNOOHUrAeh4b
+	HEOwuLw9f/Jt2MCBffaiscZoGueBPlg51GPH6EIkRFmYF/kX0RQ==
+X-Gm-Gg: ASbGnctGKzNSTRtTK4Rnht2UoBCXPKWBl37lROUqaJjXAXMrU491VtHX3gyKrLd0gSq
+	/zNmADKAtw64Ub9fGOxzlAaG215uXIVHLJw5NcKM=
+X-Google-Smtp-Source: AGHT+IGODadZTBAPzKwgax05vY9NUHUfkPNs+7IG+444xS58i4EJ6Pre/dh+yQmUcOszmxuzeJpeMHnIsaQ/pkp5F+c=
+X-Received: by 2002:a5d:508d:0:b0:38a:673b:3738 with SMTP id
+ ffacd0b85a97d-38bf5688e01mr2489905f8f.33.1737124278795; Fri, 17 Jan 2025
+ 06:31:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAKhnimcC/y2MywqAIBAAfyX2nKAbZvUr0SF0rT30wIUIpH9Po
- uPAzGQQSkwCQ5Uh0cXCx17A1BX4dd4XUhwKA2q02hinNhYfiuhJxeMU9VvY6sZiDF1vHZT4TBT 5/sbj9Dwv9/tfcWgAAAA=
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=15060; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=k4Xpn2RmY6NCWHMXL/iKfqAqRheyeJPA8UiAb1hhX9Q=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnimeqxReb7orNnmaYOfFfrPSDGWq0wudLQtFCs
- 1fOsjoEie2JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ4pnqgAKCRAEWL7uWMY5
- RlmEEACsoSr3E71KSv1JTxXQdyhxOL/ywLjfk1CG890FHA4qgAPEKuO6DVQtl057K51t8b8UfRR
- gqTLg5gEwXhao3Yc9xFZPAT7iU7P5c5aY8FVzM/6NrJ4VRzop7oV033tQO7euh2UXErbGtbeVXP
- ZYfoK9C18RiMBfmhuWTX6KhABn7dLwRKRSbRWyRYzBn/2YTX/Llkuy04nS8lN3B6uM4NQS5Y3w4
- iDAW2Q0zu8yRyta7pwkghlx9Q4NHZAyosiiayIxmHBaIk0fKy4p3u4qySOqV7zgnKJdGJ8vSmhr
- LGccrtTauYPK4Fe8voFVU1zvmFAFHFAarcvwYTF2epyDLduZZDj70y8sudQDMNAVR0euzBSz+Pq
- +AYe7XqsLR6adqrzkXUM/bpTf0KxBbihlxGiocsj48DMLUx9Ac4lbOORT9l41/lc01ABTg/XjRe
- LIqklY6987aQWS4LyG7rFed1mFrhDdqVfbZ9aS6oN3xCXG+VUSrYvOsg6hu2nCqf3fDw1fEP748
- BHnS+2V64ZJ2YD3zk2CEPlb0v2fpqKvlCARPeyVIZIG3IILLv+B+V+pTsbtT89jvSfgZ/+5xkB5
- aYdE3QVYZB1+OsJf5eY05PG6a/nqDoSB9H31qYYiN3m1upOfJCRfTwkat0dnOmuYboq4IO69UBH nQIhKtO8w13WTrQ==
-X-Mailer: b4 0.13.0
-Message-ID: <20250117-miscdevice-fops-change-v1-1-ec04b701c076@google.com>
-Subject: [PATCH] rust: miscdevice: change how f_ops vtable is constructed
+MIME-Version: 1.0
+References: <CAH5fLggUGT83saC++M-kd57bGvWj5dwAgbWZ95r+PHz_B67NLQ@mail.gmail.com>
+ <20250117.185501.1171065234025373111.fujita.tomonori@gmail.com>
+ <CAH5fLghqbY4UKQ2n1XVKPtvnLfJ4ceh+2aNpVmm9WxbUTu8-GQ@mail.gmail.com> <20250117.232015.1047782190952648538.fujita.tomonori@gmail.com>
+In-Reply-To: <20250117.232015.1047782190952648538.fujita.tomonori@gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+Date: Fri, 17 Jan 2025 15:31:07 +0100
+X-Gm-Features: AbW1kvYSufSejqtJamYDlgBaixJFLn8sr1F6oBphlqAd7AYJWrHcRO2_8GhIn5w
+Message-ID: <CAH5fLgh7jpDyOGJPpasSK8E126YUUL+gj37_2RQr8m2fE9ifVw@mail.gmail.com>
+Subject: Re: [PATCH v8 4/7] rust: time: Add wrapper for fsleep function
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com, 
+	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
+	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de, 
+	arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, mingo@redhat.com, 
+	peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, 
+	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, 
+	mgorman@suse.de, vschneid@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I was helping someone with writing a new Rust abstraction, and we were
-using the miscdevice abstraction as an example. While doing this, it
-became clear to me that the way I implemented the f_ops vtable is
-confusing to new Rust users, and that the approach used by the block
-abstractions is less confusing.
+On Fri, Jan 17, 2025 at 3:20=E2=80=AFPM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
+>
+> On Fri, 17 Jan 2025 14:05:52 +0100
+> Alice Ryhl <aliceryhl@google.com> wrote:
+>
+> > On Fri, Jan 17, 2025 at 10:55=E2=80=AFAM FUJITA Tomonori
+> > <fujita.tomonori@gmail.com> wrote:
+> >>
+> >> On Fri, 17 Jan 2025 10:13:08 +0100
+> >> Alice Ryhl <aliceryhl@google.com> wrote:
+> >>
+> >> > On Fri, Jan 17, 2025 at 10:01=E2=80=AFAM FUJITA Tomonori
+> >> > <fujita.tomonori@gmail.com> wrote:
+> >> >>
+> >> >> On Fri, 17 Jan 2025 16:53:26 +0900 (JST)
+> >> >> FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
+> >> >>
+> >> >> > On Thu, 16 Jan 2025 10:27:02 +0100
+> >> >> > Alice Ryhl <aliceryhl@google.com> wrote:
+> >> >> >
+> >> >> >>> +/// This function can only be used in a nonatomic context.
+> >> >> >>> +pub fn fsleep(delta: Delta) {
+> >> >> >>> +    // The argument of fsleep is an unsigned long, 32-bit on 3=
+2-bit architectures.
+> >> >> >>> +    // Considering that fsleep rounds up the duration to the n=
+earest millisecond,
+> >> >> >>> +    // set the maximum value to u32::MAX / 2 microseconds.
+> >> >> >>> +    const MAX_DURATION: Delta =3D Delta::from_micros(u32::MAX =
+as i64 >> 1);
+> >> >> >>
+> >> >> >> Hmm, is this value correct on 64-bit platforms?
+> >> >> >
+> >> >> > You meant that the maximum can be longer on 64-bit platforms? 214=
+7484
+> >> >> > milliseconds is long enough for fsleep's duration?
+> >> >> >
+> >> >> > If you prefer, I use different maximum durations for 64-bit and 3=
+2-bit
+> >> >> > platforms, respectively.
+> >> >>
+> >> >> How about the following?
+> >> >>
+> >> >> const MAX_DURATION: Delta =3D Delta::from_micros(usize::MAX as i64 =
+>> 1);
+> >> >
+> >> > Why is there a maximum in the first place? Are you worried about
+> >> > overflow on the C side?
+> >>
+> >> Yeah, Boqun is concerned that an incorrect input (a negative value or
+> >> an overflow on the C side) leads to unintentional infinite sleep:
+> >>
+> >> https://lore.kernel.org/lkml/ZxwVuceNORRAI7FV@Boquns-Mac-mini.local/
+> >
+> > Okay, can you explain in the comment that this maximum value prevents
+> > integer overflow inside fsleep?
+>
+> Surely, how about the following?
+>
+> pub fn fsleep(delta: Delta) {
+>     // The argument of fsleep is an unsigned long, 32-bit on 32-bit archi=
+tectures.
+>     // Considering that fsleep rounds up the duration to the nearest mill=
+isecond,
+>     // set the maximum value to u32::MAX / 2 microseconds to prevent inte=
+ger
+>     // overflow inside fsleep, which could lead to unintentional infinite=
+ sleep.
+>     const MAX_DURATION: Delta =3D Delta::from_micros(u32::MAX as i64 >> 1=
+);
 
-Thus, update the miscdevice abstractions to use the same approach as
-rust/kernel/block/mq/operations.rs.
+Hmm ... this is phrased as-if the problem is on 32-bit machines, but
+the problem is that fsleep casts an `unsigned long` to `unsigned int`
+which can overflow on 64-bit machines. I would instead say this
+prevents overflow on 64-bit machines when casting to an int.
 
-Sorry about the large diff. This changes the indentation of a large
-amount of code.
+Also, it might be cleaner to just use `i32::MAX as i64` instead of u32.
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/kernel/miscdevice.rs | 295 ++++++++++++++++++++++------------------------
- 1 file changed, 141 insertions(+), 154 deletions(-)
-
-diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
-index dfb363630c70..ad02434cbeaf 100644
---- a/rust/kernel/miscdevice.rs
-+++ b/rust/kernel/miscdevice.rs
-@@ -39,7 +39,7 @@ pub const fn into_raw<T: MiscDevice>(self) -> bindings::miscdevice {
-         let mut result: bindings::miscdevice = unsafe { MaybeUninit::zeroed().assume_init() };
-         result.minor = bindings::MISC_DYNAMIC_MINOR as _;
-         result.name = self.name.as_char_ptr();
--        result.fops = create_vtable::<T>();
-+        result.fops = MiscdeviceVTable::<T>::build();
-         result
-     }
- }
-@@ -164,171 +164,158 @@ fn show_fdinfo(
-     }
- }
- 
--const fn create_vtable<T: MiscDevice>() -> &'static bindings::file_operations {
--    const fn maybe_fn<T: Copy>(check: bool, func: T) -> Option<T> {
--        if check {
--            Some(func)
--        } else {
--            None
-+/// A vtable for the file operations of a Rust miscdevice.
-+struct MiscdeviceVTable<T: MiscDevice>(PhantomData<T>);
-+
-+impl<T: MiscDevice> MiscdeviceVTable<T> {
-+    /// # Safety
-+    ///
-+    /// `file` and `inode` must be the file and inode for a file that is undergoing initialization.
-+    /// The file must be associated with a `MiscDeviceRegistration<T>`.
-+    unsafe extern "C" fn open(inode: *mut bindings::inode, raw_file: *mut bindings::file) -> c_int {
-+        // SAFETY: The pointers are valid and for a file being opened.
-+        let ret = unsafe { bindings::generic_file_open(inode, raw_file) };
-+        if ret != 0 {
-+            return ret;
-         }
--    }
- 
--    struct VtableHelper<T: MiscDevice> {
--        _t: PhantomData<T>,
--    }
--    impl<T: MiscDevice> VtableHelper<T> {
--        const VTABLE: bindings::file_operations = bindings::file_operations {
--            open: Some(fops_open::<T>),
--            release: Some(fops_release::<T>),
--            unlocked_ioctl: maybe_fn(T::HAS_IOCTL, fops_ioctl::<T>),
--            #[cfg(CONFIG_COMPAT)]
--            compat_ioctl: if T::HAS_COMPAT_IOCTL {
--                Some(fops_compat_ioctl::<T>)
--            } else if T::HAS_IOCTL {
--                Some(bindings::compat_ptr_ioctl)
--            } else {
--                None
--            },
--            show_fdinfo: maybe_fn(T::HAS_SHOW_FDINFO, fops_show_fdinfo::<T>),
--            // SAFETY: All zeros is a valid value for `bindings::file_operations`.
--            ..unsafe { MaybeUninit::zeroed().assume_init() }
--        };
--    }
-+        // SAFETY: The open call of a file can access the private data.
-+        let misc_ptr = unsafe { (*raw_file).private_data };
- 
--    &VtableHelper::<T>::VTABLE
--}
-+        // SAFETY: This is a miscdevice, so `misc_open()` set the private data to a pointer to the
-+        // associated `struct miscdevice` before calling into this method. Furthermore, `misc_open()`
-+        // ensures that the miscdevice can't be unregistered and freed during this call to `fops_open`.
-+        let misc = unsafe { &*misc_ptr.cast::<MiscDeviceRegistration<T>>() };
- 
--/// # Safety
--///
--/// `file` and `inode` must be the file and inode for a file that is undergoing initialization.
--/// The file must be associated with a `MiscDeviceRegistration<T>`.
--unsafe extern "C" fn fops_open<T: MiscDevice>(
--    inode: *mut bindings::inode,
--    raw_file: *mut bindings::file,
--) -> c_int {
--    // SAFETY: The pointers are valid and for a file being opened.
--    let ret = unsafe { bindings::generic_file_open(inode, raw_file) };
--    if ret != 0 {
--        return ret;
--    }
-+        // SAFETY:
-+        // * This underlying file is valid for (much longer than) the duration of `T::open`.
-+        // * There is no active fdget_pos region on the file on this thread.
-+        let file = unsafe { File::from_raw_file(raw_file) };
- 
--    // SAFETY: The open call of a file can access the private data.
--    let misc_ptr = unsafe { (*raw_file).private_data };
--
--    // SAFETY: This is a miscdevice, so `misc_open()` set the private data to a pointer to the
--    // associated `struct miscdevice` before calling into this method. Furthermore, `misc_open()`
--    // ensures that the miscdevice can't be unregistered and freed during this call to `fops_open`.
--    let misc = unsafe { &*misc_ptr.cast::<MiscDeviceRegistration<T>>() };
-+        let ptr = match T::open(file, misc) {
-+            Ok(ptr) => ptr,
-+            Err(err) => return err.to_errno(),
-+        };
- 
--    // SAFETY:
--    // * This underlying file is valid for (much longer than) the duration of `T::open`.
--    // * There is no active fdget_pos region on the file on this thread.
--    let file = unsafe { File::from_raw_file(raw_file) };
-+        // This overwrites the private data with the value specified by the user, changing the type of
-+        // this file's private data. All future accesses to the private data is performed by other
-+        // fops_* methods in this file, which all correctly cast the private data to the new type.
-+        //
-+        // SAFETY: The open call of a file can access the private data.
-+        unsafe { (*raw_file).private_data = ptr.into_foreign().cast_mut() };
- 
--    let ptr = match T::open(file, misc) {
--        Ok(ptr) => ptr,
--        Err(err) => return err.to_errno(),
--    };
--
--    // This overwrites the private data with the value specified by the user, changing the type of
--    // this file's private data. All future accesses to the private data is performed by other
--    // fops_* methods in this file, which all correctly cast the private data to the new type.
--    //
--    // SAFETY: The open call of a file can access the private data.
--    unsafe { (*raw_file).private_data = ptr.into_foreign().cast_mut() };
-+        0
-+    }
- 
--    0
--}
-+    /// # Safety
-+    ///
-+    /// `file` and `inode` must be the file and inode for a file that is being released. The file must
-+    /// be associated with a `MiscDeviceRegistration<T>`.
-+    unsafe extern "C" fn release(_inode: *mut bindings::inode, file: *mut bindings::file) -> c_int {
-+        // SAFETY: The release call of a file owns the private data.
-+        let private = unsafe { (*file).private_data };
-+        // SAFETY: The release call of a file owns the private data.
-+        let ptr = unsafe { <T::Ptr as ForeignOwnable>::from_foreign(private) };
-+
-+        // SAFETY:
-+        // * The file is valid for the duration of this call.
-+        // * There is no active fdget_pos region on the file on this thread.
-+        T::release(ptr, unsafe { File::from_raw_file(file) });
-+
-+        0
-+    }
- 
--/// # Safety
--///
--/// `file` and `inode` must be the file and inode for a file that is being released. The file must
--/// be associated with a `MiscDeviceRegistration<T>`.
--unsafe extern "C" fn fops_release<T: MiscDevice>(
--    _inode: *mut bindings::inode,
--    file: *mut bindings::file,
--) -> c_int {
--    // SAFETY: The release call of a file owns the private data.
--    let private = unsafe { (*file).private_data };
--    // SAFETY: The release call of a file owns the private data.
--    let ptr = unsafe { <T::Ptr as ForeignOwnable>::from_foreign(private) };
--
--    // SAFETY:
--    // * The file is valid for the duration of this call.
--    // * There is no active fdget_pos region on the file on this thread.
--    T::release(ptr, unsafe { File::from_raw_file(file) });
--
--    0
--}
-+    /// # Safety
-+    ///
-+    /// `file` must be a valid file that is associated with a `MiscDeviceRegistration<T>`.
-+    unsafe extern "C" fn ioctl(file: *mut bindings::file, cmd: c_uint, arg: c_ulong) -> c_long {
-+        // SAFETY: The ioctl call of a file can access the private data.
-+        let private = unsafe { (*file).private_data };
-+        // SAFETY: Ioctl calls can borrow the private data of the file.
-+        let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
-+
-+        // SAFETY:
-+        // * The file is valid for the duration of this call.
-+        // * There is no active fdget_pos region on the file on this thread.
-+        let file = unsafe { File::from_raw_file(file) };
-+
-+        match T::ioctl(device, file, cmd, arg as usize) {
-+            Ok(ret) => ret as c_long,
-+            Err(err) => err.to_errno() as c_long,
-+        }
-+    }
- 
--/// # Safety
--///
--/// `file` must be a valid file that is associated with a `MiscDeviceRegistration<T>`.
--unsafe extern "C" fn fops_ioctl<T: MiscDevice>(
--    file: *mut bindings::file,
--    cmd: c_uint,
--    arg: c_ulong,
--) -> c_long {
--    // SAFETY: The ioctl call of a file can access the private data.
--    let private = unsafe { (*file).private_data };
--    // SAFETY: Ioctl calls can borrow the private data of the file.
--    let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
--
--    // SAFETY:
--    // * The file is valid for the duration of this call.
--    // * There is no active fdget_pos region on the file on this thread.
--    let file = unsafe { File::from_raw_file(file) };
--
--    match T::ioctl(device, file, cmd, arg as usize) {
--        Ok(ret) => ret as c_long,
--        Err(err) => err.to_errno() as c_long,
-+    /// # Safety
-+    ///
-+    /// `file` must be a valid file that is associated with a `MiscDeviceRegistration<T>`.
-+    #[cfg(CONFIG_COMPAT)]
-+    unsafe extern "C" fn compat_ioctl(
-+        file: *mut bindings::file,
-+        cmd: c_uint,
-+        arg: c_ulong,
-+    ) -> c_long {
-+        // SAFETY: The compat ioctl call of a file can access the private data.
-+        let private = unsafe { (*file).private_data };
-+        // SAFETY: Ioctl calls can borrow the private data of the file.
-+        let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
-+
-+        // SAFETY:
-+        // * The file is valid for the duration of this call.
-+        // * There is no active fdget_pos region on the file on this thread.
-+        let file = unsafe { File::from_raw_file(file) };
-+
-+        match T::compat_ioctl(device, file, cmd, arg as usize) {
-+            Ok(ret) => ret as c_long,
-+            Err(err) => err.to_errno() as c_long,
-+        }
-     }
--}
- 
--/// # Safety
--///
--/// `file` must be a valid file that is associated with a `MiscDeviceRegistration<T>`.
--#[cfg(CONFIG_COMPAT)]
--unsafe extern "C" fn fops_compat_ioctl<T: MiscDevice>(
--    file: *mut bindings::file,
--    cmd: c_uint,
--    arg: c_ulong,
--) -> c_long {
--    // SAFETY: The compat ioctl call of a file can access the private data.
--    let private = unsafe { (*file).private_data };
--    // SAFETY: Ioctl calls can borrow the private data of the file.
--    let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
--
--    // SAFETY:
--    // * The file is valid for the duration of this call.
--    // * There is no active fdget_pos region on the file on this thread.
--    let file = unsafe { File::from_raw_file(file) };
--
--    match T::compat_ioctl(device, file, cmd, arg as usize) {
--        Ok(ret) => ret as c_long,
--        Err(err) => err.to_errno() as c_long,
-+    /// # Safety
-+    ///
-+    /// - `file` must be a valid file that is associated with a `MiscDeviceRegistration<T>`.
-+    /// - `seq_file` must be a valid `struct seq_file` that we can write to.
-+    unsafe extern "C" fn show_fdinfo(seq_file: *mut bindings::seq_file, file: *mut bindings::file) {
-+        // SAFETY: The release call of a file owns the private data.
-+        let private = unsafe { (*file).private_data };
-+        // SAFETY: Ioctl calls can borrow the private data of the file.
-+        let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
-+        // SAFETY:
-+        // * The file is valid for the duration of this call.
-+        // * There is no active fdget_pos region on the file on this thread.
-+        let file = unsafe { File::from_raw_file(file) };
-+        // SAFETY: The caller ensures that the pointer is valid and exclusive for the duration in which
-+        // this method is called.
-+        let m = unsafe { SeqFile::from_raw(seq_file) };
-+
-+        T::show_fdinfo(device, m, file);
-     }
--}
- 
--/// # Safety
--///
--/// - `file` must be a valid file that is associated with a `MiscDeviceRegistration<T>`.
--/// - `seq_file` must be a valid `struct seq_file` that we can write to.
--unsafe extern "C" fn fops_show_fdinfo<T: MiscDevice>(
--    seq_file: *mut bindings::seq_file,
--    file: *mut bindings::file,
--) {
--    // SAFETY: The release call of a file owns the private data.
--    let private = unsafe { (*file).private_data };
--    // SAFETY: Ioctl calls can borrow the private data of the file.
--    let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
--    // SAFETY:
--    // * The file is valid for the duration of this call.
--    // * There is no active fdget_pos region on the file on this thread.
--    let file = unsafe { File::from_raw_file(file) };
--    // SAFETY: The caller ensures that the pointer is valid and exclusive for the duration in which
--    // this method is called.
--    let m = unsafe { SeqFile::from_raw(seq_file) };
--
--    T::show_fdinfo(device, m, file);
-+    const VTABLE: bindings::file_operations = bindings::file_operations {
-+        open: Some(Self::open),
-+        release: Some(Self::release),
-+        unlocked_ioctl: if T::HAS_IOCTL {
-+            Some(Self::ioctl)
-+        } else {
-+            None
-+        },
-+        #[cfg(CONFIG_COMPAT)]
-+        compat_ioctl: if T::HAS_COMPAT_IOCTL {
-+            Some(Self::compat_ioctl)
-+        } else if T::HAS_IOCTL {
-+            Some(Self::bindings::compat_ptr_ioctl)
-+        } else {
-+            None
-+        },
-+        show_fdinfo: if T::HAS_SHOW_FDINFO {
-+            Some(Self::show_fdinfo)
-+        } else {
-+            None
-+        },
-+        // SAFETY: All zeros is a valid value for `bindings::file_operations`.
-+        ..unsafe { MaybeUninit::zeroed().assume_init() }
-+    };
-+
-+    const fn build() -> &'static bindings::file_operations {
-+        &Self::VTABLE
-+    }
- }
-
----
-base-commit: 01b3cb620815fc3feb90ee117d9445a5b608a9f7
-change-id: 20250117-miscdevice-fops-change-260352fd8957
-
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
-
+Alice
