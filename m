@@ -1,202 +1,129 @@
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC68813C9B3;
-	Sun, 19 Jan 2025 17:51:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C9927450;
+	Sun, 19 Jan 2025 22:11:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737309068; cv=none; b=Xnquwz9J8YWvv+oNEwry3PbS0/wAiX8nEe+frQVYtLFDeDRS19rYtZXgJOBVme4CHhobJGQrcHMonuL5cmIbzcZW12Cz5Zphgih3rb0XUqE3hHq4kPX1evR6lqNeaNgC+qu2gO+CjZuI5u7H+wd6IT7CW87ZubCsRcavEs8e/XE=
+	t=1737324699; cv=none; b=B4GwHos0zzVijFq/7UCeu4um9T03tWRZqZxqNHRdbhVySPmj/cVQYy56NEADNz/CbxDKhdkPggm3+NOmP5A1/kr0f6IvGJgwrFq7eI3OwfkM/sbrbyIbVgwpD+mZMZUkL3pUQizw5ewcnZYOexmf8QzMB3sAoeyPami9T34lcBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737309068; c=relaxed/simple;
-	bh=4R0jenqwaF+HoEl/UA7wfQV05sPAffHKNhpviQxaMpk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V7eJShEbr3tV1dO6e9/+ysonEKOPJeeC7stOFjvGOcNwZB1Xwp5PXtw/Z2mBbzEYHxzoiJYK6cG6W5EA43zpf6luJWHLRht0Ga2pBjQJ30Nbf+MABFTxyzK/4TFgCtlUzm2fC2ijNcVwva0plFl9solPNZUith1SyogTcjEo9FA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bgRWrjzf; arc=none smtp.client-ip=209.85.222.171
+	s=arc-20240116; t=1737324699; c=relaxed/simple;
+	bh=pvu5R3DEvRpsH68p7p6YbbyWCLwlHzpTj17U/YOcddY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Uaaq2y46vA1eYK4uJelNJqq0tioKgLeCrXm+Ti5DO7n3rpABnorx/HsWLofZfLrrXNuZzyV51mCxFP0/Q2YX5kE8eEvLrrGOE2nYybbYOXU+b6ptnD/XS1QAVZAG3bsrKbttQq0wRYQGSmFh3Tr04P6zPXHYa+3bAlt5EFCtsWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m0B+mxQ5; arc=none smtp.client-ip=209.85.218.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bgRWrjzf"
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7b6ff72ba5aso363712085a.1;
-        Sun, 19 Jan 2025 09:51:06 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m0B+mxQ5"
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-aaee0b309adso584405866b.3;
+        Sun, 19 Jan 2025 14:11:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737309066; x=1737913866; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Eob8FF1frnbw5Zlnu5FB/I8cA/uX2wtiZsLngag8gUk=;
-        b=bgRWrjzfvVGOcPycIKns6lr2XH2OhHSJSMjWSa7RyASiXn39yBr31X9wGKOEfTqb4C
-         HfMoFEGZpB1vFcoSwU4Tmo58VGIcVHgtBpHRKWrzKOG5zmTNppuzIbDxDFAMTCe1dx4l
-         b4eL02eKaH2zkJa6NCpH5dAffpAOI7xufjZ7R5qZPldIJc/sv7PBlYINkwFhzlt77Xa5
-         jD6/gqLbasprzGY//X6yUDiEo8CH8N/G9ofE4lDxC3U502b4yf6f/1tngKmH2MEoWr7i
-         /YMT2DF1+DwsH32kXU4GoQ+7LZbjsechto0MVa59etaU9MXXZpOKWtL6Tgz03sf0FVkx
-         uenA==
+        d=gmail.com; s=20230601; t=1737324696; x=1737929496; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=SSE28zYEQv0LTOnsDYvfaf5eNpSxRsKhcwyN/fw3chM=;
+        b=m0B+mxQ5PeMZWBjG0A3fUKcr3UioEbYDlaOL4jAJrBLL2dlM6APqI585ZGSVqhD6RM
+         rfeSgihCZ/EQ+fMIxUiJcUGb3dhIGK3bu6dIz1YX6eKmxQi7ecRVnpDOUWJ6ouebzfcr
+         xDJzh3D/Sxt1wDwcULGXUQWTivq9YkVaawWR++9UVF9CSqccCdI+hx4XLnRhyr2kxE4T
+         w7On1bkIXN0+Jw+nxWGQbvtr39irL1kvlBHCREch1m6McG5Y5L9ucGAIM28HQdN3ZTb2
+         tT1c2ah9Rb0lSwuRzBGZ8/4h83fSisLek4NmJDajgvTvjSMA/33u0XhIWGLS22XKJmtw
+         Tk/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737309066; x=1737913866;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1737324696; x=1737929496;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Eob8FF1frnbw5Zlnu5FB/I8cA/uX2wtiZsLngag8gUk=;
-        b=EVyKZHJ3AbtHFWR2hN7MwVbVmBy4jzynx4ZeuXXmd2z7P6IEQDaIhZo4YSwKjsEIeI
-         gJrd1o5q2GkkkpJVHtYu4o0k0dihAsb8uzddCkLVKyHNFIxjygGJAinR4Ulwj9xk48vH
-         aBU2X5OJP/4k063iVEtTaS5q2TzQx6diRQHyEPN2yZw9FYaiaUU728IPJz8lNES69h7R
-         aBFRyJ7xh4TDYmYCrC0kOPzXigtp0ezW8/8sx8iuWqfY0wVC9rWDvVhag3HFFeebOMEY
-         fftOsmxbK7YIdW8ZTINOyClvRenuQDS7Psj8TNPe+o6hjJo2MlsHrlKBn802n32rqFLm
-         m+cA==
-X-Forwarded-Encrypted: i=1; AJvYcCVQiRWcX4iuZ3BAv8lVqdlhCmpGqntVztWseboIgvBXSahmuFfTiRlY6/WO4wdAL2W0YLKJCv60oyAWcSI=@vger.kernel.org, AJvYcCXavujtDpTK8IjXzy61eLhu8NAP7F1T7GknCXbi6mVG5Zn1bFz0aRL9sco55pyTA4bm6DUzlRg5QZz4iHmGrAg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwbqrR0v83BitotYFp1zYR3pRfaagsXVVT0UitvK4r+KvAtX4Yy
-	jEXEqZaM+5kUaq4dVY/6SIj86U/6l/5PGoDA4c5go0xuUpph7gBf
-X-Gm-Gg: ASbGncuzAAoiZjC+SHptSxzmM6DrVO76NXz0GM3IppX8QjYPOo6yzCiYfXL3gho+bcX
-	OHpywgL0k2ivmb/Z67hSYJewWw/fLsw6S+lKmV9sXmJ0nZc9fKMdp2oPwDR9HY6Rkbnc0991br1
-	rb2kmnKXZG3mAgcQuSpXSH3McK1PI38ltJVA2i+r1ofng+P/gTS3HVR+/Ml5lLvMAO4SvYJ1Xs/
-	OlC+Dt6/tdKk1sAGdvDPD8cQK9xC/vSoIvb+BfZsgswlbi50jig+Wwi6iehi9y8ncP1XDWU0VLz
-	W6feIJCvcbqpCMq9Lg7mWT2HLD5XrlRDKvzmn56d0E0nt86iGX8s2Zf0ja4x
-X-Google-Smtp-Source: AGHT+IGdWtopTkNb6QRkZFDXJunfFBaougrTRTW4/Zwbc02Obcn/Iqm8eFYLs5drxOmxYZCEAf5nGA==
-X-Received: by 2002:a05:620a:19a1:b0:7b6:6701:7a4d with SMTP id af79cd13be357-7be6328a7e0mr1831028885a.56.1737309065690;
-        Sun, 19 Jan 2025 09:51:05 -0800 (PST)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7be6147eccdsm346456285a.27.2025.01.19.09.51.04
+        bh=SSE28zYEQv0LTOnsDYvfaf5eNpSxRsKhcwyN/fw3chM=;
+        b=Yp9JTC5gs1CnTWiu5LHUnwyKHeh6bIWa5onXZc8kzHUwgH4BqQwh7u6a7cW78IdxU/
+         6RcXfyfnzkvhGTt806+eTHgVm1k/18JGUcUwl5O4OoKLDK1D0v3dlMsFMIvBincZ6Iiz
+         vGGSVeVaCjjoqOUMHXA390j/x4ocDtgD/f+17P2jAP8HUPSbTe3RjULZQHV6ePvSUicI
+         rVGqeCTxMRsA1WViwYBIYmSFOb4nAE2jnGUjcaCJceTUZZeIZLcGdCMLCzm7PvnlVnkq
+         LmJOh/xET+nKd6SNyGQ72gsKb89STauHP5S7H1rh9WZ/yJzOeXd5/ob06J2Hwdmrum+G
+         ARlw==
+X-Forwarded-Encrypted: i=1; AJvYcCVYS03KtSQHuw4euR0q8vvi6WAEVAOBMY/rrammHPYQe/7zjunSKLJ4fJM/sv6xsECF7Gel7WaVQDAy/7k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZW1uXyHes1eQP2JAgWRr2pULlM3+dp5fjAyWkZjODgmfEtHoJ
+	KUlfBq0K5j+m4yoVftmKlXI2iwAnVT8YwXc9y/PBbiK9n8lUG32d
+X-Gm-Gg: ASbGncvjy8YccA4XRFgsagPhHyBftbJmdH7LRPijPU6v51NSEO82qPyhI7Ah88hgPUF
+	4d6kyTElUr8W5vMb8FKqhLsPgJvQ6dU19OgqSk17+Zfr9CR2fx00lECY04G1Iw/hTyulUahJwm6
+	z63yyjyjVKiVnYTqHhsIJqUd2ZcWuwl/DIutCimPV/WdjWUloHdSzg4phKFfR2jN+1CbO2alEc2
+	xfov4KYmDoeGNZlJRh/OtyZ3rKWl/l8A1s0XqhGjJopxdMMBp9tB3Om+Q==
+X-Google-Smtp-Source: AGHT+IFQIB+Qxk7mtFfAwkruLOI0w6hoMXW4UZCjLy8swmuUWjjjqJNuGFvNegU5ZdyqlQ+iprLa/g==
+X-Received: by 2002:a17:907:d0f:b0:aa6:a9fe:46dd with SMTP id a640c23a62f3a-ab38b3aff9fmr1136595666b.38.1737324695866;
+        Sun, 19 Jan 2025 14:11:35 -0800 (PST)
+Received: from [10.0.1.56] ([2001:871:22a:8634::1ad1])
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-ab384c5c3e1sm537196366b.7.2025.01.19.14.11.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Jan 2025 09:51:05 -0800 (PST)
-Received: from phl-compute-08.internal (phl-compute-08.phl.internal [10.202.2.48])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 794001200074;
-	Sun, 19 Jan 2025 12:51:04 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-08.internal (MEProxy); Sun, 19 Jan 2025 12:51:04 -0500
-X-ME-Sender: <xms:iDuNZy2FijQ8LMekeqAdpQl1Z8JoqJmMAFHqbcMXwsgNwHuxwToKEw>
-    <xme:iDuNZ1E-E-YWv-wIfOkfn4H1sphA7nT40b2Mu09UN5caM5G1PlDH854ZgP-m423e8
-    x-Yaz0FF9VPm8VnWA>
-X-ME-Received: <xmr:iDuNZ66mOui8-rVOcTuBKaQIzhdlPjgAYtgsczeCUYAChDzzLt7dO4kW4r4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudeijedguddtgecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddt
-    jeenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
-    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeevgffhueevkedutefgveduuedujeefledt
-    hffgheegkeekiefgudekhffggeelfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
-    grmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgr
-    lhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppe
-    hgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepuddvpdhm
-    ohguvgepshhmthhpohhuthdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvg
-    drtghomhdprhgtphhtthhopegurghnihgvlhdrrghlmhgvihgurgestgholhhlrggsohhr
-    rgdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtth
-    hopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihn
-    ohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtoh
-    hnmhgrihhlrdgtohhmpdhrtghpthhtohepsggvnhhnohdrlhhoshhsihhnsehprhhothho
-    nhdrmhgvpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprh
-    gtphhtthhopehtmhhgrhhoshhssehumhhitghhrdgvughu
-X-ME-Proxy: <xmx:iDuNZz24BGTMp-7ffR3P9kNXgs7ti7KrbI-Lt4Qx-fAiEiOa4cfCVw>
-    <xmx:iDuNZ1EECc6gZxqFQpqTMHrbIfuzxWTWVx1b0y4pSr_QhQIXepLTZg>
-    <xmx:iDuNZ884So1XmZl0MKcP5ys3aC3CAJxy0tf6iHIZNmOz1aUjf2PgUg>
-    <xmx:iDuNZ6m7FSsDQPZHY5S8JOsWgcWSumTcdcJB0e4jF_Q0DbwGb9CozA>
-    <xmx:iDuNZ9GJV3VeXOrepA7e4jMuhASS_WmNocvliGlvU51uPykMok-qsYmv>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 19 Jan 2025 12:51:03 -0500 (EST)
-Date: Sun, 19 Jan 2025 09:50:50 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>,
-	Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] rust: irq: add support for request_irq()
-Message-ID: <Z407egxOy7oNLpq8@boqun-archlinux>
-References: <20241024-topic-panthor-rs-request_irq-v1-1-7cbc51c182ca@collabora.com>
- <CAH5fLggjAu+YPBxJh0_K933McnnSC=pEBhVV9YxMbUGzukE3ng@mail.gmail.com>
- <04864DC4-FA5B-4D7A-8EE5-BDA1E8F88007@collabora.com>
- <CAH5fLgiaVg1+PZxGr0Y_oyu9pJfTSRuN9n4EomFGhnvnZXC4cg@mail.gmail.com>
- <20499935-B328-4DE3-AFBF-B692FA3434E5@collabora.com>
- <20250115113836.18992e92.gary@garyguo.net>
- <71A92388-A636-47F4-9B1C-0154D9AA9839@collabora.com>
- <CAH5fLgiOASgjoYKFz6kWwzLaH07DqP2ph+3YyCDh2+gYqGpABA@mail.gmail.com>
+        Sun, 19 Jan 2025 14:11:35 -0800 (PST)
+From: Christian Schrefl <chrisi.schrefl@gmail.com>
+Subject: [PATCH 0/3] rust: miscdevice: Add additional data to
+ MiscDeviceRegistration
+Date: Sun, 19 Jan 2025 23:11:12 +0100
+Message-Id: <20250119-b4-rust_miscdevice_registrationdata-v1-0-edbf18dde5fc@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLgiOASgjoYKFz6kWwzLaH07DqP2ph+3YyCDh2+gYqGpABA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIB4jWcC/x2NQQrCQAwAv1JydqFZKqx+RaSkm7TNwSrJKkLp3
+ w0e5zAzO7iYisO128Hko67PLQBPHdSVtkWScjDkPp97xEuahmRvb+NDvXIIVUaTRb0ZtXCZGiV
+ C5FK4TrkMEKWXyazf/+V2P44fh6y663UAAAA=
+X-Change-ID: 20250119-b4-rust_miscdevice_registrationdata-a11d88dcb284
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Arnd Bergmann <arnd@arndb.de>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Lee Jones <lee@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Christian Schrefl <chrisi.schrefl@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1737324695; l=1566;
+ i=chrisi.schrefl@gmail.com; s=20250119; h=from:subject:message-id;
+ bh=pvu5R3DEvRpsH68p7p6YbbyWCLwlHzpTj17U/YOcddY=;
+ b=abtFLwRvCVhTj8OJ2smQvxWh+CihIzJtHl/B3ziSvi8dImhXNkRKLyr8d1xTw1xDZrBhXzuuy
+ v14LEApWAveDFWHBmg8aVJNMHFoJlTLyy59WR9tS7s/XngjnizJc7/u
+X-Developer-Key: i=chrisi.schrefl@gmail.com; a=ed25519;
+ pk=EIyitYCrzxWlybrqoGqiL2jyvO7Vp9X40n0dQ6HE4oU=
 
-On Thu, Jan 16, 2025 at 09:29:44AM +0100, Alice Ryhl wrote:
-> On Wed, Jan 15, 2025 at 1:31 PM Daniel Almeida
-> <daniel.almeida@collabora.com> wrote:
-> >
-> >
-> >
-> > > On 15 Jan 2025, at 08:38, Gary Guo <gary@garyguo.net> wrote:
-> > >
-> > > On Tue, 14 Jan 2025 15:57:57 -0300
-> > > Daniel Almeida <daniel.almeida@collabora.com> wrote:
-> > >
-> > >>>
-> > >>> It's not the pin_init! stuff, but the Opaque stuff. If it fails, then
-> > >>> it runs the destructor of Opaque<T>, which does *not* run the
-> > >>> destructor of T.
-> > >>>
-> > >>> Alice
-> > >>
-> > >> This is pretty unintuitive if you take into account trivial examples like
-> > >>
-> > >> ```
-> > >> struct Foo(T)
-> > >> ```
-> > >>
-> > >> Where dropping Foo drops T.
-> > >>
-> > >> Is there any reason why dropping Opaque<T> doesn’t behave similarly?
-> > >>
-> > >> — Daniel
-> > >
-> > > `Opaque` means that "this is a blob of bytes and don't touch it". It
-> > > can be uninitialized, so no meaningful action can be performed when
-> > > it's dropped.
-> > >
-> > > Best,
-> > > Gary
-> > >
-> >
-> > I really think that the documentation for this type has to be improved somehow.
-> >
-> > How is this a blob of bytes that can’t be touched, if it gives out a *mut T?
-> >
-> > I think I’ve consistently seen code that either accesses or mutates the inner T through
-> > the pointer.
-> 
-> It's not a problem to give out a *mut T. A Opaque is a blob of bytes
-> that *might* or *might not* contain a valid `T`. When you dereference
-> a raw pointer to the inner value, you are unsafely asserting that
-> *right now*, it does in fact contain a valid T.
-> 
-> The problem we're running into here is that Opaque is intended for
-> wrapping C types, but you're using it to wrap a Rust type instead. I
-> think we should have a new container type called `Aliased<T>` defined
-> like Opaque but without the MaybeUninit.
-> 
-> #[repr(transparent)]
-> pub struct Aliased<T> {
+This set is based on Greg's driver-core-next tree.
 
-Hmm.. I feel that `Aliased` is a name that reflects too much more
-compiler/backend details other than programmers' need. That said, the
-best I can come up now is `Shared<T>`, which indicates the field is
-always shared therefore even a &mut could not assume noalias.
+Currently there is no good way to pass arbitrary data from the driver to
+a miscdevice or to share data between individual handles to a miscdevice in rust.
 
-Regards,
-Boqun
+This series adds additional (generic) data to the MiscDeviceRegistration
+for this purpose.
 
->     value: UnsafeCell<T>,
->     _pin: PhantomPinned,
-> }
-> 
-> This type can then serve the purpose of a Rust type that might be
-> accessed in weird ways, but *is* guaranteed to hold a valid Rust type.
-> It's destructor will run the destructor of T.
-> 
-> Alice
+The first patch add the Aliased type.
+
+The second patch implements the changes and fixes the build of the sample.
+
+The third patch changes the rust_misc_device sample to use this to 
+share the same data between multiple handles to the miscdevice.
+
+Some discussion on Zulip about the motivation and approach
+(Thanks a lot to everyone helping me out with this):
+Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/Passing.20a.20DevRes.20to.20a.20miscdev/near/494553814
+
+Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
+---
+Christian Schrefl (3):
+      rust: add Aliased type
+      rust: miscdevice: Add additional data to MiscDeviceRegistration
+      rust: miscdevice: adjust the rust_misc_device sample to use RegistrationData.
+
+ rust/kernel/miscdevice.rs        | 37 ++++++++++++++++++++++++++++++-------
+ rust/kernel/types.rs             | 40 ++++++++++++++++++++++++++++++++++++++++
+ samples/rust/rust_misc_device.rs | 22 ++++++++++++----------
+ 3 files changed, 82 insertions(+), 17 deletions(-)
+---
+base-commit: 01b3cb620815fc3feb90ee117d9445a5b608a9f7
+change-id: 20250119-b4-rust_miscdevice_registrationdata-a11d88dcb284
+
+Best regards,
+-- 
+Christian Schrefl <chrisi.schrefl@gmail.com>
+
