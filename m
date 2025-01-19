@@ -1,175 +1,269 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BFA91DFE29;
-	Sun, 19 Jan 2025 22:11:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3B11DF975;
+	Sun, 19 Jan 2025 22:44:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737324702; cv=none; b=o/Jq5evLkkkuLf/tNiseP1oj9K6XokInA804ATNLQuz1XPuSZoK0J92qyB4+zvntn3lEPtMEL03O4ctzvcMtMnnYEy3zrfPCc2tFeKseDNQrP5QbKetvzljnzcwVMTy+7GuPakiO7ygtD1h46RSi26AaOSlK4Y8SjWm4jDuVbhM=
+	t=1737326663; cv=none; b=Arj0ezi3ftBntf/kbt93ZOU4gQlNwrW4IKwtqH6v15zpPCOMXdFrW+oSJKarnwd0VOKjGIOs1w1y/sJMi5rfsYaGc+afqmh/c5QEZFjkmPfxvr9WPE/Fw0GyIe0+xVh4VDisTRVNXJCkwQOMLZgCP7yqwpV7fNn3T7g6CqGqX8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737324702; c=relaxed/simple;
-	bh=QuP40hh0ZwJRJ5uP+8xtANV+0kwNhDyRXKba5T9Q1EE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dKVeyYv99CJ4iDW2KjSgmnalmE0+9DTGo+CG8gzu8vX/Uo9A9uRv6xV7uYAJx0rNH3yyE/pBg9mDqUtETelb6WPL0jjsBMLfWb8yfdTS5n7bHXxladFO8CMHSgWpygUiACCO3Qu1cDBAshboIYtLNAklKBtCMVuHVjOqQXItAow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lWTMnXYs; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1737326663; c=relaxed/simple;
+	bh=4AtgsLLLeos4Owt8Nas6UrxZj+956TsBNVpC8cRn1ts=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lncYGuP2mn0KwlOZP/zh9aYFiIKv9eT9wcuJ2ioHChCeJDyZL1lMfMwbtkvvYNfP9HKL7Xw8/LFMnQZV2k61m2Yz0x0VYt6kE1y/u7rGE4+ezKtoFLife+BBu85frYLb4VElDwpzHU2wWbcgCnINFQrBUbRv+le8nrdyIlQhPuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QkX5mdIK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lWTMnXYs"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5d3bbb0f09dso6697701a12.2;
-        Sun, 19 Jan 2025 14:11:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737324699; x=1737929499; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UJ3Ct9+FDvp+LJoSNj9IUPXHQq7XwQY7LemlgwnvcKA=;
-        b=lWTMnXYsehKLP/urdy45iY33jQBJuKgCFxHC0kFnlnp4l3r+pXav1kxXnDbsieOTY8
-         H/CL+2bWkfCsJiwmjsWH3fYDQvF0ac7STp24Mw698nJL22kQjwGnGUYWfwbEJ+eZ6Xuj
-         N8GuMDjkAimUrQl+lsEIQkQKLf7hWiWERToFv10AVixOjXBYKPFeKgOH879/9kPn5iXZ
-         XZ1yegDsAArtwnitLOJxrij1faeGa/+Qc90LcqTGWG8cUPxqQG8ouTxrAh+0qmPjHt4Q
-         Ac/K8xuRDBGXU0yqHkwWg2qkF+ZbmMD83r7pGY4/kzSVsqZYwZOtaryfM4aQPbaw5bjn
-         OK+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737324699; x=1737929499;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UJ3Ct9+FDvp+LJoSNj9IUPXHQq7XwQY7LemlgwnvcKA=;
-        b=I8b8rT8nuu6IfQnfXX/eccYYYxbkCbsoeQCDoXMObBMISEVzvhWxvqzATlDQQY7a/T
-         uXbdzmkumoXl4Fb/dch/y66gUGBnwqYpU/JL+b2QFnKgav97dnQH5hWylSgJkdoYqzRd
-         imVly/SnbIev6heHT2NcfEyBFU/gWN1VjVxGIPCR3Vwad1BU3IY1pmoUSVpHiS4zCfNJ
-         1A2wUnNkfTCa8v6umz9qrTK0OzzVTL9SFoCbc/V9W7xPOm0zDLlrlVq5Xl0LiT077XZI
-         PP7P8mDBL7s6qTDZ1M2hB14/tkfWtr62YR+G/EFaR27UofjNlFLlO340CAV9Lg3bO1Ms
-         yRrw==
-X-Forwarded-Encrypted: i=1; AJvYcCW+9Gsk/x60YONCuIWZfo5x+7/DRnWgJ2RaXZaLOpXa3YmRHQnsM8ujdYtjYRaD1RQpkkNwgQo0fMsBoyU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKNGdCf4fh5G6HCxkmc1MclVc4sqzPEzfiLnvF9tPtryywxbTn
-	5WPQTDmzB80mC/ko1krszMIcj8ZZvtkhSeAxKvlsfcM+DWM7HOhO
-X-Gm-Gg: ASbGnctIHsOfbkqKCUNkqat+Sl8nAsSaMIwbO2WyFSLvCjL4QkbsqIk0w8HwNUFaH7H
-	TdVKdRbjuCBRvnvPHx6TpicNb1C1L5+H1H2I8Kl+qPgGu0ePvAbAtzjexlwi2DuCidJ0elatdRv
-	lBXq8A/30oni2Ktg3zMKBZXKnZ0e4Da8eVOg2Shs8wkj51g/KGvt+L4jyFdriVulKI27umTzvww
-	QU86mvP2Ulnbeu6TVC8TSKeF+mZ+atHC9dcvPfDmSUQX9TsevuTSvTizw==
-X-Google-Smtp-Source: AGHT+IFPCT+kzYM2/gjWgMBA62sijk6ruu8jmgp/3PNW+s/eI0ZSWvZ5ZLNr4MHKmy5z1GuqotekCA==
-X-Received: by 2002:a17:907:7e91:b0:aa6:a572:49fd with SMTP id a640c23a62f3a-ab38b3ce71cmr964428466b.54.1737324699174;
-        Sun, 19 Jan 2025 14:11:39 -0800 (PST)
-Received: from [10.0.1.56] ([2001:871:22a:8634::1ad1])
-        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-ab384c5c3e1sm537196366b.7.2025.01.19.14.11.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Jan 2025 14:11:38 -0800 (PST)
-From: Christian Schrefl <chrisi.schrefl@gmail.com>
-Date: Sun, 19 Jan 2025 23:11:15 +0100
-Subject: [PATCH 3/3] rust: miscdevice: adjust the rust_misc_device sample
- to use RegistrationData.
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QkX5mdIK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6863C4CED6;
+	Sun, 19 Jan 2025 22:44:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737326662;
+	bh=4AtgsLLLeos4Owt8Nas6UrxZj+956TsBNVpC8cRn1ts=;
+	h=From:To:Cc:Subject:Date:From;
+	b=QkX5mdIKv33hSNHCQH60L//RF6f+yueKvTHHDMuHgPa4KPUW0oSt5LmkIgTesHTAO
+	 WEVcD5M84kiYcssS1SBTQPMCRjHBmziVXrJW97XZc3kSqA9gl3v0+WmS91ntcu+YgY
+	 e7FdkWqXMvdc9pHABBiw9VjYDZnrs94FOOxRUv6E3QI6mRlmsF5YZYnmTCOVy8jWT4
+	 8uBaivXgmKSu8mvyHBHZ8IIJPNl9PNKMEQWySlru46euPpCi0fWEKUkXExttkG8Hs1
+	 hyM4ORSw5OQvtQWTmby2w8RIFad2cT7vh7sXaKGfLlHTmJOMrhYFKrl2T5MvU97jyZ
+	 PuvjVSIq+2A6g==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Rust for 6.14
+Date: Sun, 19 Jan 2025 23:43:52 +0100
+Message-ID: <20250119224352.365202-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250119-b4-rust_miscdevice_registrationdata-v1-3-edbf18dde5fc@gmail.com>
-References: <20250119-b4-rust_miscdevice_registrationdata-v1-0-edbf18dde5fc@gmail.com>
-In-Reply-To: <20250119-b4-rust_miscdevice_registrationdata-v1-0-edbf18dde5fc@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Arnd Bergmann <arnd@arndb.de>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Lee Jones <lee@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Christian Schrefl <chrisi.schrefl@gmail.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1737324695; l=2744;
- i=chrisi.schrefl@gmail.com; s=20250119; h=from:subject:message-id;
- bh=QuP40hh0ZwJRJ5uP+8xtANV+0kwNhDyRXKba5T9Q1EE=;
- b=QHOs7usN/SSRJ4BipgBqJJaCnLiGS3/DmF291dTyTpYeKJcvzgb9AjzhJYMwVSOYRIZDGwLwc
- yQzAV8AiN9CD2e9IaM0GzB/b2Rf6cftbGkV4FHRR91dYBdG+eaozfHN
-X-Developer-Key: i=chrisi.schrefl@gmail.com; a=ed25519;
- pk=EIyitYCrzxWlybrqoGqiL2jyvO7Vp9X40n0dQ6HE4oU=
+Content-Transfer-Encoding: 8bit
 
-Share the mutex stored in RustMiscDevice between all instances using an Arc
-and the RegistrationData of MiscDeviceRegistration.
+Hi Linus,
 
-This is mostly to Demonstrate the capability to share data in this way.
+This is the next round of the Rust support.
 
-Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
----
- samples/rust/rust_misc_device.rs | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+I pushed the branch and tag to git.kernel.org this time around as you
+asked, but it is also still in GitHub too (like in previous occasions).
+I may create a "group" repository in the future.
 
-diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_device.rs
-index 779fcfd64119bdd5b4f8be740f7e8336c652b4d3..956b3b2bd8ef7455fcfe283dd140690ac325c0fb 100644
---- a/samples/rust/rust_misc_device.rs
-+++ b/samples/rust/rust_misc_device.rs
-@@ -104,7 +104,7 @@
-     miscdevice::{MiscDevice, MiscDeviceOptions, MiscDeviceRegistration},
-     new_mutex,
-     prelude::*,
--    sync::Mutex,
-+    sync::{Arc, Mutex},
-     types::ARef,
-     uaccess::{UserSlice, UserSliceReader, UserSliceWriter},
- };
-@@ -136,7 +136,10 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
-         };
- 
-         try_pin_init!(Self {
--            _miscdev <- MiscDeviceRegistration::register(options, ()),
-+            _miscdev <- MiscDeviceRegistration::register(
-+                options,
-+                Arc::pin_init(new_mutex!(Inner { value: 0_i32 }), GFP_KERNEL)?
-+            ),
-         })
-     }
- }
-@@ -145,10 +148,8 @@ struct Inner {
-     value: i32,
- }
- 
--#[pin_data(PinnedDrop)]
- struct RustMiscDevice {
--    #[pin]
--    inner: Mutex<Inner>,
-+    inner: Arc<Mutex<Inner>>,
-     dev: ARef<Device>,
- }
- 
-@@ -156,7 +157,7 @@ struct RustMiscDevice {
- impl MiscDevice for RustMiscDevice {
-     type Ptr = Pin<KBox<Self>>;
- 
--    type RegistrationData = ();
-+    type RegistrationData = Arc<Mutex<Inner>>;
- 
-     fn open(_file: &File, misc: &MiscDeviceRegistration<Self>) -> Result<Pin<KBox<Self>>> {
-         let dev = ARef::from(misc.device());
-@@ -164,9 +165,9 @@ fn open(_file: &File, misc: &MiscDeviceRegistration<Self>) -> Result<Pin<KBox<Se
-         dev_info!(dev, "Opening Rust Misc Device Sample\n");
- 
-         KBox::try_pin_init(
--            try_pin_init! {
-+            try_init! {
-                 RustMiscDevice {
--                    inner <- new_mutex!( Inner{ value: 0_i32 } ),
-+                    inner: misc.data().clone(),
-                     dev: dev,
-                 }
-             },
-@@ -193,9 +194,8 @@ fn ioctl(me: Pin<&RustMiscDevice>, _file: &File, cmd: u32, arg: usize) -> Result
-     }
- }
- 
--#[pinned_drop]
--impl PinnedDrop for RustMiscDevice {
--    fn drop(self: Pin<&mut Self>) {
-+impl Drop for RustMiscDevice {
-+    fn drop(&mut self) {
-         dev_info!(self.dev, "Exiting the Rust Misc Device Sample\n");
-     }
- }
+All commits have been in linux-next for a few rounds.
 
--- 
-2.48.1
+You may get major Rust changes via a driver-core PR and a Kbuild PR, as
+well as smaller ones in a locking PR via tip, a lsm PR and a netdev-next
+PR. You already got the blocks PR which contains a small Rust change as
+well.
 
+Conflicts expected with both the driver-core and security one. The
+conflicts aren't too bad -- the resolutions in -next are fine.
+
+Please pull for v6.14 -- thanks!
+
+Cheers,
+Miguel
+
+The following changes since commit 78d4f34e2115b517bcbfe7ec0d018bbbb6f9b0b8:
+
+  Linux 6.13-rc3 (2024-12-15 15:58:23 -0800)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-6.14
+
+for you to fetch changes up to ceff0757f5dafb5be5205988171809c877b1d3e3:
+
+  kbuild: rust: add PROCMACROLDFLAGS (2025-01-15 09:53:54 +0100)
+
+----------------------------------------------------------------
+Rust changes for v6.14
+
+Toolchain and infrastructure:
+
+ - Finish the move to custom FFI integer types started in the previous
+   cycle and finally map 'long' to 'isize' and 'char' to 'u8'. Do a few
+   cleanups on top thanks to that.
+
+ - Start to use 'derive(CoercePointee)' on Rust >= 1.84.0.
+
+   This is a major milestone on the path to build the kernel using only
+   stable Rust features. In particular, previously we were using the
+   unstable features 'coerce_unsized', 'dispatch_from_dyn' and 'unsize',
+   and now we will use the new 'derive_coerce_pointee' one, which is on
+   track to stabilization. This new feature is a macro that essentially
+   expands into code that internally uses the unstable features that we
+   were using before, without having to expose those.
+
+   With it, stable Rust users, including the kernel, will be able to
+   build custom smart pointers that work with trait objects, e.g.:
+
+       fn f(p: &Arc<dyn Display>) {
+           pr_info!("{p}\n");
+       }
+
+       let a: Arc<dyn Display> = Arc::new(42i32, GFP_KERNEL)?;
+       let b: Arc<dyn Display> = Arc::new("hello there", GFP_KERNEL)?;
+
+       f(&a); // Prints "42".
+       f(&b); // Prints "hello there".
+
+   Together with the 'arbitrary_self_types' feature that we started
+   using in the previous cycle, using our custom smart pointers like
+   'Arc' will eventually only rely in stable Rust.
+
+ - Introduce 'PROCMACROLDFLAGS' environment variable to allow to link
+   Rust proc macros using different flags than those used for linking
+   Rust host programs (e.g. when 'rustc' uses a different C library
+   than the host programs' one), which Android needs.
+
+ - Help kernel builds under macOS with Rust enabled by accomodating
+   other naming conventions for dynamic libraries (i.e. '.so' vs.
+   '.dylib') which are used for Rust procedural macros. The actual
+   support for macOS (i.e. the rest of the pieces needed) is provided
+   out-of-tree by others, following the policy used for other parts of
+   the kernel by Kbuild.
+
+ - Run Clippy for 'rusttest' code too and clean the bits it spotted.
+
+ - Provide Clippy with the minimum supported Rust version to improve
+   the suggestions it gives.
+
+ - Document 'bindgen' 0.71.0 regression.
+
+'kernel' crate:
+
+ - 'build_error!': move users of the hidden function to the documented
+   macro, prevent such uses in the future by moving the function
+   elsewhere and add the macro to the prelude.
+
+ - 'types' module: add improved version of 'ForeignOwnable::borrow_mut'
+   (which was removed in the past since it was problematic); change
+   'ForeignOwnable' pointer type to '*mut'.
+
+ - 'alloc' module: implement 'Display' for 'Box' and align the 'Debug'
+   implementation to it; add example (doctest) for 'ArrayLayout::new()'.
+
+ - 'sync' module: document 'PhantomData' in 'Arc'; use
+   'NonNull::new_unchecked' in 'ForeignOwnable for Arc' impl.
+
+ - 'uaccess' module: accept 'Vec's with different allocators in
+   'UserSliceReader::read_all'.
+
+ - 'workqueue' module: enable run-testing a couple more doctests.
+
+ - 'error' module: simplify 'from_errno()'.
+
+ - 'block' module: fix formatting in code documentation (a lint to catch
+   these is being implemented).
+
+ - Avoid 'unwrap()'s in doctests, which also improves the examples by
+   showing how kernel code is supposed to be written.
+
+ - Avoid 'as' casts with 'cast{,_mut}' calls which are a bit safer.
+
+And a few other cleanups.
+
+----------------------------------------------------------------
+Alice Ryhl (1):
+      rust: kernel: add improved version of `ForeignOwnable::borrow_mut`
+
+Daniel Sedlak (5):
+      rust: error: modify `from_errno` to use `try_from_errno`
+      rust: init: replace unwraps with question mark operators
+      rust: rbtree: remove unwrap in asserts
+      rust: page: remove unnecessary helper function from doctest
+      rust: str: replace unwraps with question mark operators
+
+Dirk Behme (1):
+      rust: workqueue: Enable execution of doctests
+
+Filipe Xavier (1):
+      rust: uaccess: generalize userSliceReader to support any Vec
+
+Gary Guo (2):
+      rust: map `long` to `isize` and `char` to `u8`
+      rust: cleanup unnecessary casts
+
+Guangbo Cui (2):
+      rust: alloc: implement Display for Box
+      rust: alloc: align Debug implementation for Box with Display
+
+HONG Yifan (1):
+      kbuild: rust: add PROCMACROLDFLAGS
+
+Jimmy Ostler (3):
+      rust: error: import `kernel`'s `LayoutError` instead of `core`'s
+      rust: init: update `stack_try_pin_init` examples
+      rust: alloc: add doctest for `ArrayLayout::new()`
+
+Miguel Ojeda (7):
+      rust: finish using custom FFI integer types
+      rust: document `bindgen` 0.71.0 regression
+      rust: give Clippy the minimum supported Rust version
+      rust: kbuild: run Clippy for `rusttest` code
+      rust: use the `build_error!` macro, not the hidden function
+      rust: kernel: move `build_error` hidden function to prevent mistakes
+      rust: add `build_error!` to the prelude
+
+Tamir Duberstein (7):
+      rust: sync: document `PhantomData` in `Arc`
+      rust: use host dylib naming convention to support macOS
+      rust: arc: use `NonNull::new_unchecked`
+      rust: types: avoid `as` casts
+      rust: arc: split unsafe block, add missing comment
+      rust: kernel: change `ForeignOwnable` pointer to mut
+      rust: kernel: reorder `ForeignOwnable` items
+
+Xiangfei Ding (1):
+      rust: use derive(CoercePointee) on rustc >= 1.84.0
+
+Yutaro Ohno (1):
+      rust: block: fix formatting in GenDisk doc
+
+ .clippy.toml                       |  2 +
+ .gitignore                         |  1 +
+ Documentation/kbuild/kbuild.rst    | 11 +++++
+ Makefile                           |  5 +-
+ drivers/gpu/drm/drm_panic_qr.rs    |  2 +-
+ init/Kconfig                       |  9 +++-
+ rust/Makefile                      | 32 +++++++------
+ rust/ffi.rs                        | 37 ++++++++++++++-
+ rust/kernel/alloc.rs               |  2 +-
+ rust/kernel/alloc/kbox.rs          | 53 +++++++++++++++++-----
+ rust/kernel/alloc/layout.rs        | 19 ++++++++
+ rust/kernel/block/mq/gen_disk.rs   |  6 +--
+ rust/kernel/block/mq/operations.rs |  3 +-
+ rust/kernel/build_assert.rs        | 12 +++--
+ rust/kernel/device.rs              |  4 +-
+ rust/kernel/error.rs               | 23 ++++------
+ rust/kernel/firmware.rs            |  2 +-
+ rust/kernel/init.rs                | 30 +++++++++---
+ rust/kernel/lib.rs                 | 13 +++---
+ rust/kernel/list/arc.rs            |  9 ++--
+ rust/kernel/miscdevice.rs          | 18 +++-----
+ rust/kernel/net/phy.rs             | 18 ++++----
+ rust/kernel/page.rs                |  6 +--
+ rust/kernel/prelude.rs             |  2 +-
+ rust/kernel/print.rs               |  4 +-
+ rust/kernel/rbtree.rs              | 46 +++++++++----------
+ rust/kernel/security.rs            |  2 +-
+ rust/kernel/seq_file.rs            |  2 +-
+ rust/kernel/str.rs                 | 38 ++++++++++------
+ rust/kernel/sync/arc.rs            | 65 +++++++++++++++++++-------
+ rust/kernel/types.rs               | 93 ++++++++++++++++++++++++++++----------
+ rust/kernel/uaccess.rs             | 33 ++++----------
+ rust/kernel/workqueue.rs           |  3 ++
+ rust/macros/lib.rs                 |  8 ++--
+ samples/rust/rust_print_main.rs    | 20 +++++++-
+ scripts/generate_rust_analyzer.py  | 15 ++++--
+ scripts/rust_is_available.sh       |  6 ++-
+ 37 files changed, 437 insertions(+), 217 deletions(-)
