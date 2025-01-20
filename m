@@ -1,258 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from luna.linkmauve.fr (luna.linkmauve.fr [82.65.109.163])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE44918FDC8;
-	Mon, 20 Jan 2025 11:55:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205181E0E06;
+	Mon, 20 Jan 2025 12:54:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737374141; cv=none; b=IXe3ilA6ZcVOqQhYt8m2qIGiMslcMibz3BRUbdwIm6AQ4DWBMDGA1b6u5BExbeNIK3MPGaoirbq+GnKIv/xvyHP1HD0vzI30Vssla5yQBgJP7B6V3dF2pJ/dxPx6ISEkTQtxoVaEoK9uuocyKwaUAqv+O7yltP+cfXZUGu64Rrw=
+	t=1737377669; cv=none; b=rIlK92LHpypZMQXfxPbILq/ql4hXKWraqlMdUO53E7Qe8AVN71JtUMD3yZ6MQ+MVtXVqoxJPypRSxfylrN2R0t8F340NABVT/ldcL1RxwUuWuxnPqUGXMdTKZntftfEF3RptJq7lLSMLSjawU9ANTqn3CIXcWjDMhrgYLM3aQ40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737374141; c=relaxed/simple;
-	bh=DLNstBoar4ifU31o+3NKdRHWKDc24VLMKho6RVtC0Nc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=WKuVQY7c5i5aCuCvtTSRCN+xHVTAUqLpaO8L1vUGf6PCh495km73pGVhqqb+bZ/QPRVdsarCspqeg8RrmmFkfWdbLyLJDKE/rfm0TfIqql60Bvb6sUAjgpJ9ecvK8PftNiqGmJaLfqJgujTej7Jpf8xIJOZUrtvgeXAfA28qE2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L0cGhGOf; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L0cGhGOf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D87C4CEDD;
-	Mon, 20 Jan 2025 11:55:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737374141;
-	bh=DLNstBoar4ifU31o+3NKdRHWKDc24VLMKho6RVtC0Nc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=L0cGhGOfU6Fabaw/D0K9YACK20MU7whnuKClnOfa4heb0uDEl1UM/OJGyytg3vLO6
-	 BjcyDIGbp0f3SwGL5XDwyzhvxWR7KGvK8X8L558xcyAf8N7d0wo6ltNkiR7raH2PVt
-	 r3L1QRXvefjeE92nDDN1PtOXIEnpFwQPzDzAsCNH+5k0FmuWD0wH3IyY5XK/Om1WEB
-	 KlkpxiaPbZ/YsE0GTooRsR9mpQ1rETfapXYc2JNs75m0MIJKnYmRC4aqs8cXtqOt+c
-	 uWnDmqEjjVelfZSM1ZK5FtfRvCz89Kli82lFY9JFkH8eZGmsT4/QfxzO25P3HyTVjG
-	 BlgyX6Ce2Z/cA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno
- Lossin" <benno.lossin@proton.me>,  "Trevor Gross" <tmgross@umich.edu>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: list: make the cursor point between elements
-In-Reply-To: <20241025-cursor-between-v1-1-08913714aae5@google.com> (Alice
-	Ryhl's message of "Fri, 25 Oct 2024 13:36:29 +0000")
-References: <RDzzJkrT7QOUu_FAcJyNOJx3ZW9gzDG7vi-z94_5G6YiTgp8yKUu_U4QYVyTXrzTi9eK4BIiANZ4LboxAchm-w==@protonmail.internalid>
-	<20241025-cursor-between-v1-1-08913714aae5@google.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Mon, 20 Jan 2025 12:55:31 +0100
-Message-ID: <87h65tem30.fsf@kernel.org>
+	s=arc-20240116; t=1737377669; c=relaxed/simple;
+	bh=cmN/niqzZ1rpA0iq67EMmiOeK/W9CBL7sCeaGl/jz/Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jcIjvnjqZdU4BU5dHS4CYY5h7o7riE0nsBg+fP6zMehGnaj8FCdjPudKXnTVfPwGeu74z7QkC5dVaLaXEvpoHTdRW2X/Yo4EsW7LRnByaEq4AWEN2Hx9syX2VTXesaRvoaCubiTRwUheOSuIdTjHKYegm6waGDDTPdXo9M/R9KI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
+Received: by luna.linkmauve.fr (Postfix, from userid 1000)
+	id F00ED230B083; Mon, 20 Jan 2025 13:45:34 +0100 (CET)
+From: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Cc: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
+Subject: [PATCH] drm/panic: fix compilation issue on ARM
+Date: Mon, 20 Jan 2025 13:45:29 +0100
+Message-ID: <20250120124531.2581448-1-linkmauve@linkmauve.fr>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Alice,
+In C, the char type is specified with “The implementation shall define char to
+have the same range, representation, and behavior as either signed char or
+unsigned char.”
 
-This looks like a nice improvement!
+On x86 it defaults to signed char, and on ARM it defaults to unsigned char.
+This carries over to Rust’s FFI, which aliases its c_char type to i8 on x86,
+and to u8 on ARM.
 
-"Alice Ryhl" <aliceryhl@google.com> writes:
+We can fix this error by using the *const c_char type wherever it is needed,
+rather than assuming we are on x86 by passing *const i8.
 
-> I've been using the linked list cursor for a few different things, and I
-> find it inconvenient to use because all of the functions have signatures
-> along the lines of `Self -> Option<Self>`. The root cause of these
-> signatures is that the cursor points *at* an element, rather than
-> *between* two elements.
->
-> Thus, change the cursor API to point between two elements. This is
-> inspired by the stdlib linked list (well, really by this guy [1]), which
-> also uses cursors that point between elements.
->
-> The `peek_*` methods returns a helper that lets you look at and
-> optionally remove the element, as one common use-case of cursors is to
-> iterate a list to look for an element, then remove that element.
->
-> Another advantage is that this means you can now have a cursor into an
-> empty list.
->
-> Link: https://rust-unofficial.github.io/too-many-lists/sixth-cursors-intro.html [1]
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/kernel/list.rs | 325 +++++++++++++++++++++++++++++++-------------
->  1 file changed, 231 insertions(+), 94 deletions(-)
->
-> diff --git a/rust/kernel/list.rs b/rust/kernel/list.rs
-> index fb93330f4af4..328d3e369d57 100644
-> --- a/rust/kernel/list.rs
-> +++ b/rust/kernel/list.rs
-> @@ -245,8 +245,20 @@ pub fn is_empty(&self) -> bool {
->          self.first.is_null()
->      }
->
-> -    /// Add the provided item to the back of the list.
-> -    pub fn push_back(&mut self, item: ListArc<T, ID>) {
-> +    /// Inserts `item` before `next` in the cycle.
-> +    ///
-> +    /// Returns a pointer to the newly inserted element. Never changes `self.first` unless the list
-> +    /// is empty.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// * `next` must be an element in this list or null.
-> +    /// * if `next` is null, then the list must be empty.
-> +    unsafe fn insert_inner(
-> +        &mut self,
-> +        item: ListArc<T, ID>,
-> +        next: *mut ListLinksFields,
-> +    ) -> *mut ListLinksFields {
->          let raw_item = ListArc::into_raw(item);
->          // SAFETY:
->          // * We just got `raw_item` from a `ListArc`, so it's in an `Arc`.
-> @@ -259,16 +271,16 @@ pub fn push_back(&mut self, item: ListArc<T, ID>) {
->          // SAFETY: We have not yet called `post_remove`, so `list_links` is still valid.
->          let item = unsafe { ListLinks::fields(list_links) };
->
-> -        if self.first.is_null() {
-> -            self.first = item;
-> +        // Check if the list is empty.
-> +        if next.is_null() {
->              // SAFETY: The caller just gave us ownership of these fields.
->              // INVARIANT: A linked list with one item should be cyclic.
->              unsafe {
->                  (*item).next = item;
->                  (*item).prev = item;
->              }
-> +            self.first = item;
->          } else {
-> -            let next = self.first;
->              // SAFETY: By the type invariant, this pointer is valid or null. We just checked that
->              // it's not null, so it must be valid.
->              let prev = unsafe { (*next).prev };
-> @@ -282,45 +294,24 @@ pub fn push_back(&mut self, item: ListArc<T, ID>) {
->                  (*next).prev = item;
->              }
->          }
-> +
-> +        item
->      }
->
-> +    /// Add the provided item to the back of the list.
-> +    pub fn push_back(&mut self, item: ListArc<T, ID>) {
-> +        // SAFETY:
-> +        // * `self.first` is null or in the list.
-> +        // * `self.first` is only null if the list is empty.
-> +        unsafe { self.insert_inner(item, self.first) };
-> +    }
-> +
->      /// Add the provided item to the front of the list.
->      pub fn push_front(&mut self, item: ListArc<T, ID>) {
-> -        let raw_item = ListArc::into_raw(item);
-> -        // SAFETY:
-> -        // * We just got `raw_item` from a `ListArc`, so it's in an `Arc`.
-> -        // * If this requirement is violated, then the previous caller of `prepare_to_insert`
-> -        //   violated the safety requirement that they can't give up ownership of the `ListArc`
-> -        //   until they call `post_remove`.
-> -        // * We own the `ListArc`.
-> -        // * Removing items] from this list is always done using `remove_internal_inner`, which
-> -        //   calls `post_remove` before giving up ownership.
-> -        let list_links = unsafe { T::prepare_to_insert(raw_item) };
-> -        // SAFETY: We have not yet called `post_remove`, so `list_links` is still valid.
-> -        let item = unsafe { ListLinks::fields(list_links) };
-> -
-> -        if self.first.is_null() {
-> -            // SAFETY: The caller just gave us ownership of these fields.
-> -            // INVARIANT: A linked list with one item should be cyclic.
-> -            unsafe {
-> -                (*item).next = item;
-> -                (*item).prev = item;
-> -            }
-> -        } else {
-> -            let next = self.first;
-> -            // SAFETY: We just checked that `next` is non-null.
-> -            let prev = unsafe { (*next).prev };
-> -            // SAFETY: Pointers in a linked list are never dangling, and the caller just gave us
-> -            // ownership of the fields on `item`.
-> -            // INVARIANT: This correctly inserts `item` between `prev` and `next`.
-> -            unsafe {
-> -                (*item).next = next;
-> -                (*item).prev = prev;
-> -                (*prev).next = item;
-> -                (*next).prev = item;
-> -            }
-> -        }
-> -        self.first = item;
-> +        // SAFETY:
-> +        // * `self.first` is null or in the list.
-> +        // * `self.first` is only null if the list is empty.
-> +        self.first = unsafe { self.insert_inner(item, self.first) };
->      }
->
->      /// Removes the last item from this list.
+The only other place which uses the CStr::from_char_ptr() function is
+errname(), which already uses c_char correctly thanks to bindgen.
 
-This looks like a refactor of `push_front`, `push_back`. It looks like
-it is unrelated to the cursor change. Can you split this out into a
-separate patch?
+Here is the error I encountered, building latest master:
+```
+error[E0308]: mismatched types
+   --> drivers/gpu/drm/drm_panic_qr.rs:961:60
+    |
+961 |         let url_cstr: &CStr = unsafe { CStr::from_char_ptr(url) };
+    |                                        ------------------- ^^^ expected `*const u8`, found `*const i8`
+    |                                        |
+    |                                        arguments to this function are incorrect
+    |
+    = note: expected raw pointer `*const u8`
+               found raw pointer `*const i8`
+note: associated function defined here
+   --> rust/kernel/str.rs:187:19
+    |
+187 |     pub unsafe fn from_char_ptr<'a>(ptr: *const crate::ffi::c_char) -> &'a Self {
+    |                   ^^^^^^^^^^^^^
 
+error: aborting due to 1 previous error
 
-> @@ -489,17 +480,21 @@ pub fn push_all_back(&mut self, other: &mut List<T, ID>) {
->          other.first = ptr::null_mut();
->      }
->
-> -    /// Returns a cursor to the first element of the list.
-> -    ///
-> -    /// If the list is empty, this returns `None`.
-> -    pub fn cursor_front(&mut self) -> Option<Cursor<'_, T, ID>> {
-> -        if self.first.is_null() {
-> -            None
-> -        } else {
-> -            Some(Cursor {
-> -                current: self.first,
-> -                list: self,
-> -            })
-> -        }
-> -    }
-> +    /// Returns a cursor that points before the first element of the list.
-> +    pub fn cursor_front(&mut self) -> Cursor<'_, T, ID> {
-> +        // INVARIANT: `self.first` is in this list.
-> +        Cursor {
-> +            next: self.first,
-> +            list: self,
-> +        }
-> +    }
-> +
-> +    /// Returns a cursor that points after the last element in the list.
-> +    pub fn cursor_back(&mut self) -> Cursor<'_, T, ID> {
-> +        // INVARIANT: `next` is allowed to be null.
-> +        Cursor {
-> +            next: core::ptr::null_mut(),
+For more information about this error, try `rustc --explain E0308`.
+```
+---
+ drivers/gpu/drm/drm_panic_qr.rs | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-I am slightly confused about why you need to track the beginning and end
-of the list. The cursor movement operations circle have wrapping
-semantics and the lists are circular. Could you remove some code by
-using this property?
-
-> +            list: self,
-> +        }
-> +    }
->
-> @@ -579,69 +574,211 @@ fn next(&mut self) -> Option<ArcBorrow<'a, T>> {
->
->  /// A cursor into a [`List`].
->  ///
-> +/// A cursor always rests between two elements in the list. This means that a cursor has a previous
-> +/// and next element, but no current element. It also means that it's possible to have a cursor
-> +/// into an empty list.
-> +///
->  /// # Invariants
->  ///
-> -/// The `current` pointer points a value in `list`.
-> +/// The `next` pointer is null or points a value in `list`.
-
-Could you add an example of how to use this struct?
-
-Unrelated, but since you are at it, could you update the safety comment
-on first line in the `List::remove` function?
-
-
-Best regards,
-Andreas Hindborg
-
+diff --git a/drivers/gpu/drm/drm_panic_qr.rs b/drivers/gpu/drm/drm_panic_qr.rs
+index ef2d490965ba..39ddb431b361 100644
+--- a/drivers/gpu/drm/drm_panic_qr.rs
++++ b/drivers/gpu/drm/drm_panic_qr.rs
+@@ -27,6 +27,7 @@
+ //! * <https://github.com/bjguillot/qr>
+ 
+ use core::cmp;
++use kernel::ffi::c_char;
+ use kernel::str::CStr;
+ 
+ #[derive(Debug, Clone, Copy, PartialEq, Eq, Ord, PartialOrd)]
+@@ -931,7 +932,7 @@ fn draw_all(&mut self, data: impl Iterator<Item = u8>) {
+ /// They must remain valid for the duration of the function call.
+ #[no_mangle]
+ pub unsafe extern "C" fn drm_panic_qr_generate(
+-    url: *const i8,
++    url: *const c_char,
+     data: *mut u8,
+     data_len: usize,
+     data_size: usize,
+-- 
+2.48.1
 
