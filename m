@@ -1,119 +1,176 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69171E515;
-	Mon, 20 Jan 2025 14:19:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D681B4F02
+	for <rust-for-linux@vger.kernel.org>; Mon, 20 Jan 2025 15:53:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737382742; cv=none; b=f8UYsBCFuvyU5P0QPovz8U8CTzYVAx3XwJcTPkvzaNCzZmAjkFE6/vV4aX9EfTXBn7lOSc0+d3TEgmTrCglzL8C9FvT4Pp3iMJ/qKgOtQlGxqcBfSwYl35YxslGUXv9Rsw7uDod2r+u/vE+Gg2FIY9G3ta//3X1D2EMJEXHAXnE=
+	t=1737388386; cv=none; b=SwKENDRsShzwyJzpY+PM6RAEA9lB2mzZkh69H3Zqq7UwwNWu7995Vfe3SJbmAXDI3QFxNRV0/5cefZKgYW1X+Ep19JP30k+y05kBNYVCTvIsVxEnobesSLRKoLDDqLIl2SoR73TY2f8Y1b4/8Xu+wIKLTJK1+nq+KAlrZjHlzRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737382742; c=relaxed/simple;
-	bh=m1L0cqHEWqwTbAH+uQ2DNRqRpDvGGNhvtaweWQxcAbE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=boTpho+Krb61qolfrjbOAt+xOW6njlsUJ3IHnvjKyKFc3j5WzfuvyS6Xr8phS1kIhJyjv/5+RLZAHuuQi0vy5YbfE2Iuu5DxH32CxxeWDNPchizaZMzNYWf07RxB6lfc/tI7KlpAhYKAdEBe/n69gi2acSxW55UifeRM68HIGwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TgBXfmuJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1737388386; c=relaxed/simple;
+	bh=YZLRxl6myrC7WISQqY2jZeRMEB16CnRP1zVhTe+t5Hg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=c8KvDkXNh05MRgQe70WKdrmybunVEl4mQenzC1URSoWUajWF7clKZBWa/22+zQzkPSrT6puZei6jfnDTIwEWA4F+i8uDhTTaHYo4C3SLeSzAsR5i88rxCBZBWp+N9M3EOlbbpj/teABEmEVDtsL6H+zvnYozKyvRTAezbKXRZQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wQoVoXT4; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TgBXfmuJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B99C4CEE1;
-	Mon, 20 Jan 2025 14:18:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737382742;
-	bh=m1L0cqHEWqwTbAH+uQ2DNRqRpDvGGNhvtaweWQxcAbE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TgBXfmuJ6G/OGJ5GnFq14/MBAlyw05z18siJKTohb5gMOaHBHcDLhCStXWkYmMpCB
-	 MUjECQea+3e3g07J6GIkh0EQReLoBD3nqpnoL+8CBfP9qkIpi4+CNZvku5M45sWsdz
-	 6ECs8bfwHHwoL4cFQ0rBWPvKs4RGZWY3gUNmQllFdBhSXUe8ggShweB5WAkL4q7hk9
-	 nTOTpT9Xf3LYEVZtDMjGzxBeNIMB+aBuYp3+BB2FGGNEyijTWf1wnjHHjnmAi1eF0L
-	 ePABb3tmSnRS401Wr6dc7XGkgAElm/ZFuDHFKjcAybev04vuqgK83/PIAn3l/kw+JM
-	 rSdeUwxOHtTKg==
-Date: Mon, 20 Jan 2025 15:18:55 +0100
-From: Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>
-To: Fiona Behrens <me@kloenk.dev>
-Cc: Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Pavel Machek <pavel@ucw.cz>, 
-	Lee Jones <lee@kernel.org>, Jean Delvare <jdelvare@suse.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Mark Pearson <mpearson-lenovo@squebb.ca>, 
-	Peter Koch <pkoch@lenovo.com>, rust-for-linux@vger.kernel.org, linux-leds@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/5] rust: leds: Add hardware trigger support for
- hardware-controlled LEDs
-Message-ID: <ve4waunjbwjjuteuzsalsvbdzwygqhfla5nvqefkl5smaixups@x2e4ltcuisxd>
-References: <20250113121620.21598-1-me@kloenk.dev>
- <20250113121620.21598-4-me@kloenk.dev>
- <2rla4ga3v563gdjdg6fztyh6hardmxnnclfe667gnfs4icsiqo@eho3bcv53h7d>
- <5366FB38-FF4C-4FC8-B116-9102381791D5@kloenk.dev>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wQoVoXT4"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-38632b8ae71so3725706f8f.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 20 Jan 2025 07:53:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1737388383; x=1737993183; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=R9In2eqKYI/uki5bp1j8PuNsRkX//inAbzw84feDwzE=;
+        b=wQoVoXT4tJ1Si0qWusBmMY3W1W2NQLFMywIIk2woDNsGVJwboiINs8Gmio2xOStQHf
+         YDoSytdFCA+61O8MpCapWlhtcBr8SE/vezGsyU9g0/mdbg0f0A1l/MBmXTWAySl3uwQc
+         MVjGB+EIiraiIuwP+7/EwM8NC9MSRz//KoSBfsyKVl3UdfkdI9lBwmYMLSdk46sReVoI
+         xBxtKTo7AoUhSKlK7GZVTYOWgNT2DhP0UIm0/m5Nv6GvxHba1RRcwo169jgqAlRk1c2q
+         6Ttdvc6qXpjrCZuFH+jKDRjPeCqKxaEO5utpiipn6dOBBojKCxDhK/xbSq7MbFHHRcfz
+         0CHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737388383; x=1737993183;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=R9In2eqKYI/uki5bp1j8PuNsRkX//inAbzw84feDwzE=;
+        b=Yl9N91XDdfhmUBUCAbyOXY8JDOJ/5A5roGCtV11bW1EU128TE1vFtbC3ySxkq5N2gB
+         JJ54KpjDZH7+vb9aWfcuvd1aJ2qGRXXA11nJaALPg58jbKCKYuC4LThuyYc7czdYQg2V
+         wLz+A9FhvQ+MHHSOgz9ywHGVkZ+PlS1heOz73eo0yAKrJVJjY1EGLWLB5+C0fzYj0FIY
+         jaUpLFnVl3g+wAMRfXOGbE3qaKTXJOCktZWYtsnnTVUuMTn+yrfWra8KAnl8N5zHwCma
+         8LORBJmtcAQYXMNhNo2QDLTpwknPrDXwR8aVW+j3YwhIPyBTJdoKNJFMDxH7kOKlD2PP
+         DYUw==
+X-Forwarded-Encrypted: i=1; AJvYcCWrrJlQbLSmrSUKbKuXNXcJea7+yhqvI72dbDlJ+OzS+Gq6R6NjjTE8Kx0WtJk/rt2DipMsIda8iWTdsJmsvg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwoKZBNJguerAMiCXit9LqC+mqcmZkOwlJgH0gwacQSfNz2GsvN
+	am8hd/y6ux7BpLOIk0/RtpxZhc6EmKphvR/f044xOlghq9xtIb5ZtJghDkK+1kkoLEIrXQr476q
+	TafFHedZW2y8ox6sh9g8x910wZrSUohZbOb1A
+X-Gm-Gg: ASbGncvuovQc04MrAY1gO2i4cZnoAAQlml9XZss237xnK4f6Skd4btSMI4vhMy5ezrm
+	gheFkJSoyfF6taU1uPEDjrhxWjvZ04+EYr9b2RCn9+uj1la72W+ADgv8Bb+kOcPuMgHYpMRxO07
+	XvDdhwfA==
+X-Google-Smtp-Source: AGHT+IFCCa9T/woBaJaeBhS3H84lOfOgx0hCbuVxrpx7W65G7e2utJBcO4xKv916rwCiZqAIhp6vITV2UMSCbBpn2h0=
+X-Received: by 2002:a05:6000:1567:b0:385:fd07:8616 with SMTP id
+ ffacd0b85a97d-38bf55c4d1emr12566206f8f.0.1737388382716; Mon, 20 Jan 2025
+ 07:53:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5366FB38-FF4C-4FC8-B116-9102381791D5@kloenk.dev>
+References: <RDzzJkrT7QOUu_FAcJyNOJx3ZW9gzDG7vi-z94_5G6YiTgp8yKUu_U4QYVyTXrzTi9eK4BIiANZ4LboxAchm-w==@protonmail.internalid>
+ <20241025-cursor-between-v1-1-08913714aae5@google.com> <87h65tem30.fsf@kernel.org>
+In-Reply-To: <87h65tem30.fsf@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 20 Jan 2025 16:52:50 +0100
+X-Gm-Features: AbW1kvZz3gvLSkHkhPbsyH-Ndc2XODCmWz_Zc6n56dJ8siK2K8taDLe3nUHKs-M
+Message-ID: <CAH5fLginoFU38HbRjtOY8wAOo9uu5LJD7AKzduRkL0RcT6BUvw@mail.gmail.com>
+Subject: Re: [PATCH] rust: list: make the cursor point between elements
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Trevor Gross <tmgross@umich.edu>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 20, 2025 at 11:59:03AM +0100, Fiona Behrens wrote:
+On Mon, Jan 20, 2025 at 12:55=E2=80=AFPM Andreas Hindborg <a.hindborg@kerne=
+l.org> wrote:
+>
+> Hi Alice,
+>
+> This looks like a nice improvement!
+
+Thanks!
+
+> This looks like a refactor of `push_front`, `push_back`. It looks like
+> it is unrelated to the cursor change. Can you split this out into a
+> separate patch?
+
+I don't think it's unrelated. It extracts out common code that
+previously only push_front/push_back have, but that the cursor now
+also needs. Of course, it could still make sense to extract
+insert_inner out in a separate patch.
+
+> > @@ -489,17 +480,21 @@ pub fn push_all_back(&mut self, other: &mut List<=
+T, ID>) {
+> >          other.first =3D ptr::null_mut();
+> >      }
 > >
-> > This looks as if you are doing a Rust binding for struct led_trigger.
-> > But you keep calling it Hardware trigger, which makes me thing that
-> > you are confused about what is a LED trigger and what is a hardware
-> > trigger.
+> > -    /// Returns a cursor to the first element of the list.
+> > -    ///
+> > -    /// If the list is empty, this returns `None`.
+> > -    pub fn cursor_front(&mut self) -> Option<Cursor<'_, T, ID>> {
+> > -        if self.first.is_null() {
+> > -            None
+> > -        } else {
+> > -            Some(Cursor {
+> > -                current: self.first,
+> > -                list: self,
+> > -            })
+> > -        }
+> > -    }
+> > +    /// Returns a cursor that points before the first element of the l=
+ist.
+> > +    pub fn cursor_front(&mut self) -> Cursor<'_, T, ID> {
+> > +        // INVARIANT: `self.first` is in this list.
+> > +        Cursor {
+> > +            next: self.first,
+> > +            list: self,
+> > +        }
+> > +    }
+> > +
+> > +    /// Returns a cursor that points after the last element in the lis=
+t.
+> > +    pub fn cursor_back(&mut self) -> Cursor<'_, T, ID> {
+> > +        // INVARIANT: `next` is allowed to be null.
+> > +        Cursor {
+> > +            next: core::ptr::null_mut(),
+>
+> I am slightly confused about why you need to track the beginning and end
+> of the list. The cursor movement operations circle have wrapping
+> semantics and the lists are circular. Could you remove some code by
+> using this property?
+
+I think the current API is much more intuitive. Yes, the list is
+implemented in a circular manner, but you're not intended to think of
+it that way. The linked list is a list of elements. With elements ABC
+and cursors pointing between them, it makes sense that the cursor can
+be |ABC, A|BC, AB|C, ABC|. In each case, you can add an element before
+or after the cursor. To iterate the list, you keep calling `move_next`
+until `next` returns `None`. That also makes sense. If the cursor
+becomes circular, then you iterate by calling `next` until the next
+element is the first element? Seems confusing to me.
+
+I also don't think it's much less code. You still need to handle null
+pointers because the list might be empty.
+
+> > +            list: self,
+> > +        }
+> > +    }
 > >
-> > Why do you keep putting "Hardware" into the names of these symbols?
-> 
-> The idea was to create a abstraction specific to writing a hardware trigger (or my understanding of what that is) and deal with the other
-> trigger types later, to more separate the things on the rust side with e.g. the vtables for those.
-> But my understanding might be wrong.
-> 
-> (My broad understanding is what I did in the SE10 driver later, to tell the hardware to not present the LED to the kernel, but some other hardware wiring to a hardware thing that then drives the LED)
-
-Looking at patch 5, you do:
-
-  #[vtable]
-  #[cfg(CONFIG_LEDS_TRIGGERS)]
-  impl triggers::HardwareOperations for LedSE10 {
-      fn activate(this: &mut Self::This) -> Result {
-          this.data.send_cmd(LedCommand::Trigger)
-      }
-  }
-
-I think this naming "triggers::HardwareOperations" may cause confusion
-in the future. I think that what you implement here should be called
-LED Private Trigger, or something derived from that.
-
-Using the work "hardware" may lead people to think that it means the
-other mechanism, wherein we offload software LED triggers to hardware
-(which is implemented via the `hw_control_*` members of
- `struct led_classdev`).
-
-> 
+> > @@ -579,69 +574,211 @@ fn next(&mut self) -> Option<ArcBorrow<'a, T>> {
 > >
-> > I fear that you may be confused about some stuff here. In order to
-> > determine whether this is the case, could you answer the following
-> > questions please?
-> 
-> That might be right, thanks for trying to clear it up if that is the case.
-> 
-> > - What is the purpose of `struct led_hw_trigger_type`?
-> Marking a led that it has a private trigger that gives control of the LED to some hardware driver.
-> > - What is the purpose of the `dummy` member of this struct? What
-> >   value should be assigned to it?
-> From my understanding this is just to give the struct a size, so that it has a unique address in memory so the pointer value can be compared.
-> > - If a LED class device (LED cdev) has the `trigger_type` member set
-> >   to NULL, which LED triggers will be listed in the sysfs `trigger`
-> >   file for this LED cdev? And which triggers will be listed if the
-> >   `trigger_type` member is not NULL?
-> For null all generic triggers will be listed, and for some value all generic plus the specific trigger.
-> > - Why does both `struct led_classdev` and `struct led_trigger` have
-> >   the `trigger_type` member?
-> led_classdev has it to declare that it does have a led private trigger mode, and the led_trigger has it so the activate/deactive functions can be found.
-> 
-> My research so far into how triggers work was mostly so that I can use the wwan module trigger on the SE10 board I have here, and therefore I did not look into how to write a generic led trigger usable on more then a specific led.
-> 
-> Thanks a lot for clearing up possible misunderstandings,
-> Fiona
+> >  /// A cursor into a [`List`].
+> >  ///
+> > +/// A cursor always rests between two elements in the list. This means=
+ that a cursor has a previous
+> > +/// and next element, but no current element. It also means that it's =
+possible to have a cursor
+> > +/// into an empty list.
+> > +///
+> >  /// # Invariants
+> >  ///
+> > -/// The `current` pointer points a value in `list`.
+> > +/// The `next` pointer is null or points a value in `list`.
+>
+> Could you add an example of how to use this struct?
+>
+> Unrelated, but since you are at it, could you update the safety comment
+> on first line in the `List::remove` function?
 
-OK it seems that you do indeed understand these.
+Okay, will look at this.
+
+Alice
