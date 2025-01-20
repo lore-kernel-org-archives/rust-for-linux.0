@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C88EE1E32C3;
-	Mon, 20 Jan 2025 13:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443A51E32DA;
+	Mon, 20 Jan 2025 13:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737381544; cv=none; b=DD3fMYr7VqexicQeMgNlqjvIUUop2T2E89t4pqUDEIsl/T9InzcU1i8u2KWVhR33exJihcuoqW+OV/sIqdUJefd6AjdaGTcFCEMHGe9FHZUFFqPBRt5ZczmLHCHZ5seYL/XTVYLZzI7Kc34sK12GY7RdBBuYXZozjt7NqlzkucE=
+	t=1737381549; cv=none; b=SLkMStb7f8b2eFKf7ivamR1nNinZWr2nNv59mlPoEg2gH9HhnVJiBNZrqG0PpUCkwwgIxIm2pLL3w2riMbgOP4hWYF97GvtKYlwDn1AFpn/jCxD1wjsiz+1mI3I1ZI4wJbFW0eODAj/l4avaIbPCJBjJFbjqUCBkP2A/n+BLfXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737381544; c=relaxed/simple;
-	bh=6uRtkk/jNvzKOVauU8wC20bjjcc2C00m8OjNWM7tFjo=;
+	s=arc-20240116; t=1737381549; c=relaxed/simple;
+	bh=d1tsoLUIvajiEO9W641JPwvevOSM+aDlDfBHK21fuXk=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=MGBkPlIb57BW1TSUAHHhtzT6DCMdjNUVjttMISzGUm/Pxxim6QfVLV0iCd8qXOZy4IpS9LemkA/wJe0TBUI5C95VDS6fVvcUWO+WzcyeZayeJRg3BMRIUUZeEd6E10TmmJglgt8kuVLth+Wv6FRXPgumG7A8+AsdOXuBBUe0fgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tu7cbzt1; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=KdF2gum+xGYj+wCRWG67rayDl8fXp0o6pChdZ11Vvfpp9JbInRBnv06o3VvGUQ0DmNXAxEtRcECabQEcoVtYCpGYM1oQ8AqVa2VkR0Ui8KcGiI7w1QV8kFxzZqENtKdOSca3o+PipSvmW52FA8jiJxlUxQs70+xzRNHRAV1I+A4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QxzGxUNy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tu7cbzt1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 536D5C4CEE1;
-	Mon, 20 Jan 2025 13:59:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QxzGxUNy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8747C4CEE3;
+	Mon, 20 Jan 2025 13:59:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737381544;
-	bh=6uRtkk/jNvzKOVauU8wC20bjjcc2C00m8OjNWM7tFjo=;
+	s=k20201202; t=1737381548;
+	bh=d1tsoLUIvajiEO9W641JPwvevOSM+aDlDfBHK21fuXk=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Tu7cbzt1EYuVAHA7GxMhtAmbSMfoFckIjtgp+uyQyHh/OaWqjISsRZFOk2Csc6PV+
-	 OWKowypmWsZ5nn0XAicZUW4Z91indymLBUoZaS/ZXOfpDU+EhSCtlf/1EGAfe/2gTN
-	 iH2Fi2kgTSrjrtJtR+ZJOp8aU7Efaodq3FoGhTiutWu/TKExCcCv4VlyoONEiUrfT+
-	 AuadReex7reNrERMSeFkdpeJfU/hSoR7aDyUmCVoyaqfr59LH0m0L70pW6whX06BFQ
-	 8brt8PrxGB8tOQAO3D1KtYZUCF5IJ4FP31eKs1cd+NaSkOc4gOXyQmtmZjKrkA6zip
-	 5zu17SqiH45JQ==
+	b=QxzGxUNyAQ6Prb0O1fqrFZHkN4L3/z3rkKqb13mP6fZF8nyMDQLzx0iv6HxCKAJrU
+	 /bocLniWyvdXoYuP2agYypFKfpPy3RUqrfZ+DY5gui5hN2DHm469MFC+P9xalijSs6
+	 JCFWqIjL2RfqzziSCg+zX5mHsEpB6OxKzksjqMz3eVB5auxmQ2Z5fjuirBPTxJcTRu
+	 4ijlhfVFek1I7um75lk98ib3xOBm+vtRSMYB08QUPXPhvOOkouRtiOyUuxSHwC2tmv
+	 9iWXsk5q/20PBnxnR/RXsjCpAGftGYD7skEqmmVLrcoDxWvpyH0aIjTIheRtMCRWWc
+	 aVpKpSAyn6MMA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: "Alice Ryhl" <aliceryhl@google.com>
 Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Matthew Wilcox"
@@ -41,15 +41,15 @@ Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Matthew Wilcox"
  <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
   "Trevor Gross" <tmgross@umich.edu>,  <linux-kernel@vger.kernel.org>,
   <linux-mm@kvack.org>,  <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v12 4/8] mm: rust: add lock_vma_under_rcu
-In-Reply-To: <20250115-vma-v12-4-375099ae017a@google.com> (Alice Ryhl's
-	message of "Wed, 15 Jan 2025 13:35:07 +0000")
+Subject: Re: [PATCH v12 7/8] rust: miscdevice: add mmap support
+In-Reply-To: <20250115-vma-v12-7-375099ae017a@google.com> (Alice Ryhl's
+	message of "Wed, 15 Jan 2025 13:35:10 +0000")
 References: <20250115-vma-v12-0-375099ae017a@google.com>
-	<rhrbn6WVipeiXJDTNLqjxUv2zr1qukElqEK50Bpe1k9dl5HQtD3TBjRFhS31qIKI-gVYbETDvQPE8lPfWcdwxw==@protonmail.internalid>
-	<20250115-vma-v12-4-375099ae017a@google.com>
+	<aBAHBgpfbiibgirDNrA2Ee9a0ST3qTzbMWXiyuIjWkHDoCClUFEOMpXqZlW2pX2kcDGujpWkbSoSGFaIw2X3gg==@protonmail.internalid>
+	<20250115-vma-v12-7-375099ae017a@google.com>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Mon, 20 Jan 2025 13:50:42 +0100
-Message-ID: <87tt9td4yl.fsf@kernel.org>
+Date: Mon, 20 Jan 2025 14:48:46 +0100
+Message-ID: <87ikq9d29t.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -60,20 +60,12 @@ Content-Type: text/plain
 
 "Alice Ryhl" <aliceryhl@google.com> writes:
 
-> Currently, the binder driver always uses the mmap lock to make changes
-> to its vma. Because the mmap lock is global to the process, this can
-> involve significant contention. However, the kernel has a feature called
-> per-vma locks, which can significantly reduce contention. For example,
-> you can take a vma lock in parallel with an mmap write lock. This is
-> important because contention on the mmap lock has been a long-term
-> recurring challenge for the Binder driver.
->
-> This patch introduces support for using `lock_vma_under_rcu` from Rust.
-> The Rust Binder driver will be able to use this to reduce contention on
-> the mmap lock.
+> Add the ability to write a file_operations->mmap hook in Rust when using
+> the miscdevice abstraction. The `vma` argument to the `mmap` hook uses
+> the `VmAreaNew` type from the previous commit; this type provides the
+> correct set of operations for a file_operations->mmap hook.
 >
 > Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com> (for mm bits)
-> Reviewed-by: Jann Horn <jannh@google.com>
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
 Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
@@ -81,6 +73,5 @@ Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
 
 Best regards,
 Andreas Hindborg
-
 
 
