@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C620D1E25F4;
-	Mon, 20 Jan 2025 13:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ADFE1E25F4;
+	Mon, 20 Jan 2025 13:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737381535; cv=none; b=dyp78EVWDZyCf/mWZu4Moj9C2XQgfCyzvkgzXTffNb5lLEEyjWVIXDalixdNZK5XViaxii1TUg7LJ9wXEVCW71Hr3iMOV6jK7I8ri1lyEORSrScvePsMIIZXDBDwsjmEemQwO7/7+1bsnLB+/S8Fd/uL1zbiCWJn6Qfj60YBMNI=
+	t=1737381540; cv=none; b=Uqq2owWDYoY5sG69U818Vzw8E/32yQwH0LqKsjRJvV3sJX70yqi+98QADk1cMoKSUGULFPdAI+zSjXwPBvqtc7cHlhdE+i5JvctI0hf1Nl+YWsaufPNxzGmKXogEQD7gKObXrrkjpNF7axrF2dYL+AbgLeVt4xMbRcdgAmxfvsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737381535; c=relaxed/simple;
-	bh=iGCzI1XYV3W8ZPDs3utlyJdmI7e0wBzptGQh8W8V9lQ=;
+	s=arc-20240116; t=1737381540; c=relaxed/simple;
+	bh=Igv7LN2+tORLsqtcsQU61uzv3Ya8nttmV+0Uzj1G/2g=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=B88x8264ipLQC7TyMqS4gXEYTInDIDI7vX5q6ngz+JjEESn2WWN6e6Bhi6ar6fuOrRpmMExwDT1W0+Nuf621buFXXfLyYMqrL/mg8V9EDLyWjEIHqcYfHIk4dFVKt+RDps/nWuXRt1CPZIoEng0pkxTO0zewGwhU0UEbC7fD5sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GRj+KPDq; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=S22/dLvk+h8xiq3BBCqB8U86bh0en8lBd29UlqILQY+eDwZeJrjknNBbpA4CDvI2FWL+AKEMe4oaJDvFQnSzRPpRWO/rZ6U8SGZBJZQCjN4otFjhTnhPnHF/yyt0TfbsTChA9cQI4rqWHReGv9VnQEJ8yAlcwitYkSypeVYQzJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jbNOUxZE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GRj+KPDq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D65C4CEE1;
-	Mon, 20 Jan 2025 13:58:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jbNOUxZE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEF77C4CEDD;
+	Mon, 20 Jan 2025 13:58:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737381535;
-	bh=iGCzI1XYV3W8ZPDs3utlyJdmI7e0wBzptGQh8W8V9lQ=;
+	s=k20201202; t=1737381539;
+	bh=Igv7LN2+tORLsqtcsQU61uzv3Ya8nttmV+0Uzj1G/2g=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=GRj+KPDqT1yo6bs4Yhuxa7BD+LXfGmkrDmmiKK4Gu0F3LQCjbQqa5oOYL9FpdoBIe
-	 +B43DhbMjkGmxFvbQUYIbC3aSC+Hf64f/Z9+WVAfMKH6v0ptvilqCFhJsC633n+DLZ
-	 nydL1QN7fVA/6gi9VyYiKgDRg1hc9aEq0cQKEP1VCERYF7ou/FJH/+dXlo2BIk7otW
-	 z/MquNaKstk9TkxqhibO5XVGA2LWdaydzJ6TYszUSHudo3n0b4ctrw1U7YOSIPf7Xf
-	 RwV3wIY53DZyRcUN6/eAPbKETOsidPGMg3ytRFaJAFtcWPZqo6bvzZX4ITrEvT+YTL
-	 wFSqLu3MDleSA==
+	b=jbNOUxZEFF1OuBhzwnnafsAXLIZvFeGgeujAR/aBp7/Kf184cH6Oa6O9LhQcXSbkx
+	 XScRKzAxr47yqeVSFeKX9XTowoCLetIXF6A1ax4DJQLVnjTjy67b2XwbYq9g97/J6R
+	 SI3+N7mnDaAl0CgvPilylyrTn7pUwPPGUs0tZMRh+G15NICA3N0xEd4h9HspDPWSm8
+	 LP+qBRyGFNLjTuseAgykq8ji1v4N7yPVKkH73jur0hmcMMpjeWVcYaKvk/11QPhE+c
+	 viKHIPOoT0AEyw946TF9uef9PgIwbscfOHywmvagLOiyDpTRcRVtWgFGTz8/Ijepf3
+	 czllVQiNv7iJA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: "Alice Ryhl" <aliceryhl@google.com>
 Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Matthew Wilcox"
@@ -41,15 +41,15 @@ Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Matthew Wilcox"
  <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
   "Trevor Gross" <tmgross@umich.edu>,  <linux-kernel@vger.kernel.org>,
   <linux-mm@kvack.org>,  <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v12 1/8] mm: rust: add abstraction for struct mm_struct
-In-Reply-To: <20250115-vma-v12-1-375099ae017a@google.com> (Alice Ryhl's
-	message of "Wed, 15 Jan 2025 13:35:04 +0000")
+Subject: Re: [PATCH v12 6/8] mm: rust: add VmAreaNew for f_ops->mmap()
+In-Reply-To: <20250115-vma-v12-6-375099ae017a@google.com> (Alice Ryhl's
+	message of "Wed, 15 Jan 2025 13:35:09 +0000")
 References: <20250115-vma-v12-0-375099ae017a@google.com>
-	<EJniO_7zKE5oLRie5q2G7ogmzUJOuTyEV7aUjZVZGLsjK02-xeNeJXYuIQKhPy0Td0r55g3DMmSRGVnsoYfDuQ==@protonmail.internalid>
-	<20250115-vma-v12-1-375099ae017a@google.com>
+	<BlyMgQ8YIRn3FzbgAL0pxsOXkr45sEKwt8hR-aqH_TANIozThAeuKNz6aN9RunuS_ndbkuuAhWLArxACU_NbEA==@protonmail.internalid>
+	<20250115-vma-v12-6-375099ae017a@google.com>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Mon, 20 Jan 2025 13:33:13 +0100
-Message-ID: <87bjw1ekc6.fsf@kernel.org>
+Date: Mon, 20 Jan 2025 14:00:02 +0100
+Message-ID: <87o701d4j1.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -60,26 +60,25 @@ Content-Type: text/plain
 
 "Alice Ryhl" <aliceryhl@google.com> writes:
 
-> These abstractions allow you to reference a `struct mm_struct` using
-> both mmgrab and mmget refcounts. This is done using two Rust types:
+> This type will be used when setting up a new vma in an f_ops->mmap()
+> hook. Using a separate type from VmAreaRef allows us to have a separate
+> set of operations that you are only able to use during the mmap() hook.
+> For example, the VM_MIXEDMAP flag must not be changed after the initial
+> setup that happens during the f_ops->mmap() hook.
 >
-> * Mm - represents an mm_struct where you don't know anything about the
->   value of mm_users.
-> * MmWithUser - represents an mm_struct where you know at compile time
->   that mm_users is non-zero.
+> To avoid setting invalid flag values, the methods for clearing
+> VM_MAYWRITE and similar involve a check of VM_WRITE, and return an error
+> if VM_WRITE is set. Trying to use `try_clear_maywrite` without checking
+> the return value results in a compilation error because the `Result`
+> type is marked #[must_use].
 >
-> This allows us to encode in the type system whether a method requires
-> that mm_users is non-zero or not. For instance, you can always call
-> `mmget_not_zero` but you can only call `mmap_read_lock` when mm_users is
-> non-zero.
->
-> The struct is called Mm to keep consistency with the C side.
->
-> The ability to obtain `current->mm` is added later in this series.
+> For now, there's only a method for VM_MIXEDMAP and not VM_PFNMAP. When
+> we add a VM_PFNMAP method, we will need some way to prevent you from
+> setting both VM_MIXEDMAP and VM_PFNMAP on the same vma.
 >
 > Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com> (for mm bits)
+> Reviewed-by: Jann Horn <jannh@google.com>
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-
 
 Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
 
