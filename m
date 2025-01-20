@@ -1,271 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71743194C78;
-	Mon, 20 Jan 2025 21:12:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4473C23A9;
+	Mon, 20 Jan 2025 21:53:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737407556; cv=none; b=f13khGqGVuhWYgUdy+ZQxqUvQIeRiIzL6RgBc533R9CLiYOIku9RECXIPH0rxrYLW0e4VJ8sK5KCgSts1khpS5/GtlqdBijVZiZUzGE63RSJ7vzhaazW7WjutnqRprixWFsYg1QWkRiW+Ki3NOKz3O5BwEm9OXOV7jYU9rsC8eo=
+	t=1737409985; cv=none; b=V4gzZryhnTpIIUsx4MxzwrbGw4HainlnGXyl9KzuTGFHNHFBXITh3V4kzLCLabQh430ihnAJ8gJkRVAKpiWXlQkLfrh140SIOt+BdXKen0iEOCQQyt3INOtR9TV6fvgy3+ogOdG6enOK37kM7JK5r3KSmCvnViY1yp+qyh3uDmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737407556; c=relaxed/simple;
-	bh=uA2mcFGE2BXe/wlaVePIRvc8grkqEAcaX1YhNCFEbeI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=qBO46k3fGgI2urjDdoFwBzKCVvHwwFNxiiNWm0HqZE5YdUuvW2o03jzLTjX9wXSQY4CjA7tc69J6J44hJHJwBJSue3l7KeOnpf2T+PJ5oGux+8CBIUnrPb0eQCLgK+li6/ZGwYyHIdjZLxbFvfE0bx9t3Wyq19dlQHv0OF+MHNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PkXnTOU7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1737409985; c=relaxed/simple;
+	bh=1Vbw7KU/hZTJSqblA6qabU/ThVTNhHylD1j7iTQi1h0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XaDJ5Gkgg+cKWfBR4XSrEoI2j1hv8EDou+XXe5PvUdVoXeJRj3Ws59iQDarHHNSAVOK8qYOzyKjBM9I4U90dQ35WZg5uJ4RKW9QxMKOAgNTSHZnpq/u2yL2HGgjzRKWhFhSxFHeRQkaV+/s8pIfNO2nedJmSg+zmWsFsaSDH030=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FCwwu3vf; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PkXnTOU7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88500C4CEE0;
-	Mon, 20 Jan 2025 21:12:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737407555;
-	bh=uA2mcFGE2BXe/wlaVePIRvc8grkqEAcaX1YhNCFEbeI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=PkXnTOU7Uf4eX6U047y9iSf8+/aoso12sNwBj4RKiUp3paDNNLAqK+8RjUzrIG3of
-	 T1vg70IweFBPUgqZmZKdjQBuI49CTLWWSorwnZSstQ+CgwgI+LwabuGeZniZ83/siP
-	 sJrnEZngKB8e18mgMK6aW2AkWbXZSbyFj8qBWUlvflB1B6r/0FwJTj2bU5T6rlwyRy
-	 qKhIIwI9UdoBYfmEp5tzEuBNKCUgc6WX3DfYu6QYP2Fay3PZp9rKP3DOhZO2OxEgLL
-	 h78dlBWb2huzkYGsi5BhGVKN18R6e4kMk4rx4PV86O17R6LHSxKYOcxACBv+QUEUZe
-	 cQS036UyGo+VA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno
- Lossin" <benno.lossin@proton.me>,  "Trevor Gross" <tmgross@umich.edu>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: list: make the cursor point between elements
-In-Reply-To: <CAH5fLginoFU38HbRjtOY8wAOo9uu5LJD7AKzduRkL0RcT6BUvw@mail.gmail.com>
- (Alice
-	Ryhl's message of "Mon, 20 Jan 2025 16:52:50 +0100")
-References: <RDzzJkrT7QOUu_FAcJyNOJx3ZW9gzDG7vi-z94_5G6YiTgp8yKUu_U4QYVyTXrzTi9eK4BIiANZ4LboxAchm-w==@protonmail.internalid>
-	<20241025-cursor-between-v1-1-08913714aae5@google.com>
-	<87h65tem30.fsf@kernel.org>
-	<5HvNJ52WD0CL3uj4M1EHoKipDiKw0B-3tbEAGI_KFSmgvt5hyLWPPDTKHoKWYGk4y_BYjEyppWUpJW6AfSyVPA==@protonmail.internalid>
-	<CAH5fLginoFU38HbRjtOY8wAOo9uu5LJD7AKzduRkL0RcT6BUvw@mail.gmail.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Mon, 20 Jan 2025 22:12:21 +0100
-Message-ID: <877c6pchqi.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FCwwu3vf"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-21c0e29b26bso10898955ad.0;
+        Mon, 20 Jan 2025 13:53:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737409982; x=1738014782; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1Vbw7KU/hZTJSqblA6qabU/ThVTNhHylD1j7iTQi1h0=;
+        b=FCwwu3vfMjDNGzONtw1MjM9ReJuQAAStYZ9hwbwKG4qVV1+p35lsLE28QTcCK+z2hD
+         1ieVXv2Id+1J41IVrl3JCrMGP31cE6TCrpHzDlfNtMIInIshrzaIGTOCOQfLbU7ByBfX
+         6Qm8FXQZ4rdigOf5cfoIZmrxuZvCv/p0P1eJ9umLrQvAQ8jTU+AS/JZ+sqb2Ss3cbIj+
+         kVgG4cOfsKD1oF3HtbAzCzWqSEnhlj4VgIGD7l4pTD8UdqzswPoms6NTHUiLA+GFGKmJ
+         o/9JIBB8bYNwwrrU1CKWT9NM2iW/DTqh4W07c5qgr5ezuu+Qxy85ZmeybJ2nvBfV9GGM
+         HVPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737409982; x=1738014782;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1Vbw7KU/hZTJSqblA6qabU/ThVTNhHylD1j7iTQi1h0=;
+        b=FjsSsIQ72KgtCpvvJszng0aTTA/ZJtdMmg9HBPc+M4gUHXPJPmQWrZkzhFyavucxtx
+         vaewnoWuYEKC4F1iHRRyzwtRe/sgqmULJWkFZcJLasjETzp6MoDJWy2rkAkJD1P0ZlmH
+         3XSVgNHAbXnhDA0+CFkpHlGOorZVF5OqiSnYpFBJa0WhSSeHe9AQZkiRUosToCBYDb1B
+         kN5JgRFbP5caJUYwzYt1M0AhAnpA7Gf+CO2ps/hK+VtMXam5YyxnpR4Xg0KNHjAbVXC5
+         Dl2pCoZVSdOIw4ThYGBytwxti9gITvl9+tDbawEDIHTrEjkxmfFcZETWtQWz3s7d92Ik
+         VfUg==
+X-Forwarded-Encrypted: i=1; AJvYcCU3f3jckZDCVVcU5VI7yskMz0TT7bketXbEjBSa7z2uRe3SoZJgdFwMujDeZUB0USZSIS4GRw29V3I7HRI=@vger.kernel.org, AJvYcCX8Py6zbl4PflRl7MZd6U3souTvDY+NZc2pQEpKQpxbaUVBQMPSR/fuCJBjBZ7DFJ4X8MsqjtKiP4AYK4WIDxU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzc82DCPcp2RzPwrBlt0TbkhBtHq9/MUtpPduRc7GkOez+vBdoz
+	H+co0o1xWz4kfmcrHPH0+ksB2yeiLakH0ZDLFdmYVnofh6QKRyibGeO4ludP/0Nn5/at/uhjrYp
+	wWE2BWzKBfL2sj6NCq0qhzOXIEWA=
+X-Gm-Gg: ASbGncuydL97FtVgWyVtn1sAjk96qjHt2CRvv+omWzSPD/KVJka6QNAKBag55RJdhyn
+	QWOvQPCughr54wAX1PgxRpKKUXOpXwYNEZZelPSb7e06jZ/9x70M=
+X-Google-Smtp-Source: AGHT+IEBFfoREvwPsyAWhU6KI6Sj3YXP+bME90dJ+3K+zVF2Ba9Y0tsVR1FviFh6Y7cffgrMh+5FSIjsqdqa+EVs+bs=
+X-Received: by 2002:a17:902:fc87:b0:215:9d47:4897 with SMTP id
+ d9443c01a7336-21c353ef373mr82155455ad.4.1737409980859; Mon, 20 Jan 2025
+ 13:53:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20250120124531.2581448-1-linkmauve@linkmauve.fr>
+In-Reply-To: <20250120124531.2581448-1-linkmauve@linkmauve.fr>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 20 Jan 2025 22:52:48 +0100
+X-Gm-Features: AbW1kvbipA64WZgr9Xm7SsOvkVvkgqJp9cEZabKMYD5JD0up8QBoKASUAMMavBM
+Message-ID: <CANiq72n1YpUowTh3Hdjo5auOmTTUU1-8d2FTL3e=Oyu3Q=-BkQ@mail.gmail.com>
+Subject: Re: [PATCH] drm/panic: fix compilation issue on ARM
+To: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Jocelyn Falempe <jfalempe@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-"Alice Ryhl" <aliceryhl@google.com> writes:
+Hi Emmanuel,
 
-> On Mon, Jan 20, 2025 at 12:55=E2=80=AFPM Andreas Hindborg <a.hindborg@ker=
-nel.org> wrote:
->>
->> Hi Alice,
->>
->> This looks like a nice improvement!
+On Mon, Jan 20, 2025 at 1:45=E2=80=AFPM Emmanuel Gil Peyrot
+<linkmauve@linkmauve.fr> wrote:
 >
-> Thanks!
+> In C, the char type is specified with =E2=80=9CThe implementation shall d=
+efine char to
+> have the same range, representation, and behavior as either signed char o=
+r
+> unsigned char.=E2=80=9D
 >
->> This looks like a refactor of `push_front`, `push_back`. It looks like
->> it is unrelated to the cursor change. Can you split this out into a
->> separate patch?
->
-> I don't think it's unrelated. It extracts out common code that
-> previously only push_front/push_back have, but that the cursor now
-> also needs. Of course, it could still make sense to extract
-> insert_inner out in a separate patch.
+> On x86 it defaults to signed char, and on ARM it defaults to unsigned cha=
+r.
+> This carries over to Rust=E2=80=99s FFI, which aliases its c_char type to=
+ i8 on x86,
+> and to u8 on ARM.
 
-I think that would make sense.
+In the kernel `-funsigned-char` is used, see commit 3bc753c06dd0
+("kbuild: treat char as always unsigned").
 
->
->> > @@ -489,17 +480,21 @@ pub fn push_all_back(&mut self, other: &mut List=
-<T, ID>) {
->> >          other.first =3D ptr::null_mut();
->> >      }
->> >
->> > -    /// Returns a cursor to the first element of the list.
->> > -    ///
->> > -    /// If the list is empty, this returns `None`.
->> > -    pub fn cursor_front(&mut self) -> Option<Cursor<'_, T, ID>> {
->> > -        if self.first.is_null() {
->> > -            None
->> > -        } else {
->> > -            Some(Cursor {
->> > -                current: self.first,
->> > -                list: self,
->> > -            })
->> > -        }
->> > -    }
->> > +    /// Returns a cursor that points before the first element of the =
-list.
->> > +    pub fn cursor_front(&mut self) -> Cursor<'_, T, ID> {
->> > +        // INVARIANT: `self.first` is in this list.
->> > +        Cursor {
->> > +            next: self.first,
->> > +            list: self,
->> > +        }
->> > +    }
->> > +
->> > +    /// Returns a cursor that points after the last element in the li=
-st.
->> > +    pub fn cursor_back(&mut self) -> Cursor<'_, T, ID> {
->> > +        // INVARIANT: `next` is allowed to be null.
->> > +        Cursor {
->> > +            next: core::ptr::null_mut(),
->>
->> I am slightly confused about why you need to track the beginning and end
->> of the list. The cursor movement operations circle have wrapping
->> semantics and the lists are circular. Could you remove some code by
->> using this property?
->
-> I think the current API is much more intuitive. Yes, the list is
-> implemented in a circular manner, but you're not intended to think of
-> it that way. The linked list is a list of elements. With elements ABC
-> and cursors pointing between them, it makes sense that the cursor can
-> be |ABC, A|BC, AB|C, ABC|. In each case, you can add an element before
-> or after the cursor. To iterate the list, you keep calling `move_next`
-> until `next` returns `None`. That also makes sense. If the cursor
-> becomes circular, then you iterate by calling `next` until the next
-> element is the first element? Seems confusing to me.
+In any case, the change is fine, because we want to use the proper
+type, but this is already in the Rust PR for this cycle, which should
+land in mainline in some days, see commit 27c7518e7f1c ("rust: finish
+using custom FFI integer types") in rust-next.
 
-You might be right. But then again, in your patch the cursor _does_ wrap to=
- the front
-when it is at the end. If we did not treat beginning and end as two
-separate states, we could remove a lot of edge case checks, see below.
+However, I am nevertheless confused, because in mainline
+`crate::ffi::c_char` is `core::ffi::c_char` which is `i8` in both
+arm64 and x86_64 and thus there is no build issue there.
 
-In your experience using the API, did you use the feature that
-`move_next` will wrap to the front? If the cursor is circular, maybe
-`move_next` and `move_prev` should should be no-ops when the cursor is
-in edge positions?
+If by ARM you mean 32-bit, then we don't have support for it yet in
+mainline, so you shouldn't be able to see it there either.
 
-With a circular cursor, you would need to compare to first or last as to
-break an iteration loop. I think that is how the C API works.
+Could you please clarify? Are you using patches on top of mainline,
+e.g. the 32-bit arm support one?
 
-With a circular cursor it would be something like this
+Thanks!
 
-let mut c =3D list.cursor_front();
-let last =3D c.peek_prev();
-loop {
-  let el =3D c.peek_next();
-  // Do stuff
-  if el =3D=3D last {
-    break;
-  }
-}
-
-For a non-circular cursor
-
-let mut c =3D list.cursor_front();
-loop {
-  let el =3D c.peek_next();
-  if el.is_none() {
-    break
-  }
-  // Do stuff
-  c.move_next();
-}
-
-Not too much difference?
-
-
-diff --git a/rust/kernel/list.rs b/rust/kernel/list.rs
-index 328d3e369d571..e1d0608e66dc8 100644
---- a/rust/kernel/list.rs
-+++ b/rust/kernel/list.rs
-@@ -589,26 +589,15 @@ pub struct Cursor<'a, T: ?Sized + ListItem<ID>, const=
- ID: u64 =3D 0> {
-=20
- impl<'a, T: ?Sized + ListItem<ID>, const ID: u64> Cursor<'a, T, ID> {
-     /// Returns a pointer to the element before the cursor.
--    ///
--    /// Returns null if there is no element before the cursor.
-     fn prev_ptr(&self) -> *mut ListLinksFields {
--        let mut next =3D self.next;
--        let first =3D self.list.first;
--        if next =3D=3D first {
--            // We are before the first element.
--            return core::ptr::null_mut();
--        }
--
--        if next.is_null() {
--            // We are after the last element, so we need a pointer to the =
-last element, which is
--            // the same as `(*first).prev`.
--            next =3D first;
-+        if self.next.is_null() {
-+            return self.next;
-         }
-=20
-         // SAFETY: `next` can't be null, because then `first` must also be=
- null, but in that case
-         // we would have exited at the `next =3D=3D first` check. Thus, `n=
-ext` is an element in the
-         // list, so we can access its `prev` pointer.
--        unsafe { (*next).prev }
-+        unsafe { (*self.next).prev }
-     }
-=20
-     /// Access the element after this cursor.
-@@ -648,8 +637,6 @@ pub fn peek_prev(&mut self) -> Option<CursorPeek<'_, 'a=
-, T, false, ID>> {
-     /// If the cursor is after the last element, then the cursor will move=
- back to the beginning.
-     pub fn move_next(&mut self) {
-         if self.next.is_null() {
--            // INVARIANT: `list.first` is in the list or null.
--            self.next =3D self.list.first;
-             return;
-         }
-=20
-@@ -657,10 +644,6 @@ pub fn move_next(&mut self) {
-         // access the `next` field.
-         let mut next =3D unsafe { (*self.next).next };
-=20
--        if next =3D=3D self.list.first {
--            next =3D core::ptr::null_mut();
--        }
--
-         // INVARIANT: `next` is either null or the next element after an e=
-lement in the list.
-         self.next =3D next;
-     }
-@@ -670,24 +653,13 @@ pub fn move_next(&mut self) {
-     /// If the cursor is before the first element, then the cursor will mo=
-ve to the end of the
-     /// list.
-     pub fn move_prev(&mut self) {
--        if self.next =3D=3D self.list.first {
--            // We are before the first element, so move the cursor after t=
-he last element.
--            // INVARIANT: `next` can be a null pointer.
--            self.next =3D core::ptr::null_mut();
--            return;
--        }
--
-         // INVARIANT: `prev_ptr()` always returns a pointer that is null o=
-r in the list.
-         self.next =3D self.prev_ptr();
-     }
-=20
-     /// Inserts an element where the cursor is pointing and get a pointer =
-to the new element.
-     fn insert_inner(&mut self, item: ListArc<T, ID>) -> *mut ListLinksFiel=
-ds {
--        let ptr =3D if self.next.is_null() {
--            self.list.first
--        } else {
--            self.next
--        };
-+        let ptr =3D self.next;
-         // SAFETY:
-         // * `ptr` is an element in the list or null.
-         // * if `ptr` is null, then `self.list.first` is null so the list =
-is empty.
-
-
-
-
-Best regards,
-Andreas Hindborg
-
-
+Cheers,
+Miguel
