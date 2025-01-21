@@ -1,481 +1,113 @@
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93AA31E7C16
-	for <rust-for-linux@vger.kernel.org>; Tue, 21 Jan 2025 10:08:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC681E9B10
+	for <rust-for-linux@vger.kernel.org>; Tue, 21 Jan 2025 10:14:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737454133; cv=none; b=ndh/G4AW9RsKbtfvkmJ57rs5bRejx7a/XGEodN3WTJ97RCUwvdwCGsGo3GK2/1uQLxuWbJ05ZsD+D99aSY5d3YqxyM19mrc6uur0vuFKhcj30rhLoeQxgCLbJ5XJAzVbdLXsBaZMiTv0MfZyIpxsXn1YTJctcYmWHxYOICOn5OE=
+	t=1737454497; cv=none; b=Mgax7WP1HSjFo7nAXlsk+Kb+8uzEX4Bs+rN5+QSq4B7AE99KlfBeTYM0Zoza0zGVyhkFhLVZJkRf/cDlQC73aAjfnNrfJHQJLLzXyU3VdijbFTpe2CAun/k/i0T1ZPpu3VZovjDBiUqn7WTKR3/Tsx7Cff30VYRPxr6bn8hZ1nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737454133; c=relaxed/simple;
-	bh=RgROe1uTkRvlRV+DYmWfsEa0vpNlU4PD34hng6WZyh8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ce/D15B2tmP6neAAq8nX4l0oReugnyyur2jW6Uu40wpUt2ci8Jr7fmY9tzeLbqXCh3Xznv3BrdT7O08xR1Hus0h4lOTT4oim18z5m/q0d6ngmBJAFev6MHapuIBeI+WHyhIqAgula6HHYckO52ytSDPf7ZfvpeFZeJ0oILY28qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zsCrTl/c; arc=none smtp.client-ip=209.85.208.179
+	s=arc-20240116; t=1737454497; c=relaxed/simple;
+	bh=84LGlajnIsiDyDNvcSBjiHBSqCRjx2vYfToPoBqxZzI=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=gIg8KQ5tPBbaSZur/ufNRdry0ndw0Z4rat8Vf9DVHMcIq7729sDqmE/GaSJRIB5M3ah9S/0jQTX7suyNRDh+lRmIBcziBcuidQiXMQlCLqrcYE2gic8dAhy9WAUFtkHfdEtZFTNhjAkQ9LHTBVY/Fcv74IgHNgTcXAfrJ6qpnX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lQ50RW3+; arc=none smtp.client-ip=209.85.221.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zsCrTl/c"
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-304e4562516so53650801fa.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 21 Jan 2025 02:08:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lQ50RW3+"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-385e49efd59so2347738f8f.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 21 Jan 2025 02:14:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737454130; x=1738058930; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PxATdoBboMl8YHvsPZQ4+QCK2SQ+GJUEg6s0+E/IMHY=;
-        b=zsCrTl/c9QecvVxQ8lLCb0Cj1/21+kQsc6eXzV5F+OpC8F+URmdbCvZ4hwUA64mmKG
-         Zmf3RZRgjFyC59FztF50oSh+CR7ogVsi3yQtSnzwELjWWxM2RVhlPne8+3/i0OG8cfTM
-         P4Q26AnoLYzRjDM01soSGOZPNgZzX/fCeqtSTtR+kxGWJ0g1z/uTUt8D7y3yzn6llnRI
-         WvGoyxzqqdDHzd3ZEqwdhMfUKW3Hb4al9Dfve8YDbqt3jJ62XwoGGgVAQlnyPLTTS0f3
-         D6NOmVv2gnNti8/zTttnIxduxcJPZQNd9jTN9ZbaDnuY697V3M0nc1xe4kBNr7vlztYd
-         3H2A==
+        d=google.com; s=20230601; t=1737454494; x=1738059294; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=W9/U7tHRNXGosnB7a38NwWZkzN9loxC/pM9akOxlSo8=;
+        b=lQ50RW3+dEXWZHMyBtBUh4h3ZGsj7Mv7bA+8tGM4KOir8HowdAkYkfVoSk1V5s5GeJ
+         2I7ObXaV736btIrAOQVjibDv60ThI2KhVA/TwSy+Fz7FK0yTjFqnp/0WC7ZWOdexnbaD
+         mZv9PyX+zCtcsoW7EnQst1pexu83ZPOpz1P6O4Qzztpme8iuFx5STPWJsR8SNsxSbsSG
+         YWPRVjrsXJnpVRrjsD4hthN6fb8ufo3Fh1b7SGVOP5TE4p73drqC9BWIovbPldJ6y2cZ
+         OFLSoZHOHAxDOtMHsBRdtClOLX/MQRuFNQyTangwi1jMp6oQx/2xlwnZKfq/g8Fx+fvo
+         C9Gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737454130; x=1738058930;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PxATdoBboMl8YHvsPZQ4+QCK2SQ+GJUEg6s0+E/IMHY=;
-        b=w//csTkNN8Wm+SlLw5RaQyvpyK5xj0OLAXiOkEoKogu2Jpzec73ibO2qClfisEC45s
-         Vcmz9JYkjSUHcqpGE5SQ6wGYfvQinxf6w1DBmw+h3tFILmODpCbCvh2NbYzyhe8N0Ar7
-         ujSlhKjYaT5X+fmEPWuadJpTkuwwY6YkOv1amzwOolwkvRqNCDQRVeQ6ls2ObwF89rU8
-         w7oz93vYOUOVzL2KyDoHnVyMCJaW6nzcPlt2Du+kcndpRu5KAll40DnNrZ/7SqSCtRfJ
-         5iPCSEAM3xy4ecHhbPc4B7kwuJk+wqcsqwld2pqiRBko9Rrtz+w6CCZUm7n1pdKSYFwn
-         Dccw==
-X-Gm-Message-State: AOJu0YyPaF5VQnLishr8S21BAC3xc1uWxiH+YH7zAFYsLl1bkLOQBkFL
-	xjCTdQ2AQQq2yNv74C1CAUoFMc7R/QKyEdtU112j9Wa4oQaIuAg9iaVbJAdsJ5Rc2UQ9P9I65qS
-	avBLeLt5qWCC40OrzznyBeAxUJlyRo3DTyxzLIDOF9CehgcY+MQ==
-X-Gm-Gg: ASbGncsZcAE+Me89LYiu+mSFPhVxx2I5O/NmfHota+zEupqye9ewv2QCJbIq0Ply4q4
-	MeTRAto7XROpVbZDDm3wm13bxFusNY2sg+4I7xI8p3Cjv2IbE9QXWHEKAamtgxnFORRnXIv9loH
-	Tm+Yl9+g==
-X-Google-Smtp-Source: AGHT+IGHo0ASfN45RlGW1XS2NPq4qfoX7WwEeBfZrH5MLkWb5LtVP2ZVRUvvpg+Oq92vq9nYK7rMBzai3r9zu04BgmU=
-X-Received: by 2002:a05:600c:35cf:b0:434:f1bd:1e40 with SMTP id
- 5b1f17b1804b1-438918c6162mr125898835e9.6.1737454110230; Tue, 21 Jan 2025
- 02:08:30 -0800 (PST)
+        d=1e100.net; s=20230601; t=1737454494; x=1738059294;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=W9/U7tHRNXGosnB7a38NwWZkzN9loxC/pM9akOxlSo8=;
+        b=WAg2gDysXe0CplG1EorWO0cTbVCdpARNVf8qaYicWW5kEIySD7nrue7ONiiK5WQdjV
+         hjYzVV6+krcPPLiFvZ6B/lluE/4IsU9+iuiJH8l2HK8vh2ja9l6SX5vmMWSbgxFoKI24
+         tqFD20pvz1IUq4LTGsn6/+TzpKqHGNzVLwkDw5bBRigqz+DGFvt1ElydLYyYKpa39+br
+         fTOgBV3C+AZccA4VOAymYU7BcDtSnGK31cq+XtXCdGq2DufikiaIez/nPf7qu6z/vnXD
+         bqAfudaRJNnjaVNR+XY/hfbZOWacA2FcxzbKvzznL0ShBnJ6l74NDUbPbEgMTuEHVSKQ
+         2WOA==
+X-Forwarded-Encrypted: i=1; AJvYcCU3G40e01ZatntkSnXnvRsXdfKUpIyVXOI9ks4hAYbojj1HTqUpVMUtKbn7ypaRPAim2e/rzVIQS7hj8lQETw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTX2qWVMAhQQB1Kb5Er5qaLux+tRlxJIDoFM+MWZIUAZ6RGZ2E
+	OXu97mVb+WykQ8bhciXXYX5gqbDE5sAs5v7HwNja3mY09CeZvfwmpxfrUvPdBZAVoSH+MhXZJbF
+	Q4Wz61fo14kNhRA==
+X-Google-Smtp-Source: AGHT+IHT75BmdFgnJIbblSR9wgGuPeOU5qQIZjFAPbXK5TlIPQOe9C5GkqpqZ/3Lv/eRrKYN79afMYyCFoOXQDA=
+X-Received: from wrbdh1.prod.google.com ([2002:a05:6000:a81:b0:38b:f9ae:244f])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:1a8d:b0:385:f062:c2df with SMTP id ffacd0b85a97d-38bf566e6bdmr14664933f8f.11.1737454494173;
+ Tue, 21 Jan 2025 02:14:54 -0800 (PST)
+Date: Tue, 21 Jan 2025 10:14:22 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250121084756.1051758-1-abdiel.janulgue@gmail.com> <20250121084756.1051758-3-abdiel.janulgue@gmail.com>
-In-Reply-To: <20250121084756.1051758-3-abdiel.janulgue@gmail.com>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAH5zj2cC/13MQQ7CIBCF4as0sxbDINjWlfcwXVA6UhKFBmrVN
+ NxdbFy5/F/yvhUSRUcJTtUKkRaXXPAlxK4CM2pvibmhNAguJHI8MvOIKUTW0/wk8gyV7GloVEu
+ ihnKaIl3dawMvXenRpTnE9+Yv+F1/lFD/1IIMGW9aPNQotSZ1tiHYG+1NuEOXc/4A/DRa+a0AA AA=
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=806; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=84LGlajnIsiDyDNvcSBjiHBSqCRjx2vYfToPoBqxZzI=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnj3N/pmTInKWOLMNak/eE0knrxaujvqXwum9SO
+ JCIUfCnmi+JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ49zfwAKCRAEWL7uWMY5
+ RlvoD/4vUTXzwtA3KJOanvr54vVqhAfAJVeEvAfcpvi2HP3Whi18/BvG2oc2c1CrdNR91Qp/1hf
+ QN0m8XrWiajYwqQaQrSGcheAqPUiOh4jV4c9xFjgXODiENWH4fNy0AbhVTBtTfwfeOkXI4XWLNu
+ x2hQ8Wn/s6a/m9jl75ALgG2K9hCoU2SEp3L/aQ+56cWFzrHjbV+jHAmgDiaEThnSfAQsgPUCxOn
+ jD2u5xqmzAhkniilRRr3Nd41khAR+mPrj6AURNWMg4z6NztYPLvZ9bEEaYHem1iLls4gGwJ+2Zf
+ nk9pa+5NNjvgltvsqObGngUXOBbvD0HdbnNUm6+m6YAkRKTIrqvBE3hqglEIyzd1SWjZhXKIjfU
+ cTGQn+K/HIlqSlUh+lCccBQ2Sk4dj3Av4tUUNZI9W+STUcGBS5QfuOYgxG0qNih3/DGefG+TyUF
+ M53YfZijygDhuDjnKS96C9ZG2dX8SZt3tSHiYVQjCvvmRD6nxK23ibrjpk2Upq2diOceo2H/YEN
+ uvMWMyq4vTPfIcfhHfMfAx4iSUYKL6zyd4sJ/64d88O+hGD4ZseNF6OkiHI4kng05qbsW2i4veE
+ bm1q9O8f0n/JB9adxccCoFXIhanfPVsPMkYXtVZZjKIh/hlwkrXhWJzPIx9Qm2YajkEAuf/SRPd +mmY/2ufmmyr/sQ==
+X-Mailer: b4 0.13.0
+Message-ID: <20250121-cursor-between-v2-0-1b24cd377618@google.com>
+Subject: [PATCH v2 0/2] Make the Rust linked list cursor point between elements
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 21 Jan 2025 11:08:18 +0100
-X-Gm-Features: AbW1kva1NVZ-RHQbUzMEuvm2mGRrHbaGxmEeGHMYIfYJvWCJDpvp5lz1jk6dhqg
-Message-ID: <CAH5fLgjjS5CP724bgU5HoRFjaS_by_U3gQMY1mQ1sRbRRw676g@mail.gmail.com>
-Subject: Re: [PATCH v9 2/3] rust: add dma coherent allocator abstraction.
-To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, daniel.almeida@collabora.com, 
-	dakr@kernel.org, robin.murphy@arm.com, daniel@sedlak.dev, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Valentin Obst <kernel@valentinobst.de>, 
-	open list <linux-kernel@vger.kernel.org>, Christoph Hellwig <hch@lst.de>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com, 
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Jan 21, 2025 at 9:48=E2=80=AFAM Abdiel Janulgue
-<abdiel.janulgue@gmail.com> wrote:
->
-> Add a simple dma coherent allocator rust abstraction. Based on
-> Andreas Hindborg's dma abstractions from the rnvme driver, which
-> was also based on earlier work by Wedson Almeida Filho.
->
-> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Please see the commit message of the last patch for more details and
+motivation.
 
-Overall looks reasonable but some comments below.
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v2:
+- Extract insert_inner refactor to separate patch.
+- Make move_next/move_prev not wrap around.
+- Add some examples.
+- Link to v1: https://lore.kernel.org/r/20241025-cursor-between-v1-1-08913714aae5@google.com
 
->  rust/bindings/bindings_helper.h |   1 +
->  rust/kernel/dma.rs              | 272 ++++++++++++++++++++++++++++++++
->  rust/kernel/lib.rs              |   1 +
->  3 files changed, 274 insertions(+)
->  create mode 100644 rust/kernel/dma.rs
->
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
-per.h
-> index 5c4dfe22f41a..49bf713b9bb6 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -11,6 +11,7 @@
->  #include <linux/blk_types.h>
->  #include <linux/blkdev.h>
->  #include <linux/cred.h>
-> +#include <linux/dma-mapping.h>
->  #include <linux/errname.h>
->  #include <linux/ethtool.h>
->  #include <linux/file.h>
-> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-> new file mode 100644
-> index 000000000000..66d1bed887d3
-> --- /dev/null
-> +++ b/rust/kernel/dma.rs
-> @@ -0,0 +1,272 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Direct memory access (DMA).
-> +//!
-> +//! C header: [`include/linux/dma-mapping.h`](srctree/include/linux/dma-=
-mapping.h)
-> +
-> +use crate::{
-> +    bindings, build_assert,
-> +    device::Device,
-> +    error::code::*,
-> +    error::Result,
-> +    transmute::{AsBytes, FromBytes},
-> +    types::ARef,
-> +};
-> +
-> +/// Possible attributes associated with a DMA mapping.
-> +///
-> +/// They can be combined with the operators `|`, `&`, and `!`.
-> +///
-> +/// Values can be used from the [`attrs`] module.
-> +#[derive(Clone, Copy, PartialEq)]
-> +#[repr(transparent)]
-> +pub struct Attrs(u32);
-> +
-> +impl Attrs {
-> +    /// Get the raw representation of this attribute.
-> +    pub(crate) fn as_raw(self) -> crate::ffi::c_ulong {
-> +        self.0 as _
-> +    }
-> +
-> +    /// Check whether `flags` is contained in `self`.
-> +    pub fn contains(self, flags: Attrs) -> bool {
-> +        (self & flags) =3D=3D flags
-> +    }
-> +}
-> +
-> +impl core::ops::BitOr for Attrs {
-> +    type Output =3D Self;
-> +    fn bitor(self, rhs: Self) -> Self::Output {
-> +        Self(self.0 | rhs.0)
-> +    }
-> +}
-> +
-> +impl core::ops::BitAnd for Attrs {
-> +    type Output =3D Self;
-> +    fn bitand(self, rhs: Self) -> Self::Output {
-> +        Self(self.0 & rhs.0)
-> +    }
-> +}
-> +
-> +impl core::ops::Not for Attrs {
-> +    type Output =3D Self;
-> +    fn not(self) -> Self::Output {
-> +        Self(!self.0)
-> +    }
-> +}
-> +
-> +/// DMA mapping attrributes.
-> +pub mod attrs {
-> +    use super::Attrs;
-> +
-> +    /// Specifies that reads and writes to the mapping may be weakly ord=
-ered, that is that reads
-> +    /// and writes may pass each other.
-> +    pub const DMA_ATTR_WEAK_ORDERING: Attrs =3D Attrs(bindings::DMA_ATTR=
-_WEAK_ORDERING);
-> +
-> +    /// Specifies that writes to the mapping may be buffered to improve =
-performance.
-> +    pub const DMA_ATTR_WRITE_COMBINE: Attrs =3D Attrs(bindings::DMA_ATTR=
-_WRITE_COMBINE);
-> +
-> +    /// Lets the platform to avoid creating a kernel virtual mapping for=
- the allocated buffer.
-> +    pub const DMA_ATTR_NO_KERNEL_MAPPING: Attrs =3D Attrs(bindings::DMA_=
-ATTR_NO_KERNEL_MAPPING);
-> +
-> +    /// Allows platform code to skip synchronization of the CPU cache fo=
-r the given buffer assuming
-> +    /// that it has been already transferred to 'device' domain.
-> +    pub const DMA_ATTR_SKIP_CPU_SYNC: Attrs =3D Attrs(bindings::DMA_ATTR=
-_SKIP_CPU_SYNC);
-> +
-> +    /// Forces contiguous allocation of the buffer in physical memory.
-> +    pub const DMA_ATTR_FORCE_CONTIGUOUS: Attrs =3D Attrs(bindings::DMA_A=
-TTR_FORCE_CONTIGUOUS);
-> +
-> +    /// This is a hint to the DMA-mapping subsystem that it's probably n=
-ot worth the time to try
-> +    /// to allocate memory to in a way that gives better TLB efficiency.
-> +    pub const DMA_ATTR_ALLOC_SINGLE_PAGES: Attrs =3D Attrs(bindings::DMA=
-_ATTR_ALLOC_SINGLE_PAGES);
-> +
-> +    /// This tells the DMA-mapping subsystem to suppress allocation fail=
-ure reports (similarly to
-> +    /// __GFP_NOWARN).
-> +    pub const DMA_ATTR_NO_WARN: Attrs =3D Attrs(bindings::DMA_ATTR_NO_WA=
-RN);
-> +
-> +    /// Used to indicate that the buffer is fully accessible at an eleva=
-ted privilege level (and
-> +    /// ideally inaccessible or at least read-only at lesser-privileged =
-levels).
-> +    pub const DMA_ATTR_PRIVILEGED: Attrs =3D Attrs(bindings::DMA_ATTR_PR=
-IVILEGED);
-> +}
-> +
-> +/// An abstraction of the `dma_alloc_coherent` API.
-> +///
-> +/// This is an abstraction around the `dma_alloc_coherent` API which is =
-used to allocate and map
-> +/// large consistent DMA regions.
-> +///
-> +/// A [`CoherentAllocation`] instance contains a pointer to the allocate=
-d region (in the
-> +/// processor's virtual address space) and the device address which can =
-be given to the device
-> +/// as the DMA address base of the region. The region is released once [=
-`CoherentAllocation`]
-> +/// is dropped.
-> +///
-> +/// # Invariants
-> +///
-> +/// For the lifetime of an instance of [`CoherentAllocation`], the cpu a=
-ddress is a valid pointer
-> +/// to an allocated region of consistent memory and we hold a reference =
-to the device.
-> +pub struct CoherentAllocation<T: AsBytes + FromBytes> {
-> +    dev: ARef<Device>,
-> +    dma_handle: bindings::dma_addr_t,
-> +    count: usize,
-> +    cpu_addr: *mut T,
-> +    dma_attrs: Attrs,
-> +}
-> +
-> +impl<T: AsBytes + FromBytes> CoherentAllocation<T> {
-> +    /// Allocates a region of `size_of::<T> * count` of consistent memor=
-y.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// use kernel::device::Device;
-> +    /// use kernel::dma::{attrs::*, CoherentAllocation};
-> +    ///
-> +    /// # fn test(dev: &Device) -> Result {
-> +    /// let c: CoherentAllocation<u64> =3D CoherentAllocation::alloc_att=
-rs(dev, 4, GFP_KERNEL,
-> +    ///                                                                 =
- DMA_ATTR_NO_WARN)?;
-> +    /// # Ok::<(), Error>(()) }
-> +    /// ```
-> +    pub fn alloc_attrs(
-> +        dev: &Device,
+---
+Alice Ryhl (2):
+      rust: list: extract common code for insertion
+      rust: list: make the cursor point between elements
 
-Instead of incrementing the refcount inside this call, I would
-probably just take an ARef<Device> as argument.
+ rust/kernel/list.rs | 401 ++++++++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 308 insertions(+), 93 deletions(-)
+---
+base-commit: ceff0757f5dafb5be5205988171809c877b1d3e3
+change-id: 20241016-cursor-between-154bed859e27
 
-> +        count: usize,
-> +        gfp_flags: kernel::alloc::Flags,
-> +        dma_attrs: Attrs,
-> +    ) -> Result<CoherentAllocation<T>> {
-> +        build_assert!(
-> +            core::mem::size_of::<T>() > 0,
-> +            "It doesn't make sense for the allocated type to be a ZST"
-> +        );
-> +
-> +        let size =3D count
-> +            .checked_mul(core::mem::size_of::<T>())
-> +            .ok_or(EOVERFLOW)?;
-> +        let mut dma_handle =3D 0;
-> +        // SAFETY: device pointer is guaranteed as valid by invariant on=
- `Device`.
-> +        // We ensure that we catch the failure on this function and thro=
-w an ENOMEM
-> +        let ret =3D unsafe {
-> +            bindings::dma_alloc_attrs(
-> +                dev.as_raw(),
-> +                size,
-> +                &mut dma_handle,
-> +                gfp_flags.as_raw(),
-> +                dma_attrs.as_raw(),
-> +            )
-> +        };
-> +        if ret.is_null() {
-> +            return Err(ENOMEM);
-> +        }
-> +        // INVARIANT: We just successfully allocated a coherent region w=
-hich is accessible for
-> +        // `count` elements, hence the cpu address is valid. We also hol=
-d a refcounted reference
-> +        // to the device.
-> +        Ok(Self {
-> +            dev: dev.into(),
-> +            dma_handle,
-> +            count,
-> +            cpu_addr: ret as *mut T,
-> +            dma_attrs,
-> +        })
-> +    }
-> +
-> +    /// Performs the same functionality as `alloc_attrs`, except the `dm=
-a_attrs` is 0 by default.
-> +    pub fn alloc_coherent(
-> +        dev: &Device,
-> +        count: usize,
-> +        gfp_flags: kernel::alloc::Flags,
-> +    ) -> Result<CoherentAllocation<T>> {
-> +        CoherentAllocation::alloc_attrs(dev, count, gfp_flags, Attrs(0))
-> +    }
-> +
-> +    /// Returns the base address, dma handle, attributes and the size of=
- the allocated region.
-> +    /// The caller takes ownership of the returned resources, i.e., will=
- have the responsibility
-> +    /// in calling `bindings::dma_free_attrs`.
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
-I would add a newline between line 1 and 2 here. That will render
-better in the generated html docs.
-
-Also, is it the case that the allocated region is only valid while the
-device exists? If so, the comment should explain that.
-
-> +    pub fn into_parts(self) -> (*mut T, bindings::dma_addr_t, crate::ffi=
-::c_ulong, usize) {
-> +        let size =3D self.count * core::mem::size_of::<T>();
-> +        let ret =3D (
-> +            self.cpu_addr,
-> +            self.dma_handle,
-> +            self.dma_attrs.as_raw(),
-> +            size,
-> +        );
-> +        // Drop the device's reference count associated with this object=
-. This is needed as no
-> +        // destructor will be called on this object once this function r=
-eturns.
-> +        // SAFETY: the device pointer is still valid as of this point du=
-e to the type invariants
-> +        // on `CoherentAllocation`.
-> +        unsafe { bindings::put_device(self.dev.as_raw()) }
-
-Instead of dropping the refcount, you could return an ARef<Device> to
-let the user do with it as they please.
-
-> +        core::mem::forget(self);
-> +        ret
-> +    }
-> +
-> +    /// Returns the base address to the allocated region in the CPU's vi=
-rtual address space.
-> +    pub fn start_ptr(&self) -> *const T {
-> +        self.cpu_addr
-> +    }
-> +
-> +    /// Returns the base address to the allocated region in the CPU's vi=
-rtual address space as
-> +    /// a mutable pointer.
-> +    pub fn start_ptr_mut(&mut self) -> *mut T {
-> +        self.cpu_addr
-> +    }
-> +
-> +    /// Returns a DMA handle which may given to the device as the DMA ad=
-dress base of
-> +    /// the region.
-> +    pub fn dma_handle(&self) -> bindings::dma_addr_t {
-> +        self.dma_handle
-> +    }
-> +
-> +    /// Reads data from the region starting from `offset` as a slice.
-> +    /// `offset` and `count` are in units of `T`, not the number of byte=
-s.
-> +    ///
-> +    /// Due to the safety requirements of slice, the data returned shoul=
-d be regarded by the
-> +    /// caller as a snapshot of the region when this function is called,=
- as the region could
-> +    /// be modified by the device at anytime. For ringbuffer type of r/w=
- access or use-cases
-> +    /// where the pointer to the live data is needed, `start_ptr()` or `=
-start_ptr_mut()`
-> +    /// could be used instead.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that no hardware operations that involve the=
- buffer are currently
-> +    /// taking place while the returned slice is live.
-> +    pub unsafe fn read(&self, offset: usize, count: usize) -> Result<&[T=
-]> {
-> +        if offset + count >=3D self.count {
-> +            return Err(EINVAL);
-> +        }
-> +        // SAFETY: The pointer is valid due to type invariant on `Cohere=
-ntAllocation`,
-> +        // we've just checked that the range and index is within bounds.=
- The immutability of the
-> +        // of data is also guaranteed by the safety requirements of the =
-function.
-> +        Ok(unsafe { core::slice::from_raw_parts(self.cpu_addr.wrapping_a=
-dd(offset), count) })
-
-You can use .add() here instead of .wrapping_add() to give better
-hints to the compiler.
-
-> +    }
-> +
-> +    /// Writes data to the region starting from `offset`. `offset` is in=
- units of `T`, not the
-> +    /// number of bytes.
-> +    pub fn write(&self, src: &[T], offset: usize) -> Result {
-> +        if offset + src.len() >=3D self.count {
-> +            return Err(EINVAL);
-> +        }
-> +        // SAFETY: The pointer is valid due to type invariant on `Cohere=
-ntAllocation`
-> +        // and we've just checked that the range and index is within bou=
-nds.
-> +        unsafe {
-> +            core::ptr::copy_nonoverlapping(
-> +                src.as_ptr(),
-> +                self.cpu_addr.wrapping_add(offset),
-
-Same here.
-
-> +                src.len(),
-> +            )
-> +        };
-> +        Ok(())
-> +    }
-> +}
-> +
-> +impl<T: AsBytes + FromBytes> Drop for CoherentAllocation<T> {
-> +    fn drop(&mut self) {
-> +        let size =3D self.count * core::mem::size_of::<T>();
-> +        // SAFETY: the device, cpu address, and the dma handle is valid =
-due to the
-> +        // type invariants on `CoherentAllocation`.
-> +        unsafe {
-> +            bindings::dma_free_attrs(
-> +                self.dev.as_raw(),
-> +                size,
-> +                self.cpu_addr as _,
-> +                self.dma_handle,
-> +                self.dma_attrs.as_raw(),
-> +            )
-> +        }
-> +    }
-> +}
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 545d1170ee63..36ac88fd91e7 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -37,6 +37,7 @@
->  pub mod build_assert;
->  pub mod cred;
->  pub mod device;
-> +pub mod dma;
->  pub mod error;
->  #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
->  pub mod firmware;
-> --
-> 2.43.0
->
