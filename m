@@ -1,60 +1,62 @@
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB3819E7D3;
-	Tue, 21 Jan 2025 19:14:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A931F236B;
+	Tue, 21 Jan 2025 19:14:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737486887; cv=none; b=izWi7xvV3biLEZfKqCJ+Fayj2TYTfmPzRqkTAp0sKa6Zvio3sTRnkxhSH3zKe0YaLDwk1GcMeNOoDapZhDL0bqfj4zD/+04Zc6m6OrNau+x8RrEL/yC+718lIidb/IAO5kCThmtNA+OaT+DpyPFzkgQLjGjg0UXmL4lzhOADuh8=
+	t=1737486889; cv=none; b=c4AGacol/EtVoazKYLSd4LSWN4baKBDDLchJKHBB5JxVouuXccZEI85gfaB20lImHE+fN9xqNBfOqL5GxkTM1SbmxKnZ2TVKvsmg3pj7xDZpA43wf+OFRPUNILpCLO7aHmT1R568V1XQ9+clfwQPjuVlFO6Ixje3QXAA/wyE4P0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737486887; c=relaxed/simple;
-	bh=ivK18ECx3I8NGnpFSJQ6naIpLcVaOg0alogpoLWYwoY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=szSVIF5lBXxuwheNhftCqLCwjNep197A0o5Ia3UTHAl7grXA6ZCQCfHTnMeicHIfqmpTqouywR5MabwISqY4hUKWJu8rKWkKzvwmroj6ISxkKfnf0u5nH0sdmA5d2Kg11wV43pnvM0Mq4XoRmmmQgsSkLmebLVkHK8m/0qZElFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BmHedrXp; arc=none smtp.client-ip=209.85.167.51
+	s=arc-20240116; t=1737486889; c=relaxed/simple;
+	bh=7y/5voRRl3iVEWd8dd9FMx/aIm3fFsPYaagWFci7DeI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gx7beSBu1Xqb99nVIS9s2hqtsORNTCNZlhGHBi3KDikSTUuJ6gmeYechTa/BNnmiZg4V0p7+KctHnG+xQ/TwOr9gLGh1CUKnqmUEGDyj+fpohb4cxPuLGDwtDZeHqVI6pClpRqQN2UKUpIc7jJWVHufc+UAolvI1Z5RDXWTcdg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dbre+miy; arc=none smtp.client-ip=209.85.167.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BmHedrXp"
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-540201cfedbso5683417e87.3;
-        Tue, 21 Jan 2025 11:14:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dbre+miy"
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5401c68b89eso111810e87.0;
+        Tue, 21 Jan 2025 11:14:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737486884; x=1738091684; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8bg61QWb1i91VY9CIQBaPYXkWR4SssGW1KgIQsxOXJU=;
-        b=BmHedrXpMYr1xAwNU2QJlAmfbmJv3i+m69X92jFA4a8MuisWBOzti9oZO7U4oxN8V+
-         1KcYgJWhXw3x4kK3+T5mAL3CiV3Fl2qThJL5P9jkGdna7rfRUhNt0EPofdYGl5exMcHS
-         EK0ZRdZlUWqQiz6QvNoJnfQLwdDFEnsO1hAegdtR3dYhM2uRq8gn5+OGZioUmSORAKX+
-         X8odVt9ysCg+VehP9ytmOZ9Y+7SkVpH2MSZQ5mbiTpmHYRhE4ahSVYx7kytVc2u98+nv
-         jg88DNrEO8AaT5bWcfg/uYWpe33or1cKmm/wNO4wDbvKXLMoEPoKTBnvMOVi6QoFb+Lj
-         bi6Q==
+        d=gmail.com; s=20230601; t=1737486886; x=1738091686; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MsTWX9yoQTMgLsmI/WJU+pLJbUvjBW8MdXlesjuHNQQ=;
+        b=Dbre+miy4ydHSJPTZJPfdk/M6FxAlz9BUTRVDdC6MiaRhZKPG46TG++TFL2cUfJX9b
+         sMY4ohokbVofRcaEMaB0BaA/Z48xzAVYIzWDDISfqm646FRROzahpDNdQgmKLUInGBTn
+         KBjbXZWFswG0BkmdDYuOJKzI5XlY5rOUVVdjFEkKnWQlYmNO2PsAAZF1u5iegtcb7Mzp
+         Z3YnTSOxIaNrCB4m6qxmYrfG9ikeatmrFAnzKg6RQP8k+Ang4v9bgv5oBNnRTwcocXNp
+         tWR7lvevAONYGjhD52FOMWDELueDvCjryhEqsr4xsO+dR32r6Sg5P8CVgtmAmNerhZw+
+         HzCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737486884; x=1738091684;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8bg61QWb1i91VY9CIQBaPYXkWR4SssGW1KgIQsxOXJU=;
-        b=jPq3qXUSNlc7HlQTPFWJ4ZMspO3L1CW1uqtHGyLM/eKoJBkPevdKmdA4tsMamoXJfF
-         IOSsmJhv1+aP7JKKXAEU00mcdRaweVr5UnJfvdxqDkWtQBUR6j+yiMQQMOWMi3Khe/WT
-         BMadv6SupRM4ato4i/UFvTeafl8bdBguUxJsY8KhWbP/tZKBCUib+2qbELxZ7fbG34BZ
-         lygLJnDM50WHNwn2appBoBd+roYbYqEMS3cvbmsz1kPJ71PpmGu2k2RvxJfdU3Z13bf9
-         bvTNJAYx2UFoGsNJcTZJRcyWllo1uIMUM3clIpnoVGxUal+cZHbVTtMLX7gL723fBCyS
-         V1yQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVCgP2VqZk156Hm15dQBUP0EELrrsbJ0ook5HM1SdPB4WDbIAA0Sr9JXCrkHvSkPRjGbc/6TH6i1Py8B/w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7mzXWSw/uUAKRxHEHV6x84+Oq7X7PwU5WBvZbWLSWC2gh0uCs
-	HBD15rk8qS8hdEzuwxq/gIUbyUevyprTDjO4iyH/C0CNy7gYaw6C/bz0gw==
-X-Gm-Gg: ASbGncsanIlucVVQexe+ixaGkNhhDLZZDL5jA2o/K5TE0qVgqMLa9N0nLddDdxOrgTs
-	D+Iccc5ahA9jQvkHDcsWpuXK+i3hjNI0ky7sWsn2X86SQ2R/w7N0jMq4cvJEenX2L2LpVv1gTaX
-	MBKXiROSni2i+gIqUHUICudFV99fIWVe68KzMRssEIXOtxVaBlkFSd80eMBv1voQ7PO5+4dbtED
-	XXqwlHrNAUfuqfoZkogDRnmjt0tBgQg6rWCibc6ZOjTcyp686q/ajdmnDeWXVQsHHIpeDmlymBg
-	7tQ6sQKo49EDJopi1BsWPv9v6FiOdRQKmYGPEU7M
-X-Google-Smtp-Source: AGHT+IFZvLqKPUFbTeA9XOCsPrcEmevG/Vm8PIvqM4oZNloBE0Smt6VyQz29eF6NVmKLgg6EZpVcTA==
-X-Received: by 2002:a19:e054:0:b0:543:baca:6f1b with SMTP id 2adb3069b0e04-543baca70d7mr450871e87.44.1737486883632;
-        Tue, 21 Jan 2025 11:14:43 -0800 (PST)
+        d=1e100.net; s=20230601; t=1737486886; x=1738091686;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MsTWX9yoQTMgLsmI/WJU+pLJbUvjBW8MdXlesjuHNQQ=;
+        b=cpGY5LL/PZRLEGIol27fUiREndGmOIll6khwFKNEUiyEjB4dAU1ld9tu2oofjMUgA4
+         Ph/do/C9FBk1hFAjI47p/9NVPtIflrlzvn9T0gsQNv6o7eG2sM01nGtBdKre0LFstTQC
+         67O/mx0NIu7vKvtMD/zhaw5oxONinbUuMlQUrhektaW32iBevh0oqETe+peZ5ciNV3Q7
+         bxWnUK1GuAivuXtO8ESvqyfqw5LeQG+ZD07DxXLlMroKnCE/CmvciE1uB+axgcnGVbDm
+         NKXy4e82iFAeOmI7Y0iytBR8IsoY8rreZpmVyYVXunYGfho42Ibh0XxKUXjXWtrFP6YV
+         CFqw==
+X-Forwarded-Encrypted: i=1; AJvYcCURTcoMHvYuvV+NW2lHw0CH6UVsiNrkgTVDbWAePIq0Yz3hpRTGBfxiCd7UJktr2h0OQY0WCTvvthqo4O0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoA2WebfWdBubgKEjzX9YuR/41AQxZj1BPBZtCUOrYB/QW63LP
+	WOolN/7LlJ1CClMqJ3U4emeWpdBrcGAyJeELhNe9oQYhDkX1zJSjveNx/A==
+X-Gm-Gg: ASbGncsg++llS9FckTj5xPo86jVqloDYSrELPfwLRcOMLcjdP5PLG05qORLToP7zLzw
+	tsid6MfX9TUagObyZV8XXy3dWUUJA0ohcKchyPekome8jdLhJwJic7RNJYRcnMmFmgBT67aqtLT
+	AZqX+v7SBoRM9NNDjCG9uGzGxUYM3Ze0cJdaedPtWQeBugCRHFnyZdEuwrFjKK0CXhuqI51QFeB
+	KiOMnrX6ORz6+7znlxwzhxHvWbF3qNt9OI+Mf2bP3uqSS65x2C01tgUBb0fcnMJkYsA90CXEIvn
+	LibWQnX4+c/6w6DDDlTXLZj+W+YJPPXPBHH7ECrR
+X-Google-Smtp-Source: AGHT+IF59/6VBNX+P87BsR3FzxtMILdr5WUEu2YX+aOjaC1INxGKfOraQULJOOgZMNYW/Q/fUqvlxw==
+X-Received: by 2002:a05:6512:1599:b0:540:2add:c1f1 with SMTP id 2adb3069b0e04-542abfb56a9mr9238213e87.18.1737486885553;
+        Tue, 21 Jan 2025 11:14:45 -0800 (PST)
 Received: from abj-NUC9VXQNX.. (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-543bb6bf5b1sm56786e87.118.2025.01.21.11.14.40
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-543bb6bf5b1sm56786e87.118.2025.01.21.11.14.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jan 2025 11:14:42 -0800 (PST)
+        Tue, 21 Jan 2025 11:14:44 -0800 (PST)
 From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
 To: rust-for-linux@vger.kernel.org,
 	daniel.almeida@collabora.com,
@@ -76,10 +78,12 @@ Cc: Miguel Ojeda <ojeda@kernel.org>,
 	airlied@redhat.com,
 	iommu@lists.linux.dev (open list:DMA MAPPING HELPERS),
 	Abdiel Janulgue <abdiel.janulgue@gmail.com>
-Subject: [PATCH v10 0/3] Add dma coherent allocator abstraction
-Date: Tue, 21 Jan 2025 21:14:01 +0200
-Message-ID: <20250121191432.1178734-1-abdiel.janulgue@gmail.com>
+Subject: [PATCH v10 1/3] rust: error: Add EOVERFLOW
+Date: Tue, 21 Jan 2025 21:14:02 +0200
+Message-ID: <20250121191432.1178734-2-abdiel.janulgue@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250121191432.1178734-1-abdiel.janulgue@gmail.com>
+References: <20250121191432.1178734-1-abdiel.janulgue@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -88,66 +92,28 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Changes since v9:
-- Use ARef<Device> in the constructor arguments, docs clarification avoid
-  manually dropping the refcount for the device in into_parts(), use
-  add() instead of wrapping_add() in the pointer arithmetic for performance
-  (Alice Ryhl).
-- Link to v9: https://lore.kernel.org/all/20250121084756.1051758-1-abdiel.janulgue@gmail.com/
+Trivial addition for missing EOVERFLOW error. This is used by a
+subsequent patch that might require returning EOVERFLOW as a result
+of `checked_mul`.
 
-Changes since v8:
-- Add MAINTAINERS entry
-- Fix build issues due to switch from core::ffi to crate:ffi in bindgen.
-- Ensure the wrapped attribute is non-pub in struct Attrs, declare it 
-  #[repr(transparent)] as well (Daniel Sedlak)
+Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+---
+ rust/kernel/error.rs | 1 +
+ 1 file changed, 1 insertion(+)
 
-Changes since v7:
-- Remove cpu_buf() and cpu_buf_mut() as exporting a r/w interface via
-  a slice is undefined behaviour due to slice's requirement that the
-  underlying pointer should not be modified (Alice Ryhl, Robin Murphy).
-- Reintroduce r/w helpers instead which includes proper safety
-  invariants (Daniel Almeida).
-
-Changes since v6:
-- Include the dma_attrs in the constructor, use alloc::Flags as inpiration
-
-Changes since v5:
-- Remove unnecessary lifetime annotation when returning the CPU buffer.
-
-Changes since v4:
-- Documentation and example fixes, use Markdown formatting (Miguel Ojeda).
-- Discard read()/write() helpers to remove bound on Copy and fix overhead
-  (Daniel Almeida).
-- Improve error-handling in the constructor block (Andreas Hindborg).
-
-Changes since v3:
-- Reject ZST types by checking the type size in the constructor in
-  addition to requiring FromBytes/AsBytes traits for the type (Alice Ryhl).
-
-Changes since v2:
-- Fixed missing header for generating the bindings.
-
-Changes since v1:
-- Fix missing info in commit log where EOVERFLOW is used.
-- Restrict the dma coherent allocator to numeric types for now for valid
-  behaviour (Daniel Almeida).
-- Build slice dynamically.
-
-Abdiel Janulgue (3):
-  rust: error: Add EOVERFLOW
-  rust: add dma coherent allocator abstraction.
-  MAINTAINERS: add entry for Rust dma mapping helpers device driver API
-
- MAINTAINERS                     |  10 ++
- rust/bindings/bindings_helper.h |   1 +
- rust/kernel/dma.rs              | 281 ++++++++++++++++++++++++++++++++
- rust/kernel/error.rs            |   1 +
- rust/kernel/lib.rs              |   1 +
- 5 files changed, 294 insertions(+)
- create mode 100644 rust/kernel/dma.rs
-
-
-base-commit: ceff0757f5dafb5be5205988171809c877b1d3e3
+diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+index f6ecf09cb65f..1e510181432c 100644
+--- a/rust/kernel/error.rs
++++ b/rust/kernel/error.rs
+@@ -64,6 +64,7 @@ macro_rules! declare_err {
+     declare_err!(EPIPE, "Broken pipe.");
+     declare_err!(EDOM, "Math argument out of domain of func.");
+     declare_err!(ERANGE, "Math result not representable.");
++    declare_err!(EOVERFLOW, "Value too large for defined data type.");
+     declare_err!(ERESTARTSYS, "Restart the system call.");
+     declare_err!(ERESTARTNOINTR, "System call was interrupted by a signal and will be restarted.");
+     declare_err!(ERESTARTNOHAND, "Restart if no handler.");
 -- 
 2.43.0
 
