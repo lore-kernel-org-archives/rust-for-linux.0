@@ -1,114 +1,180 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662FC139B;
-	Tue, 21 Jan 2025 10:29:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA51F1F1306;
+	Tue, 21 Jan 2025 10:54:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737455386; cv=none; b=XEUMtdeE8znKIjXhMU5Sbokzi2kWg1n2u//hL1NjDsQWjjcrQgOU5JP59CSJx+0AjGcsoW+0r+x5MkwF0c0z1qF4Yh6dQabXB4675y/qgpbND1/uaY8elvL4Dhvvca52IiLMIGwGcvFZ55cl4aHhsXnU95fEwq5HFnIHl9uoJzU=
+	t=1737456844; cv=none; b=ZkS1LZ2xobV8kbYLY7KKc6pPusA+sH6n9v28NUw2IzoogsZ4sOzcAgS32oIelA+ozhM4y/E8is5rdpjFsz0ahSrsl68EYBzNXyxSvH2YS8DB3k9eSrf6bWvgAPRt677JbBql9LpPeZZfzMDoEMRRzeh7oiFOFtzJNlK+G1WKEPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737455386; c=relaxed/simple;
-	bh=ibQYsPi9EyTC+oeK1NXDVf4wVeXuPvCp+Ycl844c86o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fmDN6Hr44MiUehcsqN5HG7LGy4C4HiEYrHnSERRVnrNLY/GkUa+1Pk0CJMGHZZowQzuYzA0wEqf9XdYH3Ztn1agAcJVM7dNBnQopToQM2bjTXFbz3w0YN/NknRivXrV912QJXUXY5RIYVAUFLRpke+JKe3Rl1C0P+MayJke8GGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bQ6EMDZk; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1737456844; c=relaxed/simple;
+	bh=gyH292xQIxBO5MQVhSMOh9N7Ct/+tb2k3ECH3xnl5uc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gCD7STYWmCwrlMHDxmbk/ONCWikKxHB0lSILZvS++/+KuHcAMXoiL691t1rr34TpcUS3Ky0g+Fm4/h4313Cdz7pjd9820RUkiDjcIFhXtw8B2lLmeJ3AjLPbKnYP4gXMdpX9aOiLcWB5yPmX8MFvtCaPRIWZyVYIl/hG3yGw/wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VjrWeWII; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bQ6EMDZk"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-ab322ecd75dso957313466b.0;
-        Tue, 21 Jan 2025 02:29:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737455382; x=1738060182; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gOdqkQkzqgycBW7zwu9Px+LiQ3th56b8QJMvlIaBWZM=;
-        b=bQ6EMDZkBrmqBRSWcNC5LnKbKmcODoTWbRWjCP2vAqpXaEnUl3h9/yqt0jpCQqxbHX
-         2H0Qq7gaRKjog0+Wvq1pRzo1axXbFD4IspcarDXHbKuwAP1Qevq7ZNVQjMjLmDMW5RoW
-         9C7bmxy5pkTaXFlm5ilxZrQ16PybLGy5VoajJopDNc3ohvv8j9sY3FRbx1H12p0mxOyR
-         bRNKmj+fyHHO+QYmVPykCk+gK5tMYn83jGWTOdlxo6xBmf/RH0HobEzn5lXjdWF2arSM
-         UgDjBtb8/ncdOy5K2v0UXq3yX1zHX48dW9i8xI77Dim0xZnPZfU5tegIEDMbughcRk1F
-         4Uhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737455382; x=1738060182;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gOdqkQkzqgycBW7zwu9Px+LiQ3th56b8QJMvlIaBWZM=;
-        b=gA/my9NwTPCegaYRv8tibCYvywmN8Ly5FMi+ak81u1Nh61AY7gmOpCFq3r07/usrsS
-         Td8SMCoXN5jOG5cWRFO1Kxv+GNltTVmMeKng2CXD7yVtwhEWIyZwGIKhckaaQbq08r68
-         6J9DE5HnMnuQH41yNhMIG6urCytYIv/ZgGeSeGt8FYSduvyiZUGvdr4e70idKBgLOzEK
-         YUTwzd5EQZHlNcH1OmZjq4JPiHb4PdjRX3+lDpTRG5uptvy6sk6cIlH75Suh59+MVEHs
-         sDUQ8coaYRP5VPjoQ7b0RAkO8aQT0r6PIB1pzdbINpS8UXvI2hNo8/ELbVhKP0SqVo0Q
-         gDzw==
-X-Forwarded-Encrypted: i=1; AJvYcCVARN0sA+QoExbH4GkaoX+3jj9vSkzJLZZQas6lTyWJj9Cv9n3iw/Qaq3FJEoY88p+YIjvipytTO3kxPmG9npU=@vger.kernel.org, AJvYcCXo5vJYRKCwsw7SyveYeMKPa3sOliO+JO2SOblMUfN3SHWmQleor6K3x/vsiNQIVKdOGlgTpSimUN8AguI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLjXgDDfF5bEuRHlKRsToHogJ2vg7cl6xdcskxzYQq5cYZUU95
-	Je7v3FbTfgGmwCCaGMy5uVFC2oDuqOgBAwWmAk6fowbH/QSDm3tX
-X-Gm-Gg: ASbGncvLPqmqMqzlF8Qc9gW/7p2VIHkA6lqcFOlM/PnBuc6nFQpgynOY+dGk833kFYM
-	+011fMpMIJZQIut+gQ0uVrwXgYDZ9RekA++B6X55tGkZDkbcrC6slQEK71ytwj/ctILNlBigg5Q
-	79rvUS5JX4LC4SNgYeLk//wmPXN+9dDIKfeY2tLN/TeV3OPAcQdZW8QRwbPFJyiV7iQMeCAPuBq
-	grZVQJlANBvol+5oFJCRixGqMSdxJUC/2qL9LiadwWoszCIBKOT6+Jl8oVn+uYpVdKsTAH9o69w
-	HNoPYA==
-X-Google-Smtp-Source: AGHT+IGLgY9IKvOY8jX07x3NRy7MilZujPWaXQHbG3+WgGMHLRkmR3H+gRBs1LRqReUDZ316EPnR1g==
-X-Received: by 2002:a17:906:4fd5:b0:ab6:362a:3fd9 with SMTP id a640c23a62f3a-ab6362a56d9mr297566866b.1.1737455381528;
-        Tue, 21 Jan 2025 02:29:41 -0800 (PST)
-Received: from [10.27.99.142] ([193.170.124.198])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab384ce13ccsm738332566b.50.2025.01.21.02.29.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Jan 2025 02:29:41 -0800 (PST)
-Message-ID: <41cee8ac-f773-4e7b-8249-2de5d7807287@gmail.com>
-Date: Tue, 21 Jan 2025 11:29:40 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VjrWeWII"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737456842; x=1768992842;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=gyH292xQIxBO5MQVhSMOh9N7Ct/+tb2k3ECH3xnl5uc=;
+  b=VjrWeWIIaD8/xeuPvw4gOhT/vjklMbhFTEe+7drfp+rf0OxWpTkqxv0j
+   j5WTVh5nKouIEmlV8UfXb5jn/x7tvvbs25TMU6lln8vlH3udTqDMoxaRC
+   lLk7xKMAOYUSWrR6ElitdVoHhRAsgrOLPzcq9H6ghCb4yQLnKc8ViblQh
+   b75Eh8VQlBcBLusn/uhdzgmhDbAZb0aw5jeU+kx3F1sfQtfYWs2IxDcoo
+   oNM5KU+ddTAA34ft69N7M8HlbMBifvzZuu9adQM3SDYo+B5c4PrwUbqZs
+   qr/4iXKpWHdfxkCO1l0ZRNen+4S4D4Z9aizaKsayrlaNSZqY4M/OB1QcF
+   w==;
+X-CSE-ConnectionGUID: iL+kBCA1T/6eunqomMgETg==
+X-CSE-MsgGUID: NOEWm8eFT7aclP6ANXB4jw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11321"; a="37076287"
+X-IronPort-AV: E=Sophos;i="6.13,221,1732608000"; 
+   d="scan'208";a="37076287"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2025 02:54:01 -0800
+X-CSE-ConnectionGUID: T/UXhYd5QlSPYDORjZvWcA==
+X-CSE-MsgGUID: TsFzvSDLTYCU5NRxAUYLyg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="107201662"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 21 Jan 2025 02:53:57 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1taBtK-000XxH-1v;
+	Tue, 21 Jan 2025 10:53:54 +0000
+Date: Tue, 21 Jan 2025 18:53:12 +0800
+From: kernel test robot <lkp@intel.com>
+To: Christian Schrefl <chrisi.schrefl@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Lee Jones <lee@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Christian Schrefl <chrisi.schrefl@gmail.com>
+Subject: Re: [PATCH 2/3] rust: miscdevice: Add additional data to
+ MiscDeviceRegistration
+Message-ID: <202501211825.Vefi6H2q-lkp@intel.com>
+References: <20250119-b4-rust_miscdevice_registrationdata-v1-2-edbf18dde5fc@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] rust: miscdevice: Add additional data to
- MiscDeviceRegistration
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Arnd Bergmann <arnd@arndb.de>,
- Lee Jones <lee@kernel.org>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250119-b4-rust_miscdevice_registrationdata-v1-0-edbf18dde5fc@gmail.com>
- <2025012034-rope-canned-43da@gregkh>
-Content-Language: en-US
-From: Christian Schrefl <chrisi.schrefl@gmail.com>
-In-Reply-To: <2025012034-rope-canned-43da@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250119-b4-rust_miscdevice_registrationdata-v1-2-edbf18dde5fc@gmail.com>
 
+Hi Christian,
 
-On 20.01.25 6:46 AM, Greg Kroah-Hartman wrote:
-> On Sun, Jan 19, 2025 at 11:11:12PM +0100, Christian Schrefl wrote:
->> This set is based on Greg's driver-core-next tree.
->>
->> Currently there is no good way to pass arbitrary data from the driver to
->> a miscdevice or to share data between individual handles to a miscdevice in rust.
-> 
-> Why would you want to do this?  A misc device instance should be "self
-> contained" with the needed stuff to make it work.
-> 
-> Do you have an example of where this is needed as I can't figure out the
-> goal here, sorry.
+kernel test robot noticed the following build errors:
 
-The main reason for needing this was that I could not figure out how to otherwise
-use a Devres from the platfrom driver probe in the implementation of the miscdevice.
-The reason to add this to MiscDeviceRegistration is to avoid race-conditions between
-the fops and driver registration/deregistration.
-(See the commit description of patch 2/3)
+[auto build test ERROR on 01b3cb620815fc3feb90ee117d9445a5b608a9f7]
 
-If there is a better or more intended way to achieve that please let me know.
+url:    https://github.com/intel-lab-lkp/linux/commits/Christian-Schrefl/rust-add-Aliased-type/20250120-061340
+base:   01b3cb620815fc3feb90ee117d9445a5b608a9f7
+patch link:    https://lore.kernel.org/r/20250119-b4-rust_miscdevice_registrationdata-v1-2-edbf18dde5fc%40gmail.com
+patch subject: [PATCH 2/3] rust: miscdevice: Add additional data to MiscDeviceRegistration
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250121/202501211825.Vefi6H2q-lkp@intel.com/config)
+compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250121/202501211825.Vefi6H2q-lkp@intel.com/reproduce)
 
-> 
-> thanks,
-> 
-> greg k-h
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202501211825.Vefi6H2q-lkp@intel.com/
 
+All errors (new ones prefixed by >>):
+
+   In file included from arch/x86/kernel/asm-offsets.c:14:
+   In file included from include/linux/suspend.h:5:
+   In file included from include/linux/swap.h:9:
+   In file included from include/linux/memcontrol.h:21:
+   In file included from include/linux/mm.h:2224:
+   include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   504 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+   |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+   505 |                            item];
+   |                            ~~~~
+   include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   511 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+   |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+   512 |                            NR_VM_NUMA_EVENT_ITEMS +
+   |                            ~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   524 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+   |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+   525 |                            NR_VM_NUMA_EVENT_ITEMS +
+   |                            ~~~~~~~~~~~~~~~~~~~~~~
+   3 warnings generated.
+   ***
+   *** Rust bindings generator 'bindgen' < 0.69.5 together with libclang >= 19.1
+   *** may not work due to a bug (https://github.com/rust-lang/rust-bindgen/pull/2824),
+   *** unless patched (like Debian's).
+   ***   Your bindgen version:  0.65.1
+   ***   Your libclang version: 19.1.3
+   ***
+   ***
+   *** Please see Documentation/rust/quick-start.rst for details
+   *** on how to set up the Rust support.
+   ***
+   In file included from rust/helpers/helpers.c:10:
+   In file included from rust/helpers/blk.c:3:
+   In file included from include/linux/blk-mq.h:5:
+   In file included from include/linux/blkdev.h:9:
+   In file included from include/linux/blk_types.h:10:
+   In file included from include/linux/bvec.h:10:
+   In file included from include/linux/highmem.h:8:
+   In file included from include/linux/cacheflush.h:5:
+   In file included from arch/x86/include/asm/cacheflush.h:5:
+   In file included from include/linux/mm.h:2224:
+   include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   504 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+   |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+   505 |                            item];
+   |                            ~~~~
+   include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   511 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+   |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+   512 |                            NR_VM_NUMA_EVENT_ITEMS +
+   |                            ~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   524 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+   |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+   525 |                            NR_VM_NUMA_EVENT_ITEMS +
+   |                            ~~~~~~~~~~~~~~~~~~~~~~
+   3 warnings generated.
+   clang diag: include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   clang diag: include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   clang diag: include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   clang diag: include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   clang diag: include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   clang diag: include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   clang diag: include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   clang diag: include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   clang diag: include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+>> error[E0658]: associated type bounds are unstable
+   --> rust/kernel/miscdevice.rs:64:27
+   |
+   64 | unsafe impl<T: MiscDevice<RegistrationData: Send>> Send for MiscDeviceRegistration<T> {}
+   |                           ^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: see issue #52662 <https://github.com/rust-lang/rust/issues/52662> for more information
+   = help: add `#![feature(associated_type_bounds)]` to the crate attributes to enable
+   = note: this compiler was built on 2024-04-29; consider upgrading it if it is out of date
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
