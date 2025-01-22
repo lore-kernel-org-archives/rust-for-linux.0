@@ -1,198 +1,117 @@
-Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFBEA211A31;
-	Wed, 22 Jan 2025 13:39:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E17212F98;
+	Wed, 22 Jan 2025 13:46:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737553199; cv=none; b=X4OcG388airxp5xRPtYObEIapOcNP/4ow8djgGrhxJenmEZzXYgNKOM87cl85Q04xiosdGCjbB0Uo+EqgPnJKS+pFFMVe8wW6JthmK7L2s6kfK5YWdZgmcbN7CGQwb5CFsdR0FQCOvemtWVDJr1kpQlhCnwewjBioigUKMM+kcE=
+	t=1737553607; cv=none; b=SUc4zxXt/c9GNmnFc8ZwMFQyy2ohL0+R+a41IH2ufbpoa8xcNxF/QD9rCG0jY1WvAzggfiEmWki5TN1Z8M7/mL6bvj6ff4VNZTkg584FLGoM4T4wW8rehoW4m5te3GNm1nLrOah7wrOn0GyPo5WRY6Vs7ujt0N+ztH7x/ULXFXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737553199; c=relaxed/simple;
-	bh=nJ1qmGLyQtb4yV8ajvn1zrGXGz0t4bV3sm/1q2WXVDM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nuBLNcqP1YzWXpq8ZPoOSDPdSIod2uFqI8XMnELprAopPLwSopMjmyP5lsDOFCMysyEoYqd1YoaFNOo/slu6xSc/e24T/n+tldwn1k4j+3vue8WtXvi8lOGoPXre3NciNL+bukx4cpMR2ZJlkvMzzuKUKaZpPoI+1bCSthBBp6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astier.eu; spf=pass smtp.mailfrom=astier.eu; dkim=pass (2048-bit key) header.d=astier.eu header.i=@astier.eu header.b=D9MCAh+x; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=sDkzR72w; arc=none smtp.client-ip=103.168.172.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astier.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astier.eu
+	s=arc-20240116; t=1737553607; c=relaxed/simple;
+	bh=1BW1e45kiLlnm2nJRhGoE/QpLBlikGScXvdTACXGzJA=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=nZ5bRXMVNPh9F59TrLF7r5fhGxGJ+7PHZn88KtFo5WOJikcV6iPwAPvWivnXmlZ5X9uCjpdHm4N66NJy/m6i4l4dBmTwcqsv0ayfqUlEJQ9o6g+mTbOkfkKyhK45FG3uK5kAV/SrSUaDHqEwmmdi8QQnYsISdEIokrQI+y792cI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NfyUHoG/; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=astier.eu header.i=@astier.eu header.b="D9MCAh+x";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="sDkzR72w"
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfout.phl.internal (Postfix) with ESMTP id 0620B138029E;
-	Wed, 22 Jan 2025 08:39:57 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-10.internal (MEProxy); Wed, 22 Jan 2025 08:39:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=astier.eu; h=cc
-	:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1737553197; x=
-	1737639597; bh=9XTOuHU1krjox5MI4CtiJPj+ohcAVmrgkb5DXphKy48=; b=D
-	9MCAh+xX6k/h6GsQT+6e9FvdDoT2clPg11iEMBH+80SYO6n94Zfee7aVdg5ee2Tg
-	Rnbkzy/L8jKFllXYzK0ZwsmAYqPAatr3A/rPv6urTr77rQxF/olryg/Nvup/ZRvR
-	AdEirA/dYRZC5sBiIRlyXsgcLFI7tSrWvfCreAfItdX94p8pddnF/UAVmUetw+iX
-	/bAao62P65Wp4E5MVgqhA5P8/PJcp9PL12oRzTjf5WoL8RXQxhxESgAEiDPxHW9m
-	3R1wfyWCAbb983SzbBBB8N0T5BpMLeEdcw81aFg1jgxoIuGfNwxYzYxOAunnnt48
-	ng+KLZ4z23DRRAvMLTjJw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1737553197; x=1737639597; bh=9
-	XTOuHU1krjox5MI4CtiJPj+ohcAVmrgkb5DXphKy48=; b=sDkzR72wE91eQslWS
-	GlT70qkMtdwbV5QDv79qZv9hAT9F2u8Jr31XeDEHISQ4oH9Idjw0TOkgOXFe4UlK
-	zSDJLWzuFS5Dvy6Z54ujCJSnzLVY6FRRfKMe9vQLBFOICh+S9r7W7qaVzk9mQ0oj
-	1+Y8UI1gBQk7FJul66fcOZmxX3Z6rN8aEJsFpNiLr/nbkayK2YZdMG0i4uJi+kW3
-	Sy9u0cuqw7EufRlMqKdGyjhI4aRi+0Dy3JG0iqxG5vvmBVfGMSypD/0jnT4jMKzz
-	DGRomkR6tO9qB7B41a3xe2+aVjacuZ0UdAW5OtQDosyBJJq6yHhyyljeCtyNBzU4
-	/qJWA==
-X-ME-Sender: <xms:LPWQZ1riR9ruxfSGsUVnNnx9UwaVGURsYxoV85oKDR0HESNDf8wNIg>
-    <xme:LPWQZ3pY5oQ_WdXBKj5pFfaR1b0RexJCMseBXVrIG8jbK4eRr82ksMPQON0S933ry
-    THsUTTRSYJZOGWJvWI>
-X-ME-Received: <xmr:LPWQZyOgad2UJROrMbnOpBa_bC6TsmWQeTUR8Ei0vm4iXZfsVgE1DHcM6ogroJvmseiluton0AgVfN4HPKa33Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudejfedgudektdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddt
-    necuhfhrohhmpeetnhhishhsvgcutehsthhivghruceorghnihhsshgvsegrshhtihgvrh
-    drvghuqeenucggtffrrghtthgvrhhnpeduudduheffiefgfeekgfehhfdujeffgfeffffg
-    tddvjeehveefveeuhfehhfetfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpegrnhhishhsvgesrghsthhivghrrdgvuhdpnhgspghrtghpthht
-    ohepudeipdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehvihhrvghshhdrkhhumh
-    grrheslhhinhgrrhhordhorhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdr
-    ohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhope
-    grlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepsghoqhhunhdr
-    fhgvnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhord
-    hnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhm
-    pdhrtghpthhtohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpth
-    htoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:LPWQZw4NAGv6QGBm7umcYJ2J2_RtFzpTuMvUQdjRKBe9uiZ7GEXoqA>
-    <xmx:LPWQZ07n6wMHSQ029OS0gekCBScgq4X71m2ODAvB-09qtckyUr-WlA>
-    <xmx:LPWQZ4gsEP4L2n_4DuV6Nb2PrcX032q-YfkFq3e053yWyL3herRlrQ>
-    <xmx:LPWQZ2634iSBIdSyIKwdBGMqW8GgDNPSXTgoxpATqB_2O2GY6Dm_xg>
-    <xmx:LPWQZwqkIKmJBh7ZeEZYNEF_llgZzkpvSyPz_UxDaPdjrRRKYDeq_jKr>
-Feedback-ID: iccec46d4:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 22 Jan 2025 08:39:54 -0500 (EST)
-From: Anisse Astier <anisse@astier.eu>
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	linux-pm@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Anisse Astier <anisse@astier.eu>
-Subject: [PATCH v2] rust: macros: enable use of hyphens in module names
-Date: Wed, 22 Jan 2025 14:39:52 +0100
-Message-ID: <20250122133952.501055-1-anisse@astier.eu>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250122131812.466080-1-anisse@astier.eu>
-References: <20250122131812.466080-1-anisse@astier.eu>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NfyUHoG/"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2161eb94cceso87127435ad.2;
+        Wed, 22 Jan 2025 05:46:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737553605; x=1738158405; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1BW1e45kiLlnm2nJRhGoE/QpLBlikGScXvdTACXGzJA=;
+        b=NfyUHoG/2Pt8Bv0YNcxV1+j9BtWnDxUHHlK0FcZEaxS3NAQwE7m9o54DoJHbH+l0WI
+         hisZ/1Qu31WY/3PhQevH8DWE30j5j6uAEANCnEtwMfWizDegvThYtCSoZsIqH5yia9uQ
+         uoEp2P9PyZlXfeGt3vUqFJQXwCbsNVoBsNwq0QMwDFd+35xgR80UZ6ckwQC1s39xra6+
+         snF1b7GiohGS43J0JOjunAyj282SWNJpVsXJSeF2R5VUc9PXJXnGUvVt7hM8NHpzvbJM
+         9YIYKx563CQto6Mz0NII3Feph5jsvWkFAux1VTwlXh3dk094S2dLZVKUDxdzvGUc21ES
+         kSHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737553605; x=1738158405;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=1BW1e45kiLlnm2nJRhGoE/QpLBlikGScXvdTACXGzJA=;
+        b=aawyyM3K+N0DUQqa18kEUHtLeHuX8I5jNtFdbanqVXMYxPVS8E4mW1X6pce/HbnWR5
+         3a1zcyCVvyTTxo4Wjeg9LIiZQrh4xRHvCV0dWuCjdWX2zyp8bOoko/r6IPdx8OzOMbUA
+         ZpKUxgkSNXZwtSAgNBEaRRnn/eKSAxY3tkxW/NEqrRV5TShxhwmDL+T7n+JpWxPZBytE
+         i3caxbsy+5zHalEwZl5xJ0wWCikztcTnCdneyvrTz5FerjyCmjj0poJSwgsCYAoUDgjm
+         qTeeR3mXaC6LQrbh4xies2fYmIn7SOcQhmT5GS0siMS+YeyrYV3i74g8fowP6/GgGgzj
+         5KFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU5ZUL6g/6zoor+D2chrJmEnr+JJ8HrK61i9cHP+MDMWGxRB8L85RrQk81bCkn1Ygylr+rwFpn6@vger.kernel.org, AJvYcCUeAIS9j+X3/YvT9uH+Ja51YgmExd2d/BNYsUNbKYep7ZT+LIftaKDpxNDbdy0MU5IfGAjJWoLQhy3oWP/EL24=@vger.kernel.org, AJvYcCWu0BDEw0IFOQ9axZmW2ydqujnz2+prCCf/3rx42SY0oT0DQxMx2qiRSQi3/En+BCP7Xoz//y8ErJ8y4ms=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFnIvALu3ED8CmsYu7dS48zRaQ62icwqEhTdIslaP8GR2s8RK9
+	HNd+Z8ercbGONdyI/FTzNX9YwCexsabjwxW3ASh7k7zZ+r8dYfFx
+X-Gm-Gg: ASbGncuD9Dp7Jd7ICk7aFi/sw9ZKPPJ6XVcQ4AoxELElxbBlpSuG8mRmVb2fdDuD42U
+	oKq6sgx92RFZxQwS8C/w+WajCYsVPNxgWtisPv+/hLaNL5sdRU3BNhkrWo56T4yfYmlR47I/IKJ
+	7KYD/8r3uKy/v5dHNJpbVHSDIlotWO3C2RtRMiuYqBgFI5hZhGE88/m38Ijvsif8bTz09ckbYFI
+	xkvIPTET7B/67K61IZxR4s7ljC87fy6rqRdZNi82XUwc/E+gxPvBNdhVDbRIFdc6EgMFS/Sb6MQ
+	ZguNZm3wUcd8JGLvVIXhFmoFeTuQvXzcPJaiVzY/eCRw5WnZHhU=
+X-Google-Smtp-Source: AGHT+IE1Hp+cf17IzNMDkWb5vJslmSRT2LDfaddC9tY/dYlXywwF10hkgf4XwTnX58Tk/K2UUra2AA==
+X-Received: by 2002:a17:902:d583:b0:215:4d90:4caf with SMTP id d9443c01a7336-21c353e700fmr353047635ad.14.1737553605134;
+        Wed, 22 Jan 2025 05:46:45 -0800 (PST)
+Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21c2cebaebcsm96177155ad.99.2025.01.22.05.46.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jan 2025 05:46:44 -0800 (PST)
+Date: Wed, 22 Jan 2025 22:46:35 +0900 (JST)
+Message-Id: <20250122.224635.1710391280729820874.fujita.tomonori@gmail.com>
+To: aliceryhl@google.com
+Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
+ boqun.feng@gmail.com, rust-for-linux@vger.kernel.org,
+ netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, anna-maria@linutronix.de, frederic@kernel.org,
+ tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
+ mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+ vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
+ bsegall@google.com, mgorman@suse.de, vschneid@redhat.com
+Subject: Re: [PATCH v8 3/7] rust: time: Introduce Instant type
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CAH5fLgipKcAk55r-KCYTh4JTooGhAv42kUU_L46=g-tUSo5n+A@mail.gmail.com>
+References: <20250116.210644.2053799984954195907.fujita.tomonori@gmail.com>
+	<20250122.214920.2057812400114439393.fujita.tomonori@gmail.com>
+	<CAH5fLgipKcAk55r-KCYTh4JTooGhAv42kUU_L46=g-tUSo5n+A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
 
-Some modules might need naming that contains hyphens "-" to match the
-auto-probing by name in the platform devices that comes from the device
-tree.
-
-But rust identifiers cannot contain hyphens, so replace the module name
-by an underscore anywhere we'd use it as an identifier.
-
-Signed-off-by: Anisse Astier <anisse@astier.eu>
----
-Hello,
-
-Change since v1:
- - rebase on branch rfl/staging/dev
-
-Sorry for sending a v2 so quickly, but v1 was based on the wrong branch :-/
-
-Kind regards,
-
-Anisse
----
- rust/macros/module.rs | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
-
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index cdf94f4982df..1eff30d2ca6a 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -182,7 +182,9 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
- 
-     let info = ModuleInfo::parse(&mut it);
- 
--    let mut modinfo = ModInfoBuilder::new(info.name.as_ref());
-+    /* Rust does not allow hyphens in identifiers, use underscore instead */
-+    let name_identifier = info.name.replace("-", "_");
-+    let mut modinfo = ModInfoBuilder::new(name_identifier.as_ref());
-     if let Some(author) = info.author {
-         modinfo.emit("author", &author);
-     }
-@@ -298,14 +300,14 @@ mod __module_init {{
-                     #[doc(hidden)]
-                     #[link_section = \"{initcall_section}\"]
-                     #[used]
--                    pub static __{name}_initcall: extern \"C\" fn() -> kernel::ffi::c_int = __{name}_init;
-+                    pub static __{name_identifier}_initcall: extern \"C\" fn() -> kernel::ffi::c_int = __{name_identifier}_init;
- 
-                     #[cfg(not(MODULE))]
-                     #[cfg(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS)]
-                     core::arch::global_asm!(
-                         r#\".section \"{initcall_section}\", \"a\"
--                        __{name}_initcall:
--                            .long   __{name}_init - .
-+                        __{name_identifier}_initcall:
-+                            .long   __{name_identifier}_init - .
-                             .previous
-                         \"#
-                     );
-@@ -313,7 +315,7 @@ mod __module_init {{
-                     #[cfg(not(MODULE))]
-                     #[doc(hidden)]
-                     #[no_mangle]
--                    pub extern \"C\" fn __{name}_init() -> kernel::ffi::c_int {{
-+                    pub extern \"C\" fn __{name_identifier}_init() -> kernel::ffi::c_int {{
-                         // SAFETY: This function is inaccessible to the outside due to the double
-                         // module wrapping it. It is called exactly once by the C side via its
-                         // placement above in the initcall section.
-@@ -323,12 +325,12 @@ mod __module_init {{
-                     #[cfg(not(MODULE))]
-                     #[doc(hidden)]
-                     #[no_mangle]
--                    pub extern \"C\" fn __{name}_exit() {{
-+                    pub extern \"C\" fn __{name_identifier}_exit() {{
-                         // SAFETY:
-                         // - This function is inaccessible to the outside due to the double
-                         //   module wrapping it. It is called exactly once by the C side via its
-                         //   unique name,
--                        // - furthermore it is only called after `__{name}_init` has returned `0`
-+                        // - furthermore it is only called after `__{name_identifier}_init` has returned `0`
-                         //   (which delegates to `__init`).
-                         unsafe {{ __exit() }}
-                     }}
-@@ -369,6 +371,7 @@ unsafe fn __exit() {{
-         ",
-         type_ = info.type_,
-         name = info.name,
-+        name_identifier = name_identifier,
-         modinfo = modinfo.buffer,
-         initcall_section = ".initcall6.init"
-     )
--- 
-2.48.1
-
+T24gV2VkLCAyMiBKYW4gMjAyNSAxMzo1MToyMSArMDEwMA0KQWxpY2UgUnlobCA8YWxpY2VyeWhs
+QGdvb2dsZS5jb20+IHdyb3RlOg0KDQo+IE9uIFdlZCwgSmFuIDIyLCAyMDI1IGF0IDE6NDnigK9Q
+TSBGVUpJVEEgVG9tb25vcmkNCj4gPGZ1aml0YS50b21vbm9yaUBnbWFpbC5jb20+IHdyb3RlOg0K
+Pj4NCj4+IE9uIFRodSwgMTYgSmFuIDIwMjUgMjE6MDY6NDQgKzA5MDAgKEpTVCkNCj4+IEZVSklU
+QSBUb21vbm9yaSA8ZnVqaXRhLnRvbW9ub3JpQGdtYWlsLmNvbT4gd3JvdGU6DQo+Pg0KPj4gPiBP
+biBUaHUsIDE2IEphbiAyMDI1IDEwOjMyOjQ1ICswMTAwDQo+PiA+IEFsaWNlIFJ5aGwgPGFsaWNl
+cnlobEBnb29nbGUuY29tPiB3cm90ZToNCj4+ID4NCj4+ID4+PiAtaW1wbCBLdGltZSB7DQo+PiA+
+Pj4gLSAgICAvLy8gQ3JlYXRlIGEgYEt0aW1lYCBmcm9tIGEgcmF3IGBrdGltZV90YC4NCj4+ID4+
+PiAraW1wbCBJbnN0YW50IHsNCj4+ID4+PiArICAgIC8vLyBDcmVhdGUgYSBgSW5zdGFudGAgZnJv
+bSBhIHJhdyBga3RpbWVfdGAuDQo+PiA+Pj4gICAgICAjW2lubGluZV0NCj4+ID4+PiAtICAgIHB1
+YiBmbiBmcm9tX3Jhdyhpbm5lcjogYmluZGluZ3M6Omt0aW1lX3QpIC0+IFNlbGYgew0KPj4gPj4+
+ICsgICAgZm4gZnJvbV9yYXcoaW5uZXI6IGJpbmRpbmdzOjprdGltZV90KSAtPiBTZWxmIHsNCj4+
+ID4+PiAgICAgICAgICBTZWxmIHsgaW5uZXIgfQ0KPj4gPj4+ICAgICAgfQ0KPj4gPj4NCj4+ID4+
+IFBsZWFzZSBrZWVwIHRoaXMgZnVuY3Rpb24gcHVibGljLg0KPj4gPg0KPj4gPiBTdXJlbHksIHlv
+dXIgZHJpdmVyIHVzZXMgZnJvbV9yYXcoKT8NCj4+DQo+PiBJIGNoZWNrZWQgb3V0IHRoZSBDIHZl
+cnNpb24gb2YgQmluZGVyIGRyaXZlciBhbmQgaXQgZG9lc24ndCBzZWVtIGxpa2UNCj4+IHRoZSBk
+cml2ZXIgbmVlZHMgZnJvbV9yYXcgZnVuY3Rpb24uIFRoZSBSdXN0IHZlcnNpb24gWzFdIGFsc28g
+ZG9lc24ndA0KPj4gc2VlbSB0byBuZWVkIHRoZSBmdW5jdGlvbi4gRG8geW91IGhhdmUgYSBkaWZm
+ZXJlbnQgdXNlIGNhc2U/DQo+IA0KPiBOb3QgZm9yIHRoaXMgcGFydGljdWxhciBmdW5jdGlvbiwg
+YnV0IEkndmUgY2hhbmdlZCBmdW5jdGlvbnMgY2FsbGVkDQo+IGZyb21fcmF3IGFuZCBzaW1pbGFy
+IGZyb20gcHJpdmF0ZSB0byBwdWJsaWMgc28gbWFueSB0aW1lcyBhdCB0aGlzDQo+IHBvaW50IHRo
+YXQgSSB0aGluayBpdCBzaG91bGQgYmUgdGhlIGRlZmF1bHQuDQoNClRoZW4gY2FuIHdlIHJlbW92
+ZSBmcm9tX3JhdygpPw0KDQpXZSBkb24ndCB1c2UgSW5zdGFudCB0byByZXByZXNlbnQgYm90aCBh
+IHNwZWNpZmljIHBvaW50IGluIHRpbWUgYW5kIGENCnNwYW4gb2YgdGltZSAod2UgYWRkIERlbHRh
+KSBzbyBhIGRldmljZSBkcml2ZXIgZG9uJ3QgbmVlZCB0byBjcmVhdGUgYW4NCkluc3RhbnQgZnJv
+bSBhbiBhcmJpdHJhcnkgdmFsdWUsIEkgdGhpbmsuDQoNCklmIHdlIGFsbG93IGEgZGV2aWNlIGRy
+aXZlciB0byBjcmVhdGUgSW5zdGFudCB2aWEgZnJvbV9yYXcoKSwgd2UgbmVlZA0KdG8gdmFsaWRh
+dGUgYSB2YWx1ZSBmcm9tIHRoZSBkcml2ZXIuIElmIHdlIGNyZWF0ZSBrdGltZV90IG9ubHkgdmlh
+DQprdGltZV9nZXQoKSwgd2UgZG9uJ3QgbmVlZCB0aGUgZGV0YWlscyBvZiBrdGltZSBsaWtlIGEg
+dmFsaWQgcmFuZ2Ugb2YNCmt0aW1lX3QuDQo=
