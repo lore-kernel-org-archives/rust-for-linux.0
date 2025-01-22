@@ -1,169 +1,124 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C421C3C1E
-	for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 08:23:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369A41CEE8D
+	for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 08:38:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737534230; cv=none; b=pYFS/7NM41LoCHhfLDG3psDvVxIHl2Bh2BU0eYAFX/GQMDQYgO3AM2+pVshD9MOyl3TsA57NPVAN4moXGaJhkMu5ksJLptMZQQLqSFcugdHFMvHo/t9kDm17S3aMOqIQfaGSka4jVtdwxeC+PXmqmxUxBvDjQGNLQD5SpiRCNAw=
+	t=1737535131; cv=none; b=H3c8Aah0oohNpi1mQlAYY9OX0DcqtRKF6o4DB4B8i3TsJt4SOb3BhN+HhNrPA5P9iM3t1K0dOKYgtr4NmNM7hd7kpHFnuj4JZuRuUHj9jFiKquwILeQVo57IW/X+XFvhdDdPB7nGgcfDce3CY4Lv8BR6lpEyuCxqHkIbfYLMaQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737534230; c=relaxed/simple;
-	bh=UWEKk0/IajddWYr4MmXpzVVsoY8VGZOwDpU8j3Zg6A0=;
+	s=arc-20240116; t=1737535131; c=relaxed/simple;
+	bh=J1PZ54vssI6jPaqsAH0gCww+a1TM3BmEpIr7INz4ib4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Y02/zA1+fn3rdRDKPdA3jkmWbV72O+6IDzCMbCvUQmTk/fp2yMctSuR+pEEdS5JP3x0uaqJ4ai3L6CqHas31YFVL7Xl6YhEzTCJTzGa1p1q3neU81fUsbdWGXMF2ep/vgCPnzKdrTiDNLoyOq3KrnlaK8vhU1nX/jQWVaXZb+Ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X5Jxdo4E; arc=none smtp.client-ip=209.85.128.47
+	 To:Cc:Content-Type; b=FPeFZ3bFcPZnMDSIdIcJRNdJ1RJxSei4DJRrj8xskA0pZyOdFM2jDOwbXG961G0N9rRrYwhyZXFxTFsi36j9D1NRkXCJiQck9rPKlDjsmXXxlt3frZh8D66NZhNngIhMKdHrBu9gjaX6hvG7fxb3FltGbvYzBpaDv6VJTWkixE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MHbrmYcm; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X5Jxdo4E"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4361815b96cso45730675e9.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 00:23:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MHbrmYcm"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4361f796586so72186295e9.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 00:38:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737534227; x=1738139027; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1737535128; x=1738139928; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OcEI1cNhN+P7WzD6tOAkMg6iUZz4y1VQgFqyHXgPSKM=;
-        b=X5Jxdo4E6YppxR9V87Qw65nSn6hRnJjL+3KukqZjRXGWExP5LN76+9mpCVt891R4NL
-         ezuNs3f1ksL3m0fmjd2e1cXruwwyg5onK1FfbHLsRYz6ZYudSHfs1g04l7S0Yyws2QMZ
-         dCtDkqDpJ7LEisf9KKH8wLSufM+LkIYxU2ZRjvQF296LVpTz5YGsqQCmNxcQHSyxZEfd
-         Zl2NccYgKuFuRpbAZHBlxEofa9AQXHqb1ztPllYbJyRG0lHGMM/gSTELT+Y3424GF3Ps
-         LlUjQONdfHsyqHxHExJ9TdI7B2ZTKjMP+MfxxK0HIwJvCLQXLtklHMicuysTE6TuLx76
-         OzIA==
+        bh=PxsC/lnPLJHrCczRJkEAqLDOauntTBgxm3137kAbTzA=;
+        b=MHbrmYcmlHjAIRWXpsaboxmfDamPaFycWBdXfnhEsOkjE7JXPY9RLxPYNoFzgSsKH8
+         mSJBqVhgDtzeMbAYNx9lQ8BUlMmbz2knaANIkjvRae0CHqPvk7ve9/Q+7ZacguucpjYE
+         4XaYNoDu0w3KbMTOj4rH8vu+4B/e9zZo2P6qyfOP6bdzw12rR2+vA7SPBDDcrLSxoIUP
+         bNGmvyLB0NZfQev5/0gxmPmSp33HncQiFPyusggi7lbRjSpOzQBIgZU7oYIOXGjg5F0i
+         030g2JPG0I0u7Dt/AzLcpSt2tHXFv9EQV4hn7tAPSjey3AGvd37NYiOCwL6mQa32/CoY
+         idNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737534227; x=1738139027;
+        d=1e100.net; s=20230601; t=1737535128; x=1738139928;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=OcEI1cNhN+P7WzD6tOAkMg6iUZz4y1VQgFqyHXgPSKM=;
-        b=reOyehbLAgtMnLjUejzW/IHoIv1JBKWbRUuIkHTY0cmOx4IZLR/Y3uhfHKsfKxhBNm
-         HHTfDnb+ZN5Kl9uhx/k37EN+LvlmNqZAun9k7kfHWQ2tdAtKwPhgFoOm4VvgA+mcL5uO
-         ebLZsU0iAYKFWCNfK4ELaXqOHq6O9zN3byw/wHvlsTDjTna7ftqxweOEXc506SNUhcZ/
-         dvaYs0p+u7+O2RC3T04yXBXYOmcIbsNEBoii/iYHVl4/y3X84OQ88CGk7vBVcZCkbiyb
-         9pminIJRuchhRMxfmDHoLWW1GzUFs29nWx8VNjtEh09rOjsrVvE9Rcdg6bJWtO5P6t3b
-         7uog==
-X-Forwarded-Encrypted: i=1; AJvYcCUDGnk7vdj7KKqjYzps8+nFAW7StZ1nFKKB4sNkCwq9ihG29IJCTghdyOfM5cGb8gUEbiWNuKnCN+EIsMod+w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzscboO2bc0HOvWOb6jb/C+aXrD9dw3zs5GCo5F9i90bZK+BBBZ
-	FMcaBXyfi3Oasdcm1kvMPEunO0UN9Tj3uxrIySgnJjZgVk30G76MkwSLf9BP77JmzGLzCZIuZX7
-	Hfu2FCuLDFLwFgT1K3R2w8fkh9jcOeKUX3LFB
-X-Gm-Gg: ASbGncu8hIDu9Xd87aqNbCty4/H6MH+6K65IjOy/1TwJpp0wX+6LcCoLsikEGBAMgLT
-	iCKTN2YTjX09U1m9Fs8yiOXFBn24H6R4blDt+D4zkOKoARWHUS/tpcr7QYcg5VqI0aE5MZWGWRD
-	9Imesl
-X-Google-Smtp-Source: AGHT+IGLhcoLGibp60qeyppb6Y4slI01E6V64KDqpYcBLyjS2JRjLl/fT2k0OancRcx0JWo/ju/1iHpMauZS/9Lsk2E=
-X-Received: by 2002:a5d:6d86:0:b0:385:e38f:8cc with SMTP id
- ffacd0b85a97d-38bf59e1e56mr24039806f8f.38.1737534225084; Wed, 22 Jan 2025
- 00:23:45 -0800 (PST)
+        bh=PxsC/lnPLJHrCczRJkEAqLDOauntTBgxm3137kAbTzA=;
+        b=CfNXUh5q/j1R/Tm+VzwD8cJd430ha/IKkZusPhOZ9qycbipMtoQ+Z9Pq9D2QSzEarb
+         k+o8MRWs3Hx6c8n72LODbt5SyHixKhVUKLoKUg/UqxRHpdm7xwRNQQ+Z1UkLqn90znyJ
+         bo9pVXuZsbIUWtEeii7T7CN9zutygtyxaI1NOTMfzB57nuMQt9mAtwxD7ky1/ZU/dYA5
+         G/8jsjuOyhfs+ESkwQqerLJSt2VRTyrGfFrpKAAVWA3l4OE9hZjdxpTzqKXIBbw59PCf
+         Y/bQ9IwCl1rwi8eTk0YstGWCmBY0hzdvF4V+0EXVQ3+vZ0a0JjvBcj+97oa43vXSoGGF
+         tnug==
+X-Forwarded-Encrypted: i=1; AJvYcCWIWg2G6lwvXLysaODdPDH1isu9QJ4z98MrQY7RbyXdS6R0QNEafqHIrKt0x0/0tF8BpAsiVoSb7xuiFHcUiw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLpGxwH1Z/UhsfqYOH4rwtnKRlN/EfJ01AhmGXlBvyhLPhtzyq
+	RUSnJjkniTnw9pJBF+TkQSWJiZmIiWe5hylxkoE2/4RUvmUbmiGSSibTwFMrXlXIQl2pRxgAOCs
+	MkywG6mS4hNEw3QOEGvi+bhNstKCujqDKz1hY
+X-Gm-Gg: ASbGnctZhdRHJ3NURSh0zuOCFBwX5G9h44NFyDPIL4RA/uPLzxNYltXMS0qJm6sG2zG
+	7Ue7zTUVv2FO8UCx78G6pugs2A5IkkV6WJXYnCYQ7XXHorXRLvYD1q2uFpXfb0BPA1kZHMkclAD
+	MH2Axj
+X-Google-Smtp-Source: AGHT+IFPuvOfZfw1b6egw4r7DiMV0eyONzBkuus91kMgCRJ74Pd+1Y2LSEfTb91ly597gdda1T7Uy2XI5S2InOftVvU=
+X-Received: by 2002:a05:6000:bc4:b0:38b:d8a5:df43 with SMTP id
+ ffacd0b85a97d-38bf565a587mr18003489f8f.21.1737535128333; Wed, 22 Jan 2025
+ 00:38:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANiq72nNsmuQz1mEx2ov8SXj_UAEURDZFtLotf4qP2pf+r97eQ@mail.gmail.com>
- <20250118.170224.1577745251770787347.fujita.tomonori@gmail.com>
- <CANiq72kqu7U6CR30T5q=PvRam919eMTXNOfJHKXKJ0Z60U0=uw@mail.gmail.com> <20250122.155702.1385101290715452078.fujita.tomonori@gmail.com>
-In-Reply-To: <20250122.155702.1385101290715452078.fujita.tomonori@gmail.com>
+References: <20250122-gendwarfksyms-kasan-rust-v1-1-5ee5658f4fb6@google.com>
+In-Reply-To: <20250122-gendwarfksyms-kasan-rust-v1-1-5ee5658f4fb6@google.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 22 Jan 2025 09:23:33 +0100
-X-Gm-Features: AbW1kvaYoDa6HCJU-y7gMRZCEOShJlhUhzZjI1chC4RAjHWOFxFe9aV4LXFN85Y
-Message-ID: <CAH5fLghgcJV6gLvPxJVvn8mq4ZN0jGF16L5w-7nDo9TGNAA86w@mail.gmail.com>
-Subject: Re: [PATCH v8 4/7] rust: time: Add wrapper for fsleep function
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: miguel.ojeda.sandonis@gmail.com, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, andrew@lunn.ch, 
-	hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@samsung.com, anna-maria@linutronix.de, 
-	frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, 
-	sboyd@kernel.org, mingo@redhat.com, peterz@infradead.org, 
-	juri.lelli@redhat.com, vincent.guittot@linaro.org, dietmar.eggemann@arm.com, 
-	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de, vschneid@redhat.com
+Date: Wed, 22 Jan 2025 09:38:35 +0100
+X-Gm-Features: AbW1kvZg0Mv8xtaENSsxfpITIl4lLLkLfFgL_7of5oMVFQxtjMmJFBs2fAK6yX8
+Message-ID: <CAH5fLgiyNBn3CtS8EBRsCHCSo1OyafhA2i8rM7VykWsaOMxK1w@mail.gmail.com>
+Subject: Re: [PATCH] rust: Do not export generated KASAN ODR symbols
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 22, 2025 at 7:57=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
+On Wed, Jan 22, 2025 at 1:14=E2=80=AFAM Matthew Maurer <mmaurer@google.com>=
+ wrote:
 >
-> On Sat, 18 Jan 2025 13:17:29 +0100
-> Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
->
-> > On Sat, Jan 18, 2025 at 9:02=E2=80=AFAM FUJITA Tomonori
-> > <fujita.tomonori@gmail.com> wrote:
-> >>
-> >> /// The above behavior differs from the kernel's [`fsleep`], which cou=
-ld sleep
-> >> /// infinitely (for [`MAX_JIFFY_OFFSET`] jiffies).
-> >>
-> >> Looks ok?
-> >
-> > I think if that is meant as an intra-doc link, it would link to this
-> > function, rather than the C side one, so please add a link target to
-> > e.g. https://docs.kernel.org/timers/delay_sleep_functions.html#c.fsleep=
-.
->
-> Added.
->
-> > I would also say "the C side [`fsleep()`] or similar"; in other words,
-> > both are "kernel's" at this point.
->
-> Agreed that "the C side" is better and updated the comment. I copied
-> that expression from the existing code; there are many "kernel's" in
-> rust/kernel/. "good first issues" for them?
->
-> You prefer "[`fsleep()`]" rather than "[`fsleep`]"? I can't find any
-> precedent for the C side functions.
+> ASAN generates sppecial synthetic symbols to help check for ODR
 
-I think that's a matter of taste. In the Rust ecosystem, fsleep is
-more common, in the kernel ecosystem, fsleep() is more common. I've
-seen both in Rust code at this point.
+Typo: sppecial
 
-> > And perhaps I would simplify and say something like "The behavior
-> > above differs from the C side [`fsleep()`] for which out-of-range
-> > values mean "infinite timeout" instead."
+> violations. These synthetic symbols lack debug information, so
+> gendwarfksyms emits warnings when processing them. No code should ever
+> have a dependency on these symbols, so we should not be exporting them,
+> just like the __cfi symbols.
 >
-> Yeah, simpler is better. After applying the above changes, it ended up
-> as follows.
->
-> /// Sleeps for a given duration at least.
-> ///
-> /// Equivalent to the C side [`fsleep`], flexible sleep function,
-> /// which automatically chooses the best sleep method based on a duration=
-.
-> ///
-> /// `delta` must be within [0, `i32::MAX`] microseconds;
+> Signed-off-by: Matthew Maurer <mmaurer@google.com>
 
-I'd do `[0, i32::MAX]` instead for better rendering.
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-> /// otherwise, it is erroneous behavior. That is, it is considered a bug
-> /// to call this function with an out-of-range value, in which case the
-> /// function will sleep for at least the maximum value in the range and
-> /// may warn in the future.
-> ///
-> /// The behavior above differs from the C side [`fsleep`] for which out-o=
-f-range
-> /// values mean "infinite timeout" instead.
-> ///
-> /// This function can only be used in a nonatomic context.
-> ///
-> /// [`fsleep`]: https://docs.kernel.org/timers/delay_sleep_functions.html=
-#c.fsleep
-> pub fn fsleep(delta: Delta) {
+>  rust/Makefile | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
+> diff --git a/rust/Makefile b/rust/Makefile
+> index ab300bfb46f6a3e386b86d58120d7aeddc57da37..4f212bd41e74ec9f25445d3af=
+76818332f288e15 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -329,7 +329,7 @@ $(obj)/bindings/bindings_helpers_generated.rs: privat=
+e bindgen_target_extra =3D ;
+>  $(obj)/bindings/bindings_helpers_generated.rs: $(src)/helpers/helpers.c =
+FORCE
+>         $(call if_changed_dep,bindgen)
 >
-> >> A range can be used for a custom type?
-> >
-> > I was thinking of doing it through `as_nanos()`, but it may read
-> > worse, so please ignore it if so.
+> -rust_exports =3D $(NM) -p --defined-only $(1) | awk '$$2~/(T|R|D|B)/ && =
+$$3!~/__cfi/ { printf $(2),$$3 }'
+> +rust_exports =3D $(NM) -p --defined-only $(1) | awk '$$2~/(T|R|D|B)/ && =
+$$3!~/__cfi/ && $$3!~/__odr_asan/ { printf $(2),$$3 }'
 >
-> Ah, it might work. The following doesn't work. Seems that we need to
-> add another const like MAX_DELTA_NANOS or something. No strong
-> preference but I feel the current is simpler.
+>  quiet_cmd_exports =3D EXPORTS $@
+>        cmd_exports =3D \
 >
-> let delta =3D match delta.as_nanos() {
->     0..=3DMAX_DELTA.as_nanos() as i32 =3D> delta,
->     _ =3D> MAX_DELTA,
-> };
-
-Could you do Delta::min(delta, MAX_DELTA).as_nanos() ?
-
-Alice
+> ---
+> base-commit: 0939156bc07c9fd2b554d9813352c386dacfc3d9
+> change-id: 20250116-gendwarfksyms-kasan-rust-2bdbac027f88
+>
+> Best regards,
+> --
+> Matthew Maurer <mmaurer@google.com>
+>
