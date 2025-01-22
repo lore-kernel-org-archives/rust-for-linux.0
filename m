@@ -1,130 +1,203 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1826F1B6CE0;
-	Wed, 22 Jan 2025 20:06:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7EA21576D
+	for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 20:14:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737576376; cv=none; b=NzYtfFbwvJ550vkakpUQLRAlexz+PziF1KMPY/GMQlvQVt7dWzlflsKZlUupsuFduujIyIJxO9ngJAUwC6rfYw9y26rPLQcGxmkxZ5R8OT4nYX8YxCXiqhDg8m3zgOPYMk02AcOy/uBcFfLyaIbIhvCregTqtwPNI55kn9oMsds=
+	t=1737576855; cv=none; b=WsL5xa2lUeSUC+DyAZgchoJqFDVrDprebndBFYbchFmLmMKr0EJisBL5OcPqWJl2Te5wo4tG4QpqSAEgJtxT6Q1yK/qlZPv7ujSFEHgG9OQN6+bRxtHHGINrswNrzXz+Tr2WGbni0423qvwMj4MNBDW+B6SIz+YIsgEJqpZEPhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737576376; c=relaxed/simple;
-	bh=S5TTnFvAJPPSSH0AY88qF4Q33YOQ5/7GfsUezm6tuHY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=JrNbO0RBBKfs73+CErdEqWcjUnBYbEVIVGEmGJ9AD+rTfV+8ckTVna1uIuhxP6OdYAJf892CKbcCJzNypp/tRvRbLwN51mEWb3MaL67Xi79iD6L3N8V8FwhPx8/SkQnZFCO5lNqHM0qUhMomwCVXCa9ouVWShhexIyP0ctr3ahM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EjJcG2Z6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1737576855; c=relaxed/simple;
+	bh=MQPfRLJVD9+rimsW6bt9LJMO5UnWiyoW3E9uObuUFJI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OkCNzauGHOPINO6kZDplCgk7wXiOKRKCg1VKQ9Pwxd3YrucgyNO07ogU+VFfSTAFs9nF32T/IIeAOCbAwTxX+/ReEFc+DK286Vf0HMy30bQ61YoNKrV/1edgr6Yp3XFqdyrsn3RC9YEEHVipg+70me1AXWAh4DKxecviTmcQd7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3ZozxSEn; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EjJcG2Z6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60920C4CED2;
-	Wed, 22 Jan 2025 20:06:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737576374;
-	bh=S5TTnFvAJPPSSH0AY88qF4Q33YOQ5/7GfsUezm6tuHY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=EjJcG2Z66JJlh9mImcdD7SeVperH0zRWeaXzqZx1y6HpMbv1EuJrfAseTFRTFDRT2
-	 4dYZddDKMnsHPfAciwhrI7Dyg6Z44Nui6JWwBW2wHtIXNsM6LmStoIHbJQ9MGIULl8
-	 n7h5ok6ypAzMIhbHd2PI5OhNje8S4XYwimGLiEFJt5+mbe5Q9gDhAc7t0UuaYhoOvc
-	 9nROdsYl2QPbFD07pMAXXMJ9+rfL+91nTQlHTaAh7nG7ibDhsv+L5uUtdrfuNDCzu5
-	 Sj9bQmSd1Lp/1D55sHm2N2NZBdrTIPU+2gjgs+QPkxZfynS4N9htgdrwu3PGRCCeBg
-	 ZFqyDsmQGqgdg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Petr Pavlu" <petr.pavlu@suse.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno
- Lossin" <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,
-  "Masahiro Yamada" <masahiroy@kernel.org>,  "Nathan Chancellor"
- <nathan@kernel.org>,  "Nicolas Schier" <nicolas@fjasle.eu>,  "Luis
- Chamberlain" <mcgrof@kernel.org>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <linux-kbuild@vger.kernel.org>,  "Sami Tolvanen"
- <samitolvanen@google.com>,  "Daniel Gomez" <da.gomez@samsung.com>,
-  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg KH"
- <gregkh@linuxfoundation.org>,  <linux-modules@vger.kernel.org>
-Subject: Re: [PATCH v4 4/4] rust: add parameter support to the `module!` macro
-In-Reply-To: <04419f26-1411-4e47-a0f0-f774064bc2f0@suse.com> (Petr Pavlu's
-	message of "Wed, 22 Jan 2025 17:01:32 +0100")
-References: <20250109-module-params-v3-v4-0-c208bcfbe11f@kernel.org>
-	<20250109-module-params-v3-v4-4-c208bcfbe11f@kernel.org>
-	<XHW3ISBydpd3OFamhThxUUd97oEcmOAxv3ro0WP6nAbUALocUp3qw62jNCuDv66LoSL_8shwbFH660c1GhekiA==@protonmail.internalid>
-	<04419f26-1411-4e47-a0f0-f774064bc2f0@suse.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Wed, 22 Jan 2025 21:06:00 +0100
-Message-ID: <874j1q1umv.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3ZozxSEn"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-385e1fcb0e1so51840f8f.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 12:14:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1737576851; x=1738181651; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=799enZDRd68J8NTgzAbvdBKg9qVwFJkLjqAu2nTRthw=;
+        b=3ZozxSEnucGoZNGBnpDYKO955PjINK9VdHMvZ0mTMyuyh72XAE0O29k3vKQcUiMQLB
+         boVOANXhUMyU9uvNWl8FsP6wnUJiKf8ZXapR4V4prbYdvIYe3OykhJVipAFdy2XZVqDz
+         K7UCWkNCt1gEtiFxxLZ00J8Yz1un3hMwJUjArj8Wy3+Cg3TIZ7bsyCWzQKQuYaAudm2o
+         zOQgJqfLiB8YmGZ8MkRxOkRmkMuuASzgTvGanP6VSvavtptUDSF6HtgtLe0wUAzV7HSE
+         eN1Q2na7FWeGxCQWIdO4EiDjIT1cDpFuTDF1GJLRce9tzd7FnSEPFSQWBOOJ2i0lYnIV
+         nEag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737576851; x=1738181651;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=799enZDRd68J8NTgzAbvdBKg9qVwFJkLjqAu2nTRthw=;
+        b=Bt9lhY0hNQj82oLckZpc+bQuUQXPw58KrvvxRx5KOanmstht7PzD9ysRzbbz7uSUfz
+         jojbHHuQ/Okn/kIAGjkQJig6EqgloDy1vgW2WuIj11hu2KGxLZApFJ5claMyQFtd3wSF
+         l9bUgP738G1QzNzVSqURw/rL1bsbp9V1nAEzTU3cVPdaSpb2fjOpmdQhSG4jdcloRF7K
+         fRiUPa6+iQ1juH1smhFZmRrd/H9OEUU7NhXP8utlh4kUCssl5eZT3apueveqppLdqe3Q
+         uWLcU1vv2jtOMdMkqEe6qXlQ2XHj3EanMtSC6jFKrv0KLN9svrs0GT1EFalunRGOdXf9
+         /W1A==
+X-Forwarded-Encrypted: i=1; AJvYcCVDRO47AmTry9SnIuT68rdpIYpoVbAMDIKi3jZZPglvn8tnOVttyTr/IqBtGn0ntoQsRahfOp/fyFnaMmepGQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfmGtzKu1QYI+zExzBQ3R4AIBzKcWi33HiQIl7G4cdpqQm06wd
+	arGyoDIMAfvYdfyBHJRyLkEBeB3Qh7LqhteLEKzdyRV5vHJ852YpOXskeVyO93NRUeVpOo/ey+z
+	KTbecsf2V9dp5YRVXPO3Nvyhz5goFQ3FVExI3
+X-Gm-Gg: ASbGncvkSF5qOY0mc75J0HVL1mJuUsNsWWJmelLk0o1XF9tCDgiobm2lQ/PgwuCixaB
+	xzdDbbalgiAgzU7wZFulPQng0uoxPvvK+Ukj84iOKZqjc4xVl61KP
+X-Google-Smtp-Source: AGHT+IHHFJjH3/hicgLxucZeztnwvP00UZVJLyNNL4Qv38atEuZl6Zz5YU/+f4EcPOoU7U3mCW/FWaYwviSq9tl1AGs=
+X-Received: by 2002:adf:fd84:0:b0:385:faf5:eb9f with SMTP id
+ ffacd0b85a97d-38bf57c91e7mr22722774f8f.48.1737576851500; Wed, 22 Jan 2025
+ 12:14:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20250116044100.80679-1-fujita.tomonori@gmail.com>
+ <20250116044100.80679-7-fujita.tomonori@gmail.com> <20250122183612.60f3c62d.gary@garyguo.net>
+In-Reply-To: <20250122183612.60f3c62d.gary@garyguo.net>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 22 Jan 2025 21:14:00 +0100
+X-Gm-Features: AWEUYZm3UTAucx2cFmk1mTUAxOJsE7LEBH5OM1aMznsLuIfD4fH93uCjGIhAd_Q
+Message-ID: <CAH5fLgiMnifHoEkExSQVcv+7amO5aXSqd9kaGfM5af4eapcHzA@mail.gmail.com>
+Subject: Re: [PATCH v8 6/7] rust: Add read_poll_timeout functions
+To: Gary Guo <gary@garyguo.net>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, linux-kernel@vger.kernel.org, 
+	Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org, 
+	netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com, 
+	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
+	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de, 
+	arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, mingo@redhat.com, 
+	peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, 
+	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, 
+	mgorman@suse.de, vschneid@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-"Petr Pavlu" <petr.pavlu@suse.com> writes:
-
-> On 1/9/25 11:54, Andreas Hindborg wrote:
->> This patch includes changes required for Rust kernel modules to utilize
->> module parameters. This code implements read only support for integer
->> types without `sysfs` support.
->>
-
-[cut]
-
->> +
->> +        // SAFETY: `old_value` is valid for writes, as we have exclusive
->> +        // access. `old_value` is pointing to an initialized static, an
+On Wed, Jan 22, 2025 at 7:36=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
 >
-> Typo: an -> and
-
-Thanks.
-
-[cut]
-
->> +
->> +    fn emit_params(&mut self, info: &ModuleInfo) {
->> +        let Some(params) = &info.params else {
->> +            return;
->> +        };
->> +
->> +        for param in params {
->> +            let ops = param_ops_path(&param.ptype);
->> +
->> +            // Note: The spelling of these fields is dictated by the user space
->> +            // tool `modinfo`.
->> +            self.emit_param("parmtype", &param.name, &param.ptype);
->> +            self.emit_param("parm", &param.name, &param.description);
->> +
->> +            write!(
->> +                self.param_buffer,
->> +                "
->> +                    pub(crate) static {param_name}:
->> +                        ::kernel::module_param::ModuleParamAccess<{param_type}> =
->> +                            ::kernel::module_param::ModuleParamAccess::new({param_default});
->> +
->> +                    #[link_section = \"__param\"]
->> +                    #[used]
->> +                    static __{module_name}_{param_name}_struct:
->> +                        ::kernel::module_param::RacyKernelParam =
->> +                        ::kernel::module_param::RacyKernelParam(::kernel::bindings::kernel_param {{
->> +                            name: if cfg!(MODULE) {{
->> +                                c\"{module_name}.{param_name}\"
->> +                            }} else {{
->> +                                c\"{param_name}\"
->> +                            }}.as_ptr(),
+> On Thu, 16 Jan 2025 13:40:58 +0900
+> FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
 >
-> This should be the other way around? Running
-> 'insmod rust_minimal.ko test_parameter=2' reports for me that the
-> parameter is unknown while specifying 'rust_minimal.test_parameter=2'
-> works. The prefix should be used only if the module is built-in so the
-> parameter can be distinguished on the kernel command line.
+> > Add read_poll_timeout functions which poll periodically until a
+> > condition is met or a timeout is reached.
+> >
+> > C's read_poll_timeout (include/linux/iopoll.h) is a complicated macro
+> > and a simple wrapper for Rust doesn't work. So this implements the
+> > same functionality in Rust.
+> >
+> > The C version uses usleep_range() while the Rust version uses
+> > fsleep(), which uses the best sleep method so it works with spans that
+> > usleep_range() doesn't work nicely with.
+> >
+> > Unlike the C version, __might_sleep() is used instead of might_sleep()
+> > to show proper debug info; the file name and line
+> > number. might_resched() could be added to match what the C version
+> > does but this function works without it.
+> >
+> > The sleep_before_read argument isn't supported since there is no user
+> > for now. It's rarely used in the C version.
+> >
+> > core::panic::Location::file() doesn't provide a null-terminated string
+> > so add __might_sleep_precision() helper function, which takes a
+> > pointer to a string with its length.
+> >
+> > read_poll_timeout() can only be used in a nonatomic context. This
+> > requirement is not checked by these abstractions, but it is intended
+> > that klint [1] or a similar tool will be used to check it in the
+> > future.
+> >
+> > Link: https://rust-for-linux.com/klint [1]
+> > Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> > ---
+> >  include/linux/kernel.h |  2 +
+> >  kernel/sched/core.c    | 28 +++++++++++---
+> >  rust/helpers/helpers.c |  1 +
+> >  rust/helpers/kernel.c  | 13 +++++++
+> >  rust/kernel/cpu.rs     | 13 +++++++
+> >  rust/kernel/error.rs   |  1 +
+> >  rust/kernel/io.rs      |  5 +++
+> >  rust/kernel/io/poll.rs | 84 ++++++++++++++++++++++++++++++++++++++++++
+> >  rust/kernel/lib.rs     |  2 +
+> >  9 files changed, 144 insertions(+), 5 deletions(-)
+> >  create mode 100644 rust/helpers/kernel.c
+> >  create mode 100644 rust/kernel/cpu.rs
+> >  create mode 100644 rust/kernel/io.rs
+> >  create mode 100644 rust/kernel/io/poll.rs
+> >
+> > diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+> > new file mode 100644
+> > index 000000000000..033f3c4e4adf
+> > --- /dev/null
+> > +++ b/rust/kernel/io.rs
+> > @@ -0,0 +1,5 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +//! Input and Output.
+> > +
+> > +pub mod poll;
+> > diff --git a/rust/kernel/io/poll.rs b/rust/kernel/io/poll.rs
+> > new file mode 100644
+> > index 000000000000..da8e975d8e50
+> > --- /dev/null
+> > +++ b/rust/kernel/io/poll.rs
+> > @@ -0,0 +1,84 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +//! IO polling.
+> > +//!
+> > +//! C header: [`include/linux/iopoll.h`](srctree/include/linux/iopoll.=
+h).
+> > +
+> > +use crate::{
+> > +    cpu::cpu_relax,
+> > +    error::{code::*, Result},
+> > +    time::{delay::fsleep, Delta, Instant},
+> > +};
+> > +
+> > +use core::panic::Location;
+> > +
+> > +/// Polls periodically until a condition is met or a timeout is reache=
+d.
+> > +///
+> > +/// Public but hidden since it should only be used from public macros.
+> > +///
+> > +/// ```rust
+> > +/// use kernel::io::poll::read_poll_timeout;
+> > +/// use kernel::time::Delta;
+> > +/// use kernel::sync::{SpinLock, new_spinlock};
+> > +///
+> > +/// let lock =3D KBox::pin_init(new_spinlock!(()), kernel::alloc::flag=
+s::GFP_KERNEL)?;
+> > +/// let g =3D lock.lock();
+> > +/// read_poll_timeout(|| Ok(()), |()| true, Delta::from_micros(42), De=
+lta::from_micros(42));
+> > +/// drop(g);
+> > +///
+> > +/// # Ok::<(), Error>(())
+> > +/// ```
+> > +#[track_caller]
+> > +pub fn read_poll_timeout<Op, Cond, T: Copy>(
+>
+> I wonder if we can lift the `T: Copy` restriction and have `Cond` take
+> `&T` instead. I can see this being useful in many cases.
+>
+> I know that quite often `T` is just an integer so you'd want to pass by
+> value, but I think almost always `Cond` is a very simple closure so
+> inlining would take place and they won't make a performance difference.
 
-Thanks for testing! This actually gave me quite a headache when I was
-using the series elsewhere. I forgot to resend the series with the fix,
-sorry.
+Yeah, I think it should be
 
+Cond: FnMut(&T) -> bool,
 
-Best regards,
-Andreas Hindborg
+with FnMut as well.
 
-
-
+Alice
