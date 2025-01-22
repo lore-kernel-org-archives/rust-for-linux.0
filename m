@@ -1,55 +1,55 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A9B521421D
-	for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 15:00:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB4F2144C9
+	for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 15:00:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737558046; cv=none; b=fS8avXvYH4bN08f/DEoYCRhT14KSipC5A4BC3qsP5pOSH2jcoCCARGRC2g2iCe290OlSAF2DfhyAJLO0nVZWuqs78BctG6sp9odNADhMzLT+bgX3E7qkdzvW9iA63qwaywRQmzGuieVboFXLrVVU3rvwL2+iKHZYmA9W+CrkZTU=
+	t=1737558048; cv=none; b=Np1L6zmvJMniC7cKfxf0Py9IQH3ZRAkdFxIzLcgOUuTnTh6njkLVV/LdL+2/FiIwx/RR0CdHTZpeSUvpNoTdEyROgJjqIgqCZheKTxr2l2as0+EKe4rVSitOeNovan78bYZR7tC35pVHch8jkf5NGcralbyvdjRSTvxt4x5pE54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737558046; c=relaxed/simple;
-	bh=07KvXWwT9X3FUu26PatafcUnUgdiuPCMqiW6FbaREys=;
+	s=arc-20240116; t=1737558048; c=relaxed/simple;
+	bh=VoIukpJ0jW+rvwma/DnUGR14jtGq6eBiASSndzwltRE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=qS5zV2lnjKanKE3M7APgOcAJnSDTEQaSKaHstUCySGqV07x6kwy3XLPJaTRyTsJPGldMPxACP+VMbXRUN95MAY5k9KjP/+jtwOUHt8PXZJA1i63wPOuI3X0y6r3cyACeR+KZJQ3bATJF2/pGIVUYg1J3/gDsAYyvlNYzi06QBDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Qt+mve1b; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=Z1nuAbaA1TezrpoitDwOHxXC4wbOhI1rD+33YLaUtOvW7s5vAexMMFSGfx9lZ+UZrMjCgrpgVeSA03Psr+IcFsZLPo4Wy5k6PwDyMvyxilmzi90T/HvVWXlSGUDOz28iIG4I1HvMJaB0rPJw2Od4TCQEVbuafQD9ISl+mAzZNCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=w02vNvoV; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Qt+mve1b"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-436723db6c4so51411025e9.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 07:00:43 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="w02vNvoV"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4361ac8b25fso38048765e9.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 07:00:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737558042; x=1738162842; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1737558044; x=1738162844; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=K2jyo6F2nIPEWze5+hxsh8zUD5pqGsM2SbdyCSmT9fA=;
-        b=Qt+mve1bAHuOOhMxMp1HwaJaeIRaVWlJgfY0Oh7AurSGyoTw5lWvmrrKEscf+Zy1Fx
-         w6WAyxoZCIMFtJPDKDCIbpczz3ORkOdlNY3xKc21k49lqRmOdbf8314q1GJht9c0nKSz
-         Ku6VWI1Sf8EyLHl83obKKyZ5rOH3a2UsdcM9vdG7ybo8OjTPjXzXv1onm6O0+6qSRRlR
-         cuYlrbf/iJKkNh+QUEgzO+Q6l4SesJVSSLo9oGxMvdNqKX+rEDzphmGqgkoqVrsSxR31
-         BEg7AXzNL7gv6L6DA+EeKNn9QVyjSoNDwFZjuWfDMMt+5pqnNrwN0DLpBxG8XlKDW6Qf
-         vqzg==
+        bh=wI2ZgrmHeUJUXqNM6UTPag6iKf+yFn85pJiKJJQL+Zg=;
+        b=w02vNvoVcYSX/C4O0SUJipyJHKoDR7VzbhjixPvx2YwRJD2CkjkJgd4Q2AvKASV5eA
+         o2Wcg44+PtbKnq37fJD+42fuZ7puBXwcEtZgzJgn+N1m3YjZgiNqRom+vjnA5qyq5tVy
+         vF1UYUqfvzKKOD0ZKiXdExFTvCuFRUHu5s0iRLFVB9l0hiF9HzknDUWp9ZF83SUcfcfN
+         8YUupfn7MsUR/fvJfKYPRp6E/Rrm9StaOjxSY5sDpkhgk9+zWCqh1xzjRkJdKEpQtCtJ
+         Yl485A2RJ7in2fHxD9HXx66vMkOhhglsB4o64emYnMhcInuGHrhBW+OxmPaj+x4VjJDh
+         8caQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737558042; x=1738162842;
+        d=1e100.net; s=20230601; t=1737558044; x=1738162844;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=K2jyo6F2nIPEWze5+hxsh8zUD5pqGsM2SbdyCSmT9fA=;
-        b=L26ocQ/yayzVQ46TO4BM+ce+YmpaLscMQCHtNvaKWyz/x2W4/OgR78Aag7bEhO77Gf
-         c9KhvUGVtaY21b6k/PKUd727aKpVy/xYrGmmAtZpO6WQ9Ci4kDX/brelylnREPpxm8xx
-         w9Yt/kCIpxF24ezk+iIBXZEQTF2d57Nurcy0H/nM9Q1KDchVsdqyZsM99loMNUC7kisC
-         9f/cyU9dzdNHlgysiN+PPIKhlP+gpb9unLupXbLGOyg6d/w/bTEdvUSR8lwiBmA9b3To
-         t89wqg7V85luK9acXOBok2Il/tVSjTFvdz/Pe7Jfyr9JmFy6JXiSVLeiRUKOVYampdAx
-         taiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXbltqFWf0fPolVxyxvQiYzQPd50qP1p/VX16bWUWJN8G8lMsUHFYFuQRTGWnekl+jT9pHJPgeM3H4Scb1BrA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgUjXnNSTHZflzu4Jbn/K2fbG8BVg9jT6weyu7zoEXvh9D0Su9
-	bVFzqfk8lOy84d1CSS/JbaYsN6c0be6Enm6TwwWhzB1DCu3ZmCPSbplwIbue5KT+lc/QKmT5JP+
-	Pbp8SipScuTEoIQ==
-X-Google-Smtp-Source: AGHT+IEoWiIvAlur5jxITETpHeyb+Ehmgm5n8/TjIJE2NU/IWIuxFg+LEF2EiOqPe3lJLQGAZZ8AeRlDx5OgsfU=
-X-Received: from wmbjx7.prod.google.com ([2002:a05:600c:5787:b0:435:4bd2:1dcd])
+        bh=wI2ZgrmHeUJUXqNM6UTPag6iKf+yFn85pJiKJJQL+Zg=;
+        b=PcnkhJzC59K02CcKXStC5tnSY0c1xA5TgBfPxE37JDWIW0WQA9BKEStaKjFgCkW+ZC
+         feMmThpDbqax/MIZLv/1CZuMDR/+Gha08xdou+2FRWMcSl/Mo8ilbaEth7ZpXSHK0iyU
+         o/9i0ylLUFUQap6+8pEXf62lXC/ffimlPX1H59VU9CMi4puNKBwEYReR8wKyKCholi3/
+         pYAwSDS2hCq8DnGZ9oAIshfAlK57E2IndPkKh/4y/nT9kw1SttLEQv+0tM8Cl06MXNE3
+         jxUGcJNCTdDc8Lpz3pVeCh/coKu1LsFY8fnL8/xBnsbzKokEkjb5emgY23k0q//8Nbwc
+         3hiA==
+X-Forwarded-Encrypted: i=1; AJvYcCV4dvj1nGTHKSg9nrvjGrTaWirz8mLpNgGMUEnbpUVnyx/fH5pENr2tlxKb4SwhkDwiaFdm64YJqrJM/ElIyQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIY9GGC8qBABw55aDBlYluz2D0fHelcOYR3Ih+sYK7nHnbCK76
+	pA/ZJBj27tDs9ogBZid79ZOYrvNSypORtjySrRiUnODdAc967JKCuwk7cNcFADST3WureW5yA81
+	4BQSRAfb1FR48IQ==
+X-Google-Smtp-Source: AGHT+IHxlRyh5nlff+wyL4yy04PccI3uaiT1SiqrLHyfm7XHBvMy3fVe7G98QHNpMBPwW4mMD+15HCj1QC35De8=
+X-Received: from wmqh8.prod.google.com ([2002:a05:600c:3508:b0:436:16c6:831])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1d1d:b0:434:a815:2b5d with SMTP id 5b1f17b1804b1-4389141c211mr177008575e9.24.1737558041903;
- Wed, 22 Jan 2025 07:00:41 -0800 (PST)
-Date: Wed, 22 Jan 2025 15:00:17 +0000
+ 2002:a05:600c:5021:b0:436:1c0c:bfb6 with SMTP id 5b1f17b1804b1-438914514f2mr186792045e9.27.1737558044301;
+ Wed, 22 Jan 2025 07:00:44 -0800 (PST)
+Date: Wed, 22 Jan 2025 15:00:18 +0000
 In-Reply-To: <20250122-cursor-between-v3-0-aaafbd8af14d@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -59,22 +59,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250122-cursor-between-v3-0-aaafbd8af14d@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5203; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=07KvXWwT9X3FUu26PatafcUnUgdiuPCMqiW6FbaREys=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnkQgUK6HVjT1u9zVRNmfzxMwNEZjwekmFbdMeS
- 81uEKFZZqWJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ5EIFAAKCRAEWL7uWMY5
- RgjjD/0RuCjox/EbkI2wszt67IkPXUKJZ2PNDPNzfx7H0DPxjhkyGQJ1JK2QP8J+KqPDQ/iygvg
- BUkomVcUP1Dm+G8ZCpZnNbaiLw9jsd3FiaGhd3c+IvNSNEhi68JufIAAbcd7F6w7hFo6ZQBYonJ
- bDAWIKnoA8u4umKJZJ7MqcjqIxTMWIkxaSF3B2i5tbibzUUvmusPs9gFhDL7MBHyEUgfD3PrUkr
- Uox5wc86exgdeac4V44bsSAXTkwgtJvO0AGhecglkTOLeFQdXgI8AWo8SlRsJDVAbuMeqFIBvW1
- MoOZ2wYvJmwyI0LJLhE2iWkazFZ1wIAfImKO12JHM4AcpUDiVl55GAb4qG6tTuS2x6iwQ71S8jE
- hPt2GHsIQs+wL7T19g/yC3aB5cIFpZrLTv8rtlKSW/bdy8gjTZrPRnM53ZYqNJDGbuwYra+o3ML
- jSPPtbdHXwvu2fXoBS5lYbcUs62veCqCJeb88b8JCx06dwp9pyxbSQRw4JKk5XK4Se3VNt6wPY5
- 7kKNotXyKzftjqTOAB74XDO654/Gbebhr4RBmrvvVD5/6gnu3zOA+tlZs6HoIRkrAY+mvl4S8Vh
- 26t95FNgIAVoutRludhizKsva3qrdRuTNTCBQmGZbapJddCxCxLk05NQemKCgfX9z6ODzEYyJ52 orkhBsR1M42hUsQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=16340; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=VoIukpJ0jW+rvwma/DnUGR14jtGq6eBiASSndzwltRE=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnkQgUCrOxsgUKvpKz2MZJ4TN7i0gBg1CWvlGmM
+ CKaU/mVNfuJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ5EIFAAKCRAEWL7uWMY5
+ Rhs/EACGczIDTjvcRCRp1pdOmtXbVf2vJpkzj7ca6pRO5fPsFb+UZ4DjtxPuhHoo8ButG+Nd7cW
+ YtMzxcUVxtGr3QzIjysbCr+G02P//rtNJanr6SN5C4uL1JMiIVDZosAjW/FCKaL/iOFiN6qfbq7
+ QLH/wv+lKr3+C83N2e09Uy/hJzMxH3yrOhzZ3HkJUrRSKNmvwL7eMexAK3JzDYtrxAyTHn3/+dQ
+ /54pNfyTEi4et+EiBebpPTQCRBxJYjs+t9l3ZjU9LSUHxJStgxxR4ap/q6Jmu0riEtavSLJICdN
+ l8L81GhUjuV/IVlWPHkYw7lG+BKsv8H0aREFzlsjWuYjKcDqHtgmmT5x2bizniZyg08bqnssx9e
+ PdPSRPnqmcHOVAGK3Xt8thHUPsclmTEN9Zcb8XxzUuwmBBXO4AoOahb8hupdxc3NgnOgcye0mUy
+ 3vZa/TBvywV/jhfMYlgL9H6K7jjlxC7Y5TUZzVOZTgXp5Z9Co3fhbht4yv8u4XaNRhPyq57M2Nm
+ xWF8+G2T+ImgR0r1MwO990mU2WUZuCTV/aEv9xjCHlrd2d70HlZa2na5G0sbCBr0Z07gs0RQPK3
+ VjrmQ+wlxrFmGCYOvkEtUmtOS5zX9uYO/EI0RQs/vy/piPmGCHE/bYjwqOgFJfdGp1+iNLP5xkW YJPFOCti8AKOfHA==
 X-Mailer: b4 0.13.0
-Message-ID: <20250122-cursor-between-v3-1-aaafbd8af14d@google.com>
-Subject: [PATCH v3 1/2] rust: list: extract common code for insertion
+Message-ID: <20250122-cursor-between-v3-2-aaafbd8af14d@google.com>
+Subject: [PATCH v3 2/2] rust: list: make the cursor point between elements
 From: Alice Ryhl <aliceryhl@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>
 Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
@@ -85,126 +85,407 @@ Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
 	Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-To prepare for a new cursor API that has the ability to insert elements
-into the list, extract the common code needed for this operation into a
-new `insert_inner` method.
+I've been using the linked list cursor for a few different things, and I
+find it inconvenient to use because all of the functions have signatures
+along the lines of `Self -> Option<Self>`. The root cause of these
+signatures is that the cursor points *at* an element, rather than
+*between* two elements.
 
-Both `push_back` and `push_front` are updated to use the new function.
+Thus, change the cursor API to point between two elements. This is
+inspired by the stdlib linked list (well, really by this guy [1]), which
+also uses cursors that point between elements.
 
+The `peek_next` method returns a helper that lets you look at and
+optionally remove the element, as one common use-case of cursors is to
+iterate a list to look for an element, then remove that element.
+
+For many of the methods, this will reduce how many we need since they
+now just need a prev/next method, instead of the current state where you
+may end up needing all of curr/prev/next. Also, if we decide to add a
+function for splitting a list into two lists at the cursor, then a
+cursor that points between elements is exactly what makes the most
+sense.
+
+Another advantage is that this means you can now have a cursor into an
+empty list.
+
+Link: https://rust-unofficial.github.io/too-many-lists/sixth-cursors-intro.html [1]
 Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/list.rs | 70 ++++++++++++++++++++++++-----------------------------
- 1 file changed, 32 insertions(+), 38 deletions(-)
+ rust/kernel/list.rs | 333 +++++++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 278 insertions(+), 55 deletions(-)
 
 diff --git a/rust/kernel/list.rs b/rust/kernel/list.rs
-index fb93330f4af4..97b3599b7207 100644
+index 97b3599b7207..1d4e034f818c 100644
 --- a/rust/kernel/list.rs
 +++ b/rust/kernel/list.rs
-@@ -245,8 +245,20 @@ pub fn is_empty(&self) -> bool {
-         self.first.is_null()
+@@ -483,17 +483,21 @@ pub fn push_all_back(&mut self, other: &mut List<T, ID>) {
+         other.first = ptr::null_mut();
      }
  
--    /// Add the provided item to the back of the list.
--    pub fn push_back(&mut self, item: ListArc<T, ID>) {
-+    /// Inserts `item` before `next` in the cycle.
-+    ///
-+    /// Returns a pointer to the newly inserted element. Never changes `self.first` unless the list
-+    /// is empty.
-+    ///
-+    /// # Safety
-+    ///
-+    /// * `next` must be an element in this list or null.
-+    /// * if `next` is null, then the list must be empty.
-+    unsafe fn insert_inner(
-+        &mut self,
-+        item: ListArc<T, ID>,
-+        next: *mut ListLinksFields,
-+    ) -> *mut ListLinksFields {
-         let raw_item = ListArc::into_raw(item);
-         // SAFETY:
-         // * We just got `raw_item` from a `ListArc`, so it's in an `Arc`.
-@@ -259,16 +271,16 @@ pub fn push_back(&mut self, item: ListArc<T, ID>) {
-         // SAFETY: We have not yet called `post_remove`, so `list_links` is still valid.
-         let item = unsafe { ListLinks::fields(list_links) };
- 
+-    /// Returns a cursor to the first element of the list.
+-    ///
+-    /// If the list is empty, this returns `None`.
+-    pub fn cursor_front(&mut self) -> Option<Cursor<'_, T, ID>> {
 -        if self.first.is_null() {
--            self.first = item;
-+        // Check if the list is empty.
-+        if next.is_null() {
-             // SAFETY: The caller just gave us ownership of these fields.
-             // INVARIANT: A linked list with one item should be cyclic.
-             unsafe {
-                 (*item).next = item;
-                 (*item).prev = item;
-             }
-+            self.first = item;
-         } else {
--            let next = self.first;
-             // SAFETY: By the type invariant, this pointer is valid or null. We just checked that
-             // it's not null, so it must be valid.
-             let prev = unsafe { (*next).prev };
-@@ -282,45 +294,27 @@ pub fn push_back(&mut self, item: ListArc<T, ID>) {
-                 (*next).prev = item;
-             }
-         }
-+
-+        item
+-            None
+-        } else {
+-            Some(Cursor {
+-                current: self.first,
+-                list: self,
+-            })
++    /// Returns a cursor that points before the first element of the list.
++    pub fn cursor_front(&mut self) -> Cursor<'_, T, ID> {
++        // INVARIANT: `self.first` is in this list.
++        Cursor {
++            next: self.first,
++            list: self,
++        }
 +    }
 +
-+    /// Add the provided item to the back of the list.
-+    pub fn push_back(&mut self, item: ListArc<T, ID>) {
-+        // SAFETY:
-+        // * `self.first` is null or in the list.
-+        // * `self.first` is only null if the list is empty.
-+        unsafe { self.insert_inner(item, self.first) };
++    /// Returns a cursor that points after the last element in the list.
++    pub fn cursor_back(&mut self) -> Cursor<'_, T, ID> {
++        // INVARIANT: `next` is allowed to be null.
++        Cursor {
++            next: core::ptr::null_mut(),
++            list: self,
+         }
      }
  
-     /// Add the provided item to the front of the list.
-     pub fn push_front(&mut self, item: ListArc<T, ID>) {
--        let raw_item = ListArc::into_raw(item);
-         // SAFETY:
--        // * We just got `raw_item` from a `ListArc`, so it's in an `Arc`.
--        // * If this requirement is violated, then the previous caller of `prepare_to_insert`
--        //   violated the safety requirement that they can't give up ownership of the `ListArc`
--        //   until they call `post_remove`.
--        // * We own the `ListArc`.
--        // * Removing items] from this list is always done using `remove_internal_inner`, which
--        //   calls `post_remove` before giving up ownership.
--        let list_links = unsafe { T::prepare_to_insert(raw_item) };
--        // SAFETY: We have not yet called `post_remove`, so `list_links` is still valid.
--        let item = unsafe { ListLinks::fields(list_links) };
-+        // * `self.first` is null or in the list.
-+        // * `self.first` is only null if the list is empty.
-+        let new_elem = unsafe { self.insert_inner(item, self.first) };
+@@ -573,69 +577,288 @@ fn next(&mut self) -> Option<ArcBorrow<'a, T>> {
  
--        if self.first.is_null() {
--            // SAFETY: The caller just gave us ownership of these fields.
--            // INVARIANT: A linked list with one item should be cyclic.
--            unsafe {
--                (*item).next = item;
--                (*item).prev = item;
--            }
+ /// A cursor into a [`List`].
+ ///
++/// A cursor always rests between two elements in the list. This means that a cursor has a previous
++/// and next element, but no current element. It also means that it's possible to have a cursor
++/// into an empty list.
++///
++/// # Examples
++///
++/// ```
++/// use kernel::list::{List, ListArc, ListLinks};
++///
++/// #[pin_data]
++/// struct ListItem {
++///     value: u32,
++///     #[pin]
++///     links: ListLinks,
++/// }
++///
++/// kernel::list::impl_has_list_links! {
++///     impl HasListLinks<0> for ListItem { self.links }
++/// }
++/// kernel::list::impl_list_arc_safe! {
++///     impl ListArcSafe<0> for ListItem { untracked; }
++/// }
++/// kernel::list::impl_list_item! {
++///     impl ListItem<0> for ListItem { using ListLinks; }
++/// }
++///
++/// // Use a cursor to remove the first element with the given value.
++/// fn remove_first(list: &mut List<ListItem>, value: u32) -> Option<ListArc<ListItem>> {
++///     let mut cursor = list.cursor_front();
++///     while let Some(next) = cursor.peek_next() {
++///         if next.value == value {
++///             return Some(next.remove());
++///         }
++///         cursor.move_next();
++///     }
++///     None
++/// }
++///
++/// // Use a cursor to remove all elements with the given value. The removed elements are moved to
++/// // a new list.
++/// fn remove_all(list: &mut List<ListItem>, value: u32) -> List<ListItem> {
++///     let mut out = List::new();
++///     let mut cursor = list.cursor_front();
++///     while let Some(next) = cursor.peek_next() {
++///         if next.value == value {
++///             out.push_back(next.remove());
++///         } else {
++///             cursor.move_next();
++///         }
++///     }
++///     out
++/// }
++///
++/// // Use a cursor to insert a value at a specific index. Returns an error if the index is out of
++/// // bounds.
++/// fn insert_at(list: &mut List<ListItem>, new: ListArc<ListItem>, idx: usize) -> Result {
++///     let mut cursor = list.cursor_front();
++///     for _ in 0..idx {
++///         if !cursor.move_next() {
++///             return Err(EINVAL);
++///         }
++///     }
++///     cursor.insert_next(new);
++///     Ok(())
++/// }
++///
++/// // Merge two sorted lists into a single sorted list.
++/// fn merge_sorted(list: &mut List<ListItem>, merge: List<ListItem>) {
++///     let mut cursor = list.cursor_front();
++///     for to_insert in merge {
++///         while let Some(next) = cursor.peek_next() {
++///             if to_insert.value < next.value {
++///                 break;
++///             }
++///             cursor.move_next();
++///         }
++///         cursor.insert_prev(to_insert);
++///     }
++/// }
++/// ```
++///
+ /// # Invariants
+ ///
+-/// The `current` pointer points a value in `list`.
++/// The `next` pointer is null or points a value in `list`.
+ pub struct Cursor<'a, T: ?Sized + ListItem<ID>, const ID: u64 = 0> {
+-    current: *mut ListLinksFields,
+     list: &'a mut List<T, ID>,
++    /// Points at the element after this cursor, or null if the cursor is after the last element.
++    next: *mut ListLinksFields,
+ }
+ 
+ impl<'a, T: ?Sized + ListItem<ID>, const ID: u64> Cursor<'a, T, ID> {
+-    /// Access the current element of this cursor.
+-    pub fn current(&self) -> ArcBorrow<'_, T> {
+-        // SAFETY: The `current` pointer points a value in the list.
+-        let me = unsafe { T::view_value(ListLinks::from_fields(self.current)) };
+-        // SAFETY:
+-        // * All values in a list are stored in an `Arc`.
+-        // * The value cannot be removed from the list for the duration of the lifetime annotated
+-        //   on the returned `ArcBorrow`, because removing it from the list would require mutable
+-        //   access to the cursor or the list. However, the `ArcBorrow` holds an immutable borrow
+-        //   on the cursor, which in turn holds a mutable borrow on the list, so any such
+-        //   mutable access requires first releasing the immutable borrow on the cursor.
+-        // * Values in a list never have a `UniqueArc` reference, because the list has a `ListArc`
+-        //   reference, and `UniqueArc` references must be unique.
+-        unsafe { ArcBorrow::from_raw(me) }
++    /// Returns a pointer to the element before the cursor.
++    ///
++    /// Returns null if there is no element before the cursor.
++    fn prev_ptr(&self) -> *mut ListLinksFields {
++        let mut next = self.next;
++        let first = self.list.first;
++        if next == first {
++            // We are before the first element.
++            return core::ptr::null_mut();
++        }
++
++        if next.is_null() {
++            // We are after the last element, so we need a pointer to the last element, which is
++            // the same as `(*first).prev`.
++            next = first;
++        }
++
++        // SAFETY: `next` can't be null, because then `first` must also be null, but in that case
++        // we would have exited at the `next == first` check. Thus, `next` is an element in the
++        // list, so we can access its `prev` pointer.
++        unsafe { (*next).prev }
+     }
+ 
+-    /// Move the cursor to the next element.
+-    pub fn next(self) -> Option<Cursor<'a, T, ID>> {
+-        // SAFETY: The `current` field is always in a list.
+-        let next = unsafe { (*self.current).next };
++    /// Access the element after this cursor.
++    pub fn peek_next(&mut self) -> Option<CursorPeek<'_, 'a, T, true, ID>> {
++        if self.next.is_null() {
++            return None;
++        }
++
++        // INVARIANT:
++        // * We just checked that `self.next` is non-null, so it must be in `self.list`.
++        // * `ptr` is equal to `self.next`.
++        Some(CursorPeek {
++            ptr: self.next,
++            cursor: self,
++        })
++    }
++
++    /// Access the element before this cursor.
++    pub fn peek_prev(&mut self) -> Option<CursorPeek<'_, 'a, T, false, ID>> {
++        let prev = self.prev_ptr();
++
++        if prev.is_null() {
++            return None;
++        }
++
++        // INVARIANT:
++        // * We just checked that `prev` is non-null, so it must be in `self.list`.
++        // * `self.prev_ptr()` never returns `self.next`.
++        Some(CursorPeek {
++            ptr: prev,
++            cursor: self,
++        })
++    }
++
++    /// Move the cursor one element forward.
++    ///
++    /// If the cursor is after the last element, then this call does nothing. This call returns
++    /// `true` if the cursor's position was changed.
++    pub fn move_next(&mut self) -> bool {
++        if self.next.is_null() {
++            return false;
++        }
++
++        // SAFETY: `self.next` is an element in the list and we borrow the list mutably, so we can
++        // access the `next` field.
++        let mut next = unsafe { (*self.next).next };
+ 
+         if next == self.list.first {
+-            None
 -        } else {
--            let next = self.first;
--            // SAFETY: We just checked that `next` is non-null.
--            let prev = unsafe { (*next).prev };
--            // SAFETY: Pointers in a linked list are never dangling, and the caller just gave us
--            // ownership of the fields on `item`.
--            // INVARIANT: This correctly inserts `item` between `prev` and `next`.
--            unsafe {
--                (*item).next = next;
--                (*item).prev = prev;
--                (*prev).next = item;
--                (*next).prev = item;
--            }
--        }
--        self.first = item;
-+        // INVARIANT: `new_elem` is in the list because we just inserted it.
-+        self.first = new_elem;
+-            // INVARIANT: Since `self.current` is in the `list`, its `next` pointer is also in the
+-            // `list`.
+-            Some(Cursor {
+-                current: next,
+-                list: self.list,
+-            })
++            next = core::ptr::null_mut();
+         }
++
++        // INVARIANT: `next` is either null or the next element after an element in the list.
++        self.next = next;
++        true
      }
  
-     /// Removes the last item from this list.
+-    /// Move the cursor to the previous element.
+-    pub fn prev(self) -> Option<Cursor<'a, T, ID>> {
+-        // SAFETY: The `current` field is always in a list.
+-        let prev = unsafe { (*self.current).prev };
++    /// Move the cursor one element backwards.
++    ///
++    /// If the cursor is before the first element, then this call does nothing. This call returns
++    /// `true` if the cursor's position was changed.
++    pub fn move_prev(&mut self) -> bool {
++        if self.next == self.list.first {
++            return false;
++        }
+ 
+-        if self.current == self.list.first {
+-            None
++        // INVARIANT: `prev_ptr()` always returns a pointer that is null or in the list.
++        self.next = self.prev_ptr();
++        true
++    }
++
++    /// Inserts an element where the cursor is pointing and get a pointer to the new element.
++    fn insert_inner(&mut self, item: ListArc<T, ID>) -> *mut ListLinksFields {
++        let ptr = if self.next.is_null() {
++            self.list.first
+         } else {
+-            // INVARIANT: Since `self.current` is in the `list`, its `prev` pointer is also in the
+-            // `list`.
+-            Some(Cursor {
+-                current: prev,
+-                list: self.list,
+-            })
+-        }
++            self.next
++        };
++        // SAFETY:
++        // * `ptr` is an element in the list or null.
++        // * if `ptr` is null, then `self.list.first` is null so the list is empty.
++        unsafe { self.list.insert_inner(item, ptr) }
++    }
++
++    /// Inserts an element after this cursor.
++    pub fn insert_next(&mut self, item: ListArc<T, ID>) {
++        self.next = self.insert_inner(item);
++    }
++
++    /// Inserts an element before this cursor.
++    pub fn insert_prev(&mut self, item: ListArc<T, ID>) {
++        self.insert_inner(item);
+     }
+ 
+-    /// Remove the current element from the list.
++    /// Remove the next element from the list.
++    pub fn remove_next(&mut self) -> Option<ListArc<T, ID>> {
++        self.peek_next().map(|v| v.remove())
++    }
++
++    /// Remove the previous element from the list.
++    pub fn remove_prev(&mut self) -> Option<ListArc<T, ID>> {
++        self.peek_prev().map(|v| v.remove())
++    }
++}
++
++/// References the element in the list next to the cursor.
++///
++/// # Invariants
++///
++/// * `ptr` is an element in `self.cursor.list`.
++/// * `ISNEXT == (self.ptr == self.cursor.next)`.
++pub struct CursorPeek<'a, 'b, T: ?Sized + ListItem<ID>, const ISNEXT: bool, const ID: u64> {
++    cursor: &'a mut Cursor<'b, T, ID>,
++    ptr: *mut ListLinksFields,
++}
++
++impl<'a, 'b, T: ?Sized + ListItem<ID>, const ISNEXT: bool, const ID: u64>
++    CursorPeek<'a, 'b, T, ISNEXT, ID>
++{
++    /// Remove the element from the list.
+     pub fn remove(self) -> ListArc<T, ID> {
+-        // SAFETY: The `current` pointer always points at a member of the list.
+-        unsafe { self.list.remove_internal(self.current) }
++        if ISNEXT {
++            self.cursor.move_next();
++        }
++
++        // INVARIANT: `self.ptr` is not equal to `self.cursor.next` due to the above `move_next`
++        // call.
++        // SAFETY: By the type invariants of `Self`, `next` is not null, so `next` is an element of
++        // `self.cursor.list` by the type invariants of `Cursor`.
++        unsafe { self.cursor.list.remove_internal(self.ptr) }
++    }
++
++    /// Access this value as an [`ArcBorrow`].
++    pub fn arc(&self) -> ArcBorrow<'_, T> {
++        // SAFETY: `self.ptr` points at an element in `self.cursor.list`.
++        let me = unsafe { T::view_value(ListLinks::from_fields(self.ptr)) };
++        // SAFETY:
++        // * All values in a list are stored in an `Arc`.
++        // * The value cannot be removed from the list for the duration of the lifetime annotated
++        //   on the returned `ArcBorrow`, because removing it from the list would require mutable
++        //   access to the `CursorPeek`, the `Cursor` or the `List`. However, the `ArcBorrow` holds
++        //   an immutable borrow on the `CursorPeek`, which in turn holds a mutable borrow on the
++        //   `Cursor`, which in turn holds a mutable borrow on the `List`, so any such mutable
++        //   access requires first releasing the immutable borrow on the `CursorPeek`.
++        // * Values in a list never have a `UniqueArc` reference, because the list has a `ListArc`
++        //   reference, and `UniqueArc` references must be unique.
++        unsafe { ArcBorrow::from_raw(me) }
++    }
++}
++
++impl<'a, 'b, T: ?Sized + ListItem<ID>, const ISNEXT: bool, const ID: u64> core::ops::Deref
++    for CursorPeek<'a, 'b, T, ISNEXT, ID>
++{
++    // If you change the `ptr` field to have type `ArcBorrow<'a, T>`, it might seem like you could
++    // get rid of the `CursorPeek::arc` method and change the deref target to `ArcBorrow<'a, T>`.
++    // However, that doesn't work because 'a is too long. You could obtain an `ArcBorrow<'a, T>`
++    // and then call `CursorPeek::remove` without giving up the `ArcBorrow<'a, T>`, which would be
++    // unsound.
++    type Target = T;
++
++    fn deref(&self) -> &T {
++        // SAFETY: `self.ptr` points at an element in `self.cursor.list`.
++        let me = unsafe { T::view_value(ListLinks::from_fields(self.ptr)) };
++
++        // SAFETY: The value cannot be removed from the list for the duration of the lifetime
++        // annotated on the returned `&T`, because removing it from the list would require mutable
++        // access to the `CursorPeek`, the `Cursor` or the `List`. However, the `&T` holds an
++        // immutable borrow on the `CursorPeek`, which in turn holds a mutable borrow on the
++        // `Cursor`, which in turn holds a mutable borrow on the `List`, so any such mutable access
++        // requires first releasing the immutable borrow on the `CursorPeek`.
++        unsafe { &*me }
+     }
+ }
+ 
 
 -- 
 2.48.0.rc2.279.g1de40edade-goog
