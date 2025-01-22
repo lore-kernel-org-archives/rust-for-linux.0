@@ -1,178 +1,143 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DD4136A
-	for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 10:02:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B56210F5B
+	for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 10:11:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737540155; cv=none; b=NeBIVzXNLbaLJUoaT8MDE6P/jXGVpmE/KdOdYWt7UJBjPbissUwN6lyRPvH4UP4UZ4hZzKZwOmhhYxaExTdw7AIENpC3XT6l4ECQvaNT+Z42kFgybhhBaGJE9bFrXbcEb+u0gmKrD8hEwrG9cEziaWbwFWTV8loaJTC5yo4I4PI=
+	t=1737540683; cv=none; b=UZrlBZlJpaXCdZmyDd5d6IITgjxHijQ8o+ai9artiYJA6Q8LVHBQgwh62EhO0i/oO6vrIu1zBYs1u6zhGpeXtB9L5riLw7jQ3ZGbGluNK1JEN9L4ek21Kua8TLZNYVwz3iZBmbmwr8YK5kLX96gEQkEcIcr69GtHd8LNw9R2leo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737540155; c=relaxed/simple;
-	bh=rg0wctb8s8zvnjZZAV3RYEa6Tx8UaHmyZKZh1+gDAv8=;
+	s=arc-20240116; t=1737540683; c=relaxed/simple;
+	bh=IMZQuv3IZBSNK/FSqjM7tla45OLXz5dphLZB4d+oRg0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=geMnrLCPb7bQbOHk7ZmZQLsQhFG2bz2kf+Q7t2hYU16i3wxswwLAAn19Xkag4w614Amm9NpLlfBKe6UmsXotCOOHxI2L2QmUNLjhwJv9mwNK1ukRJ+vhsLzx56fSVBR12k8G8N68+R0u7JU8TpHOOiGEWV3iSptyFG9HGj+hD4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=akWPOmjM; arc=none smtp.client-ip=209.85.221.54
+	 To:Cc:Content-Type; b=kFmnH8dlByS3kYaPhMj4VHBm0/YohTXrSOgGHLuLO8eDii0qodDNzYpSoDuN1u0JpZhwIL2jDNBPQpJuoHMb97DrNEdvDuO/VPXte07Q3SZ5066O4EWQL5pkzZ9VJt9Qhvg9BfRf8J1jJUqC+jG9wWo7d7jeasuiC1zdqJiO2HA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=b/VpSssF; arc=none smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="akWPOmjM"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-385ef8b64b3so5851644f8f.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 02:02:33 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="b/VpSssF"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-386329da1d9so3691688f8f.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 02:11:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737540152; x=1738144952; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1737540679; x=1738145479; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=T64ksA3JRg5Gqw8xNHAVE2Ven6JlxcDBE0lpBLQtMiI=;
-        b=akWPOmjMTxgeRNQFZbQkS2g+nfTNTwEGiePWsdllour3Ob4o1rZrC6a9SwbMNFyIIF
-         933JjdILFP9bYTj809r2NJeggVluaAmJAQDWDoxCRLgtSVw8gP5Quat+bqwlqrAI05Ic
-         tKeMkh5Dmm7Scv6lVuLWDJ/246DoKzZ/MIfoBaD3QE1Y3eHylLJKeuxrAUxkR0mYMIBj
-         fn8Eb7GaWjotGNBi+asYEbwsUWyqPzdXfJT3Flm5/dBlYgmskwMm4TRY3sBSdnwvGyky
-         fR8GZKib10FOu28Bk//0JRSLMkfZdapySqXXESUGVHSxq1gp8Cz99S5P0rsLlj6ThfQC
-         Iw1Q==
+        bh=XBqx9JEcRmW2rWqsjHQwofa4RNCobGVG6rE/MKtUTxE=;
+        b=b/VpSssFYk9FWsAwSNEiiHBG0egN2xIPv+TbSohretP+kOjwN0/xs5r8HQvU1JmiVs
+         ctErTU3KNWmGt843+Vo0N3uu7wfiRqgcdjQQYhPKQIhqfKpmwBB+X+s2KNi1LSvFDDNg
+         4m01KG8RtRQtEP1SQ5xdfK1DvkLK5/98iyxDScQuiaBehk19FFYuwMBEfxCLmFlpxzev
+         OV6Q5NTJhm1QowUft80JPUkUDGZgH6GizwYcsn9wBIOkHX6O/UL6gWpJJC18uG3a6xgG
+         pF/c7T9opOCbghLAKS5NH9mh0tnp4TCffXRwALJCJ4y4AAHGKEOaQtCdQz/CD1s2PT52
+         iR8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737540152; x=1738144952;
+        d=1e100.net; s=20230601; t=1737540679; x=1738145479;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=T64ksA3JRg5Gqw8xNHAVE2Ven6JlxcDBE0lpBLQtMiI=;
-        b=U6xIQBJ7g9mR9O4IFPjMC8nDtzQioWV0nfYn6Km4mPtZZZ2qlG4NwrVPzCz2fMtI8C
-         jzIyDSucSb9ovhGnQA19bywdylzN5jqLZOeXHFsn/cF3wXEnNGpAAWzTC7WJgDlAqT6D
-         x1ou+dly+sCS3LIpy7ebvY3l9nixnIGExYgM2HOLfXevsOohuri1gnk/bhqXNosIU9Zw
-         v3rZ/siVlmH58D655J7vqgULp3R5H56AZPVqYi+PGq3hnO154fL8HbpFet+jYzG/4Ii6
-         lIn/jD7riC/di0UQm0nXc4OMk4M/YSG2K9msWeaQhX6bBAOsQO8MLyfb+JlUFkWXHlkj
-         gOPg==
-X-Forwarded-Encrypted: i=1; AJvYcCXxAD15OFoMb9wgMXwBB4FnS5IJ2j9HiJCJVaEqw4KUYGxKjvWpvmZF3XuL+ouQ8HiOBbDVdqggV8Y9RLG9dw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUKupwKa5MjSLS3yz4o54U+CohG3GUddwDU7bNGlnXigBlIMd4
-	MHigTO7uXYKmQ2jLJSuTPPraY87b++omUh13fEK2DWTUPzarBBQnle/E9HdKD6+ea/60VZ1RVOH
-	gDSJZknt6PcVU8gFyg54QxAhSuC70B8s/Hqyb
-X-Gm-Gg: ASbGncvlayjSDXpVcHGr9ZaDl744M1e9/tWd7m3mLhEBohVEH1MnE9iJ53ttbzVCiRD
-	Rry2W8Z4iolJoRG0u25bohlH0b6HFKoTcY2pTKJ5Ojrg5VlIQn+oHrxFV0NcM9bkGIn7L/kAR+l
-	Jqubxv
-X-Google-Smtp-Source: AGHT+IGEFIX9HCNodJz+eHUM4Wmhs96ebBRzx6JXn2x4vSwzYYdzfr2PjAD+N+RuJFenL8Ba0FHl6/2HnZUv60fUzYk=
-X-Received: by 2002:a5d:5847:0:b0:386:3082:ee2d with SMTP id
- ffacd0b85a97d-38bf57b7626mr22651937f8f.41.1737540151528; Wed, 22 Jan 2025
- 02:02:31 -0800 (PST)
+        bh=XBqx9JEcRmW2rWqsjHQwofa4RNCobGVG6rE/MKtUTxE=;
+        b=cVK7bXZoUsGvxNPcAlK2YtpcZV7dJLvyYrJ/RMiHrbREFJm5KqqHPKDQiKRscLMGXs
+         ftpDjWkrEu9uXRr7uQuoggSDI1Vq4AAf2qi2JOPGyUJuuXgRKaBQIebP65f04CG5E/5p
+         RyGrkOW5dApWTcCPk48RI69AWWkouEF2BGzBWhbrffKzuBw49HW8CTdLkPX/Ml20DIjN
+         orLdfcYo8fId8MDOdlGxcIspSmJaYAy5hbDBAoEjCJWr5z8IMweDbT1P7UCTHQzI/SJG
+         1Ay2c2QgNpB5sZlSNSSKid0KiB4lKhpOwaIZCBTYPR4CuCTwfTPLwl+dFyeIvpceO9/a
+         cc3g==
+X-Forwarded-Encrypted: i=1; AJvYcCVuXzrW5CWgji/T16FAwCc5ItveS17v4u6w+xnHc5hKd2UmrzyaPEuMuYorVMjUxgrK+v6iqvmEBlXSwqJe2g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBgpVeyGb56z6tfS/BU4WyhbjwweHZCe4GLOFBKlfcNqUlDMDN
+	gb65OfHNccX2JLTIJlAYdRdnXA2GDZHwzmWv0CyEcirQnwxTBzZXFhxcp8Gva/WK4bZH2/NViFQ
+	EheK3K2gyQ8CPIPFXBsjdek+fKUZ/z11gLY/r
+X-Gm-Gg: ASbGncuQIQLrtSap7rD4NJhiRQZvIFkjIoPcymzTI9yiCNJI4b5Zp0rf+uitulMsgMf
+	4b5g1WFlFWgD+V84h62r3ybwh+C2rwiBwt3tDONEw0QRU89cKq5xPmtkpTbgmGTWWGH4rxUr0fO
+	QQCOqS
+X-Google-Smtp-Source: AGHT+IGjOWC3PbTkuww656m2RVk9JPAhm+2ANu17OZoz/Yt7HyT7RSMMh+WTVtBcN1izRVOO+SYCDvfL9m9Hmjt0jJo=
+X-Received: by 2002:a5d:5f50:0:b0:382:49f9:74bb with SMTP id
+ ffacd0b85a97d-38bf57a9a6bmr20719894f8f.35.1737540679367; Wed, 22 Jan 2025
+ 02:11:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250121-cursor-between-v2-0-1b24cd377618@google.com>
- <20250121-cursor-between-v2-2-1b24cd377618@google.com> <Z5AOYbZGhgB19KzC@tardis.local>
-In-Reply-To: <Z5AOYbZGhgB19KzC@tardis.local>
+References: <20250119-b4-rust_miscdevice_registrationdata-v1-0-edbf18dde5fc@gmail.com>
+ <20250119-b4-rust_miscdevice_registrationdata-v1-2-edbf18dde5fc@gmail.com> <2025012243-myspace-woof-1d1e@gregkh>
+In-Reply-To: <2025012243-myspace-woof-1d1e@gregkh>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 22 Jan 2025 11:02:19 +0100
-X-Gm-Features: AbW1kva-f1wcJlZ7OqS6VxCpNCq2B0MyA4dm29sxxZIvnpAyIEPdNCBUS1Id8Ss
-Message-ID: <CAH5fLgi=WbkcAcqbZRozJP0XQvQLdAtihEMZz3Qzyf1MJbjHhQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] rust: list: make the cursor point between elements
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+Date: Wed, 22 Jan 2025 11:11:07 +0100
+X-Gm-Features: AbW1kvba19lfZ_zJbFc3-O57-O-V34AXaA4ALWsp_9GUCp_0EH-MCLgwd5QkeTQ
+Message-ID: <CAH5fLgh7QyVSgqJZM-krHmF87c76a84Cg6PyT47TYjMsN9iwZg@mail.gmail.com>
+Subject: Re: [PATCH 2/3] rust: miscdevice: Add additional data to MiscDeviceRegistration
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Christian Schrefl <chrisi.schrefl@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+	Trevor Gross <tmgross@umich.edu>, Arnd Bergmann <arnd@arndb.de>, Lee Jones <lee@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 21, 2025 at 10:15=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> =
-wrote:
+On Wed, Jan 22, 2025 at 10:28=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> On Tue, Jan 21, 2025 at 10:14:24AM +0000, Alice Ryhl wrote:
-> [...]
-> > +/// References the element in the list next to the cursor.
-> > +///
-> > +/// # Invariants
-> > +///
-> > +/// * `ptr` is an element in `self.cursor.list`.
-> > +/// * `ISNEXT =3D=3D (self.ptr =3D=3D self.cursor.next)`.
-> > +pub struct CursorPeek<'a, 'b, T: ?Sized + ListItem<ID>, const ISNEXT: =
-bool, const ID: u64> {
-> > +    cursor: &'a mut Cursor<'b, T, ID>,
-> > +    ptr: *mut ListLinksFields,
-> > +}
-> > +
-> > +impl<'a, 'b, T: ?Sized + ListItem<ID>, const ISNEXT: bool, const ID: u=
-64>
-> > +    CursorPeek<'a, 'b, T, ISNEXT, ID>
-> > +{
-> > +    /// Remove the element from the list.
-> >      pub fn remove(self) -> ListArc<T, ID> {
-> > -        // SAFETY: The `current` pointer always points at a member of =
-the list.
-> > -        unsafe { self.list.remove_internal(self.current) }
-> > +        if ISNEXT {
-> > +            self.cursor.move_next();
-> > +        }
-> > +
-> > +        // INVARIANT: `self.ptr` is not equal to `self.cursor.next` du=
-e to the above `move_next`
-> > +        // call.
-> > +        // SAFETY: By the type invariants of `Self`, `next` is not nul=
-l, so `next` is an element of
-> > +        // `self.cursor.list` by the type invariants of `Cursor`.
-> > +        unsafe { self.cursor.list.remove_internal(self.ptr) }
-> > +    }
-> > +
-> > +    /// Access this value as an [`ArcBorrow`].
-> > +    pub fn arc(&self) -> ArcBorrow<'_, T> {
-> > +        // SAFETY: `self.ptr` points at an element in `self.cursor.lis=
-t`.
-> > +        let me =3D unsafe { T::view_value(ListLinks::from_fields(self.=
-ptr)) };
-> > +        // SAFETY:
-> > +        // * All values in a list are stored in an `Arc`.
-> > +        // * The value cannot be removed from the list for the duratio=
-n of the lifetime annotated
-> > +        //   on the returned `ArcBorrow`, because removing it from the=
- list would require mutable
-> > +        //   access to the `CursorPeek`, the `Cursor` or the `List`. H=
-owever, the `ArcBorrow` holds
-> > +        //   an immutable borrow on the `CursorPeek`, which in turn ho=
-lds a mutable borrow on the
-> > +        //   `Cursor`, which in turn holds a mutable borrow on the `Li=
-st`, so any such mutable
-> > +        //   access requires first releasing the immutable borrow on t=
-he `CursorPeek`.
-> > +        // * Values in a list never have a `UniqueArc` reference, beca=
-use the list has a `ListArc`
-> > +        //   reference, and `UniqueArc` references must be unique.
-> > +        unsafe { ArcBorrow::from_raw(me) }
-> > +    }
-> > +}
-> > +
-> > +impl<'a, 'b, T: ?Sized + ListItem<ID>, const ISNEXT: bool, const ID: u=
-64> core::ops::Deref
-> > +    for CursorPeek<'a, 'b, T, ISNEXT, ID>
-> > +{
-> > +    // This can't use `ArcBorrow<'a, T>` as the target type because 'a=
- is too long. It would let
-> > +    // you obtain an `ArcBorrow<'a, T>` and then call `CursorPeek::rem=
-ove` without giving up the
-> > +    // `ArcBorrow<'a, T>`.
+> On Sun, Jan 19, 2025 at 11:11:14PM +0100, Christian Schrefl wrote:
+> > When using the Rust miscdevice bindings, you generally embed the
+> > MiscDeviceRegistration within another struct:
+> >
+> > struct MyDriverData {
+> >     data: SomeOtherData,
+> >     misc: MiscDeviceRegistration<MyMiscFile>
+> > }
+> >
+> > In the `fops->open` callback of the miscdevice, you are given a
+> > reference to the registration, which allows you to access its fields.
+> > For example, as of commit 284ae0be4dca ("rust: miscdevice: Provide
+> > accessor to pull out miscdevice::this_device") you can access the
+> > internal `struct device`. However, there is still no way to access the
+> > `data` field in the above example, because you only have a reference to
+> > the registration.
 >
-> I'm not sure whether we want to mention `ArcBorrow<'a, T>` here, because
-> `ArcBorrow<'a, T>` is a (smart) pointer type, which should never be used
-> as a `Deref::Target`, otherwise CursorPeek::deref() would return a
-> &ArcBorrow<'a, T>, which doesn't make sense, and a bit challenging to
-> implement I think?
+> What's wrong with the driver_data pointer in the misc device structure?
+> Shouldn't you be in control of that as you are a misc driver owner?  Or
+> does the misc core handle this I can't recall at the moment, sorry.
 
-A previous implementation of this struct used ArcBorrow as the type of
-`self.ptr`, but I had to abandon that because it wasn't helpful. I
-wrote this comment to document that I couldn't get it to work. I can
-remove it if you don't think it's useful.
+There's no such pointer in struct miscdevice?
 
-> > +    type Target =3D T;
-> > +
-> > +    fn deref(&self) -> &T {
-> > +        // SAFETY: `self.ptr` points at an element in `self.cursor.lis=
-t`.
-> > +        let me =3D unsafe { T::view_value(ListLinks::from_fields(self.=
-cursor.next)) };
+> > Using container_of is also not possible to do safely. For example, if
+> > the destructor of `MyDriverData` runs, then the destructor of `data`
+> > would run before the miscdevice is deregistered, so using container_of
+> > to access `data` from `fops->open` could result in a UAF. A similar
+> > problem can happen on initialization if `misc` is not the last field to
+> > be initialized.
+> >
+> > To provide a safe way to access user-defined data stored next to the
+> > `struct miscdevice`, make `MiscDeviceRegistration` into a container tha=
+t
+> > can store a user-provided piece of data. This way, `fops->open` can
+> > access that data via the registration, since the data is stored inside
+> > the registration.
 >
-> Shouldn't this be `self.ptr` instead of `self.cursor.next`?
+> "next to" feels odd, that's what a container_of is for, but be careful
+> as to who owns the lifecycle of the object you are trying to get to.
+> You can't have multiple objects with different lifecycles in the same
+> structure (i.e. don't mix a misc device and a platform device together).
 
-Excellent point, thanks.
+Ultimately, this is intended to solve the problem that container_of
+solves in C. Actually using container_of runs into the challenge that
+you have no way of knowing if those other fields are still valid. If
+the destructor of the struct starts running, then it might have
+destroyed some of the fields, but not yet have destroyed the
+miscdevice field. Since you can't know if the rest of the struct is
+still valid, it's not safe to use container_of.
+
+Storing those other fields within the registration solves this issue.
+The registration ensures that the miscdevice is deregistered before
+the `data` field is destroyed. This means that if it's safe to access
+the miscdevice field, then it's also safe to access the `data` field,
+and that's the guarantee we need.
 
 Alice
+
+> So a real example here would be good to see, can you post your driver at
+> the same time so that we can see what you are doing and perhaps provide
+> a better way to do it?
