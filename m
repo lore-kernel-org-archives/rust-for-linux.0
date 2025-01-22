@@ -1,145 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3500521146F;
-	Wed, 22 Jan 2025 12:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B01F20FA8A;
+	Wed, 22 Jan 2025 12:49:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737549620; cv=none; b=nGYWg0f1lqpxFVCrVYpyHsCJjcuf1jmh/6/SVVUNuWrTmkMOH7Hs5d7OiK+z+UP3z2QXizSUYAifb8+hR2PdylR80XuL12uDO8oUPPrMBVFOQ12wxqA9m1Ab7g3Ywr7lNt243I6GVS8tNoGmkd77go7HCklRKlbftO/3kvCAWe8=
+	t=1737550172; cv=none; b=G4ncpxITEnCd4iPmdYe0pIwFvVRkbpCRzYMA8/d1tlRkyoJW/LOMYM7EN2JLDfck1inAFsrDqKvfiUB3sPWvJCXqQTJeDcMUItEVvxqpU/I3AVl0AuOyCUygQBcjmcwKYu39pYT/Jgh6m7HFCzZX+GJaisd6abm0rlOeTZa8pis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737549620; c=relaxed/simple;
-	bh=G1/8pmXRPOW4Iq3qKvQsEJSG7i5Hu05GSIYdptuPEi4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V2pITpceArs54DgTKzgk7ObpImleW+9ela6zDjrtqLqOpLhfhPjAl6CI8cL6Kus9WmJJN0SYoil5qDDmHjKvuzPLxaEandS4QQgnQTWxvBFs3I8Lm3rdOASA53BHn0ZpcVyYsehrY6x4Br+Z0Ht5YcGHN4xwFVymvBUlh3jPL6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dOndvst1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1737550172; c=relaxed/simple;
+	bh=fulkn0CZ8dAX8ZJi6q40SCLWotSdfPTnPt/YSJVSi7M=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=J8zBFZ+KLR9VvBO7oF1kYCMYb4XevvmWK5F+nyk8CJZ6JevbKDLF8FQQCnTZmYEoT/9IhoxnvjqC8c/q8q0lw3r37s8ZTiOhp4A8PcirkeVtcwxtGCWAHQcuxtL96aLponlm+BGXmGnmjTFQwjzFwYm7O0iofQt3ol+GvQgEIrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KOD6JdNO; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dOndvst1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6411DC4CED6;
-	Wed, 22 Jan 2025 12:40:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737549620;
-	bh=G1/8pmXRPOW4Iq3qKvQsEJSG7i5Hu05GSIYdptuPEi4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dOndvst1REMv2b83SJEezwJCmfkrW1z0r8LaKE1HyvPZQLzDT1IiNLepqHOMS5Fv4
-	 acP9E40y+tU6kxHpNKJDXVz7z7+N4kZAkEUWs4i01FV16fo05YMEgK6RXK1zKdiC2S
-	 p0MT1vNpLI/hY1DlRi/UIqksJYOlEZqTBtNDm09M=
-Date: Wed, 22 Jan 2025 13:40:17 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Christian Schrefl <chrisi.schrefl@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>, Arnd Bergmann <arnd@arndb.de>,
-	Lee Jones <lee@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] rust: miscdevice: Add additional data to
- MiscDeviceRegistration
-Message-ID: <2025012236-tall-untried-1d7c@gregkh>
-References: <20250119-b4-rust_miscdevice_registrationdata-v1-0-edbf18dde5fc@gmail.com>
- <20250119-b4-rust_miscdevice_registrationdata-v1-2-edbf18dde5fc@gmail.com>
- <2025012243-myspace-woof-1d1e@gregkh>
- <CAH5fLgh7QyVSgqJZM-krHmF87c76a84Cg6PyT47TYjMsN9iwZg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KOD6JdNO"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-21644aca3a0so153860105ad.3;
+        Wed, 22 Jan 2025 04:49:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737550170; x=1738154970; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=C/tW6RLUcA52NhRJWU9merpmr82Jkd0q1UsX6dibBJQ=;
+        b=KOD6JdNOEkcuDP9HSMyZGduOEzaHj1FjyZd781B/zfo1N+Ra91NuznVLKznMypx25w
+         gbMfAXQeGvwO+Cz9idm6RC/FAZavjYPwTN9rcTHwmNBgqFbGcyByclpA7QLYbqMaL1QW
+         XLTcbF7Nfg/RQrfpVu7hpXFehNDEb+CVO/wX3gNWIcLDscpVEm7CoTfIzNIdw/+EUh0Y
+         xxcCqAl1Kf8rB0rfcMzOwUEQN3GcJlVjEK/QCwdbtOHF86ZkXzQNpMgWCWYyhdVfoJ0q
+         cmyzFrfh7JTu3nAJzxlQw49NT9dtKQKBdO/aLFYDgFUCSgSwZdnLnXip72IiZIEvqX1S
+         NhUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737550170; x=1738154970;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=C/tW6RLUcA52NhRJWU9merpmr82Jkd0q1UsX6dibBJQ=;
+        b=MYt/nTvsSj4KoF9rX1GzQRFhW+Ja5yuuqt1tWmENJ0yaSeyak3InBu9ZIyH3opqtX1
+         QUCnrc/N7/ysmRowRuiWuwft4AIPQBL0/Dus2YxuPOd/7SxUm3uVte2IHR6zNwJ8q969
+         yVKZmails/CmXepuQZijK6x5uidiHF1vba6fycOQUE2UECXEMd5qpjC5rqzEQ7h0R9LM
+         53FFp0GzV4LDvxD5S/llN1ekKZ7sOGtVVR3EPEbNrT4JIeoWNO3PXkC+Vu6OMv9fLeRZ
+         fT0gn+kZOgoq0AQlEjjYVXGi6WxgcBkAZYzRaUgt0KcKvX9mLoWSRkfEDkkmobUIXvE4
+         0BgA==
+X-Forwarded-Encrypted: i=1; AJvYcCUHsE7TvIVp2Qt9omw/CQhcNIfU0uKi7g0z8K0hiNf+lvjEEq4QtME+A9TTrupSRJjr7I2KewwCG6q1c3Q=@vger.kernel.org, AJvYcCUyxDw9QB9VwuzzzrPbzGTyQM8Bn2c7l/xIu6hvkuN1aPzwqjyhT7ueV2x6Wzu5FeV4o5FdToJx@vger.kernel.org, AJvYcCXaUaEoFi/DZDdQ+wGiYy3qXjl+jf+y+jPrnwzHZc8PrZoTrorMSmD1QMt1+5hMn1tOYB7vx8cYXSPfchzwIjw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxpsAC3DPPbVy17e/N59GKFELjzzcJ6DWZeVSMkvJs/OASU09Rp
+	hP5LbM7hHgwBVS9SX8eXRp35JpEyvnZo+ISMSK1b85jNgs86AnYV
+X-Gm-Gg: ASbGncuFzLWOJfdzQerJz7WWdQW6ZRDSVJ1NSUhgoWt35CkqKYR1Y5F6mTwo3BG0xnd
+	bQ+JmXtB7bqD3YOZ80q8SS5d1XLykT6gv1soABMt3EcqT7EWR1YwkTMpQldgfw6lzqnEoKvxuTv
+	R1lcE2Az4fL3kqg9FEEnmVPRWpt3DmSF8slI8EZ2pvnZ/+KSgtjrZK3Rfz1rPYBPR3Z5WuE8DKR
+	WgQcvGmo5kOrhCeFigUGRzus52F5FT5VyyxdRMwZ1ypauL0XrIEieRKrkBwi/JbEz2RguqGESmZ
+	ToFDcn41CkdA6sEel5JT2MbGI7PmJz0sIgbAx8a3H1dVMuB9Diw=
+X-Google-Smtp-Source: AGHT+IGWvRDmGu4hGMbEgJxA/MZfPrakPsojxGXFWOy202xxw7bV+CC54VPXxCUo+XnZx98Fxx+O1g==
+X-Received: by 2002:a05:6a20:840b:b0:1e1:c748:13c1 with SMTP id adf61e73a8af0-1eb215ec017mr30298366637.27.1737550169753;
+        Wed, 22 Jan 2025 04:49:29 -0800 (PST)
+Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-a9bdd30d1fdsm10790874a12.60.2025.01.22.04.49.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jan 2025 04:49:29 -0800 (PST)
+Date: Wed, 22 Jan 2025 21:49:20 +0900 (JST)
+Message-Id: <20250122.214920.2057812400114439393.fujita.tomonori@gmail.com>
+To: aliceryhl@google.com
+Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
+ boqun.feng@gmail.com, rust-for-linux@vger.kernel.org,
+ netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, anna-maria@linutronix.de, frederic@kernel.org,
+ tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
+ mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+ vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
+ bsegall@google.com, mgorman@suse.de, vschneid@redhat.com
+Subject: Re: [PATCH v8 3/7] rust: time: Introduce Instant type
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <20250116.210644.2053799984954195907.fujita.tomonori@gmail.com>
+References: <20250116044100.80679-4-fujita.tomonori@gmail.com>
+	<CAH5fLggz0t3wTxSNUw9oVBDbR_PSWpQysaSSt6drd7vw8AXQfw@mail.gmail.com>
+	<20250116.210644.2053799984954195907.fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLgh7QyVSgqJZM-krHmF87c76a84Cg6PyT47TYjMsN9iwZg@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jan 22, 2025 at 11:11:07AM +0100, Alice Ryhl wrote:
-> On Wed, Jan 22, 2025 at 10:28 AM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Sun, Jan 19, 2025 at 11:11:14PM +0100, Christian Schrefl wrote:
-> > > When using the Rust miscdevice bindings, you generally embed the
-> > > MiscDeviceRegistration within another struct:
-> > >
-> > > struct MyDriverData {
-> > >     data: SomeOtherData,
-> > >     misc: MiscDeviceRegistration<MyMiscFile>
-> > > }
-> > >
-> > > In the `fops->open` callback of the miscdevice, you are given a
-> > > reference to the registration, which allows you to access its fields.
-> > > For example, as of commit 284ae0be4dca ("rust: miscdevice: Provide
-> > > accessor to pull out miscdevice::this_device") you can access the
-> > > internal `struct device`. However, there is still no way to access the
-> > > `data` field in the above example, because you only have a reference to
-> > > the registration.
-> >
-> > What's wrong with the driver_data pointer in the misc device structure?
-> > Shouldn't you be in control of that as you are a misc driver owner?  Or
-> > does the misc core handle this I can't recall at the moment, sorry.
+On Thu, 16 Jan 2025 21:06:44 +0900 (JST)
+FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
+
+> On Thu, 16 Jan 2025 10:32:45 +0100
+> Alice Ryhl <aliceryhl@google.com> wrote:
 > 
-> There's no such pointer in struct miscdevice?
-
-struct miscdevice->struct device->driver_data;
-
-But in digging, this might not be "allowed" for a misc driver to do, I
-can't remember anymore, sorry.
-
-> > > Using container_of is also not possible to do safely. For example, if
-> > > the destructor of `MyDriverData` runs, then the destructor of `data`
-> > > would run before the miscdevice is deregistered, so using container_of
-> > > to access `data` from `fops->open` could result in a UAF. A similar
-> > > problem can happen on initialization if `misc` is not the last field to
-> > > be initialized.
-> > >
-> > > To provide a safe way to access user-defined data stored next to the
-> > > `struct miscdevice`, make `MiscDeviceRegistration` into a container that
-> > > can store a user-provided piece of data. This way, `fops->open` can
-> > > access that data via the registration, since the data is stored inside
-> > > the registration.
-> >
-> > "next to" feels odd, that's what a container_of is for, but be careful
-> > as to who owns the lifecycle of the object you are trying to get to.
-> > You can't have multiple objects with different lifecycles in the same
-> > structure (i.e. don't mix a misc device and a platform device together).
+>>> -impl Ktime {
+>>> -    /// Create a `Ktime` from a raw `ktime_t`.
+>>> +impl Instant {
+>>> +    /// Create a `Instant` from a raw `ktime_t`.
+>>>      #[inline]
+>>> -    pub fn from_raw(inner: bindings::ktime_t) -> Self {
+>>> +    fn from_raw(inner: bindings::ktime_t) -> Self {
+>>>          Self { inner }
+>>>      }
+>> 
+>> Please keep this function public.
 > 
-> Ultimately, this is intended to solve the problem that container_of
-> solves in C. Actually using container_of runs into the challenge that
-> you have no way of knowing if those other fields are still valid.
+> Surely, your driver uses from_raw()?
 
-You "know" they are valid if you have a pointer to your structure,
-right?  Someone sent that to you, so by virtue of that it has to be
-valid.
+I checked out the C version of Binder driver and it doesn't seem like
+the driver needs from_raw function. The Rust version [1] also doesn't
+seem to need the function. Do you have a different use case?
 
-> If
-> the destructor of the struct starts running, then it might have
-> destroyed some of the fields, but not yet have destroyed the
-> miscdevice field. Since you can't know if the rest of the struct is
-> still valid, it's not safe to use container_of.
-
-That's a different issue, that's a lifetime issue of "can I look at
-these other fields at this point in time and trust them", it's not a
-"these are not valid thing to look at".
-
-> Storing those other fields within the registration solves this issue.
-> The registration ensures that the miscdevice is deregistered before
-> the `data` field is destroyed. This means that if it's safe to access
-> the miscdevice field, then it's also safe to access the `data` field,
-> and that's the guarantee we need.
-
-I'm confused.  A misc device should be embedded inside of something
-else.  And the misc device controls the lifespan of that "something
-else" structure, right?  So by virtue of the misc device being alive,
-everything else in there should be ok.
-
-Now individual misc devices might want to do different things but if
-they are being torn down, that means all references are dropped so any
-"container_of()" like cast-back should not even be possible as there
-should not be a pointer that you can cast-back from here.
-
-Or am I confused?  I think a real example would be good to see here.
-
-thanks,
-
-greg k-h
+https://r.android.com/3004103 [1]
