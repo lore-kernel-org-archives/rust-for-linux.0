@@ -1,203 +1,89 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7EA21576D
-	for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 20:14:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D7D1CAA98
+	for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 23:54:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737576855; cv=none; b=WsL5xa2lUeSUC+DyAZgchoJqFDVrDprebndBFYbchFmLmMKr0EJisBL5OcPqWJl2Te5wo4tG4QpqSAEgJtxT6Q1yK/qlZPv7ujSFEHgG9OQN6+bRxtHHGINrswNrzXz+Tr2WGbni0423qvwMj4MNBDW+B6SIz+YIsgEJqpZEPhs=
+	t=1737590064; cv=none; b=T+OLUyfUE6CytOVVeVdr46J4ZhUTMjoL7cjhidLam+iJOxvunL9QObpl/U2Zh48M4FEZdfz8fZ7eUvy9D3Pztv6nq5q6vYXuQxd2bOVA0LWNU5p2K/pBgRd5fQblfl3QYNUdrxcDLvTBMcHDAfa0g/AFfMoPSosPy0Ho8Nz5HM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737576855; c=relaxed/simple;
-	bh=MQPfRLJVD9+rimsW6bt9LJMO5UnWiyoW3E9uObuUFJI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OkCNzauGHOPINO6kZDplCgk7wXiOKRKCg1VKQ9Pwxd3YrucgyNO07ogU+VFfSTAFs9nF32T/IIeAOCbAwTxX+/ReEFc+DK286Vf0HMy30bQ61YoNKrV/1edgr6Yp3XFqdyrsn3RC9YEEHVipg+70me1AXWAh4DKxecviTmcQd7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3ZozxSEn; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1737590064; c=relaxed/simple;
+	bh=u/5kBhVahoi2rURQ4qke5LtU8tarBM5XiEebR8hE7/E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lHlluxaC2T+Ygo0bIyvxOSkNI4e+Lta7sgsRkdcZhPNUdzRxPihvZkv0E9NFEhmYNduwKu9M018Vp3lopYs6HbPQJws3fF3fEih59NsXwfqx0qpypKqXfblkXaN9e0KnWxJncvr6MTkQ2M6VKW2dRpdiDpJYtOLQ6am45W8h14k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PW0b/vKo; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3ZozxSEn"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-385e1fcb0e1so51840f8f.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 12:14:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737576851; x=1738181651; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=799enZDRd68J8NTgzAbvdBKg9qVwFJkLjqAu2nTRthw=;
-        b=3ZozxSEnucGoZNGBnpDYKO955PjINK9VdHMvZ0mTMyuyh72XAE0O29k3vKQcUiMQLB
-         boVOANXhUMyU9uvNWl8FsP6wnUJiKf8ZXapR4V4prbYdvIYe3OykhJVipAFdy2XZVqDz
-         K7UCWkNCt1gEtiFxxLZ00J8Yz1un3hMwJUjArj8Wy3+Cg3TIZ7bsyCWzQKQuYaAudm2o
-         zOQgJqfLiB8YmGZ8MkRxOkRmkMuuASzgTvGanP6VSvavtptUDSF6HtgtLe0wUAzV7HSE
-         eN1Q2na7FWeGxCQWIdO4EiDjIT1cDpFuTDF1GJLRce9tzd7FnSEPFSQWBOOJ2i0lYnIV
-         nEag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737576851; x=1738181651;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=799enZDRd68J8NTgzAbvdBKg9qVwFJkLjqAu2nTRthw=;
-        b=Bt9lhY0hNQj82oLckZpc+bQuUQXPw58KrvvxRx5KOanmstht7PzD9ysRzbbz7uSUfz
-         jojbHHuQ/Okn/kIAGjkQJig6EqgloDy1vgW2WuIj11hu2KGxLZApFJ5claMyQFtd3wSF
-         l9bUgP738G1QzNzVSqURw/rL1bsbp9V1nAEzTU3cVPdaSpb2fjOpmdQhSG4jdcloRF7K
-         fRiUPa6+iQ1juH1smhFZmRrd/H9OEUU7NhXP8utlh4kUCssl5eZT3apueveqppLdqe3Q
-         uWLcU1vv2jtOMdMkqEe6qXlQ2XHj3EanMtSC6jFKrv0KLN9svrs0GT1EFalunRGOdXf9
-         /W1A==
-X-Forwarded-Encrypted: i=1; AJvYcCVDRO47AmTry9SnIuT68rdpIYpoVbAMDIKi3jZZPglvn8tnOVttyTr/IqBtGn0ntoQsRahfOp/fyFnaMmepGQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfmGtzKu1QYI+zExzBQ3R4AIBzKcWi33HiQIl7G4cdpqQm06wd
-	arGyoDIMAfvYdfyBHJRyLkEBeB3Qh7LqhteLEKzdyRV5vHJ852YpOXskeVyO93NRUeVpOo/ey+z
-	KTbecsf2V9dp5YRVXPO3Nvyhz5goFQ3FVExI3
-X-Gm-Gg: ASbGncvkSF5qOY0mc75J0HVL1mJuUsNsWWJmelLk0o1XF9tCDgiobm2lQ/PgwuCixaB
-	xzdDbbalgiAgzU7wZFulPQng0uoxPvvK+Ukj84iOKZqjc4xVl61KP
-X-Google-Smtp-Source: AGHT+IHHFJjH3/hicgLxucZeztnwvP00UZVJLyNNL4Qv38atEuZl6Zz5YU/+f4EcPOoU7U3mCW/FWaYwviSq9tl1AGs=
-X-Received: by 2002:adf:fd84:0:b0:385:faf5:eb9f with SMTP id
- ffacd0b85a97d-38bf57c91e7mr22722774f8f.48.1737576851500; Wed, 22 Jan 2025
- 12:14:11 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PW0b/vKo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1737590062;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=L/qtwcGblqFn+akPVo5Mm3Sp8lH0HwbJjJZg19Hnjfk=;
+	b=PW0b/vKoFU+EZhaz2MpwUOiCItn6U894XRNmrTWWG4rWi/jKMoJJLHbp0r4GOol4Y5QQDw
+	OUcK9EBjmRcXsYuZ9mvdkUE1TKwu9Y57uCYLuyPb8sHrgfWqgdZVzSfsWd4zllpfmjXbTq
+	U5IU9my0oLO6qDTb5UYDJm9XDs6MuWo=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-669-maMvBrGfMj69bODEAytZQQ-1; Wed,
+ 22 Jan 2025 18:54:18 -0500
+X-MC-Unique: maMvBrGfMj69bODEAytZQQ-1
+X-Mimecast-MFC-AGG-ID: maMvBrGfMj69bODEAytZQQ
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 470E81956080;
+	Wed, 22 Jan 2025 23:54:17 +0000 (UTC)
+Received: from chopper.redhat.com (unknown [10.22.88.57])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 51D6719560AA;
+	Wed, 22 Jan 2025 23:54:15 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>
+Subject: [PATCH 0/2] rust/kernel: Add bindings for manually creating devices
+Date: Wed, 22 Jan 2025 18:49:20 -0500
+Message-ID: <20250122235340.2145383-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250116044100.80679-1-fujita.tomonori@gmail.com>
- <20250116044100.80679-7-fujita.tomonori@gmail.com> <20250122183612.60f3c62d.gary@garyguo.net>
-In-Reply-To: <20250122183612.60f3c62d.gary@garyguo.net>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 22 Jan 2025 21:14:00 +0100
-X-Gm-Features: AWEUYZm3UTAucx2cFmk1mTUAxOJsE7LEBH5OM1aMznsLuIfD4fH93uCjGIhAd_Q
-Message-ID: <CAH5fLgiMnifHoEkExSQVcv+7amO5aXSqd9kaGfM5af4eapcHzA@mail.gmail.com>
-Subject: Re: [PATCH v8 6/7] rust: Add read_poll_timeout functions
-To: Gary Guo <gary@garyguo.net>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, linux-kernel@vger.kernel.org, 
-	Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org, 
-	netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com, 
-	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
-	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de, 
-	arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, mingo@redhat.com, 
-	peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, 
-	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, 
-	mgorman@suse.de, vschneid@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-On Wed, Jan 22, 2025 at 7:36=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
->
-> On Thu, 16 Jan 2025 13:40:58 +0900
-> FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
->
-> > Add read_poll_timeout functions which poll periodically until a
-> > condition is met or a timeout is reached.
-> >
-> > C's read_poll_timeout (include/linux/iopoll.h) is a complicated macro
-> > and a simple wrapper for Rust doesn't work. So this implements the
-> > same functionality in Rust.
-> >
-> > The C version uses usleep_range() while the Rust version uses
-> > fsleep(), which uses the best sleep method so it works with spans that
-> > usleep_range() doesn't work nicely with.
-> >
-> > Unlike the C version, __might_sleep() is used instead of might_sleep()
-> > to show proper debug info; the file name and line
-> > number. might_resched() could be added to match what the C version
-> > does but this function works without it.
-> >
-> > The sleep_before_read argument isn't supported since there is no user
-> > for now. It's rarely used in the C version.
-> >
-> > core::panic::Location::file() doesn't provide a null-terminated string
-> > so add __might_sleep_precision() helper function, which takes a
-> > pointer to a string with its length.
-> >
-> > read_poll_timeout() can only be used in a nonatomic context. This
-> > requirement is not checked by these abstractions, but it is intended
-> > that klint [1] or a similar tool will be used to check it in the
-> > future.
-> >
-> > Link: https://rust-for-linux.com/klint [1]
-> > Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
-> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> > ---
-> >  include/linux/kernel.h |  2 +
-> >  kernel/sched/core.c    | 28 +++++++++++---
-> >  rust/helpers/helpers.c |  1 +
-> >  rust/helpers/kernel.c  | 13 +++++++
-> >  rust/kernel/cpu.rs     | 13 +++++++
-> >  rust/kernel/error.rs   |  1 +
-> >  rust/kernel/io.rs      |  5 +++
-> >  rust/kernel/io/poll.rs | 84 ++++++++++++++++++++++++++++++++++++++++++
-> >  rust/kernel/lib.rs     |  2 +
-> >  9 files changed, 144 insertions(+), 5 deletions(-)
-> >  create mode 100644 rust/helpers/kernel.c
-> >  create mode 100644 rust/kernel/cpu.rs
-> >  create mode 100644 rust/kernel/io.rs
-> >  create mode 100644 rust/kernel/io/poll.rs
-> >
-> > diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-> > new file mode 100644
-> > index 000000000000..033f3c4e4adf
-> > --- /dev/null
-> > +++ b/rust/kernel/io.rs
-> > @@ -0,0 +1,5 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +//! Input and Output.
-> > +
-> > +pub mod poll;
-> > diff --git a/rust/kernel/io/poll.rs b/rust/kernel/io/poll.rs
-> > new file mode 100644
-> > index 000000000000..da8e975d8e50
-> > --- /dev/null
-> > +++ b/rust/kernel/io/poll.rs
-> > @@ -0,0 +1,84 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +//! IO polling.
-> > +//!
-> > +//! C header: [`include/linux/iopoll.h`](srctree/include/linux/iopoll.=
-h).
-> > +
-> > +use crate::{
-> > +    cpu::cpu_relax,
-> > +    error::{code::*, Result},
-> > +    time::{delay::fsleep, Delta, Instant},
-> > +};
-> > +
-> > +use core::panic::Location;
-> > +
-> > +/// Polls periodically until a condition is met or a timeout is reache=
-d.
-> > +///
-> > +/// Public but hidden since it should only be used from public macros.
-> > +///
-> > +/// ```rust
-> > +/// use kernel::io::poll::read_poll_timeout;
-> > +/// use kernel::time::Delta;
-> > +/// use kernel::sync::{SpinLock, new_spinlock};
-> > +///
-> > +/// let lock =3D KBox::pin_init(new_spinlock!(()), kernel::alloc::flag=
-s::GFP_KERNEL)?;
-> > +/// let g =3D lock.lock();
-> > +/// read_poll_timeout(|| Ok(()), |()| true, Delta::from_micros(42), De=
-lta::from_micros(42));
-> > +/// drop(g);
-> > +///
-> > +/// # Ok::<(), Error>(())
-> > +/// ```
-> > +#[track_caller]
-> > +pub fn read_poll_timeout<Op, Cond, T: Copy>(
->
-> I wonder if we can lift the `T: Copy` restriction and have `Cond` take
-> `&T` instead. I can see this being useful in many cases.
->
-> I know that quite often `T` is just an integer so you'd want to pass by
-> value, but I think almost always `Cond` is a very simple closure so
-> inlining would take place and they won't make a performance difference.
+As many of you are probably aware, there's a number of kernel modules in
+the Linux kernel that don't actually probe a device on a bus - but
+instead simply create a virtual platform device. One such example is the
+virmidi driver (sound/drivers/virmidi.c) These patches add the
+ability to do this with our current platform device bindings for rust.
 
-Yeah, I think it should be
+The main usecase for this is the WIP driver, rvkms:
 
-Cond: FnMut(&T) -> bool,
+https://patchwork.freedesktop.org/series/131522/
 
-with FnMut as well.
+Lyude Paul (2):
+  rust/kernel: Add platform::Device::from_raw()
+  rust/kernel: Add platform::ModuleDevice
 
-Alice
+ rust/kernel/platform.rs | 111 +++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 109 insertions(+), 2 deletions(-)
+
+
+base-commit: b323d8e7bc03d27dec646bfdccb7d1a92411f189
+-- 
+2.47.1
+
