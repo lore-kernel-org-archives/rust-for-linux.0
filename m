@@ -1,188 +1,704 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021072.outbound.protection.outlook.com [52.101.100.72])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 377C81F78E8;
-	Wed, 22 Jan 2025 16:38:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195811CEAA3;
+	Wed, 22 Jan 2025 16:48:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737563905; cv=fail; b=BLKK7FMoW5PwqE4bbWo9Y7nLTaCulhm2jq2GgEJP0Gc+2v86qzXBQ/nPGKQgeZBDlirkXhVZ49S7IFyCj/Jm608G9Z2mDssMWn25tGfSHK9StLXOpIeRo46HWNM0TO6aVMbGPF6x/gBZYZtr7klwsVHvHsYhzoiPzxhiT6n7AYo=
+	t=1737564524; cv=pass; b=f2bJnxxyJHj/fPcz7M/StGyuch39Y+RTCJdoGY4+Wzq6hk2K7zCXUJnXlGrQzBr2vTzUcJaSJQ9IShzGV/GdbtYNhE9jr/uKhlWg+HnuR5i1u1kvRaD/p62ainBzQVOok3Yt/kE99uvUaWjRg9RLgAen3hSe/2v4QEfllSg1F5I=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737563905; c=relaxed/simple;
-	bh=qYUZ3V4EeUw1WxJdjfiVMquox4HFXn7e7lrChGXZs6w=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gohNzrZy3qmV4aX2gjad5QXeIWt9DBgBM1lImP2lrnOwPa6ITLEW17/q89m5vNvqZFhYfc3X9xHVsgxgLWJv38h89ag1g0S1RskboewUEl4Dq2q7Z2GzxUFfsB8+ks35lagP3Lm8xFU4Q6E08tKULakP18Hu6DpxFYa7b5tkR38=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=X9aYd/YL; arc=fail smtp.client-ip=52.101.100.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1737564524; c=relaxed/simple;
+	bh=3c227opxC+SjuNqiQUXHUKCX4Ij9/UC9jII3UR99iRY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n2PSMK21imQ/ZS/n3+isKaBUWu0mn9td1UV3RMEIIUgp7jCwF67fs5f87vUjbXMjZSJju55IKA8U5Kq4SlF9gQlN7uiQlFecMSjRctohcd1BGxv6kDlMwZxi6Zt0Lw8F10Nq8yNw/skc/1X9D2ZlHpG//YBGzatSyXfjPannm2k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=NrnLMiE9; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="X9aYd/YL"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Y2uwMWy0AkX19BDmolh1v/CErExW1+Wxuy+xGpokkw/ihXTGtLP8xQrFJBfHRxCaKiMz1lTsatvZUa5H7EjStECaPtG2PCAxur5pP0AV6LeKtBUs+9/sHp78EIFxu4H6gOfeuo4DgyyQU3DsitW605oNRLImQ3606h9uGko47OmOl4Bz6jNkGPBtMAz0iqXDJpqUymzZxBpD0iIFmPhNadNHt9tiYzy/3BKqKzDF2Yd4/4r2jGL3n+02o74FVCn3WplfZSEttG/td1bO0QZdzxHPOZkd8h3iXEwiVvYHFxYIczIiPx9KiyLSXAwkSMWciPqC46JJ9m7CEsRGXd9dnQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MiXxHfmaylWghROeU4fvSHWiQxRYOjIWWk3d71l5lko=;
- b=LqC+/MCfAxy/qslRFHx6HdBSi+KzZBJN8z9m/6IbNRn9vvHGQVhhdsF6HCQrxY3Uwfv4bdOicV2+SEd/fhvqiyidg2Sgd80e8nKtsJl2phj/msuOuieUHr7lxm9BGVoxWd+0QXw+ceQRPBLbmKszYH190xQP+XDxTCdaF128hbyXfQmMEJKqAWszdi6QISCq1BR4a5kXW+KEVcTpmXv3HqMlKJdu57Gs6zOe9g3Rz5TGk0pfN0gFuNYCZzCoIT7TnvjGDoN6AD2aDXq+sERqltwcMEgxnRLdzTNdNjweRgg89kpbHT0OOlBlGCrNOPcdBn+Hl0HkwDaqFJCTa/X6KA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MiXxHfmaylWghROeU4fvSHWiQxRYOjIWWk3d71l5lko=;
- b=X9aYd/YL4/prQ+9DIJTYhAMqO3uLAjVknXT2bnGyGP+ZJJUFOVzCUfAWdHzPdkkE77Su9KV2I3/flQdfxUjL8Fbm+iEyItr0ddwntaydQU0sG0oE1ryybY7FxHsDUeyZoRg0xFxqMje1CYz9YfQC3vsDdLT0xi1tvuo8RPsfs6M=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO6P265MB6031.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2a4::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8377.17; Wed, 22 Jan
- 2025 16:38:20 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7%5]) with mapi id 15.20.8356.020; Wed, 22 Jan 2025
- 16:38:20 +0000
-Date: Wed, 22 Jan 2025 16:38:16 +0000
-From: Gary Guo <gary@garyguo.net>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- patches@lists.linux.dev
-Subject: Re: [PATCH] rust: init: use explicit ABI to clean warning in future
- compilers
-Message-ID: <20250122163816.4a8e987b.gary@garyguo.net>
-In-Reply-To: <20250121200934.222075-1-ojeda@kernel.org>
-References: <20250121200934.222075-1-ojeda@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AS8PR04CA0059.eurprd04.prod.outlook.com
- (2603:10a6:20b:312::34) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="NrnLMiE9"
+ARC-Seal: i=1; a=rsa-sha256; t=1737564501; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=lQYNNbJ4TArPsL9uahjpypaOpRZPdRW8h4F/r3Lm4gd+X8SK7/WmXstPy0g5EevpOjAkLw6/jjFFL5gB/Vdi3llNCkbYdg2E2W4f5jvIleID72/wVSrB+xB+RUlgB/17TjU9CpjqMR54xPuheHtafn9ww1axR+NK1orwJGKrJ3I=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1737564501; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=MQT4nET+xt2MH+983Hj64OHlcMZCDbXJi4QLbAWqPMI=; 
+	b=nvk4WHIP/YloXXSetTJ/r0eW6Ib4Oylqxuaibd6nvbSKnC8DkbrAqyfEp/Vc4Zj/x16QGr968LCj2eBhmzbuw8KTvZ6i2D/tzGVXmv8WzNAZZUjxhDujNU1xuLx8bnOp81kRDM31rgTIabL6DpIIb3pNmkFfS2XpwhhFcglJl/Y=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1737564501;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=MQT4nET+xt2MH+983Hj64OHlcMZCDbXJi4QLbAWqPMI=;
+	b=NrnLMiE98PudqI0JPV8NfLF0DMh+oVYkJfigdOSD0PdpUmAQhorCGQKGXMVJ8FLS
+	tAlvyHPOvzT8KZHJcrHMx8QYmUcWnZrSJMJ/7V4uktiB3wRuVh8m6q9o1t78cqKunxE
+	s4ky0UtxCT88FLuTRB2otMRsUWE7fwdJk+jIGB50=
+Received: by mx.zohomail.com with SMTPS id 1737564500060344.99387687864635;
+	Wed, 22 Jan 2025 08:48:20 -0800 (PST)
+From: Daniel Almeida <daniel.almeida@collabora.com>
+To: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	tmgross@umich.edu
+Cc: Daniel Almeida <daniel.almeida@collabora.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Alice Ryhl <aliceryhl@google.com>
+Subject: [PATCH v2] rust: irq: add support for request_irq()
+Date: Wed, 22 Jan 2025 13:39:30 -0300
+Message-ID: <20250122163932.46697-1-daniel.almeida@collabora.com>
+X-Mailer: git-send-email 2.48.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO6P265MB6031:EE_
-X-MS-Office365-Filtering-Correlation-Id: 11df45a4-e4b0-484e-2cbe-08dd3b032e19
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|10070799003|7416014|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?N42Iz7enHjd+yNl79qFig3vHG7NyA0uC/x2wAWiml/5K5uXN5B1NEqPafprg?=
- =?us-ascii?Q?n/GR36zrU98T4d4r3XD9/rZcjjt9q9k0swRtZcFLaFbsYo2/7VeZNkdXA5gR?=
- =?us-ascii?Q?o++Ox/JJeEz2yRnplFc27J4KhnxPB2/k57FYLvOMIR3stihmwxrUffBM0Gi3?=
- =?us-ascii?Q?+IGfBHbKdfl4elYl14NBOEn7Z7JGOluFTcOMrVgHn76smHOb7INlgJ4cmJcw?=
- =?us-ascii?Q?D1xjqqU0LJmoRIRRfEdl5TmXSLpq0NZStHhk7E3YEv31COmfytL+VWwSsUcH?=
- =?us-ascii?Q?2RFxHrpSHp0LKnngyEjDw4zeLBdwmSNN+K/nxnZghCHKl2vYbPxBX3ZU4Ecv?=
- =?us-ascii?Q?OzKKvC8e4t2PZLMTzE7Q4QgPvkc6y86X3MtMIjluPl3cPkUviiqHBpZ1fSOm?=
- =?us-ascii?Q?T5edVIS9HI3QQcsl5UbaGJVTTfHTZM3WojLbFo25ozMrH/GABI001a5AEApo?=
- =?us-ascii?Q?K7tniXXsWzK2xuiMxWK4cK7I9YPIRSWIoq44xQUAWmeohFo5lJJABL4oODX/?=
- =?us-ascii?Q?D+jKRzfz4JYYiM3J1uWi2u1EO6ttAm9PlcqGexJvBb/rYdZ02sNjVdIku0tc?=
- =?us-ascii?Q?AVpebCLCXec3RqeOIZ3sZZbLbMfONVROX47BRgV4xREqb3ZEixDMQSXt2DOR?=
- =?us-ascii?Q?EbkjtkADHc2kYvFUKjt2hZ77wFtchkjXmM9Jh17ojyCkGEyD+kwu7FyMmu3U?=
- =?us-ascii?Q?un+b2dnDnKrY90AuIv/ghMuoH/vtmI5h/MmLSflU3WZ0zfFJlCtTZrlW0uh0?=
- =?us-ascii?Q?Oa+fbU+v9IHT17/JnaaS27IOuhYRaa8V06s21f+eWZmpLxLBcERRqWQZhbIR?=
- =?us-ascii?Q?QqP41hESUAYN25Y5ffdz3qXXUitcmcaRBX7Qs1DvxptxwZ7px8btOstrULoi?=
- =?us-ascii?Q?6JxkYVnYyOqsr8oPHriFFqyd8owQxQs5R7IOd0EilntuK2OHNtjqP7fbVQp4?=
- =?us-ascii?Q?010rf8SHitfa0T6X1PD8YFK62L0gn+dlXaSGq2d33m79AInUNtfqrjErxf4c?=
- =?us-ascii?Q?jcdlsc5TUB6EWiMsfRulmqrUe/NeBTa7j+eN8PGDw79mJgqECqNTURv8Z8tZ?=
- =?us-ascii?Q?VLlgM3Ja2uEo724wccd+VKmnjSbFeGargIOiOSF7TQ2k841jZlMLFed5OOuV?=
- =?us-ascii?Q?xWhFJBHubVcqOAopVht5juuT6F42fja5YkvQH1yGNdLgN/40tBx74p2SESZp?=
- =?us-ascii?Q?UaUlzpptOczW+wpk1sHplNkDgFXPOhgj2i1vARjzUs3clUUyK5bpSp+yvD1o?=
- =?us-ascii?Q?HRXoKdj7hmQhiCKTolyfX1l0NbxATqcjqisp6WozeXWcY0J5+5pRcuwHd1en?=
- =?us-ascii?Q?MdHlcVAuupth9bB0NzIcdaj7s1alznlg9cCmWhp2ddHHnoblJvPqdbUhoArN?=
- =?us-ascii?Q?LLFZWCjmUUOnfCclrX5DTp0H9Lit?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(7416014)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?iMi+zPG7qMai0n+OqTbgkg0bBweJnELJyLAfpGfnRexvdUngx8k1uA3VN5B2?=
- =?us-ascii?Q?lKHVkttNoycS2nho1hNaZ1445OtFEJJcOYrh1N29fSFiXGhjM3enLZNdyoUx?=
- =?us-ascii?Q?7seWSZcBO329lHZ0vXT2XNPwpeiXk0AQ5N3hQQ2fdQNKVx7/BIJrd/HH1xgf?=
- =?us-ascii?Q?Db0pwxOngMrfGJklAHsQ4ebG4C31PpkLSr/Sb0IBadNHmMK4xo/w08SbjrBz?=
- =?us-ascii?Q?7WuijufZ6WfbfgDoeRMqMsm/fwmYWF7ZTxpfKqrwuP0mi71HZMVWTnkX5ZEP?=
- =?us-ascii?Q?j/P5Cwaia1Je4LcAUCepj55dxpGVhEYA7uvhzN+hTVJi5PDMsldRFls8HLxS?=
- =?us-ascii?Q?2ZWMGM3WbS7ffyVFB/PJTGuE8aij5qSMeci6iHc6N0SBEaokJx9/ZsjH9M1u?=
- =?us-ascii?Q?/Mn/GiVARr/6zp0yX5Brg4EIUxJFkU7+mD5DCNKD+UzDbOxQZTO6skSs/5OV?=
- =?us-ascii?Q?5b4gh+qCZ1zJ6Mp5vULOwiJxWKyt574NHQEJxfYYN5Gku3KJ2ZcO47txUu96?=
- =?us-ascii?Q?zQGzMd/HnzMFomGvJKVnSnjsOP7G6wbei5HoJUhBwyzAMlD+rwcgQIJU89jp?=
- =?us-ascii?Q?QLQWC70+KNFXK9hVUchRsMpj9yqn4Gp8cbAJ2WGO1il0wEuZq4/cbE4iBuRU?=
- =?us-ascii?Q?8N/4XsGZQfFOozrRto40foZGAkK1zasypP5Z94iLoJq1MS2kjhr+lKIpU0y+?=
- =?us-ascii?Q?xMQ4/zUkELEmluccvVve33Qm2Gf29D8+KdzDRInncLkwIBymDQGk03gx8ItR?=
- =?us-ascii?Q?bR5awiHAGUCFHsuYBGPu7OylYNR3el7puXxPfIRQI/cQf6dQf29khLKwN9ui?=
- =?us-ascii?Q?3J5fOJfn++Gn43MfP2YTMIlbdf5mxqqu78yajVl6PagtpA94s5uTA73fvRek?=
- =?us-ascii?Q?5dufdvyqkiukcdf3JeX/PN5mCrE9c/tGHxw48pUxWrOQ1/YXUbKd2OTndPnk?=
- =?us-ascii?Q?FDkKrJJeTWsYuQbxI9TTNwCC2P8qnycOUqD/AXw5ic9DN5rkAMIyEN/6nwh0?=
- =?us-ascii?Q?lMu4B/7k6whSbluzIEOTU6FC3FkkvrpjfUfRGoZABSvX5kfmsEQ21l4FPthu?=
- =?us-ascii?Q?YQsEELDdqM++IvRGxR/smjfvc9c1/ARGe0vOYTBHqYVKE82NBOjz2i68vbUR?=
- =?us-ascii?Q?VmwOPu8rLi7QYCwl1KCtY4DBv1rVEykPGp0SAA7FIoxo8AFB7lfGVhesYbJf?=
- =?us-ascii?Q?sRzs9TENdgcf9zXFeJEiXvUznIy7b8Dfhxqdz/tXrxhlB+Rmj1noyLjqfgn7?=
- =?us-ascii?Q?AzPgS8UN1/r8v3TD7g0yb30hJRs7yYW8GUO3ZV6rXmxx0RTiQDIgUeUf1MQd?=
- =?us-ascii?Q?ry+A32EXoDcUtgwwF44wmgzt83CpyINnD3B94IK88ylBoZgrGSZn/JDvuvG8?=
- =?us-ascii?Q?x72KcF2NHFW5K9kUT8P/rXqx0rxywSZz9nv8zThRoHLQybdakjOweLx0BXVZ?=
- =?us-ascii?Q?LCcXNmZcLoTiTOm4EOCzTu9VwH4GdNoaNbsfAsQW6LPUubpj9e/5l9xxUUjz?=
- =?us-ascii?Q?f9WjpanH+zEnk1EEqEn/3MV+VZ7joheyMoOzpd3YxtFfIhP3hNgbt7R1ofgq?=
- =?us-ascii?Q?gn/t7pjK4hbIqHHtNjcSIxAyF6uZ++nC5y1l7rse2ReSLG1ZcBg6IGBEJueB?=
- =?us-ascii?Q?1g=3D=3D?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 11df45a4-e4b0-484e-2cbe-08dd3b032e19
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jan 2025 16:38:20.2513
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wPFWwQcqz7AAD0ycCW6eV03bSFmDtK3NpmB6u2Lhi05GQ+xJQ2YA/sjSZpjhYrD18Z1bmXE004zyFDCn7kUexw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB6031
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-On Tue, 21 Jan 2025 21:09:34 +0100
-Miguel Ojeda <ojeda@kernel.org> wrote:
+Add support for registering IRQ handlers in Rust.
 
-> Starting with Rust 1.86.0 (currently in nightly, to be released on
-> 2025-04-03), the `missing_abi` lint is warn-by-default [1]:
-> 
->     error: extern declarations without an explicit ABI are deprecated
->         --> rust/doctests_kernel_generated.rs:3158:1  
->          |
->     3158 | extern {
->          | ^^^^^^ help: explicitly specify the C ABI: `extern "C"`
->          |
->          = note: `-D missing-abi` implied by `-D warnings`
->          = help: to override `-D warnings` add `#[allow(missing_abi)]`
-> 
-> Thus clean it up.
-> 
-> Link: https://github.com/rust-lang/rust/pull/132397 [1]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+IRQ handlers are extensively used in drivers when some peripheral wants to
+obtain the CPU attention. Registering a handler will make the system invoke the
+passed-in function whenever the chosen IRQ line is triggered.
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
+Both regular and threaded IRQ handlers are supported through a Handler (or
+ThreadedHandler) trait that is meant to be implemented by a type that:
 
-> ---
->  rust/kernel/init.rs | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-> index 347049df556b..c962029f96e1 100644
-> --- a/rust/kernel/init.rs
-> +++ b/rust/kernel/init.rs
-> @@ -854,7 +854,7 @@ pub unsafe trait PinInit<T: ?Sized, E = Infallible>: Sized {
->      /// use kernel::{types::Opaque, init::pin_init_from_closure};
->      /// #[repr(C)]
->      /// struct RawFoo([u8; 16]);
-> -    /// extern {
-> +    /// extern "C" {
->      ///     fn init_foo(_: *mut RawFoo);
->      /// }
->      ///
-> 
-> base-commit: 100ceb4817a2ac650e29f107cf97161ce3e2289a
+a) provides a function to be run by the system when the IRQ fires and,
+
+b) holds the shared data (i.e.: `T`) between process and IRQ contexts.
+
+The requirement that T is Sync derives from the fact that handlers might run
+concurrently with other processes executing the same driver, creating the
+potential for data races.
+
+Ideally, some interior mutability must be in place if T is to be mutated. This
+should usually be done through the in-flight SpinLockIrq type.
+
+Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+---
+
+Changes from v1:
+
+- Added Co-developed-by tag to account for the work that Alice did in order to
+figure out how to do this without Opaque<T> (Thanks!)
+- Removed Opaque<T> in favor of plain T
+- Fixed the examples
+- Made sure that the invariants sections are the last entry in the docs
+- Switched to slot.cast() where applicable,
+- Mentioned in the safety comments that we require that T: Sync,
+- Removed ThreadedFnReturn in favor of IrqReturn,
+- Improved the commit message
+
+Link to v1: https://lore.kernel.org/rust-for-linux/20241024-topic-panthor-rs-request_irq-v1-1-7cbc51c182ca@collabora.com/
+
+
+---
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers/helpers.c          |   1 +
+ rust/helpers/irq.c              |   9 +
+ rust/kernel/irq.rs              |   6 +
+ rust/kernel/irq/request.rs      | 517 ++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   1 +
+ 6 files changed, 535 insertions(+)
+ create mode 100644 rust/helpers/irq.c
+ create mode 100644 rust/kernel/irq.rs
+ create mode 100644 rust/kernel/irq/request.rs
+
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 5c4dfe22f41a..0331c6273def 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -15,6 +15,7 @@
+ #include <linux/ethtool.h>
+ #include <linux/file.h>
+ #include <linux/firmware.h>
++#include <linux/interrupt.h>
+ #include <linux/fs.h>
+ #include <linux/jiffies.h>
+ #include <linux/jump_label.h>
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index dcf827a61b52..bfc499d7f4c1 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -13,6 +13,7 @@
+ #include "build_bug.c"
+ #include "cred.c"
+ #include "err.c"
++#include "irq.c"
+ #include "fs.c"
+ #include "jump_label.c"
+ #include "kunit.c"
+diff --git a/rust/helpers/irq.c b/rust/helpers/irq.c
+new file mode 100644
+index 000000000000..1faca428e2c0
+--- /dev/null
++++ b/rust/helpers/irq.c
+@@ -0,0 +1,9 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/interrupt.h>
++
++int rust_helper_request_irq(unsigned int irq, irq_handler_t handler,
++			    unsigned long flags, const char *name, void *dev)
++{
++	return request_irq(irq, handler, flags, name, dev);
++}
+diff --git a/rust/kernel/irq.rs b/rust/kernel/irq.rs
+new file mode 100644
+index 000000000000..3ab83c5bdb83
+--- /dev/null
++++ b/rust/kernel/irq.rs
+@@ -0,0 +1,6 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! IRQ abstractions
++
++/// IRQ allocation and handling
++pub mod request;
+diff --git a/rust/kernel/irq/request.rs b/rust/kernel/irq/request.rs
+new file mode 100644
+index 000000000000..61e7d4a8f555
+--- /dev/null
++++ b/rust/kernel/irq/request.rs
+@@ -0,0 +1,517 @@
++// SPDX-License-Identifier: GPL-2.0
++// SPDX-FileCopyrightText: Copyright 2025 Collabora ltd.
++
++//! IRQ allocation and handling
++
++use core::marker::PhantomPinned;
++use core::ptr::addr_of_mut;
++
++use init::pin_init_from_closure;
++
++use crate::error::to_result;
++use crate::prelude::*;
++use crate::str::CStr;
++
++/// Flags to be used when registering IRQ handlers.
++///
++/// They can be combined with the operators `|`, `&`, and `!`.
++///
++/// Values can be used from the [`flags`] module.
++#[derive(Clone, Copy)]
++pub struct Flags(u64);
++
++impl core::ops::BitOr for Flags {
++    type Output = Self;
++    fn bitor(self, rhs: Self) -> Self::Output {
++        Self(self.0 | rhs.0)
++    }
++}
++
++impl core::ops::BitAnd for Flags {
++    type Output = Self;
++    fn bitand(self, rhs: Self) -> Self::Output {
++        Self(self.0 & rhs.0)
++    }
++}
++
++impl core::ops::Not for Flags {
++    type Output = Self;
++    fn not(self) -> Self::Output {
++        Self(!self.0)
++    }
++}
++
++/// The flags that can be used when registering an IRQ handler.
++pub mod flags {
++    use super::Flags;
++
++    use crate::bindings;
++
++    /// Use the interrupt line as already configured.
++    pub const TRIGGER_NONE: Flags = Flags(bindings::IRQF_TRIGGER_NONE as _);
++
++    /// The interrupt is triggered when the signal goes from low to high.
++    pub const TRIGGER_RISING: Flags = Flags(bindings::IRQF_TRIGGER_RISING as _);
++
++    /// The interrupt is triggered when the signal goes from high to low.
++    pub const TRIGGER_FALLING: Flags = Flags(bindings::IRQF_TRIGGER_FALLING as _);
++
++    /// The interrupt is triggered while the signal is held high.
++    pub const TRIGGER_HIGH: Flags = Flags(bindings::IRQF_TRIGGER_HIGH as _);
++
++    /// The interrupt is triggered while the signal is held low.
++    pub const TRIGGER_LOW: Flags = Flags(bindings::IRQF_TRIGGER_LOW as _);
++
++    /// Allow sharing the irq among several devices.
++    pub const SHARED: Flags = Flags(bindings::IRQF_SHARED as _);
++
++    /// Set by callers when they expect sharing mismatches to occur.
++    pub const PROBE_SHARED: Flags = Flags(bindings::IRQF_PROBE_SHARED as _);
++
++    /// Flag to mark this interrupt as timer interrupt.
++    pub const TIMER: Flags = Flags(bindings::IRQF_TIMER as _);
++
++    /// Interrupt is per cpu.
++    pub const PERCPU: Flags = Flags(bindings::IRQF_PERCPU as _);
++
++    /// Flag to exclude this interrupt from irq balancing.
++    pub const NOBALANCING: Flags = Flags(bindings::IRQF_NOBALANCING as _);
++
++    /// Interrupt is used for polling (only the interrupt that is registered
++    /// first in a shared interrupt is considered for performance reasons).
++    pub const IRQPOLL: Flags = Flags(bindings::IRQF_IRQPOLL as _);
++
++    /// Interrupt is not reenabled after the hardirq handler finished. Used by
++    /// threaded interrupts which need to keep the irq line disabled until the
++    /// threaded handler has been run.
++    pub const ONESHOT: Flags = Flags(bindings::IRQF_ONESHOT as _);
++
++    /// Do not disable this IRQ during suspend. Does not guarantee that this
++    /// interrupt will wake the system from a suspended state.
++    pub const NO_SUSPEND: Flags = Flags(bindings::IRQF_NO_SUSPEND as _);
++
++    /// Force enable it on resume even if [`NO_SUSPEND`] is set.
++    pub const FORCE_RESUME: Flags = Flags(bindings::IRQF_FORCE_RESUME as _);
++
++    /// Interrupt cannot be threaded.
++    pub const NO_THREAD: Flags = Flags(bindings::IRQF_NO_THREAD as _);
++
++    /// Resume IRQ early during syscore instead of at device resume time.
++    pub const EARLY_RESUME: Flags = Flags(bindings::IRQF_EARLY_RESUME as _);
++
++    /// If the IRQ is shared with a NO_SUSPEND user, execute this interrupt
++    /// handler after suspending interrupts. For system wakeup devices users
++    /// need to implement wakeup detection in their interrupt handlers.
++    pub const COND_SUSPEND: Flags = Flags(bindings::IRQF_COND_SUSPEND as _);
++
++    /// Don't enable IRQ or NMI automatically when users request it. Users will
++    /// enable it explicitly by `enable_irq` or `enable_nmi` later.
++    pub const NO_AUTOEN: Flags = Flags(bindings::IRQF_NO_AUTOEN as _);
++
++    /// Exclude from runnaway detection for IPI and similar handlers, depends on
++    /// `PERCPU`.
++    pub const NO_DEBUG: Flags = Flags(bindings::IRQF_NO_DEBUG as _);
++}
++
++/// The value that can be returned from an IrqHandler or a ThreadedIrqHandler.
++pub enum IrqReturn {
++    /// The interrupt was not from this device or was not handled.
++    None = bindings::irqreturn_IRQ_NONE as _,
++
++    /// The interrupt was handled by this device.
++    Handled = bindings::irqreturn_IRQ_HANDLED as _,
++}
++
++/// Callbacks for an IRQ handler.
++pub trait Handler: Sync {
++    /// The actual handler function. As usual, sleeps are not allowed in IRQ
++    /// context.
++    fn handle_irq(&self) -> IrqReturn;
++}
++
++/// A registration of an IRQ handler for a given IRQ line.
++///
++/// # Examples
++///
++/// The following is an example of using `Registration`:
++///
++/// ```
++/// use kernel::prelude::*;
++/// use kernel::irq::request::flags;
++/// use kernel::irq::request::Registration;
++/// use kernel::irq::request::IrqReturn;
++/// use kernel::sync::Arc;
++/// use kernel::sync::SpinLock;
++/// use kernel::c_str;
++/// use kernel::alloc::flags::GFP_KERNEL;
++///
++/// // Declare a struct that will be passed in when the interrupt fires. The u32
++/// // merely serves as an example of some internal data.
++/// struct Data(SpinLock<u32>);
++///
++/// // [`handle_irq`] takes &self. This example illustrates interior
++/// // mutability can be used when share the data between process context and IRQ
++/// // context.
++/// //
++/// // Ideally, this example would be using a version of SpinLock that is aware
++/// // of `spin_lock_irqsave` and `spin_lock_irqrestore`, but that is not yet
++/// // implemented.
++///
++/// type Handler = Data;
++///
++/// impl kernel::irq::request::Handler for Handler {
++///     // This is executing in IRQ context in some CPU. Other CPUs can still
++///     // try to access to data.
++///     fn handle_irq(&self) -> IrqReturn {
++///         // We now have exclusive access to the data by locking the SpinLock.
++///         let mut data = self.0.lock();
++///         *data += 1;
++///
++///         IrqReturn::Handled
++///     }
++/// }
++///
++/// // This is running in process context.
++/// fn register_irq(irq: u32, handler: Handler) -> Result<Arc<Registration<Handler>>> {
++///     let registration = Registration::register(irq, flags::SHARED, c_str!("my-device"), handler);
++///
++///     // You can have as many references to the registration as you want, so
++///     // multiple parts of the driver can access it.
++///     let registration = Arc::pin_init(registration, GFP_KERNEL)?;
++///
++///     // The handler may be called immediately after the function above
++///     // returns, possibly in a different CPU.
++///
++///     {
++///         // The data can be accessed from the process context too.
++///         let mut data = registration.handler().0.lock();
++///         *data = 42;
++///     }
++///
++///     Ok(registration)
++/// }
++///
++/// # Ok::<(), Error>(())
++///```
++///
++/// # Invariants
++///
++/// * We own an irq handler using `&self` as its private data.
++///
++#[pin_data(PinnedDrop)]
++pub struct Registration<T: Handler> {
++    irq: u32,
++    #[pin]
++    handler: T,
++    #[pin]
++    /// Pinned because we need address stability so that we can pass a pointer
++    /// to the callback.
++    _pin: PhantomPinned,
++}
++
++impl<T: Handler> Registration<T> {
++    /// Registers the IRQ handler with the system for the given IRQ number. The
++    /// handler must be able to be called as soon as this function returns.
++    pub fn register(
++        irq: u32,
++        flags: Flags,
++        name: &'static CStr,
++        handler: T,
++    ) -> impl PinInit<Self, Error> {
++        let closure = move |slot: *mut Self| {
++            // SAFETY: The slot passed to pin initializer is valid for writing.
++            unsafe {
++                slot.write(Self {
++                    irq,
++                    handler,
++                    _pin: PhantomPinned,
++                })
++            };
++
++            // SAFETY:
++            // - The callbacks are valid for use with request_irq.
++            // - If this succeeds, the slot is guaranteed to be valid until the
++            // destructor of Self runs, which will deregister the callbacks
++            // before the memory location becomes invalid.
++            let res = to_result(unsafe {
++                bindings::request_irq(
++                    irq,
++                    Some(handle_irq_callback::<T>),
++                    flags.0,
++                    name.as_char_ptr(),
++                    &*slot as *const _ as *mut core::ffi::c_void,
++                )
++            });
++
++            if res.is_err() {
++                // SAFETY: We are returning an error, so we can destroy the slot.
++                unsafe { core::ptr::drop_in_place(addr_of_mut!((*slot).handler)) };
++            }
++
++            res
++        };
++
++        // SAFETY:
++        // - if this returns Ok, then every field of `slot` is fully
++        // initialized.
++        // - if this returns an error, then the slot does not need to remain
++        // valid.
++        unsafe { pin_init_from_closure(closure) }
++    }
++
++    /// Returns a reference to the handler that was registered with the system.
++    pub fn handler(&self) -> &T {
++        // SAFETY: `handler` is initialized in `register`, and we require that
++        // T: Sync.
++        &self.handler
++    }
++}
++
++#[pinned_drop]
++impl<T: Handler> PinnedDrop for Registration<T> {
++    fn drop(self: Pin<&mut Self>) {
++        // SAFETY:
++        // - `self.irq` is the same as the one passed to `reques_irq`.
++        // -  `&self` was passed to `request_irq` as the cookie. It is
++        // guaranteed to be unique by the type system, since each call to
++        // `register` will return a different instance of `Registration`.
++        //
++        // Notice that this will block until all handlers finish executing,
++        // i.e.: at no point will &self be invalid while the handler is running.
++        unsafe { bindings::free_irq(self.irq, &*self as *const Self as *mut core::ffi::c_void) };
++    }
++}
++
++/// The value that can be returned from `ThreadedHandler::handle_irq`.
++pub enum ThreadedIrqReturn {
++    /// The interrupt was not from this device or was not handled.
++    None = bindings::irqreturn_IRQ_NONE as _,
++
++    /// The interrupt was handled by this device.
++    Handled = bindings::irqreturn_IRQ_HANDLED as _,
++
++    /// The handler wants the handler thread to wake up.
++    WakeThread = bindings::irqreturn_IRQ_WAKE_THREAD as _,
++}
++
++/// Callbacks for a threaded IRQ handler.
++pub trait ThreadedHandler: Sync {
++    /// The actual handler function. As usual, sleeps are not allowed in IRQ
++    /// context.
++    fn handle_irq(&self) -> ThreadedIrqReturn;
++
++    /// The threaded handler function. This function is called from the irq
++    /// handler thread, which is automatically created by the system.
++    fn thread_fn(&self) -> IrqReturn;
++}
++
++/// A registration of a threaded IRQ handler for a given IRQ line.
++///
++/// Two callbacks are required: one to handle the IRQ, and one to handle any
++/// other work in a separate thread.
++///
++/// The thread handler is only called if the IRQ handler returns `WakeThread`.
++///
++/// # Examples
++///
++/// The following is an example of using `ThreadedRegistration`:
++///
++/// ```
++/// use kernel::prelude::*;
++/// use kernel::irq::request::flags;
++/// use kernel::irq::request::ThreadedIrqReturn;
++/// use kernel::irq::request::ThreadedRegistration;
++/// use kernel::irq::request::IrqReturn;
++/// use kernel::sync::Arc;
++/// use kernel::sync::SpinLock;
++/// use kernel::alloc::flags::GFP_KERNEL;
++/// use kernel::c_str;
++///
++/// // Declare a struct that will be passed in when the interrupt fires. The u32
++/// // merely serves as an example of some internal data.
++/// struct Data(SpinLock<u32>);
++///
++/// // [`handle_irq`] takes &self. This example illustrates interior
++/// // mutability can be used when share the data between process context and IRQ
++/// // context.
++/// //
++/// // Ideally, this example would be using a version of SpinLock that is aware
++/// // of `spin_lock_irqsave` and `spin_lock_irqrestore`, but that is not yet
++/// // implemented.
++///
++/// type Handler = Data;
++///
++/// impl kernel::irq::request::ThreadedHandler for Handler {
++///     // This is executing in IRQ context in some CPU. Other CPUs can still
++///     // try to access to data.
++///     fn handle_irq(&self) -> ThreadedIrqReturn {
++///         // We now have exclusive access to the data by locking the SpinLock.
++///         let mut data = self.0.lock();
++///         *data += 1;
++///
++///         // By returning `WakeThread`, we indicate to the system that the
++///         // thread function should be called. Otherwise, return
++///         // ThreadedIrqReturn::Handled.
++///         ThreadedIrqReturn::WakeThread
++///     }
++///
++///     // This will run (in a separate kthread) iff `handle_irq` returns
++///     // `WakeThread`.
++///     fn thread_fn(&self) -> IrqReturn {
++///         // We now have exclusive access to the data by locking the SpinLock.
++///         let mut data = self.0.lock();
++///         *data += 1;
++///
++///         IrqReturn::Handled
++///     }
++/// }
++///
++/// // This is running in process context.
++/// fn register_threaded_irq(irq: u32, handler: Handler) -> Result<Arc<ThreadedRegistration<Handler>>> {
++///     let registration = ThreadedRegistration::register(irq, flags::SHARED, c_str!("my-device"), handler);
++///
++///     // You can have as many references to the registration as you want, so
++///     // multiple parts of the driver can access it.
++///     let registration = Arc::pin_init(registration, GFP_KERNEL)?;
++///
++///     // The handler may be called immediately after the function above
++///     // returns, possibly in a different CPU.
++///
++///     {
++///         // The data can be accessed from the process context too.
++///         let mut data = registration.handler().0.lock();
++///         *data = 42;
++///     }
++///
++///     Ok(registration)
++/// }
++///
++///
++/// # Ok::<(), Error>(())
++///```
++///
++/// # Invariants
++///
++/// * We own an irq handler using `&self` as its private data.
++///
++#[pin_data(PinnedDrop)]
++pub struct ThreadedRegistration<T: ThreadedHandler> {
++    irq: u32,
++    #[pin]
++    handler: T,
++    #[pin]
++    /// Pinned because we need address stability so that we can pass a pointer
++    /// to the callback.
++    _pin: PhantomPinned,
++}
++
++impl<T: ThreadedHandler> ThreadedRegistration<T> {
++    /// Registers the IRQ handler with the system for the given IRQ number. The
++    /// handler must be able to be called as soon as this function returns.
++    pub fn register(
++        irq: u32,
++        flags: Flags,
++        name: &'static CStr,
++        handler: T,
++    ) -> impl PinInit<Self, Error> {
++        let closure = move |slot: *mut Self| {
++            // SAFETY: The slot passed to pin initializer is valid for writing.
++            unsafe {
++                slot.write(Self {
++                    irq,
++                    handler,
++                    _pin: PhantomPinned,
++                })
++            };
++
++            // SAFETY:
++            // - The callbacks are valid for use with request_threaded_irq.
++            // - If this succeeds, the slot is guaranteed to be valid until the
++            // destructor of Self runs, which will deregister the callbacks
++            // before the memory location becomes invalid.
++            let res = to_result(unsafe {
++                bindings::request_threaded_irq(
++                    irq,
++                    Some(handle_threaded_irq_callback::<T>),
++                    Some(thread_fn_callback::<T>),
++                    flags.0,
++                    name.as_char_ptr(),
++                    slot.cast(),
++                )
++            });
++
++            if res.is_err() {
++                // SAFETY: We are returning an error, so we can destroy the slot.
++                unsafe { core::ptr::drop_in_place(addr_of_mut!((*slot).handler)) };
++            }
++
++            res
++        };
++
++        // SAFETY:
++        // - if this returns Ok(()), then every field of `slot` is fully
++        // initialized.
++        // - if this returns an error, then the slot does not need to remain
++        // valid.
++        unsafe { pin_init_from_closure(closure) }
++    }
++
++    /// Returns a reference to the handler that was registered with the system.
++    pub fn handler(&self) -> &T {
++        // SAFETY: `handler` is initialized in `register`, and we require that
++        // T: Sync.
++        &self.handler
++    }
++}
++
++#[pinned_drop]
++impl<T: ThreadedHandler> PinnedDrop for ThreadedRegistration<T> {
++    fn drop(self: Pin<&mut Self>) {
++        // SAFETY:
++        // - `self.irq` is the same as the one passed to `request_threaded_irq`.
++        // -  `&self` was passed to `request_threaded_irq` as the cookie. It is
++        // guaranteed to be unique by the type system, since each call to
++        // `register` will return a different instance of
++        // `ThreadedRegistration`.
++        //
++        // Notice that this will block until all handlers finish executing, so,
++        // at no point will &self be invalid while the handler is running.
++        unsafe { bindings::free_irq(self.irq, &*self as *const Self as *mut core::ffi::c_void) };
++    }
++}
++
++/// # Safety
++///
++/// This function should be only used as the callback in `request_irq`.
++unsafe extern "C" fn handle_irq_callback<T: Handler>(
++    _irq: i32,
++    ptr: *mut core::ffi::c_void,
++) -> core::ffi::c_uint {
++    // SAFETY: `ptr` is a pointer to T set in `Registration::new`
++    let data = unsafe { &*(ptr as *const T) };
++    T::handle_irq(data) as _
++}
++
++/// # Safety
++///
++/// This function should be only used as the callback in `request_threaded_irq`.
++unsafe extern "C" fn handle_threaded_irq_callback<T: ThreadedHandler>(
++    _irq: i32,
++    ptr: *mut core::ffi::c_void,
++) -> core::ffi::c_uint {
++    // SAFETY: `ptr` is a pointer to T set in `ThreadedRegistration::new`
++    let data = unsafe { &*(ptr as *const T) };
++    T::handle_irq(data) as _
++}
++
++/// # Safety
++///
++/// This function should be only used as the callback in `request_threaded_irq`.
++unsafe extern "C" fn thread_fn_callback<T: ThreadedHandler>(
++    _irq: i32,
++    ptr: *mut core::ffi::c_void,
++) -> core::ffi::c_uint {
++    // SAFETY: `ptr` is a pointer to T set in `ThreadedRegistration::new`
++    let data = unsafe { &*(ptr as *const T) };
++    T::thread_fn(data) as _
++}
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index e1065a7551a3..bba782e138c5 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -41,6 +41,7 @@
+ pub mod fs;
+ pub mod init;
+ pub mod ioctl;
++pub mod irq;
+ pub mod jump_label;
+ #[cfg(CONFIG_KUNIT)]
+ pub mod kunit;
+-- 
+2.48.0
 
