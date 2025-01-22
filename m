@@ -1,106 +1,105 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FF5188CAE;
-	Tue, 21 Jan 2025 21:47:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DA1182
+	for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 00:14:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737496057; cv=none; b=oOh/5+RMKJJq1esMngOxfTSJgBCqnYJ6Bwqlt5Az9uOvFcBxFA0iGzp08v7liw5eae/lnlEvi+9dQW+7VJ0J9UA2Ii0wIFVCQRXG/dd+nllow871Rq8zr/K2+II3qAXe7fUtzxdS9dvaLRZRvPTqCQP32zTxef341LgeO5v1fZo=
+	t=1737504887; cv=none; b=uj3N88eZOrM2QTffW3LGwhntRT/OZ1ewPopCY4npJzwj1zTZbGXvy7M+xZ/gqpcCLMHCR2ZV918KT3qfhGXHiM3u/1E4LXETwJB3G+jmUUWD1j5mYFMwWUm/IwdxCYrD2mMQIEWL37J50dJ1xZ9l3jzKxWM6zeaRICDHdff9olg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737496057; c=relaxed/simple;
-	bh=SFQdO87KU6rMmmKG466+pHg05L5s4MNtWbHODZ2EOyI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FVmv31g5iwcD4vuIASvMuOsg4NDiUPsJVqkHmGPf113pCvxm5L+0kR9BFwF0oCyr4SSXYC3IBvhQXaUlEzjaBlpiRRrsK1VuD43bzy5VdBmNXSh+ElPgEUa9p9eZgBA55UNnP9p5V/Fwb4SMuTvzD3eV2P5V22wcD9hC3TaTh9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QhvlPJEN; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1737504887; c=relaxed/simple;
+	bh=FwYJaStDXdGMdB0qjyLfGzemUoqUNCxgZQGdmS2F2P4=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=gT3Xqo4ZgUOkZp1fSiaQbaVGoyVCFfNt//SWOHeS3Xy8HbfNQY8ZIHBG0PwaLrYobQttzDqxt432xC5kp1ADIWuWe2cDGRp6+ZQ1FpxxUVU5AHVjVs6CVchamiozdAjhwJ4fFf9N12lzWvLDfLWQWLPvcOfcNba2ei5bHRMHVlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NLsbktni; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QhvlPJEN"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-216513f8104so9864245ad.2;
-        Tue, 21 Jan 2025 13:47:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NLsbktni"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2f5538a2356so11460155a91.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 21 Jan 2025 16:14:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737496055; x=1738100855; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l7o+9JshcrBofeKTB9tW09tsPDVhMqj/3ufOD6DtXHI=;
-        b=QhvlPJENJn1+l6mhxDrp1PG4BQ1qeFApV+3XOx14lprQlJRNBpyPGzhtjy+OaAj+RC
-         W1jpXUMRaVsje2JldXkUXDv8TcHS541CbL6qmoiphwBFaEGzcFt43S9/KQ+56r6sTsEc
-         9dNqNPkZq46DCysmezNeOVSzw0N2BixRzHioLMfyROlHDw1BPJEExcdhEM+yVywAzcHE
-         Z3aqWQlDosD07SFaTt95miEfmdLfOWvjA8TPw5fgH5oKnTWX71sCpooCmVoGgs0c9xgM
-         4zBPyHcJgrt2+iI1tZGN3hKMbQEA4WZhOUnIBUnfdWiAtDzrDMATUFBs0LqvbALU7q9e
-         ULGg==
+        d=google.com; s=20230601; t=1737504886; x=1738109686; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=pYaho9hyTknTGpu45IGAstiusf8bXdQAQ8h+cpS7izU=;
+        b=NLsbktni8x9mcg7HDYF3pOWi20awZqkVSSFdHlbZs+3uXW5+MxFjhbSgURI9C/V/NC
+         OCdMj1ZjycqKUSKgvuFeN3rYJ/VMb1c7xpmhvNJLmXtvDXLljQ2iF5rGvMG6CJz9aJOK
+         pXZYhMOYw60Ni1jyE5XFAP6hnVbV08ViFQkUtON3yEYwZ66I4gS7Can/dCAZKV71sxj5
+         Q4LOZm2RSr2oRDeRRecFjY5NvMU0fuFOTaHT6NfYOQySwpEDwm5DFNqdSrS6dx4DEfmR
+         Ao3lc1XnTrzMZe/0rbJKYdxpa15AwoSwA0L4ufJ5ElhzvCDqKFS9iBZlph9PvRH1wZSM
+         xdKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737496055; x=1738100855;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=l7o+9JshcrBofeKTB9tW09tsPDVhMqj/3ufOD6DtXHI=;
-        b=K1556w1AE3kLir4Z8eAE+FQcQFBEvdd+AlKEFQzY759F9GEXBHJGXRm/Ip2oN9QK/9
-         oncWAUCIrHn1jA+TW+u8PxnaA0/WTBePrb1BGEY03NluG667sA7pM5M1fz4dwpm2U2yk
-         EBL5jW2m1yL6XFJg2TEx/S/57ByJDTSFzA6hpc+FGG2KBpHRzH4Ho4Ut7zkJOOBfPDHs
-         7jt5sX6HaN+mHxQmkl/PhHp3kF/vfqtC2cIhEEiABvtFfWkaF/swRgfWl/jPLgDNU4f6
-         aRkxA7IW0WIJlMYtXCoyPz2Xe7IgKsoK5Ija5et1RKyTJubT3jEN9Y7m7WCsHvdEH9b8
-         7ILA==
-X-Forwarded-Encrypted: i=1; AJvYcCWZb3Zr6Zc+IR7EDCoDWwM228VDSmKUj2nQxzU22xB4LVFxqojRK5n6RB5natiaeORKXthgpF1hfD3RPYQ=@vger.kernel.org, AJvYcCXpoHhK2JhVOy32FCoBR2dn794RxECzdyIlaEI1B1Jl/cAVBrpA14OAtF5cxSWVwhlFGkJZ++ZVTUa6Euffyqo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgGqdd9Nh/XaPdabFZQH4xSMieGPFE10cvKY4xSogcaJRO3F6O
-	S2z35j3YLVzC6w4zVP8H+KNyMFbLeZ/XCmTPbzWWQqSwU47/E4P1WrztrS4vUZ71o/BMfpEKQvk
-	mBwz738hD2qcKKE2FXLnSiwWF7YA=
-X-Gm-Gg: ASbGnctgb0tCFetpSUVViUZzbvnZYq/fmjm2GRRu+jr0DLMbaM4Ryj4Ey6Z62WZg6hu
-	bjd8o1jDr4OWonuqGEuAnqSVU3NafQA/hJuFSQmA/mlNfN7EscAM=
-X-Google-Smtp-Source: AGHT+IHRk2ZLyf0ysaNReOYuyZFvxKpMP3e7AM7p3wxJojsGYuVF9Jzwo3/st9jP2UCgo7y6AAVXBGJVBhXdH7oeheE=
-X-Received: by 2002:a17:902:d2c2:b0:21a:8ce5:10f0 with SMTP id
- d9443c01a7336-21c355869a8mr97456405ad.9.1737496055410; Tue, 21 Jan 2025
- 13:47:35 -0800 (PST)
+        d=1e100.net; s=20230601; t=1737504886; x=1738109686;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pYaho9hyTknTGpu45IGAstiusf8bXdQAQ8h+cpS7izU=;
+        b=N6kOtydhzqJYFoA0hZ3qvo1GbnE4zgC5GP9faulop6sVnWRMjkZvP8X2UKtiaZ4wdh
+         FkCakjgt5SA1v9PAUV7V33LVLbNZhQ2RRttBNYKSO990/wcqDiWTW8VwadjRTXCr0EWi
+         DKvMwirxm8RYxu4YpwbaDiGjvUAFU8e9x3giF+MaBpd8B8TBna/iyJSzxhk1a+wW1c8a
+         iu4CVlNTMhsjOysQ9kzUCl4Z2V/ts7hTQkghravqt4Wuk0ShYRwXKog8rbXaQHFxwU9a
+         6ZvyqGH1B8Fv+Rzx2ymyCPI/mLsFH+ihr4QAK/MDCwH0D9BDRhc0xkZZ9++u6qMCtU9Z
+         tutQ==
+X-Gm-Message-State: AOJu0YxZv0LD5TwiD3V24A8DaOclTYkOQeRovDK7Lzay+hIoLN0Ksw7Q
+	d0gxB9UbY6BHxtymEkH46Dcs5+NRBzMzvKULvFlHaVxgGsgSNjW9hKd0th3K409qZ8SLfYwuqgs
+	MRFtAXg==
+X-Google-Smtp-Source: AGHT+IETq99d638srfDvUmEZerQh8rahFiGVspnc2A9FdV/8o4aliKIB++mQUz3umfayyWSxK4GsSygnKQ4G
+X-Received: from pjty12.prod.google.com ([2002:a17:90a:ca8c:b0:2ef:95f4:4619])
+ (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d444:b0:2f1:2fa5:1924
+ with SMTP id 98e67ed59e1d1-2f782d38336mr24033784a91.26.1737504885662; Tue, 21
+ Jan 2025 16:14:45 -0800 (PST)
+Date: Wed, 22 Jan 2025 00:14:43 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250121200934.222075-1-ojeda@kernel.org>
-In-Reply-To: <20250121200934.222075-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 21 Jan 2025 22:47:23 +0100
-X-Gm-Features: AbW1kva6Rn2sOfmf9JeN8H86I4Id2gUtstZTDCg6KdGBDAiqPupe7dqT1tfE2rE
-Message-ID: <CANiq72=mL45_xJBmQNzaXtP3v317ZbQthH2g5rAH3tw3U6uovg@mail.gmail.com>
-Subject: Re: [PATCH] rust: init: use explicit ABI to clean warning in future compilers
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAHI4kGcC/x3MwQrCMAyA4VcZORtoC3PFVxEP2Zp2YVglcToZe
+ 3eLx+/w/zsYq7DBpdtB+S0mj9rgTx1MM9XCKKkZggu98/6MhWv6kObFvnfDhYwq6movDGMaaXJ hyDFCy5/KWbb/+no7jh/MAxueagAAAA==
+X-Change-Id: 20250116-gendwarfksyms-kasan-rust-2bdbac027f88
+X-Mailer: b4 0.15-dev
+Message-ID: <20250122-gendwarfksyms-kasan-rust-v1-1-5ee5658f4fb6@google.com>
+Subject: [PATCH] rust: Do not export generated KASAN ODR symbols
+From: Matthew Maurer <mmaurer@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Matthew Maurer <mmaurer@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Jan 21, 2025 at 9:10=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> Starting with Rust 1.86.0 (currently in nightly, to be released on
-> 2025-04-03), the `missing_abi` lint is warn-by-default [1]:
->
->     error: extern declarations without an explicit ABI are deprecated
->         --> rust/doctests_kernel_generated.rs:3158:1
->          |
->     3158 | extern {
->          | ^^^^^^ help: explicitly specify the C ABI: `extern "C"`
->          |
->          =3D note: `-D missing-abi` implied by `-D warnings`
->          =3D help: to override `-D warnings` add `#[allow(missing_abi)]`
->
-> Thus clean it up.
->
-> Link: https://github.com/rust-lang/rust/pull/132397 [1]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+ASAN generates sppecial synthetic symbols to help check for ODR
+violations. These synthetic symbols lack debug information, so
+gendwarfksyms emits warnings when processing them. No code should ever
+have a dependency on these symbols, so we should not be exporting them,
+just like the __cfi symbols.
 
-Cc: <stable@vger.kernel.org> # Needed in 6.12.y only (Rust is pinned
-in older LTSs).
+Signed-off-by: Matthew Maurer <mmaurer@google.com>
+---
+ rust/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-And while there was nothing wrong back then with the commit, as usual:
+diff --git a/rust/Makefile b/rust/Makefile
+index ab300bfb46f6a3e386b86d58120d7aeddc57da37..4f212bd41e74ec9f25445d3af76818332f288e15 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -329,7 +329,7 @@ $(obj)/bindings/bindings_helpers_generated.rs: private bindgen_target_extra = ;
+ $(obj)/bindings/bindings_helpers_generated.rs: $(src)/helpers/helpers.c FORCE
+ 	$(call if_changed_dep,bindgen)
+ 
+-rust_exports = $(NM) -p --defined-only $(1) | awk '$$2~/(T|R|D|B)/ && $$3!~/__cfi/ { printf $(2),$$3 }'
++rust_exports = $(NM) -p --defined-only $(1) | awk '$$2~/(T|R|D|B)/ && $$3!~/__cfi/ && $$3!~/__odr_asan/ { printf $(2),$$3 }'
+ 
+ quiet_cmd_exports = EXPORTS $@
+       cmd_exports = \
 
-    Fixes: 7f8977a7fe6d ("rust: init: add `{pin_}chain` functions to
-`{Pin}Init<T, E>`")
+---
+base-commit: 0939156bc07c9fd2b554d9813352c386dacfc3d9
+change-id: 20250116-gendwarfksyms-kasan-rust-2bdbac027f88
 
-Cheers,
-Miguel
+Best regards,
+-- 
+Matthew Maurer <mmaurer@google.com>
+
