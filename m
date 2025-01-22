@@ -1,143 +1,333 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B56210F5B
-	for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 10:11:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EAC1F7914;
+	Wed, 22 Jan 2025 10:14:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737540683; cv=none; b=UZrlBZlJpaXCdZmyDd5d6IITgjxHijQ8o+ai9artiYJA6Q8LVHBQgwh62EhO0i/oO6vrIu1zBYs1u6zhGpeXtB9L5riLw7jQ3ZGbGluNK1JEN9L4ek21Kua8TLZNYVwz3iZBmbmwr8YK5kLX96gEQkEcIcr69GtHd8LNw9R2leo=
+	t=1737540851; cv=none; b=hcqyPIFY2SKD3KqvZg6JmWyi5Dj7Od7K1bvYK7axDyz9/gBxI9wOSux6s9bF11jYXbngTF2Y/YKVp1xVZ5kxKq3Sqj979d0ZIf0JVGvdWAOQkTpit/wdZockptUCuJCaKliFFCVclgzoh9F3NVSEIuwoco0neGvnhOuFfrVU174=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737540683; c=relaxed/simple;
-	bh=IMZQuv3IZBSNK/FSqjM7tla45OLXz5dphLZB4d+oRg0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kFmnH8dlByS3kYaPhMj4VHBm0/YohTXrSOgGHLuLO8eDii0qodDNzYpSoDuN1u0JpZhwIL2jDNBPQpJuoHMb97DrNEdvDuO/VPXte07Q3SZ5066O4EWQL5pkzZ9VJt9Qhvg9BfRf8J1jJUqC+jG9wWo7d7jeasuiC1zdqJiO2HA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=b/VpSssF; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1737540851; c=relaxed/simple;
+	bh=Hg+YhmRs1maSVmNSvczvl0dufRpcjqvvqj9c8nDtU3s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=smYN0DkmEAs29lk1FUKs5FuKkMy5HdFNhto53pYyNc/BK/dZMcxH1fVVdaM03n/IEl9FKbvUe2LHehN3SQlU/4nVSbXBm7DchXBMmhkYtR1LOW1B3LouDHS6RLeSPJOydvNEYOFFQ6Rv4zQd8pIG3pCIcYp6HMbpYGQD3+LqR4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jNDXMMDk; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="b/VpSssF"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-386329da1d9so3691688f8f.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 02:11:20 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jNDXMMDk"
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-53f22fd6887so6672314e87.2;
+        Wed, 22 Jan 2025 02:14:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737540679; x=1738145479; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XBqx9JEcRmW2rWqsjHQwofa4RNCobGVG6rE/MKtUTxE=;
-        b=b/VpSssFYk9FWsAwSNEiiHBG0egN2xIPv+TbSohretP+kOjwN0/xs5r8HQvU1JmiVs
-         ctErTU3KNWmGt843+Vo0N3uu7wfiRqgcdjQQYhPKQIhqfKpmwBB+X+s2KNi1LSvFDDNg
-         4m01KG8RtRQtEP1SQ5xdfK1DvkLK5/98iyxDScQuiaBehk19FFYuwMBEfxCLmFlpxzev
-         OV6Q5NTJhm1QowUft80JPUkUDGZgH6GizwYcsn9wBIOkHX6O/UL6gWpJJC18uG3a6xgG
-         pF/c7T9opOCbghLAKS5NH9mh0tnp4TCffXRwALJCJ4y4AAHGKEOaQtCdQz/CD1s2PT52
-         iR8Q==
+        d=gmail.com; s=20230601; t=1737540847; x=1738145647; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SSyxU0Ox9hnNgLjin1l5eGRDHXbLU274FDlPyNJKLZQ=;
+        b=jNDXMMDkigr6aif6NlzSQqXAvkakAN5kTeIrA2e48VqQaPASLXfy1Mr60TWxH2Wk8R
+         APcPzJKQSCG9Ig6kDrxitGIz0IdFoWcXfCxlOVsyzZ2rQWozC1F2xsXa1xIMU1i8+qel
+         UM6x51ZD57dGQ2qL3411YJgfKP/PIb4aLlreljFGqplINVw51LYehobxpRegqCFAV9e8
+         0R+C7daiq7LKhDYF/q0DwY++k1O9Q9CO+/8VNNaJh2Og0ko0ZS6xCsMnjVj6fBu3wkeU
+         sMFHKczM/RHtBickOPMFu3uG/ZJ3h/wWRThto/zsL3EapCVcniq+h/KwLjzBNv8JIcLM
+         2T4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737540679; x=1738145479;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XBqx9JEcRmW2rWqsjHQwofa4RNCobGVG6rE/MKtUTxE=;
-        b=cVK7bXZoUsGvxNPcAlK2YtpcZV7dJLvyYrJ/RMiHrbREFJm5KqqHPKDQiKRscLMGXs
-         ftpDjWkrEu9uXRr7uQuoggSDI1Vq4AAf2qi2JOPGyUJuuXgRKaBQIebP65f04CG5E/5p
-         RyGrkOW5dApWTcCPk48RI69AWWkouEF2BGzBWhbrffKzuBw49HW8CTdLkPX/Ml20DIjN
-         orLdfcYo8fId8MDOdlGxcIspSmJaYAy5hbDBAoEjCJWr5z8IMweDbT1P7UCTHQzI/SJG
-         1Ay2c2QgNpB5sZlSNSSKid0KiB4lKhpOwaIZCBTYPR4CuCTwfTPLwl+dFyeIvpceO9/a
-         cc3g==
-X-Forwarded-Encrypted: i=1; AJvYcCVuXzrW5CWgji/T16FAwCc5ItveS17v4u6w+xnHc5hKd2UmrzyaPEuMuYorVMjUxgrK+v6iqvmEBlXSwqJe2g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBgpVeyGb56z6tfS/BU4WyhbjwweHZCe4GLOFBKlfcNqUlDMDN
-	gb65OfHNccX2JLTIJlAYdRdnXA2GDZHwzmWv0CyEcirQnwxTBzZXFhxcp8Gva/WK4bZH2/NViFQ
-	EheK3K2gyQ8CPIPFXBsjdek+fKUZ/z11gLY/r
-X-Gm-Gg: ASbGncuQIQLrtSap7rD4NJhiRQZvIFkjIoPcymzTI9yiCNJI4b5Zp0rf+uitulMsgMf
-	4b5g1WFlFWgD+V84h62r3ybwh+C2rwiBwt3tDONEw0QRU89cKq5xPmtkpTbgmGTWWGH4rxUr0fO
-	QQCOqS
-X-Google-Smtp-Source: AGHT+IGjOWC3PbTkuww656m2RVk9JPAhm+2ANu17OZoz/Yt7HyT7RSMMh+WTVtBcN1izRVOO+SYCDvfL9m9Hmjt0jJo=
-X-Received: by 2002:a5d:5f50:0:b0:382:49f9:74bb with SMTP id
- ffacd0b85a97d-38bf57a9a6bmr20719894f8f.35.1737540679367; Wed, 22 Jan 2025
- 02:11:19 -0800 (PST)
+        d=1e100.net; s=20230601; t=1737540847; x=1738145647;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SSyxU0Ox9hnNgLjin1l5eGRDHXbLU274FDlPyNJKLZQ=;
+        b=Gr8r4fhSvWRQKEO6XGCCJMrm0zN49ZgH50NxeTSr2FbvgE3fOHrCGw0dqcgqA3DgrY
+         FvznPkdJ9ISBsBL2yrZwjbSUm4+uyD+XYaxlDRyv/SMsZethzmsnFEA2CtGBbAcJ4WXH
+         NXUwgrZzGz321yVlj2cWqDVj0kdv8mpbpBRq1t6WehtKJyopuP/lq2poizNEQZ74Ipil
+         GWmTdGJ2prBNeAd/zKSNef9oMEnYGwfWz7+V+qi2TgCRPA5/xpAE35ECyQy+NGZpeOqN
+         HSe0oY+T/oDlyQOH7L9Qi+Qypg875bfZYbXZXvuqtVChC5wwrV31L55LQQWbo3+7HjNV
+         XD9g==
+X-Forwarded-Encrypted: i=1; AJvYcCWreDLskrio/YqxiHTAQXIgZB5RLBnJB4BTIilwHAj8laAuCc74IpHUGTfprvmVZwXK99+MCXWkHEl8jp8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZgkMjlNO067wegSdkwFDzMsREscPT06VBaCwzjwUhBIY+CyxW
+	gvNgQWd33w+aXpJGA9d9x0cEqLs9E5TfLkr4l5jKL5Z+Qq1keH/p
+X-Gm-Gg: ASbGnctlDyIJwN/VRb6hrYGSA+0BzwD8DCgFEGi74uhSUbFE/RI+wSkCUGv1T5vHc2q
+	EnqbMJTAphgfgObtz2S0XxjDnlNSnrr4wjInENlU3s9yQY6TJjn8wiyOToscbvzoIg+1Sh/5Gk0
+	fcYxuTJI7VpZ0EQUgdolnDFb47SuUpGZij2ZJGvce0WHdpDsShiYLu8dnc9lQrElfQ4l+FxCZjB
+	Nl0qpV4rBOugJeQdkx+meTKMVbHs2F9xz56Q92SjCnGHSEO7mJMylIbzuPNZFONPSyPmDrg5oZ0
+	7qatHBgsrfF5v8goDXpAuuVzihQK9NrIiQjYeH3C
+X-Google-Smtp-Source: AGHT+IEE5ZJsoglNcCgqLVCj00aN8fxV/PCAVYwQejoowiKy+k6ns3brqVBN1nZVtxJXYCp3Rorfhg==
+X-Received: by 2002:ac2:5187:0:b0:540:263a:131f with SMTP id 2adb3069b0e04-5439c287dd1mr5898106e87.50.1737540846692;
+        Wed, 22 Jan 2025 02:14:06 -0800 (PST)
+Received: from [192.168.1.146] (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5439af78d62sm2150860e87.241.2025.01.22.02.14.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Jan 2025 02:14:06 -0800 (PST)
+Message-ID: <fb2216a4-306b-4635-bc13-10647e7cdb93@gmail.com>
+Date: Wed, 22 Jan 2025 12:14:04 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250119-b4-rust_miscdevice_registrationdata-v1-0-edbf18dde5fc@gmail.com>
- <20250119-b4-rust_miscdevice_registrationdata-v1-2-edbf18dde5fc@gmail.com> <2025012243-myspace-woof-1d1e@gregkh>
-In-Reply-To: <2025012243-myspace-woof-1d1e@gregkh>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 22 Jan 2025 11:11:07 +0100
-X-Gm-Features: AbW1kvba19lfZ_zJbFc3-O57-O-V34AXaA4ALWsp_9GUCp_0EH-MCLgwd5QkeTQ
-Message-ID: <CAH5fLgh7QyVSgqJZM-krHmF87c76a84Cg6PyT47TYjMsN9iwZg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] rust: miscdevice: Add additional data to MiscDeviceRegistration
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Christian Schrefl <chrisi.schrefl@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Arnd Bergmann <arnd@arndb.de>, Lee Jones <lee@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 2/3] rust: add dma coherent allocator abstraction.
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: rust-for-linux@vger.kernel.org, daniel.almeida@collabora.com,
+ dakr@kernel.org, robin.murphy@arm.com, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Valentin Obst <kernel@valentinobst.de>,
+ open list <linux-kernel@vger.kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+ "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+References: <20250121191432.1178734-1-abdiel.janulgue@gmail.com>
+ <20250121191432.1178734-3-abdiel.janulgue@gmail.com>
+ <CAH5fLgjVjAVwR+osD4ajKfyewdWPpkSyV+oy=ppaCULUdPqB7w@mail.gmail.com>
+Content-Language: en-US
+From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+In-Reply-To: <CAH5fLgjVjAVwR+osD4ajKfyewdWPpkSyV+oy=ppaCULUdPqB7w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jan 22, 2025 at 10:28=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Sun, Jan 19, 2025 at 11:11:14PM +0100, Christian Schrefl wrote:
-> > When using the Rust miscdevice bindings, you generally embed the
-> > MiscDeviceRegistration within another struct:
-> >
-> > struct MyDriverData {
-> >     data: SomeOtherData,
-> >     misc: MiscDeviceRegistration<MyMiscFile>
-> > }
-> >
-> > In the `fops->open` callback of the miscdevice, you are given a
-> > reference to the registration, which allows you to access its fields.
-> > For example, as of commit 284ae0be4dca ("rust: miscdevice: Provide
-> > accessor to pull out miscdevice::this_device") you can access the
-> > internal `struct device`. However, there is still no way to access the
-> > `data` field in the above example, because you only have a reference to
-> > the registration.
->
-> What's wrong with the driver_data pointer in the misc device structure?
-> Shouldn't you be in control of that as you are a misc driver owner?  Or
-> does the misc core handle this I can't recall at the moment, sorry.
 
-There's no such pointer in struct miscdevice?
 
-> > Using container_of is also not possible to do safely. For example, if
-> > the destructor of `MyDriverData` runs, then the destructor of `data`
-> > would run before the miscdevice is deregistered, so using container_of
-> > to access `data` from `fops->open` could result in a UAF. A similar
-> > problem can happen on initialization if `misc` is not the last field to
-> > be initialized.
-> >
-> > To provide a safe way to access user-defined data stored next to the
-> > `struct miscdevice`, make `MiscDeviceRegistration` into a container tha=
-t
-> > can store a user-provided piece of data. This way, `fops->open` can
-> > access that data via the registration, since the data is stored inside
-> > the registration.
->
-> "next to" feels odd, that's what a container_of is for, but be careful
-> as to who owns the lifecycle of the object you are trying to get to.
-> You can't have multiple objects with different lifecycles in the same
-> structure (i.e. don't mix a misc device and a platform device together).
+On 22/01/2025 11:13, Alice Ryhl wrote:
+> On Tue, Jan 21, 2025 at 8:14 PM Abdiel Janulgue
+> <abdiel.janulgue@gmail.com> wrote:
+>>
+>> Add a simple dma coherent allocator rust abstraction. Based on
+>> Andreas Hindborg's dma abstractions from the rnvme driver, which
+>> was also based on earlier work by Wedson Almeida Filho.
+>>
+>> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+>> ---
+>>   rust/bindings/bindings_helper.h |   1 +
+>>   rust/kernel/dma.rs              | 281 ++++++++++++++++++++++++++++++++
+>>   rust/kernel/lib.rs              |   1 +
+>>   3 files changed, 283 insertions(+)
+>>   create mode 100644 rust/kernel/dma.rs
+>>
+>> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+>> index 5c4dfe22f41a..49bf713b9bb6 100644
+>> --- a/rust/bindings/bindings_helper.h
+>> +++ b/rust/bindings/bindings_helper.h
+>> @@ -11,6 +11,7 @@
+>>   #include <linux/blk_types.h>
+>>   #include <linux/blkdev.h>
+>>   #include <linux/cred.h>
+>> +#include <linux/dma-mapping.h>
+>>   #include <linux/errname.h>
+>>   #include <linux/ethtool.h>
+>>   #include <linux/file.h>
+>> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
+>> new file mode 100644
+>> index 000000000000..ebae7270190e
+>> --- /dev/null
+>> +++ b/rust/kernel/dma.rs
+>> @@ -0,0 +1,281 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +
+>> +//! Direct memory access (DMA).
+>> +//!
+>> +//! C header: [`include/linux/dma-mapping.h`](srctree/include/linux/dma-mapping.h)
+>> +
+>> +use crate::{
+>> +    bindings, build_assert,
+>> +    device::Device,
+>> +    error::code::*,
+>> +    error::Result,
+>> +    transmute::{AsBytes, FromBytes},
+>> +    types::ARef,
+>> +};
+>> +
+>> +/// Possible attributes associated with a DMA mapping.
+>> +///
+>> +/// They can be combined with the operators `|`, `&`, and `!`.
+>> +///
+>> +/// Values can be used from the [`attrs`] module.
+>> +#[derive(Clone, Copy, PartialEq)]
+>> +#[repr(transparent)]
+>> +pub struct Attrs(u32);
+>> +
+>> +impl Attrs {
+>> +    /// Get the raw representation of this attribute.
+>> +    pub(crate) fn as_raw(self) -> crate::ffi::c_ulong {
+>> +        self.0 as _
+>> +    }
+>> +
+>> +    /// Check whether `flags` is contained in `self`.
+>> +    pub fn contains(self, flags: Attrs) -> bool {
+>> +        (self & flags) == flags
+>> +    }
+>> +}
+>> +
+>> +impl core::ops::BitOr for Attrs {
+>> +    type Output = Self;
+>> +    fn bitor(self, rhs: Self) -> Self::Output {
+>> +        Self(self.0 | rhs.0)
+>> +    }
+>> +}
+>> +
+>> +impl core::ops::BitAnd for Attrs {
+>> +    type Output = Self;
+>> +    fn bitand(self, rhs: Self) -> Self::Output {
+>> +        Self(self.0 & rhs.0)
+>> +    }
+>> +}
+>> +
+>> +impl core::ops::Not for Attrs {
+>> +    type Output = Self;
+>> +    fn not(self) -> Self::Output {
+>> +        Self(!self.0)
+>> +    }
+>> +}
+>> +
+>> +/// DMA mapping attrributes.
+>> +pub mod attrs {
+>> +    use super::Attrs;
+>> +
+>> +    /// Specifies that reads and writes to the mapping may be weakly ordered, that is that reads
+>> +    /// and writes may pass each other.
+>> +    pub const DMA_ATTR_WEAK_ORDERING: Attrs = Attrs(bindings::DMA_ATTR_WEAK_ORDERING);
+>> +
+>> +    /// Specifies that writes to the mapping may be buffered to improve performance.
+>> +    pub const DMA_ATTR_WRITE_COMBINE: Attrs = Attrs(bindings::DMA_ATTR_WRITE_COMBINE);
+>> +
+>> +    /// Lets the platform to avoid creating a kernel virtual mapping for the allocated buffer.
+>> +    pub const DMA_ATTR_NO_KERNEL_MAPPING: Attrs = Attrs(bindings::DMA_ATTR_NO_KERNEL_MAPPING);
+>> +
+>> +    /// Allows platform code to skip synchronization of the CPU cache for the given buffer assuming
+>> +    /// that it has been already transferred to 'device' domain.
+>> +    pub const DMA_ATTR_SKIP_CPU_SYNC: Attrs = Attrs(bindings::DMA_ATTR_SKIP_CPU_SYNC);
+>> +
+>> +    /// Forces contiguous allocation of the buffer in physical memory.
+>> +    pub const DMA_ATTR_FORCE_CONTIGUOUS: Attrs = Attrs(bindings::DMA_ATTR_FORCE_CONTIGUOUS);
+>> +
+>> +    /// This is a hint to the DMA-mapping subsystem that it's probably not worth the time to try
+>> +    /// to allocate memory to in a way that gives better TLB efficiency.
+>> +    pub const DMA_ATTR_ALLOC_SINGLE_PAGES: Attrs = Attrs(bindings::DMA_ATTR_ALLOC_SINGLE_PAGES);
+>> +
+>> +    /// This tells the DMA-mapping subsystem to suppress allocation failure reports (similarly to
+>> +    /// __GFP_NOWARN).
+>> +    pub const DMA_ATTR_NO_WARN: Attrs = Attrs(bindings::DMA_ATTR_NO_WARN);
+>> +
+>> +    /// Used to indicate that the buffer is fully accessible at an elevated privilege level (and
+>> +    /// ideally inaccessible or at least read-only at lesser-privileged levels).
+>> +    pub const DMA_ATTR_PRIVILEGED: Attrs = Attrs(bindings::DMA_ATTR_PRIVILEGED);
+>> +}
+>> +
+>> +/// An abstraction of the `dma_alloc_coherent` API.
+>> +///
+>> +/// This is an abstraction around the `dma_alloc_coherent` API which is used to allocate and map
+>> +/// large consistent DMA regions.
+>> +///
+>> +/// A [`CoherentAllocation`] instance contains a pointer to the allocated region (in the
+>> +/// processor's virtual address space) and the device address which can be given to the device
+>> +/// as the DMA address base of the region. The region is released once [`CoherentAllocation`]
+>> +/// is dropped.
+>> +///
+>> +/// # Invariants
+>> +///
+>> +/// For the lifetime of an instance of [`CoherentAllocation`], the cpu address is a valid pointer
+>> +/// to an allocated region of consistent memory and we hold a reference to the device.
+>> +pub struct CoherentAllocation<T: AsBytes + FromBytes> {
+>> +    dev: ARef<Device>,
+>> +    dma_handle: bindings::dma_addr_t,
+>> +    count: usize,
+>> +    cpu_addr: *mut T,
+>> +    dma_attrs: Attrs,
+>> +}
+>> +
+>> +impl<T: AsBytes + FromBytes> CoherentAllocation<T> {
+>> +    /// Allocates a region of `size_of::<T> * count` of consistent memory.
+>> +    ///
+>> +    /// # Examples
+>> +    ///
+>> +    /// ```
+>> +    /// use kernel::device::Device;
+>> +    /// use kernel::dma::{attrs::*, CoherentAllocation};
+>> +    ///
+>> +    /// # fn test(dev: &Device) -> Result {
+>> +    /// let c: CoherentAllocation<u64> = CoherentAllocation::alloc_attrs(dev.into(), 4, GFP_KERNEL,
+>> +    ///                                                                  DMA_ATTR_NO_WARN)?;
+>> +    /// # Ok::<(), Error>(()) }
+>> +    /// ```
+>> +    pub fn alloc_attrs(
+>> +        dev: ARef<Device>,
+>> +        count: usize,
+>> +        gfp_flags: kernel::alloc::Flags,
+>> +        dma_attrs: Attrs,
+>> +    ) -> Result<CoherentAllocation<T>> {
+>> +        build_assert!(
+>> +            core::mem::size_of::<T>() > 0,
+>> +            "It doesn't make sense for the allocated type to be a ZST"
+>> +        );
+>> +
+>> +        let size = count
+>> +            .checked_mul(core::mem::size_of::<T>())
+>> +            .ok_or(EOVERFLOW)?;
+>> +        let mut dma_handle = 0;
+>> +        // SAFETY: device pointer is guaranteed as valid by invariant on `Device`.
+>> +        // We ensure that we catch the failure on this function and throw an ENOMEM
+>> +        let ret = unsafe {
+>> +            bindings::dma_alloc_attrs(
+>> +                dev.as_raw(),
+>> +                size,
+>> +                &mut dma_handle,
+>> +                gfp_flags.as_raw(),
+>> +                dma_attrs.as_raw(),
+>> +            )
+>> +        };
+>> +        if ret.is_null() {
+>> +            return Err(ENOMEM);
+>> +        }
+>> +        // INVARIANT: We just successfully allocated a coherent region which is accessible for
+>> +        // `count` elements, hence the cpu address is valid. We also hold a refcounted reference
+>> +        // to the device.
+>> +        Ok(Self {
+>> +            dev,
+>> +            dma_handle,
+>> +            count,
+>> +            cpu_addr: ret as *mut T,
+>> +            dma_attrs,
+>> +        })
+>> +    }
+>> +
+>> +    /// Performs the same functionality as `alloc_attrs`, except the `dma_attrs` is 0 by default.
+>> +    pub fn alloc_coherent(
+>> +        dev: ARef<Device>,
+>> +        count: usize,
+>> +        gfp_flags: kernel::alloc::Flags,
+>> +    ) -> Result<CoherentAllocation<T>> {
+>> +        CoherentAllocation::alloc_attrs(dev, count, gfp_flags, Attrs(0))
+>> +    }
+>> +
+>> +    /// Returns the device, base address, dma handle, attributes and the size of the
+>> +    /// allocated region.
+>> +    ///
+>> +    /// The caller takes ownership of the returned resources, i.e., will have the responsibility
+>> +    /// in calling `bindings::dma_free_attrs`. The allocated region is valid as long as
+>> +    /// the returned device exists.
+>> +    pub fn into_parts(
+>> +        self,
+>> +    ) -> (
+>> +        ARef<Device>,
+>> +        *mut T,
+>> +        bindings::dma_addr_t,
+>> +        crate::ffi::c_ulong,
+>> +        usize,
+>> +    ) {
+>> +        let size = self.count * core::mem::size_of::<T>();
+>> +        let ret = (
+>> +            self.dev.clone(),
+> 
+> Calling clone here increments the refcount, but you don't want to do
+> that since it leaks a count.
+> 
 
-Ultimately, this is intended to solve the problem that container_of
-solves in C. Actually using container_of runs into the challenge that
-you have no way of knowing if those other fields are still valid. If
-the destructor of the struct starts running, then it might have
-destroyed some of the fields, but not yet have destroyed the
-miscdevice field. Since you can't know if the rest of the struct is
-still valid, it's not safe to use container_of.
+You mean return the raw *mut bindings::device instead of ARef<Device>. 
+Otherwise the compiler complains not being able to move out ARef<Device> 
+because it doesn't implement Copy.
 
-Storing those other fields within the registration solves this issue.
-The registration ensures that the miscdevice is deregistered before
-the `data` field is destroyed. This means that if it's safe to access
-the miscdevice field, then it's also safe to access the `data` field,
-and that's the guarantee we need.
+Thanks,
+Abdiel
 
-Alice
 
-> So a real example here would be good to see, can you post your driver at
-> the same time so that we can see what you are doing and perhaps provide
-> a better way to do it?
