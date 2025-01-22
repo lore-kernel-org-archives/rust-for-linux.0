@@ -1,124 +1,124 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369A41CEE8D
-	for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 08:38:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537E74EB38;
+	Wed, 22 Jan 2025 08:57:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737535131; cv=none; b=H3c8Aah0oohNpi1mQlAYY9OX0DcqtRKF6o4DB4B8i3TsJt4SOb3BhN+HhNrPA5P9iM3t1K0dOKYgtr4NmNM7hd7kpHFnuj4JZuRuUHj9jFiKquwILeQVo57IW/X+XFvhdDdPB7nGgcfDce3CY4Lv8BR6lpEyuCxqHkIbfYLMaQE=
+	t=1737536274; cv=none; b=Lrf6ZDrTyVjaBR3RsIULOMC6uMGiRa4BGVZ3CBbcbNqd17pQAvOO6Idtclzx7BXQLp0HcHSGfL6+e91urwTqt2A5JdJQPt956rPiSq4LPvXDbTSJ3KKmrO3O55GS6efoTKS0I8R22Ws7naogsLp7oB7kzlGCfajhzRPbgeIUTtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737535131; c=relaxed/simple;
-	bh=J1PZ54vssI6jPaqsAH0gCww+a1TM3BmEpIr7INz4ib4=;
+	s=arc-20240116; t=1737536274; c=relaxed/simple;
+	bh=sU298wtMU+gMgPfWkGzp++POQ1xOAgiZrBAXE8FB4LM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FPeFZ3bFcPZnMDSIdIcJRNdJ1RJxSei4DJRrj8xskA0pZyOdFM2jDOwbXG961G0N9rRrYwhyZXFxTFsi36j9D1NRkXCJiQck9rPKlDjsmXXxlt3frZh8D66NZhNngIhMKdHrBu9gjaX6hvG7fxb3FltGbvYzBpaDv6VJTWkixE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MHbrmYcm; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=FLPGsxf9Hr0VdE+4jPjNo1rjA5NRSPqpiHv8D7v3AJIBOvr749DCkz9/Z7p9seR/32gFs0/rBUWGOSwlkPMd0WxRAgNaEbSW8V6Vdae82Y3oBPmpQ4zPSuzDOs+gdlR8+lkEsPW3U4b31g1mO1LbGNFZ5QT+DrMSfhsYuiF9ESo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B/trVRql; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MHbrmYcm"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4361f796586so72186295e9.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 00:38:49 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B/trVRql"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2ef6ee55225so1363133a91.0;
+        Wed, 22 Jan 2025 00:57:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737535128; x=1738139928; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1737536272; x=1738141072; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PxsC/lnPLJHrCczRJkEAqLDOauntTBgxm3137kAbTzA=;
-        b=MHbrmYcmlHjAIRWXpsaboxmfDamPaFycWBdXfnhEsOkjE7JXPY9RLxPYNoFzgSsKH8
-         mSJBqVhgDtzeMbAYNx9lQ8BUlMmbz2knaANIkjvRae0CHqPvk7ve9/Q+7ZacguucpjYE
-         4XaYNoDu0w3KbMTOj4rH8vu+4B/e9zZo2P6qyfOP6bdzw12rR2+vA7SPBDDcrLSxoIUP
-         bNGmvyLB0NZfQev5/0gxmPmSp33HncQiFPyusggi7lbRjSpOzQBIgZU7oYIOXGjg5F0i
-         030g2JPG0I0u7Dt/AzLcpSt2tHXFv9EQV4hn7tAPSjey3AGvd37NYiOCwL6mQa32/CoY
-         idNA==
+        bh=o+4rWF4CG+aBfHBC/5V8BT3aj9TO/uoTwJ8l9BOGJeM=;
+        b=B/trVRqlu3PV7QW8hT8F/szFSxqr2m7tnclTsgwxpB4823EAEKaXFpek/FXWriJ9JV
+         XuNtG+AE1MULW4aUBT5zFJ91hl0lm/xv6VOfT4gyEKwHrbArbj6/x4uqDrLmPyFjcS5R
+         GkTr2Ia4go+TlBy9dtmwHRZm3W4G9eAIPnqmZEeSOV5Ee2Y4WMXsopePAkgzaymIXcLH
+         QVBwOAFbHVrMGUxRP4FcNCR512ZDiV2hRPnTr/Rnhh5DraubbIMpwH/oUGc5ssbMdZvE
+         dcD82nrMfWT4unAfxDIJLU9tjOTAYMyk/knIt/NLy2Pa2GgOFcANp1rQixrQnkd/fACY
+         4dpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737535128; x=1738139928;
+        d=1e100.net; s=20230601; t=1737536272; x=1738141072;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PxsC/lnPLJHrCczRJkEAqLDOauntTBgxm3137kAbTzA=;
-        b=CfNXUh5q/j1R/Tm+VzwD8cJd430ha/IKkZusPhOZ9qycbipMtoQ+Z9Pq9D2QSzEarb
-         k+o8MRWs3Hx6c8n72LODbt5SyHixKhVUKLoKUg/UqxRHpdm7xwRNQQ+Z1UkLqn90znyJ
-         bo9pVXuZsbIUWtEeii7T7CN9zutygtyxaI1NOTMfzB57nuMQt9mAtwxD7ky1/ZU/dYA5
-         G/8jsjuOyhfs+ESkwQqerLJSt2VRTyrGfFrpKAAVWA3l4OE9hZjdxpTzqKXIBbw59PCf
-         Y/bQ9IwCl1rwi8eTk0YstGWCmBY0hzdvF4V+0EXVQ3+vZ0a0JjvBcj+97oa43vXSoGGF
-         tnug==
-X-Forwarded-Encrypted: i=1; AJvYcCWIWg2G6lwvXLysaODdPDH1isu9QJ4z98MrQY7RbyXdS6R0QNEafqHIrKt0x0/0tF8BpAsiVoSb7xuiFHcUiw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLpGxwH1Z/UhsfqYOH4rwtnKRlN/EfJ01AhmGXlBvyhLPhtzyq
-	RUSnJjkniTnw9pJBF+TkQSWJiZmIiWe5hylxkoE2/4RUvmUbmiGSSibTwFMrXlXIQl2pRxgAOCs
-	MkywG6mS4hNEw3QOEGvi+bhNstKCujqDKz1hY
-X-Gm-Gg: ASbGnctZhdRHJ3NURSh0zuOCFBwX5G9h44NFyDPIL4RA/uPLzxNYltXMS0qJm6sG2zG
-	7Ue7zTUVv2FO8UCx78G6pugs2A5IkkV6WJXYnCYQ7XXHorXRLvYD1q2uFpXfb0BPA1kZHMkclAD
-	MH2Axj
-X-Google-Smtp-Source: AGHT+IFPuvOfZfw1b6egw4r7DiMV0eyONzBkuus91kMgCRJ74Pd+1Y2LSEfTb91ly597gdda1T7Uy2XI5S2InOftVvU=
-X-Received: by 2002:a05:6000:bc4:b0:38b:d8a5:df43 with SMTP id
- ffacd0b85a97d-38bf565a587mr18003489f8f.21.1737535128333; Wed, 22 Jan 2025
- 00:38:48 -0800 (PST)
+        bh=o+4rWF4CG+aBfHBC/5V8BT3aj9TO/uoTwJ8l9BOGJeM=;
+        b=YtawMkn5/CipssGTr3k5r3B/6rpWjBREQRwsjaI0qhBM9xQK15rw1Qey4+2OJ+jVZB
+         L3sG/DriHKnJMHsX85ahrRBLDwyLo1iy1npr0t8YiVDQBylET+zxx0nMyDlu94i5fcID
+         2pCHaoPSXHr0GODCp4oKum39qlKWHMDPwXsy/N6tca19efNTBvYdNKKFUpRnRB6xgP1H
+         Zq/vzyGe1JwmDXT9CcAKSH8KtUSFvUpg8mPicMwJHw1LCLneuPKJDijpFB8rgfZVIIxU
+         Oxa6T7kxkga8+ZCYhEetsDF4SdzoIXqmu2r9WAoU17A2bTTA/04CvIb8AWmcCsRZd7XQ
+         CeLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVcbTalkk8kOWUwaFRrg+ZL9ZNLcILHW/TR7eMgauRNH6XVAHR76dQcxyKlH0HurSlrkO81OwAO3aHbIAgYjfk=@vger.kernel.org, AJvYcCWDQbo8D71w/oC+ysEsgkZGULATRx8so9yxi/hgUkEyrqEBVtau9jljDPXclkCzjm71iS0Kp+c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhZ9x1bqSrImzcDW/+L7UbOEgFQ92V1Fncbr3lEI5NS8/7cQjV
+	uhx9PdtINmzWOza/yMmFRauyzHI6vv43a62ujTEXIzkrg89zFu+BdT0HIt/50yrFggmVV84cF73
+	PAe810PPNC/9DzoRjPjHDqgXkzNI=
+X-Gm-Gg: ASbGncu+sgQLhKoj9OrT3nNM/9akHWfWtdJBhlfIKH+HNRIbsgg5qcFo6gNpcKKt9qw
+	DznrWWBg3COrcRCqWPInXBnp2Ct5OIhjGVmXpb7Huo6vQ7nzGY+o=
+X-Google-Smtp-Source: AGHT+IET9r8JSmss5wncs58ue1ECkJgLujCKETsp3piHO3mpOMSewKO+YqHU7WDcXQ4s/4pzCBVFG86fXm1njs0O9E8=
+X-Received: by 2002:a17:90b:5387:b0:2ee:f59a:94d3 with SMTP id
+ 98e67ed59e1d1-2f7e3e0fcf1mr1749187a91.0.1737536272516; Wed, 22 Jan 2025
+ 00:57:52 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250122-gendwarfksyms-kasan-rust-v1-1-5ee5658f4fb6@google.com>
-In-Reply-To: <20250122-gendwarfksyms-kasan-rust-v1-1-5ee5658f4fb6@google.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 22 Jan 2025 09:38:35 +0100
-X-Gm-Features: AbW1kvZg0Mv8xtaENSsxfpITIl4lLLkLfFgL_7of5oMVFQxtjMmJFBs2fAK6yX8
-Message-ID: <CAH5fLgiyNBn3CtS8EBRsCHCSo1OyafhA2i8rM7VykWsaOMxK1w@mail.gmail.com>
-Subject: Re: [PATCH] rust: Do not export generated KASAN ODR symbols
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+References: <20250116044100.80679-1-fujita.tomonori@gmail.com>
+ <20250116044100.80679-3-fujita.tomonori@gmail.com> <CANiq72=kuZcLCgsSkKa6MrYCJY9UsWSV9VLvj2TcVOQEf0Cnmg@mail.gmail.com>
+ <20250122.163728.1738626154854951916.fujita.tomonori@gmail.com>
+In-Reply-To: <20250122.163728.1738626154854951916.fujita.tomonori@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 22 Jan 2025 09:57:40 +0100
+X-Gm-Features: AbW1kva7CLhxOl4_GYMA5C5vdZCSXsUOyMdUnIwhKy-TXUNa6kTCcW4ZlzmNa0A
+Message-ID: <CANiq72nL8JYDZx8xZoUzh9KdYWCeMZ28GWAoTOSUqRN2WT8Ovw@mail.gmail.com>
+Subject: Re: [PATCH v8 2/7] rust: time: Introduce Delta type
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: linux-kernel@vger.kernel.org, andrew@lunn.ch, 
+	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, hkallweit1@gmail.com, 
+	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
+	aliceryhl@google.com, anna-maria@linutronix.de, frederic@kernel.org, 
+	tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, 
+	mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com, 
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org, 
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 22, 2025 at 1:14=E2=80=AFAM Matthew Maurer <mmaurer@google.com>=
- wrote:
+On Wed, Jan 22, 2025 at 8:37=E2=80=AFAM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
 >
-> ASAN generates sppecial synthetic symbols to help check for ODR
+> Yes, please create such. I'll add more docs but I'm sure that there
+> will be room for improvement.
 
-Typo: sppecial
+Sounds good, will do!
 
-> violations. These synthetic symbols lack debug information, so
-> gendwarfksyms emits warnings when processing them. No code should ever
-> have a dependency on these symbols, so we should not be exporting them,
-> just like the __cfi symbols.
->
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
+> You want to add the above explanation to all the
+> Delta::from_[millis|micro|secs], right?
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Yeah, I meant to add the saturating note to each of them.
 
->  rust/Makefile | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/rust/Makefile b/rust/Makefile
-> index ab300bfb46f6a3e386b86d58120d7aeddc57da37..4f212bd41e74ec9f25445d3af=
-76818332f288e15 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -329,7 +329,7 @@ $(obj)/bindings/bindings_helpers_generated.rs: privat=
-e bindgen_target_extra =3D ;
->  $(obj)/bindings/bindings_helpers_generated.rs: $(src)/helpers/helpers.c =
-FORCE
->         $(call if_changed_dep,bindgen)
->
-> -rust_exports =3D $(NM) -p --defined-only $(1) | awk '$$2~/(T|R|D|B)/ && =
-$$3!~/__cfi/ { printf $(2),$$3 }'
-> +rust_exports =3D $(NM) -p --defined-only $(1) | awk '$$2~/(T|R|D|B)/ && =
-$$3!~/__cfi/ && $$3!~/__odr_asan/ { printf $(2),$$3 }'
->
->  quiet_cmd_exports =3D EXPORTS $@
->        cmd_exports =3D \
->
-> ---
-> base-commit: 0939156bc07c9fd2b554d9813352c386dacfc3d9
-> change-id: 20250116-gendwarfksyms-kasan-rust-2bdbac027f88
->
-> Best regards,
-> --
-> Matthew Maurer <mmaurer@google.com>
->
+> Is there any existing source code I can refer to? I'm not sure
+> how "module-level docs" should be written.
+
+You can see e.g.
+
+    rust/kernel/block/mq.rs
+    rust/kernel/init.rs
+    rust/kernel/workqueue.rs
+
+(grep `^//!` for others).
+
+In general, you can use the module-level docs to talk about how things
+relate between items of that module. For instance, when I saw in your
+commit message this note:
+
+    Implement the subtraction operator for Instant:
+
+    Delta =3D Instant A - Instant B
+
+I thought something like: "It would be nice to explain how `Delta` and
+`Instant` fit together / how they are related / how all fits together
+in the `time` module".
+
+> I'll try to improve.
+
+Thanks a lot! (really -- I personally appreciate good docs)
+
+Cheers,
+Miguel
