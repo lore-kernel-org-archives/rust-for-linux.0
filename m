@@ -1,245 +1,145 @@
-Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05A30211484;
-	Wed, 22 Jan 2025 12:38:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3500521146F;
+	Wed, 22 Jan 2025 12:40:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737549520; cv=none; b=Y1B3gZhii/qnQ2K+zqgCd130iK+dGUIAeXwpBmbGq4q7XNyTzhEIdKcN4YAWOi94jPnqc+cKmXglLPOHpFdo2M3ZkyjS9nw4Tw073wUM0aO7cy8Ix2yWA7GH8mGH8QEveHtBfIT/BN9KMI5bkAG6nmoYySs4GnFrH+CMab0tCPc=
+	t=1737549620; cv=none; b=nGYWg0f1lqpxFVCrVYpyHsCJjcuf1jmh/6/SVVUNuWrTmkMOH7Hs5d7OiK+z+UP3z2QXizSUYAifb8+hR2PdylR80XuL12uDO8oUPPrMBVFOQ12wxqA9m1Ab7g3Ywr7lNt243I6GVS8tNoGmkd77go7HCklRKlbftO/3kvCAWe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737549520; c=relaxed/simple;
-	bh=Izv9utzdfp1zB6jrmm0SrdK/2UXYvADzA8JwK5UjU10=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=lddGKL/fEQF7IFvOP2PDWoT8c04sirpQZW6Fll2GihefvrC21z5NtDbRzppVy7HnCNmA6kWgpjYYJ4yZ5aT4Er2iz2WYbvpLMSMT1AhF6HVJJP6yljsvZWbIPdKW3/peE9jqswKbaxW854lTKO0f0Xk7aiga6jdAEyQHPb/DJj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=LZR6dC0F; arc=none smtp.client-ip=49.12.72.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
+	s=arc-20240116; t=1737549620; c=relaxed/simple;
+	bh=G1/8pmXRPOW4Iq3qKvQsEJSG7i5Hu05GSIYdptuPEi4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V2pITpceArs54DgTKzgk7ObpImleW+9ela6zDjrtqLqOpLhfhPjAl6CI8cL6Kus9WmJJN0SYoil5qDDmHjKvuzPLxaEandS4QQgnQTWxvBFs3I8Lm3rdOASA53BHn0ZpcVyYsehrY6x4Br+Z0Ht5YcGHN4xwFVymvBUlh3jPL6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dOndvst1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="LZR6dC0F"
-From: Fiona Behrens <me@kloenk.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1737549512; bh=Iur9wEfdiGAs3xsv9pab5l3ui4audQ+RCQw3QYUuSIg=;
-	h=From:Date:Subject:To:Cc;
-	b=LZR6dC0FzCq9AQKk4wkFV16OAqV7tvb+jn4UekETwv6iMqHa87q5mIF8cLWkgPRon
-	 NTCU2g6ihd9Gq9RGUlDZvutE6krUTr7KW8GB5O7SW6OsQjk62GTBE/4MvojhCI0RDA
-	 dxVuci7dipvTGVcO6PWtd/ewceWwr3F3tIJru7NY=
-Date: Wed, 22 Jan 2025 13:38:09 +0100
-Subject: [PATCH] rust: io: move offset_valid and io_addr(_assert) to IoRaw
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dOndvst1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6411DC4CED6;
+	Wed, 22 Jan 2025 12:40:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1737549620;
+	bh=G1/8pmXRPOW4Iq3qKvQsEJSG7i5Hu05GSIYdptuPEi4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dOndvst1REMv2b83SJEezwJCmfkrW1z0r8LaKE1HyvPZQLzDT1IiNLepqHOMS5Fv4
+	 acP9E40y+tU6kxHpNKJDXVz7z7+N4kZAkEUWs4i01FV16fo05YMEgK6RXK1zKdiC2S
+	 p0MT1vNpLI/hY1DlRi/UIqksJYOlEZqTBtNDm09M=
+Date: Wed, 22 Jan 2025 13:40:17 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Christian Schrefl <chrisi.schrefl@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>, Arnd Bergmann <arnd@arndb.de>,
+	Lee Jones <lee@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] rust: miscdevice: Add additional data to
+ MiscDeviceRegistration
+Message-ID: <2025012236-tall-untried-1d7c@gregkh>
+References: <20250119-b4-rust_miscdevice_registrationdata-v1-0-edbf18dde5fc@gmail.com>
+ <20250119-b4-rust_miscdevice_registrationdata-v1-2-edbf18dde5fc@gmail.com>
+ <2025012243-myspace-woof-1d1e@gregkh>
+ <CAH5fLgh7QyVSgqJZM-krHmF87c76a84Cg6PyT47TYjMsN9iwZg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250122-rust-io-offset-v1-1-914725ab55ed@kloenk.dev>
-X-B4-Tracking: v=1; b=H4sIALDmkGcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDQyMj3aLS4hLdzHzd/LS04tQSXfMkY8skQ8NUC5PEZCWgpoKi1LTMCrC
- B0bG1tQBXjHmBYAAAAA==
-X-Change-ID: 20250122-rust-io-offset-7b39b11e84ac
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Fiona Behrens <me@kloenk.dev>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7134; i=me@kloenk.dev;
- h=from:subject:message-id; bh=Izv9utzdfp1zB6jrmm0SrdK/2UXYvADzA8JwK5UjU10=;
- b=owJ4nJvAy8zAJdbGuXyr5NPHToyn1ZIY0ic8O6LZ5DTlrnPBnic2ST2b7tqwReyTWsE+fe6r0
- FWTPCNjGQU6SlkYxLgYZMUUWbZ43b//I3NZlv39u90wc1iZQIYwcHEKwER6ZRj+pxyI2qZxo/+e
- 251q+0TL43Gbiv+cz98qHlsTceY/F9fhNEaGB0c6Om/eM6qXqeS0czimH96iXvi/mJvxi4rj3dc
- +fwW5ATFhTA8=
-X-Developer-Key: i=me@kloenk.dev; a=openpgp;
- fpr=B44ADFDFF869A66A3FDFDD8B8609A7B519E5E342
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLgh7QyVSgqJZM-krHmF87c76a84Cg6PyT47TYjMsN9iwZg@mail.gmail.com>
 
-Move the helper functions `offset_valid`, `io_addr` and
-`io_addr_asset` from `Io` to `IoRaw`. This allows `IoRaw` to be reused
-if other abstractions with different write/read functions are
-needed (e.g. `writeb` vs `iowrite` vs `outb`).
+On Wed, Jan 22, 2025 at 11:11:07AM +0100, Alice Ryhl wrote:
+> On Wed, Jan 22, 2025 at 10:28 AM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Sun, Jan 19, 2025 at 11:11:14PM +0100, Christian Schrefl wrote:
+> > > When using the Rust miscdevice bindings, you generally embed the
+> > > MiscDeviceRegistration within another struct:
+> > >
+> > > struct MyDriverData {
+> > >     data: SomeOtherData,
+> > >     misc: MiscDeviceRegistration<MyMiscFile>
+> > > }
+> > >
+> > > In the `fops->open` callback of the miscdevice, you are given a
+> > > reference to the registration, which allows you to access its fields.
+> > > For example, as of commit 284ae0be4dca ("rust: miscdevice: Provide
+> > > accessor to pull out miscdevice::this_device") you can access the
+> > > internal `struct device`. However, there is still no way to access the
+> > > `data` field in the above example, because you only have a reference to
+> > > the registration.
+> >
+> > What's wrong with the driver_data pointer in the misc device structure?
+> > Shouldn't you be in control of that as you are a misc driver owner?  Or
+> > does the misc core handle this I can't recall at the moment, sorry.
+> 
+> There's no such pointer in struct miscdevice?
 
-Make this functions public as well so they can be used from other
-modules if you aquire a `IoRaw`.
+struct miscdevice->struct device->driver_data;
 
-Signed-off-by: Fiona Behrens <me@kloenk.dev>
----
- rust/kernel/io.rs | 98 +++++++++++++++++++++++++++++++++++--------------------
- 1 file changed, 63 insertions(+), 35 deletions(-)
+But in digging, this might not be "allowed" for a misc driver to do, I
+can't remember anymore, sorry.
 
-diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-index d4a73e52e3ee68f7b558749ed0108acde92ae5fe..a6d026f458608626113fd194ee5a8616b4ef76fe 100644
---- a/rust/kernel/io.rs
-+++ b/rust/kernel/io.rs
-@@ -15,6 +15,11 @@
- /// Instead, the bus specific MMIO implementation must convert this raw representation into an `Io`
- /// instance providing the actual memory accessors. Only by the conversion into an `Io` structure
- /// any guarantees are given.
-+///
-+/// # Invariant
-+///
-+/// `addr` plus `maxsize` has to fit in memory (smaller than [`usize::MAX`])
-+/// and `maxsize` has to be smaller or equal to `SIZE`.
- pub struct IoRaw<const SIZE: usize = 0> {
-     addr: usize,
-     maxsize: usize,
-@@ -23,7 +28,7 @@ pub struct IoRaw<const SIZE: usize = 0> {
- impl<const SIZE: usize> IoRaw<SIZE> {
-     /// Returns a new `IoRaw` instance on success, an error otherwise.
-     pub fn new(addr: usize, maxsize: usize) -> Result<Self> {
--        if maxsize < SIZE {
-+        if maxsize < SIZE || addr.checked_add(maxsize).is_none() {
-             return Err(EINVAL);
-         }
- 
-@@ -32,15 +37,66 @@ pub fn new(addr: usize, maxsize: usize) -> Result<Self> {
- 
-     /// Returns the base address of the MMIO region.
-     #[inline]
--    pub fn addr(&self) -> usize {
-+    pub const fn addr(&self) -> usize {
-         self.addr
-     }
- 
-     /// Returns the maximum size of the MMIO region.
-     #[inline]
--    pub fn maxsize(&self) -> usize {
-+    pub const fn maxsize(&self) -> usize {
-         self.maxsize
-     }
-+
-+    /// Check if the offset plus the size of the type `U` fits in the bounds of `size`.
-+    /// Also checks if the offset is aligned with the type size.
-+    #[inline]
-+    pub const fn offset_valid<U>(offset: usize, size: usize) -> bool {
-+        let type_size = core::mem::size_of::<U>();
-+        if let Some(end) = offset.checked_add(type_size) {
-+            end <= size && offset % type_size == 0
-+        } else {
-+            false
-+        }
-+    }
-+
-+    /// Check if the offset (plus the type size) is out of bounds.
-+    ///
-+    /// Runtime checked version of [`io_addr_assert`].
-+    ///
-+    /// See [`offset_valid`] for the performed offset check.
-+    ///
-+    /// # Errors
-+    ///
-+    /// Returns [`EINVAL`] if the type does not fit into [`IoRaw`] at the given offset.
-+    ///
-+    /// [`offset_valid`]: Self::offset_valid
-+    /// [`io_addr_assert`]: Self::io_addr_assert
-+    #[inline]
-+    pub fn io_addr<U>(&self, offset: usize) -> Result<usize> {
-+        if !Self::offset_valid::<U>(offset, self.maxsize()) {
-+            return Err(EINVAL);
-+        }
-+
-+        // Probably no need to check, since the safety requirements of `Self::new` guarantee that
-+        // this can't overflow.
-+        self.addr().checked_add(offset).ok_or(EINVAL)
-+    }
-+
-+    /// Check at build time if the offset (plus the type size) is out of bounds.
-+    ///
-+    /// Compiletime checked version of [`io_addr`].
-+    ///
-+    /// See [`offset_valid`] for the performed offset check.
-+    ///
-+    ///
-+    /// [`offset_valid`]: Self::offset_valid
-+    /// [`io_addr`]: Self::io_addr
-+    #[inline]
-+    pub const fn io_addr_assert<U>(&self, offset: usize) -> usize {
-+        build_assert!(Self::offset_valid::<U>(offset, SIZE));
-+
-+        self.addr() + offset
-+    }
- }
- 
- /// IO-mapped memory, starting at the base address @addr and spanning @maxlen bytes.
-@@ -116,7 +172,7 @@ macro_rules! define_read {
-         $(#[$attr])*
-         #[inline]
-         pub fn $name(&self, offset: usize) -> $type_name {
--            let addr = self.io_addr_assert::<$type_name>(offset);
-+            let addr = self.0.io_addr_assert::<$type_name>(offset);
- 
-             // SAFETY: By the type invariant `addr` is a valid address for MMIO operations.
-             unsafe { bindings::$name(addr as _) }
-@@ -128,7 +184,7 @@ pub fn $name(&self, offset: usize) -> $type_name {
-         /// out of bounds.
-         $(#[$attr])*
-         pub fn $try_name(&self, offset: usize) -> Result<$type_name> {
--            let addr = self.io_addr::<$type_name>(offset)?;
-+            let addr = self.0.io_addr::<$type_name>(offset)?;
- 
-             // SAFETY: By the type invariant `addr` is a valid address for MMIO operations.
-             Ok(unsafe { bindings::$name(addr as _) })
-@@ -145,7 +201,7 @@ macro_rules! define_write {
-         $(#[$attr])*
-         #[inline]
-         pub fn $name(&self, value: $type_name, offset: usize) {
--            let addr = self.io_addr_assert::<$type_name>(offset);
-+            let addr = self.0.io_addr_assert::<$type_name>(offset);
- 
-             // SAFETY: By the type invariant `addr` is a valid address for MMIO operations.
-             unsafe { bindings::$name(value, addr as _, ) }
-@@ -157,7 +213,7 @@ pub fn $name(&self, value: $type_name, offset: usize) {
-         /// out of bounds.
-         $(#[$attr])*
-         pub fn $try_name(&self, value: $type_name, offset: usize) -> Result {
--            let addr = self.io_addr::<$type_name>(offset)?;
-+            let addr = self.0.io_addr::<$type_name>(offset)?;
- 
-             // SAFETY: By the type invariant `addr` is a valid address for MMIO operations.
-             unsafe { bindings::$name(value, addr as _) }
-@@ -190,34 +246,6 @@ pub fn maxsize(&self) -> usize {
-         self.0.maxsize()
-     }
- 
--    #[inline]
--    const fn offset_valid<U>(offset: usize, size: usize) -> bool {
--        let type_size = core::mem::size_of::<U>();
--        if let Some(end) = offset.checked_add(type_size) {
--            end <= size && offset % type_size == 0
--        } else {
--            false
--        }
--    }
--
--    #[inline]
--    fn io_addr<U>(&self, offset: usize) -> Result<usize> {
--        if !Self::offset_valid::<U>(offset, self.maxsize()) {
--            return Err(EINVAL);
--        }
--
--        // Probably no need to check, since the safety requirements of `Self::new` guarantee that
--        // this can't overflow.
--        self.addr().checked_add(offset).ok_or(EINVAL)
--    }
--
--    #[inline]
--    fn io_addr_assert<U>(&self, offset: usize) -> usize {
--        build_assert!(Self::offset_valid::<U>(offset, SIZE));
--
--        self.addr() + offset
--    }
--
-     define_read!(readb, try_readb, u8);
-     define_read!(readw, try_readw, u16);
-     define_read!(readl, try_readl, u32);
+> > > Using container_of is also not possible to do safely. For example, if
+> > > the destructor of `MyDriverData` runs, then the destructor of `data`
+> > > would run before the miscdevice is deregistered, so using container_of
+> > > to access `data` from `fops->open` could result in a UAF. A similar
+> > > problem can happen on initialization if `misc` is not the last field to
+> > > be initialized.
+> > >
+> > > To provide a safe way to access user-defined data stored next to the
+> > > `struct miscdevice`, make `MiscDeviceRegistration` into a container that
+> > > can store a user-provided piece of data. This way, `fops->open` can
+> > > access that data via the registration, since the data is stored inside
+> > > the registration.
+> >
+> > "next to" feels odd, that's what a container_of is for, but be careful
+> > as to who owns the lifecycle of the object you are trying to get to.
+> > You can't have multiple objects with different lifecycles in the same
+> > structure (i.e. don't mix a misc device and a platform device together).
+> 
+> Ultimately, this is intended to solve the problem that container_of
+> solves in C. Actually using container_of runs into the challenge that
+> you have no way of knowing if those other fields are still valid.
 
----
-base-commit: 01b3cb620815fc3feb90ee117d9445a5b608a9f7
-change-id: 20250122-rust-io-offset-7b39b11e84ac
+You "know" they are valid if you have a pointer to your structure,
+right?  Someone sent that to you, so by virtue of that it has to be
+valid.
 
-Best regards,
--- 
-Fiona Behrens <me@kloenk.dev>
+> If
+> the destructor of the struct starts running, then it might have
+> destroyed some of the fields, but not yet have destroyed the
+> miscdevice field. Since you can't know if the rest of the struct is
+> still valid, it's not safe to use container_of.
 
+That's a different issue, that's a lifetime issue of "can I look at
+these other fields at this point in time and trust them", it's not a
+"these are not valid thing to look at".
+
+> Storing those other fields within the registration solves this issue.
+> The registration ensures that the miscdevice is deregistered before
+> the `data` field is destroyed. This means that if it's safe to access
+> the miscdevice field, then it's also safe to access the `data` field,
+> and that's the guarantee we need.
+
+I'm confused.  A misc device should be embedded inside of something
+else.  And the misc device controls the lifespan of that "something
+else" structure, right?  So by virtue of the misc device being alive,
+everything else in there should be ok.
+
+Now individual misc devices might want to do different things but if
+they are being torn down, that means all references are dropped so any
+"container_of()" like cast-back should not even be possible as there
+should not be a pointer that you can cast-back from here.
+
+Or am I confused?  I think a real example would be good to see here.
+
+thanks,
+
+greg k-h
