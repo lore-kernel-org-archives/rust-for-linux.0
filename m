@@ -1,122 +1,129 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D3591BD014
-	for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 10:15:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E998145FE0;
+	Wed, 22 Jan 2025 10:22:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737540953; cv=none; b=Dwx1c1ZK+Vy1sFeGr7lqRf8V4lJR40OXHWjLfljPbwQQcKtkStEIQz8Rv5cXRgKzloKlOepN9hY0NXCwF6hsMLWA+6ptZAhA2kaRyJr3tnfH6dDR7mnEABz8J5yEvKigpul0IXs6zOvs9xePBLV1HWGvJANTOEgNecKZfVZf/5I=
+	t=1737541325; cv=none; b=er2Q8yFCHSZs4Q6U+vmurE96lA+LO+WFigWnhKcf6z2nPM0Rgzc9/FzdKDWHXkztoP/T73TvUfYHOiEtfZXxXnKgH+nlvkiTMj0GhWxajxQtxNoDXPQAKDin/5CKfySW4bEh96Jypiz1IXX5sWlny0LeDKRRo4/4kR8Dnlyu3/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737540953; c=relaxed/simple;
-	bh=UBlzD8MynP4wtJMH3FouuoxGPAoh+UjXszE4ZLZb9PM=;
+	s=arc-20240116; t=1737541325; c=relaxed/simple;
+	bh=8WRgsVZn6YDQoweCWaTyk5dOaQoi1J3EUul3UOhkscw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ix5860vB7ZcC3t1W8RfQKYJMX8il0bvQc+bgbe/DyBBQFZ7zRMrgLUswbPjz+8sfnHdiUK9JHVUMVubVn2MaX1l8tJTTSCSRlXbrkcp2mLbJnGE2KWFDqZccL3Is7XKYW08j0SRqzTKo5ZrIdpECrE2Tr5gsg/Sf1j4LfvMma7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nrevQxiF; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=sJJ45z0vJLWTr5iKyFTklZlIGKOTgPZk1QW44vnkezrLlnhBtgNyfRPAPp+39ZXdYJ5dzEBltJiL2rQ3MzS9Sw1bEXndtoAfJLj7WFOhzo0lXrEYUHK0KSxxh3VEc5uorrprT6hQYER7Ro/j8RJ9R2c6URloYycOZ1ZXim6Wyoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TPlwwa9f; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nrevQxiF"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-385df53e559so5070750f8f.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 02:15:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TPlwwa9f"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2f2f5e91393so1443274a91.0;
+        Wed, 22 Jan 2025 02:22:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737540950; x=1738145750; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1737541324; x=1738146124; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=We/e78Nv3R6LaJg7Byr6yv9XSyWPTTNeoplZz3yEeWg=;
-        b=nrevQxiFuVse/3tS/Zc0RWSXPV9aiGniUECTdBhRnY20ZNqjoa+jPC6NQPMWC01k8b
-         QvZDFvIuvhwH4viwyA+ttiUE0YBAKltrV8ZqNSDzmgQUzw2fcUhd0mwEz3Ci1U38ogQk
-         VWVpTmOtdt9N21H4tC3iuYFI0/FOpm/SjOD5nfiT+6qtvOxzXtmZ7JT5FSfr7JvHDSZL
-         t7bgYy4Lv2DVtI3gjhIhjA/+SHcg1b9U1CSDtfPPNaXob8RlVymy7MaTb4eqLuuajmYt
-         3TV12lVS0XLCXDW1NNMBtpz2Wdos1oozKp9x/98WcUNGNysvGasOFdNO1D4PVLsloE0k
-         01AQ==
+        bh=UTV4Wm4e6K9JxtAYNKZcc5xcEw6GFtqEWLoBb2B+6fU=;
+        b=TPlwwa9frDbfWnD0vgBgnP5cp9VkhNCIyT5A2eV2BjG6j9c9iajvUiaSvJJOp+FSFV
+         K85x/NHOZ9oXU+L0xM+OrzksYeQqNAKZ7QFuz1LZ+fjuotAjXRRHwzCB1ztedBN63ezI
+         J7NHEq9BEVbsTq+Y2A15bvdjIS3CFTM9F6RkZg0dcrM9TfdC8ebCXQdkrkHd75Zq64VK
+         OZ9TTK2d1jQGJRTLcfO284OXkfLCbnjoHt7rXA6onSVUEWUhWb7cZkS7zkVDxbeq61uw
+         fQVj69GBB1xzdTQ0nyL4buYQ1ds9QmMq2O3xFIB6rgmUTjkP+o6SKmUPR0wHEYkEkl7t
+         qRCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737540950; x=1738145750;
+        d=1e100.net; s=20230601; t=1737541324; x=1738146124;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=We/e78Nv3R6LaJg7Byr6yv9XSyWPTTNeoplZz3yEeWg=;
-        b=EKlavl8DxZ8HVCpNnhIHZpu/qqF9UaM+Cvd0r3oXBe0TBuqq20gLX7hobEUlybo6dp
-         hpjcKUDvMR4cAh8CYYKULwR2KKxqUiyUH1MqP+j8GdVGhTF2usoexBVzhk3l3uIC8v0h
-         ggzXj9TKvnOQC2k9puyVt7/o6lQg+dYJ7O8ABUiyriIpUeg/UKmGpuH65bMLSD93eunD
-         joAi0pqsJUCd3lPOARS0NFLsMW/O+B1tmjFgG6KrMQgnKCVNbKzuAw5ckTgfOA4+P5V+
-         3Fl8CYgM6uuoHyokUpxO8hT0AdmxZtjGXqW79vn6dF1xNf/u/m0i4Q6FUvlb8BBB0ohr
-         Uzfw==
-X-Gm-Message-State: AOJu0YxbgFl/39utD2hFUKIqawEOugOVMG3/QB1iGOwRzed65T3JmzHB
-	gcXE3vu/qzJM9dBquS9yuN4jV7bNRzoJW6s/oMgUx5upnDyhtKUd23k+og1veALfNBuTOR3NOwW
-	kR3y4DB7KLjUXuSuKiKA6VJzA4WqYIsRVVx7X
-X-Gm-Gg: ASbGnctJCVLx4fOoZjID9RSySMNajK6cWU8gm3MsZ60Ic2oUh1dqePUtJ8u7IuMSxsU
-	7x3fjB5tMO+EkAnKgPlAlC1O+r/6OImYIdd/GD7NgWTFLwx7/aMwGK2D2Vd8agrBh/w02wa2lqK
-	q0MY+I
-X-Google-Smtp-Source: AGHT+IHFzm4euUAacp6gvYxVizLBMwIg5oDbxoAH60HayNsSmT+3Q7l6UofaUmQpPsbKH7EPaW0Rk6q0dXkawUrfJmw=
-X-Received: by 2002:a5d:6d83:0:b0:385:efc7:932d with SMTP id
- ffacd0b85a97d-38bf57d2a39mr18199014f8f.46.1737540949669; Wed, 22 Jan 2025
- 02:15:49 -0800 (PST)
+        bh=UTV4Wm4e6K9JxtAYNKZcc5xcEw6GFtqEWLoBb2B+6fU=;
+        b=Z4lTjcEkoxR3aCEEtHuMSF2CnBrEZ/v/JE9pOVpKRrjHTtejFmZy340M4kSqZmqY9W
+         7ZWk28UAQUkMVzhIjX5255nGI6BPT6xQuzAnyEaYLIYh+ihy46esdnz5B7s3nKMZnBkP
+         hEgtR0fp0Fngr1H7RR6NdnS/ByrVjhiFSE8wGXbZ9hmyjmsvCXAM6cx8sXdVufYzE0b+
+         JbIw3cr5fCbNIA2okwWcuasY61Fpw5DPCGt0qqEG+N/mUnXNmDy5dCSzUSkST2wiNosS
+         wMqd73P4uC5SiCcs8R2MAoNVtDe8hu+Jm/njaBNj7ot7JfjmXRGJ46txtHangwYvNY9i
+         gdtw==
+X-Forwarded-Encrypted: i=1; AJvYcCUk/rclIDdG+7pQepc80YuhL+smfclFhjaiFDp9DIdSGATIjobvmWCJgDF+rwOI7l9k076I9Ww=@vger.kernel.org, AJvYcCWuWrz2hpemOMXCSvnRObIKX2vRZZDuc+e7/0FqioexFoodvOi60gsqpq19r2Rdm6WpjVC3Puh+N3s5vhqxnkc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHZgMN9fouoO6uldevWZeUmhfMljWNkE7VxXRDyd/ZTz/my17z
+	A4wtlqBpXH3LkMMkACbU01utDPBTZq5vspZfsbi9UVcACS5ocW4KRRZfHqKPiVMQVB8eqP1aFZ9
+	vQFmzXNOak23JbWLdSAPNVinG4ss=
+X-Gm-Gg: ASbGnctljrJs8gbEZ/7yj6RjhbzgsF+F/IrEwuZZl6YZMyY0mvMaQjq3Z6nF8hKBRh2
+	cGHpaJa152K3HDulQ9RjA/6CzeiYaIyKiWnE0xwuSR4TCbJzLYNQ=
+X-Google-Smtp-Source: AGHT+IHvp+JfGT24gLHUG8TiwUPSRFuqnrD6G+YLWHFY6TrywtNHhVsl5Lb82x5DTO4a3uC4K6TcXns13ds6lJ7BcIY=
+X-Received: by 2002:a17:90a:da86:b0:2ee:ab27:f28b with SMTP id
+ 98e67ed59e1d1-2f783295929mr10773071a91.7.1737541323593; Wed, 22 Jan 2025
+ 02:22:03 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250121191432.1178734-1-abdiel.janulgue@gmail.com>
- <20250121191432.1178734-3-abdiel.janulgue@gmail.com> <CAH5fLgjVjAVwR+osD4ajKfyewdWPpkSyV+oy=ppaCULUdPqB7w@mail.gmail.com>
- <fb2216a4-306b-4635-bc13-10647e7cdb93@gmail.com>
-In-Reply-To: <fb2216a4-306b-4635-bc13-10647e7cdb93@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 22 Jan 2025 11:15:37 +0100
-X-Gm-Features: AbW1kvYHOBRoQQbvT-ruGTUBikUWtGUaNvOBrtbEBcj6jH7COvdJOr5ZaYwH_yE
-Message-ID: <CAH5fLghO3eh4VWjSiwX4bqORBMC8JF6RyDQM2eCPg6On5Ti9WQ@mail.gmail.com>
-Subject: Re: [PATCH v10 2/3] rust: add dma coherent allocator abstraction.
-To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, daniel.almeida@collabora.com, 
-	dakr@kernel.org, robin.murphy@arm.com, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Valentin Obst <kernel@valentinobst.de>, 
-	open list <linux-kernel@vger.kernel.org>, Christoph Hellwig <hch@lst.de>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com, 
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+References: <CANiq72nNsmuQz1mEx2ov8SXj_UAEURDZFtLotf4qP2pf+r97eQ@mail.gmail.com>
+ <20250118.170224.1577745251770787347.fujita.tomonori@gmail.com>
+ <CANiq72kqu7U6CR30T5q=PvRam919eMTXNOfJHKXKJ0Z60U0=uw@mail.gmail.com> <20250122.155702.1385101290715452078.fujita.tomonori@gmail.com>
+In-Reply-To: <20250122.155702.1385101290715452078.fujita.tomonori@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 22 Jan 2025 11:21:51 +0100
+X-Gm-Features: AbW1kvZtr-GpB0BuJvOVkB_nIn9G6ofj7pyHWwEpCX8sJW0HL4pAPgVqzfiVwFI
+Message-ID: <CANiq72=xwhu21YJ+HEXhF1Uk_t1tuffphRgF4wAGiTc-JYcJVQ@mail.gmail.com>
+Subject: Re: [PATCH v8 4/7] rust: time: Add wrapper for fsleep function
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com, 
+	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
+	aliceryhl@google.com, anna-maria@linutronix.de, frederic@kernel.org, 
+	tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, 
+	mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com, 
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org, 
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 22, 2025 at 11:14=E2=80=AFAM Abdiel Janulgue
-<abdiel.janulgue@gmail.com> wrote:
-> >> +    /// Returns the device, base address, dma handle, attributes and =
-the size of the
-> >> +    /// allocated region.
-> >> +    ///
-> >> +    /// The caller takes ownership of the returned resources, i.e., w=
-ill have the responsibility
-> >> +    /// in calling `bindings::dma_free_attrs`. The allocated region i=
-s valid as long as
-> >> +    /// the returned device exists.
-> >> +    pub fn into_parts(
-> >> +        self,
-> >> +    ) -> (
-> >> +        ARef<Device>,
-> >> +        *mut T,
-> >> +        bindings::dma_addr_t,
-> >> +        crate::ffi::c_ulong,
-> >> +        usize,
-> >> +    ) {
-> >> +        let size =3D self.count * core::mem::size_of::<T>();
-> >> +        let ret =3D (
-> >> +            self.dev.clone(),
-> >
-> > Calling clone here increments the refcount, but you don't want to do
-> > that since it leaks a count.
-> >
+On Wed, Jan 22, 2025 at 7:57=E2=80=AFAM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
 >
-> You mean return the raw *mut bindings::device instead of ARef<Device>.
-> Otherwise the compiler complains not being able to move out ARef<Device>
-> because it doesn't implement Copy.
+> Agreed that "the C side" is better and updated the comment. I copied
+> that expression from the existing code; there are many "kernel's" in
+> rust/kernel/. "good first issues" for them?
 
-What I mean is that you should return an ARef<Device> without
-incrementing the refcount. I acknowledge that this requires unsafe,
-but it's the correct semantics and the unsafe is a consequence of
-using mem::forget.
+Yeah, will do.
 
-You can write `core::ptr::read(&self.dev)`.
+> You prefer "[`fsleep()`]" rather than "[`fsleep`]"? I can't find any
+> precedent for the C side functions.
 
-Alice
+There is no preference yet. It would be nice to be consistent, though.
+The option of removing the `()` in all cases may be easier to check
+for than the other, though the `()` give a bit of (possibly redundant)
+information to the reader.
+
+> Yeah, simpler is better. After applying the above changes, it ended up
+> as follows.
+
+Looks good, thanks!
+
+Not sure if we should say "Equivalent" given it is not exactly the
+same, but I am not a native speaker: I think it does not necessarily
+need to be exactly the same to be "equivalent", but perhaps "Similar
+to" or "Counterpart of" or something like that is better.
+
+> Ah, it might work. The following doesn't work. Seems that we need to
+> add another const like MAX_DELTA_NANOS or something. No strong
+> preference but I feel the current is simpler.
+>
+> let delta =3D match delta.as_nanos() {
+>     0..=3DMAX_DELTA.as_nanos() as i32 =3D> delta,
+>     _ =3D> MAX_DELTA,
+> };
+
+Yeah, don't worry about it too much :)
+
+[ The language may get `const { ... }` to work there (it does in
+nightly) though it wouldn't look good either. I think the `as i32`
+would not be needed. ]
+
+By the way, speaking of something related, do we want to make some of
+the methods `fn`s be `const`?
+
+Cheers,
+Miguel
