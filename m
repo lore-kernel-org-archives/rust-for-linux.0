@@ -1,124 +1,98 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537E74EB38;
-	Wed, 22 Jan 2025 08:57:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054521F7572
+	for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 09:09:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737536274; cv=none; b=Lrf6ZDrTyVjaBR3RsIULOMC6uMGiRa4BGVZ3CBbcbNqd17pQAvOO6Idtclzx7BXQLp0HcHSGfL6+e91urwTqt2A5JdJQPt956rPiSq4LPvXDbTSJ3KKmrO3O55GS6efoTKS0I8R22Ws7naogsLp7oB7kzlGCfajhzRPbgeIUTtU=
+	t=1737536994; cv=none; b=IM0LFWOXBep1JzgqkkfmzT+VuW/b4rqs4QBU32khID6P7DDwaGT1teWFMO24e59REsII10s1Wv0QgZRH1yMvoYpwWKGLHjd2DrKtvC7xTpZ4fC7esY/UlQtaI2FKkdyzWcky0Lf2pfdelAHDLO7hTR6/og635Vxdyt5LvT6Q/EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737536274; c=relaxed/simple;
-	bh=sU298wtMU+gMgPfWkGzp++POQ1xOAgiZrBAXE8FB4LM=;
+	s=arc-20240116; t=1737536994; c=relaxed/simple;
+	bh=2WAv1fZWi6FSo+sNAeuewqpsZCPg9rKwCFH+MiQwAa0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FLPGsxf9Hr0VdE+4jPjNo1rjA5NRSPqpiHv8D7v3AJIBOvr749DCkz9/Z7p9seR/32gFs0/rBUWGOSwlkPMd0WxRAgNaEbSW8V6Vdae82Y3oBPmpQ4zPSuzDOs+gdlR8+lkEsPW3U4b31g1mO1LbGNFZ5QT+DrMSfhsYuiF9ESo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B/trVRql; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=c6dQ7CkvWR6BQh8FphvXkAn+kvuJ46X8xr+Gg28zt7d9GVboqF2ojK4+OXO4SDlQG99qtZf4VdI6BnidjLlTjc0YNl1dCLglHVM1w9Dy7jPXJoYAbs1h9eM0I6cZrKWdCiDvbGtvqrcB1GZXGg63LLjx9LoS2KAa3/gf4Keriog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GvJ8v8B+; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B/trVRql"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2ef6ee55225so1363133a91.0;
-        Wed, 22 Jan 2025 00:57:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GvJ8v8B+"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-385e27c75f4so5490067f8f.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 01:09:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737536272; x=1738141072; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1737536990; x=1738141790; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=o+4rWF4CG+aBfHBC/5V8BT3aj9TO/uoTwJ8l9BOGJeM=;
-        b=B/trVRqlu3PV7QW8hT8F/szFSxqr2m7tnclTsgwxpB4823EAEKaXFpek/FXWriJ9JV
-         XuNtG+AE1MULW4aUBT5zFJ91hl0lm/xv6VOfT4gyEKwHrbArbj6/x4uqDrLmPyFjcS5R
-         GkTr2Ia4go+TlBy9dtmwHRZm3W4G9eAIPnqmZEeSOV5Ee2Y4WMXsopePAkgzaymIXcLH
-         QVBwOAFbHVrMGUxRP4FcNCR512ZDiV2hRPnTr/Rnhh5DraubbIMpwH/oUGc5ssbMdZvE
-         dcD82nrMfWT4unAfxDIJLU9tjOTAYMyk/knIt/NLy2Pa2GgOFcANp1rQixrQnkd/fACY
-         4dpQ==
+        bh=LAtNzABgivJyMHl67AxVlrKNNT4N7NGsuX2tPsVc4oE=;
+        b=GvJ8v8B+KVs9l2arSL40JghPq9t1jPA7ud7MweEn2X1a4Ygmul6MbAJMLEN1hp+v8Z
+         lbJm5DyMzzlLkZ0f9bn2ioz5Hm85rYfuupCjLY40MEDlFSGeKC/X9yMk+pYiVXXjoTrO
+         hX12mG/Sdh/4dRV6ZbrudUa+4OiSc2KnuOlMY4jWC8Wh9egEYZ2f56ngBuLIJ2o41c4j
+         6rcVlmZa609wsqxlkF24mAMD+QISv03nj8XfBgmuNcnVinkzsSwYa+3djo5CIe1ZMGkx
+         gAIXJQ6VghWq6sh1dTho2TOK/VWoFtmZv9TI20pNYTgWYHlEymIA8V663JXp+g67q36L
+         JYrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737536272; x=1738141072;
+        d=1e100.net; s=20230601; t=1737536990; x=1738141790;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=o+4rWF4CG+aBfHBC/5V8BT3aj9TO/uoTwJ8l9BOGJeM=;
-        b=YtawMkn5/CipssGTr3k5r3B/6rpWjBREQRwsjaI0qhBM9xQK15rw1Qey4+2OJ+jVZB
-         L3sG/DriHKnJMHsX85ahrRBLDwyLo1iy1npr0t8YiVDQBylET+zxx0nMyDlu94i5fcID
-         2pCHaoPSXHr0GODCp4oKum39qlKWHMDPwXsy/N6tca19efNTBvYdNKKFUpRnRB6xgP1H
-         Zq/vzyGe1JwmDXT9CcAKSH8KtUSFvUpg8mPicMwJHw1LCLneuPKJDijpFB8rgfZVIIxU
-         Oxa6T7kxkga8+ZCYhEetsDF4SdzoIXqmu2r9WAoU17A2bTTA/04CvIb8AWmcCsRZd7XQ
-         CeLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVcbTalkk8kOWUwaFRrg+ZL9ZNLcILHW/TR7eMgauRNH6XVAHR76dQcxyKlH0HurSlrkO81OwAO3aHbIAgYjfk=@vger.kernel.org, AJvYcCWDQbo8D71w/oC+ysEsgkZGULATRx8so9yxi/hgUkEyrqEBVtau9jljDPXclkCzjm71iS0Kp+c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhZ9x1bqSrImzcDW/+L7UbOEgFQ92V1Fncbr3lEI5NS8/7cQjV
-	uhx9PdtINmzWOza/yMmFRauyzHI6vv43a62ujTEXIzkrg89zFu+BdT0HIt/50yrFggmVV84cF73
-	PAe810PPNC/9DzoRjPjHDqgXkzNI=
-X-Gm-Gg: ASbGncu+sgQLhKoj9OrT3nNM/9akHWfWtdJBhlfIKH+HNRIbsgg5qcFo6gNpcKKt9qw
-	DznrWWBg3COrcRCqWPInXBnp2Ct5OIhjGVmXpb7Huo6vQ7nzGY+o=
-X-Google-Smtp-Source: AGHT+IET9r8JSmss5wncs58ue1ECkJgLujCKETsp3piHO3mpOMSewKO+YqHU7WDcXQ4s/4pzCBVFG86fXm1njs0O9E8=
-X-Received: by 2002:a17:90b:5387:b0:2ee:f59a:94d3 with SMTP id
- 98e67ed59e1d1-2f7e3e0fcf1mr1749187a91.0.1737536272516; Wed, 22 Jan 2025
- 00:57:52 -0800 (PST)
+        bh=LAtNzABgivJyMHl67AxVlrKNNT4N7NGsuX2tPsVc4oE=;
+        b=dhKCjEgx5aasEhDDrJWpJqgq0bVDcNulTC3YLFSY1+fRVlvpPUdA59RLFpEuBSNaMd
+         R3wqbSIgJzOWFKi0JIAhCXkn4Q8QHXNk+fD8VuYv6Ux/J8U3md6d4+yYUZbGg1jTiY/j
+         G2LJsW9WopV5m35Q9Jhy8VFQs7CGgy8NDoWJoHJEUUa0rkuotc4MguX+iPxBDshdEWR9
+         MykGIBSZFS39AThtzG8axdhLs2B0BVjQiT5jjlEZo5TlvUiZYOkghuzXn1HiqRUFZ/BO
+         4Ywr/Z5Wy5PpPlUQAbcEnqCXt+5XCkfFbX2w29eAj5KStNSmplHe4F5m92z33bPSzK4v
+         YdWA==
+X-Forwarded-Encrypted: i=1; AJvYcCXTXQVWXOXQQvLFSzTQgaWQHdNTtBJsligUjgXhKcT2xaIA1IVXX0po/7F5N9nW8AwXxmANWw/yIXT9lXjHbw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZOMW8b/tYmz3kJ9vxzmcNzOWulA9zROERkGFdbCjuB25bSiZD
+	LpXQDFojzMheM0axOfwd8tnZNuqyFhwN1tPfvkI+SJv4fJkxRaqIoviTDvPBx6qofAyipf1xV2t
+	xl+yQ2fmxmUvNaJU3+nGNomwp6P6Ld3pmFCNW
+X-Gm-Gg: ASbGnctHIcSaQ2WIlXZAgr9zaJdHs/j2O/eo3m966v9uXZlaerKIdL0o+ohwuzQW8NA
+	h9G16BQoJvoL6NDZ8hazjo/DigCoZRT1163os+yNPhR4SxLlwvSerT0UIMUuMKU4OcEbmVpwZID
+	wxUVmK
+X-Google-Smtp-Source: AGHT+IE8sISUJ0sbUjuJ5vU8uBRJi5Fk4KbIbU8O3jiSMDOjh27QXtxILwzagCqnqCojBFBUcdB3Q2ffYFEPyhRlpFo=
+X-Received: by 2002:a5d:6d82:0:b0:388:c61d:43e0 with SMTP id
+ ffacd0b85a97d-38bf59ef478mr21993524f8f.48.1737536990282; Wed, 22 Jan 2025
+ 01:09:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250116044100.80679-1-fujita.tomonori@gmail.com>
- <20250116044100.80679-3-fujita.tomonori@gmail.com> <CANiq72=kuZcLCgsSkKa6MrYCJY9UsWSV9VLvj2TcVOQEf0Cnmg@mail.gmail.com>
- <20250122.163728.1738626154854951916.fujita.tomonori@gmail.com>
-In-Reply-To: <20250122.163728.1738626154854951916.fujita.tomonori@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 22 Jan 2025 09:57:40 +0100
-X-Gm-Features: AbW1kva7CLhxOl4_GYMA5C5vdZCSXsUOyMdUnIwhKy-TXUNa6kTCcW4ZlzmNa0A
-Message-ID: <CANiq72nL8JYDZx8xZoUzh9KdYWCeMZ28GWAoTOSUqRN2WT8Ovw@mail.gmail.com>
-Subject: Re: [PATCH v8 2/7] rust: time: Introduce Delta type
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: linux-kernel@vger.kernel.org, andrew@lunn.ch, 
-	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, hkallweit1@gmail.com, 
-	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
-	aliceryhl@google.com, anna-maria@linutronix.de, frederic@kernel.org, 
-	tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, 
-	mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com, 
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org, 
-	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com
+References: <20250121200934.222075-1-ojeda@kernel.org>
+In-Reply-To: <20250121200934.222075-1-ojeda@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 22 Jan 2025 10:09:38 +0100
+X-Gm-Features: AbW1kvYgEPke0Mm4asQAeuWGL9gs90635G5kOjS1vZYCD4ylQc7U1G4SnIpfKoA
+Message-ID: <CAH5fLgizcjPgnQ0WcZ6q-pjzxaJT53cwsFh0r==m6pmnfYObeg@mail.gmail.com>
+Subject: Re: [PATCH] rust: init: use explicit ABI to clean warning in future compilers
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 22, 2025 at 8:37=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
+On Tue, Jan 21, 2025 at 9:10=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
 >
-> Yes, please create such. I'll add more docs but I'm sure that there
-> will be room for improvement.
+> Starting with Rust 1.86.0 (currently in nightly, to be released on
+> 2025-04-03), the `missing_abi` lint is warn-by-default [1]:
+>
+>     error: extern declarations without an explicit ABI are deprecated
+>         --> rust/doctests_kernel_generated.rs:3158:1
+>          |
+>     3158 | extern {
+>          | ^^^^^^ help: explicitly specify the C ABI: `extern "C"`
+>          |
+>          =3D note: `-D missing-abi` implied by `-D warnings`
+>          =3D help: to override `-D warnings` add `#[allow(missing_abi)]`
+>
+> Thus clean it up.
+>
+> Link: https://github.com/rust-lang/rust/pull/132397 [1]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Sounds good, will do!
-
-> You want to add the above explanation to all the
-> Delta::from_[millis|micro|secs], right?
-
-Yeah, I meant to add the saturating note to each of them.
-
-> Is there any existing source code I can refer to? I'm not sure
-> how "module-level docs" should be written.
-
-You can see e.g.
-
-    rust/kernel/block/mq.rs
-    rust/kernel/init.rs
-    rust/kernel/workqueue.rs
-
-(grep `^//!` for others).
-
-In general, you can use the module-level docs to talk about how things
-relate between items of that module. For instance, when I saw in your
-commit message this note:
-
-    Implement the subtraction operator for Instant:
-
-    Delta =3D Instant A - Instant B
-
-I thought something like: "It would be nice to explain how `Delta` and
-`Instant` fit together / how they are related / how all fits together
-in the `time` module".
-
-> I'll try to improve.
-
-Thanks a lot! (really -- I personally appreciate good docs)
-
-Cheers,
-Miguel
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
