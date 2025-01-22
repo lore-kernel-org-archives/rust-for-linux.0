@@ -1,98 +1,102 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054521F7572
-	for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 09:09:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0274170A15;
+	Wed, 22 Jan 2025 09:12:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737536994; cv=none; b=IM0LFWOXBep1JzgqkkfmzT+VuW/b4rqs4QBU32khID6P7DDwaGT1teWFMO24e59REsII10s1Wv0QgZRH1yMvoYpwWKGLHjd2DrKtvC7xTpZ4fC7esY/UlQtaI2FKkdyzWcky0Lf2pfdelAHDLO7hTR6/og635Vxdyt5LvT6Q/EY=
+	t=1737537123; cv=none; b=gDzgqtbD+QLWbkPkGfLajP2ogd7wtCsBIRUWxDCHlwCYPfjIluhwYTLavj/xZltepRW4O6fSv6Rya40hnScT8jywUI5km2I6scDSw3oVly7r9Wln0Y3PAvi/XsGCuL1kTA6ob2cuXfMfHSqG6PqbX1JbNaad8zO3lmoaH0vx9ME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737536994; c=relaxed/simple;
-	bh=2WAv1fZWi6FSo+sNAeuewqpsZCPg9rKwCFH+MiQwAa0=;
+	s=arc-20240116; t=1737537123; c=relaxed/simple;
+	bh=unpQXLZCEmfpZAq1qhXn9KX3puIZIAE2o9bp+zsRMUc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=c6dQ7CkvWR6BQh8FphvXkAn+kvuJ46X8xr+Gg28zt7d9GVboqF2ojK4+OXO4SDlQG99qtZf4VdI6BnidjLlTjc0YNl1dCLglHVM1w9Dy7jPXJoYAbs1h9eM0I6cZrKWdCiDvbGtvqrcB1GZXGg63LLjx9LoS2KAa3/gf4Keriog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GvJ8v8B+; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=cpilgSQm7WxD6fwIp/fjIQZOJuHdNZfYmI12SPHpZn8P0jhSTFjYU3sOaOl8oh8cUf5cPXRuu5leKI8wkATjqhA/FzGqnL4RpXBVJKNjypex9JKNFvJ1ZhINR+40u6pgC8qHCjYKPRe2PjkvPNw3PoZwtMdPu45DtjgEUcpZmLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CS7NfHfT; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GvJ8v8B+"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-385e27c75f4so5490067f8f.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 01:09:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CS7NfHfT"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2ee9b1a2116so1428215a91.3;
+        Wed, 22 Jan 2025 01:12:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737536990; x=1738141790; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1737537121; x=1738141921; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LAtNzABgivJyMHl67AxVlrKNNT4N7NGsuX2tPsVc4oE=;
-        b=GvJ8v8B+KVs9l2arSL40JghPq9t1jPA7ud7MweEn2X1a4Ygmul6MbAJMLEN1hp+v8Z
-         lbJm5DyMzzlLkZ0f9bn2ioz5Hm85rYfuupCjLY40MEDlFSGeKC/X9yMk+pYiVXXjoTrO
-         hX12mG/Sdh/4dRV6ZbrudUa+4OiSc2KnuOlMY4jWC8Wh9egEYZ2f56ngBuLIJ2o41c4j
-         6rcVlmZa609wsqxlkF24mAMD+QISv03nj8XfBgmuNcnVinkzsSwYa+3djo5CIe1ZMGkx
-         gAIXJQ6VghWq6sh1dTho2TOK/VWoFtmZv9TI20pNYTgWYHlEymIA8V663JXp+g67q36L
-         JYrw==
+        bh=unpQXLZCEmfpZAq1qhXn9KX3puIZIAE2o9bp+zsRMUc=;
+        b=CS7NfHfTrjbx2kvDhJpju3GpYEZbtVTtIcKixB0hVCasmlXXB4t/+w5AcYBJPmteUr
+         9NCWDHBpetel4n7LdUMvKx2qcpd3K0yeuQEym0glIQvt305d3XrP39xe8fN48e6Kfa0y
+         oVMJr2lm0BhJRXeoIS+Tet++Kbuhkq6lOgjh3TGp4gUJhI/Itoud+m3tkscxrFL10nel
+         FUUUyh+csVVqJN4OUo8X4kYOgnnK724LmXUXrqJCFzOR2zx6/l189R20UmKSP6N1MLBx
+         almFAydPq7BUMWKPMzPS8q0EYRGWfIp8UjdB9x2WKh/gUppx2ZajChQZ2EHoFanxn9Au
+         ewBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737536990; x=1738141790;
+        d=1e100.net; s=20230601; t=1737537121; x=1738141921;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=LAtNzABgivJyMHl67AxVlrKNNT4N7NGsuX2tPsVc4oE=;
-        b=dhKCjEgx5aasEhDDrJWpJqgq0bVDcNulTC3YLFSY1+fRVlvpPUdA59RLFpEuBSNaMd
-         R3wqbSIgJzOWFKi0JIAhCXkn4Q8QHXNk+fD8VuYv6Ux/J8U3md6d4+yYUZbGg1jTiY/j
-         G2LJsW9WopV5m35Q9Jhy8VFQs7CGgy8NDoWJoHJEUUa0rkuotc4MguX+iPxBDshdEWR9
-         MykGIBSZFS39AThtzG8axdhLs2B0BVjQiT5jjlEZo5TlvUiZYOkghuzXn1HiqRUFZ/BO
-         4Ywr/Z5Wy5PpPlUQAbcEnqCXt+5XCkfFbX2w29eAj5KStNSmplHe4F5m92z33bPSzK4v
-         YdWA==
-X-Forwarded-Encrypted: i=1; AJvYcCXTXQVWXOXQQvLFSzTQgaWQHdNTtBJsligUjgXhKcT2xaIA1IVXX0po/7F5N9nW8AwXxmANWw/yIXT9lXjHbw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZOMW8b/tYmz3kJ9vxzmcNzOWulA9zROERkGFdbCjuB25bSiZD
-	LpXQDFojzMheM0axOfwd8tnZNuqyFhwN1tPfvkI+SJv4fJkxRaqIoviTDvPBx6qofAyipf1xV2t
-	xl+yQ2fmxmUvNaJU3+nGNomwp6P6Ld3pmFCNW
-X-Gm-Gg: ASbGnctHIcSaQ2WIlXZAgr9zaJdHs/j2O/eo3m966v9uXZlaerKIdL0o+ohwuzQW8NA
-	h9G16BQoJvoL6NDZ8hazjo/DigCoZRT1163os+yNPhR4SxLlwvSerT0UIMUuMKU4OcEbmVpwZID
-	wxUVmK
-X-Google-Smtp-Source: AGHT+IE8sISUJ0sbUjuJ5vU8uBRJi5Fk4KbIbU8O3jiSMDOjh27QXtxILwzagCqnqCojBFBUcdB3Q2ffYFEPyhRlpFo=
-X-Received: by 2002:a5d:6d82:0:b0:388:c61d:43e0 with SMTP id
- ffacd0b85a97d-38bf59ef478mr21993524f8f.48.1737536990282; Wed, 22 Jan 2025
- 01:09:50 -0800 (PST)
+        bh=unpQXLZCEmfpZAq1qhXn9KX3puIZIAE2o9bp+zsRMUc=;
+        b=QEL+UQMfowZUJpxrhhFRWXolvDRFS8WCdEOSVq3FjWZcxIPwO3Q4gdlLCZpCOW2eL8
+         lj6BrBXqp8VJbiJYfHHmObRFw8I4HfWo4mv3l3Xt19gyBrTMavW6IS3ZPsJuqTc5QyHL
+         QEqnKXigCvirhd3LPRWDNg2xXEA5fxVymOq2esFpM+i0xqlQu3Rdp0VqvSHxYZF1Jjgr
+         uz/Zdq5egvYpMajpDnfHBZaGBNZNht/YZeWvp3zwIt+NqkuBPOrhHj8hPPyf/wBS3lYk
+         +GRBpXRubgbaZ4X3xTGNMw5SHKerYUnuUJJADVYn+cizWY1701mP33NgqOr6Y10jRoUB
+         gkAg==
+X-Forwarded-Encrypted: i=1; AJvYcCV54EHfH4goFGMBX4IW8vqYuq+N2nO/JE7jxTWMgg5VGysFOg/7EfFH/5nfR9KdEjSL7065HATR+ev5POqrrIo=@vger.kernel.org, AJvYcCWfoe6KQ06/1mFbW8aSBZ/SsLdoAH/EL9akMk49XE5gFCvc7Gmw2c9SQMT7vvUJL3xw4vBQM/YXFCjF3EE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRekXeJQ2zTDFYT4bPjp34Uu5QSej/2Ghf8Ij3hSM9ThEblCFP
+	dO8LoMhivaugZZgQf5HHtmOfcM1YwWm1xx8Abz4sjiU9RSGtS3ak8arv3A2k0fY/pHGBLU1y7sE
+	xsNRAAORAmuVANurT6hGeOiao/Y8=
+X-Gm-Gg: ASbGncsERVsMH/2L1UtrUhBUgD6pVfsqkN4RcEHnw3QXI7tOvphHGGmF7HtoKsg+ye5
+	fnM3G160qk6ueTq04udf2vmfsTGSN+GmSmkcMJpZcTU0evjvNT2Q=
+X-Google-Smtp-Source: AGHT+IGvMkzYeS+M2Zs4H6d+gUAbhzSisYgxxJR1o/VmxNkEUyZnwchVP5tpcBr73gssYBNEpIC06QEbT+e401xxRQw=
+X-Received: by 2002:a17:90b:3bcb:b0:2ee:6db1:21dc with SMTP id
+ 98e67ed59e1d1-2f782c82684mr11737161a91.1.1737537120928; Wed, 22 Jan 2025
+ 01:12:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250121200934.222075-1-ojeda@kernel.org>
-In-Reply-To: <20250121200934.222075-1-ojeda@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 22 Jan 2025 10:09:38 +0100
-X-Gm-Features: AbW1kvYgEPke0Mm4asQAeuWGL9gs90635G5kOjS1vZYCD4ylQc7U1G4SnIpfKoA
-Message-ID: <CAH5fLgizcjPgnQ0WcZ6q-pjzxaJT53cwsFh0r==m6pmnfYObeg@mail.gmail.com>
-Subject: Re: [PATCH] rust: init: use explicit ABI to clean warning in future compilers
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+References: <20250122-gendwarfksyms-kasan-rust-v1-1-5ee5658f4fb6@google.com>
+In-Reply-To: <20250122-gendwarfksyms-kasan-rust-v1-1-5ee5658f4fb6@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 22 Jan 2025 10:11:48 +0100
+X-Gm-Features: AbW1kvZclPiC4R5ekXjFPDnbpnTdPwVHT7PR2P2wCXbI868nl-kHoewZ5EOtNCA
+Message-ID: <CANiq72nr9vTgUF9u0uyypzprQrEpGv4qbOUJS_QgYbMZhTTrRQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: Do not export generated KASAN ODR symbols
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 21, 2025 at 9:10=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
+On Wed, Jan 22, 2025 at 1:14=E2=80=AFAM Matthew Maurer <mmaurer@google.com>=
+ wrote:
 >
-> Starting with Rust 1.86.0 (currently in nightly, to be released on
-> 2025-04-03), the `missing_abi` lint is warn-by-default [1]:
+> ASAN generates sppecial synthetic symbols to help check for ODR
+> violations. These synthetic symbols lack debug information, so
+> gendwarfksyms emits warnings when processing them. No code should ever
+> have a dependency on these symbols, so we should not be exporting them,
+> just like the __cfi symbols.
 >
->     error: extern declarations without an explicit ABI are deprecated
->         --> rust/doctests_kernel_generated.rs:3158:1
->          |
->     3158 | extern {
->          | ^^^^^^ help: explicitly specify the C ABI: `extern "C"`
->          |
->          =3D note: `-D missing-abi` implied by `-D warnings`
->          =3D help: to override `-D warnings` add `#[allow(missing_abi)]`
->
-> Thus clean it up.
->
-> Link: https://github.com/rust-lang/rust/pull/132397 [1]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: Matthew Maurer <mmaurer@google.com>
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Sounds good -- are those generated unconditionally by ASAN to check
+for C++ ODR violations and so we get them anyway or do we benefit
+somehow?
+
+I also wondered about whether we should search for an extra underscore
+(`__odr_asan_`), but I also see mentions of `__odr_asan.`, which I
+guess that is the reason you used that prefix. Is that right?
+
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+
+Thanks!
+
+Cheers,
+Miguel
