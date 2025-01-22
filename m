@@ -1,97 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E294D20FA84;
-	Wed, 22 Jan 2025 09:28:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D064420FAA2
+	for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 09:41:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737538124; cv=none; b=YIsfxSUm9w2PgXaQrkB03D/0uSvzT3nL6ON3AQjUOCX+F9UlIC0a74m08kzj9uLM//Mcsp+/8UgBH9gURdjDPvio34Fn00FG1ZrMSNDAgkHdI4r1C85EzGjYfJx/tvGW3h67WddZD6iokVcg1G+5LkIJUQxcXkqvGL6b5yexWx4=
+	t=1737538885; cv=none; b=GwT7g7mIEInpSQlowXM290e8Bfr3BIHMDniz4/DnRVD7xO1eHEPGjsMOrPcu/a1+LhP2iBgvPgdA8GzHsJ+uy6p1xNs2jOfN3L93AOLqYy+yoZtNjjv3A2+kFjeTbY//Oh3Q5NQDsaDu4qGtzf7YzeYcVQ1WYFh2DqeVboPEm28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737538124; c=relaxed/simple;
-	bh=lt6N8dgVDca/nFt1n9/jg+fuL/v9nIrY0csrfCq38p8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AD5Vbz5gPxuV/p+UGjzXJfrTgGs8pHGs/MHk2OYz4Pjf5qNl+AqgLzOtvCeOWZe+FsCqUVlvMPS8tdM9IlFMPIxif/9L+uF8Z6pSo2wHePtRQ2ojHeTJorQU+TedHHEgj0ZxVpD08leNhtkJgsWkb15P3c7mWjoGtEgOj3LpspU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LXljxsHt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1737538885; c=relaxed/simple;
+	bh=nOinp4enbjvBdkLomJeUdXpEITSxhW2oqbrDBlixIrI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kLdNwpT3WT/OR+VAe7uqO2ftXk9FdJskFFwDrmcBYDI2CieExKaNjn1qq+97ms/NUs+9cMeZAeHie/U8vqsqLNn/mV0zB9VIcim26DC6jpzpPQ+T7Lyb/xKNyvBqn/0TmJrIIqmWu/loQA4cVpGULENgTJEQTntp32caKCCaxOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GrBr90+d; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXljxsHt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0AABC4CED6;
-	Wed, 22 Jan 2025 09:28:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1737538123;
-	bh=lt6N8dgVDca/nFt1n9/jg+fuL/v9nIrY0csrfCq38p8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LXljxsHt2YxnuMaRShrwBfcQFANp4BbPWpQj9GMTha5Vo1R6d5ESXvKbvEE2BCsKy
-	 FEN+7A5lkWsXBWeUHkpDR1H/ZC+vb0vnH+Cd+gwpY6IhWEpewSDYXnlMRV+5OkA7Ab
-	 X2blin2pWb+59/YfEfTLydZeHeZk6bm/kb53WjIs=
-Date: Wed, 22 Jan 2025 10:28:40 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Christian Schrefl <chrisi.schrefl@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Arnd Bergmann <arnd@arndb.de>, Lee Jones <lee@kernel.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] rust: miscdevice: Add additional data to
- MiscDeviceRegistration
-Message-ID: <2025012243-myspace-woof-1d1e@gregkh>
-References: <20250119-b4-rust_miscdevice_registrationdata-v1-0-edbf18dde5fc@gmail.com>
- <20250119-b4-rust_miscdevice_registrationdata-v1-2-edbf18dde5fc@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GrBr90+d"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2161d4b820bso11987915ad.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 01:41:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737538883; x=1738143683; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lNv2Sj0lQnrSuScUtebhpjxMi+BynbZgNUKnbjw1tAE=;
+        b=GrBr90+doQ6/P0aFJYy4p5vQ/U4SQvrrCgGbok9pF5CJqpiaLsWVmma6Qdmq3PK2YH
+         eskOrMMFusxu4Jd8f0lXP0g2s9B/EX8+9wUie1E7XrL1hQg+MtjHNz98Vu1QmRCT18Uu
+         R1gSxrtRr/GUSAgloxvMnHbPJTuZfhgMvVyabEgNTriiI5VlaPjSWJ70VZDzTy0Z0pOP
+         qloLFLLPW681ZbKYIaBEIUQecbwzU/Dxa6bd1tRVGONl2hVEKEIL8kGn5RnB2Swdp42D
+         0gNDQYJ+eLAKDiuNJP+s51exl0pkR+9Hn2GoYaHaK4O9kNyPqpju6e0RJbQPnD/9IWLD
+         Cs5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737538883; x=1738143683;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lNv2Sj0lQnrSuScUtebhpjxMi+BynbZgNUKnbjw1tAE=;
+        b=CoVfCemol0oduI78xA6ay1UKPlsYiNor8DtPo9FK5Ce/BkaVL7t3/jSbXNf9xfxtXh
+         VcPsz0xkKlhsz3Ddyc/vmTxKQhmXNuoAdnYMsO44pDBR5N5O0yeysQ4IL2q57M8/rzy9
+         Jk6tD3/gfW0WRkYZIO9VuI0Sjm6IXxBmgAcODCj6IzMc0K6Tsxdazqv43NbUbUQoHugt
+         QDC0DpDlVATNpnNBuacUEBXnvlakM51rVnjeDy8rDg5slW4jlrQGREymu6EqsRjQ+qkV
+         3IMyujwLioKdY4AF8t4oj1ejz/qpsQfCqLOfdMJPWMZd6RIK1kgyJdOr9f37lhhZvxYw
+         6pKA==
+X-Gm-Message-State: AOJu0YwkY/kK3nMbn7SR2XPSdCGuIUZ40yGj9wbK+qJVbYQ2AHp7OCe4
+	vqjYCCFTCP+BPxXTjokbtCoDRTPHXDD1abtKtQ/lP9wKZk6fc+JNfbqLY0jfMTIiXNsuBScA2gc
+	ZNPGOUcn/tIpZQx8LBAz8bVUSYpw=
+X-Gm-Gg: ASbGncvAlO29CQCsKU1jnqFRIa3ffgJ8NbO5xcjDVZgGreLYgfxQYfqvMp9f2Cbi8Ep
+	5UTkSfWqgB8WntrTS8SFc4hsuZ22UQBUinJ+WWgTsw0CqoUKwnOA=
+X-Google-Smtp-Source: AGHT+IEMLJiXPInoepERngJZF3wm9f0KHA76EKVXo9yD1isZQB7fMHiNEP7tzPfxVtAx9ZZ0upGTGwZcwMzvnXlf5Og=
+X-Received: by 2002:a17:903:22cd:b0:215:435d:b41a with SMTP id
+ d9443c01a7336-21c3553920emr111680335ad.1.1737538883089; Wed, 22 Jan 2025
+ 01:41:23 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250119-b4-rust_miscdevice_registrationdata-v1-2-edbf18dde5fc@gmail.com>
+References: <20250122055347.597798-1-dirk.behme@de.bosch.com>
+In-Reply-To: <20250122055347.597798-1-dirk.behme@de.bosch.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 22 Jan 2025 10:41:10 +0100
+X-Gm-Features: AbW1kvYcXKGrjLonPzYcdB6M6xAP6IK42HyaIyRcSaPAftOrkU17IxgbHhV_6DI
+Message-ID: <CANiq72=o1ouGc4ScvDkz_uMnEfM+D47YQTMh0jTC=Go4tvQvkg@mail.gmail.com>
+Subject: Re: [RFC PATCH] rust: types: extend `Opaque` documentation
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, aliceryhl@google.com, 
+	daniel.almeida@collabora.com, gary@garyguo.net, boqun.feng@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Jan 19, 2025 at 11:11:14PM +0100, Christian Schrefl wrote:
-> When using the Rust miscdevice bindings, you generally embed the
-> MiscDeviceRegistration within another struct:
-> 
-> struct MyDriverData {
->     data: SomeOtherData,
->     misc: MiscDeviceRegistration<MyMiscFile>
-> }
-> 
-> In the `fops->open` callback of the miscdevice, you are given a
-> reference to the registration, which allows you to access its fields.
-> For example, as of commit 284ae0be4dca ("rust: miscdevice: Provide
-> accessor to pull out miscdevice::this_device") you can access the
-> internal `struct device`. However, there is still no way to access the
-> `data` field in the above example, because you only have a reference to
-> the registration.
+On Wed, Jan 22, 2025 at 6:54=E2=80=AFAM Dirk Behme <dirk.behme@de.bosch.com=
+> wrote:
+>
+> This is marked as RFC as it mainly takes some statements from
+> the linked discussion. Let us take this as a starting point
+> to discuss how we want to extend the `Opaque` documentation.
 
-What's wrong with the driver_data pointer in the misc device structure?
-Shouldn't you be in control of that as you are a misc driver owner?  Or
-does the misc core handle this I can't recall at the moment, sorry.
+Thanks Dirk for this sort of patch -- I think it is important to lift
+some comments from the mailing list and distill them into
+documentation as time permits, so thanks.
 
-> Using container_of is also not possible to do safely. For example, if
-> the destructor of `MyDriverData` runs, then the destructor of `data`
-> would run before the miscdevice is deregistered, so using container_of
-> to access `data` from `fops->open` could result in a UAF. A similar
-> problem can happen on initialization if `misc` is not the last field to
-> be initialized.
-> 
-> To provide a safe way to access user-defined data stored next to the
-> `struct miscdevice`, make `MiscDeviceRegistration` into a container that
-> can store a user-provided piece of data. This way, `fops->open` can
-> access that data via the registration, since the data is stored inside
-> the registration.
+The docs already list the requirements that `Opaque` lifts. What we
+could do, perhaps, is expand each bullet point on that list to mention
+e.g. how that is done and link to the relevant docs.
 
-"next to" feels odd, that's what a container_of is for, but be careful
-as to who owns the lifecycle of the object you are trying to get to.
-You can't have multiple objects with different lifecycles in the same
-structure (i.e. don't mix a misc device and a platform device together).
+To try to explain what I mean, for instance, in the bullet point:
 
-So a real example here would be good to see, can you post your driver at
-the same time so that we can see what you are doing and perhaps provide
-a better way to do it?
+    * The value is allowed to be uninitialized (for example have
+invalid bit patterns: `3` for a [`bool`]).
 
-thanks,
+perhaps we could add some of what you wrote here, or simply mention
+and link to `MaybeUninit`'s relevant docs on it.
 
-greg k-h
+The destruction part of the paragraph could also be there in that
+bullet point as another paragraph, or could be kept at the end of the
+docs as a separate note to highlight it a bit more, e.g.
+
+    Note that the destructor of [`Opaque<T>`] does _not_ run the destructor
+    of `T`, as `T` may be uninitialized, as described above.
+
+Cheers,
+Miguel
