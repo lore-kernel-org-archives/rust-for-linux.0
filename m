@@ -1,125 +1,122 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A18520E007;
-	Thu, 23 Jan 2025 10:43:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97CAE1C5F14
+	for <rust-for-linux@vger.kernel.org>; Thu, 23 Jan 2025 11:01:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737629039; cv=none; b=vE/g5xAjR/88nETWbC6G0lEEFH0xzZrKeYb2XxUug1A/vELtGkNCRkspWrf7ML41DZSZFvg6HS+Pxnrpf9NJSKobkAtGTl2vcVLkqYjmPXINpJUzMcxKMgYeu6Hws+sjrSsIv4Ak1/Q1XARXl4C4nQhuXh6w2F7jCYMCQGbpVCs=
+	t=1737630104; cv=none; b=eWp8RLCm4FZdjJGFgs45zwRsZkOQ/8zFEs22va5kzBZYF5dZeodkE+pb98Q83OLBixnJ7toLIt5zymR+ZH/yFlbqJ0SQTuGbjOn+JAtwp/ZlxwaOVhYW/SLIwSKjBqEu1uS60n/FPr4jGm1LCuvX5vzYZx9foifuwlOAp3rgB2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737629039; c=relaxed/simple;
-	bh=FNwkKYtNgY128tT+Ow8mqes42EjX7w9jGfWwlvxYpFc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DWpDFw4j3Ad02D1LhKrQnYd9NtqYKPTv6VIG2VXyqCx9ejMva2l3nSZ04TJTsEDpy5OEgPgoV/qzILWSGRw2QMeVAG2FAhnXPcI75uhn0/S/+mbOMLzHbfQTR1QzPiwTU2/qbutEQYQw+86tClKjqFHHiH3meN2414ia7rZluM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GNpHfz1O; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1737630104; c=relaxed/simple;
+	bh=afSa6vVTYCVxy0a759OZdbrn/OOM1dFbHbFatBL2nB8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=CLeNWbtCTd6aSHn5HUYoBatgVZF60JSvWcMt6CgceHutHegqNt9MegPe/qTj650A2QluJ5hhB67oHYeHmP8dQJ5lW9TYG7rjGi8bf8+YQtf1MRSBbAAzNXNKBzs3PEIzS5lEoX8iVZoRnjkMmBFgEM2Iem0+lIch/RsUi/HANM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YrNzOb6p; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GNpHfz1O"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5439a6179a7so837428e87.1;
-        Thu, 23 Jan 2025 02:43:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YrNzOb6p"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43628594d34so4324425e9.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 23 Jan 2025 03:01:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737629036; x=1738233836; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=F4s3hoprJz1ioDJMXWp67H1qXVNKWcKbvshZNe+AKy0=;
-        b=GNpHfz1OIA0yduVUxn41ONMoYhaX6JGKfX5AbfZWm0d75P+O3bKK8l7+JaHt3bS6CB
-         Jrns0+paHLk+zEqnvkqAtY7EzW4LNMdtoOwd+DJvwW3+h1cS6U6j7FA0bFblh1HoY+Ne
-         eLbEOI4kHmr5MoOOcHDKEFGKdZg3Xs3VcRRfeZbvUEbHkSmM5Kv6l1PdRe7dQsfkJJEx
-         5TKZ25lJixqmeh6rrLd6YcApYsBu3EgK2JcNoFFsfgL8uTgQHcMB1Gwq/zycqSSIeUuA
-         kRKsA+Y5AW7/gse5AumCVqvgaWbNopdj2+zcz96m129nl1RXILcg8uMnSltN+oLbiZpF
-         Emug==
+        d=google.com; s=20230601; t=1737630101; x=1738234901; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=C3V53K2yo0ts4re6IgjEJ3+fZBdG27oIjNbpXvm4O0w=;
+        b=YrNzOb6pQ7UGSAsVxTpoCuS7JmjDBnoYWCt7Kzeqg3/IPVUy3rt0RAB63JJwOEWUKa
+         twHNLv/GsxppEW4OTbTWVPH3dGs/wFcjDJd1DQbV0SKwhpwFdfDcCplKmj/rzvAzkCX0
+         Nhb+30z9qswYUd93VRmdfXpGTalG1vArmZEzXg6mYcaaq+3iBIOazvUgvF+w0OSEJCXv
+         gUGpbWA+/RWYooZhN6slYOXavrpA6xZCbr9h4mgoTuXB+PevfeHMu5fhN1FaNdMg9Xjv
+         nng5IFAi3VawzYsZNjnU+3oxpUAv+3SKYChaxuV9NQQLgK7yoD4vNmaZAmCCdgaaXtrn
+         vhKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737629036; x=1738233836;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=F4s3hoprJz1ioDJMXWp67H1qXVNKWcKbvshZNe+AKy0=;
-        b=UiT9dYlKEybatn2u04BA/HyfloRKnF1o20uypYVzhkrjx1yxfUl30D36BuWBBv4pif
-         /dXbDxN2Jvxp5M3gG1fSJjgpNhqG7tG8IvPzWdHeYGzrTOuaQ5eRHMA+N8WSJSm+AGjb
-         9KBRj/4Ff2hUlCxwngoGs4fKasBqTF5/5NOA5wMDonbJxkSzS6QcW7n2UzXc8eLDu80T
-         +zNTlbTubMLXunr+4IX5z4R+YCD3hl8oZ9DszhFkPNMoHOhQQlqFKduhWd7CAlGMDtdG
-         BZelMc8I4S9qbmQ37ynG5m06YokSmBZqYQ45yFkBkA8lw3uUyYWdH/3RmF4TW/nwC/RH
-         whZA==
-X-Forwarded-Encrypted: i=1; AJvYcCVfPi40qeCGFZllQz3vAGrPUlAc9/eSteXrTR/gg52RJOkUfqGJXV700bAneBi+4s6mwdzQiQ2XZ8jWGoU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAaSCwVn41AO4CWuDJIZLmlFmpI66ndT6568Nj89tKOfojhKFK
-	Kmqz/u5wmzgRejfo6Rt6wvGQICyczKhwzp0fet07Mt8dKIF0y0YVrsjLmQ==
-X-Gm-Gg: ASbGncvrgQuD+o5WvPfeoN5MMQarad7zWIBLB2N+e5GCb16pWtG+gVRp+itbGtoyF1o
-	7quITkIo/T1LQo6q6l5iSlKqcymudqqH2awH0WpFN65jLdPqrh2tam4QwWLmPfMlrS1T/OJqSPP
-	G9SFZYOeo6fZ8ScztIKZQhkGPPLWn3MbwlaSRY22cQ3H9rcz9yJd2Tjo4DdYH8pYXG1JFT+bXey
-	SeXbSwPAHGQGr4fYiZ9nloQ1a00HJ8Qpdc1OEN98ZVrzwfL9vh15Hje1wgMV3jASSVt3PtIm5lF
-	47ZrZzxMn6ckUL74Dw4IQjNFwOX01h4e+VpHomxA7wpruh0TMaM=
-X-Google-Smtp-Source: AGHT+IHcT7/RQNeQOAcU8PvDPDdbWBolwS3y95KvFPLTulFvDVapY73EUjtaarvuodv6G+7bXgxMBw==
-X-Received: by 2002:a05:6512:1044:b0:53f:67be:507 with SMTP id 2adb3069b0e04-543c2278880mr846834e87.16.1737629035933;
-        Thu, 23 Jan 2025 02:43:55 -0800 (PST)
-Received: from abj-NUC9VXQNX.. (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5439af0ea8esm2579873e87.80.2025.01.23.02.43.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jan 2025 02:43:54 -0800 (PST)
-From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-To: rust-for-linux@vger.kernel.org,
-	daniel.almeida@collabora.com,
-	dakr@kernel.org,
-	robin.murphy@arm.com,
-	aliceryhl@google.com
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	linux-kernel@vger.kernel.org (open list),
-	Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	airlied@redhat.com,
-	iommu@lists.linux.dev (open list:DMA MAPPING HELPERS),
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>
-Subject: [PATCH v11 3/3] MAINTAINERS: add entry for Rust dma mapping helpers device driver API
-Date: Thu, 23 Jan 2025 12:42:59 +0200
-Message-ID: <20250123104333.1340512-4-abdiel.janulgue@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250123104333.1340512-1-abdiel.janulgue@gmail.com>
-References: <20250123104333.1340512-1-abdiel.janulgue@gmail.com>
+        d=1e100.net; s=20230601; t=1737630101; x=1738234901;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=C3V53K2yo0ts4re6IgjEJ3+fZBdG27oIjNbpXvm4O0w=;
+        b=db4Qa15tGw3iFeeePQ1vDXQdYWP9i2cVnzN1jv+naRN8nyRvR1RpXK3FKv/d5ru7e/
+         esdbBWFXsdKdD1JtMTlRvr+LTXhK2WBn3YBJTUyaIYaa3HwTZVadzBc2++v5IG6VBwQs
+         aqR+SwoifK1POxr6ZZv6dQJuRVUpi6c/m7Q3xmF5yEpXFNcGQBmtiagYGQncjLHsqsiv
+         eV62camRr89ZkhG+frNYuI/+kTIkonKGSVU+YeX60Dx7SRfIeTYtWgOHwUaWzCbTTewo
+         pkXetKW43u4Ohw1zzWoIuAlkCwXpuQ1ZNXb9S0Jzrw5nwu+aeYDWiyt99OGt0I/XAKBQ
+         rbLA==
+X-Forwarded-Encrypted: i=1; AJvYcCUnQduNcEVysetZkbUKdVA0pRL7AAc/hrRWsbiVVMe0SLZtGwY6cu29q+vktFUt3wb7q7gxTZpCiFA6Ke27YA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9/iRsCLhS0r90jEy8lWLOionWzfY0t4Z0HTAze1llx9VwENZI
+	IkRDTWoG8NY3fyjVDn+bGan5XBQbwCF/Vuf2pOjOdWwHuKlI6+qqfzFERuwWERStyULAFSMT2xF
+	2HyFz1kjW/P/sXg==
+X-Google-Smtp-Source: AGHT+IFtE6vBVZVSoSVUzyHmdrnucpKjiNSMnaDXbbiwf5dmer8Jv7+nEpKpe3h45e1JGkhc78I5+Kc2nF3kyA0=
+X-Received: from wmqp4.prod.google.com ([2002:a05:600c:3584:b0:436:d819:e4eb])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:218b:b0:436:e751:e417 with SMTP id 5b1f17b1804b1-43891919404mr243572925e9.7.1737630101013;
+ Thu, 23 Jan 2025 03:01:41 -0800 (PST)
+Date: Thu, 23 Jan 2025 11:01:07 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAHMhkmcC/2XMQQ6CMBCF4auQrq3pDC2gK+9hXBQ6QBOlpkXUE
+ O5uIZqoLN9Lvn9kgbylwPbJyDwNNljXxSE3Cata3TXErYmboUAJAjJe3XxwnpfU34k6DkqWZAq
+ 1I8xZRFdPtX0sweMp7taG3vnn0h9gft8pVP+pAThwUewgzUFqTerQONecaVu5C5tbA368EoCw8 sgFhxJlZdI8z6BY+fTb48qn0Wut69IUugZpfvw0TS+JkkicLQEAAA==
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1181; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=afSa6vVTYCVxy0a759OZdbrn/OOM1dFbHbFatBL2nB8=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnkiGNSx1Vegt5nqiR9mUnv/9xJemAXCvSdLr5A
+ WY9UpOkiXyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ5IhjQAKCRAEWL7uWMY5
+ Rq71EACzrAFplG64OJigfO349KKQeNfpctwuB9I0KETf1bsN9wa+4QLVB9rQzoq/lioc3DAPu+R
+ KQ3qFGEZ5ISukctkQMwwLbGQezfpdWGXSypA/Fq6qI9b1S32Re9CHpdlb0OqS4mf9NVNH1xACOa
+ OqQ4LGHki7vzQt1pC7vtSF/KY4SyKI0/gPVdFcqfUpvc6t8LeQgdhHanGfhLg5180uitArbbbex
+ WU/gWKrQqNaFIUubsfDFc/DU+mZebDCPL3u6Xaz9lVzQ56SVXoTzvlSjBX5MmJ5SarYdpkPY6Ln
+ RTLptkZlh4zZPJh2JUm5+gx9xIO8SJp57HBHroceNUmYXdiD/EI9mmXWkCftV3wI/YeD6VGWsXg
+ QwZ53XtdyCINRDKC4rF2LuCjl6IXb43eIRgq2K/xGg0h7lo7+I8LZv98TTDeJNo70UZItfL41L9
+ YVAgcuRF/W1mdTdUZa7eGve2WXHzsK5SOdtUANSDjP8swuglKRrkDSOEvrl/NnidRiNAqpi2e8r
+ 6W0A+kQHjRPudShQMi3jvX3Z9/CpRlD2Av6QPA158qnxeCN5Pen5JLtPkGU9Bx3w4YkUxHxV2ta
+ wmESWm32bzYVr6039LJv1FcYJueH3vzpACwUrCGulDHYDWxFjIXiob8GhXU8vKwey0Y2gQHf22M fXfTUfqXXTnpJdg==
+X-Mailer: b4 0.13.0
+Message-ID: <20250123-cursor-between-v4-0-cb06698db94c@google.com>
+Subject: [PATCH v4 0/2] Make the Rust linked list cursor point between elements
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-Add an entry for the Rust dma mapping helpers abstractions.
+Please see the commit message of the last patch for more details and
+motivation.
 
-Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- MAINTAINERS | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Changes in v4:
+- Actually call the example functions.
+- Link to v3: https://lore.kernel.org/r/20250122-cursor-between-v3-0-aaafbd8af14d@google.com
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index baf0eeb9a355..4808c9880b3e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -6822,6 +6822,16 @@ F:	include/linux/dma-mapping.h
- F:	include/linux/swiotlb.h
- F:	kernel/dma/
- 
-+DMA MAPPING HELPERS DEVICE DRIVER API [RUST]
-+M:	Abdiel Janulgue <abdiel.janulgue@gmail.com>
-+M:	Danilo Krummrich <dakr@kernel.org>
-+R:	Daniel Almeida <daniel.almeida@collabora.com>
-+L:	rust-for-linux@vger.kernel.org
-+S:	Supported
-+W:	https://rust-for-linux.com
-+T:	git https://github.com/Rust-for-Linux/linux.git rust-next
-+F:	rust/kernel/dma.rs
-+
- DMA-BUF HEAPS FRAMEWORK
- M:	Sumit Semwal <sumit.semwal@linaro.org>
- R:	Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Changes in v3:
+- Fix `CursorPeek::deref` to use `self.ptr`.
+- Reword comment on `ArcBorrow` in `impl Deref for CursorPeek`.
+- Link to v2: https://lore.kernel.org/r/20250121-cursor-between-v2-0-1b24cd377618@google.com
+
+Changes in v2:
+- Extract insert_inner refactor to separate patch.
+- Make move_next/move_prev not wrap around.
+- Add some examples.
+- Link to v1: https://lore.kernel.org/r/20241025-cursor-between-v1-1-08913714aae5@google.com
+
+---
+Alice Ryhl (2):
+      rust: list: extract common code for insertion
+      rust: list: make the cursor point between elements
+
+ rust/kernel/list.rs | 440 +++++++++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 347 insertions(+), 93 deletions(-)
+---
+base-commit: ceff0757f5dafb5be5205988171809c877b1d3e3
+change-id: 20241016-cursor-between-154bed859e27
+
+Best regards,
 -- 
-2.43.0
+Alice Ryhl <aliceryhl@google.com>
 
