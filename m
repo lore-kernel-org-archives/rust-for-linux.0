@@ -1,206 +1,114 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72D81D31A5
-	for <rust-for-linux@vger.kernel.org>; Wed, 22 Jan 2025 23:54:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C635F1C01;
+	Thu, 23 Jan 2025 00:12:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737590071; cv=none; b=ksA2LRcjAmsS6Wltcrd5YR3gKka1xTYUSEQJ+1ENcwcUp9wnl59FPoM4Z3PBJ2dOAyhpvSbTv6Ow95cOQO1lhR59+8FTGn42RbyI747ZZBMtnmXxH9qIv1gmtieVPhWhrGGqK2iUJtYwtnGK56UkumN2eFDhgsKCKhJe10bmEBk=
+	t=1737591153; cv=none; b=bsKkPrxXwpvAMN5ZZ52WYJvSzeqeuFNuwNd4O1kRRt1Qi13LgELZPGXLEOlknQS0+1txrvizzLIbpw7Ikn7kPOuZNQmduXVZ17qGK5zIqba5K6b89IED1FKMdkth3POwFMQhcCQtSgY9x3mmV0JNdVek1fqyeMp7swHr25lCuBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737590071; c=relaxed/simple;
-	bh=k+2WxuFUkJb3ygcg18Fn5sNX0oS0EgYOnFVMYFHzHjY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ba67BXtGoYJjzVSiyAaeyq1MLslZ9ErWESWeQ/BZGubieFnCbF1Y9bW4SkXDPFWmLVyAXCgHA8ZxdpeA7eoqXajQlLVQlKkAwVfVpUEniJJOLl1P0EEJG/+ILJPCUvxxvg9HVf/BJ4TR5pDJsLT/uBFp6xs1YjEHMtDudE7stSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IaKwuhLw; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1737591153; c=relaxed/simple;
+	bh=X1XECz49qWcxWeG/GB6BNF2gmFTz+ylWBz8BE0QNiJA=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=rhehvGBbWg5Tiz8BCh7OLpJqO0mWTlUOpv0/ymico8yDDPbLUDKnOPKNErUZ794SEcAuAu6vhyZ8dRQ8c6qQh7fNZduJ9z1XbP+s3/SNH7tzTOiHj3OM76aSzYdf/vH0wqLJmBEOVxUQy51vB0AWs2CaJkWp0mi1bsxQkzpPHxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N9YrP5XU; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IaKwuhLw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1737590068;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qn5VPfgtJ4t4Y4+cqcL97GvZXixeJcYoIyEVffAkuws=;
-	b=IaKwuhLw/oQX/M9nE9R0uzi8YViFBUORLdhVbC3dM8tujciGT9/pvVajxuWWHAovqHN1tL
-	s3BPDt6BCbLKKtVNjTk7tUAbgTr15vWqINZlIODUv9cZvsc+VPbzQMdINpCu2SssPYLwJL
-	zcLUZrUe2VZWClmTSv+RZswX57EPXtY=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-584-z2VU-b20N-egqKu72yEhTQ-1; Wed,
- 22 Jan 2025 18:54:25 -0500
-X-MC-Unique: z2VU-b20N-egqKu72yEhTQ-1
-X-Mimecast-MFC-AGG-ID: z2VU-b20N-egqKu72yEhTQ
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1F3091956080;
-	Wed, 22 Jan 2025 23:54:23 +0000 (UTC)
-Received: from chopper.redhat.com (unknown [10.22.88.57])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9107319560AA;
-	Wed, 22 Jan 2025 23:54:20 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mairacanal@riseup.net>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>
-Subject: [PATCH 2/2] rust/kernel: Add platform::ModuleDevice
-Date: Wed, 22 Jan 2025 18:49:22 -0500
-Message-ID: <20250122235340.2145383-3-lyude@redhat.com>
-In-Reply-To: <20250122235340.2145383-1-lyude@redhat.com>
-References: <20250122235340.2145383-1-lyude@redhat.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N9YrP5XU"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-21a7ed0155cso5004205ad.3;
+        Wed, 22 Jan 2025 16:12:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737591151; x=1738195951; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Piw58QD9uf+j8b2ua/HAZ6tweWQTcyMdimhsEJ9IrPo=;
+        b=N9YrP5XUgxBNZhfBm3iMhwivi23ul1HGApK7C197VOyXH3JZXHm2znSRoRk0z/geQI
+         hx7ZT/pLn+SO4D2mqgw7hmqXOltuYWw4vnONij5bZrkccgWmd29AW839HQKxLWSOc02A
+         q19+8wBgHdmbS+PkH6RQkpfnw/0duutoDgJ+SCXD/I+HYpH2P6++7E+Hl2FWBBmaQW94
+         Il14U/dkXY73FBQd4Eme93yRWCoPjgJ6uhhERcpB67P1Nb0DF8nAk1u4ARWDpr1oFVMP
+         3xceirbu2h/Q16I/hkDYFqSN9NtjnMfQ2UPhmZCpM3T8rfHCiSWQAbQ02/sJC6ZhI33T
+         vCVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737591151; x=1738195951;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Piw58QD9uf+j8b2ua/HAZ6tweWQTcyMdimhsEJ9IrPo=;
+        b=O0jBu83J3fQfujDoqEsLj6BKsFHcDTRFLLidSiZhUpDXjOE31LdyF4B28yiWxS0Z9F
+         AQZjCQULHeShPye486EDumdx5DBpWpVtixEbUpPMaKqmf+s2AUhoNjGkfs72FGsBa4Xw
+         W52R4pBwKpDHNKGGesjC0HAPy94MALmueNB7JMORuV6j83kaQQ6IKR2WfQqBMsR6VpKE
+         s0MjQ8m+HmAPEFCA25r28f0uyjKGR0NAGU3q/kXyn7x4xEFcdLqXZgenG9mO1UJiH4o7
+         6LmY6ufqbEDtq+6Zvmt2VgWeiG09tdJ1S9PDcQtTFHyYGcMSGPXxekZJB0LTw3JrDalk
+         QEyw==
+X-Forwarded-Encrypted: i=1; AJvYcCUxxXYAJ0gEgcWSqvm2cAXJ6Fu47dAxYFwNwsR5kIoRgAukKoy9Pn3bAE8F0qvLW/eepyXW4LhriJlNv8/38DA=@vger.kernel.org, AJvYcCV1ShBMSZBAaekhzZgF3xl6XwwQemFJkVOT1lnalDkI/NbTQrRCfkVoDW5NZGZFN7h4ss3vbWsIj/WsaDw=@vger.kernel.org, AJvYcCV6hWo87QlTyHTae8PivHzYtZGihgvm8Iw64cNX1XlhxCDMCF0LFBQbT2YJqnaGdguDsJiL3pns@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLg9eTlWQKjhhdOLRoCUYwIkii9jdCMLrBEnHBa/guN7L1J8F6
+	c4FpBQH1NhfFzKwtC8VVRzv7mTWkmQy5Fl6E5iUe2b+QEicAW7CM
+X-Gm-Gg: ASbGncuJGyqXSRk8Tfjuuqb2rNr7iKbonX4DrrtXvd/pF7VJWAVJjU+n1jaBCvjB9C7
+	BMK5GhUS5r10Yeovg/s+uaO3aWFk637YIhx+/s4g9voEWP2cfuEIa7sPvvyVDVGuX5nO9HowAxa
+	q03yCX/E8J8TG8zmOmUeIzvhZbeI5UPjJIl9SwGgfXcz/emqnwPh2rBtOopo6Zl9HOEzXiOMHjl
+	PcYDoT3ZzN8eeqfm3vb4l2nRK9bv6pyz9VHOTh8ef8ifi+Z1PKbMnJd1EiuO6ZR2KzuMuVE0n8X
+	RA4I1Jj9g5VcjSrgA4/rUAcZ9Zpe7ieBMof0o/9TP1vaciLyp6c=
+X-Google-Smtp-Source: AGHT+IFbzEzDepffLCJBduNjJCrXd9MQqm9y1MzMSu+HJp+DT1OxEewkjFhjOhEzH9VOMpb0jb0NKQ==
+X-Received: by 2002:a17:902:c94a:b0:216:2abc:195c with SMTP id d9443c01a7336-21c352dd6ffmr323373965ad.7.1737591150970;
+        Wed, 22 Jan 2025 16:12:30 -0800 (PST)
+Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21c2cea07e1sm100915785ad.19.2025.01.22.16.12.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jan 2025 16:12:30 -0800 (PST)
+Date: Thu, 23 Jan 2025 09:12:20 +0900 (JST)
+Message-Id: <20250123.091220.883080907537783935.fujita.tomonori@gmail.com>
+To: aliceryhl@google.com, gary@garyguo.net
+Cc: fujita.tomonori@gmail.com, miguel.ojeda.sandonis@gmail.com,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+ bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com,
+ anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
+ arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
+ peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
+ dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com
+Subject: Re: [PATCH v8 4/7] rust: time: Add wrapper for fsleep function
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CAH5fLgiEn27VMUfrXcidu0rUpM7MPZVCOjywa-vQBO7dOdQrRQ@mail.gmail.com>
+References: <20250118.170224.1577745251770787347.fujita.tomonori@gmail.com>
+	<20250122170537.1a92051c.gary@garyguo.net>
+	<CAH5fLgiEn27VMUfrXcidu0rUpM7MPZVCOjywa-vQBO7dOdQrRQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-A number of kernel modules work with virtual devices, where being virtual
-implies that there's no physical device to actually be plugged into the
-system. Because of that, such modules need to be able to manually
-instantiate a kernel device themselves - which can then be probed in the
-same manner as any other kernel device.
+On Wed, 22 Jan 2025 18:06:58 +0100
+Alice Ryhl <aliceryhl@google.com> wrote:
 
-This adds support for such a usecase by introducing another platform device
-type, ModuleDevice. This type is interchangeable with normal platform
-devices, with the one exception being that it controls the lifetime of the
-registration of the device.
+>> > >> +    let duration = if delta > MAX_DURATION || delta.is_negative() {
+>> > >> +        // TODO: add WARN_ONCE() when it's supported.
+>> > >
+>> > > Ditto (also "Add").
+>> >
+>> > Oops, I'll fix.
+>> >
+>> > > By the way, can this be written differently maybe? e.g. using a range
+>> > > since it is `const`?
+>> >
+>> > A range can be used for a custom type?
+>>
+>> Yes, you can say `!(Delta::ZERO..MAX_DURATION).contains(&delta)`.
+>> (You'll need to add `Delta::ZERO`).
+> 
+> It would need to use ..= instead of .. to match the current check.
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Co-authored-by: Maíra Canal <mairacanal@riseup.net>
----
- rust/kernel/platform.rs | 96 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 94 insertions(+), 2 deletions(-)
+Neat, it works as follows.
 
-diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-index 75dc7824eccf4..b5d38bb182e93 100644
---- a/rust/kernel/platform.rs
-+++ b/rust/kernel/platform.rs
-@@ -13,8 +13,11 @@
-     types::{ARef, ForeignOwnable, Opaque},
-     ThisModule,
- };
--
--use core::ptr::{NonNull, addr_of_mut};
-+use core::{
-+    mem::ManuallyDrop,
-+    ops::*,
-+    ptr::{addr_of_mut, NonNull},
-+};
- 
- /// An adapter for the registration of platform drivers.
- pub struct Adapter<T: Driver>(T);
-@@ -213,3 +216,92 @@ fn as_ref(&self) -> &device::Device {
-         &self.0
-     }
- }
-+
-+/// A platform device ID specifier.
-+///
-+/// This type is used for selecting the kind of device ID to use when constructing a new
-+/// [`ModuleDevice`].
-+#[derive(Copy, Clone)]
-+pub enum ModuleDeviceId {
-+    /// Do not use a device ID with a device.
-+    None,
-+    /// Automatically allocate a device ID for a device.
-+    Auto,
-+    /// Explicitly specify a device ID for a device.
-+    Explicit(i32),
-+}
-+
-+impl ModuleDeviceId {
-+    fn as_raw(self) -> Result<i32> {
-+        match self {
-+            ModuleDeviceId::Explicit(id) => {
-+                if matches!(
-+                    id,
-+                    bindings::PLATFORM_DEVID_NONE | bindings::PLATFORM_DEVID_AUTO
-+                ) {
-+                    Err(EINVAL)
-+                } else {
-+                    Ok(id)
-+                }
-+            }
-+            ModuleDeviceId::None => Ok(bindings::PLATFORM_DEVID_NONE),
-+            ModuleDeviceId::Auto => Ok(bindings::PLATFORM_DEVID_AUTO),
-+        }
-+    }
-+}
-+
-+/// A platform device that was created by a module.
-+///
-+/// This type represents a platform device that was manually created by a kernel module, typically a
-+/// virtual device, instead of being discovered by the kernel. It is probed upon creation in the
-+/// same manner as a typical platform device, and the device will not be unregistered until this
-+/// type is dropped.
-+// We store the Device in a ManuallyDrop container, since we must enforce that our reference to the
-+// Device is dropped using platform_device_unregister()
-+pub struct ModuleDevice(ManuallyDrop<Device>);
-+
-+impl ModuleDevice {
-+    /// Create and register a new platform device.
-+    ///
-+    /// This creates and registers a new platform device. This is usually only useful for drivers
-+    /// which create virtual devices, as drivers for real hardware can rely on the kernel's probing
-+    /// process.
-+    pub fn new(name: &'static CStr, id: ModuleDeviceId) -> Result<Self> {
-+        // SAFETY:
-+        // * ModuleDeviceId::as_raw() always returns a valid device ID
-+        // * Returns NULL on failure, or a valid platform_device pointer on success
-+        let pdev_ptr = unsafe { bindings::platform_device_alloc(name.as_char_ptr(), id.as_raw()?) };
-+        if pdev_ptr.is_null() {
-+            return Err(ENOMEM);
-+        }
-+
-+        // SAFETY:
-+        // * The previous function is guaranteed to have returned a valid pointer to a platform_dev,
-+        //   or NULL (which we checked for already)
-+        // * The previous function also took a single reference to the platform_dev
-+        let pdev = unsafe { Device::from_raw(pdev_ptr) };
-+
-+        // SAFETY: We already checked that pdev_ptr is valid above.
-+        to_result(unsafe { bindings::platform_device_add(pdev_ptr) })
-+            .map(|_| ModuleDevice(ManuallyDrop::new(pdev)))
-+    }
-+}
-+
-+impl Deref for ModuleDevice {
-+    type Target = Device;
-+
-+    fn deref(&self) -> &Self::Target {
-+        &self.0
-+    }
-+}
-+
-+impl Drop for ModuleDevice {
-+    fn drop(&mut self) {
-+        // SAFETY: Only one instance of this type can exist for a given platform device, so this is
-+        // safe to call.
-+        unsafe { bindings::platform_device_unregister(self.as_raw()) }
-+
-+        // No need to manually drop our contents, as platform_device_unregister() dropped the ref
-+        // count that was owned by this type.
-+    }
-+}
--- 
-2.47.1
-
+let delta = if (Delta::ZERO..=MAX_DELTA).contains(&delta) {
+    delta
+} else {
+    MAX_DELTA
+};
