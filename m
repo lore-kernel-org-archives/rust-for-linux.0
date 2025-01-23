@@ -1,110 +1,246 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bee.tesarici.cz (bee.tesarici.cz [37.205.15.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81E820E009;
-	Thu, 23 Jan 2025 11:04:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E321CDFBC;
+	Thu, 23 Jan 2025 12:36:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.15.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737630252; cv=none; b=ugEOmoDQiINQWV+myGFipHaXVLW5Pm5uNaTjg09PP8clnnp3qSeF9G1npGvdiAQpfgrE3P8Bki5XepPBFS0weLNmasGrXdwQz7C+XfBIzCcLADrZyhqwt9unzAN+GBgA74bh+cbm+yJIXbjsxbo2s+YQNmGNUv2rl6LKZrev81w=
+	t=1737635792; cv=none; b=KNUnk+VxtJ74z93TnBeTjcGg0lPGO1Y4hVF/ETbqGnLFfiUjL3YZfkT/TDoSyGLFL3o5ZMj1k5fKeTBxLo48hdsSJ/Ne3nYMTnjLheTAuN1koBbe/EIhSLAq5Jo4vLwRwdP8A6UXhpoIDmyc8xLczdVuKbNTDIOh6AHxl1fV9yM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737630252; c=relaxed/simple;
-	bh=Fzo06p7LbGOK4VfFKjg4NmV51POOKOUCBXzkkK9h//o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=D3MQR2LvXi5Cf3iFPjgNV5ituLMyYfFoFxZDQen3o++OSV9sKx6gF8mhwN1PrexZVjejojXHD9XgaLvG1733RIwOpE7oV2fIYONvCyXFA+nTuKbaAGPLuGF8qH3MwVWbmtpj1MpwH6VeVT7aqLXu24ghvSYmrbGOH1D/VnXJj1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HK5iadzA; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1737635792; c=relaxed/simple;
+	bh=bwHb3k0CMWm2DzAjQYvrhi+e8E2Ul8Z3iF5VhIAnfbM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kQ65skfgyTgzqLU0g9IliYZsqRkq/3n+0eo4mYPxVwalgACMIzdu1ynsGEBldbqkxHTeVBpdUtoXMdriSX83udBAHzWIDXyGA7uqeVmv3M1bosBsOLVFT9CjgJCW9zjDQUScYqVTBo2Y/+7vFfGd7kVGuY3tC+Oboe5CS+sHWlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tesarici.cz; spf=pass smtp.mailfrom=tesarici.cz; dkim=pass (2048-bit key) header.d=tesarici.cz header.i=@tesarici.cz header.b=cAAkQUV3; arc=none smtp.client-ip=37.205.15.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tesarici.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tesarici.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HK5iadzA"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2f45526dea0so180202a91.1;
-        Thu, 23 Jan 2025 03:04:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737630250; x=1738235050; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Fzo06p7LbGOK4VfFKjg4NmV51POOKOUCBXzkkK9h//o=;
-        b=HK5iadzAbSEOl+9/YoFLR0A5r8Q9nEsH6QtVrhX6ttBmiPtPeCcJGj0rstV9QKFUFe
-         Twwmt10WhnoHHp+wtRWEVemKtpJwWTI3YuWjw+q7Tay7+XVU1GnZguZvZvOiFDzEHMCf
-         gFDlihhd8hkL16xZJbxVOuTmY0DgVcNvw685CxU7Wyc47k9eNIF2pBtJHlKcwwPiDkqE
-         YowNouP4+0+4e/YsixVi4Wfq3jtCGE4V+PwBKYGo8KqFZvyyzTVi9TYJi5CvYVBVNb6P
-         /Yw2BW2Vy709YZ+TSKArYw8z08emoHrvN6piZ3bfOuHPvYie+SMUzGoIud1Ei05pobiq
-         Ovcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737630250; x=1738235050;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Fzo06p7LbGOK4VfFKjg4NmV51POOKOUCBXzkkK9h//o=;
-        b=lum1Z2sBhKrJ27sPB3gak3OYz7B6TlBn3mj4TpmMo4HZ7kTc9/kp2xUjfsdUuuNrba
-         k8/enSVQKJ+5LO9XFu1I2ahJGoXaTE7cRs07dIUajoPKp2KJucEvqQgvZFkQaJOG98BR
-         s9nSYZ39JF5698isXIRr9oDB1f6+5Hv9hSTA895GhMhf+Xe771Z7x6EBpBW+3iBe7xzm
-         EtR3i/bddgMn3ImfmXImTFb0haI9cl1jkl9V3Dg6HPmZsXOSbTCTf3hoin+BHkrXMU31
-         SOZ+DTy3ujmDIQFPA/Qu+oMj4acjG5JZYkAVlXU6ZqGJTP+knuW643/Q5SZQbI59fcxV
-         a0XQ==
-X-Forwarded-Encrypted: i=1; AJvYcCULsxgU4D+ZasEVs1n3UJjP/ggN9N6CYIgBeLDF3kyTI3hePoDLyFSh0QDC4lDoiWY7zqcTKLqB5C7bPsw=@vger.kernel.org, AJvYcCVWqufx/avNYgnuO9KN5ewWf1AiYlv8OlULzaW1mKGh2Q8ElJdWU7k9IrwVPpblEHjBqMEHd+GU@vger.kernel.org, AJvYcCX95miUE0r6PllEhD4CR+TNdhpQKTXghJ19Ka1IleMhF8Uded7miZExLgo2V9ChO4dVeetw4e+WqubDMgmlY4E=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzd4HZSxYAXlWymzzyKb9z7swd8ORs2LFIFNTEXUINcGL7T/0w+
-	IXdqWqnI6YvLuxVjUQmSI/aOO2mI5KDEeGpAW53tmxv9t1yDZXtOkwXfqXC9V6+/Ouey8Dqwch0
-	yLjINSTaabvXtHaMnWMlgyTwF5IN5pgZ2
-X-Gm-Gg: ASbGncsCZfefv/GYqELXs60Je7JT6l7oTERZJUVJ6IL7Vlr4CjBTxYNRWUFzg6puPOL
-	F7zhcxdSWND3qHD6rfKgOYZQrYfg76uk07YO0863ouanvwWfp/mqw2Zfr+kdZ6A==
-X-Google-Smtp-Source: AGHT+IErE7Mk/Hv4lR4bn+1BCQ6wuArrQjSwSOVt/rGhgOGYV9tJ4eUVFee3uzk+5C0oyr/HJR2OHgdGbydMLnxUp/A=
-X-Received: by 2002:a17:90b:534c:b0:2ea:5e0c:2851 with SMTP id
- 98e67ed59e1d1-2f782b06d93mr13769040a91.0.1737630249985; Thu, 23 Jan 2025
- 03:04:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=tesarici.cz header.i=@tesarici.cz header.b="cAAkQUV3"
+Received: from mordecai.tesarici.cz (dynamic-2a00-1028-83b8-1e7a-3010-3bd6-8521-caf1.ipv6.o2.cz [IPv6:2a00:1028:83b8:1e7a:3010:3bd6:8521:caf1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by bee.tesarici.cz (Postfix) with ESMTPSA id 597C22113BB;
+	Thu, 23 Jan 2025 13:30:14 +0100 (CET)
+Authentication-Results: mail.tesarici.cz; dmarc=fail (p=quarantine dis=none) header.from=tesarici.cz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tesarici.cz; s=mail;
+	t=1737635414; bh=a9q1Fh53qZ0gTFwMyqXiOD//fC1kdAqomwhFFXs3J8g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=cAAkQUV3E0cfe+dLy2TE9ZFw6ZpwKfjnEOVcEQBkuAlmup6LIFJ6KiuANUkNJ0/7n
+	 R60TRaqlXwkTE0RsgDn/kXz4QPXS41Y5il7E8bdkXL13yrOy0wWC/AJa7wjLDCPKvQ
+	 y5hcp4zs7LwXGYkfRxbXGq97F2e0Zuve2srf/9GfyBZ/PpeUkhnWX2AhP56A0H9VPb
+	 GAit4TStmGVR8ryZQtECd3l0+GdQkGPldHmAt+7epkYbL5u4sy2jY2KnL4Ht9GFmNf
+	 CeV2FWq/4YygRFF/msYfsDE2bLEnO/b+bXaPJtU33xc5f6ix5sS68+veKOhci5bZUg
+	 ymTzAu5fmFqKg==
+Date: Thu, 23 Jan 2025 13:30:09 +0100
+From: Petr =?UTF-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>
+To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, daniel.almeida@collabora.com,
+ dakr@kernel.org, robin.murphy@arm.com, aliceryhl@google.com, Miguel Ojeda
+ <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?=
+ Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor
+ Gross <tmgross@umich.edu>, Valentin Obst <kernel@valentinobst.de>,
+ linux-kernel@vger.kernel.org (open list), Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+ iommu@lists.linux.dev (open list:DMA MAPPING HELPERS)
+Subject: Re: [PATCH v11 2/3] rust: add dma coherent allocator abstraction.
+Message-ID: <20250123132940.1f3c2666@mordecai.tesarici.cz>
+In-Reply-To: <20250123104333.1340512-3-abdiel.janulgue@gmail.com>
+References: <20250123104333.1340512-1-abdiel.janulgue@gmail.com>
+	<20250123104333.1340512-3-abdiel.janulgue@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-suse-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAH5fLghgcJV6gLvPxJVvn8mq4ZN0jGF16L5w-7nDo9TGNAA86w@mail.gmail.com>
- <20250122.194405.1742941306708932313.fujita.tomonori@gmail.com>
- <Z5HpvAMd6mr-6d9k@boqun-archlinux> <20250123.174011.1712033125728284549.fujita.tomonori@gmail.com>
-In-Reply-To: <20250123.174011.1712033125728284549.fujita.tomonori@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 23 Jan 2025 12:03:56 +0100
-X-Gm-Features: AWEUYZnSN-u14_3F504620wE10KcsGXv_0aa4VFT7rZTZHgaKbu-nyKZWm7z3bw
-Message-ID: <CANiq72kbv2BvQHKWeLV89hmjqL479MpzkE6PKDj8SLm9ehZE_Q@mail.gmail.com>
-Subject: Re: [PATCH v8 4/7] rust: time: Add wrapper for fsleep function
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: boqun.feng@gmail.com, aliceryhl@google.com, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, andrew@lunn.ch, 
-	hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@samsung.com, anna-maria@linutronix.de, 
-	frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, 
-	sboyd@kernel.org, mingo@redhat.com, peterz@infradead.org, 
-	juri.lelli@redhat.com, vincent.guittot@linaro.org, dietmar.eggemann@arm.com, 
-	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de, vschneid@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jan 23, 2025 at 9:40=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> Thanks, I overlooked this. I had better to go with [`fsleep()`] then.
->
-> I think that using two styles under rust/kernel isn't ideal. Should we
-> make the [`function_name()`] style the preference under rust/kernel?
+On Thu, 23 Jan 2025 12:42:58 +0200
+Abdiel Janulgue <abdiel.janulgue@gmail.com> wrote:
 
-Sounds good to me. I have a guidelines series on the backlog, so I can
-add it there.
+> Add a simple dma coherent allocator rust abstraction. Based on
+> Andreas Hindborg's dma abstractions from the rnvme driver, which
+> was also based on earlier work by Wedson Almeida Filho.
+> 
+> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+>[...]
+> +/// An abstraction of the `dma_alloc_coherent` API.
+> +///
+> +/// This is an abstraction around the `dma_alloc_coherent` API which is used to allocate and map
+> +/// large consistent DMA regions.
+> +///
+> +/// A [`CoherentAllocation`] instance contains a pointer to the allocated region (in the
+> +/// processor's virtual address space) and the device address which can be given to the device
+> +/// as the DMA address base of the region. The region is released once [`CoherentAllocation`]
+> +/// is dropped.
+> +///
+> +/// # Invariants
+> +///
+> +/// For the lifetime of an instance of [`CoherentAllocation`], the cpu address is a valid pointer
+> +/// to an allocated region of consistent memory and we hold a reference to the device.
+> +pub struct CoherentAllocation<T: AsBytes + FromBytes> {
+> +    dev: ARef<Device>,
+> +    dma_handle: bindings::dma_addr_t,
+> +    count: usize,
+> +    cpu_addr: *mut T,
+> +    dma_attrs: Attrs,
+> +}
+> +
+> +impl<T: AsBytes + FromBytes> CoherentAllocation<T> {
+> +    /// Allocates a region of `size_of::<T> * count` of consistent memory.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// use kernel::device::Device;
+> +    /// use kernel::dma::{attrs::*, CoherentAllocation};
+> +    ///
+> +    /// # fn test(dev: &Device) -> Result {
+> +    /// let c: CoherentAllocation<u64> = CoherentAllocation::alloc_attrs(dev.into(), 4, GFP_KERNEL,
+> +    ///                                                                  DMA_ATTR_NO_WARN)?;
+> +    /// # Ok::<(), Error>(()) }
+> +    /// ```
+> +    pub fn alloc_attrs(
+> +        dev: ARef<Device>,
+> +        count: usize,
+> +        gfp_flags: kernel::alloc::Flags,
+> +        dma_attrs: Attrs,
+> +    ) -> Result<CoherentAllocation<T>> {
+> +        build_assert!(
+> +            core::mem::size_of::<T>() > 0,
+> +            "It doesn't make sense for the allocated type to be a ZST"
+> +        );
+> +
+> +        let size = count
+> +            .checked_mul(core::mem::size_of::<T>())
+> +            .ok_or(EOVERFLOW)?;
+> +        let mut dma_handle = 0;
+> +        // SAFETY: device pointer is guaranteed as valid by invariant on `Device`.
+> +        // We ensure that we catch the failure on this function and throw an ENOMEM
+> +        let ret = unsafe {
+> +            bindings::dma_alloc_attrs(
+> +                dev.as_raw(),
+> +                size,
+> +                &mut dma_handle,
+> +                gfp_flags.as_raw(),
+> +                dma_attrs.as_raw(),
+> +            )
+> +        };
+> +        if ret.is_null() {
+> +            return Err(ENOMEM);
+> +        }
+> +        // INVARIANT: We just successfully allocated a coherent region which is accessible for
+> +        // `count` elements, hence the cpu address is valid. We also hold a refcounted reference
+> +        // to the device.
+> +        Ok(Self {
+> +            dev,
+> +            dma_handle,
+> +            count,
+> +            cpu_addr: ret as *mut T,
+> +            dma_attrs,
+> +        })
+> +    }
+> +
+> +    /// Performs the same functionality as `alloc_attrs`, except the `dma_attrs` is 0 by default.
+> +    pub fn alloc_coherent(
+> +        dev: ARef<Device>,
+> +        count: usize,
+> +        gfp_flags: kernel::alloc::Flags,
+> +    ) -> Result<CoherentAllocation<T>> {
+> +        CoherentAllocation::alloc_attrs(dev, count, gfp_flags, Attrs(0))
+> +    }
+> +
+> +    /// Returns the device, base address, dma handle, attributes and the size of the
+> +    /// allocated region.
+> +    ///
+> +    /// The caller takes ownership of the returned resources, i.e., will have the responsibility
+> +    /// in calling `bindings::dma_free_attrs`. The allocated region is valid as long as
+> +    /// the returned device exists.
+> +    pub fn into_parts(
+> +        self,
+> +    ) -> (
+> +        ARef<Device>,
+> +        *mut T,
+> +        bindings::dma_addr_t,
+> +        crate::ffi::c_ulong,
+> +        usize,
+> +    ) {
+> +        let size = self.count * core::mem::size_of::<T>();
+> +        let ret = (
+> +            // SAFETY: `&self.dev` is valid for reads.
+> +            unsafe { core::ptr::read(&self.dev) },
+> +            self.cpu_addr,
+> +            self.dma_handle,
+> +            self.dma_attrs.as_raw(),
+> +            size,
+> +        );
+> +        core::mem::forget(self);
+> +        ret
+> +    }
+> +
+> +    /// Returns the base address to the allocated region in the CPU's virtual address space.
+> +    pub fn start_ptr(&self) -> *const T {
+> +        self.cpu_addr
+> +    }
+> +
+> +    /// Returns the base address to the allocated region in the CPU's virtual address space as
+> +    /// a mutable pointer.
+> +    pub fn start_ptr_mut(&mut self) -> *mut T {
+> +        self.cpu_addr
+> +    }
+> +
+> +    /// Returns a DMA handle which may given to the device as the DMA address base of
+> +    /// the region.
+> +    pub fn dma_handle(&self) -> bindings::dma_addr_t {
+> +        self.dma_handle
+> +    }
+> +
+> +    /// Reads data from the region starting from `offset` as a slice.
+> +    /// `offset` and `count` are in units of `T`, not the number of bytes.
+> +    ///
+> +    /// Due to the safety requirements of slice, the data returned should be regarded by the
+> +    /// caller as a snapshot of the region when this function is called, as the region could
+> +    /// be modified by the device at anytime. For ringbuffer type of r/w access or use-cases
+> +    /// where the pointer to the live data is needed, `start_ptr()` or `start_ptr_mut()`
+> +    /// could be used instead.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that no hardware operations that involve the buffer are currently
+> +    /// taking place while the returned slice is live.
+> +    pub unsafe fn as_slice(&self, offset: usize, count: usize) -> Result<&[T]> {
+> +        if offset + count >= self.count {
 
-Though there is a question about whether we should do the same for
-Rust ones or not. For Rust, it is a bit clearer already since it uses
-e.g. CamelCase for types.
+I'm probably missing something, but how do you know that this addition
+can't overflow? I mean, since this is a public function, users can do
+something dumb such as buf.as_slice(usize::MAX, n), can't they?
 
-> Unless there's a subsystem that prefers the [`function_name`] style,
-> that would be a different story.
+What about something like:
 
-I think we have a good chance to try to make things consistent across
-the kernel (for Rust) wherever possible, like for formatting, since
-all the code is new, i.e. to try to avoid variations between
-subsystems, even if in the C side had them originally.
+    let end = offset.checked_add(count).ok_or(EOVERFLOW)?;
+    if end >= self.count { ... }
 
-Exceptions as usual may be needed, but unless there is a good reason,
-I think we should try to stay consistent.
+> +            return Err(EINVAL);
+> +        }
+> +        // SAFETY:
+> +        // - The pointer is valid due to type invariant on `CoherentAllocation`,
+> +        // we've just checked that the range and index is within bounds. The immutability of the
+> +        // of data is also guaranteed by the safety requirements of the function.
+> +        // - `offset` can't overflow since it is smaller than `self.count` and we've checked
+> +        // that `self.count` won't overflow early in the constructor.
+> +        Ok(unsafe { core::slice::from_raw_parts(self.cpu_addr.add(offset), count) })
+> +    }
+> +
+> +    /// Writes data to the region starting from `offset`. `offset` is in units of `T`, not the
+> +    /// number of bytes.
+> +    pub fn write(&self, src: &[T], offset: usize) -> Result {
+> +        if offset + src.len() >= self.count {
 
-Cheers,
-Miguel
+Same here.
+
+Petr T
