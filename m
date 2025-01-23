@@ -1,81 +1,82 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B07920B7F9;
-	Thu, 23 Jan 2025 07:30:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF2020C016;
+	Thu, 23 Jan 2025 08:40:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737617405; cv=none; b=hszaSc/7RxDRKQkcTkUpkL2p00kNG7iIeC81sxeF8OOKZn7AG2Rq/nrcW+YaPDXc2WUr88l+fH/5P8+ti3aA57ELg9Pca0hhF3U5IoA7r3rQligJBKuxI1n0RzAVZ72OpImundvL26yAh/iT5BrKoEcHo8Mfq3ozP9kW6qG+JcU=
+	t=1737621623; cv=none; b=IznbuvA7ZiDLBsGZO3JvpNvKases0hodgvswValMCPnMPPeDXmjurHCRnWtM8KDO9prsRySNaUmK3wWiQUOT4c0DgrGwRBFWg4WSjKs2Zqv/HQzaj0blTzAYJHkeJ1mRa25oulLwg8lwRJ4/aV73E5mlFpSuxgkg5yZJ0NRijSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737617405; c=relaxed/simple;
-	bh=8wIUWRleAJl/I3w9xAtnwjP1dwhnjToxJNMmVKMjapI=;
+	s=arc-20240116; t=1737621623; c=relaxed/simple;
+	bh=XD0aABv58nDK/2kXxubE7fw2Dd/4+FE2LNdabEGmXYw=;
 	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=ZPmEMYnNiZyZTphInmKPT2cdqbRRN/880Y6rccjBnIcTqoHwytI4D8pnWjDeeeTs2TFA3KBynZ4WF4MxutT918jFR+waJtllQzTCj28CcYMKT5uyNXqWzxhxnSIo5461lqaZ2uswFabpBpRVfOWmWAO409PI9N6o0ZYQ8qhZBVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I1TlyuuW; arc=none smtp.client-ip=209.85.216.53
+	 Mime-Version:Content-Type; b=IMnuLlhoca4DStPj5PZiHnNukMXP9ssGLuVJXu52LPWhZH8JrO2XdDduSaH1ESLzRXj/0spo9wW4UoT1dEyl8I25pmORPrKvcQWy1TQu8jj+RSbUS9ChNQ+Kv5o2e7WJCMXYFg5Dtr/uq944+42w6UhSEwxpS9vltiWT0LZkMz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EVRCMOQk; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I1TlyuuW"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2ef28f07dbaso915015a91.2;
-        Wed, 22 Jan 2025 23:30:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EVRCMOQk"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2ee989553c1so1226283a91.3;
+        Thu, 23 Jan 2025 00:40:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737617403; x=1738222203; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1737621622; x=1738226422; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ceNonhB99Ue99Hp33lMgol+NGBL9sA13QyEPHHCOh0E=;
-        b=I1TlyuuW0+A73FK59s053dilKqLXhM6w9DtTuetnI/nWM0dYgK5zeD0MYfBdgRJsJ6
-         Kx3L+97Yt18TNzoMzGteB53EBpcmExtZhS8KSS+iUEc4y8Aa0d/MxlLnQbdiKGFrvdP4
-         WvTHIsJufnDOgrAT7PCMePezoEvjqpI+FP7HATmcqzfHB6D6A0C2Sd9aDois1+hEChMk
-         lua/9q7papHs0eCniERH3ZP34hhrWj8MzuZ0K1t0D0vpWMxxpobl8DibIg5uoY+mhG9S
-         YIDdGmrvx/p21NKDzZq+LccSvK6/CarCL9NGeId8Ii1l1yna1wAQyyMoEHqipGsMfloX
-         E6kA==
+        bh=+9q1x174EflZkASpLdvzyaoyFXGYC2fkIourI+Rdf60=;
+        b=EVRCMOQkFPZasNOSxQ6io/uLvk/Vn0DlYhRnQLSmBFi92uZHXTVszgCKEfr7H2FEYL
+         gL+Cz/fl67+lpCOyIUal3hA8nNfbHrBzLG0ezIgLyFWNjrSufZuS9GSdOXryMS28fsp3
+         NNKEHrTKSxPsc5DPH/u7UobDgZV7Vs9rSAKFf++lxUhUw69H0pluwYARA2Jmd+SUnWUB
+         mJvTmmTSHHZ0AAv2lTv0D2dCAQ/FHiepZ6PaN6nb46wipnDvsX+aO099lDgaoo2xxYQO
+         A7SNDFXUbs8ygxTNhkzG3Yz3NzL59g+ahvO2iDaJKw0gE+fY/ixJQ48R+8SU3oFi/rHH
+         nzfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737617403; x=1738222203;
+        d=1e100.net; s=20230601; t=1737621622; x=1738226422;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=ceNonhB99Ue99Hp33lMgol+NGBL9sA13QyEPHHCOh0E=;
-        b=d9fVzewigW/LcwoJCPcPMH+Ki/s5X2fU6CcSaAaYVv0HLbx9T0xzx8U8HjhyTK5DZd
-         rbGJHLO5xa4ztUcFcvaTrGBKz8EmJnhHqZs//oORhU6t4fZbzbjF+20Jp4O39eAAg5XI
-         L8lS+I+mtegLePWW6nURm6Ec8VLosvr7sAU7BXtE+36hm6DxGCE8eZ7hS7aZr57EAkxR
-         DAui4Tt96H5pxKdVPhmK3MTvzKWNEZGaZ2bjhqwlf/QQ6OvBNSI5BMX5NMicc94oYHlV
-         MQ6cgdNFSFxraBAT8AW9zCjJCyDzUKsO+0OqhWyzwk5IA24yBR03FQjdjmMsm7VXS/zb
-         xfPg==
-X-Forwarded-Encrypted: i=1; AJvYcCVnaCK/3/9E7LKxZVy5l61cOIRcKoqOfLBlew/dBK2tIgBg8r8fH3Sg8qqd3G02M6+6oYcefgzB@vger.kernel.org, AJvYcCW6t04RnpYPMgyrGLhTUO/NxWaB4O3MGEk9ashu6mIz9AvdKSu38ZjV1d2XGK96+eWnRc8J617pYEGkTmE=@vger.kernel.org, AJvYcCWLmwVfTKSybVI9f46+7REbQDyyMJTPwNQ5hoBzLilVZteJYrDXac/50mjyZw5AKhzn07VSjyT9/Quu4mFeFMI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxI6U2T6fivY9F4EaDLq2059uBf+mLKzfHRsgZKiRnzDvNgoYZv
-	mqFCS92rfZ6ZepcI8v0Gor6ad2D7b3uSAw07TKrURnRG56tf6F12
-X-Gm-Gg: ASbGncvdh0o6cGbfNkEZ/1U0bB7DSRkvRib0+ZEsRN5QTjXxu71rBrQgwIlGBP98pFX
-	xR15sR9IYSw4h0k4TBQJ2MLOQK5/+511pA1UH65DaXGFcI8TENDIQy1IGn2Od91HrMppUfRtLYq
-	rX2TCEKfRuWZ24ARuSM04oZaaD87xjYduIHgi052kXoH7hq+jL2hYH6T/2rO4KYhJknpm+cP1Ym
-	CIGozD6rDYDoRObV1gKji+NxR6rSepKBThBeSAdhObNsf03SclZIT8EKlz5XzSnwqcbNbJC+80F
-	B/ZGmaWLOpbEuFKFR7itOz7HyKMi8BCX64JSoyp+WuJF8Xy8AlqS5YgDBJj0OA==
-X-Google-Smtp-Source: AGHT+IGgJEEY2fGYxnhEALflskADXUIN88Cj8MuBBCz6FtXxIsTDrMlOpzda6kUQdSB5RFDIBGpEEQ==
-X-Received: by 2002:a05:6a00:190c:b0:729:1b8f:9645 with SMTP id d2e1a72fcca58-72dafbd02ecmr41151029b3a.24.1737617403150;
-        Wed, 22 Jan 2025 23:30:03 -0800 (PST)
+        bh=+9q1x174EflZkASpLdvzyaoyFXGYC2fkIourI+Rdf60=;
+        b=oFNr5q3/bma8eXTuMlnRyfheFbntrUZteO4UPvauq/WhzeBYKrewP5NQX6gK1c3jP+
+         /TE64iK/GRmsX4eU5R0J/sLKObVKBeyFVMc8J2rPrNQnefLr2uyCk3qTym3gRAj06CQu
+         B4Kd17lJJKsYdvgcd6hjxYjbuhQFsnVxod52I9Hf6Ctzd4f7TZjASKBqzlxFrcXuNVyA
+         hJmecGkIwJp7BK5J3WScKEmROWT/2FdwZzgHf6AF40uYxEPj9j2a2d7V9bxmLUd9Y9z1
+         z55Mu5UUdym00dKDNd2AR+gHJ1WUGVdEu9IoxY47/ta4BV4SwujKmID2NT0HLgclwHBQ
+         Mo1A==
+X-Forwarded-Encrypted: i=1; AJvYcCUFjdmXaFxOxoqX1A4eY2cwEOMN6XwEFmP5pzI1zR5KdYrjaon9IPPN/0IZHQ0LUBgFEh82+y1xiqI55LowUHI=@vger.kernel.org, AJvYcCUocykZI5riAHFrsTpgIMY4xxQuDT9Xq0eawWvurGKPPaiO/ujFvmwZ3Tt1y7kPzC4lJQZAAuX57juAUeI=@vger.kernel.org, AJvYcCXlCZIN9J7QpOoEmtu20taCEIcnbhosS7jhjLHqx80/qThyK2uuSt+MjT7aOY9LaWYnQsO04Fo2@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLaqGsJz8eBjFRd27Pe6bpHE427JGeKiNds1CZnBMVBZH0mdIh
+	3fr9/o6n312mfZHwDQjARZKe9h13+jBZtsCjarHVUTHh/6BOCvQN
+X-Gm-Gg: ASbGncvKXw1Qc2KuW5MPlGFG8s7tX7YgYsQoY7z30iT9RQ8wVG0OrAVhdTAf6wTOUNV
+	wcXw4BudF+rMjb3NaeR2CGbzZHZIYHxz+wG3BCkLztAoox1wRrS8HlSSnA4aSNwWM4+u+ooygLP
+	6pmnIDOajhriZo7S8EUq/zIa8qc+2XDswavZlJMBiZtkhN5onbFCpBbR2qI18y6J7X7Vi6z/hiZ
+	9qtqpd78g8UDs205N0lU+zBqdmMdbVFDA4kdJWR89PbZ5DwqLThxwSSNb+YHjyiN0LPxKLnUi2+
+	zmzoeswvcxbO8x3wsVo5rJAcHMeSFWYNw8lhnurzc78HNxdgczqZsHMZwx/IPw==
+X-Google-Smtp-Source: AGHT+IE9dQ9Lgeq0kGoH1d4c485K3h8IpsrVnIVD0DCtLq9V7LZOCGwH41jH3uhoQxFFbr8rVadFjw==
+X-Received: by 2002:a17:90b:2703:b0:2ee:d63f:d71 with SMTP id 98e67ed59e1d1-2f782c7252dmr41539965a91.14.1737621621721;
+        Thu, 23 Jan 2025 00:40:21 -0800 (PST)
 Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72dab7f0b0dsm12206881b3a.30.2025.01.22.23.29.55
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f7e6a7def9sm3335539a91.18.2025.01.23.00.40.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jan 2025 23:30:02 -0800 (PST)
-Date: Thu, 23 Jan 2025 16:29:53 +0900 (JST)
-Message-Id: <20250123.162953.1064418483128096795.fujita.tomonori@gmail.com>
-To: aliceryhl@google.com
-Cc: gary@garyguo.net, fujita.tomonori@gmail.com,
- linux-kernel@vger.kernel.org, boqun.feng@gmail.com,
+        Thu, 23 Jan 2025 00:40:21 -0800 (PST)
+Date: Thu, 23 Jan 2025 17:40:11 +0900 (JST)
+Message-Id: <20250123.174011.1712033125728284549.fujita.tomonori@gmail.com>
+To: boqun.feng@gmail.com
+Cc: fujita.tomonori@gmail.com, aliceryhl@google.com,
+ miguel.ojeda.sandonis@gmail.com, linux-kernel@vger.kernel.org,
  rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, andrew@lunn.ch,
  hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
- alex.gaynor@gmail.com, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- a.hindborg@samsung.com, anna-maria@linutronix.de, frederic@kernel.org,
- tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
- mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
- vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
- bsegall@google.com, mgorman@suse.de, vschneid@redhat.com
-Subject: Re: [PATCH v8 6/7] rust: Add read_poll_timeout functions
+ alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me, a.hindborg@samsung.com, anna-maria@linutronix.de,
+ frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de,
+ jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
+ peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
+ dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com
+Subject: Re: [PATCH v8 4/7] rust: time: Add wrapper for fsleep function
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CAH5fLgiMnifHoEkExSQVcv+7amO5aXSqd9kaGfM5af4eapcHzA@mail.gmail.com>
-References: <20250116044100.80679-7-fujita.tomonori@gmail.com>
-	<20250122183612.60f3c62d.gary@garyguo.net>
-	<CAH5fLgiMnifHoEkExSQVcv+7amO5aXSqd9kaGfM5af4eapcHzA@mail.gmail.com>
+In-Reply-To: <Z5HpvAMd6mr-6d9k@boqun-archlinux>
+References: <CAH5fLghgcJV6gLvPxJVvn8mq4ZN0jGF16L5w-7nDo9TGNAA86w@mail.gmail.com>
+	<20250122.194405.1742941306708932313.fujita.tomonori@gmail.com>
+	<Z5HpvAMd6mr-6d9k@boqun-archlinux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -85,37 +86,56 @@ Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 
-On Wed, 22 Jan 2025 21:14:00 +0100
-Alice Ryhl <aliceryhl@google.com> wrote:
+On Wed, 22 Jan 2025 23:03:24 -0800
+Boqun Feng <boqun.feng@gmail.com> wrote:
 
->> > +#[track_caller]
->> > +pub fn read_poll_timeout<Op, Cond, T: Copy>(
->>
->> I wonder if we can lift the `T: Copy` restriction and have `Cond` take
->> `&T` instead. I can see this being useful in many cases.
->>
->> I know that quite often `T` is just an integer so you'd want to pass by
->> value, but I think almost always `Cond` is a very simple closure so
->> inlining would take place and they won't make a performance difference.
+> On Wed, Jan 22, 2025 at 07:44:05PM +0900, FUJITA Tomonori wrote:
+>> On Wed, 22 Jan 2025 09:23:33 +0100
+>> Alice Ryhl <aliceryhl@google.com> wrote:
+>> 
+>> >> > I would also say "the C side [`fsleep()`] or similar"; in other words,
+>> >> > both are "kernel's" at this point.
+>> >>
+>> >> Agreed that "the C side" is better and updated the comment. I copied
+>> >> that expression from the existing code; there are many "kernel's" in
+>> >> rust/kernel/. "good first issues" for them?
+>> >>
+>> >> You prefer "[`fsleep()`]" rather than "[`fsleep`]"? I can't find any
+>> >> precedent for the C side functions.
+>> > 
+>> > I think that's a matter of taste. In the Rust ecosystem, fsleep is
+>> > more common, in the kernel ecosystem, fsleep() is more common. I've
+>> > seen both in Rust code at this point.
+>> 
+>> Understood, I'll go with [`fsleep`].
+>> 
 > 
-> Yeah, I think it should be
+> I would suggest using [`fsleep()`], in the same spirit of this paragraph
+> in Documentation/process/maintainer-tip.rst:
 > 
-> Cond: FnMut(&T) -> bool,
+> """
+> When a function is mentioned in the changelog, either the text body or the
+> subject line, please use the format 'function_name()'. Omitting the
+> brackets after the function name can be ambiguous::
 > 
-> with FnMut as well.
+>   Subject: subsys/component: Make reservation_count static
+> 
+>   reservation_count is only used in reservation_stats. Make it static.
+> 
+> The variant with brackets is more precise::
+> 
+>   Subject: subsys/component: Make reservation_count() static
+> 
+>   reservation_count() is only called from reservation_stats(). Make it
+>   static.
+> """
+> 
+> , since fsleep() falls into the areas of tip tree.
 
-Yeah, less restriction is better. I changed the code as follows:
+Thanks, I overlooked this. I had better to go with [`fsleep()`] then.
 
-#[track_caller]
-pub fn read_poll_timeout<Op, Cond, T>(
-    mut op: Op,
-    mut cond: Cond,
-    sleep_delta: Delta,
-    timeout_delta: Delta,
-) -> Result<T>
-where
-    Op: FnMut() -> Result<T>,
-    Cond: FnMut(&T) -> bool,
-{
+I think that using two styles under rust/kernel isn't ideal. Should we
+make the [`function_name()`] style the preference under rust/kernel?
 
-			  
+Unless there's a subsystem that prefers the [`function_name`] style,
+that would be a different story.
