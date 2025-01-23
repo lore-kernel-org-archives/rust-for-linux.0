@@ -1,47 +1,47 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010027.outbound.protection.outlook.com [52.101.69.27])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2047.outbound.protection.outlook.com [40.107.22.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F8DC2FD
-	for <rust-for-linux@vger.kernel.org>; Thu, 23 Jan 2025 05:49:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB27136E3B
+	for <rust-for-linux@vger.kernel.org>; Thu, 23 Jan 2025 05:53:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.47
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737611388; cv=fail; b=So9G8i8hnPzGq5DrpJp718ZjbgafCJK2fLR3CA3m4rDAgIjV7fQdbdx7vLoZVnnEVNv++jmTZXxP/Y32c9FmRPqWL7YZZ/Yy0cQr+lR3EpH1qpDSSYmb/qyLAPRXWICXSh1lDDXGp+eV7f/n4XWDyTO0EFaY3Kp8+czLaIc/xTk=
+	t=1737611620; cv=fail; b=AEotWVGmCiuwGwA7nO7ymslWxGpOhlKdvzi8u4/t9qGmh9StjStdZGtiR7OwZJxd8jNC9doyRp4pNG4RVUyNyJWFaD+HmU6oH4zVzuJpFysBNEkk/Pa+iBNy3kkqXi8a7ZfmoVphCAetrmSaDCcpCNvHXCpN/Iy9LCpV9CGw8S4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737611388; c=relaxed/simple;
-	bh=kc6D9Y9uv8XbarMWact2g5hEEuUy/0cxE0S4NekKdb8=;
+	s=arc-20240116; t=1737611620; c=relaxed/simple;
+	bh=e4Fw3BoyH3bN9oIE0wFnX5IkMq0fjMPI6tqd4kyX5rs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=L0pFYNMygX8Ho4OueFA83mUlbFSb9/QMFX9DBitW19+/x+ZL4bgxMt3V/1VX1edqpF9nJTfuMR9DLSC/W2L8ClMzry1Uf9XpB3TtvrGxQvBDIMm24dlnHyP8EGO7QaZeHHTQnE8NvQj+l4D7Lw9PCyGFQBFKPxgfzWfG1zeV/ws=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=HJW/V7nm; arc=fail smtp.client-ip=52.101.69.27
+	 In-Reply-To:Content-Type; b=HHtslWs3YiFCBgX1K4DLU5VOvgGPxrDnp8f8G+EklGmnWVoniF04ZX2m8pIQJ+fTexm0jQmTDV62tRREwLjnQrkbUzw9t9wPl3rgDabpRexL/n52ukiiOs4hDjztOYpvil/LWUgcbirtviMTDfgyOTr7ZoqTF7G8xux5aK1MifE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=KTxrkKRk; arc=fail smtp.client-ip=40.107.22.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="HJW/V7nm"
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="KTxrkKRk"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=U/F9QtUFSzBgErxqtp0v6PMoNbcFXo5uZIn5P3JfTN+AKZ04pcwVVcBeYpv9fV2SZubGIDAp39/tcMEWw+Tdbq2N9T2UCdd+i5k65q+yryoUq6Hvfb9rY3p/1rWVyVx3a+KwSSIH0mfnUe7cBuuVKfNgBYQKGiBOPrg9L+cHsmUFwM+oOnxfQS6WRP2MuC8BJbQOnJxW7WBAIpPzUwkiji+U3vs2aXfu91hX3jG8EwJey4RC5SLsZrchEJFvOgVKzmOcTzaoum1s2k4kpqLbVTtY0XXBAJEfKE0tPwsacmB4KE+9cr+U/+vEiECikxdAslwcSUf0kPK0u7s4xH2xhQ==
+ b=dkNQaS6d1pEN1BRRWwI97xNUrUwwrEJ8cMTWoAYJ/MTLdiwjtBay6vGg/EtKEGcgYyflgjf+8uMzgVzQZmvaydbohnzk7+V9Zckr782bhuck+aEZuwpeeE/lvkwWQppsgeryxokareqrBoLRSfFLSc58+HqpklFfWOq2LXHtF/EiJR5tRk6fHJfmOT0NoQ0SL4fD+Fi/WUZeQ1MZvEyq7Z4yqvXPFc1aBR7c9X+2aTziOohUI+MVgE68+E4ov1YWdDI9mPydnPnoEt6LJm+zO91GAnUQLzomUjtxLxdTvJWUNKcujKBtUSH0wcHflfzHXS7J4mUjNaNE1grm6oLIKA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SNAeAcWY5ArgYanTdXMbepDECmBAb/zPLfYMpI03lbI=;
- b=tbQs8iGQFf3HNMcYCeu3gxcTrOP+YwblSg++XqIIQ6GjVonoslflzlYKVyXn4mojmT2pcRNJJ3WJiM/EM6z7rZp6sdOPej2/BlEskC8rQPO+xgfg3vOQuVnr3DYGfcFY57YghZF/lF0bpOBZajmiVR4+mva/F21YGwh/0ka/0VAcgY9SqbCdxPaJu2hxDMJLwR1xzVlg/9Oo5K2hHJ4uFuAcNmmrbz8NaEKhuBh/r9hw1LYzcd5OAEFPdtybtdE4gy/sHmsAZ1ixyeI1jBaJ0k03rtHV9rPX8fEfFF78iB4+2y9jiHujl5m78mNZFIBl1jKNQ5ehem8Kz4H0fCzE8g==
+ bh=YtVuK/f73cq+WkDsH7mrgxfDKUbOKSQABxyVCaQNq+U=;
+ b=VVKi8NXKzvuq4REpdqGK2GjKZpd589WRCI8XgpFUJVVM6ohpivbOuJkv275zkVHDzdvl81Z9jA1tYdnavzOQfrDPR6Yda5Wxsc+QU0jYQ80WOvJEZQnqSLwqMgFermwApw+B6HnizM5pB1iix0EHQCRtqYaXpu3v1rogNu9mCZWZNJRZtV561fRdPqR4v2e3FRzktmEOnbnwmr6xndpLTah6vEHfGhsmn/8/OSZc3gug5vbD6PZrogzC4fR56+a4GgzvUzG+/ZFb26fenvPetUbU4Ds4oHOUdXMuoSgB2DJyM1LaRTRHF+9ndkw8YRg1zI9CR9DeQBh1FwQwSTHFvQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 139.15.153.206) smtp.rcpttodomain=kloenk.dev smtp.mailfrom=de.bosch.com;
+ 139.15.153.206) smtp.rcpttodomain=google.com smtp.mailfrom=de.bosch.com;
  dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SNAeAcWY5ArgYanTdXMbepDECmBAb/zPLfYMpI03lbI=;
- b=HJW/V7nm691WWSM0W1LNafOPWrhiy4uRwE6h2TaiTcHm8d/eZ1fbPdy1dNLnnnZX3d8GbOQieC+wof8XEVE7KdKFmo3btsvHFko8+IQ77tVUSc7Oy8Ir3mMgfm2Tvpvxipxid2205Fc4GP9QtQwXzyVK/eqKjNJY65aAAyRpOrLgXRpp7xPcywx7WhzhVG+qn0O2dyn/ACMGyFLC2qaR9+3riKbelommnikQbXYw+JN4wtSymDajVtMqcxD/H8ERFMEkmFhs2ELn/f3LQ3eIaB69CoDRRd/TuIMzQaXJPcx0nPhZA5d+M0Hg1oLqsyFuXYQnQKCieu9IPfYzRhvhBg==
-Received: from CWLP123CA0241.GBRP123.PROD.OUTLOOK.COM (2603:10a6:400:19e::8)
- by VI1PR10MB7755.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:800:1cd::22) with
+ bh=YtVuK/f73cq+WkDsH7mrgxfDKUbOKSQABxyVCaQNq+U=;
+ b=KTxrkKRkgt2h6XsikVdf7EywetZpB4ixJuiMFECvm5sy6Tw1XGOcBQ3pgLdfXEzVYEm6YERu075uhg/0g7r9LrYnORv6BMRRHy5UkdG4gkLqZASJCsYRYeQ3Q9JAdK8IkrGCEef1ee3UjGh8k+/L4OZllKq/X2lsU66YgC7Jb61A6Ds1rt+/6GWF8GYsXjDg77OW2SjC/3sq6uqlXBDDqfXRX9ifgDPtRjDK27Yb27h4wCWmjvhidb2nqCR4BNed5HAi60GNaZHWfdUhM4Eq+cbXsM0T1oEcrE367qMrjR2HVGFr0BVuMDBM8trlk2rjVFsW2o69oUqodQmIoJRaIw==
+Received: from AM6P192CA0096.EURP192.PROD.OUTLOOK.COM (2603:10a6:209:8d::37)
+ by VI1PR10MB8061.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:800:1df::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8377.13; Thu, 23 Jan
- 2025 05:49:39 +0000
-Received: from AM1PEPF000252DF.eurprd07.prod.outlook.com
- (2603:10a6:400:19e:cafe::9b) by CWLP123CA0241.outlook.office365.com
- (2603:10a6:400:19e::8) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8377.11; Thu, 23 Jan
+ 2025 05:53:30 +0000
+Received: from AM3PEPF00009B9E.eurprd04.prod.outlook.com
+ (2603:10a6:209:8d:cafe::e2) by AM6P192CA0096.outlook.office365.com
+ (2603:10a6:209:8d::37) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.8377.17 via Frontend Transport; Thu,
- 23 Jan 2025 05:49:39 +0000
+ 23 Jan 2025 05:53:30 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.206)
  smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=de.bosch.com;
@@ -49,19 +49,19 @@ Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
  139.15.153.206 as permitted sender) receiver=protection.outlook.com;
  client-ip=139.15.153.206; helo=eop.bosch-org.com; pr=C
 Received: from eop.bosch-org.com (139.15.153.206) by
- AM1PEPF000252DF.mail.protection.outlook.com (10.167.16.57) with Microsoft
+ AM3PEPF00009B9E.mail.protection.outlook.com (10.167.16.23) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8377.8 via Frontend Transport; Thu, 23 Jan 2025 05:49:39 +0000
-Received: from FE-EXCAS2000.de.bosch.com (10.139.217.199) by eop.bosch-org.com
+ 15.20.8377.8 via Frontend Transport; Thu, 23 Jan 2025 05:53:30 +0000
+Received: from FE-EXCAS2001.de.bosch.com (10.139.217.200) by eop.bosch-org.com
  (139.15.153.206) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.13; Thu, 23 Jan
- 2025 06:49:38 +0100
-Received: from [10.34.219.93] (10.139.217.196) by FE-EXCAS2000.de.bosch.com
- (10.139.217.199) with Microsoft SMTP Server (version=TLS1_2,
+ 2025 06:53:30 +0100
+Received: from [10.34.219.93] (10.139.217.196) by FE-EXCAS2001.de.bosch.com
+ (10.139.217.200) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.43; Thu, 23 Jan
- 2025 06:49:38 +0100
-Message-ID: <26d57f25-d2ff-4967-abf3-3d329c04d3ef@de.bosch.com>
-Date: Thu, 23 Jan 2025 06:49:26 +0100
+ 2025 06:53:29 +0100
+Message-ID: <17ceb0bc-af4c-49dd-ae8f-9b7361e54d33@de.bosch.com>
+Date: Thu, 23 Jan 2025 06:53:29 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -70,78 +70,75 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird Beta
 Subject: Re: [PATCH v4] rust: error: Extend the Result documentation
-To: Fiona Behrens <me@kloenk.dev>
-CC: <rust-for-linux@vger.kernel.org>, <ojeda@kernel.org>, <daniel@sedlak.dev>,
-	<aliceryhl@google.com>
+To: Alice Ryhl <aliceryhl@google.com>
+CC: <rust-for-linux@vger.kernel.org>, <ojeda@kernel.org>, <daniel@sedlak.dev>
 References: <20250122054719.595878-1-dirk.behme@de.bosch.com>
- <DFB88CA7-B9B9-4007-BFFB-02E624BA7ED3@kloenk.dev>
+ <CAH5fLggwj6oazuXRFP6by39U-7EhQ3kQnfmAMksV-dbma_UbQA@mail.gmail.com>
 Content-Language: en-GB
 From: Dirk Behme <dirk.behme@de.bosch.com>
-In-Reply-To: <DFB88CA7-B9B9-4007-BFFB-02E624BA7ED3@kloenk.dev>
+In-Reply-To: <CAH5fLggwj6oazuXRFP6by39U-7EhQ3kQnfmAMksV-dbma_UbQA@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM1PEPF000252DF:EE_|VI1PR10MB7755:EE_
-X-MS-Office365-Filtering-Correlation-Id: c8f468d7-c676-444c-e598-08dd3b71b9e1
+X-MS-TrafficTypeDiagnostic: AM3PEPF00009B9E:EE_|VI1PR10MB8061:EE_
+X-MS-Office365-Filtering-Correlation-Id: 27503698-38ba-4d03-f891-08dd3b7243a6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700013|1800799024|82310400026|13003099007;
+	BCL:0;ARA:13230040|376014|36860700013|82310400026|1800799024|13003099007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bWhGdUZaYkNHVkZVL3ZmWXk0TXpEZGF6UHpnOTBTbzhMVi9tTG5zaW14Um9s?=
- =?utf-8?B?bUVWZmY4d2lLeXpKRWpodEFuWmxUYllMUXBZUXBpVWRyaEpDa0llSWpVaGk5?=
- =?utf-8?B?c3RNKzEzOUV1SDIvS2tvbVllOXV0VUlRSHQ3aTBLb21WUGJ0c3ZPd0RXR2VW?=
- =?utf-8?B?VGdPbGZXd3BzN2F2OFB0S1E3Q0lCTjB4Slk0NXVVa2RHbjBMci9UU2M5bUtS?=
- =?utf-8?B?c1YxSkV1RUFSZ2taMms2dmhhN3VGK0JDcFBBVldNUys1UlFCNnNicjREazQ5?=
- =?utf-8?B?TnVDUFpXTHEyNkVORDlUZmlsV1pkU3l6MEFMM3U1elNlcllFRmNsajJOOTFa?=
- =?utf-8?B?Z1pDeGhZcHFCdStpbEY3VGVVOFJTdm5nK3owZTFZYjd5QlFlMERaOEFvd0Ri?=
- =?utf-8?B?dlFkd3UvVnZqMGs5N0Y3eUFCVFdBR01WOC83MW5DUUthaGQxZnl6NnYyUUtH?=
- =?utf-8?B?bm5aUGY2Y2JGUlF1SVQyL01Qa253aTA4WFJNdm9ObnNacjV4MFdlU0t6elJh?=
- =?utf-8?B?aDBLaTVta2YvUGt2Rm1hME5jQm1uZTZ4Mldzb3JsMXBXVFMxM3VadEppT1d4?=
- =?utf-8?B?dEh0SUNaRGNmb2UyUmMyTXpzSXFpQjM2d0ZSSzRROXJKd3BRVThqL1RyWCtB?=
- =?utf-8?B?RFFIdHhSbkFNbFFZK1Yvd1V5bEt4VG91c3ZsY2VTeWlhTm9zVUtZR3l1UFky?=
- =?utf-8?B?UGxNcmNjT0pQQSs2NWMzbTR3SXphYm11bkRsTHhaVFZHZ3c5TEk3TnhKaVBW?=
- =?utf-8?B?V1JkTE9DOW9tVGEvUjZmTWJWY0lOaWR6cmp5ZDZnQTJ1YUVEdllpVGFIWnhw?=
- =?utf-8?B?NjVQd3R6MVdpcy8zbFFlS1lpaEhjM2lUMmErVWFYRC9UVnFLTEZ4UzBrck1t?=
- =?utf-8?B?Q050YUpaU3B1Q3h3M2tGYzRTTUhvTHRUelgyMFZPeGJ2WnFMb2Mwa3d0Y1Yz?=
- =?utf-8?B?NzdMd3F1N2lFUVdmclRxUGhRM3d5MHprVVpOZks1ajNxNzhlYnk1dlkrcUZ6?=
- =?utf-8?B?NDVoWmF4MmlIUHo2bnByQjA0VnQvbGJZUzk4N0NjQVIvTTF0SzVoV3R2dUxW?=
- =?utf-8?B?MnJsa3lmODRDZm45cWlBajAwa1RRek12dW9VSVR0U1B6QjZ6eFA3NHVSQ2ky?=
- =?utf-8?B?OWR3aG81RVFyb3Nram9GS0tFbXZraTR2WE5XbWNjYWJyZHRvZ0FFNk1tWHlY?=
- =?utf-8?B?THdSVC9DRG5yYWRoN29IL0I3QXRqUERNTUV0aUpIK2dwTVZXb0NKdGtWa2FF?=
- =?utf-8?B?U2NHUHRxdFB2dnE3ak9OVUhxMllzejZrOXJOQ2dOcVVqSTZGQ3F5NGxyWDVj?=
- =?utf-8?B?ajI5aTlGSWlraUs5M3hiWHlrdTROM1hQWkJ4ZmRFeWU3ZzBYK1FLQk5JeGl3?=
- =?utf-8?B?eU1Fam9Dd2Rnam1LbXc0MnZFUEFTbGhDOGYrNnhqMldMWEFYMFhLWHFhUEor?=
- =?utf-8?B?a0VRczNrZkF3ZHN6SXhnTEtpTCtxUzZkcmNUdThFb3h6L09RSHFjK1lwa0ZC?=
- =?utf-8?B?ekFheElzQjROYmJSRldmVFh6SnVjSVhoZWxuTEQwVTBYcWMvV2JZalFnRXl5?=
- =?utf-8?B?VTNvN3h4cTR0YkFhd0lnQVNRSk1JRE05cml4dUtTS2t3eSs5a2tDUWFIbTJ1?=
- =?utf-8?B?OVJwb0ZleHhxRXdvdEJEQzlkODJIZHNVQXUxZ3c4ZFh4Q1RVd2dnYzg2VFJu?=
- =?utf-8?B?UWlWTFJaY3NtN0lmN3haUGhiWDdXb2lyV2w1SFRWRStmMVpqbGVQQzcrNkdH?=
- =?utf-8?B?S21pV0taRzV3cGxLOFM1NDZYZWJ6MEdnR3lZUzl6K3AzWFlLcWtUSkYvNkJ2?=
- =?utf-8?B?ZXQ2VVA1MTA5Sm11SmhWQ3gyYVpObFptdE56ZXRwVTVjU3JyYk1RTUtZU3hn?=
- =?utf-8?B?NlFTaDdUUDNkbzZnbkVuZWZsQkY1YXVIOTgyL3pnam9JVU9aTTNoZ0pLdGdJ?=
- =?utf-8?B?Smo1aE9CTURmQ0F5ejU2TVJRTENjVkNqOWNjRlQ3VHV1N0pyWkZIcWVnb3hh?=
- =?utf-8?Q?ld1Zfz10gznqwfKKrHB+2MtfEdjpc0=3D?=
+	=?utf-8?B?N0cyYVk5RVhCR1Z0d0RiT1JvQkdtTE9tYUdhV2krQ0Q1ZExKRkptUUNpd0ZR?=
+ =?utf-8?B?S2VjWUhSWCtjV0xhdkZlZDZIQ1pLLytuVjVZZUlKdldqRzlEd1NhL2dXVWVQ?=
+ =?utf-8?B?bVN3anhWUkc0MXhYUk5SZlVrTkFTYVVoRnJXRmRRNkJnY2tkVkh6b1hyRktV?=
+ =?utf-8?B?bkx2Sm4vVDJrSHhaTDYva2FjRjY5TmdHRVVYekhhcG5pdkVEOXVTc2R5Ty9G?=
+ =?utf-8?B?Q3dNblJTeHA0MmJUMzdhVlBmMnRJNzRNbFhMbjVYb0dSakVLcWRXRG90Y2w0?=
+ =?utf-8?B?bktZcktPNnI1b1NrSVJINWdKeUNIdnA5aERZdGRJUjFMYlB5MkF1bjgrY1pO?=
+ =?utf-8?B?NDlvdklvY1grMCtnZWZyTTg1ZENDdjZCeGhhdjYwL3hqQ0dzQnE5Y3BWUGZN?=
+ =?utf-8?B?OTRPZU5YZXRkdGk5U3h1NlVBaHRpT2V5R0QxRkszSWhpeHJiMXNreXNvZFFr?=
+ =?utf-8?B?R2lVd2kwbkp5ZWl3ZUR6enFCa1A3ZU4vMzFQeHJwSGRUeXcrcCtQR2VJWWtm?=
+ =?utf-8?B?Y3YzWTIrTkJnMGFSamxFKzY4N1NpVjgzYjhtQzEzWlNtM3BlcXJSNmpKaWpO?=
+ =?utf-8?B?TThkdU9WVG5sNmh4cnlnd1JiZWV0NEdrcXZnQkRsaGNEcENtdXpON2ZtYkxL?=
+ =?utf-8?B?NWNDR29DYzF0blloSWZYc09HUm5CUFZ6UHpqRXgrVk9uUXpueU9qVm5uelJs?=
+ =?utf-8?B?Vkc4dlViUElLVElheUNnZEVJZjNkNFh2SzA1ZjAwWHVEZ0o5bHhrbm1kTTVW?=
+ =?utf-8?B?Z1A5eU1LeU5EakhTNXgvenYrZEZLTis1R2tKQ2xBR1RZMDJCaFFPMXZ3cGwz?=
+ =?utf-8?B?dTFUWnYwWXl4d0RkNCs2ZFFCbCt4SFRvcVVpQ3BWa3o2czB6WkxxZlRsT25H?=
+ =?utf-8?B?bUJ0YnRxaHp5TURmZFc1WWYzSWVwVk1iZ2tnUUI2U1RQd0tZT1MxTEdyTks1?=
+ =?utf-8?B?Zll2bjRENlYyNmpDRkJ3ZlY2MGQ4MEUvZVJ0U0lBK1k1RVhsNHNwdkxzaFk4?=
+ =?utf-8?B?YnVmZmY3cksvQWc2Q0lmazdtNUY2N05UMHJWTDhlTlVaM2JyVzhYcmd1UEc5?=
+ =?utf-8?B?dC9LVDYxeFVQbTR4N2tnRTA1THRUc3hCQVdhS0tVblJ2eVFvVEQyMW5xVTU1?=
+ =?utf-8?B?RUFPVHVGeW5sTEFISndVbUtGV3BGNUtTS3JZb3hxOEJjVVJId2Nmc2dDc0ZL?=
+ =?utf-8?B?TlFxd0FHYmFnVnRMTHVCZm1XY2NyNWZvb0VIQUMxam5OZ2xBbUdDNS91KzZF?=
+ =?utf-8?B?aDhpZDhRY0ppY2ZRWUt5alEvYjRwYitWeTVzQnMxYVAzQ2lxWGhRUlNEV0RS?=
+ =?utf-8?B?alZKVkJQem5RdlA4dVVKSkpYOE5FU0tFYUNyMDlUc1d0bjBJWHpFNVhnOGJZ?=
+ =?utf-8?B?NWFTVmpDdHV4L1ZQbmwzaTc1bHN4TTN4M3lZUFpjUjkxcTBpM0Q5dWx6c3Nx?=
+ =?utf-8?B?Q2ZBQkhnbnA2ai8xRE1EbG0yZkI0ZnkwQW1Vb09heWQrRTREQ2p4akVUUll5?=
+ =?utf-8?B?enlqTHN6Ni9Yc2dHLzNXYk1mZmZvRDJCS2tCS1M5WVcyTVNWNS9JMThCTk4y?=
+ =?utf-8?B?YnlhRDNFV0xET2tKamtLQ3dyaWo0VG55QUdTSUZ1R0FNcGgwUm9GNEF0Sysx?=
+ =?utf-8?B?MkFLQWhZM1dBM09wbVA4NVFvTzIyTVRCVHFmcy9Qb3EzZzlTNmZJTEdMQUdY?=
+ =?utf-8?B?MGgwOUthc1FVM3pWMWZQcndCY2xJaEplOW5XN1J4dC9GWmJSNkZmcHJvSkpH?=
+ =?utf-8?B?OTd6elZiZHY5SFVBdGl0emkwUEVyOWhUZTJMVjE2OFRpMWg0aElIbGNhaDB0?=
+ =?utf-8?B?UWVXZC94UXVsZmVKaHlab3pEdWJFVHZ5SEMxcmhyQ1VSNHFWcnlybS8xSkNt?=
+ =?utf-8?B?OGpvRk4rakVhSmxLckVaS2ROUlk5TXRneW5pQWJKWG9GWlZ3dmpDc0lBS3lq?=
+ =?utf-8?B?VFFvblc2YUZER0taTG42cFF5eXJ5Y1ZsZjhjNmhsQnNQK0pTSFhLOG83RVUz?=
+ =?utf-8?Q?AvqFHJXVK4KWsnaQlEPbCi1+km61Q0=3D?=
 X-Forefront-Antispam-Report:
-	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700013)(1800799024)(82310400026)(13003099007);DIR:OUT;SFP:1101;
+	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700013)(82310400026)(1800799024)(13003099007);DIR:OUT;SFP:1101;
 X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2025 05:49:39.1786
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2025 05:53:30.3023
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c8f468d7-c676-444c-e598-08dd3b71b9e1
+X-MS-Exchange-CrossTenant-Network-Message-Id: 27503698-38ba-4d03-f891-08dd3b7243a6
 X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.206];Helo=[eop.bosch-org.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	AM1PEPF000252DF.eurprd07.prod.outlook.com
+	AM3PEPF00009B9E.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR10MB7755
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR10MB8061
 
-Hi Fiona,
-
-On 22/01/2025 10:57, Fiona Behrens wrote:
-> On 22 Jan 2025, at 6:47, Dirk Behme wrote:
-> 
+On 22/01/2025 10:17, Alice Ryhl wrote:
+> On Wed, Jan 22, 2025 at 6:47 AM Dirk Behme <dirk.behme@de.bosch.com> wrote:
+>>
 >> Extend the Result documentation by some guidelines and examples how
 >> to handle Result error cases gracefully. And how to not handle them.
 >>
@@ -259,26 +256,40 @@ On 22/01/2025 10:57, Fiona Behrens wrote:
 >> +/// be used to handle the [`Result`]. Using the [`?`]-operator is often
 >> +/// the best choice to handle [`Result`] in a non-verbose way as done in
 >> +/// [samples/rust/rust_minimal.rs]:
+>> +///
+>> +/// ```
+>> +/// fn example() -> Result {
+>> +///     let mut numbers = KVec::new();
+>> +///     numbers.push(72, GFP_KERNEL)?;
+>> +///     numbers.push(108, GFP_KERNEL)?;
+>> +///     numbers.push(200, GFP_KERNEL)?;
+>> +///     Ok(())
+>> +/// }
+>> +/// # example()?;
+>> +/// # Ok::<(), Error>(())
+>> +/// ```
+>> +/// Another possibility is to call [`unwrap()`](Result::unwrap) or
+>> +/// [`expect()`](Result::expect). However, use of these functions is
+>> +/// *heavily discouraged* in the kernel because they trigger a Rust
+>> +/// [`panic`] if an error happens, which may destabilize the system or
+>> +/// entirely break it as a result -- just like the C [`BUG()`] macro.
+>> +/// Please see the documentation for the C macro [`BUG()`] for guidance
+>> +/// on when to use these functions. Alternatively, depending on the use
+>> +/// case, using [`unwrap_or()`](Result::unwrap_or),
+>> +/// [`unwrap_or_else()`](Result::unwrap_or_else),
+>> +/// [`unwrap_or_default()`](Result::unwrap_or_default) or
+>> +/// [`unwrap_unchecked()`](Result::unwrap_unchecked) might be an option, as well.
 > 
-> All examples above feature a pr_err and then return the error. Then the `?`-operator is just called less verbose.
-> Maybe it makes sense to also state that it then does not print anything and possible also show that it could be
-> logged at this place with `inspect_err`.
-> Though I remember that usage of inspect_err got discussed at kangrejos (rfl-conference) but don’t fully remember the outcome,
-> think it was something like use it sparingly.
-Yes, we talked about that. If I remember correctly the conclusion was
-somehow that the caller is responsible to report correctly about
-possible errors he gets back. Like in C. And yes, I think the
-samples/rust/rust_minimal.rs used here is exactly an example where this
-is *not* the case. This is what I called "silent" errors.
+> This sounds like unwrap_or() and friends are just as bad as unwrap(),
+> but in reality they aren't since they don't panic. Maybe a paragraph
+> break could be nice?
 
-The idea of this patch is "don't use unwrap/expect as it might panic".
-And yes, we need some explanation for using the `?`-operator correctly.
-Esp. to avoid these "silent" errors.
+Yes, makes sense. Ack.
 
-But would it be ok for you to do this in two steps? I.e. having this "no
-unwrap/expect" patch. And then in a second step a "use `?` correctly"
-explanation?
+Let's see if a version 5 is required. If not, maybe Miguel could add
+that paragraph break before "Alternatively, depending ..." while applying?
 
-Best regards,
+> Otherwise looks good!
+Thanks!
 
 Dirk
