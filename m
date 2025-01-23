@@ -1,70 +1,70 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C635F1C01;
-	Thu, 23 Jan 2025 00:12:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A381A28D;
+	Thu, 23 Jan 2025 01:04:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737591153; cv=none; b=bsKkPrxXwpvAMN5ZZ52WYJvSzeqeuFNuwNd4O1kRRt1Qi13LgELZPGXLEOlknQS0+1txrvizzLIbpw7Ikn7kPOuZNQmduXVZ17qGK5zIqba5K6b89IED1FKMdkth3POwFMQhcCQtSgY9x3mmV0JNdVek1fqyeMp7swHr25lCuBI=
+	t=1737594263; cv=none; b=gc7iUYyQtVKTDw8DHBbHM6Rbt4A8Qrxklx9PUvs3/w6gquMcUqug8Lnmgvg1jdTMBsBAF6j7yDjFSGLnscgvCjZWHj5IOHWd8K5qt7GF4VJCrf8+ir2aLC/Qe4uRrczUhqKgqTfvvsugj+atKaUI2O0IP9ElrNwQAXMGk+8VyH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737591153; c=relaxed/simple;
-	bh=X1XECz49qWcxWeG/GB6BNF2gmFTz+ylWBz8BE0QNiJA=;
+	s=arc-20240116; t=1737594263; c=relaxed/simple;
+	bh=/OYlylaUK/RZr8Em8bH96uxFv6KAO2ccmBlUbaHiAnM=;
 	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=rhehvGBbWg5Tiz8BCh7OLpJqO0mWTlUOpv0/ymico8yDDPbLUDKnOPKNErUZ794SEcAuAu6vhyZ8dRQ8c6qQh7fNZduJ9z1XbP+s3/SNH7tzTOiHj3OM76aSzYdf/vH0wqLJmBEOVxUQy51vB0AWs2CaJkWp0mi1bsxQkzpPHxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N9YrP5XU; arc=none smtp.client-ip=209.85.214.169
+	 Mime-Version:Content-Type; b=Dy5cborjrhldyS61EtfN9WG2b4DWvGiPeLWLLW44E5N6D9t7g/YVgU1sEHvpv56yto6fwF9j07uxyPEqeQvgot3dwUbFJXQdpA8KPlUhHyVVf53Gvt0XEa4iq4odZnpR9mV4yOSeQwgaop6fORnIWjjl6dz/balV+gzyoUX3guY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qh1tv5tv; arc=none smtp.client-ip=209.85.216.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N9YrP5XU"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-21a7ed0155cso5004205ad.3;
-        Wed, 22 Jan 2025 16:12:31 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qh1tv5tv"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2ee8aa26415so751951a91.1;
+        Wed, 22 Jan 2025 17:04:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737591151; x=1738195951; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1737594261; x=1738199061; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Piw58QD9uf+j8b2ua/HAZ6tweWQTcyMdimhsEJ9IrPo=;
-        b=N9YrP5XUgxBNZhfBm3iMhwivi23ul1HGApK7C197VOyXH3JZXHm2znSRoRk0z/geQI
-         hx7ZT/pLn+SO4D2mqgw7hmqXOltuYWw4vnONij5bZrkccgWmd29AW839HQKxLWSOc02A
-         q19+8wBgHdmbS+PkH6RQkpfnw/0duutoDgJ+SCXD/I+HYpH2P6++7E+Hl2FWBBmaQW94
-         Il14U/dkXY73FBQd4Eme93yRWCoPjgJ6uhhERcpB67P1Nb0DF8nAk1u4ARWDpr1oFVMP
-         3xceirbu2h/Q16I/hkDYFqSN9NtjnMfQ2UPhmZCpM3T8rfHCiSWQAbQ02/sJC6ZhI33T
-         vCVw==
+        bh=/OYlylaUK/RZr8Em8bH96uxFv6KAO2ccmBlUbaHiAnM=;
+        b=Qh1tv5tv/a2Y9BK6VS119GKLG01me2qSLDrW6a5L3a5Kuj8qg5n1PMQ4iSrWMF5/Fz
+         I+Hd+OkUXmD6WJWYUiFSuD5OxgsJoaYvqHTX0S/CfacVoI5vZ7UOYqnhiCa1SudPjKcf
+         GjF1bCOXt5uDvPHNyJGgwzBZcyPECiQnrDcSQeILhoB1XP0CY9Rsnodmss436y7AeBS9
+         UQ4esLgyMM77zLDU5obqod9rki4lTck7IRhCFh2SguSyn0sZQa98bzP+9GymNnGmTr1K
+         C0L8cvv5ye56WZA/5u5hDF6FPFJH6Vhg60Lv99bAAzFTi2oWM3WPGa2I+OIQRt2gseXj
+         KsaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737591151; x=1738195951;
+        d=1e100.net; s=20230601; t=1737594261; x=1738199061;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=Piw58QD9uf+j8b2ua/HAZ6tweWQTcyMdimhsEJ9IrPo=;
-        b=O0jBu83J3fQfujDoqEsLj6BKsFHcDTRFLLidSiZhUpDXjOE31LdyF4B28yiWxS0Z9F
-         AQZjCQULHeShPye486EDumdx5DBpWpVtixEbUpPMaKqmf+s2AUhoNjGkfs72FGsBa4Xw
-         W52R4pBwKpDHNKGGesjC0HAPy94MALmueNB7JMORuV6j83kaQQ6IKR2WfQqBMsR6VpKE
-         s0MjQ8m+HmAPEFCA25r28f0uyjKGR0NAGU3q/kXyn7x4xEFcdLqXZgenG9mO1UJiH4o7
-         6LmY6ufqbEDtq+6Zvmt2VgWeiG09tdJ1S9PDcQtTFHyYGcMSGPXxekZJB0LTw3JrDalk
-         QEyw==
-X-Forwarded-Encrypted: i=1; AJvYcCUxxXYAJ0gEgcWSqvm2cAXJ6Fu47dAxYFwNwsR5kIoRgAukKoy9Pn3bAE8F0qvLW/eepyXW4LhriJlNv8/38DA=@vger.kernel.org, AJvYcCV1ShBMSZBAaekhzZgF3xl6XwwQemFJkVOT1lnalDkI/NbTQrRCfkVoDW5NZGZFN7h4ss3vbWsIj/WsaDw=@vger.kernel.org, AJvYcCV6hWo87QlTyHTae8PivHzYtZGihgvm8Iw64cNX1XlhxCDMCF0LFBQbT2YJqnaGdguDsJiL3pns@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLg9eTlWQKjhhdOLRoCUYwIkii9jdCMLrBEnHBa/guN7L1J8F6
-	c4FpBQH1NhfFzKwtC8VVRzv7mTWkmQy5Fl6E5iUe2b+QEicAW7CM
-X-Gm-Gg: ASbGncuJGyqXSRk8Tfjuuqb2rNr7iKbonX4DrrtXvd/pF7VJWAVJjU+n1jaBCvjB9C7
-	BMK5GhUS5r10Yeovg/s+uaO3aWFk637YIhx+/s4g9voEWP2cfuEIa7sPvvyVDVGuX5nO9HowAxa
-	q03yCX/E8J8TG8zmOmUeIzvhZbeI5UPjJIl9SwGgfXcz/emqnwPh2rBtOopo6Zl9HOEzXiOMHjl
-	PcYDoT3ZzN8eeqfm3vb4l2nRK9bv6pyz9VHOTh8ef8ifi+Z1PKbMnJd1EiuO6ZR2KzuMuVE0n8X
-	RA4I1Jj9g5VcjSrgA4/rUAcZ9Zpe7ieBMof0o/9TP1vaciLyp6c=
-X-Google-Smtp-Source: AGHT+IFbzEzDepffLCJBduNjJCrXd9MQqm9y1MzMSu+HJp+DT1OxEewkjFhjOhEzH9VOMpb0jb0NKQ==
-X-Received: by 2002:a17:902:c94a:b0:216:2abc:195c with SMTP id d9443c01a7336-21c352dd6ffmr323373965ad.7.1737591150970;
-        Wed, 22 Jan 2025 16:12:30 -0800 (PST)
+        bh=/OYlylaUK/RZr8Em8bH96uxFv6KAO2ccmBlUbaHiAnM=;
+        b=f4DBMmylcH3JdsSA+PxnvRBXO3jsrR4w6qe2dPLZXgGTffS0Ziy7V1uLhAdZsGNe9R
+         r3wy6fTIKTdvxT0+gleYMcbjBlblwkMgKlIiWPI00e5CEQerUJko4DvMRNTDHEX44mbA
+         5Or8XZ0Qm64Qjr9UblvoegioRKhiwv+6Nc112lFV27U+4IqvioxkPormTeGofZinDJ6A
+         PXtUnYkfMcx/5FbUwB3lsuLbMxOay09EYd3YGL744kO09sA2NPf4AgQK4x8ZrZiaqqar
+         hfeHEULiaZ4aqzuTXuO12hi9EX7YZlnr+NlSVW8bNzzaTCfO/qJMZnbKIrDW7WV72bwG
+         Nxbg==
+X-Forwarded-Encrypted: i=1; AJvYcCUETqJVUodKiG5++BZe+Rpoyv32iPNXykaVjSaXunoDoLZWYHgaVmx1Gr+5udRHh/ZENjM6mBDa6rn4Heo=@vger.kernel.org, AJvYcCUWiu6UZYVdhQ5IHQzFGocT0+FBSEepovoFhqSKHCie7Zgm3mG1jJNuMEg3dekUKt8FqGlLi358@vger.kernel.org, AJvYcCVilqE5NhZaegmW8itg03y7TS3h9UIOZ3796PXeqEGd22/lOE5rD2HFeFtsZao2ij7UA4M4x7JvZDaAU36kGB4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxK4+QqleHRFXy8Za5oWedNShYiE+iTeU3Wgd5LeYOyTmgo973m
+	8YdFaSjtIaELTTuQ6ksSfu3fYdVoO1l6IsCdVQngcv3ZUVqsi9Flu4wJ+G2M
+X-Gm-Gg: ASbGncspjS4YaDvedHzfZwWvgRKEwa4iQ2YjR3sF6jdIc873aNW7lHjirn5AeU9RWcz
+	plSN/kMuq4K+2nYMNQd4wL3IUjw+Fg/Ng1FrVcGEtMn85ECab3Sy1hYudRxMlgHOU/Wv3v5NjN/
+	HSSRKlkcT+QjskAbQBoUZUzSBFcWbvLn8rB8xxaD0YPOsFizU+6nvtmNATGBHIVyc7r8lbYpa5Q
+	Jab003jIt5ZSRY4QGudgPbd83zrrx/P142NiBPFMB3HFRyR381SoG0hLHGl/LR7paIi092wXUm/
+	8oqUZrSpjWyzBedDYAFA/v/5KEHRUps/KnzQlNxzyQhXuXHAMzC/PTQZ72Qehg==
+X-Google-Smtp-Source: AGHT+IHiDrHregsJ7T5LgEb+OVTEsKZqWD8raiOlQhcWlLYsLzMy3/7Npnhp71eZ0IRfBob2QLOBTQ==
+X-Received: by 2002:a17:90b:2808:b0:2ee:d433:7c54 with SMTP id 98e67ed59e1d1-2f782cb61bemr33143312a91.19.1737594260849;
+        Wed, 22 Jan 2025 17:04:20 -0800 (PST)
 Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21c2cea07e1sm100915785ad.19.2025.01.22.16.12.23
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f7e6ad5baasm2662573a91.43.2025.01.22.17.04.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jan 2025 16:12:30 -0800 (PST)
-Date: Thu, 23 Jan 2025 09:12:20 +0900 (JST)
-Message-Id: <20250123.091220.883080907537783935.fujita.tomonori@gmail.com>
-To: aliceryhl@google.com, gary@garyguo.net
-Cc: fujita.tomonori@gmail.com, miguel.ojeda.sandonis@gmail.com,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
- tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
- bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com,
+        Wed, 22 Jan 2025 17:04:20 -0800 (PST)
+Date: Thu, 23 Jan 2025 10:04:11 +0900 (JST)
+Message-Id: <20250123.100411.1402967329491755838.fujita.tomonori@gmail.com>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, andrew@lunn.ch,
+ hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
+ alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com,
  anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
  arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
  peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
@@ -72,43 +72,46 @@ Cc: fujita.tomonori@gmail.com, miguel.ojeda.sandonis@gmail.com,
  mgorman@suse.de, vschneid@redhat.com
 Subject: Re: [PATCH v8 4/7] rust: time: Add wrapper for fsleep function
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CAH5fLgiEn27VMUfrXcidu0rUpM7MPZVCOjywa-vQBO7dOdQrRQ@mail.gmail.com>
-References: <20250118.170224.1577745251770787347.fujita.tomonori@gmail.com>
-	<20250122170537.1a92051c.gary@garyguo.net>
-	<CAH5fLgiEn27VMUfrXcidu0rUpM7MPZVCOjywa-vQBO7dOdQrRQ@mail.gmail.com>
+In-Reply-To: <CANiq72=xwhu21YJ+HEXhF1Uk_t1tuffphRgF4wAGiTc-JYcJVQ@mail.gmail.com>
+References: <CANiq72kqu7U6CR30T5q=PvRam919eMTXNOfJHKXKJ0Z60U0=uw@mail.gmail.com>
+	<20250122.155702.1385101290715452078.fujita.tomonori@gmail.com>
+	<CANiq72=xwhu21YJ+HEXhF1Uk_t1tuffphRgF4wAGiTc-JYcJVQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: Text/Plain; charset=iso-8859-7
+Content-Transfer-Encoding: base64
 
-On Wed, 22 Jan 2025 18:06:58 +0100
-Alice Ryhl <aliceryhl@google.com> wrote:
-
->> > >> +    let duration = if delta > MAX_DURATION || delta.is_negative() {
->> > >> +        // TODO: add WARN_ONCE() when it's supported.
->> > >
->> > > Ditto (also "Add").
->> >
->> > Oops, I'll fix.
->> >
->> > > By the way, can this be written differently maybe? e.g. using a range
->> > > since it is `const`?
->> >
->> > A range can be used for a custom type?
->>
->> Yes, you can say `!(Delta::ZERO..MAX_DURATION).contains(&delta)`.
->> (You'll need to add `Delta::ZERO`).
-> 
-> It would need to use ..= instead of .. to match the current check.
-
-Neat, it works as follows.
-
-let delta = if (Delta::ZERO..=MAX_DELTA).contains(&delta) {
-    delta
-} else {
-    MAX_DELTA
-};
+T24gV2VkLCAyMiBKYW4gMjAyNSAxMToyMTo1MSArMDEwMA0KTWlndWVsIE9qZWRhIDxtaWd1ZWwu
+b2plZGEuc2FuZG9uaXNAZ21haWwuY29tPiB3cm90ZToNCg0KPiBOb3Qgc3VyZSBpZiB3ZSBzaG91
+bGQgc2F5ICJFcXVpdmFsZW50IiBnaXZlbiBpdCBpcyBub3QgZXhhY3RseSB0aGUNCj4gc2FtZSwg
+YnV0IEkgYW0gbm90IGEgbmF0aXZlIHNwZWFrZXI6IEkgdGhpbmsgaXQgZG9lcyBub3QgbmVjZXNz
+YXJpbHkNCj4gbmVlZCB0byBiZSBleGFjdGx5IHRoZSBzYW1lIHRvIGJlICJlcXVpdmFsZW50Iiwg
+YnV0IHBlcmhhcHMgIlNpbWlsYXINCj4gdG8iIG9yICJDb3VudGVycGFydCBvZiIgb3Igc29tZXRo
+aW5nIGxpa2UgdGhhdCBpcyBiZXR0ZXIuDQoNCkknbSBub3QgYSBuYXRpdmUgc3BlYWtlciBlaXRo
+ZXIsIGJ1dCBzZWVtcyB0aGF0ICJlcXVpdmFsZW50IiBjYW4gYmUNCnVzZWQgYXMgImZ1bmN0aW9u
+YWxseSBlcXVpdmFsZW50Ii4gVGhlIG9mZmljaWFsIFJ1c3QgZG9jcyBhbHNvIHVzZQ0KImVxdWl2
+YWxlbnQiIGluIHRoaXMgc2Vuc2UsICJFcXVpdmFsZW50IHRvIEOicyB1bnNpZ25lZCBjaGFyIHR5
+cGUiDQoNCmh0dHBzOi8vZG9jLnJ1c3QtbGFuZy5vcmcvc3RkL29zL3Jhdy90eXBlLmNfdWNoYXIu
+aHRtbA0KDQpUaGVyZSBhcmUgbWFueSBwbGFjZXMgd2hlcmUgImVxdWl2YWxlbnQiIGlzIHVzZWQg
+aW4gdGhpcyBzZW5zZSBpbg0KcnVzdC9rZXJuZWwvLiBTZWVtcyB0aGF0IG9ubHkgcnVzdC9rZXJu
+ZWwvYmxvY2svbXEucnMgdXNlcyBhIGRpZmZlcmVudA0Kd29yZCwgImNvdW50ZXJwYXJ0IiBpbiB0
+aGlzIHNlbnNlLg0KDQpQb3NzaWJseSBhbm90aGVyICJnb29kIGZpcnN0IGlzc3VlIiB0byBtYWtl
+IHRoaXMgZXhwcmVzc2lvbiBpbiB0aGUNCnRyZWUgY29uc2lzdGVudD8NCg0KPj4gQWgsIGl0IG1p
+Z2h0IHdvcmsuIFRoZSBmb2xsb3dpbmcgZG9lc24ndCB3b3JrLiBTZWVtcyB0aGF0IHdlIG5lZWQg
+dG8NCj4+IGFkZCBhbm90aGVyIGNvbnN0IGxpa2UgTUFYX0RFTFRBX05BTk9TIG9yIHNvbWV0aGlu
+Zy4gTm8gc3Ryb25nDQo+PiBwcmVmZXJlbmNlIGJ1dCBJIGZlZWwgdGhlIGN1cnJlbnQgaXMgc2lt
+cGxlci4NCj4+DQo+PiBsZXQgZGVsdGEgPSBtYXRjaCBkZWx0YS5hc19uYW5vcygpIHsNCj4+ICAg
+ICAwLi49TUFYX0RFTFRBLmFzX25hbm9zKCkgYXMgaTMyID0+IGRlbHRhLA0KPj4gICAgIF8gPT4g
+TUFYX0RFTFRBLA0KPj4gfTsNCj4gDQo+IFllYWgsIGRvbid0IHdvcnJ5IGFib3V0IGl0IHRvbyBt
+dWNoIDopDQo+IA0KPiBbIFRoZSBsYW5ndWFnZSBtYXkgZ2V0IGBjb25zdCB7IC4uLiB9YCB0byB3
+b3JrIHRoZXJlIChpdCBkb2VzIGluDQo+IG5pZ2h0bHkpIHRob3VnaCBpdCB3b3VsZG4ndCBsb29r
+IGdvb2QgZWl0aGVyLiBJIHRoaW5rIHRoZSBgYXMgaTMyYA0KPiB3b3VsZCBub3QgYmUgbmVlZGVk
+LiBdDQo+DQo+IEJ5IHRoZSB3YXksIHNwZWFraW5nIG9mIHNvbWV0aGluZyByZWxhdGVkLCBkbyB3
+ZSB3YW50IHRvIG1ha2Ugc29tZSBvZg0KPiB0aGUgbWV0aG9kcyBgZm5gcyBiZSBgY29uc3RgPw0K
+DQpZZWFoLiBBbGwgdGhlIGZyb21fKiBmdW5jdGlvbnMgYXJlIGFscmVhZHkgY29uc3QuIFNlZW1z
+IHRoYXQgbWFraW5nDQphc18qIGZ1bmNhdGlvbnMgKGFzX25hbm9zLCBldGMpIGNvbnN0IHRvbyBt
+YWtlIHNlbnNlLg0K
