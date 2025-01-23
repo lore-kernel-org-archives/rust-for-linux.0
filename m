@@ -1,64 +1,64 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A5685234;
-	Thu, 23 Jan 2025 10:02:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2578520CCDF;
+	Thu, 23 Jan 2025 10:21:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737626581; cv=none; b=rVdO1Fyaif9Kx4EzIx1U923PRL8aHocIZUhpoh15tIdTRafgUqxF9sEdCFRHmuCKCGsaqAK5TuuoX+ZuIQwc2jHAj8roQSxOKpU+lIL2i8VJJhq77a4zsoDriiUsW27l8gTisDtv/XjatwAK3tpGnXMEqoER/i0wMFx2QvJaIx0=
+	t=1737627688; cv=none; b=Fh0Q9uzA2lEBYcTpoC3eGGw5aiPVqFLWbXSroocp912XLW0zPhLUj+oQuec+8293S091+RzEeUWDbgOm5euxhcbFMJhx06MvrJeAaJdj1axU2zIMEhRPDNZQR9VPt9jQBSsW45kJFFoUA4reZjI18Q/ttx6WIIr4ffSkPdduB3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737626581; c=relaxed/simple;
-	bh=9kLKxg5Wl8QuI1Pu0A0az5n0XGjm6K028zf706D5W2c=;
+	s=arc-20240116; t=1737627688; c=relaxed/simple;
+	bh=kk4HA5vDppyGWzTb7XH809DECIRN03DbdW8hfodxvqA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=d5ppZLSN7vix749ZTmFpMAL6GbFOG3DCJoVqs+S6aOKZzJpgIGMufsR3Q3DG9oOAuZXk9zxYpGUQIsQQ5a6tmnMoYA7DPFruCGXhWzVJ80NGiQMvyws688CTqcAqvJaAr57qNkPw8ht02byfYOeM4D7FcK6Hc0Khof/n68/C9HQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bZYs2d1j; arc=none smtp.client-ip=209.85.218.48
+	 In-Reply-To:Content-Type; b=pj1pJsP96YVtY85DotV+VyskODgmSRSkPHfGchk6GN29wDEXt+yH94RCBm/8kyqvavaXkZA3fprRI01qDx2RzzTpawXfdY4aV14tIedBMnEzMqrC0hK6VR6gP/njAwWnksML27mtkj0ZnnwMYhGcEZdUO4qm/VwuNsB2lKxM+XE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BHKs2/f9; arc=none smtp.client-ip=209.85.218.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bZYs2d1j"
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-ab2c9b8aecaso134418366b.0;
-        Thu, 23 Jan 2025 02:02:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BHKs2/f9"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-ab39f84cbf1so143590066b.3;
+        Thu, 23 Jan 2025 02:21:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737626578; x=1738231378; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1737627685; x=1738232485; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=nn7f1QDRjABiYdfBrDPZUt0OEho92iQ25k7YCXNjVxI=;
-        b=bZYs2d1jdffCV1r7AHYhBflidXSXrKtRr0suH4dvFzaG7pAYaWVGpnC+R4nfAnpRYg
-         i53xlHyGNfIOO1z8mYZBGhaZu9aty1/PSx+/mOyCyATIroK+7GINTGBprrIDd9/nWwfS
-         YnAIzsh7ZP28HljBrbjX1qPBPrUDA57HXq2j4reyAuMdk4uuvEm2bvIQXtrYWQr5z4Aa
-         PhjY8Lv1nGzotr2786d72Zyw4iff3CySIebt4voXFyx/k8YH5B2tRekdU8cnolQtf7DQ
-         rFa0YgC2Uer7bcZSh7+pnvNLaQ2dlF+dXlN6FhbZbO7uYaAIUinido4bLgSe6bP4Zu+L
-         bXBw==
+        bh=Reu37OJc+YBSU+2HqT1wU4OxNOzAxq+mVUXqI2qpwcI=;
+        b=BHKs2/f9x+PKEiGh/WeLEAjKU4obSyWkuu9DdXSxZA+tjEG6Y4UZp/F0zWGo3kMBTj
+         1z4j7z1BqY/rU7WvS8lhPjdbtVi5WEs5QlQ4RjahOU3beRP7FM+o+vkoJLj1BbT3fQEe
+         f0SbQoM8d19N/azrbjH+UCj97lOy/2mnWhTaHV6uhjGUuwIQEYk+sgCgMp/2BCqLf31/
+         cfw5m3S/biifBOA72XFd2B5uUYaiuMDXtKpvXKUKgNTv12fxH5S5AsfHqUOlXVAYPPa0
+         xV+aghwwmfj87dbaOUPi5YohdTGrV2ScJcRvdGgI8UyCjbi7LLVj6XFkueNGapaQMWXZ
+         Drjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737626578; x=1738231378;
+        d=1e100.net; s=20230601; t=1737627685; x=1738232485;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nn7f1QDRjABiYdfBrDPZUt0OEho92iQ25k7YCXNjVxI=;
-        b=MwqqLQA3jV9ZmgDvoAAW/8oqvLq2llKZ8+Cf0KdM6c5CJ1c92nJ5SkJzsuTfZhQtNZ
-         y83Z5pRf4LsTPaWk/oOcVVe2C/KeZWGraKWhDqc0dXK8w4Artvg2l1rJAXG4HD0ObhqR
-         EVeUPL5y9xfk/n3ZQDuNT6XjUvpYAs8E6nKeTvS3HB/UEdnJI+GnyuzNdxt/pjKlau7B
-         N2/286IAzW3Op3uc/7ZWWZ3Q3RNbeswPPKw8WfKnyhRnwfoSOYDhjdYM90o7jzaCoA96
-         mEypjzreOOmU6cn+gMkOIIzmzxaLkgD2qravx7xLNNNeiftYHtRxAzdaWflnTrq+0GDE
-         UXmg==
-X-Forwarded-Encrypted: i=1; AJvYcCVxZDz+wpMl5WEsKewdHCqjBrC8Ly242vVYpa409ULZbBJR/VxcXcB+l9Pu3wSeH3BRkclvCPD9lT69T/38Yao=@vger.kernel.org, AJvYcCWMD0tzgKutZ2n7cvo0V6eNUcRmgr4XxD0Y3r/vGxh1FmTo1Mn++YQkgleuq6dGsV2mB+cCWKERHvk1q5E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUVfeyu1dQn+0/BOkTrBtLYFnNH7Fh1cNmzuYETflbJMaq+o5L
-	wKDcRBF7QfrzZQ5MjqANpAw84DZf3ErIqKsfeEiYYSIB9j82JPhT
-X-Gm-Gg: ASbGnctQ3JHnh0piaQVHuQ1wM0fmUkWC4WjeoINnma2mKbwFIzPJch3Ms6KWvuqmpH6
-	Rj/43Fdjr/rgCIEbfpKZGmOZ/RZazYEZ3vveEFectca/pNBR9aeJl0steUEeSOt1AuaSDNh9N36
-	KbpXM1rO+a2Njm52HQdaYuAwNQVma/9m0jVhNk8XdIBAwXzrZumOq19wmchREf2vdiMCFTN4xUM
-	lstV98CYLVnPXE1DzQNAx57D52KqjA0VZmmlaqK0MCxXzDv8mEo4VTzjcXplXqyuIHiMpKKsh2d
-	w/P1UpwtHBDfQw==
-X-Google-Smtp-Source: AGHT+IFBonUB0dybhykZaWG1lE35DbT9+uimB8yFqTNpVs2WtmP3fHyGcRnKKE9wgII/s+cHzhhppQ==
-X-Received: by 2002:a17:906:4784:b0:aa6:5e35:d730 with SMTP id a640c23a62f3a-ab38b16300dmr2223560866b.24.1737626577569;
-        Thu, 23 Jan 2025 02:02:57 -0800 (PST)
+        bh=Reu37OJc+YBSU+2HqT1wU4OxNOzAxq+mVUXqI2qpwcI=;
+        b=RP139Brz9f7bM+wC6qWLgaN2KeZWgZO5TxJ0ElG8oOEzS4nJxjI+N64EJbMLiChk0Q
+         B8Hv0xTOvd+KO92mDxyUmqDnPOrZe92W847qPjsLxqGTYbb2xsu1sacl8G14inwBstg4
+         ILAs+6Y6vNvJ7Q2d8nxlg7KG7Lm5NmIjWwgQeHjvyiaLdN5aCSdWVeBUfrLldDuxpwXo
+         I4ZgycgrAoLT+aAG+vQfsS65nKUh49cyLBKBUn2nfodmJdgqgaXXqEiNDFfbrfJt1yME
+         ZSq+Ns+fVuZiS9ZHuv1o9TGgrnYmoV/uam7onBOHf2zuxng1/5oNvfIHj7Jy1B6aYIfL
+         03Ug==
+X-Forwarded-Encrypted: i=1; AJvYcCV3P6tDd+hDSSkm7Vebdp5cRdSQHXResDPyU9MYXqR77FbOsEB0AL0VEgFug44j3MV8pmwt/KK0cgu+Flg=@vger.kernel.org, AJvYcCWAu2JiQAaw/MqZF1cNlmXyOnKzEurHh2diHZcwjWHUz+g2St/FhUBAX/cvahQBUdWam6+tMbHyt0aYcrVxtxU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyff/qaql3/sgD3cRoVrIIC2LsMnG0KZhS/HbBD3knOwFNFR7Jw
+	zKCooNWzaeayVeRs9rxTU4IwtH8jelesWfnfBVvja0bTZY352pVV/eDM48KiRAY=
+X-Gm-Gg: ASbGncsKH9UxB8qwtto+Se56p6XKlrtvx6utUrIBi8a0WB5vKjeEnnZ7M3o0qP+VqCh
+	m7tjB1QNg4oJKdvokReLBTSvaYhaDgPCDLB4lytK+THf7EuwIgBXzUYe9iKkj1CGu1zIRvXCbnh
+	lYYGS7BYqAdJwTKSlw2dQl1QDljlyv/ZQZTLI06Im2S2Wyh8yu5afrXWklBLd57jDoq59/PPe/K
+	+0RjphnvhjgPyQdFshdHWcILfcbVImhdZFQ+7LjoccfBulfeJqeNv8XIIUlozrbMBlPI7ipRpkj
+	1V8ablvo9gyldg==
+X-Google-Smtp-Source: AGHT+IFmpqm2VcJTgrgH8R0aMH7vaNLrbujfeTPVXBsJxQPw9xlmyoZTJ1AnwgC5MGZhGFDk5q+m4A==
+X-Received: by 2002:a17:907:6ea6:b0:aa6:2704:4840 with SMTP id a640c23a62f3a-ab38b3cfb30mr2214407266b.51.1737627684989;
+        Thu, 23 Jan 2025 02:21:24 -0800 (PST)
 Received: from [10.5.1.156] ([193.170.134.247])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab384c636b4sm1051141266b.15.2025.01.23.02.02.56
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab384ce0f58sm1029002266b.48.2025.01.23.02.21.24
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Jan 2025 02:02:57 -0800 (PST)
-Message-ID: <bc096b1c-2e33-4234-a0ac-081b05d8cd7f@gmail.com>
-Date: Thu, 23 Jan 2025 11:02:56 +0100
+        Thu, 23 Jan 2025 02:21:24 -0800 (PST)
+Message-ID: <b7492912-3e58-43c4-aa0c-e6bcd4925e24@gmail.com>
+Date: Thu, 23 Jan 2025 11:21:23 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -66,252 +66,136 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] rust: miscdevice: Add additional data to
- MiscDeviceRegistration
-To: Alice Ryhl <aliceryhl@google.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH 1/3] rust: add Aliased type
+To: Boqun Feng <boqun.feng@gmail.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- Arnd Bergmann <arnd@arndb.de>, Lee Jones <lee@kernel.org>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Lee Jones <lee@kernel.org>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Danilo Krummrich <dakr@kernel.org>
 References: <20250119-b4-rust_miscdevice_registrationdata-v1-0-edbf18dde5fc@gmail.com>
- <20250119-b4-rust_miscdevice_registrationdata-v1-2-edbf18dde5fc@gmail.com>
- <2025012243-myspace-woof-1d1e@gregkh>
- <CAH5fLgh7QyVSgqJZM-krHmF87c76a84Cg6PyT47TYjMsN9iwZg@mail.gmail.com>
- <2025012236-tall-untried-1d7c@gregkh>
- <CAH5fLggZ-7Rb=98JF+KkieY_H13mRVLB+T1umOrQib3ah78M-Q@mail.gmail.com>
+ <20250119-b4-rust_miscdevice_registrationdata-v1-1-edbf18dde5fc@gmail.com>
+ <Z46Gzg_5kv-MwZNL@boqun-archlinux>
 Content-Language: en-US
 From: Christian Schrefl <chrisi.schrefl@gmail.com>
-In-Reply-To: <CAH5fLggZ-7Rb=98JF+KkieY_H13mRVLB+T1umOrQib3ah78M-Q@mail.gmail.com>
+In-Reply-To: <Z46Gzg_5kv-MwZNL@boqun-archlinux>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
 
 
-On 22.01.25 2:06 PM, Alice Ryhl wrote:
-> On Wed, Jan 22, 2025 at 1:40 PM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
->>
->> On Wed, Jan 22, 2025 at 11:11:07AM +0100, Alice Ryhl wrote:
->>> On Wed, Jan 22, 2025 at 10:28 AM Greg Kroah-Hartman
->>> <gregkh@linuxfoundation.org> wrote:
->>>>
->>>> On Sun, Jan 19, 2025 at 11:11:14PM +0100, Christian Schrefl wrote:
->>>>> When using the Rust miscdevice bindings, you generally embed the
->>>>> MiscDeviceRegistration within another struct:
->>>>>
->>>>> struct MyDriverData {
->>>>>     data: SomeOtherData,
->>>>>     misc: MiscDeviceRegistration<MyMiscFile>
->>>>> }
->>>>>
->>>>> In the `fops->open` callback of the miscdevice, you are given a
->>>>> reference to the registration, which allows you to access its fields.
->>>>> For example, as of commit 284ae0be4dca ("rust: miscdevice: Provide
->>>>> accessor to pull out miscdevice::this_device") you can access the
->>>>> internal `struct device`. However, there is still no way to access the
->>>>> `data` field in the above example, because you only have a reference to
->>>>> the registration.
->>>>
->>>> What's wrong with the driver_data pointer in the misc device structure?
->>>> Shouldn't you be in control of that as you are a misc driver owner?  Or
->>>> does the misc core handle this I can't recall at the moment, sorry.
->>>
->>> There's no such pointer in struct miscdevice?
->>
->> struct miscdevice->struct device->driver_data;
->>
->> But in digging, this might not be "allowed" for a misc driver to do, I
->> can't remember anymore, sorry.
->>
->>>>> Using container_of is also not possible to do safely. For example, if
->>>>> the destructor of `MyDriverData` runs, then the destructor of `data`
->>>>> would run before the miscdevice is deregistered, so using container_of
->>>>> to access `data` from `fops->open` could result in a UAF. A similar
->>>>> problem can happen on initialization if `misc` is not the last field to
->>>>> be initialized.
->>>>>
->>>>> To provide a safe way to access user-defined data stored next to the
->>>>> `struct miscdevice`, make `MiscDeviceRegistration` into a container that
->>>>> can store a user-provided piece of data. This way, `fops->open` can
->>>>> access that data via the registration, since the data is stored inside
->>>>> the registration.
->>>>
->>>> "next to" feels odd, that's what a container_of is for, but be careful
->>>> as to who owns the lifecycle of the object you are trying to get to.
->>>> You can't have multiple objects with different lifecycles in the same
->>>> structure (i.e. don't mix a misc device and a platform device together).
->>>
->>> Ultimately, this is intended to solve the problem that container_of
->>> solves in C. Actually using container_of runs into the challenge that
->>> you have no way of knowing if those other fields are still valid.
->>
->> You "know" they are valid if you have a pointer to your structure,
->> right?  Someone sent that to you, so by virtue of that it has to be
->> valid.
->>
->>> If
->>> the destructor of the struct starts running, then it might have
->>> destroyed some of the fields, but not yet have destroyed the
->>> miscdevice field. Since you can't know if the rest of the struct is
->>> still valid, it's not safe to use container_of.
->>
->> That's a different issue, that's a lifetime issue of "can I look at
->> these other fields at this point in time and trust them", it's not a
->> "these are not valid thing to look at".
+On 20.01.25 6:24 PM, Boqun Feng wrote:
+> Hi Christian,
 > 
-> The memory containing the field can't have been deallocated yet, but
-> if we provide a safe way to get access to those fields after their
-> destructor runs, then that's still a problem. If there's a field of
-> type `KBox<MyType>`, i.e. a pointer to a kmalloc allocation, then the
-> destructor will have freed that allocation. We cannot let you access
-> the field that holds the KBox after that happens because the pointer
-> will be dangling.
+> [Cc Daniel and Danilo]
 > 
->>> Storing those other fields within the registration solves this issue.
->>> The registration ensures that the miscdevice is deregistered before
->>> the `data` field is destroyed. This means that if it's safe to access
->>> the miscdevice field, then it's also safe to access the `data` field,
->>> and that's the guarantee we need.
+> Thanks for the patch!
+> 
+> On Sun, Jan 19, 2025 at 11:11:13PM +0100, Christian Schrefl wrote:
+>> This type is useful for cases where a value might be shared with C code
+>> but not interpreted by it.
+>> In partiquarly this is added to for data that is shared between a Driver
+>> and a MiscDevice implementation.
 >>
->> I'm confused.  A misc device should be embedded inside of something
->> else.  And the misc device controls the lifespan of that "something
->> else" structure, right?  So by virtue of the misc device being alive,
->> everything else in there should be ok.
-> 
-> This patch proposes that the way you write
-> 
-> struct MyDriverData {
->     // lifetime of these fields is controlled by misc
->     field1: Foo,
->     field2: Bar,
->     misc: MiscDeviceRegistration<MyMiscFile>
-> }
-> 
-> is
-> 
-> struct MyDriverData {
->     misc: MiscDeviceRegistration<MyMiscFile, Inner>
-> }
-> struct Inner {
->     // lifetime of these fields is controlled by misc
->     field1: Foo,
->     field2: Bar,
-> }
-> 
-> in memory all three fields gets laid out next to each other.
-> 
->> Now individual misc devices might want to do different things but if
->> they are being torn down, that means all references are dropped so any
->> "container_of()" like cast-back should not even be possible as there
->> should not be a pointer that you can cast-back from here.
+>> Similar to Opaque but guarantees that the value is initialized and the
+>> inner value is dropped when Aliased is dropped.
 >>
->> Or am I confused?  I think a real example would be good to see here.
+>> This was origianally proposed for the IRQ abstractions [0], but also
+>> useful for other cases where Data may be aliased, but is always valid
+>> and automatic drop is desired.
+>>
+>> Link: https://lore.kernel.org/rust-for-linux/CAH5fLgiOASgjoYKFz6kWwzLaH07DqP2ph+3YyCDh2+gYqGpABA@mail.gmail.com [0]
+>> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+>> Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
+>> ---
+>>  rust/kernel/types.rs | 40 ++++++++++++++++++++++++++++++++++++++++
+>>  1 file changed, 40 insertions(+)
+>>
+>> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+>> index 3aea6af9a0bca70ee42b4bad2fe31a99750cbf11..5640128c9a9055476a0040033946ba6caa6e7076 100644
+>> --- a/rust/kernel/types.rs
+>> +++ b/rust/kernel/types.rs
+>> @@ -528,3 +528,43 @@ pub enum Either<L, R> {
+>>  /// [`NotThreadSafe`]: type@NotThreadSafe
+>>  #[allow(non_upper_case_globals)]
+>>  pub const NotThreadSafe: NotThreadSafe = PhantomData;
+>> +
+>> +/// Stores a value that may be aliased.
+>> +///
+>> +/// This is similar to `Opaque<T>` but is guaranteed to contain valid data and will
+>> +/// Call the Drop implementation of T when dropped.
+>> +#[repr(transparent)]
+>> +pub struct Aliased<T> {
 > 
-> Christian, do you mind sharing the example you showed to me?
+> As I already mentioned [1], the name `Aliased` is more reflecting the
+> fact that this wrapper will avoid generating the "noalias" attribute(?)
+> on the reference/pointer to the type rather than an intuitive idea about
+> "why or when do I need this". Moreover, I think the argument about the
+> naming of the counterpart in unstable Rust (UnsafePinned) makes sense to
+> me [2]: this type alone won't prevent `&mut Aliased` getting `swap`, and
+> it has to be used with `Pin`.
+> 
+> Therefore, I think we should use a different name, perhaps
+> `(Always)Shared`, or just use `UnsafePinned`, or, as always, looking
+> fowards to a better name from anybody ;-)
+> 
+> [1]: https://lore.kernel.org/rust-for-linux/Z407egxOy7oNLpq8@boqun-archlinux/
+> [2]: https://rust-lang.github.io/rfcs/3467-unsafe-pinned.html#naming
 
-Sure
+I don't particularly care about the name, I mostly used aliased, because that's
+the name that Alice originally used.
 
-#[pin_data(PinnedDrop)]
-struct LedPwmDriver {
-    pdev: platform::Device,
-    mapping: Devres<IoMem<MAPPING_SIZE, true>>,
-    #[pin]
-    miscdev: MiscDeviceRegistration<RustMiscDevice>,
-}
+`(Always)Shared` seems confusing to me.
 
-impl platform::Driver for LedPwmDriver {
-    type IdInfo = ();
-    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
-    fn probe(pdev: &mut platform::Device, info: Option<&Self::IdInfo>) -> Result<Pin<KBox<Self>>> {
-        dev_dbg!(pdev.as_ref(), "Probe Rust Platform driver sample.\n");
-        if info.is_some() {
-            dev_info!(pdev.as_ref(), "Probed with info\n");
-        }
-        let mapping = pdev
-            .ioremap_resource_sized::<MAPPING_SIZE, true>(pdev.resource(0).ok_or(ENXIO)?)
-            .map_err(|_| ENXIO)?;
+I guess we can use `UnsafePinned`, but most people won't know what that means,
+also I'm not sure if it's a good Idea to use the same name as a (future) 
+language type.
 
-        // Initialize the HW
-        mapping.try_access().ok_or(ENXIO)?.writel(0xFF, 0x0);
+If there is a consensus on a good name I'll use that for the next version.
 
-        let options = MiscDeviceOptions { name: c_str!("led0") };
-        let drvdata = KBox::try_pin_init(
-            try_pin_init!(Self {
-                pdev: pdev.clone(),
-                mapping,
-                miscdev <- MiscDeviceRegistration::register(options),
-            }),
-            GFP_KERNEL,
-        )?;
-        Ok(drvdata)
-    }
-}
+> 
+> Regards,
+> Boqun
+> 
+>> +    value: UnsafeCell<T>,
+>> +    _pin: PhantomPinned,
+>> +}
+>> +
+>> +impl<T> Aliased<T> {
+>> +    /// Creates a new `Aliased` value.
+>> +    pub const fn new(value: T) -> Self {
+>> +        Self {
+>> +            value: UnsafeCell::new(value),
+>> +            _pin: PhantomPinned,
+>> +        }
+>> +    }
+>> +    /// Create an `Aliased` pin-initializer from the given pin-initializer.
+>> +    pub fn try_pin_init<E>(value: impl PinInit<T, E>) -> impl PinInit<Self, E> {
+>> +        // SAFETY:
+>> +        // In case of an error in value the error is returned, otherwise the slot is fully initialized,
+>> +        // since value is initialized and _pin is a Zero sized type.
+>> +        // The pin invariants of value are upheld, since no moving occurs.
+>> +        unsafe { init::pin_init_from_closure(move |slot| value.__pinned_init(Self::raw_get(slot))) }
+>> +    }
+>> +    /// Returns a raw pointer to the opaque data.
+>> +    pub const fn get(&self) -> *mut T {
+>> +        UnsafeCell::get(&self.value).cast::<T>()
+>> +    }
+>> +
+>> +    /// Gets the value behind `this`.
+>> +    ///
+>> +    /// This function is useful to get access to the value without creating intermediate
+>> +    /// references.
+>> +    pub const fn raw_get(this: *const Self) -> *mut T {
+>> +        UnsafeCell::raw_get(this.cast::<UnsafeCell<MaybeUninit<T>>>()).cast::<T>()
+>> +    }
+>> +}
+>>
+>> -- 
+>> 2.48.1
+>>
 
-#[pinned_drop]
-impl PinnedDrop for LedPwmDriver {
-    fn drop(self: Pin<&mut Self>) {
-        dev_info!(self.pdev.as_ref(), "Remove Rust Platform driver sample.\n");
-
-        if let Some(res) = self.mapping.try_access() {
-            res.writel(0x00, 0x0);
-        }
-    }
-}
-
-#[pin_data(PinnedDrop)]
-struct RustMiscDevice {
-    dev: ARef<Device>,
-    mapping: &'static Devres<IoMem<MAPPING_SIZE, true>>,
-}
-#[vtable]
-impl MiscDevice for RustMiscDevice {
-    type Ptr = Pin<KBox<Self>>;
-    fn open(_file: &File, misc: &MiscDeviceRegistration<Self>) -> Result<Pin<KBox<Self>>> {
-        let dev = ARef::from(misc.device());
-        // SAFETY:
-        // Stuff?
-        let ledpwm = unsafe { &*container_of!(misc, LedPwmDriver, miscdev) };
-        dev_info!(dev, "Opening Rust Misc Device Sample\n");
-        let res = ledpwm.mapping.try_access().ok_or(ENXIO)?;
-        res.writel(0x80, 0x0);
-        KBox::try_pin_init(
-            try_pin_init! {
-                RustMiscDevice {
-                    dev: dev,
-                    mapping: &ledpwm.mapping
-                }
-            },
-            GFP_KERNEL,
-        )
-    }
-}
-
-#[pinned_drop]
-impl PinnedDrop for RustMiscDevice {
-    fn drop(self: Pin<&mut Self>) {
-        dev_info!(self.dev, "Exiting the Rust Misc Device Sample\n");
-
-        if let Some(res) = self.mapping.try_access() {
-            res.writel(0x10, 0x0);
-        }
-    }
-}
-
-
-I removed or simplified many irrelevant parts, the full driver can be found here:
-
-https://github.com/onestacked/linux/blob/c9e2ef858e4537d33625cdf2b5d20ef4acfa9424/drivers/misc/ledpwm.rs
-
-This driver was only an attempt to the assignment of a University course in Rust mostly to see if was 
-possible or which abstractions are missing.
-
-The driver using the patch can be found here:
-https://github.com/onestacked/linux/blob/rust_ledpwm_driver/drivers/misc/ledpwm.rs
-
-
-Cheers
-Christian
