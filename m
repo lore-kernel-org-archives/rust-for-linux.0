@@ -1,110 +1,181 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2991B60890;
-	Fri, 24 Jan 2025 01:51:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4ABC1DB13A
+	for <rust-for-linux@vger.kernel.org>; Fri, 24 Jan 2025 07:27:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737683470; cv=none; b=uiBKopJmsza0eleJoNr4Lmatw9IbQw0QXy4HZV+nTqWR+s629PT7hXtqftvu77UoeHvZRzwsh37IKSE8SWd5DFiHtWzqP8/MPlegYFy+bFU4SjPLWDKLe+yl2LG3yjYyAIxglWk8ems3YqZZsC2xWCh3O8hybytY4sP1yjA5QOw=
+	t=1737703672; cv=none; b=SGziA/txMEnE/1SO5S8o9pbiYMeHyinDaLMCX5NXd+8urbDANvUY5yEG3KVR1k5jDQlB7ZdVqyRNhQ74fiGOv8Wshg0Mic0aXgS4AhedYeNq5QDi8KQnlxcnnlSv+nZSVhghCsG3gUoX6WY+BeAA+WWemgqZSYq+2P4Vu3ZbfXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737683470; c=relaxed/simple;
-	bh=i+amdNE0u8D8ChGqZ3qs6cRFJs6BsiNJwg022n6KT98=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=V24H4/t7kwPjb9rgCXJ4IewDQJpJZSMbPzbyVr5CI3b+As904EoRX5gfR6ht425kx/eAFMPFwfyQfDrr6SkPWI1Az8q5WmH5qGaZ+x7T+x+cbrLy7I1usxycDRmTd/9DlUUe443vFScaHRMOPkSFAvE9gs45xkq5PVU2LSfuslE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=laoTN4BK; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1737703672; c=relaxed/simple;
+	bh=MmWXvcHs0YEqeWGlJjI3ga9PmxYBdLE+gEIiTKedKTU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oVBmd5kuGWa5sxY7XNQB23OZMwtgvVIRWRCFU/wM8+lgC9aHzg/pzxTEqKN+oXFU51S6PpAN2giyZEQe23nYm/Z9uEu9Makqi8xkJoxjF/AIDR423MfrPsE0bUh8Y6oVnBw4aUQJ+XWALh9n27yMFVNDRP1l0XfyjPCBEZzLJ9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D9jqOqy0; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="laoTN4BK"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2163b0c09afso30295605ad.0;
-        Thu, 23 Jan 2025 17:51:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D9jqOqy0"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-385f07cd1a4so1732122f8f.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 23 Jan 2025 23:27:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737683468; x=1738288268; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=i+amdNE0u8D8ChGqZ3qs6cRFJs6BsiNJwg022n6KT98=;
-        b=laoTN4BKJCU+IGRict2UB0Dpzg8cEOzf3tcTnUpS4IKBoAYNk+1yc7+cMziTGvyTbN
-         h9Krizq0v5941yHmtD6CNw8Flhk5JWdGpRsQZ/YE9Ovsi2RJm7rYiSMH8TWzsvW7boqu
-         M51JEF7cTfoH9dJRalgdE1Wsnm1HR0SGSvP3KdBRcO9Jbq0u7lgQ77vGhQW/AY8n/cb+
-         W9xms6ila7qgNXdVimlw6JSTQNJD6A2NxwntkB7QvtE/DrHtKAWcoKBAdT0iORnIgZhJ
-         L6744JXWVdyN9NvbUJjOv6064g1YML8XFqObVHSHl6X1r9OKdkGc1/vLvdPDCm9xEh8c
-         6OWg==
+        d=google.com; s=20230601; t=1737703669; x=1738308469; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9dm7wAbTYwcUBhvi1fiJ3y0ouhlvLY0mrXCVDx5XKuA=;
+        b=D9jqOqy0iMZgRmthc9yPU0l8L2mjkFmAlPFEPHMSNLUkhMyIVvPQY+Aj9O+jfY+NFJ
+         JEvOEzW1J1SOQkZTAUGN+8N4uRGSExAxYpQmRWY1GeImUe5iHrNqSZRJLZZtwJJXQEXX
+         t5FbCzX6n0r0t1KUrGmAWLj6WFYCstQ70s/b6L8LnyCTuNM9dcFretHzT04c2y6AaRQV
+         wn+IUYLj7R35GJOaruv18Qz38yjOgr8zuZuR7d8ywahjwHfDSs5IaOLI6YTwi/C4n81B
+         P/nFIYIzru/nrXOSX4vegqd8+j/A2mh0oBHnMK3W6KrF99Sgo3d9tmkVJfnmVAldMJpo
+         loaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737683468; x=1738288268;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=i+amdNE0u8D8ChGqZ3qs6cRFJs6BsiNJwg022n6KT98=;
-        b=Vgaib5gZgQbXAuEhZy7ESM7sTed0bGfJP1JmDDTNTU58QWMq4jkSVPTsHLjEJ8Vw2B
-         mgwKxdBIhrUaR5I+a5fvMWdN4gCDIgmiTk9nFiysjCGwBaxzc5hrCfWkwRAY2cSqijVw
-         29UmkDTOcmIUpqnD6SNqEn2oUiF/wrJvL/7GJ2YjoPCxdNKTC9X4H3GZGJqYRyJ5BHMU
-         1+VMA8m7iKhoxqxdsE6jbV8KKYbtA5T8Te4utylIfELJwC6XXzwW2PoTAdQ0YaCUEz2p
-         OMj21OtZhxPPJNhmCLEXKcKn4fmS4BnFaQ+53ql+bwi0oSLaTcV++Pcqx9Oc5+NYN32Y
-         Fp7g==
-X-Forwarded-Encrypted: i=1; AJvYcCUV4rQnpwOiWhQ8DF20uXMiBAp1uivoEegr5N4brWOqi6Kk8ceVdF615comSVy8di3rT6b8+ws7e9CMHQO9yCY=@vger.kernel.org, AJvYcCUv6EEnV2ybO+zogeGx0rhyBXSt5KHK3ajhuwWsed4t49Fn9EJCnmiJ7dGQCaEplcfTcRHnrU6p@vger.kernel.org, AJvYcCXhLLIlzXeJ2+GjD8pgBxo/iK3ZFocBxE1YFrjSqXMINQ8NmD+0XZsn47+/2qiP0HebXhlvxiS+rfGIomU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3/dH6zDSHDJoPCyHPLusKFhuhRaSu2EZuOaB0fLYcCo0cZBnN
-	xYNAOjLI1g+TzeJO9tOwOwqz5B7rEOfQsrJpogVfwCT4ednKsF+E
-X-Gm-Gg: ASbGncufL5UDhwawkyhgASVP1H7ZHLRRSPC/QyFET7BCYqPIB9UXOZEGKsOD/CVtTSG
-	Mc2fbj8YjLpcTTKE8fVJ1tts+YYTXuXfrInhQ1tJbE7loimufxfp8KuiiYxDxu66xSwlMGzYszy
-	+DfDQFtJRRarJZdqTbcv56pjePgo5CLO6QdqEmFpZI8aG2Yj8bo9C6JtcqmUROPG8fGLdvFm+4Y
-	wCJvwtpCpDVzaDX9Qh++bNrvnzPyO8SVD8paVJwjLx9dBQQ3hQB7LR11Pf05qWr4VHB4Sb0X9Q2
-	wYILUi0N75aXn6TN0LemfDdgplB0IWb6Ta/3rCqnH9bDNerGICok5SyORkljOlBM4uN13ajZ
-X-Google-Smtp-Source: AGHT+IEnEOpMZd94Nvaj5D1v1KGJ51auz4R9U2AKF2YdxaLOKvxnXL2Sm9J23v0XcOBTj+ZOv/gHjA==
-X-Received: by 2002:a17:902:c94d:b0:216:7175:41bd with SMTP id d9443c01a7336-21c355c0257mr396700635ad.39.1737683468300;
-        Thu, 23 Jan 2025 17:51:08 -0800 (PST)
-Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21da424eca8sm5497755ad.241.2025.01.23.17.51.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jan 2025 17:51:07 -0800 (PST)
-Date: Fri, 24 Jan 2025 10:50:58 +0900 (JST)
-Message-Id: <20250124.105058.869129840829208535.fujita.tomonori@gmail.com>
-To: miguel.ojeda.sandonis@gmail.com
-Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
- boqun.feng@gmail.com, rust-for-linux@vger.kernel.org,
- netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
- tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- a.hindborg@samsung.com, aliceryhl@google.com, anna-maria@linutronix.de,
- frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de,
- jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
- peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
- dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
- mgorman@suse.de, vschneid@redhat.com
-Subject: Re: [PATCH v8 3/7] rust: time: Introduce Instant type
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CANiq72=vY3eZdsr12KfTCR6wGwrXyGZBk+1J7fsvg0t41ufYeA@mail.gmail.com>
-References: <CANiq72m++27i+=H0KUaf=6fn=p29iueEV-+g8toctp0O0zEW+A@mail.gmail.com>
-	<20250117.083111.1494434582668066369.fujita.tomonori@gmail.com>
-	<CANiq72=vY3eZdsr12KfTCR6wGwrXyGZBk+1J7fsvg0t41ufYeA@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1737703669; x=1738308469;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9dm7wAbTYwcUBhvi1fiJ3y0ouhlvLY0mrXCVDx5XKuA=;
+        b=bKsjlNGXD9y9mj4ad+5wpHckm4w3uSKDBasquomt4e0C4JVSWTRT07ezj4RRu42/fq
+         0gNEeLdfAgBoa8+Po+ZDpzcK1uLJWZH2DbouP3IKDyR5Jjc8+oDk1xuv4oMS04hT+ywa
+         W221fmJTQ9MHqbKi2JjThgqjTTv22pXZxsYmnRFtCZc0DuJu8iO0C3QkujJ9mPIEDesB
+         ZkDPdd40pQ8XPB/cvUvK+3jxroherKDWPY1ff0+6rXmnm3q+GDzNG8RMDjWD2q+E4T8I
+         aNcjv8QFrRo0fb7B17/A4T28vk6Vw8i4ZN4r0M6EukucRfUktfmDAiw3Anl9tWiFgjRn
+         nVjg==
+X-Gm-Message-State: AOJu0YxWGzPAIz2g50STHzaDBgmYKNdEnaLcmcIjvndBbdxi4wRDDs8Q
+	Ov2mFz2OBKR4h/oObPjfKm7ooqf3zWFG8Dq3ri8Fp8ZPz1/f0wFCbXPlDyVGg7Mmi4AAOGvALCW
+	42aTG9j4m1j7VZvbtLaGnXd8dtWHxi8/AnRtc
+X-Gm-Gg: ASbGncsToGKZTd1iKwUywtFAQlrWYWk5RBs+gIrjnVm0Vr3CNo8uISdaT53qRoDONYO
+	fvPRFUwIyvRFrIWIKjqb5ttA3QnELbbTE1vWzo5dDP6gTFnU9bkjROAX7drgpZug=
+X-Google-Smtp-Source: AGHT+IG+WJCZ6niBCr2ea9lao8jjYwLocNBSdvhoj1Oe9+nJg4phuC6TJqJ0ndgB8EHxTfuMjJPksaAZ7SW0A582Bhg=
+X-Received: by 2002:a5d:648a:0:b0:385:f349:fffb with SMTP id
+ ffacd0b85a97d-38bf57bfba2mr28100153f8f.45.1737703668899; Thu, 23 Jan 2025
+ 23:27:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=utf-8
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+References: <20250123104333.1340512-1-abdiel.janulgue@gmail.com> <20250123104333.1340512-3-abdiel.janulgue@gmail.com>
+In-Reply-To: <20250123104333.1340512-3-abdiel.janulgue@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 24 Jan 2025 08:27:36 +0100
+X-Gm-Features: AWEUYZl4ycPNE5J1IbzWwGCXCrtkHoG7zC_s-8WEd41UYdMj8CbvYSClW0Zuoc8
+Message-ID: <CAH5fLgjL0aGGwkjEfXH08Jopwin1NfkLzp9vQWKcHPEum8jV4g@mail.gmail.com>
+Subject: Re: [PATCH v11 2/3] rust: add dma coherent allocator abstraction.
+To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, daniel.almeida@collabora.com, 
+	dakr@kernel.org, robin.murphy@arm.com, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Valentin Obst <kernel@valentinobst.de>, 
+	open list <linux-kernel@vger.kernel.org>, Christoph Hellwig <hch@lst.de>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com, 
+	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-T24gU2F0LCAxOCBKYW4gMjAyNSAxMzoxNTo0MiArMDEwMA0KTWlndWVsIE9qZWRhIDxtaWd1ZWwu
-b2plZGEuc2FuZG9uaXNAZ21haWwuY29tPiB3cm90ZToNCg0KPiBPbiBGcmksIEphbiAxNywgMjAy
-NSBhdCAxMjozMeKAr0FNIEZVSklUQSBUb21vbm9yaQ0KPiA8ZnVqaXRhLnRvbW9ub3JpQGdtYWls
-LmNvbT4gd3JvdGU6DQo+Pg0KPj4gQXMgSSB3cm90ZSB0byBUb20sIHRoYXQncyB0aGUga2VybmVs
-J3MgYXNzdW1wdGlvbi4gRG8gd2UgbmVlZCB0byBtYWtlDQo+PiBpdCBhbiBpbnZhcmlhbnQgdG9v
-Pw0KPj4NCj4+IE9yIGltcHJvdmluZyB0aGUgYWJvdmUgIlJhbmdlIGZyb20gMCB0byBgS1RJTUVf
-TUFYLmAiIGlzIGVub3VnaD8NCj4+DQo+PiBUaGUga2VybmVsIGFzc3VtZXMgdGhhdCB0aGUgcmFu
-Z2Ugb2YgdGhlIGt0aW1lX3QgdHlwZSBpcyBmcm9tIDAgdG8NCj4+IEtUSU1FX01BWC4gVGhlIGt0
-aW1lIEFQSXMgZ3VhcmFudGVlcyB0byBnaXZlIGEgdmFsaWQga3RpbWVfdC4NCj4gDQo+IEl0IGRl
-cGVuZHMgb24gd2hhdCBpcyBiZXN0IGZvciB1c2VycywgaS5lLiBpZiB0aGVyZSBhcmUgbm8gdXNl
-IGNhc2VzDQo+IHdoZXJlIHRoaXMgbmVlZHMgdG8gYmUgbmVnYXRpdmUsIHRoZW4gd2h5IHdvdWxk
-bid0IHdlIGhhdmUgdGhlDQo+IGludmFyaWFudCBkb2N1bWVudGVkPyBPciBkbyB3ZSB3YW50IHRv
-IG1ha2UgaXQgY29tcGxldGVseSBvcGFxdWU/DQoNCkluc3RhbnQgb2JqZWN0IGlzIGFsd2F5cyBj
-cmVhdGVkIHZpYSBrdGltZV9nZXQoKSBzbyBpdCBzaG91bGRuJ3QgYmUNCm5lZ2F0aXZlLiBrdGlt
-ZV90IGlzIG9wYXF1ZSBmb3IgdXNlcnMuIEhvd2V2ZXIsIHdlIHN1cHBvcnQgY3JlYXRpbmcgYQ0K
-RGVsdGEgb2JqZWN0IGZyb20gdGhlIGRpZmZlcmVuY2UgYmV0d2VlbiB0d28gSW5zdGFuY2Ugb2Jq
-ZWN0czoNCg0KRGVsdGEgPSBJbnN0YW50MSAtIEluc3RhbnQyDQoNCkl0J3MgYSBzdWJ0cmFjdGlv
-biBvZiB0d28gczY0IHR5cGVzIHNvIHRvIHByZXZlbnQgb3ZlcmZsb3csIHRoZSByYW5nZQ0Kb2Yg
-a3RpbWVfdCBuZWVkcyB0byBiZSBsaW1pdGVkLg0KDQpJJ2xsIGFkZCB0aGUgaW52YXJpYW50IGRv
-Yy4gSSdtIG5vdCBzdXJlIGlmIGFuIGludmFyaWFudCBkb2N1bWVudA0KaXMgdGhlIGJlc3QgY2hv
-aWNlLCBidXQgaW4gYW55IGNhc2UsIHRoZSBhYm92ZSBpbmZvcm1hdGlvbiBzaG91bGQgYmUNCmRv
-Y3VtZW50ZWQuDQo=
+On Thu, Jan 23, 2025 at 11:43=E2=80=AFAM Abdiel Janulgue
+<abdiel.janulgue@gmail.com> wrote:
+>
+> Add a simple dma coherent allocator rust abstraction. Based on
+> Andreas Hindborg's dma abstractions from the rnvme driver, which
+> was also based on earlier work by Wedson Almeida Filho.
+>
+> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+
+Overall I think it looks pretty good, but a follow-up from our
+discussion the other day.
+
+> +    /// Returns the device, base address, dma handle, attributes and the=
+ size of the
+> +    /// allocated region.
+> +    ///
+> +    /// The caller takes ownership of the returned resources, i.e., will=
+ have the responsibility
+> +    /// in calling `bindings::dma_free_attrs`. The allocated region is v=
+alid as long as
+> +    /// the returned device exists.
+> +    pub fn into_parts(
+> +        self,
+> +    ) -> (
+> +        ARef<Device>,
+> +        *mut T,
+> +        bindings::dma_addr_t,
+> +        crate::ffi::c_ulong,
+> +        usize,
+> +    ) {
+> +        let size =3D self.count * core::mem::size_of::<T>();
+> +        let ret =3D (
+> +            // SAFETY: `&self.dev` is valid for reads.
+> +            unsafe { core::ptr::read(&self.dev) },
+
+This safety comment should explain why this will not lead to
+decrementing the refcount too many times. Which is because this
+doesn't actually duplicate the ARef due to the use of mem::forget.
+
+That said, I think wrapping self in ManuallyDrop is slightly easier to
+read than using mem::forget. I refer you to this pattern from Tokio
+that solves a similar problem:
+https://github.com/tokio-rs/tokio/blob/ee19b0ed7371b069112b9c9ef9280b81f343=
+8d26/tokio/src/sync/rwlock/owned_write_guard.rs#L38-L51
+
+> +            self.cpu_addr,
+> +            self.dma_handle,
+> +            self.dma_attrs.as_raw(),
+
+Why not return the Attrs type instead of an integer?
+
+> +            size,
+> +        );
+> +        core::mem::forget(self);
+> +        ret
+> +    }
+
+> +    /// Reads data from the region starting from `offset` as a slice.
+> +    /// `offset` and `count` are in units of `T`, not the number of byte=
+s.
+> +    ///
+> +    /// Due to the safety requirements of slice, the data returned shoul=
+d be regarded by the
+> +    /// caller as a snapshot of the region when this function is called,=
+ as the region could
+> +    /// be modified by the device at anytime. For ringbuffer type of r/w=
+ access or use-cases
+> +    /// where the pointer to the live data is needed, `start_ptr()` or `=
+start_ptr_mut()`
+> +    /// could be used instead.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that no hardware operations that involve the=
+ buffer are currently
+> +    /// taking place while the returned slice is live.
+> +    pub unsafe fn as_slice(&self, offset: usize, count: usize) -> Result=
+<&[T]> {
+
+You were asked to rename this function because it returns a slice, but
+I wonder if it's better to take an `&mut [T]` argument and to have
+this function copy data into that argument. That way, we could make
+the function itself safe. Perhaps the actual copy needs to be
+volatile?
+
+Well ... I understand that we did this previously and that we want to
+avoid it because it causes too much reading if T is a struct and we
+just want to read one of its fields. How about an API like this?
+
+dma_read!(my_alloc[7].foo)
+
+which expands to something that reads the value of the foo field of
+the 7th element, and
+
+dma_write!(my_alloc[7].foo =3D 13);
+
+That expands to something that writes 13 to field foo of the 7th element.
+
+Thoughts? I'm proposing this to avoid going in circles between the
+same solutions.
+
+Alice
