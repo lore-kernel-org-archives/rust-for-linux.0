@@ -1,156 +1,209 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B9718D621
-	for <rust-for-linux@vger.kernel.org>; Mon, 27 Jan 2025 18:32:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6987718A6C5;
+	Mon, 27 Jan 2025 18:38:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738002765; cv=none; b=fjSRcZeWz3dmN4KFjqEcDxB2NJa4MMkWPu7ynzHybnBXrB2vU+mgD0iygkVOtCQVN3NkKag7QzoDgPNuKjLzom3TC91OPSOi58SVc71QZlDqmVM6BiIESSaReac6NtAtWlw94vL3MO+CxU5NDlFj8plI5lM8yiruHzs9obmzQrc=
+	t=1738003124; cv=none; b=vCjT2FP2dH68+LU1HFzYQvEgPwD8VxR0E2H+3a1KqgppN2+WBO0mx51jAIubrK2ONzSK3Kch/OkWnVawHbLBZgWeW+9XrH3fASOm9lA4GqO69p2kzzJ4sBYIinlm/9JyUO8F1aGrY/KnGhMmdr5PwNRRFww1/3PULqn4L5LT1Og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738002765; c=relaxed/simple;
-	bh=Qsoxsth/svjFCYoMhIU+TEzvY1Q+VtfvPtQKewuOLIQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=grOQahNT4HUm42FiQjjzibTNR9QHHmQEMky/05OVgCOwerMGcyJCNkb7HsaNS597NJiCWcgKF8ZTM1EtpJz+y4Xv6x399zOFQoVv8qnIVpuIRn+5gE2bLftkmR1sFWwMQyrr3jzU5RqPMmnvnml5XtIyStQrEmrxAIhPuWlAA9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZNnRA1EJ; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1738003124; c=relaxed/simple;
+	bh=Jcrah8crnoSDJudzA/13JJsJRYdJfjqTW1whSNLMRZI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TZ1/ULJMaL8zFgpOD+8Rvi1KNhqRlzdaB1O/a8Vy0fQiu1JIUwkxtwfWkMfMiBi/jzaoW/LSix1EQwyvHW0NjZyhUg0RYoAhDbuB9sEDYnmMDrdG9lc5FXP/uheWtPkDhvc0FdOsDokJmuE0ufELzhmCjQVo2ayKZYc0rA+8cNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cbP4CMEz; arc=none smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZNnRA1EJ"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2f13acbe29bso9051039a91.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 27 Jan 2025 10:32:43 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cbP4CMEz"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-467bc28277eso41008251cf.1;
+        Mon, 27 Jan 2025 10:38:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738002763; x=1738607563; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qp4rGn+6HD7c2OVDUaJKvlE+5lGg9vBU2JEHl8VIVRA=;
-        b=ZNnRA1EJdBoqas33b5DrZNWJv5WZTCxxClqUxAEb1Bdeg4z9nq05R2vHSHa39fj8KV
-         mHPkqpplomVbQQSicPgGv1hTMN5vqnVXS5pamlQ+S1bQYXy/kHcDDqOGXZBioReaOc5p
-         fM/zOAHetgIJNKs6WDqr4CRp+aj/gNmmbF6S1fRs9vGhqraq//1aTaWJZa0vGZNZx3ll
-         DWwjMm4+uOqMnJcVx2I+ID/GhV6dYxU1D4wIm2yMHU8zp28xtOnB8+kcXARKj7TCUIW3
-         3UUyyu4c0S2+nfvuYStnXYP4PP+qFvjDuql4XkwfYMDPsRmtHR5m9iS+HUMuvzFmZ/R7
-         1tzg==
+        d=gmail.com; s=20230601; t=1738003121; x=1738607921; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=cnLSGEglCyP7yP+NKVqR+beLp0sJk1A9YULGXK8P3dU=;
+        b=cbP4CMEz/zOwpdTmzjWGm8FFYFm1i2MSnEqPMPPWYJZEbcYY/DIaK5pPkkkw4JJ1xl
+         ZtiINcsoPfcxbVmwZNtNMhTu6mZwCvrPMVvJ+NnBzXeuo4qSmneA+RN1xkbDHCfSLEc1
+         xpZPgJbdUhvHYW6crqdHT+KAtE4r35j4fygA2BYIi4I2VgUQwSsipILf/rVEb7WiVsGt
+         1GwwoFoAew5MgInO2rEfp4B6txLcVxYeTTQWUz21601DVj/WSYM9Z/nL42FE0o3MRTIO
+         AwsDlamvJ8aEyAvnuuH8HqCWxUrY/QvPKtHV+hbxk0UZrcYzuHEsshtXvwI5ohR0hJ4T
+         lY5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738002763; x=1738607563;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qp4rGn+6HD7c2OVDUaJKvlE+5lGg9vBU2JEHl8VIVRA=;
-        b=CFfUNMVorfoIPfdW/ScYYGFREhdPDClC9GgdfrcFGVGnBYqPYWPR+YZfLMnKp6S4ZM
-         ahit4sV+kXO+Vs+IS6tpsANGtb553QL5VehI6Yy/Ei109SObKC1O3sJORjY9Ajl0FeIj
-         kFJG6p9pJ6eRHEwXuwMpkAHXCkG7Ue3sUmQCYTd7TvQJmawcohlOpsbSi4hnpbVvUxlj
-         GWd8EAHRoBiv1b/Q+OMmA/mSaSTSBnMBiou2eH7mujgVd1vDif6JepZmu1kLonwhulEy
-         QkF8DY9J+F7zBAgev2zyQMqVs04pdtpbnQEPzJdNIap6aUUPvrgYcah88B3ZfdS2SaKv
-         KMUg==
-X-Forwarded-Encrypted: i=1; AJvYcCX1rivWuc4apUv18xOHViXHof3pmSMLN2vVgRfqylR1smxOtxXb+zN/fKxkURhXFI9VOiSTSw6Hqe8abhj7gQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwIFO+7afytyl1Trfn3Xt7YjS2RRe54Ej2lqFupjDYfQ2JI2UUJ
-	Kl2CRdtH79LJIxH1Wz0arRz/ymbEa/8JidLWaXZ3pZJPQgQJUhk1HfrXlVhonXjf1qNAhgjTNDk
-	DnNuiMskbEdEJTcod1VNAieSnvO6B3/omDPUv
-X-Gm-Gg: ASbGncsalFpexEVaUcQy6CYFw/2sQ6VxdLM2CB7+ifJBALdva6dWKMmPtaA6EeYCE2Q
-	4IqfWxdhOdQ9YOl2SaBfftckxfFYTl1cB+66QCXcZHa41lK9w+LOeZUUwchKtDJ4=
-X-Google-Smtp-Source: AGHT+IHbi8lv349DxaEsx6V1URTrBpwfMZ5Ln33K8IMtN0FmEZ9Nl2SMQIh6q8W51hc6Y8Dl804/bDcXZOMDi0vIsp8=
-X-Received: by 2002:a17:90b:3d43:b0:2f5:63a:44f8 with SMTP id
- 98e67ed59e1d1-2f82bff716emr557652a91.8.1738002763272; Mon, 27 Jan 2025
- 10:32:43 -0800 (PST)
+        d=1e100.net; s=20230601; t=1738003121; x=1738607921;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cnLSGEglCyP7yP+NKVqR+beLp0sJk1A9YULGXK8P3dU=;
+        b=eYW+nNUcCOVKHG6QFLKxv5YaxGlrtS8ldCazKrYjVgtnTxFD2+6qOO9tQsxFQusJeq
+         A+LpzhiT2wAMIwF32jdLLlisemXXCbXfVISmjYPxDmOPaA7P/ptPxnM4mDJsodQHYVHN
+         ePzczwrC+zgIIMrVrtXLXGe8WJJBCIpAG4kME6n32n+5auZU/6guAw1+kv9EzTSMFJVu
+         8TRvI+4hUrHYp3ZlK+AegKV6Es/YxWdsk9NAQeVhLq274zMCzihH7A0ggkj/3m9tvcOr
+         k1lkLrnk/UwlwqRCYZFdX0feW47kOY6KiTWcdhMgHCzjpozomPr/Q/iM4y7iE0y7M8ch
+         K9iQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU6H5wXZe378EVyZstuh0ab9b7cIdlmMbji3aVL4WagATRcQCXtP+9/ic2QfaDlNcQ9czh3oy6OkmgOlcM=@vger.kernel.org, AJvYcCWN/BXkH/JWXEnPVGztc1gq9r7QJd8y+yvq4bEzI5nRlccyJVi2PRKT1VpKsA+MZM8j5HcVDiHlErOL5dsdvH8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGkS8azKEuL7ricvBH+BSbnAIak9DHQtk8VqRTuYJW7EFFUQdv
+	DEzd/ipTKVOEsaqN3081cnQxRiN8m7d0QjxOphDE0l6XugIKXtte
+X-Gm-Gg: ASbGnctc7gi1PMX6HrjalqvET6s8H4ATCdfpdfkeDhaVktpeLHqadc2AKfCeOIWg42o
+	0ropgkUWd6isLW494TJnsKVNXUY+7in7dp3+bKQ7FMZNVoBofvnM1Uab9UFldefSFDb48j6MFJC
+	7RFY5u7ycVvCpjon36jQEJhugy1hjoKrstvUgVs+88rtVOMj5XyGk0TFxi+vyGOf45bkCCRLpug
+	qG6Rsh0OLz2yTlC1SuIiXUhCQz0qtMDZFuxWDU8tVOwftRmvgztvaAz2Dkx9GdzAZrT5mYij5DD
+	+ZCk3+hp53gwlj5G+ppM8599ZTrJHxEdSSAhBR//QrLQxn16Xcb6ClBd1sWu92Bo/3rJV6E=
+X-Google-Smtp-Source: AGHT+IGx2bhjQNxth2A6fh2NTjO+u4vPPE+dbnJ4jWwZ7kmUHkuV6HrKslynFUuXEQ/QTHoTTBfBxg==
+X-Received: by 2002:ac8:5dc9:0:b0:467:681c:425c with SMTP id d75a77b69052e-46e12a0c0f2mr623894731cf.1.1738003121091;
+        Mon, 27 Jan 2025 10:38:41 -0800 (PST)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e2057a8b79sm36835476d6.93.2025.01.27.10.38.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jan 2025 10:38:40 -0800 (PST)
+Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 1FC1C1200043;
+	Mon, 27 Jan 2025 13:38:40 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Mon, 27 Jan 2025 13:38:40 -0500
+X-ME-Sender: <xms:sNKXZ4R6MNASvF7y8caL6QDbdY2fTgMpFAHQKOCa5pSEHgduz3xbsQ>
+    <xme:sNKXZ1zeXOSXsVHi7TWZgwbNjMm18Jf6q_QmCIzlyFB1hd8nx2yf8eSKOESmDB0XT
+    UYP7i_tuzALyCGtSA>
+X-ME-Received: <xmr:sNKXZ12tgWekN7UHKPj7qmQeaOdD6TK1x7OI5pswFL4n8o9R8l1RV4EZ3kKY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudejgedgudefledvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddt
+    tdejnecuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrg
+    hilhdrtghomheqnecuggftrfgrthhtvghrnhepvefghfeuveekudetgfevudeuudejfeel
+    tdfhgfehgeekkeeigfdukefhgfegleefnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
+    hrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhn
+    rghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpe
+    epghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedvtddp
+    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglh
+    gvrdgtohhmpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthho
+    pegrsgguihgvlhdrjhgrnhhulhhguhgvsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprh
+    hushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthht
+    ohepuggrnhhivghlrdgrlhhmvghiuggrsegtohhllhgrsghorhgrrdgtohhmpdhrtghpth
+    htoheprhhosghinhdrmhhurhhphhihsegrrhhmrdgtohhmpdhrtghpthhtohepohhjvggu
+    rgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrg
+    hilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvth
+X-ME-Proxy: <xmx:sNKXZ8DKl1DydCOnee7DHMbB0LWbK_mYN7JqFSOo1P0Epya1BxXVHw>
+    <xmx:sNKXZxiYDVYCpdoaD8A99mTJGNIIb2pZEBmxLIeCK5vmGB6w53qEWQ>
+    <xmx:sNKXZ4rudWHK14OKcSlIgd8mbmwMv0Hpi0hHfYbicHzKa4PfBSxXrw>
+    <xmx:sNKXZ0geXHnYdTx76cgHvZ2tlgn2YZppFluR1Gnyl8HciPLE4hDDbw>
+    <xmx:sNKXZ4RhftLDNbpMlXGvuraH8l2z_1eiHyOLl-4HXO3afKJ7-JcoAbDM>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 27 Jan 2025 13:38:39 -0500 (EST)
+Date: Mon, 27 Jan 2025 10:38:38 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Danilo Krummrich <dakr@kernel.org>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	rust-for-linux@vger.kernel.org, daniel.almeida@collabora.com,
+	robin.murphy@arm.com, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Valentin Obst <kernel@valentinobst.de>,
+	open list <linux-kernel@vger.kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+Subject: Re: [PATCH v11 2/3] rust: add dma coherent allocator abstraction.
+Message-ID: <Z5fSrgLO0nO67p-U@tardis.local>
+References: <20250123104333.1340512-1-abdiel.janulgue@gmail.com>
+ <20250123104333.1340512-3-abdiel.janulgue@gmail.com>
+ <CAH5fLgjL0aGGwkjEfXH08Jopwin1NfkLzp9vQWKcHPEum8jV4g@mail.gmail.com>
+ <Z5dh6cSnNxwbefJX@pollux>
+ <CAH5fLggMSiHZwHJ3md0eH7smyDNVL3L=Sre7F0SXSSnPrJiO-A@mail.gmail.com>
+ <Z5e7Xv4Y9007Ia0a@tardis.local>
+ <CAH5fLgh6_+yT36KQTML6wZTiKXO10HsueCDM5LvEbsD-8Wo6Jg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250123104333.1340512-1-abdiel.janulgue@gmail.com>
- <20250123104333.1340512-3-abdiel.janulgue@gmail.com> <CAH5fLgjL0aGGwkjEfXH08Jopwin1NfkLzp9vQWKcHPEum8jV4g@mail.gmail.com>
- <Z5dh6cSnNxwbefJX@pollux> <CAH5fLggMSiHZwHJ3md0eH7smyDNVL3L=Sre7F0SXSSnPrJiO-A@mail.gmail.com>
- <Z5e7Xv4Y9007Ia0a@tardis.local>
-In-Reply-To: <Z5e7Xv4Y9007Ia0a@tardis.local>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 27 Jan 2025 19:32:29 +0100
-X-Gm-Features: AWEUYZm0Jv7rZ45EVsaPnB7OgSsxrCPuqDUBezjrKd8oPaeN5APSDIbyTiY68BI
-Message-ID: <CAH5fLgh6_+yT36KQTML6wZTiKXO10HsueCDM5LvEbsD-8Wo6Jg@mail.gmail.com>
-Subject: Re: [PATCH v11 2/3] rust: add dma coherent allocator abstraction.
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
-	rust-for-linux@vger.kernel.org, daniel.almeida@collabora.com, 
-	robin.murphy@arm.com, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Valentin Obst <kernel@valentinobst.de>, 
-	open list <linux-kernel@vger.kernel.org>, Christoph Hellwig <hch@lst.de>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com, 
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLgh6_+yT36KQTML6wZTiKXO10HsueCDM5LvEbsD-8Wo6Jg@mail.gmail.com>
 
-On Mon, Jan 27, 2025 at 5:59=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
->
-> On Mon, Jan 27, 2025 at 11:43:39AM +0100, Alice Ryhl wrote:
-> > On Mon, Jan 27, 2025 at 11:37=E2=80=AFAM Danilo Krummrich <dakr@kernel.=
-org> wrote:
-> > >
-> > > On Fri, Jan 24, 2025 at 08:27:36AM +0100, Alice Ryhl wrote:
-> > > > On Thu, Jan 23, 2025 at 11:43=E2=80=AFAM Abdiel Janulgue
-> > > > <abdiel.janulgue@gmail.com> wrote:
-> > > > > +    /// Reads data from the region starting from `offset` as a s=
-lice.
-> > > > > +    /// `offset` and `count` are in units of `T`, not the number=
- of bytes.
-> > > > > +    ///
-> > > > > +    /// Due to the safety requirements of slice, the data return=
-ed should be regarded by the
-> > > > > +    /// caller as a snapshot of the region when this function is=
- called, as the region could
-> > > > > +    /// be modified by the device at anytime. For ringbuffer typ=
-e of r/w access or use-cases
-> > > > > +    /// where the pointer to the live data is needed, `start_ptr=
-()` or `start_ptr_mut()`
-> > > > > +    /// could be used instead.
-> > > > > +    ///
-> > > > > +    /// # Safety
-> > > > > +    ///
-> > > > > +    /// Callers must ensure that no hardware operations that inv=
-olve the buffer are currently
-> > > > > +    /// taking place while the returned slice is live.
-> > > > > +    pub unsafe fn as_slice(&self, offset: usize, count: usize) -=
-> Result<&[T]> {
+On Mon, Jan 27, 2025 at 07:32:29PM +0100, Alice Ryhl wrote:
+> On Mon, Jan 27, 2025 at 5:59 PM Boqun Feng <boqun.feng@gmail.com> wrote:
+> >
+> > On Mon, Jan 27, 2025 at 11:43:39AM +0100, Alice Ryhl wrote:
+> > > On Mon, Jan 27, 2025 at 11:37 AM Danilo Krummrich <dakr@kernel.org> wrote:
 > > > >
-> > > > You were asked to rename this function because it returns a slice, =
-but
-> > > > I wonder if it's better to take an `&mut [T]` argument and to have
-> > > > this function copy data into that argument. That way, we could make
-> > > > the function itself safe. Perhaps the actual copy needs to be
-> > > > volatile?
+> > > > On Fri, Jan 24, 2025 at 08:27:36AM +0100, Alice Ryhl wrote:
+> > > > > On Thu, Jan 23, 2025 at 11:43 AM Abdiel Janulgue
+> > > > > <abdiel.janulgue@gmail.com> wrote:
+> > > > > > +    /// Reads data from the region starting from `offset` as a slice.
+> > > > > > +    /// `offset` and `count` are in units of `T`, not the number of bytes.
+> > > > > > +    ///
+> > > > > > +    /// Due to the safety requirements of slice, the data returned should be regarded by the
+> > > > > > +    /// caller as a snapshot of the region when this function is called, as the region could
+> > > > > > +    /// be modified by the device at anytime. For ringbuffer type of r/w access or use-cases
+> > > > > > +    /// where the pointer to the live data is needed, `start_ptr()` or `start_ptr_mut()`
+> > > > > > +    /// could be used instead.
+> > > > > > +    ///
+> > > > > > +    /// # Safety
+> > > > > > +    ///
+> > > > > > +    /// Callers must ensure that no hardware operations that involve the buffer are currently
+> > > > > > +    /// taking place while the returned slice is live.
+> > > > > > +    pub unsafe fn as_slice(&self, offset: usize, count: usize) -> Result<&[T]> {
+> > > > >
+> > > > > You were asked to rename this function because it returns a slice, but
+> > > > > I wonder if it's better to take an `&mut [T]` argument and to have
+> > > > > this function copy data into that argument. That way, we could make
+> > > > > the function itself safe. Perhaps the actual copy needs to be
+> > > > > volatile?
+> > > >
+> > > > Why do we consider the existing one unsafe?
+> > > >
+> > > > Surely, it's not desirable that the contents of the buffer are modified by the
+> > > > HW unexpectedly, but is this a concern in terms of Rust safety requirements?
+> > > >
+> > > > And if so, how does this go away with the proposed approach?
 > > >
-> > > Why do we consider the existing one unsafe?
+> > > In Rust, it is undefined behavior if the value behind an immutable
+> > > reference changes (unless the type uses UnsafeCell / Opaque or
+> > > similar). That is, any two consecutive reads of the same immutable
+> > > reference must return the same byte value no matter what happened in
+> > > between those reads.
 > > >
-> > > Surely, it's not desirable that the contents of the buffer are modifi=
-ed by the
-> > > HW unexpectedly, but is this a concern in terms of Rust safety requir=
-ements?
+> > > If we manually perform the read as a volatile read, then it is
+> > > arguably allowed for the value to be modified by the hardware while we
+> > > read the value.
 > > >
-> > > And if so, how does this go away with the proposed approach?
 > >
-> > In Rust, it is undefined behavior if the value behind an immutable
-> > reference changes (unless the type uses UnsafeCell / Opaque or
-> > similar). That is, any two consecutive reads of the same immutable
-> > reference must return the same byte value no matter what happened in
-> > between those reads.
+> > Do you also assume that volatile read/write provide some sort of
+> > atomicity? Because otherwise even though the read/write may not be
+> > considered as UB, then results can be load/store teared.
 > >
-> > If we manually perform the read as a volatile read, then it is
-> > arguably allowed for the value to be modified by the hardware while we
-> > read the value.
-> >
->
-> Do you also assume that volatile read/write provide some sort of
-> atomicity? Because otherwise even though the read/write may not be
-> considered as UB, then results can be load/store teared.
->
-> I asked because I think in case that we need atomicity, we should just
-> use atomic APIs.
+> > I asked because I think in case that we need atomicity, we should just
+> > use atomic APIs.
+> 
+> No, I'm not assuming that. I think it's like uaccess. Under normal
+> cases, it's not going to be concurrently modified, but it shouldn't
+> trigger UB if it is.
+> 
 
-No, I'm not assuming that. I think it's like uaccess. Under normal
-cases, it's not going to be concurrently modified, but it shouldn't
-trigger UB if it is.
+Let's say my_alloc[7].foo is a (u64, u64), would
 
-Alice
+	dma_read!(my_alloc[7].foo)
+
+and 
+
+	dma_write!(my_alloc[7].foo, (1u64, 2u64))
+
+trigger any UB when they are concurrent? (Of course, the example here is
+a bit inpropriate because it's DMA buff, but still the question is more
+on whatever atomic expectation we want from read_volatile() and
+write_volatile()).
+
+Regards,
+Boqun
+
+> Alice
