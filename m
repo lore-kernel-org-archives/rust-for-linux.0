@@ -1,154 +1,115 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1671FDA6F
-	for <rust-for-linux@vger.kernel.org>; Mon, 27 Jan 2025 10:43:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737974634; cv=none; b=FEnTDMhuc3rtH2M0hryD7cWnjVuD/B8K/lLS1KQeYV7l1SCykx+J+bBoYBx9SY0QGFpX7y1FJb5yLYx5VLo32NTTNZv7ub1mlZVTJEVpMy0kSyW5Voi9z1mYu+EwM739eUs1RNbqs1+jbNSJI8Ljkf7sQ+8xxcKDSOYu774dmM4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737974634; c=relaxed/simple;
-	bh=DpUlU+5e0pdlWnss+w/btDiCXvNZm4M2kvgGwmjvQJA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dKE8KiR1ChQQLM3vOxt7yjE5M1RjW4pD1a9GoGMJiZ5RkzeKjuVLeOJV+WeHEKqZ2rF1BqFlz59MFDAVHmLQ05JiBStOMqsktSzU3S5MBNVItRrzhHtcmvgSHsyQwbtIAUiMQy8OdJzDoQLOdoinVzK+UzlDcF2H/rw0TieLbns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aSK743Gb; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999711FCD13;
+	Mon, 27 Jan 2025 10:53:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737975216; cv=pass; b=cB/f23WaoWMZIQdrRLn/1syyF6cU2AgpBJIGZE0TxPVxS/WWAcZtLTU3nDcjngcEg4CwNNdePbgN/RcwHOFHjTC9m41y+1oPMBR1lfk6zfwiR5IjHn7CrUCHeKRrkw5yHShyEY9BOYlPz4GQIM3mkFlv8L7HbU1tQIPE+ZP56g8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737975216; c=relaxed/simple;
+	bh=RBMhuyaTOram7ZI311tODQh+jGCGrNi1F3gn9/ajoic=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=kzpaIVF6+pQJSz7HkgpOoU3D3HMDoWFD7BWqfB5Y/b2qGGExm3/oPfhnH4Dj6wvqlf6ZqDtsGuPXZwtL65I7I/YecjkObKUK3rpKumNu1cOlQZOg64wg6t8MLxbTgtLHezoQBaRjDgSPC1+CwEOvKhSb2DNibCcCDyyHWjvG/Sw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=ksp2sDKd; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aSK743Gb"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-38633b5dbcfso4765532f8f.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 27 Jan 2025 02:43:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737974631; x=1738579431; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=npu9NWyCRH5wSGiN1N/OtKrtIsdcWA0kJ2CT1AR1D88=;
-        b=aSK743Gb3/ognsEsd9MXf3cSA7jJkgpT3tDNWy2Enw2wC7NLP+CM8E94NKJgnackAv
-         KHdm0TzGU32nCZAnnSjArUKwogrydn6MeOKzyt8jBts0hQWy9tq97UwmMnTivVQPuRBE
-         r7opwOZLtFfVQBiUxdd1NEzPQQ4VTF7yGYQ15eO7BTrI++sPnhf4eyBXWDcjTUKqySiS
-         NctI2pwx7HTglMyoq0n0tgNxqSwuaVE7akL+RZ36sS41V8pIXRMKHZYdUfLX4gRCiRK+
-         ZKtGZr1zc6mfbCjwVWaSNAAuObdLZgL+56+PIGV5XkxzApEBqPU8tv8GZg4/MBPSfKXk
-         mQiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737974631; x=1738579431;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=npu9NWyCRH5wSGiN1N/OtKrtIsdcWA0kJ2CT1AR1D88=;
-        b=T9yH6tQT53la3beVGRdenbkJNtAOv1hPfMZr+waLhitFC+DwuVc7bd8tzqBn7NgQjK
-         UQ9PIYUKCoknUaf+HEQhTqVmL/kD5ALKJ2mW6PZ3ED3QozzrPzwoODUO42Cr5hSqmz6H
-         dCTRTDyTm0K6yKNdf5OkYlu3bH1zxU16XHqPs9/smuV0ksT5mn5VshecXYQcGTDIbDpt
-         pAEHuZeVXg73nCiWowgGQ1KozP1v9gaMkmCNaTCgXnTMVMbMAVKStqOBk36/7znBwThA
-         yYO8EL7hy+7mwe6qIwgZzcq+f98dp9jISwE3hvg6o6s1ES8w0C9aaUPJ2x/hPGT8+j2G
-         278w==
-X-Forwarded-Encrypted: i=1; AJvYcCVHKcSMWkdOZujpEBEfVSouYA4pgaatZssHlKP0nu6xk48uCDiNuT9ZYLvw6KN12KX7S2OFzydHrf0dgZXX8A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yykw73qQ1BkZHcEQjaL8Yvzucy1doVK//ke7q60b3cL5mWh5tAS
-	8PZx9plHHpENd6QzNw7TE/LxYDA8l69XR07FMVNn1L624SL2sy8F2JjwQR75pVOBl6qq/lBEpQO
-	pOCFCZru3U4KAk/bt85EiFIyB/0eDb1Pm6b4W
-X-Gm-Gg: ASbGncsW9MWW8BsKhHAOb6Cg0qu32a2ESrbuD7s9fT/VZKAL++Fg5J2+WcR1NSi6wXZ
-	Ep3nrC1Wc4pdlCi1mb8imnnWIfTCwSi8X2MrHdp75S88taS0hC0Jp4MunlAhGTn1pBl8XWCxvVY
-	6LPnzyro/t9bGE0SwT
-X-Google-Smtp-Source: AGHT+IFM7Dw/e5+F8lZxBaUZ6G/EpfUegKdVXE/TEthH2HhoJ4KDJIugbRveHggQNeuR2C5cWej8okeF5g/vsSLS2ZE=
-X-Received: by 2002:a5d:47c2:0:b0:38a:888c:7df0 with SMTP id
- ffacd0b85a97d-38bf56494e9mr37942323f8f.1.1737974630993; Mon, 27 Jan 2025
- 02:43:50 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="ksp2sDKd"
+ARC-Seal: i=1; a=rsa-sha256; t=1737975183; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=iKeCblK+7zC0FJV3LsNr9htRJ6R/50XI4+k0Cfe+vIVmWbwp9e5JdU0rNzlW7m39jdu6s0eufzIvviDIkogsNUvhXyjBMbsVX5DpBzP874LcsQGXKq3BKPpTnQ4vxqvky45vCRORyOoDDFv1wHzC7nqILA5lDMTnXluf4RCseqo=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1737975183; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=RBMhuyaTOram7ZI311tODQh+jGCGrNi1F3gn9/ajoic=; 
+	b=bonAOTxFxIyKU03ZpCQ9cjxOVJRfjQy4dr8C8zdDBmgi/prFA1yOyjVXGyrwrZQZ5wGCcOLfsvOAYtOUqOqYvjOsH8jgYyyXxAIr6Y+GL/yAdUDlWKWwknz4muOathNBDfn90CQcvBXP95hZVdRX2tRncL2ijkHOpaz1wl6TT5c=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1737975183;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=RBMhuyaTOram7ZI311tODQh+jGCGrNi1F3gn9/ajoic=;
+	b=ksp2sDKdJFy9FTBEatJTxBub2Iq7ipjz4o+7OUkM6yW3OrBwFFGN9wD8fXv5okS7
+	csCXtVHIGhi+r4OOB1LPLTvw7IwgHj83N99ikQoav7Nl++XhVmulbNTHd4UA6NXlWA8
+	iLZhDKbxr51TtJx78xDnHOx/0Za7w/5K3QAIdMg8=
+Received: by mx.zohomail.com with SMTPS id 1737975177602742.970556978156;
+	Mon, 27 Jan 2025 02:52:57 -0800 (PST)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250123104333.1340512-1-abdiel.janulgue@gmail.com>
- <20250123104333.1340512-3-abdiel.janulgue@gmail.com> <CAH5fLgjL0aGGwkjEfXH08Jopwin1NfkLzp9vQWKcHPEum8jV4g@mail.gmail.com>
- <Z5dh6cSnNxwbefJX@pollux>
-In-Reply-To: <Z5dh6cSnNxwbefJX@pollux>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 27 Jan 2025 11:43:39 +0100
-X-Gm-Features: AWEUYZkUcfOxL3CR6BWSP7MUerjFHyQvPZlQ_CIfDjEwqbZsip6hR6LyiFqgpFw
-Message-ID: <CAH5fLggMSiHZwHJ3md0eH7smyDNVL3L=Sre7F0SXSSnPrJiO-A@mail.gmail.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
 Subject: Re: [PATCH v11 2/3] rust: add dma coherent allocator abstraction.
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>, rust-for-linux@vger.kernel.org, 
-	daniel.almeida@collabora.com, robin.murphy@arm.com, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Valentin Obst <kernel@valentinobst.de>, 
-	open list <linux-kernel@vger.kernel.org>, Christoph Hellwig <hch@lst.de>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com, 
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <Z5dh6cSnNxwbefJX@pollux>
+Date: Mon, 27 Jan 2025 07:52:42 -0300
+Cc: Alice Ryhl <aliceryhl@google.com>,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ rust-for-linux@vger.kernel.org,
+ robin.murphy@arm.com,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Valentin Obst <kernel@valentinobst.de>,
+ open list <linux-kernel@vger.kernel.org>,
+ Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ airlied@redhat.com,
+ "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <7E4F0584-7C60-494A-9CE6-57840F3B7976@collabora.com>
+References: <20250123104333.1340512-1-abdiel.janulgue@gmail.com>
+ <20250123104333.1340512-3-abdiel.janulgue@gmail.com>
+ <CAH5fLgjL0aGGwkjEfXH08Jopwin1NfkLzp9vQWKcHPEum8jV4g@mail.gmail.com>
+ <Z5dh6cSnNxwbefJX@pollux>
+To: Danilo Krummrich <dakr@kernel.org>
+X-Mailer: Apple Mail (2.3826.300.87.4.3)
+X-ZohoMailClient: External
 
-On Mon, Jan 27, 2025 at 11:37=E2=80=AFAM Danilo Krummrich <dakr@kernel.org>=
- wrote:
->
-> On Fri, Jan 24, 2025 at 08:27:36AM +0100, Alice Ryhl wrote:
-> > On Thu, Jan 23, 2025 at 11:43=E2=80=AFAM Abdiel Janulgue
-> > <abdiel.janulgue@gmail.com> wrote:
-> > > +    /// Reads data from the region starting from `offset` as a slice=
-.
-> > > +    /// `offset` and `count` are in units of `T`, not the number of =
-bytes.
-> > > +    ///
-> > > +    /// Due to the safety requirements of slice, the data returned s=
-hould be regarded by the
-> > > +    /// caller as a snapshot of the region when this function is cal=
-led, as the region could
-> > > +    /// be modified by the device at anytime. For ringbuffer type of=
- r/w access or use-cases
-> > > +    /// where the pointer to the live data is needed, `start_ptr()` =
-or `start_ptr_mut()`
-> > > +    /// could be used instead.
-> > > +    ///
-> > > +    /// # Safety
-> > > +    ///
-> > > +    /// Callers must ensure that no hardware operations that involve=
- the buffer are currently
-> > > +    /// taking place while the returned slice is live.
-> > > +    pub unsafe fn as_slice(&self, offset: usize, count: usize) -> Re=
-sult<&[T]> {
-> >
-> > You were asked to rename this function because it returns a slice, but
-> > I wonder if it's better to take an `&mut [T]` argument and to have
-> > this function copy data into that argument. That way, we could make
-> > the function itself safe. Perhaps the actual copy needs to be
-> > volatile?
->
+
+>=20
 > Why do we consider the existing one unsafe?
->
-> Surely, it's not desirable that the contents of the buffer are modified b=
-y the
-> HW unexpectedly, but is this a concern in terms of Rust safety requiremen=
-ts?
->
+>=20
+> Surely, it's not desirable that the contents of the buffer are =
+modified by the
+> HW unexpectedly, but is this a concern in terms of Rust safety =
+requirements?
+>=20
 > And if so, how does this go away with the proposed approach?
+>=20
 
-In Rust, it is undefined behavior if the value behind an immutable
-reference changes (unless the type uses UnsafeCell / Opaque or
-similar). That is, any two consecutive reads of the same immutable
-reference must return the same byte value no matter what happened in
-between those reads.
+Alice pointed out that if you hand out a &mut T, you must ensure =
+exclusive access
+to that memory location. So if you pass that address to some piece of =
+hardware and
+it writes it, that violates that expectation.
 
-If we manually perform the read as a volatile read, then it is
-arguably allowed for the value to be modified by the hardware while we
-read the value.
+The solution was to simply not do that when the &mut T was alive, i.e. =
+to ensure that
+no hardware operation involving that memory was taking place while the =
+slice was still
+in use.
 
-> > Well ... I understand that we did this previously and that we want to
-> > avoid it because it causes too much reading if T is a struct and we
-> > just want to read one of its fields. How about an API like this?
-> >
-> > dma_read!(my_alloc[7].foo)
-> >
-> > which expands to something that reads the value of the foo field of
-> > the 7th element, and
-> >
-> > dma_write!(my_alloc[7].foo =3D 13);
->
-> I really like how this turns out.
+Some people then commented that they would use the abstraction for ring =
+buffers, which=20
+would violate this assumption in perpetuity, as both producer and =
+consumer would have
+the range mapped at the same time.=20
 
-Yes, I think it would be a nice API.
+The solution was to revert back to pointers.
 
-Alice
+I think Boqun asked for the unsafe as_slice() function as a way to =
+impose the safety check
+on users, for the cases where it could be proved through other means =
+that the reference
+rules were upheld.=
