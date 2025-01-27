@@ -1,187 +1,320 @@
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71A71922C4;
-	Mon, 27 Jan 2025 19:37:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1334615B10D
+	for <rust-for-linux@vger.kernel.org>; Mon, 27 Jan 2025 21:04:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738006631; cv=none; b=uvbRTiVUR1mlrHb1sUOgcBiVMGgmlNVKdY3Qw+dcV9E5yT/oDtN3nwKla3nucPJt6RhYlmBRDgUbXz+fU8pOtRc5CnwjKIY4H1iAosKvlt6tgNFew9BrFAGqkYsZ1CBfN7OXIhGnHW6xAqw//TDLsk4i1DBdE2kv60vmglPzx3c=
+	t=1738011856; cv=none; b=njU3TnwjzKk9MMA9XNXWBrP5CE6lpIFoZVFBgvC+FA/7wqCzfsJ2CZd8o/sN3WKhBRXp0lxqOC/otgrY92g3U/DiRY3Kb+LP4HN7hz56KEK7d+Tdo0nB2PquPZxkuqwjgeaTZa9N28pDxC0efCPCVPdHAW8+ZfB247vZvsaEbUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738006631; c=relaxed/simple;
-	bh=aspYQodIOsASH81q6vfQ9ZANESRBw754U6WbZGaPlRM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=enQkFS2lrGgoIkeJKRvaLSnoihwAcWeSW5PPd5WJIwAEv6q7h8cbNp1E3VTsiB1bqd9CK5S2vRpaCitZCVWTH8L7L9he56Cwg3V4YH1+TyWc1hoBnhpbS6F0XZzMbRWXBDKCVLJ3dJuVepA1wUiD4o+IjKR+ladp4ptd8/gfUM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L/aOdPC1; arc=none smtp.client-ip=209.85.219.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738011856; c=relaxed/simple;
+	bh=H8ovIADPahKqgnV5YG3t9GMBtpkHPdMi9fqxZwfnBJo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ryZyQaUrQkkrUrreHRTY8JkIJEvEZHecKwqE319FPTIODwLmfps2aYAzmuDBp6ASjY7O+TthAG4umVTUVkD2/a7y+Rrwno2uoz2UeYAslEhW8k2z5Ig7AQTSMC/b//ZQEC8zLH6n21OmYeTqFMsdmP/qFkWHqIRgx72kdqZCBKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ClREr+li; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L/aOdPC1"
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6dd420f82e2so61490556d6.1;
-        Mon, 27 Jan 2025 11:37:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ClREr+li"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2ef6c56032eso6554717a91.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 27 Jan 2025 13:04:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738006629; x=1738611429; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1738011854; x=1738616654; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=D0ToixAfq6gQz7QhMKLfytUT3gyityDNzyR9zHuPjbI=;
-        b=L/aOdPC1R0GuvdYDg2RmqenSr/Ikywvj83cKGC3nXx5j6XaUV0hDZJ1Z0WY4TPerCM
-         Lf/1MLN/zeyQeqEgoMwNI1MDLBB3ayyi3az/6zSBAYzdFiw77cB6K6EUWVcsM8kaswvX
-         PgtVwd1RJY7ClyaEvgqZYSVu1hd35FrhEFe7KixPO+cUzxah4dXg0fOc9T700XjwHjiu
-         vNbC8zjJdIkQKIGY4e+jtqjXa8SDEcCUtKYcT/+ZnMN526ou5cFyMuGZcXZ9Ef8hFYQY
-         uM97s2Q/SVduMoPyp86vZSyI+/c0DRev+o6CV4myxLokW/mITwF1m995qqtpltXlWQ1j
-         +hAQ==
+        bh=qoOTWso6vnNQEol50KDl9uyVE5wdPyErjCcG9xU2LF4=;
+        b=ClREr+liDBR8x1HDC7z2kNaznKzU9u4pKVylNNk0rP4PV8O01SaSx5VOuiFdWR/utq
+         0Q8tNdGs43jpuKnMJvGPl9TUBSGV3kWV6dI1zgJzAdq4BV6aI+fJBylbq69o1flihHd2
+         Sju9+pHw+zT3OGhdUvzOKrF+pYGOlFY1OikCvKOOzLVJ7En4Z8tttK/lfiMh8YJzSYf7
+         TxnuiQ7CSPUS6qEjMEqBiZJXabLhc0wgSM6KhVF0/9j/mo1lwfIT/uOjYGSwVclwoDyc
+         68RfH7eirphgEJ0HYpNfauR1zBS/pxmxa3AHif2bMPAwYDrS+Aiulh/1cseumv9zSx5B
+         s0xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738006629; x=1738611429;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1738011854; x=1738616654;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=D0ToixAfq6gQz7QhMKLfytUT3gyityDNzyR9zHuPjbI=;
-        b=gnxdPbmi7DhzDvk3xsc1L9Orqy+IMtpBpkiXelbAIpB9lw5SQFxpF4N4SF6UQhmC/R
-         +ynj5ooglaNIprCIgAzIyDPovlMKPqEi/Sy9nr/Mev8BFLYnzNrodb11XsxdaDoPIDkx
-         uIJz44m2OY7YWlvM+9ZW6je2Aicuj3lyCRqbCM+tmgWww/M+WMOZE9xpp/6tY4oq09aK
-         Mn43tiUvBM9CbYFThc94/JpNXL+RcA2YOwazN1WaBcvtBJzrwSYSLMsrPEGl3W4KfXJJ
-         gJw1mdGgsZo1jirxV84Esx8GqZk4dgLjtTm1LjkpZcOlh7AzZuGfKWni4s5VDTfZlELT
-         +wyA==
-X-Forwarded-Encrypted: i=1; AJvYcCUY/Wn+3o2tFVmFVqGIYCxdn9sl6FkCr4wLqpE2Cm46BQS4cLVB8mWL+Qqfe192dmHvABYIh2wiJTiCh4M=@vger.kernel.org, AJvYcCWtSWriSH8MBPx4RNhkyrmr/ghgtke9HYN2JuVF5p849KCBk9fOhzKQFTAN4MjauzYUo6zbozfciFhWRJh3B3o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAiuuuXLJ6eGgpgB4UPXOmCBjz3YZUhEmnZuVVwIgHkLNLCoGw
-	UQ5+FDSuczuy54pErv1RjHAAc8p3nYs5pfHpEysNE9/vD+JzJHub
-X-Gm-Gg: ASbGncs31ivRTINJ++iI/KqOAq33rYL23c4J9pNuQEK6b1+TX8qj5fbT3+XR7wtgB3N
-	n44Jhp2AJe/fkq3gHpf77JR1g6ICRUxYKR+jcUl5myxyhAtSpOJKMwu7uPHbUz7rvIhaGDAu3pO
-	Bk/xJx+s2e756zfR/mX7NNdELSiDFtNpv0AZouDSQhBuUoPPIToAIWHUEvyZWrDFGk7+nfJKdUc
-	JIVxxEDAHUJJvOMrxjqkgXIEc9x8YrNS7/1PFVz5i7hFrkbTozIUWCn1s1y/kbmkpoW7zJRKgx/
-	opNKCOrU88M2OaMfN9pPG3hXvdXo2fu0GDAJovzsSgm4nxFmlZD7ThuPiGRSheIhHDcn5sM=
-X-Google-Smtp-Source: AGHT+IEHao9uh0T/xjPL/a8jVvCwsURvzYbLFWGC6I+YUmDdM/v3xY6aDyntff1+HetPFnZFp+8bXw==
-X-Received: by 2002:a05:6214:2aa6:b0:6d4:e0a:230e with SMTP id 6a1803df08f44-6e1b217922bmr662265516d6.16.1738006628687;
-        Mon, 27 Jan 2025 11:37:08 -0800 (PST)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e20514ededsm37468166d6.35.2025.01.27.11.37.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jan 2025 11:37:08 -0800 (PST)
-Received: from phl-compute-08.internal (phl-compute-08.phl.internal [10.202.2.48])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 786F51200076;
-	Mon, 27 Jan 2025 14:37:07 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-08.internal (MEProxy); Mon, 27 Jan 2025 14:37:07 -0500
-X-ME-Sender: <xms:Y-CXZ1LOxAwj6KqAYibtkdY7_FEf1cxIosysKtVOprtj0v-bCjFeYw>
-    <xme:Y-CXZxKht9hkf02MRmh54NYbwGZydBRG-_VcmI-qYqcIpjLGNdVwuG30pHxcO-9oP
-    ZT_x3B-t1kpHWmIOA>
-X-ME-Received: <xmr:Y-CXZ9sY3lAS8rFgQOC-tnVR6fajY1_SMsO14gWCftdnCeUO9JHnMTKnzL5_>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudejgedgudegtdegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
-    vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
-    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeetgfehvdeihfehffetgeffffelvdehudek
-    geektdduhefhleeuhfevuedtjeffgfenucffohhmrghinhepohhpvghnqdhsthgurdhorh
-    hgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsgho
-    qhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqd
-    dujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihm
-    vgdrnhgrmhgvpdhnsggprhgtphhtthhopedvtddpmhhouggvpehsmhhtphhouhhtpdhrtg
-    hpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepuggr
-    khhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrsgguihgvlhdrjhgrnhhulhhguh
-    gvsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehv
-    ghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrnhhivghlrdgrlhhmvghiug
-    grsegtohhllhgrsghorhgrrdgtohhmpdhrtghpthhtoheprhhosghinhdrmhhurhhphhih
-    segrrhhmrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopehg
-    rghrhiesghgrrhihghhuohdrnhgvth
-X-ME-Proxy: <xmx:Y-CXZ2bDrBFBchlAtM6-QMGWZNjtVLvAdB8fAdyfLPBbyIjDXFbLBw>
-    <xmx:Y-CXZ8aaaJD6uo0TuLe73ImNh3bSgDNOnqzNth7cgpvlTTntfBR9Wg>
-    <xmx:Y-CXZ6BmBlvdJfaw8AW4mVLNxknYlSQl1GxRtGCsLH9avr6cShztCA>
-    <xmx:Y-CXZ6YDC1A-9LXF1qBqTbgzkDhT1BiNSAQbhpwxkOWhFy3CBioaQw>
-    <xmx:Y-CXZ4p-sFPN-PkzGNaVky1eqaoErVnYZ_J3hia834k1-e4_6BeZ8dtX>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 27 Jan 2025 14:37:06 -0500 (EST)
-Date: Mon, 27 Jan 2025 11:37:06 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Danilo Krummrich <dakr@kernel.org>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	rust-for-linux@vger.kernel.org, daniel.almeida@collabora.com,
-	robin.murphy@arm.com, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
-Subject: Re: [PATCH v11 2/3] rust: add dma coherent allocator abstraction.
-Message-ID: <Z5fgYtIdOudE3ELF@tardis.local>
-References: <CAH5fLgjL0aGGwkjEfXH08Jopwin1NfkLzp9vQWKcHPEum8jV4g@mail.gmail.com>
- <Z5dh6cSnNxwbefJX@pollux>
- <CAH5fLggMSiHZwHJ3md0eH7smyDNVL3L=Sre7F0SXSSnPrJiO-A@mail.gmail.com>
- <Z5e7Xv4Y9007Ia0a@tardis.local>
- <CAH5fLgh6_+yT36KQTML6wZTiKXO10HsueCDM5LvEbsD-8Wo6Jg@mail.gmail.com>
- <Z5fSrgLO0nO67p-U@tardis.local>
- <CAH5fLggQuuOfp19tqxYr=U-R+fyqgygYV8MeybvHLChk_eHPMw@mail.gmail.com>
- <Z5fYAGxXymV1xTFL@tardis.local>
- <CAH5fLgjys9wkSy=YSnw6QoOw_rbfgkLr5nNSGhh_+CSOUcaWkg@mail.gmail.com>
- <Z5fc0EFCUdXlkpWB@tardis.local>
+        bh=qoOTWso6vnNQEol50KDl9uyVE5wdPyErjCcG9xU2LF4=;
+        b=Mo4b48qmv8ntUEPuRLXGbbKxw7cSj6uWhZ9ozxznaTAcYXbfAPLEYfddGLP6SR9Hw9
+         SJO9atp8TW7W4fbtGMC2W61NIdF5Xlp0SrDKlMxXiNPj2n9jyvKZyWyn50rc4dLW35bU
+         Qm7dzZ7QxhkUeneKYklIUFQkQFUgzTb+a0Av6fusejMQCMYjiqT1ww759AwJk312L82r
+         Kr7FOz0cTLaulYfDbTYpvcKU0LQGG80CHdRfEmXwHRsg5m1nZq4TxPQVQQl/WEmmv1xa
+         ABtWm+Zz6qztpqW91Od92Lh3DrH1cPMM7FQD0B4gCyn/aDDMwgHDD3O47KQoUHlJHdNl
+         PsBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV9a/TQK1QFmZA1w2EIKpZfeVVLRw0rRJCndeDffbFBn5ZL5af9OI17FB6tqU+pzJBsYMWvcx0xplxPBfh/6A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSHN7PBDnstv0TAEkiV6jQXuNQr+P7Bn2iskASiIlc1ouzAVbQ
+	eHaOfQmP28jislgdHJNzoS4QREu1n8K4RTvgMcSZcU4mxK+Wu1AfrOBNyhkV5HKIqtkBmzBNb/w
+	ibxZJbl6SQARkgEDX6sz5lrbybg1a0txa+Ki1
+X-Gm-Gg: ASbGnct1ZAJpvHX3J8BW9Zksi5g1MM9fSo/7ww5bsJd0LrniF5DsIgQwaewTZMS93T0
+	By0xZrnhiuAjXRQoax0WiFTxP1ACTcj0c6NDB2i+r4SmZN7JMid9MIun0IPTHZHw=
+X-Google-Smtp-Source: AGHT+IGVFaDi1w4/uXw6mL2aohymTRupuUKtmzFeR4AJY1Mx1Jc4FNIVtJe8Dq04yro6ezW1gGtBKQecl6FmVe4mvFs=
+X-Received: by 2002:a17:90a:c883:b0:2ee:b2be:f390 with SMTP id
+ 98e67ed59e1d1-2f782d37d55mr60563476a91.28.1738011854064; Mon, 27 Jan 2025
+ 13:04:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z5fc0EFCUdXlkpWB@tardis.local>
+References: <20250126223627.732451-1-sergio.collado@gmail.com>
+In-Reply-To: <20250126223627.732451-1-sergio.collado@gmail.com>
+From: Rae Moar <rmoar@google.com>
+Date: Mon, 27 Jan 2025 16:04:00 -0500
+X-Gm-Features: AWEUYZlB-AVGnm8s5uG4dd5xgHmfQAhUlYMLgMHhMo3OQ7iExowHpgRWq1AF44c
+Message-ID: <CA+GJov7u+VwaVLLVwHWvRkqDrVgSPLEtkG-AjHDvXnSgdnRDWw@mail.gmail.com>
+Subject: Re: [PATCH v6] Kunit to check the longest symbol length
+To: =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
+Cc: David Gow <davidgow@google.com>, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, David Rheinsberg <david@readahead.eu>, 
+	rust-for-linux@vger.kernel.org, x86@kernel.org, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Shuah Khan <skhan@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 27, 2025 at 11:21:52AM -0800, Boqun Feng wrote:
-[...]
-> > > Depending on the granularity that tearing can happen, if .foo is an enum
-> > > (or any other type that not all bit combinations are valid) and tearing
-> > > can happen at byte levels, then a racing dma_read() may read invalid
-> > > data.
-> > 
-> > T: FromBytes + ToBytes is already required for these types. You can't
-> > use these operations with such an enum.
-> > 
-> 
-> I was talking about a wider problem, but fine ;-) So the assumption is
-> the read_volatile() or copy_nonoverlapping() provide byte-level
-> atomicity? Although unlikely, but if tearing happens at sub-byte level,
-> then even if `T: FromBytes + ToBytes` you can still get invalid data.
-> 
+On Sun, Jan 26, 2025 at 5:36=E2=80=AFPM Sergio Gonz=C3=A1lez Collado
+<sergio.collado@gmail.com> wrote:
+>
+> The longest length of a symbol (KSYM_NAME_LEN) was increased to 512
+> in the reference [1]. This patch adds kunit test suite to check the longe=
+st
+> symbol length. These tests verify that the longest symbol length defined
+> is supported.
+>
+> This test can also help other efforts for longer symbol length,
+> like [2].
+>
+> The test suite defines one symbol with the longest possible length.
+>
+> The first test verify that functions with names of the created
+> symbol, can be called or not.
+>
+> The second test, verify that the symbols are created (or
+> not) in the kernel symbol table.
+>
+> [1] https://lore.kernel.org/lkml/20220802015052.10452-6-ojeda@kernel.org/
+> [2] https://lore.kernel.org/lkml/20240605032120.3179157-1-song@kernel.org=
+/
+>
+> Tested-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+> Signed-off-by: Sergio Gonz=C3=A1lez Collado <sergio.collado@gmail.com>
+> Link: https://github.com/Rust-for-Linux/linux/issues/504
 
-OK, `FromBytes + ToBytes` should tolerate sub-byte level tearing, so I
-was wrong on this.
+Hi Sergio!
 
-> > > I think it's fine to expect read_volatile() and write_volatile()
-> > > themselves don't trigger UB, but we will need to be careful about the
-> > > atomic granularity that we can expect on them. It would be more clear if
-> > > we use the atomic API here (and implementation can be read_volatile()
-> > > and write_volatile()), and it can avoid coding based on tribal knowledge
-> > > such as "in kernel, read_volatile() and write_volatile() imply atomic".
-> > 
-> > Why should we use atomics for operations that don't need to be atomic?
+Thanks for sending another version of this test. This now looks good
+to me! The test passes both built-in to the kernel and loaded as a
+module.
 
-And yes, given the `FromBytes + ToBytes`, it looks like you don't need
-any atomicity for the basic DMA read/write operation.
+Happy to take this patch though the kselftest/kunit branch. However
+this patch does not cleanly apply to that branch right now. There are
+just a few lines in lib/Makefile that differ. It would be an easy fix
+of rebasing the patch and sending out a new version. Or would you
+prefer sending it through another branch? Let me know.
 
-Regards,
-Boqun
+But other than the need to rebase, this patch looks good to me:
 
-> > Most of the time, dma memory is not *actually* changed while you read
-> > it.
-> > 
-> 
-> Because the requirement here actually needs atomic at byte level, it's
-> similar to:
-> 
-> 	https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p1478r8.html
-> 
-> also, notice that for byte level atomic, it's actually free on most of
-> the architectures (i.e. no extra cost). Again, it's more of a "how do we
-> express our assumption" question. If indeed we expect byte-level
-> atomicity, then I see no harm to use atomic API here.
-> 
-> Regards,
-> Boqun
-> 
-> > Alice
+Reviewed-by: Rae Moar <rmoar@google.com>
+
+Thanks!
+-Rae
+
+> ---
+> V5 -> V6: remove tests with symbols of length KSYM_NAME_LEN+1
+> ---
+> V4 -> V5: fixed typo, added improved description
+> ---
+> V3 -> V4: add x86 mantainers, add new reference.
+> ---
+> V2 -> V3: updated base and added MODULE_DESCRIPTION() and MODULE_AUTHOR()
+> ---
+> V1 -> V2: corrected CI tests. Added fix proposed at [3]
+>
+> [3] https://lore.kernel.org/lkml/Y9ES4UKl%2F+DtvAVS@gmail.com/T/#m3ef0e12=
+bb834d01ed1ebdcae12ef5f2add342077
+>
+> The test execution should result in something like:
+> ```
+> [20:04:35] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D longest-symbol (=
+4 subtests) =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> [20:04:35] [PASSED] test_longest_symbol
+> [20:04:35] [PASSED] test_longest_symbol_kallsyms
+> [20:04:35] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D [PASSED] l=
+ongest-symbol =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> [20:04:35] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> [20:04:35] Testing complete. Ran 4 tests: passed: 4
+> ```
+> ---
+>  arch/x86/tools/insn_decoder_test.c |  3 +-
+>  lib/Kconfig.debug                  |  9 ++++
+>  lib/Makefile                       |  2 +
+>  lib/longest_symbol_kunit.c         | 84 ++++++++++++++++++++++++++++++
+>  4 files changed, 97 insertions(+), 1 deletion(-)
+>  create mode 100644 lib/longest_symbol_kunit.c
+>
+> diff --git a/arch/x86/tools/insn_decoder_test.c b/arch/x86/tools/insn_dec=
+oder_test.c
+> index 472540aeabc2..3bde35ea4188 100644
+> --- a/arch/x86/tools/insn_decoder_test.c
+> +++ b/arch/x86/tools/insn_decoder_test.c
+> @@ -10,6 +10,7 @@
+>  #include <assert.h>
+>  #include <unistd.h>
+>  #include <stdarg.h>
+> +#include <linux/kallsysms.h>
+>
+>  #define unlikely(cond) (cond)
+>
+> @@ -106,7 +107,7 @@ static void parse_args(int argc, char **argv)
+>         }
+>  }
+>
+> -#define BUFSIZE 256
+> +#define BUFSIZE (256 + KSYM_NAME_LEN)
+>
+>  int main(int argc, char **argv)
+>  {
+> diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+> index 5f1874622175..4c3a61862281 100644
+> --- a/lib/Kconfig.debug
+> +++ b/lib/Kconfig.debug
+> @@ -2828,6 +2828,15 @@ config FORTIFY_KUNIT_TEST
+>           by the str*() and mem*() family of functions. For testing runti=
+me
+>           traps of FORTIFY_SOURCE, see LKDTM's "FORTIFY_*" tests.
+>
+> +config LONGEST_SYM_KUNIT_TEST
+> +       tristate "Test the longest symbol possible" if !KUNIT_ALL_TESTS
+> +       depends on KUNIT && KPROBES
+> +       default KUNIT_ALL_TESTS
+> +       help
+> +         Tests the longest symbol possible
+> +
+> +         If unsure, say N.
+> +
+>  config HW_BREAKPOINT_KUNIT_TEST
+>         bool "Test hw_breakpoint constraints accounting" if !KUNIT_ALL_TE=
+STS
+>         depends on HAVE_HW_BREAKPOINT
+> diff --git a/lib/Makefile b/lib/Makefile
+> index d5cfc7afbbb8..e8fec9defec2 100644
+> --- a/lib/Makefile
+> +++ b/lib/Makefile
+> @@ -393,6 +393,8 @@ obj-$(CONFIG_FORTIFY_KUNIT_TEST) +=3D fortify_kunit.o
+>  obj-$(CONFIG_CRC_KUNIT_TEST) +=3D crc_kunit.o
+>  obj-$(CONFIG_SIPHASH_KUNIT_TEST) +=3D siphash_kunit.o
+>  obj-$(CONFIG_USERCOPY_KUNIT_TEST) +=3D usercopy_kunit.o
+> +obj-$(CONFIG_LONGEST_SYM_KUNIT_TEST) +=3D longest_symbol_kunit.o
+> +CFLAGS_longest_symbol_kunit.o +=3D $(call cc-disable-warning, missing-pr=
+ototypes)
+>
+>  obj-$(CONFIG_GENERIC_LIB_DEVMEM_IS_ALLOWED) +=3D devmem_is_allowed.o
+>
+> diff --git a/lib/longest_symbol_kunit.c b/lib/longest_symbol_kunit.c
+> new file mode 100644
+> index 000000000000..38ae117647e4
+> --- /dev/null
+> +++ b/lib/longest_symbol_kunit.c
+> @@ -0,0 +1,84 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Test the longest symbol length. Execute with:
+> + *  ./tools/testing/kunit/kunit.py run longest-symbol
+> + *  --arch=3Dx86_64 --kconfig_add CONFIG_KPROBES=3Dy --kconfig_add CONFI=
+G_MODULES=3Dy
+> + *  --kconfig_add CONFIG_RETPOLINE=3Dn --kconfig_add CONFIG_CFI_CLANG=3D=
+n
+> + *  --kconfig_add CONFIG_MITIGATION_RETPOLINE=3Dn
+> + */
+> +
+> +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+> +
+> +#include <kunit/test.h>
+> +#include <linux/stringify.h>
+> +#include <linux/kprobes.h>
+> +#include <linux/kallsyms.h>
+> +
+> +#define DI(name) s##name##name
+> +#define DDI(name) DI(n##name##name)
+> +#define DDDI(name) DDI(n##name##name)
+> +#define DDDDI(name) DDDI(n##name##name)
+> +#define DDDDDI(name) DDDDI(n##name##name)
+> +
+> +#define PLUS1(name) __PASTE(name, e)
+> +
+> +/*Generate a symbol whose name length is 511 */
+> +#define LONGEST_SYM_NAME  DDDDDI(g1h2i3j4k5l6m7n)
+> +
+> +#define RETURN_LONGEST_SYM 0xAAAAA
+> +
+> +noinline int LONGEST_SYM_NAME(void);
+> +noinline int LONGEST_SYM_NAME(void)
+> +{
+> +       return RETURN_LONGEST_SYM;
+> +}
+> +
+> +_Static_assert(sizeof(__stringify(LONGEST_SYM_NAME)) =3D=3D KSYM_NAME_LE=
+N,
+> +"Incorrect symbol length found. Expected KSYM_NAME_LEN: "
+> +__stringify(KSYM_NAME) ", but found: "
+> +__stringify(sizeof(LONGEST_SYM_NAME)));
+> +
+> +static void test_longest_symbol(struct kunit *test)
+> +{
+> +       KUNIT_EXPECT_EQ(test, RETURN_LONGEST_SYM, LONGEST_SYM_NAME());
+> +};
+> +
+> +static void test_longest_symbol_kallsyms(struct kunit *test)
+> +{
+> +       unsigned long (*kallsyms_lookup_name)(const char *name);
+> +       static int (*longest_sym)(void);
+> +
+> +       struct kprobe kp =3D {
+> +               .symbol_name =3D "kallsyms_lookup_name",
+> +       };
+> +
+> +       if (register_kprobe(&kp) < 0) {
+> +               pr_info("%s: kprobe not registered\n", __func__);
+> +               KUNIT_FAIL(test, "test_longest_symbol kallsysms: kprobe n=
+ot registered\n");
+> +               return;
+> +       }
+> +
+> +       kunit_warn(test, "test_longest_symbol kallsyms: kprobe registered=
+\n");
+> +       kallsyms_lookup_name =3D (unsigned long (*)(const char *name))kp.=
+addr;
+> +       unregister_kprobe(&kp);
+> +
+> +       longest_sym =3D
+> +               (void *) kallsyms_lookup_name(__stringify(LONGEST_SYM_NAM=
+E));
+> +       KUNIT_EXPECT_EQ(test, RETURN_LONGEST_SYM, longest_sym());
+> +};
+> +
+> +static struct kunit_case longest_symbol_test_cases[] =3D {
+> +       KUNIT_CASE(test_longest_symbol),
+> +       KUNIT_CASE(test_longest_symbol_kallsyms),
+> +       {}
+> +};
+> +
+> +static struct kunit_suite longest_symbol_test_suite =3D {
+> +       .name =3D "longest-symbol",
+> +       .test_cases =3D longest_symbol_test_cases,
+> +};
+> +kunit_test_suite(longest_symbol_test_suite);
+> +
+> +MODULE_LICENSE("GPL");
+> +MODULE_DESCRIPTION("Test the longest symbol length");
+> +MODULE_AUTHOR("Sergio Gonz=C3=A1lez Collado");
+> --
+> 2.39.2
+>
