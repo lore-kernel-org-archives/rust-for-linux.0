@@ -1,175 +1,128 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25102135A63
-	for <rust-for-linux@vger.kernel.org>; Mon, 27 Jan 2025 10:27:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD061FCD12
+	for <rust-for-linux@vger.kernel.org>; Mon, 27 Jan 2025 10:34:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737973666; cv=none; b=urOAmGow6Y+Jm4vPcqumloTvlXibf9vwzSLBd2fmqUP7VbuqmaEn3wbhWs0OKDIoM8fWm6Qb+mJgS1nVkaz6KidLtwl0wXgNNBITXghdGW1kFD6lH86k5i74RUqvNM1ZQcvHF7sZ/UEmNexIjdygX54g96CJrnt5YShIucjRbtc=
+	t=1737974071; cv=none; b=J64l+RzbxlK7pMyF8uGYNbQ+0+ZxuRVrGBjH1Kpuw/8yBeWnO7HVFuxiJAIF4E6CBv8pEWPX9EItnMzNgVDWWwxs6GgtVlXAk4VS83kUIMUTah0dBFfsHt1PjSX52UidOMja4Yqg++dBah+E1Su1PRbyJ27ijyC984BEQS1OdF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737973666; c=relaxed/simple;
-	bh=9WltOooB3gfkVdTh/qp/u8NhNtSbit7HnPPedS2uleU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FG2vogXJsbEigYuDucWVe2pvJYfviTz7v5LU5pEfOMVmwdtnUzGkE8pJRJk2DidglmQGU6BNlrPt7AA8YqLvuYjcDlhAKNWyF1qbzZyY5TCaYxPCJ6PX+e5o9MvGd/XqS0fIEt7dN1ddU57gCiRVVlH9Kte7rjamExFuCsjWw5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R7/GAxh8; arc=none smtp.client-ip=209.85.128.44
+	s=arc-20240116; t=1737974071; c=relaxed/simple;
+	bh=6LmjhGfsMYkh/JPlUyVo2tvxkQci+7eMMYTtJ6n8Vd4=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=rpiuWYZNiQQSq/ap/iw8rHKC6R/0gYY/BXp52HhEx2a0lld1U9ZhLbyWDPXCyV9z8hV8ZFIRnR8/pFiJqSugOhkoSgaf1meNbT2mJ02by5g3ag4kzs/WyiX6adGJttWr0XcOk2d56q1/6RMRHjt1yDnYTkrTaTqNVoTB7TlqM14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=raFyKjyW; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R7/GAxh8"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4363dc916ceso32938405e9.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 27 Jan 2025 02:27:43 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="raFyKjyW"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4362552ce62so20641185e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 27 Jan 2025 02:34:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737973662; x=1738578462; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=px3SDk5Kazn8dfkM4KysIW4j1nWIOv8Fz86w4h9auTU=;
-        b=R7/GAxh832RxbxYWp6jtC1HgJHvGiDCgAucn8BMtLPfaBW4VhaQos8+AItTg+Y8R9F
-         xJdbxW2hJV79O1UCdqzDbinJd5VtWxKtLQSVbNHYnJytih8XcSljfCGz9Xv/CD0CxkFY
-         9eFlIZquXQ4XNYZVlG5y+OEBeXvAhJ9HanMCVXKvmSqeGjAoD3US1v/aVa5S+VkmBRUi
-         lLMzSQSNx/p6RUylP65HmcjBN9lg+DtQaJZw1MpgDS0yo9Z7HjXd7IQPGIwp4GYfeVKR
-         n6Syptnr0EThgVBM1vcgHbE6m3hUX/fTveCIcetVbICDQc1sKp5QwiDbVtLr7vSyjHuV
-         pS4Q==
+        d=google.com; s=20230601; t=1737974068; x=1738578868; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=XRzn2SZCYyK3M1JWCa38omHgy1jSYILnd3vTeuU6Q+Y=;
+        b=raFyKjyWWTD0GTZ3TBy2Q7f/Txr7hVRBLYIj3ZUBR+7mmIKChipsDVu1CJKLqLJkAu
+         Wv8Usirm1UALaF02AzCr5TS6zNnw/4OoC8KepAFomxSFleeoEFbpWPd7letI6f8IcRba
+         WF2Kau2Nib984Emp8VNf3Pph5+nVd6nlASF3qrbU1pwtt+mEE0ffH/2WJBWzxqtTGdL5
+         c5Xl08v9efxeBtWWJDig+r+Sw8YP2shNDEhk0qjxZK7s5r1SK31MIk26MgPbCo+Fmd0P
+         kB3aI/jWIvdHhsYGV8MqKxbGSIgWVqGGqGPh77IVnvD2wrtWJ6BcvAcrdnbNvPf6KwmW
+         tnzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737973662; x=1738578462;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=px3SDk5Kazn8dfkM4KysIW4j1nWIOv8Fz86w4h9auTU=;
-        b=fStBpjo3d5wqtEgiRiptb2OLRctMibqokxaVE2Ajyf59RsrrMoosal0MjbC5mDPlC6
-         WiuPAY1EbqTBRlpMWa+H+mu8jxYAx85ntChJA+K6Gv5R30vLlpQeKD0PUdYJEQVXdCwC
-         QkiSYmTwffIyMHE3N9j80p70BOVm7TaUHuFL71xXgENHQNy4EJyhgjzefXejIhQxoBoc
-         3DcREWrOspdSraFjBtOSjTRds7IDRrmsPSHickH5C0UccIJRXQpUbr5kfiBnNeA40wpn
-         K3ryNn7iyc2ZbYZxkM8HbQ2FDS5cYEt/H+BdjaUx1a2cbleGr2A6oamd3V2dCt9Deoyb
-         2mFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXGGibu6vzJALbIs2wjmFUViWtw0KgpawGx5/8Q3pH8zjRKN30f4f+dVr4QDKp4/Ok8WXS2TS7sE4OcgOKTWw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIfXVMjzN7eoOCdyQmSh2d4o93VVPbhLwGgJWkzqZUiR296Api
-	10Q+PWNzYQlpJka8JWJObk1Y7uM+59SnKJspUZkzo++za4ZPIgQOgANZn0s0IFDD6ptQJOrcu2e
-	szXRebtGc9na9ReLprELYtRB8VSorSgkuKIPY
-X-Gm-Gg: ASbGnctcQrBR7qa+gmkAQWX5ST71RJrbxVM7Qp7Ye8r2XcC7bbGhEtjhpTCJQpI6kyr
-	bvDW8opfJfBD0obbleAHdiWfX9gQHGIEI1iiVys9SXpY3cra8DIxBUh6xMzLiFyWAiuW/F4Vp9N
-	Oc83bEVFlS9CGhJcd+
-X-Google-Smtp-Source: AGHT+IEwAfZsNOZp5NBzYXqmXKMwWWnv7DCAhKee+0PZAgAEEqJEbxakyMC1Sv84tJnNSiGODZWRXyuei0+ro8TJoA4=
-X-Received: by 2002:a5d:6483:0:b0:38a:6183:77b9 with SMTP id
- ffacd0b85a97d-38c22267cbamr18453197f8f.6.1737973662340; Mon, 27 Jan 2025
- 02:27:42 -0800 (PST)
+        d=1e100.net; s=20230601; t=1737974068; x=1738578868;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XRzn2SZCYyK3M1JWCa38omHgy1jSYILnd3vTeuU6Q+Y=;
+        b=o5dAlszgHELPOWFhCfrfnZ2/2NEOtJDZgBTStySB28BvqD8b++8EYFL8oFGIj9NpwJ
+         mY9jteOTN0OTbksEpEp7wab+i7/NkL5AY1KFhJhn6w40KOZQgKRK9iEEgTdnv9LAb915
+         UMH/5C1Uj4kIRqs/DLSsvOZtBK/UVWr1EML5qi8KeTSIzwIt0P2IH4U2rz9amlYrUO+a
+         ZBUPqEwxQbNeMCmFcwicghKSc50V4IqTO5VHgUw/4OVStFfJAX7jYFx+xNjXFCdmcSVB
+         XhA8MJqd30CDdveyiTDS3bXmjLviqfhlDVIOGCY0GDGzrCHHvwlwI0FoDsycN5F4Vajv
+         YNcw==
+X-Forwarded-Encrypted: i=1; AJvYcCVx7P9K3qw6q2UPEVsa9wlRdU2Esh0CQKx845hpL54T3stjsixMB+H0CxYTM7ztTfAFlHR8PwyMtOcc3igipA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3jxnPqRTz1W41UxxTsgec6Oks+oV+5KaZWsceCHP/6J29lo2f
+	fKxvgeTNY9TFiDZNJ8KD8tOBElyao+EDKMqzST0sEdCUVmIf9/PkVauCmH2HFy/Q9C7uY6CYqUn
+	Mko3FOZyzGMnWtA==
+X-Google-Smtp-Source: AGHT+IELEQVEP+Pb7bAeMdz811t8gdKeaB389dmZSRnfJ9olS19Br8X7u3+e3kH8kX+Vo+7Ia3Qz+Twpk5XIt8A=
+X-Received: from wmej5.prod.google.com ([2002:a05:600c:42c5:b0:436:6fa7:621])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:8719:b0:434:9499:9e87 with SMTP id 5b1f17b1804b1-43891437217mr325816675e9.25.1737974067953;
+ Mon, 27 Jan 2025 02:34:27 -0800 (PST)
+Date: Mon, 27 Jan 2025 10:33:57 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250119-b4-rust_miscdevice_registrationdata-v1-0-edbf18dde5fc@gmail.com>
- <20250119-b4-rust_miscdevice_registrationdata-v1-2-edbf18dde5fc@gmail.com> <8953765e-d978-4a91-bc81-9ab154ac2255@gmail.com>
-In-Reply-To: <8953765e-d978-4a91-bc81-9ab154ac2255@gmail.com>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIABVhl2cC/2XMy27DIBCF4VeJWJeKGcDGXfU9oi64jB2k1lTgO
+ o0iv3tI1EhJWZ4jff+ZFcqRCnvbnVmmNZaY5jr0y475g50n4jHUzVCgAgEd9z+5pMwdLUeimYN
+ WjoLRA2HPKvrONMbfW3D/UfchliXl062/wvX9S6H+n1qBAxdmANmDspb0+5TS9EmvPn2xa2vFu
+ 9cCEBqPXHBwqHyQfd+Babx89Nh4Wb21dnTB2BFUaLx69LLxqnrvRNcNJrhB+Se/bdsFaJzpNW0 BAAA=
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1365; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=6LmjhGfsMYkh/JPlUyVo2tvxkQci+7eMMYTtJ6n8Vd4=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnl2EXtxGwuck2XeaHMk0R79jv9xymHK5SmoVu1
+ I1WZl+F0ueJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ5dhFwAKCRAEWL7uWMY5
+ RpiyD/45Pe3QO6q/5xO5T6iPjXCn7EluqWk3nGo81oRPCcuBfzweQWkfS37ZzGvg0XmS848bNc8
+ IxL/QJymLJIgy4Z15DCb0jFxA54NRJZeajDn7PcI/J3reYpT3j3pMjewPGmQV/P7Imd12C+emqS
+ 8GdBuG9ig1M+xROQzcs7JQTWcsGW1lvtr1yGUIcYu2Bw4Pg+C5B8rvwemB6uhrnSKuBQETUXg/k
+ CzNdeNjkgm8sDkFKvPedLB34YzfXHDnHaWBrVtdRZlBSPtk+cca9jFV73Ie9gBaaiTY9zjeNwse
+ x4q1Jzc7YT1VjtWyywXu0TgbF5O+uu/luGhTBSoQRPJXbtVHmT5ZFXNKsOS2lqxMrlnU3Ayqvza
+ vZAHacOgHFrcLAUzGfXc11iLc1yNE5+sQ/ybbjuq1IUaRH9tG9cgLK4O7XJWCjBEqAKKUSOTnZZ
+ GmhXC7aIPt3ur6qRtJ47gaLSaVHj14YE17dczJZLTQi+f3AHzkl8QguKuh1wTvHV8gJ6Pa9en2P
+ /od8OhK/UPGOavtAGYXp0zpabHqE2uXxfBM1qPM8LnX3d3FhV9MlTDNbxEY0Jx82nd2yi6vBMiQ
+ y2Hxm0nPfPH10Yz8Q67msh2Cbp9MwRbZp0/7H1GBcJDmsqy4HTC8N1R+OtTYiV/0krqw6oMlkWw 7EBNEJJAokJzLuA==
+X-Mailer: b4 0.13.0
+Message-ID: <20250127-cursor-between-v5-0-f7c388c23642@google.com>
+Subject: [PATCH v5 0/2] Make the Rust linked list cursor point between elements
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 27 Jan 2025 11:27:30 +0100
-X-Gm-Features: AWEUYZm1YxmUrQSIDHRooum1YYq_7rOOdNC56wLOCw8Tl_2aOHhFGExy-XaVdY8
-Message-ID: <CAH5fLgi-CJCveLmc6hFdAYOhpRULovDh_Cix4FyV=kBeg9oiFA@mail.gmail.com>
-Subject: Re: [PATCH 2/3] rust: miscdevice: Add additional data to MiscDeviceRegistration
-To: Christian Schrefl <chrisi.schrefl@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Lee Jones <lee@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, Jan 24, 2025 at 12:26=E2=80=AFAM Christian Schrefl
-<chrisi.schrefl@gmail.com> wrote:
->
-> On 19.01.25 11:11 PM, Christian Schrefl wrote:
-> > When using the Rust miscdevice bindings, you generally embed the
-> > MiscDeviceRegistration within another struct:
-> >
-> > struct MyDriverData {
-> >     data: SomeOtherData,
-> >     misc: MiscDeviceRegistration<MyMiscFile>
-> > }
-> >
-> > <snip>
-> >
-> >  impl<T: MiscDevice> MiscDeviceRegistration<T> {
-> >      /// Register a misc device.
-> > -    pub fn register(opts: MiscDeviceOptions) -> impl PinInit<Self, Err=
-or> {
-> > +    pub fn register(
-> > +        opts: MiscDeviceOptions,
-> > +        data: impl PinInit<T::RegistrationData, Error>,
-> > +    ) -> impl PinInit<Self, Error> {
-> >          try_pin_init!(Self {
-> >              inner <- Opaque::try_ffi_init(move |slot: *mut bindings::m=
-iscdevice| {
-> >                  // SAFETY: The initializer can write to the provided `=
-slot`.
-> > @@ -79,6 +85,7 @@ pub fn register(opts: MiscDeviceOptions) -> impl PinI=
-nit<Self, Error> {
-> >                  // misc device.
-> >                  to_result(unsafe { bindings::misc_register(slot) })
-> >              }),
-> > +            data <- Aliased::try_pin_init(data),
-> >              _t: PhantomData,
-> >          })
->
-> After some thought I think `register` needs to be something like:
->
-> pub fn register(
->     opts: MiscDeviceOptions,
->     data: impl PinInit<T::RegistrationData, Error>,
-> ) -> impl PinInit<Self, Error> {
->     try_pin_init!(Self {
->         inner <- Opaque::try_ffi_init(move |slot: *mut bindings::miscdevi=
-ce| {
->             // SAFETY: The initializer can write to the provided `slot`.
->             unsafe { slot.write(opts.into_raw::<T>()) };
->             Ok::<(), Error>(())
->         }),
->         data <- UnsafePinned::try_pin_init(data),
->         _t: PhantomData,
->     })
->     .pin_chain(|slot| {
->         // SAFETY: We just wrote the misc device options to the slot. The=
- miscdevice will
->         // get unregistered before `slot` is deallocated because the memo=
-ry is pinned and
->         // the destructor of this type deallocates the memory.
->         // `data` is Initialized before `misc_register` so no race with `=
-fops->open()`
->         // is possible.
->         // INVARIANT: If this returns `Ok(())`, then the `slot` will cont=
-ain a registered
->         // misc device.
->         to_result(unsafe { bindings::misc_register(slot.as_raw()) }).map_=
-err(|err| {
->             // Drop the Data in case misc_register fails.
->             // SAFETY:
->             // - We just initialized `data`.
->             // - We are about to return `Err(err)`, so it is valid for us=
- to drop `data`.
->             unsafe {
->                 ptr::drop_in_place(slot.data.get());
->             }
->             err
->         })
->     })
-> }
->
-> to make sure that `misc_register` is called after data is initialized and=
- to that
-> `data` will be dropped correctly in case `misc_register` fails.
->
-> But I'm not very familiar with `(try_)pin_init!` so this might be unneces=
-sary?
+Please see the commit message of the last patch for more details and
+motivation.
 
-Using pin_chain is definitely incorrect because it will run the
-destructor of MiscDeviceRegistration if the misc_register call fails,
-but calling misc_deregister is incorrect in that case.
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v5:
+- Fix list / list2 in example.
+- Add remove_last function to example.
+- Link to v4: https://lore.kernel.org/r/20250123-cursor-between-v4-0-cb06698db94c@google.com
 
-You should be able to just move the `data <-
-UnsafePinned::try_pin_init(data)` line to the top so that the field is
-initialized first.
+Changes in v4:
+- Actually call the example functions.
+- Link to v3: https://lore.kernel.org/r/20250122-cursor-between-v3-0-aaafbd8af14d@google.com
 
-Alice
+Changes in v3:
+- Fix `CursorPeek::deref` to use `self.ptr`.
+- Reword comment on `ArcBorrow` in `impl Deref for CursorPeek`.
+- Link to v2: https://lore.kernel.org/r/20250121-cursor-between-v2-0-1b24cd377618@google.com
+
+Changes in v2:
+- Extract insert_inner refactor to separate patch.
+- Make move_next/move_prev not wrap around.
+- Add some examples.
+- Link to v1: https://lore.kernel.org/r/20241025-cursor-between-v1-1-08913714aae5@google.com
+
+---
+Alice Ryhl (2):
+      rust: list: extract common code for insertion
+      rust: list: make the cursor point between elements
+
+ rust/kernel/list.rs | 455 +++++++++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 362 insertions(+), 93 deletions(-)
+---
+base-commit: ceff0757f5dafb5be5205988171809c877b1d3e3
+change-id: 20241016-cursor-between-154bed859e27
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
