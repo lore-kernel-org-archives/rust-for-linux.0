@@ -1,278 +1,116 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46CC1D61B1
-	for <rust-for-linux@vger.kernel.org>; Tue, 28 Jan 2025 19:29:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C341A841A;
+	Tue, 28 Jan 2025 20:56:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738092594; cv=none; b=sNJCuMSclh9/P0myjd4li9JhFLIyWFvT9c8Y6VE14xR5Lh1r7QXSuT6ZZ+4TSCN4b89c5LO7YJ1/KkKhCAg5wiwSpTb+vVBon/+Zuai0UHCZiLE2pzNq2jkoHPqeOvstH6IADMXHqibtxP64076XPB5zwroPp8Bt81oYUEib5LM=
+	t=1738097785; cv=none; b=vF/ZEscBItYg0aY0Uc/QK2XtuhTQvWh34QlEDcJ5P7sTIArDo/lTA+cEOy72ZOEDDn/KC8aifVfWi5LRwkK87KLO6g4B4+cSy6wMN0ZKuW4WTaxctqxjytVdyjepLIKmlL/bsI6FLzkfI9HT1Zkn/kRIN9IbMHvWmSjdB9bnZIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738092594; c=relaxed/simple;
-	bh=XZDSZDvTjJLJ2HmGqWdO9GWhj7wfB4VxHKiTQA+5WPs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OVS8uOl+pbVUPSpnRuJtZmEi/W83pMnIXdu6ws7saRrHBZeE+ZGxS0Td+AdjMSHm85M5Ev1Uy6n+7K/AKcjipXyuRj8vB9QqzrgfN9HVME+ewoTg3pWznjHpnEG98+Zb9GEf0yjOHrZSyI++ae5MccKGvtdcXWXAIock7nujk6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=u8Jz6Djv; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sedlak.dev
+	s=arc-20240116; t=1738097785; c=relaxed/simple;
+	bh=8loRBTK4oxn9ZcE2/ZQpQLeAHRgVEExKEWDQgOfIit8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tmO7t0GFeOQhmdbcWZZuCmnoDuIEE+Orzory+acB9XLzNj1ZNtvryUpjQM90dfwIjMEIgpqLzd2+2fqspjCk5Q48fgqrx3R+9YobqDHLQ6C6G3SV3KsJF9pAUPG2CmUnIg2vPkk+6ofVCDfFrKn18fQEvX+bYi4LewtCdIFtpcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bH2Za6OL; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="u8Jz6Djv"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-aaf6b1a5f2bso1422128166b.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 28 Jan 2025 11:29:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bH2Za6OL"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2f800b5c2d5so1096672a91.2;
+        Tue, 28 Jan 2025 12:56:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1738092591; x=1738697391; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AgyKNhdhEc6YNqdyt39WyTdk5mKqwPFUjqr9KV2Vglc=;
-        b=u8Jz6DjvLaDGR8BXJ+C0DRXUCQiomaB5PyVeHZ3tMm1xoFPT2STtPLBckQDi5Fs0/X
-         kVZ1Mo51yt+6KoXjURBoHkrRDs9SRnlRxfOSejdezscdwkkpUvA6yT3kEL2bI8DLacnE
-         MLfPKNIa7FLmLBXzJbCpM3oLalya4eMS7cSCSPlcIWqBRewy7OGOt/ejIxpu9gW6HXLl
-         Z8Yt3ZKrU4hVp4S7g250+mxtFTyaj3LJqwAtXgqKArzPj8Yd68BTJJ2JwanjurWncnOK
-         daouxKEmPsH9YcrCxrwCz6PqFoUcySr06NNfLX19TGM3Bv9fDMKcpjh+3S+dKyLJA4aG
-         nfLg==
+        d=gmail.com; s=20230601; t=1738097784; x=1738702584; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PS9HIem1hHx/9kQROBmQ355P0gGLxBHH8bm6/Xx9izE=;
+        b=bH2Za6OLwIqrHtnr2XnAC0nn6Yd91Tiqh8P2PYNuYMgbV4BwDztIeJkRZlY3vTilCK
+         k8LpeO4654Jj0/aHxqppDs7WaY9chN81+rWqOxr8m7K9Gq+hlDeks/GLw0PQ+istvObO
+         JAVv5IA38/XzXmJQlBNe5CCVir+62UBh4bZaka4qjfEMTg14ybs6eXb1aNTPI6ZKakXM
+         j9VDLWDLEcaJo7P3dWXehphvTghnpNW8qPS/zi1MjuBZ4+HvgKNKrvAWrBJvI+/Iul1m
+         eaK4cCrHYUvI3r3RDlBEh86BdTjnF+TO14FCLI3MkZY/qbtfFZXxPuO/d/ob3PaZlwKt
+         zbPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738092591; x=1738697391;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AgyKNhdhEc6YNqdyt39WyTdk5mKqwPFUjqr9KV2Vglc=;
-        b=hZC6mdGPsjMH5CVO89nqmKhyNqRjGzU12S5VQtRxnBh6RtcdGWwhbFLRQcQnGnBOE7
-         RzCJnbhwOs94fRl1GwTgzMsj1+vaHpStpOFDmdVlDBifJ3Us6wmfNbV9UhoqkRcx8X2p
-         334A0QW+0Dtml4gODZkdnPWMgGEBJLKTZgaMGOl+LUZO6nhlfsT5ejynkfOFoMwJN1M9
-         vIcGMukUYbYKDkoFFGyqOfI42UM9EgxMnoVH3Bc0Gq6IjwdG8MGJBUSTtcbxdApCdfzu
-         Acs+Qh08xuIdPYuRqA07ol8BDCl7GkRJ5EVkfXBbaJhhTMoH5zaSIReb+j0g7C7CggZ9
-         hYgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXSp3jZWsoOXEv7xGiaPHK98mmm61lXLfUdGmnwRKFakOgwlJmDZDRmqzzUZzmMZMirsQzxZ3wqGWM3ZCPXug==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywb7BFOchxzWSirQ9BOjw2a0E1lD9giRvP/Ue4T8uRDfLOQ5DYL
-	1bepJGVW2NhRmTtqp4ZrsBEMM+464PBnXzcy6W/ZLl+uoqPvO7UYGOQtAKwPkZc=
-X-Gm-Gg: ASbGnctQbIcnY7UMfnAcFWPW1SvKYHWVYDNOwydd2avgvzkk8bJO7qUCCz0bCbyvnzV
-	4jWcVGvS7QQD5PPs+O5GVQMVixAtyzj7NJGiaYGYnHy3napOPO6AHQW6U8YdLg8s6Ogy+L+XxcE
-	3DPjra1mhRjnBKmxQSr/jwLLlxZ+8wXIwXO4cnlQH21uxK0QeKwOf1bHuXIRzSwAcMgxw97ApIi
-	+NMrS7tcnFomPZ7bowdMg43WgpLtQ0Gum4XcY59iaWx27t5/CM5fduExpPvc2l9J4PjPjT5Kxdd
-	mCeLbJwKfTIU+IVg
-X-Google-Smtp-Source: AGHT+IFyhffQN/OsYoNQw/aTM5fFiWaNlpw+2vgiqNf5QXtfK47aBOAj2zws7o6C51hIPgdyO2FgzA==
-X-Received: by 2002:a17:907:97d3:b0:ab6:cdc2:3417 with SMTP id a640c23a62f3a-ab6cdc23436mr129567466b.15.1738092590920;
-        Tue, 28 Jan 2025 11:29:50 -0800 (PST)
-Received: from [192.168.88.249] ([95.85.217.110])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab675e653c6sm838718266b.64.2025.01.28.11.29.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Jan 2025 11:29:50 -0800 (PST)
-Message-ID: <79283554-ce12-4812-be1d-af8b420c1053@sedlak.dev>
-Date: Tue, 28 Jan 2025 20:29:49 +0100
+        d=1e100.net; s=20230601; t=1738097784; x=1738702584;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PS9HIem1hHx/9kQROBmQ355P0gGLxBHH8bm6/Xx9izE=;
+        b=LjtNKzUGeMkRK+F1YZJz5oujLWvmaF1NT9oaWbQaDfDtWYVEoCdMC40CwK80Jp1bBx
+         t0ITbj1hkhZqlrxJuI2m8QVCsoCa0IyyX8rNEWa8c6myCscamDK0rSc093Uo6NEw890f
+         /E7DOFWyfCJ0SxDFbLz4R5eP+hR67epCM2ITqLF8cxbMu4a+lK2m3Th4ASL+mwF8/tU2
+         E+x1mUxIGoUsiWobWt5aLfsieiQc/c6Q8x8oboesdUDYhH6ohYkR2oPQpJKBWZS8MTkv
+         xG1ZZnwZBiBNreIYCYXGmEzL22olot3Ll3NayM+0yRxlw/3mVOmle1ivOAoZWwf5pwXG
+         kwgw==
+X-Forwarded-Encrypted: i=1; AJvYcCU0xpv2LiYBsD/PsiQH9KUVRuyCq92n3dAwRHL9p9UYY1QtUW+g0a3bwgITdBAbkFEZZGhA7RM0KkDNL4e9c38=@vger.kernel.org, AJvYcCXMNyMgR59s3VgkGLS/a4c1i0sV2CRT6udctDAvti115E7BZfxgBd+By0Qol07mhurMaWUiZRF3OWYDz0q7DTQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw68wqP+tbf0Z71ZYNbO2cXsA0r0xnraUcN7/orfI6JeGgW9iqu
+	QeteiMdMx8Xd8veL2XgDAfw4e2WMvDdouRI993yZuaLKyDfTXWSVn819GyUGLHcBqPfqUwAn41u
+	PMRelAXHykuIDG9WsvNj/5UXcfDQ=
+X-Gm-Gg: ASbGncvrvcG41dtuTyj5puqTmelghFMo9XzipFjc1E1vzqWjDsrN+KQnZNIZzOuiYWu
+	E3tvrWr/F2nytJy0AJBTwr9zl1p8hmXeXohTjjEnvbXxrzAofyx0augxn4jy0LEl7WTFdFW/bkg
+	==
+X-Google-Smtp-Source: AGHT+IH4CcpV/pe9+fel3zee7jXKa5DaeI6taNtY9gioMS7/R5yIDDgN4mGBHMAQhti1a34E2dpTf/3qFuk4e95mIIg=
+X-Received: by 2002:a17:90b:3a08:b0:2ee:3fa7:ef23 with SMTP id
+ 98e67ed59e1d1-2f83acaa9c8mr242995a91.8.1738097783814; Tue, 28 Jan 2025
+ 12:56:23 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC WIP v2] rust: add bitfield_options macro to create
- bitfield wrapper types
-To: gtimothy-dev@protonmail.com, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-References: <20250128-add-bitfield-options-macro-v2-1-d65349b389fc@protonmail.com>
-Content-Language: en-US
-From: Daniel Sedlak <daniel@sedlak.dev>
-In-Reply-To: <20250128-add-bitfield-options-macro-v2-1-d65349b389fc@protonmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250126223627.732451-1-sergio.collado@gmail.com>
+ <CANiq72koWg-GGD3w5mJw3F-hGrOBZ7hiK1G4pHY+y_rQmtG5+Q@mail.gmail.com> <CAA76j93kQG0GjaMWpR+AnxPWDO1ud0SLECCE3uxN7FAyNB6Dsg@mail.gmail.com>
+In-Reply-To: <CAA76j93kQG0GjaMWpR+AnxPWDO1ud0SLECCE3uxN7FAyNB6Dsg@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 28 Jan 2025 21:56:10 +0100
+X-Gm-Features: AWEUYZntlmwO4enIGZKNb2l4xXe6E_FGYy4i-PNo8mMe1ggtBgEXBVNYnJ4BK4E
+Message-ID: <CANiq72kXG4qURXjnZZTLPMn-k_WwFt0yabR0nfCAzDMqYNJKHg@mail.gmail.com>
+Subject: Re: [PATCH v6] Kunit to check the longest symbol length
+To: =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
+Cc: David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, David Rheinsberg <david@readahead.eu>, 
+	rust-for-linux@vger.kernel.org, x86@kernel.org, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Shuah Khan <skhan@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
-I do not have a strong opinion on whether this patch is actually needed 
-thus I only do a quick review of the code/documentation part.
+On Tue, Jan 28, 2025 at 1:24=E2=80=AFPM Sergio Gonz=C3=A1lez Collado
+<sergio.collado@gmail.com> wrote:
+>
+> > > +#include <linux/kallsysms.h>
+> >
+> > Typo?
+>
+> #include <linux/kallsysms.h> is needed to be able to read
+> KSYM_NAME_LEN: https://elixir.bootlin.com/linux/v6.13/source/include/linu=
+x/kallsyms.h#L18
 
-What I think is actually missing is an another patch integrating this or 
-showing usage of this somewhere, for example in samples/drivers.
+What I meant is that the `#include` in the patch is:
 
-On 1/28/25 4:48 PM, Timothy Garwood via B4 Relay wrote:
+    kallsysms.h
 
-> +//! Trait and macro to build bitfield wrappers.
-> +//!
-> +//! A trait and [`kernel::bitfield_options`] macro to build bitfield wrappers with
-> +//! [`std::fs::OpenOptions`](https://doc.rust-lang.org/std/fs/struct.OpenOptions.html)-like methods to
-> +//! set bits and _try to ensure an always-valid state_.
-> +
-> +/// A trait associating a bitfield type to a wrapper type to allow for shared trait implementations
-> +/// and bitfield retrieval.
-> +pub trait BitField {
-> +    /// The bitfield type, usually `u8` or `u32`
+which is different from:
 
-Missing period at the end.
+    kallsyms.h
 
-> +    type Bits;
-> +
-> +    /// returns the bits stored by the wrapper.
-> +    fn bits(&self) -> Self::Bits;
-> +}
-> +
-> +/// concatenate sequences using a comma separator. Uses a a `, and` (oxford comma) separation
+Does that file build? Or am I missing something?
 
-Capitalization of the first word.
+I just tried, and I indeed get:
 
-> +/// instead between the last two items.
-> +#[doc(hidden)]
-> +#[macro_export]
-> +macro_rules! concat_with_oxford_comma {
-> +    ($last:expr) => (concat!("and ", $last));
-> +    ($left:expr, $($right:expr),+ ) => (
-> +        concat!($left, ", ", $crate::concat_with_oxford_comma!($($right),+))
-> +    )
-> +}
-> +
-> +/// Builds a bitfield wrapper with
-> +/// [`std::fs::OpenOptions`](https://doc.rust-lang.org/std/fs/struct.OpenOptions.html)-like methods to
+      HOSTCC  arch/x86/tools/insn_decoder_test
+    arch/x86/tools/insn_decoder_test.c:13:10: fatal error:
+'linux/kallsysms.h' file not found
+      13 | #include <linux/kallsysms.h>
+          |          ^~~~~~~~~~~~~~~~~~~
+    1 error generated.
 
-This might be opinionated, but it may be better to use positional 
-parameters [1] as it is not that noisy to read in the source code.
+Thanks!
 
-Link: 
-https://doc.rust-lang.org/rustdoc/write-documentation/linking-to-items-by-name.html#valid-links 
-[1]
-
-> +/// set bits.
-> +///
-> +/// This wrapper _tries to ensure an always-valid state_, even when created from a bitfield
-> +/// directly.
-> +///
-> +/// The wrapper implements the [`BitField`] trait.
-> +///
-> +/// # argument types
-> +///   - `name`: the name of the wrapper to build.
-> +///   - `type`: the bit field type, usually `u32` or `u8`. Must be an int primitive.
-> +///   - `options`: array of `{ name:ident, true:expr, false:expr }` options where name is the name
-> +///     of a method that will set the `true:expr` bit(s) when called with `true` or else the
-> +///     `false:expr` bit(s). In a standard bitfield, `false:expr` is set to `false:0`, but sometimes
-> +///     different bit flags designate incompatible alternatives : in these cases, set `false` to
-> +///     activate the alternative bit(s).
-> +///
-> +/// # Examples
-> +///
-> +/// Call the macro to create the bitflag wrapper.
-> +///
-> +/// Here we create a wrapper that allows to set `RED`, `BLUE`, `GREEN` bits independently,
-> +/// and additionally either the `BIG` bit or the `SMALL` bit.
-> +///
-> +/// `BIG` and `SMALL` are incompatible alternatives.
-> +///
-> +/// ```rust
-
-The rust is implicit.
-
-> +/// use kernel::bitfield_options;
-> +///
-> +/// const BIG: u32 = 16;
-> +/// const SMALL: u32 = 1;
-> +///
-> +/// const RED: u32 = 2;
-> +/// const GREEN: u32 = 4;
-> +/// const BLUE: u32 = 8;
-> +///
-> +/// bitfield_options! {
-> +///     name: SizeAndColors,
-> +///     type: u32,
-> +///     options: [
-> +///         {name:big, true:BIG, false:SMALL},
-> +///         {name:red, true:RED, false:0u32},
-> +///         {name:blue, true:BLUE, false:0u32},
-> +///         {name:green, true:GREEN, false:0u32}
-> +///     ]
-> +/// };
-> +/// ```
-> +///
-> +/// The `SizeAndColor` type is now available in this scope.
-> +///
-> +/// It implements the [`Default`] trait where all options are set to `false`:
-> +///
-> +/// ```rust
-
-The rust is implicit.
-
-> +/// # use kernel::bitfield_options;
-> +/// # use kernel::bitfield::BitField; // to have access to the bits() method
-> +/// #
-> +/// # const BIG: u32 = 16;
-> +/// # const SMALL: u32 = 1;
-> +/// #
-> +/// # const RED: u32 = 2;
-> +/// # const GREEN: u32 = 4;
-> +/// # const BLUE: u32 = 8;
-> +/// #
-> +/// # bitfield_options! {
-> +/// #     name: SizeAndColors,
-> +/// #     type: u32,
-> +/// #     options: [
-> +/// #         {name:big, true:BIG, false:SMALL},
-> +/// #         {name:red, true:RED, false:0u32},
-> +/// #         {name:blue, true:BLUE, false:0u32},
-> +/// #         {name:green, true:GREEN, false:0u32}
-> +/// #     ]
-> +/// # };
-> +/// let sac = SizeAndColors::default();
-> +///
-> +/// // the default state, with all the options set to false should be the field with only the
-> +/// // `SMALL` bit(s) set
-> +/// assert_eq!(
-> +///     sac.bits(),
-> +///     SMALL | 0u32 | 0u32 | 0u32)
-> +/// ```
-> +///
-> +/// It implements the [`TryFrom`] trait which succeeds only if the passed bitfield is a valid state:
-> +///
-> +/// ```rust
-
-The rust is implicit.
-
-> +/// # use kernel::bitfield_options;
-> +/// #
-> +/// # const BIG: u32 = 16;
-> +/// # const SMALL: u32 = 1;
-> +/// #
-> +/// # const RED: u32 = 2;
-> +/// # const GREEN: u32 = 4;
-> +/// # const BLUE: u32 = 8;
-> +/// #
-> +/// # bitfield_options! {
-> +/// #     name: SizeAndColors,
-> +/// #     type: u32,
-> +/// #     options: [
-> +/// #         {name:big, true:BIG, false:SMALL},
-> +/// #         {name:red, true:RED, false:0u32},
-> +/// #         {name:blue, true:BLUE, false:0u32},
-> +/// #         {name:green, true:GREEN, false:0u32}
-> +/// #     ]
-> +/// # };
-> +/// # let sac = SizeAndColors::default();
-> +/// let small_and_no_colors = SizeAndColors::try_from(SMALL)
-> +///    .expect("having only the SMALL bit to 1 should be a valid state");
-> +///
-> +/// // Having only the `SMALL` bit set to 1 is the default state.
-> +/// assert_eq!(sac, small_and_no_colors);
-> +///
-> +/// let big_and_rgb = SizeAndColors::try_from(BIG | RED | GREEN | BLUE)
-> +///     .expect("having the BIG, RED, GREEN and BLUE bits set to 1 should be a valid state");
-> +///
-> +/// assert_eq!(
-> +///     SizeAndColors::default()
-> +///         .big(true)
-> +///         .red(true)
-> +///         .blue(true)
-> +///         .green(true),
-> +///     big_and_rgb
-> +/// );
-> +///
-> +/// let big_and_small = SizeAndColors::try_from(BIG | SMALL)
-> +///     .expect_err("BIG and SMALL are incompatible, this should fail");
-> +///
-> +/// let intense:u32 = 1024;
-> +/// let big_and_intense = SizeAndColors::try_from(BIG | intense)
-> +///     .expect_err("BIG|intense is not a valid state, this should fail");
-> +/// ```
-
-Daniel
-
+Cheers,
+Miguel
