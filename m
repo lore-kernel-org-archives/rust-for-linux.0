@@ -1,105 +1,251 @@
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C802A290F;
-	Tue, 28 Jan 2025 12:24:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F1319C54E;
+	Tue, 28 Jan 2025 12:46:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738067069; cv=none; b=iACGHHnwssZcWuqt6iz4s6QraGDlt5Ax9oSQtw7cF8TPSxb29nM0zKJyNTGjBmjjcHPv+9REUodDZmwvRpex4XM8EaE2wcaLTdplBm7nS4VFE2y6+WzpfzwuDUs65ZJWBOHOuPFFrTOssl6xQJawaO27WgNqqwUIUk1GCzsKE7c=
+	t=1738068377; cv=none; b=Evl1z5rfNvb67Qb6xnvWv19pxLr9kVXFQbEgiQhGl9lp+m+a5+HGFJwlNCqlohuJQ9qJzMrgiHjeHgsUsPiYUjL9LVorgPc65KeNgda6PVTW4GdFoBhnXJvtaM0QAfD3vyq9ol9J4DZjImQILsh5MyYc8EHc/B8hK1IGWMGz4BA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738067069; c=relaxed/simple;
-	bh=rk6I/LnsK1V1KhN/DyrVi7LTONTlzqX5P1y04J1b8bo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OHL2DBO64bzOd0KgIZ4K+XkWdx5qMfxK88NkjIZ9IBmXLFu4sapbH8tUGdSN1EmYapud3RUN39qhTrvVnW1uy36JIcX7scbjo1D477a3sIMQZHIHl09yQWTV9u5X423najnGZ/p0Y5gl5mztBesVqYDClecr1PU1ZM8ip1Xh6pU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G2jK+SfV; arc=none smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738068377; c=relaxed/simple;
+	bh=Dirfg2RCwDetyzBX3eKuY++hGWP+hMXFw6bK8y9el4A=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=mFzE8hRCxo0/bdYV69Bn13L2gNahRpCEBijkkwN2YlycbOC6sAYPqa4ACFZAUZpuXgnXwE4q4saboGHL2PrOqSwIHqkKcyy/BIQYtqg49qaOKZVwYZo5L2jg3IspcqRdoIr3cK+fxfa3suXMFvt5bSfti6aSz2L40T8gF6dkXwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=qsiqSaf9; arc=none smtp.client-ip=49.12.72.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G2jK+SfV"
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-30227ccf803so51157971fa.2;
-        Tue, 28 Jan 2025 04:24:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738067066; x=1738671866; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=upRXrAeVaXyeQyXXNAUwtCIwIXa5qrKpW/iheEjVT/Y=;
-        b=G2jK+SfVhf82ipSexsfFs5xaA7GYoPqIz1nT/4IOF2+KD8iVXl3bTMgYozaFrY0Oxl
-         6/4C+xwvrx6FvydTktTF0NxyfGpYWE60aFLeB6Aekp2zISKAhy5SIkxFOn+1iKqUkMu8
-         6Uto6rQwq0NhHCV1jA+ZGlZFlzPS0riBeQswr6m26bWAHO0TdFLYLOwhSsmFpOLMYPjz
-         B2iRzYbwSynhj1INhel1522KIgugb5iUZ98Ryb1BsXun/AylaF6TY1kNCR+R9TWjTV1s
-         oY5jnG4eaYDPFtKUepOL0APN5rAoLVk+N1dWEHXxP8e3IC4X+QWLZmhjaPZFOeaSl94P
-         nk7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738067066; x=1738671866;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=upRXrAeVaXyeQyXXNAUwtCIwIXa5qrKpW/iheEjVT/Y=;
-        b=UyVmo+2p2q4pYNDcihgn/tY7Zx15oLWqtGqFrc3L6yA4jZH16aaZgYqadzHn25Bloj
-         ilXiONYsY3hH+0SF/ayLIwU553tfR5O2VlpXPL7buAT95BAXdmWnPm72B8APUdGaqfaI
-         ZJ1vTBThH424SNGTwBZytdFdOVHKnDiUBcgpE/4YLNCYtMdy136s+OavEiyKndEAWh/J
-         4xEG6hhJ1OMwEf3h0UowcJY+6KX2r2nEGxGiWNiUhsvNftwjqNchLnSjCSRe/ai3Ujhg
-         ikIxqXv5mOiQ5lKmN3t7waYxm40SmxvOK6Pjm2f97SMW/+5xNN/PUTopy1cX5LLYnXp5
-         741w==
-X-Forwarded-Encrypted: i=1; AJvYcCUWlB3CKKNugSzoAQ07qLUq7JuwbZc5SoRpVebvCdK7W4E/pdKuiFucIXi4hTxwUWUx01hoNKioZ3nllHTFWYA=@vger.kernel.org, AJvYcCVXnBYSVnJI6UB+3n/apUvdHFr0CdwYqftvr7XBVeV2PtoOf76BOGzww0AMSEshwrp7XPgOyx/UJYTx7Lm9HIo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0RJcATpBXho7ioyWQj/3ND4vKnb35RZYLAWALkg8kL19YpzNW
-	QrTIH9ZIundQ9mgIYBM3nKdoetcVm5VDao+Bz03Wz/b4D3EcM5MhZqXzK3iYrxBbeAr8igTk71y
-	w1STUw4z2wJWA++VR3xhaxmx9Mc0=
-X-Gm-Gg: ASbGncuTIBaT6GanZUkcRntrptdMBjdm3AEq2Q++npgFsZfU8XlHl29ZJ+GPiWlg/zg
-	/eUQ7/xVHnTy14eEXY6NoW8BEMBy5iQkPLEK6K9wvqChpV8cne8A4Voc3Re5vgMG2wrs43xM=
-X-Google-Smtp-Source: AGHT+IGLL+AKov+Gd71cOdThKlFX3LEp+ZilobVybmABWfEGX4KABD1qXwSeDo/SBrRdK5AvSL+k+S2AlCxtVILQH7Y=
-X-Received: by 2002:a05:651c:210c:b0:300:26bc:4311 with SMTP id
- 38308e7fff4ca-3072ca9802bmr205489661fa.18.1738067065617; Tue, 28 Jan 2025
- 04:24:25 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="qsiqSaf9"
+From: Fiona Behrens <me@kloenk.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
+	t=1738068370; bh=z4U1wS1oFuVXrD+vHluRQA/ZRiRPivC1iAVS78rS4iw=;
+	h=From:Date:Subject:To:Cc;
+	b=qsiqSaf9xB1z/2Q57QbzlWZz+TiYLsWfzT6pAecoqwV5rvn0i/vFhPmA2pGwpdb4q
+	 7qmkvXPvu6bl5JDobD8BW/oO0o9NgaXpgkWK/VY3J8UuiO2xe1YF2kLYSLvOcMvSvp
+	 /qbfr5JjPPcMAyAhhnELMImjaWazLJ0+aRTQ+n58=
+Date: Tue, 28 Jan 2025 13:46:00 +0100
+Subject: [PATCH v2] rust: io: move offset_valid and io_addr(_assert) to
+ IoRaw
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250126223627.732451-1-sergio.collado@gmail.com> <CANiq72koWg-GGD3w5mJw3F-hGrOBZ7hiK1G4pHY+y_rQmtG5+Q@mail.gmail.com>
-In-Reply-To: <CANiq72koWg-GGD3w5mJw3F-hGrOBZ7hiK1G4pHY+y_rQmtG5+Q@mail.gmail.com>
-From: =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
-Date: Tue, 28 Jan 2025 13:23:49 +0100
-X-Gm-Features: AWEUYZlPVvqoCCNBcf6_DwYt5qwGz4hCazoVpJdHrjVLI_sVKl59qTzx-rvl_YM
-Message-ID: <CAA76j93kQG0GjaMWpR+AnxPWDO1ud0SLECCE3uxN7FAyNB6Dsg@mail.gmail.com>
-Subject: Re: [PATCH v6] Kunit to check the longest symbol length
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, David Rheinsberg <david@readahead.eu>, 
-	rust-for-linux@vger.kernel.org, x86@kernel.org, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Shuah Khan <skhan@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250128-rust-io-offset-v2-1-222de7c96a34@kloenk.dev>
+X-B4-Tracking: v=1; b=H4sIAIfRmGcC/3XMQQ6CMBCF4auQWTuGqTSIK+9hWBQ6lQmGmhYbD
+ endrexd/i953waRg3CES7VB4CRR/FJCHSoYJ7PcGcWWBlUrXZNSGF5xRfHonYu8YjucuoGIz40
+ ZoZyegZ28d/DWl54krj58dj/Rb/1LJULCjppWaTNozfY6Pzwv89Fygj7n/AVpuNoIrQAAAA==
+X-Change-ID: 20250122-rust-io-offset-7b39b11e84ac
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Fiona Behrens <me@kloenk.dev>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7351; i=me@kloenk.dev;
+ h=from:subject:message-id; bh=Dirfg2RCwDetyzBX3eKuY++hGWP+hMXFw6bK8y9el4A=;
+ b=owJ4nJvAy8zAJdbGuXyr5NPHToyn1ZIY0mdc7E+texR8RN89IPZiT94hPx4ZO46se6beR313P
+ XW26d03PbOjlIVBjItBVkyRZYvX/fs/Mpdl2d+/2w0zh5UJZAgDF6cATCT8GMN/p+NxPWWHHTj8
+ XLRSzhbWN3Kttb0ZaJqw1nff7W8O6qcjGf4XH7vdkGix2cXpQEerLgebvP5W/bhlPv+umf4MEJ+
+ eEsEMALYISkE=
+X-Developer-Key: i=me@kloenk.dev; a=openpgp;
+ fpr=B44ADFDFF869A66A3FDFDD8B8609A7B519E5E342
 
-Hello
+Move the helper functions `offset_valid`, `io_addr` and
+`io_addr_asset` from `Io` to `IoRaw`. This allows `IoRaw` to be reused
+if other abstractions with different write/read functions are
+needed (e.g. `writeb` vs `iowrite` vs `outb`).
 
-> > +#include <linux/kallsysms.h>
->
-> Typo?
+Signed-off-by: Fiona Behrens <me@kloenk.dev>
+---
+Changes in v2:
+- make the io_addr functions private again
+- reword the invariant description
+- use the invariant (unchecked_add)
+- Link to v1: https://lore.kernel.org/r/20250122-rust-io-offset-v1-1-914725ab55ed@kloenk.dev
+---
+ rust/kernel/io.rs | 99 +++++++++++++++++++++++++++++++++++--------------------
+ 1 file changed, 64 insertions(+), 35 deletions(-)
 
-#include <linux/kallsysms.h> is needed to be able to read
-KSYM_NAME_LEN: https://elixir.bootlin.com/linux/v6.13/source/include/linux/=
-kallsyms.h#L18
+diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+index d4a73e52e3ee68f7b558749ed0108acde92ae5fe..c4dd8289705eacc93e285f4e25fb6262f605328c 100644
+--- a/rust/kernel/io.rs
++++ b/rust/kernel/io.rs
+@@ -15,6 +15,11 @@
+ /// Instead, the bus specific MMIO implementation must convert this raw representation into an `Io`
+ /// instance providing the actual memory accessors. Only by the conversion into an `Io` structure
+ /// any guarantees are given.
++///
++/// # Invariant
++///
++/// - `maxsize` is larger or equal to `SIZE`.
++/// - `addr + maxsize` is always smaller then [`usize::MAX`] so that it fits in virtual memory.
+ pub struct IoRaw<const SIZE: usize = 0> {
+     addr: usize,
+     maxsize: usize,
+@@ -23,24 +28,76 @@ pub struct IoRaw<const SIZE: usize = 0> {
+ impl<const SIZE: usize> IoRaw<SIZE> {
+     /// Returns a new `IoRaw` instance on success, an error otherwise.
+     pub fn new(addr: usize, maxsize: usize) -> Result<Self> {
+-        if maxsize < SIZE {
++        if maxsize < SIZE || addr.checked_add(maxsize).is_none() {
+             return Err(EINVAL);
+         }
+ 
++        // INVARIANT: `maxsize` is at least `SIZE`, `addr + maxsize` is not wrapping.
+         Ok(Self { addr, maxsize })
+     }
+ 
+     /// Returns the base address of the MMIO region.
+     #[inline]
+-    pub fn addr(&self) -> usize {
++    pub const fn addr(&self) -> usize {
+         self.addr
+     }
+ 
+     /// Returns the maximum size of the MMIO region.
+     #[inline]
+-    pub fn maxsize(&self) -> usize {
++    pub const fn maxsize(&self) -> usize {
+         self.maxsize
+     }
++
++    /// Check if the offset plus the size of the type `U` fits in the bounds of `size`.
++    /// Also checks if the offset is aligned with the type size.
++    #[inline]
++    const fn offset_valid<U>(offset: usize, size: usize) -> bool {
++        let type_size = core::mem::size_of::<U>();
++        if let Some(end) = offset.checked_add(type_size) {
++            end <= size && offset % type_size == 0
++        } else {
++            false
++        }
++    }
++
++    /// Check if the offset (plus the type size) is out of bounds.
++    ///
++    /// Runtime checked version of [`io_addr_assert`].
++    ///
++    /// See [`offset_valid`] for the performed offset check.
++    ///
++    /// # Errors
++    ///
++    /// Returns [`EINVAL`] if the type does not fit into [`IoRaw`] at the given offset.
++    ///
++    /// [`offset_valid`]: Self::offset_valid
++    /// [`io_addr_assert`]: Self::io_addr_assert
++    #[inline]
++    fn io_addr<U>(&self, offset: usize) -> Result<usize> {
++        if !Self::offset_valid::<U>(offset, self.maxsize()) {
++            return Err(EINVAL);
++        }
++
++        // SAFETY: by the invariant of `IoRaw` this cannot overflow.
++        Ok(unsafe { self.addr().unchecked_add(offset) })
++    }
++
++    /// Check at build time if the offset (plus the type size) is out of bounds.
++    ///
++    /// Compiletime checked version of [`io_addr`].
++    ///
++    /// See [`offset_valid`] for the performed offset check.
++    ///
++    ///
++    /// [`offset_valid`]: Self::offset_valid
++    /// [`io_addr`]: Self::io_addr
++    #[inline]
++    const fn io_addr_assert<U>(&self, offset: usize) -> usize {
++        build_assert!(Self::offset_valid::<U>(offset, SIZE));
++
++        // SAFETY: by the invariant of `IoRaw` this cannot overflow.
++        unsafe { self.addr().unchecked_add(offset) }
++    }
+ }
+ 
+ /// IO-mapped memory, starting at the base address @addr and spanning @maxlen bytes.
+@@ -116,7 +173,7 @@ macro_rules! define_read {
+         $(#[$attr])*
+         #[inline]
+         pub fn $name(&self, offset: usize) -> $type_name {
+-            let addr = self.io_addr_assert::<$type_name>(offset);
++            let addr = self.0.io_addr_assert::<$type_name>(offset);
+ 
+             // SAFETY: By the type invariant `addr` is a valid address for MMIO operations.
+             unsafe { bindings::$name(addr as _) }
+@@ -128,7 +185,7 @@ pub fn $name(&self, offset: usize) -> $type_name {
+         /// out of bounds.
+         $(#[$attr])*
+         pub fn $try_name(&self, offset: usize) -> Result<$type_name> {
+-            let addr = self.io_addr::<$type_name>(offset)?;
++            let addr = self.0.io_addr::<$type_name>(offset)?;
+ 
+             // SAFETY: By the type invariant `addr` is a valid address for MMIO operations.
+             Ok(unsafe { bindings::$name(addr as _) })
+@@ -145,7 +202,7 @@ macro_rules! define_write {
+         $(#[$attr])*
+         #[inline]
+         pub fn $name(&self, value: $type_name, offset: usize) {
+-            let addr = self.io_addr_assert::<$type_name>(offset);
++            let addr = self.0.io_addr_assert::<$type_name>(offset);
+ 
+             // SAFETY: By the type invariant `addr` is a valid address for MMIO operations.
+             unsafe { bindings::$name(value, addr as _, ) }
+@@ -157,7 +214,7 @@ pub fn $name(&self, value: $type_name, offset: usize) {
+         /// out of bounds.
+         $(#[$attr])*
+         pub fn $try_name(&self, value: $type_name, offset: usize) -> Result {
+-            let addr = self.io_addr::<$type_name>(offset)?;
++            let addr = self.0.io_addr::<$type_name>(offset)?;
+ 
+             // SAFETY: By the type invariant `addr` is a valid address for MMIO operations.
+             unsafe { bindings::$name(value, addr as _) }
+@@ -190,34 +247,6 @@ pub fn maxsize(&self) -> usize {
+         self.0.maxsize()
+     }
+ 
+-    #[inline]
+-    const fn offset_valid<U>(offset: usize, size: usize) -> bool {
+-        let type_size = core::mem::size_of::<U>();
+-        if let Some(end) = offset.checked_add(type_size) {
+-            end <= size && offset % type_size == 0
+-        } else {
+-            false
+-        }
+-    }
+-
+-    #[inline]
+-    fn io_addr<U>(&self, offset: usize) -> Result<usize> {
+-        if !Self::offset_valid::<U>(offset, self.maxsize()) {
+-            return Err(EINVAL);
+-        }
+-
+-        // Probably no need to check, since the safety requirements of `Self::new` guarantee that
+-        // this can't overflow.
+-        self.addr().checked_add(offset).ok_or(EINVAL)
+-    }
+-
+-    #[inline]
+-    fn io_addr_assert<U>(&self, offset: usize) -> usize {
+-        build_assert!(Self::offset_valid::<U>(offset, SIZE));
+-
+-        self.addr() + offset
+-    }
+-
+     define_read!(readb, try_readb, u8);
+     define_read!(readw, try_readw, u16);
+     define_read!(readl, try_readl, u32);
 
-In the file insn_decoder_test.c, is added otherwise, when configuring
-that test with CONFIG_X86_DECODER_SELFTEST, you would get the error
-```
-arch/x86/tools/insn_decoder_test.c:110:24: error: =E2=80=98KSYM_NAME_LEN=E2=
-=80=99
-undeclared (first use in this function)
-  110 | #define BUFSIZE (256 + KSYM_NAME_LEN)
-```
-This was proposed here:
-https://lore.kernel.org/lkml/Y9ES4UKl%2F+DtvAVS@gmail.com/
+---
+base-commit: 01b3cb620815fc3feb90ee117d9445a5b608a9f7
+change-id: 20250122-rust-io-offset-7b39b11e84ac
 
-Cheers,
- Sergio
+Best regards,
+-- 
+Fiona Behrens <me@kloenk.dev>
 
- Sergio
