@@ -1,82 +1,105 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F225519F111;
-	Tue, 28 Jan 2025 11:37:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C802A290F;
+	Tue, 28 Jan 2025 12:24:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738064275; cv=none; b=R3W4Jx8kRnooV8AK9nAh49Igtqvqzggo1a9+UyHC6Gznj5NgpTJLnCsIXCNkym3v6YL+LN2zJWWkv0zJH81lIC2HrTMAcPvK9IHajOms+HEn+q0BWYEKZRTHy1h+TRVZ99Cw4gp9rcTpiKY/ri82XNsPSUcZ7ozoA8fArGOIgaE=
+	t=1738067069; cv=none; b=iACGHHnwssZcWuqt6iz4s6QraGDlt5Ax9oSQtw7cF8TPSxb29nM0zKJyNTGjBmjjcHPv+9REUodDZmwvRpex4XM8EaE2wcaLTdplBm7nS4VFE2y6+WzpfzwuDUs65ZJWBOHOuPFFrTOssl6xQJawaO27WgNqqwUIUk1GCzsKE7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738064275; c=relaxed/simple;
-	bh=iW5mPyaVRt58KWqGX4R/8fXMgM94ROxcwullrfypsII=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kDC3YlGeZPBAzyoffYUIa7ifUwtj1bdR4GEImvDs3GshmSMmFvZp5Zi7thOYwTXaSBvIdO2Ye/cAzIwAa+tc9M5z5D47FmlgJL/WrtxXcyesp9l4af0jDXKB3xsYm4KrCGLiY2b0C8hHfvm3dJewaFYweje4P5IGIe5Ar51FJXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=GmaINHki; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1738067069; c=relaxed/simple;
+	bh=rk6I/LnsK1V1KhN/DyrVi7LTONTlzqX5P1y04J1b8bo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OHL2DBO64bzOd0KgIZ4K+XkWdx5qMfxK88NkjIZ9IBmXLFu4sapbH8tUGdSN1EmYapud3RUN39qhTrvVnW1uy36JIcX7scbjo1D477a3sIMQZHIHl09yQWTV9u5X423najnGZ/p0Y5gl5mztBesVqYDClecr1PU1ZM8ip1Xh6pU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G2jK+SfV; arc=none smtp.client-ip=209.85.208.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="GmaINHki"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=YxJMDJpcb0hx8brZC1qpWzYpsXcI2/beMqyx1/b0dls=; b=GmaINHkipIqeyIHm8B8iyv4eFx
-	ZBMl2CTVmOB0jPxCTN+f/eZowzz8VbS3UmTSzHMDP6LzyQA4F9rhSBvVSDrUgkPQbJWY5d8kzrZr3
-	sgUBTOZGYPVK5Xjj2Rs2aeoYyFLFmulTtOelCQWky7VOjENUNEMy4BjPG+JPMLgVKg57xz2fAf8tL
-	F2KBPUEdqGRmaJREzNhZJ4QKUssS7WnreKoIopdtH25tLd6vIAi7N3LWyF1jH2Os+OtAXst1PgzWZ
-	xfVUHPFgiGdVTeFFPZwhLtnzaVZD7ujz9STh710eZ8N61LLEKDQ6RPEzMTaSlS3ggLEgLQQm6Q6bj
-	YNH+kdVw==;
-Received: from 77-249-17-89.cable.dynamic.v4.ziggo.nl ([77.249.17.89] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1tcjuV-0000000Evlv-1CKE;
-	Tue, 28 Jan 2025 11:37:39 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id A3DBA30050D; Tue, 28 Jan 2025 12:37:38 +0100 (CET)
-Date: Tue, 28 Jan 2025 12:37:38 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: linux-kernel@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>,
-	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org,
-	andrew@lunn.ch, hkallweit1@gmail.com, tmgross@umich.edu,
-	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com,
-	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
-	arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
-	mingo@redhat.com, juri.lelli@redhat.com, vincent.guittot@linaro.org,
-	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
-	mgorman@suse.de, vschneid@redhat.com, tgunders@redhat.com
-Subject: Re: [PATCH v9 1/8] sched/core: Add __might_sleep_precision()
-Message-ID: <20250128113738.GC7145@noisy.programming.kicks-ass.net>
-References: <20250125101854.112261-1-fujita.tomonori@gmail.com>
- <20250125101854.112261-2-fujita.tomonori@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G2jK+SfV"
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-30227ccf803so51157971fa.2;
+        Tue, 28 Jan 2025 04:24:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738067066; x=1738671866; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=upRXrAeVaXyeQyXXNAUwtCIwIXa5qrKpW/iheEjVT/Y=;
+        b=G2jK+SfVhf82ipSexsfFs5xaA7GYoPqIz1nT/4IOF2+KD8iVXl3bTMgYozaFrY0Oxl
+         6/4C+xwvrx6FvydTktTF0NxyfGpYWE60aFLeB6Aekp2zISKAhy5SIkxFOn+1iKqUkMu8
+         6Uto6rQwq0NhHCV1jA+ZGlZFlzPS0riBeQswr6m26bWAHO0TdFLYLOwhSsmFpOLMYPjz
+         B2iRzYbwSynhj1INhel1522KIgugb5iUZ98Ryb1BsXun/AylaF6TY1kNCR+R9TWjTV1s
+         oY5jnG4eaYDPFtKUepOL0APN5rAoLVk+N1dWEHXxP8e3IC4X+QWLZmhjaPZFOeaSl94P
+         nk7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738067066; x=1738671866;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=upRXrAeVaXyeQyXXNAUwtCIwIXa5qrKpW/iheEjVT/Y=;
+        b=UyVmo+2p2q4pYNDcihgn/tY7Zx15oLWqtGqFrc3L6yA4jZH16aaZgYqadzHn25Bloj
+         ilXiONYsY3hH+0SF/ayLIwU553tfR5O2VlpXPL7buAT95BAXdmWnPm72B8APUdGaqfaI
+         ZJ1vTBThH424SNGTwBZytdFdOVHKnDiUBcgpE/4YLNCYtMdy136s+OavEiyKndEAWh/J
+         4xEG6hhJ1OMwEf3h0UowcJY+6KX2r2nEGxGiWNiUhsvNftwjqNchLnSjCSRe/ai3Ujhg
+         ikIxqXv5mOiQ5lKmN3t7waYxm40SmxvOK6Pjm2f97SMW/+5xNN/PUTopy1cX5LLYnXp5
+         741w==
+X-Forwarded-Encrypted: i=1; AJvYcCUWlB3CKKNugSzoAQ07qLUq7JuwbZc5SoRpVebvCdK7W4E/pdKuiFucIXi4hTxwUWUx01hoNKioZ3nllHTFWYA=@vger.kernel.org, AJvYcCVXnBYSVnJI6UB+3n/apUvdHFr0CdwYqftvr7XBVeV2PtoOf76BOGzww0AMSEshwrp7XPgOyx/UJYTx7Lm9HIo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0RJcATpBXho7ioyWQj/3ND4vKnb35RZYLAWALkg8kL19YpzNW
+	QrTIH9ZIundQ9mgIYBM3nKdoetcVm5VDao+Bz03Wz/b4D3EcM5MhZqXzK3iYrxBbeAr8igTk71y
+	w1STUw4z2wJWA++VR3xhaxmx9Mc0=
+X-Gm-Gg: ASbGncuTIBaT6GanZUkcRntrptdMBjdm3AEq2Q++npgFsZfU8XlHl29ZJ+GPiWlg/zg
+	/eUQ7/xVHnTy14eEXY6NoW8BEMBy5iQkPLEK6K9wvqChpV8cne8A4Voc3Re5vgMG2wrs43xM=
+X-Google-Smtp-Source: AGHT+IGLL+AKov+Gd71cOdThKlFX3LEp+ZilobVybmABWfEGX4KABD1qXwSeDo/SBrRdK5AvSL+k+S2AlCxtVILQH7Y=
+X-Received: by 2002:a05:651c:210c:b0:300:26bc:4311 with SMTP id
+ 38308e7fff4ca-3072ca9802bmr205489661fa.18.1738067065617; Tue, 28 Jan 2025
+ 04:24:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250125101854.112261-2-fujita.tomonori@gmail.com>
+References: <20250126223627.732451-1-sergio.collado@gmail.com> <CANiq72koWg-GGD3w5mJw3F-hGrOBZ7hiK1G4pHY+y_rQmtG5+Q@mail.gmail.com>
+In-Reply-To: <CANiq72koWg-GGD3w5mJw3F-hGrOBZ7hiK1G4pHY+y_rQmtG5+Q@mail.gmail.com>
+From: =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
+Date: Tue, 28 Jan 2025 13:23:49 +0100
+X-Gm-Features: AWEUYZlPVvqoCCNBcf6_DwYt5qwGz4hCazoVpJdHrjVLI_sVKl59qTzx-rvl_YM
+Message-ID: <CAA76j93kQG0GjaMWpR+AnxPWDO1ud0SLECCE3uxN7FAyNB6Dsg@mail.gmail.com>
+Subject: Re: [PATCH v6] Kunit to check the longest symbol length
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, David Rheinsberg <david@readahead.eu>, 
+	rust-for-linux@vger.kernel.org, x86@kernel.org, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Shuah Khan <skhan@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jan 25, 2025 at 07:18:46PM +0900, FUJITA Tomonori wrote:
-> Add __might_sleep_precision(), Rust friendly version of
-> __might_sleep(), which takes a pointer to a string with the length
-> instead of a null-terminated string.
-> 
-> Rust's core::panic::Location::file(), which gives the file name of a
-> caller, doesn't provide a null-terminated
-> string. __might_sleep_precision() uses a precision specifier in the
-> printk format, which specifies the length of a string; a string
-> doesn't need to be a null-terminated.
-> 
-> Modify __might_sleep() to call __might_sleep_precision() but the
-> impact should be negligible. strlen() isn't called in a normal case;
-> it's called only when printing the error (sleeping function called
-> from invalid context).
-> 
-> Note that Location::file() providing a null-terminated string for
-> better C interoperability is under discussion [1].
+Hello
 
-Urgh :/
+> > +#include <linux/kallsysms.h>
+>
+> Typo?
+
+#include <linux/kallsysms.h> is needed to be able to read
+KSYM_NAME_LEN: https://elixir.bootlin.com/linux/v6.13/source/include/linux/=
+kallsyms.h#L18
+
+In the file insn_decoder_test.c, is added otherwise, when configuring
+that test with CONFIG_X86_DECODER_SELFTEST, you would get the error
+```
+arch/x86/tools/insn_decoder_test.c:110:24: error: =E2=80=98KSYM_NAME_LEN=E2=
+=80=99
+undeclared (first use in this function)
+  110 | #define BUFSIZE (256 + KSYM_NAME_LEN)
+```
+This was proposed here:
+https://lore.kernel.org/lkml/Y9ES4UKl%2F+DtvAVS@gmail.com/
+
+Cheers,
+ Sergio
+
+ Sergio
