@@ -1,216 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53211DDA20;
-	Tue, 28 Jan 2025 17:13:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4DC192B85;
+	Tue, 28 Jan 2025 18:55:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738084390; cv=none; b=DH4Dno/T6AfbFBf5mB3lOCQkmd9+hqkTLk1k0i2pXu8hoqGheZg5qO4CJ0T5+N4cpl9d0HmK3aWdRCKf3YL6M50zWqwYnOvMa725bHGuxDWXN+Ze5EpezBgSwkdlDbuVaJMhgg86tX6fp48WtOQ0xeLjGpo6djf7JUJFABQ6YsQ=
+	t=1738090519; cv=none; b=Mctmzi+KCiABiJwZPZ4gE0tydVUhDgxnSx7q/ZvkOUVisSjwel0tYI6dqGDd5+J2L6j1SsENyKOA3fJdynKQitEjg/UR/QCEDawv/0ogv2fPHpbuIJ69kDyKnQORXVJwmcrIgmdlRwx79mFPiHEeDXMYRcz4l6BkjcoXbjQvt9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738084390; c=relaxed/simple;
-	bh=LOkV48DJCXqr4s3ewnL2P85KpGcwsy7PCabCFOjlXyA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=nqq1WppZzQ+bxjdnay2OsKsE8vmaq44XnVbCgo+uMoouYmBjf9ErdZbbxK3mn2QebxNHA7g1xW+u3tZsBhtvraHO8s0MXY+B9i9FrZxB5Dq1Od4L0RFfk+JOMa18lFDSmOFnKQikZpqGnVB3HSwROs2lpLDDCxPFVjaYhZjO4o8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hd8ObKRv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738090519; c=relaxed/simple;
+	bh=W862Izmp/E53/SVf1i5xl1z63b56AS4JgFx3wVnZ0mQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GZJIZqpsakwNPkQv0aQSuEWz7CICD+7DxwMvJidc66shYEWxLQu5j3hSH58Uj+om7SZJA5y7IcYC5hLqpW5RI4ZTHew2EmQCLXXpyo5w1Glepw5VgXRJ5fEsjhMXFQ56MXQzevtuZgdgxZkPW5YcIAgeLfSKbw2Y4Wibx4h0AFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TMZaDcgZ; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hd8ObKRv"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7E180C4CED3;
-	Tue, 28 Jan 2025 17:13:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738084390;
-	bh=LOkV48DJCXqr4s3ewnL2P85KpGcwsy7PCabCFOjlXyA=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=hd8ObKRviK+4OPCMt2cswEIv4eoBHSC4TTacQnK7J5Ht+w5X0S/phW/2CBEBxHw9p
-	 yTt/9z4zKlhVy3Ho0D7Hw+xa3KjH1x2XFnflVrh+Fe6z+UI/jSms7aRgRy/qXqp+xp
-	 fUDZrj4x7y8sx05XN/P1L85Kr6IsGCBpQZ7jX6Orb77JffukOlu1k1Vk9rvMxivbWx
-	 CWs98+e45oARq352NoXEFcLAo1sdnSaBtCkuUhZ6F4jFh3mvt/D6sKxW0vuwzJY6E8
-	 V4MKtMQXUWC/TtWDT4Pdk/ZAwxcEOuPNyEKujCtVtddPhiUiwyyyYB7lF3drDh7Plw
-	 PsZKdtejhEtsw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 66945C0218A;
-	Tue, 28 Jan 2025 17:13:10 +0000 (UTC)
-From: Timothy Garwood via B4 Relay <devnull+gtimothy-dev.protonmail.com@kernel.org>
-Date: Tue, 28 Jan 2025 18:12:49 +0100
-Subject: [PATCH RFC] rust: HrTimerMode replacement with bitfield_options
- macro
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TMZaDcgZ"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2ef6ee55225so1242832a91.0;
+        Tue, 28 Jan 2025 10:55:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738090517; x=1738695317; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=W862Izmp/E53/SVf1i5xl1z63b56AS4JgFx3wVnZ0mQ=;
+        b=TMZaDcgZe6PtwHVhGlmwugxcleQlIGv4EZtKC/N2Mm9MG9J3zL5pqMzbUNU6flbbTy
+         LaHlElZUS0bNnqxeIm3YMsUy4KRUtxpWTVKPtindZBgLHsSt8Gzzfpu68tok/l0sWHry
+         sloldRSQd81ZOvVpTfKBrhUfT7AxG9W9A/XUpffT0sObF8GvyPuGoMMjsFhj0s+p9vun
+         bkZefx6iizi4NfcAQyqCUS2l2x2fBD9bF00QQVoF6msQWVBHFhOIffejBCKGII7Ux+ci
+         fK8P20fyVbKkNbAt4iNab6ETEHI4vSzlrVtutn+auW7EFJToi6sZX1OzzGDLRIUX5ygZ
+         tLHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738090517; x=1738695317;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=W862Izmp/E53/SVf1i5xl1z63b56AS4JgFx3wVnZ0mQ=;
+        b=SN/do+TPCLyfa9orOsKAQkKJrOyIWB4n7ONPVhFo9GivGNQN+qPr48RCxL1d/SEXny
+         qKu/3lcYC1QaZQf0Ydg5i/d42zAhwAJ+wu5WlQbji6H+0s2INW7fcyaSMLln9PHO9NN9
+         /3B1Rpo+y0QNKQdaSoVSgtNLM9HhAvikEXddmZ3p+Rv8kfWwj+L3ohH+85clusoeio5S
+         X35jp2UDWxYX+a65YCEs4/e7qQODszN6FbCtj4C5FrCImQ/ixKD0jsiXwpH8WHo/irKS
+         vdGoUY3dbTjPzW0qSWYE3PyeFlFDQv62t3Ctv+F2U2BbrYu3id2YjVTPS3ihSa3tFui6
+         d6ng==
+X-Forwarded-Encrypted: i=1; AJvYcCUtIbmQoI3BJ7audK/f/rgOa3v12AiNNFGBjUcxBp3jQSjq5QlUS5v9qyXHR6Wwt/nCtJATSnwmo3IsTic=@vger.kernel.org, AJvYcCXAEuI7YfT45/+L83mYPQRrnJcIY/y/CrmwdrO7pkqvHs9c1DAXnIev1isqlc6n55W1A4tzwMUBpr76lKkhToQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzeFI3sBvVhKbvCtIg2aBVuIUklaYb4/+sr0ev0RAnH/sjO5OcN
+	uTiqNckdD5eZwz6oXyLBvYaHHCQJ0nSuFP9QDt4hMXAzWCPZ6hgHTbbsJf9SDP8fl9J4x58e2qf
+	RXt9xhgVrw+5xW7lM8SbZ3z4rP2tUNwD0Vx0=
+X-Gm-Gg: ASbGncsWSBe9up5u5OP/hU+wbsLCacLzNzujqOryCfZZtiYx1ZUb+n7fshm0n3n0udX
+	eqwMWyEpINJUHGuCNEx0KtkHk3Cr1u3p6h7ISOPXelq7KuvWxGvlmW5ic5kiXw4nrc2oGAYVwgg
+	==
+X-Google-Smtp-Source: AGHT+IF+06ZQ6cXV8cUOxcmQygQkc8T4jyMBhIUSeJdK98a/Au5GPTdkvmu+ntap9JZl08CeUb5jsSu/1fo8bcsQMik=
+X-Received: by 2002:a17:90b:5688:b0:2ee:f59a:94d3 with SMTP id
+ 98e67ed59e1d1-2f83aa879b7mr78727a91.0.1738090517257; Tue, 28 Jan 2025
+ 10:55:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250128-bitfield-option-hrtimer-v1-1-31033d8e727f@protonmail.com>
-X-B4-Tracking: v=1; b=H4sIABAQmWcC/12OzW4CMQyEX2Xlc13FYUlIrpV4AK6IQ368JVKXp
- UmIkBDv3rRFqOpx7Jlv5gaFc+ICdrhB5pZKWk5d0MsA4ehO74wpdg1SyLUgqdGnOiX+iLica/f
- iMdc0c0bNgc1E2niK0NPnzFO6/pD3sNu+weH3mPnz0lvq4/MssUOvGEmQfiLbCptCkpiDREnrG
- JQnZfxkm4K/Ax9ZEht0Mf6fWHB2IS/oNqP2K2NIOGeb/CZ4VxjDMs+p2iFfSkX1SiMc7vcvzvu
- GsBkBAAA=
-X-Change-ID: 20250127-bitfield-option-hrtimer-7ece9f179b1d
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Timothy Garwood <gtimothy-dev@protonmail.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1738084388; l=6528;
- i=gtimothy-dev@protonmail.com; s=20250123; h=from:subject:message-id;
- bh=affPqQwr4VVR21U7swKhRZpKaHYPLTxharXdiQNSgC4=;
- b=VJ/iKV8Q7wRnm7BTJCbWaD+dOCiWMaHQBFzn3IiVRplfKSyfdc1W7v0PRK83cr8pkmGddh526
- ow4r8fFvaR2CHyBD/up985X30u/D+RhJLdzVUpA+1jvbKIpZYizMhzy
-X-Developer-Key: i=gtimothy-dev@protonmail.com; a=ed25519;
- pk=4MkQh/a3f6vfOYMYyJPEDyETzhXD/Sa4ZNZ/kAKxOOs=
-X-Endpoint-Received: by B4 Relay for gtimothy-dev@protonmail.com/20250123
- with auth_id=330
-X-Original-From: Timothy Garwood <gtimothy-dev@protonmail.com>
-Reply-To: gtimothy-dev@protonmail.com
+References: <20250128-bitfield-option-hrtimer-v1-1-31033d8e727f@protonmail.com>
+In-Reply-To: <20250128-bitfield-option-hrtimer-v1-1-31033d8e727f@protonmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 28 Jan 2025 19:55:04 +0100
+X-Gm-Features: AWEUYZn5pg2oN48tB8bafu5AsSecVOOuMeVU7wGN6R1TwF46bpfm9OeguPwZ-PU
+Message-ID: <CANiq72n96fJScyVr5eWrfTu8WE9dWXNoyTaLr-CuFj30E57RdQ@mail.gmail.com>
+Subject: Re: [PATCH RFC] rust: HrTimerMode replacement with bitfield_options macro
+To: gtimothy-dev@protonmail.com
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Timothy Garwood <gtimothy-dev@protonmail.com>
+On Tue, Jan 28, 2025 at 6:13=E2=80=AFPM Timothy Garwood via B4 Relay
+<devnull+gtimothy-dev.protonmail.com@kernel.org> wrote:
+>
+> This patch provides an example of usage of the bitfield_options macro
+> proposed in [1] as a replacement for the HrTimerMode enum introduced in
+> [2].
+> [1] is a RFC.
+> This patch depends on both [1] and [2]
 
-replace the HrTimerMode enum with a bitfield wrapper built using the
-bitfield_options macro
+This is great, that is exactly what I was thinking about, and
+showcases the advantage indeed :)
 
----
-This patch provides an example of usage of the bitfield_options macro
-proposed in [1] as a replacement for the HrTimerMode enum introduced in
-[2].
-[1] is a RFC.
-This patch depends on both [1] and [2]
+One quick question: what happens with the generated docs of the enum
+and each variant etc.? (since that is part of the savings in lines
+here)
 
-Link:
-https://lore.kernel.org/rust-for-linux/20250128-add-bitfield-options-macro-v2-1-d65349b389fc@protonmail.com
-Link:
-https://lore.kernel.org/rust-for-linux/20250110-hrtimer-v3-v6-12-rc2-v6-0-f71d50f16482@kernel.org
-[2]
+Nits/tips: when you send the next version, consider sending both as a
+series, i.e. this patch being #2 in the series, and #1 the one the
+"real patch" that introduces the macro. That way they stay linked and
+people browsing their emails and/or Lore will see it together :)
 
-Signed-off-by: Timothy Garwood <gtimothy-dev@protonmail.com>
----
- rust/kernel/time/hrtimer.rs | 82 ++++++++++-----------------------------------
- 1 file changed, 17 insertions(+), 65 deletions(-)
+Also, the notes on the commit that are not part of the commit should
+go after the SoB and the `---` line, before the diffstat.
 
-diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-index f759e4b1aa9f9fa6d55d5c144deedccc5d0590ae..ecbd7ebd7bf319291fec5bc5de31fe4a36d03c24 100644
---- a/rust/kernel/time/hrtimer.rs
-+++ b/rust/kernel/time/hrtimer.rs
-@@ -364,75 +364,27 @@ fn from(value: HrTimerRestart) -> Self {
-     }
- }
- 
--/// Operational mode of [`HrTimer`].
--#[derive(Clone, Copy)]
--pub enum HrTimerMode {
--    /// Timer expires at the given expiration time.
--    Absolute,
--    /// Timer expires after the given expiration time interpreted as a duration from now.
--    Relative,
--    /// Timer does not move between CPU cores.
--    Pinned,
--    /// Timer handler is executed in soft irq context.
--    Soft,
--    /// Timer handler is executed in hard irq context.
--    Hard,
--    /// Timer expires at the given expiration time.
--    /// Timer does not move between CPU cores.
--    AbsolutePinned,
--    /// Timer expires after the given expiration time interpreted as a duration from now.
--    /// Timer does not move between CPU cores.
--    RelativePinned,
--    /// Timer expires at the given expiration time.
--    /// Timer handler is executed in soft irq context.
--    AbsoluteSoft,
--    /// Timer expires after the given expiration time interpreted as a duration from now.
--    /// Timer handler is executed in soft irq context.
--    RelativeSoft,
--    /// Timer expires at the given expiration time.
--    /// Timer does not move between CPU cores.
--    /// Timer handler is executed in soft irq context.
--    AbsolutePinnedSoft,
--    /// Timer expires after the given expiration time interpreted as a duration from now.
--    /// Timer does not move between CPU cores.
--    /// Timer handler is executed in soft irq context.
--    RelativePinnedSoft,
--    /// Timer expires at the given expiration time.
--    /// Timer handler is executed in hard irq context.
--    AbsoluteHard,
--    /// Timer expires after the given expiration time interpreted as a duration from now.
--    /// Timer handler is executed in hard irq context.
--    RelativeHard,
--    /// Timer expires at the given expiration time.
--    /// Timer does not move between CPU cores.
--    /// Timer handler is executed in hard irq context.
--    AbsolutePinnedHard,
--    /// Timer expires after the given expiration time interpreted as a duration from now.
--    /// Timer does not move between CPU cores.
--    /// Timer handler is executed in hard irq context.
--    RelativePinnedHard,
-+kernel::bitfield_options! {
-+    name: HrTimerMode,
-+    type: bindings::hrtimer_mode,
-+    options: [
-+        {name: relative,
-+            true: bindings::hrtimer_mode_HRTIMER_MODE_REL,
-+            false: bindings::hrtimer_mode_HRTIMER_MODE_ABS
-+        },
-+        {name: pinned,
-+            true: bindings::hrtimer_mode_HRTIMER_MODE_PINNED,
-+            false: 0},
-+        {name: hard,
-+            true: bindings::hrtimer_mode_HRTIMER_MODE_HARD,
-+            false: bindings::hrtimer_mode_HRTIMER_MODE_SOFT}
-+    ]
- }
- 
- impl From<HrTimerMode> for bindings::hrtimer_mode {
-     fn from(value: HrTimerMode) -> Self {
--        use bindings::*;
--        match value {
--            HrTimerMode::Absolute => hrtimer_mode_HRTIMER_MODE_ABS,
--            HrTimerMode::Relative => hrtimer_mode_HRTIMER_MODE_REL,
--            HrTimerMode::Pinned => hrtimer_mode_HRTIMER_MODE_PINNED,
--            HrTimerMode::Soft => hrtimer_mode_HRTIMER_MODE_SOFT,
--            HrTimerMode::Hard => hrtimer_mode_HRTIMER_MODE_HARD,
--            HrTimerMode::AbsolutePinned => hrtimer_mode_HRTIMER_MODE_ABS_PINNED,
--            HrTimerMode::RelativePinned => hrtimer_mode_HRTIMER_MODE_REL_PINNED,
--            HrTimerMode::AbsoluteSoft => hrtimer_mode_HRTIMER_MODE_ABS_SOFT,
--            HrTimerMode::RelativeSoft => hrtimer_mode_HRTIMER_MODE_REL_SOFT,
--            HrTimerMode::AbsolutePinnedSoft => hrtimer_mode_HRTIMER_MODE_ABS_PINNED_SOFT,
--            HrTimerMode::RelativePinnedSoft => hrtimer_mode_HRTIMER_MODE_REL_PINNED_SOFT,
--            HrTimerMode::AbsoluteHard => hrtimer_mode_HRTIMER_MODE_ABS_HARD,
--            HrTimerMode::RelativeHard => hrtimer_mode_HRTIMER_MODE_REL_HARD,
--            HrTimerMode::AbsolutePinnedHard => hrtimer_mode_HRTIMER_MODE_ABS_PINNED_HARD,
--            HrTimerMode::RelativePinnedHard => hrtimer_mode_HRTIMER_MODE_REL_PINNED_HARD,
--        }
-+        use kernel::bitfield::BitField;
-+        value.bits()
-     }
- }
- 
+There is also some strange text wrapping going on in the message, e.g.
+on the `Link:` lines.
 
----
-base-commit: b9a6cbc3bad5eaf0e413c9487d8a0f2d3309bf0c
-change-id: 20250127-bitfield-option-hrtimer-7ece9f179b1d
-prerequisite-change-id: 20241017-hrtimer-v3-v6-12-rc2-215dc6b169bf:v6
-prerequisite-patch-id: 23d01479b2ab6b48af65eb681817c753f2b36874
-prerequisite-patch-id: 407fc78a43b558f7c6d9cde9a7bf211a06185afb
-prerequisite-patch-id: d8f3138d942b3ebfa3549cf54f6bb1c522401ba9
-prerequisite-patch-id: 11beab205013c97d7e9a686352b1359910b5938b
-prerequisite-patch-id: 84bfb19dfd05dba3aac82b4f2b0031cf6aee8566
-prerequisite-patch-id: fada7846a89465ac08b4ab049f9bc626abc27589
-prerequisite-patch-id: 526e62d0d80535f4c1b2edb62ee8b7a0f6d86f78
-prerequisite-patch-id: 201342b1c7635b147218cefdeded3bc326f59503
-prerequisite-patch-id: 271bb7aa324adcf71bdc3c8fcfaefa269ed8ab74
-prerequisite-patch-id: 75c30cfa3e81a8d4895567c16aa0b279616d0bdd
-prerequisite-patch-id: 68c2afbd51b25083614b2d963b6d32cbb3c3bb9a
-prerequisite-patch-id: 37d31228bd445445dbb1baa23ea83ab1e5c7a47b
-prerequisite-patch-id: fa49bf80231519c5397367f2d9467f3c28868620
-prerequisite-patch-id: d1c5ffd588712325a3372dd4f582ace4debd594d
-prerequisite-change-id: 20241108-add-bitfield-options-macro-a847b39910aa:v2
-prerequisite-patch-id: 7db40a5cde7387419cd346305da28e2c4932eca1
-
-Best regards,
--- 
-Timothy Garwood <gtimothy-dev@protonmail.com>
-
-
+Cheers,
+Miguel
