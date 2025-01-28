@@ -1,311 +1,171 @@
-Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB93D1A0712;
-	Tue, 28 Jan 2025 11:11:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CEAC1A0711
+	for <rust-for-linux@vger.kernel.org>; Tue, 28 Jan 2025 11:29:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738062695; cv=none; b=mBLBX87Yt4VyPj3oixVnLOQfLMID1Uiu+LsKzzS30bWEiD37e9YXoD6jgcfnsHA5IXSq++AXYhT63cpXOUmikyfnKxKE5FI+gs/Kf6Vw443n6reJlS/xecorG/L3I7tVxud+s6UvRZjJ3b89p0JuPkEbRugVJI14OIh/svzT5NA=
+	t=1738063747; cv=none; b=nIJxh1588aMNR0+apY2+zWaDHKrmAfqkRP/84i/yL0k+pjNH8ngmZjLmFNoFRAHrxz8UJh4W6NSTJ3Rwi+t4eK1yMEdzCIUttrumUBeOdWmTluRGP0TvXgTcL7NRP4rcYdtVWYbbPAIOYwhEXVU9gc/R9mJIfpKp1VOPU9qCN2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738062695; c=relaxed/simple;
-	bh=XffKGlunzVMtufxmStDgkb9UaLeqwwuI06v/SY+BOfg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SCNWydsk3/6IPVx3A36ChQEXjLnZD+ZAXC3mau5kj7lDTcpfdaEnyQlMsGGNi3zPvko3+FB+mXcVjJGVwu+ksh9VSJ4SKhzStWDQ73nbAFgD7zAXNjer9TK+qAydboPK8ZU2MMF19LjUQ25iBMJ5Qw7DJsRjP7OLMHORTYKt3n0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=NzwPUyec; arc=none smtp.client-ip=49.12.72.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
+	s=arc-20240116; t=1738063747; c=relaxed/simple;
+	bh=MQ1iUQwLMRV/zV3x6BcXaZfwt3maRdq9s6tt3xO4WDk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VB+TZa5cRWFjKFVFhTNF7UeZZH0Yti1wLI3pKLHRZWWKf4GgLrxIkfu2p/UPWL3+HkPTrGu+nuh+e7+HMCpNkT0Hi3o2qp7o7yBmmdh3Ie7Y0/T+h6ZRWPEvHGV3cU8vPu8eDf8zNIgVAIVslkIHkhDm/7Xf/PvtBJFVDuyPA6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Dz5c5Fru; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="NzwPUyec"
-From: Fiona Behrens <me@kloenk.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1738062690; bh=/fyzoAFt4Kb5izgbqeKxX5rrPnFXRVeszYu0g+n7CsU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NzwPUyecN5JJkhg1a+0MivEU1hXJHNaCL4en18GxzySvacVhTejDWnK7Y9F+EXbHJ
-	 q1NrzMh0m+zXkkv3CpCnquM/+iwu4HJ/T2wgEe374B54OZCG7N7/tbRQd1FmjO+NNM
-	 c9bwRu5/HYNjCdKibs9TJa/DzN3CRfN3jde3kXXo=
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: io: move offset_valid and io_addr(_assert) to IoRaw
-Date: Tue, 28 Jan 2025 12:11:29 +0100
-Message-ID: <AC732BF8-8806-483B-AC14-66306D763ACF@kloenk.dev>
-In-Reply-To: <Z5D_IxCZvcZ_jKd8@pollux>
-References: <20250122-rust-io-offset-v1-1-914725ab55ed@kloenk.dev>
- <Z5D_IxCZvcZ_jKd8@pollux>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Dz5c5Fru"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43626213fffso40763145e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 28 Jan 2025 03:29:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1738063743; x=1738668543; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9auZBtVLoQnDOV9i2UvIW8ly8htsTm5kjvaoa/9TBk4=;
+        b=Dz5c5FrutVvv4FP/oM09crDxMpM+grxqL/R/eoW/fJI2BtLAHmZekdKNK4xiomQVB8
+         LYVcNE83Fpg3pWnkJ8Z+2S2HBrQtnTgKnkbAPz6KVNI0CMUlR12VZEp5XMRitOUD7J3j
+         zJLqhK13UahZqnGNJWfBTEdVeD26FsdHTm3KabOPUTb5+Q6dRFUE8K0MP1IbMMc+ylVn
+         QnrYsaBhwuEvbymY2rBj8iUpek7Jz6rdq72lIELxI0IYvfhoo4rqyJztoM3T1Bg9hQ8j
+         2aaVXyZ/9PVTOY28nT58s4bmukQQ8YKKdSHIoOW5RAtFlB769gOH2UrVgMoiTlAs5FQ3
+         oBJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738063743; x=1738668543;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9auZBtVLoQnDOV9i2UvIW8ly8htsTm5kjvaoa/9TBk4=;
+        b=QOPGbak9w9qHVH8MtY7YFVpbqk65aVTCA7RYTozFmoXk7oj6FPiR98XkiYsO3usP2q
+         ihXWMlnrhv/D7U5PtxiPqbv2FMTuEiMIEdaSSuTF7k7yMVPNrbnYxaz8twBLJ22tfGG9
+         vFJNJSt/Flcav0k9/hP/OZ+M0Sl7/BiATmJKxBYVjhy9JsUP+S5RIIMY1B0378/5vs+p
+         pR4VSkJOYxyAXONzy3PSIjenufmPPDBAh02u8T0U6QYz8jg2tsO9oaGS3kaATB1zHURZ
+         toKZpqUOAdFhy3D/rHXzvdxPlnvI9O0+wcPKDra0stk4bBLQFylHhiWJykCQgVZmukMg
+         VdCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUTdeqP1zUhDREJzCRq4OL5BpLiBAkW25QzyKeu07NdsxJ7yfBKE1iDbtbQyeWIFdbDbrBaztVilzPjcyCQ9Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSvlo709nY0h+eh9NowjzcFnUoVz6cxikE2jzHa0eg/4ExH1P3
+	prJRXqvrsHQi93pPRAuqpYURZc62Rpk6Oo+oFURcfepdTQXIlqeStRIec9bcfdwqqJMxqHbG5gk
+	aFRVJShF7bCZI/eYXrJg9CGvVUtxe9je5bbv5fjmJapAhxyjVyw==
+X-Gm-Gg: ASbGncuuJPBuANcPuEHcuQLK8OSKZzfGvYCoxr+b1u60RbQAcIvJj40BpEg2xpMDyZy
+	xk3cgLmkN7jX7V2IC12m/eft2EhcNP9ORKtQKQX4Wo4Gn7PgO/XKsQi4Gjsrug8aQG0EwhOp3mR
+	T432Xxl3G0q317PhXVz/E4opQzHQ==
+X-Google-Smtp-Source: AGHT+IEqIp9lI+kIFIHbiFrLcWIiIELhYivZqeABp7GjPgpw0qgG8OMV0dMUTO8sXAohUjeQ5p9eBj4wzrdT4zuaQQI=
+X-Received: by 2002:a5d:5f56:0:b0:38a:88ac:ee69 with SMTP id
+ ffacd0b85a97d-38c49a37d3amr2659372f8f.13.1738063743439; Tue, 28 Jan 2025
+ 03:29:03 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20250123104333.1340512-1-abdiel.janulgue@gmail.com>
+ <20250123104333.1340512-3-abdiel.janulgue@gmail.com> <CAH5fLgjL0aGGwkjEfXH08Jopwin1NfkLzp9vQWKcHPEum8jV4g@mail.gmail.com>
+ <0E0FC88B-95C0-4DBE-B497-AF9101BACE70@collabora.com> <CAH5fLgiW6n82hMhbmJ-ynd6329mEDFX6TzxXQZaaoG47HAWWcA@mail.gmail.com>
+ <95382414-7A44-45A4-8F3F-C6D755422AD5@collabora.com> <CAH5fLgjZiux1_=dNuZN+7SEY6fUGMDNLoJNTwmHcB=WbKChwzw@mail.gmail.com>
+ <D3CC752A-8FE3-4B2A-93A2-7FEC2EC3940E@collabora.com>
+In-Reply-To: <D3CC752A-8FE3-4B2A-93A2-7FEC2EC3940E@collabora.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 28 Jan 2025 12:28:51 +0100
+X-Gm-Features: AWEUYZkkM6g8-lhFT6JLvjZgwZWEQJiOHCo71FDcsZysQyh8T480nt-6d21OeqU
+Message-ID: <CAH5fLgg+Su4FWXB23Zd=oQw_xEzBKRqpTujQiiOKDOYqqXheCQ@mail.gmail.com>
+Subject: Re: [PATCH v11 2/3] rust: add dma coherent allocator abstraction.
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>, rust-for-linux@vger.kernel.org, 
+	dakr@kernel.org, robin.murphy@arm.com, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Valentin Obst <kernel@valentinobst.de>, 
+	open list <linux-kernel@vger.kernel.org>, Christoph Hellwig <hch@lst.de>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com, 
+	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-
-
-On 22 Jan 2025, at 15:22, Danilo Krummrich wrote:
-
-> On Wed, Jan 22, 2025 at 01:38:09PM +0100, Fiona Behrens wrote:
->> Move the helper functions `offset_valid`, `io_addr` and
->> `io_addr_asset` from `Io` to `IoRaw`. This allows `IoRaw` to be reused=
-
->> if other abstractions with different write/read functions are
->> needed (e.g. `writeb` vs `iowrite` vs `outb`).
->>
->> Make this functions public as well so they can be used from other
->> modules if you aquire a `IoRaw`.
+On Tue, Jan 28, 2025 at 11:37=E2=80=AFAM Daniel Almeida
+<daniel.almeida@collabora.com> wrote:
 >
-> I don't think they should be public. Instead the abstraction for I/O po=
-rts
-> should be in this file, just like `Io` is.
-
-Will make it private, but would keep the documentation I wrote to make it=
- easier to read the code.
-
+> >
+> > I mean, I imagine that you could make the syntax
+> > `dma_read!(my_alloc[7])` read the entire struct. I'm not sure which
+> > safe methods you are referring to, because right now there is only the
+> > unsafe as_slice().
+> >
+> > Alice
 >
-> Another option could also be to just extend the existing `Io` abstracti=
-on for
-> I/O ports.
-
-Was thinking about that on zulip[0] already as well, but unsure if we sho=
-uld then remove the current write functions and use iowrite as those are =
-the generic new interface as far as I understand, so it works with both i=
-omem and portmem.
-
-Thanks,
-Fiona
-
-[0]: https://rust-for-linux.zulipchat.com/#narrow/channel/291565-Help/top=
-ic/.60Io.60.20type.20and.20usage.20of.20.60iowrite*.60.2F.60ioread*.60
-
+> I mean this:
 >
->>
->> Signed-off-by: Fiona Behrens <me@kloenk.dev>
->> ---
->>  rust/kernel/io.rs | 98 +++++++++++++++++++++++++++++++++++-----------=
----------
->>  1 file changed, 63 insertions(+), 35 deletions(-)
->>
->> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
->> index d4a73e52e3ee68f7b558749ed0108acde92ae5fe..a6d026f458608626113fd1=
-94ee5a8616b4ef76fe 100644
->> --- a/rust/kernel/io.rs
->> +++ b/rust/kernel/io.rs
->> @@ -15,6 +15,11 @@
->>  /// Instead, the bus specific MMIO implementation must convert this r=
-aw representation into an `Io`
->>  /// instance providing the actual memory accessors. Only by the conve=
-rsion into an `Io` structure
->>  /// any guarantees are given.
->> +///
->> +/// # Invariant
+> +    /// Writes data to the region starting from `offset`. `offset` is in=
+ units of `T`, not the
+> +    /// number of bytes.
+> +    pub fn write(&self, src: &[T], offset: usize) -> Result {
+> +        if offset + src.len() >=3D self.count {
+> +            return Err(EINVAL);
+> +        }
+> +        // SAFETY:
+> +        // - The pointer is valid due to type invariant on `CoherentAllo=
+cation`
+> +        // and we've just checked that the range and index is within bou=
+nds.
+> +        // - `offset` can't overflow since it is smaller than `self.coun=
+t` and we've checked
+> +        // that `self.count` won't overflow early in the constructor.
+> +        unsafe {
+> +            core::ptr::copy_nonoverlapping(src.as_ptr(), self.cpu_addr.a=
+dd(offset), src.len())
+> +        };
+> +        Ok(())
+> +    }
+> +}
 >
-> You phrased this invariant as if it would be a requirement, but it's mo=
-re like a
-> something that's always uphold. I'd phrase it as a fact that can be rel=
-ied on.
+> =E2=80=A6and the similar read() method that was apparently removed, i.e.:
 >
->> +///
->> +/// `addr` plus `maxsize` has to fit in memory (smaller than [`usize:=
-:MAX`])
+> +    /// Reads data from the region starting from `offset` as a slice.
+> +    /// `offset` and `count` are in units of `T`, not the number of byte=
+s.
+> +    ///
+> +    /// Due to the safety requirements of slice, the data returned shoul=
+d be regarded by the
+> +    /// caller as a snapshot of the region when this function is called,=
+ as the region could
+> +    /// be modified by the device at anytime. For ringbuffer type of r/w=
+ access or use-cases
+> +    /// where the pointer to the live data is needed, `start_ptr()` or `=
+start_ptr_mut()`
+> +    /// could be used instead.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that no hardware operations that involve the=
+ buffer are currently
+> +    /// taking place while the returned slice is live.
+> +    pub unsafe fn read(&self, offset: usize, count: usize) -> Result<&[T=
+]> {
+> +        if offset + count >=3D self.count {
+> +            return Err(EINVAL);
+> +        }
+> +        // SAFETY: The pointer is valid due to type invariant on `Cohere=
+ntAllocation`,
+> +        // we've just checked that the range and index is within bounds.=
+ The immutability of the
+> +        // of data is also guaranteed by the safety requirements of the =
+function.
+> +        Ok(unsafe { core::slice::from_raw_parts(self.cpu_addr.wrapping_a=
+dd(offset), count) })
+> +    }
 >
-> "fit in memory" sounds a bit misleading. I think you want to say they h=
-ave to be
-> in the range of some address space (e.g. PIO).
+> I don=E2=80=99t think there=E2=80=99s anything wrong with these, so maybe=
+ your solution can come in as a convenience
+> when one wants to save on the amount of copying? IMHO the two methods abo=
+ve co-exist with what
+> you propose.
 >
-> Besides that, why do we need this at all in this patch? I think it's fi=
-ne to
-> add, but then it should be separate patch I think.
->
->> +/// and `maxsize` has to be smaller or equal to `SIZE`.
->
-> That's wrong, it's the other way around.
->
->>  pub struct IoRaw<const SIZE: usize =3D 0> {
->>      addr: usize,
->>      maxsize: usize,
->> @@ -23,7 +28,7 @@ pub struct IoRaw<const SIZE: usize =3D 0> {
->>  impl<const SIZE: usize> IoRaw<SIZE> {
->>      /// Returns a new `IoRaw` instance on success, an error otherwise=
-=2E
->>      pub fn new(addr: usize, maxsize: usize) -> Result<Self> {
->> -        if maxsize < SIZE {
->> +        if maxsize < SIZE || addr.checked_add(maxsize).is_none() {
->>              return Err(EINVAL);
->>          }
->>
->> @@ -32,15 +37,66 @@ pub fn new(addr: usize, maxsize: usize) -> Result<=
-Self> {
->>
->>      /// Returns the base address of the MMIO region.
->>      #[inline]
->> -    pub fn addr(&self) -> usize {
->> +    pub const fn addr(&self) -> usize {
->>          self.addr
->>      }
->>
->>      /// Returns the maximum size of the MMIO region.
->>      #[inline]
->> -    pub fn maxsize(&self) -> usize {
->> +    pub const fn maxsize(&self) -> usize {
->>          self.maxsize
->>      }
->> +
->> +    /// Check if the offset plus the size of the type `U` fits in the=
- bounds of `size`.
->> +    /// Also checks if the offset is aligned with the type size.
->> +    #[inline]
->> +    pub const fn offset_valid<U>(offset: usize, size: usize) -> bool =
-{
->> +        let type_size =3D core::mem::size_of::<U>();
->> +        if let Some(end) =3D offset.checked_add(type_size) {
->> +            end <=3D size && offset % type_size =3D=3D 0
->> +        } else {
->> +            false
->> +        }
->> +    }
->> +
->> +    /// Check if the offset (plus the type size) is out of bounds.
->> +    ///
->> +    /// Runtime checked version of [`io_addr_assert`].
->> +    ///
->> +    /// See [`offset_valid`] for the performed offset check.
->> +    ///
->> +    /// # Errors
->> +    ///
->> +    /// Returns [`EINVAL`] if the type does not fit into [`IoRaw`] at=
- the given offset.
->> +    ///
->> +    /// [`offset_valid`]: Self::offset_valid
->> +    /// [`io_addr_assert`]: Self::io_addr_assert
->> +    #[inline]
->> +    pub fn io_addr<U>(&self, offset: usize) -> Result<usize> {
->> +        if !Self::offset_valid::<U>(offset, self.maxsize()) {
->> +            return Err(EINVAL);
->> +        }
->> +
->> +        // Probably no need to check, since the safety requirements o=
-f `Self::new` guarantee that
->> +        // this can't overflow.
->> +        self.addr().checked_add(offset).ok_or(EINVAL)
->> +    }
->> +
->> +    /// Check at build time if the offset (plus the type size) is out=
- of bounds.
->> +    ///
->> +    /// Compiletime checked version of [`io_addr`].
->> +    ///
->> +    /// See [`offset_valid`] for the performed offset check.
->> +    ///
->> +    ///
->> +    /// [`offset_valid`]: Self::offset_valid
->> +    /// [`io_addr`]: Self::io_addr
->> +    #[inline]
->> +    pub const fn io_addr_assert<U>(&self, offset: usize) -> usize {
->> +        build_assert!(Self::offset_valid::<U>(offset, SIZE));
->> +
->> +        self.addr() + offset
->> +    }
->>  }
->>
->>  /// IO-mapped memory, starting at the base address @addr and spanning=
- @maxlen bytes.
->> @@ -116,7 +172,7 @@ macro_rules! define_read {
->>          $(#[$attr])*
->>          #[inline]
->>          pub fn $name(&self, offset: usize) -> $type_name {
->> -            let addr =3D self.io_addr_assert::<$type_name>(offset);
->> +            let addr =3D self.0.io_addr_assert::<$type_name>(offset);=
+> The unsafe `as_slice()` and `as_slice_mut()` should also stay, in my opin=
+ion. They can be used, for example,
+> in codec drivers.
 
->>
->>              // SAFETY: By the type invariant `addr` is a valid addres=
-s for MMIO operations.
->>              unsafe { bindings::$name(addr as _) }
->> @@ -128,7 +184,7 @@ pub fn $name(&self, offset: usize) -> $type_name {=
+Agreed, there is nothing wrong with the safe write that was here
+previously, or the current unsafe functions.
 
->>          /// out of bounds.
->>          $(#[$attr])*
->>          pub fn $try_name(&self, offset: usize) -> Result<$type_name> =
-{
->> -            let addr =3D self.io_addr::<$type_name>(offset)?;
->> +            let addr =3D self.0.io_addr::<$type_name>(offset)?;
->>
->>              // SAFETY: By the type invariant `addr` is a valid addres=
-s for MMIO operations.
->>              Ok(unsafe { bindings::$name(addr as _) })
->> @@ -145,7 +201,7 @@ macro_rules! define_write {
->>          $(#[$attr])*
->>          #[inline]
->>          pub fn $name(&self, value: $type_name, offset: usize) {
->> -            let addr =3D self.io_addr_assert::<$type_name>(offset);
->> +            let addr =3D self.0.io_addr_assert::<$type_name>(offset);=
-
->>
->>              // SAFETY: By the type invariant `addr` is a valid addres=
-s for MMIO operations.
->>              unsafe { bindings::$name(value, addr as _, ) }
->> @@ -157,7 +213,7 @@ pub fn $name(&self, value: $type_name, offset: usi=
-ze) {
->>          /// out of bounds.
->>          $(#[$attr])*
->>          pub fn $try_name(&self, value: $type_name, offset: usize) -> =
-Result {
->> -            let addr =3D self.io_addr::<$type_name>(offset)?;
->> +            let addr =3D self.0.io_addr::<$type_name>(offset)?;
->>
->>              // SAFETY: By the type invariant `addr` is a valid addres=
-s for MMIO operations.
->>              unsafe { bindings::$name(value, addr as _) }
->> @@ -190,34 +246,6 @@ pub fn maxsize(&self) -> usize {
->>          self.0.maxsize()
->>      }
->>
->> -    #[inline]
->> -    const fn offset_valid<U>(offset: usize, size: usize) -> bool {
->> -        let type_size =3D core::mem::size_of::<U>();
->> -        if let Some(end) =3D offset.checked_add(type_size) {
->> -            end <=3D size && offset % type_size =3D=3D 0
->> -        } else {
->> -            false
->> -        }
->> -    }
->> -
->> -    #[inline]
->> -    fn io_addr<U>(&self, offset: usize) -> Result<usize> {
->> -        if !Self::offset_valid::<U>(offset, self.maxsize()) {
->> -            return Err(EINVAL);
->> -        }
->> -
->> -        // Probably no need to check, since the safety requirements o=
-f `Self::new` guarantee that
->> -        // this can't overflow.
->> -        self.addr().checked_add(offset).ok_or(EINVAL)
->> -    }
->> -
->> -    #[inline]
->> -    fn io_addr_assert<U>(&self, offset: usize) -> usize {
->> -        build_assert!(Self::offset_valid::<U>(offset, SIZE));
->> -
->> -        self.addr() + offset
->> -    }
->> -
->>      define_read!(readb, try_readb, u8);
->>      define_read!(readw, try_readw, u16);
->>      define_read!(readl, try_readl, u32);
->>
->> ---
->> base-commit: 01b3cb620815fc3feb90ee117d9445a5b608a9f7
->> change-id: 20250122-rust-io-offset-7b39b11e84ac
->>
->> Best regards,
->> -- =
-
->> Fiona Behrens <me@kloenk.dev>
->>
+Alice
