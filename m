@@ -1,122 +1,601 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2265B1ACECC
-	for <rust-for-linux@vger.kernel.org>; Tue, 28 Jan 2025 14:35:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70CB51D6DA3;
+	Tue, 28 Jan 2025 15:49:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738074938; cv=none; b=bx/ezxvNpA4nEL3JlJe+HMPEt06Ub/0gl3lnmRgEtvsxWcEFbt8LNWk9RB+SMeDfjItENDbYqxsLVupSsbiga9KaQ3MhAIw+QJwiKKNyh4YIHhOzL0K/8Z1ix+HbIHh3pzqYxeLxTkrIHItTy9ZeVFfNhZOPumSzDkgs1kKtVeY=
+	t=1738079353; cv=none; b=AStL+QvCrIJe6uRY4gSMu87azJAhQxlb5AWHRin9TVsqiBWBhjDe7D0MhgDbryMmQDhT/iCXqaMwlKWVVW2pgIXilAmSgzmkzbg/GQ8M5tyeAVM6PGukFOpfOKhjazHPfvTsOBmyWoo8otbE+ikjHpNVTGF1e1eT/nuN5QU8ctg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738074938; c=relaxed/simple;
-	bh=rzTZbC89raWzqdUZS129znA3iLUI7DPqxswUfAIp5BI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QevpU5AAmkATXmYyHae74+DwX6/5DcggcCh497O/u1bKVtz5sR8SSujo8yZjjDHsq33CFlFdcDYztEXVKIg2IhaMYrIULw5opacBu81N9TwpiRAoicw9C15a3NRs7vDzi2hUcOkKQZ8AqzHKM0zVCGE5C7ZRvMODDPTUL0vK1oA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4VdH107K; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1738079353; c=relaxed/simple;
+	bh=lIwRBOGWbHdbvEjd2ghUBFo2smpXeuLW9dv5GSfTM7A=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Q9fnmsKrcFvO6IfY/Qn87S63wRbG0s9/Cf3n420XBwYhD9jrQ6jyPin7+MFj//Mdsf0N3YMGax5PV9sKddoQpqB8xOm5JRU3kC1KLAfVrcyAYfUZhgAmxfRf6mcuz1Uef+vjhpvWtijAU5hGyGoG8E66iHlQz/CY5C+x24CxhwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jMJA0+g5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4VdH107K"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4361f664af5so65594225e9.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 28 Jan 2025 06:35:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738074935; x=1738679735; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cdzVq7ImPqyt4hcMWMfRKSFRDa8xKXYjx2n9G9K1aBQ=;
-        b=4VdH107KO67tkmazoR0BfJNkhB9yK/cdQ4qOi7tNPA0X2WDOQBIahwCz1TRMQpUnAT
-         h04zLsMdzOh0OHS6Sb/gV9MnSjt8XfE33ks9p1yrwfn4SLv7D8xy7s6Z3T5lrgA3QvqC
-         w8kLgWhM3lNQsPgXbv9XwXm5G/nBU8Tf8oznOS0pZpU7vAgr+KldE6geXB7VeLWkF1uK
-         v6WLm2Qro8REpqn9Wa1NJrgJ4BTBWJPcR6vLdklsmZXyoAbzTLay3arVEjzqDnmGnm7q
-         L1U1Uqsw3uxeA0tJKeqWKUV3yP6H0R2AAgJ4l/IMmb8xtKmbnQYYL73zT92l5uQ2X64i
-         Eo3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738074935; x=1738679735;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cdzVq7ImPqyt4hcMWMfRKSFRDa8xKXYjx2n9G9K1aBQ=;
-        b=GkSpc5XMYs/RadcclvzLMxvqTXv0ikwZkfHY6qaQ6A4sh2riKR4g8pNt93AFIlZmdO
-         K55UE+7OXxvVtM81ofMX9PQwlCAQPeFzeyY7afxH6ZGujjiPNrKrlN6p2NTP7gDyajxQ
-         zD/Cj9UzNiK/OtyKNfNhfrk68riYU2PkyMV+T1ZVT497S1M2YfENH0smKKmZOMkG39Wx
-         SHohE0oRizKtFMRNDIOR0NiAp88YEQ9HLsxpDWf88YVbH8U5seiBTGVTW7Honxyd4r4L
-         mfPRx11dJSC8zVEnhlmrBIHmB468NPnWBToIIm94Qzi4U7lE4hejGiZP7SReEYg/UzaZ
-         ZrOA==
-X-Gm-Message-State: AOJu0Yy9CBthIkD8+JcSGkS/k3GwSCajxkXt+46I8/dSc//zLB/ykfZv
-	YpU9dtG1quCacsjJRlaGmE1i4vsACVIgGX+9MHynSYAmxRAZE2S8ei6vTWlkkfWsRRp5q98Sfrn
-	j9MmZ7YAc/wkry0B8bxWvx+XUMxvhYic5LVSA
-X-Gm-Gg: ASbGnculL9wweHyJnwhUMZ/+cdQ7qd5Hftt7BMQ3DLmpF2B5S0tSeu8bIcCPU+htRPB
-	YGfIDOcL+e6db5XLRbxf7DhVMvrWZRby3FQBiAOaqupLMGLHCyGOt6Hb21e+d+EuO3+cElQbrNd
-	XRqMVuU0JQO1YoXJrH95cxWy45eqM=
-X-Google-Smtp-Source: AGHT+IHeERFZmLKb+RXBeZ0icrNT2IN1o/Yg3mnczAP+xSiSri8sXZEML6d6B8sdGsx+TNHSiulN7hxc7u/O3TQn6yU=
-X-Received: by 2002:a5d:64a1:0:b0:38a:8ace:85e8 with SMTP id
- ffacd0b85a97d-38bf57a98fdmr48075730f8f.44.1738074935329; Tue, 28 Jan 2025
- 06:35:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jMJA0+g5"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E0F6EC4CEDF;
+	Tue, 28 Jan 2025 15:49:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738079352;
+	bh=lIwRBOGWbHdbvEjd2ghUBFo2smpXeuLW9dv5GSfTM7A=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=jMJA0+g5tY0tjBbmFV9aESOMIN9Pmw/jExvNQ66o/S8cdbK2lhZuevuO9Pu4ZEtlF
+	 Ikqi/zHJNIrygMv43Iw9ruG6Kcm0kpH1y7xK9XRNeIYT31kvAkwV1TiWJP9FhSILAG
+	 2mpZH/W0xuDGXwbDEKVyjqVDWstdBFhYD5OyiNU55qHaYzO6FjGbTJRpfQ33ZWfzjJ
+	 qdHlkBDY3TS19eNdQAWIfG2VzwOBcoHlhCMtH0R4edH7cEDx41D19RKG3IKp+3fu0L
+	 KYuRIICC0Am17/stcjchx6ykTPOMxMkXlEuwPjofbVL2NRVrG6Yq7mNz8AZJopb16V
+	 3KLFuTljkFORg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C8746C02190;
+	Tue, 28 Jan 2025 15:49:12 +0000 (UTC)
+From: Timothy Garwood via B4 Relay <devnull+gtimothy-dev.protonmail.com@kernel.org>
+Date: Tue, 28 Jan 2025 16:48:18 +0100
+Subject: [PATCH RFC WIP v2] rust: add bitfield_options macro to create
+ bitfield wrapper types
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250122235340.2145383-1-lyude@redhat.com> <20250122235340.2145383-2-lyude@redhat.com>
-In-Reply-To: <20250122235340.2145383-2-lyude@redhat.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 28 Jan 2025 15:35:22 +0100
-X-Gm-Features: AWEUYZlBZEAluubzKS9hubby7-AAC5P6PivhKHmUDK4RDiwAVlx04jgBjZRCui4
-Message-ID: <CAH5fLgi1iGi9kMzDjEb_jQzzAm+y4pmfNXSneoLHS6o+sCv_8w@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rust/kernel: Add platform::Device::from_raw()
-To: Lyude Paul <lyude@redhat.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250128-add-bitfield-options-macro-v2-1-d65349b389fc@protonmail.com>
+X-B4-Tracking: v=1; b=H4sIAEH8mGcC/32NywrCMBREf6XctZEkfdi6EgTBnbhxIV3cJqm90
+ DYlCUUp/XdjP8DVMMNhzgLeODIejskCzszkyY6xyF0CqsPxZRjp2EFymQnBS4Zas4ZCS6bXzE4
+ h8p4NqJxlWGaHJq0qwREhHkzOtPTezp9wv5x/2+N6gzpmRz5Y99m8s9iIqMi5kPk/xSyYYNgWa
+ Kq0KAvVnCZngx0HpH6v7AD1uq5f/bC2ONUAAAA=
+X-Change-ID: 20241108-add-bitfield-options-macro-a847b39910aa
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, 
+ Timothy Garwood <gtimothy-dev@protonmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738079350; l=18684;
+ i=gtimothy-dev@protonmail.com; s=20250123; h=from:subject:message-id;
+ bh=WQAJcDGLKe/OoYu6dkrvdXRnrr8OYrL9iesYH3b6znw=;
+ b=D+ZDZFtW1Ds8UBThyKct0JchgM1IRhPoXDNKc9j0DnlFUqebW6NIcSg4vvEidtcszScHChvf2
+ cJMzvfWOcpsAImpa8YSkmxnmcsaqDFOqeF2vEhzR0WnCz/+6zihzLBN
+X-Developer-Key: i=gtimothy-dev@protonmail.com; a=ed25519;
+ pk=4MkQh/a3f6vfOYMYyJPEDyETzhXD/Sa4ZNZ/kAKxOOs=
+X-Endpoint-Received: by B4 Relay for gtimothy-dev@protonmail.com/20250123
+ with auth_id=330
+X-Original-From: Timothy Garwood <gtimothy-dev@protonmail.com>
+Reply-To: gtimothy-dev@protonmail.com
 
-On Thu, Jan 23, 2025 at 12:54=E2=80=AFAM Lyude Paul <lyude@redhat.com> wrot=
-e:
->
-> Just a convenience method to convert from a raw struct platform_device
-> pointer into a platform::Device object, which we'll be using in the next
-> commit.
->
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> ---
->  rust/kernel/platform.rs | 17 ++++++++++++++++-
->  1 file changed, 16 insertions(+), 1 deletion(-)
->
-> diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-> index 50e6b04218132..75dc7824eccf4 100644
-> --- a/rust/kernel/platform.rs
-> +++ b/rust/kernel/platform.rs
-> @@ -14,7 +14,7 @@
->      ThisModule,
->  };
->
-> -use core::ptr::addr_of_mut;
-> +use core::ptr::{NonNull, addr_of_mut};
->
->  /// An adapter for the registration of platform drivers.
->  pub struct Adapter<T: Driver>(T);
-> @@ -186,6 +186,21 @@ unsafe fn from_dev(dev: ARef<device::Device>) -> Sel=
-f {
->          Self(dev)
->      }
->
-> +    /// Convert a raw pointer to a `struct platform_device` into a `Devi=
-ce`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// * `pdev` must be a valid pointer to a `bindings::platform_device=
-`.
-> +    /// * The caller must be guaranteed to hold at least one reference t=
-o `pdev`.
+From: Timothy Garwood <gtimothy-dev@protonmail.com>
 
-I would probably say that the caller must *transfer ownership* of one
-refcount or something like that.
+- implement a macro to generate a bitfield wrapper with macro-specified
+  methods to set and unset macro-specified flags.
+- introduce a Bitfield trait to access the field
 
-Alice
+The macro also generates a `Default` implementation for the wrapper
+type, which instantiates a wrapped bitfield as if created with all
+methods called with `false`.
+
+The macro also generates a `TryFrom<wrapped_bitfield>` implementation
+for the wrapper that prevents instantiating a bitfield wrapper with an
+invalid field.
+
+Signed-off-by: Timothy Garwood <gtimothy-dev@protonmail.com>
+---
+Hello all,
+
+There was some discussion about handling bitfield C enums and
+bitfield-like C enums in a safe manner in the "Best way to handle
+enum/flags situation"[1] zulip discussion about the HRTIMER_MODE enum in
+`include/linux/hrtimer.h`.
+
+I will define *bitfield* as a bit set where
+ - different flags set different bits (no overlap),
+ - all flags are additive (there are no invalid combination of flags),
+ - all flags are optional.
+
+I will define *bitfield-like* in the context of the HRTIMER_MODE
+bitfield-LIKE C enum as a bit set where:
+ - different BASE flags set different bits (no overlap) but there are
+   aliases for some flag combinations, and some aliases are equal to a
+   base case (HRTIMER_MODE_ABS_PINNED == HRTIMER_MODE_PINNE because
+   HRTIMER_MODE_ABS==0x00),
+ - not all flags are additive, there may invalid combination of flags:
+   - HRTIMER_MODE_SOFT and HRTIMER_MODE_HARD (if I am not mistaken)
+   - HRTIMER_MODE_ABS and HRTIMER_MODE_REL (though this one is mitigated
+     by the fact that ABS is 0x00 therefore ABS|REL==REL)
+
+Issues:
+As the case of HRTIMER_MODE shows, sometimes the valid and invalid
+combinations are not semantically incoded in the structure. In order to
+manipulate such a field safely in Rust, we can wrap it in a type
+that prevents the user from reaching an invalid bitfield state before we
+use it in C code.
+
+Additionally, 'well formed' bitfield C enums are not marked as such,
+distinguishing them from normal C enums in a way that would allow for a
+specific bindgen solution.
+
+Possible solutions:
+ - C centered solution: refactor bitfield enums in the kernel to
+   respects the first definition and 'annotate them' in a way that would
+   allow a custom bindgen conversion to a Rust bitfield wrapper
+ - Rust cented solution: define a rust macro that builds a bitfield
+   wrapper implementing flag setting methods like `std::fs::OpenOptions`
+   by taking as input some semantic information.
+   Call this macro by hand with the proper semantic information to use
+   that C enum in Rust.
+
+Here is a Rust macro solution that generate such a wrapper:
+1. It generates methods like OpenOptions' to set/unset flags.
+2. It handle invalid flag pairs by unsetting the one before setting the
+   other.
+3. It permits flags that set/unset more than one bit at a time (this may
+   be a mistake, but in case the C bitfield enum does it too).
+4. It implements the Default trait.
+5. It implements the TryFrom<field_type> trait to attempt instantiation
+   from a passed bitfield.
+
+I am requesting comments, any issues/suggestions? I have some questions
+myself:
+ - should the macro take in a :
+   ```
+   <#optional_attributes>
+   <visibility> <wrapper_name>(<field_type>);
+   ```
+   instead of the current `name:<wrapper_name>` and `type:<field_type>`
+   entries?
+   It might be better since it allows one to decorate the wrapper with
+   desired attributes.
+ - 3. may be a mistake. We could handle only single-bit flags and pass
+   the bit offset instead to the macro for each flag and its optional
+   counterflag.
+ - I created a Bitfield trait providing a bits() function, but the
+   bits() function could also simply be part of the wrapper's impl.
+   Thoughts?
+
+Thanks in advance for any feedback,
+Timothy
+
+Link:
+https://rust-for-linux.zulipchat.com/#narrow/channel/291565-Help/topic/Best.20way.20to.20handle.20enum.2Fflags.20situation
+[1]
+---
+Changes in v2:
+- removed a v1 question answered by Miguel Ojeda
+- fix code formatting and typos
+- added expanded macro section to the macro documentation
+- added Copy, Clone trait derivation on wrappers
+- changed commit authorship and Signed-off-by to a "known identity"
+- Link to v1:
+https://lore.kernel.org/r/20250125-add-bitfield-options-macro-v1-1-af6ae93686cb@protonmail.com
+---
+ rust/kernel/bitfield.rs | 396 ++++++++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs      |   1 +
+ 2 files changed, 397 insertions(+)
+
+diff --git a/rust/kernel/bitfield.rs b/rust/kernel/bitfield.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..d8ae33826359a37a9c9e4306eb55845e08aa0b00
+--- /dev/null
++++ b/rust/kernel/bitfield.rs
+@@ -0,0 +1,396 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Trait and macro to build bitfield wrappers.
++//!
++//! A trait and [`kernel::bitfield_options`] macro to build bitfield wrappers with
++//! [`std::fs::OpenOptions`](https://doc.rust-lang.org/std/fs/struct.OpenOptions.html)-like methods to
++//! set bits and _try to ensure an always-valid state_.
++
++/// A trait associating a bitfield type to a wrapper type to allow for shared trait implementations
++/// and bitfield retrieval.
++pub trait BitField {
++    /// The bitfield type, usually `u8` or `u32`
++    type Bits;
++
++    /// returns the bits stored by the wrapper.
++    fn bits(&self) -> Self::Bits;
++}
++
++/// concatenate sequences using a comma separator. Uses a a `, and` (oxford comma) separation
++/// instead between the last two items.
++#[doc(hidden)]
++#[macro_export]
++macro_rules! concat_with_oxford_comma {
++    ($last:expr) => (concat!("and ", $last));
++    ($left:expr, $($right:expr),+ ) => (
++        concat!($left, ", ", $crate::concat_with_oxford_comma!($($right),+))
++    )
++}
++
++/// Builds a bitfield wrapper with
++/// [`std::fs::OpenOptions`](https://doc.rust-lang.org/std/fs/struct.OpenOptions.html)-like methods to
++/// set bits.
++///
++/// This wrapper _tries to ensure an always-valid state_, even when created from a bitfield
++/// directly.
++///
++/// The wrapper implements the [`BitField`] trait.
++///
++/// # argument types
++///   - `name`: the name of the wrapper to build.
++///   - `type`: the bit field type, usually `u32` or `u8`. Must be an int primitive.
++///   - `options`: array of `{ name:ident, true:expr, false:expr }` options where name is the name
++///     of a method that will set the `true:expr` bit(s) when called with `true` or else the
++///     `false:expr` bit(s). In a standard bitfield, `false:expr` is set to `false:0`, but sometimes
++///     different bit flags designate incompatible alternatives : in these cases, set `false` to
++///     activate the alternative bit(s).
++///
++/// # Examples
++///
++/// Call the macro to create the bitflag wrapper.
++///
++/// Here we create a wrapper that allows to set `RED`, `BLUE`, `GREEN` bits independently,
++/// and additionally either the `BIG` bit or the `SMALL` bit.
++///
++/// `BIG` and `SMALL` are incompatible alternatives.
++///
++/// ```rust
++/// use kernel::bitfield_options;
++///
++/// const BIG: u32 = 16;
++/// const SMALL: u32 = 1;
++///
++/// const RED: u32 = 2;
++/// const GREEN: u32 = 4;
++/// const BLUE: u32 = 8;
++///
++/// bitfield_options! {
++///     name: SizeAndColors,
++///     type: u32,
++///     options: [
++///         {name:big, true:BIG, false:SMALL},
++///         {name:red, true:RED, false:0u32},
++///         {name:blue, true:BLUE, false:0u32},
++///         {name:green, true:GREEN, false:0u32}
++///     ]
++/// };
++/// ```
++///
++/// The `SizeAndColor` type is now available in this scope.
++///
++/// It implements the [`Default`] trait where all options are set to `false`:
++///
++/// ```rust
++/// # use kernel::bitfield_options;
++/// # use kernel::bitfield::BitField; // to have access to the bits() method
++/// #
++/// # const BIG: u32 = 16;
++/// # const SMALL: u32 = 1;
++/// #
++/// # const RED: u32 = 2;
++/// # const GREEN: u32 = 4;
++/// # const BLUE: u32 = 8;
++/// #
++/// # bitfield_options! {
++/// #     name: SizeAndColors,
++/// #     type: u32,
++/// #     options: [
++/// #         {name:big, true:BIG, false:SMALL},
++/// #         {name:red, true:RED, false:0u32},
++/// #         {name:blue, true:BLUE, false:0u32},
++/// #         {name:green, true:GREEN, false:0u32}
++/// #     ]
++/// # };
++/// let sac = SizeAndColors::default();
++///
++/// // the default state, with all the options set to false should be the field with only the
++/// // `SMALL` bit(s) set
++/// assert_eq!(
++///     sac.bits(),
++///     SMALL | 0u32 | 0u32 | 0u32)
++/// ```
++///
++/// It implements the [`TryFrom`] trait which succeeds only if the passed bitfield is a valid state:
++///
++/// ```rust
++/// # use kernel::bitfield_options;
++/// #
++/// # const BIG: u32 = 16;
++/// # const SMALL: u32 = 1;
++/// #
++/// # const RED: u32 = 2;
++/// # const GREEN: u32 = 4;
++/// # const BLUE: u32 = 8;
++/// #
++/// # bitfield_options! {
++/// #     name: SizeAndColors,
++/// #     type: u32,
++/// #     options: [
++/// #         {name:big, true:BIG, false:SMALL},
++/// #         {name:red, true:RED, false:0u32},
++/// #         {name:blue, true:BLUE, false:0u32},
++/// #         {name:green, true:GREEN, false:0u32}
++/// #     ]
++/// # };
++/// # let sac = SizeAndColors::default();
++/// let small_and_no_colors = SizeAndColors::try_from(SMALL)
++///    .expect("having only the SMALL bit to 1 should be a valid state");
++///
++/// // Having only the `SMALL` bit set to 1 is the default state.
++/// assert_eq!(sac, small_and_no_colors);
++///
++/// let big_and_rgb = SizeAndColors::try_from(BIG | RED | GREEN | BLUE)
++///     .expect("having the BIG, RED, GREEN and BLUE bits set to 1 should be a valid state");
++///
++/// assert_eq!(
++///     SizeAndColors::default()
++///         .big(true)
++///         .red(true)
++///         .blue(true)
++///         .green(true),
++///     big_and_rgb
++/// );
++///
++/// let big_and_small = SizeAndColors::try_from(BIG | SMALL)
++///     .expect_err("BIG and SMALL are incompatible, this should fail");
++///
++/// let intense:u32 = 1024;
++/// let big_and_intense = SizeAndColors::try_from(BIG | intense)
++///     .expect_err("BIG|intense is not a valid state, this should fail");
++/// ```
++///
++/// To achieve this, the macro expands to this:
++///
++/// ```ignore
++/// # use kernel::bitfield_options;
++/// #
++/// # const BIG: u32 = 16;
++/// # const SMALL: u32 = 1;
++/// #
++/// # const RED: u32 = 2;
++/// # const GREEN: u32 = 4;
++/// # const BLUE: u32 = 8;
++/// #[doc = concat!("A wrapper around a `",stringify!(u32),
++/// "` bitfield that sets bitflags using its ",crate::concat_with_oxford_comma!(
++/// concat!("[`",stringify!(big),"`](",stringify!(SizeAndColors),"::",stringify!(big),")"),
++/// concat!("[`",stringify!(red),"`](",stringify!(SizeAndColors),"::",stringify!(red),")"),
++/// concat!("[`",stringify!(blue),"`](",stringify!(SizeAndColors),"::",stringify!(blue),")"),
++/// concat!("[`",stringify!(green),"`](",stringify!(SizeAndColors),"::",stringify!(green),")")),
++/// " methods.")]
++/// #[derive(Debug, PartialEq)]
++/// pub struct SizeAndColors(u32);
++///
++/// impl crate::bitfield::BitField for SizeAndColors {
++///     type Bits = u32;
++///     fn bits(&self) -> Self::Bits {
++///         self.0
++///     }
++/// }
++/// impl SizeAndColors {
++///     #[doc = concat!("if `true`, unsets the `",stringify!(SMALL),
++///     "` bit(s) and sets the `",stringify!(BIG),"` bit(s).  ")]
++///     #[doc = "Otherwise, does the opposite."]
++///     pub fn big(mut self, big: bool) -> Self {
++///         if big {
++///             self.0 = self.0 & !SMALL | BIG;
++///         } else {
++///             self.0 = self.0 & !BIG | SMALL;
++///         }
++///         self
++///     }
++///     #[doc = concat!("if `true`, unsets the `",stringify!(0u32),
++///     "` bit(s) and sets the `",stringify!(RED),"` bit(s).  ")]
++///     #[doc = "Otherwise, does the opposite."]
++///     pub fn red(mut self, red: bool) -> Self {
++///         if red {
++///             self.0 = self.0 & !0u32 | RED;
++///         } else {
++///             self.0 = self.0 & !RED | 0u32;
++///         }
++///         self
++///     }
++///     #[doc = concat!("if `true`, unsets the `",stringify!(0u32),
++///     "` bit(s) and sets the `",stringify!(BLUE),"` bit(s).  ")]
++///     #[doc = "Otherwise, does the opposite."]
++///     pub fn blue(mut self, blue: bool) -> Self {
++///         if blue {
++///             self.0 = self.0 & !0u32 | BLUE;
++///         } else {
++///             self.0 = self.0 & !BLUE | 0u32;
++///         }
++///         self
++///     }
++///     #[doc = concat!("if `true`, unsets the `",stringify!(0u32),
++///     "` bit(s) and sets the `",stringify!(GREEN),"` bit(s).  ")]
++///     #[doc = "Otherwise, does the opposite."]
++///     pub fn green(mut self, green: bool) -> Self {
++///         if green {
++///             self.0 = self.0 & !0u32 | GREEN;
++///         } else {
++///             self.0 = self.0 & !GREEN | 0u32;
++///         }
++///         self
++///     }
++/// }
++/// impl Default for SizeAndColors {
++///     fn default() -> Self {
++///         Self(0).big(false).red(false).blue(false).green(false)
++///     }
++/// }
++/// impl TryFrom<<SizeAndColors as crate::bitfield::BitField>::Bits> for SizeAndColors {
++///     type Error = <SizeAndColors as crate::bitfield::BitField>::Bits;
++///     fn try_from(
++///         value: <SizeAndColors as crate::bitfield::BitField>::Bits,
++///     ) -> Result<Self, Self::Error> {
++///         let mut to_process = value.clone();
++///         let mut matched = false;
++///         for flag in [BIG, SMALL] {
++///             if (flag & to_process) == flag {
++///                 matched = true;
++///                 to_process -= flag;
++///                 if flag > 0 {
++///                     break;
++///                 }
++///             }
++///         }
++///         if !matched {
++///             return Err(value);
++///         }
++///         matched = false;
++///         for flag in [RED, 0u32] {
++///             if (flag & to_process) == flag {
++///                 matched = true;
++///                 to_process -= flag;
++///                 if flag > 0 {
++///                     break;
++///                 }
++///             }
++///         }
++///         if !matched {
++///             return Err(value);
++///         }
++///         matched = false;
++///         for flag in [BLUE, 0u32] {
++///             if (flag & to_process) == flag {
++///                 matched = true;
++///                 to_process -= flag;
++///                 if flag > 0 {
++///                     break;
++///                 }
++///             }
++///         }
++///         if !matched {
++///             return Err(value);
++///         }
++///         matched = false;
++///         for flag in [GREEN, 0u32] {
++///             if (flag & to_process) == flag {
++///                 matched = true;
++///                 to_process -= flag;
++///                 if flag > 0 {
++///                     break;
++///                 }
++///             }
++///         }
++///         if !matched {
++///             return Err(value);
++///         }
++///         if to_process == 0 {
++///             return Ok(Self(value));
++///         }
++///         return Err(value);
++///     }
++/// }
++/// ```
++#[macro_export]
++macro_rules! bitfield_options {{
++    name:$name:ident,
++    type:$t:ty,
++    options:[
++        $({name:$fn_name:ident, true: $true_bitval:expr, false: $false_bitval:expr}),+
++]} => {
++    #[doc = concat!("A wrapper around a `",
++        stringify!($t),
++        "` bitfield that sets bitflags using its ",
++        $crate::concat_with_oxford_comma!(
++        $(concat!("[`",
++            stringify!($fn_name),
++            "`](",
++            stringify!($name),
++            "::",
++            stringify!($fn_name),
++            ")")
++        ),+),
++        " methods.")]
++    #[derive(Clone, Copy, Debug, PartialEq)]
++    pub struct $name($t);
++
++    impl $crate::bitfield::BitField for $name {
++        type Bits = $t;
++
++        fn bits(&self) -> Self::Bits {
++            self.0
++        }
++    }
++
++    impl $name {
++    $(
++        #[doc = concat!("if `true`, unsets the `",
++            stringify!($false_bitval),
++            "` bit(s) and sets the `",
++            stringify!($true_bitval),
++            "` bit(s).  "
++        )]
++        #[doc = "Otherwise, does the opposite."]
++        pub fn $fn_name(mut self, $fn_name:bool)->Self{
++            if $fn_name{
++                self.0 = self.0 & !$false_bitval | $true_bitval;
++            }else{
++                self.0 = self.0 & !$true_bitval | $false_bitval;
++            }
++            self
++        }
++    )+
++    }
++
++    impl Default for $name{
++        fn default() -> Self {
++            Self(0)$(.$fn_name(false))+
++        }
++    }
++
++    impl TryFrom<<$name as $crate::bitfield::BitField>::Bits> for $name {
++        type Error = <$name as $crate::bitfield::BitField>::Bits;
++
++        fn try_from(value: <$name as $crate::bitfield::BitField>::Bits) -> Result<Self, Self::Error>
++        {
++            let mut to_process = value.clone();
++
++            let mut $(
++            matched = false;
++
++            for flag in [$true_bitval, $false_bitval] {
++                if (flag & to_process) == flag {
++                    matched = true;
++                    to_process -= flag;
++                    if flag > 0 {
++                        break;
++                    }
++                }
++            }
++            if !matched {
++                return Err(value);
++            })+
++
++
++            if to_process == 0 {
++                return Ok(Self(value));
++            }
++            return Err(value)
++        }
++    }
++
++    };
++}
++#[doc(inline)]
++pub use bitfield_options;
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 545d1170ee6358e185b48ce10493fc61c646155c..2428a55dca09d3c75153ccfe135a3d1dae77862e 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -31,6 +31,7 @@
+ pub use ffi;
+ 
+ pub mod alloc;
++pub mod bitfield;
+ #[cfg(CONFIG_BLOCK)]
+ pub mod block;
+ #[doc(hidden)]
+
+---
+base-commit: ceff0757f5dafb5be5205988171809c877b1d3e3
+change-id: 20241108-add-bitfield-options-macro-a847b39910aa
+
+Best regards,
+-- 
+Timothy Garwood <gtimothy-dev@protonmail.com>
+
+
