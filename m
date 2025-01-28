@@ -1,220 +1,311 @@
 Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B875119DF61;
-	Tue, 28 Jan 2025 10:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB93D1A0712;
+	Tue, 28 Jan 2025 11:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738061569; cv=none; b=bmSLRJ+79BLRMTPZ0RJUISpaP7HztEyPGMVKxuF/BEcnbuIrRLXEtQuVo+qeJYr4QPBufPnO0CIuDw32hOrNN+79J0E/xKkC5alyMF579gIoIlEG/yUvCpVggTJeswkX14qZlkz78QPPd/jFEN3H4VuKyqYs6+aYmhvhVpp+jT8=
+	t=1738062695; cv=none; b=mBLBX87Yt4VyPj3oixVnLOQfLMID1Uiu+LsKzzS30bWEiD37e9YXoD6jgcfnsHA5IXSq++AXYhT63cpXOUmikyfnKxKE5FI+gs/Kf6Vw443n6reJlS/xecorG/L3I7tVxud+s6UvRZjJ3b89p0JuPkEbRugVJI14OIh/svzT5NA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738061569; c=relaxed/simple;
-	bh=PfCdzxsbws1eBdcw38huDK/jKhGdbdGpeOJKZkwLwKs=;
+	s=arc-20240116; t=1738062695; c=relaxed/simple;
+	bh=XffKGlunzVMtufxmStDgkb9UaLeqwwuI06v/SY+BOfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TMaPiV3TbsLKbUzSiL7EkWyVgl/OeOEBrskcJN2OmtjPHy5amvl6Gvnv8SAL77LsO7kXfEEbS2Ct2eJO1rWuf861uchVl24TkJpqtlN1zguwGI+e8ZgHGf8oABAu3QIap+M/DpgQy7h4uzMG+pu3srU2SaoqcytQce0OZ69S7xQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=i7ZHd+8l; arc=none smtp.client-ip=49.12.72.200
+	 MIME-Version:Content-Type; b=SCNWydsk3/6IPVx3A36ChQEXjLnZD+ZAXC3mau5kj7lDTcpfdaEnyQlMsGGNi3zPvko3+FB+mXcVjJGVwu+ksh9VSJ4SKhzStWDQ73nbAFgD7zAXNjer9TK+qAydboPK8ZU2MMF19LjUQ25iBMJ5Qw7DJsRjP7OLMHORTYKt3n0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=NzwPUyec; arc=none smtp.client-ip=49.12.72.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="i7ZHd+8l"
+	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="NzwPUyec"
 From: Fiona Behrens <me@kloenk.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1738061564; bh=GVAB7md79HnKqybn7MqI9eX/+oFlbzYDCqZBX2HB8cg=;
+	t=1738062690; bh=/fyzoAFt4Kb5izgbqeKxX5rrPnFXRVeszYu0g+n7CsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=i7ZHd+8lqRITRgcHAjo9tgTaALap3ECpCiMw2MYGIUehtPe4nkOTf4ZLbXYNBgr5s
-	 qqutonTK3jR+3Yk0kXTnPpWMfH9tx9ubASu4P/YlTutXCJbtitkbh4UfiQgOlNQ4Ag
-	 YadB3juUQ6yJ1k/QvSiyo5Vi2LoVb+BwvByhOIbA=
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
- tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com,
- aliceryhl@google.com, anna-maria@linutronix.de, frederic@kernel.org,
- tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
- mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
- vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
- bsegall@google.com, mgorman@suse.de, vschneid@redhat.com, tgunders@redhat.com
-Subject: Re: [PATCH v9 7/8] rust: Add read_poll_timeout functions
-Date: Tue, 28 Jan 2025 11:52:42 +0100
-Message-ID: <C466653B-D8DA-4176-8059-7FD60F76040E@kloenk.dev>
-In-Reply-To: <20250125101854.112261-8-fujita.tomonori@gmail.com>
-References: <20250125101854.112261-1-fujita.tomonori@gmail.com>
- <20250125101854.112261-8-fujita.tomonori@gmail.com>
+	b=NzwPUyecN5JJkhg1a+0MivEU1hXJHNaCL4en18GxzySvacVhTejDWnK7Y9F+EXbHJ
+	 q1NrzMh0m+zXkkv3CpCnquM/+iwu4HJ/T2wgEe374B54OZCG7N7/tbRQd1FmjO+NNM
+	 c9bwRu5/HYNjCdKibs9TJa/DzN3CRfN3jde3kXXo=
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: io: move offset_valid and io_addr(_assert) to IoRaw
+Date: Tue, 28 Jan 2025 12:11:29 +0100
+Message-ID: <AC732BF8-8806-483B-AC14-66306D763ACF@kloenk.dev>
+In-Reply-To: <Z5D_IxCZvcZ_jKd8@pollux>
+References: <20250122-rust-io-offset-v1-1-914725ab55ed@kloenk.dev>
+ <Z5D_IxCZvcZ_jKd8@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
 
 
 
-On 25 Jan 2025, at 11:18, FUJITA Tomonori wrote:
+On 22 Jan 2025, at 15:22, Danilo Krummrich wrote:
 
-> Add read_poll_timeout functions which poll periodically until a
-> condition is met or a timeout is reached.
->
-> The C's read_poll_timeout (include/linux/iopoll.h) is a complicated
-> macro and a simple wrapper for Rust doesn't work. So this implements
-> the same functionality in Rust.
->
-> The C version uses usleep_range() while the Rust version uses
-> fsleep(), which uses the best sleep method so it works with spans that
-> usleep_range() doesn't work nicely with.
->
-> Unlike the C version, __might_sleep() is used instead of might_sleep()
-> to show proper debug info; the file name and line
-> number. might_resched() could be added to match what the C version
-> does but this function works without it.
->
-> The sleep_before_read argument isn't supported since there is no user
-> for now. It's rarely used in the C version.
->
-> read_poll_timeout() can only be used in a nonatomic context. This
-> requirement is not checked by these abstractions, but it is intended
-> that klint [1] or a similar tool will be used to check it in the
-> future.
->
-> Link: https://rust-for-linux.com/klint [1]
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> ---
->  rust/helpers/helpers.c |  1 +
->  rust/helpers/kernel.c  | 13 +++++++
->  rust/kernel/cpu.rs     | 13 +++++++
->  rust/kernel/error.rs   |  1 +
->  rust/kernel/io.rs      |  5 +++
->  rust/kernel/io/poll.rs | 79 ++++++++++++++++++++++++++++++++++++++++++=
+> On Wed, Jan 22, 2025 at 01:38:09PM +0100, Fiona Behrens wrote:
+>> Move the helper functions `offset_valid`, `io_addr` and
+>> `io_addr_asset` from `Io` to `IoRaw`. This allows `IoRaw` to be reused=
 
->  rust/kernel/lib.rs     |  2 ++
->  7 files changed, 114 insertions(+)
->  create mode 100644 rust/helpers/kernel.c
->  create mode 100644 rust/kernel/cpu.rs
->  create mode 100644 rust/kernel/io.rs
->  create mode 100644 rust/kernel/io/poll.rs
+>> if other abstractions with different write/read functions are
+>> needed (e.g. `writeb` vs `iowrite` vs `outb`).
+>>
+>> Make this functions public as well so they can be used from other
+>> modules if you aquire a `IoRaw`.
 >
-(..)
-> diff --git a/rust/kernel/io/poll.rs b/rust/kernel/io/poll.rs
-> new file mode 100644
-> index 000000000000..7a503cf643a1
-> --- /dev/null
-> +++ b/rust/kernel/io/poll.rs
-> @@ -0,0 +1,79 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! IO polling.
-> +//!
-> +//! C header: [`include/linux/iopoll.h`](srctree/include/linux/iopoll.=
-h).
-> +
-> +use crate::{
-> +    cpu::cpu_relax,
-> +    error::{code::*, Result},
-> +    time::{delay::fsleep, Delta, Instant},
-> +};
-> +
-> +use core::panic::Location;
-> +
-> +/// Polls periodically until a condition is met or a timeout is reache=
-d.
-> +///
-> +/// Public but hidden since it should only be used from public macros.=
+> I don't think they should be public. Instead the abstraction for I/O po=
+rts
+> should be in this file, just like `Io` is.
 
+Will make it private, but would keep the documentation I wrote to make it=
+ easier to read the code.
 
-This states the function should be hidden, but I don=E2=80=99t see a `#[d=
-oc(hidden)]` in here so bit confused by that comment what part now is hid=
-den.
+>
+> Another option could also be to just extend the existing `Io` abstracti=
+on for
+> I/O ports.
+
+Was thinking about that on zulip[0] already as well, but unsure if we sho=
+uld then remove the current write functions and use iowrite as those are =
+the generic new interface as far as I understand, so it works with both i=
+omem and portmem.
 
 Thanks,
 Fiona
 
-> +///
-> +/// ```rust
-> +/// use kernel::io::poll::read_poll_timeout;
-> +/// use kernel::time::Delta;
-> +/// use kernel::sync::{SpinLock, new_spinlock};
-> +///
-> +/// let lock =3D KBox::pin_init(new_spinlock!(()), kernel::alloc::flag=
-s::GFP_KERNEL)?;
-> +/// let g =3D lock.lock();
-> +/// read_poll_timeout(|| Ok(()), |()| true, Delta::from_micros(42), De=
-lta::from_micros(42));
-> +/// drop(g);
-> +///
-> +/// # Ok::<(), Error>(())
-> +/// ```
-> +#[track_caller]
-> +pub fn read_poll_timeout<Op, Cond, T: Copy>(
-> +    mut op: Op,
-> +    mut cond: Cond,
-> +    sleep_delta: Delta,
-> +    timeout_delta: Delta,
-> +) -> Result<T>
-> +where
-> +    Op: FnMut() -> Result<T>,
-> +    Cond: FnMut(&T) -> bool,
-> +{
-> +    let start =3D Instant::now();
-> +    let sleep =3D !sleep_delta.is_zero();
-> +    let timeout =3D !timeout_delta.is_zero();
-> +
-> +    if sleep {
-> +        might_sleep(Location::caller());
-> +    }
-> +
-> +    loop {
-> +        let val =3D op()?;
-> +        if cond(&val) {
-> +            // Unlike the C version, we immediately return.
-> +            // We know the condition is met so we don't need to check =
-again.
-> +            return Ok(val);
-> +        }
-> +        if timeout && start.elapsed() > timeout_delta {
-> +            // Unlike the C version, we immediately return.
-> +            // We have just called `op()` so we don't need to call it =
-again.
-> +            return Err(ETIMEDOUT);
-> +        }
-> +        if sleep {
-> +            fsleep(sleep_delta);
-> +        }
-> +        // fsleep() could be busy-wait loop so we always call cpu_rela=
-x().
-> +        cpu_relax();
-> +    }
-> +}
-> +
-> +fn might_sleep(loc: &Location<'_>) {
-> +    // SAFETY: FFI call.
-> +    unsafe {
-> +        crate::bindings::__might_sleep_precision(
-> +            loc.file().as_ptr().cast(),
-> +            loc.file().len() as i32,
-> +            loc.line() as i32,
-> +        )
-> +    }
-> +}
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 545d1170ee63..c477701b2efa 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -35,6 +35,7 @@
->  pub mod block;
->  #[doc(hidden)]
->  pub mod build_assert;
-> +pub mod cpu;
->  pub mod cred;
->  pub mod device;
->  pub mod error;
-> @@ -42,6 +43,7 @@
->  pub mod firmware;
->  pub mod fs;
->  pub mod init;
-> +pub mod io;
->  pub mod ioctl;
->  pub mod jump_label;
->  #[cfg(CONFIG_KUNIT)]
-> -- =
+[0]: https://rust-for-linux.zulipchat.com/#narrow/channel/291565-Help/top=
+ic/.60Io.60.20type.20and.20usage.20of.20.60iowrite*.60.2F.60ioread*.60
 
-> 2.43.0
+>
+>>
+>> Signed-off-by: Fiona Behrens <me@kloenk.dev>
+>> ---
+>>  rust/kernel/io.rs | 98 +++++++++++++++++++++++++++++++++++-----------=
+---------
+>>  1 file changed, 63 insertions(+), 35 deletions(-)
+>>
+>> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+>> index d4a73e52e3ee68f7b558749ed0108acde92ae5fe..a6d026f458608626113fd1=
+94ee5a8616b4ef76fe 100644
+>> --- a/rust/kernel/io.rs
+>> +++ b/rust/kernel/io.rs
+>> @@ -15,6 +15,11 @@
+>>  /// Instead, the bus specific MMIO implementation must convert this r=
+aw representation into an `Io`
+>>  /// instance providing the actual memory accessors. Only by the conve=
+rsion into an `Io` structure
+>>  /// any guarantees are given.
+>> +///
+>> +/// # Invariant
+>
+> You phrased this invariant as if it would be a requirement, but it's mo=
+re like a
+> something that's always uphold. I'd phrase it as a fact that can be rel=
+ied on.
+>
+>> +///
+>> +/// `addr` plus `maxsize` has to fit in memory (smaller than [`usize:=
+:MAX`])
+>
+> "fit in memory" sounds a bit misleading. I think you want to say they h=
+ave to be
+> in the range of some address space (e.g. PIO).
+>
+> Besides that, why do we need this at all in this patch? I think it's fi=
+ne to
+> add, but then it should be separate patch I think.
+>
+>> +/// and `maxsize` has to be smaller or equal to `SIZE`.
+>
+> That's wrong, it's the other way around.
+>
+>>  pub struct IoRaw<const SIZE: usize =3D 0> {
+>>      addr: usize,
+>>      maxsize: usize,
+>> @@ -23,7 +28,7 @@ pub struct IoRaw<const SIZE: usize =3D 0> {
+>>  impl<const SIZE: usize> IoRaw<SIZE> {
+>>      /// Returns a new `IoRaw` instance on success, an error otherwise=
+=2E
+>>      pub fn new(addr: usize, maxsize: usize) -> Result<Self> {
+>> -        if maxsize < SIZE {
+>> +        if maxsize < SIZE || addr.checked_add(maxsize).is_none() {
+>>              return Err(EINVAL);
+>>          }
+>>
+>> @@ -32,15 +37,66 @@ pub fn new(addr: usize, maxsize: usize) -> Result<=
+Self> {
+>>
+>>      /// Returns the base address of the MMIO region.
+>>      #[inline]
+>> -    pub fn addr(&self) -> usize {
+>> +    pub const fn addr(&self) -> usize {
+>>          self.addr
+>>      }
+>>
+>>      /// Returns the maximum size of the MMIO region.
+>>      #[inline]
+>> -    pub fn maxsize(&self) -> usize {
+>> +    pub const fn maxsize(&self) -> usize {
+>>          self.maxsize
+>>      }
+>> +
+>> +    /// Check if the offset plus the size of the type `U` fits in the=
+ bounds of `size`.
+>> +    /// Also checks if the offset is aligned with the type size.
+>> +    #[inline]
+>> +    pub const fn offset_valid<U>(offset: usize, size: usize) -> bool =
+{
+>> +        let type_size =3D core::mem::size_of::<U>();
+>> +        if let Some(end) =3D offset.checked_add(type_size) {
+>> +            end <=3D size && offset % type_size =3D=3D 0
+>> +        } else {
+>> +            false
+>> +        }
+>> +    }
+>> +
+>> +    /// Check if the offset (plus the type size) is out of bounds.
+>> +    ///
+>> +    /// Runtime checked version of [`io_addr_assert`].
+>> +    ///
+>> +    /// See [`offset_valid`] for the performed offset check.
+>> +    ///
+>> +    /// # Errors
+>> +    ///
+>> +    /// Returns [`EINVAL`] if the type does not fit into [`IoRaw`] at=
+ the given offset.
+>> +    ///
+>> +    /// [`offset_valid`]: Self::offset_valid
+>> +    /// [`io_addr_assert`]: Self::io_addr_assert
+>> +    #[inline]
+>> +    pub fn io_addr<U>(&self, offset: usize) -> Result<usize> {
+>> +        if !Self::offset_valid::<U>(offset, self.maxsize()) {
+>> +            return Err(EINVAL);
+>> +        }
+>> +
+>> +        // Probably no need to check, since the safety requirements o=
+f `Self::new` guarantee that
+>> +        // this can't overflow.
+>> +        self.addr().checked_add(offset).ok_or(EINVAL)
+>> +    }
+>> +
+>> +    /// Check at build time if the offset (plus the type size) is out=
+ of bounds.
+>> +    ///
+>> +    /// Compiletime checked version of [`io_addr`].
+>> +    ///
+>> +    /// See [`offset_valid`] for the performed offset check.
+>> +    ///
+>> +    ///
+>> +    /// [`offset_valid`]: Self::offset_valid
+>> +    /// [`io_addr`]: Self::io_addr
+>> +    #[inline]
+>> +    pub const fn io_addr_assert<U>(&self, offset: usize) -> usize {
+>> +        build_assert!(Self::offset_valid::<U>(offset, SIZE));
+>> +
+>> +        self.addr() + offset
+>> +    }
+>>  }
+>>
+>>  /// IO-mapped memory, starting at the base address @addr and spanning=
+ @maxlen bytes.
+>> @@ -116,7 +172,7 @@ macro_rules! define_read {
+>>          $(#[$attr])*
+>>          #[inline]
+>>          pub fn $name(&self, offset: usize) -> $type_name {
+>> -            let addr =3D self.io_addr_assert::<$type_name>(offset);
+>> +            let addr =3D self.0.io_addr_assert::<$type_name>(offset);=
+
+>>
+>>              // SAFETY: By the type invariant `addr` is a valid addres=
+s for MMIO operations.
+>>              unsafe { bindings::$name(addr as _) }
+>> @@ -128,7 +184,7 @@ pub fn $name(&self, offset: usize) -> $type_name {=
+
+>>          /// out of bounds.
+>>          $(#[$attr])*
+>>          pub fn $try_name(&self, offset: usize) -> Result<$type_name> =
+{
+>> -            let addr =3D self.io_addr::<$type_name>(offset)?;
+>> +            let addr =3D self.0.io_addr::<$type_name>(offset)?;
+>>
+>>              // SAFETY: By the type invariant `addr` is a valid addres=
+s for MMIO operations.
+>>              Ok(unsafe { bindings::$name(addr as _) })
+>> @@ -145,7 +201,7 @@ macro_rules! define_write {
+>>          $(#[$attr])*
+>>          #[inline]
+>>          pub fn $name(&self, value: $type_name, offset: usize) {
+>> -            let addr =3D self.io_addr_assert::<$type_name>(offset);
+>> +            let addr =3D self.0.io_addr_assert::<$type_name>(offset);=
+
+>>
+>>              // SAFETY: By the type invariant `addr` is a valid addres=
+s for MMIO operations.
+>>              unsafe { bindings::$name(value, addr as _, ) }
+>> @@ -157,7 +213,7 @@ pub fn $name(&self, value: $type_name, offset: usi=
+ze) {
+>>          /// out of bounds.
+>>          $(#[$attr])*
+>>          pub fn $try_name(&self, value: $type_name, offset: usize) -> =
+Result {
+>> -            let addr =3D self.io_addr::<$type_name>(offset)?;
+>> +            let addr =3D self.0.io_addr::<$type_name>(offset)?;
+>>
+>>              // SAFETY: By the type invariant `addr` is a valid addres=
+s for MMIO operations.
+>>              unsafe { bindings::$name(value, addr as _) }
+>> @@ -190,34 +246,6 @@ pub fn maxsize(&self) -> usize {
+>>          self.0.maxsize()
+>>      }
+>>
+>> -    #[inline]
+>> -    const fn offset_valid<U>(offset: usize, size: usize) -> bool {
+>> -        let type_size =3D core::mem::size_of::<U>();
+>> -        if let Some(end) =3D offset.checked_add(type_size) {
+>> -            end <=3D size && offset % type_size =3D=3D 0
+>> -        } else {
+>> -            false
+>> -        }
+>> -    }
+>> -
+>> -    #[inline]
+>> -    fn io_addr<U>(&self, offset: usize) -> Result<usize> {
+>> -        if !Self::offset_valid::<U>(offset, self.maxsize()) {
+>> -            return Err(EINVAL);
+>> -        }
+>> -
+>> -        // Probably no need to check, since the safety requirements o=
+f `Self::new` guarantee that
+>> -        // this can't overflow.
+>> -        self.addr().checked_add(offset).ok_or(EINVAL)
+>> -    }
+>> -
+>> -    #[inline]
+>> -    fn io_addr_assert<U>(&self, offset: usize) -> usize {
+>> -        build_assert!(Self::offset_valid::<U>(offset, SIZE));
+>> -
+>> -        self.addr() + offset
+>> -    }
+>> -
+>>      define_read!(readb, try_readb, u8);
+>>      define_read!(readw, try_readw, u16);
+>>      define_read!(readl, try_readl, u32);
+>>
+>> ---
+>> base-commit: 01b3cb620815fc3feb90ee117d9445a5b608a9f7
+>> change-id: 20250122-rust-io-offset-7b39b11e84ac
+>>
+>> Best regards,
+>> -- =
+
+>> Fiona Behrens <me@kloenk.dev>
+>>
