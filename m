@@ -1,273 +1,216 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A0C19DF52
-	for <rust-for-linux@vger.kernel.org>; Tue, 28 Jan 2025 16:53:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53211DDA20;
+	Tue, 28 Jan 2025 17:13:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738083189; cv=none; b=kA04aPEyOyCir99cPVqOT7/MiW8i0baoO7cUmK0k3j3y55wXRQMqxAhFbXIgjGLtiSzJ07jODRS19v9TKSEsNwsGLMCaqV0b1mJiLucHtlgyGDgNxJMuEBlAJZa/tyJBr+KslivHfcGbZgCw6pyjqCtPu4ecm8cE+mk7gJqs58I=
+	t=1738084390; cv=none; b=DH4Dno/T6AfbFBf5mB3lOCQkmd9+hqkTLk1k0i2pXu8hoqGheZg5qO4CJ0T5+N4cpl9d0HmK3aWdRCKf3YL6M50zWqwYnOvMa725bHGuxDWXN+Ze5EpezBgSwkdlDbuVaJMhgg86tX6fp48WtOQ0xeLjGpo6djf7JUJFABQ6YsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738083189; c=relaxed/simple;
-	bh=DGnLa4qX3ukiHQE83taK5RMIPqnr49me7oQUk6T2Az8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iXhHt9h4ZrBEwk9cCYOZRt6Lb6baEtC5KRrAwLtoCJ/+4bbSD08L716MbWMy1/6JyOS/bpzhCl+LVvbdx7Aq7KFXQOgetSLZfGQeWW3YnX2P4MHpAMlbDdheAm3vHkpJk5w/pE9i62uqK+igUQyLxaj9uswL+/WOpUbzxV4oQ1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aNWjImFu; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1738084390; c=relaxed/simple;
+	bh=LOkV48DJCXqr4s3ewnL2P85KpGcwsy7PCabCFOjlXyA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=nqq1WppZzQ+bxjdnay2OsKsE8vmaq44XnVbCgo+uMoouYmBjf9ErdZbbxK3mn2QebxNHA7g1xW+u3tZsBhtvraHO8s0MXY+B9i9FrZxB5Dq1Od4L0RFfk+JOMa18lFDSmOFnKQikZpqGnVB3HSwROs2lpLDDCxPFVjaYhZjO4o8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hd8ObKRv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aNWjImFu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738083186;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=bzZqdfWddQbHUECEg4094v75joFV9Fo55eFZWFq5P60=;
-	b=aNWjImFuHrbhRqRI3v0AuyqL/138k2EHz5U9VtqXyxihV+rbg8G9+9o4kVwc8/ZfUS7MKf
-	SAL5yUBGcBbzqvv3ycWxALCemZ6O0/OEqu1yiS7qAx5aED/zxI4kbkadRm80dXhKSea0Up
-	l4oLS4EgpFW4b14bHew4XnELbm5ANkg=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-493-LcYvOsPoOCiOQ_eDyL1zrg-1; Tue,
- 28 Jan 2025 11:53:03 -0500
-X-MC-Unique: LcYvOsPoOCiOQ_eDyL1zrg-1
-X-Mimecast-MFC-AGG-ID: LcYvOsPoOCiOQ_eDyL1zrg
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A728318009C9;
-	Tue, 28 Jan 2025 16:53:01 +0000 (UTC)
-Received: from hydra.redhat.com (unknown [10.39.193.110])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 58FE230001BE;
-	Tue, 28 Jan 2025 16:52:57 +0000 (UTC)
-From: Jocelyn Falempe <jfalempe@redhat.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	=?UTF-8?q?Thomas=20B=C3=B6hler?= <witcher@wiredspace.de>,
-	rust-for-linux@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Subject: [PATCH v2] drm/panic: Better binary encoding in QR code
-Date: Tue, 28 Jan 2025 17:52:10 +0100
-Message-ID: <20250128165254.893204-1-jfalempe@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hd8ObKRv"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7E180C4CED3;
+	Tue, 28 Jan 2025 17:13:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738084390;
+	bh=LOkV48DJCXqr4s3ewnL2P85KpGcwsy7PCabCFOjlXyA=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=hd8ObKRviK+4OPCMt2cswEIv4eoBHSC4TTacQnK7J5Ht+w5X0S/phW/2CBEBxHw9p
+	 yTt/9z4zKlhVy3Ho0D7Hw+xa3KjH1x2XFnflVrh+Fe6z+UI/jSms7aRgRy/qXqp+xp
+	 fUDZrj4x7y8sx05XN/P1L85Kr6IsGCBpQZ7jX6Orb77JffukOlu1k1Vk9rvMxivbWx
+	 CWs98+e45oARq352NoXEFcLAo1sdnSaBtCkuUhZ6F4jFh3mvt/D6sKxW0vuwzJY6E8
+	 V4MKtMQXUWC/TtWDT4Pdk/ZAwxcEOuPNyEKujCtVtddPhiUiwyyyYB7lF3drDh7Plw
+	 PsZKdtejhEtsw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 66945C0218A;
+	Tue, 28 Jan 2025 17:13:10 +0000 (UTC)
+From: Timothy Garwood via B4 Relay <devnull+gtimothy-dev.protonmail.com@kernel.org>
+Date: Tue, 28 Jan 2025 18:12:49 +0100
+Subject: [PATCH RFC] rust: HrTimerMode replacement with bitfield_options
+ macro
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250128-bitfield-option-hrtimer-v1-1-31033d8e727f@protonmail.com>
+X-B4-Tracking: v=1; b=H4sIABAQmWcC/12OzW4CMQyEX2Xlc13FYUlIrpV4AK6IQ368JVKXp
+ UmIkBDv3rRFqOpx7Jlv5gaFc+ICdrhB5pZKWk5d0MsA4ehO74wpdg1SyLUgqdGnOiX+iLica/f
+ iMdc0c0bNgc1E2niK0NPnzFO6/pD3sNu+weH3mPnz0lvq4/MssUOvGEmQfiLbCptCkpiDREnrG
+ JQnZfxkm4K/Ax9ZEht0Mf6fWHB2IS/oNqP2K2NIOGeb/CZ4VxjDMs+p2iFfSkX1SiMc7vcvzvu
+ GsBkBAAA=
+X-Change-ID: 20250127-bitfield-option-hrtimer-7ece9f179b1d
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Timothy Garwood <gtimothy-dev@protonmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738084388; l=6528;
+ i=gtimothy-dev@protonmail.com; s=20250123; h=from:subject:message-id;
+ bh=affPqQwr4VVR21U7swKhRZpKaHYPLTxharXdiQNSgC4=;
+ b=VJ/iKV8Q7wRnm7BTJCbWaD+dOCiWMaHQBFzn3IiVRplfKSyfdc1W7v0PRK83cr8pkmGddh526
+ ow4r8fFvaR2CHyBD/up985X30u/D+RhJLdzVUpA+1jvbKIpZYizMhzy
+X-Developer-Key: i=gtimothy-dev@protonmail.com; a=ed25519;
+ pk=4MkQh/a3f6vfOYMYyJPEDyETzhXD/Sa4ZNZ/kAKxOOs=
+X-Endpoint-Received: by B4 Relay for gtimothy-dev@protonmail.com/20250123
+ with auth_id=330
+X-Original-From: Timothy Garwood <gtimothy-dev@protonmail.com>
+Reply-To: gtimothy-dev@protonmail.com
 
-The current encoding, is done by converting 13bits of input into 4
-decimal digits, that are then encoded efficiently using the numeric
-encoding of the QR code specification.
-The Fido v2.2 specification [1] uses a similar approach for its
-QR-initiated authentication. The only difference is that it converts
-7 bytes (56bits) of input into 17 decimal digits. The benefit is that
-the algorithm doesn't require to split input bytes into 13bits chunk,
-and the ratio is a bit better.
-This improvement was proposed by Jó Ágila Bitsch in [2].
-drm_panic is still young, and the QR code feature is not widely used,
-so it's still time to switch to a common algorithm, shared with a
-widely used standard.
-I also changed the name of the url parameter, from zl= to z=, so the
-website can keep backward compatibility if needed.
+From: Timothy Garwood <gtimothy-dev@protonmail.com>
 
-[1] https://fidoalliance.org/specs/fido-v2.2-rd-20230321/fido-client-to-authenticator-protocol-v2.2-rd-20230321.html#hybrid-qr-initiated
-[2] https://github.com/kdj0c/panic_report/issues/2
+replace the HrTimerMode enum with a bitfield wrapper built using the
+bitfield_options macro
 
-Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
 ---
+This patch provides an example of usage of the bitfield_options macro
+proposed in [1] as a replacement for the HrTimerMode enum introduced in
+[2].
+[1] is a RFC.
+This patch depends on both [1] and [2]
 
-v2:
- * Add comments for the SegmentIterator numeric encoding. 
- 
- 
- drivers/gpu/drm/drm_panic.c     |   2 +-
- drivers/gpu/drm/drm_panic_qr.rs | 108 +++++++++++---------------------
- 2 files changed, 36 insertions(+), 74 deletions(-)
+Link:
+https://lore.kernel.org/rust-for-linux/20250128-add-bitfield-options-macro-v2-1-d65349b389fc@protonmail.com
+Link:
+https://lore.kernel.org/rust-for-linux/20250110-hrtimer-v3-v6-12-rc2-v6-0-f71d50f16482@kernel.org
+[2]
 
-diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
-index f128d345b16d..ab42a2b1567d 100644
---- a/drivers/gpu/drm/drm_panic.c
-+++ b/drivers/gpu/drm/drm_panic.c
-@@ -499,7 +499,7 @@ static int drm_panic_get_qr_code_url(u8 **qr_image)
- 	char *kmsg;
- 	int max_qr_data_size, url_len;
- 
--	url_len = snprintf(url, sizeof(url), CONFIG_DRM_PANIC_SCREEN_QR_CODE_URL "?a=%s&v=%s&zl=",
-+	url_len = snprintf(url, sizeof(url), CONFIG_DRM_PANIC_SCREEN_QR_CODE_URL "?a=%s&v=%s&z=",
- 			   utsname()->machine, utsname()->release);
- 
- 	max_qr_data_size = drm_panic_qr_max_data_size(panic_qr_version, url_len);
-diff --git a/drivers/gpu/drm/drm_panic_qr.rs b/drivers/gpu/drm/drm_panic_qr.rs
-index 09500cddc009..477de4101c3e 100644
---- a/drivers/gpu/drm/drm_panic_qr.rs
-+++ b/drivers/gpu/drm/drm_panic_qr.rs
-@@ -13,12 +13,13 @@
- //! The binary data must be a valid URL parameter, so the easiest way is
- //! to use base64 encoding. But this wastes 25% of data space, so the
- //! whole stack trace won't fit in the QR code. So instead it encodes
--//! every 13bits of input into 4 decimal digits, and then uses the
-+//! every 7 bytes of input into 17 decimal digits, and then uses the
- //! efficient numeric encoding, that encode 3 decimal digits into
--//! 10bits. This makes 39bits of compressed data into 12 decimal digits,
--//! into 40bits in the QR code, so wasting only 2.5%. And the numbers are
-+//! 10bits. This makes 168bits of compressed data into 51 decimal digits,
-+//! into 170bits in the QR code, so wasting only 1.17%. And the numbers are
- //! valid URL parameter, so the website can do the reverse, to get the
--//! binary data.
-+//! binary data. This is the same algorithm used by Fido v2.2 QR-initiated
-+//! authentication specification.
- //!
- //! Inspired by these 3 projects, all under MIT license:
- //!
-@@ -26,7 +27,6 @@
- //! * <https://github.com/erwanvivien/fast_qr>
- //! * <https://github.com/bjguillot/qr>
- 
--use core::cmp;
- use kernel::str::CStr;
- 
- #[derive(Debug, Clone, Copy, PartialEq, Eq, Ord, PartialOrd)]
-@@ -296,35 +296,11 @@ fn version_info(&self) -> u32 {
- /// Padding bytes.
- const PADDING: [u8; 2] = [236, 17];
- 
--/// Get the next 13 bits of data, starting at specified offset (in bits).
--fn get_next_13b(data: &[u8], offset: usize) -> Option<(u16, usize)> {
--    if offset < data.len() * 8 {
--        let size = cmp::min(13, data.len() * 8 - offset);
--        let byte_off = offset / 8;
--        let bit_off = offset % 8;
--        // `b` is 20 at max (`bit_off` <= 7 and `size` <= 13).
--        let b = (bit_off + size) as u16;
--
--        let first_byte = (data[byte_off] << bit_off >> bit_off) as u16;
--
--        let number = match b {
--            0..=8 => first_byte >> (8 - b),
--            9..=16 => (first_byte << (b - 8)) + (data[byte_off + 1] >> (16 - b)) as u16,
--            _ => {
--                (first_byte << (b - 8))
--                    + ((data[byte_off + 1] as u16) << (b - 16))
--                    + (data[byte_off + 2] >> (24 - b)) as u16
--            }
--        };
--        Some((number, size))
--    } else {
--        None
--    }
--}
--
- /// Number of bits to encode characters in numeric mode.
- const NUM_CHARS_BITS: [usize; 4] = [0, 4, 7, 10];
--const POW10: [u16; 4] = [1, 10, 100, 1000];
-+/// Number of decimal digits required to encode n bytes of binary data.
-+/// eg: you need 15 decimal digits to fit 6 bytes of binary data.
-+const BYTES_TO_DIGITS: [usize; 8] = [0, 3, 5, 8, 10, 13, 15, 17];
- 
- enum Segment<'a> {
-     Numeric(&'a [u8]),
-@@ -360,13 +336,9 @@ fn character_count(&self) -> usize {
-         match self {
-             Segment::Binary(data) => data.len(),
-             Segment::Numeric(data) => {
--                let data_bits = data.len() * 8;
--                let last_chars = match data_bits % 13 {
--                    1 => 1,
--                    k => (k + 1) / 3,
--                };
--                // 4 decimal numbers per 13bits + remainder.
--                4 * (data_bits / 13) + last_chars
-+                let last_chars = BYTES_TO_DIGITS[data.len() % 7];
-+                // 17 decimal numbers per 7bytes + remainder.
-+                17 * (data.len() / 7) + last_chars
-             }
-         }
+Signed-off-by: Timothy Garwood <gtimothy-dev@protonmail.com>
+---
+ rust/kernel/time/hrtimer.rs | 82 ++++++++++-----------------------------------
+ 1 file changed, 17 insertions(+), 65 deletions(-)
+
+diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
+index f759e4b1aa9f9fa6d55d5c144deedccc5d0590ae..ecbd7ebd7bf319291fec5bc5de31fe4a36d03c24 100644
+--- a/rust/kernel/time/hrtimer.rs
++++ b/rust/kernel/time/hrtimer.rs
+@@ -364,75 +364,27 @@ fn from(value: HrTimerRestart) -> Self {
      }
-@@ -403,7 +375,7 @@ fn iter(&self) -> SegmentIterator<'_> {
- struct SegmentIterator<'a> {
-     segment: &'a Segment<'a>,
-     offset: usize,
--    carry: u16,
-+    carry: u64,
-     carry_len: usize,
  }
  
-@@ -422,40 +394,30 @@ fn next(&mut self) -> Option<Self::Item> {
-                 }
-             }
-             Segment::Numeric(data) => {
--                if self.carry_len == 3 {
--                    let out = (self.carry, NUM_CHARS_BITS[self.carry_len]);
--                    self.carry_len = 0;
--                    self.carry = 0;
--                    Some(out)
--                } else if let Some((bits, size)) = get_next_13b(data, self.offset) {
--                    self.offset += size;
--                    let new_chars = match size {
--                        1 => 1,
--                        k => (k + 1) / 3,
--                    };
--                    if self.carry_len + new_chars > 3 {
--                        self.carry_len = new_chars + self.carry_len - 3;
--                        let out = (
--                            self.carry * POW10[new_chars - self.carry_len]
--                                + bits / POW10[self.carry_len],
--                            NUM_CHARS_BITS[3],
--                        );
--                        self.carry = bits % POW10[self.carry_len];
--                        Some(out)
--                    } else {
--                        let out = (
--                            self.carry * POW10[new_chars] + bits,
--                            NUM_CHARS_BITS[self.carry_len + new_chars],
--                        );
--                        self.carry_len = 0;
--                        Some(out)
-+                if self.carry_len < 3 && self.offset < data.len() {
-+                    // If there are less than 3 decimal digits in the carry,
-+                    // take the next 7 bytes of input, and add them to the carry.
-+                    let mut buf = [0u8; 8];
-+                    let len = 7.min(data.len() - self.offset);
-+                    buf[..len].copy_from_slice(&data[self.offset..self.offset + len]);
-+                    let chunk = u64::from_le_bytes(buf);
-+                    let pow = u64::pow(10, BYTES_TO_DIGITS[len] as u32);
-+                    self.carry = chunk + self.carry * pow;
-+                    self.offset += len;
-+                    self.carry_len += BYTES_TO_DIGITS[len];
-+                }
-+                match self.carry_len {
-+                    0 => None,
-+                    len => {
-+                        // take the next 3 decimal digits of the carry
-+                        // and return 10bits of numeric data.
-+                        let out_len = 3.min(len);
-+                        self.carry_len -= out_len;
-+                        let pow = u64::pow(10, self.carry_len as u32);
-+                        let out = (self.carry / pow) as u16;
-+                        self.carry = self.carry % pow;
-+                        Some((out, NUM_CHARS_BITS[out_len]))
-                     }
--                } else if self.carry_len > 0 {
--                    let out = (self.carry, NUM_CHARS_BITS[self.carry_len]);
--                    self.carry_len = 0;
--                    Some(out)
--                } else {
--                    None
-                 }
-             }
-         }
+-/// Operational mode of [`HrTimer`].
+-#[derive(Clone, Copy)]
+-pub enum HrTimerMode {
+-    /// Timer expires at the given expiration time.
+-    Absolute,
+-    /// Timer expires after the given expiration time interpreted as a duration from now.
+-    Relative,
+-    /// Timer does not move between CPU cores.
+-    Pinned,
+-    /// Timer handler is executed in soft irq context.
+-    Soft,
+-    /// Timer handler is executed in hard irq context.
+-    Hard,
+-    /// Timer expires at the given expiration time.
+-    /// Timer does not move between CPU cores.
+-    AbsolutePinned,
+-    /// Timer expires after the given expiration time interpreted as a duration from now.
+-    /// Timer does not move between CPU cores.
+-    RelativePinned,
+-    /// Timer expires at the given expiration time.
+-    /// Timer handler is executed in soft irq context.
+-    AbsoluteSoft,
+-    /// Timer expires after the given expiration time interpreted as a duration from now.
+-    /// Timer handler is executed in soft irq context.
+-    RelativeSoft,
+-    /// Timer expires at the given expiration time.
+-    /// Timer does not move between CPU cores.
+-    /// Timer handler is executed in soft irq context.
+-    AbsolutePinnedSoft,
+-    /// Timer expires after the given expiration time interpreted as a duration from now.
+-    /// Timer does not move between CPU cores.
+-    /// Timer handler is executed in soft irq context.
+-    RelativePinnedSoft,
+-    /// Timer expires at the given expiration time.
+-    /// Timer handler is executed in hard irq context.
+-    AbsoluteHard,
+-    /// Timer expires after the given expiration time interpreted as a duration from now.
+-    /// Timer handler is executed in hard irq context.
+-    RelativeHard,
+-    /// Timer expires at the given expiration time.
+-    /// Timer does not move between CPU cores.
+-    /// Timer handler is executed in hard irq context.
+-    AbsolutePinnedHard,
+-    /// Timer expires after the given expiration time interpreted as a duration from now.
+-    /// Timer does not move between CPU cores.
+-    /// Timer handler is executed in hard irq context.
+-    RelativePinnedHard,
++kernel::bitfield_options! {
++    name: HrTimerMode,
++    type: bindings::hrtimer_mode,
++    options: [
++        {name: relative,
++            true: bindings::hrtimer_mode_HRTIMER_MODE_REL,
++            false: bindings::hrtimer_mode_HRTIMER_MODE_ABS
++        },
++        {name: pinned,
++            true: bindings::hrtimer_mode_HRTIMER_MODE_PINNED,
++            false: 0},
++        {name: hard,
++            true: bindings::hrtimer_mode_HRTIMER_MODE_HARD,
++            false: bindings::hrtimer_mode_HRTIMER_MODE_SOFT}
++    ]
+ }
+ 
+ impl From<HrTimerMode> for bindings::hrtimer_mode {
+     fn from(value: HrTimerMode) -> Self {
+-        use bindings::*;
+-        match value {
+-            HrTimerMode::Absolute => hrtimer_mode_HRTIMER_MODE_ABS,
+-            HrTimerMode::Relative => hrtimer_mode_HRTIMER_MODE_REL,
+-            HrTimerMode::Pinned => hrtimer_mode_HRTIMER_MODE_PINNED,
+-            HrTimerMode::Soft => hrtimer_mode_HRTIMER_MODE_SOFT,
+-            HrTimerMode::Hard => hrtimer_mode_HRTIMER_MODE_HARD,
+-            HrTimerMode::AbsolutePinned => hrtimer_mode_HRTIMER_MODE_ABS_PINNED,
+-            HrTimerMode::RelativePinned => hrtimer_mode_HRTIMER_MODE_REL_PINNED,
+-            HrTimerMode::AbsoluteSoft => hrtimer_mode_HRTIMER_MODE_ABS_SOFT,
+-            HrTimerMode::RelativeSoft => hrtimer_mode_HRTIMER_MODE_REL_SOFT,
+-            HrTimerMode::AbsolutePinnedSoft => hrtimer_mode_HRTIMER_MODE_ABS_PINNED_SOFT,
+-            HrTimerMode::RelativePinnedSoft => hrtimer_mode_HRTIMER_MODE_REL_PINNED_SOFT,
+-            HrTimerMode::AbsoluteHard => hrtimer_mode_HRTIMER_MODE_ABS_HARD,
+-            HrTimerMode::RelativeHard => hrtimer_mode_HRTIMER_MODE_REL_HARD,
+-            HrTimerMode::AbsolutePinnedHard => hrtimer_mode_HRTIMER_MODE_ABS_PINNED_HARD,
+-            HrTimerMode::RelativePinnedHard => hrtimer_mode_HRTIMER_MODE_REL_PINNED_HARD,
+-        }
++        use kernel::bitfield::BitField;
++        value.bits()
+     }
+ }
+ 
 
-base-commit: e2a81c0cd7de6cb063058be304b18f200c64802b
+---
+base-commit: b9a6cbc3bad5eaf0e413c9487d8a0f2d3309bf0c
+change-id: 20250127-bitfield-option-hrtimer-7ece9f179b1d
+prerequisite-change-id: 20241017-hrtimer-v3-v6-12-rc2-215dc6b169bf:v6
+prerequisite-patch-id: 23d01479b2ab6b48af65eb681817c753f2b36874
+prerequisite-patch-id: 407fc78a43b558f7c6d9cde9a7bf211a06185afb
+prerequisite-patch-id: d8f3138d942b3ebfa3549cf54f6bb1c522401ba9
+prerequisite-patch-id: 11beab205013c97d7e9a686352b1359910b5938b
+prerequisite-patch-id: 84bfb19dfd05dba3aac82b4f2b0031cf6aee8566
+prerequisite-patch-id: fada7846a89465ac08b4ab049f9bc626abc27589
+prerequisite-patch-id: 526e62d0d80535f4c1b2edb62ee8b7a0f6d86f78
+prerequisite-patch-id: 201342b1c7635b147218cefdeded3bc326f59503
+prerequisite-patch-id: 271bb7aa324adcf71bdc3c8fcfaefa269ed8ab74
+prerequisite-patch-id: 75c30cfa3e81a8d4895567c16aa0b279616d0bdd
+prerequisite-patch-id: 68c2afbd51b25083614b2d963b6d32cbb3c3bb9a
+prerequisite-patch-id: 37d31228bd445445dbb1baa23ea83ab1e5c7a47b
+prerequisite-patch-id: fa49bf80231519c5397367f2d9467f3c28868620
+prerequisite-patch-id: d1c5ffd588712325a3372dd4f582ace4debd594d
+prerequisite-change-id: 20241108-add-bitfield-options-macro-a847b39910aa:v2
+prerequisite-patch-id: 7db40a5cde7387419cd346305da28e2c4932eca1
+
+Best regards,
 -- 
-2.47.1
+Timothy Garwood <gtimothy-dev@protonmail.com>
+
 
