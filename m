@@ -1,86 +1,105 @@
-Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584731E22E6
-	for <rust-for-linux@vger.kernel.org>; Tue, 28 Jan 2025 21:24:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.51.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E58B7DA62;
+	Tue, 28 Jan 2025 22:00:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738099460; cv=none; b=EV7KAnjk+pvH7PY2CGMpxc9edVeb74K1Orvt4oMbz68Xh212JrE5JbBvzF0a1ixy/xEH6nhikhvFrybFl1TVSbHdH7F71m/xNyrUhR41vsSPj1AHs1szAdECx0mmuaM/EBh009laSUAn3w0ZO5KAWkdCPosaVuI3blZe4ngDuKI=
+	t=1738101638; cv=none; b=c4eROsWI1ISiOaQqsugVTe4J3m6lJwOXyiNBTs0xhxLBFdZgslzx30tSk4KFJ3slhpZIebX0VnQ26hzdF2AsjzeH7v/bFhW8Hi+xFQIZzNc3etxU0nk28/AIRoykqXjF2/IZkYv6CiWXfbBF6OYzVtUQ9FXuct3Ije2s3JDFMqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738099460; c=relaxed/simple;
-	bh=17s8GiGuXLHbRXZp9Yjq3vbc43VWuO/HTZOO3jqGc54=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gID6RkjQrldsieCnUrXB87TTPEVQRMotJsLlqECS/2Adh0DkIYyOmH81HiBpmXnM5ql4cegxJqCTbZ3X/9UxsD99A4fXyZJ1SKSvs17jXegN29GlRA47mfPZocAWWH3sSnR1Gc4xlZ4J4wWwiKFgeX4v6XE9sG/g9MIIdSuLMSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=ZHppgl1B; arc=none smtp.client-ip=188.165.51.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1738101638; c=relaxed/simple;
+	bh=K3IpmpA/0XtW8uajzPlonLjj8/7xI4zjBUZlYnqQ4+0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=X5ZxTM8speEVQKfSmGGOuH1i0gwfrkzzlAyKA/u+54/+VOiqiZy89sCsSX3DZfQWYV5e7HlHH+RdUloFsxDWNUweJxKMsW/bVQJQAQFMnSiIzTV2wIOaCuX6DnuoTJrZgluCWPTpncIP32bfTFu6T6xRz4MV5i9NMZvC7AF8X04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dcOdMIcX; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="ZHppgl1B"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1738099449; x=1738358649;
-	bh=17s8GiGuXLHbRXZp9Yjq3vbc43VWuO/HTZOO3jqGc54=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=ZHppgl1B6VpFXCDY6KNjv4oz0XMlH8KhB53X4Y/WvH2UnnOxSz3gUw+RjugPs6FtT
-	 CArW1k31CnTA3XjUj1/vzIsf7OAARdW6hA9f+GJRy0CaXTdJr5ExUwvXBIBXahrCTJ
-	 HtoOKajYg2FU0nFm0ef6eCGC5dGCEG1nXrA35DrEARBMEG99QaY8h22cRAzkN3qK2D
-	 oi9baMa5HktMuFBsesTC38XszQSOoj6RWfsC85C/2jSbR2lqlyGsk8EeeD/JV5LVzF
-	 YIaXCGkl5Xc11l1jnkK41/1UCXUL7Mj9WmNdyUJ3AdodPbvTmNY694nfI6pPc+uDlr
-	 TLSKrSV8VwXyQ==
-Date: Tue, 28 Jan 2025 21:24:03 +0000
-To: Daniel Sedlak <daniel@sedlak.dev>
-From: Timothy Garwood <gtimothy-dev@protonmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH RFC WIP v2] rust: add bitfield_options macro to create bitfield wrapper types
-Message-ID: <pm2SERyezYBsg6ObyoVI8L-aNe4GrIxxp7gEfrBPnOhtx3JNnaQrUXsNTq8sh9lumoPjlI2qwZ2edpEgyV3JxbBqIU9JWHPmaUJT_MosuFs=@protonmail.com>
-In-Reply-To: <79283554-ce12-4812-be1d-af8b420c1053@sedlak.dev>
-References: <20250128-add-bitfield-options-macro-v2-1-d65349b389fc@protonmail.com> <79283554-ce12-4812-be1d-af8b420c1053@sedlak.dev>
-Feedback-ID: 126901959:user:proton
-X-Pm-Message-ID: 7857eb443fc4fa2a5c6350de758b14e37a924f1c
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dcOdMIcX"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2f7d35de32dso1445893a91.3;
+        Tue, 28 Jan 2025 14:00:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738101636; x=1738706436; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=K3IpmpA/0XtW8uajzPlonLjj8/7xI4zjBUZlYnqQ4+0=;
+        b=dcOdMIcXAFhxTtmNrlJJ2fjztjikWMdhY57ZInTG3kGHMCgpSC2GDXpMS2tjoc/wuQ
+         sMYSjCQkb51dxLT9dw9++5SlTjoH4gJcFMK8of/oatXd0Wy7qCFjt77nO3NHMPeRVpmv
+         +KEIJQ2mHpw+dHAruJi/wObvWIxjaZf+ONXF93c9FGPYcRmMvtkDKHYmqj1NIMJUlG5u
+         EhaaUe3H4IbPdr5j/+iPysWUvsJUMH3QSARVLp9EN2WLq8Lej3qPIZMj3T0PIk34O10e
+         g5yRMp0lpk7EjX2NbecT24+KGeHXox9PN+TBCazh+x1THthRP2J+LVo3rsntflm+0Eio
+         OB+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738101636; x=1738706436;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=K3IpmpA/0XtW8uajzPlonLjj8/7xI4zjBUZlYnqQ4+0=;
+        b=LEG9m3oho4kbULgr3k4gNYWuJ/rH8VZAsZhPbpuRvMPHHFcaQtw9RHB/r1ER87XPQI
+         uRHYwO8zgKlTUUZlODLI7AyrWOS4xr7DsDr5BU8ADoRZ6Z8ywHluMpCccASVO6vaxb97
+         5mG+iVsoQ/OyaY++kmo+caTuGL+zG+OL66rnZzFgzI8g2uUa6wUeGftfTmegzxK91XOR
+         MqxhIHJ+cCR0S97a3J19orJcz9frrk4cBhyII4DDP2JW63N+NBHMpm8Z1mXm0bl7LDjy
+         DPPawq4bK7OYbT/f4ctoLX3vdCHoP0tz5NkSG+h+YW6821oINheEVu2WNF/+QLIjDQ9B
+         p4Ng==
+X-Forwarded-Encrypted: i=1; AJvYcCU0MnkJcvpDslDQGW9iH37ba9/bB2mlzGyP9Q4VK3QpE8nAw9lawNpIIJ88vcf1ktqMN3gDFVS8oY4acT4=@vger.kernel.org, AJvYcCUpS2FCfDQJaSOO5VUX0o4VOp03kjcXc8ys81tgmyf5KgQflNpWBYrKM8r7y5VWKRl5PkcWyj7PaBKgGSXO4qQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YynDFIm//VOQN00lwMPdXcrB6+i68410UWREO/igE5ATOWOHFbx
+	IFOgtJaOg2+9vM87wslQlmOc1uET787vTyEQVhqHg7zZp+hLX0RuDSt4v9uzQpiYboBCDHjvyx5
+	KPf/gAxRYvJW7Aqpi/JMS/uHYf1A=
+X-Gm-Gg: ASbGncvmiHnHw6NAktzVRoui4Jr8vwDb8elwVtwrObqFFfr/5aEW4pxNxYtmDGau7cE
+	RCf+KLaPPfxtqCMReAOfIW3JYseUJ4vz/9D7OAqInBNFw2cKRBiHhBQforzx7sM3m4J9SfLqWng
+	==
+X-Google-Smtp-Source: AGHT+IHs2ZX6b3auzA+0oDctgslq9X0ArW7qsE48hPm7QycjwKQqq+429G037h17KwD4BrKWROo+ZKpSMK40TBy8pCg=
+X-Received: by 2002:a17:90b:280d:b0:2f2:f6e5:d28e with SMTP id
+ 98e67ed59e1d1-2f83ac5e878mr344222a91.3.1738101636640; Tue, 28 Jan 2025
+ 14:00:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20250128-bitfield-option-hrtimer-v1-1-31033d8e727f@protonmail.com>
+ <CANiq72n96fJScyVr5eWrfTu8WE9dWXNoyTaLr-CuFj30E57RdQ@mail.gmail.com> <Gv30E9TnyGo2GTh5Z9xnxBXcr3jYGFBmgG2JwkEsCq0X4kHuaPrH_T6cq3iTSzf70fubE7CbJl_OghSPUurylDVQYVzPnoEntilzNv_CSHI=@protonmail.com>
+In-Reply-To: <Gv30E9TnyGo2GTh5Z9xnxBXcr3jYGFBmgG2JwkEsCq0X4kHuaPrH_T6cq3iTSzf70fubE7CbJl_OghSPUurylDVQYVzPnoEntilzNv_CSHI=@protonmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 28 Jan 2025 23:00:23 +0100
+X-Gm-Features: AWEUYZl4iDL1I_JenoDS_bD8FQEdpw4TJAHN0AxkTvZAw1oHzgwOwHV2_FhoPyE
+Message-ID: <CANiq72=JU5yXnQemmuM0Vnp8NKNO2H+LcmtzzMU4Xn9tBMduJg@mail.gmail.com>
+Subject: Re: [PATCH RFC] rust: HrTimerMode replacement with bitfield_options macro
+To: Timothy Garwood <gtimothy-dev@protonmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
+On Tue, Jan 28, 2025 at 10:23=E2=80=AFPM Timothy Garwood
+<gtimothy-dev@protonmail.com> wrote:
+>
+> Even if this patch depends on something ([2]) the "real patch" does not d=
+epend on?
 
-> What I think is actually missing is an another patch integrating this or
-> showing usage of this somewhere, for example in samples/drivers.
+I think it is fine, as long as it is clearly mentioned that it is
+meant as expository only.
 
-I did just that here: [1]
-Link: https://lore.kernel.org/rust-for-linux/20250128-add-bitfield-options-=
-macro-v2-1-d65349b389fc@protonmail.com [1]
+If dependencies are an issue, another option that may give you more
+freedom is simply replying to the original patch with the extra one,
+so that they are linked at least in the same thread.
 
-Maybe I should have made a second patch in this series instead of a new=20
-series but since this usage example depends on the HrTimer patch series I
-thought it best to separate. I am new here though, so I may very well be=20
-wrong about that.
-[1] depended on this v2 so I could not reference it in the v2, I think. I
-will reference it in the v3.
+> I forgot one [1] reference for the first link. I'll fix it.
 
+Ah, what I meant is that some of the text is line-wrapped, i.e. the
+newline breaks are a bit strangely positioned in the main text and
+e.g. after the `Link:` tags there are newlines that should not be
+there.
 
-> Missing period at the end.
-Will fix, thanks.
+> Thank you Miguel,
 
-> Capitalization of the first word.
+You're welcome!
 
-Will fix thanks.
-
-> This might be opinionated, but it may be better to use positional
-> parameters [1] as it is not that noisy to read in the source code.
-
-I have no opinion on this, I'll make the change for readability.
-
-> > +///```rust
-> The rust is implicit.
-
-I'll remove them all then.
-
-Thank you Daniel,
-Timothy
-
-
+Cheers,
+Miguel
