@@ -1,601 +1,273 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70CB51D6DA3;
-	Tue, 28 Jan 2025 15:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A0C19DF52
+	for <rust-for-linux@vger.kernel.org>; Tue, 28 Jan 2025 16:53:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738079353; cv=none; b=AStL+QvCrIJe6uRY4gSMu87azJAhQxlb5AWHRin9TVsqiBWBhjDe7D0MhgDbryMmQDhT/iCXqaMwlKWVVW2pgIXilAmSgzmkzbg/GQ8M5tyeAVM6PGukFOpfOKhjazHPfvTsOBmyWoo8otbE+ikjHpNVTGF1e1eT/nuN5QU8ctg=
+	t=1738083189; cv=none; b=kA04aPEyOyCir99cPVqOT7/MiW8i0baoO7cUmK0k3j3y55wXRQMqxAhFbXIgjGLtiSzJ07jODRS19v9TKSEsNwsGLMCaqV0b1mJiLucHtlgyGDgNxJMuEBlAJZa/tyJBr+KslivHfcGbZgCw6pyjqCtPu4ecm8cE+mk7gJqs58I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738079353; c=relaxed/simple;
-	bh=lIwRBOGWbHdbvEjd2ghUBFo2smpXeuLW9dv5GSfTM7A=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Q9fnmsKrcFvO6IfY/Qn87S63wRbG0s9/Cf3n420XBwYhD9jrQ6jyPin7+MFj//Mdsf0N3YMGax5PV9sKddoQpqB8xOm5JRU3kC1KLAfVrcyAYfUZhgAmxfRf6mcuz1Uef+vjhpvWtijAU5hGyGoG8E66iHlQz/CY5C+x24CxhwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jMJA0+g5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738083189; c=relaxed/simple;
+	bh=DGnLa4qX3ukiHQE83taK5RMIPqnr49me7oQUk6T2Az8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iXhHt9h4ZrBEwk9cCYOZRt6Lb6baEtC5KRrAwLtoCJ/+4bbSD08L716MbWMy1/6JyOS/bpzhCl+LVvbdx7Aq7KFXQOgetSLZfGQeWW3YnX2P4MHpAMlbDdheAm3vHkpJk5w/pE9i62uqK+igUQyLxaj9uswL+/WOpUbzxV4oQ1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aNWjImFu; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jMJA0+g5"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E0F6EC4CEDF;
-	Tue, 28 Jan 2025 15:49:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738079352;
-	bh=lIwRBOGWbHdbvEjd2ghUBFo2smpXeuLW9dv5GSfTM7A=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=jMJA0+g5tY0tjBbmFV9aESOMIN9Pmw/jExvNQ66o/S8cdbK2lhZuevuO9Pu4ZEtlF
-	 Ikqi/zHJNIrygMv43Iw9ruG6Kcm0kpH1y7xK9XRNeIYT31kvAkwV1TiWJP9FhSILAG
-	 2mpZH/W0xuDGXwbDEKVyjqVDWstdBFhYD5OyiNU55qHaYzO6FjGbTJRpfQ33ZWfzjJ
-	 qdHlkBDY3TS19eNdQAWIfG2VzwOBcoHlhCMtH0R4edH7cEDx41D19RKG3IKp+3fu0L
-	 KYuRIICC0Am17/stcjchx6ykTPOMxMkXlEuwPjofbVL2NRVrG6Yq7mNz8AZJopb16V
-	 3KLFuTljkFORg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C8746C02190;
-	Tue, 28 Jan 2025 15:49:12 +0000 (UTC)
-From: Timothy Garwood via B4 Relay <devnull+gtimothy-dev.protonmail.com@kernel.org>
-Date: Tue, 28 Jan 2025 16:48:18 +0100
-Subject: [PATCH RFC WIP v2] rust: add bitfield_options macro to create
- bitfield wrapper types
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aNWjImFu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1738083186;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bzZqdfWddQbHUECEg4094v75joFV9Fo55eFZWFq5P60=;
+	b=aNWjImFuHrbhRqRI3v0AuyqL/138k2EHz5U9VtqXyxihV+rbg8G9+9o4kVwc8/ZfUS7MKf
+	SAL5yUBGcBbzqvv3ycWxALCemZ6O0/OEqu1yiS7qAx5aED/zxI4kbkadRm80dXhKSea0Up
+	l4oLS4EgpFW4b14bHew4XnELbm5ANkg=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-493-LcYvOsPoOCiOQ_eDyL1zrg-1; Tue,
+ 28 Jan 2025 11:53:03 -0500
+X-MC-Unique: LcYvOsPoOCiOQ_eDyL1zrg-1
+X-Mimecast-MFC-AGG-ID: LcYvOsPoOCiOQ_eDyL1zrg
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A728318009C9;
+	Tue, 28 Jan 2025 16:53:01 +0000 (UTC)
+Received: from hydra.redhat.com (unknown [10.39.193.110])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 58FE230001BE;
+	Tue, 28 Jan 2025 16:52:57 +0000 (UTC)
+From: Jocelyn Falempe <jfalempe@redhat.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	=?UTF-8?q?Thomas=20B=C3=B6hler?= <witcher@wiredspace.de>,
+	rust-for-linux@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org
+Cc: Jocelyn Falempe <jfalempe@redhat.com>
+Subject: [PATCH v2] drm/panic: Better binary encoding in QR code
+Date: Tue, 28 Jan 2025 17:52:10 +0100
+Message-ID: <20250128165254.893204-1-jfalempe@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250128-add-bitfield-options-macro-v2-1-d65349b389fc@protonmail.com>
-X-B4-Tracking: v=1; b=H4sIAEH8mGcC/32NywrCMBREf6XctZEkfdi6EgTBnbhxIV3cJqm90
- DYlCUUp/XdjP8DVMMNhzgLeODIejskCzszkyY6xyF0CqsPxZRjp2EFymQnBS4Zas4ZCS6bXzE4
- h8p4NqJxlWGaHJq0qwREhHkzOtPTezp9wv5x/2+N6gzpmRz5Y99m8s9iIqMi5kPk/xSyYYNgWa
- Kq0KAvVnCZngx0HpH6v7AD1uq5f/bC2ONUAAAA=
-X-Change-ID: 20241108-add-bitfield-options-macro-a847b39910aa
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, 
- Timothy Garwood <gtimothy-dev@protonmail.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1738079350; l=18684;
- i=gtimothy-dev@protonmail.com; s=20250123; h=from:subject:message-id;
- bh=WQAJcDGLKe/OoYu6dkrvdXRnrr8OYrL9iesYH3b6znw=;
- b=D+ZDZFtW1Ds8UBThyKct0JchgM1IRhPoXDNKc9j0DnlFUqebW6NIcSg4vvEidtcszScHChvf2
- cJMzvfWOcpsAImpa8YSkmxnmcsaqDFOqeF2vEhzR0WnCz/+6zihzLBN
-X-Developer-Key: i=gtimothy-dev@protonmail.com; a=ed25519;
- pk=4MkQh/a3f6vfOYMYyJPEDyETzhXD/Sa4ZNZ/kAKxOOs=
-X-Endpoint-Received: by B4 Relay for gtimothy-dev@protonmail.com/20250123
- with auth_id=330
-X-Original-From: Timothy Garwood <gtimothy-dev@protonmail.com>
-Reply-To: gtimothy-dev@protonmail.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-From: Timothy Garwood <gtimothy-dev@protonmail.com>
+The current encoding, is done by converting 13bits of input into 4
+decimal digits, that are then encoded efficiently using the numeric
+encoding of the QR code specification.
+The Fido v2.2 specification [1] uses a similar approach for its
+QR-initiated authentication. The only difference is that it converts
+7 bytes (56bits) of input into 17 decimal digits. The benefit is that
+the algorithm doesn't require to split input bytes into 13bits chunk,
+and the ratio is a bit better.
+This improvement was proposed by Jó Ágila Bitsch in [2].
+drm_panic is still young, and the QR code feature is not widely used,
+so it's still time to switch to a common algorithm, shared with a
+widely used standard.
+I also changed the name of the url parameter, from zl= to z=, so the
+website can keep backward compatibility if needed.
 
-- implement a macro to generate a bitfield wrapper with macro-specified
-  methods to set and unset macro-specified flags.
-- introduce a Bitfield trait to access the field
+[1] https://fidoalliance.org/specs/fido-v2.2-rd-20230321/fido-client-to-authenticator-protocol-v2.2-rd-20230321.html#hybrid-qr-initiated
+[2] https://github.com/kdj0c/panic_report/issues/2
 
-The macro also generates a `Default` implementation for the wrapper
-type, which instantiates a wrapped bitfield as if created with all
-methods called with `false`.
-
-The macro also generates a `TryFrom<wrapped_bitfield>` implementation
-for the wrapper that prevents instantiating a bitfield wrapper with an
-invalid field.
-
-Signed-off-by: Timothy Garwood <gtimothy-dev@protonmail.com>
+Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
 ---
-Hello all,
 
-There was some discussion about handling bitfield C enums and
-bitfield-like C enums in a safe manner in the "Best way to handle
-enum/flags situation"[1] zulip discussion about the HRTIMER_MODE enum in
-`include/linux/hrtimer.h`.
-
-I will define *bitfield* as a bit set where
- - different flags set different bits (no overlap),
- - all flags are additive (there are no invalid combination of flags),
- - all flags are optional.
-
-I will define *bitfield-like* in the context of the HRTIMER_MODE
-bitfield-LIKE C enum as a bit set where:
- - different BASE flags set different bits (no overlap) but there are
-   aliases for some flag combinations, and some aliases are equal to a
-   base case (HRTIMER_MODE_ABS_PINNED == HRTIMER_MODE_PINNE because
-   HRTIMER_MODE_ABS==0x00),
- - not all flags are additive, there may invalid combination of flags:
-   - HRTIMER_MODE_SOFT and HRTIMER_MODE_HARD (if I am not mistaken)
-   - HRTIMER_MODE_ABS and HRTIMER_MODE_REL (though this one is mitigated
-     by the fact that ABS is 0x00 therefore ABS|REL==REL)
-
-Issues:
-As the case of HRTIMER_MODE shows, sometimes the valid and invalid
-combinations are not semantically incoded in the structure. In order to
-manipulate such a field safely in Rust, we can wrap it in a type
-that prevents the user from reaching an invalid bitfield state before we
-use it in C code.
-
-Additionally, 'well formed' bitfield C enums are not marked as such,
-distinguishing them from normal C enums in a way that would allow for a
-specific bindgen solution.
-
-Possible solutions:
- - C centered solution: refactor bitfield enums in the kernel to
-   respects the first definition and 'annotate them' in a way that would
-   allow a custom bindgen conversion to a Rust bitfield wrapper
- - Rust cented solution: define a rust macro that builds a bitfield
-   wrapper implementing flag setting methods like `std::fs::OpenOptions`
-   by taking as input some semantic information.
-   Call this macro by hand with the proper semantic information to use
-   that C enum in Rust.
-
-Here is a Rust macro solution that generate such a wrapper:
-1. It generates methods like OpenOptions' to set/unset flags.
-2. It handle invalid flag pairs by unsetting the one before setting the
-   other.
-3. It permits flags that set/unset more than one bit at a time (this may
-   be a mistake, but in case the C bitfield enum does it too).
-4. It implements the Default trait.
-5. It implements the TryFrom<field_type> trait to attempt instantiation
-   from a passed bitfield.
-
-I am requesting comments, any issues/suggestions? I have some questions
-myself:
- - should the macro take in a :
-   ```
-   <#optional_attributes>
-   <visibility> <wrapper_name>(<field_type>);
-   ```
-   instead of the current `name:<wrapper_name>` and `type:<field_type>`
-   entries?
-   It might be better since it allows one to decorate the wrapper with
-   desired attributes.
- - 3. may be a mistake. We could handle only single-bit flags and pass
-   the bit offset instead to the macro for each flag and its optional
-   counterflag.
- - I created a Bitfield trait providing a bits() function, but the
-   bits() function could also simply be part of the wrapper's impl.
-   Thoughts?
-
-Thanks in advance for any feedback,
-Timothy
-
-Link:
-https://rust-for-linux.zulipchat.com/#narrow/channel/291565-Help/topic/Best.20way.20to.20handle.20enum.2Fflags.20situation
-[1]
----
-Changes in v2:
-- removed a v1 question answered by Miguel Ojeda
-- fix code formatting and typos
-- added expanded macro section to the macro documentation
-- added Copy, Clone trait derivation on wrappers
-- changed commit authorship and Signed-off-by to a "known identity"
-- Link to v1:
-https://lore.kernel.org/r/20250125-add-bitfield-options-macro-v1-1-af6ae93686cb@protonmail.com
----
- rust/kernel/bitfield.rs | 396 ++++++++++++++++++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs      |   1 +
- 2 files changed, 397 insertions(+)
-
-diff --git a/rust/kernel/bitfield.rs b/rust/kernel/bitfield.rs
-new file mode 100644
-index 0000000000000000000000000000000000000000..d8ae33826359a37a9c9e4306eb55845e08aa0b00
---- /dev/null
-+++ b/rust/kernel/bitfield.rs
-@@ -0,0 +1,396 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Trait and macro to build bitfield wrappers.
-+//!
-+//! A trait and [`kernel::bitfield_options`] macro to build bitfield wrappers with
-+//! [`std::fs::OpenOptions`](https://doc.rust-lang.org/std/fs/struct.OpenOptions.html)-like methods to
-+//! set bits and _try to ensure an always-valid state_.
-+
-+/// A trait associating a bitfield type to a wrapper type to allow for shared trait implementations
-+/// and bitfield retrieval.
-+pub trait BitField {
-+    /// The bitfield type, usually `u8` or `u32`
-+    type Bits;
-+
-+    /// returns the bits stored by the wrapper.
-+    fn bits(&self) -> Self::Bits;
-+}
-+
-+/// concatenate sequences using a comma separator. Uses a a `, and` (oxford comma) separation
-+/// instead between the last two items.
-+#[doc(hidden)]
-+#[macro_export]
-+macro_rules! concat_with_oxford_comma {
-+    ($last:expr) => (concat!("and ", $last));
-+    ($left:expr, $($right:expr),+ ) => (
-+        concat!($left, ", ", $crate::concat_with_oxford_comma!($($right),+))
-+    )
-+}
-+
-+/// Builds a bitfield wrapper with
-+/// [`std::fs::OpenOptions`](https://doc.rust-lang.org/std/fs/struct.OpenOptions.html)-like methods to
-+/// set bits.
-+///
-+/// This wrapper _tries to ensure an always-valid state_, even when created from a bitfield
-+/// directly.
-+///
-+/// The wrapper implements the [`BitField`] trait.
-+///
-+/// # argument types
-+///   - `name`: the name of the wrapper to build.
-+///   - `type`: the bit field type, usually `u32` or `u8`. Must be an int primitive.
-+///   - `options`: array of `{ name:ident, true:expr, false:expr }` options where name is the name
-+///     of a method that will set the `true:expr` bit(s) when called with `true` or else the
-+///     `false:expr` bit(s). In a standard bitfield, `false:expr` is set to `false:0`, but sometimes
-+///     different bit flags designate incompatible alternatives : in these cases, set `false` to
-+///     activate the alternative bit(s).
-+///
-+/// # Examples
-+///
-+/// Call the macro to create the bitflag wrapper.
-+///
-+/// Here we create a wrapper that allows to set `RED`, `BLUE`, `GREEN` bits independently,
-+/// and additionally either the `BIG` bit or the `SMALL` bit.
-+///
-+/// `BIG` and `SMALL` are incompatible alternatives.
-+///
-+/// ```rust
-+/// use kernel::bitfield_options;
-+///
-+/// const BIG: u32 = 16;
-+/// const SMALL: u32 = 1;
-+///
-+/// const RED: u32 = 2;
-+/// const GREEN: u32 = 4;
-+/// const BLUE: u32 = 8;
-+///
-+/// bitfield_options! {
-+///     name: SizeAndColors,
-+///     type: u32,
-+///     options: [
-+///         {name:big, true:BIG, false:SMALL},
-+///         {name:red, true:RED, false:0u32},
-+///         {name:blue, true:BLUE, false:0u32},
-+///         {name:green, true:GREEN, false:0u32}
-+///     ]
-+/// };
-+/// ```
-+///
-+/// The `SizeAndColor` type is now available in this scope.
-+///
-+/// It implements the [`Default`] trait where all options are set to `false`:
-+///
-+/// ```rust
-+/// # use kernel::bitfield_options;
-+/// # use kernel::bitfield::BitField; // to have access to the bits() method
-+/// #
-+/// # const BIG: u32 = 16;
-+/// # const SMALL: u32 = 1;
-+/// #
-+/// # const RED: u32 = 2;
-+/// # const GREEN: u32 = 4;
-+/// # const BLUE: u32 = 8;
-+/// #
-+/// # bitfield_options! {
-+/// #     name: SizeAndColors,
-+/// #     type: u32,
-+/// #     options: [
-+/// #         {name:big, true:BIG, false:SMALL},
-+/// #         {name:red, true:RED, false:0u32},
-+/// #         {name:blue, true:BLUE, false:0u32},
-+/// #         {name:green, true:GREEN, false:0u32}
-+/// #     ]
-+/// # };
-+/// let sac = SizeAndColors::default();
-+///
-+/// // the default state, with all the options set to false should be the field with only the
-+/// // `SMALL` bit(s) set
-+/// assert_eq!(
-+///     sac.bits(),
-+///     SMALL | 0u32 | 0u32 | 0u32)
-+/// ```
-+///
-+/// It implements the [`TryFrom`] trait which succeeds only if the passed bitfield is a valid state:
-+///
-+/// ```rust
-+/// # use kernel::bitfield_options;
-+/// #
-+/// # const BIG: u32 = 16;
-+/// # const SMALL: u32 = 1;
-+/// #
-+/// # const RED: u32 = 2;
-+/// # const GREEN: u32 = 4;
-+/// # const BLUE: u32 = 8;
-+/// #
-+/// # bitfield_options! {
-+/// #     name: SizeAndColors,
-+/// #     type: u32,
-+/// #     options: [
-+/// #         {name:big, true:BIG, false:SMALL},
-+/// #         {name:red, true:RED, false:0u32},
-+/// #         {name:blue, true:BLUE, false:0u32},
-+/// #         {name:green, true:GREEN, false:0u32}
-+/// #     ]
-+/// # };
-+/// # let sac = SizeAndColors::default();
-+/// let small_and_no_colors = SizeAndColors::try_from(SMALL)
-+///    .expect("having only the SMALL bit to 1 should be a valid state");
-+///
-+/// // Having only the `SMALL` bit set to 1 is the default state.
-+/// assert_eq!(sac, small_and_no_colors);
-+///
-+/// let big_and_rgb = SizeAndColors::try_from(BIG | RED | GREEN | BLUE)
-+///     .expect("having the BIG, RED, GREEN and BLUE bits set to 1 should be a valid state");
-+///
-+/// assert_eq!(
-+///     SizeAndColors::default()
-+///         .big(true)
-+///         .red(true)
-+///         .blue(true)
-+///         .green(true),
-+///     big_and_rgb
-+/// );
-+///
-+/// let big_and_small = SizeAndColors::try_from(BIG | SMALL)
-+///     .expect_err("BIG and SMALL are incompatible, this should fail");
-+///
-+/// let intense:u32 = 1024;
-+/// let big_and_intense = SizeAndColors::try_from(BIG | intense)
-+///     .expect_err("BIG|intense is not a valid state, this should fail");
-+/// ```
-+///
-+/// To achieve this, the macro expands to this:
-+///
-+/// ```ignore
-+/// # use kernel::bitfield_options;
-+/// #
-+/// # const BIG: u32 = 16;
-+/// # const SMALL: u32 = 1;
-+/// #
-+/// # const RED: u32 = 2;
-+/// # const GREEN: u32 = 4;
-+/// # const BLUE: u32 = 8;
-+/// #[doc = concat!("A wrapper around a `",stringify!(u32),
-+/// "` bitfield that sets bitflags using its ",crate::concat_with_oxford_comma!(
-+/// concat!("[`",stringify!(big),"`](",stringify!(SizeAndColors),"::",stringify!(big),")"),
-+/// concat!("[`",stringify!(red),"`](",stringify!(SizeAndColors),"::",stringify!(red),")"),
-+/// concat!("[`",stringify!(blue),"`](",stringify!(SizeAndColors),"::",stringify!(blue),")"),
-+/// concat!("[`",stringify!(green),"`](",stringify!(SizeAndColors),"::",stringify!(green),")")),
-+/// " methods.")]
-+/// #[derive(Debug, PartialEq)]
-+/// pub struct SizeAndColors(u32);
-+///
-+/// impl crate::bitfield::BitField for SizeAndColors {
-+///     type Bits = u32;
-+///     fn bits(&self) -> Self::Bits {
-+///         self.0
-+///     }
-+/// }
-+/// impl SizeAndColors {
-+///     #[doc = concat!("if `true`, unsets the `",stringify!(SMALL),
-+///     "` bit(s) and sets the `",stringify!(BIG),"` bit(s).  ")]
-+///     #[doc = "Otherwise, does the opposite."]
-+///     pub fn big(mut self, big: bool) -> Self {
-+///         if big {
-+///             self.0 = self.0 & !SMALL | BIG;
-+///         } else {
-+///             self.0 = self.0 & !BIG | SMALL;
-+///         }
-+///         self
-+///     }
-+///     #[doc = concat!("if `true`, unsets the `",stringify!(0u32),
-+///     "` bit(s) and sets the `",stringify!(RED),"` bit(s).  ")]
-+///     #[doc = "Otherwise, does the opposite."]
-+///     pub fn red(mut self, red: bool) -> Self {
-+///         if red {
-+///             self.0 = self.0 & !0u32 | RED;
-+///         } else {
-+///             self.0 = self.0 & !RED | 0u32;
-+///         }
-+///         self
-+///     }
-+///     #[doc = concat!("if `true`, unsets the `",stringify!(0u32),
-+///     "` bit(s) and sets the `",stringify!(BLUE),"` bit(s).  ")]
-+///     #[doc = "Otherwise, does the opposite."]
-+///     pub fn blue(mut self, blue: bool) -> Self {
-+///         if blue {
-+///             self.0 = self.0 & !0u32 | BLUE;
-+///         } else {
-+///             self.0 = self.0 & !BLUE | 0u32;
-+///         }
-+///         self
-+///     }
-+///     #[doc = concat!("if `true`, unsets the `",stringify!(0u32),
-+///     "` bit(s) and sets the `",stringify!(GREEN),"` bit(s).  ")]
-+///     #[doc = "Otherwise, does the opposite."]
-+///     pub fn green(mut self, green: bool) -> Self {
-+///         if green {
-+///             self.0 = self.0 & !0u32 | GREEN;
-+///         } else {
-+///             self.0 = self.0 & !GREEN | 0u32;
-+///         }
-+///         self
-+///     }
-+/// }
-+/// impl Default for SizeAndColors {
-+///     fn default() -> Self {
-+///         Self(0).big(false).red(false).blue(false).green(false)
-+///     }
-+/// }
-+/// impl TryFrom<<SizeAndColors as crate::bitfield::BitField>::Bits> for SizeAndColors {
-+///     type Error = <SizeAndColors as crate::bitfield::BitField>::Bits;
-+///     fn try_from(
-+///         value: <SizeAndColors as crate::bitfield::BitField>::Bits,
-+///     ) -> Result<Self, Self::Error> {
-+///         let mut to_process = value.clone();
-+///         let mut matched = false;
-+///         for flag in [BIG, SMALL] {
-+///             if (flag & to_process) == flag {
-+///                 matched = true;
-+///                 to_process -= flag;
-+///                 if flag > 0 {
-+///                     break;
-+///                 }
-+///             }
-+///         }
-+///         if !matched {
-+///             return Err(value);
-+///         }
-+///         matched = false;
-+///         for flag in [RED, 0u32] {
-+///             if (flag & to_process) == flag {
-+///                 matched = true;
-+///                 to_process -= flag;
-+///                 if flag > 0 {
-+///                     break;
-+///                 }
-+///             }
-+///         }
-+///         if !matched {
-+///             return Err(value);
-+///         }
-+///         matched = false;
-+///         for flag in [BLUE, 0u32] {
-+///             if (flag & to_process) == flag {
-+///                 matched = true;
-+///                 to_process -= flag;
-+///                 if flag > 0 {
-+///                     break;
-+///                 }
-+///             }
-+///         }
-+///         if !matched {
-+///             return Err(value);
-+///         }
-+///         matched = false;
-+///         for flag in [GREEN, 0u32] {
-+///             if (flag & to_process) == flag {
-+///                 matched = true;
-+///                 to_process -= flag;
-+///                 if flag > 0 {
-+///                     break;
-+///                 }
-+///             }
-+///         }
-+///         if !matched {
-+///             return Err(value);
-+///         }
-+///         if to_process == 0 {
-+///             return Ok(Self(value));
-+///         }
-+///         return Err(value);
-+///     }
-+/// }
-+/// ```
-+#[macro_export]
-+macro_rules! bitfield_options {{
-+    name:$name:ident,
-+    type:$t:ty,
-+    options:[
-+        $({name:$fn_name:ident, true: $true_bitval:expr, false: $false_bitval:expr}),+
-+]} => {
-+    #[doc = concat!("A wrapper around a `",
-+        stringify!($t),
-+        "` bitfield that sets bitflags using its ",
-+        $crate::concat_with_oxford_comma!(
-+        $(concat!("[`",
-+            stringify!($fn_name),
-+            "`](",
-+            stringify!($name),
-+            "::",
-+            stringify!($fn_name),
-+            ")")
-+        ),+),
-+        " methods.")]
-+    #[derive(Clone, Copy, Debug, PartialEq)]
-+    pub struct $name($t);
-+
-+    impl $crate::bitfield::BitField for $name {
-+        type Bits = $t;
-+
-+        fn bits(&self) -> Self::Bits {
-+            self.0
-+        }
-+    }
-+
-+    impl $name {
-+    $(
-+        #[doc = concat!("if `true`, unsets the `",
-+            stringify!($false_bitval),
-+            "` bit(s) and sets the `",
-+            stringify!($true_bitval),
-+            "` bit(s).  "
-+        )]
-+        #[doc = "Otherwise, does the opposite."]
-+        pub fn $fn_name(mut self, $fn_name:bool)->Self{
-+            if $fn_name{
-+                self.0 = self.0 & !$false_bitval | $true_bitval;
-+            }else{
-+                self.0 = self.0 & !$true_bitval | $false_bitval;
-+            }
-+            self
-+        }
-+    )+
-+    }
-+
-+    impl Default for $name{
-+        fn default() -> Self {
-+            Self(0)$(.$fn_name(false))+
-+        }
-+    }
-+
-+    impl TryFrom<<$name as $crate::bitfield::BitField>::Bits> for $name {
-+        type Error = <$name as $crate::bitfield::BitField>::Bits;
-+
-+        fn try_from(value: <$name as $crate::bitfield::BitField>::Bits) -> Result<Self, Self::Error>
-+        {
-+            let mut to_process = value.clone();
-+
-+            let mut $(
-+            matched = false;
-+
-+            for flag in [$true_bitval, $false_bitval] {
-+                if (flag & to_process) == flag {
-+                    matched = true;
-+                    to_process -= flag;
-+                    if flag > 0 {
-+                        break;
-+                    }
-+                }
-+            }
-+            if !matched {
-+                return Err(value);
-+            })+
-+
-+
-+            if to_process == 0 {
-+                return Ok(Self(value));
-+            }
-+            return Err(value)
-+        }
-+    }
-+
-+    };
-+}
-+#[doc(inline)]
-+pub use bitfield_options;
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 545d1170ee6358e185b48ce10493fc61c646155c..2428a55dca09d3c75153ccfe135a3d1dae77862e 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -31,6 +31,7 @@
- pub use ffi;
+v2:
+ * Add comments for the SegmentIterator numeric encoding. 
  
- pub mod alloc;
-+pub mod bitfield;
- #[cfg(CONFIG_BLOCK)]
- pub mod block;
- #[doc(hidden)]
+ 
+ drivers/gpu/drm/drm_panic.c     |   2 +-
+ drivers/gpu/drm/drm_panic_qr.rs | 108 +++++++++++---------------------
+ 2 files changed, 36 insertions(+), 74 deletions(-)
 
----
-base-commit: ceff0757f5dafb5be5205988171809c877b1d3e3
-change-id: 20241108-add-bitfield-options-macro-a847b39910aa
+diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
+index f128d345b16d..ab42a2b1567d 100644
+--- a/drivers/gpu/drm/drm_panic.c
++++ b/drivers/gpu/drm/drm_panic.c
+@@ -499,7 +499,7 @@ static int drm_panic_get_qr_code_url(u8 **qr_image)
+ 	char *kmsg;
+ 	int max_qr_data_size, url_len;
+ 
+-	url_len = snprintf(url, sizeof(url), CONFIG_DRM_PANIC_SCREEN_QR_CODE_URL "?a=%s&v=%s&zl=",
++	url_len = snprintf(url, sizeof(url), CONFIG_DRM_PANIC_SCREEN_QR_CODE_URL "?a=%s&v=%s&z=",
+ 			   utsname()->machine, utsname()->release);
+ 
+ 	max_qr_data_size = drm_panic_qr_max_data_size(panic_qr_version, url_len);
+diff --git a/drivers/gpu/drm/drm_panic_qr.rs b/drivers/gpu/drm/drm_panic_qr.rs
+index 09500cddc009..477de4101c3e 100644
+--- a/drivers/gpu/drm/drm_panic_qr.rs
++++ b/drivers/gpu/drm/drm_panic_qr.rs
+@@ -13,12 +13,13 @@
+ //! The binary data must be a valid URL parameter, so the easiest way is
+ //! to use base64 encoding. But this wastes 25% of data space, so the
+ //! whole stack trace won't fit in the QR code. So instead it encodes
+-//! every 13bits of input into 4 decimal digits, and then uses the
++//! every 7 bytes of input into 17 decimal digits, and then uses the
+ //! efficient numeric encoding, that encode 3 decimal digits into
+-//! 10bits. This makes 39bits of compressed data into 12 decimal digits,
+-//! into 40bits in the QR code, so wasting only 2.5%. And the numbers are
++//! 10bits. This makes 168bits of compressed data into 51 decimal digits,
++//! into 170bits in the QR code, so wasting only 1.17%. And the numbers are
+ //! valid URL parameter, so the website can do the reverse, to get the
+-//! binary data.
++//! binary data. This is the same algorithm used by Fido v2.2 QR-initiated
++//! authentication specification.
+ //!
+ //! Inspired by these 3 projects, all under MIT license:
+ //!
+@@ -26,7 +27,6 @@
+ //! * <https://github.com/erwanvivien/fast_qr>
+ //! * <https://github.com/bjguillot/qr>
+ 
+-use core::cmp;
+ use kernel::str::CStr;
+ 
+ #[derive(Debug, Clone, Copy, PartialEq, Eq, Ord, PartialOrd)]
+@@ -296,35 +296,11 @@ fn version_info(&self) -> u32 {
+ /// Padding bytes.
+ const PADDING: [u8; 2] = [236, 17];
+ 
+-/// Get the next 13 bits of data, starting at specified offset (in bits).
+-fn get_next_13b(data: &[u8], offset: usize) -> Option<(u16, usize)> {
+-    if offset < data.len() * 8 {
+-        let size = cmp::min(13, data.len() * 8 - offset);
+-        let byte_off = offset / 8;
+-        let bit_off = offset % 8;
+-        // `b` is 20 at max (`bit_off` <= 7 and `size` <= 13).
+-        let b = (bit_off + size) as u16;
+-
+-        let first_byte = (data[byte_off] << bit_off >> bit_off) as u16;
+-
+-        let number = match b {
+-            0..=8 => first_byte >> (8 - b),
+-            9..=16 => (first_byte << (b - 8)) + (data[byte_off + 1] >> (16 - b)) as u16,
+-            _ => {
+-                (first_byte << (b - 8))
+-                    + ((data[byte_off + 1] as u16) << (b - 16))
+-                    + (data[byte_off + 2] >> (24 - b)) as u16
+-            }
+-        };
+-        Some((number, size))
+-    } else {
+-        None
+-    }
+-}
+-
+ /// Number of bits to encode characters in numeric mode.
+ const NUM_CHARS_BITS: [usize; 4] = [0, 4, 7, 10];
+-const POW10: [u16; 4] = [1, 10, 100, 1000];
++/// Number of decimal digits required to encode n bytes of binary data.
++/// eg: you need 15 decimal digits to fit 6 bytes of binary data.
++const BYTES_TO_DIGITS: [usize; 8] = [0, 3, 5, 8, 10, 13, 15, 17];
+ 
+ enum Segment<'a> {
+     Numeric(&'a [u8]),
+@@ -360,13 +336,9 @@ fn character_count(&self) -> usize {
+         match self {
+             Segment::Binary(data) => data.len(),
+             Segment::Numeric(data) => {
+-                let data_bits = data.len() * 8;
+-                let last_chars = match data_bits % 13 {
+-                    1 => 1,
+-                    k => (k + 1) / 3,
+-                };
+-                // 4 decimal numbers per 13bits + remainder.
+-                4 * (data_bits / 13) + last_chars
++                let last_chars = BYTES_TO_DIGITS[data.len() % 7];
++                // 17 decimal numbers per 7bytes + remainder.
++                17 * (data.len() / 7) + last_chars
+             }
+         }
+     }
+@@ -403,7 +375,7 @@ fn iter(&self) -> SegmentIterator<'_> {
+ struct SegmentIterator<'a> {
+     segment: &'a Segment<'a>,
+     offset: usize,
+-    carry: u16,
++    carry: u64,
+     carry_len: usize,
+ }
+ 
+@@ -422,40 +394,30 @@ fn next(&mut self) -> Option<Self::Item> {
+                 }
+             }
+             Segment::Numeric(data) => {
+-                if self.carry_len == 3 {
+-                    let out = (self.carry, NUM_CHARS_BITS[self.carry_len]);
+-                    self.carry_len = 0;
+-                    self.carry = 0;
+-                    Some(out)
+-                } else if let Some((bits, size)) = get_next_13b(data, self.offset) {
+-                    self.offset += size;
+-                    let new_chars = match size {
+-                        1 => 1,
+-                        k => (k + 1) / 3,
+-                    };
+-                    if self.carry_len + new_chars > 3 {
+-                        self.carry_len = new_chars + self.carry_len - 3;
+-                        let out = (
+-                            self.carry * POW10[new_chars - self.carry_len]
+-                                + bits / POW10[self.carry_len],
+-                            NUM_CHARS_BITS[3],
+-                        );
+-                        self.carry = bits % POW10[self.carry_len];
+-                        Some(out)
+-                    } else {
+-                        let out = (
+-                            self.carry * POW10[new_chars] + bits,
+-                            NUM_CHARS_BITS[self.carry_len + new_chars],
+-                        );
+-                        self.carry_len = 0;
+-                        Some(out)
++                if self.carry_len < 3 && self.offset < data.len() {
++                    // If there are less than 3 decimal digits in the carry,
++                    // take the next 7 bytes of input, and add them to the carry.
++                    let mut buf = [0u8; 8];
++                    let len = 7.min(data.len() - self.offset);
++                    buf[..len].copy_from_slice(&data[self.offset..self.offset + len]);
++                    let chunk = u64::from_le_bytes(buf);
++                    let pow = u64::pow(10, BYTES_TO_DIGITS[len] as u32);
++                    self.carry = chunk + self.carry * pow;
++                    self.offset += len;
++                    self.carry_len += BYTES_TO_DIGITS[len];
++                }
++                match self.carry_len {
++                    0 => None,
++                    len => {
++                        // take the next 3 decimal digits of the carry
++                        // and return 10bits of numeric data.
++                        let out_len = 3.min(len);
++                        self.carry_len -= out_len;
++                        let pow = u64::pow(10, self.carry_len as u32);
++                        let out = (self.carry / pow) as u16;
++                        self.carry = self.carry % pow;
++                        Some((out, NUM_CHARS_BITS[out_len]))
+                     }
+-                } else if self.carry_len > 0 {
+-                    let out = (self.carry, NUM_CHARS_BITS[self.carry_len]);
+-                    self.carry_len = 0;
+-                    Some(out)
+-                } else {
+-                    None
+                 }
+             }
+         }
 
-Best regards,
+base-commit: e2a81c0cd7de6cb063058be304b18f200c64802b
 -- 
-Timothy Garwood <gtimothy-dev@protonmail.com>
-
+2.47.1
 
