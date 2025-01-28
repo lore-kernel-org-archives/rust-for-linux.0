@@ -1,44 +1,47 @@
 Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBC919D8A2;
-	Tue, 28 Jan 2025 10:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F981991CA;
+	Tue, 28 Jan 2025 10:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738060668; cv=none; b=KgfAvwSw+LzlDWAC6lEDWL0QV9tVbdsSl3hY3fHCOLYMsJE5GpecVLMdiTWJ9YUHfYv29i9vdsDCSS/KykVUhF/d2yyy0CaWmyOJfjGkrrSR7ZoCkpa9Bv1d0isAEYNVe/lxbLET9UWm7TTcIJebRMqJmzEpS3bmbkPRJfzilXo=
+	t=1738061396; cv=none; b=CRZUGIfm4krWGWx6ynfppc07XH3mM7agUCDC5m8Cdze0Go6/Grg9AtWONgYxiXRZLI45n9tnTo5ybWSDTrQLEXUI4cWjS+7EH9TNd/rJMl3fXWWipwDfvY1VrDomOGEEouchk1soWkfRqr0WpGkqOVPm/v+ucG5P9vsSKPV7nNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738060668; c=relaxed/simple;
-	bh=J5/Vx9QGK/5guF29mxCjOCY3nClAAPUBwwr9t9b2Ts8=;
+	s=arc-20240116; t=1738061396; c=relaxed/simple;
+	bh=tQhZVViOKdYJwmJY9BFxJKbUw0FsxPZQFp5vTBlEyIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tutlhXW/J1vOtvUxcJtIdtjWllLgEP7wVIT1GNdP9SLWCuG9azAnRa0jriZP8rqwniqw64CBwC5Fv7ikLZJZdyPUAD4cdVWpdFS40SZe5n1NqVr9N9EwP+BdYJXI8uVpaodrw3vQyfiRS8XxoZYmMuonYKU6HprhCxN0ZQXOTt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=WHGNPrCL; arc=none smtp.client-ip=49.12.72.200
+	 MIME-Version:Content-Type; b=VWSMXP/wJHSPiwrMfLIFcoxW2vqFOFgEgQES1VRncw7a+nk35hBtnaSBCJzq4D76worr72FNJxa2O0NLDcyd1V03K+eG2gup2ttJvVGnI/f6TFwj7A+YFwkAMidcgnVbguhK0nnc0KYq6WqC/TYyyGMtCHaLVcQbgt729fB/FBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=h46/7Sbw; arc=none smtp.client-ip=49.12.72.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="WHGNPrCL"
+	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="h46/7Sbw"
 From: Fiona Behrens <me@kloenk.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1738060663; bh=wllYclaLxUYQNyuG1jr38OF3SHspdtratLV3VjnhYdU=;
+	t=1738061390; bh=Sk5hqTOZF0xdzUDKdnW0ug8ercxLESQwOxYtUVWbC6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WHGNPrCL/J2vpGe7lXoQK7IR7druK4V6JSkL8CSuOXUIINzXZEgxLboSUKdHYItsZ
-	 7SFbC1nQiQdT67lwZspLEqDlfN6UrWC7Dd0GOjPVU5iGW5OTJx65VLHDtdv7XXbgDs
-	 Ro50G4d1/0Cbpqk9ssuPoQFnb2Cw2CGIK8iS8bG8=
+	b=h46/7SbwWDW8a1VN0JXa3K525yqCrz1dBJFFA0Tk+xtL/tbi8KD9ysQC/oO2aFQaV
+	 HsNqK8RCTev7lsuql9phKG+vC9LqEptSjfXikyt5K6Vbo60IhKcTw80jwKI/Q0WRGR
+	 c7VzRmom8qrDv5uNjSc/Q8eOEROW/T+AV/BEQTQg=
 To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
- tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com,
- aliceryhl@google.com, anna-maria@linutronix.de, frederic@kernel.org,
- tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
- mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
- vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
- bsegall@google.com, mgorman@suse.de, vschneid@redhat.com, tgunders@redhat.com
-Subject: Re: [PATCH v9 5/8] rust: time: Add wrapper for fsleep() function
-Date: Tue, 28 Jan 2025 11:37:41 +0100
-Message-ID: <EED019B1-8DEB-43BF-8F59-1A71520F5ABB@kloenk.dev>
-In-Reply-To: <20250125101854.112261-6-fujita.tomonori@gmail.com>
-References: <20250125101854.112261-1-fujita.tomonori@gmail.com>
- <20250125101854.112261-6-fujita.tomonori@gmail.com>
+Cc: gary@garyguo.net, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, andrew@lunn.ch,
+ hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
+ alex.gaynor@gmail.com, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, aliceryhl@google.com, anna-maria@linutronix.de,
+ frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de, jstultz@google.com,
+ sboyd@kernel.org, mingo@redhat.com, peterz@infradead.org,
+ juri.lelli@redhat.com, vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+ rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
+ vschneid@redhat.com, tgunders@redhat.com
+Subject: Re: [PATCH v9 7/8] rust: Add read_poll_timeout functions
+Date: Tue, 28 Jan 2025 11:49:48 +0100
+Message-ID: <64335523-D12A-4E65-9518-64FC08C26D39@kloenk.dev>
+In-Reply-To: <20250128.152957.202492012529466658.fujita.tomonori@gmail.com>
+References: <20250127114646.6ad6d65f@eugeo>
+ <20250127.153147.1789884009486719687.fujita.tomonori@gmail.com>
+ <20250128084937.2927bab9@eugeo>
+ <20250128.152957.202492012529466658.fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -50,114 +53,128 @@ Content-Transfer-Encoding: quoted-printable
 
 
 
-On 25 Jan 2025, at 11:18, FUJITA Tomonori wrote:
+On 28 Jan 2025, at 7:29, FUJITA Tomonori wrote:
 
-> Add a wrapper for fsleep(), flexible sleep functions in
-> include/linux/delay.h which typically deals with hardware delays.
+> On Tue, 28 Jan 2025 08:49:37 +0800
+> Gary Guo <gary@garyguo.net> wrote:
 >
-> The kernel supports several sleep functions to handle various lengths
-> of delay. This adds fsleep(), automatically chooses the best sleep
-> method based on a duration.
+>> On Mon, 27 Jan 2025 15:31:47 +0900 (JST)
+>> FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
+>>
+>>> On Mon, 27 Jan 2025 11:46:46 +0800
+>>> Gary Guo <gary@garyguo.net> wrote:
+>>>
+>>>>> +#[track_caller]
+>>>>> +pub fn read_poll_timeout<Op, Cond, T: Copy>(
+>>>>> +    mut op: Op,
+>>>>> +    mut cond: Cond,
+>>>>> +    sleep_delta: Delta,
+>>>>> +    timeout_delta: Delta,
+>>>>> +) -> Result<T>
+>>>>> +where
+>>>>> +    Op: FnMut() -> Result<T>,
+>>>>> +    Cond: FnMut(&T) -> bool,
+>>>>> +{
+>>>>> +    let start =3D Instant::now();
+>>>>> +    let sleep =3D !sleep_delta.is_zero();
+>>>>> +    let timeout =3D !timeout_delta.is_zero();
+>>>>> +
+>>>>> +    if sleep {
+>>>>> +        might_sleep(Location::caller());
+>>>>> +    }
+>>>>> +
+>>>>> +    loop {
+>>>>> +        let val =3D op()?;
+>>>>> +        if cond(&val) {
+>>>>> +            // Unlike the C version, we immediately return.
+>>>>> +            // We know the condition is met so we don't need to ch=
+eck again.
+>>>>> +            return Ok(val);
+>>>>> +        }
+>>>>> +        if timeout && start.elapsed() > timeout_delta {
+>>>>
+>>>> Re-reading this again I wonder if this is the desired behaviour? May=
+be
+>>>> a timeout of 0 should mean check-once instead of no timeout. The
+>>>> special-casing of 0 makes sense in C but in Rust we should use `None=
+`
+>>>> to mean it instead?
+>>>
+>>> It's the behavior of the C version; the comment of this function says=
+:
+>>>
+>>> * @timeout_us: Timeout in us, 0 means never timeout
+>>>
+>>> You meant that waiting for a condition without a timeout is generally=
+
+>>> a bad idea? If so, can we simply return EINVAL for zero Delta?
+>>>
+>>
+>> No, I think we should still keep the ability to represent indefinite
+>> wait (no timeout) but we should use `None` to represent this rather
+>> than `Delta::ZERO`.
+>>
+>> I know that we use 0 to mean indefinite wait in C, I am saying that
+>> it's not the most intuitive way to represent in Rust.
+>>
+>> Intuitively, a timeout of 0 should be closer to a timeout of 1 and thu=
+s
+>> should mean "return with ETIMEDOUT immedidately" rather than "wait
+>> forever".
+>>
+>> In C since we don't have a very good sum type support, so we
+>> special case 0 to be the special value to represent indefinite wait,
+>> but I don't think we need to repeat this in Rust.
 >
-> sleep functions including fsleep() belongs to TIMERS, not
-> TIMEKEEPING. They are maintained separately. rust/kernel/time.rs is an
-> abstraction for TIMEKEEPING. To make Rust abstractions match the C
-> side, add rust/kernel/time/delay.rs for this wrapper.
+> Understood, thanks. How about the following code?
 >
-> fsleep() can only be used in a nonatomic context. This requirement is
-> not checked by these abstractions, but it is intended that klint [1]
-> or a similar tool will be used to check it in the future.
->
-> Link: https://rust-for-linux.com/klint [1]
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-
-One question below, but fine with this as well
-
-Reviewed-by: Fiona Behrens <me@kloenk.dev>
-
-> ---
->  rust/helpers/helpers.c    |  1 +
->  rust/helpers/time.c       |  8 +++++++
->  rust/kernel/time.rs       |  2 ++
->  rust/kernel/time/delay.rs | 49 +++++++++++++++++++++++++++++++++++++++=
-
->  4 files changed, 60 insertions(+)
->  create mode 100644 rust/helpers/time.c
->  create mode 100644 rust/kernel/time/delay.rs
->
-(..)
-> diff --git a/rust/kernel/time/delay.rs b/rust/kernel/time/delay.rs
-> new file mode 100644
-> index 000000000000..02b8731433c7
-> --- /dev/null
-> +++ b/rust/kernel/time/delay.rs
-> @@ -0,0 +1,49 @@
-> +// SPDX-License-Identifier: GPL-2.0
+> +#[track_caller]
+> +pub fn read_poll_timeout<Op, Cond, T: Copy>(
+> +    mut op: Op,
+> +    mut cond: Cond,
+> +    sleep_delta: Delta,
+> +    timeout_delta: Option<Delta>,
+> +) -> Result<T>
+> +where
+> +    Op: FnMut() -> Result<T>,
+> +    Cond: FnMut(&T) -> bool,
+> +{
+> +    let start =3D Instant::now();
+> +    let sleep =3D !sleep_delta.is_zero();
 > +
-> +//! Delay and sleep primitives.
-> +//!
-> +//! This module contains the kernel APIs related to delay and sleep th=
-at
-> +//! have been ported or wrapped for usage by Rust code in the kernel.
-> +//!
-> +//! C header: [`include/linux/delay.h`](srctree/include/linux/delay.h)=
-=2E
+> +    if sleep {
+> +        might_sleep(Location::caller());
+> +    }
 > +
-> +use super::Delta;
-> +use crate::ffi::c_ulong;
-> +
-> +/// Sleeps for a given duration at least.
-> +///
-> +/// Equivalent to the C side [`fsleep()`], flexible sleep function,
-> +/// which automatically chooses the best sleep method based on a durat=
-ion.
-> +///
-> +/// `delta` must be within `[0, i32::MAX]` microseconds;
-> +/// otherwise, it is erroneous behavior. That is, it is considered a b=
-ug
-> +/// to call this function with an out-of-range value, in which case th=
-e function
-> +/// will sleep for at least the maximum value in the range and may war=
-n
-> +/// in the future.
-> +///
-> +/// The behavior above differs from the C side [`fsleep()`] for which =
-out-of-range
-> +/// values mean "infinite timeout" instead.
-> +///
-> +/// This function can only be used in a nonatomic context.
-> +///
-> +/// [`fsleep`]: https://docs.kernel.org/timers/delay_sleep_functions.h=
-tml#c.fsleep
-> +pub fn fsleep(delta: Delta) {
-> +    // The maximum value is set to `i32::MAX` microseconds to prevent =
-integer
-> +    // overflow inside fsleep, which could lead to unintentional infin=
-ite sleep.
-> +    const MAX_DELTA: Delta =3D Delta::from_micros(i32::MAX as i64);
-> +
-> +    let delta =3D if (Delta::ZERO..=3DMAX_DELTA).contains(&delta) {
-> +        delta
-> +    } else {
-> +        // TODO: Add WARN_ONCE() when it's supported.
-> +        MAX_DELTA
-> +    };
-
-Did you try that with std::cmp::Ord you derived on Delta? This `.contains=
-` looks a bit weird, maybe it also works with `delta <=3D MAX_DELTA`?
-
-> +
-> +    // SAFETY: It is always safe to call `fsleep()` with any duration.=
-
-> +    unsafe {
-> +        // Convert the duration to microseconds and round up to preser=
-ve
-> +        // the guarantee; `fsleep()` sleeps for at least the provided =
-duration,
-> +        // but that it may sleep for longer under some circumstances.
-> +        bindings::fsleep(delta.as_micros_ceil() as c_ulong)
+> +    loop {
+> +        let val =3D op()?;
+> +        if cond(&val) {
+> +            // Unlike the C version, we immediately return.
+> +            // We know the condition is met so we don't need to check =
+again.
+> +            return Ok(val);
+> +        }
+> +        if let Some(timeout_delta) =3D timeout_delta {
+> +            if start.elapsed() > timeout_delta {
+> +                // Unlike the C version, we immediately return.
+> +                // We have just called `op()` so we don't need to call=
+ it again.
+> +                return Err(ETIMEDOUT);
+> +            }
+> +        }
+> +        if sleep {
+> +            fsleep(sleep_delta);
+> +        }
+> +        // fsleep() could be busy-wait loop so we always call cpu_rela=
+x().
+> +        cpu_relax();
 > +    }
 > +}
-> -- =
 
-> 2.43.0
+I wonder if it makes sense to then switch `Delta` to wrap a  `NonZeroI64`=
+ and forbid deltas with 0 nanoseconds with that and use the niche optimiz=
+ation. Not sure if we make other apis horrible by that, but this would pr=
+event deltas that encode no time passing.
+
+Thanks,
+Fiona
