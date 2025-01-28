@@ -1,68 +1,94 @@
-Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAA74D51C;
-	Tue, 28 Jan 2025 10:18:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738059520; cv=none; b=GKuR0oLaR+9Wae5EM4AXZwuIOqKbz1TJWTaGmOt3GUhhYPyjQzvc3rc80cpu3lrO3zzBknQyWy7YzxPNCyhPYFd64ZdTHSTIyE4E8UHGY6/C2GpnpJCWVWaOWsehj74m9deznY/ucduw+nkQzurucJQeYPburTU2RQi09JpVlv8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738059520; c=relaxed/simple;
-	bh=nbgNh2ka8IGioFY5l48FKQbMi5djBS7+tJU1H8GW7bg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sUzm7UlVAo+pIkePWf3VvnvxprNa6zl/lwpFFyY8leuL4i/kArvI7UFFP0Y3YzA0PTbDKActV0lQ6p7e69T31a5oB84fQIq5kAn6+72Xi3kDyQ7w+4XtoW56W7WKRMeB2kon5f2sJaPQOTCAi2wVRYI5ELHcec2UTV2YuiWLS5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=XxHz6jj5; arc=none smtp.client-ip=49.12.72.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F751917D8;
+	Tue, 28 Jan 2025 10:23:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738059810; cv=pass; b=ntx2onRNTfOaqvRwujiIoF3/amEjbajOz13bz8a/icOb+g0cv/dsxBgKhvhF3afbFleVGfE2m0vkUebhXXRgNprZxUHNMaULuOxO2LO3RKRZkLCoAvUWKIJi+fCYdsC2NKmK9xlsZnveZ9q3a+TZKSvtLVBeQ0iUrXScW39YzbE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738059810; c=relaxed/simple;
+	bh=OUlEzlN8rKsfzxO3bFje5k5NF7SE7FqfKjk0K+uX7EA=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=A4YazCIbpC0ca1ZBQ2Lf/6HOm4yfhaJJKy1FufPY6WrE2FD/O2XrLmneJ2gh1Y6xjSb65tPn+J5+WM6gYH9B6TOZE6dA30ej83YNRUog28QbHQNxXCEi5TtWf1jGz49VFQGnghSxgVVLtEshtREFYDkEjJnLPZ+M1CBiN5+8Pdg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=ZtON5QEE; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="XxHz6jj5"
-From: Fiona Behrens <me@kloenk.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1738059505; bh=nbgNh2ka8IGioFY5l48FKQbMi5djBS7+tJU1H8GW7bg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XxHz6jj5E3xJe5oXjFMWqxaHRMaup2u9uWcuPIRmBVd8WjIORJUGHJz3akkUXyqJW
-	 beId+c5/O2KmW8ClJLesAvYb/gHQHC6PIgNIC/PowJvnE/Jdp3v3cDoY9NFQ8H24e2
-	 F/ElPgkGE807lPntharF9gueap923/L/t/44/YtY=
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: linux-kernel@vger.kernel.org, Trevor Gross <tmgross@umich.edu>,
- Alice Ryhl <aliceryhl@google.com>, Gary Guo <gary@garyguo.net>,
- rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, andrew@lunn.ch,
- hkallweit1@gmail.com, ojeda@kernel.org, alex.gaynor@gmail.com,
- bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com,
- anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
- arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
- peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
- dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
- mgorman@suse.de, vschneid@redhat.com, tgunders@redhat.com
-Subject: Re: [PATCH v9 2/8] rust: time: Add PartialEq/Eq/PartialOrd/Ord trait
- to Ktime
-Date: Tue, 28 Jan 2025 11:18:23 +0100
-Message-ID: <7E7757E3-03BE-4110-A099-5D16ECD34C55@kloenk.dev>
-In-Reply-To: <20250125101854.112261-3-fujita.tomonori@gmail.com>
-References: <20250125101854.112261-1-fujita.tomonori@gmail.com>
- <20250125101854.112261-3-fujita.tomonori@gmail.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="ZtON5QEE"
+ARC-Seal: i=1; a=rsa-sha256; t=1738059778; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=SBshQv91bgNHPBl637MI6poPuAtao2suvvDSb/lC3ozRQ5yJ3DfI3XtUelQcEYTNd+lY2yr4x7W7Zc7mrrgl4PNTnEXEhZ/J4lTVOGcH1s0tXwvMpZOHM0oKfzxk+gGivTXufaFaGKnKe1YP/MUFY+N3fyvZ1SjaPgzFWPaPNQA=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1738059778; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=OUlEzlN8rKsfzxO3bFje5k5NF7SE7FqfKjk0K+uX7EA=; 
+	b=IMc5jjs+zveduvd/4fwbDfKNqzD/d+mfNYnN2ikd/qyb8HHseIe0VawK6P3QN7N9OzOlBkgalwPbZqXPAC2Scgyp2NN0WkpgEPuFZLPFZMurDsQPUJiLhtR7DSPnzEp0Pvvq1ZVm1TJWPFQMJanolT3ebPLyDtEzs5DGsPKL+Qo=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1738059778;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=OUlEzlN8rKsfzxO3bFje5k5NF7SE7FqfKjk0K+uX7EA=;
+	b=ZtON5QEExXQHPfDFqfXB4RtSYH6o2FENnGXNMGidH81DZ29rCqinru2WuhXvEXru
+	Dc1gRQFJ2mN/fDJhk+3+pugwWxip8NTB4+u1VS5YeAwQeAabW+OSqQvlDqI94ZW1HW/
+	zfGkDoPiIz40v3PZdqdsl7rPwH9ESJgzPlqtdT4c=
+Received: by mx.zohomail.com with SMTPS id 1738059771363954.1193914927703;
+	Tue, 28 Jan 2025 02:22:51 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
+Subject: Re: [PATCH v11 2/3] rust: add dma coherent allocator abstraction.
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <CAH5fLgiW6n82hMhbmJ-ynd6329mEDFX6TzxXQZaaoG47HAWWcA@mail.gmail.com>
+Date: Tue, 28 Jan 2025 07:22:35 -0300
+Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ rust-for-linux@vger.kernel.org,
+ dakr@kernel.org,
+ robin.murphy@arm.com,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Valentin Obst <kernel@valentinobst.de>,
+ open list <linux-kernel@vger.kernel.org>,
+ Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ airlied@redhat.com,
+ "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <95382414-7A44-45A4-8F3F-C6D755422AD5@collabora.com>
+References: <20250123104333.1340512-1-abdiel.janulgue@gmail.com>
+ <20250123104333.1340512-3-abdiel.janulgue@gmail.com>
+ <CAH5fLgjL0aGGwkjEfXH08Jopwin1NfkLzp9vQWKcHPEum8jV4g@mail.gmail.com>
+ <0E0FC88B-95C0-4DBE-B497-AF9101BACE70@collabora.com>
+ <CAH5fLgiW6n82hMhbmJ-ynd6329mEDFX6TzxXQZaaoG47HAWWcA@mail.gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+X-Mailer: Apple Mail (2.3826.300.87.4.3)
+X-ZohoMailClient: External
+
+Alice,
+
+>=20
+> The difference is exactly that - you reduce the amount of data copied
+> to just the size of the field.
+>=20
+> Alice
+>=20
 
 
+Is your idea to have that *in addition* to the safe methods?
 
-On 25 Jan 2025, at 11:18, FUJITA Tomonori wrote:
+How does it work when you want to read a T at a time?
 
-> Add PartialEq/Eq/PartialOrd/Ord trait to Ktime so two Ktime instances
-> can be compared to determine whether a timeout is met or not.
->
-> Use the derive implements; we directly touch C's ktime_t rather than
-> using the C's accessors because it is more efficient and we already do
-> in the existing code (Ktime::sub).
->
-> Reviewed-by: Trevor Gross <tmgross@umich.edu>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-
-Reviewed-by: Fiona Behrens <me@kloenk.dev>
+=E2=80=94 Daniel=
