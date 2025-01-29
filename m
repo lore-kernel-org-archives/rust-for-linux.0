@@ -1,105 +1,105 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E58B7DA62;
-	Tue, 28 Jan 2025 22:00:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F77911713;
+	Wed, 29 Jan 2025 04:40:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738101638; cv=none; b=c4eROsWI1ISiOaQqsugVTe4J3m6lJwOXyiNBTs0xhxLBFdZgslzx30tSk4KFJ3slhpZIebX0VnQ26hzdF2AsjzeH7v/bFhW8Hi+xFQIZzNc3etxU0nk28/AIRoykqXjF2/IZkYv6CiWXfbBF6OYzVtUQ9FXuct3Ije2s3JDFMqU=
+	t=1738125660; cv=none; b=LF7Zbwd/HnGeY7yJgpgc0F17NTtUpdJ0bE4UBDC2W/laZ5sNOWJCdPJBGZ1qJ4BJBLsvM9/TcLq383LO8t662A3L3p2klWE9kVo5ahkfdgePrYmnfBmM3ayEJOM3BFGge5uaWysbtBMr7X2EdTQk1laEyjJE3YW7W6bqpAtjp9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738101638; c=relaxed/simple;
-	bh=K3IpmpA/0XtW8uajzPlonLjj8/7xI4zjBUZlYnqQ4+0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X5ZxTM8speEVQKfSmGGOuH1i0gwfrkzzlAyKA/u+54/+VOiqiZy89sCsSX3DZfQWYV5e7HlHH+RdUloFsxDWNUweJxKMsW/bVQJQAQFMnSiIzTV2wIOaCuX6DnuoTJrZgluCWPTpncIP32bfTFu6T6xRz4MV5i9NMZvC7AF8X04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dcOdMIcX; arc=none smtp.client-ip=209.85.216.50
+	s=arc-20240116; t=1738125660; c=relaxed/simple;
+	bh=9hTWDT5tZoN7IJSXd2veTIW6OeAiotyAwa+Dmp9KGB8=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=RZZrTclpFCjX9t9Uc/LpirVNqYBK78CjvIZUpsNAQnAL0HGAqO0pTjVwi+M4Ogj6gITRRTlHCfvw69z0OQ+Jop3MdYgLmjQzMjGbDszijFt0sEWMqk5CuHU+riWI9lcPyLN4w2vBy+qanIO/0HJj/gFhV5pNjW9QyAYEcaO8C80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fywsztGn; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dcOdMIcX"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2f7d35de32dso1445893a91.3;
-        Tue, 28 Jan 2025 14:00:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fywsztGn"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2161eb94cceso77084685ad.2;
+        Tue, 28 Jan 2025 20:40:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738101636; x=1738706436; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=K3IpmpA/0XtW8uajzPlonLjj8/7xI4zjBUZlYnqQ4+0=;
-        b=dcOdMIcXAFhxTtmNrlJJ2fjztjikWMdhY57ZInTG3kGHMCgpSC2GDXpMS2tjoc/wuQ
-         sMYSjCQkb51dxLT9dw9++5SlTjoH4gJcFMK8of/oatXd0Wy7qCFjt77nO3NHMPeRVpmv
-         +KEIJQ2mHpw+dHAruJi/wObvWIxjaZf+ONXF93c9FGPYcRmMvtkDKHYmqj1NIMJUlG5u
-         EhaaUe3H4IbPdr5j/+iPysWUvsJUMH3QSARVLp9EN2WLq8Lej3qPIZMj3T0PIk34O10e
-         g5yRMp0lpk7EjX2NbecT24+KGeHXox9PN+TBCazh+x1THthRP2J+LVo3rsntflm+0Eio
-         OB+Q==
+        d=gmail.com; s=20230601; t=1738125657; x=1738730457; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9hTWDT5tZoN7IJSXd2veTIW6OeAiotyAwa+Dmp9KGB8=;
+        b=fywsztGnm/5llirySM4ES65mFC5DFZqOgvtB+EUWzBpvRA5FCxP+xB3yvsuufaLuRx
+         6Hjd0YXIttjghVB+9c1zTCJWHziO5uy332mSEk6UcJhT9q8EJF0XguYXpU0fzCd75FVy
+         y2gsAvTNSgISMqJ8cEEtSYiXpqc5P4+/eKUjbVLzThNBoHHZle2Sl+6OIFQypD9by8Wp
+         ollqIi8f5NlsINwn/15rFMNNmYbMvHscPpFVnCo2mBB0WskJXheKqlsXdfppsTRhrCCp
+         eD9U17ksIuUCwosgW8tmO65ILkrNY8vGhaQ+PS5V3bruQBmhMVs5FQ9jxTc8wbT9OPX8
+         kY5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738101636; x=1738706436;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=K3IpmpA/0XtW8uajzPlonLjj8/7xI4zjBUZlYnqQ4+0=;
-        b=LEG9m3oho4kbULgr3k4gNYWuJ/rH8VZAsZhPbpuRvMPHHFcaQtw9RHB/r1ER87XPQI
-         uRHYwO8zgKlTUUZlODLI7AyrWOS4xr7DsDr5BU8ADoRZ6Z8ywHluMpCccASVO6vaxb97
-         5mG+iVsoQ/OyaY++kmo+caTuGL+zG+OL66rnZzFgzI8g2uUa6wUeGftfTmegzxK91XOR
-         MqxhIHJ+cCR0S97a3J19orJcz9frrk4cBhyII4DDP2JW63N+NBHMpm8Z1mXm0bl7LDjy
-         DPPawq4bK7OYbT/f4ctoLX3vdCHoP0tz5NkSG+h+YW6821oINheEVu2WNF/+QLIjDQ9B
-         p4Ng==
-X-Forwarded-Encrypted: i=1; AJvYcCU0MnkJcvpDslDQGW9iH37ba9/bB2mlzGyP9Q4VK3QpE8nAw9lawNpIIJ88vcf1ktqMN3gDFVS8oY4acT4=@vger.kernel.org, AJvYcCUpS2FCfDQJaSOO5VUX0o4VOp03kjcXc8ys81tgmyf5KgQflNpWBYrKM8r7y5VWKRl5PkcWyj7PaBKgGSXO4qQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynDFIm//VOQN00lwMPdXcrB6+i68410UWREO/igE5ATOWOHFbx
-	IFOgtJaOg2+9vM87wslQlmOc1uET787vTyEQVhqHg7zZp+hLX0RuDSt4v9uzQpiYboBCDHjvyx5
-	KPf/gAxRYvJW7Aqpi/JMS/uHYf1A=
-X-Gm-Gg: ASbGncvmiHnHw6NAktzVRoui4Jr8vwDb8elwVtwrObqFFfr/5aEW4pxNxYtmDGau7cE
-	RCf+KLaPPfxtqCMReAOfIW3JYseUJ4vz/9D7OAqInBNFw2cKRBiHhBQforzx7sM3m4J9SfLqWng
-	==
-X-Google-Smtp-Source: AGHT+IHs2ZX6b3auzA+0oDctgslq9X0ArW7qsE48hPm7QycjwKQqq+429G037h17KwD4BrKWROo+ZKpSMK40TBy8pCg=
-X-Received: by 2002:a17:90b:280d:b0:2f2:f6e5:d28e with SMTP id
- 98e67ed59e1d1-2f83ac5e878mr344222a91.3.1738101636640; Tue, 28 Jan 2025
- 14:00:36 -0800 (PST)
+        d=1e100.net; s=20230601; t=1738125657; x=1738730457;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=9hTWDT5tZoN7IJSXd2veTIW6OeAiotyAwa+Dmp9KGB8=;
+        b=Di1F6jnLrE5Utj7jyDyDnx+qVOwFWaB0xlUsYyYy4+gUW9hwLILCbJINO69EEExCie
+         8rPlARe/hVDzQic9qfOwoznuYGLSYpeeN8QaYaB7Ea2I2fKJl4aljkXd3pUj5ESOF4h3
+         8vJJHNeQmMATH38XM5+RFqldojxte+fN9BlXKSKvIBb28AerXykC3rGunbSBzINpW8zI
+         P8qTT5tzFIlWTXtwdYhIx8yOzSYlPwY7zJg8GCJGTynXA2T1YHerDwhtG14afMvx5AoO
+         2uHWDM+GPhktzM0RKYOlMQaHhYelSChH1wFQ/QWJdGLw1U4QuEiGYGX8NtXGkH53oZc9
+         l7Zg==
+X-Forwarded-Encrypted: i=1; AJvYcCUp8bpVJ/GUuATbshSADLCpgIFKot9mSyvMhPCvulxa9LsIDzbCnII8swP7waZEiFbvjw4HDgoTl3HFDPUt5tI=@vger.kernel.org, AJvYcCW77q4Ocblx5x0neHyU8HURPruRS0vrjs+9Iopuf1xotqF9whaWfy6k8UgWm7jXN9Rt7E3ilWcQ@vger.kernel.org, AJvYcCX3po9F75y/4wMfgUYwogTOmYXQqA/8tYNunwdU/2D3W4ZwDljw0B5KDMuBxv9J5DgUUgI9SCmN7sZ/nik=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzljqStFUkIT935+brU4jPCSeUjdqE4cu0KnKdnIctrh+p9LplW
+	GC3/R7ehkRpblhPkFHtbObgU3VIBq1hwVtKgRS+VRIDmNmdVdI8U
+X-Gm-Gg: ASbGncvyPxpxhc04msBvJjML4FagP1P+vO7V34QHYXXGLtRJuEzJgOgf9/AVmDRxH/0
+	+rYWaaVnECyTVf1t8lvRWHaXUL0b/Q5b+FvzjFL9St8qAmsbx4B06pSL6xExWe3zPKjV/geo2Zf
+	vKJFqzRdgtmOqVnQ8QA4Hb0kkOeu4swHhkV9i6WC8mdtVHBjBM0gGJOI5ovzD2esD0jHbgAgcm/
+	hCOsED54qDDfMSO5y8FFgT3N+1XOCOmB4ZkLcJuSN5wywiWk6AxUkSNZZRkPEI9JC0Y3xSx1K6w
+	89pg3zNBatm+en+9B3hNnUGp6hAH+ae+YYJ5biA54+mtq5UpCr75Fgut9s8G8FEq/RyZPO2t
+X-Google-Smtp-Source: AGHT+IFXnX9BcuFhpIKUpiigcWp3gCrFBdezgQCqcE9OlA+W+SpKCBufXESy8+jfPYKBU/e3ww0TEQ==
+X-Received: by 2002:a17:903:41c6:b0:21a:8300:b9ce with SMTP id d9443c01a7336-21dd7e35fc3mr25280075ad.49.1738125657484;
+        Tue, 28 Jan 2025 20:40:57 -0800 (PST)
+Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21da414116asm90744045ad.129.2025.01.28.20.40.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Jan 2025 20:40:56 -0800 (PST)
+Date: Wed, 29 Jan 2025 13:40:47 +0900 (JST)
+Message-Id: <20250129.134047.2031182530235091102.fujita.tomonori@gmail.com>
+To: me@kloenk.dev
+Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, andrew@lunn.ch,
+ hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
+ alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com,
+ anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
+ arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
+ peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
+ dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com, tgunders@redhat.com
+Subject: Re: [PATCH v9 7/8] rust: Add read_poll_timeout functions
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <C466653B-D8DA-4176-8059-7FD60F76040E@kloenk.dev>
+References: <20250125101854.112261-1-fujita.tomonori@gmail.com>
+	<20250125101854.112261-8-fujita.tomonori@gmail.com>
+	<C466653B-D8DA-4176-8059-7FD60F76040E@kloenk.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250128-bitfield-option-hrtimer-v1-1-31033d8e727f@protonmail.com>
- <CANiq72n96fJScyVr5eWrfTu8WE9dWXNoyTaLr-CuFj30E57RdQ@mail.gmail.com> <Gv30E9TnyGo2GTh5Z9xnxBXcr3jYGFBmgG2JwkEsCq0X4kHuaPrH_T6cq3iTSzf70fubE7CbJl_OghSPUurylDVQYVzPnoEntilzNv_CSHI=@protonmail.com>
-In-Reply-To: <Gv30E9TnyGo2GTh5Z9xnxBXcr3jYGFBmgG2JwkEsCq0X4kHuaPrH_T6cq3iTSzf70fubE7CbJl_OghSPUurylDVQYVzPnoEntilzNv_CSHI=@protonmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 28 Jan 2025 23:00:23 +0100
-X-Gm-Features: AWEUYZl4iDL1I_JenoDS_bD8FQEdpw4TJAHN0AxkTvZAw1oHzgwOwHV2_FhoPyE
-Message-ID: <CANiq72=JU5yXnQemmuM0Vnp8NKNO2H+LcmtzzMU4Xn9tBMduJg@mail.gmail.com>
-Subject: Re: [PATCH RFC] rust: HrTimerMode replacement with bitfield_options macro
-To: Timothy Garwood <gtimothy-dev@protonmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=iso-8859-7
+Content-Transfer-Encoding: base64
 
-On Tue, Jan 28, 2025 at 10:23=E2=80=AFPM Timothy Garwood
-<gtimothy-dev@protonmail.com> wrote:
->
-> Even if this patch depends on something ([2]) the "real patch" does not d=
-epend on?
-
-I think it is fine, as long as it is clearly mentioned that it is
-meant as expository only.
-
-If dependencies are an issue, another option that may give you more
-freedom is simply replying to the original patch with the extra one,
-so that they are linked at least in the same thread.
-
-> I forgot one [1] reference for the first link. I'll fix it.
-
-Ah, what I meant is that some of the text is line-wrapped, i.e. the
-newline breaks are a bit strangely positioned in the main text and
-e.g. after the `Link:` tags there are newlines that should not be
-there.
-
-> Thank you Miguel,
-
-You're welcome!
-
-Cheers,
-Miguel
+T24gVHVlLCAyOCBKYW4gMjAyNSAxMTo1Mjo0MiArMDEwMA0KRmlvbmEgQmVocmVucyA8bWVAa2xv
+ZW5rLmRldj4gd3JvdGU6DQoNCj4+IGRpZmYgLS1naXQgYS9ydXN0L2tlcm5lbC9pby9wb2xsLnJz
+IGIvcnVzdC9rZXJuZWwvaW8vcG9sbC5ycw0KPj4gbmV3IGZpbGUgbW9kZSAxMDA2NDQNCj4+IGlu
+ZGV4IDAwMDAwMDAwMDAwMC4uN2E1MDNjZjY0M2ExDQo+PiAtLS0gL2Rldi9udWxsDQo+PiArKysg
+Yi9ydXN0L2tlcm5lbC9pby9wb2xsLnJzDQo+PiBAQCAtMCwwICsxLDc5IEBADQo+PiArLy8gU1BE
+WC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjANCj4+ICsNCj4+ICsvLyEgSU8gcG9sbGluZy4N
+Cj4+ICsvLyENCj4+ICsvLyEgQyBoZWFkZXI6IFtgaW5jbHVkZS9saW51eC9pb3BvbGwuaGBdKHNy
+Y3RyZWUvaW5jbHVkZS9saW51eC9pb3BvbGwuaCkuDQo+PiArDQo+PiArdXNlIGNyYXRlOjp7DQo+
+PiArICAgIGNwdTo6Y3B1X3JlbGF4LA0KPj4gKyAgICBlcnJvcjo6e2NvZGU6OiosIFJlc3VsdH0s
+DQo+PiArICAgIHRpbWU6OntkZWxheTo6ZnNsZWVwLCBEZWx0YSwgSW5zdGFudH0sDQo+PiArfTsN
+Cj4+ICsNCj4+ICt1c2UgY29yZTo6cGFuaWM6OkxvY2F0aW9uOw0KPj4gKw0KPj4gKy8vLyBQb2xs
+cyBwZXJpb2RpY2FsbHkgdW50aWwgYSBjb25kaXRpb24gaXMgbWV0IG9yIGEgdGltZW91dCBpcyBy
+ZWFjaGVkLg0KPj4gKy8vLw0KPj4gKy8vLyBQdWJsaWMgYnV0IGhpZGRlbiBzaW5jZSBpdCBzaG91
+bGQgb25seSBiZSB1c2VkIGZyb20gcHVibGljIG1hY3Jvcy4NCj4gDQo+IFRoaXMgc3RhdGVzIHRo
+ZSBmdW5jdGlvbiBzaG91bGQgYmUgaGlkZGVuLCBidXQgSSBkb26idCBzZWUgYSBgI1tkb2MoaGlk
+ZGVuKV1gIGluIGhlcmUgc28gYml0IGNvbmZ1c2VkIGJ5IHRoYXQgY29tbWVudCB3aGF0IHBhcnQg
+bm93IGlzIGhpZGRlbi4NCg0KT29wcywgdGhpcyBjb21tZW50IGlzIHRoZSBvbGRlciBpbXBsZW1l
+bnRhdGlvbjsgaXQgc2hvdWxkIGhhdmUgYmVlbg0KZGVsZXRlZC4gSSdsbCBmaXguDQoNCg0K
