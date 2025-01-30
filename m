@@ -1,176 +1,152 @@
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7CD1482E1;
-	Thu, 30 Jan 2025 21:14:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229DB19DF60
+	for <rust-for-linux@vger.kernel.org>; Thu, 30 Jan 2025 21:28:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738271674; cv=none; b=RvzEbwH+39bf01qWjvB6UVIHGAk0i3cdTRaiY+5zF93eDcUEwOepdJfG9EbGc1amRRf7l6t39fYt2bsRJHBSXHU4Gxq1KoXV2NrG2hPOUaNPNZ5VRQV05rlDOT+3zEsJgznZtyEtnn2Azo/K+UcgLDJBjaC0joRce7qA2GnpgPg=
+	t=1738272539; cv=none; b=O8tBheKuOsHLKxYsrHIUPCQN5UqoFwR9GKHDQzkW9VfBnPW0DZOLBtmfzAet8oxOuYaIp97lRBvHhXx8vt1YA8bJGZbmgf2Li7nKFOJ7DPkRjcozknr1XNoijFmq7gTcmHsuTqQ255jd36T6vzOb8GlqPjXcGxTj2GCug6S+jU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738271674; c=relaxed/simple;
-	bh=+2T0hd3zXQIgerMh8oTTU/0M6aj16vS3vzSpNL9Lt0s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EgapdOspdjJ2/hT3/IkkAyZAlKz0k+mYzbro38G0N5shiSBS1soKQipg5kBhTHq4PXC8/LBQu8wURDezrBtW9QOLTwjd54ax4EkCSJfxgriww4FJbjU4GD486N20alqXZB8EJpoxS3O43wKpbpAY5ZsTX3o5DqM0u+vSomZ11Xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ROdzVAGb; arc=none smtp.client-ip=209.85.222.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738272539; c=relaxed/simple;
+	bh=NqKvdpC7/h9M8fbWhxTLYpD/CXyBpPui9nmBSWL2bfQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lL5hU/hQPTCZe8cH0MzxQVLYRm0XOKFNNO9bc0jcvWrMdbCT/CNaIg4i1IccN6qLY5Vzk9yk8MV2kjhTongxBCKmNhR5NRsUzkOITZuBSzjoW+UgDe6m3K9YVxgkJXD/b7UqEYv2CYUHtaQViUTU9dffaPyMoSJcAROJECQs4tE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NV/iJs2H; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ROdzVAGb"
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7b6f8524f23so161989985a.2;
-        Thu, 30 Jan 2025 13:14:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738271671; x=1738876471; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=3WWG1ge772v80hApUsKf1Atr8Hoo4w8n5tFfU+25uuw=;
-        b=ROdzVAGbkz4TqzCoEQj4tRpWMnGEVb/K7HPM45LaEF74NS5M8ffbwcI+62muDtHGWJ
-         a+8HmzuG2f0b1KAkZ6gzHbGu55w2zvaCYyUHyWQMEPm4l6Vq+4zSkpWnh04LkAIuq2aZ
-         Q6Bk+SfE62Q5NGKMPTKPIb3VA4vnxZSDHktZjcG5J45YYI3YOA55YuNfYe7U5cbUnh36
-         epiEUSjxF11buqkty326BHhHp0XVERWxwQcOboCbqLReBRvOEe8qJktOPZuFsva956ub
-         LS3I0SyTx4fLYYyASIt9W6L7T97nXu11D69SCInJJYm2Q2cE3IbU4o6h8hqkftWlSNaH
-         1CRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738271671; x=1738876471;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3WWG1ge772v80hApUsKf1Atr8Hoo4w8n5tFfU+25uuw=;
-        b=n+WbXpgq450QWQXoeLzFKsNOBJAlcazoltAtsxq/xiylzJHUnz2i8KLFqKHo4VfuQ0
-         GDt5hLzdnmbbZUiJcDKUt+GYkTercJAVBhQh5ONKfvaDl2l2i6DuTMnsLKMX1+ttBeei
-         UJFyp96bm8bFvyQK8oK9iuhTtbNqxL9sZij47MZle7e7GPRKVmYcYiZ0KbjarcdFQRr7
-         EKomj0jGEU7StEAeqvcog5aS3nMQxR0ur1GNsC/vQ+6VZiwQM4n0C9u1/SLumTNIXs/9
-         rJ7DYletv8ASIfe0Jzc6V3nSyqDFzmLMrLdr9bk1Fs9iT0udXiM6D6khHbpNhZzOzgvi
-         jjKg==
-X-Forwarded-Encrypted: i=1; AJvYcCXYVyBuBvmosyAxcmAHBYT2+lo2oystgEtWejIlWUjjUvxLlw8qVG9AByJBHmN3zYPGzoUo3qzk7KXGDRM=@vger.kernel.org, AJvYcCXw06sYuM687ZVOpVgeWDjZIenXZQT6SSLcXSHb7wJYsCAM3jWYu9mkKduMt/+QBlzzPhFRzziZpGL4slDhsCo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKuCa7IrSA8WngT2QSPJkA5WIE2yacoKzlaO8swIt2G35YzywT
-	Hl9K+QTrWBBDieRSNJrGn8qXN4AvQJ7xEOfx8xUcCGlD5BljHEW9
-X-Gm-Gg: ASbGncvWjAxS4MCncDrpZjoFz6IMN1MyNigAPnvSOh97zGrYHCk+M64DFTUBMRaDius
-	Q959chHjRwvLvdgMYp0cLIYjpZJZQFjx/RXv75KS15JftG4AzeV1tbZvD9hZvi9R1pyJrdl4ulg
-	6B+1Z9wUVtM96oqlLCHPa8dQD9wTdMy89kHvLXl94rmC8R/jHx85xCx5ZfyNNmwDHLujNfL6szu
-	OrqrP6vTnYF5f9NTOaUtJnDMbEsx6l0rZrDVUCWkGLl579gmjVyYAIc42FtwrYn3GF6cI8kO/Ff
-	mb8GZoUS0hcbrdyN3ByWUTIQiTSjar7sa+bAdgvWfyVCun0DAhdWQDwd0Y7QpLGHXdDJqzeYlwi
-	ztpH5UA==
-X-Google-Smtp-Source: AGHT+IFruJj7llGRMLC43V8G8nvyRf9Wo/GtrJAKSUVdJVIdbOELhLI6ZGSnYhEGEaeILNThpImaHg==
-X-Received: by 2002:a05:620a:1725:b0:7b6:d23a:be39 with SMTP id af79cd13be357-7bffcd9b690mr1302934285a.44.1738271670957;
-        Thu, 30 Jan 2025 13:14:30 -0800 (PST)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c00a90d433sm111711185a.109.2025.01.30.13.14.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jan 2025 13:14:30 -0800 (PST)
-Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id D2B441200066;
-	Thu, 30 Jan 2025 16:14:29 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Thu, 30 Jan 2025 16:14:29 -0500
-X-ME-Sender: <xms:teubZ-Bq44c_p_Kn7SjYW-SkF08kZgWy1VKcHm_jFlDBwQe7f92yPg>
-    <xme:teubZ4jdTzyYoyNx9MIBvlylrA2DWAtcbzSyZK9hg3Uk3dv3XFnCmykMyujFE9Uu7
-    uDRze5NJx4ASfSYiQ>
-X-ME-Received: <xmr:teubZxnbyY-zRB11NcDlYbfzzZB7F648esRnADGaqm9Xqc1j5o54Xs5BIB0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeikeelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucenucfjughrpeffhffvve
-    fukfhfgggtugfgjgesthekredttddtudenucfhrhhomhepuehoqhhunhcuhfgvnhhguceo
-    sghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtthgvrhhnpedtge
-    ehleevffdujeffgedvlefghffhleekieeifeegveetjedvgeevueffieehhfenucevlhhu
-    shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvg
-    hsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheeh
-    hedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
-    dpnhgspghrtghpthhtohepudeipdhmohguvgepshhmthhpohhuthdprhgtphhtthhopeht
-    rhhinhhtrggvohhithhoghgtsehgmhgrihhlrdgtohhmpdhrtghpthhtohepphgvthgvrh
-    iisehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepmhhinhhgohesrhgvughhrght
-    rdgtohhmpdhrtghpthhtohepfihilhhlsehkvghrnhgvlhdrohhrghdprhgtphhtthhope
-    hlohhnghhmrghnsehrvgguhhgrthdrtghomhdprhgtphhtthhopehojhgvuggrsehkvghr
-    nhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtoh
-    hmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghj
-    ohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:teubZ8wruoEb55PGaCI_EaJEZfwtx65tC8Cj8mjxAgr3TszXtDkX2w>
-    <xmx:teubZzSy8QOXwKfkHZDBG0Giv2-2LolhKx-x2U0Q_QLBj9rIotJb1w>
-    <xmx:teubZ3Y02rQoOFrPdArZG9zoNpJZidHQ3iCFrtlkiEqDqCVtuJ0-Zg>
-    <xmx:teubZ8Trby-4JOUHJvh-dnEJ19irs0kbW7-kWb_p_V7N1DrsmEuJ_A>
-    <xmx:teubZ1BH2hn9GBxIP_Pgc01iqHSfJVyus9JOYtqcLxYtUYLrYCwnbI1P>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 30 Jan 2025 16:14:29 -0500 (EST)
-Date: Thu, 30 Jan 2025 13:13:42 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-Cc: peterz@infradead.org, mingo@redhat.com, will@kernel.org,
-	longman@redhat.com, ojeda@kernel.org, alex.gaynor@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] rust: sync: create the `get_mut()` function
-Message-ID: <Z5vrhpp9Idc3tiUy@boqun-archlinux>
-References: <20250130185138.200993-1-trintaeoitogc@gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NV/iJs2H"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1738272536;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WfPXlt1BaHC9qNggpXArv/npGs2QEcWgUpdglWgCezw=;
+	b=NV/iJs2HklDRkYe35qA0JsXmZMNvv1DDVd0KNrhHkTZn205rPpmhkW6l25L33gKNueJe0t
+	eK4AQIbS2aOYy4svndRe4OMGdU9WYfRQWklqMzX1W1vxHeAvB69j0QxMZqsozk0h+5EDdf
+	241amfR201fmlGtQTJV1TnUQwJYKRzo=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-321-ncJL25ZOPqCR3Evyj_JIqA-1; Thu,
+ 30 Jan 2025 16:28:52 -0500
+X-MC-Unique: ncJL25ZOPqCR3Evyj_JIqA-1
+X-Mimecast-MFC-AGG-ID: ncJL25ZOPqCR3Evyj_JIqA
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F40021801F13;
+	Thu, 30 Jan 2025 21:28:48 +0000 (UTC)
+Received: from chopper.redhat.com (unknown [10.22.81.115])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4B94419560A3;
+	Thu, 30 Jan 2025 21:28:45 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mairacanal@riseup.net>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH] WIP: drivers/base: Add virtual_device_create()
+Date: Thu, 30 Jan 2025 16:28:26 -0500
+Message-ID: <20250130212843.659437-1-lyude@redhat.com>
+In-Reply-To: <Z5Nw8kaieLueWyUu@pollux>
+References: <Z5Nw8kaieLueWyUu@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250130185138.200993-1-trintaeoitogc@gmail.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Hi Guilherme,
+As Greg KH pointed out, we have a nice /sys/devices/virtual directory free
+for the taking - but the vast majority of device drivers concerned with
+virtual devices do not use this and instead misuse the platform device API.
 
-Thanks for the patch. First I would prefer the title being:
+To fix this, let's start by adding a simple function that can be used for
+creating virtual devices - virtual_device_create().
 
-	rust: sync: lock: Add Lock::get_mut()
+Signed-off-by: Lyude Paul <lyude@redhat.com>
 
-"create" is not a good word to use here, and the parentheses after
-"get_mut" already says it's a function.
+---
 
-On Thu, Jan 30, 2025 at 03:51:38PM -0300, Guilherme Giacomo Simoes wrote:
-> Create a `get_mut()` function that receive a mutable instance of Lock,
-> and return a mutable reference to data because if the instance is
-> mutable, the rust compiler guarantee the access control.
-> 
+So, WIP obviously because I wrote this up in a few minutes - but this goes
+off the idea that Danilo suggested to me off-list of coming up with a
+simple API for handling virtual devices that's a little more obvious to
+use. I wanted to get people's feedback and if we're happy with this idea,
+I'm willing to go through and add some pointers to this function in various
+platform API docs - along with porting over the C version of VKMS over to
+this API.
+---
+ drivers/base/core.c    | 28 ++++++++++++++++++++++++++++
+ include/linux/device.h |  2 ++
+ 2 files changed, 30 insertions(+)
 
-This commit log doesn't include "why we need this", so please add the
-reason or the usage of this function, maybe you or someone need it
-because of some initialization/setup code after creating a lock
-protected object? Moreover...
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 5a1f051981149..050e644ba11d5 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -4390,6 +4390,34 @@ struct device *device_create(const struct class *class, struct device *parent,
+ }
+ EXPORT_SYMBOL_GPL(device_create);
+ 
++/**
++ * virtual_device_create - creates a virtual device and registers it with sysfs
++ * @class: optional pointer to a struct class this device should be registered to
++ * @drvdata: the data to be added to the device for the callbacks
++ * @fmt: string for the device's name
++ *
++ * This function can be used to create standalone virtual devices, optionally
++ * registered to a specific class. Drivers which create virtual devices can use
++ * this. The device will live in /sys/devices/virtual.
++ *
++ * A pointer to the struct device will be returned from the call. Any further
++ * sysfs files that might be required can be created using this pointer.
++ *
++ * Returns &struct device pointer on success or ERR_PTR() on error.
++ */
++struct device *virtual_device_create(void *drvdata, const char *fmt, ...)
++{
++	va_list vargs;
++	struct device *dev;
++
++	va_start(vargs, fmt);
++	dev = device_create_groups_vargs(NULL, NULL, 0, drvdata, NULL,
++					 fmt, vargs);
++	va_end(vargs);
++	return dev;
++}
++EXPORT_SYMBOL_GPL(virtual_device_create);
++
+ /**
+  * device_create_with_groups - creates a device and registers it with sysfs
+  * @class: pointer to the struct class that this device should be registered to
+diff --git a/include/linux/device.h b/include/linux/device.h
+index 80a5b32689866..74e07ec942f4e 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -1244,6 +1244,8 @@ bool device_is_bound(struct device *dev);
+ __printf(5, 6) struct device *
+ device_create(const struct class *cls, struct device *parent, dev_t devt,
+ 	      void *drvdata, const char *fmt, ...);
++__printf(2, 3) struct device *
++virtual_device_create(void *drvdata, const char *fmt, ...);
+ __printf(6, 7) struct device *
+ device_create_with_groups(const struct class *cls, struct device *parent, dev_t devt,
+ 			  void *drvdata, const struct attribute_group **groups,
 
-> Suggested-by: Björn Roy Baron <bjorn3_gh@protonmail.com>
-> Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-> ---
->  rust/kernel/sync/lock.rs | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-> index eb80048e0110..3f9d78bcb37c 100644
-> --- a/rust/kernel/sync/lock.rs
-> +++ b/rust/kernel/sync/lock.rs
-> @@ -140,6 +140,12 @@ pub fn new(t: T, name: &'static CStr, key: &'static LockClassKey) -> impl PinIni
->              }),
->          })
->      }
-> +
-> +    /// Get a mutable reference to data
+base-commit: b323d8e7bc03d27dec646bfdccb7d1a92411f189
+-- 
+2.47.1
 
-... please provide an example of the usage in the doc.
-
-> +    pub fn get_mut(&mut self) -> &mut T {
-> +        // SAFETY: the caller must guarantee that the instance is only used in one place
-
-SAFETY comments should explain why it's safe, here it's phrased like a
-requirement, maybe something like:
-
-    // SAFETY: `&mut self` guarantees the exclusive access to the
-    // underlying data, therefore it's safe to reborrow the inner data.
-
-Regards,
-Boqun
-
-> +        unsafe { &mut *self.data.get() }
-> +    }
->  }
->  
->  impl<B: Backend> Lock<(), B> {
-> -- 
-> 2.34.1
-> 
