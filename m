@@ -1,234 +1,129 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 580541F1313;
-	Thu, 30 Jan 2025 22:14:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738275292; cv=pass; b=L0c4QBYHw6ibzo3RT4mF1sq6hoCiK2iuMf6W5He9CLEtlDhcuAQtUNTTkrsVVDw1HXMezfHFm1nk7x075auS1J+WNOXDLEU8W7Xa2LxMk+SVU6qg0Xev50D839DizcDEnvszG/ao58g9oUz80TL7yg+NSk5INI/d99wmZEZ/hts=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738275292; c=relaxed/simple;
-	bh=gY9MhPYBpjo05OWPTydOrrNx4uo5ZppNjZh+K/Xd72w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W8nhynCqlH+TyZll5uzNpI51yM/J3cbzRqI9yw5918MZnZm1MetZFvJPLL1F10lXtwuS4cGxQw2QDUC/n+zjLPeJnpgN4WG5Bf7LwBkHGqTQM3IIjB4mZ+wDAc5m4DDs77Ck4uXTC/8PShmV6/l31GKWVJJ6E9ytEbCJvaf9aMQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=gwUtWkCa; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39EF21BCA1B;
+	Thu, 30 Jan 2025 23:10:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738278616; cv=none; b=gkxW8EnKA06M8YRFv0P2BF2tDQ3/V9liSKmqFxcGab/y6WAw0SFDwMXuQkvggkvZgZNZB+3QFVAJKUMnxPkPB/ntMIyvjVRThIAD0oVZvSPxly6jA5MzOd9rgUQHTBqxgrYtuJ8QHnGXjrBhCqerETEBcSmX9Wct0zxzk6qlDck=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738278616; c=relaxed/simple;
+	bh=YAdNwrQg3KfujGA4xTvnJ7thNZJr6kjNDjOP7T28GTA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hJdb9LF7SVmopxN5EdCGIwbIwdrzzv/LnC1WuDo9XakQVlawU8BlWvhpggEA4P0SNm0OH7EBYJb5NuyUrtCHHDtLY/F1rosA7LTdZZhO2v849N6ilpOvvMf55QiJCB1vR0jjnQsHe+z6G/iaQI6mvNF4plQrlxbHaod7wEoitdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G0H1/MAI; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="gwUtWkCa"
-ARC-Seal: i=1; a=rsa-sha256; t=1738275272; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=jgyaaxTlexT1SG16MKgmtxGXcFKLu92rrymiqCzAE8jNTL03IqScqLLiWIDkVkc68RA/0ExNywuBhtm2d2YdviqxPVgCLOMCl8JLmt3h6mTTl2qDGeJg8kOBOtuvKRhW+aSdvHNz6x+Cn0iWIr8cGSyPooXfjxkM1QjvLzD9aEU=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1738275272; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=JN0sYBLGfhpZ6u8uZWDJDdKbvOzwsQgneZgTKdfEBHs=; 
-	b=D11Jemt+xt9ulUehoSk4KtTpjxcdUEB2mcJvRSalD7TMd5JCqWKouk2nmxoHQ4o5k+p9Vs3kSHTM0wshOAhYl1faPfvSfVXijZvazF0HCtqyjzRLwJeoqiRP8qIM7yczx2zk+OrW83BmWoo1cxtzst6WDfcchZzp/CEz1Knja6g=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1738275272;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=JN0sYBLGfhpZ6u8uZWDJDdKbvOzwsQgneZgTKdfEBHs=;
-	b=gwUtWkCaIm52pvzxqQ5uo0fCg0B6/VC0JlCiD0G7w82iTLI2JXspufNbxqWlb02P
-	90xZF84Y4/PiE6nLcHKH8WWWznqTQXYIJguxoLrF7XyqdP77TzLWWvlgwOHalj6xxfG
-	QcWZl+YI81XeBDRrse8OyC2MUwmhQyIKdsN7BXM8=
-Received: by mx.zohomail.com with SMTPS id 17382752677711013.3040681841859;
-	Thu, 30 Jan 2025 14:14:27 -0800 (PST)
-From: Daniel Almeida <daniel.almeida@collabora.com>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.mco,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	dakr@kernel.org,
-	boris.brezillon@collabora.com,
-	robh@kernel.org
-Cc: Daniel Almeida <daniel.almeida@collabora.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v6 2/3] rust: io: mem: add a generic iomem abstraction
-Date: Thu, 30 Jan 2025 19:05:22 -0300
-Message-ID: <20250130220529.665896-3-daniel.almeida@collabora.com>
-X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250130220529.665896-1-daniel.almeida@collabora.com>
-References: <20250130220529.665896-1-daniel.almeida@collabora.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G0H1/MAI"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-436281c8a38so9917535e9.3;
+        Thu, 30 Jan 2025 15:10:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738278612; x=1738883412; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=UYSfrspZpcalFQy7DGPov9HLaRO54OMeKc3JEmAB2IM=;
+        b=G0H1/MAIUy2jmNAJN5e9r03LhDLVqqRWK4isuspF9xq2MfgkUYxqZlKYgdwEPqhNNH
+         NgotRQPCZcPA5qiajMuWhzfeiMMi9AICpI+SDskdAwKiA3L57WB6jUHVsPHkjyJKmyKx
+         1fkLAlS92g//OpGYALsrNAt3XyXMjMbFNX83+9ya/RlQw0+9aIuk4Hf239sNK4QnNng+
+         lxe09lcTraD1n6QgZTDN5UaspDOX0mXCe6ustQtdiuQRhVDiLcIM4xyS0j34pc+gsELl
+         YQUCKepuqt3wm7kDwQ3mXXI+dyYA0KRgz2r0crnscvHvGn9JsFe7rMLxW81UgN3Owgxg
+         jKlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738278612; x=1738883412;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UYSfrspZpcalFQy7DGPov9HLaRO54OMeKc3JEmAB2IM=;
+        b=vgvJ9I0aiEa/vcuHRX9oyb46ivwsEERSYwL6nxjmCfhlipPHSBSfi+V0w7nh4lkZ1d
+         TkcFcTjF9hzxtg6CvUuXStQg6mqPkpBxB/KsXSrjCoAW0bDsuybJb/XJFacjT/zzyG1f
+         xgVNuaYnFdcgsQFi4NF/I3iRmZTsqlPOFAf0ma+U/P59kkmxgAr6H7prdEPLBZfwAsKI
+         cD305a5nM3iaasyFk1NZ7JvXelQkRD/NHca8qCrjrlL7eVlgSCsNYLMB6v+OQwlP2UGA
+         Nl2TrMC3o49dkNUuaf0YpDBy/gc1Axu4Hyd9DkbkmW0bTthXczOzMQZG+vzVLle2QWYP
+         z6DQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV+XPthFhEFPII37diJ8lc04lUdaaMrOXqe09fgZQHq8ShgNjK72GL66h1idZUnwXL4vtceycO5cIU=@vger.kernel.org, AJvYcCXKiAe+jfPxtF7S8fYUaE+ItNHaZWXI2CHz/R4R3pBJIgfYX1NRCGgaCBiphkx3zH1rispbP+96z49aRSxo@vger.kernel.org
+X-Gm-Message-State: AOJu0YwThygq3EB7ObIZnITyCF1dujYCzTZJbxbUL3MBZuA+eWSQjSAY
+	PB37/VUFMVeSQbQpy94PcBjovQS7F8pyInzH1iRMME+kXX2WvuQ4vaqsTtIrF1o=
+X-Gm-Gg: ASbGncstqz4oPqaSGUBRW5xAn294yR+sMZ7Z4r9CUAbyjEd1hsdhTFioktS1419pSYH
+	V49F3hZGh/4kerhMjFC5/8oKZ1ifqKWKHJI+9lCuLeXhSqX5qM5WEozlPLuZ2gR07HXljHUC/ua
+	GX07/EcR64KRzwyyHywM0452cpeYxmS4FnBfefZQjotRd/q83PISKDYVoTiLSw0cc4cUgA40nPz
+	qLkxoM2Q71rI2b5gTjmXQv8ThyxsY3WU7idRA7JqSRca1MAClLLvcMRQbIBuCZAoVhtU+Zvn7LO
+	VmQ6e9v1d+RHBB1eiNyVT5mrvvM1
+X-Google-Smtp-Source: AGHT+IGHatIBqExc2QjMBxlMrxHJ7JJTUTvxVUuF1NV9bbMeXjnFByTNOWJSOdIRyooq55YwHK2bRg==
+X-Received: by 2002:a05:600c:3d9b:b0:434:effb:9f8a with SMTP id 5b1f17b1804b1-438dc3c3554mr87706875e9.15.1738278612188;
+        Thu, 30 Jan 2025 15:10:12 -0800 (PST)
+Received: from ?IPV6:2001:871:22a:8634::1ad1? ([2001:871:22a:8634::1ad1])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438dcc263f0sm72338575e9.9.2025.01.30.15.10.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 30 Jan 2025 15:10:11 -0800 (PST)
+Message-ID: <0414bdb1-2258-4164-af60-c40118d0d7f4@gmail.com>
+Date: Fri, 31 Jan 2025 00:10:10 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] arm: rust: Enable Rust support for ARMv7
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Jonathan Corbet <corbet@lwn.net>,
+ Russell King <linux@armlinux.org.uk>, Rudraksha Gupta <guptarud@gmail.com>,
+ Ard Biesheuvel <ardb@kernel.org>, Geert Stappers <stappers@stappers.nl>,
+ Andrew Lunn <andrew@lunn.ch>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
+ Sven Van Asbroeck <thesven73@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+References: <20250123-rfl-arm32-v3-1-8f13623d42c5@gmail.com>
+Content-Language: en-US, de-DE
+From: Christian Schrefl <chrisi.schrefl@gmail.com>
+In-Reply-To: <20250123-rfl-arm32-v3-1-8f13623d42c5@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add a generic iomem abstraction to safely read and write ioremapped
-regions.
+On 23.01.25 11:40 PM, Christian Schrefl wrote:
+> This commit allows building ARMv7 kernels with Rust support.
+> 
+> The rust core library expects some __eabi_... functions
+> that are not implemented in the kernel.
+> Those functions are some float operations and __aeabi_uldivmod.
+> For now those are implemented with define_panicking_intrinsics!.
+> 
+> This is based on the code by Sven Van Asbroeck from the original
+> rust branch and inspired by the AArch version by Jamie Cunliffe.
+> 
+> I have tested the rust samples and a custom simple MMIO module
+> on hardware (De1SoC FPGA + Arm A9 CPU).
+> 
+> Tested-by: Rudraksha Gupta <guptarud@gmail.com>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Acked-by: Miguel Ojeda <ojeda@kernel.org>
+> Tested-by: Miguel Ojeda <ojeda@kernel.org>
+> Acked-by: Ard Biesheuvel <ardb@kernel.org>
+> Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
+> ---
+> I've updated my Rust ARMv7 patches. 
+> Not much has changed since v2 but I want to send it out again
+> before sending it to Russell's ARM patch tracker, since I should
+> hopefully have more time to work on this again.
+> 
+> I'm not sure how exactly the patch tracker works, I assume I
+> should just sent it to the tracker once all review comments are 
+> addressed and it has sat in the mailing list for some time? 
+> 
+> I've kept the Tags from v2 since nothing signifficant has changed,
+> I hope thats fine with everyone.
+> ---
 
-The reads and writes are done through IoRaw, and are thus checked either
-at compile-time, if the size of the region is known at that point, or at
-runtime otherwise.
+I have now submitted this as:
+https://www.armlinux.org.uk/developer/patches/viewpatch.php?id=9441/1
 
-Non-exclusive access to the underlying memory region is made possible to
-cater to cases where overlapped regions are unavoidable.
+I hope I've done that correctly.
 
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
----
- rust/kernel/io.rs     |   1 +
- rust/kernel/io/mem.rs | 125 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 126 insertions(+)
- create mode 100644 rust/kernel/io/mem.rs
-
-diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-index 566d8b177e01..9ce3482b5ecd 100644
---- a/rust/kernel/io.rs
-+++ b/rust/kernel/io.rs
-@@ -7,6 +7,7 @@
- use crate::error::{code::EINVAL, Result};
- use crate::{bindings, build_assert};
- 
-+pub mod mem;
- pub mod resource;
- 
- /// Raw representation of an MMIO region.
-diff --git a/rust/kernel/io/mem.rs b/rust/kernel/io/mem.rs
-new file mode 100644
-index 000000000000..f87433ed858e
---- /dev/null
-+++ b/rust/kernel/io/mem.rs
-@@ -0,0 +1,125 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Generic memory-mapped IO.
-+
-+use core::ops::Deref;
-+
-+use crate::device::Device;
-+use crate::devres::Devres;
-+use crate::io::resource::Region;
-+use crate::io::resource::Resource;
-+use crate::io::Io;
-+use crate::io::IoRaw;
-+use crate::prelude::*;
-+
-+/// An exclusive memory-mapped IO region.
-+///
-+/// # Invariants
-+///
-+/// - ExclusiveIoMem has exclusive access to the underlying `iomem`.
-+pub struct ExclusiveIoMem<const SIZE: usize> {
-+    /// The region abstraction. This represents exclusive access to the
-+    /// range represented by the underlying `iomem`.
-+    ///
-+    /// It's placed first to ensure that the region is released before it is
-+    /// unmapped as a result of the drop order.
-+    #[allow(dead_code)]
-+    region: Region,
-+    /// The underlying `IoMem` instance.
-+    iomem: IoMem<SIZE>,
-+}
-+
-+impl<const SIZE: usize> ExclusiveIoMem<SIZE> {
-+    /// Creates a new `ExclusiveIoMem` instance.
-+    pub(crate) fn ioremap(resource: &Resource) -> Result<Self> {
-+        let iomem = IoMem::ioremap(resource)?;
-+
-+        let start = resource.start();
-+        let size = resource.size();
-+        let name = resource.name();
-+
-+        let region = resource
-+            .request_mem_region(start, size, name)
-+            .ok_or(EBUSY)?;
-+
-+        let iomem = ExclusiveIoMem { iomem, region };
-+
-+        Ok(iomem)
-+    }
-+
-+    pub(crate) fn new(resource: &Resource, device: &Device) -> Result<Devres<Self>> {
-+        let iomem = Self::ioremap(resource)?;
-+        let devres = Devres::new(device, iomem, GFP_KERNEL)?;
-+
-+        Ok(devres)
-+    }
-+}
-+
-+impl<const SIZE: usize> Deref for ExclusiveIoMem<SIZE> {
-+    type Target = Io<SIZE>;
-+
-+    fn deref(&self) -> &Self::Target {
-+        &*self.iomem
-+    }
-+}
-+
-+/// A generic memory-mapped IO region.
-+///
-+/// Accesses to the underlying region is checked either at compile time, if the
-+/// region's size is known at that point, or at runtime otherwise.
-+///
-+/// # Invariants
-+///
-+/// `IoMem` always holds an `IoRaw` inststance that holds a valid pointer to the
-+/// start of the I/O memory mapped region.
-+pub struct IoMem<const SIZE: usize = 0> {
-+    io: IoRaw<SIZE>,
-+}
-+
-+impl<const SIZE: usize> IoMem<SIZE> {
-+    fn ioremap(resource: &Resource) -> Result<Self> {
-+        let size = resource.size();
-+        if size == 0 {
-+            return Err(EINVAL);
-+        }
-+
-+        let res_start = resource.start();
-+
-+        // SAFETY:
-+        // - `res_start` and `size` are read from a presumably valid `struct resource`.
-+        // - `size` is known not to be zero at this point.
-+        let addr = unsafe { bindings::ioremap(res_start, size as kernel::ffi::c_ulong) };
-+        if addr.is_null() {
-+            return Err(ENOMEM);
-+        }
-+
-+        let io = IoRaw::new(addr as usize, size as usize)?;
-+        let io = IoMem { io };
-+
-+        Ok(io)
-+    }
-+
-+    /// Creates a new `IoMem` instance.
-+    pub(crate) fn new(resource: &Resource, device: &Device) -> Result<Devres<Self>> {
-+        let io = Self::ioremap(resource)?;
-+        let devres = Devres::new(device, io, GFP_KERNEL)?;
-+
-+        Ok(devres)
-+    }
-+}
-+
-+impl<const SIZE: usize> Drop for IoMem<SIZE> {
-+    fn drop(&mut self) {
-+        // SAFETY: Safe as by the invariant of `Io`.
-+        unsafe { bindings::iounmap(self.io.addr() as *mut core::ffi::c_void) }
-+    }
-+}
-+
-+impl<const SIZE: usize> Deref for IoMem<SIZE> {
-+    type Target = Io<SIZE>;
-+
-+    fn deref(&self) -> &Self::Target {
-+        // SAFETY: Safe as by the invariant of `IoMem`.
-+        unsafe { Io::from_raw(&self.io) }
-+    }
-+}
--- 
-2.48.0
-
+Cheers
+Christian
