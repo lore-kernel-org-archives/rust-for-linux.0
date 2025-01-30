@@ -1,118 +1,154 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C7F1B0418
-	for <rust-for-linux@vger.kernel.org>; Thu, 30 Jan 2025 11:22:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440FE1CFBC
+	for <rust-for-linux@vger.kernel.org>; Thu, 30 Jan 2025 11:30:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738236128; cv=none; b=FNSeSwVzKQQOProPSoFpdeXf+EAu3eQrrBIjjCa9t7Hpew6sVgOhHX/gfeOfWodgzTY9uNMA74vRM1aQY+4nzYpMHCRBY7CIdbEIZdZikVyftfDQ/D6ntOy13uyZmtRyiPO27sMzQmNDxzINa/I/ArfH70/UNNKSuSCJe/ERSmg=
+	t=1738236652; cv=none; b=DrTiK+BRXmlPWFcy488ug30QRHuwmxWe9eA/Mgg9g+6+vyh8L4uihALejsRj2HhZRGMVCYgw4BZskdNxyeX6jNvaDjvm91To0h2co4U8XnQzjLc+nf4c7JSgrIf5HwtG8b8zt0qzDwJhGaPWwXs7rwbw9U6lIPc4wMfGBfWXULk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738236128; c=relaxed/simple;
-	bh=epUow/8fiF8aQw32z3h6jYnc2pjrKb3zCez9kDj6Oqk=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=JghogsA5taC1vDNH+Z+V22MQqJU7P4Kc+dYBRz3XwClAE1joaGMh7FEl6DJZGY0haZeWruVwtwLdSQlKVA8wLz1psBdDyQDxBJffjmknpNoGUtxLHn1jzCdOxxjnS7rSSw+M9m61doPkXuC++Hu4BEw0Sz/XtDDE5LQAv1R43LA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=znWIWFuA; arc=none smtp.client-ip=209.85.128.74
+	s=arc-20240116; t=1738236652; c=relaxed/simple;
+	bh=iJXSb4peF8tz5wpDk5j8EzDSWN5Hr8H6kTV8N6kIZTQ=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=OUbQImuy4WmZnxgZW7I15bJ54YwTPfYW3ia8SE0UhihBQrI4kFLlAMR0EhRiG3eozeZ+xasXyfxP1fxKpWKnCAO3JVQWRHxcOzPBMYIKNq5l2l4qir6NjftYstMRk7JXTnUuvbL+Nm0/Zzgr7fG92j+6M0qkIEZsQO2XbNYbZ1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=g48vBn0h; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="znWIWFuA"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-438e180821aso3136815e9.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 30 Jan 2025 03:22:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="g48vBn0h"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4361f371908so4525165e9.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 30 Jan 2025 03:30:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738236124; x=1738840924; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1738236648; x=1738841448; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=oGOvFtwymdsmR57ATsFyVOgokrgCsziDzPAGb6ER9lw=;
-        b=znWIWFuAWqrUdEY7QJ3p+CxBhsIH+Gjjl2uCM1W9DCtZZmRvnJnn0BRGlVoAWN793D
-         nSO+I3PcBwqJOc0DAUZLDoVczN5J3Jv6la8C81tV5QRh7rYxn/OwcA7j3j4jtsJeH9bw
-         Mtapy3DHs77EwE+GOBwNex0/z5qVMUBdL2YOBMY5JeQjWlgcQt7mXZ/00lFiaYIb7zD6
-         eVWUqKwgX/60o4DglJBvRURgsSoTwOY8MkkYY/jQD+7jj3z6uVhd3dckv60MfXmatFFy
-         og/Nw8GuPMnqgEVFMrHovFZmQ6EwajEzt4SC5GG6nwpj9V1OUeLdWM24k0WO9z52qfx9
-         PKSw==
+        bh=jePf0gFxMzdZ+QDEvXG0/9t5XPufK33QfziCNz+QRro=;
+        b=g48vBn0hg3Kiju+i5vnHS+dIEDIO3qu0FJ/x+wB5Hbu2CO778Z3wkwEbkTj4iuOVxv
+         VYWE8TmEjEmodWonsQIR5FZE3eXyuFK6hacQ3KJxOC9hndIp4QqKI0oyYi+Q++3NzvMn
+         7DYk58Gu3JasD8buw872e9p9L1UqHoGw35u75Ds2oA3uZcf16yfOQv6ZeiaVnpEc916k
+         EWt8+aEcy2AQt88hc4b/bb2525zpQPS8KDvbjF2XSH6BfMhWGB5oo06TNzCmd3reYfOE
+         y9Ve+9uph0BCh9KZmfSkfjkVAL7jo09fjjlnF9weiJegJk2r8QlU4x4YNJmGHscr4qYM
+         5SVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738236124; x=1738840924;
+        d=1e100.net; s=20230601; t=1738236648; x=1738841448;
         h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=oGOvFtwymdsmR57ATsFyVOgokrgCsziDzPAGb6ER9lw=;
-        b=LTPy4ucIkJJbqvaGEMuBKOs6Hn+Y/UxMR9c7t+EAk+WFU0mv3IJH+HnVO5fgVfuDl6
-         flnql4FQbAi1hD009J/OGsJBMrTJQZNgqGY2FFsIH+dkEXLAaN2LzdAAR6M72VUoN1dD
-         eD8wa41Ju1gJw/hZJp9dyK+w7UTdd5VssxCzr89X9Mx4HhnyHOoSoJ4tdTiSLzxN0B/y
-         JFncmajXrvxVKEH5Lz93QWHYwwOgQq4Zh6aXI4DAkarIOGslOZ2MvLNhL+4qIIMJa59q
-         J4yk60tUCY9kRHXRu1rBf17bWRF8cwQm/tGoCTcwl5nXizPajXPHt0RrPOXqzQ+p9Yp4
-         y5/w==
-X-Forwarded-Encrypted: i=1; AJvYcCXF3jrjF4hhWc61IHeaRNSwNU4fsqULCDuOaXR/zPU9YhCCqqYjWXdhCZ6IL1ddV/i3GTa2ADLMc91BEnOKfA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0S8jAzTvh1cfsMp2w8tabV76/x7AsF3SKDOLIwMq2APoKVgR4
-	Q7a0csmQe90/vScsMCxcCNE4z8/JOpjsfVdyV7cvdaKi5A93fgZ36SH/rQ172rsRfHZrIz2f8zW
-	wS1Xg0C12JfRteQ==
-X-Google-Smtp-Source: AGHT+IFUthAf8+npb3AG8+vvgocshmycFlnj9gA8C5XQPmZ3HHl4BiIWHpo/V5jjjn1JmoswwDfNEibCAEKolD8=
-X-Received: from wmbeb18.prod.google.com ([2002:a05:600c:6792:b0:436:164a:763e])
+        bh=jePf0gFxMzdZ+QDEvXG0/9t5XPufK33QfziCNz+QRro=;
+        b=IjGS58VvDZJUnDdzWeaF+dpLlvtFtaU4rjIFmsuSckXJcoaG+yceM7vlMbGENtc9cA
+         U51KNvJIsEzvlr8h3qxfeiQiwK70Fe9DMUPsCwgmHQ3iwh8M5KCqtdpArfU+p3OuyK8o
+         HHsXeznhTJdEynqd7/kpyToQLdj0rfH90GL5EarhlU5iUkvonGK+tXnztWAEcswK5Vd8
+         9a0R5yM801P4xiczCxJNqq9+9rN0fGGYz061QUsuwQv7VLjdDc2uEDlkv/kz1YBY4tMx
+         akS2zYbt6ttAD1LX/EGrleD2hF5a21DNW+ma2oeDNgwwvgstgiXdMWSJSK4VrKdI+d1o
+         pfMA==
+X-Forwarded-Encrypted: i=1; AJvYcCV7lsw8hL0Wf8XW2NN22K8Cc40f18c1iFA2CWBPP2ublZToSyoMbzECcfCu67X3d+Hygq58Zwr1FSJ8Vgx+EQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQ/vbUjlvVU4Bbsdt3RwkBbbuv4fE4tDntdkE/CM0gFTrylxoI
+	/h9w/9SZKysDJKniBqTKgZeKnrkrtlPxuzYc2hJkVV9CkYnh4e88PVgrlyl+rThOfQN2lTvthJa
+	9fm4xlNgNxCzNDw==
+X-Google-Smtp-Source: AGHT+IGycKi7cqKSTgaduRdwS9/y7R5LjsSaFzWis/4qgCooTsr7KUGUERvOPxvoocUems4PeC7lA8MCCbDA44g=
+X-Received: from wmbay42.prod.google.com ([2002:a05:600c:1e2a:b0:436:e723:5be6])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:35d3:b0:438:d9f1:f5cc with SMTP id 5b1f17b1804b1-438dc3c3983mr61615825e9.8.1738236124203;
- Thu, 30 Jan 2025 03:22:04 -0800 (PST)
-Date: Thu, 30 Jan 2025 11:21:38 +0000
+ 2002:a05:600c:1c88:b0:434:a802:43d with SMTP id 5b1f17b1804b1-438dc424e5cmr53358055e9.27.1738236648667;
+ Thu, 30 Jan 2025 03:30:48 -0800 (PST)
+Date: Thu, 30 Jan 2025 11:30:44 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAMFgm2cC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDQ2MD3ZLE4mzdgswU3YLSJF0TCxMTU4vE1GRDyyQloJaCotS0zAqwcdG xtbUAC+mXKl4AAAA=
+X-B4-Tracking: v=1; b=H4sIAONim2cC/x3MMQqAMBAF0avI1gbWxIB4FbGI+qPbRNmAiOLdD
+ ZavmHkoQwWZ+uohxSlZ9lTQ1BXNW0grjCzFZNl6bhybeU/LGdREBW6YaBH85Lhr2VOJDkWU6x8 O4/t+dUaImWAAAAA=
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1058; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=epUow/8fiF8aQw32z3h6jYnc2pjrKb3zCez9kDj6Oqk=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnm2DKLcFuH+5SHyGUg1iA3pVvcUGVgAAEGWNBk
- YVN4FL1+eiJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ5tgygAKCRAEWL7uWMY5
- Rvf/EACdDy+Ofw26/VT3qBaPpqO0vQQz9Elxo9UTzZO+hEtGHqr9Ph/51piZA5KF7BOWydEHjam
- 3rC1vFOLiO9AifVRblm219s+yZxLmxQuAOhcKZ2+4p+wqkpyHzGTxvl9Wlz0o6RLu01okf9bXOZ
- KCGVtY8qqUgkxjiXFyyqPF9AIH995db2xPVg+p3H6OOlRslpv2sV1nSRhXmHxIiRUKWuNAUeUgb
- qgXrrBYDYHtldsQ3gL2uSsPZTWaGublbzdV/U/alMbYBt5CQrEvo1QAmeG0mHMUgyMBUs3/F2QA
- M1pOPiMV68PW4xTJibEgJeCq/nmTOX2KvWD0rTwEuA7JzKeb4iZWKs2mjPNuAYCPq3LuUjLHWsV
- Mzc+aYp1f6aPsaP9Fs7ddpO2sbWIdRAyCKPMqJv3dkJEhMFzCKUC/30jH9D5te/MvxwhIsUgjwS
- 8GdZSeQm/tiZyfu/QoLfdKBgdGDqyBW+5XTtNK0qIM3UWI6Po8poDokiTsR1fkzN9tjocvZ7JH6
- VWrUl+mX21nVvcLr3mkEAfa8xz/5AaVVbldRocr+ctWevs33lAwnGfEYEhVhXvzJTLHnrcwUBg0
- A+6eeUeQdywJmSEPr5tN7xwqlPzDsus77WKRKmgbOPmSG+GGKPHAQYqzMRG7f6rE7elKIVoHYMT zQEZEfDb4707bcw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2853; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=iJXSb4peF8tz5wpDk5j8EzDSWN5Hr8H6kTV8N6kIZTQ=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnm2Lms5DTl7IR5F4GtWcDY9gMKJZJPl+9mnjB6
+ vLz2R44T1GJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ5ti5gAKCRAEWL7uWMY5
+ RgY4EAC4PSLrAwMzBsR39fM5cBAQj+5atFou11ZIEcXvYd4kH0Q83XzqxmzckCU6xFSCz2AmkOv
+ cDyEPkJM371IJ8zpNezijXSzzgtzYAT1A2jxHX97JccM01YCsz0pUJut9Yf8u4kDfa7TKXm4FJ3
+ qNMRbCitO27cG6V55IgLT1k+BEu331I1236C1L7RqnPBPVu2jjQi1U/FIjhQ3I2lQWsGp0VZMN5
+ GshK9lNXkAQFlepHW8NggIDgbCrqWKgRdR8vW42zEvgoe3FkVtLv+O3LPmt8jn+pcBW/vtSVh8s
+ ncimy2va+Tsx5FOx+1/nkNr6906cwggap8xmiDJcQFs6OHJt6Z5tQ9QXbZE1Al01xfCOodUrXku
+ EE73Y3GHI3rc34dUlWXSdomqlh2DdZ8prFouEgzMGT+ebqqhC+C0tVNGIY6dgvJmy7A4WxCvXgw
+ JyT5aVPdWDv13jdtQWh2XC9I9lYTsc1DXBpgv7/9o+wzYNN24lG6bMZIWbloZCVFKELv3MpCchE
+ 0D5YYe1j1vHyb5DLHu940W4MAWk4A0QcjIK6yBeT/isausVIywGB6hi44ZM1E2GDblMr9eXIKJS
+ Awcgogdo5aTA7ZPDpzUddJemsjRkZb/3kHEh0MRkDF2AE2EpXugiy3rfIuz7AaF6DTwfNhD3oy1 q4wJ5L3v1ePD3RA==
 X-Mailer: b4 0.13.0
-Message-ID: <20250130-task-pid-pub-v1-1-508808bcfcdc@google.com>
-Subject: [PATCH] rust: task: make Pid type alias public
+Message-ID: <20250130-condvar-freeze-v1-1-a91d5661d505@google.com>
+Subject: [PATCH] rust: sync: add wait_interruptible_freezable
 From: Alice Ryhl <aliceryhl@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>
 Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
 	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
+	Waiman Long <longman@redhat.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-The Pid type alias represents the integer type used for pids in the
-kernel. It's the Rust equivalent to pid_t, and there are various methods
-on Task that use Pid as the return type.
-
-Binder needs to use Pid as the type for function arguments and struct
-fields in many places. Thus, make the type public so that Binder can
-access it.
+Binder allows you to freeze a process where some of its threads are
+blocked on the Binder driver. To make this work, we need to pass
+TASK_FREEZABLE when going to sleep in the appropriate places. Thus, add
+a new method wait_interruptible_freezable for the condition variable so
+that sleeps where this is supported can be marked as such.
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/task.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/kernel/sync/condvar.rs | 18 +++++++++++++++++-
+ rust/kernel/task.rs         |  2 ++
+ 2 files changed, 19 insertions(+), 1 deletion(-)
 
+diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
+index 7df565038d7d..a256cd74bd4b 100644
+--- a/rust/kernel/sync/condvar.rs
++++ b/rust/kernel/sync/condvar.rs
+@@ -11,7 +11,9 @@
+     init::PinInit,
+     pin_init,
+     str::CStr,
+-    task::{MAX_SCHEDULE_TIMEOUT, TASK_INTERRUPTIBLE, TASK_NORMAL, TASK_UNINTERRUPTIBLE},
++    task::{
++        MAX_SCHEDULE_TIMEOUT, TASK_FREEZABLE, TASK_INTERRUPTIBLE, TASK_NORMAL, TASK_UNINTERRUPTIBLE,
++    },
+     time::Jiffies,
+     types::Opaque,
+ };
+@@ -159,6 +161,20 @@ pub fn wait_interruptible<T: ?Sized, B: Backend>(&self, guard: &mut Guard<'_, T,
+         crate::current!().signal_pending()
+     }
+ 
++    /// Releases the lock and waits for a notification in interruptible and freezable mode.
++    #[must_use = "wait returns if a signal is pending, so the caller must check the return value"]
++    pub fn wait_interruptible_freezable<T: ?Sized, B: Backend>(
++        &self,
++        guard: &mut Guard<'_, T, B>,
++    ) -> bool {
++        self.wait_internal(
++            TASK_INTERRUPTIBLE | TASK_FREEZABLE,
++            guard,
++            MAX_SCHEDULE_TIMEOUT,
++        );
++        crate::current!().signal_pending()
++    }
++
+     /// Releases the lock and waits for a notification in interruptible mode.
+     ///
+     /// Atomically releases the given lock (whose ownership is proven by the guard) and puts the
 diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-index 07bc22a7645c..49012e711942 100644
+index 07bc22a7645c..ea43a3b8d9c5 100644
 --- a/rust/kernel/task.rs
 +++ b/rust/kernel/task.rs
-@@ -106,7 +106,7 @@ unsafe impl Send for Task {}
- unsafe impl Sync for Task {}
- 
- /// The type of process identifiers (PIDs).
--type Pid = bindings::pid_t;
-+pub type Pid = bindings::pid_t;
- 
- /// The type of user identifiers (UIDs).
- #[derive(Copy, Clone)]
+@@ -23,6 +23,8 @@
+ pub const TASK_INTERRUPTIBLE: c_int = bindings::TASK_INTERRUPTIBLE as c_int;
+ /// Bitmask for tasks that are sleeping in an uninterruptible state.
+ pub const TASK_UNINTERRUPTIBLE: c_int = bindings::TASK_UNINTERRUPTIBLE as c_int;
++/// Bitmask for tasks that are sleeping in a freezable state.
++pub const TASK_FREEZABLE: c_int = bindings::TASK_FREEZABLE as c_int;
+ /// Convenience constant for waking up tasks regardless of whether they are in interruptible or
+ /// uninterruptible sleep.
+ pub const TASK_NORMAL: c_uint = bindings::TASK_NORMAL as c_uint;
 
 ---
 base-commit: ceff0757f5dafb5be5205988171809c877b1d3e3
-change-id: 20250130-task-pid-pub-484458aec19b
+change-id: 20250130-condvar-freeze-f2ea5b308405
 
 Best regards,
 -- 
