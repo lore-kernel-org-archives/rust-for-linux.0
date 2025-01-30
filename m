@@ -1,124 +1,189 @@
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845E71E47C8;
-	Thu, 30 Jan 2025 13:43:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FE41BB6BC;
+	Thu, 30 Jan 2025 14:45:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738244618; cv=none; b=eDeQPaGicGOF1WNg0RtL1erHAE0vuN6btr2OuS160JcICTgIzW0Xv/2dloUHrSOAeYY/+WiHqzR/wiFXmbCZ+mCqo3B+lCnjHYTE6GRahJ5ajDVBh+U79SMtqNn6ATNGUPRMFJy/aCBKPBwIXmU3gW885uRSbwwgOTIsIpaiTjo=
+	t=1738248303; cv=none; b=fRoxDLjmGP/RnNZMBWQTu712gbg57gQ/G9VDT5T/3757V/Vkacgh/40QXdO6BnjZ3T274S65GroYfIrbBDrXRFcmocG2EHCuBo7PRR69lOIybNeI02+oeeq5PyLQKox65pXmqPQWOqYEvGW0sIhlDVVNCwHY2iYHB6mz+s2m5kM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738244618; c=relaxed/simple;
-	bh=lfMC4b1zgzO5tcD9HIygOzojNEhZCfTv8yVzHUqMo9Q=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=av0u+3fd1vHZbPSjGXlT/qySTSVzis9ZbRGtxQbSjTX6oDkSd2u3TocNIiJLFiSqnNjxfIjhR/3OtgZvfQmYkocG42rBo2BotHxpdYXLngNftu7El5OLRv3GbnyQ3ohrmQvWysLp3iX8BtfwyPX42cs9YX070Bg3ja43a3vxk0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=Ars+vOAF; arc=none smtp.client-ip=80.241.56.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1738248303; c=relaxed/simple;
+	bh=AZPmeMpWTs/FvCNVmUDUjDmiufPBvdZlrjwaesT1MXc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iTsS06yPiXZqADHdyCkX/+xsBvW0WVoQdBUrFJnNZADck1CWDLw+StOrsfuoDWXXDJdf47O+gR7xqx3Z3Mje3/y2xLARQ6HTWeGW3V6gwKlYLfZXs3eu1kIExC6pwK4RNJ266IHYBeTD3lmJ/RAjhsv5pcgiFpFhJRthPRnDpaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=klAJWsNn; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="Ars+vOAF"
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4YkKwv2l8Tz9t9R;
-	Thu, 30 Jan 2025 14:43:27 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1738244607; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lfMC4b1zgzO5tcD9HIygOzojNEhZCfTv8yVzHUqMo9Q=;
-	b=Ars+vOAFXv78op6rFVAYTnrdyPJUs+p0T1MbdRNK/9e/1KSmK6Fzc/vEUWCYDcASpalrqq
-	O6zzxxMJLKIqrurIDQEU/EHaqLLhya0XJUuMvYN6fmfXUn9d1u6kQ5aNHp72XjZJFyd/d1
-	5s1i2glxhB4z24JY5k6BCPpfxc71HQgDcRNrvTMzsqE7T2XMXqrBsIh/AcT7vS8v/Ia3iw
-	QEfc7hMQtSvxUlKVDrpYlJG+svag0Ii179ydEjs+V6jcAd/4UTnh9KFIRIEZrDr13ubLyc
-	5u1zsxfWMTuI2KCH9f1ZtTEPi2sPk0m7mhjVHmubbninnJ4i7ipjDRTUulc4IQ==
-Message-ID: <2c9a78be6b72b68b47ba869dea247e935468fa4c.camel@mailbox.org>
-Subject: Re: [PATCH v8 2/2] rust: add dma coherent allocator abstraction.
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Daniel Almeida <daniel.almeida@collabora.com>, phasta@kernel.org
-Cc: Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>, 
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Abdiel Janulgue
- <abdiel.janulgue@gmail.com>,  aliceryhl@google.com, robin.murphy@arm.com,
- rust-for-linux@vger.kernel.org,  Miguel Ojeda <ojeda@kernel.org>, Alex
- Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,  Gary
- Guo <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  Benno Lossin <benno.lossin@proton.me>, Andreas
- Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- Valentin Obst <kernel@valentinobst.de>, open list
- <linux-kernel@vger.kernel.org>, Marek Szyprowski
- <m.szyprowski@samsung.com>,  airlied@redhat.com, "open list:DMA MAPPING
- HELPERS" <iommu@lists.linux.dev>,  Greg KH <gregkh@linuxfoundation.org>
-Date: Thu, 30 Jan 2025 14:43:21 +0100
-In-Reply-To: <F2D88DDC-DE2E-4422-9A37-951C28F23A7B@collabora.com>
-References: <20250108122825.136021-3-abdiel.janulgue@gmail.com>
-	 <20250108135951.GA18074@lst.de>
-	 <CANiq72=R2N+QiCiHZQu-6YJ9aYpn_bik3BW3U=nAW3jL7unzLw@mail.gmail.com>
-	 <20250108151858.GB24499@lst.de> <Z36X_ZnCmBQBMoZ6@pollux>
-	 <20250109080812.GA20431@lst.de> <Z3-NqwAG_96yq8VD@pollux>
-	 <20250110083955.GA5395@lst.de> <Z4D5a5NYrAbNxUL6@pollux>
-	 <Z4kG5AcVeQKegLnb@pollux> <20250128092334.GA28548@lst.de>
-	 <293df3d54bad446e8fd527f204c6dc301354e340.camel@mailbox.org>
-	 <F2D88DDC-DE2E-4422-9A37-951C28F23A7B@collabora.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="klAJWsNn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738248301; x=1769784301;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=AZPmeMpWTs/FvCNVmUDUjDmiufPBvdZlrjwaesT1MXc=;
+  b=klAJWsNnvN7DLNKxpU9wn5V0sC715Y4GVQONQ6BWNcMma2pM1SY3pMz7
+   HTJkCh3aORXvkA/RKMTzsUwhEGHL8O4+G9uebdwdntjCsRti65nGqDDjT
+   dlns2n/1TJPZVuIduh08HDMa7qr8rHR0JjaobcFJSexVDnBN7Nrmn8wPj
+   9ynAwxR2mUaLB358ho+ZV+JQdVc+SvGD2mGGoRpV5I3EQDYYO0u+TyWFG
+   TqDuVPceeLM7/ebSAxI+vPp/VrPlQqS71oDioUCjx1qqE5J74PE9lCLE+
+   KYb7qxNIU966x4ZHAsa30JJZ+MMoatyvRDJgcr9vlToLdr73ZjWwyZ9c8
+   g==;
+X-CSE-ConnectionGUID: 9KhUKodNQOO1hKCltY8ogg==
+X-CSE-MsgGUID: ZNUv8aysQses/Qldjwb2FQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11331"; a="42546430"
+X-IronPort-AV: E=Sophos;i="6.13,245,1732608000"; 
+   d="scan'208";a="42546430"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2025 06:45:01 -0800
+X-CSE-ConnectionGUID: 542qaY2lTQ2arFXf8h9Wbg==
+X-CSE-MsgGUID: H1elkPQiRbSd4gNjC/DyMw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="146537060"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 30 Jan 2025 06:44:56 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tdVmo-000kZX-07;
+	Thu, 30 Jan 2025 14:44:54 +0000
+Date: Thu, 30 Jan 2025 22:44:51 +0800
+From: kernel test robot <lkp@intel.com>
+To: Fiona Behrens <me@kloenk.dev>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Fiona Behrens <me@kloenk.dev>
+Subject: Re: [PATCH v2] rust: io: move offset_valid and io_addr(_assert) to
+ IoRaw
+Message-ID: <202501302233.VecDQamx-lkp@intel.com>
+References: <20250128-rust-io-offset-v2-1-222de7c96a34@kloenk.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-ID: aa47e728840a1fb9d74
-X-MBO-RS-META: hgbogqkcsjia3k3hm37ezizixkogbti3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250128-rust-io-offset-v2-1-222de7c96a34@kloenk.dev>
 
-On Thu, 2025-01-30 at 10:35 -0300, Daniel Almeida wrote:
->=20
-> >=20
-> > Hallo,
-> >=20
-> > would some sort of official statement by the "entire community"
-> > reassure you that the burden of keeping Rust abstractions working
-> > with
-> > any changes on the C side rests entirely on the Rust side's
-> > shoulders?
-> > (because that's what the statements made by the latter seem to mean
-> > to
-> > me)
-> >=20
->=20
->=20
-> This has been offered over and over in this thread, i.e.:
->=20
->=20
-> ```
-> If you don't feel comfortable maintaining the Rust abstraction (or
-> just don't
-> want to), that's fine. I don't think anyone expects you to do that,
-> we can take
-> care of that instead.
-> ```
->=20
-> https://lore.kernel.org/rust-for-linux/Z3-NqwAG_96yq8VD@pollux/
+Hi Fiona,
 
+kernel test robot noticed the following build errors:
 
-Yup, I've read the whole thread. I was referring to the statements in
-those mails in my response.
+[auto build test ERROR on 01b3cb620815fc3feb90ee117d9445a5b608a9f7]
 
-My thinking is that such a file is the most official, most binding
-statement / offer the project has.
+url:    https://github.com/intel-lab-lkp/linux/commits/Fiona-Behrens/rust-io-move-offset_valid-and-io_addr-_assert-to-IoRaw/20250128-204724
+base:   01b3cb620815fc3feb90ee117d9445a5b608a9f7
+patch link:    https://lore.kernel.org/r/20250128-rust-io-offset-v2-1-222de7c96a34%40kloenk.dev
+patch subject: [PATCH v2] rust: io: move offset_valid and io_addr(_assert) to IoRaw
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250130/202501302233.VecDQamx-lkp@intel.com/config)
+compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250130/202501302233.VecDQamx-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202501302233.VecDQamx-lkp@intel.com/
 
-P.
+All errors (new ones prefixed by >>):
 
+   In file included from arch/x86/kernel/asm-offsets.c:14:
+   In file included from include/linux/suspend.h:5:
+   In file included from include/linux/swap.h:9:
+   In file included from include/linux/memcontrol.h:21:
+   In file included from include/linux/mm.h:2224:
+   include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   504 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+   |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+   505 |                            item];
+   |                            ~~~~
+   include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   511 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+   |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+   512 |                            NR_VM_NUMA_EVENT_ITEMS +
+   |                            ~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   524 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+   |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+   525 |                            NR_VM_NUMA_EVENT_ITEMS +
+   |                            ~~~~~~~~~~~~~~~~~~~~~~
+   3 warnings generated.
+   ***
+   *** Rust bindings generator 'bindgen' < 0.69.5 together with libclang >= 19.1
+   *** may not work due to a bug (https://github.com/rust-lang/rust-bindgen/pull/2824),
+   *** unless patched (like Debian's).
+   ***   Your bindgen version:  0.65.1
+   ***   Your libclang version: 19.1.3
+   ***
+   ***
+   *** Please see Documentation/rust/quick-start.rst for details
+   *** on how to set up the Rust support.
+   ***
+   In file included from rust/helpers/helpers.c:10:
+   In file included from rust/helpers/blk.c:3:
+   In file included from include/linux/blk-mq.h:5:
+   In file included from include/linux/blkdev.h:9:
+   In file included from include/linux/blk_types.h:10:
+   In file included from include/linux/bvec.h:10:
+   In file included from include/linux/highmem.h:8:
+   In file included from include/linux/cacheflush.h:5:
+   In file included from arch/x86/include/asm/cacheflush.h:5:
+   In file included from include/linux/mm.h:2224:
+   include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   504 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+   |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+   505 |                            item];
+   |                            ~~~~
+   include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   511 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+   |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+   512 |                            NR_VM_NUMA_EVENT_ITEMS +
+   |                            ~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   524 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+   |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+   525 |                            NR_VM_NUMA_EVENT_ITEMS +
+   |                            ~~~~~~~~~~~~~~~~~~~~~~
+   3 warnings generated.
+   clang diag: include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   clang diag: include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   clang diag: include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   clang diag: include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   clang diag: include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   clang diag: include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   clang diag: include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   clang diag: include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+   clang diag: include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+>> error[E0658]: use of unstable library feature 'unchecked_math': niche optimization path
+   --> rust/kernel/io.rs:82:33
+   |
+   82 |         Ok(unsafe { self.addr().unchecked_add(offset) })
+   |                                 ^^^^^^^^^^^^^
+   |
+   = note: see issue #85122 <https://github.com/rust-lang/rust/issues/85122> for more information
+   = help: add `#![feature(unchecked_math)]` to the crate attributes to enable
+   = note: this compiler was built on 2024-04-29; consider upgrading it if it is out of date
+--
+>> error[E0658]: use of unstable library feature 'unchecked_math': niche optimization path
+   --> rust/kernel/io.rs:99:30
+   |
+   99 |         unsafe { self.addr().unchecked_add(offset) }
+   |                              ^^^^^^^^^^^^^
+   |
+   = note: see issue #85122 <https://github.com/rust-lang/rust/issues/85122> for more information
+   = help: add `#![feature(unchecked_math)]` to the crate attributes to enable
+   = note: this compiler was built on 2024-04-29; consider upgrading it if it is out of date
 
-
->=20
-> Communication is not the issue here.
->=20
-> Also, this person waited until v8 to give a single line NAK. This is
-> not very nice.
->=20
-> =E2=80=94 Daniel
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
