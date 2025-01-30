@@ -1,99 +1,175 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F961A4F0A
-	for <rust-for-linux@vger.kernel.org>; Thu, 30 Jan 2025 08:36:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD4DD1B040C
+	for <rust-for-linux@vger.kernel.org>; Thu, 30 Jan 2025 08:40:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738226182; cv=none; b=l5WB5LgJq6iVfGm0A/+2FVVg1Pxwhx8SFintrOI3N55O0D612e3egh989dl2umx0jEN7BDOOUfwRLxoDqMV0XNuqLOxUmkx1LvM25aH6Pkt3tEqwnEvQnYI1X8c6WqNaT/KHHvjQPQyHA3yTLdyM5GBOsjMoyBzPIz3ERd7nvPI=
+	t=1738226427; cv=none; b=h9gAggl4L1ZMBCego039O57+sgzZLWllYx33ewJGdbmGG3V5q+uuSV8dNXGwP7pkwq67ifuiVwOFGLPemyodjx4wo9/qR/4DmTcZYvkDsSijeNT7aLLz9F0j0lkxmmWFk3FVkKJ3kb4JS4KqNrlG7z11vm7lSNgdAJFCivoLBJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738226182; c=relaxed/simple;
-	bh=NpFyo031jesMq/Zs7w8Z4oMfinomKT3emG0OY9l0/eA=;
+	s=arc-20240116; t=1738226427; c=relaxed/simple;
+	bh=JiJ59dIbSg8BMwGYdii+KCyk3SoO/RD5iZOJ276Rbso=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lIdk2bOhrx2RVa5siHWRxV+1NexmOni1lqTwTwCEMhdgPXT0kVJjmQxflQ6+5pF0ejSzB0yV8Y5Y7y3oC3JHgvaa9VquKBNcp8D8Hw3aBlXvqq9ozrRAK1WAst4hZjGYimzPuBlBzszVMII5YOQZ2VdnrCHAtda1YNfku+pmObA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MsJq4RHI; arc=none smtp.client-ip=209.85.128.47
+	 To:Cc:Content-Type; b=n6oBW5RemW6i7Jnvd7MPfrfdizuMBJj8lMWzkICMpGcjtsNAj+anZVqOUp0//wv+E5OV0nUNjZok4XhxzpYDlDZTB0o0OXVYiznybaPuS5TkDahDxWr1jvVQ70699qAGa7utIe9OcqR3snGeotSPpm0E6nc1HCDZXQNvixrZ3LU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qz7nHiyc; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MsJq4RHI"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43634b570c1so3230625e9.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 30 Jan 2025 00:36:20 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qz7nHiyc"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3863703258fso1000765f8f.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 30 Jan 2025 00:40:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738226179; x=1738830979; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1738226423; x=1738831223; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NpFyo031jesMq/Zs7w8Z4oMfinomKT3emG0OY9l0/eA=;
-        b=MsJq4RHIl8IufiQVYIgM+1F+nb0Wvw/sM4/jU8+hIr+QHYFmBXHb+c06HN0iCyQ49g
-         Q6YFpKwYDCK+xhYU2ULKMhuteAdT3wpWUqvxFYGGTMlB3nKSe+BtYyI/7Ylq+7/MiooL
-         CAAvSDqz0mqzX1+PrP61vwGNradhtWnHfjp0EPNF9An2bezZ3pqpKw6nzfH31eQoBix0
-         5Yq8hFSPSLe36+3kjj/Mgdww+GWvN/UNiapNV8uhOKc49a0pW4gdJNSpVXoSPuSVH8D1
-         or/k+Z3aMmigTjcHLYwUI0BB/w3Wkl5DVA1Xf8MGXEFmkEPegw0F/Bklsfjum1XePrtv
-         aREw==
+        bh=s5zjMjP/LPUXmnqwR0OYUyowGGr5DSPAz2cDaxob+RE=;
+        b=qz7nHiycr5yZKuQORokxr5vg/48cfCkzetBVAIWNAZAjGyjJ5f6L1cjPKzFQl5yky+
+         BS3UQokYEOSbSqZR1O5waIQzPMZVLSJ88nLjmF7DlsOxu+zOgDQBrHokB5z4Qj1zcQrs
+         ix9F0Ii/YnTBpBU1IUZCTgVNUmPrLxENiqRA6P8CL38vKCaO+CBjcSKafTQlxwiFV8Cr
+         a0KHtRPyBkKwQfveex06+Kg87cHa/Nr34IBfgRfvYt2kqKbbzQcSoaUXc+tOd8UHFjbe
+         PA9ov943Hf/ESWBtp0B5eKasE+uNel4TCipriU2eCNhRLwMXWkPSS9qPc4tbbSbCdGYs
+         RL8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738226179; x=1738830979;
+        d=1e100.net; s=20230601; t=1738226423; x=1738831223;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=NpFyo031jesMq/Zs7w8Z4oMfinomKT3emG0OY9l0/eA=;
-        b=sMBQVFy2Vqh3RQyZOlyFa2ODnuDS5s0cyi04dpJWCgSMIha9OwAaN3HaqLuX1bRXcF
-         7SS4/jkfLxRI49k/UKcwUfTGAHsix4UjVYAyZKDnnT/u2T0phfyCAUsT5mRB1eGTjiCC
-         zmYs5lc5X/NMNNhYnCoAkDlQEu0NHtcACtfAbEeL7qK8FnRLNw5qfXhc1HWn7vB8VH7g
-         u2kXzBSvdbVPqVoRjYCshjqxNgU2unbjN5ox5gJXR9GvgqN2idBvsDyhfSzZWtXaS+GC
-         t5RrpKH6ZEqxVWTP2khmHFXkkmQv2Gg6rV614q6PedaTPwagdFF3nJEY6DBPhB3UymXE
-         hB1w==
-X-Forwarded-Encrypted: i=1; AJvYcCVhsZayK13z0+AVRZmr5xujgyoJi8CoD/9bX1BkW9SvyjdXHaT/0QVfk+lLTznCE5DL0PS7DAjrvUqfYWsWVw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUn1YnjbfXpdBaCOAGhBbEz+ls6fs6eZ+RN6sHxjt3oEJ7Hqt/
-	ewYrp0uXzo7GurrenAL0XpWl7f5VwjPitxwZjvaZbpPBHkKbFCzi8+BzoWgQJmODzI4ufudCKKc
-	TOST+u6mDzdBIb61ExEOWYXerZNB1Au2q1cca
-X-Gm-Gg: ASbGncsqyydhuNCmC6BfCifYGqJlHsnKz7PyyoBMdia8KzAxzhaTzNQb8yzfNa7QFEw
-	LJg9g98t/N9cB1dVTg1Fm5M8QNyRyqgkRJObwdPRWn7CsE4dkYrHjornTscmlM8j+CCCvGSLpRL
-	QxbGO60ZRDP7vM/lQaFTj0Qj3Krj0=
-X-Google-Smtp-Source: AGHT+IHnI1LtF7nMZcqEjh9+dE8jolzjd+ED3MCX4xDE+XblHr70MsiX8qWC3045swfSoBdwoYvH2IANJawqgHJUzTU=
-X-Received: by 2002:a05:600c:2d45:b0:434:ffe3:bc7d with SMTP id
- 5b1f17b1804b1-438dc3c38b9mr58766015e9.16.1738226179287; Thu, 30 Jan 2025
- 00:36:19 -0800 (PST)
+        bh=s5zjMjP/LPUXmnqwR0OYUyowGGr5DSPAz2cDaxob+RE=;
+        b=KfDnTOBphtSmb1klmlYHHOGYiSGTvO4T9htglhE+1B0LaQ8GAqz3bMRC0YBKHlTQUO
+         bO0LMAMrTMbzQLKMqEhEmp4tBSUqMHvIVeDXRThp+YcIZFuhSGcrTtSz83G+/afLQJfL
+         AWtaInqdktSzAlZJMCFlpBCgK6BWOs9/nB+/ozDlbWEwrSSYinisjCil+hEm48h81Y4c
+         DUjBcOV4/S04Vgkyexa0lyCVm8IdiDBZwgHRd8jIzVyijnZXxjlxIlJQTrdA2/M3Na6I
+         TRjhb7HBvfeYZSDmLrzJYsUD2hA+qw3WofQz/G3nrlrpKS5N4rBuUDyzFtkxUBaBpr6y
+         kdEg==
+X-Forwarded-Encrypted: i=1; AJvYcCX03lUmZyT870pDg3/bPXEUi7TjnCEZ6A0bOmX1NDxqKwTjlTNfJYdrQCZ2SsAFqs4PkCuykfveEMgW0/3BWg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFsoHuO1CdaJKXhqyRqK58VXU+iIR7HZrwhQ7Wj8vnUwcU8A09
+	5Ltd7megm72eRVTRnrEhIqwqTgMkndw6zKH9xt+kOpQsmy+ayGvlO8DfZGeVTwgX8S1dTN/Guj9
+	2o67K3PHaTnrx32sDIFxkTx+1111WGK4yKljl
+X-Gm-Gg: ASbGncvxQBhzjSctPCCMJoNNqiNSZ+DatQme4yApCEBrVLtRFJakRUALyRf4GklA0lK
+	4rXpn/q68CPxTckTCKXsCFJz/leM2ydS3cOJPOsNC53+08EfQAQ5iWyY8eNZ7HiPnE4xSyCR110
+	SdY7T4olx18mRGYn+pttJy3YAHH8Y=
+X-Google-Smtp-Source: AGHT+IEoJ+rSlDzuke2JvbADbiW0vKr4Xk55Wi/Q/eIxGvI4r7agApPnyTloSncexZBowwtAPXxVickXMsySVDOksIw=
+X-Received: by 2002:a5d:64e4:0:b0:386:3bde:9849 with SMTP id
+ ffacd0b85a97d-38c5a9846cdmr1875667f8f.12.1738226422987; Thu, 30 Jan 2025
+ 00:40:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250129215948.135486-1-ojeda@kernel.org>
-In-Reply-To: <20250129215948.135486-1-ojeda@kernel.org>
+References: <20250129193037.573431-1-irogers@google.com>
+In-Reply-To: <20250129193037.573431-1-irogers@google.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 30 Jan 2025 09:36:06 +0100
-X-Gm-Features: AWEUYZmCbAuxOrTTVps7vRQ3a3AQ1uN8EqeAZv6sf-PzRBAhsABrooX2dsHc7Z8
-Message-ID: <CAH5fLgiVA9wKoDmXH9KsnPt5B1_eiOwewE1pNsCusP=TE05vKA@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: add Danilo Krummrich as Rust reviewer
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+Date: Thu, 30 Jan 2025 09:40:10 +0100
+X-Gm-Features: AWEUYZmMsKHcGcmyGkj9Vm741ytqm96LYwiVaZJAR832Tgm_7ICzhS8b04qWrzs
+Message-ID: <CAH5fLggW1i+eO1hhuHrX-LX7B4=M5a0-dZw4En990fD2biJU1A@mail.gmail.com>
+Subject: Re: [PATCH v1] perf symbol: Add rust v0 demangling support
+To: Ian Rogers <irogers@google.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Adrian Hunter <adrian.hunter@intel.com>, Kan Liang <kan.liang@linux.intel.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+	Trevor Gross <tmgross@umich.edu>, James Clark <james.clark@linaro.org>, 
+	Howard Chu <howardchu95@gmail.com>, Ravi Bangoria <ravi.bangoria@amd.com>, 
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Daniel Xu <dxu@dxuuu.xyz>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 29, 2025 at 11:00=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wr=
-ote:
+On Wed, Jan 29, 2025 at 8:30=E2=80=AFPM Ian Rogers <irogers@google.com> wro=
+te:
 >
-> Danilo has been involved with the Rust for Linux project for a year now.
-> He is primarily working on the Nova GPU driver [1][2].
+> Implement symbol demangling based on:
+> https://doc.rust-lang.org/rustc/symbol-mangling/index.html
 >
-> In addition, he has been active in the mailing list and most recently
-> submitted the Device / Driver PCI / Platform series.
+> Ensure recommended demangling examples match the expectations in the
+> documentation.
 >
-> He is also already a maintainer of `RUST [ALLOC]` as well as several
-> other DRM-related entries.
+> This was requested by Daniel Xu <dxu@dxuuu.xyz> in:
+> https://lore.kernel.org/lkml/jgxfnphfo3nzlfipnuuzdlfc4ehbr2tnh2evz3mdhynd=
+6wvrsu@fcz6vrvepybb/
 >
-> His expertise developing Rust abstractions and APIs for one of the major
-> users of Rust in the kernel will be very useful to have around in the
-> future. Thus add him to the `RUST` entry as reviewer.
+> Signed-off-by: Ian Rogers <irogers@google.com>
+> ---
+> This change is on top of the 18 patch v3 series:
+> https://lore.kernel.org/lkml/20250122174308.350350-1-irogers@google.com/
+> ---
+>  tools/perf/tests/Build                   |   1 +
+>  tools/perf/tests/builtin-test.c          |   1 +
+>  tools/perf/tests/demangle-rust-v0-test.c |  82 +++
+>  tools/perf/tests/tests.h                 |   1 +
+>  tools/perf/util/Build                    |   1 +
+>  tools/perf/util/demangle-rust-v0.c       | 661 +++++++++++++++++++++++
+>  tools/perf/util/demangle-rust-v0.h       |   7 +
+>  tools/perf/util/symbol-elf.c             |  31 +-
+>  8 files changed, 771 insertions(+), 14 deletions(-)
+>  create mode 100644 tools/perf/tests/demangle-rust-v0-test.c
+>  create mode 100644 tools/perf/util/demangle-rust-v0.c
+>  create mode 100644 tools/perf/util/demangle-rust-v0.h
 >
-> Cc: Danilo Krummrich <dakr@kernel.org>
-> Link: https://rust-for-linux.com/nova-gpu-driver [1]
-> Link: https://lore.kernel.org/dri-devel/Zfsj0_tb-0-tNrJy@cassiopeiae/ [2]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> diff --git a/tools/perf/tests/Build b/tools/perf/tests/Build
+> index 165ba84dc93f..d59d88abf0da 100644
+> --- a/tools/perf/tests/Build
+> +++ b/tools/perf/tests/Build
+> @@ -56,6 +56,7 @@ perf-test-y +=3D genelf.o
+>  perf-test-y +=3D api-io.o
+>  perf-test-y +=3D demangle-java-test.o
+>  perf-test-y +=3D demangle-ocaml-test.o
+> +perf-test-y +=3D demangle-rust-v0-test.o
+>  perf-test-y +=3D pfm.o
+>  perf-test-y +=3D parse-metric.o
+>  perf-test-y +=3D expand-cgroup.o
+> diff --git a/tools/perf/tests/builtin-test.c b/tools/perf/tests/builtin-t=
+est.c
+> index e77bf446e821..16937e7e313a 100644
+> --- a/tools/perf/tests/builtin-test.c
+> +++ b/tools/perf/tests/builtin-test.c
+> @@ -126,6 +126,7 @@ static struct test_suite *generic_tests[] =3D {
+>         &suite__maps__merge_in,
+>         &suite__demangle_java,
+>         &suite__demangle_ocaml,
+> +       &suite__demangle_rust,
+>         &suite__parse_metric,
+>         &suite__expand_cgroup_events,
+>         &suite__perf_time_to_tsc,
+> diff --git a/tools/perf/tests/demangle-rust-v0-test.c b/tools/perf/tests/=
+demangle-rust-v0-test.c
+> new file mode 100644
+> index 000000000000..ab6613e02c94
+> --- /dev/null
+> +++ b/tools/perf/tests/demangle-rust-v0-test.c
+> @@ -0,0 +1,82 @@
+> +// SPDX-License-Identifier: (LGPL-2.1 OR BSD-2-Clause)
+> +#include "tests.h"
+> +#include "debug.h"
+> +#include "demangle-rust-v0.h"
+> +#include <linux/kernel.h>
+> +#include <stdlib.h>
+> +#include <string.h>
+> +
+> +static int test__demangle_rust(struct test_suite *test __maybe_unused, i=
+nt subtest __maybe_unused)
+> +{
+> +       int ret =3D TEST_OK;
+> +       char *buf =3D NULL;
+> +       size_t i;
+> +
+> +       struct {
+> +               const char *mangled, *demangled;
+> +       } test_cases[] =3D {
+> +               { "_RNvMsr_NtCs3ssYzQotkvD_3std4pathNtB5_7PathBuf3newCs15=
+kBYyAo9fc_7mycrate",
+> +                 "<std::path::PathBuf>::new" },
 
-Acked-by: Alice Ryhl <aliceryhl@google.com>
+I think you would normally not have the < and > here? I usually only
+see that when you do <type as trait>.
+
+Alice
