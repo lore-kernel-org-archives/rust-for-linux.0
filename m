@@ -1,149 +1,76 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA451C5F30;
-	Fri, 31 Jan 2025 16:02:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9831EBA02;
+	Fri, 31 Jan 2025 16:05:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738339366; cv=none; b=r9rRU6bEzgBswkBozn5e2XVEOwFicDiW/IESXb+/75rVMulqGDiZ64ceC7YvU7RcSQqnwq7Ls/SzsiIWFB73Yy/Wf7bbqBGUITrK+RQP1ZgzIsFCpIGuiKKGZd4biveHzaUH+EnsXRmmCjE0M2tqwjJkoiV4TzxSzyHMxBkofeo=
+	t=1738339534; cv=none; b=ElPfmU2gA/3h8Prf1pQPQP0R8WhPNsQz/DoxNjdjap6b/p5SiW6TWCpCI4nAM2jrRGez2WPvng/5vAYZcVzcwvNEYUvPxH1K/I8bXMS9aejjiZaCgtGL+GSrN0ZwWhtLI48LQMRRiXNRm/TpPFou8kOuiGAN4JvhDiQD8MlNjOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738339366; c=relaxed/simple;
-	bh=LItYn27Gn5fx1t2g2Jk5KXuGL57fUlUGMyamQKK3fw4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cKkJkMlV3tQd22nTw8prnrvrFGe4bts3jHHBYIFShy4P/ZUJYD+ehBfC5L70viviV9JBrCrKi87M+LjsyqnTIVzDvXLev2u2/97UJ5KB2cF6zQD6EbL+qKn9tsYi8s4aH+4bhAvpasPYNVBY7SZ/v5GSYuHlABpPrqMcf+PrbCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=isllp7Uk; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738339534; c=relaxed/simple;
+	bh=1omhRQmvSB/Qil1fK+3eh4SCjNKBsj0EYIu0AGn7V7Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X2u6f1TLqHPaXVdfw1cDzONoEPgU29dovY5ndo72d4HuJ6zhIL6msN3dM795v3Xcf+kUmhy1y6ZW/tHkbjIlFqN1lkrcLeSIa9BLwOrCyn4CnFN7XQLdnq4eoeb/0WMhW1g/bGf6Y+hIPdX2DPJHI0XPO1j4HPZjd91byL0sVLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=1MYRElUg; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="isllp7Uk"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-219f8263ae0so41344815ad.0;
-        Fri, 31 Jan 2025 08:02:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738339364; x=1738944164; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MgyuVqNeNif0jzGK4cEWcGwaVaukvqMPkaGDhwWTlMc=;
-        b=isllp7Uk9OMYpwvFwHLj3OeTXXGYc/kH3B5ucXfVQz65dgr5/ndP2+mSuIHRv18MqJ
-         jtqzxBeVN61OJaiD7kz0K76v7ygmMoBfc0JU8AmI/mSmawf/Cg1l2Njz8xK4TbI1R11r
-         1RJwJlhGrE7I2deUyYhf1DV6mgU4UXwv1cTw2dNtbWK6G0Ffk0jzLzhouYAKpr7VCF+j
-         GNGKQnkqS2EHgSqI0UdKXIveSQCVCmjgiephLSWELhsOZy3VDUX2QcKQXYmGalrQSMa3
-         THUVGUrSwA+DMnO/xHT+FrdCxHhMBSHzyrw/Xdh3JIIY/iYRtLJS1UBc5IXXeFJH6hBj
-         9zPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738339364; x=1738944164;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MgyuVqNeNif0jzGK4cEWcGwaVaukvqMPkaGDhwWTlMc=;
-        b=Amzoi2oPEvOeNnGQp6jOZQLwQgjm5sRi9rn0dSfXcVO9tNPJ4hY6ZAZhxXGygvy2Tr
-         tUN1MGdN9Hq8JVIu5M0t/CeCdV8MArPW/gZeXVZyterFUfcf8zPAFRHtgCi+0milTt+7
-         34XL/yz7PgY8s4Nt8KX1m2FyjFxCvTHV+UkumgbSJe4yMHCmBSbCapdQ7wtuPkOO9z9V
-         P/enOKmC6DEoh+LDcSIWDgULEjvKBgozSjd61QRj1gjYNYEPxPRtctChNIkGc+qR7eiB
-         /ns7g5pR5p3uBoE+piNvFI4dnrcaZZdek2glHQgjYJSKeBwje4nWmShcrdKbT2p3lSxH
-         3WLA==
-X-Forwarded-Encrypted: i=1; AJvYcCUyKUwH637vlZZP2vBp/hotLIFi76x+NFq3/cYAuVs9h30HdKTeULAxEAAeswxy2j2T8dwjBWkhkAbnnGQ=@vger.kernel.org, AJvYcCXr/ulJo3FknRugVh2l3zDRQkPwRABi8dFXQg6fHOv65H3h5+woUvVWrmWU82pb9OmDEjEUQUvHU1tnNnVrA/8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwvoLyjwL6OdFG/3OG0z8d0QUzQMIebompxZzmuXW1Zv4qEzCer
-	VvibpwNiwm9eSKDJUDtGeoAkTwfWYfoxGVf3hmLKK2RT4rfYrfmM
-X-Gm-Gg: ASbGnct5OJoWU+OeyAgV76Pe9Pc9gsSugO4l3q8B4rIVMDiVeW354FoP7XnLDCe3f3q
-	vYvEkbQoItv13g1o23MbfNoGDLNe0A1xMyJi+JCikvDjbD2LZ+wBoEsW2gKIOaVOPth9QCAVGUD
-	zZCWBTx1omLxUG8xS+M7XEivJU0RpGymk52UoGmjpberK5QSBKqltnAQMN9uXleFLUYSeSQURKU
-	r6lCEwppYiccBu+fXllL3iKgFkjCMmMOP7V2c+aGYRWfcHiIa3uqb8gaZ/7CeheORB707JuyQaU
-	cPiRX6BOnsFUSEHiwxj+N1LW
-X-Google-Smtp-Source: AGHT+IEuoqwi98xpQFdlqgVQHussREEh0sVSmumXnnfCrHun85rth16LhQvg3maNZqDd4uUMiGcWfg==
-X-Received: by 2002:a17:902:ce8f:b0:215:9d29:9724 with SMTP id d9443c01a7336-21dd7ddfdc9mr182585155ad.38.1738339363722;
-        Fri, 31 Jan 2025 08:02:43 -0800 (PST)
-Received: from linuxsimoes.. ([187.120.154.251])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21ee2bae0a5sm5656905ad.19.2025.01.31.08.02.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jan 2025 08:02:43 -0800 (PST)
-From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-To: boqun.feng@gmail.com
-Cc: a.hindborg@kernel.org,
-	alex.gaynor@gmail.com,
-	aliceryhl@google.com,
-	benno.lossin@proton.me,
-	bjorn3_gh@protonmail.com,
-	gary@garyguo.net,
-	linux-kernel@vger.kernel.org,
-	longman@redhat.com,
-	mingo@redhat.com,
-	ojeda@kernel.org,
-	peterz@infradead.org,
-	rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu,
-	trintaeoitogc@gmail.com,
-	will@kernel.org
-Subject: Re: [PATCH] rust: sync: create the `get_mut()` function
-Date: Fri, 31 Jan 2025 13:02:35 -0300
-Message-Id: <20250131160235.305557-1-trintaeoitogc@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <Z5vrhpp9Idc3tiUy@boqun-archlinux>
-References: <Z5vrhpp9Idc3tiUy@boqun-archlinux>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="1MYRElUg"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=oiBjie/3ciEURIkZ+iLsXyNmqPRpB2PMG1wBn3Ax9Sg=; b=1MYRElUgqBxjWkVDqUZZxZcr+8
+	ONv5FvkVLHES1aKsbjZX2Pd8KJ1igu+ZChE//zmIzI6E/JJkxufl/3qydIO3GW+s2+WuTOOYnInRi
+	gkcKLlHtiYE/pzVQaPZwXFtqUrpiJ7jKe7FEyyQZS7tr4nWqoZecl617/SEkPEaJIOQM=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tdtVv-009jXz-O6; Fri, 31 Jan 2025 17:05:03 +0100
+Date: Fri, 31 Jan 2025 17:05:03 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Christian Schrefl <chrisi.schrefl@gmail.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Russell King <linux@armlinux.org.uk>,
+	Rudraksha Gupta <guptarud@gmail.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Geert Stappers <stappers@stappers.nl>,
+	Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
+	Sven Van Asbroeck <thesven73@gmail.com>,
+	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3] arm: rust: Enable Rust support for ARMv7
+Message-ID: <65da77f7-bbd4-4cbe-a06c-75f10a6ec4ce@lunn.ch>
+References: <20250123-rfl-arm32-v3-1-8f13623d42c5@gmail.com>
+ <a83b0149-7055-411b-ba86-d227919c7c32@app.fastmail.com>
+ <f8b59f05-55b5-4208-8bdf-b4be8e93bc22@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f8b59f05-55b5-4208-8bdf-b4be8e93bc22@gmail.com>
 
-Boqun Feng <boqun.feng@gmail.com> wrotes:
-> Hi Guilherme,
-> 
-> Thanks for the patch. First I would prefer the title being:
-> 
-> 	rust: sync: lock: Add Lock::get_mut()
-> 
-> "create" is not a good word to use here, and the parentheses after
-> "get_mut" already says it's a function.
-> 
-> On Thu, Jan 30, 2025 at 03:51:38PM -0300, Guilherme Giacomo Simoes wrote:
-> > Create a `get_mut()` function that receive a mutable instance of Lock,
-> > and return a mutable reference to data because if the instance is
-> > mutable, the rust compiler guarantee the access control.
-> > 
-> 
-> This commit log doesn't include "why we need this", so please add the
-> reason or the usage of this function, maybe you or someone need it
-> because of some initialization/setup code after creating a lock
-> protected object? Moreover...
-> 
-> > Suggested-by: Björn Roy Baron <bjorn3_gh@protonmail.com>
-> > Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-> > ---
-> >  rust/kernel/sync/lock.rs | 6 ++++++
-> >  1 file changed, 6 insertions(+)
-> > 
-> > diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-> > index eb80048e0110..3f9d78bcb37c 100644
-> > --- a/rust/kernel/sync/lock.rs
-> > +++ b/rust/kernel/sync/lock.rs
-> > @@ -140,6 +140,12 @@ pub fn new(t: T, name: &'static CStr, key: &'static LockClassKey) -> impl PinIni
-> >              }),
-> >          })
-> >      }
-> > +
-> > +    /// Get a mutable reference to data
-> 
-> ... please provide an example of the usage in the doc.
-> 
-> > +    pub fn get_mut(&mut self) -> &mut T {
-> > +        // SAFETY: the caller must guarantee that the instance is only used in one place
-> 
-> SAFETY comments should explain why it's safe, here it's phrased like a
-> requirement, maybe something like:
-> 
->     // SAFETY: `&mut self` guarantees the exclusive access to the
->     // underlying data, therefore it's safe to reborrow the inner data.
-> 
-> Regards,
-> Boqun
+> To fix this Rust would have to provide a way to build the core
+> library without float support. I don't know if there is a plan
+> already to allow this.
 
-Ok, I make this changes and sent a new patch:
+Floating point is banned within the kernel, except for in very narrow
+conditions, because the floating point registers are lazy saved on
+context switch. If the kernel uses the floating point registers, you
+can break user space in bad ways.
 
-https://lore.kernel.org/all/20250131155940.305403-1-trintaeoitogc@gmail.com
+I expect this has been discussed, since it is well known kernel
+restriction. Maybe go see what happened to that discussion within RfL?
 
-Thanks,
-Guilherme
+	Andrew
