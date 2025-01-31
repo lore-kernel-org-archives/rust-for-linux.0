@@ -1,142 +1,152 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546531CAA99;
-	Fri, 31 Jan 2025 15:34:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E544E1E9B02;
+	Fri, 31 Jan 2025 15:59:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738337654; cv=none; b=uLZ7L5A8cK2ruH3bmJCHduRg6D4TLXn7smQfuhqVtIfG35+gvZpKlIu6tH+PtRAkAM+hVZy2ZcLUmmBU81KFAfCF9bWOyJeJjg4xDqEJ94vm1MM5e3RIRB11L5wAX2RvdNtoDRaoBQ9z/xSMt4/vgWuJNkaDd1kQcYiQ8BCtko8=
+	t=1738339197; cv=none; b=u7gWm7dDXhRVaI/hlfRo2MCcDU0sdpxMg9bNEVRTXRMHBbz65BcJLjDtQnkDKJGsSTvuEQU/6HPgw2YUErg7NrAhqxu4DBeNSq6nJTaco+qTsmRAgm7ZY4Vr7rEgGgeCiq5YyheakweqCJ42b00XgBj85eS5H1bSDfsRaCt39xE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738337654; c=relaxed/simple;
-	bh=re3wYPEzIKzslBfJmiyCrhALnqaCwpgJEAYE5GfLpHQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Xs5kOfpDXvbRBPWRJPGNSm38KoLiBTZd0qdASRpS75zOMJgfhBaEG3FYxY0TJITaHAs+zaomwrmosWHY2FNtFAGvSO7bkeikEbGPKysL/sUWKeBStT/fnMIqa5DczALU8wPJLb7OhTAhB5hNoPxTJPeCced5iOUY/jvfV8OPgmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ifq/oeAr; arc=none smtp.client-ip=209.85.221.46
+	s=arc-20240116; t=1738339197; c=relaxed/simple;
+	bh=q6ujgRddaK6B601nuulg07doY+47TABI5tkVVTVc8s8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=u0OdaLEo8y9hREiw6I2sqpy2woPtCp0xJ8cO0QTY7YXYF8234vKBOw3ATEW9hJ6rsIzNDKoXlvL4RAdGBGEVBJwz5Zpsbr3l4jJ7HoYkwfKFUDM4KmGC1/2qWmN4/dChO+ZZu7MxtJZJdnt5KkyWzWPlQ0QwOOe4HwRYM8LNM0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QwSImkeE; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ifq/oeAr"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3862b40a6e0so1405840f8f.0;
-        Fri, 31 Jan 2025 07:34:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QwSImkeE"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-21670dce0a7so45836995ad.1;
+        Fri, 31 Jan 2025 07:59:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738337650; x=1738942450; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YlN3hvL9n56nyWua3u4fzIOe7QsEs4Hpzyubxj9K5cE=;
-        b=ifq/oeArDNmFclBhP8TqmCrbAgGZa4LUvkQMZQYbGIuE8hWXMQavRqNw6EfZvFna2m
-         4R231sFVR68rf+OtNDsSfGf5gzElHv2z6rywAm1e7K3noJ+IKnNGvZv60IItzGmoljhK
-         aEA4B3QcUMiabRNduoi8xqpj1bFnKxKfE2TB3/T90kwsGSyKL/5V0onujaeIPaRrElE7
-         AQB0xbFKoNw8wWZVEZgdynvAYY31K9YZCxXRv6Rrulkw7ZXX/puRu/yoohkYTdprtldF
-         iLG/ZoVUwB4kJicWinbfMMh6KC997chQTYJDtt/fUETRJP7qBZ0jExJHt2sBgzvcx/Nx
-         SiYg==
+        d=gmail.com; s=20230601; t=1738339195; x=1738943995; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7Bh7kvr1RjTSIiljQmEtngf78fB8HkukbiqgTZs7DKQ=;
+        b=QwSImkeEdG7pJKiRkDTLDNKZlXO7bkFWXhpZw+h1GH7Aoult2nX8il12msR93l0ASc
+         YwcV3jOoeIu5/6nz7+V51+nKgSnUcZsDeMVOulnm2YzGzVWeWp97UDYfZFuHFJK5ocFf
+         nZ80reD3AJLvXXn8Z34ETV5hu2mRx+RNkqEvDvRBcgj8LlwTQziE6M8/4pLLRuREv8XM
+         iDMCe7qn3Faamg/tinT1DOxJgXZrwYbYD3vyl6ZNWoUyzkXKPsLzw46aI0c0MlYuj96y
+         PFRvSBaYWH3majR0pNbvUvFv3LpX3dppgTF7BzKhqYpgUyrrKoCEUBjy+2i1ELVCZWKh
+         o5Bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738337650; x=1738942450;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YlN3hvL9n56nyWua3u4fzIOe7QsEs4Hpzyubxj9K5cE=;
-        b=OvVHqQQMaMH3e7SQ6dYNJd4V5VOtUykhB/JxrWpCTUshYWUjeBTpepo0rMpokGRysu
-         yQ4fgdjh+jEhmWHFpirRjUsJqqBIrz1zUxAidzys/BSCAAL0bKhEJgljAk6FWLOSj+2Y
-         xKAktD69j1CnzmUHlfGKTlLh6Y3AMVNyAO/Jmv8tYN9+ap4BLPJxu1ECrodorQvcu9YY
-         P/DjbTQ3CDuzEhMnrz7T2eJew1yGCgq1dm+2V1fCm5/VHJXk7OFax9bbUwhAcp7CTvH/
-         pv+mk6Xs+dEKdb+XGBQC9Q1Www1h7JvjI07TeYTzIL2UqKUBPnj56UxcQnsGrDa68Z2g
-         70tg==
-X-Forwarded-Encrypted: i=1; AJvYcCU6KggvAv2xtEIbZDsu+h3swl7UMiETLeHxl0l4jx3g1Wzjm8/cSKF3Jt7tN7/IKD6MKMD1X/E7rpg=@vger.kernel.org, AJvYcCUOZ+bGZFkYacIobAwkIkUvSbPFh4Kv3lAA9W1xejyqbYsHLIv0fv4GfqwHOF0fcOdBNZn0CMQoAKxNm6+l@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGOLFE5WRbRPe2HoBI5XiZfiTQ+nVuHe9sSgmNE1ud7skNkXYd
-	3EH1tdYlX5LALMtInZWy8uL78Bec7Akb7ZmAqoLuKVLmWHaFszW1
-X-Gm-Gg: ASbGnctIgrHbqGsR8RlqBEJqVXvx/T5z4c8eOZBs6DAaIuw4afPNU0hUYg9iZXPmFeP
-	xrYDE5ORXLuUBDUfxXojMwCA6LyXtXxb2ABwMVN+b8HnRJYtSsBKlo6Mp1HOm5N6lc5HaO9actr
-	oOxKKz8YOmy1fhG/z4Tm6cJmYcVvOXjVsafE/rhcbvoXea6CCqlVY1+zOrTnJxp63uzFphrEzaI
-	bEVwMx5Xn6wHObtVqemFc9lOhe4laLaHGiGARkOqbBNop2XYxNVU+Ng1A9vbZ7fm6alThSgbicy
-	AFDUFSaiZ7cqgWZ4TWrCr6pnzZxf
-X-Google-Smtp-Source: AGHT+IGeZg8pc1dnHI93SS1bPuVQwFVdIXopfhzkJBDwn8qHPECSHOzdEIGLge2i0w0yjCScGHxjxA==
-X-Received: by 2002:a05:6000:2ac:b0:38c:5cd0:ecd4 with SMTP id ffacd0b85a97d-38c5cd0f0f5mr5634438f8f.6.1738337650276;
-        Fri, 31 Jan 2025 07:34:10 -0800 (PST)
-Received: from ?IPV6:2001:871:22a:8634::1ad1? ([2001:871:22a:8634::1ad1])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c5c1cf555sm4998186f8f.97.2025.01.31.07.34.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 31 Jan 2025 07:34:10 -0800 (PST)
-Message-ID: <f8b59f05-55b5-4208-8bdf-b4be8e93bc22@gmail.com>
-Date: Fri, 31 Jan 2025 16:34:08 +0100
+        d=1e100.net; s=20230601; t=1738339195; x=1738943995;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7Bh7kvr1RjTSIiljQmEtngf78fB8HkukbiqgTZs7DKQ=;
+        b=WRPkVUTC8K05npuilPn17G6BUEW+TY0eo3F/a9Ms2/K2ZwdWLFMboQK+bpXCPjR+WP
+         5cCfyCg5844yd1/RbS0/NA+ZqiaXb8TCIgbD0Ok2xPXGR+rCG2gkTsCPg9g6vTH0ejPO
+         VJMtmbAcZiRT9mXm9BlxoFOSZ8MyaDYe54u/2Nj5ALMgHRrGP0V6QpGZaSMI03MYhaTQ
+         d0eefsJnCbiSwik/1ds0rg7Jv4W5qxxAC6ImVXZV4h3xLfsoBCGGmbu88YKWaKEhoKIJ
+         YwEy5r/NAw7JQfGqoKDrDmPJWM/k09OI/hiay6kHbVYQv2gfPL4ZmO9eff0relGjOhQU
+         MD+g==
+X-Forwarded-Encrypted: i=1; AJvYcCUDOu2IMS9EwUFywSGL3Qd7nQEDKJVdUb+Z2KCVaxUVY8IzUXjReC4+C+SoYlBTwm3aAbOQYWiIqCeOTS4=@vger.kernel.org, AJvYcCXoYiJ7gIX3g1kbrOmmQHREQ0emHo/QVHfTamrbCnKSdOd7JkdfhjVcm5kejZHDRlDsAdr0aRNsflBcdUe4nWA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQ+SLo3MvvUgejWeOoi0t8uae24JGsFrkWiTwTpPIYs98lUvFf
+	v3WkWlWy1wP8nthRNuC39mGROLyAmfbrC+KU+X7ClDFWMRjv0WbW
+X-Gm-Gg: ASbGncs6mnBYXB2EzcUrLQG4voxgr1vgW9qNju+Kd76pc8yovr4+Nbm+2nYolMQ0fKB
+	QGB9MrhsFBApk/3ZHlAoPcdZOZenrlwsZkCX58Cc2G2TtasS07eskSWMLsLoi3ZHwwHc14QYPjE
+	pM0kScjbuuxRX1NhTxZvbYeFLxTK/yVmajjrglkGmkVLK5G5lBNZLPO8gf1PR0OnHEJe8Kdaoy/
+	qrHka178bINSo5+EQSimJWCPogV71FnMFCwZTz79NEDSIGzl84/GgoX8RNTtao+u5Ln3+BvU839
+	0HtIjqEQ7mDHAufB1R1CI/ya
+X-Google-Smtp-Source: AGHT+IF76mWK+huaxySDy6NJ6b2xi3H2DW9Gw45M+n2RlnBbYjdCyU7mbBawxv8EiCXG6arZvdQUwg==
+X-Received: by 2002:a17:902:ce89:b0:216:3bd6:fc24 with SMTP id d9443c01a7336-21dd7c62584mr175131655ad.21.1738339194692;
+        Fri, 31 Jan 2025 07:59:54 -0800 (PST)
+Received: from linuxsimoes.. ([187.120.154.251])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21de331fb76sm31933665ad.230.2025.01.31.07.59.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Jan 2025 07:59:54 -0800 (PST)
+From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+To: peterz@infradead.org,
+	mingo@redhat.com,
+	will@kernel.org,
+	boqun.feng@gmail.com,
+	longman@redhat.com,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu
+Cc: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH] rust: sync: lock: Add Lock::get_mut()
+Date: Fri, 31 Jan 2025 12:59:39 -0300
+Message-Id: <20250131155940.305403-1-trintaeoitogc@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] arm: rust: Enable Rust support for ARMv7
-To: Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Jonathan Corbet <corbet@lwn.net>,
- Russell King <linux@armlinux.org.uk>, Rudraksha Gupta <guptarud@gmail.com>,
- Ard Biesheuvel <ardb@kernel.org>, Geert Stappers <stappers@stappers.nl>,
- Andrew Lunn <andrew@lunn.ch>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
- Sven Van Asbroeck <thesven73@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-References: <20250123-rfl-arm32-v3-1-8f13623d42c5@gmail.com>
- <a83b0149-7055-411b-ba86-d227919c7c32@app.fastmail.com>
-Content-Language: en-US, de-DE
-From: Christian Schrefl <chrisi.schrefl@gmail.com>
-In-Reply-To: <a83b0149-7055-411b-ba86-d227919c7c32@app.fastmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+At initialization where we can guarantee that we do not have multiple
+threads accessing the protected resource, blocking the resource in
+addition to being redundant, can cause unnecessary overhead.
+Add the Lock::get_mut() function for access the data without lock.
+Receive a mutable instance of Lock, and return a mutable reference to
+data because if the instance is mutable, the rust compiler guarantee the
+access control.
 
+Suggested-by: Björn Roy Baron <bjorn3_gh@protonmail.com>
+Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+---
+ rust/kernel/sync/lock.rs | 37 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
 
-On 31.01.25 8:40 AM, Arnd Bergmann wrote:
-> On Thu, Jan 23, 2025, at 23:40, Christian Schrefl wrote:
->> This commit allows building ARMv7 kernels with Rust support.
->>
->> The rust core library expects some __eabi_... functions
->> that are not implemented in the kernel.
->> Those functions are some float operations and __aeabi_uldivmod.
->> For now those are implemented with define_panicking_intrinsics!.
-> 
-> I see you are doing this part the same as the other architectures,
-> but I don't see why it's done like this in the first place:
-> 
-> In C code, we really want to get a link failure rather than a
-> runtime error in order to catch those bugs as early as possible
-> and fix them before even trying to run the kernel. Is there a
-> reason this doesn't work in rust, or is there a plan to change
-> this later when the existing callers of those functions have
-> been fixed?
-
-I agree having a linker error instead of a runtime panic would
-be ideal, but it is currently impossible to build without these
-intrinsics.
-
-To fix this Rust would have to provide a way to build the core
-library without float support. I don't know if there is a plan
-already to allow this.
-
-> 
-> 202397be76d8037b531b34dee16c7dfcfd0124ef..3375c91e698c024f95a85682f5a91d9815c355e5 
->> 100644
->> --- a/arch/arm/Kconfig
->> +++ b/arch/arm/Kconfig
->> @@ -130,6 +130,7 @@ config ARM
->>  	select MMU_GATHER_RCU_TABLE_FREE if SMP && ARM_LPAE
->>  	select HAVE_REGS_AND_STACK_ACCESS_API
->>  	select HAVE_RSEQ
->> +	select HAVE_RUST if CPU_LITTLE_ENDIAN && CPU_32v7
-> 
-> The ARMv7 dependency makes sense, but I think it needs
-> be disabled on combined v6/v7 kernels, like (CPU_V7 && !CPU_V6 && !CPU_V6K).
-
-That might be correct, I don't know much about the build
-system for the kernel. I've tried it and it still builds
-with this change.
-
-Also it should probably be relatively easy to support 
-armv6 as well.
-
-Cheers
-Christian
+diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+index eb80048e0110..f1e29820ce99 100644
+--- a/rust/kernel/sync/lock.rs
++++ b/rust/kernel/sync/lock.rs
+@@ -140,6 +140,43 @@ pub fn new(t: T, name: &'static CStr, key: &'static LockClassKey) -> impl PinIni
+             }),
+         })
+     }
++
++    /// Get a mutable reference to data
++    ///
++    /// ```
++    /// use kernel::sync::{new_mutex, Mutex};
++    ///
++    /// struct Inner {
++    ///     a: u32,
++    /// }
++    ///
++    /// #[pin_data]
++    /// struct Example {
++    ///     #[pin]
++    ///     d: Mutex<Inner>,
++    /// }
++    ///
++    /// impl Example {
++    ///     fn new() -> impl PinInit<Self> {
++    ///         pin_init!(Self {
++    ///             // This new_mutex! can be anothers locks like new_spinlock!()
++    ///             d <- new_mutex!(Inner { a: 20 })
++    ///         })
++    ///     }
++    /// }
++    ///
++    /// let mut pin = KBox::pin_init(Example::new(), GFP_KERNEL)?;
++    /// let mut_pin = pin.as_mut();
++    ///
++    /// let data = unsafe { Pin::get_unchecked_mut(mut_pin).d.get_mut() };
++    /// assert_eq!(data.a, 20);
++    /// ```
++    pub fn get_mut(&mut self) -> &mut T {
++        // SAFETY: the UnsafeCell guarantee that the self.data is not null.
++        // The `&mut self` guarantees the exclusive access to the underlying data, therefore it's
++        // safe to reborrow the inner data.
++        unsafe { &mut *self.data.get() }
++    }
+ }
+ 
+ impl<B: Backend> Lock<(), B> {
+-- 
+2.34.1
 
