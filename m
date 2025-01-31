@@ -1,103 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60BA7081F;
-	Fri, 31 Jan 2025 18:43:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0645F1F94A;
+	Fri, 31 Jan 2025 18:58:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738348993; cv=none; b=JU+c7b20SHvLCX+9sMJF7piKoLy8g/9DRD/NXy7pyDQRMDZ3Z7PKEHp75La4PGjnPKpKQ86hzwJIOLrXznOpne7wdMKvIAWvknDdXQTZ+cNYAFEWenYoTztdTURHmrS6Fv4KP3VYK76SwU6mDjwadq8Kwed4TcylJ3M+b7w11ac=
+	t=1738349908; cv=none; b=Rm/pTPCBdcM5fA/+K8U2XqI2AvJx8ikanKesCR/aplwSN70t2MfihE6KU30BRjVHb7AYYKjSyosbG2PtFSW48khHwXUoQBirLAteW8aF1ltG1DY4nyVi8TSxw5Dy2cCOMFtDuPEdeE2w47eR7aj4GxPhE8U4d2N0KGdhsxcNaa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738348993; c=relaxed/simple;
-	bh=lkEUZeq1BTatu9Yj1IRyQZ0OexnAyDj/jMfGjQxTQ0k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=moseoSuoSDkH325R/+OcSGktAfDlGnSACWgIygGah4MhhntzAJvx3zftjabI3TxeJhZD0ycRp+AY9wgcGBd/c6C4d8BsfgZh+9t7VnRGEvt1+ut5AJhE/tdg4zXDJ4/9JzalrHyGCjBU0NG9M5r9gGRl2i9/ZaxeX/hg/p+cDOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hIXD48ym; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738349908; c=relaxed/simple;
+	bh=rnLRXivPM58kQJV5pN1ILLe7H76XvfnEV4GHzTYgPV0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mSFacSA6Lo7Xi+T4ZCJUvFUeYRqprM8o35wszTDkThWGiU9auZnXFMatehQXdLJR3zS7RWg1ozfvzp47zyA9ftB/l0AKncw6xdyVgd68GO2EL2wf7XRYD/TpYK6BZ3g2rRhS3PhMxmFEJe2OgYHkFAv67wv3EgvmuIaOfJ4JlDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gdiv0wqT; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hIXD48ym"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77961C4CED1;
-	Fri, 31 Jan 2025 18:43:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738348993;
-	bh=lkEUZeq1BTatu9Yj1IRyQZ0OexnAyDj/jMfGjQxTQ0k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hIXD48ymt2P0VwbagXw1N/awjcQKtHo6vl+QAeBCtUuFH+HR22p5N5vd6jgiALbvK
-	 tm3kwlIB7upEXGUjiG5n8iwFHPCvdtpKXCwfrfBrucfynE41e3Rm4mqZogg0iVtn5L
-	 kraHIe74/yWsdzgI5kAuSRJmrLS/kIfGAWQJyWGBXVpEj0OGmiryW3wNP/NYnaqXMX
-	 3EIaZ/VcYy491fn6OsIGeg/o/ktfM8Quw9DG/ajkMNC/ctE1bvzVQU8rHEGi0Jsvth
-	 bnO/UjIxhrayUgVVcdTKXOv+5pd+XymOU2QYNRXP9NbaYPU0IUoljXM9iKFj8PTElY
-	 ACpUY+RM/yiMA==
-Date: Fri, 31 Jan 2025 19:43:07 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH] WIP: drivers/base: Add virtual_device_create()
-Message-ID: <Z50ZuzrDn-GQWOuP@cassiopeiae>
-References: <Z5Nw8kaieLueWyUu@pollux>
- <20250130212843.659437-1-lyude@redhat.com>
- <2025013159-shabby-professor-515b@gregkh>
- <2025013140-propeller-dirtiness-6cb4@gregkh>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gdiv0wqT"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-aaf0f1adef8so453560066b.3;
+        Fri, 31 Jan 2025 10:58:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738349905; x=1738954705; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dP2c9p+WJ/Ycibc0VmIMo2SY4jx3mg/tQ+vmm0GdlFU=;
+        b=gdiv0wqTVSE2cRKLlsEinh02MMHzQUypbw5/wgRSq3DhMLl8+oCgZqViMZ0az6oNNV
+         BcF3MOljksiwSatglBY2wMr9IiF8GSrxdUzhAy8ziMiTJyal3XJNfoqeCGS4Gof5QL2K
+         cFUAc/kbhq17J61ec+CsSPTdI9sNhuZNtcp+5FDz2pkjyJDckA50zaBlQlIOXajV4xp6
+         e25mr8AWQBYLCF1E80Ipc0WoXAKju2fUBVu6ljHu+xgegrKMqTmG36Do4Lff7sYF+Wws
+         ptRVG99l+uP8CvZesxbCK/UDBTqLLfR62m9YhOWIrQ8sfePXDP15yPUAeWJR+QS+yZg4
+         maew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738349905; x=1738954705;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dP2c9p+WJ/Ycibc0VmIMo2SY4jx3mg/tQ+vmm0GdlFU=;
+        b=EljFTjVz/0GP4ooXhzPAoXtPaN8/q4ueEFKi+d5ntfUedxiP2fs0e1yqFFz4MOjVIN
+         Z8KZqm9nVogBYQvzIR6OXpLPNQvLrj98lNxKsDBraMZV/IUF3ms8ZGTGgMkpz/Zw97iI
+         uCR1BgiDtGt7yZkKC5UHhJv0gp4BMMYuixDeod2QjjAbt3FAokgwLU1jlMzV4pqQbT7Q
+         Fw6ljH1mUCBUL4rTZrokETO/pABIHm14Go/huUwzeHWwWuOzOpc9gVVg2DmdHZ4quW/D
+         2GM5bRDupK8/YtEViMCIe4Oagvj/StIYLW9hQ3Ri3qeytRRXHuKZK3XyJmUz3WG6i4ul
+         wGwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVAe/eU/dGd86SNcKLdLHTcONrLCHpnjKHR0fz+LLVxz+05a0xwaJwvQ2mSTIXSuz0N6/sPNIR6iwZUBXqHBJU=@vger.kernel.org, AJvYcCX5zi2byVDVoZGQqFRYZYnNbKc4M6x8I/HR9mLopyXlyap/8tTFJZFc2LT0SHjaHtwa9ZVg4QazKpU=@vger.kernel.org, AJvYcCXij/qbstRWKcjNhbUGp2PxgXAoENorgZCnOMEMAOoQlAK6i/OU1jra465QGULkPYnzriaKAJCSzHeSISLg@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdP9FPNVRK5cQOAvgM7m7j3D9dJiqySoggsGiixM6aeq8ZNHZm
+	6KRngXkinxPyJIVILfo+OXYBFBxTANhdLg6auRBPrPCEW2eTPihO
+X-Gm-Gg: ASbGncvhNJf8JwK0PLRBjic2Okg3l814h/Ca8ponE5wn7hEIoKFDq2tG1xVDQ4ccMGv
+	fP6mYuHK0huthYVRMKiiN0wZ23EdNd4BVBIbXhvXJwC4rmJBv0ik5ri1Fo4Dce4+Nd/Kr+X1P4B
+	mUJw+Jpb196rBVjii43lu+tFTph59L18+Do/z/MFT2YvzNuOSyItOQ/Pe4z2rCg5IRimfSLToxA
+	cQnO6IW8fL+jGPMfhwDntnHYbHjsvzMs9P1j5QsP4K9K6tTHY69GdNtYkmx0+axHZp2Ltl9huky
+	YssOql5a1DPvNxcC1kbPUCV5bJam
+X-Google-Smtp-Source: AGHT+IHOS1aKbTTtUUMddEt5dbh1IUG+QNx5UiNzYR9h5od9izNR3CvolWOWfFrKJty/mwVs56DPyQ==
+X-Received: by 2002:a17:907:2d0f:b0:ab3:8cc:cd8 with SMTP id a640c23a62f3a-ab6cfd07cd9mr1254923766b.29.1738349904899;
+        Fri, 31 Jan 2025 10:58:24 -0800 (PST)
+Received: from ?IPV6:2001:871:22a:8634::1ad1? ([2001:871:22a:8634::1ad1])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab6e47d06casm340070666b.58.2025.01.31.10.58.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 31 Jan 2025 10:58:24 -0800 (PST)
+Message-ID: <5e8a99a5-f39c-46da-b54d-7b69307b1c66@gmail.com>
+Date: Fri, 31 Jan 2025 19:58:23 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025013140-propeller-dirtiness-6cb4@gregkh>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] arm: rust: Enable Rust support for ARMv7
+To: Andrew Lunn <andrew@lunn.ch>, Miguel Ojeda <ojeda@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Jonathan Corbet <corbet@lwn.net>,
+ Russell King <linux@armlinux.org.uk>, Rudraksha Gupta <guptarud@gmail.com>,
+ Ard Biesheuvel <ardb@kernel.org>, Geert Stappers <stappers@stappers.nl>,
+ Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
+ Sven Van Asbroeck <thesven73@gmail.com>, rust-for-linux@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+References: <20250123-rfl-arm32-v3-1-8f13623d42c5@gmail.com>
+ <a83b0149-7055-411b-ba86-d227919c7c32@app.fastmail.com>
+ <f8b59f05-55b5-4208-8bdf-b4be8e93bc22@gmail.com>
+ <65da77f7-bbd4-4cbe-a06c-75f10a6ec4ce@lunn.ch>
+Content-Language: en-US, de-DE
+From: Christian Schrefl <chrisi.schrefl@gmail.com>
+In-Reply-To: <65da77f7-bbd4-4cbe-a06c-75f10a6ec4ce@lunn.ch>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jan 31, 2025 at 05:40:01PM +0100, Greg Kroah-Hartman wrote:
-> On Fri, Jan 31, 2025 at 09:00:32AM +0100, Greg Kroah-Hartman wrote:
-> > On Thu, Jan 30, 2025 at 04:28:26PM -0500, Lyude Paul wrote:
-> > > As Greg KH pointed out, we have a nice /sys/devices/virtual directory free
-> > > for the taking - but the vast majority of device drivers concerned with
-> > > virtual devices do not use this and instead misuse the platform device API.
-> > > 
-> > > To fix this, let's start by adding a simple function that can be used for
-> > > creating virtual devices - virtual_device_create().
-> > > 
-> > > Signed-off-by: Lyude Paul <lyude@redhat.com>
-> > > 
-> > > ---
-> > > 
-> > > So, WIP obviously because I wrote this up in a few minutes - but this goes
-> > > off the idea that Danilo suggested to me off-list of coming up with a
-> > > simple API for handling virtual devices that's a little more obvious to
-> > > use. I wanted to get people's feedback and if we're happy with this idea,
-> > > I'm willing to go through and add some pointers to this function in various
-> > > platform API docs - along with porting over the C version of VKMS over to
-> > > this API.
-> > 
-> > This is a big better, but not quite.  Let me carve out some time today
-> > to knock something a bit nicer together...
+On 31.01.25 5:05 PM, Andrew Lunn wrote:
+>> To fix this Rust would have to provide a way to build the core
+>> library without float support. I don't know if there is a plan
+>> already to allow this.
 > 
-> Ok, here's a rough first-cut.  It builds, and boots, and I've converted
-> a driver to use the api to prove it works here.  I'll add a bunch more
-> documentation before turning it into a "real" patch, but this should
-> give you something to work off of.
+> Floating point is banned within the kernel, except for in very narrow
+> conditions, because the floating point registers are lazy saved on
+> context switch. If the kernel uses the floating point registers, you
+> can break user space in bad ways.
 > 
-> I've run out of time for tonight (dinner is calling), but I think you
-> get the idea, right?  If you want to knock up a rust binding for this
-> api, it should almost be identical to the platform api you were trying
-> to use before, right?
+> I expect this has been discussed, since it is well known kernel
+> restriction. Maybe go see what happened to that discussion within RfL?
 
-Yes, additionally, since this can't use the existing platform abstractions any
-more, we need the bus abstraction for the virtual bus, i.e. the corresponding
-driver::RegistrationOps implementation, module_virtual_driver macro, etc. Should
-be a little less than 200 lines of code.
+After checking again, it seems the float intrinsics are actually not
+needed anymore at least for my config. Only `__aeabi_uldivmod` is still
+required for `parse_u64_into` since [0] allows disabling float formatting.
 
-Other than in C, in Rust we don't need the "artificial" match between a virtual
-device and a virtual driver to have automatic cleanup through things like
-devm_kzalloc().
+Link error without the `__aeabi_uldivmod` symbol defined:
 
-But I guess we want it for consistency and to have the corresponding sysfs
-entries and uevents. OOC, are there any other reasons?
+ld.lld: error: undefined symbol: __aeabi_uldivmod
+>>> referenced by num.rs:580 (/home/chrisi/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/fmt/num.rs:580)
+>>>               rust/core.o:(core::fmt::num::parse_u64_into::<39>) in archive vmlinux.a
+>>> referenced by num.rs:589 (/home/chrisi/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/fmt/num.rs:589)
+>>>               rust/core.o:(core::fmt::num::parse_u64_into::<39>) in archive vmlinux.a
+>>> referenced by num.rs:589 (/home/chrisi/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/fmt/num.rs:589)
+>>>               rust/core.o:(core::fmt::num::parse_u64_into::<39>) in archive vmlinux.a
+>>> referenced 34 more times
+>>> did you mean: __aeabi_uidivmod
+>>> defined in: vmlinux.a(arch/arm/lib/lib1funcs.o)
+
+Not sure if we should just implement `__aeabi_uldivmod`, keep the 
+panicking intrinsic for it or somehow fix it in upstream Rust?
+
+Miguel do you know how this is best handled?
+
+Link: https://github.com/rust-lang/rust/pull/86048 [0]
+
+Cheers
+Christian
