@@ -1,44 +1,45 @@
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9451E15575D;
-	Fri, 31 Jan 2025 07:57:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FDA0143723;
+	Fri, 31 Jan 2025 08:00:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738310280; cv=none; b=uo8H9BCICuExAXuGjERXNM6eQ8yduaLjibvS/ol4/Luqzp8YPlZP6xnUP07jUGpZRTQ7aKI9DWZILLj8eTiE/zmmHAVWdMj7Vxk9JcE4h7Y3ZkRDBNMbnv4sH75tWXRDZNbpxlJ35Wu0WVnPIAXN8QxIxVOojFm2kVnaf3KrCgY=
+	t=1738310444; cv=none; b=kXrq0CddKUFoZ89KNGBQ6HocR3uJqkIGyAxR7tEfN8HvLuKT9cvr/0KRajySZX1F4roqUGKHuehU65xsxfhgbCBMa5DUaAkPoUCDThhhVMlgXjOJeaMMiXFnII0DDRpdzqiTet5rxHyj+plJOWoRdKpRubLNcvPAjQRSgpfqOSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738310280; c=relaxed/simple;
-	bh=Kjq8y6HvSNYk7y3ysI830QvgE7bPZ4g3vNr9rSG4MAY=;
+	s=arc-20240116; t=1738310444; c=relaxed/simple;
+	bh=udesyE0697+EA9cQPPOlWNe/XbzT1OhHht2eojgSG58=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FbM9cOr0n0B8LZSPNu2My04oL2LzY1uf1lnqYjIdBwnmrMlSS0jOvoG9sZ3u6LA13FVH7QcHvDXH3izeoKqv/1TKCJAts14C7PM3CSletX5FCjoobEj49fGwNftE2dK4jkYCOwFl3m7GOkCQkLaMnpUmKD2BmUMtvchLHq1dXrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 6B4C668B05; Fri, 31 Jan 2025 08:57:52 +0100 (CET)
-Date: Fri, 31 Jan 2025 08:57:51 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Christoph Hellwig <hch@lst.de>, Greg KH <gregkh@linuxfoundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	daniel.almeida@collabora.com, aliceryhl@google.com,
-	robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
-Subject: Re: [PATCH v8 2/2] rust: add dma coherent allocator abstraction.
-Message-ID: <20250131075751.GA16720@lst.de>
-References: <CANiq72=R2N+QiCiHZQu-6YJ9aYpn_bik3BW3U=nAW3jL7unzLw@mail.gmail.com> <20250108151858.GB24499@lst.de> <Z36X_ZnCmBQBMoZ6@pollux> <20250109080812.GA20431@lst.de> <Z3-NqwAG_96yq8VD@pollux> <20250110083955.GA5395@lst.de> <Z4D5a5NYrAbNxUL6@pollux> <Z4kG5AcVeQKegLnb@pollux> <20250128092334.GA28548@lst.de> <Z5qeoqRZKjiR1YAD@pollux>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y0kJdtHbPOKDYz85SfaAGHDuwHUfhRQONpnSP38xfN5s8SiuJFDtRL8aSUAWKTkkrnFnEL5i1IwWJXb4IqbbwDVD4bLZvvQ4oUQV5QQNQP4wnMxKULGPlAQMgB+kx0lrSoTiqj36VxiyIhnA1Yn7DoyoZjOMR00uDrPyXd9omIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=is0EeApJ; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="is0EeApJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF48C4CED1;
+	Fri, 31 Jan 2025 08:00:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1738310434;
+	bh=udesyE0697+EA9cQPPOlWNe/XbzT1OhHht2eojgSG58=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=is0EeApJHjJTpjRaatXI6inqMW+tElwRg6lvvWy58KYCJxUq2su9HO7qdDvqXuDVL
+	 e/Sft/FSdaYbVSB3njbBMqdGh89WnNEOdQuv05efY4Ki1DVyYJbq42hOYDwXP0L1/r
+	 +eaoG96iM6iKc/1vi3/DGQl/1SsJooEn3vbKdhRo=
+Date: Fri, 31 Jan 2025 09:00:32 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Lyude Paul <lyude@redhat.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>,
+	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH] WIP: drivers/base: Add virtual_device_create()
+Message-ID: <2025013159-shabby-professor-515b@gregkh>
+References: <Z5Nw8kaieLueWyUu@pollux>
+ <20250130212843.659437-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,22 +48,31 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z5qeoqRZKjiR1YAD@pollux>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <20250130212843.659437-1-lyude@redhat.com>
 
-On Wed, Jan 29, 2025 at 10:33:22PM +0100, Danilo Krummrich wrote:
-> I accept that you don't want to be involved with Rust in the kernel, which is
-> why we offered to maintain the Rust abstraction layer for the DMA coherent
-> allocator as a separate component (which it would be anyways) ourselves.
+On Thu, Jan 30, 2025 at 04:28:26PM -0500, Lyude Paul wrote:
+> As Greg KH pointed out, we have a nice /sys/devices/virtual directory free
+> for the taking - but the vast majority of device drivers concerned with
+> virtual devices do not use this and instead misuse the platform device API.
+> 
+> To fix this, let's start by adding a simple function that can be used for
+> creating virtual devices - virtual_device_create().
+> 
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> 
+> ---
+> 
+> So, WIP obviously because I wrote this up in a few minutes - but this goes
+> off the idea that Danilo suggested to me off-list of coming up with a
+> simple API for handling virtual devices that's a little more obvious to
+> use. I wanted to get people's feedback and if we're happy with this idea,
+> I'm willing to go through and add some pointers to this function in various
+> platform API docs - along with porting over the C version of VKMS over to
+> this API.
 
-Which doesn't help me a bit.  Every additional bit that the another
-language creeps in drastically reduces the maintainability of the kernel
-as an integrated project.  The only reason Linux managed to survive so
-long is by not having internal boundaries, and adding another language
-complely breaks this.  You might not like my answer, but I will do
-everything I can do to stop this.  This is NOT because I hate Rust.
-While not my favourite language it's definitively one of the best new
-ones and I encourage people to use it for new projects where it fits.
-I do not want it anywhere near a huge C code base that I need to
-maintain.
+This is a big better, but not quite.  Let me carve out some time today
+to knock something a bit nicer together...
 
+thanks,
+
+greg k-h
