@@ -1,129 +1,135 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39EF21BCA1B;
-	Thu, 30 Jan 2025 23:10:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4457745BE3;
+	Fri, 31 Jan 2025 03:35:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738278616; cv=none; b=gkxW8EnKA06M8YRFv0P2BF2tDQ3/V9liSKmqFxcGab/y6WAw0SFDwMXuQkvggkvZgZNZB+3QFVAJKUMnxPkPB/ntMIyvjVRThIAD0oVZvSPxly6jA5MzOd9rgUQHTBqxgrYtuJ8QHnGXjrBhCqerETEBcSmX9Wct0zxzk6qlDck=
+	t=1738294511; cv=none; b=iQO/JtZuy85dl7KOtvC3/wOp2dK9Lx1EsyuF014lwVWpJUoPDLNKyb+ak9j8krOupI4wcYDz2xxw/pMaUs+1hKAfXqLdmWUn+M/CT9eLdXZlITbwAWta5/hWaOqBCVmlI8Cz2DP/6N5+OrwV0CJZZXLus+3ZB9tGfNhz7kuHLaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738278616; c=relaxed/simple;
-	bh=YAdNwrQg3KfujGA4xTvnJ7thNZJr6kjNDjOP7T28GTA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hJdb9LF7SVmopxN5EdCGIwbIwdrzzv/LnC1WuDo9XakQVlawU8BlWvhpggEA4P0SNm0OH7EBYJb5NuyUrtCHHDtLY/F1rosA7LTdZZhO2v849N6ilpOvvMf55QiJCB1vR0jjnQsHe+z6G/iaQI6mvNF4plQrlxbHaod7wEoitdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G0H1/MAI; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738294511; c=relaxed/simple;
+	bh=cg6bJdKfqd4yDHUF/vNdH6MAs9vW28seWl4OXdnbhH0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kfHiV0l1hKVmMP7j314QGMNBE5OUSUxEr2qi3uyqVT4Fny9HJD8/QFIQ5mCnU9o+HBpwvQw2RR9HKSlH49c5GhPP9fl/fLavPp/dKeAbXQGwasM+WZ6bbeJ6v7bWaPet32460GsGUEAZWj7D4k868OibPJqb62JBt5WlU922ypg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SMhy6lHk; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G0H1/MAI"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-436281c8a38so9917535e9.3;
-        Thu, 30 Jan 2025 15:10:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738278612; x=1738883412; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=UYSfrspZpcalFQy7DGPov9HLaRO54OMeKc3JEmAB2IM=;
-        b=G0H1/MAIUy2jmNAJN5e9r03LhDLVqqRWK4isuspF9xq2MfgkUYxqZlKYgdwEPqhNNH
-         NgotRQPCZcPA5qiajMuWhzfeiMMi9AICpI+SDskdAwKiA3L57WB6jUHVsPHkjyJKmyKx
-         1fkLAlS92g//OpGYALsrNAt3XyXMjMbFNX83+9ya/RlQw0+9aIuk4Hf239sNK4QnNng+
-         lxe09lcTraD1n6QgZTDN5UaspDOX0mXCe6ustQtdiuQRhVDiLcIM4xyS0j34pc+gsELl
-         YQUCKepuqt3wm7kDwQ3mXXI+dyYA0KRgz2r0crnscvHvGn9JsFe7rMLxW81UgN3Owgxg
-         jKlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738278612; x=1738883412;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UYSfrspZpcalFQy7DGPov9HLaRO54OMeKc3JEmAB2IM=;
-        b=vgvJ9I0aiEa/vcuHRX9oyb46ivwsEERSYwL6nxjmCfhlipPHSBSfi+V0w7nh4lkZ1d
-         TkcFcTjF9hzxtg6CvUuXStQg6mqPkpBxB/KsXSrjCoAW0bDsuybJb/XJFacjT/zzyG1f
-         xgVNuaYnFdcgsQFi4NF/I3iRmZTsqlPOFAf0ma+U/P59kkmxgAr6H7prdEPLBZfwAsKI
-         cD305a5nM3iaasyFk1NZ7JvXelQkRD/NHca8qCrjrlL7eVlgSCsNYLMB6v+OQwlP2UGA
-         Nl2TrMC3o49dkNUuaf0YpDBy/gc1Axu4Hyd9DkbkmW0bTthXczOzMQZG+vzVLle2QWYP
-         z6DQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV+XPthFhEFPII37diJ8lc04lUdaaMrOXqe09fgZQHq8ShgNjK72GL66h1idZUnwXL4vtceycO5cIU=@vger.kernel.org, AJvYcCXKiAe+jfPxtF7S8fYUaE+ItNHaZWXI2CHz/R4R3pBJIgfYX1NRCGgaCBiphkx3zH1rispbP+96z49aRSxo@vger.kernel.org
-X-Gm-Message-State: AOJu0YwThygq3EB7ObIZnITyCF1dujYCzTZJbxbUL3MBZuA+eWSQjSAY
-	PB37/VUFMVeSQbQpy94PcBjovQS7F8pyInzH1iRMME+kXX2WvuQ4vaqsTtIrF1o=
-X-Gm-Gg: ASbGncstqz4oPqaSGUBRW5xAn294yR+sMZ7Z4r9CUAbyjEd1hsdhTFioktS1419pSYH
-	V49F3hZGh/4kerhMjFC5/8oKZ1ifqKWKHJI+9lCuLeXhSqX5qM5WEozlPLuZ2gR07HXljHUC/ua
-	GX07/EcR64KRzwyyHywM0452cpeYxmS4FnBfefZQjotRd/q83PISKDYVoTiLSw0cc4cUgA40nPz
-	qLkxoM2Q71rI2b5gTjmXQv8ThyxsY3WU7idRA7JqSRca1MAClLLvcMRQbIBuCZAoVhtU+Zvn7LO
-	VmQ6e9v1d+RHBB1eiNyVT5mrvvM1
-X-Google-Smtp-Source: AGHT+IGHatIBqExc2QjMBxlMrxHJ7JJTUTvxVUuF1NV9bbMeXjnFByTNOWJSOdIRyooq55YwHK2bRg==
-X-Received: by 2002:a05:600c:3d9b:b0:434:effb:9f8a with SMTP id 5b1f17b1804b1-438dc3c3554mr87706875e9.15.1738278612188;
-        Thu, 30 Jan 2025 15:10:12 -0800 (PST)
-Received: from ?IPV6:2001:871:22a:8634::1ad1? ([2001:871:22a:8634::1ad1])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438dcc263f0sm72338575e9.9.2025.01.30.15.10.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Jan 2025 15:10:11 -0800 (PST)
-Message-ID: <0414bdb1-2258-4164-af60-c40118d0d7f4@gmail.com>
-Date: Fri, 31 Jan 2025 00:10:10 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SMhy6lHk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738294508; x=1769830508;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=cg6bJdKfqd4yDHUF/vNdH6MAs9vW28seWl4OXdnbhH0=;
+  b=SMhy6lHkaSq7kySlfx1zqC15kATgHXRXPcX+7CSRb4zrjShGJtQAxkw4
+   cK+05a54MwBozIHKYB5DU/SVDW9Yjmbe5PU8EHljJKZ71fFvErpu3qy0p
+   rkVWxq0feq+w3nPiVnNuRtSIy2jsXZHB0s9htIbI9w+nWmpVnbvmV/HHv
+   DJOTmAONqToj2SHJKMNuINqbXTzM3yo7+wZQvZKKQHiHfw6HqJcaAF9DU
+   ewI+s7TYTGJQF6+TPPK2UUyo71N7nr3OnVN7m5Ncu2X1U7oInPZYxLcww
+   26J29HxQNbg3gIpzBtCbRTyxuNXtYMY9Vo+cME97j8dZTsqEJsLTW7Z96
+   g==;
+X-CSE-ConnectionGUID: GXK/P8FcR7mhC0vcMJaFIQ==
+X-CSE-MsgGUID: 7C3r54VbS1aK1v4s8CGZkw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="38967063"
+X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
+   d="scan'208";a="38967063"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2025 19:35:08 -0800
+X-CSE-ConnectionGUID: KPPMDc6nRt69biBqFB8olw==
+X-CSE-MsgGUID: ZjTA2HAcRPGHnoR5nCKV7g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="114518334"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 30 Jan 2025 19:35:04 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tdho5-000lrL-2t;
+	Fri, 31 Jan 2025 03:35:01 +0000
+Date: Fri, 31 Jan 2025 11:34:31 +0800
+From: kernel test robot <lkp@intel.com>
+To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: oe-kbuild-all@lists.linux.dev,
+	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <helgaas@kernel.org>
+Subject: Re: [PATCH] WIP: drivers/base: Add virtual_device_create()
+Message-ID: <202501311112.BDhClMYs-lkp@intel.com>
+References: <20250130212843.659437-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] arm: rust: Enable Rust support for ARMv7
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Jonathan Corbet <corbet@lwn.net>,
- Russell King <linux@armlinux.org.uk>, Rudraksha Gupta <guptarud@gmail.com>,
- Ard Biesheuvel <ardb@kernel.org>, Geert Stappers <stappers@stappers.nl>,
- Andrew Lunn <andrew@lunn.ch>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
- Sven Van Asbroeck <thesven73@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-References: <20250123-rfl-arm32-v3-1-8f13623d42c5@gmail.com>
-Content-Language: en-US, de-DE
-From: Christian Schrefl <chrisi.schrefl@gmail.com>
-In-Reply-To: <20250123-rfl-arm32-v3-1-8f13623d42c5@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250130212843.659437-1-lyude@redhat.com>
 
-On 23.01.25 11:40 PM, Christian Schrefl wrote:
-> This commit allows building ARMv7 kernels with Rust support.
-> 
-> The rust core library expects some __eabi_... functions
-> that are not implemented in the kernel.
-> Those functions are some float operations and __aeabi_uldivmod.
-> For now those are implemented with define_panicking_intrinsics!.
-> 
-> This is based on the code by Sven Van Asbroeck from the original
-> rust branch and inspired by the AArch version by Jamie Cunliffe.
-> 
-> I have tested the rust samples and a custom simple MMIO module
-> on hardware (De1SoC FPGA + Arm A9 CPU).
-> 
-> Tested-by: Rudraksha Gupta <guptarud@gmail.com>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Acked-by: Miguel Ojeda <ojeda@kernel.org>
-> Tested-by: Miguel Ojeda <ojeda@kernel.org>
-> Acked-by: Ard Biesheuvel <ardb@kernel.org>
-> Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
-> ---
-> I've updated my Rust ARMv7 patches. 
-> Not much has changed since v2 but I want to send it out again
-> before sending it to Russell's ARM patch tracker, since I should
-> hopefully have more time to work on this again.
-> 
-> I'm not sure how exactly the patch tracker works, I assume I
-> should just sent it to the tracker once all review comments are 
-> addressed and it has sat in the mailing list for some time? 
-> 
-> I've kept the Tags from v2 since nothing signifficant has changed,
-> I hope thats fine with everyone.
-> ---
+Hi Lyude,
 
-I have now submitted this as:
-https://www.armlinux.org.uk/developer/patches/viewpatch.php?id=9441/1
+kernel test robot noticed the following build warnings:
 
-I hope I've done that correctly.
 
-Cheers
-Christian
+
+url:    https://github.com/intel-lab-lkp/linux/commits/UPDATE-20250131-052936/Lyude-Paul/rust-kernel-Add-platform-Device-from_raw/20250123-075718
+base:   the 2th patch of https://lore.kernel.org/r/20250122235340.2145383-3-lyude%40redhat.com
+patch link:    https://lore.kernel.org/r/20250130212843.659437-1-lyude%40redhat.com
+patch subject: [PATCH] WIP: drivers/base: Add virtual_device_create()
+config: arc-randconfig-001-20250131 (https://download.01.org/0day-ci/archive/20250131/202501311112.BDhClMYs-lkp@intel.com/config)
+compiler: arceb-elf-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250131/202501311112.BDhClMYs-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202501311112.BDhClMYs-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/base/core.c:4409: warning: Excess function parameter 'class' description in 'virtual_device_create'
+
+
+vim +4409 drivers/base/core.c
+
+  4392	
+  4393	/**
+  4394	 * virtual_device_create - creates a virtual device and registers it with sysfs
+  4395	 * @class: optional pointer to a struct class this device should be registered to
+  4396	 * @drvdata: the data to be added to the device for the callbacks
+  4397	 * @fmt: string for the device's name
+  4398	 *
+  4399	 * This function can be used to create standalone virtual devices, optionally
+  4400	 * registered to a specific class. Drivers which create virtual devices can use
+  4401	 * this. The device will live in /sys/devices/virtual.
+  4402	 *
+  4403	 * A pointer to the struct device will be returned from the call. Any further
+  4404	 * sysfs files that might be required can be created using this pointer.
+  4405	 *
+  4406	 * Returns &struct device pointer on success or ERR_PTR() on error.
+  4407	 */
+  4408	struct device *virtual_device_create(void *drvdata, const char *fmt, ...)
+> 4409	{
+  4410		va_list vargs;
+  4411		struct device *dev;
+  4412	
+  4413		va_start(vargs, fmt);
+  4414		dev = device_create_groups_vargs(NULL, NULL, 0, drvdata, NULL,
+  4415						 fmt, vargs);
+  4416		va_end(vargs);
+  4417		return dev;
+  4418	}
+  4419	EXPORT_SYMBOL_GPL(virtual_device_create);
+  4420	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
