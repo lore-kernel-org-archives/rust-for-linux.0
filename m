@@ -1,111 +1,360 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14ED71494A3
-	for <rust-for-linux@vger.kernel.org>; Fri, 31 Jan 2025 09:16:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B6615B111
+	for <rust-for-linux@vger.kernel.org>; Fri, 31 Jan 2025 10:02:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738314969; cv=none; b=M9rD5uSRUrMyItjhwVmmvhNwfxndYOmsF28N74Jy5/ma3fVLsWzGpRqZ0lJOgSFWuChCOZEh4/ejimcFuronb9ZwtEt0iijPII4CDY8KwlOB/V+VTXJ9Kw1nfLwBS0QDQ2KILDWe+Bymw9CZWOVlQATFfIIAIFo0MaOAqhdmBxA=
+	t=1738317729; cv=none; b=pyOof/0ohIQpn/b8qGpaeQFFLMjpDArEqiHIaEU5OKjOARvEuFe5NfmOvVeBKiNoKlpJI68dVlWYwnIuh3+EBZZipmj3E0daEN7PFTLdzLTGOPXBn6996QL28091XQsm8QV1Jl95/EyXUd54ZOxmwG2vCfIpeGVXRR2Ru/eEpMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738314969; c=relaxed/simple;
-	bh=GxIgiCsRud3+MZqjsqsikw5ZSvkIpx2F/MNXdjIwWAQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=s0mhbdlaizNCzRcfFsC8bdaF+hVAweYzLGPZMpL/XPgGo/YSODFDHS/bNm7My3YPnQlpOeLpg7Hw/+xDkff6eFR62eevdQvarjfNpb3ZvPbY/W6IXiNy2WZtnaFOiHxofr6AFoA1w4QDjBS+zy50TabwI3s6YfRYqv3jRWx3ap0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JbcjVgCE; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1738317729; c=relaxed/simple;
+	bh=jIkGB7/X0ONGNq6a38B5cDa4Qlz0ARCWTcPRiP3B7Jg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LZAbz408r8m0SveBBHpsYaC7l06xXWD/emF0KzUx6hZL5M6LMLh5pH1A4SF/NB5oQSVWmGtGrZsi3SI4Niy/rT0o7saXhfU2nxJjLzXrx/02NdKuDyMwpYr+PIqoofIsPXEItcOYd6UisQnn+jEgngQDZ28FSQvsogYvKS0IHjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=H7i8XLpe; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sedlak.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JbcjVgCE"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-38be3bfb045so1927730f8f.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 31 Jan 2025 01:16:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="H7i8XLpe"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43618283dedso18033175e9.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 31 Jan 2025 02:02:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738314966; x=1738919766; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8iv2kpTtLlGjUoGy2eHzUezS9FkVmsWPom4VM6f1zVA=;
-        b=JbcjVgCE8kvzKtnripw2z+XzMF5glN8rnGQxp2CxRno+uc+DL5XcQRwJ27dT3TInD7
-         8m5FSL/8V4CUahGF6NqwXz+yFKbhdk/ozO8qhscff8XRFgBMI2847kCGkkFjj2W6HkLq
-         hSobwJKAjvvD6v/wGuZ2+HVEpKYgzq/kEJbJ7gE37Lw1lAxkUPJlNgz0jbiZKDT13AaV
-         HgfII2TYuy+V0vHRsN1ADZLXOnnvNi/d2nDY2yAT6x9Rs7ZEGedWQAuvBbPpIBM9QPRE
-         LdZE0HYl3Lb+FeVo/knx4dwrjYDzp3JdMmdDwELjDjFq3muLlNGvePS6d8bI2A/qs9ui
-         4qNg==
+        d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1738317726; x=1738922526; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TH+Mf8SIqLxWTfJTWY/h5Gp4AzULl9OECEnQGSHygnE=;
+        b=H7i8XLpe2Fbz5zbF9vHavYO7zQBU83gH92c5ubZEEkK92YUD7O6BmYqgbQQtZLK/C+
+         LPerDyYZx8vGLPzpS94J4TTRv3dUddflJd91GVVw/5C4MbjpImBti8SLqlvld1J/FkFu
+         iOVpsYmsUSZXcx/Xg+CUtBVgOHijV193D/y4XoE+79e1Usy/1RxDufdJ8WW24s3NQ1O9
+         Yal3osFCu8Wukc3Y228f280gyRUrO2wlWlkMGUFy3qsgS3iZBXoMG796hmcpSzTGOtFF
+         2ReN16CCdYgcPEPypQ4VwMX1dWfq5eWj1vpgBp+VOlnHY95ejunfWC1niddUM7xs1jkZ
+         7Opg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738314966; x=1738919766;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8iv2kpTtLlGjUoGy2eHzUezS9FkVmsWPom4VM6f1zVA=;
-        b=dnDReenUF3iz6Nz3/vKbjBhHY9HCCanAlqqLcWxhLbTe3c/49TBS9/w5iQ+Y33j8Sl
-         qQK/ISJJP5A+3E2OyPMvsTmsiayDq015bsY3qkRBj3TsOH/rXTkGcuQ7nNV/oFfwrkVY
-         +0rDG/wzeMc+oipdg0oQtlkblGfoV9rqvAf3FoSy16vvf1vlLK2z8MxFCBxu49t8cOfT
-         48Bc2gigb7sCRr9N4dMFpz/KejavAnauU+KMyiFljWNHIDeGlCf42F2xYe03/6iRny9O
-         rP3J5exdJmYcH8yOvr/MlDIM5unjZ6QkLJj86P3DxuwcoUFu5NVIRFCwn69DSB7QNpqe
-         F1Pg==
-X-Forwarded-Encrypted: i=1; AJvYcCXtxd7ucTXosL/NfiAEUhNdJ/rglyc4IPWQD7sR9a2lvpc8LxxPn5h8cXRk3M9i2BgHeRg2m42PAmEanMXa6Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwAYx1fzoivDDBv/x0i1XS1jouPJVKY4FAaerJhKFtD3MEQJ8K
-	9PEHY7/W3Uniw3heoC4Od54pmSLm0B9kbYFMMIBF0DdKTWA9u8wc+pbUeAO6/sjJ/BL/q8DTU6A
-	hBrgOyWNJHNCjciYYddHY8CpLGNnIn3nmja00
-X-Gm-Gg: ASbGncug3dJFTx2ruIaSeBRPAD+q503Jx9vXyh4DuviMFA6xp29T93ZTEQi7hR3+gp+
-	N7bB0CLQRl7RYcD/4w90aFBtfR1VxvLi+fY7dvG8yvIFLNed1uVCtVC9t4lBKkq1vRGEP2nGCB4
-	uSzlHM5LAsZgwGQPDmDfCCnT/DP0o=
-X-Google-Smtp-Source: AGHT+IEGWROdbt2kjhSAWKfEkANcNBHEV13oGqmUWBNBp4NiSuVi5J+mz3NpYwqHZ9ay7jD4qm4Af7imVhjiAQ2UVEs=
-X-Received: by 2002:adf:ea90:0:b0:385:fa30:4f87 with SMTP id
- ffacd0b85a97d-38c5a86e2acmr4959111f8f.0.1738314966314; Fri, 31 Jan 2025
- 01:16:06 -0800 (PST)
+        d=1e100.net; s=20230601; t=1738317726; x=1738922526;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TH+Mf8SIqLxWTfJTWY/h5Gp4AzULl9OECEnQGSHygnE=;
+        b=jbpzIR1AgW545cgKoqNSyCQufQ7ywXL2yue3wj6I1yPNZR+R9Fq2rAQuYxF27dstye
+         MKKPztFhEDK3I58XZXIrbTYXO8ZmNvGTjEQMZt+30KzzSPdlO6kdNMXkjw4lQfDCSnGz
+         okBH4UcAZ0Ua9ImFHC17ahCrsusZiWOv9Q3fmpU81QAPgV1ACnrizqUKdX5q43POM7yP
+         DuPW6rWCYckP3WGkXAtear31XSYU91MM83ffG81wkw7reQpb+Z2uMp2O9fAIdCBbIOo1
+         yE29112JaaVt0ll75zQ9k+HeRpsKFkuTVLm6KHwbQ9lT6WP6Kcc6vOqG2Sz0lJiYYJ3T
+         bY6Q==
+X-Gm-Message-State: AOJu0YwH3F3mK5w1sLJ+Kgtlj0xsUPLMnV51grczbO97STGp/TL9MYXi
+	WibtFQL5XP+O2r7rD2/+teO7aA7nDWipmQgxEttxrofw+7+GGvQINk0blUXA13M=
+X-Gm-Gg: ASbGncsr6FklAq/CbDVerLMss6Njb3ISK/C2SPC12rOtGSEmWvaL12dNNLWoxVK2yih
+	zvVP7f+jJRjDuytzs/ehcVzKpTPYCb1JLVTuOvVHQZZZ9f5pcDbLYuXNxGNVBrwy4OfPVOsBvVX
+	UwtqALF8EdmsYsFI8MkdQI5N5JqJHgJmgJuLrzpSS+T5riwlSCWktQKNcYcLdoQ2CJeE74UH0Nf
+	bSbXJ9Q5h6sXdaciqiuehu8gK+Ftww7ZYQe5eWqb3ZVO3r4ii3VyqKeVWIAkuDtm+9LMlGBlZEp
+	OpN1WGU1ZJOcKx9J
+X-Google-Smtp-Source: AGHT+IHcc+zMs1dK6kkPPsRpkyp1nUSSMDTtFQjCju0jQZMIs0GgDN1MFSsFD4ROUOsC9xtlxzKS0Q==
+X-Received: by 2002:adf:e6cf:0:b0:38b:f04c:25e6 with SMTP id ffacd0b85a97d-38c519447bdmr7403096f8f.14.1738317725338;
+        Fri, 31 Jan 2025 02:02:05 -0800 (PST)
+Received: from [192.168.88.249] ([95.85.217.110])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c5c1b574fsm4215864f8f.70.2025.01.31.02.02.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 31 Jan 2025 02:02:04 -0800 (PST)
+Message-ID: <0623e789-ff5d-4d6f-a73a-7d514e0dc6d7@sedlak.dev>
+Date: Fri, 31 Jan 2025 11:02:03 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250130185138.200993-1-trintaeoitogc@gmail.com>
-In-Reply-To: <20250130185138.200993-1-trintaeoitogc@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 31 Jan 2025 10:15:54 +0100
-X-Gm-Features: AWEUYZlqmQgrSQzzaYE5VYGyXQMf8iB9X_LdBKfHz7spc7nE1fi5lYltyyhedQA
-Message-ID: <CAH5fLgjM4SUEmhW334w_o0Zfv3mUZ76Nz4GnE0H7N0Y=e+G5AQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: sync: create the `get_mut()` function
-To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-Cc: peterz@infradead.org, mingo@redhat.com, will@kernel.org, 
-	boqun.feng@gmail.com, longman@redhat.com, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@kernel.org, tmgross@umich.edu, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 1/3] rust: io: add resource abstraction
+To: Daniel Almeida <daniel.almeida@collabora.com>, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.mco, benno.lossin@proton.me, a.hindborg@kernel.org,
+ aliceryhl@google.com, tmgross@umich.edu, gregkh@linuxfoundation.org,
+ rafael@kernel.org, dakr@kernel.org, boris.brezillon@collabora.com,
+ robh@kernel.org
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Fiona Behrens <me@kloenk.dev>
+References: <20250130220529.665896-1-daniel.almeida@collabora.com>
+ <20250130220529.665896-2-daniel.almeida@collabora.com>
+Content-Language: en-US
+From: Daniel Sedlak <daniel@sedlak.dev>
+In-Reply-To: <20250130220529.665896-2-daniel.almeida@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jan 30, 2025 at 7:52=E2=80=AFPM Guilherme Giacomo Simoes
-<trintaeoitogc@gmail.com> wrote:
->
-> Create a `get_mut()` function that receive a mutable instance of Lock,
-> and return a mutable reference to data because if the instance is
-> mutable, the rust compiler guarantee the access control.
->
-> Suggested-by: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
-> Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-> ---
->  rust/kernel/sync/lock.rs | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-> index eb80048e0110..3f9d78bcb37c 100644
-> --- a/rust/kernel/sync/lock.rs
-> +++ b/rust/kernel/sync/lock.rs
-> @@ -140,6 +140,12 @@ pub fn new(t: T, name: &'static CStr, key: &'static =
-LockClassKey) -> impl PinIni
->              }),
->          })
->      }
+Hi,
+
+On 1/30/25 11:05 PM, Daniel Almeida wrote:
+
+> +/// Returns a reference to the global `iomem_resource` variable.
+> +pub fn iomem_resource() -> &'static Resource {
+> +    // SAFETY: `bindings::iomem_resoure` has global lifetime and is of type Resource.
+> +    unsafe { Resource::from_ptr(core::ptr::addr_of_mut!(bindings::iomem_resource)) }
+> +}
 > +
-> +    /// Get a mutable reference to data
-> +    pub fn get_mut(&mut self) -> &mut T {
-> +        // SAFETY: the caller must guarantee that the instance is only u=
-sed in one place
-> +        unsafe { &mut *self.data.get() }
+> +/// Resource Size type.
+> +/// This is a type alias to `u64`
+> +/// depending on the config option `CONFIG_PHYS_ADDR_T_64BIT`.
+
+The comment seems weirdly formatted, shouldn't it be rather:
+
+/// Resource size type. This is a type alias to `u64`
+/// depending on the config option `CONFIG_PHYS_ADDR_T_64BIT`.
+
+or
+
+/// Resource size type.
+///
+/// This is a type alias to `u64` depending on the config
+/// option `CONFIG_PHYS_ADDR_T_64BIT`.
+
+> +#[cfg(CONFIG_PHYS_ADDR_T_64BIT)]
+> +pub type ResourceSize = u64;
+> +
+> +/// Resource Size type.
+> +/// This is a type alias to `u32`
+> +/// depending on the config option `CONFIG_PHYS_ADDR_T_64BIT`.
+
+Similar to the previous one.
+
+> +#[cfg(not(CONFIG_PHYS_ADDR_T_64BIT))]
+> +pub type ResourceSize = u32;
+> +
+> +/// A region allocated from a parent resource.
+> +///
+> +/// # Invariants
+> +/// - `self.0` points to a valid `bindings::resource` that was obtained through
+> +/// `__request_region`.
+
+Shouldn't be there an extra newline after # Invariants, to be consistent 
+with others in the patch?
+
+> +pub struct Region(NonNull<bindings::resource>);
+> +
+> +impl Deref for Region {
+> +    type Target = Resource;
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        // SAFETY: Safe as per the invariant of `Region`
+> +        unsafe { Resource::from_ptr(self.0.as_ptr()) }
 > +    }
+> +}
+> +
+> +impl Drop for Region {
+> +    fn drop(&mut self) {
+> +        // SAFETY: Safe as per the invariant of `Region`
+> +        let res = unsafe { Resource::from_ptr(self.0.as_ptr()) };
+> +        let flags = res.flags();
+> +
+> +        let release_fn = if flags.contains(flags::IORESOURCE_MEM) {
+> +            bindings::release_mem_region
+> +        } else {
+> +            bindings::release_region
+> +        };
+> +
+> +        // SAFETY: Safe as per the invariant of `Region`
+> +        unsafe { release_fn(res.start(), res.size()) };
+> +    }
+> +}
+> +
+> +// SAFETY: `Region` only holds a pointer to a C `struct resource`, which is safe to be used from
+> +// any thead.
 
-As far as I can tell, it's impossible to call this function because
-you cannot obtain a bare mutable reference to a pinned value.
+typo thead -> thread
+> +unsafe impl Send for Region {}
+> +
+> +// SAFETY: `Region` only holds a pointer to a C `struct resource`, references to which are
+> +// safe to be used from any thead.
 
-Alice
+typo thead -> thread
+
+> +unsafe impl Sync for Region {}
+> +
+> +/// A resource abstraction.
+> +///
+> +/// # Invariants
+> +///
+> +/// `Resource` is a transparent wrapper around a valid `bindings::resource`.
+> +#[repr(transparent)]
+> +pub struct Resource(Opaque<bindings::resource>);
+> +
+> +impl Resource {
+> +    /// Creates a reference to a [`Resource`] from a valid pointer.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The caller must ensure that for the duration of 'a, the pointer will
+> +    /// point at a valid `bindings::resource`
+> +    ///
+> +    /// The caller must also ensure that the `Resource` is only accessed via the
+> +    /// returned reference for the duration of 'a.
+> +    pub(crate) const unsafe fn from_ptr<'a>(ptr: *mut bindings::resource) -> &'a Self {
+> +        // SAFETY: Self is a transparent wrapper around `Opaque<bindings::resource>`.
+> +        unsafe { &*ptr.cast() }
+> +    }
+> +
+> +    /// A helper to abstract the common pattern of requesting a region.
+> +    fn request_region_checked(
+> +        &self,
+> +        start: ResourceSize,
+> +        size: ResourceSize,
+> +        name: &CStr,
+> +        request_fn: RequestFn,
+> +    ) -> Option<Region> {
+> +        // SAFETY: Safe as per the invariant of `Resource`
+> +        let region = unsafe { request_fn(start, size, name.as_char_ptr()) };
+> +
+> +        Some(Region(NonNull::new(region)?))
+> +    }
+> +
+> +    /// Requests a resource region.
+> +    ///
+> +    /// Exclusive access will be given and the region will be marked as busy.
+> +    /// Further calls to `request_region` will return `None` if the region, or a
+> +    /// part of it, is already in use.
+> +    pub fn request_region(
+> +        &self,
+> +        start: ResourceSize,
+> +        size: ResourceSize,
+> +        name: &CStr,
+> +    ) -> Option<Region> {
+> +        self.request_region_checked(start, size, name, bindings::request_region)
+> +    }
+> +
+> +    /// Requests a resource region with the IORESOURCE_MUXED flag.
+
+formatting: IORESOURCE_MUXED -> `IORESOURCE_MUXED`
+
+> +    ///
+> +    /// Exclusive access will be given and the region will be marked as busy.
+> +    /// Further calls to `request_region` will return `None` if the region, or a
+> +    /// part of it, is already in use.
+> +    pub fn request_muxed_region(
+> +        &self,
+> +        start: ResourceSize,
+> +        size: ResourceSize,
+> +        name: &CStr,
+> +    ) -> Option<Region> {
+> +        self.request_region_checked(start, size, name, bindings::request_muxed_region)
+> +    }
+> +
+> +    /// Requests a memory resource region, i.e.: a resource of type
+> +    /// IORESOURCE_MEM.
+
+formatting: IORESOURCE_MEM -> `IORESOURCE_MEM`
+
+> +    ///
+> +    /// Exclusive access will be given and the region will be marked as busy.
+> +    /// Further calls to `request_region` will return `None` if the region, or a
+> +    /// part of it, is already in use.
+> +    pub fn request_mem_region(
+> +        &self,
+> +        start: ResourceSize,
+> +        size: ResourceSize,
+> +        name: &CStr,
+> +    ) -> Option<Region> {
+> +        self.request_region_checked(start, size, name, bindings::request_mem_region)
+> +    }
+> +
+> +    /// Returns the size of the resource.
+> +    pub fn size(&self) -> ResourceSize {
+> +        let inner = self.0.get();
+> +        // SAFETY: safe as per the invariants of `Resource`
+> +        unsafe { bindings::resource_size(inner) }
+> +    }
+> +
+> +    /// Returns the start address of the resource.
+> +    pub fn start(&self) -> u64 {
+
+Should the address be of type `usize`?
+
+> +        let inner = self.0.get();
+> +        // SAFETY: safe as per the invariants of `Resource`
+> +        unsafe { *inner }.start
+> +    }
+> +
+> +    /// Returns the name of the resource.
+> +    pub fn name(&self) -> &CStr {
+> +        let inner = self.0.get();
+> +        // SAFETY: safe as per the invariants of `Resource`
+> +        unsafe { CStr::from_char_ptr((*inner).name) }
+> +    }
+> +
+> +    /// Returns the flags associated with the resource.
+> +    pub fn flags(&self) -> Flags {
+> +        let inner = self.0.get();
+> +        // SAFETY: safe as per the invariants of `Resource`
+> +        let flags = unsafe { *inner }.flags;
+> +
+> +        Flags(flags)
+> +    }
+> +}
+> +
+> +// SAFETY: `Resource` only holds a pointer to a C `struct resource`, which is safe to be used from
+> +// any thead.
+
+typo: thead -> thread
+
+> +unsafe impl Send for Resource {}
+> +
+> +// SAFETY: `Resource` only holds a pointer to a C `struct resource`, references to which are
+> +// safe to be used from any thead.
+
+typo: thead -> thread
+
+> +unsafe impl Sync for Resource {}
+> +
+> +/// Resource flags as stored in the C `struct resource::flags` field.
+> +///
+> +/// They can be combined with the operators `|`, `&`, and `!`.
+> +///
+> +/// Values can be used from the [`flags`] module.
+> +#[derive(Clone, Copy, PartialEq)]
+> +pub struct Flags(u64);
+> +
+> +impl Flags {
+> +    /// Check whether `flags` is contained in `self`.
+> +    pub fn contains(self, flags: Flags) -> bool {
+> +        (self & flags) == flags
+> +    }
+> +}
+> +
+> +impl core::ops::BitOr for Flags {
+> +    type Output = Self;
+> +    fn bitor(self, rhs: Self) -> Self::Output {
+> +        Self(self.0 | rhs.0)
+> +    }
+> +}
+> +
+> +impl core::ops::BitAnd for Flags {
+> +    type Output = Self;
+> +    fn bitand(self, rhs: Self) -> Self::Output {
+> +        Self(self.0 & rhs.0)
+> +    }
+> +}
+> +
+> +impl core::ops::Not for Flags {
+> +    type Output = Self;
+> +    fn not(self) -> Self::Output {
+> +        Self(!self.0)
+> +    }
+> +}
+> +
+> +/// Resource flags as stored in the `struct resource::flags` field.
+> +pub mod flags {
+> +    use super::Flags;
+> +
+> +    /// PCI/ISA I/O ports
+
+formatting: period at the end
+
+> +    pub const IORESOURCE_IO: Flags = Flags(bindings::IORESOURCE_IO as u64);
+> +
+> +    /// Resource is software muxed.
+> +    pub const IORESOURCE_MUXED: Flags = Flags(bindings::IORESOURCE_MUXED as u64);
+> +
+> +    /// Resource represents a memory region.
+> +    pub const IORESOURCE_MEM: Flags = Flags(bindings::IORESOURCE_MEM as u64);
+> +}
+
+	Daniel
