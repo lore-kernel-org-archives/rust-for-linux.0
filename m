@@ -1,110 +1,110 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F5E1779B8;
-	Fri, 31 Jan 2025 10:43:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A548710E0
+	for <rust-for-linux@vger.kernel.org>; Fri, 31 Jan 2025 11:36:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738320204; cv=none; b=XlrwWA51Hca+gKnvz+QIpcstrVmKuNGo89cIhhQNuL53MHJlP0oPPmjWtd4KA813ghOnN7R6U5pWZ7hUczhECL67YYmVXkk0FevtG3Y7tIEtXA2HpaVtWlZD+74NwJDJAEGy+4oCK65MnyrreowzIho2lei8+HN+OzewSPuuSOA=
+	t=1738323397; cv=none; b=BieAyy3Mj/z+mLFkt5YRlnpl7vpb8inKra1q22NzuDYWfjxzQ9icfGFFBWoT/f85GGQoD4s6I9V4qsHOyAZLyXLC/R7fy5K8C1lc4q6wop7IiuxU11Yqy3ndST0sOJ+eMh3cqeFO/v0KufpjRRWN3AIsAzeZAHRyqOqTMAc5DtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738320204; c=relaxed/simple;
-	bh=ZWG0gtq9Ld/u0lq9c4WKxP1tC7iM89FIhVVtWYEbjGo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IhW74ISqW08uaRP28Oc3aG9j0ALlMvY6w7SjNNEB0y4s9Rl6T8pYjxffY59/mndlXuw7x1ukNfgKgSIoHXBZ/m2mxOueqVXIZI3XfXkw1kNhQqskq8wIP5ujWjcF+jHuSWyo81nddMiW93iFmERHPeyGDZmGO8ORNerxOaCI9Ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WApixKRD; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1738323397; c=relaxed/simple;
+	bh=BQ3PtgVwtTEF/h2ArOXr9xcoaHTj1o/+iFcvWi794Ns=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=casbrD54lfH+2PtIYAenQ8D80gPO5HkKETW4i8/8+NkI/UeWrRuUpZN2TcXswbNzOTpvo4jZXPRvP767FRiHKQcTdaWfkvl/jfkRl9xRgJYPf9WvsG+vWBj4jL55y5OHJdgrEKd5fWFlQxR7S+wl32ojAy77pGeyECYraNCIBgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DsL/dhqq; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WApixKRD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738320204; x=1769856204;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ZWG0gtq9Ld/u0lq9c4WKxP1tC7iM89FIhVVtWYEbjGo=;
-  b=WApixKRDda0jOVIjQopahOWbh+/VwX3HXq+ma0Ioa6XBVSHlAEQUQh+1
-   psu0vg+3d0kTUhycI7pxy5FeFqLaXIJJCB/9yTAlZBw9HjOx76qPA3TEj
-   j5qPeFApr8zlfAW1bxt6duGCCwJfNXXp7cXdOJz48usdAtfKhO65nKzah
-   Fi4MqFbFqcZihfki/yxw19EcoMufyvnzN1gih89jOX1BKNIlEqe70l1NJ
-   TpWboqTljdz6KkuD0uBOQkNKkYjk0r3OnEYQDXAlXUN9U/QGM6DodC6CU
-   Mx7KaDFjnbGOOYbJqcRlmQRCcQwV5jOgkvQzd/P6R8uRofrStmTsxjoUC
-   A==;
-X-CSE-ConnectionGUID: +kk2ZOh4T3OPPQUTR7tk8Q==
-X-CSE-MsgGUID: 5PHwBFk3QOWyJCD6KJCT9w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11331"; a="42637334"
-X-IronPort-AV: E=Sophos;i="6.13,248,1732608000"; 
-   d="scan'208";a="42637334"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2025 02:43:23 -0800
-X-CSE-ConnectionGUID: pyLhMJXUSO+Mm0U9Y0on5Q==
-X-CSE-MsgGUID: dAP8UAtLSMedtqjIOcR2bg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="114592164"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2025 02:43:19 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tdoUW-00000006wRn-0QEo;
-	Fri, 31 Jan 2025 12:43:16 +0200
-Date: Fri, 31 Jan 2025 12:43:15 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Lyude Paul <lyude@redhat.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH] WIP: drivers/base: Add virtual_device_create()
-Message-ID: <Z5ypQ3VdJw_pLKBr@smile.fi.intel.com>
-References: <Z5Nw8kaieLueWyUu@pollux>
- <20250130212843.659437-1-lyude@redhat.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DsL/dhqq"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-43675b1155bso21471615e9.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 31 Jan 2025 03:36:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1738323394; x=1738928194; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4SR7zm6aWfdAv+CDJx4pa3ob/BdGYMCgycDy3MUU93g=;
+        b=DsL/dhqqCDAA424wue1+zPwaUfBNK3xc2n8l8tKrRYqrEh9rmGt5OweXlxLHLQIgKJ
+         yjpQwS/vHx0Nk6wAdBIV2MeQa62YKPmKtBlz9jyKp2Www1Lrv7XJI6ZWzSHspILFQF0/
+         h50VAPU2SucABFVd6Qc/hVcVe3iFvY2gob++DJfQThcO0OdNBqBaPN+kTdPSyVJQy4w/
+         VlOnapYlRTt/1OfIn2vtaxlQoNN31toxdTRBcWkkYsjixNYol2xtAxff20oOSBESwJ9o
+         rvRk77njVonXJoNDk0KNvkIFabq3OGwlALIemc8iAyQnpcVYjvvXhkaPg4DHl9Lj/QYD
+         UTmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738323394; x=1738928194;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4SR7zm6aWfdAv+CDJx4pa3ob/BdGYMCgycDy3MUU93g=;
+        b=hxAPfvNUFB0sSxadeSn7yG38NmVBWKev9N2xSl8Pj/uuCSf61x5AMMzxL7H/OjWvDx
+         aIg1ptFvRpyhmxl1HcrlLmG6SmWq/WJz53QBx6S+zQuiA3IsmzMOtFy5D4zvXe8iu5rg
+         J5+1ZKee1JENjZ8CYhP7Yr8r14PnOtwGp/8rxlu3XJecTtsKPhAKqPywh1Fu2/AOER2H
+         Je3GuYDBr+T6iUHJY9a9HtSXb+kqxZqOZwqe66EaXIcBOoDnxew8ZbxWa7Q25IpD1Qyx
+         lEyboEYjVYMvUt6OY6CSpBEqeHbfUEnylxMNUVzHYqeaU3ocp7nXIhP/TfkpSJWNyHKn
+         7Rag==
+X-Forwarded-Encrypted: i=1; AJvYcCUlgPo6VQ2a4kkhQtT86AFVO0GCaYospg4hsmhlu63dKp+AIWas6mebE9l6Bi1u3kRZqEyyY8PQfR9EHoUbKQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxicjVNdZP2Yu3fpS7MXm9UYmA+3R2wEMxljjgvUV8MOefLe3EZ
+	X7tIcO9CusMjmDle7FKSFn1NS2kUhTKc7hFpjiL6CJGxWOypTyClrcuiikTBd0I2RwvEoJhfbmZ
+	1IECXHnKdle33OMrgGbnlLwscG9r9X52IUJo1
+X-Gm-Gg: ASbGnct6Niz6IuE6ie7GBNG5cenv6FBtVy3Y3W3KKBaDpyr3aXB1XRicY+gPENbnDku
+	4BzJdWyFsl9Z6iFBVirqq3Q0FOKebXcHmjyF9fjre7On2xOzNq6w0iSPYOrqfla4GM7Dm21QuP2
+	qnWIFCIVYEr8Qnx626TCFWQispV7k=
+X-Google-Smtp-Source: AGHT+IHRFoJje0XBfarURrX/WAI1h146aSMoYdSVlrd84+vg7Nzi1IUkjjsFrXIj4yq92bkDJ1yKtwkjwlbbL0fKzpo=
+X-Received: by 2002:a5d:59ae:0:b0:38c:3eca:b30 with SMTP id
+ ffacd0b85a97d-38c5194a7e3mr9796494f8f.14.1738323393804; Fri, 31 Jan 2025
+ 03:36:33 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250130212843.659437-1-lyude@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20250130220529.665896-1-daniel.almeida@collabora.com>
+ <20250130220529.665896-4-daniel.almeida@collabora.com> <4518f68e-c6cb-4c97-957e-b8988e2b309b@sedlak.dev>
+In-Reply-To: <4518f68e-c6cb-4c97-957e-b8988e2b309b@sedlak.dev>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 31 Jan 2025 12:36:22 +0100
+X-Gm-Features: AWEUYZkpECKwFj2XE5cPc1r9KfvYcg1mII4V9PMbxHJsXk8rVDlWR9LASjOizDo
+Message-ID: <CAH5fLggUvcERo2+xwSkFcv-ds++4sy+Q5JoxCCjrx-R41KfDiA@mail.gmail.com>
+Subject: Re: [PATCH v6 3/3] rust: platform: allow ioremap of platform resources
+To: Daniel Sedlak <daniel@sedlak.dev>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.mco, 
+	benno.lossin@proton.me, a.hindborg@kernel.org, tmgross@umich.edu, 
+	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org, 
+	boris.brezillon@collabora.com, robh@kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 30, 2025 at 04:28:26PM -0500, Lyude Paul wrote:
-> As Greg KH pointed out, we have a nice /sys/devices/virtual directory free
-> for the taking - but the vast majority of device drivers concerned with
-> virtual devices do not use this and instead misuse the platform device API.
-> 
-> To fix this, let's start by adding a simple function that can be used for
-> creating virtual devices - virtual_device_create().
-> 
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> 
-> ---
-> 
-> So, WIP obviously because I wrote this up in a few minutes - but this goes
-> off the idea that Danilo suggested to me off-list of coming up with a
-> simple API for handling virtual devices that's a little more obvious to
-> use. I wanted to get people's feedback and if we're happy with this idea,
-> I'm willing to go through and add some pointers to this function in various
-> platform API docs - along with porting over the C version of VKMS over to
-> this API.
+On Fri, Jan 31, 2025 at 11:19=E2=80=AFAM Daniel Sedlak <daniel@sedlak.dev> =
+wrote:
+>
+> Hi,
+>
+> On 1/30/25 11:05 PM, Daniel Almeida wrote:
+> > +
+> > +    /// Same as [`Self::ioremap_resource`] but with exclusive access t=
+o the underlying
+> > +    /// region.
+> > +    pub fn ioremap_resource_exclusive(
+> > +        &self,
+> > +        resource: &Resource,
+> > +    ) -> Result<Devres<ExclusiveIoMem<0>>> {
+> > +        self.ioremap_resource_exclusive_sized::<0>(resource)
+> > +    }
+> > +
+> > +    /// Returns the resource at `index`, if any.
+> > +    pub fn resource(&self, index: u32) -> Option<&Resource> {
+>
+> Maybe we could utilize the Index [1] trait to make the API more rust~ish?
+> Or at least name it `resource_by_index` to keep consistency with
+> `resource_by_name`?
+>
+> Link: https://doc.rust-lang.org/core/ops/trait.Index.html [1]
 
-So, if it goes anywhere, please be sure that:
-1) it's implemented in a separate *.c and *.h;
-2) it won't abuse header inclusions and add into dependency hell;
-3) it's documented.
+Using the index trait would result in syntax like device[7] to get the
+resource at index 7. I think that would be unclear because it's not
+obvious that devices should behave like an array of resources.
 
-Additionally would be nice to have one user to be converted to see how it may
-be done in practice.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Alice
