@@ -1,110 +1,274 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A548710E0
-	for <rust-for-linux@vger.kernel.org>; Fri, 31 Jan 2025 11:36:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A8415F330;
+	Fri, 31 Jan 2025 13:24:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738323397; cv=none; b=BieAyy3Mj/z+mLFkt5YRlnpl7vpb8inKra1q22NzuDYWfjxzQ9icfGFFBWoT/f85GGQoD4s6I9V4qsHOyAZLyXLC/R7fy5K8C1lc4q6wop7IiuxU11Yqy3ndST0sOJ+eMh3cqeFO/v0KufpjRRWN3AIsAzeZAHRyqOqTMAc5DtI=
+	t=1738329896; cv=none; b=jSAW2GvMNN+mSjG8JperlKNNFFL4yXygThhI0zqiNaboEQ+70E5W8sUOnc9+9EcyTkvPeaVIaR2FG3h9p9/E9tx936l1jAyvk/PAtgSZ9yVDCNcrmP/Bba+EVQANrVVCuL0kOT4+vUcFP20HkW7k2k++i/FO3gJDqFXzVw5qIdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738323397; c=relaxed/simple;
-	bh=BQ3PtgVwtTEF/h2ArOXr9xcoaHTj1o/+iFcvWi794Ns=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=casbrD54lfH+2PtIYAenQ8D80gPO5HkKETW4i8/8+NkI/UeWrRuUpZN2TcXswbNzOTpvo4jZXPRvP767FRiHKQcTdaWfkvl/jfkRl9xRgJYPf9WvsG+vWBj4jL55y5OHJdgrEKd5fWFlQxR7S+wl32ojAy77pGeyECYraNCIBgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DsL/dhqq; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1738329896; c=relaxed/simple;
+	bh=CTkeOGbuxbE//jeVznsLacPanDLT8HrnTbbZBnopIxg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tOZWPfJ5qDSAZbPUzste34mOQqHmOQxPF/Sm6UPg/OAUEbikZRvKdhsBkyn2MgCAYJcXDRQVIXjwB/mCSwbyhuzveVHoKHG0yPcsm+o65EweqzGLUS3KFPfB4MVOyH7NR6HyIulSxVrX5flIbFioibawDnZrkzZRNjKb+ek8OGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pKA0Oyuo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DsL/dhqq"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-43675b1155bso21471615e9.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 31 Jan 2025 03:36:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738323394; x=1738928194; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4SR7zm6aWfdAv+CDJx4pa3ob/BdGYMCgycDy3MUU93g=;
-        b=DsL/dhqqCDAA424wue1+zPwaUfBNK3xc2n8l8tKrRYqrEh9rmGt5OweXlxLHLQIgKJ
-         yjpQwS/vHx0Nk6wAdBIV2MeQa62YKPmKtBlz9jyKp2Www1Lrv7XJI6ZWzSHspILFQF0/
-         h50VAPU2SucABFVd6Qc/hVcVe3iFvY2gob++DJfQThcO0OdNBqBaPN+kTdPSyVJQy4w/
-         VlOnapYlRTt/1OfIn2vtaxlQoNN31toxdTRBcWkkYsjixNYol2xtAxff20oOSBESwJ9o
-         rvRk77njVonXJoNDk0KNvkIFabq3OGwlALIemc8iAyQnpcVYjvvXhkaPg4DHl9Lj/QYD
-         UTmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738323394; x=1738928194;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4SR7zm6aWfdAv+CDJx4pa3ob/BdGYMCgycDy3MUU93g=;
-        b=hxAPfvNUFB0sSxadeSn7yG38NmVBWKev9N2xSl8Pj/uuCSf61x5AMMzxL7H/OjWvDx
-         aIg1ptFvRpyhmxl1HcrlLmG6SmWq/WJz53QBx6S+zQuiA3IsmzMOtFy5D4zvXe8iu5rg
-         J5+1ZKee1JENjZ8CYhP7Yr8r14PnOtwGp/8rxlu3XJecTtsKPhAKqPywh1Fu2/AOER2H
-         Je3GuYDBr+T6iUHJY9a9HtSXb+kqxZqOZwqe66EaXIcBOoDnxew8ZbxWa7Q25IpD1Qyx
-         lEyboEYjVYMvUt6OY6CSpBEqeHbfUEnylxMNUVzHYqeaU3ocp7nXIhP/TfkpSJWNyHKn
-         7Rag==
-X-Forwarded-Encrypted: i=1; AJvYcCUlgPo6VQ2a4kkhQtT86AFVO0GCaYospg4hsmhlu63dKp+AIWas6mebE9l6Bi1u3kRZqEyyY8PQfR9EHoUbKQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxicjVNdZP2Yu3fpS7MXm9UYmA+3R2wEMxljjgvUV8MOefLe3EZ
-	X7tIcO9CusMjmDle7FKSFn1NS2kUhTKc7hFpjiL6CJGxWOypTyClrcuiikTBd0I2RwvEoJhfbmZ
-	1IECXHnKdle33OMrgGbnlLwscG9r9X52IUJo1
-X-Gm-Gg: ASbGnct6Niz6IuE6ie7GBNG5cenv6FBtVy3Y3W3KKBaDpyr3aXB1XRicY+gPENbnDku
-	4BzJdWyFsl9Z6iFBVirqq3Q0FOKebXcHmjyF9fjre7On2xOzNq6w0iSPYOrqfla4GM7Dm21QuP2
-	qnWIFCIVYEr8Qnx626TCFWQispV7k=
-X-Google-Smtp-Source: AGHT+IHRFoJje0XBfarURrX/WAI1h146aSMoYdSVlrd84+vg7Nzi1IUkjjsFrXIj4yq92bkDJ1yKtwkjwlbbL0fKzpo=
-X-Received: by 2002:a5d:59ae:0:b0:38c:3eca:b30 with SMTP id
- ffacd0b85a97d-38c5194a7e3mr9796494f8f.14.1738323393804; Fri, 31 Jan 2025
- 03:36:33 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pKA0Oyuo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B3DC4CED1;
+	Fri, 31 Jan 2025 13:24:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738329895;
+	bh=CTkeOGbuxbE//jeVznsLacPanDLT8HrnTbbZBnopIxg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pKA0OyuoOhtuuCac0kThBl0XROcpoFsvhGaqLmAA4tsmy67Zj8FaId4aSjrmvo4km
+	 4YvZugVm/qJYopue0aGVOtLy0f276KlOcimNrymDsGJNAbWl10YwPjN5RPwaUEbnXD
+	 f43GVFGTXdD0+ETOsw4loS6VqneibsWzqHMomakpnH4fjPZ9aLiyvF3iburKQLwwjp
+	 /3mOQtHnzM0IV8BEBN02+J136vU4XiqSzR5OJPP4hzkL9fKiIaZE2xzTxIeVLJAb3c
+	 Mtdn4rLUaYGI0+DR7cYfFX/S2+TgkvAi79LpgJQdEzkVqO5ogZ7Ttny2KoE3ZCL5Sh
+	 3D1znPjnL7fBQ==
+Date: Fri, 31 Jan 2025 14:24:50 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Fiona Behrens <me@kloenk.dev>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: io: move offset_valid and io_addr(_assert) to
+ IoRaw
+Message-ID: <Z5zPIim8VutswOGC@pollux>
+References: <20250128-rust-io-offset-v2-1-222de7c96a34@kloenk.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250130220529.665896-1-daniel.almeida@collabora.com>
- <20250130220529.665896-4-daniel.almeida@collabora.com> <4518f68e-c6cb-4c97-957e-b8988e2b309b@sedlak.dev>
-In-Reply-To: <4518f68e-c6cb-4c97-957e-b8988e2b309b@sedlak.dev>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 31 Jan 2025 12:36:22 +0100
-X-Gm-Features: AWEUYZkpECKwFj2XE5cPc1r9KfvYcg1mII4V9PMbxHJsXk8rVDlWR9LASjOizDo
-Message-ID: <CAH5fLggUvcERo2+xwSkFcv-ds++4sy+Q5JoxCCjrx-R41KfDiA@mail.gmail.com>
-Subject: Re: [PATCH v6 3/3] rust: platform: allow ioremap of platform resources
-To: Daniel Sedlak <daniel@sedlak.dev>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.mco, 
-	benno.lossin@proton.me, a.hindborg@kernel.org, tmgross@umich.edu, 
-	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org, 
-	boris.brezillon@collabora.com, robh@kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250128-rust-io-offset-v2-1-222de7c96a34@kloenk.dev>
 
-On Fri, Jan 31, 2025 at 11:19=E2=80=AFAM Daniel Sedlak <daniel@sedlak.dev> =
-wrote:
->
-> Hi,
->
-> On 1/30/25 11:05 PM, Daniel Almeida wrote:
-> > +
-> > +    /// Same as [`Self::ioremap_resource`] but with exclusive access t=
-o the underlying
-> > +    /// region.
-> > +    pub fn ioremap_resource_exclusive(
-> > +        &self,
-> > +        resource: &Resource,
-> > +    ) -> Result<Devres<ExclusiveIoMem<0>>> {
-> > +        self.ioremap_resource_exclusive_sized::<0>(resource)
-> > +    }
-> > +
-> > +    /// Returns the resource at `index`, if any.
-> > +    pub fn resource(&self, index: u32) -> Option<&Resource> {
->
-> Maybe we could utilize the Index [1] trait to make the API more rust~ish?
-> Or at least name it `resource_by_index` to keep consistency with
-> `resource_by_name`?
->
-> Link: https://doc.rust-lang.org/core/ops/trait.Index.html [1]
+On Tue, Jan 28, 2025 at 01:46:00PM +0100, Fiona Behrens wrote:
+> Move the helper functions `offset_valid`, `io_addr` and
+> `io_addr_asset` from `Io` to `IoRaw`. This allows `IoRaw` to be reused
+> if other abstractions with different write/read functions are
+> needed (e.g. `writeb` vs `iowrite` vs `outb`).
+> 
+> Signed-off-by: Fiona Behrens <me@kloenk.dev>
+> ---
+> Changes in v2:
+> - make the io_addr functions private again
+> - reword the invariant description
+> - use the invariant (unchecked_add)
+> - Link to v1: https://lore.kernel.org/r/20250122-rust-io-offset-v1-1-914725ab55ed@kloenk.dev
+> ---
+>  rust/kernel/io.rs | 99 +++++++++++++++++++++++++++++++++++--------------------
+>  1 file changed, 64 insertions(+), 35 deletions(-)
+> 
+> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+> index d4a73e52e3ee68f7b558749ed0108acde92ae5fe..c4dd8289705eacc93e285f4e25fb6262f605328c 100644
+> --- a/rust/kernel/io.rs
+> +++ b/rust/kernel/io.rs
+> @@ -15,6 +15,11 @@
+>  /// Instead, the bus specific MMIO implementation must convert this raw representation into an `Io`
+>  /// instance providing the actual memory accessors. Only by the conversion into an `Io` structure
+>  /// any guarantees are given.
+> +///
+> +/// # Invariant
 
-Using the index trait would result in syntax like device[7] to get the
-resource at index 7. I think that would be unclear because it's not
-obvious that devices should behave like an array of resources.
+As mentioned in v1, please put the addition of the invariant and the subsequent
+switch to unchecked_add() into a separate patch.
 
-Alice
+Also note that unchecked_math is not stable before 1.79, but the minimum
+supported version is 1.78 currently, hence you see Clippy complain.
+
+So, I think we'd need to enable unchecked_math in order to use this, not sure
+that's worth though. Plus, I'm not sure this makes the Clippy lint warning go
+away by itself.
+
+> +///
+> +/// - `maxsize` is larger or equal to `SIZE`.
+> +/// - `addr + maxsize` is always smaller then [`usize::MAX`] so that it fits in virtual memory.
+
+My reply to this line from v1 was more meant as a question, because I wasn't
+entirely sure if you want to say that this does never overflow, or if you want
+to say that this must be within the bounds of some address space. Sorry for the
+confusion.
+
+I think this should be limited to saying that `addr + maxsize` does not overflow
+and leave the rest to the `Io` type.
+
+Please also note that you can't assume that `usize::MAX` is always equivalent to
+the size of the virtual address space.
+
+>  pub struct IoRaw<const SIZE: usize = 0> {
+>      addr: usize,
+>      maxsize: usize,
+> @@ -23,24 +28,76 @@ pub struct IoRaw<const SIZE: usize = 0> {
+>  impl<const SIZE: usize> IoRaw<SIZE> {
+>      /// Returns a new `IoRaw` instance on success, an error otherwise.
+>      pub fn new(addr: usize, maxsize: usize) -> Result<Self> {
+> -        if maxsize < SIZE {
+> +        if maxsize < SIZE || addr.checked_add(maxsize).is_none() {
+>              return Err(EINVAL);
+>          }
+>  
+> +        // INVARIANT: `maxsize` is at least `SIZE`, `addr + maxsize` is not wrapping.
+>          Ok(Self { addr, maxsize })
+>      }
+>  
+>      /// Returns the base address of the MMIO region.
+>      #[inline]
+> -    pub fn addr(&self) -> usize {
+> +    pub const fn addr(&self) -> usize {
+>          self.addr
+>      }
+>  
+>      /// Returns the maximum size of the MMIO region.
+>      #[inline]
+> -    pub fn maxsize(&self) -> usize {
+> +    pub const fn maxsize(&self) -> usize {
+>          self.maxsize
+>      }
+> +
+> +    /// Check if the offset plus the size of the type `U` fits in the bounds of `size`.
+> +    /// Also checks if the offset is aligned with the type size.
+
+I think it's good to add documentation even if not required. Please do so in a
+separate patch though.
+
+> +    #[inline]
+> +    const fn offset_valid<U>(offset: usize, size: usize) -> bool {
+> +        let type_size = core::mem::size_of::<U>();
+> +        if let Some(end) = offset.checked_add(type_size) {
+> +            end <= size && offset % type_size == 0
+> +        } else {
+> +            false
+> +        }
+> +    }
+> +
+> +    /// Check if the offset (plus the type size) is out of bounds.
+> +    ///
+> +    /// Runtime checked version of [`io_addr_assert`].
+> +    ///
+> +    /// See [`offset_valid`] for the performed offset check.
+> +    ///
+> +    /// # Errors
+> +    ///
+> +    /// Returns [`EINVAL`] if the type does not fit into [`IoRaw`] at the given offset.
+> +    ///
+> +    /// [`offset_valid`]: Self::offset_valid
+> +    /// [`io_addr_assert`]: Self::io_addr_assert
+> +    #[inline]
+> +    fn io_addr<U>(&self, offset: usize) -> Result<usize> {
+> +        if !Self::offset_valid::<U>(offset, self.maxsize()) {
+> +            return Err(EINVAL);
+> +        }
+> +
+> +        // SAFETY: by the invariant of `IoRaw` this cannot overflow.
+> +        Ok(unsafe { self.addr().unchecked_add(offset) })
+> +    }
+> +
+> +    /// Check at build time if the offset (plus the type size) is out of bounds.
+> +    ///
+> +    /// Compiletime checked version of [`io_addr`].
+> +    ///
+> +    /// See [`offset_valid`] for the performed offset check.
+> +    ///
+> +    ///
+> +    /// [`offset_valid`]: Self::offset_valid
+> +    /// [`io_addr`]: Self::io_addr
+> +    #[inline]
+> +    const fn io_addr_assert<U>(&self, offset: usize) -> usize {
+> +        build_assert!(Self::offset_valid::<U>(offset, SIZE));
+> +
+> +        // SAFETY: by the invariant of `IoRaw` this cannot overflow.
+> +        unsafe { self.addr().unchecked_add(offset) }
+> +    }
+>  }
+>  
+>  /// IO-mapped memory, starting at the base address @addr and spanning @maxlen bytes.
+> @@ -116,7 +173,7 @@ macro_rules! define_read {
+>          $(#[$attr])*
+>          #[inline]
+>          pub fn $name(&self, offset: usize) -> $type_name {
+> -            let addr = self.io_addr_assert::<$type_name>(offset);
+> +            let addr = self.0.io_addr_assert::<$type_name>(offset);
+>  
+>              // SAFETY: By the type invariant `addr` is a valid address for MMIO operations.
+>              unsafe { bindings::$name(addr as _) }
+> @@ -128,7 +185,7 @@ pub fn $name(&self, offset: usize) -> $type_name {
+>          /// out of bounds.
+>          $(#[$attr])*
+>          pub fn $try_name(&self, offset: usize) -> Result<$type_name> {
+> -            let addr = self.io_addr::<$type_name>(offset)?;
+> +            let addr = self.0.io_addr::<$type_name>(offset)?;
+>  
+>              // SAFETY: By the type invariant `addr` is a valid address for MMIO operations.
+>              Ok(unsafe { bindings::$name(addr as _) })
+> @@ -145,7 +202,7 @@ macro_rules! define_write {
+>          $(#[$attr])*
+>          #[inline]
+>          pub fn $name(&self, value: $type_name, offset: usize) {
+> -            let addr = self.io_addr_assert::<$type_name>(offset);
+> +            let addr = self.0.io_addr_assert::<$type_name>(offset);
+>  
+>              // SAFETY: By the type invariant `addr` is a valid address for MMIO operations.
+>              unsafe { bindings::$name(value, addr as _, ) }
+> @@ -157,7 +214,7 @@ pub fn $name(&self, value: $type_name, offset: usize) {
+>          /// out of bounds.
+>          $(#[$attr])*
+>          pub fn $try_name(&self, value: $type_name, offset: usize) -> Result {
+> -            let addr = self.io_addr::<$type_name>(offset)?;
+> +            let addr = self.0.io_addr::<$type_name>(offset)?;
+>  
+>              // SAFETY: By the type invariant `addr` is a valid address for MMIO operations.
+>              unsafe { bindings::$name(value, addr as _) }
+> @@ -190,34 +247,6 @@ pub fn maxsize(&self) -> usize {
+>          self.0.maxsize()
+>      }
+>  
+> -    #[inline]
+> -    const fn offset_valid<U>(offset: usize, size: usize) -> bool {
+> -        let type_size = core::mem::size_of::<U>();
+> -        if let Some(end) = offset.checked_add(type_size) {
+> -            end <= size && offset % type_size == 0
+> -        } else {
+> -            false
+> -        }
+> -    }
+> -
+> -    #[inline]
+> -    fn io_addr<U>(&self, offset: usize) -> Result<usize> {
+> -        if !Self::offset_valid::<U>(offset, self.maxsize()) {
+> -            return Err(EINVAL);
+> -        }
+> -
+> -        // Probably no need to check, since the safety requirements of `Self::new` guarantee that
+> -        // this can't overflow.
+> -        self.addr().checked_add(offset).ok_or(EINVAL)
+> -    }
+> -
+> -    #[inline]
+> -    fn io_addr_assert<U>(&self, offset: usize) -> usize {
+> -        build_assert!(Self::offset_valid::<U>(offset, SIZE));
+> -
+> -        self.addr() + offset
+> -    }
+> -
+>      define_read!(readb, try_readb, u8);
+>      define_read!(readw, try_readw, u16);
+>      define_read!(readl, try_readl, u32);
+> 
+> ---
+> base-commit: 01b3cb620815fc3feb90ee117d9445a5b608a9f7
+> change-id: 20250122-rust-io-offset-7b39b11e84ac
+> 
+> Best regards,
+> -- 
+> Fiona Behrens <me@kloenk.dev>
+> 
