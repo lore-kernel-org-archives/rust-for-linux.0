@@ -1,145 +1,110 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84600EED8
-	for <rust-for-linux@vger.kernel.org>; Fri, 31 Jan 2025 10:19:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F5E1779B8;
+	Fri, 31 Jan 2025 10:43:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738318775; cv=none; b=Wa5sLZKYRe/jsCELzp5vAKHRLNRrUaOHVPd1MecqLZiMLfet9kjJCwC8fmR9/y3+ktLoN+JIi1g0lEZKbndH8zdP2JU4tOf+X1f1s5+w8bANXOHAl+2TlKEHcZ9kog8UtrL0WSXZe/jqSQ1O/BmJSTol/9R35huwa7x929qG4UA=
+	t=1738320204; cv=none; b=XlrwWA51Hca+gKnvz+QIpcstrVmKuNGo89cIhhQNuL53MHJlP0oPPmjWtd4KA813ghOnN7R6U5pWZ7hUczhECL67YYmVXkk0FevtG3Y7tIEtXA2HpaVtWlZD+74NwJDJAEGy+4oCK65MnyrreowzIho2lei8+HN+OzewSPuuSOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738318775; c=relaxed/simple;
-	bh=BDOj4kHKdt+SAl6ePoV/E/5kNx2w0slU847QKaIlf9M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oq65QWBlfyd9LnU2FdHVrzlCTo4MHQ+APiWXI95CvCB3167tOci04CaKTdBDyozTPH0JmYmVXoyLhaepMIi+yHqxb/vkzt/LeqKX0HZUTM8Kcd45o0OKeUGeJsmcLvc8A0Bu/6bf2bbr017xOCyxlJd26fkwl10mVrGxam12Vok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=XTrHYb+7; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sedlak.dev
+	s=arc-20240116; t=1738320204; c=relaxed/simple;
+	bh=ZWG0gtq9Ld/u0lq9c4WKxP1tC7iM89FIhVVtWYEbjGo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IhW74ISqW08uaRP28Oc3aG9j0ALlMvY6w7SjNNEB0y4s9Rl6T8pYjxffY59/mndlXuw7x1ukNfgKgSIoHXBZ/m2mxOueqVXIZI3XfXkw1kNhQqskq8wIP5ujWjcF+jHuSWyo81nddMiW93iFmERHPeyGDZmGO8ORNerxOaCI9Ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WApixKRD; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="XTrHYb+7"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-385d7f19f20so812992f8f.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 31 Jan 2025 02:19:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1738318772; x=1738923572; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=f6K/3eYyv7Aa2aF5hOoKz5SNDtn3TKmBVLDHIqPgDlA=;
-        b=XTrHYb+7SQDk/O4lcibWRYFmRx7ppgT74EQ6pmUyhf+O9idnGbjFKG11o+ZnUKPtys
-         tYsKTA97YLzhJNdk4ZCiukiSc6zHSNDxRFZGWV9GwWqyeko2muTleQOc/vJSdQR+srrw
-         pBIHcT2urlcG0E2q1BnVMvK6FuLW24oOgb3Jv/evWpaAuXudXmy47LtqxFrQFwRQy5QD
-         /o5rmqJJYLaFasTOXtAch1PjCOG2FfxKU/sy6QesZsWye6Hxd0Y9sV4Tq5T3/ljtRa/Q
-         ouCDxJ9UDj20uVntnDAnVOGEBz/EfVAD2+nFAB5w9IWg7L/u4KTHcHCzLbL/zmfEcYrT
-         rrAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738318772; x=1738923572;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=f6K/3eYyv7Aa2aF5hOoKz5SNDtn3TKmBVLDHIqPgDlA=;
-        b=c5m4sicVo1TFC/nlBw5q2dbbC4/HAupxtKJVMCGFxZfkzq/hph3QCe31ECMR8khgy0
-         tmrESdxXjTyqL8WCobXg2hpfdBby/bRLd4L4xO4dpYIKjg4Rgy4LspTACfOn+r6UvSM0
-         NNUW396FvO9avHGrEq40rYyDClslT0xJMqkHk3/7CMdE92Ft71kbm/M7llsSxuph5kZT
-         BmvEUyu2zrVcq5AyBEj8F8w+qxsqCUeIoKJ2M40jbWYZLu1mqRhsv4J5Scas6nuPW8Be
-         iJS1xCusGvy8A5g7nA45ByTxiw65yeJ96jTmeraJAv7/8b0Zo4fLwec6M35RNvJClpYl
-         aNvw==
-X-Gm-Message-State: AOJu0YyXXlsJMVcQMgrRYgvC2V0zmRcpotVVJYrnUQK1B1jG8Y9Zvfgz
-	e/V/VVIxQw/Dl/giuhpYmCEY8x3ZpOHZRH24bLXi7jS2lcwQQyCK4YskMZiAXaM=
-X-Gm-Gg: ASbGncv/Xq1fkwXdOtjnj3fihx+8sXHmckeXpjQF1oXr30S24E4uO95NgcEAvJei66o
-	mjSbxKnOwEk2Pcv6AOl2GR0GrV46A7FCp0ZCPm5blu1YoqTQaYm3/30X9UPf20QY9Q7x74rlJ0L
-	KYav9e+wpDi+MGC2yzEcDjT1JYVBY4agwe5S+qO4ov++0gqrvZQwy+kgiHssb2PCcGz2wLHlgtu
-	f7JcaV3OlM2kfUujLDg80osBsmyVIBZQrSrpV0Av7pRnreUuq86rUJvl2/jJphtI9sTe5Dz/qzv
-	buqx5HtkypC9oTh+
-X-Google-Smtp-Source: AGHT+IFQNSgXP9aUx2oT4/Irni/kObbVuJn4/biEnOhya8E86087jnrRKG9MLhmScv+rmzyrlWy/qw==
-X-Received: by 2002:a5d:4aca:0:b0:38c:3fd1:6162 with SMTP id ffacd0b85a97d-38c520af863mr7059992f8f.50.1738318771657;
-        Fri, 31 Jan 2025 02:19:31 -0800 (PST)
-Received: from [192.168.88.249] ([95.85.217.110])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c5c1b4e99sm4280246f8f.74.2025.01.31.02.19.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 31 Jan 2025 02:19:31 -0800 (PST)
-Message-ID: <4518f68e-c6cb-4c97-957e-b8988e2b309b@sedlak.dev>
-Date: Fri, 31 Jan 2025 11:19:30 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WApixKRD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738320204; x=1769856204;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ZWG0gtq9Ld/u0lq9c4WKxP1tC7iM89FIhVVtWYEbjGo=;
+  b=WApixKRDda0jOVIjQopahOWbh+/VwX3HXq+ma0Ioa6XBVSHlAEQUQh+1
+   psu0vg+3d0kTUhycI7pxy5FeFqLaXIJJCB/9yTAlZBw9HjOx76qPA3TEj
+   j5qPeFApr8zlfAW1bxt6duGCCwJfNXXp7cXdOJz48usdAtfKhO65nKzah
+   Fi4MqFbFqcZihfki/yxw19EcoMufyvnzN1gih89jOX1BKNIlEqe70l1NJ
+   TpWboqTljdz6KkuD0uBOQkNKkYjk0r3OnEYQDXAlXUN9U/QGM6DodC6CU
+   Mx7KaDFjnbGOOYbJqcRlmQRCcQwV5jOgkvQzd/P6R8uRofrStmTsxjoUC
+   A==;
+X-CSE-ConnectionGUID: +kk2ZOh4T3OPPQUTR7tk8Q==
+X-CSE-MsgGUID: 5PHwBFk3QOWyJCD6KJCT9w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11331"; a="42637334"
+X-IronPort-AV: E=Sophos;i="6.13,248,1732608000"; 
+   d="scan'208";a="42637334"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2025 02:43:23 -0800
+X-CSE-ConnectionGUID: pyLhMJXUSO+Mm0U9Y0on5Q==
+X-CSE-MsgGUID: dAP8UAtLSMedtqjIOcR2bg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="114592164"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2025 02:43:19 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1tdoUW-00000006wRn-0QEo;
+	Fri, 31 Jan 2025 12:43:16 +0200
+Date: Fri, 31 Jan 2025 12:43:15 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Lyude Paul <lyude@redhat.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH] WIP: drivers/base: Add virtual_device_create()
+Message-ID: <Z5ypQ3VdJw_pLKBr@smile.fi.intel.com>
+References: <Z5Nw8kaieLueWyUu@pollux>
+ <20250130212843.659437-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 3/3] rust: platform: allow ioremap of platform
- resources
-To: Daniel Almeida <daniel.almeida@collabora.com>, ojeda@kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.mco, benno.lossin@proton.me, a.hindborg@kernel.org,
- aliceryhl@google.com, tmgross@umich.edu, gregkh@linuxfoundation.org,
- rafael@kernel.org, dakr@kernel.org, boris.brezillon@collabora.com,
- robh@kernel.org
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250130220529.665896-1-daniel.almeida@collabora.com>
- <20250130220529.665896-4-daniel.almeida@collabora.com>
-Content-Language: en-US
-From: Daniel Sedlak <daniel@sedlak.dev>
-In-Reply-To: <20250130220529.665896-4-daniel.almeida@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250130212843.659437-1-lyude@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Hi,
+On Thu, Jan 30, 2025 at 04:28:26PM -0500, Lyude Paul wrote:
+> As Greg KH pointed out, we have a nice /sys/devices/virtual directory free
+> for the taking - but the vast majority of device drivers concerned with
+> virtual devices do not use this and instead misuse the platform device API.
+> 
+> To fix this, let's start by adding a simple function that can be used for
+> creating virtual devices - virtual_device_create().
+> 
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> 
+> ---
+> 
+> So, WIP obviously because I wrote this up in a few minutes - but this goes
+> off the idea that Danilo suggested to me off-list of coming up with a
+> simple API for handling virtual devices that's a little more obvious to
+> use. I wanted to get people's feedback and if we're happy with this idea,
+> I'm willing to go through and add some pointers to this function in various
+> platform API docs - along with porting over the C version of VKMS over to
+> this API.
 
-On 1/30/25 11:05 PM, Daniel Almeida wrote:
-> +
-> +    /// Same as [`Self::ioremap_resource`] but with exclusive access to the underlying
-> +    /// region.
-> +    pub fn ioremap_resource_exclusive(
-> +        &self,
-> +        resource: &Resource,
-> +    ) -> Result<Devres<ExclusiveIoMem<0>>> {
-> +        self.ioremap_resource_exclusive_sized::<0>(resource)
-> +    }
-> +
-> +    /// Returns the resource at `index`, if any.
-> +    pub fn resource(&self, index: u32) -> Option<&Resource> {
+So, if it goes anywhere, please be sure that:
+1) it's implemented in a separate *.c and *.h;
+2) it won't abuse header inclusions and add into dependency hell;
+3) it's documented.
 
-Maybe we could utilize the Index [1] trait to make the API more rust~ish?
-Or at least name it `resource_by_index` to keep consistency with 
-`resource_by_name`?
+Additionally would be nice to have one user to be converted to see how it may
+be done in practice.
 
-Link: https://doc.rust-lang.org/core/ops/trait.Index.html [1]
+-- 
+With Best Regards,
+Andy Shevchenko
 
-> +        // SAFETY: `self.as_raw()` returns a valid pointer to a `struct platform_device`.
-> +        let resource = unsafe {
-> +            bindings::platform_get_resource(self.as_raw(), bindings::IORESOURCE_MEM, index)
-> +        };
-> +
-> +        if resource.is_null() {
-> +            return None;
-> +        }
-> +
-> +        // SAFETY: `resource` is a valid pointer to a `struct resource` as
-> +        // returned by `platform_get_resource`.
-> +        Some(unsafe { Resource::from_ptr(resource) })
-> +    }
-> +
-> +    /// Returns the resource with a given `name`, if any.
-> +    pub fn resource_by_name(&self, name: &CStr) -> Option<&Resource> {
-> +        // SAFETY: `self.as_raw()` returns a valid pointer to a `struct
-> +        // platform_device` and `name` points to a valid C string.
-> +        let resource = unsafe {
-> +            bindings::platform_get_resource_byname(
-> +                self.as_raw(),
-> +                bindings::IORESOURCE_MEM,
-> +                name.as_char_ptr(),
-> +            )
-> +        };
-> +
-> +        if resource.is_null() {
-> +            return None;
-> +        }
-> +
-> +        // SAFETY: `resource` is a valid pointer to a `struct resource` as
-> +        // returned by `platform_get_resource`.
-> +        Some(unsafe { Resource::from_ptr(resource) })
-> +    }
->   }
->   
->   impl AsRef<device::Device> for Device {
-	Daniel
 
