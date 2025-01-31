@@ -1,94 +1,88 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479741E9B02
-	for <rust-for-linux@vger.kernel.org>; Fri, 31 Jan 2025 16:41:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6CD2563
+	for <rust-for-linux@vger.kernel.org>; Fri, 31 Jan 2025 16:43:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738341683; cv=none; b=HjkfCjO+WeRVC60uiIgM2bV4P2ksWgUk74YP+FgglroFGN0LnXkkJUPAO/YRuIgb0mBrHxs6kKryKIuioXjqrTtiMrVIVxjLL5SPzPCzrLQ0CLsExqRXwAnTnpp93yoGAdV6e6Xoxi+UaZRuIeMwWko2I87RZpGrXB0OgAS2B/s=
+	t=1738341785; cv=none; b=TLi6PPJH4MXRQuiwF1XlvYqbI1UpIV3clGZmeCwZzdVISTHYFvek0wtmdJ5l5WeFjp4gqFD0eRLdmIu+dOtNxzNCGyqEFKljpjfNeR/OHFxv4QZK2r2uE+7wxVJhIzUpEK/Sj1OcULaca2bwm0dA+6cwNOJqRSuH1C/vH2NEP0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738341683; c=relaxed/simple;
-	bh=vYqcK28rlnAXUTMWzDVKIWmMxjod4LKRg0bWBlV1A68=;
+	s=arc-20240116; t=1738341785; c=relaxed/simple;
+	bh=Gw6un6QFhyuRHc9+r/O64HTuxDACa3AB5y9V9jrqCP8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RuMsr71ERLu8RFRUl74zmqrx+aWikUxxzoev6q0MZ4QbKniRVFn2QM6cZDuB3eDD6QGUUSqTN9JkZKFGcnRIh197alZOpNJkL1qZboG2fUdtKByQMV5m9VI6C0M9YseLHoA4dW/qm19yTei5OxL6IMG8hZOFNptlph50Y7G2Qkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=Uq3KDUFS; arc=none smtp.client-ip=209.85.221.46
+	 Content-Type:Content-Disposition:In-Reply-To; b=stBJcJFqFwfVwLP/WoX4vh15UCMgQ9BRRpr8Bwn82wmzHwlWkXHOTY2r1xNglwvKa2RugOBfsLR0TLjx0r0yE7r/McAaHGHyBvxDPagSt9YtxHw1ktPyqQ0Bh/zhHiR8z7VVOMgzgUZlHLgLem4SOcI2wqkfqNh/+eIw3e3w9Us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=TUpmzuzk; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="Uq3KDUFS"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3862d16b4f5so1403356f8f.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 31 Jan 2025 08:41:20 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="TUpmzuzk"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-436341f575fso26284745e9.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 31 Jan 2025 08:43:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1738341679; x=1738946479; darn=vger.kernel.org;
+        d=ffwll.ch; s=google; t=1738341782; x=1738946582; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references
          :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fzHjJrpyeP9mqc5JWkuMLQPalXYBqZxzyJtrO92iNow=;
-        b=Uq3KDUFSO0a/LL/NTHQfIpiS46zaXiu5OsGdS0ujUf8UuVw7bs198u5plFv62IOblj
-         V055LAWjdbNmrgoj0F7Mt3pOG37xUXgpxVGn5uY8b6CCYIIUytCZi909kpGbNuVXshlJ
-         f4HkgC2PgwqGNE7nsat8LwvJtX5hXX8VFDb2U=
+        bh=HKRgmMqYetFLOTNxQobFBr8LDNPgSKXjFfYEQCH8i8o=;
+        b=TUpmzuzk9PdZoNiMOOigaOK9zA+Fb3RKjw/sk0PNvXoW+iqKvP5S/sTR12CMQMgU54
+         VCpFNboOhWWSEcfbD9irho4658FVK8XCuh5nUb1qGC+wWYxk23sn5D9Mm3ypptPwlhFn
+         cOfQ1nix4+OFf8ou12ziIz68LOIVjO1b8SIhI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738341679; x=1738946479;
+        d=1e100.net; s=20230601; t=1738341782; x=1738946582;
         h=in-reply-to:content-disposition:mime-version:references
          :mail-followup-to:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fzHjJrpyeP9mqc5JWkuMLQPalXYBqZxzyJtrO92iNow=;
-        b=LBk/0ifbKOz2YO+oI6GiEf/3ZkelxLEEbio0FfRqwgCR5CsGkC+1R8twvgqvNRzh9+
-         x2EG8T3+sHKmMspnXdN9NXq2XsqCYrejAYfNcE4gHdte8XCYwlMdwKj1IDCYJVOEHO0g
-         afwJDhsgR8/ed/DYuydjZpsrjENCD6hkukZn8JeOWkyptw4xtc4apwEbOmxJ8yCJWFlg
-         oL0npWqJuFAi8LvPDtHqTUm8MhB0sbaqUkxnoZEuaOqiGc4w6dLSUnT6AUpcbkwORHZA
-         50/tFWI30VmhEkN/rKX+nYd8dsNEvsInssZ5G8fN5gceCxdU6Dwzvje5u6WygJvI+faF
-         2ohA==
-X-Forwarded-Encrypted: i=1; AJvYcCXaOZYPibW314RPgFNUK84sP/Mmt6yh4DH/QZ7HG7qNX9cGtVebRUAGFCr0SuRoFIDi7e4hI93L3nYh9MUrnw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YymKfwffvfGrT2jQTOcbfaxJTcODfG55tQBiK8BKACATzHKgyXF
-	gM+46+aU+Ofd/V1NZwyBbHm3GzTn+ICpW8BNmzIeDsY/7i+ij+/KP+wp95XelbA=
-X-Gm-Gg: ASbGncsf5DqXqvosdLJgJw5EBocHOElIMb/91NRbOUVxoRfIfV8pithE7obiymvxhcC
-	1jdN9zPSd+mstRugXhVDMdAUs7aHYmoup4h1wXutYjP7s8rL+fK5kRSBXVD8hgmbGjRD9bCu7Nj
-	M+rrAwF10n2nTEODFV24QYBjHYfGX/DIg4ivXLm21O2XXzGtmq/Uo1mUun48oSM6EwssGHlW3lk
-	LsraejD2I+w8L0/Bhus7R+VDbHNVMqaOjbRuyIM2i3YBTnXnS8+meHi+srVabJC3RXdgEnAbtQj
-	2YsPoKyGdbKPrIR7Y/ye+30P5BI=
-X-Google-Smtp-Source: AGHT+IGGDNp58bJr6qYY2kJIlfhFeC89Du/2iP4Ei/5xa7Mm39ysUYRti1e2Tbipv2p0tujjvYi4wA==
-X-Received: by 2002:a5d:6d08:0:b0:388:c61d:4415 with SMTP id ffacd0b85a97d-38c5a99037emr6251050f8f.18.1738341679367;
-        Fri, 31 Jan 2025 08:41:19 -0800 (PST)
+        bh=HKRgmMqYetFLOTNxQobFBr8LDNPgSKXjFfYEQCH8i8o=;
+        b=Zn6ARPbJMnHb49QCvSEZAhWn3vcmiFTuAsReij6hzZpPhn7djK2ryGmMX75VRYMwF0
+         0OBxUOl8CjQBziK7/KJ71gr4BRhm2Gyvg5pZuaud+YtM0WVs6CFPJDgIiahGEDJQzs/T
+         MLb9rIIRP0yxPcn66g8BzJmyru3XovRIu2biImSrCcYi6BWDj0p7PF1c852Rh4y/Tpmr
+         mxpMvx/YiqauLDRwTbGjvRd4Opjq62cfQwTk3Ewi1wKkhF6nEZoaUZODCzo4fs76DLWz
+         hN3taXnDZ8YKT3YQ50+M+eZOzNPjsY/ZE6uHlDcCfI6VcKlTuDCpHWfIR6YDlhetgeP5
+         uGvA==
+X-Forwarded-Encrypted: i=1; AJvYcCVg/fEWJaDtSJDHhS1q2B6klAvbR+VlwPncJQaVsHXeKiDFISTdc8uA8PyGx1AB38HUtbRo7dVwwkhEstr30A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVWXpFcAOxaweP1+mkRc/APloaoSDzq17df7MyFCVKQeY8up4O
+	IORlv5hmNNhGGiTK+4cIbBn11MlyhAqt3fX2N4dLczGMWinUn7Pm3e9tJRRkHBQ=
+X-Gm-Gg: ASbGnctsYW2jLfANI9qdyhkplHHxMUNiOZv0wenpSXMfdnFYFmtiARzykiapgZ5jQ/C
+	z4leNzvhE3cVEvkr0P/1rqwUTlE1z4NwBNXLKCvMAAUiGfyEX3y13zJVTKfAmYlyqV1MHhYmhki
+	WDtHW4bbkT8U0U/dPSakmpkSZzthMGR9788FPQQL5LaSf5w4Yztwhj+OHJrQJEPBI6DQ7VYbZ4a
+	gg/rBTNfU1xDMaGLnhFwZrEygCYbK/YxcsN+SI2zkJXAcZ2+RzTWxb9E31IzoH1/EXm/LpRfQUJ
+	/i3z/aoATHL1FFmA0HpS94Y0m78=
+X-Google-Smtp-Source: AGHT+IESRJvdEj0rBE2ZxrV7whbVWvwLzMQaF6F6GRU1uVTbFe6LW02Yng6iUd1fM4OWkAg8f7zEVw==
+X-Received: by 2002:a05:600c:5486:b0:431:5c3d:1700 with SMTP id 5b1f17b1804b1-438dc40d3fdmr115932755e9.21.1738341782253;
+        Fri, 31 Jan 2025 08:43:02 -0800 (PST)
 Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c5c1b5edasm4973797f8f.80.2025.01.31.08.41.18
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c5c1cf40asm5052428f8f.83.2025.01.31.08.43.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jan 2025 08:41:18 -0800 (PST)
-Date: Fri, 31 Jan 2025 17:41:16 +0100
+        Fri, 31 Jan 2025 08:43:01 -0800 (PST)
+Date: Fri, 31 Jan 2025 17:42:59 +0100
 From: Simona Vetter <simona.vetter@ffwll.ch>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Lyude Paul <lyude@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>,
 	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-Subject: Re: [PATCH 2/2] rust/kernel: Add platform::ModuleDevice
-Message-ID: <Z5z9LPzNuF2IdPGa@phenom.ffwll.local>
-Mail-Followup-To: Danilo Krummrich <dakr@kernel.org>,
-	Lyude Paul <lyude@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH] WIP: drivers/base: Add virtual_device_create()
+Message-ID: <Z5z9kxIKMhU6KGcf@phenom.ffwll.local>
+Mail-Followup-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>,
 	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-References: <20250122235340.2145383-1-lyude@redhat.com>
- <20250122235340.2145383-3-lyude@redhat.com>
- <2025012329-candied-walk-f57d@gregkh>
- <0bb7270e879ae3a40d4e5500f9a7992563a68d9f.camel@redhat.com>
- <Z5NzTsm7Hw-OD4n5@pollux>
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <bhelgaas@google.com>
+References: <Z5Nw8kaieLueWyUu@pollux>
+ <20250130212843.659437-1-lyude@redhat.com>
+ <2025013159-shabby-professor-515b@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -97,39 +91,36 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z5NzTsm7Hw-OD4n5@pollux>
+In-Reply-To: <2025013159-shabby-professor-515b@gregkh>
 X-Operating-System: Linux phenom 6.12.11-amd64 
 
-On Fri, Jan 24, 2025 at 12:02:38PM +0100, Danilo Krummrich wrote:
-> On Thu, Jan 23, 2025 at 07:33:28PM -0500, Lyude Paul wrote:
-> > On Thu, 2025-01-23 at 07:23 +0100, Greg Kroah-Hartman wrote:
-> > > On Wed, Jan 22, 2025 at 06:49:22PM -0500, Lyude Paul wrote:
-> > > 
-> > > And modules are code, not data.  Let's not start to even attempt to tie
-> > > lifetimes of device structures to module code, that way lies madness and
-> > > rolls back the work we did decades ago to split the two apart :)
+On Fri, Jan 31, 2025 at 09:00:32AM +0100, Greg Kroah-Hartman wrote:
+> On Thu, Jan 30, 2025 at 04:28:26PM -0500, Lyude Paul wrote:
+> > As Greg KH pointed out, we have a nice /sys/devices/virtual directory free
+> > for the taking - but the vast majority of device drivers concerned with
+> > virtual devices do not use this and instead misuse the platform device API.
 > > 
-> > To make sure I'm understanding you properly, by "are code not data" you're
-> > suggesting that resources (devices, driver registrations, etc.) should have
-> > their lifetime entirely managed by the kernel and not as part of the module
-> > data structure correct?
+> > To fix this, let's start by adding a simple function that can be used for
+> > creating virtual devices - virtual_device_create().
+> > 
+> > Signed-off-by: Lyude Paul <lyude@redhat.com>
+> > 
+> > ---
+> > 
+> > So, WIP obviously because I wrote this up in a few minutes - but this goes
+> > off the idea that Danilo suggested to me off-list of coming up with a
+> > simple API for handling virtual devices that's a little more obvious to
+> > use. I wanted to get people's feedback and if we're happy with this idea,
+> > I'm willing to go through and add some pointers to this function in various
+> > platform API docs - along with porting over the C version of VKMS over to
+> > this API.
 > 
-> I think that's two different things.
-> 
-> Driver registrations are bound to the module lifetime and in Rust, where we have
-> a structure that represents the module lifetime, driver registrations are part
-> of the module structure. That's fine.
-> 
-> Device are more of a concern here, since they ideally orginate from real
-> hardware and hence shouldn't be bound to a module lifetime.
-> 
-> I think a virtual device would need to be an exception though. What else, if not
-> the module should define its lifetime?
+> This is a big better, but not quite.  Let me carve out some time today
+> to knock something a bit nicer together...
 
-Yeah for virtual devices this should be possible I think. We do have plans
-for vkms to gain configfs support, and then maybe the current device
-wouldn't be needed anymore and we'd just register the configfs when
-loading the module.
+Yeah I think a really simple api for creating virtual devices would be
+nice. We've definitely been abusing platform devices for that purpose too,
+and I had no idea virtual devices even exist :-/
 -Sima
 -- 
 Simona Vetter
