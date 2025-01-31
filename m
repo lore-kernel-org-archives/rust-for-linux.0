@@ -1,78 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FDA0143723;
-	Fri, 31 Jan 2025 08:00:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14ED71494A3
+	for <rust-for-linux@vger.kernel.org>; Fri, 31 Jan 2025 09:16:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738310444; cv=none; b=kXrq0CddKUFoZ89KNGBQ6HocR3uJqkIGyAxR7tEfN8HvLuKT9cvr/0KRajySZX1F4roqUGKHuehU65xsxfhgbCBMa5DUaAkPoUCDThhhVMlgXjOJeaMMiXFnII0DDRpdzqiTet5rxHyj+plJOWoRdKpRubLNcvPAjQRSgpfqOSw=
+	t=1738314969; cv=none; b=M9rD5uSRUrMyItjhwVmmvhNwfxndYOmsF28N74Jy5/ma3fVLsWzGpRqZ0lJOgSFWuChCOZEh4/ejimcFuronb9ZwtEt0iijPII4CDY8KwlOB/V+VTXJ9Kw1nfLwBS0QDQ2KILDWe+Bymw9CZWOVlQATFfIIAIFo0MaOAqhdmBxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738310444; c=relaxed/simple;
-	bh=udesyE0697+EA9cQPPOlWNe/XbzT1OhHht2eojgSG58=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y0kJdtHbPOKDYz85SfaAGHDuwHUfhRQONpnSP38xfN5s8SiuJFDtRL8aSUAWKTkkrnFnEL5i1IwWJXb4IqbbwDVD4bLZvvQ4oUQV5QQNQP4wnMxKULGPlAQMgB+kx0lrSoTiqj36VxiyIhnA1Yn7DoyoZjOMR00uDrPyXd9omIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=is0EeApJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738314969; c=relaxed/simple;
+	bh=GxIgiCsRud3+MZqjsqsikw5ZSvkIpx2F/MNXdjIwWAQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=s0mhbdlaizNCzRcfFsC8bdaF+hVAweYzLGPZMpL/XPgGo/YSODFDHS/bNm7My3YPnQlpOeLpg7Hw/+xDkff6eFR62eevdQvarjfNpb3ZvPbY/W6IXiNy2WZtnaFOiHxofr6AFoA1w4QDjBS+zy50TabwI3s6YfRYqv3jRWx3ap0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JbcjVgCE; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="is0EeApJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF48C4CED1;
-	Fri, 31 Jan 2025 08:00:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738310434;
-	bh=udesyE0697+EA9cQPPOlWNe/XbzT1OhHht2eojgSG58=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=is0EeApJHjJTpjRaatXI6inqMW+tElwRg6lvvWy58KYCJxUq2su9HO7qdDvqXuDVL
-	 e/Sft/FSdaYbVSB3njbBMqdGh89WnNEOdQuv05efY4Ki1DVyYJbq42hOYDwXP0L1/r
-	 +eaoG96iM6iKc/1vi3/DGQl/1SsJooEn3vbKdhRo=
-Date: Fri, 31 Jan 2025 09:00:32 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Lyude Paul <lyude@redhat.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH] WIP: drivers/base: Add virtual_device_create()
-Message-ID: <2025013159-shabby-professor-515b@gregkh>
-References: <Z5Nw8kaieLueWyUu@pollux>
- <20250130212843.659437-1-lyude@redhat.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JbcjVgCE"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-38be3bfb045so1927730f8f.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 31 Jan 2025 01:16:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1738314966; x=1738919766; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8iv2kpTtLlGjUoGy2eHzUezS9FkVmsWPom4VM6f1zVA=;
+        b=JbcjVgCE8kvzKtnripw2z+XzMF5glN8rnGQxp2CxRno+uc+DL5XcQRwJ27dT3TInD7
+         8m5FSL/8V4CUahGF6NqwXz+yFKbhdk/ozO8qhscff8XRFgBMI2847kCGkkFjj2W6HkLq
+         hSobwJKAjvvD6v/wGuZ2+HVEpKYgzq/kEJbJ7gE37Lw1lAxkUPJlNgz0jbiZKDT13AaV
+         HgfII2TYuy+V0vHRsN1ADZLXOnnvNi/d2nDY2yAT6x9Rs7ZEGedWQAuvBbPpIBM9QPRE
+         LdZE0HYl3Lb+FeVo/knx4dwrjYDzp3JdMmdDwELjDjFq3muLlNGvePS6d8bI2A/qs9ui
+         4qNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738314966; x=1738919766;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8iv2kpTtLlGjUoGy2eHzUezS9FkVmsWPom4VM6f1zVA=;
+        b=dnDReenUF3iz6Nz3/vKbjBhHY9HCCanAlqqLcWxhLbTe3c/49TBS9/w5iQ+Y33j8Sl
+         qQK/ISJJP5A+3E2OyPMvsTmsiayDq015bsY3qkRBj3TsOH/rXTkGcuQ7nNV/oFfwrkVY
+         +0rDG/wzeMc+oipdg0oQtlkblGfoV9rqvAf3FoSy16vvf1vlLK2z8MxFCBxu49t8cOfT
+         48Bc2gigb7sCRr9N4dMFpz/KejavAnauU+KMyiFljWNHIDeGlCf42F2xYe03/6iRny9O
+         rP3J5exdJmYcH8yOvr/MlDIM5unjZ6QkLJj86P3DxuwcoUFu5NVIRFCwn69DSB7QNpqe
+         F1Pg==
+X-Forwarded-Encrypted: i=1; AJvYcCXtxd7ucTXosL/NfiAEUhNdJ/rglyc4IPWQD7sR9a2lvpc8LxxPn5h8cXRk3M9i2BgHeRg2m42PAmEanMXa6Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwAYx1fzoivDDBv/x0i1XS1jouPJVKY4FAaerJhKFtD3MEQJ8K
+	9PEHY7/W3Uniw3heoC4Od54pmSLm0B9kbYFMMIBF0DdKTWA9u8wc+pbUeAO6/sjJ/BL/q8DTU6A
+	hBrgOyWNJHNCjciYYddHY8CpLGNnIn3nmja00
+X-Gm-Gg: ASbGncug3dJFTx2ruIaSeBRPAD+q503Jx9vXyh4DuviMFA6xp29T93ZTEQi7hR3+gp+
+	N7bB0CLQRl7RYcD/4w90aFBtfR1VxvLi+fY7dvG8yvIFLNed1uVCtVC9t4lBKkq1vRGEP2nGCB4
+	uSzlHM5LAsZgwGQPDmDfCCnT/DP0o=
+X-Google-Smtp-Source: AGHT+IEGWROdbt2kjhSAWKfEkANcNBHEV13oGqmUWBNBp4NiSuVi5J+mz3NpYwqHZ9ay7jD4qm4Af7imVhjiAQ2UVEs=
+X-Received: by 2002:adf:ea90:0:b0:385:fa30:4f87 with SMTP id
+ ffacd0b85a97d-38c5a86e2acmr4959111f8f.0.1738314966314; Fri, 31 Jan 2025
+ 01:16:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250130212843.659437-1-lyude@redhat.com>
+References: <20250130185138.200993-1-trintaeoitogc@gmail.com>
+In-Reply-To: <20250130185138.200993-1-trintaeoitogc@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 31 Jan 2025 10:15:54 +0100
+X-Gm-Features: AWEUYZlqmQgrSQzzaYE5VYGyXQMf8iB9X_LdBKfHz7spc7nE1fi5lYltyyhedQA
+Message-ID: <CAH5fLgjM4SUEmhW334w_o0Zfv3mUZ76Nz4GnE0H7N0Y=e+G5AQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: sync: create the `get_mut()` function
+To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+Cc: peterz@infradead.org, mingo@redhat.com, will@kernel.org, 
+	boqun.feng@gmail.com, longman@redhat.com, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@kernel.org, tmgross@umich.edu, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 30, 2025 at 04:28:26PM -0500, Lyude Paul wrote:
-> As Greg KH pointed out, we have a nice /sys/devices/virtual directory free
-> for the taking - but the vast majority of device drivers concerned with
-> virtual devices do not use this and instead misuse the platform device API.
-> 
-> To fix this, let's start by adding a simple function that can be used for
-> creating virtual devices - virtual_device_create().
-> 
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> 
+On Thu, Jan 30, 2025 at 7:52=E2=80=AFPM Guilherme Giacomo Simoes
+<trintaeoitogc@gmail.com> wrote:
+>
+> Create a `get_mut()` function that receive a mutable instance of Lock,
+> and return a mutable reference to data because if the instance is
+> mutable, the rust compiler guarantee the access control.
+>
+> Suggested-by: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
+> Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
 > ---
-> 
-> So, WIP obviously because I wrote this up in a few minutes - but this goes
-> off the idea that Danilo suggested to me off-list of coming up with a
-> simple API for handling virtual devices that's a little more obvious to
-> use. I wanted to get people's feedback and if we're happy with this idea,
-> I'm willing to go through and add some pointers to this function in various
-> platform API docs - along with porting over the C version of VKMS over to
-> this API.
+>  rust/kernel/sync/lock.rs | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> index eb80048e0110..3f9d78bcb37c 100644
+> --- a/rust/kernel/sync/lock.rs
+> +++ b/rust/kernel/sync/lock.rs
+> @@ -140,6 +140,12 @@ pub fn new(t: T, name: &'static CStr, key: &'static =
+LockClassKey) -> impl PinIni
+>              }),
+>          })
+>      }
+> +
+> +    /// Get a mutable reference to data
+> +    pub fn get_mut(&mut self) -> &mut T {
+> +        // SAFETY: the caller must guarantee that the instance is only u=
+sed in one place
+> +        unsafe { &mut *self.data.get() }
+> +    }
 
-This is a big better, but not quite.  Let me carve out some time today
-to knock something a bit nicer together...
+As far as I can tell, it's impossible to call this function because
+you cannot obtain a bare mutable reference to a pinned value.
 
-thanks,
-
-greg k-h
+Alice
