@@ -1,81 +1,85 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E544E1E9B02;
-	Fri, 31 Jan 2025 15:59:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA451C5F30;
+	Fri, 31 Jan 2025 16:02:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738339197; cv=none; b=u7gWm7dDXhRVaI/hlfRo2MCcDU0sdpxMg9bNEVRTXRMHBbz65BcJLjDtQnkDKJGsSTvuEQU/6HPgw2YUErg7NrAhqxu4DBeNSq6nJTaco+qTsmRAgm7ZY4Vr7rEgGgeCiq5YyheakweqCJ42b00XgBj85eS5H1bSDfsRaCt39xE=
+	t=1738339366; cv=none; b=r9rRU6bEzgBswkBozn5e2XVEOwFicDiW/IESXb+/75rVMulqGDiZ64ceC7YvU7RcSQqnwq7Ls/SzsiIWFB73Yy/Wf7bbqBGUITrK+RQP1ZgzIsFCpIGuiKKGZd4biveHzaUH+EnsXRmmCjE0M2tqwjJkoiV4TzxSzyHMxBkofeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738339197; c=relaxed/simple;
-	bh=q6ujgRddaK6B601nuulg07doY+47TABI5tkVVTVc8s8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=u0OdaLEo8y9hREiw6I2sqpy2woPtCp0xJ8cO0QTY7YXYF8234vKBOw3ATEW9hJ6rsIzNDKoXlvL4RAdGBGEVBJwz5Zpsbr3l4jJ7HoYkwfKFUDM4KmGC1/2qWmN4/dChO+ZZu7MxtJZJdnt5KkyWzWPlQ0QwOOe4HwRYM8LNM0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QwSImkeE; arc=none smtp.client-ip=209.85.214.182
+	s=arc-20240116; t=1738339366; c=relaxed/simple;
+	bh=LItYn27Gn5fx1t2g2Jk5KXuGL57fUlUGMyamQKK3fw4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cKkJkMlV3tQd22nTw8prnrvrFGe4bts3jHHBYIFShy4P/ZUJYD+ehBfC5L70viviV9JBrCrKi87M+LjsyqnTIVzDvXLev2u2/97UJ5KB2cF6zQD6EbL+qKn9tsYi8s4aH+4bhAvpasPYNVBY7SZ/v5GSYuHlABpPrqMcf+PrbCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=isllp7Uk; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QwSImkeE"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-21670dce0a7so45836995ad.1;
-        Fri, 31 Jan 2025 07:59:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="isllp7Uk"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-219f8263ae0so41344815ad.0;
+        Fri, 31 Jan 2025 08:02:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738339195; x=1738943995; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7Bh7kvr1RjTSIiljQmEtngf78fB8HkukbiqgTZs7DKQ=;
-        b=QwSImkeEdG7pJKiRkDTLDNKZlXO7bkFWXhpZw+h1GH7Aoult2nX8il12msR93l0ASc
-         YwcV3jOoeIu5/6nz7+V51+nKgSnUcZsDeMVOulnm2YzGzVWeWp97UDYfZFuHFJK5ocFf
-         nZ80reD3AJLvXXn8Z34ETV5hu2mRx+RNkqEvDvRBcgj8LlwTQziE6M8/4pLLRuREv8XM
-         iDMCe7qn3Faamg/tinT1DOxJgXZrwYbYD3vyl6ZNWoUyzkXKPsLzw46aI0c0MlYuj96y
-         PFRvSBaYWH3majR0pNbvUvFv3LpX3dppgTF7BzKhqYpgUyrrKoCEUBjy+2i1ELVCZWKh
-         o5Bw==
+        d=gmail.com; s=20230601; t=1738339364; x=1738944164; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MgyuVqNeNif0jzGK4cEWcGwaVaukvqMPkaGDhwWTlMc=;
+        b=isllp7Uk9OMYpwvFwHLj3OeTXXGYc/kH3B5ucXfVQz65dgr5/ndP2+mSuIHRv18MqJ
+         jtqzxBeVN61OJaiD7kz0K76v7ygmMoBfc0JU8AmI/mSmawf/Cg1l2Njz8xK4TbI1R11r
+         1RJwJlhGrE7I2deUyYhf1DV6mgU4UXwv1cTw2dNtbWK6G0Ffk0jzLzhouYAKpr7VCF+j
+         GNGKQnkqS2EHgSqI0UdKXIveSQCVCmjgiephLSWELhsOZy3VDUX2QcKQXYmGalrQSMa3
+         THUVGUrSwA+DMnO/xHT+FrdCxHhMBSHzyrw/Xdh3JIIY/iYRtLJS1UBc5IXXeFJH6hBj
+         9zPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738339195; x=1738943995;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7Bh7kvr1RjTSIiljQmEtngf78fB8HkukbiqgTZs7DKQ=;
-        b=WRPkVUTC8K05npuilPn17G6BUEW+TY0eo3F/a9Ms2/K2ZwdWLFMboQK+bpXCPjR+WP
-         5cCfyCg5844yd1/RbS0/NA+ZqiaXb8TCIgbD0Ok2xPXGR+rCG2gkTsCPg9g6vTH0ejPO
-         VJMtmbAcZiRT9mXm9BlxoFOSZ8MyaDYe54u/2Nj5ALMgHRrGP0V6QpGZaSMI03MYhaTQ
-         d0eefsJnCbiSwik/1ds0rg7Jv4W5qxxAC6ImVXZV4h3xLfsoBCGGmbu88YKWaKEhoKIJ
-         YwEy5r/NAw7JQfGqoKDrDmPJWM/k09OI/hiay6kHbVYQv2gfPL4ZmO9eff0relGjOhQU
-         MD+g==
-X-Forwarded-Encrypted: i=1; AJvYcCUDOu2IMS9EwUFywSGL3Qd7nQEDKJVdUb+Z2KCVaxUVY8IzUXjReC4+C+SoYlBTwm3aAbOQYWiIqCeOTS4=@vger.kernel.org, AJvYcCXoYiJ7gIX3g1kbrOmmQHREQ0emHo/QVHfTamrbCnKSdOd7JkdfhjVcm5kejZHDRlDsAdr0aRNsflBcdUe4nWA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQ+SLo3MvvUgejWeOoi0t8uae24JGsFrkWiTwTpPIYs98lUvFf
-	v3WkWlWy1wP8nthRNuC39mGROLyAmfbrC+KU+X7ClDFWMRjv0WbW
-X-Gm-Gg: ASbGncs6mnBYXB2EzcUrLQG4voxgr1vgW9qNju+Kd76pc8yovr4+Nbm+2nYolMQ0fKB
-	QGB9MrhsFBApk/3ZHlAoPcdZOZenrlwsZkCX58Cc2G2TtasS07eskSWMLsLoi3ZHwwHc14QYPjE
-	pM0kScjbuuxRX1NhTxZvbYeFLxTK/yVmajjrglkGmkVLK5G5lBNZLPO8gf1PR0OnHEJe8Kdaoy/
-	qrHka178bINSo5+EQSimJWCPogV71FnMFCwZTz79NEDSIGzl84/GgoX8RNTtao+u5Ln3+BvU839
-	0HtIjqEQ7mDHAufB1R1CI/ya
-X-Google-Smtp-Source: AGHT+IF76mWK+huaxySDy6NJ6b2xi3H2DW9Gw45M+n2RlnBbYjdCyU7mbBawxv8EiCXG6arZvdQUwg==
-X-Received: by 2002:a17:902:ce89:b0:216:3bd6:fc24 with SMTP id d9443c01a7336-21dd7c62584mr175131655ad.21.1738339194692;
-        Fri, 31 Jan 2025 07:59:54 -0800 (PST)
+        d=1e100.net; s=20230601; t=1738339364; x=1738944164;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MgyuVqNeNif0jzGK4cEWcGwaVaukvqMPkaGDhwWTlMc=;
+        b=Amzoi2oPEvOeNnGQp6jOZQLwQgjm5sRi9rn0dSfXcVO9tNPJ4hY6ZAZhxXGygvy2Tr
+         tUN1MGdN9Hq8JVIu5M0t/CeCdV8MArPW/gZeXVZyterFUfcf8zPAFRHtgCi+0milTt+7
+         34XL/yz7PgY8s4Nt8KX1m2FyjFxCvTHV+UkumgbSJe4yMHCmBSbCapdQ7wtuPkOO9z9V
+         P/enOKmC6DEoh+LDcSIWDgULEjvKBgozSjd61QRj1gjYNYEPxPRtctChNIkGc+qR7eiB
+         /ns7g5pR5p3uBoE+piNvFI4dnrcaZZdek2glHQgjYJSKeBwje4nWmShcrdKbT2p3lSxH
+         3WLA==
+X-Forwarded-Encrypted: i=1; AJvYcCUyKUwH637vlZZP2vBp/hotLIFi76x+NFq3/cYAuVs9h30HdKTeULAxEAAeswxy2j2T8dwjBWkhkAbnnGQ=@vger.kernel.org, AJvYcCXr/ulJo3FknRugVh2l3zDRQkPwRABi8dFXQg6fHOv65H3h5+woUvVWrmWU82pb9OmDEjEUQUvHU1tnNnVrA/8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvoLyjwL6OdFG/3OG0z8d0QUzQMIebompxZzmuXW1Zv4qEzCer
+	VvibpwNiwm9eSKDJUDtGeoAkTwfWYfoxGVf3hmLKK2RT4rfYrfmM
+X-Gm-Gg: ASbGnct5OJoWU+OeyAgV76Pe9Pc9gsSugO4l3q8B4rIVMDiVeW354FoP7XnLDCe3f3q
+	vYvEkbQoItv13g1o23MbfNoGDLNe0A1xMyJi+JCikvDjbD2LZ+wBoEsW2gKIOaVOPth9QCAVGUD
+	zZCWBTx1omLxUG8xS+M7XEivJU0RpGymk52UoGmjpberK5QSBKqltnAQMN9uXleFLUYSeSQURKU
+	r6lCEwppYiccBu+fXllL3iKgFkjCMmMOP7V2c+aGYRWfcHiIa3uqb8gaZ/7CeheORB707JuyQaU
+	cPiRX6BOnsFUSEHiwxj+N1LW
+X-Google-Smtp-Source: AGHT+IEuoqwi98xpQFdlqgVQHussREEh0sVSmumXnnfCrHun85rth16LhQvg3maNZqDd4uUMiGcWfg==
+X-Received: by 2002:a17:902:ce8f:b0:215:9d29:9724 with SMTP id d9443c01a7336-21dd7ddfdc9mr182585155ad.38.1738339363722;
+        Fri, 31 Jan 2025 08:02:43 -0800 (PST)
 Received: from linuxsimoes.. ([187.120.154.251])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21de331fb76sm31933665ad.230.2025.01.31.07.59.50
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21ee2bae0a5sm5656905ad.19.2025.01.31.08.02.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jan 2025 07:59:54 -0800 (PST)
+        Fri, 31 Jan 2025 08:02:43 -0800 (PST)
 From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-To: peterz@infradead.org,
-	mingo@redhat.com,
-	will@kernel.org,
-	boqun.feng@gmail.com,
-	longman@redhat.com,
-	ojeda@kernel.org,
+To: boqun.feng@gmail.com
+Cc: a.hindborg@kernel.org,
 	alex.gaynor@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
 	aliceryhl@google.com,
-	tmgross@umich.edu
-Cc: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>,
+	benno.lossin@proton.me,
+	bjorn3_gh@protonmail.com,
+	gary@garyguo.net,
 	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH] rust: sync: lock: Add Lock::get_mut()
-Date: Fri, 31 Jan 2025 12:59:39 -0300
-Message-Id: <20250131155940.305403-1-trintaeoitogc@gmail.com>
+	longman@redhat.com,
+	mingo@redhat.com,
+	ojeda@kernel.org,
+	peterz@infradead.org,
+	rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu,
+	trintaeoitogc@gmail.com,
+	will@kernel.org
+Subject: Re: [PATCH] rust: sync: create the `get_mut()` function
+Date: Fri, 31 Jan 2025 13:02:35 -0300
+Message-Id: <20250131160235.305557-1-trintaeoitogc@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <Z5vrhpp9Idc3tiUy@boqun-archlinux>
+References: <Z5vrhpp9Idc3tiUy@boqun-archlinux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -85,68 +89,61 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-At initialization where we can guarantee that we do not have multiple
-threads accessing the protected resource, blocking the resource in
-addition to being redundant, can cause unnecessary overhead.
-Add the Lock::get_mut() function for access the data without lock.
-Receive a mutable instance of Lock, and return a mutable reference to
-data because if the instance is mutable, the rust compiler guarantee the
-access control.
+Boqun Feng <boqun.feng@gmail.com> wrotes:
+> Hi Guilherme,
+> 
+> Thanks for the patch. First I would prefer the title being:
+> 
+> 	rust: sync: lock: Add Lock::get_mut()
+> 
+> "create" is not a good word to use here, and the parentheses after
+> "get_mut" already says it's a function.
+> 
+> On Thu, Jan 30, 2025 at 03:51:38PM -0300, Guilherme Giacomo Simoes wrote:
+> > Create a `get_mut()` function that receive a mutable instance of Lock,
+> > and return a mutable reference to data because if the instance is
+> > mutable, the rust compiler guarantee the access control.
+> > 
+> 
+> This commit log doesn't include "why we need this", so please add the
+> reason or the usage of this function, maybe you or someone need it
+> because of some initialization/setup code after creating a lock
+> protected object? Moreover...
+> 
+> > Suggested-by: Björn Roy Baron <bjorn3_gh@protonmail.com>
+> > Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+> > ---
+> >  rust/kernel/sync/lock.rs | 6 ++++++
+> >  1 file changed, 6 insertions(+)
+> > 
+> > diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> > index eb80048e0110..3f9d78bcb37c 100644
+> > --- a/rust/kernel/sync/lock.rs
+> > +++ b/rust/kernel/sync/lock.rs
+> > @@ -140,6 +140,12 @@ pub fn new(t: T, name: &'static CStr, key: &'static LockClassKey) -> impl PinIni
+> >              }),
+> >          })
+> >      }
+> > +
+> > +    /// Get a mutable reference to data
+> 
+> ... please provide an example of the usage in the doc.
+> 
+> > +    pub fn get_mut(&mut self) -> &mut T {
+> > +        // SAFETY: the caller must guarantee that the instance is only used in one place
+> 
+> SAFETY comments should explain why it's safe, here it's phrased like a
+> requirement, maybe something like:
+> 
+>     // SAFETY: `&mut self` guarantees the exclusive access to the
+>     // underlying data, therefore it's safe to reborrow the inner data.
+> 
+> Regards,
+> Boqun
 
-Suggested-by: Björn Roy Baron <bjorn3_gh@protonmail.com>
-Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
----
- rust/kernel/sync/lock.rs | 37 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+Ok, I make this changes and sent a new patch:
 
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index eb80048e0110..f1e29820ce99 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -140,6 +140,43 @@ pub fn new(t: T, name: &'static CStr, key: &'static LockClassKey) -> impl PinIni
-             }),
-         })
-     }
-+
-+    /// Get a mutable reference to data
-+    ///
-+    /// ```
-+    /// use kernel::sync::{new_mutex, Mutex};
-+    ///
-+    /// struct Inner {
-+    ///     a: u32,
-+    /// }
-+    ///
-+    /// #[pin_data]
-+    /// struct Example {
-+    ///     #[pin]
-+    ///     d: Mutex<Inner>,
-+    /// }
-+    ///
-+    /// impl Example {
-+    ///     fn new() -> impl PinInit<Self> {
-+    ///         pin_init!(Self {
-+    ///             // This new_mutex! can be anothers locks like new_spinlock!()
-+    ///             d <- new_mutex!(Inner { a: 20 })
-+    ///         })
-+    ///     }
-+    /// }
-+    ///
-+    /// let mut pin = KBox::pin_init(Example::new(), GFP_KERNEL)?;
-+    /// let mut_pin = pin.as_mut();
-+    ///
-+    /// let data = unsafe { Pin::get_unchecked_mut(mut_pin).d.get_mut() };
-+    /// assert_eq!(data.a, 20);
-+    /// ```
-+    pub fn get_mut(&mut self) -> &mut T {
-+        // SAFETY: the UnsafeCell guarantee that the self.data is not null.
-+        // The `&mut self` guarantees the exclusive access to the underlying data, therefore it's
-+        // safe to reborrow the inner data.
-+        unsafe { &mut *self.data.get() }
-+    }
- }
- 
- impl<B: Backend> Lock<(), B> {
--- 
-2.34.1
+https://lore.kernel.org/all/20250131155940.305403-1-trintaeoitogc@gmail.com
 
+Thanks,
+Guilherme
