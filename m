@@ -1,63 +1,63 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B6615B111
-	for <rust-for-linux@vger.kernel.org>; Fri, 31 Jan 2025 10:02:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26201CA81
+	for <rust-for-linux@vger.kernel.org>; Fri, 31 Jan 2025 10:10:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738317729; cv=none; b=pyOof/0ohIQpn/b8qGpaeQFFLMjpDArEqiHIaEU5OKjOARvEuFe5NfmOvVeBKiNoKlpJI68dVlWYwnIuh3+EBZZipmj3E0daEN7PFTLdzLTGOPXBn6996QL28091XQsm8QV1Jl95/EyXUd54ZOxmwG2vCfIpeGVXRR2Ru/eEpMk=
+	t=1738318203; cv=none; b=gRb80l+OTxYwrmjF5Tar19WK7bF++CyfnOb6BVwwuMiysM/yj4ZXZ7JZNDjXjNC7EK1c3VSMMXD7/Z0FoseKTSjZkH5++FJmZqK4CGkaa85/QLpa0x3ZGvyec4VVvMc7M6R7+oex4p7Uv2mWV00w5+XKnCwSzeEA8/AHTuLyMXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738317729; c=relaxed/simple;
-	bh=jIkGB7/X0ONGNq6a38B5cDa4Qlz0ARCWTcPRiP3B7Jg=;
+	s=arc-20240116; t=1738318203; c=relaxed/simple;
+	bh=v/iqv3fJvlKUt6qdrfpU+6Y8Tx4lsqcAcwbADBY/fWw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LZAbz408r8m0SveBBHpsYaC7l06xXWD/emF0KzUx6hZL5M6LMLh5pH1A4SF/NB5oQSVWmGtGrZsi3SI4Niy/rT0o7saXhfU2nxJjLzXrx/02NdKuDyMwpYr+PIqoofIsPXEItcOYd6UisQnn+jEgngQDZ28FSQvsogYvKS0IHjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=H7i8XLpe; arc=none smtp.client-ip=209.85.128.49
+	 In-Reply-To:Content-Type; b=ggIayMi9HR/37lgpJZtOEQ+TTfPw5y2V5fbnls+x1bRlXaUdTDhaLUxEdbIwyYfyzACMX/fJ50Dm3jtGPps/YMrvX13dr9VFGWPCMP8xesP0xFCUhTGhWs7K0wy60MReSkjatxF4xz2Agg+KIr1yzX38B49hleield8tQxcpjQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=dSdnHOR2; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sedlak.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="H7i8XLpe"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43618283dedso18033175e9.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 31 Jan 2025 02:02:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="dSdnHOR2"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4361e89b6daso12466815e9.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 31 Jan 2025 02:10:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1738317726; x=1738922526; darn=vger.kernel.org;
+        d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1738318200; x=1738923000; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=TH+Mf8SIqLxWTfJTWY/h5Gp4AzULl9OECEnQGSHygnE=;
-        b=H7i8XLpe2Fbz5zbF9vHavYO7zQBU83gH92c5ubZEEkK92YUD7O6BmYqgbQQtZLK/C+
-         LPerDyYZx8vGLPzpS94J4TTRv3dUddflJd91GVVw/5C4MbjpImBti8SLqlvld1J/FkFu
-         iOVpsYmsUSZXcx/Xg+CUtBVgOHijV193D/y4XoE+79e1Usy/1RxDufdJ8WW24s3NQ1O9
-         Yal3osFCu8Wukc3Y228f280gyRUrO2wlWlkMGUFy3qsgS3iZBXoMG796hmcpSzTGOtFF
-         2ReN16CCdYgcPEPypQ4VwMX1dWfq5eWj1vpgBp+VOlnHY95ejunfWC1niddUM7xs1jkZ
-         7Opg==
+        bh=pBPk86uZmfcTkGurL1WDJzw8BH/2k/njCft7aLxhOMQ=;
+        b=dSdnHOR2s9BljaQKCuVwCJnAv//GzgAVFluO12Eutrxzg3cjZsuqTCd0RVPR4JBVC2
+         oG4yX+GQ7fiwdOHnxKPHQTMRYYIek2GB2zRGPqGS/StM/hLeCgR9KpNgwdmlqkVT8JUL
+         TlMfEyc2qVIiBJp/+qJFPDf2mE0jafzlyTjML7uSD32dV2pVwFkxhoYuX6cHCyeYHhpe
+         wL0dcEBuVQbc0AOUBTX602bzr1BeJeT9zkZ/EIXr7Qnq6KsV1Sc8c4A9HfgL1QSEAg8S
+         BkVHoqyuxOSCgr/gwCTB67W33m0UWKhthB3rVN3i3iPB3fuJUCRZYVaZx3Fn0phNO93g
+         qT4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738317726; x=1738922526;
+        d=1e100.net; s=20230601; t=1738318200; x=1738923000;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TH+Mf8SIqLxWTfJTWY/h5Gp4AzULl9OECEnQGSHygnE=;
-        b=jbpzIR1AgW545cgKoqNSyCQufQ7ywXL2yue3wj6I1yPNZR+R9Fq2rAQuYxF27dstye
-         MKKPztFhEDK3I58XZXIrbTYXO8ZmNvGTjEQMZt+30KzzSPdlO6kdNMXkjw4lQfDCSnGz
-         okBH4UcAZ0Ua9ImFHC17ahCrsusZiWOv9Q3fmpU81QAPgV1ACnrizqUKdX5q43POM7yP
-         DuPW6rWCYckP3WGkXAtear31XSYU91MM83ffG81wkw7reQpb+Z2uMp2O9fAIdCBbIOo1
-         yE29112JaaVt0ll75zQ9k+HeRpsKFkuTVLm6KHwbQ9lT6WP6Kcc6vOqG2Sz0lJiYYJ3T
-         bY6Q==
-X-Gm-Message-State: AOJu0YwH3F3mK5w1sLJ+Kgtlj0xsUPLMnV51grczbO97STGp/TL9MYXi
-	WibtFQL5XP+O2r7rD2/+teO7aA7nDWipmQgxEttxrofw+7+GGvQINk0blUXA13M=
-X-Gm-Gg: ASbGncsr6FklAq/CbDVerLMss6Njb3ISK/C2SPC12rOtGSEmWvaL12dNNLWoxVK2yih
-	zvVP7f+jJRjDuytzs/ehcVzKpTPYCb1JLVTuOvVHQZZZ9f5pcDbLYuXNxGNVBrwy4OfPVOsBvVX
-	UwtqALF8EdmsYsFI8MkdQI5N5JqJHgJmgJuLrzpSS+T5riwlSCWktQKNcYcLdoQ2CJeE74UH0Nf
-	bSbXJ9Q5h6sXdaciqiuehu8gK+Ftww7ZYQe5eWqb3ZVO3r4ii3VyqKeVWIAkuDtm+9LMlGBlZEp
-	OpN1WGU1ZJOcKx9J
-X-Google-Smtp-Source: AGHT+IHcc+zMs1dK6kkPPsRpkyp1nUSSMDTtFQjCju0jQZMIs0GgDN1MFSsFD4ROUOsC9xtlxzKS0Q==
-X-Received: by 2002:adf:e6cf:0:b0:38b:f04c:25e6 with SMTP id ffacd0b85a97d-38c519447bdmr7403096f8f.14.1738317725338;
-        Fri, 31 Jan 2025 02:02:05 -0800 (PST)
+        bh=pBPk86uZmfcTkGurL1WDJzw8BH/2k/njCft7aLxhOMQ=;
+        b=Z4seCEqCbSje6Qydlr0kiPFTMfNDtEn/ggSvV/iBol5k6C1CLyOvTek24nqCjKmLA/
+         dah+0VgQUyEvRDHGlb/ghuS43Va4hJ91Gk90NF5IjPAkj1FVwmYhiEEqLgsJ99MWFURl
+         AkKXhKLHtBgFhK4nHRuwQIXV8Hqw7OpXGVLtl6pJnRAMU7xVu8JOt3MAMmqPP6ESBMaW
+         61KPWVzOH3lTmOHAiovAhaJYpHbQPrq8qerc4ShAUBqig2NjPVw+/tug3qkFLWMOXnoV
+         WgSGDwkRTyJ1q0hNhQOurT40tjSu/es57l5/j/vP8JZQXpzxCQ05UpXBN6LZCbglvpoT
+         krRA==
+X-Gm-Message-State: AOJu0YzNhv8ZOKn7L/SGZrEfyKo5AjpT2JGgGRYb4unCPDc1mcdESw+y
+	rkkRHkBmzrGTzZFvXSmNEjBlWWAUrCftxazkXOjw1SpLExKRxaH/VWzTSZ9gNRk=
+X-Gm-Gg: ASbGncvPPM63R8/3K3PtZzroXPAmkyqtuXms0ybsPRvPx9dFUMVAjRYtT8gyP8M0SiJ
+	mL9qMQhhKV64RzqTq1Pl1cm8ZOpbGzZ6FhHP8j+jj2XkDQbWSKIjOSyZGWGyMszTg76p+YYo4n+
+	WvGPi1Wexm2id9KSGZV2gc8PY6boKeFljjoc0+EuVjiCR+omhzsGnsGkReUyiC1M0vWdaVoDLBp
+	Utfys4S48/2jZfpHcKPuB6Re5IfxmK0cuLdc90sI4JlRAa1/2pEpOwjELoLUvQMkOpB1qcu44FL
+	wspKiAPw8aWPZ1sR
+X-Google-Smtp-Source: AGHT+IG4w9PGW6x290JACvG6usdJ33ACoHALnMSvc5iVVZ/OSZs2xydGAkK9maY6DgMqQJZW2uo+Xw==
+X-Received: by 2002:a05:600c:68c4:b0:438:e231:d35e with SMTP id 5b1f17b1804b1-438e231d655mr61602485e9.0.1738318199783;
+        Fri, 31 Jan 2025 02:09:59 -0800 (PST)
 Received: from [192.168.88.249] ([95.85.217.110])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c5c1b574fsm4215864f8f.70.2025.01.31.02.02.04
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438e23deedfsm50680095e9.16.2025.01.31.02.09.58
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 31 Jan 2025 02:02:04 -0800 (PST)
-Message-ID: <0623e789-ff5d-4d6f-a73a-7d514e0dc6d7@sedlak.dev>
-Date: Fri, 31 Jan 2025 11:02:03 +0100
+        Fri, 31 Jan 2025 02:09:59 -0800 (PST)
+Message-ID: <09d0c81a-1a46-4864-995b-731d980edd92@sedlak.dev>
+Date: Fri, 31 Jan 2025 11:09:58 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -65,296 +65,188 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/3] rust: io: add resource abstraction
+Subject: Re: [PATCH v6 2/3] rust: io: mem: add a generic iomem abstraction
 To: Daniel Almeida <daniel.almeida@collabora.com>, ojeda@kernel.org,
  alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
  bjorn3_gh@protonmail.mco, benno.lossin@proton.me, a.hindborg@kernel.org,
  aliceryhl@google.com, tmgross@umich.edu, gregkh@linuxfoundation.org,
  rafael@kernel.org, dakr@kernel.org, boris.brezillon@collabora.com,
  robh@kernel.org
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- Fiona Behrens <me@kloenk.dev>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20250130220529.665896-1-daniel.almeida@collabora.com>
- <20250130220529.665896-2-daniel.almeida@collabora.com>
+ <20250130220529.665896-3-daniel.almeida@collabora.com>
 Content-Language: en-US
 From: Daniel Sedlak <daniel@sedlak.dev>
-In-Reply-To: <20250130220529.665896-2-daniel.almeida@collabora.com>
+In-Reply-To: <20250130220529.665896-3-daniel.almeida@collabora.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 Hi,
 
 On 1/30/25 11:05 PM, Daniel Almeida wrote:
-
-> +/// Returns a reference to the global `iomem_resource` variable.
-> +pub fn iomem_resource() -> &'static Resource {
-> +    // SAFETY: `bindings::iomem_resoure` has global lifetime and is of type Resource.
-> +    unsafe { Resource::from_ptr(core::ptr::addr_of_mut!(bindings::iomem_resource)) }
-> +}
+> Add a generic iomem abstraction to safely read and write ioremapped
+> regions.
+> 
+> The reads and writes are done through IoRaw, and are thus checked either
+> at compile-time, if the size of the region is known at that point, or at
+> runtime otherwise.
+> 
+> Non-exclusive access to the underlying memory region is made possible to
+> cater to cases where overlapped regions are unavoidable.
+> 
+> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+> ---
+>   rust/kernel/io.rs     |   1 +
+>   rust/kernel/io/mem.rs | 125 ++++++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 126 insertions(+)
+>   create mode 100644 rust/kernel/io/mem.rs
+> 
+> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+> index 566d8b177e01..9ce3482b5ecd 100644
+> --- a/rust/kernel/io.rs
+> +++ b/rust/kernel/io.rs
+> @@ -7,6 +7,7 @@
+>   use crate::error::{code::EINVAL, Result};
+>   use crate::{bindings, build_assert};
+>   
+> +pub mod mem;
+>   pub mod resource;
+>   
+>   /// Raw representation of an MMIO region.
+> diff --git a/rust/kernel/io/mem.rs b/rust/kernel/io/mem.rs
+> new file mode 100644
+> index 000000000000..f87433ed858e
+> --- /dev/null
+> +++ b/rust/kernel/io/mem.rs
+> @@ -0,0 +1,125 @@
+> +// SPDX-License-Identifier: GPL-2.0
 > +
-> +/// Resource Size type.
-> +/// This is a type alias to `u64`
-> +/// depending on the config option `CONFIG_PHYS_ADDR_T_64BIT`.
-
-The comment seems weirdly formatted, shouldn't it be rather:
-
-/// Resource size type. This is a type alias to `u64`
-/// depending on the config option `CONFIG_PHYS_ADDR_T_64BIT`.
-
-or
-
-/// Resource size type.
-///
-/// This is a type alias to `u64` depending on the config
-/// option `CONFIG_PHYS_ADDR_T_64BIT`.
-
-> +#[cfg(CONFIG_PHYS_ADDR_T_64BIT)]
-> +pub type ResourceSize = u64;
+> +//! Generic memory-mapped IO.
 > +
-> +/// Resource Size type.
-> +/// This is a type alias to `u32`
-> +/// depending on the config option `CONFIG_PHYS_ADDR_T_64BIT`.
-
-Similar to the previous one.
-
-> +#[cfg(not(CONFIG_PHYS_ADDR_T_64BIT))]
-> +pub type ResourceSize = u32;
+> +use core::ops::Deref;
 > +
-> +/// A region allocated from a parent resource.
+> +use crate::device::Device;
+> +use crate::devres::Devres;
+> +use crate::io::resource::Region;
+> +use crate::io::resource::Resource;
+> +use crate::io::Io;
+> +use crate::io::IoRaw;
+> +use crate::prelude::*;
+> +
+> +/// An exclusive memory-mapped IO region.
 > +///
 > +/// # Invariants
-> +/// - `self.0` points to a valid `bindings::resource` that was obtained through
-> +/// `__request_region`.
+> +///
+> +/// - ExclusiveIoMem has exclusive access to the underlying `iomem`.
 
-Shouldn't be there an extra newline after # Invariants, to be consistent 
-with others in the patch?
+formatting: ExclusiveIoMem -> [`ExclusiveIoMem`]?
 
-> +pub struct Region(NonNull<bindings::resource>);
+> +pub struct ExclusiveIoMem<const SIZE: usize> {
+> +    /// The region abstraction. This represents exclusive access to the
+> +    /// range represented by the underlying `iomem`.
+> +    ///
+> +    /// It's placed first to ensure that the region is released before it is
+> +    /// unmapped as a result of the drop order.
+> +    #[allow(dead_code)]
+> +    region: Region,
+> +    /// The underlying `IoMem` instance.
+> +    iomem: IoMem<SIZE>,
+> +}
 > +
-> +impl Deref for Region {
-> +    type Target = Resource;
+> +impl<const SIZE: usize> ExclusiveIoMem<SIZE> {
+> +    /// Creates a new `ExclusiveIoMem` instance.
+> +    pub(crate) fn ioremap(resource: &Resource) -> Result<Self> {
+> +        let iomem = IoMem::ioremap(resource)?;
+> +
+> +        let start = resource.start();
+> +        let size = resource.size();
+> +        let name = resource.name();
+> +
+> +        let region = resource
+> +            .request_mem_region(start, size, name)
+> +            .ok_or(EBUSY)?;
+> +
+> +        let iomem = ExclusiveIoMem { iomem, region };
+> +
+> +        Ok(iomem)
+> +    }
+> +
+> +    pub(crate) fn new(resource: &Resource, device: &Device) -> Result<Devres<Self>> {
+> +        let iomem = Self::ioremap(resource)?;
+> +        let devres = Devres::new(device, iomem, GFP_KERNEL)?;
+> +
+> +        Ok(devres)
+> +    }
+> +}
+> +
+> +impl<const SIZE: usize> Deref for ExclusiveIoMem<SIZE> {
+> +    type Target = Io<SIZE>;
 > +
 > +    fn deref(&self) -> &Self::Target {
-> +        // SAFETY: Safe as per the invariant of `Region`
-> +        unsafe { Resource::from_ptr(self.0.as_ptr()) }
+> +        &*self.iomem
 > +    }
 > +}
 > +
-> +impl Drop for Region {
-> +    fn drop(&mut self) {
-> +        // SAFETY: Safe as per the invariant of `Region`
-> +        let res = unsafe { Resource::from_ptr(self.0.as_ptr()) };
-> +        let flags = res.flags();
-> +
-> +        let release_fn = if flags.contains(flags::IORESOURCE_MEM) {
-> +            bindings::release_mem_region
-> +        } else {
-> +            bindings::release_region
-> +        };
-> +
-> +        // SAFETY: Safe as per the invariant of `Region`
-> +        unsafe { release_fn(res.start(), res.size()) };
-> +    }
-> +}
-> +
-> +// SAFETY: `Region` only holds a pointer to a C `struct resource`, which is safe to be used from
-> +// any thead.
-
-typo thead -> thread
-> +unsafe impl Send for Region {}
-> +
-> +// SAFETY: `Region` only holds a pointer to a C `struct resource`, references to which are
-> +// safe to be used from any thead.
-
-typo thead -> thread
-
-> +unsafe impl Sync for Region {}
-> +
-> +/// A resource abstraction.
+> +/// A generic memory-mapped IO region.
+> +///
+> +/// Accesses to the underlying region is checked either at compile time, if the
+> +/// region's size is known at that point, or at runtime otherwise.
 > +///
 > +/// # Invariants
 > +///
-> +/// `Resource` is a transparent wrapper around a valid `bindings::resource`.
-> +#[repr(transparent)]
-> +pub struct Resource(Opaque<bindings::resource>);
-> +
-> +impl Resource {
-> +    /// Creates a reference to a [`Resource`] from a valid pointer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The caller must ensure that for the duration of 'a, the pointer will
-> +    /// point at a valid `bindings::resource`
-> +    ///
-> +    /// The caller must also ensure that the `Resource` is only accessed via the
-> +    /// returned reference for the duration of 'a.
-> +    pub(crate) const unsafe fn from_ptr<'a>(ptr: *mut bindings::resource) -> &'a Self {
-> +        // SAFETY: Self is a transparent wrapper around `Opaque<bindings::resource>`.
-> +        unsafe { &*ptr.cast() }
-> +    }
-> +
-> +    /// A helper to abstract the common pattern of requesting a region.
-> +    fn request_region_checked(
-> +        &self,
-> +        start: ResourceSize,
-> +        size: ResourceSize,
-> +        name: &CStr,
-> +        request_fn: RequestFn,
-> +    ) -> Option<Region> {
-> +        // SAFETY: Safe as per the invariant of `Resource`
-> +        let region = unsafe { request_fn(start, size, name.as_char_ptr()) };
-> +
-> +        Some(Region(NonNull::new(region)?))
-> +    }
-> +
-> +    /// Requests a resource region.
-> +    ///
-> +    /// Exclusive access will be given and the region will be marked as busy.
-> +    /// Further calls to `request_region` will return `None` if the region, or a
-> +    /// part of it, is already in use.
-> +    pub fn request_region(
-> +        &self,
-> +        start: ResourceSize,
-> +        size: ResourceSize,
-> +        name: &CStr,
-> +    ) -> Option<Region> {
-> +        self.request_region_checked(start, size, name, bindings::request_region)
-> +    }
-> +
-> +    /// Requests a resource region with the IORESOURCE_MUXED flag.
+> +/// `IoMem` always holds an `IoRaw` inststance that holds a valid pointer to the
 
-formatting: IORESOURCE_MUXED -> `IORESOURCE_MUXED`
-
-> +    ///
-> +    /// Exclusive access will be given and the region will be marked as busy.
-> +    /// Further calls to `request_region` will return `None` if the region, or a
-> +    /// part of it, is already in use.
-> +    pub fn request_muxed_region(
-> +        &self,
-> +        start: ResourceSize,
-> +        size: ResourceSize,
-> +        name: &CStr,
-> +    ) -> Option<Region> {
-> +        self.request_region_checked(start, size, name, bindings::request_muxed_region)
+typo: inststance -> instance
+> +/// start of the I/O memory mapped region.
+> +pub struct IoMem<const SIZE: usize = 0> {
+> +    io: IoRaw<SIZE>,
+> +}
+> +
+> +impl<const SIZE: usize> IoMem<SIZE> {
+> +    fn ioremap(resource: &Resource) -> Result<Self> {
+> +        let size = resource.size();
+> +        if size == 0 {
+> +            return Err(EINVAL);
+> +        }
+> +
+> +        let res_start = resource.start();
+> +
+> +        // SAFETY:
+> +        // - `res_start` and `size` are read from a presumably valid `struct resource`.
+> +        // - `size` is known not to be zero at this point.
+> +        let addr = unsafe { bindings::ioremap(res_start, size as kernel::ffi::c_ulong) };
+> +        if addr.is_null() {
+> +            return Err(ENOMEM);
+> +        }
+> +
+> +        let io = IoRaw::new(addr as usize, size as usize)?;
+> +        let io = IoMem { io };
+> +
+> +        Ok(io)
 > +    }
 > +
-> +    /// Requests a memory resource region, i.e.: a resource of type
-> +    /// IORESOURCE_MEM.
-
-formatting: IORESOURCE_MEM -> `IORESOURCE_MEM`
-
-> +    ///
-> +    /// Exclusive access will be given and the region will be marked as busy.
-> +    /// Further calls to `request_region` will return `None` if the region, or a
-> +    /// part of it, is already in use.
-> +    pub fn request_mem_region(
-> +        &self,
-> +        start: ResourceSize,
-> +        size: ResourceSize,
-> +        name: &CStr,
-> +    ) -> Option<Region> {
-> +        self.request_region_checked(start, size, name, bindings::request_mem_region)
-> +    }
+> +    /// Creates a new `IoMem` instance.
+> +    pub(crate) fn new(resource: &Resource, device: &Device) -> Result<Devres<Self>> {
+> +        let io = Self::ioremap(resource)?;
+> +        let devres = Devres::new(device, io, GFP_KERNEL)?;
 > +
-> +    /// Returns the size of the resource.
-> +    pub fn size(&self) -> ResourceSize {
-> +        let inner = self.0.get();
-> +        // SAFETY: safe as per the invariants of `Resource`
-> +        unsafe { bindings::resource_size(inner) }
-> +    }
-> +
-> +    /// Returns the start address of the resource.
-> +    pub fn start(&self) -> u64 {
-
-Should the address be of type `usize`?
-
-> +        let inner = self.0.get();
-> +        // SAFETY: safe as per the invariants of `Resource`
-> +        unsafe { *inner }.start
-> +    }
-> +
-> +    /// Returns the name of the resource.
-> +    pub fn name(&self) -> &CStr {
-> +        let inner = self.0.get();
-> +        // SAFETY: safe as per the invariants of `Resource`
-> +        unsafe { CStr::from_char_ptr((*inner).name) }
-> +    }
-> +
-> +    /// Returns the flags associated with the resource.
-> +    pub fn flags(&self) -> Flags {
-> +        let inner = self.0.get();
-> +        // SAFETY: safe as per the invariants of `Resource`
-> +        let flags = unsafe { *inner }.flags;
-> +
-> +        Flags(flags)
+> +        Ok(devres)
 > +    }
 > +}
 > +
-> +// SAFETY: `Resource` only holds a pointer to a C `struct resource`, which is safe to be used from
-> +// any thead.
-
-typo: thead -> thread
-
-> +unsafe impl Send for Resource {}
-> +
-> +// SAFETY: `Resource` only holds a pointer to a C `struct resource`, references to which are
-> +// safe to be used from any thead.
-
-typo: thead -> thread
-
-> +unsafe impl Sync for Resource {}
-> +
-> +/// Resource flags as stored in the C `struct resource::flags` field.
-> +///
-> +/// They can be combined with the operators `|`, `&`, and `!`.
-> +///
-> +/// Values can be used from the [`flags`] module.
-> +#[derive(Clone, Copy, PartialEq)]
-> +pub struct Flags(u64);
-> +
-> +impl Flags {
-> +    /// Check whether `flags` is contained in `self`.
-> +    pub fn contains(self, flags: Flags) -> bool {
-> +        (self & flags) == flags
+> +impl<const SIZE: usize> Drop for IoMem<SIZE> {
+> +    fn drop(&mut self) {
+> +        // SAFETY: Safe as by the invariant of `Io`.
+> +        unsafe { bindings::iounmap(self.io.addr() as *mut core::ffi::c_void) }
 > +    }
 > +}
 > +
-> +impl core::ops::BitOr for Flags {
-> +    type Output = Self;
-> +    fn bitor(self, rhs: Self) -> Self::Output {
-> +        Self(self.0 | rhs.0)
+> +impl<const SIZE: usize> Deref for IoMem<SIZE> {
+> +    type Target = Io<SIZE>;
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        // SAFETY: Safe as by the invariant of `IoMem`.
+> +        unsafe { Io::from_raw(&self.io) }
 > +    }
 > +}
-> +
-> +impl core::ops::BitAnd for Flags {
-> +    type Output = Self;
-> +    fn bitand(self, rhs: Self) -> Self::Output {
-> +        Self(self.0 & rhs.0)
-> +    }
-> +}
-> +
-> +impl core::ops::Not for Flags {
-> +    type Output = Self;
-> +    fn not(self) -> Self::Output {
-> +        Self(!self.0)
-> +    }
-> +}
-> +
-> +/// Resource flags as stored in the `struct resource::flags` field.
-> +pub mod flags {
-> +    use super::Flags;
-> +
-> +    /// PCI/ISA I/O ports
-
-formatting: period at the end
-
-> +    pub const IORESOURCE_IO: Flags = Flags(bindings::IORESOURCE_IO as u64);
-> +
-> +    /// Resource is software muxed.
-> +    pub const IORESOURCE_MUXED: Flags = Flags(bindings::IORESOURCE_MUXED as u64);
-> +
-> +    /// Resource represents a memory region.
-> +    pub const IORESOURCE_MEM: Flags = Flags(bindings::IORESOURCE_MEM as u64);
-> +}
-
 	Daniel
