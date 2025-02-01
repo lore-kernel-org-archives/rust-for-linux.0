@@ -1,49 +1,58 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A1684A30;
-	Sat,  1 Feb 2025 12:12:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC061A00F8;
+	Sat,  1 Feb 2025 12:16:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738411964; cv=none; b=E9C+RvorTrqiuuWpuHwUbyAaNLAcuKv/31qoWbPAh9rDB43+hJysCZvX/EV00ULKuo84HJZughwajOKjMyHKX01ngxI/Qj34NxrjkZyb2eUBi+kWxMRTayOLfl0KriRgqdVVCfCTysYxjl23uPwRL93tfH++K/2w/aMMRjeSzJY=
+	t=1738412195; cv=none; b=FnPsbcUnDRhfIjZHwjiJaytjFFm4IiZLuAeKpRvYXM4dqlPZc5PMvzVTR74mIDfnB/9JgXsm+TvK7vN7YLM9+HPIyj6BTp9R7IMFZTjL6VibJ1FdXa/UdrpqB7NnTTXhZVUlsLDDwXleQteRLTbko9U6ndLNM+4g0fa6b26GCCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738411964; c=relaxed/simple;
-	bh=zqN7AakLlbtVefgeIf3wADi+hbc/wJ/4nlqzKX2S6xw=;
+	s=arc-20240116; t=1738412195; c=relaxed/simple;
+	bh=6ygYfFgJRBrBWpChngQqE9jWlxFUSeWN1NPdhi6DIwc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uzgH8VCMox3CGY7SUJwudzTwaWYI4undD3V2SVYmZkXEoOURLdkRw5hjw2BO+1S7MJUnZEVVd6SEee8qYyBGFQMoSXnOiCpL39Qkx6QDMMFbQkyyWPspjwRd9SZwMt0ITMaJ4rFxsX43RoF1ZAzPBdJ6MPs9TzihG3FmFGt3IlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e4YFI8tv; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=CllmQFNOrqOQ6S7wo4gklhlqYWrhNbr56tRD1rHEOp1zm/7kSt7T5+l70Ck4pyvDu1jstb4AbbylsJQgJj5WNkNWSWMCwoUlGGoFHqknnzc8Rf/ORAD8/JvAFH1YGWTwEU+xA2BQM/ioZMNe5olyHEhHXnnuSI4ZgwskfS5fnHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=KOqBbc7o; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e4YFI8tv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10FF6C4CED3;
-	Sat,  1 Feb 2025 12:12:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738411963;
-	bh=zqN7AakLlbtVefgeIf3wADi+hbc/wJ/4nlqzKX2S6xw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=e4YFI8tv35vRm6FBikSeoD+z0U2PU15duxLPkIK9EeJSbci27jlSwjE5KnnOTmmVC
-	 67vmY76tlJ1UcdOGKbybLY1VmJ+uFS2QLF1S6lltNYOh+Jw96Wkl3bshnWNlZOKUq6
-	 2mDrZnDz+PH2imYaLfPrIkI9UaOjTQ4/Aq+2KlIJyzvEeyNMG64OxqGXKCa/A8jGco
-	 CZLuw9bjSOw+NPGL3u/h8fuTdi56vb4WHQmkPwhHaQE1bze8vx53qiI3qe6nziogXw
-	 1LzJX2WnjAX8bHWaIbo3yTREe2k4fVKzZj+KKbMt+ikTE6dj9u8PNU3pH/mziZJwos
-	 Z3/Tzyqf6WS9Q==
-Date: Sat, 1 Feb 2025 13:12:35 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Greg KH <greg@kroah.com>
-Cc: airlied@gmail.com, simona@ffwll.ch, corbet@lwn.net,
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-	tzimmermann@suse.de, ajanulgu@redhat.com, lyude@redhat.com,
-	pstanner@redhat.com, zhiw@nvidia.com, cjia@nvidia.com,
-	jhubbard@nvidia.com, bskeggs@nvidia.com, acurrid@nvidia.com,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="KOqBbc7o"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=dsMvg7ZCVh7m4D+6zs5L9cte2LOA+U4GyXDWvKKgXhs=; b=KOqBbc7oAX0DgppuJE6DoHHn/r
+	GBTiXN1x8ubMhszPUQbNsJU5IlSYItizXFMXEBQ6lPvpU/mhMak39Iwb07VAnxCioudJz4yQQnF6x
+	zNTMIulgJStVIHRknvsV5vcCK/GbNPQ6RJIw3FHwcDHuywJ9PlnreZH9MrWI0uYF3hM2XrA8pw2Q5
+	tzNudU4K4aAThsPubFz+7Ve6CPwHjgaRFi6/QqHkhLoBR+LaBgXKtSp/cjLBGdLT9aAs9DUB+ht/1
+	K0/5BvjV/Zv0bO8H6sPSg7wyKGlC/NhlixbgnNU2fiFt2XhG0OJvtd8cdh8BatAKC2vMJPBNUwwJ6
+	YBSW758w==;
+Received: from 77-249-17-89.cable.dynamic.v4.ziggo.nl ([77.249.17.89] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1teCQ3-0000000Fi18-1Y17;
+	Sat, 01 Feb 2025 12:16:15 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 2014530050D; Sat,  1 Feb 2025 13:16:14 +0100 (CET)
+Date: Sat, 1 Feb 2025 13:16:13 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
 	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, nouveau@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 1/2] gpu: nova-core: add initial driver stub
-Message-ID: <Z54PsyY-fNRBwJQ4@cassiopeiae>
-References: <20250131220432.17717-1-dakr@kernel.org>
- <2025020151-leverage-unadorned-fb05@gregkh>
+	a.hindborg@samsung.com, aliceryhl@google.com,
+	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
+	arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
+	mingo@redhat.com, juri.lelli@redhat.com, vincent.guittot@linaro.org,
+	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+	mgorman@suse.de, vschneid@redhat.com, tgunders@redhat.com
+Subject: Re: [PATCH v9 1/8] sched/core: Add __might_sleep_precision()
+Message-ID: <20250201121613.GC8256@noisy.programming.kicks-ass.net>
+References: <20250125101854.112261-1-fujita.tomonori@gmail.com>
+ <20250125101854.112261-2-fujita.tomonori@gmail.com>
+ <20250128113738.GC7145@noisy.programming.kicks-ass.net>
+ <20250130.085644.2298700991414831587.fujita.tomonori@gmail.com>
+ <Z5rSjsdwG2aonZrB@boqun-archlinux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -52,28 +61,49 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2025020151-leverage-unadorned-fb05@gregkh>
+In-Reply-To: <Z5rSjsdwG2aonZrB@boqun-archlinux>
 
-On Sat, Feb 01, 2025 at 09:33:28AM +0100, Greg KH wrote:
-> On Fri, Jan 31, 2025 at 11:04:24PM +0100, Danilo Krummrich wrote:
-> > +impl Gpu {
-> > +    pub(crate) fn new(pdev: &pci::Device, bar: Devres<Bar0>) -> Result<impl PinInit<Self>> {
-> > +        let spec = GpuSpec::new(&bar)?;
-> > +        let fw = Firmware::new(pdev.as_ref(), &spec, "535.113.01")?;
-> > +
-> > +        dev_info!(
-> > +            pdev.as_ref(),
-> > +            "NVIDIA {:?} ({:#x})",
-> > +            spec.chipset,
-> > +            spec.boot0
-> > +        );
-> 
-> When drivers work properly, they should be quiet, so can you move this
-> to dev_dbg()?
+On Wed, Jan 29, 2025 at 05:14:54PM -0800, Boqun Feng wrote:
+> On Thu, Jan 30, 2025 at 08:56:44AM +0900, FUJITA Tomonori wrote:
+> > On Tue, 28 Jan 2025 12:37:38 +0100
+> > Peter Zijlstra <peterz@infradead.org> wrote:
+> > 
+> > > On Sat, Jan 25, 2025 at 07:18:46PM +0900, FUJITA Tomonori wrote:
+> > >> Add __might_sleep_precision(), Rust friendly version of
+> > >> __might_sleep(), which takes a pointer to a string with the length
+> > >> instead of a null-terminated string.
+> > >> 
+> > >> Rust's core::panic::Location::file(), which gives the file name of a
+> > >> caller, doesn't provide a null-terminated
+> > >> string. __might_sleep_precision() uses a precision specifier in the
+> > >> printk format, which specifies the length of a string; a string
+> > >> doesn't need to be a null-terminated.
+> > >> 
+> > >> Modify __might_sleep() to call __might_sleep_precision() but the
+> > >> impact should be negligible. strlen() isn't called in a normal case;
+> > >> it's called only when printing the error (sleeping function called
+> > >> from invalid context).
+> > >> 
+> > >> Note that Location::file() providing a null-terminated string for
+> > >> better C interoperability is under discussion [1].
+> > > 
+> > > Urgh :/
+> > 
+> > Yeah... so not acceptable?
 
-Sure, the only reason I made this dev_info!() is because, as an initial
-skeleton, the driver isn't doing anything else for now. So, I thought it would
-be nice to have some sign of life.
+Just frustrated we 'need' more ugly to deal with Rust being stupid.
 
-Of course, the intention was to remove this, once there's any other sign of
-life.
+> I would like to see some concrete and technical reasons for why it's not
+> acceptable ;-) I'm not sure whether Peter was against this patch or just
+> not happy about Location::file() providing a null-terminated string is a
+> WIP.
+
+The latter.
+
+I just hate on Rust for being designed by a bunch of C haters, not
+wanting to acknowledge the whole frigging world runs on C and they
+*have* to deal with interoperability.
+
+That got us a whole pile of ugly including this.
+
+
