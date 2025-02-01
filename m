@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0765384A30;
-	Sat,  1 Feb 2025 12:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A1684A30;
+	Sat,  1 Feb 2025 12:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738411727; cv=none; b=EQDVKDfVIin3ra4GhRrIYIn3d0mJMYoLwz/l0yBRXbgK0pJBcIgkJt37nJkZtTj2Ht79tEabbcXn6IGlWmuo867V1nJR1mMZlnjfAnutoCK9gg+7w+Jw0hY3rHXHv7aPmQpjbV9fTBqmcqR1qzhCCsO+PmYWfkemDqXh6z6vHts=
+	t=1738411964; cv=none; b=E9C+RvorTrqiuuWpuHwUbyAaNLAcuKv/31qoWbPAh9rDB43+hJysCZvX/EV00ULKuo84HJZughwajOKjMyHKX01ngxI/Qj34NxrjkZyb2eUBi+kWxMRTayOLfl0KriRgqdVVCfCTysYxjl23uPwRL93tfH++K/2w/aMMRjeSzJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738411727; c=relaxed/simple;
-	bh=K2TI2jChlFirHpPjPa4bMyuM7luLYyAPORy1s4bA3Qc=;
+	s=arc-20240116; t=1738411964; c=relaxed/simple;
+	bh=zqN7AakLlbtVefgeIf3wADi+hbc/wJ/4nlqzKX2S6xw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ACqxK3XKB4f5UZPXpjyvcgz5kbG/MWbffOPDukJW+nbPdUm4d6qTo6qhSDulZEVdOCgc6+hjCZut523njHYR+GoeKk3kLtMMEf1A+apkB0e9QPmTF3Gqc2oWrIcSaGc//4FK9gQpM8tKS7nUvKZC1mlJcMKuqIk25KEh5ioK+QI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KSmtFYCv; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=uzgH8VCMox3CGY7SUJwudzTwaWYI4undD3V2SVYmZkXEoOURLdkRw5hjw2BO+1S7MJUnZEVVd6SEee8qYyBGFQMoSXnOiCpL39Qkx6QDMMFbQkyyWPspjwRd9SZwMt0ITMaJ4rFxsX43RoF1ZAzPBdJ6MPs9TzihG3FmFGt3IlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e4YFI8tv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KSmtFYCv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD3BC4CED3;
-	Sat,  1 Feb 2025 12:08:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e4YFI8tv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10FF6C4CED3;
+	Sat,  1 Feb 2025 12:12:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738411726;
-	bh=K2TI2jChlFirHpPjPa4bMyuM7luLYyAPORy1s4bA3Qc=;
+	s=k20201202; t=1738411963;
+	bh=zqN7AakLlbtVefgeIf3wADi+hbc/wJ/4nlqzKX2S6xw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KSmtFYCvzk71QyMtkqn+tsY++LPQvDFQ+IdzaJpejd0lsi0xFfZihT4476GSSb1RV
-	 mKIBw4IvbS3SJll0wAh0y9DqJAxM7L36SPiztyPaQOIOvghW7N46j6/mdhKhkAAXym
-	 zGcBSb8FULg3Y0dLf++qJ8SRj1cE42Ef/F6nzUhNyDcLX6noFcKBAAowSsB+ruxMFE
-	 0HWp5/ZXta7CWnF+U2V7EAbEqsYXFpO9Jhefo/mXlGPE0GzWa8Ui3J8mOJOVBmznZV
-	 G3R2zJ+KC1HHYT1Va0qG+yDPg0eRxdg5R/S8sOBaUE7axmObjsxW270OM4ZZ+ELbh6
-	 HEs07R/ZQZQYg==
-Date: Sat, 1 Feb 2025 13:08:37 +0100
+	b=e4YFI8tv35vRm6FBikSeoD+z0U2PU15duxLPkIK9EeJSbci27jlSwjE5KnnOTmmVC
+	 67vmY76tlJ1UcdOGKbybLY1VmJ+uFS2QLF1S6lltNYOh+Jw96Wkl3bshnWNlZOKUq6
+	 2mDrZnDz+PH2imYaLfPrIkI9UaOjTQ4/Aq+2KlIJyzvEeyNMG64OxqGXKCa/A8jGco
+	 CZLuw9bjSOw+NPGL3u/h8fuTdi56vb4WHQmkPwhHaQE1bze8vx53qiI3qe6nziogXw
+	 1LzJX2WnjAX8bHWaIbo3yTREe2k4fVKzZj+KKbMt+ikTE6dj9u8PNU3pH/mziZJwos
+	 Z3/Tzyqf6WS9Q==
+Date: Sat, 1 Feb 2025 13:12:35 +0100
 From: Danilo Krummrich <dakr@kernel.org>
-To: Karol Herbst <kherbst@redhat.com>
+To: Greg KH <greg@kroah.com>
 Cc: airlied@gmail.com, simona@ffwll.ch, corbet@lwn.net,
 	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
 	tzimmermann@suse.de, ajanulgu@redhat.com, lyude@redhat.com,
@@ -41,47 +41,39 @@ Cc: airlied@gmail.com, simona@ffwll.ch, corbet@lwn.net,
 	linux-kernel@vger.kernel.org, nouveau@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org
 Subject: Re: [PATCH 1/2] gpu: nova-core: add initial driver stub
-Message-ID: <Z54OxV15TSvK5I9J@cassiopeiae>
+Message-ID: <Z54PsyY-fNRBwJQ4@cassiopeiae>
 References: <20250131220432.17717-1-dakr@kernel.org>
- <CACO55ttSTGTEV7_OTAGXft0JKV7o2DzSYX89ZWKS_+mZRgjEKg@mail.gmail.com>
+ <2025020151-leverage-unadorned-fb05@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACO55ttSTGTEV7_OTAGXft0JKV7o2DzSYX89ZWKS_+mZRgjEKg@mail.gmail.com>
+In-Reply-To: <2025020151-leverage-unadorned-fb05@gregkh>
 
-On Sat, Feb 01, 2025 at 09:14:48AM +0100, Karol Herbst wrote:
-> On Fri, Jan 31, 2025 at 11:04 PM Danilo Krummrich <dakr@kernel.org> wrote:
-> > +impl pci::Driver for NovaCore {
-> > +    type IdInfo = ();
-> > +    const ID_TABLE: pci::IdTable<Self::IdInfo> = &PCI_TABLE;
+On Sat, Feb 01, 2025 at 09:33:28AM +0100, Greg KH wrote:
+> On Fri, Jan 31, 2025 at 11:04:24PM +0100, Danilo Krummrich wrote:
+> > +impl Gpu {
+> > +    pub(crate) fn new(pdev: &pci::Device, bar: Devres<Bar0>) -> Result<impl PinInit<Self>> {
+> > +        let spec = GpuSpec::new(&bar)?;
+> > +        let fw = Firmware::new(pdev.as_ref(), &spec, "535.113.01")?;
 > > +
-> > +    fn probe(pdev: &mut pci::Device, _info: &Self::IdInfo) -> Result<Pin<KBox<Self>>> {
-> > +        dev_dbg!(pdev.as_ref(), "Probe Nova Core GPU driver.\n");
-> > +
-> > +        pdev.enable_device_mem()?;
-> > +        pdev.set_master();
-> > +
-> > +        let bar = pdev.iomap_region_sized::<BAR0_SIZE>(0, c_str!("nova-core"))?;
+> > +        dev_info!(
+> > +            pdev.as_ref(),
+> > +            "NVIDIA {:?} ({:#x})",
+> > +            spec.chipset,
+> > +            spec.boot0
+> > +        );
 > 
-> I'm curious about the c_str! macro here. Since rust 1.78 one can do
-> c"nova-core" to get a &CStr, is this not available in the r4l project
-> yet or other reasons why this can't be used?
+> When drivers work properly, they should be quiet, so can you move this
+> to dev_dbg()?
 
-The kernel is still using kernel::str::CStr instead of core::ffi::CStr.
+Sure, the only reason I made this dev_info!() is because, as an initial
+skeleton, the driver isn't doing anything else for now. So, I thought it would
+be nice to have some sign of life.
 
-> Might make sense to clean
-> it up kernel wide (outside this patch set) if it's guaranteed to be
-> available.
-
-Indeed, there's already an entry in the R4L issue tracker about this [1].
-There's also a patch series [2] addressing it, but it seems that the series
-didn't get an update for quite a while.
-
-[1] https://github.com/Rust-for-Linux/linux/issues/1075
-[2] https://lore.kernel.org/rust-for-linux/20240819153656.28807-2-vadorovsky@protonmail.com/
+Of course, the intention was to remove this, once there's any other sign of
+life.
