@@ -1,66 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B58719B5B8;
-	Sat,  1 Feb 2025 13:11:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9FE1E884;
+	Sat,  1 Feb 2025 13:52:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738415475; cv=none; b=p8jDscIxB6+9lcrKGsxS8GW2cHFpJvSMYWZosr/AQU1GUP7k5dkb7vPxLSTZn5jDlhBo0MZzFOhGVVYq83HxwKLg6EkvxQsJnOpanto1p7JOnJK/8LY0j1Ka7E7V6FHh0/cMqmnCF2adUg6N2vCA9cPNAuhCWjZxvwcdwP60lTA=
+	t=1738417933; cv=none; b=iXURXvuPYwsYENz1dQ8HvI2Be5yVi8lganONwRI097S2zZJ2IFF4LQC1INvpTP3l9b8hLBNCVU8GISBLUs4Ai4gsnzkDLw6VuOr3Pxwx1Jp+ynEPUOQqciID0inuaLdtk6Syot+175PM6VRfOtbeyLDO2HCiAd6cyLY8iGkWkso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738415475; c=relaxed/simple;
-	bh=8O3v1gQSlsG3tYV8ZTlep1WuOLYN6UmIQa9FBKxE7jc=;
+	s=arc-20240116; t=1738417933; c=relaxed/simple;
+	bh=ZMJ/BDqk3fUllCKxYs2l/IPxqGLUjkQUB4Zfa4PkqlM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BqR61imIW/2DuUulzUuc4uGlRI6pg8AtHWNJ7bjKYX7p/bb/xUho4SJZu9YjBf4eUaslnXJDHLkuCG06PU3mdonvHViDhbE5G1EPhR1Mlo+jPnFYAj2j2EvDOdbjQwKqgefP2My8a/Y/Lt3qBQf+X9QnAJt9c5fxlJuhRokG3CE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MoKV3vtm; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=DvpdSgNN5ggi/BPTjkuR+wqhZhEx5NRAkFQdFPZJalp+G/39wiRMp+YWsLypMyKsivTBpKpAd6PinLMEpDDmjfSeswOUUnhk8vX6p0g6HMmySeyeCw8U1HGtXWtGXQFCUIsoP1oHIMER8hMN4bieidT+sGuAYBFke+kzH/5cIcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bx9tZwsX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MoKV3vtm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738415473; x=1769951473;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=8O3v1gQSlsG3tYV8ZTlep1WuOLYN6UmIQa9FBKxE7jc=;
-  b=MoKV3vtmWDWtJ0Vm1FnmE0Zn1gfTX5NtX7rQjcEFpUkqYEv17LcYj1gf
-   SCkNk0E3tjwRNPhAVbrFu+2AprNp7TpQmzbiiBU8JNSDTYYxVuXwBQcYX
-   sQCCLssy9MIGNLyDBYevmgXUaKLFEH6PXJagg58IcFT52UKekMhh3y7rz
-   jCs/mGYVat1EX2V1wfCpUtPRfJKoFPY4VuWsAtJj1ks7QC3s1PwHai8vn
-   bsuuaPXu8N8BjE467nYGWKAf87xcDnyfOqzQBLvvsVlEkHe2kWXZct3ts
-   mpBhtNf2sCVFQ0dZF8HP6ssfyJn4ZM4eJlJvY+9dWAUyWTYMaowowkK2s
-   g==;
-X-CSE-ConnectionGUID: 9SwyervDQYydfJyojlr73g==
-X-CSE-MsgGUID: TKSksh7fS12Sl65Qs2v1cw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11333"; a="49567798"
-X-IronPort-AV: E=Sophos;i="6.13,251,1732608000"; 
-   d="scan'208";a="49567798"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2025 05:11:12 -0800
-X-CSE-ConnectionGUID: GXZdOfWXSHKpEEd79FBwaA==
-X-CSE-MsgGUID: nyHwV57ETn6H+Vfe39m8bw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,251,1732608000"; 
-   d="scan'208";a="140745522"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 01 Feb 2025 05:11:10 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1teDH8-000oAx-2e;
-	Sat, 01 Feb 2025 13:11:06 +0000
-Date: Sat, 1 Feb 2025 21:10:46 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Subject: Re: [PATCH v6 2/2] rust: list: make the cursor point between elements
-Message-ID: <202502012009.gHmXhGHi-lkp@intel.com>
-References: <20250131-cursor-between-v6-2-603bdc7d4449@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bx9tZwsX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11D50C4CED3;
+	Sat,  1 Feb 2025 13:52:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738417932;
+	bh=ZMJ/BDqk3fUllCKxYs2l/IPxqGLUjkQUB4Zfa4PkqlM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bx9tZwsXg45yFXvd2jPLsWVpSkUyUcEXVaQ1ejU9gd9bIh3V0F8OYccNRAay9x5XT
+	 J32ILpWoCOpwv23o9QNutcnFc37cX9aHXtYYaqcyUr/ZUUty1YbKV444YFelqGvKaI
+	 PjZiwPNWu00WPwkxYOvXzfxs6175msk+d09UT6nwfk66KjDwm/nbafarM/OgKkJq2t
+	 19nx1jOb9ArUeq2f7L5Ah0suD3qotz2dUN9IaA7G+QBfm5JHEKvZwLBBPr8b9+xoa0
+	 3U31zueT7DsjftJ4gDMO+zt4lNxp/SW91KU4gl3iRmV2e0sbjr6d5tzX8tlb/x+9pH
+	 UoY7R6hYJP4lQ==
+Date: Sat, 1 Feb 2025 14:52:04 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: John Hubbard <jhubbard@nvidia.com>
+Cc: airlied@gmail.com, simona@ffwll.ch, corbet@lwn.net,
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+	tzimmermann@suse.de, ajanulgu@redhat.com, lyude@redhat.com,
+	pstanner@redhat.com, zhiw@nvidia.com, cjia@nvidia.com,
+	bskeggs@nvidia.com, acurrid@nvidia.com, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, nouveau@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 1/2] gpu: nova-core: add initial driver stub
+Message-ID: <Z54nBHJsAzU9xP8o@cassiopeiae>
+References: <20250131220432.17717-1-dakr@kernel.org>
+ <35d74754-ed0c-4f6d-817e-86638ca2bb70@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -69,116 +52,475 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250131-cursor-between-v6-2-603bdc7d4449@google.com>
+In-Reply-To: <35d74754-ed0c-4f6d-817e-86638ca2bb70@nvidia.com>
 
-Hi Alice,
+On Fri, Jan 31, 2025 at 08:01:00PM -0800, John Hubbard wrote:
+> On 1/31/25 2:04 PM, Danilo Krummrich wrote:
+> > Add the initial nova-core driver stub.
+> > 
+> > nova-core is intended to serve as a common base for nova-drm (the
+> > corresponding DRM driver) and the vGPU manager VFIO driver, serving as a
+> > hard- and firmware abstraction layer for GSP-based NVIDIA GPUs.
+> > 
+> > The Nova project, including nova-core and nova-drm, in the long term,
+> > is intended to serve as the successor of Nouveau for all GSP-based GPUs.
+> > 
+> > The motivation for both, starting a successor project for Nouveau and
+> > doing so using the Rust programming language, is documented in detail
+> > through a previous post on the mailing list [1], an LWN article [2] and a
+> > talk from LPC '24.
+> > 
+> > In order to avoid the chicken and egg problem to require a user to
+> > upstream Rust abstractions, but at the same time require the Rust
+> > abstractions to implement the driver, nova-core kicks off as a driver
+> > stub and is subsequently developed upstream.
+> > 
+> > Link: https://lore.kernel.org/dri-devel/Zfsj0_tb-0-tNrJy@cassiopeiae/T/#u [1]
+> > Link: https://lwn.net/Articles/990736/ [2]
+> > Link: https://youtu.be/3Igmx28B3BQ?si=sBdSEer4tAPKGpOs [3]
+> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> > ---
+> >   MAINTAINERS                        |  10 ++
+> >   drivers/gpu/Makefile               |   1 +
+> >   drivers/gpu/nova-core/Kconfig      |  13 +++
+> >   drivers/gpu/nova-core/Makefile     |   3 +
+> >   drivers/gpu/nova-core/driver.rs    |  47 ++++++++
+> >   drivers/gpu/nova-core/gpu.rs       | 171 +++++++++++++++++++++++++++++
+> >   drivers/gpu/nova-core/nova_core.rs |  14 +++
+> >   drivers/video/Kconfig              |   1 +
+> >   8 files changed, 260 insertions(+)
+> >   create mode 100644 drivers/gpu/nova-core/Kconfig
+> >   create mode 100644 drivers/gpu/nova-core/Makefile
+> >   create mode 100644 drivers/gpu/nova-core/driver.rs
+> >   create mode 100644 drivers/gpu/nova-core/gpu.rs
+> >   create mode 100644 drivers/gpu/nova-core/nova_core.rs
+> 
+> Hi Danilo,
+> 
+> This is pleasantly clean, and even elegant. I was pleasantly surprised at
+> the level of firmware loading support in Rust, and how this approach takes
+> advantage of our r535 firmware snapshot that is in Turing, Ampere, and Ada.
+> 
+> It loads up on my GA104 system and I've been poking around at it.
+> 
+> Some minor comments below, but this looks like a very good starting "stub"
+> to get merged.
+> 
+> > 
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index d1086e53a317..f7ddca7de0ef 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -7446,6 +7446,16 @@ T:	git https://gitlab.freedesktop.org/drm/nouveau.git
+> >   F:	drivers/gpu/drm/nouveau/
+> >   F:	include/uapi/drm/nouveau_drm.h
+> > +CORE DRIVER FOR NVIDIA GPUS [RUST]
+> > +M:	Danilo Krummrich <dakr@kernel.org>
+> > +L:	nouveau@lists.freedesktop.org
+> > +S:	Supported
+> > +Q:	https://patchwork.freedesktop.org/project/nouveau/
+> 
+> Are you sure? I'm not sure how patchwork things work, but it seems
+> unfortunate to confuse Nova and nouveau here.
 
-kernel test robot noticed the following build errors:
+It's the nouveau patchwork, because we're also using the nouveau mailing list
+for now.
 
-[auto build test ERROR on ceff0757f5dafb5be5205988171809c877b1d3e3]
+Using the nouveau mailing makes it easier to reach people interested in the
+project in the beginning.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Alice-Ryhl/rust-list-extract-common-code-for-insertion/20250201-041918
-base:   ceff0757f5dafb5be5205988171809c877b1d3e3
-patch link:    https://lore.kernel.org/r/20250131-cursor-between-v6-2-603bdc7d4449%40google.com
-patch subject: [PATCH v6 2/2] rust: list: make the cursor point between elements
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250201/202502012009.gHmXhGHi-lkp@intel.com/config)
-compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250201/202502012009.gHmXhGHi-lkp@intel.com/reproduce)
+In the medium-term I think it would make sense to introduce some separate
+infrastructure.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202502012009.gHmXhGHi-lkp@intel.com/
+> 
+> > +B:	https://gitlab.freedesktop.org/drm/nova/-/issues
+> > +C:	irc://irc.oftc.net/nouveau
+> > +T:	git https://gitlab.freedesktop.org/drm/nova.git nova-next
+> > +F:	drivers/gpu/nova-core/
+> > +
+> >   DRM DRIVER FOR OLIMEX LCD-OLINUXINO PANELS
+> >   M:	Stefan Mavrodiev <stefan@olimex.com>
+> >   S:	Maintained
+> > diff --git a/drivers/gpu/Makefile b/drivers/gpu/Makefile
+> > index 8997f0096545..36a54d456630 100644
+> > --- a/drivers/gpu/Makefile
+> > +++ b/drivers/gpu/Makefile
+> > @@ -5,3 +5,4 @@
+> >   obj-y			+= host1x/ drm/ vga/
+> >   obj-$(CONFIG_IMX_IPUV3_CORE)	+= ipu-v3/
+> >   obj-$(CONFIG_TRACE_GPU_MEM)		+= trace/
+> > +obj-$(CONFIG_NOVA_CORE)		+= nova-core/
+> > diff --git a/drivers/gpu/nova-core/Kconfig b/drivers/gpu/nova-core/Kconfig
+> > new file mode 100644
+> > index 000000000000..33ac937b244a
+> > --- /dev/null
+> > +++ b/drivers/gpu/nova-core/Kconfig
+> > @@ -0,0 +1,13 @@
+> > +config NOVA_CORE
+> > +	tristate "Nova Core GPU driver"
+> > +	depends on PCI
+> > +	depends on RUST
+> > +	depends on RUST_FW_LOADER_ABSTRACTIONS
+> > +	default n
+> > +	help
+> > +	  Choose this if you want to build the Nova Core driver for Nvidia
+> > +	  GSP-based GPUs.
+> 
+> Maybe a little note about what "GSP" is and how you know if you have it,
+> would help. Turing and later architectures have GSP firmware. All the
+> user might know is the GPU architecture, I wouldn't expect the user
+> to know if it has a "GSP".
 
-All errors (new ones prefixed by >>):
+That's a good idea, gonna add some notes.
 
-   In file included from arch/x86/kernel/asm-offsets.c:14:
-   In file included from include/linux/suspend.h:5:
-   In file included from include/linux/swap.h:9:
-   In file included from include/linux/memcontrol.h:21:
-   In file included from include/linux/mm.h:2223:
-   include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   504 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-   |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-   505 |                            item];
-   |                            ~~~~
-   include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   511 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-   |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-   512 |                            NR_VM_NUMA_EVENT_ITEMS +
-   |                            ~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-   518 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-   |                               ~~~~~~~~~~~ ^ ~~~
-   include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   524 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-   |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-   525 |                            NR_VM_NUMA_EVENT_ITEMS +
-   |                            ~~~~~~~~~~~~~~~~~~~~~~
-   4 warnings generated.
-   ***
-   *** Rust bindings generator 'bindgen' < 0.69.5 together with libclang >= 19.1
-   *** may not work due to a bug (https://github.com/rust-lang/rust-bindgen/pull/2824),
-   *** unless patched (like Debian's).
-   ***   Your bindgen version:  0.65.1
-   ***   Your libclang version: 19.1.3
-   ***
-   ***
-   *** Please see Documentation/rust/quick-start.rst for details
-   *** on how to set up the Rust support.
-   ***
-   In file included from rust/helpers/helpers.c:10:
-   In file included from rust/helpers/blk.c:3:
-   In file included from include/linux/blk-mq.h:5:
-   In file included from include/linux/blkdev.h:9:
-   In file included from include/linux/blk_types.h:10:
-   In file included from include/linux/bvec.h:10:
-   In file included from include/linux/highmem.h:8:
-   In file included from include/linux/cacheflush.h:5:
-   In file included from arch/x86/include/asm/cacheflush.h:5:
-   In file included from include/linux/mm.h:2223:
-   include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   504 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-   |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-   505 |                            item];
-   |                            ~~~~
-   include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   511 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-   |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-   512 |                            NR_VM_NUMA_EVENT_ITEMS +
-   |                            ~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-   518 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-   |                               ~~~~~~~~~~~ ^ ~~~
-   include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   524 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-   |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-   525 |                            NR_VM_NUMA_EVENT_ITEMS +
-   |                            ~~~~~~~~~~~~~~~~~~~~~~
-   4 warnings generated.
-   clang diag: include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   clang diag: include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   clang diag: include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-   clang diag: include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   clang diag: include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   clang diag: include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   clang diag: include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-   clang diag: include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   clang diag: include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   clang diag: include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   clang diag: include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-   clang diag: include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
->> error[E0596]: cannot borrow `self` as mutable, as it is not declared as mutable
-   --> rust/kernel/list.rs:838:9
-   |
-   838 |         self.insert_inner(item);
-   |         ^^^^ cannot borrow as mutable
-   |
-   help: consider changing this to be mutable
-   |
-   833 |     pub fn insert(mut self, item: ListArc<T, ID>) {
-   |                   +++
+> 
+> > +
+> > +	  This driver is work in progress and may not be functional.
+> > +
+> > +	  If M is selected, the module will be called nova-core.
+> 
+> Or nova_core? I realize the driver core translates between "-" and "_",
+> just trying to be consistent.
+> 
+> It does show up as /sys/module/nova_core .
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Yes, this should be 'nova_core'. I already noticed this typo myself and forgot
+to fix it - dang!
+
+> 
+> 
+> > diff --git a/drivers/gpu/nova-core/Makefile b/drivers/gpu/nova-core/Makefile
+> > new file mode 100644
+> > index 000000000000..2d78c50126e1
+> > --- /dev/null
+> > +++ b/drivers/gpu/nova-core/Makefile
+> > @@ -0,0 +1,3 @@
+> > +# SPDX-License-Identifier: GPL-2.0
+> > +
+> > +obj-$(CONFIG_NOVA_CORE) += nova_core.o
+> > diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driver.rs
+> > new file mode 100644
+> > index 000000000000..2a2aa9b0630b
+> > --- /dev/null
+> > +++ b/drivers/gpu/nova-core/driver.rs
+> > @@ -0,0 +1,47 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +use kernel::{bindings, c_str, pci, prelude::*};
+> > +
+> > +use crate::gpu::Gpu;
+> > +
+> > +#[pin_data]
+> > +pub(crate) struct NovaCore {
+> > +    #[pin]
+> > +    pub(crate) gpu: Gpu,
+> > +}
+> > +
+> > +const BAR0_SIZE: usize = 8;
+> > +pub(crate) type Bar0 = pci::Bar<BAR0_SIZE>;
+> > +
+> > +kernel::pci_device_table!(
+> > +    PCI_TABLE,
+> > +    MODULE_PCI_TABLE,
+> > +    <NovaCore as pci::Driver>::IdInfo,
+> > +    [(
+> > +        pci::DeviceId::from_id(bindings::PCI_VENDOR_ID_NVIDIA, bindings::PCI_ANY_ID as _),
+> > +        ()
+> > +    )]
+> > +);
+> > +
+> > +impl pci::Driver for NovaCore {
+> > +    type IdInfo = ();
+> > +    const ID_TABLE: pci::IdTable<Self::IdInfo> = &PCI_TABLE;
+> > +
+> > +    fn probe(pdev: &mut pci::Device, _info: &Self::IdInfo) -> Result<Pin<KBox<Self>>> {
+> > +        dev_dbg!(pdev.as_ref(), "Probe Nova Core GPU driver.\n");
+> > +
+> > +        pdev.enable_device_mem()?;
+> > +        pdev.set_master();
+> > +
+> > +        let bar = pdev.iomap_region_sized::<BAR0_SIZE>(0, c_str!("nova-core"))?;
+> 
+> Another question about whether it should be nova-core or nova_core.
+
+This string is not related to the module name (which btw. is only 'nova_core'
+because the build system doesn't like 'nova-core.rs'), hence I used the correct
+spelling of the driver name.
+
+This string ends up as the name for the underlying struct resource [1]. So, if
+we'd want to be super correct, it should probably be something like
+"nova-core BAR0".
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/ioport.h#n24
+
+> 
+> > +
+> > +        let this = KBox::pin_init(
+> > +            try_pin_init!(Self {
+> > +                gpu <- Gpu::new(pdev, bar)?,
+> > +            }),
+> > +            GFP_KERNEL,
+> > +        )?;
+> > +
+> > +        Ok(this)
+> > +    }
+> > +}
+> > diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
+> > new file mode 100644
+> > index 000000000000..cf62390e72eb
+> > --- /dev/null
+> > +++ b/drivers/gpu/nova-core/gpu.rs
+> > @@ -0,0 +1,171 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +use kernel::{
+> > +    device, devres::Devres, error::code::*, firmware, fmt, pci, prelude::*, str::CString,
+> > +};
+> > +
+> > +use crate::driver::Bar0;
+> > +use core::fmt::Debug;
+> > +
+> > +/// Enum representation of the GPU chipset.
+> > +#[derive(Debug)]
+> > +pub(crate) enum Chipset {
+> > +    TU102 = 0x162,
+> > +    TU104 = 0x164,
+> > +    TU106 = 0x166,
+> > +    TU117 = 0x167,
+> > +    TU116 = 0x168,
+> > +    GA102 = 0x172,
+> > +    GA103 = 0x173,
+> > +    GA104 = 0x174,
+> > +    GA106 = 0x176,
+> > +    GA107 = 0x177,
+> > +    AD102 = 0x192,
+> > +    AD103 = 0x193,
+> > +    AD104 = 0x194,
+> > +    AD106 = 0x196,
+> > +    AD107 = 0x197,
+> > +}
+> > +
+> > +/// Enum representation of the GPU generation.
+> > +#[derive(Debug)]
+> > +pub(crate) enum CardType {
+> > +    /// Turing
+> > +    TU100 = 0x160,
+> > +    /// Ampere
+> > +    GA100 = 0x170,
+> > +    /// Ada Lovelace
+> > +    AD100 = 0x190,
+> > +}
+> > +
+> > +/// Structure holding the metadata of the GPU.
+> > +#[allow(dead_code)]
+> > +pub(crate) struct GpuSpec {
+> > +    /// Contents of the boot0 register.
+> > +    boot0: u64,
+> 
+> It is redundant to store boot0, when all of the following fields
+> are deduced from boot0.
+
+Yes, I think we can probably remove it, I only use it to print it in Gpu::new()
+as a sign of life and because I don't know if boot0 contains any other useful
+information than chipset and chiprev.
+
+But maybe you can help me out here? :) That is, share the register layout and
+field names. This way I could also get rid of those magic numbers, and put in
+proper naming for fields, masks and shifts.
+
+> 
+> > +    card_type: CardType,
+> > +    chipset: Chipset,
+> > +    /// The revision of the chipset.
+> > +    chiprev: u8,
+> > +}
+> > +
+> > +/// Structure encapsulating the firmware blobs required for the GPU to operate.
+> > +#[allow(dead_code)]
+> > +pub(crate) struct Firmware {
+> > +    booter_load: firmware::Firmware,
+> > +    booter_unload: firmware::Firmware,
+> > +    gsp: firmware::Firmware,
+> > +}
+> > +
+> > +/// Structure holding the resources required to operate the GPU.
+> > +#[allow(dead_code)]
+> > +#[pin_data]
+> > +pub(crate) struct Gpu {
+> > +    spec: GpuSpec,
+> > +    /// MMIO mapping of PCI BAR 0
+> > +    bar: Devres<Bar0>,
+> > +    fw: Firmware,
+> > +}
+> > +
+> > +// TODO replace with something like derive(FromPrimitive)
+> > +impl Chipset {
+> > +    fn from_u32(value: u32) -> Option<Chipset> {
+> > +        match value {
+> > +            0x162 => Some(Chipset::TU102),
+> > +            0x164 => Some(Chipset::TU104),
+> > +            0x166 => Some(Chipset::TU106),
+> > +            0x167 => Some(Chipset::TU117),
+> > +            0x168 => Some(Chipset::TU116),
+> > +            0x172 => Some(Chipset::GA102),
+> > +            0x173 => Some(Chipset::GA103),
+> > +            0x174 => Some(Chipset::GA104),
+> > +            0x176 => Some(Chipset::GA106),
+> > +            0x177 => Some(Chipset::GA107),
+> > +            0x192 => Some(Chipset::AD102),
+> > +            0x193 => Some(Chipset::AD103),
+> > +            0x194 => Some(Chipset::AD104),
+> > +            0x196 => Some(Chipset::AD106),
+> > +            0x197 => Some(Chipset::AD107),
+> > +            _ => None,
+> > +        }
+> > +    }
+> > +}
+> > +
+> > +// TODO replace with something like derive(FromPrimitive)
+> > +impl CardType {
+> > +    fn from_u32(value: u32) -> Option<CardType> {
+> > +        match value {
+> > +            0x160 => Some(CardType::TU100),
+> > +            0x170 => Some(CardType::GA100),
+> > +            0x190 => Some(CardType::AD100),
+> 
+> Is this how nouveau does it too? I mean, classifying cards as GA100,
+> and variants as TU102. It feels wrong to me, because we have for example
+> GA100 GPUs. I mean, GA100 is the same kind of thing as a GA102: each is
+> a GPU.
+
+Yes, that's what nouveau came up with and it's meant as e.g. 'GA1xx'. But yes,
+I agree it's a bit confusing.
+
+OOC, what about the first digit in this example? For Blackwell it would seem to
+be 'GB2xx'. Can you shed some light on this?
+
+> 
+> If I were naming card types, I'd calling them by their architecture names:
+> Turing, Ampere, Ada.
+
+Yeah, that is probably less cryptic. Plus, we should probably name it something
+around the term "architecture" rather than "CardType".
+
+> 
+> > +            _ => None,
+> > +        }
+> > +    }
+> > +}
+> > +
+> > +impl GpuSpec {
+> > +    fn new(bar: &Devres<Bar0>) -> Result<GpuSpec> {
+> > +        let bar = bar.try_access().ok_or(ENXIO)?;
+> > +        let boot0 = u64::from_le(bar.readq(0));
+> > +        let chip = ((boot0 & 0x1ff00000) >> 20) as u32;
+> > +
+> > +        if boot0 & 0x1f000000 == 0 {
+> > +            return Err(ENODEV);
+> > +        }
+> > +
+> > +        let Some(chipset) = Chipset::from_u32(chip) else {
+> > +            return Err(ENODEV);
+> > +        };
+> > +
+> > +        let Some(card_type) = CardType::from_u32(chip & 0x1f0) else {
+> > +            return Err(ENODEV);
+> > +        };
+> > +
+> > +        Ok(Self {
+> > +            boot0,
+> > +            card_type,
+> > +            chipset,
+> > +            chiprev: (boot0 & 0xff) as u8,
+> > +        })
+> > +    }
+> > +}
+> > +
+> > +impl Firmware {
+> > +    fn new(dev: &device::Device, spec: &GpuSpec, ver: &str) -> Result<Firmware> {
+> > +        let mut chip_name = CString::try_from_fmt(fmt!("{:?}", spec.chipset))?;
+> > +        chip_name.make_ascii_lowercase();
+> > +
+> > +        let fw_booter_load_path =
+> > +            CString::try_from_fmt(fmt!("nvidia/{}/gsp/booter_load-{}.bin", &*chip_name, ver))?;
+> > +        let fw_booter_unload_path =
+> > +            CString::try_from_fmt(fmt!("nvidia/{}/gsp/booter_unload-{}.bin", &*chip_name, ver))?;
+> > +        let fw_gsp_path =
+> > +            CString::try_from_fmt(fmt!("nvidia/{}/gsp/gsp-{}.bin", &*chip_name, ver))?;
+> > +
+> > +        let booter_load = firmware::Firmware::request(&fw_booter_load_path, dev)?;
+> > +        let booter_unload = firmware::Firmware::request(&fw_booter_unload_path, dev)?;
+> > +        let gsp = firmware::Firmware::request(&fw_gsp_path, dev)?;
+> > +
+> > +        Ok(Firmware {
+> > +            booter_load,
+> > +            booter_unload,
+> > +            gsp,
+> > +        })
+> > +    }
+> > +}
+> > +
+> > +impl Gpu {
+> > +    pub(crate) fn new(pdev: &pci::Device, bar: Devres<Bar0>) -> Result<impl PinInit<Self>> {
+> > +        let spec = GpuSpec::new(&bar)?;
+> > +        let fw = Firmware::new(pdev.as_ref(), &spec, "535.113.01")?;
+> 
+> lol there it is: our one, "stable" set of GSP firmware. Maybe a one line comment
+> above might be appropriate, to mention that this is hardcoded, but new firmware
+> versions will not be. On the other hand, that's obvious. :)
+
+Well, I guess we'll have to probe what the distribution provides us with and see
+if that's supported and sufficient for the chipset we try to initialize.
+
+> 
+> > +
+> > +        dev_info!(
+> > +            pdev.as_ref(),
+> > +            "NVIDIA {:?} ({:#x})",
+> > +            spec.chipset,
+> > +            spec.boot0
+> > +        );
+> > +
+> > +        Ok(pin_init!(Self { spec, bar, fw }))
+> > +    }
+> > +}
+> > diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/nova_core.rs
+> > new file mode 100644
+> > index 000000000000..b130d9ca6a0f
+> > --- /dev/null
+> > +++ b/drivers/gpu/nova-core/nova_core.rs
+> > @@ -0,0 +1,14 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +//! Nova Core GPU Driver
+> > +
+> > +mod driver;
+> > +mod gpu;
+> > +
+> > +kernel::module_pci_driver! {
+> > +    type: driver::NovaCore,
+> > +    name: "NovaCore",
+> > +    author: "Danilo Krummrich",
+> > +    description: "Nova Core GPU driver",
+> > +    license: "GPL v2",
+> > +}
+> > diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+> > index 44c9ef1435a2..5df981920a94 100644
+> > --- a/drivers/video/Kconfig
+> > +++ b/drivers/video/Kconfig
+> > @@ -39,6 +39,7 @@ source "drivers/gpu/vga/Kconfig"
+> >   source "drivers/gpu/host1x/Kconfig"
+> >   source "drivers/gpu/ipu-v3/Kconfig"
+> > +source "drivers/gpu/nova-core/Kconfig"
+> >   source "drivers/gpu/drm/Kconfig"
+> > 
+> > base-commit: 69b8923f5003664e3ffef102e73333edfa2abdcf
+> 
+> I'm always grateful when anyone uses "git format-patch --base", it makes
+> life simpler.
+> 
+> 
+> thanks,
+> -- 
+> John Hubbard
+> 
