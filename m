@@ -1,296 +1,527 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54AE5635;
-	Sun,  2 Feb 2025 19:24:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1AC1CDA3F;
+	Sun,  2 Feb 2025 21:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.63.210.85
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738524263; cv=none; b=JNxYPs/1Ow8IAS0FlpJraUeNt0bee081xS6/dL7W1103jDB6zfc0Lx0HIFcrD4qBT4ntQ8632FU+wJ//wDoMbfzOlfs4iHXy+U/JKSwKrB1R7/jbiCUp+VFdZpR0zeRNg8sDZgR3CLFLmz9tZMqUV35ALMDZdT+FKGmfXGvRRYw=
+	t=1738531211; cv=none; b=mxhcSQ/OF0kzQfmG70ydcuCKxEa+e2qVhMTbZPAXEXCsoidno+2HM1L0Pj59gwlKoqqasUcuilJtlmDAxscHgexNu8y8k1+LKEHYWM7noSbuy0YXRZDcyWP2YcLo+8Bm8IsUnMvFF+9cG2Ob6dZ0g8qnIiJDdxquHCiacLQ88kQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738524263; c=relaxed/simple;
-	bh=S+LZO6dATwza2HFHbHznlTKSBzQVwoyyzs1DMM8oUGM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=Cj139IGi6yoENC7iZUfRnXwj9R1lEzE1AtGJ1bB8grbPQ0tvULr5OBJqw6ZSa0CoI7CFXLxopWR6//IsiNz86AScOX6RvFpRvydBoSsJex3AxrDEzvT+A3PLTi+EA4oilmMRLozGdhIeXd950Mu0W9o74/+DbBruFjnYYqSoD6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kyPqvu97; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738531211; c=relaxed/simple;
+	bh=iPP9jbE23nENC6ZB4Po5IZxyRp0t+vUbHd7mej+49NE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Kn1XiZWmV1nGonrox5gZao5cvrcBxnGc7e01J8DpiM6Xi8a0m9ugt4WN40Akld18cn3hxky6oX0+mr8a7R7GLjSXNqoIdw24q46kTsDEY1UbGWliAMycKJKz1+IpqZPbdGglR1/zELPMWgOp5oZlWb9QvW7goRHafCzk7NlMSrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net; spf=pass smtp.mailfrom=asahilina.net; dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b=uXYQ5lxg; arc=none smtp.client-ip=212.63.210.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asahilina.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kyPqvu97"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4361b6f9faeso22303395e9.1;
-        Sun, 02 Feb 2025 11:24:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738524259; x=1739129059; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ehGfOirhIOOasnif+JzQLELzhF9wvvAgIlZXMirXfFY=;
-        b=kyPqvu97HnnjS6n57G3UpxU4Z+71hLGZigURRKljp5p+rbAT1P4vxYBs1t3pB8wmlI
-         D3+lEmAuSXr2pdFl3/fOZqsVWCdLcpxiomuG/Zq7FfW7uQZBUjcfg3bsVjSW8jVaiJAS
-         d3b38a4Jy8GjffA0aoXazO0w6VEaEs5S0/AVeOqIoxb6ThJs8Sn4qpsQQVGnn7I1CiG7
-         r53bs1GspCDMXUmGa95/cH1/jvBUSSZaMW8uZSnfGBS/1Hm7oFkU5ge1swirseZ5+8NF
-         J0IYSXyiOUrx63QYHdBwCPWs+BRXb8q+joBDj8I7k+GFV8XgOEytOLSyOoXP8Wk9greE
-         jkGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738524259; x=1739129059;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ehGfOirhIOOasnif+JzQLELzhF9wvvAgIlZXMirXfFY=;
-        b=wvYEa/5swudK2J8hX7KzXsDpPu9ixae0+p6PnP+POxdWjpIMCVtwXaf2V+vTTwdppo
-         vB3wYt5I+qU73E5SybYeV0+sYKx+2IwC4kHBbcRy8WtnPj+3bcrXDlYN0Ux86Z/J4ZgW
-         X0q3j1g6iLJiypaCe9FaIX4Q1+qnrJGCfOWO4pNwgmgyeH/hrjN6IQixiNmQQ0v1rYBj
-         DQ3wVlPrJv1hVvz/YHJnEYK8gk1t78XsPLgjQsQD/Wk1HtP/wdIIt+JA99UeRKmtuxd0
-         nvh77eAtdA1s+ABKZTn07vvlj6r3NyUU1b0MOoveG1dm+DLnwWMtVdrtouqKnIS5u9uU
-         SfvA==
-X-Forwarded-Encrypted: i=1; AJvYcCUALE243zC+CaR0LHD3vvZXoPKb3NjBoB5ha2QjmKcr8DUHAc4wnz//OSV0gSlzYoYN9wBbjYhhtSLk8Gqfmg0=@vger.kernel.org, AJvYcCWvVmbh9rHzoml7iJAKmLg3f7fuXKmWk1ddRrfmc9NIGJoTUsXauOewWggcGNgVKgaGjNk6DTdEd5e2H58x+Hg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwkLbM3rXdFAqlUIDzjzmdYjbcVShRdcbybQp9HrejivaYsHVvE
-	M34MxWCMYNLtAMpi+qjUUYR+/ET/lGat2Me1vu2Zr4LCRQDBnZ3X
-X-Gm-Gg: ASbGncv+2fLuV+M4G/ImSg17q+2dwJXpK/M9XOZgD1C0GQFpFjSgmwef71OKRYD/Bzl
-	5wF/Cn8Nidc+9RHAxaHo4trYrDztImTp9CBMWncPChGoNQo2EdNS7rhMKEyTV1W8NLCkTPPuvKb
-	AboSEs/4jFqPy7F18YFtVA5rnUBSsGDKZw1rAKUhtLuFpP65mxSRvTOVZshCoZnAOmtCCiGNk6u
-	yaoiTVAVXIOxoYU3qXotPEu65E39FdYaRPqU8PUrJ5/EPX6A0PEP1EgbFNH0X3djEG4HpVS/3wr
-	/U2al67d/cvpaEMVrYkCp2JY+vu8hnwf2UDivTiREr06GD+wyuB4
-X-Google-Smtp-Source: AGHT+IFkfctb30XhHnDPdgfee2ko/GBsx7CC/y1tK4IdyCvi6as6gVLRrMKXhcIJZTaGvjaAugpOgw==
-X-Received: by 2002:a05:600c:45cc:b0:434:e892:1033 with SMTP id 5b1f17b1804b1-438e6ea8c74mr81665735e9.2.1738524259224;
-        Sun, 02 Feb 2025 11:24:19 -0800 (PST)
-Received: from laptop.home (84.50.134.37.dynamic.jazztel.es. [37.134.50.84])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c5c122539sm10668006f8f.46.2025.02.02.11.24.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Feb 2025 11:24:18 -0800 (PST)
-From: =?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>
-To: David Gow <davidgow@google.com>,
-	Rae Moar <rmoar@google.com>,
-	linux-kselftest@vger.kernel.org,
-	kunit-dev@googlegroups.com,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	David Rheinsberg <david@readahead.eu>,
-	rust-for-linux@vger.kernel.org,
-	x86@kernel.org,
-	=?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH v8] Kunit to check the longest symbol length
-Date: Sun,  2 Feb 2025 20:24:12 +0100
-Message-Id: <20250202192412.340848-1-sergio.collado@gmail.com>
-X-Mailer: git-send-email 2.39.2
+	dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b="uXYQ5lxg"
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: lina@asahilina.net)
+	by mail.marcansoft.com (Postfix) with ESMTPSA id 40B33425F5;
+	Sun,  2 Feb 2025 21:20:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
+	s=default; t=1738531203;
+	bh=iPP9jbE23nENC6ZB4Po5IZxyRp0t+vUbHd7mej+49NE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=uXYQ5lxghhDgkoKH8cioL1jPYsrD2LzRhKGrDcebuBUXYg117aqatj9YBB0kpDkQx
+	 RMNldd8cIxzHzA4oRsWDhvXPZkhwtDG2wlWZC2Pz/KqxC6yZdQrrAckVe7IuLS+lpS
+	 RU1tlNBxLbBgMOTWPumP0wK60UQ28tKmTn7+VM19iBmIKHaRTHTHLKa36aZ3Deoc+8
+	 wC5/fu5O+8IZVjwjpdcv9HW3wi/sZyr+/291VxOVXO3sYlnZ2XClOnefBpRxeaJF9V
+	 xYBhkZN8KkyOAkN5UiKxgk9PT0ZydibqLqPw3UcK8c0O3o4jAgC6BxQoGvC0bi+2DL
+	 KUO/B2hObMRIg==
+Message-ID: <e8da15f0-5b97-4569-842c-891cdf886978@asahilina.net>
+Date: Mon, 3 Feb 2025 06:19:57 +0900
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 07/16] rust: add `io::{Io, IoRaw}` base types
+To: Danilo Krummrich <dakr@kernel.org>, gregkh@linuxfoundation.org,
+ rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, benno.lossin@proton.me, tmgross@umich.edu,
+ a.hindborg@samsung.com, aliceryhl@google.com, airlied@gmail.com,
+ fujita.tomonori@gmail.com, pstanner@redhat.com, ajanulgu@redhat.com,
+ lyude@redhat.com, robh@kernel.org, daniel.almeida@collabora.com,
+ saravanak@google.com, dirk.behme@de.bosch.com, j@jannau.net,
+ fabien.parent@linaro.org, chrisi.schrefl@gmail.com, paulmck@kernel.org
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org, devicetree@vger.kernel.org, rcu@vger.kernel.org
+References: <20241212163357.35934-1-dakr@kernel.org>
+ <20241212163357.35934-8-dakr@kernel.org> <Z2BTSbOjWa8R29i5@cassiopeiae>
+Content-Language: en-US
+From: Asahi Lina <lina@asahilina.net>
+In-Reply-To: <Z2BTSbOjWa8R29i5@cassiopeiae>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-The longest length of a symbol (KSYM_NAME_LEN) was increased to 512
-in the reference [1]. This patch adds kunit test suite to check the longest
-symbol length. These tests verify that the longest symbol length defined
-is supported.
 
-This test can also help other efforts for longer symbol length,
-like [2].
 
-The test suite defines one symbol with the longest possible length.
+On 12/17/24 1:20 AM, Danilo Krummrich wrote:
+> On Thu, Dec 12, 2024 at 05:33:38PM +0100, Danilo Krummrich wrote:
+>> I/O memory is typically either mapped through direct calls to ioremap()
+>> or subsystem / bus specific ones such as pci_iomap().
+>>
+>> Even though subsystem / bus specific functions to map I/O memory are
+>> based on ioremap() / iounmap() it is not desirable to re-implement them
+>> in Rust.
+>>
+>> Instead, implement a base type for I/O mapped memory, which generically
+>> provides the corresponding accessors, such as `Io::readb` or
+>> `Io:try_readb`.
+>>
+>> `Io` supports an optional const generic, such that a driver can indicate
+>> the minimal expected and required size of the mapping at compile time.
+>> Correspondingly, calls to the 'non-try' accessors, support compile time
+>> checks of the I/O memory offset to read / write, while the 'try'
+>> accessors, provide boundary checks on runtime.
+>>
+>> `IoRaw` is meant to be embedded into a structure (e.g. pci::Bar or
+>> io::IoMem) which creates the actual I/O memory mapping and initializes
+>> `IoRaw` accordingly.
+>>
+>> To ensure that I/O mapped memory can't out-live the device it may be
+>> bound to, subsystems must embed the corresponding I/O memory type (e.g.
+>> pci::Bar) into a `Devres` container, such that it gets revoked once the
+>> device is unbound.
+>>
+>> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>> Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
+>> Reviewed-by: Daniel Almeida  <daniel.almeida@collabora.com>
+>> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+>> ---
+>>  rust/helpers/helpers.c |   1 +
+>>  rust/helpers/io.c      | 101 ++++++++++++++++
+>>  rust/kernel/io.rs      | 260 +++++++++++++++++++++++++++++++++++++++++
+>>  rust/kernel/lib.rs     |   1 +
+>>  4 files changed, 363 insertions(+)
+>>  create mode 100644 rust/helpers/io.c
+>>  create mode 100644 rust/kernel/io.rs
+>>
+>> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+>> index 060750af6524..63f9b1da179f 100644
+>> --- a/rust/helpers/helpers.c
+>> +++ b/rust/helpers/helpers.c
+>> @@ -14,6 +14,7 @@
+>>  #include "cred.c"
+>>  #include "err.c"
+>>  #include "fs.c"
+>> +#include "io.c"
+>>  #include "jump_label.c"
+>>  #include "kunit.c"
+>>  #include "mutex.c"
+>> diff --git a/rust/helpers/io.c b/rust/helpers/io.c
+>> new file mode 100644
+>> index 000000000000..1dde6374c0e2
+>> --- /dev/null
+>> +++ b/rust/helpers/io.c
+>> @@ -0,0 +1,101 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +
+>> +#include <linux/io.h>
+>> +
+>> +void __iomem *rust_helper_ioremap(phys_addr_t offset, size_t size)
+>> +{
+>> +	return ioremap(offset, size);
+>> +}
+>> +
+>> +void rust_helper_iounmap(volatile void __iomem *addr)
+>> +{
+>> +	return iounmap(addr);
+> 
+> Copy-paste mistake, obviously this return statement shouldn't be here.
+> 
+>> +}
+>> +
+>> +u8 rust_helper_readb(const volatile void __iomem *addr)
+>> +{
+>> +	return readb(addr);
+>> +}
+>> +
+>> +u16 rust_helper_readw(const volatile void __iomem *addr)
+>> +{
+>> +	return readw(addr);
+>> +}
+>> +
+>> +u32 rust_helper_readl(const volatile void __iomem *addr)
+>> +{
+>> +	return readl(addr);
+>> +}
+>> +
+>> +#ifdef CONFIG_64BIT
+>> +u64 rust_helper_readq(const volatile void __iomem *addr)
+>> +{
+>> +	return readq(addr);
+>> +}
+>> +#endif
+>> +
+>> +void rust_helper_writeb(u8 value, volatile void __iomem *addr)
+>> +{
+>> +	writeb(value, addr);
+>> +}
+>> +
+>> +void rust_helper_writew(u16 value, volatile void __iomem *addr)
+>> +{
+>> +	writew(value, addr);
+>> +}
+>> +
+>> +void rust_helper_writel(u32 value, volatile void __iomem *addr)
+>> +{
+>> +	writel(value, addr);
+>> +}
+>> +
+>> +#ifdef CONFIG_64BIT
+>> +void rust_helper_writeq(u64 value, volatile void __iomem *addr)
+>> +{
+>> +	writeq(value, addr);
+>> +}
+>> +#endif
+>> +
+>> +u8 rust_helper_readb_relaxed(const volatile void __iomem *addr)
+>> +{
+>> +	return readb_relaxed(addr);
+>> +}
+>> +
+>> +u16 rust_helper_readw_relaxed(const volatile void __iomem *addr)
+>> +{
+>> +	return readw_relaxed(addr);
+>> +}
+>> +
+>> +u32 rust_helper_readl_relaxed(const volatile void __iomem *addr)
+>> +{
+>> +	return readl_relaxed(addr);
+>> +}
+>> +
+>> +#ifdef CONFIG_64BIT
+>> +u64 rust_helper_readq_relaxed(const volatile void __iomem *addr)
+>> +{
+>> +	return readq_relaxed(addr);
+>> +}
+>> +#endif
+>> +
+>> +void rust_helper_writeb_relaxed(u8 value, volatile void __iomem *addr)
+>> +{
+>> +	writeb_relaxed(value, addr);
+>> +}
+>> +
+>> +void rust_helper_writew_relaxed(u16 value, volatile void __iomem *addr)
+>> +{
+>> +	writew_relaxed(value, addr);
+>> +}
+>> +
+>> +void rust_helper_writel_relaxed(u32 value, volatile void __iomem *addr)
+>> +{
+>> +	writel_relaxed(value, addr);
+>> +}
+>> +
+>> +#ifdef CONFIG_64BIT
+>> +void rust_helper_writeq_relaxed(u64 value, volatile void __iomem *addr)
+>> +{
+>> +	writeq_relaxed(value, addr);
+>> +}
+>> +#endif
+>> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+>> new file mode 100644
+>> index 000000000000..7ec3341bb411
+>> --- /dev/null
+>> +++ b/rust/kernel/io.rs
+>> @@ -0,0 +1,260 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +
+>> +//! Memory-mapped IO.
+>> +//!
+>> +//! C header: [`include/asm-generic/io.h`](srctree/include/asm-generic/io.h)
+>> +
+>> +use crate::error::{code::EINVAL, Result};
+>> +use crate::{bindings, build_assert};
+>> +
+>> +/// Raw representation of an MMIO region.
+>> +///
+>> +/// By itself, the existence of an instance of this structure does not provide any guarantees that
+>> +/// the represented MMIO region does exist or is properly mapped.
+>> +///
+>> +/// Instead, the bus specific MMIO implementation must convert this raw representation into an `Io`
+>> +/// instance providing the actual memory accessors. Only by the conversion into an `Io` structure
+>> +/// any guarantees are given.
+>> +pub struct IoRaw<const SIZE: usize = 0> {
+>> +    addr: usize,
+>> +    maxsize: usize,
+>> +}
+>> +
+>> +impl<const SIZE: usize> IoRaw<SIZE> {
+>> +    /// Returns a new `IoRaw` instance on success, an error otherwise.
+>> +    pub fn new(addr: usize, maxsize: usize) -> Result<Self> {
+>> +        if maxsize < SIZE {
+>> +            return Err(EINVAL);
+>> +        }
+>> +
+>> +        Ok(Self { addr, maxsize })
+>> +    }
+>> +
+>> +    /// Returns the base address of the MMIO region.
+>> +    #[inline]
+>> +    pub fn addr(&self) -> usize {
+>> +        self.addr
+>> +    }
+>> +
+>> +    /// Returns the maximum size of the MMIO region.
+>> +    #[inline]
+>> +    pub fn maxsize(&self) -> usize {
+>> +        self.maxsize
+>> +    }
+>> +}
+>> +
+>> +/// IO-mapped memory, starting at the base address @addr and spanning @maxlen bytes.
+>> +///
+>> +/// The creator (usually a subsystem / bus such as PCI) is responsible for creating the
+>> +/// mapping, performing an additional region request etc.
+>> +///
+>> +/// # Invariant
+>> +///
+>> +/// `addr` is the start and `maxsize` the length of valid I/O mapped memory region of size
+>> +/// `maxsize`.
+>> +///
+>> +/// # Examples
+>> +///
+>> +/// ```no_run
+>> +/// # use kernel::{bindings, io::{Io, IoRaw}};
+>> +/// # use core::ops::Deref;
+>> +///
+>> +/// // See also [`pci::Bar`] for a real example.
+>> +/// struct IoMem<const SIZE: usize>(IoRaw<SIZE>);
+>> +///
+>> +/// impl<const SIZE: usize> IoMem<SIZE> {
+>> +///     /// # Safety
+>> +///     ///
+>> +///     /// [`paddr`, `paddr` + `SIZE`) must be a valid MMIO region that is mappable into the CPUs
+>> +///     /// virtual address space.
+>> +///     unsafe fn new(paddr: usize) -> Result<Self>{
+>> +///         // SAFETY: By the safety requirements of this function [`paddr`, `paddr` + `SIZE`) is
+>> +///         // valid for `ioremap`.
+>> +///         let addr = unsafe { bindings::ioremap(paddr as _, SIZE.try_into().unwrap()) };
 
-The first test verify that functions with names of the created
-symbol, can be called or not.
+This is a problematic API. ioremap() does not work on some platforms
+like Apple Silicon. Instead, you have to use ioremap_np() for most devices.
 
-The second test, verify that the symbols are created (or
-not) in the kernel symbol table.
+Please add a bindings::resource abstraction and use that to construct
+IoMem. Then, you can check the flags for
+bindings::IORESOURCE_MEM_NONPOSTED and use the appropriate function,
+like this:
 
-[1] https://lore.kernel.org/lkml/20220802015052.10452-6-ojeda@kernel.org/
-[2] https://lore.kernel.org/lkml/20240605032120.3179157-1-song@kernel.org/
+https://github.com/AsahiLinux/linux/blob/fce34c83f1dca5b10cc2c866fd8832a362de7974/rust/kernel/io_mem.rs#L152
 
-Tested-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
-Reviewed-by: Rae Moar <rmoar@google.com>
-Signed-off-by: Sergio González Collado <sergio.collado@gmail.com>
-Link: https://github.com/Rust-for-Linux/linux/issues/504
----
-V7 -> V8: typo fixed & rebased
----
-V6 -> V7: rebased
----
-V5 -> V6: remove tests with symbols of length KSYM_NAME_LEN+1
----
-V4 -> V5: fixed typo, added improved description
----
-V3 -> V4: add x86 mantainers, add new reference.
----
-V2 -> V3: updated base and added MODULE_DESCRIPTION() and MODULE_AUTHOR()
----
-V1 -> V2: corrected CI tests. Added fix proposed at [3]
 
-[3] https://lore.kernel.org/lkml/Y9ES4UKl%2F+DtvAVS@gmail.com/T/#m3ef0e12bb834d01ed1ebdcae12ef5f2add342077
+>> +///         if addr.is_null() {
+>> +///             return Err(ENOMEM);
+>> +///         }
+>> +///
+>> +///         Ok(IoMem(IoRaw::new(addr as _, SIZE)?))
+>> +///     }
+>> +/// }
+>> +///
+>> +/// impl<const SIZE: usize> Drop for IoMem<SIZE> {
+>> +///     fn drop(&mut self) {
+>> +///         // SAFETY: `self.0.addr()` is guaranteed to be properly mapped by `Self::new`.
+>> +///         unsafe { bindings::iounmap(self.0.addr() as _); };
+>> +///     }
+>> +/// }
+>> +///
+>> +/// impl<const SIZE: usize> Deref for IoMem<SIZE> {
+>> +///    type Target = Io<SIZE>;
+>> +///
+>> +///    fn deref(&self) -> &Self::Target {
+>> +///         // SAFETY: The memory range stored in `self` has been properly mapped in `Self::new`.
+>> +///         unsafe { Io::from_raw(&self.0) }
+>> +///    }
+>> +/// }
+>> +///
+>> +///# fn no_run() -> Result<(), Error> {
+>> +/// // SAFETY: Invalid usage for example purposes.
+>> +/// let iomem = unsafe { IoMem::<{ core::mem::size_of::<u32>() }>::new(0xBAAAAAAD)? };
+>> +/// iomem.writel(0x42, 0x0);
+>> +/// assert!(iomem.try_writel(0x42, 0x0).is_ok());
+>> +/// assert!(iomem.try_writel(0x42, 0x4).is_err());
+>> +/// # Ok(())
+>> +/// # }
+>> +/// ```
+>> +#[repr(transparent)]
+>> +pub struct Io<const SIZE: usize = 0>(IoRaw<SIZE>);
+>> +
+>> +macro_rules! define_read {
+>> +    ($(#[$attr:meta])* $name:ident, $try_name:ident, $type_name:ty) => {
+>> +        /// Read IO data from a given offset known at compile time.
+>> +        ///
+>> +        /// Bound checks are performed on compile time, hence if the offset is not known at compile
+>> +        /// time, the build will fail.
+>> +        $(#[$attr])*
+>> +        #[inline]
+>> +        pub fn $name(&self, offset: usize) -> $type_name {
+>> +            let addr = self.io_addr_assert::<$type_name>(offset);
+>> +
+>> +            // SAFETY: By the type invariant `addr` is a valid address for MMIO operations.
+>> +            unsafe { bindings::$name(addr as _) }
+>> +        }
+>> +
+>> +        /// Read IO data from a given offset.
+>> +        ///
+>> +        /// Bound checks are performed on runtime, it fails if the offset (plus the type size) is
+>> +        /// out of bounds.
+>> +        $(#[$attr])*
+>> +        pub fn $try_name(&self, offset: usize) -> Result<$type_name> {
+>> +            let addr = self.io_addr::<$type_name>(offset)?;
+>> +
+>> +            // SAFETY: By the type invariant `addr` is a valid address for MMIO operations.
+>> +            Ok(unsafe { bindings::$name(addr as _) })
+>> +        }
+>> +    };
+>> +}
+>> +
+>> +macro_rules! define_write {
+>> +    ($(#[$attr:meta])* $name:ident, $try_name:ident, $type_name:ty) => {
+>> +        /// Write IO data from a given offset known at compile time.
+>> +        ///
+>> +        /// Bound checks are performed on compile time, hence if the offset is not known at compile
+>> +        /// time, the build will fail.
+>> +        $(#[$attr])*
+>> +        #[inline]
+>> +        pub fn $name(&self, value: $type_name, offset: usize) {
+>> +            let addr = self.io_addr_assert::<$type_name>(offset);
+>> +
+>> +            // SAFETY: By the type invariant `addr` is a valid address for MMIO operations.
+>> +            unsafe { bindings::$name(value, addr as _, ) }
+>> +        }
+>> +
+>> +        /// Write IO data from a given offset.
+>> +        ///
+>> +        /// Bound checks are performed on runtime, it fails if the offset (plus the type size) is
+>> +        /// out of bounds.
+>> +        $(#[$attr])*
+>> +        pub fn $try_name(&self, value: $type_name, offset: usize) -> Result {
+>> +            let addr = self.io_addr::<$type_name>(offset)?;
+>> +
+>> +            // SAFETY: By the type invariant `addr` is a valid address for MMIO operations.
+>> +            unsafe { bindings::$name(value, addr as _) }
+>> +            Ok(())
+>> +        }
+>> +    };
+>> +}
+>> +
+>> +impl<const SIZE: usize> Io<SIZE> {
+>> +    /// Converts an `IoRaw` into an `Io` instance, providing the accessors to the MMIO mapping.
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// Callers must ensure that `addr` is the start of a valid I/O mapped memory region of size
+>> +    /// `maxsize`.
+>> +    pub unsafe fn from_raw(raw: &IoRaw<SIZE>) -> &Self {
+>> +        // SAFETY: `Io` is a transparent wrapper around `IoRaw`.
+>> +        unsafe { &*core::ptr::from_ref(raw).cast() }
+>> +    }
+>> +
+>> +    /// Returns the base address of this mapping.
+>> +    #[inline]
+>> +    pub fn addr(&self) -> usize {
+>> +        self.0.addr()
+>> +    }
+>> +
+>> +    /// Returns the maximum size of this mapping.
+>> +    #[inline]
+>> +    pub fn maxsize(&self) -> usize {
+>> +        self.0.maxsize()
+>> +    }
+>> +
+>> +    #[inline]
+>> +    const fn offset_valid<U>(offset: usize, size: usize) -> bool {
+>> +        let type_size = core::mem::size_of::<U>();
+>> +        if let Some(end) = offset.checked_add(type_size) {
+>> +            end <= size && offset % type_size == 0
+>> +        } else {
+>> +            false
+>> +        }
+>> +    }
+>> +
+>> +    #[inline]
+>> +    fn io_addr<U>(&self, offset: usize) -> Result<usize> {
+>> +        if !Self::offset_valid::<U>(offset, self.maxsize()) {
+>> +            return Err(EINVAL);
+>> +        }
+>> +
+>> +        // Probably no need to check, since the safety requirements of `Self::new` guarantee that
+>> +        // this can't overflow.
+>> +        self.addr().checked_add(offset).ok_or(EINVAL)
+>> +    }
+>> +
+>> +    #[inline]
+>> +    fn io_addr_assert<U>(&self, offset: usize) -> usize {
+>> +        build_assert!(Self::offset_valid::<U>(offset, SIZE));
+>> +
+>> +        self.addr() + offset
+>> +    }
+>> +
+>> +    define_read!(readb, try_readb, u8);
+>> +    define_read!(readw, try_readw, u16);
+>> +    define_read!(readl, try_readl, u32);
+>> +    define_read!(
+>> +        #[cfg(CONFIG_64BIT)]
+>> +        readq,
+>> +        try_readq,
+>> +        u64
+>> +    );
+>> +
+>> +    define_read!(readb_relaxed, try_readb_relaxed, u8);
+>> +    define_read!(readw_relaxed, try_readw_relaxed, u16);
+>> +    define_read!(readl_relaxed, try_readl_relaxed, u32);
+>> +    define_read!(
+>> +        #[cfg(CONFIG_64BIT)]
+>> +        readq_relaxed,
+>> +        try_readq_relaxed,
+>> +        u64
+>> +    );
+>> +
+>> +    define_write!(writeb, try_writeb, u8);
+>> +    define_write!(writew, try_writew, u16);
+>> +    define_write!(writel, try_writel, u32);
+>> +    define_write!(
+>> +        #[cfg(CONFIG_64BIT)]
+>> +        writeq,
+>> +        try_writeq,
+>> +        u64
+>> +    );
+>> +
+>> +    define_write!(writeb_relaxed, try_writeb_relaxed, u8);
+>> +    define_write!(writew_relaxed, try_writew_relaxed, u16);
+>> +    define_write!(writel_relaxed, try_writel_relaxed, u32);
+>> +    define_write!(
+>> +        #[cfg(CONFIG_64BIT)]
+>> +        writeq_relaxed,
+>> +        try_writeq_relaxed,
+>> +        u64
+>> +    );
+>> +}
+>> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+>> index 5702ce32ec8e..6c836ab73771 100644
+>> --- a/rust/kernel/lib.rs
+>> +++ b/rust/kernel/lib.rs
+>> @@ -79,6 +79,7 @@
+>>  
+>>  #[doc(hidden)]
+>>  pub use bindings;
+>> +pub mod io;
+>>  pub use macros;
+>>  pub use uapi;
+>>  
+>> -- 
+>> 2.47.1
+>>
+> 
+> 
 
-The test execution should result in something like:
-```
-[20:04:35] =============== longest-symbol (4 subtests) ================
-[20:04:35] [PASSED] test_longest_symbol
-[20:04:35] [PASSED] test_longest_symbol_kallsyms
-[20:04:35] ================= [PASSED] longest-symbol ==================
-[20:04:35] ============================================================
-[20:04:35] Testing complete. Ran 4 tests: passed: 4
-```
----
- arch/x86/tools/insn_decoder_test.c |  3 +-
- lib/Kconfig.debug                  |  9 ++++
- lib/Makefile                       |  2 +
- lib/longest_symbol_kunit.c         | 84 ++++++++++++++++++++++++++++++
- 4 files changed, 97 insertions(+), 1 deletion(-)
- create mode 100644 lib/longest_symbol_kunit.c
-
-diff --git a/arch/x86/tools/insn_decoder_test.c b/arch/x86/tools/insn_decoder_test.c
-index 472540aeabc2..6c2986d2ad11 100644
---- a/arch/x86/tools/insn_decoder_test.c
-+++ b/arch/x86/tools/insn_decoder_test.c
-@@ -10,6 +10,7 @@
- #include <assert.h>
- #include <unistd.h>
- #include <stdarg.h>
-+#include <linux/kallsyms.h>
- 
- #define unlikely(cond) (cond)
- 
-@@ -106,7 +107,7 @@ static void parse_args(int argc, char **argv)
- 	}
- }
- 
--#define BUFSIZE 256
-+#define BUFSIZE (256 + KSYM_NAME_LEN)
- 
- int main(int argc, char **argv)
- {
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 1af972a92d06..62d43aa9e8f0 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -2838,6 +2838,15 @@ config FORTIFY_KUNIT_TEST
- 	  by the str*() and mem*() family of functions. For testing runtime
- 	  traps of FORTIFY_SOURCE, see LKDTM's "FORTIFY_*" tests.
- 
-+config LONGEST_SYM_KUNIT_TEST
-+	tristate "Test the longest symbol possible" if !KUNIT_ALL_TESTS
-+	depends on KUNIT && KPROBES
-+	default KUNIT_ALL_TESTS
-+	help
-+	  Tests the longest symbol possible
-+
-+	  If unsure, say N.
-+
- config HW_BREAKPOINT_KUNIT_TEST
- 	bool "Test hw_breakpoint constraints accounting" if !KUNIT_ALL_TESTS
- 	depends on HAVE_HW_BREAKPOINT
-diff --git a/lib/Makefile b/lib/Makefile
-index d5cfc7afbbb8..e8fec9defec2 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -393,6 +393,8 @@ obj-$(CONFIG_FORTIFY_KUNIT_TEST) += fortify_kunit.o
- obj-$(CONFIG_CRC_KUNIT_TEST) += crc_kunit.o
- obj-$(CONFIG_SIPHASH_KUNIT_TEST) += siphash_kunit.o
- obj-$(CONFIG_USERCOPY_KUNIT_TEST) += usercopy_kunit.o
-+obj-$(CONFIG_LONGEST_SYM_KUNIT_TEST) += longest_symbol_kunit.o
-+CFLAGS_longest_symbol_kunit.o += $(call cc-disable-warning, missing-prototypes)
- 
- obj-$(CONFIG_GENERIC_LIB_DEVMEM_IS_ALLOWED) += devmem_is_allowed.o
- 
-diff --git a/lib/longest_symbol_kunit.c b/lib/longest_symbol_kunit.c
-new file mode 100644
-index 000000000000..2a2dd1151097
---- /dev/null
-+++ b/lib/longest_symbol_kunit.c
-@@ -0,0 +1,84 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Test the longest symbol length. Execute with:
-+ *  ./tools/testing/kunit/kunit.py run longest-symbol
-+ *  --arch=x86_64 --kconfig_add CONFIG_KPROBES=y --kconfig_add CONFIG_MODULES=y
-+ *  --kconfig_add CONFIG_RETPOLINE=n --kconfig_add CONFIG_CFI_CLANG=n
-+ *  --kconfig_add CONFIG_MITIGATION_RETPOLINE=n
-+ */
-+
-+#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-+
-+#include <kunit/test.h>
-+#include <linux/stringify.h>
-+#include <linux/kprobes.h>
-+#include <linux/kallsyms.h>
-+
-+#define DI(name) s##name##name
-+#define DDI(name) DI(n##name##name)
-+#define DDDI(name) DDI(n##name##name)
-+#define DDDDI(name) DDDI(n##name##name)
-+#define DDDDDI(name) DDDDI(n##name##name)
-+
-+#define PLUS1(name) __PASTE(name, e)
-+
-+/*Generate a symbol whose name length is 511 */
-+#define LONGEST_SYM_NAME  DDDDDI(g1h2i3j4k5l6m7n)
-+
-+#define RETURN_LONGEST_SYM 0xAAAAA
-+
-+noinline int LONGEST_SYM_NAME(void);
-+noinline int LONGEST_SYM_NAME(void)
-+{
-+	return RETURN_LONGEST_SYM;
-+}
-+
-+_Static_assert(sizeof(__stringify(LONGEST_SYM_NAME)) == KSYM_NAME_LEN,
-+"Incorrect symbol length found. Expected KSYM_NAME_LEN: "
-+__stringify(KSYM_NAME) ", but found: "
-+__stringify(sizeof(LONGEST_SYM_NAME)));
-+
-+static void test_longest_symbol(struct kunit *test)
-+{
-+	KUNIT_EXPECT_EQ(test, RETURN_LONGEST_SYM, LONGEST_SYM_NAME());
-+};
-+
-+static void test_longest_symbol_kallsyms(struct kunit *test)
-+{
-+	unsigned long (*kallsyms_lookup_name)(const char *name);
-+	static int (*longest_sym)(void);
-+
-+	struct kprobe kp = {
-+		.symbol_name = "kallsyms_lookup_name",
-+	};
-+
-+	if (register_kprobe(&kp) < 0) {
-+		pr_info("%s: kprobe not registered\n", __func__);
-+		KUNIT_FAIL(test, "test_longest_symbol kallsyms: kprobe not registered\n");
-+		return;
-+	}
-+
-+	kunit_warn(test, "test_longest_symbol kallsyms: kprobe registered\n");
-+	kallsyms_lookup_name = (unsigned long (*)(const char *name))kp.addr;
-+	unregister_kprobe(&kp);
-+
-+	longest_sym =
-+		(void *) kallsyms_lookup_name(__stringify(LONGEST_SYM_NAME));
-+	KUNIT_EXPECT_EQ(test, RETURN_LONGEST_SYM, longest_sym());
-+};
-+
-+static struct kunit_case longest_symbol_test_cases[] = {
-+	KUNIT_CASE(test_longest_symbol),
-+	KUNIT_CASE(test_longest_symbol_kallsyms),
-+	{}
-+};
-+
-+static struct kunit_suite longest_symbol_test_suite = {
-+	.name = "longest-symbol",
-+	.test_cases = longest_symbol_test_cases,
-+};
-+kunit_test_suite(longest_symbol_test_suite);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("Test the longest symbol length");
-+MODULE_AUTHOR("Sergio González Collado");
-
-base-commit: a86bf2283d2c9769205407e2b54777c03d012939
--- 
-2.39.2
+~~ Lina
 
