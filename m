@@ -1,40 +1,40 @@
 Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E8E1F55EB;
-	Sun,  2 Feb 2025 22:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 238A61D5143;
+	Sun,  2 Feb 2025 22:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.63.210.85
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738536151; cv=none; b=f+xpg4mId60NVJl+z9XBMoRC9BONBHf55ZyK8lkxXMa0QdcOz9le/gOmXFTBwBOoCmHINoZLbwFvJtX57R1KbAbgPsVtxqi4yVP2S7G04M9WTYxM9A/3kE7LctBBUIIzs49O3UFjRKTpQaveC/4LiPFycf4dW4BM81MCHbpUb0U=
+	t=1738536361; cv=none; b=T9VIA9sor/knXYpVI+4nDwFwGAtC5Ye0h38h8p7vkwaZX4hrmtOIVrT/K699l0AGyg0fMQKLPA7EtObdlyzi5NjgQi5iiZNOuQW8Zn3Zme54o14Ei8n9jrTga5TSTJAmqZdXvqq2jwRdncuiiYaT1YeIXfDGZYtdN2Xn3JgdKUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738536151; c=relaxed/simple;
-	bh=qSNoil9KM8+5HeFGOJ9HYPvfydxNnPOxjUHmJ65r2fY=;
+	s=arc-20240116; t=1738536361; c=relaxed/simple;
+	bh=PzayQFwcozc8L/udxMBMWG37Zz+x0bU+o+OQIRR522U=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a6HN/RK346qrYGmugDT25d4Jnj2/yRwLBkGucaClzVZPXyN0v8mt7TTTZBLlLIFjdIomzD9pF3KABv4XqAX8m6x6i2O8jskPlRZnxC9BYaZmk/rCVuzkIPOuYDVVigOZes+9fNJ1TpI24+mbZEgX4MZrhns00qfPRp6eqKfzfv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net; spf=pass smtp.mailfrom=asahilina.net; dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b=WQ3Ic9mU; arc=none smtp.client-ip=212.63.210.85
+	 In-Reply-To:Content-Type; b=uZk5AH+u1k0MVgvLunAudge3TyqPMRrlVJH0qLRrpkcvTjMXedXHUAH6U0WVJVYImmH8Xw3cUqHPaCbecbFaF0u74E8CqktLfOplmNbZdKwXhcKLBjt5mqjl31+TEyRGqGDjlQku5b57zYdFim4qGeqBtRGDRsQCw8NT1Q58f3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net; spf=pass smtp.mailfrom=asahilina.net; dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b=Oyn7XYae; arc=none smtp.client-ip=212.63.210.85
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asahilina.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b="WQ3Ic9mU"
+	dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b="Oyn7XYae"
 Received: from [127.0.0.1] (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
 	(No client certificate requested)
 	(Authenticated sender: lina@asahilina.net)
-	by mail.marcansoft.com (Postfix) with ESMTPSA id 42AE842657;
-	Sun,  2 Feb 2025 22:42:21 +0000 (UTC)
+	by mail.marcansoft.com (Postfix) with ESMTPSA id 4D93B42657;
+	Sun,  2 Feb 2025 22:45:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
-	s=default; t=1738536144;
-	bh=qSNoil9KM8+5HeFGOJ9HYPvfydxNnPOxjUHmJ65r2fY=;
+	s=default; t=1738536357;
+	bh=PzayQFwcozc8L/udxMBMWG37Zz+x0bU+o+OQIRR522U=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=WQ3Ic9mURPvoG/AaMLD4RQFLDALdZS6SmEi8tZsq7afD8QWjRbVsHhy16voA/pgcJ
-	 UpCtZ1Ylf/u1RBjNVp2lBrZnof0QQLwrSYasU/HZGVWnhf89kMtHcyGghaI8PK9Pb3
-	 L2fxM+EFZ+Kqwo+d9apSDjkSSP9aret6Adr94Pve4pj8vNqBMGTNLZtn/1u46EZVAw
-	 TUr2GKM9N4X1/eq0FBfrnYmCpaii1RO5S0vgkqDNCzlsetw4/vYGic/XWb4YOW8pWu
-	 S/YnPf3Nop1drymu6x3HoE0gXippHt1N6T5sdw3iujG95+Zy29SQtY7S7Jt08Lsx1J
-	 YxImPiSOaPmTw==
-Message-ID: <e271d8a1-493d-40b4-8328-2146eef26d0d@asahilina.net>
-Date: Mon, 3 Feb 2025 07:42:19 +0900
+	b=Oyn7XYaemt2uzCQjvTr0yB4GPeXfjozPfleI/c63uxvgpR3cASzUcQTbnliS38bn4
+	 2eKN7k35+DFp4+Mc7m4Uwnd7rdfoPp/wTx3zxeJGN7Eth8EWE1qm4vRktYhsNTpmEk
+	 KR8vZ+FUno8PAr9EkCt6V2bDdVtEFyB6sDDdAyGiWdSozk6iRxpEsiI3nzXgmzTqP1
+	 Q770eDl2IF/EK42Ndfv0Gx4I7koXYuTKjvOPinkEXOu7WqKguewXIXHdZPhgbthTgx
+	 aoX9Ef84FGPbgo0SCqtdUPmPRCpFrbpLYh3h1XRGmUeXDwmlsH5eVatGOlFeR0rCbO
+	 wCPpajRav75PA==
+Message-ID: <b5538fda-1926-4280-8e46-e0ff299a4f72@asahilina.net>
+Date: Mon, 3 Feb 2025 07:45:54 +0900
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -42,130 +42,193 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 07/16] rust: add `io::{Io, IoRaw}` base types
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
- ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- tmgross@umich.edu, a.hindborg@samsung.com, aliceryhl@google.com,
- airlied@gmail.com, fujita.tomonori@gmail.com, pstanner@redhat.com,
- ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org,
- daniel.almeida@collabora.com, saravanak@google.com, dirk.behme@de.bosch.com,
- j@jannau.net, fabien.parent@linaro.org, chrisi.schrefl@gmail.com,
- paulmck@kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
- devicetree@vger.kernel.org, rcu@vger.kernel.org
-References: <20241212163357.35934-1-dakr@kernel.org>
- <20241212163357.35934-8-dakr@kernel.org> <Z2BTSbOjWa8R29i5@cassiopeiae>
- <e8da15f0-5b97-4569-842c-891cdf886978@asahilina.net>
- <Z5_vlx1BZuJGOvK7@pollux>
+Subject: Re: [PATCH v6 2/3] rust: io: mem: add a generic iomem abstraction
+To: Daniel Almeida <daniel.almeida@collabora.com>, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.mco, benno.lossin@proton.me, a.hindborg@kernel.org,
+ aliceryhl@google.com, tmgross@umich.edu, gregkh@linuxfoundation.org,
+ rafael@kernel.org, dakr@kernel.org, boris.brezillon@collabora.com,
+ robh@kernel.org
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250130220529.665896-1-daniel.almeida@collabora.com>
+ <20250130220529.665896-3-daniel.almeida@collabora.com>
 Content-Language: en-US
 From: Asahi Lina <lina@asahilina.net>
-In-Reply-To: <Z5_vlx1BZuJGOvK7@pollux>
+In-Reply-To: <20250130220529.665896-3-daniel.almeida@collabora.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
 
-On 2/3/25 7:20 AM, Danilo Krummrich wrote:
-> Hi Lina,
+On 1/31/25 7:05 AM, Daniel Almeida wrote:
+> Add a generic iomem abstraction to safely read and write ioremapped
+> regions.
 > 
-> On Mon, Feb 03, 2025 at 06:19:57AM +0900, Asahi Lina wrote:
+> The reads and writes are done through IoRaw, and are thus checked either
+> at compile-time, if the size of the region is known at that point, or at
+> runtime otherwise.
 > 
->>
->>
->> On 12/17/24 1:20 AM, Danilo Krummrich wrote:
->>> On Thu, Dec 12, 2024 at 05:33:38PM +0100, Danilo Krummrich wrote:
->>>> +/// IO-mapped memory, starting at the base address @addr and spanning @maxlen bytes.
->>>> +///
->>>> +/// The creator (usually a subsystem / bus such as PCI) is responsible for creating the
->>>> +/// mapping, performing an additional region request etc.
->>>> +///
->>>> +/// # Invariant
->>>> +///
->>>> +/// `addr` is the start and `maxsize` the length of valid I/O mapped memory region of size
->>>> +/// `maxsize`.
->>>> +///
->>>> +/// # Examples
->>>> +///
->>>> +/// ```no_run
->>>> +/// # use kernel::{bindings, io::{Io, IoRaw}};
->>>> +/// # use core::ops::Deref;
->>>> +///
->>>> +/// // See also [`pci::Bar`] for a real example.
->>>> +/// struct IoMem<const SIZE: usize>(IoRaw<SIZE>);
->>>> +///
->>>> +/// impl<const SIZE: usize> IoMem<SIZE> {
->>>> +///     /// # Safety
->>>> +///     ///
->>>> +///     /// [`paddr`, `paddr` + `SIZE`) must be a valid MMIO region that is mappable into the CPUs
->>>> +///     /// virtual address space.
->>>> +///     unsafe fn new(paddr: usize) -> Result<Self>{
->>>> +///         // SAFETY: By the safety requirements of this function [`paddr`, `paddr` + `SIZE`) is
->>>> +///         // valid for `ioremap`.
->>>> +///         let addr = unsafe { bindings::ioremap(paddr as _, SIZE.try_into().unwrap()) };
->>
->> This is a problematic API. ioremap() does not work on some platforms
->> like Apple Silicon. Instead, you have to use ioremap_np() for most devices.
->>
->> Please add a bindings::resource abstraction and use that to construct
->> IoMem. Then, you can check the flags for
->> bindings::IORESOURCE_MEM_NONPOSTED and use the appropriate function,
->> like this:
+> Non-exclusive access to the underlying memory region is made possible to
+> cater to cases where overlapped regions are unavoidable.
 > 
-> This is just a very simplified example of how to use `IoRaw` and `Io` base
-> types in the scope of an example section within a doc-comment.
+> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+> ---
+>  rust/kernel/io.rs     |   1 +
+>  rust/kernel/io/mem.rs | 125 ++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 126 insertions(+)
+>  create mode 100644 rust/kernel/io/mem.rs
 > 
-> There is an actual `IoMem` implementation including a struct resource
-> abstraction [1] from Daniel though. Maybe you want to have a look at this
-> instead.
-> 
-> [1] https://lore.kernel.org/rust-for-linux/20250130220529.665896-1-daniel.almeida@collabora.com/
-> 
+> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+> index 566d8b177e01..9ce3482b5ecd 100644
+> --- a/rust/kernel/io.rs
+> +++ b/rust/kernel/io.rs
+> @@ -7,6 +7,7 @@
+>  use crate::error::{code::EINVAL, Result};
+>  use crate::{bindings, build_assert};
+>  
+> +pub mod mem;
+>  pub mod resource;
+>  
+>  /// Raw representation of an MMIO region.
+> diff --git a/rust/kernel/io/mem.rs b/rust/kernel/io/mem.rs
+> new file mode 100644
+> index 000000000000..f87433ed858e
+> --- /dev/null
+> +++ b/rust/kernel/io/mem.rs
+> @@ -0,0 +1,125 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Generic memory-mapped IO.
+> +
+> +use core::ops::Deref;
+> +
+> +use crate::device::Device;
+> +use crate::devres::Devres;
+> +use crate::io::resource::Region;
+> +use crate::io::resource::Resource;
+> +use crate::io::Io;
+> +use crate::io::IoRaw;
+> +use crate::prelude::*;
+> +
+> +/// An exclusive memory-mapped IO region.
+> +///
+> +/// # Invariants
+> +///
+> +/// - ExclusiveIoMem has exclusive access to the underlying `iomem`.
+> +pub struct ExclusiveIoMem<const SIZE: usize> {
+> +    /// The region abstraction. This represents exclusive access to the
+> +    /// range represented by the underlying `iomem`.
+> +    ///
+> +    /// It's placed first to ensure that the region is released before it is
+> +    /// unmapped as a result of the drop order.
+> +    #[allow(dead_code)]
+> +    region: Region,
+> +    /// The underlying `IoMem` instance.
+> +    iomem: IoMem<SIZE>,
+> +}
+> +
+> +impl<const SIZE: usize> ExclusiveIoMem<SIZE> {
+> +    /// Creates a new `ExclusiveIoMem` instance.
+> +    pub(crate) fn ioremap(resource: &Resource) -> Result<Self> {
+> +        let iomem = IoMem::ioremap(resource)?;
+> +
+> +        let start = resource.start();
+> +        let size = resource.size();
+> +        let name = resource.name();
+> +
+> +        let region = resource
+> +            .request_mem_region(start, size, name)
+> +            .ok_or(EBUSY)?;
+> +
+> +        let iomem = ExclusiveIoMem { iomem, region };
+> +
+> +        Ok(iomem)
+> +    }
+> +
+> +    pub(crate) fn new(resource: &Resource, device: &Device) -> Result<Devres<Self>> {
+> +        let iomem = Self::ioremap(resource)?;
+> +        let devres = Devres::new(device, iomem, GFP_KERNEL)?;
+> +
+> +        Ok(devres)
+> +    }
+> +}
+> +
+> +impl<const SIZE: usize> Deref for ExclusiveIoMem<SIZE> {
+> +    type Target = Io<SIZE>;
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        &*self.iomem
+> +    }
+> +}
+> +
+> +/// A generic memory-mapped IO region.
+> +///
+> +/// Accesses to the underlying region is checked either at compile time, if the
+> +/// region's size is known at that point, or at runtime otherwise.
+> +///
+> +/// # Invariants
+> +///
+> +/// `IoMem` always holds an `IoRaw` inststance that holds a valid pointer to the
+> +/// start of the I/O memory mapped region.
+> +pub struct IoMem<const SIZE: usize = 0> {
+> +    io: IoRaw<SIZE>,
+> +}
+> +
+> +impl<const SIZE: usize> IoMem<SIZE> {
+> +    fn ioremap(resource: &Resource) -> Result<Self> {
+> +        let size = resource.size();
+> +        if size == 0 {
+> +            return Err(EINVAL);
+> +        }
+> +
+> +        let res_start = resource.start();
+> +
+> +        // SAFETY:
+> +        // - `res_start` and `size` are read from a presumably valid `struct resource`.
+> +        // - `size` is known not to be zero at this point.
+> +        let addr = unsafe { bindings::ioremap(res_start, size as kernel::ffi::c_ulong) };
 
-That's what I get for skimming too much... I thought this had the actual
-implementation. Sorry!
+This does not work for all platforms. Some, like Apple platforms,
+require ioremap_np(). You should check for the
+`IORESOURCE_MEM_NONPOSTED` resource flag and use the appropriate
+function, like this (from an older spin of this code):
 
->>
->> https://github.com/AsahiLinux/linux/blob/fce34c83f1dca5b10cc2c866fd8832a362de7974/rust/kernel/io_mem.rs#L152
->>
->>
->>>> +///         if addr.is_null() {
->>>> +///             return Err(ENOMEM);
->>>> +///         }
->>>> +///
->>>> +///         Ok(IoMem(IoRaw::new(addr as _, SIZE)?))
->>>> +///     }
->>>> +/// }
->>>> +///
->>>> +/// impl<const SIZE: usize> Drop for IoMem<SIZE> {
->>>> +///     fn drop(&mut self) {
->>>> +///         // SAFETY: `self.0.addr()` is guaranteed to be properly mapped by `Self::new`.
->>>> +///         unsafe { bindings::iounmap(self.0.addr() as _); };
->>>> +///     }
->>>> +/// }
->>>> +///
->>>> +/// impl<const SIZE: usize> Deref for IoMem<SIZE> {
->>>> +///    type Target = Io<SIZE>;
->>>> +///
->>>> +///    fn deref(&self) -> &Self::Target {
->>>> +///         // SAFETY: The memory range stored in `self` has been properly mapped in `Self::new`.
->>>> +///         unsafe { Io::from_raw(&self.0) }
->>>> +///    }
->>>> +/// }
->>>> +///
->>>> +///# fn no_run() -> Result<(), Error> {
->>>> +/// // SAFETY: Invalid usage for example purposes.
->>>> +/// let iomem = unsafe { IoMem::<{ core::mem::size_of::<u32>() }>::new(0xBAAAAAAD)? };
->>>> +/// iomem.writel(0x42, 0x0);
->>>> +/// assert!(iomem.try_writel(0x42, 0x0).is_ok());
->>>> +/// assert!(iomem.try_writel(0x42, 0x4).is_err());
->>>> +/// # Ok(())
->>>> +/// # }
->>>> +/// ```
->>>> +#[repr(transparent)]
->>>> +pub struct Io<const SIZE: usize = 0>(IoRaw<SIZE>);
-> 
+https://github.com/AsahiLinux/linux/blob/fce34c83f1dca5b10cc2c866fd8832a362de7974/rust/kernel/io_mem.rs#L166C36-L166C70
+
+> +        if addr.is_null() {
+> +            return Err(ENOMEM);
+> +        }
+> +
+> +        let io = IoRaw::new(addr as usize, size as usize)?;
+> +        let io = IoMem { io };
+> +
+> +        Ok(io)
+> +    }
+> +
+> +    /// Creates a new `IoMem` instance.
+> +    pub(crate) fn new(resource: &Resource, device: &Device) -> Result<Devres<Self>> {
+> +        let io = Self::ioremap(resource)?;
+> +        let devres = Devres::new(device, io, GFP_KERNEL)?;
+> +
+> +        Ok(devres)
+> +    }
+> +}
+> +
+> +impl<const SIZE: usize> Drop for IoMem<SIZE> {
+> +    fn drop(&mut self) {
+> +        // SAFETY: Safe as by the invariant of `Io`.
+> +        unsafe { bindings::iounmap(self.io.addr() as *mut core::ffi::c_void) }
+> +    }
+> +}
+> +
+> +impl<const SIZE: usize> Deref for IoMem<SIZE> {
+> +    type Target = Io<SIZE>;
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        // SAFETY: Safe as by the invariant of `IoMem`.
+> +        unsafe { Io::from_raw(&self.io) }
+> +    }
+> +}
 
 ~~ Lina
 
