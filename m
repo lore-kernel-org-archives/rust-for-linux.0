@@ -1,63 +1,64 @@
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0958535DC;
-	Sun,  2 Feb 2025 11:27:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8AF149C4D;
+	Sun,  2 Feb 2025 12:20:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738495645; cv=none; b=l6jOnIr8FbdB7K9WglwAjx0QHmmM0H7kKi0Fg2nrF4nTZWbjdtgXyQg9ZeN9wUVXR2Y7Ww9IkLaylID3ndQRKgHEm8RoFt7kjLZHCGYCrz6m1904/kf2IbGMiNl69fUmkFut7eV9f5NvgLNo571lQcZJ4f3ZMidBB/IJlVVzazc=
+	t=1738498856; cv=none; b=syuOzDm56f7DwuqDHmhelHwUtGHKaP5y8mu+8jfg/oMim4eNx2a/XVlMVSN0Qku0NUDysopNWm665jSZgrRG2Opkb4NBX/tod4Kk86p/IuGGqDkN6QyeAtX7uO6TqaUolGzpkoq+u9WCb4NTEd9X3M0uEddsZznFj/H3ir/rDbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738495645; c=relaxed/simple;
-	bh=hf+IdUFrZOQeQVFus+InFVRfeR5NNqXLK663w0T7MYw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=sau1sond/StN8nikK6M7O4/BXnHiKX6RufNKoe8KxLtyyI4Ns46rtMdyrLkLpXEbA/wWp7SXLGg+27XCo1Mm1+ODGX9HMPtS7Czr8rnAGhVGEURt6JrbnQNaG2J3BNAv4ZayPAdhyR908H2ur4nmYdGpTppHc914lfGUlUSgH+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cw9aeaKD; arc=none smtp.client-ip=209.85.219.47
+	s=arc-20240116; t=1738498856; c=relaxed/simple;
+	bh=s849DsnFTggZktapb0+YgYRgRzElg/Ogh4dTWdMzKNQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Lj5rNUalMYq6D7BNmKjFJh1bX7ai4LhgfnP6l6FAp7Nl8bV4OO0Su6pqRtFPniM2680gYHyyb8sHKSo4qgKq2SCE8iIjhWJkryFExdAj4/pJ6uc9TT/AonRBmxNmZN5Mimu+ax0S+QFL+sjhrcTh3s2JXheOwBKVEYwLY/xaazA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cgrk+Zeq; arc=none smtp.client-ip=209.85.160.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cw9aeaKD"
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6dd0d09215aso26087056d6.2;
-        Sun, 02 Feb 2025 03:27:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cgrk+Zeq"
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-46fd4bf03cbso45688021cf.0;
+        Sun, 02 Feb 2025 04:20:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738495642; x=1739100442; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0/6zeTYuhLFER6O/8ziKsJwSTb7O7aOJg9sZH7UL3Kk=;
-        b=cw9aeaKDwGxydpmacy+oguDsSTosDEDM6l62jzjrzpWm9dbudHncwIFgY9nEERPIEW
-         zK1yaNnYD2PtFEn0AlCwr0qkZ6ybldpT9Wla37hRI94vYQ4qbyxlCres6/ivaz0lZLOp
-         U9YrscaKx7oSJ420mebN3irLR4sn1BURavsB9C61gjXN/aiKzbEUyMooiBe8UOPgPnXM
-         y40rqGGyxDUt6xwVdMIOe5o85xsuiibeW2D6Ns5IxLDXe+AmMVfdqX+eYT6IfF6BI1+J
-         XWLuaXP4ltZ21NBa38zTK61oc1jO4v+QLsNS3wTg1L896r2fXpbvWpp6IrSmFVs977Hy
-         hCKA==
+        d=gmail.com; s=20230601; t=1738498853; x=1739103653; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0UZ/jhKzcMPvIsq154QirnMhNKke2d9TEFteb1izy9I=;
+        b=cgrk+ZeqwMP8aotaRGgrmtWGH5kcvxxMe/y4YW6/E+9aJPp6wlU20aLtPUeE7e7G7V
+         shvczgtSL4vDEk9Hxb0foSla8MCARyGptoSpJq0rfjRFNWpBiVxNAD91GOWwZQrzBZyl
+         rbNcGDl3eiqst9NHQzvGt1r0X/g7/hgLNp3c6pl5wou0FYAHjhgQihDENxEW8ByAOgrK
+         4YZxkxyhSZUlk9zHCHjYSB3blzsdLMu7RkTLF3mIhluvsP1NvhXwd5SjM95/05ubIP90
+         SQDE1pRf9TfwZh+se2nXUaqc1vDp1yTKjDW0qXoewL/SIC8wKA1dkk5AjLr8sMEENb4G
+         H23Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738495642; x=1739100442;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1738498853; x=1739103653;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=0/6zeTYuhLFER6O/8ziKsJwSTb7O7aOJg9sZH7UL3Kk=;
-        b=guqOy/gTlQLLtMcNqnXQTGDYaK9c3ktNJtS0MNe07qwtbJF73pTcLmbsHc7ntaAdBY
-         nq8MwH3hH51auysKmzc5yPwNFvRAqqv+A1YTqTOyTXD0cEhpb4R+sVJ6OduvI0SOFPqe
-         Mrtu16lEy8YFJEYGN2a8mIrgu3EX6CIhxxiWFdmnXE4jtY6SN2bDKEZYlXHbG5DdRhGh
-         luvrb5QNGTAe4SJD3u6WDwluN+a+duxCi+Wc1XJ7VWnc881fDfiTTZkpx43ovHCFWV/+
-         E/WRBZm4Qob5A06dQrMNsJLhT3NDN55MJQgrvdaMBpYEKf/mQ2lpUsio5Vf3fGkwR6UR
-         s+Tg==
-X-Forwarded-Encrypted: i=1; AJvYcCXaW6CKy7yimXwHq0XX1h6jcU5EE988RuGGJ8SrUOiQ3P8u1gj9bGEldxflEZ3LKtaa3TEQoo7dsjHPrTE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+HibhTz0TlokO/PgJrXMCfgghYfQ5E0L3pWBdx5YpOSTVjb0A
-	mtBvUtv8Owk0uPiGDgCXRMVoF68KWEGPdEXkRxWBd1cHFIi6ZNsL
-X-Gm-Gg: ASbGncvWdl+1m84/b1/DCHzIZ1TrEqKJoHEgyR64xKCaT1jgowXZVF1aIXlr4nSgOMH
-	uoX2kPodunjRbii3F0Idw8swlekZUiUgT6EwwI3py1p8ER+qEmYmzxAItSIOukOR3trlNNEq6Ia
-	TIkaI6QUD9blocj+B+Qgdwf8NZkRpUw+i/In2BqYHPPJcB/KI/8OAsJH77oipQX/8JB6D0N7Jt2
-	ayFB9thP0y2aFn9Oh3NiBnhp0Tioj8h/2EC7hzPsqZTmNQQXx+FpdheXFk9kqBXVvNVehYTnJd6
-	R1KFGElbr7zE5hfnUxTHRIsWUjTMg8Oyeh/eyd7CUd4CzGYfdbwG
-X-Google-Smtp-Source: AGHT+IHPTbUGcbI3TYP8wdW141uRzBTOQHDtibuTNsLaXahLCL3ZDpdz7xxCcTX5U1PS3xy7VE3Kgw==
-X-Received: by 2002:a05:6214:765:b0:6d8:9ead:c665 with SMTP id 6a1803df08f44-6e243bfafb5mr280251686d6.27.1738495642569;
-        Sun, 02 Feb 2025 03:27:22 -0800 (PST)
-Received: from 159.1.168.192.in-addr.arpa ([2600:4041:5be7:7c00:f07f:fb14:288d:6f1e])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c00a8bbe58sm406388885a.2.2025.02.02.03.27.20
+        bh=0UZ/jhKzcMPvIsq154QirnMhNKke2d9TEFteb1izy9I=;
+        b=us7rCD5m2QnMQt4cA/eiyK9NDoCo/ym149TMIJKBYFijuMen+Ry5W8IC0sqUG4sP3F
+         6fNVFW4lNsMiRM8wCJ+RfT98e0km5eyS7oYVA6wTSMe+6sV7Bqhs6gafaWMIpsJmOdTl
+         2IbnVcMnC5v0zR5txRzfcTRxD3n//2xG9tW64eAdP2mhByjfpRpS2Z048pXLtYTKUYfl
+         rlLaPNpyr7lUc4AZdJmVwAAoS/n8eQ5WHo+Wve0v36wflNlIVL4GLkNNhtk1f5W8LXnx
+         chqI9QJEL7y59Jr97MiVC25sKZX8PQMvQDPAa91nfjbIDMNdyehNVsQxHBKCUbOAl5tK
+         S8+A==
+X-Forwarded-Encrypted: i=1; AJvYcCUUBc+f/eVQK5XVwqgyAQ7XIUnDIhi4Et8uAVZeBmTCbJC1qt8sAjPb+weqQj333zrPdguJyhDw/5LTwGg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxkpM/pT6z6dYLOtI6Z8YSKrWgj6hIs4R75FILe1U7b2lRiTxa
+	9SHvMycEUOobg2d1pax7LfQAUrWOUBmKWDvXgqekCaINZUPuG+vi
+X-Gm-Gg: ASbGncvnTXW12qaHAuYgWEzNYZyrsJ27j+cO5aAXHotjyx43kIHnxtrM4gqeTMNQsax
+	DzdAQyIQelz9Gr2X20MEm8Llc6Hmk4me/Ebhx1QuCpDf+ioo8esv6BFpIlC8PNGBf69cYhhFP7W
+	QzLx7o+KM0WYN8CU0Ton7tqHulVyuYbtTk+dI4eOqq94G0Btz2fX0dK7tN8nQxaNde2XzwsxJj7
+	8zKKDJPV1DG7/2nPzIQPLn7Qz1qmQN22fFm7sY4xb6jEze4pCu545UG67/9YMax6/StKBX57tbR
+	G9iD34vHvw/qb7zFcaT14jrAuJK1wnv0pREi5jY=
+X-Google-Smtp-Source: AGHT+IGH4BTmM2azLsNHKPXoYHpy3bWscnq6RtmhrPjJ9h4o5oWDhAdmx4zXoNzRByyAzgjhDY1uGw==
+X-Received: by 2002:a05:622a:5a05:b0:46d:fd08:7ca7 with SMTP id d75a77b69052e-46fd0a1d328mr280644241cf.6.1738498853012;
+        Sun, 02 Feb 2025 04:20:53 -0800 (PST)
+Received: from tamird-mac.local ([2600:4041:5be7:7c00:f07f:fb14:288d:6f1e])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46fdf1728efsm37700331cf.62.2025.02.02.04.20.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Feb 2025 03:27:22 -0800 (PST)
+        Sun, 02 Feb 2025 04:20:51 -0800 (PST)
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Sun, 02 Feb 2025 06:27:16 -0500
-Subject: [PATCH v2] rust: alloc: satisfy `aligned_alloc` requirements
+Subject: [PATCH v6 0/4] rust: replace kernel::str::CStr w/ core::ffi::CStr
+Date: Sun, 02 Feb 2025 07:20:45 -0500
+Message-Id: <20250202-cstr-core-v6-0-8469cd6d29fd@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -66,14 +67,14 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250202-aligned-alloc-v2-1-5af0b5fdd46f@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAJNWn2cC/3WMQQrCMBBFr1JmbSSZWLSuvId0kUzTdiBtSiJBK
- bm7sXtXn/fhvR2Si+wS3JsdosucOKwV8NQAzWadnOChMqDEVqJUwnieVjfU9YGEbZEs6lbTDaE
- 6W3Qjv4/es688c3qF+DnyWf3ef6WshBLUdeaqR012uDymxbA/U1igL6V8Ac9u+kyqAAAA
-X-Change-ID: 20250201-aligned-alloc-b52cb2353c82
-To: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
+X-B4-Tracking: v=1; b=H4sIAB1jn2cC/zXMQQqDMBBA0avIrDuSpJqqq96jdBHjWENrRiYiL
+ eLdGwpdPvj8HRJJoARdsYPQFlLgmGFPBfjJxQdhGLLBKFMrozT6tAp6FsKh6tvettooP0LuF6E
+ xvH+v2z17FJ5xnYTc/1CpRre6PtvalqZp1AUNbm5g4S09P9dFeOU4u/AqPc9wHF+EhcaUngAAA
+ A==
+X-Change-ID: 20250201-cstr-core-d4b9b69120cf
+To: Michal Rostecki <vadorovsky@protonmail.com>, 
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
  Benno Lossin <benno.lossin@proton.me>, 
  Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
@@ -82,57 +83,88 @@ Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
  Tamir Duberstein <tamird@gmail.com>
 X-Mailer: b4 0.15-dev
 
-The implementation added in commit dd09538fb409 ("rust: alloc: implement
-`Cmalloc` in module allocator_test") did not honor the documented
-requirements of `aligned_alloc`. These requirements may not be enforced
-on all systems, but they are on macOS. Ensure that alignment is at least
-`sizeof(void *)` and round size up to the nearest multiple of that
-value.
+This picks up from Michal Rostecki's work[0]. Per Michal's guidance I
+have omitted Co-authored tags, as the end result is quite different.
 
-Fixes: dd09538fb409 ("rust: alloc: implement `Cmalloc` in module allocator_test")
+Link: https://lore.kernel.org/rust-for-linux/20240819153656.28807-2-vadorovsky@protonmail.com/t/#u [0]
+Closes: https://github.com/Rust-for-Linux/linux/issues/1075
 
 Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 ---
+Changes in v6:
+- Split the work into several commits for ease of review.
+- Restore `{from,as}_char_ptr` to allow building on ARM (see commit
+  message).
+- Add `CStrExt` to `kernel::prelude`. (Alice Ryhl)
+- Remove `CStrExt::from_bytes_with_nul_unchecked_mut` and restore
+  `DerefMut for CString`. (Alice Ryhl)
+- Rename and hide `kernel::c_str!` to encourage use of C-String
+  literals.
+- Drop implementation and invocation changes in kunit.rs. (Trevor Gross)
+- Drop docs on `Display` impl. (Trevor Gross)
+- Rewrite docs in the style of the standard library.
+- Restore the `test_cstr_debug` unit tests to demonstrate that the
+  implementation has changed.
+
+Changes in v5:
+- Keep the `test_cstr_display*` unit tests.
+
+Changes in v4:
+- Provide the `CStrExt` trait with `display()` method, which returns a
+   `CStrDisplay` wrapper with `Display` implementation. This addresses
+   the lack of `Display` implementation for `core::ffi::CStr`.
+- Provide `from_bytes_with_nul_unchecked_mut()` method in `CStrExt`,
+   which might be useful and is going to prevent manual, unsafe casts.
+- Fix a typo (s/preffered/prefered/).
+
+Changes in v3:
+- Fix the commit message.
+- Remove redundant braces in `use`, when only one item is imported.
+
 Changes in v2:
-- Shorten some variable names. (Danilo Krummrich)
-- Replace shadowing alignment variable with a second call to
-  Layout::align. (Danilo Krummrich)
-- Link to v1: https://lore.kernel.org/r/20250201-aligned-alloc-v1-1-c99a73f3cbd4@gmail.com
----
- rust/kernel/alloc/allocator_test.rs | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/rust/kernel/alloc/allocator_test.rs b/rust/kernel/alloc/allocator_test.rs
-index e3240d16040b..69f79e246891 100644
---- a/rust/kernel/alloc/allocator_test.rs
-+++ b/rust/kernel/alloc/allocator_test.rs
-@@ -62,9 +62,21 @@ unsafe fn realloc(
-             ));
-         }
- 
-+        // According to `man aligned_alloc`:
-+        //
-+        // aligned_alloc() returns a NULL pointer and sets errno to EINVAL if size is not an
-+        // integral multiple of alignment, or if alignment is not a power of 2 at least as large as
-+        // sizeof(void *).
-+        let min_align = core::mem::size_of::<*const crate::ffi::c_void>();
-+        let (align, size) = if layout.align() < min_align {
-+            (min_align, layout.size().div_ceil(min_align) * min_align)
-+        } else {
-+            (layout.align(), layout.size())
-+        };
-+
-         // SAFETY: Returns either NULL or a pointer to a memory allocation that satisfies or
-         // exceeds the given size and alignment requirements.
--        let dst = unsafe { libc_aligned_alloc(layout.align(), layout.size()) } as *mut u8;
-+        let dst = unsafe { libc_aligned_alloc(align, size) } as *mut u8;
-         let dst = NonNull::new(dst).ok_or(AllocError)?;
- 
-         if flags.contains(__GFP_ZERO) {
+- Do not remove `c_str` macro. While it's preferred to use C-string
+   literals, there are two cases where `c_str` is helpful:
+   - When working with macros, which already return a Rust string literal
+     (e.g. `stringify!`).
+   - When building macros, where we want to take a Rust string literal as an
+     argument (for caller's convenience), but still use it as a C-string
+     internally.
+- Use Rust literals as arguments in macros (`new_mutex`, `new_condvar`,
+   `new_mutex`). Use the `c_str` macro to convert these literals to C-string
+   literals.
+- Use `c_str` in kunit.rs for converting the output of `stringify!` to a
+   `CStr`.
+- Remove `DerefMut` implementation for `CString`.
 
 ---
-base-commit: 89a010129b2a60185d34d7377ef8aec7fbb92e76
-change-id: 20250201-aligned-alloc-b52cb2353c82
+Tamir Duberstein (4):
+      rust: move BStr,CStr Display impls behind method
+      rust: replace `CStr` with `core::ffi::CStr`
+      rust: replace `kernel::c_str!` with C-Strings
+      rust: remove core::ffi::CStr reexport
+
+ drivers/gpu/drm/drm_panic_qr.rs  |   2 +-
+ drivers/net/phy/ax88796b_rust.rs |   7 +-
+ drivers/net/phy/qt2025.rs        |   5 +-
+ rust/kernel/device.rs            |   5 +-
+ rust/kernel/error.rs             |  10 +-
+ rust/kernel/firmware.rs          |   9 +-
+ rust/kernel/kunit.rs             |  18 +-
+ rust/kernel/miscdevice.rs        |   5 +-
+ rust/kernel/net/phy.rs           |   8 +-
+ rust/kernel/prelude.rs           |   2 +-
+ rust/kernel/seq_file.rs          |   4 +-
+ rust/kernel/str.rs               | 579 +++++++++++----------------------------
+ rust/kernel/sync.rs              |   4 +-
+ rust/kernel/sync/condvar.rs      |   4 +-
+ rust/kernel/sync/lock.rs         |   5 +-
+ rust/kernel/sync/lock/global.rs  |   7 +-
+ rust/kernel/sync/poll.rs         |   1 +
+ rust/kernel/workqueue.rs         |   3 +-
+ 18 files changed, 210 insertions(+), 468 deletions(-)
+---
+base-commit: bdf3d0e99c106932167de56141be5092762bab48
+change-id: 20250201-cstr-core-d4b9b69120cf
 
 Best regards,
 -- 
