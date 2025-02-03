@@ -1,139 +1,226 @@
-Received: from buffalo.tulip.relay.mailchannels.net (buffalo.tulip.relay.mailchannels.net [23.83.218.24])
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7DBE1FDA78
-	for <rust-for-linux@vger.kernel.org>; Mon,  3 Feb 2025 13:45:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.218.24
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738590359; cv=pass; b=VUCowXlImpUVXtAuxM/3goC+BdiEh/oloFxdljqtDmQI+2n1nIpyap3ArVbqzCKxqNbKbxLR+1okw+4c0t2H1t/3OBZhZmzs6QfysDOcOo6bqzIU9PD8+jLkM5oalLkBj8+Wu7uf7Ggr1BFg9C/PH4hnQPCDLLEQcB3Wq6aAV+U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738590359; c=relaxed/simple;
-	bh=7yVn+X220mqAzr++njqeukxJJHoMpAZbRdznsgNCeUQ=;
-	h=From:To:Cc:Subject:Message-ID:MIME-Version:Date; b=aLzSReUv5i+vGDIU6QBzsNzyDiK+T0cLuooER+ZfxUr89m1gunHZsC7cvrpMRlKipqg2fmnitFoWwAz5uaq3/6RYnzeyIl5jbbCtzsPVfoi6Usgzr+3kYX75wLBPFPUvfunvFBhz2mpl/PBSchGHaxcePXkVGMd/wePELGJqtQM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invicto.ai; spf=pass smtp.mailfrom=invicto.ai; dkim=fail (0-bit key) header.d=invicto.ai header.i=@invicto.ai header.b=nCiQtjcK reason="key not found in DNS"; arc=pass smtp.client-ip=23.83.218.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invicto.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=invicto.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34171FC0F9;
+	Mon,  3 Feb 2025 14:14:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.63.210.85
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738592059; cv=none; b=C/QGSyDjZ+z8PIVtMInKL322aqRSSAreo/ginjobkcgaKDW/UG2fx4lfBmfeBN3Q4iPvEVA39U7sgUSbBUhK3EXFEaR0L0/41YXzEua+yFP5KXjDvEs2nhEYIvN0B1mwpY6ghZcOlfuwaEoMzowQ48wrQNBEGpuTZAclLZxeD3A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738592059; c=relaxed/simple;
+	bh=60PMMt2ExM2Ko6ripWDDCg+Nj5o/tLdlrm2phlbWfM8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Trxg9GnhwX+yTk2lS60PeG/lf0xuCMeC+aCb+IRAWTrF21rMU5AITbo8BTM0BnK9qBro3Lfhq1ps+9Qf3DM/70tqERjqtmvIkcFYottI0hyo2G5Px+5RjToGO1rXwPqaqrYVpV9M6WZEh8h458LXVI/76wzruRbQBeNlZxAjWEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net; spf=pass smtp.mailfrom=asahilina.net; dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b=xHSaImGT; arc=none smtp.client-ip=212.63.210.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asahilina.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=invicto.ai header.i=@invicto.ai header.b="nCiQtjcK"
-X-Sender-Id: hostingeremail|x-authuser|kurti@invicto.ai
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 5A5772C4836;
-	Mon,  3 Feb 2025 13:37:26 +0000 (UTC)
-Received: from fr-int-smtpout4.hostinger.io (trex-6.trex.outbound.svc.cluster.local [100.126.223.123])
-	(Authenticated sender: hostingeremail)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 6EA732C1B7A;
-	Mon,  3 Feb 2025 13:37:21 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1738589841; a=rsa-sha256;
-	cv=none;
-	b=CONxSNV8yrclgMkRN3sH38zHIMQTPjSCDuaVeT0RcX1Zmi7DlL2jmi6KvZA/7eOTs236se
-	8bj0C5jGCPuWXt/YuNTUVIAWgOSNkLEj8VB0xkRFUaqB9cRdi/S7O0vapBLOHFlGQgjMXN
-	e4wF9PZ2KtcOhUPOGFTlefB4iXE/nutBfdT9zNqLwV32qTCZorl2OYjeyRcnDW9qs539nR
-	Eef5RVDrUL4GU5tSqXWtxOtlTEs+i7ltONrD7Otq5zIv5zPVjlLonQOudepiHdVZTSTgba
-	p+V6JVxvY7EgQAMIQWUS22StVxHalmuNAf5I+9uT3G9sQYWtZnAQT1/dsmpYdw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1738589841;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:dkim-signature;
-	bh=oytPgXEwPJrOTLwq5qk1T2t5czkNHjhnfboT29qq2Ks=;
-	b=VrF/mYxDC/94xq3QkHxPUp+G/xU2Q0qk0FZB2LMoBOcJIwqOPIhoyhJ1NLRRYHg88yv6X6
-	44n7lS7+w2/eFW5NRJ5Tp2fFR4JG6bHh2QI4fnknpnHGgEf1e2KX3xSrUPfWpBc7J7Khfx
-	rEAeQWPlrGW4OVfoT+d8xKQcM148osSOhyXvLMqvZocTUrk8lKr8Mf6GSDLwbyFi8+7Qq0
-	2kyq9QznYoRKMqBW8Ve7toKDu6YSBfyqh85L/YzGqJYhBxuKohbSFJv0dosuf3OcZQ5GjO
-	6T8Xn2uQqm0bovIpeRhYs+MnxpA80FaPcewQIqlTmqlJ3Szbz8csAHG4akP3LA==
-ARC-Authentication-Results: i=1;
-	rspamd-8586946c78-nrtrz;
-	auth=pass smtp.auth=hostingeremail smtp.mailfrom=kurti@invicto.ai
-X-Sender-Id: hostingeremail|x-authuser|kurti@invicto.ai
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: hostingeremail|x-authuser|kurti@invicto.ai
-X-MailChannels-Auth-Id: hostingeremail
-X-Well-Made-Quick: 336cc15733ab2817_1738589846103_1250276306
-X-MC-Loop-Signature: 1738589846102:4128927352
-X-MC-Ingress-Time: 1738589846102
-Received: from fr-int-smtpout4.hostinger.io (fr-int-smtpout4.hostinger.io
- [89.116.146.83])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.126.223.123 (trex/7.0.2);
-	Mon, 03 Feb 2025 13:37:26 +0000
-Received: from ak.localdomain (unknown [62.182.99.47])
-	(Authenticated sender: kurti@invicto.ai)
-	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPA id 4Ymnby614Cz2Sf4q;
-	Mon, 03 Feb 2025 13:37:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=invicto.ai;
-	s=hostingermail-a; t=1738589839;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oytPgXEwPJrOTLwq5qk1T2t5czkNHjhnfboT29qq2Ks=;
-	b=nCiQtjcKehMfBd0UVYs0xYQmzVLzLNxtXs8ZN6BoVlCTP0WGMyRHbMo2YJjg/LnllF3u5X
-	WeYx9RY31bQXMX1/hVvyQu0QaHH+6lpxa3Z/F3Fm72IAzN20ld8xRlqGM2TKdeXhoBaf1D
-	errAbzXjavG+Xgayf768UM1J4gOenO4UDhglOAvCvLPTlbmOD6YhQnUxu1gVpWWL7F38j3
-	/vi78JR1qunenG2iCe66GRwvUd3ai3eVSe9kne+aPA6ciB9epLMgT5YbtHHPnz9zbvWrNN
-	uGM/GQNnQ1YdMROEbuVYLKxeCMyBD4OpYbC4DDGlNSWVg4wgOU5c/6nkS0fLDA==
-From: albankurti <kurti@invicto.ai>
-To: rust-for-linux@vger.kernel.org
-Cc: ojeda@kernel.org
-Subject: [PATCH] rust: printing macros sample: add missing newlines
-Message-ID: <20250203133717.264522-1-kurti@invicto.ai>
-X-Mailer: git-send-email 2.48.1
+	dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b="xHSaImGT"
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(No client certificate requested)
+	(Authenticated sender: lina@asahilina.net)
+	by mail.marcansoft.com (Postfix) with ESMTPSA id 39E9743472;
+	Mon,  3 Feb 2025 14:14:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
+	s=default; t=1738592054;
+	bh=60PMMt2ExM2Ko6ripWDDCg+Nj5o/tLdlrm2phlbWfM8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=xHSaImGTYTcNonN6pj2/sTcYh2NeEPD9BbFFmu9rqiSIAolqlsGXWqnZhc3an3vNY
+	 y1dF92upsKAQAFz1afjPHoHyNJ7RjAuw/LGQSolrIpWRtNx7ZCiMq7ldMvRjx1GZpd
+	 jV2+pk/aMnio/xvJ21+n1jkcXAMSRen8AiPbBg6H2m/x1ioZYOHDLTBW2BTvX5B7HW
+	 JhEPJBEJ/OYq8kO5huxBx9Kjiy+VqMF0chaVjoqhXC3DmbJ8blpqbhO5yQiLGqz8U2
+	 lK5XCgQxFBERo5lcdI6lrLu73r/A5QwODhZ1pnRHM2lA1PenmWzaRa8YB+Qsdv7Ka+
+	 bi0fcMfRApL4w==
+Message-ID: <697188e5-0718-433e-943e-14ccb9bb59f4@asahilina.net>
+Date: Mon, 3 Feb 2025 23:14:12 +0900
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 2/3] rust: io: mem: add a generic iomem abstraction
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.mco, benno.lossin@proton.me, a.hindborg@kernel.org,
+ tmgross@umich.edu, gregkh@linuxfoundation.org, rafael@kernel.org,
+ dakr@kernel.org, boris.brezillon@collabora.com, robh@kernel.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250130220529.665896-1-daniel.almeida@collabora.com>
+ <20250130220529.665896-3-daniel.almeida@collabora.com>
+ <b5538fda-1926-4280-8e46-e0ff299a4f72@asahilina.net>
+ <CAH5fLgjf4VArJ21DaAY9SP+AF4k+706naR+UfcVFx3S9aJfmJQ@mail.gmail.com>
+Content-Language: en-US
+From: Asahi Lina <lina@asahilina.net>
+In-Reply-To: <CAH5fLgjf4VArJ21DaAY9SP+AF4k+706naR+UfcVFx3S9aJfmJQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Date: Mon, 03 Feb 2025 13:37:18 +0000 (UTC)
-X-CM-Envelope: MS4xfCQQgtDrk/tXOSOd1YIawWFAJcr4Pky72le02lKSq0Z3Oaal8/KrTH+/I6kkf8GMi9vnVTGcvonVaZI+f6xZdCbkGWawk8tc9Uy3QpDNRosnZLGK/HLO zAeIXc0PjnKYSyTr9hCAx6fiz3ovv2yf33701ueD6mLDG7NSwGNlmT6UmhMmaPGGpdb652XwfuXm7U73dJZXskcufgwWfcdlaTUR1SXv41E+9KSQ//hEJXKm
-X-CM-Analysis: v=2.4 cv=PMNd+uqC c=1 sm=1 tr=0 ts=67a0c68f a=lYFjNvm/SGFeYHipu1NBKA==:117 a=lYFjNvm/SGFeYHipu1NBKA==:17 a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=ej7u1ndXoedFt1_pqf4A:9
-X-AuthUser: kurti@invicto.ai
 
-Fixes calls to pr_*! to include \n
 
-Reported-by: ojeda <ojeda@kernel.org>
-Closes: https://github.com/Rust-for-Linux/linux/issues/1139
-Signed-off-by: albankurti <kurti@invicto.ai>
----
- samples/rust/rust_print_main.rs | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/samples/rust/rust_print_main.rs b/samples/rust/rust_print_main.rs
-index 7e8af5f176a3..7ef3cecc65a1 100644
---- a/samples/rust/rust_print_main.rs
-+++ b/samples/rust/rust_print_main.rs
-@@ -23,10 +23,10 @@ fn arc_print() -> Result {
-     let b = UniqueArc::new("hello, world", GFP_KERNEL)?;
- 
-     // Prints the value of data in `a`.
--    pr_info!("{}", a);
-+    pr_info!("{}\n", a);
- 
-     // Uses ":?" to print debug fmt of `b`.
--    pr_info!("{:?}", b);
-+    pr_info!("{:?}\n", b);
- 
-     let a: Arc<&str> = b.into();
-     let c = a.clone();
-@@ -42,7 +42,7 @@ fn arc_print() -> Result {
- 
-         use core::fmt::Display;
-         fn arc_dyn_print(arc: &Arc<dyn Display>) {
--            pr_info!("Arc<dyn Display> says {arc}");
-+            pr_info!("Arc<dyn Display> says {arc}\n");
-         }
- 
-         let a_i32_display: Arc<dyn Display> = Arc::new(42i32, GFP_KERNEL)?;
-@@ -53,7 +53,7 @@ fn arc_dyn_print(arc: &Arc<dyn Display>) {
-     }
- 
-     // Pretty-prints the debug formatting with lower-case hexadecimal integers.
--    pr_info!("{:#x?}", a);
-+    pr_info!("{:#x?}\n", a);
- 
-     Ok(())
- }
--- 
-2.48.1
+On 2/3/25 6:26 PM, Alice Ryhl wrote:
+> On Sun, Feb 2, 2025 at 11:45 PM Asahi Lina <lina@asahilina.net> wrote:
+>>
+>>
+>>
+>> On 1/31/25 7:05 AM, Daniel Almeida wrote:
+>>> Add a generic iomem abstraction to safely read and write ioremapped
+>>> regions.
+>>>
+>>> The reads and writes are done through IoRaw, and are thus checked either
+>>> at compile-time, if the size of the region is known at that point, or at
+>>> runtime otherwise.
+>>>
+>>> Non-exclusive access to the underlying memory region is made possible to
+>>> cater to cases where overlapped regions are unavoidable.
+>>>
+>>> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+>>> ---
+>>>  rust/kernel/io.rs     |   1 +
+>>>  rust/kernel/io/mem.rs | 125 ++++++++++++++++++++++++++++++++++++++++++
+>>>  2 files changed, 126 insertions(+)
+>>>  create mode 100644 rust/kernel/io/mem.rs
+>>>
+>>> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+>>> index 566d8b177e01..9ce3482b5ecd 100644
+>>> --- a/rust/kernel/io.rs
+>>> +++ b/rust/kernel/io.rs
+>>> @@ -7,6 +7,7 @@
+>>>  use crate::error::{code::EINVAL, Result};
+>>>  use crate::{bindings, build_assert};
+>>>
+>>> +pub mod mem;
+>>>  pub mod resource;
+>>>
+>>>  /// Raw representation of an MMIO region.
+>>> diff --git a/rust/kernel/io/mem.rs b/rust/kernel/io/mem.rs
+>>> new file mode 100644
+>>> index 000000000000..f87433ed858e
+>>> --- /dev/null
+>>> +++ b/rust/kernel/io/mem.rs
+>>> @@ -0,0 +1,125 @@
+>>> +// SPDX-License-Identifier: GPL-2.0
+>>> +
+>>> +//! Generic memory-mapped IO.
+>>> +
+>>> +use core::ops::Deref;
+>>> +
+>>> +use crate::device::Device;
+>>> +use crate::devres::Devres;
+>>> +use crate::io::resource::Region;
+>>> +use crate::io::resource::Resource;
+>>> +use crate::io::Io;
+>>> +use crate::io::IoRaw;
+>>> +use crate::prelude::*;
+>>> +
+>>> +/// An exclusive memory-mapped IO region.
+>>> +///
+>>> +/// # Invariants
+>>> +///
+>>> +/// - ExclusiveIoMem has exclusive access to the underlying `iomem`.
+>>> +pub struct ExclusiveIoMem<const SIZE: usize> {
+>>> +    /// The region abstraction. This represents exclusive access to the
+>>> +    /// range represented by the underlying `iomem`.
+>>> +    ///
+>>> +    /// It's placed first to ensure that the region is released before it is
+>>> +    /// unmapped as a result of the drop order.
+>>> +    #[allow(dead_code)]
+>>> +    region: Region,
+>>> +    /// The underlying `IoMem` instance.
+>>> +    iomem: IoMem<SIZE>,
+>>> +}
+>>> +
+>>> +impl<const SIZE: usize> ExclusiveIoMem<SIZE> {
+>>> +    /// Creates a new `ExclusiveIoMem` instance.
+>>> +    pub(crate) fn ioremap(resource: &Resource) -> Result<Self> {
+>>> +        let iomem = IoMem::ioremap(resource)?;
+>>> +
+>>> +        let start = resource.start();
+>>> +        let size = resource.size();
+>>> +        let name = resource.name();
+>>> +
+>>> +        let region = resource
+>>> +            .request_mem_region(start, size, name)
+>>> +            .ok_or(EBUSY)?;
+>>> +
+>>> +        let iomem = ExclusiveIoMem { iomem, region };
+>>> +
+>>> +        Ok(iomem)
+>>> +    }
+>>> +
+>>> +    pub(crate) fn new(resource: &Resource, device: &Device) -> Result<Devres<Self>> {
+>>> +        let iomem = Self::ioremap(resource)?;
+>>> +        let devres = Devres::new(device, iomem, GFP_KERNEL)?;
+>>> +
+>>> +        Ok(devres)
+>>> +    }
+>>> +}
+>>> +
+>>> +impl<const SIZE: usize> Deref for ExclusiveIoMem<SIZE> {
+>>> +    type Target = Io<SIZE>;
+>>> +
+>>> +    fn deref(&self) -> &Self::Target {
+>>> +        &*self.iomem
+>>> +    }
+>>> +}
+>>> +
+>>> +/// A generic memory-mapped IO region.
+>>> +///
+>>> +/// Accesses to the underlying region is checked either at compile time, if the
+>>> +/// region's size is known at that point, or at runtime otherwise.
+>>> +///
+>>> +/// # Invariants
+>>> +///
+>>> +/// `IoMem` always holds an `IoRaw` inststance that holds a valid pointer to the
+>>> +/// start of the I/O memory mapped region.
+>>> +pub struct IoMem<const SIZE: usize = 0> {
+>>> +    io: IoRaw<SIZE>,
+>>> +}
+>>> +
+>>> +impl<const SIZE: usize> IoMem<SIZE> {
+>>> +    fn ioremap(resource: &Resource) -> Result<Self> {
+>>> +        let size = resource.size();
+>>> +        if size == 0 {
+>>> +            return Err(EINVAL);
+>>> +        }
+>>> +
+>>> +        let res_start = resource.start();
+>>> +
+>>> +        // SAFETY:
+>>> +        // - `res_start` and `size` are read from a presumably valid `struct resource`.
+>>> +        // - `size` is known not to be zero at this point.
+>>> +        let addr = unsafe { bindings::ioremap(res_start, size as kernel::ffi::c_ulong) };
+>>
+>> This does not work for all platforms. Some, like Apple platforms,
+>> require ioremap_np(). You should check for the
+>> `IORESOURCE_MEM_NONPOSTED` resource flag and use the appropriate
+>> function, like this (from an older spin of this code):
+>>
+>> https://github.com/AsahiLinux/linux/blob/fce34c83f1dca5b10cc2c866fd8832a362de7974/rust/kernel/io_mem.rs#L166C36-L166C70
+> 
+> Hmm. Is detecting this based on the flag the right approach? On the C
+> side, they use different methods and I wonder if we should do the
+> same?
+
+ioremap() vs. ioremap_np() exist because the second one was added for
+Apple platforms, and we need both because ioremap() is required for
+external PCI devices and ioremap_np() for internal SoC devices, but no
+driver calls ioremap_np() directly. If you look at drivers/of/address.c
+and lib/devres.c, you'll see they do the same thing to decide which one
+to call. The code in drivers/base/platform.c hooks up the platform
+methods together with devres, and the code in drivers/of/platform.c sets
+up OF devices as platform devices with the OF resource code, which sets
+the flag as needed.
+
+Therefore, that any driver that uses any of the high-level ioremap
+wrappers that go through `struct resource` automatically gets the
+ioremap()/ioremap_np() handling (platform drivers get ioremap_np() on
+Apple platforms, everything else including PCI drivers get ioremap()).
+The Rust side should do the same thing.
+
+~~ Lina
 
