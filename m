@@ -1,68 +1,98 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B73620370C;
-	Mon,  3 Feb 2025 11:54:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B769E207A1C
+	for <rust-for-linux@vger.kernel.org>; Mon,  3 Feb 2025 11:56:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738583666; cv=none; b=iT4DbwLvaILZ2cUKeQlHNMV4BVp5sFUnxKs7FzVZ1SBcNFtpfSwoP5PrlJBX9eLWQREObe278ELLuVJjE/xkfC3Wd1i22j6tV2EEhwS8Nsm2vTmJoKY3dJQCld8cc7ynq5c50eFOfaTip2aSS9BCnzCyiYP2eF0c8472lY1OLdA=
+	t=1738583781; cv=none; b=tLDbInkUbvya3aJjy3FivQUrtlwGGOeBJlmVlXak9dBlymvfGOonEc49ogrFKrFM5HfTheOGCbv6KPfI/LAdOI4bA6awueFhAKfAurPikBBOug2DEo7FC6LR19x6uGTSkhwuUm3VFOoNLMHnT68GNQrg4O920N72SJ4fl00xvDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738583666; c=relaxed/simple;
-	bh=+0UPjRq2bNuHhSqfgSViURTGOaINhDBfG8MWqarjTOY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mUtengZcgUe3491q2FnZlEdob+poEJLZq8ejIVTzzY3mrONdtXOJA77Jpedbfrv1sDdfp1Vmq7y1HwAHpQGsAX03xBs6IRFPsS4OCuSG8tVjLcH616nPs02NebBDNokmUvSrsyHWxkD46v7/iDTemPAz+aQ4O/L+cU5BpvZHe8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=MsZm47M5; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1738583781; c=relaxed/simple;
+	bh=9IzEiom6SzulKxJ/glaOYmrIa2Uo0paqlphMpy7VetM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AGIfBFyaRTvSv7QOeosVGyyuwptidHMizQmM7Gq/8+3T1CTuIKqtCUciQ9018d5w3KR5+wKSnnsfgXhA5IZ6C9PJkMGfK1X5utHLJcKX3b5/Rz0ZW07rKX53C9xnaH5jCX2gqGwkSixAZqx/AdVNiq+UMtuwNpRHl/v4xuf7prs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=az6t90QN; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="MsZm47M5"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=+0UPjRq2bNuHhSqfgSViURTGOaINhDBfG8MWqarjTOY=; b=MsZm47M5Wiuqo3VvscNUKTuSSl
-	CdFV9bf7dXV3A9ahIo6AaE6F3yL2jlCzgqgtewx/A0E15MWqgugVC4BYSCzxPuoTyXH/tssX0GIto
-	GZkRAl1lBcbGzfJWlfPAAJ+o6G3HWPzr9nJnH8AbQraAS8dSVDO2T+5bIsKd26wjhXhqlmju92IG4
-	auFfGP90fu/Wq/hxj7sBACEgpJ1ZvCTcA0GugtBmJrMsOKugj4bK+dxvvUFfRMrr7/N6oFy9U3YaT
-	6LtAu5Utq467DY4tu45FKhY22gQqF6zE6Pj5ZNTKdIT6/yF9MWblJBDfE2b8FelJZOZ4Jxnmdfqs+
-	qzk9qi2g==;
-Received: from 77-249-17-89.cable.dynamic.v4.ziggo.nl ([77.249.17.89] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1tev1v-0000000G52Z-0f22;
-	Mon, 03 Feb 2025 11:54:19 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id B36D330035F; Mon,  3 Feb 2025 12:54:18 +0100 (CET)
-Date: Mon, 3 Feb 2025 12:54:18 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>, Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: sync: add wait_interruptible_freezable
-Message-ID: <20250203115418.GB14028@noisy.programming.kicks-ass.net>
-References: <20250130-condvar-freeze-v1-1-a91d5661d505@google.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="az6t90QN"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43618283dedso44545295e9.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 03 Feb 2025 03:56:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1738583778; x=1739188578; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9IzEiom6SzulKxJ/glaOYmrIa2Uo0paqlphMpy7VetM=;
+        b=az6t90QNr6avpauxATyEVi+A9NzWuAolGBCYgLK2rHrnzhv0azep3l/xW0AXn2+qVX
+         GICdymXxN0Nlrs8HoPxtRAf1A+eaigVutOpHc4auKGKQ30y8FKSPyekz2oBqMNiLf8G+
+         Z2UCQXh9Oq72Zl9paJvkstETP7zBJ/ICafS/qzopLyFxe4hbqeui4V/c1M2ZRk7clRCX
+         ywiAZkQYc24xkIS+XBBSclZMs0tp2eKE0kMJT4UU3QLmnmz+h2pOqMuTA4kR7B3eYpRs
+         AZCKrCUisfIouOyZIpowycfrEExVZR2ug+mDE1PVO8CNeCrbDU4FfCf2dUi8pu4EV2KZ
+         pMoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738583778; x=1739188578;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9IzEiom6SzulKxJ/glaOYmrIa2Uo0paqlphMpy7VetM=;
+        b=PHZx21o3vGxgQo1BIb+Ers8zcKg3Xq5XTGz0HloCBgaGsY47HLgHtjG8vCQnepGX/G
+         xcPRI22JIKrePpYeTzccS+Rhbg5Zfl6NQVMvkzxr9k3EXnCA0L4rIGxTTR8AeR1wtVed
+         DDgNZR/VOlrM9i4sih9Yal/oiZOzoq6hmbEFMJe3b3s++PIQOTGyU9+KRpAyyVau0sKa
+         lwP7IluLOMssCEW5MUOW4gIuIMoF4FQwy4A2Ajuzn9jxRvY+eRlylzvcBJXK07HzAW4C
+         mQhC73B7G/MlE8r2adt5ucDwGNSy+74xeCf5pNmVvEzLb6xzOkVp6cEEX/2eMiiHj7X/
+         rixw==
+X-Forwarded-Encrypted: i=1; AJvYcCWgU316tdNaXqCtEShYSvFovLxcLT2JNoPbq5yGqg7ltXgE+BN2edb3/kVNMx6Gx6UanbaEn35QWUmdTYbSIw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWbPpoh9eyaDZtY0R21reupHR99xBZBSWScoYBYumq+hBsEbr4
+	gkEjZD2i4rIGImCGe11w4+38+MgI9bwt0Sr24kgXymoegwmTLY/aYyWXQWVy0pGI2pPFLSvDXaR
+	5hgw/qKbuBxg9FW62rwudYHtB3UYSkGNEpyEa
+X-Gm-Gg: ASbGncuVzR0nUgJfvHmUbiOTlUlJIudWces08WQxhrHxpORKvTd94mhthcT58Y0o8Yg
+	dp/jMH7LHgElbDSenugRc4Pih8I0f/5Q7NSVBYVnIBetWQuQ62KDRQvHLVcaQzEelcRrAs/IVFn
+	c8MaIzgcv39XoQqnR0N4IRloCi
+X-Google-Smtp-Source: AGHT+IFWgvCUDCO17qB3ujbTN8kQLJHlVJh3nMwKzb0A/UItlxg1jmWXbjbwwfUF8gwMzKP/W1LegZfB0g5CJf8cksI=
+X-Received: by 2002:a5d:6487:0:b0:38b:669d:4dd4 with SMTP id
+ ffacd0b85a97d-38c5192f1f4mr17390254f8f.11.1738583777940; Mon, 03 Feb 2025
+ 03:56:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250130-condvar-freeze-v1-1-a91d5661d505@google.com>
+References: <20250130-condvar-freeze-v1-1-a91d5661d505@google.com> <20250203115418.GB14028@noisy.programming.kicks-ass.net>
+In-Reply-To: <20250203115418.GB14028@noisy.programming.kicks-ass.net>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 3 Feb 2025 12:56:05 +0100
+X-Gm-Features: AWEUYZnrtsIUCF_sbBn4JDADCke_X1bx2GdOn0irljBNdeANdIrovySmE7zKDbI
+Message-ID: <CAH5fLggyyP1A=uNxr2iYNKOj0V5rxZRU83TRgs6Ah1uJ=Ee2uA@mail.gmail.com>
+Subject: Re: [PATCH] rust: sync: add wait_interruptible_freezable
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
+	Waiman Long <longman@redhat.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 30, 2025 at 11:30:44AM +0000, Alice Ryhl wrote:
-> Binder allows you to freeze a process where some of its threads are
-> blocked on the Binder driver. To make this work, we need to pass
-> TASK_FREEZABLE when going to sleep in the appropriate places. Thus, add
-> a new method wait_interruptible_freezable for the condition variable so
-> that sleeps where this is supported can be marked as such.
+On Mon, Feb 3, 2025 at 12:54=E2=80=AFPM Peter Zijlstra <peterz@infradead.or=
+g> wrote:
+>
+> On Thu, Jan 30, 2025 at 11:30:44AM +0000, Alice Ryhl wrote:
+> > Binder allows you to freeze a process where some of its threads are
+> > blocked on the Binder driver. To make this work, we need to pass
+> > TASK_FREEZABLE when going to sleep in the appropriate places. Thus, add
+> > a new method wait_interruptible_freezable for the condition variable so
+> > that sleeps where this is supported can be marked as such.
+>
+> The constraint on freezable is that you must not hold locks. There is a
+> lockdep check for this in the code, but it would probably make sense to
+> teach Rust about this constraint as well, hmm?
 
-The constraint on freezable is that you must not hold locks. There is a
-lockdep check for this in the code, but it would probably make sense to
-teach Rust about this constraint as well, hmm?
+Unfortunately, I don't think there's any way to enforce this at
+compile time, but I'm definitely happy to add this in the
+documentation.
+
+Thanks!
+Alice
