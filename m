@@ -1,240 +1,190 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69B420012B
-	for <rust-for-linux@vger.kernel.org>; Mon,  3 Feb 2025 09:58:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4757578F49
+	for <rust-for-linux@vger.kernel.org>; Mon,  3 Feb 2025 10:01:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738576692; cv=none; b=ZurofXWbNNjMoH+vNJrPdafUVie3X3FJoT1TI4bfLjOnIMoa6saX5XMiTP9ogF59peGl5JZt02ZbJIQj9PHCOtQ7//NIymzTXQ5e2aCXU9dualC4OPIe7TwcsJ5UoqAWoG/fXqJAzzwEXdjCnGlis2ClOj14UKJK1PxD3NN78kA=
+	t=1738576882; cv=none; b=NklXjWnP8+x3VXYsmbkefloQYU3ZcNyO8FmIE/bCvdpDb6YX/TN+8ECKJLDnv/N2hcCJjXBWGXSz2GryaGGYQg+W03HiqKvGerLakmNNFc3jGGJw78ueAZ5X1RQ8Xsb3p9dKcyqCnrIW1G0S0tOI0qFYlEl75hVsyYFZHH3GGSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738576692; c=relaxed/simple;
-	bh=wQB7FChqnrt8lzf67MgS27rpO3Q2KIoL9AdOfNEtOZ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N5+iYRCvy6Al9NKge3zI+SzR4mWQQ0ettD3UgjnCuuJhvVZsSgv/cp9eC4zhCP7OLC/eiqNyml8bDl7c0SSCBYxnOOaI87V1DGgY7PUnzhriN0cSSQzmMZBUtjCUlBUcjMo5QchsEGZU1uXq21g7RgKgXoM3W+durzJx7tLwd1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=QZymytbR; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
+	s=arc-20240116; t=1738576882; c=relaxed/simple;
+	bh=kdua4+YQ85GykUIHsDe45i3nydQ0QIA06M4GK2rq+eI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YB3PW0mVgsvp7/B8nME1f5BF1jBONJb8T5Byv5H+9C5ZjJDIWdErR8yxvu9fEFFev9EkZyLD4KM0F82BgziKmhfLk1o7k/6ckHF3qIf+kIB1KERlaTH1W3z2Suw9IIs1dkJs33+fcQ6SbIBJfOmdXbDOb4lSy7RMCW/K/gAew2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h+6FB+zg; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="QZymytbR"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43675b1155bso49025195e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 03 Feb 2025 01:58:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h+6FB+zg"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-385e0e224cbso2241089f8f.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 03 Feb 2025 02:01:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1738576688; x=1739181488; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GeD4zer0SwhO1vY20QVHV1mXu+FN5WI4OZDMZzjZdsA=;
-        b=QZymytbRDpLOiif1t7iRC5bBCGl0lql/apuT/sMPFXysLEG4i60daHSClP0chvImda
-         8LPtVgXna6tFVRRx7gg+mYKa5PpH+2ucJYG4OizMPX8UuxZudqXRs6achaDFImwvov+M
-         BojWcybelVS0SiBNPFCcD1wNnpQq/lltgcDiQ=
+        d=google.com; s=20230601; t=1738576877; x=1739181677; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dEGNgfB2S/8AjXy/uNgsGPvZS31C4zTjkg+WKJogdi8=;
+        b=h+6FB+zgWxmAYXsiRN2XcG8PlGdjL29+43/yB8qNsalDSe3hSvUX4YEtssYMNj8pNn
+         ZjyPGe5wU6OgM8+mwSSfUG6KsLEe7RmFs/NJTx5DWMbCE7y1TOGPidLElbkcI2sXJS+S
+         BvSVNTWJDNPgPwZOjX3CjOLPdaCYuzTTDzWM/tYigHzqZd6Hq1djfAYlCG4FIEv369Ip
+         DXURg13Qo9UJ97E/UcAjnJofHjLtgAH3DkCmD7bChN9rI6sv2QV9efoyBOTkKufW0oM1
+         yEpWMnePiqnZlCGd8ac8UBwh8LexhQRygImI5xiJ6EJ1qy7e3hrrVqzgG+gfA+0aVBMA
+         25Sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738576688; x=1739181488;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GeD4zer0SwhO1vY20QVHV1mXu+FN5WI4OZDMZzjZdsA=;
-        b=ma8+xdAJIJnjw3Fkw+quFuLs/tf8rpZxlJOtceu+TuZbi6qwOuqrq6AnqulsYmncEt
-         N/H1EYQNdnCsNv4SFVv8sp3lqcrspSBL2Gh8gcHt930V5J/tA6AIIBJ7rEgZLpJurAsz
-         vDWYAlD6tdq9ifNz74hLbdWN4TyBt3hDOjteV3uIqooupBV/kiaWnOMlQU5D108JsvuV
-         MMSNtE7InTCLLGyNVxlBFGdEyvF99j2NhZseLYyvLKXXLavmrC7KpoqvPjW5v9p0vX3p
-         KlZeIFn7eVuCFKoY/GIBaOD+w4j+6WuvDUjLI331T+MxFLZNKHEGTUJZWztPXdudvfyu
-         PCqw==
-X-Forwarded-Encrypted: i=1; AJvYcCUlmepew2foYhDG1YctG/HlEdn0vhtAxHC06vs/sURYVPz06G4nR9eH1j2RW0qJDYthhrQZxQOs7f42eoxorQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwI97bj0KpXtIQnLjBD9QVy+BRjf7AGKTU0QW8U74xD4mPKuhUL
-	pghFXmve3nZ9Tayy7HlzhacVfFERJhgX7hdkggOkwl+p4UI8UakJozlRKDcuNgI=
-X-Gm-Gg: ASbGncu+chw83birMLpyOmrCFW+n8TyJbpjKzJ8E7dn0afdM61pSCa518FbEN0JXcz3
-	IcuA6zHazHwAe5jlRCSv+Qy1rwKn/P76k7455f7AhJLH6/wSi+MmbtjdkUVxE/MwM8CqmmwVr2c
-	iK2+Nk54M3YyRDDD9VZix07bmSjL7NlDqj0uwh7wU6SnsUd7Z0lWIajEGzTYwl8yFNLC0rID+7e
-	xQQDyAvYYZ9XlJDNEnzpZIzB4AHqmZrKevzJe7g4xL6M5ghUq/Mzr6VQDEdOe0h89woYjYoyept
-	6VKgHZ4bZbrcBaiA4cy5GSWbtMU=
-X-Google-Smtp-Source: AGHT+IGorkrzHjX4R3pZdGwk+hHms7tlUcrC4qehkpQJ03KFCFxuLmGP8ZR27Vt03TxvRXb7uHx+vw==
-X-Received: by 2002:a05:600c:4594:b0:434:f9e1:5cf8 with SMTP id 5b1f17b1804b1-438dc435389mr183716805e9.31.1738576687704;
-        Mon, 03 Feb 2025 01:58:07 -0800 (PST)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438dcc2ede0sm185941355e9.21.2025.02.03.01.58.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Feb 2025 01:58:07 -0800 (PST)
-Date: Mon, 3 Feb 2025 10:58:04 +0100
-From: Simona Vetter <simona.vetter@ffwll.ch>
-To: Asahi Lina <lina@asahilina.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Jann Horn <jannh@google.com>, Matthew Wilcox <willy@infradead.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Valentin Obst <kernel@valentinobst.de>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	airlied@redhat.com, Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	asahi@lists.linux.dev
-Subject: Re: [PATCH 0/6] rust: page: Support borrowing `struct page` and
- physaddr conversion
-Message-ID: <Z6CTLB2NggwYafi9@phenom.ffwll.local>
-Mail-Followup-To: Asahi Lina <lina@asahilina.net>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Jann Horn <jannh@google.com>, Matthew Wilcox <willy@infradead.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Valentin Obst <kernel@valentinobst.de>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	airlied@redhat.com, Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	asahi@lists.linux.dev
-References: <20250202-rust-page-v1-0-e3170d7fe55e@asahilina.net>
+        d=1e100.net; s=20230601; t=1738576877; x=1739181677;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dEGNgfB2S/8AjXy/uNgsGPvZS31C4zTjkg+WKJogdi8=;
+        b=MeyZwGy9BjCnUW9sEJCKjLtzV74WMBaNMOBY/FvYIsx3MsUefdC9G9yhDgn9pN+syI
+         D3pJRxkIGJnJNqxm1AYw9n0oOtVi0QbDXTkYstKG8uJBNXRC/fcex+2Zs/kECSsIX6GH
+         bf2L/7vxImZjwCb94TfGKVLy8tgU+KZD3OwgeVG2f/+/Nxx+hoewX67ONJLzkGK0ORgA
+         gW3b1gBdGwj5ZGRfJJMJlRYmEYtBEJqircsa+J9Gr1bj4o/ZSeWNdCrSdfNUcQE2Lz/8
+         IrhkwnyMc1VIKpGFzhRoOSveSTGGJC+WCcc161N9spOqz4iXovsP1WiH+VjuS9l79CCw
+         U7Wg==
+X-Forwarded-Encrypted: i=1; AJvYcCXe33hqiQFEyOdzmCeGcrA5SGpWnPa+H+UbNTgqfHqx+Q6SMdNT6DfeQnP+NMhakJEpW2h0YeW19wUlyL2bxA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyc63Zq7XRVzfa7zPKx7sTlZc/ZX+NqfQ5WwIRtODUUYXxIsZsm
+	KpX2av/bowot/bc+bVZapFFoae3HI/HfXnOLzvhixcSVv42UhP1kKsdcoMi83q4JDxPpA6/MVu3
+	bZc85aVvPQdfiCYgQJEtdBb25eiao+xCVqlxO
+X-Gm-Gg: ASbGncuscaNklakn7OdwUgR1/YqiU7sdNT8OzTtG2c9BHl4VhlkqfBRekHRWUSe+hv8
+	12u7cnFWJ58uN2Dql6LKfCAfndZCy9vbiFEnYvtf00m/Fy/ePFpv+zljM7WgAl/KFnr+blebXG7
+	2fT8umkZKWGBrrr8CUIhph7Qba
+X-Google-Smtp-Source: AGHT+IH3g2mPZEl5GlZ3WLWpDP89LKo0b2KChSH5cl3Q6a9dl/Hpn/AlGzitcM3Z4OiZyJKWLS+CB0K0XadAjdKQxbo=
+X-Received: by 2002:a5d:6d02:0:b0:385:f092:e1a with SMTP id
+ ffacd0b85a97d-38c5194c3b6mr16768265f8f.11.1738576877295; Mon, 03 Feb 2025
+ 02:01:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250202-rust-page-v1-0-e3170d7fe55e@asahilina.net>
-X-Operating-System: Linux phenom 6.12.11-amd64 
+References: <20250202-rust-page-v1-0-e3170d7fe55e@asahilina.net>
+ <20250202-rust-page-v1-5-e3170d7fe55e@asahilina.net> <87jza74amo.fsf@kloenk.dev>
+In-Reply-To: <87jza74amo.fsf@kloenk.dev>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 3 Feb 2025 11:01:05 +0100
+X-Gm-Features: AWEUYZndXPsUdFaaW3upqQnP0AEq9KZD2d2molkEULuOFcYuzceGr2VHgZKEEdM
+Message-ID: <CAH5fLgh7gKRpT7wXzkqTwi0rwg+QyzAbqYzt12=85LqduC-oiA@mail.gmail.com>
+Subject: Re: [PATCH 5/6] rust: page: Add physical address conversion functions
+To: Fiona Behrens <me@kloenk.dev>
+Cc: Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Jann Horn <jannh@google.com>, 
+	Matthew Wilcox <willy@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Valentin Obst <kernel@valentinobst.de>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	airlied@redhat.com, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	asahi@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Feb 02, 2025 at 10:05:42PM +0900, Asahi Lina wrote:
-> This series refactors the existing Page wrapper to support borrowing
-> `struct page` objects without ownership on the Rust side, and converting
-> page references to/from physical memory addresses.
-> 
-> The series overlaps with the earlier submission in [1] and follows a
-> different approach, based on the discussion that happened there.
-> 
-> The primary use case for this is implementing IOMMU-style page table
-> management in Rust. This allows drivers for IOMMUs and MMU-containing
-> SoC devices to be written in Rust (such as embedded GPUs). The intended
-> logic is similar to how ARM SMMU page tables are managed in the
-> drivers/iommu tree.
-> 
-> First, introduce a concept of Owned<T> and an Ownable trait. These are
-> similar to ARef<T> and AlwaysRefCounted, but are used for types which
-> are not ref counted but rather have a single intended owner.
-> 
-> Then, refactor the existing Page support to use the new mechanism. Pages
-> returned from the page allocator are not intended to be ref counted by
-> consumers (see previous discussion in [1]), so this keeps Rust's view of
-> page ownership as a simple "owned or not". Of course, this is still
-> composable as Arc<Owned<Page>> if Rust code needs to reference count its
-> own Page allocations for whatever reason.
+On Mon, Feb 3, 2025 at 10:54=E2=80=AFAM Fiona Behrens <me@kloenk.dev> wrote=
+:
+>
+> Asahi Lina <lina@asahilina.net> writes:
+>
+> > Add methods to allow code using the Page type to obtain the physical
+> > address of a page, convert to and from an (owned) physical address, and
+> > borrow a Page from a physical address. Most of these operations are, as
+> > you might expect, unsafe.
+> >
+> > These primitives are useful to implement page table structures in Rust,
+> > and to implement arbitrary physical memory access (as needed to walk
+> > arbitrary page tables and dereference through them). These mechanisms
+> > are, of course, fraught with danger, and are only expected to be used
+> > for core memory management code (in e.g. drivers with their own device
+> > page table implementations) and for debug features such as crash dumps
+> > of device memory.
+> >
+> > Signed-off-by: Asahi Lina <lina@asahilina.net>
+> > ---
+> >  rust/helpers/page.c | 26 +++++++++++++++++++++
+> >  rust/kernel/page.rs | 65 +++++++++++++++++++++++++++++++++++++++++++++=
+++++++++
+> >  2 files changed, 91 insertions(+)
+> >
+> > diff --git a/rust/helpers/page.c b/rust/helpers/page.c
+> > index b3f2b8fbf87fc9aa89cb1636736c52be16411301..1c3bd68818d77f7ce780632=
+9b8f040a7d4205bb3 100644
+> > --- a/rust/helpers/page.c
+> > +++ b/rust/helpers/page.c
+> > @@ -1,5 +1,6 @@
+> >  // SPDX-License-Identifier: GPL-2.0
+> >
+> > +#include <linux/io.h>
+> >  #include <linux/gfp.h>
+> >  #include <linux/highmem.h>
+> >
+> > @@ -17,3 +18,28 @@ void rust_helper_kunmap_local(const void *addr)
+> >  {
+> >       kunmap_local(addr);
+> >  }
+> > +
+> > +struct page *rust_helper_phys_to_page(phys_addr_t phys)
+> > +{
+> > +     return phys_to_page(phys);
+> > +}
+> > +
+> > +phys_addr_t rust_helper_page_to_phys(struct page *page)
+> > +{
+> > +     return page_to_phys(page);
+> > +}
+> > +
+> > +unsigned long rust_helper_phys_to_pfn(phys_addr_t phys)
+> > +{
+> > +     return __phys_to_pfn(phys);
+> > +}
+> > +
+> > +struct page *rust_helper_pfn_to_page(unsigned long pfn)
+> > +{
+> > +     return pfn_to_page(pfn);
+> > +}
+> > +
+> > +bool rust_helper_pfn_valid(unsigned long pfn)
+> > +{
+> > +     return pfn_valid(pfn);
+> > +}
+> > diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+> > index fe5f879f9d1a86083fd55c682fad9d52466f79a2..67cd7006fa63ab5aed4c4de=
+2be639ed8e1fbc2ba 100644
+> > --- a/rust/kernel/page.rs
+> > +++ b/rust/kernel/page.rs
+> > @@ -3,6 +3,7 @@
+> >  //! Kernel page allocation and management.
+> >
+> >  use crate::{
+> > +    addr::*,
+> >      alloc::{AllocError, Flags},
+> >      bindings,
+> >      error::code::*,
+> > @@ -10,6 +11,7 @@
+> >      types::{Opaque, Ownable, Owned},
+> >      uaccess::UserSliceReader,
+> >  };
+> > +use core::mem::ManuallyDrop;
+> >  use core::ptr::{self, NonNull};
+> >
+> >  /// A bitwise shift for the page size.
+> > @@ -249,6 +251,69 @@ pub unsafe fn copy_from_user_slice_raw(
+> >              reader.read_raw(unsafe { core::slice::from_raw_parts_mut(d=
+st.cast(), len) })
+> >          })
+> >      }
+> > +
+> > +    /// Returns the physical address of this page.
+> > +    pub fn phys(&self) -> PhysicalAddr {
+>
+> Rust  uses for similar references `as_*` so `as_phys`, would it make
+> sense to use the same naming format here?
 
-I think there's a bit a potential mess here because the conversion to
-folios isn't far enough yet that we can entirely ignore page refcounts and
-just use folio refcounts. But I guess we can deal with that oddity if we
-hit it (maybe folio conversion moves fast enough), since this only really
-starts to become relevant for hmm/svm gpu stuff.
+The as_ prefix is only used when returning a borrow, which is not the
+case here. I think not having a prefix is correct in this case.
 
-iow I think anticipating the future where struct page really doesn't have
-a refcount is the right move. Aside from that it's really not a refcount
-that works in the rust ARef sense, since struct page cannot disappear for
-system memory, and for dev_pagemap memory it's an entirely different
-reference you need (and then there's a few more special cases).
+https://rust-lang.github.io/api-guidelines/naming.html#ad-hoc-conversions-f=
+ollow-as_-to_-into_-conventions-c-conv
 
-For dma/iommu stuff there's also a push to move towards pfn + metadata
-model, so that p2pdma doesn't need struct page. But I haven't looked into
-that much yet.
-
-Cheers, Sima
-
-> Then, make some existing private methods public, since this is needed to
-> reasonably use allocated pages as IOMMU page tables.
-> 
-> Along the way we also add a small module to represent a core kernel
-> address types (PhysicalAddr, DmaAddr, ResourceSize, Pfn). In the future,
-> this might grow with helpers to make address math safer and more
-> Rust-like.
-> 
-> Finally, add methods to:
-> - Get a page's physical address
-> - Convert an owned Page into its physical address
-> - Convert a physical address back to its owned Page
-> - Borrow a Page from a physical address, in both checked (with checks
->   that a struct page exists and is accessible as regular RAM) and not
->   checked forms (useful when the user knows the physaddr is valid,
->   for example because it got it from Page::into_phys()).
-> 
-> Of course, all but the first two have to be `unsafe` by nature, but that
-> comes with the territory of writing low level memory management code.
-> 
-> These methods allow page table code to know the physical address of
-> pages (needed to build intermediate level PTEs) and to essentially
-> transfer ownership of the pages into the page table structure itself,
-> and back into Page objects when freeing page tables. Without that, the
-> code would have to keep track of page allocations in duplicate, once in
-> Rust code and once in the page table structure itself, which is less
-> desirable.
-> 
-> For Apple GPUs, the address space shared between firmware and the driver
-> is actually pre-allocated by the bootloader, with the top level page
-> table already pre-allocated, and the firmware owning some PTEs within it
-> while the kernel populates others. This cooperation works well when the
-> kernel can reference this top level page table by physical address. The
-> only thing the driver needs to ensure is that it never attempts to free
-> it in this case, nor the page tables corresponding to virtual address
-> ranges it doesn't own. Without the ability to just borrow the
-> pre-allocated top level page and access it, the driver would have to
-> special-case this and manually manage the top level PTEs outside the
-> main page table code, as well as introduce different page table
-> configurations with different numbers of levels so the kernel's view is
-> one lever shallower.
-> 
-> The physical address borrow feature is also useful to generate virtual
-> address space dumps for crash dumps, including firmware pages. The
-> intent is that firmware pages are configured in the Device Tree as
-> reserved System RAM (without no-map), which creates struct page objects
-> for them and makes them available in the kernel's direct map. Then the
-> driver's page table code can walk the page tables and make a snapshot of
-> the entire address space, including firmware code and data pages,
-> pre-allocated shared segments, and driver-allocated objects (which are
-> GEM objects), again without special casing anything. The checks in
-> `Page::borrow_phys()` should ensure that the page is safe to access as
-> RAM, so this will skip MMIO pages and anything that wasn't declared to
-> the kernel in the DT.
-> 
-> Example usage:
-> https://github.com/AsahiLinux/linux/blob/gpu/rust-wip/drivers/gpu/drm/asahi/pgtable.rs
-> 
-> The last patch is a minor cleanup to the Page abstraction noticed while
-> preparing this series.
-> 
-> [1] https://lore.kernel.org/lkml/20241119112408.779243-1-abdiel.janulgue@gmail.com/T/#u
-> 
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> ---
-> Asahi Lina (6):
->       rust: types: Add Ownable/Owned types
->       rust: page: Convert to Ownable
->       rust: page: Make with_page_mapped() and with_pointer_into_page() public
->       rust: addr: Add a module to declare core address types
->       rust: page: Add physical address conversion functions
->       rust: page: Make Page::as_ptr() pub(crate)
-> 
->  rust/helpers/page.c  |  26 ++++++++++++
->  rust/kernel/addr.rs  |  15 +++++++
->  rust/kernel/lib.rs   |   1 +
->  rust/kernel/page.rs  | 101 ++++++++++++++++++++++++++++++++++++++--------
->  rust/kernel/types.rs | 110 +++++++++++++++++++++++++++++++++++++++++++++++++++
->  5 files changed, 236 insertions(+), 17 deletions(-)
-> ---
-> base-commit: ffd294d346d185b70e28b1a28abe367bbfe53c04
-> change-id: 20250202-rust-page-80892069fc78
-> 
-> Cheers,
-> ~~ Lina
-> 
-
--- 
-Simona Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Alice
