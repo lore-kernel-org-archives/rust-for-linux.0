@@ -1,209 +1,373 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBAC4414;
-	Mon,  3 Feb 2025 21:13:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD90320F081
+	for <rust-for-linux@vger.kernel.org>; Mon,  3 Feb 2025 21:26:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738617195; cv=none; b=pAJvXGj2v4MN1ffpOYl0Yjg7V/awJ2W+L7UGJac+Y4+D9nq5D7pk2QEw+2nnyeJlCc1stjfRVS67Y1TI6sTn0CxbYJn6irQ3lcS4PvkutqEvPZ7XYxmdjGtVamDb5aPHrCO1pmr/tbSbpjx4sq07TS2PXFzNjKDv4CkvebNZW9A=
+	t=1738617997; cv=none; b=ckt4ufBQnQrkG/OtyEv11cAZ0BPGYyn/Xjo1pm34NAiKr6liJtAcHLBSkQA8zbq+8Tw5cA/VTRTGyLW9QWYYRO4J+V+RaeMbvz+aQ+lvBkUNCabQLjIDzDO2KcS69m5/aic0vXyU2MotSEl9BblNevFPHx+UHxteOzH/CEdjEFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738617195; c=relaxed/simple;
-	bh=Vin1Wn2guK5HRry0AO82szSOfxlKodsGBCZzYwG5uIY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ev0Zjk3suzgh60lfpdteyA2bhupLdrG4B0Y/kReHH85mDk0CrYfYUbxC0eMuQfJLgNQaRP8SMlpsiWG1TBYFSt1h5XD7j2QE69ABl1JGs8rnEuEYPUXCq1h9+ku6DseRdmcPAEWHnLbY0JKCTzvmIezl/0QHCZAKcQ+vXROgO2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GoupvWYd; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738617997; c=relaxed/simple;
+	bh=JeDac0q7kV6pCKlgWMuLm1akLXt+s+WKT6IT+w2VOew=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=KnnsPfovxfoV1Px3VvhFSe9wnuxsE0nYCH7Q8zb6GJZqmngbvuaPytXAvGl4F57hc6FwYSXpvilfZ7FcsoQamPpefFZ/ju5ZOJBsA+PJYCMxdBsK7WckW2i1sCT/Un75nOObXPgBPe1RGxVJpoyKCQtPV/o5kcvt9CMP9ET6n5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--samitolvanen.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T6U9qiRe; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--samitolvanen.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GoupvWYd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCF57C4CED2;
-	Mon,  3 Feb 2025 21:13:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738617195;
-	bh=Vin1Wn2guK5HRry0AO82szSOfxlKodsGBCZzYwG5uIY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GoupvWYdKqXwXY38WgvEmIWVV50G2gfo5TkhrkYBHXBg3mkUPQLERUesC7AxY7m2d
-	 NyoG0uon2zdPl0f2P1tlwgZI8Gcq6SXwe6WBDkz+KtfJgbvHOHTx/l2mm4KoQyJBQ7
-	 oPT38CQi0tb5Y9OLcc3Ir/0PcUzDJ6Qd+nG7iesNMNe2QK5bDXX5+wCgiisXfpADS9
-	 GIJRyqTS73YR4Dl06VBtc4lyg3ml+VPP6oKDYQFPGSfwcgVQ0q0LOdpJHmrd6VsL7W
-	 yUKp9haBdQ6TjGzC0FOaGyBG4wmngLRbr7L4Mu1dXaYXu2oVeqdhzWie8w/M/KodWw
-	 dw7aiw7yH5+yw==
-Date: Mon, 3 Feb 2025 22:13:08 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <bhelgaas@google.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>
-Subject: Re: [RFC] driver core: add a virtual bus for use when a simple
- device/bus is needed
-Message-ID: <Z6ExZOzIgAHlX_MP@pollux>
-References: <Z5Nw8kaieLueWyUu@pollux>
- <20250130212843.659437-1-lyude@redhat.com>
- <2025013159-shabby-professor-515b@gregkh>
- <2025013140-propeller-dirtiness-6cb4@gregkh>
- <Z50ZuzrDn-GQWOuP@cassiopeiae>
- <2025020106-avert-senorita-4181@gregkh>
- <2025020306-overhang-glider-7d42@gregkh>
- <Z6Ch8O-0oY70Jhi6@pollux>
- <2025020307-cavalier-knapsack-7f89@gregkh>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T6U9qiRe"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2162f80040aso101558795ad.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 03 Feb 2025 13:26:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1738617995; x=1739222795; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=xjzG1KpOB33WO7MG4/hnojjzcuAojKCRhLZ9X+LEtag=;
+        b=T6U9qiReiV9A1GVTwHgWeFB7H3+8Sv13EzJXP3NcC59QcclvEBRba2KBLmvlIjNtBk
+         fzlSvW+s803cNkM8er694Bwx6dk3MPE4485DT+eJfbLFFAn9/VSgN7yuhsE0PihnICMT
+         ZDRLYsIb2HNQBhhIwYRHcO014dFnL8ux1bFqe8fZFub32MlXnXP9VlV8mAwRjars1sQc
+         B6m7zilFTMnL0gCZVDssPKJULL2rJMeXc8kPSIt9bce/p+OwMTjPUNl1iAmh4ZjCDXoN
+         pjpm4+ukp3zWqV6m6ok2gc2SH3tJZWR2PJ6kDJcHy30f21bPGAG2oUg+BZaF+C6+zsFL
+         qNjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738617995; x=1739222795;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xjzG1KpOB33WO7MG4/hnojjzcuAojKCRhLZ9X+LEtag=;
+        b=kFT0HF7IbG+y7gq7/tyG1ESTKTn30T/BV1SzDCC0V4c3CFydH4Kcc/PPDPj0u7ub8f
+         0TDN/Z2+SwqC853UFv2S1SCuMpZTMi8zn6Tfo5TI/FwEbKB0dDPXm1AY0TuE0Jt0BMBK
+         ywyvXXIZJRJkZN2M6Ux4dsDIOa6qz8kSDBYEfvbust3M9RU8nQPx0JDw33tJveP7wN9l
+         Q5Rj042Ih9OumYJybtYNTDy4r2kYPX11me9f1Y88vRuO6rE5PNq2w+Zufb4rfrDUsVg+
+         h5ZTNffIkLOQr0H+/e9oZvMH05+AyRxksittMC4uOHfSdYpK275vOdsRd6LmFYhsuhxm
+         Yj+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU3N8JBtMzexhK7bdeC96tszTybyGa8fd4hNs/mK8PCRZmiwDKvKM8BUxYKv553LzqjEZRdMFa1nzCc08ubeg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJTiwL143JFOqTLrmfMBDQh2n7O+GVA9lV1JbnM7nNzfrl/Ru5
+	DFHLHoKv1HgOlInHx8hcfTnwp1Z8SPO1921uUqcJmb0xzlhjpvKHA3Iyysd/wWpSFiwBnSTbJVh
+	PhcfTxCep6LOLQBlbu33KR8hZOQ==
+X-Google-Smtp-Source: AGHT+IFp8Bb1uts8l0ivJKmHnFfAT/7nzBCLJaIOvCG8JcYD0WSwRz844mjcXsBSV6UmkLE4IXKqBJ2dFLizO3GXShk=
+X-Received: from pfbik10.prod.google.com ([2002:a05:6a00:8d0a:b0:72b:ccb:c99b])
+ (user=samitolvanen job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:2e88:b0:725:df1a:288 with SMTP id d2e1a72fcca58-72fd0c74f49mr37105211b3a.24.1738617994983;
+ Mon, 03 Feb 2025 13:26:34 -0800 (PST)
+Date: Mon,  3 Feb 2025 21:26:32 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025020307-cavalier-knapsack-7f89@gregkh>
+Mime-Version: 1.0
+X-Developer-Key: i=samitolvanen@google.com; a=openpgp; fpr=35CCFB63B283D6D3AEB783944CB5F6848BBC56EE
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8722; i=samitolvanen@google.com;
+ h=from:subject; bh=JeDac0q7kV6pCKlgWMuLm1akLXt+s+WKT6IT+w2VOew=;
+ b=owGbwMvMwCEWxa662nLh8irG02pJDOkLTdpPikoo/T7Vf3b7ZPFZ8dkdAeH/J8trcKxRl+sXP
+ mjcE7iko5SFQYyDQVZMkaXl6+qtu787pb76XCQBM4eVCWQIAxenAEykyI7hr1x8j3Yj5+52gziL
+ jIn8a78dnuehxTixh22uB2fupqveqgz/DNeevHjKdQpLxy2Zu+Ih/q9W9RUXfbTQM/nluW7O/e1 tfAA=
+X-Mailer: git-send-email 2.48.1.362.g079036d154-goog
+Message-ID: <20250203212631.565818-2-samitolvanen@google.com>
+Subject: [PATCH] gendwarfksyms: Add a separate pass to resolve FQNs
+From: Sami Tolvanen <samitolvanen@google.com>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Matthew Maurer <mmaurer@google.com>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@samsung.com>, 
+	Sedat Dilek <sedat.dilek@gmail.com>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Sami Tolvanen <samitolvanen@google.com>, 
+	Giuliano Procida <gprocida@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Feb 03, 2025 at 12:25:23PM +0100, Greg Kroah-Hartman wrote:
-> On Mon, Feb 03, 2025 at 12:01:04PM +0100, Danilo Krummrich wrote:
-> > On Mon, Feb 03, 2025 at 10:39:58AM +0100, Greg Kroah-Hartman wrote:
-> > > From 4c7aa0f9f0f7d25c962b70a11bad48d418b9490a Mon Sep 17 00:00:00 2001
-> > > From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > Date: Fri, 31 Jan 2025 15:01:32 +0100
-> > > Subject: [PATCH] driver core: add a virtual bus for use when a simple
-> > >  device/bus is needed
-> > > 
-> > > Many drivers abuse the platform driver/bus system as it provides a
-> > > simple way to create and bind a device to a driver-specific set of
-> > > probe/release functions.  Instead of doing that, and wasting all of the
-> > > memory associated with a platform device, here is a "virtual" bus that
-> > > can be used instead.
-> > > 
-> > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > 
-> > I think it turned out pretty nice combining the driver and device creation for
-> > convenience.
-> > 
-> > But I think we may still need the option to create multiple devices for the same
-> > driver, as mentioned by Sima.
-> 
-> That will work just fine, the api will allow that, just give each device
-> a unique name and you are good to go.
-> 
-> > @Sima: I wonder if the number of devices could just be an argument?
-> 
-> Then the virtual bus logic will have to create some sort of number/name
-> system and I don't want to do that.  It's a "first caller gets the name"
-> type thing here.  You can easily in a driver do this:
-> 
-> 	my_dev_1 = virtual_device_create(&my_virt_ops, "my_dev_1");
-> 	my_dev_2 = virtual_device_create(&my_virt_ops, "my_dev_2");
-> 	my_dev_3 = virtual_device_create(&my_virt_ops, "my_dev_3");
-> 	...
-> 
-> You share the same callbacks, and that's all you really care about.  If
-> you want to hang sysfs files off of these things, I can make them take a
-> device_groups pointer as well, but let's keep it simple first.
+Using dwarf_getscopes_die to resolve fully-qualified names turns out to
+be rather slow, and also results in duplicate scopes being processed,
+which doesn't help. Simply adding an extra pass to resolve names for all
+DIEs before processing exports is noticeably faster.
 
-Sure, that works perfectly. Just thought, we might not want to also create a new
-struct driver for each device.
+For the object files with the most exports in a defconfig+Rust build,
+the performance improvement is consistently >50%:
 
-> 
-> > > +/*
-> > > + * Internal rapper structure so we can hold the memory
-> > 
-> > I guess having an internal "rapper" does make the interface even cooler! :-)
-> 
-> Hah, I totally missed that.  Language is fun...
-> 
-> > > +static void virtual_device_release(struct device *dev)
-> > > +{
-> > > +	struct virtual_object *virt_obj = to_virtual_object(dev);
-> > > +	struct device_driver *drv = &virt_obj->driver;
-> > > +
-> > > +	/*
-> > > +	 * Now that the device is going away, it has been unbound from the
-> > > +	 * driver we created for it, so it is safe to unregister the driver from
-> > > +	 * the system.
-> > > +	 */
-> > > +	driver_unregister(drv);
-> > 
-> > This is probably becoming non-trivial if we allow multiple devices to be created
-> > for the driver.
-> 
-> Nope, see above, the driver is created dynamically per device created,
-> but that has NOTHING to do with the caller of this api, this is all
-> internal housekeeping.
-> 
-> You will note that the caller knows nothing about a driver or anything
-> like that, all it does is provide some callbacks.
+rust/bindings.o: 1038 exports
+    before: 9.5980 +- 0.0183 seconds time elapsed  ( +-  0.19% )
+     after: 4.3116 +- 0.0287 seconds time elapsed  ( +-  0.67% )
 
-Should have said in case we allow multiple devices per driver, but as long as we
-already create the full "virtual_object", that's fine for sure.
+rust/core.o: 424 exports
+    before: 5.3584 +- 0.0204 seconds time elapsed  ( +-  0.38% )
+     after: 0.05348 +- 0.00129 seconds time elapsed  ( +-  2.42% )
+            ^ Not a mistake.
 
-> 
-> > > +/**
-> > > + * __virtual_device_create - create and register a virtual device and driver
-> > > + * @virt_ops: struct virtual_driver_ops that the new device will call back into
-> > > + * @name: name of the device and driver we are adding
-> > > + * @owner: module owner of the device/driver
-> > > + *
-> > > + * Create a new virtual device and driver, both with the same name, and register
-> > > + * them in the driver core properly.  The probe() callback of @virt_ops will be
-> > > + * called with the new device that is created for the caller to do something
-> > > + * with.
-> > > + */
-> > > +struct virtual_device *__virtual_device_create(struct virtual_driver_ops *virt_ops,
-> > > +					       const char *name, struct module *owner)
-> > > +{
-> > > +	struct device_driver *drv;
-> > > +	struct device *dev;
-> > > +	struct virtual_object *virt_obj;
-> > > +	struct virtual_device *virt_dev;
-> > > +	int ret;
-> > > +
-> > > +	pr_info("%s: %s\n", __func__, name);
-> > > +
-> > > +	virt_obj = kzalloc(sizeof(*virt_obj) + strlen(name) + 1, GFP_KERNEL);
-> > > +	if (!virt_obj)
-> > > +		return NULL;
-> > > +
-> > > +	/* Save off the name of the object into local memory */
-> > > +	strcpy(virt_obj->name, name);
-> > > +
-> > > +	/* Initialize the driver portion and register it with the driver core */
-> > > +	virt_obj->virt_ops = virt_ops;
-> > 
-> > I wonder if it would make sense to allow NULL for virt_ops and use default ops
-> > in this case.
-> 
-> What would be a "default"?  If you don't care/want to do anything with
-> probe/remove, then yes, we can allow it to be set to NULL.
+net/core/dev.o: 190 exports
+    before: 9.0507 +- 0.0297 seconds time elapsed  ( +-  0.33% )
+     after: 3.2882 +- 0.0165 seconds time elapsed  ( +-  0.50% )
 
-Exactly that, no probe, no remove. With that we can avoid the full bus
-abstraction in Rust.
+rust/kernel.o: 129 exports
+    before: 6.8571 +- 0.0317 seconds time elapsed  ( +-  0.46% )
+     after: 2.9096 +- 0.0316 seconds time elapsed  ( +-  1.09% )
 
-> 
-> Actually looking at some of the places this can be replaced with, that
-> does make sense, I'll go make that change.
-> 
-> > This could be useful for the Rust side of things, since then we could probably
-> > avoid having a virtual bus abstraction and instead would only need an
-> > abstraction of __virtual_device_create() itself.
-> 
-> Ok.
-> 
-> > However, this is probalby only convenient for when we have a single device /
-> > driver, but not multiple devices for a single driver.
-> 
-> Again, see above, and stop worrying about the traditional "driver" model
-> here, I took that away from you :)
-> 
-> > The more I think about it, the less I think it's a good idea, since it'd
-> > probably trick people into coming up with questionable constructs...
-> 
-> No, I think it will work, let me do some replacements later today after
-> I get some other work done, I think it does make sense, don't doubt
-> yourself :)
-> 
-> thanks,
-> 
-> greg k-h
+net/core/skbuff.o: 120 exports
+    before: 5.4805 +- 0.0291 seconds time elapsed  ( +-  0.53% )
+     after: 2.0339 +- 0.0231 seconds time elapsed  ( +-  1.14% )
+
+drivers/gpu/drm/display/drm_dp_helper.o: 101 exports
+    before: 1.7877 +- 0.0187 seconds time elapsed  ( +-  1.05% )
+     after: 0.69245 +- 0.00994 seconds time elapsed  ( +-  1.44% )
+
+net/core/sock.o: 97 exports
+    before: 5.8327 +- 0.0653 seconds time elapsed  ( +-  1.12% )
+     after: 2.0784 +- 0.0291 seconds time elapsed  ( +-  1.40% )
+
+drivers/net/phy/phy_device.o: 95 exports
+    before: 3.0671 +- 0.0371 seconds time elapsed  ( +-  1.21% )
+     after: 1.2127 +- 0.0207 seconds time elapsed  ( +-  1.70% )
+
+drivers/pci/pci.o: 93 exports
+    before: 1.1130 +- 0.0113 seconds time elapsed  ( +-  1.01% )
+     after: 0.4848 +- 0.0127 seconds time elapsed  ( +-  2.63% )
+
+kernel/sched/core.o: 83 exports
+    before: 3.5092 +- 0.0223 seconds time elapsed  ( +-  0.64% )
+     after: 1.1231 +- 0.0145 seconds time elapsed  ( +-  1.29% )
+
+Overall, a defconfig+DWARF5 build with gendwarfksyms and Rust is 14.8%
+faster with this patch applied on my test system. Without Rust, there's
+still a 10.4% improvement in build time when gendwarfksyms is used.
+
+Note that symbol versions are unchanged with this patch.
+
+Suggested-by: Giuliano Procida <gprocida@google.com>
+Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+---
+ scripts/gendwarfksyms/die.c           |   2 +-
+ scripts/gendwarfksyms/dwarf.c         | 152 ++++++++++++++------------
+ scripts/gendwarfksyms/gendwarfksyms.h |   2 +
+ scripts/gendwarfksyms/types.c         |   2 +-
+ 4 files changed, 86 insertions(+), 72 deletions(-)
+
+diff --git a/scripts/gendwarfksyms/die.c b/scripts/gendwarfksyms/die.c
+index 66bd4c9bc952..6183bbbe7b54 100644
+--- a/scripts/gendwarfksyms/die.c
++++ b/scripts/gendwarfksyms/die.c
+@@ -6,7 +6,7 @@
+ #include <string.h>
+ #include "gendwarfksyms.h"
+ 
+-#define DIE_HASH_BITS 15
++#define DIE_HASH_BITS 16
+ 
+ /* {die->addr, state} -> struct die * */
+ static HASHTABLE_DEFINE(die_map, 1 << DIE_HASH_BITS);
+diff --git a/scripts/gendwarfksyms/dwarf.c b/scripts/gendwarfksyms/dwarf.c
+index 534d9aa7c114..eed247d8abfc 100644
+--- a/scripts/gendwarfksyms/dwarf.c
++++ b/scripts/gendwarfksyms/dwarf.c
+@@ -3,6 +3,7 @@
+  * Copyright (C) 2024 Google LLC
+  */
+ 
++#define _GNU_SOURCE
+ #include <assert.h>
+ #include <inttypes.h>
+ #include <stdarg.h>
+@@ -193,79 +194,17 @@ static void process_fmt(struct die *cache, const char *fmt, ...)
+ 	va_end(args);
+ }
+ 
+-#define MAX_FQN_SIZE 64
+-
+-/* Get a fully qualified name from DWARF scopes */
+-static char *get_fqn(Dwarf_Die *die)
++static void update_fqn(struct die *cache, Dwarf_Die *die)
+ {
+-	const char *list[MAX_FQN_SIZE];
+-	Dwarf_Die *scopes = NULL;
+-	bool has_name = false;
+-	char *fqn = NULL;
+-	char *p;
+-	int count = 0;
+-	int len = 0;
+-	int res;
+-	int i;
+-
+-	res = checkp(dwarf_getscopes_die(die, &scopes));
+-	if (!res) {
+-		list[count] = get_name_attr(die);
+-
+-		if (!list[count])
+-			return NULL;
+-
+-		len += strlen(list[count]);
+-		count++;
+-
+-		goto done;
+-	}
+-
+-	for (i = res - 1; i >= 0 && count < MAX_FQN_SIZE; i--) {
+-		if (dwarf_tag(&scopes[i]) == DW_TAG_compile_unit)
+-			continue;
+-
+-		list[count] = get_name_attr(&scopes[i]);
+-
+-		if (list[count]) {
+-			has_name = true;
+-		} else {
+-			list[count] = "<anonymous>";
+-			has_name = false;
+-		}
++	struct die *fqn;
+ 
+-		len += strlen(list[count]);
+-		count++;
+-
+-		if (i > 0) {
+-			list[count++] = "::";
+-			len += 2;
+-		}
++	if (!cache->fqn) {
++		if (!__die_map_get((uintptr_t)die->addr, DIE_FQN, &fqn) &&
++		    *fqn->fqn)
++			cache->fqn = xstrdup(fqn->fqn);
++		else
++			cache->fqn = "";
+ 	}
+-
+-	free(scopes);
+-
+-	if (count == MAX_FQN_SIZE)
+-		warn("increase MAX_FQN_SIZE: reached the maximum");
+-
+-	/* Consider the DIE unnamed if the last scope doesn't have a name */
+-	if (!has_name)
+-		return NULL;
+-done:
+-	fqn = xmalloc(len + 1);
+-	*fqn = '\0';
+-
+-	p = fqn;
+-	for (i = 0; i < count; i++)
+-		p = stpcpy(p, list[i]);
+-
+-	return fqn;
+-}
+-
+-static void update_fqn(struct die *cache, Dwarf_Die *die)
+-{
+-	if (!cache->fqn)
+-		cache->fqn = get_fqn(die) ?: "";
+ }
+ 
+ static void process_fqn(struct die *cache, Dwarf_Die *die)
+@@ -1148,8 +1087,81 @@ static void process_symbol_ptr(struct symbol *sym, void *arg)
+ 	cache_free(&state.expansion_cache);
+ }
+ 
++static int resolve_fqns(struct state *parent, struct die *unused,
++			Dwarf_Die *die)
++{
++	struct state state;
++	struct die *cache;
++	const char *name;
++	bool use_prefix;
++	char *prefix = NULL;
++	char *fqn = "";
++	int tag;
++
++	if (!__die_map_get((uintptr_t)die->addr, DIE_FQN, &cache))
++		return 0;
++
++	tag = dwarf_tag(die);
++
++	/*
++	 * Only namespaces and structures need to pass a prefix to the next
++	 * scope.
++	 */
++	use_prefix = tag == DW_TAG_namespace || tag == DW_TAG_class_type ||
++		     tag == DW_TAG_structure_type;
++
++	state.expand.current_fqn = NULL;
++	name = get_name_attr(die);
++
++	if (parent && parent->expand.current_fqn && (use_prefix || name)) {
++		/*
++		 * The fqn for the current DIE, and if needed, a prefix for the
++		 * next scope.
++		 */
++		if (asprintf(&prefix, "%s::%s", parent->expand.current_fqn,
++			     name ? name : "<anonymous>") < 0)
++			error("asprintf failed");
++
++		if (use_prefix)
++			state.expand.current_fqn = prefix;
++
++		/*
++		 * Use fqn only if the DIE has a name. Otherwise fqn will
++		 * remain empty.
++		 */
++		if (name) {
++			fqn = prefix;
++			/* prefix will be freed by die_map. */
++			prefix = NULL;
++		}
++	} else if (name) {
++		/* No prefix from the previous scope. Use only the name. */
++		fqn = xstrdup(name);
++
++		if (use_prefix)
++			state.expand.current_fqn = fqn;
++	}
++
++	/* If the DIE has a non-empty name, cache it. */
++	if (*fqn) {
++		cache = die_map_get(die, DIE_FQN);
++		/* Move ownership of fqn to die_map. */
++		cache->fqn = fqn;
++		cache->state = DIE_FQN;
++	}
++
++	check(process_die_container(&state, NULL, die, resolve_fqns,
++				    match_all));
++
++	free(prefix);
++	return 0;
++}
++
+ void process_cu(Dwarf_Die *cudie)
+ {
++	check(process_die_container(NULL, NULL, cudie, resolve_fqns,
++				    match_all));
++
+ 	check(process_die_container(NULL, NULL, cudie, process_exported_symbols,
+ 				    match_all));
+ 
+diff --git a/scripts/gendwarfksyms/gendwarfksyms.h b/scripts/gendwarfksyms/gendwarfksyms.h
+index 197a1a8123c6..2feec168bf73 100644
+--- a/scripts/gendwarfksyms/gendwarfksyms.h
++++ b/scripts/gendwarfksyms/gendwarfksyms.h
+@@ -139,6 +139,7 @@ void symbol_free(void);
+ 
+ enum die_state {
+ 	DIE_INCOMPLETE,
++	DIE_FQN,
+ 	DIE_UNEXPANDED,
+ 	DIE_COMPLETE,
+ 	DIE_SYMBOL,
+@@ -170,6 +171,7 @@ static inline const char *die_state_name(enum die_state state)
+ {
+ 	switch (state) {
+ 	CASE_CONST_TO_STR(DIE_INCOMPLETE)
++	CASE_CONST_TO_STR(DIE_FQN)
+ 	CASE_CONST_TO_STR(DIE_UNEXPANDED)
+ 	CASE_CONST_TO_STR(DIE_COMPLETE)
+ 	CASE_CONST_TO_STR(DIE_SYMBOL)
+diff --git a/scripts/gendwarfksyms/types.c b/scripts/gendwarfksyms/types.c
+index 6c03265f4d10..6f37289104ff 100644
+--- a/scripts/gendwarfksyms/types.c
++++ b/scripts/gendwarfksyms/types.c
+@@ -248,7 +248,7 @@ static char *get_type_name(struct die *cache)
+ 		warn("found incomplete cache entry: %p", cache);
+ 		return NULL;
+ 	}
+-	if (cache->state == DIE_SYMBOL)
++	if (cache->state == DIE_SYMBOL || cache->state == DIE_FQN)
+ 		return NULL;
+ 	if (!cache->fqn || !*cache->fqn)
+ 		return NULL;
+
+base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
+-- 
+2.48.1.362.g079036d154-goog
+
