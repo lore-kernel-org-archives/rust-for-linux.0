@@ -1,175 +1,230 @@
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E9F20C464;
-	Mon,  3 Feb 2025 14:30:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036FD2080E6;
+	Mon,  3 Feb 2025 14:32:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.63.210.85
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738593010; cv=none; b=mcsDW3YR1VuujqSlNdbZhReQGd3RVxNl6RBgOStZkLSZa4YnfBzR9WO9ki9rVSv4v8vRoBdDSTwk3hEZhrc/V/MriuONmJkNTBBLKxba9dnAlkmVId6cBvWM2w3jwOJq/dkZCFnsNXsRa5ZTZNiHljzt80GCjMTYjdYc+0ukCnQ=
+	t=1738593149; cv=none; b=Ht0T3Ec4Fbr71YSWG/L55pv2OHlC4EinuNPZ3wuoC1E7UxsZ+whLMS8f/vrJtmy5VfSN/G04Mm+GEMlkhsBgzEf88v0KCOslIbBnkWtBZGn/rFDbTl2Lh5/zmQIsOctFLDmxplbtaAPj5xU6ow39iloPgUh5Acnw13mz+YLotr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738593010; c=relaxed/simple;
-	bh=8XzsPEpsyRGi4YWX6B3V+OvrOKb/YV2WMYuZ6HuSEmc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=heJ9W8YCJaOyaDjx9lehgY19XGq42/R5Mci4tJ63oe7Blj+aod0Xe9sEk39bIwJPkY+3x3KOT3Xq/5nO546ENGCNb7yR3QybKBLqgBHIQhc9x0jfNcNv9smAFcAtXE3yTVAjoT7kSBETItbPKGAoSGwbNViCxEL9JOlc5vGQ+pA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hisHXZ2p; arc=none smtp.client-ip=209.85.222.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738593149; c=relaxed/simple;
+	bh=o2atDu1PWcl9Kgs88c64C/EyOfqDqKG+Y34fJ02LYlY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=XHNE/0DOjV5YPxGPtNwrNUCQzQCUrAjnHai7hy0k7hSvnIHArc5UfNab9MB5jcLpja1eePpwZRc7GKs2eod5oP4DpApfHgpU7G/NmgFlzposPs8/JuWUUU9Ka47ehxlvghoupy71IfVOmQ32jrVeod5Ez8IonQbYOVAt5tJt5u4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net; spf=pass smtp.mailfrom=asahilina.net; dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b=zZtvrsfE; arc=none smtp.client-ip=212.63.210.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asahilina.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hisHXZ2p"
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7bcf32a6582so396491985a.1;
-        Mon, 03 Feb 2025 06:30:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738593008; x=1739197808; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=KrGivRpKLfJH6uYF5e+fC19rCHtdF/k+KlI9NRXVfRc=;
-        b=hisHXZ2pQV6TeDu58UGVqblM2Kx/JBJOURnEwk7ppgLuN6dfAXic63ldtoe/oDzxMX
-         oc2xJSVazNyYlOwuvoqGb1YyKO9ovDmqIW3ipDyQucKeohVCQP0Rvd1bBJ0l38tBc64V
-         vmxkXWReUYxBybJFLnlPsnU2UfibRh/mua8M70usjwagWghbs1jT5ruoPS/RVjhlNxP3
-         JNyv+9kJXUWqtnCQLG6aGqm7s6lxTDH1IJCOi44Jq7CUASMTmRl8ePI8wtGtSGSsJnei
-         lhwy9Fs+vGXJ/nKJ8mVKsArYM1nM7Gw0w8VZ7Vqjci+8tjrk3HXv9bXeC5klpyazUAKo
-         /bsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738593008; x=1739197808;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KrGivRpKLfJH6uYF5e+fC19rCHtdF/k+KlI9NRXVfRc=;
-        b=Pd7xznBsZNkARMzaZ9nFNFYYQhH3GpfrPckVK3o65vHEE5aGcdwt2oiOmHuXjKLJz4
-         jCb+hmF9Do4vyiZEh/IZzmg1ZtL4vxP8XhayL67DiGUjv+STycCUxpGWZilXgD3U/Jaj
-         EpDcfrMCQcsTGkLPAQfIQTaWF4B4cLV46LFFkjBV88GGz7DsI1/KqDJ8gDf9YBErCs2+
-         H2dyi8Rpkbge+UEpc1u6AcRXFTQyoIbjzAjaYS3SezaLRT7KRuY2O1TDsGZzaSPUuZ14
-         510V7CAqYiLoGBqGotqK6kBITOOCZFgDWaem8o+I9C2R+TULAs0oUVq7h0ahVhOUbb4j
-         vRLw==
-X-Forwarded-Encrypted: i=1; AJvYcCVAJCvwB0NOL4z3iAipsJ+Ynv48bcmzFGkWEcssUdgiRm25Xdn7P6DzqW2w25Wr1qn0kxEwr8tNWL6JrfU=@vger.kernel.org, AJvYcCWDribTl1wvQkW3kOFanMiUsB6rgzVqGy+nsJUL3ZMgsot26JznTqTpYlcBwCtgc57ixbUWlvyH6roEGzJ3h+c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YybKZK6ev4gy3MNvbwUa7kdGA/dSCwxE/gngUCnvNJxmJt6KFaW
-	RLORXxIVWjwEHFAtFqopby9KPnVtT4tfYenmIrB6eKGJa2cc1aTA
-X-Gm-Gg: ASbGnctko1gpcIFk5aaTepce3sHZ4bk+dZwO8yXSf2PG7Pm5G6H3kaseBGjDQZxP0Z4
-	XWrpQ8sNKdsshQ9cm2XXcH3FwllErt6e6z6m1IWrjsWbAda0CxcTIv0jVrcrwWKR02YGLcVQuXK
-	TtKU96A94MIkgnfpn89I+9OO4T4EvMUvyt/zkm1M2OLCvY1OeYxf7f8iQQeHJQYGPLhMOjZX0MK
-	Up5LtwfwP5jJaf5xHqOvrzpmsFDaROQVSnf0bEd+qGMMv8d3wtSBBws5dwnOdGRa7aZl7afHts7
-	XbVEYb7bujSlY6VofpAeB/0ekWlYPBb8xs4ret6NCUWcXDUXtCBwoPuW5CEhNsVW7LYEhIv8jrl
-	r8HzAxA==
-X-Google-Smtp-Source: AGHT+IGoqnIySCW4xcBXN10HHnpeNElNjJD/qjRMVinK12TP0Vgh/xKOOiAEjTPNu+EtEwRQ/J98Cw==
-X-Received: by 2002:a05:6214:5004:b0:6d8:7ed4:336a with SMTP id 6a1803df08f44-6e243ca746amr373030486d6.31.1738593005127;
-        Mon, 03 Feb 2025 06:30:05 -0800 (PST)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e254819959sm50933796d6.31.2025.02.03.06.30.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Feb 2025 06:30:04 -0800 (PST)
-Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id EC9151200072;
-	Mon,  3 Feb 2025 09:30:03 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Mon, 03 Feb 2025 09:30:03 -0500
-X-ME-Sender: <xms:69KgZ7nFnMAsEsWuIm2I9rwkmSUbqGRGsJr68znH7oyKZxDtLg019A>
-    <xme:69KgZ-2B5tiwPPHpdyREC72NW5rENTImzLVpMZqf4WvgPFsAISP98Zace3vON3J_5
-    TeG0HmUTdN-MieHlA>
-X-ME-Received: <xmr:69KgZxqYvLYkAPpBf4W5LR1mBKixJYWNIvcByvwQfhbAdGVhiRUvkJvQbQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddujeekhecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddt
-    jeenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
-    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeejhfeikeekffejgeegueevffdtgeefudet
-    leegjeelvdffteeihfelfeehvdegkeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgne
-    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhu
-    nhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqdduje
-    ejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdr
-    nhgrmhgvpdhnsggprhgtphhtthhopedugedpmhhouggvpehsmhhtphhouhhtpdhrtghpth
-    htoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepphgvthgv
-    rhiisehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthht
-    ohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtohepsg
-    gvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtoheprgdrhhhinhgu
-    sghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehtmhhgrhhoshhssehumhhitg
-    hhrdgvughupdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgtohhm
-X-ME-Proxy: <xmx:69KgZzmLz0ege_ZgYn8QXvKbMsill1rATvXLo65m_F24I4elyBLHRg>
-    <xmx:69KgZ51BQw03SVPM3GKvXUHv77qoJmymLWlZS5suNFGU-D-mNb81zw>
-    <xmx:69KgZyuaODamm1u_mEYNxYO_qTeb6wF-yLxGQ0uV4FdyI4M-kRYi0A>
-    <xmx:69KgZ9XX3cy5ayCH_vVXCpEUAjj7WyMzyneJTHgoqV5raULNua5ebg>
-    <xmx:69KgZ40Qa0GYgF6yxoerwKdfhVsWM_PCPtC83RL270qUeKrFrmKluwcx>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 3 Feb 2025 09:30:03 -0500 (EST)
-Date: Mon, 3 Feb 2025 06:30:01 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>, Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: sync: add wait_interruptible_freezable
-Message-ID: <Z6DS6cIWgGsX7FXL@tardis.local>
-References: <20250130-condvar-freeze-v1-1-a91d5661d505@google.com>
- <20250203115418.GB14028@noisy.programming.kicks-ass.net>
- <CAH5fLggyyP1A=uNxr2iYNKOj0V5rxZRU83TRgs6Ah1uJ=Ee2uA@mail.gmail.com>
- <20250203133843.GG7145@noisy.programming.kicks-ass.net>
- <CAH5fLgjVyCSTyZqS7uSzWMTKvrxPL55PKUyM-H0RrnuZiU9VEg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b="zZtvrsfE"
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(No client certificate requested)
+	(Authenticated sender: lina@asahilina.net)
+	by mail.marcansoft.com (Postfix) with ESMTPSA id D59D13FA6A;
+	Mon,  3 Feb 2025 14:32:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
+	s=default; t=1738593144;
+	bh=o2atDu1PWcl9Kgs88c64C/EyOfqDqKG+Y34fJ02LYlY=;
+	h=Date:Subject:To:References:From:In-Reply-To;
+	b=zZtvrsfEWZHYSIaS690wPRQu+ZMjSgYb3OctW6aa1PyNYqyc83s12Dv/5OyJkfOaG
+	 l038s4t7eFIhWV1biQVmOXMrTF3Mud7NAxnfp5Bg+hY7RRhj9poKYb0ut0Gs4ZrIt6
+	 FqC/yck1wBkJn+9d0DtVu63mR7alYox6d0aRIAwZaLwDAQ50gEjqcMXtyWJv9fy71N
+	 +pp2fMaqyYMW4Xv5BJJEsqr58mJq9ne7vhI1bblz4fdaumqbfwHD8bmWKSGiF26Zsk
+	 lF+CEx7Tvv46k9mp5Qim4msJFFx/9cXzCvQA51YCKUrqVjuHCGrlfY3WAGLSfz789c
+	 6QFtir98VcDgA==
+Message-ID: <41ca3445-80cd-43c1-8f9e-634c195c9187@asahilina.net>
+Date: Mon, 3 Feb 2025 23:32:21 +0900
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLgjVyCSTyZqS7uSzWMTKvrxPL55PKUyM-H0RrnuZiU9VEg@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/6] rust: page: Support borrowing `struct page` and
+ physaddr conversion
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Jann Horn <jannh@google.com>,
+ Matthew Wilcox <willy@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Danilo Krummrich <dakr@kernel.org>, Wedson Almeida Filho
+ <wedsonaf@gmail.com>, Valentin Obst <kernel@valentinobst.de>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ airlied@redhat.com, Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ asahi@lists.linux.dev
+References: <20250202-rust-page-v1-0-e3170d7fe55e@asahilina.net>
+ <Z6CTLB2NggwYafi9@phenom.ffwll.local>
+Content-Language: en-US
+From: Asahi Lina <lina@asahilina.net>
+In-Reply-To: <Z6CTLB2NggwYafi9@phenom.ffwll.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Feb 03, 2025 at 02:41:37PM +0100, Alice Ryhl wrote:
-> On Mon, Feb 3, 2025 at 2:38 PM Peter Zijlstra <peterz@infradead.org> wrote:
-> >
-> > On Mon, Feb 03, 2025 at 12:56:05PM +0100, Alice Ryhl wrote:
-> > > On Mon, Feb 3, 2025 at 12:54 PM Peter Zijlstra <peterz@infradead.org> wrote:
-> > > >
-> > > > On Thu, Jan 30, 2025 at 11:30:44AM +0000, Alice Ryhl wrote:
-> > > > > Binder allows you to freeze a process where some of its threads are
-> > > > > blocked on the Binder driver. To make this work, we need to pass
-> > > > > TASK_FREEZABLE when going to sleep in the appropriate places. Thus, add
-> > > > > a new method wait_interruptible_freezable for the condition variable so
-> > > > > that sleeps where this is supported can be marked as such.
-> > > >
-> > > > The constraint on freezable is that you must not hold locks. There is a
-> > > > lockdep check for this in the code, but it would probably make sense to
-> > > > teach Rust about this constraint as well, hmm?
-> > >
-> > > Unfortunately, I don't think there's any way to enforce this at
-> > > compile time, but I'm definitely happy to add this in the
-> > > documentation.
-> >
-> > Ah, ISTR people talking about teaching Rust about the whole raw_spinlock
-> > vs spinlock vs mutex nesting order and figured if it can do that, then
 
-Peter, are you talking about the POC idea I proposed on tracking irqsave
-status:
 
-	https://lore.kernel.org/rust-for-linux/20241018055125.2784186-1-boqun.feng@gmail.com/
-
-? I'm working on this right now, however, I don't think this would help
-spinlock or mutex nesting? Because there's no global(percpu) status of
-acquiring these locks. Am I missing something here?
-
-Regards,
-Boqun
-
-> > this should be doable too.
-> >
-> > But perhaps that never quite happened.
+On 2/3/25 6:58 PM, Simona Vetter wrote:
+> On Sun, Feb 02, 2025 at 10:05:42PM +0900, Asahi Lina wrote:
+>> This series refactors the existing Page wrapper to support borrowing
+>> `struct page` objects without ownership on the Rust side, and converting
+>> page references to/from physical memory addresses.
+>>
+>> The series overlaps with the earlier submission in [1] and follows a
+>> different approach, based on the discussion that happened there.
+>>
+>> The primary use case for this is implementing IOMMU-style page table
+>> management in Rust. This allows drivers for IOMMUs and MMU-containing
+>> SoC devices to be written in Rust (such as embedded GPUs). The intended
+>> logic is similar to how ARM SMMU page tables are managed in the
+>> drivers/iommu tree.
+>>
+>> First, introduce a concept of Owned<T> and an Ownable trait. These are
+>> similar to ARef<T> and AlwaysRefCounted, but are used for types which
+>> are not ref counted but rather have a single intended owner.
+>>
+>> Then, refactor the existing Page support to use the new mechanism. Pages
+>> returned from the page allocator are not intended to be ref counted by
+>> consumers (see previous discussion in [1]), so this keeps Rust's view of
+>> page ownership as a simple "owned or not". Of course, this is still
+>> composable as Arc<Owned<Page>> if Rust code needs to reference count its
+>> own Page allocations for whatever reason.
 > 
-> There isn't too much progress on that front lately, but you are right
-> that this work could be extended to support this case too.
+> I think there's a bit a potential mess here because the conversion to
+> folios isn't far enough yet that we can entirely ignore page refcounts and
+> just use folio refcounts. But I guess we can deal with that oddity if we
+> hit it (maybe folio conversion moves fast enough), since this only really
+> starts to become relevant for hmm/svm gpu stuff.
 > 
-> > Yes, documentation would be good. Just in case it isn't obviuos,
-> > freezing a task that holds a lock can trivially deadlock vs another task
-> > that needs that lock to complete before it too can hit freezable.
+> iow I think anticipating the future where struct page really doesn't have
+> a refcount is the right move. Aside from that it's really not a refcount
+> that works in the rust ARef sense, since struct page cannot disappear for
+> system memory, and for dev_pagemap memory it's an entirely different
+> reference you need (and then there's a few more special cases).
+
+Right, as far as this abstraction is concerned, all that needs to hold
+is that:
+
+- alloc_pages() and __free_pages() work as intended, however that may
+be, to reserve and return one page (for now, though I think extending
+the Rust abstraction to handle higher-order folios is pretty easy, but
+that can happen later).
+- Whatever borrows pages knows what it's doing. In this case there's
+only support for borrowing pages by physaddr, and it's only going to be
+used in a driver for a platform without memory hot remove (so far) and
+only for pages which have known usage (in principle) and are either
+explicitly allocated or known pinned or reserved, so it's not a problem
+right now. Future abstractions that return borrowed pages can do their
+own locking/bookkeeping/whatever is necessary to keep it safe.
+
+I would like to hear how memory hot-remove is supposed to work though,
+to see if we should be doing something to make the abstraction safer
+(though it's still unsafe and always will be). Is there a chance a
+`struct page` could vanish out from under us under some conditions?
+
+For dev_pagemap memory I imagine we'd have an entirely different
+abstraction wrapping that, that can just return a borrowed &Page to give
+the user access to page operations without going through Owned<Page>.
+
+> For dma/iommu stuff there's also a push to move towards pfn + metadata
+> model, so that p2pdma doesn't need struct page. But I haven't looked into
+> that much yet.
+
+Yeah, I don't know how that stuff works...
+
 > 
-> I'll include those details, thanks!
+> Cheers, Sima
 > 
-> Alice
+>> Then, make some existing private methods public, since this is needed to
+>> reasonably use allocated pages as IOMMU page tables.
+>>
+>> Along the way we also add a small module to represent a core kernel
+>> address types (PhysicalAddr, DmaAddr, ResourceSize, Pfn). In the future,
+>> this might grow with helpers to make address math safer and more
+>> Rust-like.
+>>
+>> Finally, add methods to:
+>> - Get a page's physical address
+>> - Convert an owned Page into its physical address
+>> - Convert a physical address back to its owned Page
+>> - Borrow a Page from a physical address, in both checked (with checks
+>>   that a struct page exists and is accessible as regular RAM) and not
+>>   checked forms (useful when the user knows the physaddr is valid,
+>>   for example because it got it from Page::into_phys()).
+>>
+>> Of course, all but the first two have to be `unsafe` by nature, but that
+>> comes with the territory of writing low level memory management code.
+>>
+>> These methods allow page table code to know the physical address of
+>> pages (needed to build intermediate level PTEs) and to essentially
+>> transfer ownership of the pages into the page table structure itself,
+>> and back into Page objects when freeing page tables. Without that, the
+>> code would have to keep track of page allocations in duplicate, once in
+>> Rust code and once in the page table structure itself, which is less
+>> desirable.
+>>
+>> For Apple GPUs, the address space shared between firmware and the driver
+>> is actually pre-allocated by the bootloader, with the top level page
+>> table already pre-allocated, and the firmware owning some PTEs within it
+>> while the kernel populates others. This cooperation works well when the
+>> kernel can reference this top level page table by physical address. The
+>> only thing the driver needs to ensure is that it never attempts to free
+>> it in this case, nor the page tables corresponding to virtual address
+>> ranges it doesn't own. Without the ability to just borrow the
+>> pre-allocated top level page and access it, the driver would have to
+>> special-case this and manually manage the top level PTEs outside the
+>> main page table code, as well as introduce different page table
+>> configurations with different numbers of levels so the kernel's view is
+>> one lever shallower.
+>>
+>> The physical address borrow feature is also useful to generate virtual
+>> address space dumps for crash dumps, including firmware pages. The
+>> intent is that firmware pages are configured in the Device Tree as
+>> reserved System RAM (without no-map), which creates struct page objects
+>> for them and makes them available in the kernel's direct map. Then the
+>> driver's page table code can walk the page tables and make a snapshot of
+>> the entire address space, including firmware code and data pages,
+>> pre-allocated shared segments, and driver-allocated objects (which are
+>> GEM objects), again without special casing anything. The checks in
+>> `Page::borrow_phys()` should ensure that the page is safe to access as
+>> RAM, so this will skip MMIO pages and anything that wasn't declared to
+>> the kernel in the DT.
+>>
+>> Example usage:
+>> https://github.com/AsahiLinux/linux/blob/gpu/rust-wip/drivers/gpu/drm/asahi/pgtable.rs
+>>
+>> The last patch is a minor cleanup to the Page abstraction noticed while
+>> preparing this series.
+>>
+>> [1] https://lore.kernel.org/lkml/20241119112408.779243-1-abdiel.janulgue@gmail.com/T/#u
+>>
+>> Signed-off-by: Asahi Lina <lina@asahilina.net>
+>> ---
+>> Asahi Lina (6):
+>>       rust: types: Add Ownable/Owned types
+>>       rust: page: Convert to Ownable
+>>       rust: page: Make with_page_mapped() and with_pointer_into_page() public
+>>       rust: addr: Add a module to declare core address types
+>>       rust: page: Add physical address conversion functions
+>>       rust: page: Make Page::as_ptr() pub(crate)
+>>
+>>  rust/helpers/page.c  |  26 ++++++++++++
+>>  rust/kernel/addr.rs  |  15 +++++++
+>>  rust/kernel/lib.rs   |   1 +
+>>  rust/kernel/page.rs  | 101 ++++++++++++++++++++++++++++++++++++++--------
+>>  rust/kernel/types.rs | 110 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>>  5 files changed, 236 insertions(+), 17 deletions(-)
+>> ---
+>> base-commit: ffd294d346d185b70e28b1a28abe367bbfe53c04
+>> change-id: 20250202-rust-page-80892069fc78
+>>
+>> Cheers,
+>> ~~ Lina
+>>
+> 
+
+~~ Lina
+
