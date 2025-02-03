@@ -1,98 +1,221 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B769E207A1C
-	for <rust-for-linux@vger.kernel.org>; Mon,  3 Feb 2025 11:56:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE22202C21
+	for <rust-for-linux@vger.kernel.org>; Mon,  3 Feb 2025 12:15:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738583781; cv=none; b=tLDbInkUbvya3aJjy3FivQUrtlwGGOeBJlmVlXak9dBlymvfGOonEc49ogrFKrFM5HfTheOGCbv6KPfI/LAdOI4bA6awueFhAKfAurPikBBOug2DEo7FC6LR19x6uGTSkhwuUm3VFOoNLMHnT68GNQrg4O920N72SJ4fl00xvDU=
+	t=1738584916; cv=none; b=KFBz+n+M0cERz2JISzg6WqoVj6uSjIplygT85dMq4cjZBM0ehihuYljxv0HumZZmBnFMg0v/AEdqJhvK0EGGr2t90CoTsyzGmVEQVAwJC/JI+JgiMsO2cwgmJibjD29tODzzoPY48ElCOd1q4wR4XLznduhGXzkxjDvg9Z///Gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738583781; c=relaxed/simple;
-	bh=9IzEiom6SzulKxJ/glaOYmrIa2Uo0paqlphMpy7VetM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AGIfBFyaRTvSv7QOeosVGyyuwptidHMizQmM7Gq/8+3T1CTuIKqtCUciQ9018d5w3KR5+wKSnnsfgXhA5IZ6C9PJkMGfK1X5utHLJcKX3b5/Rz0ZW07rKX53C9xnaH5jCX2gqGwkSixAZqx/AdVNiq+UMtuwNpRHl/v4xuf7prs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=az6t90QN; arc=none smtp.client-ip=209.85.128.52
+	s=arc-20240116; t=1738584916; c=relaxed/simple;
+	bh=5RayMwBdE8wftaAFzyzo7I2D2vIYhJNPKMb4OmTDwCM=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=FQrQrWQ5MnEET9mUsonu3vusRUYKE6SN9ea33go95htJ3uJYolfPyGc4WO2YXRavCyYqXTm/RFMFwSgSFIhjwpaFjzntz5A9+/jOvlrxHu47t9urpigDWnmvfZf8UXNBvOnhoNXvuDzNqnwDjZF6GK8sMdOlehrWmzgnUJfsptQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ztJ3vixc; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="az6t90QN"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43618283dedso44545295e9.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 03 Feb 2025 03:56:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ztJ3vixc"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4361f371908so31262285e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 03 Feb 2025 04:15:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738583778; x=1739188578; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9IzEiom6SzulKxJ/glaOYmrIa2Uo0paqlphMpy7VetM=;
-        b=az6t90QNr6avpauxATyEVi+A9NzWuAolGBCYgLK2rHrnzhv0azep3l/xW0AXn2+qVX
-         GICdymXxN0Nlrs8HoPxtRAf1A+eaigVutOpHc4auKGKQ30y8FKSPyekz2oBqMNiLf8G+
-         Z2UCQXh9Oq72Zl9paJvkstETP7zBJ/ICafS/qzopLyFxe4hbqeui4V/c1M2ZRk7clRCX
-         ywiAZkQYc24xkIS+XBBSclZMs0tp2eKE0kMJT4UU3QLmnmz+h2pOqMuTA4kR7B3eYpRs
-         AZCKrCUisfIouOyZIpowycfrEExVZR2ug+mDE1PVO8CNeCrbDU4FfCf2dUi8pu4EV2KZ
-         pMoQ==
+        d=google.com; s=20230601; t=1738584912; x=1739189712; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ZW0GP4W/7qnWquUo7ioN8qOuSA8agXZe2rMFQxltuOY=;
+        b=ztJ3vixcE4kSvx1UESuTiqrmjO+oUSYqX2ymSPkTdkB2bQtiZXvpjqmPhoVrpVLjrw
+         IA9htH8yB8XjmxSdzg/6e859CRgKrXkgUk4QMtYRkSmxUaDrAtYjA/0PksGEExjWM4Yo
+         3nUQ74ggg/7H/x1AYnz5YK/fedGjIatgEiwKwZA556CiGk44QIKT3skQPBClNntyrGf+
+         4IkeFRMGjRogjCk/iSH7MQiWxJgRqlU8qGBfH7qj5lIzTxaz7qHupYc3L0BFCdPYVgEq
+         pflhXdjjoMFaHdSc2qAbUwlhJIwxaAfdKCC56EkBadvydGOBj3hbH2JrcXloLuePYW3a
+         lZCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738583778; x=1739188578;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9IzEiom6SzulKxJ/glaOYmrIa2Uo0paqlphMpy7VetM=;
-        b=PHZx21o3vGxgQo1BIb+Ers8zcKg3Xq5XTGz0HloCBgaGsY47HLgHtjG8vCQnepGX/G
-         xcPRI22JIKrePpYeTzccS+Rhbg5Zfl6NQVMvkzxr9k3EXnCA0L4rIGxTTR8AeR1wtVed
-         DDgNZR/VOlrM9i4sih9Yal/oiZOzoq6hmbEFMJe3b3s++PIQOTGyU9+KRpAyyVau0sKa
-         lwP7IluLOMssCEW5MUOW4gIuIMoF4FQwy4A2Ajuzn9jxRvY+eRlylzvcBJXK07HzAW4C
-         mQhC73B7G/MlE8r2adt5ucDwGNSy+74xeCf5pNmVvEzLb6xzOkVp6cEEX/2eMiiHj7X/
-         rixw==
-X-Forwarded-Encrypted: i=1; AJvYcCWgU316tdNaXqCtEShYSvFovLxcLT2JNoPbq5yGqg7ltXgE+BN2edb3/kVNMx6Gx6UanbaEn35QWUmdTYbSIw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWbPpoh9eyaDZtY0R21reupHR99xBZBSWScoYBYumq+hBsEbr4
-	gkEjZD2i4rIGImCGe11w4+38+MgI9bwt0Sr24kgXymoegwmTLY/aYyWXQWVy0pGI2pPFLSvDXaR
-	5hgw/qKbuBxg9FW62rwudYHtB3UYSkGNEpyEa
-X-Gm-Gg: ASbGncuVzR0nUgJfvHmUbiOTlUlJIudWces08WQxhrHxpORKvTd94mhthcT58Y0o8Yg
-	dp/jMH7LHgElbDSenugRc4Pih8I0f/5Q7NSVBYVnIBetWQuQ62KDRQvHLVcaQzEelcRrAs/IVFn
-	c8MaIzgcv39XoQqnR0N4IRloCi
-X-Google-Smtp-Source: AGHT+IFWgvCUDCO17qB3ujbTN8kQLJHlVJh3nMwKzb0A/UItlxg1jmWXbjbwwfUF8gwMzKP/W1LegZfB0g5CJf8cksI=
-X-Received: by 2002:a5d:6487:0:b0:38b:669d:4dd4 with SMTP id
- ffacd0b85a97d-38c5192f1f4mr17390254f8f.11.1738583777940; Mon, 03 Feb 2025
- 03:56:17 -0800 (PST)
+        d=1e100.net; s=20230601; t=1738584912; x=1739189712;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZW0GP4W/7qnWquUo7ioN8qOuSA8agXZe2rMFQxltuOY=;
+        b=kbBtDkb3gDQilk38fo0lgnbWm5vpXffznbD88HUwy7mMt3Yfj+Z3kiNaWxI8kwgvEC
+         sv6s+sAqxquBs5r0jFS5lc7u4tUA+QB/Kg81/88l0F422ysL1HBU9XlLpakVexxHrFhJ
+         mZwJLoe4a4jT9BnGf1IBAU2pAP5ZQR2qeygaBE2DI77zwDInMFuyl5uuFZxrQIt4pDcq
+         cfDOLxqvQg14r6wKe7yiLAAkPF6nAC2zVgUfAO1VVQlA/b9vIjz3hUNuwS0DC30G6SvD
+         QCDlUqjwuY/YxO+wPv4uuonw82M1K2qlz8A3qIuqT+v59E+klu5l43bMK5IjSpxfkK80
+         sHDg==
+X-Forwarded-Encrypted: i=1; AJvYcCV5aACXOy+SssYuzj0Bz58kZTxe/Lr/PBeE45SlM9vbmNRPU6uYd5mO3z84DnaDOFSZob1U41zixbFh9CYfyA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+GahC8C7i2r0gfpqJynEo/p2h3Yw5DRD7yI3p+M+GwfWHzIWO
+	zbM0eP8wnCBRYxS6poTR54mnNAeg3WPAgZvTNu7dunUH/t/aKLC0Q8Sz+3TEKhDxMfG+JDkIApD
+	mPTqiA9EAC0JEzg==
+X-Google-Smtp-Source: AGHT+IG/TkjnL8EqB6zkiMQgN5CT4BSlrTDc0dPk9b0e/ayAkzCN4KRnO9dRcR4wqNYBGO2XmYR/QgL+1B4Y41g=
+X-Received: from wmbbi5.prod.google.com ([2002:a05:600c:3d85:b0:434:fc6f:e8c3])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1f10:b0:435:192:63fb with SMTP id 5b1f17b1804b1-438dc3ae816mr179894055e9.3.1738584912178;
+ Mon, 03 Feb 2025 04:15:12 -0800 (PST)
+Date: Mon, 03 Feb 2025 12:14:35 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250130-condvar-freeze-v1-1-a91d5661d505@google.com> <20250203115418.GB14028@noisy.programming.kicks-ass.net>
-In-Reply-To: <20250203115418.GB14028@noisy.programming.kicks-ass.net>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIACuzoGcC/2XSzWrDMAwH8FcpPs9Dkr932nuMHezYbgNrM5IRN
+ krffWoT2hSfgk1+stBfZzGVsS+TeNudxVjmfuqHEx9QvexEd4infZF95gtBQBocKTkfo6weEEM
+ NNSkj+M/vsdT+91bm45PPh376Gca/W9UZr7fPfkaJUlHMJnIhX8r7fhj2X+W1G47iWmCmLXILI
+ kYxqWICudyp2CD1QNzgghSjnGyHHcSaY2iQ3iJakGYEAaN3YHzUqkFmi+yCzBVpQF/B5EKpQfa
+ OEBAWZCXI7AOokGw1rn3JbZFekGMEWBRVbzkH0yD/QEjrS55RSQo1mRytbdsLW7QOIjBySC7VL
+ mej25wQtiqs6XJ7UudaeRIpcloteywFEq5R8ZeZtVaDJl+7dhh4XwvDe2NWRsyUMxBCLIDueS8 ul8s/cCRSeuUCAAA=
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5306; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=5RayMwBdE8wftaAFzyzo7I2D2vIYhJNPKMb4OmTDwCM=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnoLMsb3vYypHp++2v+iwMBI0va3rR6k3M/+mfS
+ 4dPLylQ2VyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ6CzLAAKCRAEWL7uWMY5
+ RrjREACFo945VrKdNs3WhkUyYvws1JUfjXsYC17/IrN78oTs4JAJOKVq5EWgvlSz92rV1ryVfnU
+ H6Rzd1keeCsYvrZhxJsOTTsWbOsp8Uj2Wp8eETjThBtnExSYDjXVemLY0cnu67REaAu/LFVIeoh
+ DTaq9wTiGIk5eAeVdZFRU/XVErrlG/AU5lm1hHJJ2v25jL3nm3xFNmyTacI/4UUAKcjzylciuZc
+ Xts+OZAHG4F6yyylwxnFzUzMbSXTgdWfGLjS9iBCJlscW0JubJOwk2AO0XIl6Amt5CvhlIDUnwD
+ FUkFPnQbhcaRR8AXYJoznVGSzKerioix42kpLDKQQlFxRjGj+G1N4OEOY/y3NFSXmKI9dKlvfpJ
+ FVKy7kB2lgwCAxlaDLH0CqpN5Kl3s9ooAhyC0IuTKTxv8073bRKhO81oSlu5Uq5sGeiM6CwUgUd
+ 4u1jR22VaMA9YH/psBzlUZ1DYsglza/1gh6MrLvmB2FHxxGfs7Oloa969x7tnQ4u++bonH+bw/B
+ C6dnyCPCSFaNuGnHp1t68hGP4nei41RJwB9SXoZxBEFLZ9jxxjbBd9iPujOcLH9AgTEhHwUyr8a
+ gll54rVzoVutRftEfABsYFikgx7fQWfUnpf7vDbob6A9WFFpq8GLVxhB3Z90SvlMWfZpYHs2Pfd XlDZIBjuT3i84aA==
+X-Mailer: b4 0.13.0
+Message-ID: <20250203-vma-v13-0-2b998268a396@google.com>
+Subject: [PATCH v13 0/8] Rust support for mm_struct, vm_area_struct, and mmap
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 3 Feb 2025 12:56:05 +0100
-X-Gm-Features: AWEUYZnrtsIUCF_sbBn4JDADCke_X1bx2GdOn0irljBNdeANdIrovySmE7zKDbI
-Message-ID: <CAH5fLggyyP1A=uNxr2iYNKOj0V5rxZRU83TRgs6Ah1uJ=Ee2uA@mail.gmail.com>
-Subject: Re: [PATCH] rust: sync: add wait_interruptible_freezable
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
-	Waiman Long <longman@redhat.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>, Suren Baghdasaryan <surenb@google.com>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>, Balbir Singh <balbirs@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Mon, Feb 3, 2025 at 12:54=E2=80=AFPM Peter Zijlstra <peterz@infradead.or=
-g> wrote:
->
-> On Thu, Jan 30, 2025 at 11:30:44AM +0000, Alice Ryhl wrote:
-> > Binder allows you to freeze a process where some of its threads are
-> > blocked on the Binder driver. To make this work, we need to pass
-> > TASK_FREEZABLE when going to sleep in the appropriate places. Thus, add
-> > a new method wait_interruptible_freezable for the condition variable so
-> > that sleeps where this is supported can be marked as such.
->
-> The constraint on freezable is that you must not hold locks. There is a
-> lockdep check for this in the code, but it would probably make sense to
-> teach Rust about this constraint as well, hmm?
+This updates the vm_area_struct support to use the approach we discussed
+at LPC where there are several different Rust wrappers for
+vm_area_struct depending on the kind of access you have to the vma. Each
+case allows a different set of operations on the vma.
 
-Unfortunately, I don't think there's any way to enforce this at
-compile time, but I'm definitely happy to add this in the
-documentation.
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v13:
+- Rebase on v6.14-rc1.
+- Remove casts that are now unnecessary due to improved Rust/C integer
+  type mappings.
+- Link to v12: https://lore.kernel.org/r/20250115-vma-v12-0-375099ae017a@google.com
 
-Thanks!
-Alice
+Changes in v12:
+- Add additional documentation to modules at the top of mm.rs and virt.rs.
+- Explain why the name Mm is used in commit message of patch 1.
+- Expand zap_page_range_single with docs suggested by Lorenzo.
+- Update safety comment in vm_insert_page
+- Mention that VmAreaMixedMap is identical to VmAreaRef except for VM_MIXEDMAP.
+- Update docs for as_mixedmap_vma.
+- Add additional docs for VmAreaNew struct.
+- Rename `get_read` -> `readable` and equivalent for write/exec.
+- Use mut pointers for `from_raw` for VMAs.
+- Update safety comment for fops_mmap.
+- Add additional docs for MiscDevice::mmap.
+- Don't introduce and immediately delete mmgrab_current.
+- Reduce active_pid_ns comment at Andreas's suggestion and link to get_pid_ns.
+- Fix documentation test in rust/kernel/task.rs.
+- Fix warning about unused variables in lock_vma_under_rcu when
+  CONFIG_PER_VMA_LOCK=n.
+- Fix minor typos.
+- Link to v11: https://lore.kernel.org/r/20241211-vma-v11-0-466640428fc3@google.com
+
+Changes in v11:
+- Add accessor for the vm_mm field of vm_area_struct.
+- Pass the file to MiscDevice::mmap for consistency with
+  https://lore.kernel.org/r/20241210-miscdevice-file-param-v3-1-b2a79b666dc5@google.com
+- Link to v10: https://lore.kernel.org/r/20241129-vma-v10-0-4dfff05ba927@google.com
+
+Changes in v10:
+- Update docs for `set_io`.
+- Check address in `zap_page_range_single`.
+- Completely redo the last patch.
+- Link to v9: https://lore.kernel.org/r/20241122-vma-v9-0-7127bfcdd54e@google.com
+
+Changes in v9:
+- Be more explicit about VmAreaNew being used with f_ops->mmap().
+- Point out that clearing VM_MAYWRITE is irreversible.
+- Use __vm_flags to set the flags.
+- Use as_ and into_ prefixes for conversions.
+- Update lock_vma_under_rcu docs and commit msg
+- Mention that VmAreaRef::end is exclusive.
+- Reword docs for zap_page_range_single.
+- Minor fixes to flag docs.
+- Add way to access current->mm without a refcount increment.
+- Link to v8: https://lore.kernel.org/r/20241120-vma-v8-0-eb31425da66b@google.com
+
+Changes in v8:
+- Split series into more commits to ease review.
+- Improve read locks based on Lorenzo's doc: either the mmap or vma lock
+  can be used.
+- Get rid of mmap write lock because it's possible to avoid the need for
+  it.
+- Do not allow invalid flag combinations on VmAreaNew.
+- Link to v7: https://lore.kernel.org/r/20241014-vma-v7-0-01e32f861195@google.com
+
+Changes in v7:
+- Make the mmap read/write lock guards respect strict owner semantics.
+- Link to v6: https://lore.kernel.org/r/20241010-vma-v6-0-d89039b6f573@google.com
+
+Changes in v6:
+- Introduce VmArea{Ref,Mut,New} distinction.
+- Add a second patchset for miscdevice.
+- Rebase on char-misc-next (currently on v6.12-rc2).
+- Link to v5: https://lore.kernel.org/r/20240806-vma-v5-1-04018f05de2b@google.com
+
+Changes in v5:
+- Rename VmArea::from_raw_vma to from_raw.
+- Use Pin for mutable VmArea references.
+- Go through `ARef::from` in `mmgrab_current`.
+- Link to v4: https://lore.kernel.org/r/20240802-vma-v4-1-091a87058a43@google.com
+
+Changes in v4:
+- Pull out ARef::into_raw into a separate patch.
+- Update invariants and struct documentation.
+- Rename from_raw_mm to from_raw.
+- Link to v3: https://lore.kernel.org/r/20240801-vma-v3-1-db6c1c0afda9@google.com
+
+Changes in v3:
+- Reorder entries in mm.rs.
+- Use ARef for mmput_async helper.
+- Clarify that VmArea requires you to hold the mmap read or write lock.
+- Link to v2: https://lore.kernel.org/r/20240727-vma-v2-1-ab3e5927dc3a@google.com
+
+Changes in v2:
+- mm.rs is redesigned from scratch making use of AsRef
+- Add notes about whether destructors may sleep
+- Rename Area to VmArea
+- Link to v1: https://lore.kernel.org/r/20240723-vma-v1-1-32ad5a0118ee@google.com
+
+---
+Alice Ryhl (8):
+      mm: rust: add abstraction for struct mm_struct
+      mm: rust: add vm_area_struct methods that require read access
+      mm: rust: add vm_insert_page
+      mm: rust: add lock_vma_under_rcu
+      mm: rust: add mmput_async support
+      mm: rust: add VmAreaNew for f_ops->mmap()
+      rust: miscdevice: add mmap support
+      task: rust: rework how current is accessed
+
+ rust/helpers/helpers.c    |   1 +
+ rust/helpers/mm.c         |  50 +++++
+ rust/kernel/lib.rs        |   1 +
+ rust/kernel/miscdevice.rs |  44 +++++
+ rust/kernel/mm.rs         | 339 +++++++++++++++++++++++++++++++++
+ rust/kernel/mm/virt.rs    | 476 ++++++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/task.rs       | 247 ++++++++++++------------
+ 7 files changed, 1040 insertions(+), 118 deletions(-)
+---
+base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
+change-id: 20240723-vma-f80119f9fb35
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
