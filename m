@@ -1,102 +1,156 @@
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB8051D7E50;
-	Mon,  3 Feb 2025 08:37:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC33F1FC7DC
+	for <rust-for-linux@vger.kernel.org>; Mon,  3 Feb 2025 08:41:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738571826; cv=none; b=DwPGFvazALyCFAvrRWpXm/d3NHfW2QPgwcgmz6fro4vErJGYAaxMeqXyv+gy30CNLYLNRnH4Qp+73HTniBF4MfUwFoLVjBHVrR6Cpnut+F8cB/PJKLt2h3kFaQCcea2cv/w3pT76/QJWPWR+giszGQbYW5Wm404wNSDeGg3Jxjk=
+	t=1738572071; cv=none; b=foeSNfx9noM1py7ff6Kyp/dVY70CJ/0BrYGWpdlS5Lz5y3WuEO0G1MTnZtxT/ODVN5YucEIvk9NPbM6A9mj7UPUhVacCBR9uDG3YR2Voa5hCWPH/Fh3X1aymIYK50xEW5A1Ar/LEemr4f6vMZBrxMyYzElX/8dr/Rb0oM+av3QA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738571826; c=relaxed/simple;
-	bh=gWOFAt2rybSaMtiQKrZAONssTjaaeIu2CUJS662ZrX0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aBFG20qMydPolNkN7Lnhu5VmsEapcjhQp7jxjHZdwob7O9G4NKZ/o4cZsicNx7fqAeeKObFsImfCTtlgvr8BSAuRODeKw2WSNiqEK837MC/MUoCUPtFeq7zov/nR1e6QGJJvnKzTJNYmFMXgTj+1eRtc5WNhBJRsorSBIyQMe9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H5ZXp7zp; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738572071; c=relaxed/simple;
+	bh=77gwvmMi/WmTmBIVTvybK9+anHR4PuaeyO7yxM3i/As=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=nUIPCXWB562bs3FLouPxHqh2ZupqxtBH5YCGa4HwtUk12dJoxtptBqz66/DRcmVkg7WPuhb1uJ7h+Ozusu1bROsVjf68F8xMbBID0LpGrXeHO+ir8Gsyl8CfKY8eGTWcV/u0fP7EE1sewE4RLFL27HB42E9+DsDbCFt6hZ2UE3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ENa2pt1V; arc=none smtp.client-ip=209.85.208.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H5ZXp7zp"
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-54021daa6cbso4374714e87.0;
-        Mon, 03 Feb 2025 00:37:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ENa2pt1V"
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-5d3c284eba0so6105351a12.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 03 Feb 2025 00:41:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738571823; x=1739176623; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=j30JImXL8j/mQY7XDaNDiKvNWf91T15iq6ow2JICGdU=;
-        b=H5ZXp7zpFt5/riOpzI2EtMGjrbyiUIUVVNvn/jXuoVEGhC5ggOUUjBG4++vZoI0x4R
-         e24CGy5zkMySy1LsOHi9FrKvR1mYoOJFtu3sTcowxuFSjvYzDhpSZjfUcaXa8Axyaf/o
-         q/BWtD9ffnQDWQMW5zQkfTOF4fW6N6WoWUZ7/NjVZDszGfrdVzG9/PqWhnHH5aNNgbNp
-         OnaymSjQT6oe1vltCAsSanPJ94fGDVutJQ1MnnWJxugqzfwx67h2ed/fdS7uxHdx/2zo
-         tEHPW1eOcbozbK255lwGwvcl3EweMBWKFntGiBdLEj4fzVQDdoxIkotJpChfdB+kQu+S
-         e8zQ==
+        d=google.com; s=20230601; t=1738572068; x=1739176868; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Mk6V2a1OKehUwhksSUOJsYXjthaAUvB8G0tqW4qNGVk=;
+        b=ENa2pt1VCBLqjMXjj7JEbDlrpc7PGs4XoBtxk7z57UZcxLghPiOO2pLoggfYEg2u7p
+         CwONrvDtHMDTfWh3KMpi4oqzOuWRpp9nezY0Jm/vB3sbco4adxbQrlM7OoOC19eFCykT
+         yvK58eRhy0RHNCBgy4cVMdqx0trZgm5yVIzRgD5ZoMxAdw5l+Vtj5FRETIifUxwUrj6d
+         yj8E3vOYrVAfsADrLbvnAvn4uWuScxZLzF41i31a3YKe+lAYVPBNa6fyNbAa+xLa/9B8
+         vNBZfx/lmhyR3Qfov+aV9FP5BJ/nrVNwuGffpcbwkDumOZYqJf1HLVfSyslN0upmzOMF
+         UF/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738571823; x=1739176623;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=j30JImXL8j/mQY7XDaNDiKvNWf91T15iq6ow2JICGdU=;
-        b=gq8AXUR1UKNoZvU5iXWYELsuIs3RwHCQ1/hpmJ8e6tpQ62a6WJsffOTzKxTUjCAVjo
-         nSlx3aZ2xhrWBHDGGU7gjlO7rnQ0smVJrwlStfdIWaQva6zhfTkC9bG3O4XrHzby9mAx
-         WbvMrVJaReFuadHM8s3wavgtSB4JMb+ZtGNtmXph5y64HofCCbqk0VbohaeISygZhiGO
-         y3qd9H2EQDFTLsT/iFhWiO/C3GrvbfTyIs4b3ee4qRldvEYQsU8/doO2QJ+cB0qiY8J6
-         hemXRqY1hLF0QPQ3JEZ58XNHYPwE9cFKxqwhMvAYIu+LtYOGJXynyax4NgYk0WqSd/3h
-         9vFw==
-X-Forwarded-Encrypted: i=1; AJvYcCVjeIWKE/5lqJAXYa5tXgObzMbutdUvNL0Buy/q96u5d8SDuYgHUIUs5xR1PUXAL+/wbxjpdQPoUJHRHIY=@vger.kernel.org, AJvYcCWMTOzkkvfKuNgyo9PXX8aYWyIzsWx1D37vWKtZVvNvSxbB9ChQemU9SUO8ytI0UYW+ixHXTBODAsAL10uBV0Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCUvrNENkONVImHnESwWXRrxne29r4uDP7Zah2degJK83WVYi+
-	UYo0d37YTQaCqUMxTmVk6zVBJVL6TccUpgHH4T/fWBEukCvIk1Zb
-X-Gm-Gg: ASbGnctVuJhfAu7fA1jE70tgmXELzD7I1OttzJD8Ya1lMIa/yidG6yQq1lDbVtV3lh0
-	o3flDaCieWTA+A2FUjrQSXScg4Cw8iDMifz3zWpCDk8jR1xLEZPaJZEVGnQkweGu9CYKVDXh83Y
-	vmon1fjBSEwFQmVFNrVASSYgfOUII7K6JlJRJSrlq+e41KxR/fbebLrb74SEvGdSmOjvUveHDrs
-	N1UEzhG2zW/0eJqanSWAOBymRcCPYcugXGN5QUVCK5Rf7B6JdEKbjVDudQFAoWgwMmp2QtrE/vp
-	zHMrYGzUSHKGmihUJQx3x9MH0H7ChQ6zuZsLEOwk/GV52+1HinNOa5i8jXY3eQ==
-X-Google-Smtp-Source: AGHT+IF2J0IfkNwwMwXACa9nZcYDX3ga+w/KRzEdi7zlalBoWSm0GuqBJLQ+dPRSCXr9qDRpU/nP3A==
-X-Received: by 2002:ac2:430a:0:b0:540:1b2d:8ef3 with SMTP id 2adb3069b0e04-543e4c3ca2cmr5198254e87.52.1738571822740;
-        Mon, 03 Feb 2025 00:37:02 -0800 (PST)
-Received: from [192.168.1.146] (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-543ebebe6a3sm1197056e87.219.2025.02.03.00.37.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Feb 2025 00:37:02 -0800 (PST)
-Message-ID: <b8ea4215-f4f9-44ba-8976-7d60afd7c8d7@gmail.com>
-Date: Mon, 3 Feb 2025 10:37:00 +0200
+        d=1e100.net; s=20230601; t=1738572068; x=1739176868;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Mk6V2a1OKehUwhksSUOJsYXjthaAUvB8G0tqW4qNGVk=;
+        b=MnUOREpXPExVwUeoBdDxHTVI1UVgRSi62Zk689M8A0YXKwuPgNJQRm3rcc2mFTWMuK
+         emeot0bqkG2ZsIbe1YloriLnJRtfJWLo7Gc3yR1a0UsYN15YMjOwadC4WoLhjXN5d/Wt
+         zEnKa0dWdMUSrx3gpAy6Ljbb/AZrxtoGCEMzEycfAk0EKjV9ZRrpONllC8wUMBflPxkn
+         Kcj2fP3aORCa8hfKS1ttR5aZs8YSMult70gwL2aO5wm2Ufn+LtneaZGFriVfLedULAv1
+         eB76VwkJL9IVxh3vCu6g1sCgJpk9rAriNE2R8TBd2dG68yUlr69bXGgg8e2iX1JYjRe/
+         KNtw==
+X-Forwarded-Encrypted: i=1; AJvYcCUAxAGwDpuy1DP9J31T8A2HKfIeZkRPaN63CswS1gPeBMvNY/YuwT4WsT9QU5hpcU2hvQUtyqZ0a422NX83kg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxui4LmEq4erzwbiU0f4rkV0ZKoRb7MKkwGLHRbJUltj9zbgoth
+	Brs05maogAZLOBLUUHRaeMQuQjyg7UFpWcLEIY80xW0unap1InKyJ6BHebjjCVRAcftSJsfTJGP
+	EBvhcP2qvQsymRQ==
+X-Google-Smtp-Source: AGHT+IFgfRdiETtZBMuEEeQV1/e16m9nbwfES9yKMQDXNq+I0fbO181QnlPznYn6q52iu9mDVagMFJqy6rI6XJU=
+X-Received: from edat28.prod.google.com ([2002:a05:6402:241c:b0:5d6:6918:bd9d])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:51d1:b0:5db:f52c:806c with SMTP id 4fb4d7f45d1cf-5dc5efebd64mr20562017a12.20.1738572068190;
+ Mon, 03 Feb 2025 00:41:08 -0800 (PST)
+Date: Mon, 03 Feb 2025 08:40:57 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 3/3] MAINTAINERS: add entry for Rust dma mapping
- helpers device driver API
-To: Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
- daniel.almeida@collabora.com, dakr@kernel.org, aliceryhl@google.com
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- Valentin Obst <kernel@valentinobst.de>,
- open list <linux-kernel@vger.kernel.org>, Christoph Hellwig <hch@lst.de>,
- Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
- "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
-References: <20250123104333.1340512-1-abdiel.janulgue@gmail.com>
- <20250123104333.1340512-4-abdiel.janulgue@gmail.com>
- <4956d01e-2d06-4edd-813b-9da94b482069@arm.com>
-Content-Language: en-US
-From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-In-Reply-To: <4956d01e-2d06-4edd-813b-9da94b482069@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIABiBoGcC/x2MywqEMAwAf0VyNhDr21+RPWg31YBYaaoI4r9v2
+ cMc5jDzgHIQVhiyBwJfouL3JEWegV2nfWGUb3IwZGoyVGI4NVossGvwTqh30W1+ikhz35ZUV7a aLaT8COzk/q/Hz/v+AG0FjRBqAAAA
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2479; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=77gwvmMi/WmTmBIVTvybK9+anHR4PuaeyO7yxM3i/As=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnoIEhvIO6g0w1Cm4GRlTNlZ0bc66QxjR1smp/t
+ b0Iu2NyHymJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ6CBIQAKCRAEWL7uWMY5
+ RgkgEACztrFdagGYWFuJsQ1ltsSEumNssm25/HC2foapuWKTd7jDzagC0pC/1Oq0Uy0/77/1PMO
+ Ej6ZgrtH2SF9rYP00+JadJEoLpm/WVrzpzPaixK7YMqDYYoIxse5dFa7ZR+1VEom9oOIdm1H6xl
+ cDv+9KVZkbcEZN0+ROPUN2bfN2Ba8Unz/7mUOGCD44ilBfdtVIDk47NQOMSFItqJlV8Y0LxbU+s
+ SHRR2pGNZ9IX9icdFqMLUOJ7Mq42GA1ivndSP5YAZLkoeiDKFyFUhbo0ddewSKvC3huM8njSnGn
+ nV+5FHcpZdsAm+y9ZzhUxxwFWOfFFfmR/c8vOc3qCO6sjrRaAMQUvFmiFkj1kKhMNXjw4F8w2wr
+ iIVJ9SIt6DGbh6EpBuRqSUEvUwagz5nA9G7xAv4+lqvRTYYa4nobW/JGhmtdV6+7Vz66tyXrq2f
+ 2JCSC/EvK3fJcPBGtRe5erbdswWwsN9YY6zHbZNbh1x97Z0I4T6azL92ES3GpqsYcmukvCTSBdt
+ 814Uy4GBkJJcIDbU1w1RnUiEdpmUY8A1UXbX7vzOpApH7v3/VCP0v+1VkcQbsskuWzPn0v1DplK
+ RKEL2ThIpSFGcXe2iyr1xwxIc/Lli2bEljSekIJADoJ00IrgaP5uhCSBbqBnuZ9LkSAfOiGZXh6 a2FMTP6pu8qxHLQ==
+X-Mailer: b4 0.13.0
+Message-ID: <20250203-rustc-1-86-x86-softfloat-v1-1-220a72a5003e@google.com>
+Subject: [PATCH] x86: rust: set rustc-abi=x86-softfloat on rustc>=1.86.0
+From: Alice Ryhl <aliceryhl@google.com>
+To: x86@kernel.org, rust-for-linux@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
+When using Rust on the x86 architecture, we are currently using the
+unstable target.json feature to specify the compilation target. Rustc is
+going to change how softfloat is specified in the target.json file on
+x86, thus update generate_rust_target.rs to specify softfloat using the
+new option.
 
+Note that if you enable this parameter with a compiler that does not
+recognize it, then that triggers a warning but it does not break the
+build.
 
-On 30/01/2025 13:49, Robin Murphy wrote:
-> On 2025-01-23 10:42 am, Abdiel Janulgue wrote:
->> Add an entry for the Rust dma mapping helpers abstractions.
-> 
-> Can't really speak for the Rust side of things, but I could be an 
-> additional reviewer to keep an eye on the DMA API angle if that would help.
-> 
+Cc: stable@vger.kernel.org # for 6.12.y
+Link: https://github.com/rust-lang/rust/pull/136146
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ scripts/generate_rust_target.rs | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-Yes, would really appreciate your help! Thanks!
-Abdiel
+diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
+index 0d00ac3723b5..4fd6b6ab3e32 100644
+--- a/scripts/generate_rust_target.rs
++++ b/scripts/generate_rust_target.rs
+@@ -165,6 +165,18 @@ fn has(&self, option: &str) -> bool {
+         let option = "CONFIG_".to_owned() + option;
+         self.0.contains_key(&option)
+     }
++
++    /// Is the rustc version at least `major.minor.patch`?
++    fn rustc_version_atleast(&self, major: u32, minor: u32, patch: u32) -> bool {
++        let check_version = 100000 * major + 100 * minor + patch;
++        let actual_version = self
++            .0
++            .get("CONFIG_RUSTC_VERSION")
++            .unwrap()
++            .parse::<u32>()
++            .unwrap();
++        check_version <= actual_version
++    }
+ }
+ 
+ fn main() {
+@@ -182,6 +194,9 @@ fn main() {
+         }
+     } else if cfg.has("X86_64") {
+         ts.push("arch", "x86_64");
++        if cfg.rustc_version_atleast(1, 86, 0) {
++            ts.push("rustc-abi", "x86-softfloat");
++        }
+         ts.push(
+             "data-layout",
+             "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128",
+@@ -215,6 +230,9 @@ fn main() {
+             panic!("32-bit x86 only works under UML");
+         }
+         ts.push("arch", "x86");
++        if cfg.rustc_version_atleast(1, 86, 0) {
++            ts.push("rustc-abi", "x86-softfloat");
++        }
+         ts.push(
+             "data-layout",
+             "e-m:e-p:32:32-p270:32:32-p271:32:32-p272:64:64-i128:128-f64:32:64-f80:32-n8:16:32-S128",
+
+---
+base-commit: 40384c840ea1944d7c5a392e8975ed088ecf0b37
+change-id: 20250203-rustc-1-86-x86-softfloat-0b973054c4bc
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
