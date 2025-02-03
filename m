@@ -1,133 +1,212 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA531FFC4C;
-	Mon,  3 Feb 2025 09:52:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14501FFC67;
+	Mon,  3 Feb 2025 09:53:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738576368; cv=none; b=YWtf8B4UkVx4lhgcrfTpbMURiSmuM+3Y3E4BZrwXIayPp9wXEOHkNF4u8p14tgd3hQLhJ9lIUkHAHihShovfXLTlYp6TDvQI+H+ULBboTqN1o1TAK/d8KARVDBen4qYE/2CnSWvakaPnkP3R7Y/1DcMgFBDQcPLN5RERny+UuZ8=
+	t=1738576438; cv=none; b=ExWLuFC+JDnthi9KlZ+d0X3B2c9GZTmunlAuVibskqS+MxOvlpRjCJWjky5B7HG3YcFWhUBme4fKYijgOUT2wx5MR11cwtiCuF0tMuZPfFuIOfjgoXwaVWmOB+EGAvGVVVyzVQ9rbIu1NgH/l/0Vtw4hpcrPreyA7Kts8I0zI3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738576368; c=relaxed/simple;
-	bh=ZXpevS1Mmi8yjIFsOyg/6dm3QjL5MGX7lBk7dnD8LAY=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VGuy1TEsAhyK83k/E8k48s6d+mDLJk9wJIs+9hfFjaxcf2m+jbg8YjO14iL/8sUyFDOdkOd0S5DByZDevJfGz5usn70s3IRj9ESBhhy9xeJnxQ7gyyDTFhXkLMKQmxrQlRh/SRxEi5qUNOSRf7s/GhbTO+nKZNdUCOLJc6tDRrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=te9GJZZD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738576438; c=relaxed/simple;
+	bh=tesu0A/tv1Xw8FBbgxAAWn5a6B9SHzPZC8XK7xjtnTQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=H2e0fOfPhjY268V+OBejfuCyUeaoBzQtb8AQwjZtpbzDylKaOm5wOXCg63SClbnSBb/JgyOOcC3TfxNWDJvRII/vhl/OYiK+idcFGYkYpljPshKcmEyfin6wTYHcu2uohFcVW4lPi/qxlJE/KS2f6aO2U9JGmoXSvnQyhjQMvfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=ZTFtFUx1; arc=none smtp.client-ip=49.12.72.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="te9GJZZD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD2B6C4CEE0;
-	Mon,  3 Feb 2025 09:52:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738576367;
-	bh=ZXpevS1Mmi8yjIFsOyg/6dm3QjL5MGX7lBk7dnD8LAY=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=te9GJZZDlSUvNUpXY48YSFKjY1FuwPesPaECOQYFxgeclz/2hbpxy3IRw0467XGfC
-	 kkm+ipCBv0Lis1zja5HmmWEwW1qqW5sFUpRDn9+QehZWJn1W/od9mMLCz1T9w9Qmxz
-	 eBA/nXqwJnKlpnOMR1nwh5bxzTKLRZlut+0P6xv4=
-Date: Mon, 3 Feb 2025 10:51:45 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@kernel.org>, Lyude Paul <lyude@redhat.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH] WIP: drivers/base: Add virtual_device_create()
-Message-ID: <2025020339-unwomanly-amulet-96cf@gregkh>
-References: <Z5Nw8kaieLueWyUu@pollux>
- <20250130212843.659437-1-lyude@redhat.com>
- <2025013159-shabby-professor-515b@gregkh>
- <2025013140-propeller-dirtiness-6cb4@gregkh>
- <Z50ZuzrDn-GQWOuP@cassiopeiae>
- <2025020106-avert-senorita-4181@gregkh>
- <Z6CQQZ5fbBwCJ63K@phenom.ffwll.local>
+	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="ZTFtFUx1"
+From: Fiona Behrens <me@kloenk.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
+	t=1738576432; bh=3H5iq9A3tQ3hrA+8GYMBIQFWr4KutMcbtiEaeICkxs4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=ZTFtFUx139H7TvSqA0wxnR5/OWqcwS1fhiwWGACck4Y0ARngUwg7UL7wQ0y9nM2xl
+	 J3MqKp4Aaof7+tBR19wvBuFZK3BCa4AhliLjjrvVLqSc9EvTNJKOFtASjc8rmICQXI
+	 rcyLTrzvVlJx5NDc5g5oqu/oD2PFpKHpN4SR+m4U=
+To: Asahi Lina <lina@asahilina.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
+  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,
+  =?utf-8?Q?Bj=C3=B6rn?=
+ Roy Baron <bjorn3_gh@protonmail.com>,  Benno Lossin
+ <benno.lossin@proton.me>,  Andreas Hindborg <a.hindborg@kernel.org>,
+  Alice Ryhl <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,
+  Jann Horn <jannh@google.com>,  Matthew Wilcox <willy@infradead.org>,
+  Paolo Bonzini <pbonzini@redhat.com>,  Danilo Krummrich <dakr@kernel.org>,
+  Wedson Almeida Filho <wedsonaf@gmail.com>,  Valentin Obst
+ <kernel@valentinobst.de>,  Andrew Morton <akpm@linux-foundation.org>,
+  linux-mm@kvack.org,  airlied@redhat.com,  Abdiel Janulgue
+ <abdiel.janulgue@gmail.com>,  rust-for-linux@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  asahi@lists.linux.dev
+Subject: Re: [PATCH 5/6] rust: page: Add physical address conversion functions
+In-Reply-To: <20250202-rust-page-v1-5-e3170d7fe55e@asahilina.net> (Asahi
+	Lina's message of "Sun, 02 Feb 2025 22:05:47 +0900")
+References: <20250202-rust-page-v1-0-e3170d7fe55e@asahilina.net>
+	<20250202-rust-page-v1-5-e3170d7fe55e@asahilina.net>
+Date: Mon, 03 Feb 2025 10:53:51 +0100
+Message-ID: <87jza74amo.fsf@kloenk.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z6CQQZ5fbBwCJ63K@phenom.ffwll.local>
+Content-Type: text/plain
 
-On Mon, Feb 03, 2025 at 10:45:37AM +0100, Simona Vetter wrote:
-> On Sat, Feb 01, 2025 at 09:00:00AM +0100, Greg Kroah-Hartman wrote:
-> > On Fri, Jan 31, 2025 at 07:43:07PM +0100, Danilo Krummrich wrote:
-> > > On Fri, Jan 31, 2025 at 05:40:01PM +0100, Greg Kroah-Hartman wrote:
-> > > > On Fri, Jan 31, 2025 at 09:00:32AM +0100, Greg Kroah-Hartman wrote:
-> > > > > On Thu, Jan 30, 2025 at 04:28:26PM -0500, Lyude Paul wrote:
-> > > > > > As Greg KH pointed out, we have a nice /sys/devices/virtual directory free
-> > > > > > for the taking - but the vast majority of device drivers concerned with
-> > > > > > virtual devices do not use this and instead misuse the platform device API.
-> > > > > > 
-> > > > > > To fix this, let's start by adding a simple function that can be used for
-> > > > > > creating virtual devices - virtual_device_create().
-> > > > > > 
-> > > > > > Signed-off-by: Lyude Paul <lyude@redhat.com>
-> > > > > > 
-> > > > > > ---
-> > > > > > 
-> > > > > > So, WIP obviously because I wrote this up in a few minutes - but this goes
-> > > > > > off the idea that Danilo suggested to me off-list of coming up with a
-> > > > > > simple API for handling virtual devices that's a little more obvious to
-> > > > > > use. I wanted to get people's feedback and if we're happy with this idea,
-> > > > > > I'm willing to go through and add some pointers to this function in various
-> > > > > > platform API docs - along with porting over the C version of VKMS over to
-> > > > > > this API.
-> > > > > 
-> > > > > This is a big better, but not quite.  Let me carve out some time today
-> > > > > to knock something a bit nicer together...
-> > > > 
-> > > > Ok, here's a rough first-cut.  It builds, and boots, and I've converted
-> > > > a driver to use the api to prove it works here.  I'll add a bunch more
-> > > > documentation before turning it into a "real" patch, but this should
-> > > > give you something to work off of.
-> > > > 
-> > > > I've run out of time for tonight (dinner is calling), but I think you
-> > > > get the idea, right?  If you want to knock up a rust binding for this
-> > > > api, it should almost be identical to the platform api you were trying
-> > > > to use before, right?
-> > > 
-> > > Yes, additionally, since this can't use the existing platform abstractions any
-> > > more, we need the bus abstraction for the virtual bus, i.e. the corresponding
-> > > driver::RegistrationOps implementation, module_virtual_driver macro, etc. Should
-> > > be a little less than 200 lines of code.
-> > 
-> > I hope so as the original C code for this is less than 200 lines of code :)
-> > 
-> > I wonder what it would look like to do a "real" bus in rust, maybe I'll
-> > try that someday, but for now, I want this to be used by C code...
-> > 
-> > > Other than in C, in Rust we don't need the "artificial" match between a virtual
-> > > device and a virtual driver to have automatic cleanup through things like
-> > > devm_kzalloc().
-> > 
-> > What artificial match?  Ah, you mean they would both be in the same
-> > "object"?
-> > 
-> > > But I guess we want it for consistency and to have the corresponding sysfs
-> > > entries and uevents. OOC, are there any other reasons?
-> > 
-> > I don't really understand the objection here.  Oooh, you want the C code
-> > to both create/manage the driver AND the device at the same time?  Hey I
-> > like that, it would make the interface to it even simpler!  Let me go
-> > try that, and see if it is what you are thinking of here...
-> 
-> So at least in vkms we plan to allow instantiating more than one device,
-> with the same driver, so not sure we really want this. The idea is that
-> you can also validate the multi-gpu (or at least multi-display) code of
-> compositors with entirely fake hw in CI. It is a pretty common pattern
-> though for these virtual devices/drivers, but not universal I think.
+Asahi Lina <lina@asahilina.net> writes:
 
-See the patch I just posted, it creates internal drivers for every
-device you create, so in reality, you don't need to worry about the
-driver portion at all, just provide a probe/release callback if you want
-to and you are good to go!
+> Add methods to allow code using the Page type to obtain the physical
+> address of a page, convert to and from an (owned) physical address, and
+> borrow a Page from a physical address. Most of these operations are, as
+> you might expect, unsafe.
+>
+> These primitives are useful to implement page table structures in Rust,
+> and to implement arbitrary physical memory access (as needed to walk
+> arbitrary page tables and dereference through them). These mechanisms
+> are, of course, fraught with danger, and are only expected to be used
+> for core memory management code (in e.g. drivers with their own device
+> page table implementations) and for debug features such as crash dumps
+> of device memory.
+>
+> Signed-off-by: Asahi Lina <lina@asahilina.net>
+> ---
+>  rust/helpers/page.c | 26 +++++++++++++++++++++
+>  rust/kernel/page.rs | 65 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 91 insertions(+)
+>
+> diff --git a/rust/helpers/page.c b/rust/helpers/page.c
+> index b3f2b8fbf87fc9aa89cb1636736c52be16411301..1c3bd68818d77f7ce7806329b8f040a7d4205bb3 100644
+> --- a/rust/helpers/page.c
+> +++ b/rust/helpers/page.c
+> @@ -1,5 +1,6 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  
+> +#include <linux/io.h>
+>  #include <linux/gfp.h>
+>  #include <linux/highmem.h>
+>  
+> @@ -17,3 +18,28 @@ void rust_helper_kunmap_local(const void *addr)
+>  {
+>  	kunmap_local(addr);
+>  }
+> +
+> +struct page *rust_helper_phys_to_page(phys_addr_t phys)
+> +{
+> +	return phys_to_page(phys);
+> +}
+> +
+> +phys_addr_t rust_helper_page_to_phys(struct page *page)
+> +{
+> +	return page_to_phys(page);
+> +}
+> +
+> +unsigned long rust_helper_phys_to_pfn(phys_addr_t phys)
+> +{
+> +	return __phys_to_pfn(phys);
+> +}
+> +
+> +struct page *rust_helper_pfn_to_page(unsigned long pfn)
+> +{
+> +	return pfn_to_page(pfn);
+> +}
+> +
+> +bool rust_helper_pfn_valid(unsigned long pfn)
+> +{
+> +	return pfn_valid(pfn);
+> +}
+> diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+> index fe5f879f9d1a86083fd55c682fad9d52466f79a2..67cd7006fa63ab5aed4c4de2be639ed8e1fbc2ba 100644
+> --- a/rust/kernel/page.rs
+> +++ b/rust/kernel/page.rs
+> @@ -3,6 +3,7 @@
+>  //! Kernel page allocation and management.
+>  
+>  use crate::{
+> +    addr::*,
+>      alloc::{AllocError, Flags},
+>      bindings,
+>      error::code::*,
+> @@ -10,6 +11,7 @@
+>      types::{Opaque, Ownable, Owned},
+>      uaccess::UserSliceReader,
+>  };
+> +use core::mem::ManuallyDrop;
+>  use core::ptr::{self, NonNull};
+>  
+>  /// A bitwise shift for the page size.
+> @@ -249,6 +251,69 @@ pub unsafe fn copy_from_user_slice_raw(
+>              reader.read_raw(unsafe { core::slice::from_raw_parts_mut(dst.cast(), len) })
+>          })
+>      }
+> +
+> +    /// Returns the physical address of this page.
+> +    pub fn phys(&self) -> PhysicalAddr {
 
-thanks,
+Rust  uses for similar references `as_*` so `as_phys`, would it make
+sense to use the same naming format here?
 
-greg "drivers for everyone!" k-h
+Thanks,
+Fiona
+
+> +        // SAFETY: `page` is valid due to the type invariants on `Page`.
+> +        unsafe { bindings::page_to_phys(self.as_ptr()) }
+> +    }
+> +
+> +    /// Converts a Rust-owned Page into its physical address.
+> +    ///
+> +    /// The caller is responsible for calling [`Page::from_phys()`] to avoid leaking memory.
+> +    pub fn into_phys(this: Owned<Self>) -> PhysicalAddr {
+> +        ManuallyDrop::new(this).phys()
+> +    }
+> +
+> +    /// Converts a physical address to a Rust-owned Page.
+> +    ///
+> +    /// # Safety
+> +    /// The caller must ensure that the physical address was previously returned by a call to
+> +    /// [`Page::into_phys()`], and that the physical address is no longer used after this call,
+> +    /// nor is [`Page::from_phys()`] called again on it.
+> +    pub unsafe fn from_phys(phys: PhysicalAddr) -> Owned<Self> {
+> +        // SAFETY: By the safety requirements, the physical address must be valid and
+> +        // have come from `into_phys()`, so phys_to_page() cannot fail and
+> +        // must return the original struct page pointer.
+> +        unsafe { Owned::from_raw(NonNull::new_unchecked(bindings::phys_to_page(phys)).cast()) }
+> +    }
+> +
+> +    /// Borrows a Page from a physical address, without taking over ownership.
+> +    ///
+> +    /// If the physical address does not have a `struct page` entry or is not
+> +    /// part of a System RAM region, returns None.
+> +    ///
+> +    /// # Safety
+> +    /// The caller must ensure that the physical address, if it is backed by a `struct page`,
+> +    /// remains available for the duration of the borrowed lifetime.
+> +    pub unsafe fn borrow_phys(phys: &PhysicalAddr) -> Option<&Self> {
+> +        // SAFETY: This is always safe, as it is just arithmetic
+> +        let pfn = unsafe { bindings::phys_to_pfn(*phys) };
+> +        // SAFETY: This function is safe to call with any pfn
+> +        if !unsafe { bindings::pfn_valid(pfn) && bindings::page_is_ram(pfn) != 0 } {
+> +            None
+> +        } else {
+> +            // SAFETY: We have just checked that the pfn is valid above, so it must
+> +            // have a corresponding struct page. By the safety requirements, we can
+> +            // return a borrowed reference to it.
+> +            Some(unsafe { &*(bindings::pfn_to_page(pfn) as *mut Self as *const Self) })
+> +        }
+> +    }
+> +
+> +    /// Borrows a Page from a physical address, without taking over ownership
+> +    /// nor checking for validity.
+> +    ///
+> +    /// # Safety
+> +    /// The caller must ensure that the physical address is backed by a `struct page` and
+> +    /// corresponds to System RAM. This is true when the address was returned by
+> +    /// [`Page::into_phys()`].
+> +    pub unsafe fn borrow_phys_unchecked(phys: &PhysicalAddr) -> &Self {
+> +        // SAFETY: This is always safe, as it is just arithmetic
+> +        let pfn = unsafe { bindings::phys_to_pfn(*phys) };
+> +        // SAFETY: The caller guarantees that the pfn is valid. By the safety
+> +        // requirements, we can return a borrowed reference to it.
+> +        unsafe { &*(bindings::pfn_to_page(pfn) as *mut Self as *const Self) }
+> +    }
+>  }
+>  
+>  // SAFETY: `Owned<Page>` objects returned by Page::alloc_page() follow the requirements of
