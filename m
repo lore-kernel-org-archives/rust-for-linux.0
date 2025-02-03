@@ -1,117 +1,226 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7392CB667
-	for <rust-for-linux@vger.kernel.org>; Mon,  3 Feb 2025 18:17:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ECE91CAA87;
+	Mon,  3 Feb 2025 18:46:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.63.210.85
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738606649; cv=none; b=tO70QVJ3eXUSb9quKL8Bbw/qlCOXc0imcoW/2kKHq71+K8aiihGmjLkm/m29N8E0vZJsrWGgfRMVLeWca0xO1XG4ddfjPhMVwh/tDWidSBHVLQnTkeqVCjSljOLm5dBhFZV0lyJ+I4IyNbSfxZQH/grQ7Ngsf7wF9YBZ94R7fak=
+	t=1738608385; cv=none; b=Z3BNrSzCfTBEGgR2IXrCpC7/0uZXxSPtjJXNLDjRma/kGfn9eNrDZe9syYXeNXoVQkjQvoJz6+YW9mdsRDoFVWoSa9mqlslAh1aRavyJmb1xJvBksHbc1Hkz8CvLb3hpCxJ2frAkZAPgVjDMMC5X7FS05vsoHIP822SA79Mkh5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738606649; c=relaxed/simple;
-	bh=+oTVEI7ih4UQ6CaQVZkQ3pNuU5Lz8cH04p72iYkrp88=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jzs9ZBWoCzJg+ergoK1gvPnztwSCtbNAQC2EZInroJuqJOJIH1fQ010PuTiokDNBTitW98YKIIsevkugw6vPKirHOXiqeB6pnBo2Emf67L16LezESIalqsvYcPINTTAzpEiKdS8RxToHSQVwJp6dib/jjg1QvPXZ4sG4A+34yMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G4cH0oea; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1738608385; c=relaxed/simple;
+	bh=DdBNZBVqhdt8t/yzb8j+B7YHIkBAvG76Ih0ekZehw5k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=B8Qb8K65y1/9c5yy94S7GViXyEYah9ovQ8Q7ONhPUQEsiHaeNzxIphDnkP4sI+5Trg4RW9ZVB/qNAh4FHE02E1CsNNlGAmEDo41i3lcZ7FYse1x/BEWS+B1Y5nwcIvvYB/GoAERZahgQeiJ5jDPq6eVslaDcK9K44EE0ORgDgpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marcan.st; spf=pass smtp.mailfrom=marcan.st; dkim=pass (2048-bit key) header.d=marcan.st header.i=@marcan.st header.b=Iru9fUzJ; arc=none smtp.client-ip=212.63.210.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marcan.st
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marcan.st
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G4cH0oea"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4361c705434so35228725e9.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 03 Feb 2025 10:17:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738606646; x=1739211446; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VDkxzxcu7O1vOggBOzC4wE/NAP+zsMC3Yt4mKkAp2BM=;
-        b=G4cH0oeaYQyTXS9ej3u1+f+Qzl8IRnO6AyAMDWpmfZp17wct9DjUIQ4JPlJ13t/0Kb
-         tm4eUjPhPiYtyvhwhLtpf2l0/b+6MfHml9L3SWSaLggGPh2ybjtTzSyfUH5SGGTjOaOR
-         R3sYXP5fzeEOj72BQPF27soQGVgAKO0GV918gRz7rnv5ZBHzae7pPlfmtnR9DEJS3ou9
-         6uUF4wf+GrCIS4sY+voOy3BkSugE1SbdDHXCnhcDw+AbOpmPfQUiMSpU7yeZgglQiVyd
-         kmurEXMAmpn8Y2JFgssTcSYaPZ1AV8rfPRp8gb47MnvPa4YYDm4jssnUPYHcFYpn6FxT
-         ezMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738606646; x=1739211446;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VDkxzxcu7O1vOggBOzC4wE/NAP+zsMC3Yt4mKkAp2BM=;
-        b=DXv20MxQUTH0VZ0AuxAnJLY9zQHw7aBfs+fnE8LqDLWn3gplZ4yoMIIlFjWn+EvBhq
-         4uo1Bz2Lvp/fcquZDHO2XhbR+fRK+QG9f+FJH4c9PidkWVIXgWtgECQ4X6djiM4noDXJ
-         ZBmcyg4Jjhbx2WiUUBzwOirkcliGTPRV3hiuJxS3SOYeES743BeQrrCegsadslnsJHDU
-         hjUy0yVV3zn/iBlYC+qPYk/5ubQJflcX2RZmcpl3cIEp80+k/GpHIj3wamYltt/Vk4DP
-         5hVk8woHjvQNEyvG+LsEdejSmaGzG/XJFUL8RjvgZf+bv26IDy+ndI/sTT6BfSj7m37x
-         EzOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV7T6ZAxRtqYylpvPJatGtiVRiHVwaB+epwMMoEeCpGrn4xAEbpEZWhMCzm9zV7IxT4qO4k1vwZphg0HxVmFw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCjecGCzh0B1q0ygb+v+BxSDw5ufpc0/TEC65RHGAIB3DkBvN4
-	PnSkQuKDN97vO9d9Wn6af9wPbnhfDv8qnPf4ByCW7eVu0AO0DEgWINfqi86pdS57ouqfjWFU/2I
-	Wkt77+6w1nu2B3sdp7CgA9nA8FwmrphecrW3N
-X-Gm-Gg: ASbGnctNJ92FW9Z0bx5piIe4od1Uzs5q8OlSuNq+5KsGi/BT90PI2bjdaAy6vpdxDHT
-	QwLSkLzcYo8BsM0hoXf4fcfytoo5E2vZsG1GdVnvYhY1eooOwl7QR3RRj7+ldfICOozXsLLNA3A
-	==
-X-Google-Smtp-Source: AGHT+IFjiAANHpU4lYhLwjIj1aIzAMCx+jP5Z2qXe2xs3JQXXbYoy6fxWH9MRWQ5Z6+cy+ed9B9IBPZfiojUyR3Yru8=
-X-Received: by 2002:a05:6000:2c5:b0:385:e013:39ec with SMTP id
- ffacd0b85a97d-38c51930b44mr17922172f8f.8.1738606645674; Mon, 03 Feb 2025
- 10:17:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=marcan.st header.i=@marcan.st header.b="Iru9fUzJ"
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: marcan@marcan.st)
+	by mail.marcansoft.com (Postfix) with ESMTPSA id 24A7841D83;
+	Mon,  3 Feb 2025 18:46:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
+	t=1738608378; bh=DdBNZBVqhdt8t/yzb8j+B7YHIkBAvG76Ih0ekZehw5k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Iru9fUzJ7S5Zu8P8ln0ykbRKU0yif9DF72LO3K8SQw+7/2n+2Gx84FqPHrLPbzko3
+	 ygwJPP7x4ic7HTbhN7r2ivy4WrdB6Aa6HzdimSEsyw99eu+sC+7Tbv1sWIdxMmZyal
+	 AOzeDZSXTEfaYELOCxO4PQrW1fsdDdf9BV7HTgxCQBAXTWgML/DsNUzwe1Hs+I0m3d
+	 11Hhf9GuqPFSPnXUEl7+PWPbWMeyQRJnHT9ZVwFghQdDcz+dZmcBMPjDlds9eR3C8e
+	 sTYZA3hsOle3gUIPWPSRA7rLFAPmlSIwG1Tfxu6ychEwbfi+NH2tM3KbyrnstyGKdB
+	 9VpvcX7X4pf1w==
+Message-ID: <2b9b75d1-eb8e-494a-b05f-59f75c92e6ae@marcan.st>
+Date: Tue, 4 Feb 2025 03:46:14 +0900
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250202-rust-page-v1-0-e3170d7fe55e@asahilina.net>
- <20250202-rust-page-v1-1-e3170d7fe55e@asahilina.net> <CAH5fLggscATtCgQwCYSms77oSFOMkjTscRDqAOZsSgoHsOoPQw@mail.gmail.com>
- <def0ac4e-6ec3-4f91-a3e6-02ce931c46f3@asahilina.net>
-In-Reply-To: <def0ac4e-6ec3-4f91-a3e6-02ce931c46f3@asahilina.net>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 3 Feb 2025 19:17:13 +0100
-X-Gm-Features: AWEUYZmdD1lRFN2B0MxC6_5nwF3LFE7h8SGB6KozvokrQeCQEKJgmX-DPDC9T_s
-Message-ID: <CAH5fLggcT0_e3EsBppxsGfxaqvs6rTkbbRvrFEHthEff5s1x0g@mail.gmail.com>
-Subject: Re: [PATCH 1/6] rust: types: Add Ownable/Owned types
-To: Asahi Lina <lina@asahilina.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Jann Horn <jannh@google.com>, 
-	Matthew Wilcox <willy@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Valentin Obst <kernel@valentinobst.de>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	airlied@redhat.com, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	asahi@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 2/2] rust: add dma coherent allocator abstraction.
+To: Jason Gunthorpe <jgg@nvidia.com>, Greg KH <gregkh@linuxfoundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>
+Cc: phasta@kernel.org, Christoph Hellwig <hch@lst.de>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>, daniel.almeida@collabora.com,
+ aliceryhl@google.com, robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Valentin Obst <kernel@valentinobst.de>,
+ open list <linux-kernel@vger.kernel.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+ "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+References: <Z3-NqwAG_96yq8VD@pollux> <20250110083955.GA5395@lst.de>
+ <Z4D5a5NYrAbNxUL6@pollux> <Z4kG5AcVeQKegLnb@pollux>
+ <20250128092334.GA28548@lst.de>
+ <293df3d54bad446e8fd527f204c6dc301354e340.camel@mailbox.org>
+ <20250130154646.GA2298732@nvidia.com> <2025013030-gummy-cosmic-7927@gregkh>
+ <20250130172437.GN5556@nvidia.com>
+ <2025013148-reversal-pessimism-1515@gregkh>
+ <20250131135421.GO5556@nvidia.com>
+From: Hector Martin <marcan@marcan.st>
+Content-Language: en-US
+In-Reply-To: <20250131135421.GO5556@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Feb 3, 2025 at 3:17=E2=80=AFPM Asahi Lina <lina@asahilina.net> wrot=
-e:
->
->
->
-> On 2/3/25 6:13 PM, Alice Ryhl wrote:
-> > On Sun, Feb 2, 2025 at 2:06=E2=80=AFPM Asahi Lina <lina@asahilina.net> =
-wrote:
-> >> +    /// Consumes the `Owned`, returning a raw pointer.
-> >> +    ///
-> >> +    /// This function does not actually relinquish ownership of the o=
-bject.
-> >> +    /// After calling this function, the caller is responsible for ow=
-nership previously managed
-> >> +    /// by the `Owned`.
-> >> +    #[allow(dead_code)]
-> >> +    pub(crate) fn into_raw(me: Self) -> NonNull<T> {
-> >
-> > I would just make these methods public, like the ARef ones. Then you
-> > can drop the #[allow(dead_code)] annotation.
->
-> Does it make sense to ever have drivers doing this? I feel like these
-> methods should be limited to the kernel crate.
 
-Not having drivers use this is the ideal, but I don't think we should
-always expect it to be possible. The Binder driver has a C component
-for the binderfs component, and it also has some code that's
-essentially an abstraction inside the driver that I was asked to move
-into Binder because it's so specific to Binder that it's not useful
-for anyone else.
 
-Alice
+On 2025/01/31 22:54, Jason Gunthorpe wrote:
+> On Fri, Jan 31, 2025 at 08:47:54AM +0100, Greg KH wrote:
+>> On Thu, Jan 30, 2025 at 01:24:37PM -0400, Jason Gunthorpe wrote:
+>>> On Thu, Jan 30, 2025 at 05:11:43PM +0100, Greg KH wrote:
+>>>> On Thu, Jan 30, 2025 at 11:46:46AM -0400, Jason Gunthorpe wrote:
+>>>>> On Thu, Jan 30, 2025 at 02:19:16PM +0100, Philipp Stanner wrote:
+>>>>>> would some sort of official statement by the "entire community"
+>>>>>> reassure you that the burden of keeping Rust abstractions working with
+>>>>>> any changes on the C side rests entirely on the Rust side's
+>>>>>> shoulders?
+>>>>>
+>>>>> You'd have to reconcile that with the recent event where Linus defered
+>>>>> the MM pull request and some C patches were dropped because of rust
+>>>>> kbuild bugs:
+>>>>>
+>>>>> https://lore.kernel.org/linux-mm/CAHk-=whddBhfi5DUi370W3pYs+z3r2E7KYuHjwR=a1eRig5Gxg@mail.gmail.com/
+>>>>>
+>>>>> It seems to me the message is now crystal clear, and the opposite of
+>>>>> what you claim.
+>>>>>
+>>>>> All PRs to Linus must not break the rust build and the responsibilty
+>>>>> for that falls to all the maintainers. If the Rust team is not quick
+>>>>> enough to resolve any issues during the development window then
+>>>>> patches must be dropped before sending PRs, or Linus will refuse the
+>>>>> PR.
+>>>>>
+>>>>> Effectively this seems to imply that patches changing some of the C
+>>>>> API cannot be merged by maintainers unless accompanied by matching
+>>>>> Rust hunks.
+>>>>>
+>>>>> If there are different instructions to maintainers I would be
+>>>>> interested to know.
+>>>>
+>>>> That's not the case, the one you point at above was a tooling issue that
+>>>> people missed due to the holidays.  Fixing it up was simple enough and
+>>>> people did so and moved on.
+>>>
+>>> Regardless of holidays, you seem to be saying that Linus should have
+>>> accepted Andrew's PR and left rust with build failures?
+>>
+>> I can't answer for Linus, sorry.  
+> 
+> Then I think we need a clear statement from Linus how he will be
+> working. If he is build testing rust or not.
+> 
+> Without that I don't think the Rust team should be saying "any changes
+> on the C side rests entirely on the Rust side's shoulders".
+> 
+> It is clearly not the process if Linus is build testing rust and
+> rejecting PRs that fail to build.
+
+Adding Linus
+
+My 2c: If Linus doesn't pipe up with an authoritative answer to this
+thread, Miguel and the other Rust folks should just merge this series
+once it is reviewed and ready, ignoring Christoph's overt attempt at
+sabotaging the project. If Linus pulls it, what Christoph says doesn't
+matter. If Linus doesn't pull it, the R4L project is essentially dead
+until either Linus or Christoph make a move. Everything else is beating
+around the bush.
+
+Rust folks: Please don't waste your time and mental cycles on drama like
+this. It's not worth your time. Either Linus likes it, or he doesn't.
+Everything else is distractions orchestrated by a subset of saboteur
+maintainers who are trying to demoralize you until you give up, because
+they know they're going to be on the losing side of history sooner or
+later. No amount of sabotage from old entrenched maintainers is going to
+stop the world from moving forward towards memory-safe languages.
+
+FWIW, in my opinion, the "cancer" comment from Christoph would be enough
+to qualify for Code-of-Conduct action, but I doubt anything of the sort
+will happen.
+
+> 
+>> But a generic "hey, this broke our
+>> working toolchain builds" is something that is much much much different
+> 
+> It broke some builds, it sounded like the typical rust build was not
+> effected because it used the same version of clang for C code and
+> bindgen. Linus was mixing gcc and clang in his build.
+> 
+>> than "an api changed so I now have to turn off this driver in my build"
+>> issue.
+> 
+> I tested this theory, allnoconfig x86 build, enable 64 bit, rust and
+> PCI only. *NO* Rust drivers enabled.
+> 
+> Make a hypothetical C API change:
+> 
+>        --- a/include/asm-generic/pci_iomap.h
+>        +++ b/include/asm-generic/pci_iomap.h
+>        @@ -18,7 +18,7 @@ extern void __iomem *pci_iomap_range(struct pci_dev *dev, int bar,
+> 	extern void __iomem *pci_iomap_wc_range(struct pci_dev *dev, int bar,
+> 					       unsigned long offset,
+> 					       unsigned long maxlen);
+>        -extern void pci_iounmap(struct pci_dev *dev, void __iomem *);
+>        +extern void pci_iounmap(struct pci_dev *dev, void __iomem *, unsigned int flags);
+> 	/* Create a virtual mapping cookie for a port on a given PCI device.
+> 	 * Do not call this directly, it exists to make it easier for architectures
+> 	 * to override */
+>        diff --git a/lib/iomap.c b/lib/iomap.c
+>        index 4f8b31baa5752a..5b63063a1a811f 100644
+>        --- a/lib/iomap.c
+>        +++ b/lib/iomap.c
+>        @@ -421,7 +421,7 @@ EXPORT_SYMBOL(ioport_unmap);
+> 	#ifdef CONFIG_PCI
+> 	/* Hide the details if this is a MMIO or PIO address space and just do what
+> 	 * you expect in the correct way. */
+>        -void pci_iounmap(struct pci_dev *dev, void __iomem * addr)
+>        +void pci_iounmap(struct pci_dev *dev, void __iomem * addr, unsigned int flags)
+> 	{
+> 	       IO_COND(addr, /* nothing */, iounmap(addr));
+> 	}
+> 
+> And the result is..
+> 
+>        error[E0061]: this function takes 3 arguments but 2 arguments were supplied
+> 	  --> ../rust/kernel/pci.rs:320:13
+> 	   |
+>        320 |             bindings::pci_iounmap(pdev.as_raw(), ioptr as _);
+> 	   |             ^^^^^^^^^^^^^^^^^^^^^--------------------------- an argument of type `u32` is missing
+> 	   |
+>        note: function defined here
+> 	  --> /tmp/x/build/rust/bindings/bindings_generated.rs:3:1444598
+> 	   |
+>        3   | ...> * mut ffi :: c_void ; } extern "C" { pub fn pci_iounmap (dev : * mut pci_dev , arg1 : * mut ffi :: c_v...
+> 	   |                                                  ^^^^^^^^^^^
+>        help: provide the argument
+> 	   |
+>        320 |             bindings::pci_iounmap(pdev.as_raw(), ioptr as _, /* u32 */);
+> 	   |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> 
+> Build fails.
+> 
+> Can't seem to fix this using kconfig without turning off CONFIG_RUST,
+> exactly the same outcome as Uros's case.
+> 
+> Doesn't seem "much much much different" to me.
+> 
+> This shouldn't be surprising. It doesn't work like C. Rust builds the
+> PCI bindings always once CONFIG_PCI is turned on. It doesn't matter if
+> no rust driver is being built that consumes those bindings. It won't
+> work like staging does where you can just turn off one driver.
+> 
+> Jason
+> 
+> 
+
+- Hector
+
