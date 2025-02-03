@@ -1,271 +1,280 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C821FF1AB
-	for <rust-for-linux@vger.kernel.org>; Mon,  3 Feb 2025 09:32:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 918FF1FF1D8
+	for <rust-for-linux@vger.kernel.org>; Mon,  3 Feb 2025 09:35:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738575155; cv=none; b=jOw6qSbkevrW/zLCTvTQDNlJhaqAqu58W7WqNT8HDzAdKcc0HqsAZuGdFqMIxyPvb5AavY4CmTaLr2gCbBm8/XlJEElH0TzVZXsE/EGFL0ix/GR7a2WPIT2hoHyWVqi4as6hv7M94U8E2MmVYO1N3lZOSn09Z5n5LgDmEhyQ0Oc=
+	t=1738575339; cv=none; b=kjqutI7LtsRnTCyTe3v7E5l+RZlJTz3kCBrJhsbN6yAGiQ+tZfKCNihcFsnv1r5D1JERLTA+QS52fGSxclJnIcKfSRYtUvaNFxprU5iGdhNJUPPuv95xIHmEmvoSDSj0mvA208A7jLjWwMUUd3vavmZfK9yaI8iTKVQA0CwAI7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738575155; c=relaxed/simple;
-	bh=tHeNzsPP5pqjXoE6hN8s4deC/sNuvZhZRHQmcbXY9/c=;
+	s=arc-20240116; t=1738575339; c=relaxed/simple;
+	bh=n05dHGdQdFDQsNVn0UeK/+mBDnbgqot6XprHDEMOiNE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZQKYCgxFu3IB3n+ZyLVph8Kn/NXLcbc1kP9zAL7TVYshkaiuppSTMolqx7qQfEuzrtZgt1JRgpvQyTeIYuwkRC0A+aNfezhxqIKw4AoTi6qjwrueSNmiSHSBY7vC9tryza0nVKHiEiL+DJ6SaXJ+OzxYMFIlV8Gaj0EIHt3CLJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uPMPPCa5; arc=none smtp.client-ip=209.85.128.48
+	 To:Cc:Content-Type; b=Jt6MUC0JAyrjGN4uTHGsZ4N3VTjwCSNVzuHjMyBBQCllcotsy7LX7ofvUP6bs/lZtB5EYKW1eDgDz5lZZFbStHqdSdh2RquTjLjpot3a0Sdcf2ucdF6vZMlmxywNXDfWK2PW3l9685tB/MybYiykE46XLihmkmYnGi/Q7VzCj28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0FltVlIP; arc=none smtp.client-ip=209.85.221.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uPMPPCa5"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4361c705434so30263405e9.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 03 Feb 2025 01:32:33 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0FltVlIP"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3863703258fso3125858f8f.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 03 Feb 2025 01:35:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738575152; x=1739179952; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1738575336; x=1739180136; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XrYBjepLttts43wmKj/MYk2WDjZApOA0ZfEIn34BDXg=;
-        b=uPMPPCa5Vhkkj4tG0vA9eLNvBGWyomW6rcCWPoqs3LeYDBRG9szNM9nwYqysekFJzl
-         cabqWl6R0FB/GGhYgduVXx5+O7pzVnSPUE6k1HPyLWc5vSqR3iIOxc9aFaxL1bp3jX9+
-         luLzYnLpCGMmm2sRI3N1QcXHcdZxdEZBWMEWrsySKXImM81qtQr0febAGQmJW5Zkm2g0
-         UykVO0u7dBFSpnhR9ompff4bMbW3XefD0I3fsqyAC3qVlNZhIYGKj7hqogkVLix7X4P8
-         gJimkaO+Q5SG8aXQKTKExPWfF8bjSCESN/o9JkqGPZKpJRyGgmKGyG2hPsm/jo2foIdN
-         /1cg==
+        bh=PAGCUE13i820gweBIRdTlY3cwxZN3YMksoO7IfRjEXA=;
+        b=0FltVlIPzReC1ya1GbpTG5JROF3ImIopIlO/AKIRB1snodFe0JUpjx3Bgs3XUU7Srh
+         Qq19kD6haswMV5lZBtHAtKEj6ihxwbGbeMjjBR5o21a+stXlC+OCPdQWdJVrJxpwSFuY
+         JXMaVbVTq3HSgtHqmO4p/qP8XThSs1SorZMFt3vYN8gZheLM+Gyn495CUx/6lvC/cgQE
+         1BZbi2/NJb4OChhIw1Lei9dzRGOh22VquSUn/K9PmjgRhyU4jFweKTJXWuhR+zzGwC0P
+         gftnPh0F29B2ch/AnNtltq0RWqLt/EAun/935hlj4j7dlOrUHWYukngi6Bhn15FdYPGr
+         T2fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738575152; x=1739179952;
+        d=1e100.net; s=20230601; t=1738575336; x=1739180136;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XrYBjepLttts43wmKj/MYk2WDjZApOA0ZfEIn34BDXg=;
-        b=WfIe1ELjAG6msKJ5rEOALkyN9j/CpXeGXBB5MxJLRwz9F+NTYDLtTFxlDFFMtc9JuP
-         RT9nkgiggEvvJy0CtuLoIxHRbOGI0vGMuXs0/mCGjvOCLrSGYNCAS9spYN5ojG1BEMCS
-         7S6rjMpYhaQMyzuvIjbkCtJNTfSdtIEOHYX6xWNhirV7LTDnwiZrK3tNrBSl8vpDL7Lr
-         MiONYrfwPie0ad+GOElCnytTZpiDusTzkmtMSpW7FGyJquKIJwL1lucfjBTGcAxOCTNR
-         yv0eAfFVN6H130seFShjRxaOblnIlmZ9O6UMGgDuVIip8/sPj/c4RXd2HjyYlaupqg90
-         zY3w==
-X-Forwarded-Encrypted: i=1; AJvYcCXqXOdf4eSW/84xzILEjmQkNNzvNX44nfXhHsfzDLOX41HgX8Xxu0mSEGRpjX73koXm8gtOEwh/FOwp17aihA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCZzdLd4gNbMKJOO1dmZ9ciU5Cdtf9uU7yRlmzzQ3TotuPf4Vi
-	p8JIZpW/5TteW8Fwj/BR6miEtEnMevuNqAXoPnyeHOAx+fmHxT9wKrgHcFXXURFO9vpC7pVApo/
-	ZZ/TnPYyvtvFxT1AfmEb+8CnwhhhI4kfDXago
-X-Gm-Gg: ASbGncuW7HUXvYZpITXkPTmf5/pP9nkguiUNSVbb7gZTEDVf3Z9acCwWg6d481ePyuh
-	i1YGDf/iqRNJ2iGNV+8GxOJ8PFeDAtcW7XsgVl1j5rjljqBHdq5CgT8fh3wHPdlbdOntkDG0/Xk
-	OdhFz41APbBSvJWoc+8NWJF+1F
-X-Google-Smtp-Source: AGHT+IEPOyVPZQUNY0BD8dcY972kpjgVEpIOCaVoZTGD0Z4lhAQzI0DbFE8z1emthp5xKKrsgHdBFrStIjH33NSco+o=
-X-Received: by 2002:a05:600c:138f:b0:434:f1e9:afae with SMTP id
- 5b1f17b1804b1-438dc3aa785mr152784995e9.1.1738575152049; Mon, 03 Feb 2025
- 01:32:32 -0800 (PST)
+        bh=PAGCUE13i820gweBIRdTlY3cwxZN3YMksoO7IfRjEXA=;
+        b=xTi6KRWdb2Jo38pehyabsyjvvTxk9Tjr7j6EyFNVeew378gRti8nZjClp7HweA3Xqv
+         KYPt6dwCkmQ2TkWu6SGaXUdf8setgiWveZeHu9FS4YTCqbAO3nLSTCMOVsa9l+B2fcMu
+         /ZRc6p1ztEr0mU4n/mwXadVVcG6hTXwJrRYmJp/GhL0CD4RWHVPMNdFz9SFoEkOczAF8
+         xL6sqpNbZMYjiD0od3zd84fp3rNFGNSeCQWST8SXzd5oI65hh4QBMn1zS0R9BmNBMYkk
+         pKQeKdZY2xUxqrJh8HN12gU6JGEhBhY7dLQBlTFLvXaIkbV90YsWp5WaNAqvRsgno32E
+         IdLA==
+X-Forwarded-Encrypted: i=1; AJvYcCUg001/h87GBCa2uF5TRuv/MYQ7dHn/qIXFjzPVq9X34KTeGMgSvV7ee6WQ3WlpUoWjzjjpWAUcRXyIRfhntg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYnTeaIlqoFcMfLqjmOvbaflAOUjdJi10dTtF9IS1JCx19eE7/
+	AzRVQaw6F/VXErlSC4x2JMbhuyE1qSkc1I4pFDCckWXiBk56caRID1yupQg9heOjA/ZZic+cDG7
+	VjT/2ZeOnl+dVPfxPlYNd6Y0yRuyUYza49Hnm
+X-Gm-Gg: ASbGncuqlR/LnY0O72yK5ycZCeI+QMsfPJP08a84p1xlcQAh2VlwW814Xw95AfiPWkI
+	CSGO5YHemD56q41NtBUnKk+6OHAb8476sDao3+JPjWzmstV8QMumvwO4RpZcD4wlu7PmvkWFeD9
+	lYSigH0EC26pCjC3T5eiubJavZ
+X-Google-Smtp-Source: AGHT+IFV2ERUah2TD2/kP6wJT9HY9fEdAeATVJ+Xaft/21AS/YnAutg4iqnUPMYwT7txa0oOOasZngp82NrdVa86DOs=
+X-Received: by 2002:a5d:6d82:0:b0:38b:dc3d:e4bc with SMTP id
+ ffacd0b85a97d-38c5a9a3fa2mr13681749f8f.19.1738575335683; Mon, 03 Feb 2025
+ 01:35:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250130220529.665896-1-daniel.almeida@collabora.com> <20250130220529.665896-3-daniel.almeida@collabora.com>
-In-Reply-To: <20250130220529.665896-3-daniel.almeida@collabora.com>
+References: <20250202-rust-page-v1-0-e3170d7fe55e@asahilina.net> <20250202-rust-page-v1-5-e3170d7fe55e@asahilina.net>
+In-Reply-To: <20250202-rust-page-v1-5-e3170d7fe55e@asahilina.net>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 3 Feb 2025 10:32:19 +0100
-X-Gm-Features: AWEUYZlRzjKzAy1qfsG7-6ppCOGlMXmjKZybC1DCrZZOTMMhoUFZyu1SCCCeYE0
-Message-ID: <CAH5fLgi5bQgztdxm2Ly-Bdp_W=f+xEdyQX+=y-mQ=d2h+FMhHQ@mail.gmail.com>
-Subject: Re: [PATCH v6 2/3] rust: io: mem: add a generic iomem abstraction
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.mco, benno.lossin@proton.me, 
-	a.hindborg@kernel.org, tmgross@umich.edu, gregkh@linuxfoundation.org, 
-	rafael@kernel.org, dakr@kernel.org, boris.brezillon@collabora.com, 
-	robh@kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 3 Feb 2025 10:35:23 +0100
+X-Gm-Features: AWEUYZlQZ7OHmwC09KmBnatETxY8tKhdEgNvEV1CTacQkRBgKwreOugRVwipZos
+Message-ID: <CAH5fLgiRC3RHfF+2xH+7Ek+FkXDDDpZopqo-Q20VhkWhTk16Wg@mail.gmail.com>
+Subject: Re: [PATCH 5/6] rust: page: Add physical address conversion functions
+To: Asahi Lina <lina@asahilina.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Jann Horn <jannh@google.com>, 
+	Matthew Wilcox <willy@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Valentin Obst <kernel@valentinobst.de>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	airlied@redhat.com, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	asahi@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 30, 2025 at 11:14=E2=80=AFPM Daniel Almeida
-<daniel.almeida@collabora.com> wrote:
+On Sun, Feb 2, 2025 at 2:06=E2=80=AFPM Asahi Lina <lina@asahilina.net> wrot=
+e:
 >
-> Add a generic iomem abstraction to safely read and write ioremapped
-> regions.
+> Add methods to allow code using the Page type to obtain the physical
+> address of a page, convert to and from an (owned) physical address, and
+> borrow a Page from a physical address. Most of these operations are, as
+> you might expect, unsafe.
 >
-> The reads and writes are done through IoRaw, and are thus checked either
-> at compile-time, if the size of the region is known at that point, or at
-> runtime otherwise.
+> These primitives are useful to implement page table structures in Rust,
+> and to implement arbitrary physical memory access (as needed to walk
+> arbitrary page tables and dereference through them). These mechanisms
+> are, of course, fraught with danger, and are only expected to be used
+> for core memory management code (in e.g. drivers with their own device
+> page table implementations) and for debug features such as crash dumps
+> of device memory.
 >
-> Non-exclusive access to the underlying memory region is made possible to
-> cater to cases where overlapped regions are unavoidable.
->
-> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Signed-off-by: Asahi Lina <lina@asahilina.net>
 > ---
->  rust/kernel/io.rs     |   1 +
->  rust/kernel/io/mem.rs | 125 ++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 126 insertions(+)
->  create mode 100644 rust/kernel/io/mem.rs
+>  rust/helpers/page.c | 26 +++++++++++++++++++++
+>  rust/kernel/page.rs | 65 +++++++++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  2 files changed, 91 insertions(+)
 >
-> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-> index 566d8b177e01..9ce3482b5ecd 100644
-> --- a/rust/kernel/io.rs
-> +++ b/rust/kernel/io.rs
-> @@ -7,6 +7,7 @@
->  use crate::error::{code::EINVAL, Result};
->  use crate::{bindings, build_assert};
+> diff --git a/rust/helpers/page.c b/rust/helpers/page.c
+> index b3f2b8fbf87fc9aa89cb1636736c52be16411301..1c3bd68818d77f7ce7806329b=
+8f040a7d4205bb3 100644
+> --- a/rust/helpers/page.c
+> +++ b/rust/helpers/page.c
+> @@ -1,5 +1,6 @@
+>  // SPDX-License-Identifier: GPL-2.0
 >
-> +pub mod mem;
->  pub mod resource;
+> +#include <linux/io.h>
+>  #include <linux/gfp.h>
+>  #include <linux/highmem.h>
 >
->  /// Raw representation of an MMIO region.
-> diff --git a/rust/kernel/io/mem.rs b/rust/kernel/io/mem.rs
-> new file mode 100644
-> index 000000000000..f87433ed858e
-> --- /dev/null
-> +++ b/rust/kernel/io/mem.rs
-> @@ -0,0 +1,125 @@
-> +// SPDX-License-Identifier: GPL-2.0
+> @@ -17,3 +18,28 @@ void rust_helper_kunmap_local(const void *addr)
+>  {
+>         kunmap_local(addr);
+>  }
 > +
-> +//! Generic memory-mapped IO.
+> +struct page *rust_helper_phys_to_page(phys_addr_t phys)
+> +{
+> +       return phys_to_page(phys);
+> +}
 > +
-> +use core::ops::Deref;
+> +phys_addr_t rust_helper_page_to_phys(struct page *page)
+> +{
+> +       return page_to_phys(page);
+> +}
 > +
-> +use crate::device::Device;
-> +use crate::devres::Devres;
-> +use crate::io::resource::Region;
-> +use crate::io::resource::Resource;
-> +use crate::io::Io;
-> +use crate::io::IoRaw;
-> +use crate::prelude::*;
+> +unsigned long rust_helper_phys_to_pfn(phys_addr_t phys)
+> +{
+> +       return __phys_to_pfn(phys);
+> +}
 > +
-> +/// An exclusive memory-mapped IO region.
-> +///
-> +/// # Invariants
-> +///
-> +/// - ExclusiveIoMem has exclusive access to the underlying `iomem`.
-> +pub struct ExclusiveIoMem<const SIZE: usize> {
-> +    /// The region abstraction. This represents exclusive access to the
-> +    /// range represented by the underlying `iomem`.
+> +struct page *rust_helper_pfn_to_page(unsigned long pfn)
+> +{
+> +       return pfn_to_page(pfn);
+> +}
+> +
+> +bool rust_helper_pfn_valid(unsigned long pfn)
+> +{
+> +       return pfn_valid(pfn);
+> +}
+> diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+> index fe5f879f9d1a86083fd55c682fad9d52466f79a2..67cd7006fa63ab5aed4c4de2b=
+e639ed8e1fbc2ba 100644
+> --- a/rust/kernel/page.rs
+> +++ b/rust/kernel/page.rs
+> @@ -3,6 +3,7 @@
+>  //! Kernel page allocation and management.
+>
+>  use crate::{
+> +    addr::*,
+>      alloc::{AllocError, Flags},
+>      bindings,
+>      error::code::*,
+> @@ -10,6 +11,7 @@
+>      types::{Opaque, Ownable, Owned},
+>      uaccess::UserSliceReader,
+>  };
+> +use core::mem::ManuallyDrop;
+>  use core::ptr::{self, NonNull};
+>
+>  /// A bitwise shift for the page size.
+> @@ -249,6 +251,69 @@ pub unsafe fn copy_from_user_slice_raw(
+>              reader.read_raw(unsafe { core::slice::from_raw_parts_mut(dst=
+.cast(), len) })
+>          })
+>      }
+> +
+> +    /// Returns the physical address of this page.
+> +    pub fn phys(&self) -> PhysicalAddr {
+> +        // SAFETY: `page` is valid due to the type invariants on `Page`.
+> +        unsafe { bindings::page_to_phys(self.as_ptr()) }
+> +    }
+> +
+> +    /// Converts a Rust-owned Page into its physical address.
 > +    ///
-> +    /// It's placed first to ensure that the region is released before i=
-t is
-> +    /// unmapped as a result of the drop order.
-> +    #[allow(dead_code)]
-> +    region: Region,
-
-Instead of #[allow(dead_code)], I would prefix the name with an
-underscore and comment that you hold on to it only for ownership.
-
-> +    /// The underlying `IoMem` instance.
-> +    iomem: IoMem<SIZE>,
-> +}
-> +
-> +impl<const SIZE: usize> ExclusiveIoMem<SIZE> {
-> +    /// Creates a new `ExclusiveIoMem` instance.
-> +    pub(crate) fn ioremap(resource: &Resource) -> Result<Self> {
-> +        let iomem =3D IoMem::ioremap(resource)?;
-> +
-> +        let start =3D resource.start();
-> +        let size =3D resource.size();
-> +        let name =3D resource.name();
-> +
-> +        let region =3D resource
-> +            .request_mem_region(start, size, name)
-> +            .ok_or(EBUSY)?;
-> +
-> +        let iomem =3D ExclusiveIoMem { iomem, region };
-> +
-> +        Ok(iomem)
+> +    /// The caller is responsible for calling [`Page::from_phys()`] to a=
+void leaking memory.
+> +    pub fn into_phys(this: Owned<Self>) -> PhysicalAddr {
+> +        ManuallyDrop::new(this).phys()
 > +    }
 > +
-> +    pub(crate) fn new(resource: &Resource, device: &Device) -> Result<De=
-vres<Self>> {
-> +        let iomem =3D Self::ioremap(resource)?;
-> +        let devres =3D Devres::new(device, iomem, GFP_KERNEL)?;
-> +
-> +        Ok(devres)
+> +    /// Converts a physical address to a Rust-owned Page.
+> +    ///
+> +    /// # Safety
+> +    /// The caller must ensure that the physical address was previously =
+returned by a call to
+> +    /// [`Page::into_phys()`], and that the physical address is no longe=
+r used after this call,
+> +    /// nor is [`Page::from_phys()`] called again on it.
+> +    pub unsafe fn from_phys(phys: PhysicalAddr) -> Owned<Self> {
+> +        // SAFETY: By the safety requirements, the physical address must=
+ be valid and
+> +        // have come from `into_phys()`, so phys_to_page() cannot fail a=
+nd
+> +        // must return the original struct page pointer.
+> +        unsafe { Owned::from_raw(NonNull::new_unchecked(bindings::phys_t=
+o_page(phys)).cast()) }
 > +    }
-> +}
 > +
-> +impl<const SIZE: usize> Deref for ExclusiveIoMem<SIZE> {
-> +    type Target =3D Io<SIZE>;
-> +
-> +    fn deref(&self) -> &Self::Target {
-> +        &*self.iomem
-> +    }
-> +}
-> +
-> +/// A generic memory-mapped IO region.
-> +///
-> +/// Accesses to the underlying region is checked either at compile time,=
- if the
-> +/// region's size is known at that point, or at runtime otherwise.
-> +///
-> +/// # Invariants
-> +///
-> +/// `IoMem` always holds an `IoRaw` inststance that holds a valid pointe=
-r to the
-
-typo: instance
-
-> +/// start of the I/O memory mapped region.
-> +pub struct IoMem<const SIZE: usize =3D 0> {
-> +    io: IoRaw<SIZE>,
-> +}
-> +
-> +impl<const SIZE: usize> IoMem<SIZE> {
-> +    fn ioremap(resource: &Resource) -> Result<Self> {
-> +        let size =3D resource.size();
-> +        if size =3D=3D 0 {
-> +            return Err(EINVAL);
+> +    /// Borrows a Page from a physical address, without taking over owne=
+rship.
+> +    ///
+> +    /// If the physical address does not have a `struct page` entry or i=
+s not
+> +    /// part of a System RAM region, returns None.
+> +    ///
+> +    /// # Safety
+> +    /// The caller must ensure that the physical address, if it is backe=
+d by a `struct page`,
+> +    /// remains available for the duration of the borrowed lifetime.
+> +    pub unsafe fn borrow_phys(phys: &PhysicalAddr) -> Option<&Self> {
+> +        // SAFETY: This is always safe, as it is just arithmetic
+> +        let pfn =3D unsafe { bindings::phys_to_pfn(*phys) };
+> +        // SAFETY: This function is safe to call with any pfn
+> +        if !unsafe { bindings::pfn_valid(pfn) && bindings::page_is_ram(p=
+fn) !=3D 0 } {
+> +            None
+> +        } else {
+> +            // SAFETY: We have just checked that the pfn is valid above,=
+ so it must
+> +            // have a corresponding struct page. By the safety requireme=
+nts, we can
+> +            // return a borrowed reference to it.
+> +            Some(unsafe { &*(bindings::pfn_to_page(pfn) as *mut Self as =
+*const Self) })
 > +        }
-> +
-> +        let res_start =3D resource.start();
-> +
-> +        // SAFETY:
-> +        // - `res_start` and `size` are read from a presumably valid `st=
-ruct resource`.
-> +        // - `size` is known not to be zero at this point.
-> +        let addr =3D unsafe { bindings::ioremap(res_start, size as kerne=
-l::ffi::c_ulong) };
-
-Once you rebase on v6.14-rc1 this cast is no longer necessary.
-
-> +        if addr.is_null() {
-> +            return Err(ENOMEM);
-> +        }
-> +
-> +        let io =3D IoRaw::new(addr as usize, size as usize)?;
-
-Ditto here. Though isn't usize the wrong type for `addr`? Shouldn't
-you have a type alias for phys_addr_t?
-
-> +        let io =3D IoMem { io };
-> +
-> +        Ok(io)
 > +    }
 > +
-> +    /// Creates a new `IoMem` instance.
-> +    pub(crate) fn new(resource: &Resource, device: &Device) -> Result<De=
-vres<Self>> {
-> +        let io =3D Self::ioremap(resource)?;
-> +        let devres =3D Devres::new(device, io, GFP_KERNEL)?;
-> +
-> +        Ok(devres)
-> +    }
-> +}
-> +
-> +impl<const SIZE: usize> Drop for IoMem<SIZE> {
-> +    fn drop(&mut self) {
-> +        // SAFETY: Safe as by the invariant of `Io`.
-> +        unsafe { bindings::iounmap(self.io.addr() as *mut core::ffi::c_v=
-oid) }
+> +    /// Borrows a Page from a physical address, without taking over owne=
+rship
+> +    /// nor checking for validity.
+> +    ///
+> +    /// # Safety
+> +    /// The caller must ensure that the physical address is backed by a =
+`struct page` and
+> +    /// corresponds to System RAM. This is true when the address was ret=
+urned by
+> +    /// [`Page::into_phys()`].
+> +    pub unsafe fn borrow_phys_unchecked(phys: &PhysicalAddr) -> &Self {
 
-Hmm ... void pointer? I wonder whether IoRaw should store this as a
-pointer instead of an integer?
+Should this be
+
+pub unsafe fn borrow_phys_unchecked<'a>(phys: PhysicalAddr) -> &'a Self
+
+? That's how the signature of these raw methods usually goes, and then
+your safety requirements say that the requirements must hold for the
+duration of 'a.
+
+> +        // SAFETY: This is always safe, as it is just arithmetic
+> +        let pfn =3D unsafe { bindings::phys_to_pfn(*phys) };
+> +        // SAFETY: The caller guarantees that the pfn is valid. By the s=
+afety
+> +        // requirements, we can return a borrowed reference to it.
+> +        unsafe { &*(bindings::pfn_to_page(pfn) as *mut Self as *const Se=
+lf) }
+
+Can this just be
+
+&*bindings::pfn_to_page(pfn).cast()
+
+?
 
 Alice
 
 > +    }
-> +}
-> +
-> +impl<const SIZE: usize> Deref for IoMem<SIZE> {
-> +    type Target =3D Io<SIZE>;
-> +
-> +    fn deref(&self) -> &Self::Target {
-> +        // SAFETY: Safe as by the invariant of `IoMem`.
-> +        unsafe { Io::from_raw(&self.io) }
-> +    }
-> +}
+>  }
+>
+>  // SAFETY: `Owned<Page>` objects returned by Page::alloc_page() follow t=
+he requirements of
+>
 > --
-> 2.48.0
+> 2.47.1
 >
