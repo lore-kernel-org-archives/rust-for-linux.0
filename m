@@ -1,190 +1,126 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4757578F49
-	for <rust-for-linux@vger.kernel.org>; Mon,  3 Feb 2025 10:01:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B7A1FBE89;
+	Mon,  3 Feb 2025 10:03:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738576882; cv=none; b=NklXjWnP8+x3VXYsmbkefloQYU3ZcNyO8FmIE/bCvdpDb6YX/TN+8ECKJLDnv/N2hcCJjXBWGXSz2GryaGGYQg+W03HiqKvGerLakmNNFc3jGGJw78ueAZ5X1RQ8Xsb3p9dKcyqCnrIW1G0S0tOI0qFYlEl75hVsyYFZHH3GGSY=
+	t=1738577009; cv=none; b=RL6e9LSEImJPmzbIahGBXU4Gl7WfRAoad3RpktQsda12aJJ1g4Kk4CTSacJPLbqfwbPD1O6A/UjtEPHwTekDBwPdpSZXu5VUfIf9vYL6gVJYBMoWs5VLc4pMX4h5aN+6VGgC/xiZC3kfEMehWLkqLE9qEVtztmcx64GKOaafMYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738576882; c=relaxed/simple;
-	bh=kdua4+YQ85GykUIHsDe45i3nydQ0QIA06M4GK2rq+eI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YB3PW0mVgsvp7/B8nME1f5BF1jBONJb8T5Byv5H+9C5ZjJDIWdErR8yxvu9fEFFev9EkZyLD4KM0F82BgziKmhfLk1o7k/6ckHF3qIf+kIB1KERlaTH1W3z2Suw9IIs1dkJs33+fcQ6SbIBJfOmdXbDOb4lSy7RMCW/K/gAew2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h+6FB+zg; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1738577009; c=relaxed/simple;
+	bh=CjPh2b574jLnmXszurDp0YgE4EJWVAhoILKnIPH1zkQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=is9Zvfb61U34jMgWQFRDhVgSVnMhVdHsTv8J4/LFrr5+Y25im3SetbOMkfAIscNKly5ZMFzff9QZ/bAVqHHi0ks9gBr5vSSwDm09VdKUVMen04b3Z8Alqp7B9ycMex43cPje4rD3i3L4SEuwjRcQZlDdylV2jeJAqJehxTpmhxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iuAD+Ulf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h+6FB+zg"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-385e0e224cbso2241089f8f.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 03 Feb 2025 02:01:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738576877; x=1739181677; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dEGNgfB2S/8AjXy/uNgsGPvZS31C4zTjkg+WKJogdi8=;
-        b=h+6FB+zgWxmAYXsiRN2XcG8PlGdjL29+43/yB8qNsalDSe3hSvUX4YEtssYMNj8pNn
-         ZjyPGe5wU6OgM8+mwSSfUG6KsLEe7RmFs/NJTx5DWMbCE7y1TOGPidLElbkcI2sXJS+S
-         BvSVNTWJDNPgPwZOjX3CjOLPdaCYuzTTDzWM/tYigHzqZd6Hq1djfAYlCG4FIEv369Ip
-         DXURg13Qo9UJ97E/UcAjnJofHjLtgAH3DkCmD7bChN9rI6sv2QV9efoyBOTkKufW0oM1
-         yEpWMnePiqnZlCGd8ac8UBwh8LexhQRygImI5xiJ6EJ1qy7e3hrrVqzgG+gfA+0aVBMA
-         25Sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738576877; x=1739181677;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dEGNgfB2S/8AjXy/uNgsGPvZS31C4zTjkg+WKJogdi8=;
-        b=MeyZwGy9BjCnUW9sEJCKjLtzV74WMBaNMOBY/FvYIsx3MsUefdC9G9yhDgn9pN+syI
-         D3pJRxkIGJnJNqxm1AYw9n0oOtVi0QbDXTkYstKG8uJBNXRC/fcex+2Zs/kECSsIX6GH
-         bf2L/7vxImZjwCb94TfGKVLy8tgU+KZD3OwgeVG2f/+/Nxx+hoewX67ONJLzkGK0ORgA
-         gW3b1gBdGwj5ZGRfJJMJlRYmEYtBEJqircsa+J9Gr1bj4o/ZSeWNdCrSdfNUcQE2Lz/8
-         IrhkwnyMc1VIKpGFzhRoOSveSTGGJC+WCcc161N9spOqz4iXovsP1WiH+VjuS9l79CCw
-         U7Wg==
-X-Forwarded-Encrypted: i=1; AJvYcCXe33hqiQFEyOdzmCeGcrA5SGpWnPa+H+UbNTgqfHqx+Q6SMdNT6DfeQnP+NMhakJEpW2h0YeW19wUlyL2bxA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyc63Zq7XRVzfa7zPKx7sTlZc/ZX+NqfQ5WwIRtODUUYXxIsZsm
-	KpX2av/bowot/bc+bVZapFFoae3HI/HfXnOLzvhixcSVv42UhP1kKsdcoMi83q4JDxPpA6/MVu3
-	bZc85aVvPQdfiCYgQJEtdBb25eiao+xCVqlxO
-X-Gm-Gg: ASbGncuscaNklakn7OdwUgR1/YqiU7sdNT8OzTtG2c9BHl4VhlkqfBRekHRWUSe+hv8
-	12u7cnFWJ58uN2Dql6LKfCAfndZCy9vbiFEnYvtf00m/Fy/ePFpv+zljM7WgAl/KFnr+blebXG7
-	2fT8umkZKWGBrrr8CUIhph7Qba
-X-Google-Smtp-Source: AGHT+IH3g2mPZEl5GlZ3WLWpDP89LKo0b2KChSH5cl3Q6a9dl/Hpn/AlGzitcM3Z4OiZyJKWLS+CB0K0XadAjdKQxbo=
-X-Received: by 2002:a5d:6d02:0:b0:385:f092:e1a with SMTP id
- ffacd0b85a97d-38c5194c3b6mr16768265f8f.11.1738576877295; Mon, 03 Feb 2025
- 02:01:17 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iuAD+Ulf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61102C4CED2;
+	Mon,  3 Feb 2025 10:03:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1738577009;
+	bh=CjPh2b574jLnmXszurDp0YgE4EJWVAhoILKnIPH1zkQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iuAD+Ulfl6eBo2dTljn37N5oMIvNHPqLOExo+P+XWkNy+Zy7ttUPmKgTIp1pQMw0Y
+	 0VGVHJOFv8c0lzzJeJ21KTyCXImt76+OXUlUk3YBGo1QthCfAqtgstI0DoOggUWBHD
+	 tBR0VsGfIkFtBX8vcl6eL+FQ0xjuWTqbU5+7kj7s=
+Date: Mon, 3 Feb 2025 11:02:27 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [RFC] driver core: add a virtual bus for use when a simple
+ device/bus is needed
+Message-ID: <2025020311-elderly-struck-1d26@gregkh>
+References: <Z5Nw8kaieLueWyUu@pollux>
+ <20250130212843.659437-1-lyude@redhat.com>
+ <2025013159-shabby-professor-515b@gregkh>
+ <2025013140-propeller-dirtiness-6cb4@gregkh>
+ <Z50ZuzrDn-GQWOuP@cassiopeiae>
+ <2025020106-avert-senorita-4181@gregkh>
+ <2025020306-overhang-glider-7d42@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250202-rust-page-v1-0-e3170d7fe55e@asahilina.net>
- <20250202-rust-page-v1-5-e3170d7fe55e@asahilina.net> <87jza74amo.fsf@kloenk.dev>
-In-Reply-To: <87jza74amo.fsf@kloenk.dev>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 3 Feb 2025 11:01:05 +0100
-X-Gm-Features: AWEUYZndXPsUdFaaW3upqQnP0AEq9KZD2d2molkEULuOFcYuzceGr2VHgZKEEdM
-Message-ID: <CAH5fLgh7gKRpT7wXzkqTwi0rwg+QyzAbqYzt12=85LqduC-oiA@mail.gmail.com>
-Subject: Re: [PATCH 5/6] rust: page: Add physical address conversion functions
-To: Fiona Behrens <me@kloenk.dev>
-Cc: Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Jann Horn <jannh@google.com>, 
-	Matthew Wilcox <willy@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Valentin Obst <kernel@valentinobst.de>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	airlied@redhat.com, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	asahi@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025020306-overhang-glider-7d42@gregkh>
 
-On Mon, Feb 3, 2025 at 10:54=E2=80=AFAM Fiona Behrens <me@kloenk.dev> wrote=
-:
->
-> Asahi Lina <lina@asahilina.net> writes:
->
-> > Add methods to allow code using the Page type to obtain the physical
-> > address of a page, convert to and from an (owned) physical address, and
-> > borrow a Page from a physical address. Most of these operations are, as
-> > you might expect, unsafe.
-> >
-> > These primitives are useful to implement page table structures in Rust,
-> > and to implement arbitrary physical memory access (as needed to walk
-> > arbitrary page tables and dereference through them). These mechanisms
-> > are, of course, fraught with danger, and are only expected to be used
-> > for core memory management code (in e.g. drivers with their own device
-> > page table implementations) and for debug features such as crash dumps
-> > of device memory.
-> >
-> > Signed-off-by: Asahi Lina <lina@asahilina.net>
-> > ---
-> >  rust/helpers/page.c | 26 +++++++++++++++++++++
-> >  rust/kernel/page.rs | 65 +++++++++++++++++++++++++++++++++++++++++++++=
-++++++++
-> >  2 files changed, 91 insertions(+)
-> >
-> > diff --git a/rust/helpers/page.c b/rust/helpers/page.c
-> > index b3f2b8fbf87fc9aa89cb1636736c52be16411301..1c3bd68818d77f7ce780632=
-9b8f040a7d4205bb3 100644
-> > --- a/rust/helpers/page.c
-> > +++ b/rust/helpers/page.c
-> > @@ -1,5 +1,6 @@
-> >  // SPDX-License-Identifier: GPL-2.0
-> >
-> > +#include <linux/io.h>
-> >  #include <linux/gfp.h>
-> >  #include <linux/highmem.h>
-> >
-> > @@ -17,3 +18,28 @@ void rust_helper_kunmap_local(const void *addr)
-> >  {
-> >       kunmap_local(addr);
-> >  }
-> > +
-> > +struct page *rust_helper_phys_to_page(phys_addr_t phys)
-> > +{
-> > +     return phys_to_page(phys);
-> > +}
-> > +
-> > +phys_addr_t rust_helper_page_to_phys(struct page *page)
-> > +{
-> > +     return page_to_phys(page);
-> > +}
-> > +
-> > +unsigned long rust_helper_phys_to_pfn(phys_addr_t phys)
-> > +{
-> > +     return __phys_to_pfn(phys);
-> > +}
-> > +
-> > +struct page *rust_helper_pfn_to_page(unsigned long pfn)
-> > +{
-> > +     return pfn_to_page(pfn);
-> > +}
-> > +
-> > +bool rust_helper_pfn_valid(unsigned long pfn)
-> > +{
-> > +     return pfn_valid(pfn);
-> > +}
-> > diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
-> > index fe5f879f9d1a86083fd55c682fad9d52466f79a2..67cd7006fa63ab5aed4c4de=
-2be639ed8e1fbc2ba 100644
-> > --- a/rust/kernel/page.rs
-> > +++ b/rust/kernel/page.rs
-> > @@ -3,6 +3,7 @@
-> >  //! Kernel page allocation and management.
-> >
-> >  use crate::{
-> > +    addr::*,
-> >      alloc::{AllocError, Flags},
-> >      bindings,
-> >      error::code::*,
-> > @@ -10,6 +11,7 @@
-> >      types::{Opaque, Ownable, Owned},
-> >      uaccess::UserSliceReader,
-> >  };
-> > +use core::mem::ManuallyDrop;
-> >  use core::ptr::{self, NonNull};
-> >
-> >  /// A bitwise shift for the page size.
-> > @@ -249,6 +251,69 @@ pub unsafe fn copy_from_user_slice_raw(
-> >              reader.read_raw(unsafe { core::slice::from_raw_parts_mut(d=
-st.cast(), len) })
-> >          })
-> >      }
-> > +
-> > +    /// Returns the physical address of this page.
-> > +    pub fn phys(&self) -> PhysicalAddr {
->
-> Rust  uses for similar references `as_*` so `as_phys`, would it make
-> sense to use the same naming format here?
+On Mon, Feb 03, 2025 at 10:39:58AM +0100, Greg Kroah-Hartman wrote:
+> --- a/drivers/regulator/dummy.c
+> +++ b/drivers/regulator/dummy.c
+> @@ -13,7 +13,7 @@
+>  
+>  #include <linux/err.h>
+>  #include <linux/export.h>
+> -#include <linux/platform_device.h>
+> +#include <linux/device/virtual.h>
+>  #include <linux/regulator/driver.h>
+>  #include <linux/regulator/machine.h>
+>  
+> @@ -37,15 +37,15 @@ static const struct regulator_desc dummy_desc = {
+>  	.ops = &dummy_ops,
+>  };
+>  
+> -static int dummy_regulator_probe(struct platform_device *pdev)
+> +static int dummy_regulator_probe(struct virtual_device *vdev)
+>  {
+>  	struct regulator_config config = { };
+>  	int ret;
+>  
+> -	config.dev = &pdev->dev;
+> +	config.dev = &vdev->dev;
+>  	config.init_data = &dummy_initdata;
+>  
+> -	dummy_regulator_rdev = devm_regulator_register(&pdev->dev, &dummy_desc,
+> +	dummy_regulator_rdev = devm_regulator_register(&vdev->dev, &dummy_desc,
+>  						       &config);
+>  	if (IS_ERR(dummy_regulator_rdev)) {
+>  		ret = PTR_ERR(dummy_regulator_rdev);
+> @@ -56,36 +56,17 @@ static int dummy_regulator_probe(struct platform_device *pdev)
+>  	return 0;
+>  }
+>  
+> -static struct platform_driver dummy_regulator_driver = {
+> +struct virtual_driver_ops dummy_regulator_driver = {
+>  	.probe		= dummy_regulator_probe,
+> -	.driver		= {
+> -		.name		= "reg-dummy",
+> -		.probe_type	= PROBE_PREFER_ASYNCHRONOUS,
+> -	},
+>  };
+>  
+> -static struct platform_device *dummy_pdev;
+> +static struct virtual_device *dummy_vdev;
+>  
+>  void __init regulator_dummy_init(void)
+>  {
+> -	int ret;
+> -
+> -	dummy_pdev = platform_device_alloc("reg-dummy", -1);
+> -	if (!dummy_pdev) {
+> +	dummy_vdev = virtual_device_create(&dummy_regulator_driver, "reg-dummy");
+> +	if (!dummy_vdev) {
 
-The as_ prefix is only used when returning a borrow, which is not the
-case here. I think not having a prefix is correct in this case.
+I originally was thinking that many platform_device_alloc() calls could
+be replaced with this, but in looking further, I think we can get rid of
+almost all calls to platform_device_register_simple() with this api
+instead, including most of the use of that in the drm tree where all
+that is being used is the device structure and not the platform one at
+all.
 
-https://rust-lang.github.io/api-guidelines/naming.html#ad-hoc-conversions-f=
-ollow-as_-to_-into_-conventions-c-conv
+I'll dig into that later today...
 
-Alice
+thanks,
+
+greg k-h
