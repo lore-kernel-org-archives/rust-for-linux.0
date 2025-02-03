@@ -1,189 +1,169 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from buffalo.tulip.relay.mailchannels.net (buffalo.tulip.relay.mailchannels.net [23.83.218.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4591B6CFB
-	for <rust-for-linux@vger.kernel.org>; Mon,  3 Feb 2025 19:22:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738610552; cv=none; b=o853EOgU3TnhqdCPGD8ACvwf3FilDDkPlO8ZffvGYz1MBXpCpJG8JvC6hi22BRfYrE4BhtKNfw/NCCGuMEnZqs1Ck3DZUVSsfkXq3XLLMqqihaw2/TBc2bz7/oLzMGK9EaI871YceAkS/dj6ikn+l4+hGLHUCsEug1moPfHiPTU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738610552; c=relaxed/simple;
-	bh=47I4W/OdFRdOnxyJFooCrp1d9zqBf6rBozHIs8h9RnU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t0ydk6uw3k9iEn4cOh2H+Fjr1XLfnbhHWgrn54QOtrOAJaSSlCJwvVH5sIGEbe1LvcZgTXr98pPaTRb+mTBHOixu4fBIFLdwQtAEzyqwq4mEmOg+Itnw+usVgyXcfUL+v3cGJEH3R5Ec4I7NucyMD0ycymRbW1CbhkS0iuw9Ihw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cx4M+6wj; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67FF51E7C03;
+	Mon,  3 Feb 2025 20:11:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.218.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738613520; cv=pass; b=Vxy8S587vH5cOO+E2YsbryLWTFBuY+E5zgM9v+CLHYgwjbUW36ekiszhf5//Ia7YOjUTEYPMq+KmhWWK//zPjgqkxX+aTtvhR2KknPcNTW1zdRo7evtOFBFKlnTWUNx+3X3PrLSwaujtqNw1kBsqq2GjHgt15qUmG/eJAG7nfjM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738613520; c=relaxed/simple;
+	bh=k98bQzDI9RwM3220WwTRBw0NBLkW7u2Vfu4HJD6Ly7U=;
+	h=From:To:Cc:Subject:Message-ID:MIME-Version:Date; b=dIjPy2xxtwq2UhIAoJQX+0JDCaSP588Y41PYk5h+w3wEVbhE8lgMSsQBuzTRRMVX9ABdVwa1gnv/1JBeFonEdg4FACFllnGbcMHNwccTuGforZf9npx75N/8dGbDxZJWJTvlKA+yS14Zicc4EpKpzYWIkAD+ULaIUOD4EAgeEvM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invicto.ai; spf=pass smtp.mailfrom=invicto.ai; dkim=fail (0-bit key) header.d=invicto.ai header.i=@invicto.ai header.b=AaXCNLBA reason="key not found in DNS"; arc=pass smtp.client-ip=23.83.218.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invicto.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=invicto.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cx4M+6wj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738610549;
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=invicto.ai header.i=@invicto.ai header.b="AaXCNLBA"
+X-Sender-Id: hostingeremail|x-authuser|kurti@invicto.ai
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 61B1122C57;
+	Mon,  3 Feb 2025 20:11:56 +0000 (UTC)
+Received: from nl-srv-smtpout6.hostinger.io (trex-6.trex.outbound.svc.cluster.local [100.127.143.53])
+	(Authenticated sender: hostingeremail)
+	by relay.mailchannels.net (Postfix) with ESMTPA id EFC8B22F37;
+	Mon,  3 Feb 2025 20:11:54 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1738613515; a=rsa-sha256;
+	cv=none;
+	b=jwnycTtzplSqmoVJ/SpKSBeeiisFrvXNUxns6RwY8UPPPLbyx74Z2rKQ5NkRoIODbsiua/
+	HPRd+Mvf9I9wW0uN5rGUKMNeF468/FdWYaLO4DY9EcM/u1WTNgFTL9EZ2j3B1x0b4DLyOo
+	OfK1MGF0sxl+yGTLwNR/3apUN2j+8NwrhljhA3rQh1n7xUT2AiJh1YT4JVymw4Evak6rye
+	dCyZ+AUMnBG+7XmQcaaNMxlDtWZKitvrTS3skYt2fz+YhTVNtSn6lBIjsjcTbvEDfQkJXW
+	+BsvB/dzbXPPpNVp2frYhoJ20iMt4dbD40lf6QkGwnlmkPAVtBY2xcAglfEi0A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1738613515;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=8JzCvz88snSnAVNQMXnklYQMU/jabK+PbGj82gu/vrw=;
-	b=cx4M+6wj5cfvk9accn0ptGtG756AOAuYWbPy6D0IxpaGgpqqCa4+ZX8mWRiMO9z9UM6jxD
-	Ko2q3wqdeVLbdgn/id3WQBRHzaDgCHIb42xG+pIii8TsRU2IEJlC3IwS4Xp7cy9nOYNm9I
-	/SSjQD2fH77W/7pKGdbZPlZckpfbu2E=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-217-t5sTxCQ8MHejc8rlgVftQw-1; Mon, 03 Feb 2025 14:22:26 -0500
-X-MC-Unique: t5sTxCQ8MHejc8rlgVftQw-1
-X-Mimecast-MFC-AGG-ID: t5sTxCQ8MHejc8rlgVftQw
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-438e4e9a53fso36055845e9.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 03 Feb 2025 11:22:26 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738610545; x=1739215345;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8JzCvz88snSnAVNQMXnklYQMU/jabK+PbGj82gu/vrw=;
-        b=YF9tigrfhDJwsWpc9QCz0uGsdAo8tqSc6erCd3XgGya0TtBt0/3a7JntHSqGXIxGC2
-         EXmess8cp4KwsWJywVYKISnHBM1WhPBdzmuKcGIf4h0vVUJyBlY18w2ATsTGr81eNVYt
-         YACYD+QWhtW2F659ivLH9WD2YwA0SWjj0Qb1boPAEqYSaBCwanEy1ETsZVV1Z5wW2tFn
-         vOmbLsoNCbuAFcYKBzllUXbvtIEEpNDEo0JFeu07u89s3uvDJnjjs6+5g4Fy7+f+FdkO
-         VJONGb6+Xxyn4l4WaDJ0fpZm6GdsU7CbEKPAINj5y4D3MwiIMiy6eRhofhC8lGUm61ej
-         BPPg==
-X-Forwarded-Encrypted: i=1; AJvYcCVY3gaoBJAOIe03fk/zd+836wQjMnER/ofuh0XR+HJzjpmazk1iLdXg2XMumjZqfbqg5vuuVeDeW+cdH9a5HA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCMHfgTd5VxWwvHZH5fW0zW/CGb4aLxePb5NGPH7v4Mk2Rgg2d
-	1MxSp+vDH7S246iKcZOmfPkf7q5T3fMQUo9YDgzWz8AI8u9S5AulUWfHSGFfYS0iIwZh2P01508
-	PVG7nYmtUHEWZqQZL5mJV9/+6y8iUvSWXkEvYICBMxgPj9NJ41xYLuxLdoY9Vi90L
-X-Gm-Gg: ASbGncs2rFk4jqSkvCz+MkC3a7xk2Fj56KcFR/tgDQ9MyySTY5x9uE3l1FsPznBxQTq
-	v0wGrDgd6CY8AEb7+j1F5IluPd6PrR+2izfGqxINASSsCdq2U52K5yjkRyoos6fvfcJtE+hdY3B
-	+Tgog0+3c4NnxC/2Z1S0lBYCq3sxxSQM0FyT4WKJ1GqWVqBTqho9CblfjA8vZWUnbjJCtLp93YC
-	w0gXFT35o8rcVquMjlpmAjQmiE/lmgKuTug2655IW6Mmdi1+Zxuh23GQXdIBUu6D4hveLIzU55O
-	I1rzLg==
-X-Received: by 2002:a05:600c:6c44:b0:436:fb02:e90 with SMTP id 5b1f17b1804b1-438dc48aa14mr222541255e9.10.1738610545568;
-        Mon, 03 Feb 2025 11:22:25 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEBlGAFDIU1GLvsSC3pDPLeHERpJ5yoHpiUEpzS4SGlu1H0ypOa5OhIad8hucJaADA6QYw8AQ==
-X-Received: by 2002:a05:600c:6c44:b0:436:fb02:e90 with SMTP id 5b1f17b1804b1-438dc48aa14mr222541065e9.10.1738610545216;
-        Mon, 03 Feb 2025 11:22:25 -0800 (PST)
-Received: from [192.168.10.3] ([151.62.97.55])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-438dcc26d6fsm197969255e9.14.2025.02.03.11.22.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Feb 2025 11:22:24 -0800 (PST)
-Message-ID: <5d5a6640-2f14-4d80-bc5e-4d8274251793@redhat.com>
-Date: Mon, 3 Feb 2025 20:22:22 +0100
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:dkim-signature;
+	bh=Ab6R3x0iq4MlY/imzAVkZkBE2JedJ/qGVM3bp8PX4R0=;
+	b=4ihuR+WXOxh/wRH8M1GFHHd+fqpyhb7MNXy4acVTeCpo4iQW/CWnVqxpPiZEO04h7nHgta
+	NKGk3dFijNIeZRNJdI0+qa34iR5yqXflhHDDGJs5hYTZWtXRl3LPDZEW7R3dMjH58tB7IY
+	zSlBfsXVaTOwFS1CG59FmMqHXRMYXgf1JQShXVXn8k8BB+NgDVhQR1qkP+G1B3mHwzuZOQ
+	Anjx3/CVArAg8AtXS8Hhbndz9mQSneAm3Qur4ljfLdSIatdc0PQ37/bJq0o8SzVstge6ea
+	FOU6rPPlpAUDA6w+6Iusa29tX5EXAAFUrVpFFsqKXgcEyf8EWFGTqpI6yBPKFA==
+ARC-Authentication-Results: i=1;
+	rspamd-8586946c78-bl7zc;
+	auth=pass smtp.auth=hostingeremail smtp.mailfrom=kurti@invicto.ai
+X-Sender-Id: hostingeremail|x-authuser|kurti@invicto.ai
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: hostingeremail|x-authuser|kurti@invicto.ai
+X-MailChannels-Auth-Id: hostingeremail
+X-Harbor-Power: 2562e9661c947542_1738613516153_2978833233
+X-MC-Loop-Signature: 1738613516153:1895777589
+X-MC-Ingress-Time: 1738613516153
+Received: from nl-srv-smtpout6.hostinger.io (nl-srv-smtpout6.hostinger.io
+ [45.87.82.130])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.127.143.53 (trex/7.0.2);
+	Mon, 03 Feb 2025 20:11:56 +0000
+From: albankurti <kurti@invicto.ai>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=invicto.ai;
+	s=hostingermail-a; t=1738613513;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Ab6R3x0iq4MlY/imzAVkZkBE2JedJ/qGVM3bp8PX4R0=;
+	b=AaXCNLBAoBQsG0FrVrsIan6JtSNgNnk5bigaCgo2z+yHHLqb1poY9XmAhyEMhR6ab/4qlv
+	J0I7orOtsgrWc0RrChANovN9cOdErrE4tecAiykpZkRaK1RNS5HhKXwlGeiyjK+fuoJVXv
+	kczamorWzs4z/NDRKmpHMBLeFWpEwZP5XcZUJ00IdSi0je/0lb2HQcvaJymp0x9EKM6P94
+	k+s3yFbHob16/uhXnnlW6Fvy9Zidp1eUlZHk3QfYU/OaO55aX0fPO9aB98BDvLP/uwAWWb
+	3yvhI31cqEeuyUsfL7CZ+8IN+RPBtGyFtXJVr9cFbejMLp6Oih/Py3UFUiJuNw==
+To: Joe Perches <joe@perches.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alban Kurti <kurti@invicto.ai>,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH 1/1 RESEND] checkpatch: add warning for pr_* and dev_* macros without a trailing newline
+Message-ID: <20250203201149.330117-1-kurti@invicto.ai>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 2/2] rust: add dma coherent allocator abstraction.
-To: Hector Martin <marcan@marcan.st>, Jason Gunthorpe <jgg@nvidia.com>,
- Greg KH <gregkh@linuxfoundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>
-Cc: phasta@kernel.org, Christoph Hellwig <hch@lst.de>,
- Danilo Krummrich <dakr@kernel.org>,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Abdiel Janulgue <abdiel.janulgue@gmail.com>, daniel.almeida@collabora.com,
- aliceryhl@google.com, robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- Valentin Obst <kernel@valentinobst.de>,
- open list <linux-kernel@vger.kernel.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
- "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
-References: <Z3-NqwAG_96yq8VD@pollux> <20250110083955.GA5395@lst.de>
- <Z4D5a5NYrAbNxUL6@pollux> <Z4kG5AcVeQKegLnb@pollux>
- <20250128092334.GA28548@lst.de>
- <293df3d54bad446e8fd527f204c6dc301354e340.camel@mailbox.org>
- <20250130154646.GA2298732@nvidia.com> <2025013030-gummy-cosmic-7927@gregkh>
- <20250130172437.GN5556@nvidia.com>
- <2025013148-reversal-pessimism-1515@gregkh>
- <20250131135421.GO5556@nvidia.com>
- <2b9b75d1-eb8e-494a-b05f-59f75c92e6ae@marcan.st>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <2b9b75d1-eb8e-494a-b05f-59f75c92e6ae@marcan.st>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: vPYb476SiytuxCWlZZrOh6l_HPwDGuYdRHmsAVAkWtE_1738610546
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Date: Mon, 03 Feb 2025 20:11:51 +0000 (UTC)
+X-CM-Envelope: MS4xfG9gGM85xtaTTr7ofso7RCr3HVElrYIZhOSrBSVDkbfO7XLzxulvadJq7HQZf2Em7qdejlBIeIHwNEpkQZ87MmBl19aMlNAxZlM0s9xlJgLWv3hG1ZXo HtpB6rURIJDoY5LJPx3AjOfPq4SBFG78CUkpxmuJUUD3beXPxF65O97yfX5xaY98HzV9TC8+fa2LTayMBltlfCxEORhGbCvn4KaVz8cv9OGkRZ1Xl6IIXvbV IDePpooDuOFz3HVB8e0SHP0vdoypWUUvQEPnDl2a0nbYlrXryFKwfXujFZwunZNiaJ0AVKhBwCCcCPL4s00F3Ylcttmf6wVMLklAj/yInFUy2u8+mZkmxf5L cWeezpBh
+X-CM-Analysis: v=2.4 cv=Pr3BbBM3 c=1 sm=1 tr=0 ts=67a12309 a=6u68u+YV8u36k7dRtz0iGQ==:117 a=6u68u+YV8u36k7dRtz0iGQ==:17 a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=cCfJtRbQlw7MZNJxVPUA:9
+X-AuthUser: kurti@invicto.ai
 
-On 2/3/25 19:46, Hector Martin wrote:
-> Adding Linus
-> 
-> My 2c: If Linus doesn't pipe up with an authoritative answer to this
-> thread, Miguel and the other Rust folks should just merge this series
-> once it is reviewed and ready, ignoring Christoph's overt attempt at
-> sabotaging the project.
+Add a new check in scripts/checkpatch.pl to detect usage of pr_(level)
+and dev_(level) macros (for both C and Rust) when the string literal
+does not end with '\n'. Missing trailing newlines can lead to incomplete
+log lines that do not appear properly in dmesg or in console output.
+To show an example of this working after applying the patch we can run
+the script on the commit that likely motivated this need/issue:
+  ./scripts/checkpatch.pl --strict -g f431c5c581fa176f608ba3fdebb3c1051bad5774
 
-Hold your horses...  I agree that they should just merge the series in 
-the unlikely event that Linus doesn't chime in over the next two months, 
-but I would very strongly suggest that it's sent to Linus (assuming he 
-doesn't jump in now) as a separate pull request.
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1140
+Signed-off-by: albankurti <kurti@invicto.ai>
+---
+ scripts/checkpatch.pl | 48 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
 
-This is almost always a good thing to do when you have commits that 
-merit specific attention (example: 
-https://www.uwsg.indiana.edu/hypermail/linux/kernel/2109.2/10311.html).
-
-My 2 cents as someone that is certainly not any kind of VIP, but has 
-been in MAINTAINERS for quite a while.
-
-> Rust folks: Please don't waste your time and mental cycles on drama like
-> this. It's not worth your time. Either Linus likes it, or he doesn't.
-> Everything else is distractions orchestrated by a subset of saboteur
-> maintainers who are trying to demoralize you until you give up, because
-> they know they're going to be on the losing side of history sooner or
-> later. No amount of sabotage from old entrenched maintainers is going to
-> stop the world from moving forward towards memory-safe languages.
-
-I have a question, which is unrelated to my opinion of Rust for Linux: 
-in what way do you think this tirade is actually helping?
-
-> FWIW, in my opinion, the "cancer" comment from Christoph would be enough
-> to qualify for Code-of-Conduct action, but I doubt anything of the sort
-> will happen.
-
-FWIW I agree that it was borderline and probably on the wrong side of 
-the edge.  But I am happy for one that Christoph has since expanded 
-beyond the "cancer" comment, because that's at least a technical 
-argument, unlike yours above.
-
-Paolo
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 9eed3683ad76..86ff666f5017 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -3888,6 +3888,54 @@ sub process {
+ 			}
+ 		}
+ 
++# check for pr_* and dev_* logs without a newline for C and Rust files to avoid missing log messages
++    my $macro_pattern_c = qr{
++        \b
++        (
++            pr_(?:emerg|alert|crit|err|warn|notice|info|debug)
++          | dev_(?:emerg|alert|crit|err|warn|notice|info|dbg)
++        )
++        \(\s*
++        "((?:\\.|[^"])*)"
++        \s*
++        (?:,|\))
++    }x;
++
++    my $macro_pattern_rust = qr{
++        \b
++        (
++            pr_(?:emerg|alert|crit|err|warn|notice|info|debug)
++          | dev_(?:emerg|alert|crit|err|warn|notice|info|dbg)
++        )
++        !\s*
++        \(\s*
++        "((?:\\.|[^"])*)"
++        \s*
++        (?:,|\))
++    }x;
++
++    if ($realfile =~ /\.(?:c|h|rs)$/) {
++      my $is_rust = ($realfile =~ /\.rs$/);
++      my $macro_pattern = $is_rust ? $macro_pattern_rust : $macro_pattern_c;
++
++      if ($line =~ /^\+/) {
++        my $cleanline = $line;
++        $cleanline =~ s/^[+\s]+//;
++        $cleanline =~ s/\r?$//;
++
++        if ($cleanline =~ /$macro_pattern/) {
++          my $macro_call = $1;
++          my $string_arg = $2;
++
++          if ($string_arg !~ /\\n$/ && $string_arg !~ /\n$/) {
++            my $lang = $is_rust ? "Rust" : "C";
++            WARN("${lang}_LOG_NO_NEWLINE",
++                 "Usage of $macro_call without a trailing newline. Consider adding '\\n'.\n" . $herecurr);
++          }
++        }
++      }
++    }
++
+ # check for .L prefix local symbols in .S files
+ 		if ($realfile =~ /\.S$/ &&
+ 		    $line =~ /^\+\s*(?:[A-Z]+_)?SYM_[A-Z]+_(?:START|END)(?:_[A-Z_]+)?\s*\(\s*\.L/) {
+-- 
+2.48.1
 
