@@ -1,89 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E0820ADCF;
-	Mon,  3 Feb 2025 14:33:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5F420CCFA;
+	Mon,  3 Feb 2025 14:41:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.63.210.85
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738593216; cv=none; b=KWNbMMLaOjtYPiJqRjLekLvZLe+/gs/piWaBSPCCtIIietNYAuaejF+7IJWIWQnmDNpfZqSg28cz1JM2mz+MW+xi96HEHpwFgeAZzS47BnolEfdKUG6anmUqHCljcVLXVOX7WnqjRhLSv5p9DDoofhk7GCWq9554uD4sDJL9pLI=
+	t=1738593708; cv=none; b=Ovn6C8h7TT18BVNBiF7pr+b8n7pEHmruLEDlJWn/5cMKh1PmpT5n7zBs9xaR03SDCmJ/IharnSjSM4Ty0CEFzvMPvwf8b19wL+e34/3YU/huXV525KjuwpVLZGO/ZCBtxPDIBcW6SqnJd1unXu9cyF+QbisR+8uXlw8y6uDtnd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738593216; c=relaxed/simple;
-	bh=JLavaaOhrnEE9p6owSTsfMaaxQcLSd9qqQap8LGvZfA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iTxKy8os7tWQt85HAKSsVgpVRfWvak0F9N9BDA6c1o9BfOoVLkMr5uuM1IfGn0R1w1kzl63KAzVk+kd94Nzjw5PSBCVkaskvfUYDrOzV6dSX2Ym+VdIhY/BtiysMoYse+pnl1PWCjylqb8JNOQfVY+o1/b3Hmwg5hah3czwZnY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XCjSUAM8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738593708; c=relaxed/simple;
+	bh=o3RHR04b0nUHnjIcC7HG/raMFyT5aWadxRpEFPbyOlM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=d8DB3VYlD3hVFVIrwApulbNCqw/K3Zy0demelVayfQS82lk/lyZaRdRwFy6Hjuq/4OtXrTnTzlmBuWLxn6GhJq0JekmV9EiIGpmMN1SiA19vT8ma2dlpEz2+y0Q2FbiSDdudF3czvCrYEqoTXPfB7xnpXg3knoulzkocPo3huPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net; spf=pass smtp.mailfrom=asahilina.net; dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b=RRljPB7e; arc=none smtp.client-ip=212.63.210.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asahilina.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XCjSUAM8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F00E7C4CED2;
-	Mon,  3 Feb 2025 14:33:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738593215;
-	bh=JLavaaOhrnEE9p6owSTsfMaaxQcLSd9qqQap8LGvZfA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XCjSUAM8ygAOvkm9LUK/VPyfWi2YhJRkY1S9M2wyR9Qk/DuzE93kFTC9pCgAaatvx
-	 7VJZWEu497BfXRDtSEYGZoKxD8gKYqephW8Oz/xESGibvuClNtdaix8LdpNLGjuyfC
-	 rejputx+SgzNE47MoTFrM8/LSvH0aSXAfBuKgKtA=
-Date: Mon, 3 Feb 2025 15:33:32 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <bhelgaas@google.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>
-Subject: Re: [RFC] driver core: add a virtual bus for use when a simple
- device/bus is needed
-Message-ID: <2025020300-carol-emblem-07ff@gregkh>
-References: <Z5Nw8kaieLueWyUu@pollux>
- <20250130212843.659437-1-lyude@redhat.com>
- <2025013159-shabby-professor-515b@gregkh>
- <2025013140-propeller-dirtiness-6cb4@gregkh>
- <Z50ZuzrDn-GQWOuP@cassiopeiae>
- <2025020106-avert-senorita-4181@gregkh>
- <2025020306-overhang-glider-7d42@gregkh>
- <Z6Ch8O-0oY70Jhi6@pollux>
- <2025020307-cavalier-knapsack-7f89@gregkh>
+	dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b="RRljPB7e"
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: lina@asahilina.net)
+	by mail.marcansoft.com (Postfix) with ESMTPSA id 6A5804357C;
+	Mon,  3 Feb 2025 14:41:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
+	s=default; t=1738593704;
+	bh=o3RHR04b0nUHnjIcC7HG/raMFyT5aWadxRpEFPbyOlM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=RRljPB7eyI7Tuy/Q9XaefhPfH8wtBgFdNo4J2Jj1Fn1hBeOlhN9/9R2N+2DBTrJGE
+	 G89Cj31pqFgbGu9LJGpC9qVEbK6yor20OQHeGsU2+1qgA8ilUdvg5YeYV8QEyIsQWD
+	 5JHDRzdrpv2jm9K4c3tZRYJ7VK6rF4LQMdyaV8SkxftEF69fLGNEW1QPp8/KHxX3YP
+	 Pl9dnrsst5oXMz95F7KVovy+0CxpZAaOyarooCJ0/O8WP8NrIISuI2KLzmsKJoRD5s
+	 ORI/44BmmloKz9mjQB1dOg9SjgToYtCrvAqG26Qgft2SnxHEXi70QKe+IJzh4Fsi+1
+	 Tc/wD5h39V5kQ==
+Message-ID: <a3551d7d-14c7-40a0-90ff-1fcce93be62a@asahilina.net>
+Date: Mon, 3 Feb 2025 23:41:41 +0900
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025020307-cavalier-knapsack-7f89@gregkh>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/6] rust: page: Support borrowing `struct page` and
+ physaddr conversion
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Jann Horn <jannh@google.com>,
+ Matthew Wilcox <willy@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Valentin Obst <kernel@valentinobst.de>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ airlied@redhat.com, Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ asahi@lists.linux.dev
+References: <20250202-rust-page-v1-0-e3170d7fe55e@asahilina.net>
+ <Z6CY4TvZwLkWmB3I@pollux>
+Content-Language: en-US
+From: Asahi Lina <lina@asahilina.net>
+In-Reply-To: <Z6CY4TvZwLkWmB3I@pollux>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Feb 03, 2025 at 12:25:23PM +0100, Greg Kroah-Hartman wrote:
-> > The more I think about it, the less I think it's a good idea, since it'd
-> > probably trick people into coming up with questionable constructs...
+
+
+On 2/3/25 7:22 PM, Danilo Krummrich wrote:
+> Hi Lina,
 > 
-> No, I think it will work, let me do some replacements later today after
-> I get some other work done, I think it does make sense, don't doubt
-> yourself :)
-
-New version is now at:
-	https://lore.kernel.org/r/2025020324-thermal-quilt-1bae@gregkh
-
-I've renamed it from "virtual" to "faux" as virtual can easily get
-confused with virtio stuff, and we already have a /sys/devices/virtual/
-that is for something else at the moment.
-
-Let me know if there's anything I can change that would make a rust
-binding simpler.
-
-thanks,
-
-greg k-h
-
-
+> On Sun, Feb 02, 2025 at 10:05:42PM +0900, Asahi Lina wrote:
+>> This series refactors the existing Page wrapper to support borrowing
+>> `struct page` objects without ownership on the Rust side, and converting
+>> page references to/from physical memory addresses.
 > 
-> thanks,
+> Thanks for picking this up!
 > 
-> greg k-h
-> 
+> As you know, this has been previously worked on by Abdiel. Kindly drop a note
+> if you intend to pick up something up next time, such that we don't end up doing
+> duplicated work.
+
+Sorry! I wasn't sure if this was going to end up submitted over the
+holidays so I wasn't in a rush, but I ended up switching gears in the
+past couple of weeks and I really needed this feature now (for crashdump
+support to debug a really annoying firmware crash).
+
+I actually only just noticed that the previous v2 already had
+Owned/Ownable... I only saw the v3 which didn't, so I didn't realize
+there was already a version of that approach in the past.
+
+~~ Lina
+
