@@ -1,180 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99395215776;
-	Tue,  4 Feb 2025 16:51:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86181215776;
+	Tue,  4 Feb 2025 16:54:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738687881; cv=none; b=ReTCTI/WcdXNaz+6sxx2d/PRtOBdnNHAt5nEDncw+T84Jg92ScdZ4Z7xXKAKeTydq2580ry+ar6BtJBu9kv0FuSfu6tXrHrvxz9Rx+aJdCzIVFFe7Spz0nYQciR2d38lelUsLph1QCSC+iMElpCuekCvx9yTPl3rBCZN02pmnb4=
+	t=1738688063; cv=none; b=bI+nuWy0eZGYRyKGOxSgXvbwEugjqLlHruKj30Jed2s7jIcE6K5ORVT1bjQaSK4f2VgII+ciJ8WQyPlLRsjwYKbFvFd67STTFImyX1p8unesm4ei2Nv+P1rhcR7cEdcUfIDZeAOa+5AeRtbHcrhuCdMITADw2n5UKqZj6KnaQmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738687881; c=relaxed/simple;
-	bh=72lyvzbkOWCoWrejdv+Om5NJfaD1Lw1U67vX17qNFN0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jYXEVcTd29/gGDsFqovs09lg0JItKAS9pyxcnYi/J2v9w8I3Fjgljh0MhogiewUFzof1UfIEpwTgbESX7p2NUnV/SD/YBas5wzfsTa1AdBPjCukuvTbLl2OaRcDbG0io8OW3oiD6f2Jo7rPM+TnBZ+7TNNV/xDpYvqqHK+P2s1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hw+i5l0x; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738688063; c=relaxed/simple;
+	bh=dvbGjmFPIipFOAHao5it2MHqCCB+34eacpcE+gOPX6A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QlFIqynpt4BGkPQ8hcJtmDqpckNmqXN5tI5I50tJV6zTicy8zVN9f6sYzmyL+W0JKaG/vEyc0u+X7UD2K5TGKAEYI4hUrOkdxF2CO9ITEogKiPDwCKaHkfm913nMGvdSZpZo8QYZI7B3ShYt1ygAzZQiPl82lCStIvhR746FYpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UvuBcvkl; arc=none smtp.client-ip=209.85.167.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hw+i5l0x"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F6A1C4CEDF;
-	Tue,  4 Feb 2025 16:51:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738687881;
-	bh=72lyvzbkOWCoWrejdv+Om5NJfaD1Lw1U67vX17qNFN0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hw+i5l0xwGyxokCg+CsjU84EXKNdTN5eRpo6t0USLhWWFK+nMkbrVfEn7e5FrFtWV
-	 RlgAYc8ASrK9JMdRS3L2VwpEECf+J/hcqvrr2we9tq2upNF4LSMB/LLHiOqQ5fsI8S
-	 qX2GMIUolB+ThTOetlnqeOXSuOK9qvbL1Y8PZC0d5Z98TV2xq6CKfq6Z+1bRBIdFIk
-	 tvtpikgG55bYBeLbXXDWXQhLu5BC2YB5XXmrUdUKZNlI0wqkMbFWhyHlOWxCB0nknt
-	 5L4UNvxdWuPQudGwsG4OQyL8GF2l/C6/lu0zssJVo1NOoO8vP5AnoetVodjamxsrIj
-	 2YcBKbRZ8GM1g==
-Date: Tue, 4 Feb 2025 10:51:20 -0600
-From: Rob Herring <robh@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Lyude Paul <lyude@redhat.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Liam Girdwood <lgirdwood@gmail.com>, Lukas Wunner <lukas@wunner.de>,
-	Mark Brown <broonie@kernel.org>,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Zijun Hu <quic_zijuhu@quicinc.com>, linux-usb@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 1/5] driver core: add a faux bus for use when a simple
- device/bus is needed
-Message-ID: <20250204165120.GA2994503-robh@kernel.org>
-References: <2025020421-poster-moisture-534b@gregkh>
- <2025020424-retrain-recharger-407c@gregkh>
- <20250204164650.GA2970208-robh@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UvuBcvkl"
+Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-3eb8bdcac2eso1319389b6e.0;
+        Tue, 04 Feb 2025 08:54:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738688060; x=1739292860; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ufxqeTPbh5jVi4KeE739Ux/m/0UeBoN+5T7+ZjE4za4=;
+        b=UvuBcvkl9pWpREAdGJFo+EOFxg70yaRag7S0x+Txq+jwq+5bpnW16FbI+L95B/9d30
+         K9XrDHhzDte0He+kLJVmmeSFLVa4x5rAzBiEI+Rjutc1rPukfLXWucAy3ju7LZI4Pk20
+         ObXuX9Utvllaqcma4rQ/CHko+/sTBiODL7ubTfyx++6JKEM89eEiXd/gsB3lpOiFM0SC
+         yNYjj43zOnEe3WekuaTA/3T5mZtI4CAeysTA7SNuiXpRn+6dwkNJYdCqGOvK8dLxkf1n
+         XsYnzxIWlcjx5fgOJhhT0GFA5hQ3AwP9Y88tWfeR8vQXEkKyo7Iap4WRUw3qyOX75omY
+         lzXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738688060; x=1739292860;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ufxqeTPbh5jVi4KeE739Ux/m/0UeBoN+5T7+ZjE4za4=;
+        b=bqj98DAgsJ24WwCIl9amyGO7N8I7Wj9dFLG2vlRnwh5Vx1LlhbrCZBE5rKtbJ7LtDJ
+         ChRflcxUZfTccV2Qq3kQlfnvQ/6gesDDRnnkXDLO343YHrjTaBRvWrA1AwG3Us8DXGNv
+         1TQT4k/2QReCVHiGIWw4fRDYiQfe8nvPdXpRoMohmNnsomd6foyTAQTghiseyasmpnW4
+         YvGR+o2O1m1a288bLH+3KCUJ7Kj1UMyn9s5vHh39aBBvjGgRIpWhnRX5jfnzUrd1iCl6
+         Htw2CmaNXWEhZDGpKRPaavVyjZxHJUl0e6rR3288fwfXIHTrgVFjmLabe4bG5A+9dB0K
+         5VGA==
+X-Forwarded-Encrypted: i=1; AJvYcCUn9UiZbyT81dY1SeY2dOkfV5+5tnYGf5jMrE8LXkjBdktAxs7z/U3TDynB5aADODppD6N7OLiGa9IKZh+lU+c=@vger.kernel.org, AJvYcCUqzTqdtXZEXMlnGKeKSDYC5OUsBlmFoM2HfXywq+QpbrzRkqcXNOaXdk6eVt8R+PoH8/Hu+TRM8hx1BVI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YylSEDlUVK765WcfX7acZrl+mI9ycxZtdxrCGJh7aLP2z1/RFqr
+	yyvWaisL4sYeR9xAarEBM1qM+BUKIeShbOjl76s6FN4fYTf8eLN/+T6ABO8afJLIAwtjzia6Yj0
+	oVwasII893WRU2tWL72BixJgw734=
+X-Gm-Gg: ASbGncvwBc8uw0ZNU2V+ImiyoyIGZiDZAnt6p7MySEGg9QDhG44F6UaBah7ttScu6S9
+	HYbcDGwBsZLt9frueNpK9V6jUQntXMevhbJG10EBEccf8Dw8aB/u8RR1DJ+5EzyLKMKkWU7EilQ
+	==
+X-Google-Smtp-Source: AGHT+IF7EnaFEJFCSlyCLr+nn83vnKdF6Emxb8uA3hFJPTocYeG615mU6+dytSHRjTRpgNZMbqe79WfG5L4cwrXkxj4=
+X-Received: by 2002:a05:6808:1b99:b0:3eb:6044:5a85 with SMTP id
+ 5614622812f47-3f323a76658mr18482915b6e.20.1738688060469; Tue, 04 Feb 2025
+ 08:54:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250204164650.GA2970208-robh@kernel.org>
+References: <20250108122825.136021-1-abdiel.janulgue@gmail.com> <20250108122825.136021-3-abdiel.janulgue@gmail.com>
+In-Reply-To: <20250108122825.136021-3-abdiel.janulgue@gmail.com>
+From: Thomas Hampton <thomas.j.hampton@gmail.com>
+Date: Tue, 4 Feb 2025 10:54:09 -0600
+X-Gm-Features: AWEUYZmrSMVxm_k1uivRyBQVGcUir-2h4LgjAJyf97InNoJiKzYSKb_gYdAF1GQ
+Message-ID: <CAEmX-ZUbPqNUBj2-xAf=5uGE_GWAQQ79akADZCDxNsmx7Lf9VQ@mail.gmail.com>
+Subject: Re: [PATCH v8 2/2] rust: add dma coherent allocator abstraction.
+To: Abdiel Janulgue <abdiel.janulgue@gmail.com>, daniel.almeida@collabora.com, 
+	aliceryhl@google.com, robin.murphy@arm.com, rust-for-linux@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Valentin Obst <kernel@valentinobst.de>, open list <linux-kernel@vger.kernel.org>, 
+	Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com, 
+	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Feb 04, 2025 at 10:46:50AM -0600, Rob Herring wrote:
-> On Tue, Feb 04, 2025 at 12:09:13PM +0100, Greg Kroah-Hartman wrote:
-> > Many drivers abuse the platform driver/bus system as it provides a
-> > simple way to create and bind a device to a driver-specific set of
-> > probe/release functions.  Instead of doing that, and wasting all of the
-> > memory associated with a platform device, here is a "faux" bus that
-> > can be used instead.
-> > 
-> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > ---
-> >  v2: - renamed bus and root device to just "faux" thanks to Thomas
-> >      - removed the one-driver-per-device and now just have one driver
-> >        entirely thanks to Danilo
-> >      - kerneldoc fixups and additions and string handling bounds checks
-> >        hanks to Andy
-> >      - coding style fix thanks to Jonathan
-> >      - tested that the destroy path actually works
-> > 
-> >  drivers/base/Makefile       |   2 +-
-> >  drivers/base/base.h         |   1 +
-> >  drivers/base/faux.c         | 196 ++++++++++++++++++++++++++++++++++++
-> >  drivers/base/init.c         |   1 +
-> >  include/linux/device/faux.h |  31 ++++++
-> >  5 files changed, 230 insertions(+), 1 deletion(-)
-> >  create mode 100644 drivers/base/faux.c
-> >  create mode 100644 include/linux/device/faux.h
-> > 
-> > diff --git a/drivers/base/Makefile b/drivers/base/Makefile
-> > index 7fb21768ca36..8074a10183dc 100644
-> > --- a/drivers/base/Makefile
-> > +++ b/drivers/base/Makefile
-> > @@ -6,7 +6,7 @@ obj-y			:= component.o core.o bus.o dd.o syscore.o \
-> >  			   cpu.o firmware.o init.o map.o devres.o \
-> >  			   attribute_container.o transport_class.o \
-> >  			   topology.o container.o property.o cacheinfo.o \
-> > -			   swnode.o
-> > +			   swnode.o faux.o
-> >  obj-$(CONFIG_AUXILIARY_BUS) += auxiliary.o
-> >  obj-$(CONFIG_DEVTMPFS)	+= devtmpfs.o
-> >  obj-y			+= power/
-> > diff --git a/drivers/base/base.h b/drivers/base/base.h
-> > index 8cf04a557bdb..0042e4774b0c 100644
-> > --- a/drivers/base/base.h
-> > +++ b/drivers/base/base.h
-> > @@ -137,6 +137,7 @@ int hypervisor_init(void);
-> >  static inline int hypervisor_init(void) { return 0; }
-> >  #endif
-> >  int platform_bus_init(void);
-> > +int faux_bus_init(void);
-> >  void cpu_dev_init(void);
-> >  void container_dev_init(void);
-> >  #ifdef CONFIG_AUXILIARY_BUS
-> > diff --git a/drivers/base/faux.c b/drivers/base/faux.c
-> > new file mode 100644
-> > index 000000000000..9b28643afc45
-> > --- /dev/null
-> > +++ b/drivers/base/faux.c
-> > @@ -0,0 +1,196 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only
-> > +/*
-> > + * Copyright (c) 2025 Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > + * Copyright (c) 2025 The Linux Foundation
-> > + *
-> > + * A "simple" faux bus that allows devices to be created and added
-> > + * automatically to it.  This is to be used whenever you need to create a
-> > + * device that is not associated with any "real" system resources, and do
-> > + * not want to have to deal with a bus/driver binding logic.  It is
-> > + * intended to be very simple, with only a create and a destroy function
-> > + * available.
-> > + */
-> > +#include <linux/err.h>
-> > +#include <linux/init.h>
-> > +#include <linux/slab.h>
-> > +#include <linux/string.h>
-> > +#include <linux/container_of.h>
-> > +#include <linux/device/faux.h>
-> > +#include "base.h"
-> > +
-> > +#define MAX_NAME_SIZE	256	/* Max size of a faux_device name */
-> > +
-> > +/*
-> > + * Internal wrapper structure so we can hold the memory
-> > + * for the driver and the name string of the faux device.
-> > + */
-> > +struct faux_object {
-> > +	struct faux_device faux_dev;
-> > +	const struct faux_driver_ops *faux_ops;
-> > +	char name[];
-> > +};
-> > +#define to_faux_object(dev) container_of_const(dev, struct faux_object, faux_dev.dev)
-> > +
-> > +static struct device faux_bus_root = {
-> > +	.init_name	= "faux",
-> > +};
-> > +
-> > +static int faux_match(struct device *dev, const struct device_driver *drv)
-> > +{
-> > +	/* Match always succeeds, we only have one driver */
-> > +	return 1;
-> > +}
-> > +
-> > +static int faux_probe(struct device *dev)
-> > +{
-> > +	struct faux_object *faux_obj = to_faux_object(dev);
-> > +	struct faux_device *faux_dev = &faux_obj->faux_dev;
-> > +	const struct faux_driver_ops *faux_ops = faux_obj->faux_ops;
-> > +	int ret = 0;
-> > +
-> > +	if (faux_ops && faux_ops->probe)
-> 
-> Is there any use for faux_ops being NULL (or probe being NULL for that 
-> matter)? I can't think of one. So faux_device_create should check that 
-> and fail instead of checking here.
+On 1/8/2025 6:27 AM, Abdiel Janulgue wrote:
 
-NM, I see your converted cases do just that. Weird.
+> +    /// Returns the base address, dma handle, attributes and the size of the allocated region.
+> +    /// The caller takes ownership of the returned resources, i.e., will have the responsibility
+> +    /// in calling `bindings::dma_free_attrs`.
+> +    pub fn into_parts(self) -> (*mut T, bindings::dma_addr_t, usize, usize) {
+> +        let size = self.count * core::mem::size_of::<T>();
+> +        let ret = (
+> +            self.cpu_addr,
+> +            self.dma_handle,
+> +            self.dma_attrs.as_raw(),
+> +            size,
+> +        );
+> +        // Drop the device's reference count associated with this object. This is needed as no
+> +        // destructor will be called on this object once this function returns.
+> +        // SAFETY: the device pointer is still valid as of this point due to the type invariants
+> +        // on `CoherentAllocation`.
+> +        unsafe { bindings::put_device(self.dev.as_raw()) }
+> +        core::mem::forget(self);
+> +        ret
+> +    }
 
-I suppose you could still say if faux_ops is not NULL, then probe must 
-not be NULL.
+Would it be feasible and prudent to avoid exposing `pub fn
+into_parts`, `pub fn first_ptr`, `pub fn first_ptr_mut`?
 
-Rob
+It seems like some sort of functional access method might be better
+for keeping future Rust code maintainable and Rusty.
+
+For example, making client code from:
+
+> {
+>    let ctrl_id = unsafe { &*(id.first_ptr() as *const NvmeIdCtrl) };
+>    number_of_namespaces = ctrl_id.nn.into();
+>    mdts = ctrl_id.mdts;
+> }
+
+Into something like,
+pub fn expose(self, op: F)
+  where F: Fn(*const T) {
+    op(self.cpu_addr);
+}
+
+let number_of_namespaces;
+let mdts;
+id.expose(|data| {
+let ctrl_id = &*(data as *const NvmeIdCtrl);
+    number_of_namespaces = ctrl_id.nn.into();
+    mdts = ctrl_id.mdts;
+});
+
+And to avoid code docs like:
+
+> /// The caller <...> will have the responsibility in calling `bindings::dma_free_attrs`.
