@@ -1,70 +1,70 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DC821C9ED
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Feb 2025 22:51:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA3921C17E
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Feb 2025 23:10:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738709497; cv=none; b=r+XNsDC6lQqVWw5P00r/Z4QnuXlPv6R0TSpCs1uXpmgZIrwgGyh2KuajKSalWF5EhFfn79/E9SomXA0e8C5lDehUVyqVQd7rdI87WF6IH1ZxwO2/xQMU9IUvWBgz5S4OSl3ugEucJXagrTVwh5gv8N9BCI/YDQq27zvTm3n+3Js=
+	t=1738710645; cv=none; b=Pv8o/+fZGIXADZYinLCdvsFTto/fvr7ohPQdGI65wAnK4J7uHF7yrOpeXvTUHLypibQ9BVboVhJN03h2cJTeuAw0euxU+yx+qantizSLU3yaKBP9IFZTsjmOtloUIODy6VPW8CF0Lo2NSEN88Uyzl1D2DWZcnXdjZla1IGBLZxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738709497; c=relaxed/simple;
-	bh=3IORuaqiaXZCAWb8siXj2z4n2aoHNj+YJnsLKpnReeM=;
+	s=arc-20240116; t=1738710645; c=relaxed/simple;
+	bh=IriOQ5TpET1QKR1leBqf8PAsBkkLKt8OL0r3FxziqqI=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Hs2TCo3s8dmA+7qI5qkVuFKR/vhdrwUoqxq6iutVLEVt+VYeCrQ2selWVjaZsb38L27KKdqhLbyGvivGxQemZb9ExzbSOlFHR2vIKumr43dy1N0l99hmUyp3Nz0dLN2x5t94vJR1fmTkKD8bexbYuqbQ8YVIK+URY9ckbLa6860=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UgEcW8nV; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=PrwhQbIf3fTU2VqkqkpgXc7CmezQArRWhGQ87pwXO/mtGj1I4ARRkjdGkdW0FHJJSJrspWyyed/tYhQEflIQgheeUoUQFaPylY3XU3hx6jHjfuNZfTpl4ikP5P5WAfIloRmwwieaAjAgMkC0nfKWfKZszwyTLrZFKLygHOU8UUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SNRt3g4q; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UgEcW8nV"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SNRt3g4q"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738709494;
+	s=mimecast20190719; t=1738710642;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3IORuaqiaXZCAWb8siXj2z4n2aoHNj+YJnsLKpnReeM=;
-	b=UgEcW8nV97KQFgD1gFkyGRrIBGto14SNXvBJh3XrZc/F/1p0FAO7l+RqcNdfj+oQ7xgRoi
-	5PK/fHj0xdQRTxcaP6mzq1SZ78FIDru6eFfBQRxlL5doszsZnCViA0a8Mvu9czzcYlZnBt
-	qKyczQCQJoSOs3K0FvfrAMkj/WUyYcQ=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=LZQOHlnKGWD6iM1z8BI3BRTOocjozSJ9vdvOr6qvt5o=;
+	b=SNRt3g4qzXI1eIComf+7z83R/pgvXedh6GBsRBvIDuNsWejxZiHCjiBWilSapeavfAaIkj
+	5l/f3QgXzMUTjMWvbPVK8Ez7g0ilsJw2syU076GHqz2OeaRC4jIgn5arYDv3egvXSegoED
+	WGPohEAU2pCA86d0sh5mWu999qzgWIk=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-553-aGG21uUyOQ64SMA2v3mWEA-1; Tue, 04 Feb 2025 17:51:31 -0500
-X-MC-Unique: aGG21uUyOQ64SMA2v3mWEA-1
-X-Mimecast-MFC-AGG-ID: aGG21uUyOQ64SMA2v3mWEA
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-6e42197da08so27453596d6.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Feb 2025 14:51:31 -0800 (PST)
+ us-mta-588-zrth1M5tNOWwtKZvDc61wg-1; Tue, 04 Feb 2025 18:10:41 -0500
+X-MC-Unique: zrth1M5tNOWwtKZvDc61wg-1
+X-Mimecast-MFC-AGG-ID: zrth1M5tNOWwtKZvDc61wg
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-7bcdb02f43cso671961185a.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Feb 2025 15:10:41 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738709490; x=1739314290;
+        d=1e100.net; s=20230601; t=1738710641; x=1739315441;
         h=mime-version:user-agent:content-transfer-encoding:organization
          :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1cBRQ+4W0bY71AC9wnmjBPFkp619LZQsWu0kkQ251Kg=;
-        b=wiJ5pFcSv/Uu/lKnELufYiLmwTQo3zCyyf7rxGWKEuk4PB2TFMV4S59M3d+ncCdJTZ
-         JD7gPFB56R/VPMYwS5WkUm2yghTsVoF3gcC4ImsAJhYfKuuqj9W05P1yy1V0JylRMzx0
-         thI5+7qiHAWTr8MrLbvDADBZHHzW95dPu2T7KYLxi+puwruFM3lzGEfwbbkg30aqlvAG
-         1LD3gBj0naTEIc5/jeHG/6iP4qTRPNe+7uNz3IKj6balfyDKZqG/q3K846FjYeXg9Jtt
-         eVTc0sKuHrnmGPBT2o8m+B9GzVl/LNllqPrntBVQzePYcq/sd9oKIEkf3jcXc3KTuWio
-         tYtA==
-X-Forwarded-Encrypted: i=1; AJvYcCWlE7385lLWmyuuZQs2+hXHq8Idn9iWTgZji7sVzKukxq5gyU+gfWZzoVOPg0w+HA5HiY5Av0ae7EbMzI/1+w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9OoS0IjkcB120OuqbzT3cRFxRps/NnbEvvgkllxeCqmupT/MM
-	x5qN2KmBGyQ6G8fv/nTkLWtbKpgoU/Ce2LxGsYFID1w2bQ1DTozlvF1uzHBrKfdv9n4pnRPiIvF
-	I3UJBXaOWpzh+7kci9MW2eBjG2ajtNOW5eMj7HvdW7tsuFbxg287lbarEkQCBrtwO
-X-Gm-Gg: ASbGncv0UwZ2rlcwfQgr5X5TnTHppzm+XCI8qK3kOeR+A3rdGxUWg5qmniYJcAWgiHy
-	Bbwbm9nfTgjc5lCy7Kl8Rhc6aEBQ505klOlWVdJESaRzqtexvnqAm/lZ5hwFVO7G2HsM8+fSp7w
-	7vNBGGuhWaSurFWDjMOTJhaA6XQk0sZPfMzVk0MDc2Cs/nCXdxMB1q+n928xWHQFrAfZowMZu7a
-	SLDtI5uFvG3D3fAQVLyRg/t2viXi3r6sbUjvv+bfz1uVpMYTL99DFDFu1QQsDglNN7dhjH+ljHr
-	mEdyPE1BuHpy4OJkrI8860GWytUyio5O3r+/S4vRwyy3F/o4XCA=
-X-Received: by 2002:a05:6214:4a89:b0:6e4:2343:816e with SMTP id 6a1803df08f44-6e42fca5355mr6908426d6.39.1738709490509;
-        Tue, 04 Feb 2025 14:51:30 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFhJvdvFsnkaeLDazrnaUYhaYwrrPpM3V5QYiR2zHpSnnEdyZIGX26njtW48sFQKQjpYAjwmQ==
-X-Received: by 2002:a05:6214:4a89:b0:6e4:2343:816e with SMTP id 6a1803df08f44-6e42fca5355mr6908266d6.39.1738709490239;
-        Tue, 04 Feb 2025 14:51:30 -0800 (PST)
+        bh=EislAuPEq0r/J87oikcGKqiVMWq3+OYszhusBrDPR3s=;
+        b=SxfWzdB7FYDi9TWorQ0ps/mK1dpvVIKwvA6qW2AvA+zRcS449z18xO6xk1/EBpMT0k
+         /jpR75+biImpgE1GEG80mz+KeiMqoauWiH2eHaknbwx8NWn5ThRcPIP0j9et24p6eG8Z
+         TPUQxrDXUIzm3Y0jaGjMWAMJNKdSBLzRwC1apcfrnhPwelYJ/QOoHxuFXa3bG6ZZuJyI
+         4oGOC2Qkg3grcyuhTEMXCfsfiIhTr6TiaJ8PKuga09wBY2HL60+PcKqs1uP7jStOxhSW
+         soV8+5ivR7p1NG6r+kDLVIaNJygJzDpoKbiLKFYHiSdejEbMiILJPfWrPqxcFdv2VKUs
+         uXhA==
+X-Forwarded-Encrypted: i=1; AJvYcCUSvcY5yQHlBrxmQnJhRYW/uK3WJuKfYZu5Y0yRBNjaZhQ3d+TeQhW9wnn8AXdo7gCqJvMlyABCWRyDHiDbTA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFWNUQBm++hFN6VNbgBN6Rs1B5wg9rXjUQi6w28Lc+W52XSaQL
+	+Rr8bJ34pIPZ7TOo3nbCkICwaOh8mc/aXEItzd3gGPv3JaECTHW3GQmztnfVwAh7QDWGQE2TDO1
+	EzTXbmzWVrusq8tWV+BnOeJxbXL4u56hXBFlt7gnETTTTTCGxlpMH/oegvVJL4T0o
+X-Gm-Gg: ASbGnctt9KfOIQi3y6U/27EDUHb8FadUNTuH3hB7A9379CSGbPpPdEdMSw/yaroY3TH
+	nSNRdplfwJMAIXp8RI5xJjhouAYYR2daPRZ5gNqNYCg27wnIVmv6M2h2r/g87AshndNnEBIOxY7
+	jD466NOAXhTxckmSKXyBzcwkNLPrnrMzZfLZ0YYpgxbIwlCso2EqjHLvq+0hNqhAWkiCbZa6D6d
+	WVTYcxlEX0j6al7SDw26UyP1cpMCrtjgaaLhidN1iCWsAGGkuO2wHhOjZnwfSXVPsXD0tMdCh1E
+	t7LArQ3OqywqcJsXagiq9Rr/7ASd4cWZFxcqvlBirgNZWOdISTA=
+X-Received: by 2002:a05:620a:4556:b0:7be:98a9:298 with SMTP id af79cd13be357-7c039fc433cmr81741085a.19.1738710640744;
+        Tue, 04 Feb 2025 15:10:40 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGIFcNGGrJ6Xau2gu0Li3lCSkAKkBuC1j1JqxDx6L/0ZxjOb3age41zUIWqIwYLykW3rterLw==
+X-Received: by 2002:a05:620a:4556:b0:7be:98a9:298 with SMTP id af79cd13be357-7c039fc433cmr81737785a.19.1738710640346;
+        Tue, 04 Feb 2025 15:10:40 -0800 (PST)
 Received: from ?IPv6:2600:4040:5c4c:a000:e00f:8b38:a80e:5592? ([2600:4040:5c4c:a000:e00f:8b38:a80e:5592])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e42fde933asm1430026d6.75.2025.02.04.14.51.28
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c00a8bba83sm691086885a.9.2025.02.04.15.10.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Feb 2025 14:51:29 -0800 (PST)
-Message-ID: <5da9a28a00b6ab3a756aff34dc872905acd610ad.camel@redhat.com>
+        Tue, 04 Feb 2025 15:10:39 -0800 (PST)
+Message-ID: <fd6250102ea9d869448e7a40a60a02f8b167d4ac.camel@redhat.com>
 Subject: Re: [PATCH v2 1/5] driver core: add a faux bus for use when a
  simple device/bus is needed
 From: Lyude Paul <lyude@redhat.com>
@@ -79,7 +79,7 @@ Cc: Alexander Lobakin <aleksander.lobakin@intel.com>, Andy Shevchenko
  <mairacanal@riseup.net>, Robin Murphy	 <robin.murphy@arm.com>, Simona
  Vetter <simona.vetter@ffwll.ch>, Zijun Hu	 <quic_zijuhu@quicinc.com>,
  linux-usb@vger.kernel.org, 	rust-for-linux@vger.kernel.org
-Date: Tue, 04 Feb 2025 17:51:25 -0500
+Date: Tue, 04 Feb 2025 18:10:36 -0500
 In-Reply-To: <2025020424-retrain-recharger-407c@gregkh>
 References: <2025020421-poster-moisture-534b@gregkh>
 	 <2025020424-retrain-recharger-407c@gregkh>
@@ -92,51 +92,64 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: XfK6Ld05pFChIWlBde6OojGvBGMh6yAne-o5HXn817M_1738709490
+X-Mimecast-MFC-PROC-ID: qV7aXBn-DV5jC98UMTH8cdJ9Fwpviy5H8-pQ-rwnjIU_1738710641
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Oops! I actually caught one small nitpick I didn't notice before when writi=
-ng
-up the bindings:
+OK I definitely should have waited to write the actual bindings before revi=
+ew
+- sorry! There was one other small thing I ended up noticing:
 
 On Tue, 2025-02-04 at 12:09 +0100, Greg Kroah-Hartman wrote:
-> +/**
-> + * faux_device_create - create and register a faux device and driver
-> + * @name: name of the device and driver we are adding
-> + * @faux_ops: struct faux_driver_ops that the new device will call back =
-into, can be NULL
+> diff --git a/include/linux/device/faux.h b/include/linux/device/faux.h
+> new file mode 100644
+> index 000000000000..2c8ae5bd7ae8
+> --- /dev/null
+> +++ b/include/linux/device/faux.h
+> @@ -0,0 +1,31 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * Copyright (c) 2025 Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> + * Copyright (c) 2025 The Linux Foundation
 > + *
-> + * Create a new faux device and driver, both with the same name, and
-> + * register them in the driver core properly.=C2=A0 The probe() callback=
- of
-> + * @faux_ops will be called with the new device that is created for the
-> + * caller to do something with.
-> + *
-> + * Note, when this function is called, the functions specified in struct
-> + * faux_ops will be called before the function returns, so be prepared f=
-or
-> + * everything to be properly initialized before that point in time.
-> + *
-> + * Return:
-> + * * NULL if an error happened with creating the device
-> + * * pointer to a valid struct faux_device that is registered with sysfs
+> + * A "simple" faux bus that allows devices to be created and added
+> + * automatically to it.  This is to be used whenever you need to create =
+a
+> + * device that is not associated with any "real" system resources, and d=
+o
+> + * not want to have to deal with a bus/driver binding logic.  It is
+> + * intended to be very simple, with only a create and a destroy function
+> + * available.
 > + */
-> +struct faux_device *faux_device_create(const char *name, struct faux_dri=
-ver_ops *faux_ops)
-
-^ Why not const struct faux_driver_ops? Doesn't seem like there's any need =
-to
-mutate faux_ops.
-
-> +{
-> +=09struct device *dev;
-> +=09struct faux_object *faux_obj;
-> +=09struct faux_device *faux_dev;
-> +=09int name_size;
-> +=09int ret;
+> +#ifndef _FAUX_DEVICE_H_
+> +#define _FAUX_DEVICE_H_
 > +
+> +#include <linux/device.h>
+> +
+> +struct faux_device {
+> +=09struct device dev;
+> +};
+> +#define to_faux_device(x) container_of_const((x), struct faux_device, de=
+v)
+> +
+> +struct faux_driver_ops {
+> +=09int (*probe)(struct faux_device *faux_dev);
+> +=09void (*remove)(struct faux_device *faux_dev);
+> +};
+> +
+> +struct faux_device *faux_device_create(const char *name, struct faux_dri=
+ver_ops *faux_ops);
+> +void faux_device_destroy(struct faux_device *faux_dev);
+
+Should we add faux_get_drvdata()/faux_set_drvdata() since we've got a
+probe/remove function? Doesn't really look like the platform driver equival=
+ent
+does mcuh, but I assume just having an inline function for this would make
+things a little less confusing for users.
+
+> +
+> +#endif /* _FAUX_DEVICE_H_ */
 
 --=20
 Cheers,
