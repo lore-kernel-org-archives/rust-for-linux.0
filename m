@@ -1,139 +1,246 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E5C20CCE1;
-	Tue,  4 Feb 2025 12:55:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B3F721127D;
+	Tue,  4 Feb 2025 13:05:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.63.210.85
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738673758; cv=none; b=OvVpfYiDQV+9M0oCW4V6ILLq8KbcL/1wH/x214EtHFIceo+9VV512n70+d5qZKIfesSRz7SXcgj7uaWpPEDZVoJq9LSkWQOCrf+U05WB3wnMIEzIibkYov+Pf3nuFReIEREkEJg7K9GQrD8RCjs3TQTIYJsEBnflV3Xuaj5kJOE=
+	t=1738674363; cv=none; b=B/APSUvCfMTv6dE5XDS8xdkhVkbVlVDgTFXX5n9ChFLEVMi4+4syOTUNs5hbBTp346C4NmNj8bi/lUa2bkye7PXTcA2m5ucDUdxmAU3bFsVB+rFpvxKNDbcJJ77LWDWp5BfgElFTIY+zAQHvY5dIM+GxmwJ/Aqruykr1EsMojh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738673758; c=relaxed/simple;
-	bh=79+RV3wfyZJvCYZPLtCDhJ7ch5O4tDc5RyLCB6Sl5uE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pdSIUTyHZLUcNL8giEhHVT7C2QGvZGgGDny7BgrECWoAeXAOpXNifEnuO5FOstS+aGkXNMmE8G7R71tKbK++u3ujCs/YvtIXpyfXowpbo5jZrgimJ86jC4ZBeZ/pfAf4vBMnij0KwGtEnGVvzhX9cZhq4A9IJdLIh/brKgr10NM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=no85a8d3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738674363; c=relaxed/simple;
+	bh=JtJpZ9JBg5RMa5R66H7G5tBoKD7wUf+pEfL69vJi/hk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZjB/SR3GCa+qVVTMMn1VupVsI2lJmgtOfh4q5QAQHKYwbjy0s11Lv3BS7Ahfm4hPqV6QZ8CEaJpaG/UaAXMXeSIBKECqHb/AArBV0nbFCkMV88gSxQnTUSTnyMfB01ydhkKKYHU0M9y3Qc1Gb19T+HhYO15VGPFCtCtohw3uN7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net; spf=pass smtp.mailfrom=asahilina.net; dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b=JZj/AK23; arc=none smtp.client-ip=212.63.210.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asahilina.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="no85a8d3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AAEBC4CEDF;
-	Tue,  4 Feb 2025 12:55:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738673757;
-	bh=79+RV3wfyZJvCYZPLtCDhJ7ch5O4tDc5RyLCB6Sl5uE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=no85a8d3ZgHd1rJTADs/tMTTpMjKlhzUTcqCMjSjx0Uj4KnYiSCvt9UkEVAsO6qt1
-	 ope9AG6O0xeLeYU7BaLeMtnpC9BUaoCq3vqeHUZcknNjhJ6aquoP0YaaDfq/WEnSBd
-	 oWa50VnC6LRQapalaMR9qEpPwjoDj9iNEUW+Smfs=
-Date: Tue, 4 Feb 2025 13:55:54 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
-	Lyude Paul <lyude@redhat.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Liam Girdwood <lgirdwood@gmail.com>, Lukas Wunner <lukas@wunner.de>,
-	Mark Brown <broonie@kernel.org>,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Zijun Hu <quic_zijuhu@quicinc.com>, linux-usb@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 1/5] driver core: add a faux bus for use when a simple
- device/bus is needed
-Message-ID: <2025020458-overpass-pebbly-f4b9@gregkh>
-References: <2025020421-poster-moisture-534b@gregkh>
- <2025020424-retrain-recharger-407c@gregkh>
- <Z6H9g_bvvMf5pPyc@cassiopeiae>
- <2025020435-earwig-zesty-87ea@gregkh>
- <Z6ICPc3A5Cy1dgw_@cassiopeiae>
+	dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b="JZj/AK23"
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: lina@asahilina.net)
+	by mail.marcansoft.com (Postfix) with ESMTPSA id 6F997431CA;
+	Tue,  4 Feb 2025 13:05:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
+	s=default; t=1738674353;
+	bh=JtJpZ9JBg5RMa5R66H7G5tBoKD7wUf+pEfL69vJi/hk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=JZj/AK230WWVFZSYwpKbzwfvAuQltV+/J9aH+mPhEfG2V6eoZ19CrmBzpbnnx7cIz
+	 Nt8sFsF1nzsfukcW6YJpzf3n7J9RmOMDpSTZl/0MYuZj2W/YU9rerq6RtlqFFP15aw
+	 KSbdvUlFRm61deoGjuGJKiBWrQ9HGZn4cLxt7JjcTHGqMNhVaY/A1kwnb8c6fPcCCY
+	 ZIl7J0xxp3VqMFE+88kFhhqYUh2OOq61iO8GUs8TYeDaMZOjCqOBYoe/jgKg/Trnqs
+	 Wi4/Jo5dK9LQurSj8ilZdDrqklw68cQ8y5qqQedCQNWGBlyBavq0R3gvUjiQSRF8iM
+	 F0vTel4kjjmsw==
+Message-ID: <1e9ae833-4293-4e48-83b2-c0af36cb3fdc@asahilina.net>
+Date: Tue, 4 Feb 2025 22:05:50 +0900
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z6ICPc3A5Cy1dgw_@cassiopeiae>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/6] rust: page: Support borrowing `struct page` and
+ physaddr conversion
+To: David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Jann Horn <jannh@google.com>,
+ Matthew Wilcox <willy@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Danilo Krummrich <dakr@kernel.org>, Wedson Almeida Filho
+ <wedsonaf@gmail.com>, Valentin Obst <kernel@valentinobst.de>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ airlied@redhat.com, Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ asahi@lists.linux.dev, Oscar Salvador <osalvador@suse.de>,
+ Muchun Song <muchun.song@linux.dev>
+References: <20250202-rust-page-v1-0-e3170d7fe55e@asahilina.net>
+ <Z6CTLB2NggwYafi9@phenom.ffwll.local>
+ <41ca3445-80cd-43c1-8f9e-634c195c9187@asahilina.net>
+ <37A0729B-A711-4D45-B9F0-328FDB9ADD28@nvidia.com>
+ <0e19e1c3-293b-4740-93f3-2c410893288b@redhat.com>
+ <82047858-480a-45e3-b826-3a46fbebe842@asahilina.net>
+ <f1498b22-0bc1-489a-8c2c-35aa48c7fe7d@redhat.com>
+Content-Language: en-US
+From: Asahi Lina <lina@asahilina.net>
+In-Reply-To: <f1498b22-0bc1-489a-8c2c-35aa48c7fe7d@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Feb 04, 2025 at 01:04:13PM +0100, Danilo Krummrich wrote:
-> On Tue, Feb 04, 2025 at 12:52:34PM +0100, Greg Kroah-Hartman wrote:
-> > On Tue, Feb 04, 2025 at 12:44:03PM +0100, Danilo Krummrich wrote:
-> > > On Tue, Feb 04, 2025 at 12:09:13PM +0100, Greg Kroah-Hartman wrote:
-> > > > Many drivers abuse the platform driver/bus system as it provides a
-> > > > simple way to create and bind a device to a driver-specific set of
-> > > > probe/release functions.  Instead of doing that, and wasting all of the
-> > > > memory associated with a platform device, here is a "faux" bus that
-> > > > can be used instead.
-> > > > 
-> > > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > > ---
-> > > >  v2: - renamed bus and root device to just "faux" thanks to Thomas
-> > > >      - removed the one-driver-per-device and now just have one driver
-> > > >        entirely thanks to Danilo
-> > > >      - kerneldoc fixups and additions and string handling bounds checks
-> > > >        hanks to Andy
-> > > >      - coding style fix thanks to Jonathan
-> > > >      - tested that the destroy path actually works
-> > > > 
-> > > >  drivers/base/Makefile       |   2 +-
-> > > >  drivers/base/base.h         |   1 +
-> > > >  drivers/base/faux.c         | 196 ++++++++++++++++++++++++++++++++++++
-> > > >  drivers/base/init.c         |   1 +
-> > > >  include/linux/device/faux.h |  31 ++++++
-> > > >  5 files changed, 230 insertions(+), 1 deletion(-)
-> > > >  create mode 100644 drivers/base/faux.c
-> > > >  create mode 100644 include/linux/device/faux.h
-> > > 
-> > > I really like it, it's as simply as it can be.
-> > > 
-> > > Please find one nit below, otherwise
-> > > 
-> > > Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-> > > 
-> > > > 
-> > > > +/**
-> > > > + * faux_device_destroy - destroy a faux device
-> > > > + * @faux_dev: faux device to destroy
-> > > > + *
-> > > > + * Unregister and free all memory associated with a faux device that was
-> > > > + * previously created with a call to faux_device_create().
-> > > 
-> > > Can we really claim that this frees all memory? Someone can still have a
-> > > reference to the underlying struct device, right?
-> > 
-> > That "someone" is the person that had the original device pointer passed
-> > to it, so if that person then calls faux_device_destroy(), yes, that
-> > should all be properly cleaned up.
-> > 
-> > But even if it isn't, the device is destroyed and gone from sysfs, and
-> > whenever that final final put_device() is called, the memory will then
-> > be freed by the driver core itself.
+
+
+On 2/4/25 8:59 PM, David Hildenbrand wrote:
+>>>> Add DavidH and OscarS for memory hot-remove questions.
+>>>>
+>>>> IIUC, struct page could be freed if a chunk of memory is hot-removed.
+>>>
+>>> Right, but only after there are no users anymore (IOW, memory was freed
+>>> back to the buddy). PFN walkers might still stumble over them, but I
+>>> would not expect (or recommend) rust to do that.
+>>
+>> The physaddr to page function does look up pages by pfn, but it's
+>> intended to be used by drivers that know what they're doing. There are
+>> two variants of the API, one that is completely unchecked (a fast path
+>> for cases where the driver definitely allocated these pages itself, for
+>> example just grabbing the `struct page` back from a decoded PTE it
+>> wrote), and one that has this check:
+>>
+>> pfn_valid(pfn) && page_is_ram(pfn)
+>>
+>> Which is intended as a safety net to allow drivers to look up
+>> firmware-reserved pages too, and fail gracefully if the kernel doesn't
+>> know about them (because they weren't declared in the
+>> bootloader/firmware memory map correctly) or doesn't have them mapped in
+>> the direct map (because they were declared no-map).
+>> > Is there anything else that can reasonably be done here to make the API
+>> safer to call on an arbitrary pfn?
 > 
-> Oh indeed, the code here is perfectly fine. I just wanted to say that calling
-> faux_device_destroy() is not a guarantee that "all memory associated with a
-> faux device" is actually freed, as the kernel-doc comment above says (or at
-> least implies).
+> In PFN walkers we use pfn_to_online_page() to make sure that (1) the
+> memmap really exists; and (2) that it has meaning (e.g., was actually
+> initialized).
 > 
-> So, the concern only was that the comment could be confusing, as in "How can
-> faux_device_destroy() free the memory, if I still have a separate reference to
-> this thing?" (which it clearly would not).
+> It can still race with memory offlining, and it refuses ZONE_DEVICE
+> pages. For the latter, we have a different way to check validity. See
+> memory_failure() that first calls pfn_to_online_page() to then check
+> get_dev_pagemap().
 
-Documentation is hard :)
+I'll give it a shot with these functions. If they work for my use case,
+then it's good to have extra checks and I'll add them for v2. Thanks!
 
-Can you think of some wording here that would explain this better?
-Something like "after you call this, you can't touch the pointer you
-passed into here" is what I'm going for.
+> 
+>>
+>> If the answer is "no" then that's fine. It's still an unsafe function
+>> and we need to document in the safety section that it should only be
+>> used for memory that is either known to be allocated and pinned and will
+>> not be freed while the `struct page` is borrowed, or memory that is
+>> reserved and not owned by the buddy allocator, so in practice correct
+>> use would not be racy with memory hot-remove anyway.
+>>
+>> This is already the case for the drm/asahi use case, where the pfns
+>> looked up will only ever be one of:
+>>
+>> - GEM objects that are mapped to the GPU and whose physical pages are
+>> therefore pinned (and the VM is locked while this happens so the objects
+>> cannot become unpinned out from under the running code),
+> 
+> How exactly are these pages pinned/obtained?
 
-I guess the documentation for device_destroy() would work here as well,
-which says:
+Under the hood it's shmem. For pinning, it winds up at
+`drm_gem_get_pages()`, which I think does a `shmem_read_folio_gfp()` on
+a mapping set as unevictable.
 
-	 * This call unregisters and cleans up a device that was created with a
-	 * call to device_create().
+I'm not very familiar with the innards of that codepath, but it's
+definitely an invariant that GEM objects have to be pinned while they
+are mapped in GPU page tables (otherwise the GPU would end up accessing
+freed memory).
 
-Would that be better?
+Since the code that walks the PT to dump pages is part of the same PT
+object and takes a mutable reference, the Rust guarantees mean it's
+impossible for the PT to be concurrently mutated or anything like that.
+So if one of these objects *were* unpinned/freed somehow while the dump
+code is running, that would be a major bug somewhere else, since there
+would be dangling PTEs left over.
 
-thanks,
+In practice, there's a big lock around each PT/VM at a higher level of
+the driver, so any attempts to unmap/free any of those objects will be
+stuck waiting for the lock on the VM they are mapped into.
 
-greg k-h
+> 
+>> - Raw pages allocated from the page allocator for use as GPU page tables,
+> 
+> That makes sense.
+> 
+>> - System memory that is marked reserved by the firmware/bootloader,
+> 
+> E.g., in arch/x86/mm/ioremap.c:__ioremap_check_ram() we refuse anything
+> that has a valid memmap and is *not* marked as PageReserved, to prevent
+> remapping arbitrary *real* RAM.
+> 
+> Is that case here similar?
+
+I don't have an explicit check for that here but yes, the pages wind up
+marked PageReserved. This includes both no-map ranges and map ranges.
+The no-map ranges also have a valid struct page if within the declared
+RAM range but they would oops if we try to access the contents via
+direct map, so the page_is_ram() check is there to reject those (and
+MMIO and anything else that isn't normally mapped as RAM even if it
+winds up with a struct page).
+
+>> - (Potentially) invalid PFNs that aren't part of the System RAM region
+>> at all and don't have a struct page to begin with, which we check for,
+>> so the API returns an error. This would only happen if the bootloader
+>> didn't declare some used firmware ranges at all, so Linux doesn't know
+>> about them.
+>>
+>>>
+>>>>
+>>>> Another case struct page can be freed is when hugetlb vmemmap
+>>>> optimization
+>>>> is used. Muchun (cc'd) is the maintainer of hugetlbfs.
+>>>
+>>> Here, the "struct page" remains valid though; it can still be accessed,
+>>> although we disallow writes (which would be wrong).
+>>>
+>>> If you only allocate a page and free it later, there is no need to worry
+>>> about either on the rust side.
+>>
+>> This is what the safe API does. (Also the unsafe physaddr APIs if all
+>> you ever do is convert an allocated page to a physaddr and back, which
+>> is the only thing the GPU page table code does during normal use. The
+>> walking leaf PFNs story is only for GPU device coredumps when the
+>> firmware crashes.)
+> 
+> I would hope that we can lock down this interface as much as possible.
+
+Right, that's why the safe API never does any of the weird pfn->page
+stuff. Rust driver code has to use unsafe {} to access the raw pfn->page
+interface, which requires a // SAFETY comment explaining why what it's
+doing is safe, and then we need to document in the function signature
+what the safety requirements are so those comments can be reviewed.
+
+> Ideally, we would never go from pfn->page, unless
+> 
+> (a) we remember somehow that we came from page->pfn. E.g., we allocated
+>     these pages or someone else provided us with these pages. The memmap
+>     cannot go away. I know it's hard.
+
+This is the common case for the page tables. 99% of the time this is
+what the driver will be doing, with a single exception (the root page
+table of the firmware/privileged VM is a system reserved memory region,
+and falls under (b). It's one single page globally in the system.).
+
+The driver actually uses the completely unchecked interface in this
+case, since it knows the pfns are definitely OK. I do a single check
+with the checked interface at probe time for that one special-case pfn
+so it can fail gracefully instead of oops if the DT config is
+unusable/wrong.
+
+> (b) the pages are flagged as being special, similar to
+>     __ioremap_check_ram().
+
+This only ever happens during firmware crash dumps (plus the one
+exception above).
+
+The missing (c) case is the kernel/firmware shared memory GEM objects
+during crash dumps. But I really need those to diagnose firmware
+crashes. Of course, I could dump them separately through other APIs in
+principle, but that would complicate the crashdump code quite a bit
+since I'd have to go through all the kernel GPU memory allocators and
+dig out all their backing GEM objects and copy the memory through their
+vmap (they are all vmapped, which is yet another reason in practice the
+pages are pinned) and merge it into the coredump file. I also wouldn't
+have easy direct access to the matching GPU PTEs if I do that (I store
+the PTE permission/caching bits in the coredump file, since those are
+actually kind of critical to diagnose exactly what happened, as caching
+issues are one major cause of firmware problems). Since I need the page
+table walker code to grab the firmware pages anyway, I hope I can avoid
+having to go through a completely different codepath for the kernel GEM
+objects...
+
+~~ Lina
+
