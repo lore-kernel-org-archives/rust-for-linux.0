@@ -1,73 +1,73 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF094209695
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Feb 2025 10:26:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC46201267
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Feb 2025 10:33:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738664789; cv=none; b=BDo33q5XFIRuis19gzaQz3PwK4e0ORcOEY4+affU0d5BUzbbwIfXJ3GgaaBllkhYdYDHlQc1kKGLZmuHlzTOqwd0Sb5kmtdZyeS7ULKEtsdZkSApBJ4+IK6zAGn93xLNA0U+YsD/YCWagd2Yklqw2ONpv559TvCf0XO7yD0gVSc=
+	t=1738665212; cv=none; b=o1JH7XDsc0DyS9O7WKnKhPAVBzp7RQTA9fdChG9wPfy0is5CPNCV0yM7mbkv4D1huMFdzT3+zuCPOGf66eZRasBD6W1EoUOwokw7WXa6qbKJvSCdLhh3ILK6pr7YEZxvL53+wWP3ObP5nvhpFftLrsWQv0xE1SNh6WpbEmYRgcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738664789; c=relaxed/simple;
-	bh=ZlNntNaM+PL9MyFxoJ/ZbfSlXajgbc74psNdEvvjw2I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JuKHpD1nIQMGZwodTcJ34r2Nq1Byk9MY77DntOlWvNWzIpHmKAeG/lAOdW3nAU3eV4vWOj6ENGTHtXTjD+PyYp063gLLh8u0SOlO8pIGtzddfvNd7F9zjbH/4TtMk154l67/BXtMBH8NQ8mbteN8FqPvQ5d0Pv1XQTggTtSqtNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TWHv9GyF; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1738665212; c=relaxed/simple;
+	bh=clAoy2znCo2xQaRpN04BsX/Jlt5NhiyxhV9tU/geWuA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=J2hYcY7GD9qGpPde04Kpnz9K4i6x1+zLfVP0ev3j0FbOYVGJfvqgK1yric1IOqXfo+aA9cAy1ulSIuxlIm4B8xfr30PY0x67RigrTMspu3DfP7Nc7ZsWse+GnqowuOhrrVSYQ+P6ppBmHzvweo9+JNgu2ThWAOHADd5DgIqd7aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CiFziZKV; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TWHv9GyF"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CiFziZKV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738664786;
+	s=mimecast20190719; t=1738665209;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=obUWo/aIr8iw/uAhhh87Ys9OfYrgg8x79D02NpAO4EI=;
-	b=TWHv9GyFVNHC6wz2bdGjabdEB7sVrZ9dyfMdRoteO5sMeNH4F8tjxZ6YE30cef/7yK/B3f
-	I6kcODxtSKw0nTY7pZ0k66rrHhI5I4IffPP/RCkoO1xoTUc7CXE/uqlLm8gL8rfj3tnv2W
-	1gyf94fKPaAMbsyZAdBRDdO0qRW3Lw8=
+	bh=Yy2YcCoH8vLRUbPjUQceyiGbB/n8HRoWxC0XWbSBbdI=;
+	b=CiFziZKVWnHOU3SANEE0exDN93e4IxHiTegcIn9fmHjSYlcLPz872UmtGCWMflpgckfAfO
+	ZicHM+KdBY9x/dPvfDzCOhtHVrI/oQO+ME7t5N6opny+2ols02+QI1Oc2jlmzCZQFnjj0L
+	uD8Sne2G4nnVv9LUbPvJHHcfMHJAM7A=
 Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
  [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-662-S-rl1_cxMDSUC87wUQYulA-1; Tue, 04 Feb 2025 05:26:25 -0500
-X-MC-Unique: S-rl1_cxMDSUC87wUQYulA-1
-X-Mimecast-MFC-AGG-ID: S-rl1_cxMDSUC87wUQYulA
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4361a8fc3bdso27262905e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Feb 2025 02:26:25 -0800 (PST)
+ us-mta-277-M1ufJIqHMM2t39loO2vhpQ-1; Tue, 04 Feb 2025 05:33:28 -0500
+X-MC-Unique: M1ufJIqHMM2t39loO2vhpQ-1
+X-Mimecast-MFC-AGG-ID: M1ufJIqHMM2t39loO2vhpQ
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4361fc2b2d6so28121375e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Feb 2025 02:33:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738664784; x=1739269584;
+        d=1e100.net; s=20230601; t=1738665207; x=1739270007;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=obUWo/aIr8iw/uAhhh87Ys9OfYrgg8x79D02NpAO4EI=;
-        b=lxsEyLWYu9o4YoLctnWkLOrxpa4j9Hd2DrSYl9tfG7YtIDCtXtvts3BLgDMCa5np6b
-         xFUoh5rN5wkzZ71mr0Dsv8ILuklIo7LqfUOqcTHLHKqa/QIQ4I0wyvdieMG9i3P+HCgL
-         uVrnUSlE0N3WT63MV7amezVWLp3F5oQ1VCWrLowM6/0t8HXrVuejoBxiTxua7vZfmuWn
-         JUUaaO96a0vEXHXYQvTmX0p+94UcGL0Hg+7qxydqM+M7HIlArSOiNL/f/WLQVnvrzy9T
-         TA3i3VGJpbjf8HAFcMIshPwMw6/AQSZxhQ6E5NNSZMpOdUXu1/cvmsL3PKRl3j32xfoQ
-         L0PA==
-X-Forwarded-Encrypted: i=1; AJvYcCVcIMj156f442uTwBWbc7STmmsKdLe35F4t6KEM/vF0R0NK0vuyuJHfORHXyecLur9gpy8tAI+EUpNBDEOYhg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YygKDPw0VyTIOqcjnRDam/sUQ2j95yd0i/d31Dtx1sUESm6VCQc
-	86noaeYzcOCUAvqb5H6FlNQsQToQLMhUfw1WjdPK7BftSb3+IdUszY34vFpYw28/ahDb9Uzae36
-	WnniWTza3LfeCMr81oPnvzWXNX740i38qXXwVkW/JUFA19srqN0nSIjhCYE1S3Sy6
-X-Gm-Gg: ASbGnctg10CQbI8BSN2qbVSe+1l9+VMjkzdJsWqvmxP/JSUsY7LSpow3lxIRkyLEbgb
-	AV37x86hTMAQCEj8A68/6U690PvKz2+ukE6mm9Nxm6YQuINCr1sfqMgOkrUAYzvLFmDEasW4+XQ
-	waeSZsxgo6U+leJGxwxKF7g97cYI/uN3NuUhb5pcNCNAiDsFflH1sIFeNU+Y4/TaKlj0NYNbhQV
-	dAMZkCcBxLd8n80/V4kIp7H+of9HoEk1co0vk+3Az2hOI6ABH1h2B3at6VNVITCvtjbkllzc0Zh
-	ewomc9kYKWC3AMo7PJ97lDZbUB1lT5rrI7ZJ9D86ZZmwBz69XoeczsBb+bjQBwBUw7EgDT6l3GL
-	9glm71GfDjTFp7RNEuGIB002gDJA=
-X-Received: by 2002:a05:600c:3b0e:b0:434:fbda:1f36 with SMTP id 5b1f17b1804b1-438dc40cab1mr201404055e9.20.1738664784029;
-        Tue, 04 Feb 2025 02:26:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFgWlOtLNRacpcHkB0q3oxyRfV0rN8TOLymEbL56bYCUawlhpPC3KJuXBQUqrX0VxjV7e2Rfw==
-X-Received: by 2002:a05:600c:3b0e:b0:434:fbda:1f36 with SMTP id 5b1f17b1804b1-438dc40cab1mr201403705e9.20.1738664783609;
-        Tue, 04 Feb 2025 02:26:23 -0800 (PST)
+         :content-language:from:references:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Yy2YcCoH8vLRUbPjUQceyiGbB/n8HRoWxC0XWbSBbdI=;
+        b=vI4Qe6KcTcVnqPn20sP6rDtneBmhDIRGliYjknxQ5V6XVQXG+72EXFfLj6W2F7V0Gm
+         wUZ/qD8onZ7pno/qiHZLhAjSxhwd2bM0Ug/ZU1lQVUeAet8mTDoxOf008BhgeLMJ6y+x
+         cIO+/hGX5frl10BqwcasFQsii8ySAwI3uqRU2mUW+cUKn0mn2CJRDdeH2Fr+P82OnYrh
+         2dZUEjARmY9g2BowvsPrWud1AzH9wuDHPbFzQegF2ebh6r6o6xWiMZQEPUPWztxMZE73
+         E3KxuM0ljsdZOtsdBJSRcWOwVBuqw2CDRLFCoFhkJjclnIGuXI6nAbKdKfeuXwmmzLen
+         zGlw==
+X-Forwarded-Encrypted: i=1; AJvYcCU6eLyXMoS02uD2xgJJMzyQHa315te1+ohVxk6ZGjx7hWX7dK7eiUUb5TbEDG3Z0B+GmqrZ/2RUnaosCoYOMw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQL86WvyQiBJ2nuhugTZHAXX7SPwa7wnSpUgaWef4WAWHg6wvV
+	8HTvv72PkaVqjyQaczkX413BEgRZO319H1VWX2rdmexUkv6ZY2Jx5k678/NYwPVYb6ArkIp9r3k
+	hgyQJarojnLvoUpsiiC+Hkc1Qio2EQ3ClOqc895k7fU+3nuqmXwqvTDydsAVXNZxZ
+X-Gm-Gg: ASbGncv9n7pKo0IOYYwsJ5GbJuF1xtDmn8V0vRzMWPQKQdVoGh6r2TzqqlfmDuPScwc
+	KOh/JKmQcLjetbx5RhQN7nWZFWEiuNP44APP73PeNe71t5xQPsVIOi67dcUOrqiAeUf8YifTybZ
+	Lhjj45N6+gwSN2f2WHDj70IskhiFewwpSF9FTCn5o3/KtCPSbnAqIehZlLqdFbpE3ZHRP7QxUYI
+	KdjaIBjB1crfn6Y708vqPhX0iouc8aVQhryjNd6JsmYOUPz0Y2QWQhW9kTEVmBF7crlAREl5rrw
+	OlxZF7PaZzKtdPXh6eyVWUtmDpen1Z8aNLFKJ9vj6zZFri1LLCnD/ntZ83myuGfeb2IJ6v07XC+
+	QBLS7iazXwwv0my2hNHD9WYB5L2M=
+X-Received: by 2002:a05:600c:1e1b:b0:434:f5c0:328d with SMTP id 5b1f17b1804b1-438dc40ffcfmr206405565e9.23.1738665207164;
+        Tue, 04 Feb 2025 02:33:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGhXa3p8fLF86zz7ZWoFvpMmhvGqL5LUgi0p6/K4bHUqzfvvX8VkPoos3ndj/J9gUNMcZDIiw==
+X-Received: by 2002:a05:600c:1e1b:b0:434:f5c0:328d with SMTP id 5b1f17b1804b1-438dc40ffcfmr206405315e9.23.1738665206729;
+        Tue, 04 Feb 2025 02:33:26 -0800 (PST)
 Received: from ?IPV6:2003:cb:c70a:300:3ae1:c3c0:cef:8413? (p200300cbc70a03003ae1c3c00cef8413.dip0.t-ipconnect.de. [2003:cb:c70a:300:3ae1:c3c0:cef:8413])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438e244eb0dsm187009005e9.27.2025.02.04.02.26.20
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438dcc2e384sm226274815e9.19.2025.02.04.02.33.24
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Feb 2025 02:26:22 -0800 (PST)
-Message-ID: <0e19e1c3-293b-4740-93f3-2c410893288b@redhat.com>
-Date: Tue, 4 Feb 2025 11:26:19 +0100
+        Tue, 04 Feb 2025 02:33:25 -0800 (PST)
+Message-ID: <1eaf66ba-b2d3-448f-938b-913f17ca98a4@redhat.com>
+Date: Tue, 4 Feb 2025 11:33:24 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -77,11 +77,10 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 0/6] rust: page: Support borrowing `struct page` and
  physaddr conversion
-To: Zi Yan <ziy@nvidia.com>, Asahi Lina <lina@asahilina.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
+To: Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
  Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
  Trevor Gross <tmgross@umich.edu>, Jann Horn <jannh@google.com>,
  Matthew Wilcox <willy@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -90,12 +89,9 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
  Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
  airlied@redhat.com, Abdiel Janulgue <abdiel.janulgue@gmail.com>,
  rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- asahi@lists.linux.dev, Oscar Salvador <osalvador@suse.de>,
- Muchun Song <muchun.song@linux.dev>
+ asahi@lists.linux.dev
 References: <20250202-rust-page-v1-0-e3170d7fe55e@asahilina.net>
  <Z6CTLB2NggwYafi9@phenom.ffwll.local>
- <41ca3445-80cd-43c1-8f9e-634c195c9187@asahilina.net>
- <37A0729B-A711-4D45-B9F0-328FDB9ADD28@nvidia.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -142,92 +138,58 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <37A0729B-A711-4D45-B9F0-328FDB9ADD28@nvidia.com>
+In-Reply-To: <Z6CTLB2NggwYafi9@phenom.ffwll.local>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: vkbrGg2JnctM2uuiRBSvDIX8K7spi8DzMghOYD0WkYw_1738664784
+X-Mimecast-MFC-PROC-ID: YitmZGKxBR3Oq727vO76Gz7VyDNElts9AghmWliJ_dw_1738665207
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 03.02.25 22:05, Zi Yan wrote:
-> On 3 Feb 2025, at 9:32, Asahi Lina wrote:
-> 
->> On 2/3/25 6:58 PM, Simona Vetter wrote:
->>> On Sun, Feb 02, 2025 at 10:05:42PM +0900, Asahi Lina wrote:
->>>> This series refactors the existing Page wrapper to support borrowing
->>>> `struct page` objects without ownership on the Rust side, and converting
->>>> page references to/from physical memory addresses.
->>>>
->>>> The series overlaps with the earlier submission in [1] and follows a
->>>> different approach, based on the discussion that happened there.
->>>>
->>>> The primary use case for this is implementing IOMMU-style page table
->>>> management in Rust. This allows drivers for IOMMUs and MMU-containing
->>>> SoC devices to be written in Rust (such as embedded GPUs). The intended
->>>> logic is similar to how ARM SMMU page tables are managed in the
->>>> drivers/iommu tree.
->>>>
->>>> First, introduce a concept of Owned<T> and an Ownable trait. These are
->>>> similar to ARef<T> and AlwaysRefCounted, but are used for types which
->>>> are not ref counted but rather have a single intended owner.
->>>>
->>>> Then, refactor the existing Page support to use the new mechanism. Pages
->>>> returned from the page allocator are not intended to be ref counted by
->>>> consumers (see previous discussion in [1]), so this keeps Rust's view of
->>>> page ownership as a simple "owned or not". Of course, this is still
->>>> composable as Arc<Owned<Page>> if Rust code needs to reference count its
->>>> own Page allocations for whatever reason.
->>>
->>> I think there's a bit a potential mess here because the conversion to
->>> folios isn't far enough yet that we can entirely ignore page refcounts and
->>> just use folio refcounts. But I guess we can deal with that oddity if we
->>> hit it (maybe folio conversion moves fast enough), since this only really
->>> starts to become relevant for hmm/svm gpu stuff.
->>>
->>> iow I think anticipating the future where struct page really doesn't have
->>> a refcount is the right move. Aside from that it's really not a refcount
->>> that works in the rust ARef sense, since struct page cannot disappear for
->>> system memory, and for dev_pagemap memory it's an entirely different
->>> reference you need (and then there's a few more special cases).
+On 03.02.25 10:58, Simona Vetter wrote:
+> On Sun, Feb 02, 2025 at 10:05:42PM +0900, Asahi Lina wrote:
+>> This series refactors the existing Page wrapper to support borrowing
+>> `struct page` objects without ownership on the Rust side, and converting
+>> page references to/from physical memory addresses.
 >>
->> Right, as far as this abstraction is concerned, all that needs to hold
->> is that:
+>> The series overlaps with the earlier submission in [1] and follows a
+>> different approach, based on the discussion that happened there.
 >>
->> - alloc_pages() and __free_pages() work as intended, however that may
->> be, to reserve and return one page (for now, though I think extending
->> the Rust abstraction to handle higher-order folios is pretty easy, but
->> that can happen later).
->> - Whatever borrows pages knows what it's doing. In this case there's
->> only support for borrowing pages by physaddr, and it's only going to be
->> used in a driver for a platform without memory hot remove (so far) and
->> only for pages which have known usage (in principle) and are either
->> explicitly allocated or known pinned or reserved, so it's not a problem
->> right now. Future abstractions that return borrowed pages can do their
->> own locking/bookkeeping/whatever is necessary to keep it safe.
+>> The primary use case for this is implementing IOMMU-style page table
+>> management in Rust. This allows drivers for IOMMUs and MMU-containing
+>> SoC devices to be written in Rust (such as embedded GPUs). The intended
+>> logic is similar to how ARM SMMU page tables are managed in the
+>> drivers/iommu tree.
 >>
->> I would like to hear how memory hot-remove is supposed to work though,
->> to see if we should be doing something to make the abstraction safer
->> (though it's still unsafe and always will be). Is there a chance a
->> `struct page` could vanish out from under us under some conditions?
+>> First, introduce a concept of Owned<T> and an Ownable trait. These are
+>> similar to ARef<T> and AlwaysRefCounted, but are used for types which
+>> are not ref counted but rather have a single intended owner.
+>>
+>> Then, refactor the existing Page support to use the new mechanism. Pages
+>> returned from the page allocator are not intended to be ref counted by
+>> consumers (see previous discussion in [1]), so this keeps Rust's view of
+>> page ownership as a simple "owned or not". Of course, this is still
+>> composable as Arc<Owned<Page>> if Rust code needs to reference count its
+>> own Page allocations for whatever reason.
 > 
-> Add DavidH and OscarS for memory hot-remove questions.
-> 
-> IIUC, struct page could be freed if a chunk of memory is hot-removed.
+> I think there's a bit a potential mess here because the conversion to
+> folios isn't far enough yet that we can entirely ignore page refcounts and
+> just use folio refcounts. But I guess we can deal with that oddity if we
+> hit it (maybe folio conversion moves fast enough), since this only really
+> starts to become relevant for hmm/svm gpu stuff.
 
-Right, but only after there are no users anymore (IOW, memory was freed 
-back to the buddy). PFN walkers might still stumble over them, but I 
-would not expect (or recommend) rust to do that.
+I'll note that in the future only selected things will be folios (e.g., 
+pagecache, anonymous memory). Everything else will either get a separate 
+memdesc (e.g., ptdesc), or work on bare pages.
 
-> 
-> Another case struct page can be freed is when hugetlb vmemmap optimization
-> is used. Muchun (cc'd) is the maintainer of hugetlbfs.
+Likely, when talking about page tables, "ptdesc" might be what you want 
+to allocate here, and not "folios".
 
-Here, the "struct page" remains valid though; it can still be accessed, 
-although we disallow writes (which would be wrong).
+So in the future, this interface here will likely look quite a bit 
+different.
 
-If you only allocate a page and free it later, there is no need to worry 
-about either on the rust side.
+(I know there was a discussion on that on RFC v3 with Willy, just 
+stumbled over the usage of "folio" here)
 
 -- 
 Cheers,
