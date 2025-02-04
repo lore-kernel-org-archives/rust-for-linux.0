@@ -1,118 +1,123 @@
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28DC913AA20;
-	Tue,  4 Feb 2025 14:47:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CAFB17588;
+	Tue,  4 Feb 2025 14:50:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738680459; cv=none; b=pVwsXjZebRbap9bUgNPomgvyr2hTIhmFX2+12zCZnCd+zGTH3lbk8r3gfz4wFXx+eae0OXFnRMF1py0FLBGCwWS0kBV7LAv3AWmjCgbB+LUjo9TZlZfIF09xrE6Gbq4FA/I0CniAgv9RBQB6XJnMskW/WEtNxuJsffRpUUcbAWg=
+	t=1738680633; cv=none; b=G5Oo3qKtvN/o4k7A0GEzarrVrd9iGRHEPNlqOPQL6jeawCHq8QEInIKJM9jFlU+8IoOF0LWd7+Ltvi0y9AdUO5trXRG+oZKTVUkt4HmxYpxb4PjX7jQ9yw75Vxwbx1VkN9Yh/pJInURYBC5Bm71s6pBSz5kK5QHGOx7ZOyHkXHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738680459; c=relaxed/simple;
-	bh=VWE7rYiS1H09bpLtw4nxJsxCXrvC2b05homXc0eVsOU=;
+	s=arc-20240116; t=1738680633; c=relaxed/simple;
+	bh=PVDI10kSspSbKiqiR3cWmHfQUFuV+mJrrZh7MaBhxPQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iSoYLSyMt8Ig5yN0eF7GmH6ClI+T2c26XB3VZCcBdJP1SH1/vqSTaNEnedhVgHFINykhg1sNeFJS3tS770iOtrNYMmZ067taNHLkS9FjG7681Kd8XBuzEXnuLz0/JmZHBZY+yAjbSnKhtYb2OGlwPciOGudJJRwO8aPnjyWrDxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SlphlIOE; arc=none smtp.client-ip=209.85.219.43
+	 Content-Type:Content-Disposition:In-Reply-To; b=HaeGwt4VViNoiCne2pg04rDcRb50yd72ymkLIx6Ft6Dmp/AJtRHGQGAmIBT/lvONNSfLEZKUKridPqc7yOGzz/+xYxWfnJhrViw7RmKFku1+w0dz5XoTzylZV1aTfV5nVPml+occ2aWN2WWbZvOpELXWx/VPKSR8UbZ7sdmCRjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LijbyhrZ; arc=none smtp.client-ip=209.85.222.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SlphlIOE"
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-6dd1962a75bso43965986d6.3;
-        Tue, 04 Feb 2025 06:47:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LijbyhrZ"
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-7b6f1be1daeso540025385a.0;
+        Tue, 04 Feb 2025 06:50:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738680457; x=1739285257; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1738680630; x=1739285430; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ClBeI/UpQwbjzinpxgVI81L53zhkDK+0fCWLCZc+ZLk=;
-        b=SlphlIOEFU035yoT5NcowYdOhW1p1xof5bEKVBWcQzeJMi2J666Gpb7wANZo369yXD
-         DQd2kyjLpWtLRrGWQUsMfzKKrKgkyqzLKdypYZMtToL6R6hyK8kqbrJjrumOvPGGBIr+
-         rMul/Ev6lqQgeBbuPmpx1V2NLasm4zAoF/70vxpksVoR8q5lg8u37+CvllOB2SggxcWF
-         srGmZ5Who69nAKbioesTrKh3WISThrAv8clJKf/4YgblPALc/3etxT3+vJhJIyjGsJ08
-         zsLXAEVVh75SCrBONieA0q2F1nR/0vbAcZq+pixmZuMdwcFdwAeu1cmpp4Xi8VG6kh+R
-         InZA==
+        bh=O93zUfmkQJ5yLGKvDRcJEjXroIe8dkmS2F1TSj1aIr0=;
+        b=LijbyhrZIYehiyRV7W8mOw/BEkCTWTMqz24w7kc02Spa6l3GTSTaBggc4NJmMIlfBe
+         DbVXBfiltSSqoOmGGlhy5f1pNOCOhuQPgjNGTnmMC/iomcOjUrJQXs+rieOcnSK0znCO
+         5l48tQ9OWIlSKo/BfiTsZe51SBf/Bvz9pdybKWd1d9BMXt/QJSNwo6d/mmFurCStKsqz
+         4+kn/zRot5LuKoOOXpZ9T0yDUrINQOBxkZhiBXGHxPsW7AE9GBAQYWUYBdrqvd12Xq+t
+         dhVN9H5OvmZNKvGAoOnOkzkqbMumkheTkuctB+R3YEA/lXPcyktMr52V7ZhpoaA4P6pO
+         Ci0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738680457; x=1739285257;
+        d=1e100.net; s=20230601; t=1738680630; x=1739285430;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ClBeI/UpQwbjzinpxgVI81L53zhkDK+0fCWLCZc+ZLk=;
-        b=iOKG+EfR3qKPv5Dr/55vZn7u4wCXkNx7a8gJQ9IamCzSnV5dOrLGqVOGeDNAr+V6uq
-         33HIi347iPEMAM/bSpV6EDN6ReuJnfmhV7JTvbK5maEazy1dpPdTvUBbhZYnxO8ayEtR
-         T9d+3efMkHt/OMKgF3pjVlCIJMoukAq5dq7N3WWgkB91yEiJwrrJybjsE3PfYon0+8xu
-         3TKfTtlp36JaKfi05XoLzD0bJt8baS/U5/X8mKl2XsGJrYt7ZW/572L9ChMHriW0h1GL
-         DhTRIB9vBn8jJYDFtowuhaJpI9RiBW76nQVp0KxdiUdkJBU2NY8HVVEW6NFU0vvZasqT
-         PuBA==
-X-Forwarded-Encrypted: i=1; AJvYcCVGbDfsMGnaks9rlXHED1nU4l1W1Pdf62iDbGMoP6Fawep6et616yYvkyLQS1WpPqslgCFF8oxv8DZMaWw=@vger.kernel.org, AJvYcCXZhbhHJUb85l8F+0AFuP15zRKHSjfDQrWQhfovUpL/nMjzsUfvE1oK5hAitGzxOd2rtyd74KhkdWicoKj4gYM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9Hm7EbIBHA0UM51itqTBhbCO8dy9Z0gqDiOnU/bbBbM8m+UkN
-	QDghjYS1+aMlS4Nh76hSWhcnEw29BAn6SpFBPpgLV1aook+o0psJ
-X-Gm-Gg: ASbGnctD8QFZVP3cPKInbuv/i2Dp2lTMJOwGqhPTCzzXlfBmQVBOQ4mc5IZ7iKcQRH4
-	9LrcvoX3pHQA9vZXK7nsjrRN6g6QbCtHjV6ix2XRelPjRguMXuwuG2IV+e8PB7QHNLrXGusvQnQ
-	yWlbUGD9dBBTf1dsLPwYzRnfp6jwTsImlqrtfdaAvycHbBvCSIWbMM16DlFHZruiXZWwmxmX2Y7
-	WFhDET4KJASjS+P5eZe8mt0Sz+uG7wIBQwggiYcWjCKpjXffCiHYr75nCaYViP6vp717HegKeK8
-	K5QhoiTGBOL1AANV8wdrIbF55imFZhD/uFIx2K+RCY6GYFtarm39XBHpVITaaZXTtUJvRpkXu76
-	BqhY9jw==
-X-Google-Smtp-Source: AGHT+IGw2/GHQEvQ/LM3LAhpdh7BKctHnFItfqxE9BlbTD4YrC3GxsUswJyWgyvI5jKUoE2TuJsgEw==
-X-Received: by 2002:a05:6214:62e:b0:6d8:850a:4d69 with SMTP id 6a1803df08f44-6e243bf360cmr330398186d6.1.1738680456806;
-        Tue, 04 Feb 2025 06:47:36 -0800 (PST)
+        bh=O93zUfmkQJ5yLGKvDRcJEjXroIe8dkmS2F1TSj1aIr0=;
+        b=CWGrc7+i2Lm9XBg/jKXYQoC1rG5hX5qujHhNGl5q14UP82K7gINPKmjrqM92Yjh7uh
+         12vkUOA3GBbS2y+Cv+Lh9D+JSFkaBN0mzATSwms8dyJr7p6P8JJzcZ/yBIxhSYCbDoFe
+         aQl6nRBAUFVGQZ5FlyXi91mUxbbUl4/dQeMOOuh7sFUrFzt50qX1x/XE5JeTj7VfH/Su
+         qnUlINMZs1jzvu/cbdPQvFJrzxmHOLBPJDFPMHvNw5XSXPbtGzVd4m6sZfmwTc0l5mRV
+         KXe05LYdE2vrLtUl1pdtsma42Yj50lF3ptTGsT5ubyq27LM/1YZI+xsbqXMxrNsVymTe
+         +mXw==
+X-Forwarded-Encrypted: i=1; AJvYcCVTABvZ6IDtg85imLHOrPzu9hx1ferPUYq+0IgEbeMOCp6peiYfxlWJWEy0uhAOVsuMmdVHXnCbNWLF0SU=@vger.kernel.org, AJvYcCWH4xLXPKZZPtF3Cbmh3SbsWmW8CH9qXsbjnGgR08AV7u4N8rNfHBU0KuDdBiz1JEPTOROYXuOTaYtxJyki7fI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+sv6CRHWo3elw3klPerjYljp/Lk6RZE+pzjfOYFxaovGFx7Uc
+	70PFtI2NpQYHewvqyAq5bcNsSaI0W1J/UAB45qu5zs+Qffu5TZXZ
+X-Gm-Gg: ASbGncvGUCJkCnlqjr5RUIDuPuJ06mSvD7eCrIFlAQ1EJNaHarkHUi+LKkORmzETO/t
+	6OX3o8N/vHcrwDWTHlMi73qNbKBMQbLjp3TbMpqm4r/uEJWIOPNjEnLAj+67ZopllCwSuQtl9JS
+	2biOImnURADNiAzSS1JAWaphC6+UtbaTqQ4AnTEBLPTNC9KqgACf6e+9alQHyA1GVYutDr+Puqc
+	l78fTUNRTaOVVtPnoFRaaMGd3F2qyZwDNMioovMqP/T11nEe/GJnDXmYN22DNJAlLAdzyAghuiB
+	iWFZ4gJ6fzrILZpyAJQMiINiFT51jCeMe9Ty12+tuVpy8EzOnAD2OeBdWT9s00LQHLLQSO97+vI
+	qjj654g==
+X-Google-Smtp-Source: AGHT+IH0tfWWAkUUISaVsW7R9y0WycKwDyOEfJRx4RoIqxcqcAbwE9Cp+b3y3nIulRFvqaZhMXeL8Q==
+X-Received: by 2002:a05:6214:2305:b0:6dc:d101:2bb2 with SMTP id 6a1803df08f44-6e243a86cd0mr372471186d6.0.1738680630220;
+        Tue, 04 Feb 2025 06:50:30 -0800 (PST)
 Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e2547f2c78sm62678596d6.6.2025.02.04.06.47.35
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e2548196ffsm62572346d6.44.2025.02.04.06.50.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Feb 2025 06:47:36 -0800 (PST)
-Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 5B2D81200043;
-	Tue,  4 Feb 2025 09:47:35 -0500 (EST)
+        Tue, 04 Feb 2025 06:50:29 -0800 (PST)
+Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id EA5CF1200068;
+	Tue,  4 Feb 2025 09:50:28 -0500 (EST)
 Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Tue, 04 Feb 2025 09:47:35 -0500
-X-ME-Sender: <xms:hyiiZ9bGV0Kqdiw3U0Zb5vt3EZAKFzyN2NpoBbzuGidIN6LN9vCozg>
-    <xme:hyiiZ0YJQkXiu1dvFMEnJKMjWSBEf1xu8QtJQaoKPKSd3suKQl1j1xRFqA_mp7dtt
-    mevHEjDBaEHS5Xuyw>
-X-ME-Received: <xmr:hyiiZ_8uWwljP3hTcDUeKiZIJCGHmAwUoNzE1krY0X58RJej66rhhcK-bQ>
+  by phl-compute-11.internal (MEProxy); Tue, 04 Feb 2025 09:50:28 -0500
+X-ME-Sender: <xms:NCmiZ7BaXbSavOjU4Nn1_N-AyNHAAdOU4uEomT1DDbEYlbArrMU0dw>
+    <xme:NCmiZxjZby0UjbmwsFTVBgfeMvxC0NutCutLbtam7psCcN_YS46aHGpNrskYscJ2n
+    oaB5JOBOmcRmNfVpQ>
+X-ME-Received: <xmr:NCmiZ2lXK7-eofJMRYN5D7a0pbJpEmcy8Cfdd33D73bJMZ_kA8mqZuRNHA>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvtdektdcutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
     uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
     hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
     necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
-    drtghomheqnecuggftrfgrthhtvghrnhepiedtueffgeeitedvudeuveeiveduudeitdei
-    vefgvefhhfekheduudekhfekfeegnecuffhomhgrihhnpeguohgtshdrrhhsnecuvehluh
-    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgv
-    shhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehhe
-    ehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
-    pdhnsggprhgtphhtthhopedugedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprg
-    hlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgv
-    rhhnvghlrdhorhhgpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtg
-    hpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthht
-    ohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtoheprgdrhh
-    hinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehtmhhgrhhoshhssehu
-    mhhitghhrdgvughupdhrtghpthhtohepphgvthgvrhiisehinhhfrhgruggvrggurdhorh
-    hgpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgtohhm
-X-ME-Proxy: <xmx:hyiiZ7qIA6JuebY-wnPCDbaXzUYFwDOWbFfVeSIONGNT5DO3w9JOHA>
-    <xmx:hyiiZ4oXFLyz_d094FYQ0IpCDRtFREP2mBDHcwoQ0iVJ9HhiUHeJQg>
-    <xmx:hyiiZxSe0gF8K-xM_jyBN8gz989f3cOf_JDQkO5svJS5CYXtt4AR0A>
-    <xmx:hyiiZwrYwIXWVI68EHmhPM2XnMDqhxahxDxCRwJefe5l0Do6O4o1EA>
-    <xmx:hyiiZx7FHROtzGP_ivpsRsXFBTJ-DPzWM2J8Fyd6U9D_q_FAr33aHzcP>
+    drtghomheqnecuggftrfgrthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleel
+    ieevtdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
+    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
+    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedvfedpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhinhgrsegrshgrhhhilhhinhgrrdhnvg
+    htpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghl
+    vgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrh
+    ihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghi
+    lhdrtghomhdprhgtphhtthhopegsvghnnhhordhlohhsshhinhesphhrohhtohhnrdhmvg
+    dprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthht
+    oheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepthhmghhroh
+    hsshesuhhmihgthhdrvgguuh
+X-ME-Proxy: <xmx:NCmiZ9z5qz1n5fm3agtBtZCTy6bzQYcxUw-R3aMLwK8QDODXxt9zdw>
+    <xmx:NCmiZwTPyB9mI1Jgy7P5G0FEDVWaYa3QS-fO-i5zVUx0DJmSzsx-Ew>
+    <xmx:NCmiZwZZFMOdWFPGGnX1-WUQtro0fi2Xp7J2XtrAAVjK_IKv9_GuVg>
+    <xmx:NCmiZxTdyg8CcUym1qvO-hPjzOg9BhIcZS5kzV2xQCPvp52NSbVZEw>
+    <xmx:NCmiZ2DmICtOZUqHTnCejbMw4BgPVUSqjDKyo3QR7wFn_9ME9sTSdfrY>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 4 Feb 2025 09:47:34 -0500 (EST)
-Date: Tue, 4 Feb 2025 06:47:33 -0800
+ 4 Feb 2025 09:50:28 -0500 (EST)
+Date: Tue, 4 Feb 2025 06:50:27 -0800
 From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
+To: Asahi Lina <lina@asahilina.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: sync: add accessor for the lock behind a given
- guard
-Message-ID: <Z6IohVx6DEV4a6cK@Mac.home>
-References: <20250130-guard-get-lock-v1-1-8ed87899920a@google.com>
- <Z5ubrUcSuaTtj_wW@tardis.local>
- <CAH5fLgiTG8nNRdb2=3PdZN=2Bg=KLGy4hvrae+E0jcOeCTBpjw@mail.gmail.com>
- <Z5uzbW2j9fUBt-3H@boqun-archlinux>
- <CAH5fLggDna0E9MtarHDxoS=w3zp-2HipASOLGfYFzTg8fxUu2A@mail.gmail.com>
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Jann Horn <jannh@google.com>, Matthew Wilcox <willy@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Valentin Obst <kernel@valentinobst.de>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	airlied@redhat.com, Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	asahi@lists.linux.dev
+Subject: Re: [PATCH 4/6] rust: addr: Add a module to declare core address
+ types
+Message-ID: <Z6IpM1zuR7-iThua@Mac.home>
+References: <20250202-rust-page-v1-0-e3170d7fe55e@asahilina.net>
+ <20250202-rust-page-v1-4-e3170d7fe55e@asahilina.net>
+ <Z6Da4XV5hcTfBiNH@tardis.local>
+ <8f098064-d2d5-4a02-8306-0a3d31557bab@asahilina.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -121,62 +126,98 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAH5fLggDna0E9MtarHDxoS=w3zp-2HipASOLGfYFzTg8fxUu2A@mail.gmail.com>
+In-Reply-To: <8f098064-d2d5-4a02-8306-0a3d31557bab@asahilina.net>
 
-On Tue, Feb 04, 2025 at 02:39:33PM +0100, Alice Ryhl wrote:
-[...]
-> > > > How about we name this as `lock_ref()` or something else, because
-> > > > `lock()` itself is already used by `Lock` for the lock *operation*, and
-> > > > this is just an accessor, I would like we don't confuse code readers
-> > > > when they see code like "let b = a.lock()".
-> > >
-> > > The usual name for this operation in userspace is "mutex".
-> > > https://docs.rs/lock_api/0.4.12/lock_api/struct.MutexGuard.html#method.mutex
-> > >
-> > > But since our code is generic over many lock types, I went for "lock".
-> > > But I guess it could make sense to rename it.
-> > >
-> >
-> > Got it. The good thing about the naming of lock_api is that the name
-> > "mutex" is not used for other purpose, while "lock" is a bit different.
-> >
-> > > > Moreover, if the only usage
-> > > > of this is for asserting the right lock, maybe we can instead add an:
-> > > >
-> > > >     pub fn assert_lock_associated(&self, lock_ptr: *const Lock<T, B>)
-> > >
-> > > I guess, though there is precedent for having a method that gets the
-> > > underlying lock, so I think it makes sense. If we had an assertion, it
-> >
-> > I don't disagree, but I just feel we should be careful about introducing
-> > two "lock()" that one is an operation and the other is an accessor.
-> >
-> > > would probably take an &Lock<T,B>.
-> > >
-> >
-> > How about:
-> >
-> >     impl<T, B: Backend> Lock<T, B> {
-> >         pub fn assert_held_then<O>(
-> >             &self, proof: &Guard<'_, T, B>, f: FnOnce() -> O
-> >         ) -> O {
-> >             <assert `proof` is associated with `&self`>
-> >             f()
-> >         }
-> >     }
-> >
-> > In this way, not only we can assert the correct lock is held, but we can
-> > also guarantee `f()` is called with the lock held. Thoughts?
+On Tue, Feb 04, 2025 at 08:50:17PM +0900, Asahi Lina wrote:
 > 
-> I need mutable access to the guard during the function, though? I
-> don't think a closure is helpful in this case.
 > 
-> How about I rename to `lock_ref()` instead?
+> On 2/4/25 12:04 AM, Boqun Feng wrote:
+> > On Sun, Feb 02, 2025 at 10:05:46PM +0900, Asahi Lina wrote:
+> >> Encapsulates the core physical/DMA address types, so they can be used by
+> >> Rust abstractions.
+> >>
+> >> Signed-off-by: Asahi Lina <lina@asahilina.net>
+> >> ---
+> >>  rust/kernel/addr.rs | 15 +++++++++++++++
+> >>  rust/kernel/lib.rs  |  1 +
+> >>  2 files changed, 16 insertions(+)
+> >>
+> >> diff --git a/rust/kernel/addr.rs b/rust/kernel/addr.rs
+> >> new file mode 100644
+> >> index 0000000000000000000000000000000000000000..06aff10a0332355597060c5518d7fd6e114cf630
+> >> --- /dev/null
+> >> +++ b/rust/kernel/addr.rs
+> >> @@ -0,0 +1,15 @@
+> >> +// SPDX-License-Identifier: GPL-2.0
+> >> +
+> >> +//! Kernel core address types.
+> >> +
+> >> +use bindings;
+> >> +use core::ffi;
+> > 
+> > I think we should use crate::ffi here. See:
+> > 
+> > 	d072acda4862 "rust: use custom FFI integer types"
+> > 
+> >> +
+> >> +/// A physical memory address (which may be wider than the CPU pointer size)
+> >> +pub type PhysicalAddr = bindings::phys_addr_t;
+> >> +/// A DMA memory address (which may be narrower than `PhysicalAddr` on some systems)
+> >> +pub type DmaAddr = bindings::dma_addr_t;
+> >> +/// A physical resource size, typically the same width as `PhysicalAddr`
+> >> +pub type ResourceSize = bindings::resource_size_t;
+> >> +/// A raw page frame number, not to be confused with the C `pfn_t` which also encodes flags.
+> >> +pub type Pfn = ffi::c_ulong;
+> >> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> >> index e1065a7551a39e68d6379031d80d4be336e652a3..eb1a80ba8ff83ab2d1b3b1d11fed4fb704c7a4f5 100644
+> >> --- a/rust/kernel/lib.rs
+> >> +++ b/rust/kernel/lib.rs
+> >> @@ -29,6 +29,7 @@
+> >>  
+> >>  pub use ffi;
+> >>  
+> >> +pub mod addr;
+> > 
+> > I want to share my worry on this `pub mod` list in kernel/lib.rs may get
+> > too long ;-)
+> > 
+> > I was about to suggest putting `addr` and `page` into `mm` after Alice's
+> > patchset merged, however, seems that `mm` mod only cover userspace
+> > memory management (which is not my impression of what "mm" in kernel
+> > development), thoughts? Alice, do you think we should extend `mm` mod to
+> > contain all memory management mods?
+> 
+> I think in kernel-speak "mm" is usually userspace memory management and
+> kernel page allocation and memory management, but doesn't include device
+> stuff (I/O ranges, DMA, etc.) or the low-level concepts of memory in an
+> architecture. The types I declare here are more relevant to device/arch
+> code, so I don't think they really belong under "mm", it's more general
+> (mm deals with them and so do other parts of the kernel code).
 > 
 
-That would work for me, thanks!
+Make sense.
+
+> On the other hand, I think page.rs itself would fit under mm, since it
+> deals with the kernel mm's idea of pages and their allocation.
+> 
+
+Agreed. Probably some follow-up work after Alice's mm work merged.
 
 Regards,
 Boqun
 
-> Alice
+> > 
+> > Regards,
+> > Boqun
+> > 
+> >>  pub mod alloc;
+> >>  #[cfg(CONFIG_BLOCK)]
+> >>  pub mod block;
+> >>
+> >> -- 
+> >> 2.47.1
+> >>
+> > 
+> 
+> ~~ Lina
+> 
