@@ -1,182 +1,165 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA6020E002
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Feb 2025 13:39:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7489A207DF2
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Feb 2025 13:43:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738676389; cv=none; b=qNwJJXGA+er/w7ChEqPtWv0QiQ75hwL5gDvXeqemaqf+4mPpz7cM1jMFAHpX+5mYu13Tzy3x3i3v8+wc4a1y7Mw9Ai2d3tgW6DGb+iH/6C527c5uMuW3sHZ4xg9PDixZyzuy1aHcpqBDzOdli7YcvtIDPt4tLaQpeCrYkIzqmOI=
+	t=1738676612; cv=none; b=AMn86TPegNhRiXeIZmIgBEqD+LoYrImMoDqYVyABN2NyeXIalp2SiUbFzEATF712N7OLV6eENy5Kb4btBmYgET5PH7O5Gea1c5eRnpBk59Ke9WDYK2gSFjGepSS+tIJmdHnKoDBP+y5bEU7eY67t0hamsq1qvUdMlSxmWTR4wnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738676389; c=relaxed/simple;
-	bh=PN0CPB/Jhz2333VzA0sDbAy58IyDn5OWW1laMrN+i8U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PRrbUf5D9+ar1TZkMHeRPVMskCDsUOI3QaFh0sCt5MKTurtxZpmcJte8L9GQHFvv0qjFG8QqDzHMYIqBVwtS5J8wpWEAn906fImmIF6fYEmYJirRQ6UaOw0N55I6PvjV+BF+Lzk/hKPQbabwUoBUTJpgI3EBFhHIIgNDDC8xUdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gh2/SCfd; arc=none smtp.client-ip=209.85.221.43
+	s=arc-20240116; t=1738676612; c=relaxed/simple;
+	bh=SgIoKwcZO83D0H1DH1airYR6aVHH761lIgQkOi1H3rY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=rItTux4MgLO360sJyJV6AbL6sYA6sfKwbj7sX3pDyfAaqExEfdVfsUFe04CchkRvKBCEcT/qvqqAV0pHsqon1JLZKO7YXTF7gEUU8Tbb/GjNkcMNv6TMF31+zToodl4YuhBPfyC3Aq2pQzke7CdYGvLkrgz1PZP9wSl/JGPEsAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FqxrU7MJ; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gh2/SCfd"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-38dabb11eaaso347934f8f.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Feb 2025 05:39:47 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FqxrU7MJ"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43582d49dacso40225955e9.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Feb 2025 05:43:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738676386; x=1739281186; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HDierw2/A0zavMG+3sPVdpYZFjRoMNxDKndiA2q1SqI=;
-        b=gh2/SCfdTeOXuA7E4iuLIrKUj2Hd4BXClfwM01v9lInUu2ZxsS99wowc+7SCtCa+Vl
-         3cZdK6X5du0NVLLoKQJQ1Og+2bxD6v4vTtGWQN8kEX/W2mKP5S9iluS6zRelBjqO6bf2
-         jQkXzmbPRuHdxEpsGnUZHCUar9CfKmG8PjBb3cnlqv8Az2zTji4QMjrrHeGTD4HIibGz
-         w/f4R+fa2fQ4wdXJJSx9UmYtyRwd/96BQcSKv1KBqkY6piHMYTrtlvPSH7RKUj2CQcNF
-         Svnb6DslthYeDGdKVbkosvd3jkwT7RgcvqZuejn674fgwmouDwTFQ7dI5qi1VF8kEerw
-         phMw==
+        d=google.com; s=20230601; t=1738676609; x=1739281409; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=MtQg1sWtwKSQAU12JMSyBjbXP2TUHrUrABd3N9c0DwU=;
+        b=FqxrU7MJDhpQ0kvRSPXVHzhAkzSh4YKvx056RbX0yovYuN5ZKVZJ7l4CV6UYtunMGQ
+         cQXpWlPhUPImNMGJYY2f49Au+y9+XlIqlp5AVooFJno51o+SaHCRrncNkb4c67+z8Uw8
+         8L8+50lP/5hdjf9bgmNmTFycnAxFU0DCG3BSI69wx0YmA6GsuXjrVu2aURPoKbsed98v
+         gphLCT1Yq5t7B0EoaVZxBnsYk7+Ug+KwoanCjIxVBcUq/8Pt1/dG7ACIfJ913I2Sp9LJ
+         gXNupzU6lo4JBlMlxoQ6EmfeZGY1jiLGxB7Qg9cgI2zehkLiXMGBLA+jUXpKVfPSJUbw
+         7wcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738676386; x=1739281186;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HDierw2/A0zavMG+3sPVdpYZFjRoMNxDKndiA2q1SqI=;
-        b=NrPgZFGnoF8k2Ho7zKGNr2GzdcBbxafaL9ZDLwq6EbXMqajgzcxbu5dFMRKbkttEfH
-         8kHi/wnOwIMkCJX9dHa4QqJQi/LvExO42Ttc1FO4Lyl0ErCa23gu/b1e7ESARClrUo0V
-         qCXTTP0IHTiajJGZHGyU6PMvWX7YKAMlRxNzuSCEqR1PsoZ00JrRnsy0xgmO4GKFPeOK
-         be+oTmJMUs81vhGnSb3El0eDMpGLz2RqPa/cAKln02z2DJHeQe1txNkfLhaXp/BzOc1L
-         7Gjj6S63NiyoYIFkCX/Iv3o1zgBuolpHiDVdJsX4HRmoDWZmvVhAVFPLbz8F52GiuX39
-         Fd9g==
-X-Forwarded-Encrypted: i=1; AJvYcCVhqLB6o4GYRZfSuFexxPCD5jVsC8dQbw6rbzr0bHVNm7tlCvlxdpJQRTWGCREtDFZj0odhqe7feuTdh+iTCg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzl/X2cRGWXMd3ukJw7mfrOMmaa1LLDAImsuq1dSX9z4WJqjHP1
-	XQOou9VgqARDXvr0XLa3pCuWmPxhntrG2VCDCqzITtDkZ9UGej4WlxtIZqPHs/qukGvf/MkR5/J
-	3kLvzFAe9gbQXu8fPmvk1Sg3XphmDQdqkG7na
-X-Gm-Gg: ASbGncvpHWg769A87QzqGFrfmflMRKBGGuP+exG63OrwHyhsjqIx4FD0ply+HP7qBJs
-	SEjQ95fU4f8cb716B8xUL2+GnbkWxwp5jBhD2bZ1HUmlrkEEdjAJs5LMCc8yLQaDoL/08jl+wv5
-	gsBssrN6mD6DFamQo2I+5bZZJTbw==
-X-Google-Smtp-Source: AGHT+IH1idF8nb5QXGyrudJAB04PC/gkweM3+/bfTcG2XkkJ7eJVUgkrnIegMUVThJj/wUqrDmPMWq9/zsjcH53913E=
-X-Received: by 2002:a5d:634f:0:b0:385:f0dc:c9fd with SMTP id
- ffacd0b85a97d-38c51974c0fmr18902754f8f.27.1738676385542; Tue, 04 Feb 2025
- 05:39:45 -0800 (PST)
+        d=1e100.net; s=20230601; t=1738676609; x=1739281409;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MtQg1sWtwKSQAU12JMSyBjbXP2TUHrUrABd3N9c0DwU=;
+        b=fQUPv1BlAcDnPXqIVVkYGO2YD34hdtay9BIo/R02mN38ZLEAgxNjMCtZN3UTS/9R9D
+         11tRvMOp0tROBj9gyyWZoOffX8YPxQs246lFOkz9EMO6flNAk+AEKhZj8vqMKwnWQGJ9
+         F313InmTV8s6fovt5N2RMZY1GAQxqwviCiIwF3mBY2MYkBXc+dlVOdxCvNfs8LMmOYck
+         2xo9dpmZmYb7DtAbD3cd/Ck4Ezm3AOlaZwE6fQ+4bCu9xba7ss/VDqvhynJB9DAZ9m8S
+         ebs2dax31Rocvzd3MNMGSgjsselyLzlfb/HDRiD5USV6leoL4GhkHn4aoQbQZ7sT9Q2B
+         MOPg==
+X-Forwarded-Encrypted: i=1; AJvYcCUd6o0cm2UdVtyBNTW7akzpg+fY3iHT1BjUZtwv6NxtCR/YmV47wVfPnP7V+LfTbEqiupYZpPN9p3p8I4ur0w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyaDK+PNjAitM2oSLVXU4eN59poWQvmIE9o/m3/Q6K/ZAZwe6+v
+	8ZRRQnt6vjlg6WY7iP4xbST4o48KCNfjyb0s7/u6jCEpcyn/+TEiGdIu7sC0rzuGDCS99GP8jiY
+	IxdrcWG223AEr+w==
+X-Google-Smtp-Source: AGHT+IGAQNTQ/HRjFqlJxD13mjiLL9qmpzklJ62h8rjWfkdUvqJO8WMyMLc2bexZNoP8PXBeYp42ZC0jFX2qsZg=
+X-Received: from wmbfl22.prod.google.com ([2002:a05:600c:b96:b0:434:a2c3:d51b])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:470c:b0:434:fddf:5bfa with SMTP id 5b1f17b1804b1-438dc3bb395mr227045875e9.2.1738676608768;
+ Tue, 04 Feb 2025 05:43:28 -0800 (PST)
+Date: Tue, 04 Feb 2025 13:43:25 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250130-guard-get-lock-v1-1-8ed87899920a@google.com>
- <Z5ubrUcSuaTtj_wW@tardis.local> <CAH5fLgiTG8nNRdb2=3PdZN=2Bg=KLGy4hvrae+E0jcOeCTBpjw@mail.gmail.com>
- <Z5uzbW2j9fUBt-3H@boqun-archlinux>
-In-Reply-To: <Z5uzbW2j9fUBt-3H@boqun-archlinux>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAH0ZomcC/3WMQQ7CIBBFr9LMWgxQadSV9zBdIAx0Ei3NYIjac
+ Hexezc/eT95b4WMTJjh3K3AWChTmhvoXQdusnNEQb4xaKmNVL0ULs2+WBaBET8ogkZrbr08HqS BJi2MgV5b8Do2nig/E7+3flG/92+qKKGEPSlvhqGNNJeYUrzj3qUHjLXWL3AArietAAAA
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3388; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=SgIoKwcZO83D0H1DH1airYR6aVHH761lIgQkOi1H3rY=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnohl+xh0SniBplYn2XOoZ+MDC9xdsph612fysW
+ 01tMPwTQY2JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ6IZfgAKCRAEWL7uWMY5
+ RirlD/wMbv1NW7IMb2YtaDqpbFSIK6JubKo5HI7cc8ZynyIBXXxZC6GA2YQzB0lpKoKqYYkuBnS
+ oGz3JKDWf+Toti5JFD1F5InKYqB9+ibQbIhfdnAwsH0Co/KrmeIih2A4hzRCHGSLG3EvSWjIlBY
+ d3AaIu4/Ea/p786fnUbrilEpAEU+axZnWyM0c0p6PejcKpcQBJ9/vd4z8ExBEn6leNVLMgMfb39
+ v6VSUmsfoWyXGfsdhHLET84A+fRk/iltvtSS6xcJpUMfPGd2EwuKP4vTM9N5fXgrpe5caGAqhFq
+ WwM2YM4/BkQFKvEsauEd6b9ozAyqLb6w+5sUZoqAuMO1HVogsldt9zFrDI+yAVFJ6TCBpN5XVuh
+ W4t32aw8V6BBTs4H/9NBGNMaoaRReUUwSdqxTc0IoeNz2VDysvLOIGd3pCfJxSblLbd2DsLsyEr
+ a7wA7zJHVsDHhladEJU4O8X+uyZOv+ntK2ZD8AO6Z+hlhGJr3PZvifWRj30TlaYSUSZ3zT9I1JR
+ B6kTQwYZiBu/sFvaLJs08tcSy0b/WMTJZd2WoI7znRx2lwB/qIrWgnZTMxx7edTkE4Pww9t6UD8
+ 3MBEzFyjjBAXshRuqIXzStheAt2/YFH6iViROlSitc2n77A1SQqjUxdhLME1/XcARq2sarZNBQP QwIOJkvcDqIhWqQ==
+X-Mailer: b4 0.13.0
+Message-ID: <20250204-condvar-freeze-v2-1-804483096260@google.com>
+Subject: [PATCH v2] rust: sync: add wait_interruptible_freezable
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 4 Feb 2025 14:39:33 +0100
-X-Gm-Features: AWEUYZmChfcq3HmMbFgadtiv5KZHjn7HO5hyASoeuLdrGk0OS6f7DI8w2rmXhEU
-Message-ID: <CAH5fLggDna0E9MtarHDxoS=w3zp-2HipASOLGfYFzTg8fxUu2A@mail.gmail.com>
-Subject: Re: [PATCH] rust: sync: add accessor for the lock behind a given guard
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
+	Waiman Long <longman@redhat.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Thu, Jan 30, 2025 at 6:15=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
->
-> On Thu, Jan 30, 2025 at 04:43:22PM +0100, Alice Ryhl wrote:
-> > On Thu, Jan 30, 2025 at 4:33=E2=80=AFPM Boqun Feng <boqun.feng@gmail.co=
-m> wrote:
-> > >
-> > > Hi Alice,
-> > >
-> > > The patch looks reasonable to me, however...
-> > >
-> > > On Thu, Jan 30, 2025 at 11:39:32AM +0000, Alice Ryhl wrote:
-> > > > Binder has some methods where the caller provides a lock guard, and
-> > > > Binder needs to be able to assert that the guard is associated with=
- the
-> > > > right lock. To enable this, add an accessor to obtain a reference t=
-o the
-> > > > underlying lock that you can pass to `ptr::eq`.
-> > > >
-> > >
-> > > ... could you provide more details on this usage, for example, why do
-> > > you need the assertion, is it for debug purposes? Does the current C
-> > > code have the same or similar logic? Besides...
-> >
-> > I added the assertion because it makes the SAFETY comment on a call to
-> > kernel::list::List::remove simpler. The C driver does not have the
-> > assertion.
-> >
->
-> Ok. Make sense.
->
-> > > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > > > ---
-> > > >  rust/kernel/sync/lock.rs | 7 ++++++-
-> > > >  1 file changed, 6 insertions(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-> > > > index 41dcddac69e2..681d67275b49 100644
-> > > > --- a/rust/kernel/sync/lock.rs
-> > > > +++ b/rust/kernel/sync/lock.rs
-> > > > @@ -169,7 +169,12 @@ pub struct Guard<'a, T: ?Sized, B: Backend> {
-> > > >  // SAFETY: `Guard` is sync when the data protected by the lock is =
-also sync.
-> > > >  unsafe impl<T: Sync + ?Sized, B: Backend> Sync for Guard<'_, T, B>=
- {}
-> > > >
-> > > > -impl<T: ?Sized, B: Backend> Guard<'_, T, B> {
-> > > > +impl<'a, T: ?Sized, B: Backend> Guard<'a, T, B> {
-> > > > +    /// Returns the lock that this guard originates from.
-> > > > +    pub fn lock(&self) -> &'a Lock<T, B> {
-> > >
-> > > How about we name this as `lock_ref()` or something else, because
-> > > `lock()` itself is already used by `Lock` for the lock *operation*, a=
-nd
-> > > this is just an accessor, I would like we don't confuse code readers
-> > > when they see code like "let b =3D a.lock()".
-> >
-> > The usual name for this operation in userspace is "mutex".
-> > https://docs.rs/lock_api/0.4.12/lock_api/struct.MutexGuard.html#method.=
-mutex
-> >
-> > But since our code is generic over many lock types, I went for "lock".
-> > But I guess it could make sense to rename it.
-> >
->
-> Got it. The good thing about the naming of lock_api is that the name
-> "mutex" is not used for other purpose, while "lock" is a bit different.
->
-> > > Moreover, if the only usage
-> > > of this is for asserting the right lock, maybe we can instead add an:
-> > >
-> > >     pub fn assert_lock_associated(&self, lock_ptr: *const Lock<T, B>)
-> >
-> > I guess, though there is precedent for having a method that gets the
-> > underlying lock, so I think it makes sense. If we had an assertion, it
->
-> I don't disagree, but I just feel we should be careful about introducing
-> two "lock()" that one is an operation and the other is an accessor.
->
-> > would probably take an &Lock<T,B>.
-> >
->
-> How about:
->
->     impl<T, B: Backend> Lock<T, B> {
->         pub fn assert_held_then<O>(
->             &self, proof: &Guard<'_, T, B>, f: FnOnce() -> O
->         ) -> O {
->             <assert `proof` is associated with `&self`>
->             f()
->         }
->     }
->
-> In this way, not only we can assert the correct lock is held, but we can
-> also guarantee `f()` is called with the lock held. Thoughts?
+Binder allows you to freeze a process where some of its threads are
+blocked on the Binder driver. To make this work, we need to pass
+TASK_FREEZABLE when going to sleep in the appropriate places. Thus, add
+a new method wait_interruptible_freezable for the condition variable so
+that sleeps where this is supported can be marked as such.
 
-I need mutable access to the guard during the function, though? I
-don't think a closure is helpful in this case.
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v2:
+- Document that you must not hold locks when you call the method.
+- Link to v1: https://lore.kernel.org/r/20250130-condvar-freeze-v1-1-a91d5661d505@google.com
+---
+ rust/kernel/sync/condvar.rs | 23 ++++++++++++++++++++++-
+ rust/kernel/task.rs         |  2 ++
+ 2 files changed, 24 insertions(+), 1 deletion(-)
 
-How about I rename to `lock_ref()` instead?
+diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
+index 7df565038d7d..1859e011e322 100644
+--- a/rust/kernel/sync/condvar.rs
++++ b/rust/kernel/sync/condvar.rs
+@@ -11,7 +11,9 @@
+     init::PinInit,
+     pin_init,
+     str::CStr,
+-    task::{MAX_SCHEDULE_TIMEOUT, TASK_INTERRUPTIBLE, TASK_NORMAL, TASK_UNINTERRUPTIBLE},
++    task::{
++        MAX_SCHEDULE_TIMEOUT, TASK_FREEZABLE, TASK_INTERRUPTIBLE, TASK_NORMAL, TASK_UNINTERRUPTIBLE,
++    },
+     time::Jiffies,
+     types::Opaque,
+ };
+@@ -159,6 +161,25 @@ pub fn wait_interruptible<T: ?Sized, B: Backend>(&self, guard: &mut Guard<'_, T,
+         crate::current!().signal_pending()
+     }
+ 
++    /// Releases the lock and waits for a notification in interruptible and freezable mode.
++    ///
++    /// The process is allowed to be frozen during this sleep. You must not hold any locks while
++    /// this operation is ongoing, and there is a lockdep assertion for this. Freezing a task that
++    /// holds a lock can trivially deadlock vs another task that needs that lock to complete before
++    /// it too can hit freezable.
++    #[must_use = "wait returns if a signal is pending, so the caller must check the return value"]
++    pub fn wait_interruptible_freezable<T: ?Sized, B: Backend>(
++        &self,
++        guard: &mut Guard<'_, T, B>,
++    ) -> bool {
++        self.wait_internal(
++            TASK_INTERRUPTIBLE | TASK_FREEZABLE,
++            guard,
++            MAX_SCHEDULE_TIMEOUT,
++        );
++        crate::current!().signal_pending()
++    }
++
+     /// Releases the lock and waits for a notification in interruptible mode.
+     ///
+     /// Atomically releases the given lock (whose ownership is proven by the guard) and puts the
+diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+index 07bc22a7645c..ea43a3b8d9c5 100644
+--- a/rust/kernel/task.rs
++++ b/rust/kernel/task.rs
+@@ -23,6 +23,8 @@
+ pub const TASK_INTERRUPTIBLE: c_int = bindings::TASK_INTERRUPTIBLE as c_int;
+ /// Bitmask for tasks that are sleeping in an uninterruptible state.
+ pub const TASK_UNINTERRUPTIBLE: c_int = bindings::TASK_UNINTERRUPTIBLE as c_int;
++/// Bitmask for tasks that are sleeping in a freezable state.
++pub const TASK_FREEZABLE: c_int = bindings::TASK_FREEZABLE as c_int;
+ /// Convenience constant for waking up tasks regardless of whether they are in interruptible or
+ /// uninterruptible sleep.
+ pub const TASK_NORMAL: c_uint = bindings::TASK_NORMAL as c_uint;
 
-Alice
+---
+base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
+change-id: 20250130-condvar-freeze-f2ea5b308405
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
