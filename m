@@ -1,165 +1,236 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5B013C9D4;
-	Tue,  4 Feb 2025 10:20:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF094209695
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Feb 2025 10:26:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738664453; cv=none; b=qoKGLGtYQnlLbLAet1F4mAZZN58I58ixS3b7x5TTDfIkhPUncFbQgoGQTUsPesxkyCRtOv846r2lX/gUouz3oGxOz3e0SGJk9x3bAKIKN6j/jkC4xod7sgqQrMZE2Pl2XpUQ9FxJJynfVYR0fYRrMjCbse6SBXkd4yyrdEvPbH0=
+	t=1738664789; cv=none; b=BDo33q5XFIRuis19gzaQz3PwK4e0ORcOEY4+affU0d5BUzbbwIfXJ3GgaaBllkhYdYDHlQc1kKGLZmuHlzTOqwd0Sb5kmtdZyeS7ULKEtsdZkSApBJ4+IK6zAGn93xLNA0U+YsD/YCWagd2Yklqw2ONpv559TvCf0XO7yD0gVSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738664453; c=relaxed/simple;
-	bh=1yiPGmbegji3QalyzllDOR9ellvItD0yt1XHJ6KdoD8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C4rByyolknNE2g2ehTMUFDNUJF1wlQZRcFFwj+EcmktBHzMR4+uV/BPkHfYGxc+PdVStwnbUGVKoWOVOw7VWSipDYzB4skADO+jMeWR587M1zNj6eQr9V9Z9BRpieK5auK/VpkRjccHBxKzOdLhUwMOrhHnxu4hGW9EbZDFkYbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y0qq21rn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738664789; c=relaxed/simple;
+	bh=ZlNntNaM+PL9MyFxoJ/ZbfSlXajgbc74psNdEvvjw2I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JuKHpD1nIQMGZwodTcJ34r2Nq1Byk9MY77DntOlWvNWzIpHmKAeG/lAOdW3nAU3eV4vWOj6ENGTHtXTjD+PyYp063gLLh8u0SOlO8pIGtzddfvNd7F9zjbH/4TtMk154l67/BXtMBH8NQ8mbteN8FqPvQ5d0Pv1XQTggTtSqtNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TWHv9GyF; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y0qq21rn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9A3DC4CEDF;
-	Tue,  4 Feb 2025 10:20:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738664452;
-	bh=1yiPGmbegji3QalyzllDOR9ellvItD0yt1XHJ6KdoD8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=y0qq21rnquPUBBmOLU7ovddIAcDuVm4cbdvXWdCDO1BsPUarnc/uFXbizSgHf9VTP
-	 audSa7nofutOqhlLDULdkCD7mfdBaZ/9rapVI9slVxqes0MPnZIgHQN9jWNBm4o8IC
-	 qOYkV2+AlXR+LKp72m75DKI1/msClUaXdYeE3cvQ=
-Date: Tue, 4 Feb 2025 11:20:43 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Lyude Paul <lyude@redhat.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Liam Girdwood <lgirdwood@gmail.com>, Lukas Wunner <lukas@wunner.de>,
-	Mark Brown <broonie@kernel.org>,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Zijun Hu <quic_zijuhu@quicinc.com>, linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 1/3] driver core: add a faux bus for use when a simple
- device/bus is needed
-Message-ID: <2025020430-polyester-unwind-5f9e@gregkh>
-References: <2025020324-thermal-quilt-1bae@gregkh>
- <2025020326-backer-vendetta-7094@gregkh>
- <127f992b-1c53-49e1-8939-65b1d086fac5@t-8ch.de>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TWHv9GyF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1738664786;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=obUWo/aIr8iw/uAhhh87Ys9OfYrgg8x79D02NpAO4EI=;
+	b=TWHv9GyFVNHC6wz2bdGjabdEB7sVrZ9dyfMdRoteO5sMeNH4F8tjxZ6YE30cef/7yK/B3f
+	I6kcODxtSKw0nTY7pZ0k66rrHhI5I4IffPP/RCkoO1xoTUc7CXE/uqlLm8gL8rfj3tnv2W
+	1gyf94fKPaAMbsyZAdBRDdO0qRW3Lw8=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-662-S-rl1_cxMDSUC87wUQYulA-1; Tue, 04 Feb 2025 05:26:25 -0500
+X-MC-Unique: S-rl1_cxMDSUC87wUQYulA-1
+X-Mimecast-MFC-AGG-ID: S-rl1_cxMDSUC87wUQYulA
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4361a8fc3bdso27262905e9.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Feb 2025 02:26:25 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738664784; x=1739269584;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=obUWo/aIr8iw/uAhhh87Ys9OfYrgg8x79D02NpAO4EI=;
+        b=lxsEyLWYu9o4YoLctnWkLOrxpa4j9Hd2DrSYl9tfG7YtIDCtXtvts3BLgDMCa5np6b
+         xFUoh5rN5wkzZ71mr0Dsv8ILuklIo7LqfUOqcTHLHKqa/QIQ4I0wyvdieMG9i3P+HCgL
+         uVrnUSlE0N3WT63MV7amezVWLp3F5oQ1VCWrLowM6/0t8HXrVuejoBxiTxua7vZfmuWn
+         JUUaaO96a0vEXHXYQvTmX0p+94UcGL0Hg+7qxydqM+M7HIlArSOiNL/f/WLQVnvrzy9T
+         TA3i3VGJpbjf8HAFcMIshPwMw6/AQSZxhQ6E5NNSZMpOdUXu1/cvmsL3PKRl3j32xfoQ
+         L0PA==
+X-Forwarded-Encrypted: i=1; AJvYcCVcIMj156f442uTwBWbc7STmmsKdLe35F4t6KEM/vF0R0NK0vuyuJHfORHXyecLur9gpy8tAI+EUpNBDEOYhg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YygKDPw0VyTIOqcjnRDam/sUQ2j95yd0i/d31Dtx1sUESm6VCQc
+	86noaeYzcOCUAvqb5H6FlNQsQToQLMhUfw1WjdPK7BftSb3+IdUszY34vFpYw28/ahDb9Uzae36
+	WnniWTza3LfeCMr81oPnvzWXNX740i38qXXwVkW/JUFA19srqN0nSIjhCYE1S3Sy6
+X-Gm-Gg: ASbGnctg10CQbI8BSN2qbVSe+1l9+VMjkzdJsWqvmxP/JSUsY7LSpow3lxIRkyLEbgb
+	AV37x86hTMAQCEj8A68/6U690PvKz2+ukE6mm9Nxm6YQuINCr1sfqMgOkrUAYzvLFmDEasW4+XQ
+	waeSZsxgo6U+leJGxwxKF7g97cYI/uN3NuUhb5pcNCNAiDsFflH1sIFeNU+Y4/TaKlj0NYNbhQV
+	dAMZkCcBxLd8n80/V4kIp7H+of9HoEk1co0vk+3Az2hOI6ABH1h2B3at6VNVITCvtjbkllzc0Zh
+	ewomc9kYKWC3AMo7PJ97lDZbUB1lT5rrI7ZJ9D86ZZmwBz69XoeczsBb+bjQBwBUw7EgDT6l3GL
+	9glm71GfDjTFp7RNEuGIB002gDJA=
+X-Received: by 2002:a05:600c:3b0e:b0:434:fbda:1f36 with SMTP id 5b1f17b1804b1-438dc40cab1mr201404055e9.20.1738664784029;
+        Tue, 04 Feb 2025 02:26:24 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFgWlOtLNRacpcHkB0q3oxyRfV0rN8TOLymEbL56bYCUawlhpPC3KJuXBQUqrX0VxjV7e2Rfw==
+X-Received: by 2002:a05:600c:3b0e:b0:434:fbda:1f36 with SMTP id 5b1f17b1804b1-438dc40cab1mr201403705e9.20.1738664783609;
+        Tue, 04 Feb 2025 02:26:23 -0800 (PST)
+Received: from ?IPV6:2003:cb:c70a:300:3ae1:c3c0:cef:8413? (p200300cbc70a03003ae1c3c00cef8413.dip0.t-ipconnect.de. [2003:cb:c70a:300:3ae1:c3c0:cef:8413])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438e244eb0dsm187009005e9.27.2025.02.04.02.26.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Feb 2025 02:26:22 -0800 (PST)
+Message-ID: <0e19e1c3-293b-4740-93f3-2c410893288b@redhat.com>
+Date: Tue, 4 Feb 2025 11:26:19 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <127f992b-1c53-49e1-8939-65b1d086fac5@t-8ch.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/6] rust: page: Support borrowing `struct page` and
+ physaddr conversion
+To: Zi Yan <ziy@nvidia.com>, Asahi Lina <lina@asahilina.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Jann Horn <jannh@google.com>,
+ Matthew Wilcox <willy@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Danilo Krummrich <dakr@kernel.org>, Wedson Almeida Filho
+ <wedsonaf@gmail.com>, Valentin Obst <kernel@valentinobst.de>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ airlied@redhat.com, Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ asahi@lists.linux.dev, Oscar Salvador <osalvador@suse.de>,
+ Muchun Song <muchun.song@linux.dev>
+References: <20250202-rust-page-v1-0-e3170d7fe55e@asahilina.net>
+ <Z6CTLB2NggwYafi9@phenom.ffwll.local>
+ <41ca3445-80cd-43c1-8f9e-634c195c9187@asahilina.net>
+ <37A0729B-A711-4D45-B9F0-328FDB9ADD28@nvidia.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
+ ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT7CwZgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQW
+ AgMBAh4BAheAAhkBFiEEG9nKrXNcTDpGDfzKTd4Q9wD/g1oFAl8Ox4kFCRKpKXgACgkQTd4Q
+ 9wD/g1oHcA//a6Tj7SBNjFNM1iNhWUo1lxAja0lpSodSnB2g4FCZ4R61SBR4l/psBL73xktp
+ rDHrx4aSpwkRP6Epu6mLvhlfjmkRG4OynJ5HG1gfv7RJJfnUdUM1z5kdS8JBrOhMJS2c/gPf
+ wv1TGRq2XdMPnfY2o0CxRqpcLkx4vBODvJGl2mQyJF/gPepdDfcT8/PY9BJ7FL6Hrq1gnAo4
+ 3Iv9qV0JiT2wmZciNyYQhmA1V6dyTRiQ4YAc31zOo2IM+xisPzeSHgw3ONY/XhYvfZ9r7W1l
+ pNQdc2G+o4Di9NPFHQQhDw3YTRR1opJaTlRDzxYxzU6ZnUUBghxt9cwUWTpfCktkMZiPSDGd
+ KgQBjnweV2jw9UOTxjb4LXqDjmSNkjDdQUOU69jGMUXgihvo4zhYcMX8F5gWdRtMR7DzW/YE
+ BgVcyxNkMIXoY1aYj6npHYiNQesQlqjU6azjbH70/SXKM5tNRplgW8TNprMDuntdvV9wNkFs
+ 9TyM02V5aWxFfI42+aivc4KEw69SE9KXwC7FSf5wXzuTot97N9Phj/Z3+jx443jo2NR34XgF
+ 89cct7wJMjOF7bBefo0fPPZQuIma0Zym71cP61OP/i11ahNye6HGKfxGCOcs5wW9kRQEk8P9
+ M/k2wt3mt/fCQnuP/mWutNPt95w9wSsUyATLmtNrwccz63XOwU0EVcufkQEQAOfX3n0g0fZz
+ Bgm/S2zF/kxQKCEKP8ID+Vz8sy2GpDvveBq4H2Y34XWsT1zLJdvqPI4af4ZSMxuerWjXbVWb
+ T6d4odQIG0fKx4F8NccDqbgHeZRNajXeeJ3R7gAzvWvQNLz4piHrO/B4tf8svmRBL0ZB5P5A
+ 2uhdwLU3NZuK22zpNn4is87BPWF8HhY0L5fafgDMOqnf4guJVJPYNPhUFzXUbPqOKOkL8ojk
+ CXxkOFHAbjstSK5Ca3fKquY3rdX3DNo+EL7FvAiw1mUtS+5GeYE+RMnDCsVFm/C7kY8c2d0G
+ NWkB9pJM5+mnIoFNxy7YBcldYATVeOHoY4LyaUWNnAvFYWp08dHWfZo9WCiJMuTfgtH9tc75
+ 7QanMVdPt6fDK8UUXIBLQ2TWr/sQKE9xtFuEmoQGlE1l6bGaDnnMLcYu+Asp3kDT0w4zYGsx
+ 5r6XQVRH4+5N6eHZiaeYtFOujp5n+pjBaQK7wUUjDilPQ5QMzIuCL4YjVoylWiBNknvQWBXS
+ lQCWmavOT9sttGQXdPCC5ynI+1ymZC1ORZKANLnRAb0NH/UCzcsstw2TAkFnMEbo9Zu9w7Kv
+ AxBQXWeXhJI9XQssfrf4Gusdqx8nPEpfOqCtbbwJMATbHyqLt7/oz/5deGuwxgb65pWIzufa
+ N7eop7uh+6bezi+rugUI+w6DABEBAAHCwXwEGAEIACYCGwwWIQQb2cqtc1xMOkYN/MpN3hD3
+ AP+DWgUCXw7HsgUJEqkpoQAKCRBN3hD3AP+DWrrpD/4qS3dyVRxDcDHIlmguXjC1Q5tZTwNB
+ boaBTPHSy/Nksu0eY7x6HfQJ3xajVH32Ms6t1trDQmPx2iP5+7iDsb7OKAb5eOS8h+BEBDeq
+ 3ecsQDv0fFJOA9ag5O3LLNk+3x3q7e0uo06XMaY7UHS341ozXUUI7wC7iKfoUTv03iO9El5f
+ XpNMx/YrIMduZ2+nd9Di7o5+KIwlb2mAB9sTNHdMrXesX8eBL6T9b+MZJk+mZuPxKNVfEQMQ
+ a5SxUEADIPQTPNvBewdeI80yeOCrN+Zzwy/Mrx9EPeu59Y5vSJOx/z6OUImD/GhX7Xvkt3kq
+ Er5KTrJz3++B6SH9pum9PuoE/k+nntJkNMmQpR4MCBaV/J9gIOPGodDKnjdng+mXliF3Ptu6
+ 3oxc2RCyGzTlxyMwuc2U5Q7KtUNTdDe8T0uE+9b8BLMVQDDfJjqY0VVqSUwImzTDLX9S4g/8
+ kC4HRcclk8hpyhY2jKGluZO0awwTIMgVEzmTyBphDg/Gx7dZU1Xf8HFuE+UZ5UDHDTnwgv7E
+ th6RC9+WrhDNspZ9fJjKWRbveQgUFCpe1sa77LAw+XFrKmBHXp9ZVIe90RMe2tRL06BGiRZr
+ jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <37A0729B-A711-4D45-B9F0-328FDB9ADD28@nvidia.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: vkbrGg2JnctM2uuiRBSvDIX8K7spi8DzMghOYD0WkYw_1738664784
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Feb 04, 2025 at 11:08:11AM +0100, Thomas Weißschuh wrote:
-> On 2025-02-03 15:25:17+0100, Greg Kroah-Hartman wrote:
-> > +static void faux_remove(struct device *dev)
-> > +{
-> > +	struct faux_object *faux_obj = to_faux_object(dev);
-> > +	struct faux_device *faux_dev = &faux_obj->faux_dev;
-> > +	const struct faux_driver_ops *faux_ops = faux_obj->faux_ops;
-> > +
-> > +	if (faux_ops && faux_ops->remove)
-> > +		faux_ops->remove(faux_dev);
-> > +}
-> > +
-> > +static const struct bus_type faux_bus_type = {
-> > +	.name		= "faux_bus",
+On 03.02.25 22:05, Zi Yan wrote:
+> On 3 Feb 2025, at 9:32, Asahi Lina wrote:
 > 
-> Is the _bus suffix intentional?
-
-It was intentional.
-
-> Other busses don't have it.
-
-True.  Naming is hard.  I guess /sys/bus/faux/ makes sense, I will go
-rename it.
-
-But for the "root" device, does /sys/devices/faux_bus/ make sense, or
-should it be /sys/devices/faux/ as well?  I'm now leaning toward the
-latter...
-
-> > +	.match		= faux_match,
-> > +	.probe		= faux_probe,
-> > +	.remove		= faux_remove,
-> > +};
-> > +
-> > +static void faux_device_release(struct device *dev)
-> > +{
-> > +	struct faux_object *faux_obj = to_faux_object(dev);
-> > +	struct device_driver *drv = &faux_obj->driver;
-> > +
-> > +	/*
-> > +	 * Now that the device is going away, it has been unbound from the
-> > +	 * driver we created for it, so it is safe to unregister the driver from
-> > +	 * the system.
-> > +	 */
-> > +	driver_unregister(drv);
-> > +
-> > +	kfree(faux_obj);
-> > +}
-> > +
-> > +/**
-> > + * __faux_device_create - create and register a faux device and driver
-> > + * @name: name of the device and driver we are adding
-> > + * @faux_ops: struct faux_driver_ops that the new device will call back into, can be NULL
-> > + * @owner: module owner of the device/driver
-> > + *
-> > + * Create a new faux device and driver, both with the same name, and register
-> > + * them in the driver core properly.  The probe() callback of @faux_ops will be
-> > + * called with the new device that is created for the caller to do something
-> > + * with.
-> > + */
-> > +struct faux_device *__faux_device_create(const char *name,
-> > +					       struct faux_driver_ops *faux_ops,
+>> On 2/3/25 6:58 PM, Simona Vetter wrote:
+>>> On Sun, Feb 02, 2025 at 10:05:42PM +0900, Asahi Lina wrote:
+>>>> This series refactors the existing Page wrapper to support borrowing
+>>>> `struct page` objects without ownership on the Rust side, and converting
+>>>> page references to/from physical memory addresses.
+>>>>
+>>>> The series overlaps with the earlier submission in [1] and follows a
+>>>> different approach, based on the discussion that happened there.
+>>>>
+>>>> The primary use case for this is implementing IOMMU-style page table
+>>>> management in Rust. This allows drivers for IOMMUs and MMU-containing
+>>>> SoC devices to be written in Rust (such as embedded GPUs). The intended
+>>>> logic is similar to how ARM SMMU page tables are managed in the
+>>>> drivers/iommu tree.
+>>>>
+>>>> First, introduce a concept of Owned<T> and an Ownable trait. These are
+>>>> similar to ARef<T> and AlwaysRefCounted, but are used for types which
+>>>> are not ref counted but rather have a single intended owner.
+>>>>
+>>>> Then, refactor the existing Page support to use the new mechanism. Pages
+>>>> returned from the page allocator are not intended to be ref counted by
+>>>> consumers (see previous discussion in [1]), so this keeps Rust's view of
+>>>> page ownership as a simple "owned or not". Of course, this is still
+>>>> composable as Arc<Owned<Page>> if Rust code needs to reference count its
+>>>> own Page allocations for whatever reason.
+>>>
+>>> I think there's a bit a potential mess here because the conversion to
+>>> folios isn't far enough yet that we can entirely ignore page refcounts and
+>>> just use folio refcounts. But I guess we can deal with that oddity if we
+>>> hit it (maybe folio conversion moves fast enough), since this only really
+>>> starts to become relevant for hmm/svm gpu stuff.
+>>>
+>>> iow I think anticipating the future where struct page really doesn't have
+>>> a refcount is the right move. Aside from that it's really not a refcount
+>>> that works in the rust ARef sense, since struct page cannot disappear for
+>>> system memory, and for dev_pagemap memory it's an entirely different
+>>> reference you need (and then there's a few more special cases).
+>>
+>> Right, as far as this abstraction is concerned, all that needs to hold
+>> is that:
+>>
+>> - alloc_pages() and __free_pages() work as intended, however that may
+>> be, to reserve and return one page (for now, though I think extending
+>> the Rust abstraction to handle higher-order folios is pretty easy, but
+>> that can happen later).
+>> - Whatever borrows pages knows what it's doing. In this case there's
+>> only support for borrowing pages by physaddr, and it's only going to be
+>> used in a driver for a platform without memory hot remove (so far) and
+>> only for pages which have known usage (in principle) and are either
+>> explicitly allocated or known pinned or reserved, so it's not a problem
+>> right now. Future abstractions that return borrowed pages can do their
+>> own locking/bookkeeping/whatever is necessary to keep it safe.
+>>
+>> I would like to hear how memory hot-remove is supposed to work though,
+>> to see if we should be doing something to make the abstraction safer
+>> (though it's still unsafe and always will be). Is there a chance a
+>> `struct page` could vanish out from under us under some conditions?
 > 
-> const
+> Add DavidH and OscarS for memory hot-remove questions.
 > 
-> > +					       struct module *owner)
-> 
-> What about attributes?
+> IIUC, struct page could be freed if a chunk of memory is hot-removed.
 
-What in-kernel user of this wants an attribute for such a device?
-
-And again, if we find one, we can make a faux_device_create_groups()
-call that takes a pointer to an attribute group structure if it's really
-needed.
-
+Right, but only after there are no users anymore (IOW, memory was freed 
+back to the buddy). PFN walkers might still stumble over them, but I 
+would not expect (or recommend) rust to do that.
 
 > 
-> > +{
-> > +	struct device_driver *drv;
-> > +	struct device *dev;
-> > +	struct faux_object *faux_obj;
-> > +	struct faux_device *faux_dev;
-> > +	int ret;
-> > +
-> > +	faux_obj = kzalloc(sizeof(*faux_obj) + strlen(name) + 1, GFP_KERNEL);
-> > +	if (!faux_obj)
-> > +		return NULL;
-> > +
-> > +	/* Save off the name of the object into local memory */
-> > +	strcpy(faux_obj->name, name);
-> > +
-> > +	/* Initialize the driver portion and register it with the driver core */
-> > +	faux_obj->faux_ops = faux_ops;
-> > +	drv = &faux_obj->driver;
-> > +
-> > +	drv->owner = owner;
-> > +	drv->name = faux_obj->name;
-> 
-> Assuming most names are constant, this would be better with kstrdup_const().
-> Which is also used by dev_set_name() under the hood.
+> Another case struct page can be freed is when hugetlb vmemmap optimization
+> is used. Muchun (cc'd) is the maintainer of hugetlbfs.
 
-I've now removed the additional driver, but note that this is just a
-pointer assignment, which is fine to do here as the lifespan of
-faux_obj->name outlived the driver structure's lifespan.
+Here, the "struct page" remains valid though; it can still be accessed, 
+although we disallow writes (which would be wrong).
 
-thanks for the review, much appreciated!
+If you only allocate a page and free it later, there is no need to worry 
+about either on the rust side.
 
-greg k-h
+-- 
+Cheers,
+
+David / dhildenb
+
