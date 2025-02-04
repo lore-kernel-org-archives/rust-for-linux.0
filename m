@@ -1,73 +1,72 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A3C215765
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Feb 2025 20:41:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1E821767D
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Feb 2025 20:48:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738701698; cv=none; b=j3RbE22lw3QVlkekgFazaVq97C0pxcZUpZTTiJ1HRjdA7Knvq9ZzX1041S55SHqEnbFdVOJgSxuR4Rbx8bjKDDD/oLlucxJicjr2xT9BZSTwN/MVVInznowdeXDBBkshs2PHb5dWRCzyX+bH7YycWJM+0hackw2UHPVEdI9QKwg=
+	t=1738702082; cv=none; b=G+fS4TAHgDg5dv/+gfzDoq2KoNr0dTujElg/SHoPzM3RI/eZmGDtY860oV+fE+9US4nbrHpSWptjqQHscHGVdJMFKHvkzNck72bv48jngJxrYCfTpivSqEPl2hxdSm8dbgjQA+PvfVWBtl3zZyr5jor+sunU6mz8pdxabSjacno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738701698; c=relaxed/simple;
-	bh=6NCRsRrnyj8VHUmHGh6x7SaptsToqqYWr1qQapiVN/0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qtftJrC1GV1CwUmjy2n20fsv2r39OXfU2T+6HB9RbAk4h72Fyx4wqWJlLLEHlWX98ggy32HumSrHJEOxM2WH7Kg6HfvgJU+OVUCfg1w3zhz5p9LBmrNFnA2OLMrxG3xoNx0mfhGXFVz73YZRA2Ovvm/2iMXUOCyPLOyU9ob5bhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cQzj4rTY; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1738702082; c=relaxed/simple;
+	bh=njuP0jpl7EaEG6atDAQumzAWNDGlStoUTl+r7sW2BV0=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=XSS/uibIaead9pUORnihOazLpbNo+jSZtVhUp9k7WPEMl6mo+1+nPlKmowimwYNhOfd0bytBm7anrzFwXzSWWI+Ih9PeOK64c+ABUXlEXaq94L6WTwPGRt2iC3hGp3lGbyp9gc+Sxuhb4eBsyixRwcJFjf/AgIqcwcyRuZvF0EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=erdcAZJX; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cQzj4rTY"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="erdcAZJX"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738701695;
+	s=mimecast20190719; t=1738702079;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=756onm9SaiF/RTT8cEu/91K4nMKJxzo0rdjfNMK8HaU=;
-	b=cQzj4rTYto9DC0rDg2jacdDmPMIPJMsBKE0AxbX+iHFwg+dVU778MF/fGqkU8fVeQ9F+dA
-	daTzxrsHpN48w1u0G2E1gxLqbplnsCVcSUgalx50V0FbY3w5d3eG4a3ERWpARyurJR7fol
-	cdWZwjQ5J4ZqSwmddNFLhW03MmSSYD0=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=z4vImUuz5gXwBthaSk4zpKVBhpNpdK0P0dtelk1zWfg=;
+	b=erdcAZJXt7tBAvd27c1NzhtBXCJTFR7vYNI5WA8lsugPKWaz6AlbHawU0i7Jqxs3u7NMGF
+	UyYYkG/yYR7MJIJ305pZF2GsNim7wAzdz7IKWVcV6+PMJo7hByKndDrIlombCaGEtiDh00
+	Ula04ROpuXvYD22A8w+pAaplXmzfjxg=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-633-JbyiGcx2OXCaLgotE6mz2w-1; Tue, 04 Feb 2025 15:41:34 -0500
-X-MC-Unique: JbyiGcx2OXCaLgotE6mz2w-1
-X-Mimecast-MFC-AGG-ID: JbyiGcx2OXCaLgotE6mz2w
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4362153dcd6so30270385e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Feb 2025 12:41:34 -0800 (PST)
+ us-mta-358-ByfpMk4IOYqK1NuBQqeB_w-1; Tue, 04 Feb 2025 15:47:58 -0500
+X-MC-Unique: ByfpMk4IOYqK1NuBQqeB_w-1
+X-Mimecast-MFC-AGG-ID: ByfpMk4IOYqK1NuBQqeB_w
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4361eb83f46so47875075e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Feb 2025 12:47:58 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738701693; x=1739306493;
+        d=1e100.net; s=20230601; t=1738702077; x=1739306877;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
+         :content-language:references:cc:to:from:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=756onm9SaiF/RTT8cEu/91K4nMKJxzo0rdjfNMK8HaU=;
-        b=qisQg6dvVZ2nfsf5eI46iOcElJkGxQRXJ17yM15XeItETPzEi8cNGnHAsxc/xLAkc3
-         8rvZGiKnDfoKWlFXxz2Sv+HDjOCgN2YWb7UXIHM5Fz5EzILcft/undlxcev0TFcDCJWJ
-         hxLenwM/5n78BBvA4m6itnC8q0bzI4+ngPO5d9Gfj7c71KT/NuLB+nctOV9b8L0zKhC7
-         8u2PHaCKF+/in7ZYFLuRtNTj7cFGIL4yXA8jCKfWWEa8ThwrlLfWeDdqkmrmy4ZhrRs8
-         ZznisNKYLdZKHLVu3ABlc0u46Ldzpd7oKwFNOoGyjPtzmRxi1nl4kFACwErLKv8ITfZY
-         B+aw==
-X-Forwarded-Encrypted: i=1; AJvYcCXVtC11dI0guNkLwFfqwAGBr1q7z8GZa3mkFN+EJN+D61bPrcSNXc+vNR6MeKgpKLnP1T983Swg62B4dgDf3A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwocIzAoLApwz5JGkM+lmAh1rwoi9gAAi061cAH3f6XDXrTrCfm
-	JLqcke2ag4Z7S3+Qe7Br1sUmTHYOzvLFUTNF+1tEQzo+oA2iK8TUSg+L+Pq6MSm5Ac4SlvdNFzV
-	tLl0GDYaoSa8sYVKXZr8MVIrQrJPmBRk3LDO7THCqoFXLLJ77k9/9oxbfatkUKQ50
-X-Gm-Gg: ASbGnctzDXmSR/maXsUzhux3l2C8FVhaqEJ1ej40LD7odszeN/96/TzHoNaD2khcqKr
-	OQqHpsNIPX7qIzkD8/AlATzlFcmdFXw1U34f3o723U2iRzc2dW9ZyQkOEbzJnZOgGO2td3uYAfq
-	kUjZpNem5pcAdFAQMChFM1Rs44hmhmlswhtN+u4Ik9fV84Wm5fDm/3vDBrjRfxO8NYkrLYvcK5r
-	HSH0TUrNsl7lU4xhGhQFuDTna+4CPZfD/q+ZWnDz9mxFi+mLUpyyGkeDz9ne+SIDgvrWvPsrddE
-	cXvTRs8qQd46z73U8fyRnEu0YEp33rwnWx8gsMbJPPSSUIzKUE/M6DeRtSXE7862KngtkL93oMf
-	kv0AfXcA++4bxWBktVSEYk3pujdY=
-X-Received: by 2002:a05:600c:5112:b0:436:fb02:e68 with SMTP id 5b1f17b1804b1-4390d42f7c5mr546375e9.2.1738701693456;
-        Tue, 04 Feb 2025 12:41:33 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHcWlZw4eJvcxbYnSulvZuQawICjLqew9irCZxtfosmn3w3Phu8MvPHgrklUczGiYiTiVvfwQ==
-X-Received: by 2002:a05:600c:5112:b0:436:fb02:e68 with SMTP id 5b1f17b1804b1-4390d42f7c5mr546225e9.2.1738701693147;
-        Tue, 04 Feb 2025 12:41:33 -0800 (PST)
-Received: from ?IPV6:2003:cb:c70a:300:3ae1:c3c0:cef:8413? (p200300cbc70a03003ae1c3c00cef8413.dip0.t-ipconnect.de. [2003:cb:c70a:300:3ae1:c3c0:cef:8413])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38dac5a3e79sm2706524f8f.63.2025.02.04.12.41.30
+        bh=z4vImUuz5gXwBthaSk4zpKVBhpNpdK0P0dtelk1zWfg=;
+        b=LtBjtYYp0qL3Vzxo2RUCu8xc1PSS5WQrRtvrJ05CqlZWWkEEB0ARxRIi4iaK6ckirA
+         tkD+VXxAGAtaYs9Vr1k6Hc/U7OExi4EUjH3OWBDHf3IbcRH7wiO3mllpmW9+eEnB5sQa
+         oE1tI5ly4OlhhZrCKq5WTRPJ3RQPeC7TtXZTEnIa9ryP+esLDSN2ChRPUiVRZBBcuLM5
+         i8NGdkDnXv9bKgk0EHVnoLk9aNJhsyeBBJKP66x9P7ML/CQhDQBjOUAVjyvSFbHOtZe7
+         W2rkoKTvpWO/XzOIn/R1frt+kElc9JKy/3sVhHJHmYW5PLeIo1kxg/F5h5y4OzRlYtlF
+         64wg==
+X-Forwarded-Encrypted: i=1; AJvYcCU215Lq7s8YKOeHq5ar/DhmZTG7pkmSFknWXNJeH5H/ApKXm0IeQ2c7EuY/rUubaF4wxx4cEbA6LC3eAiOnQQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyMyYYv24mZ/afpY6z7QjIUc/SU3naDKLgX8reBsEm0dYEUJKkP
+	dB4ta8Pc3UWV9DkEXnzzQ/r/MTRwHOniZG2qaFSUjaVaK1Gt4A5slKMPOxHmjLV9okclLvg9bxM
+	SN6b9IpOITZgE7Xs0HFVyLTKPOAZ4CdZ8ij/2j3hBsElhrnGarOyLAdI3jmQQn09M
+X-Gm-Gg: ASbGncviy9xTFObP6R5rF88jzAzLMV0RvsQC8GyfTJ7Kr5fhoXXv+Epl5pVS7jZZ7RL
+	0Z/k/GwDW8/d19FzCXE+xdGrqps/SAdKGVdoKd9ezg3HtbqQ3/2Plim6F4kR2ORUSGfB304H8DL
+	rGpvABkufhHi0X0u3jr+G4zHM0UfRxzSGZrEtOvj9Py8xCPQhF5fiSyafUj4qf2aEZ5NhVFmbYo
+	LyACR+SaE9WxxmN6pNoZ7sc5+EXxrxnPK9XBB3IIBWU0aGoWFt8jGBwdQGxLtRRgHuIjCwWpFQX
+	jlXqdZLyRGOj104EM8w3q0vm/1eV/6p0
+X-Received: by 2002:a05:600c:5252:b0:436:30e4:459b with SMTP id 5b1f17b1804b1-4390d43e153mr631585e9.18.1738702077060;
+        Tue, 04 Feb 2025 12:47:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG8MfxYAnnJeUXQFxt7doefvYBPuFEStFKJefTGH1z0tD/45gZRF4e/Q5kb3BA51DWWjYy/Lg==
+X-Received: by 2002:a05:600c:5252:b0:436:30e4:459b with SMTP id 5b1f17b1804b1-4390d43e153mr631415e9.18.1738702076694;
+        Tue, 04 Feb 2025 12:47:56 -0800 (PST)
+Received: from [192.168.3.141] (p5b0c6602.dip0.t-ipconnect.de. [91.12.102.2])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438e245f41esm202542205e9.36.2025.02.04.12.47.53
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Feb 2025 12:41:32 -0800 (PST)
-Message-ID: <08ce9562-9ded-4d95-a495-b60f90d75490@redhat.com>
-Date: Tue, 4 Feb 2025 21:41:29 +0100
+        Tue, 04 Feb 2025 12:47:55 -0800 (PST)
+Message-ID: <c4c39ea5-3602-4b92-9ffd-af33e122538d@redhat.com>
+Date: Tue, 4 Feb 2025 21:47:53 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -77,6 +76,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 0/6] rust: page: Support borrowing `struct page` and
  physaddr conversion
+From: David Hildenbrand <david@redhat.com>
 To: Jason Gunthorpe <jgg@ziepe.ca>
 Cc: Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>,
  Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
@@ -97,7 +97,7 @@ References: <20250202-rust-page-v1-0-e3170d7fe55e@asahilina.net>
  <20250204183933.GJ2296753@ziepe.ca>
  <1d379007-97c3-4bb9-93da-1a828f955fc4@redhat.com>
  <20250204202656.GL2296753@ziepe.ca>
-From: David Hildenbrand <david@redhat.com>
+ <08ce9562-9ded-4d95-a495-b60f90d75490@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -143,40 +143,36 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20250204202656.GL2296753@ziepe.ca>
+In-Reply-To: <08ce9562-9ded-4d95-a495-b60f90d75490@redhat.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: grSplZLM7599guE1BV71_HhphBuJg-rf_4OOyy4J8fQ_1738701693
+X-Mimecast-MFC-PROC-ID: HGpHmvoO_LuEN9dpSF6u65ItB0LgswZxDsQ1pkHBur4_1738702077
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 04.02.25 21:26, Jason Gunthorpe wrote:
-> On Tue, Feb 04, 2025 at 09:05:47PM +0100, David Hildenbrand wrote:
->> Fully agreed, this is going into the right direction. Dumping what's mapped
->> is a different story. Maybe that dumping logic could simply be written in C
->> for the time being?
+On 04.02.25 21:41, David Hildenbrand wrote:
+> On 04.02.25 21:26, Jason Gunthorpe wrote:
+>> On Tue, Feb 04, 2025 at 09:05:47PM +0100, David Hildenbrand wrote:
+>>> Fully agreed, this is going into the right direction. Dumping what's mapped
+>>> is a different story. Maybe that dumping logic could simply be written in C
+>>> for the time being?
+>>
+>> ?
+>>
+>> Isn't dumping just a
+>>     decode pte -> phys_to_virt() -> for_each_u64(virt) -> printk?
+>>
 > 
-> ?
-> 
-> Isn't dumping just a
->    decode pte -> phys_to_virt() -> for_each_u64(virt) -> printk?
-> 
+> IIUC, the problematic bit is that you might not have a directmap such
+> that phys_to_virt() would tell you the whole story.
 
-IIUC, the problematic bit is that you might not have a directmap such 
-that phys_to_virt() would tell you the whole story.
+... but it's late and I am confused. For dumping the *page table* that 
+would not be required, only when dumping mapped page content (and at 
+this point I am not sure if that is a requirement).
 
-> If you can populate the page table in rust you have to be able to dump
-> it, surely.
-> 
-> Or do you mean trying to decode the leaf entires into some struct page
-> detail? Does a GPU need to do that? Agree that would be better as some
-> C function to take in a KVA instead of a struct page and populate a
-> string with details about that KVA from the struct page.
-> 
-> Jason
-> 
-
+So hopefully Asahi Lina can clarify what the issue was (if there is any 
+:) ).
 
 -- 
 Cheers,
