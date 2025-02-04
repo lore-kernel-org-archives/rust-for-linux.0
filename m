@@ -1,122 +1,105 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB2C211499;
-	Tue,  4 Feb 2025 12:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB8F20D4FC;
+	Tue,  4 Feb 2025 12:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738670660; cv=none; b=bjtxaUgqR74hhRTCjkO6Jvgr7dV9baMMwjsLjKmhFmy4M+ZI6wQtK0/ioAVouW8Q2sM2FCRIwv1bxDtLmDFYy/YcJkcj7uFxc6m76hM5q2vp8l7c/DmExTNZNL+4a9U5bepKw92LN8f42lW0tpyGZeMxFFC1sePQ1+fP2E7z6/M=
+	t=1738670683; cv=none; b=OEZKBbf6rjqAiaxvqMw9zSz1vKV59g96+FoO+5ZADc6ApGq+ANo7vIG82xww4C7i6LhfBFUCYZxttXdrEtKP2QIZRtWeHjGFNATolAwzXVXg9JGDyHvWS2r25CuI9zUc9v51DO59p89tKk/stijApew71B6mn69FBLvClGWs8vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738670660; c=relaxed/simple;
-	bh=omV+qai0C4CUP4OsvQDmxq1tpbs+PK7ywZKq2iNrKK0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JcXQTa2od06NodooDif/JA9Y493UnOLgFYakmTD9P1dsJnhIdq1k5C7KfVPXbURN4ZYoqFbG22eU+UKQPF7NIiVcmCCStClEjKVgzoY1IlkeEO0ByTD1Z7gFChGVXRflyB22uPaMp5yqTzLAtyGESevL2YYGz5/kNamw74d6Z+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W1GVri76; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738670683; c=relaxed/simple;
+	bh=0arBoyu3Hidy2Bd0UioU3I9Dhsom6btci9xWGQw7wPM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=tAeXbykwNCw4aRpNyImsSX4O1gmzVN9PqGemoRAvMu29KkhMGoYRKyWeTU2JmlfoPLqS4cmFFXj0W+WAM5WJw3/DYDiqtXbPLwGbX0iYIu8ud5ooPtz9IXK9QJdvADyJUpaJzBlWgM0+GTPt5PuRRtj07CvDL+04Xv7cjxMpvcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WCboyeFO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W1GVri76"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FF9CC4CEDF;
-	Tue,  4 Feb 2025 12:04:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WCboyeFO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FF92C4CEDF;
+	Tue,  4 Feb 2025 12:04:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738670659;
-	bh=omV+qai0C4CUP4OsvQDmxq1tpbs+PK7ywZKq2iNrKK0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=W1GVri76AWuyn/tlUqkOC8bO3tIQckV61zl+CmUFesQfqBsxp38JYqfjfhCknfcJD
-	 WU9YxIyV6X2KRd9IJpc0ZuI/zMYHu6JgGJBucKp8QPIoDqwsq5/5M31GMuFODhxYZw
-	 M1JWFOZQNHWH1ckDzNBkY3YG9FZnZt5YOEYv3a+59ZjmTnOXO+oKn4eVuI/aCxrzB+
-	 V3Gxc+e8HxyF2Rb1mOzY+UBBPWY9hgG5ZL3ln2RbdLbbaLkuuTZCerCxUoEbBtD26A
-	 Oh1c+B6GRSCw4+FfnLtXaKCxrZTjWSlVhcAo+8gJ99mVCSu3BeByg6c64409as45ZV
-	 8FDHCujEU/a5w==
-Date: Tue, 4 Feb 2025 13:04:13 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
-	Lyude Paul <lyude@redhat.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Liam Girdwood <lgirdwood@gmail.com>, Lukas Wunner <lukas@wunner.de>,
-	Mark Brown <broonie@kernel.org>,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Zijun Hu <quic_zijuhu@quicinc.com>, linux-usb@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 1/5] driver core: add a faux bus for use when a simple
- device/bus is needed
-Message-ID: <Z6ICPc3A5Cy1dgw_@cassiopeiae>
-References: <2025020421-poster-moisture-534b@gregkh>
- <2025020424-retrain-recharger-407c@gregkh>
- <Z6H9g_bvvMf5pPyc@cassiopeiae>
- <2025020435-earwig-zesty-87ea@gregkh>
+	s=k20201202; t=1738670682;
+	bh=0arBoyu3Hidy2Bd0UioU3I9Dhsom6btci9xWGQw7wPM=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=WCboyeFO93OyLDaB3BQ3LHgMLQ+n+0bkkVBDXvlC4y7scGqZtGlIBtWMhFEQH2JH8
+	 mMDRiJRK4A5pVK+iyzZLKXHfb3J7Y8Xx/IWX7hkc6fziAPDfv7papkGxnrYCPJaCXW
+	 dQkRMZJIcbQrkg3Xvwxl85qTxKJKuj4Y5lZKJG/DgNSvjxqvpUKutI6aM4jvKbyATe
+	 nYyRH3F9Au5ZWkvv/Kglred5uf15ZzPWpso83fPj8Cruee/bTnbATg8N0vIo+fzdCE
+	 sYD4XIWvWgudArQ1F5v/Txwf6xJhVGOQGR+36l6v1iYQMEqKLqw1d2WERSXQuTNumD
+	 wrQsnj8c3Xw/w==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Tue, 04 Feb 2025 13:02:08 +0100
+Subject: [PATCH v5 1/5] rust: str: implement `PartialEq` for `BStr`
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025020435-earwig-zesty-87ea@gregkh>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250204-module-params-v3-v5-1-bf5ec2041625@kernel.org>
+References: <20250204-module-params-v3-v5-0-bf5ec2041625@kernel.org>
+In-Reply-To: <20250204-module-params-v3-v5-0-bf5ec2041625@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+ Masahiro Yamada <masahiroy@kernel.org>, 
+ Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
+ Luis Chamberlain <mcgrof@kernel.org>
+Cc: Trevor Gross <tmgross@umich.edu>, 
+ Adam Bratschi-Kaye <ark.email@gmail.com>, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+ Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, 
+ Daniel Gomez <da.gomez@samsung.com>, Simona Vetter <simona.vetter@ffwll.ch>, 
+ Greg KH <gregkh@linuxfoundation.org>, linux-modules@vger.kernel.org, 
+ Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=849; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=0arBoyu3Hidy2Bd0UioU3I9Dhsom6btci9xWGQw7wPM=;
+ b=owEBbQKS/ZANAwAIAeG4Gj55KGN3AcsmYgBnogHXYEu6tWoU6mU3Vx+FudFkvhTU7P/pK4Lhf
+ FdL32HTc6KJAjMEAAEIAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCZ6IB1wAKCRDhuBo+eShj
+ d2K0EAChe2kjKfA+M7h37KcqfhRdnBKojjgbo0udmJQyrFXOUmd+BGUichd/0//xlok3X+M1h/D
+ PsPeOg9A4Nwg8EtZASUxLe62hDnv9RURMzSmjUbGKeW9kz1kLxfsehE4NrCUFRBWxU7wfD8c3PU
+ 9GXAXTK8ay3XB9vDSaDQ6E8TBa3JgNSUJb9qLsqW1Y3VCM9pCFDotT9D5vRVvrj4nZnmzUcjEEA
+ HIaP0R3BvbfLhmHBY1kzCKtf6V1FPga9CnUXZqzOf5JYUAogJqXhkOuieEVGrku79il08SXiMDA
+ QgfJc0FhxhHX2WcRzpZsuwa0D44esIfe7fmPqSKm9T2lGrKiRkN8O7WiVfCcR8I9pGYHY+BAu6G
+ DtwFpiOT2fQgVqSD2EDzpTQNCMww2bMOQqjipjgcA0//ZsxzZpFqYuOiiRO3RXlCQa1H65rLCc+
+ wHa1wSp8iJ33Mbkv2TXaXpwX7D9M2zoPR8ln/JkzN2ic91ML2bsjKvzz9d4TRtBhlx9xcSFOtnR
+ BBIkMFVtZHmVfEHZjsZADbgR9qkZLUzRADdw2A67bbemlPRbL/TzguR34LpISLs+Hz+F8rNCgBU
+ OJ3itTvKv8slpikH+E3FXwggBE4J8tctfs3Q+tOamsB4Vp/4zytXdk198t+f9PFR4qf9J6A1JKE
+ ZHSGGzSns1mkPbA==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-On Tue, Feb 04, 2025 at 12:52:34PM +0100, Greg Kroah-Hartman wrote:
-> On Tue, Feb 04, 2025 at 12:44:03PM +0100, Danilo Krummrich wrote:
-> > On Tue, Feb 04, 2025 at 12:09:13PM +0100, Greg Kroah-Hartman wrote:
-> > > Many drivers abuse the platform driver/bus system as it provides a
-> > > simple way to create and bind a device to a driver-specific set of
-> > > probe/release functions.  Instead of doing that, and wasting all of the
-> > > memory associated with a platform device, here is a "faux" bus that
-> > > can be used instead.
-> > > 
-> > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > ---
-> > >  v2: - renamed bus and root device to just "faux" thanks to Thomas
-> > >      - removed the one-driver-per-device and now just have one driver
-> > >        entirely thanks to Danilo
-> > >      - kerneldoc fixups and additions and string handling bounds checks
-> > >        hanks to Andy
-> > >      - coding style fix thanks to Jonathan
-> > >      - tested that the destroy path actually works
-> > > 
-> > >  drivers/base/Makefile       |   2 +-
-> > >  drivers/base/base.h         |   1 +
-> > >  drivers/base/faux.c         | 196 ++++++++++++++++++++++++++++++++++++
-> > >  drivers/base/init.c         |   1 +
-> > >  include/linux/device/faux.h |  31 ++++++
-> > >  5 files changed, 230 insertions(+), 1 deletion(-)
-> > >  create mode 100644 drivers/base/faux.c
-> > >  create mode 100644 include/linux/device/faux.h
-> > 
-> > I really like it, it's as simply as it can be.
-> > 
-> > Please find one nit below, otherwise
-> > 
-> > Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-> > 
-> > > 
-> > > +/**
-> > > + * faux_device_destroy - destroy a faux device
-> > > + * @faux_dev: faux device to destroy
-> > > + *
-> > > + * Unregister and free all memory associated with a faux device that was
-> > > + * previously created with a call to faux_device_create().
-> > 
-> > Can we really claim that this frees all memory? Someone can still have a
-> > reference to the underlying struct device, right?
-> 
-> That "someone" is the person that had the original device pointer passed
-> to it, so if that person then calls faux_device_destroy(), yes, that
-> should all be properly cleaned up.
-> 
-> But even if it isn't, the device is destroyed and gone from sysfs, and
-> whenever that final final put_device() is called, the memory will then
-> be freed by the driver core itself.
+Implement `PartialEq` for `BStr` by comparing underlying byte slices.
 
-Oh indeed, the code here is perfectly fine. I just wanted to say that calling
-faux_device_destroy() is not a guarantee that "all memory associated with a
-faux device" is actually freed, as the kernel-doc comment above says (or at
-least implies).
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+ rust/kernel/str.rs | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-So, the concern only was that the comment could be confusing, as in "How can
-faux_device_destroy() free the memory, if I still have a separate reference to
-this thing?" (which it clearly would not).
+diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+index 28e2201604d67800f8d6b8f69065dc32710b891e..002dcddf7c7687522a0acbff3ce6f65fa890e216 100644
+--- a/rust/kernel/str.rs
++++ b/rust/kernel/str.rs
+@@ -108,6 +108,12 @@ fn deref(&self) -> &Self::Target {
+     }
+ }
+ 
++impl PartialEq for BStr {
++    fn eq(&self, other: &Self) -> bool {
++        self.deref().eq(other.deref())
++    }
++}
++
+ /// Creates a new [`BStr`] from a string literal.
+ ///
+ /// `b_str!` converts the supplied string literal to byte string, so non-ASCII
+
+-- 
+2.47.0
+
+
