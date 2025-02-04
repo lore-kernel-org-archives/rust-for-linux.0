@@ -1,83 +1,159 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6641509BD;
-	Tue,  4 Feb 2025 18:56:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A264685;
+	Tue,  4 Feb 2025 19:01:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.63.210.85
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738695418; cv=none; b=b9XMcO/XTir7Siu5Mz1vgr1OJzY1msubEGqGPDUIeYD6+EGYXYJWpQusHOMUb1DLq8TzA6i2KPwOk/Flrx1+5V0hW1Yl9fxc1t1bgPDU6xFrNErFuJDI+grY4XXI0agOIIPyj5tTMebtW0Ay6hgjWnE6hLPuYfXt3xdYde6b68c=
+	t=1738695671; cv=none; b=qn6Tzg5CL6KDO1FEjQ8db4D70hARnXCoRRbvwYAO/Ln9nhnTB/FRAXQRwUQYcx0bUz+73hKFwVytC72eF6HkkxV/+0ywnnctLFuv/mN984yvRoNzoAUIbGrwGIeRztKLZNRZLPZaTBd+fh7BIlrLU4M1RH934pbLE3tt/kANrDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738695418; c=relaxed/simple;
-	bh=+xlWDqA1nktIztC11TUlrCC7pQTndNouzw5baByuO/Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i2OhQCi46nZrs2SWRoXWNU8P7LC57tJ5a2nuY+cMp6vP/TIJ0DeqcOmAekQqIVb/CIyprskmSeIz1oirmSyusJUt/ExxYyRCxv3IMUImB25tR7qbkMLwt2qNn3Jm+EY8J5jCRoTqfbLrRr2Q2/CO6lHugbPl5zphbiHxjtd+4oA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SC1coa+x; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738695671; c=relaxed/simple;
+	bh=j1HluQu+SfdI+WQgxoy9vEPWh80MpLWIZgMzLSmRvYY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LbIteNdlmi5Bczr9qOUhCormBHEs8iyfW12yg+gxBdiPOu6Wd8+Teez8f7bPZLKuQmXus2cE3P4Z7RRhs9cX96m+FHKyR1nO/cXk7SBlNXQbW/C0zeoABjNLIAV5rTh7Cuhe2Q/mCQv9HMqViRjPejHThOYQpDGJLML9S6MwYsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net; spf=pass smtp.mailfrom=asahilina.net; dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b=D+MPcFU6; arc=none smtp.client-ip=212.63.210.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asahilina.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SC1coa+x"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68C39C4CEDF;
-	Tue,  4 Feb 2025 18:56:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738695417;
-	bh=+xlWDqA1nktIztC11TUlrCC7pQTndNouzw5baByuO/Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SC1coa+xa1wViaQHjAzIsR7pvYfAcoh9lEYTOxbZ2oEoiR/uvXrmWQIP2rKTFXVkJ
-	 2hXeUFPLlWADm/MXPZLj4OUugt2CaBReKR5Mb/bEFRvF8tzsqrGA4bYOT+j3xyvVOs
-	 c8y4+K9W50C4GWUu1rVVbjWcC0W/tS+Zsuh0Hb9eMc1QuUdruj16+URqkkoPrCp5kU
-	 DwhhtH26xTW3T6Ui0W0KFncfC13rvzFqBHqY2tcqA/7hA02oT49MbG9g+C303moIVR
-	 3FLx3uwZ5k8gqFwJiMbjXHFIC52w0eaCT7+0NTHRYbq5tPCeVLvXORG6roCdzfZo/1
-	 J7FtICqOV6eTg==
-Date: Tue, 4 Feb 2025 19:56:49 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Timur Tabi <ttabi@nvidia.com>
-Cc: "corbet@lwn.net" <corbet@lwn.net>,
-	"ajanulgu@redhat.com" <ajanulgu@redhat.com>,
-	"tzimmermann@suse.de" <tzimmermann@suse.de>,
-	"simona@ffwll.ch" <simona@ffwll.ch>,
-	"lyude@redhat.com" <lyude@redhat.com>, Zhi Wang <zhiw@nvidia.com>,
-	"airlied@gmail.com" <airlied@gmail.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	"maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
-	Ben Skeggs <bskeggs@nvidia.com>,
-	"mripard@kernel.org" <mripard@kernel.org>,
-	Neo Jia <cjia@nvidia.com>, Andy Currid <acurrid@nvidia.com>,
-	"pstanner@redhat.com" <pstanner@redhat.com>,
-	"tmgross@umich.edu" <tmgross@umich.edu>,
-	"benno.lossin@proton.me" <benno.lossin@proton.me>,
-	"nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
-	"gary@garyguo.net" <gary@garyguo.net>,
-	"a.hindborg@kernel.org" <a.hindborg@kernel.org>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>,
-	"boqun.feng@gmail.com" <boqun.feng@gmail.com>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"alex.gaynor@gmail.com" <alex.gaynor@gmail.com>,
-	"aliceryhl@google.com" <aliceryhl@google.com>,
-	"ojeda@kernel.org" <ojeda@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH 1/2] gpu: nova-core: add initial driver stub
-Message-ID: <Z6Ji8XrBtrXvdZZY@cassiopeiae>
-References: <20250131220432.17717-1-dakr@kernel.org>
- <2d521b9d57338927a176118587dca545f5e4f170.camel@nvidia.com>
+	dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b="D+MPcFU6"
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: lina@asahilina.net)
+	by mail.marcansoft.com (Postfix) with ESMTPSA id 74ACC4331F;
+	Tue,  4 Feb 2025 19:01:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
+	s=default; t=1738695664;
+	bh=j1HluQu+SfdI+WQgxoy9vEPWh80MpLWIZgMzLSmRvYY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=D+MPcFU6p7Oo9Mj2A5QSdzn1y0txF2ESXFgZr9fCpXslAfcOiJWqRv4V4SEEJVOdp
+	 Snd0CK4TdO1U/Hi8JyMT6pzpxto8YIbGDbZAcbXUCbkw9afGkdU45x8wx5vm3iK/yA
+	 p2KQISHYMO4KSpY/Vihk5csasR741Txi+1AlcYIEyvZ+qcF7Ka7qgGylGx2ElaliIs
+	 jSbP8IGjGuMCH3uzs5PCfmZra3uMXrBCF2QG5JwJ7EWwnajzRnXsNBVSWsK/uKUqMb
+	 hYDSZdgqjaSr9ggJhpZqsbcYaE3P7EBg8lJQpClqAGvZTZ7RIC6+16BktEzYyXw6Co
+	 otXaMNP5KhvQA==
+Message-ID: <7253bfc0-9a49-4d0e-a7de-43069e6b2e5f@asahilina.net>
+Date: Wed, 5 Feb 2025 04:01:00 +0900
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2d521b9d57338927a176118587dca545f5e4f170.camel@nvidia.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/6] rust: page: Support borrowing `struct page` and
+ physaddr conversion
+To: Jason Gunthorpe <jgg@ziepe.ca>, David Hildenbrand <david@redhat.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Jann Horn <jannh@google.com>,
+ Matthew Wilcox <willy@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Danilo Krummrich <dakr@kernel.org>, Wedson Almeida Filho
+ <wedsonaf@gmail.com>, Valentin Obst <kernel@valentinobst.de>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ airlied@redhat.com, Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ asahi@lists.linux.dev
+References: <20250202-rust-page-v1-0-e3170d7fe55e@asahilina.net>
+ <Z6CTLB2NggwYafi9@phenom.ffwll.local>
+ <1eaf66ba-b2d3-448f-938b-913f17ca98a4@redhat.com>
+ <20250204183933.GJ2296753@ziepe.ca>
+Content-Language: en-US
+From: Asahi Lina <lina@asahilina.net>
+In-Reply-To: <20250204183933.GJ2296753@ziepe.ca>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Feb 04, 2025 at 06:42:46PM +0000, Timur Tabi wrote:
-> On Fri, 2025-01-31 at 23:04 +0100, Danilo Krummrich wrote:
-> > +/// Structure encapsulating the firmware blobs required for the GPU to operate.
-> > +#[allow(dead_code)]
-> > +pub(crate) struct Firmware {
-> > +    booter_load: firmware::Firmware,
-> > +    booter_unload: firmware::Firmware,
-> > +    gsp: firmware::Firmware,
+
+
+On 2/5/25 3:39 AM, Jason Gunthorpe wrote:
+> On Tue, Feb 04, 2025 at 11:33:24AM +0100, David Hildenbrand wrote:
+>> On 03.02.25 10:58, Simona Vetter wrote:
+>>> On Sun, Feb 02, 2025 at 10:05:42PM +0900, Asahi Lina wrote:
+>>>> This series refactors the existing Page wrapper to support borrowing
+>>>> `struct page` objects without ownership on the Rust side, and converting
+>>>> page references to/from physical memory addresses.
+>>>>
+>>>> The series overlaps with the earlier submission in [1] and follows a
+>>>> different approach, based on the discussion that happened there.
+>>>>
+>>>> The primary use case for this is implementing IOMMU-style page table
+>>>> management in Rust. This allows drivers for IOMMUs and MMU-containing
+>>>> SoC devices to be written in Rust (such as embedded GPUs). The intended
+>>>> logic is similar to how ARM SMMU page tables are managed in the
+>>>> drivers/iommu tree.
+>>>>
+>>>> First, introduce a concept of Owned<T> and an Ownable trait. These are
+>>>> similar to ARef<T> and AlwaysRefCounted, but are used for types which
+>>>> are not ref counted but rather have a single intended owner.
+>>>>
+>>>> Then, refactor the existing Page support to use the new mechanism. Pages
+>>>> returned from the page allocator are not intended to be ref counted by
+>>>> consumers (see previous discussion in [1]), so this keeps Rust's view of
+>>>> page ownership as a simple "owned or not". Of course, this is still
+>>>> composable as Arc<Owned<Page>> if Rust code needs to reference count its
+>>>> own Page allocations for whatever reason.
+>>>
+>>> I think there's a bit a potential mess here because the conversion to
+>>> folios isn't far enough yet that we can entirely ignore page refcounts and
+>>> just use folio refcounts. But I guess we can deal with that oddity if we
+>>> hit it (maybe folio conversion moves fast enough), since this only really
+>>> starts to become relevant for hmm/svm gpu stuff.
+>>
+>> I'll note that in the future only selected things will be folios (e.g.,
+>> pagecache, anonymous memory). Everything else will either get a separate
+>> memdesc (e.g., ptdesc), or work on bare pages.
+>>
+>> Likely, when talking about page tables, "ptdesc" might be what you want to
+>> allocate here, and not "folios".
 > 
-> What about the bootloader?
+> I just posted a series to clean up the iommu code that this is
+> cribbing the interface from: add an ioptdesc, remove all the struct
+> page from the API and so forth:
+> 
+> https://lore.kernel.org/all/0-v1-416f64558c7c+2a5-iommu_pages_jgg@nvidia.com/
+> 
+> I strongly suggest that rust not expose these old schemes that will
+> need another cleanup like the above. Page tables just need an
+> allocator using simple void *, kmalloc is good enough for simple
+> cases.
+> 
+> Drivers should not be exposing or touching struct page just to
+> implement a page table.
 
-Gonna add it.
+iommu-pages.h looks like a private API internal to drivers/iommu. Is
+there a plan to move that out so it can be used by non-iommu drivers?
+
+If you think I should just use kmalloc, then I guess I could literally
+just use KBox<PageTable> where PageTable is just a wrapper around [u64;
+PTES_PER_PAGE] with an alignment attribute, or something like that. I
+guess then just virt_to_phys() and back for the PTEs? So we still need
+to add at least trivial wrappers to export those for Rust drivers to use.
+
+I still need to be able to grab pointers to leaf pages for the crashdump
+page table walker code though, and I want to keep the pfn and memory
+type checks to make sure it won't crash trying to dereference the page
+contents. So we also still need those too.
+
+I'm not entirely sure what a higher-level Rust abstraction for this
+looks like at this point, or whether it makes sense at all instead of
+just trivially wrapping the C helpers... I don't particularly mind just
+writing this part of the driver code "like C" (it's pretty much the
+lowest-level bit of code in the driver anyway) but I guess we have to do
+some thinking here.
+
+Maybe this is one of those cases where we just do it ad-hoc for now, and
+wait until a second driver that needs to implement page tables comes
+around and we figure out what can be shared then, and what the API
+should look like.
+
+Hmm, starting to think maybe these should literally be impls on the
+address types (PhysicalAddr::to_pfn(), PhysicalAddr::to_virt(), etc.).
+Though that won't work without newtyping everything, but maybe we should?
+
+~~ Lina
+
