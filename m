@@ -1,131 +1,101 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D321519A0
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Feb 2025 12:15:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164C015198A;
+	Wed,  5 Feb 2025 12:27:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738757746; cv=none; b=F9icpwXqzkV7ufFijycLZuMe8HfYE7EBtCCcVl45XsqkdFVDOfx3lvbjCkybvC43T6xqpQnB+K4BS68l2wQxbU80ePhjBveiND6IT0GP4NHUL2hHITSKe8pc4nUA2XlGDgfOzMl7ieK1+dkhAnx7NGwztLLq2yMOUI1x+rxZzVI=
+	t=1738758454; cv=none; b=AyxA6WvHypZowqYWv3gik3E2HccB7HKtcaO9+Y8Jxf2ARwzkJJETN6UGekVJ6i+VJZO12+H6pyE+asUZLz6luaom1ZmE1IFUmDjbrsjpkrUpSYLYdrvy+6FLUhBfDnU9LMASvoVPb9kA+E8Rbw5SgHOik3AEW6tAcHU6dEJncmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738757746; c=relaxed/simple;
-	bh=J7wilqmPHsuhrjWldKeEduAhOIlOAovrmJnuTkf85mU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FiLXuFMRwPYVKgcmB7GKS9MFPRI/cO5l/RbMd6eR0WHPqoiOOh20S5ethqFCBvZJB9l30+LsTe/Ajv6QrJtaXVQbol28YtLb2AT4Km/do8C64JSe+s0KqW5DBo6RWZfFCTfcVxeQBZh0KVRs+xyfB0sak4qsNJTM6n8uc+YfOx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Fv563eM8; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1738758454; c=relaxed/simple;
+	bh=Hv+9xYQ9CAGfmXnWvUtaY/aBiYCQlbRi5+XZwb6tiGA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qeajkpC1E5UbGBPdfibkiYFndtB/pq3bZPKheJK8NU3IWUETFqzgGvEk4rMNb08sbJgdB1+MTa+G7XPY1n8AzPZdwAhoX8aP2bNxoQIUgFyJpI461Tqd+Q5t26Z85xk7YYnOvF6kRu76twvMF8SwSdHldKGC+hFeJbdnZbPHAIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wLB2Lsgu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Fv563eM8"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-43621d27adeso46043175e9.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 05 Feb 2025 04:15:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738757743; x=1739362543; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9RLrvslM9aFEcwqi4eoMGeCeN5mBvMg4pwEiJB6GaxM=;
-        b=Fv563eM8kjRfnVHBsAY+gimHVvYSVD4Z0r6ZgfudHh+dVVc3mPuQY6FitheAj33Usl
-         GoM2V7pHX1kT1oK3QD/AYXQu5DIvVJ3P8hjFQqoHjJGE31Gqn1ObyviWSaaq74GXutsK
-         QXpPHKSNBiD4YSar61ZscV3W0UJoPen2KetRV4KtmPt2htKxV+eUyqKAUuQjilZifkJg
-         gFeopTQfdXeoJBMC5FLc5JLhgNBrfgSg0eZby4Djl23NPAZx80Qh7f042FD1HIfdNHm6
-         439/lC5tXkuAskajoIHugRWRTZEB2omo5qJdiq44IkqD0am/S7IOUgCUbq1FOjvvBOf0
-         Y4ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738757743; x=1739362543;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9RLrvslM9aFEcwqi4eoMGeCeN5mBvMg4pwEiJB6GaxM=;
-        b=Fonpkr52uxfGCpE0z8Pw5U7d7CcvwkLhSUldEtxITydYIgjMxhqyZrEuqBSe1zauxK
-         BNTofwbbd3dKpc8wDNytmLeBXFMtWFq30N5EWQ50/qD3xhdT2nZHi40MHwqLHKxOlQcO
-         zq6wt8ydD8IvfPLirXtneePhmyQ/6oXy3lj/m6yJMYgwjoYo7d9U0i/jzFjQ7psy9NPq
-         dbCZtpHIEcliqpS0+Neet1VNS5G2bO6x3qB4F45jdrrX/rmz8eBV6fopvzDQ40fRMPO1
-         oNg2u3AGUF4TSDKeVKg/Aoy8FDjoJ4TZ3vTDaKR+0tXk6uCHt21ZCH/RvQ4G6bzz9k7H
-         qXMg==
-X-Forwarded-Encrypted: i=1; AJvYcCUnI+uYcrw5Z+LVLB5yFhvRad7zQbAmFV6tKmOao0MLKbs8iXShSdDwT1gAyNymNnZ6XZktuyBVS4U/ghncVA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcYNy9rSucOXWbBCPDNMcr/qHqzBiLs/dkqS+TcHwdNBalnIVO
-	b/Ygzk3Bey1oE4zUU/pSRcFPadBdR6yy9w/PH+Rm7mk5KZQ6F8ab7kBRCAZcZPNCffXrAmWd31I
-	o1Zj/fLAHbANrEL4+S/q58hBGyEnC8deXE4jY
-X-Gm-Gg: ASbGnctl6UJoGnlGJn8zBwdayRzSqbbQcvgqBT2txhl+C5vE0z0BEyAcZPex6X4hivg
-	Five2iewO1BhBMjojo1Duc1WwFBUVnxPOUsCKzxEyhKHBNUpkKrQ2MpY5xBf7+DHLIu7SkARtFI
-	vj0pjURTiEQAuSiQAssd0YhuSR23o=
-X-Google-Smtp-Source: AGHT+IFFRYDcBNRUvh03b1ZpAg+T3eOWU8MKC6oSOTuMU6IgCntz4KLfqSMmEcACpE/3OM6T62hPydq7xJ0UjjusIvY=
-X-Received: by 2002:a05:600c:3b11:b0:434:a852:ba6d with SMTP id
- 5b1f17b1804b1-4390d4342abmr18361165e9.9.1738757743090; Wed, 05 Feb 2025
- 04:15:43 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wLB2Lsgu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1340C4CEE2;
+	Wed,  5 Feb 2025 12:27:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1738758453;
+	bh=Hv+9xYQ9CAGfmXnWvUtaY/aBiYCQlbRi5+XZwb6tiGA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=wLB2LsguuDjrJK4Diz4d/2AQQANLOS821Tq9RcqF8B43gfkWg3C1w+jlaEBMRd7n9
+	 Y9g2YOzeiIKW/BE5zgGF87bJ95uTkcuTto0Va4MG8v9dukxSd4mgmlKCsPEpbnHj9c
+	 Mcs78Xu2aFHFVM65F2sb4tEebAQTsKqs7pqvWp84=
+Date: Wed, 5 Feb 2025 13:27:30 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Peter Chen <peter.chen@kernel.org>
+Cc: linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Lyude Paul <lyude@redhat.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Liam Girdwood <lgirdwood@gmail.com>, Lukas Wunner <lukas@wunner.de>,
+	Mark Brown <broonie@kernel.org>,
+	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Zijun Hu <quic_zijuhu@quicinc.com>, linux-usb@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 3/5] USB: phy: convert usb_phy_generic logic to use a
+ faux device
+Message-ID: <2025020505-harsh-divisibly-51cc@gregkh>
+References: <2025020421-poster-moisture-534b@gregkh>
+ <2025020424-overstock-scheming-6a30@gregkh>
+ <20250205101916.GA4083@nchen-desktop>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250130-condvar-freeze-v1-1-a91d5661d505@google.com>
- <20250203115418.GB14028@noisy.programming.kicks-ass.net> <CAH5fLggyyP1A=uNxr2iYNKOj0V5rxZRU83TRgs6Ah1uJ=Ee2uA@mail.gmail.com>
- <20250203133843.GG7145@noisy.programming.kicks-ass.net> <CAH5fLgjVyCSTyZqS7uSzWMTKvrxPL55PKUyM-H0RrnuZiU9VEg@mail.gmail.com>
- <Z6DS6cIWgGsX7FXL@tardis.local>
-In-Reply-To: <Z6DS6cIWgGsX7FXL@tardis.local>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 5 Feb 2025 13:15:31 +0100
-X-Gm-Features: AWEUYZl0MM3H2ej-cs_2WXNnkdTtvZUWRhiPa7g5MlTz6fq8IJdCvnZGxjsiPnU
-Message-ID: <CAH5fLgj0gGxSWv1U+kjWTwAx7yfJCJ4u_cjfBwZjghZ5udbyuw@mail.gmail.com>
-Subject: Re: [PATCH] rust: sync: add wait_interruptible_freezable
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
-	Waiman Long <longman@redhat.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250205101916.GA4083@nchen-desktop>
 
-On Mon, Feb 3, 2025 at 3:30=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> wr=
-ote:
->
-> On Mon, Feb 03, 2025 at 02:41:37PM +0100, Alice Ryhl wrote:
-> > On Mon, Feb 3, 2025 at 2:38=E2=80=AFPM Peter Zijlstra <peterz@infradead=
-.org> wrote:
-> > >
-> > > On Mon, Feb 03, 2025 at 12:56:05PM +0100, Alice Ryhl wrote:
-> > > > On Mon, Feb 3, 2025 at 12:54=E2=80=AFPM Peter Zijlstra <peterz@infr=
-adead.org> wrote:
-> > > > >
-> > > > > On Thu, Jan 30, 2025 at 11:30:44AM +0000, Alice Ryhl wrote:
-> > > > > > Binder allows you to freeze a process where some of its threads=
- are
-> > > > > > blocked on the Binder driver. To make this work, we need to pas=
-s
-> > > > > > TASK_FREEZABLE when going to sleep in the appropriate places. T=
-hus, add
-> > > > > > a new method wait_interruptible_freezable for the condition var=
-iable so
-> > > > > > that sleeps where this is supported can be marked as such.
-> > > > >
-> > > > > The constraint on freezable is that you must not hold locks. Ther=
-e is a
-> > > > > lockdep check for this in the code, but it would probably make se=
-nse to
-> > > > > teach Rust about this constraint as well, hmm?
-> > > >
-> > > > Unfortunately, I don't think there's any way to enforce this at
-> > > > compile time, but I'm definitely happy to add this in the
-> > > > documentation.
-> > >
-> > > Ah, ISTR people talking about teaching Rust about the whole raw_spinl=
-ock
-> > > vs spinlock vs mutex nesting order and figured if it can do that, the=
-n
->
-> Peter, are you talking about the POC idea I proposed on tracking irqsave
-> status:
->
->         https://lore.kernel.org/rust-for-linux/20241018055125.2784186-1-b=
-oqun.feng@gmail.com/
->
-> ? I'm working on this right now, however, I don't think this would help
-> spinlock or mutex nesting? Because there's no global(percpu) status of
-> acquiring these locks. Am I missing something here?
+On Wed, Feb 05, 2025 at 06:19:16PM +0800, Peter Chen wrote:
+> On 25-02-04 12:09:15, Greg Kroah-Hartman wrote:
+> > The usb_phy_generic code was creating a "fake" platform device to pass
+> > around in different places.  Instead of doing that, use the faux bus
+> > instead as that is what is really wanted here.
+> 
+> Hi Greg,
+> 
+> As far as I know, there are some platforms use the device-tree to get
+> the system resource (eg, clock, reset, regular) for this driver.
+> We may not use fake bus for this driver.
 
-I assumed that Peter was talking about klint, but I don't know.
+But there is no system resources assigned to this device/driver at all,
+so how is it getting anything here?
 
-Alice
+> $grep -rn "usb-nop-xceiv" arch/arm64/boot/dts/*
+> 
+> arch/arm64/boot/dts/altera/socfpga_stratix10.dtsi:649:		compatible = "usb-nop-xceiv";
+> arch/arm64/boot/dts/freescale/imx8mm.dtsi:275:		compatible = "usb-nop-xceiv";
+> arch/arm64/boot/dts/freescale/imx8mm.dtsi:285:		compatible = "usb-nop-xceiv";
+> arch/arm64/boot/dts/freescale/imx93.dtsi:238:		compatible = "usb-nop-xceiv";
+> arch/arm64/boot/dts/freescale/imx93.dtsi:245:		compatible = "usb-nop-xceiv";
+> arch/arm64/boot/dts/freescale/imx8mn.dtsi:1321:		compatible = "usb-nop-xceiv";
+> arch/arm64/boot/dts/intel/socfpga_agilex.dtsi:149:		compatible = "usb-nop-xceiv";
+> arch/arm64/boot/dts/intel/socfpga_agilex5.dtsi:133:		compatible = "usb-nop-xceiv";
+> arch/arm64/boot/dts/marvell/cn9132-db.dtsi:30:		compatible = "usb-nop-xceiv";
+> arch/arm64/boot/dts/marvell/cn9132-db.dtsi:44:		compatible = "usb-nop-xceiv";
+> arch/arm64/boot/dts/marvell/cn9131-db.dtsi:33:		compatible = "usb-nop-xceiv";
+> arch/arm64/boot/dts/marvell/armada-3720-db.dts:43:		compatible = "usb-nop-xceiv";
+> arch/arm64/boot/dts/marvell/cn9130-crb.dtsi:49:		compatible = "usb-nop-xceiv";
+> arch/arm64/boot/dts/marvell/cn9130-crb.dtsi:53:		compatible = "usb-nop-xceiv";
+> arch/arm64/boot/dts/marvell/cn9130-db.dtsi:52:		compatible = "usb-nop-xceiv";
+> arch/arm64/boot/dts/marvell/cn9130-db.dtsi:66:		compatible = "usb-nop-xceiv";
+> arch/arm64/boot/dts/marvell/armada-8040-db.dts:53:		compatible = "usb-nop-xceiv";
+> arch/arm64/boot/dts/marvell/armada-8040-db.dts:67:		compatible = "usb-nop-xceiv";
+> arch/arm64/boot/dts/marvell/ac5-98dx35xx-rd.dts:36:		compatible = "usb-nop-xceiv";
+> arch/arm64/boot/dts/marvell/armada-3720-espressobin-ultra.dts:39:		compatible = "usb-nop-xceiv";
+
+Does this actually work at all?  There is no real resouces here that I
+can see, so what am I missing?
+
+thanks,
+
+greg k-h
