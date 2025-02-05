@@ -1,96 +1,118 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9AD8C11;
-	Wed,  5 Feb 2025 12:59:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9182136658;
+	Wed,  5 Feb 2025 13:12:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738760387; cv=none; b=SfGGcroI5EtizQyhnPWM5tqP84AanI75TmoYgifIw9tD2dGdx9yAWO3XOfkfckSl3wIi/8oe6ZU/s5SkxXpqQKkbaZusp372/bLJQNF+OWZINbffhQXUEu35LzlXarq6LREDwwfta1bOmvuhUJ5DkMdcL4XYGqLH/s3P3o7DHSI=
+	t=1738761170; cv=none; b=BAZ3vQgXHeqLF0D02cgu0uBFB0F1lJdqn+pz1QyDz3VZSPPvuyGlxstOqRWebJRVVPZoOCSZPDaTO3ezVeYncQMzWm/11onwisvEKr4MW8+g8Gu9XLneLiuYOFUsImaMk4yx8Nj4sHKuSX25Gjxgxk3zIOn0DowCSHFtYN4VvDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738760387; c=relaxed/simple;
-	bh=26CJ6eCx9sOjWqCu2BT3cZKrGbPD0dZZbBOZtjTojz4=;
+	s=arc-20240116; t=1738761170; c=relaxed/simple;
+	bh=6duYIf6h8o+WP0mCCkxvBXN2EQNvmCIGytkRay1nDck=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MKv1JxeD8TCnCnhPWv8mwBwyY6AxXH7Km5KbnImV38EN6D3a4HPeajaQBaca9Kupq7/SkLjd+c6Vqugg36NLz/PW1+FnEMRs0t9R2h4SbH3GoiUhmwPcz+a/LxAcHGbk7jTtLKbW10ICdnxevmXcP6qx8j9aXSSDvmLbnzxWEcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KzadPKl/; arc=none smtp.client-ip=209.85.214.171
+	 To:Cc:Content-Type; b=rr9a+knMuQlteIh2oAdnzoVkXgJ5VgasNnegYkzEds6mhuMCi45w36C22SXFnL4qUKd8IoLCQzgDZDDGy4eIbZIkqLxLmMG+JmACPdzNbggCFMBZhIT+1W0CVoUtI0QTrwUZz1gPAKb4sQ+fL0UvQIk7XrOxXujWr1mH6lnU7zE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RTScxOd5; arc=none smtp.client-ip=209.85.216.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KzadPKl/"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-21f075df4faso3025855ad.1;
-        Wed, 05 Feb 2025 04:59:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RTScxOd5"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2f45244a81fso1404434a91.1;
+        Wed, 05 Feb 2025 05:12:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738760385; x=1739365185; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1738761168; x=1739365968; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=26CJ6eCx9sOjWqCu2BT3cZKrGbPD0dZZbBOZtjTojz4=;
-        b=KzadPKl/OY8u2i8dSIy+abZ8nKMlVt+AqY0Z1V4s5UuBTOep5uiTMKYlqhyxBVqkes
-         i1nFeAcksNXh5P8133kZTr1SvmvKJXMrAEDFhLMSZ0parw+TLyDnpDDjM2/zz8i0Kwcb
-         opfOvQflc9jVw8kty1Cd+qY/5oOPp0I2RAAkFIgNryfeUwVKxBteqqETNBdLkAwVfmNx
-         Vwx+rMZlU45ziLsO0Vd1O+a4fpuQqsEsgxpnLbfPvL2sEI5wXIUML+hYbtAMuisZMLjV
-         nE6d3rHp1ltAC5Oy7gWsrKKxyyyUrC+aUjp3ykwnBcTWIMRUKoyx60NWnmrlh1xQEjuk
-         zTsg==
+        bh=cAfHGmW5Jn6KSQz8KSJ3YqxRch6Hu8jeIGGPJU3eb1M=;
+        b=RTScxOd5vLX04MVzjVpQwZBrgZktmN0Y/jTbXYTkC2zuJ6NQK/bYzN7dwecclNBFBl
+         MNjvRUsJLJkuS89ltZen3bHX/Ule4xAyTblAYiH1pHr7CPqVM2spQs5QX3SPbPsgOc+4
+         /FYD/wENb0dOMOM4AHerS9U+XuuyJVK8losQfhzRBqtA0QnU4JShxQa0UpY7br63KIHR
+         /ph4Fp8iRRSz7AO7DOj7lD7ExpMLWk3LKjXsei6tF6+/d8hpy3bo7cxLlxbhu1FgidJ9
+         SImudnUqtaWuzif/PZKdJsq2jQMtFY6Js6e0tbGvjRnP/nU+SAe014EOoVmB9DwUvtHH
+         TBnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738760385; x=1739365185;
+        d=1e100.net; s=20230601; t=1738761168; x=1739365968;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=26CJ6eCx9sOjWqCu2BT3cZKrGbPD0dZZbBOZtjTojz4=;
-        b=Jsnbr66MhGH/iitMQUL4SpmmtvCWPq2iblfCzWn7wxMroniJJbQpw5A/mc3sN1ywyX
-         nyJ1GijqNDVN/GCymX8vYtqaL4DWtBEmZupcul43W2b7R/30ZLqaDneIVvsb5/DKwkYe
-         nL7orkBi/zZmPMU8iUueiD6+n5STRnYhXKnMIsMPaeyZeO9Ix5AQLxJhfZHqzhgEZM3j
-         Slhz95/QY3zNawPN07RFYQBJRjG4D7GCPoH38tByf/KVBiorP0JSQ0sK2UXK6hmG4QDs
-         dkKslNYPdK2COfMx4nNtX/fv0XWvkPfW46eDA81jArPVVH9MNsN1vyEuRFkN9AzKVHXm
-         C9Vw==
-X-Forwarded-Encrypted: i=1; AJvYcCU6xMt14VN7Sm7ZopCZniDL5vzgh7yUGxCYS6ys/02Az8HrAW1jt/HMT2JmQJR5RPe4+0dZGMXRkhEfWOj1xE8=@vger.kernel.org, AJvYcCUfs4I+lbXZ3vDw2AmmV0LMQRY6VKAA3mLpjcaiHHM6KpYUt+M5Tj1uyeUoCOpsdzB8qTORzJZRe879bdChe0CacQ==@vger.kernel.org, AJvYcCXP2yTDW6oZq0PQT2r5e3FO60GhkVHjdNFKTEUzY4wSyga1FCRZBwkco5/XHrgiH8d4QOCaYOVNppe+III=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWTvzvbUseCtHfue0A+QxAlpVaSvx/fLJsS/jseUBID80qXtQj
-	O9hJk0HoW7f5oQerfWgIgE8o6HbizWvKHgTPR9sv/7km/l25J2qOye9rQ3wMRRQEwTC5pT3XP9k
-	MfdVZObyJooXkbaqZddHLzfQguCk=
-X-Gm-Gg: ASbGncuHnzjhB6dIEFHPy+P4/690Ycb9p7dTBiwdLomrV10Dtm0uUolQTwsTt7wIdiv
-	uI4LMk845S6e1k0JYPzwqKNAgcY6h1tDwUasxXFBCCB+gZfIn6bL2PdKMdYjj6pkNhsTwZK+W
-X-Google-Smtp-Source: AGHT+IHkri6TNGTSz3U98mXqrXR+r+m35ZqBww+i9hywgTl9AhUoiMtLMP5LF8FnMwbhi4COMqrpcJa3lx42SSdu2wM=
-X-Received: by 2002:a17:902:f54b:b0:215:3862:603a with SMTP id
- d9443c01a7336-21f17ec5e6fmr17560075ad.10.1738760384836; Wed, 05 Feb 2025
- 04:59:44 -0800 (PST)
+        bh=cAfHGmW5Jn6KSQz8KSJ3YqxRch6Hu8jeIGGPJU3eb1M=;
+        b=DEsFyy+oQsh7xgvOoIKh5CA5Lgm5frIVsV7t4jRmrDLbFqQlKUYCuceCdpQBck66mB
+         aERi6g0pIS5LAlAxxkkIERPSVN6L0qVqZRBmUsbMd26id3/LzIAPSh88qJRto2BAvNx9
+         2km1+cF/2djwnD11IQU+pfNFnK/UkJCqdBux8XqL6ZVqMblTJ+mqKa2jY9p/9G/crfNl
+         KJ1pURc+AmAzkHZc/wcDLeozllC75DGEygPZiiJY7PcOor7StJ1QA5gp+7uRcHy5B+tN
+         EcIojzC+GbqJ4uMXnQwaYTL8dUz/ktcaVYSE98x5kMtfwB44mbl+02X6mlTa59UaNBdQ
+         thJA==
+X-Forwarded-Encrypted: i=1; AJvYcCVxdoemE8/UhnGwIXvqdfZT28Pj3T1z5uHHNIl3M6uNyBmguLmbPppE9yil9Fh2oq9SJZaU3PmVAdMLdy71KnY=@vger.kernel.org, AJvYcCWrK5KxilZiV5HIG6Ae9tL040z+Gecu/P4YDto7lFCipOsWXBDsi8Oc3idbXsBxVST3zrN2iDJzE5c=@vger.kernel.org, AJvYcCXtufEjKtKmKAx9WciMsb5Tht3Wl1ySURBcaEIJ5qMKyJCSnJUkWVs1SScipDZ04FB13ZWJOR+BZ9ZiLgjI@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTu2ph3iWtv9hRiD7SLnxz3+kbAW+vqirHhnCBxMekY3s3vBdE
+	ZPI/zRIQ1Ic+hwtW4t4tTfJR1dT64ih05JvvAKO4/8dg4OxzkHwMFyWZ2pt82EUHe5qZWsuKGmH
+	TTknAJUJWE3Mj4z6CN6E+gxBQL4R4/ivjsi4=
+X-Gm-Gg: ASbGnct/2fD5OWCvk/6AzdxDkpE8R5bMxCrxFbFERqwxx74eDpS6QAP75ptvoPEP+Ak
+	XMgEi3tc2JQtzOLjl1jXZtjamfTmCxcRrOw2Ff6cEd6TLQtdfj6HMuPx4Nuqw7O9J5Ykf8nom
+X-Google-Smtp-Source: AGHT+IGhxND18/FiuqBivcbJhvPajzGYRoAgmYiGIAXuUA0qYwQ51d9O2tgSpInISAI3Z0mUQTNi7RvvZemHvkDrI7k=
+X-Received: by 2002:a17:90b:1c12:b0:2ee:f64b:9aab with SMTP id
+ 98e67ed59e1d1-2f9e083493dmr1842793a91.6.1738761167698; Wed, 05 Feb 2025
+ 05:12:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250129193037.573431-1-irogers@google.com> <f500ef21-5c87-4c60-8453-d98ee637a60c@app.fastmail.com>
- <CAP-5=fVJHV=JgR_FR91V6zcVnLXnakdoiNP4Y5j-+X72r2STmQ@mail.gmail.com>
-In-Reply-To: <CAP-5=fVJHV=JgR_FR91V6zcVnLXnakdoiNP4Y5j-+X72r2STmQ@mail.gmail.com>
+References: <20250123-rfl-arm32-v3-1-8f13623d42c5@gmail.com>
+ <a83b0149-7055-411b-ba86-d227919c7c32@app.fastmail.com> <f8b59f05-55b5-4208-8bdf-b4be8e93bc22@gmail.com>
+ <65da77f7-bbd4-4cbe-a06c-75f10a6ec4ce@lunn.ch>
+In-Reply-To: <65da77f7-bbd4-4cbe-a06c-75f10a6ec4ce@lunn.ch>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 5 Feb 2025 13:59:32 +0100
-X-Gm-Features: AWEUYZlorAPRmvHCC4L-KWXHG1tDMTWJUpQRUhJNRpESCja4Y70e9BTk5q_UtPE
-Message-ID: <CANiq72=ynvE9k2=78wsVoM5-YVFBhTfNCKBeW7SOrNasPdihzg@mail.gmail.com>
-Subject: Re: [PATCH v1] perf symbol: Add rust v0 demangling support
-To: Ian Rogers <irogers@google.com>
-Cc: Daniel Xu <dxu@dxuuu.xyz>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Adrian Hunter <adrian.hunter@intel.com>, Kan Liang <kan.liang@linux.intel.com>, 
+Date: Wed, 5 Feb 2025 14:12:35 +0100
+X-Gm-Features: AWEUYZn_HdJDwofkKyPvCBjvXo_483qp0SuoTZG2uYerx5l5HkF1GY4eb7dcmA0
+Message-ID: <CANiq72n7UhQEh9TJU7UNBv2t0ZR_rNO3dqbVZ2cwr99u5SOVeg@mail.gmail.com>
+Subject: Re: [PATCH v3] arm: rust: Enable Rust support for ARMv7
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Christian Schrefl <chrisi.schrefl@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
 	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	James Clark <james.clark@linaro.org>, Howard Chu <howardchu95@gmail.com>, 
-	Ravi Bangoria <ravi.bangoria@amd.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
+	Jonathan Corbet <corbet@lwn.net>, Russell King <linux@armlinux.org.uk>, 
+	Rudraksha Gupta <guptarud@gmail.com>, Ard Biesheuvel <ardb@kernel.org>, 
+	Geert Stappers <stappers@stappers.nl>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>, 
+	Sven Van Asbroeck <thesven73@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, 
+	Catalin Marinas <catalin.marinas@arm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 3, 2025 at 6:20=E2=80=AFPM Ian Rogers <irogers@google.com> wrot=
-e:
+On Fri, Jan 31, 2025 at 5:05=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
 >
-> I think the best solution is to use the official demangler but in
-> general we'd like fewer rather than more library dependencies. For
+> Floating point is banned within the kernel, except for in very narrow
+> conditions, because the floating point registers are lazy saved on
+> context switch. If the kernel uses the floating point registers, you
+> can break user space in bad ways.
+>
+> I expect this has been discussed, since it is well known kernel
+> restriction. Maybe go see what happened to that discussion within RfL?
 
-I agree, solution 4) seems the best, at least for the time being.
+Yeah, it has been discussed, including in the last couple weeks in the
+Rust Zulip due to the upcoming move to the aarch64 `softfloat` target
+(the disallowing of disabling `neon` in the hardfloat one).
+
+Ideally, I think upstream Rust could perhaps give us a way to do
+something like `-mgeneral-regs-only` or `-march=3D...+nofp` (in the form
+GCC does it, i.e. a hard error if one even tries to use the floating
+point types even within a function implementation, not just in
+interfaces like in Clang), i.e. a way to avoid unintended use of
+floating point facilities:
+
+    https://godbolt.org/z/o1E5nrrzc
+
+Currently it is unclear what form that could take (e.g. whether a
+`-nofloat` target could be possible, "disabling" the `f*` types, just
+Clippy...).
+
+Cc'ing Catalin in case he wants to be in the loop, since I discussed
+it with him recently.
 
 Cheers,
 Miguel
