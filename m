@@ -1,101 +1,185 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164C015198A;
-	Wed,  5 Feb 2025 12:27:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666F6623;
+	Wed,  5 Feb 2025 12:51:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738758454; cv=none; b=AyxA6WvHypZowqYWv3gik3E2HccB7HKtcaO9+Y8Jxf2ARwzkJJETN6UGekVJ6i+VJZO12+H6pyE+asUZLz6luaom1ZmE1IFUmDjbrsjpkrUpSYLYdrvy+6FLUhBfDnU9LMASvoVPb9kA+E8Rbw5SgHOik3AEW6tAcHU6dEJncmk=
+	t=1738759884; cv=none; b=q6QXdNJ0IfdWtHEwXEQYxVFYJaxhlZB6IWDFaPbCdcDgHhiTQ4+AaTy0KxZZXQlzAAiQ0/5oEtZJThT8Sk8FHuypJvg4r7s4F9ciE9cGYk7DLWXkHFL4CcOPyIRpCJG7uXOReJj0A+yO5NMdD8jZm0EfGriFLu1atWhFNhil7+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738758454; c=relaxed/simple;
-	bh=Hv+9xYQ9CAGfmXnWvUtaY/aBiYCQlbRi5+XZwb6tiGA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qeajkpC1E5UbGBPdfibkiYFndtB/pq3bZPKheJK8NU3IWUETFqzgGvEk4rMNb08sbJgdB1+MTa+G7XPY1n8AzPZdwAhoX8aP2bNxoQIUgFyJpI461Tqd+Q5t26Z85xk7YYnOvF6kRu76twvMF8SwSdHldKGC+hFeJbdnZbPHAIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wLB2Lsgu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738759884; c=relaxed/simple;
+	bh=LbS2QAr94GKb9Q8ZQia8Tn+AusZedBX3FaUndVsUInU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EZrqIhR8VteNbtJzyrtRq3YOkPt1IvSPyTeOyO1ULlYB1lsGkYMgy8IIAfOrnq8dUHat2wBrQrN2lZDbQ2GPPaMbllgZI132DePOQeXpFdmap39Z0tFUNrGJ0yCXMiGm2UPir5DpNHL7Own3Tw8TrnUK21rz+lWVgNWe3t25tK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=aIv+EmAe; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wLB2Lsgu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1340C4CEE2;
-	Wed,  5 Feb 2025 12:27:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738758453;
-	bh=Hv+9xYQ9CAGfmXnWvUtaY/aBiYCQlbRi5+XZwb6tiGA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=wLB2LsguuDjrJK4Diz4d/2AQQANLOS821Tq9RcqF8B43gfkWg3C1w+jlaEBMRd7n9
-	 Y9g2YOzeiIKW/BE5zgGF87bJ95uTkcuTto0Va4MG8v9dukxSd4mgmlKCsPEpbnHj9c
-	 Mcs78Xu2aFHFVM65F2sb4tEebAQTsKqs7pqvWp84=
-Date: Wed, 5 Feb 2025 13:27:30 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Peter Chen <peter.chen@kernel.org>
-Cc: linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Lyude Paul <lyude@redhat.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Liam Girdwood <lgirdwood@gmail.com>, Lukas Wunner <lukas@wunner.de>,
-	Mark Brown <broonie@kernel.org>,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Zijun Hu <quic_zijuhu@quicinc.com>, linux-usb@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 3/5] USB: phy: convert usb_phy_generic logic to use a
- faux device
-Message-ID: <2025020505-harsh-divisibly-51cc@gregkh>
-References: <2025020421-poster-moisture-534b@gregkh>
- <2025020424-overstock-scheming-6a30@gregkh>
- <20250205101916.GA4083@nchen-desktop>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="aIv+EmAe"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1738759875;
+	bh=LbS2QAr94GKb9Q8ZQia8Tn+AusZedBX3FaUndVsUInU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=aIv+EmAe5lVZN2aKpqFDOZkiypQidX6gU8Jqd6Lf3rcUySVl0uOYg09i8+37v1tQy
+	 7xhJcDTXcc4fANIkpIffskBCi3Y1vO4NCUHDca8Sf7M5iXhu00LjrivsZW/CtW4jsH
+	 f9a4a00al2b2ruhttf7ts3opBWdCECUie0MfuBIyAETBsFkb2Y2vozziWG7/pBiieU
+	 KW+UokmJ3ko+5Xy945SOoDOnuXdm5xNNwZTTesnGcZuFACjeE/tTD+Fnd6Rn6HjYsV
+	 RXtab/ZrvAYVDGEymP1unwLdRLXJEtGY6cy7O/RFZBFQETqlJExlbv5n9RpJ1+YiAM
+	 LfH1rUmhUl/jA==
+Received: from localhost (unknown [IPv6:2a01:e0a:2c:6930:5cf4:84a1:2763:fe0d])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 9349117E083A;
+	Wed,  5 Feb 2025 13:51:14 +0100 (CET)
+Date: Wed, 5 Feb 2025 13:51:07 +0100
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Miguel Ojeda
+ <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?=
+ Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Beata
+ Michalska <beata.michalska@arm.com>, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] drm/panthor: Convert IOCTL defines to an enum
+Message-ID: <20250205135107.50223e7a@collabora.com>
+In-Reply-To: <20250204232824.3819437-1-robh@kernel.org>
+References: <20250204232824.3819437-1-robh@kernel.org>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250205101916.GA4083@nchen-desktop>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Feb 05, 2025 at 06:19:16PM +0800, Peter Chen wrote:
-> On 25-02-04 12:09:15, Greg Kroah-Hartman wrote:
-> > The usb_phy_generic code was creating a "fake" platform device to pass
-> > around in different places.  Instead of doing that, use the faux bus
-> > instead as that is what is really wanted here.
+On Tue,  4 Feb 2025 17:28:24 -0600
+"Rob Herring (Arm)" <robh@kernel.org> wrote:
+
+> Use an enum instead of #defines for panthor IOCTLs. This allows the
+> header to be used with Rust code as bindgen can't handle complex
+> defines.
 > 
-> Hi Greg,
+> Cc: Beata Michalska <beata.michalska@arm.com>
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+
+Acked-by: Boris Brezillon <boris.brezillon@collabora.com>
+
+> ---
+>  include/uapi/drm/panthor_drm.h | 86 +++++++++++++++++-----------------
+>  1 file changed, 44 insertions(+), 42 deletions(-)
 > 
-> As far as I know, there are some platforms use the device-tree to get
-> the system resource (eg, clock, reset, regular) for this driver.
-> We may not use fake bus for this driver.
+> diff --git a/include/uapi/drm/panthor_drm.h b/include/uapi/drm/panthor_drm.h
+> index b99763cbae48..97e2c4510e69 100644
+> --- a/include/uapi/drm/panthor_drm.h
+> +++ b/include/uapi/drm/panthor_drm.h
+> @@ -129,48 +129,6 @@ enum drm_panthor_ioctl_id {
+>  	DRM_PANTHOR_TILER_HEAP_DESTROY,
+>  };
+>  
+> -/**
+> - * DRM_IOCTL_PANTHOR() - Build a Panthor IOCTL number
+> - * @__access: Access type. Must be R, W or RW.
+> - * @__id: One of the DRM_PANTHOR_xxx id.
+> - * @__type: Suffix of the type being passed to the IOCTL.
+> - *
+> - * Don't use this macro directly, use the DRM_IOCTL_PANTHOR_xxx
+> - * values instead.
+> - *
+> - * Return: An IOCTL number to be passed to ioctl() from userspace.
+> - */
+> -#define DRM_IOCTL_PANTHOR(__access, __id, __type) \
+> -	DRM_IO ## __access(DRM_COMMAND_BASE + DRM_PANTHOR_ ## __id, \
+> -			   struct drm_panthor_ ## __type)
+> -
+> -#define DRM_IOCTL_PANTHOR_DEV_QUERY \
+> -	DRM_IOCTL_PANTHOR(WR, DEV_QUERY, dev_query)
+> -#define DRM_IOCTL_PANTHOR_VM_CREATE \
+> -	DRM_IOCTL_PANTHOR(WR, VM_CREATE, vm_create)
+> -#define DRM_IOCTL_PANTHOR_VM_DESTROY \
+> -	DRM_IOCTL_PANTHOR(WR, VM_DESTROY, vm_destroy)
+> -#define DRM_IOCTL_PANTHOR_VM_BIND \
+> -	DRM_IOCTL_PANTHOR(WR, VM_BIND, vm_bind)
+> -#define DRM_IOCTL_PANTHOR_VM_GET_STATE \
+> -	DRM_IOCTL_PANTHOR(WR, VM_GET_STATE, vm_get_state)
+> -#define DRM_IOCTL_PANTHOR_BO_CREATE \
+> -	DRM_IOCTL_PANTHOR(WR, BO_CREATE, bo_create)
+> -#define DRM_IOCTL_PANTHOR_BO_MMAP_OFFSET \
+> -	DRM_IOCTL_PANTHOR(WR, BO_MMAP_OFFSET, bo_mmap_offset)
+> -#define DRM_IOCTL_PANTHOR_GROUP_CREATE \
+> -	DRM_IOCTL_PANTHOR(WR, GROUP_CREATE, group_create)
+> -#define DRM_IOCTL_PANTHOR_GROUP_DESTROY \
+> -	DRM_IOCTL_PANTHOR(WR, GROUP_DESTROY, group_destroy)
+> -#define DRM_IOCTL_PANTHOR_GROUP_SUBMIT \
+> -	DRM_IOCTL_PANTHOR(WR, GROUP_SUBMIT, group_submit)
+> -#define DRM_IOCTL_PANTHOR_GROUP_GET_STATE \
+> -	DRM_IOCTL_PANTHOR(WR, GROUP_GET_STATE, group_get_state)
+> -#define DRM_IOCTL_PANTHOR_TILER_HEAP_CREATE \
+> -	DRM_IOCTL_PANTHOR(WR, TILER_HEAP_CREATE, tiler_heap_create)
+> -#define DRM_IOCTL_PANTHOR_TILER_HEAP_DESTROY \
+> -	DRM_IOCTL_PANTHOR(WR, TILER_HEAP_DESTROY, tiler_heap_destroy)
+> -
+>  /**
+>   * DOC: IOCTL arguments
+>   */
+> @@ -1019,6 +977,50 @@ struct drm_panthor_tiler_heap_destroy {
+>  	__u32 pad;
+>  };
+>  
+> +/**
+> + * DRM_IOCTL_PANTHOR() - Build a Panthor IOCTL number
+> + * @__access: Access type. Must be R, W or RW.
+> + * @__id: One of the DRM_PANTHOR_xxx id.
+> + * @__type: Suffix of the type being passed to the IOCTL.
+> + *
+> + * Don't use this macro directly, use the DRM_IOCTL_PANTHOR_xxx
+> + * values instead.
+> + *
+> + * Return: An IOCTL number to be passed to ioctl() from userspace.
+> + */
+> +#define DRM_IOCTL_PANTHOR(__access, __id, __type) \
+> +	DRM_IO ## __access(DRM_COMMAND_BASE + DRM_PANTHOR_ ## __id, \
+> +			   struct drm_panthor_ ## __type)
+> +
+> +enum {
+> +	DRM_IOCTL_PANTHOR_DEV_QUERY =
+> +		DRM_IOCTL_PANTHOR(WR, DEV_QUERY, dev_query),
+> +	DRM_IOCTL_PANTHOR_VM_CREATE =
+> +		DRM_IOCTL_PANTHOR(WR, VM_CREATE, vm_create),
+> +	DRM_IOCTL_PANTHOR_VM_DESTROY =
+> +		DRM_IOCTL_PANTHOR(WR, VM_DESTROY, vm_destroy),
+> +	DRM_IOCTL_PANTHOR_VM_BIND =
+> +		DRM_IOCTL_PANTHOR(WR, VM_BIND, vm_bind),
+> +	DRM_IOCTL_PANTHOR_VM_GET_STATE =
+> +		DRM_IOCTL_PANTHOR(WR, VM_GET_STATE, vm_get_state),
+> +	DRM_IOCTL_PANTHOR_BO_CREATE =
+> +		DRM_IOCTL_PANTHOR(WR, BO_CREATE, bo_create),
+> +	DRM_IOCTL_PANTHOR_BO_MMAP_OFFSET =
+> +		DRM_IOCTL_PANTHOR(WR, BO_MMAP_OFFSET, bo_mmap_offset),
+> +	DRM_IOCTL_PANTHOR_GROUP_CREATE =
+> +		DRM_IOCTL_PANTHOR(WR, GROUP_CREATE, group_create),
+> +	DRM_IOCTL_PANTHOR_GROUP_DESTROY =
+> +		DRM_IOCTL_PANTHOR(WR, GROUP_DESTROY, group_destroy),
+> +	DRM_IOCTL_PANTHOR_GROUP_SUBMIT =
+> +		DRM_IOCTL_PANTHOR(WR, GROUP_SUBMIT, group_submit),
+> +	DRM_IOCTL_PANTHOR_GROUP_GET_STATE =
+> +		DRM_IOCTL_PANTHOR(WR, GROUP_GET_STATE, group_get_state),
+> +	DRM_IOCTL_PANTHOR_TILER_HEAP_CREATE =
+> +		DRM_IOCTL_PANTHOR(WR, TILER_HEAP_CREATE, tiler_heap_create),
+> +	DRM_IOCTL_PANTHOR_TILER_HEAP_DESTROY =
+> +		DRM_IOCTL_PANTHOR(WR, TILER_HEAP_DESTROY, tiler_heap_destroy),
+> +};
+> +
+>  #if defined(__cplusplus)
+>  }
+>  #endif
 
-But there is no system resources assigned to this device/driver at all,
-so how is it getting anything here?
-
-> $grep -rn "usb-nop-xceiv" arch/arm64/boot/dts/*
-> 
-> arch/arm64/boot/dts/altera/socfpga_stratix10.dtsi:649:		compatible = "usb-nop-xceiv";
-> arch/arm64/boot/dts/freescale/imx8mm.dtsi:275:		compatible = "usb-nop-xceiv";
-> arch/arm64/boot/dts/freescale/imx8mm.dtsi:285:		compatible = "usb-nop-xceiv";
-> arch/arm64/boot/dts/freescale/imx93.dtsi:238:		compatible = "usb-nop-xceiv";
-> arch/arm64/boot/dts/freescale/imx93.dtsi:245:		compatible = "usb-nop-xceiv";
-> arch/arm64/boot/dts/freescale/imx8mn.dtsi:1321:		compatible = "usb-nop-xceiv";
-> arch/arm64/boot/dts/intel/socfpga_agilex.dtsi:149:		compatible = "usb-nop-xceiv";
-> arch/arm64/boot/dts/intel/socfpga_agilex5.dtsi:133:		compatible = "usb-nop-xceiv";
-> arch/arm64/boot/dts/marvell/cn9132-db.dtsi:30:		compatible = "usb-nop-xceiv";
-> arch/arm64/boot/dts/marvell/cn9132-db.dtsi:44:		compatible = "usb-nop-xceiv";
-> arch/arm64/boot/dts/marvell/cn9131-db.dtsi:33:		compatible = "usb-nop-xceiv";
-> arch/arm64/boot/dts/marvell/armada-3720-db.dts:43:		compatible = "usb-nop-xceiv";
-> arch/arm64/boot/dts/marvell/cn9130-crb.dtsi:49:		compatible = "usb-nop-xceiv";
-> arch/arm64/boot/dts/marvell/cn9130-crb.dtsi:53:		compatible = "usb-nop-xceiv";
-> arch/arm64/boot/dts/marvell/cn9130-db.dtsi:52:		compatible = "usb-nop-xceiv";
-> arch/arm64/boot/dts/marvell/cn9130-db.dtsi:66:		compatible = "usb-nop-xceiv";
-> arch/arm64/boot/dts/marvell/armada-8040-db.dts:53:		compatible = "usb-nop-xceiv";
-> arch/arm64/boot/dts/marvell/armada-8040-db.dts:67:		compatible = "usb-nop-xceiv";
-> arch/arm64/boot/dts/marvell/ac5-98dx35xx-rd.dts:36:		compatible = "usb-nop-xceiv";
-> arch/arm64/boot/dts/marvell/armada-3720-espressobin-ultra.dts:39:		compatible = "usb-nop-xceiv";
-
-Does this actually work at all?  There is no real resouces here that I
-can see, so what am I missing?
-
-thanks,
-
-greg k-h
