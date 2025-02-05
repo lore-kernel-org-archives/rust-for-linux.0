@@ -1,87 +1,95 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 407D2151982;
-	Wed,  5 Feb 2025 23:17:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8641151982;
+	Wed,  5 Feb 2025 23:18:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738797454; cv=none; b=nQnilxkQzPw814lgzuFplLBA56IHfhMQ4pkh71sedh6ZwNBdq9KSJwVcwGbRLgkvc8DY/j6/JW1cF7KRZI0l09Mqhnb+hBcWyM7J0i9zlEPji60l5yiBPXXYEmkpDCxUEFx118xo+8ohZtoznpHO+Xk3L14NnozpjuTMS0EsDDo=
+	t=1738797518; cv=none; b=p1w4QwihJlNNwSoTBHiz2xm6OQEAPsQEj7cPanQgqadbjW5Zsp+5A8DEy45BJUDLwD0N2M+EHifp0lZIhdxwVwVPETfwst/OLd+cwpiExX9Y4u3evAIay7ZvRiV3Cr9PmyQ+mBDUbe8ov/lP9YGZ8f5tiN+yWwKiCwCxcGd1i94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738797454; c=relaxed/simple;
-	bh=SNY9HJsOA/maBbuh8nh6FtwZqv+v1FfKTwKYcxjfl8E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hCHLHLwzGLusVXQtma7qw6t9qC+EfJxCaHzdQDhfGw+jv+kRbh7in6ny90RyUDc4koSQHZPHaWnLNRdj0h+uYpavulhPhslDcFw2vLyGLxTHwiTs9QjDUt91hkstNkCBrD6Z3tCM2Hrsg4rVA+7osmpXh7oRpVh8wlgv5zcmEyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=cC+0IT9z; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1738797518; c=relaxed/simple;
+	bh=fTS5kkRiT5iov7u0NdIhvvBNlqd43XAj36fSoYjlcLs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JufC3hWUTTHZuL4kAsZ9Q1lIcJJOMUXT38v9NCfJF2uTDCrdFo2IEcB+NCiC9GdgLoY2Xn1W9njfCwPlMDFxLWsPIXQ/0bJ/f5i+l39EIa90LH3DAVIeGuzT3jRbLNazfpCpDwH+pfWo+3TNfqUwRmxxr14Jajf5lIPjlfewLPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gUiUBRMT; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="cC+0IT9z"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Eo8iddA5F3+GfWnUXk00TmgLrVbfJuqGlTFhAHUQxOU=; b=cC+0IT9zSR753XY+TILiRLEpHu
-	954DArINS0Z/g3l1UXY7LvAmL+Ca8JC8U1PlzIYkR5BlqmYQRo4uRq69R8yhGc2zN3XLnsEVQ1b34
-	P/+2S6NBylkv//Nz5ywwl3HJ6snDBCCRdGFJ6EPYRBj6TtzKStzhc54X+Y3/o4nfBGNmm1DzTdKqH
-	XKuBS6DaN9TRjKfup4VY1Ykl0VT62FDJ1B0qUPqFW8uVEr5Znwq1Y+4VeJprFzdtmqVRSUgAGCMRd
-	jSieY1LguqWUNEOwJZfcIrRQqw4kXEWlmKiMsToIY+xg9cyz0cjWE0F+H8LkGkACUFPGLWbdjBJl+
-	gVDEp1Qw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1tfody-000000059Mt-2d7z;
-	Wed, 05 Feb 2025 23:17:18 +0000
-Date: Wed, 5 Feb 2025 23:17:18 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: David Hildenbrand <david@redhat.com>, Asahi Lina <lina@asahilina.net>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Jann Horn <jannh@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Valentin Obst <kernel@valentinobst.de>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	airlied@redhat.com, Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	asahi@lists.linux.dev
-Subject: Re: [PATCH 0/6] rust: page: Support borrowing `struct page` and
- physaddr conversion
-Message-ID: <Z6Pxfo1xDHUOna6a@casper.infradead.org>
-References: <20250202-rust-page-v1-0-e3170d7fe55e@asahilina.net>
- <Z6CTLB2NggwYafi9@phenom.ffwll.local>
- <1eaf66ba-b2d3-448f-938b-913f17ca98a4@redhat.com>
- <20250204183933.GJ2296753@ziepe.ca>
- <1d379007-97c3-4bb9-93da-1a828f955fc4@redhat.com>
- <20250204202656.GL2296753@ziepe.ca>
- <08ce9562-9ded-4d95-a495-b60f90d75490@redhat.com>
- <20250204204947.GM2296753@ziepe.ca>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gUiUBRMT"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-21bb2c2a74dso837085ad.0;
+        Wed, 05 Feb 2025 15:18:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738797516; x=1739402316; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fTS5kkRiT5iov7u0NdIhvvBNlqd43XAj36fSoYjlcLs=;
+        b=gUiUBRMTCPQ0gi+4to9QaLRbEuVBmv/kKLpmCmPj6SLSLvRuXO8jL3+O3nmUzmkTJ/
+         wnqsgMky69h6kqGaLIqIfMAO5Wt1+XBNcvIj+pq6GBUfIqd8gYt+ZdTq4fRWWwX0cXv3
+         b5hJeiW6WNkno1GgQ2YVneMny7yJlziQIpGqGwk67TJVD4wVKYJCQCByGu8/pLrMkvIq
+         SXbRv/UgMbt7IKZ5ZqlxngoHvT/ZTMc1aqAwC19nZi0ZcyEnA2X42aypa4DSJWmwx6f4
+         kyD/c5DrDJTxaSLu+fTNOyxeTBMTogDRdN0eM3p86IjFwv5hk04KAWkyEU/82fByk4Oo
+         f35A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738797516; x=1739402316;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fTS5kkRiT5iov7u0NdIhvvBNlqd43XAj36fSoYjlcLs=;
+        b=o508wOP/NEraXgz6bkRumdOLw3OL/HnDVvXlCbxfKM5zB61mnLX58/QBLYsPp32QrA
+         IiUyAw3uHQzrPA3Y224tBVYzhEFzxmVFah6OAVEemZ8N+W9pm/R5hDS0mBqEBTlSbpcF
+         EpU+Sohou7rEJYgB4qTyXn6k36X0YP5FObUX9wuSdKYRC5Ef4+LOTxuyddu2zXHHSACB
+         dNFP6oceXGA2hJ4OZM5bBcF22hFasuE2wghsy7q6E4VaVJiATcHsg+WqplmOJmbvkxEa
+         QbwVO5Ljm0GhszdIuOsD2DU0X9kMYj+y2rFaXLsCFDcKBtf1hic8K3o8YHbn6/7j/DVP
+         4LKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUHTmp9ZOaQrqJFAYh8rEY0kUNfiZW9B1aD/Ip5ar3i3oLslLknf2y+LaStzjH5bdRsaDAHF9fEeSCgZvUq514=@vger.kernel.org, AJvYcCVI0B5m3SEDs9zF+foqvKGgxKN9DGnXcfAkuGEslF9+Nf0/LX4GU+gHQirt67CRu3JZibUiaWkeoEm0m3Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjFFlEd7raIvfp4qALNHb/+f95ukqB3ry9ivi1wXFzNIyIoV71
+	L0lYJcK4V+FFrEUJ4OgOAY+HMFQHhhuTg5vSWd7GbyYMb9SoOMCOMoFTY+rbZgZ+37G8jolwgFI
+	0WU3TnOz8Te6FPrAlDbRt8IOSHvU=
+X-Gm-Gg: ASbGncsX9gT8R5ciiXr5NJyvbIjSrhxkct54qmCOKeOfOdaNsVCyOVOz4PoobhASYIs
+	7y0tFVQTTT9rf+sLhMml2C4/f/POI/jW/XVueD6GL320pAQrL/BcRBWDyfSaODTNuKISB6p0X
+X-Google-Smtp-Source: AGHT+IFWRFp3qPYpdUxS+lP8VvZZad2txfBx/CfxCHzV3mHRF/MJNPdlgU17tBd768zBU2L5/J0QhSflOhL9Ap6f7qo=
+X-Received: by 2002:a17:902:d48c:b0:215:2f19:1dd with SMTP id
+ d9443c01a7336-21f17ebe960mr28812655ad.11.1738797516180; Wed, 05 Feb 2025
+ 15:18:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250204204947.GM2296753@ziepe.ca>
+References: <20250129215003.1736127-1-jforbes@fedoraproject.org>
+In-Reply-To: <20250129215003.1736127-1-jforbes@fedoraproject.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 6 Feb 2025 00:18:24 +0100
+X-Gm-Features: AWEUYZkHfbSzXVG3UDOVm2PdeFkOPbGi45OSGXrvCy3zTLZpmNXEuYakcDkpsLc
+Message-ID: <CANiq72=GpSe4stOb+EqiP_FGUNZbbLW0opTu_Bpqr3w0Cc=J4Q@mail.gmail.com>
+Subject: Re: [PATCH] Add -fzero-init-padding-bits to bindgen_skip_cflags
+To: "Justin M. Forbes" <jforbes@fedoraproject.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 04, 2025 at 04:49:47PM -0400, Jason Gunthorpe wrote:
-> The phys_to_virt() I mean is on the page table pages themselves, not
-> on a leaf.
-> 
-> All page table pages came from alloc_pages_node() and you'd do
-> virt_to_phys() to stick them into a next-table PTE, then
-> phys_to_virt() to bring them back:
-> 
->   phys_to_virt(virt_to_phys(page_address(alloc_pages_node())))
-> 
-> Effectively.
+On Wed, Jan 29, 2025 at 10:50=E2=80=AFPM Justin M. Forbes
+<jforbes@fedoraproject.org> wrote:
+>
+> This seems to break the build when building with gcc15.
+>
+> Unable to generate bindings: ClangDiagnostic("error: unknown argument: '-=
+fzero-init-padding-bits=3Dall'\n")
+>
+> Signed-off-by: Justin M. Forbes <jforbes@fedoraproject.org>
 
-except for s390 & ppc where the page table can be smaller than
-PAGE_SIZE, so you really only have a physical address that can be
-converted to a virtual address.
+Applied to `rust-fixes` -- thanks!
 
+Fixes: dce4aab8441d ("kbuild: Use -fzero-init-padding-bits=3Dall")
+
+[ Slightly reworded commit. - Miguel ]
+
+Cheers,
+Miguel
