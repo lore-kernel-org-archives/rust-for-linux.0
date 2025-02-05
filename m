@@ -1,144 +1,131 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64224218AC4
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Feb 2025 12:10:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D321519A0
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Feb 2025 12:15:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738757433; cv=none; b=FX/szBebpfSiaN7mRI+AkkGF3pdPrdNfahEhSwKzFlWH8fPvFMs/0zRdshjKEVZvqiG2cok2+1zrIl4BXEo+jH1eZPBctc0eXRl5DES0JSevlz5JAsZCA0nc4tkZ58DHAqcvJI0R5YP+7BazGQOO3/F+RqJ+k/Qr4Gykg/YMfts=
+	t=1738757746; cv=none; b=F9icpwXqzkV7ufFijycLZuMe8HfYE7EBtCCcVl45XsqkdFVDOfx3lvbjCkybvC43T6xqpQnB+K4BS68l2wQxbU80ePhjBveiND6IT0GP4NHUL2hHITSKe8pc4nUA2XlGDgfOzMl7ieK1+dkhAnx7NGwztLLq2yMOUI1x+rxZzVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738757433; c=relaxed/simple;
-	bh=LAJkZr3j590h9Mmjm3sT0QGmWd4n4HFqQNH1WXZZWwc=;
+	s=arc-20240116; t=1738757746; c=relaxed/simple;
+	bh=J7wilqmPHsuhrjWldKeEduAhOIlOAovrmJnuTkf85mU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=ShiTWr1vxyK6/K2/pjB+VVlULbIfhoVFfhP1MHoOhuwyO24s1RRbjoplB9lekazj+rVf6pfOrjHPXW0WOMpZDgWSZUbuGJi5fdu8gs7iqkedztm91fzpmq34tfcPUJwHHG4ARlM/0Ha0pxLuqB3Ls9o+LBVpB69TH5WtImY+oUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZCTQDt1I; arc=none smtp.client-ip=209.85.221.42
+	 To:Cc:Content-Type; b=FiLXuFMRwPYVKgcmB7GKS9MFPRI/cO5l/RbMd6eR0WHPqoiOOh20S5ethqFCBvZJB9l30+LsTe/Ajv6QrJtaXVQbol28YtLb2AT4Km/do8C64JSe+s0KqW5DBo6RWZfFCTfcVxeQBZh0KVRs+xyfB0sak4qsNJTM6n8uc+YfOx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Fv563eM8; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZCTQDt1I"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-38db0c06e96so932983f8f.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 05 Feb 2025 04:10:31 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Fv563eM8"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-43621d27adeso46043175e9.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 05 Feb 2025 04:15:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738757430; x=1739362230; darn=vger.kernel.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from
+        d=google.com; s=20230601; t=1738757743; x=1739362543; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CM9edJiBMXn21mPbe8Qk4uoLTtdcK1HokgiZWsmiPV8=;
-        b=ZCTQDt1In4NJq11mC03sJj9DMXGt0nY6PiPfhI/cWLFLo3JXcOGBAWvO5yMENIY4iP
-         26U63ac94q/Ce6AXuJ2Ox+iuAmgS6Fm4V0OoFEoRq3cWhFyFlCO2vscwm4+hHJ1jTj3q
-         YFZBGT4EoWGWlKrGuaJ/0qIf3lFa2qkO74j1zevEMLQpTGapMjwcIn1YYiT6J875FfRS
-         HBoONKCVX0VtQYdCgbiah+5Mc7z6MWijcKEANclXTnMPCykh5KQgM+iLAC1CdTikT7YR
-         wf4CPAxEPXm/FoQfxSTKlkW79qm4nGeWa1R6nOjOVRGCLyYH5Z/LGMhDK4kpN6oh2X7L
-         xiuw==
+        bh=9RLrvslM9aFEcwqi4eoMGeCeN5mBvMg4pwEiJB6GaxM=;
+        b=Fv563eM8kjRfnVHBsAY+gimHVvYSVD4Z0r6ZgfudHh+dVVc3mPuQY6FitheAj33Usl
+         GoM2V7pHX1kT1oK3QD/AYXQu5DIvVJ3P8hjFQqoHjJGE31Gqn1ObyviWSaaq74GXutsK
+         QXpPHKSNBiD4YSar61ZscV3W0UJoPen2KetRV4KtmPt2htKxV+eUyqKAUuQjilZifkJg
+         gFeopTQfdXeoJBMC5FLc5JLhgNBrfgSg0eZby4Djl23NPAZx80Qh7f042FD1HIfdNHm6
+         439/lC5tXkuAskajoIHugRWRTZEB2omo5qJdiq44IkqD0am/S7IOUgCUbq1FOjvvBOf0
+         Y4ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738757430; x=1739362230;
-        h=content-transfer-encoding:to:subject:message-id:date:from
+        d=1e100.net; s=20230601; t=1738757743; x=1739362543;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=CM9edJiBMXn21mPbe8Qk4uoLTtdcK1HokgiZWsmiPV8=;
-        b=rKpevCyiS/jtSV5YuioPGeHLIUfo67Kek25GdkBGpNVs6vtVLyLFW7RlWVxVrbVmdJ
-         +oW4p+7CuTSN4+jcIADmF/X+3TkfqrggLpkkTZQkhmIMxrKQ4jDm8JKudqoRFvYkeXw0
-         YhxAAfb6NKBkCGJNTNbv0peOPHr6BQe2HVr9pWmZ1QQQiEwqJL9+c4PdP1KGWELSY+gs
-         KK9lTXav8+r1yfupKlJAmyzwiL3ACgrdeLwogIcD7WPde0i/7W8eSOh54K60gp1CLRUc
-         EHhMX4fA6BjHVjjpAaxMAh39qEmDfTB6Vg37+TooXxiwazUt6DR3ISukRinBJMbAxW4e
-         9oYA==
-X-Forwarded-Encrypted: i=1; AJvYcCVaylFxvn8z/wrJE6FRkTMSq8INybt7U70yuRrqaFlNbwX0zJstiGa4qPsR2k14yFvSzvtU2DI7HhL7+NSo4w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzr+9DxQelSKdpbBKublMqxiATNxmGPyiMOzuqs3aOG2LVdEhhz
-	8Gh2jGthZQpD4W7xi6YvmUI17YSpGSlt25G8XSO86WrRDIfH71dNK82C+8/eU8UJPH6gUP6KETD
-	ztKr4nQYg4xdmecObIZ+eVQF1gVWId0xvTjfp
-X-Gm-Gg: ASbGnculLBmVWvONMs3WaWw4WFLo68v/Fq+bet/xx2H6PEs76ea6a/MuAxYOi9byqlv
-	QA3XQpX/SSl1s1l4U2yasFixp2TSZfoYYw4msmSK2gTPaV/BU/iJMikFarBciZW8BXuPg2kupoa
-	YRhjxW1O8ocdGQkDjWK9Dl6zb6lrA=
-X-Google-Smtp-Source: AGHT+IEJRX8Gawq5uTZWc7gghQE3VD3b5s1utE8n3fNb/Dxuk/7Rl4NYgvzDN4Jo2pf/N+jO5EMKYukFZfnclOVEP6g=
-X-Received: by 2002:adf:fdc4:0:b0:385:fd07:85f4 with SMTP id
- ffacd0b85a97d-38db488960amr1453466f8f.31.1738757429509; Wed, 05 Feb 2025
- 04:10:29 -0800 (PST)
+        bh=9RLrvslM9aFEcwqi4eoMGeCeN5mBvMg4pwEiJB6GaxM=;
+        b=Fonpkr52uxfGCpE0z8Pw5U7d7CcvwkLhSUldEtxITydYIgjMxhqyZrEuqBSe1zauxK
+         BNTofwbbd3dKpc8wDNytmLeBXFMtWFq30N5EWQ50/qD3xhdT2nZHi40MHwqLHKxOlQcO
+         zq6wt8ydD8IvfPLirXtneePhmyQ/6oXy3lj/m6yJMYgwjoYo7d9U0i/jzFjQ7psy9NPq
+         dbCZtpHIEcliqpS0+Neet1VNS5G2bO6x3qB4F45jdrrX/rmz8eBV6fopvzDQ40fRMPO1
+         oNg2u3AGUF4TSDKeVKg/Aoy8FDjoJ4TZ3vTDaKR+0tXk6uCHt21ZCH/RvQ4G6bzz9k7H
+         qXMg==
+X-Forwarded-Encrypted: i=1; AJvYcCUnI+uYcrw5Z+LVLB5yFhvRad7zQbAmFV6tKmOao0MLKbs8iXShSdDwT1gAyNymNnZ6XZktuyBVS4U/ghncVA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcYNy9rSucOXWbBCPDNMcr/qHqzBiLs/dkqS+TcHwdNBalnIVO
+	b/Ygzk3Bey1oE4zUU/pSRcFPadBdR6yy9w/PH+Rm7mk5KZQ6F8ab7kBRCAZcZPNCffXrAmWd31I
+	o1Zj/fLAHbANrEL4+S/q58hBGyEnC8deXE4jY
+X-Gm-Gg: ASbGnctl6UJoGnlGJn8zBwdayRzSqbbQcvgqBT2txhl+C5vE0z0BEyAcZPex6X4hivg
+	Five2iewO1BhBMjojo1Duc1WwFBUVnxPOUsCKzxEyhKHBNUpkKrQ2MpY5xBf7+DHLIu7SkARtFI
+	vj0pjURTiEQAuSiQAssd0YhuSR23o=
+X-Google-Smtp-Source: AGHT+IFFRYDcBNRUvh03b1ZpAg+T3eOWU8MKC6oSOTuMU6IgCntz4KLfqSMmEcACpE/3OM6T62hPydq7xJ0UjjusIvY=
+X-Received: by 2002:a05:600c:3b11:b0:434:a852:ba6d with SMTP id
+ 5b1f17b1804b1-4390d4342abmr18361165e9.9.1738757743090; Wed, 05 Feb 2025
+ 04:15:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250203-vma-v13-0-2b998268a396@google.com> <20250203-vma-v13-2-2b998268a396@google.com>
- <r5xkc2i3tk4za3xkrrvbeqto4kf5l425ursytc3n6tmcy2gylb@eusudybb5dqa>
- <CAH5fLgj00hRAEBvNc8RR8iBwKQ2okDqmWWQ+kqmNkr9mOjfU0w@mail.gmail.com>
- <ymjkf2l2otosunrs3e3mmsj2wr3tvrfmgl4aav5dcpm3gtdulh@dzz4njdwkspc>
- <CAH5fLggd75BvB6VXPjR=_jxn1u7kOfix2rynvMHU4CeUUDHnVA@mail.gmail.com> <ebwiebbxomsjamv2uk6gnpg2uzjpqw25llvcz7njadklfi66nk@ab5uyq4bvwlb>
-In-Reply-To: <ebwiebbxomsjamv2uk6gnpg2uzjpqw25llvcz7njadklfi66nk@ab5uyq4bvwlb>
+References: <20250130-condvar-freeze-v1-1-a91d5661d505@google.com>
+ <20250203115418.GB14028@noisy.programming.kicks-ass.net> <CAH5fLggyyP1A=uNxr2iYNKOj0V5rxZRU83TRgs6Ah1uJ=Ee2uA@mail.gmail.com>
+ <20250203133843.GG7145@noisy.programming.kicks-ass.net> <CAH5fLgjVyCSTyZqS7uSzWMTKvrxPL55PKUyM-H0RrnuZiU9VEg@mail.gmail.com>
+ <Z6DS6cIWgGsX7FXL@tardis.local>
+In-Reply-To: <Z6DS6cIWgGsX7FXL@tardis.local>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 5 Feb 2025 13:10:16 +0100
-X-Gm-Features: AWEUYZlj_xoYsvNCca0RfpQ0eQ7nYggzNeG2vXSDC6JyOIm_4a-qi1ks5bLCsaM
-Message-ID: <CAH5fLgh2Y0rG5ntpdiK-ycn9eBvrSXekxPsjDaYWuHBDUYNppw@mail.gmail.com>
-Subject: Re: [PATCH v13 2/8] mm: rust: add vm_area_struct methods that require
- read access
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	John Hubbard <jhubbard@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Date: Wed, 5 Feb 2025 13:15:31 +0100
+X-Gm-Features: AWEUYZl0MM3H2ej-cs_2WXNnkdTtvZUWRhiPa7g5MlTz6fq8IJdCvnZGxjsiPnU
+Message-ID: <CAH5fLgj0gGxSWv1U+kjWTwAx7yfJCJ4u_cjfBwZjghZ5udbyuw@mail.gmail.com>
+Subject: Re: [PATCH] rust: sync: add wait_interruptible_freezable
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org
+	Trevor Gross <tmgross@umich.edu>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
+	Waiman Long <longman@redhat.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 4, 2025 at 4:46=E2=80=AFPM Liam R. Howlett <Liam.Howlett@oracle=
-.com> wrote:
-> > > > > > +        let vma =3D unsafe { bindings::vma_lookup(self.mm.as_r=
-aw(), vma_addr) };
-> > > > > > +
-> > > > > > +        if vma.is_null() {
-> > > > > > +            None
-> > > > > > +        } else {
-> > > > > > +            // SAFETY: We just checked that a vma was found, s=
-o the pointer is valid. Furthermore,
-> > > > > > +            // the returned area will borrow from this read lo=
-ck guard, so it can only be used
-> > > > > > +            // while the mmap read lock is still held.
-> > > > >
-> > > > > So We have complicated the locking of the vmas with rcu and per-v=
-ma
-> > > > > locking recently.  We are now able to look up and use a vma under=
- the
-> > > > > rcu read lock.  Does this translate to rust model?
-> > > > >
-> > > > > I believe this is true in recent version of binder as well?
-> > > >
-> > > > Yes. The safety requirements of VmAreaRef is that you must hold the
-> > > > mmap read lock *or* the vma read lock while you have a VmAreaRef
-> > > > reference. This particular method achieves that requirement by hold=
-ing
-> > > > the mmap read lock. But there is also a Rust lock_vma_under_rcu(), =
-see
-> > > > patch 4 for that.
+On Mon, Feb 3, 2025 at 3:30=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> wr=
+ote:
+>
+> On Mon, Feb 03, 2025 at 02:41:37PM +0100, Alice Ryhl wrote:
+> > On Mon, Feb 3, 2025 at 2:38=E2=80=AFPM Peter Zijlstra <peterz@infradead=
+.org> wrote:
 > > >
-> > > Right, okay.  Thanks.  You can get the reference by only holding the =
-rcu
-> > > read lock, but you should hold the vma lock to ensure that the vma
-> > > itself (and not just the pointer) is safe to use.
-> >
-> > Hmm... To modify the vma, you must hold the mmap *and* vma write lock,
-> > so holding the mmap read lock prevents mutations?
+> > > On Mon, Feb 03, 2025 at 12:56:05PM +0100, Alice Ryhl wrote:
+> > > > On Mon, Feb 3, 2025 at 12:54=E2=80=AFPM Peter Zijlstra <peterz@infr=
+adead.org> wrote:
+> > > > >
+> > > > > On Thu, Jan 30, 2025 at 11:30:44AM +0000, Alice Ryhl wrote:
+> > > > > > Binder allows you to freeze a process where some of its threads=
+ are
+> > > > > > blocked on the Binder driver. To make this work, we need to pas=
+s
+> > > > > > TASK_FREEZABLE when going to sleep in the appropriate places. T=
+hus, add
+> > > > > > a new method wait_interruptible_freezable for the condition var=
+iable so
+> > > > > > that sleeps where this is supported can be marked as such.
+> > > > >
+> > > > > The constraint on freezable is that you must not hold locks. Ther=
+e is a
+> > > > > lockdep check for this in the code, but it would probably make se=
+nse to
+> > > > > teach Rust about this constraint as well, hmm?
+> > > >
+> > > > Unfortunately, I don't think there's any way to enforce this at
+> > > > compile time, but I'm definitely happy to add this in the
+> > > > documentation.
+> > >
+> > > Ah, ISTR people talking about teaching Rust about the whole raw_spinl=
+ock
+> > > vs spinlock vs mutex nesting order and figured if it can do that, the=
+n
 >
-> Sorry, I think I confused things with my answer.  Your code is fine.
-> The phrasing of the "only be used while the mmap read lock is still
-> held" made me wonder about further clarification on the locking here
-> (because the locking is confusing).
+> Peter, are you talking about the POC idea I proposed on tracking irqsave
+> status:
 >
-> Yes, mmap read lock means there are no writers that can modify the vma.
-> Essentially, you are using the lock to ensure the entire vma space isn't
-> changed during your operation - which is heavier than just locking one
-> vma.
+>         https://lore.kernel.org/rust-for-linux/20241018055125.2784186-1-b=
+oqun.feng@gmail.com/
+>
+> ? I'm working on this right now, however, I don't think this would help
+> spinlock or mutex nesting? Because there's no global(percpu) status of
+> acquiring these locks. Am I missing something here?
 
-I could extend the safety comment like this:
-
-SAFETY: We just checked that a vma was found, so the pointer is valid.
-Furthermore, the returned area will borrow from this read lock guard,
-so it can only be used while the mmap read lock is still held. This
-ensures that there are no writers because writers must hold both the
-mmap and vma write lock.
+I assumed that Peter was talking about klint, but I don't know.
 
 Alice
