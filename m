@@ -1,128 +1,164 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from slateblue.cherry.relay.mailchannels.net (slateblue.cherry.relay.mailchannels.net [23.83.223.168])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD4B522D4EF
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Feb 2025 10:55:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738752908; cv=none; b=dwdHZBjlkw6luibI0b74PIpv703wNQIwJSPy/K1g/2kOgnYmd3IBburoRX1I1MN2/RzLsBgJCHKKGvfo81hheFk5qgOhyvrQ+iJFj0JFy+Tr86InUz1x0PklDMOfMDAZsycc67Iqf7XxAS69f3LevG8AWrtsySUPTLahe3Vu+QM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738752908; c=relaxed/simple;
-	bh=BZm2IS/W1WzLbPH+phN8UxkYytY59JQo4Ey5AS8U9ao=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=MLncwxW1xDkq0Ieo0RAtjSMgYEFSQ+mHmdFug/JQ8pBNtatWt1WgK7ErlWOit8a3Upz9blF+9/T8VbnAVm0jAq1cj9X7Q456JZgaHwjl5IXLjHd7VWvHMpkhOwn89LSEljPYk+rrudZH5uON7q8TBQG70pGFgFwiHyVk+XxMj7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4tsopsCl; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E792288C3;
+	Wed,  5 Feb 2025 12:05:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.223.168
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738757154; cv=pass; b=LrMGCRPZas8x86Bp4SadPpdLawota5OLZ9X4spW2hPmrdVuQUyJ4y5gF3zmuDbWQYwVBYnqZJ0OorT5MRCAYS0sIt9nDlCiHXzGyrPvrala1UuoGZG/jvELoUkIwa4HSZsO3YbxQ+sZPir+otpHS006Tkd4sKL+vX/0NgfO/0dc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738757154; c=relaxed/simple;
+	bh=n+kV9+UwBTCR/vArvaVKIkc5Gk2J6L2bfQFRy+ydri4=;
+	h=From:To:Cc:Subject:Message-ID:MIME-Version:Date; b=bOuxUtlZVWwg5qaFsaiQmy1JP497RlI0UmpIh0C3va25724rns7Ea3GiVg7MmTAp0zVhtOHn/Pw1OWxgUuySKddd9av+npgNXaA85o4VbVaOfaF4UDhCW5/7FkWJg0oGQ4qGqRKVBj2rUz+llQxWkG5kcT7zwTAvRVc+xG1oFCM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invicto.ai; spf=pass smtp.mailfrom=invicto.ai; dkim=fail (0-bit key) header.d=invicto.ai header.i=@invicto.ai header.b=PM3LVCfo reason="key not found in DNS"; arc=pass smtp.client-ip=23.83.223.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invicto.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=invicto.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4tsopsCl"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-38db0b5405bso330071f8f.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 05 Feb 2025 02:55:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738752905; x=1739357705; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=5ds1OfIeG/KwY5NmWbjkV2ZetwjxNWccG3MAdn8QvKs=;
-        b=4tsopsClUcM7H8tGAS4m6FIXwb60QSl6OtXRIICS54zpJQwOCvsbbRe5jyxrxkPbCM
-         Migc0ErUg/eqW+zUvH5cIqA0i+M9nHXYok4SYio9b0J+OQT7qVWX7G4nDJS/rihv2pFl
-         nrJoJWOL/oSiHdmqGj3sk93VK9ylNDe2qYl2p8gn7D9GzpJTVX98mqvA1sdAUhVwerxj
-         VQMwnzFP4xpXP59Sxd6UW9VbgpS53j7OezigESBB+NSo0iF6H03YGRj5v5BT23XZI7dj
-         P7L4WU15kmv3D4VPiJsENoaUpOVJTHkO99xjYoyofYq0AqfGPoXsXz2XYxZS/ivHTS5S
-         ZpBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738752905; x=1739357705;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5ds1OfIeG/KwY5NmWbjkV2ZetwjxNWccG3MAdn8QvKs=;
-        b=T7ePqjjsIRg3ucxGwyuf/ahWhLHrY0PStSFjix2CDXU6NCfh12pw47PNdslPBcOcu7
-         sNyFiogODYw5Wf2c/UQayrekcTln3p1nTfAdA8JAIDQLE+OKHLS3OMC0HOgoh3GlRMdZ
-         YO+UsETMTOZ/3oDiU6wbFf+289TrUEuRHssHmDHe9hJSjoQ3YNs7xiS8vOejR7JKjTpN
-         cHv64A9/XZTIkopHs5HW7sGnpwLhFr7sJ/33FGTDIxc/IgcyFq99Vtl7q/OzgK89uGvY
-         hFtiDSXhAHFufzSNCa7xlrOhMDMoXVpAePmOgw+DIfvHt4/5LaC3BVznVUqRLod2CZI5
-         vWAw==
-X-Forwarded-Encrypted: i=1; AJvYcCXa4r7KAJ7vDGPgU0ZqaGxFJ0UL3oFk6dV7vQ/EdOtD5dPu93Pq/a+QA2hSmaZ6v8N8+5uRMORnPMw+8rMmIg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhaROOwukTgWTJ3y4ZHfr3LmpnzPnXxxeYc2V1/HH1tbxEwsYk
-	8wlsvjf0h+kQIBJkfk2ugi7EZrnT5BxDBXE+bYyAdGC3UGTs1xTpTukztXr2P/X7tnP5VHVIFOL
-	WyIQnFl5dNySPjQ==
-X-Google-Smtp-Source: AGHT+IE+fB8un9XlOAGKAQL7NqhSL6ObjBc+7puLlZZYBPT6x1hQo+imJp5ugrJknFdznqxFB8cc2Iw1lyfK2Dw=
-X-Received: from wrnc12.prod.google.com ([2002:adf:e74c:0:b0:386:32a2:cdda])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a5d:6da3:0:b0:38b:ee9f:52d5 with SMTP id ffacd0b85a97d-38db467a302mr1709339f8f.16.1738752905272;
- Wed, 05 Feb 2025 02:55:05 -0800 (PST)
-Date: Wed, 05 Feb 2025 10:54:50 +0000
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=invicto.ai header.i=@invicto.ai header.b="PM3LVCfo"
+X-Sender-Id: hostingeremail|x-authuser|kurti@invicto.ai
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 84D13323999;
+	Wed,  5 Feb 2025 12:05:45 +0000 (UTC)
+Received: from uk-fast-smtpout10.hostinger.io (100-125-6-118.trex-nlb.outbound.svc.cluster.local [100.125.6.118])
+	(Authenticated sender: hostingeremail)
+	by relay.mailchannels.net (Postfix) with ESMTPA id DC9D8323510;
+	Wed,  5 Feb 2025 12:05:43 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1738757145; a=rsa-sha256;
+	cv=none;
+	b=X7Pa9SsGpLkYum3OwWmUsIKX0BrSMTi4QKFYiJRM8qKIE2O/lmhqvBPHjN4pQUsSllLO45
+	GmGR2AQFlFrJyrYxUc5qVFyiuuSt/SOrjPoW5wKm3YYNYW1VByhdsgkwOF3yyksA3NcHBL
+	kRsuZwkgSyWSUY45CKhkQixWLL+sqtjm9pfqHtr7/3xjYOVV+jK6oHup90XIVYd2zt/M+K
+	1ACmZqD5UymvhSnA3sXLtaNXR3XAeONXIs1Yx0oTMPTBnwvqixJAFJaNizgxjOyZumXFvZ
+	c8d2C8rLyNhDMUqhOJfedLFT+KpYm8pWw4Zy2syBKVVd6ZkxT1NMJHhXTjqdLQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1738757145;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:dkim-signature;
+	bh=Z1U0Xh8r2sAEGksth46gKm60Xdy2Owbvni8DC6du3+E=;
+	b=QKqNxd+QxscV9M/e+8alCKAoTrBY0G5zNqUvjjSKxhBpErbEetgPyLcUt1eixvMiBR0lfm
+	j6sH6w0Ga5jSxwf0Wqmi6NxDCcf8neECYFz8uIrnAuc0CkqWD9ehro0QnuHGW9YGx4QtNG
+	tVbO81ngCOObkLDilfcmQJBJ8Qbs8gTyB+SceUw6CyIWLXsHggj1pz/bptzraR0XNxlucx
+	3wRlpKVC6j8cwg+ZY/7+QZHLCyKHr5T/TerzXEo1u1csxNQ5v/CFzEJ9mho8uev11q1fsH
+	ugNjR2VepRM4ZcQmQgsAtoCoNv+Jdb3D0v0Ay9Hjl0zJApv+M2sYzx3pbu9BNw==
+ARC-Authentication-Results: i=1;
+	rspamd-854f7f575d-4l9h2;
+	auth=pass smtp.auth=hostingeremail smtp.mailfrom=kurti@invicto.ai
+X-Sender-Id: hostingeremail|x-authuser|kurti@invicto.ai
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: hostingeremail|x-authuser|kurti@invicto.ai
+X-MailChannels-Auth-Id: hostingeremail
+X-Bitter-Trail: 61e7d66d49c260da_1738757145282_248120685
+X-MC-Loop-Signature: 1738757145282:3145241845
+X-MC-Ingress-Time: 1738757145281
+Received: from uk-fast-smtpout10.hostinger.io (uk-fast-smtpout10.hostinger.io
+ [145.14.155.68])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.125.6.118 (trex/7.0.2);
+	Wed, 05 Feb 2025 12:05:45 +0000
+From: albankurti <kurti@invicto.ai>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=invicto.ai;
+	s=hostingermail-a; t=1738757141;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Z1U0Xh8r2sAEGksth46gKm60Xdy2Owbvni8DC6du3+E=;
+	b=PM3LVCfo0FMaVKlqYetnMfN1sZi0IrLSACx8/zsgYF0fBMQrRAwQ23mnqtgCETeW+Z1hD4
+	AwHFhAFhFpK4vhnIqKICTD6pq4lfsBwQT1zIKNLBX+0t8phWLxFrKUNwbde03WqudLuRwq
+	/Sc7DOgojR8E9fvmrT5eT+QTsnBDmnvDajpnAPmYfCnAa54HGdVn+YIj9qShNiiItGDI1e
+	9+BeOMujBmeaVv5m1E2li8BKCxD5HfoIKW/CtDPM8NMEeBVtV7MILykjNmnju4x7G2Gg6e
+	IjD6X5EJq9NQ+rgdTrfVGR7MsiOZlML8B0M/xP1xdhsNALxYJdXabDIppHvmBQ==
+To: Joe Perches <joe@perches.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Charalampos Mitrodimas <charmitro@posteo.net>,
+	Alban Kurti <kurti@invicto.ai>,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH v2 1/1] checkpatch: strip comments fix
+Message-ID: <20250205120540.387447-1-kurti@invicto.ai>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAHlDo2cC/3XMQQ7CIBCF4as0s3YMUEnBlfcwXRAYKbEWA5VoG
- u4udu/yf8n7NsiUAmU4dxskKiGHuLQQhw7sZBZPGFxrEExIxnuG/mWSQ08rztHe0Tl5kmLQvdM G2umZ6BbeO3gdW08hrzF9dr/w3/qXKhw5KnJqUFprwczFx+hnOtr4gLHW+gWLLiU/rQAAAA==
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1628; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=BZm2IS/W1WzLbPH+phN8UxkYytY59JQo4Ey5AS8U9ao=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBno0N7KchbENarEyLd3ssWUCRvml3uwoqRmaRQ4
- r1hL4DLOtGJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ6NDewAKCRAEWL7uWMY5
- RueBD/4+nPFPVg2s2G1N6WwiAq4eWMgbG1Ns/3c88MrO8QcVmYjkh9pXszUfpFXy+2YFDZtMYoR
- VWA+mPO0UfYPtJ8xsAoHQzE92xUwowklIxL3TmLXCTT1EVa6s715I+8xP4hzT/XUjxPjxIhYu0A
- lhK8Tj4nh4RxCxUVNGfAwNRmg2fHzBItNOr+33h+Uz/8eqqX1ydt2A71E+GWKd3zwyV7nNV0AXP
- ARi4mtHEpKmSF7vlRNOaiTavSc8HTWRAf7EQPk5wHZ12UclFC5/3ICGijbHbvBB1QBdlkeVPI6e
- yX6PSu9777OrIZUbfAAA7GHPwma7SbKDnuTY0Lfc2ZCKCl5liS+49daWEKYp2GFLSh6SaX/b/2p
- HuXyZvcY5tOkxVk1PAO5CLJUoOpyD+vwGZt2m4AuDUpvc53ZavBhI2s6T9OemB7fLvfbiscTv1K
- UXzQZllj90T5yNGr//RJH8KRhbjIihDDChSjSi/Uug3oGDOmtqsDq96umLDynUj98DnAXFZWPBj
- rJx+W8iWCxwmd5bdGNMkkSmJzWg6OqZQC8AluOkTZXqRsv+YPWVaJ+WwZkEOZaYPTryX/HyF40s
- t6laGCM4s7QqLisyCzeObSDcgbk3k1DFvafGy1qMaMi/gtZIzKCntKLR5xrXJvDpHNmhCKrPMKP RPlsIRaYqMu4/nw==
-X-Mailer: b4 0.13.0
-Message-ID: <20250205-guard-get-lock-v2-1-ba32a8c1d5b7@google.com>
-Subject: [PATCH v2] rust: sync: add accessor for the lock behind a given guard
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
-	Waiman Long <longman@redhat.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Date: Wed, 05 Feb 2025 12:05:41 +0000 (UTC)
+X-CM-Analysis: v=2.4 cv=TtS0hyXh c=1 sm=1 tr=0 ts=67a35415 a=9/DLicljd4JGVkZ5BRdAJQ==:117 a=9/DLicljd4JGVkZ5BRdAJQ==:17 a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=n_Y5cSvsXr9sHqn1BKgA:9
+X-CM-Envelope: MS4xfLfvwmOMryI8TtL4XBuQfxCZgpj+zHvTAhNtmEbTj86H76nnbA2kPDfCxuKxnIJi7E1elsxAOp5yG42vW3+OU5H0AZbkzL0QDDRGnp5Cre7wcjhALBON 6SIFFj0FzkUohXrSvYf3/kBX9xMNPYRd1w2e3ItziCL+scfJ/UeLL0Cu1V+5rARMNaMJ1JkJoiH6Igmoqv0GEEbRNBi4zMr7hO5LKeI65LgzM5CWU6HUevx4 npSF8sb/29Q8t0iv6XoROrJZVE1gJwmj9fIwR57voyrIuHSKA0mJv22y6R/4XwaDEPBGjA9gtMc3qu1vXnvRzFguDJUZH6Lja4ZSMcgaibbjgeiMrV2ThpJW 1Au0jgoIdr2yaiyvJbJEm4LkEw5eG5UFlvU5yiUG5iyOfnqS78s=
+X-AuthUser: kurti@invicto.ai
 
-Binder has some methods where the caller provides a lock guard, and
-Binder needs to be able to assert that the guard is associated with the
-right lock. To enable this, add an accessor to obtain a reference to the
-underlying lock that you can pass to `ptr::eq`.
+Fixes the false positive warning when there is a comment on a pr_ or
+dev_ log that ends with \n correctly.
+Also contains some improvements on the macro_pattern to make it more
+concise.
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Closes: https://github.com/Rust-for-Linux/linux/issues/1140
+Signed-off-by: albankurti <kurti@invicto.ai>
 ---
-Changes in v2:
-- Rename to lock_ref() to avoid confusion with lock().
-- Rebase on v6.14-rc1.
-- Link to v1: https://lore.kernel.org/r/20250130-guard-get-lock-v1-1-8ed87899920a@google.com
----
- rust/kernel/sync/lock.rs | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ scripts/checkpatch.pl | 46 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
 
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index eb80048e0110..8e7e6d5f61e4 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -199,7 +199,12 @@ pub struct Guard<'a, T: ?Sized, B: Backend> {
- // SAFETY: `Guard` is sync when the data protected by the lock is also sync.
- unsafe impl<T: Sync + ?Sized, B: Backend> Sync for Guard<'_, T, B> {}
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 9eed3683ad76..3256b5f31835 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -3888,6 +3888,52 @@ sub process {
+ 			}
+ 		}
  
--impl<T: ?Sized, B: Backend> Guard<'_, T, B> {
-+impl<'a, T: ?Sized, B: Backend> Guard<'a, T, B> {
-+    /// Returns the lock that this guard originates from.
-+    pub fn lock_ref(&self) -> &'a Lock<T, B> {
-+        self.lock
++# check for pr_* and dev_* logs without a newline for C and Rust files to avoid missing log messages
++    my $log_macro_pattern = qr{
++        \b
++        (
++            pr_(?:emerg|alert|crit|err|warn|notice|info|debug)
++          | dev_(?:emerg|alert|crit|err|warn|notice|info|dbg)
++        )
++        (!?)
++        \s*
++        \(
++        \s*
++        "([^"]*)"
++    }x;
++
++    if ($realfile =~ /\.(?:c|h|rs)$/) {
++        if ($rawline =~ /^\+/) {
++            my $cleanline = $rawline;
++
++            $cleanline =~ s/^[+\s]+//;
++            $cleanline =~ s/\r?$//;
++
++            $cleanline =~ s{/\*.*?\*/}{}g;
++            $cleanline =~ s{//.*}{}g;
++
++            if ($cleanline =~ /$log_macro_pattern/) {
++                my $macro_call = $1;
++                my $maybe_excl  = $2;
++                my $string_arg  = $3;
++
++                $string_arg =~ s/\s+$//;
++                if ($realfile =~ /\.rs$/ && $maybe_excl ne '!') {
++                    return;
++                }
++
++                if ($string_arg !~ /\\n$/ && $string_arg !~ /\n$/) {
++                    my $lang = ($realfile =~ /\.rs$/) ? "Rust" : "C";
++                    WARN("${lang}_LOG_NO_NEWLINE",
++                         "Usage of $macro_call without a trailing newline. Consider adding '\\n'.\n" .
++                         $herecurr);
++                }
++            }
++        }
 +    }
 +
-     pub(crate) fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
-         // SAFETY: The caller owns the lock, so it is safe to unlock it.
-         unsafe { B::unlock(self.lock.state.get(), &self.state) };
-
----
-base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
-change-id: 20250130-guard-get-lock-dd5452793d9a
-
-Best regards,
++
+ # check for .L prefix local symbols in .S files
+ 		if ($realfile =~ /\.S$/ &&
+ 		    $line =~ /^\+\s*(?:[A-Z]+_)?SYM_[A-Z]+_(?:START|END)(?:_[A-Z_]+)?\s*\(\s*\.L/) {
 -- 
-Alice Ryhl <aliceryhl@google.com>
+2.48.1
 
