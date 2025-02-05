@@ -1,71 +1,72 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40DCD1519B4;
-	Wed,  5 Feb 2025 23:05:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373B4215176;
+	Wed,  5 Feb 2025 23:08:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738796716; cv=none; b=IHxyAezIYIZypJO8Cf4GPcVhbwnYxhk06hstj30TT4tRjkJ0bL5JCft7l7aDfvNVHqIXv+gDyfdiC7+7qVePGXSIuYsee5SYXPp6uw6xid+Al3/yKVwiWYt2M+7XTQhNuGYm/IfeCkrQoDXAwRjHBrKpePfypfhRIshsCMBhhjY=
+	t=1738796918; cv=none; b=gXzOCgYeyhFgoMfi9N/E7Ch9flKncr00a8DiW3ra2bLpbBCe+WJkAVKoNX5QfluPBYoKAmmYTZdXO//v7Kejm5kfmmUrVj4zZFziLnihEsQwb4B8abx7X4/+LmZuKkAnK/qE7g1wHPR5uN3e2eiit7KJ3q4KoVDqw99RZ37Q868=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738796716; c=relaxed/simple;
-	bh=VuNnUCNMGMxnYEe4tmIx7sCYp+4mZpJJQQwlDI5HWfI=;
+	s=arc-20240116; t=1738796918; c=relaxed/simple;
+	bh=fuDkEVMB8kWb5BIlq15+1fTm+CoSPxa8lvWLL5RgHxo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WreKKkwEwupxUPMBN76wMu2ZKN1ivIEhMIkGwwPbLBJVYnRxK9ZCMedIO3ah3TOejWuhD0VCOXUuNia4SyR5HElpfQ5R3drOPDDprYrdJuN27vSSEsjUfEmsm2bbi60Cx7loYe31FUVXCmy9nasu/vCNMmoXXb2m5IhQpATm/fU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OOfuPA6h; arc=none smtp.client-ip=209.85.216.48
+	 To:Cc:Content-Type; b=PRBPtsNtTuWK1Nr58yjZIcalkqo5oN42IKCbAmbkc5ub6FuDotv6Lmsx/sH5qc0SHXlJGU4+j9FITT/iaPVQmR4VnnnTJoncQ2LXhTpfseflIjtVremc7ReT495iEN1kE385fzNbIe7Zced7/wShhmzr1SGtyy74/ouV24p6Dhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gpbhfii0; arc=none smtp.client-ip=209.85.208.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OOfuPA6h"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2f9c3ff9219so54885a91.1;
-        Wed, 05 Feb 2025 15:05:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gpbhfii0"
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-30616d71bb0so3275971fa.3;
+        Wed, 05 Feb 2025 15:08:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738796714; x=1739401514; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1738796915; x=1739401715; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VuNnUCNMGMxnYEe4tmIx7sCYp+4mZpJJQQwlDI5HWfI=;
-        b=OOfuPA6h78AIUmrsP2s/bnCUMhMu3IiI86bDU8HzV9VBRkj9rwHM3L9uZ0ByZpn86x
-         1IXeaGtRWE4T+BJzOmPTgWzpY0otwr4cQT3TBVRE3YIfhzL225Xs31Mt3TA635XNjyiB
-         KBSfsvACJVjToHLmtkgsK+Pq3BG0axfvyCBWr4pG5HBwFv6++1prdyqENIDWLm3C8iNx
-         9rtyb629VxAP70NGCQbAL7k5BS2chX9xinyjGAQcWAW7kVfzBDeVubHrFyRfm84GLPnu
-         AvCYSNWJKw/+xJL/YGSv7WOyHZLgkAdoRgCkqd62jpdj1yzSAJXVV/OQoRFq5oR+gLCZ
-         qsHw==
+        bh=fuDkEVMB8kWb5BIlq15+1fTm+CoSPxa8lvWLL5RgHxo=;
+        b=gpbhfii0Vggl6Ge4G3PlddedrcgpAnsGzsuzVINBLC09ekEvpJ1uh3n3zO3QcvBA1k
+         mmkc6E5B1qaJzjCd9Nguax+5eBuAmPlIN94/uQnLm1d4NaYfMEa7P/Q1fi+n3cWAcFrv
+         nAcRJepD8Ax+JG1/W18i05Ql08xZwETp932YSoIOPpX0lQZre2ShmRccqN4rwP/6TKqT
+         K50tlOq5TGLarQk1HPd8lwKgEvg/JGUKlpbaEba+cvyZYbI0Ktz+I28PRrp+ux2FnLhn
+         wW/xXHLW1ewoOH2jTBmrvfQv/jzzHvONP1tiLEEjzat9HmtgAhd1/3a/LoA1aB4qyW9I
+         JmTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738796714; x=1739401514;
+        d=1e100.net; s=20230601; t=1738796915; x=1739401715;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VuNnUCNMGMxnYEe4tmIx7sCYp+4mZpJJQQwlDI5HWfI=;
-        b=wBxXqkNqOvl75sDG/yno+n7oZpg+/vB9SLTiCMB2oQKAXQIez8iXhciVEPEWiPauPZ
-         KJDvVqsQJOCFCvgvPw8bVAcA9HXy6EEC2xyMpdXbUIc4pQolsNIrtu/g1fPGyxrjfWLC
-         kJiHjS3TDfPeZy0mq5aGpUAYKCdJX6++9X3cLNUfHygkM4IIeezj5diRMaCtIAOFVCjw
-         SoAHy38+XMtBkX5gcFcNMEj6xsmwl9yVYW5O3ZDlthXawGeIMq4me95mc00G9Epixgac
-         kQ35H6R81p8UFDz468HETAZzZkQiOxxi/KHs3quqQDYBHibGxPaH91dwG+BE4BgAlCJd
-         GzEg==
-X-Forwarded-Encrypted: i=1; AJvYcCVIBLGpJSa2Y7wD7sKVuRGqA0Q03bNMgd76vElrs0njeQIqsc7UQkPWVUYLnRWNtcYKmgn1zDQrTrV0wxQ=@vger.kernel.org, AJvYcCVzLO71/5cp3rjf1jQ6DL6O0dkfFZZySLVJwan5Hi7z2vYoU9ziXr9NCcfjHSdfVBIHl6peyVqUxDnvQBdYEV4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwL3Gn6KnLyhvwjzHSQjHE6+Qpc+Kn9jQdb9RiRYetSBgBgSFI3
-	gHkMdTR8O+gE8dXHTQuTkXPCWVS8P0oZN22L04mIEb+2L08e+xNhVOIURQMCuvtonPjNvxDQuNm
-	t81osk/92mjcoIyPUjC+HLhI8SBo=
-X-Gm-Gg: ASbGncsGJ06zFctYBbMvNZd8Dfgw+gAx8MPTfVMHHKR9vI04ic8Z/DhcEahSR9RWvO4
-	BLQWZwFrHa9so4SLLSJsNz1v+T/A7fhK9FTFekC3G1ctbX9H3ehZgg1TAZrMLS7vEOD/W4Rmv
-X-Google-Smtp-Source: AGHT+IHEkdQuZ1xqXx5TR3RkT0RQ5tRkVPdi8J7oEfoodpxut2oDCBf/YRZYXgpJ3Jqdbdpb1SlcepxFfU7b/SmCZ9s=
-X-Received: by 2002:a17:90b:4b08:b0:2f2:f6e5:d28e with SMTP id
- 98e67ed59e1d1-2f9e080017dmr2799782a91.3.1738796714404; Wed, 05 Feb 2025
- 15:05:14 -0800 (PST)
+        bh=fuDkEVMB8kWb5BIlq15+1fTm+CoSPxa8lvWLL5RgHxo=;
+        b=p3K/mL3b9inrCFpwhcCwYv+01VceHC2Pq9pRpWKTTrFSDZdflm6fSVbpp6wJkGukCD
+         uAF/FnGvikmOwo3E2ZS6EnO3ASTteDoxKqPqz5u+es8J8zqrncrxrUH9OI2ZUYh2Nw+4
+         4ldD6dM90Yr+W3C3XZi3nAoneJ55BElXfpUEufIxHyqRtRY5UrK0Izbx9WOHSpTXCLO6
+         APDgk5/nRNIguyDUwPbZ2U0krK2GhbO5gjG934/UsHnEVgSsPRj1Vl+aZNix9ew/IjWJ
+         W7uLkkBOGYZsztlvjgPyUEOdbSRqtjj5RtW6GEuhlX3PIYDehJWegchZCQdP9svb45ZW
+         H7PQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUqNDzmL2O3J5ngQPGxC+YpKi5Ut5DBvpJW5/bDwhzSLgP8nuj2SYlZ/UBz0baNId1AaN/M5C7UqSvQtLc=@vger.kernel.org, AJvYcCXjMxqtZo4fa6dXlUfAdxeacnDgIfZ15+4+43oP6bRKIlemGpEQPLR48t1HopI54aiTbaImMrkhYXv8NegHTdU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxCFXlpGZDIJddUSNhdNnkF7fL8oLYjG+aVJVr0jRXkf6WxonD
+	j3q5By4zMaWUss65PM9WUSxptjTo6JGaFiTu2/1bLqgG/aW+/NJFog6RR5/2LG42bQ2o+XMkYtn
+	9LUKWluAtQWfF3cSLSq49tWVydQg=
+X-Gm-Gg: ASbGncu1i8D9zZfm9dKPcN55+gzenyMze4t+YZDuD6IZBnCHozBduOr3mClSnQl/J6u
+	uHhPrU7BXiFkwd8NuJbte2KwHqUZxVBBwrIMxRYxOOCkK71UC6MpVColpAtkglG7hS6rUPml6Cy
+	8KEa7ftGn4+E9q466F8pOKcr+hdEQe
+X-Google-Smtp-Source: AGHT+IGXtWJu1TuEzqD2mC0rHrBhNn8jf2CoT5OcbuaYRRc/MtWYWlzfKTExPmHCLgov+AB6zIYwwAr3GPgvUW4f/5U=
+X-Received: by 2002:a2e:be0d:0:b0:302:4115:acc with SMTP id
+ 38308e7fff4ca-307cf3819ebmr15102291fa.26.1738796914900; Wed, 05 Feb 2025
+ 15:08:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250201-fix-mac-build-again-v1-1-ca665f5d7de7@gmail.com>
-In-Reply-To: <20250201-fix-mac-build-again-v1-1-ca665f5d7de7@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 6 Feb 2025 00:05:02 +0100
-X-Gm-Features: AWEUYZn1oyg916x3vUhZdy48weoxz1NOh8dzVbRIYcaTvkuDvvMXx0QxXNSMkys
-Message-ID: <CANiq72kDzfDhzE4ZiZ2YEtOmFwh5u9pwy-_76xRURd9WabPEdA@mail.gmail.com>
+References: <20250201-fix-mac-build-again-v1-1-ca665f5d7de7@gmail.com> <CANiq72kDzfDhzE4ZiZ2YEtOmFwh5u9pwy-_76xRURd9WabPEdA@mail.gmail.com>
+In-Reply-To: <CANiq72kDzfDhzE4ZiZ2YEtOmFwh5u9pwy-_76xRURd9WabPEdA@mail.gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Wed, 5 Feb 2025 18:07:58 -0500
+X-Gm-Features: AWEUYZkMk_m_U_88hDFjqAEJY5HLb1KkTzQ-eoIGeyChu1oEsxjZ4sqZJV55FXM
+Message-ID: <CAJ-ks9nh=oM=d4dyJz_Pi3M=46QGRpcqX699muB+qvd01ZuRFA@mail.gmail.com>
 Subject: Re: [PATCH] rust: use host dylib naming in rusttestlib-kernel
-To: Tamir Duberstein <tamird@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -75,18 +76,28 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Feb 1, 2025 at 6:40=E2=80=AFPM Tamir Duberstein <tamird@gmail.com> =
-wrote:
+On Wed, Feb 5, 2025 at 6:05=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> Fixes: 0730422bced5 ("rust: use host dylib naming convention to support m=
-acOS")
-> ---
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> On Sat, Feb 1, 2025 at 6:40=E2=80=AFPM Tamir Duberstein <tamird@gmail.com=
+> wrote:
+> >
+> > Fixes: 0730422bced5 ("rust: use host dylib naming convention to support=
+ macOS")
+> > ---
+> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+>
+> Spurious `---`, but I have fixed it on my side.
+>
+> I also noticed another recent message from you with an empty line
+> between tags too. Something strange is going on with the tags you add.
+>
+> Cheers,
+> Miguel
 
-Spurious `---`, but I have fixed it on my side.
+Thanks for fixing it. I think in this case the SoB came from the b4
+cover letter rather than the commit itself, which is why it appeared
+after the `---`.
 
-I also noticed another recent message from you with an empty line
-between tags too. Something strange is going on with the tags you add.
-
-Cheers,
-Miguel
+I'll audit to make sure all my commits are properly SoB'd and file a
+bug with b4 if necessary.
