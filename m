@@ -1,57 +1,58 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB3D215176;
-	Wed,  5 Feb 2025 23:08:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D768C1F473C
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Feb 2025 23:12:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738796924; cv=none; b=NaAvNCDS6mnTrjCZQiXN0j7d7OayBOf2iMoZHngVp/acXoeydE7WqqdKG3y6e4FLIBtSADDgOh26EX5iwDncmdk1hA90hajuIwoeRuluP2BO/48jPq2ElNq7XEjI3mL95Io3GcmWUF9Hl25n8/3srdRGpdLq5VqcYOl/H1dj6a8=
+	t=1738797144; cv=none; b=X9w5ihJMIeeRToXKF4RWaZBshYu1zPoyYGcpSQw7CHpJizFWmD6n5F0OObTUPEpjB7FTjA1CDoL2OxaEkVYZGiP7m+mxrJgD5S2ij47gqQ2ZYhbBTFvlVIKGDgTa2Jo85RAmwItoPLANhDhY57mqzQ0FTWtngfC3T1MQXmM/+SQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738796924; c=relaxed/simple;
-	bh=119CI6OFDj+C/3vID9nFN97S1ov2S8Vw/j7B+ZUYlT4=;
+	s=arc-20240116; t=1738797144; c=relaxed/simple;
+	bh=4zHAng6HdFa9VjdxzgdDnt1PL3lyWq1Aclh+Z83mzYg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I9LM7/+QiANAsSADDkrHgKPUp6Cz0FcJUiErzaBMr2iEkODnjrcya4szfqWw5mMSlTG4DIdf0zf8+8cSOqmohc7EwKcy2atcKcT0zS/5OOG3stkD/uy1zfGhnWv6/ZDpoLnwMgH5+WFfxlOeDKVvzchfnnbxiZ5T+OObd1XxG4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dA4Wegnd; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=SD39T+RZUCvg2uunyx1Yi3npHfsreiFdcM10XbF2znLIyz6rCUhonBX7W2Ufn/nsruJGZgC8yRmfBQ879nJuEte6HHT3pYRRxUE3TD0S+1NIGOzk7WGxymZs5a4E6crReLC/EPUXautUxNyC+XapnR36uq2UbFQXNZ49pyL0R2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=U8GJhbdq; arc=none smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dA4Wegnd"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2f9e072f155so51297a91.2;
-        Wed, 05 Feb 2025 15:08:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="U8GJhbdq"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5dcd43726ecso394a12.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 05 Feb 2025 15:12:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738796922; x=1739401722; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1738797141; x=1739401941; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=119CI6OFDj+C/3vID9nFN97S1ov2S8Vw/j7B+ZUYlT4=;
-        b=dA4WegndU+KDoTr9oxGQTKtnxPRzRuk3m6Nbz3D8HO3ojNnYhqUjtlj6ayodmkRtcW
-         o59MmIYsfLrFafqeS85JqB7hhdHQCNTDA9b4aCM4sgEWbtioFqtkZJBcuMEUidJ03Fxv
-         WiLwtKxIkV6xl0W3XOBACTOSiTxnZnh9S0ScIhPbi+Vyl2rJc1DMNA5/mwVHgOz7whhQ
-         AYOPzdZju8KsPxtZpX/uBb827xFXFiebvK6pucMHJxcWp2QJNXUzLi9YLewR1Dghh0eG
-         6KBbjYPbBfTs862YkWkD7kPsy+cssnmsO9G7hrl85Q9pyFuUEKEj7vjh+JnarU3iyj5w
-         e9QA==
+        bh=4zHAng6HdFa9VjdxzgdDnt1PL3lyWq1Aclh+Z83mzYg=;
+        b=U8GJhbdqgWf2McHiJB1SLne+54/dLfTE9r+PV2cR+nus19BO5gGvT2dcnpgauTzmW/
+         eT3OLXc2zs+LkvFqTCVswXCjXgP6fh8FxnWRw3SXGBw7vyK9zGg3CoH2DDQP+kGjg0ei
+         CW5pLcDf2oO9/9OuY4eQ51n+h/dxyokPtJB18OR5qa5dspPTFeM1jGNbpu3VuxOSSUnD
+         tHNIcjUcHsBRLFtrF38RimOgmCy9E1yBZ21igdW0qDYYIpWfK+0i0AsducGGQpIKhuG2
+         GDR1E3+Cn8rNfNSNjAkBMLubzgG+V5GGJWzaq15SpSo6SIdOhWi7F/+s9WEyyFPcdAoZ
+         3gZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738796922; x=1739401722;
+        d=1e100.net; s=20230601; t=1738797141; x=1739401941;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=119CI6OFDj+C/3vID9nFN97S1ov2S8Vw/j7B+ZUYlT4=;
-        b=lxnrLmb8E514nmV/D4T4OyyXOeDsUaxfD80B+weu06xIycYcrPrUYlY3Nm9e47yvck
-         Ayit2gkzjXwI2d719EiFXnbG41TW2hLd+nOnXN1axKId2SUh96WnM1FBOSio72FDj8+g
-         ijnflDEC4VZ8q8SNhRoD51zs58Lu4X9jhT2HFMSkC2Cg+s8BK7OF5436ggwFyUC2uucM
-         31XgZgtPotwLn+jJ2qnax/rvyb8fhMSSv/KrTMZISQYItDd5Mh1BUSQNdsQUE2fL2YBT
-         0CvaQgCIJ2NG6v4SQx7PMXBIv8ppBgKGTxAbon9qsChXAVqEjof0Yy68ArOIBCBU8hUp
-         FaJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV7f0XtIpqHaYAu3/SK8kFhF4bFaXDJYaMmaXwnSeVwjZVIAMXS0sjlQWSGrWx8F9NDaVuvtjR1Sc6D0gqVAk4=@vger.kernel.org, AJvYcCVkkuI4Gzz3jNP2u7mtek/MFbN6NhHdvlD6o7BR6d3zW1IDdCuZgw/lV9BXOnKPpJ0nJlf02wyC+uqIuAo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2QRTcaRHzVx3R27at9PE4ve4/6MPaU/pwBl1qc3DLkU5T6550
-	H1grbI0D1ta4LiYh73OXSdBbsd79DZddN7vbuJGyM4YyjATAZzRXqxJYZp8sF5Lm2nE3atd47RK
-	tySCbi2A4am3la/22qdKL35Ed/oQ=
-X-Gm-Gg: ASbGncuognwNKVb7LdZGmdeiOU94dlG2KWPj52nTvN2uCAZOC/xflUZ9hjTcGJ0ajsM
-	fjPdfePbIuLURSLzzYAJuFJxpnu17zeJrbP0UgK53pTgEbh08hz7CAK7NivEup4kR51rCadKP
-X-Google-Smtp-Source: AGHT+IGPQWN6lu7lXi70uGtcKR3m7Ux+2U34rhG09J16VU2W7p7726JMw8V/FzkqaeczPU2ki2ORnRLXXQHf5fEjNNk=
-X-Received: by 2002:a17:90b:380d:b0:2ee:d9f2:2acd with SMTP id
- 98e67ed59e1d1-2f9e085a504mr2961268a91.6.1738796922117; Wed, 05 Feb 2025
- 15:08:42 -0800 (PST)
+        bh=4zHAng6HdFa9VjdxzgdDnt1PL3lyWq1Aclh+Z83mzYg=;
+        b=VXQ1vIWxkpBJ5YN5FFO468znTLqlgATCX4D4n6EpBXONIkHtbb9i/qva/RbLwEOTbM
+         TfN71xm9kwuCO41mXMHgyVLcKhW1964kpjL432Wxrdd+3/lsmnuBdSPgNLhhwrwS34uH
+         TIxPe9JxfgXXYmdf64DTu2SPMZ/EyXnnK9ANhuTN2VNerFCF23bbDvT9Sj26q7wggeU7
+         l82/ofkN3DT+itp6xY91Xdaq3nLQjASNdHecDJMZdRGge7yfy88jodrwfELedjx3kzwI
+         lh7T9TIZtaMjy4Fb1AsxyQWZR5dnXOV9N2btr7dpIKyFdPXF4eYC7tOUC/QHjjeL/2m0
+         uTtA==
+X-Forwarded-Encrypted: i=1; AJvYcCXE7ja2Bxon1tT2fVItq8ZyWqiLUn3ljX5LsQeMXUsZWfq4RG6mo+k8L+8DjTbcoZ9143KgibBMZDRHdil7Fg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuhdmgsHki4bEaPtq3JZZlKFJ2Xv+KPECPOBz7BSHDn5gooRPs
+	3BR3QOVw5QDDy1JtuHRYT+JXB0owXTm2WYh/eZA1qCZv4IvQk/qQZ0BW+WIEDOukNwIS9kehrg4
+	5AWPK9FvrSAilS3km+WdtVYA3tIvndV9BvMzr
+X-Gm-Gg: ASbGncthqzaWDGeok5EQxHFuMro1uYdw7+jScNjYJu84lr5427xXpKM+TDbdMXoQFvW
+	Ojv6MBLFLe+7i2SUzV+EVEYNOGSR5KbkZ9nnaWaCVd8T8tsJ181YIv5b1rG7Qw31wJJ1E5QK1tn
+	pDlIAjwmUZk8tezktXfuz1nISoQX8=
+X-Google-Smtp-Source: AGHT+IEy8D06ym9OFvBFxNDWOLA3mpnur8aFPFxDU+aIsQd7Z5dcQwZCDB3Rc9uXU2+Il5yHW8OsIbsEDjD7/GVrGOU=
+X-Received: by 2002:a05:6402:644:b0:5d0:eb21:264d with SMTP id
+ 4fb4d7f45d1cf-5dcefeb0e4dmr3424a12.1.1738797141035; Wed, 05 Feb 2025 15:12:21
+ -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -61,14 +62,15 @@ MIME-Version: 1.0
 References: <20250122-gendwarfksyms-kasan-rust-v1-1-5ee5658f4fb6@google.com>
  <CANiq72nr9vTgUF9u0uyypzprQrEpGv4qbOUJS_QgYbMZhTTrRQ@mail.gmail.com>
  <CAGSQo02HFMn0b=d6LVFr35Bc06F0AY8XmPFtqWi4b17cQSF0+g@mail.gmail.com>
- <CANiq72mo66FCLQTsBMU+Sc-VeS617uYgQdtCXJF9PacpUhSbLA@mail.gmail.com> <CAGSQo00uUYdjeiRHEz465WyN_kDyiV2L0Ojaomr8ckMYipmp6w@mail.gmail.com>
-In-Reply-To: <CAGSQo00uUYdjeiRHEz465WyN_kDyiV2L0Ojaomr8ckMYipmp6w@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 6 Feb 2025 00:08:29 +0100
-X-Gm-Features: AWEUYZkAO5tt7mVoyojcc-IcIgPA8kzPSscdi5FCv3UdWiVIWNe2t_rNumho7Qk
-Message-ID: <CANiq72ksOc_ncUXycySPS+JUur8GZZSHSSEQYOg9aKtpBRvnPg@mail.gmail.com>
+ <CANiq72mo66FCLQTsBMU+Sc-VeS617uYgQdtCXJF9PacpUhSbLA@mail.gmail.com>
+ <CAGSQo00uUYdjeiRHEz465WyN_kDyiV2L0Ojaomr8ckMYipmp6w@mail.gmail.com> <CANiq72ksOc_ncUXycySPS+JUur8GZZSHSSEQYOg9aKtpBRvnPg@mail.gmail.com>
+In-Reply-To: <CANiq72ksOc_ncUXycySPS+JUur8GZZSHSSEQYOg9aKtpBRvnPg@mail.gmail.com>
+From: Matthew Maurer <mmaurer@google.com>
+Date: Wed, 5 Feb 2025 15:12:09 -0800
+X-Gm-Features: AWEUYZk63DXwzsdzpkKGzbhmaLKhtF4EH60XsK48xOQrl7YUbPdqDb59fHj8Esk
+Message-ID: <CAGSQo02wJrawHfCJ7HTo+_o0wgk2zv+SefMmORoNcM5NNS7LqA@mail.gmail.com>
 Subject: Re: [PATCH] rust: Do not export generated KASAN ODR symbols
-To: Matthew Maurer <mmaurer@google.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -78,16 +80,26 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 6, 2025 at 12:03=E2=80=AFAM Matthew Maurer <mmaurer@google.com>=
- wrote:
+Correct, I don't believe it needs to be backported. `gendwarfksyms` is
+the only in-tree tool I am aware of breaking on this. It is possible
+someone else is dumping DWARF for all exported symbols, but I don't
+know of anyone specific other than Android for kernel ABI monitoring,
+who already has this patch in-tree, and does that monitoring on
+non-ASAN builds.
+
+On Wed, Feb 5, 2025 at 3:08=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> Fixes: e3117404b41124c88a4d834fc3222669a880addc
-> would probably be most appropriate
-
-Thanks for the quick reply!
-
-In principle, the backport to 6.12.y nor 6.13.y is not needed since
-gendwarfksyms does not exist there, right?
-
-Cheers,
-Miguel
+> On Thu, Feb 6, 2025 at 12:03=E2=80=AFAM Matthew Maurer <mmaurer@google.co=
+m> wrote:
+> >
+> > Fixes: e3117404b41124c88a4d834fc3222669a880addc
+> > would probably be most appropriate
+>
+> Thanks for the quick reply!
+>
+> In principle, the backport to 6.12.y nor 6.13.y is not needed since
+> gendwarfksyms does not exist there, right?
+>
+> Cheers,
+> Miguel
