@@ -1,104 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89AD9126C18;
-	Wed,  5 Feb 2025 13:41:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D1213B58C
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Feb 2025 13:42:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738762895; cv=none; b=Y9ucAf4vcqe2+v0FZDnYFlT6JofKOhGt15a0rLeb3gdqoZUQ3VbTWZKpg4lyvB6qUSs+nl8f0dLwsSCggOo+/tHGuaImvwpCojrQmhbnDIqqf+b/TAztb/RKdE4P8w0lJCPxVhGPycC2WYd435Z5mU6dbiCIyuPJN+o/VtNMa4U=
+	t=1738762967; cv=none; b=BmC/q90fRs0lTRMsx4e53iSfCiCCbG0yFXRcAYZHCS5u/ZXTijVBP3lNJeVl6LQ8Q5UQ3Vty6EHngDgAA4vjD22e9WHccTDneKfsGmnAOEz2R5OLF957ZrD9mCOHF+cqmdF5V8bI+xfFewrzNcrWh2A2wWzQs84Q6TrYuL99Z1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738762895; c=relaxed/simple;
-	bh=U7Js62AsEd21eUFkVDcJZEIJ38W1+b5iygkxCIM0T/E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FNP2JekQsz9AHvSfUcHIDlTc6rcFa88tebETkKmhm2SQklQyTDuXcIBmW6CL5hBv6naxzLZYeo0BMQMxJ2l1MQ6DxuzdI7yEYESkTsKHX6bJHr4Bd7d1G1iz5ipUVbxtMl8RcU6F+H6qDEcp0fzj2yZzrYgJmsPFNV6LMqGstrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ipc43YHY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738762967; c=relaxed/simple;
+	bh=y9/KrzeohqcIwrfY0qdsxNgmzVdDXNghpEy9MK8khhc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rRWPhT2QDWfMJwSnghz05GeUL89TGxCDRPebnk5HSesgpRyJZoDyJ54v6hm6ZMMjpzzjIlm6WcRfOID4AqKBo4S5GL0AdYdztuxlKpxGa47mFByPHif0o8UUSKJ71u7gL0rj4NQTwvVpbsotdgiMfd3OSew9dfywYQ8pkkxpnLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vwXfdRE9; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ipc43YHY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 546CBC4CED1;
-	Wed,  5 Feb 2025 13:41:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738762894;
-	bh=U7Js62AsEd21eUFkVDcJZEIJ38W1+b5iygkxCIM0T/E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ipc43YHYKI5ichfkTqCIKfXGjwrQzPBdiEP/txhS0RBTd7ClzPjqn5LEWh4GL8ysx
-	 D6XQLB8os7Xgd6DB1B6CCAjNGHs2tbPYwI6k6B3aH8xLtf4JD0/T8DJE/DGKPMZvvD
-	 9Ba03/ZHI1jvrexIUnYsr+j/O0iph6v9O0biyuL4=
-Date: Wed, 5 Feb 2025 14:41:31 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Peter Chen <peter.chen@kernel.org>
-Cc: linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Lyude Paul <lyude@redhat.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Liam Girdwood <lgirdwood@gmail.com>, Lukas Wunner <lukas@wunner.de>,
-	Mark Brown <broonie@kernel.org>,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Zijun Hu <quic_zijuhu@quicinc.com>, linux-usb@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 3/5] USB: phy: convert usb_phy_generic logic to use a
- faux device
-Message-ID: <2025020509-imperial-maroon-1bc9@gregkh>
-References: <2025020421-poster-moisture-534b@gregkh>
- <2025020424-overstock-scheming-6a30@gregkh>
- <20250205101916.GA4083@nchen-desktop>
- <2025020505-harsh-divisibly-51cc@gregkh>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vwXfdRE9"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2f9d74037a7so2474490a91.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 05 Feb 2025 05:42:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1738762965; x=1739367765; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=y9/KrzeohqcIwrfY0qdsxNgmzVdDXNghpEy9MK8khhc=;
+        b=vwXfdRE9uJV2gTcDjdCI1nLRIv3yvH7UX7jCW5nm9bFHMHIBELUHYyFshmNVB23ITH
+         cyFvGwddBnSBHQMXHZrrqgzWDF/oNCFJdNGrUYV9MU70bZyNd9uLb/RXFGfm2kFKlDnl
+         U7QY5V3uBJWfJho2Wucnldg7j4fcgeSsBjsB50tL8/zuTuH2kkTynoE8plJ/CdydkJIy
+         0WYxxf0s0cqicqnNTtnC7yc4ajd6zVEwzZSkWLTOBPoc8btsskQkZ6UwPFW+frz8CJcD
+         bMBWgDDoxySABT4mfCmdXJnHfskHFBs72B6TI471uEIIup9gP7kBOlu/TNBSDZX8PzIj
+         wfzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738762965; x=1739367765;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=y9/KrzeohqcIwrfY0qdsxNgmzVdDXNghpEy9MK8khhc=;
+        b=NFZSzQe27gFbON+wcLRtFuniZmn0m0PwestQjcJg4ompOS+W5ZCMLOeL2SisC1kGBc
+         L9r0UvNC0mLYd9LRnwKc/7niSIYs34jRRDSPjGiZjf/Kp786wNOi2dWdKltXFfq5ySQu
+         29TCQY/m0/+EY8o49Zs3yDbMiA+sew4QPhCgyrz3bBdFBTuYbOgKvLo7k2q9eRoRhLaS
+         lPlLI5bMksrZNUb3W5Pqj8LWP/iFGxCqMBAd/PZ/li98l2C5lo8p5WQrar8vC4eCWVx8
+         bqo7fdQ53ldLinh05vPDATo3vxdFx4LHylv6L1j363r5O6TNZzEjpm2khmbA8q0uVCt8
+         QaQg==
+X-Forwarded-Encrypted: i=1; AJvYcCWiflp0isB5KdtCfYfGvOOwvqh3c1MmsGEN1KXtf4gadpAO8wVCsF0OruHiBa1iybU+456WiwsN9LyVExPj4g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/Y8j0UTxl0abCa0/C9+WrULJOb0WASBXbAcB7Sqc90ph2o7rd
+	6KpWtBXLLoM3iMwqRPS7EfK+EVhIWHmQxluvFVMfj5HUU/nYYMnvxgRJnrnYa7NovgTNSr/C8+i
+	lUaQEFefts00sgmdeHFyzy8eFKlxIBXheiFkf
+X-Gm-Gg: ASbGncsjwOqIbupoUZhQTWE15pH07YtpjjveHGG0N8Y6SuOs1fM6Ebf8TDM6p2T7yWw
+	VMF7zjUN6Nl9sTQ7xLlNmiVtY3XXiZsdqap8neLgh1o8K2qaN1UW2RBDl7ARECrT8cB7FRk8wwi
+	iiVT8nkrzLCCt0A9sWYUgwmYDT7X0=
+X-Google-Smtp-Source: AGHT+IH/EQxhv36VWrIe8Gv+L/KgZwPP2PZmZzoajSAXyUR6QSdWL45+HOWZhhT5Cwq7j7Ro0lf5pski2VkayJgOHwc=
+X-Received: by 2002:a17:90a:d407:b0:2f7:d5f8:f393 with SMTP id
+ 98e67ed59e1d1-2f9e084fcb3mr4374896a91.35.1738762965170; Wed, 05 Feb 2025
+ 05:42:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025020505-harsh-divisibly-51cc@gregkh>
+References: <20250130-guard-get-lock-v1-1-8ed87899920a@google.com> <87zfj8eczd.fsf@kloenk.dev>
+In-Reply-To: <87zfj8eczd.fsf@kloenk.dev>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 5 Feb 2025 14:42:31 +0100
+X-Gm-Features: AWEUYZlJgYLFa6S5rPjaXdVXGeY7J7aptQJdB0SN72G2Qv7QRAvY8D_WZ5moQTY
+Message-ID: <CAH5fLgiMY_J2u_ZXaNUvrBXqeBvs0T6Gz=fH8MVcd7bm+3GZqg@mail.gmail.com>
+Subject: Re: [PATCH] rust: sync: add accessor for the lock behind a given guard
+To: Fiona Behrens <me@kloenk.dev>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 05, 2025 at 01:27:30PM +0100, Greg Kroah-Hartman wrote:
-> On Wed, Feb 05, 2025 at 06:19:16PM +0800, Peter Chen wrote:
-> > On 25-02-04 12:09:15, Greg Kroah-Hartman wrote:
-> > > The usb_phy_generic code was creating a "fake" platform device to pass
-> > > around in different places.  Instead of doing that, use the faux bus
-> > > instead as that is what is really wanted here.
-> > 
-> > Hi Greg,
-> > 
-> > As far as I know, there are some platforms use the device-tree to get
-> > the system resource (eg, clock, reset, regular) for this driver.
-> > We may not use fake bus for this driver.
-> 
-> But there is no system resources assigned to this device/driver at all,
-> so how is it getting anything here?
-> 
-> > $grep -rn "usb-nop-xceiv" arch/arm64/boot/dts/*
-> > 
-> > arch/arm64/boot/dts/altera/socfpga_stratix10.dtsi:649:		compatible = "usb-nop-xceiv";
-> > arch/arm64/boot/dts/freescale/imx8mm.dtsi:275:		compatible = "usb-nop-xceiv";
-> > arch/arm64/boot/dts/freescale/imx8mm.dtsi:285:		compatible = "usb-nop-xceiv";
-> > arch/arm64/boot/dts/freescale/imx93.dtsi:238:		compatible = "usb-nop-xceiv";
-> > arch/arm64/boot/dts/freescale/imx93.dtsi:245:		compatible = "usb-nop-xceiv";
-> > arch/arm64/boot/dts/freescale/imx8mn.dtsi:1321:		compatible = "usb-nop-xceiv";
-> > arch/arm64/boot/dts/intel/socfpga_agilex.dtsi:149:		compatible = "usb-nop-xceiv";
-> > arch/arm64/boot/dts/intel/socfpga_agilex5.dtsi:133:		compatible = "usb-nop-xceiv";
-> > arch/arm64/boot/dts/marvell/cn9132-db.dtsi:30:		compatible = "usb-nop-xceiv";
-> > arch/arm64/boot/dts/marvell/cn9132-db.dtsi:44:		compatible = "usb-nop-xceiv";
-> > arch/arm64/boot/dts/marvell/cn9131-db.dtsi:33:		compatible = "usb-nop-xceiv";
-> > arch/arm64/boot/dts/marvell/armada-3720-db.dts:43:		compatible = "usb-nop-xceiv";
-> > arch/arm64/boot/dts/marvell/cn9130-crb.dtsi:49:		compatible = "usb-nop-xceiv";
-> > arch/arm64/boot/dts/marvell/cn9130-crb.dtsi:53:		compatible = "usb-nop-xceiv";
-> > arch/arm64/boot/dts/marvell/cn9130-db.dtsi:52:		compatible = "usb-nop-xceiv";
-> > arch/arm64/boot/dts/marvell/cn9130-db.dtsi:66:		compatible = "usb-nop-xceiv";
-> > arch/arm64/boot/dts/marvell/armada-8040-db.dts:53:		compatible = "usb-nop-xceiv";
-> > arch/arm64/boot/dts/marvell/armada-8040-db.dts:67:		compatible = "usb-nop-xceiv";
-> > arch/arm64/boot/dts/marvell/ac5-98dx35xx-rd.dts:36:		compatible = "usb-nop-xceiv";
-> > arch/arm64/boot/dts/marvell/armada-3720-espressobin-ultra.dts:39:		compatible = "usb-nop-xceiv";
-> 
-> Does this actually work at all?  There is no real resouces here that I
-> can see, so what am I missing?
+On Thu, Jan 30, 2025 at 12:51=E2=80=AFPM Fiona Behrens <me@kloenk.dev> wrot=
+e:
+>
+> Alice Ryhl <aliceryhl@google.com> writes:
+>
+> > Binder has some methods where the caller provides a lock guard, and
+> > Binder needs to be able to assert that the guard is associated with the
+> > right lock. To enable this, add an accessor to obtain a reference to th=
+e
+> > underlying lock that you can pass to `ptr::eq`.
+> >
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+>
+> Reviewed-by: Fiona Behrens <me@kloenk.dev>
 
-Hm, maybe I got this one wrong, I'm getting build errors now from
-kbuild, let me go look into this some more...
+I forgot to pick this up on v2. Sorry, but could you resend it on v2?
 
-greg k-h
+Alice
