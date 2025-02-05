@@ -1,111 +1,96 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320F61D540;
-	Wed,  5 Feb 2025 12:55:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9AD8C11;
+	Wed,  5 Feb 2025 12:59:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738760130; cv=none; b=G916hoYmDzSQaawAIMG0hTJqVjRErJCjIrBa675jruMujLgLd+PsYvSpZb9P15fanaMScwv/pMxZVHlb8oVlsZFo3a5B3pm+cJddBsZDVATbTSCEbAl1TjRusktd14f7ky9j79aUWLJwN20Ujph7+MjPcamtzirET2xsHg7yMOg=
+	t=1738760387; cv=none; b=SfGGcroI5EtizQyhnPWM5tqP84AanI75TmoYgifIw9tD2dGdx9yAWO3XOfkfckSl3wIi/8oe6ZU/s5SkxXpqQKkbaZusp372/bLJQNF+OWZINbffhQXUEu35LzlXarq6LREDwwfta1bOmvuhUJ5DkMdcL4XYGqLH/s3P3o7DHSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738760130; c=relaxed/simple;
-	bh=pdO6+jAkpYOeS/DDflPmApHSf/rDiLzOQJfZe1ZN7mw=;
+	s=arc-20240116; t=1738760387; c=relaxed/simple;
+	bh=26CJ6eCx9sOjWqCu2BT3cZKrGbPD0dZZbBOZtjTojz4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r9MAepN1J7kZ80wlRhw3mgP5i3Hfx9L0qkjsbIrHiswKeYjj5DTSHXStoQMHtZxN4KgUOrurrCKzNXC2ugatK3YWDvNE4cD3oY9T4PMr4I2rOD31D2njd0n2TtGFgIcWJWvMI+GQ7WpAHPHLbyw7kRm01T1ZldB6cFgJTnzPx7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VXEgYAQA; arc=none smtp.client-ip=209.85.216.51
+	 To:Cc:Content-Type; b=MKv1JxeD8TCnCnhPWv8mwBwyY6AxXH7Km5KbnImV38EN6D3a4HPeajaQBaca9Kupq7/SkLjd+c6Vqugg36NLz/PW1+FnEMRs0t9R2h4SbH3GoiUhmwPcz+a/LxAcHGbk7jTtLKbW10ICdnxevmXcP6qx8j9aXSSDvmLbnzxWEcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KzadPKl/; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VXEgYAQA"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2f9f90103bbso9384a91.3;
-        Wed, 05 Feb 2025 04:55:28 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KzadPKl/"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-21f075df4faso3025855ad.1;
+        Wed, 05 Feb 2025 04:59:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738760128; x=1739364928; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1738760385; x=1739365185; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tcnHztUUdnVPJ+/5e1SOyz1DfV3d17PwRKV3Z/iivJQ=;
-        b=VXEgYAQACLD3bpBF5XFaUZcUIYXQ5w0iZzry0uW5PxApGprVQqvtjP00CpWNceH0K+
-         pq+kZ/6DkzPsPtgCGC0SMP8vpqbIDRXqH6ZTFqniqNYnFZrZE83diO4CRZrt2rt9zI1g
-         ndRJrJREGTXbfz9W4D57iie0t2OH/98sjh2s2i58m8jzNdHlb1ah1lxngqZx5dPobPuZ
-         mlauXjvQpE5EbYl6sR5n23fe0Qb4CaJd+9yPKsS890vhOA+9wr5P8Dn1bNmOR09C/WmN
-         g1aQ64WSAAUq1fehw178BAN/EtAUrkz6VVGxX8Us2lvdzEGXEDBY5MhOSLWSMSaeS83F
-         LUWg==
+        bh=26CJ6eCx9sOjWqCu2BT3cZKrGbPD0dZZbBOZtjTojz4=;
+        b=KzadPKl/OY8u2i8dSIy+abZ8nKMlVt+AqY0Z1V4s5UuBTOep5uiTMKYlqhyxBVqkes
+         i1nFeAcksNXh5P8133kZTr1SvmvKJXMrAEDFhLMSZ0parw+TLyDnpDDjM2/zz8i0Kwcb
+         opfOvQflc9jVw8kty1Cd+qY/5oOPp0I2RAAkFIgNryfeUwVKxBteqqETNBdLkAwVfmNx
+         Vwx+rMZlU45ziLsO0Vd1O+a4fpuQqsEsgxpnLbfPvL2sEI5wXIUML+hYbtAMuisZMLjV
+         nE6d3rHp1ltAC5Oy7gWsrKKxyyyUrC+aUjp3ykwnBcTWIMRUKoyx60NWnmrlh1xQEjuk
+         zTsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738760128; x=1739364928;
+        d=1e100.net; s=20230601; t=1738760385; x=1739365185;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=tcnHztUUdnVPJ+/5e1SOyz1DfV3d17PwRKV3Z/iivJQ=;
-        b=Eogy2XyEU87SnN8MMdwa+UVviaH7ra8gEDnoeqMZJHEc18xsKzQ8UcOT8Uwwiv7vpN
-         Is9O4chVD8/op32poH1A1HkCxdxP0l3GoG8kXW8WDV3iqxHFqBo4Bll/JFOvbJIDX+9/
-         ZXCAZ5ANjxWoEGlXVDVrUejqHEPwi1mDu0GCyC+nAnFDKptZ2re8gaxKDFdDSRE3aDre
-         6+GTvfy/dmnll0inb4btn4pXg7GZyCibl5pQv9GNDBP5Gfaz7EBFhUu3yegFIMG7esmf
-         VK+QBpL0QzJEwj+YiIzcw39Omjc60wKPBrN+/FI2lS8woM/t5blA+z7Y5F52hX/iob3P
-         rVRw==
-X-Forwarded-Encrypted: i=1; AJvYcCUtpQRFgXLRC5K5wL0piIh4Unh6VGtmcaph7XoFHGIFIFO3oHpSFlDiK0qlat4Uv3Zxe0mCTn+TP5vjloA=@vger.kernel.org, AJvYcCVi71IHji1iyP4ur6nixS6yrq+9O5RP+7m1bMQr2KTSR0hF//elA8MjTHtzF8HMafBORMlsZApa4PEIysaBLts=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5ZTK/Hs0wupg4xic1MYfTVovx/i20RL9ARctjiLFQvucZWClp
-	gi7uthVc+9Fb5XGRpUAGS4NQP5eDRqf3+aawrdwxlSkUSqnOYBi/D9F6JwQuWxwHA/sU2IiQe9j
-	MjiP0MICLVZejL6LK1CLf0iO3wG4=
-X-Gm-Gg: ASbGnctqVePw7XqwCRclp1qO6X+8X9R9FWkaUCq/ErIYfZAUzfzhU9jTz9yrVuQbxO4
-	5kBF1wJ21tpRnYdmxNPDfDhRcGg/ZeZQ8sG1VQAMyDf3xfwxJo5CFyeozbg8gBQkneWS31Qtw
-X-Google-Smtp-Source: AGHT+IEIMfbxShlzWMZcpH2fXxb6ERAAGzN6huAPFG49+BXJdhaAwaJJSRCZ9jGX/NvNM9jk3hqQzfxa7DJVmf7UC5s=
-X-Received: by 2002:a17:90b:44:b0:2ee:6db1:21dc with SMTP id
- 98e67ed59e1d1-2f9e074fa35mr1857013a91.1.1738760128284; Wed, 05 Feb 2025
- 04:55:28 -0800 (PST)
+        bh=26CJ6eCx9sOjWqCu2BT3cZKrGbPD0dZZbBOZtjTojz4=;
+        b=Jsnbr66MhGH/iitMQUL4SpmmtvCWPq2iblfCzWn7wxMroniJJbQpw5A/mc3sN1ywyX
+         nyJ1GijqNDVN/GCymX8vYtqaL4DWtBEmZupcul43W2b7R/30ZLqaDneIVvsb5/DKwkYe
+         nL7orkBi/zZmPMU8iUueiD6+n5STRnYhXKnMIsMPaeyZeO9Ix5AQLxJhfZHqzhgEZM3j
+         Slhz95/QY3zNawPN07RFYQBJRjG4D7GCPoH38tByf/KVBiorP0JSQ0sK2UXK6hmG4QDs
+         dkKslNYPdK2COfMx4nNtX/fv0XWvkPfW46eDA81jArPVVH9MNsN1vyEuRFkN9AzKVHXm
+         C9Vw==
+X-Forwarded-Encrypted: i=1; AJvYcCU6xMt14VN7Sm7ZopCZniDL5vzgh7yUGxCYS6ys/02Az8HrAW1jt/HMT2JmQJR5RPe4+0dZGMXRkhEfWOj1xE8=@vger.kernel.org, AJvYcCUfs4I+lbXZ3vDw2AmmV0LMQRY6VKAA3mLpjcaiHHM6KpYUt+M5Tj1uyeUoCOpsdzB8qTORzJZRe879bdChe0CacQ==@vger.kernel.org, AJvYcCXP2yTDW6oZq0PQT2r5e3FO60GhkVHjdNFKTEUzY4wSyga1FCRZBwkco5/XHrgiH8d4QOCaYOVNppe+III=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWTvzvbUseCtHfue0A+QxAlpVaSvx/fLJsS/jseUBID80qXtQj
+	O9hJk0HoW7f5oQerfWgIgE8o6HbizWvKHgTPR9sv/7km/l25J2qOye9rQ3wMRRQEwTC5pT3XP9k
+	MfdVZObyJooXkbaqZddHLzfQguCk=
+X-Gm-Gg: ASbGncuHnzjhB6dIEFHPy+P4/690Ycb9p7dTBiwdLomrV10Dtm0uUolQTwsTt7wIdiv
+	uI4LMk845S6e1k0JYPzwqKNAgcY6h1tDwUasxXFBCCB+gZfIn6bL2PdKMdYjj6pkNhsTwZK+W
+X-Google-Smtp-Source: AGHT+IHkri6TNGTSz3U98mXqrXR+r+m35ZqBww+i9hywgTl9AhUoiMtLMP5LF8FnMwbhi4COMqrpcJa3lx42SSdu2wM=
+X-Received: by 2002:a17:902:f54b:b0:215:3862:603a with SMTP id
+ d9443c01a7336-21f17ec5e6fmr17560075ad.10.1738760384836; Wed, 05 Feb 2025
+ 04:59:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250205120540.387447-1-kurti@invicto.ai>
-In-Reply-To: <20250205120540.387447-1-kurti@invicto.ai>
+References: <20250129193037.573431-1-irogers@google.com> <f500ef21-5c87-4c60-8453-d98ee637a60c@app.fastmail.com>
+ <CAP-5=fVJHV=JgR_FR91V6zcVnLXnakdoiNP4Y5j-+X72r2STmQ@mail.gmail.com>
+In-Reply-To: <CAP-5=fVJHV=JgR_FR91V6zcVnLXnakdoiNP4Y5j-+X72r2STmQ@mail.gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 5 Feb 2025 13:55:16 +0100
-X-Gm-Features: AWEUYZkNknJCFOT8YjssXYTp28ufsyiShHXFJQ4K8n6_FoUuQB29W8RwTRHBk8E
-Message-ID: <CANiq72kN-FaciYLuv-mXHNGdN13UpvqoaRX=-0mKE4M9BdtY6Q@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] checkpatch: strip comments fix
-To: albankurti <kurti@invicto.ai>
-Cc: Joe Perches <joe@perches.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Charalampos Mitrodimas <charmitro@posteo.net>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>
+Date: Wed, 5 Feb 2025 13:59:32 +0100
+X-Gm-Features: AWEUYZlorAPRmvHCC4L-KWXHG1tDMTWJUpQRUhJNRpESCja4Y70e9BTk5q_UtPE
+Message-ID: <CANiq72=ynvE9k2=78wsVoM5-YVFBhTfNCKBeW7SOrNasPdihzg@mail.gmail.com>
+Subject: Re: [PATCH v1] perf symbol: Add rust v0 demangling support
+To: Ian Rogers <irogers@google.com>
+Cc: Daniel Xu <dxu@dxuuu.xyz>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Adrian Hunter <adrian.hunter@intel.com>, Kan Liang <kan.liang@linux.intel.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	James Clark <james.clark@linaro.org>, Howard Chu <howardchu95@gmail.com>, 
+	Ravi Bangoria <ravi.bangoria@amd.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi albankurti,
-
-On Wed, Feb 5, 2025 at 1:05=E2=80=AFPM albankurti <kurti@invicto.ai> wrote:
+On Mon, Feb 3, 2025 at 6:20=E2=80=AFPM Ian Rogers <irogers@google.com> wrot=
+e:
 >
-> Fixes the false positive warning when there is a comment on a pr_ or
-> dev_ log that ends with \n correctly.
-> Also contains some improvements on the macro_pattern to make it more
-> concise.
->
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1140
-> Signed-off-by: albankurti <kurti@invicto.ai>
+> I think the best solution is to use the official demangler but in
+> general we'd like fewer rather than more library dependencies. For
 
-Thanks for the patch!
-
-It seems this is v2 of:
-
-    https://lore.kernel.org/rust-for-linux/20250203201149.330117-1-kurti@in=
-victo.ai/
-
-Is that correct?
-
-If so, the commit title and description looks wrong, i.e. it seems
-that you are explaining what it changed w.r.t. v2, but instead you
-should put that in a changelog after the `---` line after the
-Signed-off-by tag. The commit message and title should describe what
-the commit does, just like v1 does.
-
-Also, the kernel requires a "known identity" for signatures. For
-instance, the name you use to sign documents in real life. Please let
-us know if that is a problem -- see:
-
-    https://docs.kernel.org/process/submitting-patches.html#developer-s-cer=
-tificate-of-origin-1-1
+I agree, solution 4) seems the best, at least for the time being.
 
 Cheers,
 Miguel
