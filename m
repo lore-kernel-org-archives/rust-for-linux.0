@@ -1,113 +1,111 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D031FCD07
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Feb 2025 20:08:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06902153C7;
+	Wed,  5 Feb 2025 20:31:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.51.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738786100; cv=none; b=llIepYWWbwkJhPLz7y+IPnOrwOMKcMoFvMqPTXSsG8O+f7AiblGDouyqiT5ts6VFitk134d5OLBM/taD2TBiSSEQW66db670cl+M8pekJld3fF2Vwp4PhUPawLA/MI3gMlt55G7P/wMPEIPyYiFJpupg4TT6EDWG7gCehx1FsCA=
+	t=1738787474; cv=none; b=qdLXpKMGJuteyu5xLauDdq7Wx7wiJuud8sP60V8rzdZ6lMPIkVI1RLAss0QcrinNLkRsGRHIMb8s7AK0qAQ9R6qrZfcI8PucXmgltFvVsfhhAvQiDAlgjYVLXsjuEHaWxerfWo3zCzBVrbEQmGLBGZoq6xToxVTNyo62F2P3tjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738786100; c=relaxed/simple;
-	bh=1+8osiND+poixajs+uGj5lEQpMJBkufcI1G19mRvd3U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eNt27QCZk/cbuJLwircC6hYoAYu9q+kXbtAms8c4oFHWRb+L6WPCpt/u0SYi7416y4INIn8XCADiQ/B97rTCY/Egt9J/PEtVQa6gfEmQzlDioJqMQJn00FHy4ziJa83w9OMiyg1ivfYWsUmcItLmzDxwIFwbt0jBRkIBBvzsYLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ekJxztB0; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1738787474; c=relaxed/simple;
+	bh=G2BFvixwkMGuyat+ysHlR5LQgZOPVhcp+i/Lp4e/Q8k=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tCCkQwJ2HAwfW3TLllPkiZrXGFmhiOO4DZefqkVo6mVzJxzO9BJBicRxh3hypVNIW+0fsQWeGitM1DK9gi0LlRi+zLLUIsXexuO051AMC66Yx2b1cINvi4P00WYE+oXAJCUOPaw4eZ9KOIZ/viYwYOgBTlNzyhYTh6G7LJV7NMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=DGkT/j2n; arc=none smtp.client-ip=188.165.51.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ekJxztB0"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5d442f9d285so1921a12.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 05 Feb 2025 12:08:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738786096; x=1739390896; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1+8osiND+poixajs+uGj5lEQpMJBkufcI1G19mRvd3U=;
-        b=ekJxztB0fiWaIcgmfgJNAxLeOx0jlECZn07k08L7c405O5TyD8AlbmTJseOooMyul7
-         WhDoSB0F/Y2gox3/AzwlH+8Zr/YH502O9wVQ/zmAq69meCbOqz4bjJoHhkj4KfSU6/w8
-         rc6xmRpPbjplaLT/iiPGisx+nZufPedVwuTOK3mSOIjsixh0ciqe4DFWKpGzVUQ1UuIW
-         MMKqXyDaoR8eU32n/5XD3y29dpXLLB1GHf5IBTnvVQbeR6ynoQ56oLZoTFvqe46wVqCm
-         0HGhRtV9/nmzd/QChX6T/8MV0VvK8ijkzgxItqnsICbsP9MUWuoFG1qdKZFIv+fhdAQJ
-         C7Rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738786096; x=1739390896;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1+8osiND+poixajs+uGj5lEQpMJBkufcI1G19mRvd3U=;
-        b=N2ho4p9nM0S6Slto4TILlkzFA/fJmyrX9J+YZ/6+ybASWjbOJ6C5u9KRf7NrlOgQBn
-         4WtC3UPRrl2LTaeOFcOOBFhuz6UevqFYbROzZgDVex+Lr/+cKenTGQYzIgMFTSvVF6KY
-         NJKF4d0Ih5kgm9Tufx1SlnwmGEhpvf4TB57t1UrKffMNsnKITOk6VSLCzKu466jOsAbk
-         mKkqNWRjVu4aDHYEkNegwknqhenIxQa/wtjEMc+QvhJLGvR8/Gbc4YygOLbRgOEuiCtP
-         Fo+B6ZtuWJaW8vxEMkQrGnZgwqESbSMxSB6lS0bf8xWM3QXp/94mgaBrsLt3wriCnOUI
-         q6rQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXvdoEkoiQSBzxlOqe7ClXfNcuoFAPP30nAmP51cVc80djaoH41s/7JLf/xvSAh7yPN7EtJudcIpSmmk8vUqQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYNSQ3wqNgj6WAhZwfjiT1jyECbxtDFI9ztHWc9ktsrCN145yR
-	8YNDhRvRnGSEjUrJItlYuSfO4I2SaGAvHwWP0x7QRppzlw4F+biq3mQH9doNFYnOxEL+EgXbUbH
-	UK/RBLLgmxLZ5senSbvCKEnPxAOwORSTS30Kc
-X-Gm-Gg: ASbGncsqgN+8CaNtT85v4OXWo64fqXZ+8/1cP7I2ZdL1ewaXl86utTeqMbSvhMb6mhU
-	AY+8gHT4PcZJ4voMFHErRLQyXlZWl7SrXiuQu80t63ndMo8MdbOnwqt76qKV1dGST7Tds6kuFbc
-	7RQZBc0A+prHT3Jf9UotcD+u9LdGI=
-X-Google-Smtp-Source: AGHT+IGx316vv85yz2/nvJFRxkFiWThWunwKRnKhnVM6RkZhlGbx8MIHHEJ25sjRD9Jdsb9vJmcFpLr/AhWfE2Ty9Tc=
-X-Received: by 2002:a05:6402:f90:b0:5d0:d935:457b with SMTP id
- 4fb4d7f45d1cf-5dced624585mr15835a12.0.1738786096220; Wed, 05 Feb 2025
- 12:08:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="DGkT/j2n"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1738787456; x=1739046656;
+	bh=QcIutq2h8aMzJgTTWdf+LfKW/kL1qkzR7Y5jU05xCbs=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=DGkT/j2n9dxkboW5bhCoh7seMiNfmqzaoMYfNjmD4hdGKy5LQtYQ+92zwBD+9pIXe
+	 yrdPFXn8uvdDJV12lL7UD8Aq6NQ4T9wbwTbxYqEG/I7WqeCRqqSjDCa3BfV2XJHsID
+	 /tvrTiMASlO0ZEhlOp9HzVYfFyTR6Ur5BS9oqZpSkwGHdH47a72U0hXO/YhG6jNThM
+	 400iqxQ/61n44R3fRgOqlVFy28bL4n9dS7qBlFAdpLPjnL8HG3BHqPG7124iQQTqyd
+	 3BmQBzQp2OqTgq8JzeVnXmvP3I6JIKZ93BZt9EmsLY1d188UMZcJybkDF07Gb15TD7
+	 Ta760h6ks45FQ==
+Date: Wed, 05 Feb 2025 20:30:50 +0000
+To: Mitchell Levy <levymitchell0@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Andreas Hindborg <a.hindborg@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] rust: lockdep: Use Pin for all LockClassKey usages
+Message-ID: <19dfbe36-237c-4da8-acfb-1d14069a8d1c@proton.me>
+In-Reply-To: <20250205-rust-lockdep-v3-2-5313e83a0bef@gmail.com>
+References: <20250205-rust-lockdep-v3-0-5313e83a0bef@gmail.com> <20250205-rust-lockdep-v3-2-5313e83a0bef@gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 0a471865454d10379c75b2737ae638194384f16f
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250122-gendwarfksyms-kasan-rust-v1-1-5ee5658f4fb6@google.com> <CANiq72nr9vTgUF9u0uyypzprQrEpGv4qbOUJS_QgYbMZhTTrRQ@mail.gmail.com>
-In-Reply-To: <CANiq72nr9vTgUF9u0uyypzprQrEpGv4qbOUJS_QgYbMZhTTrRQ@mail.gmail.com>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Wed, 5 Feb 2025 12:08:04 -0800
-X-Gm-Features: AWEUYZl61QhSjJhgUceZS-V8R2uiiR6L4GKn0W5Urdj0QBNHHGznj3vzrZ4SpcY
-Message-ID: <CAGSQo02HFMn0b=d6LVFr35Bc06F0AY8XmPFtqWi4b17cQSF0+g@mail.gmail.com>
-Subject: Re: [PATCH] rust: Do not export generated KASAN ODR symbols
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 22, 2025 at 1:12=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Wed, Jan 22, 2025 at 1:14=E2=80=AFAM Matthew Maurer <mmaurer@google.co=
-m> wrote:
-> >
-> > ASAN generates sppecial synthetic symbols to help check for ODR
-> > violations. These synthetic symbols lack debug information, so
-> > gendwarfksyms emits warnings when processing them. No code should ever
-> > have a dependency on these symbols, so we should not be exporting them,
-> > just like the __cfi symbols.
-> >
-> > Signed-off-by: Matthew Maurer <mmaurer@google.com>
->
-> Sounds good -- are those generated unconditionally by ASAN to check
-> for C++ ODR violations and so we get them anyway or do we benefit
-> somehow?
->
-> I also wondered about whether we should search for an extra underscore
-> (`__odr_asan_`), but I also see mentions of `__odr_asan.`, which I
-> guess that is the reason you used that prefix. Is that right?
+On 05.02.25 20:59, Mitchell Levy wrote:
+> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> index 41dcddac69e2..119e5f569bdb 100644
+> --- a/rust/kernel/sync/lock.rs
+> +++ b/rust/kernel/sync/lock.rs
+> @@ -7,12 +7,9 @@
+>=20
+>  use super::LockClassKey;
+>  use crate::{
+> -    init::PinInit,
+> -    pin_init,
+> -    str::CStr,
+> -    types::{NotThreadSafe, Opaque, ScopeGuard},
+> +    init::PinInit, pin_init, str::CStr, types::NotThreadSafe, types::Opa=
+que, types::ScopeGuard,
+>  };
+> -use core::{cell::UnsafeCell, marker::PhantomPinned};
+> +use core::{cell::UnsafeCell, marker::PhantomPinned, pin::Pin};
+>  use macros::pin_data;
+>=20
+>  pub mod mutex;
+> @@ -121,7 +118,7 @@ unsafe impl<T: ?Sized + Send, B: Backend> Sync for Lo=
+ck<T, B> {}
+>=20
+>  impl<T, B: Backend> Lock<T, B> {
+>      /// Constructs a new lock initialiser.
+> -    pub fn new(t: T, name: &'static CStr, key: &'static LockClassKey) ->=
+ impl PinInit<Self> {
+> +    pub fn new(t: T, name: &'static CStr, key: Pin<&'static LockClassKey=
+>) -> impl PinInit<Self> {
 
-In case you were waiting for an answer on that, it's because I was
-trying to be as loose as possible, since `__odr_asan` isn't going to
-end up on random symbols we *intended* to export from the kernel.
-We could technically restrict it to `__odr_asan_gen_` to be more
-precise and it should still work.
+Static references do not need `Pin`, since `Pin::static_ref` [1] exists,
+so you can just as well not add the `Pin` here and the other places
+where you have `Pin<&'static T>`.
 
->
-> Acked-by: Miguel Ojeda <ojeda@kernel.org>
->
-> Thanks!
->
-> Cheers,
-> Miguel
+The reasoning is that since the data lives for `'static` at that
+location, it will never move (since it is borrowed for `'static` after
+all).
+
+[1]: https://doc.rust-lang.org/std/pin/struct.Pin.html#method.static_ref
+
+---
+Cheers,
+Benno
+
+>          pin_init!(Self {
+>              data: UnsafeCell::new(t),
+>              _pin: PhantomPinned,
+> diff --git a/rust/kernel/sync/lock/global.rs b/rust/kernel/sync/lock/glob=
+al.rs
+> index 480ee724e3cc..d65f94b5caf2 100644
+> --- a/rust/kernel/sync/lock/global.rs
+> +++ b/rust/kernel/sync/lock/global.rs
+> @@ -13,6 +13,7 @@
+>  use core::{
+>      cell::UnsafeCell,
+>      marker::{PhantomData, PhantomPinned},
+> +    pin::Pin,
+>  };
+>=20
+>  /// Trait implemented for marker types for global locks.
+
