@@ -1,185 +1,84 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666F6623;
-	Wed,  5 Feb 2025 12:51:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B55616DC12
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Feb 2025 12:52:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738759884; cv=none; b=q6QXdNJ0IfdWtHEwXEQYxVFYJaxhlZB6IWDFaPbCdcDgHhiTQ4+AaTy0KxZZXQlzAAiQ0/5oEtZJThT8Sk8FHuypJvg4r7s4F9ciE9cGYk7DLWXkHFL4CcOPyIRpCJG7uXOReJj0A+yO5NMdD8jZm0EfGriFLu1atWhFNhil7+4=
+	t=1738759980; cv=none; b=aNQClsZ/TlXdPCmbRQ5zyWL5k44USvOA+/OgFzd5k7LKfcTX4vdkHSweo1QD8eRay6dCcnJ1bpqidUCuZWJfxP4ysWjWiS7BQlDBuxxQmTWu99mY+2TfbyISfQYQxC3baJpoGJ83SjPd+t8PM+4ULwIlfYM6zc4h9Gk60uI5gC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738759884; c=relaxed/simple;
-	bh=LbS2QAr94GKb9Q8ZQia8Tn+AusZedBX3FaUndVsUInU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EZrqIhR8VteNbtJzyrtRq3YOkPt1IvSPyTeOyO1ULlYB1lsGkYMgy8IIAfOrnq8dUHat2wBrQrN2lZDbQ2GPPaMbllgZI132DePOQeXpFdmap39Z0tFUNrGJ0yCXMiGm2UPir5DpNHL7Own3Tw8TrnUK21rz+lWVgNWe3t25tK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=aIv+EmAe; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1738759980; c=relaxed/simple;
+	bh=bNZ14gx6Laah292ytLTzsG+X9dGK3fn4GwhhVA4OFQA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=c5UwpUpkatVbWeHdzzDVGYa/cTf6Q0MHjYBhmu5etKKSO9NEckHjNS0SHHD9vbNT+fQvMw4661SuQ/Pc3as6NnNnPLLQJ9ai1OOpJ42RaPQE7Vz8CWFEnwse+K67X3gdXHdzryZZgy1eYD3gmak133iWbj5I5kkTeZOBPmIJSKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cze2EUXO; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="aIv+EmAe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1738759875;
-	bh=LbS2QAr94GKb9Q8ZQia8Tn+AusZedBX3FaUndVsUInU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=aIv+EmAe5lVZN2aKpqFDOZkiypQidX6gU8Jqd6Lf3rcUySVl0uOYg09i8+37v1tQy
-	 7xhJcDTXcc4fANIkpIffskBCi3Y1vO4NCUHDca8Sf7M5iXhu00LjrivsZW/CtW4jsH
-	 f9a4a00al2b2ruhttf7ts3opBWdCECUie0MfuBIyAETBsFkb2Y2vozziWG7/pBiieU
-	 KW+UokmJ3ko+5Xy945SOoDOnuXdm5xNNwZTTesnGcZuFACjeE/tTD+Fnd6Rn6HjYsV
-	 RXtab/ZrvAYVDGEymP1unwLdRLXJEtGY6cy7O/RFZBFQETqlJExlbv5n9RpJ1+YiAM
-	 LfH1rUmhUl/jA==
-Received: from localhost (unknown [IPv6:2a01:e0a:2c:6930:5cf4:84a1:2763:fe0d])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 9349117E083A;
-	Wed,  5 Feb 2025 13:51:14 +0100 (CET)
-Date: Wed, 5 Feb 2025 13:51:07 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Miguel Ojeda
- <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?=
- Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Beata
- Michalska <beata.michalska@arm.com>, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] drm/panthor: Convert IOCTL defines to an enum
-Message-ID: <20250205135107.50223e7a@collabora.com>
-In-Reply-To: <20250204232824.3819437-1-robh@kernel.org>
-References: <20250204232824.3819437-1-robh@kernel.org>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cze2EUXO"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2f9b8ef4261so452004a91.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 05 Feb 2025 04:52:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738759979; x=1739364779; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Meg2Zp7PV1/Vonezh5KCfgh6b0qyiNzN0k6NSBzIcrc=;
+        b=Cze2EUXOt3hJm5XJH3uVDHncZVzTXze8TstRnTRwbxGOjJ/Eq0f6FPd8wfZiMccXjL
+         xnfU87uc/pOC2W446flmiPcRovGHCh5DTlGr5l2s5g2B78T3lirKcg2TVo3wJUGOWIWd
+         QDSJSnC+zogKPaFjLt66yqc0nHgVrxnf5/dOhOWBjQcgwZzbsx9hd69wZG4HnDLMuP9S
+         HpQsNYMmnjTPRR++VEN4K2Y/smCncVZ1YDRwr7LyE/n89Dc00B+SHEHxVq6qiruj3hjW
+         6Ufku738NUymXftDJcu/ZSt9/KO/kGIJmQCpaIQRl577R4A5dFssXhHMRXGBFvc9ysYE
+         D0fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738759979; x=1739364779;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Meg2Zp7PV1/Vonezh5KCfgh6b0qyiNzN0k6NSBzIcrc=;
+        b=stwvUs/nkkLV7YjWsXn2gcDgPc1NQcY2IQfXEdHohYF2OtZCVZH+7EMSvvvsWjCPIw
+         KDSjOyBR28wBcv7vh+19ocl1h92Gz3dUfcgZGF1cp0mdnE0eClJM5Cuc4Rz36xc1jkbP
+         yAXWihq+CHHnVpKjcaWr8nuql9bVIjDOILd2RHy5dbBm8eh2+VxpAcy1pHznFnAcLTnO
+         s/YMcKjbIov8KGYLIj7hOM5XZ9MTLjG4y65GWWlCKnsr2kYyf76YJY5KWkOttVKYJEtI
+         Eta3Gn4n9hjnaTMvleiZUfuLn0o1H0ve5XkYx2OTMH/W4WwdiFl3BaAXUxI3LEEwqi7c
+         JpUA==
+X-Gm-Message-State: AOJu0YwgFVs9mvul+8bxbXEFrlQylIC2JWDzK/LdYa6BXzHjAJW5CUOK
+	JXy76ehEwJLNp9oTtfPQzjFUC4XQOwLSw+Fnl5YxmVFxOosLXXTRaY7PqsmFgRQRlSgPT6nwy0r
+	QG652rcIbpYQiI0l+i8Wptre07aw=
+X-Gm-Gg: ASbGncuShckQXu3/9u9lYDHfs8HkAKSUMJW20hb14H9xuQ4agM1GwdFgfXAJr41lh6K
+	c+2/c9ZIvX+VInoBoQhRSqjlwU5GeHsPoLGyBoK+MqzT4Ft7rmmEOV35+gHS7LaE96X1nolJ5
+X-Google-Smtp-Source: AGHT+IEPoZ/uUgZFx4ZUzkCv1pDIzmhGG1eUtkfdR8qle/7Iqezx8nA75MRDr37A8pleI7N/7o/oglQiKFad9djocT0=
+X-Received: by 2002:a17:90b:2b4d:b0:2ea:c2d3:a079 with SMTP id
+ 98e67ed59e1d1-2f9e0825e0amr1682794a91.3.1738759978657; Wed, 05 Feb 2025
+ 04:52:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20250203133717.264522-1-kurti@invicto.ai>
+In-Reply-To: <20250203133717.264522-1-kurti@invicto.ai>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 5 Feb 2025 13:52:46 +0100
+X-Gm-Features: AWEUYZmP_NTxMu88Q6n_DqmQOswBOz0JVPyqX8dNcRXO2Bj4EWCOtJV3TzyzqxA
+Message-ID: <CANiq72mXvqQCH6TYPCPG=B+TvLrFakfNC46=tzOeZBt=E6C8Kg@mail.gmail.com>
+Subject: Re: [PATCH] rust: printing macros sample: add missing newlines
+To: albankurti <kurti@invicto.ai>
+Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue,  4 Feb 2025 17:28:24 -0600
-"Rob Herring (Arm)" <robh@kernel.org> wrote:
+On Mon, Feb 3, 2025 at 2:37=E2=80=AFPM albankurti <kurti@invicto.ai> wrote:
+>
+> Signed-off-by: albankurti <kurti@invicto.ai>
 
-> Use an enum instead of #defines for panthor IOCTLs. This allows the
-> header to be used with Rust code as bindgen can't handle complex
-> defines.
-> 
-> Cc: Beata Michalska <beata.michalska@arm.com>
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+The kernel requires a "known identity" for signatures. For instance,
+the name you use to sign documents in real life. Please let us know if
+that is a problem -- see:
 
-Acked-by: Boris Brezillon <boris.brezillon@collabora.com>
+    https://docs.kernel.org/process/submitting-patches.html#developer-s-cer=
+tificate-of-origin-1-1
 
-> ---
->  include/uapi/drm/panthor_drm.h | 86 +++++++++++++++++-----------------
->  1 file changed, 44 insertions(+), 42 deletions(-)
-> 
-> diff --git a/include/uapi/drm/panthor_drm.h b/include/uapi/drm/panthor_drm.h
-> index b99763cbae48..97e2c4510e69 100644
-> --- a/include/uapi/drm/panthor_drm.h
-> +++ b/include/uapi/drm/panthor_drm.h
-> @@ -129,48 +129,6 @@ enum drm_panthor_ioctl_id {
->  	DRM_PANTHOR_TILER_HEAP_DESTROY,
->  };
->  
-> -/**
-> - * DRM_IOCTL_PANTHOR() - Build a Panthor IOCTL number
-> - * @__access: Access type. Must be R, W or RW.
-> - * @__id: One of the DRM_PANTHOR_xxx id.
-> - * @__type: Suffix of the type being passed to the IOCTL.
-> - *
-> - * Don't use this macro directly, use the DRM_IOCTL_PANTHOR_xxx
-> - * values instead.
-> - *
-> - * Return: An IOCTL number to be passed to ioctl() from userspace.
-> - */
-> -#define DRM_IOCTL_PANTHOR(__access, __id, __type) \
-> -	DRM_IO ## __access(DRM_COMMAND_BASE + DRM_PANTHOR_ ## __id, \
-> -			   struct drm_panthor_ ## __type)
-> -
-> -#define DRM_IOCTL_PANTHOR_DEV_QUERY \
-> -	DRM_IOCTL_PANTHOR(WR, DEV_QUERY, dev_query)
-> -#define DRM_IOCTL_PANTHOR_VM_CREATE \
-> -	DRM_IOCTL_PANTHOR(WR, VM_CREATE, vm_create)
-> -#define DRM_IOCTL_PANTHOR_VM_DESTROY \
-> -	DRM_IOCTL_PANTHOR(WR, VM_DESTROY, vm_destroy)
-> -#define DRM_IOCTL_PANTHOR_VM_BIND \
-> -	DRM_IOCTL_PANTHOR(WR, VM_BIND, vm_bind)
-> -#define DRM_IOCTL_PANTHOR_VM_GET_STATE \
-> -	DRM_IOCTL_PANTHOR(WR, VM_GET_STATE, vm_get_state)
-> -#define DRM_IOCTL_PANTHOR_BO_CREATE \
-> -	DRM_IOCTL_PANTHOR(WR, BO_CREATE, bo_create)
-> -#define DRM_IOCTL_PANTHOR_BO_MMAP_OFFSET \
-> -	DRM_IOCTL_PANTHOR(WR, BO_MMAP_OFFSET, bo_mmap_offset)
-> -#define DRM_IOCTL_PANTHOR_GROUP_CREATE \
-> -	DRM_IOCTL_PANTHOR(WR, GROUP_CREATE, group_create)
-> -#define DRM_IOCTL_PANTHOR_GROUP_DESTROY \
-> -	DRM_IOCTL_PANTHOR(WR, GROUP_DESTROY, group_destroy)
-> -#define DRM_IOCTL_PANTHOR_GROUP_SUBMIT \
-> -	DRM_IOCTL_PANTHOR(WR, GROUP_SUBMIT, group_submit)
-> -#define DRM_IOCTL_PANTHOR_GROUP_GET_STATE \
-> -	DRM_IOCTL_PANTHOR(WR, GROUP_GET_STATE, group_get_state)
-> -#define DRM_IOCTL_PANTHOR_TILER_HEAP_CREATE \
-> -	DRM_IOCTL_PANTHOR(WR, TILER_HEAP_CREATE, tiler_heap_create)
-> -#define DRM_IOCTL_PANTHOR_TILER_HEAP_DESTROY \
-> -	DRM_IOCTL_PANTHOR(WR, TILER_HEAP_DESTROY, tiler_heap_destroy)
-> -
->  /**
->   * DOC: IOCTL arguments
->   */
-> @@ -1019,6 +977,50 @@ struct drm_panthor_tiler_heap_destroy {
->  	__u32 pad;
->  };
->  
-> +/**
-> + * DRM_IOCTL_PANTHOR() - Build a Panthor IOCTL number
-> + * @__access: Access type. Must be R, W or RW.
-> + * @__id: One of the DRM_PANTHOR_xxx id.
-> + * @__type: Suffix of the type being passed to the IOCTL.
-> + *
-> + * Don't use this macro directly, use the DRM_IOCTL_PANTHOR_xxx
-> + * values instead.
-> + *
-> + * Return: An IOCTL number to be passed to ioctl() from userspace.
-> + */
-> +#define DRM_IOCTL_PANTHOR(__access, __id, __type) \
-> +	DRM_IO ## __access(DRM_COMMAND_BASE + DRM_PANTHOR_ ## __id, \
-> +			   struct drm_panthor_ ## __type)
-> +
-> +enum {
-> +	DRM_IOCTL_PANTHOR_DEV_QUERY =
-> +		DRM_IOCTL_PANTHOR(WR, DEV_QUERY, dev_query),
-> +	DRM_IOCTL_PANTHOR_VM_CREATE =
-> +		DRM_IOCTL_PANTHOR(WR, VM_CREATE, vm_create),
-> +	DRM_IOCTL_PANTHOR_VM_DESTROY =
-> +		DRM_IOCTL_PANTHOR(WR, VM_DESTROY, vm_destroy),
-> +	DRM_IOCTL_PANTHOR_VM_BIND =
-> +		DRM_IOCTL_PANTHOR(WR, VM_BIND, vm_bind),
-> +	DRM_IOCTL_PANTHOR_VM_GET_STATE =
-> +		DRM_IOCTL_PANTHOR(WR, VM_GET_STATE, vm_get_state),
-> +	DRM_IOCTL_PANTHOR_BO_CREATE =
-> +		DRM_IOCTL_PANTHOR(WR, BO_CREATE, bo_create),
-> +	DRM_IOCTL_PANTHOR_BO_MMAP_OFFSET =
-> +		DRM_IOCTL_PANTHOR(WR, BO_MMAP_OFFSET, bo_mmap_offset),
-> +	DRM_IOCTL_PANTHOR_GROUP_CREATE =
-> +		DRM_IOCTL_PANTHOR(WR, GROUP_CREATE, group_create),
-> +	DRM_IOCTL_PANTHOR_GROUP_DESTROY =
-> +		DRM_IOCTL_PANTHOR(WR, GROUP_DESTROY, group_destroy),
-> +	DRM_IOCTL_PANTHOR_GROUP_SUBMIT =
-> +		DRM_IOCTL_PANTHOR(WR, GROUP_SUBMIT, group_submit),
-> +	DRM_IOCTL_PANTHOR_GROUP_GET_STATE =
-> +		DRM_IOCTL_PANTHOR(WR, GROUP_GET_STATE, group_get_state),
-> +	DRM_IOCTL_PANTHOR_TILER_HEAP_CREATE =
-> +		DRM_IOCTL_PANTHOR(WR, TILER_HEAP_CREATE, tiler_heap_create),
-> +	DRM_IOCTL_PANTHOR_TILER_HEAP_DESTROY =
-> +		DRM_IOCTL_PANTHOR(WR, TILER_HEAP_DESTROY, tiler_heap_destroy),
-> +};
-> +
->  #if defined(__cplusplus)
->  }
->  #endif
-
+Cheers,
+Miguel
