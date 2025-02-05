@@ -1,111 +1,75 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 191E4228393
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Feb 2025 07:40:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFBF0204C2D;
+	Wed,  5 Feb 2025 07:57:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738741251; cv=none; b=pdIgq4sZuIeMY2GbeAMlD3r0eGbqNCtDhDU1ecLqUqx++MC7OTtvPVxoGdxOAplpWpPvHL13baQT6QColcWkOAfrrOTsc1I1WHNmQ+gWcivHzBd7N8G/y2vrvFz3sayTffnkmw1oOlKn3RWs9c5lb9s8b33xwKyG4q0uZX9yeA4=
+	t=1738742263; cv=none; b=C5f9vL4s2byjCGTbfVosCm3HyFUpmBZk+T/HMOwwD0/bD1pRGZOj51ibFo0P7sTD8z74fbgbqdcYHIO7bGi4KPCK9H9FYIsbSeEgLdIzTc33Edb6Phri5uw8upp+8+DB/LCQm5ggmTOvMk6EYsHSnIqTe+X2TP+F1a/IRYOj2OI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738741251; c=relaxed/simple;
-	bh=dq8x78xFfxJcyFobGxSkBs6l3zBnCmYDFlTlCt5dNhc=;
+	s=arc-20240116; t=1738742263; c=relaxed/simple;
+	bh=6WDlN7opUnQ1mFJ09g5mK8d5/27wYrKppIZj9++lpV0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ey+yXVtshSWse+tuIhEDZkNF9dfhCqoQGQ0GxTXhXFk7jQe7mo/qQKX4OP1xKlVnluYKF9+rpzOeRA7kvnBRVF8BPCzbibksoNO9mpf9EFTTSKxxOMdzTX4dzstA84njgi0PFu0jipTvZPLh/Wevl8153omO2g6tY1KM/57EjEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=NJcRtDNK; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z/mUhqDeQPpHzyfmpbN0mk+kjpDYZ199bUhRlj0avGb3gXOevksi8jVVM4HT8GsDiEa/3HgMBIOJtereF9MkuinTb4D9JaD8LqRgiVaUaY3U3zSI0+QUSTX3jrZmXkDkAR/pwTqeXkdsq2QrVcqdSK40qa5h2Du1gQTOjG9z+Zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PDfA3hwK; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="NJcRtDNK"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-436a03197b2so44517865e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Feb 2025 23:40:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1738741248; x=1739346048; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ckp9FvO1OYcctyJmH0f9RK1zPC2wKkspGKnecKorEdQ=;
-        b=NJcRtDNKkhjBVWPxOUor/t30/c6m6ztKF/R7o6+ImOOFdCIaL94W2HXpv+L9QeXrxA
-         4HR2Pn1nnhHQ2JhCjOua1EQwdS+32M33EDJOucNkClFh2YIoRk/unswHMLEIvCF42boB
-         vZTKx5Cd4AYe1xZMgzgIb6TBx+YlqiDTnXX9U=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738741248; x=1739346048;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ckp9FvO1OYcctyJmH0f9RK1zPC2wKkspGKnecKorEdQ=;
-        b=Zh5y0LjA5JyCEUvFbdBqEfbOcopTjPCdbKasE1p/4RWdFrwqfjAhP/mZnSiZd6kUau
-         10gGOTOnnKT2M0AQd/8E11rIHDw2CnHR90QvdEJGlYn1WwZC4phFz/VCGSLnMfmkhUEn
-         P70Ua7VwxF0X8r6uyCySr+/eHtEHAmTVBpMahbBS/u9jMfBK5fpZ3Z+bA6i2yEZ+MEZ8
-         elW0KEeMsqIQOP7xaTyc+jJITemQVxB5ONrW9f0TbAufGXTpkWXPinslt+xgal/XHucm
-         d1kQlbep4CvEeVZ1E8PJCYLR440rqAod7E8UZth4yWnXfANsTHQe1bTgz0aSwxJNcJGQ
-         jRYg==
-X-Forwarded-Encrypted: i=1; AJvYcCUDQXK0XtMLS3VLx3zpbQU2mdYr9ToZJRdeTU/Wqtok1EsT+YWsZwrSrnXUKcWWtEno/ClftJyGuOM0GVC3zQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3hIFJOToXJ0eOWI0o6Gs6Zq/4x805quvYk1WWuKFGVPgSvt7R
-	zUetS4SxyKAgIdlgxeaID58Mj7ugx1GLN1R6VhIdtS9QRWjhIfwQUznsyOsizOk=
-X-Gm-Gg: ASbGnct76EBudV8zOD7WjpVgPdg6LQPhpIxQVDdfLhcN7iSVufnCg72bqSdRzs8PldA
-	0hbEkE9duk8i5xfcMDPEiZ1/xsaI4/wh6YuxiHPG+WU2BulToNZPDK11IPOT0vTceFJEQ7/9VjX
-	5zQdM8EnwhsjM6OLTxnsUDdtHLyZURI3Z+IexYb9p8tI5ARYGTTWTWHXI9GMaqmovmvlulys5sr
-	ILTjky8vVKj8wN3In63d3ACPcizkVwX3V4HB3A7IQmniLvyW5HQVhawwh4SJXchJqmxJ9sxwDpd
-	lDYe534o3oSgdPUX1f5QEuSfvMc=
-X-Google-Smtp-Source: AGHT+IG9wKRslTcLxM9q7tpMRQI/mhbwKzUGyEOxhppyXztbkL0YRlXLXEUw54yO2pT5NLjqWPcDZQ==
-X-Received: by 2002:a05:600c:1d1e:b0:436:faeb:2a1b with SMTP id 5b1f17b1804b1-4390d43e579mr9940605e9.13.1738741247972;
-        Tue, 04 Feb 2025 23:40:47 -0800 (PST)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4390d933a4bsm12876465e9.6.2025.02.04.23.40.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Feb 2025 23:40:47 -0800 (PST)
-Date: Wed, 5 Feb 2025 08:40:45 +0100
-From: Simona Vetter <simona.vetter@ffwll.ch>
-To: David Hildenbrand <david@redhat.com>
-Cc: Asahi Lina <lina@asahilina.net>, Zi Yan <ziy@nvidia.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Jann Horn <jannh@google.com>, Matthew Wilcox <willy@infradead.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PDfA3hwK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738742262; x=1770278262;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=6WDlN7opUnQ1mFJ09g5mK8d5/27wYrKppIZj9++lpV0=;
+  b=PDfA3hwKb6Ky0l9aYCmNO17C3NPJg/kyiKJN+25QVdUQwk0hx3BZzQfU
+   SMoNyW4x4iwbFMZr48nlb4F7MaDwNbRc41XB0MThbpKDYofroo+SfYkEo
+   16Fgavrwznw6slF2zsIH7zkNgio2hXbmmc9thoQ2W1CWN6LuUQHgvwT1A
+   1a2QhZc0D9K5Yb/fs/ucKAoAbeWnbg/2HgEBB1Ae71YcZ4dhaxmfElueu
+   d1TvxehxJ1cjgrMVRNL/AFcKGkgCnwH7VkezRV3qEPmk/wL/4tNefe7U/
+   dADFgCYwjhRyYyxk/e1PL6YRkwp9/oC1Klie1NCHCAjszfliZYah3f09R
+   A==;
+X-CSE-ConnectionGUID: nMOCGHwaTOmysONXO/leUg==
+X-CSE-MsgGUID: 1yPm6lBASxe5cNpel9ZhHg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="38528297"
+X-IronPort-AV: E=Sophos;i="6.13,260,1732608000"; 
+   d="scan'208";a="38528297"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2025 23:57:41 -0800
+X-CSE-ConnectionGUID: DkNphc1mQeGvUda7MJCC0Q==
+X-CSE-MsgGUID: OyOxDkkEQoOu8moIij6Zig==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="134078252"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2025 23:57:37 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1tfaHt-00000008Q0c-0rWo;
+	Wed, 05 Feb 2025 09:57:33 +0200
+Date: Wed, 5 Feb 2025 09:57:32 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Lyude Paul <lyude@redhat.com>, linux-kernel@vger.kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Danilo Krummrich <dakr@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Valentin Obst <kernel@valentinobst.de>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	airlied@redhat.com, Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	asahi@lists.linux.dev, Oscar Salvador <osalvador@suse.de>,
-	Muchun Song <muchun.song@linux.dev>
-Subject: Re: [PATCH 0/6] rust: page: Support borrowing `struct page` and
- physaddr conversion
-Message-ID: <Z6MV_Y9WRdlBYeRs@phenom.ffwll.local>
-Mail-Followup-To: David Hildenbrand <david@redhat.com>,
-	Asahi Lina <lina@asahilina.net>, Zi Yan <ziy@nvidia.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Jann Horn <jannh@google.com>, Matthew Wilcox <willy@infradead.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Valentin Obst <kernel@valentinobst.de>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	airlied@redhat.com, Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	asahi@lists.linux.dev, Oscar Salvador <osalvador@suse.de>,
-	Muchun Song <muchun.song@linux.dev>
-References: <20250202-rust-page-v1-0-e3170d7fe55e@asahilina.net>
- <Z6CTLB2NggwYafi9@phenom.ffwll.local>
- <41ca3445-80cd-43c1-8f9e-634c195c9187@asahilina.net>
- <37A0729B-A711-4D45-B9F0-328FDB9ADD28@nvidia.com>
- <0e19e1c3-293b-4740-93f3-2c410893288b@redhat.com>
- <82047858-480a-45e3-b826-3a46fbebe842@asahilina.net>
- <f1498b22-0bc1-489a-8c2c-35aa48c7fe7d@redhat.com>
- <1e9ae833-4293-4e48-83b2-c0af36cb3fdc@asahilina.net>
- <026c1a0c-e53a-4a5e-92da-6e4f18ce0fee@redhat.com>
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Liam Girdwood <lgirdwood@gmail.com>, Lukas Wunner <lukas@wunner.de>,
+	Mark Brown <broonie@kernel.org>,
+	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Zijun Hu <quic_zijuhu@quicinc.com>, linux-usb@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 1/5] driver core: add a faux bus for use when a simple
+ device/bus is needed
+Message-ID: <Z6MZ7JdP6tynvYRr@smile.fi.intel.com>
+References: <2025020421-poster-moisture-534b@gregkh>
+ <2025020424-retrain-recharger-407c@gregkh>
+ <fd6250102ea9d869448e7a40a60a02f8b167d4ac.camel@redhat.com>
+ <2025020518-outcome-harbor-6281@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -114,75 +78,32 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <026c1a0c-e53a-4a5e-92da-6e4f18ce0fee@redhat.com>
-X-Operating-System: Linux phenom 6.12.11-amd64 
+In-Reply-To: <2025020518-outcome-harbor-6281@gregkh>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Tue, Feb 04, 2025 at 03:38:17PM +0100, David Hildenbrand wrote:
-> > > It can still race with memory offlining, and it refuses ZONE_DEVICE
-> > > pages. For the latter, we have a different way to check validity. See
-> > > memory_failure() that first calls pfn_to_online_page() to then check
-> > > get_dev_pagemap().
-> > 
-> > I'll give it a shot with these functions. If they work for my use case,
-> > then it's good to have extra checks and I'll add them for v2. Thanks!
-> 
-> Let me know if you run into any issues.
-> 
-> > 
-> > > 
-> > > > 
-> > > > If the answer is "no" then that's fine. It's still an unsafe function
-> > > > and we need to document in the safety section that it should only be
-> > > > used for memory that is either known to be allocated and pinned and will
-> > > > not be freed while the `struct page` is borrowed, or memory that is
-> > > > reserved and not owned by the buddy allocator, so in practice correct
-> > > > use would not be racy with memory hot-remove anyway.
-> > > > 
-> > > > This is already the case for the drm/asahi use case, where the pfns
-> > > > looked up will only ever be one of:
-> > > > 
-> > > > - GEM objects that are mapped to the GPU and whose physical pages are
-> > > > therefore pinned (and the VM is locked while this happens so the objects
-> > > > cannot become unpinned out from under the running code),
-> > > 
-> > > How exactly are these pages pinned/obtained?
-> > 
-> > Under the hood it's shmem. For pinning, it winds up at
-> > `drm_gem_get_pages()`, which I think does a `shmem_read_folio_gfp()` on
-> > a mapping set as unevictable.
-> 
-> Thanks. So we grab another folio reference via
-> shmem_read_folio_gfp()->shmem_get_folio_gfp().
-> 
-> Hm, I wonder if we might end up holding folios residing in
-> ZONE_MOVABLE/MIGRATE_CMA longer than we should.
-> 
-> Compared to memfd_pin_folios(), which simulates FOLL_LONGTERM and makes sure
-> to migrate pages out of ZONE_MOVABLE/MIGRATE_CMA.
-> 
-> But that's a different discussion, just pointing it out, maybe I'm missing
-> something :)
+On Wed, Feb 05, 2025 at 06:53:09AM +0100, Greg Kroah-Hartman wrote:
+> On Tue, Feb 04, 2025 at 06:10:36PM -0500, Lyude Paul wrote:
+> > On Tue, 2025-02-04 at 12:09 +0100, Greg Kroah-Hartman wrote:
 
-Good GPU Drivers (tm) are supposed to have a shrinker so we can at least
-nuke some of them again. Some folks even looked into hooking up a migrate
-callback through the address_space (or wherever that hook was, this is
-from memory) so we can make this somewhat reliable. So yeah we're hogging
-ZONE_MOVEABLE unduly still.
+...
 
-The other side is that there's about 2-3 good drivers (msm, i915, xe
-should have a shrinker now too but I didn't check). The others all fall
-various levels of short, or still have 3 times cargo-culted versions of
-i915's pin-as-a-lock design and get it completely wrong.
+> > Should we add faux_get_drvdata()/faux_set_drvdata() since we've got a
+> > probe/remove function? Doesn't really look like the platform driver equivalent
+> > does mcuh, but I assume just having an inline function for this would make
+> > things a little less confusing for users.
+> 
+> You already have a reference counted object returned to you, why do you
+> need to increment/decrement it again?  All of the users I've found in
+> the kernel so far didn't need that, do you have a specific example where
+> it would be useful?
 
-So yeah I'm aware this isn't great, and we're at least glacially slowly
-moving towards a common shrinker infrastructure that maybe in a glorious
-future gets all this right. I mean it took us 15+ years to get to a
-cgroups controller after all too, and that was also a well known issue of
-just being able to hog memory with no controls and potentially cause
-havoc.
+It's about getter and setter for the .driver_data field, I don't see how
+reference counting can help with this.
 
-Cheers, Sima
+> I'll be glad to add it, I just didn't think anyone would ever call it.
+
 -- 
-Simona Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+With Best Regards,
+Andy Shevchenko
+
+
