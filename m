@@ -1,135 +1,104 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2124E282FA
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Feb 2025 13:15:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89AD9126C18;
+	Wed,  5 Feb 2025 13:41:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738761323; cv=none; b=l7W649Ehr5knOpDCA9bgXspD7Kia6UeEG7H+V6rYdyFUBVDb58i6VWimehEUw1htsedlIAfT8Qq0VhEgugxLbCFoZShETn6V8OYLCtUdQ6wc4O68yAUnBd4Fp4NDCArvbxufB+31Pb1ZkgFeHM21Vj7lY5G2jTmIGm+y2S88vjI=
+	t=1738762895; cv=none; b=Y9ucAf4vcqe2+v0FZDnYFlT6JofKOhGt15a0rLeb3gdqoZUQ3VbTWZKpg4lyvB6qUSs+nl8f0dLwsSCggOo+/tHGuaImvwpCojrQmhbnDIqqf+b/TAztb/RKdE4P8w0lJCPxVhGPycC2WYd435Z5mU6dbiCIyuPJN+o/VtNMa4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738761323; c=relaxed/simple;
-	bh=6EdqnBNcqnIHydGEBNR6e8JFOzTCHGwPB0b8W93PzC4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cM7jTAEvcl81rXrjQ96u/wE4Fwhx2w06zbC0JIzbGge038zaGlaJNaZiVe6pqgb+nGtRg7yazlVBriDtbXBQHFOSz3jFdhAnRDVfaywLVao6jW88hkXz5dY0UFbLf/4XEV1oFj5vyRVdCRf1EAXYM0A/xpaibHAWM7B560jum2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zSRdZXZI; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1738762895; c=relaxed/simple;
+	bh=U7Js62AsEd21eUFkVDcJZEIJ38W1+b5iygkxCIM0T/E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FNP2JekQsz9AHvSfUcHIDlTc6rcFa88tebETkKmhm2SQklQyTDuXcIBmW6CL5hBv6naxzLZYeo0BMQMxJ2l1MQ6DxuzdI7yEYESkTsKHX6bJHr4Bd7d1G1iz5ipUVbxtMl8RcU6F+H6qDEcp0fzj2yZzrYgJmsPFNV6LMqGstrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ipc43YHY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zSRdZXZI"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-21634338cfdso66270865ad.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 05 Feb 2025 05:15:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738761321; x=1739366121; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Wu/sc/L4OPn7cAk2v/XNwJZ1ybARuz3FCSjlWNrd2uc=;
-        b=zSRdZXZIfnmGRwi+2nqokYp/dEOLuKPK4ogttRg5xcJCvSaN5WZgabspeBYp26UTrP
-         ayKkI3AInY8kfYA4vG/l1cBIa0UlKJO5V8nYYdRGjU81Ws/gYXfmMZRViAyg3AQYXa2c
-         1pVhXBoia9HDtutK+TeiQioMvgdgmN6KikvcVTvvZSIJmggqaJ8swau10HL35GQd4a7O
-         sYz4TnQrX1sTkL0nMcArWCUO2UIjLCwi3gzxl1Jrm3anmTuCkMkc7Dbk5HKnNjgDdwFN
-         i9NI++SfEJ1ts9djjMI23OFOkC2fmJbUElasHOTHMvC9ewquIxZpx7EdQE80j7lIxzxQ
-         W7Fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738761321; x=1739366121;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Wu/sc/L4OPn7cAk2v/XNwJZ1ybARuz3FCSjlWNrd2uc=;
-        b=oMnvXIAjl9f2k2Jni4/oNEJrNJ/G2unzpsIwCmcrnBsWoEfizRAASR/jwhpl8g8Z1g
-         M2WLtXHIWgV03LPoCI9XPf8pHELqq1DySalT/78i9HxNdY9CsNfO2V/ZtTI311f4wwbr
-         xpQA34exWQeiqa4X+eOrmEvQFsL05JOc3PO9pcIvmNPLocHpoSF5YgxrLfBggWoBvFLi
-         Zebp1w9PQaPAW7crUOId3lfZ6pEkWnEzBECZXugHFGR9H49LCERL/vOUMEedTpztCQLk
-         FuM1GpnTFb7d25cHxinRGcCSo21M4lzsPHWWqS0rKtEAzu+rTy1CaTcvmNqQs1g+Hl3R
-         g4dg==
-X-Forwarded-Encrypted: i=1; AJvYcCUqZD/M1Ql+GPBHE+fQq7EeFxIH6303HYVLlw2Fa46oi4BLT4/xwMJYwZc3W21C/HaUKk6ULaJFKkN9cSM9xw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYwsuoNpL5nEAyylxLy7b5E3d6geGGDE6O6D7gxDNocDz3lQ62
-	Y41II4ZsOnUphZkuw6CmyZ2Zs+3I0YXdwEXvNLm453khqtIXrEeToYg41YchtUI0HWwFr0YmwEL
-	yUXOp81CWawlidkoJ4gV7VNXGkMI0dCj3luk1
-X-Gm-Gg: ASbGncuZhSCoTvX40SnTlK8pB41omes4FjNIKxookgxQvOz3bcNUeDwJWbaLFHIblif
-	nwZZQnXxXEwLKkWKiz/DZzw3ojfEjjXp7zjVdgFUVIiqN9n+9yLPngS/Gc5/u9DyzoN1lvavCL6
-	eYGybhUJge3TgzqwacnTwHacaDrc0=
-X-Google-Smtp-Source: AGHT+IFf8uqGqejiqDC+WsvJ+0IKFQdep5DE/lTTj9Lq2uU4fvUimsIEKmftbwK3h1qE8+ChhRZkPz5mlad/lMYnjFo=
-X-Received: by 2002:a17:903:2b10:b0:216:3732:ade3 with SMTP id
- d9443c01a7336-21f17ef01f1mr55209855ad.35.1738761319655; Wed, 05 Feb 2025
- 05:15:19 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ipc43YHY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 546CBC4CED1;
+	Wed,  5 Feb 2025 13:41:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1738762894;
+	bh=U7Js62AsEd21eUFkVDcJZEIJ38W1+b5iygkxCIM0T/E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ipc43YHYKI5ichfkTqCIKfXGjwrQzPBdiEP/txhS0RBTd7ClzPjqn5LEWh4GL8ysx
+	 D6XQLB8os7Xgd6DB1B6CCAjNGHs2tbPYwI6k6B3aH8xLtf4JD0/T8DJE/DGKPMZvvD
+	 9Ba03/ZHI1jvrexIUnYsr+j/O0iph6v9O0biyuL4=
+Date: Wed, 5 Feb 2025 14:41:31 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Peter Chen <peter.chen@kernel.org>
+Cc: linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Lyude Paul <lyude@redhat.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Liam Girdwood <lgirdwood@gmail.com>, Lukas Wunner <lukas@wunner.de>,
+	Mark Brown <broonie@kernel.org>,
+	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Zijun Hu <quic_zijuhu@quicinc.com>, linux-usb@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 3/5] USB: phy: convert usb_phy_generic logic to use a
+ faux device
+Message-ID: <2025020509-imperial-maroon-1bc9@gregkh>
+References: <2025020421-poster-moisture-534b@gregkh>
+ <2025020424-overstock-scheming-6a30@gregkh>
+ <20250205101916.GA4083@nchen-desktop>
+ <2025020505-harsh-divisibly-51cc@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250123-rfl-arm32-v3-1-8f13623d42c5@gmail.com>
- <a83b0149-7055-411b-ba86-d227919c7c32@app.fastmail.com> <f8b59f05-55b5-4208-8bdf-b4be8e93bc22@gmail.com>
- <65da77f7-bbd4-4cbe-a06c-75f10a6ec4ce@lunn.ch> <CANiq72n7UhQEh9TJU7UNBv2t0ZR_rNO3dqbVZ2cwr99u5SOVeg@mail.gmail.com>
-In-Reply-To: <CANiq72n7UhQEh9TJU7UNBv2t0ZR_rNO3dqbVZ2cwr99u5SOVeg@mail.gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 5 Feb 2025 14:14:51 +0100
-X-Gm-Features: AWEUYZlASz-FWWUxhqCKYiMuN_a0MLJAcx7YSx21Wkzf07cjFQ7z0fJLREmrNHo
-Message-ID: <CAH5fLgi05p6KTN2v=+jy4HoK-oC9pg7dYBuc8wvfx_uN6SVjOg@mail.gmail.com>
-Subject: Re: [PATCH v3] arm: rust: Enable Rust support for ARMv7
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Christian Schrefl <chrisi.schrefl@gmail.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Jonathan Corbet <corbet@lwn.net>, Russell King <linux@armlinux.org.uk>, 
-	Rudraksha Gupta <guptarud@gmail.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Geert Stappers <stappers@stappers.nl>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>, 
-	Sven Van Asbroeck <thesven73@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, 
-	Catalin Marinas <catalin.marinas@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025020505-harsh-divisibly-51cc@gregkh>
 
-On Wed, Feb 5, 2025 at 2:12=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Fri, Jan 31, 2025 at 5:05=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrot=
-e:
-> >
-> > Floating point is banned within the kernel, except for in very narrow
-> > conditions, because the floating point registers are lazy saved on
-> > context switch. If the kernel uses the floating point registers, you
-> > can break user space in bad ways.
-> >
-> > I expect this has been discussed, since it is well known kernel
-> > restriction. Maybe go see what happened to that discussion within RfL?
->
-> Yeah, it has been discussed, including in the last couple weeks in the
-> Rust Zulip due to the upcoming move to the aarch64 `softfloat` target
-> (the disallowing of disabling `neon` in the hardfloat one).
->
-> Ideally, I think upstream Rust could perhaps give us a way to do
-> something like `-mgeneral-regs-only` or `-march=3D...+nofp` (in the form
-> GCC does it, i.e. a hard error if one even tries to use the floating
-> point types even within a function implementation, not just in
-> interfaces like in Clang), i.e. a way to avoid unintended use of
-> floating point facilities:
->
->     https://godbolt.org/z/o1E5nrrzc
->
-> Currently it is unclear what form that could take (e.g. whether a
-> `-nofloat` target could be possible, "disabling" the `f*` types, just
-> Clippy...).
+On Wed, Feb 05, 2025 at 01:27:30PM +0100, Greg Kroah-Hartman wrote:
+> On Wed, Feb 05, 2025 at 06:19:16PM +0800, Peter Chen wrote:
+> > On 25-02-04 12:09:15, Greg Kroah-Hartman wrote:
+> > > The usb_phy_generic code was creating a "fake" platform device to pass
+> > > around in different places.  Instead of doing that, use the faux bus
+> > > instead as that is what is really wanted here.
+> > 
+> > Hi Greg,
+> > 
+> > As far as I know, there are some platforms use the device-tree to get
+> > the system resource (eg, clock, reset, regular) for this driver.
+> > We may not use fake bus for this driver.
+> 
+> But there is no system resources assigned to this device/driver at all,
+> so how is it getting anything here?
+> 
+> > $grep -rn "usb-nop-xceiv" arch/arm64/boot/dts/*
+> > 
+> > arch/arm64/boot/dts/altera/socfpga_stratix10.dtsi:649:		compatible = "usb-nop-xceiv";
+> > arch/arm64/boot/dts/freescale/imx8mm.dtsi:275:		compatible = "usb-nop-xceiv";
+> > arch/arm64/boot/dts/freescale/imx8mm.dtsi:285:		compatible = "usb-nop-xceiv";
+> > arch/arm64/boot/dts/freescale/imx93.dtsi:238:		compatible = "usb-nop-xceiv";
+> > arch/arm64/boot/dts/freescale/imx93.dtsi:245:		compatible = "usb-nop-xceiv";
+> > arch/arm64/boot/dts/freescale/imx8mn.dtsi:1321:		compatible = "usb-nop-xceiv";
+> > arch/arm64/boot/dts/intel/socfpga_agilex.dtsi:149:		compatible = "usb-nop-xceiv";
+> > arch/arm64/boot/dts/intel/socfpga_agilex5.dtsi:133:		compatible = "usb-nop-xceiv";
+> > arch/arm64/boot/dts/marvell/cn9132-db.dtsi:30:		compatible = "usb-nop-xceiv";
+> > arch/arm64/boot/dts/marvell/cn9132-db.dtsi:44:		compatible = "usb-nop-xceiv";
+> > arch/arm64/boot/dts/marvell/cn9131-db.dtsi:33:		compatible = "usb-nop-xceiv";
+> > arch/arm64/boot/dts/marvell/armada-3720-db.dts:43:		compatible = "usb-nop-xceiv";
+> > arch/arm64/boot/dts/marvell/cn9130-crb.dtsi:49:		compatible = "usb-nop-xceiv";
+> > arch/arm64/boot/dts/marvell/cn9130-crb.dtsi:53:		compatible = "usb-nop-xceiv";
+> > arch/arm64/boot/dts/marvell/cn9130-db.dtsi:52:		compatible = "usb-nop-xceiv";
+> > arch/arm64/boot/dts/marvell/cn9130-db.dtsi:66:		compatible = "usb-nop-xceiv";
+> > arch/arm64/boot/dts/marvell/armada-8040-db.dts:53:		compatible = "usb-nop-xceiv";
+> > arch/arm64/boot/dts/marvell/armada-8040-db.dts:67:		compatible = "usb-nop-xceiv";
+> > arch/arm64/boot/dts/marvell/ac5-98dx35xx-rd.dts:36:		compatible = "usb-nop-xceiv";
+> > arch/arm64/boot/dts/marvell/armada-3720-espressobin-ultra.dts:39:		compatible = "usb-nop-xceiv";
+> 
+> Does this actually work at all?  There is no real resouces here that I
+> can see, so what am I missing?
 
-Seems like we already have a warning for it:
+Hm, maybe I got this one wrong, I'm getting build errors now from
+kbuild, let me go look into this some more...
 
-warning: floating-point arithmetic detected
-  --> /home/aliceryhl/rust-for-linux/rust/kernel/lib.rs:89:5
-   |
-89 |     a + b
-   |     ^^^^^
-   |
-   =3D help: for further information visit
-https://rust-lang.github.io/rust-clippy/master/index.html#float_arithmetic
-   =3D note: requested on the command line with `-W clippy::float-arithmeti=
-c`
-
-> Cc'ing Catalin in case he wants to be in the loop, since I discussed
-> it with him recently.
->
-> Cheers,
-> Miguel
+greg k-h
