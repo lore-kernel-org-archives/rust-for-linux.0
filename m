@@ -1,173 +1,337 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD391632DA
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Feb 2025 15:24:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677831946AA;
+	Wed,  5 Feb 2025 16:10:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738769067; cv=none; b=ARdQAGmtA9AXOAbAx19ODm+mE4Qo5LkR2vcBJX/N8lTuFFQKQDNYxo2O8C76kMeB0jtJ1tKjz3KlzAcFKvWfdMbb6xVAiq/7NZNLhrzuH5yp3Hg7R5uQvSpkEZW3W231CbpjTesJfAICbFW6a/ni3uLj+sU6cmmB0M0ZWasy5Ec=
+	t=1738771853; cv=none; b=cRtRUaWg4/3JAff7WgWG9x8GV3KNin4HV8mmEWSbRP1ggYJcoV5LmyxknTGIzNh0ExycRScxMQ7mFPG9RbO70yze3xZvGjUjgNtGeTk7EcF9qOqNqmwO+/MDviMmGfT6L1vfWuJpYVYwbvepXEqTUG4t0LVDxZ3AYI1D3HLT75E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738769067; c=relaxed/simple;
-	bh=RgnLrNkg9LQXYy1twLEj6EteqD+deF14Iq9XrS1HPZI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=d/zqBgY9OB1Y2kPKYJP63iCL0looiE8s9EPz+JB/K+JNsA1XluUjrltU2QcakCpWqdS2bw1dhB72QJw52Jc3IJ6kwi7c34uhPtx5DkBg9VrSRrxGv3B+RPWDevDVQ1eo73Vhjizt2I0W0MPx6LREBRSdlRRB+zee5pvgBHQ7M/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PWCmvD6K; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1738771853; c=relaxed/simple;
+	bh=ImZ/l/99sI+3iifnDXr8jZw00Dl/R1qh0lxcrzFqNhs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VMC2ardjD573FVoqFLKMKIrwcrFIUQUBIjY7GVWtNHxxg/zHdMpo6uBX6MErgCf3IZLsPdayhqyM84QnKqE0k5JyopeUM4mi3TlM50e5t6+vI8DaurmSlYE4wOge36SgQWN3ss4hWGJP6lkNRKSyoZBb7fJQlqIqgtVVvDS6Jhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kdrczVAz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PWCmvD6K"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2f9cd8ecbceso3208873a91.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 05 Feb 2025 07:24:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738769065; x=1739373865; darn=vger.kernel.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KGUFj/mah/kn+/uxQ4Btu9bKF0UOsIAWYRzSd3+gFfM=;
-        b=PWCmvD6KmJm9h+wuCzf2bdNMHbls/yTGicth9HdWrA3xHpTnpoM5QZfkVdOmmfXMV1
-         5frvYCPq1xmbIJwr8QTeKZtZrvmlGyXj6RD6HI0edRc4TkEIODSykcPQg1e6OTdp4rS1
-         h5KLg736daBW59WubR71+dk8Us/bH0OnIkcj5zDMZbMdItKhS48QcUAYJBenxrLYbI9a
-         7TIIIBH++O5kvADoXYdPLLghhv7cIqBQhGtktIv9gMsy5MgNEv6bDhvxilZxi1j1RcNr
-         I4H7UZZGV53y1PrTq/zUWmM2xugjBxnTGPP5ndj6rM0i1pWOPx7CCDFqSIl8FD5+A2OW
-         AAuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738769065; x=1739373865;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KGUFj/mah/kn+/uxQ4Btu9bKF0UOsIAWYRzSd3+gFfM=;
-        b=eNwigOxp8vPRLxO/MAKQ9tQFCoc1qwfMKEgeH+1yoN8vhSTIGhmEWbKFCFz8JUojzw
-         xK8eyTSwLpDqCuMuH1VxMjFH4hNgCkq03DKMs9sPTivLnXagu2fV1F0UZkm2MJueqbGt
-         PEEYz3WTO6CanebYxlkDAHiGtUbTUo8CjLLFtd+MNpPraact9FqxlpnY92UCNdDwP48z
-         R9N/WU2Bip5dR/SBOkg6Lgip/oV0uNcwX+3yrWZtCpp2TXDwRaSdE0Cmx4NQi/Ht168f
-         56y4BmiiQzl6itt+NVHwtxihXbomJ/auN5PdBJzpb1tnksJ331e+SzIyiFOwAcDtNMoK
-         k4bw==
-X-Forwarded-Encrypted: i=1; AJvYcCXX8XtLaVL+rx5EaI5iDFKWDZBDq9NhMoemuqsl+9nNxgQWaWyICt8vI3u1L1QMKMPCS+oCeQWIWfyVd1EC4w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5jIqIgl6juNBnYiBB2ZtMENKvv4/POOuLRKgGtRCa48yCN7H7
-	xrxGUNvoq1F5ifYnNFUpGNDfedN+ZSbJFgXJUsOGjuuRHfZ5KG7rB5v6jbBOVlJAxw/Fy+QKBvd
-	ruB1bYPfsDPijfaI5pApzaeF4lCT/NNV36kBl
-X-Gm-Gg: ASbGncuQzJrvnhsz3kdiDdiALHEeZkaYxAUL7ojtjhrhBiAyFbMuQOMo7aXlpFPgdwq
-	b/pVBbBQD3at1Wfgp3OAIwn53BBe7T8zbysyORC6kO/bDl2egZoOqyz7N2sJy1hEWDvK4FSnPba
-	2HlIT449fxxUa3SmxaxTva3x+9IMY=
-X-Google-Smtp-Source: AGHT+IFbR/Za3bzQ561Moir1l01pSJAcHP+agVl6hNv1WMjaZabDacA+FBKaP1s+i3G2zvW5BNr6B5Ren6dXC7QGv6w=
-X-Received: by 2002:a17:90b:370c:b0:2ee:c91a:acf7 with SMTP id
- 98e67ed59e1d1-2f9e0753763mr5096043a91.4.1738769065057; Wed, 05 Feb 2025
- 07:24:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kdrczVAz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82B45C4CED1;
+	Wed,  5 Feb 2025 16:10:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738771852;
+	bh=ImZ/l/99sI+3iifnDXr8jZw00Dl/R1qh0lxcrzFqNhs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kdrczVAzsDMnZeoCyMdOwHLTKriaztL8DjPls05K+qiB5YPdMGzwPaO6msSBpIJ4U
+	 nKmGvZbaX1wFVQsJfUp0I6YxlRIKY5cpVq/GNY4bqQJkQPq/w12Qlw+ZQi8lRHDr8G
+	 BOBBWcQIM+ObyoHy0MWjeddIVnRc2s/IxfGUtDsFu6y+IfYGLGHrMO3Q61dL259w9V
+	 zdeGwMB+sZf2+WeVcByhiNVWHgsqUAhNdZvpXsxsFDj3PA2y2032sLLETBOCzXX68S
+	 HdaYG50ATuGzWDMTNTizMEII+fyQSFRxWzIw5ks2Vex92iohJzyNrjPRZCpBL2UfEc
+	 soi79DcKy0NCQ==
+Date: Wed, 5 Feb 2025 17:10:44 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Zhi Wang <zhiw@nvidia.com>
+Cc: airlied@gmail.com, simona@ffwll.ch, corbet@lwn.net,
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+	tzimmermann@suse.de, ajanulgu@redhat.com, lyude@redhat.com,
+	pstanner@redhat.com, cjia@nvidia.com, jhubbard@nvidia.com,
+	bskeggs@nvidia.com, acurrid@nvidia.com, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, nouveau@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] gpu: nova-core: add initial documentation
+Message-ID: <Z6ONhNOAtfWsKIRg@cassiopeiae>
+References: <20250204190400.2550-1-dakr@kernel.org>
+ <20250204190400.2550-2-dakr@kernel.org>
+ <20250205155646.00003c2f@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250203-vma-v13-0-2b998268a396@google.com> <20250203-vma-v13-2-2b998268a396@google.com>
- <r5xkc2i3tk4za3xkrrvbeqto4kf5l425ursytc3n6tmcy2gylb@eusudybb5dqa>
- <CAH5fLgj00hRAEBvNc8RR8iBwKQ2okDqmWWQ+kqmNkr9mOjfU0w@mail.gmail.com>
- <ymjkf2l2otosunrs3e3mmsj2wr3tvrfmgl4aav5dcpm3gtdulh@dzz4njdwkspc>
- <CAH5fLggd75BvB6VXPjR=_jxn1u7kOfix2rynvMHU4CeUUDHnVA@mail.gmail.com>
- <ebwiebbxomsjamv2uk6gnpg2uzjpqw25llvcz7njadklfi66nk@ab5uyq4bvwlb>
- <CAH5fLgh2Y0rG5ntpdiK-ycn9eBvrSXekxPsjDaYWuHBDUYNppw@mail.gmail.com> <ndell4l7fo2pkixo6q5xgdaryuj6wrmnyzthhe42wtumpacak5@oxlrwuwa5e5g>
-In-Reply-To: <ndell4l7fo2pkixo6q5xgdaryuj6wrmnyzthhe42wtumpacak5@oxlrwuwa5e5g>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 5 Feb 2025 16:24:11 +0100
-X-Gm-Features: AWEUYZmq_vX8tVFSj3KjtvPi2OOSFFsq6QpKo6Pfs-lOXylEZQu2sCfVDes0wgA
-Message-ID: <CAH5fLggzX2fZe7zdPXibosYAn3752XeoxXhcbSrAYpw99sdj9w@mail.gmail.com>
-Subject: Re: [PATCH v13 2/8] mm: rust: add vm_area_struct methods that require
- read access
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	John Hubbard <jhubbard@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250205155646.00003c2f@nvidia.com>
 
-On Wed, Feb 5, 2025 at 3:38=E2=80=AFPM Liam R. Howlett <Liam.Howlett@oracle=
-.com> wrote:
->
-> * Alice Ryhl <aliceryhl@google.com> [250205 07:10]:
-> > On Tue, Feb 4, 2025 at 4:46=E2=80=AFPM Liam R. Howlett <Liam.Howlett@or=
-acle.com> wrote:
-> > > > > > > > +        let vma =3D unsafe { bindings::vma_lookup(self.mm.=
-as_raw(), vma_addr) };
-> > > > > > > > +
-> > > > > > > > +        if vma.is_null() {
-> > > > > > > > +            None
-> > > > > > > > +        } else {
-> > > > > > > > +            // SAFETY: We just checked that a vma was foun=
-d, so the pointer is valid. Furthermore,
-> > > > > > > > +            // the returned area will borrow from this rea=
-d lock guard, so it can only be used
-> > > > > > > > +            // while the mmap read lock is still held.
-> > > > > > >
-> > > > > > > So We have complicated the locking of the vmas with rcu and p=
-er-vma
-> > > > > > > locking recently.  We are now able to look up and use a vma u=
-nder the
-> > > > > > > rcu read lock.  Does this translate to rust model?
-> > > > > > >
-> > > > > > > I believe this is true in recent version of binder as well?
-> > > > > >
-> > > > > > Yes. The safety requirements of VmAreaRef is that you must hold=
- the
-> > > > > > mmap read lock *or* the vma read lock while you have a VmAreaRe=
-f
-> > > > > > reference. This particular method achieves that requirement by =
-holding
-> > > > > > the mmap read lock. But there is also a Rust lock_vma_under_rcu=
-(), see
-> > > > > > patch 4 for that.
-> > > > >
-> > > > > Right, okay.  Thanks.  You can get the reference by only holding =
-the rcu
-> > > > > read lock, but you should hold the vma lock to ensure that the vm=
-a
-> > > > > itself (and not just the pointer) is safe to use.
-> > > >
-> > > > Hmm... To modify the vma, you must hold the mmap *and* vma write lo=
-ck,
-> > > > so holding the mmap read lock prevents mutations?
-> > >
-> > > Sorry, I think I confused things with my answer.  Your code is fine.
-> > > The phrasing of the "only be used while the mmap read lock is still
-> > > held" made me wonder about further clarification on the locking here
-> > > (because the locking is confusing).
-> > >
-> > > Yes, mmap read lock means there are no writers that can modify the vm=
-a.
-> > > Essentially, you are using the lock to ensure the entire vma space is=
-n't
-> > > changed during your operation - which is heavier than just locking on=
-e
-> > > vma.
-> >
-> > I could extend the safety comment like this:
-> >
-> > SAFETY: We just checked that a vma was found, so the pointer is valid.
-> > Furthermore, the returned area will borrow from this read lock guard,
-> > so it can only be used while the mmap read lock is still held. This
-> > ensures that there are no writers because writers must hold both the
-> > mmap and vma write lock.
->
-> How about just changing the last part to:
->
-> Furthermore, the returned vma is still under the protection of the read
-> lock guard and can be used while the mmap read lock is still held.
+On Wed, Feb 05, 2025 at 03:56:46PM +0200, Zhi Wang wrote:
+> On Tue,  4 Feb 2025 20:03:12 +0100
+> Danilo Krummrich <dakr@kernel.org> wrote:
+> 
+> > +
+> > +Generic register abstraction
+> > +----------------------------
+> > +
+> > +Work out how register constants and structures can be automatically generated
+> > +through generalized macros.
+> > +
+> > +Example:
+> > +
+> > +.. code-block:: rust
+> > +
+> > +	register!(BOOT0, 0x0, u32, pci::Bar<SIZE>, Fields [
+> > +	   MINOR_REVISION(3:0, RO),
+> > +	   MAJOR_REVISION(7:4, RO),
+> > +	   REVISION(7:0, RO), // Virtual register combining major and minor rev.
+> > +	])
+> > +
+> 
+> I think it is better not to tie this to pci::Bar and its operations. It
+> would be better to have a intermediate container as the macro param. The
+> container holds the register region vaddr pointer, size, read/write traits.
 
-Well, the important part here is that you can't do this:
+I think for this particular example we want to tie it to the pci::Bar on way or
+the other.
 
-let guard =3D mm.mmap_read_lock();
-let vma =3D guard.vma_lookup(...)?;
-drop(guard);
-vma.foo();
+But yes, the idea would be that any `dyn Io` works.
 
-since that would use the vma after the lock has been released. The
-reason that the above is prevented is because `vma` borrows from
-`guard`, so you can only use `vma` while `guard` is still valid.
+> The macro expands it from there, thus, we can also use this on firmware
+> memory structures, e.g. GSP WPR2 info.
+> 
+> Probably we are looking for a even more generic solution/type for deferring
+> a structure in the vaddr and generating the the accessing methods
+> accordingly. It might also be useful later in GSP message queue
+> manipulation, ELF header extraction, page table manipulation? (to avoid
+> ambitious unsafe statements in the rust driver)
 
-Alice
+I think it's hard to predict to what extend we can (or want to) generalize this.
+But I think those are good thoughts that should be considered working on this.
+
+If you come up with a few lines to broaden the scope, I'm happy to add them to
+this section.
+
+> 
+> > +This could expand to something like:
+> > +
+> > +.. code-block:: rust
+> > +
+> > +	const BOOT0_OFFSET: usize = 0x00000000;
+> > +	const BOOT0_MINOR_REVISION_SHIFT: u8 = 0;
+> > +	const BOOT0_MINOR_REVISION_MASK: u32 = 0x0000000f;
+> > +	const BOOT0_MAJOR_REVISION_SHIFT: u8 = 4;
+> > +	const BOOT0_MAJOR_REVISION_MASK: u32 = 0x000000f0;
+> > +	const BOOT0_REVISION_SHIFT: u8 = BOOT0_MINOR_REVISION_SHIFT;
+> > +	const BOOT0_REVISION_MASK: u32 = BOOT0_MINOR_REVISION_MASK | BOOT0_MAJOR_REVISION_MASK;
+> > +
+> > +	struct Boot0(u32);
+> > +
+> > +	impl Boot0 {
+> > +	   #[inline]
+> > +	   fn read(bar: &RevocableGuard<'_, pci::Bar<SIZE>>) -> Self {
+> > +	      Self(bar.readl(BOOT0_OFFSET))
+> > +	   }
+> > +
+> > +	   #[inline]
+> > +	   fn minor_revision(&self) -> u32 {
+> > +	      (self.0 & BOOT0_MINOR_REVISION_MASK) >> BOOT0_MINOR_REVISION_SHIFT
+> > +	   }
+> > +
+> > +	   #[inline]
+> > +	   fn major_revision(&self) -> u32 {
+> > +	      (self.0 & BOOT0_MAJOR_REVISION_MASK) >> BOOT0_MAJOR_REVISION_SHIFT
+> > +	   }
+> > +
+> > +	   #[inline]
+> > +	   fn revision(&self) -> u32 {
+> > +	      (self.0 & BOOT0_REVISION_MASK) >> BOOT0_REVISION_SHIFT
+> > +	   }
+> > +	}
+> > +
+> > +Usage:
+> > +
+> > +.. code-block:: rust
+> > +
+> > +	let bar = bar.try_access().ok_or(ENXIO)?;
+> > +
+> > +	let boot0 = Boot0::read(&bar);
+> > +	pr_info!("Revision: {}\n", boot0.revision());
+> > +
+> > +| Complexity: Advanced
+> > +
+> > +Delay / Sleep abstractions
+> > +--------------------------
+> 
+> ...
+> 
+> > +
+> > +VRAM memory allocator
+> > +---------------------
+> > +
+> > +Investigate options for a VRAM memory allocator.
+> > +
+> > +Some possible options:
+> > +  - Rust abstractions for
+> > +    - RB tree (interval tree) / drm_mm
+> > +    - maple_tree
+> > +  - native Rust collections
+> > +
+> > +| Complexity: Advanced
+> > +
+> 
+> I am leaning towards having the abstractions at a high level APIs, e.g.
+> wrapping drm_mm and possibly the rust side can choose the backend type of
+> drm_mm if it really needs a different type of data structure other
+> than default supported by drm_mm. If we need more type of data structures,
+> we can extend drm_mm in C side. That can save us some efforts.
+
+I think we have to work out the advantages and disadvantages and see if there
+are any opportunities for synergies.
+
+For instance, in case we end up with separate VMM management in nova-core and
+nova-drm, there might be synergies for the other options.
+
+> 
+> > +Instance Memory
+> > +---------------
+> > +
+> > +Implement support for instmem (bar2) used to store page tables.
+> > +
+> > +| Complexity: Intermediate
+> > +| Contact: Dave Airlie
+> > +
+> > +GPU System Processor (GSP)
+> > +==========================
+> 
+> ...
+> 
+> > +
+> > +External APIs
+> > +=============
+> > +
+> > +nova-core base API
+> > +------------------
+> > +
+> > +Work out the common pieces of the API to connect 2nd level drivers, i.e. vGPU
+> > +manager and nova-drm.
+> > +
+> > +| Complexity: Advanced
+> > +
+> > +vGPU manager API
+> > +----------------
+> > +
+> > +Work out the API parts required by the vGPU manager, which are not covered by
+> > +the base API.
+> > +
+> > +| Complexity: Advanced
+> > +
+> > +nova-core C API
+> > +---------------
+> > +
+> > +Implement a C wrapper for the APIs required by the vGPU manager driver.
+> > +
+> > +| Complexity: Intermediate
+> 
+> Thanks for calling this out.
+> 
+> I believe the "vGPU manager API" is not a standalone task, as many of the
+> required APIs will intersect with other components in nova-core.
+> 
+> As one of nova-core’s users, vGPU represents the simplest use case to get
+> started with, offering significant value to both nova-core and its users
+> in the near term.
+> 
+> I was thinking that if we could align with the folks on making vGPU +
+> nova-core our initial short-term goal, it would be beneficial for
+> nova-drm's development, since the APIs required for nova-drm are a
+> superset of those needed for vGPU.
+
+I think it is common understanding to have nova-core + vGPU as a first
+milestone.
+
+However, I think that we should also put some effort into the nova-drm side of
+things to not miss out on potential design contraints on both ends, nova-core
+<-> nova-drm as well as nova-drm <-> DRM core, since there are also other
+upcoming Rust DRM drivers.
+
+> 
+> It would be valuable for us to be involved in key areas related to vGPU,
+> including:
+> 
+> - Task review
+> - Design discussions
+> - Unit testing
+
+I'm a bit confused about who specifically is meant with "we", "the folks" and
+"us" in your statements above.
+
+But of course everyone is welcome to be involved into the aspects mentioned
+above and the project in general. :-)
+
+> 
+> Additionally, we are working on a vGPU requirements document that will
+> outline the complete API needs for vGPU beyond those already covered in
+> the RFC patches. Hope that will be published soon.
+
+I think this will be very useful for nova project!
+
+> 
+> > +
+> > +Testing
+> > +=======
+> > +
+> > +CI pipeline
+> > +-----------
+> > +
+> > +Investigate option for continuous integration testing.
+> > +
+> > +This can go from as simple as running KUnit tests over running (graphics) CTS to
+> > +booting up (multiple) guest VMs to test VFIO use-cases.
+> > +
+> > +It might also be worth to consider the introduction of a new test suite directly
+> > +sitting on top of the uAPI for more targeted testing and debugging. There may be
+> > +options for collaboration / shared code with the Mesa project.
+> > +
+> > +| Complexity: Advanced
+> > diff --git a/Documentation/gpu/nova/guidelines.rst b/Documentation/gpu/nova/guidelines.rst
+> > new file mode 100644
+> > index 000000000000..28a959f51c2c
+> > --- /dev/null
+> > +++ b/Documentation/gpu/nova/guidelines.rst
+> > @@ -0,0 +1,73 @@
+> > +.. SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> > +
+> 
+> I think this will develop into a maintainer handbook in the future which
+> reflects maintainer's requirements, thoughts, tips...maybe we can make it
+> explicit? I think it is rules of book that we agree to follow.
+> 
+> A similar one can be found here.
+> https://lore.kernel.org/kvm/20230411171651.1067966-1-seanjc@google.com/
+
+Yes, that's the idea. Is there anything additional you'd like to see added for
+this initial commit?
+
+> 
+> > +==========
+> > +Guidelines
+> > +==========
+> > +
+> > +This document describes the general project guidelines that apply to nova-core
+> > +and nova-drm.
+> > +
+> > +Language
+> > +========
+> > +
+> > +The Nova project uses the Rust programming language. In this context, the
+> > +following rules apply.
+> > +
+> > +- Unless technically necessary otherwise (e.g. uAPI), any driver code is written
+> > +  in Rust.
+> > +
+> > +- Direct FFI calls to C kernel APIs must be avoided; instead C kernel APIs
+> > +  should be accessed through shared Rust abstractions.
+> > +
+> > +- Unless technically necessary, unsafe Rust code must be avoided. In case of
+> > +  technical necessity, unsafe code should be isolated in a separate component
+> > +  providing a safe API for other driver code to use.
+> 
+> Also need to comment why the unsafe is the last possible approach to go.
+> the last thing we want to see is "unsafe" flying here and there in a rust
+> driver. :)
+
+You mean adding an explanation as for why to avoid "unsafe"? I thought it's
+probably rather obvious.
+
+But I'm also fine adding an explanation, suggestions?
