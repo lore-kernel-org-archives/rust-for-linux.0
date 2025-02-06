@@ -1,146 +1,193 @@
-Received: from black.elm.relay.mailchannels.net (black.elm.relay.mailchannels.net [23.83.212.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA771E1035;
-	Thu,  6 Feb 2025 21:26:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.212.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738877170; cv=pass; b=q66puGk6LQtCs9iwgr3nOCSVlK+WBkJx3asjXhI2uuuId6NldvhqM2rLVa3o9fpsaLgt1fp1+czI8EkoqdwtQW1NZ0pPVACkLXbVA2f6jtW+KVPC0znyOpmJuzn9Q2lQpWUOkIXwM9rB0tKDJGHjEd4oLzzKMsRSjpoCmiv+WiA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738877170; c=relaxed/simple;
-	bh=Aoq8DR0tmBwK/2qmp6nHnMm7CfMGYf5gDRatYYdmJS4=;
-	h=From:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc:Date; b=uRZLVF70lCLOqiObr74SwW8pq1j+9qQMp9NW6Z3feEVFgZHnlQzgUanM+YOl5cWyGGj1HGhFANLKsNSAIlMN4oxtcyVsPOBpZYtb7x9uEryWdOk6OGcoJGj5VB8zOFPJEWisqkY0SoyzUH8Dsl+njetYx2cuDwiLk5iCf3ocfKU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invicto.ai; spf=pass smtp.mailfrom=invicto.ai; dkim=fail (0-bit key) header.d=invicto.ai header.i=@invicto.ai header.b=UdaOjjry reason="key not found in DNS"; arc=pass smtp.client-ip=23.83.212.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invicto.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=invicto.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B551E5B8A;
+	Thu,  6 Feb 2025 21:28:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738877310; cv=none; b=PUjqA8/iTtp1cfkAie4Ofdu15QSKvGWGzGGugBz0cx6ho47fc5EWT/nGvvplLX7QA3s4GBHMAXCNXuKYDVAANfz2N40zSvrVr/VxmxBo6UQA9xgYkvvZfFL1qtF9kTrBFs3R1uX6uNH0H3YpJAOGtMUlVTBhyNRkkyKoCPGJa3g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738877310; c=relaxed/simple;
+	bh=NFGMxl1SbuKnFBdg29s4L4SmWMhiT5d/APkJO9nPDek=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n8DTVufeMHdIt5RZxfSht6TBFFnUW/jIrp/lELE8MebzEsH7T3Y4gsFpoOPCUM6GLxhBUFAlv1eUVaalHciG3qKmt47ZGgjthFh5+lelsYvAZu3c127vZKJniPGzhiPpm/SiiL9+FUFnO5w8JVGMZRz3bceGhxeFgLf/gOlcwfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XITWFf2d; arc=none smtp.client-ip=209.85.219.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=invicto.ai header.i=@invicto.ai header.b="UdaOjjry"
-X-Sender-Id: hostingeremail|x-authuser|kurti@invicto.ai
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 5B209161EA9;
-	Thu,  6 Feb 2025 21:07:59 +0000 (UTC)
-Received: from fr-int-smtpout8.hostinger.io (trex-3.trex.outbound.svc.cluster.local [100.125.12.218])
-	(Authenticated sender: hostingeremail)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 169D9161B25;
-	Thu,  6 Feb 2025 21:07:54 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1738876079; a=rsa-sha256;
-	cv=none;
-	b=SS2OZOpxhGLSWS4WYX3g8CdxQUp/uNdJD6w3hcSK3mf2L3zOlZEUWP4nB7d0DQHz97+iHd
-	SbbFLC2/iuehUNzVG5W8qphOeJifufNH/9nEEUkdg8YePQIs5vQoxaKW+n8aJrrb/iku7J
-	GFqRLUaLV62F5EoY6bmAxyQXmHPfHOWN7epPNkFWGbgKr2EfGxTqDOaw3g81ZAF5pvV0AQ
-	saEnNoZesEizafATZYObRGaA7hUIKakk6uXCvWD+oORiWE12zeTtJkW64yP0R8BT7GGSEq
-	4E7I9G2ANrYN+wKIbZ5h78mUhFTRd7cgynGY/hQfyFJxfVYMVjumx2I4YzLkRQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1738876079;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QiXyubdeOKIcHLGUBolab2yRgrtdSgwKfCo8KFHBIQ0=;
-	b=W535iN4cjuht4mFgWuEjluFesNq+1YAgpndQrsd5cnJegSOLFU9s8E9KGbf0i5PjRzBayi
-	SKDMz0HTXalG6aUxRlRCX+2tYkO1se+S/uzZURgg6HCSwwKSr8MfqwFMBuWjIjEwscIIxa
-	aNbzXF31wM1j2q/bQBEviZPsRQDwjtJZUT1w7M76DxJ8mCwKUSntEFqe7w6ysil/Jtq1nK
-	jsckRKXHHaAGd9MZ3O/PkHzqsK4vQjOpJfm6sj1h+1emHV5MDdrtO9psTsKSdY2gKiT7ku
-	1K/NhkS5pA854yfP1MzRuowIjcVUf9J6lz7NjKHeOAJvFosutIZlN3IKhpRYXg==
-ARC-Authentication-Results: i=1;
-	rspamd-8586946c78-zkzf8;
-	auth=pass smtp.auth=hostingeremail smtp.mailfrom=kurti@invicto.ai
-X-Sender-Id: hostingeremail|x-authuser|kurti@invicto.ai
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: hostingeremail|x-authuser|kurti@invicto.ai
-X-MailChannels-Auth-Id: hostingeremail
-X-Keen-Thread: 40f4450b18a3cc77_1738876079201_511394290
-X-MC-Loop-Signature: 1738876079201:1092380178
-X-MC-Ingress-Time: 1738876079200
-Received: from fr-int-smtpout8.hostinger.io (fr-int-smtpout8.hostinger.io
- [89.116.146.204])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.125.12.218 (trex/7.0.2);
-	Thu, 06 Feb 2025 21:07:59 +0000
-From: Alban Kurti <kurti@invicto.ai>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=invicto.ai;
-	s=hostingermail-a; t=1738876073;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QiXyubdeOKIcHLGUBolab2yRgrtdSgwKfCo8KFHBIQ0=;
-	b=UdaOjjrygfJ26g/NDouNl3plGw34C+tlqJfFZScsyxIUXmv8sg88ygyK/Okdg33br2P4VX
-	LQ6NqGbA55PZdviqc7cWl/ScE62QiXoErvufGRJ0KK79/22aNoQROBKF6xOFl6Nr3rjVe2
-	mHvVwT3sN1gV+qCnuPBZ8guI8e3q+aXwQ+ZKcZZeRJ5OotVlb9R1+24rtvQ3DHaA8i9nVO
-	b5BmaHz7x/TVH6/Xtq1Rtmdt+di7nDjHZvrcnPA2alEpVzZxe5JxT/DgnNZefVrzOIRWAJ
-	JEm9VIt2dHh5CDXO6dvT/vObC+3PcDbrHFKUXqu07LAZDxPm7QXDVDZNBGDFrA==
-Subject: [PATCH v3 1/6] rust: docs: add missing newline to printing macro
- examples
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XITWFf2d"
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6dcdd9a3e54so13971856d6.3;
+        Thu, 06 Feb 2025 13:28:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738877308; x=1739482108; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BtzujjqM7/NjPejAA9pfY2HcLOFh+EdK4tymo4UbpDM=;
+        b=XITWFf2doyFNxUazr8sZyriBU8v05k63zHc5vDOMRK+RHJQotOX/y1GadwErKa2xrx
+         WY195dtyhvXTE+BuxOPfK5SY+/2K/qwsXDCNVZBlyTOM1LLZW2tepcHuLkyEEctf0FWQ
+         3m3PzfsMmQpq7vixlcwjRMIlmJVBTjxotdnr4Whgcrukw/KwzQAJ2RRc63lSi6Ng/fKW
+         fMq4jikpIeDpk07JM+gsD/bXtR3WtUDpVFalB8x3tuCTZMZ8L3nD4MDePlqGOu60sgCf
+         d1HfX/gZvSvhBeW552zxAFIt4ItCgFaCtX+uap/Ai0VJetGTypPjT/DmCpb/jLJEBJp5
+         1xmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738877308; x=1739482108;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BtzujjqM7/NjPejAA9pfY2HcLOFh+EdK4tymo4UbpDM=;
+        b=hTKKUYR207zbtd7hweFZxKI7kwS1L7jwPqDzvPRidbQJ2oWieFsKwBc167fN5rHIaU
+         mRhzqvw4EvnMMEz/CCfrVgBvblZTEWYAVDiKWsbZ6NQ7ymcMgSgwqiEjfUo03Fb12sI7
+         t+N8xQn+rYEwozYwpGDLjpKp2sEaUXQXrz9yQvUbzXSb94I9ilGcI78T7ytcyxSTDOv6
+         s/NmYbEEiENBoCBqGimrI5/uzXkN3BmJMVHz+Q5XAW67oIBRQEgbsWIOW79v5C5662Ds
+         oYZZ6yfaR8AUcXsiEkmz8bP+bdHgVnTQtyWwZshI/pJTNcw+rJjoGg+bGweRjfF7KPo6
+         Mzpg==
+X-Forwarded-Encrypted: i=1; AJvYcCUnLzPyKLF0ecRuDqZjTiYD3R0feNizAKvu8OKL30r5IE5wtBzhkEI149YDQC35XOOimNZ/GZQHZM6RN3BupzY=@vger.kernel.org, AJvYcCWpj15niFhIzfQYXThi1C6np8hW2zonnnZ3X5W8HnLvcLGcWo66u1Ct2XMhV8f8L0FtHfelHnStUnzqpgN4@vger.kernel.org, AJvYcCXrdXOrUIsZK8tein45mnUKWmha87fWlsTX2irEougcFOyrRHO0T7lyUXfNZajTOOdJY2++d2QlvL9exg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTG0xqgnS7HI0hiTV52AqEyfrdotlHqaj2cuPHeQAVkWEXHUW/
+	/LeUT53y6CmHhTZkr0K0rSmDC72y6J+YMpDCp7KdzG87dsEl62mPSn2bpw==
+X-Gm-Gg: ASbGncv9ZLEhZBvs/hUaD1jPFbg6gt/wH5KYYeda6TZX3WCdImSrssyfwXH5kqkZLKU
+	zTld07tGZN+jGcGKq/6XXiDjkPs7gtyxJkyQH4tVCuOeQsYk4kWqUvetcSuHQbdKh6N+53hM8iP
+	BI5C0Q043DxEyl8oi/bMeCyB/+zP7qCQ6h3VzKexbmnSGMhmFgCQurUcnPQYMYkRZaFb3pNxnJ+
+	oSAoOhF9p7gI4V1/JqOv0nRNU4O24wRtL21B4oWhHITRYW6nwyVBbt/H2FOfedxcMFU+UJBwtgZ
+	+ur1KDTlDLNoyg08PiWIq+8ep2h6OdFLHKuNQXx9qlO8moAzkIzmZC17cWNCDETAr5F/Tj/7Dfv
+	88KLa8g==
+X-Google-Smtp-Source: AGHT+IEpnMeIff/CeoH5Hth0vqekNOrrYi6jTy5OKYjsKCFhAhq1kgrlI7gd/IfvtN10zpRDehDLzw==
+X-Received: by 2002:ad4:5f85:0:b0:6e4:3de7:d90b with SMTP id 6a1803df08f44-6e44566e6e4mr10196896d6.25.1738877308041;
+        Thu, 06 Feb 2025 13:28:28 -0800 (PST)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e43baacb22sm9624586d6.86.2025.02.06.13.28.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Feb 2025 13:28:27 -0800 (PST)
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 45EC5120007A;
+	Thu,  6 Feb 2025 16:28:27 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Thu, 06 Feb 2025 16:28:27 -0500
+X-ME-Sender: <xms:eymlZ3UkGnrbl3lpkqaaIuWlUhMguJi6lajCKkBKQSPLNAcf87CgSw>
+    <xme:eymlZ_m_tNOnLmZfvVY_28bA_LxTA6xNVvsKiCu129vaf8GvgBzLIBb0dXAWjYfK4
+    _8UsvQLi9kLhIIbRA>
+X-ME-Received: <xmr:eymlZzbLW2cLZzNW6Hb7ltbfBiRk7DNYXWEliR-pT8A_tAPvKRNvjV9fnkk>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvjeegiecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
+    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
+    drtghomheqnecuggftrfgrthhtvghrnhepjeeihfdtuedvgedvtddufffggeefhefgtdei
+    vdevveelvefhkeehffdtkeeihedvnecuffhomhgrihhnpehruhhsthdqlhgrnhhgrdhorh
+    hgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsgho
+    qhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqd
+    dujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihm
+    vgdrnhgrmhgvpdhnsggprhgtphhtthhopedufedpmhhouggvpehsmhhtphhouhhtpdhrtg
+    hpthhtohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtohep
+    lhgvvhihmhhithgthhgvlhhltdesghhmrghilhdrtghomhdprhgtphhtthhopehojhgvug
+    grsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgr
+    ihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpth
+    htohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtohep
+    rghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepthhmghhrohhssh
+    esuhhmihgthhdrvgguuhdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghl
+    rdhorhhg
+X-ME-Proxy: <xmx:eymlZyV2U-kKbGgxNDQrD2cuXFbV9Xk_41wMe2F16CB84koK9RC82Q>
+    <xmx:eymlZxlQDpGB51je_jfT68mdVEXDqPRzsXGL6PTHzFrzfM_5XVpzfA>
+    <xmx:eymlZ_csAaUzgr6d1TVVX-faNIIzC_bY9OZIZ2augSuPCIwZx4Osdg>
+    <xmx:eymlZ7GgN2j0DaVmCm0Y0lDe76P1UWTRFiKl9c9GgPk7BPqQG51NKg>
+    <xmx:eymlZzk-6wPIPruZVtrbu_e026oPFXK2Qweo_hmZimpyFNSycaOwrBbw>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 6 Feb 2025 16:28:26 -0500 (EST)
+Date: Thu, 6 Feb 2025 13:27:18 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Mitchell Levy <levymitchell0@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] rust: lockdep: Use Pin for all LockClassKey usages
+Message-ID: <Z6UpNpefdxyvYBPe@boqun-archlinux>
+References: <20250205-rust-lockdep-v3-0-5313e83a0bef@gmail.com>
+ <20250205-rust-lockdep-v3-2-5313e83a0bef@gmail.com>
+ <19dfbe36-237c-4da8-acfb-1d14069a8d1c@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250206-printing_fix-v3-1-a85273b501ae@invicto.ai>
-References: <20250206-printing_fix-v3-0-a85273b501ae@invicto.ai>
-In-Reply-To: <20250206-printing_fix-v3-0-a85273b501ae@invicto.ai>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Jonathan Corbet <corbet@lwn.net>, 
- David Gow <davidgow@google.com>, Dirk Behme <dirk.behme@de.bosch.com>, 
- Asahi Lina <lina@asahilina.net>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
- Wedson Almeida Filho <walmeida@microsoft.com>, 
- "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>, Tejun Heo <tj@kernel.org>, 
- Fiona Behrens <me@kloenk.dev>, 
- Vincenzo Palazzo <vincenzopalazzodev@gmail.com>, 
- Xiangfei Ding <dingxiangfei2009@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Alban Kurti <kurti@invicto.ai>, 
- Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
- Fox Chen <foxhlchen@gmail.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1738876070; l=994;
- i=kurti@invicto.ai; s=20250206; h=from:subject:message-id;
- bh=Aoq8DR0tmBwK/2qmp6nHnMm7CfMGYf5gDRatYYdmJS4=;
- b=Eg90l4a/6yjDvdcx9mylSKH9TwrCcYGbL5wRllwirwpydxVlF+6oOrh2toKrQYqOCfGeYTNDK
- fD5qHTYXdEUDDzYLf/rmLm8HcoHKuAODuKe1m9eJifdWRY0ibabQ93N
-X-Developer-Key: i=kurti@invicto.ai; a=ed25519;
- pk=D1lKs+JFapuEVI9zJ2QUTLSf5u4aT12tG0ny6vMMuOc=
-Date: Thu, 06 Feb 2025 21:07:52 +0000 (UTC)
-X-CM-Analysis: v=2.4 cv=PMNd+uqC c=1 sm=1 tr=0 ts=67a524a9 a=9/DLicljd4JGVkZ5BRdAJQ==:117 a=9/DLicljd4JGVkZ5BRdAJQ==:17 a=IkcTkHD0fZMA:10 a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=c9EISN1oOV-dU950GokA:9 a=QEXdDO2ut3YA:10
-X-CM-Envelope: MS4xfBif+Uu3UMiyyU3J2G4rL9XjRNFgaliUqVvWA+0J0KfByC89iygW/TK7LxcvGtEhR64jjQ/kng2PNfuzzvTZ+KhmSJPXwteMLawGlY0DD1xK005kV+EB aZ+qU8iIURNZz4ohIbaxz/MFrOg/jOdXp0P+zYSBQ6lRRHurwExpxOw3x7h2SicBM18ttiGdmUJRQi+V7zU3l/omDZODpYOxXfDj+OMFwP7brUVUFYDFaXb7 u5dEJ+Wl9/yfGmzhn4/hBeVh/FzpFqq1haYEwI6JvDbVoj5S6R088jYTUpohRw5GQmx3anfX0/yGCz0PKEnUNnNnf3q9944GzVOEpKAJwZz8STjM7qmDWQIj myO/17u+UXeYiFJLwXcIkAELeiYUfOhotSnQVrUCw3VvL9iHWsVWJzPNH3Fk7W2SNiCETWTbL6G6iwiz1FajCu31k/HUxPLhQZ5OlX1cDq1eiQVb0GEtmg7L i2xnGowZkvNgIOAtnzzADarhKZA2XTpMz8VVGJxg0ph83Mp/95vjiIVDkgyDeypCrog7bitWXbU6t45Up9+5Cd0A9+D6e7ZdaV/KdTerNaJNJtRBZJhbRmbE RuDTn8fdxinrdRtVS8VQI1MOh/HwHFTz1qaEqI+YXmyg5RqbredGI1TnV1coW8l5lxdivod0GE1z7nMZPzpRL1qugCN8Le6JTfte1GKsjxHFgIqog+KOIkSk 9sUSqFv6mUKQ0O3CzL2PXQ3kbP46eEMDdjpcgG4q0tT0/qQZMbDTkHVTth2W/UZXwWrGPFGMJ/JpfeTUdS4N6uNyPFjHewO9YLjRQ0FGUOYbhM/11hQPVXMh GfBH6b6pn5GlJuYsxE2rOdFE6U2+tj89REyxi1nHdHOh465Mddf4IcDEMtLCFX6/ZnwpBEo9Ay+5WmiWojoaTNkxNH3hRWB8xUevfH7HS9Xm2VUkmfgqZSGU y96MvbgA8ONk5vq
- 3Q48kLNBtX5h5GXJywJXSI+/k/xgsFtGz
-X-AuthUser: kurti@invicto.ai
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <19dfbe36-237c-4da8-acfb-1d14069a8d1c@proton.me>
 
-Fix adding a newline at the end of the usage of pr_info! in the
-documentation
+On Wed, Feb 05, 2025 at 08:30:50PM +0000, Benno Lossin wrote:
+> On 05.02.25 20:59, Mitchell Levy wrote:
+> > diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> > index 41dcddac69e2..119e5f569bdb 100644
+> > --- a/rust/kernel/sync/lock.rs
+> > +++ b/rust/kernel/sync/lock.rs
+> > @@ -7,12 +7,9 @@
+> > 
+> >  use super::LockClassKey;
+> >  use crate::{
+> > -    init::PinInit,
+> > -    pin_init,
+> > -    str::CStr,
+> > -    types::{NotThreadSafe, Opaque, ScopeGuard},
+> > +    init::PinInit, pin_init, str::CStr, types::NotThreadSafe, types::Opaque, types::ScopeGuard,
+> >  };
+> > -use core::{cell::UnsafeCell, marker::PhantomPinned};
+> > +use core::{cell::UnsafeCell, marker::PhantomPinned, pin::Pin};
+> >  use macros::pin_data;
+> > 
+> >  pub mod mutex;
+> > @@ -121,7 +118,7 @@ unsafe impl<T: ?Sized + Send, B: Backend> Sync for Lock<T, B> {}
+> > 
+> >  impl<T, B: Backend> Lock<T, B> {
+> >      /// Constructs a new lock initialiser.
+> > -    pub fn new(t: T, name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self> {
+> > +    pub fn new(t: T, name: &'static CStr, key: Pin<&'static LockClassKey>) -> impl PinInit<Self> {
+> 
+> Static references do not need `Pin`, since `Pin::static_ref` [1] exists,
+> so you can just as well not add the `Pin` here and the other places
+> where you have `Pin<&'static T>`.
+> 
 
-Fixes: e3c3d34507c7 ("docs: rust: Add description of Rust documentation test as KUnit ones")
-Reported-by: Miguel Ojeda <ojeda@kernel.org>
-Closes: https://github.com/Rust-for-Linux/linux/issues/1139
-Signed-off-by: Alban Kurti <kurti@invicto.ai>
----
- Documentation/rust/testing.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+You're right about `Pin` not needed for 'static. However, the
+`Pin<&'static LockClassKey>` signature is the intermediate state, and
+eventually we will need to support initializing a lock (and others) with
+a dynamically allocated `LockClassKey`, and when that is available, the
+type of `key` will become `Pin<&'a LockClassKey>`, so `Pin` is needed.
 
-diff --git a/Documentation/rust/testing.rst b/Documentation/rust/testing.rst
-index 568b71b415a4525772cb77ce76c7f9da32fac1c4..180b886e0f1ee997779f04ce85eba858e64946c0 100644
---- a/Documentation/rust/testing.rst
-+++ b/Documentation/rust/testing.rst
-@@ -97,7 +97,7 @@ operator are also supported as usual, e.g.:
- 
- 	/// ```
- 	/// # use kernel::{spawn_work_item, workqueue};
--	/// spawn_work_item!(workqueue::system(), || pr_info!("x"))?;
-+	/// spawn_work_item!(workqueue::system(), || pr_info!("x\n"))?;
- 	/// # Ok::<(), Error>(())
- 	/// ```
- 
+So I would like to keep this patch as it is. Works for you?
 
--- 
-2.48.1
+Regards,
+Boqun
 
+> The reasoning is that since the data lives for `'static` at that
+> location, it will never move (since it is borrowed for `'static` after
+> all).
+> 
+> [1]: https://doc.rust-lang.org/std/pin/struct.Pin.html#method.static_ref
+> 
+> ---
+> Cheers,
+> Benno
+> 
+> >          pin_init!(Self {
+> >              data: UnsafeCell::new(t),
+> >              _pin: PhantomPinned,
+> > diff --git a/rust/kernel/sync/lock/global.rs b/rust/kernel/sync/lock/global.rs
+> > index 480ee724e3cc..d65f94b5caf2 100644
+> > --- a/rust/kernel/sync/lock/global.rs
+> > +++ b/rust/kernel/sync/lock/global.rs
+> > @@ -13,6 +13,7 @@
+> >  use core::{
+> >      cell::UnsafeCell,
+> >      marker::{PhantomData, PhantomPinned},
+> > +    pin::Pin,
+> >  };
+> > 
+> >  /// Trait implemented for marker types for global locks.
+> 
+> 
