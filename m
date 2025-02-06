@@ -1,117 +1,138 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B65D1F419B;
-	Thu,  6 Feb 2025 16:12:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1012D232360;
+	Thu,  6 Feb 2025 16:19:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738858326; cv=none; b=Lxq1dTT0H9MjIoXmN64hwZ2JdS94dBMhHJX/6mb0Wsl96uuGVl1oIPvx6/NNQl7Qb0fkK3m2owK8GkznIWRbo/Ri0bgfO9BtjIordi2l5K9cK9dMXKdeIFsEHgURrLIEKUwGGoQpCUdPKfP5Nn7oAwCanzbmliilGobvMMQo11s=
+	t=1738858792; cv=none; b=chtvOqKxpaA9afA5wwgao5mx2GKCrS3yJKk8f8ZxCcbbozbTUs0tocTNxO3/Hbk7UyOWAsmgi1J07AnPBgjncuahMGGE6UW3ihcjXvyosWWG0WvReeLm6QYrUaIvpe8ZrqTrK/WbKOBf7KMwBZDPItUgdIctmgkh0CC4oebephk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738858326; c=relaxed/simple;
-	bh=HhH4amzXgF44Osc7EyhcoSr3ieMh8P2+h5rl5kU9Ico=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UhCOUXZBGLtmRTJ1Jiq20o2ogyjBjPi3dEXKtZ15eRDGfTZ332I5ibo7x9zqdHIQFGPfxH8ODG07kEhsJTFJ6g7xGzwHFZE7HZbTfk9DH34tVXay5Jl/sHjS1kTQmCNAsbHRuNT45e+eQz0TOjx8SmOL6jaROuDMlTqniO6C4UU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fJCu9mMS; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738858792; c=relaxed/simple;
+	bh=9Tuj/qQPgOS89JdE2AcvbLcqLOTT3lWxn6XNGzkVYzg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lPhLiqIhBZQZITOyzmv1bRmWV2imsvXYGndCCNvZyMBPBMVbzWk4pg8IrLBUb4vau0yKSBbYShWS9jr58WktgTrs4JwnriuilT7AF2+7R1WQVahBycoW4ys0puJOA5d1EVxo3BPqi5OKzI5VOORjExdD1EIuqASHB2AtAoHVTXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=blntiDpe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fJCu9mMS"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-21f3826e88cso1740435ad.0;
-        Thu, 06 Feb 2025 08:12:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738858324; x=1739463124; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EtZRM/BNpNEwgzIhJIm9sS+WQc95LhJovLyEl9cVNjo=;
-        b=fJCu9mMSSQLusTqpPDk8KqR5ll6enNlXtz1IPxg3sDqecQ11f60QqURuBzVJwUEAYl
-         qK0qT94s69eBcXqGt5OrZ9Z1UpTWDgj7s2o//U6xnykGvyQqdIkrn6NIgswWI+lsf0Uk
-         /GzSC3wnEmrrG7EINmCxHbTiGzvbdKj+o4zspwW16KRVh3MaaMBX7TMvUikXLEDsR6kY
-         OcSyjrx1aedRNktdxCSckwaiMspDacfQWS/FIMMnM4tVts1VX3S/9LNfXkKNSAB6rUpg
-         DXD6iRvk6gAvhEHj/DjJ8DP5JWmbDkV2hfK6kpCYEEiw6RAY2fz90YuFLYi06oaN2blP
-         wanQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738858324; x=1739463124;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EtZRM/BNpNEwgzIhJIm9sS+WQc95LhJovLyEl9cVNjo=;
-        b=tlwZNY3M6iTDdS/qG3jMos8HEJED9pCxpSXwzvXL71vEqvnBT8+32KFxoALx7NIfSU
-         4qJzL7vdZRVcd6imMGt55iAraXJb44FkLnL+sEe0BmnWu/ma0/TeUA+WOOvVvj0NkI+H
-         WczFRdsnmbdr0fwcwfNo1vs0DCdHumnK1d7SZqw4tRIGmrCyDjWkgUjAlbXvTNYZcsSX
-         +z1SKkvEq/xwW6PAkeV4hwVmYWPfGcJrOdPqcDvkM4S2/QVMnutcWabjSshOQWKDEs+5
-         s90OKtFoec8wwK2I9m+i8LRc+CAsCxUsyEYsjU2WUx6nni2hwM8WscaLtUxSf4g2NMCv
-         vgyw==
-X-Forwarded-Encrypted: i=1; AJvYcCUCdr5Pjvi9q0NWpQYysGNCwxXk1gfi5sCNiSWR+pXrr76OA+u/ecpxTNesywfOk8R0qaMiTOMU9nbM0MoaZO8=@vger.kernel.org, AJvYcCW+JPlLB+YK8THMFnvRKfJVrT7JdZDsW5nsffPWhXtIqWp862NwHK5be+2YB9ABlRbIIkO7nLB6Yq1Q7hw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHZvUjJg4LdJoZbKlfnLQ+3e9u+p69E3RQUeZso28SfXIgFPok
-	HMmIQSOoIZaVVN//Q/FhvwF/l9KM3h2/fWr+py6lfP3vwG/0mZB2wbngPi1oawzobd8R7XJg1cG
-	uxQIAGeCKQyfIq1KLNGL1lhRw+bM=
-X-Gm-Gg: ASbGnctBh6Rtgs/3HaJWvlX8fV6BkiJ+8+V1OzU/Vmj3TjviVLO93F8ffdxILZyxFjO
-	32O5ngk4zwUdi0VTYS5ZhlNvSe6cw88Aq9iooL1Cae4AB82gRhoJPmJvEhj9U68aKPdi9qsnG
-X-Google-Smtp-Source: AGHT+IFSiXvXNTgA8TrqWkoPQkz+SMbg9VapwbxKW3QnL+WXQCcmzD7oApJb8fPLdbR0/L4ArPvRVwLFkQ3zHN8A5Fw=
-X-Received: by 2002:a17:903:990:b0:215:5f17:4296 with SMTP id
- d9443c01a7336-21f17e3e4eamr47980705ad.8.1738858324509; Thu, 06 Feb 2025
- 08:12:04 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="blntiDpe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C174FC4CEDF;
+	Thu,  6 Feb 2025 16:19:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1738858791;
+	bh=9Tuj/qQPgOS89JdE2AcvbLcqLOTT3lWxn6XNGzkVYzg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=blntiDpeIdL6vHWdpk5SJRRlX/lQ8xNjPx3efQVHG9nVLdpLE6TOotXK4PNBa9DXS
+	 uBIf0GxeEoGpZNORg/Qt+KmuEiA9NQA04p6V+dwXyl9qezu9c73ishRsH0wYVolVjm
+	 hvnWkEVNQdWL4RuYxLUEfx403EoYwhFryHzTMXC4=
+Date: Thu, 6 Feb 2025 17:19:48 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Zijun Hu <quic_zijuhu@quicinc.com>
+Cc: linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Lyude Paul <lyude@redhat.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Liam Girdwood <lgirdwood@gmail.com>, Lukas Wunner <lukas@wunner.de>,
+	Mark Brown <broonie@kernel.org>,
+	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Simona Vetter <simona.vetter@ffwll.ch>, linux-usb@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 1/5] driver core: add a faux bus for use when a simple
+ device/bus is needed
+Message-ID: <2025020638-refresh-pager-cdc0@gregkh>
+References: <2025020421-poster-moisture-534b@gregkh>
+ <2025020424-retrain-recharger-407c@gregkh>
+ <f575978b-7103-48b9-8125-a38fb6425f5c@quicinc.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250130220529.665896-3-daniel.almeida@collabora.com>
- <tencent_2E2CD1359817A58BB51F59E790325CFA6A0A@qq.com> <CAH5fLgi+Qf=o91XEPamjycdrGeso1yDEDOGNQRmmy-miakDaOg@mail.gmail.com>
- <tencent_9719A47A97C91AAD7453E64CE987EDABD608@qq.com>
-In-Reply-To: <tencent_9719A47A97C91AAD7453E64CE987EDABD608@qq.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 6 Feb 2025 17:11:52 +0100
-X-Gm-Features: AWEUYZkU1T74Ris2ZJ-7bYKB39i33oG5Rk1rzMhthfMhG8Cal2ozvrFPZNPSTi4
-Message-ID: <CANiq72mS-AgdAva4mB=FWf5dh3vZg95Ka7Wv36ypoZXChuwk=A@mail.gmail.com>
-Subject: Re: [PATCH v6 2/3] rust: io: mem: add a generic iomem abstraction
-To: Guangbo Cui <2407018371@qq.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, daniel.almeida@collabora.com, 
-	a.hindborg@kernel.org, alex.gaynor@gmail.com, benno.lossin@proton.me, 
-	bjorn3_gh@protonmail.mco, boqun.feng@gmail.com, boris.brezillon@collabora.com, 
-	dakr@kernel.org, gary@garyguo.net, gregkh@linuxfoundation.org, 
-	linux-kernel@vger.kernel.org, ojeda@kernel.org, rafael@kernel.org, 
-	robh@kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f575978b-7103-48b9-8125-a38fb6425f5c@quicinc.com>
 
-On Thu, Feb 6, 2025 at 4:59=E2=80=AFPM Guangbo Cui <2407018371@qq.com> wrot=
-e:
->
-> With CONFIG_RUST_BUILD_ASSERT_ALLOW=3Dy enabled, this compilation succeed=
-s.
+On Thu, Feb 06, 2025 at 11:34:27PM +0800, Zijun Hu wrote:
+> On 2/4/2025 7:09 PM, Greg Kroah-Hartman wrote:
+> > +#define MAX_NAME_SIZE	256	/* Max size of a faux_device name */
+> > +
+> > +/*
+> > + * Internal wrapper structure so we can hold the memory
+> > + * for the driver and the name string of the faux device.
+> > + */
+> > +struct faux_object {
+> > +	struct faux_device faux_dev;
+> > +	const struct faux_driver_ops *faux_ops;
+> > +	char name[];
+> 
+> Remove name since it is not used actually ?
 
-Yes, that is expected too (but note that the config option is there
-just in case -- it should not happen that it is needed in normal
-builds).
+Hm, we do copy it:
+	/* Save off the name of the object into local memory */
+	memcpy(faux_obj->name, name, name_size);
 
-> Even if the size is determined at compile time, the compilation will stil=
-l fail
-> if CONFIG_RUST_BUILD_ASSERT_ALLOW is not enabled.
+Ah, but then we do a dev_set_name() so we don't care anymore!  When the
+code was a two-step process we did care.  Nice catch, let me go change
+that and test it to be sure.
 
-Yes, that is expected -- the idea is that you cannot make the mistake
-of calling those.
+> > +};+ */
+> > +void faux_device_destroy(struct faux_device *faux_dev)
+> > +{
+> > +	struct device *dev = &faux_dev->dev;
+> > +
+> > +	if (IS_ERR_OR_NULL(faux_dev))
+> > +		return;
+> > +
+> 
+> struct device *dev;
+> 
+> //faux_device_create() does not return ERR_PTR().
+> if (!faux_dev)
+> 	return;
+> 
+> // avoid NULL pointer dereference in case of above error
+> dev = &faux_dev->dev;
 
-I think you are suggesting only exposing the methods in the case where
-calling them would work? That would be great if a design allows for
-it, of course.
+Nope, that wouldn't have been a dereference error, you can set a pointer
+to point to NULL just fine as long as you don't try to dereference it to
+something else.  Isn't C fun!  :)
 
-By the way, Daniel, in patch 3/3 there is this comment:
+> > +	device_del(dev);
+> > +
+> > +	/* The final put_device() will clean up the driver we created for this device. */
+> > +	put_device(dev);
+> 
+> use device_unregister() instead of above 2 statements?
 
-+    ///     // Unlike `ioremap_resource_sized`, here the size of the
-memory region
-+    ///     // is not known at compile time, so only the `try_read*`
-and `try_write*`
-+    ///     // family of functions are exposed, leading to runtime
-checks on every
-+    ///     // access.
+Could be, both are the same.
 
-Is the "only ... are exposed" correct? i.e. are they exposed? / is
-this potentially confusing?
+> > +}
+> > +EXPORT_SYMBOL_GPL(faux_device_destroy);
+> > +
+> > +int __init faux_bus_init(void)
+> > +{
+> > +	int ret;
+> > +
+> > +	ret = device_register(&faux_bus_root);
+> > +	if (ret) {
+> > +		put_device(&faux_bus_root);
+> 
+> put_device() for static device may trigger below warning:
+> 
+> drivers/base/core.c:device_release():
+> WARN(1, KERN_ERR "Device '%s' does not have a release() function, it is
+> broken and must be fixed. See Documentation/core-api/kobject.rst.\n",
+> 			dev_name(dev));
 
-Thanks!
+Yes, but that will never trigger when you run the code as the final put
+device never happens.  So you will not ever see that.
 
-Cheers,
-Miguel
+And yes, I HATE static struct devices in the kernel a lot, but in the
+driver core we use them for a few things like this, so either I fix all
+of them, or just live with the few that we have.
+
+thanks for the review!
+
+greg k-h
