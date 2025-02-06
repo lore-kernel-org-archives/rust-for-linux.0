@@ -1,95 +1,108 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB3B1F416D;
-	Thu,  6 Feb 2025 15:55:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738857336; cv=none; b=kRFRhawvNWs3JTrwUtq9Te1kpPK9aJm9JWFv5pH1q8TQqB02f9ssDcm/MJrKyHdT3/dnMqvlOmKwtOuZdK82F1+iMpBiQgvCKrgYR//DM7SQJ0FZznrRF1oRTEB8JnSlKOZcY2kdxC5No+Xg71AU2mgWsgVNTwFFoHHKi9lgAzw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738857336; c=relaxed/simple;
-	bh=tD52tgT0ku1ofDDa7H4xHdYUEEdhBWYV8NOkuxPkEew=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VH8BixmKU1QFvQ9xbmCSPlL/FJFWtosl7IxhQcdyJX1GhiNKsrcQN5je42/hixGpfCsqvU5ZGtMiCI89yLjr+y/RmmyxiRhqEAXSy9igbE7r/YFF22g8sZcuyXPxQqHhEoQTx6NWDWG7kTlN47F4IzJMMYmVCnsf4fzlNAA2ePA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YMWyVKeQ; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450AA4C8E;
+	Thu,  6 Feb 2025 15:58:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738857492; cv=pass; b=rM78hcvULIHiDNh/QJuEOrColBQNkSM8HGfUtI+MIzGtWkdFrYazv7tdiLHimANtQvdVyOluHbcjzirj0od/HYS4KGxlnfQql3Ccl1wMCx2H8B2cwMBiGKZWz5j1kuLGgcFE57TOqQwVbzumM5WfRRGE8+O9p+YnoPZoanFZtJU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738857492; c=relaxed/simple;
+	bh=yDPUsCT9hmh7vT+oOHRxNlaZfB9DoCgl5znzJqhS3go=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=Aefkh3Q2PXSuxlWai43H4WFSVfhcIan6TZVtKuPrQyFiI/3AMEr4042qyD0w/qg2/xjS8kBf5YyTHNVkteTkxq2dJEmxzSGKz0QMUeWQLtcXKVI3Ubr8zfXoxlclyVapf+CpYZKvXAvxXyF96RzEoUN23xdaAWXV/txiron77PI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=lUvaMDEr; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YMWyVKeQ"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2f74e6c6cbcso244282a91.2;
-        Thu, 06 Feb 2025 07:55:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738857333; x=1739462133; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tD52tgT0ku1ofDDa7H4xHdYUEEdhBWYV8NOkuxPkEew=;
-        b=YMWyVKeQ+eJq4k4pnxJe8Czy1/TXw8TZU5zXaoWwjgv2KvM+jEHozZqMuCp8K1cbzp
-         JYPNTBw9QbOwvfs/PPOgVNUdGYRvHcdbSTSAbhX4Y2/wg4zCbC+4lIjMCb6AWrHRCjYP
-         44Dqv/y2I7vo95ZZKGwOF4B+69U9hyGm5gXnowwU7kpnuEMILRIR6IF3U6Ckzjj0gg2u
-         NMGAKrhTBZeLtsyac0CmOWIGBxiVtsAst/UHTGnzICatm9exXPnqOYrhzcq0Zug89l4e
-         8hXNuGUBASGrQQf0nmZU/LH0k7AD77s0ccS+C/WM6vI8EOUKhvKGv+flfa2noKbqXLa8
-         uT/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738857333; x=1739462133;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tD52tgT0ku1ofDDa7H4xHdYUEEdhBWYV8NOkuxPkEew=;
-        b=NXjcavauHpn0JDFi0B1fPT7gej/QKCYggA6NogL1/wQBfBRGjizAtFZTT3CHepTWrL
-         9vm2u6dbNR3g4HugGYq/raVappvMvLCcTEAYHQxU2WFT9efyXM4HCA9oPWsKQCka0gKs
-         koQtopsJ9tZbxiyWfsoMyLbYIz1wo2HsaURC0xW422nYxhtB/HTYEJwM0F1F6dr8S6cF
-         GbwjrNtw/s4e4bP1y2Pb4GndBIjSzwxCDv5M3wVLTWTqM5kWdcmeHZMCF3ER4Xbp4a6r
-         4RJrLYcEvny31hKd6IwWZMwTeED3moglnyBr0NxVLXWCdaxznibhFTmnTdIJAvM3LXNz
-         SX2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXDUS9LRSk+uaBOaDEdW6qceGUL9tok6XC1u24FkXKh1pYPxJtpK/FD20LevTW3nO8KMFV3bebljOWphbw=@vger.kernel.org, AJvYcCXDfPcKut7EN3znF5P/4LFf4vmD7Y8LVvNx8FcNTAIKO+PzINWajbwYHLKF2T1/5b1kEqtE0ciqu8GTcjTWbjk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxqdgZ6r1EyGLzcXqdP/Ye6QG5bDmBwBKnnVdB9MYoodL+u2Y3d
-	l7RAzvousCRi/okqTft98fMVkR2DjSo6HbXaOnsauQEebzTKpHs72tJX6CK4+PQ+qOL8Udp9VQi
-	d6dWMYzSb3VRTYS3eZhkVAqT6lZY=
-X-Gm-Gg: ASbGncsyBUTb0kODhhBK6EiKIYi/kGcH5zKA2WkVwGV6PvJzBT87F13k9+38KwOO3KH
-	OgseDVQ8aMneq2BoR1GvWbKdQFoyGM/juo2O0ZLziLeVSRk8y89zr5IfsssX6Ll5xh1/8TEyj
-X-Google-Smtp-Source: AGHT+IEFA6bwsKfDtexNPcAT1Ijz76kY846Udajcpk3w58/MZZAQKzUIom5u6GuoKlIyvw24uIrDWLQCOmlW0KuvGmM=
-X-Received: by 2002:a17:90b:1c12:b0:2ee:f64b:9aab with SMTP id
- 98e67ed59e1d1-2f9e083493dmr4903827a91.6.1738857333464; Thu, 06 Feb 2025
- 07:55:33 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="lUvaMDEr"
+ARC-Seal: i=1; a=rsa-sha256; t=1738857469; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=LWbKxtA5zrBaCf1ULzQDJOKBTk1Sj46wqe/FDnz6FZ8AM+q5XV8+SGVZQdJYt/foor+ehUx3C+3lp6tq88TL0m1CUyBhmBHA2GDTA7R/BBaWZ/vOa1kdziw0mVLZGwIVkhMqcwFo+ED0ra5YZLPOIssAZROAXPMOOBONffXsVFA=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1738857469; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=yDPUsCT9hmh7vT+oOHRxNlaZfB9DoCgl5znzJqhS3go=; 
+	b=YXbtygPTI/6Y1IJBjf4LP5luGto+SCbTBYXBpaA/dlylU6ii2GV/hVcJ8jQ32eqK5NTnA2va1+cC2LZ6QpLOH57h/mh6r1/eJ4Z+u78VFpY/GYGSM17sTSuPSkrTiB1MRwiJpxEG/SfdaQObqoMKsNm89xq4vm2MEQQtNWwCkh8=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1738857468;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=yDPUsCT9hmh7vT+oOHRxNlaZfB9DoCgl5znzJqhS3go=;
+	b=lUvaMDErbtrHOvXxZEu2MSleKY8tSy7uOEJK6m5aMLFo6YfdOd8H6ZopYKDJKwDP
+	isNQ7BbDGwFaBpMcWA7x+0ZoSyCkavf81bzzuX6W0A2y2Gwc/7uXK39sATjpnCfFPUR
+	1aJvHLFhmWQwHKkH9trEmJ8iigO5a1m+onEzrXKo=
+Received: by mx.zohomail.com with SMTPS id 1738857465134608.811360113628;
+	Thu, 6 Feb 2025 07:57:45 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250129215003.1736127-1-jforbes@fedoraproject.org> <202502060744.6F701A4CBE@keescook>
-In-Reply-To: <202502060744.6F701A4CBE@keescook>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 6 Feb 2025 16:55:21 +0100
-X-Gm-Features: AWEUYZlz2JYC3NHGsOQJMV9SfXiXt-ES4SPKFNqmwUtWcJbz7DyUOVLVFqJMjho
-Message-ID: <CANiq72meqUFt136PQt=h6b5p+wJ5KvdYM2ci_QNKbHaR2wY71A@mail.gmail.com>
-Subject: Re: [PATCH] Add -fzero-init-padding-bits to bindgen_skip_cflags
-To: Kees Cook <kees@kernel.org>
-Cc: "Justin M. Forbes" <jforbes@fedoraproject.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
+Subject: Re: [PATCH v6 2/3] rust: io: mem: add a generic iomem abstraction
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <tencent_2E2CD1359817A58BB51F59E790325CFA6A0A@qq.com>
+Date: Thu, 6 Feb 2025 12:57:30 -0300
+Cc: a.hindborg@kernel.org,
+ alex.gaynor@gmail.com,
+ aliceryhl@google.com,
+ benno.lossin@proton.me,
+ bjorn3_gh@protonmail.mco,
+ boqun.feng@gmail.com,
+ boris.brezillon@collabora.com,
+ dakr@kernel.org,
+ gary@garyguo.net,
+ gregkh@linuxfoundation.org,
+ linux-kernel@vger.kernel.org,
+ ojeda@kernel.org,
+ rafael@kernel.org,
+ robh@kernel.org,
+ rust-for-linux@vger.kernel.org,
+ tmgross@umich.edu
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <67AB9311-3EDC-44A8-9C7C-ABF2ED6B632C@collabora.com>
+References: <20250130220529.665896-3-daniel.almeida@collabora.com>
+ <tencent_2E2CD1359817A58BB51F59E790325CFA6A0A@qq.com>
+To: Guangbo Cui <2407018371@qq.com>,
+ Miguel Ojeda <ojeda@kernel.org>
+X-Mailer: Apple Mail (2.3826.300.87.4.3)
+X-ZohoMailClient: External
 
-On Thu, Feb 6, 2025 at 4:45=E2=80=AFPM Kees Cook <kees@kernel.org> wrote:
->
-> Thanks for this! I keep forgetting to keep flags in sync. I wonder if
-> there is a way to automate some kind of warning for this (even when
-> CONFIG_RUST=3Dn)?
+Btw, Miguel & others,
 
-You mean at editing time?
+IMHO, I think we should write a comment about this somewhere in the =
+docs.
 
-> Reviewed-by: Kees Cook <kees@kernel.org>
+When I first came across this issue myself, it took me a while to =
+understand that
+the build_error was actually triggering.
 
-Thanks! I will add it.
+That=E2=80=99s because the result is:
 
-> Miguel, I see you took this already -- is it planned to land for -rc2?
+```
+ERROR: modpost: "rust_build_error" [rust_platform_uio_driver.ko] =
+undefined!
+```
 
-Possibly, depends on how it goes; otherwise -rc3 -- why?
+When a symbol is undefined, someone would be within their rights to =
+assume that
+something is broken in some KConfig somewhere, like this person did. It =
+specifically
+doesn=E2=80=99t tell them that the problem is their own code triggering =
+a build_error because
+they are misusing an API.
 
-Cheers,
-Miguel
+I know that we can=E2=80=99t really provide a message through =
+build_error itself, hence my
+suggestion about the docs.
+
+I can send a patch if you agree, it will prevent this confusion from =
+coming up in the
+future.
+
+=E2=80=94 Daniel=
