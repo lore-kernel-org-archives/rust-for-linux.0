@@ -1,74 +1,76 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEEFD19E99A;
-	Thu,  6 Feb 2025 18:59:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF53F19D884;
+	Thu,  6 Feb 2025 19:05:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738868350; cv=none; b=WeGwXm7linAagWnkPrNSDk0KAE3dTblR5wN3hAifr6Ncx7jk5Rlx0iN8YW1sAE4CrhxqX937chvuFU1xwz1CQnxGCByZCdErKA6s+sFElH4tMUmwkfHu8r8Dfz59wUqYxexj9+1Hn1eboNja0BxtXo09D7djofnD7xE+33L+uyo=
+	t=1738868734; cv=none; b=Rronqfyvch2pkUvf/Nin2k2oRuq4c21aw37IEf16B3InQJWyyDp5LOG9HpRUhFi7z6UAyVlQCjIjhB+m8kAnxmqysPM5FDVs/Xn7TrBQ5XjtBwn1N/XJrj8O5Cu9Yjucyon85eYTXJq/dxG3vN+OyBYl5oAv/G2Wtl8p6UtgUWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738868350; c=relaxed/simple;
-	bh=Mn4USTsueD1G7GSMkHmp8NppNtpg8/PCvuSqrrh+Gos=;
+	s=arc-20240116; t=1738868734; c=relaxed/simple;
+	bh=9uQVOmifnreGhQsc1A9lVrH5St/iFksctqFWAQBdxkU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gqrYY3D2K4bSF3keCDU81TZT9Iy38YIj4alI5x2JkGrqurUg2Pthos7CWyAlMQkt8YxUzSR+VZ77/UY5kDvxHJ7Xe3dO6cGoMUz+6MP9K4lIPlMGsxsM1A8csqvzdnLT7WoJQvu0pJUUglJHphxnWhLlYUkw/0yrXAsxR5yl3PQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O5LCkOKG; arc=none smtp.client-ip=209.85.214.178
+	 To:Cc:Content-Type; b=QfYfYgptqByhIq0HNSh5tvspmkXrVipMjTynoWI88ERr275lnFJv+sIbBhEbDJLgGn/aWOq2x5IfrOil6xBLKfihAfEoL2W0pAClU+KVbV9qHTb+09WMt0pzaURV0AbNlnAHvQ7Y7SAWrXuY7lv1Dia9iX3SFzv929CzVPBghOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iFyLyS8O; arc=none smtp.client-ip=209.85.167.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O5LCkOKG"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-21f0dca08b8so2320385ad.1;
-        Thu, 06 Feb 2025 10:59:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iFyLyS8O"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5440d1f506aso1406541e87.2;
+        Thu, 06 Feb 2025 11:05:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738868348; x=1739473148; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1738868731; x=1739473531; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Mn4USTsueD1G7GSMkHmp8NppNtpg8/PCvuSqrrh+Gos=;
-        b=O5LCkOKGCAgCuevtOh3OHs5h+q28FE6f2AgFP+1AZpenU7BMFbRWauiiE85bqbNze3
-         cZDJGp0zWjtbhz/dm+y9sb1sljYnaAwxzK2T+QccBl9bsi/0UXhAitezsWPRRZannDd9
-         ukKjZs/72WHpp4OqV+d83FiB4TWmf8oxKCFJYzgxL34082MGqRoyGUqkTSIJlFFeTkAc
-         /atlVlnIKnfRBr5WTcIarC3hsOkOVgh11bMIzFhTDHqklG0/h2ZAZaMZlmd48JEZHy/5
-         TvBs6J4c1K8MPgm2Cr1Qp9RF6H/iSvJsTd2GDHcyIgxgKGkY833Y2crVQWDVSGV6PTEF
-         /PpQ==
+        bh=vWe/2ua+fmh35CLfAMD65N/tcnFfhiqpINTofFDfa4s=;
+        b=iFyLyS8OhWx70qdmlIVIj1vXx7cNvGG/jkBCk5yoXNZqEwGPj6TL4wqsBrHp/IDLH2
+         m2hI0Skp8I6nE+q34QxMZfQEnOTKg9WbKeOui6sEiPlRospWZYXy3iTaIONInNyXM1LA
+         UInm6aieSKsoU3hYiUy9/uBWLJGCpUHBSIyYpyL2aIkx7jVLELrhGGlBsMzFZrCGY/Bj
+         GxgyH0GJHOxRziuuFgwzD5lg76ucIQtD5UB6bULgk7kdrGPWliPhlgnmybK1qjgU0aa6
+         sHcywuORPj35So3+zakOgOW2OM4TKOHSbLRvDRVUxmVcdsCjMzLofx9ElnhYo21tNnPe
+         Lbeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738868348; x=1739473148;
+        d=1e100.net; s=20230601; t=1738868731; x=1739473531;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Mn4USTsueD1G7GSMkHmp8NppNtpg8/PCvuSqrrh+Gos=;
-        b=bF+/kvO89r95xgqX1xBbNMs0r9ZGbxjw51ZFSjxg1qPcw/SDvcA1e77X+4w1JVMZEy
-         wRWz4Kfi+Lqw7Uy0zrrFdrPp4CxNkbayAKmVQ7BSNSEJQyKkCePmSkEMaQRJ0CpcZLqW
-         21A5bdBmsBSkOyuMZE6bOnZiDPwBQKaAvLuWmUNQVQpmUiC0UQOuqmnzBFWg2+2Ps24b
-         qHbIMGeaWCBeZoJx7IJCQNEswBTIJC/Ymjn0j1/oKrkU4h5uxr5RJq/sF42O9gFrDFMy
-         lxTc3E+J1jbwXuZHZxgO2pIV9zcTXQ5uTGGwnArQx/i6WgJj0vgX0SPFyKd+QV5NpVaP
-         Y5pA==
-X-Forwarded-Encrypted: i=1; AJvYcCWe6S6NOpyUb9dkPIjkjpj+X5Jlgbux9aAmtUfyq97qTT+zWMZAs9QYstyiCF3ikDUZZhwpULloFk0ykZQk9fA=@vger.kernel.org, AJvYcCXLfp5+dl1x3RD40xA+PZ13Z/YD+UutvR3ovfZYdO+GeKuKiu/OFBWT3gLUwmssr0zvqTNb+YuflYQDWRw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyqqo3qO24xf2sPAbWpiQJyBKzkuXhsGkw83fXZMcCQwtk8u2Tl
-	7xEVRgN1mOeM6m/2XhatAYAPXw8dAubOaMKybh1lMA9GyCtjDQBUf2clmrTaT3rrLFM3orEZ1B5
-	K+AHUP/2R+McL6GD88DEYG3MgGlZ5CplX
-X-Gm-Gg: ASbGncs3mep00wYxabFSbeqa+t6jEWO43w3oZUm2nRuFnbQp/YE2CISZM7iBHDRzShB
-	Rth6281fxf0wrI7FoxP2DfDHVJJY5YxQ03HLM6mwEz/moPkUbdg9s5OxCdJoB2eRaE/jiuos2
-X-Google-Smtp-Source: AGHT+IGnRpUn2XfJ2LINEYmbvh9Snm3fVTBp24/lkJhCMPt2W6qS6jePbm2mV+8n9oC24MDFo0lX5gVSNfqXWE9l+RU=
-X-Received: by 2002:a17:903:2f84:b0:215:aa88:e142 with SMTP id
- d9443c01a7336-21f4e70dccfmr1295945ad.7.1738868347791; Thu, 06 Feb 2025
- 10:59:07 -0800 (PST)
+        bh=vWe/2ua+fmh35CLfAMD65N/tcnFfhiqpINTofFDfa4s=;
+        b=Bnmi3tsbm4AFAPafD/arRly+R0GI0PNPaAAdKpDWm6MXuLufpZUiyQL5GpqPTrb2VW
+         DHTdDGBfw+1lf7++zsBMt3kNEbWeaIfyGk2Oq0XIKlPt++anDrFhIhf/I5KvOaRlnAjt
+         ujsivC+8vjEDrD4qishOqk1BU8jKpOQwA3SVtSWT4YMqWCuxG0kRAbFUSaNwLaNRmXmo
+         thRtdu44boSpljiYleAbvSbZxRE6UslJytd4MMPQelbww3J2Uy0dffMVDYSlXktkcf62
+         KVSC2lME5rhUaB6EXFY+zcP9PfJh6Zkk8P1doNgOZfiZ7lfBhc7PXKOu1x4l7+bD0rs9
+         MzKw==
+X-Forwarded-Encrypted: i=1; AJvYcCXk/l33H/dvGyHlViktgmMukMiJA7RPFbn38CeSW3sfeM4y7d7v1xJnCBU6id4v0BS426FFB5CMYJK/wI79L24=@vger.kernel.org, AJvYcCXkL4BaRHNERWazToiLDQU704PJZDiqNiJlRXxE/KZkXcjxFx4taZ/UvR5cT/q+P0LHB5KsWPCvcpZ0MwE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPjPghvjrgZMF5rT0vVTvBJD+ieZvlbFGBBNfe5nrFligA/l/l
+	fqycLP3HEetXN9QMh3FTSpfm2jUCy+mia0+gRZ+l7l1B4YbKXikJ+RYf5uGWe3OiuEGASlyT4+4
+	/WZPOW5jH1EUnoCA56iU/afikLuM=
+X-Gm-Gg: ASbGncu2Z/2eWTBb4p1LJi2oBYpHTEAEBh0RBaMfjHS2g5tf4fysz4oExaqLmd1xd6e
+	VUUtPmWRh1QSMWYSTQg7yRaonxEMwIcsGzYvXDv0zXoH04+CrkZRC7+aiaXwpMRUpdRZui+KlVL
+	VmYpm6XMLTNYTDDhLbM7rjGwl2qLj8
+X-Google-Smtp-Source: AGHT+IFb/vF56J/Q4fncJH5D5onPYZnsacNHsk//1uyVv8nEb2/jnZ4MfdBuw2ZeWkVaH6sI4P7kJQed7OhU5P9x8BI=
+X-Received: by 2002:a05:6512:2399:b0:540:206b:c355 with SMTP id
+ 2adb3069b0e04-54414a9d0bbmr24781e87.19.1738868730481; Thu, 06 Feb 2025
+ 11:05:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250129215003.1736127-1-jforbes@fedoraproject.org>
- <202502060744.6F701A4CBE@keescook> <CANiq72meqUFt136PQt=h6b5p+wJ5KvdYM2ci_QNKbHaR2wY71A@mail.gmail.com>
- <202502061039.A75818BA@keescook>
-In-Reply-To: <202502061039.A75818BA@keescook>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 6 Feb 2025 19:58:55 +0100
-X-Gm-Features: AWEUYZmnqqBm8-a4q4INrSXW_BoF7WienOorg5PM5G2Exzt3-P5lQCtI5lS7L8M
-Message-ID: <CANiq72n+LbwG=r=zGrEA4-sCD8spJfHF6J7ER=RtaUhFq+ZN3Q@mail.gmail.com>
-Subject: Re: [PATCH] Add -fzero-init-padding-bits to bindgen_skip_cflags
-To: Kees Cook <kees@kernel.org>
-Cc: "Justin M. Forbes" <jforbes@fedoraproject.org>, Miguel Ojeda <ojeda@kernel.org>, 
+References: <20250202-aligned-alloc-v2-1-5af0b5fdd46f@gmail.com>
+ <CANiq72nH3N9UMu2hsPG7WfYCZQwy9M_4q_rQHJnJMScQ3D9-Jg@mail.gmail.com>
+ <Z6T5sOWXxmUsflW7@pollux> <CANiq72n7jx5ve9UL3oDD08=PjY55QHoMY8fyfsW9RNEvjH_b4Q@mail.gmail.com>
+ <Z6UGNbowcvqTN0-T@pollux>
+In-Reply-To: <Z6UGNbowcvqTN0-T@pollux>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Thu, 6 Feb 2025 14:04:54 -0500
+X-Gm-Features: AWEUYZkktBtBZNaQMCoEzUE1Y4SVul1Gh2koh9oJg_zJds6xgzDkBGw1WFiJBy0
+Message-ID: <CAJ-ks9mwB+9F8Bz89TB0ZecijOftM49yfPzn5GgcyPDEput+xg@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: alloc: satisfy `aligned_alloc` requirements
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
 	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
 	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
@@ -77,23 +79,62 @@ Cc: "Justin M. Forbes" <jforbes@fedoraproject.org>, Miguel Ojeda <ojeda@kernel.o
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 6, 2025 at 7:48=E2=80=AFPM Kees Cook <kees@kernel.org> wrote:
+On Thu, Feb 6, 2025 at 1:58=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
+rote:
 >
-> Many subsystems base their trees on -rc2, so if it missed rc2, Rust build=
-s
-> in a given subsystem will be broken under gcc 15 (but fine in -next).
-> But perhaps that's enough of a corner case that it doesn't matter? I
-> have other fixes I'm sending to Linus tomorrow, if you'd rather it go in
-> sooner? I'm fine either way. :)
+> On Thu, Feb 06, 2025 at 07:20:20PM +0100, Miguel Ojeda wrote:
+> > On Thu, Feb 6, 2025 at 7:04=E2=80=AFPM Danilo Krummrich <dakr@kernel.or=
+g> wrote:
+> > >
+> > > I previously checked man posix_memalign(3) and it says:
+> > >
+> > > ERRORS
+> > >         EINVAL The alignment argument was not a power of two, or was =
+not a
+> > >                multiple of sizeof(void *).
+> >
+> > Yeah, but that may not apply to `alligned_alloc` as far as I can see.
+>
+> What makes you think so?
+>
+> AFAICS, the man page applies for posix_memalign, aligned_alloc, memalign,
+> valloc and pvalloc.
+>
+> In case behavior differs between the functions, this is stated explicitly=
+, e.g.
+> in the "RETURN VALUE" section.
+>
+> The "ERRORS" setion does not differentiate, hence it should apply to all =
+the
+> functions above, including aligned_alloc.
+>
+> Do I miss anything?
 
-Ah, I see.
+The writing is definitely obtuse.
 
-The Rust-enabled-mixed-GCC/Clang builds are best-effort at the moment
-(this should not affect the normal Clang ones) and GCC 15 is still at
-least a couple months away as far as I understand, right?
+> Return Value
+>.  aligned_alloc(), memalign(), valloc(), and pvalloc() return a pointer t=
+o the allocated memory, or NULL if the request fails.
+>
+>   posix_memalign() returns zero on success, or one of the error values li=
+sted in the next section on failure. Note that errno is not set.
+>
+> Errors
+>   EINVAL
+>     The alignment argument was not a power of two, or was not a multiple =
+of sizeof(void *).
+>   ENOMEM
+>.    There was insufficient memory to fulfill the allocation request.
 
-In any case, I can send what I have for -rc2, since I think I will
-have others for -rc3 anyway.
+It seems that the errors section applies to posix_memalign only. The
+description section also contains:
 
-Cheers,
-Miguel
+> The obsolete function memalign() allocates size bytes and returns a point=
+er to the allocated memory. The memory address will be a multiple of alignm=
+ent, which must be a power of two.
+>
+> The function aligned_alloc() is the same as memalign(), except for the ad=
+ded restriction that size should be a multiple of alignment.
+
+So aligned_alloc has the same alignment requirement as memalign, which
+is only that it's a power of two.
