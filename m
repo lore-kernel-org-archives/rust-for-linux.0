@@ -1,256 +1,166 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from shrimp.cherry.relay.mailchannels.net (shrimp.cherry.relay.mailchannels.net [23.83.223.164])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0551DE3A8
-	for <rust-for-linux@vger.kernel.org>; Thu,  6 Feb 2025 21:06:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738876000; cv=none; b=cUoRb7Se2kHYnJY9l8gosz2rjsnQIDePAMe2C/pvtH2dIk6pf72fX1baZGvxqMOMr/EAi8ALB8cwh8aoGOturoWhvrBlL87vnRlFuWR9OJ1JYg02cMkVy2CXlUyfjpqiUn43U8PP0UprsY57Y+WIyz96N4Q5QoFpdMRSNYRHjMM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738876000; c=relaxed/simple;
-	bh=kOOEPl/veYhynAhhL0jpvHiTjC+U6g7X09NmSzkbB80=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uQiOIYLr2idgzbvih4OnFY84p+KHqYX/3OEIeosAy52CfjqGd0Fqmrx4/7VmD4abXZg95a11k9XkYwSArywSqh8gKKuywC/x4Bg/2W9AWxOt1yqoRs2dyVZZ/Slp2LlA6bvlMshQ6+r+oCMjGqiwyds+McSUXB9AwyYls0JvCD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WsNO//zv; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246411DE3A8;
+	Thu,  6 Feb 2025 21:08:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.223.164
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738876089; cv=pass; b=X5cuvMcuI9H9ZL8E+dcL1OwWhVI9sX2rtLwkjD1U6XF/o2/YZM1OUUgeOEG4/ybzx9YPUHSiDkAKbGk8aJuX+re2C8znvDQI8pHwGNLE/3KPsLLKcNJudhbSQBGVh3ozqSTKtkaUB+f2UWqJ8boURe6qf2iwocNbFHWLMEGTOq0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738876089; c=relaxed/simple;
+	bh=1SWPqf8a5C9NxYJR391AEqJrR+BVnwbgc8HdXRPOySI=;
+	h=From:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc:Date; b=rU/E/vkKi8KPu38D7/w9qTDlZyoH44Ch8puqTp3tM9leX2oaK9VGua2gkSn3mS+tG33cuoiTTwmV1mjTW5HlSijbmBOXzR1jdkUI0CbeT3HUaNtmsVCTAq2+AWYSs5MdmbiWDLTfpxmOUKnDKc6JFuQJBpMZIn2hiS9aDJL3+RU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invicto.ai; spf=pass smtp.mailfrom=invicto.ai; dkim=fail (0-bit key) header.d=invicto.ai header.i=@invicto.ai header.b=lyUORO3r reason="key not found in DNS"; arc=pass smtp.client-ip=23.83.223.164
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invicto.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=invicto.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WsNO//zv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738875997;
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=invicto.ai header.i=@invicto.ai header.b="lyUORO3r"
+X-Sender-Id: hostingeremail|x-authuser|kurti@invicto.ai
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 5C2742C4C5D;
+	Thu,  6 Feb 2025 21:08:04 +0000 (UTC)
+Received: from fr-int-smtpout8.hostinger.io (100-127-46-110.trex-nlb.outbound.svc.cluster.local [100.127.46.110])
+	(Authenticated sender: hostingeremail)
+	by relay.mailchannels.net (Postfix) with ESMTPA id B954C2C45A4;
+	Thu,  6 Feb 2025 21:07:59 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1738876084; a=rsa-sha256;
+	cv=none;
+	b=G2h2w9OJ4Kwr70MSNoMgiIaBXXYzjExK6ZIdluCfT55WNbEX/pG+38Uhkg5/afdC1f9Q8N
+	rTSjCb4JxqUwKYj611yxCMbHhzy9euIn5DIRa3OCI+Kici2ilR5yog9Stxf5Jgn/wcWGrc
+	lp/vJwnMfYAjBS+MNLcEHiAh25BwkW7aKErF7Uz9a1TicpvghRuWlGALEuHJy4Ww/KZfZo
+	fSEnMzIZ1x1MVbFH16AkdxkGbdEpyfkYPPhcyg7MDY90FRRm2qhOLu7JBhcPc7VS3pmqbI
+	gfcqG3rtJhyAaaliC0hWGSfkMegXSuvs9wDXv9lAcTV9Kx+S0tpo23e+EFUHvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1738876084;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=GihRnkuZEyKR3tOEQSNi7Ep19r88LL1Tvr+PPotI6bE=;
-	b=WsNO//zvIWuJ6aLV3Fow2gDgFRL1YMxTBtyaj7+zCX9HH3kxKcEVJ+ui7rlZCzx9urz6g0
-	uW78QMczqJrC/dmQsGbUdUtiPuqAhXXtGnmQy8RphdyXpVo2XQC/OGjSK7wLiztB9+NdBW
-	qrj16T8tglW3U6R8Zeo+o6Bql98S+V0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-632-1CgXrbzLOb677x8OZ5Bheg-1; Thu,
- 06 Feb 2025 16:06:32 -0500
-X-MC-Unique: 1CgXrbzLOb677x8OZ5Bheg-1
-X-Mimecast-MFC-AGG-ID: 1CgXrbzLOb677x8OZ5Bheg
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 798731800877;
-	Thu,  6 Feb 2025 21:06:29 +0000 (UTC)
-Received: from chopper.redhat.com (unknown [10.22.66.91])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C75D71955BCB;
-	Thu,  6 Feb 2025 21:06:25 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: rust-for-linux@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mairacanal@riseup.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Xiangfei Ding <dingxiangfei2009@gmail.com>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] rust/kernel: Add faux device bindings
-Date: Thu,  6 Feb 2025 16:04:56 -0500
-Message-ID: <20250206210503.102061-2-lyude@redhat.com>
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=UvSNPkaWPAb3Yryh9T+JjK6uH4K1WVGA5oF6rH2lJLI=;
+	b=Q9jLHrbquFe6KLMTo4psb9g8PA0FGpBRNIpy0A4cMrVfKX4sz2a4NZHdlnfS/OtSlQlm+B
+	+c92az+UkG30fe4I7VHz4xCOhkxPNEhWoL63TKJDlPYdXv2LPATxzoIj4c7a2XdpYKScuW
+	XAay2BMd6k7X5rFf3bqBRhJhNqiU3/10LWOlmGhIQF2G7lX/k6pmakFESHDLdAUm9DeRue
+	lMg23CRsMHfuGa0H7xM2WamVOTGKTMOH4Io53979K1awst6R/LF1MP5VEKkPo8LLQ11hga
+	OhETeF/GBsVj+bzVep6baBSTtjU127HanB6SKnrXkx/pMTYTKJQUqnghvOvYtA==
+ARC-Authentication-Results: i=1;
+	rspamd-8586946c78-rzbvj;
+	auth=pass smtp.auth=hostingeremail smtp.mailfrom=kurti@invicto.ai
+X-Sender-Id: hostingeremail|x-authuser|kurti@invicto.ai
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: hostingeremail|x-authuser|kurti@invicto.ai
+X-MailChannels-Auth-Id: hostingeremail
+X-Callous-Broad: 3b66586c402da879_1738876084222_2093947072
+X-MC-Loop-Signature: 1738876084222:3252647735
+X-MC-Ingress-Time: 1738876084222
+Received: from fr-int-smtpout8.hostinger.io (fr-int-smtpout8.hostinger.io
+ [89.116.146.204])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.127.46.110 (trex/7.0.2);
+	Thu, 06 Feb 2025 21:08:04 +0000
+From: Alban Kurti <kurti@invicto.ai>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=invicto.ai;
+	s=hostingermail-a; t=1738876077;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UvSNPkaWPAb3Yryh9T+JjK6uH4K1WVGA5oF6rH2lJLI=;
+	b=lyUORO3rXo/Pz6Zk2MOggpbgNtccRRUyPlpsWIiwO6SiIFAH5nERMQTGVj+T7ugMRnXl7+
+	Pt0X0GyR5WO4chelN5SI6/D4pmYhrw97aTfOAyb69YjfUSmqTbnGyuiy9rjwC6QMHXKwND
+	mIq/99riiA1iha+ePHMUjXF/sSjULkOCL058Y6TcaBWEQlbHGK4/htkgo5CEfB2E0oe8MK
+	vdoO5CPEdkO4kj4sFI4Vjb2MSSZPZ+lzx0HwrMSalT1e55UFc+A2inSwfPh7kUy3nWBpOv
+	Uw7wZCB1uHXykYaGYiFZkJM4ty6lIXvFs8REE7bb0T+QbF7JApqe/COXNEl2rQ==
+Subject: [PATCH v3 5/6] rust: workqueue: add missing newline to pr_info!
+ examples
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250206-printing_fix-v3-5-a85273b501ae@invicto.ai>
+References: <20250206-printing_fix-v3-0-a85273b501ae@invicto.ai>
+In-Reply-To: <20250206-printing_fix-v3-0-a85273b501ae@invicto.ai>
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Jonathan Corbet <corbet@lwn.net>, 
+ David Gow <davidgow@google.com>, Dirk Behme <dirk.behme@de.bosch.com>, 
+ Asahi Lina <lina@asahilina.net>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+ Wedson Almeida Filho <walmeida@microsoft.com>, 
+ "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>, Tejun Heo <tj@kernel.org>, 
+ Fiona Behrens <me@kloenk.dev>, 
+ Vincenzo Palazzo <vincenzopalazzodev@gmail.com>, 
+ Xiangfei Ding <dingxiangfei2009@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Alban Kurti <kurti@invicto.ai>, 
+ Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
+ Fox Chen <foxhlchen@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738876070; l=1526;
+ i=kurti@invicto.ai; s=20250206; h=from:subject:message-id;
+ bh=1SWPqf8a5C9NxYJR391AEqJrR+BVnwbgc8HdXRPOySI=;
+ b=LmrJo+twXvkVHrOjDZszyTqAtMSevdlyJlpzsPHiwXfFkYONoIO5eKkwaAecZshXqxCOn2a+n
+ gpbDfzSbxZsCU+cHD/MtVeG0x+K0eYnPHo6+oX/MrokVP7cfrYhfRM7
+X-Developer-Key: i=kurti@invicto.ai; a=ed25519;
+ pk=D1lKs+JFapuEVI9zJ2QUTLSf5u4aT12tG0ny6vMMuOc=
+Date: Thu, 06 Feb 2025 21:07:56 +0000 (UTC)
+X-CM-Analysis: v=2.4 cv=PMNd+uqC c=1 sm=1 tr=0 ts=67a524ad a=9/DLicljd4JGVkZ5BRdAJQ==:117 a=9/DLicljd4JGVkZ5BRdAJQ==:17 a=IkcTkHD0fZMA:10 a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=d1_hD_aZrE2QnMCWEikA:9 a=QEXdDO2ut3YA:10
+X-CM-Envelope: MS4xfLUMi2wqvpb+tX7MyXm9rUKdWevLEufSMHa+fcmLIMgXIeBRBo98pf4yva//uSDKV2X7jkILyRDM87aYkyyKZ/Zd8zhN7oa398irkTiwLBQ3MEIPQhb+ vpJBj9vg6jn9DQjP3Gl/tizVRkZ/q/YBQw/7dPHmAhTJjEL2gvhrASfhUJyGrFsx6DBIJOW/xQEoRi95UcmAhCjCoamXCmCy2yBKqVEqlfFz3Ped6nRzK7s4 XcvBa8jBPg2rEtv5stSRJL8uSXW15SwQM/p/YAqMKxNQIJaLSB7Dl6fUxRHmmF0hSpw8IthYHQufZKDQOVuH2AEr0fbsv/F/Ol1H2qtr2lw/KsnX1abgiZni JVCWH0yXvWgrvxx0m2RNVRutpkQICYyirfDbilyL5lzyI7EqzT8kN0/oAcIN03jt//rPVXWAqZ1yESzKQSwn9zXeSQkyBAFoipkTkE84EEOYyBdUpOsV02aR zp0fxyNq9Q8Ac5oLm64WPRJvdijTBr61RdRnHgOGrG5KFI5PwptUnIdP4VOiJyz7h59cTh3Zrpz6v/FCIyxLmqFI64PkZf/4qgWLRVIw9tdQc+NJA54Ic3QE I6JgHxSV50ufcXnL/ATSrApNWtmedSo3MhCk25fcVcEdquXOhNZkGPcPRB4Nlq6qYp6eIoia1CUrNXYxvvy+OUa5ivHtM5BiPHJD0xG2bjcFxJt1pye5nTnQ oJbD4LLJLFPM4xx4u8Psy5gA8zKllSRej14lPs8GVxfJ6Wya53rSt4pSB4h0hbPQVgAQF7oVBA3/3WpDevjpJBhLeJrvL2R1nDwjTSyCq/KBQiaBSM/o0Ph4 gtKRuCNpJA4KY5WTphXLWSHwllwES6re9ji7iEeYYNRl5mkIGGCBel2jrNhIWMQPZLypuCM64YWmN+4cHySlW3B9fONQX+hTxzKn9HngNG4qqs86QTvZyiMX LcZpg2+A2JXziSl
+ ntCcroZckRcf8PFBdcPXvrvJFpBy3CQGV
+X-AuthUser: kurti@invicto.ai
 
-This introduces a crate for working with faux devices in rust, along with
-adding sample code to show how the API is used. Unlike other types of
-devices, we don't provide any hooks for device probe/removal - since these
-are optional for the faux API and are unnecessary in rust.
+The documentation examples in rust/kernel/workqueue.rs use pr_info!
+calls that lack a trailing newline. To maintain consistency with
+kernel logging practices, this patch adds the newline to all
+affected examples.
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Maíra Canal <mairacanal@riseup.net>
+Fixes: 15b286d1fd05 ("rust: workqueue: add examples")
+Reported-by: Miguel Ojeda <ojeda@kernel.org>
+Closes: https://github.com/Rust-for-Linux/linux/issues/1139
+Signed-off-by: Alban Kurti <kurti@invicto.ai>
 ---
- rust/bindings/bindings_helper.h  |  1 +
- rust/kernel/faux.rs              | 60 ++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs               |  1 +
- samples/rust/Kconfig             | 10 ++++++
- samples/rust/Makefile            |  1 +
- samples/rust/rust_driver_faux.rs | 29 +++++++++++++++
- 6 files changed, 102 insertions(+)
- create mode 100644 rust/kernel/faux.rs
- create mode 100644 samples/rust/rust_driver_faux.rs
+ rust/kernel/workqueue.rs | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 55354e4dec14e..f46cf3bb70695 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -11,6 +11,7 @@
- #include <linux/blk_types.h>
- #include <linux/blkdev.h>
- #include <linux/cred.h>
-+#include <linux/device/faux.h>
- #include <linux/errname.h>
- #include <linux/ethtool.h>
- #include <linux/file.h>
-diff --git a/rust/kernel/faux.rs b/rust/kernel/faux.rs
-new file mode 100644
-index 0000000000000..5e58f397b747a
---- /dev/null
-+++ b/rust/kernel/faux.rs
-@@ -0,0 +1,60 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+//! Abstractions for the faux bus.
-+//!
-+//! This crate provides bindings for working with faux devices in kernel modules. It should be
-+//! preferred for creating virtual devices over the platform API.
-+//!
-+//! C header: [`include/linux/device/faux.h`]
-+use crate::{bindings, device, error::from_err_ptr, prelude::*};
-+use core::ptr::{addr_of_mut, null, NonNull};
-+
-+/// The faux device representation.
-+///
-+/// This type represents the registration of a [`struct faux_device`]. When an instance of this type
-+/// is dropped, its respective faux device will be unregistered from the system.
-+///
-+/// # Invariants
-+///
-+/// `self.0` always holds a valid pointer to an initialized and registered [`struct faux_device`].
-+///
-+/// [`struct faux_device`]: srctree/include/linux/device/faux.h
-+#[repr(transparent)]
-+pub struct Device(NonNull<bindings::faux_device>);
-+
-+impl Device {
-+    /// Create and register a new faux device with the given name.
-+    pub fn new(name: &CStr) -> Result<Self> {
-+        // SAFETY:
-+        // - `name` is copied by this function into its own storage
-+        // - `faux_ops` is safe to leave NULL according to the C API
-+        // - `faux_device_create` returns a valid non-null pointer to a `faux_device`, or error
-+        from_err_ptr(unsafe { bindings::faux_device_create(name.as_char_ptr(), null()) })
-+            .map(|d| Self(unsafe { NonNull::new_unchecked(d) }))
-+    }
-+
-+    fn as_raw(&self) -> *mut bindings::faux_device {
-+        self.0.as_ptr()
-+    }
-+}
-+
-+impl AsRef<device::Device> for Device {
-+    fn as_ref(&self) -> &device::Device {
-+        // SAFETY: The underlying `device` in `faux_device` is guaranteed by the C API to be
-+        // a valid initialized `device`.
-+        unsafe { device::Device::as_ref(addr_of_mut!((*self.as_raw()).dev)) }
-+    }
-+}
-+
-+impl Drop for Device {
-+    fn drop(&mut self) {
-+        // SAFETY: self.0 is a valid registered faux_device via our type invariants.
-+        unsafe { bindings::faux_device_destroy(self.as_raw()) }
-+    }
-+}
-+
-+// SAFETY: The faux device API is thread-safe
-+unsafe impl Send for Device {}
-+
-+// SAFETY: The faux device API is thread-safe
-+unsafe impl Sync for Device {}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 496ed32b0911a..398242f92a961 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -46,6 +46,7 @@
- pub mod devres;
- pub mod driver;
- pub mod error;
-+pub mod faux;
- #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
- pub mod firmware;
- pub mod fs;
-diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-index 918dbead2c0b4..3b6eae84b2977 100644
---- a/samples/rust/Kconfig
-+++ b/samples/rust/Kconfig
-@@ -61,6 +61,16 @@ config SAMPLE_RUST_DRIVER_PLATFORM
- 
- 	  If unsure, say N.
- 
-+config SAMPLE_RUST_DRIVER_FAUX
-+	tristate "Faux Driver"
-+	help
-+	  This option builds the Rust Faux driver sample.
-+
-+	  To compile this as a module, choose M here:
-+	  the module will be called rust_driver_faux.
-+
-+	  If unsure, say N.
-+
- config SAMPLE_RUST_HOSTPROGS
- 	bool "Host programs"
- 	help
-diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-index 5a8ab0df0567c..0dbc6d90f1ef9 100644
---- a/samples/rust/Makefile
-+++ b/samples/rust/Makefile
-@@ -6,6 +6,7 @@ obj-$(CONFIG_SAMPLE_RUST_MISC_DEVICE)		+= rust_misc_device.o
- obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_PCI)		+= rust_driver_pci.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+= rust_driver_platform.o
-+obj-$(CONFIG_SAMPLE_RUST_DRIVER_FAUX)		+= rust_driver_faux.o
- 
- rust_print-y := rust_print_main.o rust_print_events.o
- 
-diff --git a/samples/rust/rust_driver_faux.rs b/samples/rust/rust_driver_faux.rs
-new file mode 100644
-index 0000000000000..fb0d8527bdcb2
---- /dev/null
-+++ b/samples/rust/rust_driver_faux.rs
-@@ -0,0 +1,29 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Rust faux device sample.
-+
-+use kernel::{c_str, faux::*, prelude::*, Module};
-+
-+module! {
-+    type: SampleModule,
-+    name: "rust_faux_driver",
-+    author: "Lyude Paul",
-+    description: "Rust faux device sample",
-+    license: "GPL",
-+}
-+
-+struct SampleModule {
-+    _dev: Device,
-+}
-+
-+impl Module for SampleModule {
-+    fn init(_module: &'static ThisModule) -> Result<Self> {
-+        pr_info!("Initialising Rust Faux Device Sample\n");
-+
-+        let dev = Device::new(c_str!("rust-faux-sample-device"))?;
-+
-+        dev_info!(dev.as_ref(), "Hello from faux device!");
-+
-+        Ok(Self { _dev: dev })
-+    }
-+}
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index 1dcd53478edda5fe8cf4e1a034865ecbf70bca79..ebc4b5b4b06db20f57a03b3330f932f279e5d0e9 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -60,7 +60,7 @@
+ //!     type Pointer = Arc<MyStruct>;
+ //!
+ //!     fn run(this: Arc<MyStruct>) {
+-//!         pr_info!("The value is: {}", this.value);
++//!         pr_info!("The value is: {}\n", this.value);
+ //!     }
+ //! }
+ //!
+@@ -108,7 +108,7 @@
+ //!     type Pointer = Arc<MyStruct>;
+ //!
+ //!     fn run(this: Arc<MyStruct>) {
+-//!         pr_info!("The value is: {}", this.value_1);
++//!         pr_info!("The value is: {}\n", this.value_1);
+ //!     }
+ //! }
+ //!
+@@ -116,7 +116,7 @@
+ //!     type Pointer = Arc<MyStruct>;
+ //!
+ //!     fn run(this: Arc<MyStruct>) {
+-//!         pr_info!("The second value is: {}", this.value_2);
++//!         pr_info!("The second value is: {}\n", this.value_2);
+ //!     }
+ //! }
+ //!
 
-base-commit: 808eb958781e4ebb6e9c0962af2e856767e20f45
-prerequisite-patch-id: f05ff916822e21eec452f9e5b8d11339c409265a
 -- 
 2.48.1
 
