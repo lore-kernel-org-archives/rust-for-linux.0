@@ -1,62 +1,62 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B739522D4C4
-	for <rust-for-linux@vger.kernel.org>; Thu,  6 Feb 2025 09:29:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C344E22D4F7
+	for <rust-for-linux@vger.kernel.org>; Thu,  6 Feb 2025 09:29:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738834148; cv=none; b=qFE39GuCmLCP3ihe4nv0ciTUa7qF+jeH+Ll2H1egsFQJ4alq3TAcVXw3Nk+de7FsYZ2HzG04rz/7T/jZMIo0DCX7Tgkcc3eLt9Uia+kW249DfGgYeHIHT3cOD4yzapw16wMA0cJyScwRHyNc8v9eErmoNO+vefX7cjZ2X3dUO8A=
+	t=1738834151; cv=none; b=ehSeatrEqeYOSI09ePBj/LeSSWCYzTJAdY1JzTQKAKl7Nr5mpVFItsGmtnpmNvELLMtF0qZnFLWkDXUKnCB0/oLX6rBcJGWz5EHscR+Nfz56ZvcccA3K/I5ubMJ7PgrqLYG7F0pmXikQXmuDPP8l3otc9pSVj+W4JblBHZFdaj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738834148; c=relaxed/simple;
-	bh=hNxUaqce8sjnkwzAQlWMlhW9DvX+XlFNHHx9DRtSdzs=;
+	s=arc-20240116; t=1738834151; c=relaxed/simple;
+	bh=N5KuSHGuim/2ltuf1CgPtREiUHrSzunHBtCeRYx+xXs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=d0I1++mvGYhmYxU/KBdYYBn70baFc/LeQYgyTUHfnQox0VX6tJZXqKX8Rk8eXlHVtlLc7El2hV3qPg2D/h2W+clVXzYVjev72DC/YhbM/N2sQKWJTSkOQ2zE6LPLO7NZeAcJinxNtZEP0/CIlaaFjteC/NuElh2/XUjGGhns0E8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GJwe2eN9; arc=none smtp.client-ip=209.85.214.172
+	 MIME-Version; b=nXPK9EvMEUiLJUAXdWYMvwFNS2h17Wo73zB3dpXGz6k2n6+UkprHPR+Na7RjSSgLlyZgFF/+mTWDUHz8qq2RR29lgMc3TqsFsm3hkPN7+7d1k+WB43rUsqA/nL/tpcsxNTmkC7hXPAEbShuJszs23w55NpLlLoOBjg7VM+/7gVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sc77Q82G; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GJwe2eN9"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-21f40deb941so2739615ad.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 06 Feb 2025 01:29:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sc77Q82G"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-21f16af1f71so10202285ad.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 06 Feb 2025 01:29:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1738834145; x=1739438945; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1738834149; x=1739438949; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2G2VXwMXVVwTjOULFIF4Y5hQffUd1BBYLZ5S5agX+0E=;
-        b=GJwe2eN9R6OS5SV+yyTFO9EaC9rcaVkKbk1AbGKR/GRW0MAQtw/AP5VuDnq7I16ceR
-         Gg2u92epq0vMtGdRboNkMm1AXjOKDdVqDloKntpGvuRWcPY+U7iK+/pjwxA2kkRz0r/O
-         2tv39HFfoHKReiXN9HkQDCiL/pOFvl/aDR1cM/t+MFUZwRJ2BiiMxDMboDzaF+77mpU4
-         IpY/yOdUD3lv4IRB7lEmagk+LAQ/ntV0Myk0j8bCBXKkuSROMa1Iwc4mLupSViXvG8Qp
-         3gzTGMAp07WeYyhYh1hZbSgYYQvd3lIIKWPNw/S57tx0ruOy0NnVAsf8Lc2hBgNuXcVp
-         bN1A==
+        bh=mnnLlALAvod9HBe452p93Qf9oTal7xzFyAI477ScgZM=;
+        b=sc77Q82GSplB60NLau89LR+M2b6Blb8An7/PuaqQytPQbrvV8RreaRXa3K4CrVrXwM
+         EvLhxFhV1AjDeXHvFyCuTb8Pkysh3w1CFadPv1W8H+3NzekGaouLlP2zahkmqKNlaTAS
+         aocz2PKJ5iJay0chM/YwdGJymhpNY6pa/fX3yB1c/r8OzDE5z8xbidnT8JsD/Y4tOcZ0
+         fw5yzBx4LBxBs5MWz8LbkhVHlmh1W58mbZxbx9eFutpohMhSG9VAf6MAg3YlTqb1rZ6G
+         XEw96wB30BNF5EUVrNUk8AmNThbXy5SdEDtxvwqdQwJnraN/AGCoup7954Nxc7C/gs2X
+         3VhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738834145; x=1739438945;
+        d=1e100.net; s=20230601; t=1738834149; x=1739438949;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2G2VXwMXVVwTjOULFIF4Y5hQffUd1BBYLZ5S5agX+0E=;
-        b=I26K7jZcfkcRQpoV5VZ3gpTQiGIBpXydJJw9m/7oGJq7fAZZX/0yRqT5Jv++ynI9qo
-         YJPaWpdhKa5S+HDVoIB5LfmQHlJ+KctVamHnLR4C9wAM+EzFeMccJL9xU33mYkDO/U+m
-         bIsb/I0sbpoY8kL+lHU0xoBF8NjKEY49JZ8xf2/yN1fAfbD5kg2caDSzmnyFQUAHWru3
-         DO0kQge0J40XUgHlNUxqkXuwnDCRAyr5vhGiAemCucRO7medGTDNogrKqBGnHHegercZ
-         XDATv7wWI3hWFAFT4an0S+3gnNSqMBOyZN8sgPWVND5Cni7SBQac1dhczNt6PncsT6v2
-         DB4w==
-X-Forwarded-Encrypted: i=1; AJvYcCUVCJ77LtbwyuehMWC7UYF66thRXR0LjTSI7u9tAc+nUDiCXMQrFu79qlrycU2+PzlmVWy4yPgLvzmTdsNykw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcqGUQkpXYLt1BrnKxXzyuGIvgcgfTFmDPsk2j6Xrm9KWmN0R1
-	L2NLaOzfnML/EL+YCwrsFSB9PZySYtptPxxNbakOz7OwKTv+ijzsSiIrBiIznsU=
-X-Gm-Gg: ASbGncut6uPZ0E2BneipmRFPZ+Y01ewrwXlI+pmpWGzz1CX5kXWAIf3VHvK3QAUnJ5z
-	Fd1IWwXEoXdvGMBaKeqAGrlawkdDFYBe2XCRFzH6X+NS9IYBNdXJuGhxUGyk4IDS00304tkIg7Q
-	+xAINr/UkPDMpghLrzGdfK6zZkbJnxYl/gtwfIzvlxkjsyCtXGz6g2jt59owhbsZyK4HtKCn2Q9
-	XYO85rgX4GC+K4MovLTnjSbfhzUQ48Q8x/n1IK51lWHqI8Y8ITq2ONdUNukf8wxb0+4fjIVM6Mp
-	/TT6wM92FDDE0h9uIg==
-X-Google-Smtp-Source: AGHT+IERZaH/yV6NhctlMcXLudgaGLxhDTf+gOxPascB2hUakJ8YcCEV+KZm6lvDnBVxg1aOgdZhiA==
-X-Received: by 2002:a17:903:8c4:b0:215:a3fd:61f5 with SMTP id d9443c01a7336-21f17dde0c8mr99801325ad.5.1738834144997;
-        Thu, 06 Feb 2025 01:29:04 -0800 (PST)
+        bh=mnnLlALAvod9HBe452p93Qf9oTal7xzFyAI477ScgZM=;
+        b=vbS/22w/v8cvJ4lA6dibSGfPr0a29nLUPdz4OFdvZ+Qyg4C9r15YtHAbwgV7FJPuI1
+         83hkEQNsW+r2tsLjIldRXFBTyWZ91B3Q0hV8jDFEB6VsSedFKCwBcSfcXYf71m1wOau5
+         99akUT8rA9sp+IvPw4KomiB33Yz7QTYxi8AieRcHl3DvK6nHUlnc3+650aXqkB59jIop
+         Ot1Ar/vj+On5QjBz1SpZWsxreG3loydhWHnqDBJUDlOtCGqOU06p/9B6yO7UbFV/ubEv
+         8e1Gau/ZAyVIMkFdDk+0G98wBn0FfB6H4rUr8OcI/mcN08NL63EHGd5d8gG0hpEsZM6O
+         bIsw==
+X-Forwarded-Encrypted: i=1; AJvYcCUGB9t9pI1GqwJTaIOkwNLQyzCf7ThsymLdf6UdfZE+z4tAItCUsYgJlXrBgZ4k/XnzQ5jdxHNLmGw5QOOikg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzoA8p/yAqApfGGxQ7XG86YWJ1cp9QtO7zumTE/ZgT8kcOR9bR0
+	/XTQiCUq6kyhN73P0N1QegJckThwOM48syhMhh1as9D6fFgF0MIi3pyIjTMpwP0=
+X-Gm-Gg: ASbGnctzA4uy3vZMWfZPyCcGmHnl0bmT8uTF/QTggwExRPsUnDmM5rc9xMxIGcggmq9
+	ercRZGQk1SB0SpKyIvqQiZ280K51DAzo1qphRSvQUBe29Wj2Z5jhRxo5XoIF4j+Tkloaibq1I1H
+	Bz1ogyin5uz1S/5DL5n8hr+3oAcmfFD0dNmnMTZNa9Ah33/f6gbTDWphg+EeWkMXNCrvjBfpsF6
+	jSeFVwzPtRiU9ehUsSxOe8g79C3jr7MqFLaoHeurhdF7W9ry7C5/M4q+UgQpLmJ1HkW431OJqr5
+	FAqAxh9wMLDVGsayZQ==
+X-Google-Smtp-Source: AGHT+IFhy+AgYokZxM3HWCBUPc9xYncGxlqmLNHYEWBcgsKtPNb/mhJ3KsrxJ6CgY09YEPKvYF5m8g==
+X-Received: by 2002:a17:902:ce87:b0:215:5ea2:6544 with SMTP id d9443c01a7336-21f17dd685bmr96867085ad.7.1738834149070;
+        Thu, 06 Feb 2025 01:29:09 -0800 (PST)
 Received: from localhost ([122.172.84.139])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f3683ddc0sm8071205ad.123.2025.02.06.01.29.04
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f368ce622sm7994205ad.241.2025.02.06.01.29.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Feb 2025 01:29:04 -0800 (PST)
+        Thu, 06 Feb 2025 01:29:08 -0800 (PST)
 From: Viresh Kumar <viresh.kumar@linaro.org>
 To: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
@@ -70,8 +70,8 @@ To: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>
+	Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>
 Cc: Viresh Kumar <viresh.kumar@linaro.org>,
 	linux-pm@vger.kernel.org,
 	Vincent Guittot <vincent.guittot@linaro.org>,
@@ -84,9 +84,9 @@ Cc: Viresh Kumar <viresh.kumar@linaro.org>,
 	Joakim Bech <joakim.bech@linaro.org>,
 	Rob Herring <robh@kernel.org>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH V8 03/14] rust: cpu: Add from_cpu()
-Date: Thu,  6 Feb 2025 14:58:24 +0530
-Message-Id: <35ef3767cb9e65cb4c95df7ed50c6f3f6190066e.1738832118.git.viresh.kumar@linaro.org>
+Subject: [PATCH V8 04/14] rust: Add cpumask helpers
+Date: Thu,  6 Feb 2025 14:58:25 +0530
+Message-Id: <db0166341ce824c157d0c58c240b3efc6aec6f6e.1738832118.git.viresh.kumar@linaro.org>
 X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
 In-Reply-To: <cover.1738832118.git.viresh.kumar@linaro.org>
 References: <cover.1738832118.git.viresh.kumar@linaro.org>
@@ -98,94 +98,100 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This implements cpu::from_cpu(), which returns a reference to
-Device for a CPU. The C struct is created at initialization time for
-CPUs and is never freed and so ARef isn't returned from this function.
-
-The new helper will be used by Rust based cpufreq drivers.
+In order to prepare for adding Rust abstractions for cpumask, this patch
+adds cpumask helpers.
 
 Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 ---
  MAINTAINERS                     |  1 +
  rust/bindings/bindings_helper.h |  1 +
- rust/kernel/cpu.rs              | 31 +++++++++++++++++++++++++++++++
- rust/kernel/lib.rs              |  1 +
- 4 files changed, 34 insertions(+)
- create mode 100644 rust/kernel/cpu.rs
+ rust/helpers/cpumask.c          | 40 +++++++++++++++++++++++++++++++++
+ rust/helpers/helpers.c          |  1 +
+ 4 files changed, 43 insertions(+)
+ create mode 100644 rust/helpers/cpumask.c
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 896a307fa065..ee6709599df5 100644
+index ee6709599df5..bfc1bf2ebd77 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -6034,6 +6034,7 @@ F:	include/linux/cpuhotplug.h
- F:	include/linux/smpboot.h
- F:	kernel/cpu.c
- F:	kernel/smpboot.*
-+F:	rust/kernel/cpu.rs
- 
- CPU IDLE TIME MANAGEMENT FRAMEWORK
- M:	"Rafael J. Wysocki" <rafael@kernel.org>
+@@ -4021,6 +4021,7 @@ F:	lib/cpumask_kunit.c
+ F:	lib/find_bit.c
+ F:	lib/find_bit_benchmark.c
+ F:	lib/test_bitmap.c
++F:	rust/helpers/cpumask.c
+ F:	tools/include/linux/bitfield.h
+ F:	tools/include/linux/bitmap.h
+ F:	tools/include/linux/bits.h
 diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 55354e4dec14..fda1e0d8f376 100644
+index fda1e0d8f376..59b4bc49d039 100644
 --- a/rust/bindings/bindings_helper.h
 +++ b/rust/bindings/bindings_helper.h
-@@ -10,6 +10,7 @@
- #include <linux/blk-mq.h>
+@@ -11,6 +11,7 @@
  #include <linux/blk_types.h>
  #include <linux/blkdev.h>
-+#include <linux/cpu.h>
+ #include <linux/cpu.h>
++#include <linux/cpumask.h>
  #include <linux/cred.h>
  #include <linux/errname.h>
  #include <linux/ethtool.h>
-diff --git a/rust/kernel/cpu.rs b/rust/kernel/cpu.rs
+diff --git a/rust/helpers/cpumask.c b/rust/helpers/cpumask.c
 new file mode 100644
-index 000000000000..3054165d3818
+index 000000000000..49267ad33b3c
 --- /dev/null
-+++ b/rust/kernel/cpu.rs
-@@ -0,0 +1,31 @@
++++ b/rust/helpers/cpumask.c
+@@ -0,0 +1,40 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
-+//! Generic CPU definitions.
-+//!
-+//! C header: [`include/linux/cpu.h`](srctree/include/linux/cpu.h)
++#include <linux/cpumask.h>
 +
-+use crate::{bindings, device::Device, error::Result, prelude::ENODEV};
-+
-+/// Creates a new instance of CPU's device.
-+///
-+/// # Safety
-+///
-+/// Reference counting is not implemented for the CPU device in the C code. When a CPU is
-+/// hot-unplugged, the corresponding CPU device is unregistered, but its associated memory
-+/// is not freed.
-+///
-+/// Callers must ensure that the CPU device is not used after it has been unregistered.
-+/// This can be achieved, for example, by registering a CPU hotplug notifier and removing
-+/// any references to the CPU device within the notifier's callback.
-+pub unsafe fn from_cpu(cpu: u32) -> Result<&'static Device> {
-+    // SAFETY: The pointer returned by `get_cpu_device()`, if not `NULL`, is a valid pointer to
-+    // a `struct device` and is never freed by the C code.
-+    let ptr = unsafe { bindings::get_cpu_device(cpu) };
-+    if ptr.is_null() {
-+        return Err(ENODEV);
-+    }
-+
-+    // SAFETY: The pointer returned by `get_cpu_device()`, if not `NULL`, is a valid pointer to
-+    // a `struct device` and is never freed by the C code.
-+    Ok(unsafe { Device::as_ref(ptr) })
++void rust_helper_cpumask_set_cpu(unsigned int cpu, struct cpumask *dstp)
++{
++	cpumask_set_cpu(cpu, dstp);
 +}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 496ed32b0911..415c500212dd 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -40,6 +40,7 @@
- pub mod block;
- #[doc(hidden)]
- pub mod build_assert;
-+pub mod cpu;
- pub mod cred;
- pub mod device;
- pub mod device_id;
++
++void rust_helper_cpumask_clear_cpu(int cpu, struct cpumask *dstp)
++{
++	cpumask_clear_cpu(cpu, dstp);
++}
++
++void rust_helper_cpumask_setall(struct cpumask *dstp)
++{
++	cpumask_setall(dstp);
++}
++
++unsigned int rust_helper_cpumask_weight(struct cpumask *srcp)
++{
++	return cpumask_weight(srcp);
++}
++
++void rust_helper_cpumask_copy(struct cpumask *dstp, const struct cpumask *srcp)
++{
++	cpumask_copy(dstp, srcp);
++}
++
++bool rust_helper_zalloc_cpumask_var(cpumask_var_t *mask, gfp_t flags)
++{
++	return zalloc_cpumask_var(mask, flags);
++}
++
++#ifndef CONFIG_CPUMASK_OFFSTACK
++void rust_helper_free_cpumask_var(cpumask_var_t mask)
++{
++	free_cpumask_var(mask);
++}
++#endif
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index 0640b7e115be..de2341cfd917 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -11,6 +11,7 @@
+ #include "bug.c"
+ #include "build_assert.c"
+ #include "build_bug.c"
++#include "cpumask.c"
+ #include "cred.c"
+ #include "device.c"
+ #include "err.c"
 -- 
 2.31.1.272.g89b43f80a514
 
