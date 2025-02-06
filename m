@@ -1,103 +1,127 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B88E15B99E;
-	Thu,  6 Feb 2025 22:23:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DD723909A;
+	Thu,  6 Feb 2025 22:30:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738880637; cv=none; b=nH7z8ph3Gf1lUkMC3Fd4l4SXBYv209a1DCo+wl1ojU5IrRxYvSuARsL2iHJSWfOmF6TU+H0PVf+HpL7MUjIjnBvx1iydkL02mf+g6m9wwMS2Ee++B9sjABtDi86aqIRmn7spUG1Fz8+iURQNOtyNOzKcte3tuMgsHCTNcs+KQqo=
+	t=1738881030; cv=none; b=WFf9pbfHFYhvUxvlT1HyxZza9JwsMxw+ZD/5H6PgeehcEKHvgvvgUp0EMBA7JYAZI/NMWzwGQgMKyEvWuknQsBJVSQadYfu6nSzauiMCkYGH2y2LXc6nmWa8MLflcCuCotS/8MccUVrJej5Kskn57ZNPwSRp1VyGULaXRJWCB8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738880637; c=relaxed/simple;
-	bh=IS06I5U0xdVjXFHNYM6SRnQFWnEVy2bqzrx1q4c+/ds=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dw8SW8EykhJywptO/2i2VwE72oeeiJrjaMLPC87OD36tVzIdbk/AWr/tUhsiOM+xCECajMbY8HOOELUEV8A/Txq6SErsnRbxcaK+MZqAsK56h8mrv7nLirfqrnY6UuLwn2JsAopRlKikeyrISsnSFFUbRw8UXQOuxL4aDcsQAyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TUxnEkF7; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738881030; c=relaxed/simple;
+	bh=I9e8qohZ0axoeUAGmZ65q4ftkunmfJYqkr5WGaRSb4Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SETTvotu5h7Dcrwvtnc+vzciWuS+0+5Eg99bI2dX27LaCvm8eql4zpXJ12OF0YXoXrS9l0RCFcJJ8n0AlsO37afhPonPPLGssf+f2iuX4KY8/dS8mjIW2eSNRia5mUFkoqyvur4F3VLVFX3AC0Pu7BZg+meU6SiU6RkU2CnCcnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ufQQRXjd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TUxnEkF7"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2fa102a6106so222749a91.0;
-        Thu, 06 Feb 2025 14:23:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738880635; x=1739485435; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IS06I5U0xdVjXFHNYM6SRnQFWnEVy2bqzrx1q4c+/ds=;
-        b=TUxnEkF7DGNOFEs5g+Q7Q00tJz+BOnR+sEmkNQ78+KAJVJBH8lkUmvNwLk+7OrIp+T
-         Ein16lyShx8SAF+24xEwZ4yq6dJYMcz8GDzOVV2qVmsunPHLDcHFkb3EPFsOMkSlCxoK
-         fjgBmf4muH0xqjrq7LQpxOB7ARE3RsL9VukjqvNJ/UskZ+bNTmZEL9Vv6Xgd5uxnz82f
-         fJ95RFMDB3BQ3BsMCTzH4rT8lEj5LCxeDgStY9GGXoObVvvxqnAlo/6DGfn9qgP11VW8
-         sKJIf+OMKCb9whoRUBm3fGx6sIGWw7hlRqep9vXxmc/RpTlxKSa8S42LUjzjODCPn2Me
-         sq4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738880635; x=1739485435;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IS06I5U0xdVjXFHNYM6SRnQFWnEVy2bqzrx1q4c+/ds=;
-        b=aX4n/Bk4P5+fXz7mQE3X+cBKS7lfh7VZSwNdqiUASaYhGll0mhZSgMJ0nA4VPjly/q
-         5GQPMScGhstZTVb6Ez1UA/5L4h7F4qiDJ8VdWUNCS3Y4b/2qgII51hvP85UebBovBcv5
-         Ty6JyvSssEGE9jSRR4cZfqSNCJ/yDOhU/bRKaApEhE7F6SgZYu4kG+G1krrlec3QKTuI
-         HuhOXd1uq/y8bRsrhwCmqd+ydGkIf+MI7LLCYXQ1f31CvMgocQ5Yo5sb9iHzeE0PeTd8
-         VNB3fRqpZUJn3cggP38I+gvHjqhpxZryjTna+KuegBXTvzpGQyjI5AnFk0ANUv1p2UhM
-         +Upw==
-X-Forwarded-Encrypted: i=1; AJvYcCU4J42CmQZhNZ7OYNyoxXZmyfbF6JFPjphYQtb5iYhJh+MTgJpRmCmAALaes8DRVdRg7XL+5HMG@vger.kernel.org, AJvYcCXDjW5gBccFPwUVbz8JFvZHeTW8GDwyJpZM8FzWjSOhe7KZAW3w9o3JSQf04XweP3l6E3E+tdU6deLiv2o=@vger.kernel.org, AJvYcCXouwMGurKDcyxC3IoVTdQcU/tmc9cI3dXFTZBnFsEceuLss+NMGgTCeft9E8CQRSlCeJpnBqyuZDv5h8od7QI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5+gLtFNLD5NfDelJxrQYd1PvhYq5EIj+sjXgoL2oQ8O3/HwZz
-	T4lg4akSWIsGXRSY5pgTusv+BpqrAGkKXCr46B0yhlHr+lnKimkJc7wGQIlZ8G5TztRvrG4cCnA
-	FhYwUiUpm13gJY4XV+hYYByLawtT2urFwkqQ=
-X-Gm-Gg: ASbGnctyc3YGlUJ9rgUy6kF+B/S+z6gSV6xjdkA+qax39XVb222xke9NNY9c9d+gQlY
-	D0K/e90u7tCUNzt7WwojguBRKVUwN6DO/+nSOhEtedtPicKh5SPZPmhG3pjtovXwkGWoXYcs9
-X-Google-Smtp-Source: AGHT+IG9SCuXHttUG1K4uZ9sgNfkDjQbd2RfkChJLOxYwTTEA6GyQPkoVKG1M20Dtiyd4iqgUwAhGCeFpgbE45ZfjYY=
-X-Received: by 2002:a17:90b:1b44:b0:2ea:956b:deab with SMTP id
- 98e67ed59e1d1-2fa2453100emr455019a91.4.1738880635082; Thu, 06 Feb 2025
- 14:23:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ufQQRXjd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1BBBC4CEE0;
+	Thu,  6 Feb 2025 22:30:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738881030;
+	bh=I9e8qohZ0axoeUAGmZ65q4ftkunmfJYqkr5WGaRSb4Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ufQQRXjdCdn+JGrggv8f+w5o4gJUqxK+96rzGg3PrcMbBb70fY2nexhrKj9KSfY3m
+	 wrS2dP52K6znt4nkhTDtK5+ij6n3smkr6GjK6wzdhppFPyPElnlD/8jXbJoLOjnnmy
+	 9ar7/NFjPz7t6kb/ZdGeRYUqmrL1TVoBFFdrytyT3+mUwsl+JU12M6t43iUWdb8XP+
+	 EqpEW+5Mgx5ROgnz/NgJfF+pqaP3AAVhr/q2r1QdG5TAm1FPN0r5d9V6gWbVnghzzL
+	 DmQuK5PURweTpTymNDyHZ/eCxJLZCfMNh0xUsW4A4wl5BHP4Y70YcTG/6ZWZaeOTxu
+	 ksf9B11Dr9OVA==
+Date: Thu, 6 Feb 2025 23:30:24 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Lyude Paul <lyude@redhat.com>
+Cc: rust-for-linux@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Xiangfei Ding <dingxiangfei2009@gmail.com>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rust/kernel: Add faux device bindings
+Message-ID: <Z6U4APfuIEOgMzmd@cassiopeiae>
+References: <20250206210503.102061-2-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250203-rustc-1-86-x86-softfloat-v1-1-220a72a5003e@google.com>
- <CANiq72kv_wE_ESNsW9qDiwnJkaoFb+WERJ6p796TCPAdK838Fw@mail.gmail.com> <4ab2efaf-867a-4b8a-8e4a-193f8218dd33@intel.com>
-In-Reply-To: <4ab2efaf-867a-4b8a-8e4a-193f8218dd33@intel.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 6 Feb 2025 23:23:42 +0100
-X-Gm-Features: AWEUYZmRxOjvPPyaibtJQh9LKpnRat36mvXX_IWG3jDmqy8dT0gvCzQxMYYWI28
-Message-ID: <CANiq72kYzZ5T0Y1PMmz8dcu5FEwuS+xkUPprnw-qawy1WHEMsA@mail.gmail.com>
-Subject: Re: [PATCH] x86: rust: set rustc-abi=x86-softfloat on rustc>=1.86.0
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, x86@kernel.org, rust-for-linux@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250206210503.102061-2-lyude@redhat.com>
 
-On Thu, Feb 6, 2025 at 9:58=E2=80=AFPM Dave Hansen <dave.hansen@intel.com> =
-wrote:
->
-> Are you saying you'd prefer that we pick this up on the x86 side? I'm
-> totally happy to do that, and it's obviously patching x86-specific
-> sections of the rust scripts.
->
-> If I'm understanding the ask.... Just curious though, what makes that
-> preferable? It's in a rust-specific file
-> (scripts/generate_rust_target.rs) and I'd guess that it'd be easier to
-> take it through the rust tree since it's more likely to collide with
-> stuff there and also be closer to the folks that can competently resolve
-> any merge problems.
+On Thu, Feb 06, 2025 at 04:04:56PM -0500, Lyude Paul wrote:
+> This introduces a crate for working with faux devices in rust, along with
+> adding sample code to show how the API is used. Unlike other types of
+> devices, we don't provide any hooks for device probe/removal - since these
+> are optional for the faux API and are unnecessary in rust.
+> 
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Maíra Canal <mairacanal@riseup.net>
+> ---
+>  rust/bindings/bindings_helper.h  |  1 +
+>  rust/kernel/faux.rs              | 60 ++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs               |  1 +
+>  samples/rust/Kconfig             | 10 ++++++
+>  samples/rust/Makefile            |  1 +
+>  samples/rust/rust_driver_faux.rs | 29 +++++++++++++++
+>  6 files changed, 102 insertions(+)
+>  create mode 100644 rust/kernel/faux.rs
+>  create mode 100644 samples/rust/rust_driver_faux.rs
+> 
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index 55354e4dec14e..f46cf3bb70695 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -11,6 +11,7 @@
+>  #include <linux/blk_types.h>
+>  #include <linux/blkdev.h>
+>  #include <linux/cred.h>
+> +#include <linux/device/faux.h>
+>  #include <linux/errname.h>
+>  #include <linux/ethtool.h>
+>  #include <linux/file.h>
+> diff --git a/rust/kernel/faux.rs b/rust/kernel/faux.rs
+> new file mode 100644
+> index 0000000000000..5e58f397b747a
+> --- /dev/null
+> +++ b/rust/kernel/faux.rs
+> @@ -0,0 +1,60 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +
+> +//! Abstractions for the faux bus.
+> +//!
+> +//! This crate provides bindings for working with faux devices in kernel modules. It should be
+> +//! preferred for creating virtual devices over the platform API.
 
-I typically say something like that when I feel I may be overstepping
--- I don't want other subsystems to feel that they are being skipped.
-For x86 I have so far taken things myself, since it was the first Rust
-arch (so it was an exceptional case), but perhaps you wanted to start
-handling things on your own etc.
+"preferred" implies a bit that platform devices are still an option for that
+(even if not preferred). Maybe just not mention it at all. But if you want to,
+maybe something along the lines of "faux devices are the solution for the
+historical abuse of platform devices as virtual devices"?
 
-I am happy either way, of course. Your Acked-by's would be very welcome!
+> +//!
+> +//! C header: [`include/linux/device/faux.h`]
+> +use crate::{bindings, device, error::from_err_ptr, prelude::*};
+> +use core::ptr::{addr_of_mut, null, NonNull};
+> +
+> +/// The faux device representation.
+> +///
+> +/// This type represents the registration of a [`struct faux_device`]. When an instance of this type
+> +/// is dropped, its respective faux device will be unregistered from the system.
 
-Cheers,
-Miguel
+Ultimately, this will be used to be passed to C APIs, such as drm_dev_alloc(),
+which increment the reference count of the underlying struct device.
+
+Should we consider that in Rust we may have a need to take additional references
+in the future too?
+
+Maybe it would be more future proof to call this structure `Registration` and
+leave us the option to define faux::Device for reference counting later on.
