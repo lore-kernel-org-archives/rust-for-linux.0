@@ -1,140 +1,241 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF53F19D884;
-	Thu,  6 Feb 2025 19:05:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA191990C1;
+	Thu,  6 Feb 2025 19:18:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.63.210.85
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738868734; cv=none; b=Rronqfyvch2pkUvf/Nin2k2oRuq4c21aw37IEf16B3InQJWyyDp5LOG9HpRUhFi7z6UAyVlQCjIjhB+m8kAnxmqysPM5FDVs/Xn7TrBQ5XjtBwn1N/XJrj8O5Cu9Yjucyon85eYTXJq/dxG3vN+OyBYl5oAv/G2Wtl8p6UtgUWU=
+	t=1738869540; cv=none; b=qMJFeMlW/5/l58lAczG/fN4WSX8mnI5HXIEZOawQdE9vZ3famfy3cpAC13ZK9nf/3VEYll4kF84W03S6OO/QSdD/zoC1KHQa8Np8e/FVmBwm1PlSzjhlO6A6IfVXu7LJVGYpgE0k+U5DtfbTQHRhjMEvGFPnPR2RJHeD5v2aeO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738868734; c=relaxed/simple;
-	bh=9uQVOmifnreGhQsc1A9lVrH5St/iFksctqFWAQBdxkU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QfYfYgptqByhIq0HNSh5tvspmkXrVipMjTynoWI88ERr275lnFJv+sIbBhEbDJLgGn/aWOq2x5IfrOil6xBLKfihAfEoL2W0pAClU+KVbV9qHTb+09WMt0pzaURV0AbNlnAHvQ7Y7SAWrXuY7lv1Dia9iX3SFzv929CzVPBghOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iFyLyS8O; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738869540; c=relaxed/simple;
+	bh=ZL//EHotRWwQ+ac5qyjmVmFj7JZNLt25zwPXSoKAebc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PGvDZ7eurCvh8MQ0LAvi7rlLQi0wijJaFF6IPencXjmQvaYOBVynoKGcX6ebrZJA8OePAjerW+Yl7g/AZG4+02PTZcEz4f+TRZaxlHGBQmThzD8kEIWP8f2fZoguMtWseDsCgjvXpIgXTXP14cgSBsZOZcVl3PeSrANzYiTfqLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net; spf=pass smtp.mailfrom=asahilina.net; dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b=g3QhZjxe; arc=none smtp.client-ip=212.63.210.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asahilina.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iFyLyS8O"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5440d1f506aso1406541e87.2;
-        Thu, 06 Feb 2025 11:05:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738868731; x=1739473531; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vWe/2ua+fmh35CLfAMD65N/tcnFfhiqpINTofFDfa4s=;
-        b=iFyLyS8OhWx70qdmlIVIj1vXx7cNvGG/jkBCk5yoXNZqEwGPj6TL4wqsBrHp/IDLH2
-         m2hI0Skp8I6nE+q34QxMZfQEnOTKg9WbKeOui6sEiPlRospWZYXy3iTaIONInNyXM1LA
-         UInm6aieSKsoU3hYiUy9/uBWLJGCpUHBSIyYpyL2aIkx7jVLELrhGGlBsMzFZrCGY/Bj
-         GxgyH0GJHOxRziuuFgwzD5lg76ucIQtD5UB6bULgk7kdrGPWliPhlgnmybK1qjgU0aa6
-         sHcywuORPj35So3+zakOgOW2OM4TKOHSbLRvDRVUxmVcdsCjMzLofx9ElnhYo21tNnPe
-         Lbeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738868731; x=1739473531;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vWe/2ua+fmh35CLfAMD65N/tcnFfhiqpINTofFDfa4s=;
-        b=Bnmi3tsbm4AFAPafD/arRly+R0GI0PNPaAAdKpDWm6MXuLufpZUiyQL5GpqPTrb2VW
-         DHTdDGBfw+1lf7++zsBMt3kNEbWeaIfyGk2Oq0XIKlPt++anDrFhIhf/I5KvOaRlnAjt
-         ujsivC+8vjEDrD4qishOqk1BU8jKpOQwA3SVtSWT4YMqWCuxG0kRAbFUSaNwLaNRmXmo
-         thRtdu44boSpljiYleAbvSbZxRE6UslJytd4MMPQelbww3J2Uy0dffMVDYSlXktkcf62
-         KVSC2lME5rhUaB6EXFY+zcP9PfJh6Zkk8P1doNgOZfiZ7lfBhc7PXKOu1x4l7+bD0rs9
-         MzKw==
-X-Forwarded-Encrypted: i=1; AJvYcCXk/l33H/dvGyHlViktgmMukMiJA7RPFbn38CeSW3sfeM4y7d7v1xJnCBU6id4v0BS426FFB5CMYJK/wI79L24=@vger.kernel.org, AJvYcCXkL4BaRHNERWazToiLDQU704PJZDiqNiJlRXxE/KZkXcjxFx4taZ/UvR5cT/q+P0LHB5KsWPCvcpZ0MwE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPjPghvjrgZMF5rT0vVTvBJD+ieZvlbFGBBNfe5nrFligA/l/l
-	fqycLP3HEetXN9QMh3FTSpfm2jUCy+mia0+gRZ+l7l1B4YbKXikJ+RYf5uGWe3OiuEGASlyT4+4
-	/WZPOW5jH1EUnoCA56iU/afikLuM=
-X-Gm-Gg: ASbGncu2Z/2eWTBb4p1LJi2oBYpHTEAEBh0RBaMfjHS2g5tf4fysz4oExaqLmd1xd6e
-	VUUtPmWRh1QSMWYSTQg7yRaonxEMwIcsGzYvXDv0zXoH04+CrkZRC7+aiaXwpMRUpdRZui+KlVL
-	VmYpm6XMLTNYTDDhLbM7rjGwl2qLj8
-X-Google-Smtp-Source: AGHT+IFb/vF56J/Q4fncJH5D5onPYZnsacNHsk//1uyVv8nEb2/jnZ4MfdBuw2ZeWkVaH6sI4P7kJQed7OhU5P9x8BI=
-X-Received: by 2002:a05:6512:2399:b0:540:206b:c355 with SMTP id
- 2adb3069b0e04-54414a9d0bbmr24781e87.19.1738868730481; Thu, 06 Feb 2025
- 11:05:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b="g3QhZjxe"
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: lina@asahilina.net)
+	by mail.marcansoft.com (Postfix) with ESMTPSA id 748D943A93;
+	Thu,  6 Feb 2025 19:18:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
+	s=default; t=1738869535;
+	bh=ZL//EHotRWwQ+ac5qyjmVmFj7JZNLt25zwPXSoKAebc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=g3QhZjxedOMejOxLX7SKYeyUoBjljnaLGkVWFRt/nOQdqh1fMviXexyEi2ZKDYEbg
+	 FNj8ledgvUh1T4tFLuHvKmFN4f642ZowNR5fvdbADXe+PEJ2yMdQGwZqQSpp4HYQX+
+	 3f/BMw2f9uQbxmxZRbCEGXmDdWbhw+HTTlVQpJu2i0ZswSXqIwwpGaqA0O5Y+UkyNd
+	 d43qrhLcoTR1Zz/mRku1Gv1LmMZbfz0FsmFrJAe0K63ZNyMrmZjQKXwWk2kcR2/5+x
+	 D3khF1TK3QcCe/dmOQHDrhvr3ZFYwQxZs7g+WvHMjjy0Y+XCa8R9YSA5hiCrLAvNS2
+	 1sN62EZxHiTmg==
+Message-ID: <bfc81fb0-917a-4518-851b-c7fcf3a91c5b@asahilina.net>
+Date: Fri, 7 Feb 2025 04:18:52 +0900
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250202-aligned-alloc-v2-1-5af0b5fdd46f@gmail.com>
- <CANiq72nH3N9UMu2hsPG7WfYCZQwy9M_4q_rQHJnJMScQ3D9-Jg@mail.gmail.com>
- <Z6T5sOWXxmUsflW7@pollux> <CANiq72n7jx5ve9UL3oDD08=PjY55QHoMY8fyfsW9RNEvjH_b4Q@mail.gmail.com>
- <Z6UGNbowcvqTN0-T@pollux>
-In-Reply-To: <Z6UGNbowcvqTN0-T@pollux>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Thu, 6 Feb 2025 14:04:54 -0500
-X-Gm-Features: AWEUYZkktBtBZNaQMCoEzUE1Y4SVul1Gh2koh9oJg_zJds6xgzDkBGw1WFiJBy0
-Message-ID: <CAJ-ks9mwB+9F8Bz89TB0ZecijOftM49yfPzn5GgcyPDEput+xg@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: alloc: satisfy `aligned_alloc` requirements
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/6] rust: page: Support borrowing `struct page` and
+ physaddr conversion
+To: David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Jann Horn <jannh@google.com>,
+ Matthew Wilcox <willy@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Danilo Krummrich <dakr@kernel.org>, Wedson Almeida Filho
+ <wedsonaf@gmail.com>, Valentin Obst <kernel@valentinobst.de>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ airlied@redhat.com, Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ asahi@lists.linux.dev, Oscar Salvador <osalvador@suse.de>,
+ Muchun Song <muchun.song@linux.dev>
+References: <20250202-rust-page-v1-0-e3170d7fe55e@asahilina.net>
+ <Z6CTLB2NggwYafi9@phenom.ffwll.local>
+ <41ca3445-80cd-43c1-8f9e-634c195c9187@asahilina.net>
+ <37A0729B-A711-4D45-B9F0-328FDB9ADD28@nvidia.com>
+ <0e19e1c3-293b-4740-93f3-2c410893288b@redhat.com>
+ <82047858-480a-45e3-b826-3a46fbebe842@asahilina.net>
+ <f1498b22-0bc1-489a-8c2c-35aa48c7fe7d@redhat.com>
+ <1e9ae833-4293-4e48-83b2-c0af36cb3fdc@asahilina.net>
+ <026c1a0c-e53a-4a5e-92da-6e4f18ce0fee@redhat.com>
+ <cc1cd991-1871-4929-851e-d9672a45dcf0@asahilina.net>
+ <6bcd3315-a0f9-463c-ab97-a43736f9b4f4@redhat.com>
+ <2a513c3e-818c-4040-b3d3-7835861bab4f@asahilina.net>
+ <0dffaa7d-340f-4ce1-9a2e-54cfd9079266@redhat.com>
+Content-Language: en-US
+From: Asahi Lina <lina@asahilina.net>
+In-Reply-To: <0dffaa7d-340f-4ce1-9a2e-54cfd9079266@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Feb 6, 2025 at 1:58=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
-rote:
->
-> On Thu, Feb 06, 2025 at 07:20:20PM +0100, Miguel Ojeda wrote:
-> > On Thu, Feb 6, 2025 at 7:04=E2=80=AFPM Danilo Krummrich <dakr@kernel.or=
-g> wrote:
-> > >
-> > > I previously checked man posix_memalign(3) and it says:
-> > >
-> > > ERRORS
-> > >         EINVAL The alignment argument was not a power of two, or was =
-not a
-> > >                multiple of sizeof(void *).
-> >
-> > Yeah, but that may not apply to `alligned_alloc` as far as I can see.
->
-> What makes you think so?
->
-> AFAICS, the man page applies for posix_memalign, aligned_alloc, memalign,
-> valloc and pvalloc.
->
-> In case behavior differs between the functions, this is stated explicitly=
-, e.g.
-> in the "RETURN VALUE" section.
->
-> The "ERRORS" setion does not differentiate, hence it should apply to all =
-the
-> functions above, including aligned_alloc.
->
-> Do I miss anything?
 
-The writing is definitely obtuse.
 
-> Return Value
->.  aligned_alloc(), memalign(), valloc(), and pvalloc() return a pointer t=
-o the allocated memory, or NULL if the request fails.
->
->   posix_memalign() returns zero on success, or one of the error values li=
-sted in the next section on failure. Note that errno is not set.
->
-> Errors
->   EINVAL
->     The alignment argument was not a power of two, or was not a multiple =
-of sizeof(void *).
->   ENOMEM
->.    There was insufficient memory to fulfill the allocation request.
+On 2/7/25 2:58 AM, David Hildenbrand wrote:
+> On 04.02.25 22:06, Asahi Lina wrote:
+>>
+>>
+>> On 2/5/25 5:10 AM, David Hildenbrand wrote:
+>>> On 04.02.25 18:59, Asahi Lina wrote:
+>>>> On 2/4/25 11:38 PM, David Hildenbrand wrote:
+>>>>>>>> If the answer is "no" then that's fine. It's still an unsafe
+>>>>>>>> function
+>>>>>>>> and we need to document in the safety section that it should
+>>>>>>>> only be
+>>>>>>>> used for memory that is either known to be allocated and pinned and
+>>>>>>>> will
+>>>>>>>> not be freed while the `struct page` is borrowed, or memory that is
+>>>>>>>> reserved and not owned by the buddy allocator, so in practice
+>>>>>>>> correct
+>>>>>>>> use would not be racy with memory hot-remove anyway.
+>>>>>>>>
+>>>>>>>> This is already the case for the drm/asahi use case, where the pfns
+>>>>>>>> looked up will only ever be one of:
+>>>>>>>>
+>>>>>>>> - GEM objects that are mapped to the GPU and whose physical
+>>>>>>>> pages are
+>>>>>>>> therefore pinned (and the VM is locked while this happens so the
+>>>>>>>> objects
+>>>>>>>> cannot become unpinned out from under the running code),
+>>>>>>>
+>>>>>>> How exactly are these pages pinned/obtained?
+>>>>>>
+>>>>>> Under the hood it's shmem. For pinning, it winds up at
+>>>>>> `drm_gem_get_pages()`, which I think does a
+>>>>>> `shmem_read_folio_gfp()` on
+>>>>>> a mapping set as unevictable.
+>>>>>
+>>>>> Thanks. So we grab another folio reference via shmem_read_folio_gfp()-
+>>>>>> shmem_get_folio_gfp().
+>>>>>
+>>>>> Hm, I wonder if we might end up holding folios residing in
+>>>>> ZONE_MOVABLE/
+>>>>> MIGRATE_CMA longer than we should.
+>>>>>
+>>>>> Compared to memfd_pin_folios(), which simulates FOLL_LONGTERM and
+>>>>> makes
+>>>>> sure to migrate pages out of ZONE_MOVABLE/MIGRATE_CMA.
+>>>>>
+>>>>> But that's a different discussion, just pointing it out, maybe I'm
+>>>>> missing something :)
+>>>>
+>>>> I think this is a little over my head. Though I only just realized that
+>>>> we seem to be keeping the GEM objects pinned forever, even after unmap,
+>>>> in the drm-shmem core API (I see no drm-shmem entry point that would
+>>>> allow the sgt to be freed and its corresponding pages ref to be
+>>>> dropped,
+>>>> other than a purge of purgeable objects or final destruction of the
+>>>> object). I'll poke around since this feels wrong, I thought we were
+>>>> supposed to be able to have shrinker support for swapping out whole GPU
+>>>> VMs in the modern GPU MM model, but I guess there's no
+>>>> implementation of
+>>>> that for gem-shmem drivers yet...?
+>>>
+>>> I recall that shrinker as well, ... or at least a discussion around it.
+>>>
+>>> [...]
+>>>
+>>>>>
+>>>>> If it's only for crash dumps etc. that might even be opt-in, it makes
+>>>>> the whole thing a lot less scary. Maybe this could be opt-in
+>>>>> somewhere,
+>>>>> to "unlock" this interface? Just an idea.
+>>>>
+>>>> Just to make sure we're on the same page, I don't think there's
+>>>> anything
+>>>> to unlock in the Rust abstraction side (this series). At the end of the
+>>>> day, if nothing else, the unchecked interface (which the regular
+>>>> non-crash page table management code uses for performance) will let you
+>>>> use any pfn you want, it's up to documentation and human review to
+>>>> specify how it should be used by drivers. What Rust gives us here is
+>>>> the
+>>>> mandatory `unsafe {}`, so any attempts to use this API will necessarily
+>>>> stick out during review as potentially dangerous code that needs extra
+>>>> scrutiny.
+>>>>
+>>>> For the client driver itself, I could gate the devcoredump stuff behind
+>>>> a module parameter or something... but I don't think it's really worth
+>>>> it. We don't have a way to reboot the firmware or recover from this
+>>>> condition (platform limitations), so end users are stuck rebooting to
+>>>> get back a usable machine anyway. If something goes wrong in the
+>>>> crashdump code and the machine oopses or locks up worse... it doesn't
+>>>> really make much of a difference for normal end users. I don't think
+>>>> this will ever really happen given the constraints I described, but if
+>>>> somehow it does (some other bug somewhere?), well... the machine was
+>>>> already in an unrecoverable state anyway.
+>>>>
+>>>> It would be nice to have userspace tooling deployed by default that
+>>>> saves off the devcoredump somewhere, so we can have a chance at
+>>>> debugging hard-to-hit firmware crashes... if it's opt-in, it would only
+>>>> really be useful for developers and CI machines.
+>>>
+>>> Is this something that possibly kdump can save or analyze? Because that
+>>> is our default "oops, kernel crashed, let's dump the old content so we
+>>> can dump it" mechanism on production systems.
+>>
+>> kdump does not work on Apple ARM systems because kexec is broken and
+>> cannot be fully fixed, due to multiple platform/firmware limitations. A
+>> very limited version of kexec might work well enough for kdump, but I
+>> don't think anyone has looked into making that work yet...
+>>
+>>> but ... I am not familiar with devcoredump. So I don't know when/how it
+>>> runs, and if the source system is still alive (and remains alive --  in
+>>> contrast to a kernel crash).
+>>
+>> Devcoredump just makes the dump available via /sys so it can be
+>> collected by the user. The system is still alive, the GPU is just dead
+>> and all future GPU job submissions fail. You can still SSH in or (at
+>> least in theory, if enough moving parts are graceful about it) VT-switch
+>> to a TTY. The display controller is not part of the GPU, it is separate
+>> hardware.
+> 
+> 
+> Thanks for all the details (and sorry for the delay, I'm on PTO until
+> Monday ... :)
+> 
+> (regarding the other mail) Adding that stuff to rust just so we have a
+> devcoredump that ideally wouldn't exist is a bit unfortunate.
+> 
+> So I'm curious: we do have /proc/kcore, where we do all of the required
+> filtering, only allowing for reading memory that is online, not
+> hwpoisoned etc.
+> 
+> makedumpfile already supports /proc/kcore.
+> 
+> Would it be possible to avoid Devcoredump completely either by dumping /
+> proc/kcore directly or by having a user-space script that walks the page
+> tables to dump the content purely based on /proc/kcore?
+> 
+> If relevant memory ranges are inaccessible from /proc/kcore, we could
+> look into exposing them.
 
-It seems that the errors section applies to posix_memalign only. The
-description section also contains:
+I'm not sure that's a good idea... the dump code runs when the GPU
+crashes, and makes copies of all the memory pages into newly allocated
+pages (this is around 16MB for a typical dump, and if allocation fails
+we just bail and clean up). Then userspace can read the coredump at its
+leisure. AIUI, this is exactly the intended use case of devcoredump. It
+also means that anyone can grab a core dump with just a `cp`, without
+needing any bespoke tools.
 
-> The obsolete function memalign() allocates size bytes and returns a point=
-er to the allocated memory. The memory address will be a multiple of alignm=
-ent, which must be a power of two.
->
-> The function aligned_alloc() is the same as memalign(), except for the ad=
-ded restriction that size should be a multiple of alignment.
+After the snapshot is taken, the kernel will complete (fail) all GPU
+jobs, which means much of the shared memory will be freed and some
+structures will change contents. If we defer the coredump to userspace,
+then it would not be able to capture the state of all relevant memory
+exactly at the crash time, which could be very confusing.
 
-So aligned_alloc has the same alignment requirement as memalign, which
-is only that it's a power of two.
+In theory I could change the allocators to not free or touch anything
+after a crash, and add guards to any mutations in the driver to avoid
+any changes after a crash... but that feels a lot more brittle and
+error-prone than just taking the core dump at the right time.
+
+~~ Lina
+
