@@ -1,233 +1,460 @@
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D8B239572;
-	Thu,  6 Feb 2025 17:23:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A85C17799F;
+	Thu,  6 Feb 2025 17:38:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738862592; cv=none; b=Bz7LqsRfCRI855vcS3z1O+jtKAeuVIaRMqYPz1Qw345ehgAWeUJ6JD/oDFk5tbIfTDbAmLVSPgm0cXtRL2dkG//23wjMW8DnrU3/Jcx5m+2ROIuLyRjm13vQ3SrMMOC4trapgWedGHboCDolzMWAISzGk8Ln/xTeawYuWnOe/jo=
+	t=1738863513; cv=none; b=It/XvO9TDOxbRB6DmsHGPzQnXtORvux+yKG3aT9RVLmKvYCpN6aI1LgQ1b8tIWZhlqJCiMKDFl4WOuMyfTzD2e2ko+lWOAA0EjbO0zFw2L3uoSj5d9GA+aHevJGKBYd1CJqyHQmOhGOek1mfACvBBodNuSHCE3akj+M1ACqCKWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738862592; c=relaxed/simple;
-	bh=aOlIb3GrtUb94/9tx8SwRQttF+ZHn3JmSd+o6phwsIs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=psxO7tp0at4xDsI6M/vQp9q+AQaYkg5jpNvIOskL/WKlCj2pu9kfYxnn13rYWmnySIvpXPL+gxK39EEhrl4Q2DIAFh/+w4qHtuX5fA0lOuiACf8i6uWZWBSz/7F3j4TJJl/P4m83/su1Rum0uT/xE0fRdHSLoz8fUSANDjQkRao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aykkiNeM; arc=none smtp.client-ip=209.85.208.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738863513; c=relaxed/simple;
+	bh=PYE4odxFCn9Cp6DmDp7y4h8+WxTuRZL6jNDmpTNbLf4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kNRQSfaLKvjUtQytUNvxR7DQJSXHtx6swbJwB4RlFFf8+a8Eyg+BF3/fD3eHKE402rp/T4k3WlnuFuWsJnv7GaPVo8RJYu6k9UTBv4ZCvuvSw6nvwDS2I/hoDixKfsQNjOTUle3dSbObvBO5c0pH23GM4QFQWeh3EeYsiUvmrK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPqJO0fl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aykkiNeM"
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-30737db1ab1so9773311fa.1;
-        Thu, 06 Feb 2025 09:23:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738862589; x=1739467389; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CtS2LSS0vjwz5nne7JgrymnedyIyoSCc7U6z284XAgw=;
-        b=aykkiNeMFDqczhSbAD5It5yAjvjIEmKurj2wP0c+EU9naB7LRvBEomgTpV49XJeUnY
-         RsVtHKhgTPZSOwFAuSpr8SlwkEFemsgU7sO2reNt6wjHFPUZ8H2ezu/4IfcgVx8GX7LH
-         CVh0FTufqq7aJnsLZd9b0isxZFl+Qce5sfHyDJ53uHRIlx7X2lQ+2pGemf3DxmQaMRev
-         LauFrn+/etVJxD+qyKg77fmmhwB9KYvB41Bj9l3hvYBz3H7fa/zxJfTLPBIgh/Kv65zq
-         wrb11VSsuypLT5L2Odlgs5W7XS9WOqxluBeMHVZfNtD/X5lnj3BJ7CUD7ImUKV9xKNeT
-         pZfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738862589; x=1739467389;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CtS2LSS0vjwz5nne7JgrymnedyIyoSCc7U6z284XAgw=;
-        b=Nc3DYJimYuZr/adZUbEIcX+LP56qgdW6NUk0OKlVi13C4nFlIpyvYp/52Ufd3i1wgh
-         FFPa5IkT7jRiMbXRPtcOce2jz2odPfPs7cTPFDt1ZYKit8j2WJ26TH6wU5E8z1K9JWJ0
-         Y/sgJAslQNMUtetlO8SsjLE4BTkmgswJuWiuHKmt1MvF49G/OjrBktud92+j17HxNgb9
-         eptBelMxlO3XhCYz3kMqR055QhdGjwixZ8YLsa/JwrnzucDRBWZWUG8GtCcKy+m1l/bI
-         6FZ+KZ8hymttkFwIgVqotzx4vibKOOHmo7u8KMR90yayorBPJAI9zB7uhLLMU3JVnSMZ
-         JMsg==
-X-Forwarded-Encrypted: i=1; AJvYcCVjGUnM2NQ7+YeEsL0UPisaEmS9MWCDl+fH6LoBsLA0M9TNgCjSpK/FBXjwDeelPommKnKv1pCXaz2OPDQhgog=@vger.kernel.org, AJvYcCVuGTHWJw0OzKjEvHAUu9DQQp+ACi+RbYSoVx7MLun6EndbcSXO1Y2CgnOflIJ/ZU0f8gHiknc2wSee@vger.kernel.org, AJvYcCXK8v1rywsNSbj+m/WY8gA9/ilmkcrUsp1KsK/61yc5bXwHooFdUaxX63PhdTucM8P9mNEenOs3rP8rqmCH@vger.kernel.org, AJvYcCXsnxuVmwkRstHUQ0TCX8QkDo5vntfaqqv0ffhXnvdQp49cs1SgEJcDby6V+nEGuzWmAdZNLCAOLfcYPXHx@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4l+J1RwnERzvU4EOTKFLgPtdgpCTESbGpmZVXYRXXDiiFayEg
-	FV2jxhT145AX0CB877En3GjmYxobhFvvQKyANuXDF69Ry3KiuFpWfdXF9lB0br6IbstoUpa2t+c
-	OKHmeVWFVPSa53qqOzKi62TRztzY=
-X-Gm-Gg: ASbGnctmCFF+yYOxzHkqCR/501Q9AkP2IqCNtr4UJtJvzGJaw8IeKVvXfJDXjn35gz5
-	pt8AumxxUlRfHgasurgNIPlR5kbdenw69hDpV2xZR10IHqsk+bt5xgGnC0Q5mlt2OV0cIG1CPAy
-	eygaFDpRXcmYCEiDn9IOp7eaQaW2rttg==
-X-Google-Smtp-Source: AGHT+IFCKQidDHUSKUVfNzVCxtO4kJumyNyooPKxZlUf9l5k1u7tlukxnKOcJOAct8R4yY7ySfTSLrOK29uReAM9QWk=
-X-Received: by 2002:a05:651c:509:b0:300:3e1c:b8b1 with SMTP id
- 38308e7fff4ca-307cf3140b0mr32469311fa.18.1738862588347; Thu, 06 Feb 2025
- 09:23:08 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPqJO0fl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9FDFC4CEDD;
+	Thu,  6 Feb 2025 17:38:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1738863512;
+	bh=PYE4odxFCn9Cp6DmDp7y4h8+WxTuRZL6jNDmpTNbLf4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=tPqJO0flOowdQQZK7i/G6SW3uWKZdkyWKThvlFY8ywJNakPhoW6ItaKOrUcaOp3+u
+	 LMP1fhGDEWxNvJqRcq2zeT9ww+c6Mx1J+iDHi+dG+YZ4z0hr4hC3/YEYLrG+nSBsuX
+	 7ADqbShWQK5powgEDji07t0xhCa1s2iOQVaWaKHI=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Lyude Paul <lyude@redhat.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mairacanal@riseup.net>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	linux-usb@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v3 1/8] driver core: add a faux bus for use when a simple device/bus is needed
+Date: Thu,  6 Feb 2025 18:38:15 +0100
+Message-ID: <2025020623-chemo-amends-102a@gregkh>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <2025020620-skedaddle-olympics-1735@gregkh>
+References: <2025020620-skedaddle-olympics-1735@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250206-rust-xarray-bindings-v15-0-a22b5dcacab3@gmail.com>
- <20250206-rust-xarray-bindings-v15-1-a22b5dcacab3@gmail.com> <Z6Tlsn2RIiE121Lg@cassiopeiae>
-In-Reply-To: <Z6Tlsn2RIiE121Lg@cassiopeiae>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Thu, 6 Feb 2025 12:22:32 -0500
-X-Gm-Features: AWEUYZlsb7hvkfENYsFn-FcmN-sfRN0LGVKAr5ROPUMS7Hi6j_4LKu_iYv0VAsw
-Message-ID: <CAJ-ks9kzfM+U=UptZaafoxCHz-4Dtjxc8o1bpTe93+NEMwN5EA@mail.gmail.com>
-Subject: Re: [PATCH v15 1/3] rust: types: add `ForeignOwnable::PointedTo`
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Matthew Wilcox <willy@infradead.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	=?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
-	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=openpgp-sha256; l=13332; i=gregkh@linuxfoundation.org; h=from:subject:message-id; bh=PYE4odxFCn9Cp6DmDp7y4h8+WxTuRZL6jNDmpTNbLf4=; b=owGbwMvMwCRo6H6F97bub03G02pJDOlLPvd3brwiqv8xulCuPOdTqLtOB1PkyolhRq8vnPd4P MHuXMWUjlgWBkEmBlkxRZYv23iO7q84pOhlaHsaZg4rE8gQBi5OAZiI702GedpHOpuTr7IzR5xc U1r4RPyVyof6ewwLunx1tm4XlHlc1XR1jmNa3LQSTYZVAA==
+X-Developer-Key: i=gregkh@linuxfoundation.org; a=openpgp; fpr=F4B60CC5BF78C2214A313DCB3147D40DDB2DFB29
+Content-Transfer-Encoding: 8bit
 
-On Thu, Feb 6, 2025 at 11:39=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> =
-wrote:
->
-> On Thu, Feb 06, 2025 at 11:24:43AM -0500, Tamir Duberstein wrote:
-> > Allow implementors to specify the foreign pointer type; this exposes
-> > information about the pointed-to type such as its alignment.
-> >
-> > This requires the trait to be `unsafe` since it is now possible for
-> > implementors to break soundness by returning a misaligned pointer.
-> >
-> > Encoding the pointer type in the trait (and avoiding pointer casts)
-> > allows the compiler to check that implementors return the correct
-> > pointer type. This is preferable to directly encoding the alignment in
-> > the trait using a constant as the compiler would be unable to check it.
-> >
-> > Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> > ---
-> >  rust/kernel/alloc/kbox.rs | 38 ++++++++++++++++++++------------------
-> >  rust/kernel/miscdevice.rs |  7 ++++++-
-> >  rust/kernel/pci.rs        |  5 ++++-
-> >  rust/kernel/platform.rs   |  5 ++++-
-> >  rust/kernel/sync/arc.rs   | 21 ++++++++++++---------
-> >  rust/kernel/types.rs      | 46 +++++++++++++++++++++++++++++++--------=
--------
-> >  6 files changed, 77 insertions(+), 45 deletions(-)
-> >
-> > diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
-> > index e14433b2ab9d..f1a081dd64c7 100644
-> > --- a/rust/kernel/miscdevice.rs
-> > +++ b/rust/kernel/miscdevice.rs
-> > @@ -225,13 +225,15 @@ impl<T: MiscDevice> VtableHelper<T> {
-> >          Ok(ptr) =3D> ptr,
-> >          Err(err) =3D> return err.to_errno(),
-> >      };
-> > +    let ptr =3D ptr.into_foreign();
-> > +    let ptr =3D ptr.cast();
-> >
-> >      // This overwrites the private data with the value specified by th=
-e user, changing the type of
-> >      // this file's private data. All future accesses to the private da=
-ta is performed by other
-> >      // fops_* methods in this file, which all correctly cast the priva=
-te data to the new type.
-> >      //
-> >      // SAFETY: The open call of a file can access the private data.
-> > -    unsafe { (*raw_file).private_data =3D ptr.into_foreign() };
-> > +    unsafe { (*raw_file).private_data =3D ptr };
->
-> Why not just ptr.into_foreign().cast()?
+Many drivers abuse the platform driver/bus system as it provides a
+simple way to create and bind a device to a driver-specific set of
+probe/release functions.  Instead of doing that, and wasting all of the
+memory associated with a platform device, here is a "faux" bus that
+can be used instead.
 
-That would work too. I was trying to move stuff out of the unsafe block.
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+v3: - loads of documentation updates and rewrites
+    - added to the documentation build
+    - removed name[] array as it's no longer needed
+    - added faux_device_create_with_groups()
+    - added functions to get/set devdata
+    - renamed faux_driver_ops -> faux_device_ops
+    - made faux_device_ops a const *
+    - minor cleanups
+    - tested it, again.
 
-> >
-> >      0
-> >  }
-> > @@ -246,6 +248,7 @@ impl<T: MiscDevice> VtableHelper<T> {
-> >  ) -> c_int {
-> >      // SAFETY: The release call of a file owns the private data.
-> >      let private =3D unsafe { (*file).private_data };
-> > +    let private =3D private.cast();
-> >      // SAFETY: The release call of a file owns the private data.
-> >      let ptr =3D unsafe { <T::Ptr as ForeignOwnable>::from_foreign(priv=
-ate) };
-> >
-> > @@ -267,6 +270,7 @@ impl<T: MiscDevice> VtableHelper<T> {
-> >  ) -> c_long {
-> >      // SAFETY: The ioctl call of a file can access the private data.
-> >      let private =3D unsafe { (*file).private_data };
-> > +    let private =3D private.cast();
-> >      // SAFETY: Ioctl calls can borrow the private data of the file.
-> >      let device =3D unsafe { <T::Ptr as ForeignOwnable>::borrow(private=
-) };
-> >
-> > @@ -316,6 +320,7 @@ impl<T: MiscDevice> VtableHelper<T> {
-> >  ) {
-> >      // SAFETY: The release call of a file owns the private data.
-> >      let private =3D unsafe { (*file).private_data };
-> > +    let private =3D private.cast();
-> >      // SAFETY: Ioctl calls can borrow the private data of the file.
-> >      let device =3D unsafe { <T::Ptr as ForeignOwnable>::borrow(private=
-) };
-> >      // SAFETY:
-> > diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-> > index 4c98b5b9aa1e..eb25fabbff9c 100644
-> > --- a/rust/kernel/pci.rs
-> > +++ b/rust/kernel/pci.rs
-> > @@ -72,10 +72,12 @@ extern "C" fn probe_callback(
-> >
-> >          match T::probe(&mut pdev, info) {
-> >              Ok(data) =3D> {
-> > +                let data =3D data.into_foreign();
-> > +                let data =3D data.cast();
-> >                  // Let the `struct pci_dev` own a reference of the dri=
-ver's private data.
-> >                  // SAFETY: By the type invariant `pdev.as_raw` returns=
- a valid pointer to a
-> >                  // `struct pci_dev`.
-> > -                unsafe { bindings::pci_set_drvdata(pdev.as_raw(), data=
-.into_foreign() as _) };
-> > +                unsafe { bindings::pci_set_drvdata(pdev.as_raw(), data=
-) };
->
-> This change isn't necessary for this patch, is it? I think it makes sense=
- to
-> replace `as _` with cast(), but this should be a separate patch then.
+v2: - renamed bus and root device to just "faux" thanks to Thomas
+    - removed the one-driver-per-device and now just have one driver
+      entirely thanks to Danilo
+    - kerneldoc fixups and additions and string handling bounds checks
+      thanks to Andy
+    - coding style fix thanks to Jonathan
+    - tested that the destroy path actually works
+ Documentation/driver-api/infrastructure.rst |   6 +
+ drivers/base/Makefile                       |   2 +-
+ drivers/base/base.h                         |   1 +
+ drivers/base/faux.c                         | 228 ++++++++++++++++++++
+ drivers/base/init.c                         |   1 +
+ include/linux/device/faux.h                 |  65 ++++++
+ 6 files changed, 302 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/base/faux.c
+ create mode 100644 include/linux/device/faux.h
 
-Sure, I can make this a separate (prequel) patch.
+diff --git a/Documentation/driver-api/infrastructure.rst b/Documentation/driver-api/infrastructure.rst
+index 3d52dfdfa9fd..35e36fee4238 100644
+--- a/Documentation/driver-api/infrastructure.rst
++++ b/Documentation/driver-api/infrastructure.rst
+@@ -41,6 +41,12 @@ Device Drivers Base
+ .. kernel-doc:: drivers/base/class.c
+    :export:
+ 
++.. kernel-doc:: include/linux/device/faux.h
++   :internal:
++
++.. kernel-doc:: drivers/base/faux.c
++   :export:
++
+ .. kernel-doc:: drivers/base/node.c
+    :internal:
+ 
+diff --git a/drivers/base/Makefile b/drivers/base/Makefile
+index 7fb21768ca36..8074a10183dc 100644
+--- a/drivers/base/Makefile
++++ b/drivers/base/Makefile
+@@ -6,7 +6,7 @@ obj-y			:= component.o core.o bus.o dd.o syscore.o \
+ 			   cpu.o firmware.o init.o map.o devres.o \
+ 			   attribute_container.o transport_class.o \
+ 			   topology.o container.o property.o cacheinfo.o \
+-			   swnode.o
++			   swnode.o faux.o
+ obj-$(CONFIG_AUXILIARY_BUS) += auxiliary.o
+ obj-$(CONFIG_DEVTMPFS)	+= devtmpfs.o
+ obj-y			+= power/
+diff --git a/drivers/base/base.h b/drivers/base/base.h
+index 8cf04a557bdb..0042e4774b0c 100644
+--- a/drivers/base/base.h
++++ b/drivers/base/base.h
+@@ -137,6 +137,7 @@ int hypervisor_init(void);
+ static inline int hypervisor_init(void) { return 0; }
+ #endif
+ int platform_bus_init(void);
++int faux_bus_init(void);
+ void cpu_dev_init(void);
+ void container_dev_init(void);
+ #ifdef CONFIG_AUXILIARY_BUS
+diff --git a/drivers/base/faux.c b/drivers/base/faux.c
+new file mode 100644
+index 000000000000..27879ae78f53
+--- /dev/null
++++ b/drivers/base/faux.c
+@@ -0,0 +1,228 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (c) 2025 Greg Kroah-Hartman <gregkh@linuxfoundation.org>
++ * Copyright (c) 2025 The Linux Foundation
++ *
++ * A "simple" faux bus that allows devices to be created and added
++ * automatically to it.  This is to be used whenever you need to create a
++ * device that is not associated with any "real" system resources, and do
++ * not want to have to deal with a bus/driver binding logic.  It is
++ * intended to be very simple, with only a create and a destroy function
++ * available.
++ */
++#include <linux/err.h>
++#include <linux/init.h>
++#include <linux/slab.h>
++#include <linux/string.h>
++#include <linux/container_of.h>
++#include <linux/device/faux.h>
++#include "base.h"
++
++#define MAX_FAUX_NAME_SIZE	256	/* Max size of a faux_device name */
++
++/*
++ * Internal wrapper structure so we can hold a pointer to the
++ * faux_device_ops for this device.
++ */
++struct faux_object {
++	struct faux_device faux_dev;
++	const struct faux_device_ops *faux_ops;
++};
++#define to_faux_object(dev) container_of_const(dev, struct faux_object, faux_dev.dev)
++
++static struct device faux_bus_root = {
++	.init_name	= "faux",
++};
++
++static int faux_match(struct device *dev, const struct device_driver *drv)
++{
++	/* Match always succeeds, we only have one driver */
++	return 1;
++}
++
++static int faux_probe(struct device *dev)
++{
++	struct faux_object *faux_obj = to_faux_object(dev);
++	struct faux_device *faux_dev = &faux_obj->faux_dev;
++	const struct faux_device_ops *faux_ops = faux_obj->faux_ops;
++	int ret = 0;
++
++	if (faux_ops && faux_ops->probe)
++		ret = faux_ops->probe(faux_dev);
++
++	return ret;
++}
++
++static void faux_remove(struct device *dev)
++{
++	struct faux_object *faux_obj = to_faux_object(dev);
++	struct faux_device *faux_dev = &faux_obj->faux_dev;
++	const struct faux_device_ops *faux_ops = faux_obj->faux_ops;
++
++	if (faux_ops && faux_ops->remove)
++		faux_ops->remove(faux_dev);
++}
++
++static const struct bus_type faux_bus_type = {
++	.name		= "faux",
++	.match		= faux_match,
++	.probe		= faux_probe,
++	.remove		= faux_remove,
++};
++
++static struct device_driver faux_driver = {
++	.name		= "faux_driver",
++	.bus		= &faux_bus_type,
++	.probe_type	= PROBE_PREFER_ASYNCHRONOUS,
++};
++
++static void faux_device_release(struct device *dev)
++{
++	struct faux_object *faux_obj = to_faux_object(dev);
++
++	kfree(faux_obj);
++}
++
++/**
++ * faux_device_create_with_groups - create and register with the driver
++ *		core a faux device and populate the device with an initial
++ *		set of sysfs attributes
++ * @name:	The name of the device we are adding, must be unique for
++ *		all faux devices.
++ * @faux_ops:	struct faux_device_ops that the new device will call back
++ *		into, can be NULL.
++ * @groups:	The set of sysfs attributes that will be created for this
++ *		device when it is registered with the driver core.
++ *
++ * Create a new faux device and register it in the driver core properly.
++ * If present, callbacks in @faux_ops will be called with the device that
++ * for the caller to do something with at the proper time given the
++ * device's lifecycle.
++ *
++ * Note, when this function is called, the functions specified in struct
++ * faux_ops can be called before the function returns, so be prepared for
++ * everything to be properly initialized before that point in time.
++ *
++ * Return:
++ * * NULL if an error happened with creating the device
++ * * pointer to a valid struct faux_device that is registered with sysfs
++ */
++struct faux_device *faux_device_create_with_groups(const char *name,
++						   const struct faux_device_ops *faux_ops,
++						   const struct attribute_group **groups)
++{
++	struct device *dev;
++	struct faux_object *faux_obj;
++	struct faux_device *faux_dev;
++	int name_size;
++	int ret;
++
++	name_size = strlen(name);
++	if (name_size > MAX_FAUX_NAME_SIZE)
++		return NULL;
++
++	faux_obj = kzalloc(sizeof(*faux_obj) + name_size + 1, GFP_KERNEL);
++	if (!faux_obj)
++		return NULL;
++
++	/* Save off the callbacks so we can use them in the future */
++	faux_obj->faux_ops = faux_ops;
++
++	/* Initialize the device portion and register it with the driver core */
++	faux_dev = &faux_obj->faux_dev;
++	dev = &faux_dev->dev;
++
++	device_initialize(dev);
++	dev->release = faux_device_release;
++	dev->parent = &faux_bus_root;
++	dev->bus = &faux_bus_type;
++	dev->groups = groups;
++	dev_set_name(dev, "%s", name);
++
++	ret = device_add(dev);
++	if (ret) {
++		pr_err("%s: device_add for faux device '%s' failed with %d\n",
++		       __func__, name, ret);
++		put_device(dev);
++		return NULL;
++	}
++
++	return faux_dev;
++}
++EXPORT_SYMBOL_GPL(faux_device_create_with_groups);
++
++/**
++ * faux_device_create - create and register with the driver core a faux device
++ * @name:	name of the device we are adding, must be unique for all
++ *		faux devices.
++ * @faux_ops:	struct faux_device_ops that the new device will call back
++ *		into, can be NULL.
++ *
++ * Create a new faux device and register it in the driver core properly.
++ * If present, callbacks in @faux_ops will be called with the device that
++ * for the caller to do something with at the proper time given the
++ * device's lifecycle.
++ *
++ * Note, when this function is called, the functions specified in struct
++ * faux_ops can be called before the function returns, so be prepared for
++ * everything to be properly initialized before that point in time.
++ *
++ * Return:
++ * * NULL if an error happened with creating the device
++ * * pointer to a valid struct faux_device that is registered with sysfs
++ */
++struct faux_device *faux_device_create(const char *name,
++				       const struct faux_device_ops *faux_ops)
++{
++	return faux_device_create_with_groups(name, faux_ops, NULL);
++}
++EXPORT_SYMBOL_GPL(faux_device_create);
++
++/**
++ * faux_device_destroy - destroy a faux device
++ * @faux_dev:	faux device to destroy
++ *
++ * Unregisters and cleans up a device that was created with a call to
++ * faux_device_create()
++ */
++void faux_device_destroy(struct faux_device *faux_dev)
++{
++	struct device *dev = &faux_dev->dev;
++
++	if (!faux_dev)
++		return;
++
++	device_del(dev);
++
++	/* The final put_device() will clean up the memory we allocated for this device. */
++	put_device(dev);
++}
++EXPORT_SYMBOL_GPL(faux_device_destroy);
++
++int __init faux_bus_init(void)
++{
++	int ret;
++
++	ret = device_register(&faux_bus_root);
++	if (ret) {
++		put_device(&faux_bus_root);
++		return ret;
++	}
++
++	ret = bus_register(&faux_bus_type);
++	if (ret)
++		goto error_bus;
++
++	ret = driver_register(&faux_driver);
++	if (ret)
++		goto error_driver;
++
++	return ret;
++
++error_driver:
++	bus_unregister(&faux_bus_type);
++
++error_bus:
++	device_unregister(&faux_bus_root);
++	return ret;
++}
+diff --git a/drivers/base/init.c b/drivers/base/init.c
+index c4954835128c..9d2b06d65dfc 100644
+--- a/drivers/base/init.c
++++ b/drivers/base/init.c
+@@ -32,6 +32,7 @@ void __init driver_init(void)
+ 	/* These are also core pieces, but must come after the
+ 	 * core core pieces.
+ 	 */
++	faux_bus_init();
+ 	of_core_init();
+ 	platform_bus_init();
+ 	auxiliary_bus_init();
+diff --git a/include/linux/device/faux.h b/include/linux/device/faux.h
+new file mode 100644
+index 000000000000..f74cfd2843f1
+--- /dev/null
++++ b/include/linux/device/faux.h
+@@ -0,0 +1,65 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (c) 2025 Greg Kroah-Hartman <gregkh@linuxfoundation.org>
++ * Copyright (c) 2025 The Linux Foundation
++ *
++ * A "simple" faux bus that allows devices to be created and added
++ * automatically to it.  This is to be used whenever you need to create a
++ * device that is not associated with any "real" system resources, and do
++ * not want to have to deal with a bus/driver binding logic.  It is
++ * intended to be very simple, with only a create and a destroy function
++ * available.
++ */
++#ifndef _FAUX_DEVICE_H_
++#define _FAUX_DEVICE_H_
++
++#include <linux/device.h>
++
++/**
++ * struct faux_device - a "faux" device
++ * @dev:	internal struct device of the object
++ *
++ * A simple faux device that can be created/destroyed.  To be used when a
++ * driver only needs to have a device to "hang" something off.  This can be
++ * used for downloading firmware or other basic tasks.  Use this instead of
++ * a struct platform_device if the device has no resources assigned to
++ * it at all.
++ */
++struct faux_device {
++	struct device dev;
++};
++#define to_faux_device(x) container_of_const((x), struct faux_device, dev)
++
++/**
++ * struct faux_device_ops - a set of callbacks for a struct faux_device
++ * @probe:	called when a faux device is probed by the driver core
++ *		before the device is fully bound to the internal faux bus
++ *		code.  If probe succeeds, return 0, otherwise return a
++ *		negative error number to stop the probe sequence from
++ *		succeeding.
++ * @remove:	called when a faux device is removed from the system
++ *
++ * Both @probe and @remove are optional, if not needed, set to NULL.
++ */
++struct faux_device_ops {
++	int (*probe)(struct faux_device *faux_dev);
++	void (*remove)(struct faux_device *faux_dev);
++};
++
++struct faux_device *faux_device_create(const char *name, const struct faux_device_ops *faux_ops);
++struct faux_device *faux_device_create_with_groups(const char *name,
++						   const struct faux_device_ops *faux_ops,
++						   const struct attribute_group **groups);
++void faux_device_destroy(struct faux_device *faux_dev);
++
++static inline void *faux_device_get_drvdata(const struct faux_device *faux_dev)
++{
++	return dev_get_drvdata(&faux_dev->dev);
++}
++
++static inline void faux_device_set_drvdata(struct faux_device *faux_dev, void *data)
++{
++	dev_set_drvdata(&faux_dev->dev, data);
++}
++
++#endif /* _FAUX_DEVICE_H_ */
+-- 
+2.48.1
 
-> >              }
-> >              Err(err) =3D> return Error::to_errno(err),
-> >          }
-> > @@ -87,6 +89,7 @@ extern "C" fn remove_callback(pdev: *mut bindings::pc=
-i_dev) {
-> >          // SAFETY: The PCI bus only ever calls the remove callback wit=
-h a valid pointer to a
-> >          // `struct pci_dev`.
-> >          let ptr =3D unsafe { bindings::pci_get_drvdata(pdev) };
-> > +        let ptr =3D ptr.cast();
-> >
-> >          // SAFETY: `remove_callback` is only ever called after a succe=
-ssful call to
-> >          // `probe_callback`, hence it's guaranteed that `ptr` points t=
-o a valid and initialized
-> > diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-> > index 50e6b0421813..53764cb7f804 100644
-> > --- a/rust/kernel/platform.rs
-> > +++ b/rust/kernel/platform.rs
-> > @@ -63,10 +63,12 @@ extern "C" fn probe_callback(pdev: *mut bindings::p=
-latform_device) -> kernel::ff
-> >          let info =3D <Self as driver::Adapter>::id_info(pdev.as_ref())=
-;
-> >          match T::probe(&mut pdev, info) {
-> >              Ok(data) =3D> {
-> > +                let data =3D data.into_foreign();
-> > +                let data =3D data.cast();
-> >                  // Let the `struct platform_device` own a reference of=
- the driver's private data.
-> >                  // SAFETY: By the type invariant `pdev.as_raw` returns=
- a valid pointer to a
-> >                  // `struct platform_device`.
-> > -                unsafe { bindings::platform_set_drvdata(pdev.as_raw(),=
- data.into_foreign() as _) };
-> > +                unsafe { bindings::platform_set_drvdata(pdev.as_raw(),=
- data) };
->
-> Same here.
-
-Yep. Will do.
