@@ -1,66 +1,67 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068B6227596
-	for <rust-for-linux@vger.kernel.org>; Thu,  6 Feb 2025 09:28:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DBA422ACEE
+	for <rust-for-linux@vger.kernel.org>; Thu,  6 Feb 2025 09:29:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738834139; cv=none; b=Uc4/1Vh4lQ2XyDam2Je91BK95ngvb9hZAIlA5z8BvuF63OoLK5wKNqBz+GKfG/VC/XnbKsUgL57jQ5C5VRs48JtbJwC5R5tZ8o3FmU+B8+6Oaq7lKR3E83n5/wXGulR8E7iHjwz+fyLbkQ+Gs0wRRAyfEGasAID+S8TrUZ7DKGQ=
+	t=1738834143; cv=none; b=UesfiL8AcS/BYB01w4cPWSRtQdfZdoZUI2jYQiUEGjEE4i3vBwo9Q8nKQpw+pdoEGnI1ZzuY6oflfVaFZRb38Z6SB86C+HqNIbka0JyqqXRTxIRE6NeJ9BJAH6IQuDdk5kO8cPOnfVhsz7M5zt//OgiaEPhp2/Iw2sE2X41judc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738834139; c=relaxed/simple;
-	bh=Ot/T0jCd4T7tNCR433fIHwM84YOZJZy/rRbe6ZLnftM=;
+	s=arc-20240116; t=1738834143; c=relaxed/simple;
+	bh=t2NVGvjKSZ8jGPHeqUP8byps2cHUv/LlWtK1ugt6aZ4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ppz6MquGOBZ/k3LCfSq658Tg+hrnwq4yF5N3tmVbTfGoqsVjr5A1P0bSI8OG0z/cfrB2I4FPFfRxtSpMn/LpHSgVNR0xzQhvzhQtbUwiTjDjL/GmIbkXYtfzo1USccWEMXUxB/P62PhcAm3Spm6oNiwWVqSRJBnpRJvZf1z/ESI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zUoR3pTF; arc=none smtp.client-ip=209.85.214.173
+	 MIME-Version; b=bi4ZquqiTtf2dKjpQTfyzYwZ+IWNkkBdTk9yMO/9f5/WAUFMW9V0FImfOhOaartViQGWc0Fk689YyAtdcJUSQLKCotMb6jlf72dI8wLJP7ANCK2F5StHgPNdf1Iy/vceewdUZD9Gdj7cr6HcZWxdBCXtJ1/fT8otjRKFwQfafsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QpzFPYDs; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zUoR3pTF"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-21670dce0a7so16610275ad.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 06 Feb 2025 01:28:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QpzFPYDs"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2163dc5155fso12913635ad.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 06 Feb 2025 01:29:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1738834137; x=1739438937; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1738834141; x=1739438941; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=H9/+ITx7jdgxCni5rtLO0HfiqPVNFjTWeSm9ZunqSOA=;
-        b=zUoR3pTF6YmbxQRUQ8Ws3B0zZbQMmK0CTochc8/i7A/gnubm0ADABBO9+k7MXWRqAS
-         urZGm2dDo2ZZePeWLFvvihxJ1TYZzJZJ3HjMW5+DO27fr8/V/NtablMOmIyPK+WAMOuD
-         084PT5xrhzqYZMelFQWI7MTZY/unlUScwFsjzqR6k2MYKqRhr7Q/9NvJvhQGyE82J6dU
-         4FmZ+hDMzSoPcOy1IoFb/d9Npmy74SBGSrvoLxtoMmbda9Vb0fA83qWGT8YnODCzsF3n
-         nKPoUKXyCjMoUpvxK4tFr1r4azrehnKIQBe/prHlKI2kNAkKN3Ba5YB78ILHlnMVw7eV
-         51GQ==
+        bh=IkWjr0H8S/ljloJuoBCwCDqimDzQkeaXdlPta4A4wUg=;
+        b=QpzFPYDs5uF7AGEy9d5dgcKHK5ELcTQ8G/LPO9gDyiwUBfHK1CaceSUUG4Yzz42/AV
+         NyQfgdK2EMYBqcKOKZbq+a5xBFf26hpPxGHLO9u63HJINmwT8Mv/tLkbmlMzEF7vgiAm
+         ODMkzU7HNLqwfrjc8uGn+3vvqoHPDENCILq9YEdXIPy0Ixlrq1xwr0oBVuIww8b/cP0Q
+         J+d4Qxk4XB+96S1QORQNHFOpwVxBYN6VL307QPfe9GXSO6VETUe+yj869/f+uyfj9YT3
+         PHkzPyeUbpmQD9e34sVKqIIuiqVxAgZlGlQW8fX2g4L0YLe3tLOEHWgxCrYntLcjGY8A
+         8vgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738834137; x=1739438937;
+        d=1e100.net; s=20230601; t=1738834141; x=1739438941;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=H9/+ITx7jdgxCni5rtLO0HfiqPVNFjTWeSm9ZunqSOA=;
-        b=aURk0VMLcsUdhy95pPW6auCdenCk8Ix3Iu1RPETj9XYEInY98DUvk/2bNNj8lFfGWO
-         UN+8PkI0qXxqqM7qaaeu+hHZU/1C6zudZjY8PkUw2muNXAC3Gp3ocfO4wC2WEF/U2c7f
-         ln7DvOzB267X358+9KiXfpYKcezmc88CoPDGa06KpzDDNjoyPFseEguySpLkd22fEkMa
-         W8uHrmern2iLqYwc7N4WxU0gaOjiThHeg6tgiMq8xh6SxEV1+MPf2JLkZTouzBmhN5Y5
-         UHgMBaVz50kgid2GZtiPpjS2/VVEQFmU2EEO9Mzc0cEEFN1LwxLaQrb6+gLsXiga9R9r
-         t8DQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUjgUXav3wYftrpI/1FN/ZBLjY5/22k5Ng9ovq64PNyXusRYOcKddU8rWJvLeOf6k33jWIQErsER8tlL82Q1A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTQkrnJckEZpnlOWXiWMoKEW2llaDVNvvf0dgR0DUmhNPcqgts
-	Ms8920ejIRKU8d/+1fGsNAyB8sV+s8EYO6e9t1P2viSvTpeGa1ISwL04lXgnZFw=
-X-Gm-Gg: ASbGncs549HWwWHv8xxrYualIoy7WNpn6XTTkrQvebtvKTdQMik1J65CzcooIA/LMJR
-	qf6JSC1IFxr2tU58c3zsS9SnF37GUOgmvl7/c30552JVoVmbI0+1nuE4mK5E39E382BVwzErneR
-	cXUzspo/zjRVUSNO6f7Y2MwxZOd2EUZuSRXrekqGqor3OK8LX0LqwnFKlM/0432IcpKmYkCGqOT
-	JNX4gy+h1NosKdpdid2KstOKhs+PSO+pynbXFn/bluoXuVQEIHuI3cN3/Wn2QsiHq/0bE95GhdW
-	jHR0ydaZ3NNakuGVSw==
-X-Google-Smtp-Source: AGHT+IGJC2iQJEI3sTGW6GjKdvP/nRc87YJ1GkI47hpYxHY8P6Qy5pjuZWMZBFlY67UgbnD1fdAThg==
-X-Received: by 2002:a17:903:41c1:b0:21e:ff3a:7593 with SMTP id d9443c01a7336-21f17dde2d4mr80139535ad.6.1738834137385;
-        Thu, 06 Feb 2025 01:28:57 -0800 (PST)
+        bh=IkWjr0H8S/ljloJuoBCwCDqimDzQkeaXdlPta4A4wUg=;
+        b=MlH9gZyz5D68vV/rnOY1pPgR9iU3HwUR9r4cSI0Rmgn64CONI9gnKRPeeHgsU7b12W
+         0t9T0JwVp8nTOhrCHbunezuth7DoB9A5cpb6ReUWweDojeuwBUzn0cCpqzQNxoAS4TUp
+         CeMnI5bXYu+yEbdb4kzGPdmxkiL7TIihMF4MVWAmAx6XsoyQ1YNa555jXiMuNuMaOlWX
+         1eNcBepC+02ChIAyd7dpTRBY5Pu1VNu7yhtGg2q+SbtdzxpKJgiNqLu/h3lutQyfHicO
+         K0wDlDdFMUoVBpsp5EY93nZmeQRvRt37KA/Niq3nlDomWFZK7LdZaM6VB1husuf0RSJT
+         P0EA==
+X-Forwarded-Encrypted: i=1; AJvYcCUT5FP1anMHitZ0s3dJ0i0jNu3lLxvdCX9nvw80dPn4aA6QhWUX4PGp9EqFzdIDwbh1Gf2QdE58ZVoVTui9cw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YweesCpaLwq2s4wIB2UsC3V7OYH99WY8Hys0pnyuymn8FjQLs0U
+	A8Bi74xSXGDKaZkEpJ+k0I73T0XESjfWJ28y4dMpZRF5LgnqQOK4IlUL12T58Og=
+X-Gm-Gg: ASbGnctj8sASZI/JLCJ5P/CahPTSyb0nqtieJs3wU7ATQQ7kaX7R7QL1JkdhNWAftr4
+	/mGYoTFKuYljkzDyT7bEwXgdoNpGaLUNE53XmaS4EAX0aP8eaSc9/IeUmMehCcJBXPGaehf2cZ0
+	bADC6Df4D+fYq7zcz5sxORqmVA5frTlBYg5jSRCoE8lOSgsYk9dtEznQFrs1RQlCZOhtzKFh3/l
+	957L2075u+Wo3rud/mxY18oNouEjpzkdTD2VX+xClAXM1nIN9G8kO7CRyT1tAUktFMSYN4KHO32
+	iz+f3uWXk0iXsAm5kA==
+X-Google-Smtp-Source: AGHT+IH1/6xK/rRw8mY8TBJIKn2KcQgONJf1mDB8CNf90rvvV01LuVGRr4XBp/OKymX25kOUJ+f8Qw==
+X-Received: by 2002:a17:903:244e:b0:21f:b6f:3f34 with SMTP id d9443c01a7336-21f17df36a4mr89345215ad.15.1738834140797;
+        Thu, 06 Feb 2025 01:29:00 -0800 (PST)
 Received: from localhost ([122.172.84.139])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f3653b02dsm8145955ad.74.2025.02.06.01.28.56
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f368bae51sm7952415ad.234.2025.02.06.01.28.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Feb 2025 01:28:56 -0800 (PST)
+        Thu, 06 Feb 2025 01:29:00 -0800 (PST)
 From: Viresh Kumar <viresh.kumar@linaro.org>
 To: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
 	Danilo Krummrich <dakr@redhat.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>,
@@ -70,8 +71,7 @@ To: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>,
-	linux-pm@vger.kernel.org,
+Cc: linux-pm@vger.kernel.org,
 	Vincent Guittot <vincent.guittot@linaro.org>,
 	Stephen Boyd <sboyd@kernel.org>,
 	Nishanth Menon <nm@ti.com>,
@@ -81,11 +81,10 @@ Cc: Viresh Kumar <viresh.kumar@linaro.org>,
 	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
 	Joakim Bech <joakim.bech@linaro.org>,
 	Rob Herring <robh@kernel.org>,
-	Anisse Astier <anisse@astier.eu>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH V8 01/14] rust: macros: enable use of hyphens in module names
-Date: Thu,  6 Feb 2025 14:58:22 +0530
-Message-Id: <99ca28045252ba77c302d74e57c2976e60744c4d.1738832118.git.viresh.kumar@linaro.org>
+Subject: [PATCH V8 02/14] cpufreq: Use enum for cpufreq flags that use BIT()
+Date: Thu,  6 Feb 2025 14:58:23 +0530
+Message-Id: <a15f7a5988d2619c593339566a51007cec14901a.1738832118.git.viresh.kumar@linaro.org>
 X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
 In-Reply-To: <cover.1738832118.git.viresh.kumar@linaro.org>
 References: <cover.1738832118.git.viresh.kumar@linaro.org>
@@ -97,88 +96,140 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Anisse Astier <anisse@astier.eu>
+The BIT() macro is too complex for Rust's bindgen to interpret as
+integer constants. This results in many of the cpufreq macros being
+undefined in Rust auto-generated bindings. By replacing the "#define"
+macros with an "enum", we ensure that bindgen can properly evaluate
+these values, enabling their seamless use in Rust code.
 
-Some modules might need naming that contains hyphens "-" to match the
-auto-probing by name in the platform devices that comes from the device
-tree.
+No intentional functional impact.
 
-But rust identifiers cannot contain hyphens, so replace the module name
-by an underscore anywhere we'd use it as an identifier.
-
-Signed-off-by: Anisse Astier <anisse@astier.eu>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-[Viresh: Replace "-" with '-']
+Suggested-by: Alice Ryhl <aliceryhl@google.com>
 Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 ---
- rust/macros/module.rs | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ include/linux/cpufreq.h | 96 ++++++++++++++++++++++-------------------
+ 1 file changed, 51 insertions(+), 45 deletions(-)
 
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index cdf94f4982df..2e740bbdb598 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -182,7 +182,9 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
+diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
+index 7fe0981a7e46..bd67728081ad 100644
+--- a/include/linux/cpufreq.h
++++ b/include/linux/cpufreq.h
+@@ -292,11 +292,12 @@ static inline void cpufreq_stats_record_transition(struct cpufreq_policy *policy
+  *                      CPUFREQ DRIVER INTERFACE                     *
+  *********************************************************************/
  
-     let info = ModuleInfo::parse(&mut it);
+-#define CPUFREQ_RELATION_L 0  /* lowest frequency at or above target */
+-#define CPUFREQ_RELATION_H 1  /* highest frequency below or at target */
+-#define CPUFREQ_RELATION_C 2  /* closest frequency to target */
+-/* relation flags */
+-#define CPUFREQ_RELATION_E BIT(2) /* Get if possible an efficient frequency */
++enum {
++	CPUFREQ_RELATION_L = 0, /* lowest frequency at or above target */
++	CPUFREQ_RELATION_H = BIT(0), /* highest frequency below or at target */
++	CPUFREQ_RELATION_C = BIT(1), /* closest frequency to target */
++	CPUFREQ_RELATION_E = BIT(2), /* Get if possible an efficient frequency */
++};
  
--    let mut modinfo = ModInfoBuilder::new(info.name.as_ref());
-+    /* Rust does not allow hyphens in identifiers, use underscore instead */
-+    let name_identifier = info.name.replace('-', "_");
-+    let mut modinfo = ModInfoBuilder::new(name_identifier.as_ref());
-     if let Some(author) = info.author {
-         modinfo.emit("author", &author);
-     }
-@@ -298,14 +300,14 @@ mod __module_init {{
-                     #[doc(hidden)]
-                     #[link_section = \"{initcall_section}\"]
-                     #[used]
--                    pub static __{name}_initcall: extern \"C\" fn() -> kernel::ffi::c_int = __{name}_init;
-+                    pub static __{name_identifier}_initcall: extern \"C\" fn() -> kernel::ffi::c_int = __{name_identifier}_init;
+ #define CPUFREQ_RELATION_LE (CPUFREQ_RELATION_L | CPUFREQ_RELATION_E)
+ #define CPUFREQ_RELATION_HE (CPUFREQ_RELATION_H | CPUFREQ_RELATION_E)
+@@ -418,52 +419,57 @@ struct cpufreq_driver {
  
-                     #[cfg(not(MODULE))]
-                     #[cfg(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS)]
-                     core::arch::global_asm!(
-                         r#\".section \"{initcall_section}\", \"a\"
--                        __{name}_initcall:
--                            .long   __{name}_init - .
-+                        __{name_identifier}_initcall:
-+                            .long   __{name_identifier}_init - .
-                             .previous
-                         \"#
-                     );
-@@ -313,7 +315,7 @@ mod __module_init {{
-                     #[cfg(not(MODULE))]
-                     #[doc(hidden)]
-                     #[no_mangle]
--                    pub extern \"C\" fn __{name}_init() -> kernel::ffi::c_int {{
-+                    pub extern \"C\" fn __{name_identifier}_init() -> kernel::ffi::c_int {{
-                         // SAFETY: This function is inaccessible to the outside due to the double
-                         // module wrapping it. It is called exactly once by the C side via its
-                         // placement above in the initcall section.
-@@ -323,12 +325,12 @@ mod __module_init {{
-                     #[cfg(not(MODULE))]
-                     #[doc(hidden)]
-                     #[no_mangle]
--                    pub extern \"C\" fn __{name}_exit() {{
-+                    pub extern \"C\" fn __{name_identifier}_exit() {{
-                         // SAFETY:
-                         // - This function is inaccessible to the outside due to the double
-                         //   module wrapping it. It is called exactly once by the C side via its
-                         //   unique name,
--                        // - furthermore it is only called after `__{name}_init` has returned `0`
-+                        // - furthermore it is only called after `__{name_identifier}_init` has returned `0`
-                         //   (which delegates to `__init`).
-                         unsafe {{ __exit() }}
-                     }}
-@@ -369,6 +371,7 @@ unsafe fn __exit() {{
-         ",
-         type_ = info.type_,
-         name = info.name,
-+        name_identifier = name_identifier,
-         modinfo = modinfo.buffer,
-         initcall_section = ".initcall6.init"
-     )
+ /* flags */
+ 
+-/*
+- * Set by drivers that need to update internal upper and lower boundaries along
+- * with the target frequency and so the core and governors should also invoke
+- * the diver if the target frequency does not change, but the policy min or max
+- * may have changed.
+- */
+-#define CPUFREQ_NEED_UPDATE_LIMITS		BIT(0)
++enum {
++	/*
++	 * Set by drivers that need to update internal upper and lower
++	 * boundaries along with the target frequency and so the core and
++	 * governors should also invoke the diver if the target frequency does
++	 * not change, but the policy min or max may have changed.
++	 */
++	CPUFREQ_NEED_UPDATE_LIMITS		= BIT(0),
+ 
+-/* loops_per_jiffy or other kernel "constants" aren't affected by frequency transitions */
+-#define CPUFREQ_CONST_LOOPS			BIT(1)
++	/*
++	 * loops_per_jiffy or other kernel "constants" aren't affected by
++	 * frequency transitions.
++	 */
++	CPUFREQ_CONST_LOOPS			= BIT(1),
+ 
+-/*
+- * Set by drivers that want the core to automatically register the cpufreq
+- * driver as a thermal cooling device.
+- */
+-#define CPUFREQ_IS_COOLING_DEV			BIT(2)
++	/*
++	 * Set by drivers that want the core to automatically register the
++	 * cpufreq driver as a thermal cooling device.
++	 */
++	CPUFREQ_IS_COOLING_DEV			= BIT(2),
+ 
+-/*
+- * This should be set by platforms having multiple clock-domains, i.e.
+- * supporting multiple policies. With this sysfs directories of governor would
+- * be created in cpu/cpu<num>/cpufreq/ directory and so they can use the same
+- * governor with different tunables for different clusters.
+- */
+-#define CPUFREQ_HAVE_GOVERNOR_PER_POLICY	BIT(3)
++	/*
++	 * This should be set by platforms having multiple clock-domains, i.e.
++	 * supporting multiple policies. With this sysfs directories of governor
++	 * would be created in cpu/cpu<num>/cpufreq/ directory and so they can
++	 * use the same governor with different tunables for different clusters.
++	 */
++	CPUFREQ_HAVE_GOVERNOR_PER_POLICY	= BIT(3),
+ 
+-/*
+- * Driver will do POSTCHANGE notifications from outside of their ->target()
+- * routine and so must set cpufreq_driver->flags with this flag, so that core
+- * can handle them specially.
+- */
+-#define CPUFREQ_ASYNC_NOTIFICATION		BIT(4)
++	/*
++	 * Driver will do POSTCHANGE notifications from outside of their
++	 * ->target() routine and so must set cpufreq_driver->flags with this
++	 *  flag, so that core can handle them specially.
++	 */
++	CPUFREQ_ASYNC_NOTIFICATION		= BIT(4),
+ 
+-/*
+- * Set by drivers which want cpufreq core to check if CPU is running at a
+- * frequency present in freq-table exposed by the driver. For these drivers if
+- * CPU is found running at an out of table freq, we will try to set it to a freq
+- * from the table. And if that fails, we will stop further boot process by
+- * issuing a BUG_ON().
+- */
+-#define CPUFREQ_NEED_INITIAL_FREQ_CHECK	BIT(5)
++	/*
++	 * Set by drivers which want cpufreq core to check if CPU is running at
++	 * a frequency present in freq-table exposed by the driver. For these
++	 * drivers if CPU is found running at an out of table freq, we will try
++	 * to set it to a freq from the table. And if that fails, we will stop
++	 * further boot process by issuing a BUG_ON().
++	 */
++	CPUFREQ_NEED_INITIAL_FREQ_CHECK		= BIT(5),
+ 
+-/*
+- * Set by drivers to disallow use of governors with "dynamic_switching" flag
+- * set.
+- */
+-#define CPUFREQ_NO_AUTO_DYNAMIC_SWITCHING	BIT(6)
++	/*
++	 * Set by drivers to disallow use of governors with "dynamic_switching"
++	 * flag set.
++	 */
++	CPUFREQ_NO_AUTO_DYNAMIC_SWITCHING	= BIT(6),
++};
+ 
+ int cpufreq_register_driver(struct cpufreq_driver *driver_data);
+ void cpufreq_unregister_driver(struct cpufreq_driver *driver_data);
 -- 
 2.31.1.272.g89b43f80a514
 
