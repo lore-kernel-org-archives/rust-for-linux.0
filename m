@@ -1,183 +1,168 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from common.ash.relay.mailchannels.net (common.ash.relay.mailchannels.net [23.83.222.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5D5214209;
-	Thu,  6 Feb 2025 11:52:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738842769; cv=none; b=h7nHgbov0lLOrf+8DeBnzwGaZx+Rh8xdT2Gs/5blQ66DGyQjrJDb4K0g9w6id+AZFjX49TC8MfRPkTbdcgnsMqJjmXHukUmm1Xof+tIHC7RYh92EPoM2Xa/6gQzPGniXMkWPuEWIrAEtCdCuE/VXySbPSc+RWxTgShsYqr5xEf8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738842769; c=relaxed/simple;
-	bh=avabfQ8Dl/T55XPfuG4fHovvp9LBLIUXUO2RKxv80cU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W3jYS/W8Bcfa0n3WesZ+2/LGFbD7sFnWcsNfr99leyDUVPlMBJyt/H8wML2IuRCCqDX7mJpFS1pPYUUq80W7APKOk73ouGyzyFbDbJ0tNSmob9AlSLWRnYuSpmLCI5mHFHzw+3U8osPRCSko37GMAIe3Qpuy8bLwjIQpA+Ei474=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qB8/8/mc; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF0118B477;
+	Thu,  6 Feb 2025 12:03:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.222.38
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738843435; cv=pass; b=cyD+e9L/Cuq4NcPHcDDCS3xWYptEsnoYTgU7Blob51IEQj/E0oyKzc6q5otJ025IC+8u7Ld3vZa8aUoj8+KFu5eQBYXaFZHBsJ1PcmpIa2SfQrawiY5yWI1sO4MuNBq+wLgYEm42uUDWv0sw5Wmwqnx7kfx1vXfEtlpUQVdf87E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738843435; c=relaxed/simple;
+	bh=cADbSS5p6b/9O1n4o1RT1/87DI9T5ECYkQOPRJX760Y=;
+	h=From:To:Cc:Subject:Message-ID:MIME-Version:Date; b=lhfq7EfizsR7/dx4rnLXDje5UThUNFvqRQwu6wSUcOnRz6UXcbO66TB9Q2HdJuqFwA3oqji/wldN1CPppduzcEFHkPGY70m95HcdVy1HumQOI3n9G3TIY14xpWMmcBZr6KeUp5l9tvo4CqtCGr9ou1IbZXqQD6vYtEfHXN35qsY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invicto.ai; spf=pass smtp.mailfrom=invicto.ai; dkim=fail (0-bit key) header.d=invicto.ai header.i=@invicto.ai header.b=N5nN8Sfu reason="key not found in DNS"; arc=pass smtp.client-ip=23.83.222.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invicto.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=invicto.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qB8/8/mc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42364C4CEE0;
-	Thu,  6 Feb 2025 11:52:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738842769;
-	bh=avabfQ8Dl/T55XPfuG4fHovvp9LBLIUXUO2RKxv80cU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qB8/8/mcvuf/aOBOYUwqgFnMIFNSCCjNGwL+TafnUo9sqeTlzDRa2aW6qutGjj/P6
-	 9KsypobBkZc0rFIzBWN3cRc4eZeKO2QjGK6IYBdLE2FCmeUJr4C6DrHWqwZfl2Tg9+
-	 cJm8tAKJksto7L6R28xVhlKj6Gm1pBx41ZTAPvJh0HThmQ05hFwlz0WP9d4CD6U/+9
-	 nMMB50Pt7fod/0UxuNX3djEIjm/4WsdvjjQZUIO2HeAfKdCGJCGvP0KaJq5JzIgym0
-	 pCAN0rDweh5iaZEm+L/abPRGYqzYwzxNCiO3qhYKr6BhWAB9dAAimavE3trIa0hTUC
-	 ix4CoInDCDfIA==
-Date: Thu, 6 Feb 2025 12:52:41 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Danilo Krummrich <dakr@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, linux-pm@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Nishanth Menon <nm@ti.com>, rust-for-linux@vger.kernel.org,
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
-	Erik Schilling <erik.schilling@linaro.org>,
-	Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
-	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org
-Subject: Re: [PATCH V8 06/14] rust: Add bare minimal bindings for clk
- framework
-Message-ID: <Z6SiiRubSXGInbgj@pollux>
-References: <cover.1738832118.git.viresh.kumar@linaro.org>
- <c68081e18d939aefc7f6dac798df6b72e81bba4b.1738832118.git.viresh.kumar@linaro.org>
- <Z6ShsuLykigNscz8@pollux>
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=invicto.ai header.i=@invicto.ai header.b="N5nN8Sfu"
+X-Sender-Id: hostingeremail|x-authuser|kurti@invicto.ai
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id A2EA78C389E;
+	Thu,  6 Feb 2025 12:03:45 +0000 (UTC)
+Received: from uk-fast-smtpout10.hostinger.io (100-119-10-57.trex-nlb.outbound.svc.cluster.local [100.119.10.57])
+	(Authenticated sender: hostingeremail)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 0EEAA8C34AD;
+	Thu,  6 Feb 2025 12:03:43 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1738843425; a=rsa-sha256;
+	cv=none;
+	b=ay38nT3Y+Khh4LMTYyNlgFjnrDxPT8HPfhyNnM9YaQ4MSYNdDCZYVc77hKDa6okDA5zsJE
+	SLFgyUbMBXLUmi2kJXYIXdI5pRZEFoHk2X/KdzyNRKiRT74ZZ22Y8Abx+AmF4HreCJTBcM
+	AVsFpKIKXMiwmolOmmJYHGj5f9E6Gxw5zuQC+GC4P92e+HDF1Z2mquBaxobyvXP12Rjd8t
+	mb+ArVHTR/V/V4RTnbrM+bpFhCDZbSgWUiwts1NYLSAuoOkF6f8MPW8Wi22r0h2hTf+LoZ
+	oqtVcOal+lNbFZTRILujgZ61faut0iA89m1koiq6DSDAaL5SGoVpv+FBwL9Usw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1738843425;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:dkim-signature;
+	bh=JFx2mV7B/TQDMqt1SyMTvvvJQg17c8AnrF3PckYQmRU=;
+	b=5wYC6ZDkUwSM2prwW2JLAItS/B+QG2SYflKG+H+PIrTGyOdWgtSoMOq6wyG4AnC80iUiS8
+	cYHEKnahkwj0a8sr2+BpjVuBQQDJpF8b3YduoMuQNPeRBc/NVnCtbLWaY77Jr++PhBR2Wt
+	Kp+yDxyP21xeFiMb7Piw0C8rEoyBEax/kJTUWpT52vN/Nss8kVQJngqJ22IoMTNEE1Q9W/
+	m1w1k3IXSLVkERZZzJ+V4p+9zj2yNPQHOsqj+0unMN91672Weml4Y/QCMqblJz3k92XwtF
+	cRai2qzQexGAKik3Wr9TGAokh/stQzAS81hoCpTPc1RZjqpR/a+l63nXYEE1jg==
+ARC-Authentication-Results: i=1;
+	rspamd-854f7f575d-7cvmf;
+	auth=pass smtp.auth=hostingeremail smtp.mailfrom=kurti@invicto.ai
+X-Sender-Id: hostingeremail|x-authuser|kurti@invicto.ai
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: hostingeremail|x-authuser|kurti@invicto.ai
+X-MailChannels-Auth-Id: hostingeremail
+X-Whispering-Befitting: 64c9d5c62cdd2652_1738843425421_1987958796
+X-MC-Loop-Signature: 1738843425421:4076721496
+X-MC-Ingress-Time: 1738843425420
+Received: from uk-fast-smtpout10.hostinger.io (uk-fast-smtpout10.hostinger.io
+ [145.14.155.68])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.119.10.57 (trex/7.0.2);
+	Thu, 06 Feb 2025 12:03:45 +0000
+From: Alban Kurti <kurti@invicto.ai>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=invicto.ai;
+	s=hostingermail-a; t=1738843422;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=JFx2mV7B/TQDMqt1SyMTvvvJQg17c8AnrF3PckYQmRU=;
+	b=N5nN8Sfu4F/PCL+taFPUj4X/XcHieOLuJO6VxF49T3F0WJAeTjb0Oe3RQkGikP2bNxfGdP
+	N4hQVPDVs1FJP4DHldoYkS3ZNu0I9Cn+/rq/ldcKffWrd3zKSDvbfNAbQkHmeFS0ur3u6t
+	UyfqmRnSkr5/6oF1duoRFuSrQzCAJgJ2yIRUxhSAJA615uehMDUMsM8u7nTX/eoikLDvHb
+	rEGpwNLZPM7yjSnq/SNBpbUcPRs2weQx28EmsmcdA0eoweYyepKV9TBsjjsWMxWZs6HH5p
+	xWJhXeGsvLAzpWxg5hDfGgnPMxk6zFsnnlAKv+giiZQW0nddya0zevUC6YZFJw==
+To: Joe Perches <joe@perches.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Charalampos Mitrodimas <charmitro@posteo.net>,
+	Mugel Ojeda <ojeda@kernel.org>,
+	Alban Kurti <kurti@invicto.ai>,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v2 RESEND 1/1] checkpatch: add warning for pr_* and dev_* macros without a trailing newline
+Message-ID: <20250206120341.170683-1-kurti@invicto.ai>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z6ShsuLykigNscz8@pollux>
+Content-Transfer-Encoding: 8bit
+Date: Thu, 06 Feb 2025 12:03:41 +0000 (UTC)
+X-CM-Envelope: MS4xfL46Y1G4iJYfXS2uB2etgh9m/UwlNiUd5EcbXs1WSN3MG8YX++4vX3tBCBbEl2yt9X+OL9UBmLZ5E7rnyate3hdeL7DBzqOMKF4TfFlJgHsvixaEMCsH EgnyptIUaVLKpDPkT943XkHouuGmUva0Un7e0KLzTFnH//UpHff8Pxcf4tcMj2DK9njOwf1f7t2jYteXvf/SgfH43KLoCh0xyCAYGQJd10O0878TW30nMt+D GPH0BmTSrE7MWpMNuaSZOvxbCXQCb8VVlbag/lSbuaCj7jyU40QQ8l5Od+5MF/ZeFben4nEsAkyIx7/vI5aVoP0e2IWOK7pQUpEOCYS/ImLlW33VEIEqcoRi FNgV/tCK/NV7o22W5Q30rkJq5uKTF4riI0myWM7raU4FFK9izB8=
+X-CM-Analysis: v=2.4 cv=FNtJxPos c=1 sm=1 tr=0 ts=67a4a51e a=9/DLicljd4JGVkZ5BRdAJQ==:117 a=9/DLicljd4JGVkZ5BRdAJQ==:17 a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=LxQgENTTcpZERYXGLXgA:9
+X-AuthUser: kurti@invicto.ai
 
-On Thu, Feb 06, 2025 at 12:49:14PM +0100, Danilo Krummrich wrote:
-> On Thu, Feb 06, 2025 at 02:58:27PM +0530, Viresh Kumar wrote:
-> > This adds very basic bindings for the clk framework, implements only
-> > clk_get() and clk_put(). These are the bare minimum bindings required
-> > for many users and are simple enough to add in the first attempt.
-> > 
-> > These will be used by Rust based cpufreq / OPP core to begin with.
-> > 
-> > Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-> > ---
-> >  MAINTAINERS                     |  1 +
-> >  rust/bindings/bindings_helper.h |  1 +
-> >  rust/kernel/clk.rs              | 48 +++++++++++++++++++++++++++++++++
-> >  rust/kernel/lib.rs              |  2 ++
-> >  4 files changed, 52 insertions(+)
-> >  create mode 100644 rust/kernel/clk.rs
-> > 
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index ff4511914e0a..604717065476 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -5780,6 +5780,7 @@ F:	include/dt-bindings/clock/
-> >  F:	include/linux/clk-pr*
-> >  F:	include/linux/clk/
-> >  F:	include/linux/of_clk.h
-> > +F:	rust/kernel/clk.rs
-> >  X:	drivers/clk/clkdev.c
-> >  
-> >  COMMON INTERNET FILE SYSTEM CLIENT (CIFS and SMB3)
-> > diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-> > index 59b4bc49d039..4eadcf645df0 100644
-> > --- a/rust/bindings/bindings_helper.h
-> > +++ b/rust/bindings/bindings_helper.h
-> > @@ -10,6 +10,7 @@
-> >  #include <linux/blk-mq.h>
-> >  #include <linux/blk_types.h>
-> >  #include <linux/blkdev.h>
-> > +#include <linux/clk.h>
-> >  #include <linux/cpu.h>
-> >  #include <linux/cpumask.h>
-> >  #include <linux/cred.h>
-> > diff --git a/rust/kernel/clk.rs b/rust/kernel/clk.rs
-> > new file mode 100644
-> > index 000000000000..123cdb43b115
-> > --- /dev/null
-> > +++ b/rust/kernel/clk.rs
-> > @@ -0,0 +1,48 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +//! Clock abstractions.
-> > +//!
-> > +//! C header: [`include/linux/clk.h`](srctree/include/linux/clk.h)
-> > +
-> > +use crate::{
-> > +    bindings,
-> > +    device::Device,
-> > +    error::{from_err_ptr, Result},
-> > +    prelude::*,
-> > +};
-> > +
-> > +use core::ptr;
-> > +
-> > +/// A simple implementation of `struct clk` from the C code.
-> > +#[repr(transparent)]
-> > +pub struct Clk(*mut bindings::clk);
-> 
-> Guess this should be Opaque<bindings::clk>.
+Fixes the false positive warning when there is a comment on a pr_ or
+dev_ log that ends with \n correctly.
+Also contains some improvements on the macro_pattern to make it more
+concise.
 
-Sorry, I meant NonNull<bindings::clk>.
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Closes: https://github.com/Rust-for-Linux/linux/issues/1140
+Signed-off-by: Alban Kurti <kurti@invicto.ai>
+---
+Changelog since v1:
+ - Strip comments before matching to avoid false positives.
+ - Refactored the macro patterns for clarity.
 
-> 
-> > +
-> > +impl Clk {
-> > +    /// Creates `Clk` instance for a device and a connection id.
-> > +    pub fn new(dev: &Device, name: Option<&CStr>) -> Result<Self> {
-> > +        let con_id = if let Some(name) = name {
-> > +            name.as_ptr() as *const _
-> > +        } else {
-> > +            ptr::null()
-> > +        };
-> > +
-> > +        // SAFETY: It is safe to call `clk_get()`, on a device pointer earlier received from the C
-> > +        // code.
-> > +        Ok(Self(from_err_ptr(unsafe {
-> > +            bindings::clk_get(dev.as_raw(), con_id)
-> > +        })?))
-> > +    }
-> > +
-> > +    /// Obtain the raw `struct clk *`.
-> > +    pub fn as_raw(&self) -> *mut bindings::clk {
-> > +        self.0
-> > +    }
-> > +}
-> > +
-> > +impl Drop for Clk {
-> > +    fn drop(&mut self) {
-> > +        // SAFETY: By the type invariants, we know that `self` owns a reference, so it is safe to
-> > +        // relinquish it now.
-> > +        unsafe { bindings::clk_put(self.0) };
-> > +    }
-> > +}
-> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> > index ccbf7fa087a0..77d3b1f82154 100644
-> > --- a/rust/kernel/lib.rs
-> > +++ b/rust/kernel/lib.rs
-> > @@ -40,6 +40,8 @@
-> >  pub mod block;
-> >  #[doc(hidden)]
-> >  pub mod build_assert;
-> > +#[cfg(CONFIG_COMMON_CLK)]
-> > +pub mod clk;
-> >  pub mod cpu;
-> >  pub mod cpumask;
-> >  pub mod cred;
-> > -- 
-> > 2.31.1.272.g89b43f80a514
-> > 
-> > 
+ scripts/checkpatch.pl | 46 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
+
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 9eed3683ad76..3256b5f31835 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -3888,6 +3888,52 @@ sub process {
+ 			}
+ 		}
+ 
++# check for pr_* and dev_* logs without a newline for C and Rust files to avoid missing log messages
++    my $log_macro_pattern = qr{
++        \b
++        (
++            pr_(?:emerg|alert|crit|err|warn|notice|info|debug)
++          | dev_(?:emerg|alert|crit|err|warn|notice|info|dbg)
++        )
++        (!?)
++        \s*
++        \(
++        \s*
++        "([^"]*)"
++    }x;
++
++    if ($realfile =~ /\.(?:c|h|rs)$/) {
++        if ($rawline =~ /^\+/) {
++            my $cleanline = $rawline;
++
++            $cleanline =~ s/^[+\s]+//;
++            $cleanline =~ s/\r?$//;
++
++            $cleanline =~ s{/\*.*?\*/}{}g;
++            $cleanline =~ s{//.*}{}g;
++
++            if ($cleanline =~ /$log_macro_pattern/) {
++                my $macro_call = $1;
++                my $maybe_excl  = $2;
++                my $string_arg  = $3;
++
++                $string_arg =~ s/\s+$//;
++                if ($realfile =~ /\.rs$/ && $maybe_excl ne '!') {
++                    return;
++                }
++
++                if ($string_arg !~ /\\n$/ && $string_arg !~ /\n$/) {
++                    my $lang = ($realfile =~ /\.rs$/) ? "Rust" : "C";
++                    WARN("${lang}_LOG_NO_NEWLINE",
++                         "Usage of $macro_call without a trailing newline. Consider adding '\\n'.\n" .
++                         $herecurr);
++                }
++            }
++        }
++    }
++
++
+ # check for .L prefix local symbols in .S files
+ 		if ($realfile =~ /\.S$/ &&
+ 		    $line =~ /^\+\s*(?:[A-Z]+_)?SYM_[A-Z]+_(?:START|END)(?:_[A-Z_]+)?\s*\(\s*\.L/) {
+-- 
+2.48.1
+
