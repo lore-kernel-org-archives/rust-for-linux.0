@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA4E246347;
-	Thu,  6 Feb 2025 14:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94FCE25A644;
+	Thu,  6 Feb 2025 14:28:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738852098; cv=none; b=A4IETlwsGFpw1ImQuIpBJXibolaGRpXp8vCcUp2SPNs8Mlx0HQRMX8/OjGXVRfgNts6cdX55sUrsJS7IP6wl43gbuBZ6ovSenTO5jUvUsZotV6oAdi36LYwxJJFwpvUBCaRkc/gFwrKq9mK3kjOnWIRWfWqqkAdjImaNTWqXMhI=
+	t=1738852107; cv=none; b=QNtMRsN0/gKN/gmKg1AM4wtFS8R2YyMJHKxvkH1RiAdBmq8rFlucXSWOx0/wBloJY9eYcMWVTdRVuOWY4gp+W4cAqy8zrmFaKTukJxnFnop/bCm1GOELe+UAfzEJxqGI6ZynbaD9cIfGXqde7u6KAobc1Zgsm5qLcTuoC9kw+oA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738852098; c=relaxed/simple;
-	bh=FGezJSTQ5loPva1WVPOLm0m15qrrylz37wr6Aolb4rs=;
+	s=arc-20240116; t=1738852107; c=relaxed/simple;
+	bh=6EyDe9NvVxd0zADlr6BfjsjwBsiTzttidToHv1RbPLs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gTabdWqmDw/A0uBYBdJ/ISOWteQGsFfj08Xev0D5yZqu4I2hN+MaET5pzdmpLlrY23F1zg9xfshY3ThncQwgjTWDxCb0YiGBblTqRq6M3XEKLTu5WMYhdvjYLxWqYYH2AGZzb/ETpWw48TJEAVy26bmX/Gvjzp61mVsIBlakr3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hYV0j17; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=CQexnWB+j8zlCaI3QuZ2ouRgAEawHY5qGPwyxKgXJehNcaB9JH1TOooOG9Bcprh90wHjYWovj1FUSuEg/1DCh/jrISGzvLkmbfU4M40xK9cb0rPHsXcivQBYmwfpYxTmbo/4napkm1mxfWr+g1YxuhQELr5mh0m4d6x4AYS+9Gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a4XwfeFJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hYV0j17"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDE32C4CEDF;
-	Thu,  6 Feb 2025 14:28:16 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a4XwfeFJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 510A2C4CEE2;
+	Thu,  6 Feb 2025 14:28:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738852097;
-	bh=FGezJSTQ5loPva1WVPOLm0m15qrrylz37wr6Aolb4rs=;
+	s=korg; t=1738852106;
+	bh=6EyDe9NvVxd0zADlr6BfjsjwBsiTzttidToHv1RbPLs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=0hYV0j171TDpX0CRnCPaUB/bpfbZ7/bDQJ8AHZUBSQRGKPIBIGuGq/ujTrZ+8HyKC
-	 i9sTupbt1fkwQq83/9jgmSVND7GFyi/Mbn3VJ8bAx0LW/4pClZ/qTgG0K6Oila+156
-	 SMbpEXXpyf+X+RxGOxkhSvOMeDg4CIEnOpRkmpMo=
-Date: Thu, 6 Feb 2025 06:46:29 +0100
+	b=a4XwfeFJIar+9N4URRpwc409/rZdeiffv/unlAgJznrnOhOpXQ2kXjJIqcgZ9CVc3
+	 jAC5rZzRjxjXof0fKTNHGxnuZGAqwjxwimplCs3T5z9vXU6bDoLhrInXQG+c74oio1
+	 8Ap42KeT8wIduAyah/M8Y8zUrWZoXlaFEa/47jl8=
+Date: Thu, 6 Feb 2025 08:43:51 +0100
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Peter Chen <peter.chen@kernel.org>
+To: Rob Herring <robh@kernel.org>
 Cc: linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
 	Danilo Krummrich <dakr@kernel.org>, Lyude Paul <lyude@redhat.com>,
 	Alexander Lobakin <aleksander.lobakin@intel.com>,
@@ -39,15 +39,12 @@ Cc: linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
 	Simona Vetter <simona.vetter@ffwll.ch>,
 	Zijun Hu <quic_zijuhu@quicinc.com>, linux-usb@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 3/5] USB: phy: convert usb_phy_generic logic to use a
- faux device
-Message-ID: <2025020622-porous-possible-847c@gregkh>
+Subject: Re: [PATCH v2 1/5] driver core: add a faux bus for use when a simple
+ device/bus is needed
+Message-ID: <2025020635-canteen-exceeding-f9c9@gregkh>
 References: <2025020421-poster-moisture-534b@gregkh>
- <2025020424-overstock-scheming-6a30@gregkh>
- <20250205101916.GA4083@nchen-desktop>
- <2025020505-harsh-divisibly-51cc@gregkh>
- <2025020509-imperial-maroon-1bc9@gregkh>
- <20250206015452.GA20613@nchen-desktop>
+ <2025020424-retrain-recharger-407c@gregkh>
+ <20250204164650.GA2970208-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -56,60 +53,151 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250206015452.GA20613@nchen-desktop>
+In-Reply-To: <20250204164650.GA2970208-robh@kernel.org>
 
-On Thu, Feb 06, 2025 at 09:54:52AM +0800, Peter Chen wrote:
-> On 25-02-05 14:41:31, Greg Kroah-Hartman wrote:
-> > On Wed, Feb 05, 2025 at 01:27:30PM +0100, Greg Kroah-Hartman wrote:
-> > > On Wed, Feb 05, 2025 at 06:19:16PM +0800, Peter Chen wrote:
-> > > > On 25-02-04 12:09:15, Greg Kroah-Hartman wrote:
-> > > > > The usb_phy_generic code was creating a "fake" platform device to pass
-> > > > > around in different places.  Instead of doing that, use the faux bus
-> > > > > instead as that is what is really wanted here.
-> > > > 
-> > > > Hi Greg,
-> > > > 
-> > > > As far as I know, there are some platforms use the device-tree to get
-> > > > the system resource (eg, clock, reset, regular) for this driver.
-> > > > We may not use fake bus for this driver.
-> > > 
-> > > But there is no system resources assigned to this device/driver at all,
-> > > so how is it getting anything here?
-> > > 
-> > > > $grep -rn "usb-nop-xceiv" arch/arm64/boot/dts/*
-> > > > 
-> > > > arch/arm64/boot/dts/altera/socfpga_stratix10.dtsi:649:		compatible = "usb-nop-xceiv";
-> > > > arch/arm64/boot/dts/freescale/imx8mm.dtsi:275:		compatible = "usb-nop-xceiv";
-> > > > arch/arm64/boot/dts/freescale/imx8mm.dtsi:285:		compatible = "usb-nop-xceiv";
-> > > > arch/arm64/boot/dts/freescale/imx93.dtsi:238:		compatible = "usb-nop-xceiv";
-> > > > arch/arm64/boot/dts/freescale/imx93.dtsi:245:		compatible = "usb-nop-xceiv";
-> > > > arch/arm64/boot/dts/freescale/imx8mn.dtsi:1321:		compatible = "usb-nop-xceiv";
-> > > > arch/arm64/boot/dts/intel/socfpga_agilex.dtsi:149:		compatible = "usb-nop-xceiv";
-> > > > arch/arm64/boot/dts/intel/socfpga_agilex5.dtsi:133:		compatible = "usb-nop-xceiv";
-> > > > arch/arm64/boot/dts/marvell/cn9132-db.dtsi:30:		compatible = "usb-nop-xceiv";
-> > > > arch/arm64/boot/dts/marvell/cn9132-db.dtsi:44:		compatible = "usb-nop-xceiv";
-> > > > arch/arm64/boot/dts/marvell/cn9131-db.dtsi:33:		compatible = "usb-nop-xceiv";
-> > > > arch/arm64/boot/dts/marvell/armada-3720-db.dts:43:		compatible = "usb-nop-xceiv";
-> > > > arch/arm64/boot/dts/marvell/cn9130-crb.dtsi:49:		compatible = "usb-nop-xceiv";
-> > > > arch/arm64/boot/dts/marvell/cn9130-crb.dtsi:53:		compatible = "usb-nop-xceiv";
-> > > > arch/arm64/boot/dts/marvell/cn9130-db.dtsi:52:		compatible = "usb-nop-xceiv";
-> > > > arch/arm64/boot/dts/marvell/cn9130-db.dtsi:66:		compatible = "usb-nop-xceiv";
-> > > > arch/arm64/boot/dts/marvell/armada-8040-db.dts:53:		compatible = "usb-nop-xceiv";
-> > > > arch/arm64/boot/dts/marvell/armada-8040-db.dts:67:		compatible = "usb-nop-xceiv";
-> > > > arch/arm64/boot/dts/marvell/ac5-98dx35xx-rd.dts:36:		compatible = "usb-nop-xceiv";
-> > > > arch/arm64/boot/dts/marvell/armada-3720-espressobin-ultra.dts:39:		compatible = "usb-nop-xceiv";
-> > > 
-> > > Does this actually work at all?
+On Tue, Feb 04, 2025 at 10:46:50AM -0600, Rob Herring wrote:
+> On Tue, Feb 04, 2025 at 12:09:13PM +0100, Greg Kroah-Hartman wrote:
+> > Many drivers abuse the platform driver/bus system as it provides a
+> > simple way to create and bind a device to a driver-specific set of
+> > probe/release functions.  Instead of doing that, and wasting all of the
+> > memory associated with a platform device, here is a "faux" bus that
+> > can be used instead.
+> > 
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > ---
+> >  v2: - renamed bus and root device to just "faux" thanks to Thomas
+> >      - removed the one-driver-per-device and now just have one driver
+> >        entirely thanks to Danilo
+> >      - kerneldoc fixups and additions and string handling bounds checks
+> >        hanks to Andy
+> >      - coding style fix thanks to Jonathan
+> >      - tested that the destroy path actually works
+> > 
+> >  drivers/base/Makefile       |   2 +-
+> >  drivers/base/base.h         |   1 +
+> >  drivers/base/faux.c         | 196 ++++++++++++++++++++++++++++++++++++
+> >  drivers/base/init.c         |   1 +
+> >  include/linux/device/faux.h |  31 ++++++
+> >  5 files changed, 230 insertions(+), 1 deletion(-)
+> >  create mode 100644 drivers/base/faux.c
+> >  create mode 100644 include/linux/device/faux.h
+> > 
+> > diff --git a/drivers/base/Makefile b/drivers/base/Makefile
+> > index 7fb21768ca36..8074a10183dc 100644
+> > --- a/drivers/base/Makefile
+> > +++ b/drivers/base/Makefile
+> > @@ -6,7 +6,7 @@ obj-y			:= component.o core.o bus.o dd.o syscore.o \
+> >  			   cpu.o firmware.o init.o map.o devres.o \
+> >  			   attribute_container.o transport_class.o \
+> >  			   topology.o container.o property.o cacheinfo.o \
+> > -			   swnode.o
+> > +			   swnode.o faux.o
+> >  obj-$(CONFIG_AUXILIARY_BUS) += auxiliary.o
+> >  obj-$(CONFIG_DEVTMPFS)	+= devtmpfs.o
+> >  obj-y			+= power/
+> > diff --git a/drivers/base/base.h b/drivers/base/base.h
+> > index 8cf04a557bdb..0042e4774b0c 100644
+> > --- a/drivers/base/base.h
+> > +++ b/drivers/base/base.h
+> > @@ -137,6 +137,7 @@ int hypervisor_init(void);
+> >  static inline int hypervisor_init(void) { return 0; }
+> >  #endif
+> >  int platform_bus_init(void);
+> > +int faux_bus_init(void);
+> >  void cpu_dev_init(void);
+> >  void container_dev_init(void);
+> >  #ifdef CONFIG_AUXILIARY_BUS
+> > diff --git a/drivers/base/faux.c b/drivers/base/faux.c
+> > new file mode 100644
+> > index 000000000000..9b28643afc45
+> > --- /dev/null
+> > +++ b/drivers/base/faux.c
+> > @@ -0,0 +1,196 @@
+> > +// SPDX-License-Identifier: GPL-2.0-only
+> > +/*
+> > + * Copyright (c) 2025 Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > + * Copyright (c) 2025 The Linux Foundation
+> > + *
+> > + * A "simple" faux bus that allows devices to be created and added
+> > + * automatically to it.  This is to be used whenever you need to create a
+> > + * device that is not associated with any "real" system resources, and do
+> > + * not want to have to deal with a bus/driver binding logic.  It is
+> > + * intended to be very simple, with only a create and a destroy function
+> > + * available.
+> > + */
+> > +#include <linux/err.h>
+> > +#include <linux/init.h>
+> > +#include <linux/slab.h>
+> > +#include <linux/string.h>
+> > +#include <linux/container_of.h>
+> > +#include <linux/device/faux.h>
+> > +#include "base.h"
+> > +
+> > +#define MAX_NAME_SIZE	256	/* Max size of a faux_device name */
+> > +
+> > +/*
+> > + * Internal wrapper structure so we can hold the memory
+> > + * for the driver and the name string of the faux device.
+> > + */
+> > +struct faux_object {
+> > +	struct faux_device faux_dev;
+> > +	const struct faux_driver_ops *faux_ops;
+> > +	char name[];
+> > +};
+> > +#define to_faux_object(dev) container_of_const(dev, struct faux_object, faux_dev.dev)
+> > +
+> > +static struct device faux_bus_root = {
+> > +	.init_name	= "faux",
+> > +};
+> > +
+> > +static int faux_match(struct device *dev, const struct device_driver *drv)
+> > +{
+> > +	/* Match always succeeds, we only have one driver */
+> > +	return 1;
+> > +}
+> > +
+> > +static int faux_probe(struct device *dev)
+> > +{
+> > +	struct faux_object *faux_obj = to_faux_object(dev);
+> > +	struct faux_device *faux_dev = &faux_obj->faux_dev;
+> > +	const struct faux_driver_ops *faux_ops = faux_obj->faux_ops;
+> > +	int ret = 0;
+> > +
+> > +	if (faux_ops && faux_ops->probe)
 > 
-> Yes, at least for some NXP i.MX series SoCs, these SoCs use chipidea IP.
-> At above device tree files, the USB generic PHY device node has enabled,
-> so the device will be probed and get hardware resources.
-> 
-> During the chipidea core driver->probe, it calls this generic USB phy
-> driver's phy.init and do some actual hardware operations.
+> Is there any use for faux_ops being NULL (or probe being NULL for that 
+> matter)? I can't think of one. So faux_device_create should check that 
+> and fail instead of checking here.
 
-Ugh, that's not obvious at all.  The usb-nop-xceiv match with
-usb-phy-generic is tenious, but yeah, my change here broke this code.
-I'll drop it from the series, thanks for the review.
+probe and/or faux_ops can be NULL, that's fine.  And if a driver only
+wants to be notified when remove() gets called, that's fine too, I'm not
+going to object too hard.
+
+So this should be ok for now, unless it starts to get abused in odd
+ways.
+
+> > +/**
+> > + * faux_device_create - create and register a faux device and driver
+> > + * @name: name of the device and driver we are adding
+> > + * @faux_ops: struct faux_driver_ops that the new device will call back into, can be NULL
+> > + *
+> > + * Create a new faux device and driver, both with the same name, and
+> > + * register them in the driver core properly.  The probe() callback of
+> > + * @faux_ops will be called with the new device that is created for the
+> > + * caller to do something with.
+> > + *
+> > + * Note, when this function is called, the functions specified in struct
+> > + * faux_ops will be called before the function returns, so be prepared for
+> > + * everything to be properly initialized before that point in time.
+> > + *
+> > + * Return:
+> > + * * NULL if an error happened with creating the device
+> > + * * pointer to a valid struct faux_device that is registered with sysfs
+> > + */
+> > +struct faux_device *faux_device_create(const char *name, struct faux_driver_ops *faux_ops)
+> 
+> const struct faux_driver_ops
+
+Good catch, will fix up.  Thanks for the review.
 
 greg k-h
