@@ -1,225 +1,256 @@
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CBE11DD0D4;
-	Thu,  6 Feb 2025 20:58:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0551DE3A8
+	for <rust-for-linux@vger.kernel.org>; Thu,  6 Feb 2025 21:06:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738875517; cv=none; b=uPWBa0lI/pze6VfPHLp3bFVEPoXBvdS8UEjTat9NEIN8QrtWFoyhWPd9lN8udUc34ah/CIL+fI4nLbIAAfccNO5ZaDtCtvI2p8FAZpndpFOaaCWMaKzFwT9+BJBqb7X47ZafVYPTmMBEknZalAZPUsZWgY202nm/ojDiiK1EySs=
+	t=1738876000; cv=none; b=cUoRb7Se2kHYnJY9l8gosz2rjsnQIDePAMe2C/pvtH2dIk6pf72fX1baZGvxqMOMr/EAi8ALB8cwh8aoGOturoWhvrBlL87vnRlFuWR9OJ1JYg02cMkVy2CXlUyfjpqiUn43U8PP0UprsY57Y+WIyz96N4Q5QoFpdMRSNYRHjMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738875517; c=relaxed/simple;
-	bh=Vl1E5n4Tqgm2PGQzPBmSB+0qboSZss7zKm0zOFIQOIY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WOjvEqSK6w1CBdI4XPp2cEY9nMTax32VZD9XNyPQx/mP/J4uZsYlmWH6tB5dCzz/IDdaTTdOTAzvJ4cUJWOXlUtEFhTELfuqfkOos8Nf6LEUtThqmR6WUUq6L51UusHegqdkrCsy7t6sUrNOpAhbfl1Oh4GntJSucBe5X77uGxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KcjLPXXO; arc=none smtp.client-ip=209.85.160.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738876000; c=relaxed/simple;
+	bh=kOOEPl/veYhynAhhL0jpvHiTjC+U6g7X09NmSzkbB80=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uQiOIYLr2idgzbvih4OnFY84p+KHqYX/3OEIeosAy52CfjqGd0Fqmrx4/7VmD4abXZg95a11k9XkYwSArywSqh8gKKuywC/x4Bg/2W9AWxOt1yqoRs2dyVZZ/Slp2LlA6bvlMshQ6+r+oCMjGqiwyds+McSUXB9AwyYls0JvCD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WsNO//zv; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KcjLPXXO"
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-46783d44db0so14372221cf.1;
-        Thu, 06 Feb 2025 12:58:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738875515; x=1739480315; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=t9cHsIps+BUS5q+gyi26JPt+JcfCXlNK6A88Ldomk2Q=;
-        b=KcjLPXXOX5c/J0vRBGeJl4bfPcBlKjF+pTuRpkdx6cF1pEJLFQCTDHW1dixVdB9vFq
-         74wCmvOfg/bay+nNAzj2I15hfujCz/xo4nXhBEKThTKF/8Mrb4bWFr/cmVP1zDVypSCN
-         +v9Et6cAB4Bzqc1W4Rt4oTvm7Q+aw8xdEg19fM6p1O2inKMHmBdE3k7yjwQ1BQm62TkG
-         TgT/7OcL8b/gqnpUo79lEjXOgutRAEt2FD2IqwJbxknXZsr/s/PCbdNQAEP+kvih/q/k
-         Vo2EKj/KwsqTMtbheDYbYqU5ROOnyP0u+3Vx+PDyMpfQW7dKsFBLupkOKlLhyQsl+mKx
-         S54g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738875515; x=1739480315;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=t9cHsIps+BUS5q+gyi26JPt+JcfCXlNK6A88Ldomk2Q=;
-        b=Ycz+pX8ymcExi3zCSFOSbBzNawS1xRtIZWLlDivx2FNEHm1jtzBTM2Jvt9iPWiJx3Q
-         Jfxsu3JXAgECPCSEx1OPTJsW54qfj4fOkMfwsj90pb/EroCKWTuLCZ9IGvl8bnvKhR0k
-         ICAZOOz8dRnBw/Q+mX5QeaiLCXZLd7Hogrxxh3WxhTHs30eONCPIBOJaWbeRyavzIGMu
-         N/OpFLbDDlyEFBIIi+aVCVNEbdlHPlV8vR297jN2Dm+S2E24QGpHmqS3zwhDbKEq5jpN
-         n9Ydsn0oEHha+UeBAq4q7S8p7A/R+UvbxoKCJ4bxtjXEE7lq4iunt7La+XYZPmGeuHfu
-         4vpw==
-X-Forwarded-Encrypted: i=1; AJvYcCUKiFww705Gpry9IBSdfLmhKFjdYDrrRlrviZE4c2CZwnj7m9uIiObWx+B8yFBgpwhlEUv9ehj9/qjguAtN@vger.kernel.org, AJvYcCUgw9EdQ1uaylA9QLx+7wCSlNnCkFcHJYPer4/YBCj2Jk4K6iRInZRvyrcDNKoCou6zWNVtufSCQUqV@vger.kernel.org, AJvYcCXYZUT43SECbT1h0yRqTLkZ2aT4LAMUp7vWFYN847gjd6cncRPDy22+8o5Qo1480n6W+q0yewrspiHuPTDU@vger.kernel.org, AJvYcCXpGbDZlXNkwT0+DDFcXPffni1CCEBwEcNONThpuwRUxdeVAdsd6wKAkmhmYOLx7sUfmdnUMho5SVQD4b9FPXs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSX2c/RispQsYA8foonbLMNObutV+3db/p4Ilx7+BN7yIJDFgm
-	4ihLCMeuT094NRNgL9og13wZGE2za0wvOs/621eSwTYvrmc21WeT/PU3RQ==
-X-Gm-Gg: ASbGncvFlwOeEVE1Flu2tRdCX+TNlT8mghCEo8UyG9VWk7A4jGq/Itn/7Cxlq71EqUf
-	WI3Lw9lBnbSkuLMbIrzr35Wn3rduZ6qhU2MHAEsdMOYak6HS/8oko1Ksf/7B7+hBh7BjlkLny4W
-	8pjRNOcL6lwCwkYHnwxNX3YTGs18pKWALVa3+AdR0tlXcjaQH6tgVsrbRJsXQqvC/QVcrQhR5Wf
-	Nnkpb7Hy+JrdQ9/eRtTp6rw3CZMPAkFkZwRadGRKIpDmK3AOBJjHd971Prbe5KuoRrX1AI0cAVY
-	Frq/7wOtFYD1hcvHB+gaPYcy7btEOtuS2a7FDe9JAx4o0oAp9rC5JirG/29XjDGC6cSvGfcoEtZ
-	L/8hVnA==
-X-Google-Smtp-Source: AGHT+IHuTiT1O9gWcNSlS8NNPtvRf1yXdSvvR+Laa0d93a1XUZSuNd8/pQ+BCFaC45iXFJm2+9asTg==
-X-Received: by 2002:a05:622a:6182:b0:461:22f0:4f83 with SMTP id d75a77b69052e-47167b07bddmr12791641cf.43.1738875515083;
-        Thu, 06 Feb 2025 12:58:35 -0800 (PST)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-471492a91b6sm9036151cf.34.2025.02.06.12.58.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Feb 2025 12:58:34 -0800 (PST)
-Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 032F91200043;
-	Thu,  6 Feb 2025 15:58:34 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Thu, 06 Feb 2025 15:58:34 -0500
-X-ME-Sender: <xms:eSKlZ-P1XZZZwwOALGZsJMKMKTZ2t1mRy3hCWjVkS3UHSei6d_7tFA>
-    <xme:eSKlZ8-_JUCzgRLfxcmxTU-Sm-ozIqRpdmGSynfNwatc75aPWdaRuRIEdCH1J1h_X
-    1CE8JXdekWjdehfGA>
-X-ME-Received: <xmr:eSKlZ1T9moYcz8JW0s2M0BH9XYU7g4uZaygZXt35X2VTUEFwE6edd8C1M-A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvjeegtdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddt
-    jeenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
-    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeevgffhueevkedutefgveduuedujeefledt
-    hffgheegkeekiefgudekhffggeelfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
-    grmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgr
-    lhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppe
-    hgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvddupdhm
-    ohguvgepshhmthhpohhuthdprhgtphhtthhopehtrghmihhrugesghhmrghilhdrtghomh
-    dprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggu
-    rgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrg
-    hilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphht
-    thhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhope
-    gsvghnnhhordhlohhsshhinhesphhrohhtohhnrdhmvgdprhgtphhtthhopegrrdhhihhn
-    uggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlihgtvghrhihhlhesgh
-    hoohhglhgvrdgtohhm
-X-ME-Proxy: <xmx:eSKlZ-vA6jXnYmz9tmLDBjDkBTik0K8rin_JOnOJ1N5fJD8kR5gw2g>
-    <xmx:eSKlZ2cKL70bfoHR9pQuTzAe62KtbtB-1gefbEKPqGA7GEqJGT7i2w>
-    <xmx:eSKlZy2UOjrX1g5N-lc-swWMPbTa_4dCp_M_BXa8oMT9W_CdmNnUIw>
-    <xmx:eSKlZ68WK37X8rB6-Gooz4quTAaqGD72W5lkjltOONiU8idJFqkbBw>
-    <xmx:eSKlZ1-vviK6heep0UHzWhKNK6u6vLVGhU_pR2xpMAvjje6BxjMwkSLz>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 6 Feb 2025 15:58:33 -0500 (EST)
-Date: Thu, 6 Feb 2025 12:57:25 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WsNO//zv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1738875997;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=GihRnkuZEyKR3tOEQSNi7Ep19r88LL1Tvr+PPotI6bE=;
+	b=WsNO//zvIWuJ6aLV3Fow2gDgFRL1YMxTBtyaj7+zCX9HH3kxKcEVJ+ui7rlZCzx9urz6g0
+	uW78QMczqJrC/dmQsGbUdUtiPuqAhXXtGnmQy8RphdyXpVo2XQC/OGjSK7wLiztB9+NdBW
+	qrj16T8tglW3U6R8Zeo+o6Bql98S+V0=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-632-1CgXrbzLOb677x8OZ5Bheg-1; Thu,
+ 06 Feb 2025 16:06:32 -0500
+X-MC-Unique: 1CgXrbzLOb677x8OZ5Bheg-1
+X-Mimecast-MFC-AGG-ID: 1CgXrbzLOb677x8OZ5Bheg
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 798731800877;
+	Thu,  6 Feb 2025 21:06:29 +0000 (UTC)
+Received: from chopper.redhat.com (unknown [10.22.66.91])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C75D71955BCB;
+	Thu,  6 Feb 2025 21:06:25 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: rust-for-linux@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mairacanal@riseup.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Matthew Wilcox <willy@infradead.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>,
-	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH v15 2/3] rust: xarray: Add an abstraction for XArray
-Message-ID: <Z6UiNYOTUshEKNcL@boqun-archlinux>
-References: <20250206-rust-xarray-bindings-v15-0-a22b5dcacab3@gmail.com>
- <20250206-rust-xarray-bindings-v15-2-a22b5dcacab3@gmail.com>
- <Z6Tu8E4r5ZEolFX1@Mac.home>
- <CAJ-ks9nGZCMjgTTzeRz3DUCQyLVu-xWKau4AFkMGutLtomK-fA@mail.gmail.com>
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Xiangfei Ding <dingxiangfei2009@gmail.com>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] rust/kernel: Add faux device bindings
+Date: Thu,  6 Feb 2025 16:04:56 -0500
+Message-ID: <20250206210503.102061-2-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJ-ks9nGZCMjgTTzeRz3DUCQyLVu-xWKau4AFkMGutLtomK-fA@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Thu, Feb 06, 2025 at 01:21:35PM -0500, Tamir Duberstein wrote:
-> Hi Boqun,
-> 
-> On Thu, Feb 6, 2025 at 12:18 PM Boqun Feng <boqun.feng@gmail.com> wrote:
-> >
-> > Hi Tamir,
-> >
-> > This looks good to me overall, a few comments below:
-> >
-> > On Thu, Feb 06, 2025 at 11:24:44AM -0500, Tamir Duberstein wrote:
-> > [...]
-> > > +impl<'a, T: ForeignOwnable> Guard<'a, T> {
-> > [...]
-> > > +    /// Loads an entry from the array.
-> > > +    ///
-> > > +    /// Returns the entry at the given index.
-> > > +    pub fn get(&self, index: usize) -> Option<T::Borrowed<'_>> {
-> > > +        self.load(index, |ptr| {
-> > > +            // SAFETY: `ptr` came from `T::into_foreign`.
-> > > +            unsafe { T::borrow(ptr.as_ptr()) }
-> > > +        })
-> > > +    }
-> > > +
-> > > +    /// Loads an entry from the array.
-> >
-> > Nit: firstly, this function has the same description of `get()`, also
-> > I would prefer something like "Returns a [`T::Borrowed`] of the object
-> > at `index`" rather then "Loads an entry from the array", thoughts?
-> 
-> I was trying to avoid repeating the signature in the comment. In other
-> words I was trying to write a comment that wouldn't have to change if
-> the signature (but not the semantics) of the function changed. Since
+This introduces a crate for working with faux devices in rust, along with
+adding sample code to show how the API is used. Unlike other types of
+devices, we don't provide any hooks for device probe/removal - since these
+are optional for the faux API and are unnecessary in rust.
 
-Understood. However, I think doc comments and function signatures (and
-name) can have the overlapped information, because they are for
-different users. Surely a developer who already knows what XArray is
-will make a good guess on what `get()` and `get_mut()` do, but it won't
-hurt to have the doc comments double-confirming the guess. Besides there
-could also be someone who is not that familiar with XArray and would
-like to seek the information from the doc comments at first, then having
-a more precise description would be helpful.
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Maíra Canal <mairacanal@riseup.net>
+---
+ rust/bindings/bindings_helper.h  |  1 +
+ rust/kernel/faux.rs              | 60 ++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs               |  1 +
+ samples/rust/Kconfig             | 10 ++++++
+ samples/rust/Makefile            |  1 +
+ samples/rust/rust_driver_faux.rs | 29 +++++++++++++++
+ 6 files changed, 102 insertions(+)
+ create mode 100644 rust/kernel/faux.rs
+ create mode 100644 samples/rust/rust_driver_faux.rs
 
-> the difference between `get` and `get_mut` is completely described in
-> the type system, the two functions got the same comment. Shall I
-> change it?
-> 
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 55354e4dec14e..f46cf3bb70695 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -11,6 +11,7 @@
+ #include <linux/blk_types.h>
+ #include <linux/blkdev.h>
+ #include <linux/cred.h>
++#include <linux/device/faux.h>
+ #include <linux/errname.h>
+ #include <linux/ethtool.h>
+ #include <linux/file.h>
+diff --git a/rust/kernel/faux.rs b/rust/kernel/faux.rs
+new file mode 100644
+index 0000000000000..5e58f397b747a
+--- /dev/null
++++ b/rust/kernel/faux.rs
+@@ -0,0 +1,60 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++//! Abstractions for the faux bus.
++//!
++//! This crate provides bindings for working with faux devices in kernel modules. It should be
++//! preferred for creating virtual devices over the platform API.
++//!
++//! C header: [`include/linux/device/faux.h`]
++use crate::{bindings, device, error::from_err_ptr, prelude::*};
++use core::ptr::{addr_of_mut, null, NonNull};
++
++/// The faux device representation.
++///
++/// This type represents the registration of a [`struct faux_device`]. When an instance of this type
++/// is dropped, its respective faux device will be unregistered from the system.
++///
++/// # Invariants
++///
++/// `self.0` always holds a valid pointer to an initialized and registered [`struct faux_device`].
++///
++/// [`struct faux_device`]: srctree/include/linux/device/faux.h
++#[repr(transparent)]
++pub struct Device(NonNull<bindings::faux_device>);
++
++impl Device {
++    /// Create and register a new faux device with the given name.
++    pub fn new(name: &CStr) -> Result<Self> {
++        // SAFETY:
++        // - `name` is copied by this function into its own storage
++        // - `faux_ops` is safe to leave NULL according to the C API
++        // - `faux_device_create` returns a valid non-null pointer to a `faux_device`, or error
++        from_err_ptr(unsafe { bindings::faux_device_create(name.as_char_ptr(), null()) })
++            .map(|d| Self(unsafe { NonNull::new_unchecked(d) }))
++    }
++
++    fn as_raw(&self) -> *mut bindings::faux_device {
++        self.0.as_ptr()
++    }
++}
++
++impl AsRef<device::Device> for Device {
++    fn as_ref(&self) -> &device::Device {
++        // SAFETY: The underlying `device` in `faux_device` is guaranteed by the C API to be
++        // a valid initialized `device`.
++        unsafe { device::Device::as_ref(addr_of_mut!((*self.as_raw()).dev)) }
++    }
++}
++
++impl Drop for Device {
++    fn drop(&mut self) {
++        // SAFETY: self.0 is a valid registered faux_device via our type invariants.
++        unsafe { bindings::faux_device_destroy(self.as_raw()) }
++    }
++}
++
++// SAFETY: The faux device API is thread-safe
++unsafe impl Send for Device {}
++
++// SAFETY: The faux device API is thread-safe
++unsafe impl Sync for Device {}
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 496ed32b0911a..398242f92a961 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -46,6 +46,7 @@
+ pub mod devres;
+ pub mod driver;
+ pub mod error;
++pub mod faux;
+ #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
+ pub mod firmware;
+ pub mod fs;
+diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
+index 918dbead2c0b4..3b6eae84b2977 100644
+--- a/samples/rust/Kconfig
++++ b/samples/rust/Kconfig
+@@ -61,6 +61,16 @@ config SAMPLE_RUST_DRIVER_PLATFORM
+ 
+ 	  If unsure, say N.
+ 
++config SAMPLE_RUST_DRIVER_FAUX
++	tristate "Faux Driver"
++	help
++	  This option builds the Rust Faux driver sample.
++
++	  To compile this as a module, choose M here:
++	  the module will be called rust_driver_faux.
++
++	  If unsure, say N.
++
+ config SAMPLE_RUST_HOSTPROGS
+ 	bool "Host programs"
+ 	help
+diff --git a/samples/rust/Makefile b/samples/rust/Makefile
+index 5a8ab0df0567c..0dbc6d90f1ef9 100644
+--- a/samples/rust/Makefile
++++ b/samples/rust/Makefile
+@@ -6,6 +6,7 @@ obj-$(CONFIG_SAMPLE_RUST_MISC_DEVICE)		+= rust_misc_device.o
+ obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
+ obj-$(CONFIG_SAMPLE_RUST_DRIVER_PCI)		+= rust_driver_pci.o
+ obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+= rust_driver_platform.o
++obj-$(CONFIG_SAMPLE_RUST_DRIVER_FAUX)		+= rust_driver_faux.o
+ 
+ rust_print-y := rust_print_main.o rust_print_events.o
+ 
+diff --git a/samples/rust/rust_driver_faux.rs b/samples/rust/rust_driver_faux.rs
+new file mode 100644
+index 0000000000000..fb0d8527bdcb2
+--- /dev/null
++++ b/samples/rust/rust_driver_faux.rs
+@@ -0,0 +1,29 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Rust faux device sample.
++
++use kernel::{c_str, faux::*, prelude::*, Module};
++
++module! {
++    type: SampleModule,
++    name: "rust_faux_driver",
++    author: "Lyude Paul",
++    description: "Rust faux device sample",
++    license: "GPL",
++}
++
++struct SampleModule {
++    _dev: Device,
++}
++
++impl Module for SampleModule {
++    fn init(_module: &'static ThisModule) -> Result<Self> {
++        pr_info!("Initialising Rust Faux Device Sample\n");
++
++        let dev = Device::new(c_str!("rust-faux-sample-device"))?;
++
++        dev_info!(dev.as_ref(), "Hello from faux device!");
++
++        Ok(Self { _dev: dev })
++    }
++}
 
-Your call ;-) It's a nitpicking after all, and you're the maintainer.
-However, I do want to make the point that being a bit more comprehensive
-won't hurt when providing an API.
+base-commit: 808eb958781e4ebb6e9c0962af2e856767e20f45
+prerequisite-patch-id: f05ff916822e21eec452f9e5b8d11339c409265a
+-- 
+2.48.1
 
-Regards,
-Boqun
-
-> > > +    ///
-> > > +    /// Returns the entry at the given index.
-> > > +    pub fn get_mut(&mut self, index: usize) -> Option<T::BorrowedMut<'_>> {
-> > > +        self.load(index, |ptr| {
-> > > +            // SAFETY: `ptr` came from `T::into_foreign`.
-> > > +            unsafe { T::borrow_mut(ptr.as_ptr()) }
-> > > +        })
-> > > +    }
-> > > +
-> > > +    /// Erases an entry from the array.
-> >
-> > Nit: s/Erases/Removes?
-> 
-> Will change. I used "erase" because that's the verb used in the C
-> function name but named it "remove" because that's the verb used in
-> the Rust standard library. The result is neither here nor there :)
-> 
-> >
-> > > +    ///
-> > > +    /// Returns the entry which was previously at the given index.
-> > > +    pub fn remove(&mut self, index: usize) -> Option<T> {
-> > > +        // SAFETY: `self.xa.xa` is always valid by the type invariant.
-> > > +        //
-> > > +        // SAFETY: The caller holds the lock.
-> > > +        let ptr = unsafe { bindings::__xa_erase(self.xa.xa.get(), index) }.cast();
-> > > +        // SAFETY: `ptr` is either NULL or came from `T::into_foreign`.
-> >
-> > SAFETY comment here needs to mention why there is no alive `T::Borrowed`
-> > or `T::BorrowedMut` out there per the safety requirement.
-> 
-> Will do.
-> 
-> > Regards,
-> > Boqun
-> >
-> > > +        unsafe { T::try_from_foreign(ptr) }
-> > > +    }
-> > > +
-> > [...]
-> 
-> Thanks for the review!
