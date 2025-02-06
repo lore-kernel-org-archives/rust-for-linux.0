@@ -1,175 +1,137 @@
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253811D8E01;
-	Thu,  6 Feb 2025 20:49:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3F31DC9B4;
+	Thu,  6 Feb 2025 20:58:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738874948; cv=none; b=by6DeCilCK+KDcfLBnJTp+id7f0DfcIjylMa0csCqdsNlLT6cGrTzlIGCMp7jKSGC9jc+Z2x82VlziyCyWd0uzHPV05TKf6M+efBWS3zTcYc9PICMWROCVWErql4CnV5Zi3D7aM0hbeRZS09LfK6qRXATJOKdfmrSYLmrTFY6xc=
+	t=1738875491; cv=none; b=Ixqxycbs+mbZPAdB/b6kWAQQzTZFMCP/jzcaSynWfB2oTCavKbfDGIrwh3FKeNA01M/874RaKSgCGm2LWKG1Usmpyos8c8JKy2tHH/P7G6T2HwGZgQqZNTok+IPr7PxKaKaLTU+JC+gU96zRsK/Au0PdkGzEMeO4uxYiKqvvhzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738874948; c=relaxed/simple;
-	bh=TK9xOrYy3As6bruxmaUDOIAGOJJAmyR05lT/LecV/BE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=PVnLz0Sc8HbO0cMmk8GD9RwQ3loG1lwvzT08N8YK3mS/c1r4bMvsHzuS1PO41NSzqoIJaoOkjzH8UAu/G/kLuTz2S0SKrBUp5sxaye0LNXf08vj/ygVqqUAP/zxDOhDOqoYRxTdJnwBaAeYvi0boBE4alVrKU9c6DeDmA/BY3j4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HuQZ32+0; arc=none smtp.client-ip=209.85.222.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738875491; c=relaxed/simple;
+	bh=/0pxhC+GTLTKTMJ14bnPQQWPb904pW8koG/0Y3LYbzU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VyVETMk06qlKYFn9c+nhPeNzqpVh0ZyVPw6FoaYQDj4C2X5NYBmiXDrtSTzvg4P9YwdV5NmI0HItzts+cfB7Z1MhF3Buqqq65Ugwzzu5TEq8WftTkJT+J7V/uf8muMvIbV0xag6sZBA0mt0iDRorS866J0I4vfq6IpKS1q7RAgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ct79wcSR; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HuQZ32+0"
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7be3d681e74so120498685a.0;
-        Thu, 06 Feb 2025 12:49:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738874944; x=1739479744; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4eOr05IML2aXEPaIpdxqaUml19+von0Vggy1QliMcCY=;
-        b=HuQZ32+09fN8OnnvDApNyE9CcslRp+7TaFVSjHlKURNsuxrakEkXWxAak/d48U4lo0
-         fko9b4Rlfp4Sl5qa/071sTDX1rZX4A8XBiCQ3uf9aV8bMBIqziEoorwnfoWSGmt8w7Fx
-         pQ+Z4VVDwDxti1M0ggaQa5bEUdJ+IctSFZamBv22WvGgjIy+pWlBoLAgsrdZ11Yq+uzA
-         n0nAG2LnC6+Nu+zchAK0e/PVCFoklGBNsFKuyD3mhCG62T6jzBzMIX3ZvMSKsUwQCRQe
-         0N84AAIuvx0QooYDH2cXDOUSpaxvTgpw78TVsg43UdfgzPgygGXSkGvEW+hdmHYEyJSX
-         1Odg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738874944; x=1739479744;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4eOr05IML2aXEPaIpdxqaUml19+von0Vggy1QliMcCY=;
-        b=T2fXkudSHPoqxPmQpGNYZKzERhmUbpG3PgVmjltiVgQ7I95BfnIFKo3CJg9PeqqV5d
-         LjnehL6t+eaSSWr5hHInesili8uUtRfilVHWb5brv8XeII9eqFJLIDLi77hfRxmTQbbA
-         0NEv+LgwUXAoIjtniGIuvWMODbOyKKKbGuhS1Nf5dHO+QCHTYKJuKwx3W3jmdSY65Y3c
-         GXLhHfjSPmKGQwABaSfOC0AYfqjYxQPUtvI9rHp+DfSH5Pxf5kPnKg3b3T/U8H8UTyDY
-         4S7ppdmJSJ9g6P84usc7BoL41SDXNS6opeJNlXQmS0Vvjd8ODrMgLXlM+p3wWNhgQpYa
-         WZNw==
-X-Forwarded-Encrypted: i=1; AJvYcCWW+/Oad1ahzNKZGgq3Eai8q2SjSzE3pQhZKVgxSq3iw1Wm2ZA0+aF1i3TzeREJ1KjE7F0IDHOAxhduiaY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSXmvf6PG5KIr+GWd9tZI025B/Uw2/Zayk5Xq4j9+dCiy7LHPp
-	uM/pB0mMFMhyA2C4an+cnS86+2Kg8oYeuA28PrsAmfzfXVQxXCxP
-X-Gm-Gg: ASbGncvsKFrXycwLs3gXB8YkYqMJsPaUFWji7nlvUrXJ8/zGswUOgzF3Xvksd5tAxzG
-	X1C3dumiOhJU7wNRLOx9Tbmq+N+SG8LbVtGS5yNiddvbFmIHImZHADiDo+nwEGUkelWaNsT6zP9
-	Fz407Xhi7FhrhKbDKdKhRc04OTWV0cYpIn9mVfXVxuRz+HDEPaHa1v59a0i6tY1bWnF4dTeqdXn
-	oz8p3YjmjU9zzlXks966fVWAzuuV5W7U/JWhQXsZ9uLBG3v67lWthDfpoN1vST0OSLmzXQ3kTku
-	b5mez+xmIstwEyJmiqZcEm9zI1cJBsUI4p/z/+RjCJewr1vZwXZP
-X-Google-Smtp-Source: AGHT+IHavPQRlBINStuHOuhHZnd67x1S4mzDpGUVacFju1EDZN0tI+AW0MZsiR3q74WZGPet1uqezA==
-X-Received: by 2002:a05:620a:4083:b0:7b6:a793:4223 with SMTP id af79cd13be357-7c047c213d6mr89494185a.24.1738874943885;
-        Thu, 06 Feb 2025 12:49:03 -0800 (PST)
-Received: from Tamirs-MacBook-Pro.local ([2600:4041:5be7:7c00:fb:aded:686f:8a03])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c041dfb0d2sm101272585a.34.2025.02.06.12.49.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Feb 2025 12:49:03 -0800 (PST)
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Thu, 06 Feb 2025 15:49:00 -0500
-Subject: [PATCH v3] rust: allocator_test: use `posix_memalign`
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ct79wcSR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738875489; x=1770411489;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=/0pxhC+GTLTKTMJ14bnPQQWPb904pW8koG/0Y3LYbzU=;
+  b=Ct79wcSRsooELflExK73Ul9bMU3LhReyH3kgVROr1bu5Dyuc/+IhtYpZ
+   wOl4qoGFosqMG/oFRm5yDp1ViQ//tsv7FJy7eQ/8q3Lun5SEgp2kiZKfG
+   AOMMvwSRvQfQ3loF5/DdQE+jI+axCrDlZ7x6SBcAuSaoPMxWXJ5a88FwZ
+   Nm7ODuZ8Fv5T/hS6JR5UQSSjHlMyusL33okTAr557podgpgVGkLxKX4cn
+   s18Mcg5XKED+soqRglAzPY+pN9KKOcDwLsFh+RpvXdwI9Wa+NkhEKbMwc
+   +ZMV5FF1Fwl94UwPtKS6ydzuzcQtHzBcu0htoSiLpgHKPqJ5bc2YTW3rO
+   A==;
+X-CSE-ConnectionGUID: rNL5IQ9CR1K5jMCoGUHwhw==
+X-CSE-MsgGUID: ho1zCSgwSDu1RvqWiG4fbw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="50125056"
+X-IronPort-AV: E=Sophos;i="6.13,265,1732608000"; 
+   d="scan'208";a="50125056"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2025 12:58:08 -0800
+X-CSE-ConnectionGUID: JUPj4RINSo+3mL2t23/4wQ==
+X-CSE-MsgGUID: tx3sjQ9oRTCYKrH4T8h8TA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,265,1732608000"; 
+   d="scan'208";a="111945741"
+Received: from dnelso2-mobl.amr.corp.intel.com (HELO [10.125.111.17]) ([10.125.111.17])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2025 12:58:06 -0800
+Message-ID: <4ab2efaf-867a-4b8a-8e4a-193f8218dd33@intel.com>
+Date: Thu, 6 Feb 2025 12:58:07 -0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] x86: rust: set rustc-abi=x86-softfloat on rustc>=1.86.0
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Alice Ryhl <aliceryhl@google.com>
+Cc: x86@kernel.org, rust-for-linux@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250203-rustc-1-86-x86-softfloat-v1-1-220a72a5003e@google.com>
+ <CANiq72kv_wE_ESNsW9qDiwnJkaoFb+WERJ6p796TCPAdK838Fw@mail.gmail.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
+ oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
+ 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
+ ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
+ VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
+ iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
+ c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
+ pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
+ ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
+ QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
+ c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
+ LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
+ lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
+ MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
+ IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
+ aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
+ I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
+ E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
+ F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
+ CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
+ P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
+ 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
+ GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
+ MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
+ Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
+ lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
+ 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
+ qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
+ BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
+ 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
+ vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
+ FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
+ l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
+ yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
+ +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
+ asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
+ WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
+ sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
+ KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
+ MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
+ hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
+ vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
+In-Reply-To: <CANiq72kv_wE_ESNsW9qDiwnJkaoFb+WERJ6p796TCPAdK838Fw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250206-aligned-alloc-v3-1-0cbc0ab0306d@gmail.com>
-X-B4-Tracking: v=1; b=H4sIADwgpWcC/3WMywrCMBQFf6VkbSS5adS68j/ERZ7thbaRRIJS8
- u+mXRXB1WEOzCwkuYgukWuzkOgyJgxzBXFoiBnU3DuKtjIBBpIB41SN2M/O1h2DoVqC0SCkMBc
- g1XlG5/G99e6PygOmV4ifLZ/5+v4rZU45NV2nzsILo2176yeF49GEiaylDHsbfm2otlSeaemtb
- U9+b5dSvoC5mOHoAAAA
-X-Change-ID: 20250201-aligned-alloc-b52cb2353c82
-To: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Tamir Duberstein <tamird@gmail.com>
-X-Mailer: b4 0.15-dev
 
-The implementation added in commit dd09538fb409 ("rust: alloc: implement
-`Cmalloc` in module allocator_test") used `aligned_malloc` which has
-implementation-defined requirements of its `alignment` parameter.
+On 2/6/25 10:51, Miguel Ojeda wrote:
+> x86: I will pick this up, but if x86 wants to do so, that would be
+> welcome -- in which case:
+> 
+>     Acked-by: Miguel Ojeda <ojeda@kernel.org>
 
-The macOS implementation of `aligned_alloc` appears to be based on
-`posix_memalign` and inherits the stricter requirements of that
-function, causing test failures on macOS.
+Hey Miguel,
 
-Replace `aligned_alloc` with `posix_memalign` and comply with its
-requirements. This ensures uniform behavior across systems.
+Are you saying you'd prefer that we pick this up on the x86 side? I'm
+totally happy to do that, and it's obviously patching x86-specific
+sections of the rust scripts.
 
-Fixes: dd09538fb409 ("rust: alloc: implement `Cmalloc` in module allocator_test")
+If I'm understanding the ask.... Just curious though, what makes that
+preferable? It's in a rust-specific file
+(scripts/generate_rust_target.rs) and I'd guess that it'd be easier to
+take it through the rust tree since it's more likely to collide with
+stuff there and also be closer to the folks that can competently resolve
+any merge problems.
 
-Signed-off-by: Tamir Duberstein <tamird@gmail.com>
----
-I've intentionally not picked up Danilo's Acked-by from v2 because the
-approach has changed quite a bit.
----
-Changes in v3:
-- Replace `aligned_malloc` with `posix_memalign` for portability.
-- Link to v2: https://lore.kernel.org/r/20250202-aligned-alloc-v2-1-5af0b5fdd46f@gmail.com
-
-Changes in v2:
-- Shorten some variable names. (Danilo Krummrich)
-- Replace shadowing alignment variable with a second call to
-  Layout::align. (Danilo Krummrich)
-- Link to v1: https://lore.kernel.org/r/20250201-aligned-alloc-v1-1-c99a73f3cbd4@gmail.com
----
- rust/kernel/alloc/allocator_test.rs | 27 +++++++++++++++++++++++----
- 1 file changed, 23 insertions(+), 4 deletions(-)
-
-diff --git a/rust/kernel/alloc/allocator_test.rs b/rust/kernel/alloc/allocator_test.rs
-index e3240d16040b..0aa68d955b39 100644
---- a/rust/kernel/alloc/allocator_test.rs
-+++ b/rust/kernel/alloc/allocator_test.rs
-@@ -23,8 +23,19 @@
- pub type KVmalloc = Kmalloc;
- 
- extern "C" {
--    #[link_name = "aligned_alloc"]
--    fn libc_aligned_alloc(align: usize, size: usize) -> *mut crate::ffi::c_void;
-+    // NB: `posix_memalign` is intentionally used instead of `aligned_malloc`.
-+    //
-+    // ISO C (ISO/IEC 9899:2011) defines `aligned_malloc`:
-+    //
-+    // > The value of alignment shall be a valid alignment supported by the implementation [...].
-+    //
-+    // POSIX.1-2001 (IEEE 1003.1-2001) defines `posix_memalign`:
-+    //
-+    // > The value of alignment shall be a power of two multiple of sizeof (void *).
-+    //
-+    // `posix_memalign` is more portable than (but otherwise identical to) `aligned_malloc`.
-+    #[link_name = "posix_memalign"]
-+    fn libc_posix_memalign(align: usize, size: usize) -> *mut crate::ffi::c_void;
- 
-     #[link_name = "free"]
-     fn libc_free(ptr: *mut crate::ffi::c_void);
-@@ -62,13 +73,21 @@ unsafe fn realloc(
-             ));
-         }
- 
-+        // Ensure we comply with the requirements of `posix_memalign`.
-+        let min_align = core::mem::size_of::<*const crate::ffi::c_void>();
-+        let (align, size) = if layout.align() < min_align {
-+            (min_align, layout.size().div_ceil(min_align) * min_align)
-+        } else {
-+            (layout.align(), layout.size())
-+        };
-+
-         // SAFETY: Returns either NULL or a pointer to a memory allocation that satisfies or
-         // exceeds the given size and alignment requirements.
--        let dst = unsafe { libc_aligned_alloc(layout.align(), layout.size()) } as *mut u8;
-+        let dst = unsafe { libc_posix_memalign(align, size) } as *mut u8;
-         let dst = NonNull::new(dst).ok_or(AllocError)?;
- 
-         if flags.contains(__GFP_ZERO) {
--            // SAFETY: The preceding calls to `libc_aligned_alloc` and `NonNull::new`
-+            // SAFETY: The preceding calls to `libc_posix_memalign` and `NonNull::new`
-             // guarantee that `dst` points to memory of at least `layout.size()` bytes.
-             unsafe { dst.as_ptr().write_bytes(0, layout.size()) };
-         }
-
----
-base-commit: dc58b514a628fc11ab459dccdd6a2f3a916e8f6a
-change-id: 20250201-aligned-alloc-b52cb2353c82
-
-Best regards,
--- 
-Tamir Duberstein <tamird@gmail.com>
 
