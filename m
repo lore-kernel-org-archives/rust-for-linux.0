@@ -1,148 +1,101 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3120C22C322;
-	Thu,  6 Feb 2025 11:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2113922A1C2;
+	Thu,  6 Feb 2025 11:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738841895; cv=none; b=cesNsWWBB4g07nj9l0DQVsKcFCDjO/80vYeyT/c+t/OY9y299tWz/vj5cstrHzsbhM2UBqLXS3Xzc75cWHjJ9WWkxnR17q9G98HQfT3PhsLXQkri6GuWm5TiNRKPdr7EL7l1AzIwC1AnOgYM3KCgK0h9UqjnHFDWIewNp29Sr8c=
+	t=1738842314; cv=none; b=t61KXAu4IJdeoClgKRfM8KMA7aRJipffljp1MdsVAUDtwEAxHfSbu8aEPorLq8omP+iI8tDAWpHvgTjOUQTTx+DYUJKpG/lfbSBA3SxnRxnj0hNVYxj1D+V1C7AA6Ja9pUBin+I+OvIrzHAPrh6M5beO2mFkvhCi/fjU77lebRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738841895; c=relaxed/simple;
-	bh=A3owJN5B+OUsQm2m+Rw/6zqmqJJLWM87rAwKoOvv4wA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=AOx+jcuahRk/KcPJRJUh9pZMl6ErWyE7bK9SHFb2yXrwbtZNehmc2RvA78BDnpb8xaO9PHufDtRKFf+0dKAks/gAS+DMJGgFeg3bv57oiN9UGi8DTQU8mGLo2VY5rTCvhgc1Z/pHQ7QyiioAFzQZBmtMlD8PFqRLGvPXQVpzass=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XKQhMl5N; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738842314; c=relaxed/simple;
+	bh=noSQ+Xs1uJzUWnLdUjp+J+1wjOFITtMZFxGZIKDmVzs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mMlrfra7u4a9V1gARUAsj3EIG38uaaZ0FfImNt68PHOCk3vXLMIAQYDmcqKTB2E0Hf58sEDCBI63NBm0rWD95wNrCqBAs+kJTeBAQFhMSpC0lF/3UVRBZmdKm4uBpGhj5wSalogopVVV6AQLPiAx+2aYRMKn6QBWBj8YLLXgDYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ESd0vkMf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XKQhMl5N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F40C4CEDD;
-	Thu,  6 Feb 2025 11:38:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ESd0vkMf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFC8EC4CEDD;
+	Thu,  6 Feb 2025 11:45:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738841893;
-	bh=A3owJN5B+OUsQm2m+Rw/6zqmqJJLWM87rAwKoOvv4wA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=XKQhMl5N37I0f5Ru9w+HepK2t/n521D/cobWcQ5i1MOfzHzx9iI08qL9T31MKTrpR
-	 ll+wLDBgEhKgvH06n6z77J82L+PfvwClkqfz/Dl0ErJm/zRmKqn9RNcWI9tCVlbjuo
-	 DxtSVDvDPihxqnr/S4aIcy4fDHoQYmBT3nnAHVxKX1Sxcq8pPvTr0m+nCMcCgSmqTL
-	 BMK3EvQyAVTEsUWCMyWlEZXLrvCKgCwyL99QOP7FWM+5kwG3hs6FQqNF25jAM3qqR3
-	 f/jeQCYa+Php2qNJPtaQ0W2Vulxao7mImhv/oBZIum7R/GinzaEjWvAKpNuuWHQ3l5
-	 HJSRZYmXYb8IQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Fiona Behrens" <me@kloenk.dev>
-Cc: "Danilo Krummrich" <dakr@kernel.org>,  "Miguel Ojeda"
- <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
- <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
- =?utf-8?Q?=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
-  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Joel Becker" <jlbec@evilplan.org>,  "Christoph Hellwig" <hch@lst.de>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 3/4] rust: configfs: introduce rust support for configfs
-In-Reply-To: <87wme4nl7o.fsf@kloenk.dev> (Fiona Behrens's message of "Wed, 05
-	Feb 2025 22:19:23 +0100")
-References: <20250131-configfs-v1-0-87947611401c@kernel.org>
-	<20250131-configfs-v1-3-87947611401c@kernel.org>
-	<hlmed80z1XLW8Lk874NHQlDa-r-BHEODXB1lSV8G1ZEoO7EU0rSsRPvpnXA4yCvQulPtKCrudfD7ds-grqXnkQ==@protonmail.internalid>
-	<87wme4nl7o.fsf@kloenk.dev>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Thu, 06 Feb 2025 12:37:57 +0100
-Message-ID: <87frkrjobu.fsf@kernel.org>
+	s=k20201202; t=1738842313;
+	bh=noSQ+Xs1uJzUWnLdUjp+J+1wjOFITtMZFxGZIKDmVzs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ESd0vkMfYhujEVmrRpUZ0wDb0ZV5NTnVgJUEpDrUPF4CQi+h/Cf9Esuiv0oCZ+YOG
+	 L/lUns9YVFIT4P4FAOpWwpNFQKeyKDHxOIYLi1P++4nH0Jo4CFAS5IuClaWlCnF1CV
+	 8BQ18cdpnGZ0IXjAqsYKtZd6XDMiqvUiEa5ChrKMKN/QXRNS5JX1bGigUNazj7+jPe
+	 20ER3q7r25ncTItfphqtkZWtT2K1gG37xBfSU7bB2GSZJxBrVax4UhouPuwuC6Yseb
+	 YrQsFhspM3H7f5mG8UVQuLB8pAAzX8R6Cr4B9yK/NrpKl0vx7ss2wgmOqIvIT2cGzJ
+	 FY0Inw1I72C8Q==
+Date: Thu, 6 Feb 2025 12:45:05 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Danilo Krummrich <dakr@redhat.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Benno Lossin <benno.lossin@proton.me>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Nishanth Menon <nm@ti.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Trevor Gross <tmgross@umich.edu>, Viresh Kumar <vireshk@kernel.org>,
+	Yury Norov <yury.norov@gmail.com>, linux-pm@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	rust-for-linux@vger.kernel.org,
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+	Erik Schilling <erik.schilling@linaro.org>,
+	Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
+	Anisse Astier <anisse@astier.eu>, linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V8 00/14] Rust bindings for cpufreq and OPP core + sample
+ driver
+Message-ID: <Z6Sgwbgfp-9SCr8Y@pollux>
+References: <cover.1738832118.git.viresh.kumar@linaro.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1738832118.git.viresh.kumar@linaro.org>
 
-"Fiona Behrens" <me@kloenk.dev> writes:
+Hi Viresh,
 
-> Andreas Hindborg <a.hindborg@kernel.org> writes:
->
+On Thu, Feb 06, 2025 at 02:58:21PM +0530, Viresh Kumar wrote:
+> Hello,
+> 
+> I am seeking a few Acks for this patch series before merging it into the PM tree
+> for the 6.15 merge window, unless there are any objections.
+> 
+> This series introduces initial Rust bindings for two subsystems: cpufreq and
+> Operating Performance Points (OPP). The bindings cover most of the interfaces
+> exposed by these subsystems. It also includes minimal bindings for the clk and
+> cpumask frameworks, which are required by the cpufreq bindings.
+> 
+> Additionally, a sample cpufreq driver, rcpufreq-dt, is included. This is a
+> duplicate of the existing cpufreq-dt driver, which is a platform-agnostic,
+> device-tree-based driver commonly used on ARM platforms.
+> 
+> The implementation has been tested using QEMU, ensuring that frequency
+> transitions, various configurations, and driver binding/unbinding work as
+> expected. However, performance measurements have not been conducted yet.
+> 
+> For those interested in testing these patches, they can be found at:
+> 
+> git://git.kernel.org/pub/scm/linux/kernel/git/vireshk/linux.git rust/cpufreq-dt
+> 
+> This version is rebased on v6.14-rc1.
 
-[cut]
+I gave it a quick shot and it seems there are a few Clippy warnings, plus
+rustfmtcheck complains.
 
->> +/// A `configfs` subsystem.
->> +///
->> +/// This is the top level entrypoint for a `configfs` hierarchy. Embed =
-a field
->> +/// of this type into a struct and implement [`HasSubsystem`] for the s=
-truct
->> +/// with the [`kernel::impl_has_subsystem`] macro. Instantiate the subs=
-ystem with
->> +/// [`Subsystem::register`].
->> +///
->> +/// A [`Subsystem`] is also a [`Group`], and implementing [`HasSubsyste=
-m`] for a
->> +/// type will automatically implement [`HasGroup`] for the type.
->
-> Rustdoc is unhappy about this (and other lines where `HasGroup` is used)
-> as `HasGroup` is private and therefore rustdoc cannot resolve this link.
-
-Right, I'll remove this link.
-
->
->> +#[pin_data(PinnedDrop)]
->> +pub struct Subsystem<DATA> {
->
-> I would favour this as PascalCase (so `Subsystem<Data>`), as this is a
-> generic type and not a generic const (I always see all uppercase for
-> const generics).
-
-Yea, that makes sense. I somehow thought all generics had to be
-screaming snake.
-
-
-[cut]
-
->> +
->> +#[pinned_drop]
->> +impl<DATA> PinnedDrop for Subsystem<DATA> {
->> +    fn drop(self: Pin<&mut Self>) {
->> +        // SAFETY: We registered `self.subsystem` in the initializer re=
-turned by `Self::new`.
->> +        unsafe { bindings::configfs_unregister_subsystem(self.subsystem=
-get()) };
->
-> I see other users (e.g. gpio-virtuser[0]) to also destroy the mutex, is
-> that a required action?
->
-> [0]: https://elixir.bootlin.com/linux/v6.13.1/source/drivers/gpio/gpio-vi=
-rtuser.c#L1841
-
-Referring to C null_blk, they do not destroy the mutex when tearing
-down. I am not sure what the correct thing to do is. Perhaps lockdep
-wants it destroyed? I'll investigate.
-
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dri=
-vers/block/null_blk/main.c?h=3Dv6.14-rc1#n2105
-
-
-[cut]
-
->> +
->> +impl<PAR, CHLD, CPTR, PCPTR> GroupOperationsVTable<PAR, CHLD, CPTR, PCP=
-TR>
->> +where
->> +    PAR: GroupOperations<Child =3D CHLD, ChildPointer =3D CPTR, PinChil=
-dPointer =3D PCPTR>,
->> +    CPTR: InPlaceInit<Group<CHLD>, PinnedSelf =3D PCPTR>,
->> +    PCPTR: ForeignOwnable<PointedTo =3D Group<CHLD>>,
->> +{
->
-> I usualy favour having struct and then impls for the functions direcly
-> above each other. Here you have th `get_group_data` function between
-> that, maybe it makes sense to move that function either further up or
-> down.
-
-I agree, I'll move it =F0=9F=91=8D
->
-> So far this is all that I did direcly see.
-
-Thanks!
-
-
-Best regards,
-Andreas Hindborg
-
-
+There are also two minor checkpatch complaints about line length.
