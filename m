@@ -1,72 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81661BA33;
-	Thu,  6 Feb 2025 15:45:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB3B1F416D;
+	Thu,  6 Feb 2025 15:55:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738856721; cv=none; b=K6ub6p/ueQSb9Lppu9cSzEfgtlRoYMH8Ye7Rm1T/+IcXVGWUZlWhuRSWXkEg76q9PqFfdJtDDeykS11qsQqlnRX62bXCrMKq16uiMihxNg7F9KLMYQi6Zc23dfR4wiqmzu/ETT6+m+SMguj9WArlkH/XfL45IU7nrXKYRKAAy6g=
+	t=1738857336; cv=none; b=kRFRhawvNWs3JTrwUtq9Te1kpPK9aJm9JWFv5pH1q8TQqB02f9ssDcm/MJrKyHdT3/dnMqvlOmKwtOuZdK82F1+iMpBiQgvCKrgYR//DM7SQJ0FZznrRF1oRTEB8JnSlKOZcY2kdxC5No+Xg71AU2mgWsgVNTwFFoHHKi9lgAzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738856721; c=relaxed/simple;
-	bh=o7szuTdI9sJ0WscJYpzG4yJcQVYcAyaIDo8/Sv6kNT8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z0YI9e0oLggly5E8feIsn7aGZ4vUqg+iGpI9noB7kEmv4TwnzmOJBYZOykz0TSqjpNZZ88x3vfWWOxD47lVWUi+7v9/30nCfc0KDjk02s47REGoSZDJayJ1AsPmi0ufa45pjUMLTPIiUJ0FD7i4EzOseErpZcHuOuNUkJ2XIhA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CTNbPzET; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738857336; c=relaxed/simple;
+	bh=tD52tgT0ku1ofDDa7H4xHdYUEEdhBWYV8NOkuxPkEew=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VH8BixmKU1QFvQ9xbmCSPlL/FJFWtosl7IxhQcdyJX1GhiNKsrcQN5je42/hixGpfCsqvU5ZGtMiCI89yLjr+y/RmmyxiRhqEAXSy9igbE7r/YFF22g8sZcuyXPxQqHhEoQTx6NWDWG7kTlN47F4IzJMMYmVCnsf4fzlNAA2ePA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YMWyVKeQ; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CTNbPzET"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01FDCC4CEDD;
-	Thu,  6 Feb 2025 15:45:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738856721;
-	bh=o7szuTdI9sJ0WscJYpzG4yJcQVYcAyaIDo8/Sv6kNT8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CTNbPzET6MNjyLQ5w8oLzwv0Pa6vkYEiWKQlf7FMnQ7CvFkKKRsR+NKiK0nVeesH9
-	 VwXTFoDk1JvQdNO6DmxISAo8SLn9wkZgdBETVWitaNctNGhChmFLTpeCqQyoYUgd8z
-	 6BuRbQPzE1qhv16/benGCrBR9S6CEv2a++jj4flqtYk9rchPn4TSK8LE/9bSVACURh
-	 ih7YU5GkZpUcBPVyh2HgqiV5MFqtOMI57CHG6ZpR5WduT+jMpYQ8EFGUaNlyFDZ6qk
-	 XUP93YfNpWjRYA7ElMdx3JpzCWCvSMPci0rF913scyQufmCSfsv95WLNnjbMwVEZtG
-	 uWo6fAPDoTTtg==
-Date: Thu, 6 Feb 2025 07:45:20 -0800
-From: Kees Cook <kees@kernel.org>
-To: "Justin M. Forbes" <jforbes@fedoraproject.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Add -fzero-init-padding-bits to bindgen_skip_cflags
-Message-ID: <202502060744.6F701A4CBE@keescook>
-References: <20250129215003.1736127-1-jforbes@fedoraproject.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YMWyVKeQ"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2f74e6c6cbcso244282a91.2;
+        Thu, 06 Feb 2025 07:55:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738857333; x=1739462133; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tD52tgT0ku1ofDDa7H4xHdYUEEdhBWYV8NOkuxPkEew=;
+        b=YMWyVKeQ+eJq4k4pnxJe8Czy1/TXw8TZU5zXaoWwjgv2KvM+jEHozZqMuCp8K1cbzp
+         JYPNTBw9QbOwvfs/PPOgVNUdGYRvHcdbSTSAbhX4Y2/wg4zCbC+4lIjMCb6AWrHRCjYP
+         44Dqv/y2I7vo95ZZKGwOF4B+69U9hyGm5gXnowwU7kpnuEMILRIR6IF3U6Ckzjj0gg2u
+         NMGAKrhTBZeLtsyac0CmOWIGBxiVtsAst/UHTGnzICatm9exXPnqOYrhzcq0Zug89l4e
+         8hXNuGUBASGrQQf0nmZU/LH0k7AD77s0ccS+C/WM6vI8EOUKhvKGv+flfa2noKbqXLa8
+         uT/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738857333; x=1739462133;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tD52tgT0ku1ofDDa7H4xHdYUEEdhBWYV8NOkuxPkEew=;
+        b=NXjcavauHpn0JDFi0B1fPT7gej/QKCYggA6NogL1/wQBfBRGjizAtFZTT3CHepTWrL
+         9vm2u6dbNR3g4HugGYq/raVappvMvLCcTEAYHQxU2WFT9efyXM4HCA9oPWsKQCka0gKs
+         koQtopsJ9tZbxiyWfsoMyLbYIz1wo2HsaURC0xW422nYxhtB/HTYEJwM0F1F6dr8S6cF
+         GbwjrNtw/s4e4bP1y2Pb4GndBIjSzwxCDv5M3wVLTWTqM5kWdcmeHZMCF3ER4Xbp4a6r
+         4RJrLYcEvny31hKd6IwWZMwTeED3moglnyBr0NxVLXWCdaxznibhFTmnTdIJAvM3LXNz
+         SX2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXDUS9LRSk+uaBOaDEdW6qceGUL9tok6XC1u24FkXKh1pYPxJtpK/FD20LevTW3nO8KMFV3bebljOWphbw=@vger.kernel.org, AJvYcCXDfPcKut7EN3znF5P/4LFf4vmD7Y8LVvNx8FcNTAIKO+PzINWajbwYHLKF2T1/5b1kEqtE0ciqu8GTcjTWbjk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqdgZ6r1EyGLzcXqdP/Ye6QG5bDmBwBKnnVdB9MYoodL+u2Y3d
+	l7RAzvousCRi/okqTft98fMVkR2DjSo6HbXaOnsauQEebzTKpHs72tJX6CK4+PQ+qOL8Udp9VQi
+	d6dWMYzSb3VRTYS3eZhkVAqT6lZY=
+X-Gm-Gg: ASbGncsyBUTb0kODhhBK6EiKIYi/kGcH5zKA2WkVwGV6PvJzBT87F13k9+38KwOO3KH
+	OgseDVQ8aMneq2BoR1GvWbKdQFoyGM/juo2O0ZLziLeVSRk8y89zr5IfsssX6Ll5xh1/8TEyj
+X-Google-Smtp-Source: AGHT+IEFA6bwsKfDtexNPcAT1Ijz76kY846Udajcpk3w58/MZZAQKzUIom5u6GuoKlIyvw24uIrDWLQCOmlW0KuvGmM=
+X-Received: by 2002:a17:90b:1c12:b0:2ee:f64b:9aab with SMTP id
+ 98e67ed59e1d1-2f9e083493dmr4903827a91.6.1738857333464; Thu, 06 Feb 2025
+ 07:55:33 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250129215003.1736127-1-jforbes@fedoraproject.org>
+References: <20250129215003.1736127-1-jforbes@fedoraproject.org> <202502060744.6F701A4CBE@keescook>
+In-Reply-To: <202502060744.6F701A4CBE@keescook>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 6 Feb 2025 16:55:21 +0100
+X-Gm-Features: AWEUYZlz2JYC3NHGsOQJMV9SfXiXt-ES4SPKFNqmwUtWcJbz7DyUOVLVFqJMjho
+Message-ID: <CANiq72meqUFt136PQt=h6b5p+wJ5KvdYM2ci_QNKbHaR2wY71A@mail.gmail.com>
+Subject: Re: [PATCH] Add -fzero-init-padding-bits to bindgen_skip_cflags
+To: Kees Cook <kees@kernel.org>
+Cc: "Justin M. Forbes" <jforbes@fedoraproject.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 29, 2025 at 02:50:02PM -0700, Justin M. Forbes wrote:
-> This seems to break the build when building with gcc15.
-> 
-> Unable to generate bindings: ClangDiagnostic("error: unknown argument: '-fzero-init-padding-bits=all'\n")
-> 
-> Signed-off-by: Justin M. Forbes <jforbes@fedoraproject.org>
+On Thu, Feb 6, 2025 at 4:45=E2=80=AFPM Kees Cook <kees@kernel.org> wrote:
+>
+> Thanks for this! I keep forgetting to keep flags in sync. I wonder if
+> there is a way to automate some kind of warning for this (even when
+> CONFIG_RUST=3Dn)?
 
-Thanks for this! I keep forgetting to keep flags in sync. I wonder if
-there is a way to automate some kind of warning for this (even when
-CONFIG_RUST=n)?
+You mean at editing time?
 
-Reviewed-by: Kees Cook <kees@kernel.org>
+> Reviewed-by: Kees Cook <kees@kernel.org>
 
-Miguel, I see you took this already -- is it planned to land for -rc2?
+Thanks! I will add it.
 
-Thanks!
+> Miguel, I see you took this already -- is it planned to land for -rc2?
 
--Kees
+Possibly, depends on how it goes; otherwise -rc3 -- why?
 
--- 
-Kees Cook
+Cheers,
+Miguel
