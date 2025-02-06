@@ -1,155 +1,116 @@
-Received: from poodle.tulip.relay.mailchannels.net (poodle.tulip.relay.mailchannels.net [23.83.218.249])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8288E19E7E2;
-	Thu,  6 Feb 2025 21:45:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.218.249
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738878360; cv=pass; b=RVavOBnVvi11jTRzkPGkypaITCtnlm8T1m0KCd82MociNFEX+FjQsiKd0c5ougfGwjJqU3s3hAf7fW4r2I+cghcWf72ijhIAlQPMkcadOCkuH7RolZnMa04uYtBzRs7qPO6DL/6uNJloKDI1UolEfLnRBwIOq64zygZEl57rhFE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738878360; c=relaxed/simple;
-	bh=pYXeZWRk42/ZKJn9nfzSEfSPAS+Qq+7Hbo3m4foI6m4=;
-	h=From:Subject:Message-Id:MIME-Version:Content-Type:To:Cc:Date; b=C62qhcs/o7L5L3E6Ty+OiTwRjUL52j6iBZ2pdK6pDCXoYyHCk3B5vwKvlBXtQRNFbgT8xvBY2e0Aqhq8dZuBgykGk6MugVmhD2bgtf/nqxCx2SVLHMslkbugzSnajEZrqVQNvt6aWEd64ykI92D0XYiadBAx/zpge8qTwngDr3s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invicto.ai; spf=pass smtp.mailfrom=invicto.ai; dkim=fail (0-bit key) header.d=invicto.ai header.i=@invicto.ai header.b=KsefuRaK reason="key not found in DNS"; arc=pass smtp.client-ip=23.83.218.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invicto.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=invicto.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE495225A52;
+	Thu,  6 Feb 2025 21:56:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738878991; cv=none; b=gOcq6qZLkc/MCgCk/zLF0CH/qNW+XwDavKcB58le/GpIWbZoy3Bg2gr9k9S5QPx/bpJWZekdFsu+dBEJRKbMRB5v4mcjTP03O/WrakOEHHGwqKrLEaEuLObLiF000z+tMqcs8Dp4RHp8EsSZqkIcCbYpPtd271f0HYl0sExnqDs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738878991; c=relaxed/simple;
+	bh=QLEA8ohyIX8hj6vGPgsirNp6XqzX1i1bIJAJO4b/5I8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Cs+rPncPyyXFvdYSyUwhm7wJlyu7qw85kkjzALOVOt8f0w1zXEG3D+ss4mw1X/Mg7zoa82YDYUzpBIDvE0oOcprFbdtmfbBt3tlKeN2PT2mXtnhC1Xon5GZC+6st1ksSNYZUB0fuxHBpUuDGfBlwC970+32V/P44nbXKJQoI50I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UXr4Ygby; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=invicto.ai header.i=@invicto.ai header.b="KsefuRaK"
-X-Sender-Id: hostingeremail|x-authuser|kurti@invicto.ai
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id B28CC8445D0;
-	Thu,  6 Feb 2025 21:07:58 +0000 (UTC)
-Received: from fr-int-smtpout8.hostinger.io (trex-6.trex.outbound.svc.cluster.local [100.127.158.245])
-	(Authenticated sender: hostingeremail)
-	by relay.mailchannels.net (Postfix) with ESMTPA id E9F8284377B;
-	Thu,  6 Feb 2025 21:07:53 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1738876078; a=rsa-sha256;
-	cv=none;
-	b=KYB+F9RvFcbnpUPd3PbMy2sIiJTtsPnt+COOSNOn3MAQzk+KIbZCGa4x3RWpDho3RjSyl+
-	o6NoytryPxaxqW6uCkXxiF2dMoWdaR/qV5QCum0ssq9cQxn9y0eckPrdJ/NboVQ7rSUvap
-	u4xnsaM81JRdrrBiD5EE0vjxrM1RIW+euE8f2nLCyyBMXRL1+fX+n4EUDxw2M1s9LbW7lv
-	bL2CsigGkga+YQNqHVddUm8WEB57GJFMcXi+2bh5kKePr7w7vAhZSm0lLeuT15KKFeez9J
-	tHEy02JmERDYynIHKn4PQ8zbnksYrU2kwIY9JFxtvj5T5DZFmkLTAD2SpjdX5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1738876078;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:dkim-signature;
-	bh=Z/WUVlRe4tP/MfzqUsTxDtSPEpFNCz05VpHyl8nQi+c=;
-	b=h2cYPkU+azmpKg5OkLe1ZA8i4CdoaAiAYcV6NrP1kSSlB9ZFe/SaBx7otW8avmLweYPnL/
-	L4lbRszwqwNFaq76vPqfVbwNHm7ytowIUgERKbH4hamJVVuEKmRM+76aPHYQu+20iooUAX
-	o3zCnHyR5eEyWb1iIYvQyh5U9pyYg2PUMG0Ilio6TsP5TwcMwZpImgVCI9cGEWEz2j+d7u
-	B+GJV8qFzVfDK0/xWipcutkoo/turNf5+OaRkOzVATXYXQBPuHfFmRFgXAhN3BwVcup6JA
-	vIeEYtk+WYJYLcE19ySexxWs9joo2X3BfEzeaeY8f3/+Euvs9Eirwd0IbtEARw==
-ARC-Authentication-Results: i=1;
-	rspamd-8586946c78-9pdp9;
-	auth=pass smtp.auth=hostingeremail smtp.mailfrom=kurti@invicto.ai
-X-Sender-Id: hostingeremail|x-authuser|kurti@invicto.ai
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: hostingeremail|x-authuser|kurti@invicto.ai
-X-MailChannels-Auth-Id: hostingeremail
-X-Continue-Versed: 02e721ef73e41276_1738876078403_1443058005
-X-MC-Loop-Signature: 1738876078403:2730700952
-X-MC-Ingress-Time: 1738876078402
-Received: from fr-int-smtpout8.hostinger.io (fr-int-smtpout8.hostinger.io
- [89.116.146.204])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.127.158.245 (trex/7.0.2);
-	Thu, 06 Feb 2025 21:07:58 +0000
-From: Alban Kurti <kurti@invicto.ai>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=invicto.ai;
-	s=hostingermail-a; t=1738876072;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Z/WUVlRe4tP/MfzqUsTxDtSPEpFNCz05VpHyl8nQi+c=;
-	b=KsefuRaKOViSVbjPF9zt29fFXM9I3vU5ccIWt+h/2WWP7TDZNBig+0H17FWV90haTKIwXi
-	knPg+sr2BewCax0zrQdQMAD7wAXrN+h2skvhJGLfk7o8VXP1ZtrSSVPtT0KpekMVA/byGq
-	FiziCDlforIPLb5pFyG6opdJQnMub8zGpg+za9FMvmnLeFLmdGd2mRtd50w0eYfSp2nBTH
-	ZTqL87pCRKWVjZfPx0627gyEPJAUA3MsFSgdPJouA6ZtlsQFPFuIDUTBDy8s1Y5dge/6Et
-	xjRBWh1xr8/PaGbRs9kzsi980m5N/1oMN2WJpgtEZw02DSYsrKa8dY1L7u43UQ==
-Subject: [PATCH v3 0/6] rust: treewide: add missing newlines to printing
- calls
-Message-Id: <20250206-printing_fix-v3-0-a85273b501ae@invicto.ai>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UXr4Ygby"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E09F2C4CEDD;
+	Thu,  6 Feb 2025 21:56:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738878991;
+	bh=QLEA8ohyIX8hj6vGPgsirNp6XqzX1i1bIJAJO4b/5I8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UXr4Ygby3tsCgsNjJPbjqbEOpLA2kV6LXwGMCw/GMwalPFlcz8Ta8BSyFIsJnDjoD
+	 SwZk/pWwGHWoHiDMII80f1+4wD/3gz2rzOS0ZIDoy4dLHN4cQoDG8xAx9Ksqk2MOJ4
+	 S1Fwfgwcudf56JxNp8o8eUkQZRZuKoxObGqTaQrpLvQM8HldT6ImvLOff23xvE+B7Z
+	 HSUmgAn+z9pWMSbpTy+5c8M8dZ5lW4dlcL6m9DDq+vERYLX8z9yjqPQUlq2zfW87y+
+	 FTdBrk6Lwl0Jgr6DHUNnZF3d4C380Gc0AevwraBvI85MfSFNCoI1o7QaHpOFU/pHmh
+	 0uFrvuIk4ghpQ==
+Date: Thu, 6 Feb 2025 22:56:26 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] rust: allocator_test: use `posix_memalign`
+Message-ID: <Z6UwCtaO-qVYEN2Z@cassiopeiae>
+References: <20250206-aligned-alloc-v3-1-0cbc0ab0306d@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJMkpWcC/x2MQQqAIBAAvxJ7TlgME/tKRJhtthcTjQjEvycdZ
- 2CmQKbElGHqCiR6OPMVGgx9B+60wZPgvTFIlAoljiImDjcHvx78CtJWG4WbIe2gJTFR0/9uXmr
- 9AAeZNcVeAAAA
-X-Change-ID: 20250206-printing_fix-e7a7950b9e7c
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Jonathan Corbet <corbet@lwn.net>, 
- David Gow <davidgow@google.com>, Dirk Behme <dirk.behme@de.bosch.com>, 
- Asahi Lina <lina@asahilina.net>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
- Wedson Almeida Filho <walmeida@microsoft.com>, 
- "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>, Tejun Heo <tj@kernel.org>, 
- Fiona Behrens <me@kloenk.dev>, 
- Vincenzo Palazzo <vincenzopalazzodev@gmail.com>, 
- Xiangfei Ding <dingxiangfei2009@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Alban Kurti <kurti@invicto.ai>, 
- Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
- Fox Chen <foxhlchen@gmail.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1738876070; l=1426;
- i=kurti@invicto.ai; s=20250206; h=from:subject:message-id;
- bh=pYXeZWRk42/ZKJn9nfzSEfSPAS+Qq+7Hbo3m4foI6m4=;
- b=4xSpkYbl9+VsWvFsZY9w0iM7VQ2qHwb/a9rw7Pwy1oWgOfnj6pgBZOsaRONP4mY4a6xyE/OqC
- 0JGrPEsJ3+rDcpdJfiQAXyCpzl097hCFRIDoWRTZpgcMV0I8DCXKijc
-X-Developer-Key: i=kurti@invicto.ai; a=ed25519;
- pk=D1lKs+JFapuEVI9zJ2QUTLSf5u4aT12tG0ny6vMMuOc=
-Date: Thu, 06 Feb 2025 21:07:50 +0000 (UTC)
-X-CM-Analysis: v=2.4 cv=PMNd+uqC c=1 sm=1 tr=0 ts=67a524a8 a=9/DLicljd4JGVkZ5BRdAJQ==:117 a=9/DLicljd4JGVkZ5BRdAJQ==:17 a=IkcTkHD0fZMA:10 a=WWgaao6JuW3fq2SmxSwA:9 a=QEXdDO2ut3YA:10
-X-CM-Envelope: MS4xfKFr1Vl6mjl7LLCK5YBRZtlYnG6DnCEKo5NQc9u2omKjY/AMU3pgTyrXtU1dQ5imhPpe6xqFw/nSy3TjZvmMjGRBpM5WSL0nmalchdTqjcFxQ03KrEjL KUf9R8pOhCZgj6bw2mqTcKjNqzBQUfS3QaSIZ61Ivly1L3E0jKeSnvRC09eMA/Z6NXZQ1i/VFxMTN/vlUIhpqRPRvzty21rus78gdn7CXkUWvU6WDgSZm40E LGKHbvAm4rsFeazNrH/Bn+RUS4cCZ3CBDZjCMGvaOR+R0L7vOaOcWbHGq4bWGQLgeebhTheXm0FmfQfhlHlEXzn3uB11/MB/kWqtcLcai9D5m01w6JhFZOtL z7y/ldu6fk4rk9aLMW2wLQ6XpOe9e7glUijKa8RNItCPECE3I1tk1FJZs5KSIAUwNJxjdnCTQ0z4dtYlwDoMFzH7F+vbwcTMbo3kI8aEvy2hCRC3VLL39KZm nCZwxHziWtwXeY/68OuzVxVvMHSTA71qdy2eSjKQBGXEgis/nIAiVgVz7Bi9B/sEuXq2RhZPZsSC/mybkKMrzJX1v1c/oZ1IiUWC5JHGd+xmUaGG6IEhNBHn cvTtr3Ooj/gr6+/ueMBGDmRzJFYTTkIuKqO+z+UToyoG0uBgw2b/vDJ1SCjNV5dMTb0g0BhuEQh0fTrt2fK1tODucMdNct/pTfpnTuunQxxcVwRctmDjcVT4 ad96oSWpMsd1bOXyZbIwiHH1jMiZCzL1Vs/H6TqBlzE5mmbs31qxNlYftst4EQtFkDc3Gvx4feBaCeFnBcaSvai2u3ZWABwL0Gt/tVgSw1s5H/Y0jBFamEV7 uxhca7F1aar4LqjUUM4Eie6969Y4vmpX+7SXWkQpOUi0ZpHGjHx5fM6JgbYzKi7LcIs1vBWaDALHuwuC0cPfxUXG4npUIYV4A0BufUKMYGY5/wIkHBFuwFSX UuAYax6SW4LQuNw
- YfBmec6fDIHT1WJ1bOGhxWF1rWnSIbvKL
-X-AuthUser: kurti@invicto.ai
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250206-aligned-alloc-v3-1-0cbc0ab0306d@gmail.com>
 
-Adding newline at the end of all Rust pr_* and dev_* macro
-calls that miss a newline.
-`pr_*!` and `dev_*!` macros are supposed to be called
-with a newline at the end, just like in the C side
-such that independent lines are not visually missed.
-There were no dev_*! cases with a missing newline found.
+On Thu, Feb 06, 2025 at 03:49:00PM -0500, Tamir Duberstein wrote:
+> The implementation added in commit dd09538fb409 ("rust: alloc: implement
+> `Cmalloc` in module allocator_test") used `aligned_malloc` which has
+> implementation-defined requirements of its `alignment` parameter.
+> 
+> The macOS implementation of `aligned_alloc` appears to be based on
+> `posix_memalign` and inherits the stricter requirements of that
+> function, causing test failures on macOS.
+> 
+> Replace `aligned_alloc` with `posix_memalign` and comply with its
+> requirements. This ensures uniform behavior across systems.
+> 
+> Fixes: dd09538fb409 ("rust: alloc: implement `Cmalloc` in module allocator_test")
+> 
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-Signed-off-by: Alban Kurti <kurti@invicto.ai>
----
-Changes in v3:
-- Same code changes to v2, but split patches into multiple patches
-  and improved the descriptions
+Let's wait for clarification before moving on. :)
 
----
-Alban Kurti (6):
-      rust: docs: add missing newline to printing macro examples
-      rust: error: add missing newline to pr_warn! calls
-      rust: init: add missing newline to pr_info! calls
-      rust: sync: add missing newline in locked_by log example
-      rust: workqueue: add missing newline to pr_info! examples
-      rust: samples: add missing newline to pr_info! calls in rust_print_main
+> ---
+> I've intentionally not picked up Danilo's Acked-by from v2 because the
+> approach has changed quite a bit.
+> ---
+> Changes in v3:
+> - Replace `aligned_malloc` with `posix_memalign` for portability.
+> - Link to v2: https://lore.kernel.org/r/20250202-aligned-alloc-v2-1-5af0b5fdd46f@gmail.com
+> 
+> Changes in v2:
+> - Shorten some variable names. (Danilo Krummrich)
+> - Replace shadowing alignment variable with a second call to
+>   Layout::align. (Danilo Krummrich)
+> - Link to v1: https://lore.kernel.org/r/20250201-aligned-alloc-v1-1-c99a73f3cbd4@gmail.com
+> ---
+>  rust/kernel/alloc/allocator_test.rs | 27 +++++++++++++++++++++++----
+>  1 file changed, 23 insertions(+), 4 deletions(-)
+> 
+> diff --git a/rust/kernel/alloc/allocator_test.rs b/rust/kernel/alloc/allocator_test.rs
+> index e3240d16040b..0aa68d955b39 100644
+> --- a/rust/kernel/alloc/allocator_test.rs
+> +++ b/rust/kernel/alloc/allocator_test.rs
+> @@ -23,8 +23,19 @@
+>  pub type KVmalloc = Kmalloc;
+>  
+>  extern "C" {
+> -    #[link_name = "aligned_alloc"]
+> -    fn libc_aligned_alloc(align: usize, size: usize) -> *mut crate::ffi::c_void;
+> +    // NB: `posix_memalign` is intentionally used instead of `aligned_malloc`.
+> +    //
+> +    // ISO C (ISO/IEC 9899:2011) defines `aligned_malloc`:
+> +    //
+> +    // > The value of alignment shall be a valid alignment supported by the implementation [...].
+> +    //
+> +    // POSIX.1-2001 (IEEE 1003.1-2001) defines `posix_memalign`:
+> +    //
+> +    // > The value of alignment shall be a power of two multiple of sizeof (void *).
+> +    //
+> +    // `posix_memalign` is more portable than (but otherwise identical to) `aligned_malloc`.
+> +    #[link_name = "posix_memalign"]
+> +    fn libc_posix_memalign(align: usize, size: usize) -> *mut crate::ffi::c_void;
 
- Documentation/rust/testing.rst  |  2 +-
- rust/kernel/error.rs            |  2 +-
- rust/kernel/init.rs             | 12 ++++++------
- rust/kernel/init/macros.rs      |  6 +++---
- rust/kernel/sync/locked_by.rs   |  2 +-
- rust/kernel/workqueue.rs        |  6 +++---
- samples/rust/rust_print_main.rs |  8 ++++----
- 7 files changed, 19 insertions(+), 19 deletions(-)
----
-base-commit: ceff0757f5dafb5be5205988171809c877b1d3e3
-change-id: 20250206-printing_fix-e7a7950b9e7c
+I don't think this can work. posix_memalign() is defined as follows.
 
-Best regards,
--- 
-Alban Kurti <kurti@invicto.ai>
+int posix_memalign(void **memptr, size_t alignment, size_t size)
 
+Besides that, I don't think switching to posix_memalign() is desirable, it only
+seems to make the code more complicated.
