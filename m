@@ -1,57 +1,57 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD141624CF;
-	Thu,  6 Feb 2025 16:05:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B65D1F419B;
+	Thu,  6 Feb 2025 16:12:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738857950; cv=none; b=SbkiGOYAOKLic2lY5SyNP1YufLqGUQl8V478cgeUCSPXkrERpmuH6cKsW1Sch+smug8RgjcmYYTqn5VBGR7Mw55ORAmERwyZkqdwbWreV64pq6iUnaTUv3ICFJooEEo5/VjtTeYu+yyO05FwsriGMET+rkF096Q+X737NfsjE1I=
+	t=1738858326; cv=none; b=Lxq1dTT0H9MjIoXmN64hwZ2JdS94dBMhHJX/6mb0Wsl96uuGVl1oIPvx6/NNQl7Qb0fkK3m2owK8GkznIWRbo/Ri0bgfO9BtjIordi2l5K9cK9dMXKdeIFsEHgURrLIEKUwGGoQpCUdPKfP5Nn7oAwCanzbmliilGobvMMQo11s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738857950; c=relaxed/simple;
-	bh=RMrQYMNjAHqDCcRKaeos3nu037ShcpDNHPY0RlHFfzk=;
+	s=arc-20240116; t=1738858326; c=relaxed/simple;
+	bh=HhH4amzXgF44Osc7EyhcoSr3ieMh8P2+h5rl5kU9Ico=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=joEbUHqK9+Y1Pt+1Tjs6WACd2Rk3AHWgxPR6+nIRu7gvCa2aAFay/8IDMVGNJLUiM1tYcTnJXOWBH661zIFHQjEoqXzVaCoRVYWHy/zYbefUujwcUMqYmo+L8lJXWs6h2rffZRRstyO2cvt4NDWR+yUUNCPVp6/PVXMp8LPiREU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N9bjz3xv; arc=none smtp.client-ip=209.85.216.43
+	 To:Cc:Content-Type; b=UhCOUXZBGLtmRTJ1Jiq20o2ogyjBjPi3dEXKtZ15eRDGfTZ332I5ibo7x9zqdHIQFGPfxH8ODG07kEhsJTFJ6g7xGzwHFZE7HZbTfk9DH34tVXay5Jl/sHjS1kTQmCNAsbHRuNT45e+eQz0TOjx8SmOL6jaROuDMlTqniO6C4UU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fJCu9mMS; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N9bjz3xv"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2fa18088594so88575a91.3;
-        Thu, 06 Feb 2025 08:05:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fJCu9mMS"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-21f3826e88cso1740435ad.0;
+        Thu, 06 Feb 2025 08:12:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738857948; x=1739462748; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1738858324; x=1739463124; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RMrQYMNjAHqDCcRKaeos3nu037ShcpDNHPY0RlHFfzk=;
-        b=N9bjz3xvaGFjnFmXZGq9KdLaLXyd4g1H7mVb/P78SNzIdZyTfdgeGLCAEMBifgPuwV
-         EWCXk5XpJbzcJS59vZIkpuHnw8zztf0Ui3Ua6ylzl3uI9GSKTP3YiKeKPIhVTelyhjz9
-         TSNUPFT1J2cCwWGsCGT2B8CGmPlD/CuD3lJHyVtDdkfNmDd8xgqh8f18f4leSQjvcaiQ
-         q24ZRAiJbMT59Bq7aSJL73WIgKveuJgutE54zSHA/2nspxaynl/L6UOxC70/y1Ur86xj
-         tQojki/mhLMjhukzNCTwv1CftyYCY75iH/XDNsUuNTGB88cyh1o0OWFKapIH5I+AiUhc
-         ub7w==
+        bh=EtZRM/BNpNEwgzIhJIm9sS+WQc95LhJovLyEl9cVNjo=;
+        b=fJCu9mMSSQLusTqpPDk8KqR5ll6enNlXtz1IPxg3sDqecQ11f60QqURuBzVJwUEAYl
+         qK0qT94s69eBcXqGt5OrZ9Z1UpTWDgj7s2o//U6xnykGvyQqdIkrn6NIgswWI+lsf0Uk
+         /GzSC3wnEmrrG7EINmCxHbTiGzvbdKj+o4zspwW16KRVh3MaaMBX7TMvUikXLEDsR6kY
+         OcSyjrx1aedRNktdxCSckwaiMspDacfQWS/FIMMnM4tVts1VX3S/9LNfXkKNSAB6rUpg
+         DXD6iRvk6gAvhEHj/DjJ8DP5JWmbDkV2hfK6kpCYEEiw6RAY2fz90YuFLYi06oaN2blP
+         wanQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738857948; x=1739462748;
+        d=1e100.net; s=20230601; t=1738858324; x=1739463124;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=RMrQYMNjAHqDCcRKaeos3nu037ShcpDNHPY0RlHFfzk=;
-        b=k/yNtNL5oSlbfCksBf6CZdAkm60rjEcmnywVqs6vqoUN/ZgGfu+vGWL6/DEdku2Dwg
-         6JHiPGiQxBZbSm7+UfKC2pJswUdQ/hvHRRBUzPpdNxMVTjQdJLBjrD5zhq0t2WWrIV/z
-         RqtxjN99PkQevuhNC/UaYixdNmuP+/iwCEizcwLc86BSVsvkNyWoVVKZpLqK5wz1qfbr
-         ETUPLQUDdFbWWLZZPVaglHrgenN66WryVkTb8yfuyhsC3niuBiHzDaDJ4JW2ZOynbgh5
-         GGr9yleBwe7zWfXb6wcPU9DDhx13XNukHwdmNLKdj/+Vm3HAP2EIJw1Hi4fDUj8GASUB
-         X8iw==
-X-Forwarded-Encrypted: i=1; AJvYcCX9FERKIJpwNzaCS6DtIut9EXlgC1orMr++k3n1DEQ+CTQltir7JnyJREJyLsQ6mLMJaOkuXrnkcmjcn7Wy940=@vger.kernel.org, AJvYcCXAfoLl4/u69W5QbTbNaT2R715W0osakbz6dT3s99dcDPpqyfLm/sGWvhGhiYRCLz0/bTpMNuaNPS4Vp1A=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3/xaljqofyUU6t0722Q/pmcBal0TjVpeltYzzP+Arv6w8AUjU
-	lInLHAsKKLYHppVQcB48n9jF60kFjjVUqPDlHHvW+rB0b/XZC0QH/mGj4cjgY/WAmJXUj8bhh+M
-	8RVfMSYowauSXNXWdZubeFrywl1iawcTL
-X-Gm-Gg: ASbGncvGZYpriQKihxYsoSIkgC7kZmU/4TIwFYMtNfyaEYbVYBx0O2CgG7ldj0ORoxd
-	FcH5qu2jK0v6cxpnhKTSrfBGwQsUsNaXGno/0GnXRHnasCXPqZomXFsKWiOUvdJdW5oi3LY/c
-X-Google-Smtp-Source: AGHT+IEcEVc1n+/1BATnRABCQtSTL0mXGZKlW5jifmyjswrEEpzNHa98iAun346JC1c3U1OFW3KbAhLZghNlm/ahSWU=
-X-Received: by 2002:a17:90a:e7c2:b0:2ee:d397:1fef with SMTP id
- 98e67ed59e1d1-2f9e0849b8amr4619355a91.6.1738857948115; Thu, 06 Feb 2025
- 08:05:48 -0800 (PST)
+        bh=EtZRM/BNpNEwgzIhJIm9sS+WQc95LhJovLyEl9cVNjo=;
+        b=tlwZNY3M6iTDdS/qG3jMos8HEJED9pCxpSXwzvXL71vEqvnBT8+32KFxoALx7NIfSU
+         4qJzL7vdZRVcd6imMGt55iAraXJb44FkLnL+sEe0BmnWu/ma0/TeUA+WOOvVvj0NkI+H
+         WczFRdsnmbdr0fwcwfNo1vs0DCdHumnK1d7SZqw4tRIGmrCyDjWkgUjAlbXvTNYZcsSX
+         +z1SKkvEq/xwW6PAkeV4hwVmYWPfGcJrOdPqcDvkM4S2/QVMnutcWabjSshOQWKDEs+5
+         s90OKtFoec8wwK2I9m+i8LRc+CAsCxUsyEYsjU2WUx6nni2hwM8WscaLtUxSf4g2NMCv
+         vgyw==
+X-Forwarded-Encrypted: i=1; AJvYcCUCdr5Pjvi9q0NWpQYysGNCwxXk1gfi5sCNiSWR+pXrr76OA+u/ecpxTNesywfOk8R0qaMiTOMU9nbM0MoaZO8=@vger.kernel.org, AJvYcCW+JPlLB+YK8THMFnvRKfJVrT7JdZDsW5nsffPWhXtIqWp862NwHK5be+2YB9ABlRbIIkO7nLB6Yq1Q7hw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHZvUjJg4LdJoZbKlfnLQ+3e9u+p69E3RQUeZso28SfXIgFPok
+	HMmIQSOoIZaVVN//Q/FhvwF/l9KM3h2/fWr+py6lfP3vwG/0mZB2wbngPi1oawzobd8R7XJg1cG
+	uxQIAGeCKQyfIq1KLNGL1lhRw+bM=
+X-Gm-Gg: ASbGnctBh6Rtgs/3HaJWvlX8fV6BkiJ+8+V1OzU/Vmj3TjviVLO93F8ffdxILZyxFjO
+	32O5ngk4zwUdi0VTYS5ZhlNvSe6cw88Aq9iooL1Cae4AB82gRhoJPmJvEhj9U68aKPdi9qsnG
+X-Google-Smtp-Source: AGHT+IFSiXvXNTgA8TrqWkoPQkz+SMbg9VapwbxKW3QnL+WXQCcmzD7oApJb8fPLdbR0/L4ArPvRVwLFkQ3zHN8A5Fw=
+X-Received: by 2002:a17:903:990:b0:215:5f17:4296 with SMTP id
+ d9443c01a7336-21f17e3e4eamr47980705ad.8.1738858324509; Thu, 06 Feb 2025
+ 08:12:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -59,45 +59,57 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250130220529.665896-3-daniel.almeida@collabora.com>
- <tencent_2E2CD1359817A58BB51F59E790325CFA6A0A@qq.com> <67AB9311-3EDC-44A8-9C7C-ABF2ED6B632C@collabora.com>
-In-Reply-To: <67AB9311-3EDC-44A8-9C7C-ABF2ED6B632C@collabora.com>
+ <tencent_2E2CD1359817A58BB51F59E790325CFA6A0A@qq.com> <CAH5fLgi+Qf=o91XEPamjycdrGeso1yDEDOGNQRmmy-miakDaOg@mail.gmail.com>
+ <tencent_9719A47A97C91AAD7453E64CE987EDABD608@qq.com>
+In-Reply-To: <tencent_9719A47A97C91AAD7453E64CE987EDABD608@qq.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 6 Feb 2025 17:05:35 +0100
-X-Gm-Features: AWEUYZkcjCjFE2ZfblHsg4HLGJ_kRZF8wduKdGhZRN46Ma92tmC4ZEHZtLYoimk
-Message-ID: <CANiq72=opw-X6-qXCFsdtLw8FDOO5Ekvj9L-r_4LSwoNShjwEw@mail.gmail.com>
+Date: Thu, 6 Feb 2025 17:11:52 +0100
+X-Gm-Features: AWEUYZkU1T74Ris2ZJ-7bYKB39i33oG5Rk1rzMhthfMhG8Cal2ozvrFPZNPSTi4
+Message-ID: <CANiq72mS-AgdAva4mB=FWf5dh3vZg95Ka7Wv36ypoZXChuwk=A@mail.gmail.com>
 Subject: Re: [PATCH v6 2/3] rust: io: mem: add a generic iomem abstraction
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Guangbo Cui <2407018371@qq.com>, Miguel Ojeda <ojeda@kernel.org>, a.hindborg@kernel.org, 
-	alex.gaynor@gmail.com, aliceryhl@google.com, benno.lossin@proton.me, 
+To: Guangbo Cui <2407018371@qq.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, daniel.almeida@collabora.com, 
+	a.hindborg@kernel.org, alex.gaynor@gmail.com, benno.lossin@proton.me, 
 	bjorn3_gh@protonmail.mco, boqun.feng@gmail.com, boris.brezillon@collabora.com, 
 	dakr@kernel.org, gary@garyguo.net, gregkh@linuxfoundation.org, 
-	linux-kernel@vger.kernel.org, rafael@kernel.org, robh@kernel.org, 
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu
+	linux-kernel@vger.kernel.org, ojeda@kernel.org, rafael@kernel.org, 
+	robh@kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 6, 2025 at 4:57=E2=80=AFPM Daniel Almeida
-<daniel.almeida@collabora.com> wrote:
+On Thu, Feb 6, 2025 at 4:59=E2=80=AFPM Guangbo Cui <2407018371@qq.com> wrot=
+e:
 >
-> I know that we can=E2=80=99t really provide a message through build_error=
- itself, hence my
-> suggestion about the docs.
->
-> I can send a patch if you agree, it will prevent this confusion from comi=
-ng up in the
-> future.
+> With CONFIG_RUST_BUILD_ASSERT_ALLOW=3Dy enabled, this compilation succeed=
+s.
 
-We have some docs in the Rust items and the crate -- perhaps those can
-be improved (e.g. showing an example of the error that one would get)
-or rearranged and then a note referencing those from Doc/rust/?
+Yes, that is expected too (but note that the config option is there
+just in case -- it should not happen that it is needed in normal
+builds).
 
-That would definitely help, at least those that read the docs (but not
-everyone does, and even those that do may forget details, so it will
-not fully prevent the issue).
+> Even if the size is determined at compile time, the compilation will stil=
+l fail
+> if CONFIG_RUST_BUILD_ASSERT_ALLOW is not enabled.
 
-Ideally we would get a better way to do this, perhaps assisted by the
-compiler(s)/linker (`*_assert` in
-https://github.com/Rust-for-Linux/linux/issues/354).
+Yes, that is expected -- the idea is that you cannot make the mistake
+of calling those.
+
+I think you are suggesting only exposing the methods in the case where
+calling them would work? That would be great if a design allows for
+it, of course.
+
+By the way, Daniel, in patch 3/3 there is this comment:
+
++    ///     // Unlike `ioremap_resource_sized`, here the size of the
+memory region
++    ///     // is not known at compile time, so only the `try_read*`
+and `try_write*`
++    ///     // family of functions are exposed, leading to runtime
+checks on every
++    ///     // access.
+
+Is the "only ... are exposed" correct? i.e. are they exposed? / is
+this potentially confusing?
 
 Thanks!
 
