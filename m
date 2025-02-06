@@ -1,71 +1,71 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4CC61B4231
-	for <rust-for-linux@vger.kernel.org>; Thu,  6 Feb 2025 20:03:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114E01A76AE
+	for <rust-for-linux@vger.kernel.org>; Thu,  6 Feb 2025 20:04:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738872230; cv=none; b=kOXJAfnkAad38HoIfxoeLu/rMy6VSqhRgm7qxCIL1kPlZBo6kPIj0oZSwau+q16mnhbDpjem36AcuJA09fblB1aKvseXBoaUecMd8M5Rb8iVY6+dBreoGVlQaUvvVXj+9twSh2AIsNGGwHyTvwYl+tkR4/xHPj3PtKMrY0fSqyg=
+	t=1738872273; cv=none; b=YR1FKN02fIsabUCpjdWFfwYtWaEGvgm9/uckEetHgALJgW5fVpcmqSk1eYY4Kpb82fSpKBA0Cq8Urf4tvpeWoGsTrqHDqmu/4hnOFpJED4FKot3qAoQdmfVSrt7X22MlbF62h+okI9c204UCS6U5r3iYyrLsoC9bbK5W+P4SrHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738872230; c=relaxed/simple;
-	bh=tuySieH0d4l5M9CRkgUagLYSHrlnUGsvud5+AROyXj4=;
+	s=arc-20240116; t=1738872273; c=relaxed/simple;
+	bh=Hk6B8vVM0fhmio2j3Vg3EYr0v6jZgqIMsP2g88ghDgM=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EVMTPgSJfOD/L7DlhvPBujMWr6LXvTWXrbsjT6KHkjnNtP84hTM7UNAcfQaFPYHMu0938n99pc+/viOU7gxD9tLczUWjrvPtWK+hpahQ0y6PxRsfX95SuQmHbz1HphbfK3NWZISt68iT6xsYjYHKtUZBbJtRi/5VjdjeVhFm8uI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Rlu4+gWH; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=k7Lhoyx2zjhyVurmGcyc3XIdqX19CYSi9bgsgoweY8S0U8r56yWGQS/C0Gr+cKIi3ZJfYwQQrAe1umZnOIgdik803TleTXsT+bmfpVPPjudyRhGKpzRl6AgU7eAz0Qc52hmJlVjae8ScbSoUtILXgD2qqY3D/1dLcwJEKJRzzdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ioyGVzly; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Rlu4+gWH"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ioyGVzly"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738872227;
+	s=mimecast20190719; t=1738872271;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WazOdjM+4ZY/wW7IY3scP7uWoRLiUhc44+RvowlzZag=;
-	b=Rlu4+gWHsIvG8jwIAusR1V5dvYT/VjcuWz8nR2q6/XldiKvn/oz0k0U5BqVmnYpjYzendY
-	nYKWZ11DfTUOqqXlhMehVMxSK6dA9wvpPIKhPL3TvGtgQ/aS2hABLy2Gcv9veuW5fmUZsy
-	1t4iZ56wVZCA17Qgaay8qvkDRokNWfs=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=nOEZtZgGjdfYC/1MeuC8IrM5qd7Lqqxgj2R0Nvh/m5g=;
+	b=ioyGVzlyN9N/fVfpkY19TpwHBx+zCuUYWZkRDC6UHGle7UZm8cYF5qGLsTEhP8uNRgN3Pi
+	btJ4Ufw/JOWCbbXpF9GdgAudtIRxvEaZxczwOoJ0v/9HFaNsPWBqSapyr5jrxWWXERzHTL
+	+mAki7rjmkZCRFYGCmEZVPe1OsZ2sr4=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-468-fQeMJUa-N8Sqsr3AfxLbtQ-1; Thu, 06 Feb 2025 15:03:46 -0500
-X-MC-Unique: fQeMJUa-N8Sqsr3AfxLbtQ-1
-X-Mimecast-MFC-AGG-ID: fQeMJUa-N8Sqsr3AfxLbtQ
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-6e42d5ff298so15378796d6.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 06 Feb 2025 12:03:46 -0800 (PST)
+ us-mta-387-PnxHwhhtMrmpRsxdeO2VhQ-1; Thu, 06 Feb 2025 15:04:30 -0500
+X-MC-Unique: PnxHwhhtMrmpRsxdeO2VhQ-1
+X-Mimecast-MFC-AGG-ID: PnxHwhhtMrmpRsxdeO2VhQ
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-46dd46d759eso24096101cf.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 06 Feb 2025 12:04:29 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738872226; x=1739477026;
+        d=1e100.net; s=20230601; t=1738872269; x=1739477069;
         h=mime-version:user-agent:content-transfer-encoding:organization
          :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1vgDnw6Lf7Kqh895fQUYsNvKnGwEw3TJpBRvlHPSFkM=;
-        b=cLTcX1Iu0Krz3CO7RLr31Mr2KvqaUSteEgOlgXwfpPfTbk4yxTSvAHunr9LgPKnmln
-         ixHMX02wg3bnDPJaDdC/okUvD+d/lnLGIvro7KvlKUt+W7gzNBcMy26Kr9wNU8H+oAV9
-         unIbinvb+OU+olKllfIsHmJHv6CXdv+QvsvAF8nudaNGOt//qWdULkKrh10fwOk6pWNx
-         oMdXW+JTH/G+5EJT6M/rfdrOyz+fgD8TAFnbN3267RIrqrlcHL3DglUtE6HDt9aqJjSc
-         SGfpOdehixLrgyS782hCJahIhRuum+2fey7vfL3wQAfN854Q8W476Jx0WT8Y4Jh33djL
-         ZEMA==
-X-Forwarded-Encrypted: i=1; AJvYcCW7qi4eh0eiEY/YRF/aBARZOPT86i++tBRYuoIpvzWzXHfsFh2WwCGu+vatBdzj5V/0BSQKC4duU3iXPkl+NQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFSU1FZZ5IEIwS00OaqLaBL1Ufew8+0At682N86l6iIETjU/8C
-	f3ufpy3v2P5bs/29JfBQIkR6CTLSio2V9WpUXRB/bDqMtdhpdz3NNL6rY9EciUbAYBK0t1BwxuV
-	vawOCM9WrlZINw88w/ZN4EPrs4VVPMkmAlHVWWSpdgfwGi1zS8TAQY9x+B0ILW3uV
-X-Gm-Gg: ASbGncuqxiBYODj+V19oFBTAAqMbg2UlKHbshRPBPp4nluELY9BbqUDUdWcbCPgvuUK
-	YaTlo3Fag/ooO12fGRIbX4o5l5d+z9P968VP6CmLw5ecOndl8q3ybgjpdgN43K4CB+T52BLBT8s
-	VzqnFjDQic5gMb6KqhFFSoSpI10sV0VpGc6er7YphpKoMa43/GCfA0acq7pgvOb94UrMsI+tcUt
-	dBa0zdn/X82fu0mk6D/2eL8agaDMoXOiSYPJN2FGKmH92LMqp36T4vBECb0hpomdOvIBldhkhQp
-	8eIkde7aZUY=
-X-Received: by 2002:a05:6214:4108:b0:6e4:2962:6d04 with SMTP id 6a1803df08f44-6e4456d76acmr5275746d6.34.1738872225967;
-        Thu, 06 Feb 2025 12:03:45 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEhYxtW02Pq+IQtadgB3lMiuroeY2JohBxHaoIIN5uEyt5+zkgFYt4EF0fow5XFLidEr3cK3w==
-X-Received: by 2002:a05:6214:4108:b0:6e4:2962:6d04 with SMTP id 6a1803df08f44-6e4456d76acmr5275196d6.34.1738872225644;
-        Thu, 06 Feb 2025 12:03:45 -0800 (PST)
+        bh=XDkww20sOxXCMItKP0T8GZ5DE/RQEwD5UwPFsN9XtNg=;
+        b=s+rKgX5P8sQQkoMid6CNVb2EqPrt4RJf3tz+gHRNiY1dOZVNbDyOoV/Vx0JKkRVR69
+         TBu2Fr0rbOfBTjVDYZbgdwdvhSgBhd1y/hLJKdh47aXZqiMnzBvCIjrrq5IqPt56Ugr1
+         Rczs8upF4hRRUH8NamLzutV0uIwC5J8g6YyLI6qXMcWxRnKPFAdjqpI2YrxIHbta1Lwk
+         +3FkzQUMjkHh2dsk1Es8S7/6LaNrfZfXUavg+xqwb5hdYyErPb9fybQurGcOZWf4wMIt
+         4ijNksrDefTPch4vNFGpfraKozr6raIW042VbmJwuwVJbURYhhm/NxecKiAKXWPUv/p1
+         NtKA==
+X-Forwarded-Encrypted: i=1; AJvYcCWCCg/I0cav7+KBoODDXmoSAkMSu82ttGOc6CDtKMHVBFFD4QLep/pa1mGRuKvR1KK3Yokdd4bRS8VdFXOTnA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+f1iWZuATOCzY6RYL0G1xc7CooIoM7a0LE4hVqfDG9zoXPxTd
+	Xn9Xp6gkyQK9xgVJrNVKe+9FDTGcTxms+Z3PZGeO4r2NXgNQBdMXxwrGlsI1nY2ujBPsPol1drb
+	OY0GhFS7hgUhwgArqt6xQLO5OCbY0gXT+jqvPq3t+nT0z55S2gY5LyhGdUIJVpOnr
+X-Gm-Gg: ASbGnctwTnKInXgcIAW4T1Z3mn1V3iXFMRfDo/IyAC/8g/y8MI9pRzU5G6WbYetqsb0
+	I/iF3aZ8NgDWEsGx+JJH4MuvhVElkzXfNGNOCNCszf07HItcHcsNzTdzSRhtZTrmzZ0w+mfiq/n
+	qQLG2oD8UsI1TWZBEMfu5tKnQysXulX+OZM/XstoLgPiyTHMJmb0zd76W0s0wbKxlCBRIVjZVjp
+	D2BhEM1LshyiVROKbaZSO4B14yM/qJdLy0ItMxLuGRf6ffZBF/L0znzaQSeTTPtOKmYe4Q25mV7
+	dP/lZ1ayq38=
+X-Received: by 2002:ac8:5f0b:0:b0:467:7295:b75f with SMTP id d75a77b69052e-47167bcec59mr8896241cf.38.1738872269464;
+        Thu, 06 Feb 2025 12:04:29 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHbic552YDZL1LJla+DQE77ixB7xExVlWEhLLnzvQ6IL8S7AERIcOvgs0ssg4IFfOEaORw1vQ==
+X-Received: by 2002:ac8:5f0b:0:b0:467:7295:b75f with SMTP id d75a77b69052e-47167bcec59mr8895841cf.38.1738872269120;
+        Thu, 06 Feb 2025 12:04:29 -0800 (PST)
 Received: from ?IPv6:2600:4040:5c4c:a000::bb3? ([2600:4040:5c4c:a000::bb3])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e43ba2bf6bsm9029006d6.16.2025.02.06.12.03.43
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-471492acfbcsm8575581cf.35.2025.02.06.12.04.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Feb 2025 12:03:44 -0800 (PST)
-Message-ID: <900399945f614a3ebc885f2d9628f773e65c97c2.camel@redhat.com>
-Subject: Re: [PATCH v3 8/8] drm/vkms: convert to use faux_device
+        Thu, 06 Feb 2025 12:04:28 -0800 (PST)
+Message-ID: <756d72bb33ce56064bd6908b6937444a909cb29b.camel@redhat.com>
+Subject: Re: [PATCH v3 7/8] drm/vgem/vgem_drv convert to use faux_device
 From: Lyude Paul <lyude@redhat.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
 	linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -77,16 +77,15 @@ Cc: Alexander Lobakin <aleksander.lobakin@intel.com>, Andy Shevchenko
  <broonie@kernel.org>, =?ISO-8859-1?Q?Ma=EDra?= Canal
  <mairacanal@riseup.net>, Robin Murphy	 <robin.murphy@arm.com>, Simona
  Vetter <simona.vetter@ffwll.ch>, Zijun Hu	 <quic_zijuhu@quicinc.com>,
- linux-usb@vger.kernel.org, 	rust-for-linux@vger.kernel.org, Louis Chauvet
- <louis.chauvet@bootlin.com>,  Haneen Mohammed <hamohammed.sa@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Melissa Wen <melissa.srw@gmail.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann	 <tzimmermann@suse.de>, David
- Airlie <airlied@gmail.com>, 	dri-devel@lists.freedesktop.org
-Date: Thu, 06 Feb 2025 15:03:41 -0500
-In-Reply-To: <2025020625-unlaced-vagueness-ae34@gregkh>
+ linux-usb@vger.kernel.org, 	rust-for-linux@vger.kernel.org, Maarten
+ Lankhorst	 <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>,  Thomas Zimmermann <tzimmermann@suse.de>, David
+ Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	dri-devel@lists.freedesktop.org
+Date: Thu, 06 Feb 2025 15:04:25 -0500
+In-Reply-To: <2025020625-corsage-undertow-765c@gregkh>
 References: <2025020620-skedaddle-olympics-1735@gregkh>
-	 <2025020625-unlaced-vagueness-ae34@gregkh>
+	 <2025020625-corsage-undertow-765c@gregkh>
 Organization: Red Hat Inc.
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41)
 Precedence: bulk
@@ -96,66 +95,68 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: MgKtDY31jOX2uGY1JQMug3xx3cpli9yPYZTiH-GRmfA_1738872226
+X-Mimecast-MFC-PROC-ID: vLRL54F8VxDep6USOYotQsaHE9DAlfstLLweRJQRlyQ_1738872269
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Lol, I wrote up a patch for this last night but it looks like you got here
-first :P
+Reviewed-by: Lyude Paul <lyude@redhat.com>
 
 On Thu, 2025-02-06 at 18:38 +0100, Greg Kroah-Hartman wrote:
-> The vkms driver does not need to create a platform device, as there is
+> The vgem driver does not need to create a platform device, as there is
 > no real platform resources associated it,  it only did so because it was
 > simple to do that in order to get a device to use for resource
 > management of drm resources.  Change the driver to use the faux device
 > instead as this is NOT a real platform device.
 >=20
-> Cc: Louis Chauvet <louis.chauvet@bootlin.com>
-> Cc: Haneen Mohammed <hamohammed.sa@gmail.com>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Cc: Melissa Wen <melissa.srw@gmail.com>
 > Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
 > Cc: Maxime Ripard <mripard@kernel.org>
 > Cc: Thomas Zimmermann <tzimmermann@suse.de>
 > Cc: David Airlie <airlied@gmail.com>
+> Cc: Simona Vetter <simona@ffwll.ch>
 > Cc: dri-devel@lists.freedesktop.org
 > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 > ---
 >  v3: new patch in the series.  For an example of the api working, does
 >      not have to be merged at this time, but I can take it if the
 >      maintainers give an ack.
->  drivers/gpu/drm/vkms/vkms_drv.c | 28 ++++++++++++++--------------
->  drivers/gpu/drm/vkms/vkms_drv.h |  4 ++--
->  2 files changed, 16 insertions(+), 16 deletions(-)
+>  drivers/gpu/drm/vgem/vgem_drv.c | 30 +++++++++++++++---------------
+>  1 file changed, 15 insertions(+), 15 deletions(-)
 >=20
-> diff --git a/drivers/gpu/drm/vkms/vkms_drv.c b/drivers/gpu/drm/vkms/vkms_=
+> diff --git a/drivers/gpu/drm/vgem/vgem_drv.c b/drivers/gpu/drm/vgem/vgem_=
 drv.c
-> index e0409aba9349..b1269f984886 100644
-> --- a/drivers/gpu/drm/vkms/vkms_drv.c
-> +++ b/drivers/gpu/drm/vkms/vkms_drv.c
-> @@ -10,7 +10,7 @@
->   */
+> index 2752ab4f1c97..2a50c0b76fac 100644
+> --- a/drivers/gpu/drm/vgem/vgem_drv.c
+> +++ b/drivers/gpu/drm/vgem/vgem_drv.c
+> @@ -32,7 +32,7 @@
 > =20
+>  #include <linux/dma-buf.h>
 >  #include <linux/module.h>
 > -#include <linux/platform_device.h>
 > +#include <linux/device/faux.h>
->  #include <linux/dma-mapping.h>
+>  #include <linux/shmem_fs.h>
+>  #include <linux/vmalloc.h>
 > =20
->  #include <drm/clients/drm_client_setup.h>
-> @@ -177,25 +177,25 @@ static int vkms_modeset_init(struct vkms_device *vk=
-msdev)
->  static int vkms_create(struct vkms_config *config)
+> @@ -52,7 +52,7 @@
+> =20
+>  static struct vgem_device {
+>  =09struct drm_device drm;
+> -=09struct platform_device *platform;
+> +=09struct faux_device *faux_dev;
+>  } *vgem_device;
+> =20
+>  static int vgem_open(struct drm_device *dev, struct drm_file *file)
+> @@ -127,27 +127,27 @@ static const struct drm_driver vgem_driver =3D {
+>  static int __init vgem_init(void)
 >  {
 >  =09int ret;
 > -=09struct platform_device *pdev;
 > +=09struct faux_device *fdev;
->  =09struct vkms_device *vkms_device;
 > =20
-> -=09pdev =3D platform_device_register_simple(DRIVER_NAME, -1, NULL, 0);
+> -=09pdev =3D platform_device_register_simple("vgem", -1, NULL, 0);
 > -=09if (IS_ERR(pdev))
 > -=09=09return PTR_ERR(pdev);
-> +=09fdev =3D faux_device_create(DRIVER_NAME, NULL);
+> +=09fdev =3D faux_device_create("vgem", NULL);
 > +=09if (!fdev)
 > +=09=09return -ENODEV;
 > =20
@@ -165,19 +166,23 @@ msdev)
 >  =09=09goto out_unregister;
 >  =09}
 > =20
-> -=09vkms_device =3D devm_drm_dev_alloc(&pdev->dev, &vkms_driver,
-> +=09vkms_device =3D devm_drm_dev_alloc(&fdev->dev, &vkms_driver,
->  =09=09=09=09=09 struct vkms_device, drm);
->  =09if (IS_ERR(vkms_device)) {
->  =09=09ret =3D PTR_ERR(vkms_device);
+> -=09dma_coerce_mask_and_coherent(&pdev->dev,
+> +=09dma_coerce_mask_and_coherent(&fdev->dev,
+>  =09=09=09=09     DMA_BIT_MASK(64));
+> =20
+> -=09vgem_device =3D devm_drm_dev_alloc(&pdev->dev, &vgem_driver,
+> +=09vgem_device =3D devm_drm_dev_alloc(&fdev->dev, &vgem_driver,
+>  =09=09=09=09=09 struct vgem_device, drm);
+>  =09if (IS_ERR(vgem_device)) {
+>  =09=09ret =3D PTR_ERR(vgem_device);
 >  =09=09goto out_devres;
 >  =09}
-> -=09vkms_device->platform =3D pdev;
-> +=09vkms_device->faux_dev =3D fdev;
->  =09vkms_device->config =3D config;
->  =09config->dev =3D vkms_device;
+> -=09vgem_device->platform =3D pdev;
+> +=09vgem_device->faux_dev =3D fdev;
 > =20
-> @@ -229,9 +229,9 @@ static int vkms_create(struct vkms_config *config)
+>  =09/* Final step: expose the device/driver to userspace */
+>  =09ret =3D drm_dev_register(&vgem_device->drm, 0);
+> @@ -157,19 +157,19 @@ static int __init vgem_init(void)
 >  =09return 0;
 > =20
 >  out_devres:
@@ -189,58 +194,19 @@ msdev)
 >  =09return ret;
 >  }
 > =20
-> @@ -259,19 +259,19 @@ static int __init vkms_init(void)
-> =20
->  static void vkms_destroy(struct vkms_config *config)
+>  static void __exit vgem_exit(void)
 >  {
-> -=09struct platform_device *pdev;
-> +=09struct faux_device *fdev;
+> -=09struct platform_device *pdev =3D vgem_device->platform;
+> +=09struct faux_device *fdev =3D vgem_device->faux_dev;
 > =20
->  =09if (!config->dev) {
->  =09=09DRM_INFO("vkms_device is NULL.\n");
->  =09=09return;
->  =09}
-> =20
-> -=09pdev =3D config->dev->platform;
-> +=09fdev =3D config->dev->faux_dev;
-> =20
->  =09drm_dev_unregister(&config->dev->drm);
->  =09drm_atomic_helper_shutdown(&config->dev->drm);
+>  =09drm_dev_unregister(&vgem_device->drm);
 > -=09devres_release_group(&pdev->dev, NULL);
 > -=09platform_device_unregister(pdev);
 > +=09devres_release_group(&fdev->dev, NULL);
 > +=09faux_device_destroy(fdev);
-> =20
->  =09config->dev =3D NULL;
 >  }
-> diff --git a/drivers/gpu/drm/vkms/vkms_drv.h b/drivers/gpu/drm/vkms/vkms_=
-drv.h
-> index 00541eff3d1b..4668b0e29a84 100644
-> --- a/drivers/gpu/drm/vkms/vkms_drv.h
-> +++ b/drivers/gpu/drm/vkms/vkms_drv.h
-> @@ -209,13 +209,13 @@ struct vkms_config {
->   * struct vkms_device - Description of a VKMS device
->   *
->   * @drm - Base device in DRM
-> - * @platform - Associated platform device
-> + * @faux_dev- Associated faux device
-
-Small nitpick - you dropped the space on the - here by mistake
-
-With that fixed:
-
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-
->   * @output - Configuration and sub-components of the VKMS device
->   * @config: Configuration used in this VKMS device
->   */
->  struct vkms_device {
->  =09struct drm_device drm;
-> -=09struct platform_device *platform;
-> +=09struct faux_device *faux_dev;
->  =09struct vkms_output output;
->  =09const struct vkms_config *config;
->  };
+> =20
+>  module_init(vgem_init);
 
 --=20
 Cheers,
