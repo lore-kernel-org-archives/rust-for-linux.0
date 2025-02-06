@@ -1,108 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67932417DB;
-	Thu,  6 Feb 2025 23:11:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21A11D9A66;
+	Thu,  6 Feb 2025 23:12:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738883500; cv=none; b=EDm28jItlnk2McBEdndj9YaYQ35aqPjo2oz+xd2QlVNcFXoTXmD6T2k1Jk9+XVzqq1zV6hVLjJwJQLKg2WGhxDjLorxFwtdYDgI46ZnL8UCluGBbG4o5pJ/NahKzl6Qf62Txo0PkaqIQkHMIHKtOT+n7Rz8sVwajHMqdYAbOWVk=
+	t=1738883533; cv=none; b=djbX9njRDoZyNWg8OzlETGAGIEmG2JKAlAfL2lMJzZ2xsaXOvzDJuxcC9T2tN05iihZgmRgQEwOPj62omU7UtehhRXzJmLzbwZCMUEXqA59ThFSVG9GSy4o8mqre/tkhrPZpOAxQ9Q95MVciaFS/SaHgD7f9c+tvV2Uwj+/vNvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738883500; c=relaxed/simple;
-	bh=jDuPmiaq9ueizgTW8FkupCOJkVQUdjLVaZ6njpeHcVc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kRoQvOL8as2rccaOlEKAPp1UqZ7xd/fXnkByMRwBYalBgnf16wBfkXfLJtDYPFguxzFMu3LDqfydjcemIyzcec9rDcPBniKEgM7xX7Vteow28h7C8Jw6AQzhqfiV+grb0lNb89Y5q0SZpj5A/+ednqcBgdYj8cOT38wIwU3l2Rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GLWwQsGr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738883533; c=relaxed/simple;
+	bh=T0Wj0kmg/cSO81RHPcQC5+556wt9IZ2fZ3r/H844l0o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aHak9jF3DPMNTSRvdvrCL3NZyPIjBxHoH6cwBejclgPz4ZJOht1vAUTnwGNRNc2vYPJCxskJ2Hkn545SRhgf7GG5bQzAr82e94LQanA0SSe7GN4fteu+AYfa701qnVnnHbb40TIz98bTl6nu9L7Ha5oqGobW2UYfELn/4rDzs2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IbEFh/Q6; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GLWwQsGr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C81C4CEE0;
-	Thu,  6 Feb 2025 23:11:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738883499;
-	bh=jDuPmiaq9ueizgTW8FkupCOJkVQUdjLVaZ6njpeHcVc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GLWwQsGrqCWiTz7ciZe4TH4q5zurpTo/1k/REn+QY+m/lsMxACI9XrXHYVq7TI/4r
-	 lmTZHCJqQ8QDobZSitExjwGTZDEwnQuAyfBFeK4n99h0ZJFMp1l1VqRc+ZDLKEoBHE
-	 vlLnYizUdODzUifm5I4MxmEF+AAhsvL0QqVxMQElohT8cuwk4Z5Bz5cIYudv63Z3gU
-	 /flYP8ChC1hQRZhau+nyetKGMuGPSxeDdeea+RFSCcRIEcTyWDHyveYN2TQlB9zo2W
-	 RAW8MlfC0ac8q7Txom/mUMuQ7NVj6ZA1k6zCLkGQW8WzXO0O2Tk9wBmAP6x2D5HP9H
-	 P0GgNC01AaIXA==
-Date: Fri, 7 Feb 2025 00:11:31 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Stephen Boyd <sboyd@kernel.org>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Danilo Krummrich <dakr@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Michael Turquette <mturquette@baylibre.com>,
-	linux-pm@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Nishanth Menon <nm@ti.com>, rust-for-linux@vger.kernel.org,
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
-	Erik Schilling <erik.schilling@linaro.org>,
-	Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
-	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org
-Subject: Re: [PATCH V8 06/14] rust: Add bare minimal bindings for clk
- framework
-Message-ID: <Z6VBo51g54xAmelQ@cassiopeiae>
-References: <cover.1738832118.git.viresh.kumar@linaro.org>
- <c68081e18d939aefc7f6dac798df6b72e81bba4b.1738832118.git.viresh.kumar@linaro.org>
- <Z6ShsuLykigNscz8@pollux>
- <Z6SiiRubSXGInbgj@pollux>
- <0cd42d2d683ea057e6034978b02c7f84.sboyd@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IbEFh/Q6"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2f45526dea0so292308a91.1;
+        Thu, 06 Feb 2025 15:12:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738883531; x=1739488331; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=T0Wj0kmg/cSO81RHPcQC5+556wt9IZ2fZ3r/H844l0o=;
+        b=IbEFh/Q6AxPXCSeNRpZM1yp71wkHDqg/itKbYLjHPCs9JBvSe4qU2Qe+AyLRFQUATi
+         UdZuiGX/OICAQx/e70bbqt8e5bfrIe6ZlKqEXldqX2pINWimJZa8/tN8G/57325o5jhl
+         zrOgFK0Gq+zzz3aj+s/n+rXvHZHwDmqoxlxJXV53A2XIdtW1trpwVIqUfyTRJfTI4rCO
+         8s1uFzFziKQKtFky+IRaWxcyzk77WiuZLRuhpDCuBJWI29XKpN+43Cn4KD/K9Ut2geyz
+         uvnOA8wJMHuv3P0ApqllKwnuxkLFzaRdN+BVPXAcVPJSEAoryc7khRhCk8+eYY7Y2utA
+         Ly9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738883531; x=1739488331;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=T0Wj0kmg/cSO81RHPcQC5+556wt9IZ2fZ3r/H844l0o=;
+        b=wgP13LYOd5/vPQivTE6tLJ/8hNgVrixaa9wUb4fwWtMBeVWQeMJQd96J53bEKLbTiD
+         GLAVRhp21pHaHHsh9KqI4brdYac/x/UC+Q8Xkg4CbiGfi7JwrTY9k6bbbcwiIt7pPFv0
+         SeH/VtJ8n9J657pPa0modhX8NvxfFSdKQscR1QLJFm6+1f9MPZNKijEsgsnPEMdctolp
+         1/hgCrQfih1uCSPBNFvJa324j+xOYV/jAphKDMO1vS5zvoNtePv6UnrkDLyOVuUlfmbr
+         +bRZ1w7ldoAMGXlv6yuru2TIxqAO3fdEEV6TTJl6JdRyqxT/p8sETx2O6+GHSPZHbVtv
+         xewQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVKr6rFzERhkQNHw5E0DizIXwmxPO1AmhPsQMMTuLV6bqDppNCEgQuYbtsSxpWbQYGoisqs2ffC@vger.kernel.org, AJvYcCWJhkeNKrPAiV1ftm3M12zLr97Ol/xYkU5htYMu0lOofqIObSUvWa02aA8HV0e0ooS2krVyleqb7hwRhW4=@vger.kernel.org, AJvYcCX6vKsrD6hf10b93RnGJ6TpR/BHr6yd7/SgCf7JxpSJkILLK0c/LBQpz1yN1Iqd9p8zEpYXCjxHNd6/Lg23w64=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyuxHBRhdh1263oQZaV41Scr8Z7T37af8AxdXI929L4Li/3AcJx
+	dI4tt7m6ph/sLEg/zKq6yhOJJNpx/diwBC1tLtJ+0UhdaZmvIoiLIU3Bldt6muyNg2hLTCrpB2R
+	wbI0gGYcOSlKCBGtYXsdj93EEbc0=
+X-Gm-Gg: ASbGnctbFscLInruYMuq/qUnshmO5VROf40UlGFKhXAR6unmE4Z9OxKv59Mr8MtITrK
+	WXEdzr60Pf6IZKmZISpeAwkc4uTNob+q+TK/dkR9ivgoL9A9bheA4veSvH9T4mVJD7qL1AgbO
+X-Google-Smtp-Source: AGHT+IEirwjMb2+Tte/ztOzcJVc6rz5/I99KNyU1w//C/vKkgniRyBjJrBeJwRRFR+mH2QpV5DbHOFYSgB6R4pJZWfc=
+X-Received: by 2002:a17:90b:1b44:b0:2ee:b665:12ce with SMTP id
+ 98e67ed59e1d1-2fa23f5ea82mr562072a91.1.1738883530889; Thu, 06 Feb 2025
+ 15:12:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0cd42d2d683ea057e6034978b02c7f84.sboyd@kernel.org>
+References: <20250203-rustc-1-86-x86-softfloat-v1-1-220a72a5003e@google.com>
+ <CANiq72kv_wE_ESNsW9qDiwnJkaoFb+WERJ6p796TCPAdK838Fw@mail.gmail.com> <e60b9d9c-01aa-4a87-8701-d5f18a5f4240@intel.com>
+In-Reply-To: <e60b9d9c-01aa-4a87-8701-d5f18a5f4240@intel.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 7 Feb 2025 00:11:57 +0100
+X-Gm-Features: AWEUYZlN2l6DrxgrKrDDZ33vCZBQLuGXYij2RPkQSeOXJ--doc7yq3sVTxPUKS0
+Message-ID: <CANiq72kQhY8fh6tu-N17SDqEoz27-f6HXOTLnuua7FFKdXPT=A@mail.gmail.com>
+Subject: Re: [PATCH] x86: rust: set rustc-abi=x86-softfloat on rustc>=1.86.0
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, x86@kernel.org, rust-for-linux@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 06, 2025 at 12:05:59PM -0800, Stephen Boyd wrote:
-> Quoting Danilo Krummrich (2025-02-06 03:52:41)
-> > On Thu, Feb 06, 2025 at 12:49:14PM +0100, Danilo Krummrich wrote:
-> > > On Thu, Feb 06, 2025 at 02:58:27PM +0530, Viresh Kumar wrote:
-> > > > diff --git a/rust/kernel/clk.rs b/rust/kernel/clk.rs
-> > > > new file mode 100644
-> > > > index 000000000000..123cdb43b115
-> > > > --- /dev/null
-> > > > +++ b/rust/kernel/clk.rs
-> > > > @@ -0,0 +1,48 @@
-> > > > +// SPDX-License-Identifier: GPL-2.0
-> > > > +
-> > > > +//! Clock abstractions.
-> > > > +//!
-> > > > +//! C header: [`include/linux/clk.h`](srctree/include/linux/clk.h)
-> > > > +
-> > > > +use crate::{
-> > > > +    bindings,
-> > > > +    device::Device,
-> > > > +    error::{from_err_ptr, Result},
-> > > > +    prelude::*,
-> > > > +};
-> > > > +
-> > > > +use core::ptr;
-> > > > +
-> > > > +/// A simple implementation of `struct clk` from the C code.
-> > > > +#[repr(transparent)]
-> > > > +pub struct Clk(*mut bindings::clk);
-> > > 
-> > > Guess this should be Opaque<bindings::clk>.
-> > 
-> > Sorry, I meant NonNull<bindings::clk>.
-> 
-> NULL is a valid clk. It's like "don't care" in the common clk framework
+On Fri, Feb 7, 2025 at 12:08=E2=80=AFAM Dave Hansen <dave.hansen@intel.com>=
+ wrote:
+>
+> First of all, thanks for cc'ing the x86 maintainers on this! I do think
+> it would be best if you take this through the rust tree though:
+>
+> Acked-by: Dave Hansen <dave.hansen@linux.intel.com> # for x86
 
-Thanks for clarifying!
+Great, thanks!
 
-> as most clk consumer operations bail out early in that case.
-
-Most? Does that mean NULL isn't *always* valid?
+Cheers,
+Miguel
