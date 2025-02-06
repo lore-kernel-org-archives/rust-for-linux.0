@@ -1,102 +1,144 @@
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C978222257E;
-	Thu,  6 Feb 2025 21:36:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC25223309;
+	Thu,  6 Feb 2025 21:44:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738877800; cv=none; b=foe8PF4f4b7WlFdFxaaIXY5bPMnLE7tSaS/NI73RGZPt+wkuB1v3OSvcQC7ZFghtTqWAAEg3sRLPiJJnfiFll1+B5xwstBR9EmprQldiDdW20UebtQpKeFbus9Slx6qxRRRlbo0GqbgrXvM4sR290R78i4sOvrPq9YTl2GydzYo=
+	t=1738878288; cv=none; b=IrnrLvI7qE57UHpuLQQjspkjLYMe36XuJmc/J3bqbBcfxM7KNCMnDo53TBF6EttCZgec6rkodl/++MWxSwH1vnlU2FBFfGNGClC/B1wn9pPdrqWJV8LB/UcGFCpSqh/PBgyG4qKC7NAYjWVzEF3jLc4X8uiQP3BLZoVb63aE8Hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738877800; c=relaxed/simple;
-	bh=nCwZyzhpC0hkV2m1x93EBihOAA8Sdpu3DRgaf+2cGTM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=If1CidTVkNWzG42u7Ti9R35cM3AOmL3GrA6nLFDTx5Idh5g72TDvdmgk1A1zg2hczx6mPeV1GtnKrfXVuNVbs8IKyjEm7dmWuHks+apiMuhegluLpexkzfj6eC6fNpIV+5gnXsU8rIKSgaIc0ynoW47u4pEofXuQMKFcFlTM0RA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U6AULSlE; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738878288; c=relaxed/simple;
+	bh=tMuc8lNWLyZacD543ngw7lyFrwdEqvWH9RTr+7RhSsI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Uvk10pU36ujhVgt2YNBts/k4ODs/CfLeIIlFXTV6ILPkvVPRqinLffxRleyJr47PvQS9smS8hJirSmC7lvx44bf0+rKuiZQuET1aX/+bZ3qp/attW/BA2Nvgrqwb6v2X/C8oVBNLAREEFSNs9Rs6uBVOb2+qkD9keOAs1px4WnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=pJBgoqRc; arc=none smtp.client-ip=159.69.126.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U6AULSlE"
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5401ab97206so1531987e87.3;
-        Thu, 06 Feb 2025 13:36:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738877797; x=1739482597; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nCwZyzhpC0hkV2m1x93EBihOAA8Sdpu3DRgaf+2cGTM=;
-        b=U6AULSlEdtwCXKL+XU+5JZ7t/Ky74yjHIXFYYLtjvixYilC2Z6/dLOfnBIO0h6k5VL
-         zO9MH2XTcpODLQkeJcVar6JVJ5mLfOy7hOzQcKiBRMiE4MqA9N1FqbwfoSF8DErKpOHe
-         ahx4QeNj2Ixa7cHOXGuyAiZF13q0mOdWTgOkfJVpKIaairsz4qrkdYC0RAlz57CNTm0N
-         VNCPMtPYEX3BYnWR40eqkqViChPmXVyPzVY0ZnQIbm+tBmMsI+MKM/4HI8WYyQ+IW1cM
-         9uLRgLywyft6M1x+2cfbf2Zg6/Jt5sAu4oyhLpGzAAOBamecBzEunUe5OddJaVzkjM2J
-         ra2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738877797; x=1739482597;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nCwZyzhpC0hkV2m1x93EBihOAA8Sdpu3DRgaf+2cGTM=;
-        b=IraD7VEnxTzw11KO/MpaH5Sf4eoB3egb2rEul+ckvVbdZFguplGAzhQ3aqGnIvWJBu
-         9GY7mMuqhx43PNWx1G0TWaFy6cQ4+nDwQbUdrVZ+zT1K+uopyMtV4uWocvCcGGCKR8oM
-         wY1V5shkY7B4syTkDqBzCop8dZ1qYtfFf6gSujnmTxwbzt/HWAwEiZXH8SD01oPgTNpJ
-         11kGIQWZVh7+qkrYRz5uhWNgNuFp1yVWdFXq6D/uwxRM83wG/xRxMRuPERSQHEHOb7y8
-         kK4aZmXt7w6SIUTT3Fjv5YTQWCHAEHuYe7Kr2EERGycEfj6q3lw7oxPAre4ezo3eNezU
-         Bcjw==
-X-Forwarded-Encrypted: i=1; AJvYcCUGRT1AOnQPY+3NCz5XgTTvaJzYaa6XAkJ00nWqPv/Ml5e76Pu6Sf8DtKkjmMM9HJjMlWYKAWEEpY/B@vger.kernel.org, AJvYcCUY4KPfQ9wqbfdxQIGRZ4/CXXGnGBF3i2juzoHUgYkaadNLZKM2m/4GxjU1kraIASLqY6YjN2qVImFpz1oz@vger.kernel.org, AJvYcCWPlshqPFmjLbf14TiHqTf9sFbuqSoXWSyiJz8CcvshaTkGBvOAN5adtS34A1TyP8hEndYh/vRtfk7nS6Yd@vger.kernel.org, AJvYcCXfVjlgeASMfrrPBJRYqyIrlSjowY1glt5F7mD7Gtyq+JbXs1PNiiNMroFeRs8IepkM8GU9ef1brgsxYuIAuO4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQzcV1ObW1nY+fgiQOrU/MUXJqLmSMQYPl2JDj0NpZzcwho6tj
-	uQ9SujkQ5xMkZF64bMSCxoF4e381HGHgCCxton9vXwcOygZljRn+T0xk3QmWauEjRfq7hBwIgWb
-	i3Fvmq6VsjfOMV39pCGzVbWedaWI=
-X-Gm-Gg: ASbGncsR/mSKi/naLJgT/NB8AnTCPynZ4vHa1IZaFFPU0KcDIWW0h2jcU22Z6jaa3FD
-	Uj8G9aaPMsgtiyjNhka5faaEtadH5U88p0xhVEQq1Win3z4dQa26SgvXsxswNixt8Er67S4Jh+B
-	emy5udZq//8D34OnAfxCtqxtYSG/4z
-X-Google-Smtp-Source: AGHT+IFKsZ4neZ3WNle2nn5hNbX0wbEg2tMqnTVyt1oi7sWysli/k1ZAwtqDYExTcUt41YFmoVh1a7cBIrlW1sD9mcc=
-X-Received: by 2002:a05:6512:2814:b0:544:1201:c0bb with SMTP id
- 2adb3069b0e04-54414a9649emr111216e87.2.1738877796593; Thu, 06 Feb 2025
- 13:36:36 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="pJBgoqRc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+	s=mail; t=1738878280;
+	bh=tMuc8lNWLyZacD543ngw7lyFrwdEqvWH9RTr+7RhSsI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pJBgoqRcav3jlzs4U95lIYyvvuCPJnXj5hRHDdXREYXoi8e0zOGZ0tRrkbuTAcAIZ
+	 xNH16I5IYy/xs1sZlJmI9v2075YMV90X3aLxJKHDn65+EdiITVG9o+JqqQ2p1bUVOS
+	 t/4aVXuJLdoGeJ8OxFR+ePIMQYW+bmH/4wylAJWE=
+Date: Thu, 6 Feb 2025 22:44:39 +0100
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
+To: Lyude Paul <lyude@redhat.com>
+Cc: rust-for-linux@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?B?TWHDrXJh?= Canal <mairacanal@riseup.net>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
+	Xiangfei Ding <dingxiangfei2009@gmail.com>, open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rust/kernel: Add faux device bindings
+Message-ID: <7c2b7173-6979-497e-840c-7b82b0c69e01@t-8ch.de>
+References: <20250206210503.102061-2-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250206-rust-xarray-bindings-v15-0-a22b5dcacab3@gmail.com>
- <20250206-rust-xarray-bindings-v15-2-a22b5dcacab3@gmail.com>
- <Z6Tu8E4r5ZEolFX1@Mac.home> <CAJ-ks9nGZCMjgTTzeRz3DUCQyLVu-xWKau4AFkMGutLtomK-fA@mail.gmail.com>
- <Z6UiNYOTUshEKNcL@boqun-archlinux>
-In-Reply-To: <Z6UiNYOTUshEKNcL@boqun-archlinux>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Thu, 6 Feb 2025 16:35:59 -0500
-X-Gm-Features: AWEUYZmUCZ0vWErylmSBmkD9QhhwDT4zy6MbR2nP6txP7jrlOwmvXIgfTGOJo9o
-Message-ID: <CAJ-ks9=urZ54L5NkoyUw5rk+kSqJ1kS6n20WbC4THACU-TFfrg@mail.gmail.com>
-Subject: Re: [PATCH v15 2/3] rust: xarray: Add an abstraction for XArray
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Matthew Wilcox <willy@infradead.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	=?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
-	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250206210503.102061-2-lyude@redhat.com>
 
-On Thu, Feb 6, 2025 at 3:58=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> wr=
-ote:
->
-> Your call ;-) It's a nitpicking after all, and you're the maintainer.
-> However, I do want to make the point that being a bit more comprehensive
-> won't hurt when providing an API.
->
-> Regards,
-> Boqun
+On 2025-02-06 16:04:56-0500, Lyude Paul wrote:
+> This introduces a crate for working with faux devices in rust, along with
+> adding sample code to show how the API is used. Unlike other types of
+> devices, we don't provide any hooks for device probe/removal - since these
+> are optional for the faux API and are unnecessary in rust.
+> 
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Maíra Canal <mairacanal@riseup.net>
+> ---
+>  rust/bindings/bindings_helper.h  |  1 +
+>  rust/kernel/faux.rs              | 60 ++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs               |  1 +
+>  samples/rust/Kconfig             | 10 ++++++
+>  samples/rust/Makefile            |  1 +
+>  samples/rust/rust_driver_faux.rs | 29 +++++++++++++++
+>  6 files changed, 102 insertions(+)
+>  create mode 100644 rust/kernel/faux.rs
+>  create mode 100644 samples/rust/rust_driver_faux.rs
 
-Point taken, and I appreciate your feedback! I went with something a
-bit more informative without being repetitive, inspired by std again.
-Will send v16 tomorrow.
+<snip>
 
-Cheers.
-Tamir
+> diff --git a/rust/kernel/faux.rs b/rust/kernel/faux.rs
+> new file mode 100644
+> index 0000000000000..5e58f397b747a
+> --- /dev/null
+> +++ b/rust/kernel/faux.rs
+> @@ -0,0 +1,60 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +
+> +//! Abstractions for the faux bus.
+> +//!
+> +//! This crate provides bindings for working with faux devices in kernel modules. It should be
+> +//! preferred for creating virtual devices over the platform API.
+> +//!
+> +//! C header: [`include/linux/device/faux.h`]
+> +use crate::{bindings, device, error::from_err_ptr, prelude::*};
+> +use core::ptr::{addr_of_mut, null, NonNull};
+> +
+> +/// The faux device representation.
+> +///
+> +/// This type represents the registration of a [`struct faux_device`]. When an instance of this type
+> +/// is dropped, its respective faux device will be unregistered from the system.
+> +///
+> +/// # Invariants
+> +///
+> +/// `self.0` always holds a valid pointer to an initialized and registered [`struct faux_device`].
+> +///
+> +/// [`struct faux_device`]: srctree/include/linux/device/faux.h
+> +#[repr(transparent)]
+> +pub struct Device(NonNull<bindings::faux_device>);
+> +
+> +impl Device {
+> +    /// Create and register a new faux device with the given name.
+> +    pub fn new(name: &CStr) -> Result<Self> {
+> +        // SAFETY:
+> +        // - `name` is copied by this function into its own storage
+> +        // - `faux_ops` is safe to leave NULL according to the C API
+> +        // - `faux_device_create` returns a valid non-null pointer to a `faux_device`, or error
+
+In the v3 patch the C API returns NULL on error.
+
+> +        from_err_ptr(unsafe { bindings::faux_device_create(name.as_char_ptr(), null()) })
+> +            .map(|d| Self(unsafe { NonNull::new_unchecked(d) }))
+> +    }
+> +
+> +    fn as_raw(&self) -> *mut bindings::faux_device {
+> +        self.0.as_ptr()
+> +    }
+> +}
+> +
+> +impl AsRef<device::Device> for Device {
+> +    fn as_ref(&self) -> &device::Device {
+> +        // SAFETY: The underlying `device` in `faux_device` is guaranteed by the C API to be
+> +        // a valid initialized `device`.
+> +        unsafe { device::Device::as_ref(addr_of_mut!((*self.as_raw()).dev)) }
+> +    }
+> +}
+> +
+> +impl Drop for Device {
+> +    fn drop(&mut self) {
+> +        // SAFETY: self.0 is a valid registered faux_device via our type invariants.
+> +        unsafe { bindings::faux_device_destroy(self.as_raw()) }
+> +    }
+> +}
+> +
+> +// SAFETY: The faux device API is thread-safe
+> +unsafe impl Send for Device {}
+> +
+> +// SAFETY: The faux device API is thread-safe
+> +unsafe impl Sync for Device {}
+
+<snip>
