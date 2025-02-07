@@ -1,310 +1,308 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E1418FDAE;
-	Fri,  7 Feb 2025 16:59:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60B4194A53
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Feb 2025 17:05:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738947554; cv=none; b=lwWRBODi7b93/CW6AxnVrwYMYZeo9JTmhS0STxR38ZFNGb44QFBr6TVq25WtfudYcmHWea5t/VO1l/15AA+cNR+NmDUo02vm3jaTvJoeY5cGW+7Z4sutdxwg5Y9YxmGzwayNVjjKY5d23yMGD5rfGguWd1PSas+zjlb5ii9wnyw=
+	t=1738947955; cv=none; b=nZDtNnVdr/EvK75Y90SR9WJco4ZFUIrvMVMlceO+Ubzma0qBrzRjsXHJu2Tw73VwoOQAb8aKMgZt6yq+WRfQUdHaaLGjJFDDAZyL/L6wHNYtf1+I9SsIwXKB1Thi86f1NHYQPVvK8dSqLV/x5FBQ38/YLwbeOz3pnH5Eo4Smg/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738947554; c=relaxed/simple;
-	bh=by0uVHOQtZ+FTUZ9Lbdn0bLhHwkNqYdP1Wl9LqjyAVk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ADWQDjblKdG4v1Xyfck+/XknV56HEReK86v9h4KFzsAcFa4rGhohcWmr/aJW6p7ZEto7hQmgnW/bMLnIA1JiIkumbAm/h/lazez35mZvd6YvF4iSuMDJ8uIUxVtY5WVXD3+8//j6T+IjaOxCyGPQ/T327uRUln7YYh+V/bZ5PAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=EIZgPFVw; arc=none smtp.client-ip=217.70.183.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1738947955; c=relaxed/simple;
+	bh=1Dyi+8ak7PANbAUQic/ESw+91MvIzQWAudQJQwZN0AA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Bv5O7nbzmPrzzeaC2H/HTZxwUv95Na9fdnXfm1ozu7zcxHol6a0cNHVEAeG/gKrGq/Yn5nSnQe2/k+sDwG6BX7ekTlkOJYnJsT6hfVOOZ3Owa8b14xa+8ZbI5YA0cklxbesKaeO4n0YRyA4fjpe3FBm4kUpvdJyqqbLtHyOjeDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jRXgoEkF; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="EIZgPFVw"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 2DF55441DA;
-	Fri,  7 Feb 2025 16:59:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1738947548;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jRXgoEkF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1738947952;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/Vahkevl3F2lREJftLS6cdDcMfSleJSqHFUq+QmTQiU=;
-	b=EIZgPFVwykSWcWsy5rEycLE3/B7/sf4MUrf1slqX0ATxUFm38qPjPCuXAqKRbQuPb8eR6K
-	QFMAjFbzLzwYIdmrHdCReGMsoxXej+b2rEIMXQ+9U9Sn0OMnmwDXFq5NmztJ63kWf1OLEP
-	6jSPV4ImPaT3K47J5PHaXXH5XUDajBtH9/oV8nSLaeZxXI4UNCgYjX38EBiIF5LBvzv/93
-	0kLyRH/jKaOw21g20z37NOVZ+JRl3iWKZyxNvtIyKoOZrqef1JAKoeg1gCw7pYERkG0X+S
-	xZhv1kJhRZgGBGqU9EtU7j2Emso9fNhZdRvyww9hyUPV+SRd9RLzk0H2y2nwrg==
-Date: Fri, 7 Feb 2025 17:59:04 +0100
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Lyude Paul <lyude@redhat.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Liam Girdwood <lgirdwood@gmail.com>, Lukas Wunner <lukas@wunner.de>,
-	Mark Brown <broonie@kernel.org>,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Zijun Hu <quic_zijuhu@quicinc.com>, linux-usb@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Haneen Mohammed <hamohammed.sa@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Melissa Wen <melissa.srw@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v3 8/8] drm/vkms: convert to use faux_device
-Message-ID: <Z6Y72LK1UW86x8av@louis-chauvet-laptop>
-Mail-Followup-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Lyude Paul <lyude@redhat.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Liam Girdwood <lgirdwood@gmail.com>, Lukas Wunner <lukas@wunner.de>,
-	Mark Brown <broonie@kernel.org>,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Zijun Hu <quic_zijuhu@quicinc.com>, linux-usb@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Haneen Mohammed <hamohammed.sa@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Melissa Wen <melissa.srw@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, dri-devel@lists.freedesktop.org
-References: <2025020620-skedaddle-olympics-1735@gregkh>
- <2025020625-unlaced-vagueness-ae34@gregkh>
+	bh=ulmIneXvWeKn842sM/NUdtiQkyckXgWBWcAxTArN7Vo=;
+	b=jRXgoEkFFq9MAhHYc7IFDXGIyQ+Bq+OLxsHZhHUStJZIxbna4sJJGahoj1llCasiM1j3+X
+	9wOA1ch6UgHMBad9+1oEkh7OcqwNnthPDBFdtWeCyUGO1vYosoWGqQuGOMHOXxeQzw5rus
+	RC+SOc6TZpMBNPN6OYZ8v3vCQurHDg4=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-627-hv0lCu8fN46891ycGHBZig-1; Fri, 07 Feb 2025 12:05:51 -0500
+X-MC-Unique: hv0lCu8fN46891ycGHBZig-1
+X-Mimecast-MFC-AGG-ID: hv0lCu8fN46891ycGHBZig
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-38c5d9530ebso1719771f8f.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 07 Feb 2025 09:05:50 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738947948; x=1739552748;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ulmIneXvWeKn842sM/NUdtiQkyckXgWBWcAxTArN7Vo=;
+        b=ctqHDpaHR1+nBjRZxVVULTSO/TmFt4P82XN2YmVDEgkXVI0A6Thb/8Sk4iIVrNZvjn
+         1XrZ/bAlq370HPcqFpQxBM3cfpt/8IdX/VdPZM3330cQcvjMvXx+sswQrEXeNvsUOXg8
+         ThLmpYtqCUCcBzZ2vdlP7GlHlsnYxGZykDVkj3Fbjewb3IrAKVwI0bMFP4Nofqc3Fzbo
+         zuBzpxFE8I4ImqQVpbXica+6hQVzQMI2fIh4/fHA6yrwN+vizyvWj9inAzyiO0C8je4r
+         eXEQrAR+ZJQkkxk8aHVkHTSdZC47l5fColhAlLuFUwRYgP4+Uz2clCqkE8OmgnXkyz1s
+         E8gg==
+X-Forwarded-Encrypted: i=1; AJvYcCVa26AaRLENCQeCJz8K+y92cY3rliIjbbXLqnp/NdlNDtlw4BnpNQEWd2flXQVXGIdLvGTWz2YwaxdiC9WGcA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAQ0qfhJOw45wEjn+Vqo8Fw6v2NuxB9JVI0q6uXxrgudFGSRWT
+	ZB7VsFX10rd8HwUc4CQVsQV36Ik4yNx+Dz0X3VZzGp0nhhdgfEYH+S2rPAfYUzd3hqF7IeRisTw
+	7VbhvbY+/oCT0cmKlr844mL2A83Ry2TyUCBznZAmgw4p4ekYZle9Mh17lK4mIVOEo
+X-Gm-Gg: ASbGncu1flplIXo5zeEHVqn9UpzBd0BChWy+Lhy0mN1DwqdUln7Wk1e3Xwcpo2FYRLK
+	7K7ETTLZ4xTLzZz9RQRfaBmUIrTvS/hFgLlPQZDWpzZCyEvw2tCRLzkJ6yg16TMQ/QKPVNL9RJV
+	gSLno9xLQ0SNhOvmjHeTh9CN3DeOUoNEYJmJJIlnBHsqClAqy5GulluUwTV3l/HAu9WG2rZxWNA
+	LZxLyGN2eTor63qlpjZy1FJv+pgCXWO9wPcnpllzXp+zJ9UTBEPxOVP/ylsfpXvocY/JJ/xDj4O
+	kVvEgRuYxdiwgOfG3n2JF8rDxSkheSom6lu+C0vrNZig
+X-Received: by 2002:a5d:6c6f:0:b0:38d:d0ea:b04c with SMTP id ffacd0b85a97d-38dd0eab247mr760430f8f.38.1738947947381;
+        Fri, 07 Feb 2025 09:05:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEUXkaH3F2I8hXAZSIfpLvryKrg2+hMGrYhKNpmj5opskHd+9X1jWEJI0aIzgAEMdsoZJPkjw==
+X-Received: by 2002:a5d:6c6f:0:b0:38d:d0ea:b04c with SMTP id ffacd0b85a97d-38dd0eab247mr760352f8f.38.1738947946678;
+        Fri, 07 Feb 2025 09:05:46 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:c:37e0:ced3:55bd:f454:e722? ([2a01:e0a:c:37e0:ced3:55bd:f454:e722])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4390db1150csm97455655e9.39.2025.02.07.09.05.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 07 Feb 2025 09:05:45 -0800 (PST)
+Message-ID: <56364bd9-2a6f-40f5-972c-f62898284a5c@redhat.com>
+Date: Fri, 7 Feb 2025 18:05:44 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025020625-unlaced-vagueness-ae34@gregkh>
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvleekvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpefggffgtddtudegiedtgeeluddtleegjeehveegieffvefgfeehkeekiedvjeetveenucffohhmrghinhepsghoohhtlhhinhdrtghomhdpkhgvrhhnvghlrdhorhhgnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehlohhuihhsqdgthhgruhhvvghtqdhlrghpthhophdpmhgrihhlfhhrohhmpehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedviedprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrkhhrsehkv
- ghrnhgvlhdrohhrghdprhgtphhtthhopehlhihuuggvsehrvgguhhgrthdrtghomhdprhgtphhtthhopegrlhgvkhhsrghnuggvrhdrlhhosggrkhhinhesihhnthgvlhdrtghomhdprhgtphhtthhopegrnhgurhhihidrshhhvghvtghhvghnkhhosehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepsghhvghlghgrrghssehgohhoghhlvgdrtghomh
-X-GND-Sasl: louis.chauvet@bootlin.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] drm/panic: Better binary encoding in QR code
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Miguel Ojeda <ojeda@kernel.org>, =?UTF-8?Q?Thomas_B=C3=B6hler?=
+ <witcher@wiredspace.de>, rust-for-linux@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+References: <20250128165254.893204-1-jfalempe@redhat.com>
+From: Jocelyn Falempe <jfalempe@redhat.com>
+In-Reply-To: <20250128165254.893204-1-jfalempe@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: tgnyq8WJsCGCP9vLSaAFrNE3rCjJj_Hyci5I7xbfWP4_1738947948
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US, fr
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 06/02/25 - 18:38, Greg Kroah-Hartman wrote:
-> The vkms driver does not need to create a platform device, as there is
-> no real platform resources associated it,  it only did so because it was
-> simple to do that in order to get a device to use for resource
-> management of drm resources.  Change the driver to use the faux device
-> instead as this is NOT a real platform device.
+On 28/01/2025 17:52, Jocelyn Falempe wrote:
+> The current encoding, is done by converting 13bits of input into 4
+> decimal digits, that are then encoded efficiently using the numeric
+> encoding of the QR code specification.
+> The Fido v2.2 specification [1] uses a similar approach for its
+> QR-initiated authentication. The only difference is that it converts
+> 7 bytes (56bits) of input into 17 decimal digits. The benefit is that
+> the algorithm doesn't require to split input bytes into 13bits chunk,
+> and the ratio is a bit better.
+> This improvement was proposed by Jó Ágila Bitsch in [2].
+> drm_panic is still young, and the QR code feature is not widely used,
+> so it's still time to switch to a common algorithm, shared with a
+> widely used standard.
+> I also changed the name of the url parameter, from zl= to z=, so the
+> website can keep backward compatibility if needed.
 > 
-> Cc: Louis Chauvet <louis.chauvet@bootlin.com>
-> Cc: Haneen Mohammed <hamohammed.sa@gmail.com>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Cc: Melissa Wen <melissa.srw@gmail.com>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> [1] https://fidoalliance.org/specs/fido-v2.2-rd-20230321/fido-client-to-authenticator-protocol-v2.2-rd-20230321.html#hybrid-qr-initiated
+> [2] https://github.com/kdj0c/panic_report/issues/2
+> 
+> Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+
+As it had no reviews for 2 months, I've got an Acked-by from Maxime 
+Ripard off-list, and pushed it to drm-misc-next.
+
+Thanks,
+
+-- 
+
+Jocelyn
+
+
 > ---
->  v3: new patch in the series.  For an example of the api working, does
->      not have to be merged at this time, but I can take it if the
->      maintainers give an ack.
-
-Hi,
-
-This patch cannot be merged into drm-misc-next because we modified the 
-vkms_device structure in commit 49a167c393b0 ("drm/vkms: Switch to dynamic 
-allocation for CRTC"), which is present in linux-next.
-
-Once this conflict is resolved, I agree with changing from platform_device 
-to faux_device.
-
-Apart from this minor conflict, I believe your patch has revealed an issue 
-in VKMS:
-
-Without your patch:
-
-	bash-5.2# modprobe vkms
-	[drm] Initialized vkms 1.0.0 for vkms on minor 0
-	bash-5.2#
-
-With your patch:
-
-	bash-5.2# modprobe vkms
-	faux vkms: Resources present before probing
-	[drm] Initialized vkms 1.0.0 for vkms on minor 0
-	bash-5.2#
-
-After some investigation, I found that the issue is not caused by your 
-patch but by VKMS itself:
-
-During faux_device_create, the device core postpones the device probe to 
-run it later [0]. This probe checks if the devres list is empty [1] and 
-fails if it is not.
-
-[0]:https://elixir.bootlin.com/linux/v6.13.1/source/drivers/base/bus.c#L534
-[1]:https://elixir.bootlin.com/linux/v6.13.1/source/drivers/base/dd.c#L626
-
-With a platform driver, the order of execution was:
-
-	platform_device_register_simple();
-		device_add();
-	*async* device_probe(); /* no issue, the devres is untouched */
-	devres_open_group();
-
-But with faux-device, the order is:
-
-	faux_device_create();
-		device_add();
-	devres_open_group();
-	*async* device_probe(); /* issue here, because of the previous 
-				   devres_open_group */
-
-How do you think this should be solved? I would like to keep a simple 
-solution, given that:
-- we want to have multiple vkms devices (configfs [2])
-- we need to ensure that device_probe is called before devres_open_group 
-  and devm_drm_dev_alloc to avoid this error
-
-[2]:https://lore.kernel.org/all/20250121-google-config-fs-v3-0-8154a6945142@bootlin.com/
-
-I found two other drm driver that may be broken in the same way (very 
-similar code pattern):
-https://elixir.bootlin.com/linux/v6.13.1/source/drivers/gpu/drm/amd/amdxcp/amdgpu_xcp_drv.c#L64
-https://elixir.bootlin.com/linux/v6.13.1/source/drivers/gpu/drm/vgem/vgem_drv.c#L138
-
-Thanks a lot,
-Louis Chauvet
-
-Change to hide the issue:
-
-diff --git a/drivers/gpu/drm/vkms/vkms_drv.c b/drivers/gpu/drm/vkms/vkms_drv.c
-index 89ccf0d6419a..84777d6ba889 100644
---- a/drivers/gpu/drm/vkms/vkms_drv.c
-+++ b/drivers/gpu/drm/vkms/vkms_drv.c
-@@ -174,7 +174,7 @@ static int vkms_create(struct vkms_config *config)
-        fdev = faux_device_create(DRIVER_NAME, NULL);
-        if (!fdev)
-                return -ENODEV;
--
-+       pr_err("%s:%d\n", __FILE__, __LINE__);
-        if (!devres_open_group(&fdev->dev, NULL, GFP_KERNEL)) {
-                ret = -ENOMEM;
-                goto out_unregister;
-
-
-
->  drivers/gpu/drm/vkms/vkms_drv.c | 28 ++++++++++++++--------------
->  drivers/gpu/drm/vkms/vkms_drv.h |  4 ++--
->  2 files changed, 16 insertions(+), 16 deletions(-)
 > 
-> diff --git a/drivers/gpu/drm/vkms/vkms_drv.c b/drivers/gpu/drm/vkms/vkms_drv.c
-> index e0409aba9349..b1269f984886 100644
-> --- a/drivers/gpu/drm/vkms/vkms_drv.c
-> +++ b/drivers/gpu/drm/vkms/vkms_drv.c
-> @@ -10,7 +10,7 @@
->   */
->  
->  #include <linux/module.h>
-> -#include <linux/platform_device.h>
-> +#include <linux/device/faux.h>
->  #include <linux/dma-mapping.h>
->  
->  #include <drm/clients/drm_client_setup.h>
-> @@ -177,25 +177,25 @@ static int vkms_modeset_init(struct vkms_device *vkmsdev)
->  static int vkms_create(struct vkms_config *config)
->  {
->  	int ret;
-> -	struct platform_device *pdev;
-> +	struct faux_device *fdev;
->  	struct vkms_device *vkms_device;
->  
-> -	pdev = platform_device_register_simple(DRIVER_NAME, -1, NULL, 0);
-> -	if (IS_ERR(pdev))
-> -		return PTR_ERR(pdev);
-> +	fdev = faux_device_create(DRIVER_NAME, NULL);
-> +	if (!fdev)
-> +		return -ENODEV;
->  
-> -	if (!devres_open_group(&pdev->dev, NULL, GFP_KERNEL)) {
-> +	if (!devres_open_group(&fdev->dev, NULL, GFP_KERNEL)) {
->  		ret = -ENOMEM;
->  		goto out_unregister;
->  	}
->  
-> -	vkms_device = devm_drm_dev_alloc(&pdev->dev, &vkms_driver,
-> +	vkms_device = devm_drm_dev_alloc(&fdev->dev, &vkms_driver,
->  					 struct vkms_device, drm);
->  	if (IS_ERR(vkms_device)) {
->  		ret = PTR_ERR(vkms_device);
->  		goto out_devres;
->  	}
-> -	vkms_device->platform = pdev;
-> +	vkms_device->faux_dev = fdev;
->  	vkms_device->config = config;
->  	config->dev = vkms_device;
->  
-> @@ -229,9 +229,9 @@ static int vkms_create(struct vkms_config *config)
->  	return 0;
->  
->  out_devres:
-> -	devres_release_group(&pdev->dev, NULL);
-> +	devres_release_group(&fdev->dev, NULL);
->  out_unregister:
-> -	platform_device_unregister(pdev);
-> +	faux_device_destroy(fdev);
->  	return ret;
->  }
->  
-> @@ -259,19 +259,19 @@ static int __init vkms_init(void)
->  
->  static void vkms_destroy(struct vkms_config *config)
->  {
-> -	struct platform_device *pdev;
-> +	struct faux_device *fdev;
->  
->  	if (!config->dev) {
->  		DRM_INFO("vkms_device is NULL.\n");
->  		return;
->  	}
->  
-> -	pdev = config->dev->platform;
-> +	fdev = config->dev->faux_dev;
->  
->  	drm_dev_unregister(&config->dev->drm);
->  	drm_atomic_helper_shutdown(&config->dev->drm);
-> -	devres_release_group(&pdev->dev, NULL);
-> -	platform_device_unregister(pdev);
-> +	devres_release_group(&fdev->dev, NULL);
-> +	faux_device_destroy(fdev);
->  
->  	config->dev = NULL;
->  }
-> diff --git a/drivers/gpu/drm/vkms/vkms_drv.h b/drivers/gpu/drm/vkms/vkms_drv.h
-> index 00541eff3d1b..4668b0e29a84 100644
-> --- a/drivers/gpu/drm/vkms/vkms_drv.h
-> +++ b/drivers/gpu/drm/vkms/vkms_drv.h
-> @@ -209,13 +209,13 @@ struct vkms_config {
->   * struct vkms_device - Description of a VKMS device
->   *
->   * @drm - Base device in DRM
-> - * @platform - Associated platform device
-> + * @faux_dev- Associated faux device
->   * @output - Configuration and sub-components of the VKMS device
->   * @config: Configuration used in this VKMS device
->   */
->  struct vkms_device {
->  	struct drm_device drm;
-> -	struct platform_device *platform;
-> +	struct faux_device *faux_dev;
->  	struct vkms_output output;
->  	const struct vkms_config *config;
->  };
-> -- 
-> 2.48.1
+> v2:
+>   * Add comments for the SegmentIterator numeric encoding.
+>   
+>   
+>   drivers/gpu/drm/drm_panic.c     |   2 +-
+>   drivers/gpu/drm/drm_panic_qr.rs | 108 +++++++++++---------------------
+>   2 files changed, 36 insertions(+), 74 deletions(-)
 > 
+> diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
+> index f128d345b16d..ab42a2b1567d 100644
+> --- a/drivers/gpu/drm/drm_panic.c
+> +++ b/drivers/gpu/drm/drm_panic.c
+> @@ -499,7 +499,7 @@ static int drm_panic_get_qr_code_url(u8 **qr_image)
+>   	char *kmsg;
+>   	int max_qr_data_size, url_len;
+>   
+> -	url_len = snprintf(url, sizeof(url), CONFIG_DRM_PANIC_SCREEN_QR_CODE_URL "?a=%s&v=%s&zl=",
+> +	url_len = snprintf(url, sizeof(url), CONFIG_DRM_PANIC_SCREEN_QR_CODE_URL "?a=%s&v=%s&z=",
+>   			   utsname()->machine, utsname()->release);
+>   
+>   	max_qr_data_size = drm_panic_qr_max_data_size(panic_qr_version, url_len);
+> diff --git a/drivers/gpu/drm/drm_panic_qr.rs b/drivers/gpu/drm/drm_panic_qr.rs
+> index 09500cddc009..477de4101c3e 100644
+> --- a/drivers/gpu/drm/drm_panic_qr.rs
+> +++ b/drivers/gpu/drm/drm_panic_qr.rs
+> @@ -13,12 +13,13 @@
+>   //! The binary data must be a valid URL parameter, so the easiest way is
+>   //! to use base64 encoding. But this wastes 25% of data space, so the
+>   //! whole stack trace won't fit in the QR code. So instead it encodes
+> -//! every 13bits of input into 4 decimal digits, and then uses the
+> +//! every 7 bytes of input into 17 decimal digits, and then uses the
+>   //! efficient numeric encoding, that encode 3 decimal digits into
+> -//! 10bits. This makes 39bits of compressed data into 12 decimal digits,
+> -//! into 40bits in the QR code, so wasting only 2.5%. And the numbers are
+> +//! 10bits. This makes 168bits of compressed data into 51 decimal digits,
+> +//! into 170bits in the QR code, so wasting only 1.17%. And the numbers are
+>   //! valid URL parameter, so the website can do the reverse, to get the
+> -//! binary data.
+> +//! binary data. This is the same algorithm used by Fido v2.2 QR-initiated
+> +//! authentication specification.
+>   //!
+>   //! Inspired by these 3 projects, all under MIT license:
+>   //!
+> @@ -26,7 +27,6 @@
+>   //! * <https://github.com/erwanvivien/fast_qr>
+>   //! * <https://github.com/bjguillot/qr>
+>   
+> -use core::cmp;
+>   use kernel::str::CStr;
+>   
+>   #[derive(Debug, Clone, Copy, PartialEq, Eq, Ord, PartialOrd)]
+> @@ -296,35 +296,11 @@ fn version_info(&self) -> u32 {
+>   /// Padding bytes.
+>   const PADDING: [u8; 2] = [236, 17];
+>   
+> -/// Get the next 13 bits of data, starting at specified offset (in bits).
+> -fn get_next_13b(data: &[u8], offset: usize) -> Option<(u16, usize)> {
+> -    if offset < data.len() * 8 {
+> -        let size = cmp::min(13, data.len() * 8 - offset);
+> -        let byte_off = offset / 8;
+> -        let bit_off = offset % 8;
+> -        // `b` is 20 at max (`bit_off` <= 7 and `size` <= 13).
+> -        let b = (bit_off + size) as u16;
+> -
+> -        let first_byte = (data[byte_off] << bit_off >> bit_off) as u16;
+> -
+> -        let number = match b {
+> -            0..=8 => first_byte >> (8 - b),
+> -            9..=16 => (first_byte << (b - 8)) + (data[byte_off + 1] >> (16 - b)) as u16,
+> -            _ => {
+> -                (first_byte << (b - 8))
+> -                    + ((data[byte_off + 1] as u16) << (b - 16))
+> -                    + (data[byte_off + 2] >> (24 - b)) as u16
+> -            }
+> -        };
+> -        Some((number, size))
+> -    } else {
+> -        None
+> -    }
+> -}
+> -
+>   /// Number of bits to encode characters in numeric mode.
+>   const NUM_CHARS_BITS: [usize; 4] = [0, 4, 7, 10];
+> -const POW10: [u16; 4] = [1, 10, 100, 1000];
+> +/// Number of decimal digits required to encode n bytes of binary data.
+> +/// eg: you need 15 decimal digits to fit 6 bytes of binary data.
+> +const BYTES_TO_DIGITS: [usize; 8] = [0, 3, 5, 8, 10, 13, 15, 17];
+>   
+>   enum Segment<'a> {
+>       Numeric(&'a [u8]),
+> @@ -360,13 +336,9 @@ fn character_count(&self) -> usize {
+>           match self {
+>               Segment::Binary(data) => data.len(),
+>               Segment::Numeric(data) => {
+> -                let data_bits = data.len() * 8;
+> -                let last_chars = match data_bits % 13 {
+> -                    1 => 1,
+> -                    k => (k + 1) / 3,
+> -                };
+> -                // 4 decimal numbers per 13bits + remainder.
+> -                4 * (data_bits / 13) + last_chars
+> +                let last_chars = BYTES_TO_DIGITS[data.len() % 7];
+> +                // 17 decimal numbers per 7bytes + remainder.
+> +                17 * (data.len() / 7) + last_chars
+>               }
+>           }
+>       }
+> @@ -403,7 +375,7 @@ fn iter(&self) -> SegmentIterator<'_> {
+>   struct SegmentIterator<'a> {
+>       segment: &'a Segment<'a>,
+>       offset: usize,
+> -    carry: u16,
+> +    carry: u64,
+>       carry_len: usize,
+>   }
+>   
+> @@ -422,40 +394,30 @@ fn next(&mut self) -> Option<Self::Item> {
+>                   }
+>               }
+>               Segment::Numeric(data) => {
+> -                if self.carry_len == 3 {
+> -                    let out = (self.carry, NUM_CHARS_BITS[self.carry_len]);
+> -                    self.carry_len = 0;
+> -                    self.carry = 0;
+> -                    Some(out)
+> -                } else if let Some((bits, size)) = get_next_13b(data, self.offset) {
+> -                    self.offset += size;
+> -                    let new_chars = match size {
+> -                        1 => 1,
+> -                        k => (k + 1) / 3,
+> -                    };
+> -                    if self.carry_len + new_chars > 3 {
+> -                        self.carry_len = new_chars + self.carry_len - 3;
+> -                        let out = (
+> -                            self.carry * POW10[new_chars - self.carry_len]
+> -                                + bits / POW10[self.carry_len],
+> -                            NUM_CHARS_BITS[3],
+> -                        );
+> -                        self.carry = bits % POW10[self.carry_len];
+> -                        Some(out)
+> -                    } else {
+> -                        let out = (
+> -                            self.carry * POW10[new_chars] + bits,
+> -                            NUM_CHARS_BITS[self.carry_len + new_chars],
+> -                        );
+> -                        self.carry_len = 0;
+> -                        Some(out)
+> +                if self.carry_len < 3 && self.offset < data.len() {
+> +                    // If there are less than 3 decimal digits in the carry,
+> +                    // take the next 7 bytes of input, and add them to the carry.
+> +                    let mut buf = [0u8; 8];
+> +                    let len = 7.min(data.len() - self.offset);
+> +                    buf[..len].copy_from_slice(&data[self.offset..self.offset + len]);
+> +                    let chunk = u64::from_le_bytes(buf);
+> +                    let pow = u64::pow(10, BYTES_TO_DIGITS[len] as u32);
+> +                    self.carry = chunk + self.carry * pow;
+> +                    self.offset += len;
+> +                    self.carry_len += BYTES_TO_DIGITS[len];
+> +                }
+> +                match self.carry_len {
+> +                    0 => None,
+> +                    len => {
+> +                        // take the next 3 decimal digits of the carry
+> +                        // and return 10bits of numeric data.
+> +                        let out_len = 3.min(len);
+> +                        self.carry_len -= out_len;
+> +                        let pow = u64::pow(10, self.carry_len as u32);
+> +                        let out = (self.carry / pow) as u16;
+> +                        self.carry = self.carry % pow;
+> +                        Some((out, NUM_CHARS_BITS[out_len]))
+>                       }
+> -                } else if self.carry_len > 0 {
+> -                    let out = (self.carry, NUM_CHARS_BITS[self.carry_len]);
+> -                    self.carry_len = 0;
+> -                    Some(out)
+> -                } else {
+> -                    None
+>                   }
+>               }
+>           }
+> 
+> base-commit: e2a81c0cd7de6cb063058be304b18f200c64802b
+
