@@ -1,97 +1,219 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13901448E0;
-	Fri,  7 Feb 2025 13:25:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738934750; cv=pass; b=asDiusdERM69XkSU3oQ1+2Njmmtv+XcYQk1OwUHLSp4eMqUpWQ2doqJku/JZkxzW3xjqnAKOkNC+y30fwfOenWQHaQljVzlt4ieQ0jUsC7a1+CJk+6V01Aep+3hBJw7XFjZY+5/d/2T/IwJUQN+Q9arKAjt8FSxOpGH35uhsBNs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738934750; c=relaxed/simple;
-	bh=npiJI/Jl/eTm7nVbldwPPxU8JxbWR8l/VeHbzpXdrRc=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=elCJjtcBT8IRPdQF3WOGexPehXsNtegUNivG9GQPbZjmiKG2rWxDxC98hIukC35Wa0BAwpc1LB4f/FYt2kMWAATwdaphUaRRd6w8svs1BQk/0qNnYCa8GFBPT2fZfruLdpE8eb3Whx1W+Tn8ZUO3FXNMF0Thm0yHCL7uqOBInrc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Jr2F3i/u; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D501F4174;
+	Fri,  7 Feb 2025 13:31:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738935088; cv=none; b=g6Ul+6svhmtFQsjTYQQm5mE2TMvf2McpI7ivcbmsP2xhRc3LnnyAG4MJmDU9YbfbRUn2VS/iOBqqqsIpVRMoHcs2JWFXmZ3YfHg7ft7iwP5OBURr5wv2UwUCXoCMhgzIzuE4SOv82HxWSZS36LJye1FsZLtiM/IlyjbevIHdpNY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738935088; c=relaxed/simple;
+	bh=hnOTbmTrrKsnD+Y2GGxHascu/YYa/gDDdIc+hdhOy2o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IFqBav3OtRx810kzLwQY+bQnzijqIfLpfPpii+JFDGsKixg8ppS8Lq7mz416dXxa6wQZO6WsDstTUqaO6xRKOqkEfWU8sFOU1T3zO4kDmjK4F944IQ2gIs0oLS2aCpEVY2ACdxw3y7X1EqOmF1YAQeziJfLadSP89l7OjyGdSII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RjZSDRJw; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Jr2F3i/u"
-ARC-Seal: i=1; a=rsa-sha256; t=1738934727; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=HsRX8OfwKxh0N6MJarx5824n+QEBwgyCSGP1424+GCJXusQgwYxEgkQ/IXIxZyQUkicER67r5OULHufIGs+yJVcag7LGwwUjpqYpa/4SLZbHMa6bvdvfZe9+V/inKFr35SM4RFxJCvJyq4vHAsYe3Jxv26i1b/o+3XBb/ioDMes=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1738934727; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=npiJI/Jl/eTm7nVbldwPPxU8JxbWR8l/VeHbzpXdrRc=; 
-	b=lc5sxzGN84U01jia8XWe2/xE7X2i/iYCZtoems9FeQ2IXN31VsZSFvi6ugQx9W4NvsEOaxZpBslwcMdtFUCkdsFgsRz7tS/SJJtFuyLMBEPrqMqRbF2aAu7xnP6STpguoQGf9+zpi9R4/4BsqlMJphqvBPXKbSZKm6Q0t1kE0oo=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1738934727;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=npiJI/Jl/eTm7nVbldwPPxU8JxbWR8l/VeHbzpXdrRc=;
-	b=Jr2F3i/uiCb63tAcU23T7XPNa/EDy6nUeBHkGSPrfHK2GHhJ9tNJ08qcfLmME4Ag
-	Iu60key0wdxdkxvg/5pw7uFNBBpOBSrVCyCSK9pmIMAm0Ms3FDHnOe6RCZvk4MTZxOR
-	F4a9nA4jg3OkC/X8oAtgVYW2e47ZqDQw3AUAxfb4=
-Received: by mx.zohomail.com with SMTPS id 1738934724448370.76818352174746;
-	Fri, 7 Feb 2025 05:25:24 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RjZSDRJw"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-21f0c4275a1so31584535ad.2;
+        Fri, 07 Feb 2025 05:31:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738935085; x=1739539885; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NK1HGIXoH8vXj+D0vllNs3ytDiD6gTjuLJ5UVxhg7uI=;
+        b=RjZSDRJwUqcZkM0PBqiLH8xj4QwCPlFnsXYVxuEDi0oR35V5IisM92L6cYdZ4AQdIb
+         2mBumNY9JWId81lnMyZQNad4ufdxfXpI/6YNqWXgKvex0oovltw+Wp0oQAAFWQ06ir9n
+         xbIPK+TiUFyjJx7F6rxq8G2YJu/N4wipQso0+eNClgS7mnURtu0B6uf5WWjCyp7BQxJV
+         htmYg+VEa2ziRsjpAlDUa5Pi7Hl+iXIrypXNnbIhFRLPKfasqRpCFlpRCT3g02M/AHH8
+         usTjtgI9XqFzrh1mzCdAfvUof7i9JZau77L6ZqzQT+Mi5cM8jhGkmDfUWDXLf0iCAl+R
+         EgAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738935085; x=1739539885;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NK1HGIXoH8vXj+D0vllNs3ytDiD6gTjuLJ5UVxhg7uI=;
+        b=UMJcPZOv/qeujoqo7ItDhAkfj3Smf6BzDmfxFa/oqAtqwigzzbon7SUHLI2FgCZjss
+         NSkEjdc5LRwyhhvonYCfvFrOccmL7UI4oFwBtoMp+JsVPsBonUPtpaGZ7VGGGkQI7/1a
+         3vBgQW0AUOYTPzyb7Y2V7PxCCTgzXh4Ime51/WBA/opGsoluidFH+UsraFonGcanIIeN
+         ObLsY7FG6uCfYkjzsF3s5tvREFDCTishBklRnLSgZAJe1IC0CHzcbmdN1dI5TVl/Jxss
+         Qk2lc+HPM9ISFGQ0K8W0QNIvxTsxWoEdckgU32t7F6PkQLEapOGo7AU6flqXbVDu5waR
+         PMrw==
+X-Forwarded-Encrypted: i=1; AJvYcCVaXtlW2hr3i8blIUqILB9O69PNqACp2NJTUIQ7s6JjeMtbyibmNWqBisU32bswCds1q61a9pc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTzw7uRCxvnyLcg/V9q/w4hQb6154k9xXp+1KXGfqztsNA0/MJ
+	Mb9Ftcen57Cq0gac5z/r/AWtFuOQYp9Sx07Qg+YIUwDCaTe182EwrNvkeDaX
+X-Gm-Gg: ASbGncvDVjQzoefj0NXZ2rpXIT6wM17NdnDEynKQswWW4aN95tFtI644SZD++EyUFIL
+	wRRWoSMKT56ayqsjWPa/s2gNvk6Qq6hDcaVLKFsBljsiPlhTLbIcVT+CDxOA8q+O0Kz3JJxxKp+
+	94nhmcIkFkVxwrf1ZenaL08pF27jp7wtVlvH/fGXGT8K88xELb8fO+ITI+Rn5lqmq7NbLl/K0RE
+	LL91XPdpZZMshlkuwrJzLaRBCMbYcWlHjwfDcrLPVLEGz8IO3VYKPvZf1Pyi5fu2dO8J7WLOYBZ
+	dU57ryQW1afjMF/apWTIhFygZuWjz/Fr6j0Yzhp5iKCN9ZAzY2y/pC/MI71Vhup8RUE=
+X-Google-Smtp-Source: AGHT+IHy+EpqgNAEumqcP7+ulrJ69USEKRJ98gpkuxrliW7woK12rfMKtqQYFSXTGB0DnlPZomwu/g==
+X-Received: by 2002:a05:6a20:c896:b0:1ed:e7cc:ee7e with SMTP id adf61e73a8af0-1ee03b10078mr7267238637.32.1738935085258;
+        Fri, 07 Feb 2025 05:31:25 -0800 (PST)
+Received: from mew.. (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ad51ea79a47sm2877843a12.76.2025.02.07.05.31.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Feb 2025 05:31:24 -0800 (PST)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: linux-kernel@vger.kernel.org
+Cc: rust-for-linux@vger.kernel.org,
+	netdev@vger.kernel.org,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	tmgross@umich.edu,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@samsung.com,
+	aliceryhl@google.com,
+	anna-maria@linutronix.de,
+	frederic@kernel.org,
+	tglx@linutronix.de,
+	arnd@arndb.de,
+	jstultz@google.com,
+	sboyd@kernel.org,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	dietmar.eggemann@arm.com,
+	rostedt@goodmis.org,
+	bsegall@google.com,
+	mgorman@suse.de,
+	vschneid@redhat.com,
+	tgunders@redhat.com,
+	me@kloenk.dev
+Subject: [PATCH v10 0/8] rust: Add IO polling
+Date: Fri,  7 Feb 2025 22:26:15 +0900
+Message-ID: <20250207132623.168854-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
-Subject: Re: [PATCH v6 2/3] rust: io: mem: add a generic iomem abstraction
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <Z6Ttn83DQ_8asHXl@cassiopeiae>
-Date: Fri, 7 Feb 2025 10:25:08 -0300
-Cc: =?utf-8?B?5bSU5YWJ5Y2a?= <2407018371@qq.com>,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Alice Ryhl <aliceryhl@google.com>,
- a.hindborg@kernel.org,
- alex.gaynor@gmail.com,
- benno.lossin@proton.me,
- bjorn3_gh@protonmail.mco,
- boqun.feng@gmail.com,
- boris.brezillon@collabora.com,
- gary@garyguo.net,
- gregkh@linuxfoundation.org,
- linux-kernel@vger.kernel.org,
- ojeda@kernel.org,
- rafael@kernel.org,
- robh@kernel.org,
- rust-for-linux@vger.kernel.org,
- tmgross@umich.edu
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <774D098D-9FEC-45CC-8645-A6E5A7BEB4DF@collabora.com>
-References: <20250130220529.665896-3-daniel.almeida@collabora.com>
- <tencent_2E2CD1359817A58BB51F59E790325CFA6A0A@qq.com>
- <CAH5fLgi+Qf=o91XEPamjycdrGeso1yDEDOGNQRmmy-miakDaOg@mail.gmail.com>
- <tencent_9719A47A97C91AAD7453E64CE987EDABD608@qq.com>
- <CANiq72mS-AgdAva4mB=FWf5dh3vZg95Ka7Wv36ypoZXChuwk=A@mail.gmail.com>
- <tencent_E1DC219DB45DC03A8454E2124D238DCEC705@qq.com>
- <Z6Ttn83DQ_8asHXl@cassiopeiae>
-To: Danilo Krummrich <dakr@kernel.org>
-X-Mailer: Apple Mail (2.3826.300.87.4.3)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Sorry, didn=E2=80=99t find time to reply yesterday,
+Add a helper function to poll periodically until a condition is met or
+a timeout is reached. By using the function, the 8th patch fixes
+QT2025 PHY driver to sleep until the hardware becomes ready.
+
+The first patch is for sched/core, which adds
+__might_sleep_precision(), rust friendly version of __might_sleep(),
+which takes a pointer to a string with the length instead of a
+null-terminated string. Rust's core::panic::Location::file(), which
+gives the file name of a caller, doesn't provide a null-terminated
+string. __might_sleep_precision() uses a precision specifier in the
+printk format, which specifies the length of a string; a string
+doesn't need to be a null-terminated.
+
+The remaining patches are for the Rust portion and updates to the
+MAINTAINERS file.
+
+This introduces two new types, Instant and Delta, which represent a
+specific point in time and a span of time, respectively.
+
+Unlike the old rust branch, This adds a wrapper for fsleep() instead
+of msleep(). fsleep() automatically chooses the best sleep method
+based on a duration.
+
+[1]: https://github.com/rust-lang/libs-team/issues/466
+
+v10:
+- rebased on rust-next
+- use Option type for timeout argument for read_poll_timeout()
+- remove obsoleted comment on read_poll_timeout()
+v9: https://lore.kernel.org/lkml/20250125101854.112261-1-fujita.tomonori@gmail.com/
+- make the might_sleep() changes into as a separate patch
+- add as_millis() method to Delta for Binder driver
+- make Delta's as_*() methods const (useful in some use cases)
+- add Delta::ZERO const; used in fsleep()
+- fix typos
+- use intra-doc links
+- place the #[inline] marker before the documentation
+- remove Instant's from_raw() method
+- add Invariants to Instant type
+- improve Delta's methods documents
+- fix fsleep() SAFETY comment
+- improve fsleep() documents
+- lift T:Copy restriction in read_poll_timeout()
+- use MutFn for Cond in read_poll_timeout() instead of Fn
+- fix might_sleep() call in read_poll_timeout()
+- simplify read_poll_timeout() logic
+v8: https://lore.kernel.org/lkml/20250116044100.80679-1-fujita.tomonori@gmail.com/
+- fix compile warnings
+v7: https://lore.kernel.org/lkml/20241220061853.2782878-1-fujita.tomonori@gmail.com/
+- rebased on rust-next
+- use crate::ffi instead of core::ffi
+v6: https://lore.kernel.org/lkml/20241114070234.116329-1-fujita.tomonori@gmail.com/
+- use super::Delta in delay.rs
+- improve the comments
+- add Delta's is_negative() method
+- rename processor.rs to cpu.rs for cpu_relax()
+- add __might_sleep_precision() taking pointer to a string with the length
+- implement read_poll_timeout as normal function instead of macro
+v5: https://lore.kernel.org/lkml/20241101010121.69221-1-fujita.tomonori@gmail.com/
+- set the range of Delta for fsleep function
+- update comments
+v4: https://lore.kernel.org/lkml/20241025033118.44452-1-fujita.tomonori@gmail.com/
+- rebase on the tip tree's timers/core
+- add Instant instead of using Ktime
+- remove unused basic methods
+- add Delta as_micros_ceil method
+- use const fn for Delta from_* methods
+- add more comments based on the feedback
+- add a safe wrapper for cpu_relax()
+- add __might_sleep() macro
+v3: https://lore.kernel.org/lkml/20241016035214.2229-1-fujita.tomonori@gmail.com/
+- Update time::Delta methods (use i64 for everything)
+- Fix read_poll_timeout to show the proper debug info (file and line)
+- Move fsleep to rust/kernel/time/delay.rs
+- Round up delta for fsleep
+- Access directly ktime_t instead of using ktime APIs
+- Add Eq and Ord with PartialEq and PartialOrd
+v2: https://lore.kernel.org/lkml/20241005122531.20298-1-fujita.tomonori@gmail.com/
+- Introduce time::Delta instead of core::time::Duration
+- Add some trait to Ktime for calculating timeout
+- Use read_poll_timeout in QT2025 driver instead of using fsleep directly
+v1: https://lore.kernel.org/netdev/20241001112512.4861-1-fujita.tomonori@gmail.com/
+
+FUJITA Tomonori (8):
+  sched/core: Add __might_sleep_precision()
+  rust: time: Add PartialEq/Eq/PartialOrd/Ord trait to Ktime
+  rust: time: Introduce Delta type
+  rust: time: Introduce Instant type
+  rust: time: Add wrapper for fsleep() function
+  MAINTAINERS: rust: Add TIMEKEEPING and TIMER abstractions
+  rust: Add read_poll_timeout functions
+  net: phy: qt2025: Wait until PHY becomes ready
+
+ MAINTAINERS               |   2 +
+ drivers/net/phy/qt2025.rs |  10 ++-
+ include/linux/kernel.h    |   2 +
+ kernel/sched/core.c       |  55 ++++++++------
+ rust/helpers/helpers.c    |   2 +
+ rust/helpers/kernel.c     |  13 ++++
+ rust/helpers/time.c       |   8 ++
+ rust/kernel/cpu.rs        |  13 ++++
+ rust/kernel/error.rs      |   1 +
+ rust/kernel/io.rs         |   2 +
+ rust/kernel/io/poll.rs    |  78 +++++++++++++++++++
+ rust/kernel/lib.rs        |   1 +
+ rust/kernel/time.rs       | 155 ++++++++++++++++++++++++++++++--------
+ rust/kernel/time/delay.rs |  49 ++++++++++++
+ 14 files changed, 337 insertions(+), 54 deletions(-)
+ create mode 100644 rust/helpers/kernel.c
+ create mode 100644 rust/helpers/time.c
+ create mode 100644 rust/kernel/cpu.rs
+ create mode 100644 rust/kernel/io/poll.rs
+ create mode 100644 rust/kernel/time/delay.rs
 
 
->=20
-> That's two different things here. Miguel questions whether the comment =
-is
-> correct. And I think it's not, they are indeed exposed.
->=20
+base-commit: beeb78d46249cab8b2b8359a2ce8fa5376b5ad2d
+-- 
+2.43.0
 
-Yes, I said =E2=80=9Cnot exposed=E2=80=9D, but in truth I meant =E2=80=9Cy=
-ou can=E2=80=99t use it=E2=80=9D, as shown by
-the build_error being triggered.
-
-My bad. I will fix the wording so that it=E2=80=99s clear in the next =
-iteration.
-
-=E2=80=94 Daniel=
