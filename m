@@ -1,185 +1,191 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D477D2A1D8;
-	Fri,  7 Feb 2025 17:36:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E49F197A7E;
+	Fri,  7 Feb 2025 18:02:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.63.210.85
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738949820; cv=none; b=GL+w+0ejQq2MWnA3tR8ZyOlDdbwy+TsOSqS8spbNG07YGvVzcdZecpmpVKqwcgZ3cbfnH+oJqi3cwYi5Me+TDmYOfbB4hhCNZuS5HjRB3bV056x+tNRqY/iZjYpqFGRfUOfPjZetoLqq5851OAvL4AcOVY8D6H4io3pZ3cswBqk=
+	t=1738951341; cv=none; b=BgjfxkG+4Jeh/iKsl+moN1MF/Wns7HCt8utwXduROsG8gkNmwwzbql9AhoRWp+2iNoKHqX5NECojXunVpKHd9iFvDVnhOepVDnAwvNshirebxD8l7g1Drpqztnf6TYdfxxwdbT2qxc3CL/edFPudKY89hTeG2X/njZh/5SgP6Sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738949820; c=relaxed/simple;
-	bh=fcpm8zPo3t6of/QhUdAYAl07owRMtxY3+gOrEtI6YWw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fY2DDaJolrDbX+2hsjEKbpojvFS4MTp5YXlGSxjSD5RVoj1AqshHJFR4sH3RfJZr+eiE1yBQV/VigPBZPfDb+j+aUGoiqn0cD8TwceGgRFO5QRfA/Zjc1/tWsrvGKNb7QI/pmp04LDlBw5pyIwFz0qmgVf3h39UANpFyw3Kbl9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=exoVW02j; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1738951341; c=relaxed/simple;
+	bh=K63Fpm4Kxp5LTpQxJQ48pUAOYhYczonzA7LReojlAZI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cjJI1C/WzXCBW4+q2m+aMSLztGGzedZwtCKIExCHTEsc3o/Xz4Igg5Hv6SDxcdsstnvoiEWj0a/pd2aAkExSf6gL+lYOfivMRX1SlFqt9YhuXYTocHLow9NQMt2KI+BW6chha185XTxonMbUWQ7IdbxkCSjiG0XEooKwvT3+brM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marcan.st; spf=pass smtp.mailfrom=marcan.st; dkim=pass (2048-bit key) header.d=marcan.st header.i=@marcan.st header.b=C+tu+ElY; arc=none smtp.client-ip=212.63.210.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marcan.st
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marcan.st
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="exoVW02j"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1738949815;
-	bh=fcpm8zPo3t6of/QhUdAYAl07owRMtxY3+gOrEtI6YWw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=exoVW02jeexZbuX6mheZygHMwFFf+/EVtzbAUB74lRSEEJFBEYxPjYKEDzndF5JDY
-	 X1k8Z9+gNFuw6g7TiNF0RjWtkJvyMkB3zBgO+g76aYEECEz7SZt44mSps9XppaAwiO
-	 6Bi/H8XlfziQ64dS7BCZa+q8lM4HICX4/LiLh+68X0ZgGfnAdUiJN+yuo2HGSrGEjK
-	 OV/v/0pnyoEDH+ElvroIgHM3Yc+2/lvucEBAyttMIB4SfeXK4MQ52qAAlElY/b01rz
-	 PqNRMtI/iGM0U5DNp1l9vPGdXiDVa4rl0Bp8MoVIblLppA8pcEb/48bDeuHOE1PeyD
-	 Usc5bfC34ASKQ==
-Received: from localhost (unknown [IPv6:2a01:e0a:2c:6930:5cf4:84a1:2763:fe0d])
+	dkim=pass (2048-bit key) header.d=marcan.st header.i=@marcan.st header.b="C+tu+ElY"
+Received: from [127.0.0.1] (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 1FDB217E02AF;
-	Fri,  7 Feb 2025 18:36:55 +0100 (CET)
-Date: Fri, 7 Feb 2025 18:36:47 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Miguel Ojeda
- <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?=
- Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Beata
- Michalska <beata.michalska@arm.com>, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] drm/panthor: Convert IOCTL defines to an enum
-Message-ID: <20250207183647.2bc1e5ed@collabora.com>
-In-Reply-To: <20250204232824.3819437-1-robh@kernel.org>
-References: <20250204232824.3819437-1-robh@kernel.org>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	(Authenticated sender: marcan@marcan.st)
+	by mail.marcansoft.com (Postfix) with ESMTPSA id D092B41F7F;
+	Fri,  7 Feb 2025 18:02:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
+	t=1738951335; bh=K63Fpm4Kxp5LTpQxJQ48pUAOYhYczonzA7LReojlAZI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=C+tu+ElYntR8wBRcFKZxvP6WG3en/4yVXwKudMP9OdBRDAK929qu94F07Cd6XDOYi
+	 8lsSohR320RRmapyxLRcWS/BmrZbORe0ypjHrqir/5kN9qPjvzxc1rT00C0H5kM+KV
+	 T2HZmN9pYNoxWIzQ3K8rdRKmZcLCoxuDbaswNyDVZWHt8NtD1I9oED8p7YZ8s3msh6
+	 eA138FEJVwOTv98gWB/TULbOnWosb1oJa2hyOtT8NEsIXYUB6HywGOINGx88zU8DDG
+	 qCip0FULgWnmfV8y3ssFjjrnGnJsbMefCagHqH+HvcvON/sQlGngiqLN2CmZd5tz2x
+	 ZJo7jfDuxehOA==
+Message-ID: <1bbdf8b7-a70b-4994-865e-7fcb8d53ebef@marcan.st>
+Date: Sat, 8 Feb 2025 03:02:11 +0900
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: On community influencing (was Re: [PATCH v8 2/2] rust: add dma
+ coherent allocator abstraction.)
+To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Cc: Danilo Krummrich <dakr@kernel.org>, Dave Airlie <airlied@gmail.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Greg KH <gregkh@linuxfoundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, phasta@kernel.org,
+ Christoph Hellwig <hch@lst.de>,
+ Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>, daniel.almeida@collabora.com,
+ aliceryhl@google.com, robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Valentin Obst <kernel@valentinobst.de>,
+ open list <linux-kernel@vger.kernel.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+ "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
+ DRI Development <dri-devel@lists.freedesktop.org>
+References: <2025013030-gummy-cosmic-7927@gregkh>
+ <20250130172437.GN5556@nvidia.com>
+ <2025013148-reversal-pessimism-1515@gregkh>
+ <20250131135421.GO5556@nvidia.com>
+ <2b9b75d1-eb8e-494a-b05f-59f75c92e6ae@marcan.st>
+ <Z6OzgBYZNJPr_ZD1@phenom.ffwll.local>
+ <CAPM=9tzPR9wd=3Wbjnp-T0W8-dDfGah-H3Ny52G85B+2Ev9ksA@mail.gmail.com>
+ <208e1fc3-cfc3-4a26-98c3-a48ab35bb9db@marcan.st>
+ <Z6UPXxEJYpanU9iU@cassiopeiae>
+ <4c0a7cf9-26e1-4a19-8a6e-7c30bc3aef86@marcan.st>
+ <20250207-mature-pastel-rottweiler-e6dbd9@lemur>
+From: Hector Martin <marcan@marcan.st>
+Content-Language: en-US
+In-Reply-To: <20250207-mature-pastel-rottweiler-e6dbd9@lemur>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Tue,  4 Feb 2025 17:28:24 -0600
-"Rob Herring (Arm)" <robh@kernel.org> wrote:
-
-> Use an enum instead of #defines for panthor IOCTLs. This allows the
-> header to be used with Rust code as bindgen can't handle complex
-> defines.
+On 2025/02/08 2:14, Konstantin Ryabitsev wrote:
+> On Fri, Feb 07, 2025 at 05:16:28AM +0900, Hector Martin wrote:
+>> And what I see, is very little effort to improve that status quo, or at
+>> least very little that yields any actual change that isn't just
+>> band-aids (e.g. tooling like b4, which is nice and appreciated, but
+>> doesn't fix any underlying issues). And that's not going to change no
+>> matter how many long technical arguments we have on the MLs (or even off
+>> MLs, since MLs are also not particularly good for this, and I've seen
+>> multiple arguments only reach a resolution after being redirected to IRC).
 > 
-> Cc: Beata Michalska <beata.michalska@arm.com>
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-
-Queued to drm-misc-next.
-
-> ---
->  include/uapi/drm/panthor_drm.h | 86 +++++++++++++++++-----------------
->  1 file changed, 44 insertions(+), 42 deletions(-)
+> From my perspective, there are several camps clashing when it comes to the
+> kernel development model. One is people who are (rightfully) pointing out that
+> using the mailing lists was fine 20 years ago, but the world of software
+> development has vastly moved on to forges.
 > 
-> diff --git a/include/uapi/drm/panthor_drm.h b/include/uapi/drm/panthor_drm.h
-> index b99763cbae48..97e2c4510e69 100644
-> --- a/include/uapi/drm/panthor_drm.h
-> +++ b/include/uapi/drm/panthor_drm.h
-> @@ -129,48 +129,6 @@ enum drm_panthor_ioctl_id {
->  	DRM_PANTHOR_TILER_HEAP_DESTROY,
->  };
->  
-> -/**
-> - * DRM_IOCTL_PANTHOR() - Build a Panthor IOCTL number
-> - * @__access: Access type. Must be R, W or RW.
-> - * @__id: One of the DRM_PANTHOR_xxx id.
-> - * @__type: Suffix of the type being passed to the IOCTL.
-> - *
-> - * Don't use this macro directly, use the DRM_IOCTL_PANTHOR_xxx
-> - * values instead.
-> - *
-> - * Return: An IOCTL number to be passed to ioctl() from userspace.
-> - */
-> -#define DRM_IOCTL_PANTHOR(__access, __id, __type) \
-> -	DRM_IO ## __access(DRM_COMMAND_BASE + DRM_PANTHOR_ ## __id, \
-> -			   struct drm_panthor_ ## __type)
-> -
-> -#define DRM_IOCTL_PANTHOR_DEV_QUERY \
-> -	DRM_IOCTL_PANTHOR(WR, DEV_QUERY, dev_query)
-> -#define DRM_IOCTL_PANTHOR_VM_CREATE \
-> -	DRM_IOCTL_PANTHOR(WR, VM_CREATE, vm_create)
-> -#define DRM_IOCTL_PANTHOR_VM_DESTROY \
-> -	DRM_IOCTL_PANTHOR(WR, VM_DESTROY, vm_destroy)
-> -#define DRM_IOCTL_PANTHOR_VM_BIND \
-> -	DRM_IOCTL_PANTHOR(WR, VM_BIND, vm_bind)
-> -#define DRM_IOCTL_PANTHOR_VM_GET_STATE \
-> -	DRM_IOCTL_PANTHOR(WR, VM_GET_STATE, vm_get_state)
-> -#define DRM_IOCTL_PANTHOR_BO_CREATE \
-> -	DRM_IOCTL_PANTHOR(WR, BO_CREATE, bo_create)
-> -#define DRM_IOCTL_PANTHOR_BO_MMAP_OFFSET \
-> -	DRM_IOCTL_PANTHOR(WR, BO_MMAP_OFFSET, bo_mmap_offset)
-> -#define DRM_IOCTL_PANTHOR_GROUP_CREATE \
-> -	DRM_IOCTL_PANTHOR(WR, GROUP_CREATE, group_create)
-> -#define DRM_IOCTL_PANTHOR_GROUP_DESTROY \
-> -	DRM_IOCTL_PANTHOR(WR, GROUP_DESTROY, group_destroy)
-> -#define DRM_IOCTL_PANTHOR_GROUP_SUBMIT \
-> -	DRM_IOCTL_PANTHOR(WR, GROUP_SUBMIT, group_submit)
-> -#define DRM_IOCTL_PANTHOR_GROUP_GET_STATE \
-> -	DRM_IOCTL_PANTHOR(WR, GROUP_GET_STATE, group_get_state)
-> -#define DRM_IOCTL_PANTHOR_TILER_HEAP_CREATE \
-> -	DRM_IOCTL_PANTHOR(WR, TILER_HEAP_CREATE, tiler_heap_create)
-> -#define DRM_IOCTL_PANTHOR_TILER_HEAP_DESTROY \
-> -	DRM_IOCTL_PANTHOR(WR, TILER_HEAP_DESTROY, tiler_heap_destroy)
-> -
->  /**
->   * DOC: IOCTL arguments
->   */
-> @@ -1019,6 +977,50 @@ struct drm_panthor_tiler_heap_destroy {
->  	__u32 pad;
->  };
->  
-> +/**
-> + * DRM_IOCTL_PANTHOR() - Build a Panthor IOCTL number
-> + * @__access: Access type. Must be R, W or RW.
-> + * @__id: One of the DRM_PANTHOR_xxx id.
-> + * @__type: Suffix of the type being passed to the IOCTL.
-> + *
-> + * Don't use this macro directly, use the DRM_IOCTL_PANTHOR_xxx
-> + * values instead.
-> + *
-> + * Return: An IOCTL number to be passed to ioctl() from userspace.
-> + */
-> +#define DRM_IOCTL_PANTHOR(__access, __id, __type) \
-> +	DRM_IO ## __access(DRM_COMMAND_BASE + DRM_PANTHOR_ ## __id, \
-> +			   struct drm_panthor_ ## __type)
-> +
-> +enum {
-> +	DRM_IOCTL_PANTHOR_DEV_QUERY =
-> +		DRM_IOCTL_PANTHOR(WR, DEV_QUERY, dev_query),
-> +	DRM_IOCTL_PANTHOR_VM_CREATE =
-> +		DRM_IOCTL_PANTHOR(WR, VM_CREATE, vm_create),
-> +	DRM_IOCTL_PANTHOR_VM_DESTROY =
-> +		DRM_IOCTL_PANTHOR(WR, VM_DESTROY, vm_destroy),
-> +	DRM_IOCTL_PANTHOR_VM_BIND =
-> +		DRM_IOCTL_PANTHOR(WR, VM_BIND, vm_bind),
-> +	DRM_IOCTL_PANTHOR_VM_GET_STATE =
-> +		DRM_IOCTL_PANTHOR(WR, VM_GET_STATE, vm_get_state),
-> +	DRM_IOCTL_PANTHOR_BO_CREATE =
-> +		DRM_IOCTL_PANTHOR(WR, BO_CREATE, bo_create),
-> +	DRM_IOCTL_PANTHOR_BO_MMAP_OFFSET =
-> +		DRM_IOCTL_PANTHOR(WR, BO_MMAP_OFFSET, bo_mmap_offset),
-> +	DRM_IOCTL_PANTHOR_GROUP_CREATE =
-> +		DRM_IOCTL_PANTHOR(WR, GROUP_CREATE, group_create),
-> +	DRM_IOCTL_PANTHOR_GROUP_DESTROY =
-> +		DRM_IOCTL_PANTHOR(WR, GROUP_DESTROY, group_destroy),
-> +	DRM_IOCTL_PANTHOR_GROUP_SUBMIT =
-> +		DRM_IOCTL_PANTHOR(WR, GROUP_SUBMIT, group_submit),
-> +	DRM_IOCTL_PANTHOR_GROUP_GET_STATE =
-> +		DRM_IOCTL_PANTHOR(WR, GROUP_GET_STATE, group_get_state),
-> +	DRM_IOCTL_PANTHOR_TILER_HEAP_CREATE =
-> +		DRM_IOCTL_PANTHOR(WR, TILER_HEAP_CREATE, tiler_heap_create),
-> +	DRM_IOCTL_PANTHOR_TILER_HEAP_DESTROY =
-> +		DRM_IOCTL_PANTHOR(WR, TILER_HEAP_DESTROY, tiler_heap_destroy),
-> +};
-> +
->  #if defined(__cplusplus)
->  }
->  #endif
+> The other camp is people who (also rightfully) point out that kernel
+> development has always been decentralized and we should resist all attempts to
+> get ourselves into a position where Linux is dependent on any single
+> Benevolent Entity (Github, Gitlab, LF, kernel.org, etc), because this would
+> give that entity too much political or commercial control or, at the very
+> least, introduce SPoFs.
+> 
+> At best, I can hope to make both camps grumpily agree to coexist.
+> 
+> I *am* very wary of Benevolent Entities, because we have too many very recent
+> examples of companies "realigning priorities" when political winds shift.
+> Programs and initiatives that have until recently been poster board examples
+> of progress and benevolence are shuttered and defunded. I am concerned that
+> we're only a couple of mood swings away from someone deciding that free
+> software should not be allowed to exist because it benefits America's foes.
+> Many of us remember all too well when large tech giants treated Linux as a
+> "cancer" to be opposed, and I can certainly see that idea easily re-entering
+> some Big Brain in Charge.
+> 
+> From my perspective, I would like to ensure that Linux development can
+> continue without a hard dependency on a single centralized forge -- whether
+> controlled by a large commercial entity, or even a standalone one that is
+> operated by kernel.org. It's becoming shockingly difficult to operate a public
+> resource on the web unless you're willing to put it behind a large commercial
+> CDN that will protect you from hostile bots (and if you do that, you're back
+> to depending on the whims of a Benevolent Entity).
+> 
+> We're trying to get lore.kernel.org to the point where it's like a global
+> messaging bus that is indexed and searchable. Currently, you mostly have to
+> send things to a mailing list for them to end up on lore, but it's gradually
+> becoming less and less the case. We're already bridging with bugzilla and we
+> should be able to bridge with forges soon, too (currently delayed again
+> because I'm scrambling to move kernel.org frontends away from Equinix). Who
+> knows, we may be actually leapfrogging the forge era of software development
+> straight into "AI" agents era -- but that remains to be seen.
+> 
+> Anyway, all of this is to say that I'm happy that you've found b4 useful, but
+> I wouldn't view it as a band-aid -- it's just a very small and email-centric
+> way to interact with the kernel lore.
+> 
+
+The centralization concern is valid, but there are technical solutions
+to this, such as forge federation. It's possible to set up a forge
+environment to be less of a SPoF, such as by ensuring all data is open
+and archiveable to allow for migration and backup restore, even by third
+parties (you can make practically ~all forge data public except for
+login passwords, and we have email-based reset processes for those).
+It's also possible to simply shard, and let different subsystems choose
+their own forge infrastructure, so downtime has a more limited effect.
+
+Meanwhile, for better or worse, much of Linux infra *is* centralized -
+for example, the mailing lists themselves, and a lot of the Git hosting.
+
+There's also the fact that there is enough support for Linux that
+finding a Benevolent Entity to provide stuff like DDoS protection is not
+particularly hard, and such services are easily replaceable should
+priorities change (and indeed are the kind of service that can only be
+provided by a large entity, whether paid or sponsored, by nature). Heck,
+even I have a Benevolent Entity sponsoring a CDN frontend for Asahi
+sites and installer images (bunny.net, they're nice, highly recommended).
+
+At the end of the day, I do not believe a theoretical breakdown of Linux
+infra would be a major long-term setback to Linux kernel development.
+The kernel already survived the great BitKeeper to Git migration, and
+this time there's no proprietary software to be yanked out from under
+the kernel (at least assuming the forge of choice is FOSS and
+self-hostable, which seems like a no-brainer given the concerns). As
+long as everyone has the Git trees, infrastructure can be rebuilt. As
+long as everyone has email and git, development can continue ad-hoc.
+Sure, it would cause a blip, but it's not like we would switch to a
+forge, the forge would go down for a few days, and it would not be the
+end of the world. Just ask the freedesktop folks (a good case study on
+how infra is hard, but not impossible, and even if imperfect, even if at
+times frustrating, it still functions, and well enough to still be
+wildly positive compared to not having that infra at all).
+
+But I'm afraid you'll find much if not most of the true opposition to
+forges is not technical, it is philosophical or preference-based (even
+though it may be presented as technical opposition, sometimes to
+intentionally mislead). This is, in fact, quite a mirror of the R4L
+situation, where technical arguments ("show me you can write a real
+driver") quickly lead to non-technical arguments when solutions are
+proposed ("it's cancer").
+
+I actually considered moving soc/apple development to a forge personally
+in the near future (obviously not my call to make any more), and I was
+fully expecting a pile of pushback, "because that's not how we do things
+here". Who knows, I might have gotten a "fuck you, either you accept
+email patches or I remove you from MAINTAINTERS" from Linus.
+
+All that said, thanks for b4. I might have given up much earlier, not
+due to flamewars but due to exhaustion with poor tooling, if it didn't
+exist.
+
+- Hector
 
