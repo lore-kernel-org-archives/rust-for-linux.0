@@ -1,254 +1,191 @@
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2055.outbound.protection.outlook.com [40.107.244.55])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18EEF1494DD;
-	Fri,  7 Feb 2025 01:41:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.55
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738892512; cv=fail; b=RDsE5SPzr1wunVxIDc8r71PsYlq2CabM/UcvqNDXgyt3y9NvyBtsWLxl8pRfC8GtEQqSxauxBoY4WrlkpevtCKNjV4oaW8tDBjTt1GSw/Wt1gsOD80xD0SnvZUVgN6S9EopB1QNzi6KWxqoqhsl8JVJMdR96cBLrkoYdpW8K7xM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738892512; c=relaxed/simple;
-	bh=8nLhjbyX1Kk4EQZsZAyqayCQW7E95njme622+VuORTc=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=k9EdSKtyQEkjdwkdX/v1CulnBi27jPZnTZUFk4QACVeEaZPhBRcas3hE4nkKcfjxJJFJdK+AetdfHGa4JnPP/qgNOowk5KUsppgubnYiDOGuUIGKDaaIBiYg5+tEeVQB2dDgcranpxEslVayYZ9kMjWFa/aivV8kx+xpIW77wA8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=a22klQwP; arc=fail smtp.client-ip=40.107.244.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C146AA7;
+	Fri,  7 Feb 2025 02:55:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738896916; cv=none; b=jKErdaS5d94+K7PYsK4N0aNI3ofUmc8ap3kVXtecax2WDoIJ46DpvjiaXtRQ6cUSAV+V+aTbJIckIuyL9fr9vrgk8lvxYXhDDz7O7AHOWAWBvRd8YiPCSBSDJCNitOHt0OQgiV/GFaXz2xAuFd6PJ8gvTkFW4zoBOTnO/0rqXjM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738896916; c=relaxed/simple;
+	bh=jTYxBKOjdaWKZhzMUu31ksejdQODNYTAtLBcDx+4/tU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=sAczn9NthkVj8tu4FnRLrzqMGjBQ2SasS3AqSwgD8eRhqSnFuLVb+fsuOifKteqXDUTE5b21O5aE9avd7J8q4vNFvgVh2HXwcL6xDiT73T5m+okrwP4THF/2C5XSclH6xKZ21NNpwlMq1XYg+dqlh/f6PQCQwUwmag2oNB7jypg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=IhJMo2+0; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="a22klQwP"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DkAs9oVIRsjSaFIBfa7xhgZHMs8sZ6D60edEtXVEg+E3DKk3YwYHT0v+qFYHTm3UgSPh0klMTE1lRWKPCUqW+rGkf6WkxOz6kXtQMLABQjHm0jRa1LFi0qcQe5aDD5wTlJVh+nVfksP7K/kA3h/W7yFDuGG4z7up3oLmXBvOSo0QuQgLvw7MRJuQ3YD6U0LGNI6igZ4Mfi8MiygQDtYg19JVrPilm+3yRfjTa6ebz/IUkeATYpWGRI83M1JcRpjNj6TMNs3ulja69OexJWDYmSo2PG12FfBdiBlEeM1TO3ya/2DVS+REI2tGeUnKm37zB1H2qa6TKBnfWqQjfwAjVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wq02bO8jmC+HI3ONoOuzPLrlHQ0gUCc02uzCqs2+lAs=;
- b=sIO7jeisBXbDKBARwHDvPGTSD1XMb7oSYURGSRBzyW9oHzC3/+OeNLC8Hf0kWEUiqs57ztXpisbW4IcPTaulCKAKGuqvaAQnjfc/uqA7wVqmIsM7sdDhyxiZwzaTnmkV6NCeBkW/VvvWJ0MEwo/Q12UgUWoIpVuFeynkdNeybxTXnlRWq1jiUGRah4Gl4mXn6KhUG5OO3vL1P5YijhFx+lrsKA6TRVxLoXMwloqb3iK7dg5UFEor+WTPao2qTDwkG1jOHisJM8P9QUyWrKOnU5LY58hExSFbytHvoNKJ8p/vcxgdxCWrKbnnZI40kIUsK/+ToKsS7t6mlQ5PoupNGA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wq02bO8jmC+HI3ONoOuzPLrlHQ0gUCc02uzCqs2+lAs=;
- b=a22klQwPWrPtfYfOzFX9kuHque5McdC996CfNuwafwJnBO53vyx16/Toa1Jcr4f7g3VpP2SUzaplBW0NYrYK/6YfuQRW0DytZzzQh9e1HfCrm4OSnsqNT+UyJglPL7g6+cYmn8oNCRdlCMh8XPFHMOF8THDNgchCU+Rf20JgNZyRlU5hI/pn7XGh5seGUsOAltJep4CEVeWzfomUqxgaVBqRGmcBvegSpNz3icG74V10Xjn1owrJIoREzKjcPAlhhBgCmZlEKdpkd74emiHMMxcfgTQj06HC+js+Po+yOSBHSqCj/yhHH2gY5abVRwGwhcinpcduFsudIODRmENTpg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by MN6PR12MB8514.namprd12.prod.outlook.com (2603:10b6:208:474::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.12; Fri, 7 Feb
- 2025 01:41:48 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99%4]) with mapi id 15.20.8422.010; Fri, 7 Feb 2025
- 01:41:48 +0000
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 07 Feb 2025 10:41:37 +0900
-Message-Id: <D7LTY1FIUOTR.3E6MZ8BD0HW7E@nvidia.com>
-Cc: "airlied@gmail.com" <airlied@gmail.com>, "simona@ffwll.ch"
- <simona@ffwll.ch>, "corbet@lwn.net" <corbet@lwn.net>,
- "maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
- "mripard@kernel.org" <mripard@kernel.org>, "tzimmermann@suse.de"
- <tzimmermann@suse.de>, "ajanulgu@redhat.com" <ajanulgu@redhat.com>,
- "lyude@redhat.com" <lyude@redhat.com>, "pstanner@redhat.com"
- <pstanner@redhat.com>, "Zhi Wang" <zhiw@nvidia.com>, "Neo Jia"
- <cjia@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>, "Ben Skeggs"
- <bskeggs@nvidia.com>, "Andy Currid" <ACurrid@nvidia.com>,
- "ojeda@kernel.org" <ojeda@kernel.org>, "alex.gaynor@gmail.com"
- <alex.gaynor@gmail.com>, "boqun.feng@gmail.com" <boqun.feng@gmail.com>,
- "gary@garyguo.net" <gary@garyguo.net>, "bjorn3_gh@protonmail.com"
- <bjorn3_gh@protonmail.com>, "benno.lossin@proton.me"
- <benno.lossin@proton.me>, "a.hindborg@kernel.org" <a.hindborg@kernel.org>,
- "aliceryhl@google.com" <aliceryhl@google.com>, "tmgross@umich.edu"
- <tmgross@umich.edu>, "dri-devel@lists.freedesktop.org"
- <dri-devel@lists.freedesktop.org>, "linux-doc@vger.kernel.org"
- <linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "nouveau@lists.freedesktop.org"
- <nouveau@lists.freedesktop.org>, "rust-for-linux@vger.kernel.org"
- <rust-for-linux@vger.kernel.org>, "Nouveau"
- <nouveau-bounces@lists.freedesktop.org>
-Subject: Re: [PATCH v2 1/2] gpu: nova-core: add initial driver stub
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Danilo Krummrich" <dakr@kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Thread-Topic: [PATCH v2 1/2] gpu: nova-core: add initial driver stub
-Thread-Index: AQHbeKA2ayaXKTc/F0i8CkcmmtmVjrM6W02AgAFD1gA=
-References: <20250204190400.2550-1-dakr@kernel.org>
- <D7LF554L2J0N.JRPHDUCHVKP3@nvidia.com> <Z6TL5a5SCZoVq8Zt@cassiopeiae>
-In-Reply-To: <Z6TL5a5SCZoVq8Zt@cassiopeiae>
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-x-ms-exchange-imapappendstamp: CH2PR12MB3990.namprd12.prod.outlook.com
- (15.20.8422.008)
-Content-ID: <2947EFEEE55F0C4186127BBC1C0D0604@NVIDIA.onmicrosoft.com>
-X-ClientProxiedBy: TY2PR0101CA0004.apcprd01.prod.exchangelabs.com
- (2603:1096:404:92::16) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="IhJMo2+0"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5171PU5m009392;
+	Fri, 7 Feb 2025 02:54:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	DT6q24hDlUwkGSH97IqJdPWETMBtLEuGKqkfKsbpEDU=; b=IhJMo2+0m1sxrgSa
+	ayjeknUiaHqsAWF4wJW2WyMjDkjwdwXfo30G5IDh8IopFj178oaRUiZCjwfgjIc2
+	+K24QirKrFu+JXN2w9ZjJpAekYamjEfIx/4o35g6bMHBi3elfXHxWFiQsWtc5ARI
+	IqAM6oyCxV9eh3FbhkmK1gaS7sadC6LWkKSUA8QxJ5mPUgrQQnSvCBx4sab+2llc
+	/DVOZZZON4esH8dwJ0XZRsBfCBSiTcw+Kel8lLxFF7fCFNjnSukwBJGnzLMoNyFs
+	Pvd8C+c360z4QWEL1XhHfqorMX+P0WGtXYKqh+/ZznU0MOixNZ2YQ5jOk1BMTtyM
+	oT5hjA==
+Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44n1vs126a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Feb 2025 02:54:45 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5172siaJ020788
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 7 Feb 2025 02:54:44 GMT
+Received: from [10.133.33.5] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 6 Feb 2025
+ 18:54:40 -0800
+Message-ID: <e9c3f622-0126-4cea-984c-29e77209ae30@quicinc.com>
+Date: Fri, 7 Feb 2025 10:54:38 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|MN6PR12MB8514:EE_
-X-MS-Office365-Filtering-Correlation-Id: b3870b26-8c59-4fc8-2ed3-08dd471895f8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|366016|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Qm5LUEhrQnNXL1lTVThoNFN6bVY2Rmg0TWxJeWNSTVRpL1cvTHRQelB2bkF1?=
- =?utf-8?B?SGdYWTlvYkI1K1VXWCt1TG5EQk92UjZkRzJoVVhIUUpzckp1Mmk3YjY4TWZj?=
- =?utf-8?B?UnlXVmpMVWdkemdZV0VEMkxiLzVHWU9QOGhONUp3Z2UvUlZ1VzhwNHhTK2o5?=
- =?utf-8?B?SU4vSkFlYlYyZDJYMHROY1pHUDhWQzV3VDF1UGxiRzF4WEJvK0JNaEt0UUpB?=
- =?utf-8?B?UUJRZ0dFQ0FBRjlsWWl5ZVU4bm8wYkYzOXVobDBpM2VDTkhrSVV3dHdOaXI5?=
- =?utf-8?B?aW5vWTBiMFVJNUE3dDFZK1A4MUNDZzAvclpLNzJud2tCOHFxNWJraFFQQ0Na?=
- =?utf-8?B?UEtrR2s3TlF1aVZBTE5Hd1VWbzdFald1aGhjdXlETElOQnU2TDZKMTExamps?=
- =?utf-8?B?cC9Tb1ZoSzMyK3JuUWNnT1FicWlkRjJMZ0d6clBXcU5pNTN3dHVpeGNLSnRl?=
- =?utf-8?B?eTdGc0tKQmpac1J0aGM3WUhZeDErcG0yZ09CUnBiV0R5U1lLR1ZiYkN1SmZy?=
- =?utf-8?B?bWpvRnFGZzdSTjVkcjVSU2EwSzhpd2NzSEQ4TXg4eGdwd2tZRnlZNXBKdHV6?=
- =?utf-8?B?dERpbU5Tc2xBU29aSlNMK2tPZDVLSDlqZFZubTBEUFJMWEMrR3NZQVVyY3Nv?=
- =?utf-8?B?WUF0aWRnWDlvUjV5eHpEajQ3cGRhT0FBVmVRTk50akppSEFjM29iWlNpZWhx?=
- =?utf-8?B?MVVyNk1TMG9YOTh0Z0xkUEQwcmgyVlBRL296NXdmR0JrVDh5Nkx5ZEsrRGZm?=
- =?utf-8?B?SmZEaHpPTVF5dDFYMXZsRk5RK2JKUXpjMGpTRUd5M3d4MXA1VEEvQ3huTGNB?=
- =?utf-8?B?M2wxa3BvUGQxY29HdFRnWUxwYkZ3b0ZpTzZqemxybFZTOHFBTHFlT2RGeWN3?=
- =?utf-8?B?dmNOMUlZN3lKdThwblZqMUxIMWpDMDF5N0huRGZuM3IralJsR0VpWFJHZTRS?=
- =?utf-8?B?ZzE2QjVXOHRIQXIyZmdkZ1hqUGN3d3paRjNhaSswOEROYktZRzNXSUt3QUo2?=
- =?utf-8?B?Ry9ycnRrS0dWdytqbWViK3g4NWJYN0J4bUVQUEd2U0N1SVU4NFNkNmVsK0hj?=
- =?utf-8?B?OU9pRkdQOUI3Qy9vMHF2SzFwbHgvdEphZ0trU0NEbFMwTUxrRENpR2diRjha?=
- =?utf-8?B?U290NjdNUnBGdGVvZWxUQTEyNWoxdVc4TlNDYXAxOWpiV04waUJjTlJLOTN5?=
- =?utf-8?B?R1pyTHhYMFVpWkc3QjkvaTVMMzg5MGI3bDBMOGtNeTdqL25rTW0wMFFsb1pX?=
- =?utf-8?B?MGp2RmVTdUJzSlUrVmhOcnpkcTk3NzlaWW5nQnN2MmdvdUhsaDZxQUw3UXdN?=
- =?utf-8?B?dlorcDVHSUVZWG0rbWxwT3BLKzRYcXc5dnAxYjdqdnhEY2h5TWNRVXp1S2xx?=
- =?utf-8?B?ZW1TNnNGcTVJRllvdlBMU2RJNVBtVWdGempEcWtkUERzeElFbGs3L1YraHdO?=
- =?utf-8?B?dzJTV0J3c1NGSXhoMVI0aVhTOEN4RFUwNmVybUJ6RTdKVncxaGxKek9DYmh1?=
- =?utf-8?B?eVlRZmpDR0FVTU5GcHNDUUlQbktGZ2lia3R0MmY2akpsUUlleENkeVBsV3V5?=
- =?utf-8?B?VlNUSjNLMEllZjVKWDlGeHduM0UzN2p2R3cvZ0tiRjBWbE5ObzM1bFh4NDMx?=
- =?utf-8?B?b1hjWUdDTXpIbVhuSE1KK3h4WnVSWGs2VWJsVHV0WGIzUjJLaXVUY2l5b0gr?=
- =?utf-8?B?cFpwNHovRnNQU1dqZEFMZG5VTHZzQVpnV0dGRldxUjhvS3A3VEJvUVpNUjVJ?=
- =?utf-8?B?UG84QndaMk9FOWpGMlRaVTd0THV2dlVwWUVXOG5tRVJlSVhLOW9NNnAvejZ2?=
- =?utf-8?B?THJrbFh5b0NIZXg2YklKWXdiUzdIcUVQUzVhUnBHUXMwK0V4NjBQZm9TbnR4?=
- =?utf-8?Q?X0nx5QGcZ7ZnK?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?c3MxcWhBWlEwb3BudVUvSHJTazVPMU4vS2xBNGt4eEw2ZXZxV202djlpR2kw?=
- =?utf-8?B?M0NsWWdpU21yYit6emxySmFSaWY4V2x5c0tNR1drdVRFbWZQZVBiMnFyYTY5?=
- =?utf-8?B?VHNvVFVOTzJTcjc4S1JCaERlVHhWTlZCUnFjOGhDM2Uwb201VjYraittYm5X?=
- =?utf-8?B?UG8rdjRMSEI5S2g4QmEweDR1R2tIL2llY0NWZ1dQVit5YUUrNG9zS1JmY05r?=
- =?utf-8?B?dmwvTzZTeUFJK3A4ZWpWeVozQUJjMWJSek1TdkdQR0NBUkFWMStIOXQ3YWxk?=
- =?utf-8?B?emJQVjNiTjBRZlpHa3dXcXJobHVGVGh4KzhYRjNla2NsdjBRMGdnUUpRaHZQ?=
- =?utf-8?B?SER0TURxVjIxZ1cvaVJTRklFWlpKWFZFVFdoVDJVUE45VURqOXFLNllQdjQ0?=
- =?utf-8?B?dUVvN1hMNWVYOGVyVTJDbUVYa3BudktvVGtBWG4yK1ltN3FjUE5pYVl2d3gv?=
- =?utf-8?B?bDVDTy9aS21Ubkcxc0dRN1IybXFTZFhCUEtYME9aNGNSaTFBcDRxeThNLzRV?=
- =?utf-8?B?Z1hQTlBKb2RFckdvaTZvUWdLMXhhdTJEa0xydWZPTEphZHgzOFpOOUlNWGZ1?=
- =?utf-8?B?V1VBRXJHVXZLc0Y2RTFac0tTTlJDQ2hVck5kOUpZV001TExkbzVkbEFPQjly?=
- =?utf-8?B?NkREeGlzNERjbjBnMjJXZk9obmdUUnNTRjNmY3YwcTRvWUxpNDFKVFBjRXF6?=
- =?utf-8?B?OGlmaVNjUlNnMGhqVi9qY2IyZVlHbHpiTU5NTXJnS0V5S3ZWTEJNMTkzaW1h?=
- =?utf-8?B?WlZNbVFRYkpHR3NtNWwzdVUwL2dWNXJwVE9ZQXZORlVwd0lIaWJxQXlxd3Vo?=
- =?utf-8?B?MllGcCtRV2NKS3p5UE9IYTRoamtzQUZZWng2elQzbHpZOWFGOGpOcVl5S3BZ?=
- =?utf-8?B?clE3dVptK25xU3lvdWNxLzhoOHk1M0l0OVN6NTY3cXljUk9XT3dEUHN5b2Js?=
- =?utf-8?B?Tk9FalllUm42L3FwTE94aTlKMWZ5RlVWYjlJRFFSMFMvVlVFN3ZOYU1EeTYr?=
- =?utf-8?B?Z0tQUktYa1RVdlBxL01VUUJJb3pxR0lzZnFKeDlVMEJpYnE0dHcxL3Y2bGUz?=
- =?utf-8?B?NnpXK1l5eEVHVGtkNndhd095VWdqV2RubGNLdGkrUHBVdUtkYVVmOVd3b3VY?=
- =?utf-8?B?UHptZDNaQkNMZGNoeUpEaTU2enBiNk9vOFM0UTNjSXVBRXE3TTN3alBjU2ta?=
- =?utf-8?B?VzRFUFFnWTJQNjlLQ2dXcUFxSitxNlF1QVBXVVFrNHA1dXVDNG9XaGRUMzlV?=
- =?utf-8?B?c0VwZ1RDWXBJYXZ6NGNLRVM2Vy9LK09hVkNoc3lDcGlzcGtjV2MyK0xBL05G?=
- =?utf-8?B?Ri9nRlBNVkFYQXdVZm9QZ2ZVNTVJMGMweUFNbjg0NlhuOWlVQ1BzMjhoNlJD?=
- =?utf-8?B?SHp3S2lVMHN6QUtuNTM3b010M3h3OXV3bzBLMGMzenkwTzY4eFM0UUxFelN4?=
- =?utf-8?B?Q0NWZlFTUlloaDRPTEpyekF0TUxOa0l4cHQzRWhYa2k5Wk1hY0xsK1ZuZkV2?=
- =?utf-8?B?cWtNU0FrMzJOZ1lyaElYcXc2Nk93bE5xbUFXNUIrYTJJVnlnbm1QQ0FTdnJm?=
- =?utf-8?B?aElsTFJVNzNsUmFlbTAwaWtkbE9LZ3dWUmwva3RTc3FVZ2Ftd0ozbHpnWWJ6?=
- =?utf-8?B?dDJWd1FuRVAySWljTzAxNXR5ZTJWNXNFalhKTWlQMWFrcnhYVlZDc2p0SXUw?=
- =?utf-8?B?dHF4VXVOUmlNMzFKbXNTNmNGNEtiSm5RbGorYzljbHluL01vODhvSmh2NUJK?=
- =?utf-8?B?bnd3dFVtSUdaN1h5cld1cE9JZWpOM2J5dHRkZ3YvdVJmK2VyZ2FzVjc2OHp4?=
- =?utf-8?B?NEFRRUtmR1RRdzExdHluY2hKNmludnN1eWxxL0hEWHgxZmhLR1hpeCt6b1lI?=
- =?utf-8?B?TUtUNFB1UEcyd1ZyNDJVdDhFSmUrY2hWcUgvMXI0bjZPbE5uckhGRFlHOERq?=
- =?utf-8?B?UDlDRk1QeEFQWHA0L3N1K3hXMXlxZUx2R1FlKzJPVDEwZ3kxK3VXc1VlcGV2?=
- =?utf-8?B?NGdIUml6dG5iY0M4TGxCZHZTZDFLSEdmZkRmVHczb1BWYWVNSHplamtkdlVG?=
- =?utf-8?B?cXM5Qis5bkM4UFh3Tm5ueDNqM0hWRGlyNG82dFdEK1hyMDdONm1FYlUrZmNo?=
- =?utf-8?Q?fSjjqZTj0jlRKYUNiZsPdbA5D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b3870b26-8c59-4fc8-2ed3-08dd471895f8
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Feb 2025 01:41:48.0185
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PnE1Iwv4x4uViSYrze8s26EwWMrs6+bap7X/ZVnwa4+2/jRO9G8u7kVZ1I3FUbAFnlSNqfdKbhO1oFUcGT+CAQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR12MB8514
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/8] driver core: add a faux bus for use when a simple
+ device/bus is needed
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <linux-kernel@vger.kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Danilo Krummrich <dakr@kernel.org>, Lyude Paul <lyude@redhat.com>
+CC: Alexander Lobakin <aleksander.lobakin@intel.com>,
+        Andy Shevchenko
+	<andriy.shevchenko@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Liam Girdwood
+	<lgirdwood@gmail.com>, Lukas Wunner <lukas@wunner.de>,
+        Mark Brown
+	<broonie@kernel.org>,
+        =?UTF-8?Q?Ma=C3=ADra_Canal?= <mairacanal@riseup.net>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Simona Vetter <simona.vetter@ffwll.ch>, <linux-usb@vger.kernel.org>,
+        <rust-for-linux@vger.kernel.org>
+References: <2025020620-skedaddle-olympics-1735@gregkh>
+ <2025020623-chemo-amends-102a@gregkh>
+Content-Language: en-US
+From: Zijun Hu <quic_zijuhu@quicinc.com>
+In-Reply-To: <2025020623-chemo-amends-102a@gregkh>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 6UecibHba5myjDbItQxb_pf9gOoDQuh7
+X-Proofpoint-GUID: 6UecibHba5myjDbItQxb_pf9gOoDQuh7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-07_01,2025-02-05_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 adultscore=0
+ spamscore=0 mlxlogscore=999 priorityscore=1501 mlxscore=0 suspectscore=0
+ malwarescore=0 impostorscore=0 phishscore=0 lowpriorityscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502070021
 
-Hi Danilo,
+On 2/7/2025 1:38 AM, Greg Kroah-Hartman wrote:
+> +#include "base.h"
+> +
+> +#define MAX_FAUX_NAME_SIZE	256	/* Max size of a faux_device name */
 
-On Thu Feb 6, 2025 at 11:49 PM JST, Danilo Krummrich wrote:
->> > +impl Spec {
->> > +    fn new(bar: &Devres<Bar0>) -> Result<Spec> {
->> > +        let bar =3D bar.try_access().ok_or(ENXIO)?;
->> > +        let boot0 =3D regs::Boot0::read(&bar);
->> > +
->> > +        let Some(chipset) =3D Chipset::from_u32(boot0.chipset()) else=
- {
->> > +            return Err(ENODEV);
->> > +        };
->> > +
->> > +        let Some(arch) =3D Architecture::from_u32(boot0.arch()) else =
-{
->> > +            return Err(ENODEV);
->> > +        };
->>
->> Technically the Architecture is already known if the Chipset has been
->> built successfully, so there should be no need to build it again (and
->> test for a failure that cannot happen at this point).
->>
->> Since the architecture information is already embedded in Chipset, maybe
->> we can have an arch() method there?
->>
->> Something like:
->>
->>     impl Chipset {
->>         pub(crate) fn arch(self) -> Architecture {
->>             match self as u32 & !0xf {
->>                 0x160 =3D> Architecture::Turing,
->>                 0x170 =3D> Architecture::Ampere,
->>                 0x190 =3D> Architecture::Ada,
->>                 _ =3D> unreachable!(),
->>             }
->>         }
->>     }
->
-> I thought about this, which is also why the comment above says: "consider=
- to
-> store within Chipset, if arbitrary_enum_discriminant becomes stable".
->
-> I did not go with what you suggest because it leaves us with either
-> Chipset::arch() returning a Result, which is annoying, or with Chipset::a=
-rch()
-> being able to panic the kernel, which I'd dislike even more.
->
-> There's also a third option, which would be to have some kind of unknown
-> architecture, which we could catch later on, but that's just a worse vari=
-ation
-> of returning a Result.
->
-> Another reason was that I did not want to encode register specific masks =
-into
-> the Chipset type.
+Remove this macro?
 
-Agreed, none of these solutions are completely satisfying. From the
-point that we have successfully built a Chipset, we should be able to
-get its architecture without any runtime error or failure path. So I
-guess this leaves matching all the variants. It's a bit verbose, but
-hopefully later we can gather all the static information about chipsets
-in a single place, and generate these implementations (including a
-Display implementation - ideally the debug one would also print the hex
-representation of the chipset to be more useful for troubleshooting)
-using macros.
+> ++ */
 
-Cheers,
-Alex.
+<snip>
 
+> +struct faux_device *faux_device_create_with_groups(const char *name,
+> +						   const struct faux_device_ops *faux_ops,
+> +						   const struct attribute_group **groups)
+> +{
+> +	struct device *dev;
+> +	struct faux_object *faux_obj;
+> +	struct faux_device *faux_dev;
+> +	int name_size;
+
+Remove @name_size?
+
+> +	int ret;
+> +
+> +	name_size = strlen(name);
+> +	if (name_size > MAX_FAUX_NAME_SIZE)
+> +		return NULL;
+> +
+
+Remove above block related to @name_size
+
+> +	faux_obj = kzalloc(sizeof(*faux_obj) + name_size + 1, GFP_KERNEL);
+
+faux_obj = kzalloc(sizeof(*faux_obj), GFP_KERNEL);
+
+> +	if (!faux_obj)
+> +		return NULL;
+> +
+> +	/* Save off the callbacks so we can use them in the future */
+> +	faux_obj->faux_ops = faux_ops;
+> +
+> +	/* Initialize the device portion and register it with the driver core */
+> +	faux_dev = &faux_obj->faux_dev;
+> +	dev = &faux_dev->dev;
+> +
+> +	device_initialize(dev);
+> +	dev->release = faux_device_release;
+> +	dev->parent = &faux_bus_root;
+> +	dev->bus = &faux_bus_type;
+> +	dev->groups = groups;
+> +	dev_set_name(dev, "%s", name);
+> +
+> +	ret = device_add(dev);
+> +	if (ret) {
+> +		pr_err("%s: device_add for faux device '%s' failed with %d\n",
+> +		       __func__, name, ret);
+> +		put_device(dev);
+> +		return NULL;
+> +	}
+> +
+> +	return faux_dev;
+> +}
+> +EXPORT_SYMBOL_GPL(faux_device_create_with_groups);
+
+<snip>
+
+> ++int __init faux_bus_init(void)
+> +{
+> +	int ret;
+> +
+> +	ret = device_register(&faux_bus_root);
+> +	if (ret) {
+> +		put_device(&faux_bus_root);
+> +		return ret;
+> +	}
+> +
+> +	ret = bus_register(&faux_bus_type);
+> +	if (ret)
+> +		goto error_bus;
+> +
+> +	ret = driver_register(&faux_driver);
+> +	if (ret)
+> +		goto error_driver;
+> +
+> +	return ret;
+
+return 0;
+
+> +
+> +error_driver:
+> +	bus_unregister(&faux_bus_type);
+> +
+> +error_bus:
+> +	device_unregister(&faux_bus_root);
+> +	return ret;
+> +}
+
+<snip>
