@@ -1,65 +1,78 @@
-Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD9CD26D
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Feb 2025 00:23:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.77.79.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00B4B652;
+	Fri,  7 Feb 2025 00:35:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738887817; cv=none; b=K6JTpS0whdCl5VbiqzFhgwADjrjudMnY1lICMSf+9mikyoflVN6b6O3ZxWHJVAI/MZmiAiNeDbYXoUvbfuveE2B1qWPKSG/pl4Xl5EZsgLrzr3oOZtGDuQesnCI787Ko+3bsZhFtf7sEAFVv7dXei8JVO4yPu+2oPfnn6RnyGWo=
+	t=1738888544; cv=none; b=uPzyjJ255M3pk1IiabneYIKd8n1smlV6MSG2Aott56m9ExsVlxCNJp1stuRwAv6L/zI/2Rx++FMhE5vnhVTlhsB/YlhyHYUBsTNHomNBro38HV5sSsKIz0YZTV7JEo97WeJlZySECiGEpc1WwpU82X/TuvKxRW+4mT/TIfrAhJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738887817; c=relaxed/simple;
-	bh=MSBQ8GWnqbmkXkDJQH1fTfd8ljxtUT/P4BqezHpjyeA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vDLL+KM/1xQOKigZ+nLejNTxIO5soopzxp+jgUH46+KCad1PMvW3epsuXxzsB+pmgomO/5CkS8wkHB+DEH2u4rNyYRrGCvzILZZNWZal9Wlu5pbf+X0r+f77mUO4hrl5ugVH2aM+D21t/lTkc71z1POUYULCYUOlm2R/ItBufEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=DAAmmzsU; arc=none smtp.client-ip=51.77.79.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1738888544; c=relaxed/simple;
+	bh=O/WXDPFFzJgiadrkK901IXY0sEUM6zkrUhB7U50NAlc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a9YE58T9nZc2js18AmLbNIIse2kCQNYueeM1ujc/SdNyo1fxx/DZOmeR8IlXPltis7q7Nog+njp9xtnYFnb1RbUlJ6l8pDHIdYbkHhU8uqQHfmN6OLb8K8eBoKZ/BB2FuRcRfxgfGe3vCSU/ob6nOlZ48Znd60cwj9YTF1hzE/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DyXiHJ39; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="DAAmmzsU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1738887805; x=1739147005;
-	bh=+Y17yiJKHXbqIJKjLYffT+nV6HQjYl3k7kgDM8kNNBE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=DAAmmzsUhsgxUQje4qg9DrQub53aodQNzRZXxLSsX8E8J37eTISb97wKLPkWd2qUa
-	 dkjt83wiQEBv+Fd/xOgYy1ZYAfM3x+8MgHrAv72xgD+DLP1hgkkksMcC8+Sfc1Gxld
-	 yWGh9aIXFtAdAUjlnEjt4VS2Vtr4B5IGgsqQ8eKzGE1gSvG3Ds8dFlinAUN3Qn8NtR
-	 AAkS7yaZp70LqCh8DAsL/RchjVV4IQ7/eijVxvC/UPVeZ/FZr4HsDxKmz5he3webkE
-	 MIg8R2VteMaR75Hdmry5dLzOPatOhl6NHAt7V1qlohSxK+D8QO6dJiE+UBLczuxpAe
-	 bXE5opynilM5w==
-Date: Fri, 07 Feb 2025 00:23:21 +0000
-To: Mitchell Levy <levymitchell0@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Andreas Hindborg <a.hindborg@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] rust: lockdep: Remove support for dynamically allocated LockClassKeys
-Message-ID: <a21084cc-84d7-473f-846b-9ca735cd8e34@proton.me>
-In-Reply-To: <20250205-rust-lockdep-v3-1-5313e83a0bef@gmail.com>
-References: <20250205-rust-lockdep-v3-0-5313e83a0bef@gmail.com> <20250205-rust-lockdep-v3-1-5313e83a0bef@gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: c4b077ab609d510ca1842e9ee98f1b607618ee1c
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DyXiHJ39"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A07C4CEDD;
+	Fri,  7 Feb 2025 00:35:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738888543;
+	bh=O/WXDPFFzJgiadrkK901IXY0sEUM6zkrUhB7U50NAlc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DyXiHJ39b2O6msyD+iJ4yLCd7u1gtkgvI1IRJujiQRd2wVAIwnp0VEVpHyXwXP+Gt
+	 cZEA/xupKQlyYpEO/DvN8fQHhhJQ/MIT/CsLoQzC4Ac65HJDvSDcCdha2uvzTHPh5H
+	 wi8j7721R7BHU+HyfNz2DHBuA7PDUzriEk5V8/65YWe7E93PJ8TV/TwoT8QaLLkG09
+	 yPU7cDTcoZFYiwLYVCodRNwoMiRJ3VFZcPL2qrEbtLNVlmyc7OoHN6J2yGufKrMTsV
+	 CUAGJ+1I6m6OrSyG+aFZDJOKv0FCREFOg54n5GlFgTWVQQ3mTb/NNx9POsw1cx7caG
+	 aljVR0Fdnrkyw==
+Date: Fri, 7 Feb 2025 01:35:37 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Lyude Paul <lyude@redhat.com>
+Cc: rust-for-linux@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Xiangfei Ding <dingxiangfei2009@gmail.com>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rust/kernel: Add faux device bindings
+Message-ID: <Z6VVWT_vqb9EGGqv@cassiopeiae>
+References: <20250206210503.102061-2-lyude@redhat.com>
+ <Z6U4APfuIEOgMzmd@cassiopeiae>
+ <13397687a4490bc5410402c9e92a90959756e102.camel@redhat.com>
+ <Z6VQ0D-L4Z0pxxsa@cassiopeiae>
+ <bab25d10d69e1b6b135cee69ee71be270ed92586.camel@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bab25d10d69e1b6b135cee69ee71be270ed92586.camel@redhat.com>
 
-On 05.02.25 20:59, Mitchell Levy wrote:
-> Currently, dynamically allocated LockCLassKeys can be used from the Rust
-> side without having them registered. This is a soundness issue, so
-> remove them.
->=20
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> Link: https://lore.kernel.org/rust-for-linux/20240815074519.2684107-3-nmi=
-@metaspace.dk/
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
-> ---
->  rust/kernel/sync.rs | 16 ++++------------
->  1 file changed, 4 insertions(+), 12 deletions(-)
+On Thu, Feb 06, 2025 at 07:21:24PM -0500, Lyude Paul wrote:
+> But yeah - I mean, faux::Registration::as_ref::<device::Device>() lets you get
+> a device::Device which you can take a reference on using ARef. So you still
+> can take a reference count to the device without us adding support for it
+> explicitly was what I was getting at.
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Yeah, that's true. But it would be nice to have a separate type faux::Device for
+that, just like the C struct faux_device only exists to make this obvious given
+that it's defined as follows.
 
+struct faux_device {
+	struct device dev;
+};
+
+But I don't think we need that right away. Having a faux::Registration with
+as_raw() should be enough for now.
