@@ -1,108 +1,185 @@
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABAB733EC;
-	Fri,  7 Feb 2025 17:24:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D477D2A1D8;
+	Fri,  7 Feb 2025 17:36:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738949075; cv=none; b=eL+fyRoxfLIGKlXGZhHhtO1S2etupFiM0KHb14wYXx3NJGvT3oxGfC2vx7lA6IlUjlXRzkOoDBkmPNlnC++NvNI+zEgRQ7o7WI9RTXXzxtlUOYFDU7kYY9PiXIc/pExN224RDn6vlsJwbP7cYbmt57yySFcnJRiR1yeRZmPPi7s=
+	t=1738949820; cv=none; b=GL+w+0ejQq2MWnA3tR8ZyOlDdbwy+TsOSqS8spbNG07YGvVzcdZecpmpVKqwcgZ3cbfnH+oJqi3cwYi5Me+TDmYOfbB4hhCNZuS5HjRB3bV056x+tNRqY/iZjYpqFGRfUOfPjZetoLqq5851OAvL4AcOVY8D6H4io3pZ3cswBqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738949075; c=relaxed/simple;
-	bh=4FqbyW6T43rM8SaIorh3pfrQSsJBAEX+RkDworH46sI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cOm4C1uENS5poqQib1yjpOdSBk7+GztjnNdaFHk5rixyZM2IWUDbqEkzJnlVlsmeh4OPqrNgPN6XPyy10P0KvpNSzrgoI+o4g44xE2hSVEmJFfLVOPyBo2tQurpAb7lFPBtDpM4Y6m390u+k9Z7cjePMAqNOqFE8kWXpgtTjCLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bQ/yA8QO; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738949820; c=relaxed/simple;
+	bh=fcpm8zPo3t6of/QhUdAYAl07owRMtxY3+gOrEtI6YWw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fY2DDaJolrDbX+2hsjEKbpojvFS4MTp5YXlGSxjSD5RVoj1AqshHJFR4sH3RfJZr+eiE1yBQV/VigPBZPfDb+j+aUGoiqn0cD8TwceGgRFO5QRfA/Zjc1/tWsrvGKNb7QI/pmp04LDlBw5pyIwFz0qmgVf3h39UANpFyw3Kbl9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=exoVW02j; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bQ/yA8QO"
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-3076262bfc6so24573781fa.3;
-        Fri, 07 Feb 2025 09:24:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738949072; x=1739553872; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4FqbyW6T43rM8SaIorh3pfrQSsJBAEX+RkDworH46sI=;
-        b=bQ/yA8QOLn3nyzGankSfNZQy9J2dhBtQZdQnS659+J353l6ptcrEl7Hp7Cfj5ato7P
-         tH/CmW91juk52MBc0NagRgczT4fAfuQu4IR4DIWxmp7ebPEvl7amiY8Wqypc2M2S5nng
-         S4J9UjHKgr2w+Q0wVlWXYs9H9pj61ZL7vMgSKK90iR9sgAhu8UbCyP7Y67bFX2Pf8KPd
-         tRq5R2T23moVi3BIfmwLw8Z/Lqn7MLsioNboV9XVp9VIwQOBjg52b5SHB2PTY3G0igB1
-         NXA9QJ/8AeiENvI5rmUjySRuB0EKv3/G2SBZ9XdiZlACtrM0K8dMKS9TQOjbMtnI8Dg8
-         Skaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738949072; x=1739553872;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4FqbyW6T43rM8SaIorh3pfrQSsJBAEX+RkDworH46sI=;
-        b=F5yHh+5mzugnxmeDn7vPIED797fOYO35phyK0Gu7XPlZCX6GDHJmxiJtfXGRZvdGBT
-         WpIBsW5mZhRwxVMU/uBaa4xjZdfSOe30MjWBxDXyE8RJiselWZgjAs7eWyaaAM8cfLPh
-         xSCX89oT7+TR0c9Nueg7arGY63rs5aJzJchGN0caGDC6MErn4f1iW0Q+LgtSPz+37r4c
-         sW9RoDqWrv4OH+afNINdffpHR5IvrnguI0yons5mU7e03OyMRSWphDlm0E69LKcmd4Kf
-         NQGWekGNF1tQ3MI1hIZVGG5qQ25MQhuPHENFX06En4Rh7SmJVLlaHCkEg7yj7Xt57jUM
-         rpCA==
-X-Forwarded-Encrypted: i=1; AJvYcCU5RogEcXpjRJp9qEGLLNIaBuZB/ZKz7rHlyeR/sazbHXUmWi2vqdmlMGY+AwgZoKPKsia/V+8qMUUCyLyhISo=@vger.kernel.org, AJvYcCWZLkfkBAsA7Nr22jAriKhYfLLxewYGzlHKoJ6a7fnK8VQ496Wlzfaac6PODuxyTb5QMy4SuQcQcPBY2sk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxlblMtuAYAVuyS9GZ/fdByEF2JIHPzQzAyCHt6nUej27qeQKth
-	mUXsCxEZxQkr3yyn2cm/UBR/0b05eH3JDr4y/PmUrw+f+CxNj8H0b0W219n4ymbs0GG7/7ReJZe
-	QJ9bfc5h2xZpwnKB4u+ZJeVzyX/w=
-X-Gm-Gg: ASbGncuSiNaoTIqY9H88ZbymG0SWZAI1PrUkDk8TczqWsomrFTgBDUZaL9mgd0spkDq
-	055fvnUZc7Vd2uyRzbgk0Ku2e56kxb9Bcy3g9jj/AUBZguW8FATtxnTDDoJ6KvKeP3Mj0hC2wRx
-	f4y1wXN05Qv/nzgc5fblrpj7Y4ROTb
-X-Google-Smtp-Source: AGHT+IG9pbT24kZGeeD+jal6OKbhajlzOKUg4scWlT1NB/y1Mro60A9M7f+pnlieWgL50xF9H8QjqJq2pwKffaMJcns=
-X-Received: by 2002:a05:651c:150c:b0:302:4147:178d with SMTP id
- 38308e7fff4ca-307e5a73c15mr17208191fa.28.1738949071450; Fri, 07 Feb 2025
- 09:24:31 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="exoVW02j"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1738949815;
+	bh=fcpm8zPo3t6of/QhUdAYAl07owRMtxY3+gOrEtI6YWw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=exoVW02jeexZbuX6mheZygHMwFFf+/EVtzbAUB74lRSEEJFBEYxPjYKEDzndF5JDY
+	 X1k8Z9+gNFuw6g7TiNF0RjWtkJvyMkB3zBgO+g76aYEECEz7SZt44mSps9XppaAwiO
+	 6Bi/H8XlfziQ64dS7BCZa+q8lM4HICX4/LiLh+68X0ZgGfnAdUiJN+yuo2HGSrGEjK
+	 OV/v/0pnyoEDH+ElvroIgHM3Yc+2/lvucEBAyttMIB4SfeXK4MQ52qAAlElY/b01rz
+	 PqNRMtI/iGM0U5DNp1l9vPGdXiDVa4rl0Bp8MoVIblLppA8pcEb/48bDeuHOE1PeyD
+	 Usc5bfC34ASKQ==
+Received: from localhost (unknown [IPv6:2a01:e0a:2c:6930:5cf4:84a1:2763:fe0d])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 1FDB217E02AF;
+	Fri,  7 Feb 2025 18:36:55 +0100 (CET)
+Date: Fri, 7 Feb 2025 18:36:47 +0100
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Miguel Ojeda
+ <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?=
+ Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Beata
+ Michalska <beata.michalska@arm.com>, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] drm/panthor: Convert IOCTL defines to an enum
+Message-ID: <20250207183647.2bc1e5ed@collabora.com>
+In-Reply-To: <20250204232824.3819437-1-robh@kernel.org>
+References: <20250204232824.3819437-1-robh@kernel.org>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250206-aligned-alloc-v3-1-0cbc0ab0306d@gmail.com>
- <Z6UwCtaO-qVYEN2Z@cassiopeiae> <CAJ-ks9kvrBBLTnEmRPbrkoHYgg6wrXoTVXh8ecqYBSPTfpjx2g@mail.gmail.com>
- <CANiq72=P3O5Q=S4JBVGY0B0t5xSfMYGu3YbhT6SQmbVcAkEA8A@mail.gmail.com>
-In-Reply-To: <CANiq72=P3O5Q=S4JBVGY0B0t5xSfMYGu3YbhT6SQmbVcAkEA8A@mail.gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Fri, 7 Feb 2025 12:23:55 -0500
-X-Gm-Features: AWEUYZlzQeDAaaVqkaMfjkSWv28i9coMAeQO2OkT0X01FaL_a7WEuwb4KcogeJM
-Message-ID: <CAJ-ks9nFo7broCoOSBzzaG1uHEK=Lch8vxhGCvqQj4xwWP0nXQ@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: allocator_test: use `posix_memalign`
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Alejandro Colomar <alx@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Feb 7, 2025 at 7:19=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Fri, Feb 7, 2025 at 12:43=E2=80=AFPM Tamir Duberstein <tamird@gmail.co=
-m> wrote:
-> >
-> > I'm happy to wait for clarification, I'm just not sure whose court the
-> > ball is in.
->
-> Ideally Alejandro would clarify, who I Cc'd in the previous thread (he
-> was not Cc'd here, by the way).
+On Tue,  4 Feb 2025 17:28:24 -0600
+"Rob Herring (Arm)" <robh@kernel.org> wrote:
 
-Sorry about that.
+> Use an enum instead of #defines for panthor IOCTLs. This allows the
+> header to be used with Rust code as bindgen can't handle complex
+> defines.
+> 
+> Cc: Beata Michalska <beata.michalska@arm.com>
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 
-> Anyway, I agree with Danilo that we shouldn't overcomplicate just for
-> this. Using the previous patch, but being clear about that we are
-> using stricter requirements so that it works on macOS too, should be
-> fine I think. But I trust Danilo to decide which approach is best for
-> maintaining this.
->
-> Cheers,
-> Miguel
+Queued to drm-misc-next.
 
-Seems there's consensus on the previous patch. I've reworded it and
-will send it in v4 next week to allow Alejandro some time to weigh in.
+> ---
+>  include/uapi/drm/panthor_drm.h | 86 +++++++++++++++++-----------------
+>  1 file changed, 44 insertions(+), 42 deletions(-)
+> 
+> diff --git a/include/uapi/drm/panthor_drm.h b/include/uapi/drm/panthor_drm.h
+> index b99763cbae48..97e2c4510e69 100644
+> --- a/include/uapi/drm/panthor_drm.h
+> +++ b/include/uapi/drm/panthor_drm.h
+> @@ -129,48 +129,6 @@ enum drm_panthor_ioctl_id {
+>  	DRM_PANTHOR_TILER_HEAP_DESTROY,
+>  };
+>  
+> -/**
+> - * DRM_IOCTL_PANTHOR() - Build a Panthor IOCTL number
+> - * @__access: Access type. Must be R, W or RW.
+> - * @__id: One of the DRM_PANTHOR_xxx id.
+> - * @__type: Suffix of the type being passed to the IOCTL.
+> - *
+> - * Don't use this macro directly, use the DRM_IOCTL_PANTHOR_xxx
+> - * values instead.
+> - *
+> - * Return: An IOCTL number to be passed to ioctl() from userspace.
+> - */
+> -#define DRM_IOCTL_PANTHOR(__access, __id, __type) \
+> -	DRM_IO ## __access(DRM_COMMAND_BASE + DRM_PANTHOR_ ## __id, \
+> -			   struct drm_panthor_ ## __type)
+> -
+> -#define DRM_IOCTL_PANTHOR_DEV_QUERY \
+> -	DRM_IOCTL_PANTHOR(WR, DEV_QUERY, dev_query)
+> -#define DRM_IOCTL_PANTHOR_VM_CREATE \
+> -	DRM_IOCTL_PANTHOR(WR, VM_CREATE, vm_create)
+> -#define DRM_IOCTL_PANTHOR_VM_DESTROY \
+> -	DRM_IOCTL_PANTHOR(WR, VM_DESTROY, vm_destroy)
+> -#define DRM_IOCTL_PANTHOR_VM_BIND \
+> -	DRM_IOCTL_PANTHOR(WR, VM_BIND, vm_bind)
+> -#define DRM_IOCTL_PANTHOR_VM_GET_STATE \
+> -	DRM_IOCTL_PANTHOR(WR, VM_GET_STATE, vm_get_state)
+> -#define DRM_IOCTL_PANTHOR_BO_CREATE \
+> -	DRM_IOCTL_PANTHOR(WR, BO_CREATE, bo_create)
+> -#define DRM_IOCTL_PANTHOR_BO_MMAP_OFFSET \
+> -	DRM_IOCTL_PANTHOR(WR, BO_MMAP_OFFSET, bo_mmap_offset)
+> -#define DRM_IOCTL_PANTHOR_GROUP_CREATE \
+> -	DRM_IOCTL_PANTHOR(WR, GROUP_CREATE, group_create)
+> -#define DRM_IOCTL_PANTHOR_GROUP_DESTROY \
+> -	DRM_IOCTL_PANTHOR(WR, GROUP_DESTROY, group_destroy)
+> -#define DRM_IOCTL_PANTHOR_GROUP_SUBMIT \
+> -	DRM_IOCTL_PANTHOR(WR, GROUP_SUBMIT, group_submit)
+> -#define DRM_IOCTL_PANTHOR_GROUP_GET_STATE \
+> -	DRM_IOCTL_PANTHOR(WR, GROUP_GET_STATE, group_get_state)
+> -#define DRM_IOCTL_PANTHOR_TILER_HEAP_CREATE \
+> -	DRM_IOCTL_PANTHOR(WR, TILER_HEAP_CREATE, tiler_heap_create)
+> -#define DRM_IOCTL_PANTHOR_TILER_HEAP_DESTROY \
+> -	DRM_IOCTL_PANTHOR(WR, TILER_HEAP_DESTROY, tiler_heap_destroy)
+> -
+>  /**
+>   * DOC: IOCTL arguments
+>   */
+> @@ -1019,6 +977,50 @@ struct drm_panthor_tiler_heap_destroy {
+>  	__u32 pad;
+>  };
+>  
+> +/**
+> + * DRM_IOCTL_PANTHOR() - Build a Panthor IOCTL number
+> + * @__access: Access type. Must be R, W or RW.
+> + * @__id: One of the DRM_PANTHOR_xxx id.
+> + * @__type: Suffix of the type being passed to the IOCTL.
+> + *
+> + * Don't use this macro directly, use the DRM_IOCTL_PANTHOR_xxx
+> + * values instead.
+> + *
+> + * Return: An IOCTL number to be passed to ioctl() from userspace.
+> + */
+> +#define DRM_IOCTL_PANTHOR(__access, __id, __type) \
+> +	DRM_IO ## __access(DRM_COMMAND_BASE + DRM_PANTHOR_ ## __id, \
+> +			   struct drm_panthor_ ## __type)
+> +
+> +enum {
+> +	DRM_IOCTL_PANTHOR_DEV_QUERY =
+> +		DRM_IOCTL_PANTHOR(WR, DEV_QUERY, dev_query),
+> +	DRM_IOCTL_PANTHOR_VM_CREATE =
+> +		DRM_IOCTL_PANTHOR(WR, VM_CREATE, vm_create),
+> +	DRM_IOCTL_PANTHOR_VM_DESTROY =
+> +		DRM_IOCTL_PANTHOR(WR, VM_DESTROY, vm_destroy),
+> +	DRM_IOCTL_PANTHOR_VM_BIND =
+> +		DRM_IOCTL_PANTHOR(WR, VM_BIND, vm_bind),
+> +	DRM_IOCTL_PANTHOR_VM_GET_STATE =
+> +		DRM_IOCTL_PANTHOR(WR, VM_GET_STATE, vm_get_state),
+> +	DRM_IOCTL_PANTHOR_BO_CREATE =
+> +		DRM_IOCTL_PANTHOR(WR, BO_CREATE, bo_create),
+> +	DRM_IOCTL_PANTHOR_BO_MMAP_OFFSET =
+> +		DRM_IOCTL_PANTHOR(WR, BO_MMAP_OFFSET, bo_mmap_offset),
+> +	DRM_IOCTL_PANTHOR_GROUP_CREATE =
+> +		DRM_IOCTL_PANTHOR(WR, GROUP_CREATE, group_create),
+> +	DRM_IOCTL_PANTHOR_GROUP_DESTROY =
+> +		DRM_IOCTL_PANTHOR(WR, GROUP_DESTROY, group_destroy),
+> +	DRM_IOCTL_PANTHOR_GROUP_SUBMIT =
+> +		DRM_IOCTL_PANTHOR(WR, GROUP_SUBMIT, group_submit),
+> +	DRM_IOCTL_PANTHOR_GROUP_GET_STATE =
+> +		DRM_IOCTL_PANTHOR(WR, GROUP_GET_STATE, group_get_state),
+> +	DRM_IOCTL_PANTHOR_TILER_HEAP_CREATE =
+> +		DRM_IOCTL_PANTHOR(WR, TILER_HEAP_CREATE, tiler_heap_create),
+> +	DRM_IOCTL_PANTHOR_TILER_HEAP_DESTROY =
+> +		DRM_IOCTL_PANTHOR(WR, TILER_HEAP_DESTROY, tiler_heap_destroy),
+> +};
+> +
+>  #if defined(__cplusplus)
+>  }
+>  #endif
 
-Thanks.
-Tamir
