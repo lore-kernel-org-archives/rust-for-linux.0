@@ -1,232 +1,357 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4787019CCEC
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Feb 2025 19:53:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A53C1B4235
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Feb 2025 21:54:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738958020; cv=none; b=GzAE7VUdWNs5qhEMBym/Hvdl/bN2wgiQFlqd/n8sVpLKt6GFDbsXoAYlu4g9MxRCuyqZHbbFooLLRBg04ecHBg7tZk3nmk8jltyXDhhw75w/kpEOOvBmXGPdbJGr9cD7YXURqXOuDgQ68BXl16jZQhxPNidA6zYrYBol2GiEoKk=
+	t=1738965242; cv=none; b=QkjMrSdV4ObNzcpUCJeHVJWMLXGynUQv3LQ7fTYRxfFtxDfOlJVP0UPOvS6CtvgxH5y1Lo5kASyewGkXzIpJMdIuycFV71PmZlQTFWpyi7uoau0FTSeMuoIVd0XYjJLpXJu2eBpe4doeazb5++577ttgLHtnTrOIv59bUKN+aOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738958020; c=relaxed/simple;
-	bh=yXZiKi5E5en5DW948jJuRz2UwobMK6wppmDarWrXWhQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=DkcwmNwV3SFBHmZ6etzpTFx+EQgBVF86utY82VLehkPA+Yw1kPRuCUt01upJs17UqleYpewASDwZHTy/Sb0EBc04ekwSWrGF5bUn2Ndi7byZRBtqT6F6LNgueD/c6KKE8Wztwc47GZG2FplX6IIuE/o1A9UW9oscEUkY7qXYdaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=LwyzTy1d; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
+	s=arc-20240116; t=1738965242; c=relaxed/simple;
+	bh=VeekEwj96xA0Hs59vDAXliI/sgxxJjxZsx/I7/fJZY4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pwywNUW0SNhqILJ+dqhwQ0yKCxvsTR7y99NArUqNSO3cGi/q2cFLnIHEbm6TFNNya1j1rWXMH+Y3LXJeT9/886iUZuMMEbAV76LE6FCp49VuqrdwhE/lWedpV08ZzyUHWZRWg3sliqF+dpW25GlkeYjomKhpWDfg447SsIEsIFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Xl2Calze; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="LwyzTy1d"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 8FC37240101
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Feb 2025 20:53:35 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1738958015; bh=yXZiKi5E5en5DW948jJuRz2UwobMK6wppmDarWrXWhQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
-	 From;
-	b=LwyzTy1dc52bMMUq0rM7/CPM7urNkbk/nwDEWWTcVX/nefWpnoF6hQZfoMgFud7TA
-	 1ki9yAHY8U78ibOkaUoK3BVRGecPvwiDTtT8JEiT1C6LirZsXLu83qZ+mgzF4LvBp7
-	 Ztl1Fl8M06OTPVrdcm95aKU8lyu0H3AIFwYjFcMr1pu0p7hmFP7sC3LsyqipuZI0nh
-	 b7zQl9QaPFbga7Rx49rYmtx/luxG5YqsHL7a3X6B+dSaOrf0aRD7eXPb7FCGcCzusb
-	 qNiTmXYRl8J4uh1CyHORSoQjTCffB212WoUakWBHZnIlwFcncR4N6e8SrJggSu/S31
-	 mYE+rL7Hlbb7w==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4YqPmD5nHvz6tvt;
-	Fri,  7 Feb 2025 20:53:32 +0100 (CET)
-From: Charalampos Mitrodimas <charmitro@posteo.net>
-To: Alban Kurti <kurti@invicto.ai>
-Cc: Andy Whitcroft <apw@canonical.com>,  Joe Perches <joe@perches.com>,
-  Dwaipayan Ray <dwaipayanray1@gmail.com>,  Lukas Bulwahn
- <lukas.bulwahn@gmail.com>,  Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor
- <alex.gaynor@gmail.com>,  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  Benno
- Lossin <benno.lossin@proton.me>,  Andreas Hindborg
- <a.hindborg@kernel.org>,  Alice Ryhl <aliceryhl@google.com>,  Trevor Gross
- <tmgross@umich.edu>,  linux-kernel@vger.kernel.org,
-  rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v4] checkpatch: add warning for pr_* and dev_* macros
- without a trailing newline
-In-Reply-To: <20250207-checkpatch-newline2-v4-1-26d8e80d0059@invicto.ai>
-	(Alban Kurti's message of "Fri, 07 Feb 2025 18:39:06 +0000 (UTC)")
-References: <20250207-checkpatch-newline2-v4-1-26d8e80d0059@invicto.ai>
-Date: Fri, 07 Feb 2025 19:53:31 +0000
-Message-ID: <m2wme1pm4k.fsf@posteo.net>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Xl2Calze"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2fa2c456816so1500272a91.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 07 Feb 2025 13:54:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1738965240; x=1739570040; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=t8JPOvwUlSYA4FPC7cGEtXUo7l2ZSnPxDKa2YpPUTMU=;
+        b=Xl2CalzeL6/f6n7YLnqbMGsLIL8pJaD+jlhO90+rJBDN8t4pE/i9WiOp+LOTm2JDyv
+         i7i6RoTvUjMBHcxJ4k8SbdRrxw6sAqiOa+TL84gQ38v3MEVe7PmMiRtnOYqLAtvLcZjh
+         YwCUmQ0/CFqjre/X1IJDWKs/DJqxsc9HNvfMfhxZ4ih+tzv+QyQ+udEy8kkANExAQt8L
+         6ZpkyJLb8adrtROtZe5GtKPi1154eN7sFAIUXvk7OyINxkDT6aHRN8pMHdQDCsky9PPX
+         yALcoJv8JmLFfot9AYH/SyWiXnBndKXgEglhOnkqMmhOeaLKjNaqRWlT1AtaSkx0F7C5
+         B/fA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738965240; x=1739570040;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=t8JPOvwUlSYA4FPC7cGEtXUo7l2ZSnPxDKa2YpPUTMU=;
+        b=PZBPqcg7x5k/1vIbBESVZTAcxsK8PaReopWzQChBNwvyhhASD5cNu6Xa1wuADuTvUA
+         dLKV3g2hWT3R2ZHFq8Xk2JMs07wukNfVqgpekvXvbV8Rf4Gqt7IdDqgbLEoIXOSdwBUi
+         DIPa9F6u7PQHR3JvM9a0q9tWdmBE+oH31wesVvyrLNOLIYT0pTWTmcbbK8rboLp4yGDk
+         fYK3VbE/VD+NoKtf4isok2skbIUHXz6asvA/Hn2A9KgfuUC+k8/Pu4L4gOZb1gBT8ZmY
+         hkDce7FWA4k3rZwhazDlky8rol7r9vp0tGc7LzPoBRxAxrvm3XkMcNDrcFG9irVUBggu
+         Y/rQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWAwHjJ7i/GIEZraokiTh3a91OYxsRHlPrdfWUUtgG4ZyBWxo6QDuBTipNUqMZf5agFcIVijuF7jR9xLVZ60A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVXDqnvpPfyJ/+TiAF9wE/mN3d/TP3S3xlTV1CiacMgQSrt6c8
+	HJTz8Bw4tw7xKnvGtodBcX4rjw7Wu4F4frCMSlov++giCezguzJQ5VuZou9x7DFmZ3nBf/UMFkN
+	vswPwDoRwQH5xhJPevbgpJNpXqmr4BqlvWIbj
+X-Gm-Gg: ASbGncs9iyJhYKgmj1bP2sYvgnAZpe8WfDDQPp3C3pVePUpT9TJPnC7ZmoRZkZIDdcQ
+	V9JMuDprwDN8jPXcS1dZkMqAkWWWWzQaE/JNHhFCrNs99W/+mMSx/pPYINWrjbbowBHH9T7xi6K
+	FE2PZdwuwDcIFil0p+Abrnx+fd6Q==
+X-Google-Smtp-Source: AGHT+IEQ3N7LGa37pQ7nMqVFq50zy1Va8WdT7BIlXYAY8WGCw739VQbeOv3w5zOeAAO8ewJxD5xMGSWUwK6f9W60e2w=
+X-Received: by 2002:a17:90a:ec85:b0:2f1:3355:4a8f with SMTP id
+ 98e67ed59e1d1-2fa23f423d9mr6772607a91.4.1738965239665; Fri, 07 Feb 2025
+ 13:53:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20250202192412.340848-1-sergio.collado@gmail.com>
+In-Reply-To: <20250202192412.340848-1-sergio.collado@gmail.com>
+From: Rae Moar <rmoar@google.com>
+Date: Fri, 7 Feb 2025 16:53:47 -0500
+X-Gm-Features: AWEUYZl7gVorsscNmDMsy6aoUiWPtEvqMb3L6OXPtWQGexYQPwOu3GivqRAJtAc
+Message-ID: <CA+GJov6+TPSm6ns8+MrSytWF5qsS1cm=KFJrUivPtzc5QvgARQ@mail.gmail.com>
+Subject: Re: [PATCH v8] Kunit to check the longest symbol length
+To: =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
+Cc: David Gow <davidgow@google.com>, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, David Rheinsberg <david@readahead.eu>, 
+	rust-for-linux@vger.kernel.org, x86@kernel.org, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Shuah Khan <skhan@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Alban Kurti <kurti@invicto.ai> writes:
+On Sun, Feb 2, 2025 at 2:24=E2=80=AFPM Sergio Gonz=C3=A1lez Collado
+<sergio.collado@gmail.com> wrote:
+>
+> The longest length of a symbol (KSYM_NAME_LEN) was increased to 512
+> in the reference [1]. This patch adds kunit test suite to check the longe=
+st
+> symbol length. These tests verify that the longest symbol length defined
+> is supported.
+>
+> This test can also help other efforts for longer symbol length,
+> like [2].
+>
+> The test suite defines one symbol with the longest possible length.
+>
+> The first test verify that functions with names of the created
+> symbol, can be called or not.
+>
+> The second test, verify that the symbols are created (or
+> not) in the kernel symbol table.
+>
+> [1] https://lore.kernel.org/lkml/20220802015052.10452-6-ojeda@kernel.org/
+> [2] https://lore.kernel.org/lkml/20240605032120.3179157-1-song@kernel.org=
+/
+>
+> Tested-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+> Reviewed-by: Rae Moar <rmoar@google.com>
+> Signed-off-by: Sergio Gonz=C3=A1lez Collado <sergio.collado@gmail.com>
+> Link: https://github.com/Rust-for-Linux/linux/issues/504
 
-> Add a new check in scripts/checkpatch.pl to detect usage of pr_(level)
-> and dev_(level) macros (for both C and Rust) when the string literal
-> does not end with '\n'. Missing trailing newlines can lead to incomplete
-> log lines that do not appear properly in dmesg or in console output.
-> To show an example of this working after applying the patch we can run
-> the script on the commit that likely motivated this need/issue:
->   ./scripts/checkpatch.pl --strict -g "f431c5c581fa1"
->
-> Also, the patch is able to handle correctly if there is a printing call
-> without a newline which then has a newline printed via pr_cont for
-> both Rust and C alike. If there is no newline printed and the patch
-> ends or there is another pr_* call before a newline with pr_cont is
-> printed it will show a warning. Not implemented for dev_cont because it
-> is not clear to me if that is used at all.
->
-> One false warning that will be generated due to this change is in case
-> we have a patch that modifies a `pr_* call without a newline` which has a
-> pr_cont with a newline following it. In this case there will be a
-> warning but because the patch does not include the following pr_cont it
-> will warn there is nothing creating a newline. I have modified the
-> warning to be softer due to this known problem.
->
-> I have tested with comments, whitespace, differen orders of pr_* calls
-> and pr_cont and the only case that I suspect to be a problem is the one
-> outlined above.
+Hello!
 
-This is now a more significant change, I belive we should document it
-this under Documentation/dev-tools/checkpatch.rst. Where you can also
-provide examples/use-cases.
+Thanks for fixing the typo and this new version! This patch still does
+not apply cleanly in the Makefile for me. Have you rebased it on the
+kselftest/kunit branch? I also have a few more questions that I just
+noticed.
 
->
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1140
-> Signed-off-by: Alban Kurti <kurti@invicto.ai>
+Thanks!
+-Rae
+
 > ---
-> Changes since v3:
-> - Just reordered the checkpatch.pl code original addition as it did not work properly
-> - Link to v3: https://lore.kernel.org/all/20250207-checkpatch-newline-v3-1-20d8774f16ea@invicto.ai/
+> V7 -> V8: typo fixed & rebased
 > ---
->  scripts/checkpatch.pl | 96 +++++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 96 insertions(+)
->
-> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-> index 9eed3683ad76caffbbb2418e5dbea7551d374406..0e7684d2f0cf30575640d7c4da9e51a13d91463b 100755
-> --- a/scripts/checkpatch.pl
-> +++ b/scripts/checkpatch.pl
-> @@ -77,6 +77,8 @@ my ${CONFIG_} = "CONFIG_";
->  
->  my %maybe_linker_symbol; # for externs in c exceptions, when seen in *vmlinux.lds.h
->  
-> +my $pending_log = undef;
-> +
->  sub help {
->  	my ($exitcode) = @_;
->  
-> @@ -3888,6 +3890,91 @@ sub process {
->  			}
->  		}
->  
-> +# check for pr_* and dev_* logs without a newline for C and Rust files to avoid missing log messages
-> +  my $pr_cont_pattern = qr{
-> +      \b
-> +      pr_cont!?
-> +      \s*
-> +      \(
-> +      \s*
-> +      "([^"]*)"
-> +      [^)]*
-> +      \)
-> +  }x;
-> +  my $log_macro_pattern = qr{
-> +      \b
-> +      (
-> +          pr_(?:emerg|alert|crit|err|warn|notice|info|debug)
-> +        | dev_(?:emerg|alert|crit|err|warn|notice|info|dbg)
-> +      )
-> +      (!?)
-> +      \s*
-> +      \(
-> +      \s*
-> +      "([^"]*)"
-> +  }x;
-> +
-> +  if ($realfile =~ /\.(?:c|h|rs)$/) {
-> +      if ($rawline =~ /^\+/) {
-> +          my $cleanline = $rawline;
-> +          $cleanline =~ s/^[+\s]+//;
-> +          $cleanline =~ s/\r?$//;
-> +          $cleanline =~ s{/\*.*?\*/}{}g;
-> +          $cleanline =~ s{//.*}{}g;
-> +
-> +          if ($pending_log) {
-> +              if ($cleanline =~ /$pr_cont_pattern/) {
-> +                  my $cont_string_arg = $1;
-> +                  if ($cont_string_arg =~ /\\n$/) {
-> +                      $pending_log = undef;
-> +                  }
-> +              } elsif ($cleanline =~ /$log_macro_pattern/) {
-> +                  WARN($pending_log->{lang} . "_LOG_NO_NEWLINE",
-> +                       "Possible usage of $pending_log->{macro_call} without a trailing newline.\n" .
-> +                       $pending_log->{herecurr});
-> +
-> +                  $pending_log = undef;
-> +
-> +                  my $macro_call  = $1;
-> +                  my $maybe_excl  = $2;
-> +                  my $string_arg  = $3;
-> +                  $string_arg =~ s/\s+$//;
-> +
-> +                  if ($realfile =~ /\.rs$/ && $maybe_excl ne '!') {
-> +                      return;
-> +                  }
-> +
-> +                  if ($string_arg !~ /\\n$/ && $string_arg !~ /\n$/) {
-> +                      $pending_log = {
-> +                          macro_call => $macro_call,
-> +                          herecurr => $herecurr,
-> +                          lang => ($realfile =~ /\.rs$/) ? "Rust" : "C",
-> +                      };
-> +                  }
-> +              }
-> +          } else {
-> +              if ($cleanline =~ /$log_macro_pattern/) {
-> +                  my $macro_call = $1;
-> +                  my $maybe_excl = $2;
-> +                  my $string_arg = $3;
-> +                  $string_arg =~ s/\s+$//;
-> +
-> +                  if ($realfile =~ /\.rs$/ && $maybe_excl ne '!') {
-> +                      return;
-> +                  }
-> +
-> +                  if ($string_arg !~ /\\n$/ && $string_arg !~ /\n$/) {
-> +                      $pending_log = {
-> +                          macro_call => $macro_call,
-> +                          herecurr   => $herecurr,
-> +                          lang       => ($realfile =~ /\.rs$/) ? "Rust" : "C",
-> +                      };
-> +                  }
-> +              }
-> +          }
-> +      }
-> +  }
-> +
->  # check for .L prefix local symbols in .S files
->  		if ($realfile =~ /\.S$/ &&
->  		    $line =~ /^\+\s*(?:[A-Z]+_)?SYM_[A-Z]+_(?:START|END)(?:_[A-Z_]+)?\s*\(\s*\.L/) {
-> @@ -7678,6 +7765,15 @@ sub process {
->  		}
->  	}
->  
-> +# pending log means a pr_* without an ending newline has not
-> +# been followed by a pr_cont call with a newline at the end
-> +  if ($pending_log) {
-> +    WARN($pending_log->{lang} . "_LOG_NO_NEWLINE",
-> +      "Usage of $pending_log->{macro_call} without a trailing newline.\n" .
-> +      $pending_log->{herecurr});
-> +    $pending_log = undef;
-> +  }
-> +
->  	# If we have no input at all, then there is nothing to report on
->  	# so just keep quiet.
->  	if ($#rawlines == -1) {
->
+> V6 -> V7: rebased
 > ---
-> base-commit: ceff0757f5dafb5be5205988171809c877b1d3e3
-> change-id: 20250207-checkpatch-newline2-f60275e30eb6
+> V5 -> V6: remove tests with symbols of length KSYM_NAME_LEN+1
+> ---
+> V4 -> V5: fixed typo, added improved description
+> ---
+> V3 -> V4: add x86 mantainers, add new reference.
+> ---
+> V2 -> V3: updated base and added MODULE_DESCRIPTION() and MODULE_AUTHOR()
+> ---
+> V1 -> V2: corrected CI tests. Added fix proposed at [3]
 >
-> Best regards,
+> [3] https://lore.kernel.org/lkml/Y9ES4UKl%2F+DtvAVS@gmail.com/T/#m3ef0e12=
+bb834d01ed1ebdcae12ef5f2add342077
+>
+> The test execution should result in something like:
+> ```
+> [20:04:35] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D longest-symbol (=
+4 subtests) =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> [20:04:35] [PASSED] test_longest_symbol
+> [20:04:35] [PASSED] test_longest_symbol_kallsyms
+> [20:04:35] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D [PASSED] l=
+ongest-symbol =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> [20:04:35] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> [20:04:35] Testing complete. Ran 4 tests: passed: 4
+> ```
+> ---
+>  arch/x86/tools/insn_decoder_test.c |  3 +-
+>  lib/Kconfig.debug                  |  9 ++++
+>  lib/Makefile                       |  2 +
+>  lib/longest_symbol_kunit.c         | 84 ++++++++++++++++++++++++++++++
+>  4 files changed, 97 insertions(+), 1 deletion(-)
+>  create mode 100644 lib/longest_symbol_kunit.c
+>
+> diff --git a/arch/x86/tools/insn_decoder_test.c b/arch/x86/tools/insn_dec=
+oder_test.c
+> index 472540aeabc2..6c2986d2ad11 100644
+> --- a/arch/x86/tools/insn_decoder_test.c
+> +++ b/arch/x86/tools/insn_decoder_test.c
+> @@ -10,6 +10,7 @@
+>  #include <assert.h>
+>  #include <unistd.h>
+>  #include <stdarg.h>
+> +#include <linux/kallsyms.h>
+>
+>  #define unlikely(cond) (cond)
+>
+> @@ -106,7 +107,7 @@ static void parse_args(int argc, char **argv)
+>         }
+>  }
+>
+> -#define BUFSIZE 256
+> +#define BUFSIZE (256 + KSYM_NAME_LEN)
+
+I'm not too familiar with this test. I believe this would potentially
+make a symbol with a length that exceeds the KSYM_NAME_LEN. What is
+the intention for this line?
+
+>
+>  int main(int argc, char **argv)
+>  {
+> diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+> index 1af972a92d06..62d43aa9e8f0 100644
+> --- a/lib/Kconfig.debug
+> +++ b/lib/Kconfig.debug
+> @@ -2838,6 +2838,15 @@ config FORTIFY_KUNIT_TEST
+>           by the str*() and mem*() family of functions. For testing runti=
+me
+>           traps of FORTIFY_SOURCE, see LKDTM's "FORTIFY_*" tests.
+>
+> +config LONGEST_SYM_KUNIT_TEST
+> +       tristate "Test the longest symbol possible" if !KUNIT_ALL_TESTS
+> +       depends on KUNIT && KPROBES
+> +       default KUNIT_ALL_TESTS
+> +       help
+> +         Tests the longest symbol possible
+> +
+> +         If unsure, say N.
+> +
+>  config HW_BREAKPOINT_KUNIT_TEST
+>         bool "Test hw_breakpoint constraints accounting" if !KUNIT_ALL_TE=
+STS
+>         depends on HAVE_HW_BREAKPOINT
+> diff --git a/lib/Makefile b/lib/Makefile
+> index d5cfc7afbbb8..e8fec9defec2 100644
+> --- a/lib/Makefile
+> +++ b/lib/Makefile
+> @@ -393,6 +393,8 @@ obj-$(CONFIG_FORTIFY_KUNIT_TEST) +=3D fortify_kunit.o
+>  obj-$(CONFIG_CRC_KUNIT_TEST) +=3D crc_kunit.o
+>  obj-$(CONFIG_SIPHASH_KUNIT_TEST) +=3D siphash_kunit.o
+>  obj-$(CONFIG_USERCOPY_KUNIT_TEST) +=3D usercopy_kunit.o
+> +obj-$(CONFIG_LONGEST_SYM_KUNIT_TEST) +=3D longest_symbol_kunit.o
+> +CFLAGS_longest_symbol_kunit.o +=3D $(call cc-disable-warning, missing-pr=
+ototypes)
+>
+>  obj-$(CONFIG_GENERIC_LIB_DEVMEM_IS_ALLOWED) +=3D devmem_is_allowed.o
+
+These are the lines that are causing the patch to not apply cleanly.
+The change list that applies cleanly for me is:
+
+ obj-$(CONFIG_FORTIFY_KUNIT_TEST) +=3D fortify_kunit.o
+ obj-$(CONFIG_SIPHASH_KUNIT_TEST) +=3D siphash_kunit.o
+ obj-$(CONFIG_USERCOPY_KUNIT_TEST) +=3D usercopy_kunit.o
+ obj-$(CONFIG_CRC16_KUNIT_TEST) +=3D crc16_kunit.o
++obj-$(CONFIG_LONGEST_SYM_KUNIT_TEST) +=3D longest_symbol_kunit.o
++CFLAGS_longest_symbol_kunit.o +=3D $(call cc-disable-warning, missing-prot=
+otypes)
+
+ obj-$(CONFIG_GENERIC_LIB_DEVMEM_IS_ALLOWED) +=3D devmem_is_allowed.o
+
+>
+> diff --git a/lib/longest_symbol_kunit.c b/lib/longest_symbol_kunit.c
+> new file mode 100644
+> index 000000000000..2a2dd1151097
+> --- /dev/null
+> +++ b/lib/longest_symbol_kunit.c
+> @@ -0,0 +1,84 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Test the longest symbol length. Execute with:
+> + *  ./tools/testing/kunit/kunit.py run longest-symbol
+> + *  --arch=3Dx86_64 --kconfig_add CONFIG_KPROBES=3Dy --kconfig_add CONFI=
+G_MODULES=3Dy
+> + *  --kconfig_add CONFIG_RETPOLINE=3Dn --kconfig_add CONFIG_CFI_CLANG=3D=
+n
+> + *  --kconfig_add CONFIG_MITIGATION_RETPOLINE=3Dn
+> + */
+> +
+> +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+
+I don't believe you use this macro. Could probably be deleted.
+
+> +
+> +#include <kunit/test.h>
+> +#include <linux/stringify.h>
+> +#include <linux/kprobes.h>
+> +#include <linux/kallsyms.h>
+> +
+> +#define DI(name) s##name##name
+> +#define DDI(name) DI(n##name##name)
+> +#define DDDI(name) DDI(n##name##name)
+> +#define DDDDI(name) DDDI(n##name##name)
+> +#define DDDDDI(name) DDDDI(n##name##name)
+> +
+> +#define PLUS1(name) __PASTE(name, e)
+
+I don't think you use this anymore with the new changes. Can probably
+be deleted.
+
+> +
+> +/*Generate a symbol whose name length is 511 */
+> +#define LONGEST_SYM_NAME  DDDDDI(g1h2i3j4k5l6m7n)
+> +
+> +#define RETURN_LONGEST_SYM 0xAAAAA
+> +
+> +noinline int LONGEST_SYM_NAME(void);
+> +noinline int LONGEST_SYM_NAME(void)
+> +{
+> +       return RETURN_LONGEST_SYM;
+> +}
+> +
+> +_Static_assert(sizeof(__stringify(LONGEST_SYM_NAME)) =3D=3D KSYM_NAME_LE=
+N,
+> +"Incorrect symbol length found. Expected KSYM_NAME_LEN: "
+> +__stringify(KSYM_NAME) ", but found: "
+> +__stringify(sizeof(LONGEST_SYM_NAME)));
+
+Should this error return __stringify(KSYM_NAME_LEN) instead of
+__stringify(KSYM_NAME) to give the maximum length?
+
+Also, I get an error because the length of LONGEST_SYM_NAME is 512.
+The error is produced by this code:
+https://elixir.bootlin.com/linux/v6.13.1/source/scripts/kallsyms.c#L152
+and alerts if the symbol length is >=3D to KSYM_NAME_LEN. That is fine
+as long as that is the intention of this test to produce a warning. Or
+should this warning change to be "> KSYM_NAME_LEN" if usage of symbols
+that are the maximum length is allowed?
+
+> +
+> +static void test_longest_symbol(struct kunit *test)
+> +{
+> +       KUNIT_EXPECT_EQ(test, RETURN_LONGEST_SYM, LONGEST_SYM_NAME());
+> +};
+> +
+> +static void test_longest_symbol_kallsyms(struct kunit *test)
+> +{
+> +       unsigned long (*kallsyms_lookup_name)(const char *name);
+> +       static int (*longest_sym)(void);
+> +
+> +       struct kprobe kp =3D {
+> +               .symbol_name =3D "kallsyms_lookup_name",
+> +       };
+> +
+> +       if (register_kprobe(&kp) < 0) {
+> +               pr_info("%s: kprobe not registered\n", __func__);
+> +               KUNIT_FAIL(test, "test_longest_symbol kallsyms: kprobe no=
+t registered\n");
+> +               return;
+> +       }
+> +
+> +       kunit_warn(test, "test_longest_symbol kallsyms: kprobe registered=
+\n");
+> +       kallsyms_lookup_name =3D (unsigned long (*)(const char *name))kp.=
+addr;
+> +       unregister_kprobe(&kp);
+> +
+> +       longest_sym =3D
+> +               (void *) kallsyms_lookup_name(__stringify(LONGEST_SYM_NAM=
+E));
+> +       KUNIT_EXPECT_EQ(test, RETURN_LONGEST_SYM, longest_sym());
+> +};
+> +
+> +static struct kunit_case longest_symbol_test_cases[] =3D {
+> +       KUNIT_CASE(test_longest_symbol),
+> +       KUNIT_CASE(test_longest_symbol_kallsyms),
+> +       {}
+> +};
+> +
+> +static struct kunit_suite longest_symbol_test_suite =3D {
+> +       .name =3D "longest-symbol",
+> +       .test_cases =3D longest_symbol_test_cases,
+> +};
+> +kunit_test_suite(longest_symbol_test_suite);
+> +
+> +MODULE_LICENSE("GPL");
+> +MODULE_DESCRIPTION("Test the longest symbol length");
+> +MODULE_AUTHOR("Sergio Gonz=C3=A1lez Collado");
+>
+> base-commit: a86bf2283d2c9769205407e2b54777c03d012939
+> --
+> 2.39.2
+>
