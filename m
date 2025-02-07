@@ -1,191 +1,145 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C146AA7;
-	Fri,  7 Feb 2025 02:55:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD65518C93C
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Feb 2025 07:15:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738896916; cv=none; b=jKErdaS5d94+K7PYsK4N0aNI3ofUmc8ap3kVXtecax2WDoIJ46DpvjiaXtRQ6cUSAV+V+aTbJIckIuyL9fr9vrgk8lvxYXhDDz7O7AHOWAWBvRd8YiPCSBSDJCNitOHt0OQgiV/GFaXz2xAuFd6PJ8gvTkFW4zoBOTnO/0rqXjM=
+	t=1738912543; cv=none; b=GBM+3VyStfdj1CVmZylfeSSCEkKc3s1QhXiE8LHyatnWIdFc12ANgPCdRQRRBCY/eCgUulrs8AcdPztyBrcI+cYI5nR8u8YyZ7fLI0G1PArelcJEFV4ieNssU0Q1IUxURfgsS/ySsJfXZV2AEnF+d9j57gyT7qZDcE85kXUtlr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738896916; c=relaxed/simple;
-	bh=jTYxBKOjdaWKZhzMUu31ksejdQODNYTAtLBcDx+4/tU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=sAczn9NthkVj8tu4FnRLrzqMGjBQ2SasS3AqSwgD8eRhqSnFuLVb+fsuOifKteqXDUTE5b21O5aE9avd7J8q4vNFvgVh2HXwcL6xDiT73T5m+okrwP4THF/2C5XSclH6xKZ21NNpwlMq1XYg+dqlh/f6PQCQwUwmag2oNB7jypg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=IhJMo2+0; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	s=arc-20240116; t=1738912543; c=relaxed/simple;
+	bh=dUnNqw1brKPXE6dDQeYeK/FFGBNMkG1EB3CHxG+wkJY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XsWzOhAh9jL0GDTCbMfi1+sm0BevXaP+Qu6WxYzAONRqCf3eF+9jFreZUKhWDY1TKY07vXO034gNMka5sFNokTbeBO1dqAPbD9azBN7qJI1DxJC+0XW/Cf3161c2q9A/9i/ZeDzZc7PKLAWSioa4XLCrnvP0ClxUy3WvpYZw7Vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DL+i4tep; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="IhJMo2+0"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5171PU5m009392;
-	Fri, 7 Feb 2025 02:54:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	DT6q24hDlUwkGSH97IqJdPWETMBtLEuGKqkfKsbpEDU=; b=IhJMo2+0m1sxrgSa
-	ayjeknUiaHqsAWF4wJW2WyMjDkjwdwXfo30G5IDh8IopFj178oaRUiZCjwfgjIc2
-	+K24QirKrFu+JXN2w9ZjJpAekYamjEfIx/4o35g6bMHBi3elfXHxWFiQsWtc5ARI
-	IqAM6oyCxV9eh3FbhkmK1gaS7sadC6LWkKSUA8QxJ5mPUgrQQnSvCBx4sab+2llc
-	/DVOZZZON4esH8dwJ0XZRsBfCBSiTcw+Kel8lLxFF7fCFNjnSukwBJGnzLMoNyFs
-	Pvd8C+c360z4QWEL1XhHfqorMX+P0WGtXYKqh+/ZznU0MOixNZ2YQ5jOk1BMTtyM
-	oT5hjA==
-Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44n1vs126a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 07 Feb 2025 02:54:45 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5172siaJ020788
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 7 Feb 2025 02:54:44 GMT
-Received: from [10.133.33.5] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 6 Feb 2025
- 18:54:40 -0800
-Message-ID: <e9c3f622-0126-4cea-984c-29e77209ae30@quicinc.com>
-Date: Fri, 7 Feb 2025 10:54:38 +0800
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DL+i4tep"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-21f3c119fe6so33673635ad.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 06 Feb 2025 23:15:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1738912541; x=1739517341; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZE4R1S1j/M6pE22+nPWcID1WidunmigR9GW3OBmBoT4=;
+        b=DL+i4tep+7bgTVKJpktqcmJkyOAk52S1Y4nXzYtMukimi8FFddEiltDD4TC1lzTWEo
+         puWLcXl0gmYRYX6biIwq7H11D7cfp/PSUqA+nXVEAqWbojaEuucTTBjPwSKvMuNr2/HE
+         lUQGOBHV8WtE2D+29tK+8gmuBAgJOCK+V0S6hPZ0k6NFOTssbVOeokHql47UbDp4SrhD
+         fbTfBjfdZWMQaYZNCWKRVAm7rb1/YMv0koObwimFz816Hj8zG4vpE4sEBBn9PAHnlLth
+         LrQ+JfBZUxxAQxZvkUyyHoB+a9KyyqgvaYbnfMUVhpyvD0VsEw/hCpP1P2qWWlla+juf
+         kVZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738912541; x=1739517341;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZE4R1S1j/M6pE22+nPWcID1WidunmigR9GW3OBmBoT4=;
+        b=NTHn6ECTjy+S+Ie5b0ceZSl3XSskK1PxCaZ2TCStFSZatmXMHgOCanrx+nHMqi+bZ1
+         2685z7nYSKRnA8dXLjyIjXx3u0GVlhoYbAHd9Za9XGcRMTosfZ0kFq5FVhP4KUvWM5jD
+         sl1dHNDLjNErNLVKbbQVtzN8mzvBj1ZRr1On5/spCnIvQ+DB0ZY7BjnfW8V5eO8qrtD3
+         xNAPOl4o+TzDWAowWShZliHrjGAo15yH5BE8nRYDCqMseu6QJDDQDtYQBAtevvy3hVCz
+         b0Y25e8Ql8cBEpWW1EzKkc011kpCKnq6qQtD+k3UXnSk3kAchZ9pV6q/X18kgYhSIP/r
+         jS9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW0jVJgBN15FX+TwDThpvWfs9lzl4EEvSrT0r2akxeZEIAin6Vi5RWHmzZk26Ll4St062nX+JCYqm93yv3Oxg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yya1ZTJzF8QfxD89erfjQEypJ4fIDDgbKC0353HQB4GXOp/ZNaL
+	4gIJFcVgy73vsy2tMOYiLcNrBSyWRmYyhlHX7uLQNsJbWPN1Y/1YIh9O7hCNBb8=
+X-Gm-Gg: ASbGncvpE0aiFV9qyZ/40RDoo3R4nMt4ijkEwv0CYYU2nnjNZsdxGkLArLYtJZ4a/zT
+	rr7xyl0tNDzD9+IpCDsD42fxzoYuR1rxuu7hIPx1tC9vJxb9P8R4ytW13JxF1/gSYdXzV+JX9EV
+	tSWCf56jyllkV3B8Ww+dBkZDOhdLkDN5jD12ExVzyshQvtdGl+TnWklsrnCvwh3M9imZocwWNQM
+	7DAz7WpiVddOW2peFmlnxSjW1x0zIIDjfsHv9ANBc+pJ8O9RPHPnQZXiK5xFL07z5fmROLbBJJ8
+	XFENY2c1cERagJGh5g==
+X-Google-Smtp-Source: AGHT+IG0HmX1b0ZP7iCDqtRYBLY1OA2uSMSxmzc5p4sdX0Udih5vnsk0XFTryW6rzf65b5fUm+ItCQ==
+X-Received: by 2002:a05:6a00:4fc7:b0:71e:4cff:2654 with SMTP id d2e1a72fcca58-7305d44a475mr3508897b3a.6.1738912541001;
+        Thu, 06 Feb 2025 23:15:41 -0800 (PST)
+Received: from localhost ([122.172.84.139])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73048bf135dsm2358026b3a.113.2025.02.06.23.15.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Feb 2025 23:15:40 -0800 (PST)
+Date: Fri, 7 Feb 2025 12:45:38 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Danilo Krummrich <dakr@redhat.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Benno Lossin <benno.lossin@proton.me>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Nishanth Menon <nm@ti.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Trevor Gross <tmgross@umich.edu>, Viresh Kumar <vireshk@kernel.org>,
+	Yury Norov <yury.norov@gmail.com>, linux-pm@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	rust-for-linux@vger.kernel.org,
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+	Erik Schilling <erik.schilling@linaro.org>,
+	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
+	Anisse Astier <anisse@astier.eu>, linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V8 00/14] Rust bindings for cpufreq and OPP core + sample
+ driver
+Message-ID: <20250207071538.xjxauatta2jsedz4@vireshk-i7>
+References: <cover.1738832118.git.viresh.kumar@linaro.org>
+ <Z6Sgwbgfp-9SCr8Y@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/8] driver core: add a faux bus for use when a simple
- device/bus is needed
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Danilo Krummrich <dakr@kernel.org>, Lyude Paul <lyude@redhat.com>
-CC: Alexander Lobakin <aleksander.lobakin@intel.com>,
-        Andy Shevchenko
-	<andriy.shevchenko@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Liam Girdwood
-	<lgirdwood@gmail.com>, Lukas Wunner <lukas@wunner.de>,
-        Mark Brown
-	<broonie@kernel.org>,
-        =?UTF-8?Q?Ma=C3=ADra_Canal?= <mairacanal@riseup.net>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Simona Vetter <simona.vetter@ffwll.ch>, <linux-usb@vger.kernel.org>,
-        <rust-for-linux@vger.kernel.org>
-References: <2025020620-skedaddle-olympics-1735@gregkh>
- <2025020623-chemo-amends-102a@gregkh>
-Content-Language: en-US
-From: Zijun Hu <quic_zijuhu@quicinc.com>
-In-Reply-To: <2025020623-chemo-amends-102a@gregkh>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 6UecibHba5myjDbItQxb_pf9gOoDQuh7
-X-Proofpoint-GUID: 6UecibHba5myjDbItQxb_pf9gOoDQuh7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-07_01,2025-02-05_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 adultscore=0
- spamscore=0 mlxlogscore=999 priorityscore=1501 mlxscore=0 suspectscore=0
- malwarescore=0 impostorscore=0 phishscore=0 lowpriorityscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502070021
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z6Sgwbgfp-9SCr8Y@pollux>
 
-On 2/7/2025 1:38 AM, Greg Kroah-Hartman wrote:
-> +#include "base.h"
-> +
-> +#define MAX_FAUX_NAME_SIZE	256	/* Max size of a faux_device name */
+Hi Danilo,
 
-Remove this macro?
+On 06-02-25, 12:45, Danilo Krummrich wrote:
+> I gave it a quick shot and it seems there are a few Clippy warnings,
 
-> ++ */
+I could find only one (related to core::format_args), are there more ?
 
-<snip>
+(Earlier I had a debug commit on top of the series in my branch and
+Clippy didn't give any warnings as format_flags was getting used from
+there.)
 
-> +struct faux_device *faux_device_create_with_groups(const char *name,
-> +						   const struct faux_device_ops *faux_ops,
-> +						   const struct attribute_group **groups)
-> +{
-> +	struct device *dev;
-> +	struct faux_object *faux_obj;
-> +	struct faux_device *faux_dev;
-> +	int name_size;
+> plus rustfmtcheck complains.
 
-Remove @name_size?
+I am not sure how to solve them.
 
-> +	int ret;
-> +
-> +	name_size = strlen(name);
-> +	if (name_size > MAX_FAUX_NAME_SIZE)
-> +		return NULL;
-> +
+Diff in rust/kernel/cpufreq.rs at line 628:
 
-Remove above block related to @name_size
+         // SAFETY: The C code returns a valid pointer here, which is again passed to the C code in
+         // an array.
+-        attr[next] = unsafe {
+-            addr_of_mut!(bindings::cpufreq_freq_attr_scaling_available_freqs) as *mut _
+-        };
++        attr[next] =
++            unsafe { addr_of_mut!(bindings::cpufreq_freq_attr_scaling_available_freqs) as *mut _ };
+         next += 1;
 
-> +	faux_obj = kzalloc(sizeof(*faux_obj) + name_size + 1, GFP_KERNEL);
+         if boost {
 
-faux_obj = kzalloc(sizeof(*faux_obj), GFP_KERNEL);
+If I move the code as suggested here, then I get warning about not
+adding a SAFETY comment for unsafe code (which looks to be a tool
+specific bug).
 
-> +	if (!faux_obj)
-> +		return NULL;
-> +
-> +	/* Save off the callbacks so we can use them in the future */
-> +	faux_obj->faux_ops = faux_ops;
-> +
-> +	/* Initialize the device portion and register it with the driver core */
-> +	faux_dev = &faux_obj->faux_dev;
-> +	dev = &faux_dev->dev;
-> +
-> +	device_initialize(dev);
-> +	dev->release = faux_device_release;
-> +	dev->parent = &faux_bus_root;
-> +	dev->bus = &faux_bus_type;
-> +	dev->groups = groups;
-> +	dev_set_name(dev, "%s", name);
-> +
-> +	ret = device_add(dev);
-> +	if (ret) {
-> +		pr_err("%s: device_add for faux device '%s' failed with %d\n",
-> +		       __func__, name, ret);
-> +		put_device(dev);
-> +		return NULL;
-> +	}
-> +
-> +	return faux_dev;
-> +}
-> +EXPORT_SYMBOL_GPL(faux_device_create_with_groups);
+I can move the entire thing into the unsafe block, but the assignment
+to attr[next] isn't unsafe.
 
-<snip>
+What do yo suggest here ?
 
-> ++int __init faux_bus_init(void)
-> +{
-> +	int ret;
-> +
-> +	ret = device_register(&faux_bus_root);
-> +	if (ret) {
-> +		put_device(&faux_bus_root);
-> +		return ret;
-> +	}
-> +
-> +	ret = bus_register(&faux_bus_type);
-> +	if (ret)
-> +		goto error_bus;
-> +
-> +	ret = driver_register(&faux_driver);
-> +	if (ret)
-> +		goto error_driver;
-> +
-> +	return ret;
+> There are also two minor checkpatch complaints about line length.
 
-return 0;
+Yeah, they came from the first commit (which wasn't written by me and
+so I avoided touching it), fixed now.
 
-> +
-> +error_driver:
-> +	bus_unregister(&faux_bus_type);
-> +
-> +error_bus:
-> +	device_unregister(&faux_bus_root);
-> +	return ret;
-> +}
-
-<snip>
+-- 
+viresh
