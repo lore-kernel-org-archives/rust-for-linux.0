@@ -1,176 +1,127 @@
-Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492101B0423;
-	Fri,  7 Feb 2025 18:54:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1681B6D0A;
+	Fri,  7 Feb 2025 19:02:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738954457; cv=none; b=GlCiSQyEH0+5AigkHVQCH7HwUJnXmGgL8bDrgqczS/dj6cFeefswWUMUEgD9yPvCYgZVdtjaTOWLY5ivoPR/UwajKnfwY58hYoEWqsdHTd3Ipq6HgqGS7+LRObgZWGPDqPs/5m1eutoU/WS2BduyCdm8ZI7u4hsmrK5jOR+iOS4=
+	t=1738954935; cv=none; b=Y8j66ctfEJkZMS6jQZu4Qa2d+UNpcPKjGDVp+NRkDCdpTrd+8ROGv2bsQpenjKmjT6PhEQQ5Uiw/NSuQO2OK04KE2p5fswGZXU8qhzWqsTLDt0dqGQXKEX7CTB9BS9t8zn+RT4hAnh7VYaO6ub1CU3Hft+lq2bB5UcIh6OOz+7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738954457; c=relaxed/simple;
-	bh=39tM/FelPk8IXPE4RyvCWWz+ddMpywlUPjAZQcKRfUY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=djIFkZK4wBwSdW1XlTA3KHSyZPQ4RfFaBeoljoiFaKMJHPdGPcNfDCzrUvZ51nJuexbeStTDPLNq8A6azYwMeR0Pk7Qc03iOhvxFKYq0sT/Pj7soz33iWCTFYAa597CpbY6EhRMSwtPZCwgGRJrVv8kLXma1ETeStpVcZFAHufk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=smKJK53u; arc=none smtp.client-ip=46.235.229.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
+	s=arc-20240116; t=1738954935; c=relaxed/simple;
+	bh=qVfd97zkfkmzTB/cXAgE/+dJgZ6p/2lJrXR8cCuyXvo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cGIUXzUEtNXgpfREDu71mUzjVK1PxQrQLjUGkncn7nnzg1bHXUgkC8bkVYE/by97TeMYHxNYTu7LFbWFI7nFw+8RXtZnxt5bK4U9RJ7Zeosfd4Xu/cu0PbDVvhOrXUXfYesZ3JELFmYU/Htey9h5EOcQ6R6MuAZcLxxMwGZXsDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AM/9VO/+; arc=none smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="smKJK53u"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
-	; s=bytemarkmx; h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
-	:Subject; bh=EAcqYwz2jmB6Mvusczq8VIeE3A07B10hda1ej7t/Xe8=; b=smKJK53uK4eErOQV
-	PDjUcgn3F89vn7KLBPpz/VkKUhnQuII8VRw7zR8UyeMBeNDJVSAxi12sNrwyadDFDtWWS0Xndz4SO
-	ldx/PvWRDZgBXjf3APTyUBa4sguVxsFYPwiU+wjnbnjcsxAIN3j1R+6So9KLN5tk4s1TeG0wbhl9I
-	rtezlIgvdtv+ZV8v5FYvDOMipJ1I7B05/bma9ABqItWYzGj2COLa8SutJ+aD4qvEuqArt9WCn1WBe
-	0KuZ0ejFNeLfXX43LM1Wdk/qqTCWEkPFLm7EN38d/H/iQs5HGCi0olpebtywvE+qzfaW1r/QB3y/a
-	ADK20FLy8pv2gt+KiQ==;
-Received: from dg by mx.treblig.org with local (Exim 4.96)
-	(envelope-from <dg@treblig.org>)
-	id 1tgTU3-00ELPl-1K;
-	Fri, 07 Feb 2025 18:53:47 +0000
-Date: Fri, 7 Feb 2025 18:53:47 +0000
-From: "Dr. David Alan Gilbert" <linux@treblig.org>
-To: Hector Martin <marcan@marcan.st>
-Cc: Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>, Dave Airlie <airlied@gmail.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>, phasta@kernel.org,
-	Christoph Hellwig <hch@lst.de>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	daniel.almeida@collabora.com, aliceryhl@google.com,
-	robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
-	DRI Development <dri-devel@lists.freedesktop.org>
-Subject: Re: On community influencing (was Re: [PATCH v8 2/2] rust: add dma
- coherent allocator abstraction.)
-Message-ID: <Z6ZWu44D9UCXVIgi@gallifrey>
-References: <2025013148-reversal-pessimism-1515@gregkh>
- <20250131135421.GO5556@nvidia.com>
- <2b9b75d1-eb8e-494a-b05f-59f75c92e6ae@marcan.st>
- <Z6OzgBYZNJPr_ZD1@phenom.ffwll.local>
- <CAPM=9tzPR9wd=3Wbjnp-T0W8-dDfGah-H3Ny52G85B+2Ev9ksA@mail.gmail.com>
- <208e1fc3-cfc3-4a26-98c3-a48ab35bb9db@marcan.st>
- <Z6UPXxEJYpanU9iU@cassiopeiae>
- <4c0a7cf9-26e1-4a19-8a6e-7c30bc3aef86@marcan.st>
- <20250207-mature-pastel-rottweiler-e6dbd9@lemur>
- <1bbdf8b7-a70b-4994-865e-7fcb8d53ebef@marcan.st>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AM/9VO/+"
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-3082334d1a0so9327961fa.0;
+        Fri, 07 Feb 2025 11:02:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738954931; x=1739559731; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+BPQBeY4NWsR7lR6BMW6QXyGfWgkM3VWv16uX3q7hwM=;
+        b=AM/9VO/+FX0p/2CyrPhncgQeu+FE9B1SXuELCCMJTATa11NkxzZ7G/WUoL4tjgK8kb
+         yYBwzht8orE71Ab7RKHak2N6x0GMFhBnkZAHRKmDlb2oUc0usQiI1tfMInfbFY+TfvDg
+         pNH+XB8f78bywIVe70Dpo5iAY9SmQHEhhxfzQMgh4/ePieaSHSMtQ/dMPutRcdz23wnL
+         MQC36VIc0sDylovhgLF7L4aMnTPFycwogj5e3fm15eIe2yKZqvDIGcNvv/2ymwaOr8z0
+         GmLgNGYVVkDakNlqVpW2PNVbKpW0iDUK8/13UO+Ff2s2JyFbVWQQ9hOpE/J14nSQJzYr
+         tPeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738954931; x=1739559731;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+BPQBeY4NWsR7lR6BMW6QXyGfWgkM3VWv16uX3q7hwM=;
+        b=deZ9WY3zw/x2vXQLrH6eMQYw+yWxVQ5TniZH7w4pJjG8IHvYrkMhj90EzYVQXaqOH0
+         RdAQtZUYb0T2EOWPp2TmtIL8Dy6KZSidqxA9rknpTx39czhIF0zFQpyKQR2CRGbQGs0P
+         UlzVUuDyChY3DUwrFl2sssBxDpmfNU8MCDehVKjncLygXfgjg8dDupwkN3dB4EsR7tFk
+         jElzt321Oyb9wzgS/kFVsedw+FZtLQLWS6kyQBV4OhnbZ+MV81Rbqge5OUGBSAROEKc5
+         otnvVEkUrEjFcc05AHmFcFIP27gjFGOBvjW6/gwKTl9NWh0zQArxUtHHtwJEYDrh/CDq
+         5faw==
+X-Forwarded-Encrypted: i=1; AJvYcCU1uCNrGuXHQ23MN9iVGyJDWlQP/1b17qgMZ3AYj+4IiJtv4G09eJHKJMPkJFIksR/dFP9H+YSiOuVMmwXTwBs=@vger.kernel.org, AJvYcCVZB4rscvJpxZAUVNAaBCmSwWQKUFYup6oZKv6l6GnLnvU8be9lP66nnt0Vz8X6nNFBJFsb4UF3crRQxxM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJSvK5enHNPjsSQ0OPMcGJtbP9xxPifOuroKMj4FGoK2QxsOoE
+	tVxjRnx66g4tU3NEHHlRJ7p2mvZF1LHNMQnjBkLD10Y9Y4oKgEGWfYiUXDb/JczQH3kFMBylcMO
+	MkHuC08rzDGTJllY+JiAXDORG1FY=
+X-Gm-Gg: ASbGncumhKurOSd6KP2ku6k1r8d84sVh+zNotjadVM0LXNXWG4dJjX+fmJ6sb9gyDlN
+	oooFXz/wbSWy+V/YSZCgfryjg83gsYoRoVq3vgeghICusPCJmdwChCHBkLOUy8iwYoMakEeT36T
+	8cK/wDYgpTTCWsrwDLwp9/cZyYzDr/
+X-Google-Smtp-Source: AGHT+IHk+w78UdWaea7KZ1l60ekIWFxxUMzCAoxyaPzUwRFj1//8MfCTtQb/i8wOhQcAKw6q+pUmP9DyqLv8lMLfNrI=
+X-Received: by 2002:a2e:ab05:0:b0:302:3021:9b23 with SMTP id
+ 38308e7fff4ca-307e5d93c09mr15027451fa.17.1738954931047; Fri, 07 Feb 2025
+ 11:02:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <1bbdf8b7-a70b-4994-865e-7fcb8d53ebef@marcan.st>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/6.1.0-21-amd64 (x86_64)
-X-Uptime: 18:48:07 up 275 days,  6:02,  1 user,  load average: 0.06, 0.05,
- 0.00
-User-Agent: Mutt/2.2.12 (2023-09-09)
+References: <20250207-macros-section-v1-0-8f018cb05a20@gmail.com>
+ <20250207-macros-section-v1-1-8f018cb05a20@gmail.com> <CANiq72=Hgqt4jPGw_pXmReWaVXWUZm8YofdqUeSde94apozhAw@mail.gmail.com>
+In-Reply-To: <CANiq72=Hgqt4jPGw_pXmReWaVXWUZm8YofdqUeSde94apozhAw@mail.gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Fri, 7 Feb 2025 14:01:35 -0500
+X-Gm-Features: AWEUYZnFx91OhvKyZCw15ac2DV9Mx7qi3yvX_x3qrc_FEPZp-9u2uIyGPHxCIZQ
+Message-ID: <CAJ-ks9=g9-bKoyh0++4f7CVQYth3Rb20FAd1-cgwXy8dYj27Dg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rust: macros: improve panic messages
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-* Hector Martin (marcan@marcan.st) wrote:
-> On 2025/02/08 2:14, Konstantin Ryabitsev wrote:
-> > On Fri, Feb 07, 2025 at 05:16:28AM +0900, Hector Martin wrote:
-> >> And what I see, is very little effort to improve that status quo, or at
-> >> least very little that yields any actual change that isn't just
-> >> band-aids (e.g. tooling like b4, which is nice and appreciated, but
-> >> doesn't fix any underlying issues). And that's not going to change no
-> >> matter how many long technical arguments we have on the MLs (or even off
-> >> MLs, since MLs are also not particularly good for this, and I've seen
-> >> multiple arguments only reach a resolution after being redirected to IRC).
-> > 
-> > From my perspective, there are several camps clashing when it comes to the
-> > kernel development model. One is people who are (rightfully) pointing out that
-> > using the mailing lists was fine 20 years ago, but the world of software
-> > development has vastly moved on to forges.
-> > 
-> > The other camp is people who (also rightfully) point out that kernel
-> > development has always been decentralized and we should resist all attempts to
-> > get ourselves into a position where Linux is dependent on any single
-> > Benevolent Entity (Github, Gitlab, LF, kernel.org, etc), because this would
-> > give that entity too much political or commercial control or, at the very
-> > least, introduce SPoFs.
-> > 
-> > At best, I can hope to make both camps grumpily agree to coexist.
-> > 
-> > I *am* very wary of Benevolent Entities, because we have too many very recent
-> > examples of companies "realigning priorities" when political winds shift.
-> > Programs and initiatives that have until recently been poster board examples
-> > of progress and benevolence are shuttered and defunded. I am concerned that
-> > we're only a couple of mood swings away from someone deciding that free
-> > software should not be allowed to exist because it benefits America's foes.
-> > Many of us remember all too well when large tech giants treated Linux as a
-> > "cancer" to be opposed, and I can certainly see that idea easily re-entering
-> > some Big Brain in Charge.
-> > 
-> > From my perspective, I would like to ensure that Linux development can
-> > continue without a hard dependency on a single centralized forge -- whether
-> > controlled by a large commercial entity, or even a standalone one that is
-> > operated by kernel.org. It's becoming shockingly difficult to operate a public
-> > resource on the web unless you're willing to put it behind a large commercial
-> > CDN that will protect you from hostile bots (and if you do that, you're back
-> > to depending on the whims of a Benevolent Entity).
-> > 
-> > We're trying to get lore.kernel.org to the point where it's like a global
-> > messaging bus that is indexed and searchable. Currently, you mostly have to
-> > send things to a mailing list for them to end up on lore, but it's gradually
-> > becoming less and less the case. We're already bridging with bugzilla and we
-> > should be able to bridge with forges soon, too (currently delayed again
-> > because I'm scrambling to move kernel.org frontends away from Equinix). Who
-> > knows, we may be actually leapfrogging the forge era of software development
-> > straight into "AI" agents era -- but that remains to be seen.
-> > 
-> > Anyway, all of this is to say that I'm happy that you've found b4 useful, but
-> > I wouldn't view it as a band-aid -- it's just a very small and email-centric
-> > way to interact with the kernel lore.
-> > 
-> 
-> The centralization concern is valid, but there are technical solutions
-> to this, such as forge federation. It's possible to set up a forge
-> environment to be less of a SPoF, such as by ensuring all data is open
-> and archiveable to allow for migration and backup restore, even by third
-> parties (you can make practically ~all forge data public except for
-> login passwords, and we have email-based reset processes for those).
-> It's also possible to simply shard, and let different subsystems choose
-> their own forge infrastructure, so downtime has a more limited effect.
-> 
-> Meanwhile, for better or worse, much of Linux infra *is* centralized -
-> for example, the mailing lists themselves, and a lot of the Git hosting.
+On Fri, Feb 7, 2025 at 1:12=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Fri, Feb 7, 2025 at 6:22=E2=80=AFPM Tamir Duberstein <tamird@gmail.com=
+> wrote:
+> >
+> > Include unexpected input on parsing failures.  This has the side effect
+> > of avoiding a spurious rust-analyzer warning:
+> >
+> >   Variable `None` should have snake_case name, e.g. `none`
+>
+> Hmm... That should be solved independently, but sure.
+>
+> In any case, how is this related to the second patch in the series?
+> i.e. do you need both to solve the macOS issue?
 
-Although, many of the subsystems have their own patchworks or other systems
-anyway dotted in random places.
+No, it's not required - you're right to point that out. I'll send it
+separately. Is it very inconvenient to consider the other patch on its
+own?
 
-It's actually something I find quite hard, it might seem there is
-*a* Linux contribution process, but if you do fixups or devices all over
-rather than in one subsystem you end up tripping over the oddities
-of each maintainer; then trying to figure out when they're prepared
-to take a patch, or where to check for whether they've taken it,
-or whether to expect it to turn up in -next can all be quite random.
+> > +        let Some(token) =3D it.next() else {
+> > +            break;
+> > +        };
+> > +        match token {
+> > +            TokenTree::Punct(punct) =3D> assert_eq!(punct.as_char(), '=
+,'),
+> > +            token =3D> panic!("Expected ',' or end of array, got {}", =
+token),
+>
+> Do we want to shadow here?
 
+I personally like this style because the shadow and shadowed are the
+same variable and the presence of a binding in the match expression
+hints to the reader that it's used somewhere in the body of the match
+arm. Do you have another preference?
 
-<snip>
+> Also, I think you could write `{token}`. Same above.
 
-> - Hector
+Good call. Will make it so.
 
-Dave
+> Could you please show how the new output would look like in the commit me=
+ssage?
 
-> 
-> 
--- 
- -----Open up your eyes, open up your mind, open up your code -------   
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
+Yes, I will include before and after output.
+
+> Cheers,
+> Miguel
