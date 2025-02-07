@@ -1,191 +1,110 @@
-Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E49F197A7E;
-	Fri,  7 Feb 2025 18:02:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.63.210.85
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE6E19D881;
+	Fri,  7 Feb 2025 18:12:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738951341; cv=none; b=BgjfxkG+4Jeh/iKsl+moN1MF/Wns7HCt8utwXduROsG8gkNmwwzbql9AhoRWp+2iNoKHqX5NECojXunVpKHd9iFvDVnhOepVDnAwvNshirebxD8l7g1Drpqztnf6TYdfxxwdbT2qxc3CL/edFPudKY89hTeG2X/njZh/5SgP6Sc=
+	t=1738951934; cv=none; b=P+OH0P4oYpXSzJzJHMoU5lF5M38SnptsAlpeavaSofMUOwPH37kdlpot0F7IwAOuK1r1CwSYcuVqbZ1+HkTqYSsiVVwLtcibUm4j/ShL5DdlWTeQu/qpwweDk2OeFowvLph0+DaS+hA059Gz3yWRrHxBFw2MPVPD0MLHAX2fevs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738951341; c=relaxed/simple;
-	bh=K63Fpm4Kxp5LTpQxJQ48pUAOYhYczonzA7LReojlAZI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cjJI1C/WzXCBW4+q2m+aMSLztGGzedZwtCKIExCHTEsc3o/Xz4Igg5Hv6SDxcdsstnvoiEWj0a/pd2aAkExSf6gL+lYOfivMRX1SlFqt9YhuXYTocHLow9NQMt2KI+BW6chha185XTxonMbUWQ7IdbxkCSjiG0XEooKwvT3+brM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marcan.st; spf=pass smtp.mailfrom=marcan.st; dkim=pass (2048-bit key) header.d=marcan.st header.i=@marcan.st header.b=C+tu+ElY; arc=none smtp.client-ip=212.63.210.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marcan.st
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marcan.st
+	s=arc-20240116; t=1738951934; c=relaxed/simple;
+	bh=UL16UHiG9e0z6Z65WXvRnZgcXrZJQ9t9AhuMsAVqixw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Eyp88WYauZR4FFXTgZZKwXvL9k8Yn91AZbrQcONttlKiDwvbroZOenHfFqgcvXa8ojbZAmQ4Z+OjJio/N5S5UKt7dKehLNoqGnxb14Cmmllup2aOYcaYzAZTq2JTECjOW2TXDWoPYF2ZsjK7NLGPSAd1N4HqN9tkF+WxsImujGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MyuMvyXn; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marcan.st header.i=@marcan.st header.b="C+tu+ElY"
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: marcan@marcan.st)
-	by mail.marcansoft.com (Postfix) with ESMTPSA id D092B41F7F;
-	Fri,  7 Feb 2025 18:02:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
-	t=1738951335; bh=K63Fpm4Kxp5LTpQxJQ48pUAOYhYczonzA7LReojlAZI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=C+tu+ElYntR8wBRcFKZxvP6WG3en/4yVXwKudMP9OdBRDAK929qu94F07Cd6XDOYi
-	 8lsSohR320RRmapyxLRcWS/BmrZbORe0ypjHrqir/5kN9qPjvzxc1rT00C0H5kM+KV
-	 T2HZmN9pYNoxWIzQ3K8rdRKmZcLCoxuDbaswNyDVZWHt8NtD1I9oED8p7YZ8s3msh6
-	 eA138FEJVwOTv98gWB/TULbOnWosb1oJa2hyOtT8NEsIXYUB6HywGOINGx88zU8DDG
-	 qCip0FULgWnmfV8y3ssFjjrnGnJsbMefCagHqH+HvcvON/sQlGngiqLN2CmZd5tz2x
-	 ZJo7jfDuxehOA==
-Message-ID: <1bbdf8b7-a70b-4994-865e-7fcb8d53ebef@marcan.st>
-Date: Sat, 8 Feb 2025 03:02:11 +0900
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MyuMvyXn"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2fa0f70bfecso441935a91.2;
+        Fri, 07 Feb 2025 10:12:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738951932; x=1739556732; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vbY/PBwholOF2JDy4WiiL6Wp/4TxznWfUWc4NV54Qto=;
+        b=MyuMvyXncYHIpVmGHY6OGggpBRIeFHhEp8Ko1RdFNy9xAC6//g8NBkUyJXYHtuty76
+         53xJUG/PAF6TRPOWYzo/zqT7XR0znpSmwrra6BiGavwyKcYdpzTBEQW8z/rg31jp214s
+         YLBZKBq7YDXLz6nhZu69JlYcTe4f+bnI4GnoMSQKQZEjko6jpkEI6nqjfGtQeGf20BDL
+         k+JnK9wzuERFDCzRvFFjdJjKypc+7udjAoyGDO0a4SnV844g7cmNMIr8+ywNXGF8+MYn
+         EcrZ60G9AquLpt+8tw6IUi4cwtPuyuCL/ZNUbBEgNlLYEXUftZdgNDJDvB1nXSPlXpT6
+         6hCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738951932; x=1739556732;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vbY/PBwholOF2JDy4WiiL6Wp/4TxznWfUWc4NV54Qto=;
+        b=v3w9z3gc/aEUpM6NREZUDZx+fJmVtKmd5N2m9n1QCsfMFYJ0AOlt95rs9onEiiOj11
+         BdkRTqwxmFOoJNoTCOmrEygsqnMtEsZgCyGnrvRa5qq+aAHdWpJdsEpCtrseJlhyZ7C2
+         kSQMlUE/U03KbsIbhpzviBIsJULf8YBWFF6tUf7VjjQBPiSSof3Ysdkg29EIqLUUqDpS
+         ahhsYC5Y6MVLGpb1qbbqk/m2gR52chKbZYoF/wkDJTRWe7AXRs9GgDmdUC8hhGPT0/X+
+         RWKDnQDEHfesnV+g37bhtxOJGSxZF8LcDoIBrRRtknIUEmhNn5bFqdNbulhv7tSLPCT3
+         igGw==
+X-Forwarded-Encrypted: i=1; AJvYcCVTeGhiuvAnRY5K0ZUHAGzHBfVZm5StfT2xwAb26pBhx2duDw9pHWwlIY1Vq6tSr01Pis1k+9DggXuZOT8Ig2I=@vger.kernel.org, AJvYcCXIr1gUogqX4N01LmqD1dr1SobenfO/4fxCAUxiGoP098RYxFHsRLoMeY5KacWHTkIaRXI9xB70utWgFxA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwagrQyJ96JumBJs1YULRmOXUjjPwae3m/Ic2ezfEyZ9cDRB0v4
+	9FeZ3Mc/hJbBkEOfjd76BrhEDeFV9jw0+3fxj7PVlWZ4CMvTFmGqxeP+D+tx9y4TdNpVXAnRfXn
+	s6hTzhG6Oj2cILDo5XgXWf+ADDxA=
+X-Gm-Gg: ASbGncvCHo69BZHSzPvAdztFl/jw4VwiL9ziZ1hYVgnFOYmMSXY/TzZJUuFzpPGvElT
+	nk6mp0TQGTrjove/SOk6GdVuf61k143iK6RLERZh9rKOzEOV2W+zPVXCBg/r2Q3QNQIWcVULzaA
+	==
+X-Google-Smtp-Source: AGHT+IHRZhFO+dqftqZaKRb94T0kV4Q38yZSGjM5KyjbUJvVwLtackKzJpYRfPC0JLLi7Tq4FvPz3Wx58XNvcvrLijQ=
+X-Received: by 2002:a17:90b:38c3:b0:2f4:f7f8:f70b with SMTP id
+ 98e67ed59e1d1-2fa24544c36mr2561500a91.5.1738951932397; Fri, 07 Feb 2025
+ 10:12:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: On community influencing (was Re: [PATCH v8 2/2] rust: add dma
- coherent allocator abstraction.)
-To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, Dave Airlie <airlied@gmail.com>,
- Jason Gunthorpe <jgg@nvidia.com>, Greg KH <gregkh@linuxfoundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, phasta@kernel.org,
- Christoph Hellwig <hch@lst.de>,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Abdiel Janulgue <abdiel.janulgue@gmail.com>, daniel.almeida@collabora.com,
- aliceryhl@google.com, robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- Valentin Obst <kernel@valentinobst.de>,
- open list <linux-kernel@vger.kernel.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
- "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
- DRI Development <dri-devel@lists.freedesktop.org>
-References: <2025013030-gummy-cosmic-7927@gregkh>
- <20250130172437.GN5556@nvidia.com>
- <2025013148-reversal-pessimism-1515@gregkh>
- <20250131135421.GO5556@nvidia.com>
- <2b9b75d1-eb8e-494a-b05f-59f75c92e6ae@marcan.st>
- <Z6OzgBYZNJPr_ZD1@phenom.ffwll.local>
- <CAPM=9tzPR9wd=3Wbjnp-T0W8-dDfGah-H3Ny52G85B+2Ev9ksA@mail.gmail.com>
- <208e1fc3-cfc3-4a26-98c3-a48ab35bb9db@marcan.st>
- <Z6UPXxEJYpanU9iU@cassiopeiae>
- <4c0a7cf9-26e1-4a19-8a6e-7c30bc3aef86@marcan.st>
- <20250207-mature-pastel-rottweiler-e6dbd9@lemur>
-From: Hector Martin <marcan@marcan.st>
-Content-Language: en-US
-In-Reply-To: <20250207-mature-pastel-rottweiler-e6dbd9@lemur>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250207-macros-section-v1-0-8f018cb05a20@gmail.com> <20250207-macros-section-v1-1-8f018cb05a20@gmail.com>
+In-Reply-To: <20250207-macros-section-v1-1-8f018cb05a20@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 7 Feb 2025 19:12:00 +0100
+X-Gm-Features: AWEUYZm1Btnc79nYuOdqDCxOXgK4yrleEaA31HAaHN3M6SoV4x-ONmx55mJ9mVI
+Message-ID: <CANiq72=Hgqt4jPGw_pXmReWaVXWUZm8YofdqUeSde94apozhAw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rust: macros: improve panic messages
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2025/02/08 2:14, Konstantin Ryabitsev wrote:
-> On Fri, Feb 07, 2025 at 05:16:28AM +0900, Hector Martin wrote:
->> And what I see, is very little effort to improve that status quo, or at
->> least very little that yields any actual change that isn't just
->> band-aids (e.g. tooling like b4, which is nice and appreciated, but
->> doesn't fix any underlying issues). And that's not going to change no
->> matter how many long technical arguments we have on the MLs (or even off
->> MLs, since MLs are also not particularly good for this, and I've seen
->> multiple arguments only reach a resolution after being redirected to IRC).
-> 
-> From my perspective, there are several camps clashing when it comes to the
-> kernel development model. One is people who are (rightfully) pointing out that
-> using the mailing lists was fine 20 years ago, but the world of software
-> development has vastly moved on to forges.
-> 
-> The other camp is people who (also rightfully) point out that kernel
-> development has always been decentralized and we should resist all attempts to
-> get ourselves into a position where Linux is dependent on any single
-> Benevolent Entity (Github, Gitlab, LF, kernel.org, etc), because this would
-> give that entity too much political or commercial control or, at the very
-> least, introduce SPoFs.
-> 
-> At best, I can hope to make both camps grumpily agree to coexist.
-> 
-> I *am* very wary of Benevolent Entities, because we have too many very recent
-> examples of companies "realigning priorities" when political winds shift.
-> Programs and initiatives that have until recently been poster board examples
-> of progress and benevolence are shuttered and defunded. I am concerned that
-> we're only a couple of mood swings away from someone deciding that free
-> software should not be allowed to exist because it benefits America's foes.
-> Many of us remember all too well when large tech giants treated Linux as a
-> "cancer" to be opposed, and I can certainly see that idea easily re-entering
-> some Big Brain in Charge.
-> 
-> From my perspective, I would like to ensure that Linux development can
-> continue without a hard dependency on a single centralized forge -- whether
-> controlled by a large commercial entity, or even a standalone one that is
-> operated by kernel.org. It's becoming shockingly difficult to operate a public
-> resource on the web unless you're willing to put it behind a large commercial
-> CDN that will protect you from hostile bots (and if you do that, you're back
-> to depending on the whims of a Benevolent Entity).
-> 
-> We're trying to get lore.kernel.org to the point where it's like a global
-> messaging bus that is indexed and searchable. Currently, you mostly have to
-> send things to a mailing list for them to end up on lore, but it's gradually
-> becoming less and less the case. We're already bridging with bugzilla and we
-> should be able to bridge with forges soon, too (currently delayed again
-> because I'm scrambling to move kernel.org frontends away from Equinix). Who
-> knows, we may be actually leapfrogging the forge era of software development
-> straight into "AI" agents era -- but that remains to be seen.
-> 
-> Anyway, all of this is to say that I'm happy that you've found b4 useful, but
-> I wouldn't view it as a band-aid -- it's just a very small and email-centric
-> way to interact with the kernel lore.
-> 
+On Fri, Feb 7, 2025 at 6:22=E2=80=AFPM Tamir Duberstein <tamird@gmail.com> =
+wrote:
+>
+> Include unexpected input on parsing failures.  This has the side effect
+> of avoiding a spurious rust-analyzer warning:
+>
+>   Variable `None` should have snake_case name, e.g. `none`
 
-The centralization concern is valid, but there are technical solutions
-to this, such as forge federation. It's possible to set up a forge
-environment to be less of a SPoF, such as by ensuring all data is open
-and archiveable to allow for migration and backup restore, even by third
-parties (you can make practically ~all forge data public except for
-login passwords, and we have email-based reset processes for those).
-It's also possible to simply shard, and let different subsystems choose
-their own forge infrastructure, so downtime has a more limited effect.
+Hmm... That should be solved independently, but sure.
 
-Meanwhile, for better or worse, much of Linux infra *is* centralized -
-for example, the mailing lists themselves, and a lot of the Git hosting.
+In any case, how is this related to the second patch in the series?
+i.e. do you need both to solve the macOS issue?
 
-There's also the fact that there is enough support for Linux that
-finding a Benevolent Entity to provide stuff like DDoS protection is not
-particularly hard, and such services are easily replaceable should
-priorities change (and indeed are the kind of service that can only be
-provided by a large entity, whether paid or sponsored, by nature). Heck,
-even I have a Benevolent Entity sponsoring a CDN frontend for Asahi
-sites and installer images (bunny.net, they're nice, highly recommended).
+> +        let Some(token) =3D it.next() else {
+> +            break;
+> +        };
+> +        match token {
+> +            TokenTree::Punct(punct) =3D> assert_eq!(punct.as_char(), ','=
+),
+> +            token =3D> panic!("Expected ',' or end of array, got {}", to=
+ken),
 
-At the end of the day, I do not believe a theoretical breakdown of Linux
-infra would be a major long-term setback to Linux kernel development.
-The kernel already survived the great BitKeeper to Git migration, and
-this time there's no proprietary software to be yanked out from under
-the kernel (at least assuming the forge of choice is FOSS and
-self-hostable, which seems like a no-brainer given the concerns). As
-long as everyone has the Git trees, infrastructure can be rebuilt. As
-long as everyone has email and git, development can continue ad-hoc.
-Sure, it would cause a blip, but it's not like we would switch to a
-forge, the forge would go down for a few days, and it would not be the
-end of the world. Just ask the freedesktop folks (a good case study on
-how infra is hard, but not impossible, and even if imperfect, even if at
-times frustrating, it still functions, and well enough to still be
-wildly positive compared to not having that infra at all).
+Do we want to shadow here?
 
-But I'm afraid you'll find much if not most of the true opposition to
-forges is not technical, it is philosophical or preference-based (even
-though it may be presented as technical opposition, sometimes to
-intentionally mislead). This is, in fact, quite a mirror of the R4L
-situation, where technical arguments ("show me you can write a real
-driver") quickly lead to non-technical arguments when solutions are
-proposed ("it's cancer").
+Also, I think you could write `{token}`. Same above.
 
-I actually considered moving soc/apple development to a forge personally
-in the near future (obviously not my call to make any more), and I was
-fully expecting a pile of pushback, "because that's not how we do things
-here". Who knows, I might have gotten a "fuck you, either you accept
-email patches or I remove you from MAINTAINTERS" from Linus.
+Could you please show how the new output would look like in the commit mess=
+age?
 
-All that said, thanks for b4. I might have given up much earlier, not
-due to flamewars but due to exhaustion with poor tooling, if it didn't
-exist.
-
-- Hector
-
+Cheers,
+Miguel
