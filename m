@@ -1,127 +1,158 @@
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1681B6D0A;
-	Fri,  7 Feb 2025 19:02:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158861A3141;
+	Fri,  7 Feb 2025 19:18:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.63.210.85
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738954935; cv=none; b=Y8j66ctfEJkZMS6jQZu4Qa2d+UNpcPKjGDVp+NRkDCdpTrd+8ROGv2bsQpenjKmjT6PhEQQ5Uiw/NSuQO2OK04KE2p5fswGZXU8qhzWqsTLDt0dqGQXKEX7CTB9BS9t8zn+RT4hAnh7VYaO6ub1CU3Hft+lq2bB5UcIh6OOz+7M=
+	t=1738955933; cv=none; b=oeXbS0wrmnF0wGYbXpowRTze3J4ZW4Od1TFK5FvvP8WBaoC3ip9OYM5o4kOTo8uVHpqEdwtByu+klAZ+QbB/7T3zkTsuKigGfs3C+MCCf9FhldoXz/OQBQ6qsejA3a6TcnTvXMMZiRBo4UoGO8qJi1F5ZWpTC89/BpJ7tWZRjIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738954935; c=relaxed/simple;
-	bh=qVfd97zkfkmzTB/cXAgE/+dJgZ6p/2lJrXR8cCuyXvo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cGIUXzUEtNXgpfREDu71mUzjVK1PxQrQLjUGkncn7nnzg1bHXUgkC8bkVYE/by97TeMYHxNYTu7LFbWFI7nFw+8RXtZnxt5bK4U9RJ7Zeosfd4Xu/cu0PbDVvhOrXUXfYesZ3JELFmYU/Htey9h5EOcQ6R6MuAZcLxxMwGZXsDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AM/9VO/+; arc=none smtp.client-ip=209.85.208.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738955933; c=relaxed/simple;
+	bh=hzKbZ8fP/OSMSD/R0tqD9tsgwLS5wn2Ud2IztAjubuM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ejBR0k71K4Kbh353uulYiYC+ezNs8osen4SQavoTU/LG7lWLqrTt2yObxabHEGzq63oAQnM2RttnuiqxjR/L8g6zPXLPPCgIF7Nl4lYubZr3VfbywrH25TJ4eFtPlC6laRVC6E1cTsZofakQqyBXUJ0cVOB0rC2t4odd9RGW/Mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marcan.st; spf=pass smtp.mailfrom=marcan.st; dkim=pass (2048-bit key) header.d=marcan.st header.i=@marcan.st header.b=sHjNiqpm; arc=none smtp.client-ip=212.63.210.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marcan.st
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marcan.st
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AM/9VO/+"
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-3082334d1a0so9327961fa.0;
-        Fri, 07 Feb 2025 11:02:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738954931; x=1739559731; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+BPQBeY4NWsR7lR6BMW6QXyGfWgkM3VWv16uX3q7hwM=;
-        b=AM/9VO/+FX0p/2CyrPhncgQeu+FE9B1SXuELCCMJTATa11NkxzZ7G/WUoL4tjgK8kb
-         yYBwzht8orE71Ab7RKHak2N6x0GMFhBnkZAHRKmDlb2oUc0usQiI1tfMInfbFY+TfvDg
-         pNH+XB8f78bywIVe70Dpo5iAY9SmQHEhhxfzQMgh4/ePieaSHSMtQ/dMPutRcdz23wnL
-         MQC36VIc0sDylovhgLF7L4aMnTPFycwogj5e3fm15eIe2yKZqvDIGcNvv/2ymwaOr8z0
-         GmLgNGYVVkDakNlqVpW2PNVbKpW0iDUK8/13UO+Ff2s2JyFbVWQQ9hOpE/J14nSQJzYr
-         tPeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738954931; x=1739559731;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+BPQBeY4NWsR7lR6BMW6QXyGfWgkM3VWv16uX3q7hwM=;
-        b=deZ9WY3zw/x2vXQLrH6eMQYw+yWxVQ5TniZH7w4pJjG8IHvYrkMhj90EzYVQXaqOH0
-         RdAQtZUYb0T2EOWPp2TmtIL8Dy6KZSidqxA9rknpTx39czhIF0zFQpyKQR2CRGbQGs0P
-         UlzVUuDyChY3DUwrFl2sssBxDpmfNU8MCDehVKjncLygXfgjg8dDupwkN3dB4EsR7tFk
-         jElzt321Oyb9wzgS/kFVsedw+FZtLQLWS6kyQBV4OhnbZ+MV81Rbqge5OUGBSAROEKc5
-         otnvVEkUrEjFcc05AHmFcFIP27gjFGOBvjW6/gwKTl9NWh0zQArxUtHHtwJEYDrh/CDq
-         5faw==
-X-Forwarded-Encrypted: i=1; AJvYcCU1uCNrGuXHQ23MN9iVGyJDWlQP/1b17qgMZ3AYj+4IiJtv4G09eJHKJMPkJFIksR/dFP9H+YSiOuVMmwXTwBs=@vger.kernel.org, AJvYcCVZB4rscvJpxZAUVNAaBCmSwWQKUFYup6oZKv6l6GnLnvU8be9lP66nnt0Vz8X6nNFBJFsb4UF3crRQxxM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJSvK5enHNPjsSQ0OPMcGJtbP9xxPifOuroKMj4FGoK2QxsOoE
-	tVxjRnx66g4tU3NEHHlRJ7p2mvZF1LHNMQnjBkLD10Y9Y4oKgEGWfYiUXDb/JczQH3kFMBylcMO
-	MkHuC08rzDGTJllY+JiAXDORG1FY=
-X-Gm-Gg: ASbGncumhKurOSd6KP2ku6k1r8d84sVh+zNotjadVM0LXNXWG4dJjX+fmJ6sb9gyDlN
-	oooFXz/wbSWy+V/YSZCgfryjg83gsYoRoVq3vgeghICusPCJmdwChCHBkLOUy8iwYoMakEeT36T
-	8cK/wDYgpTTCWsrwDLwp9/cZyYzDr/
-X-Google-Smtp-Source: AGHT+IHk+w78UdWaea7KZ1l60ekIWFxxUMzCAoxyaPzUwRFj1//8MfCTtQb/i8wOhQcAKw6q+pUmP9DyqLv8lMLfNrI=
-X-Received: by 2002:a2e:ab05:0:b0:302:3021:9b23 with SMTP id
- 38308e7fff4ca-307e5d93c09mr15027451fa.17.1738954931047; Fri, 07 Feb 2025
- 11:02:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=marcan.st header.i=@marcan.st header.b="sHjNiqpm"
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: marcan@marcan.st)
+	by mail.marcansoft.com (Postfix) with ESMTPSA id B39684203E;
+	Fri,  7 Feb 2025 19:18:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
+	t=1738955928; bh=hzKbZ8fP/OSMSD/R0tqD9tsgwLS5wn2Ud2IztAjubuM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=sHjNiqpm+Nd9HwV76Weu9j8XnhP47P+uq7573nSGjE9eJAyMBGyfSz+yDqxX6/PbL
+	 qGSrltV/BCfiDLNFTn81hhoQodk3U1539JLY+XxQxsYSYqNw5pmUFc1mBnVZftWSlu
+	 xlcYlCzr/llfrxVde6Zuv+94X0XSE9sUPZTFGxNLXwKD6ciSyz2pWKO2yZz9Q6rXCS
+	 L0fglNEajp8MokCOE25A31kFkq2rWrA5e+tWOksyAmdAJG3AC0U8m5vtM2BC02b0ck
+	 hByJ4GYVkOtsVXJaITTvCU2bOyI/hIwth37+vWN3sNvsFpWOjkzlICkMkNrTaWi1/1
+	 +DLBb/GdHKTjw==
+Message-ID: <ae11fa0f-7b3e-4dd7-8b4f-da0e9daa99bd@marcan.st>
+Date: Sat, 8 Feb 2025 04:18:44 +0900
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250207-macros-section-v1-0-8f018cb05a20@gmail.com>
- <20250207-macros-section-v1-1-8f018cb05a20@gmail.com> <CANiq72=Hgqt4jPGw_pXmReWaVXWUZm8YofdqUeSde94apozhAw@mail.gmail.com>
-In-Reply-To: <CANiq72=Hgqt4jPGw_pXmReWaVXWUZm8YofdqUeSde94apozhAw@mail.gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Fri, 7 Feb 2025 14:01:35 -0500
-X-Gm-Features: AWEUYZnFx91OhvKyZCw15ac2DV9Mx7qi3yvX_x3qrc_FEPZp-9u2uIyGPHxCIZQ
-Message-ID: <CAJ-ks9=g9-bKoyh0++4f7CVQYth3Rb20FAd1-cgwXy8dYj27Dg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rust: macros: improve panic messages
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: On community influencing (was Re: [PATCH v8 2/2] rust: add dma
+ coherent allocator abstraction.)
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>, Dave Airlie <airlied@gmail.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Greg KH <gregkh@linuxfoundation.org>,
+ phasta@kernel.org, Christoph Hellwig <hch@lst.de>,
+ Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>, daniel.almeida@collabora.com,
+ aliceryhl@google.com, robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Valentin Obst <kernel@valentinobst.de>,
+ open list <linux-kernel@vger.kernel.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+ "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
+ DRI Development <dri-devel@lists.freedesktop.org>
+References: <2025013030-gummy-cosmic-7927@gregkh>
+ <20250130172437.GN5556@nvidia.com>
+ <2025013148-reversal-pessimism-1515@gregkh>
+ <20250131135421.GO5556@nvidia.com>
+ <2b9b75d1-eb8e-494a-b05f-59f75c92e6ae@marcan.st>
+ <Z6OzgBYZNJPr_ZD1@phenom.ffwll.local>
+ <CAPM=9tzPR9wd=3Wbjnp-T0W8-dDfGah-H3Ny52G85B+2Ev9ksA@mail.gmail.com>
+ <208e1fc3-cfc3-4a26-98c3-a48ab35bb9db@marcan.st>
+ <Z6UPXxEJYpanU9iU@cassiopeiae>
+ <4c0a7cf9-26e1-4a19-8a6e-7c30bc3aef86@marcan.st>
+ <20250207-mature-pastel-rottweiler-e6dbd9@lemur>
+ <1bbdf8b7-a70b-4994-865e-7fcb8d53ebef@marcan.st>
+ <CAHk-=wiQUya5_zTwLFNT2XkX-bf_H1vJiJ3zuADnO-3EwOOjVA@mail.gmail.com>
+From: Hector Martin <marcan@marcan.st>
+Content-Language: en-US
+In-Reply-To: <CAHk-=wiQUya5_zTwLFNT2XkX-bf_H1vJiJ3zuADnO-3EwOOjVA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Feb 7, 2025 at 1:12=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Fri, Feb 7, 2025 at 6:22=E2=80=AFPM Tamir Duberstein <tamird@gmail.com=
-> wrote:
-> >
-> > Include unexpected input on parsing failures.  This has the side effect
-> > of avoiding a spurious rust-analyzer warning:
-> >
-> >   Variable `None` should have snake_case name, e.g. `none`
->
-> Hmm... That should be solved independently, but sure.
->
-> In any case, how is this related to the second patch in the series?
-> i.e. do you need both to solve the macOS issue?
 
-No, it's not required - you're right to point that out. I'll send it
-separately. Is it very inconvenient to consider the other patch on its
-own?
 
-> > +        let Some(token) =3D it.next() else {
-> > +            break;
-> > +        };
-> > +        match token {
-> > +            TokenTree::Punct(punct) =3D> assert_eq!(punct.as_char(), '=
-,'),
-> > +            token =3D> panic!("Expected ',' or end of array, got {}", =
-token),
->
-> Do we want to shadow here?
+On 2025/02/08 3:33, Linus Torvalds wrote:
+> On Fri, 7 Feb 2025 at 10:02, Hector Martin <marcan@marcan.st> wrote:
+>>
+>> Meanwhile, for better or worse, much of Linux infra *is* centralized -
+>> for example, the mailing lists themselves, and a lot of the Git hosting.
+> 
+> The mailing lists are mostly on kernel.org, but the git hosting most
+> certainly is not centralized in any way.
+> 
+> The kernel.org git repositories used to be special in that I didn't
+> require signed tags for them, because I trusted the user maintenance.
+> But I was encouraging signed tags even back then, and once it got to
+> the point where most were signed anyway, I just made it a rule. So now
+> kernel.org isn't special even in that respect.
+> 
+> Now, kernel.org is very much _convenient_. And you see that in the
+> stats: of my pulls in the last year, 85% have been from kernel.org.
+> But that is very much because it is convenient, not because it's
+> centralized.
+> 
+> But that still leaves the 15% that aren't kernel.org.
 
-I personally like this style because the shadow and shadowed are the
-same variable and the presence of a binding in the match expression
-hints to the reader that it's used somewhere in the body of the match
-arm. Do you have another preference?
+For all intents and purposes, 85% centralized might as well be fully
+centralized. That is, any downtime on kernel.org will affect the
+community effectively the same as downtime on a true central SPOF would.
 
-> Also, I think you could write `{token}`. Same above.
+> More importtantly, not being centralized was very much a basic tenet
+> of git, so *if* git.kernel.org were to become problematic, it's very
+> easy to move git repositories anywhere else. Very much by design.
 
-Good call. Will make it so.
+And this is why, over focus on *decentraliation*, I think we should be
+focusing on *recoverability* and *data availability*.
 
-> Could you please show how the new output would look like in the commit me=
-ssage?
+There are two distinct scenarios. If kernel.org goes down for a while,
+that screws with people's workflow. They can find alternatives, but it
+will cause immediate, acute disruption, even while using "decentralized"
+git. You still need to tell people where the new repos are, reconfigure
+remotes, etc.. If the disruption is expected to be short-lived, a lot of
+people will choose to just ride it out, rather than find alternatives,
+or will only use alternatives in an ad-hoc manner where strictly
+necessary. Nobody does a "true" complete migration to another Git
+hosting when faced with a brief, temporary outage (heck, even just the
+time it takes to push a Linux Git tree from scratch to somewhere new is
+much longer than ideal, more so if your internet connection isn't the
+best or the routing to the server in question isn't great). At most you
+push whatever you're working on as needed somewhere else.
 
-Yes, I will include before and after output.
+If kernel.org goes down permanently or long term (or becomes
+problematic), that's when you start doing a full migration. And thanks
+to the Git design, this is possible - not because it's decentralized per
+se, but because everyone has local copies of almost everything, and they
+can easily be restored onto a new service.
 
-> Cheers,
-> Miguel
+The same goes for a forge scenario. If it goes down briefly, you fix it,
+and you can still use email to communicate with people ad hoc and send
+git changes around through any other hosting. It's still Git at the end
+of the day. Emailed patches and Git trees aren't going to become
+unusable just because most or all of the regular development happens on
+a forge.
+
+And if it goes down permanently or long term, or becomes problematic,
+what really matters isn't that it's "decentralized" as in federation.
+It's that the data is available, in much the same way it is for
+lore.kernel.org, and that people are actively backing it up (and it
+isn't hard to arrange for a handful of folks/organizations to have up to
+date mirrors, you don't need a Git-like scenario where literally
+everyone has full repo dumps; heck, I have a big NAS at home, I'd
+volunteer myself). Then, the service can be restored elsewhere when
+needed. If the issue is with the specific forge software used, you can
+always develop a migration plan to a different software (which, if the
+risk is managed properly, shouldn't be a time-critical process anyway).
+
+- Hector
+
