@@ -1,282 +1,254 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2055.outbound.protection.outlook.com [40.107.244.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C737DD26D
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Feb 2025 00:42:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738888938; cv=none; b=UElYP8yIu+1wIiGBMX7vyPYq3W57O6HkUtmw6nGhlD673j6LOPg08LnRKOQVmHJd0YAxEIGN5t0Gx3rgWoRBidQxyV3YzYCy1Do9bvsp9J5tye0+ufZNH1J7pitdyVkxhZbPwq9YiRbOuvw5Ud8NWBhcuEElT1leg+DotXajA/c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738888938; c=relaxed/simple;
-	bh=E3IIA/rW2JSQOawsih6tJR2JTBsf7TFUoSpGcSYgBfM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VlSGJ/jAJPT7KWwKxjsb7Dj3SW47vf08S395kkNf/AltB2MiFqPDYiXL/fulQ2JC5fmZVFbPcaUAMQo8tfDw52iEYtTruaPa4fLIczwc9ptycNQlzR8YBsiGgIqxt+F0h1gQ6RMSNtcgESj4sUlJjL14oNTz1N5gUFPAGssJVbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=N6fgLMG4; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18EEF1494DD;
+	Fri,  7 Feb 2025 01:41:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.55
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738892512; cv=fail; b=RDsE5SPzr1wunVxIDc8r71PsYlq2CabM/UcvqNDXgyt3y9NvyBtsWLxl8pRfC8GtEQqSxauxBoY4WrlkpevtCKNjV4oaW8tDBjTt1GSw/Wt1gsOD80xD0SnvZUVgN6S9EopB1QNzi6KWxqoqhsl8JVJMdR96cBLrkoYdpW8K7xM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738892512; c=relaxed/simple;
+	bh=8nLhjbyX1Kk4EQZsZAyqayCQW7E95njme622+VuORTc=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=k9EdSKtyQEkjdwkdX/v1CulnBi27jPZnTZUFk4QACVeEaZPhBRcas3hE4nkKcfjxJJFJdK+AetdfHGa4JnPP/qgNOowk5KUsppgubnYiDOGuUIGKDaaIBiYg5+tEeVQB2dDgcranpxEslVayYZ9kMjWFa/aivV8kx+xpIW77wA8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=a22klQwP; arc=fail smtp.client-ip=40.107.244.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="N6fgLMG4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738888932;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=eqAHLbDnsR2GoZ6ebFHWH4LrvYbIUhQvlucqWizP2jo=;
-	b=N6fgLMG4KtiOLPowSJm8vdOmH3xpWTsn0zrAdIFa14gx+CMOkGylGNvNJuQgKcJVvrLTPx
-	gvY/Eh3FhBVQVCCaP+Ht7t3rmPGeslR1ob345aSmgLBBtiHauAipEnHyqmXWt0J/CWhT/9
-	7oiKaGHCYg0cTpnPOzrPB5BFFtwSE1o=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-496-jQEfXN1TNOWuKq1NEH8vGA-1; Thu,
- 06 Feb 2025 19:42:09 -0500
-X-MC-Unique: jQEfXN1TNOWuKq1NEH8vGA-1
-X-Mimecast-MFC-AGG-ID: jQEfXN1TNOWuKq1NEH8vGA
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F180D180087A;
-	Fri,  7 Feb 2025 00:42:05 +0000 (UTC)
-Received: from chopper.redhat.com (unknown [10.22.66.91])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CDB6D30001AB;
-	Fri,  7 Feb 2025 00:42:01 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: rust-for-linux@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mairacanal@riseup.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Xiangfei Ding <dingxiangfei2009@gmail.com>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v2] rust/kernel: Add faux device bindings
-Date: Thu,  6 Feb 2025 19:40:45 -0500
-Message-ID: <20250207004049.178049-1-lyude@redhat.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="a22klQwP"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DkAs9oVIRsjSaFIBfa7xhgZHMs8sZ6D60edEtXVEg+E3DKk3YwYHT0v+qFYHTm3UgSPh0klMTE1lRWKPCUqW+rGkf6WkxOz6kXtQMLABQjHm0jRa1LFi0qcQe5aDD5wTlJVh+nVfksP7K/kA3h/W7yFDuGG4z7up3oLmXBvOSo0QuQgLvw7MRJuQ3YD6U0LGNI6igZ4Mfi8MiygQDtYg19JVrPilm+3yRfjTa6ebz/IUkeATYpWGRI83M1JcRpjNj6TMNs3ulja69OexJWDYmSo2PG12FfBdiBlEeM1TO3ya/2DVS+REI2tGeUnKm37zB1H2qa6TKBnfWqQjfwAjVg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wq02bO8jmC+HI3ONoOuzPLrlHQ0gUCc02uzCqs2+lAs=;
+ b=sIO7jeisBXbDKBARwHDvPGTSD1XMb7oSYURGSRBzyW9oHzC3/+OeNLC8Hf0kWEUiqs57ztXpisbW4IcPTaulCKAKGuqvaAQnjfc/uqA7wVqmIsM7sdDhyxiZwzaTnmkV6NCeBkW/VvvWJ0MEwo/Q12UgUWoIpVuFeynkdNeybxTXnlRWq1jiUGRah4Gl4mXn6KhUG5OO3vL1P5YijhFx+lrsKA6TRVxLoXMwloqb3iK7dg5UFEor+WTPao2qTDwkG1jOHisJM8P9QUyWrKOnU5LY58hExSFbytHvoNKJ8p/vcxgdxCWrKbnnZI40kIUsK/+ToKsS7t6mlQ5PoupNGA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wq02bO8jmC+HI3ONoOuzPLrlHQ0gUCc02uzCqs2+lAs=;
+ b=a22klQwPWrPtfYfOzFX9kuHque5McdC996CfNuwafwJnBO53vyx16/Toa1Jcr4f7g3VpP2SUzaplBW0NYrYK/6YfuQRW0DytZzzQh9e1HfCrm4OSnsqNT+UyJglPL7g6+cYmn8oNCRdlCMh8XPFHMOF8THDNgchCU+Rf20JgNZyRlU5hI/pn7XGh5seGUsOAltJep4CEVeWzfomUqxgaVBqRGmcBvegSpNz3icG74V10Xjn1owrJIoREzKjcPAlhhBgCmZlEKdpkd74emiHMMxcfgTQj06HC+js+Po+yOSBHSqCj/yhHH2gY5abVRwGwhcinpcduFsudIODRmENTpg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by MN6PR12MB8514.namprd12.prod.outlook.com (2603:10b6:208:474::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.12; Fri, 7 Feb
+ 2025 01:41:48 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99%4]) with mapi id 15.20.8422.010; Fri, 7 Feb 2025
+ 01:41:48 +0000
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 07 Feb 2025 10:41:37 +0900
+Message-Id: <D7LTY1FIUOTR.3E6MZ8BD0HW7E@nvidia.com>
+Cc: "airlied@gmail.com" <airlied@gmail.com>, "simona@ffwll.ch"
+ <simona@ffwll.ch>, "corbet@lwn.net" <corbet@lwn.net>,
+ "maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
+ "mripard@kernel.org" <mripard@kernel.org>, "tzimmermann@suse.de"
+ <tzimmermann@suse.de>, "ajanulgu@redhat.com" <ajanulgu@redhat.com>,
+ "lyude@redhat.com" <lyude@redhat.com>, "pstanner@redhat.com"
+ <pstanner@redhat.com>, "Zhi Wang" <zhiw@nvidia.com>, "Neo Jia"
+ <cjia@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>, "Ben Skeggs"
+ <bskeggs@nvidia.com>, "Andy Currid" <ACurrid@nvidia.com>,
+ "ojeda@kernel.org" <ojeda@kernel.org>, "alex.gaynor@gmail.com"
+ <alex.gaynor@gmail.com>, "boqun.feng@gmail.com" <boqun.feng@gmail.com>,
+ "gary@garyguo.net" <gary@garyguo.net>, "bjorn3_gh@protonmail.com"
+ <bjorn3_gh@protonmail.com>, "benno.lossin@proton.me"
+ <benno.lossin@proton.me>, "a.hindborg@kernel.org" <a.hindborg@kernel.org>,
+ "aliceryhl@google.com" <aliceryhl@google.com>, "tmgross@umich.edu"
+ <tmgross@umich.edu>, "dri-devel@lists.freedesktop.org"
+ <dri-devel@lists.freedesktop.org>, "linux-doc@vger.kernel.org"
+ <linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "nouveau@lists.freedesktop.org"
+ <nouveau@lists.freedesktop.org>, "rust-for-linux@vger.kernel.org"
+ <rust-for-linux@vger.kernel.org>, "Nouveau"
+ <nouveau-bounces@lists.freedesktop.org>
+Subject: Re: [PATCH v2 1/2] gpu: nova-core: add initial driver stub
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Thread-Topic: [PATCH v2 1/2] gpu: nova-core: add initial driver stub
+Thread-Index: AQHbeKA2ayaXKTc/F0i8CkcmmtmVjrM6W02AgAFD1gA=
+References: <20250204190400.2550-1-dakr@kernel.org>
+ <D7LF554L2J0N.JRPHDUCHVKP3@nvidia.com> <Z6TL5a5SCZoVq8Zt@cassiopeiae>
+In-Reply-To: <Z6TL5a5SCZoVq8Zt@cassiopeiae>
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+x-ms-exchange-imapappendstamp: CH2PR12MB3990.namprd12.prod.outlook.com
+ (15.20.8422.008)
+Content-ID: <2947EFEEE55F0C4186127BBC1C0D0604@NVIDIA.onmicrosoft.com>
+X-ClientProxiedBy: TY2PR0101CA0004.apcprd01.prod.exchangelabs.com
+ (2603:1096:404:92::16) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|MN6PR12MB8514:EE_
+X-MS-Office365-Filtering-Correlation-Id: b3870b26-8c59-4fc8-2ed3-08dd471895f8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|366016|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Qm5LUEhrQnNXL1lTVThoNFN6bVY2Rmg0TWxJeWNSTVRpL1cvTHRQelB2bkF1?=
+ =?utf-8?B?SGdYWTlvYkI1K1VXWCt1TG5EQk92UjZkRzJoVVhIUUpzckp1Mmk3YjY4TWZj?=
+ =?utf-8?B?UnlXVmpMVWdkemdZV0VEMkxiLzVHWU9QOGhONUp3Z2UvUlZ1VzhwNHhTK2o5?=
+ =?utf-8?B?SU4vSkFlYlYyZDJYMHROY1pHUDhWQzV3VDF1UGxiRzF4WEJvK0JNaEt0UUpB?=
+ =?utf-8?B?UUJRZ0dFQ0FBRjlsWWl5ZVU4bm8wYkYzOXVobDBpM2VDTkhrSVV3dHdOaXI5?=
+ =?utf-8?B?aW5vWTBiMFVJNUE3dDFZK1A4MUNDZzAvclpLNzJud2tCOHFxNWJraFFQQ0Na?=
+ =?utf-8?B?UEtrR2s3TlF1aVZBTE5Hd1VWbzdFald1aGhjdXlETElOQnU2TDZKMTExamps?=
+ =?utf-8?B?cC9Tb1ZoSzMyK3JuUWNnT1FicWlkRjJMZ0d6clBXcU5pNTN3dHVpeGNLSnRl?=
+ =?utf-8?B?eTdGc0tKQmpac1J0aGM3WUhZeDErcG0yZ09CUnBiV0R5U1lLR1ZiYkN1SmZy?=
+ =?utf-8?B?bWpvRnFGZzdSTjVkcjVSU2EwSzhpd2NzSEQ4TXg4eGdwd2tZRnlZNXBKdHV6?=
+ =?utf-8?B?dERpbU5Tc2xBU29aSlNMK2tPZDVLSDlqZFZubTBEUFJMWEMrR3NZQVVyY3Nv?=
+ =?utf-8?B?WUF0aWRnWDlvUjV5eHpEajQ3cGRhT0FBVmVRTk50akppSEFjM29iWlNpZWhx?=
+ =?utf-8?B?MVVyNk1TMG9YOTh0Z0xkUEQwcmgyVlBRL296NXdmR0JrVDh5Nkx5ZEsrRGZm?=
+ =?utf-8?B?SmZEaHpPTVF5dDFYMXZsRk5RK2JKUXpjMGpTRUd5M3d4MXA1VEEvQ3huTGNB?=
+ =?utf-8?B?M2wxa3BvUGQxY29HdFRnWUxwYkZ3b0ZpTzZqemxybFZTOHFBTHFlT2RGeWN3?=
+ =?utf-8?B?dmNOMUlZN3lKdThwblZqMUxIMWpDMDF5N0huRGZuM3IralJsR0VpWFJHZTRS?=
+ =?utf-8?B?ZzE2QjVXOHRIQXIyZmdkZ1hqUGN3d3paRjNhaSswOEROYktZRzNXSUt3QUo2?=
+ =?utf-8?B?Ry9ycnRrS0dWdytqbWViK3g4NWJYN0J4bUVQUEd2U0N1SVU4NFNkNmVsK0hj?=
+ =?utf-8?B?OU9pRkdQOUI3Qy9vMHF2SzFwbHgvdEphZ0trU0NEbFMwTUxrRENpR2diRjha?=
+ =?utf-8?B?U290NjdNUnBGdGVvZWxUQTEyNWoxdVc4TlNDYXAxOWpiV04waUJjTlJLOTN5?=
+ =?utf-8?B?R1pyTHhYMFVpWkc3QjkvaTVMMzg5MGI3bDBMOGtNeTdqL25rTW0wMFFsb1pX?=
+ =?utf-8?B?MGp2RmVTdUJzSlUrVmhOcnpkcTk3NzlaWW5nQnN2MmdvdUhsaDZxQUw3UXdN?=
+ =?utf-8?B?dlorcDVHSUVZWG0rbWxwT3BLKzRYcXc5dnAxYjdqdnhEY2h5TWNRVXp1S2xx?=
+ =?utf-8?B?ZW1TNnNGcTVJRllvdlBMU2RJNVBtVWdGempEcWtkUERzeElFbGs3L1YraHdO?=
+ =?utf-8?B?dzJTV0J3c1NGSXhoMVI0aVhTOEN4RFUwNmVybUJ6RTdKVncxaGxKek9DYmh1?=
+ =?utf-8?B?eVlRZmpDR0FVTU5GcHNDUUlQbktGZ2lia3R0MmY2akpsUUlleENkeVBsV3V5?=
+ =?utf-8?B?VlNUSjNLMEllZjVKWDlGeHduM0UzN2p2R3cvZ0tiRjBWbE5ObzM1bFh4NDMx?=
+ =?utf-8?B?b1hjWUdDTXpIbVhuSE1KK3h4WnVSWGs2VWJsVHV0WGIzUjJLaXVUY2l5b0gr?=
+ =?utf-8?B?cFpwNHovRnNQU1dqZEFMZG5VTHZzQVpnV0dGRldxUjhvS3A3VEJvUVpNUjVJ?=
+ =?utf-8?B?UG84QndaMk9FOWpGMlRaVTd0THV2dlVwWUVXOG5tRVJlSVhLOW9NNnAvejZ2?=
+ =?utf-8?B?THJrbFh5b0NIZXg2YklKWXdiUzdIcUVQUzVhUnBHUXMwK0V4NjBQZm9TbnR4?=
+ =?utf-8?Q?X0nx5QGcZ7ZnK?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?c3MxcWhBWlEwb3BudVUvSHJTazVPMU4vS2xBNGt4eEw2ZXZxV202djlpR2kw?=
+ =?utf-8?B?M0NsWWdpU21yYit6emxySmFSaWY4V2x5c0tNR1drdVRFbWZQZVBiMnFyYTY5?=
+ =?utf-8?B?VHNvVFVOTzJTcjc4S1JCaERlVHhWTlZCUnFjOGhDM2Uwb201VjYraittYm5X?=
+ =?utf-8?B?UG8rdjRMSEI5S2g4QmEweDR1R2tIL2llY0NWZ1dQVit5YUUrNG9zS1JmY05r?=
+ =?utf-8?B?dmwvTzZTeUFJK3A4ZWpWeVozQUJjMWJSek1TdkdQR0NBUkFWMStIOXQ3YWxk?=
+ =?utf-8?B?emJQVjNiTjBRZlpHa3dXcXJobHVGVGh4KzhYRjNla2NsdjBRMGdnUUpRaHZQ?=
+ =?utf-8?B?SER0TURxVjIxZ1cvaVJTRklFWlpKWFZFVFdoVDJVUE45VURqOXFLNllQdjQ0?=
+ =?utf-8?B?dUVvN1hMNWVYOGVyVTJDbUVYa3BudktvVGtBWG4yK1ltN3FjUE5pYVl2d3gv?=
+ =?utf-8?B?bDVDTy9aS21Ubkcxc0dRN1IybXFTZFhCUEtYME9aNGNSaTFBcDRxeThNLzRV?=
+ =?utf-8?B?Z1hQTlBKb2RFckdvaTZvUWdLMXhhdTJEa0xydWZPTEphZHgzOFpOOUlNWGZ1?=
+ =?utf-8?B?V1VBRXJHVXZLc0Y2RTFac0tTTlJDQ2hVck5kOUpZV001TExkbzVkbEFPQjly?=
+ =?utf-8?B?NkREeGlzNERjbjBnMjJXZk9obmdUUnNTRjNmY3YwcTRvWUxpNDFKVFBjRXF6?=
+ =?utf-8?B?OGlmaVNjUlNnMGhqVi9qY2IyZVlHbHpiTU5NTXJnS0V5S3ZWTEJNMTkzaW1h?=
+ =?utf-8?B?WlZNbVFRYkpHR3NtNWwzdVUwL2dWNXJwVE9ZQXZORlVwd0lIaWJxQXlxd3Vo?=
+ =?utf-8?B?MllGcCtRV2NKS3p5UE9IYTRoamtzQUZZWng2elQzbHpZOWFGOGpOcVl5S3BZ?=
+ =?utf-8?B?clE3dVptK25xU3lvdWNxLzhoOHk1M0l0OVN6NTY3cXljUk9XT3dEUHN5b2Js?=
+ =?utf-8?B?Tk9FalllUm42L3FwTE94aTlKMWZ5RlVWYjlJRFFSMFMvVlVFN3ZOYU1EeTYr?=
+ =?utf-8?B?Z0tQUktYa1RVdlBxL01VUUJJb3pxR0lzZnFKeDlVMEJpYnE0dHcxL3Y2bGUz?=
+ =?utf-8?B?NnpXK1l5eEVHVGtkNndhd095VWdqV2RubGNLdGkrUHBVdUtkYVVmOVd3b3VY?=
+ =?utf-8?B?UHptZDNaQkNMZGNoeUpEaTU2enBiNk9vOFM0UTNjSXVBRXE3TTN3alBjU2ta?=
+ =?utf-8?B?VzRFUFFnWTJQNjlLQ2dXcUFxSitxNlF1QVBXVVFrNHA1dXVDNG9XaGRUMzlV?=
+ =?utf-8?B?c0VwZ1RDWXBJYXZ6NGNLRVM2Vy9LK09hVkNoc3lDcGlzcGtjV2MyK0xBL05G?=
+ =?utf-8?B?Ri9nRlBNVkFYQXdVZm9QZ2ZVNTVJMGMweUFNbjg0NlhuOWlVQ1BzMjhoNlJD?=
+ =?utf-8?B?SHp3S2lVMHN6QUtuNTM3b010M3h3OXV3bzBLMGMzenkwTzY4eFM0UUxFelN4?=
+ =?utf-8?B?Q0NWZlFTUlloaDRPTEpyekF0TUxOa0l4cHQzRWhYa2k5Wk1hY0xsK1ZuZkV2?=
+ =?utf-8?B?cWtNU0FrMzJOZ1lyaElYcXc2Nk93bE5xbUFXNUIrYTJJVnlnbm1QQ0FTdnJm?=
+ =?utf-8?B?aElsTFJVNzNsUmFlbTAwaWtkbE9LZ3dWUmwva3RTc3FVZ2Ftd0ozbHpnWWJ6?=
+ =?utf-8?B?dDJWd1FuRVAySWljTzAxNXR5ZTJWNXNFalhKTWlQMWFrcnhYVlZDc2p0SXUw?=
+ =?utf-8?B?dHF4VXVOUmlNMzFKbXNTNmNGNEtiSm5RbGorYzljbHluL01vODhvSmh2NUJK?=
+ =?utf-8?B?bnd3dFVtSUdaN1h5cld1cE9JZWpOM2J5dHRkZ3YvdVJmK2VyZ2FzVjc2OHp4?=
+ =?utf-8?B?NEFRRUtmR1RRdzExdHluY2hKNmludnN1eWxxL0hEWHgxZmhLR1hpeCt6b1lI?=
+ =?utf-8?B?TUtUNFB1UEcyd1ZyNDJVdDhFSmUrY2hWcUgvMXI0bjZPbE5uckhGRFlHOERq?=
+ =?utf-8?B?UDlDRk1QeEFQWHA0L3N1K3hXMXlxZUx2R1FlKzJPVDEwZ3kxK3VXc1VlcGV2?=
+ =?utf-8?B?NGdIUml6dG5iY0M4TGxCZHZTZDFLSEdmZkRmVHczb1BWYWVNSHplamtkdlVG?=
+ =?utf-8?B?cXM5Qis5bkM4UFh3Tm5ueDNqM0hWRGlyNG82dFdEK1hyMDdONm1FYlUrZmNo?=
+ =?utf-8?Q?fSjjqZTj0jlRKYUNiZsPdbA5D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b3870b26-8c59-4fc8-2ed3-08dd471895f8
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Feb 2025 01:41:48.0185
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PnE1Iwv4x4uViSYrze8s26EwWMrs6+bap7X/ZVnwa4+2/jRO9G8u7kVZ1I3FUbAFnlSNqfdKbhO1oFUcGT+CAQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR12MB8514
 
-This introduces a crate for working with faux devices in rust, along with
-adding sample code to show how the API is used. Unlike other types of
-devices, we don't provide any hooks for device probe/removal - since these
-are optional for the faux API and are unnecessary in rust.
+Hi Danilo,
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Maíra Canal <mairacanal@riseup.net>
+On Thu Feb 6, 2025 at 11:49 PM JST, Danilo Krummrich wrote:
+>> > +impl Spec {
+>> > +    fn new(bar: &Devres<Bar0>) -> Result<Spec> {
+>> > +        let bar =3D bar.try_access().ok_or(ENXIO)?;
+>> > +        let boot0 =3D regs::Boot0::read(&bar);
+>> > +
+>> > +        let Some(chipset) =3D Chipset::from_u32(boot0.chipset()) else=
+ {
+>> > +            return Err(ENODEV);
+>> > +        };
+>> > +
+>> > +        let Some(arch) =3D Architecture::from_u32(boot0.arch()) else =
+{
+>> > +            return Err(ENODEV);
+>> > +        };
+>>
+>> Technically the Architecture is already known if the Chipset has been
+>> built successfully, so there should be no need to build it again (and
+>> test for a failure that cannot happen at this point).
+>>
+>> Since the architecture information is already embedded in Chipset, maybe
+>> we can have an arch() method there?
+>>
+>> Something like:
+>>
+>>     impl Chipset {
+>>         pub(crate) fn arch(self) -> Architecture {
+>>             match self as u32 & !0xf {
+>>                 0x160 =3D> Architecture::Turing,
+>>                 0x170 =3D> Architecture::Ampere,
+>>                 0x190 =3D> Architecture::Ada,
+>>                 _ =3D> unreachable!(),
+>>             }
+>>         }
+>>     }
+>
+> I thought about this, which is also why the comment above says: "consider=
+ to
+> store within Chipset, if arbitrary_enum_discriminant becomes stable".
+>
+> I did not go with what you suggest because it leaves us with either
+> Chipset::arch() returning a Result, which is annoying, or with Chipset::a=
+rch()
+> being able to panic the kernel, which I'd dislike even more.
+>
+> There's also a third option, which would be to have some kind of unknown
+> architecture, which we could catch later on, but that's just a worse vari=
+ation
+> of returning a Result.
+>
+> Another reason was that I did not want to encode register specific masks =
+into
+> the Chipset type.
 
----
-V2:
-* Check for NULL on return from device_create(), not a pointer error
-* Rename Device to Registration to make its purpose more clear
-* Drop platform device comment from crate docstring.
-* Update MAINTAINERS
+Agreed, none of these solutions are completely satisfying. From the
+point that we have successfully built a Chipset, we should be able to
+get its architecture without any runtime error or failure path. So I
+guess this leaves matching all the variants. It's a bit verbose, but
+hopefully later we can gather all the static information about chipsets
+in a single place, and generate these implementations (including a
+Display implementation - ideally the debug one would also print the hex
+representation of the chipset to be more useful for troubleshooting)
+using macros.
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
----
- MAINTAINERS                      |  2 ++
- rust/bindings/bindings_helper.h  |  1 +
- rust/kernel/faux.rs              | 60 ++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs               |  1 +
- samples/rust/Kconfig             | 10 ++++++
- samples/rust/Makefile            |  1 +
- samples/rust/rust_driver_faux.rs | 29 +++++++++++++++
- 7 files changed, 104 insertions(+)
- create mode 100644 rust/kernel/faux.rs
- create mode 100644 samples/rust/rust_driver_faux.rs
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2f0dc98dab5fa..aa81e57b4c25c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7119,8 +7119,10 @@ F:	rust/kernel/device.rs
- F:	rust/kernel/device_id.rs
- F:	rust/kernel/devres.rs
- F:	rust/kernel/driver.rs
-+F:	rust/kernel/faux.rs
- F:	rust/kernel/platform.rs
- F:	samples/rust/rust_driver_platform.rs
-+F:	samples/rust/rust_driver_faux.rs
- 
- DRIVERS FOR OMAP ADAPTIVE VOLTAGE SCALING (AVS)
- M:	Nishanth Menon <nm@ti.com>
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 55354e4dec14e..f46cf3bb70695 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -11,6 +11,7 @@
- #include <linux/blk_types.h>
- #include <linux/blkdev.h>
- #include <linux/cred.h>
-+#include <linux/device/faux.h>
- #include <linux/errname.h>
- #include <linux/ethtool.h>
- #include <linux/file.h>
-diff --git a/rust/kernel/faux.rs b/rust/kernel/faux.rs
-new file mode 100644
-index 0000000000000..6c0a795b27477
---- /dev/null
-+++ b/rust/kernel/faux.rs
-@@ -0,0 +1,60 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+//! Abstractions for the faux bus.
-+//!
-+//! This crate provides bindings for working with faux devices in kernel modules.
-+//!
-+//! C header: [`include/linux/device/faux.h`]
-+use crate::{bindings, device, error::code::*, prelude::*};
-+use core::ptr::{addr_of_mut, null, NonNull};
-+
-+/// The registration of a faux device.
-+///
-+/// This type represents the registration of a [`struct faux_device`]. When an instance of this type
-+/// is dropped, its respective faux device will be unregistered from the system.
-+///
-+/// # Invariants
-+///
-+/// `self.0` always holds a valid pointer to an initialized and registered [`struct faux_device`].
-+///
-+/// [`struct faux_device`]: srctree/include/linux/device/faux.h
-+#[repr(transparent)]
-+pub struct Registration(NonNull<bindings::faux_device>);
-+
-+impl Registration {
-+    /// Create and register a new faux device with the given name.
-+    pub fn new(name: &CStr) -> Result<Self> {
-+        // SAFETY:
-+        // - `name` is copied by this function into its own storage
-+        // - `faux_ops` is safe to leave NULL according to the C API
-+        let dev = unsafe { bindings::faux_device_create(name.as_char_ptr(), null()) };
-+
-+        // The above function will return either a valid device, or NULL on failure
-+        Ok(Self(NonNull::new(dev).ok_or(ENOMEM)?))
-+    }
-+
-+    fn as_raw(&self) -> *mut bindings::faux_device {
-+        self.0.as_ptr()
-+    }
-+}
-+
-+impl AsRef<device::Device> for Registration {
-+    fn as_ref(&self) -> &device::Device {
-+        // SAFETY: The underlying `device` in `faux_device` is guaranteed by the C API to be
-+        // a valid initialized `device`.
-+        unsafe { device::Device::as_ref(addr_of_mut!((*self.as_raw()).dev)) }
-+    }
-+}
-+
-+impl Drop for Registration {
-+    fn drop(&mut self) {
-+        // SAFETY: self.0 is a valid registered faux_device via our type invariants.
-+        unsafe { bindings::faux_device_destroy(self.as_raw()) }
-+    }
-+}
-+
-+// SAFETY: The faux device API is thread-safe
-+unsafe impl Send for Registration {}
-+
-+// SAFETY: The faux device API is thread-safe
-+unsafe impl Sync for Registration {}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 496ed32b0911a..398242f92a961 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -46,6 +46,7 @@
- pub mod devres;
- pub mod driver;
- pub mod error;
-+pub mod faux;
- #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
- pub mod firmware;
- pub mod fs;
-diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-index 918dbead2c0b4..3b6eae84b2977 100644
---- a/samples/rust/Kconfig
-+++ b/samples/rust/Kconfig
-@@ -61,6 +61,16 @@ config SAMPLE_RUST_DRIVER_PLATFORM
- 
- 	  If unsure, say N.
- 
-+config SAMPLE_RUST_DRIVER_FAUX
-+	tristate "Faux Driver"
-+	help
-+	  This option builds the Rust Faux driver sample.
-+
-+	  To compile this as a module, choose M here:
-+	  the module will be called rust_driver_faux.
-+
-+	  If unsure, say N.
-+
- config SAMPLE_RUST_HOSTPROGS
- 	bool "Host programs"
- 	help
-diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-index 5a8ab0df0567c..0dbc6d90f1ef9 100644
---- a/samples/rust/Makefile
-+++ b/samples/rust/Makefile
-@@ -6,6 +6,7 @@ obj-$(CONFIG_SAMPLE_RUST_MISC_DEVICE)		+= rust_misc_device.o
- obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_PCI)		+= rust_driver_pci.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+= rust_driver_platform.o
-+obj-$(CONFIG_SAMPLE_RUST_DRIVER_FAUX)		+= rust_driver_faux.o
- 
- rust_print-y := rust_print_main.o rust_print_events.o
- 
-diff --git a/samples/rust/rust_driver_faux.rs b/samples/rust/rust_driver_faux.rs
-new file mode 100644
-index 0000000000000..81ec465d52651
---- /dev/null
-+++ b/samples/rust/rust_driver_faux.rs
-@@ -0,0 +1,29 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Rust faux device sample.
-+
-+use kernel::{c_str, faux::*, prelude::*, Module};
-+
-+module! {
-+    type: SampleModule,
-+    name: "rust_faux_driver",
-+    author: "Lyude Paul",
-+    description: "Rust faux device sample",
-+    license: "GPL",
-+}
-+
-+struct SampleModule {
-+    _dev: Registration,
-+}
-+
-+impl Module for SampleModule {
-+    fn init(_module: &'static ThisModule) -> Result<Self> {
-+        pr_info!("Initialising Rust Faux Device Sample\n");
-+
-+        let dev = Registration::new(c_str!("rust-faux-sample-device"))?;
-+
-+        dev_info!(dev.as_ref(), "Hello from faux device!");
-+
-+        Ok(Self { _dev: dev })
-+    }
-+}
-
-base-commit: 808eb958781e4ebb6e9c0962af2e856767e20f45
-prerequisite-patch-id: f05ff916822e21eec452f9e5b8d11339c409265a
--- 
-2.48.1
+Cheers,
+Alex.
 
