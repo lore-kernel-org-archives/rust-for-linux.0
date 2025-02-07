@@ -1,308 +1,119 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60B4194A53
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Feb 2025 17:05:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF382E40B;
+	Fri,  7 Feb 2025 17:14:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738947955; cv=none; b=nZDtNnVdr/EvK75Y90SR9WJco4ZFUIrvMVMlceO+Ubzma0qBrzRjsXHJu2Tw73VwoOQAb8aKMgZt6yq+WRfQUdHaaLGjJFDDAZyL/L6wHNYtf1+I9SsIwXKB1Thi86f1NHYQPVvK8dSqLV/x5FBQ38/YLwbeOz3pnH5Eo4Smg/g=
+	t=1738948482; cv=none; b=pM7nsAOtfzK9NRaFeUeh89G5rW2YEr3M30lLZrBC0jyd69fC7xwc3YXsUjErnzmmFo0gaWK8KErUH3FsDZrAOoKWmAi12z76n3gJcEwfn9Q9OEqV8f8BB4F83woUzZK0gsJcOLPghWkF5EGuOQslNWqqiJSbQ5FAF1DZIG9pc4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738947955; c=relaxed/simple;
-	bh=1Dyi+8ak7PANbAUQic/ESw+91MvIzQWAudQJQwZN0AA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Bv5O7nbzmPrzzeaC2H/HTZxwUv95Na9fdnXfm1ozu7zcxHol6a0cNHVEAeG/gKrGq/Yn5nSnQe2/k+sDwG6BX7ekTlkOJYnJsT6hfVOOZ3Owa8b14xa+8ZbI5YA0cklxbesKaeO4n0YRyA4fjpe3FBm4kUpvdJyqqbLtHyOjeDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jRXgoEkF; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1738948482; c=relaxed/simple;
+	bh=u/ED8JNnC1UQpHwKYWpyVLSbIfd3idX0j4jpEDRD/Po=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HL6alPBNjkGzT+6N92kGMMlFVFYSWavNjL+ildoki5kjDACBiaCu8tPItSIFPZTduEY6mk9qvIrMBBr90b+QAsRYJAGvdksj8xr1ho2xkU+MhXI1kw4qPLiux0GU1W10N2L35/puNJPSHQYqqQhGfBR72K8G+ngkO1pip0uzeVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EB4qZguv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jRXgoEkF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738947952;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ulmIneXvWeKn842sM/NUdtiQkyckXgWBWcAxTArN7Vo=;
-	b=jRXgoEkFFq9MAhHYc7IFDXGIyQ+Bq+OLxsHZhHUStJZIxbna4sJJGahoj1llCasiM1j3+X
-	9wOA1ch6UgHMBad9+1oEkh7OcqwNnthPDBFdtWeCyUGO1vYosoWGqQuGOMHOXxeQzw5rus
-	RC+SOc6TZpMBNPN6OYZ8v3vCQurHDg4=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-627-hv0lCu8fN46891ycGHBZig-1; Fri, 07 Feb 2025 12:05:51 -0500
-X-MC-Unique: hv0lCu8fN46891ycGHBZig-1
-X-Mimecast-MFC-AGG-ID: hv0lCu8fN46891ycGHBZig
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-38c5d9530ebso1719771f8f.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 07 Feb 2025 09:05:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738947948; x=1739552748;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ulmIneXvWeKn842sM/NUdtiQkyckXgWBWcAxTArN7Vo=;
-        b=ctqHDpaHR1+nBjRZxVVULTSO/TmFt4P82XN2YmVDEgkXVI0A6Thb/8Sk4iIVrNZvjn
-         1XrZ/bAlq370HPcqFpQxBM3cfpt/8IdX/VdPZM3330cQcvjMvXx+sswQrEXeNvsUOXg8
-         ThLmpYtqCUCcBzZ2vdlP7GlHlsnYxGZykDVkj3Fbjewb3IrAKVwI0bMFP4Nofqc3Fzbo
-         zuBzpxFE8I4ImqQVpbXica+6hQVzQMI2fIh4/fHA6yrwN+vizyvWj9inAzyiO0C8je4r
-         eXEQrAR+ZJQkkxk8aHVkHTSdZC47l5fColhAlLuFUwRYgP4+Uz2clCqkE8OmgnXkyz1s
-         E8gg==
-X-Forwarded-Encrypted: i=1; AJvYcCVa26AaRLENCQeCJz8K+y92cY3rliIjbbXLqnp/NdlNDtlw4BnpNQEWd2flXQVXGIdLvGTWz2YwaxdiC9WGcA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAQ0qfhJOw45wEjn+Vqo8Fw6v2NuxB9JVI0q6uXxrgudFGSRWT
-	ZB7VsFX10rd8HwUc4CQVsQV36Ik4yNx+Dz0X3VZzGp0nhhdgfEYH+S2rPAfYUzd3hqF7IeRisTw
-	7VbhvbY+/oCT0cmKlr844mL2A83Ry2TyUCBznZAmgw4p4ekYZle9Mh17lK4mIVOEo
-X-Gm-Gg: ASbGncu1flplIXo5zeEHVqn9UpzBd0BChWy+Lhy0mN1DwqdUln7Wk1e3Xwcpo2FYRLK
-	7K7ETTLZ4xTLzZz9RQRfaBmUIrTvS/hFgLlPQZDWpzZCyEvw2tCRLzkJ6yg16TMQ/QKPVNL9RJV
-	gSLno9xLQ0SNhOvmjHeTh9CN3DeOUoNEYJmJJIlnBHsqClAqy5GulluUwTV3l/HAu9WG2rZxWNA
-	LZxLyGN2eTor63qlpjZy1FJv+pgCXWO9wPcnpllzXp+zJ9UTBEPxOVP/ylsfpXvocY/JJ/xDj4O
-	kVvEgRuYxdiwgOfG3n2JF8rDxSkheSom6lu+C0vrNZig
-X-Received: by 2002:a5d:6c6f:0:b0:38d:d0ea:b04c with SMTP id ffacd0b85a97d-38dd0eab247mr760430f8f.38.1738947947381;
-        Fri, 07 Feb 2025 09:05:47 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEUXkaH3F2I8hXAZSIfpLvryKrg2+hMGrYhKNpmj5opskHd+9X1jWEJI0aIzgAEMdsoZJPkjw==
-X-Received: by 2002:a5d:6c6f:0:b0:38d:d0ea:b04c with SMTP id ffacd0b85a97d-38dd0eab247mr760352f8f.38.1738947946678;
-        Fri, 07 Feb 2025 09:05:46 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:c:37e0:ced3:55bd:f454:e722? ([2a01:e0a:c:37e0:ced3:55bd:f454:e722])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4390db1150csm97455655e9.39.2025.02.07.09.05.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 07 Feb 2025 09:05:45 -0800 (PST)
-Message-ID: <56364bd9-2a6f-40f5-972c-f62898284a5c@redhat.com>
-Date: Fri, 7 Feb 2025 18:05:44 +0100
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EB4qZguv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E9F4C4CED1;
+	Fri,  7 Feb 2025 17:14:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1738948481;
+	bh=u/ED8JNnC1UQpHwKYWpyVLSbIfd3idX0j4jpEDRD/Po=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EB4qZguvpalT0C0z5a/gmU1Fx/oGkxoHt7O7oT5NG1M+IgG+gErAElJCoutxyOcyX
+	 A5ZLVUwf1kS+TT68/W3kyrxczesNU++Zz7xX8hX2jqAVzSKXaZrc4qpBW5aQgmXsep
+	 naRvC6qJ9IxhQQE4HYjYFv54gzi1+cJhRLxSN7nY=
+Date: Fri, 7 Feb 2025 12:14:36 -0500
+From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+To: Hector Martin <marcan@marcan.st>
+Cc: Danilo Krummrich <dakr@kernel.org>, Dave Airlie <airlied@gmail.com>, 
+	Jason Gunthorpe <jgg@nvidia.com>, Greg KH <gregkh@linuxfoundation.org>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, phasta@kernel.org, Christoph Hellwig <hch@lst.de>, 
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
+	daniel.almeida@collabora.com, aliceryhl@google.com, robin.murphy@arm.com, 
+	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Valentin Obst <kernel@valentinobst.de>, open list <linux-kernel@vger.kernel.org>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com, 
+	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>, DRI Development <dri-devel@lists.freedesktop.org>
+Subject: Re: On community influencing (was Re: [PATCH v8 2/2] rust: add dma
+ coherent allocator abstraction.)
+Message-ID: <20250207-mature-pastel-rottweiler-e6dbd9@lemur>
+References: <2025013030-gummy-cosmic-7927@gregkh>
+ <20250130172437.GN5556@nvidia.com>
+ <2025013148-reversal-pessimism-1515@gregkh>
+ <20250131135421.GO5556@nvidia.com>
+ <2b9b75d1-eb8e-494a-b05f-59f75c92e6ae@marcan.st>
+ <Z6OzgBYZNJPr_ZD1@phenom.ffwll.local>
+ <CAPM=9tzPR9wd=3Wbjnp-T0W8-dDfGah-H3Ny52G85B+2Ev9ksA@mail.gmail.com>
+ <208e1fc3-cfc3-4a26-98c3-a48ab35bb9db@marcan.st>
+ <Z6UPXxEJYpanU9iU@cassiopeiae>
+ <4c0a7cf9-26e1-4a19-8a6e-7c30bc3aef86@marcan.st>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] drm/panic: Better binary encoding in QR code
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Miguel Ojeda <ojeda@kernel.org>, =?UTF-8?Q?Thomas_B=C3=B6hler?=
- <witcher@wiredspace.de>, rust-for-linux@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-References: <20250128165254.893204-1-jfalempe@redhat.com>
-From: Jocelyn Falempe <jfalempe@redhat.com>
-In-Reply-To: <20250128165254.893204-1-jfalempe@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: tgnyq8WJsCGCP9vLSaAFrNE3rCjJj_Hyci5I7xbfWP4_1738947948
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, fr
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <4c0a7cf9-26e1-4a19-8a6e-7c30bc3aef86@marcan.st>
 
-On 28/01/2025 17:52, Jocelyn Falempe wrote:
-> The current encoding, is done by converting 13bits of input into 4
-> decimal digits, that are then encoded efficiently using the numeric
-> encoding of the QR code specification.
-> The Fido v2.2 specification [1] uses a similar approach for its
-> QR-initiated authentication. The only difference is that it converts
-> 7 bytes (56bits) of input into 17 decimal digits. The benefit is that
-> the algorithm doesn't require to split input bytes into 13bits chunk,
-> and the ratio is a bit better.
-> This improvement was proposed by Jó Ágila Bitsch in [2].
-> drm_panic is still young, and the QR code feature is not widely used,
-> so it's still time to switch to a common algorithm, shared with a
-> widely used standard.
-> I also changed the name of the url parameter, from zl= to z=, so the
-> website can keep backward compatibility if needed.
-> 
-> [1] https://fidoalliance.org/specs/fido-v2.2-rd-20230321/fido-client-to-authenticator-protocol-v2.2-rd-20230321.html#hybrid-qr-initiated
-> [2] https://github.com/kdj0c/panic_report/issues/2
-> 
-> Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+On Fri, Feb 07, 2025 at 05:16:28AM +0900, Hector Martin wrote:
+> And what I see, is very little effort to improve that status quo, or at
+> least very little that yields any actual change that isn't just
+> band-aids (e.g. tooling like b4, which is nice and appreciated, but
+> doesn't fix any underlying issues). And that's not going to change no
+> matter how many long technical arguments we have on the MLs (or even off
+> MLs, since MLs are also not particularly good for this, and I've seen
+> multiple arguments only reach a resolution after being redirected to IRC).
 
-As it had no reviews for 2 months, I've got an Acked-by from Maxime 
-Ripard off-list, and pushed it to drm-misc-next.
+From my perspective, there are several camps clashing when it comes to the
+kernel development model. One is people who are (rightfully) pointing out that
+using the mailing lists was fine 20 years ago, but the world of software
+development has vastly moved on to forges.
 
-Thanks,
+The other camp is people who (also rightfully) point out that kernel
+development has always been decentralized and we should resist all attempts to
+get ourselves into a position where Linux is dependent on any single
+Benevolent Entity (Github, Gitlab, LF, kernel.org, etc), because this would
+give that entity too much political or commercial control or, at the very
+least, introduce SPoFs.
 
--- 
+At best, I can hope to make both camps grumpily agree to coexist.
 
-Jocelyn
+I *am* very wary of Benevolent Entities, because we have too many very recent
+examples of companies "realigning priorities" when political winds shift.
+Programs and initiatives that have until recently been poster board examples
+of progress and benevolence are shuttered and defunded. I am concerned that
+we're only a couple of mood swings away from someone deciding that free
+software should not be allowed to exist because it benefits America's foes.
+Many of us remember all too well when large tech giants treated Linux as a
+"cancer" to be opposed, and I can certainly see that idea easily re-entering
+some Big Brain in Charge.
 
+From my perspective, I would like to ensure that Linux development can
+continue without a hard dependency on a single centralized forge -- whether
+controlled by a large commercial entity, or even a standalone one that is
+operated by kernel.org. It's becoming shockingly difficult to operate a public
+resource on the web unless you're willing to put it behind a large commercial
+CDN that will protect you from hostile bots (and if you do that, you're back
+to depending on the whims of a Benevolent Entity).
 
-> ---
-> 
-> v2:
->   * Add comments for the SegmentIterator numeric encoding.
->   
->   
->   drivers/gpu/drm/drm_panic.c     |   2 +-
->   drivers/gpu/drm/drm_panic_qr.rs | 108 +++++++++++---------------------
->   2 files changed, 36 insertions(+), 74 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
-> index f128d345b16d..ab42a2b1567d 100644
-> --- a/drivers/gpu/drm/drm_panic.c
-> +++ b/drivers/gpu/drm/drm_panic.c
-> @@ -499,7 +499,7 @@ static int drm_panic_get_qr_code_url(u8 **qr_image)
->   	char *kmsg;
->   	int max_qr_data_size, url_len;
->   
-> -	url_len = snprintf(url, sizeof(url), CONFIG_DRM_PANIC_SCREEN_QR_CODE_URL "?a=%s&v=%s&zl=",
-> +	url_len = snprintf(url, sizeof(url), CONFIG_DRM_PANIC_SCREEN_QR_CODE_URL "?a=%s&v=%s&z=",
->   			   utsname()->machine, utsname()->release);
->   
->   	max_qr_data_size = drm_panic_qr_max_data_size(panic_qr_version, url_len);
-> diff --git a/drivers/gpu/drm/drm_panic_qr.rs b/drivers/gpu/drm/drm_panic_qr.rs
-> index 09500cddc009..477de4101c3e 100644
-> --- a/drivers/gpu/drm/drm_panic_qr.rs
-> +++ b/drivers/gpu/drm/drm_panic_qr.rs
-> @@ -13,12 +13,13 @@
->   //! The binary data must be a valid URL parameter, so the easiest way is
->   //! to use base64 encoding. But this wastes 25% of data space, so the
->   //! whole stack trace won't fit in the QR code. So instead it encodes
-> -//! every 13bits of input into 4 decimal digits, and then uses the
-> +//! every 7 bytes of input into 17 decimal digits, and then uses the
->   //! efficient numeric encoding, that encode 3 decimal digits into
-> -//! 10bits. This makes 39bits of compressed data into 12 decimal digits,
-> -//! into 40bits in the QR code, so wasting only 2.5%. And the numbers are
-> +//! 10bits. This makes 168bits of compressed data into 51 decimal digits,
-> +//! into 170bits in the QR code, so wasting only 1.17%. And the numbers are
->   //! valid URL parameter, so the website can do the reverse, to get the
-> -//! binary data.
-> +//! binary data. This is the same algorithm used by Fido v2.2 QR-initiated
-> +//! authentication specification.
->   //!
->   //! Inspired by these 3 projects, all under MIT license:
->   //!
-> @@ -26,7 +27,6 @@
->   //! * <https://github.com/erwanvivien/fast_qr>
->   //! * <https://github.com/bjguillot/qr>
->   
-> -use core::cmp;
->   use kernel::str::CStr;
->   
->   #[derive(Debug, Clone, Copy, PartialEq, Eq, Ord, PartialOrd)]
-> @@ -296,35 +296,11 @@ fn version_info(&self) -> u32 {
->   /// Padding bytes.
->   const PADDING: [u8; 2] = [236, 17];
->   
-> -/// Get the next 13 bits of data, starting at specified offset (in bits).
-> -fn get_next_13b(data: &[u8], offset: usize) -> Option<(u16, usize)> {
-> -    if offset < data.len() * 8 {
-> -        let size = cmp::min(13, data.len() * 8 - offset);
-> -        let byte_off = offset / 8;
-> -        let bit_off = offset % 8;
-> -        // `b` is 20 at max (`bit_off` <= 7 and `size` <= 13).
-> -        let b = (bit_off + size) as u16;
-> -
-> -        let first_byte = (data[byte_off] << bit_off >> bit_off) as u16;
-> -
-> -        let number = match b {
-> -            0..=8 => first_byte >> (8 - b),
-> -            9..=16 => (first_byte << (b - 8)) + (data[byte_off + 1] >> (16 - b)) as u16,
-> -            _ => {
-> -                (first_byte << (b - 8))
-> -                    + ((data[byte_off + 1] as u16) << (b - 16))
-> -                    + (data[byte_off + 2] >> (24 - b)) as u16
-> -            }
-> -        };
-> -        Some((number, size))
-> -    } else {
-> -        None
-> -    }
-> -}
-> -
->   /// Number of bits to encode characters in numeric mode.
->   const NUM_CHARS_BITS: [usize; 4] = [0, 4, 7, 10];
-> -const POW10: [u16; 4] = [1, 10, 100, 1000];
-> +/// Number of decimal digits required to encode n bytes of binary data.
-> +/// eg: you need 15 decimal digits to fit 6 bytes of binary data.
-> +const BYTES_TO_DIGITS: [usize; 8] = [0, 3, 5, 8, 10, 13, 15, 17];
->   
->   enum Segment<'a> {
->       Numeric(&'a [u8]),
-> @@ -360,13 +336,9 @@ fn character_count(&self) -> usize {
->           match self {
->               Segment::Binary(data) => data.len(),
->               Segment::Numeric(data) => {
-> -                let data_bits = data.len() * 8;
-> -                let last_chars = match data_bits % 13 {
-> -                    1 => 1,
-> -                    k => (k + 1) / 3,
-> -                };
-> -                // 4 decimal numbers per 13bits + remainder.
-> -                4 * (data_bits / 13) + last_chars
-> +                let last_chars = BYTES_TO_DIGITS[data.len() % 7];
-> +                // 17 decimal numbers per 7bytes + remainder.
-> +                17 * (data.len() / 7) + last_chars
->               }
->           }
->       }
-> @@ -403,7 +375,7 @@ fn iter(&self) -> SegmentIterator<'_> {
->   struct SegmentIterator<'a> {
->       segment: &'a Segment<'a>,
->       offset: usize,
-> -    carry: u16,
-> +    carry: u64,
->       carry_len: usize,
->   }
->   
-> @@ -422,40 +394,30 @@ fn next(&mut self) -> Option<Self::Item> {
->                   }
->               }
->               Segment::Numeric(data) => {
-> -                if self.carry_len == 3 {
-> -                    let out = (self.carry, NUM_CHARS_BITS[self.carry_len]);
-> -                    self.carry_len = 0;
-> -                    self.carry = 0;
-> -                    Some(out)
-> -                } else if let Some((bits, size)) = get_next_13b(data, self.offset) {
-> -                    self.offset += size;
-> -                    let new_chars = match size {
-> -                        1 => 1,
-> -                        k => (k + 1) / 3,
-> -                    };
-> -                    if self.carry_len + new_chars > 3 {
-> -                        self.carry_len = new_chars + self.carry_len - 3;
-> -                        let out = (
-> -                            self.carry * POW10[new_chars - self.carry_len]
-> -                                + bits / POW10[self.carry_len],
-> -                            NUM_CHARS_BITS[3],
-> -                        );
-> -                        self.carry = bits % POW10[self.carry_len];
-> -                        Some(out)
-> -                    } else {
-> -                        let out = (
-> -                            self.carry * POW10[new_chars] + bits,
-> -                            NUM_CHARS_BITS[self.carry_len + new_chars],
-> -                        );
-> -                        self.carry_len = 0;
-> -                        Some(out)
-> +                if self.carry_len < 3 && self.offset < data.len() {
-> +                    // If there are less than 3 decimal digits in the carry,
-> +                    // take the next 7 bytes of input, and add them to the carry.
-> +                    let mut buf = [0u8; 8];
-> +                    let len = 7.min(data.len() - self.offset);
-> +                    buf[..len].copy_from_slice(&data[self.offset..self.offset + len]);
-> +                    let chunk = u64::from_le_bytes(buf);
-> +                    let pow = u64::pow(10, BYTES_TO_DIGITS[len] as u32);
-> +                    self.carry = chunk + self.carry * pow;
-> +                    self.offset += len;
-> +                    self.carry_len += BYTES_TO_DIGITS[len];
-> +                }
-> +                match self.carry_len {
-> +                    0 => None,
-> +                    len => {
-> +                        // take the next 3 decimal digits of the carry
-> +                        // and return 10bits of numeric data.
-> +                        let out_len = 3.min(len);
-> +                        self.carry_len -= out_len;
-> +                        let pow = u64::pow(10, self.carry_len as u32);
-> +                        let out = (self.carry / pow) as u16;
-> +                        self.carry = self.carry % pow;
-> +                        Some((out, NUM_CHARS_BITS[out_len]))
->                       }
-> -                } else if self.carry_len > 0 {
-> -                    let out = (self.carry, NUM_CHARS_BITS[self.carry_len]);
-> -                    self.carry_len = 0;
-> -                    Some(out)
-> -                } else {
-> -                    None
->                   }
->               }
->           }
-> 
-> base-commit: e2a81c0cd7de6cb063058be304b18f200c64802b
+We're trying to get lore.kernel.org to the point where it's like a global
+messaging bus that is indexed and searchable. Currently, you mostly have to
+send things to a mailing list for them to end up on lore, but it's gradually
+becoming less and less the case. We're already bridging with bugzilla and we
+should be able to bridge with forges soon, too (currently delayed again
+because I'm scrambling to move kernel.org frontends away from Equinix). Who
+knows, we may be actually leapfrogging the forge era of software development
+straight into "AI" agents era -- but that remains to be seen.
+
+Anyway, all of this is to say that I'm happy that you've found b4 useful, but
+I wouldn't view it as a band-aid -- it's just a very small and email-centric
+way to interact with the kernel lore.
+
+-K
 
