@@ -1,158 +1,232 @@
-Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158861A3141;
-	Fri,  7 Feb 2025 19:18:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.63.210.85
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4787019CCEC
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Feb 2025 19:53:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738955933; cv=none; b=oeXbS0wrmnF0wGYbXpowRTze3J4ZW4Od1TFK5FvvP8WBaoC3ip9OYM5o4kOTo8uVHpqEdwtByu+klAZ+QbB/7T3zkTsuKigGfs3C+MCCf9FhldoXz/OQBQ6qsejA3a6TcnTvXMMZiRBo4UoGO8qJi1F5ZWpTC89/BpJ7tWZRjIc=
+	t=1738958020; cv=none; b=GzAE7VUdWNs5qhEMBym/Hvdl/bN2wgiQFlqd/n8sVpLKt6GFDbsXoAYlu4g9MxRCuyqZHbbFooLLRBg04ecHBg7tZk3nmk8jltyXDhhw75w/kpEOOvBmXGPdbJGr9cD7YXURqXOuDgQ68BXl16jZQhxPNidA6zYrYBol2GiEoKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738955933; c=relaxed/simple;
-	bh=hzKbZ8fP/OSMSD/R0tqD9tsgwLS5wn2Ud2IztAjubuM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ejBR0k71K4Kbh353uulYiYC+ezNs8osen4SQavoTU/LG7lWLqrTt2yObxabHEGzq63oAQnM2RttnuiqxjR/L8g6zPXLPPCgIF7Nl4lYubZr3VfbywrH25TJ4eFtPlC6laRVC6E1cTsZofakQqyBXUJ0cVOB0rC2t4odd9RGW/Mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marcan.st; spf=pass smtp.mailfrom=marcan.st; dkim=pass (2048-bit key) header.d=marcan.st header.i=@marcan.st header.b=sHjNiqpm; arc=none smtp.client-ip=212.63.210.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marcan.st
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marcan.st
+	s=arc-20240116; t=1738958020; c=relaxed/simple;
+	bh=yXZiKi5E5en5DW948jJuRz2UwobMK6wppmDarWrXWhQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=DkcwmNwV3SFBHmZ6etzpTFx+EQgBVF86utY82VLehkPA+Yw1kPRuCUt01upJs17UqleYpewASDwZHTy/Sb0EBc04ekwSWrGF5bUn2Ndi7byZRBtqT6F6LNgueD/c6KKE8Wztwc47GZG2FplX6IIuE/o1A9UW9oscEUkY7qXYdaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=LwyzTy1d; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marcan.st header.i=@marcan.st header.b="sHjNiqpm"
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: marcan@marcan.st)
-	by mail.marcansoft.com (Postfix) with ESMTPSA id B39684203E;
-	Fri,  7 Feb 2025 19:18:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
-	t=1738955928; bh=hzKbZ8fP/OSMSD/R0tqD9tsgwLS5wn2Ud2IztAjubuM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=sHjNiqpm+Nd9HwV76Weu9j8XnhP47P+uq7573nSGjE9eJAyMBGyfSz+yDqxX6/PbL
-	 qGSrltV/BCfiDLNFTn81hhoQodk3U1539JLY+XxQxsYSYqNw5pmUFc1mBnVZftWSlu
-	 xlcYlCzr/llfrxVde6Zuv+94X0XSE9sUPZTFGxNLXwKD6ciSyz2pWKO2yZz9Q6rXCS
-	 L0fglNEajp8MokCOE25A31kFkq2rWrA5e+tWOksyAmdAJG3AC0U8m5vtM2BC02b0ck
-	 hByJ4GYVkOtsVXJaITTvCU2bOyI/hIwth37+vWN3sNvsFpWOjkzlICkMkNrTaWi1/1
-	 +DLBb/GdHKTjw==
-Message-ID: <ae11fa0f-7b3e-4dd7-8b4f-da0e9daa99bd@marcan.st>
-Date: Sat, 8 Feb 2025 04:18:44 +0900
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="LwyzTy1d"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id 8FC37240101
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Feb 2025 20:53:35 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1738958015; bh=yXZiKi5E5en5DW948jJuRz2UwobMK6wppmDarWrXWhQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 From;
+	b=LwyzTy1dc52bMMUq0rM7/CPM7urNkbk/nwDEWWTcVX/nefWpnoF6hQZfoMgFud7TA
+	 1ki9yAHY8U78ibOkaUoK3BVRGecPvwiDTtT8JEiT1C6LirZsXLu83qZ+mgzF4LvBp7
+	 Ztl1Fl8M06OTPVrdcm95aKU8lyu0H3AIFwYjFcMr1pu0p7hmFP7sC3LsyqipuZI0nh
+	 b7zQl9QaPFbga7Rx49rYmtx/luxG5YqsHL7a3X6B+dSaOrf0aRD7eXPb7FCGcCzusb
+	 qNiTmXYRl8J4uh1CyHORSoQjTCffB212WoUakWBHZnIlwFcncR4N6e8SrJggSu/S31
+	 mYE+rL7Hlbb7w==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4YqPmD5nHvz6tvt;
+	Fri,  7 Feb 2025 20:53:32 +0100 (CET)
+From: Charalampos Mitrodimas <charmitro@posteo.net>
+To: Alban Kurti <kurti@invicto.ai>
+Cc: Andy Whitcroft <apw@canonical.com>,  Joe Perches <joe@perches.com>,
+  Dwaipayan Ray <dwaipayanray1@gmail.com>,  Lukas Bulwahn
+ <lukas.bulwahn@gmail.com>,  Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor
+ <alex.gaynor@gmail.com>,  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  Benno
+ Lossin <benno.lossin@proton.me>,  Andreas Hindborg
+ <a.hindborg@kernel.org>,  Alice Ryhl <aliceryhl@google.com>,  Trevor Gross
+ <tmgross@umich.edu>,  linux-kernel@vger.kernel.org,
+  rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v4] checkpatch: add warning for pr_* and dev_* macros
+ without a trailing newline
+In-Reply-To: <20250207-checkpatch-newline2-v4-1-26d8e80d0059@invicto.ai>
+	(Alban Kurti's message of "Fri, 07 Feb 2025 18:39:06 +0000 (UTC)")
+References: <20250207-checkpatch-newline2-v4-1-26d8e80d0059@invicto.ai>
+Date: Fri, 07 Feb 2025 19:53:31 +0000
+Message-ID: <m2wme1pm4k.fsf@posteo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: On community influencing (was Re: [PATCH v8 2/2] rust: add dma
- coherent allocator abstraction.)
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>, Dave Airlie <airlied@gmail.com>,
- Jason Gunthorpe <jgg@nvidia.com>, Greg KH <gregkh@linuxfoundation.org>,
- phasta@kernel.org, Christoph Hellwig <hch@lst.de>,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Abdiel Janulgue <abdiel.janulgue@gmail.com>, daniel.almeida@collabora.com,
- aliceryhl@google.com, robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- Valentin Obst <kernel@valentinobst.de>,
- open list <linux-kernel@vger.kernel.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
- "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
- DRI Development <dri-devel@lists.freedesktop.org>
-References: <2025013030-gummy-cosmic-7927@gregkh>
- <20250130172437.GN5556@nvidia.com>
- <2025013148-reversal-pessimism-1515@gregkh>
- <20250131135421.GO5556@nvidia.com>
- <2b9b75d1-eb8e-494a-b05f-59f75c92e6ae@marcan.st>
- <Z6OzgBYZNJPr_ZD1@phenom.ffwll.local>
- <CAPM=9tzPR9wd=3Wbjnp-T0W8-dDfGah-H3Ny52G85B+2Ev9ksA@mail.gmail.com>
- <208e1fc3-cfc3-4a26-98c3-a48ab35bb9db@marcan.st>
- <Z6UPXxEJYpanU9iU@cassiopeiae>
- <4c0a7cf9-26e1-4a19-8a6e-7c30bc3aef86@marcan.st>
- <20250207-mature-pastel-rottweiler-e6dbd9@lemur>
- <1bbdf8b7-a70b-4994-865e-7fcb8d53ebef@marcan.st>
- <CAHk-=wiQUya5_zTwLFNT2XkX-bf_H1vJiJ3zuADnO-3EwOOjVA@mail.gmail.com>
-From: Hector Martin <marcan@marcan.st>
-Content-Language: en-US
-In-Reply-To: <CAHk-=wiQUya5_zTwLFNT2XkX-bf_H1vJiJ3zuADnO-3EwOOjVA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
+Alban Kurti <kurti@invicto.ai> writes:
 
+> Add a new check in scripts/checkpatch.pl to detect usage of pr_(level)
+> and dev_(level) macros (for both C and Rust) when the string literal
+> does not end with '\n'. Missing trailing newlines can lead to incomplete
+> log lines that do not appear properly in dmesg or in console output.
+> To show an example of this working after applying the patch we can run
+> the script on the commit that likely motivated this need/issue:
+>   ./scripts/checkpatch.pl --strict -g "f431c5c581fa1"
+>
+> Also, the patch is able to handle correctly if there is a printing call
+> without a newline which then has a newline printed via pr_cont for
+> both Rust and C alike. If there is no newline printed and the patch
+> ends or there is another pr_* call before a newline with pr_cont is
+> printed it will show a warning. Not implemented for dev_cont because it
+> is not clear to me if that is used at all.
+>
+> One false warning that will be generated due to this change is in case
+> we have a patch that modifies a `pr_* call without a newline` which has a
+> pr_cont with a newline following it. In this case there will be a
+> warning but because the patch does not include the following pr_cont it
+> will warn there is nothing creating a newline. I have modified the
+> warning to be softer due to this known problem.
+>
+> I have tested with comments, whitespace, differen orders of pr_* calls
+> and pr_cont and the only case that I suspect to be a problem is the one
+> outlined above.
 
-On 2025/02/08 3:33, Linus Torvalds wrote:
-> On Fri, 7 Feb 2025 at 10:02, Hector Martin <marcan@marcan.st> wrote:
->>
->> Meanwhile, for better or worse, much of Linux infra *is* centralized -
->> for example, the mailing lists themselves, and a lot of the Git hosting.
-> 
-> The mailing lists are mostly on kernel.org, but the git hosting most
-> certainly is not centralized in any way.
-> 
-> The kernel.org git repositories used to be special in that I didn't
-> require signed tags for them, because I trusted the user maintenance.
-> But I was encouraging signed tags even back then, and once it got to
-> the point where most were signed anyway, I just made it a rule. So now
-> kernel.org isn't special even in that respect.
-> 
-> Now, kernel.org is very much _convenient_. And you see that in the
-> stats: of my pulls in the last year, 85% have been from kernel.org.
-> But that is very much because it is convenient, not because it's
-> centralized.
-> 
-> But that still leaves the 15% that aren't kernel.org.
+This is now a more significant change, I belive we should document it
+this under Documentation/dev-tools/checkpatch.rst. Where you can also
+provide examples/use-cases.
 
-For all intents and purposes, 85% centralized might as well be fully
-centralized. That is, any downtime on kernel.org will affect the
-community effectively the same as downtime on a true central SPOF would.
-
-> More importtantly, not being centralized was very much a basic tenet
-> of git, so *if* git.kernel.org were to become problematic, it's very
-> easy to move git repositories anywhere else. Very much by design.
-
-And this is why, over focus on *decentraliation*, I think we should be
-focusing on *recoverability* and *data availability*.
-
-There are two distinct scenarios. If kernel.org goes down for a while,
-that screws with people's workflow. They can find alternatives, but it
-will cause immediate, acute disruption, even while using "decentralized"
-git. You still need to tell people where the new repos are, reconfigure
-remotes, etc.. If the disruption is expected to be short-lived, a lot of
-people will choose to just ride it out, rather than find alternatives,
-or will only use alternatives in an ad-hoc manner where strictly
-necessary. Nobody does a "true" complete migration to another Git
-hosting when faced with a brief, temporary outage (heck, even just the
-time it takes to push a Linux Git tree from scratch to somewhere new is
-much longer than ideal, more so if your internet connection isn't the
-best or the routing to the server in question isn't great). At most you
-push whatever you're working on as needed somewhere else.
-
-If kernel.org goes down permanently or long term (or becomes
-problematic), that's when you start doing a full migration. And thanks
-to the Git design, this is possible - not because it's decentralized per
-se, but because everyone has local copies of almost everything, and they
-can easily be restored onto a new service.
-
-The same goes for a forge scenario. If it goes down briefly, you fix it,
-and you can still use email to communicate with people ad hoc and send
-git changes around through any other hosting. It's still Git at the end
-of the day. Emailed patches and Git trees aren't going to become
-unusable just because most or all of the regular development happens on
-a forge.
-
-And if it goes down permanently or long term, or becomes problematic,
-what really matters isn't that it's "decentralized" as in federation.
-It's that the data is available, in much the same way it is for
-lore.kernel.org, and that people are actively backing it up (and it
-isn't hard to arrange for a handful of folks/organizations to have up to
-date mirrors, you don't need a Git-like scenario where literally
-everyone has full repo dumps; heck, I have a big NAS at home, I'd
-volunteer myself). Then, the service can be restored elsewhere when
-needed. If the issue is with the specific forge software used, you can
-always develop a migration plan to a different software (which, if the
-risk is managed properly, shouldn't be a time-critical process anyway).
-
-- Hector
-
+>
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1140
+> Signed-off-by: Alban Kurti <kurti@invicto.ai>
+> ---
+> Changes since v3:
+> - Just reordered the checkpatch.pl code original addition as it did not work properly
+> - Link to v3: https://lore.kernel.org/all/20250207-checkpatch-newline-v3-1-20d8774f16ea@invicto.ai/
+> ---
+>  scripts/checkpatch.pl | 96 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 96 insertions(+)
+>
+> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+> index 9eed3683ad76caffbbb2418e5dbea7551d374406..0e7684d2f0cf30575640d7c4da9e51a13d91463b 100755
+> --- a/scripts/checkpatch.pl
+> +++ b/scripts/checkpatch.pl
+> @@ -77,6 +77,8 @@ my ${CONFIG_} = "CONFIG_";
+>  
+>  my %maybe_linker_symbol; # for externs in c exceptions, when seen in *vmlinux.lds.h
+>  
+> +my $pending_log = undef;
+> +
+>  sub help {
+>  	my ($exitcode) = @_;
+>  
+> @@ -3888,6 +3890,91 @@ sub process {
+>  			}
+>  		}
+>  
+> +# check for pr_* and dev_* logs without a newline for C and Rust files to avoid missing log messages
+> +  my $pr_cont_pattern = qr{
+> +      \b
+> +      pr_cont!?
+> +      \s*
+> +      \(
+> +      \s*
+> +      "([^"]*)"
+> +      [^)]*
+> +      \)
+> +  }x;
+> +  my $log_macro_pattern = qr{
+> +      \b
+> +      (
+> +          pr_(?:emerg|alert|crit|err|warn|notice|info|debug)
+> +        | dev_(?:emerg|alert|crit|err|warn|notice|info|dbg)
+> +      )
+> +      (!?)
+> +      \s*
+> +      \(
+> +      \s*
+> +      "([^"]*)"
+> +  }x;
+> +
+> +  if ($realfile =~ /\.(?:c|h|rs)$/) {
+> +      if ($rawline =~ /^\+/) {
+> +          my $cleanline = $rawline;
+> +          $cleanline =~ s/^[+\s]+//;
+> +          $cleanline =~ s/\r?$//;
+> +          $cleanline =~ s{/\*.*?\*/}{}g;
+> +          $cleanline =~ s{//.*}{}g;
+> +
+> +          if ($pending_log) {
+> +              if ($cleanline =~ /$pr_cont_pattern/) {
+> +                  my $cont_string_arg = $1;
+> +                  if ($cont_string_arg =~ /\\n$/) {
+> +                      $pending_log = undef;
+> +                  }
+> +              } elsif ($cleanline =~ /$log_macro_pattern/) {
+> +                  WARN($pending_log->{lang} . "_LOG_NO_NEWLINE",
+> +                       "Possible usage of $pending_log->{macro_call} without a trailing newline.\n" .
+> +                       $pending_log->{herecurr});
+> +
+> +                  $pending_log = undef;
+> +
+> +                  my $macro_call  = $1;
+> +                  my $maybe_excl  = $2;
+> +                  my $string_arg  = $3;
+> +                  $string_arg =~ s/\s+$//;
+> +
+> +                  if ($realfile =~ /\.rs$/ && $maybe_excl ne '!') {
+> +                      return;
+> +                  }
+> +
+> +                  if ($string_arg !~ /\\n$/ && $string_arg !~ /\n$/) {
+> +                      $pending_log = {
+> +                          macro_call => $macro_call,
+> +                          herecurr => $herecurr,
+> +                          lang => ($realfile =~ /\.rs$/) ? "Rust" : "C",
+> +                      };
+> +                  }
+> +              }
+> +          } else {
+> +              if ($cleanline =~ /$log_macro_pattern/) {
+> +                  my $macro_call = $1;
+> +                  my $maybe_excl = $2;
+> +                  my $string_arg = $3;
+> +                  $string_arg =~ s/\s+$//;
+> +
+> +                  if ($realfile =~ /\.rs$/ && $maybe_excl ne '!') {
+> +                      return;
+> +                  }
+> +
+> +                  if ($string_arg !~ /\\n$/ && $string_arg !~ /\n$/) {
+> +                      $pending_log = {
+> +                          macro_call => $macro_call,
+> +                          herecurr   => $herecurr,
+> +                          lang       => ($realfile =~ /\.rs$/) ? "Rust" : "C",
+> +                      };
+> +                  }
+> +              }
+> +          }
+> +      }
+> +  }
+> +
+>  # check for .L prefix local symbols in .S files
+>  		if ($realfile =~ /\.S$/ &&
+>  		    $line =~ /^\+\s*(?:[A-Z]+_)?SYM_[A-Z]+_(?:START|END)(?:_[A-Z_]+)?\s*\(\s*\.L/) {
+> @@ -7678,6 +7765,15 @@ sub process {
+>  		}
+>  	}
+>  
+> +# pending log means a pr_* without an ending newline has not
+> +# been followed by a pr_cont call with a newline at the end
+> +  if ($pending_log) {
+> +    WARN($pending_log->{lang} . "_LOG_NO_NEWLINE",
+> +      "Usage of $pending_log->{macro_call} without a trailing newline.\n" .
+> +      $pending_log->{herecurr});
+> +    $pending_log = undef;
+> +  }
+> +
+>  	# If we have no input at all, then there is nothing to report on
+>  	# so just keep quiet.
+>  	if ($#rawlines == -1) {
+>
+> ---
+> base-commit: ceff0757f5dafb5be5205988171809c877b1d3e3
+> change-id: 20250207-checkpatch-newline2-f60275e30eb6
+>
+> Best regards,
