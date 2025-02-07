@@ -1,90 +1,112 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8305F199EB7;
-	Fri,  7 Feb 2025 18:13:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FE2190679;
+	Fri,  7 Feb 2025 18:16:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738952029; cv=none; b=uSlXsRCySDlHvPn/n8TmdUMI4OGfr+s6lKn3BudVsgO8a5LK9sLp8tglxoBPGqBIuaLBDsGafwGWWHZ97Ik4hHSGWfB1HuumXIhWEtVAZvaJeEKEBj191rKD+vcXb8SnEpjzeX+3Pl4cFhGypjn5R0qw3Ynn7P0gMl5O8zn70Cs=
+	t=1738952178; cv=none; b=imw2BmyAC/umBxLy6xWiuZsFmf6xRBSXNTMw32EHMY2Aos8nLTP8SWBXagb1pDXZZX1nPvsE2OR00jLZYzC7KKGPPsYp3URsu3QxWVsDsJFIdyZEAYHRo7zCmfgntcjZ0lP/WCa+28w6MwMQUju+kgKw58rGYPDXKzkbqUqJ3lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738952029; c=relaxed/simple;
-	bh=kCJUCb1al564gWEZKmDKxko9CvAjVN9iFffA/t/+h0A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cXtl4aKQ3bdg+iOlunkQJVKcub9Sc9+GKrIO99JpRN6n3qGlQz5AjqTRfzVDbYPGHaTVdzr0HRBKNI3EXtFaNmiPD2LNL2dbd6oA1Qrwi2actpo+j5d7QFx0DXCSqBGP5LMpEVWMGtgnaV/lTj3fE2YQD4bF6bPJBkcsZluUqu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JAeeubZh; arc=none smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738952178; c=relaxed/simple;
+	bh=Eq4cBho7gaFSCAzvdIWPOTbGcCpCxWQkoaDnbjh0a/A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f8Ik6spwJSytXRm7Y7JpZbs8bEDcDL9oujxJuHJhksObBuCXa4SotMnmnWfBNTkcIDTSYY677wdD77oNpL9mOwDUMzX6NIq7YHhobej/V0NTL5mvE/XcR2LfoS3d4ZBcXW2ow+OBxjBo+rfdtoy/HLYRwWD5zJ8CenVZtddOhbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dYtkQyL9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JAeeubZh"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2f9dcc3f944so493275a91.2;
-        Fri, 07 Feb 2025 10:13:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738952028; x=1739556828; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kCJUCb1al564gWEZKmDKxko9CvAjVN9iFffA/t/+h0A=;
-        b=JAeeubZhk9FE180BZanTf8Cm8pkKYxKQcxapMEvxxAaAr0d7E0KATJksLfnrWsi5Qg
-         JZwqZZ8FLWDIbTG3wV6mHcTAoxM7NWWe/5/6Kz/O2HJr0IFq+uqmO8pQ8eaMVk0mmFy4
-         voBgGpAGMzFM66ns5pJJUM8ZDvjug/IJrqorEqX/33sfo6F2LRWOoSiBYFEwRUMSrnrd
-         evy0AsH+Fc7oFtm9mjeVMVqkjR90bWeRuszVOvu76yWQS281McI3Kd+9ajFtYkGHik3V
-         4U0Zg0js2UoIBRfDw2e9wBcPZeFlVX/WXOfOHCVu40lWRHdyRCgT+ouP333j2TEPEhOo
-         Dn9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738952028; x=1739556828;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kCJUCb1al564gWEZKmDKxko9CvAjVN9iFffA/t/+h0A=;
-        b=i83bd0WwQk42MH1OGJ3gz4beO0QVLYIB/oL9qZAl21rntGhFdWWGfViAU9TqNb9KTl
-         lAFTie6q/ZuFcGH3KOiPZNdMQxws/4Y9hWiENf1ct/Uv32ToZepwLwcwuKbbE7Me37lx
-         XzxBYODZKnJZ08Xzhytx76N3TC4C4GxjsC7k+UAjiOCQ1NffkBerqqNAVwp2iFdHAM4V
-         TxLZAZCQ2tV2GuXMpC9BKOawXdTFXZtXEEtMV1oWo7O49f868N3BhHL6NH3TiN+6nPtu
-         /IJO1LcIWIaFM3/0DGuguMB3ujH+k7XW1ADaORN2KAXjOmd3cG8gnPeCa/SK6oieBVz+
-         /nrg==
-X-Forwarded-Encrypted: i=1; AJvYcCVb2Ta45XzrfgRrMmDE5TzrfWF1fAd0Ny+o3e2QXEQ3jkEzCdj2NDwzODTNBvwo7jA/D9IW/zFAebaMtpY=@vger.kernel.org, AJvYcCXf0j8e2SW86HEAAe6ITcdY39A+aBlaF8vgEmRlq1g3ggPYzZMQ5MhWoOWi85ESXMIOukXVQVtJWVroVm20NzQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywlr4nfqCJLZ5jPCJYFW4a9Wrj3/my4wK18MR5Yl9PrkuOkPLar
-	perpu0QSw90ctPE7rsHCs2T/Yl3nUGx6RwVI6HEpOj8+w8Jp7NXTeLVbvad1+eNzYRBMhX6XCNk
-	pEdmBm341YWNxHHrHm6yhHaeSFYc=
-X-Gm-Gg: ASbGnctou0nBSGZp47s2Yh9GjBMw7wEJJ1gEqpRgG0a39vVgcPEDxdgCSP9XHRGh4Qj
-	QONaRrD5mzEiIsXWLrIoflFTJY4/8p7FsJZPws2r9RCe2DmYE1BVR3YPI2yuxGH/3adiGGs22Ag
-	==
-X-Google-Smtp-Source: AGHT+IEnAY695rQ33z8o6cmzY46tPr7vvtwy9jrurgATNpzacnfuWCONrZGp2ErDmnLZxICdOC9Y7x3JeppmfViSOgM=
-X-Received: by 2002:a17:90b:180d:b0:2fa:2011:c85d with SMTP id
- 98e67ed59e1d1-2fa245281e0mr2284958a91.7.1738952027739; Fri, 07 Feb 2025
- 10:13:47 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dYtkQyL9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D00C4CED1;
+	Fri,  7 Feb 2025 18:16:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1738952177;
+	bh=Eq4cBho7gaFSCAzvdIWPOTbGcCpCxWQkoaDnbjh0a/A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dYtkQyL9R4s5F/N1Qc8eNa/zpLRu+R/5gpq8SzJ8+0J20vJGafaHQn/CBVwUbJwBl
+	 ajHqq7eFr+PQsg6xEQ7uN6kBTV41D6fV1zQLqYzx61TvOm5X7/f0jfshBj+IJHx0by
+	 HGzLZ7ARvwiQ3fVYqIWk6WYUI0hKpp6YQNgeDNDg=
+Date: Fri, 7 Feb 2025 13:16:11 -0500
+From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+To: Hector Martin <marcan@marcan.st>
+Cc: Danilo Krummrich <dakr@kernel.org>, Dave Airlie <airlied@gmail.com>, 
+	Jason Gunthorpe <jgg@nvidia.com>, Greg KH <gregkh@linuxfoundation.org>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, phasta@kernel.org, Christoph Hellwig <hch@lst.de>, 
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
+	daniel.almeida@collabora.com, aliceryhl@google.com, robin.murphy@arm.com, 
+	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Valentin Obst <kernel@valentinobst.de>, open list <linux-kernel@vger.kernel.org>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com, 
+	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>, DRI Development <dri-devel@lists.freedesktop.org>
+Subject: Re: On community influencing (was Re: [PATCH v8 2/2] rust: add dma
+ coherent allocator abstraction.)
+Message-ID: <20250207-prehistoric-married-dormouse-3e1aa7@lemur>
+References: <2025013148-reversal-pessimism-1515@gregkh>
+ <20250131135421.GO5556@nvidia.com>
+ <2b9b75d1-eb8e-494a-b05f-59f75c92e6ae@marcan.st>
+ <Z6OzgBYZNJPr_ZD1@phenom.ffwll.local>
+ <CAPM=9tzPR9wd=3Wbjnp-T0W8-dDfGah-H3Ny52G85B+2Ev9ksA@mail.gmail.com>
+ <208e1fc3-cfc3-4a26-98c3-a48ab35bb9db@marcan.st>
+ <Z6UPXxEJYpanU9iU@cassiopeiae>
+ <4c0a7cf9-26e1-4a19-8a6e-7c30bc3aef86@marcan.st>
+ <20250207-mature-pastel-rottweiler-e6dbd9@lemur>
+ <1bbdf8b7-a70b-4994-865e-7fcb8d53ebef@marcan.st>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250207-macros-section-v1-0-8f018cb05a20@gmail.com> <20250207-macros-section-v1-2-8f018cb05a20@gmail.com>
-In-Reply-To: <20250207-macros-section-v1-2-8f018cb05a20@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 7 Feb 2025 19:13:34 +0100
-X-Gm-Features: AWEUYZk2aXFR-Ad0yHLgDDHw4Us-fwuGZXXF6lGo_lXLuhuiKjjqopyHNjKtTnk
-Message-ID: <CANiq72kGvZkpamxEFJqYO3As5POhrVDonFPZvKu8+UZMtVcvFQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] rust: macros: fix `make rusttest` build on macOS
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <1bbdf8b7-a70b-4994-865e-7fcb8d53ebef@marcan.st>
 
-On Fri, Feb 7, 2025 at 6:22=E2=80=AFPM Tamir Duberstein <tamird@gmail.com> =
-wrote:
->
-> Do not emit `#[link_section =3D ".modinfo"]` on macOS (i.e. when building
-> userspace tests); .modinfo is not a legal section specifier in mach-o.
+On Sat, Feb 08, 2025 at 03:02:11AM +0900, Hector Martin wrote:
+> The centralization concern is valid, but there are technical solutions
+> to this, such as forge federation. 
 
-I thought the changes we already applied were the ones needed for
-macOS support. Oh, well...
+Unfortunately, forge federation is really only between Forgejo instances and
+is still pretty nascent, afaict. The most promising development in
+decentralized forges that I've seen is Radicle, but I'm yet to try it again
+ever since they got collectively drunk on bitcoin coolaid a few years ago.
 
-Cheers,
-Miguel
+> Meanwhile, for better or worse, much of Linux infra *is* centralized -
+> for example, the mailing lists themselves, and a lot of the Git hosting.
+
+Yes, but it's at least resilient. If someone knocks out vger.kernel.org,
+kernel development will still continue because maintainers are still cc'd
+directly via email, and email is still the only widely adopted federated
+platform that we have, with nothing else coming anywhere close.
+
+> At the end of the day, I do not believe a theoretical breakdown of Linux
+> infra would be a major long-term setback to Linux kernel development.
+
+We know it's the case when kernel.org went off the air for months in 2011. :)
+Let's keep it that way!
+
+> But I'm afraid you'll find much if not most of the true opposition to
+> forges is not technical, it is philosophical or preference-based (even
+> though it may be presented as technical opposition, sometimes to
+> intentionally mislead). This is, in fact, quite a mirror of the R4L
+> situation, where technical arguments ("show me you can write a real
+> driver") quickly lead to non-technical arguments when solutions are
+> proposed ("it's cancer").
+> 
+> I actually considered moving soc/apple development to a forge personally
+> in the near future (obviously not my call to make any more), and I was
+> fully expecting a pile of pushback, "because that's not how we do things
+> here". Who knows, I might have gotten a "fuck you, either you accept
+> email patches or I remove you from MAINTAINTERS" from Linus.
+
+It is my goal to be able to give subsystems a way to use forges without it
+impacting how they interact with upstream or handle tree-wide changes. That
+is, once I'm done moving things from one Benevolent Company to another.
+
+> All that said, thanks for b4. I might have given up much earlier, not
+> due to flamewars but due to exhaustion with poor tooling, if it didn't
+> exist.
+
+I'm happy to hear that.
+
+Best wishes,
+-K
