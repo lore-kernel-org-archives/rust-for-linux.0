@@ -1,153 +1,284 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2011F4E56;
-	Fri,  7 Feb 2025 13:32:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA51913BAE4
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Feb 2025 13:49:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738935149; cv=none; b=sTwfZfeW9VoZ6s0Wz6GBWlAg1cfkEz59OHWOGD6Zcws1YXQsR7t3Em3VOXULCdkc0+8faF/acmILhi/F7/vK2sBqjUTeg2Z7y2CcSnTmbRk8943TjOOc9nBSjFpSBf437I9YNteuP+34vFGujMZq3gzCrdU/yYlQ7MvTE8fLcZw=
+	t=1738936196; cv=none; b=mNFysjft17jcyh5EHDVggrCGNkOFDxSwA+0UN31yBm9HPdO3EtyB+ID501sINC6nXvsceKXSqfUBYC6Ru1pMyQ1R++ATGS02V58Dk0V+blW/lhqGXICNVgxW98Jzu/wlHAS2zggzIzzxrjte8vLmosBSJTpcl3WXg5Dn8jGs8wA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738935149; c=relaxed/simple;
-	bh=p/LLNspP63XeDluK8n1bB3ApPN0HiknOfwCoEOeBPsY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hZp7v2G/8UGCb1rJQMI4LE5po7VvqCdDPwnYgGoHK/Q1ZeQiPoelaRD0Fh5KXAN6VswEGQqMinUbK/MlhPiVrkC0RraXPIpkrJtsaVWKcS6GVPqYuoC8UqKKMbIPlBNLJNYgMcSzLKWD3n2tOm+ZNgUISc6ibDMiNcsgvPkms48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j+5LtLQz; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1738936196; c=relaxed/simple;
+	bh=juFaumXjbLoOz65YU45sqBaxAyFGQIdadpsHlfe1m5M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FxLoLNYN6w6vTatIlTiXviaiwgGb7VrZCOaQPgNI6h4XZq3q5Ol3XiCkOSi276IcXvutqP6iouxt8HkO92xYvH11aHHHc9RfaaZy5xXLmZT4lj4MXLGiFRyfvaYxz2UBEUXHmPtu6BHeFheAqK09+qY+a3NImXosT/suBC2tAFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=WRQQgkTS; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j+5LtLQz"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-21f5660c2fdso9590525ad.2;
-        Fri, 07 Feb 2025 05:32:27 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="WRQQgkTS"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-38dc9eba8a1so596581f8f.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 07 Feb 2025 05:49:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738935147; x=1739539947; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=R57PZ40vsMBhmQU5DVB3HkIVq/yRk+LSm6ONd5T9PSk=;
-        b=j+5LtLQz4hKl9OtugRZi89BG3nF+IzTUkizVR2EhR3vMCOMOTUu9sovFpSgTCZEKBu
-         OMqY74VB9t13J3ad349EmLTqTkQbPmve3TL1OUuit1j/nJuuEurkIEy5y1QRoLIBy065
-         PS819Ny5ET663NbQbcxzbq3WIVUXyeOJDnKI2DZUOAxFJr0SjXxunY9gX2pFRrPwxKD3
-         xXYt2f9jdJMnbdZIqr8WHoJ1GpULB56GOG3YG8nsa8v+yu/Q0qhpLReiYCZdmUHZTqoC
-         0lG9bS4QfIorrgWs07KxwTL+yiSWDw4o4w//82VcyN/EOWswXUr2kVxMgtemESPQKCfE
-         84MA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738935147; x=1739539947;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=ffwll.ch; s=google; t=1738936193; x=1739540993; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=R57PZ40vsMBhmQU5DVB3HkIVq/yRk+LSm6ONd5T9PSk=;
-        b=hWiSmHI3r/IMbx3ML3DzwkgCO9Bv9V6vo6SR50vYv8hTzyELDDE+99j66+dx955n3d
-         qubvMEAL55pcBGA2PdLO/KbJcPdjOf7TpFMMkXVUs1YJC+1BnWJ1SEbIuBAEHJ3L5vnK
-         C6VcKh99ipFTpqpbD7r4RanmCFDBSJK25fVIXMZh6p5GiN7l/GdjhfVNOJklBosA/hJN
-         T5UOVo5vL7SYYZAagYUlhswzy5VbWn+Oq9XcXz/FVoi7/y149xB06lcPojUb/sWFK3u1
-         1tOBmL98PpCzLIvOKKS/9hAySG68/ezbM08X3rXi9krC6xKARIqEqtwitKGhlkn+Ulny
-         RpeA==
-X-Forwarded-Encrypted: i=1; AJvYcCVbisuUmNKbqOrXXepEnpOdTa4rUdIRkchMEjgGKwEMJhvEECZ6Y0VBADMyUMPMKh0WRx+NxWWnQpXGpgCc8Ao=@vger.kernel.org, AJvYcCWNZEVKb25KXh4Edt/tthZlTl4oTK/gD0eJbFQgbvHm94vno0w5G4ddgqixoikJz6TAai8U+mY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNejoInx3c1o2mRWt9tlXzF99TONmywtwsBXQ0iiyHaxFQVO3l
-	QWDkUYlNgnXCZto1ab1l+QKhtE9694x8Vtc+tmPgmDzfxHIbYKCdN+l/L66V
-X-Gm-Gg: ASbGncvm/tQQhDBmzHMtUsK9qEWMCEk6BVddoOPvVVizNDXxLojhlh8ToTT3pVm61Ir
-	HnaVhXk5bEBHBjsYUP7PbGNHTifgCV6Q4zK5ee7k/e/jUS2Fk+8bA0nQc1d3nwMLS4G0F2qflkD
-	xvWDddc9+j+UMFHkXrlPlwW34DNn6CTptr+jsRMMfwTbU7hGni7e4l19TMVrExSYOKK8GFKeGwX
-	9YUVoRt3tKBp+XJfEWphYHX1td+wEBeXdBqRB+9RvBdx02pTiKjaPL4WREkvk9uH5hGSb7F0Zfb
-	yFmGVl1/CcmfVR/IiNr936+Jk8L2Mgfq1EENOBEvz/aXbbvonlRAQ03Bm6qsDlAE7+w=
-X-Google-Smtp-Source: AGHT+IHhtSG2duMocArmnuRm1/YUB2+aUWDxsujnMBlnADYjatNoIUDc8APNR9zWnp5zI5ykScedxA==
-X-Received: by 2002:a05:6a20:438c:b0:1ed:a72f:bed1 with SMTP id adf61e73a8af0-1ee03b5a90emr7910761637.32.1738935146765;
-        Fri, 07 Feb 2025 05:32:26 -0800 (PST)
-Received: from mew.. (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ad51ea79a47sm2877843a12.76.2025.02.07.05.32.19
+        bh=gpzEGYGNBlnkdvpss0WFxUtrvy3hr5xZCI7pyjeA6nE=;
+        b=WRQQgkTSVFp5Pk6nAaiccJ9cbFWobKVQp/qz10aWgsHPRZ+/EfPqq1JZ+s9M9R5/Nn
+         E7cYIdibkmnMu6ykVmToBgCdu8He2lzOqbp8BsrqZSi30Yiv/1lb26OiBfjgvfJnwocU
+         yP6MPMUvekv/tVbA5FKVLCbvxQFH+PcNj/bdg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738936193; x=1739540993;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gpzEGYGNBlnkdvpss0WFxUtrvy3hr5xZCI7pyjeA6nE=;
+        b=sraNkUS+QWncrn0hmpbK4O8pl+uKk/hH8YLd+IQqrut+xbR1MbY8z+l6oGwS6JnxxZ
+         1QC5amt1EAr5FVGmJTSH8MAnFpgghKcZY/ZKWRu1Pgsy8iNp9mhgrl9MktzzSa2tYQMP
+         2UDPtOSsMVw61MQc2QTeN/Trs9Ix5q9zg522fjRrb/sd6mkq0fkpiUqi3+t65Dm/PQFc
+         f4mSjoW/FMgdaRYFt3G7EZNqyxKWksaHdniKQInhKYssZ8uwNfsoX7EuxtBJT9GwNB1B
+         Qw2Z8AI4DpWvdPUuOH6KFnzBTfK/PNF2VVC4MsyhFvwApFo2j0kYPBq/E/fRfrgCwf8Q
+         9YQg==
+X-Forwarded-Encrypted: i=1; AJvYcCWuHsxHshCrouYpRq0Rl+jzXEWoOeqSp0fKHB7jDXP38Kq9+CfdUN5EfF8b5V+fh7UBu3NnyMfdRxwtifxdBQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKjNJESKk6fjA/bW/U4eV8UoFUSJPBaYe5YEuUfDj360mMZKC/
+	NkwHtQyswhMD+hO61+Jms4SE1lNhLpCWyjnuMJERiodc+r0SIgyg/iJ7lqUQY6A=
+X-Gm-Gg: ASbGncvbwyq62JtySTgCwhYPKmMQ0i80IhCKHEOEpmBbQHBPgH15Beudh6IYEP9EJFW
+	YYyYrvx59CT9dOAkWSZdmhUg07vUnHkgRKmZJ5to/AVPjtxwC/Do1osXVJXEJl4LdIHAOfpp9bx
+	1nJIaTgC3D4QrShQqGGj4m+rhvABnGr9j/af3P2i2uHrLSxEflqNkhjlPTKt17gm75PmkZdS6dw
+	rLhid8Yk1oM8rc9W10M6bnUol84SQtsbTCP0mANeAYG71RxaFn+mfW3WT+l/kEdU8dxqVTasZeB
+	cZtb1AndjZG4FmXXQA7ZuzK5ATU=
+X-Google-Smtp-Source: AGHT+IGJqAMB1t0pJiSzXY6UMdV7Lyj9QcEwc09QaQmxoJvGxizmah3qJE54xKnmFhg5DOnjQ57dWQ==
+X-Received: by 2002:a05:6000:1a8d:b0:38a:88b8:99af with SMTP id ffacd0b85a97d-38dc8dd0c01mr2285461f8f.22.1738936192850;
+        Fri, 07 Feb 2025 05:49:52 -0800 (PST)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38dbdd53a6esm4511438f8f.43.2025.02.07.05.49.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Feb 2025 05:32:26 -0800 (PST)
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-To: linux-kernel@vger.kernel.org
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Gary Guo <gary@garyguo.net>,
-	rust-for-linux@vger.kernel.org,
-	netdev@vger.kernel.org,
-	hkallweit1@gmail.com,
-	tmgross@umich.edu,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@samsung.com,
-	anna-maria@linutronix.de,
-	frederic@kernel.org,
-	tglx@linutronix.de,
-	arnd@arndb.de,
-	jstultz@google.com,
-	sboyd@kernel.org,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org,
-	dietmar.eggemann@arm.com,
-	rostedt@goodmis.org,
-	bsegall@google.com,
-	mgorman@suse.de,
-	vschneid@redhat.com,
-	tgunders@redhat.com,
-	me@kloenk.dev
-Subject: [PATCH v10 8/8] net: phy: qt2025: Wait until PHY becomes ready
-Date: Fri,  7 Feb 2025 22:26:23 +0900
-Message-ID: <20250207132623.168854-9-fujita.tomonori@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250207132623.168854-1-fujita.tomonori@gmail.com>
-References: <20250207132623.168854-1-fujita.tomonori@gmail.com>
+        Fri, 07 Feb 2025 05:49:52 -0800 (PST)
+Date: Fri, 7 Feb 2025 14:49:50 +0100
+From: Simona Vetter <simona.vetter@ffwll.ch>
+To: Hector Martin <marcan@marcan.st>
+Cc: Simona Vetter <simona@ffwll.ch>, Jason Gunthorpe <jgg@nvidia.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>, phasta@kernel.org,
+	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	daniel.almeida@collabora.com, aliceryhl@google.com,
+	robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Valentin Obst <kernel@valentinobst.de>,
+	open list <linux-kernel@vger.kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
+	DRI Development <dri-devel@lists.freedesktop.org>
+Subject: Re: On community influencing (was Re: [PATCH v8 2/2] rust: add dma
+ coherent allocator abstraction.)
+Message-ID: <Z6YPfsDSNdRUskvp@phenom.ffwll.local>
+Mail-Followup-To: Hector Martin <marcan@marcan.st>,
+	Simona Vetter <simona@ffwll.ch>, Jason Gunthorpe <jgg@nvidia.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>, phasta@kernel.org,
+	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	daniel.almeida@collabora.com, aliceryhl@google.com,
+	robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Valentin Obst <kernel@valentinobst.de>,
+	open list <linux-kernel@vger.kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
+	DRI Development <dri-devel@lists.freedesktop.org>
+References: <293df3d54bad446e8fd527f204c6dc301354e340.camel@mailbox.org>
+ <20250130154646.GA2298732@nvidia.com>
+ <2025013030-gummy-cosmic-7927@gregkh>
+ <20250130172437.GN5556@nvidia.com>
+ <2025013148-reversal-pessimism-1515@gregkh>
+ <20250131135421.GO5556@nvidia.com>
+ <2b9b75d1-eb8e-494a-b05f-59f75c92e6ae@marcan.st>
+ <Z6OzgBYZNJPr_ZD1@phenom.ffwll.local>
+ <4c143b85-063a-4413-a6ca-e9d80e26da96@marcan.st>
+ <c5a49bcb-45cf-4295-80e0-c4b07083df00@marcan.st>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c5a49bcb-45cf-4295-80e0-c4b07083df00@marcan.st>
+X-Operating-System: Linux phenom 6.12.11-amd64 
 
-Wait until a PHY becomes ready in the probe callback by
-using read_poll_timeout function.
+On Fri, Feb 07, 2025 at 07:20:03PM +0900, Hector Martin wrote:
+> On 2025/02/07 18:41, Hector Martin wrote:
+> > On 2025/02/06 3:52, Simona Vetter wrote:
+> >> On Tue, Feb 04, 2025 at 03:46:14AM +0900, Hector Martin wrote:
+> >>> Adding Linus
+> >>>
+> >>> My 2c: If Linus doesn't pipe up with an authoritative answer to this
+> >>> thread, Miguel and the other Rust folks should just merge this series
+> >>> once it is reviewed and ready, ignoring Christoph's overt attempt at
+> >>> sabotaging the project. If Linus pulls it, what Christoph says doesn't
+> >>> matter. If Linus doesn't pull it, the R4L project is essentially dead
+> >>> until either Linus or Christoph make a move. Everything else is beating
+> >>> around the bush.
+> >>>
+> >>> Rust folks: Please don't waste your time and mental cycles on drama like
+> >>> this. It's not worth your time. Either Linus likes it, or he doesn't.
+> >>> Everything else is distractions orchestrated by a subset of saboteur
+> >>> maintainers who are trying to demoralize you until you give up, because
+> >>> they know they're going to be on the losing side of history sooner or
+> >>> later. No amount of sabotage from old entrenched maintainers is going to
+> >>> stop the world from moving forward towards memory-safe languages.
+> >>>
+> >>> FWIW, in my opinion, the "cancer" comment from Christoph would be enough
+> >>> to qualify for Code-of-Conduct action, but I doubt anything of the sort
+> >>> will happen.
+> >>
+> >> Yeah no.
+> >>
+> >> https://chaos.social/@sima/113942119012147959
+> >>
+> >> This was about you, because typing a proper answer takes a bit longer. It
+> >> was also about your toots on fedi, like this:
+> >>
+> >> https://social.treehouse.systems/@marcan/113941468353031993
+> >>
+> >> And "haha it's only a joke" does not work with your public profile and following.
+> >>
+> >> I do understand the frustration and temptation to just burn it all to the
+> >> ground, head the call of the sirens, or maybe for me more pick up goat
+> >> farming in the Swiss Alps. But you can't have it both and expect to also
+> >> be part of and contribute to the same community. And personally I don't
+> >> appreciate getting drenched in gasoline while I'm trying to quench flames
+> >> on the ground.
+> >>
+> >> And this isn't the first time or the second, by now it's a pretty clear
+> >> pattern over some years. And with the first I could explain why you react
+> >> like that and you had my full understanding, but eventually that runs a
+> >> bit thin as an excuse.  Now I'm left with the unlikely explanation that
+> >> you just like thundering in as the cavalry, fashionably late, maximally
+> >> destructive, because it entertains the masses on fedi or reddit or
+> >> wherever. I have no idea what you're trying to achieve here, I really
+> >> don't get it, but I am for sure fed up dealing with the fallout.
+> >>
+> >> Cheers, Sima
+> > 
+> > Since we're into complaining about social media posts on the list now,
+> > I'm going to link one of yours:
+> > 
+> > https://chaos.social/@sima/113961496955043901
+> > 
+> > An R4L maintainer quit after multiple rounds of hostility, including
+> > some completely unacceptable public comments bordering on downright
+> > harassment from tytso, a situation which was widely publicized.
+> > 
+> > If, according to you, that's "shockingly smooth" with "no outsized
+> > drama" other than "what I stirred up" (I guess you also missed the whole
+> > LWN post about this thread before I posted anything on Fedi? That's how
+> > I even found out about this), then I'm glad I'm disengaging with this
+> > community. The Stockholm syndrome and utter denial is palpable.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
- drivers/net/phy/qt2025.rs | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+Yes, the kernel's conduct is still not where I think it needs to be. And
+there are still cases occuring with some regularity which would be
+unacceptable on dri-devel and sanctioned under the freedesktop.org code of
+conduct. But that's not really new, it's not really specific to the r4l
+project, and despite that it's still not good enough, it's definitely much
+better than 10 years ago.
 
-diff --git a/drivers/net/phy/qt2025.rs b/drivers/net/phy/qt2025.rs
-index 1ab065798175..cdf0540f0a98 100644
---- a/drivers/net/phy/qt2025.rs
-+++ b/drivers/net/phy/qt2025.rs
-@@ -12,6 +12,7 @@
- use kernel::c_str;
- use kernel::error::code;
- use kernel::firmware::Firmware;
-+use kernel::io::poll::read_poll_timeout;
- use kernel::net::phy::{
-     self,
-     reg::{Mmd, C45},
-@@ -19,6 +20,7 @@
- };
- use kernel::prelude::*;
- use kernel::sizes::{SZ_16K, SZ_8K};
-+use kernel::time::Delta;
- 
- kernel::module_phy_driver! {
-     drivers: [PhyQT2025],
-@@ -93,7 +95,13 @@ fn probe(dev: &mut phy::Device) -> Result<()> {
-         // The micro-controller will start running from SRAM.
-         dev.write(C45::new(Mmd::PCS, 0xe854), 0x0040)?;
- 
--        // TODO: sleep here until the hw becomes ready.
-+        read_poll_timeout(
-+            || dev.read(C45::new(Mmd::PCS, 0xd7fd)),
-+            |val| *val != 0x00 && *val != 0x10,
-+            Delta::from_millis(50),
-+            Some(Delta::from_secs(3)),
-+        )?;
-+
-         Ok(())
-     }
- 
+That all aside, I put the "outsized" very intentionally in my comment. It
+carries a lot more than just the above paragraph in just one small word.
+
+> > I thought I could work with you on these issues; I don't know what
+> > happened over the past year since we last had a private conversation
+> > about this, but clearly you've changed your mind.
+
+I got seriously annoyed with you about two years ago for the first time,
+but kept chatting for quite a while longer. Nothing changed. Like I said,
+I'm not complaining about this specific case here, but about a pattern
+that you've established consistently over a fair amount of time.
+
+And if you're wondering why you didn't realize this: It's impossible to
+change people by telling them they're wrong. What does tend to work is
+explaining different perspectives, so that they can figure it out
+themselves. And sometimes that's just way too subtle to ever register.
+
+> > Thus, as you kindly requested of me in social media,
+> > 
+> > https://chaos.social/@sima/113961283260455876
+> > 
+> > I will now proceed to fuck off. Good luck.
+
+I wasn't fully awake yet this morning, but I have no issue standing behind
+that thread in it's entirety. Lightly edited for typos below, with one
+sentence added for a bit more context:
+
+This isn't about "being civil" or "friendly" and even less about "don't
+call out". This is about calling out in an ineffective and imprecise way,
+so that the people actually trying to change things are busy patching up
+your collateral damage instead of implementing real changes, while all
+you've achieved is airing your frustration for internet drama points.
+
+Aside from that I've learned through private feedback since my first mail
+here that your social media brigading has had much more of a chilling
+effect on contributors than I assumed, which is not acceptable.
+
+When you're that harmful with your calling out, eventually I'm going to be
+fed up, and you get a live round shot across your bow. And if that then
+causes you to ragequit, because you can't actually deal with the heat
+you've been dishing out coming back around the corner:
+
+Fuck off.
+
+Or as Dave Airlie put it upthread in this conversation:
+
+"Being toxic on the right side of an argument is still toxic, [...]"
+
+So please do call out broken things, do change things, I've been doing it
+for well over a decade in the linux kernel. But do it in a way that you're
+not just becoming part of the problem and making it bigger.
+
+> Oh, and one last thing. I've heard that, in whatever backroom
+> conversations you've been having about this situation, there has
+> apparently been a belief, explicit or implicit, that I am in any way
+> employed to work on the Linux kernel.
+> 
+> Unlike most people in this thread, I don't enjoy the luxury of a cushy
+> tech job that pays me to deal with this community. I am supported
+> exclusively by donations, which incidentally, have been steadily
+> *de*creasing since the start of the Asahi Linux project. The project has
+> zero corporate sponsorship.
+> 
+> And I do believe the fact that essentially all high-level Linux kernel
+> maintainers and contributors are paid by corporations to do it is a
+> major factor that has caused this community to become wildly out of
+> touch with what it means to be a community FOSS project.
+
+I'm really not in favor of chiding people for how they earn money, because
+this world isn't fair and critizing people for how they get their bills
+paid is generally not ok. But this is a bit too much to just let it slide.
+
+It's fairly plausible that you need the social media brigading to generate
+attention that you can convert into enough donations to support the asahi
+project. But someone has to clean up the mess your shitstorms create, it's
+sure not you, which means my and other people's mental health essentially
+pay your bills. And I really do not appreciate that dynamic.
+
+Cheers, Sima
 -- 
-2.43.0
-
+Simona Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
