@@ -1,155 +1,95 @@
-Received: from wind.enjellic.com (wind.enjellic.com [76.10.64.91])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6DB1E6DC5;
-	Fri,  7 Feb 2025 12:17:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=76.10.64.91
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3331E04AE;
+	Fri,  7 Feb 2025 12:19:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738930674; cv=none; b=HF7idT+1v7rdqZXb4S2gxTfr0SKLIaUKW39+Za1jDOdNTV7HNBLy90ws3gXGyoaYdJglEhnrC6mIniuCKSOm31nUU1Saha/hM5/qLKEMLSYWmGsekIaKAuRAC4vxanUV2T6PFYknFOmnK3DIFu/tKCO8dVxsX2RA1aKxOpsXjh8=
+	t=1738930760; cv=none; b=fa3T0YVzhVbZornjQ7TfyTCBlPFY8v8tLdp4UgM5239nu41c/5H0QhbLAgWzumS+D0vSvjW2qpy+peNPq26sjLP6IE30R2LSr7rjbnitX8gPktDhxysCRYiSE1ZT8uBB4J6J5ZqEvEKumsKJdNltFLuy4RKqY/fro6hk6sKcslM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738930674; c=relaxed/simple;
-	bh=Diwc8kaOpiUiKonF5IYBToi/IYCdpwMOdLIk8dSBMf8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JyXm/vK18fBaTUy9CD2LTzfBjL9DMxMB3qUnlE4L4krmbMxlloM6GrahxCkzAEKFvvERnrv+FSGv4RiX7LHXElk1il+5U/x98tc1x2FHvB5P8V8XifODp9INqcFhEALiJ3IK4BFoy6UGHJ9MiO56pUHAj4ixjv9ntPHIAQ6YD4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com; spf=pass smtp.mailfrom=wind.enjellic.com; arc=none smtp.client-ip=76.10.64.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wind.enjellic.com
-Received: from wind.enjellic.com (localhost [127.0.0.1])
-	by wind.enjellic.com (8.15.2/8.15.2) with ESMTP id 517CGfoY007959;
-	Fri, 7 Feb 2025 06:16:41 -0600
-Received: (from greg@localhost)
-	by wind.enjellic.com (8.15.2/8.15.2/Submit) id 517CGcXR007958;
-	Fri, 7 Feb 2025 06:16:38 -0600
-Date: Fri, 7 Feb 2025 06:16:38 -0600
-From: "Dr. Greg" <greg@enjellic.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Hector Martin <marcan@marcan.st>, Dave Airlie <airlied@gmail.com>,
-        Jason Gunthorpe <jgg@nvidia.com>, Greg KH <gregkh@linuxfoundation.org>,
-        phasta@kernel.org, Christoph Hellwig <hch@lst.de>,
-        Danilo Krummrich <dakr@kernel.org>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-        daniel.almeida@collabora.com, aliceryhl@google.com,
-        robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
-        Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        Bj??rn Roy Baron <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Andreas Hindborg <a.hindborg@kernel.org>,
-        Trevor Gross <tmgross@umich.edu>,
-        Valentin Obst <kernel@valentinobst.de>,
-        open list <linux-kernel@vger.kernel.org>,
-        Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
-        "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
-        DRI Development <dri-devel@lists.freedesktop.org>
-Subject: Re: On community influencing (was Re: [PATCH v8 2/2] rust: add dma coherent allocator abstraction.)
-Message-ID: <20250207121638.GA7356@wind.enjellic.com>
-Reply-To: "Dr. Greg" <greg@enjellic.com>
-References: <20250130154646.GA2298732@nvidia.com> <2025013030-gummy-cosmic-7927@gregkh> <20250130172437.GN5556@nvidia.com> <2025013148-reversal-pessimism-1515@gregkh> <20250131135421.GO5556@nvidia.com> <2b9b75d1-eb8e-494a-b05f-59f75c92e6ae@marcan.st> <Z6OzgBYZNJPr_ZD1@phenom.ffwll.local> <CAPM=9tzPR9wd=3Wbjnp-T0W8-dDfGah-H3Ny52G85B+2Ev9ksA@mail.gmail.com> <208e1fc3-cfc3-4a26-98c3-a48ab35bb9db@marcan.st> <CAHk-=wi=ZmP2=TmHsFSUGq8vUZAOWWSK1vrJarMaOhReDRQRYQ@mail.gmail.com>
+	s=arc-20240116; t=1738930760; c=relaxed/simple;
+	bh=oDwmjypt8/G6DWzsb+Ic2fOcU6ddc9XqAgb0jGDaN50=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hPghhj+/zqbXy1kQ00CHHIh3znqpi0W5feq14c5zkykRQxTHHeMOj+1P+zWqeT/d8gi5io4acwT8/j10+k6sCLcP9bBJISLNysGfEZzBz3ex2YACnBB4aBEQHsWNWpYL314cGqHw5WFad7gRc2AcPpIwbqMXLoL8tBMDoKw4OdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GOfuzZ5d; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GOfuzZ5d"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2fa122f62b5so340376a91.3;
+        Fri, 07 Feb 2025 04:19:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738930758; x=1739535558; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oDwmjypt8/G6DWzsb+Ic2fOcU6ddc9XqAgb0jGDaN50=;
+        b=GOfuzZ5d7mEUcWOx6bm2Y/YoZhPDsfVTwjS+pkEieitNzmFhuVuqch991NFrUIHHte
+         PXUBC4j1r78WliRIZHf0LfhRkaP0hmaRVIciWd+UIJymvXjpGGs6YvaYiODvebyeQFa0
+         rvyS/Hk9RHPVuCwSQO8VWAklwEJyfmE2b3u0KzIQzHlVcVozzy0d9NMVIqcbO0/kRUvR
+         onLiU8iupNezZhIU6zIF2cJK0GJRndWZ4KtAXJZOg9YpzUpvUH5a+RYhMZkS9wS3n+AH
+         l/2NE1Jn6P5siSVS9rVc//sCvOuSeEXEReaCY+5S0JaDgHoEsTKubBRcf/GM3ZT3GCmM
+         sv7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738930758; x=1739535558;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oDwmjypt8/G6DWzsb+Ic2fOcU6ddc9XqAgb0jGDaN50=;
+        b=XjjEYjkWFYRb53xJVcRd+gMjwgPJE9tjPj5wj97sjKeri2Lu7yxE+KSnlYf3RChHvE
+         It9zNH5Ji28nrRnoVSXlXCMPji6xb20HUoeLIq9SG6vWyO0txz3TXR3D6Rheb0eGR8ux
+         vA8RDPc0Ddu1zX+Er6FAhJPKzFDy4G0yYUTDSgLog5TwIBdgrKIsIvJBr8a3ziEtVdZy
+         zNU/iUjNNxi4QDzdaYHQh+LQLdc0GuZ5G6gOHX5pqBG+9wGJgh+scbsVEaWkkFrwUTXM
+         6l0crVVBz11hKTX9ey7L5jOvv44EFKCPSoxa50o2QlSYV7v8OqsqeFxja+Xg5nj6O/M/
+         hejw==
+X-Forwarded-Encrypted: i=1; AJvYcCV4efwJpauv0B7VFQazmvailql7Yl6VLyxzdC1LkTER2W/IcJNrlLcWEYavl2S7MOpuW2tIKzLnZDsgjPIpNY4=@vger.kernel.org, AJvYcCVpdVBDC9z9njofsUvrNdx+5CzWT5DIIqmvEAyCtMpYUSfY6y+24SdBK26hotRcZOvwGstoLsnMDjiVGlk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywwo/LNyYeckjejnPQJlrYSzUpw6HO3VFui1MqqI9BfXUo7NlGn
+	JsldnyotlwzbI+Bwg4EfuWA8nH8kfYKwsRshYoBgDVwUN8ylfRjev2mE5Ow9d0Zjq63qlVzZ4Vc
+	kD3JNYSE+pURIQD/lJxoPuhy3v6k=
+X-Gm-Gg: ASbGncuMbvSipKmzWuUUOVeVMKf/G6Hd3aHOLeCgLtFx47e4b7jTAMZJXVOL921oQtJ
+	wD2OEAMpS4y5jPEuEe1pTuOLwVAD+5OF9XRQbB0+Xb4ok4fKbw7vyMTP0ezkbFxHZN0VqXiAn
+X-Google-Smtp-Source: AGHT+IFkNnQhokYL4R1tAFkCPTJBGfOs+kfO+CfhEhcWR3WujUHlCLaheoFzIor7FdQwpA8Wy95zSOkgf3PXLHL+4tA=
+X-Received: by 2002:a17:90b:3844:b0:2ee:6d73:7ae6 with SMTP id
+ 98e67ed59e1d1-2fa2455914cmr1706312a91.7.1738930758009; Fri, 07 Feb 2025
+ 04:19:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wi=ZmP2=TmHsFSUGq8vUZAOWWSK1vrJarMaOhReDRQRYQ@mail.gmail.com>
-User-Agent: Mutt/1.4i
-X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.2.3 (wind.enjellic.com [127.0.0.1]); Fri, 07 Feb 2025 06:16:41 -0600 (CST)
+MIME-Version: 1.0
+References: <20250206-aligned-alloc-v3-1-0cbc0ab0306d@gmail.com>
+ <Z6UwCtaO-qVYEN2Z@cassiopeiae> <CAJ-ks9kvrBBLTnEmRPbrkoHYgg6wrXoTVXh8ecqYBSPTfpjx2g@mail.gmail.com>
+In-Reply-To: <CAJ-ks9kvrBBLTnEmRPbrkoHYgg6wrXoTVXh8ecqYBSPTfpjx2g@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 7 Feb 2025 13:19:04 +0100
+X-Gm-Features: AWEUYZlJUi-5tupzy-7IWx-TvdGH6k6ZORV0lBRzfg6ZrCg-hLR9RW2vOKIIxzw
+Message-ID: <CANiq72=P3O5Q=S4JBVGY0B0t5xSfMYGu3YbhT6SQmbVcAkEA8A@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: allocator_test: use `posix_memalign`
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alejandro Colomar <alx@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 06, 2025 at 09:58:36AM -0800, Linus Torvalds wrote:
-
-Good morning to everyone.
-
-> On Thu, 6 Feb 2025 at 01:19, Hector Martin <marcan@marcan.st> wrote:
-> >
-> > If shaming on social media does not work, then tell me what does,
-> > because I'm out of ideas.
-
-> Because if we have issues in the kernel development model, then
-> social media sure as hell isn't the solution. The same way it sure
-> as hell wasn't the solution to politics.
+On Fri, Feb 7, 2025 at 12:43=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
+ wrote:
 >
-> Technical patches and discussions matter. Social media brigading - no
-> thank you.
+> I'm happy to wait for clarification, I'm just not sure whose court the
+> ball is in.
 
-I truely wish that technical patches and discussions were the currency
-that matter but I believe we are struggling with that, at least in
-some venues in the kernel development process.
+Ideally Alejandro would clarify, who I Cc'd in the previous thread (he
+was not Cc'd here, by the way).
 
-No one should construe that statement as an endorsement of berating
-people on social media as the 'fix'.
+Anyway, I agree with Danilo that we shouldn't overcomplicate just for
+this. Using the previous patch, but being clear about that we are
+using stricter requirements so that it works on macOS too, should be
+fine I think. But I trust Danilo to decide which approach is best for
+maintaining this.
 
-I come at this from the perspective of having worked on Linux since
-around December of 1991.  I first met you and Tove in 1995 at the Free
-Software Conference at MIT that Stallman sponsored.  When we first
-met, I told you that cancer patients in North Dakota were enjoying
-more time with their families because of what we were able to do with
-Linux and optimizing medical processes at our Cancer Center.
-
-RedHat paid me to speak at a number of conferences in the 90's talking
-about how Linux was going to dominate enterprise computing, given that
-it was about technology people doing the 'right' technology thing.
-
-I'm seeing things that make me regret those words.
-
-Probably the last technical contribution of my career is leading an
-initiative to provide the Linux community a generic security modeling
-architecture.  Not to supplant or replace anything currently being
-done, but to provide a flexible alternative to the development of
-alternate and/or customized workload models, particularly in this era
-of machine learning and modeling.
-
-Four patch series over two years, as of yesterday, not a single line
-of code ever reviewed.
-
-For a contribution that touches nothing outside of its own directory
-and does nothing unless people choose to execute a workload under its
-control.
-
-We were meticulous in our submissions to avoid wasting maintainers
-time.  We even waited two months without hearing a word before we sent
-an inquiry as to the status of one of the submissions.  We were told,
-rather curtly, that anything we sent would likely be ignored if we
-ever inquired about them.
-
-We tried to engage, perhaps to excess, in technical discussions
-attempting to explain why and how we chose to implement what we were
-proposing.  Including input from advisors who are running production
-IT systems that feel that there needs to be better approaches to
-addressing their security needs.
-
-There were never any relevant technical exchanges.  The discussion
-consisted of, we have decided to do things a certain way, no
-discussion, if you don't like that you should really consider doing
-something other than submitting to upstream Linux.
-
-The all powerful sub-system maintainer model works well if the big
-technology companies can employ omniscient individuals in these roles,
-but those types are a bit hard to come by.  Lacking that, there is the
-tangible risk of stifling innovation and Linux is the only place that
-innovation can occur in the operating system space.
-
-Not sure what the fix is, from a project management perspective the
-technology industry has never faced a challenge like this.  The fork
-model, which was the classic protection in open-source, doesn't work
-at this scale.
-
-We have a Code Of Conduct that we can't scream or hurl four letter
-words and insults at one another.  Maybe it already exists but a Code
-Of Standards for maintainers would seem to be an imperative if we are
-going to move forward productively.  Jim are you listening?
-
-Obviously respect and open-mindedness to new ideas appears to be the
-grease that makes all of this run smoothly.  Unfortunately that seems
-to be about as rare a commodity as omniscience in our industry.
-
->                  Linus
-
-Linus, best wishes to you and your family, it has been a fascinating
-ride and thing to watch.
-
-As always,
-Dr. Greg
-
-The Quixote Project - Flailing at the Travails of Cybersecurity
-              https://github.com/Quixote-Project
+Cheers,
+Miguel
