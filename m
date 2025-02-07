@@ -1,47 +1,49 @@
-Received: from cockroach.pear.relay.mailchannels.net (cockroach.pear.relay.mailchannels.net [23.83.216.37])
+Received: from fennec.yew.relay.mailchannels.net (fennec.yew.relay.mailchannels.net [23.83.220.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4F31AA1D5;
-	Fri,  7 Feb 2025 18:39:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.216.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC201A0714;
+	Fri,  7 Feb 2025 18:40:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.220.58
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738953560; cv=pass; b=uOAIl2I2HYfodt1jbj5e+vA4lSooH522ooTP68C9baPhs7s91JTOXXWxdbgQCADveSZmclZKY3BJPP6hkd69TL67XnrhAOJld3qIMI+I8ly3E5kuAveI/ZusVlZpdRGChdQ8FkDr+dEaP9CtFOhqBSwNanOi5bxvO/Un3vNJdek=
+	t=1738953645; cv=pass; b=er0NSY+UGjygcUtLPooXn4ru8MNaMcr3efwW+LjZNVsfhWsuRw7pNCFEHhPmZOHcRTXVxWKbhmbbnGf8CcMRzr2HhGkakbTqq5Asj9Vrf4/vwa5EIJ8oT4m6YraaNv/FmXmZqpVqRCub5z+oGG/zXft9zBltR5EH8fnbmCgVMW8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738953560; c=relaxed/simple;
-	bh=senRZHmikqaHKI+uFtjbSM9crn5J5rrwh5Sris6YjkU=;
-	h=From:Subject:MIME-Version:Content-Type:Message-Id:To:Cc:Date; b=SbpgCv1zfhfwze2halQZ5/FpNnq42JgozYdoelF+4GQyL+TcjYzeeD++MUFUn5ko4kNCH3e0Vak9x0bruslgdQuxIGqua0YYWUU2J8my7EMbE4w5EwrHFmc+4yjV0WdeVCsJ5Q0CPA9v72SWijxuooKzJ8FSdTonetupPJRrnas=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invicto.ai; spf=pass smtp.mailfrom=invicto.ai; dkim=fail (0-bit key) header.d=invicto.ai header.i=@invicto.ai header.b=c+EzZ/e2 reason="key not found in DNS"; arc=pass smtp.client-ip=23.83.216.37
+	s=arc-20240116; t=1738953645; c=relaxed/simple;
+	bh=uH8vMkud4EQnG1MvnsD+6x2TVRiu3o9+ST5+Uv6tPPA=;
+	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
+	 MIME-Version:Date; b=fiBRD8YI2kNe9UJeyy3qJANbMDe1nk7soZdp0PdMGMTIfqh7C+W1o3ssj7CDvKmk97osbtiwqv0m2RsRyEH7RyMPGEoVfF98HFgGuEeGw5w0GaVO8DDfG09ASTOQEj5f8G8ShE22/ox5xFXvSZPUrDERYlnFvCJ6t51U7geOiOY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invicto.ai; spf=pass smtp.mailfrom=invicto.ai; dkim=fail (0-bit key) header.d=invicto.ai header.i=@invicto.ai header.b=cFhxWNIJ reason="key not found in DNS"; arc=pass smtp.client-ip=23.83.220.58
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invicto.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=invicto.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=invicto.ai header.i=@invicto.ai header.b="c+EzZ/e2"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=invicto.ai header.i=@invicto.ai header.b="cFhxWNIJ"
 X-Sender-Id: hostingeremail|x-authuser|kurti@invicto.ai
 Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id B0DA3783815;
-	Fri,  7 Feb 2025 18:39:11 +0000 (UTC)
-Received: from uk-fast-smtpout10.hostinger.io (100-122-220-145.trex-nlb.outbound.svc.cluster.local [100.122.220.145])
+	by relay.mailchannels.net (Postfix) with ESMTP id 11312783C33;
+	Fri,  7 Feb 2025 18:40:35 +0000 (UTC)
+Received: from nl-srv-smtpout1.hostinger.io (100-96-47-154.trex-nlb.outbound.svc.cluster.local [100.96.47.154])
 	(Authenticated sender: hostingeremail)
-	by relay.mailchannels.net (Postfix) with ESMTPA id A07E9783924;
-	Fri,  7 Feb 2025 18:39:08 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1738953551; a=rsa-sha256;
+	by relay.mailchannels.net (Postfix) with ESMTPA id 92CE97836D2;
+	Fri,  7 Feb 2025 18:40:33 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1738953634; a=rsa-sha256;
 	cv=none;
-	b=JDl+OPClbVAn6V53psI0nlcbEbTcZShFt7A/J8jhYnoGuawa3pvTt1sILANfVHuxLAYK6p
-	9oDAAJNdO9SHjytIEC8aG61nWQ/hCHWbvuNMqMj5CLpp0/eYCd0ofnpgYxLMhl7xjx6WH3
-	4UY/lLKMEgJfffZCAxbS18jhClcJ+LpFP/FpL14KItKi243M119x5cKexDrQeA+6loD8Fv
-	g+DVPITUC3ufw/ysHerDuqok9Xxu/HK+BZuwlN+rciY6Xgs0TLTmsuX1O3kaFkDyclgwbQ
-	VOh8ywjpyCWfX/Jtfyok0rBQlw2VFLuloinRnD6ZMgSrvCfKXPQRiSJ4CHgFSQ==
+	b=05GfAoI6YeQihX8U+9D6RwafPy+FLN0ywCBHFu/cgBU0LCsw8JYdauUPr+E0vlMxpYTg4x
+	F/MKAlOfYQyJND1nhv8z7Dlz/yVharp5nnOYijVSchY/IycU8NMCuex/McuRoh3eHwIdGp
+	rpXGLigV/uNgQnTz1tZRzFgnPR0Ql9UzqxgOWqSlRZi3FqRcPW+CMHZ5/ifdjY2HLlOVGg
+	NyNeCsem+0Iye69j7IsBZhNQXDNC2qpBox9p6xQztE8bRHCfTuIcSB78qtKduzdX8nKQQZ
+	HVkovXk85jE+XQfpMOgFtOe0VPonouf6gDxACyP5G/slmZ6nEAkRa2EdFvgDYg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
  d=mailchannels.net;
-	s=arc-2022; t=1738953551;
+	s=arc-2022; t=1738953634;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:dkim-signature;
-	bh=1YKXbjvV6gbXtK58+tuay73I6NfkNUwulEFMxiG3tUU=;
-	b=A1wa1Y7/s87wVxN3iiyQXJieUJ3Kijd4kWQ9mJS1ij/I9DO0wexIuPPOxwsscWNOANA3In
-	YppHvEcnPxjlXHTZkHQwv4JNVcufRXU7+u40QOkDb9P/2m59iegI3gC8B05HfvRBpEpHD/
-	jDyE0fnvZjb9yECBOsy1DZTEBDVPGGzFvvQYb6AMCvNPZ5YddMRT3q0UoaAZXMvuFf6QPo
-	95IrUrGs+O6fGUNxU0fF3Db9GjQSw3Uxxb7/oODsrrcBSqAal5kAHKNmuEMF5o8JE0H6k9
-	nBbxbqeQYb6YLiWyH8ksCAgNyoOhk1Unl7IYYesIa8Xr958OsNNAF0f26sI9ww==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=uH8vMkud4EQnG1MvnsD+6x2TVRiu3o9+ST5+Uv6tPPA=;
+	b=1C9J369QowZZDXMHT9AHtmIArm3hlwyuivq8vXm9LcPRE6AS0FgNeBHVzMZIzcXrjDzv43
+	M039Ju7jad6vB5SKJ+InGXtMs5O0ffOdcPbMSKw3Fo76krYAn8+YwHwT3o4pbEWQOeM1/t
+	fvTSUUauxUb/jXjVUGWBfoMfYTSvO8f2i7UNbjJEJhoGh1oxdZqMZm7oDr9bCadtKAk6JD
+	IUKCiMjNNvpObr9PbZQlWore9f30mvEyyk5Gl4vIaWOmHrmsRFp21SMrxX0N171i81uSEA
+	esie8U974ugtutg0nyrJU2bk5lG+Bcj2EPnLjsPuQxRU9TMcS+gKueEcxeOA6Q==
 ARC-Authentication-Results: i=1;
 	rspamd-68c88d6cff-88t9z;
 	auth=pass smtp.auth=hostingeremail smtp.mailfrom=kurti@invicto.ai
@@ -49,229 +51,123 @@ X-Sender-Id: hostingeremail|x-authuser|kurti@invicto.ai
 X-MC-Relay: Good
 X-MailChannels-SenderId: hostingeremail|x-authuser|kurti@invicto.ai
 X-MailChannels-Auth-Id: hostingeremail
-X-Towering-Spot: 0e47964b51e6e89d_1738953551557_2357726080
-X-MC-Loop-Signature: 1738953551557:679016221
-X-MC-Ingress-Time: 1738953551557
-Received: from uk-fast-smtpout10.hostinger.io (uk-fast-smtpout10.hostinger.io
- [145.14.155.68])
+X-Cold-Cold: 25a9a48e2d918c2f_1738953634950_1626323575
+X-MC-Loop-Signature: 1738953634950:2589816486
+X-MC-Ingress-Time: 1738953634950
+Received: from nl-srv-smtpout1.hostinger.io (nl-srv-smtpout1.hostinger.io
+ [145.14.150.87])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.122.220.145 (trex/7.0.2);
-	Fri, 07 Feb 2025 18:39:11 +0000
-From: Alban Kurti <kurti@invicto.ai>
+	by 100.96.47.154 (trex/7.0.2);
+	Fri, 07 Feb 2025 18:40:34 +0000
+Message-ID: <7e664d9e0f957206cdc70fb7f178df709fe4d936.camel@invicto.ai>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=invicto.ai;
-	s=hostingermail-a; t=1738953546;
+	s=hostingermail-a; t=1738953631;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=1YKXbjvV6gbXtK58+tuay73I6NfkNUwulEFMxiG3tUU=;
-	b=c+EzZ/e2vuTI30sWVadCkbzoV9/Jv+n4B2kiBZje/jbEXV2iTPKBAo0E8OToi8THdcbrRM
-	zH4lr1LzPUHBcRkZNluou7pj/gHHHtc07fKI4lyH6Mu/LB+cW1Xlei+5Us2/9QHC8DshJ5
-	ZFonINSAstPqBvN9bhCbSxYlzT3MOy4Ykaoo6O41jEXc+aQDpqKeBHASlp624g/xROMYz2
-	lO0n2z3mDugHyq1+ooKG7kY2no3lN3iE62YFiReoM/KzAqgxYp3RCyb9G3Bz+s01J28u5Y
-	HwTjxPttvpgHnFsyJmFLYk1ZcbtEZGpVHh1kmhgRhclzpkqQ+9tLPJhiJVGDhw==
-Subject: [PATCH v4] checkpatch: add warning for pr_* and dev_* macros
- without a trailing newline
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uH8vMkud4EQnG1MvnsD+6x2TVRiu3o9+ST5+Uv6tPPA=;
+	b=cFhxWNIJLI3dGMHqygeL9lOR0dfjGG2RBZ0xXfamW/Z/xXWGTxOct6uWNDx1IkMdsxSwQc
+	sIlEmhNvolNIgXjUj9yrJh7y5jZCFIzFSnXQaqCplVRJijKEtIkcXtXJJRi9yWwIUdUomN
+	eVW1tv2XryFAeW1TRrWtaiUN2QRvgtP8BuPZVHpt1rmOuUZLmGkZeDwd+eQSMqS3YQ6uRB
+	yocy/LmOagNhaM8QC6VQJ9ADzxAOAHvJDu+KTvTKXbeT3aWZhyZA0l6SFdo9qEidvEQc6f
+	NdivWGMWuikGNFiDJWpG1/GQslGgrp0vnEHDP9w4CfEwDzjvMBEGxkOP0gmT6Q==
+Subject: Re: [PATCH v2 RESEND 1/1] checkpatch: add warning for pr_* and
+ dev_* macros without a trailing newline
+From: Alban Kurti <kurti@invicto.ai>
+To: Charalampos Mitrodimas <charmitro@posteo.net>
+Cc: Joe Perches <joe@perches.com>, Andrew Morton
+ <akpm@linux-foundation.org>,  Mugel Ojeda <ojeda@kernel.org>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+In-Reply-To: <m25xllr51m.fsf@posteo.net>
+References: <20250206120911.175884-1-kurti@invicto.ai>
+	 <m25xllr51m.fsf@posteo.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+User-Agent: Evolution 3.54.3 
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250207-checkpatch-newline2-v4-1-26d8e80d0059@invicto.ai>
-X-B4-Tracking: v=1; b=H4sIAEJTpmcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyTHQUlJIzE
- vPSU3UzU4B8JSMDI1MDIwNz3eSM1OTsgsSS5AzdvNTynMy8VCPdNDMDI3PTVGOD1CQzJaDOgqL
- UtMwKsKnRsbW1AKYNWrJlAAAA
-X-Change-ID: 20250207-checkpatch-newline2-f60275e30eb6
-To: Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>, 
- Dwaipayan Ray <dwaipayanray1@gmail.com>, 
- Lukas Bulwahn <lukas.bulwahn@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>
-Cc: Alban Kurti <kurti@invicto.ai>, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1738953545; l=6095;
- i=kurti@invicto.ai; s=20250206; h=from:subject:message-id;
- bh=senRZHmikqaHKI+uFtjbSM9crn5J5rrwh5Sris6YjkU=;
- b=p9PK1Pc2VpuhKYKURRyuF3yUqMD4zeiRHJ96w3CuzxeoFLYqlvfdwdpM1HhXVZL4O450baEBX
- wA+Fyu2K7WGAaLMZRhULf+ncWJ+SKfkenopi94k3TRR8vZqO76cfR1z
-X-Developer-Key: i=kurti@invicto.ai; a=ed25519;
- pk=D1lKs+JFapuEVI9zJ2QUTLSf5u4aT12tG0ny6vMMuOc=
-Date: Fri, 07 Feb 2025 18:39:06 +0000 (UTC)
-X-CM-Analysis: v=2.4 cv=H/GJwPYi c=1 sm=1 tr=0 ts=67a6534a a=9/DLicljd4JGVkZ5BRdAJQ==:117 a=9/DLicljd4JGVkZ5BRdAJQ==:17 a=IkcTkHD0fZMA:10 a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=RKUNEDuqt85CaGehgjcA:9 a=QEXdDO2ut3YA:10
-X-CM-Envelope: MS4xfCk0GC+bS6pm54mTuNTo2BHupnAhbyX38KlDBAdkvOelVduzyBnKFvlVHgOUXjnvwfUc+R9mk5hzfmRLh18jQhZABQCt6jUY+lOjng0mW/UN6D5SJ0C0 m/UwnqUNFdZZnhKqc2GsQsmB4rwYd6n77Em09ig5dWOJujuJJ6miQMexJRetTugzhvIAYL19dMU39GulrVruP/DABvHbLM/tBaBSw37Ns6+c9w0VM/1a8fZK YWbATvSwrlwX7UqU5EvncANBlXPv3cudz3YwptuuggyR7ZbLpJWKDbdCWBHOP2HmdNQWzmRrMOh3wsvuq6/S+TaNCbtXfXN6htgMyvq4zFNVsR5qrx6mE3cI tZ/khq2VMK1comaRe01OwNr2Ede4fjfaqsMnT9BQRKLGsHtURJEJy5il2PHsiX1NvhCFkeFM0ly+tMeylGcCo6JHX2tulxCOODE6oHXeb0xmvZdNei4WYSZ4 lW5dMaZe0vmo1k//VNz3dtmxTtUJSgOOZ7xby5ZycXvppeIZJE49MFUAsxu3zfNT/g87yFYh0Wph1JVVw5OGOzdiMuoCZ63sn7Otzu5JrqY0icrcWhae/wya qPtqMkWuNgscNko5nwQXWaYvrlR0lgNL2Qr6ra1QkvcJV8HD9IFfrhHeB6u5s1t6HewsMbMs/EvBFAWXg3BAfiL+
+Date: Fri, 07 Feb 2025 18:40:31 +0000 (UTC)
+X-CM-Analysis: v=2.4 cv=R7tRGsRX c=1 sm=1 tr=0 ts=67a6539f a=9/DLicljd4JGVkZ5BRdAJQ==:117 a=9/DLicljd4JGVkZ5BRdAJQ==:17 a=IkcTkHD0fZMA:10 a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=Ip8iZo8Gh7Y5z734uKoA:9 a=QEXdDO2ut3YA:10
+X-CM-Envelope: MS4xfE5SczPfzR1uBpYEWFlKOXuOS1ZM+1emLjby2At/nA7hxIGn0hJ35IdFeBKts7Bn9i+r5I+TLvLZcsyRFvwUNQItq2bRprF+eHcQt+WAgOIInOjUgSFs A/q6ydcXo02AcHEPNsnLIhsOHZ+IUwjn6/8OP3CSlhrHH7oQf7NKNiZAkuFzeb8aOdTM07ghbkeDLSd49D20LDgyXdDoUCkQVNPaodgP/1IwfyPMN3BV3dam 9kPN10KmHvP757mVU4Q9X+7XBJhGXr7Upad+j5ek2MAor44ZoIcvgkdNetOUMCoJZMx89VfbIlBSPikzHiBbnuOOdFIIyftMo+VHgCME3i5pivJSojojQJy5 5HrvjJTJ
 X-AuthUser: kurti@invicto.ai
 
-Add a new check in scripts/checkpatch.pl to detect usage of pr_(level)
-and dev_(level) macros (for both C and Rust) when the string literal
-does not end with '\n'. Missing trailing newlines can lead to incomplete
-log lines that do not appear properly in dmesg or in console output.
-To show an example of this working after applying the patch we can run
-the script on the commit that likely motivated this need/issue:
-  ./scripts/checkpatch.pl --strict -g "f431c5c581fa1"
-
-Also, the patch is able to handle correctly if there is a printing call
-without a newline which then has a newline printed via pr_cont for
-both Rust and C alike. If there is no newline printed and the patch
-ends or there is another pr_* call before a newline with pr_cont is
-printed it will show a warning. Not implemented for dev_cont because it
-is not clear to me if that is used at all.
-
-One false warning that will be generated due to this change is in case
-we have a patch that modifies a `pr_* call without a newline` which has a
-pr_cont with a newline following it. In this case there will be a
-warning but because the patch does not include the following pr_cont it
-will warn there is nothing creating a newline. I have modified the
-warning to be softer due to this known problem.
-
-I have tested with comments, whitespace, differen orders of pr_* calls
-and pr_cont and the only case that I suspect to be a problem is the one
-outlined above.
-
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Closes: https://github.com/Rust-for-Linux/linux/issues/1140
-Signed-off-by: Alban Kurti <kurti@invicto.ai>
----
-Changes since v3:
-- Just reordered the checkpatch.pl code original addition as it did not work properly
-- Link to v3: https://lore.kernel.org/all/20250207-checkpatch-newline-v3-1-20d8774f16ea@invicto.ai/
----
- scripts/checkpatch.pl | 96 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 96 insertions(+)
-
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 9eed3683ad76caffbbb2418e5dbea7551d374406..0e7684d2f0cf30575640d7c4da9e51a13d91463b 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -77,6 +77,8 @@ my ${CONFIG_} = "CONFIG_";
- 
- my %maybe_linker_symbol; # for externs in c exceptions, when seen in *vmlinux.lds.h
- 
-+my $pending_log = undef;
-+
- sub help {
- 	my ($exitcode) = @_;
- 
-@@ -3888,6 +3890,91 @@ sub process {
- 			}
- 		}
- 
-+# check for pr_* and dev_* logs without a newline for C and Rust files to avoid missing log messages
-+  my $pr_cont_pattern = qr{
-+      \b
-+      pr_cont!?
-+      \s*
-+      \(
-+      \s*
-+      "([^"]*)"
-+      [^)]*
-+      \)
-+  }x;
-+  my $log_macro_pattern = qr{
-+      \b
-+      (
-+          pr_(?:emerg|alert|crit|err|warn|notice|info|debug)
-+        | dev_(?:emerg|alert|crit|err|warn|notice|info|dbg)
-+      )
-+      (!?)
-+      \s*
-+      \(
-+      \s*
-+      "([^"]*)"
-+  }x;
-+
-+  if ($realfile =~ /\.(?:c|h|rs)$/) {
-+      if ($rawline =~ /^\+/) {
-+          my $cleanline = $rawline;
-+          $cleanline =~ s/^[+\s]+//;
-+          $cleanline =~ s/\r?$//;
-+          $cleanline =~ s{/\*.*?\*/}{}g;
-+          $cleanline =~ s{//.*}{}g;
-+
-+          if ($pending_log) {
-+              if ($cleanline =~ /$pr_cont_pattern/) {
-+                  my $cont_string_arg = $1;
-+                  if ($cont_string_arg =~ /\\n$/) {
-+                      $pending_log = undef;
-+                  }
-+              } elsif ($cleanline =~ /$log_macro_pattern/) {
-+                  WARN($pending_log->{lang} . "_LOG_NO_NEWLINE",
-+                       "Possible usage of $pending_log->{macro_call} without a trailing newline.\n" .
-+                       $pending_log->{herecurr});
-+
-+                  $pending_log = undef;
-+
-+                  my $macro_call  = $1;
-+                  my $maybe_excl  = $2;
-+                  my $string_arg  = $3;
-+                  $string_arg =~ s/\s+$//;
-+
-+                  if ($realfile =~ /\.rs$/ && $maybe_excl ne '!') {
-+                      return;
-+                  }
-+
-+                  if ($string_arg !~ /\\n$/ && $string_arg !~ /\n$/) {
-+                      $pending_log = {
-+                          macro_call => $macro_call,
-+                          herecurr => $herecurr,
-+                          lang => ($realfile =~ /\.rs$/) ? "Rust" : "C",
-+                      };
-+                  }
-+              }
-+          } else {
-+              if ($cleanline =~ /$log_macro_pattern/) {
-+                  my $macro_call = $1;
-+                  my $maybe_excl = $2;
-+                  my $string_arg = $3;
-+                  $string_arg =~ s/\s+$//;
-+
-+                  if ($realfile =~ /\.rs$/ && $maybe_excl ne '!') {
-+                      return;
-+                  }
-+
-+                  if ($string_arg !~ /\\n$/ && $string_arg !~ /\n$/) {
-+                      $pending_log = {
-+                          macro_call => $macro_call,
-+                          herecurr   => $herecurr,
-+                          lang       => ($realfile =~ /\.rs$/) ? "Rust" : "C",
-+                      };
-+                  }
-+              }
-+          }
-+      }
-+  }
-+
- # check for .L prefix local symbols in .S files
- 		if ($realfile =~ /\.S$/ &&
- 		    $line =~ /^\+\s*(?:[A-Z]+_)?SYM_[A-Z]+_(?:START|END)(?:_[A-Z_]+)?\s*\(\s*\.L/) {
-@@ -7678,6 +7765,15 @@ sub process {
- 		}
- 	}
- 
-+# pending log means a pr_* without an ending newline has not
-+# been followed by a pr_cont call with a newline at the end
-+  if ($pending_log) {
-+    WARN($pending_log->{lang} . "_LOG_NO_NEWLINE",
-+      "Usage of $pending_log->{macro_call} without a trailing newline.\n" .
-+      $pending_log->{herecurr});
-+    $pending_log = undef;
-+  }
-+
- 	# If we have no input at all, then there is nothing to report on
- 	# so just keep quiet.
- 	if ($#rawlines == -1) {
-
----
-base-commit: ceff0757f5dafb5be5205988171809c877b1d3e3
-change-id: 20250207-checkpatch-newline2-f60275e30eb6
-
-Best regards,
--- 
-Alban Kurti <kurti@invicto.ai>
+SGkgQ2hhcmFsYW1wb3MsCgpUaGFuayB5b3UgZm9yIHRlc3RpbmcuCgpJIGp1c3Qgc2VuZCB2NCwg
+aWdub3JlIHYzIHBsZWFzZS4gSXQgc2hvdWxkIGZpeCB0aGUgZm9ybWF0dGluZyBpc3N1ZSwKYWRk
+aXRpb25hbGx5LCBJIHRob3VnaHQgb2YgaW1wbGVtZW50aW5nIGEgbmV3IGZlYXR1cmUgZnVydGhl
+ciBhcyBJCnRoaW5rIGl0IGNhbiBlbmhhbmNlIHRoZSBmdW5jdGlvbmFsaXR5LCBidXQgSSBjYW4g
+YWx3YXlzIHJldmVydCB0byB0aGUKdjIgYXBwcm9hY2ggaWYgaXQgaXMgZGVlbWVkIHRvIGNvbXBs
+aWNhdGVkIG9yIHVubmVjZXNzYXJ5LgoKS2luZCByZWdhcmRzLApBbGJhbiBLdXJ0aQoKT24gRnJp
+LCAyMDI1LTAyLTA3IGF0IDE4OjE5ICswMDAwLCBDaGFyYWxhbXBvcyBNaXRyb2RpbWFzIHdyb3Rl
+Ogo+IEFsYmFuIEt1cnRpIDxrdXJ0aUBpbnZpY3RvLmFpPiB3cml0ZXM6Cj4gCj4gPiBBZGQgYSBu
+ZXcgY2hlY2sgaW4gc2NyaXB0cy9jaGVja3BhdGNoLnBsIHRvIGRldGVjdCB1c2FnZSBvZgo+ID4g
+cHJfKGxldmVsKQo+ID4gYW5kIGRldl8obGV2ZWwpIG1hY3JvcyAoZm9yIGJvdGggQyBhbmQgUnVz
+dCkgd2hlbiB0aGUgc3RyaW5nCj4gPiBsaXRlcmFsCj4gPiBkb2VzIG5vdCBlbmQgd2l0aCAnXG4n
+LiBNaXNzaW5nIHRyYWlsaW5nIG5ld2xpbmVzIGNhbiBsZWFkIHRvCj4gPiBpbmNvbXBsZXRlCj4g
+PiBsb2cgbGluZXMgdGhhdCBkbyBub3QgYXBwZWFyIHByb3Blcmx5IGluIGRtZXNnIG9yIGluIGNv
+bnNvbGUKPiA+IG91dHB1dC4KPiA+IFRvIHNob3cgYW4gZXhhbXBsZSBvZiB0aGlzIHdvcmtpbmcg
+YWZ0ZXIgYXBwbHlpbmcgdGhlIHBhdGNoIHdlIGNhbgo+ID4gcnVuCj4gPiB0aGUgc2NyaXB0IG9u
+IHRoZSBjb21taXQgdGhhdCBsaWtlbHkgbW90aXZhdGVkIHRoaXMgbmVlZC9pc3N1ZToKPiA+IMKg
+IC4vc2NyaXB0cy9jaGVja3BhdGNoLnBsIC0tc3RyaWN0IC1nCj4gPiBmNDMxYzVjNTgxZmExNzZm
+NjA4YmEzZmRlYmIzYzEwNTFiYWQ1Nzc0Cj4gPiAKPiA+IFN1Z2dlc3RlZC1ieTogTWlndWVsIE9q
+ZWRhIDxvamVkYUBrZXJuZWwub3JnPgo+ID4gQ2xvc2VzOiBodHRwczovL2dpdGh1Yi5jb20vUnVz
+dC1mb3ItTGludXgvbGludXgvaXNzdWVzLzExNDAKPiA+IFNpZ25lZC1vZmYtYnk6IEFsYmFuIEt1
+cnRpIDxrdXJ0aUBpbnZpY3RvLmFpPgo+ID4gLS0tCj4gPiBDaGFuZ2Vsb2cgc2luY2UgdjE6Cj4g
+PiDCoC0gU3RyaXAgY29tbWVudHMgYmVmb3JlIG1hdGNoaW5nIHRvIGF2b2lkIGZhbHNlIHBvc2l0
+aXZlcy4KPiA+IMKgLSBSZWZhY3RvcmVkIHRoZSBtYWNybyBwYXR0ZXJucyBmb3IgY2xhcml0eS4K
+PiA+IAo+ID4gwqBzY3JpcHRzL2NoZWNrcGF0Y2gucGwgfCA0Ngo+ID4gKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKwo+ID4gwqAxIGZpbGUgY2hhbmdlZCwgNDYgaW5z
+ZXJ0aW9ucygrKQo+ID4gCj4gPiBkaWZmIC0tZ2l0IGEvc2NyaXB0cy9jaGVja3BhdGNoLnBsIGIv
+c2NyaXB0cy9jaGVja3BhdGNoLnBsCj4gPiBpbmRleCA5ZWVkMzY4M2FkNzYuLjMyNTZiNWYzMTgz
+NSAxMDA3NTUKPiA+IC0tLSBhL3NjcmlwdHMvY2hlY2twYXRjaC5wbAo+ID4gKysrIGIvc2NyaXB0
+cy9jaGVja3BhdGNoLnBsCj4gPiBAQCAtMzg4OCw2ICszODg4LDUyIEBAIHN1YiBwcm9jZXNzIHsK
+PiA+IMKgCQkJfQo+ID4gwqAJCX0KPiA+IMKgCj4gPiArIyBjaGVjayBmb3IgcHJfKiBhbmQgZGV2
+XyogbG9ncyB3aXRob3V0IGEgbmV3bGluZSBmb3IgQyBhbmQgUnVzdAo+ID4gZmlsZXMgdG8gYXZv
+aWQgbWlzc2luZyBsb2cgbWVzc2FnZXMKPiA+ICvCoMKgwqAgbXkgJGxvZ19tYWNyb19wYXR0ZXJu
+ID0gcXJ7Cj4gPiArwqDCoMKgwqDCoMKgwqAgXGIKPiA+ICvCoMKgwqDCoMKgwqDCoCAoCj4gPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBwcl8oPzplbWVyZ3xhbGVydHxjcml0fGVycnx3YXJufG5v
+dGljZXxpbmZvfGRlYnVnKQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoCB8IGRldl8oPzplbWVyZ3xh
+bGVydHxjcml0fGVycnx3YXJufG5vdGljZXxpbmZvfGRiZykKPiA+ICvCoMKgwqDCoMKgwqDCoCAp
+Cj4gPiArwqDCoMKgwqDCoMKgwqAgKCE/KQo+ID4gK8KgwqDCoMKgwqDCoMKgIFxzKgo+ID4gK8Kg
+wqDCoMKgwqDCoMKgIFwoCj4gPiArwqDCoMKgwqDCoMKgwqAgXHMqCj4gPiArwqDCoMKgwqDCoMKg
+wqAgIihbXiJdKikiCj4gPiArwqDCoMKgIH14Owo+ID4gKwo+ID4gK8KgwqDCoCBpZiAoJHJlYWxm
+aWxlID1+IC9cLig/OmN8aHxycykkLykgewo+ID4gK8KgwqDCoMKgwqDCoMKgIGlmICgkcmF3bGlu
+ZSA9fiAvXlwrLykgewo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgbXkgJGNsZWFubGluZSA9
+ICRyYXdsaW5lOwo+ID4gKwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgJGNsZWFubGluZSA9
+fiBzL15bK1xzXSsvLzsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICRjbGVhbmxpbmUgPX4g
+cy9ccj8kLy87Cj4gPiArCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAkY2xlYW5saW5lID1+
+IHN7L1wqLio/XCovfXt9ZzsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICRjbGVhbmxpbmUg
+PX4gc3svLy4qfXt9ZzsKPiA+ICsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGlmICgkY2xl
+YW5saW5lID1+IC8kbG9nX21hY3JvX3BhdHRlcm4vKSB7Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgIG15ICRtYWNyb19jYWxsID0gJDE7Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgIG15ICRtYXliZV9leGNswqAgPSAkMjsKPiA+ICvCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqAgbXkgJHN0cmluZ19hcmfCoCA9ICQzOwo+ID4gKwo+ID4gK8KgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAkc3RyaW5nX2FyZyA9fiBzL1xzKyQvLzsKPiA+ICvCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaWYgKCRyZWFsZmlsZSA9fiAvXC5ycyQvICYmICRt
+YXliZV9leGNsIG5lICchJykgewo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgIHJldHVybjsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfQo+ID4g
+Kwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZiAoJHN0cmluZ19hcmcgIX4g
+L1xcbiQvICYmICRzdHJpbmdfYXJnICF+IC9cbiQvKQo+ID4gewo+ID4gK8KgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIG15ICRsYW5nID0gKCRyZWFsZmlsZSA9fiAvXC5ycyQv
+KSA/ICJSdXN0IiA6Cj4gPiAiQyI7Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqAgV0FSTigiJHtsYW5nfV9MT0dfTk9fTkVXTElORSIsCj4gPiArwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICJVc2FnZSBvZiAkbWFjcm9fY2Fs
+bCB3aXRob3V0IGEgdHJhaWxpbmcKPiA+IG5ld2xpbmUuIENvbnNpZGVyIGFkZGluZyAnXFxuJy5c
+biIgLgo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oCAkaGVyZWN1cnIpOwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB9Cj4gPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB9Cj4gPiArwqDCoMKgwqDCoMKgwqAgfQo+ID4gK8KgwqDC
+oCB9Cj4gPiArCj4gPiArCj4gPiDCoCMgY2hlY2sgZm9yIC5MIHByZWZpeCBsb2NhbCBzeW1ib2xz
+IGluIC5TIGZpbGVzCj4gPiDCoAkJaWYgKCRyZWFsZmlsZSA9fiAvXC5TJC8gJiYKPiA+IMKgCQnC
+oMKgwqAgJGxpbmUgPX4gL15cK1xzKig/OltBLVpdK18pP1NZTV9bQS0KPiA+IFpdK18oPzpTVEFS
+VHxFTkQpKD86X1tBLVpfXSspP1xzKlwoXHMqXC5MLykgewo+IAo+IEkgY291bGRuJ3QgYXBwbHkg
+dGhpcyB0byBteSB0cmVlICh3aXRoIHJ1c3QtbmV4dCBiYXNlKSwgYnV0IG1hbnVhbGx5Cj4gYWRk
+aW5nIHRoZSBjaGFuZ2VzIHRvIHNjcmlwdHMvY2hlY2twYXRjaC5wbCB3b3JrcyBhcyBleHBlY3Rl
+ZC4KPiAKPiBBbGJhbiwgY2FuIHlvdSB0cnkgcmVzZXR0aW5nIHlvdXIgdHJlZSB0byBydXN0LW5l
+eHQgYW5kIGFwcGx5IHRoaXMKPiBwYXRjaD8gSSBiZWxpZXZlIChub3Qgc3VyZSkgdGhlcmUgYXJl
+IHNvbWUgaW5kZW50YXRpb24gaXNzdWVzIHdpdGgKPiB0aGUKPiBjb2RlLgo+IAo+IEMuIE1pdHJv
+ZGltYXMKCg==
 
