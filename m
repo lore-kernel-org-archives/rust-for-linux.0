@@ -1,157 +1,113 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085961DED64;
-	Fri,  7 Feb 2025 11:07:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AFB81AB50D;
+	Fri,  7 Feb 2025 11:42:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738926451; cv=none; b=jISeG3tUhw8mUSuZNYetO9N4ixx8GJX7uyiN0w/L8yYgPb/SK9XlYPpWGml8eTQuGd7/c2FesN7ob37vH5C2X40pt5/ir+rQpgETVDQQ0HitAbPnry7AFtWiS4CPZ/x9l16FN9gHv8UzrlqLEo5+Xw+EPG6qkDvYqk2Tjq6uQDI=
+	t=1738928576; cv=none; b=HIQ7oZHiSB1m2OY3myS4tMn5jDSJx5DJxfHatBZ/2RoDwkfU/V7yeOYWtwY/qhSRhxOlEQF7PNyR6ek7kxFMraYWKOGxdjF3Ynh7YuoAvR05k7GT7vPGrlWxybnvBdKiDDZB3RgY9RKHHaO+QUc1coqrFdaiElsxtwMNZwws2mA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738926451; c=relaxed/simple;
-	bh=tX2VhS1SeREZEEWfKhsYfi87lp8g4mnQweSe4p8Ykfo=;
+	s=arc-20240116; t=1738928576; c=relaxed/simple;
+	bh=B1IY2LizCmjuRbgMh8oZXBFBN2K9kAS64Tn/T1DvfI0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AUpllPH95WWz8zl1uuQqzTrbqePOCZaqC07Am8G5bJJD0g+lUdJBnW5WlPQF57ziNj2/aRd1cSuD2iHkwDiX7KyL8TbNFOYcv1ciwn/auHaM1VoaFom5A4Zfz8sn2RsbKE5dzcJqIuUZz6Q8auXxpIA/ibGayxL8vZj9LfZfeQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O5Wz4xXk; arc=none smtp.client-ip=209.85.216.53
+	 To:Cc:Content-Type; b=nnMKv8FEjGLhAvaAqLqLccoYYB6/B0jjLxMJxJjIyKvPVAeMjm0gCo25xERmEYMeVmkjGgiHLCAT0Ix5KePpounN2/KO6Vi0pOYykmOvgbTIJndH42MRO/mhigWgdxzuTklSh4xhHHVWkixk+EEy1JCkQkP3aJYIjWUFtR5ZR5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YEBiNeAF; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O5Wz4xXk"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2f74e6c6cbcso446302a91.2;
-        Fri, 07 Feb 2025 03:07:29 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YEBiNeAF"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-21f5015bce7so1387745ad.2;
+        Fri, 07 Feb 2025 03:42:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738926449; x=1739531249; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1738928574; x=1739533374; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mX3UWjqcmjhwdy78xAQGr+U0/dUkqStaWJmr9P/RfFg=;
-        b=O5Wz4xXk8syOtmtz7Y5fEScSZEfY/Yc9Hqlpi26kEML6CERHwaNQyLfYE6emw3lT7a
-         UGfMrxn8s23j+hWnaCOXrfxN8ucDooibi3kcDWeIkOQSFDTOcBC0DMZjdBvRorDf2aum
-         36khANTspF0hvAejbGYapyfPEdjoFmUEZ7v+z/uK6fQT0jhpFequyKfai9pZDM0pNRzc
-         +laQ/d8fYa3fUBCPfUzTfr+VqAS6Hz/fSMh/+RiguQhXXAVnT7uyHMAfcOfPx46r7gtE
-         vOskpPnCvxz4YR7IwwsDL/cMh3SCt6bE8WPENER5ciWCPRnnhNu4yA3XRZtUZOr5nnVk
-         sySA==
+        bh=iY9M0kuGNKIlnRJ54ZSgFSum7bas+3NP4/NP9Pk/iOQ=;
+        b=YEBiNeAFsUxuucHkNcvBlAlPAkBypMNrJXjVG6vwXTQ/gPx5Vjemo0HeVL3Uu/lYkZ
+         LuytmkoZHyE4fbjP6538HlvnQ9FVdeBsRXI1Ih6m/vPZT3bQQ2uuWJssegvu0rOmwWaC
+         2DA2zQ+JxnxWru/gVP8vqamqqZ6EvWL9CjoU+YiRk6YKW5Blg0MDCMlkiok8naSCyCoD
+         UVb1zH/qNxtMbyTD9h8B1w1Z7JkaYOvieQealbcVrXuEwJgSvfavijci/7QeZmUDpzL/
+         KIFcim2MCy117pqLoL40mUyE1OzOMVH1UUPH6EuUCCn2L65Toll7WkZvyAKj18TpDl3w
+         kkiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738926449; x=1739531249;
+        d=1e100.net; s=20230601; t=1738928574; x=1739533374;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mX3UWjqcmjhwdy78xAQGr+U0/dUkqStaWJmr9P/RfFg=;
-        b=EvnzIvBhBR9joyM39IcvVHCUmCGFxcGXM5U47YwnngiYBoQFdstkIQ2eFUo+w1delK
-         8KhMtQNfTbjdXXNQmOVuhzpz6yQwZRhgKBkLZfKjE2P5blSMxo4KxZyOyOkZuCndnouA
-         3+Aa4o8bdXpD+BiLhjepWeHa7uFyD73ntWuGMgqpnmtRiUXLCnzUzyHzOroO6R2sSaBz
-         fy6iYN0HM2ao27kDalnaJoOt+bLMVGBrL0TTncQ587YbFP19hd6/AvmX824KKNGwLQxx
-         KRIXiItevf67UEFTaSD8b6EmWj5ybj7m8JWcoOynhvud+s72KThhEv6UZLFFG5HFK4W+
-         pgwg==
-X-Forwarded-Encrypted: i=1; AJvYcCU9bizb3e671ENmJyqKLiHpS1AAKJv65ivr9+STyrTKn2DBH35vNSxough7zwbCN6lFUmz8YzJsQjZHuqkP@vger.kernel.org, AJvYcCVQydHdexinyMh2AzYCrDpPL7YrQRJBMmOfa9RC+xNIlzw+dUBdXtwXisK6JjdoChdDv/OSS7vELopEN5hOGm4=@vger.kernel.org, AJvYcCXgXvA3FqNCdIVR3xnJF69xICv+9Tpict2cT3vX80edXtjAxH3AILqQPS6mUnkaIfz+8448ygNzfGA=@vger.kernel.org, AJvYcCXuPRCIrJvvXRqQAd81BiAO1Q3kPEVvE9SnBLG23SGpQSmx4PwstntHsw9GNpMilH5KDo2A/8aXiik=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6m6LkqGoq7UhFyYU4ApzmbHXw8MlQ5Dg8WQNTvIDE7cFjSWGg
-	9TbYahPqCYcuKvkCbvUaxkfXIHL3CWrlei3W+rq6sEz5A7FqFCln2mlPbim1RUGqq9fvO1osGQc
-	ivMgkbISTuKe3xRA2keNoCr1D1kQ=
-X-Gm-Gg: ASbGncu6WMPS+7e1Ru0Jnpz1lXudBoB/PbJus2k3TxELs4rpXWM6djzqinq2fJQjjiA
-	XvXNU+9oDRggSRzHAmtXgR2QpC3kDJLSLV8dIDn+R1sCVGhgpHxsQduMBIq4MAWhc/XJZ6D6C
-X-Google-Smtp-Source: AGHT+IE/3gWtecB4TuXpei0yuNOQwHNbelMV9DCjald55tyxQFeC6FoGlBVQILPWu4B8zeWlzZ2N/WpKVfFEjQUhemA=
-X-Received: by 2002:a17:90b:3903:b0:2ea:5e0c:2844 with SMTP id
- 98e67ed59e1d1-2fa243ed977mr1750269a91.5.1738926449145; Fri, 07 Feb 2025
- 03:07:29 -0800 (PST)
+        bh=iY9M0kuGNKIlnRJ54ZSgFSum7bas+3NP4/NP9Pk/iOQ=;
+        b=CoXv2DDnCDi5YsStAsithnaBaOnhEMi0j3RavO67IjPwasRflqHqyMUrx6q8mlILBP
+         7c2BHco5UrFSNKZMf26HSW1495E0dLoBsXCt3RPxZyWuioMymdnQ7Tjn9jSb92SMNP1W
+         iBAntlr5dO3LgkkVcv/XBvMi3Fz+h72pUrVDJU4aIZl929PZkHE7sNGlIz7OLlm3qmQp
+         xoBkdQu97T+5F+Unf7kWSlstwHPoN7kEpEo0PlAycSZRzOGkCuby/NAnJvUB5k6jlQSb
+         H1r6xPBHMth8mb9+jxjFhfZ5TXVZmAUveYRvz+kFqD15QDonJQpFelVfMaYFgOOhsZOX
+         JElQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVHsbZeLIPELARrmjVLZPJjAyWiSwdLAxcKK2Ap6UTPYQa3XyjNzjv7JGNN2k2vYxLFEeM4wUWVgfOeu4Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEesJAxgsPgom/WpGAAGuq4UOjyyfrhRXkfKdUXGrvaKLOxQqD
+	fH5KtdSsJb+2G4qB9RZ34UIhgwAAidLX5Z5vS1cd9GtoaSilS9QqlMli8epRqHi/WYiKxi94QjF
+	QUjqXcjPNNcJNrTLvmWvUTEu1lgo=
+X-Gm-Gg: ASbGnct4JWeRLVBm4Ggd2ZmZLdmwGnfwvtglZqBwbrOBYhuLtnu/Tu1FimEml0YPj/x
+	Pxfd9N+gE6CkuRDYTQ1rna28yQxRRYb1ff53uu/X0s1w11HEk/21sLiVbXecPvW2bs3RkjuGn
+X-Google-Smtp-Source: AGHT+IGg3EOLaEIr5rRgEuP+z5Hca61CIKhIOhGaAZVkN3fxjtBjRwoSI38aE/HF6q2g1MaF07I9/mil9J+vs0lZ5qk=
+X-Received: by 2002:a17:903:32c7:b0:215:b75f:a1d8 with SMTP id
+ d9443c01a7336-21f4e1b1236mr16563665ad.2.1738928574257; Fri, 07 Feb 2025
+ 03:42:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1738832118.git.viresh.kumar@linaro.org> <Z6Sgwbgfp-9SCr8Y@pollux>
- <20250207071538.xjxauatta2jsedz4@vireshk-i7>
-In-Reply-To: <20250207071538.xjxauatta2jsedz4@vireshk-i7>
+References: <20250207004049.178049-1-lyude@redhat.com>
+In-Reply-To: <20250207004049.178049-1-lyude@redhat.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 7 Feb 2025 12:07:14 +0100
-X-Gm-Features: AWEUYZms7tganxn6t-nVTSipJtfvYNnMyzk79dgVfbWiEhhyHiIvoGcdoMyxUWw
-Message-ID: <CANiq72k4N_bD3_QxFKveyjGsSeXJX7y6fKU4EVt0hBOcq9q7tA@mail.gmail.com>
-Subject: Re: [PATCH V8 00/14] Rust bindings for cpufreq and OPP core + sample driver
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@redhat.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Benno Lossin <benno.lossin@proton.me>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+Date: Fri, 7 Feb 2025 12:42:41 +0100
+X-Gm-Features: AWEUYZkUbYWulYqfAta1s8MbY8W16wi7jdedt_OfQikyj7oHM6RkNX8Vm2it60k
+Message-ID: <CANiq72=bspqRga-hTTb3Vh9kD0ctyTehM9dvJdR=8biTE+iCQw@mail.gmail.com>
+Subject: Re: [PATCH v2] rust/kernel: Add faux device bindings
+To: Lyude Paul <lyude@redhat.com>
+Cc: rust-for-linux@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?TWHDrXJhIENhbmFs?= <mairacanal@riseup.net>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Michael Turquette <mturquette@baylibre.com>, Miguel Ojeda <ojeda@kernel.org>, Nishanth Menon <nm@ti.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Stephen Boyd <sboyd@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Trevor Gross <tmgross@umich.edu>, 
-	Viresh Kumar <vireshk@kernel.org>, Yury Norov <yury.norov@gmail.com>, linux-pm@vger.kernel.org, 
-	Vincent Guittot <vincent.guittot@linaro.org>, rust-for-linux@vger.kernel.org, 
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, Erik Schilling <erik.schilling@linaro.org>, 
-	=?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
-	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>, 
-	Anisse Astier <anisse@astier.eu>, linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
+	Xiangfei Ding <dingxiangfei2009@gmail.com>, open list <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 7, 2025 at 8:15=E2=80=AFAM Viresh Kumar <viresh.kumar@linaro.or=
-g> wrote:
+On Fri, Feb 7, 2025 at 1:42=E2=80=AFAM Lyude Paul <lyude@redhat.com> wrote:
 >
-> If I move the code as suggested here, then I get warning about not
-> adding a SAFETY comment for unsafe code (which looks to be a tool
-> specific bug).
+> This introduces a crate for working with faux devices in rust, along with
 
-The warning is there even if you don't run `rustfmt`, and it does not
-look like a bug to me -- what Clippy is complaining about is that you
-don't actually need the `unsafe` block to begin with:
+s/crate/module
 
-    error: unnecessary `unsafe` block
-    --> rust/kernel/cpufreq.rs:631:22
-        |
-    631 |         attr[next] =3D unsafe {
-        |                      ^^^^^^ unnecessary `unsafe` block
-        |
-        =3D note: `-D unused-unsafe` implied by `-D warnings`
-        =3D help: to override `-D warnings` add `#[allow(unused_unsafe)]`
+(also in the module description)
 
-since those operations are safe. Or am I missing something?
+> +//! C header: [`include/linux/device/faux.h`]
+> +use crate::{bindings, device, error::code::*, prelude::*};
 
-Then, when you remove it, Clippy will complain that there should not
-be a SAFETY comment:
+Newline between.
 
-    error: statement has unnecessary safety comment
-    --> rust/kernel/cpufreq.rs:625:9
-        |
-    625 |         attr[next] =3D
-addr_of_mut!(bindings::cpufreq_freq_attr_scaling_available_freqs) as
-*mut _;
-        |
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=
-^^^^^^^^^^^^^^
-        |
-    help: consider removing the safety comment
-    --> rust/kernel/cpufreq.rs:623:9
-        |
-    623 |         // SAFETY: The C code returns a valid pointer here,
-which is again passed to the C code in
-        |
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=
-^^^^^^^^^^^^^^^
-        =3D help: for further information visit
-https://rust-lang.github.io/rust-clippy/master/index.html#unnecessary_safet=
-y_comment
-        =3D note: `-D clippy::unnecessary-safety-comment` implied by `-D wa=
-rnings`
-        =3D help: to override `-D warnings` add
-`#[allow(clippy::unnecessary_safety_comment)]`
+> +        // SAFETY: self.0 is a valid registered faux_device via our type=
+ invariants.
 
-And `rustfmt` will put things in a single line, since now they fit.
+Markdown.
 
-I would suggest reviewing all the SAFETY comments around this code,
-i.e. something may be wrong, since these were not needed, and thus you
-may have wanted to describe them elsewhere.
+> +// SAFETY: The faux device API is thread-safe
+> +unsafe impl Send for Registration {}
+> +
+> +// SAFETY: The faux device API is thread-safe
+> +unsafe impl Sync for Registration {}
 
-In any case, passing `rustfmtcheck` is a requirement. So in the worst
-case, if you do find such a bug in e.g. Clippy, you may always
-`expect` or `allow` the lint or disable `rustfmt` in that region of
-code. But that should be really rare, and in such a case it should be
-reported upstream.
+Perhaps some extra notes here would be useful, e.g. is it documented
+to be so? Especially since faux is being added now, it may make sense
+to e.g. take the chance to work on mentioning this on the C side.
 
-I also found other build issues in the branch you mention in your
-cover letter, so please double-check everything looks good before
-adding it to linux-next. Please also make it Clippy-clean.
-
-I hope that helps!
+Thanks!
 
 Cheers,
 Miguel
