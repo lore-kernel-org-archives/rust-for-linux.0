@@ -1,93 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091CD18DB21;
-	Fri,  7 Feb 2025 17:19:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF6C33EC;
+	Fri,  7 Feb 2025 17:22:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738948761; cv=none; b=j7yaf9lgZE5T72GiVbvRYHI1xXbHLxiBlJxDwBx0Hio0HTrLemvEXjTKROtm/mLKsPuxGYJkoGqyow6MCwQb/ma/IVUZSqgcqkFgKUElkqS2GQN0pGx9dfW86vrgPZoD5RA9pxo8vKxKsCcqaeDG2LX5CwerJmZ1ysDO4WOmq1o=
+	t=1738948925; cv=none; b=aSAu44KdpTipoPFPNzcP6kYoPLNhZ9qRBfrEngVkNC9R0MnE92AgRd5h4bsH0e6TjXwxsJS61g7eGMh9j41ZRZ1Ejb5C6RK42yb8junv6frbhm4QknzZs1Hc/3PBX0UNr1tWATs6CFzKr5cCep3YYohS1RFLhXjmpeYwdgxQtJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738948761; c=relaxed/simple;
-	bh=sdUkcNhVQ5Ph1CRzdktcyKpovBSX+j6bHeJqjw6Pme0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cKaCtlUkwzOS3n0kNym4rpIskWljVMeIqmH78n99VGIKVz0bLyqIk/DVx+x7KzgPeUMk6HH7y59c/kfbPJ5CivF8HrQknPdfs3YKZykeYH668mWm/gfyE0jIdCULyqr/uURcggkw6z3+PdAtSbRzEks17FZT6cEzrltc5WWCAzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uHWfCybx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738948925; c=relaxed/simple;
+	bh=F6saKOuYKwll98yUlD5RzF7Rw2xWw9P2OMNsWIabYd4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=SaOoNGwbkxvR6N/Xgg7Cr2VsFc6H0ZeObKQltDSBiTnwCUAfE1WgGGHfYRgwype3CUsMnEy1AAGmFFO3nEJpxMhMYm32HH6m9f0i5Ymh86FCUdZXzCTFRe9/GZeBWUnZy8DHPNbafJher7Nl8ThiM/dAvalN28BuRcYEu+9c36Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fvf8V1Fu; arc=none smtp.client-ip=209.85.219.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uHWfCybx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B03EDC4CED1;
-	Fri,  7 Feb 2025 17:19:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738948760;
-	bh=sdUkcNhVQ5Ph1CRzdktcyKpovBSX+j6bHeJqjw6Pme0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uHWfCybxKmDKxLPbJCai952AKWzoeLRR3Xgsq8OWU4rCAoJoCLjOAzlXjv8EulxJ3
-	 6u7B7/ggvChz2k6lf5SWWexSBkukKo68xlmPg75gzZXVjbfRfIZVrbBfVsWNFKIIKA
-	 12FL1MJ729o+AlBBszUVeUY+VsHNxrOEaZO9mxHkutGSN/yosIE9R2D4e9W/iXhI1R
-	 VcRA5LzJN6b9YipC4WBsA0TnU5/X3604LXYRHCs5KTkhzPmkjvLEYP8yaMDgHW0xxN
-	 feAq+w82tWo01y3f9Il7gQ9kBHwGprddW+d6lQyZdTaPxIqEyxgTyNj4S6IEJGzofM
-	 QEAvAhY2uHOLQ==
-Message-ID: <52a3d4fc-b08c-499c-ba47-7a1d782b57db@kernel.org>
-Date: Fri, 7 Feb 2025 18:19:12 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fvf8V1Fu"
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-6dcdf23b4edso19850456d6.0;
+        Fri, 07 Feb 2025 09:22:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738948923; x=1739553723; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=i0jQusLVjmcEdcJUsjZrDDX/aIkifG5xyFRhHncB574=;
+        b=fvf8V1Fu3rFB9XzGjDlIO6xdAlU1qHhslOqhIT7gH0hPsGIZSerpP4JZZhK+rOoRpS
+         lvFX5qzmF5y0MICw5meP/R8Hc4Y5rhykyI5x6Jf7ftuNS0BubY3UPFmIEWHdG2uIZuZx
+         cLdggQw2qcSLfFp4LCz/n20gzzI2UvuF8QWPwYk/H/3q3ukKlT/8I1wCYnjNOnfMOJkV
+         UjnspQW61NplcbyfRhYA3nK/YUUcV2RGTj+Z7GVL7uF6M7RVkdvQjFFZ5JHWQYcvCcQ3
+         CLmyibOuBBrfe/4HfrnBj97cYe8namuSNWUvSWM/LQCkVjeUdGVUxOHQ611ovi1O/kQS
+         WRnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738948923; x=1739553723;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=i0jQusLVjmcEdcJUsjZrDDX/aIkifG5xyFRhHncB574=;
+        b=O1t6MUOQO/ZUpxXr2U8BAbvGbHE2e0iuIXRrngqnW8Q+bq8qetMQvwWoa4YWYfyq2l
+         Qf4rkKVnD5UdVrgkJsxC73KKT3NjZUC0fNR0/eOLCHVLDTirqKSJpYgJCKiASThp4Ycj
+         ewVkjzVvm69XkXn5tNNLVn3kZZ1gzc3ebG7Pc/MVbmQzZqUalapeMkHWosCnV0ngrwGn
+         9NOI63DG1a8kw6SHQ2L7VEimowN85KVoeTDvRHjL3Xa7sS3LXRUJcLGyqIthDnu1DhlT
+         nHSwhr/sIh+DPVcQG3EOuNYfhXeMzwVrAxYXiRu+EC6MFklPQmvEc7e2AWku6N+l9z6L
+         oBog==
+X-Forwarded-Encrypted: i=1; AJvYcCUNmMKx55I/P97bjVyW7zp204+jrW6lWjq+p1hqF6Wg7kMMpBLU9smQbuFu/Mc0E8/Lu/isrZ55I5L2/s4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7btGpwpcvYj9yq5vsX3D16Xyxp+O9v/6EM1+oLF3NeBbcxgHA
+	QJZjS2b0/ZGi4oK/a09bmY7RrIj6z3VNRrgBLsyJokmUgNhdIkUt
+X-Gm-Gg: ASbGnctynImgO70zx0uzwLaRX2aubBNgGOgIg4WUBR31FCDG1RxJJ1dNrdLPHYoQ7+F
+	9SNwGRi7PyFra7RyaCQh+8RWdiktciSvDS04ap6xQGvbLWJIwILs60JGytlSqGivFCezBIijvyD
+	Ba9JgVR3ldIPew6TIgjTmFfI+5NQdNE0yz/AF8cfIkfdqu5sXAYqczBptr45TlpsTSlTJJidVQA
+	8ffOn5idxZ5ovfpYy9inrgwqbEie5/fCNWiFJYjz7TVHvHL2fYx27RhQk8kwlOT4TVoj0e8i8yz
+	gypCRHIT1whK0UEIUzQl7MOuenYkCY+blsd7+B4ZQzCWUs8=
+X-Google-Smtp-Source: AGHT+IHoUXEMaP6obo6DMG1s/ySdECgGCnYRm6KE+L69ErTzkmUz7xbr4DptrblobnYPWt2OWfqrmQ==
+X-Received: by 2002:ad4:5742:0:b0:6d8:9002:bdd4 with SMTP id 6a1803df08f44-6e4456d9c2bmr72195176d6.28.1738948923053;
+        Fri, 07 Feb 2025 09:22:03 -0800 (PST)
+Received: from Tamirs-MacBook-Pro.local ([2600:4041:5be7:7c00:fb:aded:686f:8a03])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e44eb52460sm3159646d6.8.2025.02.07.09.22.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Feb 2025 09:22:02 -0800 (PST)
+From: Tamir Duberstein <tamird@gmail.com>
+Subject: [PATCH 0/2] rust: macros: fix `make rusttest` build on macOS
+Date: Fri, 07 Feb 2025 12:21:51 -0500
+Message-Id: <20250207-macros-section-v1-0-8f018cb05a20@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V8 06/14] rust: Add bare minimal bindings for clk
- framework
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Stephen Boyd <sboyd@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Danilo Krummrich <dakr@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Michael Turquette
- <mturquette@baylibre.com>, linux-pm@vger.kernel.org,
- Vincent Guittot <vincent.guittot@linaro.org>, Nishanth Menon <nm@ti.com>,
- rust-for-linux@vger.kernel.org,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Erik Schilling <erik.schilling@linaro.org>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
- linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org
-References: <cover.1738832118.git.viresh.kumar@linaro.org>
- <c68081e18d939aefc7f6dac798df6b72e81bba4b.1738832118.git.viresh.kumar@linaro.org>
- <Z6ShsuLykigNscz8@pollux> <Z6SiiRubSXGInbgj@pollux>
- <0cd42d2d683ea057e6034978b02c7f84.sboyd@kernel.org>
- <Z6VBo51g54xAmelQ@cassiopeiae> <20250207092448.n5mzbt6lg6zqud4a@vireshk-i7>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20250207092448.n5mzbt6lg6zqud4a@vireshk-i7>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAC9BpmcC/x2MQQqAIBAAvyJ7TjAhhL4SHXRdaw9puBFB+Pek4
+ 8DMvCBUmQRm9UKlm4VL7jAOCnD3eSPNsTNYYydjjdOHx1pEC+HVVZ0cxoguhEgeenRWSvz8w2V
+ t7QMgRNEHYAAAAA==
+X-Change-ID: 20250207-macros-section-f7cddc7bbdea
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Tamir Duberstein <tamird@gmail.com>
+X-Mailer: b4 0.15-dev
 
-On 2/7/25 10:24 AM, Viresh Kumar wrote:
-> On 07-02-25, 00:11, Danilo Krummrich wrote:
->> On Thu, Feb 06, 2025 at 12:05:59PM -0800, Stephen Boyd wrote:
->>> Quoting Danilo Krummrich (2025-02-06 03:52:41)
->>>> On Thu, Feb 06, 2025 at 12:49:14PM +0100, Danilo Krummrich wrote:
->>>>> On Thu, Feb 06, 2025 at 02:58:27PM +0530, Viresh Kumar wrote:
-> 
->>>>>> +/// A simple implementation of `struct clk` from the C code.
->>>>>> +#[repr(transparent)]
->>>>>> +pub struct Clk(*mut bindings::clk);
->>>>>
->>>>> Guess this should be Opaque<bindings::clk>.
->>>>
->>>> Sorry, I meant NonNull<bindings::clk>.
->>>
->>> NULL is a valid clk. It's like "don't care" in the common clk framework
->>
->> Thanks for clarifying!
-> 
->> Guess this should be Opaque<bindings::clk>.
-> 
-> So it should be this now ?
+Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+---
+Tamir Duberstein (2):
+      rust: macros: improve panic messages
+      rust: macros: fix `make rusttest` build on macOS
 
-I actually meant NonNull<bindings::clk>, which I corrected in a subsequent mail,
-where Stephen pointed out that NULL is a valid value for a struct clk.
+ rust/macros/module.rs | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
+---
+base-commit: beeb78d46249cab8b2b8359a2ce8fa5376b5ad2d
+change-id: 20250207-macros-section-f7cddc7bbdea
+
+Best regards,
+-- 
+Tamir Duberstein <tamird@gmail.com>
 
