@@ -1,98 +1,157 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2DD31DE2D8
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Feb 2025 09:37:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89641D7E21;
+	Fri,  7 Feb 2025 09:41:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.63.210.85
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738921026; cv=none; b=BoI++BfKwnCTAQWO4QtPdMSIvYuQraGZMoI/2WSEb2IpAM17BFrlbt0Bv6LdoGNVwWxvwGgQ11vmhRs6vKP9ZRVRFOWZQmiRpHJI7NG+w/ovYGip52Csj27R8Gqn0+qYKY1Toyf5sp4f58EeTje9i6nzziZhqWqrCFlOiAAwQ74=
+	t=1738921318; cv=none; b=OCeen6XAOidc4u8yzbu79s4ZSmkcJMoZv5oRriZxAy5YbyRUkCWbCMJOPZoudkmFDFFRflnf4/qebD6pKZpvD8e9Ldp3LsLhxeSsDoNB3ZkMaOOJ7uaK6rFJ4Lft3qdN4iJdKV1f4HaPpPSUi/lpm+4SDryM6keNhNROHmIgiyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738921026; c=relaxed/simple;
-	bh=DZTAjfcVEUMXilHAzTkctefbUlsyz5gN6B4U82wmSfA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bZEAIvjkLlLqj3eMn5+yBnWjjuUSUrst8EYNifH+XTg3tsdZXgaLo6VFqnGi2KGjn9kFEVMZHK+XukB0aLqmFmzTa6is+lAkNWpY338XirBwB4PkvNbMTMwhY/YBnK81Tcd4M+G4KGw1O/JnxQu2dntTgFpf9Np/gFV6RXz6yww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UPGHq/OE; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1738921318; c=relaxed/simple;
+	bh=hhnpORnNFDm++vxXeAvT3ViAqcibr/gkMJz681ofVAg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
+	 In-Reply-To:Content-Type; b=oX55c278I112osxHXidmKs3bvn/xjp/tgwAoIjfxFaqXc8kzua2GDcWQeo+CfG6ayoCBxiPmJTXeB2sRvumuRF2wmWJ50rTq2wZ9miF4Gm26IUZEYuuGXDawEKupxd5YzRAETxms/AV0vxPo8+LFpOljzR2RRGbMCKK2w543ih0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marcan.st; spf=pass smtp.mailfrom=marcan.st; dkim=pass (2048-bit key) header.d=marcan.st header.i=@marcan.st header.b=f7x/497T; arc=none smtp.client-ip=212.63.210.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marcan.st
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marcan.st
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UPGHq/OE"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43690d4605dso12471125e9.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 07 Feb 2025 01:37:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738921023; x=1739525823; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DZTAjfcVEUMXilHAzTkctefbUlsyz5gN6B4U82wmSfA=;
-        b=UPGHq/OEGsLt/LitskuTmmS481dbq0ATubFggBBwGLX4GiB5KDxrKwXIOp6la7UQer
-         ICFaRTtYP1TCcWRSCutXVXWIk+hhMbrss3onbzlLw9kOCUs4o1/V5oXBvLZJBOxVHE/b
-         ML4il5yurF9Sza0Gg1nIKPEQ2XLEmq/i1Fj3yjEC/QYOQstbwkuhv27j/og+47Mmaoj9
-         iS/4Y1wK9b8Mwmatus2i6I1ys06fQXSZWTnsRsJVj/cX+jbD/iUKfWAk3RUTUyY/hlkq
-         TJtkmbOEDSImn4Mnd4xvBeUZ3wizO5/eXNEQrbirhA3H469yY06oGQHn8y/r1H2HuR1R
-         Lwmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738921023; x=1739525823;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DZTAjfcVEUMXilHAzTkctefbUlsyz5gN6B4U82wmSfA=;
-        b=G2mmf+4dK+lrpOIXw5U3TbCDa2eQv8utK0GQmj7AYA2oUpXEslaip1B9qPQtQwl92i
-         kFzGNjBPXidiafGcKmNuTXlnQO3xHMiZC74mUUFeolWdEpvBcVb2fp0R/QMlgRrV+M7d
-         FwFPnPt0+BxJ7FE0ktGnK1BAkAFBERgMIzskBMuQ6A6ZFh0RkVmivXtrrQpNBwcQHI7v
-         vQINZxB+jlWyZKmCs3SWiPLzzrZOfgNPl0iGJcg5TrF2HvTId60uSYQE2BeVBQTofoNN
-         p3wo78OyumvKOLhbNyU09Ggvx8KDtK38eE79acy/m7D9mRkUn965Ocm3MNZucVM4unxP
-         L6aQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXpLPpnFZOAgBWCxNg5c4xH75MAjg02wirwnFb+KhwApQZi9eF64/mIDFY1aln8sbFoQtpErlUgw2AgkDnv/A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmzzXsX+YK+28SmQ/dHV5HERkcz4ksYbsfAgTe3dqg+NvazqL4
-	KFWLq+nXj8qtUDz4ximZodDin022hZHgE9pkCeDwvlhm/tWmwL+nJgDV89+Jvd9GF666N7YZGf1
-	jDKHEyGSP7czF98OUkzaWUZ3/ILwNAgyLgBfE
-X-Gm-Gg: ASbGncsMV6OJq0QYiszY0wF27eQj7OdF01OhgKQb5CIEBsj3UGNr05kO1XViwarbJkG
-	3e/5azZP7q3jnvOdMkMxRnvighCOp3VgO1MTI4wlY2DVcHXs22kxGvcfdvadiojfSOc0c407qsz
-	h4jLFnfA2SkdhbayUQ/Darxm7FmRk=
-X-Google-Smtp-Source: AGHT+IHuGjdlqwgeTAUhzEPVafoaXXC6hiVr8E+u3Ozfb8k4Fr6W8d/NvE60aVN0kWu0TCZXFFymCnn9uBwb/aF1fiA=
-X-Received: by 2002:a5d:47c7:0:b0:38d:ada6:f261 with SMTP id
- ffacd0b85a97d-38dc8da7968mr1534040f8f.11.1738921023063; Fri, 07 Feb 2025
- 01:37:03 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=marcan.st header.i=@marcan.st header.b="f7x/497T"
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: marcan@marcan.st)
+	by mail.marcansoft.com (Postfix) with ESMTPSA id E3B5D4267F;
+	Fri,  7 Feb 2025 09:41:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
+	t=1738921307; bh=hhnpORnNFDm++vxXeAvT3ViAqcibr/gkMJz681ofVAg=;
+	h=Date:Subject:To:References:From:Cc:In-Reply-To;
+	b=f7x/497TTlA4J5xS7wcETrqljbIFDYnQPGz7GoXWbwqFSu9urdwpcvIrY+8o3XZcA
+	 TKfS1WhrKKEMfg1qLi3a6lO9cyEqRo+9achweDSe5w5Lo6bHCDeENj9825sXBESxxf
+	 cx15qwbuKNy0PvNPfAG1rI92kJuBoJDVgF5d1UdN673RwcUGRoVVuaoT7NJCdHJriX
+	 OjpETvSeS3LFTVSf9I1qM88ISy3JcYeJlpIpJ6KgGLOUB56St6xHaPWJ7uBhIV95Bd
+	 DdlNwPA58ACr4ylOhUfT4gaVFSUa3okurftv8s9W5VRoein3+Bg15fTiL2XpjL2s8/
+	 4idRRZn6TKG8Q==
+Message-ID: <4c143b85-063a-4413-a6ca-e9d80e26da96@marcan.st>
+Date: Fri, 7 Feb 2025 18:41:43 +0900
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250206-printing_fix-v3-0-a85273b501ae@invicto.ai> <20250206-printing_fix-v3-5-a85273b501ae@invicto.ai>
-In-Reply-To: <20250206-printing_fix-v3-5-a85273b501ae@invicto.ai>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 7 Feb 2025 10:36:50 +0100
-X-Gm-Features: AWEUYZkj2fGcFoTVezigggL9H4Yb160h5AwliIu1UEAWrlmXMzfRaAs7Nqrubqk
-Message-ID: <CAH5fLgh56iNEBVO3J9-_brJ=H=ThaXuZ4iEXj=seABvXy=r7AQ@mail.gmail.com>
-Subject: Re: [PATCH v3 5/6] rust: workqueue: add missing newline to pr_info! examples
-To: Alban Kurti <kurti@invicto.ai>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Jonathan Corbet <corbet@lwn.net>, David Gow <davidgow@google.com>, 
-	Dirk Behme <dirk.behme@de.bosch.com>, Asahi Lina <lina@asahilina.net>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Wedson Almeida Filho <walmeida@microsoft.com>, 
-	"Andreas Hindborg (Samsung)" <nmi@metaspace.dk>, Tejun Heo <tj@kernel.org>, Fiona Behrens <me@kloenk.dev>, 
-	Vincenzo Palazzo <vincenzopalazzodev@gmail.com>, Xiangfei Ding <dingxiangfei2009@gmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
-	Fox Chen <foxhlchen@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: On community influencing (was Re: [PATCH v8 2/2] rust: add dma
+ coherent allocator abstraction.)
+To: Simona Vetter <simona@ffwll.ch>
+References: <Z4D5a5NYrAbNxUL6@pollux> <Z4kG5AcVeQKegLnb@pollux>
+ <20250128092334.GA28548@lst.de>
+ <293df3d54bad446e8fd527f204c6dc301354e340.camel@mailbox.org>
+ <20250130154646.GA2298732@nvidia.com> <2025013030-gummy-cosmic-7927@gregkh>
+ <20250130172437.GN5556@nvidia.com>
+ <2025013148-reversal-pessimism-1515@gregkh>
+ <20250131135421.GO5556@nvidia.com>
+ <2b9b75d1-eb8e-494a-b05f-59f75c92e6ae@marcan.st>
+ <Z6OzgBYZNJPr_ZD1@phenom.ffwll.local>
+From: Hector Martin <marcan@marcan.st>
+Content-Language: en-US
+Cc: Jason Gunthorpe <jgg@nvidia.com>, Greg KH <gregkh@linuxfoundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, phasta@kernel.org,
+ Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+ Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>, daniel.almeida@collabora.com,
+ aliceryhl@google.com, robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Valentin Obst <kernel@valentinobst.de>,
+ open list <linux-kernel@vger.kernel.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+ "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
+ DRI Development <dri-devel@lists.freedesktop.org>
+In-Reply-To: <Z6OzgBYZNJPr_ZD1@phenom.ffwll.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Feb 6, 2025 at 10:08=E2=80=AFPM Alban Kurti <kurti@invicto.ai> wrot=
-e:
->
-> The documentation examples in rust/kernel/workqueue.rs use pr_info!
-> calls that lack a trailing newline. To maintain consistency with
-> kernel logging practices, this patch adds the newline to all
-> affected examples.
->
-> Fixes: 15b286d1fd05 ("rust: workqueue: add examples")
-> Reported-by: Miguel Ojeda <ojeda@kernel.org>
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1139
-> Signed-off-by: Alban Kurti <kurti@invicto.ai>
+On 2025/02/06 3:52, Simona Vetter wrote:
+> On Tue, Feb 04, 2025 at 03:46:14AM +0900, Hector Martin wrote:
+>> Adding Linus
+>>
+>> My 2c: If Linus doesn't pipe up with an authoritative answer to this
+>> thread, Miguel and the other Rust folks should just merge this series
+>> once it is reviewed and ready, ignoring Christoph's overt attempt at
+>> sabotaging the project. If Linus pulls it, what Christoph says doesn't
+>> matter. If Linus doesn't pull it, the R4L project is essentially dead
+>> until either Linus or Christoph make a move. Everything else is beating
+>> around the bush.
+>>
+>> Rust folks: Please don't waste your time and mental cycles on drama like
+>> this. It's not worth your time. Either Linus likes it, or he doesn't.
+>> Everything else is distractions orchestrated by a subset of saboteur
+>> maintainers who are trying to demoralize you until you give up, because
+>> they know they're going to be on the losing side of history sooner or
+>> later. No amount of sabotage from old entrenched maintainers is going to
+>> stop the world from moving forward towards memory-safe languages.
+>>
+>> FWIW, in my opinion, the "cancer" comment from Christoph would be enough
+>> to qualify for Code-of-Conduct action, but I doubt anything of the sort
+>> will happen.
+> 
+> Yeah no.
+> 
+> https://chaos.social/@sima/113942119012147959
+> 
+> This was about you, because typing a proper answer takes a bit longer. It
+> was also about your toots on fedi, like this:
+> 
+> https://social.treehouse.systems/@marcan/113941468353031993
+> 
+> And "haha it's only a joke" does not work with your public profile and following.
+> 
+> I do understand the frustration and temptation to just burn it all to the
+> ground, head the call of the sirens, or maybe for me more pick up goat
+> farming in the Swiss Alps. But you can't have it both and expect to also
+> be part of and contribute to the same community. And personally I don't
+> appreciate getting drenched in gasoline while I'm trying to quench flames
+> on the ground.
+> 
+> And this isn't the first time or the second, by now it's a pretty clear
+> pattern over some years. And with the first I could explain why you react
+> like that and you had my full understanding, but eventually that runs a
+> bit thin as an excuse.  Now I'm left with the unlikely explanation that
+> you just like thundering in as the cavalry, fashionably late, maximally
+> destructive, because it entertains the masses on fedi or reddit or
+> wherever. I have no idea what you're trying to achieve here, I really
+> don't get it, but I am for sure fed up dealing with the fallout.
+> 
+> Cheers, Sima
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Since we're into complaining about social media posts on the list now,
+I'm going to link one of yours:
+
+https://chaos.social/@sima/113961496955043901
+
+An R4L maintainer quit after multiple rounds of hostility, including
+some completely unacceptable public comments bordering on downright
+harassment from tytso, a situation which was widely publicized.
+
+If, according to you, that's "shockingly smooth" with "no outsized
+drama" other than "what I stirred up" (I guess you also missed the whole
+LWN post about this thread before I posted anything on Fedi? That's how
+I even found out about this), then I'm glad I'm disengaging with this
+community. The Stockholm syndrome and utter denial is palpable.
+
+I thought I could work with you on these issues; I don't know what
+happened over the past year since we last had a private conversation
+about this, but clearly you've changed your mind.
+
+Thus, as you kindly requested of me in social media,
+
+https://chaos.social/@sima/113961283260455876
+
+I will now proceed to fuck off. Good luck.
+
+- Hector
+
