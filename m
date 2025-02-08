@@ -1,127 +1,113 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76102913;
-	Sat,  8 Feb 2025 03:01:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54093157E6B;
+	Sat,  8 Feb 2025 04:27:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738983679; cv=none; b=B2C4zUP4AdaaVPK7HHIKJbpwcG/imu72rogijVgHmc/la+XXvKq851vBQKOzMmQdcKmPRyFFXBuDahLR9gr2ZhZg0zfvdTRDq1aPrPidskFZw9mrzHnElLGrcuX1FtrvchzCFBWgJcZnJ2607kvsAWfgAXgiSm/dh2x7jikWp7w=
+	t=1738988821; cv=none; b=YkXy0Bt8IqnXHDR2OJxvXrxT8ReG5bGLrysJICAXV2YKQl2nJmTdWkG1eJ3u8r8oow0yqNTuaDRQrKZNGdDFUfayE/qHYRAH+JAL2PRpi40g91HcxEVdU92X956naUJ9uwtGP6P/OdJt/POA27J2PvgUQva9jO7+VyGB6OlYD/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738983679; c=relaxed/simple;
-	bh=nqpBlydxKobQ/cURbEJgsLrhdk+IEA8jA8MlvsXzBb0=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=e8zZf1s1E4zJwj1gUZcSFDJ40k0mqKJKJ1Uwlr5KlYVnmCWb33ObBX+7llJZv2U9eT57OTVDK9NKNUnMJhP9jR2ZKHlMx2ZrQOkdaI10vOFMjK2pi4CDLRhwiz7wXFXG57z12KC2WV+kcH4Se45NDaqoXiE6YvY+IT8He1C9YTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I4F0oBfS; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I4F0oBfS"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-21634338cfdso67876445ad.2;
-        Fri, 07 Feb 2025 19:01:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738983674; x=1739588474; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SXzRRz14yqpIHofV/zFebh3y188Exztn/L4hTgRQI5c=;
-        b=I4F0oBfS9q32sTW2rD6hPODZ5A6FMg3e7ajBi80RVVWObSZVsz1PqUXM1irYqwnmzy
-         DOGsv+oa8deQ7gPgr3OWOQf0T20/M2sq4uGvfX8RzxS4NKL062WJMmdYpLkuXYrE6Qk8
-         t0rkaeunDpJXs5tEE8IWvF0YqrVcS8eiq24+OgvMRsTtWQSscV/giC8DcFlupZArbd9z
-         xXUL5lGf/1nj+J2Mms5B9miGMx99XMpcCo48rokcUlm4psCdoWSIMfs3AymLPKJ8HTRU
-         YARfvDkGMTzx8RNmtee0NsYWw76/ayQ7DCWabB+uEhewKR1JXBHc+C4YHO+/ArmQvCpi
-         jdQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738983674; x=1739588474;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=SXzRRz14yqpIHofV/zFebh3y188Exztn/L4hTgRQI5c=;
-        b=Z1x65kK+hSqcSB8JZDaZizeke3sxzI5Z5inU+Tixs7tEw4wtFWx2ONLfWV2mGsIqc3
-         aWqiv7IZXJYWsV8M1I2v8R42TwMBQd6jxXKFHE/Mmn8il810wYZF26VSCWpFUkiYuXnH
-         tL2GCSonf7RSHMlIrOl7qvliyMAfcPAmZY3X1dy9+hLbuxu4EZhmx2Ccq4/tev6WxVv5
-         Eo2LFuLfFxaQudGBtTmBe8PU+9CCgr00slUOZfrWPm91Sv6vRwbUU8CTkeLxdO274pyc
-         VJMVAH4KHt07nnywtbNeQQVaYntebsyCNLIkFr8MJAp0G1+CNlSgVrJcsyRAiECWqoj3
-         MugQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVj/w6iv9e32/dvoaMwC0yHja3l54rUmwQVTT3ZVDux98OisEQc7m3YHTvMWt21glHhIDxD1IwsiAweEOL8NVo=@vger.kernel.org, AJvYcCXhe7oF+6ylh6n0TzOFZ9cSb2oyjBTejTvNg1AdwUhOn6YNa+mKO4eRIE3vAy2cWsrNLf61Sevl@vger.kernel.org, AJvYcCXk3aG9tYiTds8yIrGQle1UXRuU2yq5LLqN+Bpe5/5mDV/taYd2Eb9x4u8Kfz8tLpH5GnsxDmiHgmCq7I0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyY9SN7Ox268N30e5zTjEa8c/ARmVUfiKeQjtms1hVmXLFcdjSa
-	uH/qCmnwkQaKg/UU3xq4iuIPJeY+r9ILeVohkl8aQ4x4iuE9ZZnR
-X-Gm-Gg: ASbGncvZE9xPEM+8Phg/SSdqhzFotlatjfOHNHqiatVUKq4j7QCaev3GZGq5smgV1u+
-	OP8LEOvCPHyZZOAocN4cWklD/104LBYGhfADszlHSMkHR50RtB5Xn0tqLjJdn5cVTEE3Cvh4I13
-	xnFpCmHbn7E8T3srpAXPR7VFIBHdhxxsXXEFHVmXHPLhBGiU4vBqmxwCIpSd0q+8JdQfTY/OPD4
-	teR2z2fHgF/ncXjRRuabVSKGr/pHtgVU8gCQLx1OMe65lnN/jjXuYe5nKHUAPO0ft7GrF4hQaHV
-	KBBQAhVkgjj67fpRkxIB3NzQQuMfAk8hy+CTu3y1b0TUOxQzwpweaY9Tjl2+La1ZNjq0Vkw/
-X-Google-Smtp-Source: AGHT+IHN/+0/7nmDB66q1zqOa1jqJWOSI2wBvJ26ODCFMTLzQXppEZWJ/plqUGTPn9EYqJl/M+dNwQ==
-X-Received: by 2002:a17:903:2984:b0:21f:135e:76bf with SMTP id d9443c01a7336-21f4e6a9978mr87627755ad.12.1738983673897;
-        Fri, 07 Feb 2025 19:01:13 -0800 (PST)
-Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f3653babfsm37704355ad.68.2025.02.07.19.01.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Feb 2025 19:01:13 -0800 (PST)
-Date: Sat, 08 Feb 2025 12:01:03 +0900 (JST)
-Message-Id: <20250208.120103.2120997372702679311.fujita.tomonori@gmail.com>
-To: david.laight.linux@gmail.com, aliceryhl@google.com, boqun.feng@gmail.com
-Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, andrew@lunn.ch,
- hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
- alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- benno.lossin@proton.me, a.hindborg@samsung.com, anna-maria@linutronix.de,
- frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de,
- jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
- peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
- dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
- mgorman@suse.de, vschneid@redhat.com, tgunders@redhat.com, me@kloenk.dev
-Subject: Re: [PATCH v10 1/8] sched/core: Add __might_sleep_precision()
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <20250207181258.233674df@pumpkin>
-References: <20250207132623.168854-1-fujita.tomonori@gmail.com>
-	<20250207132623.168854-2-fujita.tomonori@gmail.com>
-	<20250207181258.233674df@pumpkin>
+	s=arc-20240116; t=1738988821; c=relaxed/simple;
+	bh=ym5ptxT+2nYTumEwJVEIgFvQ7+f+3l2P58kYEQGXqFw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RFdLfz4YBfSUlEz6F4Lks8QhKLmTpJbvD4XMxs3rdrGUcIoqu+Tn4uVzMPaX0dWfda2zieWPWZ9NL1QmhKS4zcHGQD2M9rK3d9egeu2z6nHaRLZNcD7tHkr9wefFHjHJ7VdyV9O5IyyqVdKSZoIAWoDQ71Ug04NnWPuWTJmRb7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D165EC4CED6;
+	Sat,  8 Feb 2025 04:26:57 +0000 (UTC)
+Date: Fri, 7 Feb 2025 23:26:50 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: "Dr. Greg" <greg@enjellic.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	Hector Martin <marcan@marcan.st>, Dave Airlie <airlied@gmail.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Greg KH <gregkh@linuxfoundation.org>, phasta@kernel.org,
+	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	daniel.almeida@collabora.com, aliceryhl@google.com,
+	robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Bj??rn Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Valentin Obst <kernel@valentinobst.de>,
+	open list <linux-kernel@vger.kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
+	DRI Development <dri-devel@lists.freedesktop.org>
+Subject: Re: On community influencing (was Re: [PATCH v8 2/2] rust: add dma
+ coherent allocator abstraction.)
+Message-ID: <Z6bdCrgGEq8Txd-s@home.goodmis.org>
+References: <2025013030-gummy-cosmic-7927@gregkh>
+ <20250130172437.GN5556@nvidia.com>
+ <2025013148-reversal-pessimism-1515@gregkh>
+ <20250131135421.GO5556@nvidia.com>
+ <2b9b75d1-eb8e-494a-b05f-59f75c92e6ae@marcan.st>
+ <Z6OzgBYZNJPr_ZD1@phenom.ffwll.local>
+ <CAPM=9tzPR9wd=3Wbjnp-T0W8-dDfGah-H3Ny52G85B+2Ev9ksA@mail.gmail.com>
+ <208e1fc3-cfc3-4a26-98c3-a48ab35bb9db@marcan.st>
+ <CAHk-=wi=ZmP2=TmHsFSUGq8vUZAOWWSK1vrJarMaOhReDRQRYQ@mail.gmail.com>
+ <20250207121638.GA7356@wind.enjellic.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250207121638.GA7356@wind.enjellic.com>
 
-On Fri, 7 Feb 2025 18:12:58 +0000
-David Laight <david.laight.linux@gmail.com> wrote:
-
->>  static void print_preempt_disable_ip(int preempt_offset, unsigned long ip)
->>  {
->>  	if (!IS_ENABLED(CONFIG_DEBUG_PREEMPT))
->> @@ -8717,7 +8699,8 @@ static inline bool resched_offsets_ok(unsigned int offsets)
->>  	return nested == offsets;
->>  }
->>  
->> -void __might_resched(const char *file, int line, unsigned int offsets)
->> +static void __might_resched_precision(const char *file, int len, int line,
+On Fri, Feb 07, 2025 at 06:16:38AM -0600, Dr. Greg wrote:
 > 
-> For clarity that ought to be file_len.
+> Not sure what the fix is, from a project management perspective the
+> technology industry has never faced a challenge like this.  The fork
+> model, which was the classic protection in open-source, doesn't work
+> at this scale.
 
-Yeah, I'll update.
+Maybe not quite a fork, but I wonder if the Rust project did something similar
+to what PREEMPT_RT did. That was to keep an out of tree patch. The full patch
+was just merged last September after being out of tree for a good 20 years.
 
->> +				      unsigned int offsets)
->>  {
->>  	/* Ratelimiting timestamp: */
->>  	static unsigned long prev_jiffy;
->> @@ -8740,8 +8723,10 @@ void __might_resched(const char *file, int line, unsigned int offsets)
->>  	/* Save this before calling printk(), since that will clobber it: */
->>  	preempt_disable_ip = get_preempt_disable_ip(current);
->>  
->> -	pr_err("BUG: sleeping function called from invalid context at %s:%d\n",
->> -	       file, line);
->> +	if (len < 0)
->> +		len = strlen(file);
-> 
-> No need for strlen(), just use a big number instead of -1.
-> Anything bigger than a sane upper limit on the filename length will do.
+In the beginning there was a few things in that patch that Christoph was
+against, but over time he became accepting of it.
 
-Ah, that's right. Just passing the maximum precision (1<<15-1) works.
+Yes, being out of tree is very difficult because you have to constantly rebase
+(we actually found quilt being a better tool than git in this case!). But it
+also gives you full flexibility to try new approaches. Just because something
+is out of tree doesn't mean it can't be published and used. Red Hat and SUSE,
+as well as many others shipped PREEMPT_RT while it was out of tree.
 
-The precision specifies the maximum length. vsnprintf() always
-iterates through a string until it reaches the maximum length or
-encounters the null terminator. So strlen() here is useless.
+Note, even though PREEMPT_RT started in 2004 and wasn't fully merged until
+2024, it slowly did creep in bit by bit. For example, here's a few things that
+came from the RT patch, and each was rewritten at least 3 times to become
+acceptable by the upstream maintainers:
 
-Alice and Boqun, the above change is fine? Can I keep the tags?
+  - NOHZ
+  - High res timers
+  - threaded interrupts
+  - mutex code (yes, before RT everything used a semaphore)
+  - lockdep
+  - ftrace
+  - generic interrupt code
+  - generic timer code
+  - priority inheritance
+  - SCHED_DEADLINE
+  - RT push/pull scheduling
+
+and more.
+
+Point being, if you are having issues with getting code upstream, don't be
+afraid to make it out of tree. Just make it easy for others to use. And slowly
+move your code into mainline. This is also a way to prove beyond a doubt how
+useful your code is. The number of users is a technical argument. Linus does
+pull things in when there is a large user base, even over other maintainer's
+objections (see sched_ext).
+
+It worked for us, it can work for you ;-)
+
+-- Steve
+
