@@ -1,105 +1,113 @@
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771E91B0434;
-	Sat,  8 Feb 2025 13:32:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA774241103;
+	Sat,  8 Feb 2025 17:58:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739021555; cv=none; b=Oe5f99UijciEAckYOEweQheKE10rasWnvS8Qf8oTSgx3CrixPAh+VYmu4FiJ8jPb/QQBp/Xj3fIxW1w0DYbwhsVwb17uv7w2rSsVrHJNHm4P24/WcXd7co/mbSC+QhlPPv5yN1NZoyF6DrinwtSUf7U0BMDyq7QgBJXw2JUp0FA=
+	t=1739037505; cv=none; b=T0SQqIezIIi3Mx5qqQaXyTFX10J94bR4TpriDKvWrHc2OBi1bzYasQ/3sKFPGzMYrH5UkC/QSbDNPbK3oYEDx3/wCpW9o2OfGnyKyib5pFDj6Xlnl8NG7YRWKXBO8ZwH4MAjT+Z7xnHyXyqNth+rp3LQX+hD0kPiISFuXQqd6sY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739021555; c=relaxed/simple;
-	bh=hp/QlQLnszYTXmXShP+TaYAd6/NZl+NFs1iWbFohFHI=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Ym41/NHq29fiokjfdTwzMoP+40JrrL1raVt77SuGVx3E1MC7eimz9xNxJ6iPFfgKnLIPajiEUOcGvP9tu0b2vxo/K5o/HUiJMWMLkkQxFQ8Qq9sw56MALotIS87gk9Uo6LJLtuZSYcSU+MhUX+iKJ5wcFVAgtv5hw9F0ndKZfmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=nedYq9wv; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
+	s=arc-20240116; t=1739037505; c=relaxed/simple;
+	bh=TPzXwCcsRWoAR35lR+EvU8dVDtgUEusKL7MNx/RyrS4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QPJHWMO6Xo8ceKBIuj3HyqBWjc3gLrKPRnwBlhTEkEIM+h0p9Mt3SRjKAzV001trsGWVhvfWPfeLO0l9BOBf1WFcrLd7TXFO+EoyWJpdZO6Ae3AOJY/cgIedNe5zf8XO12E6G/dJo7hwtLXua/84U7iiKcuTS+HaML7V1ffiqVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SWp1M+Hq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="nedYq9wv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1739021543;
-	bh=hp/QlQLnszYTXmXShP+TaYAd6/NZl+NFs1iWbFohFHI=;
-	h=From:Subject:Date:To:Cc:From;
-	b=nedYq9wvVjyXvYbGtNTq7IykiSjVwjwDQR3DCmWdVFJPHBrplMPO924UOU9qCjehx
-	 h6m+0fdWzgtZ09f37oIEJyYbnCulq+ZFiEBlAYpLhdRhVYDiyo9a9gmZrBckOOnFUs
-	 weP98sx/U4I6g84JmXbIiW+RUbnfmPCRw3J826ys=
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Subject: [PATCH 0/2] rust: two small improvements for kunit
-Date: Sat, 08 Feb 2025 14:31:13 +0100
-Message-Id: <20250208-rust-kunit-v1-0-94a026be6d72@weissschuh.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SWp1M+Hq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81463C4CED6;
+	Sat,  8 Feb 2025 17:58:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739037505;
+	bh=TPzXwCcsRWoAR35lR+EvU8dVDtgUEusKL7MNx/RyrS4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=SWp1M+Hq/6OmVxrqdVY8UhgrZ8lqpwxw+I445eIiz6L1I0BAwmZ4zq8S8XLnfl4Ne
+	 UIFIMGnosEO7nDwGXwtLIhUayUDwgHAOcdY97yj2QpYMJUs6eghesn+jxnrIAyJl09
+	 3ujf+4jZuUj01GjELjD/3YzNM/8+qEkNLI2PAwA/QkVk6Y3KQhTPDtQnTe9AoaOOPX
+	 wwyh0HGMFFnrNqGBhdshN+4B3oCZkqyqI2JCDdvcF3+8vWLzzSlEjChUMwlD64iIRk
+	 cDYiyUsbXVnBHf+6D3vOOjJNX5CvK8HVm2Mqdqd3uwjsPLVT7ebO7gdrVZ/IGAo2yE
+	 trprMNMI5gUWQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Rust fixes for 6.14
+Date: Sat,  8 Feb 2025 18:58:17 +0100
+Message-ID: <20250208175817.45181-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAKFcp2cC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDIwML3aLS4hLd7NK8zBLdlBRjU4NUw0QTM+NkJaCGgqLUtMwKsGHRsbW
- 1AFKw9mBcAAAA
-X-Change-ID: 20250208-rust-kunit-dd350e1a463c
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Nathan Chancellor <nathan@kernel.org>, 
- Nick Desaulniers <ndesaulniers@google.com>, 
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- llvm@lists.linux.dev, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1739021542; l=1659;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=hp/QlQLnszYTXmXShP+TaYAd6/NZl+NFs1iWbFohFHI=;
- b=IgP8Mee3WFJPHH1HUqpdpDmGN6N60+iuY2FCyO62LHiCtEiHnFshVBTKBYNxlsYs+eiIliakf
- lQ9v0s83iHGA1hc6Ot4GAkcNkK7AX8Ed6AX1VO8wZSM0MFGQQpiY53m
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
-Two quality of live improvements for running kunit tests for rust/.
-While today there are only the doctests, more are coming [0].
+Hi Linus,
 
-	$ ./tools/testing/kunit/kunit.py run --kunitconfig rust/ 
-	[14:25:48] Configuring KUnit Kernel ...
-	[14:25:48] Building KUnit Kernel ...
-	Populating config with:
-	$ make ARCH=um O=.kunit olddefconfig
-	Building with:
-	$ make all compile_commands.json ARCH=um O=.kunit --jobs=16
-	[14:25:53] Starting KUnit Kernel (1/1)...
-	[14:25:53] ============================================================
-	Running tests with:
-	$ .kunit/linux kunit.enable=1 mem=1G console=tty kunit_shutdown=halt
-	[14:25:53] =========== rust_doctests_kernel (135 subtests) ============
-	[14:25:53] [PASSED] rust_doctest_kernel_alloc_kbox_rs_0
+Please pull these fixes for Rust.
 
-	...
+They have been in linux-next for a single round only. I will be sending
+a few others in a week.
 
-	[14:25:53] [PASSED] rust_doctest_kernel_workqueue_rs_3
-	[14:25:53] ============== [PASSED] rust_doctests_kernel ===============
-	[14:25:53] ============================================================
-	[14:25:53] Testing complete. Ran 135 tests: passed: 135
-	[14:25:53] Elapsed time: 5.431s total, 0.001s configuring, 5.314s building, 0.086s running
+No conflicts expected.
 
-[0] https://lore.kernel.org/rust-for-linux/20241213081035.2069066-1-davidgow@google.com/
+Thanks!
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
----
-Thomas Weißschuh (2):
-      rust: pass correct target to bindgen on Usermode Linux
-      rust: add kunitconfig
+Cheers,
+Miguel
 
- rust/.kunitconfig | 3 +++
- rust/Makefile     | 1 +
- 2 files changed, 4 insertions(+)
----
-base-commit: beeb78d46249cab8b2b8359a2ce8fa5376b5ad2d
-change-id: 20250208-rust-kunit-dd350e1a463c
+The following changes since commit 2014c95afecee3e76ca4a56956a936e23283f05b:
 
-Best regards,
--- 
-Thomas Weißschuh <linux@weissschuh.net>
+  Linux 6.14-rc1 (2025-02-02 15:39:26 -0800)
 
+are available in the Git repository at:
+
+  https://github.com/Rust-for-Linux/linux.git tags/rust-fixes-6.14
+
+for you to fetch changes up to 6273a058383e05465083b535ed9469f2c8a48321:
+
+  x86: rust: set rustc-abi=x86-softfloat on rustc>=1.86.0 (2025-02-07 00:09:33 +0100)
+
+----------------------------------------------------------------
+Rust fixes for v6.14
+
+Toolchain and infrastructure:
+
+ - Do not export KASAN ODR symbols to avoid gendwarfksyms warnings.
+
+ - Fix future Rust 1.86.0 (to be released 2025-04-03) x86_64 builds.
+
+ - Clean future Rust 1.86.0 (to be released 2025-04-03) warning.
+
+ - Fix future GCC 15 (to be released in a few months) builds.
+
+ - Fix `rusttest` target in macOS.
+
+----------------------------------------------------------------
+Alice Ryhl (1):
+      x86: rust: set rustc-abi=x86-softfloat on rustc>=1.86.0
+
+Justin M. Forbes (1):
+      rust: kbuild: add -fzero-init-padding-bits to bindgen_skip_cflags
+
+Matthew Maurer (1):
+      rust: kbuild: do not export generated KASAN ODR symbols
+
+Miguel Ojeda (1):
+      rust: init: use explicit ABI to clean warning in future compilers
+
+Tamir Duberstein (1):
+      rust: kbuild: use host dylib naming in rusttestlib-kernel
+
+ rust/Makefile                   |  5 +++--
+ rust/kernel/init.rs             |  2 +-
+ scripts/generate_rust_target.rs | 18 ++++++++++++++++++
+ 3 files changed, 22 insertions(+), 3 deletions(-)
