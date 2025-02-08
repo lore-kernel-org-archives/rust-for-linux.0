@@ -1,65 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EABF28F3;
-	Sat,  8 Feb 2025 08:17:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E2523C8B4;
+	Sat,  8 Feb 2025 08:31:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.63.210.85
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739002662; cv=none; b=HAksfG7osrIcRUqRTFNZhcObfFZLm6tLgJhEoIerNtbmgKFeizX+ZIEwMjWSEy65t2fyueIjKdLY80we0AclnMxYiH5t+/4RzZYMIjD4LOxd/t4e1u7eDJd0CBeZH2LaIT/xAK7/5TgJb5UdFjESLQW2bW2W8/sO7y25uu0LJyI=
+	t=1739003474; cv=none; b=MVwFUnyKZyNqgiQ3msO3qpXS/cTIrMNkcC8EF2tCs+sEYy9ZKH1ppjjL7FnwGcnbo9dyT3zvMTVTvrNsRz3Iy2p0wQcaBYDrb9V5yWUEJ2MrV4kewZb5Yw2stYXUpV20S3L+B08CGxqKN3VHaGDkmaDDCvbCRhe9vIAkucZTR6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739002662; c=relaxed/simple;
-	bh=+tIAwvDtZUeKq5lIL4siNEEQQzH8bg/IC4ssDeJzqxI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Uc+WX1ss7tI8AY2ugA3qSKHb6QP8pXqIqQlMQOUm6wfozjqzH49156YnhjUJFcrGW2lehUXqxRPXd1JKQWUxD9XB9P36QrnwKo81JMXrfXRKuvfUacl/FlFzCtU6z92IKxkBjzMdpwkOnlX1z3QJyvRMQAmA1Td+/tj7rQ9/Siw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IWz5P0bh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739003474; c=relaxed/simple;
+	bh=jmD7D9XcUagZ6PsaNTcK9z4/ha7zuHykclPHicgLzS0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Dp0BZzR2uFAxTtijoYZe9NqJskXdxEi9OKYIIxPBdGv1r89vdFFz11xuMdz2qcmlQxfV8OnbGFSo3Gqw6R+h/RFLhvaRi1H/UgCqRoQC7wvwe5qt8M3mGgFpLb5M+DcL8C/STOAAsQw8tlL60O+VZq9RZ+B+6Nnx0GlyfzEBw4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marcan.st; spf=pass smtp.mailfrom=marcan.st; dkim=pass (2048-bit key) header.d=marcan.st header.i=@marcan.st header.b=bgHr7qhZ; arc=none smtp.client-ip=212.63.210.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marcan.st
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marcan.st
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IWz5P0bh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0B90C4CED6;
-	Sat,  8 Feb 2025 08:17:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739002661;
-	bh=+tIAwvDtZUeKq5lIL4siNEEQQzH8bg/IC4ssDeJzqxI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IWz5P0bh7cU1+wqgU9ne2x2+l2u8vb6NaYkBThbTGHBhHUnbMQtpoDlsuS435wI5d
-	 UoTCzfti3clGaCDbFkNqqIhvRIovtcNjTucUPWAYnP0ZLcBSdFHBQEmMxl6x4bsXLw
-	 gRfChp+UJOzuKyhWCyxcYjwZyRlWgIgLGMPaRlMY=
-Date: Sat, 8 Feb 2025 09:17:38 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/2] rust: macros: fix `make rusttest` build on macOS
-Message-ID: <2025020847-boxcar-bovine-47e4@gregkh>
-References: <20250207-macros-section-v1-0-8f018cb05a20@gmail.com>
+	dkim=pass (2048-bit key) header.d=marcan.st header.i=@marcan.st header.b="bgHr7qhZ"
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: marcan@marcan.st)
+	by mail.marcansoft.com (Postfix) with ESMTPSA id A1144427ED;
+	Sat,  8 Feb 2025 08:31:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
+	t=1739003468; bh=jmD7D9XcUagZ6PsaNTcK9z4/ha7zuHykclPHicgLzS0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=bgHr7qhZXl0G147DE6p2b5mUeL7LjemjbVzNhkEv82IActVuvakyui/C44c6MJ05L
+	 3z+wqhhacacBBogX69nFHWE/erjMEUIKmJkFToHpqc3/+P/QS9LXtsszHdpxat02av
+	 N3rSmf8MoSJyqdqiw03A8qyNP9E5hwOzX+Bspaeyuj0UyL3SpeXDREyRyaG5m7ePVG
+	 Akw6ywLY06vS1uQ16+haxN+JR8K+F69eoph8SM5J09d7b0OHV57iQQri79SjGNgOwL
+	 nnCG0cfTcJkiNTC17V2AjmrUXHLRsIJXt5SMfYMsOVqXxik/+GPPvTzYTpCUbMYAFv
+	 ZAMZrqtLu2ZcA==
+Message-ID: <1e8452ab-613a-4c85-adc0-0c4a293dbf50@marcan.st>
+Date: Sat, 8 Feb 2025 17:31:04 +0900
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250207-macros-section-v1-0-8f018cb05a20@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: On community influencing (was Re: [PATCH v8 2/2] rust: add dma
+ coherent allocator abstraction.)
+To: Steven Rostedt <rostedt@goodmis.org>, "Dr. Greg" <greg@enjellic.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ Dave Airlie <airlied@gmail.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ Greg KH <gregkh@linuxfoundation.org>, phasta@kernel.org,
+ Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+ Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>, daniel.almeida@collabora.com,
+ aliceryhl@google.com, robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ Bj??rn Roy Baron <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Valentin Obst <kernel@valentinobst.de>,
+ open list <linux-kernel@vger.kernel.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+ "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
+ DRI Development <dri-devel@lists.freedesktop.org>
+References: <2025013030-gummy-cosmic-7927@gregkh>
+ <20250130172437.GN5556@nvidia.com>
+ <2025013148-reversal-pessimism-1515@gregkh>
+ <20250131135421.GO5556@nvidia.com>
+ <2b9b75d1-eb8e-494a-b05f-59f75c92e6ae@marcan.st>
+ <Z6OzgBYZNJPr_ZD1@phenom.ffwll.local>
+ <CAPM=9tzPR9wd=3Wbjnp-T0W8-dDfGah-H3Ny52G85B+2Ev9ksA@mail.gmail.com>
+ <208e1fc3-cfc3-4a26-98c3-a48ab35bb9db@marcan.st>
+ <CAHk-=wi=ZmP2=TmHsFSUGq8vUZAOWWSK1vrJarMaOhReDRQRYQ@mail.gmail.com>
+ <20250207121638.GA7356@wind.enjellic.com> <Z6bdCrgGEq8Txd-s@home.goodmis.org>
+From: Hector Martin <marcan@marcan.st>
+Content-Language: en-US
+In-Reply-To: <Z6bdCrgGEq8Txd-s@home.goodmis.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Feb 07, 2025 at 12:21:51PM -0500, Tamir Duberstein wrote:
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> ---
-> Tamir Duberstein (2):
->       rust: macros: improve panic messages
->       rust: macros: fix `make rusttest` build on macOS
 
-Very minor nit, patch 0/X does not need a signed-off-by, and if you find
-that you don't need any text for patch 0/X, there's no need to send a
-patch 0/X at all!
 
-Hopet this helps for future submissions.
+On 2025/02/08 13:26, Steven Rostedt wrote:
+> On Fri, Feb 07, 2025 at 06:16:38AM -0600, Dr. Greg wrote:
+>>
+>> Not sure what the fix is, from a project management perspective the
+>> technology industry has never faced a challenge like this.  The fork
+>> model, which was the classic protection in open-source, doesn't work
+>> at this scale.
+> 
+> Maybe not quite a fork, but I wonder if the Rust project did something similar
+> to what PREEMPT_RT did. That was to keep an out of tree patch. The full patch
+> was just merged last September after being out of tree for a good 20 years.
+> 
+> In the beginning there was a few things in that patch that Christoph was
+> against, but over time he became accepting of it.
+> 
+> Yes, being out of tree is very difficult because you have to constantly rebase
+> (we actually found quilt being a better tool than git in this case!). But it
+> also gives you full flexibility to try new approaches. Just because something
+> is out of tree doesn't mean it can't be published and used. Red Hat and SUSE,
+> as well as many others shipped PREEMPT_RT while it was out of tree.
 
-thanks,
+By kernel and mesa policy, while a drm/ kernel driver is not merged with
+a stable UAPI, the mesa side cannot be merged/enabled either. That means
+that every day the driver isn't upstream, our users suffer due to
+various container technologies not shipping the driver in userspace
+since they ship upstream mesa.
 
-greg k-h
+The process is *designed* to encourage upstreaming early and *punish*
+downstream trees.
+
+It's not just distros shipping, or even typical container technologies
+like Flatpak (we have a workaround for that specific one). We'd need to
+get stuff like Android/AOSP to ship the patched userspace driver so it
+works in Waydroid, which some people want to use. It is an impossible task.
+
+Never mind that distros aren't, in fact, inclined to ship out-of-tree
+kernels. PREEMPT_RT was an exception due to its general usefulness, and
+even then was not available everywhere, and had a reasonable excuse for
+being out-of-tree so long due to its intrusiveness in core code. Rust
+and the Rust drivers aren't even remotely as intrusive, they just stay
+off to the side in their own directories. Nobody wants to ship
+downstream kernels just for random hardware support.
+
+Out of tree doesn't work. People, both in the kernel and out of the
+kernel, want things in tree.
+
+- Hector
+
