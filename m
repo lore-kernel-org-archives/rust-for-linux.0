@@ -1,55 +1,76 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F5A2C6A3;
-	Sat,  8 Feb 2025 07:12:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834001A5BA3;
+	Sat,  8 Feb 2025 07:14:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738998761; cv=none; b=twGMWwkuozY/GqnD83k7wrEsdudDN1SB1i+oaiDoX1cKmY/cJ8q/2CqFHTGYXgLGTJH57Gf5eFH7AjvuhlfEfDrMkSuOHy/apsNkKa1OYpKTaq4+jwTh+b71H9E5sGNEnDXcrid+zxswdlfhgxdZsGGMyf7HoORkOTbfPHlObEQ=
+	t=1738998875; cv=none; b=nQpjTWFuzDRZ0c0XUcFHJUkK27yK0Qkf8sParwM8pBWioXxPEySWAy51zncVoRWTVhptrDrZzjNe+YPWsxs6YJ2sibWnW0XrGqpP2aOKEb5unVVCW91SS2oArveHR80AtxMlyjxis8YQdw048o+fXXYSzLbC3qNtgKAlRNzi/ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738998761; c=relaxed/simple;
-	bh=Pyt2xpK/5RJwXZi+SVmuRDAyARjDEhYR26aol2nWBS8=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bq3q/HTGzy/8DBf273/P8ts73dcXiiQ9L8/7GMAyLcsHFmcR8EvcmRCxhmvSULsE+FwcZRxf51B/JlTUcHmAF7nxVuMt0UrXXuJwtSkYMvfl45gOX5iq3XdtJMzAGUDprhTSfrgkatt4787OQ2ueKtTIpldhl5Ei+K26tLYLwLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZXOYrzh+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738998875; c=relaxed/simple;
+	bh=5PPzswXLCYycw4FzLaiLH/vyU5KIFGf5TLEB/UdgT0Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bpBcGvjTI7B4Na9AMLM+0OrfZDnj19GfVSJoffM/5h06lUrHVHDM+zq5Ksz/yT6TCy6WWXyXhsA4ZgHik3I/geWY06rWG1XjbPlqSrofzmXi3+cuRRUGWmpQxqV+0kxEJzxkMfbCMvjL6AS79FXo56hG17wCZ0HBcHlKbcvr0i8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EYR2UTBS; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZXOYrzh+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9678C4CED6;
-	Sat,  8 Feb 2025 07:12:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738998760;
-	bh=Pyt2xpK/5RJwXZi+SVmuRDAyARjDEhYR26aol2nWBS8=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=ZXOYrzh+VNM1tRwpXkLWvaYfcOJh9g+a7jdHgOpCUA5K1oTcx+EZa5Hv8s0FLOa1q
-	 Q/I1NpnNl4Of85rja+7mGxZmpsaI80P7nKO9Vfo0XrRg88oO2W1Jxrpj2dH9MgxuVp
-	 83v4VMcPVa+h4mpNq0thW/gPM2Q1Pvhm+spjszZM=
-Date: Sat, 8 Feb 2025 08:12:37 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Lyude Paul <lyude@redhat.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Liam Girdwood <lgirdwood@gmail.com>, Lukas Wunner <lukas@wunner.de>,
-	Mark Brown <broonie@kernel.org>,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Zijun Hu <quic_zijuhu@quicinc.com>, linux-usb@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Haneen Mohammed <hamohammed.sa@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Melissa Wen <melissa.srw@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v3 8/8] drm/vkms: convert to use faux_device
-Message-ID: <2025020855-ventricle-slang-b705@gregkh>
-References: <2025020620-skedaddle-olympics-1735@gregkh>
- <2025020625-unlaced-vagueness-ae34@gregkh>
- <Z6Y72LK1UW86x8av@louis-chauvet-laptop>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EYR2UTBS"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2f9d627b5fbso5118342a91.2;
+        Fri, 07 Feb 2025 23:14:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738998874; x=1739603674; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=c8AtJO3Auz+wNQ7YcvRVGGTP1+wDxutvZ8uaptDjAaE=;
+        b=EYR2UTBS9O+h++KUNt41EmDNgMpG6JMYvANHkNYRqY4611QjUdZczw8yfznmNbArAm
+         /uEjAHQoJ6jmwX5iQ+6aNPp+DD3OQRrRW9qSXxpzLIcw6RT1spln9Mj77cgtd65pugRX
+         aI7b3vr3kqOg/23zKXJsmN+wUtejupIu87hnL82n8qoRvAJK9QavoCb9DGe4h07RWWEt
+         9b/Zq75+3hwmTTrR0IB0+8po4SrKuTg7r+FEUYl83Q1fWOK1aeVk8IWjHw/d5p27HJQu
+         t7PoEgKnSZZqNvsLByugL6XU2wxh9Oar7F/N5008ZuExOJdSzQh8OxrOiCN5akOvsrqK
+         3ZnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738998874; x=1739603674;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=c8AtJO3Auz+wNQ7YcvRVGGTP1+wDxutvZ8uaptDjAaE=;
+        b=TZRGrehbam22H7LHz2ZshWX15OjqjYa9ijN1mxXsM6A/hLVTHvvVa+HoFJdqJz1K6u
+         +iUMWeEi9oPxAy1TiCg8S1QD/20DtJOwXsTk28Ixe+aecklz4VMOLRwK0bDfuAcm0AGu
+         nCRPJPZeiVebMYU60ARrbQKZ0Laa2THEKmtAh6F4vDSsD+I9ZRVJBB4BJ7HoCNjGyTbw
+         XX6I4w5CYtGa63VaQlK82Kgk3yZ1ID9YcsUEGurnTNo9b4rfRJfvU4KfMuSAp9V9U8wv
+         jfX6jyHBr0gDkfBMFf9vUY2A4HOccDswf/sEx7FagdzJo+ByhB0lY7Ln8Rok9j2lD+wi
+         depg==
+X-Forwarded-Encrypted: i=1; AJvYcCVFAcKAXDQKpnuyBR8S/RsEWncyi+It4b1/CnILxmeTx0rW4XYC9HKlmmJC6MEthzlBYzl/CtxZ@vger.kernel.org, AJvYcCVkwIqca5ccSIvttpNXxxeBKvsFPZg+aOTlxONvAQPjIrS120UYL8EeziYa4L/Ia+iOT2sNcHbX4lquW671PUE=@vger.kernel.org, AJvYcCX/W3aXm+VwXUdWvgWxQjaxjUjkEWd2RUgWUP+rZP6/bDJZpEGuHYhvDDXz23O4pVdnNYItnlGJw3Tsgis=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGIp3GqOk1qrJL4LY9nsNe8MP19RjLbF2auLye4sFBKP/AtZhf
+	E5bwDqi4TR5efhdT+HVYHLTbFdNFiLu/SkLwR48JCpAo46v6Ol/D7V1RtpOp
+X-Gm-Gg: ASbGncvr25hqAVvcNzNSBv/6JbNpmoRAl9LtjkeZ86wDw8+W+whu+y56/2tpGVF0sAZ
+	G8OfVvrqc24vvRTAqBzGkh3QwqFC82sQZbqYdh/FVMCTX9lGLOpo9qw/U8sKmu9ARKIcNFllwzN
+	JZgs8tz+4DVRM+Ux66jrK3oYhloNatijcTjT/z2cBZF+f6c5mfpdQq/Qen7I/AOBd/4nN9RtNF+
+	NI4/1CHa7Tq7Dh9iJ7L7oiaqvXuOVs0UE43cM/8T8UsteiyE89Ok+WFdQigQsQfhjeTDi/l4WBQ
+	3dCvcdDxrWoBpK/L
+X-Google-Smtp-Source: AGHT+IEH0fRD2QBs5bdODlFNhgw4SMnj2geK3gnFsTsUxiB7yi52Yig5fr8iMNQ8Mlq7WbrzHMPldA==
+X-Received: by 2002:a17:90b:4d05:b0:2fa:d95:4501 with SMTP id 98e67ed59e1d1-2fa24177388mr10674686a91.18.1738998873593;
+        Fri, 07 Feb 2025 23:14:33 -0800 (PST)
+Received: from ohnotp ([2001:f70:860:4100:e712:ac1a:da07:2e53])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fa5312f4c5sm285405a91.8.2025.02.07.23.14.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Feb 2025 23:14:33 -0800 (PST)
+Date: Sat, 8 Feb 2025 16:14:37 +0900
+From: Yutaro Ohno <yutaro.ono.418@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] rust: rbtree: fix overindented list item
+Message-ID: <Z6cEXXvAbbDa13j5@ohnotp>
+References: <20250206232022.599998-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -58,100 +79,43 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z6Y72LK1UW86x8av@louis-chauvet-laptop>
+In-Reply-To: <20250206232022.599998-1-ojeda@kernel.org>
 
-On Fri, Feb 07, 2025 at 05:59:04PM +0100, Louis Chauvet wrote:
-> On 06/02/25 - 18:38, Greg Kroah-Hartman wrote:
-> > The vkms driver does not need to create a platform device, as there is
-> > no real platform resources associated it,  it only did so because it was
-> > simple to do that in order to get a device to use for resource
-> > management of drm resources.  Change the driver to use the faux device
-> > instead as this is NOT a real platform device.
-> > 
-> > Cc: Louis Chauvet <louis.chauvet@bootlin.com>
-> > Cc: Haneen Mohammed <hamohammed.sa@gmail.com>
-> > Cc: Simona Vetter <simona@ffwll.ch>
-> > Cc: Melissa Wen <melissa.srw@gmail.com>
-> > Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> > Cc: Maxime Ripard <mripard@kernel.org>
-> > Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> > Cc: David Airlie <airlied@gmail.com>
-> > Cc: dri-devel@lists.freedesktop.org
-> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > ---
-> >  v3: new patch in the series.  For an example of the api working, does
-> >      not have to be merged at this time, but I can take it if the
-> >      maintainers give an ack.
+On 02/07, Miguel Ojeda wrote:
+> Starting with Rust 1.86.0 (to be released 2025-04-03), Clippy will have
+> a new lint, `doc_overindented_list_items` [1], which catches cases of
+> overindented list items.
 > 
-> Hi,
+> The lint has been added by Yutaro Ohno, based on feedback from the kernel
+> [2] on a patch that fixed a similar case -- commit 0c5928deada1 ("rust:
+> block: fix formatting in GenDisk doc").
 > 
-> This patch cannot be merged into drm-misc-next because we modified the 
-> vkms_device structure in commit 49a167c393b0 ("drm/vkms: Switch to dynamic 
-> allocation for CRTC"), which is present in linux-next.
+> Clippy reports a single case in the kernel, apart from the one already
+> fixed in the commit above:
 > 
-> Once this conflict is resolved, I agree with changing from platform_device 
-> to faux_device.
+>     error: doc list item overindented
+>         --> rust/kernel/rbtree.rs:1152:5
+>          |
+>     1152 | ///     null, it is a pointer to the root of the [`RBTree`].
+>          |     ^^^^ help: try using `  ` (2 spaces)
+>          |
+>          = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#doc_overindented_list_items
+>          = note: `-D clippy::doc-overindented-list-items` implied by `-D warnings`
+>          = help: to override `-D warnings` add `#[allow(clippy::doc_overindented_list_items)]`
 > 
-> Apart from this minor conflict, I believe your patch has revealed an issue 
-> in VKMS:
+> Thus clean it up.
 > 
-> Without your patch:
-> 
-> 	bash-5.2# modprobe vkms
-> 	[drm] Initialized vkms 1.0.0 for vkms on minor 0
-> 	bash-5.2#
-> 
-> With your patch:
-> 
-> 	bash-5.2# modprobe vkms
-> 	faux vkms: Resources present before probing
-> 	[drm] Initialized vkms 1.0.0 for vkms on minor 0
-> 	bash-5.2#
-> 
-> After some investigation, I found that the issue is not caused by your 
-> patch but by VKMS itself:
-> 
-> During faux_device_create, the device core postpones the device probe to 
-> run it later [0]. This probe checks if the devres list is empty [1] and 
-> fails if it is not.
-> 
-> [0]:https://elixir.bootlin.com/linux/v6.13.1/source/drivers/base/bus.c#L534
-> [1]:https://elixir.bootlin.com/linux/v6.13.1/source/drivers/base/dd.c#L626
-> 
-> With a platform driver, the order of execution was:
-> 
-> 	platform_device_register_simple();
-> 		device_add();
-> 	*async* device_probe(); /* no issue, the devres is untouched */
-> 	devres_open_group();
-> 
-> But with faux-device, the order is:
-> 
-> 	faux_device_create();
-> 		device_add();
-> 	devres_open_group();
-> 	*async* device_probe(); /* issue here, because of the previous 
-> 				   devres_open_group */
+> Cc: Yutaro Ohno <yutaro.ono.418@gmail.com>
+> Cc: <stable@vger.kernel.org> # Needed in 6.12.y and 6.13.y only (Rust is pinned in older LTSs).
+> Fixes: a335e9591404 ("rust: rbtree: add `RBTree::entry`")
+> Link: https://github.com/rust-lang/rust-clippy/pull/13711 [1]
+> Link: https://github.com/rust-lang/rust-clippy/issues/13601 [2]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Wait, what?  It shouuld be the exact same codepath, as faux_device() is
-not doing anything different from platform here.  You might just be
-hitting a race condition as the async probing is the same here.
+Hi Miguel,
+Nice to see this change so quickly.
 
-> How do you think this should be solved? I would like to keep a simple 
-> solution, given that:
-> - we want to have multiple vkms devices (configfs [2])
-> - we need to ensure that device_probe is called before devres_open_group 
->   and devm_drm_dev_alloc to avoid this error
+Reviewed-by: Yutaro Ohno <yutaro.ono.418@gmail.com>
 
-How about we take out the async probe?  You are getting lucky that it's
-not hit on the platform device code today.  Faux really doesn't need
-async, I was just trying to make the system work the same way that
-platform devices did.
-
-And as for the merge issue, not a problem, I just did this conversion
-for people to see how this works and ideally test it, as you did, to
-find issues!
-
-thanks,
-
-greg k-h
+Cheers,
+Yutaro
