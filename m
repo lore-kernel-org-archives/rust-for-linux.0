@@ -1,178 +1,82 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA198522F;
-	Sat,  8 Feb 2025 08:49:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09C7246345;
+	Sat,  8 Feb 2025 13:32:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739004594; cv=none; b=TYX6vJi4S9JnGCd5KkgeBahLQ68wLxy5llxVe1i4zD8nle+IzVD+SzUp/rS3vh6GjG4Wn6BR/j2eBnHKxb5xDNng+j4D4USK4TPLRBYnj+i6O66rSKQc1HtR7jfFnt0xUIxfskgHj24zXSwirlWM4q183aKJpvYkPnnJ5PPHLdM=
+	t=1739021554; cv=none; b=LeouW3UrspKq/K7FT5hJE8mRvdXajvOQWQLAPZCqcNnanKw9Fe1Mc4udOKUfRvfj7xDkggTSq2Ps2df/NbiB3EUucTYgB9+8dk8ZhbjVbbRvH28oCkfDmYMUDiAMz54MUI3ArB24hDSST0zmPLYsUspP8tVYnGo7gtXuxSftaMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739004594; c=relaxed/simple;
-	bh=AuUeYp1A5NdnSP3v1LtC4B9Kji6WVYBlvjIfzZCR5iw=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j9UJy/TLfbpjdghu88QsgA62uhDTxjJKlWyjMmo5Pdzuw/PNc7p6HguyUcEUS/WOjW1qN1sAja8RgFlOeHvisTI78WmA3xZklsLzo0jQMz6d7u8m//+E0EKG7tzc9rXL+zPPC1B9GA/A1KOVQnrun6EvsyiHQNQ4ou+Xki9+UnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wxRunt+U; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739021554; c=relaxed/simple;
+	bh=VLUVgc8NZZ21G0lWwQ7ny+8mZQTDDefFbAQFB+DD/Ts=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=IVLCjGLmB9sY4UQGBgnzvFx7o7LaJiQeScsfdwn4/EJNWf+E5E95V91GXdppNl12jASDRuP8hp/rXU8P2RDMdYo+ZOqjRIlLfBTiWgEWSemrOyyWAboJ2prNDMj2Xpzy4BkMIoSa8tn8AqjiTvuf7udWgEg/A2mJsqUkqtBSGfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=MvzF116P; arc=none smtp.client-ip=159.69.126.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wxRunt+U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753D6C4CED6;
-	Sat,  8 Feb 2025 08:49:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739004594;
-	bh=AuUeYp1A5NdnSP3v1LtC4B9Kji6WVYBlvjIfzZCR5iw=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=wxRunt+U5RX1eax8W4IFVBCSXiEA1I0HsWHo+x8nnn0NU41bmSOhLQx0VeeSqzeo0
-	 ffRwzJEUzkxjPix90WwSrjZkk5XFRc5D03XbW3QDTWzqqDDFRXhxsEcZtWxaBRFd6W
-	 sRzEalRHg8BbO6Zcxn/7BTTMSmSOOApxyiyCBXXQ=
-Date: Sat, 8 Feb 2025 09:49:50 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Lyude Paul <lyude@redhat.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Liam Girdwood <lgirdwood@gmail.com>, Lukas Wunner <lukas@wunner.de>,
-	Mark Brown <broonie@kernel.org>,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Zijun Hu <quic_zijuhu@quicinc.com>, linux-usb@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Haneen Mohammed <hamohammed.sa@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Melissa Wen <melissa.srw@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v3 8/8] drm/vkms: convert to use faux_device
-Message-ID: <2025020844-stank-catlike-2661@gregkh>
-References: <2025020620-skedaddle-olympics-1735@gregkh>
- <2025020625-unlaced-vagueness-ae34@gregkh>
- <Z6Y72LK1UW86x8av@louis-chauvet-laptop>
- <2025020855-ventricle-slang-b705@gregkh>
- <Z6cX5MG3yM4XL9jR@Host-003>
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="MvzF116P"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+	s=mail; t=1739021543;
+	bh=VLUVgc8NZZ21G0lWwQ7ny+8mZQTDDefFbAQFB+DD/Ts=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=MvzF116PQKO2uhGizEWzIBzOyiZNXEoh+m5rDgLHtSzQGCijsD8JqAqIpB4dTgeFF
+	 3NMYshpo336+7egUGlHi/vO1IU2vzIhpJ069CRiLmEgQ4vkKf85kBg3ZYvadMaA77L
+	 h/hOE9Aq+DyASLI7aR+voCQOR6wH48cHFfoFd1qg=
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Date: Sat, 08 Feb 2025 14:31:15 +0100
+Subject: [PATCH 2/2] rust: add kunitconfig
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z6cX5MG3yM4XL9jR@Host-003>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250208-rust-kunit-v1-2-94a026be6d72@weissschuh.net>
+References: <20250208-rust-kunit-v1-0-94a026be6d72@weissschuh.net>
+In-Reply-To: <20250208-rust-kunit-v1-0-94a026be6d72@weissschuh.net>
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Nathan Chancellor <nathan@kernel.org>, 
+ Nick Desaulniers <ndesaulniers@google.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ llvm@lists.linux.dev, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1739021542; l=600;
+ i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
+ bh=VLUVgc8NZZ21G0lWwQ7ny+8mZQTDDefFbAQFB+DD/Ts=;
+ b=XwK4W5z5Q8bJnP6Nl/qMeWkVL2fm1JRP+9hMubchXYdjO7YrTUnamN3+tDsxa/tbM1Z22BnH8
+ zSR2QZucXGUAXh/+tJo55LXESO4FYmRuh7/+WOrb/BQnYCZpoJKyFkj
+X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
+ pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
-On Sat, Feb 08, 2025 at 09:37:56AM +0100, Louis Chauvet wrote:
-> On 08/02/25 - 08:12, Greg Kroah-Hartman wrote:
-> > On Fri, Feb 07, 2025 at 05:59:04PM +0100, Louis Chauvet wrote:
-> > > On 06/02/25 - 18:38, Greg Kroah-Hartman wrote:
-> > > > The vkms driver does not need to create a platform device, as there is
-> > > > no real platform resources associated it,  it only did so because it was
-> > > > simple to do that in order to get a device to use for resource
-> > > > management of drm resources.  Change the driver to use the faux device
-> > > > instead as this is NOT a real platform device.
-> > > > 
-> > > > Cc: Louis Chauvet <louis.chauvet@bootlin.com>
-> > > > Cc: Haneen Mohammed <hamohammed.sa@gmail.com>
-> > > > Cc: Simona Vetter <simona@ffwll.ch>
-> > > > Cc: Melissa Wen <melissa.srw@gmail.com>
-> > > > Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> > > > Cc: Maxime Ripard <mripard@kernel.org>
-> > > > Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> > > > Cc: David Airlie <airlied@gmail.com>
-> > > > Cc: dri-devel@lists.freedesktop.org
-> > > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > > ---
-> > > >  v3: new patch in the series.  For an example of the api working, does
-> > > >      not have to be merged at this time, but I can take it if the
-> > > >      maintainers give an ack.
-> > > 
-> > > Hi,
-> > > 
-> > > This patch cannot be merged into drm-misc-next because we modified the 
-> > > vkms_device structure in commit 49a167c393b0 ("drm/vkms: Switch to dynamic 
-> > > allocation for CRTC"), which is present in linux-next.
-> > > 
-> > > Once this conflict is resolved, I agree with changing from platform_device 
-> > > to faux_device.
-> > > 
-> > > Apart from this minor conflict, I believe your patch has revealed an issue 
-> > > in VKMS:
-> > > 
-> > > Without your patch:
-> > > 
-> > > 	bash-5.2# modprobe vkms
-> > > 	[drm] Initialized vkms 1.0.0 for vkms on minor 0
-> > > 	bash-5.2#
-> > > 
-> > > With your patch:
-> > > 
-> > > 	bash-5.2# modprobe vkms
-> > > 	faux vkms: Resources present before probing
-> > > 	[drm] Initialized vkms 1.0.0 for vkms on minor 0
-> > > 	bash-5.2#
-> > > 
-> > > After some investigation, I found that the issue is not caused by your 
-> > > patch but by VKMS itself:
-> > > 
-> > > During faux_device_create, the device core postpones the device probe to 
-> > > run it later [0]. This probe checks if the devres list is empty [1] and 
-> > > fails if it is not.
-> > > 
-> > > [0]:https://elixir.bootlin.com/linux/v6.13.1/source/drivers/base/bus.c#L534
-> > > [1]:https://elixir.bootlin.com/linux/v6.13.1/source/drivers/base/dd.c#L626
-> > > 
-> > > With a platform driver, the order of execution was:
-> > > 
-> > > 	platform_device_register_simple();
-> > > 		device_add();
-> > > 	*async* device_probe(); /* no issue, the devres is untouched */
-> > > 	devres_open_group();
-> > > 
-> > > But with faux-device, the order is:
-> > > 
-> > > 	faux_device_create();
-> > > 		device_add();
-> > > 	devres_open_group();
-> > > 	*async* device_probe(); /* issue here, because of the previous 
-> > > 				   devres_open_group */
-> > 
-> > Wait, what?  It shouuld be the exact same codepath, as faux_device() is
-> > not doing anything different from platform here.  You might just be
-> > hitting a race condition as the async probing is the same here.
-> 
-> Yes, this is the same codepath, and this is a race condition. VKMS was 
-> just lucky it never happend before. 
-> 
-> > > How do you think this should be solved? I would like to keep a simple 
-> > > solution, given that:
-> > > - we want to have multiple vkms devices (configfs [2])
-> > > - we need to ensure that device_probe is called before devres_open_group 
-> > >   and devm_drm_dev_alloc to avoid this error
-> > 
-> > How about we take out the async probe?  You are getting lucky that it's
-> > not hit on the platform device code today.  Faux really doesn't need
-> > async, I was just trying to make the system work the same way that
-> > platform devices did.
-> 
-> I think this should be sufficient, and allows for a very simple interface: 
-> once faux_device_create returns, you can use the device "as-is", no 
-> need to wait for the probe.
-> 
-> What change can I do to disable async probe and test?
+The kunitconfig file in a directory is used by kunit.py to enable all
+necessary kernel configurations to run the tests in that subdirectory.
+Add such a file for rust/.
 
-Try this patch:
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+---
+ rust/.kunitconfig | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/base/faux.c b/drivers/base/faux.c
-index 27879ae78f53..0b9d17cd41f2 100644
---- a/drivers/base/faux.c
-+++ b/drivers/base/faux.c
-@@ -73,7 +73,7 @@ static const struct bus_type faux_bus_type = {
- static struct device_driver faux_driver = {
- 	.name		= "faux_driver",
- 	.bus		= &faux_bus_type,
--	.probe_type	= PROBE_PREFER_ASYNCHRONOUS,
-+	.probe_type	= PROBE_FORCE_SYNCHRONOUS,
- };
- 
- static void faux_device_release(struct device *dev)
+diff --git a/rust/.kunitconfig b/rust/.kunitconfig
+new file mode 100644
+index 0000000000000000000000000000000000000000..9e72a5ab03c9a122348fea7c1db69e1b3fedcc00
+--- /dev/null
++++ b/rust/.kunitconfig
+@@ -0,0 +1,3 @@
++CONFIG_KUNIT=y
++CONFIG_RUST=y
++CONFIG_RUST_KERNEL_DOCTESTS=y
+
+-- 
+2.48.1
+
