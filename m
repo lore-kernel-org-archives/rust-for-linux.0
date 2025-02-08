@@ -1,301 +1,169 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0291B85DF
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Feb 2025 23:49:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4C154F81;
+	Sat,  8 Feb 2025 00:39:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738972187; cv=none; b=o2OwiFV0It3Tn8r2PC0XR7ZSu15hlu78eJWPwq4xPcnl/vBAUN+XqE8gey3xgTMnZHzZ9RjfXZmhBdJf9JbLd2TWEQS7GWmor2XdHJCsfdLppRwHtK8c6Q53jZtO2nH88kTiYA/ch9M5PuE2ZyXnMXS70aSzoCj1JkqIZ+DebHs=
+	t=1738975168; cv=none; b=qcs4YsMQ5M+V7SQeEqVQP+IMMx2KUCG9NYdEVGynbzW/wZ1WsdbVubYQj6lnrQCoY6vaXgmTUMsRAROltkO2Rr33qpWgWH5TLf2+qdK8o0s45IjT9TpOZkM0z3Vrrmegr0c915pvzDbGjGT0EzwhfxJ3TnvFU3P2YPlrZY0IcIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738972187; c=relaxed/simple;
-	bh=KlSxacvrBHL4HX4T+f6Eu1WDOV4GQzHiWmR6m6N5vrI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=l88LBDnwvohNkp8J+k1q0bC70yTQ0JvJ8Hd8Fpg0E0fcB7bcLSRdc9JnPvnVO2AUC2YrKLwjKcibdRKSGzsxG3CFCDfsx7vbyV3kdRxvdzUEFIMO+v+p02YcI8bJL/MROq1fYNhyQxBV8g/5YU6YKg+0e9WV8RgYhKANfpMMcN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=goFeSzh7; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1738975168; c=relaxed/simple;
+	bh=qQa0gNrNTh8rflyzMXqpg7lZJIs7+dLRTkmivq69rQY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=CIPXGs3GnW+sPNyS+VleCdhXWyFklMP/8gp76ENgnk857IyXEXSDKYD8dxrfwpYV523do65diCPIcnxu7EpN6Kl4/W/4nL52fMmL2ht1onDiZoVf9VJvzg50crABfaDLJ9oy1hpSp+RoSkfP1nenyCoxARbbPVImpVrKc4BVNmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hu1PBrMa; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="goFeSzh7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738972184;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=3nQf3zproGrPEWkXPrJ3HTkRdptRqyzJENVw6P4Fyss=;
-	b=goFeSzh7JgepCs5qafZ1BxLO24AZ1rnzKObDOoEKJw1kg5/m7tdUMNwcP+u+11/4nP9Yu3
-	LxBOigZ7zqW/djRJVYEuNeU/oks5ZN0X5zh9nIwHiGW0fodR+4Ot5N5gD4Yu/riQqh/UrO
-	AZn8kEcOOaGZrobVCxc3mfdDoSH56Ws=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-98-NHnYJ3H6PDWeeboANC1mOw-1; Fri,
- 07 Feb 2025 18:49:37 -0500
-X-MC-Unique: NHnYJ3H6PDWeeboANC1mOw-1
-X-Mimecast-MFC-AGG-ID: NHnYJ3H6PDWeeboANC1mOw
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AE4E919560AD;
-	Fri,  7 Feb 2025 23:49:34 +0000 (UTC)
-Received: from chopper.lyude.net (unknown [10.22.88.55])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 81771195608D;
-	Fri,  7 Feb 2025 23:49:30 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: rust-for-linux@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mairacanal@riseup.net>
-Cc: Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Xiangfei Ding <dingxiangfei2009@gmail.com>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v3] rust/kernel: Add faux device bindings
-Date: Fri,  7 Feb 2025 18:49:25 -0500
-Message-ID: <20250207234928.420693-1-lyude@redhat.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hu1PBrMa"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2fa0f222530so4572160a91.0;
+        Fri, 07 Feb 2025 16:39:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738975166; x=1739579966; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mn+Gj6V5QB68lisHjccd5SYXG74nCY14H9Pe4YY0PYs=;
+        b=Hu1PBrMaOd1gYuy/v0b8lGDXRWNKJeEU5bzyaGMHHy0SBES8LgX+eHn977m29/6FkU
+         ju01AAb3+pb+Bn/iPH0sUCcc951u8zfPVCHHRiss9uFPvCSUPHFoRE1SrAa3gu/5qyHw
+         cYPCEiUEqusEXgRVdXY04qFiEQkqVGn7h4WuITaUhAq75Nn6kjOnRt+cRfrR1no3aDgM
+         e1VyuJb5Z+YFnXHzIbexrBUxP98R1oD0wtJXvRkOpwF3b14WGjqlnmeDtpLuY5t9GThK
+         c+QjQWSGJ2hBQ+DbQMg0CsY4vh3lVymNigFjr9nSbFeDMJp6kW1Pi1ggqzQPs0o84ng3
+         cbYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738975166; x=1739579966;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mn+Gj6V5QB68lisHjccd5SYXG74nCY14H9Pe4YY0PYs=;
+        b=VZny83rFyLPwDrIoXguCu/FUYfQafQ8SV9qhKYBAMLFsQKQ5MspSAHC7qbcNnlvrcy
+         MZ0bFrjjJxKdtLC/GYOGDpc3GyaDV+yAbBZFv1ys+6Jzim2RbFdpwBLgbCOycmUln9Da
+         X00RwUkSI+vOkULhc06XeOJhUpDDx3YStjo3Rb/MM9Ut/TrulSc4ehIr9fkn0fjOz2pJ
+         V8uk0SjWqQTS7S5QLcT6kKbnie9ZyZtbmlbEd6lqZ9k2zF5VNf6fBXLZlL6YVa/8Z+5f
+         XbSEYW+zlZ3gGtz2NQsO2KiOt7wfqr1xB8lw1aZiZxS0UHoyEG6gjlDZpCbkdxprYVsB
+         aGkg==
+X-Forwarded-Encrypted: i=1; AJvYcCUg2czAX9jL8xZH+r/zWLddvCF3vpFmLkgXuzTs5CgT+8qYO+mHgaOVcCRosW+SABnMx8F3YfJb@vger.kernel.org, AJvYcCUnaUbgmDM/w0mLD3GxFBP8rqaBo839kMK41SiOdRkE4Wip3Hl5bC7MQr2rv7jzTqluvXcsFWfNOBReCak=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwP3TBne/+N+k5eJeYC50bAlsYkOnCG86/bZRuq3TPnpPDgVGtX
+	a6Pz+szCUdWJvWjQjtyc4K7Am9JR35NlecOC11litzCGHjpBcTdh
+X-Gm-Gg: ASbGncs3Tcvayh5xFOQspTR0PAyL+kJsk4ZXWyBL3J7LksqF/2slUv+qYReO3zG1jc7
+	g3WrCozjtAlKLxfW58+3F9Pt09v35flBV/DfeEnZYGstNIqQ+4OIf4m3cNWaJTmdDToDPNgGI06
+	GWpAyqLiDqXWAsFlj9LAEAGum49gXzLmr5tlLTxpU6Kc3k72atn24d+mhUbaecGCtX4WSYSeSAL
+	5hmFqr1sFcc9NZm9ox1BaRgPpW+MAzSo456XUKEp/IqZmblbt7goqRLJxGyiyjOZIed6IBBx/9S
+	mjNyN/77cXrhIOHM/PsO9g==
+X-Google-Smtp-Source: AGHT+IFYcsIZByxigtPhOugwI9tbewNEbeIUh+/2FY1PeHByKW59F9geHHy6PhNJDM/F6E/NfQMMWQ==
+X-Received: by 2002:a17:90b:2888:b0:2f6:be57:49d2 with SMTP id 98e67ed59e1d1-2fa2417bee0mr8477438a91.17.1738975166182;
+        Fri, 07 Feb 2025 16:39:26 -0800 (PST)
+Received: from mitchelllevy. ([131.107.8.113])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f36511106sm36521545ad.5.2025.02.07.16.39.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Feb 2025 16:39:25 -0800 (PST)
+From: Mitchell Levy <levymitchell0@gmail.com>
+Subject: [PATCH v4 0/2] rust: lockdep: Fix soundness issue affecting
+ LockClassKeys
+Date: Fri, 07 Feb 2025 16:39:07 -0800
+Message-Id: <20250207-rust-lockdep-v4-0-7a50a7e88656@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKunpmcC/3XOQQrCMBAF0KtI1kZmJo22rryHuEinEw1qK4kWR
+ Xp3U0ERxeUfeP/PXSWJQZJaTu4qSh9S6NociulE8c61W9GhyVkRUAEVWB0v6awPHe8bOenGiAF
+ LyGXtVCanKD5cn3XrTc67kM5dvD3bexyvf4p61Kgb4ooJnStrWm2PLhxm3B3H3hEhQPGDQEvlL
+ Bd2Qej5A43rPb0XkbD6wpSxn1sDpa/ZsvvG5oUt0M+7JmNr0EhpHNTiP/EwDA82q7sDVwEAAA=
+ =
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Wedson Almeida Filho <walmeida@microsoft.com>, 
+ Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+ Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Mitchell Levy <levymitchell0@gmail.com>
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738975167; l=3256;
+ i=levymitchell0@gmail.com; s=20240719; h=from:subject:message-id;
+ bh=qQa0gNrNTh8rflyzMXqpg7lZJIs7+dLRTkmivq69rQY=;
+ b=aU5432tbB/zpsDXxlaz6mKNk4iotAZAdT5eLDzW81HtTyrDK9yKASwr3acAKd5r+X7lZNUhsa
+ 19gZwtZZMePDsm4AD9uQ27TwLoGJ+yXRNhLMGRBWa+i34KbJvNEUXcR
+X-Developer-Key: i=levymitchell0@gmail.com; a=ed25519;
+ pk=n6kBmUnb+UNmjVkTnDwrLwTJAEKUfs2e8E+MFPZI93E=
 
-This introduces a module for working with faux devices in rust, along with
-adding sample code to show how the API is used. Unlike other types of
-devices, we don't provide any hooks for device probe/removal - since these
-are optional for the faux API and are unnecessary in rust.
+This series is aimed at fixing a soundness issue with how dynamically
+allocated LockClassKeys are handled. Currently, LockClassKeys can be
+used without being Pin'd, which can break lockdep since it relies on
+address stability. Similarly, these keys are not automatically
+(de)registered with lockdep.
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Maíra Canal <mairacanal@riseup.net>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+At the suggestion of Alice Ryhl, this series includes a patch for
+-stable kernels that disables dynamically allocated keys. This prevents
+backported patches from using the unsound implementation.
+
+Currently, this series requires that all dynamically allocated
+LockClassKeys have a lifetime of 'static (i.e., they must be leaked
+after allocation). This is because Lock does not currently keep a
+reference to the LockClassKey, instead passing it to C via FFI. This
+causes a problem because the rust compiler would allow creating a
+'static Lock with a 'a LockClassKey (with 'a < 'static) while C would
+expect the LockClassKey to live as long as the lock. This problem
+represents an avenue for future work.
 
 ---
-V2:
-* Check for NULL on return from device_create(), not a pointer error
-* Rename Device to Registration to make its purpose more clear
-* Drop platform device comment from crate docstring.
-* Update MAINTAINERS
-V3:
-* Clarify safety comment around thread-safety
-* Return ENODEV on failure from new()
-* Add missing newline in faux driver sample
-* s/crate/module/ in descriptions
-* Add newline after faux module docstring
-* Fix missing markdown in safety comments
-* Add missing INVARIANT: comment in Registration
-* s/Registration/faux::Registration/ in rust_driver_faux.rs
+Changes in v4:
+- Expand the cover letter in the 2nd patch to explain why Pin is used
+  despite being redundant at the moment (Thanks Benno Lossin).
+- Include a Fixes tag in the 1st patch (Thanks Miguel Ojeda).
+- Link to v3: https://lore.kernel.org/r/20250205-rust-lockdep-v3-0-5313e83a0bef@gmail.com
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
+Changes in v3:
+- Rebased on rust-next
+- Fixed clippy/compiler warninings (Thanks Boqun Feng)
+- Link to v2: https://lore.kernel.org/r/20241219-rust-lockdep-v2-0-f65308fbc5ca@gmail.com
+
+Changes in v2:
+- Dropped formatting change that's already fixed upstream (Thanks Dirk
+  Behme).
+- Moved safety comment to the right point in the patch series (Thanks
+  Dirk Behme and Boqun Feng).
+- Added an example of dynamic LockClassKey usage (Thanks Boqun Feng).
+- Link to v1: https://lore.kernel.org/r/20241004-rust-lockdep-v1-0-e9a5c45721fc@gmail.com
+
+Changes from RFC:
+- Split into two commits so that dynamically allocated LockClassKeys are
+removed from stable kernels. (Thanks Alice Ryhl)
+- Extract calls to C lockdep functions into helpers so things build
+properly when LOCKDEP=n. (Thanks Benno Lossin)
+- Remove extraneous `get_ref()` calls. (Thanks Benno Lossin)
+- Provide better documentation for `new_dynamic()`. (Thanks Benno
+Lossin)
+- Ran rustfmt to fix formatting and some extraneous changes. (Thanks
+Alice Ryhl and Benno Lossin)
+- Link to RFC: https://lore.kernel.org/r/20240905-rust-lockdep-v1-1-d2c9c21aa8b2@gmail.com
+
 ---
- MAINTAINERS                      |  2 +
- rust/bindings/bindings_helper.h  |  1 +
- rust/kernel/faux.rs              | 67 ++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs               |  1 +
- samples/rust/Kconfig             | 10 +++++
- samples/rust/Makefile            |  1 +
- samples/rust/rust_driver_faux.rs | 29 ++++++++++++++
- 7 files changed, 111 insertions(+)
- create mode 100644 rust/kernel/faux.rs
- create mode 100644 samples/rust/rust_driver_faux.rs
+Mitchell Levy (2):
+      rust: lockdep: Remove support for dynamically allocated LockClassKeys
+      rust: lockdep: Use Pin for all LockClassKey usages
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2f0dc98dab5fa..aa81e57b4c25c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7119,8 +7119,10 @@ F:	rust/kernel/device.rs
- F:	rust/kernel/device_id.rs
- F:	rust/kernel/devres.rs
- F:	rust/kernel/driver.rs
-+F:	rust/kernel/faux.rs
- F:	rust/kernel/platform.rs
- F:	samples/rust/rust_driver_platform.rs
-+F:	samples/rust/rust_driver_faux.rs
- 
- DRIVERS FOR OMAP ADAPTIVE VOLTAGE SCALING (AVS)
- M:	Nishanth Menon <nm@ti.com>
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 55354e4dec14e..f46cf3bb70695 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -11,6 +11,7 @@
- #include <linux/blk_types.h>
- #include <linux/blkdev.h>
- #include <linux/cred.h>
-+#include <linux/device/faux.h>
- #include <linux/errname.h>
- #include <linux/ethtool.h>
- #include <linux/file.h>
-diff --git a/rust/kernel/faux.rs b/rust/kernel/faux.rs
-new file mode 100644
-index 0000000000000..6eae643c6afe3
---- /dev/null
-+++ b/rust/kernel/faux.rs
-@@ -0,0 +1,67 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+//! Abstractions for the faux bus.
-+//!
-+//! This module provides bindings for working with faux devices in kernel modules.
-+//!
-+//! C header: [`include/linux/device/faux.h`]
-+
-+use crate::{bindings, device, error::code::*, prelude::*};
-+use core::ptr::{addr_of_mut, null, NonNull};
-+
-+/// The registration of a faux device.
-+///
-+/// This type represents the registration of a [`struct faux_device`]. When an instance of this type
-+/// is dropped, its respective faux device will be unregistered from the system.
-+///
-+/// # Invariants
-+///
-+/// `self.0` always holds a valid pointer to an initialized and registered [`struct faux_device`].
-+///
-+/// [`struct faux_device`]: srctree/include/linux/device/faux.h
-+#[repr(transparent)]
-+pub struct Registration(NonNull<bindings::faux_device>);
-+
-+impl Registration {
-+    /// Create and register a new faux device with the given name.
-+    pub fn new(name: &CStr) -> Result<Self> {
-+        // SAFETY:
-+        // - `name` is copied by this function into its own storage
-+        // - `faux_ops` is safe to leave NULL according to the C API
-+        let dev = unsafe { bindings::faux_device_create(name.as_char_ptr(), null()) };
-+
-+        // The above function will return either a valid device, or NULL on failure
-+        // INVARIANT: The device will remain registered until faux_device_destroy() is called, which
-+        // happens in our Drop implementation.
-+        Ok(Self(NonNull::new(dev).ok_or(ENODEV)?))
-+    }
-+
-+    fn as_raw(&self) -> *mut bindings::faux_device {
-+        self.0.as_ptr()
-+    }
-+}
-+
-+impl AsRef<device::Device> for Registration {
-+    fn as_ref(&self) -> &device::Device {
-+        // SAFETY: The underlying `device` in `faux_device` is guaranteed by the C API to be
-+        // a valid initialized `device`.
-+        unsafe { device::Device::as_ref(addr_of_mut!((*self.as_raw()).dev)) }
-+    }
-+}
-+
-+impl Drop for Registration {
-+    fn drop(&mut self) {
-+        // SAFETY: `self.0` is a valid registered faux_device via our type invariants.
-+        unsafe { bindings::faux_device_destroy(self.as_raw()) }
-+    }
-+}
-+
-+// SAFETY: The faux device API is thread-safe as guaranteed by the device core, as long as
-+// faux_device_destroy() is guaranteed to only be called once - which is guaranteed by our type not
-+// having Copy/Clone.
-+unsafe impl Send for Registration {}
-+
-+// SAFETY: The faux device API is thread-safe as guaranteed by the device core, as long as
-+// faux_device_destroy() is guaranteed to only be called once - which is guaranteed by our type not
-+// having Copy/Clone.
-+unsafe impl Sync for Registration {}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 496ed32b0911a..398242f92a961 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -46,6 +46,7 @@
- pub mod devres;
- pub mod driver;
- pub mod error;
-+pub mod faux;
- #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
- pub mod firmware;
- pub mod fs;
-diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-index 918dbead2c0b4..3b6eae84b2977 100644
---- a/samples/rust/Kconfig
-+++ b/samples/rust/Kconfig
-@@ -61,6 +61,16 @@ config SAMPLE_RUST_DRIVER_PLATFORM
- 
- 	  If unsure, say N.
- 
-+config SAMPLE_RUST_DRIVER_FAUX
-+	tristate "Faux Driver"
-+	help
-+	  This option builds the Rust Faux driver sample.
-+
-+	  To compile this as a module, choose M here:
-+	  the module will be called rust_driver_faux.
-+
-+	  If unsure, say N.
-+
- config SAMPLE_RUST_HOSTPROGS
- 	bool "Host programs"
- 	help
-diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-index 5a8ab0df0567c..0dbc6d90f1ef9 100644
---- a/samples/rust/Makefile
-+++ b/samples/rust/Makefile
-@@ -6,6 +6,7 @@ obj-$(CONFIG_SAMPLE_RUST_MISC_DEVICE)		+= rust_misc_device.o
- obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_PCI)		+= rust_driver_pci.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+= rust_driver_platform.o
-+obj-$(CONFIG_SAMPLE_RUST_DRIVER_FAUX)		+= rust_driver_faux.o
- 
- rust_print-y := rust_print_main.o rust_print_events.o
- 
-diff --git a/samples/rust/rust_driver_faux.rs b/samples/rust/rust_driver_faux.rs
-new file mode 100644
-index 0000000000000..048c6cb98b29a
---- /dev/null
-+++ b/samples/rust/rust_driver_faux.rs
-@@ -0,0 +1,29 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+//! Rust faux device sample.
-+
-+use kernel::{c_str, faux, prelude::*, Module};
-+
-+module! {
-+    type: SampleModule,
-+    name: "rust_faux_driver",
-+    author: "Lyude Paul",
-+    description: "Rust faux device sample",
-+    license: "GPL",
-+}
-+
-+struct SampleModule {
-+    _reg: faux::Registration,
-+}
-+
-+impl Module for SampleModule {
-+    fn init(_module: &'static ThisModule) -> Result<Self> {
-+        pr_info!("Initialising Rust Faux Device Sample\n");
-+
-+        let reg = faux::Registration::new(c_str!("rust-faux-sample-device"))?;
-+
-+        dev_info!(reg.as_ref(), "Hello from faux device!\n");
-+
-+        Ok(Self { _reg: reg })
-+    }
-+}
+ rust/helpers/helpers.c          |  1 +
+ rust/helpers/sync.c             | 13 +++++++++
+ rust/kernel/sync.rs             | 63 ++++++++++++++++++++++++++++++++++-------
+ rust/kernel/sync/condvar.rs     |  5 ++--
+ rust/kernel/sync/lock.rs        |  9 ++----
+ rust/kernel/sync/lock/global.rs |  5 ++--
+ rust/kernel/sync/poll.rs        |  2 +-
+ rust/kernel/workqueue.rs        |  2 +-
+ 8 files changed, 77 insertions(+), 23 deletions(-)
+---
+base-commit: beeb78d46249cab8b2b8359a2ce8fa5376b5ad2d
+change-id: 20240905-rust-lockdep-d3e30521c8ba
 
-base-commit: 808eb958781e4ebb6e9c0962af2e856767e20f45
-prerequisite-patch-id: f05ff916822e21eec452f9e5b8d11339c409265a
+Best regards,
 -- 
-2.48.1
+Mitchell Levy <levymitchell0@gmail.com>
 
