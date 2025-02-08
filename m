@@ -1,149 +1,127 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC82125D6;
-	Sat,  8 Feb 2025 01:52:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738979546; cv=pass; b=gOoq/Cr2aVk3OFnTphdextmNSstadbCih2qVRnAtgKXQAbHEcWv1gfhrR50eqNsLpPNcdFeNDXND627ED/6PxcAmu75P3UsZk/Nlf2G7pzxsCo5IGWNXkUoGkdM/h1FaF92JqT1DD41BRURuQ0AQ0h5ctdf7uhLkq3XSnWLZfBA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738979546; c=relaxed/simple;
-	bh=T+OfHvGj/ItJulWwCxdDM20dP4A51QzDsoFZS5fuvUQ=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=ah28NR5Igg8zy8CEmNsqKtpunAci2Nj19Wu6QhESECe04/KS1czIWzWFoTQFlhaBYXpUbMIPr/msKQrkmTuEGD+iYJiERk48G3AA6PS+VZNa1/LP6eGAq/KNUK7A63T+5sqT+VqgwjcmhoEaykWcyyt7srHT0uf0EriEVmi3dl0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=WlMkGvY9; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76102913;
+	Sat,  8 Feb 2025 03:01:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738983679; cv=none; b=B2C4zUP4AdaaVPK7HHIKJbpwcG/imu72rogijVgHmc/la+XXvKq851vBQKOzMmQdcKmPRyFFXBuDahLR9gr2ZhZg0zfvdTRDq1aPrPidskFZw9mrzHnElLGrcuX1FtrvchzCFBWgJcZnJ2607kvsAWfgAXgiSm/dh2x7jikWp7w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738983679; c=relaxed/simple;
+	bh=nqpBlydxKobQ/cURbEJgsLrhdk+IEA8jA8MlvsXzBb0=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=e8zZf1s1E4zJwj1gUZcSFDJ40k0mqKJKJ1Uwlr5KlYVnmCWb33ObBX+7llJZv2U9eT57OTVDK9NKNUnMJhP9jR2ZKHlMx2ZrQOkdaI10vOFMjK2pi4CDLRhwiz7wXFXG57z12KC2WV+kcH4Se45NDaqoXiE6YvY+IT8He1C9YTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I4F0oBfS; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="WlMkGvY9"
-ARC-Seal: i=1; a=rsa-sha256; t=1738979461; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=h2CVmME1bLtWs+lpPIUCddGbm75QUXyJduwQf2mWQqFO/uI5E0iZgWKVeMLNTe6UfHPvw9Qcu5m0p7bhP9Zr1Be6Tj4VUWPIx8c4ndS8Ts3uqSYO80thvKE+hqW1a/HWi12crxerRWw9YBNR9amrJAyhItRCMJButAip0Gqu0aQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1738979461; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=PnQQ74qGW3nrr9Iyl/h1mVaZVFhV1V7cZJEYI5JlgG8=; 
-	b=cqAt0nrq/GcU6kEGElDS7vQX/ta0nrCRZs0lMHqXdH9Eh6l9mWjVUN0CrBNG07ANlRUFL17MXeg+D800kK/G595HRG3PkUmNluEr7fBga03szDXOEKdCfty/N22ap9jzft8H6H6YPRfqQe74dqRySKEdKiayvXDEqU2Zr/Ns5ec=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1738979461;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=PnQQ74qGW3nrr9Iyl/h1mVaZVFhV1V7cZJEYI5JlgG8=;
-	b=WlMkGvY9HbEJdFULa/KOJp5WUFvpRz9192iI+n7Pq0RS5agXtuoFSiksyK3sbGiJ
-	E97n8aE4MsZTtA6bwjxtnqv8f8xOtB+3A2YFfC2XHRsH+M9BjUBsmu29FnjD4RgL/m7
-	Tj+8TmarbsOdpO9zVLX9miRCgZd5aGskP/9Usi4Q=
-Received: by mx.zohomail.com with SMTPS id 1738979455913786.8061412149839;
-	Fri, 7 Feb 2025 17:50:55 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I4F0oBfS"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-21634338cfdso67876445ad.2;
+        Fri, 07 Feb 2025 19:01:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738983674; x=1739588474; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SXzRRz14yqpIHofV/zFebh3y188Exztn/L4hTgRQI5c=;
+        b=I4F0oBfS9q32sTW2rD6hPODZ5A6FMg3e7ajBi80RVVWObSZVsz1PqUXM1irYqwnmzy
+         DOGsv+oa8deQ7gPgr3OWOQf0T20/M2sq4uGvfX8RzxS4NKL062WJMmdYpLkuXYrE6Qk8
+         t0rkaeunDpJXs5tEE8IWvF0YqrVcS8eiq24+OgvMRsTtWQSscV/giC8DcFlupZArbd9z
+         xXUL5lGf/1nj+J2Mms5B9miGMx99XMpcCo48rokcUlm4psCdoWSIMfs3AymLPKJ8HTRU
+         YARfvDkGMTzx8RNmtee0NsYWw76/ayQ7DCWabB+uEhewKR1JXBHc+C4YHO+/ArmQvCpi
+         jdQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738983674; x=1739588474;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=SXzRRz14yqpIHofV/zFebh3y188Exztn/L4hTgRQI5c=;
+        b=Z1x65kK+hSqcSB8JZDaZizeke3sxzI5Z5inU+Tixs7tEw4wtFWx2ONLfWV2mGsIqc3
+         aWqiv7IZXJYWsV8M1I2v8R42TwMBQd6jxXKFHE/Mmn8il810wYZF26VSCWpFUkiYuXnH
+         tL2GCSonf7RSHMlIrOl7qvliyMAfcPAmZY3X1dy9+hLbuxu4EZhmx2Ccq4/tev6WxVv5
+         Eo2LFuLfFxaQudGBtTmBe8PU+9CCgr00slUOZfrWPm91Sv6vRwbUU8CTkeLxdO274pyc
+         VJMVAH4KHt07nnywtbNeQQVaYntebsyCNLIkFr8MJAp0G1+CNlSgVrJcsyRAiECWqoj3
+         MugQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVj/w6iv9e32/dvoaMwC0yHja3l54rUmwQVTT3ZVDux98OisEQc7m3YHTvMWt21glHhIDxD1IwsiAweEOL8NVo=@vger.kernel.org, AJvYcCXhe7oF+6ylh6n0TzOFZ9cSb2oyjBTejTvNg1AdwUhOn6YNa+mKO4eRIE3vAy2cWsrNLf61Sevl@vger.kernel.org, AJvYcCXk3aG9tYiTds8yIrGQle1UXRuU2yq5LLqN+Bpe5/5mDV/taYd2Eb9x4u8Kfz8tLpH5GnsxDmiHgmCq7I0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyY9SN7Ox268N30e5zTjEa8c/ARmVUfiKeQjtms1hVmXLFcdjSa
+	uH/qCmnwkQaKg/UU3xq4iuIPJeY+r9ILeVohkl8aQ4x4iuE9ZZnR
+X-Gm-Gg: ASbGncvZE9xPEM+8Phg/SSdqhzFotlatjfOHNHqiatVUKq4j7QCaev3GZGq5smgV1u+
+	OP8LEOvCPHyZZOAocN4cWklD/104LBYGhfADszlHSMkHR50RtB5Xn0tqLjJdn5cVTEE3Cvh4I13
+	xnFpCmHbn7E8T3srpAXPR7VFIBHdhxxsXXEFHVmXHPLhBGiU4vBqmxwCIpSd0q+8JdQfTY/OPD4
+	teR2z2fHgF/ncXjRRuabVSKGr/pHtgVU8gCQLx1OMe65lnN/jjXuYe5nKHUAPO0ft7GrF4hQaHV
+	KBBQAhVkgjj67fpRkxIB3NzQQuMfAk8hy+CTu3y1b0TUOxQzwpweaY9Tjl2+La1ZNjq0Vkw/
+X-Google-Smtp-Source: AGHT+IHN/+0/7nmDB66q1zqOa1jqJWOSI2wBvJ26ODCFMTLzQXppEZWJ/plqUGTPn9EYqJl/M+dNwQ==
+X-Received: by 2002:a17:903:2984:b0:21f:135e:76bf with SMTP id d9443c01a7336-21f4e6a9978mr87627755ad.12.1738983673897;
+        Fri, 07 Feb 2025 19:01:13 -0800 (PST)
+Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f3653babfsm37704355ad.68.2025.02.07.19.01.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Feb 2025 19:01:13 -0800 (PST)
+Date: Sat, 08 Feb 2025 12:01:03 +0900 (JST)
+Message-Id: <20250208.120103.2120997372702679311.fujita.tomonori@gmail.com>
+To: david.laight.linux@gmail.com, aliceryhl@google.com, boqun.feng@gmail.com
+Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, andrew@lunn.ch,
+ hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
+ alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me, a.hindborg@samsung.com, anna-maria@linutronix.de,
+ frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de,
+ jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
+ peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
+ dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com, tgunders@redhat.com, me@kloenk.dev
+Subject: Re: [PATCH v10 1/8] sched/core: Add __might_sleep_precision()
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <20250207181258.233674df@pumpkin>
+References: <20250207132623.168854-1-fujita.tomonori@gmail.com>
+	<20250207132623.168854-2-fujita.tomonori@gmail.com>
+	<20250207181258.233674df@pumpkin>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
-Subject: Re: [PATCH v10 7/8] rust: Add read_poll_timeout functions
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250207132623.168854-8-fujita.tomonori@gmail.com>
-Date: Fri, 7 Feb 2025 22:50:37 -0300
-Cc: linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- netdev@vger.kernel.org,
- andrew@lunn.ch,
- hkallweit1@gmail.com,
- tmgross@umich.edu,
- ojeda@kernel.org,
- alex.gaynor@gmail.com,
- gary@garyguo.net,
- bjorn3_gh@protonmail.com,
- benno.lossin@proton.me,
- a.hindborg@samsung.com,
- aliceryhl@google.com,
- anna-maria@linutronix.de,
- frederic@kernel.org,
- tglx@linutronix.de,
- arnd@arndb.de,
- jstultz@google.com,
- sboyd@kernel.org,
- mingo@redhat.com,
- peterz@infradead.org,
- juri.lelli@redhat.com,
- vincent.guittot@linaro.org,
- dietmar.eggemann@arm.com,
- rostedt@goodmis.org,
- bsegall@google.com,
- mgorman@suse.de,
- vschneid@redhat.com,
- tgunders@redhat.com,
- me@kloenk.dev
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <3F610447-C8B9-4F9D-ABDA-31989024D109@collabora.com>
-References: <20250207132623.168854-1-fujita.tomonori@gmail.com>
- <20250207132623.168854-8-fujita.tomonori@gmail.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-X-Mailer: Apple Mail (2.3826.300.87.4.3)
-X-ZohoMailClient: External
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-Hi,
+On Fri, 7 Feb 2025 18:12:58 +0000
+David Laight <david.laight.linux@gmail.com> wrote:
 
-> +
-> +/// Polls periodically until a condition is met or a timeout is =
-reached.
-> +///
-> +/// ```rust
-> +/// use kernel::io::poll::read_poll_timeout;
-> +/// use kernel::time::Delta;
-> +/// use kernel::sync::{SpinLock, new_spinlock};
-> +///
-> +/// let lock =3D KBox::pin_init(new_spinlock!(()), =
-kernel::alloc::flags::GFP_KERNEL)?;
-> +/// let g =3D lock.lock();
-> +/// read_poll_timeout(|| Ok(()), |()| true, Delta::from_micros(42), =
-Some(Delta::from_micros(42)));
-> +/// drop(g);
-> +///
-> +/// # Ok::<(), Error>(())
+>>  static void print_preempt_disable_ip(int preempt_offset, unsigned long ip)
+>>  {
+>>  	if (!IS_ENABLED(CONFIG_DEBUG_PREEMPT))
+>> @@ -8717,7 +8699,8 @@ static inline bool resched_offsets_ok(unsigned int offsets)
+>>  	return nested == offsets;
+>>  }
+>>  
+>> -void __might_resched(const char *file, int line, unsigned int offsets)
+>> +static void __might_resched_precision(const char *file, int len, int line,
+> 
+> For clarity that ought to be file_len.
 
-IMHO, the example section here needs to be improved.
+Yeah, I'll update.
 
-> +/// ```
-> +#[track_caller]
-> +pub fn read_poll_timeout<Op, Cond, T>(
-> +    mut op: Op,
-> +    mut cond: Cond,
-> +    sleep_delta: Delta,
-> +    timeout_delta: Option<Delta>,
-> +) -> Result<T>
-> +where
-> +    Op: FnMut() -> Result<T>,
-> +    Cond: FnMut(&T) -> bool,
-> +{
-> +    let start =3D Instant::now();
-> +    let sleep =3D !sleep_delta.is_zero();
-> +
-> +    if sleep {
-> +        might_sleep(Location::caller());
-> +    }
-> +
-> +    loop {
-> +        let val =3D op()?;
+>> +				      unsigned int offsets)
+>>  {
+>>  	/* Ratelimiting timestamp: */
+>>  	static unsigned long prev_jiffy;
+>> @@ -8740,8 +8723,10 @@ void __might_resched(const char *file, int line, unsigned int offsets)
+>>  	/* Save this before calling printk(), since that will clobber it: */
+>>  	preempt_disable_ip = get_preempt_disable_ip(current);
+>>  
+>> -	pr_err("BUG: sleeping function called from invalid context at %s:%d\n",
+>> -	       file, line);
+>> +	if (len < 0)
+>> +		len = strlen(file);
+> 
+> No need for strlen(), just use a big number instead of -1.
+> Anything bigger than a sane upper limit on the filename length will do.
 
-I.e.: it=E2=80=99s not clear that `op` computes `val` until you read =
-this.
+Ah, that's right. Just passing the maximum precision (1<<15-1) works.
 
-> +        if cond(&val) {
+The precision specifies the maximum length. vsnprintf() always
+iterates through a string until it reaches the maximum length or
+encounters the null terminator. So strlen() here is useless.
 
-It=E2=80=99s a bit unclear how `cond` works, until you see this line =
-here.
-
-It=E2=80=99s even more important to explain this a tad better, since it =
-differs slightly from the C API.
-
-Also, it doesn=E2=80=99t help that `Op` and `Cond` take and return the =
-unit type in the
-only example provided.
-
-=E2=80=94 Daniel
-
+Alice and Boqun, the above change is fine? Can I keep the tags?
