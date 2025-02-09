@@ -1,141 +1,198 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01FF199223;
-	Sun,  9 Feb 2025 15:43:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A952333991
+	for <rust-for-linux@vger.kernel.org>; Sun,  9 Feb 2025 16:20:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739115808; cv=none; b=WpSd4EaPyhh/RVvV3ty0d6axXX3dwEt4KhwcAv67N0nwYU6epKOBUswGLZC5LnIq8/PzNpoG3qUvBbcHzqIZAPSq2/Mcw5AI6hxchYfJoWT94nErXxABqTxyuo8y/EXL20EKCJ7JCdgvYExCdXIGKH8u4PIW3D7seCzFkRRAjBU=
+	t=1739118002; cv=none; b=Whbtectr9I6CkuLZ6q7YPWRPz+6YAHMVpbByLnW9eo9c60ukLDYBBGLnCZUcdKkPjBE3dIJU/ayNbfZGq1PUs9rt4spc04WM/gSSw4c12qhxKGoNaYMXWS4WLYarTdEKA9ctXfNQh4TblhwLMy87GLHetgIkYA7jv6OBGp5ur30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739115808; c=relaxed/simple;
-	bh=qsmcmem5zXi9evcSLYdJszKgU3/24x3uo6KjCVKhQxI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fro6IRconj/CeOCEIJ+vVtabC6IzNSILyH/9ueRKNBEG+fXYH9L5YqW7y9SJggcz2E+HheiJEv0pL4caZtD8KixMGMQNIBDI9GkGj56fWcgKkakp+iCzzrDCJXTZynyZH6TQPCjwkOLj7yZrf1/Rw95Cds/0sLdRsshxVTFTXdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IM9kIAcM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739118002; c=relaxed/simple;
+	bh=ifjluPUakW+96MCIWqdQbZnHzkmiYmc/U3OkyX77Pig=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ocI7xlqnFAogdXXT+Pq+pd6bKyT+ztkdyAxXlIIEqq3Qi7b7llKlLOXYXjm9jckzR71E5mHs/d5FwvLJO5N9Y8TSK9hbvcmrWYUevMkLD/091ypA68U0002j/aFmliGkEzTCTPZMT/Ombg5waV70OnP0ZVCEoaLfFOXm+Bfaeqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=vt.edu; spf=pass smtp.mailfrom=vt.edu; dkim=pass (2048-bit key) header.d=vt-edu.20230601.gappssmtp.com header.i=@vt-edu.20230601.gappssmtp.com header.b=aVzU7phe; arc=none smtp.client-ip=209.85.161.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=vt.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vt.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IM9kIAcM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF234C4CEDD;
-	Sun,  9 Feb 2025 15:43:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739115807;
-	bh=qsmcmem5zXi9evcSLYdJszKgU3/24x3uo6KjCVKhQxI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IM9kIAcMtB/bhmgg/yXym2l/UJkWdOjQ+Y4RE/XILD0qifnSbvX/937kThVrjN5s7
-	 a0oMbOD+oUVXxkKkQtkeQpAcN2AkBPBlGb6qhxKxG329CvyS/J7xvJfriYX3BbUnmH
-	 YYZGteudpj5MXUmOj1jgZp6v0UC6izsRYwZLFV6I=
-Date: Sun, 9 Feb 2025 16:43:23 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Lyude Paul <lyude@redhat.com>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	rust-for-linux@vger.kernel.org,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Xiangfei Ding <dingxiangfei2009@gmail.com>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] rust/kernel: Add faux device bindings
-Message-ID: <2025020904-defile-juror-67ab@gregkh>
-References: <20250207004049.178049-1-lyude@redhat.com>
- <CANiq72=bspqRga-hTTb3Vh9kD0ctyTehM9dvJdR=8biTE+iCQw@mail.gmail.com>
- <2025020715-subsonic-silenced-36c5@gregkh>
- <2ac39b766dbf5f9606107d3ead216ba384cfdd2b.camel@redhat.com>
+	dkim=pass (2048-bit key) header.d=vt-edu.20230601.gappssmtp.com header.i=@vt-edu.20230601.gappssmtp.com header.b="aVzU7phe"
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5f4ce54feb8so2070975eaf.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 09 Feb 2025 08:20:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=vt-edu.20230601.gappssmtp.com; s=20230601; t=1739118000; x=1739722800; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dvvEwD0sTJthbBM/YD3kaZ7WUn0gz8E22WCyOMue1ik=;
+        b=aVzU7phe5+RUJ/hTfJ3ySTYJsuFeGRHkyMWoZJwu87Z0OftpUSSEBLRVsBxXL9B0IX
+         V5/FP3zxl91q3UvRFDGHBKNpkR6dHSrihWy8LEEy/DNz/mG5ETuzzM12SL//hft/86Y4
+         U0ybgus6GCg9DsDCSAEAz55bIbqcLPlfeHj6NnCR68XKoZRFOsa/KuJBgFfddRzTWsGK
+         /9pCzyur8y6tpeNFrAKhbg+KKOBXQSpAudMLf/AIGfklHzRkQEacuQLD3mkljXIe6c7S
+         Bal0+qYMQyGKA710yefC0irdq4AVRY+6lrtLYrIt6PtaU01ngjyKCw1EmDQWOtLsD0u2
+         kkRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739118000; x=1739722800;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dvvEwD0sTJthbBM/YD3kaZ7WUn0gz8E22WCyOMue1ik=;
+        b=EyGKPFkwnAw6nsbbL2erp7DgIrqWibSukpU8s9dwQABquYEKdYYYV8NvKxXCBc4QlM
+         bClUnFs8T2wB8DyT88zJJnWXH7/stf24+NR2/DXoCuMxAyaDSD5CVHlXMjgUB5P6tKCX
+         Ct6jAYXpP4z9wgyJpXObmPC575TGEd1U051+wwaYgGZnNtbvAa2vt7qFKypMHYf7trVT
+         RCHWtUVZdwUyxJr7eQIf5rl5fh/CbqeKzUJ8ZGkkWkcU0yqPfVx5zHdz73YAsP7O8Lqx
+         wEHDZigZX9xQT/Js2o/lopEMhr2wuHL5PfpKPSEgROvoFMaJLE9DIPVvqYOIFcz0HSix
+         EzBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU9kocHWl7R9umI16VgGzhP1HgtwoPFjtWFeMM1WcToH3aXwHg73UIrzyX4wVCfWlNuuX6Q3w3dotlmQnpeiA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyaebrbNHSMwyhjbhM22vbyqlVSbAsio5rsbmTUCQC7rgp9L8+P
+	UdlHEyqc8YgcIx1mq1h/B/8kgweU8udWh+qDGvFRkiwkvR+8QsXG3HJKfOX8Ta9cqCZli24BgZc
+	fhIk=
+X-Gm-Gg: ASbGncsxbOtFeq0OnK1PT/xevVGPabxOtRfxEIkGY9EOS9wlyQtvdPKRZ4F2XSYwoe/
+	ZXEjyvv4u0hxbPq7cUbn+XbvwH2ved4VZy+lNEDYPKRkhdmC1I8IfG1HqQz+p84VZTjxOgNOAbK
+	7pcOpzkRaXLOYUpxyI6wLS/Pvg5pYc/g9vtTAcG9FNh7SYuf1mTgKNZsLv2OEZUfDvaGuswazN0
+	imvtoRGg+APcon+rYsgezAWa/MH9TDShex13xQJj5Cj4uIyBpoW01Dovj3WaFwJ0SF1r3jvOrII
+	Ccd8CcS6Ahhtkd0cP85juVDFjcqrzW9OwXlKYyDQcmwr4xvoXTGMvPDhpw==
+X-Google-Smtp-Source: AGHT+IEPbHpU34hW2fuOTfUZssneFgJQCeacANatw+//XNFvaeoOL3OjufV8AgclHjY9ynCZqH1OUA==
+X-Received: by 2002:a05:6820:134f:b0:5f6:e60a:776f with SMTP id 006d021491bc7-5fc5e5ff7e9mr7297600eaf.1.1739117999599;
+        Sun, 09 Feb 2025 08:19:59 -0800 (PST)
+Received: from ?IPV6:2603:8080:7400:36da:dff5:4180:2562:4c1e? ([2603:8080:7400:36da:dff5:4180:2562:4c1e])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5fc6f2764e7sm801647eaf.17.2025.02.09.08.19.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 09 Feb 2025 08:19:58 -0800 (PST)
+Message-ID: <42efddde-9fe0-4984-a903-c89328a726b6@vt.edu>
+Date: Sun, 9 Feb 2025 10:19:56 -0600
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 2/2] rust: add dma coherent allocator abstraction.
+To: David Airlie <airlied@redhat.com>,
+ "carlos.bilbao@kernel.org" <carlos.bilbao@kernel.org>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Christoph Hellwig <hch@lst.de>, Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ daniel.almeida@collabora.com, aliceryhl@google.com, robin.murphy@arm.com,
+ rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, Valentin Obst <kernel@valentinobst.de>,
+ open list <linux-kernel@vger.kernel.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
+ Greg KH <gregkh@linuxfoundation.org>
+References: <20250108122825.136021-1-abdiel.janulgue@gmail.com>
+ <20250108122825.136021-3-abdiel.janulgue@gmail.com>
+ <20250108135951.GA18074@lst.de>
+ <CANiq72=R2N+QiCiHZQu-6YJ9aYpn_bik3BW3U=nAW3jL7unzLw@mail.gmail.com>
+ <1894f095-e93a-4def-a223-d5c089ecc2df@vt.edu>
+ <CAMwc25p1kGHjy7z19Kg+vv7yVc0bF2taA08hBKhk72e4HiK5xA@mail.gmail.com>
+Content-Language: en-US
+From: Carlos Bilbao <bilbao@vt.edu>
+In-Reply-To: <CAMwc25p1kGHjy7z19Kg+vv7yVc0bF2taA08hBKhk72e4HiK5xA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2ac39b766dbf5f9606107d3ead216ba384cfdd2b.camel@redhat.com>
 
-On Fri, Feb 07, 2025 at 05:10:29PM -0500, Lyude Paul wrote:
-> On Fri, 2025-02-07 at 13:16 +0100, Greg Kroah-Hartman wrote:
-> > On Fri, Feb 07, 2025 at 12:42:41PM +0100, Miguel Ojeda wrote:
-> > > On Fri, Feb 7, 2025 at 1:42 AM Lyude Paul <lyude@redhat.com> wrote:
-> > > > 
-> > > > This introduces a crate for working with faux devices in rust, along with
-> > > 
-> > > s/crate/module
-> > > 
-> > > (also in the module description)
-> > > 
-> > > > +//! C header: [`include/linux/device/faux.h`]
-> > > > +use crate::{bindings, device, error::code::*, prelude::*};
-> > > 
-> > > Newline between.
-> > > 
-> > > > +        // SAFETY: self.0 is a valid registered faux_device via our type invariants.
-> > > 
-> > > Markdown.
-> > > 
-> > > > +// SAFETY: The faux device API is thread-safe
-> > > > +unsafe impl Send for Registration {}
-> > > > +
-> > > > +// SAFETY: The faux device API is thread-safe
-> > > > +unsafe impl Sync for Registration {}
-> > > 
-> > > Perhaps some extra notes here would be useful, e.g. is it documented
-> > > to be so? Especially since faux is being added now, it may make sense
-> > > to e.g. take the chance to work on mentioning this on the C side.
-> > 
-> > How can or should I mention this on the C side?
+Hello David,
+
+On 2/9/25 00:44, David Airlie wrote:
+> On Sun, Feb 9, 2025 at 9:55 AM Carlos Bilbao <bilbao@vt.edu> wrote:
+>>
+>> Hello,
+>>
+>> On 1/8/25 09:16, Miguel Ojeda wrote:
+>>> On Wed, Jan 8, 2025 at 3:00 PM Christoph Hellwig <hch@lst.de> wrote:
+>>>>
+>>>> No rust code in kernel/dma, please.
+>>>
+>>> What do you suggest?
+>>
+>> This is it. What do people suggest? This thread has received a lot of
+>> attention -- maybe it's an opportunity for the community to brainstorm.
+>> Here's an idea:
+>>
+>> Some maintainers clearly hate wrappers/bindings to Rust, while others don't
+>> mind as long as the R4L folks commit to the maintenance duties. Depending on
+>> the subsystem, it will be a completely different conversation. It seems to
+>> me that right now, every time the R4L folks interact with a new subsystem,
+>> they need to understand the maintainer's stance. That looks like an
+>> exhausting process.
+>>
 > 
-> This is a very good question :), especially because it turns out I actually
-> think this function is not thread-safe! Though I don't think that's actually
-> much of a problem for Send/Sync here:
+> That is the process we are committed to, everyone has a voice and gets
+> to be heard, and we move forward in the appropriate manner with each
+> maintainer. Bypassing maintainers is the last resort, not engaging at
+> all with maintainers isn't a productive way forward either. Your below
+> attempt is trying to create a technical solution to a social problem.
 > 
-> So - my original assumption was that since faux_device_destroy() just wraps
-> around device_del() and put_device() we'd get thread safety. put_device() is
-> thread-safe, but on closer inspection I don't see that device_del() is. It
-> _can_ be called from any thread, but only so long as there is a guarantee it's
-> called exactly once. I think that's fine both for C and rust, but it
-> definitely warrants a more descriptive SAFETY comment from me.
+>> Would it make sense to have a C middleman that Rust calls instead of
+>> binding directly to the C funcs? This dispatcher would provide a simpler,
+>> stable API with fixed function signatures, even if the C functions change.
+>> If a C func is removed/changed, only the C dispatcher would need to be
+>> adapted, but until that happens, a new error could be returned to the Rust
+>> side (not ideal, but Rust doesn't just break).
+>>
+>> This would obviously impose some limitations on the Rust side, but it might
+>> be less conflictive than direct bindings. Also, in Abdiel's case here (for
+>> example), he'd explicitly take on the maintenance of the Rust abstraction
+>> and its DMA dispatchers, leaving no ambiguity about ownership.
+>>
 > 
-> So for the C side of things I might actually add documentation to device_del()
-> for this that would look something like this:
+> This just adds overheads for everyone to little advantage for the
+> cases where maintainers are fine with all the other approaches.
+
+I'm not sure there's a need to worry about overhead in this hypothetical
+case if the dispatcher is merely a translator and doesn't validate inputs,
+copy buffers, or such. It would be less than calling from userspace.
+
+What I meant to say (I wasn't clear before) was for this solution to apply
+to cases where maintainers are firmly against all alternatives. Obviously,
+if all the parties involved are happy, direct bindings are preferable.
+
+
 > 
->    device_del() can be called from any thread, but provides no protection
->    against multiple calls. It is up to the caller to ensure this function may
->    only be called once for a given device.
+> Also the bindings code in rust is usually pretty trivial to change,
+> it's not like you can really abstract things that far, changing APIs
+> is hard no matter what, understanding the nuances in every C driver
+> can takes months of work adding rust bindings to your changes is
+> rarely going to be the limiting factor. We have learned over the years
+> to not make API changes that are subtle or hidden, and can leave out
+> of tree or in development users broken in subtle ways and as long as
+> we keep making API changes like that, updating the rust code is the
+> least of anyone's worries. This isn't like having to learn Mandarin vs
+> English, it's code written with a different syntax, it's not even
+> perl.
 
-You are correct in that device_del() has to be called only once, but the
-idea of "thread safe" really isn't a thing in the kernel because we have
-processes entering/exiting the code from all different places so things
-better be "thread safe" almost everywhere, what matters to us as you
-know is "context" due to sleep/locking issues.
+I'm not sure there's a need to worry about overhead in this hypothetical
+case if the dispatcher is merely a translator and doesn't validate inputs,
+copy buffers, or such. It would be less than calling from userspace.
 
-So how about this wording instead:
-	device_del() must be called from process context, not interrupt
-	context, and also provides no protection against multiple calls
-	for the same device.  It MUST be up to the caller to ensure that
-	this function can only be called once for a given device.
+What I meant to say (and wasn't clear before) is that this solution could
+apply to cases where maintainers are firmly against all better
+alternatives. Of course, if all the parties involved are happy with direct
+bindings, that's preferable. But as you said, this is a social problem, so
+maybe it's not a one-size-fits-all solution.
 
+I agree that in some cases, abstracting the API could be complicated, but
+I’d focus on keeping it simple and providing Rust with the minimum subset
+it needs to keep things moving forward. Abdiel's PR is a good example --
+by keeping the functions in his CoherentAllocation, we keep that option,
+but lose the granularity of DMA mapping attributes (which would be some
+default in the C dispatcher).
 
-> And then I suppose we could refer back to device_del() in faux_device_destroy()'s
-> documentation if we want. For the rust side of thing the safety comment could
-> just be like this:
+I agree that making subtle API changes is risky, and it would def. be
+something to keep an eye on.
+
+And yes, with this approach, some Rust developers may eventually miss
+certain DMA functionalities in the future; but that would still be better
+than the current situation, where _all_ Rust devs are missing all DMA
+capabilities.
+
 > 
->    // SAFETY: Our bindings ensure only one `Registration` can exist at a time,
->    meaning faux_device_destroy() can only be called once for a given
->    registration - fulfilling the driver core's requirements for thread-safety.
+> Dave.
+> 
 
-Sure, but I think we are going to start getting "thread" confusion over
-time here, is this something we want to start thinking about or am I
-just running into it for the first time here?  I know it's a userspace
-thing but not normally thought of in the kernel subsystems I'm familiar
-with.
-
-thanks,
-
-greg k-h
+Thanks,
+Carlos
