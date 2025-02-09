@@ -1,135 +1,100 @@
-Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512B3243397
-	for <rust-for-linux@vger.kernel.org>; Sat,  8 Feb 2025 23:55:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7313653;
+	Sun,  9 Feb 2025 00:48:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739058923; cv=none; b=dph6d2hzFjuKMzKdXEajqr4SELgJXtglekxmIF30gArPadCFPv7MWsCxZLL/ndCXSWxPl2YywOEJ1kO5RSa/HarIbdxJJnvXUUqgeYj4/F4WmAj3hZXcdaVEevQcn7uBNxWT4DoPlkviGjEq9gOvDIlhcKpm2akfcM2y+iotcQc=
+	t=1739062081; cv=none; b=HD30HB6CB/xEeD86Xz5kc13Z7NjwK0RN8bQuIotnfgcmNERRHYBKwtB0aHWKz6JW3dVysFCvsaRA/4hnLOQu9P7awLpqxR4OgBB3fYdgi71oGNhiE3MiiNIAhOG/dt7fXF8vjDrAUWpP668QlDb38BiizF6bbPr/6Z9hMGTLVzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739058923; c=relaxed/simple;
-	bh=JRYaldM9lNmyv0V3AluADdJ9dlvrHbXlkp5UU3XH9Rg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cYOF+f6ArPFaxFjALianelOQI+PgpHRk838gZUTtpL9pzDyp2lhu2nGSNw7EFmvJofOQA0M7zOMOMLDtuV9fE2XMd95uPwUg/gnioFGJudyCH1+8Mlm2sVANI8F7K2goq7j8+jTaxdSX26qYxpdrhvUE87Apqhlq3vtcOZOQMhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=vt.edu; spf=pass smtp.mailfrom=vt.edu; dkim=pass (2048-bit key) header.d=vt-edu.20230601.gappssmtp.com header.i=@vt-edu.20230601.gappssmtp.com header.b=V/GdBK9U; arc=none smtp.client-ip=209.85.161.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=vt.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vt.edu
+	s=arc-20240116; t=1739062081; c=relaxed/simple;
+	bh=qzrkW/FtYpC4vxsTUm2M/DPtl7GUjdWaJCHRPy+ZSVw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CsX6l9wzoXg1kEqGhHpuDQmS3aSOsjUawp3fEHFENoEYywLQtV3hg3uxnQ1SMTkSI9WW1vGYeiQzUqArzmIwxv6SLXLjcixL9xv2BSAJ+KtW7O7r3uGsHqVOQiKvxxF8diGNoCDrfWEyVxc/sgOA+yMGgs9QGIXIMKOYXMVGJ5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZOekPdPG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vt-edu.20230601.gappssmtp.com header.i=@vt-edu.20230601.gappssmtp.com header.b="V/GdBK9U"
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-5f4ce54feb8so1826177eaf.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 08 Feb 2025 15:55:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=vt-edu.20230601.gappssmtp.com; s=20230601; t=1739058920; x=1739663720; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mPicVwQS5wbJAwKsL40Ymzq5q/Ob6IjbFcIhIGSOedI=;
-        b=V/GdBK9UEzWMQ14583BhtSuIbTUKMhwLIrtAHFBPCs+yIqupRn5ykVRB/TCNqSOiJB
-         rsaqHlYpxej/dfd74EuJuGXQ9/My16iz5tDiMYZeqNys4gQnTYkkhLf1aWD9hDJvsPaH
-         r+WeeNpfPmrPGLtGgbC4WbbrnDh5oOXsKX1bw+u8KO+QPPrNCaOuRTpOnogQjNaaddOc
-         0wqhzhTXQjhbz2wqrIomBn9wP0lsnPsQ5H0v7nPpR2dl1ijYKZ7jUpqwiw6r9IVtSbxA
-         fhE0Hd3U+wvEfkduXvUQqkreZrUKVv/SYr63utjnyLmNbPv/xEoRHYooy6ERuXtRdWZj
-         q7mQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739058920; x=1739663720;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mPicVwQS5wbJAwKsL40Ymzq5q/Ob6IjbFcIhIGSOedI=;
-        b=SX+Y59mzdaBCVu/HVLk6XfPk/acOv4knX4bnbwMVCCtizzQrlk/iw/hSQ4BEFy3glh
-         gyRfcn7De49sYcli/pCYupjtub4zx9PWsHsPdhF2OLaPdmf2nlF7LzEoLtF/Pf9vl0SI
-         6y447k7oPi2AWwJ+Vx0FSvjoz+xRZbHNnKl2hmQxls2/ubvmrMx3XRhVpIi9Fnuo/XhQ
-         QTq7pLzhqW5qe+CLzLmC1tc3OHBxznFOcNRoXILHxBARYwgXICjVvJ+93NH2nW17EmRB
-         aMTSxI7MT4WtBD9aomJNr6qs8+22lIkcQyxGYFGOvTNYbZq9IAbPKLgPvHvTFsox7JjD
-         Otgg==
-X-Forwarded-Encrypted: i=1; AJvYcCXw5Id2fnnVetZgI8KG01OMRbx5tSgu0sbR+0dGJZhgMBh8optCVDGGEuoumgJCeGSECSqQrpvT0aT5fwp8jw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YygwoAenDBqUUnay17d17Ikq7O1D+USi/ojM/8STgOldCm5QOAc
-	E9EIpsAEbYV4p5BFjfgxZ9r7nDL+IVZcazX4KbwlqB0bqWnW/GEKWpIcRG0vITQ=
-X-Gm-Gg: ASbGncuAxqvmSvj4Kb0jfYU0Xn1t0764Hibfk3cgFeY+VgrbsU2s9iZGXfnVT6Sph1C
-	X1aQLkNM8lUtxOSvSYu/MmKJulKmPs3Gm807tHeJzxFWzbvo7ff4pkdapN6k5zg20w6zGvjowI2
-	ONBtPzfLZfcPGP2LLeYUTxcfepEugpDrNhfmpUluVVsStqq9C1ZAmnitkW7uADTZTtYOtULwhVD
-	sPMF+Kumijl9/RFcs+RWBgkRv8avkKJj0Rd1sY7CLEXJdW7EmXPHGgdxi79NfriypnGejH1qx12
-	IoPotSnXX/Kf1CBHw7zJRzn9NZW4VyiNtR8IvkR/KNilp7D+HLrQJHPJhA==
-X-Google-Smtp-Source: AGHT+IHWk4r4HVyiqLL19e9cELrxNlFZUIzBX3h21rZtA7zL/FAkU7jPy3L3H4qYyNZyOB/xY8XDPw==
-X-Received: by 2002:a05:6870:5154:b0:2b7:fa6f:9672 with SMTP id 586e51a60fabf-2b83ee95b12mr5471087fac.38.1739058920357;
-        Sat, 08 Feb 2025 15:55:20 -0800 (PST)
-Received: from ?IPV6:2603:8080:7400:36da:dff5:4180:2562:4c1e? ([2603:8080:7400:36da:dff5:4180:2562:4c1e])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2b826262333sm1734780fac.37.2025.02.08.15.55.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 08 Feb 2025 15:55:19 -0800 (PST)
-Message-ID: <1894f095-e93a-4def-a223-d5c089ecc2df@vt.edu>
-Date: Sat, 8 Feb 2025 17:55:16 -0600
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZOekPdPG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85CAFC4CED6;
+	Sun,  9 Feb 2025 00:47:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739062080;
+	bh=qzrkW/FtYpC4vxsTUm2M/DPtl7GUjdWaJCHRPy+ZSVw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZOekPdPG9rGXAHwHCR6hmFwTQMVrCn3b0BkMOkL5ga4lVl9Bs1dV7Qj8jWjhegNaN
+	 k6ROCugHcyaC2GsNvAJMCwS3vFBqmdutah+OvU5vCstt6uSky2vq1mC0Ntlm+frb2C
+	 X0xFTOQ9fU5W68iySd8+jcI7HJZVFGPYagaFMyZu0Yv8H8hpMUpy+8+kFA8Jfor1sH
+	 iANNuiZ66aMDXpHLfZVRtVHNNoiCXmArinGre7+QqR9FS9NA4DVvwT/K9Cz7cL1nI2
+	 1YH+2yIZfba9d5ndLHMbRXsv6b4BtAKXU5z1HZB6z9YXcYElecobD3sDIfa+ajQkV3
+	 NzCmF/NhFCXPg==
+Date: Sun, 9 Feb 2025 01:47:52 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Theodore Ts'o <tytso@mit.edu>
+Cc: "Dr. Greg" <greg@enjellic.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Hector Martin <marcan@marcan.st>, Dave Airlie <airlied@gmail.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Greg KH <gregkh@linuxfoundation.org>, phasta@kernel.org,
+	Christoph Hellwig <hch@lst.de>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	daniel.almeida@collabora.com, aliceryhl@google.com,
+	robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Bj??rn Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Valentin Obst <kernel@valentinobst.de>,
+	open list <linux-kernel@vger.kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
+	DRI Development <dri-devel@lists.freedesktop.org>
+Subject: Re: On community influencing (was Re: [PATCH v8 2/2] rust: add dma
+ coherent allocator abstraction.)
+Message-ID: <Z6f7OPgge4k-gYIE@pollux.localdomain>
+References: <20250130172437.GN5556@nvidia.com>
+ <2025013148-reversal-pessimism-1515@gregkh>
+ <20250131135421.GO5556@nvidia.com>
+ <2b9b75d1-eb8e-494a-b05f-59f75c92e6ae@marcan.st>
+ <Z6OzgBYZNJPr_ZD1@phenom.ffwll.local>
+ <CAPM=9tzPR9wd=3Wbjnp-T0W8-dDfGah-H3Ny52G85B+2Ev9ksA@mail.gmail.com>
+ <208e1fc3-cfc3-4a26-98c3-a48ab35bb9db@marcan.st>
+ <CAHk-=wi=ZmP2=TmHsFSUGq8vUZAOWWSK1vrJarMaOhReDRQRYQ@mail.gmail.com>
+ <20250207121638.GA7356@wind.enjellic.com>
+ <20250208204416.GL1130956@mit.edu>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 2/2] rust: add dma coherent allocator abstraction.
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Christoph Hellwig <hch@lst.de>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
- daniel.almeida@collabora.com, aliceryhl@google.com, robin.murphy@arm.com,
- rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Valentin Obst <kernel@valentinobst.de>,
- open list <linux-kernel@vger.kernel.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
- "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
- Greg KH <gregkh@linuxfoundation.org>
-References: <20250108122825.136021-1-abdiel.janulgue@gmail.com>
- <20250108122825.136021-3-abdiel.janulgue@gmail.com>
- <20250108135951.GA18074@lst.de>
- <CANiq72=R2N+QiCiHZQu-6YJ9aYpn_bik3BW3U=nAW3jL7unzLw@mail.gmail.com>
-Content-Language: en-US
-From: Carlos Bilbao <bilbao@vt.edu>
-In-Reply-To: <CANiq72=R2N+QiCiHZQu-6YJ9aYpn_bik3BW3U=nAW3jL7unzLw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250208204416.GL1130956@mit.edu>
 
-Hello,
+Ted,
 
-On 1/8/25 09:16, Miguel Ojeda wrote:
-> On Wed, Jan 8, 2025 at 3:00 PM Christoph Hellwig <hch@lst.de> wrote:
->>
->> No rust code in kernel/dma, please.
+On Sat, Feb 08, 2025 at 03:44:16PM -0500, Theodore Ts'o wrote:
+> This was the trust of my "Beyond Upstream First" presentation which I
+> gave to the Linux Foundation Member Summit last fall[1].
 > 
-> What do you suggest?
-
-This is it. What do people suggest? This thread has received a lot of
-attention -- maybe it's an opportunity for the community to brainstorm.
-Here's an idea:
-
-Some maintainers clearly hate wrappers/bindings to Rust, while others don't
-mind as long as the R4L folks commit to the maintenance duties. Depending on
-the subsystem, it will be a completely different conversation. It seems to
-me that right now, every time the R4L folks interact with a new subsystem,
-they need to understand the maintainer's stance. That looks like an
-exhausting process.
-
-Would it make sense to have a C middleman that Rust calls instead of
-binding directly to the C funcs? This dispatcher would provide a simpler,
-stable API with fixed function signatures, even if the C functions change.
-If a C func is removed/changed, only the C dispatcher would need to be
-adapted, but until that happens, a new error could be returned to the Rust
-side (not ideal, but Rust doesn't just break). 
-
-This would obviously impose some limitations on the Rust side, but it might
-be less conflictive than direct bindings. Also, in Abdiel's case here (for
-example), he'd explicitly take on the maintenance of the Rust abstraction
-and its DMA dispatchers, leaving no ambiguity about ownership.
-
+> [1] https://docs.google.com/presentation/d/11rMc8PBeyMItV6hv31OHSZ626_6FCZxjX6ZxEAehCpQ/edit#slide=id.p
 > 
-> Thanks!
-> 
-> Cheers,
-> Miguel
-> 
-> 
+> Now, I'll say that the Rust developers are making strides in the right
+> direction here.
 
-Thanks,
-Carlos
+Please let me add that a lot of those Rust kernel developers also have been
+kernel developers before there has been Rust in the kernel and do still
+contribute and even maintain C components, drivers and / or subsystems.
+
+I think missing trust should not be a relevent factor in this matter.
+
+> Miguel has stood for election for the Technical
+> Adviory Board, and has been contributing in various ways beyond just
+> Rust for Linux.
+
+Thanks for pointing this out.
+
+- Danilo
