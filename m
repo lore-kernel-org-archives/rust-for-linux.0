@@ -1,89 +1,114 @@
-Received: from out162-62-58-216.mail.qq.com (out162-62-58-216.mail.qq.com [162.62.58.216])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874564594A;
-	Sun,  9 Feb 2025 11:51:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.58.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39AB01C9DE5;
+	Sun,  9 Feb 2025 15:25:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739101875; cv=none; b=D9HfPRGoW54ek46ZKJtKjTd+ana3uIixtzuG5W4tSFVj994nfxQ/t4+d0Fb2XnMToTy+RvaUrOOa1xVSTW1Cx1+W8QVzxZRhKQZnZ9OdMJGDgcen2qzV9D5W19/BKwoh6auvaPEsMiiTSXt4OHbdYl5jsnJRXF5EzltkXa9Grn0=
+	t=1739114743; cv=none; b=m3s2iwXLaA0pw8Jhkqh/iKCV1+Xm4yh9HGFJt8FMf02Bs2IWdGf2PmqR51hzNWy1IwTny43SUGL+8N6NSAwI5fxaK9YDoZSGeqiUq/eUtzelujnaCietJGqR9ax3fTHpyi2lR0saigilU0eBy4dUmE4pjfv9n9LpGsdLigA4hhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739101875; c=relaxed/simple;
-	bh=2Hp1tr96jyJyTU8RVII6RRgzKa8U4mcQc8H4bt4HBlI=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=Q/tze/k3Y9vWFpjb99LHFg3bV8TLNl+/ZI9u2DMzZSrRf3PrR/ya/E0UQqYlxNo/pqmA1SOjxaLYPl3uFWEduM2OnT0c7zqlkX65JGaZ5BVacOULOEmYRsdZ3muCw1fp35reyUAU/crJwUkUU4MdQKsRnbIlnM5BO+g0dbtmzRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=EDuZWUfR; arc=none smtp.client-ip=162.62.58.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1739114743; c=relaxed/simple;
+	bh=08BrRKWgQML+UNiNXbeO8F7nrxKLc4CHz5eh3WB8g90=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nE2WVPJLqMRg8C9WdnWwL4oYVAbrsJl2lc99AppGo873/x9h1heCdl5kcdEZMMhWXGAzKHX5MOGMmPFFYnNL+BeymSRRRfCUxoZIswOxfHCg7KAPjFuuAVIKKC4be/zsEERWKpSrkImUk/KVS9fQd2CZcy5nfZhPBgNRT5nJ82E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bQCOPtRf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="EDuZWUfR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1739101559; bh=2Hp1tr96jyJyTU8RVII6RRgzKa8U4mcQc8H4bt4HBlI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EDuZWUfRgcVuDAQzosZXk6pt2V/pu4PFnB/8Y9QQ4yXpQxbieDyq4lbcEd2Iyunsq
-	 QmcUkBPfM0iMH0ITirgrqhUKmPYkf4+jgoBdaHiRjLY1blSVGRBDSEUs/3o0BNamic
-	 BZAvR4/xGKZ4F1hYhs/LC2jYr2BCSjr2C44jcgNU=
-Received: from jckeep-Lenovo-XiaoXinAir-14IIL-2020.. ([2408:8459:d061:698d:6fa9:b5e6:266:b48c])
-	by newxmesmtplogicsvrsza29-0.qq.com (NewEsmtp) with SMTP
-	id B781FCFB; Sun, 09 Feb 2025 19:45:56 +0800
-X-QQ-mid: xmsmtpt1739101556tmbw6rqrp
-Message-ID: <tencent_881F52CC4B090D613A14738CF4C5F665EB07@qq.com>
-X-QQ-XMAILINFO: MqswyhUqVe0Cl4GnNTbROT0SPfkCWigcEd+D3WDtpxfnwp5IPLflN333/ffaE6
-	 6ay3PI3rbwG6fNYtHy8tVccl4UgQfxJonAlJhRQuRfS2/nF9dxmG4GUkmQGCXKwfo6+p2wAmcGio
-	 YSJD5vP1NWdPNQW+yjlsn48aA+meCaR0fcp1NvpbUfHt9aPClQP7JvNbS62Azwk1bhW0GBz8mmiL
-	 rOm6SGhhlcNmigszRSSzRChREZ4ttb8t7FjOaf6ji5HLa0gQw37oMP471NGBo88rHfvzqmSQEm1N
-	 SrChV+GkLm0D+MOaRsUSyIEWMJXqHBLZak8KdcQt/RH/mhFGKn3/5RfasDKmqWNtgCEEw8nua38g
-	 gYan75q/i7y56gHewc8Bl28IydQ/3EmvAbdYthMI9L9qNmWlFcUbUDQYvPXL+g9QIdN5pyYdMwAj
-	 vcumxPf/f1qK/p1nflWH0fdzqjtklVqw1DDCJDwpcsbIAfdZpMm5WXRVxZBZV55YSRjRqCJzk5WI
-	 vI0CXzzlYQXhp8iHqXBPLD4pgO/tEJQP1i2RzICqItupNMejn+zBgSqsTw+EyqkiZMBtzhwEbB82
-	 QqVj6+aViytKtuAeqGyqjz7LMY9p5pVAVcnMj5Ub9O7ac8N96Vqxj0w4nOpu+XEZA+PfYgCNHyf4
-	 UlWN4k7PCJYcU/ljuahX0ezIfr4aRwPuAupzxiGVQEf9uTFJVgqLVeHiEYOhoktyvJNQk1HbJyPB
-	 4/BlqH0/pgoNtwLRe5GsSIY9RV1wBGTJENnlAXQzvisda9vUCyREp9oSlBNq+n8LiHMrltRMAnPZ
-	 4qWLA52/jg5qDBh8GWvwfsCIbNW2oINQn8RRsAGn9jWrBPoGEIFiBRHIeHOTFSljt8R1/gJhEyF1
-	 hzxCh7YkIE7cxPT0VJ0VObXwgzUs778d8Q/GkIFw45qicu7Bpx4YffCFRnsoXllPGCH47J1YIgo/
-	 4KkFhrcLYcIywiI9jD+rIUXlfG37OJ3/W+IPDD5X9v2v1TNXc4Tg==
-X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
-From: Guangbo Cui <2407018371@qq.com>
-To: daniel.almeida@collabora.com
-Cc: a.hindborg@kernel.org,
-	alex.gaynor@gmail.com,
-	aliceryhl@google.com,
-	benno.lossin@proton.me,
-	bjorn3_gh@protonmail.mco,
-	boqun.feng@gmail.com,
-	boris.brezillon@collabora.com,
-	dakr@kernel.org,
-	gary@garyguo.net,
-	gregkh@linuxfoundation.org,
-	linux-kernel@vger.kernel.org,
-	me@kloenk.dev,
-	ojeda@kernel.org,
-	rafael@kernel.org,
-	robh@kernel.org,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bQCOPtRf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6BC4C4CEDD;
+	Sun,  9 Feb 2025 15:25:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739114742;
+	bh=08BrRKWgQML+UNiNXbeO8F7nrxKLc4CHz5eh3WB8g90=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bQCOPtRfxGN/3v85mUwUDJPp6hMstWFO7ZI3WDn3Uvq1p2/VX7iCPexYvMRu21NgN
+	 MVYs0JPZIStgMCmN86KZkwLYwTSJpjRavn+2qbB94B+bOVisrHlu/dzumsq+wwRpPJ
+	 jBrEtp/Jms9M9i2oEBT9zvXYU1rX84o2Bh4YhKtAZEAtiPSXXsZD/QJN0xho50hT39
+	 2qDjFRChq33COuPfXCQ5qyywOc3/DnFBcT7Gm9o8kDAmEOpLuhmfLc58MktZ85F0d0
+	 PaPiG5Oyf6XqlJ1o0R9uMx7pk/E3e53xlgZAfMrwbWYdO2g0Y4XvqJfdRc/d6iKU9y
+	 ImpE0tH4n5uGw==
+Date: Sun, 9 Feb 2025 16:25:33 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Zhi Wang <zhiw@nvidia.com>, airlied@gmail.com, simona@ffwll.ch,
+	corbet@lwn.net, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, tzimmermann@suse.de, ajanulgu@redhat.com,
+	lyude@redhat.com, pstanner@redhat.com, cjia@nvidia.com,
+	jhubbard@nvidia.com, bskeggs@nvidia.com, acurrid@nvidia.com,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, nouveau@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu,
-	2407018371@qq.com
-Subject: Re: [PATCH v6 1/3] rust: io: add resource abstraction
-Date: Sun,  9 Feb 2025 19:45:55 +0800
-X-OQ-MSGID: <20250209114555.11395-1-2407018371@qq.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250130220529.665896-2-daniel.almeida@collabora.com>
-References: <20250130220529.665896-2-daniel.almeida@collabora.com>
+	Nouveau <nouveau-bounces@lists.freedesktop.org>
+Subject: Re: [PATCH v2 2/2] gpu: nova-core: add initial documentation
+Message-ID: <Z6jI7cKZQe2gyM_v@pollux>
+References: <20250204190400.2550-1-dakr@kernel.org>
+ <20250204190400.2550-2-dakr@kernel.org>
+ <20250205155646.00003c2f@nvidia.com>
+ <D7M2HTWHNGEZ.10FM642ZMX1PX@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <D7M2HTWHNGEZ.10FM642ZMX1PX@nvidia.com>
 
-> +/// A region allocated from a parent resource.
-> +///
-> +/// # Invariants
-> +/// - `self.0` points to a valid `bindings::resource` that was obtained through
-> +/// `__request_region`.
+On Fri, Feb 07, 2025 at 05:23:37PM +0900, Alexandre Courbot wrote:
+> On Wed Feb 5, 2025 at 10:56 PM JST, Zhi Wang wrote:
+> > On Tue,  4 Feb 2025 20:03:12 +0100
+> > Danilo Krummrich <dakr@kernel.org> wrote:
+> >> +  regressions with all 2nd level drivers.
+> >> diff --git a/Documentation/gpu/nova/core/todo.rst b/Documentation/gpu/nova/core/todo.rst
+> >> new file mode 100644
+> >> index 000000000000..5e66ec35c5e3
+> >> --- /dev/null
+> >> +++ b/Documentation/gpu/nova/core/todo.rst
+> >> @@ -0,0 +1,445 @@
+> >> +.. SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> >> +
+> >> +=========
+> >> +Task List
+> >> +=========
+> >> +
+> >
+> > ...
+> >
+> >> +
+> >> +Generic register abstraction
+> >> +----------------------------
+> >> +
+> >> +Work out how register constants and structures can be automatically generated
+> >> +through generalized macros.
+> >> +
+> >> +Example:
+> >> +
+> >> +.. code-block:: rust
+> >> +
+> >> +	register!(BOOT0, 0x0, u32, pci::Bar<SIZE>, Fields [
+> >> +	   MINOR_REVISION(3:0, RO),
+> >> +	   MAJOR_REVISION(7:4, RO),
+> >> +	   REVISION(7:0, RO), // Virtual register combining major and minor rev.
+> >> +	])
+> >> +
+> >
+> > I think it is better not to tie this to pci::Bar and its operations. It
+> > would be better to have a intermediate container as the macro param. The
+> > container holds the register region vaddr pointer, size, read/write traits.
+> > The macro expands it from there, thus, we can also use this on firmware
+> > memory structures, e.g. GSP WPR2 info.
+> 
+> Another reason for not tying this to a particular bus is that Tegra
+> doesn't use PCI to reach the registers of its integrated GPU. Maybe we
+> can remove that parameter from the register!() macro and have read()
+> take a generic argument for its `bar` parameter instead, so that method
+> gets automatically specialized for every type of bus we need to use?
 
-Doc list item without indentation.
+This is just an example, I do not mean to tie this to the PCI bus. But rather
+make it generic, such that it can be tied to any I/O resource.
 
-Best regards,
-Guangbo Cui
-
+Being able to tie the generated code (but not the macro itself) to a specific
+resource though would be nice to have.
