@@ -1,57 +1,57 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131143A1B6;
-	Sun,  9 Feb 2025 17:01:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2AFDEAC6;
+	Sun,  9 Feb 2025 17:05:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739120504; cv=none; b=RyxPi5CyuGuMKQXkmarqXw7SsqnVOlRv6c8IIxe8N/vV3E/cbUC/wnd8WuRI56MFbFgzZnXMazv0Y6GLp+0+VRZMzlccKQfJ8Me2TFp1kkQs/sxdGh5eHYvtVJnnPSZge4SMsvO4Mhl4PnNUsEVev+tzAICTTl4Id7wjjraBOvk=
+	t=1739120747; cv=none; b=bWuCbUVChKHwwl/TTRAr7ao5KYcrw/MCxAXZMEr3XqmZmnO9+PngnSW4mtfbYA9RTBevVOezDUH7jY+sKYe+epdwUGCxYNBfoTa+bxVRX2woRrhP6KY1GhzdYhchECqH/bbRM6wRrsw38bEUucHosakrTcsl9075bkk38vUOYyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739120504; c=relaxed/simple;
-	bh=lJ/YSHulpluAPORO1ftQRzAsV/sAmN7D/2mUlPNhs4Q=;
+	s=arc-20240116; t=1739120747; c=relaxed/simple;
+	bh=awVFnFkJkkXtutnKWu1wNv8EEwuo84GsDaHo2GV3SoM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VGkUyuILzSx0m2iAME78ZVd90gw5cdXrYlZFedAZHfW4Iu90FftPcezJ5mWjWdBZ0QityXRMN8FbM172a6Gr0wofFf0V1874aHXjnOX3u1BfL6T7ADnV02ygU66jJfcJYxmZ2F+xUUeXgWYX8jyBuwTj27jl5FK7GPIk7ywtHZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XCJn6Loe; arc=none smtp.client-ip=209.85.216.41
+	 To:Cc:Content-Type; b=cdwGdlWq7rmA1yzCeEskAUKMGRDDv048C/6n87BgpPD5exgEGS2OQ8WexgYGNtg3wtGYey15gM4U3tDYXlgLS2bSZoKxZcR+AO4jZSrlqidwcf4xycQGAcUq+5HJHYzfQuGke0PJFrcfoC2/UbzBP5aHny6ogE0mP/GaULneX5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=moITURGx; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XCJn6Loe"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2f9dcc3f944so895342a91.2;
-        Sun, 09 Feb 2025 09:01:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="moITURGx"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-21f6fb68502so1179905ad.3;
+        Sun, 09 Feb 2025 09:05:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739120502; x=1739725302; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1739120744; x=1739725544; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lJ/YSHulpluAPORO1ftQRzAsV/sAmN7D/2mUlPNhs4Q=;
-        b=XCJn6LoeuzXpdhDJ/rOzy7bqrwO/PST0LaZMqva38q/c+gNnleFx4INRitJi6+iVzZ
-         L3Ldcnzjfnl8y8IBkFUzG8eabBmSP77do8unZc9B6cPQNc6dj/iYeoR6FSlK/2tXwNUr
-         u8soekBehrj6YqXB3B6bppE1u+xEpb9pZPqjIFZEaIIfwBSSo9JNOOD/0OOcXtt4aq1/
-         vulCo0gmtrHMKem52y+o0NIx+D1YRCMx8oKl0MGWlrGYys/xficTG8fuj8B5+M/9etmN
-         bFCoV7oc0LU9u28JksZ6SH82P5w8LNUAX+BbA7aCzCEvwcxdvABCDtOTJOystsUhcEDd
-         fnzQ==
+        bh=awVFnFkJkkXtutnKWu1wNv8EEwuo84GsDaHo2GV3SoM=;
+        b=moITURGxdlHcLdagz/02FqNSQr01fEQlDG7MISPp3w/eP1UCCDHojfGGRxQNDYrIaE
+         5+5/+OZAb9kWYQ7J4uE5N2Z/s9YL31nf8c2wds4jPlTm2TOQZfM2OrUuLvkndjzpIJ8c
+         GDxALd8Z2vV5YdBq7HEW0N+DAdx2BO0GapH2TcXLdT6+I2MhiQWSWHGO2FvAhhFrD6nC
+         6rFAmJElVgS3Wh+VZy4kcjKbwzVP1miVX9GURO/zs2o1kDnIMdf2kmkZdZWea5X3yzTJ
+         bqO2AxME1Yen6l80dECOCUG6QUHXvKYxhoJ96wLLhVPXB5pszkKcT8Zp5zS3E65mUwL5
+         mJOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739120502; x=1739725302;
+        d=1e100.net; s=20230601; t=1739120744; x=1739725544;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lJ/YSHulpluAPORO1ftQRzAsV/sAmN7D/2mUlPNhs4Q=;
-        b=r8S/2jP8fp23qbfHO3YaH8K8einUb02ybPveXWMTeeDSik27N88o6Y0q/jV4KQOD4C
-         0FqYS8ha1VXirOZo21zKzaJC+jRlmHsPFx8HhU4V+C4W4RvBu2UeiwdNPzxA/MYBj1q6
-         obslzyBc6IXulXyGPafbRLJxYMWIaaRy+3XDiHArOI9tmnUcn1LgvsITK2ONgSL6B0Rv
-         z8A7LaUFJmVte+fDnlVR0LmX9FBx50ORweq3vbFWVmBREiubgZJdEg57iTBeQI6vDmhu
-         gG6VeqDhNpS54xyQH2CYmWZU9SloNh1vRyNCGBwIWZuGohiELDbH1sTnsjVr4J8JlUrE
-         ae/A==
-X-Forwarded-Encrypted: i=1; AJvYcCUw7qzTRk1rTQ3trJQPii5Iwll0VpaDtZmW5+XX8ZlUTzb6XcXPl1Pdksb8GvRgSkRxUwQYCG+WJQ82IadHY6o=@vger.kernel.org, AJvYcCXpGQLKEM+th0HISnZXcsZB8N+a57vP+B3jhp7SzRj8TE4lpGisG2xMoHUMWq9k5dRHq8OZtvwD8txyPdg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwiwrelhvXLPRuKKRHoqeNiA1mmpOc6rnIVy0F6lnInstvHilIN
-	SP7qPsy+ZShOxMlR80au17R2BALzeYLC0ixGUiWDQ4lHWpcJcQkJx06KHgVMcQ6mCVGKbnqCpoV
-	q8xmDDSzN2KPXJMOtDflTazWM1gw=
-X-Gm-Gg: ASbGncvglXpvsNh3b9Upla9YlNFLDfLGEs3kxBbGkXLL5G1bRGhdZXPbJybxLZXoENG
-	4Up8Mo+uN9sr0c1wwwwIiJVp3AQDRlljc6diNbUQlVGZn8krGQ2nugXc+eHtKxLKWt7gCMxif
-X-Google-Smtp-Source: AGHT+IFKIwO5VBTWsnt/qkewHZWPxI3pViUPDyICGUFxxHAAq4HI4ZeG+WoxodwO4IWIQLoqL9fU1qq1ve8HpYxo2Vo=
-X-Received: by 2002:a17:90b:1b44:b0:2ee:b665:12ce with SMTP id
- 98e67ed59e1d1-2fa23f5ea82mr6534568a91.1.1739120502271; Sun, 09 Feb 2025
- 09:01:42 -0800 (PST)
+        bh=awVFnFkJkkXtutnKWu1wNv8EEwuo84GsDaHo2GV3SoM=;
+        b=Ny2z0cEAfkkEYX8dlmvI882AIHjRfJmm3vAzCmTKbeFgMSyRaOVM76TpK29qGBfb4R
+         c6idv9APBZ1XmFaOK1LUtwLfeHFVIjKYYpz/k6tk6WcAjbezFysvAr+gUIrKuT/B/WJp
+         +PswSjmIzT1I+wVw9/pUFRDZ0gMCkx/0kXpeLmc3R+uBQZoP4cambq5TC769eveS+O/n
+         tZ1htVqjuiZuOwlhKH0xOc0DGTJlbyUDVCEkTvhhfRZSbRM430TKSAwLKNWvo6YXPjut
+         vIGPH4BgY7//FIIRfastgjWBY3wjea9vGOpet+sCvp+YTYkyp0xweTv09J8vnK+LQP8f
+         aAAg==
+X-Forwarded-Encrypted: i=1; AJvYcCUJpGiZzvubLTTodJ2hAkCybCM/jOptTaC9VW6NQdSGu5A8vbN5gh2gW1lqAhrvW2van2/UBOVPeG1WrTUhIsk=@vger.kernel.org, AJvYcCUga2xRZBI2xVgdORlF63jYaf4l6XR/dj+FP6sbZksXEWo6/m4GvxrJlid7M0wt405OL2/LjIIDBXtU+LU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2qtVS40OTeIu/UBkT5VjWIdCTUECXHmhkyUQaa0mSKSCEhf5/
+	MbSpL1FMpeJF+HejDeFqfh9hS3E/HDs1pYSigGdcBNxd47cmkPeVTkK2z4wKFZpX5Jb0SwqJhGF
+	uTHeVB/rvAxJlR4oj15Ug2uQ7yFM=
+X-Gm-Gg: ASbGncv3PzBVHdSbHJoDNWLmGo9ksiLdcz5+CrngjID58e75Qig0LC/VB/4iDwyNAAS
+	5hanWWmj3fFU/2+DmNNHdXl8f/8syzUpqiI6dggRT/ka4WW4iZIcrN5wrv/00ngFhfNPRKbi4
+X-Google-Smtp-Source: AGHT+IFxi//jPdVxLWG2fniL8D7xJL/7fk8p0T1OfmMgQHML8fKKHdV+hmwCkxzpuMVurFgXnHiPvDcC7MhG3Cnu0Vs=
+X-Received: by 2002:a17:902:ea0d:b0:216:4339:70f with SMTP id
+ d9443c01a7336-21f4e7101bdmr58173815ad.8.1739120744234; Sun, 09 Feb 2025
+ 09:05:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -59,12 +59,14 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250209-rust-analyzer-macros-core-dep-v1-1-5ebeb3eb60a9@gmail.com>
- <CANiq72mw83RmLYeFFoJW6mUUygoyiA_f1ievSC2pmBESsQew+w@mail.gmail.com> <CAJ-ks9nMjPnyY_J1xH93MEepcekYWQ=Ve+Kq_TaM=MvA4B0Phw@mail.gmail.com>
-In-Reply-To: <CAJ-ks9nMjPnyY_J1xH93MEepcekYWQ=Ve+Kq_TaM=MvA4B0Phw@mail.gmail.com>
+ <CANiq72mw83RmLYeFFoJW6mUUygoyiA_f1ievSC2pmBESsQew+w@mail.gmail.com>
+ <CAJ-ks9nMjPnyY_J1xH93MEepcekYWQ=Ve+Kq_TaM=MvA4B0Phw@mail.gmail.com>
+ <CANiq72n2WTAp28PeNVw1hOsxw5Bo1HMxtpTb7N-f7z_aGMppBg@mail.gmail.com> <CAJ-ks9k1+n7GS8mMYg1BzrBwsEJK3P9xPnj6xGO7Prx0qWSs2w@mail.gmail.com>
+In-Reply-To: <CAJ-ks9k1+n7GS8mMYg1BzrBwsEJK3P9xPnj6xGO7Prx0qWSs2w@mail.gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 9 Feb 2025 18:01:29 +0100
-X-Gm-Features: AWEUYZlcJ_oTcDwwxWPbzaXMeu0I1PJe3ql1PLglfvsPrWxCHeOfn9WSghksYj4
-Message-ID: <CANiq72mgYL02C3TUn1q0MK2Yw2OCZC7yW7QNEgB+x9E+BKQHdQ@mail.gmail.com>
+Date: Sun, 9 Feb 2025 18:05:32 +0100
+X-Gm-Features: AWEUYZmzL9ngYLqE-YjHB9OU5UJHvPuHvhJCdD7M4xGuwLf8ExRJNuGZGxUUC5U
+Message-ID: <CANiq72=sCeT0xwmszLZ-sOyH5YdOvvbzSgMsz5SgzF_wRJTbxA@mail.gmail.com>
 Subject: Re: [PATCH] scripts: generate_rust_analyzer.py: add missing macros ->
  core dep
 To: Tamir Duberstein <tamird@gmail.com>
@@ -81,27 +83,31 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Feb 9, 2025 at 5:39=E2=80=AFPM Tamir Duberstein <tamird@gmail.com> =
+On Sun, Feb 9, 2025 at 5:49=E2=80=AFPM Tamir Duberstein <tamird@gmail.com> =
 wrote:
 >
-> You're right to point out the difference between `kernel::core`
-> (module) and `core` (crate). This confusion is solved below (because
-> it doesn't actually depend on the `core` crate).
+> Ah, I see! I'm happy to do that in this patch if you think it's worth it.
 
-By the way, I didn't read this sentence carefully before: I was not
-talking about "`kernel::core` (module)" -- not sure what you mean by
-that.
+I don't know if it is worth it (it requires testing it, I guess) -- we
+can go simple until we see we need it, especially for a fix.
 
-I am talking about the `core` crate in both cases. One is the one we
-build for the kernel, and the other is the host one which is used by
-proc macros.
+> The python function `append_crate` takes both `deps` and
+> `is_proc_macro`, so implying dependencies based on the value of
+> `is_proc_macro` could create duplication.
 
-The difference may not matter, but one is built differently than the
-other, including the `cfg` set differences (and at least the `cfg` set
-is used by rust-analyzer).
+Yes, but the dependencies for proc macros are a completely different
+set -- that is what I was discussing above. And those dependencies
+will be shared across all proc macros, when/if we have several
+eventually (e.g. per subsystem).
 
-Moreover, I think it does depend on the `core` crate, at least
-indirectly, since `std` depends on `core`.
+That is why, since we already have `is_proc_macro`, I think we should
+just use that. It may make sense to split `append_crate` into two
+functions or similar, e.g. having a `append_proc_macro_crate` (that
+perhaps does not require any dependencies) -- it would be the same
+idea but cleaner.
+
+Anyway, the simpler the change, the better, especially for a fix. But
+please take it into consideration.
 
 Cheers,
 Miguel
