@@ -1,57 +1,57 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5F81BBBC0;
-	Sun,  9 Feb 2025 11:10:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F64814A85;
+	Sun,  9 Feb 2025 11:11:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739099458; cv=none; b=Ac7hJnMXKIobVYcFoiedg7NqKdL4h4W4253mTppOIKqsIO7db/cbbeEekTHHmm1pwVnXjWBKSQzPZK+skwUnJE/Hmk/0is2XWwasBSLij8rcB6xclb6SaatZHysyV6FA0w20EC8pkHaV5DiPFHnn2hcAQy7+/9xwfdLc8rCcXLg=
+	t=1739099508; cv=none; b=iiELFdzU8kmzT1LC8nsnGGsrU9NM34LcTk/tocQHFjeOxD0L0N21RVuSopafDy0q2wqPxl9cQSuQ8yC25JmW31ruooKpBXUCgKgWzux98UKrc51MNglRLKUhM/mNSnYD4C3wltbFxAvLkZDvCprq9ACJ/pw4QFoIu/NMBfKbjwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739099458; c=relaxed/simple;
-	bh=sAUWDNd4UVR0TtxUxTWX41EzwA9qLihbaqkGNklYOg0=;
+	s=arc-20240116; t=1739099508; c=relaxed/simple;
+	bh=RNac7Fh81ms8UskPwYdwaMOFfpm1KA+23XQae9XCnY8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sq89KFUIQvpi0dMfgrC8bPwrAxgj9mpLwYs4mHMp6IgWW+TNt+cNGLXZ5yqfrFcjExng4PypZy39yr+EwsTOTfZr+AoWvajBsvZ3OcgXgQlOTHKV+sE0k0bb3LIGRmc6iicQymsJoDDI03H3GLDOKrMqOwvPxwtaiZ0lfUWaiig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A9uAS2Ec; arc=none smtp.client-ip=209.85.216.47
+	 To:Cc:Content-Type; b=rHVzFvTPY/od3TyUZckdFpVyi30lrjgmBh+200n3PSUDNEqy9KTQLR0/SIDTas9PdclJgIDOfbciAMBncNXydWMQRNx95fHH7d6awtvgCudvoANvVIZ0bPdZBqHcjmZLdkt8wklSY8+yNwmqQcrR4u6ewaTTWUrH8uH87iDcz3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bpQ0tz6o; arc=none smtp.client-ip=209.85.216.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A9uAS2Ec"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2f9dcc3f944so838046a91.2;
-        Sun, 09 Feb 2025 03:10:56 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bpQ0tz6o"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2fa1c3ac70cso701922a91.0;
+        Sun, 09 Feb 2025 03:11:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739099456; x=1739704256; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1739099506; x=1739704306; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sAUWDNd4UVR0TtxUxTWX41EzwA9qLihbaqkGNklYOg0=;
-        b=A9uAS2EcJj2hQIVteJfis+HoJQDkng+w6jT1TUDPeILb0/wxjkN9GTiX9MwizyFVhC
-         3+rXD7exL4flhVmtdfrIpP2hL5pyVKduUvddhIGlbpe8+PlQp+26H9yQqG0NiVqRzMpB
-         WmFnd4bS4217wospcrbT9g/MAFYeWTOlR8MTMrXo9MAoVg3EIvWBwuD8iXFQTP1ogujr
-         Xp0DmxBP3lJzsatEby9dITTewlkdVpPQH+mBJm6OWuxOzIXaKKbGOzAeqroU13YcCidc
-         Nuc3wpuUV5BGrzSnzDPMoBvR/sfFG2y9jX8Hv1/k4bJ/Wu+s+HYztWVLG2vR06qB/lWU
-         gbgg==
+        bh=RNac7Fh81ms8UskPwYdwaMOFfpm1KA+23XQae9XCnY8=;
+        b=bpQ0tz6oiwCGGoKMZC/iwQnHirkdyX4zVuK5JViO5cSUlwRkmNy6I28GyY2otoWvrz
+         YvMNyzqmxvJ5KDXcCT/H/l4yWqWx9LwRU1AmTnDJixFXCrsLK3EdXlHPTEACgdtrlqnv
+         7BC+Uxr6fz7g7/lOek+uWEfYkXcV5ai7QC3sqavs9OI6PTs9FvhGolOYcwD52wYYdHga
+         4BsDdfYzUM+BNYUuhlRwxfd8hPUFmNecdEewovT4KJJZmALXRAXMhha92IyyO0FKTT27
+         gCSRwPJq7ZjTy0ltdFu9rCpT8FgUrJTp2aiNz8+NedMpM0htq9gUCiQ6yTnvbhkZEB7A
+         K5Mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739099456; x=1739704256;
+        d=1e100.net; s=20230601; t=1739099506; x=1739704306;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=sAUWDNd4UVR0TtxUxTWX41EzwA9qLihbaqkGNklYOg0=;
-        b=VEs71CanIg0Wg3HACh7x/kYXJmDqEKxeYvWdgA3XEmOi2S48fGTDex057ZMakW7zan
-         mA7yg8RlQ/KbNfm3rhoV7x4SGRFCd3vjbqR50fyFpONGY7+KVXucMbqcO4rYPF58YcAz
-         V0AcOtNYk5LLIGbiqHDN0fj/1L7P20RqxmD/uH8Lfobxp0BPv9pOic9+T6AJDW26rEnM
-         ouLj9FyyRCuOOV9FPlsJOsyb8ZgkWICAammZbntXDJVhQif9mO9mLx5q+RwMa2UTJOjq
-         VoYV/QL575u9vUtIUuwceV56HItRI4RabK7nPK25hNGWdqFmkfbRNT4OvEzuveiBEnUn
-         yqzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUMdKYVJT6OkSRnLRz1guOs6FOVtKcJUTQJJOjaxzipyp4YNvsPkHEuk+6QsteJIgxvRddHVlGr2iOetjFTQl4=@vger.kernel.org, AJvYcCXkWggLXRHi2ZMgR4/oAYW0pHprIIsMx4yz3miegu/ceTHm3fv2ouvP9gUh/9N8ZDScrnZh0wsl6MWSP3E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSzKlmG+Thsa8xonUQd7e3BBdvrQnCo3sAYjMUUosg3rO98ipU
-	ei+8SPexvbxp3EGnbvng81bVWLyWwyCf7rHMXvKz1qX1h5fMZEe/3hC5olDiIyd+6q98d3D9Ylt
-	5l+Bu3MimOCQnyNbMnLbcihUgXgY=
-X-Gm-Gg: ASbGncuex3hZLkz5AFnoQWhN2icEMa9JNzPDQSdmccp5e7YlPXoj3nv42+gXbIfDW4l
-	MolmaRp3+Qe/srudBwvhK9TZrz/hKegQ16j0GzyhunlFkj7Rr7Ig/QOWWcOaozXPLfa7/mdp6
-X-Google-Smtp-Source: AGHT+IHBbyCHbpkYdlHKP7Zgz134DG8QfDlMRDxS+CKLmHCcyVzaGizjy4LK80ZbJWlLanTmRafM56xb6Yjx98+5GBM=
-X-Received: by 2002:a17:903:32c2:b0:216:1d5a:f348 with SMTP id
- d9443c01a7336-21f4e758a83mr56641995ad.11.1739099456319; Sun, 09 Feb 2025
- 03:10:56 -0800 (PST)
+        bh=RNac7Fh81ms8UskPwYdwaMOFfpm1KA+23XQae9XCnY8=;
+        b=SG+DTOQHP/GZgEwE7CCKwZUl7EdJk2E4IKa/spBQZzY0++RcY16NECwQhoYX+TWuEX
+         i+VpvlzvQryVXEmj5I4DBbt53l0iSjrOKSp40tFPfsMsqrtlFFmBy/Ezx/5hPXzq484p
+         3bkAAQ538DfqbvBvv6Kzs4U78YIckDqc6NlxNI5ye74RssB38tkeh401t3Sv63Y4uV09
+         rCrZFiX8S0eecQuT4iyKDR4lEKq2/iH3lx/fuj+Y2GXLR4OMCql1MVKqJ4QKjaF36rLX
+         +7OG9NXD8O2WvXhPm7y5wqlbzaSmxI3hKvwCgTjcKehGefjNx+gHf7f8Lf3iFFPHIg/s
+         DnEA==
+X-Forwarded-Encrypted: i=1; AJvYcCXHnUmZiWpdsmALzy0T3PVVsrf7z63568CqFaraF9oJ2t3aPMXxmuogRbYc+PsvE6EGd+PkSFzoGEY3Pyg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUIIYXpuTTqnijzsRx56MdT1W6a7DaA6RpWn0dCV+4lq4C10n8
+	FSA1HvbIXjXSDqom76pAMoChP3fm0LtL2WdjvKla8hSrFK0c3vcmB/QpK9up37ZScBTKE/M3PJF
+	qLJnetN4yho4zsQrBxE+9+saMHcM=
+X-Gm-Gg: ASbGnctzAZA/zkxAOsrcxmVhfM+dSV79a2zFCk8i7cGnz4akZZea/cH+juwfAJMJkO3
+	3FoXVLi9KX7eB3QXyCxLzX+VeoyQrAb3PQ6jIBFDME+bsUn344gyakNRmuDiudjy583uQvRsL
+X-Google-Smtp-Source: AGHT+IGTPyX5yA5I9gMREGJAdE/IccSiHCLwmOmK393k7g2asDNIajBU65w4cUuPE26J1WC8yAMm10SzH1Cfw0u/95Q=
+X-Received: by 2002:a17:903:32c7:b0:21f:444:b2c9 with SMTP id
+ d9443c01a7336-21f4e10e17dmr56606545ad.0.1739099506351; Sun, 09 Feb 2025
+ 03:11:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -59,16 +59,16 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250207004049.178049-1-lyude@redhat.com> <CANiq72=bspqRga-hTTb3Vh9kD0ctyTehM9dvJdR=8biTE+iCQw@mail.gmail.com>
- <2025020715-subsonic-silenced-36c5@gregkh> <2ac39b766dbf5f9606107d3ead216ba384cfdd2b.camel@redhat.com>
-In-Reply-To: <2ac39b766dbf5f9606107d3ead216ba384cfdd2b.camel@redhat.com>
+ <772a3e7cc31acc532cc29207ad7eb46dd7ce2bcb.camel@redhat.com>
+In-Reply-To: <772a3e7cc31acc532cc29207ad7eb46dd7ce2bcb.camel@redhat.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 9 Feb 2025 12:10:44 +0100
-X-Gm-Features: AWEUYZnDKLh3EIex9NQOXmi6qm1UFhlq0vORv6A8ksfhqUePHfYjkBmurxUF0co
-Message-ID: <CANiq72ndFNw2uDLjOsd1nFjQMFXMHCxAZgUztaq_AR4HA5E-PQ@mail.gmail.com>
+Date: Sun, 9 Feb 2025 12:11:34 +0100
+X-Gm-Features: AWEUYZkI6wncZpK9H0wyOHra6tI3FA7OTO78XMNJB0y6iT4-BL4TRTEzlZZg4RU
+Message-ID: <CANiq72mdrDE5f+X8hPJ2SjLCxYNM3thrQ3b0wijMg7TLaEpT3g@mail.gmail.com>
 Subject: Re: [PATCH v2] rust/kernel: Add faux device bindings
 To: Lyude Paul <lyude@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, rust-for-linux@vger.kernel.org, 
-	=?UTF-8?B?TWHDrXJhIENhbmFs?= <mairacanal@riseup.net>, 
+Cc: rust-for-linux@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?TWHDrXJhIENhbmFs?= <mairacanal@riseup.net>, 
 	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -80,46 +80,27 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, rust-for-linux@vger.kernel.
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 7, 2025 at 11:10=E2=80=AFPM Lyude Paul <lyude@redhat.com> wrote=
+On Fri, Feb 7, 2025 at 11:29=E2=80=AFPM Lyude Paul <lyude@redhat.com> wrote=
 :
 >
-> This is a very good question :), especially because it turns out I actual=
-ly
-> think this function is not thread-safe! Though I don't think that's actua=
-lly
-> much of a problem for Send/Sync here:
->
-> So - my original assumption was that since faux_device_destroy() just wra=
-ps
-> around device_del() and put_device() we'd get thread safety. put_device()=
- is
-> thread-safe, but on closer inspection I don't see that device_del() is. I=
-t
-> _can_ be called from any thread, but only so long as there is a guarantee=
- it's
-> called exactly once. I think that's fine both for C and rust, but it
-> definitely warrants a more descriptive SAFETY comment from me.
->
-> So for the C side of things I might actually add documentation to device_=
-del()
-> for this that would look something like this:
+> I'm curious, does using markdown actually make a difference here? To be
+> totally honest most of the time I've put markdown in safety comments it's=
+ been
+> out of habit rather than expecting it to do something!
 
-Thanks for taking a look -- I am glad I asked (asking is easy... :)
+No, currently it doesn't. However, we do it to make the style
+("rules") easier to remember and to keep it consistent with the rest
+of the comments -- so exactly what you say is the goal, i.e. that we
+do it "out of habit" since it is the same everywhere.
 
-> And then I suppose we could refer back to device_del() in faux_device_des=
-troy()'s
-> documentation if we want.
+I could imagine, eventually, some editor or doc renderer taking
+advantage of it (some people use ligatures or non-fixed-width fonts
+too, so it wouldn't surprise me if some people could like that).
 
-Yeah, the idea was that, since Greg welcomes tweaks on the C side,
-then whatever guarantees we use from the C side, if they can be
-documented, even better, and it makes it easy to just refer to that
-fact.
-
-It should hopefully also make it slightly less likely to drop the
-guarantee by mistake on the C side.
-
-On the Rust side, we can even be explicit and say e.g. "..., as
-guaranteed/documented by the C API".
+So, yeah, it is not a huge deal, and I don't expect that we will be
+able to keep it consistent everywhere as Rust grows in the kernel, but
+I hope at least most of it is kept consistent. Clippy (or I guess
+AIs...) could help to spot this kind of thing in the future.
 
 Cheers,
 Miguel
