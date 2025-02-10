@@ -1,96 +1,94 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78751B21BD
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Feb 2025 08:06:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3985F1B21BD
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Feb 2025 08:06:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739174766; cv=none; b=k2ECzPe2YVvqE5Xmk2MhGIvsDRP0z6ol0ALLnR5FPa5g6mRsrft3strXCCe/hhARt8BFCRdLFIONm24bgk/SM89byfphczYtnX5V9tkWNSRQ4KNkyt7JXJzIjFmT7hwR05Tt02ZWh+FeLHZqAQP9xQO+rnm8SJN+JnjOFKOvUOs=
+	t=1739174803; cv=none; b=po5OInJPnhLnKkJVTWfNSngzTXm1ODaHMh/9AoLEx7jrg/QDFfvVijZFWtWXkLH2WvXMyiHW0xmiNHP3bSUr6C3qI08WAsJzlGLUAGuwqpVa540oO+U6Z5obY8lD47aH1H93J1ptlK7GkgABUiA8YmiaiNp1B0vUW0F7QNV4Mqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739174766; c=relaxed/simple;
-	bh=5WB/xN4I0+Le1mu5gDHsjLNT2znP0CA6bOhx+6FlUhY=;
+	s=arc-20240116; t=1739174803; c=relaxed/simple;
+	bh=A3OrU86yFSA3UhFhMSz4sxiRiOlmLl05dbOqahKg9xw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k3Sy7J580++x36dyZWBCDY25ndbUlPbvYji3fTyrFjRc3+kcqMZm6dQafpr8GB2H+fy6JK+Xyi2t10ZV226YLRS/w1jHeuRJniZV68M6IaUrrPEYiD0chii1boFAm6R5bZ38ctenmSDSDPFv7kOceOCMYLai84JTwUw0jZOA4ME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=R2/20IKR; arc=none smtp.client-ip=209.85.214.174
+	 Content-Type:Content-Disposition:In-Reply-To; b=FvRjGKMzV6+BqyGjeviGIUHF5hxYHTx65UKSW0g/cYhnBlfDb4kziIPdDMpCihz11yL5oxA4TWlfcQ1vMbLKHvT/qlPCVdgKAgbTRMBkhTbiq5nqk0ak91ewWt2WgTUTX5Dg77NvL3cly+h9jY4i3c1mU3TkUwPkr5yZmNx9P8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=m27lSY7O; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="R2/20IKR"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-21f62cc4088so33841525ad.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 10 Feb 2025 00:06:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="m27lSY7O"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-21f710c17baso22601815ad.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 10 Feb 2025 00:06:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1739174764; x=1739779564; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1739174800; x=1739779600; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gQjHhBqGj5IZ+lWQctqtiLtMtAyUEzvqFMG/1MA1FoQ=;
-        b=R2/20IKR8LpM6+FYQCBJN/vco5x2msQAZRbUEXjagUkLShkEex6acjhasgHRoRN+QS
-         LgWLwUrCMuWqt+JbOXc1LPSDAIyMihJRtMb5PBiPoxJXnmYw/uack01en3SfFn0ZivmH
-         1Ih0tXIBOBy8ERi/SaArqEu23XdSiQmAtmF7/aDnkyF/1w5fjRLyD8zYQak3lFLqPJCY
-         pWqOZoeZAvKIOqidY98gLzAiIS6JQJK8A0OnDCpa95iOFeLlUtltQvY51F/OgOErnxrp
-         82tjniAeFPR7pxc1GRxJq1FF0uTwFocMEjwpjvQpyaYzPhgBWCLwHzG7aSOvDSMpTOeD
-         GdQg==
+        bh=IVXeQyKN4QJ5pjBqKy+7ctyC/+A7eWtC3q0uB/7UlNk=;
+        b=m27lSY7Oo1Mk0TmNYy7yC37wyNWccthhFHF1r5bBI3BKVictqc0OamNVc3I8Hj6zJP
+         Jk4J8V2jDafWpDymraz8Jeo33YNbHgKbxkNVAFruJaeIiRTPhnqGAsQVnvnPlw6H/7pO
+         G/ZbScaLirb0/zJmNFMOqLA4AID9CigV1cFd/Q8lJLUsvJ/0T0SWo3ulSmNCUKaPuMe+
+         Lan6a7EVuH45zIW99KaTD7tS8drPvUu5FpckkC6gzcw7GRV9kplLS8mmzxbS01vdfcxa
+         t3XEEtNAbcG7fP8VSPBy2hDcrzr9yuNxvm60lm7BqN76T5II/y3SfCH2MlDolmFiCxE8
+         G7wQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739174764; x=1739779564;
+        d=1e100.net; s=20230601; t=1739174800; x=1739779600;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gQjHhBqGj5IZ+lWQctqtiLtMtAyUEzvqFMG/1MA1FoQ=;
-        b=SNd/8nN968JVdr83iD+U3UGqwD04ceRMYQIkUuatZhT2iM91WhbUYl+3ecSzy6Dwft
-         VOWRJ10gCHG1O1MS8bLHlYveNZcZwH7D+CG0mmCvskeSoVKeJkLx5AcA1d2LTZBWTxHX
-         owYcDHJhjSRmnE/Xo9r/TIvr6OrDJIkD1me5+Xg8v5e9Eqw27wpKZOld7z/s5HndWQc/
-         FVFL/e4Zm3umSDBXH8kFQXo4L32tkTORHHuzPSm18bP5RV50aANZeNxFms3/a/Ri3hco
-         kWyEsMjPQsFQoyuikD5aTDiTQh3sBRAvvzXwlQ+vuGSVXvlKfdSGfuOvY2uw5yrz3Cnu
-         2tOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVQmbu6xeOJkVFJCCUcaXUaHsmL8KsZbbHSueopLm+s179MOobt7iwjHCuURyEgJTMuvFmJYXcwIGQJv1PHRw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxtHjeDC8Sadi+mlNYiVywiVdauaeLiAslA6EWXcg0FCjtj8C44
-	5Ndo+4IhYCcSGH4U6FhgNQOKS62zK2Ise2baMz0zTWqvZi6JE3Kahc9GfuGZHtg=
-X-Gm-Gg: ASbGncusAcKWcWb29atExmvcith+COZHtIM85gdox9nOTcPi9Blr1iUg3A4xl/sAW3I
-	+KfUa3ytM94nALiJG7VXzMyYjriAHPuQx9bB6EjN7xoC/A7NXPZHDpLgt+aNeP/mFSxgilp6rYV
-	OYTxfCxNWRt67QItJtcK3QAwrR8SC0Q94UQH9T9CzGCq67RkLg1Az07kBT5NhoRDUprbxJBaYdt
-	A39svayDRq2WfOghZ4y4ZF0b9HkGYCend4DlfcBlXB5MQ2LGPAxc7oeYU5/g7sqz749OqNrWBIl
-	vq25yDXURwKcb1xM7A==
-X-Google-Smtp-Source: AGHT+IFq5wp0CMK0YMZ+JeRZQs6mquvHCQKLzwwMogSPHJ1odDnDs2wNVqpJPZZfSlztYEGJOAUAeg==
-X-Received: by 2002:a17:902:e848:b0:215:83e1:99ff with SMTP id d9443c01a7336-21f4e6d255fmr173960985ad.27.1739174764103;
-        Mon, 10 Feb 2025 00:06:04 -0800 (PST)
+        bh=IVXeQyKN4QJ5pjBqKy+7ctyC/+A7eWtC3q0uB/7UlNk=;
+        b=m9HQoEoR4UvvaSIUvFjtpWtV9LlsmRr8lcsgzJKvJOyTdFJJPRp4tWKuu1g77VdLVG
+         HfCRnqHAXWqzS/twHk/FNFS0jlGSFFTJCfDIjS939W1jpyC8vmOe+wPcbVYMnmY5wMpR
+         8Pi+IPcZU/mCD+ciOc6/pFYbLxxu/U3kBvmXrYRSwPFJ4O32AlUW3h9HKfnEcYOtG37E
+         Ge3TEra61dnl1s66NYGnxQsvxW22JX8zjlPBslEnpirlFQr1o4Lslit7Ot3hz40hJzE2
+         jMHSWEbgtMFk72J4ED5/6EdZ9SxxlJ2TyljWAkwVGWmiyWATuFW3GXHw2LzfQnvpa5BZ
+         cK2w==
+X-Forwarded-Encrypted: i=1; AJvYcCVVlQm7hlib30UWZL6C65jRURBlmdfL/azCMkeSkDZrDGZ4pdCuE4xoJdlz4SMbGSI3AMToWjP9lP+jTn4Osw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTFKvV2aj795llVa+UBCImcAS2Pkk/+0+Px48geoLRgKppQ4A8
+	WxMlTQ7Ft9SwTUsp6qNgFuLg2PQav1awjFaUgfD7DRYgHQdIpgjZavN8ocdA14E=
+X-Gm-Gg: ASbGncvtisSxhw6t8nqTeOu601ve+e6YzKfvjcBwpptrge5pRxUX4IB18VbVRqnGF4h
+	hQMKEGZTZTmubq5G5g9VlIAAKSe4fnImQr4/LHRabvfMV5puUcnjc3SidO/H1U/wVr4MIjtU/Yn
+	M32OrMPQYCtiEL9PM5YxHSxtEEZy0Dv2lSpPzRAs/P6Aou5ObI9AuWStcddeS221pghH67+GNny
+	tKLDFDeqPQc4vI9ZojgtyJprMRJ0zHYrKrY5Fuyf9qkNXoCW5r7IBxizthWSM14CCuQBkYPe+ZC
+	3M8MQtS4TbhGDU5T2g==
+X-Google-Smtp-Source: AGHT+IHM4kYVoFgxrWVd43dBTvU4IzoZ0Z6Z31Y/z3cQy6J4+x70snoVsJeMXCdxFbw0M5vVFErOEQ==
+X-Received: by 2002:a05:6a00:2289:b0:72d:65c1:ad01 with SMTP id d2e1a72fcca58-7305d509d46mr23026216b3a.21.1739174800438;
+        Mon, 10 Feb 2025 00:06:40 -0800 (PST)
 Received: from localhost ([122.172.84.139])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f3683d58fsm72231715ad.122.2025.02.10.00.06.02
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-730764c4b51sm3623175b3a.55.2025.02.10.00.06.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Feb 2025 00:06:03 -0800 (PST)
-Date: Mon, 10 Feb 2025 13:36:01 +0530
+        Mon, 10 Feb 2025 00:06:39 -0800 (PST)
+Date: Mon, 10 Feb 2025 13:36:37 +0530
 From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>,
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Stephen Boyd <sboyd@kernel.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@redhat.com>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Danilo Krummrich <dakr@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Benno Lossin <benno.lossin@proton.me>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
 	Michael Turquette <mturquette@baylibre.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Nishanth Menon <nm@ti.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Trevor Gross <tmgross@umich.edu>, Viresh Kumar <vireshk@kernel.org>,
-	Yury Norov <yury.norov@gmail.com>, linux-pm@vger.kernel.org,
+	linux-pm@vger.kernel.org,
 	Vincent Guittot <vincent.guittot@linaro.org>,
-	rust-for-linux@vger.kernel.org,
+	Nishanth Menon <nm@ti.com>, rust-for-linux@vger.kernel.org,
 	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
 	Erik Schilling <erik.schilling@linaro.org>,
 	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
 	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
-	Anisse Astier <anisse@astier.eu>, linux-clk@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V8 00/14] Rust bindings for cpufreq and OPP core + sample
- driver
-Message-ID: <20250210080601.afrxidoywz4ukqdt@vireshk-i7>
+	linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org
+Subject: Re: [PATCH V8 06/14] rust: Add bare minimal bindings for clk
+ framework
+Message-ID: <20250210080637.ic4fxcn6tmllqgaq@vireshk-i7>
 References: <cover.1738832118.git.viresh.kumar@linaro.org>
- <Z6Sgwbgfp-9SCr8Y@pollux>
- <20250207071538.xjxauatta2jsedz4@vireshk-i7>
- <CANiq72k4N_bD3_QxFKveyjGsSeXJX7y6fKU4EVt0hBOcq9q7tA@mail.gmail.com>
+ <c68081e18d939aefc7f6dac798df6b72e81bba4b.1738832118.git.viresh.kumar@linaro.org>
+ <Z6ShsuLykigNscz8@pollux>
+ <Z6SiiRubSXGInbgj@pollux>
+ <0cd42d2d683ea057e6034978b02c7f84.sboyd@kernel.org>
+ <Z6VBo51g54xAmelQ@cassiopeiae>
+ <20250207092448.n5mzbt6lg6zqud4a@vireshk-i7>
+ <52a3d4fc-b08c-499c-ba47-7a1d782b57db@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -99,104 +97,36 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CANiq72k4N_bD3_QxFKveyjGsSeXJX7y6fKU4EVt0hBOcq9q7tA@mail.gmail.com>
+In-Reply-To: <52a3d4fc-b08c-499c-ba47-7a1d782b57db@kernel.org>
 
-Hi Miguel,
-
-On 07-02-25, 12:07, Miguel Ojeda wrote:
-> The warning is there even if you don't run `rustfmt`, and it does not
-> look like a bug to me -- what Clippy is complaining about is that you
-> don't actually need the `unsafe` block to begin with:
+On 07-02-25, 18:19, Danilo Krummrich wrote:
+> On 2/7/25 10:24 AM, Viresh Kumar wrote:
+> > On 07-02-25, 00:11, Danilo Krummrich wrote:
+> > > On Thu, Feb 06, 2025 at 12:05:59PM -0800, Stephen Boyd wrote:
+> > > > Quoting Danilo Krummrich (2025-02-06 03:52:41)
+> > > > > On Thu, Feb 06, 2025 at 12:49:14PM +0100, Danilo Krummrich wrote:
+> > > > > > On Thu, Feb 06, 2025 at 02:58:27PM +0530, Viresh Kumar wrote:
+> > 
+> > > > > > > +/// A simple implementation of `struct clk` from the C code.
+> > > > > > > +#[repr(transparent)]
+> > > > > > > +pub struct Clk(*mut bindings::clk);
+> > > > > > 
+> > > > > > Guess this should be Opaque<bindings::clk>.
+> > > > > 
+> > > > > Sorry, I meant NonNull<bindings::clk>.
+> > > > 
+> > > > NULL is a valid clk. It's like "don't care" in the common clk framework
+> > > 
+> > > Thanks for clarifying!
+> > 
+> > > Guess this should be Opaque<bindings::clk>.
+> > 
+> > So it should be this now ?
 > 
->     error: unnecessary `unsafe` block
->     --> rust/kernel/cpufreq.rs:631:22
->         |
->     631 |         attr[next] = unsafe {
->         |                      ^^^^^^ unnecessary `unsafe` block
->         |
->         = note: `-D unused-unsafe` implied by `-D warnings`
->         = help: to override `-D warnings` add `#[allow(unused_unsafe)]`
-> 
-> since those operations are safe. Or am I missing something?
+> I actually meant NonNull<bindings::clk>, which I corrected in a subsequent mail,
+> where Stephen pointed out that NULL is a valid value for a struct clk.
 
-One thing you are missing is the right branch to test. I mentioned the
-wrong tree in cover-letter (though I don't remember getting above
-errors earlier too, not sure why you are getting them) :(
-
-git://git.kernel.org/pub/scm/linux/kernel/git/vireshk/pm.git rust/cpufreq-dt
-
-This patchset was generated correctly though.
-
-I don't get anything with CLIPPY with this branch, with rustfmtcheck I
-get:
-
-         // SAFETY: The C code returns a valid pointer here, which is again passed to the C code in
-         // an array.
--        attr[next] = unsafe {
--            addr_of_mut!(bindings::cpufreq_freq_attr_scaling_available_freqs) as *mut _
--        };
-+        attr[next] =
-+            unsafe { addr_of_mut!(bindings::cpufreq_freq_attr_scaling_available_freqs) as *mut _ };
-         next += 1;
-
-
-If I make the above changes I get following with CLIPPY:
-
-$ make CLIPPY=1 ARCH=arm64 O=../barm64t/ -j8 CROSS_COMPILE=aarch64-linux-gnu- CONFIG_DEBUG_SECTION_MISMATCH=y
-
-warning: unsafe block missing a safety comment
-   --> /mnt/ssd/all/work/repos/kernel/linux/rust/kernel/cpufreq.rs:632:13
-    |
-632 |             unsafe { addr_of_mut!(bindings::cpufreq_freq_attr_scaling_available_freqs) as *mut _ };
-    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |
-    = help: consider adding a safety comment on the preceding line
-    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#undocumented_unsafe_blocks
-    = note: requested on the command line with `-W clippy::undocumented-unsafe-blocks`
-
-warning: unsafe block missing a safety comment
-   --> /mnt/ssd/all/work/repos/kernel/linux/rust/kernel/cpufreq.rs:639:17
-    |
-639 |                 unsafe { addr_of_mut!(bindings::cpufreq_freq_attr_scaling_boost_freqs) as *mut _ };
-    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |
-    = help: consider adding a safety comment on the preceding line
-    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#undocumented_unsafe_blocks
-
-warning: 2 warnings emitted
-
-
-This I thought was a bug (I may have seen this with other Rust
-projects too, from what I can remember).
-
-If I drop the unsafe here I get:
-
-error[E0133]: use of mutable static is unsafe and requires unsafe block
-   --> /mnt/ssd/all/work/repos/kernel/linux/rust/kernel/cpufreq.rs:632:26
-    |
-632 |             addr_of_mut!(bindings::cpufreq_freq_attr_scaling_available_freqs) as *mut _;
-    |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ use of mutable static
-    |
-    = note: mutable statics can be mutated by multiple threads: aliasing violations or data races will cause undefined behavior
-
-I don't remember seeing a CLIPPY warning ever about removing the
-unsafe here, as reported in your case.
-
-> In any case, passing `rustfmtcheck` is a requirement. So in the worst
-> case, if you do find such a bug in e.g. Clippy, you may always
-> `expect` or `allow` the lint or disable `rustfmt` in that region of
-> code. But that should be really rare, and in such a case it should be
-> reported upstream.
-
-It would require clippy::undocumented-unsafe-blocks to be disabled, in
-this case.
-
-> I also found other build issues in the branch you mention in your
-> cover letter, so please double-check everything looks good before
-> adding it to linux-next. Please also make it Clippy-clean.
-
-Sorry about that, maybe there were other issues with the earlier
-branch. Can you please try again from the tree I mentioned above ?
+Ahh okay, so no changes required now. Thanks.
 
 -- 
 viresh
