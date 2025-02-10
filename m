@@ -1,95 +1,104 @@
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out203-205-221-164.mail.qq.com (out203-205-221-164.mail.qq.com [203.205.221.164])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C54A2586D0;
-	Mon, 10 Feb 2025 16:52:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05CDA256C8D
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Feb 2025 16:55:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.164
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739206326; cv=none; b=s868+WptyHmcIFiJYDQMo8uyC9WDnWhUcnA4ypyRa5pyXdTY3RD/VHeCh49S7EpgbZjAHzQwvf5mywbHibHoibLxPSSuDTLyGF4QY15+xzrWdyXITByeCRenomM8w8zFnbLgJI+ctVqprUZmh7GPgheensKp4E1SHZEz8Lm9By0=
+	t=1739206525; cv=none; b=slF7bqK8tavIRFSMhUGzHdh16BsoVo7othQfmIcccMPDjD4fwJ2HgiSLrNyHUG5CSczsl++Uv9KAEeGd9feymgizP6chkE4ywFYMZHz9hk1ZDRtQjjNdXQFir8wxlQOw6tpJN71LRvIJxMM7R94Q5Po5BG1llvUWwmHk/PJE3Dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739206326; c=relaxed/simple;
-	bh=7ECKvYjnKAOWsTCz/UAestf8pnTvGhA+2SxD4HYkWaU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=h6x4PTGYLySDkMWVUx864JY+0LsmMTLYY/liMcHUwBH1cCyEg8QtWnpy/8llg3d9YZHayQ0D3R0a6PjQuzgqoQTkckMW7o/KbRYLfomhwHgQ/64xIkj4wpVfbG9KGL3UjaSNc12VMWVscuaoXT6wxjTsb8PUILbfhomuFtAtvmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AhT1iTo6; arc=none smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1739206525; c=relaxed/simple;
+	bh=TP90k1x1cBy8D1aJkhJH0QPsRcBZnpgfJFvvkQzTQOM=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SjkWybVhxcg/Nfdli7asAzL7il62vt6AcnrBOg2lkPfiIQdbxEPHBusZjUI89LuR3MmQStMhOk8o/bDfbBKKr0Jzh1aEKqHQPDayEYyCHxPOmLPJzADF6hKLkOpNDNV1pQb1B5dhlVG2j1fkRifOdQ+lgsFUJZt/Wgf9TWJQ6k8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=JKLA9C2m; arc=none smtp.client-ip=203.205.221.164
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AhT1iTo6"
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-308f71d5efcso4649761fa.3;
-        Mon, 10 Feb 2025 08:52:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739206322; x=1739811122; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7ECKvYjnKAOWsTCz/UAestf8pnTvGhA+2SxD4HYkWaU=;
-        b=AhT1iTo6Cvfj6G3gzLehTm3+zDgs8uJs1KakFGSnnuFSWM8EbZdPF+yuoJE8pDLv+S
-         TMimoNy//BBcV+T5zM2zVRy2jXVghxbmqCRs/PyTufhvibd0n62eSYAgRADTlMy/C2E2
-         wsTLZoDfx2T4pm8YgsgolQwSKTscDRWuaEuPPNQjl1DuTrytciuxxr/sh3FR/bgnBpa0
-         mSA7Wd4nEkYWnMPs7hJAtY/LSioohUQfuqy/xNtbyfFjM11VHC9BfxdBcjzHPBYclSzO
-         whJ59lWvJ0967HcEQhS4nNAh18Tzob9eTy8Q/2q1cYC0Pp6uxDmRzl8nqOg1hjy1Do8y
-         la+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739206322; x=1739811122;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7ECKvYjnKAOWsTCz/UAestf8pnTvGhA+2SxD4HYkWaU=;
-        b=l1S4pWvNjWox+L7JR5TST82fdyDEgU7bwStQ1D+ciWqyjcITYKcEcR2PreI8+JJGRc
-         xQcUK34ApahDpu12t3ISbCn8dwxoZv2AxyP1WuZyO3v7306DZ4ccpgS5vEQOBg6WFN/X
-         q9nJaqhIe8ozr/LvxV6oNVpgHGtJE/MmRAZklbUq9yzOYNvGYC1APK24QkvO1344pR7/
-         dQGdUn/xQnU4ep0SCerK54S2yE4EuJ+l1Q4Ji2sRtvkw/8yzExevtG4l1W6VB7+w517+
-         3MFC5CHaKznLDnS77h8zQvQoB1q2cFSn4FguC2wcu7LqdwvK7YCfN4QluOYTM+GmGLSP
-         RZ3A==
-X-Forwarded-Encrypted: i=1; AJvYcCU0LTEPiWkH6mqP9z8RPqdvhdIcEIXN+lqw1ykDPQ+sTPHXChXIungiblXj8jHSSISiI+vO001Q/vVA5rqv5Sk=@vger.kernel.org, AJvYcCXttYyAmU4Bf/6GIH2TDOSKjbx3bz8KfkxmS/7Z5Z/DvxJvg3vhNIF3RR+i/X73EDzzrNBWLDNYbetyRd8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwN91bnjctvBJD1DivWg5jphJe5k+G8S4gWdPqMklWuknPeFcek
-	2FVOUzjKw9NTjWjsIxGVdj5/yuEfzURva4CO5nFw/EwDZma+ctgRdktEGLH8TrIEr0lAaPEkLek
-	Tuc2ikSXnEuFgYYT3dYa2fuPdq/Q=
-X-Gm-Gg: ASbGncsh5clicc6tgnZekuQX9ZV16cCasFN+r2IhxDoLNFMFwe3Mwv8hw4obU8LpGM2
-	c03HDU9bRXmHL06YTAk405h5CBerl98WLnSmqRurJTrHh1sEGTv7vWz4Sgg6TZNOJtgVniI+wUr
-	9gqj5d8Am9qonN
-X-Google-Smtp-Source: AGHT+IE5InQBAspnhmUOUgK4eO4HVcDUiJWnN0PsAPvX6dx818veoTWgNP3LaYoSDxBZ4XuzCZrKJkeGp7wWpvY4pXU=
-X-Received: by 2002:a2e:a98e:0:b0:302:2620:ec89 with SMTP id
- 38308e7fff4ca-307e581a2e9mr44795951fa.19.1739206322179; Mon, 10 Feb 2025
- 08:52:02 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="JKLA9C2m"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1739206514; bh=8d9K5lPvc7L+i4b6UhUlBCI6/XxdJFkbw66rtYM4WZE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=JKLA9C2mAwTa6p3ofcZFqnl6W+uBxdSZaVG19897Xcy1OPw0jklaazX/GD7kIokrT
+	 svCsQyEBKjx+iwWgGjnfkcMX/W+N/Y2fO5xFCQ33fBUQ7O9nlhaBXC+HWSDcyOl4qx
+	 UXDf4mtphs0zGseSDwP6rzJNSbWY8wdWFCOx5MEA=
+Received: from jckeep-Lenovo-XiaoXinAir-14IIL-2020.. ([2408:8459:d0f0:fd1e:ebd2:62cc:a175:168d])
+	by newxmesmtplogicsvrszgpua8-1.qq.com (NewEsmtp) with SMTP
+	id A7BBA0F5; Tue, 11 Feb 2025 00:41:59 +0800
+X-QQ-mid: xmsmtpt1739205719tkgqfxfnm
+Message-ID: <tencent_EFD0399A6FA413B4B3597F93965D966BE40A@qq.com>
+X-QQ-XMAILINFO: NDgMZBR9sMmabCzCDGtcEQkxaRp9S+8DBHe2yJxUYT3KxtPaHmTe00vGR/6+c3
+	 HA8sqKCngJDNWyIgDg/SxnsOh/n/tUpYDTuTQkbxFOtrRiLaT/e6yA7DIRz9mhPnB7gQHd+Qp1Gy
+	 aM81YuJ5mWZNgwKnOiHxyMQkcSsxJnvST7PtqLwHxSi+yggYRr3JJh4G/zRGo97ILhzrUmaaTon0
+	 gl5A47EUzDFeie/NVODSu5lFdyaZkjFaSa3ueILQ4hKMiVsC37Yx3RyKlHZUPc4qiCn1NzpTybNP
+	 7T8Vjf75TzEjMYyjczzCbH6aaFtgKq/6Y6UntWK1EzVizQDJOBWwAcsqXH6juMYXjcmVFUJ4IC8V
+	 qpN3kchyz917m03OGU4wlo8xQAe3EZnp0nh/pEEmY17QG73dHPifA3Qouzpdhi8+8c7gg4TeeS8N
+	 y/PcwtMqKLcdhX5rjw0h3RiE2K2t9Wm2qv2zU4cMDg99sUmpxYsY8xHeGxNzyVJtDR8egje1Qamw
+	 ivKqEgBemN4VJ4ZTFpsnXPErRfxC9uPwNiNo7jtV0nyx5V9/5SOaiYZQKkLiKFTpcfsqXVAM/9um
+	 Nsh/6os9/lSXdW9voSrHvfsS7tazrR73uQYag1i38Pdsc9dGxBk9/3X+us4E5qt8ycVKFTAOaU09
+	 CX5T6vT1ZmhsXZo0LngAG/IR/AuDWIp9A9ye4AKW0N2Z34hsjRx+vs7oJf2BLwFFLpr2WP1O82A+
+	 oG4dOh3N1ujwxIJDia4yZBPOcJFRZJooDBpIpcp5tgNmka9eNr6ggJbRMGkUuumdCzi1FEBFhhQJ
+	 EuHDL6IjLpjbKdWgqG6NaQuCF+xMipuyqfQKVhlCgtagVpR3P9ZPhJRq2zwAHUynmz2aDKPgfNXW
+	 QjD1fF4RarG/jcbUbsW3pEIwpJ2YmSm+jtOFSFrlEoOT8w4394xKdSHc3H7zDQ9sKSQeMgGR3c6D
+	 d07KdMXcaorKsv+g4qVtac0Ncye6gr
+X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
+From: Guangbo Cui <2407018371@qq.com>
+To: daniel.almeida@collabora.com
+Cc: a.hindborg@kernel.org,
+	alex.gaynor@gmail.com,
+	aliceryhl@google.com,
+	benno.lossin@proton.me,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	linux-kernel@vger.kernel.org,
+	ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu,
+	dakr@kernel.org
+Subject: Re: [PATCH v2] rust: irq: add support for request_irq()
+Date: Tue, 11 Feb 2025 00:41:59 +0800
+X-OQ-MSGID: <20250210164159.370273-1-2407018371@qq.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <D058ABBE-A0E8-4D95-AA4F-31EAA4092A73@collabora.com>
+References: <D058ABBE-A0E8-4D95-AA4F-31EAA4092A73@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250209-rust-analyzer-macros-core-dep-v2-1-897338344d16@gmail.com>
- <87a5atbw1j.fsf@kloenk.dev>
-In-Reply-To: <87a5atbw1j.fsf@kloenk.dev>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Mon, 10 Feb 2025 11:51:26 -0500
-X-Gm-Features: AWEUYZlrNNC1uhcEPWMffnDCzT7CJLvQXBkUysGirQKVu84IK3j87iCPzAmOjBI
-Message-ID: <CAJ-ks9m3SV4ezHda0cu00_TRLwY8mNg+GxJrji+FQMs=mfuL2w@mail.gmail.com>
-Subject: Re: [PATCH v2] scripts: generate_rust_analyzer.py: add missing macros deps
-To: Fiona Behrens <me@kloenk.dev>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Boris-Chengbiao Zhou <bobo1239@web.de>, Kees Cook <kees@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Chayim Refael Friedman <chayimfr@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Feb 10, 2025 at 11:32=E2=80=AFAM Fiona Behrens <me@kloenk.dev> wrot=
-e:
->
-> Competing with https://lore.kernel.org/rust-for-linux/20241205115438.2342=
-21-1-me@kloenk.dev/
-> but I do like your aproach more.
+> By the way, I wonder if a re-export would be beneficial? I find it a bit tedious to specify this path.
+> 
+> It also clashes with kernel::driver::Registration and kernel::driver::drm::Registration, so I find myself
+> continuously writing an alias for it, i.e.:
+> 
+> ```
+> Use kernel::irq::request::Registration as IrqRegistration;
+> Use kernel::irq::request::Handler as IrqHandler;
+> ```
+> 
+> Looking at mq.rs <http://mq.rs/>, I see Andreas did something similar:
+> 
+> ```
+> pub use operations::Operations;
+> pub use request::Request;
+> pub use tag_set::TagSet;
+> ```
+> 
+> Asking for opinions here since this is a bit cosmetic in nature. IMHO, at least the ‘request’ part of the path has to go.
 
-Missed this one go by. Sorry!
+Maybe the Rust subsystem should have a unified convention for this？
+Re-export is both beneficial and necessary. The naming retains `Registration`
+and `Handler` to be consistent with other modules. And accessing it with the
+module prefix, such as `irq::Registration`. Just like @dakr did in `rust_driver_pci.rs` 
+and `rust_driver_platform.rs`: `pci::Driver` & `platform::Driver`; `pci::Device` & `platform::Device`.
 
-> Reviewed-by: Fiona Behrens <me@kloenk.dev>
+Hope this help, if not, ignore it.
 
-Thanks for reviewing! I'm going to respin v3 that looks a little bit
-more like https://lore.kernel.org/all/20250209-rust-analyzer-host-v1-3-a228=
-6a2a2fa3@gmail.com/
-which is the proper fix. If you're OK with it, I'll keep your tag.
+Best regards,
+Guangbo Cui
+
