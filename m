@@ -1,122 +1,140 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282B21C3C1E;
-	Mon, 10 Feb 2025 09:42:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739180550; cv=pass; b=ANyPRvlBHuQrzoxfmf5IYb0ICZF88m1AuPsgHnOwXCpTDYs2Emq++N9kSOYn2QK/3Zk+LnXzGn/xdtdZPZ5OsrTs150+DRdRmLCkF6IEROP39o8gdtudz+Y1TlVRxGYW11J9heQjagxreAeImuV1MSWhnbP0CDEAcpTSJVgmqio=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739180550; c=relaxed/simple;
-	bh=qBBDYZU7g9PDMRClvZSe7s7VQGUjY5ZJRuGo2wh0uUg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=P1nzmZlmGrg2ndIi8kSME7PN1lGKEP9MlHcd3HKViW1yNvj1uDAApP4e70pFPI3Mhp16Ryp/MkTJXuR5ZPUPHmiYS6NMRWuKTbVfIKxlciuiCydJ3gwweOOrjXG0GcXb8j3nnh67copIwPn6s7C6FJbQT+K9xQx0iVhkDZj5YuU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=icenowy.me; spf=pass smtp.mailfrom=icenowy.me; dkim=pass (2048-bit key) header.d=icenowy.me header.i=uwu@icenowy.me header.b=L9CyqPwW; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=icenowy.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icenowy.me
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED40C1C5F1B
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Feb 2025 09:54:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739181251; cv=none; b=TmqfRV+ZUouqiWn3DGZlElaeaP36+T5Z3pYSamlJRA+X791j+Ge9uTHNyNZJZ2Y2+6j5Avua9PevPRyfZRguhp9kpNloJ6eYozc2s6MRcedDvh5MFTGhmzWCicdTj+sv1607tHOTYuErpnXiVB7gB4XzFq1g9qETLIIczMTma+k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739181251; c=relaxed/simple;
+	bh=vG2X7WQ1PmdCI49j2NntyvNCqCTUVdb+cy7Y9jnw+Uk=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=LqaNN2h/kaj7iRzHt2xz/rOnmG2cN5UsV+zFbMk6mm5qYYSlnHse2BcMQEEH9j05D+081j1Rj6hFtu+LXrXkiYov36n1Vu6QAfPIqg/Ek+oW08yeqq1sjOQhSeKwOjYHAvpmpDHh/RQuHOk0XB8wHuyA1ph5m0ai3xYVmI4lPHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cyoqeQ0V; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icenowy.me header.i=uwu@icenowy.me header.b="L9CyqPwW"
-ARC-Seal: i=1; a=rsa-sha256; t=1739180505; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=IfHW7GFSUcnRcnjhWuX8VdC/+6QgIk+O1MALlIIYMzbmQmTTaHpbRbOF4a3uLTIWaSDn0bo5yx16kIGK6v+kxxH7TimnRnReKsIHQLb09GDMSbVlcS6j/+XM/ngIALNhB677N7kyyJrBRZOCXCdMOlnDE+aQNf4zGGMwk1FwxkQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1739180505; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=qBBDYZU7g9PDMRClvZSe7s7VQGUjY5ZJRuGo2wh0uUg=; 
-	b=hGmBetWBHuk0+d1qX8x9ZCDJHRR4U2wRa36efra3TA/6ApvbzB2ty81ni8vbebPgi+Jk9i9P4RTzNZNVuB0/rJJvbCBnnbyJJJRYQPMRiXZhRusr/AEVEGo66Nd6L5Zb1DaYi/KgXCYp1zZ5OEryWyqjVZNyfLm7oA5KBQmaws0=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=icenowy.me;
-	spf=pass  smtp.mailfrom=uwu@icenowy.me;
-	dmarc=pass header.from=<uwu@icenowy.me>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1739180505;
-	s=zmail2; d=icenowy.me; i=uwu@icenowy.me;
-	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
-	bh=qBBDYZU7g9PDMRClvZSe7s7VQGUjY5ZJRuGo2wh0uUg=;
-	b=L9CyqPwWuH/dRvDgQQmY5y3YYDn7FxyFX/jzjg/z7d3yuEBumKn/t1WqKqQyri+c
-	+PKIIuEa4oQmxS5Opo7gjRFALhFYegk5thuHdNREW5LMnNSfMjvI9hNZfKWniaXgBYZ
-	zCQXaKwHUo1a6xlQZOWgV0gXL2nxfl9GPXvi/lADVaJ1pMszP624B+bbfNYtFMIETOL
-	xX+qAcYAGTQODu7leHTMo8H/sj7wXmdoeEwol/DL8P3CGG/cCPw2PEObYKaVHhT43rC
-	vVC/ZHTZ/GD7xol4ldQDAF4Ie+tYycuSsmdp90iSLOjDNgHIwOEqnLao29s8OkvuwkN
-	VctmgfoeqA==
-Received: by mx.zohomail.com with SMTPS id 1739180501879330.0271224021237;
-	Mon, 10 Feb 2025 01:41:41 -0800 (PST)
-Message-ID: <07c447b77bdac1f8ade1f93456f853f89d4842ee.camel@icenowy.me>
-Subject: Re: On community influencing (was Re: [PATCH v8 2/2] rust: add dma
- coherent allocator abstraction.)
-From: Icenowy Zheng <uwu@icenowy.me>
-To: Hector Martin <marcan@marcan.st>, Steven Rostedt <rostedt@goodmis.org>, 
-	"Dr. Greg" <greg@enjellic.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Dave Airlie
- <airlied@gmail.com>, Jason Gunthorpe <jgg@nvidia.com>, Greg KH
- <gregkh@linuxfoundation.org>, phasta@kernel.org, Christoph Hellwig
- <hch@lst.de>,  Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda
- <miguel.ojeda.sandonis@gmail.com>, Abdiel Janulgue
- <abdiel.janulgue@gmail.com>, daniel.almeida@collabora.com,
- aliceryhl@google.com,  robin.murphy@arm.com,
- rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex
- Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
- <gary@garyguo.net>, Bj??rn Roy Baron <bjorn3_gh@protonmail.com>, Benno
- Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>, Valentin Obst <kernel@valentinobst.de>,
- open list <linux-kernel@vger.kernel.org>, Marek Szyprowski
- <m.szyprowski@samsung.com>, airlied@redhat.com, "open list:DMA MAPPING
- HELPERS" <iommu@lists.linux.dev>, DRI Development
- <dri-devel@lists.freedesktop.org>
-Date: Mon, 10 Feb 2025 17:41:30 +0800
-In-Reply-To: <1e8452ab-613a-4c85-adc0-0c4a293dbf50@marcan.st>
-References: <2025013030-gummy-cosmic-7927@gregkh>
-	 <20250130172437.GN5556@nvidia.com>
-	 <2025013148-reversal-pessimism-1515@gregkh>
-	 <20250131135421.GO5556@nvidia.com>
-	 <2b9b75d1-eb8e-494a-b05f-59f75c92e6ae@marcan.st>
-	 <Z6OzgBYZNJPr_ZD1@phenom.ffwll.local>
-	 <CAPM=9tzPR9wd=3Wbjnp-T0W8-dDfGah-H3Ny52G85B+2Ev9ksA@mail.gmail.com>
-	 <208e1fc3-cfc3-4a26-98c3-a48ab35bb9db@marcan.st>
-	 <CAHk-=wi=ZmP2=TmHsFSUGq8vUZAOWWSK1vrJarMaOhReDRQRYQ@mail.gmail.com>
-	 <20250207121638.GA7356@wind.enjellic.com>
-	 <Z6bdCrgGEq8Txd-s@home.goodmis.org>
-	 <1e8452ab-613a-4c85-adc0-0c4a293dbf50@marcan.st>
-Organization: Anthon Open-Source Community
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cyoqeQ0V"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4393e89e910so5982995e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 10 Feb 2025 01:54:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1739181248; x=1739786048; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ykRajRl/U0/1GL/W7BEJiYejIirOoQDvtZ2CM/CA7WA=;
+        b=cyoqeQ0VWqsqP3kYlNKs1vBT3Ch6xRiW5+o0x7HYRSOedJnqlYof22ZHVOhxPY4T6E
+         lOjVulNqhUo7yM7ooK6D9YavnUjIJo7SGfSqfF8t7VQE+79/iJKT14kJi0B1gs2JdaN7
+         Q8xGLG+mjvw7xaeuWB9ixaH0lCxrAQiAYG9gmCdpzCXTUMxqGI9rb/fIvn6YjxipPb6i
+         UHlbewVpn0iBcPFCXDj+Ivf2Qw1wW7mjKsfzdxPdnX4maUYYaSHEVeQKT+IBKbcw1ANa
+         JuNiL8l/+qy287NDbBuvpddrFWicb5baSOvr54bWVCdbtKyPrE4FNZzuuGjpLePU3tyH
+         GLaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739181248; x=1739786048;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ykRajRl/U0/1GL/W7BEJiYejIirOoQDvtZ2CM/CA7WA=;
+        b=Ez84pSm1rfkGnlmLJaq3i0dBSDN90IOorgtrf2wSoVP+E0OJdoUFf9wgqAXgDir67k
+         ok06U6OpQKoUb7Vlgso7DSmn2jRcGLRAXKDwGpZrrBAiPHYbnDjLRuuCAiz8N2NW8GK8
+         Y0+kf1HquiQIf34og/+Yqa/3OA5SthR7IVNIrSMqdWK2IvaBFp6uFqxDZReTVKo1+OLy
+         s3AMxoSt6oKfY9qJhQFpWY/xAJNVH8NY9O9a2QwMqt3RbTafGs8Qu98qMj6yWDB6ibZ/
+         iWPkiq4JUdqAPA/CP+Y0B2qEj70ZDVPwFRRA1/GQjRkr81Xy5tx8JubPkJyWO9vu02Zq
+         3EkA==
+X-Forwarded-Encrypted: i=1; AJvYcCXM0ht6dxUCFA7J1R4nVn87BwC7zvqcBLYoyuJJABfczez/+7G+yORYmK5xmr2bnsTkc7DqznghZFG/wFDsDg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzk5f8Oka+/5PgT72tUp9FYgw5szLl8wRSbVQLcMDfRxcW8ZByX
+	FDLovn6NXWe/BLeXRnkTp5woJK9LexS39DE2JZcp/Yc49yMIGhP+YuDrNr1ge/4UFstZCdIR5gp
+	D2RckKAIAbzRzYg==
+X-Google-Smtp-Source: AGHT+IGT6KM3+kyRLnTGSDnKD5bOiNnLtiDQpZuRgxQCtGc65seThnsmyKfSiSyioYB2yVs8vJ5Gaz66pehxzro=
+X-Received: from wmbfl7.prod.google.com ([2002:a05:600c:b87:b0:439:35bc:65d0])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4f90:b0:434:a7e7:a1ca with SMTP id 5b1f17b1804b1-439249b04f8mr96245635e9.20.1739181248337;
+ Mon, 10 Feb 2025 01:54:08 -0800 (PST)
+Date: Mon, 10 Feb 2025 09:53:34 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-ZohoMailClient: External
-X-ZohoMail-Owner: <07c447b77bdac1f8ade1f93456f853f89d4842ee.camel@icenowy.me>+zmo_0_
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAJ7MqWcC/2XPy07DMBCF4VepvMbIY48vYcV7VCx8maSWIEZOS
+ UFV3h23Aing5Rnp+6W5soVqpoU9Ha6s0pqXXOY27MOBxZOfJ+I5tc2kkAgCDI8fdSmVBzpfiGY
+ OGgMlpweSljX0XmnMn/fg8aXtU17OpX7d+yvcrj8pqf+nVuDAhRtAWUDvST9PpUyv9BjLG7u1V
+ vnrtQAJnZdccAgSY1LWGnCdV3svO6+a996PITk/AqbO496rzmPzMQhjBpfCgLHzeu9t53Xzo43 KuSiVQdl5s/Oq/980b4QKKdqEiMMfv23bN9YyRLPtAQAA
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1870; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=vG2X7WQ1PmdCI49j2NntyvNCqCTUVdb+cy7Y9jnw+Uk=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnqcyhmS2LlPCnIdMrkc44GlUdlj/Aqj0zg5CYg
+ 4B6Ieye4yKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ6nMoQAKCRAEWL7uWMY5
+ Rn0dD/0YP2wlyOms8eDPAE9U/lo/KEk+S4sMDhsJbC/4eGMEV9hBazUpZNo9GHH88kxI3IWFJ+n
+ T4uXJEUhfBmaFPYWzx2585VBNJoeWRS4mnnbvgSmN7RgAlcj8+3mH+VTbDW3oKxKVuTpMNXpDbP
+ moM8zmDzx1dZx7S+4GokSAPOcmEOpJ4mUzWv/a/aKOL8aYApuWTV2tteO8NMu2w6TJA1YXzLnhZ
+ hvLsEHFHJ6gdigh3PTRYkIWDpwZuDSWPE6BOetWKGLBFwNwAKcWPr0+TEo/ztiMc7Fbb5Nu+SeJ
+ YnaQBf1MbTsZrlvI7xa3kE/h9ExJQCh7XxXmtQO4rwYrCxh2IyQUTBScm4SubWHv+vt2UhimHBR
+ o+e5OvLI4PMA/FtJHlw2/Y+yhYjHgscyBYu22h5+Dff3C4f/ULqyehdsUtoRH5qij5dffIfLJ3w
+ B6XxRUwSS48yXMfq8f/pYCnSe6DzQBuNXbKuz4K/DkRDyn9fu3l+sG9TIvbSKmxOSf04ZdWMn4i
+ Wmv6pxReehjvkvoldqdv3qgsdCKeEvFuq4GOux/jUmgOm2tLQHfK++mW7bt9JxbajCCORmMPIKC
+ e7qJ9DTA+YpjTWcKcUIGf08EnCu+D2tDIZ4DHP9DLtHwnY4uMep1UKZshG3ztaM8BuLLdtIg+rR UO1laG5lttli0Vw==
+X-Mailer: b4 0.13.0
+Message-ID: <20250210-cursor-between-v7-0-36f0215181ed@google.com>
+Subject: [PATCH v7 0/2] Make the Rust linked list cursor point between elements
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-=E5=9C=A8 2025-02-08=E6=98=9F=E6=9C=9F=E5=85=AD=E7=9A=84 17:31 +0900=EF=BC=
-=8CHector Martin=E5=86=99=E9=81=93=EF=BC=9A
->=20
-> By kernel and mesa policy, while a drm/ kernel driver is not merged
-> with
-> a stable UAPI, the mesa side cannot be merged/enabled either. That
-> means
-> that every day the driver isn't upstream, our users suffer due to
-> various container technologies not shipping the driver in userspace
-> since they ship upstream mesa.
->=20
-> The process is *designed* to encourage upstreaming early and *punish*
-> downstream trees.
+Please see the commit message of the last patch for more details and
+motivation.
 
-Well, at least some Mesa drivers are developed against some "vendor"
-(even not community downstream) kernel drivers, e.g. powervr one;
-although in the Asahi case there's no such vendor thing (because the HW
-vendor is Darwin-only). In addition, I think at least some early
-etnaviv development is based on drm/etnaviv drivers w/ in-kernel
-version code earlier than the first in-kernel-tree version code (Well
-drm version code rarely changes, but I think in the case of etnaviv it
-really represents the UAPI).
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v7:
+- Fix missing `mut` in v6 as mentioned in reply.
+- Rebase on v6.14-rc1.
+- Link to v6: https://lore.kernel.org/r/20250131-cursor-between-v6-0-603bdc7d4449@google.com
 
-Furtherly, the monorepo nature of Linux kernel means to refactor an
-interface, it's usually the person changing the callee that need to
-change all callers to satify the interface change; having Rust code in
-tree calling the interface effectively means adding the responsibility
-of fixing the Rust code when the interface changes, which could be not
-acceptable by the C-only maintainers. In regards of adding a
-maintainer, having more maintainers means more communication. The
-situation of the current problem really shows how difficult
-communication is, right?
+Changes in v6:
+- Fix bug where Cursor::insert_inner does not update `self.list.first`
+  when inserting elements at the head of the list.
+- Add a new `Cursor::insert` method. See its implementation for
+  justification.
+- Link to v5: https://lore.kernel.org/r/20250127-cursor-between-v5-0-f7c388c23642@google.com
+
+Changes in v5:
+- Fix list / list2 in example.
+- Add remove_last function to example.
+- Link to v4: https://lore.kernel.org/r/20250123-cursor-between-v4-0-cb06698db94c@google.com
+
+Changes in v4:
+- Actually call the example functions.
+- Link to v3: https://lore.kernel.org/r/20250122-cursor-between-v3-0-aaafbd8af14d@google.com
+
+Changes in v3:
+- Fix `CursorPeek::deref` to use `self.ptr`.
+- Reword comment on `ArcBorrow` in `impl Deref for CursorPeek`.
+- Link to v2: https://lore.kernel.org/r/20250121-cursor-between-v2-0-1b24cd377618@google.com
+
+Changes in v2:
+- Extract insert_inner refactor to separate patch.
+- Make move_next/move_prev not wrap around.
+- Add some examples.
+- Link to v1: https://lore.kernel.org/r/20241025-cursor-between-v1-1-08913714aae5@google.com
+
+---
+Alice Ryhl (2):
+      rust: list: extract common code for insertion
+      rust: list: make the cursor point between elements
+
+ rust/kernel/list.rs | 471 ++++++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 379 insertions(+), 92 deletions(-)
+---
+base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
+change-id: 20241016-cursor-between-154bed859e27
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
