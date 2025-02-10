@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF2E2236F7;
-	Mon, 10 Feb 2025 12:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021CB1EF084;
+	Mon, 10 Feb 2025 12:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739190637; cv=none; b=LZvw10RF3C8FY4iRT+7eDd8idY6P9rH4OyKxGiwTUC0crzroQAmYc3X/6zrD++rdEKgS/H60+lhnGa4dhivJt1wMJjTRauMLQq9PO1tRIg4izJ/uyZFK5gtkfZPGR4TYxo2/3acOF+0AP2plyDc/XKAYYo1dNtVi3WffSoJWg+w=
+	t=1739190647; cv=none; b=WoJijKaESoUBw50DRZPycalfuHb8tFB2wTjzVJTkVV26JVIIjbl98XwnaoieflBx9Yj/DltOAKOS77wk32lYIN15UrOx/ZTcMrWHDG/bz0Rqg2R69oO3rJCZuIff82z3oiS7NM2C6nD+C1ofO7kz6FZZATs5CtmOJGRD6wYJ9OE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739190637; c=relaxed/simple;
-	bh=c9D3oOBKU8VLrTVavyW7pHwp3Ch/dcHbstq2a7GWBE4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eCh1r/ck2PTopvZEOyBo1BYIdiAmENEbBIH72ASLR/dtsbLIscAiHJxrd5oOYD/8d2BtWSOKND5FVAzYdoOv5asQcZ1S3b22qgVbpB04PUZWthPlqCeQBErlqLfjsRTv/Y0VK2JDgg+5ETWo8fVjLLl82bZYDTUpD/Lf5uRHIZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y2UjeeHu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739190647; c=relaxed/simple;
+	bh=TbyqhjqLFSMkkL2OvZYpbagA5+Vaa48gsL5qnhq+CrQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Bi5INGAg8szIk+ws3B9JvEMMrCkuvBjCuK+1yd2dCn45NIWJEjri9IxJxk/d55N3xI4JDkyZsTyDFFEL8htO1VYiUy8/SYrAxBxoZTwQtUp9VWWtUPqyTZ6ChSOunjrOWJ7QXVgLb+yl2n24kmDPt9nTrdvlZ3OGpouRExkVz8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hXOluAc2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y2UjeeHu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4051DC4CED1;
-	Mon, 10 Feb 2025 12:30:36 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hXOluAc2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82EFCC4CED1;
+	Mon, 10 Feb 2025 12:30:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739190636;
-	bh=c9D3oOBKU8VLrTVavyW7pHwp3Ch/dcHbstq2a7GWBE4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=y2UjeeHuzARc0PFFUpxZeOMDjEyBWVcQJEnM9Zn3O8rZ5dz3kb308IJEPjbBtJxLM
-	 3g+ug/4mbzEdxYzY14OvVLHEhIAvWbCZcdO5GUT7W9+vTrT0b3HYsjHBm2fgRkMNHF
-	 sP8nh/XEOuu3JCKQZfPzvqFdvuAKOxt20y0tNoQo=
+	s=korg; t=1739190646;
+	bh=TbyqhjqLFSMkkL2OvZYpbagA5+Vaa48gsL5qnhq+CrQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=hXOluAc2VAteNfZgnnrinqwFQmlcYTcHBqMDHU/FTs+lBHy3uaxofjU83O7L1118d
+	 p0+gMA5AOO4a/A8ag+vgo7lGvQc+EwczdyT18mPnkkV+h/v0EQtpzpLYYUmnUTf1K6
+	 GYbZU1j9t8giI4B4CNrYyUisPg4RUEzgVxBRRhJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: linux-kernel@vger.kernel.org,
 	Lyude Paul <lyude@redhat.com>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Danilo Krummrich <dakr@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
+Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Bjorn Helgaas <bhelgaas@google.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
@@ -40,11 +40,15 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Simona Vetter <simona.vetter@ffwll.ch>,
 	Zijun Hu <quic_zijuhu@quicinc.com>,
 	linux-usb@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH v4 0/9] Driver core: Add faux bus devices
-Date: Mon, 10 Feb 2025 13:30:24 +0100
-Message-ID: <2025021023-sandstorm-precise-9f5d@gregkh>
+	rust-for-linux@vger.kernel.org,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH v4 2/9] rust/kernel: Add faux device bindings
+Date: Mon, 10 Feb 2025 13:30:26 +0100
+Message-ID: <2025021026-exert-accent-b4c6@gregkh>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <2025021023-sandstorm-precise-9f5d@gregkh>
+References: <2025021023-sandstorm-precise-9f5d@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -52,113 +56,219 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5008; i=gregkh@linuxfoundation.org; h=from:subject:message-id; bh=c9D3oOBKU8VLrTVavyW7pHwp3Ch/dcHbstq2a7GWBE4=; b=owGbwMvMwCRo6H6F97bub03G02pJDOkrPya4eP2c5COm6bgq0P+v9MGvFZ0/l8jNiu41t/22N z6rcnlPRywLgyATg6yYIsuXbTxH91ccUvQytD0NM4eVCWQIAxenAEzkPjvDPFPfCzbMemuP71z9 7XDZ4oxplSs2BTIsWCqwPPVN1TK9UsauV//Yqxge7711FwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7374; i=gregkh@linuxfoundation.org; h=from:subject:message-id; bh=IHnp0Ph4eRqCEOwqPBSB6DS+nWbvVwV3QnDR4rv7WoA=; b=owGbwMvMwCRo6H6F97bub03G02pJDOkrPyZ9K0y7+cv2F18+o7TJDavSRXtPC25Okjj+3M3nY KM4R5VERywLgyATg6yYIsuXbTxH91ccUvQytD0NM4eVCWQIAxenAExkmh3DHI6kyiNnWLj3qh7d rbPwyj2lrMj+yQwLzgX5Ppp+1TP31t62BWI+69v55U5tAAA=
 X-Developer-Key: i=gregkh@linuxfoundation.org; a=openpgp; fpr=F4B60CC5BF78C2214A313DCB3147D40DDB2DFB29
 Content-Transfer-Encoding: 8bit
 
-For years/decades now, I've been complaining when I see people use
-platform devices for things that are obviously NOT platform devices.
-To finally fix this up, here is a "faux bus" that should be used instead
-of a platform device for these tiny and "fake" devices that people
-create all over the place.
+From: Lyude Paul <lyude@redhat.com>
 
-The api is even simpler than the normal platform device api, just two
-functions, one to create a device and one to remove it.  When a device
-is created, if a probe/release callback is offered, they will be called
-at the proper time in the device's lifecycle.  When finished with the
-device, just destroy it and all should be good.
+This introduces a module for working with faux devices in rust, along with
+adding sample code to show how the API is used. Unlike other types of
+devices, we don't provide any hooks for device probe/removal - since these
+are optional for the faux API and are unnecessary in rust.
 
-This simple api should also hopefully provide for a simple rust binding
-to it given the simple rules and lifecycle of the pointer passed back
-from the creation function (i.e. it is alive and valid for as long as
-you have not called destroy on it.)
-
-I've also converted four different examples of platform device abuse, the
-dummy regulator driver, the USB phy code, the x86 microcode dvice, and
-the "regulator" device that wifi uses to load the firmware tables, to
-use this api.  In all cases, the logic either was identical, or became
-simpler, than before, a good sign (side note, a bug was fixed in the usb
-phy code that no one ever noticed before).
-
-Note, unless there are major objections, I'm leaning toward getting
-patch 1 and 2 of this series merged during this -rc cycle so that all of
-the individual driver subsystem cleanups can go through those subsystems
-as needed, as well as allowing the rust developers to create a binding
-and get that merged easier.  Having patch 1 merged on its own isn't
-going to cause any changes if no one uses it, so that should be fine.
-
-Changes from v4:
-  - really dropped the internal name structure, remanants were left over
-    from the last patch series
-  - added the rust binding patch from Lyude (is this one of the first
-    patch series that adds a new kernel api AND the rust binding at the
-    same time?)
-  - added a parent pointer to the api so the devices can be in the tree
-    if the caller wants them
-  - made probe synchronous to prevent race when using the api (when the
-    create call returns the device is fully ready to go.)  Thanks to
-    testing of the drm driver change to find this issue.
-  - documentation tweaks
-  - #include <linux/container_of.h> finally added to faux.h
-
-
-Changes from v3:
-  - Dropped the USB phy porting, turned out to be incorrect, it really
-    did need a platform device
-  - converted more drivers to the faux_device api (tlclk, lis3lv02d,
-    vgem, and vkms)
-  - collected some reviewed-by
-  - lots of minor tweaks of the faux.c api, and documentation based on
-    review, see the changelog in patch 1 for details.
-
-Changes from v2:
-  - lots of cleanups to faux.c based on reviews, see patch 1 for details
-  - actually tested the destroy device path, it worked first try!
-  - added 3 more example drivers
-
-
-
-Greg Kroah-Hartman (8):
-  driver core: add a faux bus for use when a simple device/bus is needed
-  regulator: dummy: convert to use the faux device interface
-  x86/microcode: move away from using a fake platform device
-  wifi: cfg80211: move away from using a fake platform device
-  tlclk: convert to use faux_device
-  misc: lis3lv02d: convert to use faux_device
-  drm/vgem/vgem_drv convert to use faux_device
-  drm/vkms: convert to use faux_device
-
-Lyude Paul (1):
-  rust/kernel: Add faux device bindings
-
- Documentation/driver-api/infrastructure.rst |   6 +
- MAINTAINERS                                 |   2 +
- arch/x86/kernel/cpu/microcode/core.c        |  14 +-
- drivers/base/Makefile                       |   2 +-
- drivers/base/base.h                         |   1 +
- drivers/base/faux.c                         | 232 ++++++++++++++++++++
- drivers/base/init.c                         |   1 +
- drivers/char/tlclk.c                        |  32 +--
- drivers/gpu/drm/vgem/vgem_drv.c             |  30 +--
- drivers/gpu/drm/vkms/vkms_drv.c             |  28 +--
- drivers/gpu/drm/vkms/vkms_drv.h             |   4 +-
- drivers/misc/lis3lv02d/lis3lv02d.c          |  26 +--
- drivers/misc/lis3lv02d/lis3lv02d.h          |   4 +-
- drivers/regulator/dummy.c                   |  37 +---
- include/linux/device/faux.h                 |  69 ++++++
- net/wireless/reg.c                          |  28 +--
- rust/bindings/bindings_helper.h             |   1 +
- rust/kernel/faux.rs                         |  67 ++++++
- rust/kernel/lib.rs                          |   1 +
- samples/rust/Kconfig                        |  10 +
- samples/rust/Makefile                       |   1 +
- samples/rust/rust_driver_faux.rs            |  29 +++
- 22 files changed, 502 insertions(+), 123 deletions(-)
- create mode 100644 drivers/base/faux.c
- create mode 100644 include/linux/device/faux.h
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Cc: Maíra Canal <mairacanal@riseup.net>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+v4: - new patch added to this series
+    - api tweaked due to parent pointer added to faux_device create
+      function.
+v3: - no change
+v2: - renamed vdev variable to fdev thanks to Mark
+ MAINTAINERS                      |  2 +
+ rust/bindings/bindings_helper.h  |  1 +
+ rust/kernel/faux.rs              | 67 ++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs               |  1 +
+ samples/rust/Kconfig             | 10 +++++
+ samples/rust/Makefile            |  1 +
+ samples/rust/rust_driver_faux.rs | 29 ++++++++++++++
+ 7 files changed, 111 insertions(+)
  create mode 100644 rust/kernel/faux.rs
  create mode 100644 samples/rust/rust_driver_faux.rs
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 25c86f47353d..19ea159b2309 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -7116,8 +7116,10 @@ F:	rust/kernel/device.rs
+ F:	rust/kernel/device_id.rs
+ F:	rust/kernel/devres.rs
+ F:	rust/kernel/driver.rs
++F:	rust/kernel/faux.rs
+ F:	rust/kernel/platform.rs
+ F:	samples/rust/rust_driver_platform.rs
++F:	samples/rust/rust_driver_faux.rs
+ 
+ DRIVERS FOR OMAP ADAPTIVE VOLTAGE SCALING (AVS)
+ M:	Nishanth Menon <nm@ti.com>
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 55354e4dec14..f46cf3bb7069 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -11,6 +11,7 @@
+ #include <linux/blk_types.h>
+ #include <linux/blkdev.h>
+ #include <linux/cred.h>
++#include <linux/device/faux.h>
+ #include <linux/errname.h>
+ #include <linux/ethtool.h>
+ #include <linux/file.h>
+diff --git a/rust/kernel/faux.rs b/rust/kernel/faux.rs
+new file mode 100644
+index 000000000000..5acc0c02d451
+--- /dev/null
++++ b/rust/kernel/faux.rs
+@@ -0,0 +1,67 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++//! Abstractions for the faux bus.
++//!
++//! This module provides bindings for working with faux devices in kernel modules.
++//!
++//! C header: [`include/linux/device/faux.h`]
++
++use crate::{bindings, device, error::code::*, prelude::*};
++use core::ptr::{addr_of_mut, null, null_mut, NonNull};
++
++/// The registration of a faux device.
++///
++/// This type represents the registration of a [`struct faux_device`]. When an instance of this type
++/// is dropped, its respective faux device will be unregistered from the system.
++///
++/// # Invariants
++///
++/// `self.0` always holds a valid pointer to an initialized and registered [`struct faux_device`].
++///
++/// [`struct faux_device`]: srctree/include/linux/device/faux.h
++#[repr(transparent)]
++pub struct Registration(NonNull<bindings::faux_device>);
++
++impl Registration {
++    /// Create and register a new faux device with the given name.
++    pub fn new(name: &CStr) -> Result<Self> {
++        // SAFETY:
++        // - `name` is copied by this function into its own storage
++        // - `faux_ops` is safe to leave NULL according to the C API
++        let dev = unsafe { bindings::faux_device_create(name.as_char_ptr(), null_mut(), null()) };
++
++        // The above function will return either a valid device, or NULL on failure
++        // INVARIANT: The device will remain registered until faux_device_destroy() is called, which
++        // happens in our Drop implementation.
++        Ok(Self(NonNull::new(dev).ok_or(ENODEV)?))
++    }
++
++    fn as_raw(&self) -> *mut bindings::faux_device {
++        self.0.as_ptr()
++    }
++}
++
++impl AsRef<device::Device> for Registration {
++    fn as_ref(&self) -> &device::Device {
++        // SAFETY: The underlying `device` in `faux_device` is guaranteed by the C API to be
++        // a valid initialized `device`.
++        unsafe { device::Device::as_ref(addr_of_mut!((*self.as_raw()).dev)) }
++    }
++}
++
++impl Drop for Registration {
++    fn drop(&mut self) {
++        // SAFETY: `self.0` is a valid registered faux_device via our type invariants.
++        unsafe { bindings::faux_device_destroy(self.as_raw()) }
++    }
++}
++
++// SAFETY: The faux device API is thread-safe as guaranteed by the device core, as long as
++// faux_device_destroy() is guaranteed to only be called once - which is guaranteed by our type not
++// having Copy/Clone.
++unsafe impl Send for Registration {}
++
++// SAFETY: The faux device API is thread-safe as guaranteed by the device core, as long as
++// faux_device_destroy() is guaranteed to only be called once - which is guaranteed by our type not
++// having Copy/Clone.
++unsafe impl Sync for Registration {}
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 496ed32b0911..398242f92a96 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -46,6 +46,7 @@
+ pub mod devres;
+ pub mod driver;
+ pub mod error;
++pub mod faux;
+ #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
+ pub mod firmware;
+ pub mod fs;
+diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
+index 918dbead2c0b..3b6eae84b297 100644
+--- a/samples/rust/Kconfig
++++ b/samples/rust/Kconfig
+@@ -61,6 +61,16 @@ config SAMPLE_RUST_DRIVER_PLATFORM
+ 
+ 	  If unsure, say N.
+ 
++config SAMPLE_RUST_DRIVER_FAUX
++	tristate "Faux Driver"
++	help
++	  This option builds the Rust Faux driver sample.
++
++	  To compile this as a module, choose M here:
++	  the module will be called rust_driver_faux.
++
++	  If unsure, say N.
++
+ config SAMPLE_RUST_HOSTPROGS
+ 	bool "Host programs"
+ 	help
+diff --git a/samples/rust/Makefile b/samples/rust/Makefile
+index 5a8ab0df0567..0dbc6d90f1ef 100644
+--- a/samples/rust/Makefile
++++ b/samples/rust/Makefile
+@@ -6,6 +6,7 @@ obj-$(CONFIG_SAMPLE_RUST_MISC_DEVICE)		+= rust_misc_device.o
+ obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
+ obj-$(CONFIG_SAMPLE_RUST_DRIVER_PCI)		+= rust_driver_pci.o
+ obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+= rust_driver_platform.o
++obj-$(CONFIG_SAMPLE_RUST_DRIVER_FAUX)		+= rust_driver_faux.o
+ 
+ rust_print-y := rust_print_main.o rust_print_events.o
+ 
+diff --git a/samples/rust/rust_driver_faux.rs b/samples/rust/rust_driver_faux.rs
+new file mode 100644
+index 000000000000..048c6cb98b29
+--- /dev/null
++++ b/samples/rust/rust_driver_faux.rs
+@@ -0,0 +1,29 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++//! Rust faux device sample.
++
++use kernel::{c_str, faux, prelude::*, Module};
++
++module! {
++    type: SampleModule,
++    name: "rust_faux_driver",
++    author: "Lyude Paul",
++    description: "Rust faux device sample",
++    license: "GPL",
++}
++
++struct SampleModule {
++    _reg: faux::Registration,
++}
++
++impl Module for SampleModule {
++    fn init(_module: &'static ThisModule) -> Result<Self> {
++        pr_info!("Initialising Rust Faux Device Sample\n");
++
++        let reg = faux::Registration::new(c_str!("rust-faux-sample-device"))?;
++
++        dev_info!(reg.as_ref(), "Hello from faux device!\n");
++
++        Ok(Self { _reg: reg })
++    }
++}
 -- 
 2.48.1
 
