@@ -1,167 +1,388 @@
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8B7204874;
-	Mon, 10 Feb 2025 14:55:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91CD23C36D;
+	Mon, 10 Feb 2025 14:58:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739199324; cv=none; b=j7OYW7dp+gn2IAWEJOnOIleCvBCByG6CgX5m6SegEe+RwyT2dmxMz8JcLZW3DbOMGvrp6Ts5v1of6klmcyvzAdkL1VYIZ9jALwdplqWMHShm3hAiHBIexY9ILElMBf/YIz0Ws99gApp91sxWe8QW2bBZUfoII7IfvepCRzW9eEA=
+	t=1739199511; cv=none; b=XK48f4uKC5EeKUscfVWo09uVH8fuV1yPKH32WwFO+IgcAcxFWZQsBYPHMXbP25rQL6ES/EYDIAiWaqU+Aip5NaEHPtCyhOYSYf78V7VvBY7z2xhb6kTf5QIVGtPzhb2fheahEFdhVRMIB8LVKUcDCzSbj8wifgTi6Olr7OOtP34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739199324; c=relaxed/simple;
-	bh=0MggrRJ5v+a6b0Enr/c15QYUbRThohYTduHQhl2DMk8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=kR8+ag/+KyxcYDhsWO+jtb6YiS/q0KlP51brEW7Aq6Zusv3poGvJlLhvDy+Mj1Jcx6hOcINM6sgYBhlCKUJGKNOM0CfbSS4+Vs4TSxkKIXvM3OiDWyP30r7JnWIyGaQJS6/+3h7uFKD13ZWPL9mIQkDfzZe0lpG6XuHfWTjUmro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AouKOjZA; arc=none smtp.client-ip=209.85.222.169
+	s=arc-20240116; t=1739199511; c=relaxed/simple;
+	bh=aE5achVh8HUikp04az029HRNnVvuymT37mxL2SYhutM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=ggHHdVAKbQO6+N5gdVHaN7yXVDMaL1jh2dQ7bXQzYy9UlWdF/3U0oRr6c6wh8WQd/KS4iH0RunV3ObKfw18AszXIJImG9mTZUmK17Hl/XqiM+6XvFANfc7tdC1eT6+vvbsajVVMyeo6k4oJDjCZJrqqseU5fSb6mjufaYdydAcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T/O+bSHA; arc=none smtp.client-ip=209.85.217.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AouKOjZA"
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7c053a2118fso186806685a.2;
-        Mon, 10 Feb 2025 06:55:22 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T/O+bSHA"
+Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-4aff31b77e8so1245177137.1;
+        Mon, 10 Feb 2025 06:58:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739199321; x=1739804121; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=oKY/cRLmPBdKHMBVUtcfQapc7oda6mpw7tya6RS5r9o=;
-        b=AouKOjZAqhWkfv47PTcRK/iBx5IqH8/4y8nDG2Ma0Pw4TLMg8WHiehG+44D7zWsUFa
-         RfFjrEJWfj3iwsQRSQUVwRuAJFOXvXRcVn/B1w7jWseHlpcMH9Igg4NxskVeUA0pMED9
-         4MWxmWcve07Yr7SMCEiQnxDkD1r8NnUUSwMpYC5N4gt4SurBh1NpCpOtURL2OnDAZJqN
-         7N70qufOgFVAv+TORRJ99hsJD/pxpiw2aqPGHK3tTHkSIaTbY3Dh/Os+P+X/w3cZIBIa
-         5qQ+vdawcNiAUyqKjx+EQ7IHr7BBcl8xCynabZqLz2o35eNrqhwb6g5ldjEJ7kNXaRCc
-         9gPw==
+        d=gmail.com; s=20230601; t=1739199508; x=1739804308; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AarHumITDtwBjrB7JQOzJfM06Fq7KE1cOE/npi2r2gQ=;
+        b=T/O+bSHAy14X16OJ+Wttcln5P5z0o8MAaRifwuKiDBcmAvUiq12XIIIzAs+IuBKxIz
+         M7DjM6ZFKOyrnCMaOy9V9y2wC8AwXbehkjJhGPqM2PnpwWZ4uJlzTEOvMBI42R5+pwoa
+         0b4wdLM1GMnIqtgmmopFKUIySLvmNr1iJnkKKpaRHAhtUyj5ukkWywcpKd1zbhPC9s/J
+         NWwcXMg0QSe6TubffPsSYVXzVb7vKhWRy8ia4bhCsfVtogpiKubNFOMdBOWEx8JAjMVM
+         47ZSIIDphNRehjH8Ntgmohn3LIa5ZGfVwXG6uNZ0a+SclCdQzT95vuZxS1UUxYBsc0m8
+         gj8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739199321; x=1739804121;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oKY/cRLmPBdKHMBVUtcfQapc7oda6mpw7tya6RS5r9o=;
-        b=fDCBxpzit9gwpta50tHadf8B3WHIZzmKBilF7Cip8BYE7W6CLr8waYBuniW5QeT8sV
-         C2A3LBaTEdnK9SsMbaqnahgbi543BgCmgj0msdyg88P5cmGGy6JMEiXR2Txmu7eAQems
-         IrtnppId4yfCNvxR8tEAKqZQ6PpNTqAKWfs8+q5F3xqQkDK2xy/RQ8GHnq+UhBJ7fHJj
-         m8i3aOCKM9w7TmiRfrwPWR5gN/kokVbTOa0uuPmS4oqF/ave1rOe009odqe/PU3dfDI9
-         bFN1SnUtiBS4VSS2p9CtaNylGFGogXbDd1p8mUHVM1/e1eyNDmBd8YIIYaiyYdpIPPDG
-         uVvg==
-X-Forwarded-Encrypted: i=1; AJvYcCUT6/UH2dgYEHoWeXoOCqaKqWdCSglubSW+4YmwtoGDPaOHSDqeHqIWj/Z1jIbpkCezEEP+FWD+LMrov3M=@vger.kernel.org, AJvYcCUr2ad6s88Q8JffskLn9StMuClau0t8lY5VaYauifzxG2EG5n2RosUL2Sb2GHMyJPlumALKWc779OMH@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoMd4mfbtkBtiRPNnHM+HSz5FkEl6Z0D3sw+7SemiNlpz94/1A
-	kXV3p4B4wEo+FGrynl9Tszc7+kuj+E+VtD7+gFlfFWMvv6sv9j4P
-X-Gm-Gg: ASbGncsCdc5BALEQULVt3CX5RQxx3xMvY0v4Ry1O9+MhpPNzXMRWHRcvYLjUcSrVPP8
-	pWiHVZ+nNzLCKl+f9aSvVaomnyofdUv0E0s/quGl/Zk4E20LHTK7tgJNrVQHl0arDDTSSv9dD6W
-	Q22DkdJkcdNiTMTQYuYx/7Ms7tG7h2cJZCO+vGh93B8Iw/8SFiGxyw500y7+7Y46jA0qcozKn4D
-	9XOUfhhiaj/OzqpAv1yQszeLWuCi9ktpiq7YHn1tFU3h/b+IMoglId8e8IAQbHhWLS/mDq/q4bX
-	9Mp0np8zQSYjwO4V7wNs4KcaT6juezPbG3HTXWZ0E5Iny598bc+R1CmkenCBf2LSM0FeoUCoExH
-	2oAkHVyxtxLflo+aej1wdF7xD
-X-Google-Smtp-Source: AGHT+IHjtPM/dOeJofOdD9QbQ+MbB1sGFCDEjvisxh9+M++i/cWxlMTUPdxg2XYN0TJ1bRnwtQFvwg==
-X-Received: by 2002:a05:620a:4515:b0:7c0:604a:3f5c with SMTP id af79cd13be357-7c0604a41e4mr535004985a.56.1739199321351;
-        Mon, 10 Feb 2025 06:55:21 -0800 (PST)
-Received: from 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa ([2620:10d:c091:600::1:cc94])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c041e0e2e4sm533478985a.49.2025.02.10.06.55.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Feb 2025 06:55:20 -0800 (PST)
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Mon, 10 Feb 2025 09:55:19 -0500
-Subject: [PATCH v4] rust: alloc: satisfy POSIX alignment requirement
+        d=1e100.net; s=20230601; t=1739199508; x=1739804308;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=AarHumITDtwBjrB7JQOzJfM06Fq7KE1cOE/npi2r2gQ=;
+        b=RLtG9w4qo51hCG0MjR6jBi2fem6i2jppm9465552vkqUl7nNa/zrJwaqr5uy/VniIU
+         ryfFNdXVk2oBCNE42Qp2NdX3ztTP1cjJTJ4tsWVcsFiMCEO/KV5haYWJrghieCcpcOj3
+         xlVMDvILKLDjH3AbljicxB8HjHjXO780Mh+W7fawpgbr1svudxFfwchIah3cwrxEWTmR
+         5R3IAbybqQNCm5i7jpPo8cAvTB9zWiwGLXuEJSadb6RhOicvbcGQAsAapRaSB9p3q8kB
+         rFFPh/FG/6ZxjruH/KaqbAAwhwTRs//wosyZM8eUVMTf/11af/Q6iIVv414R6qtGQAjx
+         N9PQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVrL+rwe+WJNmW1C9sl3vtYqm2mRXe6QwOS8mFMe9993D0bJ7TIvrhkAdJooVHU+19m3aa2FMtsL6B3i2DcjU0=@vger.kernel.org, AJvYcCWRDL628Ve9D6geqUa9OUj2vQgN9GbzYPxpf9wrwjRaAKnJKxCQ98QHjV9IwJOpOJ+8c0M4hZe9IWc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6mDMF9iLcHgTgUM6JNT6SkEC3Z6jjPrKp7lVvEUMuMllwA2lj
+	8jPSbXoaO0MAYftY3TercAdAiPEqx1UPbUkkMJYMidexLcfUhaqS
+X-Gm-Gg: ASbGncvKPhdJsIfj/IN+CX1AI0sZj0EIi89k+pbgmJXK+ZeIglFkQVKSKSGul9VVS0o
+	pD8NqKvf0t02tZesSTAkr5uj0LUJGgSYZHRE6i2TuG481z6d9DGKb6IfqVcRShPkOMC7GSjL8eu
+	mk9xegT4IROjBVwvOUI3X+9l8qY7RdRBc1IIjP8Dxq08W2XNYVr2KQZlLU2PJLB0YvafeO6HqN8
+	3vpDq2jCBsSNt6xCqy+vxADZbFbKpTTZEv/RVl8wK8Dmrpc0sU3HdGopjNC1NzPM3omHCv4Il8+
+	z1NZALc=
+X-Google-Smtp-Source: AGHT+IHNEHKtlW9VRezT8q7Hza8hdVGzKNVLC7TbYmnrcpT+dR6/iL6AlqM3Av2RGq6891S7ISqZFw==
+X-Received: by 2002:a05:6102:4414:b0:4ba:76e4:638c with SMTP id ada2fe7eead31-4ba85de0aeamr9193385137.9.1739199508522;
+        Mon, 10 Feb 2025 06:58:28 -0800 (PST)
+Received: from localhost ([2800:bf0:82:3d2:4207:a956:ebad:2a64])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4bbb7547263sm798727137.4.2025.02.10.06.58.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Feb 2025 06:58:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250210-aligned-alloc-v4-1-609c3a6fe139@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAFYTqmcC/3XMQQrDIBCF4asE17XoGNOmq96jdKGjJkISixZpC
- bl7TVYh0NXwBr5/JslGbxO5VTOJNvvkw1RGfaoI9mrqLPWmbAIMJAPGqRp8N1lT7hCQagmoQUi
- BVyDFvKJ1/rP1Hs+ye5/eIX63fObr918pc8optq26CCdQm/rejcoPZwwjWUsZ9hqOGoqWyjEtn
- TF1445a7HVz1KJohhqZ0kywxuz1siw/c8GpXSYBAAA=
-X-Change-ID: 20250201-aligned-alloc-b52cb2353c82
-To: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- DJ Delorie <dj@redhat.com>, Eric Blake <eblake@redhat.com>, 
- Will Newton <will.newton@linaro.org>, Paul Eggert <eggert@cs.ucla.edu>, 
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>
-Cc: rust-for-linux@vger.kernel.org, linux-man@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Tamir Duberstein <tamird@gmail.com>
-X-Mailer: b4 0.15-dev
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 10 Feb 2025 09:58:24 -0500
+Message-Id: <D7OURQCZ3I1X.85BUFMYU6H8A@gmail.com>
+From: "Kurt Borja" <kuurtb@gmail.com>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+Cc: <linux-kernel@vger.kernel.org>, "Lyude Paul" <lyude@redhat.com>, "Rafael
+ J. Wysocki" <rafael@kernel.org>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Alexander Lobakin" <aleksander.lobakin@intel.com>, "Andy Shevchenko"
+ <andriy.shevchenko@linux.intel.com>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ "Jonathan Cameron" <Jonathan.Cameron@huawei.com>, "Liam Girdwood"
+ <lgirdwood@gmail.com>, "Lukas Wunner" <lukas@wunner.de>, "Mark Brown"
+ <broonie@kernel.org>, =?utf-8?q?Ma=C3=ADra_Canal?= <mairacanal@riseup.net>,
+ "Robin Murphy" <robin.murphy@arm.com>, "Simona Vetter"
+ <simona.vetter@ffwll.ch>, "Zijun Hu" <quic_zijuhu@quicinc.com>,
+ <linux-usb@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+Subject: Re: [PATCH v4 1/9] driver core: add a faux bus for use when a
+ simple device/bus is needed
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <2025021023-sandstorm-precise-9f5d@gregkh>
+ <2025021026-atlantic-gibberish-3f0c@gregkh>
+ <D7OU5VOXCS8M.39YEYRWFL1MPW@gmail.com> <2025021038-pushy-prior-5dfd@gregkh>
+In-Reply-To: <2025021038-pushy-prior-5dfd@gregkh>
 
-ISO C's `aligned_alloc` is partially implementation-defined; on some
-systems it inherits stricter requirements from POSIX's `posix_memalign`.
-
-This causes the call added in commit dd09538fb409 ("rust: alloc:
-implement `Cmalloc` in module allocator_test") to fail on macOS because
-it doesn't meet the requirements of `posix_memalign`.
-
-Adjust the call to meet the POSIX requirement and add a comment. This fixes
-failures in `make rusttest` on macOS.
-
-Fixes: dd09538fb409 ("rust: alloc: implement `Cmalloc` in module allocator_test")
-
-Acked-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Tamir Duberstein <tamird@gmail.com>
----
-Changes in v4:
-- Revert to `aligned_alloc` and correct rationale. (Miguel Ojeda)
-- Apply Danilo's Acked-by from v2.
-- Rebase on v6.14-rc2.
-- Link to v3: https://lore.kernel.org/r/20250206-aligned-alloc-v3-1-0cbc0ab0306d@gmail.com
-
-Changes in v3:
-- Replace `aligned_alloc` with `posix_memalign` for portability.
-- Link to v2: https://lore.kernel.org/r/20250202-aligned-alloc-v2-1-5af0b5fdd46f@gmail.com
-
-Changes in v2:
-- Shorten some variable names. (Danilo Krummrich)
-- Replace shadowing alignment variable with a second call to
-  Layout::align. (Danilo Krummrich)
-- Link to v1: https://lore.kernel.org/r/20250201-aligned-alloc-v1-1-c99a73f3cbd4@gmail.com
----
- rust/kernel/alloc/allocator_test.rs | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
-
-diff --git a/rust/kernel/alloc/allocator_test.rs b/rust/kernel/alloc/allocator_test.rs
-index e3240d16040b..1c881ed73d79 100644
---- a/rust/kernel/alloc/allocator_test.rs
-+++ b/rust/kernel/alloc/allocator_test.rs
-@@ -62,9 +62,30 @@ unsafe fn realloc(
-             ));
-         }
- 
-+        // ISO C (ISO/IEC 9899:2011) defines `aligned_alloc`:
-+        //
-+        // > The value of alignment shall be a valid alignment supported by the implementation
-+        // [...].
-+        //
-+        // As an example of the "supported by the implementation" requirement, POSIX.1-2001 (IEEE
-+        // 1003.1-2001) defines `posix_memalign`:
-+        //
-+        // > The value of alignment shall be a power of two multiple of sizeof (void *).
-+        //
-+        // and POSIX-based implementations of `aligned_alloc` inherit this requirement. At the time
-+        // of writing, this is known to be the case on macOS (but not in glibc).
-+        //
-+        // Satisfy the stricter requirement to avoid spurious test failures on some platforms.
-+        let min_align = core::mem::size_of::<*const crate::ffi::c_void>();
-+        let (align, size) = if layout.align() < min_align {
-+            (min_align, layout.size().div_ceil(min_align) * min_align)
-+        } else {
-+            (layout.align(), layout.size())
-+        };
+On Mon Feb 10, 2025 at 9:45 AM -05, Greg Kroah-Hartman wrote:
+> On Mon, Feb 10, 2025 at 09:29:52AM -0500, Kurt Borja wrote:
+>> Hi Greg,
+>>=20
+>> On Mon Feb 10, 2025 at 7:30 AM -05, Greg Kroah-Hartman wrote:
+>> > Many drivers abuse the platform driver/bus system as it provides a
+>> > simple way to create and bind a device to a driver-specific set of
+>> > probe/release functions.  Instead of doing that, and wasting all of th=
+e
+>> > memory associated with a platform device, here is a "faux" bus that
+>> > can be used instead.
+>> >
+>> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>> > Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+>> > Reviewed-by: Lyude Paul <lyude@redhat.com>
+>> > Reviewed-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
+>> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>> > ---
+>> > v4: - really removed the name logic
+>> >     - added #include <linux/container_of.h> to faux.h
+>> >     - added parent pointer to api call
+>> >     - minor documentation updates
+>> >     - made probe synchronous
+>> > v3: - loads of documentation updates and rewrites
+>> >     - added to the documentation build
+>> >     - removed name[] array as it's no longer needed
+>> >     - added faux_device_create_with_groups()
+>> >     - added functions to get/set devdata
+>> >     - renamed faux_driver_ops -> faux_device_ops
+>> >     - made faux_device_ops a const *
+>> >     - minor cleanups
+>> >     - tested it, again.
+>> >
+>> > v2: - renamed bus and root device to just "faux" thanks to Thomas
+>> >     - removed the one-driver-per-device and now just have one driver
+>> >       entirely thanks to Danilo
+>> >     - kerneldoc fixups and additions and string handling bounds checks
+>> >       thanks to Andy
+>> >     - coding style fix thanks to Jonathan
+>> >     - tested that the destroy path actually works
+>> >  Documentation/driver-api/infrastructure.rst |   6 +
+>> >  drivers/base/Makefile                       |   2 +-
+>> >  drivers/base/base.h                         |   1 +
+>> >  drivers/base/faux.c                         | 232 +++++++++++++++++++=
 +
-         // SAFETY: Returns either NULL or a pointer to a memory allocation that satisfies or
-         // exceeds the given size and alignment requirements.
--        let dst = unsafe { libc_aligned_alloc(layout.align(), layout.size()) } as *mut u8;
-+        let dst = unsafe { libc_aligned_alloc(align, size) } as *mut u8;
-         let dst = NonNull::new(dst).ok_or(AllocError)?;
- 
-         if flags.contains(__GFP_ZERO) {
+>> >  drivers/base/init.c                         |   1 +
+>> >  include/linux/device/faux.h                 |  69 ++++++
+>> >  6 files changed, 310 insertions(+), 1 deletion(-)
+>> >  create mode 100644 drivers/base/faux.c
+>> >  create mode 100644 include/linux/device/faux.h
+>> >
+>> > diff --git a/Documentation/driver-api/infrastructure.rst b/Documentati=
+on/driver-api/infrastructure.rst
+>> > index 3d52dfdfa9fd..35e36fee4238 100644
+>> > --- a/Documentation/driver-api/infrastructure.rst
+>> > +++ b/Documentation/driver-api/infrastructure.rst
+>> > @@ -41,6 +41,12 @@ Device Drivers Base
+>> >  .. kernel-doc:: drivers/base/class.c
+>> >     :export:
+>> > =20
+>> > +.. kernel-doc:: include/linux/device/faux.h
+>> > +   :internal:
+>> > +
+>> > +.. kernel-doc:: drivers/base/faux.c
+>> > +   :export:
+>> > +
+>> >  .. kernel-doc:: drivers/base/node.c
+>> >     :internal:
+>> > =20
+>> > diff --git a/drivers/base/Makefile b/drivers/base/Makefile
+>> > index 7fb21768ca36..8074a10183dc 100644
+>> > --- a/drivers/base/Makefile
+>> > +++ b/drivers/base/Makefile
+>> > @@ -6,7 +6,7 @@ obj-y			:=3D component.o core.o bus.o dd.o syscore.o \
+>> >  			   cpu.o firmware.o init.o map.o devres.o \
+>> >  			   attribute_container.o transport_class.o \
+>> >  			   topology.o container.o property.o cacheinfo.o \
+>> > -			   swnode.o
+>> > +			   swnode.o faux.o
+>> >  obj-$(CONFIG_AUXILIARY_BUS) +=3D auxiliary.o
+>> >  obj-$(CONFIG_DEVTMPFS)	+=3D devtmpfs.o
+>> >  obj-y			+=3D power/
+>> > diff --git a/drivers/base/base.h b/drivers/base/base.h
+>> > index 8cf04a557bdb..0042e4774b0c 100644
+>> > --- a/drivers/base/base.h
+>> > +++ b/drivers/base/base.h
+>> > @@ -137,6 +137,7 @@ int hypervisor_init(void);
+>> >  static inline int hypervisor_init(void) { return 0; }
+>> >  #endif
+>> >  int platform_bus_init(void);
+>> > +int faux_bus_init(void);
+>> >  void cpu_dev_init(void);
+>> >  void container_dev_init(void);
+>> >  #ifdef CONFIG_AUXILIARY_BUS
+>> > diff --git a/drivers/base/faux.c b/drivers/base/faux.c
+>> > new file mode 100644
+>> > index 000000000000..531e9d789ee0
+>> > --- /dev/null
+>> > +++ b/drivers/base/faux.c
+>> > @@ -0,0 +1,232 @@
+>> > +// SPDX-License-Identifier: GPL-2.0-only
+>> > +/*
+>> > + * Copyright (c) 2025 Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>> > + * Copyright (c) 2025 The Linux Foundation
+>> > + *
+>> > + * A "simple" faux bus that allows devices to be created and added
+>> > + * automatically to it.  This is to be used whenever you need to crea=
+te a
+>> > + * device that is not associated with any "real" system resources, an=
+d do
+>> > + * not want to have to deal with a bus/driver binding logic.  It is
+>> > + * intended to be very simple, with only a create and a destroy funct=
+ion
+>> > + * available.
+>> > + */
+>> > +#include <linux/err.h>
+>> > +#include <linux/init.h>
+>> > +#include <linux/slab.h>
+>> > +#include <linux/string.h>
+>> > +#include <linux/container_of.h>
+>> > +#include <linux/device/faux.h>
+>> > +#include "base.h"
+>> > +
+>> > +/*
+>> > + * Internal wrapper structure so we can hold a pointer to the
+>> > + * faux_device_ops for this device.
+>> > + */
+>> > +struct faux_object {
+>> > +	struct faux_device faux_dev;
+>> > +	const struct faux_device_ops *faux_ops;
+>> > +};
+>> > +#define to_faux_object(dev) container_of_const(dev, struct faux_objec=
+t, faux_dev.dev)
+>> > +
+>> > +static struct device faux_bus_root =3D {
+>> > +	.init_name	=3D "faux",
+>> > +};
+>> > +
+>> > +static int faux_match(struct device *dev, const struct device_driver =
+*drv)
+>> > +{
+>> > +	/* Match always succeeds, we only have one driver */
+>> > +	return 1;
+>> > +}
+>> > +
+>> > +static int faux_probe(struct device *dev)
+>> > +{
+>> > +	struct faux_object *faux_obj =3D to_faux_object(dev);
+>> > +	struct faux_device *faux_dev =3D &faux_obj->faux_dev;
+>> > +	const struct faux_device_ops *faux_ops =3D faux_obj->faux_ops;
+>> > +	int ret =3D 0;
+>> > +
+>> > +	if (faux_ops && faux_ops->probe)
+>> > +		ret =3D faux_ops->probe(faux_dev);
+>> > +
+>> > +	return ret;
+>> > +}
+>> > +
+>> > +static void faux_remove(struct device *dev)
+>> > +{
+>> > +	struct faux_object *faux_obj =3D to_faux_object(dev);
+>> > +	struct faux_device *faux_dev =3D &faux_obj->faux_dev;
+>> > +	const struct faux_device_ops *faux_ops =3D faux_obj->faux_ops;
+>> > +
+>> > +	if (faux_ops && faux_ops->remove)
+>> > +		faux_ops->remove(faux_dev);
+>> > +}
+>> > +
+>> > +static const struct bus_type faux_bus_type =3D {
+>> > +	.name		=3D "faux",
+>> > +	.match		=3D faux_match,
+>> > +	.probe		=3D faux_probe,
+>> > +	.remove		=3D faux_remove,
+>> > +};
+>> > +
+>> > +static struct device_driver faux_driver =3D {
+>> > +	.name		=3D "faux_driver",
+>> > +	.bus		=3D &faux_bus_type,
+>> > +	.probe_type	=3D PROBE_FORCE_SYNCHRONOUS,
+>> > +};
+>> > +
+>> > +static void faux_device_release(struct device *dev)
+>> > +{
+>> > +	struct faux_object *faux_obj =3D to_faux_object(dev);
+>> > +
+>> > +	kfree(faux_obj);
+>> > +}
+>> > +
+>> > +/**
+>> > + * faux_device_create_with_groups - Create and register with the driv=
+er
+>> > + *		core a faux device and populate the device with an initial
+>> > + *		set of sysfs attributes.
+>> > + * @name:	The name of the device we are adding, must be unique for
+>> > + *		all faux devices.
+>> > + * @parent:	Pointer to a potential parent struct device.  If set to
+>> > + *		NULL, the device will be created in the "root" of the faux
+>> > + *		device tree in sysfs.
+>> > + * @faux_ops:	struct faux_device_ops that the new device will call ba=
+ck
+>> > + *		into, can be NULL.
+>> > + * @groups:	The set of sysfs attributes that will be created for this
+>> > + *		device when it is registered with the driver core.
+>> > + *
+>> > + * Create a new faux device and register it in the driver core proper=
+ly.
+>> > + * If present, callbacks in @faux_ops will be called with the device =
+that
+>> > + * for the caller to do something with at the proper time given the
+>> > + * device's lifecycle.
+>> > + *
+>> > + * Note, when this function is called, the functions specified in str=
+uct
+>> > + * faux_ops can be called before the function returns, so be prepared=
+ for
+>> > + * everything to be properly initialized before that point in time.
+>> > + *
+>> > + * Return:
+>> > + * * NULL if an error happened with creating the device
+>> > + * * pointer to a valid struct faux_device that is registered with sy=
+sfs
+>> > + */
+>> > +struct faux_device *faux_device_create_with_groups(const char *name,
+>> > +						   struct device *parent,
+>> > +						   const struct faux_device_ops *faux_ops,
+>> > +						   const struct attribute_group **groups)
+>> > +{
+>> > +	struct faux_object *faux_obj;
+>> > +	struct faux_device *faux_dev;
+>> > +	struct device *dev;
+>> > +	int ret;
+>> > +
+>> > +	faux_obj =3D kzalloc(sizeof(*faux_obj), GFP_KERNEL);
+>> > +	if (!faux_obj)
+>> > +		return NULL;
+>> > +
+>> > +	/* Save off the callbacks so we can use them in the future */
+>> > +	faux_obj->faux_ops =3D faux_ops;
+>> > +
+>> > +	/* Initialize the device portion and register it with the driver cor=
+e */
+>> > +	faux_dev =3D &faux_obj->faux_dev;
+>> > +	dev =3D &faux_dev->dev;
+>> > +
+>> > +	device_initialize(dev);
+>> > +	dev->release =3D faux_device_release;
+>> > +	if (parent)
+>> > +		dev->parent =3D parent;
+>> > +	else
+>> > +		dev->parent =3D &faux_bus_root;
+>> > +	dev->bus =3D &faux_bus_type;
+>> > +	dev->groups =3D groups;
+>> > +	dev_set_name(dev, "%s", name);
+>> > +
+>> > +	ret =3D device_add(dev);
+>> > +	if (ret) {
+>> > +		pr_err("%s: device_add for faux device '%s' failed with %d\n",
+>> > +		       __func__, name, ret);
+>> > +		put_device(dev);
+>> > +		return NULL;
+>> > +	}
+>>=20
+>> Now that the probe is synchronous, what do you think about returning
+>> -ENODEV if the device failed to bind to the driver?
+>
+> Nope, that would make all callers have to deal with a pointer or a NULL,
+> or an error value encorporated in a pointer.
 
----
-base-commit: a64dcfb451e254085a7daee5fe51bf22959d52d3
-change-id: 20250201-aligned-alloc-b52cb2353c82
+Right! I thought for a sec this function returned ERR_PTRs.
 
-Best regards,
--- 
-Tamir Duberstein <tamird@gmail.com>
+>
+>> This would be useful for modules that may want to unload if the probe
+>> fails.
+>
+> Then just test for NULL, there's nothing preventing that, right?
+
+Please, correct me if I'm wrong. If the probe the user provided fails
+the device would still be added successfully to the bus. That means this
+function would return a valid pointer and the module has no way of
+knowing if the probe succeeded in an __init section.
+
+>
+> Also, the only way probe can fail is if the probe you passed into the
+> call fails.  Or if you picked a name that is already in the system, both
+
+Exactly. I'm thinking of modules that are very simple and just care
+about the probe succeeding, so having the device hanging around in the
+bus and the module loaded would be a waste of resources.
+
+--=20
+ ~ Kurt
+
+> of which you have full control over.
+>
+> thanks,
+>
+> greg k-h
 
