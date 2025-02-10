@@ -1,94 +1,49 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3985F1B21BD
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Feb 2025 08:06:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536FB57C93;
+	Mon, 10 Feb 2025 08:39:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739174803; cv=none; b=po5OInJPnhLnKkJVTWfNSngzTXm1ODaHMh/9AoLEx7jrg/QDFfvVijZFWtWXkLH2WvXMyiHW0xmiNHP3bSUr6C3qI08WAsJzlGLUAGuwqpVa540oO+U6Z5obY8lD47aH1H93J1ptlK7GkgABUiA8YmiaiNp1B0vUW0F7QNV4Mqk=
+	t=1739176762; cv=none; b=Xwfqn1eomVBUCa9NVMBtNK9L/AQkXJcwJG92v6qrun8KS67rJRcRWyz2ZaiGZvwkS2D5aYVRs1x5qV8rXpFfixIFpv8rvcsOCwFaVQKiNWa1hOOER2aEWJAl4iqPGwVM6br53BOE4haIN3aVZkHXnHVyOHJJQ7sULWCbTg7yK6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739174803; c=relaxed/simple;
-	bh=A3OrU86yFSA3UhFhMSz4sxiRiOlmLl05dbOqahKg9xw=;
+	s=arc-20240116; t=1739176762; c=relaxed/simple;
+	bh=cB2/4NoQX3HhCi0YEklI0a7Y6Qdh4paqmB9/dx2Qj5c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FvRjGKMzV6+BqyGjeviGIUHF5hxYHTx65UKSW0g/cYhnBlfDb4kziIPdDMpCihz11yL5oxA4TWlfcQ1vMbLKHvT/qlPCVdgKAgbTRMBkhTbiq5nqk0ak91ewWt2WgTUTX5Dg77NvL3cly+h9jY4i3c1mU3TkUwPkr5yZmNx9P8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=m27lSY7O; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=BydOWHd5xF4YVqfAhLFiTJqJXxoL4aRCqsTJUj7no6YswGgfZcDhKyv+U/4LFVLdJvH4USJcJP7TkcRqc6Mo+5aRGaFPc4cx0YDZwL+AmMEdT+6PUV8HOfOJjJP/6tjxJ4cyl/4vFbUax09e5tq66ycGvbkhoSgqWmFk2NxDAUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JeIBG7aH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="m27lSY7O"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-21f710c17baso22601815ad.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 10 Feb 2025 00:06:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1739174800; x=1739779600; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=IVXeQyKN4QJ5pjBqKy+7ctyC/+A7eWtC3q0uB/7UlNk=;
-        b=m27lSY7Oo1Mk0TmNYy7yC37wyNWccthhFHF1r5bBI3BKVictqc0OamNVc3I8Hj6zJP
-         Jk4J8V2jDafWpDymraz8Jeo33YNbHgKbxkNVAFruJaeIiRTPhnqGAsQVnvnPlw6H/7pO
-         G/ZbScaLirb0/zJmNFMOqLA4AID9CigV1cFd/Q8lJLUsvJ/0T0SWo3ulSmNCUKaPuMe+
-         Lan6a7EVuH45zIW99KaTD7tS8drPvUu5FpckkC6gzcw7GRV9kplLS8mmzxbS01vdfcxa
-         t3XEEtNAbcG7fP8VSPBy2hDcrzr9yuNxvm60lm7BqN76T5II/y3SfCH2MlDolmFiCxE8
-         G7wQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739174800; x=1739779600;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IVXeQyKN4QJ5pjBqKy+7ctyC/+A7eWtC3q0uB/7UlNk=;
-        b=m9HQoEoR4UvvaSIUvFjtpWtV9LlsmRr8lcsgzJKvJOyTdFJJPRp4tWKuu1g77VdLVG
-         HfCRnqHAXWqzS/twHk/FNFS0jlGSFFTJCfDIjS939W1jpyC8vmOe+wPcbVYMnmY5wMpR
-         8Pi+IPcZU/mCD+ciOc6/pFYbLxxu/U3kBvmXrYRSwPFJ4O32AlUW3h9HKfnEcYOtG37E
-         Ge3TEra61dnl1s66NYGnxQsvxW22JX8zjlPBslEnpirlFQr1o4Lslit7Ot3hz40hJzE2
-         jMHSWEbgtMFk72J4ED5/6EdZ9SxxlJ2TyljWAkwVGWmiyWATuFW3GXHw2LzfQnvpa5BZ
-         cK2w==
-X-Forwarded-Encrypted: i=1; AJvYcCVVlQm7hlib30UWZL6C65jRURBlmdfL/azCMkeSkDZrDGZ4pdCuE4xoJdlz4SMbGSI3AMToWjP9lP+jTn4Osw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTFKvV2aj795llVa+UBCImcAS2Pkk/+0+Px48geoLRgKppQ4A8
-	WxMlTQ7Ft9SwTUsp6qNgFuLg2PQav1awjFaUgfD7DRYgHQdIpgjZavN8ocdA14E=
-X-Gm-Gg: ASbGncvtisSxhw6t8nqTeOu601ve+e6YzKfvjcBwpptrge5pRxUX4IB18VbVRqnGF4h
-	hQMKEGZTZTmubq5G5g9VlIAAKSe4fnImQr4/LHRabvfMV5puUcnjc3SidO/H1U/wVr4MIjtU/Yn
-	M32OrMPQYCtiEL9PM5YxHSxtEEZy0Dv2lSpPzRAs/P6Aou5ObI9AuWStcddeS221pghH67+GNny
-	tKLDFDeqPQc4vI9ZojgtyJprMRJ0zHYrKrY5Fuyf9qkNXoCW5r7IBxizthWSM14CCuQBkYPe+ZC
-	3M8MQtS4TbhGDU5T2g==
-X-Google-Smtp-Source: AGHT+IHM4kYVoFgxrWVd43dBTvU4IzoZ0Z6Z31Y/z3cQy6J4+x70snoVsJeMXCdxFbw0M5vVFErOEQ==
-X-Received: by 2002:a05:6a00:2289:b0:72d:65c1:ad01 with SMTP id d2e1a72fcca58-7305d509d46mr23026216b3a.21.1739174800438;
-        Mon, 10 Feb 2025 00:06:40 -0800 (PST)
-Received: from localhost ([122.172.84.139])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-730764c4b51sm3623175b3a.55.2025.02.10.00.06.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Feb 2025 00:06:39 -0800 (PST)
-Date: Mon, 10 Feb 2025 13:36:37 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Stephen Boyd <sboyd@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Danilo Krummrich <dakr@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Michael Turquette <mturquette@baylibre.com>,
-	linux-pm@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Nishanth Menon <nm@ti.com>, rust-for-linux@vger.kernel.org,
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
-	Erik Schilling <erik.schilling@linaro.org>,
-	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org
-Subject: Re: [PATCH V8 06/14] rust: Add bare minimal bindings for clk
- framework
-Message-ID: <20250210080637.ic4fxcn6tmllqgaq@vireshk-i7>
-References: <cover.1738832118.git.viresh.kumar@linaro.org>
- <c68081e18d939aefc7f6dac798df6b72e81bba4b.1738832118.git.viresh.kumar@linaro.org>
- <Z6ShsuLykigNscz8@pollux>
- <Z6SiiRubSXGInbgj@pollux>
- <0cd42d2d683ea057e6034978b02c7f84.sboyd@kernel.org>
- <Z6VBo51g54xAmelQ@cassiopeiae>
- <20250207092448.n5mzbt6lg6zqud4a@vireshk-i7>
- <52a3d4fc-b08c-499c-ba47-7a1d782b57db@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JeIBG7aH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 336CEC4CED1;
+	Mon, 10 Feb 2025 08:39:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739176761;
+	bh=cB2/4NoQX3HhCi0YEklI0a7Y6Qdh4paqmB9/dx2Qj5c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JeIBG7aHXyacXb1ZdUsWf9t1KJyobLr4BCY3cBQFA+TkfxNWgbMHqf0/lMWghm6Ug
+	 WZ8cqCIltuIL+bxLhh9aRy0oTykCSyoXLxmMj5yeZJlE2REwtVUvRF9OToN6yNmNBW
+	 UV2XK9s95IUS0U1g785HzliMYnQEzUKsg/M3B4S56rp7zM02SR1fVQdFBVaaAreh8K
+	 1HrU4LITUBVqKKm59RVm1Gx0NlL2ABAj9BDUmKYWAEaRZ9Y2HHhAfqM20M/oI8Ht1k
+	 is5ihCsZRK+3Sb9VqZgHRvlN62Muie/Z26Jj579T9YmEUi3nlhdAe/HW/8V2wsfgVO
+	 CljokwOSXVVNw==
+Date: Mon, 10 Feb 2025 09:39:13 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: airlied@gmail.com, simona@ffwll.ch, corbet@lwn.net,
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+	tzimmermann@suse.de, ajanulgu@redhat.com, lyude@redhat.com,
+	pstanner@redhat.com, zhiw@nvidia.com, cjia@nvidia.com,
+	jhubbard@nvidia.com, bskeggs@nvidia.com, acurrid@nvidia.com,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, nouveau@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] gpu: nova-core: add initial driver stub
+Message-ID: <Z6m7MVErUPbkK9vV@pollux>
+References: <20250209173048.17398-1-dakr@kernel.org>
+ <2025021011-dangling-retrain-f61e@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -97,36 +52,46 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <52a3d4fc-b08c-499c-ba47-7a1d782b57db@kernel.org>
+In-Reply-To: <2025021011-dangling-retrain-f61e@gregkh>
 
-On 07-02-25, 18:19, Danilo Krummrich wrote:
-> On 2/7/25 10:24 AM, Viresh Kumar wrote:
-> > On 07-02-25, 00:11, Danilo Krummrich wrote:
-> > > On Thu, Feb 06, 2025 at 12:05:59PM -0800, Stephen Boyd wrote:
-> > > > Quoting Danilo Krummrich (2025-02-06 03:52:41)
-> > > > > On Thu, Feb 06, 2025 at 12:49:14PM +0100, Danilo Krummrich wrote:
-> > > > > > On Thu, Feb 06, 2025 at 02:58:27PM +0530, Viresh Kumar wrote:
-> > 
-> > > > > > > +/// A simple implementation of `struct clk` from the C code.
-> > > > > > > +#[repr(transparent)]
-> > > > > > > +pub struct Clk(*mut bindings::clk);
-> > > > > > 
-> > > > > > Guess this should be Opaque<bindings::clk>.
-> > > > > 
-> > > > > Sorry, I meant NonNull<bindings::clk>.
-> > > > 
-> > > > NULL is a valid clk. It's like "don't care" in the common clk framework
-> > > 
-> > > Thanks for clarifying!
-> > 
-> > > Guess this should be Opaque<bindings::clk>.
-> > 
-> > So it should be this now ?
+On Mon, Feb 10, 2025 at 07:24:59AM +0100, Greg KH wrote:
+> On Sun, Feb 09, 2025 at 06:30:24PM +0100, Danilo Krummrich wrote:
+> > +config NOVA_CORE
+> > +	tristate "Nova Core GPU driver"
+> > +	depends on PCI
+> > +	depends on RUST
+> > +	depends on RUST_FW_LOADER_ABSTRACTIONS
+> > +	default n
 > 
-> I actually meant NonNull<bindings::clk>, which I corrected in a subsequent mail,
-> where Stephen pointed out that NULL is a valid value for a struct clk.
+> Tiny nit, if you happen to respin this, "default n" is always the
+> default, so there's never a need to specify it.
 
-Ahh okay, so no changes required now. Thanks.
+At some point we'll want to change that to 'default m', and I thought keeping it
+explicit is probably a good reminder. But I'm also fine removing it.
 
--- 
-viresh
+> 
+> > +impl Firmware {
+> > +    fn new(dev: &device::Device, spec: &Spec, ver: &str) -> Result<Firmware> {
+> > +        let mut chip_name = CString::try_from_fmt(fmt!("{}", spec.chipset))?;
+> > +        chip_name.make_ascii_lowercase();
+> > +
+> > +        let request = |name_| {
+> > +            CString::try_from_fmt(fmt!("nvidia/{}/gsp/{}-{}.bin", &*chip_name, name_, ver))
+> 
+> How does this match up with the MODULE_FIRMWARE() aliases that end up in
+> a kernel module so that the tools know to add the firmware to the system
+> in the proper place (i.e. initramfs or something like that)?
+> 
+> I always thought you needed to individually list the firmware files, or
+> does the rust implementation now somehow handle that in a programatic
+> way from strings like this?
+
+That'd be nice, but the firmware we load is (or in general might be) only a
+subset of the firmware that the module needs potentially.
+
+So, you're right, all (potentially) required firmware files need to be listed in
+the module!() macro's firmware field (or in this case within
+module_pci_driver!()).
+
+Back when I wrote this code we haven't had this field yet -- thanks for
+reminding me of that.
