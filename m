@@ -1,116 +1,96 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74501BBBDD
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Feb 2025 07:52:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78751B21BD
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Feb 2025 08:06:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739173977; cv=none; b=g0VH+uqOwIm1SZp/+XrZKGcM1Goimou167n+lwLjE/W9XoInBTQrs2phUg9Z57oK03x+27z/m0RHMd0PJeP1BM+IpIptFHHl2ogg/+QHJWkc5XjdmSovJECefZ70lk33WyZt0HVHCC7BYsLno5BfTV2D6DmrxVe5vy9YDrAOKEI=
+	t=1739174766; cv=none; b=k2ECzPe2YVvqE5Xmk2MhGIvsDRP0z6ol0ALLnR5FPa5g6mRsrft3strXCCe/hhARt8BFCRdLFIONm24bgk/SM89byfphczYtnX5V9tkWNSRQ4KNkyt7JXJzIjFmT7hwR05Tt02ZWh+FeLHZqAQP9xQO+rnm8SJN+JnjOFKOvUOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739173977; c=relaxed/simple;
-	bh=W8zdIY1rYsE45zOuPrzevizg1Izts5KX52qEocX1Sco=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eavzFlliocs9mmq/JpQtnX+u+PrQ045/HJ3q1PGGCg3rFmf01G2qUMxvNJEo5LWTc2lle8zg4dwqkGyBNEYRGQv6eLmqw4axRByTpKAPYXAnN0mCusU6FoxwpyBUZd0sMxWz1iGH33nUb9C8V7RP37FAGhg7f4dQR0xWbclzr8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=g9alD5FC; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
+	s=arc-20240116; t=1739174766; c=relaxed/simple;
+	bh=5WB/xN4I0+Le1mu5gDHsjLNT2znP0CA6bOhx+6FlUhY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k3Sy7J580++x36dyZWBCDY25ndbUlPbvYji3fTyrFjRc3+kcqMZm6dQafpr8GB2H+fy6JK+Xyi2t10ZV226YLRS/w1jHeuRJniZV68M6IaUrrPEYiD0chii1boFAm6R5bZ38ctenmSDSDPFv7kOceOCMYLai84JTwUw0jZOA4ME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=R2/20IKR; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="g9alD5FC"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4368a293339so45046465e9.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 09 Feb 2025 23:52:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="R2/20IKR"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-21f62cc4088so33841525ad.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 10 Feb 2025 00:06:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1739173974; x=1739778774; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=qkfv43O1g5zvAJXOqIcSrZ8ndK2BrDyyauC15WFvoaQ=;
-        b=g9alD5FCVL0Ag+3KY7hlP6GzVwTNT1zd8fRru50sDnF3J+wWjJXMdJTncklnrPrD9e
-         5t9f3AeC2TECoU16lU92mutiM3TYOREd7Jt5EeIlRZr3AZvvG8Tj6Qquy487ErgiGOu7
-         25PxjTc0c6hQGY1oQN36xzToGtxKhtgEUHNz4=
+        d=linaro.org; s=google; t=1739174764; x=1739779564; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=gQjHhBqGj5IZ+lWQctqtiLtMtAyUEzvqFMG/1MA1FoQ=;
+        b=R2/20IKR8LpM6+FYQCBJN/vco5x2msQAZRbUEXjagUkLShkEex6acjhasgHRoRN+QS
+         LgWLwUrCMuWqt+JbOXc1LPSDAIyMihJRtMb5PBiPoxJXnmYw/uack01en3SfFn0ZivmH
+         1Ih0tXIBOBy8ERi/SaArqEu23XdSiQmAtmF7/aDnkyF/1w5fjRLyD8zYQak3lFLqPJCY
+         pWqOZoeZAvKIOqidY98gLzAiIS6JQJK8A0OnDCpa95iOFeLlUtltQvY51F/OgOErnxrp
+         82tjniAeFPR7pxc1GRxJq1FF0uTwFocMEjwpjvQpyaYzPhgBWCLwHzG7aSOvDSMpTOeD
+         GdQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739173974; x=1739778774;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qkfv43O1g5zvAJXOqIcSrZ8ndK2BrDyyauC15WFvoaQ=;
-        b=nhm/0zxTTVODcuDXueOfbwtft8KUCRTKqJDURcIttXhRK94wJ5BkzT4vwVLei3Zb/1
-         TRWnwjqC4eJyVwrKw1zXKYSEm4WSrBk7Hgreig4sQ5tgYmx7qjiX2+PbjlJwcbJ37a0u
-         uEH1lnkdB/3s3yzj+/Uc66XYc6Jws6QykuEK3INaQH0sU4K9R4rpJnVtfPO7uleqytSe
-         EwAD4ViEDPp1yb+9wYLNJXLdEJ0KDXAXLoOZMoBCBF1SLY5MdwD0iI8bnxTYXu4BkB8v
-         KwnWdro2o/UnHwu+Uek+NazNKR6+So4tea6lYuDijAwBR+CLYQh0d/iIBFmafI38gx4t
-         nPSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXnEfHb2bDW1L/kv0p5X3/Ykarn9G7j6S+jyPTMJydF33p/S0X9v2tYWqeo2ag1NAyQp/3NG0DsMLrdycdSjA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFkoAOulWBsVvNWH2Z7YQlkA2vnKjdKr4WsjHdCTEtoO1fIwRq
-	1pd2qEhD5p5QRxLV5oXWZIlbwtoxI1lotbJ776p8LBIFs6jtc36ahpzJ8oSc48Q=
-X-Gm-Gg: ASbGncvVn1xo73w7O4vAgUXzozA6amMz/loYR1oMqoIvjuDYWJi5du764OgA1dEXVJS
-	5HQmiho+KDddI0zX2BEVIb1B7PA+VOqXcFNqWXfPrVKgKh9Pif41iHxWnqKgCgkKU7Bhx6SA15K
-	rfP719wdR/vlQ4RDwNuWbYMd9f3rN5DMMdL4Mx328yQ8Hj8W4mOQmYTmuz4bFt9dSDrXDQNsK4c
-	sCT7rvm2PQC0MD21gLFVZPvBEwWWk5K4xZOWf1MjYvIgKh6DQcYyXtzKQ+emiK/XZIchWht6KNA
-	xPFwUEMPOVbeIU0Pc+gxhsntfZ8=
-X-Google-Smtp-Source: AGHT+IFDgbl8wGVpble5Zv0abCqTht8o2Ov+/uOG64czyzOx5fpcCwEyGABd1B3TPwQLwmivIDhgfQ==
-X-Received: by 2002:a05:600c:4f8e:b0:434:a7e3:db5c with SMTP id 5b1f17b1804b1-43924989dbbmr123507065e9.11.1739173973845;
-        Sun, 09 Feb 2025 23:52:53 -0800 (PST)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38dc565d62dsm10287702f8f.93.2025.02.09.23.52.52
+        d=1e100.net; s=20230601; t=1739174764; x=1739779564;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gQjHhBqGj5IZ+lWQctqtiLtMtAyUEzvqFMG/1MA1FoQ=;
+        b=SNd/8nN968JVdr83iD+U3UGqwD04ceRMYQIkUuatZhT2iM91WhbUYl+3ecSzy6Dwft
+         VOWRJ10gCHG1O1MS8bLHlYveNZcZwH7D+CG0mmCvskeSoVKeJkLx5AcA1d2LTZBWTxHX
+         owYcDHJhjSRmnE/Xo9r/TIvr6OrDJIkD1me5+Xg8v5e9Eqw27wpKZOld7z/s5HndWQc/
+         FVFL/e4Zm3umSDBXH8kFQXo4L32tkTORHHuzPSm18bP5RV50aANZeNxFms3/a/Ri3hco
+         kWyEsMjPQsFQoyuikD5aTDiTQh3sBRAvvzXwlQ+vuGSVXvlKfdSGfuOvY2uw5yrz3Cnu
+         2tOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVQmbu6xeOJkVFJCCUcaXUaHsmL8KsZbbHSueopLm+s179MOobt7iwjHCuURyEgJTMuvFmJYXcwIGQJv1PHRw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxtHjeDC8Sadi+mlNYiVywiVdauaeLiAslA6EWXcg0FCjtj8C44
+	5Ndo+4IhYCcSGH4U6FhgNQOKS62zK2Ise2baMz0zTWqvZi6JE3Kahc9GfuGZHtg=
+X-Gm-Gg: ASbGncusAcKWcWb29atExmvcith+COZHtIM85gdox9nOTcPi9Blr1iUg3A4xl/sAW3I
+	+KfUa3ytM94nALiJG7VXzMyYjriAHPuQx9bB6EjN7xoC/A7NXPZHDpLgt+aNeP/mFSxgilp6rYV
+	OYTxfCxNWRt67QItJtcK3QAwrR8SC0Q94UQH9T9CzGCq67RkLg1Az07kBT5NhoRDUprbxJBaYdt
+	A39svayDRq2WfOghZ4y4ZF0b9HkGYCend4DlfcBlXB5MQ2LGPAxc7oeYU5/g7sqz749OqNrWBIl
+	vq25yDXURwKcb1xM7A==
+X-Google-Smtp-Source: AGHT+IFq5wp0CMK0YMZ+JeRZQs6mquvHCQKLzwwMogSPHJ1odDnDs2wNVqpJPZZfSlztYEGJOAUAeg==
+X-Received: by 2002:a17:902:e848:b0:215:83e1:99ff with SMTP id d9443c01a7336-21f4e6d255fmr173960985ad.27.1739174764103;
+        Mon, 10 Feb 2025 00:06:04 -0800 (PST)
+Received: from localhost ([122.172.84.139])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f3683d58fsm72231715ad.122.2025.02.10.00.06.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Feb 2025 23:52:53 -0800 (PST)
-Date: Mon, 10 Feb 2025 08:52:51 +0100
-From: Simona Vetter <simona.vetter@ffwll.ch>
-To: Hector Martin <marcan@marcan.st>, Simona Vetter <simona@ffwll.ch>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>, phasta@kernel.org,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	daniel.almeida@collabora.com, aliceryhl@google.com,
-	robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
+        Mon, 10 Feb 2025 00:06:03 -0800 (PST)
+Date: Mon, 10 Feb 2025 13:36:01 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@redhat.com>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
+	Alice Ryhl <aliceryhl@google.com>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
-	DRI Development <dri-devel@lists.freedesktop.org>
-Subject: Re: On community influencing (was Re: [PATCH v8 2/2] rust: add dma
- coherent allocator abstraction.)
-Message-ID: <Z6mwU1Yiy-PQ4lXb@phenom.ffwll.local>
-Mail-Followup-To: Hector Martin <marcan@marcan.st>,
-	Simona Vetter <simona@ffwll.ch>, Jason Gunthorpe <jgg@nvidia.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>, phasta@kernel.org,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	daniel.almeida@collabora.com, aliceryhl@google.com,
-	robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
-	DRI Development <dri-devel@lists.freedesktop.org>
-References: <20250130154646.GA2298732@nvidia.com>
- <2025013030-gummy-cosmic-7927@gregkh>
- <20250130172437.GN5556@nvidia.com>
- <2025013148-reversal-pessimism-1515@gregkh>
- <20250131135421.GO5556@nvidia.com>
- <2b9b75d1-eb8e-494a-b05f-59f75c92e6ae@marcan.st>
- <Z6OzgBYZNJPr_ZD1@phenom.ffwll.local>
- <4c143b85-063a-4413-a6ca-e9d80e26da96@marcan.st>
- <c5a49bcb-45cf-4295-80e0-c4b07083df00@marcan.st>
- <Z6YPfsDSNdRUskvp@phenom.ffwll.local>
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Nishanth Menon <nm@ti.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Trevor Gross <tmgross@umich.edu>, Viresh Kumar <vireshk@kernel.org>,
+	Yury Norov <yury.norov@gmail.com>, linux-pm@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	rust-for-linux@vger.kernel.org,
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+	Erik Schilling <erik.schilling@linaro.org>,
+	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
+	Anisse Astier <anisse@astier.eu>, linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V8 00/14] Rust bindings for cpufreq and OPP core + sample
+ driver
+Message-ID: <20250210080601.afrxidoywz4ukqdt@vireshk-i7>
+References: <cover.1738832118.git.viresh.kumar@linaro.org>
+ <Z6Sgwbgfp-9SCr8Y@pollux>
+ <20250207071538.xjxauatta2jsedz4@vireshk-i7>
+ <CANiq72k4N_bD3_QxFKveyjGsSeXJX7y6fKU4EVt0hBOcq9q7tA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -119,33 +99,104 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z6YPfsDSNdRUskvp@phenom.ffwll.local>
-X-Operating-System: Linux phenom 6.12.11-amd64
+In-Reply-To: <CANiq72k4N_bD3_QxFKveyjGsSeXJX7y6fKU4EVt0hBOcq9q7tA@mail.gmail.com>
 
-On Fri, Feb 07, 2025 at 02:49:50PM +0100, Simona Vetter wrote:
-> When you're that harmful with your calling out, eventually I'm going to be
-> fed up, and you get a live round shot across your bow. And if that then
-> causes you to ragequit, because you can't actually deal with the heat
-> you've been dishing out coming back around the corner:
+Hi Miguel,
+
+On 07-02-25, 12:07, Miguel Ojeda wrote:
+> The warning is there even if you don't run `rustfmt`, and it does not
+> look like a bug to me -- what Clippy is complaining about is that you
+> don't actually need the `unsafe` block to begin with:
 > 
-> Fuck off.
-
-With some sleep, a w/e and slightly less ill temper: As I'd say in Swiss
-German, this was suboptimal wording. Or in plain English, a disaster, I
-screwed up.
-
-I do not rescind the sentiment I expressed though. I cannot stand people
-who punch where they're stronger, and eschew conflict and fold the moment
-someone hits back.
-
-> Or as Dave Airlie put it upthread in this conversation:
+>     error: unnecessary `unsafe` block
+>     --> rust/kernel/cpufreq.rs:631:22
+>         |
+>     631 |         attr[next] = unsafe {
+>         |                      ^^^^^^ unnecessary `unsafe` block
+>         |
+>         = note: `-D unused-unsafe` implied by `-D warnings`
+>         = help: to override `-D warnings` add `#[allow(unused_unsafe)]`
 > 
-> "Being toxic on the right side of an argument is still toxic, [...]"
+> since those operations are safe. Or am I missing something?
 
-The irony has not entirely escaped me. Oh well.
+One thing you are missing is the right branch to test. I mentioned the
+wrong tree in cover-letter (though I don't remember getting above
+errors earlier too, not sure why you are getting them) :(
 
-Remorsefully, Sima
+git://git.kernel.org/pub/scm/linux/kernel/git/vireshk/pm.git rust/cpufreq-dt
+
+This patchset was generated correctly though.
+
+I don't get anything with CLIPPY with this branch, with rustfmtcheck I
+get:
+
+         // SAFETY: The C code returns a valid pointer here, which is again passed to the C code in
+         // an array.
+-        attr[next] = unsafe {
+-            addr_of_mut!(bindings::cpufreq_freq_attr_scaling_available_freqs) as *mut _
+-        };
++        attr[next] =
++            unsafe { addr_of_mut!(bindings::cpufreq_freq_attr_scaling_available_freqs) as *mut _ };
+         next += 1;
+
+
+If I make the above changes I get following with CLIPPY:
+
+$ make CLIPPY=1 ARCH=arm64 O=../barm64t/ -j8 CROSS_COMPILE=aarch64-linux-gnu- CONFIG_DEBUG_SECTION_MISMATCH=y
+
+warning: unsafe block missing a safety comment
+   --> /mnt/ssd/all/work/repos/kernel/linux/rust/kernel/cpufreq.rs:632:13
+    |
+632 |             unsafe { addr_of_mut!(bindings::cpufreq_freq_attr_scaling_available_freqs) as *mut _ };
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: consider adding a safety comment on the preceding line
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#undocumented_unsafe_blocks
+    = note: requested on the command line with `-W clippy::undocumented-unsafe-blocks`
+
+warning: unsafe block missing a safety comment
+   --> /mnt/ssd/all/work/repos/kernel/linux/rust/kernel/cpufreq.rs:639:17
+    |
+639 |                 unsafe { addr_of_mut!(bindings::cpufreq_freq_attr_scaling_boost_freqs) as *mut _ };
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: consider adding a safety comment on the preceding line
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#undocumented_unsafe_blocks
+
+warning: 2 warnings emitted
+
+
+This I thought was a bug (I may have seen this with other Rust
+projects too, from what I can remember).
+
+If I drop the unsafe here I get:
+
+error[E0133]: use of mutable static is unsafe and requires unsafe block
+   --> /mnt/ssd/all/work/repos/kernel/linux/rust/kernel/cpufreq.rs:632:26
+    |
+632 |             addr_of_mut!(bindings::cpufreq_freq_attr_scaling_available_freqs) as *mut _;
+    |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ use of mutable static
+    |
+    = note: mutable statics can be mutated by multiple threads: aliasing violations or data races will cause undefined behavior
+
+I don't remember seeing a CLIPPY warning ever about removing the
+unsafe here, as reported in your case.
+
+> In any case, passing `rustfmtcheck` is a requirement. So in the worst
+> case, if you do find such a bug in e.g. Clippy, you may always
+> `expect` or `allow` the lint or disable `rustfmt` in that region of
+> code. But that should be really rare, and in such a case it should be
+> reported upstream.
+
+It would require clippy::undocumented-unsafe-blocks to be disabled, in
+this case.
+
+> I also found other build issues in the branch you mention in your
+> cover letter, so please double-check everything looks good before
+> adding it to linux-next. Please also make it Clippy-clean.
+
+Sorry about that, maybe there were other issues with the earlier
+branch. Can you please try again from the tree I mentioned above ?
+
 -- 
-Simona Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+viresh
