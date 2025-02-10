@@ -1,99 +1,71 @@
-Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B6D1F460B;
-	Mon, 10 Feb 2025 16:32:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E8D24F587;
+	Mon, 10 Feb 2025 16:32:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739205144; cv=none; b=jCN1LBEgbiCPxj04j/SSCzWM7aWGzY22v/OhkzpF4TTUvp+EWVtXbMlrLDjze8NMJP+1ZS9/d4kRSF+T23wdzlJGl9U4JGbD1I1Xf+PpAm5TER/EB9DPFYoMFkWimbuHjaVVw0XG/4+yr9dxQ5I5Y7ex1UJr2NNfSmcWURdny/k=
+	t=1739205151; cv=none; b=qKasEAdIbyNmPMb1lLijhlTmvTt410Dhu0odOUXDhajGFZgwncbDuq/ny1ryXC3DbXIAachicO/Id4zn8PHBB7Zgm1jiWF89cuUaLWcxH/gA3QmY+8+/3ct8edVUXapngMvXnMvJZttO8eQei9aOFTJhhH92kT7nx2yyJaYW73M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739205144; c=relaxed/simple;
-	bh=dpJS2WGDeq3KaUTfQSdc0mkNgb7ljggl5oUMqVH9b+U=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=k310YKm31D0x0bdXZdrGN6YIIlOyjzuXBDr3+ralMYF8Tef5IWCtj4TJjc5VgeE7AOfoVPTesgx355Mp+Htk1En3AwLFhodFSdTdCgqVjYYIf3noruPC1t7lvNxvQ+SMILlnzxxISNR42jzeUfMjsNY5RGjif7z3BrS+V4t9ffs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=idWEi6xB; arc=none smtp.client-ip=49.12.72.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
+	s=arc-20240116; t=1739205151; c=relaxed/simple;
+	bh=ugd1qIuke76CaTA7KQybUf2kPKH3fnXth307upmf4sw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PUYbMWY2NY/1gUzQZhCqzV3/aLaFZi1r/G2qZGrhHudSznuHWdzQ7xlLM2rkzv8NH87/mZ3OeTl5Yq3rUpzqri/IcdVl+O/LZix0fdcTZHNPfQBYqEWBOVWux1ve9dR/Eit998dbCz3ayoXD7BgFavwPYeOjU+GRbY0yCaAAfGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=CeFn2u6/; arc=none smtp.client-ip=185.70.40.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="idWEi6xB"
-From: Fiona Behrens <me@kloenk.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1739205130; bh=mX+ebUmMEOvskLo5E36u5VLBcZ76FPJwjr6H1qGKzGQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=idWEi6xBymT8NYfWplVq2Ii5SrlggHfw14BFMtcoX+pWIBZbQP9izRSRlSyF4WxaB
-	 FmtoaHrubsT27lY0G/cGa9aZ9360lxUHY+u9m0jnlnJfzdh/5oOcGTNybz8jp+I75C
-	 /wf/dpym+WHiSbfKlYP5yM4Oq3bAwjm7ij1sOMmw=
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
-  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,
-  =?utf-8?Q?Bj=C3=B6rn?=
- Roy Baron <bjorn3_gh@protonmail.com>,  Benno Lossin
- <benno.lossin@proton.me>,  Andreas Hindborg <a.hindborg@kernel.org>,
-  Alice Ryhl <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,
-  Boris-Chengbiao Zhou <bobo1239@web.de>,  Kees Cook <kees@kernel.org>,
-  rust-for-linux@vger.kernel.org,  linux-kernel@vger.kernel.org,  Chayim
- Refael Friedman <chayimfr@gmail.com>
-Subject: Re: [PATCH v2] scripts: generate_rust_analyzer.py: add missing
- macros deps
-In-Reply-To: <20250209-rust-analyzer-macros-core-dep-v2-1-897338344d16@gmail.com>
-	(Tamir Duberstein's message of "Sun, 09 Feb 2025 12:11:53 -0500")
-References: <20250209-rust-analyzer-macros-core-dep-v2-1-897338344d16@gmail.com>
-Date: Mon, 10 Feb 2025 17:32:08 +0100
-Message-ID: <87a5atbw1j.fsf@kloenk.dev>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="CeFn2u6/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1739205141; x=1739464341;
+	bh=ugd1qIuke76CaTA7KQybUf2kPKH3fnXth307upmf4sw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=CeFn2u6/QbRozbj668LMSNjTqUS42qFcwfNQv76gcb7ozEGV6pKZtAEQlSrtDmbex
+	 1YWf+7YNKx/49ge6A8dfMirfIg4J6lp9BReA6nddzT7xVNrvNWSe0kb0fQ51XoIp40
+	 /e9N6GoRSO7c2W+jtXWRNBw5cCCqngFLYRciQGoFuAia0uPf6CP6hGikmz8YrcS6ag
+	 TVnCrdQSDlu4m0Oxo8e/UsA9RPH+okLYGAfNznul4yTx1HN+U8pnFGDUGz/3wPKXNi
+	 BC6bwCCFQRMxZqs2wiPzcdUesYH9flYjQDwbqz/5uE6E48jEByRP7w5+FwcCpSLLBD
+	 mFm5oljHnKoBQ==
+Date: Mon, 10 Feb 2025 16:32:15 +0000
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, Lyude Paul <lyude@redhat.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Alexander Lobakin <aleksander.lobakin@intel.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Bjorn Helgaas <bhelgaas@google.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Liam Girdwood <lgirdwood@gmail.com>, Lukas Wunner <lukas@wunner.de>, Mark Brown <broonie@kernel.org>, =?utf-8?Q?Ma=C3=ADra_Canal?= <mairacanal@riseup.net>, Robin Murphy <robin.murphy@arm.com>, Simona Vetter <simona.vetter@ffwll.ch>, Zijun Hu <quic_zijuhu@quicinc.com>, linux-usb@vger.kernel.org, rust-for-linux@vger.kernel.org, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Subject: Re: [PATCH v4 2/9] rust/kernel: Add faux device bindings
+Message-ID: <c00ee85d-8e8f-4d59-9c90-af5fd35cc4ac@proton.me>
+In-Reply-To: <2025021026-exert-accent-b4c6@gregkh>
+References: <2025021023-sandstorm-precise-9f5d@gregkh> <2025021026-exert-accent-b4c6@gregkh>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 0a946bef26e36d0a883a3eba6dd1e454915b1684
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Tamir Duberstein <tamird@gmail.com> writes:
+On 10.02.25 13:30, Greg Kroah-Hartman wrote:
+> From: Lyude Paul <lyude@redhat.com>
+>=20
+> This introduces a module for working with faux devices in rust, along wit=
+h
+> adding sample code to show how the API is used. Unlike other types of
+> devices, we don't provide any hooks for device probe/removal - since thes=
+e
+> are optional for the faux API and are unnecessary in rust.
 
-> The macros crate has depended on std and proc_macro since its
-> introduction in commit 1fbde52bde73 ("rust: add `macros` crate"). These
-> dependencies were omitted from commit 8c4555ccc55c ("scripts: add
-> `generate_rust_analyzer.py`") resulting in missing go-to-definition and
-> autocomplete, and false-positive warnings emitted from rust-analyzer
-> such as:
->
->   [{
->   	"resource": "/Users/tamird/src/linux/rust/macros/module.rs",
->   	"owner": "_generated_diagnostic_collection_name_#1",
->   	"code": {
->   		"value": "non_snake_case",
->   		"target": {
->   			"$mid": 1,
->   			"path": "/rustc/",
->   			"scheme": "https",
->   			"authority": "doc.rust-lang.org",
->   			"query": "search=non_snake_case"
->   		}
->   	},
->   	"severity": 4,
->   	"message": "Variable `None` should have snake_case name, e.g. `none`",
->   	"source": "rust-analyzer",
->   	"startLineNumber": 123,
->   	"startColumn": 17,
->   	"endLineNumber": 123,
->   	"endColumn": 21
->   }]
->
-> Add the missing dependencies to improve the developer experience.
->
-> Fixes: 8c4555ccc55c ("scripts: add `generate_rust_analyzer.py`")
-> Suggested-by: Chayim Refael Friedman <chayimfr@gmail.com>
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+For me it would be useful to know why this is the case. I looked at the
+dummy regulator driver and it still has a `probe` function. Presumably,
+because it has to wait until other resources are usable and that is the
+case once `probe` gets called. But doesn't the same hold for Rust? Or
+are Rust modules loaded later than C modules? Because if I were to
+rewrite the regulator driver in Rust (assuming we had the abstractions),
+the `probe` code would be put into the `Module::init` function, right?
+Or am I missing something?
 
-Competing with https://lore.kernel.org/rust-for-linux/20241205115438.234221-1-me@kloenk.dev/
-but I do like your aproach more.
+Thanks!
+Benno
 
-Reviewed-by: Fiona Behrens <me@kloenk.dev>
-
-> ---
-> Changes in v2:
-> - Change macros deps from [core] to [std, proc_macro], improving
->   autocomplete and go-to-definition.
-> - Remove Wedson Almeida Filho <wedsonaf@google.com> from cc; email
->   bounced.
-> - Link to v1: https://lore.kernel.org/r/20250209-rust-analyzer-macros-core-dep-v1-1-5ebeb3eb60a9@gmail.com
