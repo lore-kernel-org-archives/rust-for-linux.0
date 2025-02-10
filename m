@@ -1,139 +1,122 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA031ADC9B
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Feb 2025 09:41:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739180476; cv=none; b=rjvCk4A99r74IyN+Ay13QE0BrvRAV6PWj3RoyBt4CHsj8XL6p0gBJdauJO4vVXN+BojwnIPTcpL1LDG58wfwXR76gMzvWp2UHT1FTwjVTb6cWf+Yfm509LD4af83wr3zCd2f7ZlvEkf88neIZPDEXcY0dx6V8+HECCqMwO0WEsU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739180476; c=relaxed/simple;
-	bh=p4bQSg87uFVkYpd3/MVrEp/e7zuLTdd+q0YZ9vhYMhI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pCfl92aDll79RrWH23Sg2MRYRy3lYUQGBBED3sr67S9g2QwBw/tVvewDqvv941RI0i0WG9PBBxPAwAVKxOZg8s42/wuV19wsE+zdNCEMJaZH9AQWbO668Iur+lFN+NbzPYoraKTyiwmrDOZV50uCMKyo6DKqJzyNKaCJ2HhR8C8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1th6MVEY; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282B21C3C1E;
+	Mon, 10 Feb 2025 09:42:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739180550; cv=pass; b=ANyPRvlBHuQrzoxfmf5IYb0ICZF88m1AuPsgHnOwXCpTDYs2Emq++N9kSOYn2QK/3Zk+LnXzGn/xdtdZPZ5OsrTs150+DRdRmLCkF6IEROP39o8gdtudz+Y1TlVRxGYW11J9heQjagxreAeImuV1MSWhnbP0CDEAcpTSJVgmqio=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739180550; c=relaxed/simple;
+	bh=qBBDYZU7g9PDMRClvZSe7s7VQGUjY5ZJRuGo2wh0uUg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=P1nzmZlmGrg2ndIi8kSME7PN1lGKEP9MlHcd3HKViW1yNvj1uDAApP4e70pFPI3Mhp16Ryp/MkTJXuR5ZPUPHmiYS6NMRWuKTbVfIKxlciuiCydJ3gwweOOrjXG0GcXb8j3nnh67copIwPn6s7C6FJbQT+K9xQx0iVhkDZj5YuU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=icenowy.me; spf=pass smtp.mailfrom=icenowy.me; dkim=pass (2048-bit key) header.d=icenowy.me header.i=uwu@icenowy.me header.b=L9CyqPwW; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=icenowy.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icenowy.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1th6MVEY"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43937cf2131so8440695e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 10 Feb 2025 01:41:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1739180473; x=1739785273; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iCBNOxznqCDPYuXB5E7wzbFvG2L1F3n8EQ/l45ckAzA=;
-        b=1th6MVEYLzBYM05aJm6Z61Z0G6nvsQF126bXIm3v2+nQdQ3jcufz/wh0cflA2y9sCn
-         w7KQAho2EgY7NeY+EblN+LkgJ+gvrNCWHp8SDE+b5F4LEbC6IFSGj6knPoJkGy8ZoKhq
-         H9tXK79mU7H7UFk0uLOx/N8FNHtJ3Ohi0Pld+Artje0eilbG43ISmeulgfJ1EkcugrRB
-         dnwY8vKb+DGDFS42KJnCPIoGiXKM5xgElJnJo9Kf8mzq69cBjnXdPDislBbb6+O2psxE
-         a4FIv8law7fJuKdU0PGbZEUQc5zN6liXzGeVZaK1Oh0c5rN8Od7dRp3kfuhcax2R+wZ8
-         qgpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739180473; x=1739785273;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iCBNOxznqCDPYuXB5E7wzbFvG2L1F3n8EQ/l45ckAzA=;
-        b=TFDLfUk2h0RLhAr50Pd8BPZq0xEUQo1me7G1r08b/hDC5S+L0CTnOX+tbxKMAyBE1r
-         MHM2b/ySgxxDIr0htH8pcB3XwrWENrGqyusnhlvNEtwXfmNzxHlnnC/0ArdVBAeCTMmz
-         kXEM5PrUKqa9ko7kE+SfnXP0ByGh/QnioGQlrSXUuIfiPvfZKEO+X/tYNaD2hr+m/2x3
-         SKzT2q7mIc0mWOX3Xr4Ch6lKMM0mXHTufX3YXpn2BsCocAk6D8rkKxEPMxPDpDOZoCjE
-         cbuGxmhP292xm/LCUEqqsy9L5Ygc98DSLNLmF9P9jsrq4GsO2o++ZDCn51MIvs9+75Dr
-         Pn5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV38hBZiUO8epPArT1vdq2tn1qvhrR569T0l0jRFi6/s4Eqs1o+PSzH+gMtaZFS1YdCueSpDGU7WOAgu9vmBA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzHv/EvQoWhj5KllBWqXKo2Li+s+OGT2ge2fp+mZdsQ5jCxLhO
-	zh5g4O9Ar3mxuYE7kQicuAoTZx4QK1AAM4WSjIxxtHlvl2ijroeXgTimMOdxMzZSLFcRkw+Gpbd
-	LB9tt+bQcG7Eeq6zKI0mPsdLRV47p9l8ekQeQ
-X-Gm-Gg: ASbGncsgF7nJRa0KJj7+3B91EBW/6vAbjhS+LEtTOEwR0Y0tllKwWDdVVMkZmjAQMR6
-	Qv08EODXd6hgr0OFZXm8n3iyvOucc0Kyifbr8yBk6Uvy6X2Fjma8qWTFp6m6Kqu7bt+dLdXXk9w
-	==
-X-Google-Smtp-Source: AGHT+IHEuf8P7J1DpuNuDhKVh1hrYoLIiGq+/hlGA9zolraaf3yrulKD6NlrzKrc8ZqwFjERJM8NaGnRUmNvl8upGCo=
-X-Received: by 2002:a5d:64ae:0:b0:38d:d371:e010 with SMTP id
- ffacd0b85a97d-38dd371e1bdmr6514970f8f.35.1739180473091; Mon, 10 Feb 2025
- 01:41:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=icenowy.me header.i=uwu@icenowy.me header.b="L9CyqPwW"
+ARC-Seal: i=1; a=rsa-sha256; t=1739180505; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=IfHW7GFSUcnRcnjhWuX8VdC/+6QgIk+O1MALlIIYMzbmQmTTaHpbRbOF4a3uLTIWaSDn0bo5yx16kIGK6v+kxxH7TimnRnReKsIHQLb09GDMSbVlcS6j/+XM/ngIALNhB677N7kyyJrBRZOCXCdMOlnDE+aQNf4zGGMwk1FwxkQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1739180505; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=qBBDYZU7g9PDMRClvZSe7s7VQGUjY5ZJRuGo2wh0uUg=; 
+	b=hGmBetWBHuk0+d1qX8x9ZCDJHRR4U2wRa36efra3TA/6ApvbzB2ty81ni8vbebPgi+Jk9i9P4RTzNZNVuB0/rJJvbCBnnbyJJJRYQPMRiXZhRusr/AEVEGo66Nd6L5Zb1DaYi/KgXCYp1zZ5OEryWyqjVZNyfLm7oA5KBQmaws0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=icenowy.me;
+	spf=pass  smtp.mailfrom=uwu@icenowy.me;
+	dmarc=pass header.from=<uwu@icenowy.me>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1739180505;
+	s=zmail2; d=icenowy.me; i=uwu@icenowy.me;
+	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
+	bh=qBBDYZU7g9PDMRClvZSe7s7VQGUjY5ZJRuGo2wh0uUg=;
+	b=L9CyqPwWuH/dRvDgQQmY5y3YYDn7FxyFX/jzjg/z7d3yuEBumKn/t1WqKqQyri+c
+	+PKIIuEa4oQmxS5Opo7gjRFALhFYegk5thuHdNREW5LMnNSfMjvI9hNZfKWniaXgBYZ
+	zCQXaKwHUo1a6xlQZOWgV0gXL2nxfl9GPXvi/lADVaJ1pMszP624B+bbfNYtFMIETOL
+	xX+qAcYAGTQODu7leHTMo8H/sj7wXmdoeEwol/DL8P3CGG/cCPw2PEObYKaVHhT43rC
+	vVC/ZHTZ/GD7xol4ldQDAF4Ie+tYycuSsmdp90iSLOjDNgHIwOEqnLao29s8OkvuwkN
+	VctmgfoeqA==
+Received: by mx.zohomail.com with SMTPS id 1739180501879330.0271224021237;
+	Mon, 10 Feb 2025 01:41:41 -0800 (PST)
+Message-ID: <07c447b77bdac1f8ade1f93456f853f89d4842ee.camel@icenowy.me>
+Subject: Re: On community influencing (was Re: [PATCH v8 2/2] rust: add dma
+ coherent allocator abstraction.)
+From: Icenowy Zheng <uwu@icenowy.me>
+To: Hector Martin <marcan@marcan.st>, Steven Rostedt <rostedt@goodmis.org>, 
+	"Dr. Greg" <greg@enjellic.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Dave Airlie
+ <airlied@gmail.com>, Jason Gunthorpe <jgg@nvidia.com>, Greg KH
+ <gregkh@linuxfoundation.org>, phasta@kernel.org, Christoph Hellwig
+ <hch@lst.de>,  Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda
+ <miguel.ojeda.sandonis@gmail.com>, Abdiel Janulgue
+ <abdiel.janulgue@gmail.com>, daniel.almeida@collabora.com,
+ aliceryhl@google.com,  robin.murphy@arm.com,
+ rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex
+ Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
+ <gary@garyguo.net>, Bj??rn Roy Baron <bjorn3_gh@protonmail.com>, Benno
+ Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>, Valentin Obst <kernel@valentinobst.de>,
+ open list <linux-kernel@vger.kernel.org>, Marek Szyprowski
+ <m.szyprowski@samsung.com>, airlied@redhat.com, "open list:DMA MAPPING
+ HELPERS" <iommu@lists.linux.dev>, DRI Development
+ <dri-devel@lists.freedesktop.org>
+Date: Mon, 10 Feb 2025 17:41:30 +0800
+In-Reply-To: <1e8452ab-613a-4c85-adc0-0c4a293dbf50@marcan.st>
+References: <2025013030-gummy-cosmic-7927@gregkh>
+	 <20250130172437.GN5556@nvidia.com>
+	 <2025013148-reversal-pessimism-1515@gregkh>
+	 <20250131135421.GO5556@nvidia.com>
+	 <2b9b75d1-eb8e-494a-b05f-59f75c92e6ae@marcan.st>
+	 <Z6OzgBYZNJPr_ZD1@phenom.ffwll.local>
+	 <CAPM=9tzPR9wd=3Wbjnp-T0W8-dDfGah-H3Ny52G85B+2Ev9ksA@mail.gmail.com>
+	 <208e1fc3-cfc3-4a26-98c3-a48ab35bb9db@marcan.st>
+	 <CAHk-=wi=ZmP2=TmHsFSUGq8vUZAOWWSK1vrJarMaOhReDRQRYQ@mail.gmail.com>
+	 <20250207121638.GA7356@wind.enjellic.com>
+	 <Z6bdCrgGEq8Txd-s@home.goodmis.org>
+	 <1e8452ab-613a-4c85-adc0-0c4a293dbf50@marcan.st>
+Organization: Anthon Open-Source Community
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250207132623.168854-1-fujita.tomonori@gmail.com>
- <20250207132623.168854-2-fujita.tomonori@gmail.com> <20250207181258.233674df@pumpkin>
- <20250208.120103.2120997372702679311.fujita.tomonori@gmail.com>
-In-Reply-To: <20250208.120103.2120997372702679311.fujita.tomonori@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 10 Feb 2025 10:41:00 +0100
-X-Gm-Features: AWEUYZk6EqTIZZGO1SVVqrV6LG5OFX5VZNOHhYpPhCPzQ0NZdqfyiNifhY4e36w
-Message-ID: <CAH5fLgiDCNj3C313JHGDrBS=14K1COOLF5vpV287pT9TM6a4zQ@mail.gmail.com>
-Subject: Re: [PATCH v10 1/8] sched/core: Add __might_sleep_precision()
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: david.laight.linux@gmail.com, boqun.feng@gmail.com, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com, 
-	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
-	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de, 
-	arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, mingo@redhat.com, 
-	peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, 
-	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, 
-	mgorman@suse.de, vschneid@redhat.com, tgunders@redhat.com, me@kloenk.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-ZohoMailClient: External
+X-ZohoMail-Owner: <07c447b77bdac1f8ade1f93456f853f89d4842ee.camel@icenowy.me>+zmo_0_
 
-On Sat, Feb 8, 2025 at 4:01=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> On Fri, 7 Feb 2025 18:12:58 +0000
-> David Laight <david.laight.linux@gmail.com> wrote:
->
-> >>  static void print_preempt_disable_ip(int preempt_offset, unsigned lon=
-g ip)
-> >>  {
-> >>      if (!IS_ENABLED(CONFIG_DEBUG_PREEMPT))
-> >> @@ -8717,7 +8699,8 @@ static inline bool resched_offsets_ok(unsigned i=
-nt offsets)
-> >>      return nested =3D=3D offsets;
-> >>  }
-> >>
-> >> -void __might_resched(const char *file, int line, unsigned int offsets=
-)
-> >> +static void __might_resched_precision(const char *file, int len, int =
-line,
-> >
-> > For clarity that ought to be file_len.
->
-> Yeah, I'll update.
->
-> >> +                                  unsigned int offsets)
-> >>  {
-> >>      /* Ratelimiting timestamp: */
-> >>      static unsigned long prev_jiffy;
-> >> @@ -8740,8 +8723,10 @@ void __might_resched(const char *file, int line=
-, unsigned int offsets)
-> >>      /* Save this before calling printk(), since that will clobber it:=
- */
-> >>      preempt_disable_ip =3D get_preempt_disable_ip(current);
-> >>
-> >> -    pr_err("BUG: sleeping function called from invalid context at %s:=
-%d\n",
-> >> -           file, line);
-> >> +    if (len < 0)
-> >> +            len =3D strlen(file);
-> >
-> > No need for strlen(), just use a big number instead of -1.
-> > Anything bigger than a sane upper limit on the filename length will do.
->
-> Ah, that's right. Just passing the maximum precision (1<<15-1) works.
->
-> The precision specifies the maximum length. vsnprintf() always
-> iterates through a string until it reaches the maximum length or
-> encounters the null terminator. So strlen() here is useless.
->
-> Alice and Boqun, the above change is fine? Can I keep the tags?
+=E5=9C=A8 2025-02-08=E6=98=9F=E6=9C=9F=E5=85=AD=E7=9A=84 17:31 +0900=EF=BC=
+=8CHector Martin=E5=86=99=E9=81=93=EF=BC=9A
+>=20
+> By kernel and mesa policy, while a drm/ kernel driver is not merged
+> with
+> a stable UAPI, the mesa side cannot be merged/enabled either. That
+> means
+> that every day the driver isn't upstream, our users suffer due to
+> various container technologies not shipping the driver in userspace
+> since they ship upstream mesa.
+>=20
+> The process is *designed* to encourage upstreaming early and *punish*
+> downstream trees.
 
-I'd probably like a comment explaining the meaning of this constant
-somewhere, but sure ok with me.
+Well, at least some Mesa drivers are developed against some "vendor"
+(even not community downstream) kernel drivers, e.g. powervr one;
+although in the Asahi case there's no such vendor thing (because the HW
+vendor is Darwin-only). In addition, I think at least some early
+etnaviv development is based on drm/etnaviv drivers w/ in-kernel
+version code earlier than the first in-kernel-tree version code (Well
+drm version code rarely changes, but I think in the case of etnaviv it
+really represents the UAPI).
 
-Alice
+Furtherly, the monorepo nature of Linux kernel means to refactor an
+interface, it's usually the person changing the callee that need to
+change all callers to satify the interface change; having Rust code in
+tree calling the interface effectively means adding the responsibility
+of fixing the Rust code when the interface changes, which could be not
+acceptable by the C-only maintainers. In regards of adding a
+maintainer, having more maintainers means more communication. The
+situation of the current problem really shows how difficult
+communication is, right?
