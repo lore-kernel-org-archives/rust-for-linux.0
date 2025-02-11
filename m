@@ -1,100 +1,147 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8552326562D;
-	Tue, 11 Feb 2025 20:25:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A11D263F57;
+	Tue, 11 Feb 2025 21:37:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739305505; cv=none; b=BwyJAUa75LfPWFYX2pxTMsk9fw4DY3+ImGCDFgMelXyDxy4nTOloa874xQpjlCpj1/xibWCiPIslSCW8Lc0+kjP8Ex/MCpmirqcOToLDewEWYmUUNsMAC3zBMwIwVfWQqW0ZFpyp16aWHCERLvnjuyqQJ+vGWm/SDB9bqMt3VYU=
+	t=1739309860; cv=none; b=HNfMvWccp7j9N0a72SVHTE8gMIku5dS56QJKSszp1exrL4Ne1IX93AsGg87Gz0CK19r8rrho2t+E8tLnd5V6mSuAaL5RlHdcDxAYyHcCgWEcYsgmdxn3ylvoqcPm9CJ9iuh2vqZ8PKMAUHBwEgMaCCjwe99b5rwONexTFcdFeU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739305505; c=relaxed/simple;
-	bh=xAVeZqKW+FokUgv189TRcGVblshI1nQpSSQvUsmGHtk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=FlHl0LduIrbUq00jAPBFgakwKY7wzcxJ1NK2K5Pws8HtoxB0TxjtAvZZvBUWsfiUhf0iLM53XD1zlmgm3rcVc1kO0n299IQSL3PyQbjQb+PzS4HoV/wDUAA63jIbSMRgpEFZESSAHjXTYU/IHivioHH9OGSzSYgoetsD6mJkTwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dR2ICPPj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739309860; c=relaxed/simple;
+	bh=XKbAUeYtUw75h5ZAra0XFiv2T2PGq52hQCmLhO8mPb4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WoMmwHUAPbrjSVTXYlCNTpK7y74UAq8r7m/ZLQTjAhvXBE8SEPGlJvDr6RNMhRHv5YnxcPFFeneJmApRabVbrSFt0PTpt8px+CMqsLW7xAa3m6mNB2rvbaBa51Ev4Ut2iJidQSe6iTHiuA+UOMbI+wc+2DfKrwkOhhkZ5EFv1eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KGN5w9gJ; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dR2ICPPj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B1E4C4CEDD;
-	Tue, 11 Feb 2025 20:24:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739305505;
-	bh=xAVeZqKW+FokUgv189TRcGVblshI1nQpSSQvUsmGHtk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=dR2ICPPj5Wo8ynyCZvtZ3gUPj7T3i6SV8KmVHyYMHiYbLOifImpGIVwDgkYUhuIKo
-	 Z2vG84vV1Nrp+PcUMHsBcbks3XeS542e2DBALXxRhxLuPOqYvUm69JDbc4NCwPvRCS
-	 Lvj9RC2pHIddwl6nXStLKuI+02q5o09W398iWCczbuoTvyCTucCk/4IfofVJ0ZLW70
-	 lwd+OgzxBX1P3dhW2Zl9wQDbFRs1EAjQfJfRqjNvA3lo396v9IUHSLSYRoctm5OUyG
-	 WmerGAV5o7ppwTNH8IlCyAZx9SLGt1kgDYJjFF9IyqUWOTn44KWZMdDf7eAgfnYUwj
-	 lNT5XLGtDO6cg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Gary Guo" <gary@garyguo.net>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,
-  =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron <bjorn3_gh@protonmail.com>,  "Benno Lossin"
- <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,  "Masahiro
- Yamada" <masahiroy@kernel.org>,  "Nathan Chancellor" <nathan@kernel.org>,
-  "Nicolas Schier" <nicolas@fjasle.eu>,  "Luis Chamberlain"
- <mcgrof@kernel.org>,  "Trevor Gross" <tmgross@umich.edu>,  "Adam
- Bratschi-Kaye" <ark.email@gmail.com>,  <rust-for-linux@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>,  <linux-kbuild@vger.kernel.org>,  "Petr
- Pavlu" <petr.pavlu@suse.com>,  "Sami Tolvanen" <samitolvanen@google.com>,
-  "Daniel Gomez" <da.gomez@samsung.com>,  "Simona Vetter"
- <simona.vetter@ffwll.ch>,  "Greg KH" <gregkh@linuxfoundation.org>,
-  <linux-modules@vger.kernel.org>
-Subject: Re: [PATCH v6 2/6] rust: str: implement `Index` for `BStr`
-In-Reply-To: <20250211164004.6de768c3@eugeo> (Gary Guo's message of "Tue, 11
-	Feb 2025 16:40:04 +0000")
-References: <20250211-module-params-v3-v6-0-24b297ddc43d@kernel.org>
-	<20250211-module-params-v3-v6-2-24b297ddc43d@kernel.org>
-	<kW0CDyK5M8DuLPr_1HwIXcnVP4x8evlFoq0BOjldchTZqkGiqzNJ-dtpV7s5QHLbbmm6cW529GeDTo_GoDKfdQ==@protonmail.internalid>
-	<20250211164004.6de768c3@eugeo>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Tue, 11 Feb 2025 21:24:44 +0100
-Message-ID: <87lduc44c3.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KGN5w9gJ"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2fa1c3ac70cso1334712a91.0;
+        Tue, 11 Feb 2025 13:37:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739309858; x=1739914658; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=akzFHrt13Sf+zIMfS9Ii+SJ+PVxb1KqnXMwjp26RJ/w=;
+        b=KGN5w9gJ31IcwtQzfHOx030GPXZeZFoVMpzZT8BxjJ4sGNaFaTksTSEve0fa3DGHKg
+         bjgqwyxp0TsPOS+6+woLzQI7p99mJZFYXfLHtMs/U671izQgRvva6X+8dNxmc4nzc5ho
+         Qtm/g6xQh4hy3PAZ6NwZjI4uRtTOX/dVV2/stG0jWjYKoolYNVbZh2sxfupwOVzRwSad
+         kGxHeYDl0H4hckmsHLIWgz/kv6PJFtfhmE+UfIFC6MYiC+ltgwkbHAHOEERmO/dnJDHU
+         8vXNUGQLkFnvmHFkN+1L/oP7tpccR3t+u8J00W20mb171Tpgu8lOZWqTo1GqzGpbQ1/v
+         539w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739309858; x=1739914658;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=akzFHrt13Sf+zIMfS9Ii+SJ+PVxb1KqnXMwjp26RJ/w=;
+        b=vvYPMUDlDVyITis3v22ap86OUu4HfRetc4utT8iWyV1Ub/qsI3KEhQz1qswl1vf96Y
+         1BGe1uy4bN1LRyTxplkQjIQXuCHzd4cnbVWZeS/h1lTA0Ko/Dxvl4s5qtC468jR9f6FT
+         gAMvul21ah1dwepRmQKHh2Gl7+FmamyamdC04ZfiFxg6YxPW4wrxp6ZsjOVy1NFSbNu4
+         /QpLbXJNjJnaDyl9p0oFsCVrsx+SyrP7LEy5VxEcvpsXbzkLq6ddydO1RiLyBW5x/tsi
+         Ne3q/H2QSJv6OcGuIU1virak4/FWWXGYHWDlmizFL/DgfpmkrEXRYoqByOnRvhyyw+Ht
+         5VAA==
+X-Forwarded-Encrypted: i=1; AJvYcCVr3/uQe8WVfyzRGxt8FE7kK1KDhPB/edM67iluA8TLOKMxT9+dmCaufypE5B1Ep4PSmLeXg/AxLIJHW4Q=@vger.kernel.org, AJvYcCWRVQdeR1o71FmLixNioz08j8lw9hn6sQ/yDXfWiype6ls/VdJWOMEdrq8WPZi1Nv9CfIwdeti5vL8=@vger.kernel.org, AJvYcCXHQd1lrbumu6ZmjtK2Lr1kNEJnlLPFJylaC7PY7DQ08mm5TQ36DPUTNFtq2+JXatNb00PqFWP74/1dKduJRIw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwyqTbp0vYlXyKrobY6WT/CygDASaryoTOIkh3vjYB9ftHemBpM
+	2IIEcZSofHWqQU6lsYT4VRToCLbA3P1fcXKMhoev0eLcsqva14VMnjOJRMd9GeD33D/DNSCAeoQ
+	GNa/K/IpwCUAYcZSm1mUVG8ewncY=
+X-Gm-Gg: ASbGncuxI+ZqZP3J9jCwsR0ektC/u3m4Li7keZklcEjV0irtvPUw0GFMCh77IuVj0FX
+	5Y890sWFNdqZ1w+t2S1qAYGZnY8KH4KjmZQ24yw+0xoL/lWNjJXvPrSrXqmyyR9bkNJ70k1s+
+X-Google-Smtp-Source: AGHT+IGaXS1EDa6yC/VYlIlgcCMZhbiBlWn7y6h9gigI5MM1OjNIt2C44T9+/GZ4SCA6mmKeQDKqx9OcBnX/akiH2jE=
+X-Received: by 2002:a17:90b:3845:b0:2ee:948b:72d3 with SMTP id
+ 98e67ed59e1d1-2fbf5bb8de3mr405275a91.1.1739309858447; Tue, 11 Feb 2025
+ 13:37:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <cover.1738832118.git.viresh.kumar@linaro.org> <db0166341ce824c157d0c58c240b3efc6aec6f6e.1738832118.git.viresh.kumar@linaro.org>
+ <Z6qTelPSqpFk439l@thinkpad> <20250211042908.nyftiw7gtxosfjwc@vireshk-i7> <Z6t51xodSV21ER4M@thinkpad>
+In-Reply-To: <Z6t51xodSV21ER4M@thinkpad>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 11 Feb 2025 22:37:26 +0100
+X-Gm-Features: AWEUYZngWJ1M-awjFN_5Da2lJECVQzCBMpv2S6V7HN11_MwJfmvJvmjOQij9-yk
+Message-ID: <CANiq72=3MR9F9ur-aQYP4P81RBreAr=UiGg5iaSuFjjd5Q4Y7Q@mail.gmail.com>
+Subject: Re: [PATCH V8 04/14] rust: Add cpumask helpers
+To: Yury Norov <yury.norov@gmail.com>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-pm@vger.kernel.org, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Stephen Boyd <sboyd@kernel.org>, 
+	Nishanth Menon <nm@ti.com>, rust-for-linux@vger.kernel.org, 
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, Erik Schilling <erik.schilling@linaro.org>, 
+	=?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>, Christoph Hellwig <hch@lst.de>, 
+	Jason Gunthorpe <jgg@nvidia.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-"Gary Guo" <gary@garyguo.net> writes:
-
-> On Tue, 11 Feb 2025 16:57:36 +0100
-> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+On Tue, Feb 11, 2025 at 5:24=E2=80=AFPM Yury Norov <yury.norov@gmail.com> w=
+rote:
 >
->> The `Index` implementation on `BStr` was lost when we switched `BStr` from
->> a type alias of `[u8]` to a newtype. This patch adds back `Index` by
->> implementing `Index` for `BStr` when `Index` would be implemented for
->> `[u8]`.
->>
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->> ---
->>  rust/kernel/str.rs | 11 +++++++++++
->>  1 file changed, 11 insertions(+)
->>
->> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
->> index 002dcddf7c768..1eb945bed77d6 100644
->> --- a/rust/kernel/str.rs
->> +++ b/rust/kernel/str.rs
->> @@ -114,6 +114,17 @@ fn eq(&self, other: &Self) -> bool {
->>      }
->>  }
->>
->> +impl<Idx> Index<Idx> for BStr
->> +where
->> +    Idx: core::slice::SliceIndex<[u8], Output = [u8]>,
+> No, not Okay.
 >
-> I think I'd prefer
->
-> 	[T]: Index<Idx>,
+> To begin with, this is the 8th version of the same patch, but you
+> only now bothered to CC someone who is listed in MAINTAINERS. This is
+> not how the community works.
 
-Is that equivalent?
+Yeah, that is not good.
 
+For what it is worth, we try to make this very clear:
 
-Best regards,
-Andreas Hindborg
+    https://rust-for-linux.com/contributing#submitting-new-abstractions-and=
+-modules
 
+i.e. that maintainers need to be Cc'd and contacted as soon as
+possible (possibly even before writing the code).
 
+> You also made it a patch bomb that touches multiple critical and very
+> sensitive subsystems. You link them to an experimental and unstable
+> project, and do it in a way that makes it really easy to slip through
+> maintainers' attention.
+
+Not sure what you mean by "unstable project", but I agree that the
+patch series, unless Viresh is the maintainer of the C side of
+everything added, it should be discussed and maintenance discussed
+accordingly before merging anything.
+
+This is what we have done for everything else, and that has not changed.
+
+I try to spot cases where this is not done, which is why I Cc'd you in
+v7 and told Viresh to please do so, and he did -- I don't think he was
+trying to bypass on purpose:
+
+    https://lore.kernel.org/rust-for-linux/CANiq72=3Do+uc3ZnNrdkuoSGSL8apNE=
+4z4QwpvsiLfGzXFywSLrQ@mail.gmail.com/
+
+> That would make things even worse. Before you wanted me to maintain
+> rust linkage. Now you want me to get approval from someone else who
+> maintains rust linkage. In case I need to change something, I want to
+> be able to just change.
+
+Like Danilo mentions, there are several ways to go forward here. For
+some ideas/context, please see:
+
+    https://rust-for-linux.com/rust-kernel-policy#how-is-rust-introduced-in=
+-a-subsystem
+
+(Thanks Jason for linking the page)
+
+And, yeah, whoever ends up maintaining this, then they should of
+course be testing it properly with Rust enabled with a proper config
+for that and so on, just like one would do for anything else. By the
+way, it is possible to request Intel's 0day to build with Rust
+enabled.
+
+(Side-note: to clarify, there are different parties involved here --
+"Rust team" is fairly ambiguous.)
+
+Cheers,
+Miguel
