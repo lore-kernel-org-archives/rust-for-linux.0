@@ -1,125 +1,79 @@
-Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7B91F8923
-	for <rust-for-linux@vger.kernel.org>; Tue, 11 Feb 2025 11:10:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB951FAC5D;
+	Tue, 11 Feb 2025 15:05:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739272253; cv=none; b=RJKyrN5C1u4z0lOzGcgX8fyRlt+leQjRdD3iiHKvLFSo21qOgb091E1hbRxUnFibDgoA3uAJcbg5w2CnbN4iaOzM0PYf2+rTNDVxg1mgoECmB+1Cee2tMBg79PL7fMD8ZOiKnOsEfzdKfIJLdKswRPvTH5uZxbZQUuweKhGKR5I=
+	t=1739286300; cv=none; b=uehxBHmy+WGGSUlu9ASJc503m8HJZc9nMTSzsgj2dNaSSRQ6LbgHgEbheZ9R0Dw3HIg5dwz9KLj7ugFwN3tkmiM1GYQY0ruGEB/dpbPAqvvFbMl8jnnTq3wAQSZbQViQkfgkvYIgMDLu0r/0TFE04+bfenfyQCWlMAScLPOo1qA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739272253; c=relaxed/simple;
-	bh=WPb2ORZc/9ZZ6+gHNdJlvp8bilbLUMvl7JnfNtvGfEQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=a8wVLGTxJUFV2t63vYXyH8BSPbGcDNr/LFIBxMB98uUsgwEIQgMVUS5yLvKb45yhVph+lWS5QDDO9wwt78MUHNo4G8hAJYvqT1d6z0YDMM/2m54eJ/Dstg6H4Jq74Kk+8js08l7fOMhuIS+k9O0DfFhZU+DKgOeaYvqIeh4vpo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=I47V+x4+; arc=none smtp.client-ip=209.85.219.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
+	s=arc-20240116; t=1739286300; c=relaxed/simple;
+	bh=sT9HrKaDoNTgKVs4pwxBw1GJFR1SNCo77GHp+q9E8TI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=aW9TIsIOPJZCwEuVqq5h1qV0HN7dgIYxA7yRDTqh7lzpmrptCMkBVdlETZ1WY1n3LRcZHo8SxSbSEqWQLKpVeqSwqLNPDjpz7f4vvP+zvAoFZJDmkFXw9l6AdwgZJF4SUpHJTVTTaMAiSp5zK7A7YlxR6labszt8nv4bU+v62Pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aPuNo0/S; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="I47V+x4+"
-Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e549b0f8d57so4654404276.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 11 Feb 2025 03:10:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1739272249; x=1739877049; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fPNCIgpBAFQQZU10UukFXE6nijs336odSMhelfSJ0j4=;
-        b=I47V+x4+oJekKAnoV39TFWOLke41Iij7hbPNnF6m1ImZmHZQpjfTfTdUiKccLXdO4r
-         HKBTmy/gKEJdXY8PmjMFvMIh3hUANv16jj3PeEPiLek2mYRBlwVoVet9w7AKXPANGdT0
-         1HqFt52fDYGoKvr1Ne7FqMQ0e/YhWOaYiVZu/40T9iQHkdJXhQduxY0ZcPbSdRxDxt2h
-         T1IEairzYZDfLzFvIpOktsrYM0vMxp5B6Uzl5qh71InvAcbeCfC0/uPnMta2aDZ2ikDN
-         6sh/fgPieq50tIF0pbslmOJ8fEfIZe9QuqXA/FmkVf712Wk9g7C6xQnwOApsKGtIOCnw
-         Qhvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739272249; x=1739877049;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fPNCIgpBAFQQZU10UukFXE6nijs336odSMhelfSJ0j4=;
-        b=glByCvDFHxBR4RdJ5+FsTFdL0CaS6vmVytbn2Z1gmSv63Qg4HIjqmCCZrtNXfBO9iN
-         RG+L7GBJNg9rm48JXwVXAZSHntWn9021azW8RWutK4U7Kw/tvrWeaZtyvxHRGZ7px/pb
-         KLWIK8KWmbLmwNknO5hIPDve4MpWhDcqdFqoCyK1Onk6IB97hAYULrccp8HEjh+DjLwP
-         W4//a/RC4Im01HqBcv5W8md+aJalPXbJERL5tvWIySyK2Hn3btfnFiljnZZyTV8ihMLf
-         II19N5NK4viTMoqteWAmLTQDYXRX/hMEHlkWTjReSibLGX71K5F9vq0uz5kIpT1RHwgo
-         hbiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVrk+i1DWiaBxmie1W1rz183HqSTI7M0/sPprMUMy31UBsgZZ4ThQX3/QIO4ALgWJg0rTYjLmHy7Vqja8oDFA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz12g/1v7pjoB3HgqkcSuie5xfeiv7XKHhXy508AlYCOiVuXsyv
-	rIxldRZ8QA76GLr5UJgXb+nQMLFiSXzMczHamqY93yAK3nire93PP3stBaX2ensLcMcERoLD6wl
-	B2jZFR9vBU5gv0HQv2tyBt4c1+sK59OFEYZ2MxvrDH8EFUoud
-X-Gm-Gg: ASbGncuOYUhRQvTG49xFxNCrkbriurVqwD2SAKNskiSQNzJZrKrVgNBBLxhrTUM7Og1
-	d6JheJ0jyL9AmLmQ+jl9Ytl5Qnhh5969hXVSRuAZnrKIsH2kBl8NU7ZoeJ7V+XjoKYIA9dhOf
-X-Google-Smtp-Source: AGHT+IGwcyBsYc46RWArEeADU77H8bXfVzk3irEgxqL38ZDIwj53ttNaZ+UD3iPTNd+DjLbLMEDFzT6kErsvcr/dhMw=
-X-Received: by 2002:a05:6902:27c8:b0:e58:7aa:7de4 with SMTP id
- 3f1490d57ef6-e5b462c2b38mr14587566276.45.1739272249457; Tue, 11 Feb 2025
- 03:10:49 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aPuNo0/S"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1FD0C4CEDD;
+	Tue, 11 Feb 2025 15:04:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739286300;
+	bh=sT9HrKaDoNTgKVs4pwxBw1GJFR1SNCo77GHp+q9E8TI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=aPuNo0/S31/19sKGWSjrWMx7JRqYzYkZmi5puXB6zwjRA+vRWzpwjQ1ETuXbEofD8
+	 Wlk1jXuBNygTmcuJMKs3Xbp+WmfsgOzRjeoJhTnyjcMYWgycqPind7DPLIrvTdApIL
+	 Gi/ct6GcQ+ZJx2+G8JjvHNlWN8UEWeJBaBQAxBdVuR8Vunmshcq9nFuDqDX/ZvjruI
+	 oLmFopFAEmjReGbbupSJCsLViT0hvebf63dagVyU8+fPsHmHoTSuDKp2qmPA2RS7IZ
+	 Lb6zFJyOM9bhTH+D+0FTYt88llBWW9E79D+5aJh1pQvZ8hipylYjO9M1LatEE4XatC
+	 iN295fBY04UDA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Jens Korinth via B4 Relay" <devnull+jens.korinth.tuta.io@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Benno
+ Lossin" <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,
+  "Trevor Gross" <tmgross@umich.edu>,  <jens.korinth@tuta.io>,
+  <rust-for-linux@vger.kernel.org>,  "FUJITA Tomonori"
+ <fujita.tomonori@gmail.com>,  "Dirk Behme" <dirk.behme@gmail.com>,
+  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 0/3] rust: Add pr_*_once macros
+In-Reply-To: <20241126-pr_once_macros-v4-0-410b8ca9643e@tuta.io> (Jens Korinth
+	via's message of "Tue, 26 Nov 2024 17:40:56 +0100")
+References: <8gSHb0iuAT_Wz0rR1-qsnFIVndSpW229fA0lq-fslngTt5k1ooiMw5eAIc82F26Mdma4nkyU4X7_1RLZcnQf-Q==@protonmail.internalid>
+	<20241126-pr_once_macros-v4-0-410b8ca9643e@tuta.io>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Tue, 11 Feb 2025 16:04:44 +0100
+Message-ID: <87zfish69f.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250210163732.281786-1-ojeda@kernel.org>
-In-Reply-To: <20250210163732.281786-1-ojeda@kernel.org>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Tue, 11 Feb 2025 05:10:38 -0600
-X-Gm-Features: AWEUYZn351_k4v10MDh5azMViiAdx98NkshCWwsinZSeHh9hCB6x5oVItn12a_Q
-Message-ID: <CALNs47uBcyTmBdTBAPXiBcAkE0-4tih9j=VAv1rRcTcf_c2yTg@mail.gmail.com>
-Subject: Re: [PATCH] arm64: rust: clean Rust 1.85.0 warning using softfloat target
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, 
-	moderated for non-subscribers <linux-arm-kernel@lists.infradead.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org, 
-	Matthew Maurer <mmaurer@google.com>, Ralf Jung <post@ralfj.de>, 
-	Jubilee Young <workingjubilee@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Mon, Feb 10, 2025 at 10:38=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wr=
-ote:
->
-> Starting with Rust 1.85.0 (to be released 2025-02-20), `rustc` warns
-> [1] about disabling neon in the aarch64 hardfloat target:
->
->     warning: target feature `neon` cannot be toggled with
->              `-Ctarget-feature`: unsound on hard-float targets
->              because it changes float ABI
->       |
->       =3D note: this was previously accepted by the compiler but
->               is being phased out; it will become a hard error
->               in a future release!
->       =3D note: for more information, see issue #116344
->               <https://github.com/rust-lang/rust/issues/116344>
->
-> Thus, instead, use the softfloat target instead.
->
-> While trying it out, I found that the kernel sanitizers were not enabled
-> for that built-in target [2]. Upstream Rust agreed to backport
-> the enablement for the current beta so that it is ready for
-> the 1.85.0 release [3] -- thanks!
->
-> However, that still means that before Rust 1.85.0, we cannot switch
-> since sanitizers could be in use. Thus conditionally do so.
->
-> Cc: <stable@vger.kernel.org> # Needed in 6.12.y and 6.13.y only (Rust is =
-pinned in older LTSs).
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Matthew Maurer <mmaurer@google.com>
-> Cc: Alice Ryhl <aliceryhl@google.com>
-> Cc: Ralf Jung <post@ralfj.de>
-> Cc: Jubilee Young <workingjubilee@gmail.com>
-> Link: https://github.com/rust-lang/rust/pull/133417 [1]
-> Link: https://rust-lang.zulipchat.com/#narrow/channel/131828-t-compiler/t=
-opic/arm64.20neon.20.60-Ctarget-feature.60.20warning/near/495358442 [2]
-> Link: https://github.com/rust-lang/rust/pull/135905 [3]
-> Link: https://github.com/rust-lang/rust/issues/116344
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Hi Jens,
 
-This is consistent with what has been discussed for a while on the Rust sid=
-e.
+"Jens Korinth via B4 Relay" <devnull+jens.korinth.tuta.io@kernel.org> writes:
 
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
+> Add Rust version of pr_[emerg|alert|crit|err|warn|notic|info]_once
+> functions, which print a message only once.
+>
+> Introduces a `OnceLite` abstraction similar to Rust's
+> [`std::sync::Once`](https://doc.rust-lang.org/std/sync/struct.Once.html)
+> but using the non-blocking mechanism from the kernel's `DO_ONCE_LITE`
+> macro, which is used to define the `do_once_lite` Rust macro.
+>
+> First use case are an implementation of `pr_*_once` message macros to
+> print a message only once.
+>
+
+Thanks for the patch! Do you plan on sending a new version? If not, do
+you mind if I send v5?
+
+
+Best regards,
+Andreas Hindborg
+
+
