@@ -1,83 +1,69 @@
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2048.outbound.protection.outlook.com [40.107.92.48])
+Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021089.outbound.protection.outlook.com [52.101.100.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3016526BD9C;
-	Tue, 11 Feb 2025 16:49:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72B625EFB3;
+	Tue, 11 Feb 2025 16:52:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.89
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739292586; cv=fail; b=ku1Zeyrp7+arq0tgCWkaGq2mtAalri/WF+CA7TVF4k3a0Doaqh+/TX2Vqj3/rax2KRTRDb4Kpr65qaCS+LInbU1ic5flSh0G2Qv9BRrldfgPKRMLHALdsOHmSuTdf8NQa1KoAPTwZUBHrDQgZFqNGIVI3tDO2EpDz2MagumV0so=
+	t=1739292767; cv=fail; b=NDM8hwRXy5CjTANSUogNsCR4m8aEvEF7tryHe5tpsEBgojKvce0UCvsLKgXncVMgbpHe7e09PLHYQgViljXinm7A91uzgH7f7QSEKmgWE5EzTm+fatzKEj7qz23rlLN3+Fz/s6MLqRcAfpEI8m2Q2nkXV/BrCiIyYLPWC8cg8gQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739292586; c=relaxed/simple;
-	bh=WARetMZScg5U+C7CCBaS6RCxvQKvcjepGoomToTKiaA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=jSybT1UuoDSiq8mXJNKp6y9k2rVqT2bnVzgdY2xJH5BdvVXzk0EcjXVh+onUwf7Ha3NQO8shh3rOFbT+A8C2wgdGztA3cgpyO2isqBpv0NJISX5fVRHa2/tpQWolJOOykZPyS3p9JmuDKbQ3w7KEMc6qdrpni6SAbysFsoPmCWk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=YLk65OaI; arc=fail smtp.client-ip=40.107.92.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1739292767; c=relaxed/simple;
+	bh=0xbbjk2aoUWv2yZFtr2DuBd4qipCuhgJIVfYKMeCP/8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=vEODI7xgGCoA0AXOd+kJTOwb98wBBjfkmMkFNUZtcZeiFp0AZSN1bw6WCdF9dRUco6dXvwee6vYCOhHVdGlufaC255iBpbF/SucAvvBABOQOltp6Pk/M7A5werMVLlv3E3kUIZZUeIV61DEpUsRT9acmkxZX2RcLWZLAJBFmYD0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=qroVaUnz; arc=fail smtp.client-ip=52.101.100.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="YLk65OaI"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="qroVaUnz"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cs6HzkysII2svhn9/6YhpnUq9LuGPFoSvyXn94ZOQR6gEs7H2mOSCrkgeaW7OJcxyy5ItwTbLV5jsaqwoTsH7CqZP/MPGK7HsHh9zeiY4cMeIl2CeYv8JCc2//NfX+dBlW5+uWOWtlCasMbmBXiT4G9mhHvrWz8uYkdsvT1W+3URKIAa/bQ/8Fd+72Q7fWXV4D11F8QG2CpUOAmX8F7LQreQ9HZwa4K6Qbohg+NDKx0+RzqxuZ/SHeNHEGMAZnCp1rdGKZKtVyYgB14d8p6x8C3wCmXWtBQEn6RfgPo6UaRIer/BumN8obsyq5GeJSf7yqCP3djB7BaLruO/fIJ5Pw==
+ b=GJGctFYvEb2VTbotLCUTxPL3wAJYvwipMP9ChCUr4s5XQ3PYUoIns0DqcMf4bskk/OqJ/yB0Odo6BX8vZtRO6eOccotwy7ZjxGxKC5yt9kvjH50EYyMlUm7huItF5TD0h1iaOgcbL3oVYWSIRMCt9x7txe1zuBlSnP10CWw4LVlc0xGWtFcjr8sYvdCg7WPZZKuKSdj2bs3jKR17sfDFjj44qZST+sSmCqbk0LGQ0emXxb2KPEi2/iGu+l/JbTJ0F4icnX/55TFI/s5FpXh9G+nxjoSDJwArgSQf37lPjdTdOghEWswVS3DQLblZinAQICCvgeFhCcoO9QJukdBrYQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=19splAI2HcUPgS+eeHQIOHc8tQ6T4OyFh8l05wajxio=;
- b=fpOOlyJJ8lTb4vdVEpHWeAL9/mdBQtnUiXuwyjQnKRER8F3cMJnndVfR3odvwtTGVYfa30ce+up93D0mhAad+8LusJhRHs6YrYREu7q8aht2JwxpdcEetqoYqO88cNaK+Nh1PI4B1iiocodsgFx6GTuhOQf+NhJC52mWc8wedZJTAq81UxxvEb10E2YCl6VsI9iy57fyOycQSSEsQbvyB998s5Jq1LCjlBu31KjtJpL/X3BNTe9a8hOj4bb9K3Ul9BUW8gbsjPAoo5kOHpIME6yPYyhPfGWBzmlyHuzrR3sfbc4cC+BZ3soZQiyg9Gr1ugo6fR95nZXW3wRMzm6Axg==
+ bh=20SoRC89pRLBRkHYM4I+3UYB0Umi45FBWx1aHgKrsQc=;
+ b=UxO96/SOadQLxnh/eLskuHaH3w3Sulkvo0pQJKuXT9uJ5gRL830uqCe5SBFapuQCFLdOijv9Yf66VHvEJp0xGbwXCFgVgCCiJqNYOSDTC4/YlhQOhNxhTFCtdxdDpnGMYB/f7dCIT/Z0V6cjX046Yft7qXtVAraQ60haHoCXnMq1ZoPwLKANOAGtzT3O9c7hemMJaTyRFN0SOCIGkmwxapn4Arxoh1UwyFtZx5QiL2LxFppVXh7U49ptG/cvhmxDeFHXaID+PcCQBo+cT4w/RISZxmpPRmzu8En3YgLJv8QpV8ekqMekIV2n9+1j3KD5YW0ouQTBdp/6R8+TO+yWyQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=19splAI2HcUPgS+eeHQIOHc8tQ6T4OyFh8l05wajxio=;
- b=YLk65OaIy61E6i6/AJL6sG0nkieq3KlVgYV72gI32v1BtTHiJChvDmuTlD/2Y0VFhjNdfPVNtRIeb6+isojNLgcy5YT45lE+HRTX9oBlWimCeqxGz4VbizA37ziLTQDFbtnHpmFxINx9m7c6J0KDJB4mr+lyjJgM2jXKLPZZZs92AJcuHS7wBw0vwqe407xaWjXm0Df7xg07oRlXWkKpa4SEBsaWKdJN6WRk344nhURgBfSUllbM6odfc+ts1EdSnpx0YJooKwfQuAoOi2S3euiVGpNdP7YVAQmsWO/vohZ6uFEIzafEaO9JWPqWGE1++4qah3PXYGmYItDqa4Bwcw==
+ bh=20SoRC89pRLBRkHYM4I+3UYB0Umi45FBWx1aHgKrsQc=;
+ b=qroVaUnz0QKZw4Cmwlf9NEb9dcLL3yl+lJYQh8t/KgCNL3Ae0U+FTYUoM7qziGTkzQdNmgkUyqypRiq2+umiAjfgsSFH/75qwVRmg+9RDnqAfFwkpbvybesApsLjLziQ8eEnd6anHYHQDmbuh0ZRRLqDr/ZbeGIu0xh4ozWS1jQ=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by DS0PR12MB6582.namprd12.prod.outlook.com (2603:10b6:8:d2::14) with
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by CWXP265MB2391.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:7c::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.17; Tue, 11 Feb
- 2025 16:49:39 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%6]) with mapi id 15.20.8422.015; Tue, 11 Feb 2025
- 16:49:39 +0000
-Date: Tue, 11 Feb 2025 12:49:38 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Danilo Krummrich <dakr@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	linux-pm@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
-	rust-for-linux@vger.kernel.org,
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
-	Erik Schilling <erik.schilling@linaro.org>,
-	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
-	Christoph Hellwig <hch@lst.de>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V8 04/14] rust: Add cpumask helpers
-Message-ID: <20250211164938.GI3754072@nvidia.com>
-References: <cover.1738832118.git.viresh.kumar@linaro.org>
- <db0166341ce824c157d0c58c240b3efc6aec6f6e.1738832118.git.viresh.kumar@linaro.org>
- <Z6qTelPSqpFk439l@thinkpad>
- <20250211042908.nyftiw7gtxosfjwc@vireshk-i7>
- <Z6t51xodSV21ER4M@thinkpad>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z6t51xodSV21ER4M@thinkpad>
-X-ClientProxiedBy: MN0PR03CA0002.namprd03.prod.outlook.com
- (2603:10b6:208:52f::31) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.19; Tue, 11 Feb
+ 2025 16:52:43 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7%4]) with mapi id 15.20.8422.015; Tue, 11 Feb 2025
+ 16:52:42 +0000
+Date: Tue, 11 Feb 2025 16:52:40 +0000
+From: Gary Guo <gary@garyguo.net>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, DJ
+ Delorie <dj@redhat.com>, Eric Blake <eblake@redhat.com>, Will Newton
+ <will.newton@linaro.org>, Paul Eggert <eggert@cs.ucla.edu>, Alex Gaynor
+ <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ rust-for-linux@vger.kernel.org, linux-man@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4] rust: alloc: satisfy POSIX alignment requirement
+Message-ID: <20250211165240.5f600eac@eugeo>
+In-Reply-To: <20250210-aligned-alloc-v4-1-609c3a6fe139@gmail.com>
+References: <20250210-aligned-alloc-v4-1-609c3a6fe139@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P302CA0028.GBRP302.PROD.OUTLOOK.COM
+ (2603:10a6:600:2c1::19) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -85,128 +71,165 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|DS0PR12MB6582:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0dedece0-c899-4253-56a2-08dd4abc135a
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWXP265MB2391:EE_
+X-MS-Office365-Filtering-Correlation-Id: 162f53c2-6fde-4845-10a8-08dd4abc8086
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?cksSgPsxvn94LzhteakJdF2aZoeenGXBNRlDNudKVKLBFG4wEL68ZqGMrQBT?=
- =?us-ascii?Q?qtlzB9Fk4+rG28UsAK0TejDWuF2g24zUZCM3hzXqQN6RSHA6pMpw1hYugrRJ?=
- =?us-ascii?Q?FG+SvM9qkCHBO9/Li2dpI5im6BjrCgXXBpzV+KwOPG+SfUk+TDPZJ8WzM+Oj?=
- =?us-ascii?Q?nKXKVhyh4k/GwEdHEaWO0TcOnjM896E5Pif/aoum2lwg0HPajEVXuceRZ+Vu?=
- =?us-ascii?Q?4m3EkCGMf+5m7nY/lfxlKqzq7+1u/gvikTc8F9fOZS93aY9O5Fy2BApe0RDK?=
- =?us-ascii?Q?OU8kKRY01t5f21yQhBSUJktuUjB5ofv1Fpz0f6ZLjF0ChuPrR9Al3s25L0CC?=
- =?us-ascii?Q?Fhg1GkbyErR45fEPjtTgroZNTFwlEhH63D/HaMs/K8C4rkJjF/CSd5S6hszi?=
- =?us-ascii?Q?y4ILewMWcReqNhy6WW/feOEUzUOuvXCoYSag2hk1WSh6h81IfBs1uk1v8qBZ?=
- =?us-ascii?Q?QfebpbXZFDYmzO2FLV7nK8EoZFOf5Ll89JmpW5yWg7ELF8p/dF/sevRIUuWS?=
- =?us-ascii?Q?UhNbo76aC1450+TMA7ur1f5+AHb78/AV3I58uXVUnR56J8WkthAUqa3sG7VE?=
- =?us-ascii?Q?20CpeTh+m30fGhG8ghKn9jj+HYOq/ntqGxe7k1IgDoQkarvy1MQJQOdJyCuQ?=
- =?us-ascii?Q?b+4fdR8V8VVbi2G+Zpudbh8gZgApNPJLsojz52w+STKI8j0da+orIxrRLzxG?=
- =?us-ascii?Q?CDPmz1GI4y8hA1/NAx9jgrhdC6ZtAHVzV4l+o8/cQBYZMdBfXQv36pU1IlIu?=
- =?us-ascii?Q?TyVkKkCneosaphe+aalKZBZ0H1iEVMof/y4n0Qol4hWcV7/dk+ucW1p9qje1?=
- =?us-ascii?Q?sz+tlX39HNI0GW4JgxL+Laf9WtT3TTfy2R65fnGQn7KCe4pAvPyPtRn4Pl+R?=
- =?us-ascii?Q?y/2J/CNf2xpc8648tMuSqGfeREYYc/0f21CIfP6x+jyH42p/bpnZLBQ4Vdnl?=
- =?us-ascii?Q?xQB43bukJxu8MFAf5LpNytMiP2pskuZy27GZpwj/9qsmLETmeyySRbsaZkZ/?=
- =?us-ascii?Q?TqWYVbiwsLyoY2f8je07++xwPz14zkPHvJT+q5uy7Sk60sosNn5zy8c5KTOr?=
- =?us-ascii?Q?ll+I4eyJkXE97HF8PIJfRR5XXDtimce6irYqXMhe1HXPE2ZSEvoobJjfeEM4?=
- =?us-ascii?Q?LVE8r+LnUm539BiL3iHmRPJ/N9aK8bPRs+kq59LfIHeecww+aPK9gCIfTqWU?=
- =?us-ascii?Q?O/p5CcucMCZ2gt1TrgjjE3+QZoESzRI3V+w4CXEnBVjEy7FY2JwYOVl3UYEo?=
- =?us-ascii?Q?ElhQKcIlxFDmnA4JGwsCmlFZKkCxZ1AVc33KzV5ei/eCjBY+1qw+EBpBLoHH?=
- =?us-ascii?Q?Zm3AwNpJ6/RUKZ59F8Pvvqc3lbbqSm8fgTzUaOXTyX2uYM2WPwdwfiIkmeL1?=
- =?us-ascii?Q?2P7qH9cqFF7TushsuJOoItJGzjhl?=
+	=?us-ascii?Q?IdMPMaUAY/8LmVN2BRTrVbNpwYuiJBvEs6/Qiuah9BwDM7aOiXUPQn71IjH2?=
+ =?us-ascii?Q?MoQ2kdHhxATQaCGRQxnF9kAM7/wQ/B4KhNHWgAedfgpIGQh/TyR2QKP1irSJ?=
+ =?us-ascii?Q?eRZ9rZ0qiqn3reaKR+QN6bG2aV/eCVwkyId80o6P18BREq0rlVKud5Z6RBy/?=
+ =?us-ascii?Q?2jsO+AVZs2BgIHqRPFz5K+ksxegxNuIkW90O07MX+kw9btXTMANLpnaTyMlV?=
+ =?us-ascii?Q?o5Ehqy4/33Pt2yZ+kjlcKzU/kEDaJre/vtAFammf+nCnfRKFpFw+c5lGf3te?=
+ =?us-ascii?Q?bv1kHM2lRKeLL936FYbs1M+FjcKPZqyqjra7j+uWcuVLr516jTf4aZWY/HFv?=
+ =?us-ascii?Q?pDYRmDkrjzubChzkA+cBwfR4ANfspGlIQotXV1pkrS6NJAfx2vaszcuOklCd?=
+ =?us-ascii?Q?H9e3OKx59gC7o/frGH3aMYMNgoun8f1auitqKOY+fzFmEnckw5ARxuV2dwlx?=
+ =?us-ascii?Q?+Wak+d4FJcwMxeaxt6qbmSnjj201eyNz7hS7OpeKk7KNLMrIm+kkmqxAvFcK?=
+ =?us-ascii?Q?oPJEjbMrFkOO5KKawkBjjAmMzd8Ma8m1WbfIQsA50/cvWtrZpr8QwVvuXmUY?=
+ =?us-ascii?Q?OsRlFGye99I4j2b1Wz0noJVFYGWYTqrbjvGT3FpYDjVK2pmb5fE2wdZ469BN?=
+ =?us-ascii?Q?O03Ekhq9xTGgBPjmi5dWkRmuYKj+xQiB5sZOavK0c2i8mklzVl9SgP6uUNWH?=
+ =?us-ascii?Q?wYp1pGtMaimqOeGgr8oC7MslCHrlnUPSWnRWbunAq8+UJks+U4Byx4DU8wmv?=
+ =?us-ascii?Q?a0+ChouIvMu15lEwPYOyqF8JZmuU36YSSgC6tRBkJv20/US/n8e36GWHkhY8?=
+ =?us-ascii?Q?wJLCuIA/BQGYj5Kl7OR6IMIbANlOlIErwTrPSgQszKvPvd8sJdJaa0dGAYHo?=
+ =?us-ascii?Q?Za2s57n0R+V9Giap731pkvzJ16HVqrL7ZH3SKMH1zUI9QquCfieVSlfg+4Mh?=
+ =?us-ascii?Q?ae6ume+t4rV6C9Sr9xlLtk7hULdNeWu7/TBa0vCSFzg1Tws660abkeROGzxO?=
+ =?us-ascii?Q?1yVjDCMU9kfHPxNvBijx3/7D7ymycdvVm6RronLWNP0W0rVqj2ig4jb20ujh?=
+ =?us-ascii?Q?PYvIK3wVIIMxEc8YWAVEHJYWLXNNaoqPFZvc1yEf9P+BAjxp9/0NmqdlYYum?=
+ =?us-ascii?Q?8ksUjaLScSfbW089Oz9Q4wXGlLIiCxlQ4XyvXsUiFHK09H4A5Ai4EXLe0WNq?=
+ =?us-ascii?Q?YfaJ0tPdzkn+exoQxAUox72GL0lOo/kmk9Tv3gjHzYAmviIgoPj4dgBekpyF?=
+ =?us-ascii?Q?oXDHU732+13MG58TRD4mvn78QLhrl9uydbGLp41YXtCMvJCQsYK+7d+oyNWk?=
+ =?us-ascii?Q?iTEW7MAKFTGiex3Ngtd3RnwT0VhAQiG4Ej28S3Rp6p/pST55nJ55K9GbwzLZ?=
+ =?us-ascii?Q?lBjPzyfZkP3uWB+JEsbm5R4Txgi/?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?6v+ADrURcr3Qj7hvYBh8zxcLgt+hjEVgnG9q/1FWBl7s/Kg8yST2m4/ojpGC?=
- =?us-ascii?Q?TpKH4xNGQuUs2WCsvVBR9G2jxSYJICLA9DNkc/SqH64MiVyJGwoyi+3gXvDJ?=
- =?us-ascii?Q?VlbPENTDrxI5lh0v9Fgf1Yo2NrmwgnqpY54Vnt+V4fAO4mH9DLPFvtWF/fRe?=
- =?us-ascii?Q?euij6pf1B1LYjQVh+bW7Pi2DlS9ZcaPKJwmD2FKbBl2Z7IZdOH4oErYDlKds?=
- =?us-ascii?Q?KGMFMbsbXlVijfqHJlc1I1PfqqxJ0Z+0HknF0DZ1UauSEN2+6Zt86sd6MLz9?=
- =?us-ascii?Q?OlT6FkYSyoupsQDdjQ89BFxtcw9SX4Bt6M3cYktHHKHvPsWKLAxv9+k+4zCZ?=
- =?us-ascii?Q?xQ4FAs7zHrMJIIanuxunIg6b9voYhyQQztL4NWXor81WqJ+pj08kRF/A+HJn?=
- =?us-ascii?Q?nKDW2xGICnBQFzY9Md3Np7sswgGDO/LEplsnKGWEhEBRSzYJJXgn4OhhZFyR?=
- =?us-ascii?Q?0ukAHWDPaKg+tap0g5BV2+4Ll3Ve6dA20zhhOS7hdXRISTjmK1/MdqMMmphY?=
- =?us-ascii?Q?9KxH09ROgi51M1Efqmx3k54cRBHraxJ3/KZVXL4yINB4JzfYdxS162lng2hp?=
- =?us-ascii?Q?t+d077EtK1zIjhdMEsweN5JrkCF86endSogRNBru7qcgEHh4shhuEhv+iZTe?=
- =?us-ascii?Q?ZVlBcSTWeNVrZwNyE7nZrIhpHYSawyeit6uLd1jSC1vvxTRO8/lAv1sUA9ml?=
- =?us-ascii?Q?wVkd608T5g/Cd3jjGljbiO641bkcqt3xKZvfeODXPBszc7KxnV4w1qF6HBWh?=
- =?us-ascii?Q?YtSmJmFZhKHuZojbMEYXKBPJWiCCh3vsqIo4EPR5qYMMOKtwPDWXu7Qgn+Gr?=
- =?us-ascii?Q?2nFyqof5TWo5eLI/Eai3+09qge/gXzGCaMCFvHh8ISKdA9Md97PXOQiCVvE4?=
- =?us-ascii?Q?vFGd4DNThpSxkZQeNZPgTMzLW2Euag9qDE5r7g6mFCwyTjwEQ6yExOhhKBr+?=
- =?us-ascii?Q?Pssrv5bPwy1Voqy33GexebqBXHP+j6/kkswZiZb3i7uJmhvHX9wOaKWxA3Cm?=
- =?us-ascii?Q?SCSNK1VFN10g6iT70AhNDD5RuNQ7yLlkEWglolPY/kmaIrUngJQHjM4nzcNw?=
- =?us-ascii?Q?asOH5dC/XXJjTkXItXIygBXOlAoXF8n4zJZTqDjLeFiFSgSare9KAxsIu3of?=
- =?us-ascii?Q?BUU+b7FZ3+syOmUcbJamYb1lmKm9vyUiCnyQIfGB4ekQAPXB2akZxCLc8snM?=
- =?us-ascii?Q?gE/tYmEUWhFPGkW6G++FK15XUXl4gfnCQ/M3ZffSewgeoHA95pMPhMpGktxJ?=
- =?us-ascii?Q?ylRu0IA/O1wZPJzclR8AlldIASv2UM2dksdBgSNiiz+0ylHcXi3pplafu1Qd?=
- =?us-ascii?Q?qB4jcmqcAR7LnPFXxtOxjNKV7/Q6OXZcuZaaoa3EYLBFWl+R3LCw6Z3/upMM?=
- =?us-ascii?Q?8AKeMW20Tdrmqs2037wlNarpAtX7xRVAoEonnc2KEq8uPl2b+lS1rab3CU8m?=
- =?us-ascii?Q?Q64GnxA2TacSscHjtXxtMeEvcO2Dq1iqk4xZJ9zRzH2U/XJfk9T+z5SNyAJx?=
- =?us-ascii?Q?CjybTlNntmYIAWrghaaSWqwEaqG3X8o4fUZuiqFTvaA1zzlD1skI67/lxrZP?=
- =?us-ascii?Q?VTobYe/2lfg/oQtxiQ9ApLzTyb0JPzDdaeAKKvv+?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0dedece0-c899-4253-56a2-08dd4abc135a
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+	=?us-ascii?Q?Amfmk6RdSwX1rg0306lBYyZ8yZBrh7ahxKwL4UgaBfmr9LRjjmgoO0/9GmMq?=
+ =?us-ascii?Q?931XPehOz/GvrbfAO3ptjgEV2FoluQG7W8W1Mvl6VNLG95JUOHYZ3mF0X/8M?=
+ =?us-ascii?Q?OL86zTwVuvIA5WpRnls+wSIae4IiGZ9zFdROC5rwU+0vkYse5HTQf0D6Erwh?=
+ =?us-ascii?Q?sI4zf9V7T9knkJDFrEg8CjeCHt0vCgvKTajsdN3anEHMBpIRr6o3WeKZ+KCs?=
+ =?us-ascii?Q?kM6sdF+zHn3QP10gysA/7KvaRQRTeJSKBjK6wueVGltAEyaOFJ7t5G8eG5N7?=
+ =?us-ascii?Q?ax5wr/DgKDsnsDMIyuHVqWmCPO4FcRz7U/fvA7ky03T5G8GYl2B1oMp6fe1K?=
+ =?us-ascii?Q?zbeZGtbLf0cqHGuoecVaJeJ7bDbv2PSLsgxs7atNvvrVsUelklYnCLSSbw9D?=
+ =?us-ascii?Q?Lk3/QHJPBjDMeABvIosoL2EMxwIwgsi3lEcdFE/FD9gO7EAvFGCoHyyVPyMH?=
+ =?us-ascii?Q?VVlx4ZPlreFVvrS+LZySycYdFJZy8tPWiXDPQJ+hZZP0sKBkFnkgtRvmD9FB?=
+ =?us-ascii?Q?t3pINX/t40GxIKggcyOeYOJ64Yv7RBKOA3RxJO4mkwRvJJZInqaxT3Ls2Gw0?=
+ =?us-ascii?Q?gJtpfvUbLe9lsnNskOI7zppGWAaaxjj3UNgB04wxVN7bair7rUBgYl2q+H6B?=
+ =?us-ascii?Q?wzTFzlQ98AOif+gR6gcSVydTJCnTHzTVrNczwEDoyvh6y04X9x0rUi6QYtG/?=
+ =?us-ascii?Q?Ct97xs0UhhI76dPeYc73mdZfKGW37isnmaDevyq2IvyFegp1fymH2014L/1K?=
+ =?us-ascii?Q?p32hq2JMfwGGwyMH/tN3oaF2dfWmH+aSVl1XYe5rlRTTd3fLOA5kUoCxAyFQ?=
+ =?us-ascii?Q?kusrWUtu0OqbsBMBCXwH1fh4HWopW4emjEA/aQ3w1XoLuc+Z+ujlZFAWWXRq?=
+ =?us-ascii?Q?zXkTxAM35kD5d6lvesTtwL5J2P7WqSScYWMTjP2RRcDqAI1uRLeK7BFt136G?=
+ =?us-ascii?Q?ZrtltNg0HJOr9EQwoZI4MNWtjNH9N20BKDUZy0wWicQAm6GVu4Ud7Anajww/?=
+ =?us-ascii?Q?sP23P6ECq+WrP3fy2IfsYqZHVVhyx8eKKglrdcK6qhUCFCMJ/0OtIMy/lWOa?=
+ =?us-ascii?Q?Rwa2ii1eMxQoz5HRdIvPQh1ABRg5/niBH1BRP+DYlfDngdXS/e47c8CP9Jx9?=
+ =?us-ascii?Q?fOuiR74eGutkt1iHGhHlowA5+Z4HECCz8GfOTyk4F3eTvXk4j39Y3YymZwf8?=
+ =?us-ascii?Q?47/uqR6eAySwxM8wx4VDVFpRRynX6CSIxtz4JkdYf7xUceRZpH5U5nhYCB2K?=
+ =?us-ascii?Q?oOA4F5idenLGEN8Q//PYFfCW03947TMA2/K15SLIKRZojQ8uf40Rj8xmh4IS?=
+ =?us-ascii?Q?roZRH/BWyE+vRWwFRU9LltDUpZ1cnp46w7krvnv5VAIvecwVoOivV6xzJK0B?=
+ =?us-ascii?Q?gOvCP/jMGAF+kUk4lTU6DLI7xavD2BkHoJ8/ciOqBZ+Q72rMPXWafuooN6AF?=
+ =?us-ascii?Q?J2Ahf7V0QKzlF9wazJssfPRt3B8f6TbTenX0flGJXcdWbyCzLjirWSKLRyOO?=
+ =?us-ascii?Q?rD/Gk2xuyIHVrgpTtS0VhxOg/ESydbq0x1yJULsTq20W86dJrcsT1IkU4gp8?=
+ =?us-ascii?Q?Ok3T6Rq93pzatGASWIvxTKfFi/jp9k/BYc5QTtz3?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 162f53c2-6fde-4845-10a8-08dd4abc8086
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Feb 2025 16:49:39.7345
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Feb 2025 16:52:42.9058
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: X2Un73sEoaUkctlkshuKjqPaYFtL8fTzth+EvURunvAUvu94wS0hIzvNRNuDyXNZ
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6582
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8+eMFKpgo8v+30IbfQgDlrLoXaCnH5nThlRSpk+JY3UfnnWUMqy9chS4cr8wOFQeNmMErBHE+jS6RtZyjHVZjA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB2391
 
-On Tue, Feb 11, 2025 at 11:24:55AM -0500, Yury Norov wrote:
-> I'm particularly concerned with the following comment from Jason
-> Gunthorpe:
+On Mon, 10 Feb 2025 09:55:19 -0500
+Tamir Duberstein <tamird@gmail.com> wrote:
+
+> ISO C's `aligned_alloc` is partially implementation-defined; on some
+> systems it inherits stricter requirements from POSIX's `posix_memalign`.
 > 
->   All PRs to Linus must not break the rust build and the responsibilty
->   for that falls to all the maintainers. If the Rust team is not quick
->   enough to resolve any issues during the development window then
->   patches must be dropped before sending PRs, or Linus will refuse the
->   PR.
+> This causes the call added in commit dd09538fb409 ("rust: alloc:
+> implement `Cmalloc` in module allocator_test") to fail on macOS because
+> it doesn't meet the requirements of `posix_memalign`.
 > 
-> https://lore.kernel.org/lkml/20250130154646.GA2298732@nvidia.com/
+> Adjust the call to meet the POSIX requirement and add a comment. This fixes
+> failures in `make rusttest` on macOS.
 > 
-> And that happened at least once, right?
+> Fixes: dd09538fb409 ("rust: alloc: implement `Cmalloc` in module allocator_test")
+> 
+> Acked-by: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> ---
+> Changes in v4:
+> - Revert to `aligned_alloc` and correct rationale. (Miguel Ojeda)
+> - Apply Danilo's Acked-by from v2.
+> - Rebase on v6.14-rc2.
+> - Link to v3: https://lore.kernel.org/r/20250206-aligned-alloc-v3-1-0cbc0ab0306d@gmail.com
+> 
+> Changes in v3:
+> - Replace `aligned_alloc` with `posix_memalign` for portability.
+> - Link to v2: https://lore.kernel.org/r/20250202-aligned-alloc-v2-1-5af0b5fdd46f@gmail.com
+> 
+> Changes in v2:
+> - Shorten some variable names. (Danilo Krummrich)
+> - Replace shadowing alignment variable with a second call to
+>   Layout::align. (Danilo Krummrich)
+> - Link to v1: https://lore.kernel.org/r/20250201-aligned-alloc-v1-1-c99a73f3cbd4@gmail.com
+> ---
+>  rust/kernel/alloc/allocator_test.rs | 23 ++++++++++++++++++++++-
+>  1 file changed, 22 insertions(+), 1 deletion(-)
+> 
+> diff --git a/rust/kernel/alloc/allocator_test.rs b/rust/kernel/alloc/allocator_test.rs
+> index e3240d16040b..1c881ed73d79 100644
+> --- a/rust/kernel/alloc/allocator_test.rs
+> +++ b/rust/kernel/alloc/allocator_test.rs
+> @@ -62,9 +62,30 @@ unsafe fn realloc(
+>              ));
+>          }
+>  
+> +        // ISO C (ISO/IEC 9899:2011) defines `aligned_alloc`:
+> +        //
+> +        // > The value of alignment shall be a valid alignment supported by the implementation
+> +        // [...].
+> +        //
+> +        // As an example of the "supported by the implementation" requirement, POSIX.1-2001 (IEEE
+> +        // 1003.1-2001) defines `posix_memalign`:
+> +        //
+> +        // > The value of alignment shall be a power of two multiple of sizeof (void *).
+> +        //
+> +        // and POSIX-based implementations of `aligned_alloc` inherit this requirement. At the time
+> +        // of writing, this is known to be the case on macOS (but not in glibc).
+> +        //
+> +        // Satisfy the stricter requirement to avoid spurious test failures on some platforms.
+> +        let min_align = core::mem::size_of::<*const crate::ffi::c_void>();
+> +        let (align, size) = if layout.align() < min_align {
+> +            (min_align, layout.size().div_ceil(min_align) * min_align)
+> +        } else {
+> +            (layout.align(), layout.size())
+> +        };
 
-Yes, 6 patches were dropped from the last merge window by Andrew and
-Linus because of rust build breakage.
+I think this can be more concisely expressed as
 
-There has since been some clarification posted:
+	let layout = layout.align_to(min_align)?.pad_to_align();
 
- https://lore.kernel.org/all/CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com/
+Best,
+Gary
 
-Quoting:
+> +
+>          // SAFETY: Returns either NULL or a pointer to a memory allocation that satisfies or
+>          // exceeds the given size and alignment requirements.
+> -        let dst = unsafe { libc_aligned_alloc(layout.align(), layout.size()) } as *mut u8;
+> +        let dst = unsafe { libc_aligned_alloc(align, size) } as *mut u8;
+>          let dst = NonNull::new(dst).ok_or(AllocError)?;
+>  
+>          if flags.contains(__GFP_ZERO) {
+> 
+> ---
+> base-commit: a64dcfb451e254085a7daee5fe51bf22959d52d3
+> change-id: 20250201-aligned-alloc-b52cb2353c82
+> 
+> Best regards,
 
-   Who is responsible if a C change breaks a build with Rust enabled?
-
-    The usual kernel policy applies. So, by default, changes should not
-    be introduced if they are known to break the build, including Rust.
-
-    However, exceptionally, for Rust, a subsystem may allow to
-    temporarily break Rust code. The intention is to facilitate friendly
-    adoption of Rust in a subsystem without introducing a burden to
-    existing maintainers who may be working on urgent fixes for the C
-    side. The breakage should nevertheless be fixed as soon as possible,
-    ideally before the breakage reaches Linus.
-
-    For instance, this approach was chosen by the block laye
-    they called it "stage 1" in their Rust integration plan.
-
-    We believe this approach is reasonable as long as the kernel does not
-    have way too many subsystems doing that (because otherwise it would be
-    very hard to build e.g. linux-next).
-
-However, it is unclear how this "temporarily break Rust code" will
-work in practice. We do not know under what conditions Linus will
-accept a PR that forces him to go to CONFIG_RUST=n, or even if Linus
-has agreed to this exception policy.
-
-I suggest the safe thing for any maintainer is to not send Linus PRs
-that break rust, otherwise they get to be a test case to see what
-happens..
-
-Jason
