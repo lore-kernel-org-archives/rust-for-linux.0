@@ -1,171 +1,333 @@
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF91B1F76A5;
-	Wed, 12 Feb 2025 18:45:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE4D25EF86
+	for <rust-for-linux@vger.kernel.org>; Wed, 12 Feb 2025 19:01:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739385926; cv=none; b=j8UYHsvHnDAuOlOMFAXfZXnBY5AJZxSk0Y8ePPkOaBYZ6t35jSgPegRgwL1eq7HEicnxmWIcKer0tiUKjGfD5wcJBVKvlrwSPn8isR72fOKYA7x9SbZAvejLEIaMJRLFdLaKC6iwk45vbirM9621jFZFa6uyTaSiA7x41pcDg0A=
+	t=1739386898; cv=none; b=vBUt70YOsuMcyGGc7+6CAGIBwEpDiE/rKffwOzbE5QooR86FolTaPsAbyuyA2v5JbynM7RXJNVlqW8UrBPecJB4LKBjyYFyOWG7T+3NU9RofXegqGFQpAPyrrYY6OEYlrWzJfZ4aBK549FUMPfTpShU7jiw9SF5XE6YgW0kKL+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739385926; c=relaxed/simple;
-	bh=2eYmWLnzj9twu0Mfh6rt4+jaBja6arjQhRyjGy/z7OA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=A6QofLZHxnIBOB+wKVQLDN89q4M2XDdvNt9KxjXxTgiKvzsclGWqL16waR5SrNBsW95soG4YJqfqz+4lF+ZCEM2PYLMFyHn1KSUFIgOKv4w0bSNr83gU1OCcRG93cpOl+GtX6ohHhxqdnWKa3G8xKrhgFFPaDFzU9CdTQ4ilmNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nLq3cmWl; arc=none smtp.client-ip=209.85.208.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1739386898; c=relaxed/simple;
+	bh=LqMoC5utCrT4bUaFZZWRG9lEJQPLZdCaPqVj0HZKTJs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PKN7MXUCdJmJoJ3JEoHEMZ4ue7DKUm6abfeOYvVcTE9egKAQch8Ov1ZOITjCzdSaaSs3hSXI9PVuLcb6sh/PeT4FeKPXxTSH/TXvMDJd0EGFlq4q1fdAGxKQSxUaQkF1mIYibjuQlHrnIHrKJdgzVg4C5Mkk3voeuAVqkOUyNMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CiYRGANa; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nLq3cmWl"
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-308dc0878dfso484401fa.3;
-        Wed, 12 Feb 2025 10:45:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739385923; x=1739990723; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wr7vsSEsGF7ruq+bhM/HPuV9jN2c8jyJNq3EMxGGUec=;
-        b=nLq3cmWln6pgexmmKRqvCyo2Z91dim+8NQLBIEQ8x5Bbt4bUBwy51DXb6rTlyfvO+N
-         OeryOCbcPBf5RK6n0GrOjwxIV8zlIUijCWqUKONn0cSm7HrciEczH1dNKLsjy5if/Kbi
-         FqJEX01WlQ+7nPYdO4BTTuv8eQ1MntGmNOWMuKDN9tUKh/ljiIHeV/BA2KwMsHYmz1Jb
-         +c6nDGVPwi4/aR8698XcW+gUDHDB+EoiHyEaTnzYJYWuHW6k8buJdS+Q2ZrmJpsEtCn1
-         nVuC3NE9fMwCbi3gnuuUD+gb+4mL3Ms6GNJz2rA3ANtoU/lUPEgtP8z2PsNLiAENcfqH
-         4wWw==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CiYRGANa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1739386895;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=VnpKOCL9F8DbCzuG0WiiawmSIQd7cJlByrW6DA7MXYI=;
+	b=CiYRGANax96Z8sKmwbOgsYGjxIb9VRSYInXyKj/X7NTbPo6jN9gPZBWcr2jMOcpo9JI84O
+	cGZw00Xv02CK9BQtgnygrE9Im/EAVR6K1RpZc34/XlBJ8O3p+FTq9mn22+fUfi+Nb1uA3t
+	cZhd2GC0YGWGFqvjQXCNmA26eq/gprs=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-408-ZYguI0bON-q4ErtTwPvQoA-1; Wed, 12 Feb 2025 14:01:32 -0500
+X-MC-Unique: ZYguI0bON-q4ErtTwPvQoA-1
+X-Mimecast-MFC-AGG-ID: ZYguI0bON-q4ErtTwPvQoA
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-38dd0265d97so19214f8f.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 12 Feb 2025 11:01:32 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739385923; x=1739990723;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wr7vsSEsGF7ruq+bhM/HPuV9jN2c8jyJNq3EMxGGUec=;
-        b=uHn3bc8mGIoW72dtUVWUEn1pNUp+oUT40l9uM2QSzLsIZF3x+4zKTwrMqZhd8aB0JQ
-         ijJDog/KtulIKbav55KpIMAYVLFHCSnoyh6aTZ9ppKVBY987LjQaFKtGbVxBE77h1z8X
-         qWCb1KQLo05yTiBC6aUzevVkaMVkBzb+8XN79vo2nuQys3QDHeGTJof0td+3QhVTustV
-         Oq9fT+1etwlRDF6xKs3rkvDQPDJ4f2Udg2Khi5+PvExmSDM3NJXxqIEDxnozzWsh7NqY
-         iDFLePywgisDMgzfZxl6NyKnGDQZkPoECAcSQUwzLF+PndDamGWnyYuppSJ+5j84I6z6
-         djjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU2xldr2rbsd7Jw0FLwP3ujJoU40OjB9OJd4AKWMqcK6t5M7ktJSYVT9t7YnH3ysVhb+P6SkidUpmVPaO8=@vger.kernel.org, AJvYcCXIJ55yiV7os1Banhr6IEi8L2pvJf3nZi1SYoNjYcMpsGBCxO5RpG/EQz4sFksz/Ta5dAPrvpmSbwCqjB9De6c=@vger.kernel.org, AJvYcCXbFw/b10GDBdgHRBKeZx9xnb7JF3kf2NnYAQBwDWyiYszvRZ5k2KGwqjzv1se5rm7kO4UpDh5JY+I2@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpYEGCdZTBlDn5r51MXgztaWMJDIV4ihFxOacqPzCfsuXvh52H
-	1oJhyiAdw6cvzsV1xoHpPJWSl2Xftf7ay7/MXUXPJ/71tEevt1/UcgfoZy2pLN95KTZCTqhuRpa
-	AJf4ptrmrVcesbVZATMmwHE/Hlood2luAsSU=
-X-Gm-Gg: ASbGncuq0Jd7N/PXdeIIFuI7+BrytL8FemTP+ahhReosjt729MyTkYdxXTgokJqLJG9
-	3D2hQGnGZf2mzv2uzyFW7sWxQzLpL42Q5UYuJSLbluC7C6qxd3NS1JQBWJmUf01oGSMTWSis9wr
-	s9wf6mDNDdXqQv
-X-Google-Smtp-Source: AGHT+IFZO2EiwwRn/62buyMDhDd+5v/jkPywVWyxKpKHb1Fpz/iKMA8bZHDpPm1OeFfuLULFg5Za+7W7LT1OcXKN0w8=
-X-Received: by 2002:a2e:a99e:0:b0:308:ee65:7f4e with SMTP id
- 38308e7fff4ca-30903554dc6mr15780571fa.0.1739385922424; Wed, 12 Feb 2025
- 10:45:22 -0800 (PST)
+        d=1e100.net; s=20230601; t=1739386891; x=1739991691;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=VnpKOCL9F8DbCzuG0WiiawmSIQd7cJlByrW6DA7MXYI=;
+        b=DDlVUITQu7KxVIYq/IRLIjeo8KAVPbDc7+TdN8o5O85/3R3FwwqUPvQGhn0f7W0I0o
+         OgkK/5pO96m93CcYxC7yYkAYajVW53qQ3tRIcezLWoBKgiWwXwMLjqUhAaPKO6wmc953
+         hKvcfobpgotlx/0KsZREHJ7gkMUENmyrrYp/HnpIbeVXIkzuC43gSQl9luR2sv+QCPrM
+         Uv3lXJ1B8s71n8/bj/n9l0ozdb9fAFDj/6IUREFy9EguWMv0JVMK3B6zmyzcnRdBU8Yg
+         WqfvRm4JZuNZ0NNhfARbndGmYNwnZJN+fHMRMzAQ8ptcv49GVXHRSKNFZCdwbDajosNi
+         cy1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCURcD5eQM8YOkm2b5pEu8TYXj+h4mtZaV8+01E2vskqugDhwm4mQK6rsSp8i7sgOc/7awsny8Ar4RZCheicxg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwF2P1ycHZW4x7I/Cu3JzwI0xuK4UGQ5ooG2j7fQm8/1N9Ir4/8
+	TXEwDstR58JtZe1mU6GZZL+5jTs5BUpvNNN0rav6uE/Rf/XyU2S4skeErZhIX3JuTudgVy3iZPi
+	hfPDFBzSkI9IG9HajPlp9P0ElqWdNsUiJqQhOvQ1zjl8OCQoQNU9d+75SYXiombxc
+X-Gm-Gg: ASbGnctt1SeoLkD93UlNuJ4lnX8CjlX5ii0SUYEZYKXKdRL0kQhq03Q+TT+1a+b9iyR
+	cnmXkyfkVl6GGHuVzLeB3pb7TdWvzOGRb6YANOXYNX8rhhTerjbMTXFPUYnyLsHAYdwPRdjhW5P
+	JbhdXfP6HLS5vAtNElyzf1aptgvEZr3q+NcCTYiYlpQ2RCb0fgnRRB3EwC9x4c1jCDyD20c1TAc
+	BGVV7a8u1OAiZLUNsJLkyb3iHQxjWGsMOxaS7n5FBdf2MLiHgTP7cV55EVFT9iArk4/Q0Hkby5N
+	ENSq5/toxlxyEWe8awdURaSicuCYetgSZLTKxYsrgsCV5YrMxR5uZcxCH3jo/APj6qwQanuWDbS
+	tUqzwqM1orosRlrTgLdtThV1MgYGHwQ==
+X-Received: by 2002:a05:6000:1fac:b0:38d:e584:81ea with SMTP id ffacd0b85a97d-38dea2f9ab6mr3331355f8f.45.1739386890860;
+        Wed, 12 Feb 2025 11:01:30 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGMQEuHs2ARaifFarl1hlb7XuIU2Uf3rWR3SR85DWiFYlcoHcyJgYvPwxFa9XALu3tB9xPEVQ==
+X-Received: by 2002:a05:6000:1fac:b0:38d:e584:81ea with SMTP id ffacd0b85a97d-38dea2f9ab6mr3331310f8f.45.1739386890296;
+        Wed, 12 Feb 2025 11:01:30 -0800 (PST)
+Received: from ?IPV6:2003:cb:c70c:a600:1e3e:c75:d269:867a? (p200300cbc70ca6001e3e0c75d269867a.dip0.t-ipconnect.de. [2003:cb:c70c:a600:1e3e:c75:d269:867a])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38dc2f6aeafsm17010526f8f.20.2025.02.12.11.01.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Feb 2025 11:01:29 -0800 (PST)
+Message-ID: <c0373279-a257-454f-98d6-9825700831f6@redhat.com>
+Date: Wed, 12 Feb 2025 20:01:26 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250212-aligned-alloc-v5-1-c51e0b17dee9@gmail.com>
- <Z6zA9UNm_UckccRm@pollux> <20250212163848.22e8dcff@eugeo> <Z6zT6mZuxonewQ9z@pollux>
-In-Reply-To: <Z6zT6mZuxonewQ9z@pollux>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 12 Feb 2025 13:44:45 -0500
-X-Gm-Features: AWEUYZm0Qb4K72pqdFq1fsoU1hZvwF588BOOitpVC3zV7pcNaFxc5kGBTGYAHMw
-Message-ID: <CAJ-ks9=-kP5jBGQ_A88VPU_HW9VkF=OCqcGufqrJobhJu8dhww@mail.gmail.com>
-Subject: Re: [PATCH v5] rust: alloc: satisfy POSIX alignment requirement
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, DJ Delorie <dj@redhat.com>, 
-	Eric Blake <eblake@redhat.com>, Paul Eggert <eggert@cs.ucla.edu>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-man@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/6] rust: page: Support borrowing `struct page` and
+ physaddr conversion
+To: Asahi Lina <lina@asahilina.net>, Zi Yan <ziy@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Jann Horn <jannh@google.com>,
+ Matthew Wilcox <willy@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Danilo Krummrich <dakr@kernel.org>, Wedson Almeida Filho
+ <wedsonaf@gmail.com>, Valentin Obst <kernel@valentinobst.de>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ airlied@redhat.com, Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ asahi@lists.linux.dev, Oscar Salvador <osalvador@suse.de>,
+ Muchun Song <muchun.song@linux.dev>
+References: <20250202-rust-page-v1-0-e3170d7fe55e@asahilina.net>
+ <Z6CTLB2NggwYafi9@phenom.ffwll.local>
+ <41ca3445-80cd-43c1-8f9e-634c195c9187@asahilina.net>
+ <37A0729B-A711-4D45-B9F0-328FDB9ADD28@nvidia.com>
+ <0e19e1c3-293b-4740-93f3-2c410893288b@redhat.com>
+ <82047858-480a-45e3-b826-3a46fbebe842@asahilina.net>
+ <f1498b22-0bc1-489a-8c2c-35aa48c7fe7d@redhat.com>
+ <1e9ae833-4293-4e48-83b2-c0af36cb3fdc@asahilina.net>
+ <026c1a0c-e53a-4a5e-92da-6e4f18ce0fee@redhat.com>
+ <cc1cd991-1871-4929-851e-d9672a45dcf0@asahilina.net>
+ <6bcd3315-a0f9-463c-ab97-a43736f9b4f4@redhat.com>
+ <2a513c3e-818c-4040-b3d3-7835861bab4f@asahilina.net>
+ <0dffaa7d-340f-4ce1-9a2e-54cfd9079266@redhat.com>
+ <bfc81fb0-917a-4518-851b-c7fcf3a91c5b@asahilina.net>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
+ ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT7CwZgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQW
+ AgMBAh4BAheAAhkBFiEEG9nKrXNcTDpGDfzKTd4Q9wD/g1oFAl8Ox4kFCRKpKXgACgkQTd4Q
+ 9wD/g1oHcA//a6Tj7SBNjFNM1iNhWUo1lxAja0lpSodSnB2g4FCZ4R61SBR4l/psBL73xktp
+ rDHrx4aSpwkRP6Epu6mLvhlfjmkRG4OynJ5HG1gfv7RJJfnUdUM1z5kdS8JBrOhMJS2c/gPf
+ wv1TGRq2XdMPnfY2o0CxRqpcLkx4vBODvJGl2mQyJF/gPepdDfcT8/PY9BJ7FL6Hrq1gnAo4
+ 3Iv9qV0JiT2wmZciNyYQhmA1V6dyTRiQ4YAc31zOo2IM+xisPzeSHgw3ONY/XhYvfZ9r7W1l
+ pNQdc2G+o4Di9NPFHQQhDw3YTRR1opJaTlRDzxYxzU6ZnUUBghxt9cwUWTpfCktkMZiPSDGd
+ KgQBjnweV2jw9UOTxjb4LXqDjmSNkjDdQUOU69jGMUXgihvo4zhYcMX8F5gWdRtMR7DzW/YE
+ BgVcyxNkMIXoY1aYj6npHYiNQesQlqjU6azjbH70/SXKM5tNRplgW8TNprMDuntdvV9wNkFs
+ 9TyM02V5aWxFfI42+aivc4KEw69SE9KXwC7FSf5wXzuTot97N9Phj/Z3+jx443jo2NR34XgF
+ 89cct7wJMjOF7bBefo0fPPZQuIma0Zym71cP61OP/i11ahNye6HGKfxGCOcs5wW9kRQEk8P9
+ M/k2wt3mt/fCQnuP/mWutNPt95w9wSsUyATLmtNrwccz63XOwU0EVcufkQEQAOfX3n0g0fZz
+ Bgm/S2zF/kxQKCEKP8ID+Vz8sy2GpDvveBq4H2Y34XWsT1zLJdvqPI4af4ZSMxuerWjXbVWb
+ T6d4odQIG0fKx4F8NccDqbgHeZRNajXeeJ3R7gAzvWvQNLz4piHrO/B4tf8svmRBL0ZB5P5A
+ 2uhdwLU3NZuK22zpNn4is87BPWF8HhY0L5fafgDMOqnf4guJVJPYNPhUFzXUbPqOKOkL8ojk
+ CXxkOFHAbjstSK5Ca3fKquY3rdX3DNo+EL7FvAiw1mUtS+5GeYE+RMnDCsVFm/C7kY8c2d0G
+ NWkB9pJM5+mnIoFNxy7YBcldYATVeOHoY4LyaUWNnAvFYWp08dHWfZo9WCiJMuTfgtH9tc75
+ 7QanMVdPt6fDK8UUXIBLQ2TWr/sQKE9xtFuEmoQGlE1l6bGaDnnMLcYu+Asp3kDT0w4zYGsx
+ 5r6XQVRH4+5N6eHZiaeYtFOujp5n+pjBaQK7wUUjDilPQ5QMzIuCL4YjVoylWiBNknvQWBXS
+ lQCWmavOT9sttGQXdPCC5ynI+1ymZC1ORZKANLnRAb0NH/UCzcsstw2TAkFnMEbo9Zu9w7Kv
+ AxBQXWeXhJI9XQssfrf4Gusdqx8nPEpfOqCtbbwJMATbHyqLt7/oz/5deGuwxgb65pWIzufa
+ N7eop7uh+6bezi+rugUI+w6DABEBAAHCwXwEGAEIACYCGwwWIQQb2cqtc1xMOkYN/MpN3hD3
+ AP+DWgUCXw7HsgUJEqkpoQAKCRBN3hD3AP+DWrrpD/4qS3dyVRxDcDHIlmguXjC1Q5tZTwNB
+ boaBTPHSy/Nksu0eY7x6HfQJ3xajVH32Ms6t1trDQmPx2iP5+7iDsb7OKAb5eOS8h+BEBDeq
+ 3ecsQDv0fFJOA9ag5O3LLNk+3x3q7e0uo06XMaY7UHS341ozXUUI7wC7iKfoUTv03iO9El5f
+ XpNMx/YrIMduZ2+nd9Di7o5+KIwlb2mAB9sTNHdMrXesX8eBL6T9b+MZJk+mZuPxKNVfEQMQ
+ a5SxUEADIPQTPNvBewdeI80yeOCrN+Zzwy/Mrx9EPeu59Y5vSJOx/z6OUImD/GhX7Xvkt3kq
+ Er5KTrJz3++B6SH9pum9PuoE/k+nntJkNMmQpR4MCBaV/J9gIOPGodDKnjdng+mXliF3Ptu6
+ 3oxc2RCyGzTlxyMwuc2U5Q7KtUNTdDe8T0uE+9b8BLMVQDDfJjqY0VVqSUwImzTDLX9S4g/8
+ kC4HRcclk8hpyhY2jKGluZO0awwTIMgVEzmTyBphDg/Gx7dZU1Xf8HFuE+UZ5UDHDTnwgv7E
+ th6RC9+WrhDNspZ9fJjKWRbveQgUFCpe1sa77LAw+XFrKmBHXp9ZVIe90RMe2tRL06BGiRZr
+ jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <bfc81fb0-917a-4518-851b-c7fcf3a91c5b@asahilina.net>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: -5Rali9VllBPFvd1whkLYath3ZSQcNIzbVwYqiAevAc_1739386891
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Feb 12, 2025 at 12:01=E2=80=AFPM Danilo Krummrich <dakr@kernel.org>=
- wrote:
->
-> On Wed, Feb 12, 2025 at 04:38:48PM +0000, Gary Guo wrote:
-> > On Wed, 12 Feb 2025 16:40:37 +0100
-> > Danilo Krummrich <dakr@kernel.org> wrote:
-> >
-> > > On Wed, Feb 12, 2025 at 09:43:02AM -0500, Tamir Duberstein wrote:
-> > > > diff --git a/rust/kernel/alloc/allocator_test.rs b/rust/kernel/allo=
-c/allocator_test.rs
-> > > > index e3240d16040b..17a475380253 100644
-> > > > --- a/rust/kernel/alloc/allocator_test.rs
-> > > > +++ b/rust/kernel/alloc/allocator_test.rs
-> > > > @@ -62,6 +62,26 @@ unsafe fn realloc(
-> > > >              ));
-> > > >          }
-> > > >
-> > > > +        // ISO C (ISO/IEC 9899:2011) defines `aligned_alloc`:
-> > > > +        //
-> > > > +        // > The value of alignment shall be a valid alignment sup=
-ported by the implementation
-> > > > +        // [...].
-> > > > +        //
-> > > > +        // As an example of the "supported by the implementation" =
-requirement, POSIX.1-2001 (IEEE
-> > > > +        // 1003.1-2001) defines `posix_memalign`:
-> > > > +        //
-> > > > +        // > The value of alignment shall be a power of two multip=
-le of sizeof (void *).
-> > > > +        //
-> > > > +        // and POSIX-based implementations of `aligned_alloc` inhe=
-rit this requirement. At the time
-> > > > +        // of writing, this is known to be the case on macOS (but =
-not in glibc).
-> > > > +        //
-> > > > +        // Satisfy the stricter requirement to avoid spurious test=
- failures on some platforms.
-> > > > +        let min_align =3D core::mem::size_of::<*const crate::ffi::=
-c_void>();
-> > > > +        let layout =3D layout.align_to(min_align).unwrap_or_else(|=
-_err| {
-> > > > +            crate::build_error!("invalid alignment")
-> > >
-> > > That's not what I thought this patch will look like. I thought you'll=
- directly
-> > > follow Gary's proposal, which is why I said you can keep the ACK.
-> > >
-> > > build_error!() doesn't work here, there is no guarantee that this can=
- be
-> > > evaluated at compile time.
-> >
-> > `align_to` will only fail if `min_align` is not a valid alignment (i.e.
-> > not power of two), which the compiler should be easy to notice that the
-> > size of pointer is indeed power of 2.
->
-> From the documentation of align_to():
->
-> "Returns an error if the combination of self.size() and the given align v=
-iolates
-> the conditions listed in Layout::from_size_align."
->
-> Formally self.size() may still be unknown at compile time.
->
-> Do I miss anything?
+On 06.02.25 20:18, Asahi Lina wrote:
+> 
+> 
+> On 2/7/25 2:58 AM, David Hildenbrand wrote:
+>> On 04.02.25 22:06, Asahi Lina wrote:
+>>>
+>>>
+>>> On 2/5/25 5:10 AM, David Hildenbrand wrote:
+>>>> On 04.02.25 18:59, Asahi Lina wrote:
+>>>>> On 2/4/25 11:38 PM, David Hildenbrand wrote:
+>>>>>>>>> If the answer is "no" then that's fine. It's still an unsafe
+>>>>>>>>> function
+>>>>>>>>> and we need to document in the safety section that it should
+>>>>>>>>> only be
+>>>>>>>>> used for memory that is either known to be allocated and pinned and
+>>>>>>>>> will
+>>>>>>>>> not be freed while the `struct page` is borrowed, or memory that is
+>>>>>>>>> reserved and not owned by the buddy allocator, so in practice
+>>>>>>>>> correct
+>>>>>>>>> use would not be racy with memory hot-remove anyway.
+>>>>>>>>>
+>>>>>>>>> This is already the case for the drm/asahi use case, where the pfns
+>>>>>>>>> looked up will only ever be one of:
+>>>>>>>>>
+>>>>>>>>> - GEM objects that are mapped to the GPU and whose physical
+>>>>>>>>> pages are
+>>>>>>>>> therefore pinned (and the VM is locked while this happens so the
+>>>>>>>>> objects
+>>>>>>>>> cannot become unpinned out from under the running code),
+>>>>>>>>
+>>>>>>>> How exactly are these pages pinned/obtained?
+>>>>>>>
+>>>>>>> Under the hood it's shmem. For pinning, it winds up at
+>>>>>>> `drm_gem_get_pages()`, which I think does a
+>>>>>>> `shmem_read_folio_gfp()` on
+>>>>>>> a mapping set as unevictable.
+>>>>>>
+>>>>>> Thanks. So we grab another folio reference via shmem_read_folio_gfp()-
+>>>>>>> shmem_get_folio_gfp().
+>>>>>>
+>>>>>> Hm, I wonder if we might end up holding folios residing in
+>>>>>> ZONE_MOVABLE/
+>>>>>> MIGRATE_CMA longer than we should.
+>>>>>>
+>>>>>> Compared to memfd_pin_folios(), which simulates FOLL_LONGTERM and
+>>>>>> makes
+>>>>>> sure to migrate pages out of ZONE_MOVABLE/MIGRATE_CMA.
+>>>>>>
+>>>>>> But that's a different discussion, just pointing it out, maybe I'm
+>>>>>> missing something :)
+>>>>>
+>>>>> I think this is a little over my head. Though I only just realized that
+>>>>> we seem to be keeping the GEM objects pinned forever, even after unmap,
+>>>>> in the drm-shmem core API (I see no drm-shmem entry point that would
+>>>>> allow the sgt to be freed and its corresponding pages ref to be
+>>>>> dropped,
+>>>>> other than a purge of purgeable objects or final destruction of the
+>>>>> object). I'll poke around since this feels wrong, I thought we were
+>>>>> supposed to be able to have shrinker support for swapping out whole GPU
+>>>>> VMs in the modern GPU MM model, but I guess there's no
+>>>>> implementation of
+>>>>> that for gem-shmem drivers yet...?
+>>>>
+>>>> I recall that shrinker as well, ... or at least a discussion around it.
+>>>>
+>>>> [...]
+>>>>
+>>>>>>
+>>>>>> If it's only for crash dumps etc. that might even be opt-in, it makes
+>>>>>> the whole thing a lot less scary. Maybe this could be opt-in
+>>>>>> somewhere,
+>>>>>> to "unlock" this interface? Just an idea.
+>>>>>
+>>>>> Just to make sure we're on the same page, I don't think there's
+>>>>> anything
+>>>>> to unlock in the Rust abstraction side (this series). At the end of the
+>>>>> day, if nothing else, the unchecked interface (which the regular
+>>>>> non-crash page table management code uses for performance) will let you
+>>>>> use any pfn you want, it's up to documentation and human review to
+>>>>> specify how it should be used by drivers. What Rust gives us here is
+>>>>> the
+>>>>> mandatory `unsafe {}`, so any attempts to use this API will necessarily
+>>>>> stick out during review as potentially dangerous code that needs extra
+>>>>> scrutiny.
+>>>>>
+>>>>> For the client driver itself, I could gate the devcoredump stuff behind
+>>>>> a module parameter or something... but I don't think it's really worth
+>>>>> it. We don't have a way to reboot the firmware or recover from this
+>>>>> condition (platform limitations), so end users are stuck rebooting to
+>>>>> get back a usable machine anyway. If something goes wrong in the
+>>>>> crashdump code and the machine oopses or locks up worse... it doesn't
+>>>>> really make much of a difference for normal end users. I don't think
+>>>>> this will ever really happen given the constraints I described, but if
+>>>>> somehow it does (some other bug somewhere?), well... the machine was
+>>>>> already in an unrecoverable state anyway.
+>>>>>
+>>>>> It would be nice to have userspace tooling deployed by default that
+>>>>> saves off the devcoredump somewhere, so we can have a chance at
+>>>>> debugging hard-to-hit firmware crashes... if it's opt-in, it would only
+>>>>> really be useful for developers and CI machines.
+>>>>
+>>>> Is this something that possibly kdump can save or analyze? Because that
+>>>> is our default "oops, kernel crashed, let's dump the old content so we
+>>>> can dump it" mechanism on production systems.
+>>>
+>>> kdump does not work on Apple ARM systems because kexec is broken and
+>>> cannot be fully fixed, due to multiple platform/firmware limitations. A
+>>> very limited version of kexec might work well enough for kdump, but I
+>>> don't think anyone has looked into making that work yet...
+>>>
+>>>> but ... I am not familiar with devcoredump. So I don't know when/how it
+>>>> runs, and if the source system is still alive (and remains alive --  in
+>>>> contrast to a kernel crash).
+>>>
+>>> Devcoredump just makes the dump available via /sys so it can be
+>>> collected by the user. The system is still alive, the GPU is just dead
+>>> and all future GPU job submissions fail. You can still SSH in or (at
+>>> least in theory, if enough moving parts are graceful about it) VT-switch
+>>> to a TTY. The display controller is not part of the GPU, it is separate
+>>> hardware.
+>>
+>>
+>> Thanks for all the details (and sorry for the delay, I'm on PTO until
+>> Monday ... :)
+>>
+>> (regarding the other mail) Adding that stuff to rust just so we have a
+>> devcoredump that ideally wouldn't exist is a bit unfortunate.
+>>
+>> So I'm curious: we do have /proc/kcore, where we do all of the required
+>> filtering, only allowing for reading memory that is online, not
+>> hwpoisoned etc.
+>>
+>> makedumpfile already supports /proc/kcore.
+>>
+>> Would it be possible to avoid Devcoredump completely either by dumping /
+>> proc/kcore directly or by having a user-space script that walks the page
+>> tables to dump the content purely based on /proc/kcore?
+>>
+>> If relevant memory ranges are inaccessible from /proc/kcore, we could
+>> look into exposing them.
+> 
+> I'm not sure that's a good idea... the dump code runs when the GPU
+> crashes, and makes copies of all the memory pages into newly allocated
+> pages (this is around 16MB for a typical dump, and if allocation fails
+> we just bail and clean up). Then userspace can read the coredump at its
+> leisure. AIUI, this is exactly the intended use case of devcoredump. It
+> also means that anyone can grab a core dump with just a `cp`, without
+> needing any bespoke tools.
+> 
+> After the snapshot is taken, the kernel will complete (fail) all GPU
+> jobs, which means much of the shared memory will be freed and some
+> structures will change contents.
 
-Formally, I agree. I tried testing (in allocator_test.rs):
+Ah, okay, that's an issue.
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+> If we defer the coredump to userspace,
+> then it would not be able to capture the state of all relevant memory
+> exactly at the crash time, which could be very confusing.
+> 
+> In theory I could change the allocators to not free or touch anything
+> after a crash, and add guards to any mutations in the driver to avoid
+> any changes after a crash... but that feels a lot more brittle and
+> error-prone than just taking the core dump at the right time.
 
-    #[test]
-    fn test_allocate() {
-        #[inline(never)]
-        fn non_const_usize() -> usize {
-            let x =3D 0;
-            &x as *const _ as usize
-        }
+Agreed.
 
-        let layout =3D Layout::array::<bool>(non_const_usize()).unwrap();
-        let ptr =3D Cmalloc::alloc(layout, GFP_KERNEL).unwrap();
-        let ptr =3D ptr.cast();
-        // SAFETY:
-        // - `ptr` was previously allocated with `Cmalloc`.
-        // - `layout` is equal to the `Layout=C2=B4 `ptr` was allocated wit=
-h.
-        unsafe { Cmalloc::free(ptr, layout) };
-    }
-}
+-- 
+Cheers,
 
-and it compiled (and passed).
+David / dhildenb
+
