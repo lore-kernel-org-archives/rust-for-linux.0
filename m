@@ -1,163 +1,225 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA9E201017;
-	Wed, 12 Feb 2025 20:01:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9931327183B;
+	Wed, 12 Feb 2025 20:47:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739390492; cv=none; b=aZ3F+CU/vH28peLkzniN0ogBoge6DMSNG/jhTQdOeXpTjOmSUeU0DSGrPdfhlV4LG88JV0UEYUXsfZE72HNuoZR21Ae77f3cl11lVzd8GyrK88RXq8GPKaNsnQhWM1N/cI/KEPREw32Gq2gyKEo4P3qUuY2oYCIWBpdPDf2HiUk=
+	t=1739393271; cv=none; b=XB6GAZjgaNQuVXAJOnjzvQbbc6Fng3vob+8nOVwRAuSJCfmeQauZstBTUkY+by9oq7inOCzSFOGTQR3MSVBaH2MB++WZhBSiR8H8tbFQIcDgteTbwL4AxRlyAhlh0qwsP63gL7QQZEmeniu113vezO5UEUWDODkHkHp15JyPc9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739390492; c=relaxed/simple;
-	bh=ih7UwWQTGH9m1+e48DnI4Kmn77m9E1quXg8pFdtmvwE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Na/O+DlcVoNz6zuJywiDuyBGPmXWFajH3gCXWrEYZfDsl32x2v3R378GBqnPPbX9aG5YiTQSl7QwxnHr4fOfzyNunS52X4qtGSj6AX4nCgcaXN2O+MDtw5wRPzXNkNEMqgrSv+k1aozEk3V0ungOyZdivu4btmyFz4rZEehMBCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u/SYAqBl; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739393271; c=relaxed/simple;
+	bh=f2OndY0N/HJlsXG3BXz07x+0iiADisddaDnDG3DL41I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VArudTlgF0M2bRANInkg1pGpnOYIPuEqN16cqABPSl3n5Eigl3RKIU+mTcqAy7/PP53wVKvKgEVGaaPjJe3rJ9BHLAlPfZsYwF/JlF4UsuVcxMhBdySCH+RWLV4Fxht6w9gCJD1JhfGsXcR7Hp8sZZ9j5YNuY+1r/mWo6XQq4m0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D8DjhsTr; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u/SYAqBl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF7BC4CEDF;
-	Wed, 12 Feb 2025 20:01:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739390492;
-	bh=ih7UwWQTGH9m1+e48DnI4Kmn77m9E1quXg8pFdtmvwE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=u/SYAqBlCpPfF1iq+4ICv36S0WZyNqpyqeX0b1enYwZlNh5j2DPR8Opx8VV7fzkX4
-	 3a0UmILl6EVPNFxAerkdjEk1xBH3Az1b8tEjoLNLcsUXFQ2q9mnnK9f5hSM4NoivI8
-	 VK83HinlUaR1JvKM4QXOmocK/H9riF648gVnrJx90CVsSupWQrM20TXYfbfi4soNyC
-	 iofcBj2lqigFLl4YqTHcEt8kzHL2cyc9LgfOXFtCOjTqcW8U5+d/IQZygN0lFMy7dC
-	 Lh91Z9CHzPW0d5m6xoDI/2nuUa3GX0wvyGPDxhFlrXzjOznYXifgMaB2nMASjxEmFJ
-	 Li17Bkvb2AwfQ==
-Date: Wed, 12 Feb 2025 21:01:26 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>,
-	DJ Delorie <dj@redhat.com>, Eric Blake <eblake@redhat.com>,
-	Paul Eggert <eggert@cs.ucla.edu>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, linux-man@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5] rust: alloc: satisfy POSIX alignment requirement
-Message-ID: <Z6z-FlEUk9OfeJCV@cassiopeiae>
-References: <20250212-aligned-alloc-v5-1-c51e0b17dee9@gmail.com>
- <Z6zA9UNm_UckccRm@pollux>
- <20250212163848.22e8dcff@eugeo>
- <Z6zT6mZuxonewQ9z@pollux>
- <CAJ-ks9=-kP5jBGQ_A88VPU_HW9VkF=OCqcGufqrJobhJu8dhww@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D8DjhsTr"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-545097ff67cso62817e87.2;
+        Wed, 12 Feb 2025 12:47:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739393268; x=1739998068; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qyp/t36cikfJ5qwnOCdgeR4xTyyQ9dQqxD0dEw365zA=;
+        b=D8DjhsTrHTsDV2X3zDXa16xlsSNaYpeoVznQ1mTKpoYoWKwGAZ/est6eG40/3z6qFT
+         NxJxt6KOQmgYhRCGAVKuMU8v+RRf0e95jvnsSA5EeKO4HYSkdmbyj3eZfc9jyayemtng
+         eNgN5crca0E40D8t+GuErjuZ4pogdzrEFUarL2ka/gpJkcbANujdvOLS5HXdsjidcqhd
+         gSSQuVqa9AQIltm2vSEaOd8yiV1PGnXro5sJrRoeeWxemRk13DOIMaoLn3IwzJpWlCzS
+         okmCwUq/DBFrXn7uGtRWGPg/bqHjD5TkSU92ktwoqlnoH50mriOFSptfpGGcfz/GU78f
+         KFjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739393268; x=1739998068;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qyp/t36cikfJ5qwnOCdgeR4xTyyQ9dQqxD0dEw365zA=;
+        b=D60gXGY3vzNRqhKJa1sUfkSQ6FVgBAOF8mrt3Xnxch9yIG1I1/v/9g8xQ1rcfq9WCS
+         /R5X7UFeBxf9D7cHBdKZnauh9e/Us8Af/tXFSy1MAfeMjSLyxh8hyLgOB5CNQJaZ39sI
+         Pn77isSc6WJKRswgLulZZ5Qaej5fR7dZqnRpb0fq4k5CpvPQ28DZfBYtpj34KMTURhQ2
+         D7cDg/uEQ2WTm067rvRqCUUWV9xsh88cEHRVJd5vMeTvWaDG37bZwhmDodZSsAzqnUgp
+         8cuCl/2P7lGEMjfiCLfUm6w5YLQu2RcOIRruoaD4viHakv2GQaIgBNLpy+4itYsCn1qi
+         nXDg==
+X-Forwarded-Encrypted: i=1; AJvYcCVWAmiL7cDT/V0Tpaem7JsEj6mOdEX24jzZBNiLMpkVKMfAQAkAl27I8Y4KXZdqp6X/0Ts074t5LhZc+3c=@vger.kernel.org, AJvYcCVqlSk24ClQyH6w2QNBwNUnmFkwoOjZ0lwgTHuY5pf/f/RQwQIGzTnUeGGB2xpH3vqk/j4oqTWJMgRv@vger.kernel.org, AJvYcCWXUCKzxJElBO+7yDiPbJzuH7SzwFGNI7MqkYjD6yLgTZooGN4cvqYX7MrU1V6c7GcsxGRO5u7G4aVKRo74Tws=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZJMuj6aZPeeizoheWPtY59qkHxe/aOyr1ycsfgabl3UIS9Dbf
+	JuUkO+weHXjods0JE8C72Q0Y83imbuM+YhGcHx9ObXnGOFO+wJXBuhHe2IFOhyy41Cq7cFd+8lm
+	xNzWGAwGl+uDPofl7M7596Ena0aCD3xHT1Ek=
+X-Gm-Gg: ASbGncu2L7cA5N6ZAx9smybKUbYx25Bt0UEwm+MmAHd9434VODggaAyq5IukhEVdkX/
+	aAUcgrOd11ik019QP0kby8ztMUyOCVq7Q1qimkYlOGu4IBSbzoYnjdA2/yCGJlpLoRBUaEQ+FcX
+	rQcWRNQ+ckvMiz
+X-Google-Smtp-Source: AGHT+IH3KzU+wmVTdNvjjfgFfcmvbkDy8bo3qZPe4hvm3sn4wwrtriNxfCwQJzbqFFZrtqtK5dsvOK/oumibGAF5NDk=
+X-Received: by 2002:a05:6512:e81:b0:545:ae6:d740 with SMTP id
+ 2adb3069b0e04-545184a2e67mr1218019e87.41.1739393267369; Wed, 12 Feb 2025
+ 12:47:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJ-ks9=-kP5jBGQ_A88VPU_HW9VkF=OCqcGufqrJobhJu8dhww@mail.gmail.com>
+References: <20250212-aligned-alloc-v5-1-c51e0b17dee9@gmail.com>
+ <Z6zA9UNm_UckccRm@pollux> <20250212163848.22e8dcff@eugeo> <Z6zT6mZuxonewQ9z@pollux>
+ <CAJ-ks9=-kP5jBGQ_A88VPU_HW9VkF=OCqcGufqrJobhJu8dhww@mail.gmail.com> <Z6z-FlEUk9OfeJCV@cassiopeiae>
+In-Reply-To: <Z6z-FlEUk9OfeJCV@cassiopeiae>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Wed, 12 Feb 2025 15:47:11 -0500
+X-Gm-Features: AWEUYZlY0QbbhrC10VNd2x8jWaAJGFYDZASGwDMbYLF62Nd3FDQRBPtaViQLiIE
+Message-ID: <CAJ-ks9=-ZQpmhJRs3YstZBGb9UvLwRQJ7od+dsc_sYZtwUhF2A@mail.gmail.com>
+Subject: Re: [PATCH v5] rust: alloc: satisfy POSIX alignment requirement
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, DJ Delorie <dj@redhat.com>, 
+	Eric Blake <eblake@redhat.com>, Paul Eggert <eggert@cs.ucla.edu>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-man@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 12, 2025 at 01:44:45PM -0500, Tamir Duberstein wrote:
-> On Wed, Feb 12, 2025 at 12:01 PM Danilo Krummrich <dakr@kernel.org> wrote:
-> >
-> > On Wed, Feb 12, 2025 at 04:38:48PM +0000, Gary Guo wrote:
-> > > On Wed, 12 Feb 2025 16:40:37 +0100
-> > > Danilo Krummrich <dakr@kernel.org> wrote:
+On Wed, Feb 12, 2025 at 3:01=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
+> On Wed, Feb 12, 2025 at 01:44:45PM -0500, Tamir Duberstein wrote:
+> > On Wed, Feb 12, 2025 at 12:01=E2=80=AFPM Danilo Krummrich <dakr@kernel.=
+org> wrote:
 > > >
-> > > > On Wed, Feb 12, 2025 at 09:43:02AM -0500, Tamir Duberstein wrote:
-> > > > > diff --git a/rust/kernel/alloc/allocator_test.rs b/rust/kernel/alloc/allocator_test.rs
-> > > > > index e3240d16040b..17a475380253 100644
-> > > > > --- a/rust/kernel/alloc/allocator_test.rs
-> > > > > +++ b/rust/kernel/alloc/allocator_test.rs
-> > > > > @@ -62,6 +62,26 @@ unsafe fn realloc(
-> > > > >              ));
-> > > > >          }
+> > > On Wed, Feb 12, 2025 at 04:38:48PM +0000, Gary Guo wrote:
+> > > > On Wed, 12 Feb 2025 16:40:37 +0100
+> > > > Danilo Krummrich <dakr@kernel.org> wrote:
+> > > >
+> > > > > On Wed, Feb 12, 2025 at 09:43:02AM -0500, Tamir Duberstein wrote:
+> > > > > > diff --git a/rust/kernel/alloc/allocator_test.rs b/rust/kernel/=
+alloc/allocator_test.rs
+> > > > > > index e3240d16040b..17a475380253 100644
+> > > > > > --- a/rust/kernel/alloc/allocator_test.rs
+> > > > > > +++ b/rust/kernel/alloc/allocator_test.rs
+> > > > > > @@ -62,6 +62,26 @@ unsafe fn realloc(
+> > > > > >              ));
+> > > > > >          }
+> > > > > >
+> > > > > > +        // ISO C (ISO/IEC 9899:2011) defines `aligned_alloc`:
+> > > > > > +        //
+> > > > > > +        // > The value of alignment shall be a valid alignment=
+ supported by the implementation
+> > > > > > +        // [...].
+> > > > > > +        //
+> > > > > > +        // As an example of the "supported by the implementati=
+on" requirement, POSIX.1-2001 (IEEE
+> > > > > > +        // 1003.1-2001) defines `posix_memalign`:
+> > > > > > +        //
+> > > > > > +        // > The value of alignment shall be a power of two mu=
+ltiple of sizeof (void *).
+> > > > > > +        //
+> > > > > > +        // and POSIX-based implementations of `aligned_alloc` =
+inherit this requirement. At the time
+> > > > > > +        // of writing, this is known to be the case on macOS (=
+but not in glibc).
+> > > > > > +        //
+> > > > > > +        // Satisfy the stricter requirement to avoid spurious =
+test failures on some platforms.
+> > > > > > +        let min_align =3D core::mem::size_of::<*const crate::f=
+fi::c_void>();
+> > > > > > +        let layout =3D layout.align_to(min_align).unwrap_or_el=
+se(|_err| {
+> > > > > > +            crate::build_error!("invalid alignment")
 > > > > >
-> > > > > +        // ISO C (ISO/IEC 9899:2011) defines `aligned_alloc`:
-> > > > > +        //
-> > > > > +        // > The value of alignment shall be a valid alignment supported by the implementation
-> > > > > +        // [...].
-> > > > > +        //
-> > > > > +        // As an example of the "supported by the implementation" requirement, POSIX.1-2001 (IEEE
-> > > > > +        // 1003.1-2001) defines `posix_memalign`:
-> > > > > +        //
-> > > > > +        // > The value of alignment shall be a power of two multiple of sizeof (void *).
-> > > > > +        //
-> > > > > +        // and POSIX-based implementations of `aligned_alloc` inherit this requirement. At the time
-> > > > > +        // of writing, this is known to be the case on macOS (but not in glibc).
-> > > > > +        //
-> > > > > +        // Satisfy the stricter requirement to avoid spurious test failures on some platforms.
-> > > > > +        let min_align = core::mem::size_of::<*const crate::ffi::c_void>();
-> > > > > +        let layout = layout.align_to(min_align).unwrap_or_else(|_err| {
-> > > > > +            crate::build_error!("invalid alignment")
+> > > > > That's not what I thought this patch will look like. I thought yo=
+u'll directly
+> > > > > follow Gary's proposal, which is why I said you can keep the ACK.
+> > > > >
+> > > > > build_error!() doesn't work here, there is no guarantee that this=
+ can be
+> > > > > evaluated at compile time.
 > > > >
-> > > > That's not what I thought this patch will look like. I thought you'll directly
-> > > > follow Gary's proposal, which is why I said you can keep the ACK.
-> > > >
-> > > > build_error!() doesn't work here, there is no guarantee that this can be
-> > > > evaluated at compile time.
+> > > > `align_to` will only fail if `min_align` is not a valid alignment (=
+i.e.
+> > > > not power of two), which the compiler should be easy to notice that=
+ the
+> > > > size of pointer is indeed power of 2.
 > > >
-> > > `align_to` will only fail if `min_align` is not a valid alignment (i.e.
-> > > not power of two), which the compiler should be easy to notice that the
-> > > size of pointer is indeed power of 2.
+> > > From the documentation of align_to():
+> > >
+> > > "Returns an error if the combination of self.size() and the given ali=
+gn violates
+> > > the conditions listed in Layout::from_size_align."
+> > >
+> > > Formally self.size() may still be unknown at compile time.
+> > >
+> > > Do I miss anything?
 > >
-> > From the documentation of align_to():
+> > Formally, I agree. I tried testing (in allocator_test.rs):
 > >
-> > "Returns an error if the combination of self.size() and the given align violates
-> > the conditions listed in Layout::from_size_align."
+> > #[cfg(test)]
+> > mod tests {
+> >     use super::*;
 > >
-> > Formally self.size() may still be unknown at compile time.
+> >     #[test]
+> >     fn test_allocate() {
+> >         #[inline(never)]
+> >         fn non_const_usize() -> usize {
+> >             let x =3D 0;
+> >             &x as *const _ as usize
+> >         }
 > >
-> > Do I miss anything?
-> 
-> Formally, I agree. I tried testing (in allocator_test.rs):
-> 
-> #[cfg(test)]
-> mod tests {
->     use super::*;
-> 
->     #[test]
->     fn test_allocate() {
->         #[inline(never)]
->         fn non_const_usize() -> usize {
->             let x = 0;
->             &x as *const _ as usize
->         }
-> 
->         let layout = Layout::array::<bool>(non_const_usize()).unwrap();
->         let ptr = Cmalloc::alloc(layout, GFP_KERNEL).unwrap();
->         let ptr = ptr.cast();
->         // SAFETY:
->         // - `ptr` was previously allocated with `Cmalloc`.
->         // - `layout` is equal to the `Layout´ `ptr` was allocated with.
->         unsafe { Cmalloc::free(ptr, layout) };
->     }
+> >         let layout =3D Layout::array::<bool>(non_const_usize()).unwrap(=
+);
+> >         let ptr =3D Cmalloc::alloc(layout, GFP_KERNEL).unwrap();
+> >         let ptr =3D ptr.cast();
+> >         // SAFETY:
+> >         // - `ptr` was previously allocated with `Cmalloc`.
+> >         // - `layout` is equal to the `Layout=C2=B4 `ptr` was allocated=
+ with.
+> >         unsafe { Cmalloc::free(ptr, layout) };
+> >     }
+> > }
+> >
+> > and it compiled (and passed).
+>
+> I suggest to try the following.
+>
+> Move non_const_usize() into allocator_test.rs and within realloc(), try [=
+1];
+> then try [2].
+>
+> Besides that, I still think build_error!() can't be used here correctly, =
+since
+> layout.size() might not be known at compile time. Please change things to=
+ what I
+> did suggest previously.
+>
+> --
+>
+> [1]
+> ```
+> if non_const_usize() < 0x42 {
+>    crate::build_error!();
 > }
-> 
-> and it compiled (and passed).
+> ```
+>
+> [2]
+> ```
+> if non_const_usize() >=3D 0x42 {
+>    crate::build_error!();
+> }
+> ```
 
-I suggest to try the following.
+Quite a good experiment, thanks for suggesting it. The result is that
+one of these just panics at run-time. This means that it's trivially
+easy to hold `build_{assert,error}!()` incorrectly! It only does the
+right thing in a constant context (and the docs do say this) but it's
+very easy to use in _any_ context. Looks like I wasn't the only one to
+fall into the trap (rust/kernel/io.rs):
 
-Move non_const_usize() into allocator_test.rs and within realloc(), try [1];
-then try [2].
+    #[inline]
+    const fn io_addr_assert<U>(&self, offset: usize) -> usize {
+        build_assert!(Self::offset_valid::<U>(offset, SIZE));
 
-Besides that, I still think build_error!() can't be used here correctly, since
-layout.size() might not be known at compile time. Please change things to what I
-did suggest previously.
+        self.addr() + offset
+    }
 
---
+since offset isn't known at compile time, this can easily be misused?
 
-[1]
-```
-if non_const_usize() < 0x42 {
-   crate::build_error!();
-}
-```
-
-[2]
-```
-if non_const_usize() >= 0x42 {
-   crate::build_error!();
-}
-```
+I'll change this to map_err. Thanks for your scrutiny.
