@@ -1,238 +1,129 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDAE253B63
-	for <rust-for-linux@vger.kernel.org>; Wed, 12 Feb 2025 19:07:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41D21FFC69;
+	Wed, 12 Feb 2025 19:44:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739387275; cv=none; b=ovDP6Z2wbyIeH/Orr3+CL/S6uvnuWQmcbHXxnLSywdjIWOWwRgHCajiqtsr1YfJGaqyq4rFHjizMcFV82grWTemE09DOXHIovmr0WaRE2xJtrB4eMTKCeS2hmgGqb9KfnM7y8O5Lj4nNdxYIDwvQm8R45uYv/9G5ig2GNN5rfN0=
+	t=1739389492; cv=none; b=HgsqfQuXTllZ8UFFmITjb7/VhDVoN0NKwKhVtTYvrTPscUOfF+nZcq9BPSx4hYQE2braqniLRKkiRNNdvKR92/XswHZllU2qkDyzEKB1y3WkQ8u9G6il78Rbzf4XrmyJXGKDCKE4bTmnbtykvOXMtd+wxuHxj+Q+WTQ/1jSxH94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739387275; c=relaxed/simple;
-	bh=uHysvwfy0YOcXr4Xow8BhFVHFTTibAfWz89EgwgT+6o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=EY9g9lGzD3l6gxb+w/1aWwIArGufhO7rDIJGgfPoeySkBRQldtOo+d56XrfoukGDo3wL7iBxeemWp/DPyA70F1yGtG/cgPvzz8a0s2nQ7ofWeiEwBROc1a5wILt1cqtUHJ/fRMoDeOCsosoasBJ6Lwlo4xeKH6lO6lyOtEcnOPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CrbfUWei; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1739389492; c=relaxed/simple;
+	bh=ywIzaOVXmImOoO4Gas/GMqK2ose5vqyNopDAxiufQoo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nYMXbhUH2+eZpQhHQe5tkiRza3TaqDVBOekXMQPY74Omm7cnNkH8doveE31cOB1A0TgxJnsH/ChF3FZlnkPCo6gcFDSBEEcrK0dCfuK70W8/rVWH0bNX5BYCzNoZFBx6Ys9qj9jJKjOv4rbKXSElpql5NPYA1hBo1RLNzslxR1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nRSJyY9C; arc=none smtp.client-ip=209.85.161.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CrbfUWei"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1739387273;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=kjYE41T9eH6sBeVON8mdbKg+vcLjv+QgGNIcmpOCleo=;
-	b=CrbfUWeib1U2ut0Ars1ijatW4HtiSWPlHsrkhC6HIW7R96H3F12mTtMSGyXlDRJzt+3dhz
-	kT/Egjk5Mc2UgHGmDEa2wK61oztq+QpzGged0MQqshAZX9HTG6Ro9K24nEXSQ6HO7F2eNg
-	Wdgq7EHGzcbfe33aokObqNtI07MJE0k=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-693-wNRHRg9hOtmjwejn7z-aLA-1; Wed, 12 Feb 2025 14:07:49 -0500
-X-MC-Unique: wNRHRg9hOtmjwejn7z-aLA-1
-X-Mimecast-MFC-AGG-ID: wNRHRg9hOtmjwejn7z-aLA
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4393b6763a3so304965e9.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 12 Feb 2025 11:07:49 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nRSJyY9C"
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-5fc7d346980so46728eaf.1;
+        Wed, 12 Feb 2025 11:44:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739389489; x=1739994289; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jPSeivS3uH0MhnhX3dDqt0ADzcQbXXGvaG4UAUIk9ZM=;
+        b=nRSJyY9Cd3FlMk7wpBMxAl5Aq1LCMs+e/UxuptaqEwx6xgj8GX2qzhJ0jyQonTwHZr
+         sT9vzYsqS+wOcYxjjGFwPvSQx5VMIB7dV2a/1zjfbaXfjDM0EsTA/BjJn9wfeEnYQrz8
+         uJ+sxs1Mt0NQMf7r0vJGLzDxztZ87d4ExtmUtw2XyFx9WlcscdMIvG3jri6/nD2sF258
+         ypdUUGiyAsA40tnkBNTPNZlRGscACj6QYWyIjUxLWUcaWCdMbGeXynib89i0/gg2X4u7
+         ZmCTB7wkexMPRYNMVjThGFVHBq8R7xPovkylOuH4notuRCutx5FEKoYpue+8ooQRiI3N
+         6HFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739387269; x=1739992069;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kjYE41T9eH6sBeVON8mdbKg+vcLjv+QgGNIcmpOCleo=;
-        b=lTXWshyu+l+95kVPGjSW3r8PSAt1aV/Zfx59w3jeos8bkC2qHniSuBh3LXMRODueo6
-         uHMuo851XGzID9vfSxpOPhYXHzNGilc40qtZ5lcF29KIXP6eeTuReq565pkY6/mrcJiq
-         r81cPN+IGSdoBaDlp1ekFRjMKurO0IKPQq1GuL9IGkpcmkovlsexC4liFtmOX+bcNvR1
-         g105tyKjHukS0pInS/b3KWnEoiw0veR76+hIP51mQP+aS22r64rpaNlou+jpiOAfBd2c
-         FfHqBTbw4rxaB/wzwPHG5Li+qSTsryWKUPF7i+vd41qxIQ9EAyfYJDsvGO/wOBEX2mRO
-         qmUA==
-X-Forwarded-Encrypted: i=1; AJvYcCVvipRN9VnSLkXUlIp5EShc6FCZtxVr5KFhMXXoydl8SjMEOFRxSZSpGjEghTxaRWLdd1ReTR5f+oseudzcLA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+QDWWRMXUiidlIezZco915Ye0fjAzJv2Arb6yIoLEgd2kRujG
-	2qKRil9G0aWSoNrgSJ3LgWmgzHNpkWqQA8Ys0oPpm1FZQqnV/Z7yadCce0gRrt8ldPks0akN6oE
-	aMrDXRNb1XrPexjJbgVUEI90H6Z2+fFMc46+VcgsjtAiJE+8C+1X6WmCEWptihbJd
-X-Gm-Gg: ASbGncsrvUG8Jw0D11E5V4clCNGmNkNqHs8p2OlyD1A7xul/BZBCJsEhhitXp3sCyW4
-	p/Mabbxwii8SCPLnCY6vOOFxJ4fa6YDpgw+0ftQBJf5PKGWAuMTCvaZThjo3Qx7IPEXzXqM+lyQ
-	hyXnnieLfdjRAPlW/pZr4dM+srwLoirdz+NnHEV08Q+DbwNdx7mNJfg7osiiD2iDqfgXaPxU0pc
-	Plf9/PVYV+AepoOYJ5DOd08fS5fh7cs2vn8n/4pvrp/k4zyC1bqaPN7Xy567QQqU6KNx4cQjtEK
-	suJGO7YxrJTyPGRnceE84OEqmb5+HwT+UAPNUngc6DpWBtOhVtV28PpQsdkDcpsfhWVoZKuKO6T
-	iH+YV0ug9ugRMzZo0pR75xxQjBsUlwA==
-X-Received: by 2002:a05:600c:3ba7:b0:439:4696:c063 with SMTP id 5b1f17b1804b1-43959a8401cmr34041345e9.19.1739387268724;
-        Wed, 12 Feb 2025 11:07:48 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHqTIsCjYY4j8RDJFO1zTxybX0Qjo8xFUOB2V/U5twoI9Bd2ixKNNFZ9vuxKiE+nOJ2cIpEMA==
-X-Received: by 2002:a05:600c:3ba7:b0:439:4696:c063 with SMTP id 5b1f17b1804b1-43959a8401cmr34041135e9.19.1739387268298;
-        Wed, 12 Feb 2025 11:07:48 -0800 (PST)
-Received: from ?IPV6:2003:cb:c70c:a600:1e3e:c75:d269:867a? (p200300cbc70ca6001e3e0c75d269867a.dip0.t-ipconnect.de. [2003:cb:c70c:a600:1e3e:c75:d269:867a])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4395a06e309sm28144855e9.24.2025.02.12.11.07.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Feb 2025 11:07:47 -0800 (PST)
-Message-ID: <e7f45603-17f4-4ff7-9d84-1331f0f1b447@redhat.com>
-Date: Wed, 12 Feb 2025 20:07:44 +0100
+        d=1e100.net; s=20230601; t=1739389489; x=1739994289;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jPSeivS3uH0MhnhX3dDqt0ADzcQbXXGvaG4UAUIk9ZM=;
+        b=AE78VsV9aiWR4Wf4siOKVaI00ZQnoc78HKv44esLFeoDcEFDu8rHkS2/zpzGZOTUOr
+         cuJbjlwdjVlTDSdEJ1YZS+rWORG/NTcOiey80E1sHZuEYbyb+2DfVhrXj1wZeXRrGQRT
+         DJx8QJ+gKjOihYLUS/3mUdBsxgfmZZJ3nNn6P9fkthMacUGqGWJpfuvirnFbC/oLDDMu
+         lOcFdpJSB3nHiVkc32+CTryQEgidENGl2f/OoOQsYIMc04b0/WEGBlAMXgxySuXmzDYo
+         6rlzFZXbuwaBxQKW/jtF5Y+HVOrTWvUsrgR3IheNT6cEvnQGuX0b4nVBI9wp1qaI9cmJ
+         k+Og==
+X-Forwarded-Encrypted: i=1; AJvYcCVNLe2k91NlWJltfS4MG7DWFEqtOZmpBCb9x0EPkBf+ortV9enb1wCu6We3WGqYFQbkKXXYQfANok70udc=@vger.kernel.org, AJvYcCVd9/ysv3HdTtz9vpgmDFrEkVr7oNKxKeiaHSVL4h9GL49NQVAJpxLBiaEzPICNZKw6gz/Nsw5zS9KlA3MjHzM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIchI3/KSJGz5EreAMubfxTN0D0u9MPKnT4zBh9oDiCBpG9Qh+
+	l99uvEk5TfUg8n3DJrdCt2ePZABuyC/c5/OAd5yhqpzS5mKL3qPQ
+X-Gm-Gg: ASbGnct2v+hafB/mITgal5zfHBwupvtxMlOwgHN2PhOXShcH7d+fEYZYfrRKG2Y8LB0
+	9b0+ubngvbCHqA1So9i4TtVa4ddMR/rpkk01qmmGl7tWPendbUg+xXmzDf0kJTBBOmelATCAZiM
+	N9SavCmyWKv4T6C7URoHyx4BJ+0T9kgNKjDlUyGwh/TkNwV3ZuoMg3onLOLGapXBn1QgISBtNnw
+	N6a4obWANIThzZmZI/MKWGOAYVjsaL34f+0jq4Ldwd0r3hInz79b/GwORs3awxGMqs00S90mgQU
+	ImXPuVjUT7D0Oz/lJx8u2zi0
+X-Google-Smtp-Source: AGHT+IG1q7HGNZPT8DKly1ZJUqQ7kl1B2boZmwT8sZe5OX/BYvT62Tib01zooHzL3adQanG4Bv2URw==
+X-Received: by 2002:a05:6820:1995:b0:5fc:a44c:b62a with SMTP id 006d021491bc7-5fca44cbd34mr2529986eaf.6.1739389489570;
+        Wed, 12 Feb 2025 11:44:49 -0800 (PST)
+Received: from linuxsimoes.. ([187.120.154.251])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5fc8a0cb99bsm2590915eaf.9.2025.02.12.11.44.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Feb 2025 11:44:48 -0800 (PST)
+From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+To: a.hindborg@kernel.org,
+	alex.gaynor@gmail.com,
+	aliceryhl@google.com,
+	apw@canonical.com,
+	arnd@arndb.de,
+	aswinunni01@gmail.com,
+	axboe@kernel.dk,
+	benno.lossin@proton.me,
+	bhelgaas@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	dakr@kernel.org,
+	dwaipayanray1@gmail.com,
+	ethan.twardy@gmail.com,
+	fujita.tomonori@gmail.com,
+	gary@garyguo.net,
+	gregkh@linuxfoundation.org,
+	joe@perches.com,
+	lukas.bulwahn@gmail.com,
+	ojeda@kernel.org,
+	pbonzini@redhat.com,
+	tmgross@umich.edu,
+	walmeida@microsoft.com
+Cc: trintaeoitogc@gmail.com,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/3] author field in module! macro should be a array
+Date: Wed, 12 Feb 2025 16:44:30 -0300
+Message-Id: <20250212194433.191882-1-trintaeoitogc@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/6] rust: page: Support borrowing `struct page` and
- physaddr conversion
-To: Asahi Lina <lina@asahilina.net>, Zi Yan <ziy@nvidia.com>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Jann Horn <jannh@google.com>,
- Matthew Wilcox <willy@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Danilo Krummrich <dakr@kernel.org>, Wedson Almeida Filho
- <wedsonaf@gmail.com>, Valentin Obst <kernel@valentinobst.de>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- airlied@redhat.com, Abdiel Janulgue <abdiel.janulgue@gmail.com>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- asahi@lists.linux.dev, Oscar Salvador <osalvador@suse.de>,
- Muchun Song <muchun.song@linux.dev>
-References: <20250202-rust-page-v1-0-e3170d7fe55e@asahilina.net>
- <Z6CTLB2NggwYafi9@phenom.ffwll.local>
- <41ca3445-80cd-43c1-8f9e-634c195c9187@asahilina.net>
- <37A0729B-A711-4D45-B9F0-328FDB9ADD28@nvidia.com>
- <0e19e1c3-293b-4740-93f3-2c410893288b@redhat.com>
- <82047858-480a-45e3-b826-3a46fbebe842@asahilina.net>
- <f1498b22-0bc1-489a-8c2c-35aa48c7fe7d@redhat.com>
- <1e9ae833-4293-4e48-83b2-c0af36cb3fdc@asahilina.net>
- <026c1a0c-e53a-4a5e-92da-6e4f18ce0fee@redhat.com>
- <Z6MV_Y9WRdlBYeRs@phenom.ffwll.local>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <Z6MV_Y9WRdlBYeRs@phenom.ffwll.local>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 7BcMrbeg8spPZmI_Vc26mIP91qI5aJyMSfRG4_t4BAk_1739387269
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 05.02.25 08:40, Simona Vetter wrote:
-> On Tue, Feb 04, 2025 at 03:38:17PM +0100, David Hildenbrand wrote:
->>>> It can still race with memory offlining, and it refuses ZONE_DEVICE
->>>> pages. For the latter, we have a different way to check validity. See
->>>> memory_failure() that first calls pfn_to_online_page() to then check
->>>> get_dev_pagemap().
->>>
->>> I'll give it a shot with these functions. If they work for my use case,
->>> then it's good to have extra checks and I'll add them for v2. Thanks!
->>
->> Let me know if you run into any issues.
->>
->>>
->>>>
->>>>>
->>>>> If the answer is "no" then that's fine. It's still an unsafe function
->>>>> and we need to document in the safety section that it should only be
->>>>> used for memory that is either known to be allocated and pinned and will
->>>>> not be freed while the `struct page` is borrowed, or memory that is
->>>>> reserved and not owned by the buddy allocator, so in practice correct
->>>>> use would not be racy with memory hot-remove anyway.
->>>>>
->>>>> This is already the case for the drm/asahi use case, where the pfns
->>>>> looked up will only ever be one of:
->>>>>
->>>>> - GEM objects that are mapped to the GPU and whose physical pages are
->>>>> therefore pinned (and the VM is locked while this happens so the objects
->>>>> cannot become unpinned out from under the running code),
->>>>
->>>> How exactly are these pages pinned/obtained?
->>>
->>> Under the hood it's shmem. For pinning, it winds up at
->>> `drm_gem_get_pages()`, which I think does a `shmem_read_folio_gfp()` on
->>> a mapping set as unevictable.
->>
->> Thanks. So we grab another folio reference via
->> shmem_read_folio_gfp()->shmem_get_folio_gfp().
->>
->> Hm, I wonder if we might end up holding folios residing in
->> ZONE_MOVABLE/MIGRATE_CMA longer than we should.
->>
->> Compared to memfd_pin_folios(), which simulates FOLL_LONGTERM and makes sure
->> to migrate pages out of ZONE_MOVABLE/MIGRATE_CMA.
->>
->> But that's a different discussion, just pointing it out, maybe I'm missing
->> something :)
-> 
-> Good GPU Drivers (tm) are supposed to have a shrinker so we can at least
-> nuke some of them again. Some folks even looked into hooking up a migrate
-> callback through the address_space (or wherever that hook was, this is
-> from memory) so we can make this somewhat reliable. So yeah we're hogging
-> ZONE_MOVEABLE unduly still.
+In the module! macro, the author field has a string type. Once that the
+modules can has more than one author, this is impossible in the current
+scenary.
 
-Hmmm, so we should really be migrating pages out of 
-ZONE_MOVABLE/MIGRATE_CMA here, just like we now properly do in 
-memfd_pin_folios().
+- Change the author field for accept a array string type and enable
+  module creations with more than one author.
 
-> 
-> The other side is that there's about 2-3 good drivers (msm, i915, xe
-> should have a shrinker now too but I didn't check). The others all fall
-> various levels of short, or still have 3 times cargo-culted versions of
-> i915's pin-as-a-lock design and get it completely wrong.
+- In modules that use the author field, change its value to a string
+  array.
 
-:(
+- Change the check patch to find poorly formatted arrays in the macro
+  module!
 
-> 
-> So yeah I'm aware this isn't great, and we're at least glacially slowly
-> moving towards a common shrinker infrastructure that maybe in a glorious
-> future gets all this right. I mean it took us 15+ years to get to a
-> cgroups controller after all too, and that was also a well known issue of
-> just being able to hog memory with no controls and potentially cause
-> havoc.
+Guilherme Giacomo Simoes (3):
+  rust: module: change author to be a array
+  rust: macros: change author field to array
+  checkpatch: throw error in malformed arrays
 
-I guess that means job security for us, haha :)
+ drivers/block/rnull.rs           |  2 +-
+ rust/kernel/net/phy.rs           |  4 +-
+ rust/kernel/pci.rs               |  2 +-
+ rust/macros/lib.rs               |  4 +-
+ rust/macros/module.rs            |  8 ++--
+ samples/rust/rust_driver_pci.rs  |  2 +-
+ samples/rust/rust_minimal.rs     |  2 +-
+ samples/rust/rust_misc_device.rs |  2 +-
+ samples/rust/rust_print_main.rs  |  2 +-
+ scripts/checkpatch.pl            | 68 ++++++++++++++++++++++++++++++++
+ 10 files changed, 83 insertions(+), 13 deletions(-)
 
 -- 
-Cheers,
-
-David / dhildenb
+2.34.1
 
