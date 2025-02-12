@@ -1,121 +1,110 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC24256C6A;
-	Wed, 12 Feb 2025 22:29:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD53202C38
+	for <rust-for-linux@vger.kernel.org>; Wed, 12 Feb 2025 22:43:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739399388; cv=none; b=SeWwTLCPOfABDxJ8FDY4bwe60bMTm1bC2W89s6dCvrCu0yAL8zJx3kkSJ0BfmBXcGPPnf+8vZflg2fMM0v+I96JJCcRypSoKH/hBuIfwsLXKs2atDa7RY3RZV9cmo/RY8QTGhz5vIT+tnSGAoCKex6brjP4hd9jIFUN9hxUCo8k=
+	t=1739400209; cv=none; b=K/3Er58VvWT3K0gj/g+BqwV6/+LpFWoMNcNowDVUuSUKBs4Yf+f8d0mZ7RdHrUbv86kt22MTrw0T07wzncJWuczu7Gt1zv7HkUakQxSfVNV8aQ8G9UEVeHLyUqQJuL4XTSBwHi3vsDKfdGuKBHRYNyHjQiizXVblFU7Fyw3CGtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739399388; c=relaxed/simple;
-	bh=BFRXywWhuF494EJYNCYLCR8TnlqDFSbUwgsOkRXCO4M=;
+	s=arc-20240116; t=1739400209; c=relaxed/simple;
+	bh=/tQrlmszWJsKde80dHHVd+GKcUFNLpNm9aIZPlxNykk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oP5YwC4724YKClr1A8paN00Tck25Bnq4TAgPsimhjIAodQnDY+JmMcyrxUs2AptySCTKCwCQBiUuom2MjbfJ1XD6vvlxCBH1TFL4T0/qRcHWLPNHp7QCptSEPemPRRmISIfrY96hteloBcIukqtRH3IGUq5lIiKn5nXTNipnbvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BvuWtecb; arc=none smtp.client-ip=209.85.216.47
+	 To:Cc:Content-Type; b=ucYrFR9CWeUZ5X31cYnKmTCf+fzVsKjAdKvsMdwFR1SPpgg7uyyWlItOid/X1n+J6bV1tzxf2aBi/+S3fKQUvGB97MxOJ3ktDu903CvXUpbAvm10exqNQXPVsQ/OqnkrESbWntx05F+6KQsTOU/SsAGtXQ1yM2xmvB0VWvY3DaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CtsQ3RPX; arc=none smtp.client-ip=209.85.216.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BvuWtecb"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2f2f5e91393so66678a91.0;
-        Wed, 12 Feb 2025 14:29:46 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CtsQ3RPX"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2f45526dea0so60103a91.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 12 Feb 2025 14:43:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739399386; x=1740004186; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1739400207; x=1740005007; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BZ/n9bqBDmoNTEbi3+gOvCn9UNpfuZOs7Z4fB5U9DNQ=;
-        b=BvuWtecb6kwLy/tpZGDWBoCq27CwTWKSpev4f2IXb+08mpiJ52EQDKAOd2uNHR2SVc
-         fbU766Tr2ZuF6+yh9Ra3DuTJDc7vLdwpj2A7G0T0v1k+QruVBzidUkMaWuNzoDdApsSA
-         RojYGZu0URpuhlybIONfUU2qokDFd4aSnfzmO8klq9T2gbWUrptNAS/Ce60waMy8/nEh
-         zcFLf0XSwMHEWvx06KJF3pg47Pd4FERrtNxnFcoLdtk7Q3ZBGCUuxolyNsszn2ozU+xy
-         SfHaxD+KtCxVrX1o3KOqiWSLDpFUm0WBr4Ln+T6Kt/9m+VoOsxX/hzk6OZrTkRB0u1lu
-         gpnQ==
+        bh=PGpwJjt4s+CtqC85hSXrb+fnaBSTzVzUkIpKOo2jMqU=;
+        b=CtsQ3RPXoR88Z5uBJshakafhI8oCxUqhEZR1UkOpu4+NCloHkV4UkorKGjyDDLz41G
+         2exGaIt6WhjRwUP6ijp5G5tDRzFevXC1ZmITBSspcSSRaaIUzwi7DXeJp3pihzgj3Z5X
+         eub/nbdmoASsuf67e/JoPq7mpI8kAhKL59AC+zvKzGYgRig/vHmscnJjUAUu5fY2lWgz
+         eu77272bLfqpFRMFEy4+1ysBm39RUwmE+gxcWkgoMeFgNct2N5cF22g63WU3ltuS786J
+         PSKXGI8OE24PFe/IV69ejiGrIKn+ZY+Nk1R+BpCx6oKNDrNZ2VXdsnlCIiJfHq9Y+Nkf
+         yYAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739399386; x=1740004186;
+        d=1e100.net; s=20230601; t=1739400207; x=1740005007;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BZ/n9bqBDmoNTEbi3+gOvCn9UNpfuZOs7Z4fB5U9DNQ=;
-        b=FdDAdYj6tFOq3yMPTtVzDC5WI+GgmtYfGbf2EPi1UqQ8GTWaeDN29pW81pmRObftWJ
-         p5pPDlHoGdUl+okl6mprIOWY1ZcpbrFqTaA1dDCOX+U2zLn5QBMMC4QjGzP4ffc6tnrw
-         CVKDwgdF7dZ7qqDQ95s5ycwV1VcP01A+fb9OoDAUPcocyE+i/Rmf9WAhrSw2iJEz1UPz
-         5v48iJuUo2XzX4y5XWebHr94ArkahVE9B8rPGvSYlaUh0oJBuiVleu4thRRXbLB2AV71
-         I5DWzge3rBpFONltDreAi3tUMUCZG1I7DRfxmwB1aEhQZc6vVFfjKwVGuyyncnWzY08/
-         KjeA==
-X-Forwarded-Encrypted: i=1; AJvYcCVcs3oYuL2NNMJLpDqcd8ojyjxgOq+uRT+5k7x4AcVp4nnpQ8Q5OR+z92XuWLTTTlZOswik3HICdw7d/Xw=@vger.kernel.org, AJvYcCW5cTiejgec5mOfy4TymQx8B6Ka0ENXpcn0A1yQSwH1CZhjWF4skJ88NzQwervemLX3AWxlPgu2@vger.kernel.org, AJvYcCWgrZVz6Fr1FSFyzhFnQm/EneNm/JQJX213pHdj097HgvML6UjNCK8PUR/74OgKNlyW5RXPCMCk97egXmc+HOE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWAGpPY9aN5BnDS2m6tbEcXUmxh72lnmIf992BcVfWhPURuhKj
-	ogTRhV8+NCKRi2zVXnruP5ug4I8RRAminBNEVYlDBvcnCOu2Ywzbl6+zsxZZp+lz3C//ZWqt9jj
-	EEEhOrhPaJhIk/8zCyu56fTNmjrc=
-X-Gm-Gg: ASbGncv2Zy31GkdfGsdR0u9g5C01Jc955Sj1uAWb352lLX5dWM9GK15CpfwV4DVAjrF
-	lds6xchVM0Ewwj6aUtDSlhoWWA13iF2YBsJO2IxBZYkkcXuqFFshlgWHcJh7xEH6fT+j+3iYM
-X-Google-Smtp-Source: AGHT+IHadNrgevyrSkaQZhOhsxlrzLkSyiZy1ey/P41VMurfsqDNouU1k4AFyaXrZKXXjkyODVF3l1r5ZtwFJzNg/Tw=
-X-Received: by 2002:a17:90b:3b52:b0:2ee:acea:9ec4 with SMTP id
- 98e67ed59e1d1-2fbf5c8b19amr2771748a91.3.1739399385115; Wed, 12 Feb 2025
- 14:29:45 -0800 (PST)
+        bh=PGpwJjt4s+CtqC85hSXrb+fnaBSTzVzUkIpKOo2jMqU=;
+        b=h31XU4XT42ZBJ3XgFyabqRUnoWdyUsEDbvIN3WerpxEAbPH/7WrbmwHm4CAsMy9KqC
+         rCqUe1XUp7OUW5Ge/yEcTQg3w2+U9wIeFv/vWpyNYTlcqpvHF3gcNz+WC0W4iPXmLU4Y
+         kc4ZA8BLlcsdz71KxIdgIV/857QXB+dfjtEgY51tNb39CMpaChaJv4CluQHlcGv1ByH4
+         LKRYNVMTonF4h+3vUFq9UhB+GwENzVVc9YMSqZN1TsMFFzo9gv+zcfAnFBIrPFxT1rIY
+         u/zsWcMbFlGh/7eCUKdbvIPq3lA8Wj58e7LU4vVFGFgBNckWWcJZ+RnMomE64W5SYTNP
+         hGtQ==
+X-Gm-Message-State: AOJu0YxI8IcUF3GUa4T1CiMBrk8nYxXZbq8b+RSfGcyMRha9i4Ovyh9X
+	cT0vSIJZnfPMvzxGhjgI/imhs+BxTDnZM+8kJfJAtb25KNMzuq1fXqVPkHPGCjxqETuGeaDq8oR
+	em+IeGhIy14/DK5SqAUMl+TAsUX3MHlSrYaE=
+X-Gm-Gg: ASbGncvI1tq6iP3CZj997G3nNQUGKMBOllredyQjc+Alijo3vSuOjyKRpfGhyU+jFxc
+	g0TfjzameTtaHno3rwwHQKJ7h1TPgNvNvFvLf5P0JZCm6NmzoCKOrnnadjO3EIHz/mEysJiLL
+X-Google-Smtp-Source: AGHT+IGdPBcCtzcDP2dor1l7dCqzCdSmnLRQjku7zOtuWESB6+2hPJLUzhGtRBjWBQP0Jlsa+1O0MXRtAzL4WVRHDV0=
+X-Received: by 2002:a17:90b:4f8b:b0:2ee:6a70:c5d1 with SMTP id
+ 98e67ed59e1d1-2fbf5c64c71mr2838007a91.3.1739400206103; Wed, 12 Feb 2025
+ 14:43:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250206232022.599998-1-ojeda@kernel.org>
-In-Reply-To: <20250206232022.599998-1-ojeda@kernel.org>
+References: <20250212072509.1765360-1-dirk.behme@de.bosch.com>
+In-Reply-To: <20250212072509.1765360-1-dirk.behme@de.bosch.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 12 Feb 2025 23:29:32 +0100
-X-Gm-Features: AWEUYZnuk0VGL_AzcBee1c5Y4k5tHfvfuNR0sTon-_manIWBu0BxLrpeWaavqr4
-Message-ID: <CANiq72kCKgcp6f-K1gtKdq_O6UkkC0A8WmZ-vGGGepvQHT3zLA@mail.gmail.com>
-Subject: Re: [PATCH] rust: rbtree: fix overindented list item
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
-	Yutaro Ohno <yutaro.ono.418@gmail.com>, stable@vger.kernel.org
+Date: Wed, 12 Feb 2025 23:43:12 +0100
+X-Gm-Features: AWEUYZkBq07f0dYqkN2xP8BlHpYy8jPoCCMfWXbuzzLjGuJRoaZmpqHtGlyC1Zc
+Message-ID: <CANiq72=PuwT9-njLRQckdfzQSRk4aD4-L+JsyhOj-PS5tqVxww@mail.gmail.com>
+Subject: Re: [PATCH] rust: types: extend `Opaque` documentation
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, 
+	daniel.almeida@collabora.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 7, 2025 at 12:20=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
+On Wed, Feb 12, 2025 at 8:25=E2=80=AFAM Dirk Behme <dirk.behme@de.bosch.com=
+> wrote:
 >
-> Starting with Rust 1.86.0 (to be released 2025-04-03), Clippy will have
-> a new lint, `doc_overindented_list_items` [1], which catches cases of
-> overindented list items.
->
-> The lint has been added by Yutaro Ohno, based on feedback from the kernel
-> [2] on a patch that fixed a similar case -- commit 0c5928deada1 ("rust:
-> block: fix formatting in GenDisk doc").
->
-> Clippy reports a single case in the kernel, apart from the one already
-> fixed in the commit above:
->
->     error: doc list item overindented
->         --> rust/kernel/rbtree.rs:1152:5
->          |
->     1152 | ///     null, it is a pointer to the root of the [`RBTree`].
->          |     ^^^^ help: try using `  ` (2 spaces)
->          |
->          =3D help: for further information visit https://rust-lang.github=
-.io/rust-clippy/master/index.html#doc_overindented_list_items
->          =3D note: `-D clippy::doc-overindented-list-items` implied by `-=
-D warnings`
->          =3D help: to override `-D warnings` add `#[allow(clippy::doc_ove=
-rindented_list_items)]`
->
-> Thus clean it up.
->
-> Cc: Yutaro Ohno <yutaro.ono.418@gmail.com>
-> Cc: <stable@vger.kernel.org> # Needed in 6.12.y and 6.13.y only (Rust is =
-pinned in older LTSs).
-> Fixes: a335e9591404 ("rust: rbtree: add `RBTree::entry`")
-> Link: https://github.com/rust-lang/rust-clippy/pull/13711 [1]
-> Link: https://github.com/rust-lang/rust-clippy/issues/13601 [2]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> In the discussion [1] some `Opaque` documentation updates have
+> been proposed. Add them.
 
-Applied to `rust-fixes` -- thanks everyone!
+Thanks Dirk! A few procedural nits...
 
-    [ There are a few other cases, so updated message. - Miguel ]
+Commit messages should explain what is changed, i.e. "some .. updates
+have been proposed" doesn't really say much, and requires opening the
+link and figure out the discussion. Lore will likely always be there,
+so details will not really be lost, but still, commits should
+summarize what is being changed without requiring to open a link.
+
+In general, one should also justify the changes too, e.g. in this case
+perhaps mentioning why it was confusing before.
+
+By the way, in case others get confused, Lore says there was another
+patch with the same title as this one... So perhaps a more concrete
+title about what is changed would also have helped here.
+
+The intra-doc links are good, thanks -- though perhaps they could have
+been split into an initial patch to make the diff easier to read.
+
+By the way, please Cc the team, not just the mailing list -- you may
+want to use the commands e.g. at
+https://rust-for-linux.com/contributing#submitting-patches.
+
+>  If it helps reviewing I can share a screenhot of the resulting rendered
+>  output, e.g. on Zulip, as well.
+
+That could be a good idea in some cases, especially for big changes
+(or even uploading the generated HTML file to a server somewhere).
+
+Thanks!
 
 Cheers,
 Miguel
