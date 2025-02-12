@@ -1,164 +1,135 @@
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB2D26770D;
-	Tue, 11 Feb 2025 21:57:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6670111AD
+	for <rust-for-linux@vger.kernel.org>; Wed, 12 Feb 2025 00:57:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739311074; cv=none; b=ch/Heve5GyhDaEoEt82e0pgHywwdrvqAI+LUyRvr8uQP77vtxdOH24yfN8wSNbPwmhdoLW48r56ST64qXtmwjUiehNADCwLs4uraKr/PjOFmptGoaI2Qo1DRz/SqoIwaXRevxWa3+O+60Aw0JnaYtyyuE+UhNwrmDDHwLa3FfQc=
+	t=1739321862; cv=none; b=fZH8jYTU044tEQ+Jx7X51pXhKNSElCUiIDWxgt6szr4dKQguS0r53m98B7pmZhyaUU2trIVrnMkbYsTcbNKgft1e8UwKoHNBwZlvSNAIKwLaEoajQCWqVcRd9wgYygwKk7yvc/j6AOBTy0GKMS9PoR3E1a/bWQ75U+X478m95po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739311074; c=relaxed/simple;
-	bh=GnSSHTilggRgjTh8Tt1HZilTfZYJzfHA2Mcz1okwS2w=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=m28yg1Eki6+JqjCnM9ZmSDDbEzRNE+oTmAy8AHxJfvILI7jP4LoYwVwAWMg4lu8bFWaO7hgaNTEZsipSnswdTjJtPX7EJ0y0ENVHO1mMYNmP4BrMOlnKxqTNMa0lIrCNkmFddB745FjszYz8+/85/fUNfEHddab7Wp7BDHsoIUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kY/SZyCW; arc=none smtp.client-ip=209.85.128.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1739321862; c=relaxed/simple;
+	bh=ZE/ltet4LHK7MQuN1AESeTZTqaYdweE9eCvmTMUDYtU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=c37QEVlwzEC7oYFQ/EKJlJMz0MBb9A/JCFPWdx3m987OeB3SkWsACEIUTHKYCd1r314UHVEIyR7+xVY1+zNQIs6wPExHucsf9ErxdqmZ6Hjr/bAIL3ZBhw2bwMUClRLfluCOFDT5mXmebhzWjZYyY4NeJJVZHio74opsPyvheA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JMr4TRva; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kY/SZyCW"
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-6f7031ea11cso58342327b3.2;
-        Tue, 11 Feb 2025 13:57:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JMr4TRva"
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5de6d412ee9so2002a12.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 11 Feb 2025 16:57:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739311072; x=1739915872; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1739321858; x=1739926658; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GnSSHTilggRgjTh8Tt1HZilTfZYJzfHA2Mcz1okwS2w=;
-        b=kY/SZyCWIRsIZPqhGC3/COV/zvz5Lqs5K2hDSmNURLKLF+/u4UsgerQtt8k7hUH0S6
-         J9rWzcgdd9hjrtHmqZlwBKxeLYqlsVNs2rJ4uENMS2uI1hIvOUnoWcU1BFMPkRsHUWA4
-         RgngLWkC1RTqD7x6yJSuhF+s2fzf4Y+qAXYiGbz7bLpKeBZCqcIH3z+lzDrn+4MvDvX8
-         QYzCPNONOqzzYQGYvuq8SO+QM6fgCNBbAhF0O4x3X3zoqCG9tMVOYS+Irb+zLr2N1sP1
-         fX5MnNz/Kk2/aJSZ7AWik3DHuonE5Wsd4D1/9WXTPyr02jT9fiAbXW5hiqUaMtvMyG+W
-         oFEg==
+        bh=tyBGo4NEk4ou27pmwT3GiAGuDVYoMKwfHMTAe8m2fBI=;
+        b=JMr4TRvaqlNFiKx8JVsg/H0R7HDryH23nWtJdbVZUG0VZ7BAW4qBrqGmmilcxeBAyx
+         aLhw5pdOzRfofnKqH8J95ClvXzJ+BDfiY56/aPK2dP+fm5UotpeyUuVmbgWMYiWHqOR2
+         sgVch/gO9PAVHfz3UfcKVMUiSu57cwf9DkkuE0gMX+bzRJ1SvoiKWGLASR2ISfe95sKI
+         1B0o1ytFzqGwp+H6VBC5zibKYjZoAD8OcJ70WsxUGNMGrRuEx3fnvRwyKoDaXWMcz7vb
+         mE5n3DB4hoBUuvtLydJCXKyFGNHUhiADDz2henDJGew0JoO/yqfAlAvwh2fSv/+4xFcF
+         eltw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739311072; x=1739915872;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=GnSSHTilggRgjTh8Tt1HZilTfZYJzfHA2Mcz1okwS2w=;
-        b=u4L3xIxvxtj+7mQkZNC4bHRgpR+qJyOeWdlasqCRT8Sw05SEBPulFelVVoRPo9RXtR
-         /ystdNpQ2WskOuN8RtvZeG6g5Md5nhp5E+/DDYWusC4eESsJYaY/cLU+o5oz3Fpy48Ap
-         tquvoXfGldsuc2fCoDnkF4gC8nLjDCQwHhfl0st5PtV4yFBiT6py7aR3v1Bv76kaxYH4
-         hguToTVzXO4WT2tCq1w8phMM4UUyUvN1sz7YKCQbdVGQTEoXDiS1SNXDkdNIYRQuhJEX
-         aTwqT1C+d8XgDtynIF1Q8fUiV6ynSmS/HXLhCA2jyhOxwWGxcKslKV4i8oJzv9M6/X/E
-         EeKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUGb0bM8b2LR4vW76BvsTElUYYcP9Xo9VGUcC8O1T4SzTvrLADvJeGnZBXpsfcsp0b5NIAchvlDiV0=@vger.kernel.org, AJvYcCVQVYdkCcM48NdAyCSYZsRnU1dH/730641DFcKhFredhva3yADZ3KXdMTmzKrg8LKTdk3xaqzAYED/lekkPirw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2sX0GvIhTGCQToGcoN1pFKUjVrIGK1NJ5b+D8buVr0QdVq6Mr
-	7vRLmhiVVfWRq+P+kZn8FDdTM53Tnwg+FgBL5h3TLzrSR8zw8Y/F
-X-Gm-Gg: ASbGnct5/OAPYwTeFszXm2WAffGMScO8esBXRIpbmVb57V6AS2qwLquJ0WPKpldZQsk
-	iEOXZ8OzCDrZlAR7bgnbvQW/evgzrAbQ/2zqEVCuEtWcFfAgBoLGGFsMVOuik7x4pBUGWlkQjnA
-	bdJZYuiWgVXIETX5PAkmd5eIUY7BsWZGacwbwcKhyV6peH0ESma96K/Q6yL1nAwbumJu8d0r2Ak
-	TmxcA7xMwEkzvz5VCl31nOcsowIAlchX+j/D+l6x99uYYCeL3iXgkacR+nhpvrC9Tcrosa8p2i4
-	rM1/wjoq
-X-Google-Smtp-Source: AGHT+IFpa3ZOas1Q54qPxzEun+I4mgqG4mxd7sr/9TQpL9cUQ4fTvg/R8JGtaEXleIP/OyrqBVL+Nw==
-X-Received: by 2002:a05:690c:6d0d:b0:6ef:8177:c322 with SMTP id 00721157ae682-6fb1f1aab45mr16800147b3.13.1739311071695;
-        Tue, 11 Feb 2025 13:57:51 -0800 (PST)
-Received: from localhost ([2800:bf0:61:1288:72d5:e7e1:d832:2e3d])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-6f99fd55c92sm23343637b3.55.2025.02.11.13.57.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Feb 2025 13:57:51 -0800 (PST)
+        d=1e100.net; s=20230601; t=1739321858; x=1739926658;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tyBGo4NEk4ou27pmwT3GiAGuDVYoMKwfHMTAe8m2fBI=;
+        b=V3rPL10R4yI21iOlaYCje4mYgvH8kN4TXHNPhl4hdOj3UjroEOASIQ8q5sEm+RxkBR
+         UfYL0txMKId/lyV9XyJZkoJHNSfcckB/iiOf4BEyXn3LMfmFs0GNk7JOSHHkaYnzdHPL
+         p1j6fxGcyU1gOqxMZndFRYso3fwTYFXG5pob8CaPm/enSbYhBqsRCQlWluOD3NIiwRom
+         SGmkX9WMJlrHh9WVXpQgHxewfg+2/iBHaIrjCG8Lsq8pBVG6pNn3oQuCzCy9TR2WU9aK
+         QsgjlwnWFrd0V1rj1iTCY2MbGYjT9aZ1taqe7659z281xJy0hClQOrhtpHwTDPZAKlQd
+         u1vA==
+X-Forwarded-Encrypted: i=1; AJvYcCVlyMmsUl6uBGjTkbqfuwWIfCCcL83MwNjSaxoTxWf9ZOlvsmv/HIgnIgzHSiofJorLWqMtp2UomsGdaarCyA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6gTJRJRqx3NmlWcx5gKyPLEpv8K2kp/7ildn8dJrgnk1StziI
+	gamZkYFWHBW+z0GAIx644tbLTDrH7ZXQI+oBAAwdDKpxDzgS08aWx7zlLSjxq/PtJNofpS/5WVU
+	Q6v4yBgt5RN8026E8n04tACCRf/Fc14FwFVoQ
+X-Gm-Gg: ASbGncvrOUU6pQfD4dufIqFbWkbJsYf0AGpPfgZQ14bPtpyGigQ2c701oemYblxt5UB
+	3SqOUsaJEM7Fhoz3JAQBcxCsBmInDB5RVZWwTsqZ3GMW/MZRvutc2Ut2bXhyCxzO7czz4do12hR
+	SOeTWcpUepfODSGyHAoXL28WBHXqs=
+X-Google-Smtp-Source: AGHT+IGGry5l4RQEnuSdk6aioJ+bv1rbvIM1o5se3iV5Jtj1b2iEWNaQAzttrNeymsRtOervTIxy8hxdeVXm7d1+3Ag=
+X-Received: by 2002:a05:6402:ca5:b0:5dc:ea60:45aa with SMTP id
+ 4fb4d7f45d1cf-5deb0dc7a96mr19983a12.1.1739321857927; Tue, 11 Feb 2025
+ 16:57:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250210163732.281786-1-ojeda@kernel.org> <CALNs47uBcyTmBdTBAPXiBcAkE0-4tih9j=VAv1rRcTcf_c2yTg@mail.gmail.com>
+In-Reply-To: <CALNs47uBcyTmBdTBAPXiBcAkE0-4tih9j=VAv1rRcTcf_c2yTg@mail.gmail.com>
+From: Matthew Maurer <mmaurer@google.com>
+Date: Tue, 11 Feb 2025 16:57:25 -0800
+X-Gm-Features: AWEUYZlRV6pF3AGbc0XvrMoRFXalIUrBnJyNWQn2iVM9raDE_v1HBIS8LQ3IxnI
+Message-ID: <CAGSQo00rWwhcT0SjhUn_e3o+TyCP2stadHwANkmE7-AEeSHBAA@mail.gmail.com>
+Subject: Re: [PATCH] arm64: rust: clean Rust 1.85.0 warning using softfloat target
+To: Trevor Gross <tmgross@umich.edu>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	moderated for non-subscribers <linux-arm-kernel@lists.infradead.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org, 
+	Ralf Jung <post@ralfj.de>, Jubilee Young <workingjubilee@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 11 Feb 2025 16:57:46 -0500
-Message-Id: <D7PYBD1V7Y0W.3TGGTJF6MHY5Z@gmail.com>
-From: "Kurt Borja" <kuurtb@gmail.com>
-To: "Lyude Paul" <lyude@redhat.com>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>
-Cc: <linux-kernel@vger.kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "Danilo Krummrich" <dakr@kernel.org>, "Alexander Lobakin"
- <aleksander.lobakin@intel.com>, "Andy Shevchenko"
- <andriy.shevchenko@linux.intel.com>, "Bjorn Helgaas" <bhelgaas@google.com>,
- "Jonathan Cameron" <Jonathan.Cameron@huawei.com>, "Liam Girdwood"
- <lgirdwood@gmail.com>, "Lukas Wunner" <lukas@wunner.de>, "Mark Brown"
- <broonie@kernel.org>, =?utf-8?q?Ma=C3=ADra_Canal?= <mairacanal@riseup.net>,
- "Robin Murphy" <robin.murphy@arm.com>, "Simona Vetter"
- <simona.vetter@ffwll.ch>, "Zijun Hu" <quic_zijuhu@quicinc.com>,
- <linux-usb@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-Subject: Re: [PATCH v4 1/9] driver core: add a faux bus for use when a
- simple device/bus is needed
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <2025021023-sandstorm-precise-9f5d@gregkh>
- <2025021026-atlantic-gibberish-3f0c@gregkh>
- <D7OU5VOXCS8M.39YEYRWFL1MPW@gmail.com> <2025021038-pushy-prior-5dfd@gregkh>
- <D7OURQCZ3I1X.85BUFMYU6H8A@gmail.com>
- <2025021028-showgirl-waviness-b4bf@gregkh>
- <D7OVXDJEMH53.18HAI8VKLN997@gmail.com>
- <e2087716a8328ba9c8359e50977e31a85c6fadf1.camel@redhat.com>
-In-Reply-To: <e2087716a8328ba9c8359e50977e31a85c6fadf1.camel@redhat.com>
 
-Hi Lyude,
+I successfully booted this on the emulator (with some additional
+patches to our system unrelated to this issue), so
 
-On Tue Feb 11, 2025 at 3:06 PM -05, Lyude Paul wrote:
-> On Mon, 2025-02-10 at 10:52 -0500, Kurt Borja wrote:
->> > Modules usually don't need to do the probe callback at all.=C2=A0 I sh=
-ow one
->> > example in this series (the regulator dummy driver), but it can be
->> > easily rewritten to not need that at all.
->>=20
->> This is a good point, but from a developer standpoint I would always try
->> to use the probe callback. This API seems to suggest that's the
->> appropiate use.
->>=20
->> Also it would be amazing if the probe could reside in an __init section.
+Tested-by: Matthew Maurer <mmaurer@google.com>
+
+
+On Tue, Feb 11, 2025 at 3:10=E2=80=AFAM Trevor Gross <tmgross@umich.edu> wr=
+ote:
 >
-> IMO I think it is fine without the probe callback, plus we're the ones ma=
-king
-> the API - it can say whatever we want :).
-
-IMO I think you are right.
-
+> On Mon, Feb 10, 2025 at 10:38=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> =
+wrote:
+> >
+> > Starting with Rust 1.85.0 (to be released 2025-02-20), `rustc` warns
+> > [1] about disabling neon in the aarch64 hardfloat target:
+> >
+> >     warning: target feature `neon` cannot be toggled with
+> >              `-Ctarget-feature`: unsound on hard-float targets
+> >              because it changes float ABI
+> >       |
+> >       =3D note: this was previously accepted by the compiler but
+> >               is being phased out; it will become a hard error
+> >               in a future release!
+> >       =3D note: for more information, see issue #116344
+> >               <https://github.com/rust-lang/rust/issues/116344>
+> >
+> > Thus, instead, use the softfloat target instead.
+> >
+> > While trying it out, I found that the kernel sanitizers were not enable=
+d
+> > for that built-in target [2]. Upstream Rust agreed to backport
+> > the enablement for the current beta so that it is ready for
+> > the 1.85.0 release [3] -- thanks!
+> >
+> > However, that still means that before Rust 1.85.0, we cannot switch
+> > since sanitizers could be in use. Thus conditionally do so.
+> >
+> > Cc: <stable@vger.kernel.org> # Needed in 6.12.y and 6.13.y only (Rust i=
+s pinned in older LTSs).
+> > Cc: Catalin Marinas <catalin.marinas@arm.com>
+> > Cc: Will Deacon <will@kernel.org>
+> > Cc: Matthew Maurer <mmaurer@google.com>
+> > Cc: Alice Ryhl <aliceryhl@google.com>
+> > Cc: Ralf Jung <post@ralfj.de>
+> > Cc: Jubilee Young <workingjubilee@gmail.com>
+> > Link: https://github.com/rust-lang/rust/pull/133417 [1]
+> > Link: https://rust-lang.zulipchat.com/#narrow/channel/131828-t-compiler=
+/topic/arm64.20neon.20.60-Ctarget-feature.60.20warning/near/495358442 [2]
+> > Link: https://github.com/rust-lang/rust/pull/135905 [3]
+> > Link: https://github.com/rust-lang/rust/issues/116344
+> > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 >
-> To be clear though, generally I'm fairly sure the only reason for drivers=
- to
-> be using probe() at all is because you want a driver-callback the kernel =
-is
-> responsible for executing in response to a new device being added on a bu=
-s.
-> This doesn't really make sense for a virtual bus, since we're in control =
-of
-> adding devices - and thus probe() would just be an unnecessary layer for =
-work
-> that can already easily be done from the same call site that added the de=
-vice.
-> So I think it's fine for this to be a special case imo.
-
-I'm still just a newbie in kernel development so keep that in mind.
-
-For me having probe and remove callbacks on "real" hardware devices has
-always been about gurantees. Gurantees about lifetimes of resources
-assigned by the driver/bus/subsystem (I just started learning rust :p).
-Me as a driver, I know I can initialize a bunch of memory, interfaces,
-etc. In a safe way, inside the probe because I know everything is
-guranteed to be valid until just after the .remove callback.
-
-Of course, this does not apply to this bus because the bus itself and
-the single driver are very minimalistic, so we can achieve the same
-gurantees in module __init and __exit.
-
-So I agree, the probe probably should just be dropped. However, if the
-probe goes then so must faux_device_create_with_groups() because without
-a probe the API can't give any gurantees about the lifetime of for
-example the drvdata opaque pointer.
-
-I think this is a small problem, because in platform-drivers-x86 for
-example, there is a lot of "fake" platform devices that expose a sysfs
-interface. So if this devices were made today, they could use this faux
-bus, but they would need to create/remove the sysfs groups at the
-appropiate time, as to not mess with lifetimes, which is a bit=20
-bug-prone.
-
-Additionally the current faux device API is very misleading, because
-although it gives you a choice to add groups, this groups get added way
-before the probe you provide is even executed, and even if it fails. I
-believe this could lead to a lot of misbehaviors and bugs.
-
---=20
- ~ Kurt
-
+> This is consistent with what has been discussed for a while on the Rust s=
+ide.
+>
+> Reviewed-by: Trevor Gross <tmgross@umich.edu>
