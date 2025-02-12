@@ -1,129 +1,116 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8AE71DACB1
-	for <rust-for-linux@vger.kernel.org>; Wed, 12 Feb 2025 07:34:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C573D1DACB1;
+	Wed, 12 Feb 2025 07:40:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739345683; cv=none; b=pNSe/VRKDjac4H2YrpYYpMu/EBq/K7yCc82yODFWfPcArjapw6aR6c9Jmh6LSyGmLEVVpjkpYfOlzbZgggJTO1kBJggV1bUWXEXgFjkrnDs4uWGN/e8EHN4QwswqHs/l4cIoKVNGk+CyRwtCMNVHsK9fkjVKs3DOI3wv+5GJXDE=
+	t=1739346017; cv=none; b=pUTMNR1hVltnDNd00bBYH4Fnbsv4/pt5nuvN332FquKYBsPBNe6Oo4wYCtew4TQduvfrT1fdd1Lg5FkTjZy8qOsq1xCD5U0Af17nyA2omnTZYKXR1BXNBbZdIe6KCMCTg35Vocgb1FP8MrwRXoPaaw0z8qgLUr6lfiwrmFHqnwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739345683; c=relaxed/simple;
-	bh=xKZQeC8QlmSbvkB9BK44DQ6sGPlxDTX+bVywm5YMmj0=;
+	s=arc-20240116; t=1739346017; c=relaxed/simple;
+	bh=JTl7E5auMjAWSwtkSkJOr08cyWlGJ4CniI1B/9Pp0D0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iGgQij64dzJQ6GLMRodLwxqaHIey44l+vZ9XrrW3LR4xNWVQ0zLEwqad+iq5T+xlPu2Sq/uCV2SqCn51dohslRUpgK7N6PIx4ju0pdndXSzuF0jo5oUBBpZiVVy7Wd7alElsIC2OFERLXtz4CtuufhlXLHXvAAlKALY7q5nVsH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bWBKFMZn; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=gYDwcbwDMAoJ3X0EfvGtwiYmExIs2iygJmHti34TPpnwx3LGhfe7t8w1p0LT2r5DrqVdKe6t+Gu7Lmwxau0NFysMPcBH6vrbhY4V1vsd5em/edDfSvOuv3WOCygIGOXQbxpGbJTbqEzgyRAKGjGpyda/BbO8I3LcMDGJTtA05zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=czuCKK9M; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bWBKFMZn"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-21f74c4e586so73196445ad.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 11 Feb 2025 23:34:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1739345681; x=1739950481; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=gBZVQXzGj/Nj2dxnCyApeR+oIxTqVjbcwS+DUCxmMZo=;
-        b=bWBKFMZnmiLu5Jb+el07taK6pY24LrKMKt8GmUEH1zlq0+O5Jm954HK2CoZwHJN0YX
-         LuinVGVEwQKzztFmxSCjnnAmjkrp4kCcdg8KeVK75wW5dV4A3RiVh+UFv3U29qbu+v3o
-         7Gb1vXmyuODRDjzGPwpmT2/PyT5h131eJ19ABx3WE/+iF99iE9Nl7D9Pl7PCbSe0y+1n
-         udKH3ZbJCqzcc62GmiVtvVrsEzvM/qPKig09OeCbfPxFxvCEUkowak4Y2idYbYcoYZro
-         u2CDVyZ9b5KyUvnlHnpJtm1ZN/PUkltlxM0aqgxdxHbtfmPVuHdEdu7rw3YH3blPvn2E
-         3xOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739345681; x=1739950481;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gBZVQXzGj/Nj2dxnCyApeR+oIxTqVjbcwS+DUCxmMZo=;
-        b=xBeQZF7sBsFeRLpjquAb26zIafqHpXL4wH6UmfY1N5Hf2pCWbBH5SuFZxaNGPdJyTg
-         qYNKnUysn/cMs5XWIEonYx2wf9+zbD6zekRPnGs0SWVu27CpHMr0KvX7L1nFg1B3oc3D
-         N1HYWYJiPTgzmE2FsW0m71ytKAzUT+3kbcDMbgYSh3DgNn1h5kLSnQ598Lvt1C0uJPdY
-         Z4jjg1BrwU0Sj7Z6KEbv1bZmM2GDFiCqf8aLUZZ8CNL1BLlwMy8gKtD7TloJbH/ndnhN
-         wbxI+NiOlqawq0LpJ34Rphq+vMSOsdTqzSRq/qxyBOx9ALVsKR/4cANiqH4BQOlFIO1L
-         645Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU+Ck/P9Cg10MJ4WBELYzJEj9eX7AZ2SG0yJ1Dt/uGeiGjM5uCKLy2YU5z3f+3MhjkmPt/oi+Bzr1JW9cgoSg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyoLgobqdTr+qiQxvw18yTyT0XtCPJj7StLQE1foQFI0ciLjEp4
-	/ZTzlP4RbKwecu0F3MaXbwXhK67P1VRhMxmle8WAstsRyejQVFXpv5jnriiNiyM=
-X-Gm-Gg: ASbGncvjrnNk79lxlXN6vVyoNZf+7pvXDJDvAXFRqgEZvI6rC74PUgo98alcEI5beVX
-	B35MZ/PW4WfP1nViD9wcnkqzxykFM2IBGQalc9qvL5LYxOEFlDOYXJoIIboCK1Ns5ne+8fkVHOM
-	c6PEkZ+vEL3VyEQQlxmSetQKI5w+iTt5H2C1QGPXqUxi8PGrE4G+mwfluPmBoSTZTgsdXpsyAMQ
-	9dnxr05VIlX0WNhOAwCsqBbs/xsEZfb1MEJIh7jHqz2E8TK29v8jUzM3B9zVjW1dDEBTWDytXcU
-	D0U0ajDv1mKXT2eOmw==
-X-Google-Smtp-Source: AGHT+IG+5sMijvsVWogU7ykbigna0UHmysXJKLgwHilyqSb7VE5FnliyWRdOolJC+q6GU38VtdsVhw==
-X-Received: by 2002:a17:903:124e:b0:212:996:3536 with SMTP id d9443c01a7336-220bdedcf55mr32555755ad.10.1739345681224;
-        Tue, 11 Feb 2025 23:34:41 -0800 (PST)
-Received: from localhost ([122.172.84.139])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f36511846sm107668125ad.37.2025.02.11.23.34.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Feb 2025 23:34:40 -0800 (PST)
-Date: Wed, 12 Feb 2025 13:04:38 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Yury Norov <yury.norov@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Danilo Krummrich <dakr@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	linux-pm@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="czuCKK9M"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF738C4CEE5;
+	Wed, 12 Feb 2025 07:40:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1739346016;
+	bh=JTl7E5auMjAWSwtkSkJOr08cyWlGJ4CniI1B/9Pp0D0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=czuCKK9MIeKkqWcEuk0XXFX7fJRj4gL/oh6h1kIllbYWYJOhO2EpLVVDKNfmfAWQZ
+	 cne9HkIu6bPoBMPBtH7f8wFnB7X7qfg89z9jl5yo5jOz/ZWYs13piMApQfLUQFfrD5
+	 P40yv4UULUoCq28dfsNQZE5jUPRZlybWTMTMLT00=
+Date: Wed, 12 Feb 2025 08:39:12 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Kurt Borja <kuurtb@gmail.com>
+Cc: Zijun Hu <zijun_hu@icloud.com>, linux-kernel@vger.kernel.org,
+	Lyude Paul <lyude@redhat.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Liam Girdwood <lgirdwood@gmail.com>, Lukas Wunner <lukas@wunner.de>,
+	Mark Brown <broonie@kernel.org>,
+	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Zijun Hu <quic_zijuhu@quicinc.com>, linux-usb@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
-	Erik Schilling <erik.schilling@linaro.org>,
-	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
-	Christoph Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@nvidia.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V8 04/14] rust: Add cpumask helpers
-Message-ID: <20250212073438.bjhfgefz7t4dxobi@vireshk-i7>
-References: <cover.1738832118.git.viresh.kumar@linaro.org>
- <db0166341ce824c157d0c58c240b3efc6aec6f6e.1738832118.git.viresh.kumar@linaro.org>
- <Z6qTelPSqpFk439l@thinkpad>
- <20250211042908.nyftiw7gtxosfjwc@vireshk-i7>
- <Z6t51xodSV21ER4M@thinkpad>
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
+Subject: Re: [PATCH v4 1/9] driver core: add a faux bus for use when a simple
+ device/bus is needed
+Message-ID: <2025021209-ultimate-dazzler-0e81@gregkh>
+References: <2025021023-sandstorm-precise-9f5d@gregkh>
+ <2025021026-atlantic-gibberish-3f0c@gregkh>
+ <D7OU5VOXCS8M.39YEYRWFL1MPW@gmail.com>
+ <116e9983-6c5f-45f3-a933-dcded223f6d7@icloud.com>
+ <D7PQHGGX4WPC.26F52356ISZU8@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z6t51xodSV21ER4M@thinkpad>
+In-Reply-To: <D7PQHGGX4WPC.26F52356ISZU8@gmail.com>
 
-On 11-02-25, 11:24, Yury Norov wrote:
-> To begin with, this is the 8th version of the same patch, but you
-> only now bothered to CC someone who is listed in MAINTAINERS. This is
-> not how the community works.
-
-Yes, this was my mistake. I assumed get_maintainers would Cc all
-relevant people, but I overlooked the fact that these are new files,
-so it didn’t include the maintainers. Unfortunately, the same issue
-occurred with the clk bindings. Miguel pointed it out at V7, and I
-corrected it immediately. There was no intention to bypass anyone.
-
-These bindings had been in my tree since earlier versions, but I
-hesitated to post them before V6 because I wasn’t confident in writing
-bindings for a framework I didn’t fully understand. I eventually
-shared them in V6 to unblock my series but inadvertently missed Cc’ing
-few, as mentioned above.
-
-> You also made it a patch bomb that touches multiple critical and very
-> sensitive subsystems. You link them to an experimental and unstable
-> project, and do it in a way that makes it really easy to slip through
-> maintainers' attention.
+On Tue, Feb 11, 2025 at 10:49:34AM -0500, Kurt Borja wrote:
+> On Tue Feb 11, 2025 at 10:29 AM -05, Zijun Hu wrote:
+> > On 2025/2/10 22:29, Kurt Borja wrote:
+> >>> +
+> >>> +	ret = device_add(dev);
+> >>> +	if (ret) {
+> >>> +		pr_err("%s: device_add for faux device '%s' failed with %d\n",
+> >>> +		       __func__, name, ret);
+> >>> +		put_device(dev);
+> >>> +		return NULL;
+> >>> +	}
+> >> Now that the probe is synchronous, what do you think about returning
+> >> -ENODEV if the device failed to bind to the driver?
+> >> 
+> >
+> > Result of device registering @ret is not, should not be, effected by
+> > "device binding driver (probe result)"
+> >
+> > if device binging driver failed, you may return -ENODEV in
+> > faux_ops->probe(). not here.
 > 
-> Not speaking for others, but please for cpumasks create a separate
-> series and start thorough discussion.
+> After thinking about this discussion, I understand why this might be the
+> expected behavior. I'm thinking about very simple modules that would
+> remain loaded even if the probe fails. But of course this may cause
+> problems to other modules.
+> 
+> In the end, this is just my opinion so it would be up to Greg to decide.
+> However, there is still an issue with the groups added to the device,
+> which a user might expect they are tied to an "attached" device
+> lifetime and this currently not the case.
 
-Agree, its better to post these separately.
+I agree with you here, this could be confusing and cause problems, and
+we should be creating apis that "work properly and simply".  Having a
+probe callback is good to add device data like you mention, so that you
+can properly add the information before the sysfs files are accessed,
+removing that race condition.
 
--- 
-viresh
+> >> This would be useful for modules that may want to unload if the probe
+> >> fails.
+> >
+> > may need to root cause if probe failure happens.
+> >
+> > how to unload module automatically if probe() failure ?
+> 
+> If we check for !dev->driver, a module might propagate an error to the
+> module_init, thus making it fail to load.
+
+Agreed.  Thanks so much for your review comments, they are greatly
+appreciated.  When I get time next week I'll make these changes and send
+out some patches.
+
+thanks,
+
+greg k-h
