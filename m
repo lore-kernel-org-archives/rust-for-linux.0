@@ -1,92 +1,168 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFDA23A9BE;
-	Thu, 13 Feb 2025 13:59:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1995241680;
+	Thu, 13 Feb 2025 14:00:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739455158; cv=none; b=BastS8pUujXM+dqKojrLCzLvV7zh/7O75nb42mm8eJsiT/RpAjy95LBkleaGaHefwjKDkfDzm92GIt1BpMDQDlfOEaGB3T/ieA7N93WbLaAGRu/t6AloqgOHyYXfWvQl3Piok//lUIjNcSdr9zS5stYVZ3MpkZaXDm85TvxRWmk=
+	t=1739455243; cv=none; b=n4uNnUWKdKQizs2rjSTXyjlnM4AnCpIHtyLSWYikrs9ImMFEoVfe93mJS/PYdbeMJ/IenpaEFSU9UHOafYLhzXAZcgO9arDPwnuXU+F5IW3Olo456Z3iTCpP+oiMcmdefptakHeqs0Cjv1QK/bDtckGVzqAOMJ1Cx3q7trYukIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739455158; c=relaxed/simple;
-	bh=kv8C+kxdksKQcbyaE9UMSrjCRll+aHQKDRacT2Sl+DY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b4e+2/YIITT7acJJA+gNPwzgBZi8t9oDobbpxEJ/qZKrabFQ3mqsi9DICHl+LobxeH2e6sZg4Bmz0URnhlHJrn0PwnPmjMCWkUFLvhUVxeJ89VdwBnyOO1QrYqErcoTRqHzME8DV25vLPj3l++HINXcD67xqJUZtjpqSJO87P2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qn6f0oGk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739455243; c=relaxed/simple;
+	bh=YpdB58uyq8tH7ERH2NdQvCyZMv332LF5vwPEXd91SCE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XkUwrKhzOPvo79M0K/AQ9FpNYKf9t+1V2HGpZyFDLDVU6lRHWDlPo5+Osk/ynk+WRrhX9nvg6ZAyrQviR8WpbhjGMZNRlkxVSxxsoJqHg+cRtZJweTMrZ4SjD2fOX5gyZWjrcuVVY6vaTYwAFhoSVaiOYL29VCUM+DPADXu/8Ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d3IPWWei; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qn6f0oGk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F22C4CED1;
-	Thu, 13 Feb 2025 13:59:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739455155;
-	bh=kv8C+kxdksKQcbyaE9UMSrjCRll+aHQKDRacT2Sl+DY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qn6f0oGkfzm3ZF9c8O9NpMF2Q7fffS0EaCnoaKJ6Eb93wi7isvxhmY7HYv66J/L0o
-	 LPxRdwJGBa92FKp35t7YYtP3kS8vQsxcgj1zRbHE7LU18NonBDr/m7+N/rEzSt6y5H
-	 +nyidMsO87ldbfNBgD48xh3+tJm0jfTWCHn3XdzJQ1W/dQ4nsDlQ6NnRy5Kt3yQrmr
-	 isfhA7Yiqa6By/qm3oA8K74ldOI+OTCTjlQIkEXOEso5aGVeonJOl5iWCtAMBZUQHv
-	 rCah0T0Ly/TM07li5RwXINzwO7uKIXJpVgfF/dqwjxEPyVcpH3RGHtRPSejKJU+04f
-	 B52m23KMCijaw==
-From: Will Deacon <will@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Cc: kernel-team@android.com,
-	Will Deacon <will@kernel.org>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d3IPWWei"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-21c2f1b610dso20816535ad.0;
+        Thu, 13 Feb 2025 06:00:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739455241; x=1740060041; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3CnYIC1jW8Yb7MVQSsYlSkO9EcP0G/PW7oItTF3TCFk=;
+        b=d3IPWWeicp3J0Jcviz6wLHLxmocgysJRkglXD7Rg9ZbSbG7sUslMnM7Q88V6dRfTh4
+         sWXA42ulpknChKWpHtXHQIHKl2c6wc6bDzbiMWKAPMhNZiDfVOBEc+y27YLBC5OE0Stv
+         MV7b36Kf41Pe80sBE9D9Mc8LL+62Ix9eqbtnMtc82BzT++hmud0uxCc05jh9S2NVNfoJ
+         aSMiB9bk0l2O9X5eunszS002+u0eXPonn6k/e+yr/hXaHKV6HT/KhcNn+y3h4ECJkxbV
+         bvv8ajqHGgHDHAUyMaCp0d93QnBJUB6LQTN7DY/mqoo7qLerS49qfXyP16pqfBiBlrMS
+         MYSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739455241; x=1740060041;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3CnYIC1jW8Yb7MVQSsYlSkO9EcP0G/PW7oItTF3TCFk=;
+        b=QNGvBgMXSrDDS9ReMzrOQKrczj8g9iIH+K092nq47tIU+TzF1IHGLrwfYKmG9DzoNn
+         JU9JZ9UF24B/KCqfRRClwF4bLenNqJPQdT4h/kr233DW9M7gMpPSQwYDSJAgxNwInOmn
+         YWG1pgBPRV6lyJ54Mxwwk8k8hrrAdG9PecPwb9y30G3qaGCLPVJvREK1pbEZRwQ11FG+
+         jSQbdPIU0DQce6D7MVqnySlVEb84S7hfKpM2kbSP5qKuLTMw3JO/FeHzolSOE89qJEuT
+         ro6wDWIw2mhE61XlaBNrwqBzST94ji0gre+ARTj7a3rU7yCK3A5DlNYzjutfkaVjWdSa
+         72UA==
+X-Forwarded-Encrypted: i=1; AJvYcCViCktk41ChWn8yxOt9WLg6lw3nHvCQCMAgEiPtJqudvc3OpKJaGVgx/m9vIKyFzztG7oLbjSnLbxRmhYsKqg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfJV7u7afr3hJ8FzX4H6mD5ApRsSLHB7oKG/9qx/lLWkXFiRFX
+	/+BFbZ2hcTN3kRJbOgX4IFWY74iWX4SkvdBx78GwerfKEsqbdxznGfcMR9or
+X-Gm-Gg: ASbGncskRolmkib9UWpnKj6unVYQxsny/iTKC1rzwS4REjaUmqCjOYvr+dsNTjfHSxV
+	IL4QcrObxBG9p+SpJTGEGAL/PxGo5B5TcKmSp5+PFyhiLf/ZyT6sZfsooB1GHp3gGCJVxONl65V
+	jKaxxM+puke7HK9MErANDXHU3NKRy4kMX+piRxrVoPDo6QakmRDQV65BG/4d8l2EA1egqpxeDO/
+	sHMeqFA6eO/nNVnnwwuujwmZE2YwjZ7SZbcYFWmfcmCjZgZrvIGfvk3GgZS6Viat3TCkpLCV7uT
+	g3W58Vb7cxzdBPLIwQRGTXNXQQ7s0oVZsFtbZ+S49FQb7lvnhx1jW6t8fK6cBmukGOs=
+X-Google-Smtp-Source: AGHT+IFiybmklIR6sXPe5dOMXPko9nq/OxURSSt8JQfw095Ue+kPgwqj+3k15eW2uamc5z4ID2izMg==
+X-Received: by 2002:a17:902:e850:b0:21f:78f:c178 with SMTP id d9443c01a7336-220d1ec1f7bmr52326585ad.3.1739455240643;
+        Thu, 13 Feb 2025 06:00:40 -0800 (PST)
+Received: from mew.. (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-220d55858d6sm12565225ad.223.2025.02.13.06.00.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Feb 2025 06:00:40 -0800 (PST)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Cc: x86@kernel.org,
+	linux-riscv@lists.infradead.org,
 	linux-arm-kernel@lists.infradead.org,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
-	stable@vger.kernel.org,
-	Matthew Maurer <mmaurer@google.com>,
-	Ralf Jung <post@ralfj.de>,
-	Jubilee Young <workingjubilee@gmail.com>
-Subject: Re: [PATCH] arm64: rust: clean Rust 1.85.0 warning using softfloat target
-Date: Thu, 13 Feb 2025 13:59:03 +0000
-Message-Id: <173944714987.2610867.13703061512287477883.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20250210163732.281786-1-ojeda@kernel.org>
-References: <20250210163732.281786-1-ojeda@kernel.org>
+	loongarch@lists.linux.dev,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	peterz@infradead.org,
+	hpa@zytor.com,
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	chenhuacai@kernel.org,
+	kernel@xen0n.name,
+	tangyouling@loongson.cn,
+	hejinyang@loongson.cn,
+	yangtiezhu@loongson.cn,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu
+Subject: [PATCH v3 0/5] rust: Add bug/warn abstractions
+Date: Thu, 13 Feb 2025 22:57:54 +0900
+Message-ID: <20250213135759.190006-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-On Mon, 10 Feb 2025 17:37:32 +0100, Miguel Ojeda wrote:
-> Starting with Rust 1.85.0 (to be released 2025-02-20), `rustc` warns
-> [1] about disabling neon in the aarch64 hardfloat target:
-> 
->     warning: target feature `neon` cannot be toggled with
->              `-Ctarget-feature`: unsound on hard-float targets
->              because it changes float ABI
->       |
->       = note: this was previously accepted by the compiler but
->               is being phased out; it will become a hard error
->               in a future release!
->       = note: for more information, see issue #116344
->               <https://github.com/rust-lang/rust/issues/116344>
-> 
-> [...]
+This patchset adds warn_on and warn_on_once macros with the bug/warn
+abstraction.
 
-Applied to arm64 (for-next/fixes), thanks!
+Wrapping C's BUG/WARN macros does not work well for x86, RISC-V,
+ARM64, and LoongArch. Rust code needs to directly execute the same
+assembly code used on the C side. To avoid duplicating the assembly
+code, this approach mirrors what the static branch code does: it
+generates the assembly code for Rust using the C preprocessor at
+compile time.
 
-[1/1] arm64: rust: clean Rust 1.85.0 warning using softfloat target
-      https://git.kernel.org/arm64/c/446a8351f160
+The 1st to 4th patches export the BUG/WARN assembly code for Rust on
+each architecture, with no functional changes on the C side. The
+changes for x86 and RISC-V are straightforward. However, the ARM64 and
+LoongArch assembly code are designed differently; they are used by
+both C inline assembly and assembly code. As a result, sharing this
+code with Rust is complicated.
 
-Cheers,
+The last patch adds the bug abstraction with warn_on and warn_on_once
+implementations.
+
+This has been tested on x86, ARM64, and RISC-V (QEMU), with only a
+compile test performed for LoongArch.
+
+The assembly code can be used for both BUG and WARN, but currently
+only supports warn_on and warn_on_once. I will work on the remaining
+functionality after this abstraction is merged.
+
+v3:
+- rebased on rust-next
+- use ANNOTATE_REACHABLE macro (replaced ASM_REACHABLE)
+- added Acked-by tag to the x86 change
+v2: https://lore.kernel.org/linux-arm-kernel/20241218062009.2402650-1-fujita.tomonori@gmail.com/
+- remove target_arch cfg by using asm comment
+- clean up the changes to loongarch asm
+v1: https://lore.kernel.org/linux-arm-kernel/20241210001802.228725-1-fujita.tomonori@gmail.com/
+
+FUJITA Tomonori (5):
+  x86/bug: Add ARCH_WARN_ASM macro for BUG/WARN asm code sharing with
+    Rust
+  riscv/bug: Add ARCH_WARN_ASM macro for BUG/WARN asm code sharing with
+    Rust
+  arm64/bug: Add ARCH_WARN_ASM macro for BUG/WARN asm code sharing with
+    Rust
+  loongarch/bug: Add ARCH_WARN_ASM macro for BUG/WARN asm code sharing
+    with Rust
+  rust: Add warn_on and warn_on_once
+
+ arch/arm64/include/asm/asm-bug.h              |  33 +++++-
+ arch/loongarch/include/asm/bug.h              |  35 +++++-
+ arch/riscv/include/asm/bug.h                  |  37 ++++---
+ arch/x86/include/asm/bug.h                    |  56 +++++-----
+ rust/Makefile                                 |   8 ++
+ rust/kernel/.gitignore                        |   2 +
+ rust/kernel/bug.rs                            | 100 ++++++++++++++++++
+ rust/kernel/generated_arch_reachable_asm.rs.S |   7 ++
+ rust/kernel/generated_arch_warn_asm.rs.S      |   7 ++
+ rust/kernel/lib.rs                            |   1 +
+ 10 files changed, 235 insertions(+), 51 deletions(-)
+ create mode 100644 rust/kernel/bug.rs
+ create mode 100644 rust/kernel/generated_arch_reachable_asm.rs.S
+ create mode 100644 rust/kernel/generated_arch_warn_asm.rs.S
+
+
+base-commit: beeb78d46249cab8b2b8359a2ce8fa5376b5ad2d
 -- 
-Will
+2.43.0
 
-https://fixes.arm64.dev
-https://next.arm64.dev
-https://will.arm64.dev
