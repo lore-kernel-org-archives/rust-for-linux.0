@@ -1,129 +1,135 @@
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2936FC3;
-	Thu, 13 Feb 2025 01:01:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739408491; cv=none; b=X5ZwhK/qxwqJwsvnAKRPHzqbIOf3wQ5/zxgxE0fZ/4yOmk1o68ttoOcfn6Vw/XGqIKZks83vop5mico4Csu/dgtHCeknPzY81FZ11fDDUEy4tKbEZJlUB4RbvMv12dubUarupphCYV2sSrloPFySc9MS+duk/YYzM2KUqiHkyQQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739408491; c=relaxed/simple;
-	bh=lVqsu1UPjaIEtaD6xvPeAnNOVZARwL5KXvGshOLpvPg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mUDsf43grCSGWLJ1AkLTLOalBxZfteBbYhpa+WOTMXKrNzIuIgU6O51gztYnr7qjp2r14RCunnAMam9y2ALt+Rb4rILoqar1em7MAwurY9O79V+oIvN2lF3sRj2AdXQhp9HXqsxU+fao4bXCEZv1C8xDM3Dnk/Ec0pQanMPi3w4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Oi32xUeu; arc=none smtp.client-ip=209.85.208.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A44537E5;
+	Thu, 13 Feb 2025 03:50:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739418622; cv=pass; b=BT7a7wtopXtmaXh82tWaWJ2ZNDJBn93w55nHNh2U+a+TeUORTj+M7MCJS9IDJHLKqiieb91VhFE2BYp1xe8WMPP19YXpYujuiWrZVVqNgwXsU9E2aBZRWlhnglK1xfyhcu2xmB2BGgCl7f+v7vkaun3MuDpapp6PvnjocKVMgzs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739418622; c=relaxed/simple;
+	bh=WHYu1ZS/p9mxM+ozqemo6cP3PiAvsHAKZpgoXka46AI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mNmIqYOvonyA+885eQ90G+aRnoLQsf+XUsQCE5DhnAN7qersZ8h5fD1ieK1Q3omrLHudNLAF74wcuO+nWXZ5ykZOwOT4AA4t4/vxn8Gfj2HlRiEFG8I0FqMWB0K16cGmfonBNrd4T2SKq6V1584jF/yzoyh8HBVtOhEgwR0wO7c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=icenowy.me; spf=pass smtp.mailfrom=icenowy.me; dkim=pass (2048-bit key) header.d=icenowy.me header.i=uwu@icenowy.me header.b=BWZ7KxFP; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=icenowy.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icenowy.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Oi32xUeu"
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-308dc0878dfso3643321fa.3;
-        Wed, 12 Feb 2025 17:01:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739408487; x=1740013287; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PwH1+bRzUvItGRmNCEPnnsP1l4ssLo5J+YSnIAgd8sE=;
-        b=Oi32xUeuhCX35gutLgHDqGe4JXdG55Q74iihyw70NV+m59c1o62p8X7/du6KXMg7iR
-         qn++qBd9+aumZstI5cQgYUO24h68kM18pMw+UkTX8xUOZ27Yxs4zNLqKYgb07yRq0Oxo
-         jwuBxOX4+kpZRLUlRkG/HIqcI7nIqEmkQby1ybox3C//EJj7mSylXzZbPSuyVwPEpPjJ
-         BwjNAL56F1YvG+IZvbdEmFBoBJzKMDB75o6i42yW0jjf+KXmzlTaNwnftQc6WVciIWtw
-         amNLJb3StCb6bvxssQ6nmXp7BfhjeBFiKHAz/hYewqRvvzcFSCr8nvWkUSHvFqDHacYG
-         sO2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739408487; x=1740013287;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PwH1+bRzUvItGRmNCEPnnsP1l4ssLo5J+YSnIAgd8sE=;
-        b=VDcow/aSE7WfW3rA0zJhetLs0nLiwuzye7wK6ugY5/Ht3aBTbtsy1bfNgoA5tWQNwm
-         CqOmM9svywOc7Z+cOkfCttF4KWMfN8+VD2F+NxARKoe9rjyvTRkWrEJ9ruTmwejyg7+D
-         nyedobxkcQqmj18xsgkzHREw+r/G3tRKMp98i2KrWU8DJYtj4/000huYz94Z9Gi6RnEp
-         QrpS34Sp+/5ywch6W16IGnetKWfr/mvTtoOVrJVPtTJYY1B2L6NNdBgiIpawD01WjV30
-         QwpdyId3i6Q1EDJn5xop+Z97KnlQgbDdbO9+50fZIjRZsgVTEfWyouaHPoPBrKU64Sdl
-         +Oag==
-X-Forwarded-Encrypted: i=1; AJvYcCUpEV6vyHa5pCwfUon6RoNou/ARbEwmCH2gxrje20YN8wWb1dWWAQGZf6nwAu3D26Ox6ZZGqjH6mCMWlfY=@vger.kernel.org, AJvYcCV4AbjM1dXIhy03Dsntix9D6fZtXIVY8YGh9nqomSj9jWTkAXboGwqqCrq03RcSPh5q9hZ0c3zCmCRP@vger.kernel.org, AJvYcCVJ4rSUQH+RiIFW0ZuKO5g4BQ6wujiV+C8ndemZB10++qQXU+PFmfoJjipEubBfWLNzqP1FNDaejoaLyt+Imug=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJuUzEszTnBjxSUx5xcHNwXwtqqyL/tKHc3fhgyFNJbSwWxQja
-	Sf1VEKZHGJQrwZ6Vubt5PY50D4J871slbnmg1I53NAEWuWkoS9prEJAXN6Cjn2xjFXMkPjFtFmo
-	aDJWjEaMOiD/jS29jri6xMxWza40=
-X-Gm-Gg: ASbGncv4CV9nsxOTQthV1q+Gp0sQwRSM6uAf+LQi8wDg/4rLnFQp/SMONoj80mkFTWD
-	GgDvBcOq1y96q/dUoW+PpksbWuR3Poct05FriNB1Fwex3cfPL9/6rv3aynl3/7S0VJtJsHtiYTB
-	0MlzBwzaiehFVP28hORA8USXuCdotILvI=
-X-Google-Smtp-Source: AGHT+IEWShSpJbA2J8teP0j6h6GMwJQJUZRNsbEcECAWxJ5ftLSRiy/NOOTLTTw5YYhjqRM6g0RcMfwZCTLikbdbBGE=
-X-Received: by 2002:a2e:bc16:0:b0:300:2a29:d47c with SMTP id
- 38308e7fff4ca-309036d731bmr20346141fa.24.1739408487200; Wed, 12 Feb 2025
- 17:01:27 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=icenowy.me header.i=uwu@icenowy.me header.b="BWZ7KxFP"
+ARC-Seal: i=1; a=rsa-sha256; t=1739418578; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=fbT64vxAHYqVOenrWrvSXND6bw3rDp0EXMcTJOW4r10ZOXOtwVDrbLXw6dIh13dyq2ic+xZp5mAWlYebunyhr1/d9Lu90tb73JFGzZYUmxZobh8wbHSkzbQ2D8WSwShuCf8OuBk89TJC4QenPFgsu3qeNZXr1AH73GMwvIMqcXo=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1739418578; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=WHYu1ZS/p9mxM+ozqemo6cP3PiAvsHAKZpgoXka46AI=; 
+	b=jjwbtahT8Gdx7JKCLgxQGErqD+rckdyVpC2WOw6G0G0jfjDWpQeCcARlwmo7NWj/nKxPvqsSeClPekq2nesx2AB7QB2EKyrsatk4Mvdieid+NdLz9UBj+Xomq7nrN0wRR7e14hBGPEdlWjpTpOOfipJBujXifczHtd1GRAR8ep4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=icenowy.me;
+	spf=pass  smtp.mailfrom=uwu@icenowy.me;
+	dmarc=pass header.from=<uwu@icenowy.me>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1739418578;
+	s=zmail2; d=icenowy.me; i=uwu@icenowy.me;
+	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
+	bh=WHYu1ZS/p9mxM+ozqemo6cP3PiAvsHAKZpgoXka46AI=;
+	b=BWZ7KxFPlgO5GbULTRCma04EoD7+75tnOegirkMZvna3Y7L5YPpONAufuMXrge58
+	lhgYI9NMKUqKXgDYqkZkhd7MuISbzw/RHjh/iYPZO16XZBkJ9KYTrFzTp0TKi7rd32t
+	LYcNn/bx1IHZH9EJt33APXIU2cbC4LOiTC2WpcvYXV0IbqcVZyc3bKBoqvJSs+/tKQ1
+	mom5ncgtAytRKlE7AcglLfl182C7MIt6zRMUBJPJdP4V8R1VxBbXinDZ3ZBOmUr3wj3
+	mlXbckpCrW1cUCuI5shoPAcGdwo6njybqw66USsKfCfE6xXMeZj0iEx+LDkkzGoj81n
+	1YhNg8Eyfw==
+Received: by mx.zohomail.com with SMTPS id 1739418575396322.68472183264555;
+	Wed, 12 Feb 2025 19:49:35 -0800 (PST)
+Message-ID: <d7d1fb8af8857e7ebfdea48213849ea9ba446477.camel@icenowy.me>
+Subject: Re: On community influencing (was Re: [PATCH v8 2/2] rust: add dma
+ coherent allocator abstraction.)
+From: Icenowy Zheng <uwu@icenowy.me>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Hector Martin <marcan@marcan.st>, Steven Rostedt <rostedt@goodmis.org>, 
+ "Dr. Greg" <greg@enjellic.com>, Linus Torvalds
+ <torvalds@linux-foundation.org>, Dave Airlie <airlied@gmail.com>, Jason
+ Gunthorpe <jgg@nvidia.com>, Greg KH <gregkh@linuxfoundation.org>,
+ phasta@kernel.org, Christoph Hellwig <hch@lst.de>,  Miguel Ojeda
+ <miguel.ojeda.sandonis@gmail.com>, Abdiel Janulgue
+ <abdiel.janulgue@gmail.com>,  daniel.almeida@collabora.com,
+ aliceryhl@google.com, robin.murphy@arm.com, 
+ rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex
+ Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
+ <gary@garyguo.net>, Bj??rn Roy Baron <bjorn3_gh@protonmail.com>, Benno
+ Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>, Valentin Obst <kernel@valentinobst.de>,
+ open list <linux-kernel@vger.kernel.org>, Marek Szyprowski
+ <m.szyprowski@samsung.com>,  airlied@redhat.com, "open list:DMA MAPPING
+ HELPERS" <iommu@lists.linux.dev>,  DRI Development
+ <dri-devel@lists.freedesktop.org>
+Date: Thu, 13 Feb 2025 11:49:20 +0800
+In-Reply-To: <Z6nTxks3u-ErSalQ@cassiopeiae>
+References: <20250131135421.GO5556@nvidia.com>
+	 <2b9b75d1-eb8e-494a-b05f-59f75c92e6ae@marcan.st>
+	 <Z6OzgBYZNJPr_ZD1@phenom.ffwll.local>
+	 <CAPM=9tzPR9wd=3Wbjnp-T0W8-dDfGah-H3Ny52G85B+2Ev9ksA@mail.gmail.com>
+	 <208e1fc3-cfc3-4a26-98c3-a48ab35bb9db@marcan.st>
+	 <CAHk-=wi=ZmP2=TmHsFSUGq8vUZAOWWSK1vrJarMaOhReDRQRYQ@mail.gmail.com>
+	 <20250207121638.GA7356@wind.enjellic.com>
+	 <Z6bdCrgGEq8Txd-s@home.goodmis.org>
+	 <1e8452ab-613a-4c85-adc0-0c4a293dbf50@marcan.st>
+	 <07c447b77bdac1f8ade1f93456f853f89d4842ee.camel@icenowy.me>
+	 <Z6nTxks3u-ErSalQ@cassiopeiae>
+Organization: Anthon Open-Source Community
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250212-aligned-alloc-v5-1-c51e0b17dee9@gmail.com>
- <Z6zA9UNm_UckccRm@pollux> <20250212163848.22e8dcff@eugeo> <Z6zT6mZuxonewQ9z@pollux>
- <CAJ-ks9=-kP5jBGQ_A88VPU_HW9VkF=OCqcGufqrJobhJu8dhww@mail.gmail.com>
- <Z6z-FlEUk9OfeJCV@cassiopeiae> <CAJ-ks9=-ZQpmhJRs3YstZBGb9UvLwRQJ7od+dsc_sYZtwUhF2A@mail.gmail.com>
- <Z60Lb4OK3jLCAAra@pollux> <CAJ-ks9=3LC7MM+uubZfjRTrWYa+sOakeq-0hwZpXK9hxXtuG5g@mail.gmail.com>
-In-Reply-To: <CAJ-ks9=3LC7MM+uubZfjRTrWYa+sOakeq-0hwZpXK9hxXtuG5g@mail.gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 12 Feb 2025 20:00:50 -0500
-X-Gm-Features: AWEUYZm_15lZtdyjYy2Ljp_nODSkfvZUWlFHrvc9vWeIkADxQ7fYGlaWtbwsX4c
-Message-ID: <CAJ-ks9moi5vQREcy=DL4sVoNZ+T2mA263M1axOGxSHf7Ram1xw@mail.gmail.com>
-Subject: Re: [PATCH v5] rust: alloc: satisfy POSIX alignment requirement
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, DJ Delorie <dj@redhat.com>, 
-	Eric Blake <eblake@redhat.com>, Paul Eggert <eggert@cs.ucla.edu>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-man@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-ZohoMailClient: External
+X-ZohoMail-Owner: <d7d1fb8af8857e7ebfdea48213849ea9ba446477.camel@icenowy.me>+zmo_0_
 
-On Wed, Feb 12, 2025 at 4:24=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
- wrote:
->
-> On Wed, Feb 12, 2025 at 3:58=E2=80=AFPM Danilo Krummrich <dakr@kernel.org=
-> wrote:
-> >
-> > On Wed, Feb 12, 2025 at 03:47:11PM -0500, Tamir Duberstein wrote:
-> > > Looks like I wasn't the only one to fall into the trap (rust/kernel/i=
-o.rs):
-> > >
-> > >     #[inline]
-> > >     const fn io_addr_assert<U>(&self, offset: usize) -> usize {
-> > >         build_assert!(Self::offset_valid::<U>(offset, SIZE));
-> > >
-> > >         self.addr() + offset
-> > >     }
-> > >
-> > > since offset isn't known at compile time, this can easily be misused?
-> >
-> > Well, that's intentional.
-> >
-> > iomem.readb(0x0)     // succeeds if SIZE >=3D1
-> > iomem.readb(foo)     // fails if foo is not known at compile time
->
-> By "fails" here you mean fail to link, right?
->
-> > iomem.try_readb(foo) // succeeds if self.maxsize() >=3D 1
->
-> Apologies for being dense throughout this discussion. Could you check
-> my understanding?
->
-> The trick is that `build_error` is marked `#[export_name =3D
-> "rust_build_error"]` which isn't exported unless
-> CONFIG_RUST_BUILD_ASSERT_ALLOW is defined, causing linking to it to
-> fail. This even works for doctests, but not for #[test] in the kernel
-> crate because they are built as part of the crate. The only to way
-> make that work correctly is to put `build_error` in a crate all by
-> itself.
+=E5=9C=A8 2025-02-10=E6=98=9F=E6=9C=9F=E4=B8=80=E7=9A=84 11:24 +0100=EF=BC=
+=8CDanilo Krummrich=E5=86=99=E9=81=93=EF=BC=9A
+> On Mon, Feb 10, 2025 at 05:41:30PM +0800, Icenowy Zheng wrote:
+> > Furtherly, the monorepo nature of Linux kernel means to refactor an
+> > interface, it's usually the person changing the callee that need to
+> > change all callers to satify the interface change; having Rust code
+> > in
+> > tree calling the interface effectively means adding the
+> > responsibility
+> > of fixing the Rust code when the interface changes, which could be
+> > not
+> > acceptable by the C-only maintainers. In regards of adding a
+> > maintainer, having more maintainers means more communication.
+>=20
+> This is exactly the same as for every new driver / component,
+> regardless of
+> whether it is written in C or in Rust.
+>=20
+> It is absolutely common that driver maintainers help with integrating
+> core API
+> changes, if necessary.
+>=20
+> I don't see why the same process should not work for Rust
+> abstractions.
 
-Which of course, it is.
+Because integrating API changes could involve change to contexts of API
+calls, which could be difficult for Rust situation, especially when
+it's not required for core API maintainers to be able to write Rust.
 
-I thought maybe this was specific to building on macOS, but it
-reproduces on Linux as well.
+>=20
+> (Additionally, in this particular case even one of the reviewers of
+> DMA MAPPING HELPERS offered to be a reviewer of the Rust abstractions
+> too, in
+> order to keep eye on the DMA API angle.)
 
-Gary, can you help me understand how the linker magic works? Is it
-possible to make it work on the host as well?
+Sorry, but I did a fact check on this, and I found that the only
+"reviewer" of DMA MAPPING HELPERS is Robin Murphy, he has only one
+reply in this thread, and the reply only says "Indeed, FWIW it seems
+like the appropriate level of abstraction to me,=20
+judging by the other wrappers living in rust/kernel/ already", he
+didn't offer to be a reviewer, and he still says "Rust folks are happy
+to take responsibility for un-breaking the=20
+Rust build if and when it happens".
+
+He is just saying he's going to accept the abstraction, which should be
+not able to forcibly override Christoph's explicit NACK here.
