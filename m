@@ -1,316 +1,207 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021128.outbound.protection.outlook.com [52.101.95.128])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FAEC245006;
-	Thu, 13 Feb 2025 14:01:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739455282; cv=none; b=u/fxmzLyMegIJbzaZFUxNuTyaVl6Mtdo8eMEmILf3f6LkQ3WeDX3yv1/mbINM10+ZUMfQJwVwhz9cRyWnep3cZdG/+N/ljwAepTOOguRW1RS25IR7J4Cxr3KG+gAeQmhtYVvhXoLkLtDZ1R978I9kfXWI16FLdRLWZN3+3Ol+3A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739455282; c=relaxed/simple;
-	bh=Qm3OOHynsVWNFFeKMcNloBwCd256HD9FBBWaPy+8WqI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pZGqKpIyi4siczY5hhh8ZvDbhEfqiBc+0fjzC0yloaTOSU+vRGqBzZTpSalMAnG87mnryh2w7e1K2L6ST/mhMaLmYvv08Z+tq+QPKOo7wT5gpj9lfzpgQvmY90DRO8ceQPuTAOoY3V+JVoj6TU0+sJS9zEmo3vn9BbMP9yP6P3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lCodv2/b; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63028281358;
+	Thu, 13 Feb 2025 14:23:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.128
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739456597; cv=fail; b=O2gy0YBoy+86rB7hvNSkmEriBTgJUnlcDCdGx/hdGzQNajug83q8CgQQHqmZImQ5NIrraDqHsJmYQKOkQvYaxin6NvWc3YdkO6neFSb9phGrp2O5XLbAXie6n+zr1JG66dKLA5oYr08TzTgt65F0pP987erIxoHw7l9Yu5C+cnI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739456597; c=relaxed/simple;
+	bh=JgFTlW1iGYEiY9zN6SPBVjk1KLrKt/WMgBwT8BBdDWk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=aWwt1rhLbrdwQuFjCNy59xDnCJ80WJRucfuvdxfzQ6F/QvifCxnSq+1HHGtrgJPDeLaUCYISlMa3BwQDeUzV3LXWucD9saHAEp4ybhMvrTfv4itCXr5rYyGXNROFkzWjmDaPmvAHLDweE3SPnThitYjCh1QXaGIkAW7qkTjvyeE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=QCwlRzTP; arc=fail smtp.client-ip=52.101.95.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lCodv2/b"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-220c2a87378so12547205ad.1;
-        Thu, 13 Feb 2025 06:01:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739455280; x=1740060080; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wwu/OQkpfuP5TP6urM50yolt8MlR74sxECkYt+Uf2k8=;
-        b=lCodv2/bG4d3rVv8ERNK/ebfTFBU5tk7YV2t57ZWNagNy/7ZTqxAor1wMhfIYpiXpX
-         OW8Fcy3hlRn/F1nEta/AiJ2haaw9TScG7W0pJ7jQP37AFwHmhoiBbp/xMTZJbVALSTQI
-         r6wDAWQ0c3wwshrvxyVenjLrIahTfK6f6YCqADRTWCrsnTLt93JOEKnWtKvbZb6Ikes/
-         lORU/VosZBNGHcVFSmBbGx7AfIHUH0LooWZd8pz2wGBGac73I/yO5q0oTIa7Fh4L775Q
-         KtO6oCgYQTqHVqlvuXBGZrKiaYZXirGB2Ejr6ClTYqgc7GPDw1YSQrl1/47V2VrRlPSk
-         nD2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739455280; x=1740060080;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wwu/OQkpfuP5TP6urM50yolt8MlR74sxECkYt+Uf2k8=;
-        b=NMM+Nh+nKbP4wMWA7vlRf/lZ/XMMJ/xZMh4WrztxkhT8+5+tMJgzV4PXs6stI+BNqZ
-         OIUJuzrH5ptXC2RjqPM6Sa35TIR3EMhc7tK/3AaU/ONRsjQs3rHCGGgbVhzCN176gvFi
-         wtwJIkhwnN8AEXTMcvnrO6XCrDBnlqZ2mtV7T9IfEqA9grY3gMRF4+jhAeyVLOuZnIhE
-         Lnt/bM4wDhUaDSVMlIRjcJnGyfPKHlo4P5f3le/zxv+zQSYSYiKEZiBVbsLPV0BHeI0R
-         8zafGHYdmMLgDkzfW+efFpfsGirIIBV3CEeOgBjJJ6d3B0i6R8+i1mIJ/Uvtf/tIZuIi
-         q+qQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW7SodJpn+ftYahdY8x/4/p7Zj0DZFMaWPaEYs0iSlVxwRbgNrbC5SG0DRObj0QyhFNCnGu7QbSSJ65GjXaBQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yygiyzr2aiWZZAf3v8W4nqRl9zsFP6jJs2ZFpo/ByAhdRqJgd11
-	gNwJNhcIv0oDjwWsrbk/1fx6a8TYt1lG/RUY1e1VJL88Ia8Z0i/kAJEWHxtF
-X-Gm-Gg: ASbGncsqh/SG13jv+Z7y1TFK3NVTQyE4h/rIzEPtxkFynnEgRbQt9FqBAgaZeMVrQOT
-	fZ2bcLFGKPJaYVN3K17hbzz8RIrf4VbSb+RjKPTWTgKlvz0EojIWMwmhiXQ61nveaJJ/Fy0SLJ1
-	+pad5otts8IOADOb9g0gUCfisvxQp4X6JOyoDdqwyV0Iw+htoKfwILQ6g5fnpLxBLN3AaZewJdc
-	uKgmEkVAic9IxI+gGssPfVT/eOgMt9TyELG4Hw7yw2xJr0hMjgrUrCBIiQ1gJdnfAXY4gZxENa4
-	Ev7lCr2S9T0O1lsAOUUWTAkrh8aWiZSoOf9JqLhJsppSkGt4VtLoMlwBajYmCg2jsLo=
-X-Google-Smtp-Source: AGHT+IFMceABDyWeSunss8UJzVYDb4BU4OkU0X8Hc7JUBpiklvsTg2hC46hEV4uH5kHdO2o6dh/F8A==
-X-Received: by 2002:a17:902:eb8d:b0:220:c813:dfd1 with SMTP id d9443c01a7336-220c813e56amr81532275ad.36.1739455279808;
-        Thu, 13 Feb 2025 06:01:19 -0800 (PST)
-Received: from mew.. (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-220d55858d6sm12565225ad.223.2025.02.13.06.01.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Feb 2025 06:01:19 -0800 (PST)
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-To: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Cc: x86@kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	loongarch@lists.linux.dev,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	peterz@infradead.org,
-	hpa@zytor.com,
-	paul.walmsley@sifive.com,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	chenhuacai@kernel.org,
-	kernel@xen0n.name,
-	tangyouling@loongson.cn,
-	hejinyang@loongson.cn,
-	yangtiezhu@loongson.cn,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu
-Subject: [PATCH v3 5/5] rust: Add warn_on and warn_on_once
-Date: Thu, 13 Feb 2025 22:57:59 +0900
-Message-ID: <20250213135759.190006-6-fujita.tomonori@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250213135759.190006-1-fujita.tomonori@gmail.com>
-References: <20250213135759.190006-1-fujita.tomonori@gmail.com>
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="QCwlRzTP"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GEryOSp9KLzN32e2Vxhqo4bu92tGjFJyT2slD+Wk1aq4DX3vQOCZoWBQ2lj9aFoKh5WTHnSSv6NNYOCcx2/To90NEkmQI+K2auUdzCZ/dLCEbOLlclJF8c4qZqmzSBthp9WKHGFO0N+jZIMUtKH4QKGOez+ObQg3Mfkq56pQgl1ZD23/bqUdECQYEBhRzlDu+F8UaT9Xtn59B/S7Pt4uhoTmlRK3B2AgcFggvdaeLBD8jCsPCJNf/nifpK1mwaFHTsZFVeBmBbLVLz2h6ATF2NGdroc9q9nceUTLHFOuILI6eXc0JywPx50rtDiqRtFwM6onrR18nEdoIfj269EfGQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JgFTlW1iGYEiY9zN6SPBVjk1KLrKt/WMgBwT8BBdDWk=;
+ b=EMT6fW/l7nU4qePXGmzzX76I/hy9ddcPxEigQDMENW2Y3xYS7f35VKEA+DEciigkbxyaKhKmmqdq4nY/1l7PbaQO2iMyGURrV/kjeku/csjTN8Dx4BFQml5tQp08F1OkTYRYtBiEf6HRBA0W34X9DLuCGUhJgAiiBrPgS1oziwlIwU0QSG/SCAh0P7VETootwDPj1GpEdl/vsTm6Zd0MA9k+GBT5Le7xyRO02d5c5KZVgh85ki7ipx19TTs8GGicMARVqTWZLYLQvJ8YyEWDts0yss1jxKAHh4yLoL3Q2TigueuGLiWzH7EciRa8tgVIrBTKS0ns1cOWOpeWlncwwg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JgFTlW1iGYEiY9zN6SPBVjk1KLrKt/WMgBwT8BBdDWk=;
+ b=QCwlRzTP+XpyLjnObqZTNo+iv3LXv8UIp9eo+aQNN+exl9hLl/5NVlAXLxcS6y0VGMclpnvPm+6hNv8v/H6hCp2NMK3hIEkP7Ya71R5zBGRwyAHWwGywfxlW00bbXivoupg518PKYN9NR2PCSLDfeqBWAcrpt5ZEnH+73yXLTGg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by LO3P265MB2044.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:100::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.12; Thu, 13 Feb
+ 2025 14:23:10 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7%4]) with mapi id 15.20.8445.015; Thu, 13 Feb 2025
+ 14:23:10 +0000
+Date: Thu, 13 Feb 2025 14:23:08 +0000
+From: Gary Guo <gary@garyguo.net>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, DJ
+ Delorie <dj@redhat.com>, Eric Blake <eblake@redhat.com>, Paul Eggert
+ <eggert@cs.ucla.edu>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, =?UTF-8?B?QmrDtnJu?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
+ Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+ Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
+ linux-man@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6] rust: alloc: satisfy POSIX alignment requirement
+Message-ID: <20250213142308.4aed36d7@eugeo>
+In-Reply-To: <CAJ-ks9mQG5pyEP+cnVxBkCDbfR_cecBZK0K456=Qw6Y03LuRvg@mail.gmail.com>
+References: <20250213-aligned-alloc-v6-1-4fd7f248600b@gmail.com>
+	<20250213113024.3d9919e1@eugeo>
+	<CAJ-ks9mQG5pyEP+cnVxBkCDbfR_cecBZK0K456=Qw6Y03LuRvg@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: LO4P123CA0394.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:18f::21) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO3P265MB2044:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3ca9ed3f-6747-4ee9-3428-08dd4c39f154
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?OHBPM3d0RlYxVzI5UThQWmFoUEZia0piMFpFUGYrM25NUXdJd2NkNUZkK05t?=
+ =?utf-8?B?WWpvUzdSd0o3VTYya2c0Vmx0TXVxSC9FdEU1dWNHd04yM1U2dU1Ib1NvL1Vv?=
+ =?utf-8?B?Y09WTERYM21YWlFka0liblpWMUVlMm52aU5JSEFSZ0xBdTVjMEluUE0wWldt?=
+ =?utf-8?B?ZzRIblJBWGtBMHVzM3JwUVl1VUN6bHYxVG9QK2dDTWF5Zkl6WVk3bGR1bVB4?=
+ =?utf-8?B?YlA0UURybjFkQU1MVHhxWE5jb2ZyWmxBaG4xa25tTnJ1Q3plYmNqREV0YS9M?=
+ =?utf-8?B?ek4vcU1xalZTMVMvcUJCTGFDaTMyeXR0ckZQbkMxRU9uaG1pcm1IYlArQ2pE?=
+ =?utf-8?B?U3N6dTRXMWhJVjBoYWJ4bXNCVytUTmQzU2tYWGhSU1JHWEc3RENvcFpYTldp?=
+ =?utf-8?B?VmxES2ZFeWpHMldoQStzYkx0WXhkSEwrZEVWYlgwQWZRTW9TU05iR0l5alY4?=
+ =?utf-8?B?NEpsQWw0UWFxUUtxVDk4ZWgwbjI1MHJxUVp4K3ZWd1M2OFI4anlrNUwxSzkw?=
+ =?utf-8?B?V3dnWkNqdS9rRW9sQ1Zta1NOdkFEeHpaNitpTVVLWVRWTytqUnlmZ3M1L1lh?=
+ =?utf-8?B?K3Z5ejdqelk5aWxVUGpETURVS3czOTVBZzNaOStYSlRpbGhSeUhpNHM2dVIw?=
+ =?utf-8?B?WGZ6SVl6ZjVCQ3ZTQ041ZDBxemNWOWZPR2pQRkNuNkErb2FmWmRFcnFacEFq?=
+ =?utf-8?B?eE95UzAraTRQdlBZL1orMjFpYlpPb0h5angrRU5wc0VXZTlMVzBXVVh2UkJ3?=
+ =?utf-8?B?eE5ncmtzREgxMTlDVWNBRVlGOFg0REhaaVFteUNQakRqZzJWR3pLaTNqY0Qy?=
+ =?utf-8?B?Tmp5YlJoYVNwamIrUk01WWtNK0xOYVB4U2NIZW51NVJsSGpvOXRnc3lCejBr?=
+ =?utf-8?B?c25LWWJFa2FKNmw5emE0Vi92SUJkTGdMYlM0aFl3djdVbmQ1YWMrempSMnhT?=
+ =?utf-8?B?akJNYm56bzRVTXEybmNXd3FYbTl4QjN5b0VTQVZxeGJQWkdOK0QwbWNXVkRY?=
+ =?utf-8?B?cU5Dc3gzTy8ySXk5RFlYdlgvb3BWRzBFSHdqWk9HUFQvck5xZmFEZFg4NGUz?=
+ =?utf-8?B?b0NoMGJIRmVLY2ZBREM1RGVKWDlBWmtEdWV0ZFk2ZlRsdmpWZHNDdEIvbmd4?=
+ =?utf-8?B?TUU0Y2ErV052blFOenJyTFVuc1dkQzMyMXc3a0RjWmVyVHJDSkpBU09yS1Ba?=
+ =?utf-8?B?RHUrcWlYWVRUVnhqUkd5dlRMb2oydVB4UGx3ZGlINUVMekdzb0JTVnE5bndj?=
+ =?utf-8?B?VjVZQzBXM1lzMllOMnpHTEJqN3VEWVF6UTQyNThmY0c5eGp6c01ZV00xaUVx?=
+ =?utf-8?B?SXpsN1NCQURFWFgwZThCdklBQjNrRCt0LzloZEw2K2U5SVFWYXhVUkxKdmpu?=
+ =?utf-8?B?VHNpaVpZV3RNNi9oYy9zSWpPTzlTWTdhdktzb3N3eDF5N0lmTXo3SVh2MWdn?=
+ =?utf-8?B?RVByM1dNUHN3dURlTFdQK3lyV3RIV0dYbkdURE5nby9BQVdYWkJTM3FTZjBZ?=
+ =?utf-8?B?bDE4b01xZ2NKV1hjMmk4NUZtS0I5aUJrZnJHYkxSL0M3V000MUwzd1RFWGRq?=
+ =?utf-8?B?U0NCZVlLSkRuOUZ4aVExcE5TK2tNN202VythOTNodjJhOEpremFCOFNoSHRl?=
+ =?utf-8?B?eEdxdkxwQ0Y4T3FBaUw5OTJoN0NaZXRzNlR3aG9ZRVpKMDdad3BRNTZidS9z?=
+ =?utf-8?B?L1FHM3UxQXl5bmt0L0ptSDdNdWhwNHJWSkdobDJjTDBNUFV3WXNRL1pXWWVx?=
+ =?utf-8?B?UVBqWWhSMERUQ0JrRFVkUlkrN0ZOUzl2SWdCNHp2aUZrbU1Wc3NHVklCRVVh?=
+ =?utf-8?B?d1o1VGs0czZHSDEwZEZDc3Y1RzhqN1J5NDlEL292cWd3TUxlb3FSN1pTYW1X?=
+ =?utf-8?Q?LYRuT6DGuSZDA?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(7053199007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TWMxSmJETEdCcDYrL3IrY2JESGt6eVdCKzVDUUlLaSt2ZGxCbXFodFJadnp2?=
+ =?utf-8?B?MEdJajBwSnlFaXVZVkdHZ0cxVjUwT0RGNlMrZ0JkNUVZT1c4ZGFDUjRWYXN0?=
+ =?utf-8?B?bktCV3JJSVJPbVFoRFIxZVFweHdyUzF3RnozaG91WWF0aHoxeFQrc3gvNVJw?=
+ =?utf-8?B?M1VuR0tjYUJmYkdkU2U1enFhaVVVdllkcG1TYXBHVGliVmd0Y3FFM0xaaXYy?=
+ =?utf-8?B?STdaeE1JUkZnandiZU4vWFhHQmd2SjVsa3hwMEo5S2NFcS9aMHNGSUhwd1o2?=
+ =?utf-8?B?eUw0b2orWkU2a3IveGZheWFJeWF1R1JadnQzd3gyM2pJUlVyeHkzbklmMUYw?=
+ =?utf-8?B?ZmkzeHA5WCtmc1dGOS81azFwR0U1T0RnZVVvVmN6NXZRZGVlcG1xU1M0RmVU?=
+ =?utf-8?B?ZnFFQk5IYlppaHRPSEdvNXo4ckZDTGtWZVE2aTNrdE83NHNtYmRCamFvWmx5?=
+ =?utf-8?B?WDZoRFJPQmhCY29uU0pLK0tyQnhxM2l1eDRJVzZjZzA1a1V6aVBrcUpGQW42?=
+ =?utf-8?B?VE9RN3U4LzlDUEtqVk5yOU96cEhRZmExL3FQME1jemdpbzlFbHM5RkhwQjlz?=
+ =?utf-8?B?d2E5S1lZYVd1SG12TTU0UXlHR2g2VkpYVXhRUU9WTjVqcXdmcEVXOVVFekhv?=
+ =?utf-8?B?YVNNSFpFU1E1YjVNZW51UDhHUmpZb2o4VWJNZHNEaFczN2pCZHI5by9aOFpF?=
+ =?utf-8?B?SlNpNElJOWppbDBrc0FrczlVeVlCRnJMRTBmVmRJdkM3MVkvR3E4c2hjYmU3?=
+ =?utf-8?B?bm5CZGRlM2lKYjNCaEJiZkxlYVpjbmdNNXYrNWpMeGJEaWtJelRZVDFURGVl?=
+ =?utf-8?B?MDRpZjFFeFk1MkprU1ZyVFZIRUVKL25FQ0N0RXJScGt1V0R5MEdGdDc3ZFFD?=
+ =?utf-8?B?SFR2bEpOU0EyY2Z1ZjdaWk14VzZtYmlHS20xZjRiVWlWMXZGMzFFM0dSa0Fy?=
+ =?utf-8?B?K1AxcDB3UmYxTHVxRS9XZWJaTk9wZFN1Y0haY1Bhc3hBOGh3QVRVblNBeWtk?=
+ =?utf-8?B?eXNaUHppam92UFdXTU9rUzRycDdwYXJzZmo2ZWZKMzZjekszdnBPSWtMZkl6?=
+ =?utf-8?B?NnplNGxPaWRaV256UUUwNTM2OFRIRjYvbWNMSGdzYUxBdnI2V01lVUJ4ZU5S?=
+ =?utf-8?B?Vk40Z3RhVVRGU21RYVgva0ZlYTE1cmJBVW9JcGdIemtJcnVYSmFsOFkxa0tB?=
+ =?utf-8?B?bS9rY0ZnanI5KzFwQ29ETExyY0l4bG53RHhXdkhwWXp6cUk0Z3hhenBGY1Rs?=
+ =?utf-8?B?enZYQTdqOSt1ZGF3QU5vUy9VUEVmVjFHMEpHOXdWMGtaUmdWd1BHT2lWUUtu?=
+ =?utf-8?B?TFVGWDc4Qk40U3JWaTM2eU9lcDgrcU4xbGxMVmxvYW03SEN4WUZ1aTZNeGdH?=
+ =?utf-8?B?VVpQV2ljajFLU0NlSlhoTlU3OEFOQS82SDB3L0FQSGYvR2ppUzJXWFFiUXRZ?=
+ =?utf-8?B?emtwbWtzWEE2b3Rra2xiLzY2QTBtWkZEdHF2YVRISVFDQ1RUeEZRNGQrOEdh?=
+ =?utf-8?B?R0phc1cydGFFeXg4UmdlMVBVQ2JsYWZLY0pjVnJtbnZDaURGN1MrRlpnT1JF?=
+ =?utf-8?B?eTBIdXB4SDNSN0I1Y09oS1g4WFZsSmpEbHVSQUFxRVdLMEpKL0duMk90MEpZ?=
+ =?utf-8?B?N0NhQk5QVVc3ckF5UDZ3amFiQmx0NnhHaHNNZTdoajU2d3RWWlh6NFVIdUtR?=
+ =?utf-8?B?bjVkdDU2UTYzYXFKc1VFdkcwTjR4bFpFR2pBZ3BicmRkY0g0Tzh2SFJBcmho?=
+ =?utf-8?B?cVpiZGo1S2VZbjBsL05sRTRJajBDOFp1OFBUNms0OFkxN2tCRG5Ndk9uMk1s?=
+ =?utf-8?B?eVJ0WDdmVnJHVUg5eHk3WWtRblQyVXBwZnJETm1OZXJneGpYUHBlS2pqd1hm?=
+ =?utf-8?B?aWZTWWw4UlpFek5ST1l5bTVWSUdLM01ZQmxKYU9ueXY3ZWZtOUJ1bXJRUWg2?=
+ =?utf-8?B?aUl3SUE3RVVIeVVPYjhqMjRsei9ndDVyRDI2VDFsR0lMbHFyNTVsNnlvcWZp?=
+ =?utf-8?B?WEpQOW8xeU00cUY2a25BN2NOSTBJV0txR0kyUy9Ub0hORmxUaGxHWlRScFZv?=
+ =?utf-8?B?UGk1TTkwY3JoRnZKZlFTMlFndGtBdHVUekljTXhEMjNKWm9uM1kzL21OMDBD?=
+ =?utf-8?Q?6xF+8mWaKJKxuYzJDlNjkbQE6?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3ca9ed3f-6747-4ee9-3428-08dd4c39f154
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Feb 2025 14:23:10.3968
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jF8aukYF0MIQzBy4YImsR9pmxEdQNvDNRCRseFx7+rA7RJNS6yLrOt9x8jwk/fpAtlm7yLTnz59F5hfyq/BOFA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO3P265MB2044
 
-Add warn_on and warn_on_once macros. Wrapping the C's WARN_* and BUG_*
-macros doesn't work so this uses the assembly code exported by the C
-side via ARCH_WARN_ASM macro. Like the static branch code, this
-generates the assembly code for rust at compile time by using the C
-preprocessor.
+On Thu, 13 Feb 2025 06:33:58 -0500
+Tamir Duberstein <tamird@gmail.com> wrote:
 
-file()! macro doesn't work for the Rust inline assembly in the same
-way as __FILE__ for the C inline assembly. So the code to handle a
-file name is different from the C assembly code (similar to the
-arm64/loongarch assembly).
+> On Thu, Feb 13, 2025 at 6:30=E2=80=AFAM Gary Guo <gary@garyguo.net> wrote=
+:
+> >
+> > On Thu, 13 Feb 2025 06:26:41 -0500
+> > Tamir Duberstein <tamird@gmail.com> wrote:
+> > =20
+> > > ISO C's `aligned_alloc` is partially implementation-defined; on some
+> > > systems it inherits stricter requirements from POSIX's `posix_memalig=
+n`.
+> > >
+> > > This causes the call added in commit dd09538fb409 ("rust: alloc:
+> > > implement `Cmalloc` in module allocator_test") to fail on macOS becau=
+se
+> > > it doesn't meet the requirements of `posix_memalign`.
+> > >
+> > > Adjust the call to meet the POSIX requirement and add a comment. This
+> > > fixes failures in `make rusttest` on macOS.
+> > >
+> > > Acked-by: Danilo Krummrich <dakr@kernel.org>
+> > > Fixes: dd09538fb409 ("rust: alloc: implement `Cmalloc` in module allo=
+cator_test")
+> > > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> > > ---
+> > > Changes in v6:
+> > > - Replace unsound use of build_error with map_err. (Danilo Krummrich)=
+ =20
+> >
+> > It's sound, just not correct. =20
+>=20
+> Changed. I asked a tangential question in the last thread but: do you
+> think it's possible to make build_error work correctly on the host?
 
-Similarly, ARCH_WARN_REACHABLE is also used at compile time to
-generate the assembly code; objtool's reachable anotation code. Only
-architectures that use objtool (x86 and loongarch) need it.
+I don't know what would be needed to make it work off the top of my
+head.
 
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
- rust/Makefile                                 |   8 ++
- rust/kernel/.gitignore                        |   2 +
- rust/kernel/bug.rs                            | 100 ++++++++++++++++++
- rust/kernel/generated_arch_reachable_asm.rs.S |   7 ++
- rust/kernel/generated_arch_warn_asm.rs.S      |   7 ++
- rust/kernel/lib.rs                            |   1 +
- 6 files changed, 125 insertions(+)
- create mode 100644 rust/kernel/bug.rs
- create mode 100644 rust/kernel/generated_arch_reachable_asm.rs.S
- create mode 100644 rust/kernel/generated_arch_warn_asm.rs.S
+Maybe it could be done, but I don't think it's worth the effort since
+it's only used for host side test.
 
-diff --git a/rust/Makefile b/rust/Makefile
-index 8fcfd60447bc..a295b65c43f3 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -34,6 +34,9 @@ obj-$(CONFIG_RUST_KERNEL_DOCTESTS) += doctests_kernel_generated.o
- obj-$(CONFIG_RUST_KERNEL_DOCTESTS) += doctests_kernel_generated_kunit.o
- 
- always-$(subst y,$(CONFIG_RUST),$(CONFIG_JUMP_LABEL)) += kernel/generated_arch_static_branch_asm.rs
-+ifndef CONFIG_UML
-+always-$(subst y,$(CONFIG_RUST),$(CONFIG_BUG)) += kernel/generated_arch_warn_asm.rs kernel/generated_arch_reachable_asm.rs
-+endif
- 
- # Avoids running `$(RUSTC)` when it may not be available.
- ifdef CONFIG_RUST
-@@ -481,5 +484,10 @@ $(obj)/kernel.o: $(src)/kernel/lib.rs $(obj)/build_error.o \
- ifdef CONFIG_JUMP_LABEL
- $(obj)/kernel.o: $(obj)/kernel/generated_arch_static_branch_asm.rs
- endif
-+ifndef CONFIG_UML
-+ifdef CONFIG_BUG
-+$(obj)/kernel.o: $(obj)/kernel/generated_arch_warn_asm.rs $(obj)/kernel/generated_arch_reachable_asm.rs
-+endif
-+endif
- 
- endif # CONFIG_RUST
-diff --git a/rust/kernel/.gitignore b/rust/kernel/.gitignore
-index 6ba39a178f30..f1d7f4225332 100644
---- a/rust/kernel/.gitignore
-+++ b/rust/kernel/.gitignore
-@@ -1,3 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0
- 
- /generated_arch_static_branch_asm.rs
-+/generated_arch_warn_asm.rs
-+/generated_arch_reachable_asm.rs
-\ No newline at end of file
-diff --git a/rust/kernel/bug.rs b/rust/kernel/bug.rs
-new file mode 100644
-index 000000000000..7ffd9cb1ad75
---- /dev/null
-+++ b/rust/kernel/bug.rs
-@@ -0,0 +1,100 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+// Copyright (C) 2024 FUJITA Tomonori
-+
-+//! Support for BUG_* and WARN_* functionality.
-+//!
-+//! C header: [`include/asm-generic/bug.h`](srctree/include/asm-generic/bug.h)
-+
-+#[macro_export]
-+#[doc(hidden)]
-+#[cfg(all(CONFIG_BUG, not(CONFIG_UML)))]
-+macro_rules! warn_flags {
-+    ($flags:expr) => {
-+        const FLAGS: u32 = $crate::bindings::BUGFLAG_WARNING | $flags;
-+        // SAFETY: Just an FFI call.
-+        #[cfg(CONFIG_DEBUG_BUGVERBOSE)]
-+        unsafe {
-+            $crate::asm!(concat!(
-+                "/* {size} */",
-+                ".pushsection .rodata.str1.1, \"aMS\",@progbits, 1\n",
-+                "111:\t .string ", "\"", file!(), "\"\n",
-+                ".popsection\n",
-+                include!(concat!(env!("OBJTREE"), "/rust/kernel/generated_arch_warn_asm.rs")),
-+                include!(concat!(env!("OBJTREE"), "/rust/kernel/generated_arch_reachable_asm.rs")));
-+            line = const line!(),
-+            flags = const FLAGS,
-+            size = const ::core::mem::size_of::<$crate::bindings::bug_entry>(),
-+            );
-+        }
-+        // SAFETY: Just an FFI call.
-+        #[cfg(not(CONFIG_DEBUG_BUGVERBOSE))]
-+        unsafe {
-+            $crate::asm!(
-+            concat!(
-+                "/* {size} */",
-+                include!(concat!(env!("OBJTREE"), "/rust/kernel/generated_arch_warn_asm.rs")),
-+                include!(concat!(env!("OBJTREE"), "/rust/kernel/generated_arch_reachable_asm.rs")));
-+            flags = const FLAGS,
-+            size = const ::core::mem::size_of::<$crate::bindings::bug_entry>(),
-+            );
-+        }
-+    }
-+}
-+
-+#[macro_export]
-+#[doc(hidden)]
-+#[cfg(all(CONFIG_BUG, CONFIG_UML))]
-+macro_rules! warn_flags {
-+    ($flags:expr) => {
-+        // SAFETY: Just an FFI call.
-+        unsafe {
-+            $crate::bindings::warn_slowpath_fmt(
-+                $crate::c_str!(::core::file!()).as_ptr() as *const ::core::ffi::c_char,
-+                line!() as i32,
-+                $flags as u32,
-+                ::core::ptr::null() as *const ::core::ffi::c_char,
-+            );
-+        }
-+    };
-+}
-+
-+#[macro_export]
-+#[doc(hidden)]
-+#[cfg(not(CONFIG_BUG))]
-+macro_rules! warn_flags {
-+    ($flags:expr) => {};
-+}
-+
-+#[doc(hidden)]
-+#[macro_export]
-+macro_rules! bugflag_taint {
-+    ($taint:expr) => {
-+        $taint << 8
-+    };
-+}
-+
-+/// Report a warning only once.
-+#[macro_export]
-+macro_rules! warn_on_once {
-+    ($cond:expr) => {
-+        if $cond {
-+            $crate::warn_flags!(
-+                $crate::bindings::BUGFLAG_ONCE
-+                    | $crate::bugflag_taint!($crate::bindings::TAINT_WARN)
-+            );
-+        }
-+        $cond
-+    };
-+}
-+
-+/// Report a warning.
-+#[macro_export]
-+macro_rules! warn_on {
-+    ($cond:expr) => {
-+        if $cond {
-+            $crate::warn_flags!($crate::bugflag_taint!($crate::bindings::TAINT_WARN));
-+        }
-+        $cond
-+    };
-+}
-diff --git a/rust/kernel/generated_arch_reachable_asm.rs.S b/rust/kernel/generated_arch_reachable_asm.rs.S
-new file mode 100644
-index 000000000000..3886a9ad3a99
---- /dev/null
-+++ b/rust/kernel/generated_arch_reachable_asm.rs.S
-@@ -0,0 +1,7 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+#include <linux/bug.h>
-+
-+// Cut here.
-+
-+::kernel::concat_literals!(ARCH_WARN_REACHABLE)
-diff --git a/rust/kernel/generated_arch_warn_asm.rs.S b/rust/kernel/generated_arch_warn_asm.rs.S
-new file mode 100644
-index 000000000000..8f239b431aa4
---- /dev/null
-+++ b/rust/kernel/generated_arch_warn_asm.rs.S
-@@ -0,0 +1,7 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+#include <linux/bug.h>
-+
-+// Cut here.
-+
-+::kernel::concat_literals!(ARCH_WARN_ASM("111b", "{line}",  "{flags}", "{size}"))
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 496ed32b0911..c0720846b249 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -38,6 +38,7 @@
- pub mod alloc;
- #[cfg(CONFIG_BLOCK)]
- pub mod block;
-+pub mod bug;
- #[doc(hidden)]
- pub mod build_assert;
- pub mod cred;
--- 
-2.43.0
-
+- Gary
