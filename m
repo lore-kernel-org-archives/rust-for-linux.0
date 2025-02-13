@@ -1,95 +1,101 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE48227EB4;
-	Thu, 13 Feb 2025 12:22:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE38333FE;
+	Thu, 13 Feb 2025 12:47:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739449341; cv=none; b=ElyoCm9jH6RerL0yR7ilb00op774aBx/NvfxgC0i0trYIte1R4z01fay1LvihcoRDAugdppUZRg1j4U9ZB/u/4UDh64M0c/8iH8AN4uoUicGVHZHuZP1/P/Yj8tvzX1Emu5tCSHL7R12wT32oFMhlz42UIV4W4Jqw2BqUgHrfNU=
+	t=1739450868; cv=none; b=glhqRs9dTVNzLSlnVyVfQscDFOGJlNAE+R+SM7RJmfpeoB5SDs44LFuF+DY6Sz3MsFnIeTpaRryl26jNAZfJQOkVclgaBr2qXKgJfS1zHth1nrBy7eaViCmQMd7UJAE1npKVcVAQns6Ht+n99pCXZxRTbHojZlIOsFq00tpMo78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739449341; c=relaxed/simple;
-	bh=JhQ8USlPxenG52f+etBxdWz9DV+4IdlE1eKF2Q41L/8=;
+	s=arc-20240116; t=1739450868; c=relaxed/simple;
+	bh=oaUFfCoxZvNNh5R7lttLzT90zWoqWvaSgj+qgbPZbLw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PTaaEif1UqHjL6LW207TNMSnpKoxtaul4+uEil1G1nD7zVLCklG5C4koiGSregPKvNPm9M+5iRYc6tTUPsSmXSrW4Yo6gPhb0a2moGFkhwA9MIAB4Ji56zPs5lojyE+96mClOSYFAQmDgvoM+uK0iJCC+dX4b9bX547wr/Giydw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YuL02+pi; arc=none smtp.client-ip=209.85.216.54
+	 To:Cc:Content-Type; b=BXOWYThtIUVtlnzHVv5dkB5RGHhpavMkMt3qKCoAWDRQtVnxVVCR0QgJ696QAQ3vDSBYl3x301bp5BIGVeNYMTAG7L/J+QC7UkfFvjVijtN7tEIkmIMdbAi/Q1WDCeIB5cTpMWGDKSKFPxrw+nxTScOkiXUc+j2gWOSQ3ksv690=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qi3RxPbz; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YuL02+pi"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2fa18088594so173870a91.3;
-        Thu, 13 Feb 2025 04:22:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qi3RxPbz"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2fa0f70bfecso185989a91.2;
+        Thu, 13 Feb 2025 04:47:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739449339; x=1740054139; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1739450866; x=1740055666; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JhQ8USlPxenG52f+etBxdWz9DV+4IdlE1eKF2Q41L/8=;
-        b=YuL02+pi/HjOjeGea+ITDt4AQJLkzdt6HVb2sz4rKEixkSluBb/XeNpMwHAvz9VXU9
-         F8Cko2vpB84w1aL96P036hTceVevjyHpS+ykVHVseXVc9j3UQKqgJaSd4r26mofkJnDO
-         LUlqQQ394PQyYhpCiCH9YtuBz3ga614f542M7eDdUGYBV5UIhABYIsqogs5ocxzaOLvK
-         FbeRam9rb6LQWG3XvSBpfek8kjTg+UO6KFwdkMifkZeSDrkWAs7efzfgeumo/qf6YGY4
-         4WdIguC2+O62J5p2o0mi+PwX0OO00sdGq75yoUyYj0gZ9V1axejaW1Ad30U6CWXdidi6
-         sP7w==
+        bh=oaUFfCoxZvNNh5R7lttLzT90zWoqWvaSgj+qgbPZbLw=;
+        b=Qi3RxPbzGXPeNgXgWM8UCf6LHhEy89Gdjz/sTdAr+b85eWilhTBso1W2Jwm6FTPGZr
+         ui56AOR4fYEaJdYYGnwqQvg6b4MbS6OWyzPILUZjCtHkkegXWTo21IUI1Kgjfx08DyFS
+         42yzZ4gOpMUcS8lUT8UvrNql9JBwQFf33tJpRbnhejUNnR91Jl5ly0ihPv/l/UUz3A/q
+         QPH0UyDt6rgoElQ51afgGnIGM/Qzqkwo/yrFX4pakyiQrXr7rIz7svzbMKpAtFjkHFh+
+         WxNXv9Rs6djf6oHBQPOdBn8PoIqzeEAoQU30a/TWApbvZiQVaHFIIDCj6o7WtyMoUIMG
+         H2GQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739449339; x=1740054139;
+        d=1e100.net; s=20230601; t=1739450866; x=1740055666;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=JhQ8USlPxenG52f+etBxdWz9DV+4IdlE1eKF2Q41L/8=;
-        b=R0tuhZKO0jih0rZfXr2P7jLs8lwcqy52GU8Kqw/WqIDZT3T93Lp7U/WZY5NZgQtNkN
-         V6bmPF870legLBrDJBLzQkIziBWUp/hJ4HHw5adnnK553fZd9pYkuPnafPHfGJNACA17
-         kXBL074L351ZZUq0ZoricN+HcOKuOkDsjTQ4oIqo8v1iojTddYBZWFdxOOKY1PWHWx3n
-         Koh3d4pV/yhDeTQZjySiSlyL7JzQzhvf+gDVj+onsTwyykqsPOKTlx6CDbReBx1p6XCy
-         IqlH2xBu+PHfqqvNu/yT0clnNREvAjpyO5izQmFBkol9FPUfhg1Z5xQ7qVPZFio19/dA
-         zbBw==
-X-Forwarded-Encrypted: i=1; AJvYcCUYNhdW8nnmtDZtwxgaSVGB18qfTnOVH362oPbC2RDUAGtA6Wh9U4fzgFackJCc9jT40BAxHwttChrOQM4=@vger.kernel.org, AJvYcCWjmVnE0zahJifbm2mSMQ5tXd9rqPoJ8/fLRYxWGrOcaR5za2H8R+lLeVXy0u1S0Pbbszq1TP2688xuKkGPOv8=@vger.kernel.org, AJvYcCX9vz4u/KK5aD9LugtIZOaeskYqmnxhsXCIdFGzk22T2sQQUlvPWfMfNO0dvTUNs8RW2Xyhm5AM@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmJ2aiz6ftCd2LwCE0ipfZdUTUMq/zFVrrE0rF6yJAnUcx52ir
-	GOhxmddvcIKCEzBkEYT5HcaCZ+zs97CMuUTZFXaWRTBmcXLXjslZN+JsqQbmVJP0Bywm9EXuW5W
-	vp8wiVRDis0xfiP2islsYj7z+pps=
-X-Gm-Gg: ASbGncumbbUxTktnX+lo5diLw5dOP8Umy7l7W1NUB5H2jfIXOk9bRZ0mw7fFZ815gHC
-	Urzkv7iDItApmh0yx73LtfEyNZwmM3NGnUdZzRzht5IQPJDY/ElrXUz9cOvbnxdMm1Ofd/k1l
-X-Google-Smtp-Source: AGHT+IHmYvEzL9KGp/GiZCJityFb8+Au3r1Y0YDY9cYrjSKGnUmZw+tnh/sBiqD37rnyvyHdxym1Eq0TTuz5tYj63uE=
-X-Received: by 2002:a17:90b:33cb:b0:2ea:853a:99e0 with SMTP id
- 98e67ed59e1d1-2fbf5c75392mr4064811a91.5.1739449339042; Thu, 13 Feb 2025
- 04:22:19 -0800 (PST)
+        bh=oaUFfCoxZvNNh5R7lttLzT90zWoqWvaSgj+qgbPZbLw=;
+        b=wRrna1kbhAchSFstK6HRP9Aj6PfRvuqPc7OEtnKORlhCIdOFC0uahNd4R1bccz9TaF
+         xQEvISJ4TlfOVO/Suipgs+sCi4W1OuPokRygOeFc05k/Py4ICQCV8gmNAz+3HD4LuR/r
+         vmqmhTVou0YEigpVlLB/5MoHTZ9uOH1L7FL+ARztX5SCfmFPPFL3XgRdvzl9uUrBRNMf
+         UIBRdL52Bm39GWcC9f5ACJFUuGa7DJEuPwaBvgwI7oFvLZYVfAtN+1/oDk+FwUeNfOXm
+         RfRt/JQIz5y/exRgMWpESdyxa3RTsP9EQuxFiptab9gHHB4k5PgDMp1GoNdqaItYwRHK
+         g14g==
+X-Forwarded-Encrypted: i=1; AJvYcCUmiiaa0beCEdKdsNYzYxH0QiA7Ll6lLzzW2hi3tyRmrWQHmoRrrnW/QiE1Q+P9r8pDzD66xZeAPi41c00=@vger.kernel.org, AJvYcCVwdj9RZ2uU39xPv3b68PSEertxA5UXDbHRSgtGExxeFNT/UBs03G4urq711LJ1ui2JsSsE7AsmN6p4i6ot9TE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxl3CWHtGuQp94dj5oxrC8Fo2HJtkJsdFwN4RkHaIHp2br4i+vi
+	t81XHdABzg/XF4J8DYf3xhNKH6kN4vB9MiRhn4If8EZ3Ax8OLDpTlHE2czprM5G7a1JxlC8nLfx
+	r8Ai3PvEYb8gSPabjYBQ8tRTEIw4=
+X-Gm-Gg: ASbGncvFBbCNd307Es6np8G7yzLX3+IA5yTyh4cWYtKQXGHBS1wUjL4UyQxc1ICdjB9
+	WQLkL026RHr5H5j1ARWZqeGuAX7fvWm+Yp+22EGoOFv5cgF6xb/hKJA+nWbnGJKwSIRis2o8T
+X-Google-Smtp-Source: AGHT+IH+xss/UegMB8XQoUZ41Agrh8mrGIWuK11EZoQlLBHoMAjtgW/81yjkyTUMUjbzRXjbETewC/iKXf34YwDR0A0=
+X-Received: by 2002:a17:90b:4c04:b0:2ee:f59a:94d3 with SMTP id
+ 98e67ed59e1d1-2fbf5ad930cmr4237098a91.0.1739450865927; Thu, 13 Feb 2025
+ 04:47:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250210163732.281786-1-ojeda@kernel.org> <20250211103333.GB8653@willie-the-truck>
-In-Reply-To: <20250211103333.GB8653@willie-the-truck>
+References: <20250212194717.191979-1-trintaeoitogc@gmail.com>
+In-Reply-To: <20250212194717.191979-1-trintaeoitogc@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 13 Feb 2025 13:22:06 +0100
-X-Gm-Features: AWEUYZnMSt2s3upFBai0wYaA0s4vfSFiHEc-syAvZrBIXeINByCQBVsZZ4yEXKc
-Message-ID: <CANiq72=n++Hb1KX5fHCN=XayfPOxgayb=sDG4AvyEnDOZqAsNA@mail.gmail.com>
-Subject: Re: [PATCH] arm64: rust: clean Rust 1.85.0 warning using softfloat target
-To: Will Deacon <will@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, 
-	moderated for non-subscribers <linux-arm-kernel@lists.infradead.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org, 
-	Matthew Maurer <mmaurer@google.com>, Ralf Jung <post@ralfj.de>, 
-	Jubilee Young <workingjubilee@gmail.com>
+Date: Thu, 13 Feb 2025 13:47:33 +0100
+X-Gm-Features: AWEUYZnp5TfzVjASpt2eRmEUYK1ofOEDyl3qGkpFMBXk15OAxOFUo38BeCkN3uQ
+Message-ID: <CANiq72kQLizgq+uBEFz10MYPFcpXEA6zttXMz35cG6W93Z-Szw@mail.gmail.com>
+Subject: Re: [PATCH 0/3] author field in module! macro should be a array
+To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com, 
+	apw@canonical.com, arnd@arndb.de, aswinunni01@gmail.com, axboe@kernel.dk, 
+	benno.lossin@proton.me, bhelgaas@google.com, bjorn3_gh@protonmail.com, 
+	boqun.feng@gmail.com, dakr@kernel.org, dwaipayanray1@gmail.com, 
+	ethan.twardy@gmail.com, fujita.tomonori@gmail.com, gary@garyguo.net, 
+	gregkh@linuxfoundation.org, joe@perches.com, lukas.bulwahn@gmail.com, 
+	ojeda@kernel.org, pbonzini@redhat.com, tmgross@umich.edu, 
+	walmeida@microsoft.com, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 11, 2025 at 11:33=E2=80=AFAM Will Deacon <will@kernel.org> wrot=
-e:
+On Wed, Feb 12, 2025 at 8:47=E2=80=AFPM Guilherme Giacomo Simoes
+<trintaeoitogc@gmail.com> wrote:
 >
-> Patch looks fine to me, but I'll wait for Matthew to confirm that it
-> works for them. I'm also fine with adding the rustc-min-version helper
-> at the same time, tbh -- it's not exactly rocket science, but it would
-> need an Ack from Masahiro.
+> In the module! macro, the author field has a string type. Once that the
+> modules can has more than one author, this is impossible in the current
+> scenary.
 
-Thanks Will -- happy to take it through the Rust tree for if needed
-with your Ack, I have to send a couple other bits anyway for -rc3.
+I think this was a re-send -- in general, please change the title
+(e.g. increase the version number or at least add "[ PATCH RESEND" or
+similar) if you need to do a re-send, because otherwise it is hard to
+follow which is which (e.g. in Lore).
 
-And, yeah, I went back and forth on whether to do the helper directly... :)
+Also, for some reason, Lore has your #2 and #3 patch in another thread
+-- please try to see if you can fix that when you send the next
+version. Both `git send-email` and `b4` should do the right thing by
+default when sending a series.
+
+Thanks!
 
 Cheers,
 Miguel
