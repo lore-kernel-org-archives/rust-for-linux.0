@@ -1,93 +1,158 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from r-passerv.ralfj.de (r-passerv.ralfj.de [109.230.236.95])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD93124A043;
-	Thu, 13 Feb 2025 19:52:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5711524BC1D;
+	Thu, 13 Feb 2025 20:17:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.230.236.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739476350; cv=none; b=l3WA72TDKpTNO9u7iRWWQx+AcuQbItcJJ4FmYwjIOrLxbsOGnO2VOW8ZLFpftaK1xGVcwwX3wsvEtoK+y2Za7DYU7cFtj2wbVjGx/RsHhFpqeCuDFMwF9jlfvBykhg3TByiC2XwCddHs3EUocN8M5Sqa+DFdajgPpVfj0URzboI=
+	t=1739477877; cv=none; b=A5Cnn1ROplDuAj4nSI13OutN3idlCyVr4SjxtAfPxFMoY1aipUIEBMlG+omrjeHQ9OBONYqfNTLX6cZqXsK/G2Mmp03lhrm10Fw2vm6hFzj5Lk/zTuUq/2OBnaMkuORwolt4KWwI+8ImTP5t5ZZp8fzbr23g2ZlvjZnwTPtVIhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739476350; c=relaxed/simple;
-	bh=uwaceXBbc9DYhWrRaNpwMVDjME8wm5WFYH6UetaQs6s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HikhYIDPW34wQyW5waoGHUhMmdUn3tsclCDUFgGkvWpv0NRLMVPoNhjqW3pV7J65C8Qmdxl5gjcPYJaKMa9oVSD5r9M82NjlQBKwc+oy1YmQxusUgFp7RVa8Cfuaq+dm52juwnsFeSdclNpuz+++KK+LtvZ0as0OtDfshOjYXwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gGRAuJxp; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1739477877; c=relaxed/simple;
+	bh=Z4yIAvWFLDmP5unflsXIbZxV+qfHdE5ANG++IPeu0go=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=laT03xzFs/Hsr8cw6lzlOmgGKM1sO5beGkTELNmAZ4yE/ZpheijSGWqy1TeRAgf0L221sMpRkM8pVFnmkjRVJmGAiXwl1jgcTkcEC5OL+XzgGXmrVv6qkinUdEfOe6t5aAfM6YFFNvU4AB6kz2BNQe6rtQHeiKUv/8grp1HBmlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=kSEyVsSI; arc=none smtp.client-ip=109.230.236.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ralfj.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gGRAuJxp"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2fa0f70bfecso276766a91.2;
-        Thu, 13 Feb 2025 11:52:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739476348; x=1740081148; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uwaceXBbc9DYhWrRaNpwMVDjME8wm5WFYH6UetaQs6s=;
-        b=gGRAuJxp2MSfiHis6gjGvnylDfVHERbXX4hC+AlinSIaUYKC5YeATjdFxrWXwZFlY6
-         t/IMzWaFHBCMrBigwEkvZPFScvw2lKZMHZyhPGx5k/OpilZ84P50ruJEAE5P3UuAC4sz
-         XqtoKIhDcCAwBoJNGiEO/oF512TjtqEkbMLywn8sMmj66SCAPE86DaOe/T/IRd1sGI05
-         nLmSFWNGxyRgu+3nGxEhflxITTi18SXd8V9coSar6Y6H20pxo5mOqEg2veUkvOZVdI++
-         Rj6slYMiM1Rigpp5jtiavvb1QJgoYLdRjFtFpS54wFp3ROl58SezS6eGOoiMqjoIdrNc
-         4HhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739476348; x=1740081148;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uwaceXBbc9DYhWrRaNpwMVDjME8wm5WFYH6UetaQs6s=;
-        b=YFA5VCF5/2T5+7qryrLv+g/wgpOcePpSeKBN6KWtulCPXx1IkM1/NmicVikETIpgjq
-         0rXeWbTpITi6OtBAXTat9ZirwNM1fMtVKpJBD8hK+qsbAa2qUi3eLZZOka7ygJ7NFEG1
-         hYPEj+7nIhFlO/8qTMNovhNNHJXTy3kYN8akc6rJZTJLP46T84PJm2yj2bTxf5SIad+g
-         gdGNDi4QQyXApGC4cwKW/7femD9COSPPujZEaO0sI3M3kZ7O6zS0rlE9B+cqrnbWndQj
-         8EPfEUBYLu1fUvUSPekGS1LIyY/z+SWlvF0u5J8M7alllNyRw1GTrIsQmq56EySUsh0n
-         tR2A==
-X-Forwarded-Encrypted: i=1; AJvYcCVHpYeFpFwPKw6O2Uofrx0ssAD2+cY4mAH+KXfUzGqHQxOEe2ip9wm7vYkJBV5hDzMHjoPvNBWrNTJ6X6Y=@vger.kernel.org, AJvYcCXKT93JtuQXddXI5QtQW6JGWYOg8Bh48dgpJJw3UY80HId5aSaJlXxQg9foB7TCSyag3JMjpfUmzrPFv1BFV0c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKJHPsrLDM7BFNYBY8WU2UKq73Fi0dHtDCJcOGrAaLFMfNbGLa
-	sgBm2sBKEqW2DpXrZS+G94cMi4z7TkhV7AJLKYEK9DXGhxgcrTAS9QznoNM2PjWg7MxayRWYQCD
-	Z3/h8qXBvM3I7VXjofxEWSLtBOKA=
-X-Gm-Gg: ASbGncsgDbrNfewjeK+iDsWi/ckHyW8nlbrNy3lwz03RPe3pMFVzdI/XGkVPgOrN9kU
-	ze+BhxvUuyafQlz1aal4pP9uxHDGks4sYWxd2jWxfye/vDF6BWPrBUinsOyU5FUH5+TuGL6fV
-X-Google-Smtp-Source: AGHT+IEiv/zlIZZbyCdj/X6Q0o+jGzwhquBkcBkXIEbWfZa3doUwn+Fbd2U3g1vBfbkjWtWIz0ax/rMiMtuVEGcMgXc=
-X-Received: by 2002:a17:90b:4d09:b0:2ee:d372:91bd with SMTP id
- 98e67ed59e1d1-2fbf5bb3414mr4940846a91.2.1739476348047; Thu, 13 Feb 2025
- 11:52:28 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="kSEyVsSI"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ralfj.de; s=mail;
+	t=1739477872; bh=Z4yIAvWFLDmP5unflsXIbZxV+qfHdE5ANG++IPeu0go=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=kSEyVsSIqGpEfeTGb79N8VOeKWuLNrq2ZkXHhj8qfTXa/pAkZXjj2qsIFhss6os/7
+	 lDHsgi8p4VERW+drkEcJ6OOEi26eLzxN1/fueHiUgOjUOJ5CjGPIubVbO/SmILDvOo
+	 /tMx/qn9RIEn1wRyJLH+SZT1Cda3ipsBFsMZnaZ0=
+Received: from [192.168.110.172] (unknown [178.197.218.240])
+	by r-passerv.ralfj.de (Postfix) with ESMTPSA id EC8E42052A91;
+	Thu, 13 Feb 2025 21:17:51 +0100 (CET)
+Message-ID: <9b9d53c6-7e37-4af7-878c-a1c174b04491@ralfj.de>
+Date: Thu, 13 Feb 2025 21:17:50 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250213-vma-v14-0-b29c47ab21f5@google.com> <8130a6d5-a7e5-402b-b05c-2d0703ac1ed2@lucifer.local>
- <CANiq72nBx3cRTUC9HWVR8K64Jbq3GCVMss5wuABzra3OLhRUQw@mail.gmail.com>
- <c8e78762-1429-4ab6-9398-ce52370eec08@lucifer.local> <CANiq72mKyvoyk_tgbMKUdzs-sJOoyEH7f1M9ipiET+XYgwCqRw@mail.gmail.com>
- <2d132129-fdf7-404d-b1f1-8ee87b838dcf@lucifer.local>
-In-Reply-To: <2d132129-fdf7-404d-b1f1-8ee87b838dcf@lucifer.local>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 13 Feb 2025 20:52:14 +0100
-X-Gm-Features: AWEUYZlaLFLcNnUiCyCAZuinnyDyfGxQjG8KCqfTO_s0QUprt9i-zxzyahMMZh8
-Message-ID: <CANiq72mpFzCdg8GJOZe=q8hnSbDv__obJbkCV0o-fP8iXOirrQ@mail.gmail.com>
-Subject: Re: [PATCH v14 0/8] Rust support for mm_struct, vm_area_struct, and mmap
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@suse.cz>, John Hubbard <jhubbard@nvidia.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org, Balbir Singh <balbirs@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: rust: clean Rust 1.85.0 warning using softfloat
+ target
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Catalin Marinas
+ <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ moderated for non-subscribers <linux-arm-kernel@lists.infradead.org>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+ stable@vger.kernel.org, Matthew Maurer <mmaurer@google.com>,
+ Jubilee Young <workingjubilee@gmail.com>
+References: <20250210163732.281786-1-ojeda@kernel.org>
+ <CAMj1kXHgjwHkLsJkM3H2pjEPXDvD80V+XhH_Gsjv8N4Cf6Bvkw@mail.gmail.com>
+ <9430b26a-8b2b-4ad8-b6b0-402871f2a977@ralfj.de>
+ <CAMj1kXHbXfDz96C3ZPyyXB_dSRyxbc4BP3qNN_oemG9T68eTsQ@mail.gmail.com>
+Content-Language: en-US, de-DE
+From: Ralf Jung <post@ralfj.de>
+In-Reply-To: <CAMj1kXHbXfDz96C3ZPyyXB_dSRyxbc4BP3qNN_oemG9T68eTsQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Feb 13, 2025 at 1:16=E2=80=AFPM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
->
-> Ack, for the record I'm happy to help with any work that might come up.
+Hi,
 
-Thanks a lot Lorenzo and Liam! Very much appreciated.
+>>> We have to carefully make the distinction here between codegen and ABI.
+>>>
+>>> The arm64 C code in the kernel is built with -mgeneral-regs-only
+>>> because FP/SIMD registers are not preserved/restored like GPRs, and so
+>>> they must be used only in carefully controlled circumstances, i.e., in
+>>> assembler code called under kernel_neon_begin()/kernel_neon_end()
+>>> [modulo some exceptions related to NEON intrinsics]
+>>>
+>>> This does not impact the ABI, which remains hard-float [this was the
+>>> only arm64 calling convention that existed until about a year ago].
+>>> Any function that takes or returns floats or doubles (or NEON
+>>> intrinsic types) is simply rejected by the compiler.
+>>
+>> That's how C works. It is not how Rust works. Rust does not reject using floats
+>> ever. Instead, Rust offers softfloat targets where you can still use floats, but
+>> it won't use float registers. Obviously, that needs to use a different ABI.
+>> As you said, aarch64 does not have an official softfloat ABI, but LLVM
+>> implements a de-facto softfloat ABI if you ask it to generate functions that
+>> take/return float types while disabling the relevant target features. (Maybe
+>> LLVM should just refuse to generate such code, and then Rust may have ended up
+>> with a different design. But now this would all be quite tricky to change.)
+>>
+>>> Changing this to softfloat for Rust modifies this calling convention,
+>>> i.e., it will result in floats and doubles being accepted as function
+>>> parameters and return values, but there is no code in the kernel that
+>>> actually supports/implements that.
+>>
+>> As explained above, f32/f64 were already accepted as function parameters and
+>> return values in Rust code before this change. So this patch does not change
+>> anything here. (In fact, the ABI used for these functions should be exactly the
+>> same before and after this patch.)
+>>
+> 
+> OK, so can I summarize the above as
+> 
+> - Rust calling Rust will work fine and happily use float types without
+> using FP/SIMD registers in codegen;
+> - Rust calling C or C calling Rust will not support float or double
+> arguments or return values due to the restrictions imposed by the C
+> compiler.
+> 
+> ?
 
-Cheers,
-Miguel
+Correct. (I assume the existing Rust kernel code contains no float or SIMD types 
+so this is largely theoretical. But I'm a Rust compiler / upstream dev, not a 
+Rust-for-Linux / kernel dev, so I might be entirely off here.)
+
+> 
+>>> Also, it should be clarified
+>>> whether using a softfloat ABI permits the compiler to use FP/SIMD
+>>> registers in codegen. We might still need -Ctarget-feature="-neon"
+>>> here afaict.
+>>
+>> Rust's softfloat targets do not use FP/SIMD registers by default. Ideally these
+>> targets allow selectively using FP/SIMD registers within certain functions; for
+>> aarch64, this is not properly supported by LLVM and therefore Rust.
+>>
+> 
+> I read this as 'this default behavior might change in the future', and
+> so -Ctarget-feature="-neon" should be added even if it is redundant at
+> this point in time.
+
+Personally I think it would be a breaking change to start using neon in the 
+aarch64-softfloat target, for reasons such as what we are discussing. (And this 
+means we won't do it.) We have generally, but implicitly, understood "softfloat" 
+to mean both "uses softfloat ABI" and "does not use any FP/SIMD registers by 
+default". But I don't know whether the Rust compiler team has formally committed 
+to anything here. I can inquire about that if you want.
+
+OTOH I cannot see how adding "-neon" could possibly hurt, either. It's juts a 
+NOP currently.
+
+Kind regards,
+Ralf
+
+
+> 
+>>> Ideally, we'd have a target/target-feature combo that makes this more
+>>> explicit: no FP/SIMD codegen at all, without affecting the ABI,
+>>> therefore making float/double types in function prototypes illegal.
+>>> AIUI, this change does something different.
+>>
+>> Having targets without float support would be a significant departure from past
+>> language decisions in Rust -- that doesn't mean it's impossible, but it would
+>> require a non-trivial effort (starting with an RFC to lay down the motivation
+>> and design).
+>>
+> 
+> Fair enough. The codegen is all that matters, and there are other
+> cases (e.g., spilling) where the compiler may decide to use FP/SIMD
+> registers without any floats or doubles in sight. In fact, there are
+> swaths of non-performance critical floating point code in the AMDGPU
+> driver where it would be useful to have float/double support using
+> softfloat codegen too.
+
