@@ -1,71 +1,70 @@
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC53D3C17;
-	Fri, 14 Feb 2025 02:20:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2031519BC
+	for <rust-for-linux@vger.kernel.org>; Fri, 14 Feb 2025 03:36:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739499615; cv=none; b=Sg7oqqv3T0/36B5eXwQnoH+GACaTXCMG8xtf7AN6jKBk8yBhpoYIIzNF5DH8qzxii9Il1/hRgo+DwSDDs+8XAzOjBAnRlubJfIiLMRQJzPC5Q4u/eLGCPbIVtF1I9AOmmZPQl//7Qj8fAQNU3pKwPP0KD2SocCV0huqACBAXyX8=
+	t=1739504168; cv=none; b=QuGPYg0LPKjaqe/iU2ol62Vc8mIJr0ZvlZOxiY5M8VaUDVGM4seX7EJcA9/Bjbg1JTQmQDHQi58XPcHH9QZ2L2ZENT/5XLn413WPZmO400aROBMTK1xpq/eiwmRQXQrCCdGW3Ejpgk7hg1ngEDIKoKKQadXaSqx92YYyeJbIft8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739499615; c=relaxed/simple;
-	bh=jYP0+D9vE1xhJcqq2qnQolJIYnqYPkJoXLNihXv7O44=;
+	s=arc-20240116; t=1739504168; c=relaxed/simple;
+	bh=vMKEor5hreZ1dlWbtETrNJW5GK3fo/uguUnHcn/DwL8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OLRe9Ar4SizsLukC2rxQv5+bZ2mc4By5Qrh7BPMbsjBULNCHrGcHfUFBt7+2y5wwQfg65eZpKiZPP9R1yHqFi42PBMYXVTMftB5zjQZmCYpiT0i8Wi3F4wyqFLIZ1fgYrt9jv+lDt9jbbQlQnF5MYKYjgwz1yO0pvlorDFDOB14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=en4GRU6h; arc=none smtp.client-ip=209.85.128.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=FGlLEnOX1s/DMuOZhgo9bsko5r+LGmwRJ1ZEIVIBJAafTGZSKhmmr5HD78ukiMof/ksPrCRIrl4H2sexvMx52gVFTPINsZMbbHl5xVDjHjQuJXGZcfPXgmXeJq6a2eBhcNFGj7waDi0Y+7xnhm+vLCWl6N77Ly546rYFKJnkvCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NK5AKkm/; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="en4GRU6h"
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-6f6ca1a8aa6so10212507b3.3;
-        Thu, 13 Feb 2025 18:20:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NK5AKkm/"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-220f048c038so1945045ad.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 13 Feb 2025 19:36:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739499612; x=1740104412; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=k5rJH9lwQCpm9j5rIEYTkviXPHjdbe+93D14r2lCU9M=;
-        b=en4GRU6hXHOR2pA2W1+KMzKTP7EUqEn0dNYTSWAdibnPSu/QRtUDQ8B941UY4AE+zi
-         T3XZvitCF16Hr4VzWyrq+oUk8F31OySkN3kbnPf5BKG9ps1TJcBpwwq8RssoyjjNTZid
-         bG2UHK5Qd6y295hhCOmmW4eLgjubpinZ/UFMZTVLBY0xXVoWEqGq6xRoR76g0PPNxrjn
-         gqATkeWGXzVOhgv7evXj4s8Hj2DEmYnxt7DUOQ74ubV6gppXttFsuBMW5mxRFbL2yBBK
-         Q3GYJqacDIhFRAOziDFJk05fr3wyX3AAQi7cSvM6QMIcuWc49C1Wa/XmQSZM0PN/hLo/
-         4TEw==
+        d=linaro.org; s=google; t=1739504166; x=1740108966; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qJWOFTUzjczTlnRMMm4MfirAqHPejhZpCYaLI3jfPow=;
+        b=NK5AKkm/kfGVQsy4ZRu1tBryOatgarQyj+WpJst2003iPbLFKbQC3ja7QoOTyNaPV6
+         0zTcb/iWTqU+icCsz0pR7dyA+wVqgzEDQJTAxXeXoz0/324733ShM4sO4HbOnEdehfOE
+         k2Tkl4xwMz2B9pjd93r9mnF2sbTei0ge2dMepf1E3mxSOVW1oMgsUTeEIBk5Mo0ztPax
+         iVADuEK58d0tzU+dvLeXmzsim0kmbE5sSx49CS6du7afo59Sxhrm2hRxy9BS5eOaVqm7
+         6ntppZX6KGkDwsY9F6f7HR6QBFkokmaoBlb4gN27aRXBgRSoCK6ANMJUGgwrIJ/jH+jF
+         XElQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739499612; x=1740104412;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=k5rJH9lwQCpm9j5rIEYTkviXPHjdbe+93D14r2lCU9M=;
-        b=Hh63u6DuoptPFOupp7lYblEZxKyjLbYOg22A9elDZVdKIs83SKyrt0Gg7e6TPBNC2H
-         OzNaS0MPlHJPmgw8ff2GGUc/pcEL7so4BFmz1/kBhqHOWFa+iEyCZnEMryDSJ8OfeBCz
-         kbWGN550eHXOeZASi61O+igY4+CN25/+G/55OVW+PELoeJlH0tEGzalBcpw2VlTKfNQt
-         iB3utdxOamJV6OKi11v5rPJ6qesYD4S5XBTEp/LgcbAMsujPxUc9CeXEoBPYj2TOlKdu
-         7L3aLYKcWOimZgHtBeNCnGNE5dwH57Has4IHElfOvaXeAzvHdvMslmGWIOQIuGhUKxsU
-         wkPw==
-X-Forwarded-Encrypted: i=1; AJvYcCWJo24jI7dV3csBZv/kP8cVsPcSD5YGDX6PcIVt0TZZaJ0KcxuLqqCBK93fOIKPfDYpoBt+OF77TvA=@vger.kernel.org, AJvYcCWXU9EoyNbq97iBI+1dldJ3IaJwJzRPVooeKqUY6rCzRi+XYqyK7vWJld0EEBc3xiPCXi/GCuClsf4iPEs=@vger.kernel.org, AJvYcCXUCZBfvDMKqM/DIB4YgC0cFqaeexRqOPkC+foRV06GJOd/YoI/E8NDLupaQYq58EoWVgGMDO0TMj2eGmwfxog=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzP5zjC9chzUidgkeqk/voE/2Mdr8Z76OkT3Dg+D9QeUHKIif9q
-	ISe/Fq7IEj36GIg3IKmgkdnBA4afFx1jXnwxfa1fVKun8xestLH5
-X-Gm-Gg: ASbGnct1iXJlZS/tjKJ4lHjO+QtuAs1MALMx43uQRd2qyLeN8ar42o/wgd2/H0iSkcX
-	liaRZSX6s4ldpqMgu9Dljo+LP2A5ZM5gxrJyMJlseiQtzVPCu9FVQTyFi3rUVM+vwuc6xgHKK3U
-	fZ9cmk/gZ/zGnuRgRvT5bZQwBbHukW3kIOdbzH7DI5hmJxF7DAiej7OOZGm5ff3D2U3xGIgxkP7
-	XQFKhtWNRm+Cz28PpNgd7ysnIvKt65teCrPiFt3rxhab83I/ZIrsM0KB/OycUv3wTxZzReFiRIA
-	nR4j/XEARs0CoPwg9js+JvYDlWaahfz83VwpKuuIo71vXCRYcwI=
-X-Google-Smtp-Source: AGHT+IGguoYiGmnK1arkpNA0oHTATS5WHQcMpyRzwCVNGClVc/8aSgtIdbX1SqjWtK65NKQm7w3eZQ==
-X-Received: by 2002:a05:690c:9b13:b0:6f7:534b:55fc with SMTP id 00721157ae682-6fb1f17e625mr100699197b3.7.1739499612547;
-        Thu, 13 Feb 2025 18:20:12 -0800 (PST)
-Received: from localhost (c-73-224-175-84.hsd1.fl.comcast.net. [73.224.175.84])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e5dae13a56bsm714407276.57.2025.02.13.18.20.10
+        d=1e100.net; s=20230601; t=1739504166; x=1740108966;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qJWOFTUzjczTlnRMMm4MfirAqHPejhZpCYaLI3jfPow=;
+        b=SFd/QJPGejSmjq1plIC2GU6/6NNmBx5muYKLMvI3ypCfz8B9Cxw0m1a1DhEKR3umwM
+         MvPdqsvU71GeQfZwNREnfI4VGxrMeJoESmvLgvBkR9Q2bC0pcLDY/IGBR5fmWT3Jo5if
+         I1VYN2NPAJV/NxvXxzO1h5dpCxw2a2h7Smv7IHElKiq1gL0gWretHDpnZSz9bKGdGAaE
+         rKjSLAKjskEVZ1zi0psTOitQHYyJel3vGNVCq14ylc5PQM5O5nFzWo//2hTjm6QEpLBT
+         zDIqt90HIUS+D1aodhI19UxCEsVvvhaO4RVyLE+G2hIuoAfNY6j8On7ABUO7FMmn4bil
+         kKaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXwI8ijM5unI4gxoN4ORb9KO4v5Iu20yAgWAjItfKG5v5OpCH6WbWNtcRAh7iAZraNvf6V9Nz2y576LB7p4hw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx37mXtPefNV46D8w2BHiRJIeHkDILovY17BLEcEy6Ihf6aVHFD
+	SvB4ncivngkLy0RK7IuzGIJKMAf64orZ6ExgpB4MAJdRamWprur8VN4cAyZPDiU=
+X-Gm-Gg: ASbGncvAUoS5tZa1mD3aPQmtz9y0bUPt/2+DFmWlMA14noXGKChUBk3zJn82Rn5aBmX
+	G6vhhvFYYmmRH5x1C41K9K4XjUiWzQD2y7ebm36/XDsW3bkRYue/vme3d5sSjIRXZ/ghdxlpTz1
+	+iIDo6e9nrwo08QqoKNiquRhXXmObu9UXVbRflX97sEo2iIXVW5P9UW+LlQ4mwDvc1Rj/hKuo6n
+	MFqj5OV3VaylOofst6ktf85HKLsjtj9HyYJprqEHzWh5VrbC7loCv11caxtLsxzN58M7otzoS2x
+	l8Kl2VyUSBPYF7MmTQ==
+X-Google-Smtp-Source: AGHT+IH1VH4H6wqh/ikwjcQenmn4DFt2gxLMOXV05N/JZrNUG0kmpRxr8eP2IrIjgic5np9r8UgFDQ==
+X-Received: by 2002:a17:903:2f89:b0:21f:3abc:b9e8 with SMTP id d9443c01a7336-220d215943dmr95010255ad.43.1739504166134;
+        Thu, 13 Feb 2025 19:36:06 -0800 (PST)
+Received: from localhost ([122.172.84.139])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-220d545d093sm19929755ad.128.2025.02.13.19.36.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Feb 2025 18:20:11 -0800 (PST)
-Date: Thu, 13 Feb 2025 21:20:10 -0500
-From: Yury Norov <yury.norov@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+        Thu, 13 Feb 2025 19:36:05 -0800 (PST)
+Date: Fri, 14 Feb 2025 09:06:03 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Yury Norov <yury.norov@gmail.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Danilo Krummrich <dakr@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
@@ -76,116 +75,39 @@ Cc: Viresh Kumar <viresh.kumar@linaro.org>,
 	rust-for-linux@vger.kernel.org,
 	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
 	Erik Schilling <erik.schilling@linaro.org>,
-	Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
 	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
 	Christoph Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@nvidia.com>,
 	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH V8 04/14] rust: Add cpumask helpers
-Message-ID: <Z66oWuLwY4X9Ou9D@thinkpad>
+Message-ID: <20250214033603.wijovkici3rutock@vireshk-i7>
 References: <cover.1738832118.git.viresh.kumar@linaro.org>
  <db0166341ce824c157d0c58c240b3efc6aec6f6e.1738832118.git.viresh.kumar@linaro.org>
  <Z6qTelPSqpFk439l@thinkpad>
  <20250211042908.nyftiw7gtxosfjwc@vireshk-i7>
  <Z6t51xodSV21ER4M@thinkpad>
  <CANiq72=3MR9F9ur-aQYP4P81RBreAr=UiGg5iaSuFjjd5Q4Y7Q@mail.gmail.com>
+ <Z66oWuLwY4X9Ou9D@thinkpad>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72=3MR9F9ur-aQYP4P81RBreAr=UiGg5iaSuFjjd5Q4Y7Q@mail.gmail.com>
+In-Reply-To: <Z66oWuLwY4X9Ou9D@thinkpad>
 
-Hi Miguel,
+On 13-02-25, 21:20, Yury Norov wrote:
+> I'm the right person to look after rust bindings for bitops, inevitably.
+> I will take over patch 4/14 and submit it separately together with a
+> new maintenance entry.
+> 
+> I will not maintain any rust code. For 5/14, after I'll send my series,
+> Viresh, can you submit 5/14 separately and create a separate entry in
+> MAINTAINERS. Please make me a reviewer there.
 
-On Tue, Feb 11, 2025 at 10:37:26PM +0100, Miguel Ojeda wrote:
-> On Tue, Feb 11, 2025 at 5:24 PM Yury Norov <yury.norov@gmail.com> wrote:
-> >
-> > No, not Okay.
-> >
-> > To begin with, this is the 8th version of the same patch, but you
-> > only now bothered to CC someone who is listed in MAINTAINERS. This is
-> > not how the community works.
-> 
-> Yeah, that is not good.
-> 
-> For what it is worth, we try to make this very clear:
-> 
->     https://rust-for-linux.com/contributing#submitting-new-abstractions-and-modules
-> 
-> i.e. that maintainers need to be Cc'd and contacted as soon as
-> possible (possibly even before writing the code).
-> 
-> > You also made it a patch bomb that touches multiple critical and very
-> > sensitive subsystems. You link them to an experimental and unstable
-> > project, and do it in a way that makes it really easy to slip through
-> > maintainers' attention.
-> 
-> Not sure what you mean by "unstable project", but I agree that the
+Sounds good. Thanks.
 
-I mean that Andrew's branch got broken because of it.
-
-> patch series, unless Viresh is the maintainer of the C side of
-> everything added, it should be discussed and maintenance discussed
-> accordingly before merging anything.
-> 
-> This is what we have done for everything else, and that has not changed.
-> 
-> I try to spot cases where this is not done, which is why I Cc'd you in
-> v7 and told Viresh to please do so, and he did -- I don't think he was
-> trying to bypass on purpose:
-> 
->     https://lore.kernel.org/rust-for-linux/CANiq72=o+uc3ZnNrdkuoSGSL8apNE4z4QwpvsiLfGzXFywSLrQ@mail.gmail.com/
-
-Yes, I see. Viresh didn't do that on purpose. Let's move forward. I'm
-more concerned about lack of testing on rust side that ended up with
-the patches withdrawal.
- 
-> > That would make things even worse. Before you wanted me to maintain
-> > rust linkage. Now you want me to get approval from someone else who
-> > maintains rust linkage. In case I need to change something, I want to
-> > be able to just change.
-> 
-> Like Danilo mentions, there are several ways to go forward here. For
-> some ideas/context, please see:
-> 
->     https://rust-for-linux.com/rust-kernel-policy#how-is-rust-introduced-in-a-subsystem
-> 
-> (Thanks Jason for linking the page)
-> 
-> And, yeah, whoever ends up maintaining this, then they should of
-> course be testing it properly with Rust enabled with a proper config
-> for that and so on, just like one would do for anything else. By the
-> way, it is possible to request Intel's 0day to build with Rust
-> enabled.
-
-Yes, this should be done. 0-day is already testing everything in my 
-https://github.com/norov/linux repo. If you know right people, please
-ask them to test bitmap-for-next branch with rust enabled. If there's
-enough resources, please cover all the repo.
-
-> (Side-note: to clarify, there are different parties involved here --
-> "Rust team" is fairly ambiguous.)
->
-> Cheers,
-> Miguel
-
-I'm the right person to look after rust bindings for bitops, inevitably.
-I will take over patch 4/14 and submit it separately together with a
-new maintenance entry.
-
-I will not maintain any rust code. For 5/14, after I'll send my series,
-Viresh, can you submit 5/14 separately and create a separate entry in
-MAINTAINERS. Please make me a reviewer there.
-
-I'll think about details over the weekend and will submit everything
-early next week.
-
-Rasmus, if you would like to help me reviewing this thing, please let
-me know.
-
-Thanks,
-Yury
+-- 
+viresh
