@@ -1,256 +1,344 @@
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18DE266581;
-	Fri, 14 Feb 2025 14:41:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739544102; cv=none; b=PaC3Jgs9vsr1TQ1bVDaznr94X8cWh92/tyVY8hrL4G0etGLqfdFXxWgT8sVhIKkMLofWRuQpfrYvwYpP9OEL+yFsuVHlm/Gjb/NNab9NKZyqyd77hUrLgOBJi/DxCo1EGb4XqBy58lPGWyIVr708e2udAkBxRM3eqNA5OFB5Vto=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739544102; c=relaxed/simple;
-	bh=OTXs3V3Gm6IRul4QKaL7JCAspCNZEAUXXNFKStN0soQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tXM+EnpxVsh7ZZerlbX+bFDSr6XCIQHs5Eliah5gTkqocWns47BqvZ+MuFzwvezIHVHqufobve4JmuosxnMJvQM8LP7Y1GjDufEh8fZypjluCF1ScMOgB1EnlhBZQaurLxypziBQt27EkkzmG8jlsm3E8Z/Mlq7zFXykc8zjkZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XmHEnCms; arc=none smtp.client-ip=209.85.208.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3FC70831;
+	Fri, 14 Feb 2025 16:10:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739549446; cv=fail; b=b+s2zcPFqNHH/I8zf7hMFl3PM2lLzsDA1sX3JE64DDzzDzbyd2cpdBIToTdPCT8SeHVybasXzofJim+qrGzffsfAFqD+8FRMwymuzTqrnZbcJVcv7y3t9oBvq//ruj9Xg6FG+cP+/12erqI1WeQjJYPYGjn4DAFuvjc0WOWfasg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739549446; c=relaxed/simple;
+	bh=49EJoQHONqu1o9rAnlBGLi+8XHsvpds11OI+x3ORfxo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=UPx1QcbbAmLLsPpRZHn2eq5FC643m7igjYE7Jn71Zr7w1bMa6OXyyMYW2IQQA7b0VcMLHXyzowVBvU+qB07xj+KTSvttZ5jS6IsW3FHTeTWjbsaIvROL/sNwstIqOcM7T+GYOxgtyyANFDdrtgF6woxGYbV+7rwUFUL/SqavsZI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=DNzea448; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=VTEhLJHd; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XmHEnCms"
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-307c13298eeso20830311fa.0;
-        Fri, 14 Feb 2025 06:41:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="DNzea448";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="VTEhLJHd"
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51EG2aH7002936;
+	Fri, 14 Feb 2025 16:10:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2023-11-20; bh=dUU0a31ruD8VyKPPZ8MTHc8uO/csTG5bd79DIfjLzQ0=; b=
+	DNzea448VDE6ik7Rwxo4VEMoceeq3F2TouspSXD7Sb8QY8T7rrv2ixaFtGmxUCJ9
+	aqnPPzh2n7+N1qUotTmQl+Z2WakqaNcvkCuPsQQcEGxUisk9Esf5itzBRP22K0ej
+	4ItuNPKi/oUq4JHk5e/IkjIC4ZlghCBKu+w5zyrVcNPuYUC5DVSlcvfuLPuN25HO
+	OOYGPdkn2uD3kzoDjST7bZPBlB64VkajDCq8yHFBt7mJbwHcpNpWDo8Z403Gssl0
+	8spvxuypjagTwF3Z+gj5qnixwOKCaGJXALCtf8vI90z7hDv/VqjMqNucSfm8YLPr
+	WRAO8NHX0sG2wsO/62nAXg==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44p0qyv1n0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 14 Feb 2025 16:10:03 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 51EFph4T014118;
+	Fri, 14 Feb 2025 16:10:02 GMT
+Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2045.outbound.protection.outlook.com [104.47.66.45])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 44nwqkwm98-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 14 Feb 2025 16:10:02 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nwDn5nAg2s5h3W47KOyhPpW8GbZYfqFADat6ppOFSZIY6CfMwX+kDMeZ4NZXAqJPIKG5hzWVqfZHVsvgynT55ruddNFkSR8fWHzf9qRxT2zTyZLBa63grfbhSFkjX0W/eujQ+Gj2dn3fzCyhewJGDaiFYgQIvolUdKhnu2d/CcSeKxIp3HLkfHFW8qECl2NwbIudtAlbB3ck84EQrkbSu5BAhdfH+FqIihTDQnRwflaeKDOCmyATGtKh0vyQrSQK9Ki4lD7BPbxg8IMTgz/tKHLNQBvXs2r6OIi5npE+/LX9ZLLrHntioKU74nT4wu0oZ1tu+YsoKUKheXBWAh4TNg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dUU0a31ruD8VyKPPZ8MTHc8uO/csTG5bd79DIfjLzQ0=;
+ b=vtssy50oeB/AOSikk5DGNgv9cfMHOBtdyuePh+C4h+oPBucxfM2am5eTvzw3T7UN6pwhA7hs/o4Km02rR+LVpcXGa6x583hverCEy1yYzv/O7+kvWYt8wjnV7wM3v1H9vfnI43NgXpZPofc+lpoaZxhCkurCY2b/TKf773JlystaUhxp1MLMutHvSZ7BXYHdGVEiLw4DhJH0gfr66vCrpBsgqZ/HxMHLDpFCs6enipibCL4iOY7UU5A3+732/hTR055rkbU6rsAfDRwI5vYAP/ZASmbrvreOcUlTjku7+Jou2HJnix+K4DqPQdnvuUIV7X8ZGbD8B0JvhjdwczQKFA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739544099; x=1740148899; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lZywg83io+M8jYPqDvZGoCFahp6/T+xzE48i56QLMnM=;
-        b=XmHEnCmsacK+e+eO8cls6EvBkWNJhoqQ290R53VmttlJTmK0cELQV9UdNiPyoL+0Eb
-         lK9mbnSWVvI8I65RSPfsDQDwjwLI4OZE0Y8riVTfB9W9ckAJi3eC5ybPOaHfxmStapvP
-         WBysmIjCDo5qTUWt5kI0tDRkU+UlcXv47sOKR5DljARLEdexCrFhJkP55pzTPkYlkUPR
-         VNEMxSUVXY100HUeacH4R9G+3fHtWo+MVYXXlS6k3fosV579kLrFQ5du/t5IDgxFmQsX
-         L2wfKGiwokap0D0P8r1bpNhYwlmal/1nZqMtGK4/CsToHtClBDbfQifCeR/ooQ720jeK
-         KZuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739544099; x=1740148899;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lZywg83io+M8jYPqDvZGoCFahp6/T+xzE48i56QLMnM=;
-        b=NPIvFtmiMbt2xnj/8DWEkPsLs0MoI0wxF57LwX5ojPce/+NUZbleGqkHeifHLENZbU
-         73+dhaXAr5jsp0uI66ZQaELzCEWVp4O/IJaykdstFTeZ4XSpJa+cs/5T2ySkfb4dFb0v
-         TIf5byeaJH6UOy/Gcehr20wz+GmNyApeWe6NzVVJFh5u1Xu9AzvBfPNQDIAIk3k2InQa
-         DWzaw2wWjS7ZuiUeC+eA+6MECcvb0+NdoeAUiNplGlFc9u70ACmLSI3LarOlyeH5I66v
-         fK/bm7EWrrFTYQucdiZJDgaPEBHWmeL3ZMDULb9F9/vska7AFg+AgPj0G4FZ9qxHpSxX
-         BlKg==
-X-Forwarded-Encrypted: i=1; AJvYcCVCkdpVAyQWzzU5VSi1W4fk016P6od4Slib5j3UCkcqNVBn5MI8CGaYv5U9j68TTVfSaA8NpGfo3+SmY3Nbb7oO@vger.kernel.org, AJvYcCVvOxZ3AoNEByCZp//qvMNrYgynkyQ/42N1DFAvyceon6O0/VNY+c08LoNoqzJnuUxMuFFLa6jhCY7nVNk=@vger.kernel.org, AJvYcCWmXCk6O6gmVeO9i2qd4W3bgCVQiHQ39Q5oGXprAMKPaPNxP9CdL5BbON4+7DarMYrfPCqX2Z4h5MA3POfbtRs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0YuKWAIAi2QububelGWTWPVKnoS1MykLPV8roZD1yhiCfr6yn
-	a8MSdD0zuJk7rqCaKlGBZNLjXl43ZAKqE34yxrALRDnYJhDzzRWP2MOp1pQIbQQqG4gurWc3p0H
-	oNn5yfuUEZKoEs8KHXIihNqB9Nbg=
-X-Gm-Gg: ASbGncsOX0Oq5NuY0x6pr71XyzZu8z/f+XY6EzaUROrQk8ATZdgr+AE9V23UEDd+4Ky
-	p/1IuM9avGkWLeYGZ2+1BF0AkdJOe23HZihc80rOzZ0+qIDGkWMwDr7mz9LACFAugJUjqB3rGDU
-	ABYAAEYEXeIW7ZwFoUaEAfQf2h+ZpiAnc=
-X-Google-Smtp-Source: AGHT+IFHKgpZPcpXEVRmDoWFwA2sR1RNqGhaFaOyGhlS5WyPRXpQVTSo6DzE0uTiP9BYq/oi9I1N4cXElI3SDgPoGuU=
-X-Received: by 2002:a2e:2e0c:0:b0:308:e2da:2168 with SMTP id
- 38308e7fff4ca-3090f2495ebmr20155371fa.11.1739544098529; Fri, 14 Feb 2025
- 06:41:38 -0800 (PST)
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dUU0a31ruD8VyKPPZ8MTHc8uO/csTG5bd79DIfjLzQ0=;
+ b=VTEhLJHdrfY4E/bSUPsIJsXWXoiphbLGeKPRUopX910vF98sb/SC3hxRHtkve4uRuQejox37tRrzNcqfz73NExBWnj4/2VfpowC4OjaVGfDSNIwmNMFswfQbF+LgIZgFqjFn5YSsLPXfY/o7X6lBsTBkZEVLUGfoiO4sOc5kTvk=
+Received: from PH0PR10MB5777.namprd10.prod.outlook.com (2603:10b6:510:128::16)
+ by CH0PR10MB4940.namprd10.prod.outlook.com (2603:10b6:610:c7::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.18; Fri, 14 Feb
+ 2025 16:09:59 +0000
+Received: from PH0PR10MB5777.namprd10.prod.outlook.com
+ ([fe80::75a8:21cc:f343:f68c]) by PH0PR10MB5777.namprd10.prod.outlook.com
+ ([fe80::75a8:21cc:f343:f68c%4]) with mapi id 15.20.8422.015; Fri, 14 Feb 2025
+ 16:09:59 +0000
+Date: Fri, 14 Feb 2025 11:09:55 -0500
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Alice Ryhl <aliceryhl@google.com>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+        Vlastimil Babka <vbabka@suse.cz>, John Hubbard <jhubbard@nvidia.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Andreas Hindborg <a.hindborg@kernel.org>,
+        Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
+        Balbir Singh <balbirs@nvidia.com>
+Subject: Re: [PATCH v14 0/8] Rust support for mm_struct, vm_area_struct, and
+ mmap
+Message-ID: <2iypqaa3orklplwec4k5n4nuuov3gajtkiv2nt2ce2s2b4e7gd@7y6cmwrwr5te>
+Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@suse.cz>, 
+	John Hubbard <jhubbard@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
+	Balbir Singh <balbirs@nvidia.com>
+References: <20250213-vma-v14-0-b29c47ab21f5@google.com>
+ <8130a6d5-a7e5-402b-b05c-2d0703ac1ed2@lucifer.local>
+ <CANiq72nBx3cRTUC9HWVR8K64Jbq3GCVMss5wuABzra3OLhRUQw@mail.gmail.com>
+ <c8e78762-1429-4ab6-9398-ce52370eec08@lucifer.local>
+ <CANiq72mKyvoyk_tgbMKUdzs-sJOoyEH7f1M9ipiET+XYgwCqRw@mail.gmail.com>
+ <2d132129-fdf7-404d-b1f1-8ee87b838dcf@lucifer.local>
+ <b6b5tnaw6vnuib7nzcm7ajszxiptqz3i2hex5yengzbsirztks@l3coijkqwtpb>
+ <CAH5fLgjMC2Q1tjuVtbhMvU-pmEsn1Ai4=AAB3Tm8HTWi7PFHfg@mail.gmail.com>
+ <30ffd737-d0aa-44aa-a647-686e536ac548@lucifer.local>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <30ffd737-d0aa-44aa-a647-686e536ac548@lucifer.local>
+User-Agent: NeoMutt/20240425
+X-ClientProxiedBy: YT4PR01CA0419.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:10b::6) To PH0PR10MB5777.namprd10.prod.outlook.com
+ (2603:10b6:510:128::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250214074051.1619256-1-davidgow@google.com> <20250214074051.1619256-4-davidgow@google.com>
-In-Reply-To: <20250214074051.1619256-4-davidgow@google.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Fri, 14 Feb 2025 09:41:02 -0500
-X-Gm-Features: AWEUYZnfWpWjmZOjvgT1lwCZJX7AcCD4niJuCdhB2H3Ki6byoqEQZFxKixu6sKA
-Message-ID: <CAJ-ks9kwVz4sPdmqfTLVK-Z2C7WmXHpBhbe5_ozWBZnwxJ8HpA@mail.gmail.com>
-Subject: Re: [PATCH v6 3/3] rust: kunit: allow to know if we are in a test
-To: David Gow <davidgow@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>, 
-	Rae Moar <rmoar@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Benno Lossin <benno.lossin@proton.me>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Matt Gilbride <mattgilbride@google.com>, 
-	Brendan Higgins <brendan.higgins@linux.dev>, kunit-dev@googlegroups.com, 
-	linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB5777:EE_|CH0PR10MB4940:EE_
+X-MS-Office365-Filtering-Correlation-Id: d4c0f8a3-2e12-452d-491e-08dd4d1207bf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?dWphMDZyTm8zb3ZQZWVtVnFWY2V2amx0RDNNQXZib1Y3UnkrT0FVazgrWnFM?=
+ =?utf-8?B?UWUxcCtENit1T0UyaUxkVzdqZFhYRy9ZMFhoTno2UVZqb2E3eHFiMDVHQngz?=
+ =?utf-8?B?SXVubllFYnBTOXBMaGNyQkJOQmFUY2pFRktnRDIzUHFjMXRyUTV6aTV0dTlQ?=
+ =?utf-8?B?ZVJUUWVFREUrTFB0UC9MbjZiRW5HbE1DSHc5cExSczIyaHZRSnhVQXI3ZEVo?=
+ =?utf-8?B?QklMZFF2U2YzWUJQRFczTzlWS2xXMnpuMXE2RlNlOVJiMlF2ZERkcnRsTlIy?=
+ =?utf-8?B?N2pEWm1DS1o3bjI1ckI0QnFYQnJSZDA0cFdsUDM4WVdlVEhkVHlJdHp3UENs?=
+ =?utf-8?B?RXN1MEp3cFFQRHdlZkpQS29uQ0dLN0NLTUlITUw4bjI2K3N1K2NxMEoraGh6?=
+ =?utf-8?B?dzZKbkVkUU5QR0E0bjAxSS85aWd2eC9TYU5HTFpYc1lDL0dadXJMQ0h2R0ZM?=
+ =?utf-8?B?MmM3aW5LbEtpWmtiUWFONnlHWkV3bU53Vnh2RHhwQ3hTY2UxU0ZnQlFSS1h0?=
+ =?utf-8?B?TjhEdFBzNFk1ZDJCRk9pTFBuYVRwNmVja0tmbkZsOGZkZ1IzaTV5bjVtbkh6?=
+ =?utf-8?B?MGNwTVpjeW9PZFkvcENjdGhOcDJMRDFmMU9BK1h6dU9PRDB1NFpoYllrcmsv?=
+ =?utf-8?B?QVlxQWpnK1VLRFZKNm9GMVU5SVZyY1VFVW5LOUc0Y2VIL3QzNytOUkVobS9P?=
+ =?utf-8?B?YnZGMzRUV1Z6V1YydG9GdVBlQVFtVnlFZlY3dG5HckFFKzBoUnRZckl2dmVL?=
+ =?utf-8?B?cXZJaDhkT1ExN1YwZE4rYTRrR0d2bm1lOVU4T0ZocmllQnNpWkk4dXg3RmRl?=
+ =?utf-8?B?elRMY01lYUhvOGN6cEJPV2V1VDBrZ3lPZXpzaEpvUmNKVXgwU0FiYW9WWThY?=
+ =?utf-8?B?a3VHYU9zNm83ZWdxWkhrK3QvZ2xqcExGa3BqdStmQXVGSEpTN1dkVkRKeUhL?=
+ =?utf-8?B?dnQ4L0xEOXFIM1F1bnZPakM0RDdGd3hxN0xSRWRtUk15THAwbURSMmNXdlB3?=
+ =?utf-8?B?djVvMHBuMzR2RGVkWDRXZFRRaWhWRHhyOWorSzJRUDZuZ0VVUW9GM2k3RUUz?=
+ =?utf-8?B?U0MzVGZJS1hxM2pqUDVKeDJjUnRDcWZFcnBmVzdoWTBValJRLytucWN2cG95?=
+ =?utf-8?B?RXVhZFBLYlJ4ZXBrcENMMXRma2RjbGdzeit0VXJSdjl6bXpReWtjRG45dkRt?=
+ =?utf-8?B?aWZHbi9jRlc2d1kyVTJzRE52akhkYVBjUUNBakdHZ0xCTXVIMkZScERrVnV2?=
+ =?utf-8?B?Ynh5SlVuWUZUTW9BNWE1aURITDdQQWhzdnN1bmhzS09JNzRQV0pJQXk4RXlJ?=
+ =?utf-8?B?eVRzR05ZdUwzZHlUOEtIcDlmUzVlRjlYbW5YR3BOMG5tdDhtZXdXdHdUMHU1?=
+ =?utf-8?B?V0pXaVMxTzFFanQvellraXhBYlkvZTQzb1J2b3NJZEVnUG8xaFk2eFV5V1lz?=
+ =?utf-8?B?SWNhcHk0Q2VnZ0xaZytsWXpGT3hiNXpWN3pHdm9HSm84STVCLzFpUDZhQ3Bv?=
+ =?utf-8?B?ZzhTVklyS2Frd1NiSTFyMlU1QytMOTdEQkY0OUt0QW1lZVNwdXVhRjBaOWw4?=
+ =?utf-8?B?N2F6UWx5T1I5U2M5UHdiTGkyeVdCejZlSTlkbGFyczVHWXRnTHNiUzBjVWZK?=
+ =?utf-8?B?a2tJejMrSlBOUGhxNGxIYWhrRnBCMnlFZnJ2UUNpT2kwa0l1Z2J1MEFNdDRF?=
+ =?utf-8?B?L1Fma09GU2xvNnRUbkRVWGo5ZTRZMXpWd1hpRTQrZW92TCtqNC9QMFhRKzBt?=
+ =?utf-8?Q?/DsMB7PY9STBWb7o+ZeKbMCsEmsiLBN7DepWP7l?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5777.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?T3dDWktoeTVpc0F2ckEvR2pBNFBKcFdzbVRJTjlpWTBmUDhZcHY2TXljVFJP?=
+ =?utf-8?B?ZWNKSEtvcHpSRjAxL3FCUFlyMDQzcFNjd2JWT21zK3ViVXVLOVlUWks4RlpK?=
+ =?utf-8?B?Z0d1N2RiVlc5TnNySmZ6VnFkQk5yK0hWVWhwWHNsa3IwRFZNNlV0MXZEYm9t?=
+ =?utf-8?B?a3RMdzJYV2hoRG5VeGt0ZzlyZ2tYRG50NlFQWnJwREo2NlhtRUwwQng0SWIw?=
+ =?utf-8?B?bjVuNEQ2R0FwTnhKRkdCY1QzVzQ5WGxGWVJsMWtOMWZ3dkV5cUxGci9xL0NY?=
+ =?utf-8?B?VnpqS3dlMGRkbzZ0ZE5JRW1LMkFNcm9Udjh3V1lTdXlqMmtmNWs3SXpEdEIv?=
+ =?utf-8?B?UVM3NXpLYVRuMlA0MnoxMHVDdUsxdXNuUGROb1FEVUZxaDNVUVNpSFd0R0Uy?=
+ =?utf-8?B?ekVLRXVDdDZKVXZSZFVJSGEzWVBIRU1SQmhnVFN4U2s1b1F1M1cyclg0WVlS?=
+ =?utf-8?B?N2dERkdoMldqeU01dFU4OG1CY0dUejRReWdmek5DcWNlTUZEbjhoWUdsUDhj?=
+ =?utf-8?B?NFB3dEtHL0k1NEdlL1kyeUxtTGVSakFkeU5pYVJYbHBDSG1pRzNpYTFiUGkx?=
+ =?utf-8?B?cHcrZzZkc0prNzg4OXcrbFBzYmRDNUV6U1g0QlFpcTgyc255cktJUGRvRlhu?=
+ =?utf-8?B?V1VtdHU1Zmc2SHZ6MlR2UnlRQU1tZndOejhMNTl4UG8zdjVzU0xsTWRzZGlK?=
+ =?utf-8?B?emF5NkdqQUoyZVZOb3B3Wk9oN2YxOHEyTDlKdVdtVml0YjM3NGRlNlBYTWVV?=
+ =?utf-8?B?T29UYzZSWUJxbnJDUkRJcmNaVVV1UkEydFVtKzFldnFSOGpHeEtDQ0ZyNU9s?=
+ =?utf-8?B?Ly8ycnFTRmhZRlJxNzNRWGpzZjRnY1V3U3U0Qnord0VleDcvN0pYeWJXMVU0?=
+ =?utf-8?B?cXVrQVNqVUs2TUpUa1FZS0orTEdiZ0YxNmVKNWUyb1VmYUZzajV5ZStkeGFx?=
+ =?utf-8?B?L0NWZExUWlZWeTk2SW1Gajk5UW1YcWttNkNCeXk0SEFZVytNOEhKdk5iUlJR?=
+ =?utf-8?B?SkxEYUhJVDU1UElrU2hBMzhWUkVzZzVJMUN0SjNJa0pRbnNmbXlkdTNXeFZG?=
+ =?utf-8?B?ZVdhU1MxRFN2YTZnL0hXRmVHUGdBV21ZVHVVTElja201OENCT1M5QzVhVjh0?=
+ =?utf-8?B?N2txcFMrMGRzNWFTaVpwejQ3UlZ4QTZmS0djdHc0djFGY0FrNXRjamxOZnJ4?=
+ =?utf-8?B?WFlqazlSSlg1VWJIWStNSnhkUzdCRy9uZnN4MGJaVW9YRU0reHBJUDk1N1Vt?=
+ =?utf-8?B?T1oyNFVCU2RaYnhWZEVJVlhhQnlXVHViY1Fpblh6S3Q5TEE5VUhvTmZCc280?=
+ =?utf-8?B?enAzakgyRjU4UFVodHhWNkZxNi9rdlgzMHRjZ1k1Q2RCYTBOQU43dUt4NktR?=
+ =?utf-8?B?NUxsYmV6aHlreldzT1Y4ekR4eUhQNHBheG9Nd3RYbzkyaXk2OS9qenl3WkFk?=
+ =?utf-8?B?TGJ3eSs0ZUt2QkFKVWxzZWpaQTZpQ2phMUUybjVYZk9HcmFXTFpHTXRHaHZx?=
+ =?utf-8?B?aktEUlFxSWozY01VL1hIMTVuQ0ZaNDZ0Ky9sUjRZQzJReU1xSDlaejJzdWRF?=
+ =?utf-8?B?UytQbGgwU3dSQnR3dVoyeXN1b21VcW14OGxKMERya1FhOEpKL2JOSFBQSCtL?=
+ =?utf-8?B?TVJuSVZJdXo4a0ZHWnBwNEVHZkpGZVNkcmdsVFdpUDRaaDNqUFA5MmF3V2FR?=
+ =?utf-8?B?WnFUTEdPUFpMT2tOTEVPOW5JcVh0ejF5ZTd2SkJQOGVpc0svejdoOHBHazkr?=
+ =?utf-8?B?S28zNXdoMklpK1BkNmE0SzYvTTlsMmhQNVVuQUR2VUZ5SkpyVWprb2tRRm56?=
+ =?utf-8?B?R3pBaWN0eUd1ME5JbThSUFZxSjc3RlRwSm5sZlRISlR2eUo5U2krTkRseTRs?=
+ =?utf-8?B?SGU5VDNUQXRVWDJxaE8rQ2NwZDkxMFVNaS9sZk1LV0wrU0ZjRFVURlF3aHg0?=
+ =?utf-8?B?TjNiM243NHRZWWxCT1IrcUxRdUNMb0ZNdWE3VjcydSt2a1lObVpFUVJ1T2RO?=
+ =?utf-8?B?UGZVeUdzU1pLWnY1QXo5ZTI4NDhqME9nTEdsVVZKUmxFVFNOb2VpbXQ0SU83?=
+ =?utf-8?B?TGY2M2hmTUlYUFQyY3FMMGNmUFJpTldLaG9FaUxUMWNYMmtZRjZmQlB0ZVFk?=
+ =?utf-8?Q?DlITBUi5AKIW2zrsXkh2kNfWD?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	b6iEcgwFmMZqTmAg27e3OPkvHDzPPEtPDkHkXrTTwdVDu13Nn1vgc+V7ce3KeCR1R2e0fyvEitimjYDg6+mwJrzwL86xMstFztj+jcD9zGZjkvwQdcqF/wmn43Wv9gW/INqr1Ur+6zc5y0P2K0A2vtv1jOnN7ERXNcg9bX7nRgiEeCCvY7CbldMwlPN6RCpCGJFNq0VtME7Ujwc0sSffpsecIxVprcfK2rjh9NFbpGBq36CcBx2APdY+p7gEvm1BorlOD4adZvA0uL3wgwThKSlQ358MiSeju0V4EFDddEV+A5+HzjfEXpobt6L6uVhR8ZxVce6UnNgDoJSKh35uWz/30IdtdENtJxo14Jfd74t6anQevsPj0xlRQxU10ag9ipSqNdl4IYWvhiIugLGrdT5y8m7/yYnkEZPWz/laRlgK0sCCqZUcC9+GIHd14V7/hscDT7iYomNNvV/Gh2mDRQFxtHLPAICX1TqGV2WBiz9X6ICCgSYXCiNdiAL665fbvnCoLNlSTbFxweh72ExBG/DndDxHckWRFGskh9fx2YK9CMubrTiaWcmF/1H9NfPFDh9LqQ44vEhQm7ahIVnCmG5LHdlD5FvrY2tIhOERLf4=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d4c0f8a3-2e12-452d-491e-08dd4d1207bf
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5777.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2025 16:09:59.2750
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VSodTTnvnzm2fYXopXYdpKn0YPRWVIyyUg7Iq6YGBi7we9wlz1v9kd8fdY3Vadm3acDX8KU2jfDAQff8EhYkRw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB4940
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-14_07,2025-02-13_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxlogscore=999
+ phishscore=0 malwarescore=0 mlxscore=0 spamscore=0 adultscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2501170000 definitions=main-2502140114
+X-Proofpoint-ORIG-GUID: hsnZy_cMRXk_0pbvBCOMTuZ3Q_HzYGwp
+X-Proofpoint-GUID: hsnZy_cMRXk_0pbvBCOMTuZ3Q_HzYGwp
 
-On Fri, Feb 14, 2025 at 2:42=E2=80=AFAM David Gow <davidgow@google.com> wro=
-te:
->
-> From: Jos=C3=A9 Exp=C3=B3sito <jose.exposito89@gmail.com>
->
-> In some cases, we need to call test-only code from outside the test
-> case, for example, to mock a function or a module.
->
-> In order to check whether we are in a test or not, we need to test if
-> `CONFIG_KUNIT` is set.
-> Unfortunately, we cannot rely only on this condition because:
-> - a test could be running in another thread,
-> - some distros compile KUnit in production kernels, so checking at runtim=
-e
->   that `current->kunit_test !=3D NULL` is required.
->
-> Forturately, KUnit provides an optimised check in
-> `kunit_get_current_test()`, which checks CONFIG_KUNIT, a global static
-> key, and then the current thread's running KUnit test.
->
-> Add a safe wrapper function around this to know whether or not we are in
-> a KUnit test and examples showing how to mock a function and a module.
->
-> Signed-off-by: Jos=C3=A9 Exp=C3=B3sito <jose.exposito89@gmail.com>
-> Co-developed-by: David Gow <davidgow@google.com>
-> Signed-off-by: David Gow <davidgow@google.com>
-> Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
->
-> Changes since v5:
-> https://lore.kernel.org/all/20241213081035.2069066-4-davidgow@google.com/
-> - Greatly improved documentation, which is both clearer and better
->   matches the rustdoc norm. (Thanks, Miguel)
-> - The examples and safety comments are also both more idiomatic an
->   cleaner. (Thanks, Miguel)
-> - More things sit appropriately behind CONFIG_KUNIT (Thanks, Miguel)
->
-> Changes since v4:
-> https://lore.kernel.org/linux-kselftest/20241101064505.3820737-4-davidgow=
-@google.com/
-> - Rebased against 6.13-rc1
-> - Fix some missing safety comments, and remove some unneeded 'unsafe'
->   blocks. (Thanks Boqun)
->
-> Changes since v3:
-> https://lore.kernel.org/linux-kselftest/20241030045719.3085147-8-davidgow=
-@google.com/
-> - The example test has been updated to no longer use assert_eq!() with
->   a constant bool argument (fixes a clippy warning).
->
-> No changes since v2:
-> https://lore.kernel.org/linux-kselftest/20241029092422.2884505-4-davidgow=
-@google.com/
->
-> Changes since v1:
-> https://lore.kernel.org/lkml/20230720-rustbind-v1-3-c80db349e3b5@google.c=
-om/
-> - Rebased on top of rust-next.
-> - Use the `kunit_get_current_test()` C function, which wasn't previously
->   available, instead of rolling our own.
-> - (Thanks also to Boqun for suggesting a nicer way of implementing this,
->   which I tried, but the `kunit_get_current_test()` version obsoleted.)
-> ---
->  rust/kernel/kunit.rs | 66 ++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 66 insertions(+)
->
-> diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
-> index 9e27b74a605b..3aad7a281b6d 100644
-> --- a/rust/kernel/kunit.rs
-> +++ b/rust/kernel/kunit.rs
-> @@ -286,11 +286,77 @@ macro_rules! kunit_unsafe_test_suite {
->      };
->  }
->
-> +/// Returns whether we are currently running a KUnit test.
-> +///
-> +/// In some cases, you need to call test-only code from outside the test=
- case, for example, to
-> +/// create a function mock. This function allows to change behavior depe=
-nding on whether we are
-> +/// currently running a KUnit test or not.
-> +///
-> +/// # Examples
-> +///
-> +/// This example shows how a function can be mocked to return a well-kno=
-wn value while testing:
-> +///
-> +/// ```
-> +/// # use kernel::kunit::in_kunit_test;
-> +/// fn fn_mock_example(n: i32) -> i32 {
-> +///     if in_kunit_test() {
-> +///         return 100;
-> +///     }
-> +///
-> +///     n + 1
-> +/// }
-> +///
-> +/// let mock_res =3D fn_mock_example(5);
-> +/// assert_eq!(mock_res, 100);
-> +/// ```
-> +///
-> +/// Sometimes, you don't control the code that needs to be mocked. This =
-example shows how the
-> +/// `bindings` module can be mocked:
+* Lorenzo Stoakes <lorenzo.stoakes@oracle.com> [250214 07:20]:
+> On Fri, Feb 14, 2025 at 12:56:29PM +0100, Alice Ryhl wrote:
+> > On Thu, Feb 13, 2025 at 8:46=E2=80=AFPM Liam R. Howlett <Liam.Howlett@o=
+racle.com> wrote:
+> > >
+> > > * Lorenzo Stoakes <lorenzo.stoakes@oracle.com> [250213 07:16]:
+> > > > On Thu, Feb 13, 2025 at 01:03:04PM +0100, Miguel Ojeda wrote:
+> > > > > On Thu, Feb 13, 2025 at 12:50=E2=80=AFPM Lorenzo Stoakes
+> > > > > <lorenzo.stoakes@oracle.com> wrote:
+> > > > > >
+> > > > > > Right, I don't mean the rust subsystem, I mean designated rust
+> > > > > > maintainers. The point being that this won't add workload to An=
+drew, nor
+> > > > > > require him nor other mm C people to understand rust.
+> > > > >
+> > > > > Sounds good, and apologies for being pedantic, but given the rece=
+nt
+> > > > > discussions, I thought I should clarify just in case others read =
+it
+> > > > > differently.
+> > > > >
+> > > > > In the same vein, one more quick thing (that you probably didn't =
+mean
+> > > > > in this way, but still, I think it is better I add the note, sorr=
+y): I
+> > > > > don't think it is true that it will not add workload to Andrew or=
+ MM
+> > > > > in general. It always adds some workload, even if the maintainers
+> > > > > don't handle the patches at all, since they may still need to per=
+form
+> > > > > a small change in something Rust related due to another change th=
+ey
+> > > > > need to do, or perhaps at least contact the Rust sub-maintainer t=
+o do
+> > > > > it for them, etc.
+> > > > >
+> > > > >     https://rust-for-linux.com/rust-kernel-policy#didnt-you-promi=
+se-rust-wouldnt-be-extra-work-for-maintainers
+> > > > >
+> > > > > Cheers,
+> > > > > Miguel
+> > > >
+> > > > Ack, for the record I'm happy to help with any work that might come=
+ up.
+> > >
+> > > Ack, here too.
+> > >
+> > > Without the drama, I'm not sure how we'd feel so alive :P
+> > >
+> > > Can I be added to whatever list so I can be Cc'ed on the changes on y=
+our
+> > > side?
+> >
+> > I'm happy to format the entries whichever way you all prefer, but for
+> > example it could be a new MAINTAINERS entry below MEMORY MAPPING along
+> > these lines:
+> >
+> > MEMORY MANAGEMENT/MAPPING [RUST]
+>=20
+> I think a general:
+>=20
+> MEMORY MANAGEMENT [RUST]
+>=20
+> works better here as it ought to (at least for the time being) cover off =
+all
+> rust mm stuff.
+>=20
+> > M: Alice Ryhl <aliceryhl@google.com>
+>=20
+> I wonder if we should have Andrew as a co-maintainer here so people also
+> send to Andrew also for merge? (and obviously as the mm maintainer he may
+> have commentary).
 
-[`bindings`] here, please. There are two more instances below but
-those aren't doc comments, so I don't think bracketing them will do
-anything.
+Indeed, FWIU each subsystem is doing something different with some
+taking no responsibility/effort while others are involved.
 
-> +///
-> +/// ```
-> +/// // Import our mock naming it as the real module.
-> +/// #[cfg(CONFIG_KUNIT)]
-> +/// use bindings_mock_example as bindings;
-> +/// #[cfg(not(CONFIG_KUNIT))]
-> +/// use kernel::bindings;
-> +///
-> +/// // This module mocks `bindings`.
-> +/// #[cfg(CONFIG_KUNIT)]
-> +/// mod bindings_mock_example {
-> +///     /// Mock `ktime_get_boot_fast_ns` to return a well-known value w=
-hen running a KUnit test.
-> +///     pub(crate) fn ktime_get_boot_fast_ns() -> u64 {
-> +///         1234
-> +///     }
-> +/// }
-> +///
-> +/// // This is the function we want to test. Since `bindings` has been m=
-ocked, we can use its
-> +/// // functions seamlessly.
-> +/// fn get_boot_ns() -> u64 {
-> +///     // SAFETY: `ktime_get_boot_fast_ns()` is always safe to call.
-> +///     unsafe { bindings::ktime_get_boot_fast_ns() }
-> +/// }
-> +///
-> +/// let time =3D get_boot_ns();
-> +/// assert_eq!(time, 1234);
-> +/// ```
+The mm space has been a very good citizen in both methods (merging with
+cover letters, code quality, etc) and in code (always on top of syzbot,
+bugs).  I think it is important to strive to keep this functioning.
 
-Isn't this swapping out the bindings module at compile time, and for
-the whole build? In other words cfg(CONFIG_KUNIT) will apply to all
-code, both test and non-test.
+This will become more important once we have more than just wrappers,
+but I think we should talk about what this will need to look like before
+it actually happens.  ie: unstable rust branch tracking unstable c
+branch with build emails, etc?  Early days yet, though.
 
-> +pub fn in_kunit_test() -> bool {
-> +    // SAFETY: `kunit_get_current_test()` is always safe to call (it has=
- fallbacks for
-> +    // when KUnit is not enabled).
-> +    unsafe { !bindings::kunit_get_current_test().is_null() }
+>=20
+> > R: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>=20
+> Am happy to be a reviewer this is fine!
+>=20
+> > R: Liam R. Howlett <Liam.Howlett@oracle.com>
+>=20
+> I am sure Liam is also, but of course he can comment himself :)
 
-Nit if you care about reducing unsafe blocks:
+Yes, please add me here.
 
-!unsafe { bindings::kunit_get_current_test() }.is_null()
+>=20
+> > L: linux-mm@kvack.org
+> > L: rust-for-linux@vger.kernel.org
+> > S: Maintained
+>=20
+> Probably need these here too if Andrew is taking in his tree:
+>=20
+> W:	http://www.linux-mm.org
+> T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
+This is a good question.
 
-> +}
-> +
->  #[kunit_tests(rust_kernel_kunit)]
->  mod tests {
-> +    use super::*;
-> +
->      #[test]
->      fn rust_test_kunit_example_test() {
->          #![expect(clippy::eq_op)]
->          assert_eq!(1 + 1, 2);
->      }
-> +
-> +    #[test]
-> +    fn rust_test_kunit_in_kunit_test() {
-> +        assert!(in_kunit_test());
-> +    }
->  }
-> --
-> 2.48.1.601.g30ceb7b040-goog
->
->
+I am unclear how the branching/merging happens.  When do we need to
+start (at lest) building the rust side?  We've been doing a lot of work
+in the modularization/interface level to try and integrate more isolated
+testing, as well as the locking changes.
+
+Do you have build bots that will tell us when things are broken?
+
+...
+
+Thanks,
+Liam
