@@ -1,233 +1,193 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021080.outbound.protection.outlook.com [52.101.100.80])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7B32163B6
-	for <rust-for-linux@vger.kernel.org>; Fri, 14 Feb 2025 07:41:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739518881; cv=none; b=brIDhoGTBsFcPSmy3L/CufMchF6cAYfL7kEUqb+QjiUarrLhYhFh0NFZ499AcooMM09k1QufgvxbLe9vQGnO8q+MnOQVA05hDpKIjTkCZGQdqH91Yh7iuZvtmOFV+JU6REjDijuJPFKPRX7SCNsss0bTzeRi6ajawrV5dbPJZ/E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739518881; c=relaxed/simple;
-	bh=wu1wYChkKBa84U+/lJlhYvBmiPd0MNbKVAR64OfX5YY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=RBfuCQj/NfBoo/M8nwZo4gv7rp0AuXQ/6G1NQ/KJoc5cY4XMcDapJKp1QwSvJUqB2EWIXbIa2KO0s55a2WvYfzD8QZRznHCQoA48kl3ovO4zjwUXYwmNYPsDn231NuxLO3qbYx86dxaOCEtL6EwfVPk3vBM5lIqpHB2txn84QsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DNipiRVN; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2D025A657;
+	Fri, 14 Feb 2025 11:37:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.80
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739533068; cv=fail; b=PUJWIrdiK121EyJ4qw8pq1A++KURotkapmC0GWofQJzEpQNqQzUGDt+6RbkzehW2S2I4S842fD7UqmtfXgDfokPM3yx+bBbMyAmMkGpsyRzI1R91Bs4Te/UJHlCgkjU4p7jTfdTAdVWjUJSl8SERnEhKf+Loii/fAP8fCZJX0wM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739533068; c=relaxed/simple;
+	bh=IjFWn+gPCC6NL2fTwyTAuqDvzywntRNoFOUeA/PUjyI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mriXi5xEeMcLa+yZxoZO5aWv22oqDcmOnewuRtkfHjiOQbUoxgXhy5zM3koo469YNabIWuH5Uj+4NtAh5iiQL9T9gHKDgW8z215VyUV5V3l/90Ia5asOVpeYu2RYdOGxaP0MEPrEBGawYki0kqwfekl+LLxEOAm7wXglTgxzHvc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=sVOcLB7/; arc=fail smtp.client-ip=52.101.100.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DNipiRVN"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2fc2fee4425so1057449a91.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 13 Feb 2025 23:41:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1739518878; x=1740123678; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Qphj6TWjxMj/gif/4tS2O4Kyyc5IbUJk5s6oYOqOgqw=;
-        b=DNipiRVNYB5pwNKT4xxWREnjPu8+cRIck/NsOReDCVUB/dd9nFsF7CYobqTL09s/ox
-         ufdCPZ7f7liktb9ILmFVKMAYFHKBUYZi6RB8lJmLMfmRjMmYZ8Z6aVOhdjtMiNSX9hQ+
-         3+cTsv8kfkRXnskVEaflpOVHC7cKfhTMmFNZrBrult+S5ZMJ670L1wG0BjBEcGfie2O4
-         Rz2vnD6a9KQKKRyxQ+RdlGqQSRWjxyI5NPvzQorv8d8Z877Ga8WqxJN5PMaDJwrfhyMr
-         6rbRXVInHHZi7HmXO2qed4dx93bNvBcI0S+0LEmcoBa+Tm6PVc2ijJ2ww/zrImMjkabj
-         8A8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739518878; x=1740123678;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Qphj6TWjxMj/gif/4tS2O4Kyyc5IbUJk5s6oYOqOgqw=;
-        b=sKyNsaLDmC/SRxnWeAYXGhLKFl7XQcw62xxapqotHUR45k6f+KNNcR0HPO9IXS+nLJ
-         vBsJD07U3Ci98IXitg0xjAYrLJWxfDehLtcbMeKLMIejTeRJ569qQOgNNXw/1SSGNsp6
-         Tj9wSJMQAibdnh4+pSata8kz4vELOcZmxEoPN37Kf5IA5YHuhVzT0f0GJWbsrbQ/Fo9v
-         QVqKq7ecw1q50f4KnVqg6kbx3r4lRg8yu+z9rln0U/Dovw7/vf5L70wOAwMO2vAOhIW2
-         N4yelosaScMRrP1OTVuS/nBZ8Mu4irs6UjU9P1c+zSp2yOxDiVBn8WTyqed3QyNOymkF
-         5nzA==
-X-Forwarded-Encrypted: i=1; AJvYcCUwqv/B+m4AvKwACetZj8DlIZDfUtlH3K+a/XwRg9CgnVuBjLf3RLhEnVfhQltGsNh7up0miVPpZ9EtEw4jAQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzoyMNFIsoabrdQsuClKUPdP7p9pFQ2d7IUXtMDY32dPq7wZCTQ
-	3QWQcA4I52qdXB+V+YQhGBZ6dlCrDcTPvWqlCVd/4w1K7NgOR0zKIJHL97wdrmLet15xe15oGJq
-	YcyGnNXzMGg==
-X-Google-Smtp-Source: AGHT+IFgeVopjebWDLNzibTUdu5X7StXLo69muuWXN8z+HL8PoMGaE8j2OZtBwMk7ckUhoqyVUCJrBYQdPwGMw==
-X-Received: from pfne24.prod.google.com ([2002:aa7:8258:0:b0:730:8518:b97])
- (user=davidgow job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:98b:b0:732:1bad:e245 with SMTP id d2e1a72fcca58-7322c37ea39mr14491448b3a.7.1739518878328;
- Thu, 13 Feb 2025 23:41:18 -0800 (PST)
-Date: Fri, 14 Feb 2025 15:40:48 +0800
-In-Reply-To: <20250214074051.1619256-1-davidgow@google.com>
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="sVOcLB7/"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=R4KitlUQmuxIGyq74sFDe27Q4j1Li/V3rqQe07csi2BWtHnwgjbAUdOxYL3AIZA0MuoCmQzv6Th6qkpKUnZ5YDqy0dhZlGX/7KMChwnRwDuEFw5sLsa1EmCK5dkQFt+KOBk6XW4qNj9cu02+0TXJ5GLycW81GS8PobI5hWD8Hd6pvSUv70Cg9nLtXuQrnbJbEqD4UQKjjsmLk03uGnfsWlhbXcvHqNil2DZmwouWcIlYVlaxA1B5erNBaeFHUrtXhcwFOv/+1472z5//XABtR7e4gZJP4cA85lCFmc6h06M6hJUP6qqrHWzT82NJuU9pnM1ZuMtoFMarEn1paAQR0w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7/aFwF0AgNhX46hjssnsbwLM2eVJ5LhAnzJUDQRWhBY=;
+ b=IjuWDNe8tDZTTo6iwwpMyo3R0HOwkKRKqaJLU52BYY8Tvod+m4fi8Kv9Vb2xvWxkLcvCgg1bz2jzOiFxTiI8PZbtKI7qizZ1ZhNscAKO6wN4ID887vKJm2/siFzlzIwLyjwMRlBxTXjd6dsIq992KsUhErKnZM0S0Wj7lBq6SJOiNaLKt045ND/C4mtRYE8Z9ddKXLzsxOPKhY7qQJwLJIeCXHN6t9ndO1JPUq0NkWq/5Ow6dxulbW7qErY8/j+dFZ4l7MRPdp0CfCPaf1QtGsKx5fGtgL2XDW4p3kTtYoK5/UhTYev6xrK/28r+quT8FrbFeA4trew8aDWPx7IHaA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7/aFwF0AgNhX46hjssnsbwLM2eVJ5LhAnzJUDQRWhBY=;
+ b=sVOcLB7/HHv1p/dMa3XpbG/hBOT52qY+Yn4gBF2UySmhBdFUusmzvPG2u3O1xcD/+EKs1GPsZIkkOUIm3iRU/kIys3K2CRangF0FK5H7kCU2bSm6hmLv1ynPMOLBXQ3DWDpAyPjf4otDDm1tmDWRGpnczGMe9CTg5UkQjfQEEpU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by CWXP265MB3061.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:c6::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.18; Fri, 14 Feb
+ 2025 11:37:44 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7%4]) with mapi id 15.20.8445.016; Fri, 14 Feb 2025
+ 11:37:44 +0000
+Date: Fri, 14 Feb 2025 11:37:40 +0000
+From: Gary Guo <gary@garyguo.net>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+ bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com,
+ aliceryhl@google.com, anna-maria@linutronix.de, frederic@kernel.org,
+ tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
+ mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+ vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
+ bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+ tgunders@redhat.com, me@kloenk.dev
+Subject: Re: [PATCH v10 7/8] rust: Add read_poll_timeout functions
+Message-ID: <20250214113740.156faaf4@eugeo>
+In-Reply-To: <20250214.130530.335441284525755047.fujita.tomonori@gmail.com>
+References: <20250207132623.168854-1-fujita.tomonori@gmail.com>
+	<20250207132623.168854-8-fujita.tomonori@gmail.com>
+	<20250209162048.3f18eebd.gary@garyguo.net>
+	<20250214.130530.335441284525755047.fujita.tomonori@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0504.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:1ab::23) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250214074051.1619256-1-davidgow@google.com>
-X-Mailer: git-send-email 2.48.1.601.g30ceb7b040-goog
-Message-ID: <20250214074051.1619256-4-davidgow@google.com>
-Subject: [PATCH v6 3/3] rust: kunit: allow to know if we are in a test
-From: David Gow <davidgow@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>, 
-	"=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?=" <jose.exposito89@gmail.com>, Rae Moar <rmoar@google.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, Benno Lossin <benno.lossin@proton.me>, 
-	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Matt Gilbride <mattgilbride@google.com>, Brendan Higgins <brendan.higgins@linux.dev>
-Cc: kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	David Gow <davidgow@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWXP265MB3061:EE_
+X-MS-Office365-Filtering-Correlation-Id: fe7d1c60-cf2f-413a-98f6-08dd4cebff5d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?EIBhZaNmUsHSwGlQIh321FoyDGTohfQsljBA4H/83KJa4KphOvHZCN9a8nE9?=
+ =?us-ascii?Q?KXCjtWAPvTfNFDT0aZB9qcwLJTCdhSvwKWYuMnHY392zgX5XcSrBRdwhUKxM?=
+ =?us-ascii?Q?s9IG2gWhPydUBr6eefU/ZhzyzKA0N0/ZHHy0wj3caVOltG5mbdAfN4Pt6zlc?=
+ =?us-ascii?Q?DPiNc8wUGCn9cByvbMLQvejVXSj/GtZLi+qge1AWAZePRMI6xcpRpEj7uFF2?=
+ =?us-ascii?Q?VaRRoaatPUNfNR2sbY5OhscXHdrVJQr5NZGy/HvH9NSakqPHJKKGVlYBTgbL?=
+ =?us-ascii?Q?TxHihejnV/v4MqxXLsV+pqLTXfzbMGbrludF6aL6JrvaNpf24fqVrhoB3PGd?=
+ =?us-ascii?Q?iWPrwHyVUn6aaX571o96QLSdXrmixpq76gIftRa6LVNgZ3SeKOcGnGMulMz9?=
+ =?us-ascii?Q?vzwkl/1BSwGOpKjX0+ZRdryJLpjiSD/aVtPL7GdyN1ZMVS4Fub2zoj9sT4eN?=
+ =?us-ascii?Q?1GxlJGrMPp1nwnS5W+9ggIX6RrxA6JuQ4NxDleEdiRxjBKfxPstKP+kcwu2t?=
+ =?us-ascii?Q?s7on/KwHfjb//u+NVy0l7S4fYCWgvTFLGLlKCSol0H3wqLUbA3sVpQBvE9Z1?=
+ =?us-ascii?Q?Q1y/JOODxhi8uyENXefkkCiOyKKgJ28e9zuzPyOZMdlqMY6UbwxWvwPKbcgi?=
+ =?us-ascii?Q?6P/0DIFbQJUNxJkyUQXkllnuyvufmc3Ag1HiYdjNyIvgm0tTL7B9qe4Jvcmm?=
+ =?us-ascii?Q?4RmsGeHjjDZSD5vRtDBuBSweJ7MLCnyEYkKv9bE6Q8odJXomdIXY4WGaZXiW?=
+ =?us-ascii?Q?lf8xPoEIPLFWnONAhmAewT+oDRb3APnWDeAg0Q5bMAaQVUmAS6Jw1HiGPYlJ?=
+ =?us-ascii?Q?aiSTEx4jzrz2jY954BYTdh+wVvJjT1TKLFg0XWl73rXFwcqB5X9O81/c6c7U?=
+ =?us-ascii?Q?0TesplbJEvDUaFjoQtjuxhcQrsxYDW+NvGzHKUgqdpANtRauYwQ0SqT1m7oC?=
+ =?us-ascii?Q?JEVdtDGxqA3VfywzYRv9VTlbPYDfrrE5UIKCjpXEtqJQiGhkgLxQliNIqOWd?=
+ =?us-ascii?Q?sPhd9nWTR2a8rK2yWlf9VpyzK10BimQXhKyF733VVuxAyjD3AnSoqTIttSTN?=
+ =?us-ascii?Q?VA5txElF7YYEa3SaP8FWuFV/0c7K9RRnu1cl38V7xMjxSC/yN6iU40lIh7/T?=
+ =?us-ascii?Q?DGVeHqUqULt2bOBsz08JaUhuO+mVzjO1JObx5FLwabIdvn7AgMkSsF3AO9W0?=
+ =?us-ascii?Q?gL05b9uAjkQDZgjt2VREQfKdZJa19MjkXmWIydZhvptGMW3GWLG+okD2Gfik?=
+ =?us-ascii?Q?Bjp8V21lRohZy8S7DmYXKrMRYkQirrK5PzEt8DVYTsF0A4QLuZnhy2C1h9yF?=
+ =?us-ascii?Q?lRsj15OZAUwOsQ0dUlf/5nL8qkeIH5aGqufa9dZcUvCzJ+Z6xUyjDi8lH9Ov?=
+ =?us-ascii?Q?pZInZWnAm8U5e0aRBFtSqSzI/25t?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?z39n8HFClXb3rzinFe3Vgsb9u1aJXhlmYtldtJipY3IhtGefTohgE3H/lhrh?=
+ =?us-ascii?Q?xEK4i/0t3VqyulZwM8PdKvBQJUhyeoaW7q4nAtTg1Y9TqoTLuF4iD5f9+qwK?=
+ =?us-ascii?Q?S1mulEOEgiNIY1ocMRH9cGa7K9LnbigcxUgXWri9/dZi1hQ/t3ZIz8OyJAh2?=
+ =?us-ascii?Q?718wBm1KKHCRdmx3k4MrNbvUv8B3z8PbI8zeQbymW8DDwws3Yk8EShJwqw2b?=
+ =?us-ascii?Q?DHsfZ5deWjn1JXvzHHRf6M+Q2W6YnQ/VPqdv93BRF1tfukDNTcts1In+nFNB?=
+ =?us-ascii?Q?3Q0bSM9Dr39u2IyeZU2oEEO7zYucS52LtGi0VlTIJzoHj3CT5q7U4vK2JqsQ?=
+ =?us-ascii?Q?MEpZ76j9J1/R6F7emgLgNPW2tWvDfjy+9cqbbS1EKm/dsBe6bakGgS9Bf/7n?=
+ =?us-ascii?Q?bopCUbqUIxV5AHCfv3CYR+533jEta7eNV8irZ4MKrs4C+oItHdfC/HzTuLtR?=
+ =?us-ascii?Q?BkfFaqYrzt5lHeICjLryocwepwReVkd2hhYoDqGuqoPFUeXDFEPb60glPMei?=
+ =?us-ascii?Q?iIcirppf5xEkJ19hgDfXMreODkwgLsprcx/WBExb93V7ODD13WII2uSxPqwB?=
+ =?us-ascii?Q?spP5bjmzRs7iwlyFLl9ZYt/9SPlWZqdl84ahiB7joP2NC8oCiHKoQcSb4vH2?=
+ =?us-ascii?Q?+l1Ac9ytuSZwqw4pYOlgfCBymY1eLHz78GR0j2tNnY0WPfYJQsBpjkM5kq1P?=
+ =?us-ascii?Q?DrBy2qC4tULFxJ6vmxx2PPeKWegXfAjG1cWDC1oLdMwsEnk8sK25YNm45I8B?=
+ =?us-ascii?Q?GDyr9ODgFfFzWi+MIxOazcLxpEkAlq80W0zBie6ZVnjtCV4y6rdnURGRGs5T?=
+ =?us-ascii?Q?/MRnIQT5opYZgCTrp87OjiOMNztI8BtVXPBu62yjW3nEUmVkiYZhwelKoZhD?=
+ =?us-ascii?Q?4QhhP+QXibDdCjIZKmr5CUz0Z0ASxfN6xhT+0y3J6SUJLkqOlKm6JrvqY3ZZ?=
+ =?us-ascii?Q?NLcQzo+kguDVisFVtqptWYZjSBsHvjl/6RMyMAtvvfowu6dV3F9kZiHZ8QlR?=
+ =?us-ascii?Q?sBuRbT7u1pYBwbgfg0kfzUsW1IQKNk/Ul3zE6GXIQChBsg2XUCRXZBFMihxh?=
+ =?us-ascii?Q?ubJ4YfSv6jvZBkMo2ilkaEfNFrwAN1pEz96VN5UeuX8ZGKE+TPLIssxPNtxo?=
+ =?us-ascii?Q?Ha2s6J0TluyqyEyMdULs3zXCPWm6br1tgyrTvvMjig7WExXdVBZydfuyp4Sd?=
+ =?us-ascii?Q?30g5F/TO7LzH0vkPm5EOT5R17wDy2mVxmIFhy3EyP26qr3s/thXqx0kr1jQr?=
+ =?us-ascii?Q?WIwsiS1TFjZeloJW3pKfM4M2ZmlIL5jokW03f2870tM7wqfHo+ycK0qxSRro?=
+ =?us-ascii?Q?z/frctEMcnspLNnXl93SB8JQ4lMi0O7TFwOHCTjuvaz27d22P6GbPO5rkrqe?=
+ =?us-ascii?Q?uUqgXyV2t8jfKlWSDlYX9F78/kx8axatEl+3DvOr5ln9A4vI0DY8XLdFsJmg?=
+ =?us-ascii?Q?SZ1wdrwKl9SKEYTJjSNVbTh14THO/c49DstbCKGL1uQ6wW4p0PsdXMMcTvOU?=
+ =?us-ascii?Q?ITC2QN18bB+r5JOk8XZ3V3pfBTKisN1CyJGKOhHEUrSZ3+L8EedyBa1KD+3u?=
+ =?us-ascii?Q?Wq99FzQPcyNR+AkpDzK4yUDYceSb1LK1T9b9t+Ss?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: fe7d1c60-cf2f-413a-98f6-08dd4cebff5d
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2025 11:37:44.3569
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BYAoePQ8DezYgDkcAhH43MWB2EAmiNTOWDtyMMxGva5vbLBVrV/pMdq+xtKE+8F+qlxj5xVcGsSzT1gwKZA5vA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB3061
 
-From: Jos=C3=A9 Exp=C3=B3sito <jose.exposito89@gmail.com>
+On Fri, 14 Feb 2025 13:05:30 +0900 (JST)
+FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
 
-In some cases, we need to call test-only code from outside the test
-case, for example, to mock a function or a module.
+> On Sun, 9 Feb 2025 16:20:48 +0000
+> Gary Guo <gary@garyguo.net> wrote:
+> 
+> >> +fn might_sleep(loc: &Location<'_>) {
+> >> +    // SAFETY: FFI call.
+> >> +    unsafe {
+> >> +        crate::bindings::__might_sleep_precision(
+> >> +            loc.file().as_ptr().cast(),
+> >> +            loc.file().len() as i32,
+> >> +            loc.line() as i32,
+> >> +        )
+> >> +    }
+> >> +}  
+> > 
+> > One last Q: why isn't `might_sleep` marked as `track_caller` and then
+> > have `Location::caller` be called internally?
+> >
+> > It would make the API same as the C macro.  
+> 
+> Equivalent to the C side __might_sleep(), not might_sleep(). To avoid
+> confusion, it might be better to change the name of this function.
+> 
+> The reason why __might_sleep() is used instead of might_sleep() is
+> might_sleep() can't always be called. It was discussed in v2:
+> 
+> https://lore.kernel.org/all/ZwPT7HZvG1aYONkQ@boqun-archlinux/
 
-In order to check whether we are in a test or not, we need to test if
-`CONFIG_KUNIT` is set.
-Unfortunately, we cannot rely only on this condition because:
-- a test could be running in another thread,
-- some distros compile KUnit in production kernels, so checking at runtime
-  that `current->kunit_test !=3D NULL` is required.
+I don't follow. `__might_sleep` or `might_sleep` wouldn't make a
+difference here, given that this function may actually sleep.
 
-Forturately, KUnit provides an optimised check in
-`kunit_get_current_test()`, which checks CONFIG_KUNIT, a global static
-key, and then the current thread's running KUnit test.
+- Gary
 
-Add a safe wrapper function around this to know whether or not we are in
-a KUnit test and examples showing how to mock a function and a module.
+> 
+> > Also -- perhaps this function can be public (though I guess you'd need
+> > to put it in a new module).  
 
-Signed-off-by: Jos=C3=A9 Exp=C3=B3sito <jose.exposito89@gmail.com>
-Co-developed-by: David Gow <davidgow@google.com>
-Signed-off-by: David Gow <davidgow@google.com>
-Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
-
-Changes since v5:
-https://lore.kernel.org/all/20241213081035.2069066-4-davidgow@google.com/
-- Greatly improved documentation, which is both clearer and better
-  matches the rustdoc norm. (Thanks, Miguel)
-- The examples and safety comments are also both more idiomatic an
-  cleaner. (Thanks, Miguel)
-- More things sit appropriately behind CONFIG_KUNIT (Thanks, Miguel)
-
-Changes since v4:
-https://lore.kernel.org/linux-kselftest/20241101064505.3820737-4-davidgow@g=
-oogle.com/
-- Rebased against 6.13-rc1
-- Fix some missing safety comments, and remove some unneeded 'unsafe'
-  blocks. (Thanks Boqun)
-
-Changes since v3:
-https://lore.kernel.org/linux-kselftest/20241030045719.3085147-8-davidgow@g=
-oogle.com/
-- The example test has been updated to no longer use assert_eq!() with
-  a constant bool argument (fixes a clippy warning).
-
-No changes since v2:
-https://lore.kernel.org/linux-kselftest/20241029092422.2884505-4-davidgow@g=
-oogle.com/
-
-Changes since v1:
-https://lore.kernel.org/lkml/20230720-rustbind-v1-3-c80db349e3b5@google.com=
-/
-- Rebased on top of rust-next.
-- Use the `kunit_get_current_test()` C function, which wasn't previously
-  available, instead of rolling our own.
-- (Thanks also to Boqun for suggesting a nicer way of implementing this,
-  which I tried, but the `kunit_get_current_test()` version obsoleted.)
----
- rust/kernel/kunit.rs | 66 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 66 insertions(+)
-
-diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
-index 9e27b74a605b..3aad7a281b6d 100644
---- a/rust/kernel/kunit.rs
-+++ b/rust/kernel/kunit.rs
-@@ -286,11 +286,77 @@ macro_rules! kunit_unsafe_test_suite {
-     };
- }
-=20
-+/// Returns whether we are currently running a KUnit test.
-+///
-+/// In some cases, you need to call test-only code from outside the test c=
-ase, for example, to
-+/// create a function mock. This function allows to change behavior depend=
-ing on whether we are
-+/// currently running a KUnit test or not.
-+///
-+/// # Examples
-+///
-+/// This example shows how a function can be mocked to return a well-known=
- value while testing:
-+///
-+/// ```
-+/// # use kernel::kunit::in_kunit_test;
-+/// fn fn_mock_example(n: i32) -> i32 {
-+///     if in_kunit_test() {
-+///         return 100;
-+///     }
-+///
-+///     n + 1
-+/// }
-+///
-+/// let mock_res =3D fn_mock_example(5);
-+/// assert_eq!(mock_res, 100);
-+/// ```
-+///
-+/// Sometimes, you don't control the code that needs to be mocked. This ex=
-ample shows how the
-+/// `bindings` module can be mocked:
-+///
-+/// ```
-+/// // Import our mock naming it as the real module.
-+/// #[cfg(CONFIG_KUNIT)]
-+/// use bindings_mock_example as bindings;
-+/// #[cfg(not(CONFIG_KUNIT))]
-+/// use kernel::bindings;
-+///
-+/// // This module mocks `bindings`.
-+/// #[cfg(CONFIG_KUNIT)]
-+/// mod bindings_mock_example {
-+///     /// Mock `ktime_get_boot_fast_ns` to return a well-known value whe=
-n running a KUnit test.
-+///     pub(crate) fn ktime_get_boot_fast_ns() -> u64 {
-+///         1234
-+///     }
-+/// }
-+///
-+/// // This is the function we want to test. Since `bindings` has been moc=
-ked, we can use its
-+/// // functions seamlessly.
-+/// fn get_boot_ns() -> u64 {
-+///     // SAFETY: `ktime_get_boot_fast_ns()` is always safe to call.
-+///     unsafe { bindings::ktime_get_boot_fast_ns() }
-+/// }
-+///
-+/// let time =3D get_boot_ns();
-+/// assert_eq!(time, 1234);
-+/// ```
-+pub fn in_kunit_test() -> bool {
-+    // SAFETY: `kunit_get_current_test()` is always safe to call (it has f=
-allbacks for
-+    // when KUnit is not enabled).
-+    unsafe { !bindings::kunit_get_current_test().is_null() }
-+}
-+
- #[kunit_tests(rust_kernel_kunit)]
- mod tests {
-+    use super::*;
-+
-     #[test]
-     fn rust_test_kunit_example_test() {
-         #![expect(clippy::eq_op)]
-         assert_eq!(1 + 1, 2);
-     }
-+
-+    #[test]
-+    fn rust_test_kunit_in_kunit_test() {
-+        assert!(in_kunit_test());
-+    }
- }
---=20
-2.48.1.601.g30ceb7b040-goog
+> 
+> Wouldn't it be better to keep it private until actual users appear?
 
