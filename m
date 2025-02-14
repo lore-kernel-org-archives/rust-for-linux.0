@@ -1,296 +1,372 @@
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B954F204F6E;
-	Fri, 14 Feb 2025 12:21:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739535679; cv=fail; b=SdeJ75kQDwqvGmwMjfKXoGrenTx4gxFmH2MJC7INRSlsnS43llu2WZ+eKf8aq1RM/7Y7CinRqsECAs9p3GU7NN0BIXCVbb4ccuB8AfM2zkd5fkMCiNyd9D/4Whb4uEEmqy6WtqOQNK0i4NSON2xTf83B3SGy8r21NvLhwwoiYxw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739535679; c=relaxed/simple;
-	bh=s6PfXpyfwIotrBHwI9cr2d2E5D/TkuFE56DG5zUQx6U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=LFVHUvNotivlAiymdu3EqGqOcv/8RL6W2iumiAUkCKJWTjxX/8zktWKbhItP1KZYnVxfMyifUByr6jxjiQoKMx0Rut8YQuzLhZyDN5ZEcA06i7kZioo/MvmQFzNuAN8uJYR4ds3ghKdTFZnZxdU3+3IW+1SLOhLBP9j8xWl5KeQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=om6QSdws; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=EMJom52N; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B206E2661B9;
+	Fri, 14 Feb 2025 14:41:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739544094; cv=none; b=AmmeQPwngaENtWQzSpL1MP/YyiJiPwbDSlOZbk21ygrvfPZzoH64KzTItkb1yPAUmm5Dgi/Rt7GZC6dnyVbvIN48RL9Tu+yUtp5I8Vm8flYdiEGfByv0B+DhYFaKlGUkXZQeWm/g6T2rgQf3dcR5RKw6E5ytvqyEEoYn5v5141U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739544094; c=relaxed/simple;
+	bh=pyw+BJyPn139JLUocYBhLcBKS55uFur4xdWb9MEQN8s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=m1xh7pJOhcJ7tYXDTZ1X1KzYJVKRVlh6pIj6NkZeZ6eIoxws1zQBxhkVMExePkCqXj6ltaiU6jFGijfvAQGANklxtxWv1OAJbPkl03MxagvjsY0D1U5KrOGBVw+X1zkg/3WA7iahLPUu/bJX2WT4kV7rS5cxuPfbr5Y7IQMzhjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FWrttBuP; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="om6QSdws";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="EMJom52N"
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51EBfecd018951;
-	Fri, 14 Feb 2025 12:20:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2023-11-20; bh=tbxyI5eBkfvMGRvqwFwKU69dXw26sEelJx7WIE5eBps=; b=
-	om6QSdwskiQhMtzIcHEcMUVb6iJVEoDsptoKOZOgCk+ID7b4knmnh8o7JJln4lTj
-	Guhak303p5G+Kebw6ulEn/n0VfdOiFUpgQXXhCcIMtfIs6UoF7V/XK7deKa4x1I7
-	M2bx+eO3YILHjDlrwlexd4SlUR1KjoNol9NhPrWd2hRFh4H7/y190eL24U7T6sFv
-	PtOIwjnyPw4ZwVXjwptcTZZoKUGeEzDiuhTrzpOgUgwyc6Ygca/GkGxSeUCxN8lh
-	euGzMu2MpXmhzT2e2lbalzTbE/2VBpHLdb6OGpk0SBlD1aLZbe+KBFsQZAnJaZGE
-	wabPV//zgQxjxnHt8tLOgQ==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44p0q2kkc1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 14 Feb 2025 12:20:29 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 51EBwmGr012300;
-	Fri, 14 Feb 2025 12:20:28 GMT
-Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2042.outbound.protection.outlook.com [104.47.70.42])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 44nwqd3gvx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 14 Feb 2025 12:20:28 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bgQz9mBndXT/uHmXfez4YAZWOCkqyYJYuma1fnwAoL4rB4jAWDiYVJ6w0SEHk4DEiUGqZjirolfgEFlfQrJacqO8vh0EcdgT/MycYZ+Sn46x+BgVK+ANvutYpS3LhIvPUWMDHQBYkgtPFRtVvc8iHHlqESTUV1QmvjjXNxTRjC/jLsoayKz8y66pw7Iomnttz2BYkPgKfXYdN4rsMQ3W0rzouMlyr5cftsQNemQt3aY8CX5QZVAHV12KIN6YDdpqsBjpERAnfttGT/q4JVZ6+tZkbdz2/wlfYdjK1f1/9U7f5+WIwqg9mvKsHPbVcrU4l/T1RsyLG3Anb2+SQSv6iw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tbxyI5eBkfvMGRvqwFwKU69dXw26sEelJx7WIE5eBps=;
- b=yUl+6lu+UE/WrK8Xe94sMzxlZkusjIzaFRW2wJtFYQDDDnXl8u0AW6f+Aj7/etVWfTh9X5o+AXnNGGtUjWnWHdGEYUi+MlH8t4zakdhJXLq4C51E7Hd5XD1iEx5OwMQpYc8rx5Xrs62ULgzBcHzEMRYNTBiGV2Yv2Ubb6ynx4C91u+tvES8FOKsQceKq838xOE124PCxi87mPip6uvptpwUO2zbydyzXwPiQ29In3iMWaEZbjUVsALN9Pk27BXiNXWDPb6iIPb7TrVAz2SFNdzityB/+euhl6bEuRalEUBs2IK2nqiiTryy3YwUqZcAgrvl6xMpl0RD4TNSucKaFvQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FWrttBuP"
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-307c13298eeso20828961fa.0;
+        Fri, 14 Feb 2025 06:41:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tbxyI5eBkfvMGRvqwFwKU69dXw26sEelJx7WIE5eBps=;
- b=EMJom52NzQ6SZx0PkqlSS06w2CVIOI3tN0SYWwTpRWp0z/b/z8n1hOmrh56HfqTcBvaJzXZhWQ+jBTsWO/Yq48FEiKWurJ0bjzsbuWbyptgwTrzP0vk8xqh/cuKqJp5rjwMA8UYvqsIXqxkPAAkCXXDGKpP/XdYj3ZhT3zT2rqc=
-Received: from BYAPR10MB3366.namprd10.prod.outlook.com (2603:10b6:a03:14f::25)
- by DM6PR10MB4332.namprd10.prod.outlook.com (2603:10b6:5:220::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.17; Fri, 14 Feb
- 2025 12:20:24 +0000
-Received: from BYAPR10MB3366.namprd10.prod.outlook.com
- ([fe80::baf2:dff1:d471:1c9]) by BYAPR10MB3366.namprd10.prod.outlook.com
- ([fe80::baf2:dff1:d471:1c9%4]) with mapi id 15.20.8398.025; Fri, 14 Feb 2025
- 12:20:23 +0000
-Date: Fri, 14 Feb 2025 12:20:18 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>,
-        Vlastimil Babka <vbabka@suse.cz>, John Hubbard <jhubbard@nvidia.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Andreas Hindborg <a.hindborg@kernel.org>,
-        Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
-        Balbir Singh <balbirs@nvidia.com>
-Subject: Re: [PATCH v14 0/8] Rust support for mm_struct, vm_area_struct, and
- mmap
-Message-ID: <30ffd737-d0aa-44aa-a647-686e536ac548@lucifer.local>
-References: <20250213-vma-v14-0-b29c47ab21f5@google.com>
- <8130a6d5-a7e5-402b-b05c-2d0703ac1ed2@lucifer.local>
- <CANiq72nBx3cRTUC9HWVR8K64Jbq3GCVMss5wuABzra3OLhRUQw@mail.gmail.com>
- <c8e78762-1429-4ab6-9398-ce52370eec08@lucifer.local>
- <CANiq72mKyvoyk_tgbMKUdzs-sJOoyEH7f1M9ipiET+XYgwCqRw@mail.gmail.com>
- <2d132129-fdf7-404d-b1f1-8ee87b838dcf@lucifer.local>
- <b6b5tnaw6vnuib7nzcm7ajszxiptqz3i2hex5yengzbsirztks@l3coijkqwtpb>
- <CAH5fLgjMC2Q1tjuVtbhMvU-pmEsn1Ai4=AAB3Tm8HTWi7PFHfg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLgjMC2Q1tjuVtbhMvU-pmEsn1Ai4=AAB3Tm8HTWi7PFHfg@mail.gmail.com>
-X-ClientProxiedBy: LO4P265CA0081.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2bd::9) To BYAPR10MB3366.namprd10.prod.outlook.com
- (2603:10b6:a03:14f::25)
+        d=gmail.com; s=20230601; t=1739544091; x=1740148891; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Oe9/eEqMmqvNor8cwQSKhskL7gHhmbo4tvwhBhdYuso=;
+        b=FWrttBuPyP8msFQhheXvnBAwwI43oAWBaT5ssgPiAw+Ktwaxl+eu4o2weg8AGPg4Dt
+         T0Io64eChE8Ds4ZAwA58g5fKk1Ax+7CoFeG2ZUTFNpvsWCOdPfRbMSx8HOwb0UfYWo8G
+         kHP6XPvnftZlKpHOFrqrNovFlcZY22wfhNye4nv3l3WUYT9iV93rvhe83HzeHq06hB01
+         hCUlIqY5hHmELjgZGyXSqC27ziutv8hELUWfLHvGE+KsonngT9aOD5C5LuiftvgB4jtt
+         IkT7hmqntyt5vZyF1lBvu9pd4QvhM+SBlTTgPdsu4sfVge458+F4hHQ+cRyWULlF9q2O
+         WENg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739544091; x=1740148891;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Oe9/eEqMmqvNor8cwQSKhskL7gHhmbo4tvwhBhdYuso=;
+        b=QnPRuDzuK43espfOswxL0lU40gwyUaKykSfCnQDYTmLcGZ2qGZaFrK/seAVMOdprTx
+         fHBs8UqgBPOK6kejphRjMDpdMgxN5J4vPBxTnMOGWpReLIf2KgSExqwdyzAz2jcIktQL
+         0QBflD3ugvNbUIbuqcIGkITOLVe4eOczHAIlof4T2xHZlT0a+dubuaKLchNxJwHz+i8J
+         3hs1/qyt3kqAJK2dKKulbtGPi1SHy6/nmEEAe32/Jwl60mg3/pr6Y9gWTMYhQ7WCoI6E
+         awrQnQEPFHpRs2DMOB1CgCUZhAZb4ow/+Y9+O4lGtK5GvpTkmSZTQhNd5D6vVrDmzYVa
+         3gpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUOZC3KIkIxVq+QUxRYPYwxbG8oEvJIPpjIDO05VUiAoaAAIPtgZir9plKrp6aN3KL4sYoASqCOgtAsYJWS3u0Q@vger.kernel.org, AJvYcCVmLv6BC0PEXANJ0fc4LPqNXQRIvehwK41I2FVYkW4ajz+yRkJn0alC3NQuGIOqyD6uxyI31lkxq3QXzrQ=@vger.kernel.org, AJvYcCXiTij1ywVEeplfEOj83LipcrTVXCzGctEiC35f3WERk+gJjwHOp+vJOEjNfWZLLyFEDMcWYiwOA883yRvPPo0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrTLjKL+IRCLgeKF9GgufEmGIBCA7Wzkb64ve4rqd2taCyFDdM
+	wgVr4HRiwRrb5wo82e3bLIWgsQDu0yd4x4CLBDelaSco3GKOkWquRMWor1kO3XRhsAbYIoid0T2
+	l7IyMoxNOCaEUY/8OpmJnTtEFwV8=
+X-Gm-Gg: ASbGnctbPKIS3wVaAAOjtSA9ulT8XeVljRKGou/sTPSIGFLQ88CUIKBbQS/AyyRsAf6
+	we6aygm7QtNtFmu0vQwH1cX8an79KcbubEGrnjCjni+NYVT9+Xa+MsihEmT2A1KWI07dLjoNJlE
+	hyZxDXztyiqTk2ZCri4vSdn4WluBgCzec=
+X-Google-Smtp-Source: AGHT+IEHP1/ou32oGaJo+ui+Aoc0iAWhMsZ+zjW+y2I1QHaXj2d7iOxXdc2cExE7NP4Px14pEOsLVfeB6zsuqBbtkuw=
+X-Received: by 2002:a2e:9648:0:b0:308:eb31:df9c with SMTP id
+ 38308e7fff4ca-3090f11c8e5mr21047021fa.1.1739544090444; Fri, 14 Feb 2025
+ 06:41:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR10MB3366:EE_|DM6PR10MB4332:EE_
-X-MS-Office365-Filtering-Correlation-Id: cc3099e4-073d-4f04-3e82-08dd4cf1f4e6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SGo4QnhTQTV2clk4Wlh5ZXZTYVk2L3FtbXFZTXl0UWxPd1N4T2ZIZUpQMUx0?=
- =?utf-8?B?ZWE4NUMrZDdjRnVTZmlscTFNVGovc3JzaWNtZXZHdVNEMmxGZklReTYyYzVX?=
- =?utf-8?B?cTdYQUNCNDd6MmNVckRaSXhLM3dTb0wwYmhRS21LK0plNWpGNitmT0hqNjhz?=
- =?utf-8?B?MDAza0NKdTJpenVnWUgxZ291bG1tTWVueWJ5YkY5YVpDaTdiU05KVGFiL0xQ?=
- =?utf-8?B?N0dJV0wzbUVqM3QwTU9mRHlMeHJVYko5SDFlbjc1eTloVTlmeFVnSFU0L1N2?=
- =?utf-8?B?ZG1YTW51SE05M2h0UjdMRGRxM1FvdkhMY2ZsSThkTlU0ZUtyTVpsUUo5ZWdp?=
- =?utf-8?B?QVAzMzBUNU1aOWtNTm9rT0V5eFk2bHVCYVY4ZkRQaHU4SS80SC96Z1h4ZHdF?=
- =?utf-8?B?aVdFbGFBeEZ1YXRzeTZFcGtFdjloZ3paQkhWMG1NZGxhcDFTS29tZXRnbEFU?=
- =?utf-8?B?Sk41OUNNRXJweVlxT0hPYWE4cWR2QUVUT3JFRUtTL2hzUElrUlFiODBoR2Rh?=
- =?utf-8?B?WXdVNy9BZC9mS2Y1YmpWYy9KV2o2VVQzTndXZ1VKMmUyQzNzempPOTB2R2Iv?=
- =?utf-8?B?OVMyWGJGTVorS25mSzR3MTRtUVBSeDMrUWppQkhwV1NNY0thRmUrVkhSUmpp?=
- =?utf-8?B?eExJczJnZDlOdDk3cHF6aEpsdzlpSEl2enhNR1Yxd085ckphR09KaC9ldUZX?=
- =?utf-8?B?Ui9zY0ZiSkNSc0VHOUNRL2JkV2ptclRPcCtXN09oN24zQ2NIQStoVXlGN2ww?=
- =?utf-8?B?elIyNEoycmxtWTNSTEhIbitFTUNMZHYwMU9tS2lVUC9Cb3o3SWlQbCs1aC9q?=
- =?utf-8?B?OE1yL3Q3YTBQbXRLT1JBbFp3SEtFREx1cXNTVUR4dVdqYXBQbmR0Z0w0c3Bv?=
- =?utf-8?B?MlVOd0MzbGRwa1czYnI3dUpSV2pUODNocVpyNnIrN1huQTBBT2lSQ3VBN01q?=
- =?utf-8?B?T3JhSllJTzFoT1dYWnhrVk1ZNk1KQ0ZWTm45RjdiSGsrZ0x3N29jMlpXaXpR?=
- =?utf-8?B?N0w4YTJsMUxLaFBCeGU1S3dPUHNIV01jZ3o1U3g1ZXN0MER1M09HeFdqaFFX?=
- =?utf-8?B?UTdKWWhoVXBMNStCZXN1TVltWkFzN05OYlppTm5wdnZ6THFWQVJGVTU0Z0lR?=
- =?utf-8?B?RUZzeU9sWDhRb01NMXhwdFpmTCtSU2JUV1VMU1B0TWJvSk5JNjYzS01LOS9u?=
- =?utf-8?B?eHZTL1BOK2tjTXFWa0VrSmxkVFJ4cVp0d1BYTUM0UHJyUUc5MldLZTkvWDdt?=
- =?utf-8?B?RlhTMDFlK1FUeSsvWVVHUjM0Ump4aHFYdDQwa3BmZ3VxWjNaTnRNOS9BVkly?=
- =?utf-8?B?WnVrd1hsTk1HRVZUcERlK2pCeGE2VXo3emU1aW5uOFVqSXdkN0FMU0d6SW5W?=
- =?utf-8?B?WWNnM1ZRNXpaUHd4NFNhRWV3eC9oV2dmdU9wbUY5R2tncXNHS3F6eTg3Mkw5?=
- =?utf-8?B?eVlKOEU4UmRXRWVzNW1TL1MxT05ib0VzK1plNXJwWWVsVzNSVnplVTdFMDB3?=
- =?utf-8?B?YmljTmFLYmVORkFPc3FVenVEa1pwVWQ2aGVhS2Rpc0pkeUlYaW50UU5oS1Zr?=
- =?utf-8?B?cmJZNHBSa05LK0VYYXh3K3dESENxOFFxZFFIeStXbHhvSnR0NXlvNEhyVFhq?=
- =?utf-8?B?U2N2KzkwUHh5TkhoOUhSY1pmR0dwVHdwdzZ2c1l4MzY5THlLV3N3UWI3U0oy?=
- =?utf-8?B?NUIvNmx1emQzWTRNczBSOVhFRExlSzZQbVlScDlGQkNlVGU0OEFZMFViWVJF?=
- =?utf-8?Q?kGg0hs4YEAz9ftASWDswCUtJIzNH4dJ7HDxjTPD?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR10MB3366.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WWwrY3FDUW9VQUxUclFjeDBjM3NUM1huWGU0N2ZVbnNOdWJEQ08vTG15UG8x?=
- =?utf-8?B?L1FubVRWaXdNQ0wxcVBaOHdvaTl3YTNNdHFUTjZlb2NRbFg4TDA3Wlo1dE93?=
- =?utf-8?B?MXdWTVFHQTRzMjgrWWt3OG9McktwVlBETzV1VWQrNVhITWhBNm5Lb3dzYzhk?=
- =?utf-8?B?clpKb1c0YUJXbSt4SVRvamhNNXdRaE1UeVE1WkVhT2QycWdDRWVjM2R0dlAy?=
- =?utf-8?B?QnB6NUVhdGlicXVHK0dKY1lNejA5NFAyZ0RYSmxIUStZSVltZ0s3V29SNmZT?=
- =?utf-8?B?TmRoMThrMDhldHpLWU15Nm0rY1AxS3dwTUE1SjNHYjd2dy9qSHYzNi8raWpD?=
- =?utf-8?B?RmRxdlVpY1F2ajN5TDFiSUdYU0IvanBCYzFpOWFnZzNkR1Z1SG1HV2E2ck9Z?=
- =?utf-8?B?dUt6Sy9sVkJSdkVUbXlDZ2RHOE9ONlRlcXl2MGs5bmRGSmxuWlF6WE9jcVF4?=
- =?utf-8?B?UmlhRGU0TEtRUUFQZVJtTTAxaDM2YjlNWUMrcGhEMVRoelhxcE04YW5aWFRQ?=
- =?utf-8?B?ZTB6NTVEWDNhZ0Z3YVh1bVJ5TnNucTFha216SHFVUGtaZENja2Yzc1ZSbFYz?=
- =?utf-8?B?NkJlT3FuT3NlZmk4eVRnTUltZzFqTGZoZG8zcWtPWnhocFFlUnpFZFZTRmFR?=
- =?utf-8?B?cEFKVmZhSVo3d2JGckdNeFRBdGFiUlFQSGpiLzVsTGJaOHMxd1VRR0lMWUht?=
- =?utf-8?B?WmJ6QUZ4Umd1bDNnb1o4Z0M1R255ckVMd3k4N0tuRzlubnh0S0xBbjlnY2E3?=
- =?utf-8?B?YzQ5NHlYKzNqeHNXN3BsV29Kblk4OS96eFNDUDdiSGRvVzNSYVZqSnhyaG94?=
- =?utf-8?B?L3U2clRndU5yVERPd0NJVmJyRkI0Z3pZaFBiNzdLcDhVbXlHd1RXaEFmd1h2?=
- =?utf-8?B?K2NPcEphaVRJZjBqTkM4VWgzWmZobEhQMGZ3bk1KSDZtZk1YalZqbnUzV2dz?=
- =?utf-8?B?ZFZidjNTUXdjL1JSamdyRmtXRUp4ZGRvZXJWZmlSeCtPME43aVU4OUxaNWwy?=
- =?utf-8?B?ek5YK2c5dHN4TWxkTlFwRGtzL2psRzlKbmJhUEhKK3MxcUZSWTRNTjkybkJx?=
- =?utf-8?B?aHZQVk0wSmV4UWh4RUxMYlozZmwvZ25Sb2FyTHEvMG5RNENNbGFrVUpJK2RS?=
- =?utf-8?B?bzFPSTlYZU9SSnBLT0QzTWc2Z2Q0Nzc4WVkwcUd2Z3FCRC9sWEw1SVlEdUpM?=
- =?utf-8?B?WnltVGxWTzQ5Z2N2cDFNV3dHU2I4cWxwWEFwb2IvL0g1OTd4eG0za2htdkRY?=
- =?utf-8?B?Zmpjck5lU2xwY081MUtNSVpEV3RNZmlkQ1hiOUNQaFJyaVNWSGNSR0t0UXFH?=
- =?utf-8?B?T1RPVTByQm1MU0o1Y3QyUmRXRXB4SHhuU1grZ3liM0dYOE1JZ3BJWHorelFF?=
- =?utf-8?B?Vm9paTJCRGJQSUJwMS8xaG9TUFUxaEFpVDlsTlVsUTUyTlNJOTVVd2lnMjNS?=
- =?utf-8?B?RnhMVkNZVVhCeE9JQ0dFbW0vcm9oSktLeGNLL3NIRnk5Zm9tbzZGZm0yUkp0?=
- =?utf-8?B?NUlFSEplV1JKNmlwaTRxV21Tb2FOdmVOZ1J6UkQwUXYzaUxDOXFrWjJuU2Z6?=
- =?utf-8?B?dDRlQ25rY3VDQTVjRThuRE43TzRGa2pNTjdnSHZXYlFCb01ZSUFJUmJCYmhL?=
- =?utf-8?B?Z256REJnbGZNN0o2NEdkdE9tR0RxcXlZZEMzSkQydDM0dU1FMkJ6Rm1YWk9t?=
- =?utf-8?B?dVB3QWNJU2xPa3hnVEtrZ05EVlhBS081Wmgza3BZNHM2VVZ5eEJqQ2V1ZXBZ?=
- =?utf-8?B?NVh3cHhVa0xxQUVCN3ZBWWFjM0RuNmZ1MWtOVUJNeDZlcUlRY2ZjR1pIcSt4?=
- =?utf-8?B?SHNYU1g5enJBWGJ5WE1KQzRtMzd5cFdxSy9ka1AvbnFuWFpKVVFGdGlWaFdx?=
- =?utf-8?B?Q0l0bWEvdUZncjc4QnRqZncxZUQxYmFndlBHUTNZL1c3TEtpNGR2dzdNNkNW?=
- =?utf-8?B?TWU4ZnRoUkdnR1pTcXZZQ29lR2lvVUFPcFBPdWEyVGJTT05wWTNpd01aTWkr?=
- =?utf-8?B?U1FpbXZjU2g1YXc3UzVYMHQ2NWJSanpMN1dsQ3ZzSUdYWUZGQzJjNmhxbDV5?=
- =?utf-8?B?MzVLNkUwQXNSR3ZDZnE4bWFTT1ppNEF2ajhsRldSaHJyYXRYb0tTbTlLVktw?=
- =?utf-8?B?S1RaUTBlYjRLdjVJV2w4dkJvaitWS1BXU1VnQUJxdU80RnNWME9zVWZPNVJY?=
- =?utf-8?B?MWc9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	lAtqTt7Nro4I5IX+c4Q2G+4MkrDchKmzuHmsL63KPYKmVNgd/ZW9nqjtQU0HlcO5UyM7eybaI45UbSYt6IN87PPVAUppkPeoYv1eceknnsf+u1SX9ggy+9gAz9L14OmBcPl/XIq1L5U7pEDAKbKM5BbDeWLamVNdqM7ImTb7dFNElZY+srdFLkRs0O/35SEVAv7EGn7myoBzhKypJ2E8XKrUzlPLIXAH2mL4+YnavRp5pUAvWU15h2qzEVNOh6qO43J7FgOr3WoHBmVd+HPrKZl5Yy7XNTSqitMEoj0XyGMcCfz3zPXAtWS07IpjZUfG/s/GU9stTCYw36lljSYAcf8yyR6ijRJ5w6EA/iNUrSKpBcocTffzTtds+HvUYSAyl4LOdZVJE4ZjoKY1NlyWARNG3qIYoiEhoxqXABFlutkcu2+CkZnaknuPalPUp2HMF7B1sQGgwwMHe8v4+BbEn7HF0KiJrsXWStK/5zwpziv2NdAdPU4/x+R/CTu+bAxnMdIvVNkiaS7PVAJlr4TLLunbywtNWMnyU5btlE97v6BEzuFePyXwwql/RuybeobgYc84ZWtWv0BZ2pEIotOPzGPPhnvgvsZrXtgGo5snJsc=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cc3099e4-073d-4f04-3e82-08dd4cf1f4e6
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR10MB3366.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2025 12:20:23.8975
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aqMnPB9jkeEdR4lX9oIvR687abBwjQfJcEbw4xTt9LfcWMZpXeA0ZcI7aUagAfMaG6FafJTj1C/31a/mEfBDeRAaTWeFKmIDPDarx9nUNUk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR10MB4332
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-14_05,2025-02-13_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 malwarescore=0
- mlxlogscore=999 mlxscore=0 spamscore=0 suspectscore=0 adultscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2501170000 definitions=main-2502140090
-X-Proofpoint-GUID: NUeFfqY2t854J-2g-X4Lip8p03gZg7x0
-X-Proofpoint-ORIG-GUID: NUeFfqY2t854J-2g-X4Lip8p03gZg7x0
+References: <20250214074051.1619256-1-davidgow@google.com> <20250214074051.1619256-2-davidgow@google.com>
+In-Reply-To: <20250214074051.1619256-2-davidgow@google.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Fri, 14 Feb 2025 09:40:54 -0500
+X-Gm-Features: AWEUYZn94LVObzk-67NyV5Edu12iMHyaHU-UZd5O3IiVN77rUgILpWhQIsbqA9g
+Message-ID: <CAJ-ks9kw7FTJ7EcHy8B+-1XFK8J4a-DuHLJhP1f3hPy10nOJZA@mail.gmail.com>
+Subject: Re: [PATCH v6 1/3] rust: kunit: add KUnit case and suite macros
+To: David Gow <davidgow@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>, 
+	Rae Moar <rmoar@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Benno Lossin <benno.lossin@proton.me>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Matt Gilbride <mattgilbride@google.com>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, kunit-dev@googlegroups.com, 
+	linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 14, 2025 at 12:56:29PM +0100, Alice Ryhl wrote:
-> On Thu, Feb 13, 2025 at 8:46 PM Liam R. Howlett <Liam.Howlett@oracle.com> wrote:
-> >
-> > * Lorenzo Stoakes <lorenzo.stoakes@oracle.com> [250213 07:16]:
-> > > On Thu, Feb 13, 2025 at 01:03:04PM +0100, Miguel Ojeda wrote:
-> > > > On Thu, Feb 13, 2025 at 12:50 PM Lorenzo Stoakes
-> > > > <lorenzo.stoakes@oracle.com> wrote:
-> > > > >
-> > > > > Right, I don't mean the rust subsystem, I mean designated rust
-> > > > > maintainers. The point being that this won't add workload to Andrew, nor
-> > > > > require him nor other mm C people to understand rust.
-> > > >
-> > > > Sounds good, and apologies for being pedantic, but given the recent
-> > > > discussions, I thought I should clarify just in case others read it
-> > > > differently.
-> > > >
-> > > > In the same vein, one more quick thing (that you probably didn't mean
-> > > > in this way, but still, I think it is better I add the note, sorry): I
-> > > > don't think it is true that it will not add workload to Andrew or MM
-> > > > in general. It always adds some workload, even if the maintainers
-> > > > don't handle the patches at all, since they may still need to perform
-> > > > a small change in something Rust related due to another change they
-> > > > need to do, or perhaps at least contact the Rust sub-maintainer to do
-> > > > it for them, etc.
-> > > >
-> > > >     https://rust-for-linux.com/rust-kernel-policy#didnt-you-promise-rust-wouldnt-be-extra-work-for-maintainers
-> > > >
-> > > > Cheers,
-> > > > Miguel
-> > >
-> > > Ack, for the record I'm happy to help with any work that might come up.
-> >
-> > Ack, here too.
-> >
-> > Without the drama, I'm not sure how we'd feel so alive :P
-> >
-> > Can I be added to whatever list so I can be Cc'ed on the changes on your
-> > side?
+Very excited to see this progress.
+
+On Fri, Feb 14, 2025 at 2:41=E2=80=AFAM David Gow <davidgow@google.com> wro=
+te:
 >
-> I'm happy to format the entries whichever way you all prefer, but for
-> example it could be a new MAINTAINERS entry below MEMORY MAPPING along
-> these lines:
+> From: Jos=C3=A9 Exp=C3=B3sito <jose.exposito89@gmail.com>
 >
-> MEMORY MANAGEMENT/MAPPING [RUST]
-
-I think a general:
-
-MEMORY MANAGEMENT [RUST]
-
-works better here as it ought to (at least for the time being) cover off all
-rust mm stuff.
-
-> M: Alice Ryhl <aliceryhl@google.com>
-
-I wonder if we should have Andrew as a co-maintainer here so people also
-send to Andrew also for merge? (and obviously as the mm maintainer he may
-have commentary).
-
-> R: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-
-Am happy to be a reviewer this is fine!
-
-> R: Liam R. Howlett <Liam.Howlett@oracle.com>
-
-I am sure Liam is also, but of course he can comment himself :)
-
-> L: linux-mm@kvack.org
-> L: rust-for-linux@vger.kernel.org
-> S: Maintained
-
-Probably need these here too if Andrew is taking in his tree:
-
-W:	http://www.linux-mm.org
-T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-> F: rust/helpers/mm.c
-> F: rust/kernel/mm.rs
-> F: rust/kernel/mm/
+> Add a couple of Rust const functions and macros to allow to develop
+> KUnit tests without relying on generated C code:
 >
-> Alice
+>  - The `kunit_unsafe_test_suite!` Rust macro is similar to the
+>    `kunit_test_suite` C macro. It requires a NULL-terminated array of
+>    test cases (see below).
+>  - The `kunit_case` Rust function is similar to the `KUNIT_CASE` C macro.
+>    It generates as case from the name and function.
+>  - The `kunit_case_null` Rust function generates a NULL test case, which
+>    is to be used as delimiter in `kunit_test_suite!`.
+>
+> While these functions and macros can be used on their own, a future
+> patch will introduce another macro to create KUnit tests using a
+> user-space like syntax.
+>
+> Signed-off-by: Jos=C3=A9 Exp=C3=B3sito <jose.exposito89@gmail.com>
+> Co-developed-by: Matt Gilbride <mattgilbride@google.com>
+> Signed-off-by: Matt Gilbride <mattgilbride@google.com>
+> Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Co-developed-by: David Gow <davidgow@google.com>
+> Signed-off-by: David Gow <davidgow@google.com>
+> ---
+>
+> Changes since v5:
+> https://lore.kernel.org/all/20241213081035.2069066-2-davidgow@google.com/
+> - Rebased against 6.14-rc1
+> - Several documentation touch-ups, including noting that the example
+>   test function need not be unsafe. (Thanks, Miguel)
+> - Remove the need for static_mut_refs, by using core::addr_of_mut!()
+>   combined with a cast. (Thanks, Miguel)
+>   - While this should also avoid the need for const_mut_refs, it seems
+>     to have been enabled for other users anyway.
+> - Use ::kernel::ffi::c_char for C strings, rather than i8 directly.
+>   (Thanks, Miguel)
+>
+> Changes since v4:
+> https://lore.kernel.org/linux-kselftest/20241101064505.3820737-2-davidgow=
+@google.com/
+> - Rebased against 6.13-rc1
+> - Allowed an unused_unsafe warning after the behaviour of addr_of_mut!()
+>   changed in Rust 1.82. (Thanks Boqun, Miguel)
+> - Fix a couple of minor rustfmt issues which were triggering checkpatch
+>   warnings.
+>
+> Changes since v3:
+> https://lore.kernel.org/linux-kselftest/20241030045719.3085147-4-davidgow=
+@google.com/
+> - The kunit_unsafe_test_suite!() macro now panic!s if the suite name is
+>   too long, triggering a compile error. (Thanks, Alice!)
+>
+> Changes since v2:
+> https://lore.kernel.org/linux-kselftest/20241029092422.2884505-2-davidgow=
+@google.com/
+> - The kunit_unsafe_test_suite!() macro will truncate the name of the
+>   suite if it is too long. (Thanks Alice!)
+> - We no longer needlessly use UnsafeCell<> in
+>   kunit_unsafe_test_suite!(). (Thanks Alice!)
+>
+> Changes since v1:
+> https://lore.kernel.org/lkml/20230720-rustbind-v1-1-c80db349e3b5@google.c=
+om/
+> - Rebase on top of rust-next
+> - As a result, KUnit attributes are new set. These are hardcoded to the
+>   defaults of "normal" speed and no module name.
+> - Split the kunit_case!() macro into two const functions, kunit_case()
+>   and kunit_case_null() (for the NULL terminator).
+>
+> ---
+>  rust/kernel/kunit.rs | 121 +++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 121 insertions(+)
+>
+> diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
+> index 824da0e9738a..d34a92075174 100644
+> --- a/rust/kernel/kunit.rs
+> +++ b/rust/kernel/kunit.rs
+> @@ -161,3 +161,124 @@ macro_rules! kunit_assert_eq {
+>          $crate::kunit_assert!($name, $file, $diff, $left =3D=3D $right);
+>      }};
+>  }
+> +
+> +/// Represents an individual test case.
+> +///
+> +/// The `kunit_unsafe_test_suite!` macro expects a NULL-terminated list =
+of valid test cases.
+> +/// Use `kunit_case_null` to generate such a delimiter.
 
-But in general with tweaks I am happy for this to be added to MAINTAINERS
-_personally_, am I but a minor figure however, it is up to Andrew
-ultimately :)
+Can both of these be linkified? [`kunit_unsafe_test_suite!`] and
+[`kunit_case_null`]. There are more instances below.
+
+> +#[doc(hidden)]
+> +pub const fn kunit_case(
+> +    name: &'static kernel::str::CStr,
+> +    run_case: unsafe extern "C" fn(*mut kernel::bindings::kunit),
+> +) -> kernel::bindings::kunit_case {
+> +    kernel::bindings::kunit_case {
+> +        run_case: Some(run_case),
+> +        name: name.as_char_ptr(),
+> +        attr: kernel::bindings::kunit_attributes {
+> +            speed: kernel::bindings::kunit_speed_KUNIT_SPEED_NORMAL,
+> +        },
+> +        generate_params: None,
+> +        status: kernel::bindings::kunit_status_KUNIT_SUCCESS,
+> +        module_name: core::ptr::null_mut(),
+> +        log: core::ptr::null_mut(),
+
+These members, after `name`, can be spelled `..kunit_case_null()` to
+avoid some repetition.
+
+> +    }
+> +}
+> +
+> +/// Represents the NULL test case delimiter.
+> +///
+> +/// The `kunit_unsafe_test_suite!` macro expects a NULL-terminated list =
+of test cases. This
+> +/// function returns such a delimiter.
+> +#[doc(hidden)]
+> +pub const fn kunit_case_null() -> kernel::bindings::kunit_case {
+> +    kernel::bindings::kunit_case {
+> +        run_case: None,
+> +        name: core::ptr::null_mut(),
+> +        generate_params: None,
+> +        attr: kernel::bindings::kunit_attributes {
+> +            speed: kernel::bindings::kunit_speed_KUNIT_SPEED_NORMAL,
+> +        },
+> +        status: kernel::bindings::kunit_status_KUNIT_SUCCESS,
+> +        module_name: core::ptr::null_mut(),
+> +        log: core::ptr::null_mut(),
+> +    }
+> +}
+> +
+> +/// Registers a KUnit test suite.
+> +///
+> +/// # Safety
+> +///
+> +/// `test_cases` must be a NULL terminated array of valid test cases.
+> +///
+> +/// # Examples
+> +///
+> +/// ```ignore
+> +/// extern "C" fn test_fn(_test: *mut kernel::bindings::kunit) {
+> +///     let actual =3D 1 + 1;
+> +///     let expected =3D 2;
+> +///     assert_eq!(actual, expected);
+> +/// }
+> +///
+> +/// static mut KUNIT_TEST_CASES: [kernel::bindings::kunit_case; 2] =3D [
+> +///     kernel::kunit::kunit_case(kernel::c_str!("name"), test_fn),
+> +///     kernel::kunit::kunit_case_null(),
+> +/// ];
+> +/// kernel::kunit_unsafe_test_suite!(suite_name, KUNIT_TEST_CASES);
+> +/// ```
+> +#[doc(hidden)]
+> +#[macro_export]
+> +macro_rules! kunit_unsafe_test_suite {
+> +    ($name:ident, $test_cases:ident) =3D> {
+> +        const _: () =3D {
+> +            const KUNIT_TEST_SUITE_NAME: [::kernel::ffi::c_char; 256] =
+=3D {
+> +                let name_u8 =3D ::core::stringify!($name).as_bytes();
+
+This can be a little simpler:
+
+let name =3D $crate::c_str!(::core::stringify!($name)).as_bytes_with_nul();
+
+> +                let mut ret =3D [0; 256];
+> +
+> +                if name_u8.len() > 255 {
+> +                    panic!(concat!(
+> +                        "The test suite name `",
+> +                        ::core::stringify!($name),
+> +                        "` exceeds the maximum length of 255 bytes."
+> +                    ));
+> +                }
+> +
+> +                let mut i =3D 0;
+> +                while i < name_u8.len() {
+> +                    ret[i] =3D name_u8[i] as ::kernel::ffi::c_char;
+> +                    i +=3D 1;
+> +                }
+
+I'd suggest `ret[..name.len()].copy_from_slice(name)` but
+`copy_from_slice` isn't `const`. This can stay the same with the
+now-unnecessary cast removed, or it can be the body of
+`copy_from_slice`:
+
+                // SAFETY: `name` is valid for `name.len()` elements
+by definition, and `ret` was
+                // checked to be at least as large as `name`. The
+buffers are statically know to not
+                // overlap.
+                unsafe {
+                    ::core::ptr::copy_nonoverlapping(name.as_ptr(),
+ret.as_mut_ptr(), name.len());
+
+                }
+
+> +
+> +                ret
+> +            };
+> +
+> +            #[allow(unused_unsafe)]
+> +            static mut KUNIT_TEST_SUITE: ::kernel::bindings::kunit_suite=
+ =3D
+> +                ::kernel::bindings::kunit_suite {
+> +                    name: KUNIT_TEST_SUITE_NAME,
+> +                    // SAFETY: User is expected to pass a correct `test_=
+cases`, given the safety
+> +                    // precondition; hence this macro named `unsafe`.
+> +                    test_cases: unsafe {
+> +                        ::core::ptr::addr_of_mut!($test_cases)
+> +                            .cast::<::kernel::bindings::kunit_case>()
+> +                    },
+
+This safety comment seems to be referring to the safety of
+`addr_of_mut!` but this was just a compiler limitation until Rust
+1.82, right? Same thing below on `KUNIT_TEST_SUITE_ENTRY`.
+
+Can we also narrow the `#[allow]`? This seems to work:
+
+                    #[allow(unused_unsafe)]
+                    // SAFETY: ...
+                    test_cases: unsafe {
+                        ::core::ptr::addr_of_mut!($test_cases)
+                            .cast::<::kernel::bindings::kunit_case>()
+                    },
+
+> +                    suite_init: None,
+> +                    suite_exit: None,
+> +                    init: None,
+> +                    exit: None,
+> +                    attr: ::kernel::bindings::kunit_attributes {
+> +                        speed: ::kernel::bindings::kunit_speed_KUNIT_SPE=
+ED_NORMAL,
+> +                    },
+> +                    status_comment: [0; 256usize],
+
+I don't think you need the usize hint here, there's always a usize in
+the length position.
+
+> +                    debugfs: ::core::ptr::null_mut(),
+> +                    log: ::core::ptr::null_mut(),
+> +                    suite_init_err: 0,
+> +                    is_init: false,
+> +                };
+> +
+> +            #[used]
+> +            #[link_section =3D ".kunit_test_suites"]
+
+This attribute causes the same problem I describe in
+https://lore.kernel.org/all/20250210-macros-section-v2-1-3bb9ff44b969@gmail=
+.com/.
+That's because the KUnit tests are generated both on target and on
+host (even though they won't run on host). I don't think you need to
+deal with that here, just pointing it out. I think we'll need a cfg to
+indicate we're building for host to avoid emitting these attributes
+that only make sense in the kernel.
+
+> +            static mut KUNIT_TEST_SUITE_ENTRY: *const ::kernel::bindings=
+::kunit_suite =3D
+> +                // SAFETY: `KUNIT_TEST_SUITE` is static.
+> +                unsafe { ::core::ptr::addr_of_mut!(KUNIT_TEST_SUITE) };
+
+This is missing the `#[allow(unused_unsafe)]` (it appears in the next
+patch). This means this commit will not compile on bisection.
+
+> +        };
+> +    };
+> +}
+> --
+> 2.48.1.601.g30ceb7b040-goog
+>
+>
+
+Global note: it seems more customary to use crate:: and $crate::
+instead of kernel:: and ::kernel in functions and macros,
+respectively.
+
+Cheers.
+
+
+
+
+Tamir
