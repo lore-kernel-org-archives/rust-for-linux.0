@@ -1,287 +1,232 @@
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2081.outbound.protection.outlook.com [40.107.223.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4D417E;
-	Fri, 14 Feb 2025 21:06:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.81
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739567205; cv=fail; b=XxzU+iRlLs8+sPejOB9PEgOVsQUXVDN/ptSJkfHOv9pCCckhO4mzrUF4NW9UUnJIr6y1I6hgpl0ie796m9cZRxZT016k8LW8QUpmBR0IPJahx/FwAqwm13lZVjUhfJn0T2u1sCXdstQyb5kwcule4cCjYAS/B6kQOo2/RJ9ffec=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739567205; c=relaxed/simple;
-	bh=Oc+v6pLQFxcDCd4f+2dHebHzzZxRzTiZeu/6TvezfIg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Ik+ax2yP8Ym/UAUjVGhb8t+kxTB1fSCYCVy5xpY3AdMdTXWgKQgWyPLynM9ZiV8gGslVzO8lttxupZXCK6rT/q++i5GsFGm1YXbLd0TZ7xWBhycUkfBOw0f0xp+pkHfzQePWtm0ysXfUp/H705z9YSmU+ivVvXq94doZ5Wfvpe4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=fP021DDi; arc=fail smtp.client-ip=40.107.223.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24EB31DE2B4;
+	Fri, 14 Feb 2025 22:37:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739572632; cv=none; b=OPu1UBH08AAH4OSO0auv+2L7fzEKVIb0VActHifbzlbJyeRK0Vc3gmTF2qvuhzEvSWq9islUNESAsrwai8tHKz9bJUfU1B59bbJwjAY8J7ieEebC5nkun0KXBVBzchQRxfIaHSivCymNZvTlZjqzOePLTWmjCF3PC2JX4IKJqAQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739572632; c=relaxed/simple;
+	bh=Bs60h0N8fnkKtRjpLMziT0T6dlheBegFD8UUIfzUq7Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PIstqstXp2E5IBEEG87HC6tmPtPT8TM8JyvtbvyAr0bO+btcCr1/11KF+z4bKOKGyhkV44IT2TWhZYd3uBEqKFP2oy4nwqVC8rXEW4nkaVnZu1w7DJtoi7u2EillWcCzhvXgUAfAt5o/9Fplto9BoueMK0I+4N7kwoeVpOOSJPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MpsCY9b9; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="fP021DDi"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aYiQzPgC8oRvalwAcT/7pn58wlYxGIDgAcFSYVelIpNd+J8JqHqLYzGqokcqsCRevA+kgqTzkHIQ/iHl4WdXMVY36El0FoojwO27WxUvCVL68WvfWUyq3ToDI2g3S9DL3CB74hiiFBoSc5DBipNc1wLQNjVMlhVzIpdYJQfgJtBmIDBQdeja/p9qeHMcDWPcArUixPitTIe7OwBuaJ/zF0Z4K028GHV+o1PULbSAUXEX69vrkbof52Ey5lU9nVL7r7ccltSDHyFnXCGYepjkhzBu7Ocf80jTAJ5QucdQXikuNqlWhSNfvMg0c2us/GhOqP3noSFyNXXVvcrrK+lotA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nrS5Y6twAEiI8VhPlFeMxjuppqNNnTI5zunVmHRwDzg=;
- b=RX/OonUBklL4d1j09M0LhM62L84Xx40UR6PfFC5reLrGZ2KaHshTjR8jknYHtZBnYrdRzXDA/mLGzEOiVKyWGLiLLWtRxNz658MsDyJmUout8kMV1UTdcvZKtGt4mdTprL8tqZ/CsYP41XZRrLpfAE4lSK4Bg7sRzM+FDRbV2GHVQ4/3kDwOpEz/bFKVn3jLsLzp7TVy6yriD9wOVPiW2+bXJxU8Ck7Fd2VKDHO6qdzNzlVwCCfa3FkbFJL9ecuCSHaQFK+SniZ3XxPKKEyG74gVOgHtjvzyZTprLVKAAk8G7Zx6Ix5OAdHjqgA8cpVRq//KSEGFcSDe2lihBcx9Iw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nrS5Y6twAEiI8VhPlFeMxjuppqNNnTI5zunVmHRwDzg=;
- b=fP021DDilaruv+Sz3Q2KkGknQh1sN3HJyznYSO3XF7QgFfqspyZ5ytotBMLEVjxiA4BaxVp5AGInoJIAS5rsjTsRT1WI1akYxrifYvyNr97zMOFJ3Kb1T1ihi/kYckTwWxojGjIDnTZyCu7X6bNDbCnuIGAg8J5VLmKlpcEm1JjiNMIhRaGgY4j2l5SOahJ0vNCiysZKF8E/+S2FNzGp1lUrGt665w7rL31tedaxYjRhMegcGTBQIYwLcQaw2s58eOc+3rlRo8PLmtRW6qhUVCcY5i+7oDOUtBJGudOioT/vUB0gEirTxoBEI2oBLe1vBmozAwfzifDzqXYiWPio7g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by CH2PR12MB9494.namprd12.prod.outlook.com (2603:10b6:610:27f::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.18; Fri, 14 Feb
- 2025 21:06:38 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%6]) with mapi id 15.20.8445.013; Fri, 14 Feb 2025
- 21:06:38 +0000
-Date: Fri, 14 Feb 2025 17:06:37 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Yury Norov <yury.norov@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	linux-pm@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
-	rust-for-linux@vger.kernel.org,
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
-	Erik Schilling <erik.schilling@linaro.org>,
-	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
-	Christoph Hellwig <hch@lst.de>, linux-kernel@vger.kernel.org,
-	Uros Bizjak <ubizjak@gmail.com>
-Subject: Re: [PATCH V8 04/14] rust: Add cpumask helpers
-Message-ID: <20250214210637.GK3886819@nvidia.com>
-References: <cover.1738832118.git.viresh.kumar@linaro.org>
- <db0166341ce824c157d0c58c240b3efc6aec6f6e.1738832118.git.viresh.kumar@linaro.org>
- <Z6qTelPSqpFk439l@thinkpad>
- <20250211042908.nyftiw7gtxosfjwc@vireshk-i7>
- <Z6t51xodSV21ER4M@thinkpad>
- <CANiq72=3MR9F9ur-aQYP4P81RBreAr=UiGg5iaSuFjjd5Q4Y7Q@mail.gmail.com>
- <Z66oWuLwY4X9Ou9D@thinkpad>
- <CANiq72=Yy8e=pGA+bUHPZhn+D66TmU3kLSjAXCSQzgseSYnDxQ@mail.gmail.com>
- <20250214191103.GH3886819@nvidia.com>
- <CANiq72=tDhUEjdBmVTPv4cFeD8iiKwJAQD3Cb1=Y4KnE-vh2OQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72=tDhUEjdBmVTPv4cFeD8iiKwJAQD3Cb1=Y4KnE-vh2OQ@mail.gmail.com>
-X-ClientProxiedBy: BN9PR03CA0170.namprd03.prod.outlook.com
- (2603:10b6:408:f4::25) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MpsCY9b9"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2fbf706c9cbso557021a91.3;
+        Fri, 14 Feb 2025 14:37:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739572630; x=1740177430; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OdevA1flai+NyKTLVYDy9L1A4OOTYCbLo9KPs3hmNuY=;
+        b=MpsCY9b9bDhvR7o9+BHvQnjaKYKl+x5+cbe47buMbNxh5AbakIre1Wm4BSTS6tn/2O
+         U0EwA0jfHY28/WKqH+k6NPVk3SfZq1NI9XFqEKuVNVzkPZ4AJeWqr6IepCQwnCAoRqxd
+         1flL/MyrW6Tqpc2oIKzlrsRx7gQ+ZeMPiTP8hpDX9YXUvkwhjebIxQ0BcDhYXhm2tkT2
+         4KX1RxjgXQlywAVmE7H4aK/mvE0xto/OaNGFImmXchy6j7/Bhw2ayUuEMaXF2EHzSZ7I
+         KluKKKKo/2PuoSgpDOpAO7GEgOP988AonZ256kWIMg2TPT475ywho84AL0/l8KtVJBr1
+         PTsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739572630; x=1740177430;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OdevA1flai+NyKTLVYDy9L1A4OOTYCbLo9KPs3hmNuY=;
+        b=kHrmU1xUyswUyvx9x9GUYa0EoxWEfXuNMPiEvxShipbp9CQaoJ1gKjxo78j0sUdCzf
+         elda8Upe9kTppu+J6bnFMVIfTLbooKB5GuUwT/buZdjITEijvru+mfEvJnt0E7+YBt4H
+         PfFTOg4Ew/n/8/kefMaVvzC3B1NVkzM1bFhSdhSiF4MG2zvtIlbjsqPDmlC0LfT4YXyp
+         Du0GtMzEEru1+UCq4Y9F39cGLMSd1PVl7IKq2nGLTHNCVVGQjZnZLAGYKBiMlLj8MyGa
+         aXzrYmXMvkzV90G3aVhLZ75pMWMj5NLcePPY/HwTDDoIb6R7SyVs0chZQge5qx4sFkOJ
+         Vk4A==
+X-Forwarded-Encrypted: i=1; AJvYcCUrfC7N16tBERKfiKHLGqWL9A7Fzr6lbE1SrgkonhwcepRxVjv2m8ncEnL6UAkc1zJ9oE3Ppjy2I3B+H2Fg1Fk=@vger.kernel.org, AJvYcCVyzOuNsE+2BOqnqI7EpnqJD96k61zi915KKqVp4C9td37JDHhsw6iqzKG6hz46Qz3Qd3yvadHMOHw=@vger.kernel.org, AJvYcCWey86OIHVMYVmGM0/dkPHTjTkuLTRbriRZwayDsi25kqZ2/plRUpfxrg4GR86hygi4SwlwZroB2sL4tNU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3bphV1TbAx+SjI8xwYT0S9ar32GhO2XbW0ZluiW7L01pe1JRF
+	ZVO42UhXUXYs+CX4iklYdAqCzM2fKHEbMTR3sSyMkcYTwKpSRZ0loosN8ho2mao17Q5sAn3Mx6z
+	6Y0qSOe57D/zQbBYeyrrg/Am3uMc=
+X-Gm-Gg: ASbGncu6Z5UzqGLSpRccr23t0xFhCN78kuQGTuAdRhLc9iCL8sm/yp8KX+MGUNUjzWh
+	hy9YHf21ZJD7sScH6TMSTjoVSCTg1z4TpAyFTgPfuLYswFSM3yxVERrcNJy/2B1a1qDF0862s
+X-Google-Smtp-Source: AGHT+IHfJdYJhNQjpN05/0eg1D/Ck5SGjm9iY29eg3CuAefNHS1mJ+fwTDyHWcfA+jNVrvYx3jAwma+PzZGFzNy3axk=
+X-Received: by 2002:a17:90a:d2cf:b0:2fc:3262:9465 with SMTP id
+ 98e67ed59e1d1-2fc41153dd6mr480206a91.5.1739572630108; Fri, 14 Feb 2025
+ 14:37:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|CH2PR12MB9494:EE_
-X-MS-Office365-Filtering-Correlation-Id: caddebac-b0c7-4d34-9ec9-08dd4d3b7907
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QWRvRUJDNlFOdDJ0N2x3M1psVkpqc0lWMHZJMGNjcVhpc3RoRDRKNWVNUUpI?=
- =?utf-8?B?MDVCdjFuYVF2SUU1R3M2SUVlUXBneFY4SVBDLzBlNjBpQm1XRE04cHdKT0Nk?=
- =?utf-8?B?RVNGTktrNlVESldsRWFETWRESGV0Wk5YRDc2UEIzTCtPZVhUNVJ6cTIxMW5p?=
- =?utf-8?B?SEFONTZtSWRiUlNObzVEUHlLNzR2cE9YSGNUa1N0SWVqWXV5VW1nRktldSs2?=
- =?utf-8?B?eDZDSEZrTkZnMHpDcjdzRDQ4VjRsTVpiL2JxWjlsRmJBYytPK3ZjbEdkcDNI?=
- =?utf-8?B?bkdRZmJCRkhBNlNRRy9heGgwM0Z6SGwvVVNrZjlsaVg3WjN1K3pPREh3VzR4?=
- =?utf-8?B?NHU1bkYwYk9TVGNRZkJqMXFYVHB6bVMyZFl2Smo4dUhrZnI3QzNPVTJRNWt2?=
- =?utf-8?B?WDI3N25aUjVjT3NKck55bFpOMW9YaEFHVDVXZkxiN1VQcDBUSmU2V0tNYUFz?=
- =?utf-8?B?dUxJemZsbXlFbGYzUXFVd01IbU82ckU1cWJqMk1HMkVsN0hwNlQ4S0xEcWpP?=
- =?utf-8?B?Ylgza1dMRGFqNDVONDFIOENBd1U0TVFzWlhWaG8xMTlpWGFVZ0pCSGE5T1Z4?=
- =?utf-8?B?T1pjQ0laZlRhSzhyd3pGbU5DSWVwb2Y4NVJWSzhNOGcrYWZPRkE1Wm1PVkla?=
- =?utf-8?B?NENudXd6dUZ3UGQ2WG1jM3IxQ0kraDdnTS9Rd1pVTEMzSDdabVNHeGpGNlk0?=
- =?utf-8?B?ZzZ6YmtlWnhtdXBnU0FPYXB6T0t4dTM3c0VHOS8wSVFyTTNFOStIaVo3RFlG?=
- =?utf-8?B?VHNzQ0xadlBYNlVicWpvWUJ4Y01ORnMxclZFWllwcmRLb0EyekI1eUJqS3Vq?=
- =?utf-8?B?KzRPNFh5SWg2REttTG5BWVgxbDdKU3JDSjdwaXNMQmxmTGgvbWVBcnl3dExZ?=
- =?utf-8?B?QlJKNWZaeWJ2Z09YYS8xM2VNSm5nR3VZMlV0bE1OUWxtczNLc25ic3puQ0dt?=
- =?utf-8?B?NFZQdlRJdDN0dUd6MVNiVzlLSnBQQm9NQ2F0WHVvdzl1RjdZZGJzRnVnSHhD?=
- =?utf-8?B?QS9jSkZGc1NWdDJCMlM2cTdQZEFLdTlHcFh4Y0xMeTJneDg1RGYrT05OdWJH?=
- =?utf-8?B?UndTN0g2c2lPOEcwSWMzNlk2WWE4ZEtLU21FNzQrRUV4ZHl2ZXFFcmJ0WDhI?=
- =?utf-8?B?c2I4T21KdVNnMnZnRjRsOHNQKy9wUjYrdWV1Ykp2YzJQdEV6d0VBa09OZm1Q?=
- =?utf-8?B?WHI4NS9oOWZGT0RWM1hpcUVJVFh2aTZJWUFuQktzL0RPa1d0TVVQc0dQVC9Q?=
- =?utf-8?B?Wmd1UmtNUVRwT25JMUJyWjQ2K3ZKbEc0MUxWenRJL1ZmSnlNaHlKNE5BVTVr?=
- =?utf-8?B?eTZtWEczVGRGNnFxR3ZPallEVStxK1YrV2h6eWgxSGEwRldqa1Q0QlorU2Vn?=
- =?utf-8?B?dTRKaDYyK0FPVjVLNU5BUVN6SXNOY3ZsaEIzUXU3VVNKMFhqTGFhVThha1By?=
- =?utf-8?B?MTZhd2dSRm5YRXMzT1BieHlQNkFnQW1LQ0JTamdFYTBzbUhpUkNMakZpOTgz?=
- =?utf-8?B?OW16ZFhzdk1mZ3BiLzVwK0Rqbm9CV0RUdzRIMXh1RXhHQTZ1WFJXeFBMZ3ND?=
- =?utf-8?B?WG5RSGhPVHRzSy9ZQVJ2SXo5TG00cU9ReHJqeDEyTk10ZFBBVlF0K1VMdjlI?=
- =?utf-8?B?b1pLVmpMaGIwTzVNUkZVbHVZS3BxOEdOWkhUKzdmNXFNL0xVRlJNejVMRFpN?=
- =?utf-8?B?aUpoNEd4bjl0MFdPcmcwVnRoN2I3amRBT2VYU1o0WVdUbGZnOWZ0bFhWNWhS?=
- =?utf-8?B?M3Y3UmphYjJpMW5FNGlVd05HNHpxUlZhQlBEVnFrbWdDYXVPSUo3MnBoR050?=
- =?utf-8?B?NVJSZnlBNXZJa2FjNnZZbndLb1QrdEUydzNxL1lEaTQ2aFpua291R3ZHRVJh?=
- =?utf-8?Q?XReUxXbhJubOn?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?alc4WkxaRi9WUDFnU3B2V0NPUElYRVhxbk1UcDFuZ3NtVldaeHRxa0dUbnBY?=
- =?utf-8?B?WUdWTUlvdHZybkxwc1JsY09Ra09KYndhVUpzckhORURQZVo0YlhKNUN3anNU?=
- =?utf-8?B?bTBRUk5vb1dvK2QrcWVFOE54VVBFZE9xL0FLMVUrbzVoUThCcU9RVGhBVHRq?=
- =?utf-8?B?bmJXeVZTaG9FTXFjV3NVT1Bmb3ZOSWRlNU0yTE9VV2d4akpzc0N4N1RIdjQy?=
- =?utf-8?B?SDdDNnFCbWV6WnByNWc1azNNaXlSYjFKWEZjWnNjNlhlcVVQWWxIcHBUVDJX?=
- =?utf-8?B?emZqQ2o2OGJQL2JxWnlCdjRkZUlMV2hyR3hpcUo1U3o0elV4VWNaajBxdzNO?=
- =?utf-8?B?RkZMcWswbGlxL3NDeXZqeVpKUXoyS3RqckV1eVRXVUdldkh0NEgyT1I1cGpF?=
- =?utf-8?B?UlU4TElSMjFMQjNQUjd6T0FWM1lNdkp1d2dkelUxdW8zS0NnaUl4UG4zM2RF?=
- =?utf-8?B?Q3ZYRTRJZGVNM0pBOTBqWi8vRUNrZ0Z6NTYvNEU5bVIybEJGQlFleHFsUWVr?=
- =?utf-8?B?ZXViNU9wQjl3UXUxVG0rdU5sUFp4dEs5TGZTeXRWazhhZ2t4d0ZWSWlEc3Bx?=
- =?utf-8?B?am1MWWNnSG90SjhHaDB5Z3YvS0doUlhCMkloYzVuTGxZVnROSXdRS0F2UnQy?=
- =?utf-8?B?cHpWWVp2SW9nUjdKbHRFN1ZQZ1d5NTlCYkdXUWdrbnUzcEE1MGFmTU5ueEF1?=
- =?utf-8?B?VVdPd0RSbjFaWnNKcWxYR2l0ZlI1dncya05TU2UrMGlzcjJLYXFLcU9vOGc3?=
- =?utf-8?B?MUJ0RjFCbTh3OGZQd1QyQVQ3Q05odUNUQUxwd2FEaUpMMkhKSG5OdmZYamFo?=
- =?utf-8?B?eVBPZmpPMHN4MEpvR1U2YmRsWG02aVVsczVveExLWEp6VTRTR1BjSFU4YkVZ?=
- =?utf-8?B?RWwvRmtJcWR6UGZ2NlpvNkUrTmxMekhBV0ZhbHlZNDJXUWV4TU44MlRyTXB6?=
- =?utf-8?B?eVAzTXJJN2EwZHJWa3QzSDRhL0NiV005SHc2anA1SnZOZjRPd2kxWEp4WFVX?=
- =?utf-8?B?MUtDRGljNDZxK3BvWWdhb0x4WUUyWmFQQXp1SDlvRmdqYTV2SFNPOUdHYWxD?=
- =?utf-8?B?Y25LODkyeXQ2S2Q5NlZ3NzNSTTlIRFZTQWhwNVM4Q3ptTWp1SkdnbzJSY25P?=
- =?utf-8?B?WEhrdGsxb0dYQllvbitrSFVzTGEvMTBLUG9uaDgxdktmNC9ONVFQbjRFZmFV?=
- =?utf-8?B?RjAxcHZXcHpYZVBXOFJaM3M1Mm5VdUZxN1pWYUtHOE1hZDhoVGdvQWRpYWlp?=
- =?utf-8?B?YXlqc0xIeGo1c0ZuSEU4YkEwa0Z1aDVYbmJGOEZ4a3pVbzd5RWlLdHp4RU14?=
- =?utf-8?B?c1lsYkM0YUlEUW1uSW9SVHkyUGNnWS81ejlyZzFhaXVGTTNSV1BRMjdsQmY2?=
- =?utf-8?B?K0lYSnMwSjRsaVhjdDEzbk1YQlNHM1NnV3ZZcU9JYW9TRXlZZTM1clFVL2ly?=
- =?utf-8?B?Nkh0emNXOXFPR2dVQllza1NCTHByVXJQQlZRb3lnanR3bkczQkFYWlBBVmYr?=
- =?utf-8?B?UmR4WUJUak1yWDNlRWZUYWVMcjJBM0lzTVJlNFRVV05KZHpvQ3pBSXFYak1U?=
- =?utf-8?B?cW5SNnFhZnN4MUpJd1NYODdmUWpCS3NKd0pOMDcwT2dVRG9ub0NkTEFFaVZv?=
- =?utf-8?B?cll1dVdNOWx2c1ViRFdXNEtobm02ZkR0QWp5NHJVTG1EOE9wN2JpQUZEZjFn?=
- =?utf-8?B?eE5tb1NuLytjMmZ0NjRMamlrQSsxeVRGV1l6aGk4TEtSZStLWUFrNTVleXlF?=
- =?utf-8?B?UmxFeWEzR0ZLaGJsWEF0TTJHZkFDbGlEK3JxZlJjUjdEY0poVXd4RWxrUE11?=
- =?utf-8?B?d1UzMmFwbFRPelZpRjJNaHpKUHVDSkZmT1hTZXZocGh0RExoUFgrdklvR1Fp?=
- =?utf-8?B?NWRMMlVPcFM5MG1YWkVQYWhuMTRxZEp1QnM2QUxtd1ZRRnJSaG1rMmJHMTZQ?=
- =?utf-8?B?OHg1eVorZVMvSkM2aWdPMTNpMi95L0t2dDJ4bWRpWnVidE1DZmtrcnhRL3B4?=
- =?utf-8?B?SlRqMEkwZEk0Ty9RdndQYU1WRU9QYUZVeHJTbTU0eTJuREFmdFp2elRXSGhh?=
- =?utf-8?B?RUFSVklnQjZCbUdrUjlpdXZkbTdmNitDZVlLcjUvU0hCZ3BnenMrSlgyYXVw?=
- =?utf-8?Q?XhHU=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: caddebac-b0c7-4d34-9ec9-08dd4d3b7907
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2025 21:06:38.7118
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Bz0X9M2hysyFVQ2fFlbQzoRVapemXYkT/DYLPUDX8We4gbK9lFEcggwCmfF7vig3
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB9494
+References: <cover.1738832118.git.viresh.kumar@linaro.org> <db0166341ce824c157d0c58c240b3efc6aec6f6e.1738832118.git.viresh.kumar@linaro.org>
+ <Z6qTelPSqpFk439l@thinkpad> <20250211042908.nyftiw7gtxosfjwc@vireshk-i7>
+ <Z6t51xodSV21ER4M@thinkpad> <CANiq72=3MR9F9ur-aQYP4P81RBreAr=UiGg5iaSuFjjd5Q4Y7Q@mail.gmail.com>
+ <Z66oWuLwY4X9Ou9D@thinkpad> <CANiq72=Yy8e=pGA+bUHPZhn+D66TmU3kLSjAXCSQzgseSYnDxQ@mail.gmail.com>
+ <20250214191103.GH3886819@nvidia.com> <CANiq72=tDhUEjdBmVTPv4cFeD8iiKwJAQD3Cb1=Y4KnE-vh2OQ@mail.gmail.com>
+ <20250214210637.GK3886819@nvidia.com>
+In-Reply-To: <20250214210637.GK3886819@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 14 Feb 2025 23:36:57 +0100
+X-Gm-Features: AWEUYZlRuiv6mKhS9od7TfXZrZWpxFsdKXL1PjYCKlVITF8okDxoyQK93Or0kVY
+Message-ID: <CANiq72mFKNWfGmc5J_9apQaJMgRm6M7tvVFG8xK+ZjJY+6d6Vg@mail.gmail.com>
+Subject: Re: [PATCH V8 04/14] rust: Add cpumask helpers
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Yury Norov <yury.norov@gmail.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-pm@vger.kernel.org, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Stephen Boyd <sboyd@kernel.org>, 
+	Nishanth Menon <nm@ti.com>, rust-for-linux@vger.kernel.org, 
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, Erik Schilling <erik.schilling@linaro.org>, 
+	=?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>, Christoph Hellwig <hch@lst.de>, 
+	linux-kernel@vger.kernel.org, Uros Bizjak <ubizjak@gmail.com>, 
+	Greg KH <gregkh@linuxfoundation.org>, Philipp Stanner <phasta@mailbox.org>, 
+	Jens Axboe <axboe@kernel.dk>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 14, 2025 at 09:24:31PM +0100, Miguel Ojeda wrote:
-> On Fri, Feb 14, 2025 at 8:11 PM Jason Gunthorpe <jgg@nvidia.com> wrote:
-> >
-> > Sure, but it was said, by many people, many times, that "Rust is
-> > allowed to break".
-> 
-> A lot of people have said many things (especially in online fora), and
-> many of those things are contradictory, but that does not really mean
-> anything.
+On Fri, Feb 14, 2025 at 10:06=E2=80=AFPM Jason Gunthorpe <jgg@nvidia.com> w=
+rote:
+>
+> We don't have a community where there is a clear authority
+> structure. If lots of people are repeating a thing, that thing usually
+> becomes the consensus and common viewpoint regardless of who
+> originated it. The repetition reflects community agreement and buy in
+> of the idea.
 
-We don't have a community where there is a clear authority
-structure. If lots of people are repeating a thing, that thing usually
-becomes the consensus and common viewpoint regardless of who
-originated it. The repetition reflects community agreement and buy in
-of the idea.
+We cannot be expected to chase down every maintainer in all online fora.
 
-At the end of the day, only the policy adopted by the people merging
-patches really matters.
+Not just because it is not viable, but because hopefully this is not
+about who shouts the loudest (=3D=3D more often).
 
-The assumption being if respected people speak with authority on a
-policy they have also got buy in from the people responsible to
-execute it.
+Moreover, we do not have the authority to set policy ourselves, and we
+are not in the business of forcing things into other subsystems.
 
-I also think you should merge your policy document to the tree, not
-keep it on a web page. That seems to be a big part of getting
-community agreed policy adopted.
+Now, if you are a maintainer, and you want to deal with Rust in the
+kernel, then please do any of the following: send us an email, join
+our talks, read the LWN articles about our talks (but do not assume
+LWN comments are "consensus" somehow), join our MC in LPC, join
+Kangrejos, and so on and so forth.
 
-> Finally, ambiguous terms are used in many cases to refer to different
-> parties: "Rust community", "Rust people", "Rust team", "Rust
-> maintainers"... I have started to ask people to avoid doing that (at
-> least in the LKML), please, and be concrete if possible.
+We have been open to talk to every single maintainer that wanted to
+use Rust or that we needed to interface with, and other maintainers
+can tell you that we have successfully worked with them.
 
-Okay, that makes lots of seense. Please don't use "we" as well.. I
-have no idea who is included in your "we", or what to even call it.
+> At the end of the day, only the policy adopted by the people merging
+> patches really matters.
+>
+> The assumption being if respected people speak with authority on a
+> policy they have also got buy in from the people responsible to
+> execute it.
 
-> > And Greg's version:
-> >
-> > https://lore.kernel.org/all/2025013030-gummy-cosmic-7927@gregkh/
-> 
-> I cannot speak for Greg, sorry.
+Sure, and that is why we talked to the actual, relevant, maintainers
+and subsystems that are taking patches that are related to Rust.
 
-Yet he does seems to be speaking with authority on this topic. His
-message was quoted on LWN and likely was read by a large number of
-maintainers.
+We may not have talked to you directly or explain things to you, but
+that does not mean we didn't talk to others.
 
-Is he not part of your "we"?
+> I also think you should merge your policy document to the tree, not
+> keep it on a web page. That seems to be a big part of getting
+> community agreed policy adopted.
 
-> I can read his message in the following ways:
+Very happy to do so if others are happy with it.
 
-I think it was very clear, sorry, I don't read it your many ways at
-all.
+I published it in the website because it is not a document the overall
+kernel community signed on so far. Again, we do not have that
+authority as far as I understand.
 
->   - I can read it as a general ability of subsystems to potentially
-> agree to treat Rust code as something like staging, like block's plan.
+The idea was to clarify the main points, and gather consensus. The
+FOSDEM 2025 keynote quotes were also intended in a similar way:
 
-As a side note, I don't see how anyone can enact this plan without the
-support of Linus to do CONFIG_RUST=n builds and put out a non-working
-rc1. IMHO it is yet unclear if this is real thing or an unproven idea
-block has that will run into problems.
+    https://fosdem.org/2025/events/attachments/fosdem-2025-6507-rust-for-li=
+nux/slides/236835/2025-02-0_iwSaMYM.pdf
 
-> It is very hard to keep hundreds of maintainers on the same page.
+> Okay, that makes lots of seense. Please don't use "we" as well.. I
+> have no idea who is included in your "we", or what to even call it.
 
-It is, but also I think you need to take this challenge to succeed.
- 
-> > I do not agree with "Didn't you promise Rust wouldn't be extra work
-> > for maintainers?" in your document. Clearly there is a widespread
-> > belief this kind of promise was made, even if it was never made by
-> > you. "Rust is allowed to break" is understood to be the same as saying
-> > it won't cause extra work.
-> 
-> Sorry, but I have to strongly push back against this paragraph.
-> 
-> Are you really saying that, because people out there may think
-> something, we cannot claim anymore that we did not promise something?
+In my emails in this thread, "we" means the Rust subsystem entry.
 
-Again "we" ?
+> Yet he does seems to be speaking with authority on this topic. His
+> message was quoted on LWN and likely was read by a large number of
+> maintainers.
+>
+> Is he not part of your "we"?
 
-I'm not concerned about "people out there". Greg said it. Others who I
-would think are part of your "we" have posted it on LKML.
+No, he is not part of the Rust subsystem entry, as you can easily
+verify in the `MAINTAINERS` file.
 
-It is not clear at all. If you said Miguel never claimed it, then I
-would not complain. You said it correctly above, be concrete. Ideally
-acknowledge there were different policy ideas in wide circulation, but
-they did not get adopted.
+And I can not speak for him either.
 
-> Furthermore, I don't agree with your assessment in your last sentence
-> at all. Even if it was decided to allow Rust to break globally and at
-> all times, it does not mean Rust is not extra work. 
+He, of course, has helped us a lot, like other kernel maintainers have.
 
-I appreciate this point is realistically true, but look at how Philipp
-presented this 'no break' concept to Christoph as a no-work option for
-him.
+By the way, the document, at the top, mentions:
 
-My main point here is that I'm glad things are getting straightened
-out, some of the conflicting policy ideas shot down, and the demands
-on maintainers are being articulated more clearly.
+    Like most things in the kernel, these points are not hard rules
+and can change over time depending on the situation and what key
+maintainers and the kernel community discuss.
 
-> That is good, but to be clear, from my point of view, the approach
-> mentioned in the document I wrote is what we have always said.
+> I think it was very clear, sorry, I don't read it your many ways at
+> all.
 
-There is another we :)
+Well, then please ask Greg, not us, and remember to Cc him, by the way.
 
-Jason
+> As a side note, I don't see how anyone can enact this plan without the
+> support of Linus to do CONFIG_RUST=3Dn builds and put out a non-working
+> rc1. IMHO it is yet unclear if this is real thing or an unproven idea
+> block has that will run into problems.
+
+Please ask Jens and the block layer -- Cc'ing Jens (Andreas and Boqun
+are already Cc'd):
+
+    https://lore.kernel.org/all/593a98c9-baaa-496b-a9a7-c886463722e1@kernel=
+.dk/
+
+Having said that, I am not sure what you mean by -rc1. It is in the
+context of a friendly collaboration -- I assume the intention is that
+Andreas et al. are given enough lead time on new features to fix them
+before the merge window. For fixes, it may be harder, of course. Other
+ideas: they may be able to config out certain parts too; or in the
+worst case, in an emergency, Linus may decide to break Rust. They may
+be able to tell you the details of their plan.
+
+> It is, but also I think you need to take this challenge to succeed.
+
+In fact, we are, and I explained above all the ways we are engaging
+with maintainers and so on.
+
+Please note that the fact that we may not tackle the challenge in the
+way you would like does not mean we are not doing it.
+
+> It is not clear at all. If you said Miguel never claimed it, then I
+> would not complain. You said it correctly above, be concrete. Ideally
+> acknowledge there were different policy ideas in wide circulation, but
+> they did not get adopted.
+
+We have never (intentionally) claimed that. We may have spoken
+unclearly, we may have been misinterpreted by others, and we have
+always been open for clarification.
+
+Please see my previous email.
+
+> I appreciate this point is realistically true, but look at how Philipp
+> presented this 'no break' concept to Christoph as a no-work option for
+> him.
+>
+> My main point here is that I'm glad things are getting straightened
+> out, some of the conflicting policy ideas shot down, and the demands
+> on maintainers are being articulated more clearly.
+
+Again, to be clear: the approach we have followed has been quite clear
+if you actually spoke to us, instead of taking for granted what
+unrelated people may have posted.
+
+> There is another we :)
+
+I am not sure what you are trying to achieve here.
+
+Cheers,
+Miguel
