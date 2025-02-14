@@ -1,190 +1,103 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C570019066D;
-	Fri, 14 Feb 2025 20:24:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F1C18EFD4;
+	Fri, 14 Feb 2025 20:49:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739564687; cv=none; b=Pm1Q3tSpDm2g8rWkc2MB2ZkjapoAG4h6lz8Q+r34brmY8KEvhWxAocFZn3tpm3kUa1YHInjLwL13D4UdFMvkJxu+v68xPoe7lC0tgtJ2fzt7gnVR8NFpA9LnPXZ6MluZkjluIlI6Fo7zeTI5PFz+iCPxfPga6DZugSTuSZnqOdM=
+	t=1739566168; cv=none; b=lYCGkiGGJ4stUnadYr4Fcjsys9ByRopLU7lCxMaZLqdI9dEloml7nb1x4/uHoxGqHOjD0cKcIAVL0S3riB0dAsazblurQTEcCClyUZAP5OihDCKTbiDsmZmG1Y6rtDUnGVhXZKA6SUDgCU/NxRDgw3NqRGQl+ebZWnJMpjZDoi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739564687; c=relaxed/simple;
-	bh=bCH5bqvcaIOMu8AtEhHMduHrLldLHxk+IB++yM9jvTw=;
+	s=arc-20240116; t=1739566168; c=relaxed/simple;
+	bh=FKYI80UJi6r67EQ3BJDOUhzFbmqN6BXyh63vLRy348g=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LwscspPDNWgTwQVA16SivDCsqGR9qZIxAZJ3gYjO4f6GCerYtZN5hDq+kygahXzlrxuTvRlXbT2i4QshSmT+RjPh98hTFHoV4jWMoQMlvc1cwY5YP8L9QDLq43qQyRd/ygWl/9zJBP/+lGvOINg5ziEI5aX1gKaVVf6qftRReQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H51KPdFl; arc=none smtp.client-ip=209.85.216.41
+	 To:Cc:Content-Type; b=cw+9x/+lg++7pNBkmmbq3t3dg4SSGvAjLUGwbWJsfIuMbSLB0ga9ERFKzfZtHzu5i14LwPGyOIeSggIwWaiKprKDE2/07I9QpKsvnzxABW6p2rlcSQpHDYxq+wbT5hVPm7tUotFqu6+4/RM58u0FiaM0dM0VuWOZQkQCSlxXROE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T15ddz2V; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H51KPdFl"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2fc0ab102e2so536716a91.1;
-        Fri, 14 Feb 2025 12:24:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T15ddz2V"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2fbfe16cbf5so543394a91.0;
+        Fri, 14 Feb 2025 12:49:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739564685; x=1740169485; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1739566167; x=1740170967; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3p4NWmc8ditZ/XLLp37+2EiA/PYp9yKBL0C/xM4/3Fg=;
-        b=H51KPdFl8DhqtvkPdj1BL3FTCEzZVuPjP3aE/WwYgHPxH6fcBDAL5iDxhdpOqFLsH7
-         tNLLJt+El/nQEat9R7Y0pf1yywdKZWsVnApT5WEMIZ9RmDEJ9Gp43D6afEUWOYqJ/o7j
-         kmGhOxIx/4EowxJo81/YAEgTxSpSsNVPL2s0O7wadQe3mT1rMFdShFnkXdT+sTZmYSCW
-         zJxhd9MpDeCt7C0wmhmwj5BwLQxeDGAnp1XtG21xz6FgE8AUeYMrc4LguymJeJ2UcnvI
-         x+mdsi+LOO0BUi56AdajYXEQon+P4akFuSXCMWSKxfmdEuz8qekUBe/rzgV6Xg1c6dc4
-         bO4Q==
+        bh=FKYI80UJi6r67EQ3BJDOUhzFbmqN6BXyh63vLRy348g=;
+        b=T15ddz2VKYQ7BFUpkp9wQ6vo3EJKUAHnc+WN10YApTloQpzvXBySROvLNEzG2xK/hW
+         u3CUEXVIT6GDL4TDct5whqcK6Uv5pdxOxLz1kSuSlONCRt2Ce8g4cQPupVAAJ6YA9ef6
+         jQ0w4+4sQNvTcSgr/WopHOxF/9PAI1twKgThODAovC4c8/CLmyMPMxWLHeNoxALwvXTe
+         8yyIdeqlKyShblhZvl9eGPXvt1XSOjwImYxESmvEpx0P0sLlNfSgihgotxuYZR05LVlV
+         8yH8BpLpM5SfFd0XkLWdAHruR5nM4PixUklUbtFL8nzFVIVSFJbe8Y5TpYniwewucdPb
+         0MCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739564685; x=1740169485;
+        d=1e100.net; s=20230601; t=1739566167; x=1740170967;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3p4NWmc8ditZ/XLLp37+2EiA/PYp9yKBL0C/xM4/3Fg=;
-        b=dTtCuDPsmGoHv0IYbwAreh6sbicdE1+LjctGtFNp/xVmWgPnhauIfbLcKOl+UI5imu
-         Yzsu4doDGP2r6Nn4EcUY325sUpBMY0mHzbLl5cFppr9Xes5PUs4BpLD/oSPnPsEn/cWm
-         T+CiSyAcxQfpvgeYpzLSr9/s6I5mRjgrmnFEV6uxjf3Fxb4d8I7PMfJA4qUKA5u1kcPX
-         c3EsrvPDcQTEdpG/jeRuCqAsvxl+ibR7Jr87WPc45ODUeC2CPKuTNfqjcrZvH9BOIa+q
-         gkjW9UyBRJ3d/8ANEJt40T8CFEjDTkm7Tcym6ZV8wIv8PJPigtcbxgkkojx0VJQMiN6n
-         Gxhw==
-X-Forwarded-Encrypted: i=1; AJvYcCUrO56pz8qj6ku5eJPvMaVOsQR7gSe64uGjVsOXAXQCT5nyzX1Z5yMoYiwYAuwUFSUw0/QsxUL829c=@vger.kernel.org, AJvYcCX/e2bHVkqQzWWOT1rhaOelXI7wCgz31iHIyyFRmGEjiRRK+4C6l7D+x2qAJncTtO3GR/c4RTcPLgusREQIrjc=@vger.kernel.org, AJvYcCXXbGj2M9zaD1bSaDU+GtggbwBlkSfjFzdUYXOgX5KBAKgUNDh9Rocu8U/CNtTRthNIpGopUY7F8FK7Dio=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0zGZtoov6ij0dTz+2Yhq0s9FaO7l43e8ldq4JAWyD3kXolZlL
-	oze5PanFrOVSrRzb/lt0v9pYMDpWCJyjopNt1Gg9+QYHmXmlmi6X39mLeBeYhl/ufMCGphgZDye
-	2lDnRGF08Gxa/FVYdSSOmKpgT228=
-X-Gm-Gg: ASbGncvpKdLmO2cBr7evPR3ir6wcChHlA45kn3SVKtcGv3fFF+3QXz9wrHb/KjtPrC7
-	IUkB4dZ5A0SSYuhPcnfvyz53Tehr8sTMOLGjW9hrPepaH3305aLdZfadYnHz3AH5yDJJ8163h
-X-Google-Smtp-Source: AGHT+IF24MagOcPGW+aiXWTvUfci3RUEVLMRU+XbtgYBAc9bJXXtAADDZlKmnfOAhWjgutKv8hu1TOI1+305rKUa+Gk=
-X-Received: by 2002:a17:90b:384a:b0:2ee:cbc9:d50b with SMTP id
- 98e67ed59e1d1-2fc4103d1ebmr245319a91.4.1739564684871; Fri, 14 Feb 2025
- 12:24:44 -0800 (PST)
+        bh=FKYI80UJi6r67EQ3BJDOUhzFbmqN6BXyh63vLRy348g=;
+        b=Hdbbn0YUL367tzmt6B2QEI71xijA9/BdndgH5nPw+gIo8ctVNQ/FnoH+yOwb/yApbn
+         Me5jpavB5WJtzs4Sf7gFZYH7qX3ZrI3usllmZz1xDVwyJI5nvtwC6pAXXmIqeKnJqP0D
+         AAPZpStFFlm0Zy6c9GaHx36CEOht4PPzOhXrbtiSkZ758YXCKkwKcmPsuADHqm3gYdba
+         B3z/i2N1zuMB/dG5bL/9hVzb0R6shmVDs8V9f2t0kvGxPSkZUCoIYyTtaVeY1yTYVHRI
+         oM55mDkr6EsHgaRx29+iVVgtUo0+Ge3PjK5RgZmCYZxRxMZJwMTktZHBlzNcIIj0Xkgw
+         byZg==
+X-Forwarded-Encrypted: i=1; AJvYcCVnZmjzgDAO1svVOK3ulvFrSI/FjbM26WXxXdCOOU/r9sdYdvAG7MfQ6pnXEIxcD/MVoO5pIvVPXOjvvD0er9IG@vger.kernel.org, AJvYcCVyOty738NPjmmqxTAK9RBbXYqCrqoUVe60njwGDCWdT/nEbM4K1GtycKEWmwFo7MIhkPAxkDPsWoeOnB0=@vger.kernel.org, AJvYcCX2/540FYDYKrgbyetUoTTgU81b+tY9BOokYY2BWFX1x1z/KdDqUujd1k8i6lyPNmEzNH1ndLVCRMYkFyZOcAQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyEooIxDHp5wRh/FgLREIVwPb/GBOaqmEOphS07Rmac1JnV40FA
+	4z+nhoJqK6hGd+md4z0lWm8RNj4AryVaoEE+hWYi5X063FjGjFoT1+i3reUr6OiUlJ3FpTlfP9m
+	g+Km6qilOmLrUd3gW2fJ5ZOVFt5g=
+X-Gm-Gg: ASbGncszYlBSsRfm53x0bdiQ7wXrqgiVe21ZUcBxIreo3TalW+7ctNGPdIUlK8uHll5
+	+u0X/YfsJws4x8rjFAGzmwa52Kbx4De9GR0J/7OeD4H9qKl87LSbRhQwhFhdgqOAEoFeiXKys
+X-Google-Smtp-Source: AGHT+IGPsCyIeJt8J1l8/QN0KU5uO7jL1pQpZ1i+QrPvwAs871pTp0Qrmzt7+P/+C+DUzsH7NrG1RbxFbhyKOKHVA34=
+X-Received: by 2002:a17:90b:2241:b0:2ee:b665:12c2 with SMTP id
+ 98e67ed59e1d1-2fc40d1246amr295083a91.2.1739566166561; Fri, 14 Feb 2025
+ 12:49:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1738832118.git.viresh.kumar@linaro.org> <db0166341ce824c157d0c58c240b3efc6aec6f6e.1738832118.git.viresh.kumar@linaro.org>
- <Z6qTelPSqpFk439l@thinkpad> <20250211042908.nyftiw7gtxosfjwc@vireshk-i7>
- <Z6t51xodSV21ER4M@thinkpad> <CANiq72=3MR9F9ur-aQYP4P81RBreAr=UiGg5iaSuFjjd5Q4Y7Q@mail.gmail.com>
- <Z66oWuLwY4X9Ou9D@thinkpad> <CANiq72=Yy8e=pGA+bUHPZhn+D66TmU3kLSjAXCSQzgseSYnDxQ@mail.gmail.com>
- <20250214191103.GH3886819@nvidia.com>
-In-Reply-To: <20250214191103.GH3886819@nvidia.com>
+References: <20250214074051.1619256-1-davidgow@google.com>
+In-Reply-To: <20250214074051.1619256-1-davidgow@google.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 14 Feb 2025 21:24:31 +0100
-X-Gm-Features: AWEUYZlQfDk3KdlkX87QSgmQBgzvj_9kUJuWl1DKFReZ4mhVoDc0DlTBJSkE9N8
-Message-ID: <CANiq72=tDhUEjdBmVTPv4cFeD8iiKwJAQD3Cb1=Y4KnE-vh2OQ@mail.gmail.com>
-Subject: Re: [PATCH V8 04/14] rust: Add cpumask helpers
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Yury Norov <yury.norov@gmail.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-pm@vger.kernel.org, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Stephen Boyd <sboyd@kernel.org>, 
-	Nishanth Menon <nm@ti.com>, rust-for-linux@vger.kernel.org, 
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, Erik Schilling <erik.schilling@linaro.org>, 
-	=?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
-	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>, Christoph Hellwig <hch@lst.de>, 
-	linux-kernel@vger.kernel.org, Uros Bizjak <ubizjak@gmail.com>
+Date: Fri, 14 Feb 2025 21:49:14 +0100
+X-Gm-Features: AWEUYZnRHy-tc-NU7T9dbaGK6jL7O9fPdTjkvjfsW9w5Tczle86nNQTinnUmsIM
+Message-ID: <CANiq72mqkoSkh_3Q1XYuA_Q7AqRFt1wD_Mkf1nPTbbSHKQz48g@mail.gmail.com>
+Subject: Re: [PATCH v6 0/3] rust: kunit: Support KUnit tests with a user-space
+ like syntax
+To: David Gow <davidgow@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>, 
+	Rae Moar <rmoar@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Benno Lossin <benno.lossin@proton.me>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Matt Gilbride <mattgilbride@google.com>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, kunit-dev@googlegroups.com, 
+	linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 14, 2025 at 8:11=E2=80=AFPM Jason Gunthorpe <jgg@nvidia.com> wr=
-ote:
+On Fri, Feb 14, 2025 at 8:41=E2=80=AFAM David Gow <davidgow@google.com> wro=
+te:
 >
-> Sure, but it was said, by many people, many times, that "Rust is
-> allowed to break".
+> After much delay, v6 of the KUnit/Rust integration patchset is here.
+> This change incorporates most of Miguels suggestions from v5 (save for
+> some of the copyright headers I wasn't comfortable unilaterally
+> changing). This means the documentation is much improved, and it should
+> work more cleanly on Rust 1.83 and 1.84, no longer requiring
+> static_mut_refs or const_mut_refs. (I'm not 100% sure I understand all
+> of the details of this, but I'm comfortable enough with how it's ended
+> up.)
 
-A lot of people have said many things (especially in online fora), and
-many of those things are contradictory, but that does not really mean
-anything.
+Thanks a lot, David, really.
 
-> This is not just my incorrect impression. For instance read Philipp's
-> note to Christoph:
->
-> https://lore.kernel.org/all/293df3d54bad446e8fd527f204c6dc301354e340.came=
-l@mailbox.org/
+I am happy to take it through Rust or KUnit -- I am not sure yet how
+many conflicts we will have on our side.
 
-Philipp probably sent that message with his best intentions, but he is
-not part of the Rust subsystem nor speaks on our behalf.
-
-He may have been speaking for other groups, or maybe just his own
-opinion -- I do not know.
-
-Moreover, sometimes suggestions like his may be referring to
-particular subsystems (like the one that was discussed in that
-thread), e.g. like block decided to take an approach where Rust is
-allowed to break, rather than speaking globally.
-
-Finally, ambiguous terms are used in many cases to refer to different
-parties: "Rust community", "Rust people", "Rust team", "Rust
-maintainers"... I have started to ask people to avoid doing that (at
-least in the LKML), please, and be concrete if possible.
-
-> And Greg's version:
->
-> https://lore.kernel.org/all/2025013030-gummy-cosmic-7927@gregkh/
-
-I cannot speak for Greg, sorry.
-
-I can read his message in the following ways:
-
-  - I can read it as a general ability of subsystems to potentially
-agree to treat Rust code as something like staging, like block's plan.
-
-  - I can read it within the context of those patches, where, as far
-as I know, Danilo et al. stepped up to maintain it, like Andreas did
-for block.
-
-  - I can read it as the fact that the Rust subsystem will help,
-best-effort, to bootstrap Rust and help with integration where
-possible.
-
-We need maintainers' help and expertise from other subsystems to
-succeed. And we do not want to force other subsystems into dealing
-with Rust. That is why the deal was that we would contact and wait for
-other subsystems to handle Rust and so on. It is also why I asked, in
-the very meeting where it was decided to merge Rust, that in exchange,
-we would eventually need some flexibility by maintainers that may not
-want Rust in their subsystem but that nevertheless may be the owners
-of core APIs that other users of Rust in the kernel need. I did so
-because I knew the day would come we would be in the situation we are
-in that email thread.
-
-> I've heard the same statements at conferences and in other coverages
-> like LWN. Frankly, I never much believed in this story as workable,
-> but it was advanced by many people to smooth the adoption of Rust
-> bindings.
-
-Again, people may make statements, but they may be local to their
-subsystem, or just their opinion, or it may be a misunderstanding, and
-so on and so forth.
-
-It is very hard to keep hundreds of maintainers on the same page.
-
-> I do not agree with "Didn't you promise Rust wouldn't be extra work
-> for maintainers?" in your document. Clearly there is a widespread
-> belief this kind of promise was made, even if it was never made by
-> you. "Rust is allowed to break" is understood to be the same as saying
-> it won't cause extra work.
-
-Sorry, but I have to strongly push back against this paragraph.
-
-Are you really saying that, because people out there may think
-something, we cannot claim anymore that we did not promise something?
-
-Furthermore, I don't agree with your assessment in your last sentence
-at all. Even if it was decided to allow Rust to break globally and at
-all times, it does not mean Rust is not extra work. It is, because
-collaboration would be still needed with different subsystems and so
-on. The plan has always been to not have Rust be something hidden in a
-corner. For instance, see from 2020:
-
-    https://lore.kernel.org/all/CAHk-=3DwipXqemHbVnK1kQsFzGOOZ8FUXn3PKrZb5W=
-C=3DKkgAjRRw@mail.gmail.com/
-
-> However, I am glad we are seeing a more realistic understanding of
-> what Rust requires of the community over the long term.
-
-That is good, but to be clear, from my point of view, the approach
-mentioned in the document I wrote is what we have always said.
+I will give it a go when you think it is ready (since I saw comments
+from Tamir, though not sure how many you may want to address --
+perhaps the sooner we land this, the easier it may be...).
 
 Cheers,
 Miguel
