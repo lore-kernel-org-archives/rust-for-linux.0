@@ -1,175 +1,134 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D8A2686B4;
-	Fri, 14 Feb 2025 17:56:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43DDD1EA91;
+	Fri, 14 Feb 2025 18:04:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739555819; cv=none; b=obfKbqCOCysiTAHOT3ELSbLj/4LQLPHpwZ3TLS3x5JcDtL/VBOFr0+F46eYpdlWN7Bi3WHadsyomlgtohf3HD/wdjXXKLoY4SdhvwB9GQs/rA1ewVeHJpmLAxwN0aKvLrFfQy4jHxhgYaHTufHL9h3nlk6kMy/MVL+RHuusqpBc=
+	t=1739556300; cv=none; b=EEIOjrViORvyJ6VHUHsybzVDFHlLEpOfMneNvccGtK3Y4r3RtfI6VsEqgrolIhuZ5jNSw33b9kcDLLt9zCBj3qizXSu2K3rv39ptOBAM3yRCGf31qaWyX+FbU9aOXs7t5McoIXvm6nJjxm9RXvlhZE8Ntp5DJZk6gIwcdE1tkio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739555819; c=relaxed/simple;
-	bh=lwaL1ltJxHc2XidJ6vVm7TVgQUP/nPkLjPuqPuaKQn0=;
+	s=arc-20240116; t=1739556300; c=relaxed/simple;
+	bh=xXr1JK1gjavjAE/vEHKIs9kqfKKNroxNQsopDcHfiKs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EF8eZVqEnNYVEHBaIXCVWGdaVdogYPQBH+q4sIB8GryP5I9Yn8SV8JrNtYVCJD2fCav02DBRbkRBebKZey7XMnvx/xNdVpO7O8RQohFuPU9ldAIp/JpNNRql5yTHgQQvzJTbyWoRvSBpjdhq2TljCeD/lh5RKoxQwGtMdNIdZ8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hu+5U4+4; arc=none smtp.client-ip=209.85.216.45
+	 To:Content-Type; b=FDIW0hfOmFBTJlDaoi/EEvgIWEoEr/kC3lbu9M7qVq2J9E8Bm1nqx6wkMWiWQERMRHuSajAw0iQFgW2KxLdieRCQ1Cn4QqKcOv4uY0UIBVp8ijOfDoZ37Kq3VPhelYkoT0iGimCJb4fNktqqXGUeNtkVNC+EbyTI3UQN6Qe81gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BSGDeBXd; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hu+5U4+4"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2fc0ab102e2so511237a91.1;
-        Fri, 14 Feb 2025 09:56:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BSGDeBXd"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-21f6fb68502so5906965ad.3;
+        Fri, 14 Feb 2025 10:04:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739555817; x=1740160617; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+        d=gmail.com; s=20230601; t=1739556298; x=1740161098; darn=vger.kernel.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2uqTJJ2jGnxNF41o8Nl196eWFB49oMcWZ3x7tEMRsQs=;
-        b=hu+5U4+4/+t72NXHCAiHruJZHhx+PpgAM5kGjCBXgH0c+G3BZ5XBuaZAHQ3dOX7FDM
-         6WfNPnnBjVNnOtHRvJ9F5+PQGec7kyHYCFHnV1GEvP05MX4Y+Wl7gvXTOiKWKd24ppOz
-         ljrDAyauPQF15/DVInnzGe/bPkdEu1LE4WPmQreA4SveFit9WCihx9BFLwwpLo/B4z5V
-         70zkfdmu2Ib6dNMm7FeMW4/YQQnymG22GAbloNkUnZAhYgByOPT9bN08umzSpDPdOx3N
-         /XfTWlh7l5askuAvlUW2jlr413UlDKC2GR3qwpXikt7IGUtmgyBBBPX1Ph1bkGfnO8SZ
-         K32w==
+        bh=bNlGKiDQgk/4V9I6WFUe1ZggS7rx0zWohj8BV7AO3Do=;
+        b=BSGDeBXdVMaI5KgG6lHkCF8/imx3EMoC99PK6BWF8m5YRf8RWIvdhi56+zVplU9t1A
+         lA4zE8qpaTfncmviNdFgCIXmWZIDcFbsxrFSDTQFVQCKhcn9a73ehp3g4BKmfFjpp3H9
+         km/WhqMBMhdsScWxZJmEuaM6b8XL9XPBKC/yShA0qmlSFbnPqV345C6Ve5lp1Kw8rZVB
+         f1txQwF+b1yQ7tXIqXvnGzRsuIJKHDYKxL0kxQ88vGfEDZ0LsQSPVb4MhoKirjtn153g
+         LPHTangyHg1OQOPhtHnZ5youW9/b0/tRWw6rD3+iU/YN9DSRXPd0iOHPxFnHeWv9gpPq
+         5izQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739555817; x=1740160617;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+        d=1e100.net; s=20230601; t=1739556298; x=1740161098;
+        h=content-transfer-encoding:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2uqTJJ2jGnxNF41o8Nl196eWFB49oMcWZ3x7tEMRsQs=;
-        b=eHrV2o5ckgeK2G6LJNpn9s+K3pAD5O4Ltw2vuQkVXoiRPtnCk/9g5AJeht9otrAmdt
-         lK0TajpaDounngPvn3aVc8gvG1LTDWv0EInjY+cp+3O2LAu72qQNboRD5xj15mF0FsPd
-         xT8k0GhP9SrtZRehTp4KfptXGX6lLUx2oConwt8IJkvIWZTxfPkYHIs7eveMUA3dtQn2
-         U1KfC3EvCkBIFX04qSVZOKD1zsgXCtg8YzP/zLHWyu6v88ea+kNHqUGgufWPTnqIjfut
-         4gRZqBknYQVaFd8dvLkbG7RWc3fPZs9A0De5daK7+2SSoblL6+PcP8LJokmTFwegsmU/
-         KXhA==
-X-Forwarded-Encrypted: i=1; AJvYcCUKgv/B/nJcAADIyxgCQBqslPmbncmGKW/7hDQ7lVQYyihevrVhRl4o3u1XAbcsbw+XhO8Rig9/Yzc=@vger.kernel.org, AJvYcCUbShi/rAJ/xdEX5ha2Ls3tTcU2vHrjmXfstNI8rNquuyPQctAxXqriAeeMoSc0ixpgMHN8ariU6L2gYKU=@vger.kernel.org, AJvYcCXPI2KGhmpnDNTBPOWJutMeVFyfGc39Q8Ld2BD/qDAGtLrfPh896UAI4OY96zMxdR+2xLKdF7eiwxlL8lCyvuQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgcbktsoNTOwkx5DtnfY7Fsi6oKVGmIezFSjunw/Rx7CJlrjuW
-	HvrG30gtx7u+brE8AJk764DkMV4rVjfhdwwM15GDJXW4Su5XBBVXDxigmPZX8Rb+OhdSM6kPWZ/
-	I/520FDDF10aw3mD0XTC6DnMERns=
-X-Gm-Gg: ASbGncvsLsF+26LoyAyJt/V2M5ORAt7GZBEoo/gAdXvPT2e7iNKO3tcph49QXd9cedo
-	vUxC2hcLs4o++4i/GHett4WOC9PDugURVrIqCm0IPy0A+IVYD+vPZYJ1dLVecYpvc8JvnT1Gx
-X-Google-Smtp-Source: AGHT+IFW42ywit++MdXGF7yi6jLYPNcwbU9mmKg5g0YI2M/HsrDTeMd6/RLGpgdHziQFFxCBnhFtsGX1VFM5A2UqEmk=
-X-Received: by 2002:a17:90a:d2ce:b0:2ef:c419:6930 with SMTP id
- 98e67ed59e1d1-2fc2d01d465mr2414651a91.6.1739555817064; Fri, 14 Feb 2025
- 09:56:57 -0800 (PST)
+        bh=bNlGKiDQgk/4V9I6WFUe1ZggS7rx0zWohj8BV7AO3Do=;
+        b=b68kHwaLgxcg0KurTTiVmzK5kNGgqTPRMnqtkbUPCV8Drm3mlooZrBjh65w+w551MA
+         b+age//uGk7VEmDn5Z9wry5ZYMhZJoIAXyOAJLePkN5KqbmsscYZ2aQzlevqWmwesb5O
+         0zmH4NRDtoEmD8CckE7l8yRsOm93TwfHdeGm9DQkzXen6NGYFEdZNqUhbW2EQyE40Djm
+         v6JJJAc6zulsL9UHuhfKQNjW5cRR6KadSZ8kmKgnmCCuvOK5fenuIHKZm37k/62QZcgz
+         BDGIbR8q8pY7K+JL967sKGn/qCioV2azzwF5V+unFI0TPoXuV+5QkKkHc9gOFDOz78UP
+         iR1g==
+X-Forwarded-Encrypted: i=1; AJvYcCW/LVWuVZUjR5OXKwLAJuW/2GfzGltCfl5Z2fu9BL09Hr/RW+bQmdUl4FjOkej0dOvB7RVPoXgm0I6XMRchVrc=@vger.kernel.org, AJvYcCXQP9gQlDzM9LAT9imszcKbFHK9SPQXwmtyNj1mG91nqxAuQOLmlQmvqid5f2wjkaMg2hBujuiMCP2pQV0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLhP4pBvwtqrOEApDULHSg7vTzYkuZav3+157boUNyj9y+obUx
+	E4B49a0alUNqbNyciUrXVvnPuGnKKk/FqnoZ872uig3fTEELy9wEBNAhq9ecMAWm+dIZA/GUYm8
+	DQfDlTQtuBpeDDAoFqYbT5WWGDow=
+X-Gm-Gg: ASbGnct+LWZsdu3JuhoIJ/g14pP/QbxK14azJgmxLsVPm8uQjnyvghUmaQic9X2kQJR
+	TvLT3DhOfkuLuGLi82RLa5UiC91JNpf7gXj0yfHYhm4UByIGrffJ3KKoOpRKQG8ixtGOTjDo4
+X-Google-Smtp-Source: AGHT+IGBXkuYnKPoUWEFkmV4TUXnY1Ty6w+tV3iFACV30rX/LII7P1gEfZMjxeabEwWQK0GecQj/2tN+0lbZxNLA7k8=
+X-Received: by 2002:a17:903:2312:b0:21f:b7f5:ee58 with SMTP id
+ d9443c01a7336-22103f1a081mr1114655ad.4.1739556298116; Fri, 14 Feb 2025
+ 10:04:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1738832118.git.viresh.kumar@linaro.org> <db0166341ce824c157d0c58c240b3efc6aec6f6e.1738832118.git.viresh.kumar@linaro.org>
- <Z6qTelPSqpFk439l@thinkpad> <20250211042908.nyftiw7gtxosfjwc@vireshk-i7>
- <Z6t51xodSV21ER4M@thinkpad> <CANiq72=3MR9F9ur-aQYP4P81RBreAr=UiGg5iaSuFjjd5Q4Y7Q@mail.gmail.com>
- <Z66oWuLwY4X9Ou9D@thinkpad>
-In-Reply-To: <Z66oWuLwY4X9Ou9D@thinkpad>
+References: <20250213-vma-v14-0-b29c47ab21f5@google.com> <8130a6d5-a7e5-402b-b05c-2d0703ac1ed2@lucifer.local>
+ <CANiq72nBx3cRTUC9HWVR8K64Jbq3GCVMss5wuABzra3OLhRUQw@mail.gmail.com>
+ <c8e78762-1429-4ab6-9398-ce52370eec08@lucifer.local> <CANiq72mKyvoyk_tgbMKUdzs-sJOoyEH7f1M9ipiET+XYgwCqRw@mail.gmail.com>
+ <2d132129-fdf7-404d-b1f1-8ee87b838dcf@lucifer.local> <b6b5tnaw6vnuib7nzcm7ajszxiptqz3i2hex5yengzbsirztks@l3coijkqwtpb>
+ <CAH5fLgjMC2Q1tjuVtbhMvU-pmEsn1Ai4=AAB3Tm8HTWi7PFHfg@mail.gmail.com>
+ <30ffd737-d0aa-44aa-a647-686e536ac548@lucifer.local> <2iypqaa3orklplwec4k5n4nuuov3gajtkiv2nt2ce2s2b4e7gd@7y6cmwrwr5te>
+In-Reply-To: <2iypqaa3orklplwec4k5n4nuuov3gajtkiv2nt2ce2s2b4e7gd@7y6cmwrwr5te>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 14 Feb 2025 18:56:43 +0100
-X-Gm-Features: AWEUYZlCvnlYip6NxT-IbEXvDXbcPqbLJNWAR6_aNF7ALCefm0UGoYTQZWtxKqE
-Message-ID: <CANiq72=Yy8e=pGA+bUHPZhn+D66TmU3kLSjAXCSQzgseSYnDxQ@mail.gmail.com>
-Subject: Re: [PATCH V8 04/14] rust: Add cpumask helpers
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+Date: Fri, 14 Feb 2025 19:04:46 +0100
+X-Gm-Features: AWEUYZlksNjUlfuWQ3E5FqVG20TGeackl_sUVz7lkxRiPl7yZlnjyQZLRmVc3RY
+Message-ID: <CANiq72nBDEOSuSNTGKGA5xQrs3ZFH87ii0OAdhJq3rqtOv=dfQ@mail.gmail.com>
+Subject: Re: [PATCH v14 0/8] Rust support for mm_struct, vm_area_struct, and mmap
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@suse.cz>, 
+	John Hubbard <jhubbard@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-pm@vger.kernel.org, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Stephen Boyd <sboyd@kernel.org>, 
-	Nishanth Menon <nm@ti.com>, rust-for-linux@vger.kernel.org, 
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, Erik Schilling <erik.schilling@linaro.org>, 
-	=?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
-	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>, Christoph Hellwig <hch@lst.de>, 
-	Jason Gunthorpe <jgg@nvidia.com>, linux-kernel@vger.kernel.org, 
-	Uros Bizjak <ubizjak@gmail.com>
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org, Balbir Singh <balbirs@nvidia.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 14, 2025 at 3:20=E2=80=AFAM Yury Norov <yury.norov@gmail.com> w=
-rote:
+On Fri, Feb 14, 2025 at 5:10=E2=80=AFPM Liam R. Howlett <Liam.Howlett@oracl=
+e.com> wrote:
 >
-> I mean that Andrew's branch got broken because of it.
+> This will become more important once we have more than just wrappers,
+> but I think we should talk about what this will need to look like before
+> it actually happens.  ie: unstable rust branch tracking unstable c
+> branch with build emails, etc?  Early days yet, though.
 
-(This response is extra verbose to be extra clear, given the recent
-discussions these last days -- I don't mean you said or implied any of
-this, sorry)
+Like an equivalent to the `mm-unstable` one? Would patches only be
+promoted if they pass the Rust build etc.?
 
-To be clear: it was not a patch we introduced that broke it. It was a
-patch series from someone else that got a Linaro build report and
-that, nevertheless, was sent to Linus.
+(Sorry, I don't mind to interfere -- just trying to understand how it
+would work, since I may be able to use as an example later on for
+other subsystems etc.)
 
-The build report reached our mailing list, but we were not Cc'd
-directly about it (i.e. as individuals), we were not pinged about it
-(i.e. we never had any further questions about that after that single
-day), and we didn't realize the series was kept in a queue targeting
-Linus.
-
-Moreover, the build failure happened with a configuration that is
-best-effort and is documented as very experimental (GCC mixed builds),
-and that we didn't know Linus was building (we knew he built with
-Clang+Rust, which is what we are focused on testing), so we didn't
-spot that either on our side.
-
-By the way, we have not been Cc'd in the new version, either... Nor
-the mailing list.
-
-To be clear, I am not blaming anyone for the breakage, and I already
-apologized that we didn't notice that report. But it is not our fault
-either.
-
-We also never promised we would fix every single Rust issue spotted
-across the entire kernel. We try to do our best to help, though.
-
-    https://rust-for-linux.com/rust-kernel-policy#who-is-responsible-if-a-c=
--change-breaks-a-build-with-rust-enabled
-    https://rust-for-linux.com/rust-kernel-policy#didnt-you-promise-rust-wo=
-uldnt-be-extra-work-for-maintainers
-
-> Yes, I see. Viresh didn't do that on purpose. Let's move forward. I'm
-> more concerned about lack of testing on rust side that ended up with
-> the patches withdrawal.
-
-Please see above.
-
-I regularly test different combinations (branches, configs, compiler
-versions, and so on) to catch mainly toolchain issues and so on, and
-keep things as clean as I can. Others use regularly the Rust support
-for their different use cases, thus more testing happens on different
-environments. In other words, things generally work just fine.
-
-However, our testing is not meant to catch every issue everywhere.
-Like for anything else in the kernel, whoever maintains a branch with
-a particular Rust feature needs to set up proper testing for that
-particular feature and relevant configs.
-
-Regarding the GCC mixed builds: worst case, if we see there is no
-bandwidth for it (be it ourselves or other maintainers testing their
-own branches), we could limit the testing required (e.g. limiting GCC
-versions when Rust is enabled), or we could request Linus to skip Rust
-with GCC in his builds, so that at least PRs are not blocked on that.
-
-> Yes, this should be done. 0-day is already testing everything in my
-> https://github.com/norov/linux repo. If you know right people, please
-> ask them to test bitmap-for-next branch with rust enabled. If there's
-> enough resources, please cover all the repo.
-
-Definitely! I will do that and Cc you.
-
-I hope that helps.
-
-> I'm the right person to look after rust bindings for bitops, inevitably.
-> I will take over patch 4/14 and submit it separately together with a
-> new maintenance entry.
+> I am unclear how the branching/merging happens.  When do we need to
+> start (at lest) building the rust side?  We've been doing a lot of work
+> in the modularization/interface level to try and integrate more isolated
+> testing, as well as the locking changes.
 >
-> I will not maintain any rust code. For 5/14, after I'll send my series,
-> Viresh, can you submit 5/14 separately and create a separate entry in
-> MAINTAINERS. Please make me a reviewer there.
->
-> I'll think about details over the weekend and will submit everything
-> early next week.
+> Do you have build bots that will tell us when things are broken?
 
-Thanks a lot Yury, that sounds very reasonable.
+If you mean on the Rust side, I just wrote some context on another thread:
+
+    https://lore.kernel.org/rust-for-linux/CANiq72=3DYy8e=3DpGA+bUHPZhn+D66=
+TmU3kLSjAXCSQzgseSYnDxQ@mail.gmail.com/
+
+The important bit is:
+
+    I regularly test different combinations (branches, configs, compiler
+    versions, and so on) to catch mainly toolchain issues and so on, and
+    keep things as clean as I can. Others use regularly the Rust support
+    for their different use cases, thus more testing happens on different
+    environments. In other words, things generally work just fine.
+
+    However, our testing is not meant to catch every issue everywhere.
+    Like for anything else in the kernel, whoever maintains a branch with
+    a particular Rust feature needs to set up proper testing for that
+    particular feature and relevant configs.
+
+I hope that clarifies.
+
+Moreover, there are some bots available that support Rust, e.g.
+Intel's 0-day bot. I am happy to put you in contact with them to see
+what they can do for your branches.
 
 Cheers,
 Miguel
