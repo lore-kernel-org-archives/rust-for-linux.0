@@ -1,129 +1,230 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8980315854F;
-	Fri, 14 Feb 2025 07:18:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9112153ED
+	for <rust-for-linux@vger.kernel.org>; Fri, 14 Feb 2025 07:41:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739517541; cv=none; b=F5OzNLEcQLEb2Z2jOJ6/eAw5K9r+14FuuWq4ZL2F6YL5HS5pXWTSWQc212Lk1nGoCDtGeEduFdTYL9g0xAH6GwDrMjM61VCePdHIAbwO5dKw5nRaatnm48Sa5KnXh+XEGqH2NPkjZRLgU9485Gaf1yE5ZLs7ccR+cdZwrbT5yrM=
+	t=1739518867; cv=none; b=Vnqs5u3vduOua7vLoUPK9TnGIjPNv/rXwCqq5nxP8F/RWVuTByBL+D5fkghs0xkqrJEmbRSvw0Uc64HgbfVkZ4gPtY9Y8rgvJYr4R0VQEhu/4H961qj7DlYsLFj+muf6BSlIfGQEFcgnv60VsWC9WdDBo0U/NcQvFSTg3a6B9B8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739517541; c=relaxed/simple;
-	bh=qW5K0tff0Kwu/5nGT44PYcGWfbsMK2Z152X5t4YLm+Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Qtw2RaRDHiv/z4LOY6Pu8gJRFgElfiFrpbU+bteBHsNnDGv/Fjd0CsElTJ5dqbSf6VjNyjlgZr9+7si1lgk8w3hZ5Mxt9X/0yoAyf6J9BPQfKkJ5II+s2FmlL1mvPplvgYWF6SNoCfX5WRfzSSl6RMMTHu6oVmxepFvQQbN/OIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-ab7d58aa674so258755666b.0;
-        Thu, 13 Feb 2025 23:18:59 -0800 (PST)
+	s=arc-20240116; t=1739518867; c=relaxed/simple;
+	bh=12kOPRWel7xFCzSXfD1ckAW3cz4eQ6lXHcEjTTfHP5s=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=AELCvNn9G1gxfAxUX5nr28S+3DlxTJoXzc2Ji1yatfIR9U8TLoYCof4th0Q6PYkcuqfEN/pGr8yvHTNfT7Z2+hJkg7N+kwXOteb0DaUHN8WFjKpCMTUFWv7clb8NSxjzZ2059/nwAfpEiGWt6V4s+F6S8FVm7Vd3U4NUegR7T8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pCSPyBJD; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pCSPyBJD"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-21f022fc6a3so38000315ad.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 13 Feb 2025 23:41:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1739518864; x=1740123664; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ros5ecWILQk9ViSMi46tyrMnoasJTGynME1EO90va/I=;
+        b=pCSPyBJDNza5YN0gsduFf8YznwKZ+9fmLxYpU+YGZDyZS86XgPJzd/h78X5XK48QAf
+         h+YEQ4p2OWwZkMPp+Sfvpe94zh6fTYfvyViAx7uFPEg5nI0Kyx/s5qX7BZLE2qmtku9x
+         kmnAzs1d11NsIB/g/gGEqL5YmZ4kB81DOcGbZOly7i3CiOC2PMbIIUomnXcuKqwic0zB
+         Lti2hrOJFiDjmy+GuzXnSRMmTZ8AvRXNPptzByXMegOaT3Cwz5B8HdcTRFnfzfAAXUml
+         4XDXrgbKoeHQUfddC22h/J31a/grrzn8pNgk1VcFvWG3iBEiCJowoPANA8y0YHXsNZV2
+         n00Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739517538; x=1740122338;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YBZbTGwwpOGkfmC2S2B/ns3VS+A0GE9103R09GlmDb0=;
-        b=YIKBfwDwr+taVJ43TBQIxjziYwyI2sPm75wIdb9KGfFNUZ9zmfdBHDU7zSWXwFzgy1
-         0BO/lwjoS3XH2Su/Ztaq3SznH8tKI1L16r7o7bFT8xxZD3a9rHCMjXiCkrVGnTsL3TpX
-         CvXUAohBPwhWGDaNnQQtNtWsA1+lkcQ394YqnksjhGpXZVV9R8bivE+H2geqYVKuXVsG
-         jvpiC6gu2Z8BuKfEvJ1ZsPZVALECKnsIKMi0d0q5KsC1SbUr+7cGx2l0VIm95DicRR4V
-         16d1JJAK2wa+f7cVidfd+77ToQp+7Kd5nzGQVjyaFjWdWNpSgQ+O6bBNsuxdiM13GcoT
-         NTSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVECdH6viG2eOopkKyj1pn9/E9vwOLODSh7PP+F/V8SyZi5VK5NSLxyoxTrz+kjm9TxpKKCMdq++MSdQGAvOaA=@vger.kernel.org, AJvYcCVMhVn9qhX3t6tEFL+ILGDanrmMXNjdphsLbPUwNqupDdFwVrpasD3Z3mLPCvKGhrfdWLC8e0Jmd8cRWD4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOYXS4JTMtBLViMtNCs9OYksBPK/9toxtNOK4syDP1ZqPIW/bM
-	Iuqz+AboSyk2anxbFoV7TkqgTRT+y14RgU+bQNeUiAjJiE9oW4+BV3XBqfQyKhY=
-X-Gm-Gg: ASbGncttWQd77XUPAdLTl0XskZqvonvsLDNfb+DMwlU0bJp8a8lcfgzf03SY1H45nTc
-	xvNnOfLEwPFVI1goMhtcNr2/rjAdu3YdwLPKd5XMjYwmzy7l8mZUHMHCTg4vcbxcJNbAe+oVQNz
-	ymtRXRhJofxFqy6yUs3DPFNIb7KPD6VJ983i0tHDEOATv5nXP8UpSZsBu9vltDJkvUwp3ImiDtz
-	YoaoDhWwbX8MHCmWO7WTIs0rOgbSWeHjV/+Z+ZhnyAPqsUzXw6gmf2FQ2LCxqYFp7OShIKeQlpq
-	rD79Pl4sZBojV/INF/dYCOMGE1vEJbb5Piel/wLACFtZ7Q==
-X-Google-Smtp-Source: AGHT+IFc73WHmq28oHdSqWWpoEF13ZYLfVxQJx4DtTn+o/2WXc3mBD6E31ywpog2tbhTmsfecIac8A==
-X-Received: by 2002:a17:907:1c9e:b0:ab7:a274:d3df with SMTP id a640c23a62f3a-ab7f33c13a7mr1007825466b.20.1739517537446;
-        Thu, 13 Feb 2025 23:18:57 -0800 (PST)
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com. [209.85.218.47])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aba53376ac6sm282180966b.111.2025.02.13.23.18.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Feb 2025 23:18:57 -0800 (PST)
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-ab7c07e8b9bso300332266b.1;
-        Thu, 13 Feb 2025 23:18:57 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCU85KTbgD854zvHeLJvnuFozP0otDHiX6Md58U6MyVXaOWI2ZWofnsxYOGP0534hvPFD3gKkSSPFa2HACMj4+w=@vger.kernel.org, AJvYcCW2kTaxu1/1VdO4Wyyw17ZaDeGWBqv/aiPz5eT0m4rDN5ee8rZf1wFFMgNr3+35X43u4pvYJj8z1spwJlM=@vger.kernel.org
-X-Received: by 2002:a17:907:c22:b0:ab7:c94f:af87 with SMTP id
- a640c23a62f3a-ab7f33c0897mr1109151066b.16.1739517094400; Thu, 13 Feb 2025
- 23:11:34 -0800 (PST)
+        d=1e100.net; s=20230601; t=1739518864; x=1740123664;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ros5ecWILQk9ViSMi46tyrMnoasJTGynME1EO90va/I=;
+        b=RG2731R/XRowF3IDIlp1eDt625rZ3EuLmC1P29T7AHZ5XRSDVD39n1ybUBJ+/qE2ba
+         +hHX1d8m2HrDpv6D+g0KQjLhFx1AVx+gn105ry1/5pVqF3cyJ42nJbYOAX8nwNs33qMP
+         E0IKMvSaSDnoRFiKSSTTzHhsltnAjfD3i/ogutSCK8q25BjmopN35bqODQT8+AswRUxq
+         jUQzLIv6NLuqxi6OZDDCf4Im8/xTT98icSJ8QT82QM8j7eyR21Qj0N77oiu3tIZIkUn3
+         qEM0idXNkgvz/QEMgW5pJjvMn0JCZNyAGvW6SQJkj9zAV8EreSPE3VNh2eSdzBYLV1h0
+         ztfA==
+X-Forwarded-Encrypted: i=1; AJvYcCXUnrGgtZsRCkwLvrSnAPtL5ez/hYLRlBogMKzNAcaELn5bX6DAUn9xv2bQlaaWq2yQqQQC8LrUWYFzbtODyA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpU+/SMb688favqrBXzUW9PYSUr7FIRbml/ejo+isflFAy3T+f
+	/4Yu5eDLFq8cZBOjW/vuEl0vrP49Au4aKlIe9erwhbeEO7jU5T87w2oIR0FvuaGc0aWWjCtdbd9
+	V2znRskKWpg==
+X-Google-Smtp-Source: AGHT+IFc9mssigZBBdQeLa48hAtAvejO3PdAygZr+C8/qwDEPSonq7V87yX/QBsUdgxAuKB6Xx/+ib3gt23dEg==
+X-Received: from plbjk16.prod.google.com ([2002:a17:903:3310:b0:21f:4e6:1edd])
+ (user=davidgow job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:902:dacc:b0:21f:6546:9adc with SMTP id d9443c01a7336-220d3517e17mr85460525ad.13.1739518864278;
+ Thu, 13 Feb 2025 23:41:04 -0800 (PST)
+Date: Fri, 14 Feb 2025 15:40:45 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <2025013148-reversal-pessimism-1515@gregkh> <1bbdf8b7-a70b-4994-865e-7fcb8d53ebef@marcan.st>
- <20250207-prehistoric-married-dormouse-3e1aa7@lemur> <7742420.9J7NaK4W3v@skuld-framework>
- <d6cae188-28e5-409f-86ed-7ddf374fd354@sirena.org.uk>
-In-Reply-To: <d6cae188-28e5-409f-86ed-7ddf374fd354@sirena.org.uk>
-From: Neal Gompa <neal@gompa.dev>
-Date: Fri, 14 Feb 2025 02:10:57 -0500
-X-Gmail-Original-Message-ID: <CAEg-Je9BiTsTmaadVz7S0=Mj3PgKZSu4EnFixf+65bcbuu7+WA@mail.gmail.com>
-X-Gm-Features: AWEUYZkDpaaCrtdHfh-vNgOgzQjACZNx_DnEFz8ZiojUP1KiLrlWIyNShKVYrqs
-Message-ID: <CAEg-Je9BiTsTmaadVz7S0=Mj3PgKZSu4EnFixf+65bcbuu7+WA@mail.gmail.com>
-Subject: Re: On community influencing (was Re: [PATCH v8 2/2] rust: add dma
- coherent allocator abstraction.)
-To: Mark Brown <broonie@kernel.org>
-Cc: Hector Martin <marcan@marcan.st>, Konstantin Ryabitsev <konstantin@linuxfoundation.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Dave Airlie <airlied@gmail.com>, Jason Gunthorpe <jgg@nvidia.com>, 
-	Greg KH <gregkh@linuxfoundation.org>, Linus Torvalds <torvalds@linux-foundation.org>, 
-	phasta@kernel.org, Christoph Hellwig <hch@lst.de>, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>, daniel.almeida@collabora.com, 
-	aliceryhl@google.com, robin.murphy@arm.com, rust-for-linux@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Valentin Obst <kernel@valentinobst.de>, 
-	open list <linux-kernel@vger.kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	David Airlie <airlied@redhat.com>, 
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>, DRI Development <dri-devel@lists.freedesktop.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.48.1.601.g30ceb7b040-goog
+Message-ID: <20250214074051.1619256-1-davidgow@google.com>
+Subject: [PATCH v6 0/3] rust: kunit: Support KUnit tests with a user-space
+ like syntax
+From: David Gow <davidgow@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, 
+	"=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?=" <jose.exposito89@gmail.com>, Rae Moar <rmoar@google.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, Benno Lossin <benno.lossin@proton.me>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Matt Gilbride <mattgilbride@google.com>, Brendan Higgins <brendan.higgins@linux.dev>
+Cc: David Gow <davidgow@google.com>, kunit-dev@googlegroups.com, 
+	linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 10, 2025 at 12:28=E2=80=AFPM Mark Brown <broonie@kernel.org> wr=
-ote:
->
-> On Sun, Feb 09, 2025 at 03:25:26AM -0500, Neal Gompa wrote:
-> > On Friday, February 7, 2025 1:16:11=E2=80=AFPM Eastern Standard Time Ko=
-nstantin
-> > Ryabitsev wrote:
->
-> > > It is my goal to be able to give subsystems a way to use forges witho=
-ut it
-> > > impacting how they interact with upstream or handle tree-wide changes=
-. That
-> > > is, once I'm done moving things from one Benevolent Company to anothe=
-r.
->
-> > Honestly, this is probably not possible. If a subsystem moves to a forg=
-e
-> > workflow, it pretty much means tree-wide changes need to work partially=
- that
-> > way too.
->
-> We do actually have some people using forges already, for example the
-> SOF people do a bunch of their review on github and then turn that into
-> patch serieses which they send via the normal email route when they're
-> happy with them.  I think tree wide stuff flows in via back merges or
-> rebases, one of the benefits of delegation is that it's not my problem.
-> This all works perfectly well from my side, as far as I know it's fine
-> for the SOF people too.  It certainly doesn't seem insurmountable.
+Hi all,
 
-It might be working as long as a subsystem continues to allow
-receiving patches via email. As soon as a subsystem decides to stop
-doing that (which is absolutely their right given the model of
-subsystem maintenance that the Linux project has), I think this will
-break down very quickly.
+After much delay, v6 of the KUnit/Rust integration patchset is here.
+This change incorporates most of Miguels suggestions from v5 (save for
+some of the copyright headers I wasn't comfortable unilaterally
+changing). This means the documentation is much improved, and it should
+work more cleanly on Rust 1.83 and 1.84, no longer requiring
+static_mut_refs or const_mut_refs. (I'm not 100% sure I understand all
+of the details of this, but I'm comfortable enough with how it's ended
+up.)
 
-I wonder which team will be the first one to do it. It's not a
-question of if, but when.
+This has been rebased against 6.14-rc1/rust-next, and should be able to
+comfortably go in via either the KUnit or Rust trees. My suspicion is
+that there's more likely to be conflicts with the Rust work (due to the
+changes in rust/macros/lib.rs) than with KUnit, where there are no
+current patches which would break the API, so maybe it makes the most
+sense for it to go in via Rust for 6.15.
 
+This series was originally written by Jos=C3=A9 Exp=C3=B3sito, and has been
+modified and updated by Matt Gilbride, Miguel Ojeda, and myself. The
+original version can be found here:
+https://github.com/Rust-for-Linux/linux/pull/950
+
+Add support for writing KUnit tests in Rust. While Rust doctests are
+already converted to KUnit tests and run, they're really better suited
+for examples, rather than as first-class unit tests.
+
+This series implements a series of direct Rust bindings for KUnit tests,
+as well as a new macro which allows KUnit tests to be written using a
+close variant of normal Rust unit test syntax. The only change required
+is replacing '#[cfg(test)]' with '#[kunit_tests(kunit_test_suite_name)]'
+
+An example test would look like:
+	#[kunit_tests(rust_kernel_hid_driver)]
+	mod tests {
+	    use super::*;
+	    use crate::{c_str, driver, hid, prelude::*};
+	    use core::ptr;
+
+	    struct SimpleTestDriver;
+	    impl Driver for SimpleTestDriver {
+	        type Data =3D ();
+	    }
+
+	    #[test]
+	    fn rust_test_hid_driver_adapter() {
+	        let mut hid =3D bindings::hid_driver::default();
+	        let name =3D c_str!("SimpleTestDriver");
+	        static MODULE: ThisModule =3D unsafe { ThisModule::from_ptr(ptr::n=
+ull_mut()) };
+
+        	let res =3D unsafe {
+	            <hid::Adapter<SimpleTestDriver> as driver::DriverOps>::registe=
+r(&mut hid, name, &MODULE)
+	        };
+	        assert_eq!(res, Err(ENODEV)); // The mock returns -19
+	    }
+	}
+
+
+Please give this a go, and make sure I haven't broken it! There's almost
+certainly a lot of improvements which can be made -- and there's a fair
+case to be made for replacing some of this with generated C code which
+can use the C macros -- but this is hopefully an adequate implementation
+for now, and the interface can (with luck) remain the same even if the
+implementation changes.
+
+A few small notable missing features:
+- Attributes (like the speed of a test) are hardcoded to the default
+  value.
+- Similarly, the module name attribute is hardcoded to NULL. In C, we
+  use the KBUILD_MODNAME macro, but I couldn't find a way to use this
+  from Rust which wasn't more ugly than just disabling it.
+- Assertions are not automatically rewritten to use KUnit assertions.
+
+---
+
+Changes since v5:
+https://lore.kernel.org/all/20241213081035.2069066-1-davidgow@google.com/
+- Rebased against 6.14-rc1
+- Fixed a bunch of warnings / clippy lints introduced in Rust 1.83 and
+  1.84.
+- No longer needs static_mut_refs / const_mut_refs, and is much cleaned
+  up as a result. (Thanks, Miguel)
+- Major documentation and example fixes. (Thanks, Miguel)
+
+Changes since v4:
+https://lore.kernel.org/linux-kselftest/20241101064505.3820737-1-davidgow@g=
+oogle.com/
+- Rebased against 6.13-rc1
+- Allowed an unused_unsafe warning after the behaviour of addr_of_mut!()
+  changed in Rust 1.82. (Thanks Boqun, Miguel)
+- "Expect" that the sample assert_eq!(1+1, 2) produces a clippy warning
+  due to a redundant assertion. (Thanks Boqun, Miguel)
+- Fix some missing safety comments, and remove some unneeded 'unsafe'
+  blocks. (Thanks Boqun)
+- Fix a couple of minor rustfmt issues which were triggering checkpatch
+  warnings.
+
+Changes since v3:
+https://lore.kernel.org/linux-kselftest/20241030045719.3085147-2-davidgow@g=
+oogle.com/T/
+- The kunit_unsafe_test_suite!() macro now panic!s if the suite name is
+  too long, triggering a compile error. (Thanks, Alice!)
+- The #[kunit_tests()] macro now preserves span information, so
+  errors can be better reported. (Thanks, Boqun!)
+- The example tests have been updated to no longer use assert_eq!() with
+  a constant bool argument (which triggered a clippy warning now we
+  have the span info).
+
+Changes since v2:
+https://lore.kernel.org/linux-kselftest/20241029092422.2884505-1-davidgow@g=
+oogle.com/T/
+- Include missing rust/macros/kunit.rs file from v2. (Thanks Boqun!)
+- The kunit_unsafe_test_suite!() macro will truncate the name of the
+  suite if it is too long. (Thanks Alice!)
+- The proc macro now emits an error if the suite name is too long.
+- We no longer needlessly use UnsafeCell<> in
+  kunit_unsafe_test_suite!(). (Thanks Alice!)
+
+Changes since v1:
+https://lore.kernel.org/lkml/20230720-rustbind-v1-0-c80db349e3b5@google.com=
+/T/
+- Rebase on top of the latest rust-next (commit 718c4069896c)
+- Make kunit_case a const fn, rather than a macro (Thanks Boqun)
+- As a result, the null terminator is now created with
+  kernel::kunit::kunit_case_null()
+- Use the C kunit_get_current_test() function to implement
+  in_kunit_test(), rather than re-implementing it (less efficiently)
+  ourselves.
+
+Changes since the GitHub PR:
+- Rebased on top of kselftest/kunit
+- Add const_mut_refs feature
+  This may conflict with https://lore.kernel.org/lkml/20230503090708.252431=
+0-6-nmi@metaspace.dk/
+- Add rust/macros/kunit.rs to the KUnit MAINTAINERS entry
+
+---
+
+Jos=C3=A9 Exp=C3=B3sito (3):
+  rust: kunit: add KUnit case and suite macros
+  rust: macros: add macro to easily run KUnit tests
+  rust: kunit: allow to know if we are in a test
+
+ MAINTAINERS          |   1 +
+ rust/kernel/kunit.rs | 199 +++++++++++++++++++++++++++++++++++++++++++
+ rust/macros/kunit.rs | 161 ++++++++++++++++++++++++++++++++++
+ rust/macros/lib.rs   |  29 +++++++
+ 4 files changed, 390 insertions(+)
+ create mode 100644 rust/macros/kunit.rs
 
 --=20
-=E7=9C=9F=E5=AE=9F=E3=81=AF=E3=81=84=E3=81=A4=E3=82=82=E4=B8=80=E3=81=A4=EF=
-=BC=81/ Always, there's only one truth!
+2.48.1.601.g30ceb7b040-goog
+
