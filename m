@@ -1,113 +1,248 @@
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071741C84A4;
-	Fri, 14 Feb 2025 19:49:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F3F487BF
+	for <rust-for-linux@vger.kernel.org>; Fri, 14 Feb 2025 20:19:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739562602; cv=none; b=gMAAspiiUy+8Di7nKkgdiYqPF9E3K5MaFdSqM4m6Ssq2FHtZINQl30905DMtC2dawQ3gwv21Z0mMaJfqEOMBX1EkLUC0FJk3pO3rMcalZ8dib/1JOq4Ma+4Ha5aPLgw2u1lRguUp27L7D0Q4ZY38t/zXjh4blyyQQTPd5AR218c=
+	t=1739564376; cv=none; b=UFL50sj1H1LLnx/OMMQEWUvzff30pMx3EpzO9aYjmbJmrrIHtIJuTiPL3Tmcff0lrMmw/c8TdJD5KE7DgYmbzhbay8yVL2i0l4f67Co0sDjns3G7K+fE/sRIrufQiFX1oGOO6trMHC4n8JDbehJutpjEQIRrUeLv4eMzre9Nemo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739562602; c=relaxed/simple;
-	bh=hArpn+cw0WzxHVCJBoy/mNR4x4o/Qt+KgqxSu6/0MYI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ps6I+/XX2sIM4c41W46FIsL9ndMpcUjLt4xnH5pDRSXNQMhcAf/E+fyMhQhMLT09qJYVsd97Dlb2hEpOlkl/G1E+tQx1U9NO+mlM+7uf1AgJFY1qvXfrvhaMCcMlkXvUqICVDaFqGyj9TLga89nonAw5QWK04xEQYke5QU2ncEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=Zcqd7Muw; arc=none smtp.client-ip=62.89.141.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+	s=arc-20240116; t=1739564376; c=relaxed/simple;
+	bh=CtNM/RVMZqKpZrHwL+U6jZelnKrkdf6d3UdZtJeqU5s=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ihy7DXdPcYQCijltYIPceyH5MaEuP41+lOQf375JfLzyeadb3QOSYft24qnq16mfaszkeJPIUkNr43S5u4/AHmBgh0kydxr0m4I/EfrsMeJD5yYLVJjbYJ/VERmROJTJXI9DMoOHs0IxkrCEybtHZFzLD8CB4TdsWaQYDeYPxXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=Hzffh1ee; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="Zcqd7Muw"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description;
-	bh=9Lwc6ovB+AAsRpWlUng0A8U3oiN7oiWCRl5T7bGuQNY=; b=Zcqd7MuwSp32VjaIeQh5yxL/U6
-	icJVq5xrEpspT/pKRtBxR7iEunSEhjiVPPCrSRqP10coccrZkG5YUNLZmffQUiZerd62tVgb3HLd2
-	znI7Mzv5bo8NbC2ixCTPRCHTPSIxIK/qj0liS+a+JNXUMioYlPFlpUy/M6odXJ3kAQEu64fX1f5Zd
-	GS2kofNlks6aKd+u5V97NzagKHrx+L7QSFNQZknXhh5XlHN1XPfQu/dabOW61EwnIiLCVvJ8/pNN5
-	u2lhMrSUoiJwwDKXBqkbYIUTZzE7XUajvFlJn2A4WyYCFLOESb5GpPpLsZDFsPbdiRaD6pipLDOJk
-	JM61i51g==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1tj1h3-0000000E68X-33mp;
-	Fri, 14 Feb 2025 19:49:45 +0000
-Date: Fri, 14 Feb 2025 19:49:45 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Neal Gompa <neal@gompa.dev>
-Cc: Mark Brown <broonie@kernel.org>, Hector Martin <marcan@marcan.st>,
-	Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>, Dave Airlie <airlied@gmail.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>, phasta@kernel.org,
-	Christoph Hellwig <hch@lst.de>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	daniel.almeida@collabora.com, aliceryhl@google.com,
-	robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	David Airlie <airlied@redhat.com>,
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
-	DRI Development <dri-devel@lists.freedesktop.org>
-Subject: Re: On community influencing (was Re: [PATCH v8 2/2] rust: add dma
- coherent allocator abstraction.)
-Message-ID: <20250214194945.GE1977892@ZenIV>
-References: <2025013148-reversal-pessimism-1515@gregkh>
- <1bbdf8b7-a70b-4994-865e-7fcb8d53ebef@marcan.st>
- <20250207-prehistoric-married-dormouse-3e1aa7@lemur>
- <7742420.9J7NaK4W3v@skuld-framework>
- <d6cae188-28e5-409f-86ed-7ddf374fd354@sirena.org.uk>
- <CAEg-Je9BiTsTmaadVz7S0=Mj3PgKZSu4EnFixf+65bcbuu7+WA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="Hzffh1ee"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id 74356240103
+	for <rust-for-linux@vger.kernel.org>; Fri, 14 Feb 2025 21:19:30 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1739564370; bh=CtNM/RVMZqKpZrHwL+U6jZelnKrkdf6d3UdZtJeqU5s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 From;
+	b=Hzffh1eeRVsBC5BEEkcbABraLoDHCbk6Sj7oEjvox2EKPBeJbpcpZnHgyMvhIatBw
+	 0ZnwAn3CQcEoz8DV6h/KuQZViD0QB4Zu952aOQfxBXk0LkQq8fmASrgSxYqTgDjJgy
+	 aHZt+9gOSzIZlKT1phtB7CXRPg4zWKI/bClAArm4xFMwgaTKel0HaZx3pnrfELYN4Z
+	 Klg0QeR6k8hb7UlWDcri9yd2Jf1Tdx3fqUlwWMp4Y2UHT70bxFK9nO4lbbwsAs1tnh
+	 GkJh7QzmGt+ZszhdYkni5/x5kqBrD9yjFxlsFCkLdTMjNaClsjMgJve0oXVzZowBKk
+	 upHLJh2ny0+8g==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4Yvk0r5GLrz9rxB;
+	Fri, 14 Feb 2025 21:19:24 +0100 (CET)
+From: Charalampos Mitrodimas <charmitro@posteo.net>
+To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+Cc: a.hindborg@kernel.org,  alex.gaynor@gmail.com,  aliceryhl@google.com,
+  apw@canonical.com,  arnd@arndb.de,  aswinunni01@gmail.com,
+  axboe@kernel.dk,  benno.lossin@proton.me,  bhelgaas@google.com,
+  bjorn3_gh@protonmail.com,  boqun.feng@gmail.com,  dakr@kernel.org,
+  dwaipayanray1@gmail.com,  ethan.twardy@gmail.com,
+  fujita.tomonori@gmail.com,  gary@garyguo.net,
+  gregkh@linuxfoundation.org,  joe@perches.com,  lukas.bulwahn@gmail.com,
+  ojeda@kernel.org,  pbonzini@redhat.com,  tmgross@umich.edu,
+  walmeida@microsoft.com,  rust-for-linux@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  Miguel Ojeda
+ <miguel.ojeda.sandonis@gmail.com>
+Subject: Re: [PATCH V2 1/2] rust: module: change author to be a array
+In-Reply-To: <20250214184550.120775-2-trintaeoitogc@gmail.com>
+References: <20250214184550.120775-1-trintaeoitogc@gmail.com>
+	<20250214184550.120775-2-trintaeoitogc@gmail.com>
+Date: Fri, 14 Feb 2025 20:19:23 +0000
+Message-ID: <m2y0y8b7p0.fsf@posteo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEg-Je9BiTsTmaadVz7S0=Mj3PgKZSu4EnFixf+65bcbuu7+WA@mail.gmail.com>
-Sender: Al Viro <viro@ftp.linux.org.uk>
+Content-Type: text/plain
 
-On Fri, Feb 14, 2025 at 02:10:57AM -0500, Neal Gompa wrote:
-> On Mon, Feb 10, 2025 at 12:28 PM Mark Brown <broonie@kernel.org> wrote:
-> >
-> > On Sun, Feb 09, 2025 at 03:25:26AM -0500, Neal Gompa wrote:
-> > > On Friday, February 7, 2025 1:16:11 PM Eastern Standard Time Konstantin
-> > > Ryabitsev wrote:
-> >
-> > > > It is my goal to be able to give subsystems a way to use forges without it
-> > > > impacting how they interact with upstream or handle tree-wide changes. That
-> > > > is, once I'm done moving things from one Benevolent Company to another.
-> >
-> > > Honestly, this is probably not possible. If a subsystem moves to a forge
-> > > workflow, it pretty much means tree-wide changes need to work partially that
-> > > way too.
-> >
-> > We do actually have some people using forges already, for example the
-> > SOF people do a bunch of their review on github and then turn that into
-> > patch serieses which they send via the normal email route when they're
-> > happy with them.  I think tree wide stuff flows in via back merges or
-> > rebases, one of the benefits of delegation is that it's not my problem.
-> > This all works perfectly well from my side, as far as I know it's fine
-> > for the SOF people too.  It certainly doesn't seem insurmountable.
-> 
-> It might be working as long as a subsystem continues to allow
-> receiving patches via email. As soon as a subsystem decides to stop
-> doing that (which is absolutely their right given the model of
-> subsystem maintenance that the Linux project has), I think this will
-> break down very quickly.
-> 
-> I wonder which team will be the first one to do it. It's not a
-> question of if, but when.
+Guilherme Giacomo Simoes <trintaeoitogc@gmail.com> writes:
 
-Then it will be a matter of patches affecting their subtree getting merged
-through the mainline.  All there is to it...
+> In the module! macro, the author field has a string type. Once that the
+> modules can has more than one author, this is impossible in the current
+> scenary.
+> Change the author field for accept a array string type and enable module
+> creations with more than one author.
+> In modules that use the author field, change its value to a string
+> array.
+>
+> Suggested-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+> Link: https://github.com/Rust-for-Linux/linux/issues/244
+> Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+> ---
+>  drivers/block/rnull.rs           | 2 +-
+>  rust/kernel/net/phy.rs           | 4 ++--
+>  rust/kernel/pci.rs               | 2 +-
+>  rust/macros/lib.rs               | 4 ++--
+>  rust/macros/module.rs            | 8 +++++---
+>  samples/rust/rust_driver_pci.rs  | 2 +-
+>  samples/rust/rust_minimal.rs     | 2 +-
+>  samples/rust/rust_misc_device.rs | 2 +-
+>  samples/rust/rust_print_main.rs  | 2 +-
+>  9 files changed, 15 insertions(+), 13 deletions(-)
+>
+> diff --git a/drivers/block/rnull.rs b/drivers/block/rnull.rs
+> index ddf3629d8894..cb133993f27f 100644
+> --- a/drivers/block/rnull.rs
+> +++ b/drivers/block/rnull.rs
+> @@ -27,7 +27,7 @@
+>  module! {
+>      type: NullBlkModule,
+>      name: "rnull_mod",
+> -    author: "Andreas Hindborg",
+> +    author: ["Andreas Hindborg"],
+>      description: "Rust implementation of the C null block driver",
+>      license: "GPL v2",
+>  }
+> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+> index bb654a28dab3..b179ac3a8d00 100644
+> --- a/rust/kernel/net/phy.rs
+> +++ b/rust/kernel/net/phy.rs
+> @@ -790,7 +790,7 @@ const fn as_int(&self) -> u32 {
+>  ///         DeviceId::new_with_driver::<PhySample>()
+>  ///     ],
+>  ///     name: "rust_sample_phy",
+> -///     author: "Rust for Linux Contributors",
+> +///     author: ["Rust for Linux Contributors"],
+>  ///     description: "Rust sample PHYs driver",
+>  ///     license: "GPL",
+>  /// }
+> @@ -819,7 +819,7 @@ const fn as_int(&self) -> u32 {
+>  /// module! {
+>  ///     type: Module,
+>  ///     name: "rust_sample_phy",
+> -///     author: "Rust for Linux Contributors",
+> +///     author: ["Rust for Linux Contributors"],
+>  ///     description: "Rust sample PHYs driver",
+>  ///     license: "GPL",
+>  /// }
+> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+> index 4c98b5b9aa1e..1218eaa7be02 100644
+> --- a/rust/kernel/pci.rs
+> +++ b/rust/kernel/pci.rs
+> @@ -103,7 +103,7 @@ extern "C" fn remove_callback(pdev: *mut bindings::pci_dev) {
+>  /// kernel::module_pci_driver! {
+>  ///     type: MyDriver,
+>  ///     name: "Module name",
+> -///     author: "Author name",
+> +///     author: ["Author name"],
+>  ///     description: "Description",
+>  ///     license: "GPL v2",
+>  /// }
+> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+> index d61bc6a56425..8d74e18caf96 100644
+> --- a/rust/macros/lib.rs
+> +++ b/rust/macros/lib.rs
+> @@ -36,7 +36,7 @@
+>  /// module!{
+>  ///     type: MyModule,
+>  ///     name: "my_kernel_module",
+> -///     author: "Rust for Linux Contributors",
+> +///     author: ["Rust for Linux Contributors"],
+>  ///     description: "My very own kernel module!",
+>  ///     license: "GPL",
+>  ///     alias: ["alternate_module_name"],
+> @@ -69,7 +69,7 @@
+>  /// module!{
+>  ///     type: MyDeviceDriverModule,
+>  ///     name: "my_device_driver_module",
+> -///     author: "Rust for Linux Contributors",
+> +///     author: ["Rust for Linux Contributors"],
+>  ///     description: "My device driver requires firmware",
+>  ///     license: "GPL",
+>  ///     firmware: ["my_device_firmware1.bin", "my_device_firmware2.bin"],
+> diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+> index cdf94f4982df..09265d18b44d 100644
+> --- a/rust/macros/module.rs
+> +++ b/rust/macros/module.rs
+> @@ -94,7 +94,7 @@ struct ModuleInfo {
+>      type_: String,
+>      license: String,
+>      name: String,
+> -    author: Option<String>,
+> +    author: Option<Vec<String>>,
+>      description: Option<String>,
+>      alias: Option<Vec<String>>,
+>      firmware: Option<Vec<String>>,
+> @@ -135,7 +135,7 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
+>              match key.as_str() {
+>                  "type" => info.type_ = expect_ident(it),
+>                  "name" => info.name = expect_string_ascii(it),
+> -                "author" => info.author = Some(expect_string(it)),
+> +                "author" => info.author = Some(expect_string_array(it)),
+>                  "description" => info.description = Some(expect_string(it)),
+>                  "license" => info.license = expect_string_ascii(it),
+>                  "alias" => info.alias = Some(expect_string_array(it)),
+> @@ -184,7 +184,9 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
+>  
+>      let mut modinfo = ModInfoBuilder::new(info.name.as_ref());
+>      if let Some(author) = info.author {
+> -        modinfo.emit("author", &author);
+> +        for author in author {
+> +            modinfo.emit("author", &author);
+> +        }
+
+I wonder if we should make this "for author in authors", for code
+clarity concerns.
+
+>      }
+>      if let Some(description) = info.description {
+>          modinfo.emit("description", &description);
+> diff --git a/samples/rust/rust_driver_pci.rs b/samples/rust/rust_driver_pci.rs
+> index 1fb6e44f3395..5784677c797b 100644
+> --- a/samples/rust/rust_driver_pci.rs
+> +++ b/samples/rust/rust_driver_pci.rs
+> @@ -104,7 +104,7 @@ fn drop(&mut self) {
+>  kernel::module_pci_driver! {
+>      type: SampleDriver,
+>      name: "rust_driver_pci",
+> -    author: "Danilo Krummrich",
+> +    author: ["Danilo Krummrich"],
+>      description: "Rust PCI driver",
+>      license: "GPL v2",
+>  }
+> diff --git a/samples/rust/rust_minimal.rs b/samples/rust/rust_minimal.rs
+> index 4aaf117bf8e3..74279c3bd039 100644
+> --- a/samples/rust/rust_minimal.rs
+> +++ b/samples/rust/rust_minimal.rs
+> @@ -7,7 +7,7 @@
+>  module! {
+>      type: RustMinimal,
+>      name: "rust_minimal",
+> -    author: "Rust for Linux Contributors",
+> +    author: ["Rust for Linux Contributors"],
+>      description: "Rust minimal sample",
+>      license: "GPL",
+>  }
+> diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_device.rs
+> index 40ad7266c225..e840c12005cc 100644
+> --- a/samples/rust/rust_misc_device.rs
+> +++ b/samples/rust/rust_misc_device.rs
+> @@ -116,7 +116,7 @@
+>  module! {
+>      type: RustMiscDeviceModule,
+>      name: "rust_misc_device",
+> -    author: "Lee Jones",
+> +    author: ["Lee Jones"],
+>      description: "Rust misc device sample",
+>      license: "GPL",
+>  }
+> diff --git a/samples/rust/rust_print_main.rs b/samples/rust/rust_print_main.rs
+> index 7e8af5f176a3..f6d51b0884fb 100644
+> --- a/samples/rust/rust_print_main.rs
+> +++ b/samples/rust/rust_print_main.rs
+> @@ -8,7 +8,7 @@
+>  module! {
+>      type: RustPrint,
+>      name: "rust_print",
+> -    author: "Rust for Linux Contributors",
+> +    author: ["Rust for Linux Contributors"],
+>      description: "Rust printing macros sample",
+>      license: "GPL",
+>  }
+
+It could be that you developed this with an old tree history. You missed
+changing the author for the samples/rust/rust_driver_platform.rs sample.
