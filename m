@@ -1,133 +1,121 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8114A08;
-	Sat, 15 Feb 2025 10:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A2423BB;
+	Sat, 15 Feb 2025 12:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739617187; cv=none; b=XH68jjXRYaa6D74I+9Y/o1LECZ6p2hxI3AtkB5MJz1FvIFKkgyHrHmhAtRG0lee0BF9M+jTxqqL5Laj8uqpzfO4pwp6MuTA85HIL3qmgQAn7v1JrWn7LCAgwyBRjzXd4vGeHlXG/a7fBFh4tozzSnWJWK6T0yUNWwwQj4VILpxw=
+	t=1739624228; cv=none; b=CuB3ns4etTmmGuhh9DyQtDgDdylaEn4XzzOFfVJWfWRNwHQIc2D3lGkp3P7ST8h+fPFTpQnigbLFP1Sl9cz/+E4hvlxCf9nAn77Hf+WFyMXXwpLa22PQ9iFgpJ9IUedXnGhweCxCOIaUrCkB5APqrTr64Ww/7lPd34ZZnPx0V7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739617187; c=relaxed/simple;
-	bh=IlbUBSOJy8hOCCuGT+m8jqc2wR8Ma7WO/ztuxQvUf0U=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=kGG8PxAX3ifySvVNNG69Q00smdXXOtNqrAAwqvY2qrPhS4h5W1u/QZn2ActdzjOgfR+1wYALqtmu1u/cmtkgSShitx8L0gGO3UUoZZAInObXhQ3DjqIARaJ1V4m5DwtGF2Ar6UylfFq7teFgBFoYoDSnZeuwVALfCkiiVz4PSwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LUSl3slT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739624228; c=relaxed/simple;
+	bh=kM7YDOX7M089oM6EaB2+Gynk23YBNP4Ux48RkU99e+U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dCQ406vWo7G9/OWcqFUlsiaZ6e6BSdj5oBIHlNEZ4UseZbsBNFf6j6/Wv4nsa7OsPSt8OdlAod8JudOS5EzXifZO/lYlutBKiImtNDjvLZZKtOa3B8Vak1whvvDxr1BFihlMr+hpbrhGeD9cMNhCaqht/qbf7UfpfHcmspbXiEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a29d4oib; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LUSl3slT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95D3FC4CEDF;
-	Sat, 15 Feb 2025 10:59:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a29d4oib"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0FFAC4CEF1;
+	Sat, 15 Feb 2025 12:57:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739617186;
-	bh=IlbUBSOJy8hOCCuGT+m8jqc2wR8Ma7WO/ztuxQvUf0U=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=LUSl3slT0ZUUyJPm7yt5eaId153RO4WYRqzjHXQnrQeuhhxrWfvCWEFnYSKAFFs69
-	 Fgoz2B8bbtcoHXkA/00gDJM0kpaOLFd2rOz/LNYnzQSWQTBbXKCYGSpl69w4qSPSRZ
-	 vjq5CNs/2HOaMJ/6ar8xOK7B5eMRXguifXOJSvf72Xk7Xc6lBI14oUoelBOqgowmr2
-	 Y8FqG912N9T5XlQ+WO1P5APZYHqR2sAW7HAwBSaS25ON6+iZTGTRmCRVunZz9O2h8l
-	 6MWY6hmUsemRgsCtqvti5mKeRb5snng2PFK/2JTNydoqumLbFZujehPiLJzX7/QGQ5
-	 dyiWZjtfbKKwA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Lyude Paul" <lyude@redhat.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Anna-Maria Behnsen"
- <anna-maria@linutronix.de>,  "Frederic Weisbecker" <frederic@kernel.org>,
-  "Thomas Gleixner" <tglx@linutronix.de>,  "Danilo Krummrich"
- <dakr@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
- <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
- =?utf-8?Q?=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
-  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Guangbo Cui" <2407018371@qq.com>,  "Dirk Behme" <dirk.behme@gmail.com>,
-  "Daniel Almeida" <daniel.almeida@collabora.com>,  "Tamir Duberstein"
- <tamird@gmail.com>,  <rust-for-linux@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v7 04/14] rust: hrtimer: implement `HrTimerPointer` for
- `Arc`
-In-Reply-To: <4ce7b3dcbac5ba71d3f58d72f3c01d250da784e7.camel@redhat.com>
-	(Lyude Paul's message of "Mon, 10 Feb 2025 17:28:45 -0500")
-References: <20250203-hrtimer-v3-v6-12-rc2-v7-0-189144725399@kernel.org>
-	<20250203-hrtimer-v3-v6-12-rc2-v7-4-189144725399@kernel.org>
-	<5J6GLBNLTKE7HjIIlETU_xZcmzd9Nr1riVbm43DFR6LqAC_YnxQAMqMx8_QGZAqJ4wbTUkzHVn3Yra_irTB0Hg==@protonmail.internalid>
-	<4ce7b3dcbac5ba71d3f58d72f3c01d250da784e7.camel@redhat.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Sat, 15 Feb 2025 11:35:08 +0100
-Message-ID: <874j0vv6lf.fsf@kernel.org>
+	s=k20201202; t=1739624228;
+	bh=kM7YDOX7M089oM6EaB2+Gynk23YBNP4Ux48RkU99e+U=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=a29d4oib83MWmvJt0oTvfXiQ5oMAhhrNXdt5RTMzCfZRFbTwIrZ/20Gz3HsYlxDG0
+	 fM+gWxfKAEq2BLQ6kvXNsZJ2wmH7kh0TTwtBhIcSeBvZuD/JsQTuCfoN9aQoX9AZHi
+	 yxuxQmyN+210ij21vPATeYCLBBwx3h0/sJCFFA7HAdzrOWXNTKp+HPfpaW/65a/n2e
+	 JgTs9MaQmiPfJJ7GdAVhHvfa1QlNAtkfJdIw6wEn972YsrfD1ZPoUfZY/JVzUKr/5x
+	 /nGOA2HIO/5yYOirABW/Y9fV69hQVE4RQZbx7yFw+kgIHeR4qzY6Iwch5CT0FBg0Fl
+	 IOQgxoJyR8uWw==
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-3098088c630so1702091fa.1;
+        Sat, 15 Feb 2025 04:57:07 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUMUlkkNH1VIiLGygHaq8aNWhrr/aFVESlyjMIMSwiOUCiOYysmwuGiu5q4A9dIpZIbSIKLWrhwW5kUpr4=@vger.kernel.org, AJvYcCUcfQP2Jvq/B82YONmqRfqTJt4ZG621x46fUKbvv8GVmRkJO80XzOjnXWMxVhkVe/vyfMICeZkUs7whqsWM5C4=@vger.kernel.org, AJvYcCVsvXmn/ZLT8OPaD1BK+4pdnh88P4SJ+hyPmrgWSGfo9DQiBoSCXmq14FUQpG7pDzkqio3iWjh6bgcX42nM@vger.kernel.org
+X-Gm-Message-State: AOJu0YwnAgKOBSXfmpJTyto9MLQ388FDLk54pYQJcSt28cZbqc7VBlwS
+	xYUmY/01phNKwfr7k8N6eAR48v+3mILXIDyAmjxJmz/AKKHbTTb4327JBLE/iCXvVQe50v9ncvV
+	LHFdAeBnf3MzFve6ftFsV/ri/R2g=
+X-Google-Smtp-Source: AGHT+IEsTZF/aaIkd2W2yDE7XhrivBIrlJSlG4EYc08U5lemoAf3PC4tUJ7UZ+YVghk5SfORdtSUmhtioANUwm1uA24=
+X-Received: by 2002:a2e:b2d0:0:b0:308:efdd:b184 with SMTP id
+ 38308e7fff4ca-30927a6fa08mr9447091fa.10.1739624226481; Sat, 15 Feb 2025
+ 04:57:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20250210-rust-path-remap-v1-1-021c48188df1@weissschuh.net>
+In-Reply-To: <20250210-rust-path-remap-v1-1-021c48188df1@weissschuh.net>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Sat, 15 Feb 2025 21:56:28 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATOgb0Wry50Mjoa=o4FkzG-Jf-5FjbKsf3DCN7dybwMgw@mail.gmail.com>
+X-Gm-Features: AWEUYZlqwTgp-wnBM-VhIxcv_BtmOE0JijNrv0Drs7vRsuia8wiRS1nsqb348YU
+Message-ID: <CAK7LNATOgb0Wry50Mjoa=o4FkzG-Jf-5FjbKsf3DCN7dybwMgw@mail.gmail.com>
+Subject: Re: [PATCH] kbuild, rust: use -fremap-path-prefix to make paths relative
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
+	Miguel Ojeda <ojeda@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-"Lyude Paul" <lyude@redhat.com> writes:
-
-> On Mon, 2025-02-03 at 16:07 +0100, Andreas Hindborg wrote:
->> This patch allows the use of intrusive `hrtimer` fields in structs that are
->> managed by an `Arc`.
->>
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->> ---
->>  rust/kernel/time/hrtimer.rs     |  3 +-
->>  rust/kernel/time/hrtimer/arc.rs | 89 +++++++++++++++++++++++++++++++++++++++++
->>  2 files changed, 91 insertions(+), 1 deletion(-)
->>
->> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
->> index a6332924efabd40c475a112bbc434db77596a16f..3494c00481a4bd25735edf44b6bdcbec9810243e 100644
->> --- a/rust/kernel/time/hrtimer.rs
->> +++ b/rust/kernel/time/hrtimer.rs
->> @@ -119,7 +119,6 @@ unsafe fn raw_get(ptr: *const Self) -> *mut bindings::hrtimer {
->>      /// # Safety
->>      ///
->>      /// `self_ptr` must point to a valid `Self`.
->> -    #[allow(dead_code)]
->>      pub(crate) unsafe fn raw_cancel(self_ptr: *const Self) -> bool {
->>          // SAFETY: timer_ptr points to an allocation of at least `HrTimer` size.
->>          let c_timer_ptr = unsafe { HrTimer::raw_get(self_ptr) };
->> @@ -310,3 +309,5 @@ unsafe fn raw_get_timer(ptr: *const Self) ->
->>          }
->>      }
->>  }
->> +
->> +mod arc;
->> diff --git a/rust/kernel/time/hrtimer/arc.rs b/rust/kernel/time/hrtimer/arc.rs
->> new file mode 100644
->> index 0000000000000000000000000000000000000000..d1c90631d00362bdc38be1ccc75429ae294ab544
->> --- /dev/null
->> +++ b/rust/kernel/time/hrtimer/arc.rs
->> @@ -0,0 +1,89 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +
->> +use super::HasHrTimer;
->> +use super::HrTimer;
->> +use super::HrTimerCallback;
->> +use super::HrTimerHandle;
->> +use super::HrTimerPointer;
->> +use super::RawHrTimerCallback;
->> +use crate::sync::Arc;
->> +use crate::sync::ArcBorrow;
->> +use crate::time::Ktime;
->> +
->> +/// A handle for an `Arc<HasHrTimer<T>>` returned by a call to
->> +/// [`HrTimerPointer::start`].
->> +pub struct ArcHrTimerHandle<T>
->> +where
->> +    T: HasHrTimer<T>,
->> +{
->> +    pub(crate) inner: Arc<T>,
->> +}
->> +
+On Tue, Feb 11, 2025 at 2:11=E2=80=AFAM Thomas Wei=C3=9Fschuh <linux@weisss=
+chuh.net> wrote:
 >
-> BTW - I noticed the other day that it doesn't seem like we actually expose
-> this type to users anywhere, even though we would want access to it for
-> storing the timer handle in structures
+> Remap source path prefixes in all output, including compiler
+> diagnostics, debug information, macro expansions, etc.
+> This removes a few absolute paths from the binary and also makes it
+> possible to use core::panic::Location properly.
+>
+> Equivalent to the same configuration done for C sources in
+> commit 1d3730f0012f ("kbuild: support -fmacro-prefix-map for external mod=
+ules")
+> and commit a73619a845d5 ("kbuild: use -fmacro-prefix-map to make __FILE__=
+ a relative path").
+>
+> Link: https://doc.rust-lang.org/rustc/command-line-arguments.html#--remap=
+-path-prefix-remap-source-names-in-output
+> Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
+
+
+I will apply this if Miguel gives Ack.
+
+
+
+
+> ---
+>  Makefile | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/Makefile b/Makefile
+> index 9e0d63d9d94b90672f91929e5e148e5a0c346cb6..ac35083180c825b72f13149ec=
+3acfd7d6d74ef98 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -1068,6 +1068,7 @@ endif
+>  # change __FILE__ to the relative path to the source directory
+>  ifdef building_out_of_srctree
+>  KBUILD_CPPFLAGS +=3D $(call cc-option,-fmacro-prefix-map=3D$(srcroot)/=
+=3D)
+> +KBUILD_RUSTFLAGS +=3D $(call rustc-option,--remap-path-prefix=3D$(srcroo=
+t)/=3D)
+>  endif
+>
+>  # include additional Makefiles when needed
+>
+> ---
+> base-commit: beeb78d46249cab8b2b8359a2ce8fa5376b5ad2d
+> change-id: 20250210-rust-path-remap-e97cec71e61a
+>
+> Best regards,
+> --
+> Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
 >
 
-Thanks for noticing! I'll make sure to `pub use` then handles in the
-parent module.
 
-
-Best regards,
-Andreas Hindborg
-
-
-
+--=20
+Best Regards
+Masahiro Yamada
