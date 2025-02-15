@@ -1,302 +1,128 @@
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3068623;
-	Sat, 15 Feb 2025 13:04:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF6A186E54;
+	Sat, 15 Feb 2025 13:52:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739624686; cv=none; b=jbO9dtpY4ius61L+K8D4nPz4vah1Q7bJjMstqJ3bluQ9MvJtl9AYHGmBQ7uCYiHp6cRAhZf7E/XNy9NmmpX0rCEo+iGhmbvnHyf5lYpKCrru7qwCWVhYjgf3Sr4kqvBxigfI54Qd2E185mmAwGpraceT31M9jMFi5tEWCuMU/v0=
+	t=1739627564; cv=none; b=gT/hhvZpJ7RlOpj3Izgzj8nycg2bimCAw1ONx0kn0EdWWpcTSDJBvP54DH+3aWTDe8QqOegU5JDB/3T+VR9QalcgvfuvH7Iw72OTsU4AMbsiImdQ0ojOiw77M0QsGI82FIeL9ronuq3TEUKEcLG32reB9Ydz1O9q3ulA5nAP51Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739624686; c=relaxed/simple;
-	bh=UWYnF2e2+P6Y/sAgEbI3iKHOLh7pG3OxwbBUXSU8RLA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ADR8B5gRNQz6xyoOYK9w803bCyh/CCH4bm1ys/n9q0sLGtUGVQ3ja3uvpfYZ+vp6ZW3tOfVWejelFkUHRp7fYD3yyJPVZkBsxuf8TJ6OZbHcAjjmqTz7UcDGE4iKpmChThKFOP6H9ET1ASQcIBC2f+HUTBX/4EC/i/blHuAeqEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UcSJPF+V; arc=none smtp.client-ip=209.85.208.181
+	s=arc-20240116; t=1739627564; c=relaxed/simple;
+	bh=YWhbF1mdP9nqZ2WCZQtej7ovlu0IyuZ++4Ue367cGEk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=ihmUFQ5NEoWK1J2CPW9Rw1E+iUH1s+SFj4ADHFlpiClJL7LJefc+83lurKYgM+MUL5T+YKsFdRnoMxAt9H7KEc5UrRhkEYj1W5g95mKrSqCtJ4cGKyX5IUx+6rMf5pBvI+fCqD3HMaahbGGKa45pnV5vQf6e/AGAmtrf8AVgfEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jcpJ7IWq; arc=none smtp.client-ip=209.85.214.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UcSJPF+V"
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-3092643f4aaso8988231fa.1;
-        Sat, 15 Feb 2025 05:04:43 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jcpJ7IWq"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-219f8263ae0so52540305ad.0;
+        Sat, 15 Feb 2025 05:52:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739624682; x=1740229482; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1739627562; x=1740232362; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eQxqWePvHIT2picXONSU+2OFMt7hfUb4gyLS+js58fQ=;
-        b=UcSJPF+VDAFsUGV3rRFrwtljkzXJvXJU53F+rc2OSww6cKL7caCjE+p2RwQ498268N
-         NifbZ6jVWoJtqMuBMWBRaorKOEWEqw93mCcZCMwSxk/iT0wCmoCFmXlZhYH8D0GdMgVI
-         P3/5OmskogeacO7U9uwfeGL7PHcv7RILVbN1+ciJPBAHPQ3dXKD8pccIosW9rqC5d1sF
-         hX71Pdu1y1ptnHOQGtR/LlOJ8o67PS/zFzrdW2ZWwon+RwDfNCbc0xzaEXiQ2OP7vwpR
-         WkFD6HIZmUC9Ayw8uoPTEFBUayYQ8At+Lt+3cIO4yp8s1foxnU9B1ecIdNpWL1u9c7jb
-         47LQ==
+        bh=vaNUxH6SFpAA21j86E6kLFdfmS5koBBXhIiZdTkRCXo=;
+        b=jcpJ7IWqYTNtVWHU2DfiDWFCW478wZR6DzWjUQ2RT3wgTzF6Cko6qlJO82+EGfnSCS
+         uN38Hl06A4nS2PKvUA2OI+lmtzwlZtNHe6+PccaA4dz/O89Wu2qeDdcTb7E0E2LEsV/d
+         YN7hTE3eb+bL9XkEkW78GAcfz0q+ll+HfpK9GDG2A+39IMoynWPgq8CSMgVhMUyK6tng
+         f5af47vHh22szySw1ZlPHmygHidZaqlUhxQ/7FLlWzBzR5+aHE6s4Zh4i9knrvt6OYFM
+         uZ8UUbtxIW9DJlGD1EroCkYHO/WCWul5HFhbgtmia58npmcOfkrgORuOd3zNAt6eHQDQ
+         k7MA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739624682; x=1740229482;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1739627562; x=1740232362;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eQxqWePvHIT2picXONSU+2OFMt7hfUb4gyLS+js58fQ=;
-        b=WNuF5sGHRBGEb7sSGm2uPr4bcJRUZsmOD7LoiHUOiM9Nf88IzIAuT/IpbJua4n/dYP
-         iQBbNCxiCE+9jVn5C2jsK1YUIY/BKJOjpDaVfI1agvhssDXOXTLctYbvjWZKeIlJ9nNT
-         z/BJjZj0578LVWFTw6QsEKBZT7l8u27o9jhzSKNNYYgh7wB9ivfG+VXFgm3iUG7lWQJL
-         X06hoFlIGgo5V8LgYpOJsI3GcN9TeVIDjIBIVRubRVVuAI/QAaHJ9VvUjMF3UZLfgJgC
-         5U772vTmkIcs4vXGkboI4s4d6Yonfyk2QdD9qiyERaM2xzVTLsbE3X4/bhdMzs8a/qC3
-         qlAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU6znYU7BGtP/VL6U8nQEA39TlCS6awcS6kMZJLfIgmdi9c+jV0bv8cBh2hk4aqk2kJoe2WmvA/BRPgLgL7+nY=@vger.kernel.org, AJvYcCW+DxO8YaI3QvbxX8TpIR6fk7nqhh6qNIdDoWa1T6N2CLP0lhHZlDB3QnLPtngLk+KxEICjo0tZSwKmLig=@vger.kernel.org, AJvYcCWYqp1YxnUNbOh/J5LY3PVHNahLrNnbweKvVTRi+iM0UHaI6SDFnHpef1BV05xYOKasH9G4+JuVSZLaY8C41PxL@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1rsDw0VyRTjirlyuxgfYh4KLRhUHp52gwUj9bXGxCKjv++63s
-	8oVyd1eIkVGntCrwWr5OyvMEanJNeuKYDmoVT7wEK+YeeMJ8GbyQscgxeHulEeUquX2m4xxXtsr
-	tcuOb4Cs9GfRvcB9ZQF36q//j8gtiz4zK
-X-Gm-Gg: ASbGncsfK2l8QVenejSEZPfcSxcFTDDuioGHKlnCkfNVTV4r4RvXIeGdszAPduvDQEK
-	AYiolC7xaGzsMpum9E6x1eXy/fCqFbsAmsgwYnqwm6yv1AEfyV2bYUB+/9fqcfKzd/Hho/N1cey
-	VbwTNaKMZ1hET+QhzbZzzEmcgRRYyMxQ==
-X-Google-Smtp-Source: AGHT+IGADOXK6A8/GEkATLBOdsyZof9/aX5TClGqjHqEuQqchxyCpH+3TIKuNfkvMgRdz1TQFw/1RcVFxaS9v1vh/NA=
-X-Received: by 2002:a2e:95cd:0:b0:302:3356:35d7 with SMTP id
- 38308e7fff4ca-30928b7439bmr7123121fa.18.1739624681465; Sat, 15 Feb 2025
- 05:04:41 -0800 (PST)
+        bh=vaNUxH6SFpAA21j86E6kLFdfmS5koBBXhIiZdTkRCXo=;
+        b=SfnX2XQqIu778AfAMObHXpVOrGT/8+SMCK2gAbR8MmK+ibgZdO+LKZZgzL+1QYdrcy
+         FdQ9Bb9AbtB14M36nP2bRpOYu54n89sfmgF8Ct3gSRmZzjHncwLLOY4KSeFJYmgRG1Yj
+         sakbODjtXUq90hl5KOCmfHJcR97/OTSKVJ2Gx7k3MHtrXtE5Fpf26tEVfFonyRqQgaNw
+         cVg2e2HbPriHbEjS+xifbzlklnnwlyhihgPEug9PA8Zai8ySRy8vhHJMqGKYc7otYrqn
+         THGUUDle+/oyyydGeQbGJNjkriUHNoqHHtLL8E5DDHqItGOJA7gOsCg3/dK1jTFnoLDV
+         6/4w==
+X-Forwarded-Encrypted: i=1; AJvYcCV15TYiUYUuRvWSHzYZsmC3YAhiTuiNov0kpW57PZP4KfOHSaSf4MeyBm3UU+iEjLMmToKZxffi+2y1oLE=@vger.kernel.org, AJvYcCVPVxWUGB/lEc32d8x1UN0s5mglUBRMuWbgGdDhC0tJZLrBNkrPhAgmSnm2avHt+m9TZHLt8/A5MwcEk7PYOgs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YycWUECjxqgxNRAcCmQBCfKZXhBA5DgBrZH/WIZw2EY5TaM/ulr
+	prDNOCfXFsKpOW0fruBr1H0dwZD0t6p0plk/wo3litm9ZszIvWiL
+X-Gm-Gg: ASbGncv1y9YoMfxsHBqdvJciKYo73HPBS0xMWRRF6pWAZbbao60oPaml5ed8DeSLLnM
+	Gxkc9uLRbE0zlOeH4FAZAsId0u2qQAPxxNA2CRDzOI2PoTXPVNEVD1MqKJ8H+zd3vXAC5ixw4pW
+	LEjtM0vPGC6AKkHqw9BuG5R5wQke/xlenttUJdsXzCVCBqmcbbjW+VhE3eiSHnJT2Co1rSjC3IG
+	b98qY9ULs2gxysRX0bbuAXuFw3/ctK889GVLnCC87UPsXNJU0UeUl3xuCARnIDB/OKnl+M9CC+5
+	39LiripngB74f/7dHespNjCU
+X-Google-Smtp-Source: AGHT+IFfaxeE+NyKacuzcbL4HKdiCGziXsxJ0qeAcMrBVH78k3SQu6rlAWweKDn8yQlNhWcBEVICjA==
+X-Received: by 2002:a05:6a20:43a0:b0:1ee:69db:b0c5 with SMTP id adf61e73a8af0-1ee8cbd7f21mr6325214637.31.1739627562422;
+        Sat, 15 Feb 2025 05:52:42 -0800 (PST)
+Received: from linuxsimoes.. ([187.120.159.118])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-732532ce7f1sm2970126b3a.73.2025.02.15.05.52.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 15 Feb 2025 05:52:41 -0800 (PST)
+From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+To: benno.lossin@proton.me
+Cc: a.hindborg@kernel.org,
+	alex.gaynor@gmail.com,
+	aliceryhl@google.com,
+	apw@canonical.com,
+	arnd@arndb.de,
+	aswinunni01@gmail.com,
+	axboe@kernel.dk,
+	bhelgaas@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	dakr@kernel.org,
+	dwaipayanray1@gmail.com,
+	ethan.twardy@gmail.com,
+	fujita.tomonori@gmail.com,
+	gary@garyguo.net,
+	gregkh@linuxfoundation.org,
+	joe@perches.com,
+	linux-kernel@vger.kernel.org,
+	lukas.bulwahn@gmail.com,
+	miguel.ojeda.sandonis@gmail.com,
+	ojeda@kernel.org,
+	pbonzini@redhat.com,
+	rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu,
+	trintaeoitogc@gmail.com,
+	walmeida@microsoft.com
+Subject: Re: [PATCH V2 1/2] rust: module: change author to be a array
+Date: Sat, 15 Feb 2025 10:52:29 -0300
+Message-Id: <20250215135229.300420-1-trintaeoitogc@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <93eaeb37-9913-49cb-be6d-367696a81baf@proton.me>
+References: <93eaeb37-9913-49cb-be6d-367696a81baf@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250214074051.1619256-1-davidgow@google.com> <20250214074051.1619256-4-davidgow@google.com>
- <CAJ-ks9kwVz4sPdmqfTLVK-Z2C7WmXHpBhbe5_ozWBZnwxJ8HpA@mail.gmail.com> <CABVgOS=2f3Yg8Wb7qxneRC_+s-W_TQey083niujpZD3fYcfL_w@mail.gmail.com>
-In-Reply-To: <CABVgOS=2f3Yg8Wb7qxneRC_+s-W_TQey083niujpZD3fYcfL_w@mail.gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Sat, 15 Feb 2025 08:04:05 -0500
-X-Gm-Features: AWEUYZkO-deC3TTJ-Ho4qHpqUbaRWg5ash0Mk7jUJ1Y_Vd10hv4vuGqdu5AaPFo
-Message-ID: <CAJ-ks9n92LCVQRuNMqKwMwGyLzJTnQXpHth4L8h19D0qoGUphg@mail.gmail.com>
-Subject: Re: [PATCH v6 3/3] rust: kunit: allow to know if we are in a test
-To: David Gow <davidgow@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>, 
-	Rae Moar <rmoar@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Benno Lossin <benno.lossin@proton.me>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Matt Gilbride <mattgilbride@google.com>, 
-	Brendan Higgins <brendan.higgins@linux.dev>, kunit-dev@googlegroups.com, 
-	linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sat, Feb 15, 2025 at 4:03=E2=80=AFAM David Gow <davidgow@google.com> wro=
-te:
->
-> On Fri, 14 Feb 2025 at 22:41, Tamir Duberstein <tamird@gmail.com> wrote:
-> >
-> > On Fri, Feb 14, 2025 at 2:42=E2=80=AFAM David Gow <davidgow@google.com>=
- wrote:
-> > >
-> > > From: Jos=C3=A9 Exp=C3=B3sito <jose.exposito89@gmail.com>
-> > >
-> > > In some cases, we need to call test-only code from outside the test
-> > > case, for example, to mock a function or a module.
-> > >
-> > > In order to check whether we are in a test or not, we need to test if
-> > > `CONFIG_KUNIT` is set.
-> > > Unfortunately, we cannot rely only on this condition because:
-> > > - a test could be running in another thread,
-> > > - some distros compile KUnit in production kernels, so checking at ru=
-ntime
-> > >   that `current->kunit_test !=3D NULL` is required.
-> > >
-> > > Forturately, KUnit provides an optimised check in
-> > > `kunit_get_current_test()`, which checks CONFIG_KUNIT, a global stati=
-c
-> > > key, and then the current thread's running KUnit test.
-> > >
-> > > Add a safe wrapper function around this to know whether or not we are=
- in
-> > > a KUnit test and examples showing how to mock a function and a module=
-.
-> > >
-> > > Signed-off-by: Jos=C3=A9 Exp=C3=B3sito <jose.exposito89@gmail.com>
-> > > Co-developed-by: David Gow <davidgow@google.com>
-> > > Signed-off-by: David Gow <davidgow@google.com>
-> > > Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
-> > > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> > > ---
-> > >
-> > > Changes since v5:
-> > > https://lore.kernel.org/all/20241213081035.2069066-4-davidgow@google.=
-com/
-> > > - Greatly improved documentation, which is both clearer and better
-> > >   matches the rustdoc norm. (Thanks, Miguel)
-> > > - The examples and safety comments are also both more idiomatic an
-> > >   cleaner. (Thanks, Miguel)
-> > > - More things sit appropriately behind CONFIG_KUNIT (Thanks, Miguel)
-> > >
-> > > Changes since v4:
-> > > https://lore.kernel.org/linux-kselftest/20241101064505.3820737-4-davi=
-dgow@google.com/
-> > > - Rebased against 6.13-rc1
-> > > - Fix some missing safety comments, and remove some unneeded 'unsafe'
-> > >   blocks. (Thanks Boqun)
-> > >
-> > > Changes since v3:
-> > > https://lore.kernel.org/linux-kselftest/20241030045719.3085147-8-davi=
-dgow@google.com/
-> > > - The example test has been updated to no longer use assert_eq!() wit=
-h
-> > >   a constant bool argument (fixes a clippy warning).
-> > >
-> > > No changes since v2:
-> > > https://lore.kernel.org/linux-kselftest/20241029092422.2884505-4-davi=
-dgow@google.com/
-> > >
-> > > Changes since v1:
-> > > https://lore.kernel.org/lkml/20230720-rustbind-v1-3-c80db349e3b5@goog=
-le.com/
-> > > - Rebased on top of rust-next.
-> > > - Use the `kunit_get_current_test()` C function, which wasn't previou=
-sly
-> > >   available, instead of rolling our own.
-> > > - (Thanks also to Boqun for suggesting a nicer way of implementing th=
-is,
-> > >   which I tried, but the `kunit_get_current_test()` version obsoleted=
-.)
-> > > ---
-> > >  rust/kernel/kunit.rs | 66 ++++++++++++++++++++++++++++++++++++++++++=
-++
-> > >  1 file changed, 66 insertions(+)
-> > >
-> > > diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
-> > > index 9e27b74a605b..3aad7a281b6d 100644
-> > > --- a/rust/kernel/kunit.rs
-> > > +++ b/rust/kernel/kunit.rs
-> > > @@ -286,11 +286,77 @@ macro_rules! kunit_unsafe_test_suite {
-> > >      };
-> > >  }
-> > >
-> > > +/// Returns whether we are currently running a KUnit test.
-> > > +///
-> > > +/// In some cases, you need to call test-only code from outside the =
-test case, for example, to
-> > > +/// create a function mock. This function allows to change behavior =
-depending on whether we are
-> > > +/// currently running a KUnit test or not.
-> > > +///
-> > > +/// # Examples
-> > > +///
-> > > +/// This example shows how a function can be mocked to return a well=
--known value while testing:
-> > > +///
-> > > +/// ```
-> > > +/// # use kernel::kunit::in_kunit_test;
-> > > +/// fn fn_mock_example(n: i32) -> i32 {
-> > > +///     if in_kunit_test() {
-> > > +///         return 100;
-> > > +///     }
-> > > +///
-> > > +///     n + 1
-> > > +/// }
-> > > +///
-> > > +/// let mock_res =3D fn_mock_example(5);
-> > > +/// assert_eq!(mock_res, 100);
-> > > +/// ```
-> > > +///
-> > > +/// Sometimes, you don't control the code that needs to be mocked. T=
-his example shows how the
-> > > +/// `bindings` module can be mocked:
-> >
-> > [`bindings`] here, please. There are two more instances below but
-> > those aren't doc comments, so I don't think bracketing them will do
-> > anything.
-> >
->
-> Done in v7. Alas, I'll have to keep getting used to the differences
-> between kerneldoc and rustdoc...
->
-> > > +///
-> > > +/// ```
-> > > +/// // Import our mock naming it as the real module.
-> > > +/// #[cfg(CONFIG_KUNIT)]
-> > > +/// use bindings_mock_example as bindings;
-> > > +/// #[cfg(not(CONFIG_KUNIT))]
-> > > +/// use kernel::bindings;
-> > > +///
-> > > +/// // This module mocks `bindings`.
-> > > +/// #[cfg(CONFIG_KUNIT)]
-> > > +/// mod bindings_mock_example {
-> > > +///     /// Mock `ktime_get_boot_fast_ns` to return a well-known val=
-ue when running a KUnit test.
-> > > +///     pub(crate) fn ktime_get_boot_fast_ns() -> u64 {
-> > > +///         1234
-> > > +///     }
-> > > +/// }
-> > > +///
-> > > +/// // This is the function we want to test. Since `bindings` has be=
-en mocked, we can use its
-> > > +/// // functions seamlessly.
-> > > +/// fn get_boot_ns() -> u64 {
-> > > +///     // SAFETY: `ktime_get_boot_fast_ns()` is always safe to call=
-.
-> > > +///     unsafe { bindings::ktime_get_boot_fast_ns() }
-> > > +/// }
-> > > +///
-> > > +/// let time =3D get_boot_ns();
-> > > +/// assert_eq!(time, 1234);
-> > > +/// ```
-> >
-> > Isn't this swapping out the bindings module at compile time, and for
-> > the whole build? In other words cfg(CONFIG_KUNIT) will apply to all
-> > code, both test and non-test.
-> >
->
-> I believe so, so this is probably something best done only in test files.
+Benno Lossin <benno.lossin@proton.me> wrote:
+> This commit message looks a bit clunky to me, though I am not a native
+> speaker. My suggestion would be:
+> 
+>     Change the type of the `author` field in the `module!` macro from string
+>     to string array. This allows multiple authors for a single module as is
+>     already possible in C.
+>     Additionally, rename the field to `authors` to better reflect this
+>     change.
+> 
+> Feel free to change/adapt anything.
+Thanks for your suggestions, in the truth my english is not so good.
 
-Why would you need conditional compilation of this kind in test files?
+> As already mentioned above, I think it makes sense to also rename the
+> field to `authors`.
+When I maked this change, I thinked in change the field name from author to
+authors, but I don't doing this because anothers fields that is a array in
+module! macro (firmware and alias) are in singular too.
 
-What I was getting at with this comment is that this example might
-mislead a user to think that this is how they should imbue their code
-with test-specific behavior, which is not what this will do. Instead
-this would break kernels built with CONFIG_KUNIT, which I think is not
-where we want to be going. Right?
+> You should also change the documentation in this file, there the field
+> `author` is listed as "string literal of the author of the kernel
+> module.", so it also needs to be updated.
+Yes, you is right... I haven't seen this chunk of text 
 
->
-> Ideally, we'd have support for something like the KUnit function
-> mocking features here, but that's horribly C-specific at the moment.
->
-> > > +pub fn in_kunit_test() -> bool {
-> > > +    // SAFETY: `kunit_get_current_test()` is always safe to call (it=
- has fallbacks for
-> > > +    // when KUnit is not enabled).
-> > > +    unsafe { !bindings::kunit_get_current_test().is_null() }
-> >
-> > Nit if you care about reducing unsafe blocks:
-> >
-> > !unsafe { bindings::kunit_get_current_test() }.is_null()
-> >
-> >
->
-> Huh, I thought this wouldn't work, but it's working fine for me here,
-> so I've made the change.
->
-> Thanks!
->
-> > > +}
-> > > +
-> > >  #[kunit_tests(rust_kernel_kunit)]
-> > >  mod tests {
-> > > +    use super::*;
-> > > +
-> > >      #[test]
-> > >      fn rust_test_kunit_example_test() {
-> > >          #![expect(clippy::eq_op)]
-> > >          assert_eq!(1 + 1, 2);
-> > >      }
-> > > +
-> > > +    #[test]
-> > > +    fn rust_test_kunit_in_kunit_test() {
-> > > +        assert!(in_kunit_test());
-> > > +    }
-> > >  }
-> > > --
-> > > 2.48.1.601.g30ceb7b040-goog
-> > >
-> > >
->
-> Thanks a lot, these should be fixed in v7.
->
-> Cheers,
-> -- David
+
+Thanks,
+Guilherme
