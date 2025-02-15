@@ -1,223 +1,169 @@
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679DD198E78
-	for <rust-for-linux@vger.kernel.org>; Sat, 15 Feb 2025 09:08:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D119B19049B;
+	Sat, 15 Feb 2025 09:48:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739610530; cv=none; b=favAgfTXttt1dHac2zr3zUj9b/dzJKBbVsy+AbGjweIC/o2jgR5dlZVrJu/dgqtlMXVUlOjk6BWdqiwIKWkY+FUy9Uvdoj+C96l425RP3Y3tUY3ncsGj7erjmpoLqE10yAYyLHZNJAZ+C2TWlg/22Ai27tkXd9hTLMDz8FWjUd4=
+	t=1739612894; cv=none; b=rq2sJZOtjRPhCYmiYhm3kyKDVI2vjSpbdQ5O25mJvpu1WvFuX86rWFUYpmPQYH4SRWP1isLOEhvkQJXP83956LL6JzOqyBbfRNXvBpVuGW7G+ZWBLQiEsrMpU8pw7A52/RhdUid99Nun2AtUeB4JIsOZv5EsuIRFHltXbwRFfYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739610530; c=relaxed/simple;
-	bh=GqFlLkdivB6bFg/mUAgBETarBqIMOk9nclE1jswck+M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fioFVyqmE9SSde+npK/rnTF6WWI87Euo59FnKxMpPRZHAMqbjpsV0kLt+Iojo4t8nOFldGsICPH+8kNlF8/kOewHedsRioFof742LjWH+JDJPIcsSUK52jL61JXnEQCiz42mN6NohOo/sT9eUastK0Q3ZT3zzrlxEmrcz0/4lgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KR94JVSq; arc=none smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1739612894; c=relaxed/simple;
+	bh=5p1qxbmmokb/RCjmP0J0KXsqx7Q/xH8ph31KI4qY+is=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=XpdOcvHUichgGiI661RxjQZx9k1a05VIOBDukhOozhhyiigxxHR1u9Hc4q00rcf8dymtHsdx6jxb++oOPOjfN40Xj8DueDWsYpQcC9HWguLNvBrLlE/fjuC2BBgvLUR89PK8lQwVqAiOpND/ioe2M3XvI24mIXW9NfApTWZn03o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZdIEsFke; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KR94JVSq"
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-471d1af90a0so12841221cf.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 15 Feb 2025 01:08:49 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZdIEsFke"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-220d39a5627so42415695ad.1;
+        Sat, 15 Feb 2025 01:48:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1739610528; x=1740215328; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=GqFlLkdivB6bFg/mUAgBETarBqIMOk9nclE1jswck+M=;
-        b=KR94JVSqZ/GX6DxmbcpVuvv+Dt1Zbbe6en6nj3JipMCjF8X02wSWLKWb863E5+JMhR
-         AzmN2oc8Xu+B1q3N6HwnNMiLwwZxOrrAXz8DIi5vnKRMRvE5Sq/vs6Du6zlxFvBAzt0J
-         nHEk+71uBfSTgxaiQXKbdmx/ueq6jE21iBuUloPAEJs3IzH2G6aqN8eJoiPeH2aTQiAF
-         22tm9kcdVHZNa6YK//Ewgi2owk5eCOH9zYdi4BeOEfgrtWHet3ZvxUqDlvpyoBPr9lVi
-         b8N4Usi1M59XMkvOisWaphIRihZTSS/+2kWgKhoepdr4KqNHNgOC76zbqBiUCqYsZMfs
-         2z0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739610528; x=1740215328;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1739612891; x=1740217691; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=GqFlLkdivB6bFg/mUAgBETarBqIMOk9nclE1jswck+M=;
-        b=qA7qDLXgtsIsl5g7s6miCo9o1A5QhJd+Q3qjkYjAtIQzrsckKKmdTRDGoU8Xz4k4bL
-         52H1oMdV90H/QDyh/6YeVBU651VRgBmdwy/sTz8K6JqlFCalUFK+ACLYlswXZtbg7fgY
-         diKY2BpLWmWJGpt7/Yb+C4H6KZxlBR3WdPQZ2Z722MRVQTIEmqYzi+Os79nHW1jFmD0i
-         vshDCHL00lNwbzmoFugmnpqGSM6D7Uc5LL1MeVv54zfwveSsztvgYTTIBJVHb9zERUSE
-         I9JnVYlwrLnIVnGbfvf+4I5gBMX8BXz7SwlWE5sRmAsb6yUYoV1Pa4WCQL0wLoolLNyq
-         R9LQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWByL89J2q+tikOTKXB90TcsYYzoPQoXVuSc8ZvlA/DbCJeDJVOabDDh+LngnUBbJLq4x9DMBmcxjX47t5pZQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIMaPkj8Wi7YcZbDvAtiPNwDmcjkGYuAGRjZ8opP0+AqPefxV2
-	C8hxakGTd8E1GMEbaXoNac8BzOpwibb9b6KIvGS9PZksltvZK6TUsGL7R1Txo1g2Lm3Tgp9S29F
-	vQKjvxe6efkLencbM1/Nb8omOqpklu4pHGb6w
-X-Gm-Gg: ASbGncsLDLJN4u00vR6uH3o5gbYx9x+DtxSMXvRg9+eP20a0b2mJfdEWZ7jGJbi05HI
-	VyiFcK8vXcn80qUJrPqP8tjeUdo7lk4sV8YdLvKPGHNsnLT/r5zQoT1vsH/8wF9SB1a0psCOWUg
-	==
-X-Google-Smtp-Source: AGHT+IG+Rr3QVLQC5qbITzV2ftubc6rWWymEb7xm9qu7o+XZx7WAkuFiH/hYiRigqcyU3+FvdLhh1GHsFXwjK7dawZQ=
-X-Received: by 2002:a05:6214:1d09:b0:6e4:8774:375e with SMTP id
- 6a1803df08f44-6e66cd111e4mr35478146d6.39.1739610528117; Sat, 15 Feb 2025
- 01:08:48 -0800 (PST)
+        bh=lVUIuv5v60t9dUYELYCuiXZ/SdEpKJMXESO8sDLvOaw=;
+        b=ZdIEsFkehPXmP/+UtvaUfX/y6oywKDbJURPxEDkalpCYNBpIJ16gJaNtu9grQITemU
+         GwElHt6iWA5kWqrlX+Zk5bHIApw+Niyb1pzlLCI/sVYLUvOzEZQUhmtfFpimfsqDx8lS
+         /qoyCrqTKCqhfDWao6vcZdeiX1hItHJMa38TCs9JOZPuxeFuutDLzXdE8A0bIWXdU9Mm
+         b8+l3rsK3y/MyabU0d50tPUNepXjuldLdCnjNnhXUW8DI2gZOjyY17of5Eh0PtSLCIk3
+         R1Ynkjffd1ajnASj3rOOt2zNHNzT5Ph85vX5RYLZn97ViRpp0ESQNSvB0SnoXB1h+6/F
+         gf8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739612891; x=1740217691;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=lVUIuv5v60t9dUYELYCuiXZ/SdEpKJMXESO8sDLvOaw=;
+        b=NFdpRTYokZh3gFJdLVUhYQPZnBwiE4LGBw4sYL7m+SCAAJ4AAf57UbqV6dVh1JnD2D
+         6+m0cNVHlREkIlnyQtGsNqHX7qg9POFXjhwLsTAwFI1cWnLt1jKmJxhFvmaQvhr2GdtA
+         wf5cK2xl9jhbUCw5XMx2gOgvQiRdfLU675YbkMU7zZgEYXDU2vpdXjKxveYVZzRxEbTJ
+         vyCGjAauzIOYL7Y/UbNMx9knpOn2G9/sbZvkuUgMV37WMI2hiBd3SIbGOEO91GfAuR8p
+         2caLqyW3i04kcdqCSdyYYqrSNTrzGh1cFmW8tVMiHbhZpUjrH494KN+GMOqoq+0WUR10
+         CjGw==
+X-Forwarded-Encrypted: i=1; AJvYcCUwb4CdN3EsfI0iHTENuOXje1JR2S24UJOjL3K6RRWqjB//uKBTCilkm5PdGWS2YCR8TGuYEUSeoPreW/hVaO4=@vger.kernel.org, AJvYcCV54OJruluIKfMFmhdqznZDmWDzG1kTixEKV4wV4ce8iDYnV+UM5z7MM4gYSXmBtoWxMUTYh2Rp@vger.kernel.org, AJvYcCW3uW+QaGCdUprrYh0OeIro+MDHp/kZUaZn6r9NXEZctivFr0KjxrIKdAg2CsZFdq0y+iMN3B1D3adtd/M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwM843kLskXN29EtJz1lziQOgL1mhheBmG4nS0NIP4eavr08JXd
+	mswF9dLTiOf7jraTOGkYNInfJg5LHdC3t+67Jtyd7rpDutOmAdt6
+X-Gm-Gg: ASbGncu/AwSw4LOYlCP/V2Ykp6S9VjmM+d2UaAc22I5NaJRcpq5JbGsTvsvyfJvjCGN
+	wKBC/nk0MBIXkyCoUIlF9GkXLLw6OlYZCvLhuOFoAIn2L9SOrN0+4FQxCvOeSwH4LMeHVEOUMSN
+	WBJn15klIK4LeRoJn5jPLa4ilGVELUyggNxY4o2r8/aslgWcl+iCgx6fsVw8KqpkmuunHFe5o+A
+	xIS7ywm9PSunREMlhcTIIVYHyBtb/lGhjlkRHoN47QnZ0edJmSCIp3SbvRdFVjPP/TcbPvx9lAP
+	W6yEr6n0rNJX9OdihUR0SdlzTgIFDJtO9V0ObVYeSZnOh9nP7vtpMBxrTmCT1VcS69tmgU43
+X-Google-Smtp-Source: AGHT+IFSkyYAhujjKt35ajNYuLEfuQtd1ZG9+o4N2CkiF9wb8sdnKHspORe3GA6ysX8Thph6oTObVw==
+X-Received: by 2002:a17:902:ce89:b0:220:e9ac:e746 with SMTP id d9443c01a7336-221040d81f2mr42004535ad.53.1739612890987;
+        Sat, 15 Feb 2025 01:48:10 -0800 (PST)
+Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-220d5364351sm40951775ad.76.2025.02.15.01.48.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 15 Feb 2025 01:48:10 -0800 (PST)
+Date: Sat, 15 Feb 2025 18:48:01 +0900 (JST)
+Message-Id: <20250215.184801.161111735013966961.fujita.tomonori@gmail.com>
+To: gary@garyguo.net
+Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, andrew@lunn.ch,
+ hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
+ alex.gaynor@gmail.com, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, aliceryhl@google.com, anna-maria@linutronix.de,
+ frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de,
+ jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
+ peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
+ dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com, tgunders@redhat.com, me@kloenk.dev
+Subject: Re: [PATCH v10 7/8] rust: Add read_poll_timeout functions
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <20250214113740.156faaf4@eugeo>
+References: <20250209162048.3f18eebd.gary@garyguo.net>
+	<20250214.130530.335441284525755047.fujita.tomonori@gmail.com>
+	<20250214113740.156faaf4@eugeo>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250214074051.1619256-1-davidgow@google.com> <CANiq72mqkoSkh_3Q1XYuA_Q7AqRFt1wD_Mkf1nPTbbSHKQz48g@mail.gmail.com>
-In-Reply-To: <CANiq72mqkoSkh_3Q1XYuA_Q7AqRFt1wD_Mkf1nPTbbSHKQz48g@mail.gmail.com>
-From: David Gow <davidgow@google.com>
-Date: Sat, 15 Feb 2025 17:08:34 +0800
-X-Gm-Features: AWEUYZnKrqrr9x4rceVy02l8BFKIP9UEKUtK-HgSqmdI6uditYGXfnrzD6br9cA
-Message-ID: <CABVgOS=wC75cmTEvE4JoPo1FM-ani72AZP2VU-qnTqNSYnHh=Q@mail.gmail.com>
-Subject: Re: [PATCH v6 0/3] rust: kunit: Support KUnit tests with a user-space
- like syntax
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>, 
-	Rae Moar <rmoar@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Benno Lossin <benno.lossin@proton.me>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Matt Gilbride <mattgilbride@google.com>, 
-	Brendan Higgins <brendan.higgins@linux.dev>, kunit-dev@googlegroups.com, 
-	linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000009bf01a062e2aa331"
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
---0000000000009bf01a062e2aa331
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Fri, 14 Feb 2025 11:37:40 +0000
+Gary Guo <gary@garyguo.net> wrote:
 
-On Sat, 15 Feb 2025 at 04:49, Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Fri, Feb 14, 2025 at 8:41=E2=80=AFAM David Gow <davidgow@google.com> w=
-rote:
-> >
-> > After much delay, v6 of the KUnit/Rust integration patchset is here.
-> > This change incorporates most of Miguels suggestions from v5 (save for
-> > some of the copyright headers I wasn't comfortable unilaterally
-> > changing). This means the documentation is much improved, and it should
-> > work more cleanly on Rust 1.83 and 1.84, no longer requiring
-> > static_mut_refs or const_mut_refs. (I'm not 100% sure I understand all
-> > of the details of this, but I'm comfortable enough with how it's ended
-> > up.)
->
-> Thanks a lot, David, really.
->
-> I am happy to take it through Rust or KUnit -- I am not sure yet how
-> many conflicts we will have on our side.
->
-> I will give it a go when you think it is ready (since I saw comments
-> from Tamir, though not sure how many you may want to address --
-> perhaps the sooner we land this, the easier it may be...).
+> On Fri, 14 Feb 2025 13:05:30 +0900 (JST)
+> FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
+> 
+>> On Sun, 9 Feb 2025 16:20:48 +0000
+>> Gary Guo <gary@garyguo.net> wrote:
+>> 
+>> >> +fn might_sleep(loc: &Location<'_>) {
+>> >> +    // SAFETY: FFI call.
+>> >> +    unsafe {
+>> >> +        crate::bindings::__might_sleep_precision(
+>> >> +            loc.file().as_ptr().cast(),
+>> >> +            loc.file().len() as i32,
+>> >> +            loc.line() as i32,
+>> >> +        )
+>> >> +    }
+>> >> +}  
+>> > 
+>> > One last Q: why isn't `might_sleep` marked as `track_caller` and then
+>> > have `Location::caller` be called internally?
+>> >
+>> > It would make the API same as the C macro.  
+>> 
+>> Equivalent to the C side __might_sleep(), not might_sleep(). To avoid
+>> confusion, it might be better to change the name of this function.
+>> 
+>> The reason why __might_sleep() is used instead of might_sleep() is
+>> might_sleep() can't always be called. It was discussed in v2:
+>> 
+>> https://lore.kernel.org/all/ZwPT7HZvG1aYONkQ@boqun-archlinux/
+> 
+> I don't follow. `__might_sleep` or `might_sleep` wouldn't make a
+> difference here, given that this function may actually sleep.
 
-Thanks!
+Yeah, it doesn't matter here. If I understand correctly, the
+discussion is about whether might_sleep() itself should be unsafe
+considering the case where it is called from other functions. I simply
+chose uncontroversial __might_sleep().
 
-I've sent out v7:
-https://lore.kernel.org/rust-for-linux/20250215090622.2381038-1-davidgow@go=
-ogle.com/T/
+After reviewing the code again, I realized that I made a mistake;
+__might_sleep() should only be executed when CONFIG_DEBUG_ATOMIC_SLEEP
+is enabled. I also think that it is confusing that might_sleep() calls
+C's __might_sleep().
 
-This should address (most of) Tamir's comments. If that looks good to
-you, feel free to apply it: it'd certainly be easier on my end to have
-any nonessential fixes done separately, and if we can have people
-start to use it in the rust tree concurrently, that'd be a bonus.
+How about implementing the equivalent to might_sleep()?
 
-Thanks again for your patience -- I think we're finally nearly there!
+/// Annotation for functions that can sleep.
+///
+/// Equivalent to the C side [`might_sleep()`], this function serves as
+/// a debugging aid and a potential scheduling point.
+///
+/// This function can only be used in a nonatomic context.
+#[track_caller]
+fn might_sleep() {
+    #[cfg(CONFIG_DEBUG_ATOMIC_SLEEP)]
+    {
+        let loc = core::panic::Location::caller();
+	// SAFETY: FFI call.
+	unsafe {
+	    crate::bindings::__might_sleep_precision(
+	        loc.file().as_ptr().cast(),
+	        loc.file().len() as i32,
+                loc.line() as i32,
+	    )
+	}
+    }
+    // SAFETY: FFI call.
+    unsafe { crate::bindings::might_resched() }
+}
 
--- David
 
---0000000000009bf01a062e2aa331
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+>> > Also -- perhaps this function can be public (though I guess you'd need
+>> > to put it in a new module).  
+>> 
+>> Wouldn't it be better to keep it private until actual users appear?
 
-MIIUqgYJKoZIhvcNAQcCoIIUmzCCFJcCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
-ghIEMIIGkTCCBHmgAwIBAgIQfofDAVIq0iZG5Ok+mZCT2TANBgkqhkiG9w0BAQwFADBMMSAwHgYD
-VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSNjETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
-AxMKR2xvYmFsU2lnbjAeFw0yMzA0MTkwMzUzNDdaFw0zMjA0MTkwMDAwMDBaMFQxCzAJBgNVBAYT
-AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSowKAYDVQQDEyFHbG9iYWxTaWduIEF0bGFz
-IFI2IFNNSU1FIENBIDIwMjMwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQDYydcdmKyg
-4IBqVjT4XMf6SR2Ix+1ChW2efX6LpapgGIl63csmTdJQw8EcbwU9C691spkltzTASK2Ayi4aeosB
-mk63SPrdVjJNNTkSbTowej3xVVGnYwAjZ6/qcrIgRUNtd/mbtG7j9W80JoP6o2Szu6/mdjb/yxRM
-KaCDlloE9vID2jSNB5qOGkKKvN0x6I5e/B1Y6tidYDHemkW4Qv9mfE3xtDAoe5ygUvKA4KHQTOIy
-VQEFpd/ZAu1yvrEeA/egkcmdJs6o47sxfo9p/fGNsLm/TOOZg5aj5RHJbZlc0zQ3yZt1wh+NEe3x
-ewU5ZoFnETCjjTKz16eJ5RE21EmnCtLb3kU1s+t/L0RUU3XUAzMeBVYBEsEmNnbo1UiiuwUZBWiJ
-vMBxd9LeIodDzz3ULIN5Q84oYBOeWGI2ILvplRe9Fx/WBjHhl9rJgAXs2h9dAMVeEYIYkvW+9mpt
-BIU9cXUiO0bky1lumSRRg11fOgRzIJQsphStaOq5OPTb3pBiNpwWvYpvv5kCG2X58GfdR8SWA+fm
-OLXHcb5lRljrS4rT9MROG/QkZgNtoFLBo/r7qANrtlyAwPx5zPsQSwG9r8SFdgMTHnA2eWCZPOmN
-1Tt4xU4v9mQIHNqQBuNJLjlxvalUOdTRgw21OJAFt6Ncx5j/20Qw9FECnP+B3EPVmQIDAQABo4IB
-ZTCCAWEwDgYDVR0PAQH/BAQDAgGGMDMGA1UdJQQsMCoGCCsGAQUFBwMCBggrBgEFBQcDBAYJKwYB
-BAGCNxUGBgkrBgEEAYI3FQUwEgYDVR0TAQH/BAgwBgEB/wIBADAdBgNVHQ4EFgQUM7q+o9Q5TSoZ
-18hmkmiB/cHGycYwHwYDVR0jBBgwFoAUrmwFo5MT4qLn4tcc1sfwf8hnU6AwewYIKwYBBQUHAQEE
-bzBtMC4GCCsGAQUFBzABhiJodHRwOi8vb2NzcDIuZ2xvYmFsc2lnbi5jb20vcm9vdHI2MDsGCCsG
-AQUFBzAChi9odHRwOi8vc2VjdXJlLmdsb2JhbHNpZ24uY29tL2NhY2VydC9yb290LXI2LmNydDA2
-BgNVHR8ELzAtMCugKaAnhiVodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL3Jvb3QtcjYuY3JsMBEG
-A1UdIAQKMAgwBgYEVR0gADANBgkqhkiG9w0BAQwFAAOCAgEAVc4mpSLg9A6QpSq1JNO6tURZ4rBI
-MkwhqdLrEsKs8z40RyxMURo+B2ZljZmFLcEVxyNt7zwpZ2IDfk4URESmfDTiy95jf856Hcwzdxfy
-jdwx0k7n4/0WK9ElybN4J95sgeGRcqd4pji6171bREVt0UlHrIRkftIMFK1bzU0dgpgLMu+ykJSE
-0Bog41D9T6Swl2RTuKYYO4UAl9nSjWN6CVP8rZQotJv8Kl2llpe83n6ULzNfe2QT67IB5sJdsrNk
-jIxSwaWjOUNddWvCk/b5qsVUROOuctPyYnAFTU5KY5qhyuiFTvvVlOMArFkStNlVKIufop5EQh6p
-jqDGT6rp4ANDoEWbHKd4mwrMtvrh51/8UzaJrLzj3GjdkJ/sPWkDbn+AIt6lrO8hbYSD8L7RQDqK
-C28FheVr4ynpkrWkT7Rl6npWhyumaCbjR+8bo9gs7rto9SPDhWhgPSR9R1//WF3mdHt8SKERhvtd
-NFkE3zf36V9Vnu0EO1ay2n5imrOfLkOVF3vtAjleJnesM/R7v5tMS0tWoIr39KaQNURwI//WVuR+
-zjqIQVx5s7Ta1GgEL56z0C5GJoNE1LvGXnQDyvDO6QeJVThFNgwkossyvmMAaPOJYnYCrYXiXXle
-A6TpL63Gu8foNftUO0T83JbV/e6J8iCOnGZwZDrubOtYn1QwggWDMIIDa6ADAgECAg5F5rsDgzPD
-hWVI5v9FUTANBgkqhkiG9w0BAQwFADBMMSAwHgYDVQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBS
-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
-YE9NAgMBAAGjggHgMIIB3DAeBgNVHREEFzAVgRNkYXZpZGdvd0Bnb29nbGUuY29tMA4GA1UdDwEB
-/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIwHQYDVR0OBBYEFHgsCGkO2Hex
-N6ybc+GeQEb6790qMFgGA1UdIARRME8wCQYHZ4EMAQUBAjBCBgorBgEEAaAyCgMDMDQwMgYIKwYB
-BQUHAgEWJmh0dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAwGA1UdEwEB/wQC
-MAAwgZoGCCsGAQUFBwEBBIGNMIGKMD4GCCsGAQUFBzABhjJodHRwOi8vb2NzcC5nbG9iYWxzaWdu
-LmNvbS9jYS9nc2F0bGFzcjZzbWltZWNhMjAyMzBIBggrBgEFBQcwAoY8aHR0cDovL3NlY3VyZS5n
-bG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NhdGxhc3I2c21pbWVjYTIwMjMuY3J0MB8GA1UdIwQYMBaA
-FDO6vqPUOU0qGdfIZpJogf3BxsnGMEYGA1UdHwQ/MD0wO6A5oDeGNWh0dHA6Ly9jcmwuZ2xvYmFs
-c2lnbi5jb20vY2EvZ3NhdGxhc3I2c21pbWVjYTIwMjMuY3JsMA0GCSqGSIb3DQEBCwUAA4ICAQAs
-exV05yVDmPhHRqOq9lAbfWOUvEf8zydxabZUHna6bayb83jD2eb9nMGGEprfuNBRmFg35sgF1TyN
-+ieuQakvQYmY8tzK49hhHa2Y3qhGCTqYTHO3ypHvhHsZiGbL0gmdgB9P8ssVIws//34ae99GUOxo
-XKTxPwwsQ5Arq42besv3/HXAW+4nRAT8d3ht5ZWCHc5rjL/vdGzu7PaYo3u0da69AZ8Sh4Gf5yoc
-QANr2ZkMrxXbLmSmnRvbkQrzlZp2YbTFnczx46429D6q75/FNFOL1vAjxtRAPzkyACvW0eKvchza
-TMvvD3IWERLlcBL5yXpENc3rI8/wVjqgAWYxlFg1b/4b/TCgYe2MZC0rx4Uh3zTIbmPNiHdN6QZ9
-oDiYzWUcqWZ5jCO4bMKNlVJXeCvdANLHuhcC8FONj5VzNgYXs6gWkp9/Wt6XnQPX4dF4JBa8JdL/
-cT46RJIzoiJHEx/8syO5FparZHIKbkunoq6niPsRaQUGeqWc56H4Z1sQXuBJN9fhqkIkG0Ywfrwt
-uFrCoYIRlx4rSVHpBIKgnsgdm0SFQK72MPmIkfhfq9Fh0h8AjhF73sLO7K5BfwWkx1gwMySyNY0e
-PCRYr6WEVOkUJS0a0fui693ymMPFLQAimmz8EpyFok4Ju066StkYO1dIgUIla4x61auxkWHwnzGC
-AmowggJmAgEBMGgwVDELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExKjAo
-BgNVBAMTIUdsb2JhbFNpZ24gQXRsYXMgUjYgU01JTUUgQ0EgMjAyMwIQAcDMKctW1GQKDKqEUSh4
-pjANBglghkgBZQMEAgEFAKCB1DAvBgkqhkiG9w0BCQQxIgQgG6jG467AKwQhxiuYAnh/zh2+rfiu
-xH/cqUgwJ8DNmjUwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjUw
-MjE1MDkwODQ4WjBpBgkqhkiG9w0BCQ8xXDBaMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
-YIZIAWUDBAECMAoGCCqGSIb3DQMHMAsGCSqGSIb3DQEBCjALBgkqhkiG9w0BAQcwCwYJYIZIAWUD
-BAIBMA0GCSqGSIb3DQEBAQUABIIBABSFzf77+//17U3imrZUoDpNZBbbG71TDwGmHC2hHsxH7s+E
-P5tMevH0YHlOG0kjEZglffXi8IyS/L68d05iZsc58pcRviHlLwbIHxTGVDNR4Y9BMkYJxwrfSxNq
-SYNocaqU+yQzcc4aiAfg6rctcge96C9yIn+BmUw4kiDmI9jUTxDYEuY644LJ8tRSqP88bDSAccVg
-8nKMmwAgBPfD3P7EbSJx1IjJ+b+lT/XuX7mnGEtiBxD6IaL8ZicWtQ6KcVWqCbHRYWaGIWeEPR3F
-XTre9jDbE/CmLd6d5O1G9cU6rQrtsMZ/AeRnOda0U2VGWbfO4/3XU3TQn3IVJ32BYBQ=
---0000000000009bf01a062e2aa331--
+I'll make the above public if you think that is the better approach.
+
+C's might_sleep() is defined in linux/kernel.h but kernel/kernel.rs
+isn't a good choice, I guess. kernel/sched.rs or other options?
