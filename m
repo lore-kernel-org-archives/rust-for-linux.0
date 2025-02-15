@@ -1,240 +1,223 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0EB1A2860
-	for <rust-for-linux@vger.kernel.org>; Sat, 15 Feb 2025 09:06:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679DD198E78
+	for <rust-for-linux@vger.kernel.org>; Sat, 15 Feb 2025 09:08:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739610406; cv=none; b=pgLjRs5BCF3PMS9Uc8vNxuNjFchNLT9HoUK+SoS1UtthgAjbKJZRMEWi9Or+eM7o0HNxCe8D/g+NaBdHv6wLKTDXFU91Sd96KkxmoGU0BZMz1cH4gGxeCuEMoK5p6UjpxRXPCSpjLXYZYbukv3i67YWDLgv6rXkXh74E9K3smfw=
+	t=1739610530; cv=none; b=favAgfTXttt1dHac2zr3zUj9b/dzJKBbVsy+AbGjweIC/o2jgR5dlZVrJu/dgqtlMXVUlOjk6BWdqiwIKWkY+FUy9Uvdoj+C96l425RP3Y3tUY3ncsGj7erjmpoLqE10yAYyLHZNJAZ+C2TWlg/22Ai27tkXd9hTLMDz8FWjUd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739610406; c=relaxed/simple;
-	bh=Brif0Uu+CgbP+MFCn/3eNgcrnGLZavM1s9AzupsE6jE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=t1slfBPVMLjgkF/2yPypfkks3SGRdDV9sSNBGI79ipoH8QJuAMxiXKjLh/IAv7AelfJC9//ToqHAUrJONb5WTY6/LqK7a/WfOjhdZUW806+g8QFU25c1flVJaSnV2Xk3LltcMLA5uB8B9+71SbKHFfXh6MhFZfwU8sNXCp2k2uU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uoTdf/5p; arc=none smtp.client-ip=209.85.214.201
+	s=arc-20240116; t=1739610530; c=relaxed/simple;
+	bh=GqFlLkdivB6bFg/mUAgBETarBqIMOk9nclE1jswck+M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fioFVyqmE9SSde+npK/rnTF6WWI87Euo59FnKxMpPRZHAMqbjpsV0kLt+Iojo4t8nOFldGsICPH+8kNlF8/kOewHedsRioFof742LjWH+JDJPIcsSUK52jL61JXnEQCiz42mN6NohOo/sT9eUastK0Q3ZT3zzrlxEmrcz0/4lgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KR94JVSq; arc=none smtp.client-ip=209.85.160.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uoTdf/5p"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-220d1c24b25so60844575ad.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 15 Feb 2025 01:06:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KR94JVSq"
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-471d1af90a0so12841221cf.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 15 Feb 2025 01:08:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1739610404; x=1740215204; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yNO63Q8fUF1rvzf4dCO7HftqO6PY/IYB86cB56hZgtY=;
-        b=uoTdf/5pTEcoBE0ehDSoWcWeEIVRVHRO2MRuBWYcq2/frZp+db8ol+6jXL6YsTpA5u
-         0eAfHfDEYa2ggvV1jV38g77DhAyG6EleEGespzvyxXmnmRi6YqRB81BNpLrAk68DE0j1
-         FP+ztuVSz2/bNmYoIsT1abiz+QFBB15/vy+0S6YFa4hW9ar4I0+wv9AWF0Vaf5do3//6
-         QPdcuJM/EgGYpX0od4ae3+3jh1NWAsv79/xZnYBR/kvtb8w6P+Rj39f/WNOEU6sFEwnQ
-         3nA+TZqfuB2wItnnYqYBF5wUeJTI8BC/6GUhoqtsFsJA0UAAWB8TPJwhmcBQD+9zXmOq
-         pbAA==
+        d=google.com; s=20230601; t=1739610528; x=1740215328; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=GqFlLkdivB6bFg/mUAgBETarBqIMOk9nclE1jswck+M=;
+        b=KR94JVSqZ/GX6DxmbcpVuvv+Dt1Zbbe6en6nj3JipMCjF8X02wSWLKWb863E5+JMhR
+         AzmN2oc8Xu+B1q3N6HwnNMiLwwZxOrrAXz8DIi5vnKRMRvE5Sq/vs6Du6zlxFvBAzt0J
+         nHEk+71uBfSTgxaiQXKbdmx/ueq6jE21iBuUloPAEJs3IzH2G6aqN8eJoiPeH2aTQiAF
+         22tm9kcdVHZNa6YK//Ewgi2owk5eCOH9zYdi4BeOEfgrtWHet3ZvxUqDlvpyoBPr9lVi
+         b8N4Usi1M59XMkvOisWaphIRihZTSS/+2kWgKhoepdr4KqNHNgOC76zbqBiUCqYsZMfs
+         2z0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739610404; x=1740215204;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=yNO63Q8fUF1rvzf4dCO7HftqO6PY/IYB86cB56hZgtY=;
-        b=RHO0cKLKbPgU56J1/nEe0Uj1RsfzCDxLPngMNMFxdOXEizf9hLoTPx5wucamDuY1BQ
-         KgnOvcGyqOaqTbK8LfOJ3ILUPbTn9HqjxhJfEm0OjcP7QiSm8Nq/TyGwdX2qNlgQJFWT
-         8NlMdQsAjXTyLh8RNTFgVZmsHN5OLCZSHgkXYXDDGAiVsBvv0Z3Yy29EBymjLRPxiey1
-         ckreIgRF+a+6rtQViBW4coM0VeATYnCLUKdi1r168cX+w82on+KonxAREbQHJwlBw4S0
-         hhKSID3Pi621QPgd7Ra7KUY8e6BuTsFopkaSXDh20YddRgUJOf73u+z+CCo4Eep0zxQo
-         dpqg==
-X-Forwarded-Encrypted: i=1; AJvYcCUHi3P1Qj/6UTKmT0+CYEeHDAdw+vFysf/I5/h5cVnlRPPQBA6Gm6hgxt5l8c6cit2yX+UFDesTcXhP0OLJYw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRwqQHmh5vF/6tIvHcOWQ/vDr28Pc3xjBOwvdXhI9TS356iiJ6
-	JlP2hoMGJ+6nELWktlB1xF6opf+7bTd3lk/nNTLvHBAE+XUopk/r9EkbFALU6/CofIYErIiiuKS
-	MHZuVlLPkmw==
-X-Google-Smtp-Source: AGHT+IHtFENxipav4o9tqRA/ja1GzbDCGx7710bdD1BFLEpzmG+fgognz6SYkYpQwhD6qiYIX2BeQfkGlf/crg==
-X-Received: from pfbbq17.prod.google.com ([2002:a05:6a00:e11:b0:732:222e:ac25])
- (user=davidgow job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:999e:b0:1dc:7907:6d67 with SMTP id adf61e73a8af0-1ee8cbf7a69mr4953468637.40.1739610404506;
- Sat, 15 Feb 2025 01:06:44 -0800 (PST)
-Date: Sat, 15 Feb 2025 17:06:20 +0800
-In-Reply-To: <20250215090622.2381038-1-davidgow@google.com>
+        d=1e100.net; s=20230601; t=1739610528; x=1740215328;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GqFlLkdivB6bFg/mUAgBETarBqIMOk9nclE1jswck+M=;
+        b=qA7qDLXgtsIsl5g7s6miCo9o1A5QhJd+Q3qjkYjAtIQzrsckKKmdTRDGoU8Xz4k4bL
+         52H1oMdV90H/QDyh/6YeVBU651VRgBmdwy/sTz8K6JqlFCalUFK+ACLYlswXZtbg7fgY
+         diKY2BpLWmWJGpt7/Yb+C4H6KZxlBR3WdPQZ2Z722MRVQTIEmqYzi+Os79nHW1jFmD0i
+         vshDCHL00lNwbzmoFugmnpqGSM6D7Uc5LL1MeVv54zfwveSsztvgYTTIBJVHb9zERUSE
+         I9JnVYlwrLnIVnGbfvf+4I5gBMX8BXz7SwlWE5sRmAsb6yUYoV1Pa4WCQL0wLoolLNyq
+         R9LQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWByL89J2q+tikOTKXB90TcsYYzoPQoXVuSc8ZvlA/DbCJeDJVOabDDh+LngnUBbJLq4x9DMBmcxjX47t5pZQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIMaPkj8Wi7YcZbDvAtiPNwDmcjkGYuAGRjZ8opP0+AqPefxV2
+	C8hxakGTd8E1GMEbaXoNac8BzOpwibb9b6KIvGS9PZksltvZK6TUsGL7R1Txo1g2Lm3Tgp9S29F
+	vQKjvxe6efkLencbM1/Nb8omOqpklu4pHGb6w
+X-Gm-Gg: ASbGncsLDLJN4u00vR6uH3o5gbYx9x+DtxSMXvRg9+eP20a0b2mJfdEWZ7jGJbi05HI
+	VyiFcK8vXcn80qUJrPqP8tjeUdo7lk4sV8YdLvKPGHNsnLT/r5zQoT1vsH/8wF9SB1a0psCOWUg
+	==
+X-Google-Smtp-Source: AGHT+IG+Rr3QVLQC5qbITzV2ftubc6rWWymEb7xm9qu7o+XZx7WAkuFiH/hYiRigqcyU3+FvdLhh1GHsFXwjK7dawZQ=
+X-Received: by 2002:a05:6214:1d09:b0:6e4:8774:375e with SMTP id
+ 6a1803df08f44-6e66cd111e4mr35478146d6.39.1739610528117; Sat, 15 Feb 2025
+ 01:08:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250215090622.2381038-1-davidgow@google.com>
-X-Mailer: git-send-email 2.48.1.601.g30ceb7b040-goog
-Message-ID: <20250215090622.2381038-4-davidgow@google.com>
-Subject: [PATCH v7 3/3] rust: kunit: allow to know if we are in a test
+MIME-Version: 1.0
+References: <20250214074051.1619256-1-davidgow@google.com> <CANiq72mqkoSkh_3Q1XYuA_Q7AqRFt1wD_Mkf1nPTbbSHKQz48g@mail.gmail.com>
+In-Reply-To: <CANiq72mqkoSkh_3Q1XYuA_Q7AqRFt1wD_Mkf1nPTbbSHKQz48g@mail.gmail.com>
 From: David Gow <davidgow@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>, 
-	"=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?=" <jose.exposito89@gmail.com>, Rae Moar <rmoar@google.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, Benno Lossin <benno.lossin@proton.me>, 
-	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Matt Gilbride <mattgilbride@google.com>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	Tamir Duberstein <tamird@gmail.com>
-Cc: kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	David Gow <davidgow@google.com>
+Date: Sat, 15 Feb 2025 17:08:34 +0800
+X-Gm-Features: AWEUYZnKrqrr9x4rceVy02l8BFKIP9UEKUtK-HgSqmdI6uditYGXfnrzD6br9cA
+Message-ID: <CABVgOS=wC75cmTEvE4JoPo1FM-ani72AZP2VU-qnTqNSYnHh=Q@mail.gmail.com>
+Subject: Re: [PATCH v6 0/3] rust: kunit: Support KUnit tests with a user-space
+ like syntax
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>, 
+	Rae Moar <rmoar@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Benno Lossin <benno.lossin@proton.me>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Matt Gilbride <mattgilbride@google.com>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, kunit-dev@googlegroups.com, 
+	linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="0000000000009bf01a062e2aa331"
+
+--0000000000009bf01a062e2aa331
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-From: Jos=C3=A9 Exp=C3=B3sito <jose.exposito89@gmail.com>
+On Sat, 15 Feb 2025 at 04:49, Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Fri, Feb 14, 2025 at 8:41=E2=80=AFAM David Gow <davidgow@google.com> w=
+rote:
+> >
+> > After much delay, v6 of the KUnit/Rust integration patchset is here.
+> > This change incorporates most of Miguels suggestions from v5 (save for
+> > some of the copyright headers I wasn't comfortable unilaterally
+> > changing). This means the documentation is much improved, and it should
+> > work more cleanly on Rust 1.83 and 1.84, no longer requiring
+> > static_mut_refs or const_mut_refs. (I'm not 100% sure I understand all
+> > of the details of this, but I'm comfortable enough with how it's ended
+> > up.)
+>
+> Thanks a lot, David, really.
+>
+> I am happy to take it through Rust or KUnit -- I am not sure yet how
+> many conflicts we will have on our side.
+>
+> I will give it a go when you think it is ready (since I saw comments
+> from Tamir, though not sure how many you may want to address --
+> perhaps the sooner we land this, the easier it may be...).
 
-In some cases, we need to call test-only code from outside the test
-case, for example, to mock a function or a module.
+Thanks!
 
-In order to check whether we are in a test or not, we need to test if
-`CONFIG_KUNIT` is set.
-Unfortunately, we cannot rely only on this condition because:
-- a test could be running in another thread,
-- some distros compile KUnit in production kernels, so checking at runtime
-  that `current->kunit_test !=3D NULL` is required.
+I've sent out v7:
+https://lore.kernel.org/rust-for-linux/20250215090622.2381038-1-davidgow@go=
+ogle.com/T/
 
-Forturately, KUnit provides an optimised check in
-`kunit_get_current_test()`, which checks CONFIG_KUNIT, a global static
-key, and then the current thread's running KUnit test.
+This should address (most of) Tamir's comments. If that looks good to
+you, feel free to apply it: it'd certainly be easier on my end to have
+any nonessential fixes done separately, and if we can have people
+start to use it in the rust tree concurrently, that'd be a bonus.
 
-Add a safe wrapper function around this to know whether or not we are in
-a KUnit test and examples showing how to mock a function and a module.
+Thanks again for your patience -- I think we're finally nearly there!
 
-Signed-off-by: Jos=C3=A9 Exp=C3=B3sito <jose.exposito89@gmail.com>
-Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Co-developed-by: David Gow <davidgow@google.com>
-Signed-off-by: David Gow <davidgow@google.com>
----
+-- David
 
-Changes since v6:
-https://lore.kernel.org/rust-for-linux/20250214074051.1619256-4-davidgow@go=
-ogle.com/
-- Doc comments now have a useful link. (Thanks, Tamir!)
-- A small tidy-up to limit unsafe usage. (Thanks, Tamir!)
+--0000000000009bf01a062e2aa331
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-Changes since v5:
-https://lore.kernel.org/all/20241213081035.2069066-4-davidgow@google.com/
-- Greatly improved documentation, which is both clearer and better
-  matches the rustdoc norm. (Thanks, Miguel)
-- The examples and safety comments are also both more idiomatic an
-  cleaner. (Thanks, Miguel)
-- More things sit appropriately behind CONFIG_KUNIT (Thanks, Miguel)
-
-Changes since v4:
-https://lore.kernel.org/linux-kselftest/20241101064505.3820737-4-davidgow@g=
-oogle.com/
-- Rebased against 6.13-rc1
-- Fix some missing safety comments, and remove some unneeded 'unsafe'
-  blocks. (Thanks Boqun)
-
-Changes since v3:
-https://lore.kernel.org/linux-kselftest/20241030045719.3085147-8-davidgow@g=
-oogle.com/
-- The example test has been updated to no longer use assert_eq!() with
-  a constant bool argument (fixes a clippy warning).
-
-No changes since v2:
-https://lore.kernel.org/linux-kselftest/20241029092422.2884505-4-davidgow@g=
-oogle.com/
-
-Changes since v1:
-https://lore.kernel.org/lkml/20230720-rustbind-v1-3-c80db349e3b5@google.com=
-/
-- Rebased on top of rust-next.
-- Use the `kunit_get_current_test()` C function, which wasn't previously
-  available, instead of rolling our own.
-- (Thanks also to Boqun for suggesting a nicer way of implementing this,
-  which I tried, but the `kunit_get_current_test()` version obsoleted.)
----
- rust/kernel/kunit.rs | 66 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 66 insertions(+)
-
-diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
-index 2131443a5f1e..91aa49da0265 100644
---- a/rust/kernel/kunit.rs
-+++ b/rust/kernel/kunit.rs
-@@ -286,11 +286,77 @@ macro_rules! kunit_unsafe_test_suite {
-     };
- }
-=20
-+/// Returns whether we are currently running a KUnit test.
-+///
-+/// In some cases, you need to call test-only code from outside the test c=
-ase, for example, to
-+/// create a function mock. This function allows to change behavior depend=
-ing on whether we are
-+/// currently running a KUnit test or not.
-+///
-+/// # Examples
-+///
-+/// This example shows how a function can be mocked to return a well-known=
- value while testing:
-+///
-+/// ```
-+/// # use kernel::kunit::in_kunit_test;
-+/// fn fn_mock_example(n: i32) -> i32 {
-+///     if in_kunit_test() {
-+///         return 100;
-+///     }
-+///
-+///     n + 1
-+/// }
-+///
-+/// let mock_res =3D fn_mock_example(5);
-+/// assert_eq!(mock_res, 100);
-+/// ```
-+///
-+/// Sometimes, you don't control the code that needs to be mocked. This ex=
-ample shows how the
-+/// [`bindings`] module can be mocked:
-+///
-+/// ```
-+/// // Import our mock naming it as the real module.
-+/// #[cfg(CONFIG_KUNIT)]
-+/// use bindings_mock_example as bindings;
-+/// #[cfg(not(CONFIG_KUNIT))]
-+/// use kernel::bindings;
-+///
-+/// // This module mocks `bindings`.
-+/// #[cfg(CONFIG_KUNIT)]
-+/// mod bindings_mock_example {
-+///     /// Mock `ktime_get_boot_fast_ns` to return a well-known value whe=
-n running a KUnit test.
-+///     pub(crate) fn ktime_get_boot_fast_ns() -> u64 {
-+///         1234
-+///     }
-+/// }
-+///
-+/// // This is the function we want to test. Since `bindings` has been moc=
-ked, we can use its
-+/// // functions seamlessly.
-+/// fn get_boot_ns() -> u64 {
-+///     // SAFETY: `ktime_get_boot_fast_ns()` is always safe to call.
-+///     unsafe { bindings::ktime_get_boot_fast_ns() }
-+/// }
-+///
-+/// let time =3D get_boot_ns();
-+/// assert_eq!(time, 1234);
-+/// ```
-+pub fn in_kunit_test() -> bool {
-+    // SAFETY: `kunit_get_current_test()` is always safe to call (it has f=
-allbacks for
-+    // when KUnit is not enabled).
-+    !unsafe { bindings::kunit_get_current_test() }.is_null()
-+}
-+
- #[kunit_tests(rust_kernel_kunit)]
- mod tests {
-+    use super::*;
-+
-     #[test]
-     fn rust_test_kunit_example_test() {
-         #![expect(clippy::eq_op)]
-         assert_eq!(1 + 1, 2);
-     }
-+
-+    #[test]
-+    fn rust_test_kunit_in_kunit_test() {
-+        assert!(in_kunit_test());
-+    }
- }
---=20
-2.48.1.601.g30ceb7b040-goog
-
+MIIUqgYJKoZIhvcNAQcCoIIUmzCCFJcCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
+ghIEMIIGkTCCBHmgAwIBAgIQfofDAVIq0iZG5Ok+mZCT2TANBgkqhkiG9w0BAQwFADBMMSAwHgYD
+VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSNjETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
+AxMKR2xvYmFsU2lnbjAeFw0yMzA0MTkwMzUzNDdaFw0zMjA0MTkwMDAwMDBaMFQxCzAJBgNVBAYT
+AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSowKAYDVQQDEyFHbG9iYWxTaWduIEF0bGFz
+IFI2IFNNSU1FIENBIDIwMjMwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQDYydcdmKyg
+4IBqVjT4XMf6SR2Ix+1ChW2efX6LpapgGIl63csmTdJQw8EcbwU9C691spkltzTASK2Ayi4aeosB
+mk63SPrdVjJNNTkSbTowej3xVVGnYwAjZ6/qcrIgRUNtd/mbtG7j9W80JoP6o2Szu6/mdjb/yxRM
+KaCDlloE9vID2jSNB5qOGkKKvN0x6I5e/B1Y6tidYDHemkW4Qv9mfE3xtDAoe5ygUvKA4KHQTOIy
+VQEFpd/ZAu1yvrEeA/egkcmdJs6o47sxfo9p/fGNsLm/TOOZg5aj5RHJbZlc0zQ3yZt1wh+NEe3x
+ewU5ZoFnETCjjTKz16eJ5RE21EmnCtLb3kU1s+t/L0RUU3XUAzMeBVYBEsEmNnbo1UiiuwUZBWiJ
+vMBxd9LeIodDzz3ULIN5Q84oYBOeWGI2ILvplRe9Fx/WBjHhl9rJgAXs2h9dAMVeEYIYkvW+9mpt
+BIU9cXUiO0bky1lumSRRg11fOgRzIJQsphStaOq5OPTb3pBiNpwWvYpvv5kCG2X58GfdR8SWA+fm
+OLXHcb5lRljrS4rT9MROG/QkZgNtoFLBo/r7qANrtlyAwPx5zPsQSwG9r8SFdgMTHnA2eWCZPOmN
+1Tt4xU4v9mQIHNqQBuNJLjlxvalUOdTRgw21OJAFt6Ncx5j/20Qw9FECnP+B3EPVmQIDAQABo4IB
+ZTCCAWEwDgYDVR0PAQH/BAQDAgGGMDMGA1UdJQQsMCoGCCsGAQUFBwMCBggrBgEFBQcDBAYJKwYB
+BAGCNxUGBgkrBgEEAYI3FQUwEgYDVR0TAQH/BAgwBgEB/wIBADAdBgNVHQ4EFgQUM7q+o9Q5TSoZ
+18hmkmiB/cHGycYwHwYDVR0jBBgwFoAUrmwFo5MT4qLn4tcc1sfwf8hnU6AwewYIKwYBBQUHAQEE
+bzBtMC4GCCsGAQUFBzABhiJodHRwOi8vb2NzcDIuZ2xvYmFsc2lnbi5jb20vcm9vdHI2MDsGCCsG
+AQUFBzAChi9odHRwOi8vc2VjdXJlLmdsb2JhbHNpZ24uY29tL2NhY2VydC9yb290LXI2LmNydDA2
+BgNVHR8ELzAtMCugKaAnhiVodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL3Jvb3QtcjYuY3JsMBEG
+A1UdIAQKMAgwBgYEVR0gADANBgkqhkiG9w0BAQwFAAOCAgEAVc4mpSLg9A6QpSq1JNO6tURZ4rBI
+MkwhqdLrEsKs8z40RyxMURo+B2ZljZmFLcEVxyNt7zwpZ2IDfk4URESmfDTiy95jf856Hcwzdxfy
+jdwx0k7n4/0WK9ElybN4J95sgeGRcqd4pji6171bREVt0UlHrIRkftIMFK1bzU0dgpgLMu+ykJSE
+0Bog41D9T6Swl2RTuKYYO4UAl9nSjWN6CVP8rZQotJv8Kl2llpe83n6ULzNfe2QT67IB5sJdsrNk
+jIxSwaWjOUNddWvCk/b5qsVUROOuctPyYnAFTU5KY5qhyuiFTvvVlOMArFkStNlVKIufop5EQh6p
+jqDGT6rp4ANDoEWbHKd4mwrMtvrh51/8UzaJrLzj3GjdkJ/sPWkDbn+AIt6lrO8hbYSD8L7RQDqK
+C28FheVr4ynpkrWkT7Rl6npWhyumaCbjR+8bo9gs7rto9SPDhWhgPSR9R1//WF3mdHt8SKERhvtd
+NFkE3zf36V9Vnu0EO1ay2n5imrOfLkOVF3vtAjleJnesM/R7v5tMS0tWoIr39KaQNURwI//WVuR+
+zjqIQVx5s7Ta1GgEL56z0C5GJoNE1LvGXnQDyvDO6QeJVThFNgwkossyvmMAaPOJYnYCrYXiXXle
+A6TpL63Gu8foNftUO0T83JbV/e6J8iCOnGZwZDrubOtYn1QwggWDMIIDa6ADAgECAg5F5rsDgzPD
+hWVI5v9FUTANBgkqhkiG9w0BAQwFADBMMSAwHgYDVQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBS
+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
+YE9NAgMBAAGjggHgMIIB3DAeBgNVHREEFzAVgRNkYXZpZGdvd0Bnb29nbGUuY29tMA4GA1UdDwEB
+/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIwHQYDVR0OBBYEFHgsCGkO2Hex
+N6ybc+GeQEb6790qMFgGA1UdIARRME8wCQYHZ4EMAQUBAjBCBgorBgEEAaAyCgMDMDQwMgYIKwYB
+BQUHAgEWJmh0dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAwGA1UdEwEB/wQC
+MAAwgZoGCCsGAQUFBwEBBIGNMIGKMD4GCCsGAQUFBzABhjJodHRwOi8vb2NzcC5nbG9iYWxzaWdu
+LmNvbS9jYS9nc2F0bGFzcjZzbWltZWNhMjAyMzBIBggrBgEFBQcwAoY8aHR0cDovL3NlY3VyZS5n
+bG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NhdGxhc3I2c21pbWVjYTIwMjMuY3J0MB8GA1UdIwQYMBaA
+FDO6vqPUOU0qGdfIZpJogf3BxsnGMEYGA1UdHwQ/MD0wO6A5oDeGNWh0dHA6Ly9jcmwuZ2xvYmFs
+c2lnbi5jb20vY2EvZ3NhdGxhc3I2c21pbWVjYTIwMjMuY3JsMA0GCSqGSIb3DQEBCwUAA4ICAQAs
+exV05yVDmPhHRqOq9lAbfWOUvEf8zydxabZUHna6bayb83jD2eb9nMGGEprfuNBRmFg35sgF1TyN
++ieuQakvQYmY8tzK49hhHa2Y3qhGCTqYTHO3ypHvhHsZiGbL0gmdgB9P8ssVIws//34ae99GUOxo
+XKTxPwwsQ5Arq42besv3/HXAW+4nRAT8d3ht5ZWCHc5rjL/vdGzu7PaYo3u0da69AZ8Sh4Gf5yoc
+QANr2ZkMrxXbLmSmnRvbkQrzlZp2YbTFnczx46429D6q75/FNFOL1vAjxtRAPzkyACvW0eKvchza
+TMvvD3IWERLlcBL5yXpENc3rI8/wVjqgAWYxlFg1b/4b/TCgYe2MZC0rx4Uh3zTIbmPNiHdN6QZ9
+oDiYzWUcqWZ5jCO4bMKNlVJXeCvdANLHuhcC8FONj5VzNgYXs6gWkp9/Wt6XnQPX4dF4JBa8JdL/
+cT46RJIzoiJHEx/8syO5FparZHIKbkunoq6niPsRaQUGeqWc56H4Z1sQXuBJN9fhqkIkG0Ywfrwt
+uFrCoYIRlx4rSVHpBIKgnsgdm0SFQK72MPmIkfhfq9Fh0h8AjhF73sLO7K5BfwWkx1gwMySyNY0e
+PCRYr6WEVOkUJS0a0fui693ymMPFLQAimmz8EpyFok4Ju066StkYO1dIgUIla4x61auxkWHwnzGC
+AmowggJmAgEBMGgwVDELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExKjAo
+BgNVBAMTIUdsb2JhbFNpZ24gQXRsYXMgUjYgU01JTUUgQ0EgMjAyMwIQAcDMKctW1GQKDKqEUSh4
+pjANBglghkgBZQMEAgEFAKCB1DAvBgkqhkiG9w0BCQQxIgQgG6jG467AKwQhxiuYAnh/zh2+rfiu
+xH/cqUgwJ8DNmjUwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjUw
+MjE1MDkwODQ4WjBpBgkqhkiG9w0BCQ8xXDBaMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
+YIZIAWUDBAECMAoGCCqGSIb3DQMHMAsGCSqGSIb3DQEBCjALBgkqhkiG9w0BAQcwCwYJYIZIAWUD
+BAIBMA0GCSqGSIb3DQEBAQUABIIBABSFzf77+//17U3imrZUoDpNZBbbG71TDwGmHC2hHsxH7s+E
+P5tMevH0YHlOG0kjEZglffXi8IyS/L68d05iZsc58pcRviHlLwbIHxTGVDNR4Y9BMkYJxwrfSxNq
+SYNocaqU+yQzcc4aiAfg6rctcge96C9yIn+BmUw4kiDmI9jUTxDYEuY644LJ8tRSqP88bDSAccVg
+8nKMmwAgBPfD3P7EbSJx1IjJ+b+lT/XuX7mnGEtiBxD6IaL8ZicWtQ6KcVWqCbHRYWaGIWeEPR3F
+XTre9jDbE/CmLd6d5O1G9cU6rQrtsMZ/AeRnOda0U2VGWbfO4/3XU3TQn3IVJ32BYBQ=
+--0000000000009bf01a062e2aa331--
