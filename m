@@ -1,92 +1,101 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D46B170A37;
-	Sat, 15 Feb 2025 21:41:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739655690; cv=pass; b=J2FGKytuzb+euu1VqHHTax/5iETbl6sXoV9fzVYn+b4ifTVNn5TAZuy/FPgrZcd2YKsyqEbs/DJiTBN87n8+HwngsiFn8BUuAsqUgSGmCpP5mAq6UED6Gp6tjYQy+oUyeXcouekcv5EiIzEKdIeEiaSA85NzRfIL0GTGCvCqXP0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739655690; c=relaxed/simple;
-	bh=wNkunTcwZ7tTA1DeZin72+i0UjvFvWDXsnEPq5Terjg=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=V+ojkHcNnU6yVs3+oZ0Lq5eflZxaw6VzNgyEM3iP5l7f4DPhStyU0AsVfC0iPkUdQUahiLUS8H3Ls4seqKsOqFsWF8JUrFkLT5sC6ohLiK+Nn7NyDwqDPo63PP1x2N+vJB800WuKrtwwreS2vWnMWecTJoKjfvaHcRbXhtfY6+Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Ix1kiSRe; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB01199B9;
+	Sat, 15 Feb 2025 22:31:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739658693; cv=none; b=eOxxNBU53Rh9j5OtB8e5LqJBiBaQzaop5TgJnmdtZlrPeqXMlm7NhoC9w9J+RALvYu22ABwynBREUnpPM9YHE+VdF7DKMyDh0VDVkNjB3m5ebbDKcyesCAldB/HW0ikKN/Su5cdtlYrVqtRa5UzfF/So+W9+21+NhmRVqAucDag=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739658693; c=relaxed/simple;
+	bh=zbhIo0xDzOZCTqwo4a9BF95ysjJWi4vttC5VSmsk5TM=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=HxTc6RiwpWFfKF2ryxV3AS66rgN8cpAPc0JTVfvF0JqiOVm8i33Ny/LcvdAIzbmYtqoT1KHBeYk0JisaggP7pMnNrHfOvaSFnHpCWcK48hxXZH7ZvDQTgKDA2CQBRBmc6SG8b3HXWVB6WEMKPtrK+7wm3eUbdAEowPdwvg9QLG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=EstX1456; arc=none smtp.client-ip=185.70.40.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Ix1kiSRe"
-ARC-Seal: i=1; a=rsa-sha256; t=1739655657; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=NbX1zk1lg5k6KUKx1JyEb2MC59KZDsQkxUBoxWqsKymk2rMqrc9HN3QeS89/nuKKPvOcawEa3zwXskPqK1VblRyG161w7e8C/3d0JR2A1Q8Pu7YKUOVwETAB0HYdooPeNffgNu/SRputb5Af2db0QBdi/LfOcFwcUdsVvKRznXM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1739655657; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=wNkunTcwZ7tTA1DeZin72+i0UjvFvWDXsnEPq5Terjg=; 
-	b=nePZuMOi0a0q7a70EOq9QWbMnnNGyjGsRLFkDZxERQYxS0e84YNxJcnULoV9K7dpFkesgBoWMBA/W4ZfsMe6CX+ELGRsmayZUNr/Sdj5OnPoFB4LBSobw00f1wZpFRoTvq7zWwCtLUEKIp3ek7TiQ6c6/hJKadfJxbUukP0AIbY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1739655657;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=wNkunTcwZ7tTA1DeZin72+i0UjvFvWDXsnEPq5Terjg=;
-	b=Ix1kiSRebBSiPWqdHJJgvZ6BIc/Q0F6yUFY2Hk/fjFflsGiAgVBZjR17s0R8geOO
-	zF5GMFV72somwG5rfOgROzHgSWKKWhYA3bMe6X8ZiXI6Qi+Ual8W+1FBUYImQsWEI4r
-	2txR+/eMZBLdiEkTMebM/lIDDKimeK9kCZ+Uj7Mk=
-Received: by mx.zohomail.com with SMTPS id 1739655655643285.80977869700473;
-	Sat, 15 Feb 2025 13:40:55 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="EstX1456"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=gx6ah36rjngmvit33r3cdufykm.protonmail; t=1739658688; x=1739917888;
+	bh=ZQRmFVQtyeskggtP6Qj6Zx0oQ2+VkautJ0NT3svSj+w=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
+	 List-Unsubscribe:List-Unsubscribe-Post;
+	b=EstX1456v6ehayDBu5AiNB8e4s3g9JpDn0+HTTWoi/sNE+k4W6NYnSrqAIEIbQUj+
+	 TAhFfsf7UWy9bwrLVIrpa1s8+zndxWmymCrjoTSpxZj7jm0jiS2DeVsXnKiSBl2fda
+	 ID/aZhXWrRBfVwoct3APjYo3JllV/41GjAhS+5UZwmD/awLZ0x9cTndT6zhFAjBV8k
+	 Lzanjj3ELN9tza3l6s0ICz1GKArnDwhGhXDuZ97oSxaGF+Duo1pr54muA2gsNvhCcB
+	 EtX8aczLjMQqArNAryD+UYW8+W4DdM92MdMPTqc3Eahkh97NKQYxSJWk1t8tO3vuft
+	 RXjLF8/wx40dg==
+Date: Sat, 15 Feb 2025 22:31:20 +0000
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Wedson Almeida Filho <wedsonaf@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Subject: [PATCH] rust: fix clippy::too-long-first-doc-paragraph
+Message-ID: <20250215223106.2346285-1-benno.lossin@proton.me>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: a3ae3af5ebe8b7d59018f5f505a45767c59e37ab
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
-Subject: Re: [PATCH v11 2/3] rust: add dma coherent allocator abstraction.
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250123104333.1340512-3-abdiel.janulgue@gmail.com>
-Date: Sat, 15 Feb 2025 18:40:37 -0300
-Cc: rust-for-linux@vger.kernel.org,
- dakr@kernel.org,
- robin.murphy@arm.com,
- aliceryhl@google.com,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Valentin Obst <kernel@valentinobst.de>,
- open list <linux-kernel@vger.kernel.org>,
- Christoph Hellwig <hch@lst.de>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- airlied@redhat.com,
- "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <633274AD-E55C-4A90-AB72-33D3E176176F@collabora.com>
-References: <20250123104333.1340512-1-abdiel.janulgue@gmail.com>
- <20250123104333.1340512-3-abdiel.janulgue@gmail.com>
-To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-X-Mailer: Apple Mail (2.3826.300.87.4.3)
-X-ZohoMailClient: External
 
-Hi Abdiel
+When running `make LLVM=3D1 CLIPPY=3D1` on my machine, I get this error:
 
-I noticed that there=E2=80=99s no API to call =
-`dma_set_mask/dma_set_coherent_mask`.
+    error: first doc comment paragraph is too long
+      --> rust/kernel/driver.rs:13:1
+       |
+    13 | / /// The [`RegistrationOps`] trait serves as generic interface fo=
+r subsystems (e.g., PCI, Platform,
+    14 | | /// Amba, etc.) to provide the corresponding subsystem specific =
+implementation to register /
+    15 | | /// unregister a driver of the particular type (`RegType`).
+    16 | | ///
+    17 | | /// For instance, the PCI subsystem would set `RegType` to `bind=
+ings::pci_driver` and call
+       | |_
+       |
+       =3D help: for further information visit https://rust-lang.github.io/=
+rust-clippy/master/index.html#too_long_first_doc_paragraph
+       =3D note: `-D clippy::too-long-first-doc-paragraph` implied by `-D w=
+arnings`
+       =3D help: to override `-D warnings` add `#[allow(clippy::too_long_fi=
+rst_doc_paragraph)]`
 
-This should probably be included, i.e.:
+Thus add a short one-line description.
 
-```
-By default, the kernel assumes that your device can address 32-bits of =
-DMA addressing.
-For a 64-bit capable device, this needs to be increased, and for a =
-device with limitations,
-it needs to be decreased.
-```
+Fixes: ea7e18289f44 ("rust: implement generic driver registration")
+Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+---
+The error also occurs in v6.14-rc1, so it must have slipped through our
+testing, which I find a bit strange. Also nobody reported it for rc1, so
+maybe this is only something that I encountered?
+---
+ rust/kernel/driver.rs | 2 ++
+ 1 file changed, 2 insertions(+)
 
-=E2=80=94 Daniel=
+diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
+index 2a16d5e64e6c..65c9c1776556 100644
+--- a/rust/kernel/driver.rs
++++ b/rust/kernel/driver.rs
+@@ -10,6 +10,8 @@
+ use core::pin::Pin;
+ use macros::{pin_data, pinned_drop};
+=20
++/// Generic interface for subsystem driver registrations.
++///
+ /// The [`RegistrationOps`] trait serves as generic interface for subsyste=
+ms (e.g., PCI, Platform,
+ /// Amba, etc.) to provide the corresponding subsystem specific implementa=
+tion to register /
+ /// unregister a driver of the particular type (`RegType`).
+
+base-commit: a64dcfb451e254085a7daee5fe51bf22959d52d3
+--=20
+2.46.0
+
+
