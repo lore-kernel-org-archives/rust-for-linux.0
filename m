@@ -1,63 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD49323BB;
-	Sat, 15 Feb 2025 18:47:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBBE15696E;
+	Sat, 15 Feb 2025 19:47:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.63.210.85
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739645223; cv=none; b=Lvn3zW9vWxBB7Bsop2EQl7osC0fEf+UC7/8BIL6CY9959oNJ1i7AuYxmf6YJB6f0JSdWgLSrJGJTudFQONhgTXw4JpIYdX57UsT/QE/HX/KyZOktXP1JBM6hC587ooelmL60WISjVuSp52/hGXtK127cDIvmh4vweDqUdsLPRrA=
+	t=1739648858; cv=none; b=tEehhH1fRS6QBVFRKLRobQihe190b4JGWczV6rq9MwlD5XWosW/kRI9OcyOCddXItAbtKlxcjDBkbFVCMwjeNGhjn8iSccH+jAVm4fWNb347tgR2LUJiurLItt+Mz8Ttr5ETbj8ZL51FQGlBdAvdXZX+w60E02y9og3M3ipB3EU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739645223; c=relaxed/simple;
-	bh=b0XijXGwAewhE83Fhwfl29YWkJGlmue8T97ShV3+oV0=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=fXwfZEoqVaJoL0dzT0WOmQr8qIBGQhML9Pi+hx60Jy+YHMEDA+KqZuMFv7TE6u1DCWkdrJQIAsQtJgNh4R14f1JRusXkPIcsqsuAlBKqkb84L2ZmV6+QjB2g6tggHX+JvzX+A3KkA2xKcrlCc8C8rzVg++dzwoLLKcy+Xc9oV4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Upd2DLhY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739648858; c=relaxed/simple;
+	bh=DYfp2i2SZiuctQ0MVI7rHStW6AJQXkGlw/Iul/pfxqo=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=URtZ3GwGtlVVepP/BS56z4rp7EYd8VbAyvg2XqhmBDs9jLCkxqkLtohQDR+j0/Hgc598ypMzakrAdRvVB05S6V2zovmSRoMVkPWvwX7WG3MdA4mdZlsYVTQXftcmyhtIJCB925W6JxVQmBUbMdFUWm7KmlhRjg9Wp7gG3kodNXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net; spf=pass smtp.mailfrom=asahilina.net; dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b=VzjQqb3l; arc=none smtp.client-ip=212.63.210.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asahilina.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Upd2DLhY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C88C4CEDF;
-	Sat, 15 Feb 2025 18:47:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739645223;
-	bh=b0XijXGwAewhE83Fhwfl29YWkJGlmue8T97ShV3+oV0=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=Upd2DLhY6Cov714cLGmmS3zyExujW9qAOtagQad0oyuq+pGq1GvGAVO0Xuc3tJHk5
-	 vC2zR1sjQ1W/2MLVy8xwB//TyiZvoCZ+cM7CXMuJpn0yGp07w86rv65VdQ6xvf4PfW
-	 eap1SktzJJQbuzdHGHK3xaqnInIW8Y9NdjDTWWY4RZK8dAm4wno0XmFjPTf0SPGBNe
-	 9RxraoxXvaysJ2PG021CIp8eUGDkyBmoc9QhkIQv7m7pFYd2QzAHeaNFq8r6l+Pi0r
-	 s/YwuPEYF1oH9qzCHgeYXdiNVhVWahMVBtge/k9NtDS/e6mpPvtBZhprxzQOItwwBp
-	 xMqcmoiMBdsQQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70DBE380AA7E;
-	Sat, 15 Feb 2025 18:47:34 +0000 (UTC)
-Subject: Re: [GIT PULL] Rust fixes for 6.14 (2nd)
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20250215170845.80764-1-ojeda@kernel.org>
-References: <20250215170845.80764-1-ojeda@kernel.org>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20250215170845.80764-1-ojeda@kernel.org>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-6.14-2
-X-PR-Tracked-Commit-Id: 2e4f982cf392af2f1282b5537a72144e064799e3
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 243899076c3efdf98d8e922a802896424a597580
-Message-Id: <173964525310.2320599.3728754433248657249.pr-tracker-bot@kernel.org>
-Date: Sat, 15 Feb 2025 18:47:33 +0000
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b="VzjQqb3l"
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: lina@asahilina.net)
+	by mail.marcansoft.com (Postfix) with ESMTPSA id 2413F43462;
+	Sat, 15 Feb 2025 19:47:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
+	s=default; t=1739648846;
+	bh=DYfp2i2SZiuctQ0MVI7rHStW6AJQXkGlw/Iul/pfxqo=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=VzjQqb3lWyOI32y3Ub3ByjcWQ7tonopRGCAfxXkvg/tHufVK14a9wT45GXJjmnt4s
+	 7WHg+mZsdhIbnXGi8C68mDxNR2ln5yIiUNK4TKZS/XYu1+vLi17da7m/7f4MaXpS+K
+	 iodVJ1WIdfb/9l6IAi4C2tpRDADwEOpwu53Zoqk9rp3etvLGuoCl9PsFDPaTCvWnlM
+	 BI4YtlK9iutNXU1D5RYZ376iKoa6XdogtrnfXpfiJXzgnWViDl6o91jK1c1dksKc/G
+	 8jUxzPuIJEmWIo57Q6bEJpMChpKkZKUSRGzrt9BTturSagEDKfubrPqmbVuVMhcgUX
+	 as8bLSk56o3fA==
+Message-ID: <cae5503e-4330-4c44-8a50-1ebf63ea5a24@asahilina.net>
+Date: Sun, 16 Feb 2025 04:47:22 +0900
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/6] rust: page: Support borrowing `struct page` and
+ physaddr conversion
+From: Asahi Lina <lina@asahilina.net>
+To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Jann Horn <jannh@google.com>,
+ Matthew Wilcox <willy@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Valentin Obst <kernel@valentinobst.de>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ airlied@redhat.com, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, asahi@lists.linux.dev,
+ Danilo Krummrich <dakr@kernel.org>
+References: <20250202-rust-page-v1-0-e3170d7fe55e@asahilina.net>
+ <Z6CY4TvZwLkWmB3I@pollux>
+ <a3551d7d-14c7-40a0-90ff-1fcce93be62a@asahilina.net>
+Content-Language: en-US
+In-Reply-To: <a3551d7d-14c7-40a0-90ff-1fcce93be62a@asahilina.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The pull request you sent on Sat, 15 Feb 2025 18:08:45 +0100:
+On 2/3/25 11:41 PM, Asahi Lina wrote:
+> 
+> 
+> On 2/3/25 7:22 PM, Danilo Krummrich wrote:
+>> Hi Lina,
+>>
+>> On Sun, Feb 02, 2025 at 10:05:42PM +0900, Asahi Lina wrote:
+>>> This series refactors the existing Page wrapper to support borrowing
+>>> `struct page` objects without ownership on the Rust side, and converting
+>>> page references to/from physical memory addresses.
+>>
+>> Thanks for picking this up!
+>>
+>> As you know, this has been previously worked on by Abdiel. Kindly drop a note
+>> if you intend to pick up something up next time, such that we don't end up doing
+>> duplicated work.
+> 
+> Sorry! I wasn't sure if this was going to end up submitted over the
+> holidays so I wasn't in a rush, but I ended up switching gears in the
+> past couple of weeks and I really needed this feature now (for crashdump
+> support to debug a really annoying firmware crash).
+> 
+> I actually only just noticed that the previous v2 already had
+> Owned/Ownable... I only saw the v3 which didn't, so I didn't realize
+> there was already a version of that approach in the past.
+> 
+> ~~ Lina
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-6.14-2
+Given the discussion in the other subthreads, it looks like this is not
+the best approach for page table management and using it for crash dumps
+of arbitrary physical memory pages raises some eyebrows, so I'm going to
+abandon this series.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/243899076c3efdf98d8e922a802896424a597580
+Abdiel, if the first two patches are helpful to your work, please feel
+free to incorporate them into a v4. Otherwise, just go ahead with
+whatever works for you!
 
-Thank you!
+~~ Lina
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
