@@ -1,75 +1,95 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B5FBE49
-	for <rust-for-linux@vger.kernel.org>; Sat, 15 Feb 2025 14:34:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD1D1C6FE4;
+	Sat, 15 Feb 2025 17:08:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739630087; cv=none; b=hByApcCVzE0TcFx3vVElMoriCeCCb3ZE3pHcQYLLgR1almyEk3iA8z7mENNbLTfuplkUMXao/ELybLZGF+uwKtvaFsG7jVk9yBvOsSQoigFtw6Tf0XXx6Bk/QbEQM7ggAG/gXQyEO9VeNDxEvjb2/Uwj7txfLvcEXqMm+wLOx7k=
+	t=1739639337; cv=none; b=o+8XlaEAF0/RYjvacoHP6BrBxYETO/a9q2eaIEP7VStRwGK3Mrf63zjniYKfhWC5sMi0ipK+v6DFVK34YN6izkz7k+OIjStApwfsEF8swZ1vkNSyDfAeOIAFHF8JSFKHsLfBoZZaq99MqjQuKhBGZnhST3LIlZC6rt9A0R4Gk5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739630087; c=relaxed/simple;
-	bh=92ocfrlLvJ23Or9dYf17grChdOmx8/wSNq8Pz3+AXWg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M23HwNdDs7+SsEUrAZVu7ri7s9tP8y+b3WxTNUCpl9jCe1OmIU7GxRivuftk8+khX2rf5KDDnuyf6YgWqCIijtGTbfbzj+D3RpQwhSJtU+4lQ9XYSt56fGM+rmdL9MH+PKjULoLy+9qsMEOG/kDb/OMoTG3flrTKQp+vVr5R6oA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=ITQPEozr; arc=none smtp.client-ip=185.70.40.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1739639337; c=relaxed/simple;
+	bh=Gff5Fb/UEHmhG3qEsrFxch0VTJF4L3wBvBHqc1Qlj0M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lHpy+1J1C5cIEPEpKpuM768GCqEfn+OrKJCyztX8YgTuCLpArEI0sKZmmWv4X7pn/HdhvUbAJ+Ath1wMshWrhNoQO829nKvYbkJDWxleA2jhwDsZRK3CLVqFrjiltQJbpog3PL5pVvoVFpXGGxwre3BXtaO7rQwFMQvRvI9lA9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=psG1m8xq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ITQPEozr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1739630080; x=1739889280;
-	bh=92ocfrlLvJ23Or9dYf17grChdOmx8/wSNq8Pz3+AXWg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=ITQPEozrjX3ZxHYv4fMgQzdQ94ZDWhQ6olbLpdiKpptxS14SxSi0QZAfEnu3VhUEG
-	 gjv1uwIHm3ZyI53awpSo2n+DYllViJfOF/+auFugMERYVzAZDSckDHXk8DxVeqbQ+s
-	 +fZTVhgwS1MAjBE/63o+eE86Oi9VM+rt+sAGq4nuv3GVmpT9PDYLjIxdH0f9+joaKN
-	 Pa6SMO29gsPCLXEzT40yr3djAtDMNTYxHE7iylRSozFYDLnyj+T0QGP0wRL2cDK3Yu
-	 xgNVXsYWFQkrrWP7UCAMuPqIRloZOb+k+m0NX/2qToPFXDdNAVVzIygKMgN4mj3GHs
-	 e39F459FGoABg==
-Date: Sat, 15 Feb 2025 14:34:36 +0000
-To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com, apw@canonical.com, arnd@arndb.de, aswinunni01@gmail.com, axboe@kernel.dk, bhelgaas@google.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org, dwaipayanray1@gmail.com, ethan.twardy@gmail.com, fujita.tomonori@gmail.com, gary@garyguo.net, gregkh@linuxfoundation.org, joe@perches.com, linux-kernel@vger.kernel.org, lukas.bulwahn@gmail.com, miguel.ojeda.sandonis@gmail.com, ojeda@kernel.org, pbonzini@redhat.com, rust-for-linux@vger.kernel.org, tmgross@umich.edu, walmeida@microsoft.com
-Subject: Re: [PATCH V2 1/2] rust: module: change author to be a array
-Message-ID: <32437338-a050-46ec-a09a-faf73a6b477b@proton.me>
-In-Reply-To: <20250215135229.300420-1-trintaeoitogc@gmail.com>
-References: <93eaeb37-9913-49cb-be6d-367696a81baf@proton.me> <20250215135229.300420-1-trintaeoitogc@gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 7a1e6b8dbee201addc2f6954ffa234f86dd71e4a
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="psG1m8xq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1A7EC4CEE6;
+	Sat, 15 Feb 2025 17:08:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739639336;
+	bh=Gff5Fb/UEHmhG3qEsrFxch0VTJF4L3wBvBHqc1Qlj0M=;
+	h=From:To:Cc:Subject:Date:From;
+	b=psG1m8xquWHXiS4JqkvZE7SKTenQSi0pbhl+OdWfDkgrs9rpeBMrmnd8buVuWFW0O
+	 wKVMOJRkTKeQHSb1NNbV4HoSz+jECcZme+vA+wopDdJx0w+dEBHFLeC59agsUg9csa
+	 arXpWIaJsTVQGweY1aPSvZEGuNPs2Jk26q/of18Ej/+ldFT1EBt5KHXzPD950qNNRc
+	 aqcW8RFmG3MMTLSFFnzIBIc5waKK2DqQAx5Y27aBS5cvBtcFKovr4ydcWBlp5k+owU
+	 DBHK44zKuMGsJWBfdJUNliG42hWV2lYJtDvxYbgNB585ccr3rVy/xZGv4Hyw5RHXrf
+	 xbw8++R1hSA1A==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Rust fixes for 6.14 (2nd)
+Date: Sat, 15 Feb 2025 18:08:45 +0100
+Message-ID: <20250215170845.80764-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On 15.02.25 14:52, Guilherme Giacomo Simoes wrote:
-> Benno Lossin <benno.lossin@proton.me> wrote:
->> As already mentioned above, I think it makes sense to also rename the
->> field to `authors`.
-> When I maked this change, I thinked in change the field name from author =
-to
-> authors, but I don't doing this because anothers fields that is a array i=
-n
-> module! macro (firmware and alias) are in singular too.
+Hi Linus,
 
-Hmm IMO the `alias` field should also probably be called `aliases`
-(though not in this patch). And I believe that the plural of `firmware`
-also is `firmware`.
-So I still think it's a good idea to rename it to `authors`.
+Please pull these fixes for Rust (second round).
 
->> You should also change the documentation in this file, there the field
->> `author` is listed as "string literal of the author of the kernel
->> module.", so it also needs to be updated.
-> Yes, you is right... I haven't seen this chunk of text
+They have been in linux-next for a few days.
 
-No worries, that's what review is for.
+No conflicts expected.
 
----
+Thanks!
+
 Cheers,
-Benno
+Miguel
 
+The following changes since commit a64dcfb451e254085a7daee5fe51bf22959d52d3:
+
+  Linux 6.14-rc2 (2025-02-09 12:45:03 -0800)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-6.14-2
+
+for you to fetch changes up to 2e4f982cf392af2f1282b5537a72144e064799e3:
+
+  rust: rbtree: fix overindented list item (2025-02-12 23:26:55 +0100)
+
+----------------------------------------------------------------
+Rust fixes for v6.14 (2nd)
+
+Toolchain and infrastructure:
+
+ - Fix objtool warning due to future Rust 1.85.0 (to be released in
+   a few days).
+
+ - Clean future Rust 1.86.0 (to be released 2025-04-03) Clippy warning.
+
+----------------------------------------------------------------
+Miguel Ojeda (2):
+      objtool/rust: add one more `noreturn` Rust function
+      rust: rbtree: fix overindented list item
+
+ rust/kernel/rbtree.rs | 2 +-
+ tools/objtool/check.c | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
