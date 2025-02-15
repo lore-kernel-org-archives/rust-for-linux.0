@@ -1,108 +1,100 @@
-Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBBE15696E;
-	Sat, 15 Feb 2025 19:47:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.63.210.85
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739648858; cv=none; b=tEehhH1fRS6QBVFRKLRobQihe190b4JGWczV6rq9MwlD5XWosW/kRI9OcyOCddXItAbtKlxcjDBkbFVCMwjeNGhjn8iSccH+jAVm4fWNb347tgR2LUJiurLItt+Mz8Ttr5ETbj8ZL51FQGlBdAvdXZX+w60E02y9og3M3ipB3EU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739648858; c=relaxed/simple;
-	bh=DYfp2i2SZiuctQ0MVI7rHStW6AJQXkGlw/Iul/pfxqo=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=URtZ3GwGtlVVepP/BS56z4rp7EYd8VbAyvg2XqhmBDs9jLCkxqkLtohQDR+j0/Hgc598ypMzakrAdRvVB05S6V2zovmSRoMVkPWvwX7WG3MdA4mdZlsYVTQXftcmyhtIJCB925W6JxVQmBUbMdFUWm7KmlhRjg9Wp7gG3kodNXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net; spf=pass smtp.mailfrom=asahilina.net; dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b=VzjQqb3l; arc=none smtp.client-ip=212.63.210.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asahilina.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C11170A1B;
+	Sat, 15 Feb 2025 21:29:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739655000; cv=pass; b=f6TlV2UdLUK3bTqMywZ7rZhBSje5MJfmw+jl1Z+BEc3bvu0ZuIKZlcya1y3GmZWEewas637p6bXc1ucT07I8KSn/tDDTbxuXwlwr7yZQJE2daL98jncZAg6vdR/AbyC344nHOlrOJOKpEl9RxxGNXbr863s0x+hG0ydoywPyP3g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739655000; c=relaxed/simple;
+	bh=YbGjdxDqEN3wLUVnxAfJo1FEzrUh5aC8korUEZOe9yw=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=Tc2+FrG9YjrJXhv3g2PAjymgjngUE/WcZwxHIc6m/bdxOb/5HYGvV5GySeHHWIFuu4ZIKcX19zx/YEwp8Gn6qzFfYfV2l9kf/lTBs3aGJr2BMPQQIlCCdNJBgb5sguBWesybmrJUCZTKIRe7MQlAppTzHGQQyjHTzhrpzP+SQCY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=doNYpEiP; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b="VzjQqb3l"
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: lina@asahilina.net)
-	by mail.marcansoft.com (Postfix) with ESMTPSA id 2413F43462;
-	Sat, 15 Feb 2025 19:47:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
-	s=default; t=1739648846;
-	bh=DYfp2i2SZiuctQ0MVI7rHStW6AJQXkGlw/Iul/pfxqo=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=VzjQqb3lWyOI32y3Ub3ByjcWQ7tonopRGCAfxXkvg/tHufVK14a9wT45GXJjmnt4s
-	 7WHg+mZsdhIbnXGi8C68mDxNR2ln5yIiUNK4TKZS/XYu1+vLi17da7m/7f4MaXpS+K
-	 iodVJ1WIdfb/9l6IAi4C2tpRDADwEOpwu53Zoqk9rp3etvLGuoCl9PsFDPaTCvWnlM
-	 BI4YtlK9iutNXU1D5RYZ376iKoa6XdogtrnfXpfiJXzgnWViDl6o91jK1c1dksKc/G
-	 8jUxzPuIJEmWIo57Q6bEJpMChpKkZKUSRGzrt9BTturSagEDKfubrPqmbVuVMhcgUX
-	 as8bLSk56o3fA==
-Message-ID: <cae5503e-4330-4c44-8a50-1ebf63ea5a24@asahilina.net>
-Date: Sun, 16 Feb 2025 04:47:22 +0900
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="doNYpEiP"
+ARC-Seal: i=1; a=rsa-sha256; t=1739654932; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=hP+gMUCdS8lR+jzrhe1Yi8O77W8UGO6ljEDJXr1oaydEENkOVVD2/Qf+n1ejFU5mu3gv6h6LKypcY4ixf1lQ0ynXarsacl25432L1xxmTMbXqDsm/ESTRq5ZbnqZcEtWAENAY98moyqc+d+un0wpA0DcxCsb9i6k4prmjfn2RfI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1739654932; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=YbGjdxDqEN3wLUVnxAfJo1FEzrUh5aC8korUEZOe9yw=; 
+	b=iYL5qTQr3ekec/62sKIVDGjo6kHPEShf3AhjHT39vqkerv+40v7HVSAhFcwK5C0FB4nsLi80c3QqQve1eWbOFWoihKg36eD/kKI5mplHTPsVopLJB1ZtXw5pbvwsETNnMOcVaS/u/wwyD0c05afF5kW76VWrtmuUAJHSaQWhmvQ=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1739654932;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=YbGjdxDqEN3wLUVnxAfJo1FEzrUh5aC8korUEZOe9yw=;
+	b=doNYpEiPa0y/lz22hqgCIvgAK/lf+tAl0lnK0/XzrrXzuWGKDbBGp1sPlDE9lD/d
+	AbIe/FfqEam25Zo+SSUdhVbvyZRkqJExA9jZ0EsSmo8osItS2JuhvnLW27YZDtpCeCd
+	bcg99qdC82jzfJFGPsEVFNtOgq+mvtCMCPcwlTAI=
+Received: by mx.zohomail.com with SMTPS id 1739654930320229.91104007025683;
+	Sat, 15 Feb 2025 13:28:50 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/6] rust: page: Support borrowing `struct page` and
- physaddr conversion
-From: Asahi Lina <lina@asahilina.net>
-To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Jann Horn <jannh@google.com>,
- Matthew Wilcox <willy@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Valentin Obst <kernel@valentinobst.de>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- airlied@redhat.com, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, asahi@lists.linux.dev,
- Danilo Krummrich <dakr@kernel.org>
-References: <20250202-rust-page-v1-0-e3170d7fe55e@asahilina.net>
- <Z6CY4TvZwLkWmB3I@pollux>
- <a3551d7d-14c7-40a0-90ff-1fcce93be62a@asahilina.net>
-Content-Language: en-US
-In-Reply-To: <a3551d7d-14c7-40a0-90ff-1fcce93be62a@asahilina.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
+Subject: Re: [PATCH v10 0/8] rust: Add IO polling
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20250207132623.168854-1-fujita.tomonori@gmail.com>
+Date: Sat, 15 Feb 2025 18:28:30 -0300
+Cc: linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ netdev@vger.kernel.org,
+ andrew@lunn.ch,
+ hkallweit1@gmail.com,
+ tmgross@umich.edu,
+ ojeda@kernel.org,
+ alex.gaynor@gmail.com,
+ gary@garyguo.net,
+ bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me,
+ a.hindborg@samsung.com,
+ aliceryhl@google.com,
+ anna-maria@linutronix.de,
+ frederic@kernel.org,
+ tglx@linutronix.de,
+ arnd@arndb.de,
+ jstultz@google.com,
+ sboyd@kernel.org,
+ mingo@redhat.com,
+ peterz@infradead.org,
+ juri.lelli@redhat.com,
+ vincent.guittot@linaro.org,
+ dietmar.eggemann@arm.com,
+ rostedt@goodmis.org,
+ bsegall@google.com,
+ mgorman@suse.de,
+ vschneid@redhat.com,
+ tgunders@redhat.com,
+ me@kloenk.dev
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <8BD5E78C-0B91-4BD0-A38E-7A3681536DB4@collabora.com>
+References: <20250207132623.168854-1-fujita.tomonori@gmail.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+X-Mailer: Apple Mail (2.3826.300.87.4.3)
+X-ZohoMailClient: External
 
-On 2/3/25 11:41 PM, Asahi Lina wrote:
-> 
-> 
-> On 2/3/25 7:22 PM, Danilo Krummrich wrote:
->> Hi Lina,
->>
->> On Sun, Feb 02, 2025 at 10:05:42PM +0900, Asahi Lina wrote:
->>> This series refactors the existing Page wrapper to support borrowing
->>> `struct page` objects without ownership on the Rust side, and converting
->>> page references to/from physical memory addresses.
->>
->> Thanks for picking this up!
->>
->> As you know, this has been previously worked on by Abdiel. Kindly drop a note
->> if you intend to pick up something up next time, such that we don't end up doing
->> duplicated work.
-> 
-> Sorry! I wasn't sure if this was going to end up submitted over the
-> holidays so I wasn't in a rush, but I ended up switching gears in the
-> past couple of weeks and I really needed this feature now (for crashdump
-> support to debug a really annoying firmware crash).
-> 
-> I actually only just noticed that the previous v2 already had
-> Owned/Ownable... I only saw the v3 which didn't, so I didn't realize
-> there was already a version of that approach in the past.
-> 
-> ~~ Lina
+Hi Fujita,
 
-Given the discussion in the other subthreads, it looks like this is not
-the best approach for page table management and using it for crash dumps
-of arbitrary physical memory pages raises some eyebrows, so I'm going to
-abandon this series.
+> On 7 Feb 2025, at 10:26, FUJITA Tomonori <fujita.tomonori@gmail.com> =
+wrote:
+>=20
+> Add a helper function to poll periodically until a condition is met or
+> a timeout is reached. By using the function, the 8th patch fixes
+> QT2025 PHY driver to sleep until the hardware becomes ready.
 
-Abdiel, if the first two patches are helpful to your work, please feel
-free to incorporate them into a v4. Otherwise, just go ahead with
-whatever works for you!
+I tested this on a driver I=E2=80=99ve been working on. This is working =
+as intended.
 
-~~ Lina
-
+Tested-by: Daniel Almeida <daniel.almeida@collabora.com>=
