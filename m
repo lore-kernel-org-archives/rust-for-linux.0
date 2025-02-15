@@ -1,266 +1,90 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C932F4ED
-	for <rust-for-linux@vger.kernel.org>; Sat, 15 Feb 2025 01:39:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C79C2F4A;
+	Sat, 15 Feb 2025 05:24:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739583571; cv=none; b=aZnji7b9UtYqSFlUuDjNHhdWobyxAcahIKXyvo9xW3oIMIWuu9yMPAwWbGAbYZdiNrl5Y65JaOL4GjN81ckHfYIsWx4ClLuQ0aXARu7iKatahcUQvg7AA2EhKr7v7WY3fVK+N93+3LNc0tvfJAhlAjXqHcSMOLjx5fUmgUVRsNg=
+	t=1739597053; cv=none; b=kRTRntj3PdNIj8Pr5k+uz9kLHSMY9CA93TgR0Neei9utY/wbGufIoMK/rPGv3PoufPA+Zu0bzs/6YbPTN/K9s+h2pIlatKdmwG8gI3SOpRSMvL/cr54R13FySfuAY3KT7TJ+zYgb03vjGFTwedqvn537aYacNDJxlu0g77Mahnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739583571; c=relaxed/simple;
-	bh=bsX85CP7pzM0SjdvrvK6LSPQnIzQhM+OefTQsyAnXzo=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L5U7HWHitTqZfJoKPoMN94yVTMLJuVMeOxKS8IB2nV/KXkbOKzlMnF/3lmc4oJgUJ0nnysf5FIDbOgbi9dZ1PfzJTTwmBLsjAGOBdsQ3IV1GR/oRcep5qFGrkZe1tUNbeRQE5k4ISBqQpJzEaqrutqDMdVf38UsHbT4OgD81PKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=B49MKmbV; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="B49MKmbV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=nb3yjjgtwzcs3kslqmelwsnaoy.protonmail; t=1739583566; x=1739842766;
-	bh=s/r6aRv9p6Uq44FUePVy+nAMfK+OelCF9axDvkmd5Jc=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=B49MKmbVFN0l7StcAtVkqON8zzDAkZwVpP7upmKvXaVj5aCEmyLhNqRDYk4Ms/R9U
-	 2z4k1bzTBLvHTJotfLDg2yF7erSPGKCMBnKacGNnYhJbtrzio4U8+AYE3T44BBmLsK
-	 kLj8cR4mr3qdZj2B6e0zrRBVYQOtPO/0an2x7/DjMUaMaj+ekoX4DXvWLwofdt5lQm
-	 pYjU/YKyXiZc4fekl+PGY7FNrTiiEBb8HNH8oqkx+S+cmsq73tqmn6qgJhOxA15Oft
-	 Z31QT8vbYxwU79B2pUgHgry5EOSGxLIcu5b3FO0ck8+08Ge3VP3xNFzJUHm9yg9UHI
-	 8Nn3Iol2nhLgA==
-Date: Sat, 15 Feb 2025 01:39:17 +0000
-To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>, a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com, apw@canonical.com, arnd@arndb.de, aswinunni01@gmail.com, axboe@kernel.dk, bhelgaas@google.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org, dwaipayanray1@gmail.com, ethan.twardy@gmail.com, fujita.tomonori@gmail.com, gary@garyguo.net, gregkh@linuxfoundation.org, joe@perches.com, lukas.bulwahn@gmail.com, ojeda@kernel.org, pbonzini@redhat.com, tmgross@umich.edu, walmeida@microsoft.com
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Subject: Re: [PATCH V2 1/2] rust: module: change author to be a array
-Message-ID: <93eaeb37-9913-49cb-be6d-367696a81baf@proton.me>
-In-Reply-To: <20250214184550.120775-2-trintaeoitogc@gmail.com>
-References: <20250214184550.120775-1-trintaeoitogc@gmail.com> <20250214184550.120775-2-trintaeoitogc@gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 1c5caca312692a065895a85578fd508e033bbad0
+	s=arc-20240116; t=1739597053; c=relaxed/simple;
+	bh=jP4NIklTRbCXV9xg2OGCxfTC+MVzTgnFZB316UaFaSw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=plxLOX4RhH2S0oIysJMsauM4nukRvF+6qp99dLKvcE6i2jqUMJenVSN0uHiEFH5agbhQDM4FoLO2K3L/OkF2MGDtK6eWl8PV5J/Monvh1N6zArfobEygxhNFUNJzGgxBkcSXvkCS8Gshw5BWS23BMffhRMvWrYTPt6cXCsdiOE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com; spf=pass smtp.mailfrom=perches.com; arc=none smtp.client-ip=216.40.44.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perches.com
+Received: from omf18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4EDC881396;
+	Sat, 15 Feb 2025 05:24:09 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf18.hostedemail.com (Postfix) with ESMTPA id D25B42F;
+	Sat, 15 Feb 2025 05:24:02 +0000 (UTC)
+Message-ID: <4e7d00e8e39e5394c601e2a69038e6349b7b91e7.camel@perches.com>
+Subject: Re: [PATCH V2 2/2] checkpatch: throw error in malformed arrays
+From: Joe Perches <joe@perches.com>
+To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>,
+ a.hindborg@kernel.org, 	alex.gaynor@gmail.com, aliceryhl@google.com,
+ apw@canonical.com, arnd@arndb.de, 	aswinunni01@gmail.com, axboe@kernel.dk,
+ benno.lossin@proton.me, 	bhelgaas@google.com, bjorn3_gh@protonmail.com,
+ boqun.feng@gmail.com, 	dakr@kernel.org, dwaipayanray1@gmail.com,
+ ethan.twardy@gmail.com, 	fujita.tomonori@gmail.com, gary@garyguo.net,
+ gregkh@linuxfoundation.org, 	lukas.bulwahn@gmail.com, ojeda@kernel.org,
+ pbonzini@redhat.com, tmgross@umich.edu, 	walmeida@microsoft.com
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Fri, 14 Feb 2025 21:24:01 -0800
+In-Reply-To: <20250214184550.120775-3-trintaeoitogc@gmail.com>
+References: <20250214184550.120775-1-trintaeoitogc@gmail.com>
+	 <20250214184550.120775-3-trintaeoitogc@gmail.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: D25B42F
+X-Stat-Signature: w3qmsemnecanh5kj57hwnpaf1x9p5med
+X-Rspamd-Server: rspamout05
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX19M5YyYpGUVLUubuQf7JMw1puyiDOyM1q4=
+X-HE-Tag: 1739597042-618923
+X-HE-Meta: U2FsdGVkX199gBYHxdBQyrUxC4brFpX3PQB6h+vX2Bc/F/KNLTpWgSnTsNnYbbDuK01Hch2M3xJN0mEDw4ijBvTgIaNkdKmIzlqCvvUpM8pqw7x5In4ITtC1uSbnRqsk9oVf+yi1zgQ/UyWebHYQ0QCCJePWRiHDxS4YbLFcAwqq8OYNRf939JYjnUsN3kqH/rG60EVDVnzMXs6PwZb9keiagDaUYInXmhAf+kMCKlwoZPIWUMG1hFvQYGQ8vT1Q4mJzLOt8C7rF3Ta6hW0VhrHtkZTuGCNeOdWGXVC2k615HKUaCytio8Y1GR67GdY7YbsETuoUtqjj9z2AOQv8eMvr9O0Wcjco
 
-On 14.02.25 19:45, Guilherme Giacomo Simoes wrote:
-> In the module! macro, the author field has a string type. Once that the
-> modules can has more than one author, this is impossible in the current
-> scenary.
-> Change the author field for accept a array string type and enable module
-> creations with more than one author.
-> In modules that use the author field, change its value to a string
-> array.
-
-This commit message looks a bit clunky to me, though I am not a native
-speaker. My suggestion would be:
-
-    Change the type of the `author` field in the `module!` macro from strin=
-g
-    to string array. This allows multiple authors for a single module as is
-    already possible in C.
-    Additionally, rename the field to `authors` to better reflect this
-    change.
-
-Feel free to change/adapt anything.
-
-> Suggested-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-> Link: https://github.com/Rust-for-Linux/linux/issues/244
+On Fri, 2025-02-14 at 15:45 -0300, Guilherme Giacomo Simoes wrote:
+> In module! macro, some fields have a string array type, and we need a
+> check for guarantee a good formatation.
+> Check if the current line contains one of these keys that must be a
+> string array and if so, make a regex for check if contains more than one
+> value in array, if yes, the array should be in vertical. If array have
+> only one value, so the array can be in the same line.
+>=20
 > Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-> ---
->  drivers/block/rnull.rs           | 2 +-
->  rust/kernel/net/phy.rs           | 4 ++--
->  rust/kernel/pci.rs               | 2 +-
->  rust/macros/lib.rs               | 4 ++--
->  rust/macros/module.rs            | 8 +++++---
->  samples/rust/rust_driver_pci.rs  | 2 +-
->  samples/rust/rust_minimal.rs     | 2 +-
->  samples/rust/rust_misc_device.rs | 2 +-
->  samples/rust/rust_print_main.rs  | 2 +-
->  9 files changed, 15 insertions(+), 13 deletions(-)
->=20
-> diff --git a/drivers/block/rnull.rs b/drivers/block/rnull.rs
-> index ddf3629d8894..cb133993f27f 100644
-> --- a/drivers/block/rnull.rs
-> +++ b/drivers/block/rnull.rs
-> @@ -27,7 +27,7 @@
->  module! {
->      type: NullBlkModule,
->      name: "rnull_mod",
-> -    author: "Andreas Hindborg",
-> +    author: ["Andreas Hindborg"],
+[]
+> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+[]
+> @@ -3567,6 +3570,46 @@ sub process {
+[]
+> +
+> +		if ($add_line && $key) {
+> +			my $herevet =3D "\n$here\n" . cat_vet($rawline) . "\n";
 
-As already mentioned above, I think it makes sense to also rename the
-field to `authors`.
+Please look at the other checkpatch uses of $herevet=20
+$herevet does not begin with '\n'
 
->      description: "Rust implementation of the C null block driver",
->      license: "GPL v2",
->  }
-> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-> index bb654a28dab3..b179ac3a8d00 100644
-> --- a/rust/kernel/net/phy.rs
-> +++ b/rust/kernel/net/phy.rs
-> @@ -790,7 +790,7 @@ const fn as_int(&self) -> u32 {
->  ///         DeviceId::new_with_driver::<PhySample>()
->  ///     ],
->  ///     name: "rust_sample_phy",
-> -///     author: "Rust for Linux Contributors",
-> +///     author: ["Rust for Linux Contributors"],
->  ///     description: "Rust sample PHYs driver",
->  ///     license: "GPL",
->  /// }
-> @@ -819,7 +819,7 @@ const fn as_int(&self) -> u32 {
->  /// module! {
->  ///     type: Module,
->  ///     name: "rust_sample_phy",
-> -///     author: "Rust for Linux Contributors",
-> +///     author: ["Rust for Linux Contributors"],
->  ///     description: "Rust sample PHYs driver",
->  ///     license: "GPL",
->  /// }
-> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-> index 4c98b5b9aa1e..1218eaa7be02 100644
-> --- a/rust/kernel/pci.rs
-> +++ b/rust/kernel/pci.rs
-> @@ -103,7 +103,7 @@ extern "C" fn remove_callback(pdev: *mut bindings::pc=
-i_dev) {
->  /// kernel::module_pci_driver! {
->  ///     type: MyDriver,
->  ///     name: "Module name",
-> -///     author: "Author name",
-> +///     author: ["Author name"],
->  ///     description: "Description",
->  ///     license: "GPL v2",
->  /// }
-> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-> index d61bc6a56425..8d74e18caf96 100644
-> --- a/rust/macros/lib.rs
-> +++ b/rust/macros/lib.rs
+> +
+> +			my $counter =3D () =3D $line =3D~ /"/g;
+> +			my $more_than_one =3D $counter > 2;
+> +			if ($more_than_one) {
+> +				WARN("ARRAY_MODULE_MACRO",
+> +						"Prefere one value per line$herevet");
 
-You should also change the documentation in this file, there the field
-`author` is listed as "string literal of the author of the kernel
-module.", so it also needs to be updated.
+Prefer not Prefere
+Align to open parenthesis
+So this should be
+				WARN("ARRAY_MODULE_MACRO"
+				     "Prefer one value per line\n" . $herevet);
 
----
-Cheers,
-Benno
-
-> @@ -36,7 +36,7 @@
->  /// module!{
->  ///     type: MyModule,
->  ///     name: "my_kernel_module",
-> -///     author: "Rust for Linux Contributors",
-> +///     author: ["Rust for Linux Contributors"],
->  ///     description: "My very own kernel module!",
->  ///     license: "GPL",
->  ///     alias: ["alternate_module_name"],
-> @@ -69,7 +69,7 @@
->  /// module!{
->  ///     type: MyDeviceDriverModule,
->  ///     name: "my_device_driver_module",
-> -///     author: "Rust for Linux Contributors",
-> +///     author: ["Rust for Linux Contributors"],
->  ///     description: "My device driver requires firmware",
->  ///     license: "GPL",
->  ///     firmware: ["my_device_firmware1.bin", "my_device_firmware2.bin"]=
-,
-> diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-> index cdf94f4982df..09265d18b44d 100644
-> --- a/rust/macros/module.rs
-> +++ b/rust/macros/module.rs
-> @@ -94,7 +94,7 @@ struct ModuleInfo {
->      type_: String,
->      license: String,
->      name: String,
-> -    author: Option<String>,
-> +    author: Option<Vec<String>>,
->      description: Option<String>,
->      alias: Option<Vec<String>>,
->      firmware: Option<Vec<String>>,
-> @@ -135,7 +135,7 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
->              match key.as_str() {
->                  "type" =3D> info.type_ =3D expect_ident(it),
->                  "name" =3D> info.name =3D expect_string_ascii(it),
-> -                "author" =3D> info.author =3D Some(expect_string(it)),
-> +                "author" =3D> info.author =3D Some(expect_string_array(i=
-t)),
->                  "description" =3D> info.description =3D Some(expect_stri=
-ng(it)),
->                  "license" =3D> info.license =3D expect_string_ascii(it),
->                  "alias" =3D> info.alias =3D Some(expect_string_array(it)=
-),
-> @@ -184,7 +184,9 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream =
-{
->=20
->      let mut modinfo =3D ModInfoBuilder::new(info.name.as_ref());
->      if let Some(author) =3D info.author {
-> -        modinfo.emit("author", &author);
-> +        for author in author {
-> +            modinfo.emit("author", &author);
-> +        }
->      }
->      if let Some(description) =3D info.description {
->          modinfo.emit("description", &description);
-> diff --git a/samples/rust/rust_driver_pci.rs b/samples/rust/rust_driver_p=
-ci.rs
-> index 1fb6e44f3395..5784677c797b 100644
-> --- a/samples/rust/rust_driver_pci.rs
-> +++ b/samples/rust/rust_driver_pci.rs
-> @@ -104,7 +104,7 @@ fn drop(&mut self) {
->  kernel::module_pci_driver! {
->      type: SampleDriver,
->      name: "rust_driver_pci",
-> -    author: "Danilo Krummrich",
-> +    author: ["Danilo Krummrich"],
->      description: "Rust PCI driver",
->      license: "GPL v2",
->  }
-> diff --git a/samples/rust/rust_minimal.rs b/samples/rust/rust_minimal.rs
-> index 4aaf117bf8e3..74279c3bd039 100644
-> --- a/samples/rust/rust_minimal.rs
-> +++ b/samples/rust/rust_minimal.rs
-> @@ -7,7 +7,7 @@
->  module! {
->      type: RustMinimal,
->      name: "rust_minimal",
-> -    author: "Rust for Linux Contributors",
-> +    author: ["Rust for Linux Contributors"],
->      description: "Rust minimal sample",
->      license: "GPL",
->  }
-> diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_de=
-vice.rs
-> index 40ad7266c225..e840c12005cc 100644
-> --- a/samples/rust/rust_misc_device.rs
-> +++ b/samples/rust/rust_misc_device.rs
-> @@ -116,7 +116,7 @@
->  module! {
->      type: RustMiscDeviceModule,
->      name: "rust_misc_device",
-> -    author: "Lee Jones",
-> +    author: ["Lee Jones"],
->      description: "Rust misc device sample",
->      license: "GPL",
->  }
-> diff --git a/samples/rust/rust_print_main.rs b/samples/rust/rust_print_ma=
-in.rs
-> index 7e8af5f176a3..f6d51b0884fb 100644
-> --- a/samples/rust/rust_print_main.rs
-> +++ b/samples/rust/rust_print_main.rs
-> @@ -8,7 +8,7 @@
->  module! {
->      type: RustPrint,
->      name: "rust_print",
-> -    author: "Rust for Linux Contributors",
-> +    author: ["Rust for Linux Contributors"],
->      description: "Rust printing macros sample",
->      license: "GPL",
->  }
-> --
-> 2.34.1
->=20
+etc...
 
