@@ -1,95 +1,145 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23AB12E1CD;
-	Sun, 16 Feb 2025 06:36:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 222D01758B;
+	Sun, 16 Feb 2025 12:18:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739687763; cv=none; b=alrR4vRHomV/ZroAO25ynuQoKJV+AY+CH3GKG4Efq7x3f+yQ65leKNuaNFSYZ3PCaqlPmjPSz3vS7KvIomnHUt377PoMH5MczKOGuzDTW+Lj9ov0tQ8VOrJ7fdVs9SMtsD41d+g4IPfkQ6dbO+QncKKDcYkNNmLuZ47UEK01BbM=
+	t=1739708285; cv=none; b=jImhMoSF/jCyvyGZ6G3URdSY1HX7svBszemqtrH1P7Vf5UncishcSH4iJpfBah1c5QG4MIS2lM02kQbs9JmnA3Uf3z0O2Ned3uXj9eX0xLqQlpNWt90bOI7RXNcg/iIp1Awjy43c/LB266Cad2p3z/gxH+qKyg8CEQR7OI0g8hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739687763; c=relaxed/simple;
-	bh=xibi1nGANYUGTO/IRSiOyVODq0c9qJcEp0eA14oksbY=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=ICpcl1jK5+U8+57OQUKkpCms3DsdPr9v/dRV4Yz+rgFCQYcg80h1x8NxF9BjEy/NkCVGmqFePwklspkTyQM95XHCvOzgRBKZOBLL8AN/5VWCtEFcH6U06jttnQm5fIHiFVbiQ2GxrBSqCLWVphYdvMxlWoVS4l7jptY8UnY7NhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z0qZSGB1; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1739708285; c=relaxed/simple;
+	bh=wvY2DcCPZ25/Vt0hvWxQl7zoSVOoK8EChyJ1dvXABMU=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LZnVrCPDPBjGvgiDrbM6ddh8TSOebBzU0zTw/BrrnugzpDPDKMrfCuoTGKZgtS+OmEazZq86zPqMjHmjxQJ7D9F0AXHlRXH7wWMlbcsVszjQvybjNE6NXxVzXgveAY4qyYXjw4T0XVw71YjtsPs/jRwhk6yXpl96SWTgJtJWgZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=LpVGCd9n; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z0qZSGB1"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-220c92c857aso53102085ad.0;
-        Sat, 15 Feb 2025 22:36:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739687761; x=1740292561; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xibi1nGANYUGTO/IRSiOyVODq0c9qJcEp0eA14oksbY=;
-        b=Z0qZSGB1trEbMSOxXLAmSXSv7O6mAVBuLUVZK0TIVvN+eusrfq9DUZc7cAvsOVw5DL
-         iqqh6X5YeZNBTyG+m/1P94Y6heSEdA/0UC4uMB5poAqhHWhgZZGiAejhGQpFUZrHDxlG
-         ce2wngqZrpQe9gftxqoZ2yhuYZZNhUrQx4fZ/yI+MjAuGL2wRszqNI53K9oHSAr/UexF
-         Lh4k50ejSOJxfznQAukgWVeBE1h5Lu4Y2VOnJhPx49d2tcxncx7jmOleBgSYoCPXLVV8
-         nsljcY1k4nZJ/A5V/ZuMz9JhIP2C7A4DDXf+y7vjxCxsirl4JnLtol0mnm6DdWDAtqk6
-         ch1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739687761; x=1740292561;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=xibi1nGANYUGTO/IRSiOyVODq0c9qJcEp0eA14oksbY=;
-        b=w0vV6i1lIh4H3/R4zi2sHUW3cTpIt1ZeDOHLeaxNDN16Ye0ep9hgKYJQABRLUxzutB
-         ScUX2qBPLJCtsTNiHoRzDZs763K0uhswAcT6l5twF4JGzBf4FcUf4WV91YkviTvpwIL8
-         pS9coAvOx2PW2tag8HCMekJyUS4E97GT7tqr3jT2d97+qxj5DmUYh3yGzFRGsgxJ7vqL
-         hwujpsmA9QhrB32PXWh1hubG6+I1nKOb4qjW5pvroJtIIwqCOafCnwsuvdb6zIiaKCyZ
-         0pgoWwenXh8RGDxTl+rXcO0Gj455BXJCD+pQcADgcw8IO4zoNm67ad4XRQy7I5gCIJ59
-         6E8w==
-X-Forwarded-Encrypted: i=1; AJvYcCUWQQQWOhNoj3ech+QQV9gZRpech+Zf0gtGbhl8DI7ufFmHQTcAqb1TnF+fDioBEPDsVC4++NXC9En7crE=@vger.kernel.org, AJvYcCVPn722Kg7D0kmvJqVOFfUo7VVvkcCFD79TEncnBr9YHX9srXH5QpFjLVfj42O60RJntWfeUSRD@vger.kernel.org, AJvYcCWiM31osbcIbkuKbIHFwwRX4XjIjp7JrAQXwXVnTW0dMvHWO8pBrIeyxExENruAC2Iw5iB+giNy8D8M1hNQUZA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzufnfyKzKDC7Fm+tNRyTAsxZclmEghyatAwwWl3fbWFwmavfWh
-	njHm3K/O83JW1+I9xFnKxPeXsoB0tVUedxT72LdAhzY7gikkBU4y
-X-Gm-Gg: ASbGncvst3h5oUpjUXgDn1CJwHpYJ30Y7yIJo8HbsX3uGOxySx2aEbC0Ndnm1tVkx+N
-	1EIRUlDCsiH35HK7FR5NbiBuvR4zfgubYpM+jf0P/aKkBio+Nx/9vUBY93eSlvKSLw+YniEpxUX
-	N7+xsQkwdENn2I+FHPeUPVSgYyFuipqN4gmbc+D3FUePYRIqrs9HHitRjf0edVKGzbARp6ViqL0
-	Cmf4jGKmpcGnlNq2MQpxwNgWHdfja93WTWAU8O9opVwnQiNCbl86HGjFRLEdh61tCK8IbOvEIJX
-	4zu9y/0W5REgUVaVvIxyuf7qaWVpBmf7WiD81HyJAzPoTb4AZh0HjEAtv0Q5gc8oxU/NoUVV
-X-Google-Smtp-Source: AGHT+IH41UGTLy/72mfTSzDewVBBXKuIIKGWUQiY+eFadWiy8MCZVlTsQ1TKwm+SYKhPL4hvNwDdIw==
-X-Received: by 2002:a17:902:f64f:b0:215:6c5f:d142 with SMTP id d9443c01a7336-2210460c80dmr70906595ad.20.1739687760840;
-        Sat, 15 Feb 2025 22:36:00 -0800 (PST)
-Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-220d53668d1sm52137325ad.75.2025.02.15.22.35.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Feb 2025 22:36:00 -0800 (PST)
-Date: Sun, 16 Feb 2025 15:35:51 +0900 (JST)
-Message-Id: <20250216.153551.1205568288010505529.fujita.tomonori@gmail.com>
-To: daniel.almeida@collabora.com
-Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, andrew@lunn.ch,
- hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
- alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com,
- anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
- arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
- peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
- dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
- mgorman@suse.de, vschneid@redhat.com, tgunders@redhat.com, me@kloenk.dev
-Subject: Re: [PATCH v10 0/8] rust: Add IO polling
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <8BD5E78C-0B91-4BD0-A38E-7A3681536DB4@collabora.com>
-References: <20250207132623.168854-1-fujita.tomonori@gmail.com>
-	<8BD5E78C-0B91-4BD0-A38E-7A3681536DB4@collabora.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="LpVGCd9n"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=dlnwgd7xtrdr7p5gw3bsenad6a.protonmail; t=1739708274; x=1739967474;
+	bh=rG/s99JWc6anEYh4vsWNfFJpXnVNfqyCI+3kc8cpkA0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=LpVGCd9nFeikKgMb6I4ajHqRnZpr6LBDQlLTOg500PZrPmh94pNUFPoQ5soRN5dZD
+	 Oy/i//usgAEkVMYsyxfX2Pp3i068CThVSFyfX47L6YdPpPXvlWEPhxlbGRXgnnA+DG
+	 LVIbtHOwjpc+GFUoZYhOAZmPDydCJt2vUAfUTV+dW5fBaaU8I8O5nptE+nDwzTmlnC
+	 6pKX3MjpVB2ZFmI8nHL+BovpsCVkfVyyaimYAj7SrD9iSfJyou6sZRQAj52jJzj9G8
+	 yNa4NfoY5YO/CUyNHpOaKujUtSuq5v4V1S1Jy51l0Y5iv4qLZMhfR2t/jKE0ZXqv4g
+	 wTwWMDJoWy6Fw==
+Date: Sun, 16 Feb 2025 12:17:49 +0000
+To: Charalampos Mitrodimas <charmitro@posteo.net>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH] rust: fix clippy::too-long-first-doc-paragraph
+Message-ID: <10690211-eb3b-4b95-8d9d-35c62930d924@proton.me>
+In-Reply-To: <m21pvy927w.fsf@posteo.net>
+References: <20250215223106.2346285-1-benno.lossin@proton.me> <m21pvy927w.fsf@posteo.net>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: a04d14d4d8c45140406d799145d620c701914e55
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=iso-8859-7
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-T24gU2F0LCAxNSBGZWIgMjAyNSAxODoyODozMCAtMDMwMA0KRGFuaWVsIEFsbWVpZGEgPGRhbmll
-bC5hbG1laWRhQGNvbGxhYm9yYS5jb20+IHdyb3RlOg0KDQo+PiBBZGQgYSBoZWxwZXIgZnVuY3Rp
-b24gdG8gcG9sbCBwZXJpb2RpY2FsbHkgdW50aWwgYSBjb25kaXRpb24gaXMgbWV0IG9yDQo+PiBh
-IHRpbWVvdXQgaXMgcmVhY2hlZC4gQnkgdXNpbmcgdGhlIGZ1bmN0aW9uLCB0aGUgOHRoIHBhdGNo
-IGZpeGVzDQo+PiBRVDIwMjUgUEhZIGRyaXZlciB0byBzbGVlcCB1bnRpbCB0aGUgaGFyZHdhcmUg
-YmVjb21lcyByZWFkeS4NCj4gDQo+IEkgdGVzdGVkIHRoaXMgb24gYSBkcml2ZXIgSaJ2ZSBiZWVu
-IHdvcmtpbmcgb24uIFRoaXMgaXMgd29ya2luZyBhcyBpbnRlbmRlZC4NCj4gDQo+IFRlc3RlZC1i
-eTogRGFuaWVsIEFsbWVpZGEgPGRhbmllbC5hbG1laWRhQGNvbGxhYm9yYS5jb20+DQoNCkdyZWF0
-LCB0aGFua3MgZm9yIHRlc3RpbmchDQo=
+On 16.02.25 01:12, Charalampos Mitrodimas wrote:
+> Benno Lossin <benno.lossin@proton.me> writes:
+>=20
+>> When running `make LLVM=3D1 CLIPPY=3D1` on my machine, I get this error:
+>>
+>>     error: first doc comment paragraph is too long
+>>       --> rust/kernel/driver.rs:13:1
+>>        |
+>>     13 | / /// The [`RegistrationOps`] trait serves as generic interface=
+ for subsystems (e.g., PCI, Platform,
+>>     14 | | /// Amba, etc.) to provide the corresponding subsystem specif=
+ic implementation to register /
+>>     15 | | /// unregister a driver of the particular type (`RegType`).
+>>     16 | | ///
+>>     17 | | /// For instance, the PCI subsystem would set `RegType` to `b=
+indings::pci_driver` and call
+>>        | |_
+>>        |
+>>        =3D help: for further information visit https://rust-lang.github.=
+io/rust-clippy/master/index.html#too_long_first_doc_paragraph
+>>        =3D note: `-D clippy::too-long-first-doc-paragraph` implied by `-=
+D warnings`
+>>        =3D help: to override `-D warnings` add `#[allow(clippy::too_long=
+_first_doc_paragraph)]`
+>>
+>> Thus add a short one-line description.
+>>
+>> Fixes: ea7e18289f44 ("rust: implement generic driver registration")
+>> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+>> ---
+>> The error also occurs in v6.14-rc1, so it must have slipped through our
+>> testing, which I find a bit strange. Also nobody reported it for rc1, so
+>> maybe this is only something that I encountered?
+>> ---
+>>  rust/kernel/driver.rs | 2 ++
+>>  1 file changed, 2 insertions(+)
+>>
+>> diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
+>> index 2a16d5e64e6c..65c9c1776556 100644
+>> --- a/rust/kernel/driver.rs
+>> +++ b/rust/kernel/driver.rs
+>> @@ -10,6 +10,8 @@
+>>  use core::pin::Pin;
+>>  use macros::{pin_data, pinned_drop};
+>>
+>> +/// Generic interface for subsystem driver registrations.
+>> +///
+>>  /// The [`RegistrationOps`] trait serves as generic interface for subsy=
+stems (e.g., PCI, Platform,
+>>  /// Amba, etc.) to provide the corresponding subsystem specific impleme=
+ntation to register /
+>>  /// unregister a driver of the particular type (`RegType`).
+>>
+>> base-commit: a64dcfb451e254085a7daee5fe51bf22959d52d3
+>=20
+> Hi,
+>=20
+> I cannot reproduce this as-is, but adding
+> "-Wclippy::too_long_first_doc_paragraph" to the "rust_common_flags" in
+> the Makefile reproduces it. Maybe try adding it there in your patch?
+
+I have done some more digging and bisected my Rust version. It turns out
+I was on a rather old nightly from last September. I also don't get the
+error on a newer compiler version. My bisection identified that the
+error last occurs in nightly 2024-10-18, so from 2024-10-19 onwards it
+compiles without the error.
+So probably `-Wclippy::all` implied the `too_long_first_doc_paragraph`
+lint in that version. That is probably because of [1]. It changes the
+lint from style to nursery.
+
+[1]: https://github.com/rust-lang/rust-clippy/pull/13551
+
+So we don't need this patch, as it seems this never hit stable. However,
+there is already a patch fixing what this lint reports: 2f390cc58943
+("rust: provide proper code documentation titles").
+
+I think it's a good lint, so maybe we should turn it on?
+
+---
+Cheers,
+Benno
+
+>=20
+> diff --git a/Makefile b/Makefile
+> index 89628e354..e1b14fb68 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -486,6 +486,7 @@ export rust_common_flags :=3D --edition=3D2021 \
+>  =09=09=09    -Wclippy::undocumented_unsafe_blocks \
+>  =09=09=09    -Wclippy::unnecessary_safety_comment \
+>  =09=09=09    -Wclippy::unnecessary_safety_doc \
+> +=09=09=09    -Wclippy::too_long_first_doc_paragraph \
+>  =09=09=09    -Wrustdoc::missing_crate_level_docs \
+>  =09=09=09    -Wrustdoc::unescaped_backticks
+>=20
+
