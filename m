@@ -1,125 +1,95 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12BC6366
-	for <rust-for-linux@vger.kernel.org>; Sun, 16 Feb 2025 00:12:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23AB12E1CD;
+	Sun, 16 Feb 2025 06:36:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739664781; cv=none; b=Y4J5tp2MJH+in+L5NGk/XUeYNoJ4Z3O1Jx/O3KguLTRqmoZPEh/+NABJ/2IkEwHh+86Skb6W6aZZWFFezYclcwDIOOfS7rKEn80P0YDLzqBjJaApb3cWcUR3JqF93Oet01+04gAycvlCSCD67y81bVlvLnpxhhGYeXaX5tVprTQ=
+	t=1739687763; cv=none; b=alrR4vRHomV/ZroAO25ynuQoKJV+AY+CH3GKG4Efq7x3f+yQ65leKNuaNFSYZ3PCaqlPmjPSz3vS7KvIomnHUt377PoMH5MczKOGuzDTW+Lj9ov0tQ8VOrJ7fdVs9SMtsD41d+g4IPfkQ6dbO+QncKKDcYkNNmLuZ47UEK01BbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739664781; c=relaxed/simple;
-	bh=QD486JtHs8u4Im9A2uDBFVUZyQYd+1OFyI8EK2WxMjk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=uGzk2rLwzd5W8Yh3IYGhou+0BuszdulVTICoSyQ2jlmNCwYOjUHRG/RrsrdTRbpmUwlI+o3eQ5+W37EK/jUJwcagD3y+Tx1Nq9IZVC+Nx0xK+j1vclFy57jbwxk+F3BD9SNO1vRaiUuvoaDeWcTiY+m/F9z/i1r15bfmBUBZSCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=RNnOCkw0; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
+	s=arc-20240116; t=1739687763; c=relaxed/simple;
+	bh=xibi1nGANYUGTO/IRSiOyVODq0c9qJcEp0eA14oksbY=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=ICpcl1jK5+U8+57OQUKkpCms3DsdPr9v/dRV4Yz+rgFCQYcg80h1x8NxF9BjEy/NkCVGmqFePwklspkTyQM95XHCvOzgRBKZOBLL8AN/5VWCtEFcH6U06jttnQm5fIHiFVbiQ2GxrBSqCLWVphYdvMxlWoVS4l7jptY8UnY7NhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z0qZSGB1; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="RNnOCkw0"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id C2534240105
-	for <rust-for-linux@vger.kernel.org>; Sun, 16 Feb 2025 01:12:55 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1739664775; bh=QD486JtHs8u4Im9A2uDBFVUZyQYd+1OFyI8EK2WxMjk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
-	 From;
-	b=RNnOCkw0uNRjupc/nm0BJgO5kYWMwJZ/MiSMmDwvvovBzEGI+kX8YwWRxUq6UJzdr
-	 7kYee5Ln9Kkppr8r7ROGbXxT6yuwcis4S8HSkASKqh716m6WqdKHM6h6ZFREOLsl7I
-	 mE9CVU8tx98D+mkrW2yaKMe+TFrQ1jNczOwjC4usrHFb5Gtp9H0aXQWYVsqve5w1Or
-	 2GMBwX+WKnePPaaCA29WTsAVFiOChPWe19EDfjSjmWOl28JNNk3tRqt90xvwkxEppc
-	 bJ0q7FL9aIqE0kBJxvTNpseJWJTdrf25JGIRnQL4eSlVohGlPUYmYyh1l7VboyVBmb
-	 tASdYUopKQG6A==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4YwR7m2ZDqz6ty8;
-	Sun, 16 Feb 2025 01:12:52 +0100 (CET)
-From: Charalampos Mitrodimas <charmitro@posteo.net>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,  "Rafael J. Wysocki"
- <rafael@kernel.org>,  Danilo Krummrich <dakr@kernel.org>,  Miguel Ojeda
- <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,  Boqun Feng
- <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6?=
- =?utf-8?Q?rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  Andreas Hindborg <a.hindborg@kernel.org>,
-  Alice Ryhl <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,
-  Nathan Chancellor <nathan@kernel.org>,  Nick Desaulniers
- <ndesaulniers@google.com>,  Bill Wendling <morbo@google.com>,  Justin
- Stitt <justinstitt@google.com>,  Wedson Almeida Filho
- <wedsonaf@gmail.com>,  rust-for-linux@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  llvm@lists.linux.dev
-Subject: Re: [PATCH] rust: fix clippy::too-long-first-doc-paragraph
-In-Reply-To: <20250215223106.2346285-1-benno.lossin@proton.me>
-References: <20250215223106.2346285-1-benno.lossin@proton.me>
-Date: Sun, 16 Feb 2025 00:12:51 +0000
-Message-ID: <m21pvy927w.fsf@posteo.net>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z0qZSGB1"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-220c92c857aso53102085ad.0;
+        Sat, 15 Feb 2025 22:36:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739687761; x=1740292561; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xibi1nGANYUGTO/IRSiOyVODq0c9qJcEp0eA14oksbY=;
+        b=Z0qZSGB1trEbMSOxXLAmSXSv7O6mAVBuLUVZK0TIVvN+eusrfq9DUZc7cAvsOVw5DL
+         iqqh6X5YeZNBTyG+m/1P94Y6heSEdA/0UC4uMB5poAqhHWhgZZGiAejhGQpFUZrHDxlG
+         ce2wngqZrpQe9gftxqoZ2yhuYZZNhUrQx4fZ/yI+MjAuGL2wRszqNI53K9oHSAr/UexF
+         Lh4k50ejSOJxfznQAukgWVeBE1h5Lu4Y2VOnJhPx49d2tcxncx7jmOleBgSYoCPXLVV8
+         nsljcY1k4nZJ/A5V/ZuMz9JhIP2C7A4DDXf+y7vjxCxsirl4JnLtol0mnm6DdWDAtqk6
+         ch1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739687761; x=1740292561;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=xibi1nGANYUGTO/IRSiOyVODq0c9qJcEp0eA14oksbY=;
+        b=w0vV6i1lIh4H3/R4zi2sHUW3cTpIt1ZeDOHLeaxNDN16Ye0ep9hgKYJQABRLUxzutB
+         ScUX2qBPLJCtsTNiHoRzDZs763K0uhswAcT6l5twF4JGzBf4FcUf4WV91YkviTvpwIL8
+         pS9coAvOx2PW2tag8HCMekJyUS4E97GT7tqr3jT2d97+qxj5DmUYh3yGzFRGsgxJ7vqL
+         hwujpsmA9QhrB32PXWh1hubG6+I1nKOb4qjW5pvroJtIIwqCOafCnwsuvdb6zIiaKCyZ
+         0pgoWwenXh8RGDxTl+rXcO0Gj455BXJCD+pQcADgcw8IO4zoNm67ad4XRQy7I5gCIJ59
+         6E8w==
+X-Forwarded-Encrypted: i=1; AJvYcCUWQQQWOhNoj3ech+QQV9gZRpech+Zf0gtGbhl8DI7ufFmHQTcAqb1TnF+fDioBEPDsVC4++NXC9En7crE=@vger.kernel.org, AJvYcCVPn722Kg7D0kmvJqVOFfUo7VVvkcCFD79TEncnBr9YHX9srXH5QpFjLVfj42O60RJntWfeUSRD@vger.kernel.org, AJvYcCWiM31osbcIbkuKbIHFwwRX4XjIjp7JrAQXwXVnTW0dMvHWO8pBrIeyxExENruAC2Iw5iB+giNy8D8M1hNQUZA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzufnfyKzKDC7Fm+tNRyTAsxZclmEghyatAwwWl3fbWFwmavfWh
+	njHm3K/O83JW1+I9xFnKxPeXsoB0tVUedxT72LdAhzY7gikkBU4y
+X-Gm-Gg: ASbGncvst3h5oUpjUXgDn1CJwHpYJ30Y7yIJo8HbsX3uGOxySx2aEbC0Ndnm1tVkx+N
+	1EIRUlDCsiH35HK7FR5NbiBuvR4zfgubYpM+jf0P/aKkBio+Nx/9vUBY93eSlvKSLw+YniEpxUX
+	N7+xsQkwdENn2I+FHPeUPVSgYyFuipqN4gmbc+D3FUePYRIqrs9HHitRjf0edVKGzbARp6ViqL0
+	Cmf4jGKmpcGnlNq2MQpxwNgWHdfja93WTWAU8O9opVwnQiNCbl86HGjFRLEdh61tCK8IbOvEIJX
+	4zu9y/0W5REgUVaVvIxyuf7qaWVpBmf7WiD81HyJAzPoTb4AZh0HjEAtv0Q5gc8oxU/NoUVV
+X-Google-Smtp-Source: AGHT+IH41UGTLy/72mfTSzDewVBBXKuIIKGWUQiY+eFadWiy8MCZVlTsQ1TKwm+SYKhPL4hvNwDdIw==
+X-Received: by 2002:a17:902:f64f:b0:215:6c5f:d142 with SMTP id d9443c01a7336-2210460c80dmr70906595ad.20.1739687760840;
+        Sat, 15 Feb 2025 22:36:00 -0800 (PST)
+Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-220d53668d1sm52137325ad.75.2025.02.15.22.35.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 15 Feb 2025 22:36:00 -0800 (PST)
+Date: Sun, 16 Feb 2025 15:35:51 +0900 (JST)
+Message-Id: <20250216.153551.1205568288010505529.fujita.tomonori@gmail.com>
+To: daniel.almeida@collabora.com
+Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, andrew@lunn.ch,
+ hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
+ alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com,
+ anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
+ arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
+ peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
+ dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com, tgunders@redhat.com, me@kloenk.dev
+Subject: Re: [PATCH v10 0/8] rust: Add IO polling
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <8BD5E78C-0B91-4BD0-A38E-7A3681536DB4@collabora.com>
+References: <20250207132623.168854-1-fujita.tomonori@gmail.com>
+	<8BD5E78C-0B91-4BD0-A38E-7A3681536DB4@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=iso-8859-7
+Content-Transfer-Encoding: base64
 
-Benno Lossin <benno.lossin@proton.me> writes:
-
-> When running `make LLVM=1 CLIPPY=1` on my machine, I get this error:
->
->     error: first doc comment paragraph is too long
->       --> rust/kernel/driver.rs:13:1
->        |
->     13 | / /// The [`RegistrationOps`] trait serves as generic interface for subsystems (e.g., PCI, Platform,
->     14 | | /// Amba, etc.) to provide the corresponding subsystem specific implementation to register /
->     15 | | /// unregister a driver of the particular type (`RegType`).
->     16 | | ///
->     17 | | /// For instance, the PCI subsystem would set `RegType` to `bindings::pci_driver` and call
->        | |_
->        |
->        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#too_long_first_doc_paragraph
->        = note: `-D clippy::too-long-first-doc-paragraph` implied by `-D warnings`
->        = help: to override `-D warnings` add `#[allow(clippy::too_long_first_doc_paragraph)]`
->
-> Thus add a short one-line description.
->
-> Fixes: ea7e18289f44 ("rust: implement generic driver registration")
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-> ---
-> The error also occurs in v6.14-rc1, so it must have slipped through our
-> testing, which I find a bit strange. Also nobody reported it for rc1, so
-> maybe this is only something that I encountered?
-> ---
->  rust/kernel/driver.rs | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
-> index 2a16d5e64e6c..65c9c1776556 100644
-> --- a/rust/kernel/driver.rs
-> +++ b/rust/kernel/driver.rs
-> @@ -10,6 +10,8 @@
->  use core::pin::Pin;
->  use macros::{pin_data, pinned_drop};
->  
-> +/// Generic interface for subsystem driver registrations.
-> +///
->  /// The [`RegistrationOps`] trait serves as generic interface for subsystems (e.g., PCI, Platform,
->  /// Amba, etc.) to provide the corresponding subsystem specific implementation to register /
->  /// unregister a driver of the particular type (`RegType`).
->
-> base-commit: a64dcfb451e254085a7daee5fe51bf22959d52d3
-
-Hi,
-
-I cannot reproduce this as-is, but adding
-"-Wclippy::too_long_first_doc_paragraph" to the "rust_common_flags" in
-the Makefile reproduces it. Maybe try adding it there in your patch?
-
-diff --git a/Makefile b/Makefile
-index 89628e354..e1b14fb68 100644
---- a/Makefile
-+++ b/Makefile
-@@ -486,6 +486,7 @@ export rust_common_flags := --edition=2021 \
- 			    -Wclippy::undocumented_unsafe_blocks \
- 			    -Wclippy::unnecessary_safety_comment \
- 			    -Wclippy::unnecessary_safety_doc \
-+			    -Wclippy::too_long_first_doc_paragraph \
- 			    -Wrustdoc::missing_crate_level_docs \
- 			    -Wrustdoc::unescaped_backticks
- 
+T24gU2F0LCAxNSBGZWIgMjAyNSAxODoyODozMCAtMDMwMA0KRGFuaWVsIEFsbWVpZGEgPGRhbmll
+bC5hbG1laWRhQGNvbGxhYm9yYS5jb20+IHdyb3RlOg0KDQo+PiBBZGQgYSBoZWxwZXIgZnVuY3Rp
+b24gdG8gcG9sbCBwZXJpb2RpY2FsbHkgdW50aWwgYSBjb25kaXRpb24gaXMgbWV0IG9yDQo+PiBh
+IHRpbWVvdXQgaXMgcmVhY2hlZC4gQnkgdXNpbmcgdGhlIGZ1bmN0aW9uLCB0aGUgOHRoIHBhdGNo
+IGZpeGVzDQo+PiBRVDIwMjUgUEhZIGRyaXZlciB0byBzbGVlcCB1bnRpbCB0aGUgaGFyZHdhcmUg
+YmVjb21lcyByZWFkeS4NCj4gDQo+IEkgdGVzdGVkIHRoaXMgb24gYSBkcml2ZXIgSaJ2ZSBiZWVu
+IHdvcmtpbmcgb24uIFRoaXMgaXMgd29ya2luZyBhcyBpbnRlbmRlZC4NCj4gDQo+IFRlc3RlZC1i
+eTogRGFuaWVsIEFsbWVpZGEgPGRhbmllbC5hbG1laWRhQGNvbGxhYm9yYS5jb20+DQoNCkdyZWF0
+LCB0aGFua3MgZm9yIHRlc3RpbmchDQo=
