@@ -1,98 +1,113 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from mail-10628.protonmail.ch (mail-10628.protonmail.ch [79.135.106.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9725C1917F0
-	for <rust-for-linux@vger.kernel.org>; Sun, 16 Feb 2025 12:40:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD6718893C
+	for <rust-for-linux@vger.kernel.org>; Sun, 16 Feb 2025 13:30:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739709660; cv=none; b=fZziGVuUGw7LRSl9Sc2gYuMGahIbv8jCabQPLB6140us7ZnKVU1dLN1ZQU1/xEhtKhBKW9E84mLaH7gJAEv0nNzRNXDgEiWalzeQFDyJEqIbBHLV7UG7sJ00tP1FqESJfQmTlpVTtUarqlR9OIDf7hIETHr5XEo4Xh3U4klyIEs=
+	t=1739712637; cv=none; b=l1AC6DwwQNO/V1jfl/28pgVFvGLdox6aW0KXJg1Wi28krKBRrUV+xpus0ob48+MqYr6bNmkIUaUStSvqz4YO/1HRwbIYCowA/OEFk/g7rpfVW+DHV9+bMUAzIr5edi05wKOZC3oxaXWEB2BPVUT8pKrUR9ov1Wzlmuz9o3DT3mU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739709660; c=relaxed/simple;
-	bh=Sc85HGzsFWfaGk/iyYFW84nqwWegZPXqD9lfA1Wbgl8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=YoJLW/r2ct2DZGdG7TLVWnjUtPOs01JCoqEI6IdMrMeHe3ZMOwkC5gg3XUJSJbPwRHRZee+sXoOGYQn7xf9hwSSTbuoF0MoZgmnXumdBULzgbhfc63hrm/lJ7qt4Y76d/UJB1T8vFw5aiGvrVh1oq5VnzaYuW+IkRSMZ7UJtN0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=Rzb0CxzJ; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
+	s=arc-20240116; t=1739712637; c=relaxed/simple;
+	bh=M3Fgli14JlCJs5eqzyoYg+4kju/5yYUjMV00kDWAkH4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rnG+xrtMQmeAcuUYSLEvJ4ePMUSNzU7tapQ7PGQmVN1ilxQZsbuhM1tYDGGKU9+eSJ+vuJr1algGUUhuD0OAzzua47TKqgbFLZMNUXq83ggXBNvRAcwvXUf5bLxTW9w8f0Tryz5RQ3EYGGdgf7Ffzz4z8VYyZK4zVBtSOusVOGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=WGPMJf1e; arc=none smtp.client-ip=79.135.106.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="Rzb0CxzJ"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 96DED240104
-	for <rust-for-linux@vger.kernel.org>; Sun, 16 Feb 2025 13:40:50 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1739709650; bh=Sc85HGzsFWfaGk/iyYFW84nqwWegZPXqD9lfA1Wbgl8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
-	 From;
-	b=Rzb0CxzJve8CE/LMVHheOE4GraSzgepj/E2ebT0GYsSIZVVTcdCi7b0wbSudZxR1a
-	 qA0LDn0ZXcu8pvVFj2Ew8MSY9XTE/3W3bMDad1RWiNYvzw6C3dV1PlEXKJAvDljrEp
-	 z1fgcf42F0nr/JMso5utMo1wevL2ZlPXSzGzzutMrvhLaBcWZiM3mBpA4VOXg7sUEu
-	 UpFFSabVH/Pkj4sKF8SKJFTg6JYZ1uTncFduumBS6gBQZHXslNzJjFgBO9+GLvgLWO
-	 wos7+ASA7DNPCyqSkD7gWCOzAVWNLA4T/ONXJ3jDp7plszo/fHhRXaFBsszi6hU10Y
-	 RonxCxr+2tclw==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4Ywlkl1pHmz6tvq;
-	Sun, 16 Feb 2025 13:40:47 +0100 (CET)
-From: Charalampos Mitrodimas <charmitro@posteo.net>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,  "Rafael J. Wysocki"
- <rafael@kernel.org>,  Danilo Krummrich <dakr@kernel.org>,  Miguel Ojeda
- <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,  Boqun Feng
- <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6?=
- =?utf-8?Q?rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  Andreas Hindborg <a.hindborg@kernel.org>,
-  Alice Ryhl <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,
-  Nathan Chancellor <nathan@kernel.org>,  Nick Desaulniers
- <ndesaulniers@google.com>,  Bill Wendling <morbo@google.com>,  Justin
- Stitt <justinstitt@google.com>,  Wedson Almeida Filho
- <wedsonaf@gmail.com>,  rust-for-linux@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  llvm@lists.linux.dev
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="WGPMJf1e"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=acymz7xonff2xkvpqhdhftspy4.protonmail; t=1739712626; x=1739971826;
+	bh=M3Fgli14JlCJs5eqzyoYg+4kju/5yYUjMV00kDWAkH4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=WGPMJf1eXCkYn2nNaPX9Myvgbf0hX1tWuvQ6qQx3SnlN1f6A3GVaYJj/XC/YNPtQb
+	 2tJuCs/BZfNC7lCs9lEl4zQK6Az9yxtwD95C4ODpiB0enJnHZRbwcLO1NKER3tThjw
+	 zkWQH5ZjT+ijoUF+xrzJgI1i8i5eZS2hZaAGXHLZ3bbhZOruFiKm0LorHWoWkB7+I/
+	 vE0OER/iGREZ8s/2U3RpMOHAhAe+MZCp5ckjr5r5nvndl772BC1aGit2r4bMgJWPz0
+	 zSNLbq0LBvcnZC9zVl2piUrqm2UiRPu+izNjjggFgEmoXTiixvjuxHV9x6BzVORE77
+	 Ekrif1D2gn6PQ==
+Date: Sun, 16 Feb 2025 13:30:21 +0000
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Charalampos Mitrodimas <charmitro@posteo.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, llvm@lists.linux.dev
 Subject: Re: [PATCH] rust: fix clippy::too-long-first-doc-paragraph
-In-Reply-To: <10690211-eb3b-4b95-8d9d-35c62930d924@proton.me>
-References: <20250215223106.2346285-1-benno.lossin@proton.me>
-	<m21pvy927w.fsf@posteo.net>
-	<10690211-eb3b-4b95-8d9d-35c62930d924@proton.me>
-Date: Sun, 16 Feb 2025 12:40:46 +0000
-Message-ID: <m2v7ta6p0x.fsf@posteo.net>
+Message-ID: <10c0a50e-14de-4da3-a592-dc65753cec1b@proton.me>
+In-Reply-To: <CANiq72myMWv87Me2C6Nmse-p=4YL=J+ZTEHe2hu7AhbpfZhgyw@mail.gmail.com>
+References: <20250215223106.2346285-1-benno.lossin@proton.me> <m21pvy927w.fsf@posteo.net> <10690211-eb3b-4b95-8d9d-35c62930d924@proton.me> <CANiq72myMWv87Me2C6Nmse-p=4YL=J+ZTEHe2hu7AhbpfZhgyw@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: c4662db2bf6c4829825f058e06453e0b1f3576c3
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Benno Lossin <benno.lossin@proton.me> writes:
+On 16.02.25 13:40, Miguel Ojeda wrote:
+> On Sun, Feb 16, 2025 at 1:18=E2=80=AFPM Benno Lossin <benno.lossin@proton=
+.me> wrote:
+>>
+>> I have done some more digging and bisected my Rust version. It turns out
+>> I was on a rather old nightly from last September. I also don't get the
+>> error on a newer compiler version. My bisection identified that the
+>> error last occurs in nightly 2024-10-18, so from 2024-10-19 onwards it
+>> compiles without the error.
+>=20
+> Thanks Benno, that is very useful and saved me some work.
 
-> On 16.02.25 01:12, Charalampos Mitrodimas wrote:
->> Benno Lossin <benno.lossin@proton.me> writes:
->> 
-[..snip..]
->> Hi,
->> 
->> I cannot reproduce this as-is, but adding
->> "-Wclippy::too_long_first_doc_paragraph" to the "rust_common_flags" in
->> the Makefile reproduces it. Maybe try adding it there in your patch?
->
-> I have done some more digging and bisected my Rust version. It turns out
-> I was on a rather old nightly from last September. I also don't get the
-> error on a newer compiler version. My bisection identified that the
-> error last occurs in nightly 2024-10-18, so from 2024-10-19 onwards it
-> compiles without the error.
-> So probably `-Wclippy::all` implied the `too_long_first_doc_paragraph`
-> lint in that version. That is probably because of [1]. It changes the
-> lint from style to nursery.
->
-> [1]: https://github.com/rust-lang/rust-clippy/pull/13551
->
-> So we don't need this patch, as it seems this never hit stable. However,
-> there is already a patch fixing what this lint reports: 2f390cc58943
-> ("rust: provide proper code documentation titles").
->
-> I think it's a good lint, so maybe we should turn it on?
+My pleasure :)
 
-Given the critical importance of readable documentation, I agree.
+>> So probably `-Wclippy::all` implied the `too_long_first_doc_paragraph`
+>> lint in that version. That is probably because of [1]. It changes the
+>> lint from style to nursery.
+>>
+>> [1]: https://github.com/rust-lang/rust-clippy/pull/13551
+>=20
+> Yeah, sometimes that happens when working regularly with nightly over tim=
+e.
+>=20
+> There is an upside, trying to look at it positively, which is that it
+> gives us something to look into from time to time (i.e. the new lint)
+> and give feedback, and sometimes we can clean it up anyway, even if
+> the lint is broken and we cannot enable it just yet :)
 
->
-> ---
-> Cheers,
-> Benno
+Yeah that is true.
+
+>> So we don't need this patch, as it seems this never hit stable. However,
+>> there is already a patch fixing what this lint reports: 2f390cc58943
+>> ("rust: provide proper code documentation titles").
+>>
+>> I think it's a good lint, so maybe we should turn it on?
+>=20
+> Agreed, we should -- it is something we tell people from time to time
+> to fix in review, so hopefully it will make patches better before the
+> review phase.
+>=20
+> ...well, assuming it works well enough, given it was moved to nursery,
+> e.g. in the linked Zulip thread in your link above they point to
+> https://github.com/rust-lang/rust-clippy/issues/13315 and
+
+I don't think that this one is bad. Of course it would be nice if only
+the rendered form would be considered, but there might also be people
+reading it directly in the code, so it could actually be a good idea to
+also keep the raw text short.
+In the case of long links, one can easily work around it by just not
+using an inline link. (so having [text with link] and then after the
+paragraph `[text with link]: link`.)
+
+> https://github.com/rust-lang/rust-clippy/issues/13538, which we may or
+> may not care about.
+
+This one just seems like a nice-to-have, but not a deal breaker.
+
+IMO we can enable the lint (since the instance fixed in this patch is
+the only error I get with that lint) and just see how it behaves.
+
+---
+Cheers,
+Benno
+
