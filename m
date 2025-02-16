@@ -1,163 +1,151 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE40D78F35;
-	Sun, 16 Feb 2025 12:20:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739708433; cv=pass; b=fJJZ87Uzub55mmhS6EfLihd0gGtgMdYL2LsJuBDj0GZu4N+gZ11+MlporR74UNZ39Ge/j8Z3Uz5SAjco7twVtG2PDl8gH65EmIK9Zy9QfdVd0C/HZ0JkpaJERxCYjtW4qy8/bEpQ6P8Vy8HYEVhOnmoBM+f7XlPQVY/41AuxaK0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739708433; c=relaxed/simple;
-	bh=LbvpX3NhMCUuvlS904PefdpjdyT0o4fW0FbuMpmkNMg=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Q6WoEV/D2WieCU0SpesWmc5LSR7uJtbrvTzLghjBW8E+vppT9A0cWFd4zGv2t8AfzFoCwKpntgAZzrTF4mG3Hnh+d2hmus2KAkCkyQlNedPEYKams90HbpjfeAI/VdH5gisIvFcg6HhMIsNS3y0wODv5/WMnxChmZGjHNWMbnf8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=FuWyuDv9; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04DA18C91F;
+	Sun, 16 Feb 2025 12:36:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739709375; cv=none; b=fvVqhAc0rtY+E+AWTH1n5DsvXHWtp1LTAfA6IMcU18nBdxyFmNO/LQ6q9RCYD3+FQ02FPnDaFWDaDAoQm2Ejfx4N0JH/V4Z1RJbP0Sh5SmG8f4VIUjGPs3acgTg8hQ+MskyBG8r3Kksx4NjIioS0rO5VWK4GCBgulGQ0d18bEe0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739709375; c=relaxed/simple;
+	bh=uzjQ5966InuPnGGMdyDjOTWFoAV7hcjkEWlATi0x8xc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hklg3wcimInYBVkx9yhm3qQl0FkY3kxtS1+ii3HDKzVSRF9VsHE/fy0FHCfomjMGywH6Y66b+QFoivsjtphr0Pq8/JtjuUkvIgcf1aaRkNTev++FWQx2PzmuFAdB4qs/HJ0mHvPG4csQp6DbNSXJC0t/4vjMu50ncP064Cx4m3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aORRIOTg; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="FuWyuDv9"
-ARC-Seal: i=1; a=rsa-sha256; t=1739708367; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=NaqjREJQI/zRnVhI0c4eA79lhexcRcnhBvZwpVFG20//Ufz2ei6oX/ZrNdVKB3aoJPoHUgD01zWcfOWJJ/PdSJcihcKElSM/o3zVtwPcpltAlGIz9jkNA2oSKvanWAwx0/+eICuCNKHvKCeloCgoyIsGxIbb9pYrC2/7CTQYusY=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1739708367; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=dUAN2vu7UIPXPb6wThOp1wBHlvZsTy/ndrn6Hqibs2U=; 
-	b=kBp3BHX2txtvQRjFd3vSdShraloAPFGc7ZhomGIALXUzL9FhddZvkIjVEHSI1u91bVN83Fac4JLjqKXUnGg1kzJsrOWmu61FnY8oQpQvnXFvpR/fcMZl27lOqnKLeVfqNrF2cphmTj5o8zNLimeaVaPwqqzNuSdzxlZM1my47es=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1739708367;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=dUAN2vu7UIPXPb6wThOp1wBHlvZsTy/ndrn6Hqibs2U=;
-	b=FuWyuDv9TLn31A4QSW+7EizchDpR4ftscqgOovD/U/oz8pd2Id8ieHONoqZZ47zj
-	Nd05Qcs0WiZgqvWpQG++j/KzLMmOIAgWjxeefX2fKJL2sXXO6qkVSb6biFKka3WimIo
-	D+4LXCKWnWt+1bOlOpEIS3keDi8hGcQspyTdBzAc=
-Received: by mx.zohomail.com with SMTPS id 1739708364340992.9290060619647;
-	Sun, 16 Feb 2025 04:19:24 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aORRIOTg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739709373; x=1771245373;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=uzjQ5966InuPnGGMdyDjOTWFoAV7hcjkEWlATi0x8xc=;
+  b=aORRIOTg3sHJ76Tg41Ve24nGOekaREgiQtFO21I9GYUlEv5i/mA9WSB1
+   dO4dpBDYN+nhrIRhP2yNOqZ3swI/bJhEur+l99zEZvus37gOzY++90kBn
+   bnKK3G42lMHMUOkHOl+JQppYwZsexWZo2wtaVHOV6M6L6m1hvl5AACLa/
+   tcx0P+UXAT9u6PN3o9Ipe+aeCsTJUeJ21b6J8L9DVLvgdF4uEifUTNtLf
+   zTXmVygYu33Q/LS/lS7H+D2fdRQE8kZCnc76NxBmuv+0sTErKBFi4lJOP
+   vfIOYMXOrrzIkeqTlAwe8PG/iGAzEobguMH7/5hoICQMjNnENoo+nINYE
+   g==;
+X-CSE-ConnectionGUID: Urb+Wx/7QoeShkO/RsyJCw==
+X-CSE-MsgGUID: ElNLd6NfQBW47nG9Uf8b/Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11346"; a="57810243"
+X-IronPort-AV: E=Sophos;i="6.13,291,1732608000"; 
+   d="scan'208";a="57810243"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 04:36:13 -0800
+X-CSE-ConnectionGUID: J/+Pk537QyqW2XIUOlDd8w==
+X-CSE-MsgGUID: fin8e3KDRSSfzdTpStsqfQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="114777410"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 16 Feb 2025 04:36:07 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tjdsR-001Bud-2G;
+	Sun, 16 Feb 2025 12:36:03 +0000
+Date: Sun, 16 Feb 2025 20:35:59 +0800
+From: kernel test robot <lkp@intel.com>
+To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>,
+	a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com,
+	apw@canonical.com, arnd@arndb.de, aswinunni01@gmail.com,
+	axboe@kernel.dk, benno.lossin@proton.me, bhelgaas@google.com,
+	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org,
+	dwaipayanray1@gmail.com, ethan.twardy@gmail.com,
+	fujita.tomonori@gmail.com, gary@garyguo.net,
+	gregkh@linuxfoundation.org, joe@perches.com,
+	lukas.bulwahn@gmail.com, ojeda@kernel.org, pbonzini@redhat.com,
+	tmgross@umich.edu, walmeida@microsoft.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	trintaeoitogc@gmail.com, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Subject: Re: [PATCH V2 1/2] rust: module: change author to be a array
+Message-ID: <202502162042.nKMk0Rff-lkp@intel.com>
+References: <20250214184550.120775-2-trintaeoitogc@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
-Subject: Re: [PATCH v10 7/8] rust: Add read_poll_timeout functions
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250214.131330.2062210935756508516.fujita.tomonori@gmail.com>
-Date: Sun, 16 Feb 2025 09:19:02 -0300
-Cc: linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- netdev@vger.kernel.org,
- andrew@lunn.ch,
- hkallweit1@gmail.com,
- tmgross@umich.edu,
- ojeda@kernel.org,
- alex.gaynor@gmail.com,
- gary@garyguo.net,
- bjorn3_gh@protonmail.com,
- benno.lossin@proton.me,
- a.hindborg@samsung.com,
- aliceryhl@google.com,
- anna-maria@linutronix.de,
- frederic@kernel.org,
- tglx@linutronix.de,
- arnd@arndb.de,
- jstultz@google.com,
- sboyd@kernel.org,
- mingo@redhat.com,
- peterz@infradead.org,
- juri.lelli@redhat.com,
- vincent.guittot@linaro.org,
- dietmar.eggemann@arm.com,
- rostedt@goodmis.org,
- bsegall@google.com,
- mgorman@suse.de,
- vschneid@redhat.com,
- tgunders@redhat.com,
- me@kloenk.dev
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <CEF87294-8580-4C84-BEA3-EB72E63ED7DF@collabora.com>
-References: <20250207132623.168854-1-fujita.tomonori@gmail.com>
- <20250207132623.168854-8-fujita.tomonori@gmail.com>
- <3F610447-C8B9-4F9D-ABDA-31989024D109@collabora.com>
- <20250214.131330.2062210935756508516.fujita.tomonori@gmail.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-X-Mailer: Apple Mail (2.3826.300.87.4.3)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250214184550.120775-2-trintaeoitogc@gmail.com>
 
-Sorry, ended up replying privately by mistake, resending with everybody =
-else on cc:
+Hi Guilherme,
 
-=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94
+kernel test robot noticed the following build errors:
 
+[auto build test ERROR on rust/rust-next]
+[also build test ERROR on pci/next pci/for-linus char-misc/char-misc-testing char-misc/char-misc-next char-misc/char-misc-linus linus/master v6.14-rc2 next-20250214]
+[cannot apply to rust/rust-block-next]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-> On 14 Feb 2025, at 01:13, FUJITA Tomonori <fujita.tomonori@gmail.com> =
-wrote:
->=20
-> On Fri, 7 Feb 2025 22:50:37 -0300
-> Daniel Almeida <daniel.almeida@collabora.com> wrote:
->=20
->>> +/// Polls periodically until a condition is met or a timeout is =
-reached.
->>> +///
->>> +/// ```rust
->>> +/// use kernel::io::poll::read_poll_timeout;
->>> +/// use kernel::time::Delta;
->>> +/// use kernel::sync::{SpinLock, new_spinlock};
->>> +///
->>> +/// let lock =3D KBox::pin_init(new_spinlock!(()), =
-kernel::alloc::flags::GFP_KERNEL)?;
->>> +/// let g =3D lock.lock();
->>> +/// read_poll_timeout(|| Ok(()), |()| true, Delta::from_micros(42), =
-Some(Delta::from_micros(42)));
->>> +/// drop(g);
->>> +///
->>> +/// # Ok::<(), Error>(())
->>=20
->> IMHO, the example section here needs to be improved.
->=20
-> Do you have any specific ideas?
->=20
-> Generally, this function is used to wait for the hardware to be
-> ready. So I can't think of a nice example.
+url:    https://github.com/intel-lab-lkp/linux/commits/Guilherme-Giacomo-Simoes/rust-module-change-author-to-be-a-array/20250215-024906
+base:   https://github.com/Rust-for-Linux/linux rust-next
+patch link:    https://lore.kernel.org/r/20250214184550.120775-2-trintaeoitogc%40gmail.com
+patch subject: [PATCH V2 1/2] rust: module: change author to be a array
+config: x86_64-randconfig-006-20250216 (https://download.01.org/0day-ci/archive/20250216/202502162042.nKMk0Rff-lkp@intel.com/config)
+compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250216/202502162042.nKMk0Rff-lkp@intel.com/reproduce)
 
-Just pretend that you=E2=80=99re polling some mmio address that =
-indicates whether some hardware
-block is ready, for example.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202502162042.nKMk0Rff-lkp@intel.com/
 
-You can use =E2=80=9Cignore=E2=80=9D if you want, the example just has =
-to illustrate how this function works, really.
+All errors (new ones prefixed by >>):
 
-Something like
+>> error: proc macro panicked
+   --> samples/rust/rust_driver_platform.rs:43:1
+   |
+   43 | / kernel::module_platform_driver! {
+   44 | |     type: SampleDriver,
+   45 | |     name: "rust_driver_platform",
+   46 | |     author: "Danilo Krummrich",
+   47 | |     description: "Rust Platform driver",
+   48 | |     license: "GPL v2",
+   49 | | }
+   | |_^
+   |
+   = help: message: Expected Group
+   = note: this error originates in the macro `$crate::module_driver` which comes from the expansion of the macro `kernel::module_platform_driver` (in Nightly builds, run with -Z macro-backtrace for more info)
+--
+>> error[E0277]: the trait bound `DriverModule: ModuleMetadata` is not satisfied
+   --> samples/rust/rust_driver_platform.rs:43:1
+   |
+   43 | / kernel::module_platform_driver! {
+   44 | |     type: SampleDriver,
+   45 | |     name: "rust_driver_platform",
+   46 | |     author: "Danilo Krummrich",
+   47 | |     description: "Rust Platform driver",
+   48 | |     license: "GPL v2",
+   49 | | }
+   | |_^ the trait `ModuleMetadata` is not implemented for `DriverModule`
+   |
+   = note: this error originates in the macro `$crate::module_driver` which comes from the expansion of the macro `kernel::module_platform_driver` (in Nightly builds, run with -Z macro-backtrace for more info)
+--
+>> error: proc macro panicked
+   --> drivers/net/phy/ax88796b_rust.rs:14:1
+   |
+   14 | / kernel::module_phy_driver! {
+   15 | |     drivers: [PhyAX88772A, PhyAX88772C, PhyAX88796B],
+   16 | |     device_table: [
+   17 | |         DeviceId::new_with_driver::<PhyAX88772A>(),
+   ...  |
+   24 | |     license: "GPL",
+   25 | | }
+   | |_^
+   |
+   = help: message: Expected Group
+   = note: this error originates in the macro `kernel::module_phy_driver` (in Nightly builds, run with -Z macro-backtrace for more info)
 
-```ignore
- /* R is a fictional type that abstracts a memory-mapped register where =
-`read()` returns Result<u32> */
- fn wait_for_hardware(ready_register: R) {
-     let op =3D || ready_register.read()?
-
-     // `READY` is some device-specific constant that we are waiting =
-for.
-     let cond =3D  |value: &u32| { *value =3D=3D READY }
-
-     let res =3D io::poll::read_poll_timeout (/* fill this with the =
-right arguments */);
-
-     /* show how `res` works, is -ETIMEDOUT returned on Err? */
-
-     match res {
-       Ok(<what is here?>) =3D> { /* hardware is ready */}
-       Err(e) =3D> { /* explain that *value !=3D READY here? */ }
-
-     /* sleep is Option<Delta>, how does this work? i.e.: show both =
-None, and Some(=E2=80=A6) with some comments. */
- }=20
-```
-
-That=E2=80=99s just a rough draft, but I think it's going to be helpful =
-for users.
-
-=E2=80=94 Daniel=
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
