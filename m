@@ -1,112 +1,148 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3CA63CB
-	for <rust-for-linux@vger.kernel.org>; Sun, 16 Feb 2025 21:46:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE035748F;
+	Sun, 16 Feb 2025 22:50:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739742373; cv=none; b=R1xBR+5J8i7i7GxXeYPEXCfPMPrk4/A42n3zyFzp5eoH1tVHIg3gvJLNjxRd3eJxah5o3s1SYdbJFjTPa/iPt3Aft+ciEvbYSSBFZpGrO9sGLEtM8aeJeYdNpTAzgak3+ymub5b49H9Y9/etbzsgcMIyHzHbZpCR1y7I8WeQctI=
+	t=1739746242; cv=none; b=iYFrPXBLEiFtX8h+LM85xjunJC4sj85gKSgmHg8ncZODIApAc4aUzaFKarcer/i+fzgCBVPU/pHjsr6Eq3XprZc01JoqvXuBInx9iFrmzcR89XczqDDjJg0/te19dlXK2FHHDPTHZmF+UDHF1Yw1kiuXIoM3PCo40V5aUx9MP5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739742373; c=relaxed/simple;
-	bh=XO1ungWgGlaCMuovbefRcBqAASEVNsr83NIPIV3eZJ4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=WOOKveKERo047xijJizgjY42aO9o2I9FbBIYLNrm9KOnFG/9DnWz8ZN8iPTa3MOd0ZaDazH5DirY5vG1Zd/oymqGC+K69ENe2hyw03hUDlPnJhf06KTpAOUzsKCjiuzkCbir1b/YV1bEM9WN6mv5zA/IU1rXeYtqL3tx4xAkXsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=kPbIPpth; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
+	s=arc-20240116; t=1739746242; c=relaxed/simple;
+	bh=MVPYUEfqQP7SYtryyiFnYb+MCB/nRuUktfoW6AhsSsE=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=CB1wJ8S3qP9XVNAfCrWmpmMmug4nCPxcxLmle82AHef4xbGC8Qw+7O71hQLbloGhXugL08LyC7sBRgws+qvFMQkhET6HX8Ey0g6V8b6CzPyzR1VgsnztMJeq7fseY/8PBSRyVagHO28is7iOOtIBITmPsj4yLSwuvie66wX/sMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BfZgYw00; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="kPbIPpth"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 7D934240028
-	for <rust-for-linux@vger.kernel.org>; Sun, 16 Feb 2025 22:46:08 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1739742368; bh=XO1ungWgGlaCMuovbefRcBqAASEVNsr83NIPIV3eZJ4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
-	 From;
-	b=kPbIPpthwoSzJrHF6WoSt0vJa3YV4XzlX2BCAHj+mvQ0EybBKlwJ8jgpVEE8gRnr5
-	 gef7H9RKCzYsfY6virj4KIBSp2PVtwCtaXY7ueoTR6Cs4A/RaFbe0GbBaHNj1YB69Q
-	 JYsTcCGbxcl3WI6YTF9AXYf7NdpHbCBKM++vQDQFfNu0iyJA03qDpqWR2207bzZ+2A
-	 yn0fS1xi0etdtvYLdPZ7azQynTmZHcg1vKP/Bz8+hMSg4Irhqkl/6evFH667tskUWI
-	 k3Py369cmhALGvlV9dILjebrsHJZ0kZJZDZ7FL8dlJ5GJMH85WfXaUqD6UYoCAgpDY
-	 DP4eP6rpw1tbA==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4Ywzqx1t8mz6txn;
-	Sun, 16 Feb 2025 22:46:05 +0100 (CET)
-From: Charalampos Mitrodimas <charmitro@posteo.net>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Masahiro Yamada <masahiroy@kernel.org>,  Nathan Chancellor
- <nathan@kernel.org>,  Nicolas Schier <nicolas@fjasle.eu>,  Miguel Ojeda
- <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,  Boqun Feng
- <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6?=
- =?utf-8?Q?rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  Andreas Hindborg <a.hindborg@kernel.org>,
-  Alice Ryhl <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,
-  Danilo Krummrich <dakr@kernel.org>,  linux-kbuild@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 2/2] rust: enable `too-long-first-doc-paragraph` clippy
- lint
-In-Reply-To: <20250216213827.3752586-2-benno.lossin@proton.me>
-References: <20250216213827.3752586-1-benno.lossin@proton.me>
-	<20250216213827.3752586-2-benno.lossin@proton.me>
-Date: Sun, 16 Feb 2025 21:46:04 +0000
-Message-ID: <m2jz9p7ecj.fsf@posteo.net>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BfZgYw00"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-220d601886fso48224415ad.1;
+        Sun, 16 Feb 2025 14:50:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739746240; x=1740351040; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rwRpTiFhkazH7eZCnzFo4dfJTeXkjVTocPymKPEhdxo=;
+        b=BfZgYw00LiTNTk+K0EWlPpbX4GkcUorSqwXbpFtvWHVoqwJd2R04XvLO7pKjDyg8BI
+         +P8M3xK56K6zjzVq9Bzvp0LeHyuuA7NUX+G+xDrqyrjJ3yzg/oGJy5Phdi1r72IxYUFT
+         snJqqwSbx3GVh55xgKYtOl2/CJy12U9eI8q0wVIop6HV30ccqrwuGW+eSe+bpMmZ9f9Y
+         5PIhVisYOY7d7QPLjdDo5t1C0eO7RsDff4KFdic3Yx6b6eAdCrjnAeHwPd4YtTJyA1gq
+         CmZ7eVscVy0SJiwk5F1mx0SOLYEb+lM9TDIVS0QFC/oOtw3Wh7zTMyMY8Sp9TPfDhTiQ
+         hGow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739746240; x=1740351040;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=rwRpTiFhkazH7eZCnzFo4dfJTeXkjVTocPymKPEhdxo=;
+        b=v+cjbNQpIAG0t7d7KhavjRSvFZp3yjbULsfudE7YpkxkI4MTPv+3mF51wJjkOlcE7n
+         77OauOrG8KO04DlN23l7K5v3k5wRXeQE1/fyCTcFncC5YDa0Ylup9oDMC96GZ/KtlRUP
+         BcruDKXHjLNnS1nT1JZJnWmEqn1W5MbA3jaPbyVpUrMyRBDl/96n0FjHLowW5KYcPjoJ
+         J3EkMvnUOLmUEiMUyaY6Et10BteMM/MUTDqf+ocvB4242jGtz64hsqnjvDExYO7H/5cJ
+         jWpJGgQinEAH+mMMOj1EvlfmglOuKbKLwtZS3gmoXojTScLyIWPuZQ6RqLmQ037n4eNm
+         GbUA==
+X-Forwarded-Encrypted: i=1; AJvYcCUph41B+DMA9yuboNms8DGnV6S2mu/wfV1lApzLtd4QwrK/MRIi95onvV3YTBVQFT/u/LP4hwel@vger.kernel.org, AJvYcCW1lMXeM8lCs37Rb+NpgnZQjcOp0pZtU6T9+Bo9f0HP/pt5ZDur1NGXeTxdmdvq7//FiE6VYquOANkHKPM=@vger.kernel.org, AJvYcCWwnuWSGhYx9AUXl4MOQedOKOgNSeKDz3twzMBQnxmvNLCnbVh4j850+pdy4HtA33c3T9/V9/kwX+oWdyfm5Jc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8ByqjWu2yAMm06jFiIRaSg+IRkfmsEml1tIOf9esvbcH7OUAI
+	ZoQS8d1nC8bweaH8+xoXhDRpYMMlVwE/+9ziTuW7hbTh6cjmRcLV
+X-Gm-Gg: ASbGncv1iNFZpmI5vzYi/3Plgzbi61TvpoWAYNYqOQFGYEfhLpwWW47h6/es3WQG6ze
+	wqY6FEJcLnasD0Wyqbla6klKsIrpIUsUr/wsZOsMpgLAavbu9K9wPCvgKTeYcnInHDmNNBPnUk+
+	kR35FCJHgOSPNkJp4QddFRgQrsvYCAqHRytdgkhGhqIOc0+npoqovthtvsqhjUnJ4pzGwUKYbKj
+	BUOEaxKtNLrjOXWRWGz8mT/HO2U/HK9m7/Pjl/GxXLf3+EgeB7QaRbjdif3AbtzRV+j+dVa+BL6
+	FMgRrgakbP/+YeA6nEP3NtOzWmEJ/JCHfRWJCy7VltkDMwuZfkiokSfx4HYi9d4KcerFSx/H
+X-Google-Smtp-Source: AGHT+IE6flqDwVsTpGpc3YTvZ/iHfBKBaGrBtHop4poOhkkBMwzDiFwM8gvHelDmDsGXIxZ3B+QX9g==
+X-Received: by 2002:a17:903:32c3:b0:220:e7ae:dbcf with SMTP id d9443c01a7336-22104039c9cmr81807265ad.23.1739746240046;
+        Sun, 16 Feb 2025 14:50:40 -0800 (PST)
+Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-220d536733fsm60448195ad.77.2025.02.16.14.50.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 16 Feb 2025 14:50:39 -0800 (PST)
+Date: Mon, 17 Feb 2025 07:50:29 +0900 (JST)
+Message-Id: <20250217.075029.1780115689208398996.fujita.tomonori@gmail.com>
+To: daniel.almeida@collabora.com
+Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, andrew@lunn.ch,
+ hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
+ alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com,
+ anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
+ arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
+ peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
+ dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com, tgunders@redhat.com, me@kloenk.dev
+Subject: Re: [PATCH v10 7/8] rust: Add read_poll_timeout functions
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CEF87294-8580-4C84-BEA3-EB72E63ED7DF@collabora.com>
+References: <3F610447-C8B9-4F9D-ABDA-31989024D109@collabora.com>
+	<20250214.131330.2062210935756508516.fujita.tomonori@gmail.com>
+	<CEF87294-8580-4C84-BEA3-EB72E63ED7DF@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=iso-2022-jp
+Content-Transfer-Encoding: 7bit
 
-Benno Lossin <benno.lossin@proton.me> writes:
+On Sun, 16 Feb 2025 09:19:02 -0300
+Daniel Almeida <daniel.almeida@collabora.com> wrote:
 
-> Introduced in Rust 1.82.0 [1], this lint ensures that the first line of
-> documentation is short. That is because those lines get rendered in the
-> html version of the docs directly next to the items and should therefore
-> be short.
-> Additionally, a short first sentence might help developers remember the
-> rest of the documentation if they have read it already before.
->
-> Reviewers have pointed this out manually on several occasions, thus
-> enable the lint.
->
-> Here is an example error fixed in the previous commit:
->
->     error: first doc comment paragraph is too long
->       --> rust/kernel/driver.rs:13:1
->        |
->     13 | / /// The [`RegistrationOps`] trait serves as generic interface for subsystems (e.g., PCI, Platform,
->     14 | | /// Amba, etc.) to provide the corresponding subsystem specific implementation to register /
->     15 | | /// unregister a driver of the particular type (`RegType`).
->     16 | | ///
->     17 | | /// For instance, the PCI subsystem would set `RegType` to `bindings::pci_driver` and call
->        | |_^
->        |
->        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#too_long_first_doc_paragraph
->        = note: `-D clippy::too-long-first-doc-paragraph` implied by `-D warnings`
->        = help: to override `-D warnings` add `#[allow(clippy::too_long_first_doc_paragraph)]`
->
->     error: aborting due to 1 previous error
->
-> The exact length can be configured in the .clippy.toml if we need to do
-> so.
->
-> Link: https://github.com/rust-lang/rust-clippy/issues/12989 [1]
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-> ---
->  Makefile | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/Makefile b/Makefile
-> index 9e0d63d9d94b..d00cbeb63714 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -486,6 +486,7 @@ export rust_common_flags := --edition=2021 \
->  			    -Wclippy::undocumented_unsafe_blocks \
->  			    -Wclippy::unnecessary_safety_comment \
->  			    -Wclippy::unnecessary_safety_doc \
-> +			    -Wclippy::too-long-first-doc-paragraph \
->  			    -Wrustdoc::missing_crate_level_docs \
->  			    -Wrustdoc::unescaped_backticks
+>>>> +/// Polls periodically until a condition is met or a timeout is reached.
+>>>> +///
+>>>> +/// ```rust
+>>>> +/// use kernel::io::poll::read_poll_timeout;
+>>>> +/// use kernel::time::Delta;
+>>>> +/// use kernel::sync::{SpinLock, new_spinlock};
+>>>> +///
+>>>> +/// let lock = KBox::pin_init(new_spinlock!(()), kernel::alloc::flags::GFP_KERNEL)?;
+>>>> +/// let g = lock.lock();
+>>>> +/// read_poll_timeout(|| Ok(()), |()| true, Delta::from_micros(42), Some(Delta::from_micros(42)));
+>>>> +/// drop(g);
+>>>> +///
+>>>> +/// # Ok::<(), Error>(())
+>>> 
+>>> IMHO, the example section here needs to be improved.
+>> 
+>> Do you have any specific ideas?
+>> 
+>> Generally, this function is used to wait for the hardware to be
+>> ready. So I can't think of a nice example.
+> 
+> Just pretend that you’re polling some mmio address that indicates whether some hardware
+> block is ready, for example.
+> 
+> You can use “ignore” if you want, the example just has to illustrate how this function works, really.
 
-Reviewed-by: Charalampos Mitrodimas <charmitro@posteo.net>
+Ah, you use `ignore` comment. I was only considering examples that
+would actually be tested.
+
+
+> Something like
+> 
+> ```ignore
+>  /* R is a fictional type that abstracts a memory-mapped register where `read()` returns Result<u32> */
+>  fn wait_for_hardware(ready_register: R) {
+>      let op = || ready_register.read()?
+> 
+>      // `READY` is some device-specific constant that we are waiting for.
+>      let cond =  |value: &u32| { *value == READY }
+> 
+>      let res = io::poll::read_poll_timeout (/* fill this with the right arguments */);
+> 
+>      /* show how `res` works, is -ETIMEDOUT returned on Err? */
+> 
+>      match res {
+>        Ok(<what is here?>) => { /* hardware is ready */}
+>        Err(e) => { /* explain that *value != READY here? */ }
+> 
+>      /* sleep is Option<Delta>, how does this work? i.e.: show both None, and Some(…) with some comments. */
+>  } 
+> ```
+> 
+> That’s just a rough draft, but I think it's going to be helpful for users.
+
+I'll add an example based on the code QT2025 PHY (8th patch). It's
+similar to the above.
+
+Thanks,
