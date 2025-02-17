@@ -1,106 +1,99 @@
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550BE225385;
-	Mon, 17 Feb 2025 15:50:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B723223703;
+	Mon, 17 Feb 2025 16:35:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739807450; cv=none; b=ZuN60XtTMpLxtrmVj8MyXEWQBBklAPvfFuo5K0WALof8DKaykeU9zOIuzW2ygboCYtEjakwe+49AHWguITnMOOr6l76HsYuLuOmsz+VwFRu/tFpcUxcKXWLHMiQEGP1BnQdeNBhJXtZD87riEbBATenJsagBhobGWiG9j/pTpXs=
+	t=1739810136; cv=none; b=B+blAUXACoYYM36zC3KME6ofLa3y1Ct4X88jns+NMktTm5LDovsXnZtTYReggCSIFYaCwQIVY1BeVZXpSyu9enJGlsFmaTzZFXpWv/YPBdZZ/kum4CZXgQJiK/sv6Txz9gl3YKLdKQXWe4o2xI1fS2NEhgI6EQWxU8DD/wvq9RE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739807450; c=relaxed/simple;
-	bh=eNseTvayRYPpE5U3sQCGXSLB+tmkH6DD9wRv8Ufkz6I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KWE8Q2NkrPtRjQYxaJHu/0Sfe9nodPKcrZl1IfsVU67j9MzJhYxNs5qjhV3m3vtu//eHLsdmQoZYnukrZvEtcEARdm8K25NfQCg6YXt4urqGAElBm4SvRxeE5aE/hYd+V97ELbKNzhC15b1tWo2x8E7UBZZ+YN8OaDD7yI97wkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LqTC94z/; arc=none smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1739810136; c=relaxed/simple;
+	bh=lE8v3cHaPMoIUyZtlB1vlHQgjxDf/rnGpnjVRsPeq58=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VY1XwFT/X1eltfIXYfUbLScLvMB37U/7usyhinU7fuxSYJBsI+Z+CC08ZtfbxlwC2oziFsG6I8U20qRTAXD8L4wE5srSz8SLkYShFWKhMRwCovGRH/6rM2FkM1Wfo3E+hvjF/egl7bL8upliEoY3/2A5moY3WL42gVv5mDxcHXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VfoCrMSp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LqTC94z/"
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-3098088c630so16920891fa.1;
-        Mon, 17 Feb 2025 07:50:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739807446; x=1740412246; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eNseTvayRYPpE5U3sQCGXSLB+tmkH6DD9wRv8Ufkz6I=;
-        b=LqTC94z/4cLIWFGJVzsyzG3am7hxwj/vqEG3aD0lFrSUqjnvnbaboMa2mnGf4G9ymG
-         Rv96ztitm75K04n5Ephps+XlztK6NB131h2sZj16UbnuBJSxGaiPcnERKN+fwIJmq7Bm
-         56eZUjtIgNoKX6rJbDCgBLvhhjxUWtkdOt+Y4IWWxRfoQzSkVvZG+yzsv7uAbG9gHfzW
-         cP5aIpdq1DlMcJqBaxpTT1YBxQnWEBcSwdZCZHddtvmPsbyp8rWVNQONoGwJT8WjyoZI
-         HeaJCdRyQ1FiI8IlJymSN6ar47OSeM7nDVaVOOLUOvkMa6NaHkmFLrKsEJK//3geSOOf
-         K/Nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739807446; x=1740412246;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eNseTvayRYPpE5U3sQCGXSLB+tmkH6DD9wRv8Ufkz6I=;
-        b=VKlU6WeDDQLeOOYifQWO1TNgPwso9ZVRUJKwLQo1xKKaqGnPVydSaNPP6EfIS9+1Tn
-         uIZ85HbJY9T1poFmkb1FtpbH6dMJM9nqAPkfCsLSdH9d/OohKLsEFdvLUpu+oDYx3K6F
-         EqHWZRww+/Wvbl1peqygCcNnkBd3CPLyQWayC9xIxRcQlgGtBlvHDOHCDnSjEjdPRF4A
-         HBhKUq0Phegyrs3RVB4kqu1qO5Tbza1IEj2W7S9IM/z3HZ2xEZd+YSPv2B4pmIUQ9nnw
-         e4L4lbiorPww0WeEfK5VbITQMNHK9xpCSeyO+AlnlIARmqLvB+mov0cD97G1FTyCOCen
-         8Ovg==
-X-Forwarded-Encrypted: i=1; AJvYcCVRicJ4I5cM8khtNW6eIby8MOxbY/kMNzfCkYWS3LLguNYDs2D8V+YmTrqXXE1+N5kpeYP/n7Y9mtuXWgL9Y3w=@vger.kernel.org, AJvYcCVcoW7+GF9Z8OOLs/FtnSyPlhE5StrF67v2YVfQ8oDYTuWoeSKzsNv92Xg8FtoHHwapr4jh0ZYXptFObBnX@vger.kernel.org, AJvYcCW+UJhwX88Nhlunshc62tTHDYXXtpz1lzOde3rugBBczHYEPAOg91X9txISmvGZrxJFDWEQGxqrj1ofWsJJ@vger.kernel.org, AJvYcCWSO7b3LwK3J7y79YnAFpg5byluHS/UT4YJfLbVwDh6V2dlSJFdgJCcgQorTgQgLGULsUPhlrEduPre@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDN9xJqMeVA8/L725jAXbPASYAc4umUEKswVAvLDu2ImWyjTIu
-	8qTPUAlLB3TpZ7KeXjYZmqBDMXvKhDTxZtnDCB+2hypNc6fjaqOlguGRkPW06op9joG3qLXPmPK
-	bWcnvU/zKP3P4+om9wyLNLpMkOUY=
-X-Gm-Gg: ASbGncsm4yJYZUsO9fsNh1Sl/2k2LeSwAVyelE8o8Gu0Tw2IL+kZ/60a3upGUKtmj76
-	UoBxFGQtFYVmDtOQjOEdJmcYRlGniASfirGtGtCqWE/9eWbToCi+S3JP31SZG+q5jdtqz3suPsX
-	4X9dyLEHZiPFxa2scCY9YU2uAujLkHAcE=
-X-Google-Smtp-Source: AGHT+IEWLfgkl+FCjuMBS3fn68xkWa9P5Ave195MYSwc/MJOtRAv0opVrES6jV9kKRAbbt4TWs7/lOLJt5HP6IpU86I=
-X-Received: by 2002:a2e:8615:0:b0:304:588a:99ce with SMTP id
- 38308e7fff4ca-3092797efe8mr25693211fa.0.1739807446155; Mon, 17 Feb 2025
- 07:50:46 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VfoCrMSp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37154C4CED1;
+	Mon, 17 Feb 2025 16:35:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739810135;
+	bh=lE8v3cHaPMoIUyZtlB1vlHQgjxDf/rnGpnjVRsPeq58=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VfoCrMSpk6EACaA4rYBe7g8zDZsKhPPRomWHO1Sdgmdh4maL9oMtcO3f13ClINlqz
+	 dCdqfFG56QRFjT+IBcng9APi36QBfO3mrKY0A8eM2HdDNgUc8AkULq1NJqxt2bYaf2
+	 Zj3i99uV8q2gul/xNEdivP5dVLstiQpGt5a3UCnwJzOa46MAPUpuCmPtXUUmYv6tU1
+	 phZUsDVXv/6NCEpJbeKXTJMY6MtOjpxboydCJZBPzr8hi15vZPdOoa0tSuZhbu/PwK
+	 nO2JFZ8IiKbSQrU/iWhxNLXtbIyk+YYFH+9boC5hqpkpd6nojLrl9mE7r8teyoa1Jc
+	 34lRcnhArXX9Q==
+Date: Mon, 17 Feb 2025 17:35:28 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Matthew Wilcox <willy@infradead.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	=?iso-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>,
+	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, Fiona Behrens <me@kloenk.dev>
+Subject: Re: [PATCH v16 2/4] rust: types: add `ForeignOwnable::PointedTo`
+Message-ID: <Z7NlUN7pSrDnSaMD@cassiopeiae>
+References: <20250207-rust-xarray-bindings-v16-0-256b0cf936bd@gmail.com>
+ <20250207-rust-xarray-bindings-v16-2-256b0cf936bd@gmail.com>
+ <Z7MnxKSSNY7IyExt@cassiopeiae>
+ <CAJ-ks9=OG2zPPPPfZd5KhGKgNsv3Qm9iHr2eWXFeL7Zv16QVdw@mail.gmail.com>
+ <Z7NEZfuXSr3Ofh1G@cassiopeiae>
+ <CAJ-ks9=TrFHiLFkRfyawNquDY2x6t3dwGi6FxnfgFLvQLYwc+A@mail.gmail.com>
+ <Z7NJugCD3FThZpbI@cassiopeiae>
+ <CAJ-ks9mcRffgyMWxYf=anoP7XWCA1yzc74-NazLZCXdjNqZSfg@mail.gmail.com>
+ <Z7NNDucW1-kEdFem@cassiopeiae>
+ <CAJ-ks9kZJt=eB0NU-PcXiygjORhhbEhGYEr9g3Mgjcf2-os06w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250207-rust-xarray-bindings-v16-0-256b0cf936bd@gmail.com>
- <20250207-rust-xarray-bindings-v16-2-256b0cf936bd@gmail.com>
- <Z7MnxKSSNY7IyExt@cassiopeiae> <CAJ-ks9=OG2zPPPPfZd5KhGKgNsv3Qm9iHr2eWXFeL7Zv16QVdw@mail.gmail.com>
- <Z7NEZfuXSr3Ofh1G@cassiopeiae> <CAJ-ks9=TrFHiLFkRfyawNquDY2x6t3dwGi6FxnfgFLvQLYwc+A@mail.gmail.com>
- <Z7NJugCD3FThZpbI@cassiopeiae> <CAJ-ks9mcRffgyMWxYf=anoP7XWCA1yzc74-NazLZCXdjNqZSfg@mail.gmail.com>
- <Z7NNDucW1-kEdFem@cassiopeiae>
-In-Reply-To: <Z7NNDucW1-kEdFem@cassiopeiae>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Mon, 17 Feb 2025 10:50:10 -0500
-X-Gm-Features: AWEUYZkTMjeFzOHSQCr11RKK9P9i9z6qVWK7CwCD_YdiJtL8GAwsKrnf2C3CTM0
-Message-ID: <CAJ-ks9kZJt=eB0NU-PcXiygjORhhbEhGYEr9g3Mgjcf2-os06w@mail.gmail.com>
-Subject: Re: [PATCH v16 2/4] rust: types: add `ForeignOwnable::PointedTo`
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Matthew Wilcox <willy@infradead.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, "Rob Herring (Arm)" <robh@kernel.org>, 
-	=?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
-	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org, Fiona Behrens <me@kloenk.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJ-ks9kZJt=eB0NU-PcXiygjORhhbEhGYEr9g3Mgjcf2-os06w@mail.gmail.com>
 
-On Mon, Feb 17, 2025 at 9:52=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> =
-wrote:
->
-> On Mon, Feb 17, 2025 at 09:47:14AM -0500, Tamir Duberstein wrote:
-> > On Mon, Feb 17, 2025 at 9:37=E2=80=AFAM Danilo Krummrich <dakr@kernel.o=
-rg> wrote:
-> > > You're free to do the change (I encourage that), but that's of course=
- up to you.
+On Mon, Feb 17, 2025 at 10:50:10AM -0500, Tamir Duberstein wrote:
+> On Mon, Feb 17, 2025 at 9:52 AM Danilo Krummrich <dakr@kernel.org> wrote:
 > >
-> > I'll create a "good first issue" for it in the RfL repository.
->
-> That's a good idea -- thanks.
+> > On Mon, Feb 17, 2025 at 09:47:14AM -0500, Tamir Duberstein wrote:
+> > > On Mon, Feb 17, 2025 at 9:37 AM Danilo Krummrich <dakr@kernel.org> wrote:
+> > > > You're free to do the change (I encourage that), but that's of course up to you.
+> > >
+> > > I'll create a "good first issue" for it in the RfL repository.
+> >
+> > That's a good idea -- thanks.
+> 
+> What do you think about enabling clippy::ptr_as_ptr?
+> https://rust-lang.github.io/rust-clippy/master/index.html#ptr_as_ptr
 
-What do you think about enabling clippy::ptr_as_ptr?
-https://rust-lang.github.io/rust-clippy/master/index.html#ptr_as_ptr
+Seems reasonable to me, but I'm a bit out of competence here.
 
-Do we currently enable any non-default clippy lints?
+I know some lints are not stable and hence need to be treated with care, though
+this doesn't seem to be one of them.
+
+Additionally, I think the lint would need to be supported by all compiler
+versions the kernel supports currently, which also seems to be the case (added
+in: 1.51.0).
+
+> 
+> Do we currently enable any non-default clippy lints?
+
+Yes, you can check the root Makefile [1].
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Makefile?h=v6.14-rc3#n471
