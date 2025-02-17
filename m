@@ -1,285 +1,241 @@
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2072.outbound.protection.outlook.com [40.107.237.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51EDD21CC5C;
-	Mon, 17 Feb 2025 14:02:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739800973; cv=none; b=iPH2hGWdSm9rsI1D0RY1s22HEg49Tgy8QS8YAvmo6dzsfsLTn58YYLT+nYigd7tJGDtWj3Bp8hJfcX+TIRILxy+tx1QCchaqSYzIl8eunca16mrYPeezUbZeAps/Z87bd03/AxyhOggR/sxDjqrFphqLGbiGZHoglgxCGbcdcYo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739800973; c=relaxed/simple;
-	bh=eEMWVYsOAYZ5uEDaJWBhOQ2RhdPc8B5M1UPQRCMnI2Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rQh40oZFV9kTKpi7SHcElVuOZ0Eu/AIvOklNteO0faPDsIRa8vdSnp8GJij2qHUXnu/Ws9rh9b5k0u3TIgUKuN0ZkGvkuPaJ+1ilY7vkGr5CQER6qFbeHy2aIr+96q61asf5tGePeDnN/RFH9lSWU2iYi9GtM6kVHoTfhhYgaMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WSkZQWmm; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6A621D595;
+	Mon, 17 Feb 2025 14:04:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.72
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739801099; cv=fail; b=gADhNJeMa+A/zaM/4Krjy1UUa7WisR8wUINNX9YkfZyCHdJPc5Lu6Y5Y8apVkbWsqZPIHhpDo+x1kJyggirceiNpHkDcnKwp7UNA01kJXQHB7PICwXqE9K3ni305z9r4o9dO+Ts7NQNG5qlCkHHUUhtWF/g2TgjSmXcdEibaPwc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739801099; c=relaxed/simple;
+	bh=duZTrTqTxeIYA1nLxDqDAx0YYZ00InlzjoCApV4wetk=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=eosZYSwtnYENz/9MEL1h37FZZlQBeAvsF/FvsZ//DlVDmeWp73DBUWEyESpr0K6ep3XUFuAYXXgre5AK0NCHwxrEtK7a94oj0nxfaNmojbBhfs1sk5bTT84jkyNJEji9AR0gyIHcY5OMWQA0Pg7y+Dl+94TzHJ/OiFjy5nj6Ti4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Be81bUf2; arc=fail smtp.client-ip=40.107.237.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WSkZQWmm"
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-30a2f240156so9564201fa.3;
-        Mon, 17 Feb 2025 06:02:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739800969; x=1740405769; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X1pq5eOfFzbGkYYPHO93ioyqJ39kYDVLWG64lfsmouk=;
-        b=WSkZQWmmALFTD/+/WFUzJkzAp4D2Opm3cGrNMqFmiLhu7QDt+jVjWV8nUnbCG26ggw
-         RHq1fXy6r801v/uq3YwarNE6iWwE46kDHaMydLjbQx8nuApfjgB76NwNnhLeGzWKjIHJ
-         vTSeEtgVrqEJcH4Dgh2mLEZd5yEH3oekBZb9K2wpc2WwjU4GSmXHMA293SKoY/pB67nO
-         BD8cJObIBBnCTm5Tt7a+XfY0HIYQKtvKP/r8cjL8sLpGP5tptnhavZtBfN+RcOfa+PT5
-         BNnwGHDcO1hBSvu+7aj531iMhtPhyX/tSLKuucekc2AWU4JXUjDy0oGzTsIHIEtVgahX
-         sMgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739800969; x=1740405769;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=X1pq5eOfFzbGkYYPHO93ioyqJ39kYDVLWG64lfsmouk=;
-        b=AFlGa6nVOgFZ8NqQufIzo+GOdpF7UE13G8SSQ0mEDb4jfFPU0WqfALIumDY5+w86A5
-         YettGjmoHoEBiBR2KcI66NgekuO2pRhZAR/+DWiIVYNjnVrGtcL+51fvky3/T/VcKlKZ
-         77uWGVe1mbSFbPJM4Rj5+oRdEXB+c4PQSOVvPTmCXPqdq2oxkJ3sC/PaBliPIqazzW3B
-         9wt8B0jZNPZKegqaQRlKV5ZAybu9HGpkDwHpxfC7L8qrweDhRRuYQQX1Cq7W+nW03c3V
-         blmAj3idi8gf1E+52A03nlPv9UlKi0f+71e4cmyBG53MDmP0U52ATTVl3FT3OxjjjfZA
-         xP2A==
-X-Forwarded-Encrypted: i=1; AJvYcCU5Ie/3x6UX0KfItv1hk9Eq+c+i+D/fftW+kR3E5KKBpDeEg4aQJ11m3idJjZyFTBoMGmTvzZWDhDz+I2zPGUo=@vger.kernel.org, AJvYcCUuAEGpaLzavwwjDEHt5hrvaUkIEe8GvxCOq1ScdJJwpnEHFNUUHs/keHdifYiKGJ4H/V+ud4PPt+i/LnCl@vger.kernel.org, AJvYcCW6LqsKUiFkahj23Tzbh/HT2/0WG+NvzmuhP8j5mVHONhkgfLDnIL5m/hKG34450+KIO4FMObInQviL@vger.kernel.org, AJvYcCXJMLuTIQPdTPzC8Mh92Ue8ohoRQOZ6uTINo4a2tDyVeW+bC1E1vdxs46xhFsHJVQOmK8YmOj/bAsISikxz@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTE55VhPI3yKrl2OvFB/8BxqjKfjaDnXiF9lMMecgk8sanDpa4
-	gQS5Z8hSiJzQwcgZxcNiN3wLCRCaxj/NXZXll5/J2ZyIIfKrUXnra4K1ewAOw4Nw9o+OKcgSAy2
-	XFvHmM5OADO1OnBZaljMCFdv83E4=
-X-Gm-Gg: ASbGnctaGJWusOuxO4yBXSKVuhTKmlyzssMcKeaDN8r5uiZ4xRqLgRUHkO6ycfROAWQ
-	hsFdz+KJiPYUNyK9dF99GafuqHPaNy4dWUmLJ1I/cqHlDoxnkKgNZSxLGBfNK6CwWRrh3xQFpF9
-	vobB9+5Sn1CXN6na5qRmlusk+wAciiKYE=
-X-Google-Smtp-Source: AGHT+IEhkQ8vlPjxvWHqrNDBF9jeXmjjfygC4xb6m+LKgmu7d8IhleJvuR7WydA+Upe6fEKOlXBsUaJ15zQJv6ENE00=
-X-Received: by 2002:a2e:8890:0:b0:309:2000:4902 with SMTP id
- 38308e7fff4ca-30927afe770mr23568901fa.36.1739800968510; Mon, 17 Feb 2025
- 06:02:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Be81bUf2"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jQntMUQD5uf9hDFVBqzaTzamAWJce8ON4UdGtN6QXfAbNhfOBPLqxH93P1o6dnJJMJ1zf0n8phtp8ubU1jAnEJwXdHDSz5cMfQQn+8Zwo3ooDeAgjgWLwdQ8RXpy0uq7+ydHrMMMsL2ifVHZiNo2y81VOecKX4lFx5aAQvjU5+eh9cVbZuDaI5oTl7/UVPSUygR6cG74OSrMLKvViywGvqJ0QmDJbqN/+dT7fXR531lZS+NZINtEcJFTknIG4qgMPcPEPDJn0Mdbh2Ri85rhb0W7L6KQjGtzE6MePTniwM7blv+X3dYowggA+jlLpNeic7dUX971/a3JPsygB2bDOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=a99x7DWKCuH25MLjZC88kbZwr2fA4pIdu1TGhFmqrEo=;
+ b=n4svnGc+YKeONlS8sxpeM2Or32kJJBMDqa/rdU6P6LlvS76uv3kdjY/+xLEDnx/AS2DJSvmZht6FQcNwYsWPn2jIUIjCP0i1ChBAHzdDWr6iuwgwMdy/yQ3r2rQ53PDvr8XnXXOG51Y/MY2Uo/NVC9YBvAXoBNwr5WMquPOfKHA1SlFPdysdRVhM7yJ+C3hVm5QJOnETJyZZkZkwaK9X9zl+NmJI2bbLeYMsrswT4t+/gZaG/gRpz3vj4scM1S4AFDoCuGBJHckiuWbMGddPIv+bOcPWy6msg8uyF6MBJNa2Du1YMMvVUunzF61197yKHH8GTnmt3CyOndJJ34AsBw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=a99x7DWKCuH25MLjZC88kbZwr2fA4pIdu1TGhFmqrEo=;
+ b=Be81bUf28KVOLXaf85R2F/4rkOtQvm6G6iaQLb0syJim7g+DATY8s10y6asDMlcKml1aCAMi7WJoNE7nDLKqUHeNL2+fXJfr3TCIKzHasxt8OErr795TUEbaOcBxp94rlJcikKtycT/O80e1SBYwjk10wLVf4DQyQjRbN3i4DCO617BO0Wz0MGbn57enq3mtDNKqC5wJ9x7+UE9RJBjtIVpOQzpVSGp+kPxRGGAFQ4v1DDQpgWlCsn7NI/i9/7RzL4fHDScm8lIZ0nWh9wKuqwnMRfC2WKEOSs4CFr7ilZ30elfxD098wk/4xeCTb5kEIttx0BPEz9wByLTQJgNuQw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by MN2PR12MB4208.namprd12.prod.outlook.com (2603:10b6:208:1d0::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.19; Mon, 17 Feb
+ 2025 14:04:51 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99%6]) with mapi id 15.20.8445.017; Mon, 17 Feb 2025
+ 14:04:51 +0000
+From: Alexandre Courbot <acourbot@nvidia.com>
+Subject: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
+ implementation
+Date: Mon, 17 Feb 2025 23:04:45 +0900
+Message-Id: <20250217-nova_timer-v1-0-78c5ace2d987@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAP1Bs2cC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDI0Mz3bz8ssT4kszc1CLdZDNLE2MDQwuTNFMTJaCGgqLUtMwKsGHRsbW
+ 1ACjb2D5cAAAA
+X-Change-ID: 20250216-nova_timer-c69430184f54
+To: Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, 
+ John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+ Alexandre Courbot <acourbot@nvidia.com>
+X-Mailer: b4 0.14.2
+X-ClientProxiedBy: TYAPR01CA0115.jpnprd01.prod.outlook.com
+ (2603:1096:404:2a::31) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250207-rust-xarray-bindings-v16-0-256b0cf936bd@gmail.com>
- <20250207-rust-xarray-bindings-v16-2-256b0cf936bd@gmail.com> <Z7MnxKSSNY7IyExt@cassiopeiae>
-In-Reply-To: <Z7MnxKSSNY7IyExt@cassiopeiae>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Mon, 17 Feb 2025 09:02:12 -0500
-X-Gm-Features: AWEUYZlDYjYosA2ATuHScCNvNkvNJsoxbcnMNjsXryQL_RCrO2ZrK-WfuAXE8fI
-Message-ID: <CAJ-ks9=OG2zPPPPfZd5KhGKgNsv3Qm9iHr2eWXFeL7Zv16QVdw@mail.gmail.com>
-Subject: Re: [PATCH v16 2/4] rust: types: add `ForeignOwnable::PointedTo`
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Matthew Wilcox <willy@infradead.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, "Rob Herring (Arm)" <robh@kernel.org>, 
-	=?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
-	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org, Fiona Behrens <me@kloenk.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|MN2PR12MB4208:EE_
+X-MS-Office365-Filtering-Correlation-Id: 635987a1-ebe1-4c2f-8b52-08dd4f5c0bf9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|10070799003|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?amJ5VXZwckRYSFBRdUtXWXcrY05oZzdKNG5IeWRGWllDaEtlbUFrU0lRLzNS?=
+ =?utf-8?B?SC9IZWNQTG1kNW1qdXhqelpJU0RUazZrVFVZUGxRTFVBUlgrREsxTFAxY1Vm?=
+ =?utf-8?B?THNKNTZNNmNJTFp1aDdRSDFWRExocDRvMUlTQllRTis1QTQ3RkVUbUFEZld5?=
+ =?utf-8?B?M2VQaCtueCtDaWNUa0xvYjFpK2NleHhBUFcyK3ozalVrK0lxL2MzaFBDOFNT?=
+ =?utf-8?B?OUlMQVRlUFQ3ZjRqQlZxdUNVeGNhdzE3MXppNWJRb1NnQlJNQkpOaTYxTVUw?=
+ =?utf-8?B?c1BZS1hRZWNadUFNTFZJeW0wNDlMSXJ0TWROdVRqTmhqZDJJMWV6cHVmanl6?=
+ =?utf-8?B?VHZyUnBld1U3RGVEaWxkSFlUYkZ3ZFU5MVY1aFgvK24wYjcrZ0NseGV4SG1V?=
+ =?utf-8?B?V1p5U01Hd2E1aitvODdidFZ1M0RYVHNISmdIQ0FLNS9XRVhrUWsrMjUvUXcr?=
+ =?utf-8?B?anhIbm1rMVBUWkR2Q24rMXA5YlZtRnljWkY4R1NoWGdtN05TNzJBcGhQdlpD?=
+ =?utf-8?B?bFc0emNmVmVxWlZtaDZhelIvOWYyUU1GZVFJcHZ5TVBUb3RObkNBSGczSU9R?=
+ =?utf-8?B?TmpXMFQ3ZEhveitMb0VidytNVUN0aCs3MVp4SjM1aEJmOU5WTUtVSXFkWTV5?=
+ =?utf-8?B?R0YxemtpY1FIOEFlcU15UHhEellYYkZCZGhPZGMvcStRdGcwR0I2WnhaeEpu?=
+ =?utf-8?B?YVpWVG9LSDR4Y2ozZStEUzN2dzcvbG5QaWZTc1VPOWlyNis1RVU4UERJU2Rt?=
+ =?utf-8?B?cXUxdUxxY20yNU96SlJNL2U1VXR5NlFLQ2tBdzN2L1VpTTg0Mkd2RUdZQngr?=
+ =?utf-8?B?bk9Ecm92Z0pjN3RzZWJ0T05nVC9teFZ0WkJTekpvUUxOSWcrOUV6MU12cUFZ?=
+ =?utf-8?B?cVFrRmplQTdEdzc4WkVtOWRLRmlva1YzQmZENEUvYmJoeEdMTkdIZHg0SlVx?=
+ =?utf-8?B?aWUrSmFEZnNTMGg3UmNvQTg2SDB2NDZ3azg3cFJDeW9zdERrek81d1hvQjJo?=
+ =?utf-8?B?MDlqZElCMFBwSks1RGNBdTFZZ1pqTDNFR2NwL0wvUkFoZjFnVmxibUJyck4w?=
+ =?utf-8?B?b2V5bDVabERYUFVUYTJWd1B0UlJQeVVYd1ZZWHRQeS9NK2RURGhuRjdDYWVN?=
+ =?utf-8?B?cGFYS0VOMzFHR3BaOEhrY3M2Y3cxYnQxTXVnRFRiUXpOUFlZVy93WVhScGUx?=
+ =?utf-8?B?Z3g1SUJaWTZTb2ovWXNiazZ5VlE2VVhBSGZGVFRDQjNBaEZOZ2N6d0JQZkNs?=
+ =?utf-8?B?aVJRcDM5N0ZPS0NocnVleWY4bmZMY1I3cUI2eCs5MjMwOVR2eVR3WWZQNWlB?=
+ =?utf-8?B?eVdEcmZLbUlqMHRIQStwU3dHanJaTFlDT0NCYmVPb1l0TVFadEU4RndNMkVh?=
+ =?utf-8?B?NTF2SUljaWdGWDFGUnA4Y3NlWWxLaU0rNnI3MkFjVldZRXhrUnl2LzZBVCt6?=
+ =?utf-8?B?R3JwR3cwRUJQeWFHTTZQSjdUMTN2V0kvckxzNjlXWDZ3b2NvWU9tRC9jMGEy?=
+ =?utf-8?B?QllNVTgwYTEvRmgrUk5ncHY4UDZKK3JnVy95WWMwUkVJNkUzU3JuME1EMVlT?=
+ =?utf-8?B?NGpVQVVMUndMUmVJaXlHblZFZ1JBMkx0SXR2cHJpREZzcGlqMmp0N0FEQUFK?=
+ =?utf-8?B?MWZIbXBOVWJHSVBIenpWWEt5aE4ydHNDNDFWL2wvcnk3clZUZnFWYmxxZGsv?=
+ =?utf-8?B?Mm5PaXNpM2xZdnRoRzVhUFp5U3JPOWlZQ2JMdVpKb1U2dWRLNmk2YTJxZGdD?=
+ =?utf-8?B?RkVOK2tWV3A5R3NQUXNxMUliUXY3Q21xUlo2bjNTbng2Z3FZeTdpbUdXV3RY?=
+ =?utf-8?B?R3VHenlvREdOQUwvbnJLYjRTOHJkS1AyMG5jTFFZaXRjMUtRUE0xMWpKdThz?=
+ =?utf-8?Q?fSyypdZp/7HfJ?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TFFrY09nRk9ZaTJsMWNHZVVLU1pNcG5VbWdveUhod2k3ZlRjQVB6b3dtVVpM?=
+ =?utf-8?B?SEVyWitJMzJXOEtQNC9PQnR3a2cxTVJoaHkvKzMxdFU0MXprN1ZwOHJid2ha?=
+ =?utf-8?B?dkd4Q3U4dnEvK0s3UkRTMzVEK05nd3VCWnFERFZvNlJsVmRZZDZ5Z2VNd1hj?=
+ =?utf-8?B?dTIxK1dvYXdYQ0hmQStxU09hWk10YzEyTUNEVVp5SGxFM05QYlBpb3lzUHdG?=
+ =?utf-8?B?ZkhMd0Y4SVlzTVBxMEFjeUF2N0Z5TGt1WXJUVXZ4SU8zNVNqOE9wN1g3NVZB?=
+ =?utf-8?B?YkRFeC9mTU9UVE80K29MQVlmTnZNNm5hZ0hsWVZTQm1ITDdzdlF1c3NDRGZ2?=
+ =?utf-8?B?U3ROdGh1L2lFQVZiZmEyNU5JN0h0YTBiMkhUTmUwTk5WdVUrc2hOTzJZS1hs?=
+ =?utf-8?B?UmVnTGEzMVZqaDYwMTdqY1lUTzZEOXIwalF4cUg2Uys5Tkkzam5aaFVRcHlV?=
+ =?utf-8?B?NmJlZzBvZE9sOGpxQzI5Tm96Nmo2VkdjOG9WK1dZWVdkbGtHVFFrZ0t0RGxV?=
+ =?utf-8?B?cTNhNU0rNWN6ZU1hN1QrakowaHh4Z216ektUYTVwVzJLWFBIZlRuVi9IaXZz?=
+ =?utf-8?B?TjNHSUZoWCs0WG40UGNJMkhFeEJqN3pPYi9Ld2U1MEdJYU4zSk5qbWFNUDZh?=
+ =?utf-8?B?aFdGSXRnbmVyQXltZHVzUytTZitaYjJZQXp2dDFWWTZYWU9NK3BLWGgrNXhY?=
+ =?utf-8?B?Sng5WlJHa2RjU1hKdzVYa2hJcW55R08xUkNoaG1vamNzQ1dtTFEyMW81UGFa?=
+ =?utf-8?B?cWpxdDhPT3RLMFQ0a0FlTklhQmRBUE9PY1RNR1p1UDhFZDVVZTByN0E4WlZ5?=
+ =?utf-8?B?WXkvVDBOckpKbDFlZFZTTmREQ1JKaUo5WHcxcnBKd1p2ZWlXRCtENnBHcnFI?=
+ =?utf-8?B?S2hLTk1pNFRoYmZxaDJEamVSeCtuNmxaODJpWG5ISjgwOUpGR0xRL2UrVUQ3?=
+ =?utf-8?B?cWdGZk5EQlFNTldoa3F1eTVzR2U5Mmt1NitlaVhUbTNnSVJKNkxCckhnY0NL?=
+ =?utf-8?B?b2xBTnh6UHV4RnlhcGY5Q0JsZFpmMHZRSHJwUGU4SXZQR3F0cE9KZGQ2VG54?=
+ =?utf-8?B?aGpOck5qNmRXaXdUOFZjL0hEWEpEMTB6d2UyK3lNMUdjc0h2cUZ0cjE2UWhy?=
+ =?utf-8?B?bU5sL2tJWUxWWXlyS0lxUFVIcEtEZzVVbWNiNUNzWklTOUM0Y3hGUW93dklx?=
+ =?utf-8?B?OW9pTEhFOUQ0UXRpTDFleUlRS0NpWHRqUVNZZnM2djRIMDU2UlRoYXdhb1FN?=
+ =?utf-8?B?WWxvMDJnSzVTVnVVYWlaOGlJUWxuT1Q3YllsZktwYU05SjlsWHluSGlyWENI?=
+ =?utf-8?B?MTVzdjhTSGFmWWZiTWxmMXZPZ0FEMGJ0MWs5T09lZWVWLzlXZHBoTml5Tnkx?=
+ =?utf-8?B?YmZXMEc5WHVyNmx4VDBkdmwwRzBaMUxwRE5pTFhTeEtkMzRCZ2RFcWhmaGhy?=
+ =?utf-8?B?Wk5LSEFBVms3dTNIQTNVQ3JGQ3V5NE51cStnTXgzMGQzdy9ncVpXUVJVRldD?=
+ =?utf-8?B?N0w1Q2xUTi9JbkVabzRreEoyT3AwYzB4M3Z5U3dNeDFOQi9pejB0T2dPWklF?=
+ =?utf-8?B?QUQvWWt3V1VDanJzRmxmZFFPQzVWSFN5Z2x5TzJlQmJSTDM2eFFLOWlHQ1A0?=
+ =?utf-8?B?V0gxSFdKSERQR0t3ZmQyRFFqWWFLdFRUc0dtNUpPaGVKS2RKWjVERlkyaDd2?=
+ =?utf-8?B?REJuZTNiYmMxcmFmUnYrQjl4emJMcnFlTWZDZ1dFTm8zaVJMK25LR3A3Nmtz?=
+ =?utf-8?B?QzV3SDNQSmdpajhRTFc2ckxidk5pM0dZQlJCOFN3ZGtsYWVQRERsVkZIanJ3?=
+ =?utf-8?B?QUNmQzZRMy92WHVlNmE2ZjhRTWdTMEZJWUN6WTZsdGVOUE5HZ3lKMEJzY1Jx?=
+ =?utf-8?B?dHZOcVpLcHdUdGJUT3lRVzlPNjlrNWpjRkNLaDQ3VmFoTUYzazkzWWR5T1Aw?=
+ =?utf-8?B?VFdMUk1mTkdQMGYrNXpSL3hiRC9adE84NGFVYUFqbktYbTRCMDhGeFFxUXdy?=
+ =?utf-8?B?b1YxeVJiZ0xJVTlQNitCOUYyUWdpUmNyT3ZxbjlaOUMrT1hndHdUNU5STk13?=
+ =?utf-8?B?M2IyK1NwZjM5YTQ5Q1JucFI4anFsYlFEZk9iVG02bFdtQUpMYjFDT1FWVCt5?=
+ =?utf-8?B?V2wzNE1sT1JLNC9DcjFKM2YrSU5yYktZNEpXekdUQ0JURll3Q2YxUTg2Yjkx?=
+ =?utf-8?Q?BAzuSnkUJB2S+nQ0RKwnP82KEhA3fdvO8zAooLqpOUM5?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 635987a1-ebe1-4c2f-8b52-08dd4f5c0bf9
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Feb 2025 14:04:51.4095
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hE3zP+D978PxCQYvUPRHkzMe5hBR5nd1onEbxUfCrbG/egmBSI7qBNWSeHa37qaaQX0INImvvnFiOnameP3LJQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4208
 
-On Mon, Feb 17, 2025 at 7:13=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> =
-wrote:
->
-> On Fri, Feb 07, 2025 at 08:58:25AM -0500, Tamir Duberstein wrote:
-> > Allow implementors to specify the foreign pointer type; this exposes
-> > information about the pointed-to type such as its alignment.
-> >
-> > This requires the trait to be `unsafe` since it is now possible for
-> > implementors to break soundness by returning a misaligned pointer.
-> >
-> > Encoding the pointer type in the trait (and avoiding pointer casts)
-> > allows the compiler to check that implementors return the correct
-> > pointer type. This is preferable to directly encoding the alignment in
-> > the trait using a constant as the compiler would be unable to check it.
-> >
-> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> > Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> > Reviewed-by: Fiona Behrens <me@kloenk.dev>
->
-> I know that Andreas also asked you to pick up the RBs from [1], but - wit=
-hout
-> speaking for any of the people above - given that you changed this commit=
- after
-> you received all those RBs you should also consider dropping them. Especi=
-ally,
-> since you do not mention the changes you did for this commit in the versi=
-on
-> history.
->
-> Just to be clear, often it is also fine to keep tags for minor changes, b=
-ut then
-> you should make people aware of them in the version history, such that th=
-ey get
-> the chance to double check.
+Hi everyone,
 
-I will drop their RBs.
+This short RFC is based on top of Danilo's initial driver stub series
+[1] and has for goal to initiate discussions and hopefully some design
+decisions using the simplest subdevice of the GPU (the timer) as an
+example, before implementing more devices allowing the GPU
+initialization sequence to progress (Falcon being the logical next step
+so we can get the GSP rolling).
 
-> [1] https://lore.kernel.org/rust-for-linux/20250131-configfs-v1-1-8794761=
-1401c@kernel.org/
->
-> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> > ---
-> >  rust/kernel/alloc/kbox.rs | 38 ++++++++++++++++++++------------------
-> >  rust/kernel/miscdevice.rs |  7 ++++++-
-> >  rust/kernel/pci.rs        |  2 ++
-> >  rust/kernel/platform.rs   |  2 ++
-> >  rust/kernel/sync/arc.rs   | 21 ++++++++++++---------
-> >  rust/kernel/types.rs      | 46 +++++++++++++++++++++++++++++++--------=
--------
-> >  6 files changed, 73 insertions(+), 43 deletions(-)
-> >
-> > diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
-> > index e14433b2ab9d..f1a081dd64c7 100644
-> > --- a/rust/kernel/miscdevice.rs
-> > +++ b/rust/kernel/miscdevice.rs
-> > @@ -225,13 +225,15 @@ impl<T: MiscDevice> VtableHelper<T> {
-> >          Ok(ptr) =3D> ptr,
-> >          Err(err) =3D> return err.to_errno(),
-> >      };
-> > +    let ptr =3D ptr.into_foreign();
-> > +    let ptr =3D ptr.cast();
->
-> I still think that it's unnecessary to factor this out, you can just do i=
-t
-> inline as you did in previous versions of this patch and as this code did
-> before.
+It is kept simple and short for that purpose, and to avoid bumping into
+a wall with much more device code because my assumptions were incorrect.
 
-I will do as you ask here.
+This is my first time trying to write Rust kernel code, and some of my
+questions below are probably due to me not understanding yet how to use
+the core kernel interfaces. So before going further I thought it would
+make sense to raise the most obvious questions that came to my mind
+while writing this draft:
 
->
-> >
-> >      // This overwrites the private data with the value specified by th=
-e user, changing the type of
-> >      // this file's private data. All future accesses to the private da=
-ta is performed by other
-> >      // fops_* methods in this file, which all correctly cast the priva=
-te data to the new type.
-> >      //
-> >      // SAFETY: The open call of a file can access the private data.
-> > -    unsafe { (*raw_file).private_data =3D ptr.into_foreign() };
-> > +    unsafe { (*raw_file).private_data =3D ptr };
-> >
-> >      0
-> >  }
-> > @@ -246,6 +248,7 @@ impl<T: MiscDevice> VtableHelper<T> {
-> >  ) -> c_int {
-> >      // SAFETY: The release call of a file owns the private data.
-> >      let private =3D unsafe { (*file).private_data };
-> > +    let private =3D private.cast();
-> >      // SAFETY: The release call of a file owns the private data.
-> >      let ptr =3D unsafe { <T::Ptr as ForeignOwnable>::from_foreign(priv=
-ate) };
-> >
-> > @@ -267,6 +270,7 @@ impl<T: MiscDevice> VtableHelper<T> {
-> >  ) -> c_long {
-> >      // SAFETY: The ioctl call of a file can access the private data.
-> >      let private =3D unsafe { (*file).private_data };
-> > +    let private =3D private.cast();
-> >      // SAFETY: Ioctl calls can borrow the private data of the file.
-> >      let device =3D unsafe { <T::Ptr as ForeignOwnable>::borrow(private=
-) };
-> >
-> > @@ -316,6 +320,7 @@ impl<T: MiscDevice> VtableHelper<T> {
-> >  ) {
-> >      // SAFETY: The release call of a file owns the private data.
-> >      let private =3D unsafe { (*file).private_data };
-> > +    let private =3D private.cast();
-> >      // SAFETY: Ioctl calls can borrow the private data of the file.
-> >      let device =3D unsafe { <T::Ptr as ForeignOwnable>::borrow(private=
-) };
-> >      // SAFETY:
-> > diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-> > index 6c3bc14b42ad..eb25fabbff9c 100644
-> > --- a/rust/kernel/pci.rs
-> > +++ b/rust/kernel/pci.rs
-> > @@ -73,6 +73,7 @@ extern "C" fn probe_callback(
-> >          match T::probe(&mut pdev, info) {
-> >              Ok(data) =3D> {
-> >                  let data =3D data.into_foreign();
-> > +                let data =3D data.cast();
->
-> Same here and below, see also [2].
+- Where and how to store subdevices. The timer device is currently a
+  direct member of the GPU structure. It might work for GSP devices
+  which are IIUC supposed to have at least a few fixed devices required
+  to bring the GSP up ; but as a general rule this probably won't scale
+  as not all subdevices are present on all GPU variants, or in the same
+  numbers. So we will probably need to find an equivalent to the
+  `subdev` linked list in Nouveau.
 
-You're the maintainer, so I'll do what you ask here as well. I did it
-this way because it avoids shadowing the git history with this change,
-which I thought was the dominant preference.
+- BAR sharing between subdevices. Right now each subdevice gets access
+  to the full BAR range. I am wondering whether we could not split it
+  into the relevant slices for each-subdevice, and transfer ownership of
+  each slice to the device that is supposed to use it. That way each
+  register would have a single owner, which is arguably safer - but
+  maybe not as flexible as we will need down the road?
 
-> I understand you like this style and I'm not saying it's wrong or forbidd=
-en and
-> for code that you maintain such nits are entirely up to you as far as I'm
-> concerned.
->
-> But I also don't think there is a necessity to convert things to your pre=
-ference
-> wherever you touch existing code.
+- On a related note, since the BAR is behind a Devres its availability
+  must first be secured before any hardware access using try_access().
+  Doing this on a per-register or per-operation basis looks overkill, so
+  all methods that access the BAR take a reference to it, allowing to
+  call try_access() from the highest-level caller and thus reducing the
+  number of times this needs to be performed. Doing so comes at the cost
+  of an extra argument to most subdevice methods ; but also with the
+  benefit that we don't need to put the BAR behind another Arc and share
+  it across all subdevices. I don't know which design is better here,
+  and input would be very welcome.
 
-This isn't a conversion, it's a choice made specifically to avoid
-touching code that doesn't need to be touched (in this instance).
+- We will probably need sometime like a `Subdevice` trait or something
+  down the road, but I'll wait until we have more than one subdevice to
+  think about it.
 
-> I already explicitly asked you not to do so in [3] and yet you did so whi=
-le
-> keeping my ACK. :(
->
-> (Only saying the latter for reference, no need to send a new version of [=
-3],
-> otherwise I would have replied.)
->
-> [2] https://lore.kernel.org/rust-for-linux/Z7MYNQgo28sr_4RS@cassiopeiae/
-> [3] https://lore.kernel.org/rust-for-linux/20250213-aligned-alloc-v7-1-d2=
-a2d0be164b@gmail.com/
+The first 2 patches are small additions to the core Rust modules, that
+the following patches make use of and which might be useful for other
+drivers as well. The last patch is the naive implementation of the timer
+device. I don't expect it to stay this way at all, so please point out
+all the deficiencies in this very early code! :)
 
-I will drop [2] and leave the `as _` casts in place to minimize
-controversy here.
+[1] https://lore.kernel.org/nouveau/20250209173048.17398-1-dakr@kernel.org/
 
-> >                  // Let the `struct pci_dev` own a reference of the dri=
-ver's private data.
-> >                  // SAFETY: By the type invariant `pdev.as_raw` returns=
- a valid pointer to a
-> >                  // `struct pci_dev`.
-> > @@ -88,6 +89,7 @@ extern "C" fn remove_callback(pdev: *mut bindings::pc=
-i_dev) {
-> >          // SAFETY: The PCI bus only ever calls the remove callback wit=
-h a valid pointer to a
-> >          // `struct pci_dev`.
-> >          let ptr =3D unsafe { bindings::pci_get_drvdata(pdev) };
-> > +        let ptr =3D ptr.cast();
-> >
-> >          // SAFETY: `remove_callback` is only ever called after a succe=
-ssful call to
-> >          // `probe_callback`, hence it's guaranteed that `ptr` points t=
-o a valid and initialized
-> > diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-> > index dea104563fa9..53764cb7f804 100644
-> > --- a/rust/kernel/platform.rs
-> > +++ b/rust/kernel/platform.rs
-> > @@ -64,6 +64,7 @@ extern "C" fn probe_callback(pdev: *mut bindings::pla=
-tform_device) -> kernel::ff
-> >          match T::probe(&mut pdev, info) {
-> >              Ok(data) =3D> {
-> >                  let data =3D data.into_foreign();
-> > +                let data =3D data.cast();
-> >                  // Let the `struct platform_device` own a reference of=
- the driver's private data.
-> >                  // SAFETY: By the type invariant `pdev.as_raw` returns=
- a valid pointer to a
-> >                  // `struct platform_device`.
-> > @@ -78,6 +79,7 @@ extern "C" fn probe_callback(pdev: *mut bindings::pla=
-tform_device) -> kernel::ff
-> >      extern "C" fn remove_callback(pdev: *mut bindings::platform_device=
-) {
-> >          // SAFETY: `pdev` is a valid pointer to a `struct platform_dev=
-ice`.
-> >          let ptr =3D unsafe { bindings::platform_get_drvdata(pdev) };
-> > +        let ptr =3D ptr.cast();
-> >
-> >          // SAFETY: `remove_callback` is only ever called after a succe=
-ssful call to
-> >          // `probe_callback`, hence it's guaranteed that `ptr` points t=
-o a valid and initialized
->
+Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+---
+Alexandre Courbot (3):
+      rust: add useful ops for u64
+      rust: make ETIMEDOUT error available
+      gpu: nova-core: add basic timer device
+
+ drivers/gpu/nova-core/driver.rs    |  4 +-
+ drivers/gpu/nova-core/gpu.rs       | 35 ++++++++++++++-
+ drivers/gpu/nova-core/nova_core.rs |  1 +
+ drivers/gpu/nova-core/regs.rs      | 43 ++++++++++++++++++
+ drivers/gpu/nova-core/timer.rs     | 91 ++++++++++++++++++++++++++++++++++++++
+ rust/kernel/error.rs               |  1 +
+ rust/kernel/lib.rs                 |  1 +
+ rust/kernel/num.rs                 | 32 ++++++++++++++
+ 8 files changed, 206 insertions(+), 2 deletions(-)
+---
+base-commit: 6484e46f33eac8dd42aa36fa56b51d8daa5ae1c1
+change-id: 20250216-nova_timer-c69430184f54
+
+Best regards,
+-- 
+Alexandre Courbot <acourbot@nvidia.com>
+
