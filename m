@@ -1,104 +1,129 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8CB155C83;
-	Mon, 17 Feb 2025 17:36:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0F222A1ED;
+	Mon, 17 Feb 2025 17:37:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739813798; cv=none; b=nRxh7SEKaSUIxn/IbJO3BOgr6y564DK2Jb9RB1jO9Ux6u8kCHKH+cAM8caKVSioUowv/Br3Tae0PeQfA4bYCYAHQtweniwHhJkv6SSYb+CSU2uqSGPWyQweORwDDLDSt+CfEwa8cFGA1jBFqsm3WTyddSijFEaPhOBAyPYWBh2I=
+	t=1739813868; cv=none; b=S/lPGswMlsuB3YA+zxFQUVXt6Ed/t368+VSxkkJM+yQHTYJ8RgeoMf6haRBRz/YcvWVZU4MP/+gB2FyvcQLRmpaUbS4bnstCrc4L+B3LkKeIU9BNnMY2TQVED3C3qI71aFtQQTursZ3O6eJQUHn1qpOQ9O9b5YKfnkHsw+Z8WGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739813798; c=relaxed/simple;
-	bh=SwO7vDsfD9Xzz/NGxBz8ksCtoWFceyTR4jwgR61JskQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=naiLadESxdkrC+90+sKOa5DduPlSMPQ6msCpK3ZtbQ0OUJlS72zZ4/5ajbBQAJn24nOEsHRd8sND7jIZDcZ72rr/7IUUgsXRdUgaELqJALfzpi95luHW2UA184qfMVotmoOwodI5HRwzJkZhj6CDwCNlzPM1+4Qkve/toQc3YII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gGRWO/0E; arc=none smtp.client-ip=209.85.214.170
+	s=arc-20240116; t=1739813868; c=relaxed/simple;
+	bh=8/L3gmfFAHfFA3roVYdsJEdGq7TwcZjgK8Y4cSwVPIA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fbt3R5McuKAlxUYDtRffxxLLlqt6yT7xzRT+3lm9npgSL8DHkgcGtfOBa5227fbiM0GCB2Rr3aNzTGxEyR4PJjLPqhwhhynExoKj0XikyAaxmJQrvByIC/Op5sjJFY7hRl4b3JpmlhVZSAG8ptuI1FEkbiAzGw2D/lrnVfyEOzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q8BnJP54; arc=none smtp.client-ip=209.85.167.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gGRWO/0E"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2166db59927so9957725ad.0;
-        Mon, 17 Feb 2025 09:36:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q8BnJP54"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5439e331cceso5492225e87.1;
+        Mon, 17 Feb 2025 09:37:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739813797; x=1740418597; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SwO7vDsfD9Xzz/NGxBz8ksCtoWFceyTR4jwgR61JskQ=;
-        b=gGRWO/0E7YpMAthvkN5RjZkzmA6OCmCs4e0zpWd42CdCPT4T1ljwsIjkwf7kDdXobK
-         5DquvPuLO7EEcQVaiKh1yywltIitli5bGUwas1+cThYYMLwIuMtRzyToF5uKR6MCcoUO
-         CJ0MkXSBHZWihzVyVKt79UUuS4gbNs3RZtvyoXx3chKSe5vP9yJOVeHxT+OaclXJmr0B
-         LE68zzCim7xlwj0NEwy1E+aCafm6rQMtSKAxamiRK4KH3yv7y0LSrbfSedFWRIuq2PDZ
-         PPApD11j+sP8tZ4BR0aBOWncwLI4r8KU4KEfSGW175eKALKYTGneE/wfc2ygRTT+0UH7
-         PEIg==
+        d=gmail.com; s=20230601; t=1739813865; x=1740418665; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=djXZZJISJ1TKosjoS1puXMdvOw7lbev+k0Hn9OFuMbs=;
+        b=Q8BnJP54Vw3TADmfQ8ouUtMLWv4PNm1nS/+X005A3sLaZr9AW4X1vSpUbKMhKN4tjM
+         0gyV6sa6KbwGMEjkDI2HD9IySdPFQoX3657hIK1Qs9jmBunQOmJrqrZYowStCsCiabjj
+         nOr6p8GpHXaZ2yKGmscmTsmvQF6HyU8BG51okHTX6ok0MWasllxfn4+mrAzFoFeQ7bDj
+         /s8lXx4f+Yz7BIEYO7dRU3yWmNrGwiXsv8PFK5nDAk1YbmgBNSJOteSoVeTT+zcIYGnK
+         p5416RZae6LrJybHYwCLw7Wqal06yzZ8Us2ckWuz3T96BdOMzUtJdrtuVSrEEh+YiOXl
+         eddw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739813797; x=1740418597;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SwO7vDsfD9Xzz/NGxBz8ksCtoWFceyTR4jwgR61JskQ=;
-        b=hjCv2ntj33lO923Y1RKe7dlKw8XnYNr5eZm6SolHhsEWlw7OSXn37ulfNhlZZOWrVs
-         RPNmB1lV74C/WosQESccVsaKi7aUrP+E23DK6vbOZjgQ5kaDORr6IQjtDn/0Q9ra49t0
-         d3Szk8oxVfU3tr4Q8K+RUGprtXc+NcaTaZxOJn5DSWhKNB9mrAhBkZUl1ldnz17+zu9O
-         iFRvdtYUc/XFlMavVKougD1Sx4OKoQD6svxfAkqow5eASZVOLnFlHdii00gWJTR4VXBv
-         6gRzMveOBwlq/Q1QJu989UJ5Y93BooYcFRgWh4QCRo/2OlTay7cCwkaVhZrGUc0GBdrz
-         zoug==
-X-Forwarded-Encrypted: i=1; AJvYcCWZTfggrVYKGA11fgEone7VyJ6xBzJOWt72/7EsVYFpCWj8xDIsABmsnSYiDuZ7hU9PqMT+pSPXbQt/9U4y@vger.kernel.org, AJvYcCWbUA6UUDVcAfeTXMABwSx6z5dQwr9HxrXGQrcBfrbOTHbYibkUfaJTNAgBtWGOxA5xLk66CB+Stjrpxv8e@vger.kernel.org, AJvYcCX57Lb1jt59VRqZD0bY9zQdQ+2a7cKYxi4b9MHoKzS/SLnw3NnHqZ4BeadsFmq4qTYn0xA05/3/7fwi@vger.kernel.org, AJvYcCXbikPIGdaTLshzK33v/x2+52yxfULne5Abwti0OqIWxmLZ5DokDetSczDf+7yeg2pJI0lA/rPyHnh8TwjXDD0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9M3iN74xZUUW2LJiyYXPsR64mUvywGJPrdS1qWD8UrNncMj2h
-	trbmlXF3H0i2doSKzGRmdrkUrI0Cmzri5yZn+zAa53GFtEFl2AVtWL1eEgZi6hAwOIJmg1QNkw1
-	GmVU88mIsk2+ZJkw1J05Ch0XOccg=
-X-Gm-Gg: ASbGncvl64YG5kq0AlP9RYErZGTNbsq5Jhv/RsVdbBVKkrLa5cYyb6Yv9EbqN6MKfRi
-	Xojxa97r9rSO+GwJKuStq4pR5uxN85BNQ61vks7ENv0Io9yqDmA3EepIbgYxvhOVk+JTvwnZX
-X-Google-Smtp-Source: AGHT+IHoUzKFz6KdsRlLbiPBD4oc1ayhlO4iOKanwFszVBIiP5IHTNgEjME2IqdlTDlUFzJMK4fxDeg1fRPOi9UfJDY=
-X-Received: by 2002:a17:902:fc8d:b0:215:8721:30b7 with SMTP id
- d9443c01a7336-221040a7a59mr62404795ad.11.1739813796701; Mon, 17 Feb 2025
- 09:36:36 -0800 (PST)
+        d=1e100.net; s=20230601; t=1739813865; x=1740418665;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=djXZZJISJ1TKosjoS1puXMdvOw7lbev+k0Hn9OFuMbs=;
+        b=hkerii7QKg0QtQPxVTEnpBlvq1igdSOzEW6FXVUo+mII5yp0v+q4WQZVdjDX2otbcc
+         b7kIsMBmgZ6qVpnnBnxdTQKYT6083u3y/ilPWjdem7svHql/QOHcSJBWzX9vQnZRheM8
+         61ZugzmpA1EseTmwip5LNsgCn59m/3fKHM1PdIo72dXMxduflUiEVoXPqEyTTimJnQyy
+         Xp1QVMSrBnmpneiAwyaTfitGd79WF9ge2Qf+m/9dZMHrCsfXyHgiHLme8PE/5rJxeD7P
+         ehp5l2t2006QNPsxDURE+wdv5UbT7zwSVO2VZ1hFBZxDpX57wslPyYZThl3jgHqEcr7g
+         7a7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXuRg8NfyhnNuYVBkue9qei1sEei+GGx/tFRwkd31joBMm0hB+bE75c4wquFYiXb+vEDfF8zesSww5cq7Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8XRtSNNM9YXSZZvFO8SjpVfDL0Zb6Purv//6lsV6s6ClokOPJ
+	ddoGmC5vL/NaSYjWmfYZKyx413Splh+Irau060NyjAXZzxlKIIW87TQpDg==
+X-Gm-Gg: ASbGncvweXOki/W4EPxyrAh7KcvrqIs8w6UQUAqaDWpsQJWfnDGOla39029aT1wTV4x
+	3TRW/tJKf/Y6U5ZYnIoKFskMxlWyR4kZG51kKRGRC/v6QZmNFrsqfmnrAYW13ySHQb7cY3AIusv
+	UYr79tixi0uQbk9krp7hXJksaczB+5WpiZOeDIoNr+vPC5aVK+asuc0JjisePZNHOqVa0NzCGiV
+	wzJmw/Dlk0s3J6pw80WfMJ/Zq6ybMRp94hoFhlZ+Mm2y+7J148Zkjg402PD11MOIudi6WuWctgg
+	x0yneZKANsQYCJp6HgeeTzfSZZEdKYxJiiZB/Ozm+kpaAU54RaRBaDAHRy/3Cw==
+X-Google-Smtp-Source: AGHT+IHahEhRB+xxQGpF1DyRBvIF1Rb5cbY8BrO1SPBJMBOL7KKWdBONU9dPd4DzVJZu0lRRxJ7BKQ==
+X-Received: by 2002:a05:6512:1194:b0:545:a89:4dc7 with SMTP id 2adb3069b0e04-5452feab102mr3061810e87.52.1739813864297;
+        Mon, 17 Feb 2025 09:37:44 -0800 (PST)
+Received: from [192.168.1.146] (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54527f929e7sm1341292e87.44.2025.02.17.09.37.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Feb 2025 09:37:43 -0800 (PST)
+Message-ID: <ecf3752d-87ab-4b3b-8660-d827437b0ffb@gmail.com>
+Date: Mon, 17 Feb 2025 19:37:43 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250207-rust-xarray-bindings-v16-0-256b0cf936bd@gmail.com>
- <20250207-rust-xarray-bindings-v16-2-256b0cf936bd@gmail.com>
- <Z7MnxKSSNY7IyExt@cassiopeiae> <CAJ-ks9=OG2zPPPPfZd5KhGKgNsv3Qm9iHr2eWXFeL7Zv16QVdw@mail.gmail.com>
- <Z7NEZfuXSr3Ofh1G@cassiopeiae> <CAJ-ks9=TrFHiLFkRfyawNquDY2x6t3dwGi6FxnfgFLvQLYwc+A@mail.gmail.com>
- <CANiq72kAhw6XwPzGu+FrF64PZ9P_eSzX3gqG9CLvy7YJnbXgoQ@mail.gmail.com>
- <CAJ-ks9mFT1Gaao+OrdYF+hg6Sp=XghyHWu1VTALdeMJPwkX=Uw@mail.gmail.com> <CANiq72kFpDt230zBugN12q978LRSJiZB5dJZszWkL2p7XqQ52w@mail.gmail.com>
-In-Reply-To: <CANiq72kFpDt230zBugN12q978LRSJiZB5dJZszWkL2p7XqQ52w@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 17 Feb 2025 18:36:24 +0100
-X-Gm-Features: AWEUYZkXXe9ucp731IUnfF8Mkzrw90VtoilSTq_--wgHn6jSTiKyQT8lGbY5FVI
-Message-ID: <CANiq72kjAx4a20cnE3XrJ-z4K=8pCRuc+TOa+WtcuUsdZ22tSA@mail.gmail.com>
-Subject: Re: [PATCH v16 2/4] rust: types: add `ForeignOwnable::PointedTo`
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Matthew Wilcox <willy@infradead.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, "Rob Herring (Arm)" <robh@kernel.org>, 
-	=?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
-	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org, Fiona Behrens <me@kloenk.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 2/3] rust: add dma coherent allocator abstraction.
+To: Robin Murphy <robin.murphy@arm.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>
+Cc: rust-for-linux@vger.kernel.org, dakr@kernel.org, aliceryhl@google.com,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Valentin Obst <kernel@valentinobst.de>,
+ open list <linux-kernel@vger.kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+ "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+References: <20250123104333.1340512-1-abdiel.janulgue@gmail.com>
+ <20250123104333.1340512-3-abdiel.janulgue@gmail.com>
+ <633274AD-E55C-4A90-AB72-33D3E176176F@collabora.com>
+ <dd57c3ba-246e-414d-a9c1-eb2cff032d83@arm.com>
+Content-Language: en-US
+From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+In-Reply-To: <dd57c3ba-246e-414d-a9c1-eb2cff032d83@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Feb 17, 2025 at 6:24=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> I understand the rationale -- what I meant to ask is if you saw that
 
-By the way, I don't agree with the rationale, because it sounds to me
-like optimizing for `git blame` readers, while pessimizing for normal
-readers.
 
-We do a lot of `git blame` in the kernel, especially since our Git log
-is quite good, but we still read the files themselves more... I can
-imagine ending up with a lot of extra lines over time everywhere, it
-could dissuade small fixes and so on.
+On 17/02/2025 15:52, Robin Murphy wrote:
+> On 15/02/2025 9:40 pm, Daniel Almeida wrote:
+>> Hi Abdiel
+>>
+>> I noticed that there’s no API to call `dma_set_mask/ 
+>> dma_set_coherent_mask`.
+>>
+>> This should probably be included, i.e.:
+>>
+>> ```
+>> By default, the kernel assumes that your device can address 32-bits of 
+>> DMA addressing.
+>> For a 64-bit capable device, this needs to be increased, and for a 
+>> device with limitations,
+>> it needs to be decreased.
+>> ```
+> 
+> Oh, good point (and I'm rather ashamed I missed that!)
 
-Cheers,
-Miguel
+
+Ok. Missed this part while working on the nova stub and hadn't had to 
+use this interface yet, but yes will add this for the next revision.
+
+> 
+> FWIW we've been wanting to steer away from relying on the default mask 
+> in new code, so it would be quite neat to actually enforce that 
+> allocations fail if dma_coherent_mask hasn't been explicitly set 
+> (assuming it's sufficiently cheap to keep a flag in the Device handle or 
+> something like that - it's not the end of the world if it isn't practical).
+> 
+Thanks for the heads-up on what this interface is expected to look like!
+
+
+Regards,
+Abdiel
+
