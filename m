@@ -1,127 +1,96 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C58514F9E2;
-	Mon, 17 Feb 2025 23:04:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B70E1AAA1F
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Feb 2025 23:54:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739833495; cv=none; b=hqMXph8shdMiMOprZr28X6o4GqqG51VBm6tGTNKiY170kaSDCPxCN2mv3aTnC0dYnS8mQ/isHYC3Wdn3NqFcALtKcJtXICiZSVQBtvJ1qDOyeH9XtlpsROQ6GgTdpUBWJdp+IlwlaEiB6/WZ0ofYkXca+cE7OKnZTQWao5M3sU0=
+	t=1739836487; cv=none; b=Hbahwt8VyJQuGELWAMBZcLEetLiDRUVzoZGSHvNQScMHcRMp26637V3AG1rtA9exswEwwcmXgcAl47Y0IEGW8mx4qbZG+ZNmC8l1AK2fdywEMzVLl9MSEU6m8w2SmZ8EykCjkIxSSscp4bWrCbKG4SrVOusPEONoXnvlF0rtPt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739833495; c=relaxed/simple;
-	bh=ua8MTgg/pMbzItmaHaOKpFahHqsd/AEYJLBn84nW3jA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J6gN4o54E1SEeUa/x9GaDiuOssARrtkYwy8loTl8zDGp3dqntrFKXtmIZu/35c2H1ry4m2QQwAVBJ333gYF2gL6SexvEdymPqZNvYE7J1hAZJdKsUe3nr7sZ+XuQLCCWnr/SNw3N/VBWHc2IlSctKcmmSzZqmcRGpEkiPuHU23o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=SH2GWsf5; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1739836487; c=relaxed/simple;
+	bh=ilQrorP2JZXo3khw+lo7SLfy9N+xBBHV+C/3n8jMw1U=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Vc+j1PPf3zdd358RP+yQ09fx9GjCPUS/NCbJsrL4Zc+DXXmB8Iqn/HPwasjsshsJW+aCo2bsyOYZ4Q2sDkecvTqXImHUsQM8jZuMUrC1N9Dr6DdjGdmXIZnqBNkYZO5gRaXKyLbYGNMfV7rkaO4VACIpH+IbuXuhGOI2DVog7WQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=QdMXciE7; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="SH2GWsf5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=jblptpwxyvcidg2pzm7itkg7wu.protonmail; t=1739833485; x=1740092685;
-	bh=jHdV3S2lh3pdGuk6Jd9tHkSnXo+OlTKdByZUos42qWw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=SH2GWsf5nTbSthP5aXTCrQoD0RYV0a1A5Nc2OI2T6S7756MU0q16Bxvt9Oxa71VFr
-	 8B8X3Rg4wTc5BkcLiTbCM6dt03lq7gfitfTltQkX4m5o62Lj9ZNvVosJTZIIPHSiwu
-	 9Vu47+ki+AntG/n0WY5b0gH4POvYaY657sEWFAmqyW6YCNS2rEd+5zjYkfB2w6YFDV
-	 E4Y2lmuJ7lc85IkphPI/Bs8/brv0FWaX5Z/BMjfjRd5+59I85RTKkQvVpoDQHZ5pV0
-	 ctT7QUpy8NHZg7EXj6FBEtsCOPHOT/6gnkIYCAEcnU6jlYXUF45ysqipHxUOFpMmwX
-	 glNFe3MI6B78Q==
-Date: Mon, 17 Feb 2025 23:04:39 +0000
-To: Andreas Hindborg <a.hindborg@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Joel Becker <jlbec@evilplan.org>, Christoph Hellwig <hch@lst.de>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Fiona Behrens <me@kloenk.dev>, Charalampos Mitrodimas <charmitro@posteo.net>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] rust: configfs: introduce rust support for configfs
-Message-ID: <354dbebd-b211-4e8f-a181-8fbacb0e89c8@proton.me>
-In-Reply-To: <87bjv0u5j0.fsf@kernel.org>
-References: <20250207-configfs-v2-0-f7a60b24d38e@kernel.org> <20250207-configfs-v2-2-f7a60b24d38e@kernel.org> <S6DKlLVx4KKevl_q2zrW69Z7oS0jwyX4DXpDZrFiIy1lKo4VYHM52aDiV82c2yf52Ecr7t9FayuqBUPR9onvZA==@protonmail.internalid> <dd63fcde-ba4c-4a6e-9bde-1af5af37e91b@proton.me> <87h64su8ux.fsf@kernel.org> <Kkrr23DbfvS1nChcwAfhrogDdCOO92FQ2-9JUCab-_6CREP4iBX8k1KuxaJb-yv_ErGv9TbzDWwBZHvaszFS7w==@protonmail.internalid> <bfd79db6-bd79-4187-8577-3ae412f36f35@proton.me> <87bjv0u5j0.fsf@kernel.org>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 7147e4b8455818361fecc7bff27a85c176ad257d
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="QdMXciE7"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 73003240027
+	for <rust-for-linux@vger.kernel.org>; Tue, 18 Feb 2025 00:54:42 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1739836482; bh=ilQrorP2JZXo3khw+lo7SLfy9N+xBBHV+C/3n8jMw1U=;
+	h=From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:To:Cc:From;
+	b=QdMXciE73eB0q6oiX6zIVU6kSn13xOxPpWNloikGac0/uG3NSJNSIuSMzsXZn2a/s
+	 M6LndH5Z3iGMtBVNExvqoBVRiORyNt9upnS5SsFPwYXyPERZQ+OzE3R5F7gFtnlkv5
+	 T8ZsGMK9aljEds8QQoR2qKsjFpDaMoM1qJ5Iv7nHXWmklX7uIc+Jzns4IepsmhnYw6
+	 ngZ4i2/xpXYtH+QS/f6Nkhk/MDiJvYFEWkNDim3QieFd3xHkxgo09SaA/BvLRQESr6
+	 rrowHfDYrJF+SkmXF/5xK7umxiD6MJNYbgLDaDDVTPngEtIlVa2qKkTMib0Fip7s/D
+	 94y6yWokSQ57A==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4Yxfdq5Bd3z6trs;
+	Tue, 18 Feb 2025 00:54:39 +0100 (CET)
+From: Charalampos Mitrodimas <charmitro@posteo.net>
+Date: Mon, 17 Feb 2025 23:53:50 +0000
+Subject: [PATCH] net: phy: qt2025: Fix hardware revision check comment
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250218-qt2025-comment-fix-v1-1-743e87c0040c@posteo.net>
+X-B4-Tracking: v=1; b=H4sIAA3Ms2cC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDI0ML3cISEFM3OT83NzWvRDcts0LX2DDRPM0iLTkp2cxECaixoCgVKAw
+ 2NDq2thYA0OnZ6GQAAAA=
+X-Change-ID: 20250218-qt2025-comment-fix-31a7f8fcbc64
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+ Trevor Gross <tmgross@umich.edu>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1739836470; l=1177;
+ i=charmitro@posteo.net; s=20250218; h=from:subject:message-id;
+ bh=ilQrorP2JZXo3khw+lo7SLfy9N+xBBHV+C/3n8jMw1U=;
+ b=eVYiW5uicazNJ8ilHdcKdv0TGYayJSCchZzoulAUgbCRCLcZh6rbfq3+71Rrbj/zhD6Y/jpaj
+ teRxF6Kdi58AqqaiB39AaXALzoHOh0KU2Fl5xsZvHdmrD/hMPqcso+Q
+X-Developer-Key: i=charmitro@posteo.net; a=ed25519;
+ pk=tqvFF75nwS3URscujaAaCD+j9ViKh5jLMkj1mnX7Rws=
 
-On 17.02.25 13:20, Andreas Hindborg wrote:
-> "Benno Lossin" <benno.lossin@proton.me> writes:
->> On 17.02.25 12:08, Andreas Hindborg wrote:
->>>>> +
->>>>> +/// A `configfs` subsystem.
->>>>> +///
->>>>> +/// This is the top level entrypoint for a `configfs` hierarchy. To =
-register
->>>>> +/// with configfs, embed a field of this type into your kernel modul=
-e struct.
->>>>> +#[pin_data(PinnedDrop)]
->>>>> +pub struct Subsystem<Data> {
->>>>
->>>> Usually, we don't have multi-character generics, any specific reason
->>>> that you chose `Data` here over `T` or `D`?
->>>
->>> Yes, I find it more descriptive. The patch set went through quite a bit
->>> of evolution, and the generics got a bit complicated in earlier
->>> iterations, which necessitated more descriptive generic type parameter
->>> names. It's not so bad in this version after I restricted the pointer
->>> type to just `Arc`, but I still think that using a word rather a single
->>> letter makes the code easier to comprehend at first pass.
->>
->> Makes sense. I'm not opposed to it, but I am a bit cautious, because one
->> disadvantage with using multi-character names for generics is that one
->> cannot easily see if a type is a generic or not. Maybe that is not as
->> important as I think it could be, but to me it seems useful.
->=20
-> If you use an editor with semantic highlighting, you can style the
-> generic identifiers. I am currently trying out Helix, and that is
-> unfortunately on of the features it is missing. Can't have it all I
-> guess.
+Correct the hardware revision check comment in the QT2025 driver. The
+revision value was documented as 0x3b instead of the correct 0xb3,
+which matches the actual comparison logic in the code.
 
-That is true, but there are a lot of places where Rust code is put that
-aren't my editor (git diffs/commit messages, mails, lore.kernel.org,
-github) and there it'll become more difficult to read (also people might
-not have their editor configured to highlight them).
+Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
+---
+ drivers/net/phy/qt2025.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-So I think we should at least consider it more.
-
->>>>> +                    // SAFETY: We are expanding `configfs_attrs`.
->>>>> +                    static [< $data:upper _ $name:upper _ATTR >]:
->>>>> +                      $crate::configfs::Attribute<$attr, $data, $dat=
-a> =3D
->>>>> +                        unsafe {
->>>>> +                            $crate::configfs::Attribute::new(c_str!(=
-::core::stringify!($name)))
->>>>> +                        };
->>>>> +                }
->>>>> +            )*
->>>>> +
->>>>> +
->>>>> +            const N: usize =3D $cnt + 1usize;
->>>>
->>>> Why do we need an additional copy? To have a zero entry at the end for=
- C
->>>> to know it's the end of the list? If so, a comment here would be very
->>>> helpful.
->>>
->>> Yes, we need space for a null terminator. I'll add a comment.
->>>
->>> We actually have a static check to make sure that we not missing this.
->>
->> Where is this static check?
->=20
-> In `Attribute::add`:
->=20
->         if I >=3D N - 1 {
->             kernel::build_error!("Invalid attribute index");
->         }
-
-Ahh I see, would be also nice to have a comment there explaining why the
-check is `>=3D N - 1`.
+diff --git a/drivers/net/phy/qt2025.rs b/drivers/net/phy/qt2025.rs
+index 1ab065798175b4f54c5f2fd6c871ba2942c48bf1..7e754d5d71544c6d6b6a6d90416a5a130ba76108 100644
+--- a/drivers/net/phy/qt2025.rs
++++ b/drivers/net/phy/qt2025.rs
+@@ -41,7 +41,7 @@ impl Driver for PhyQT2025 {
+ 
+     fn probe(dev: &mut phy::Device) -> Result<()> {
+         // Check the hardware revision code.
+-        // Only 0x3b works with this driver and firmware.
++        // Only 0xb3 works with this driver and firmware.
+         let hw_rev = dev.read(C45::new(Mmd::PMAPMD, 0xd001))?;
+         if (hw_rev >> 8) != 0xb3 {
+             return Err(code::ENODEV);
 
 ---
-Cheers,
-Benno
+base-commit: beeb78d46249cab8b2b8359a2ce8fa5376b5ad2d
+change-id: 20250218-qt2025-comment-fix-31a7f8fcbc64
+
+Best regards,
+-- 
+Charalampos Mitrodimas <charmitro@posteo.net>
 
