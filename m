@@ -1,148 +1,121 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE035748F;
-	Sun, 16 Feb 2025 22:50:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FAB372;
+	Mon, 17 Feb 2025 00:10:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739746242; cv=none; b=iYFrPXBLEiFtX8h+LM85xjunJC4sj85gKSgmHg8ncZODIApAc4aUzaFKarcer/i+fzgCBVPU/pHjsr6Eq3XprZc01JoqvXuBInx9iFrmzcR89XczqDDjJg0/te19dlXK2FHHDPTHZmF+UDHF1Yw1kiuXIoM3PCo40V5aUx9MP5I=
+	t=1739751021; cv=none; b=bmTvjXIU20hT0JsDaSovLurPoFPgUdIJpUb9MExlInfUfPhMAHyKqirpJ8JaIaXJCh+zRPR2wnjdtVk/lGRHuyWZic1btWKY0qGcfncN/LrDUj8WexlfEYWcnpIFbt/738rVRe0EstBwi35xPwvbjQWRwnH/ZnsCV2Prv8aeJ84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739746242; c=relaxed/simple;
-	bh=MVPYUEfqQP7SYtryyiFnYb+MCB/nRuUktfoW6AhsSsE=;
+	s=arc-20240116; t=1739751021; c=relaxed/simple;
+	bh=3cbz5T9dWjwcE8bACWKVwDdL67Jyo8olEYlqpTmJe60=;
 	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=CB1wJ8S3qP9XVNAfCrWmpmMmug4nCPxcxLmle82AHef4xbGC8Qw+7O71hQLbloGhXugL08LyC7sBRgws+qvFMQkhET6HX8Ey0g6V8b6CzPyzR1VgsnztMJeq7fseY/8PBSRyVagHO28is7iOOtIBITmPsj4yLSwuvie66wX/sMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BfZgYw00; arc=none smtp.client-ip=209.85.214.169
+	 Mime-Version:Content-Type; b=njq5edk3A1BwX/atZ1iUnFM7073Xkr0Z9eN2MqhOcShRLzs31ndiJ+5slkaE+MSOoxhNCy3dnbl+qBZ69MgIK2jT4K4lM/XVgItCi2/0acuETyssg9c48JsRIrej6dhRJ6kO2DO2Uxf0mgbyzMvO0Bt7ecPrSncranaV/F4c6OU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kQegHQV6; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BfZgYw00"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-220d601886fso48224415ad.1;
-        Sun, 16 Feb 2025 14:50:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kQegHQV6"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2fbffe0254fso7065473a91.3;
+        Sun, 16 Feb 2025 16:10:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739746240; x=1740351040; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1739751019; x=1740355819; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=rwRpTiFhkazH7eZCnzFo4dfJTeXkjVTocPymKPEhdxo=;
-        b=BfZgYw00LiTNTk+K0EWlPpbX4GkcUorSqwXbpFtvWHVoqwJd2R04XvLO7pKjDyg8BI
-         +P8M3xK56K6zjzVq9Bzvp0LeHyuuA7NUX+G+xDrqyrjJ3yzg/oGJy5Phdi1r72IxYUFT
-         snJqqwSbx3GVh55xgKYtOl2/CJy12U9eI8q0wVIop6HV30ccqrwuGW+eSe+bpMmZ9f9Y
-         5PIhVisYOY7d7QPLjdDo5t1C0eO7RsDff4KFdic3Yx6b6eAdCrjnAeHwPd4YtTJyA1gq
-         CmZ7eVscVy0SJiwk5F1mx0SOLYEb+lM9TDIVS0QFC/oOtw3Wh7zTMyMY8Sp9TPfDhTiQ
-         hGow==
+        bh=YOyckpAB1M5l9vVDvm7vTiKfe8H6EV3gsz1q0DN3TFA=;
+        b=kQegHQV6lFPmm+gfoZaOFtzKHR2QpomQMEGBj1AHX9VM7r1ZeMrnvFHlawVD9zodaY
+         iHdN+B1no2lbSjou5sUid17HM82NPFpLooNhNLjiQ9rnKTYppjBrrQ3xJvlEyKyMC4ia
+         YiqYfAOpBbwO77sydXMp/ZcQG0i+jZznmDY8Eq7VwOhCZoeaaYz1fWKVZBK/8PtjrVJK
+         2v3EC4jB+uuS4qt+RcYjYq0fDOYy8DQ/Ca8tlVlZfHO2FEci0cB91V3vmvIVK2yDzSA1
+         KsBq3A0+TnN9dx9KWypgDMxvRx78EYewH03GSmg6d2G6K6+Zv+FbmqumH3NLATf+PARa
+         VGFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739746240; x=1740351040;
+        d=1e100.net; s=20230601; t=1739751019; x=1740355819;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=rwRpTiFhkazH7eZCnzFo4dfJTeXkjVTocPymKPEhdxo=;
-        b=v+cjbNQpIAG0t7d7KhavjRSvFZp3yjbULsfudE7YpkxkI4MTPv+3mF51wJjkOlcE7n
-         77OauOrG8KO04DlN23l7K5v3k5wRXeQE1/fyCTcFncC5YDa0Ylup9oDMC96GZ/KtlRUP
-         BcruDKXHjLNnS1nT1JZJnWmEqn1W5MbA3jaPbyVpUrMyRBDl/96n0FjHLowW5KYcPjoJ
-         J3EkMvnUOLmUEiMUyaY6Et10BteMM/MUTDqf+ocvB4242jGtz64hsqnjvDExYO7H/5cJ
-         jWpJGgQinEAH+mMMOj1EvlfmglOuKbKLwtZS3gmoXojTScLyIWPuZQ6RqLmQ037n4eNm
-         GbUA==
-X-Forwarded-Encrypted: i=1; AJvYcCUph41B+DMA9yuboNms8DGnV6S2mu/wfV1lApzLtd4QwrK/MRIi95onvV3YTBVQFT/u/LP4hwel@vger.kernel.org, AJvYcCW1lMXeM8lCs37Rb+NpgnZQjcOp0pZtU6T9+Bo9f0HP/pt5ZDur1NGXeTxdmdvq7//FiE6VYquOANkHKPM=@vger.kernel.org, AJvYcCWwnuWSGhYx9AUXl4MOQedOKOgNSeKDz3twzMBQnxmvNLCnbVh4j850+pdy4HtA33c3T9/V9/kwX+oWdyfm5Jc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8ByqjWu2yAMm06jFiIRaSg+IRkfmsEml1tIOf9esvbcH7OUAI
-	ZoQS8d1nC8bweaH8+xoXhDRpYMMlVwE/+9ziTuW7hbTh6cjmRcLV
-X-Gm-Gg: ASbGncv1iNFZpmI5vzYi/3Plgzbi61TvpoWAYNYqOQFGYEfhLpwWW47h6/es3WQG6ze
-	wqY6FEJcLnasD0Wyqbla6klKsIrpIUsUr/wsZOsMpgLAavbu9K9wPCvgKTeYcnInHDmNNBPnUk+
-	kR35FCJHgOSPNkJp4QddFRgQrsvYCAqHRytdgkhGhqIOc0+npoqovthtvsqhjUnJ4pzGwUKYbKj
-	BUOEaxKtNLrjOXWRWGz8mT/HO2U/HK9m7/Pjl/GxXLf3+EgeB7QaRbjdif3AbtzRV+j+dVa+BL6
-	FMgRrgakbP/+YeA6nEP3NtOzWmEJ/JCHfRWJCy7VltkDMwuZfkiokSfx4HYi9d4KcerFSx/H
-X-Google-Smtp-Source: AGHT+IE6flqDwVsTpGpc3YTvZ/iHfBKBaGrBtHop4poOhkkBMwzDiFwM8gvHelDmDsGXIxZ3B+QX9g==
-X-Received: by 2002:a17:903:32c3:b0:220:e7ae:dbcf with SMTP id d9443c01a7336-22104039c9cmr81807265ad.23.1739746240046;
-        Sun, 16 Feb 2025 14:50:40 -0800 (PST)
+        bh=YOyckpAB1M5l9vVDvm7vTiKfe8H6EV3gsz1q0DN3TFA=;
+        b=CTtP+UDrGWxlSlcZMLtFDnOTOoM5SupvdEd/WX/7KFpGV+x438cMeJqh4dMDYxzzNs
+         IhVO1jynDYxFvdtj8cjjJzTMIo6/LQd0vrxVamvTN5w5mgWpDeyeuYo0CKRkaXYCmMEw
+         X+19sI8ORI2HyQmNbahTb83NsAKZrGZm+OVlJmwNm6uDnQCCR2w1hSgyxskE6rp52ucl
+         ninp+eAg00naHVZJjZrTD5vZKRg93rVrB5tLDSr0v9ERYO0DSeEpGRG0O3C/NPm3vgob
+         WlG7ZnjQlLtQmZ0yIwryg6+KePOaUKO+b1PLtdHnynALKjIHV7HszeAD3zzDkJ251nij
+         TCCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWjq61v/Tf78EOzyHGEtKdB+Zt4F8a/K3KwNfNHh2ZLvrFvEItygCPqofaOxdavDb1I0bK6o5PMBHQeycPMNVs=@vger.kernel.org, AJvYcCWzzvI7LTPtL5OGXXPCEMhQ1Cl0J1aqmtHIPMZEp8yoe4j/cq26kDvnow5z0MCL1rysLp9zHbw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBFSx390R63NA/qgHhLyAVUScaIQDuXrOhqIeFpdPDrH6rml/K
+	68gcgSEBu8NPvD3pMskZaJlRf2tfmLkTSSUunVl4Ffh3GVZvmSOg
+X-Gm-Gg: ASbGncvoE67pQU28CUcJA4XA5aT8cFqaoUayow/sM9/uB/oU1xnDuvrMLoh79kEtH63
+	X0S9vuDPAsXOKwyyfPRaOPhcqweVL9vDouy0uY4XEBj3C+J3YdOWO4m++RLuthh+2KMgx0ZfsTG
+	a3DxJhmdggLcIv1J5mGWDbsGSSpK8+JCltBeDdNuucIOEmNCcPAz9kia04HIE8iAAvmRQQLpeD1
+	aBPF0fKS8exCURWkvWMebFaFh3s1Efn3hdbw07L4GKd04XnqNGkp1+XLvicmPc75YvdVeIC9wKk
+	lYmIHprRDqG885rzXnxZqSxrmEue34o6JcMZ6Z00qbc1Uc42ha3x5196cYVnfiHfjNBNo3lP
+X-Google-Smtp-Source: AGHT+IEovMlmLAtfgVM28puXaF5TqCZBfp6QtFyYhKBd0gbsDSkEfXrSTPFBNlYbyjCfuM/3623nwA==
+X-Received: by 2002:a17:90b:510c:b0:2ee:53b3:3f1c with SMTP id 98e67ed59e1d1-2fc40d14c1emr11723123a91.5.1739751018763;
+        Sun, 16 Feb 2025 16:10:18 -0800 (PST)
 Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-220d536733fsm60448195ad.77.2025.02.16.14.50.32
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fbf98d05cesm8870850a91.18.2025.02.16.16.10.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Feb 2025 14:50:39 -0800 (PST)
-Date: Mon, 17 Feb 2025 07:50:29 +0900 (JST)
-Message-Id: <20250217.075029.1780115689208398996.fujita.tomonori@gmail.com>
-To: daniel.almeida@collabora.com
-Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, andrew@lunn.ch,
- hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
- alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com,
- anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
- arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
- peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
- dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
- mgorman@suse.de, vschneid@redhat.com, tgunders@redhat.com, me@kloenk.dev
-Subject: Re: [PATCH v10 7/8] rust: Add read_poll_timeout functions
+        Sun, 16 Feb 2025 16:10:18 -0800 (PST)
+Date: Mon, 17 Feb 2025 09:10:08 +0900 (JST)
+Message-Id: <20250217.091008.1729482605084144345.fujita.tomonori@gmail.com>
+To: anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
+ jstultz@google.com, sboyd@kernel.org
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, aliceryhl@google.com, arnd@arndb.de,
+ mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+ vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
+ bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+ tgunders@redhat.com, me@kloenk.dev
+Subject: Re: [PATCH v10 6/8] MAINTAINERS: rust: Add TIMEKEEPING and TIMER
+ abstractions
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CEF87294-8580-4C84-BEA3-EB72E63ED7DF@collabora.com>
-References: <3F610447-C8B9-4F9D-ABDA-31989024D109@collabora.com>
-	<20250214.131330.2062210935756508516.fujita.tomonori@gmail.com>
-	<CEF87294-8580-4C84-BEA3-EB72E63ED7DF@collabora.com>
+In-Reply-To: <20250207132623.168854-7-fujita.tomonori@gmail.com>
+References: <20250207132623.168854-1-fujita.tomonori@gmail.com>
+	<20250207132623.168854-7-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=iso-2022-jp
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 
-On Sun, 16 Feb 2025 09:19:02 -0300
-Daniel Almeida <daniel.almeida@collabora.com> wrote:
+On Fri,  7 Feb 2025 22:26:21 +0900
+FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
 
->>>> +/// Polls periodically until a condition is met or a timeout is reached.
->>>> +///
->>>> +/// ```rust
->>>> +/// use kernel::io::poll::read_poll_timeout;
->>>> +/// use kernel::time::Delta;
->>>> +/// use kernel::sync::{SpinLock, new_spinlock};
->>>> +///
->>>> +/// let lock = KBox::pin_init(new_spinlock!(()), kernel::alloc::flags::GFP_KERNEL)?;
->>>> +/// let g = lock.lock();
->>>> +/// read_poll_timeout(|| Ok(()), |()| true, Delta::from_micros(42), Some(Delta::from_micros(42)));
->>>> +/// drop(g);
->>>> +///
->>>> +/// # Ok::<(), Error>(())
->>> 
->>> IMHO, the example section here needs to be improved.
->> 
->> Do you have any specific ideas?
->> 
->> Generally, this function is used to wait for the hardware to be
->> ready. So I can't think of a nice example.
+> Add Rust TIMEKEEPING and TIMER abstractions to the maintainers entry
+> respectively.
 > 
-> Just pretend that you’re polling some mmio address that indicates whether some hardware
-> block is ready, for example.
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> ---
+>  MAINTAINERS | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> You can use “ignore” if you want, the example just has to illustrate how this function works, really.
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index c8d9e8187eb0..987a25550853 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -10353,6 +10353,7 @@ F:	kernel/time/sleep_timeout.c
+>  F:	kernel/time/timer.c
+>  F:	kernel/time/timer_list.c
+>  F:	kernel/time/timer_migration.*
+> +F:	rust/kernel/time/delay.rs
+>  F:	tools/testing/selftests/timers/
+>  
+>  HIGH-SPEED SCC DRIVER FOR AX.25
+> @@ -23852,6 +23853,7 @@ F:	kernel/time/timeconv.c
+>  F:	kernel/time/timecounter.c
+>  F:	kernel/time/timekeeping*
+>  F:	kernel/time/time_test.c
+> +F:	rust/kernel/time.rs
+>  F:	tools/testing/selftests/timers/
 
-Ah, you use `ignore` comment. I was only considering examples that
-would actually be tested.
+TIMERS and TIMEKEEPING maintainers,
 
-
-> Something like
-> 
-> ```ignore
->  /* R is a fictional type that abstracts a memory-mapped register where `read()` returns Result<u32> */
->  fn wait_for_hardware(ready_register: R) {
->      let op = || ready_register.read()?
-> 
->      // `READY` is some device-specific constant that we are waiting for.
->      let cond =  |value: &u32| { *value == READY }
-> 
->      let res = io::poll::read_poll_timeout (/* fill this with the right arguments */);
-> 
->      /* show how `res` works, is -ETIMEDOUT returned on Err? */
-> 
->      match res {
->        Ok(<what is here?>) => { /* hardware is ready */}
->        Err(e) => { /* explain that *value != READY here? */ }
-> 
->      /* sleep is Option<Delta>, how does this work? i.e.: show both None, and Some(…) with some comments. */
->  } 
-> ```
-> 
-> That’s just a rough draft, but I think it's going to be helpful for users.
-
-I'll add an example based on the code QT2025 PHY (8th patch). It's
-similar to the above.
-
-Thanks,
+You would prefer to add rust files to a separate entry for Rust? Or
+you prefer a different option?
