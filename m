@@ -1,43 +1,43 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3201AD528
-	for <rust-for-linux@vger.kernel.org>; Mon, 17 Feb 2025 00:21:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E428479
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Feb 2025 01:39:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739751685; cv=none; b=n1c5v61q/KTRRkKoIAbW7tE68UhEnfhxqvcF4osq3DGaJDTqMD1/tdYZG9vlgjJMuHgycHcE9OgPPoMeB2P8PSRI5Wyjq7XhLTuWCWbcCOi+PoV1pJkIoxAzsPMFTKmvxLEn5++7sPZ4kALQManS8F3x4miTjFYbQEcPAlB8YmE=
+	t=1739756390; cv=none; b=pmW7P8/Bz85bo7hqzvMlZFnMSJgPRKJSLAnps04sBx1H0oxUn/Xkb8r2tLZAIohhg9OdkAGyZiBe33Snp3H3eO0Iso4lfQNMNklm7iv3LthrvHfcIbROoLrFtA15X5pOpnF6Mb15PiWjYPu/ZzZgbK8YaLXEWa2qj0xUVBuyiVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739751685; c=relaxed/simple;
-	bh=WCG/lAj06OrR+lKbK3UKi69SncQAWptH7uHVK7VD1bs=;
+	s=arc-20240116; t=1739756390; c=relaxed/simple;
+	bh=BuQYXFVdDJPPhv1pziXzthdB75Ya4reXuJeQX0zuavI=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YkMD9s8wsuBY182nno0Gdf5IaMMsM7rYYucCQ9JUFPuzp3ZoYLZial2e6Fzdn+9tbc0g4kiVDGq7KQSY+ePQqvnW22EC5wCfC6s1IRGgluYp4ZudGh2mUbS3p53UIdkGvitc4XCi8w1nbJNMYkYTfeHWx3imlRhpEYpui+LiZQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=DH769yMn; arc=none smtp.client-ip=185.70.43.16
+	 MIME-Version:Content-Type; b=itOgKFukTv51nu5WTBjXHwb0KnXWYVrZDhA2SLax+xTVZLiuj36g6gb++H0WhfZSGdfg2TQpRc6J27xV/C8y5FNhkCFLD7SbQ97vyrRwJlDuf625NDtXMYNjqhImDf6jgLPAnujzDEZLbV4GGPgzAKlteaxoDpISMUEw2GqeEDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=lG3nEJqN; arc=none smtp.client-ip=185.70.40.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="DH769yMn"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="lG3nEJqN"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1739751675; x=1740010875;
-	bh=qB3VQYx7RnSiaMOOBLyFE+y1XndT5PX2EloQky+RacA=;
+	s=protonmail; t=1739756387; x=1740015587;
+	bh=LNKYDRqDPh1bV1rGmlu4ASajTHrQBDpcbKn79N6aAqs=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=DH769yMnTdBBRAP1BY+PfJc8g2dy8E8jKKsw3rAjP4RYBE5vd1EvlWEmWsGoMCvPU
-	 /M+ZNORtOX35ABcXki+C/szkSpx69guzVx1y0XGE5i5BnBlEihKF62PmsRCn1GaY7N
-	 EZYfg6fIqayYoit3WOftAz+CZ513CFY+WPjXz+S0INwCDV443O7FZajQ4GzoxQdPbq
-	 LfeOfyvK5ojHPV1ro+I8a4tHBVrEHfFTMJjj8YdeuWn1vK8dDE0GDoKLnKBCykETVU
-	 8XTyiPO1CjjFUeHSVPUavvKgfnqI+yuUKxmzPPPuI037W6GK9jBu98if0sDiW/CPDL
-	 TvPufMnEkNiBw==
-Date: Mon, 17 Feb 2025 00:21:09 +0000
-To: Andreas Hindborg <a.hindborg@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Joel Becker <jlbec@evilplan.org>, Christoph Hellwig <hch@lst.de>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Fiona Behrens <me@kloenk.dev>, Charalampos Mitrodimas <charmitro@posteo.net>
+	b=lG3nEJqNEfBjTDUxCWnBqj/hJTGFDXPKfruXfQmni+zvYFDHOF5FhOa006u42lSoo
+	 J8ZfqnfJ6A1aZid5svRtTyL9V0LYBURORD5GWbfauiEkissoO/e3tPTfDxAJrzdP+C
+	 LA1hiK9QSIRV+igFN4a44vyMI9yhyTuBGqeA8hGjkGd67hALji1JDCOPgPC8QGLWju
+	 iLH46Ac8dL9+M3smESf7FVjLreryjQ3yMuEYoTINpyD1fol/oMqucC4tOtPUynLscy
+	 PO4zynOWUwWH0mpU1yRzXqyyPQHnh9gSUxE/He/3HTKuWtkT/bs7Z89zek+JR6PVFb
+	 lQ6fzc7jld4Iw==
+Date: Mon, 17 Feb 2025 01:39:40 +0000
+To: Tamir Duberstein <tamird@gmail.com>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Matthew Wilcox <willy@infradead.org>, Bjorn Helgaas <bhelgaas@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, FUJITA Tomonori <fujita.tomonori@gmail.com>, "Rob Herring (Arm)" <robh@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] rust: sync: change `<Arc<T> as ForeignOwnable>::PointedTo` to `T`
-Message-ID: <9f9641de-72ea-4aa1-827c-3bc6c97938b0@proton.me>
-In-Reply-To: <20250207-configfs-v2-1-f7a60b24d38e@kernel.org>
-References: <20250207-configfs-v2-0-f7a60b24d38e@kernel.org> <20250207-configfs-v2-1-f7a60b24d38e@kernel.org>
+Cc: =?utf-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>, Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, Fiona Behrens <me@kloenk.dev>
+Subject: Re: [PATCH v16 2/4] rust: types: add `ForeignOwnable::PointedTo`
+Message-ID: <96d799a7-ec70-4d3f-951b-52c56b545255@proton.me>
+In-Reply-To: <20250207-rust-xarray-bindings-v16-2-256b0cf936bd@gmail.com>
+References: <20250207-rust-xarray-bindings-v16-0-256b0cf936bd@gmail.com> <20250207-rust-xarray-bindings-v16-2-256b0cf936bd@gmail.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: a5099023aa2f2ab4d90b3c3db77daaa097752d5b
+X-Pm-Message-ID: 74555bcf96b0441dbbd7381c1fe15a43bf637c32
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,114 +47,66 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 07.02.25 15:41, Andreas Hindborg wrote:
-> Using `ArcInner` as `PoinedTo` in the `ForeignOwnable` implementation for
-> `Arc` is a bit unfortunate. Using `T` as `PointedTo` does not remove any
-> functionality, but allows `ArcInner` to be private. Further, it allows
-> downstream users to write code that is generic over `Box` and `Arc`, when
-> downstream users need access to `T` after calling `into_foreign`.
+On 07.02.25 14:58, Tamir Duberstein wrote:
+> Allow implementors to specify the foreign pointer type; this exposes
+> information about the pointed-to type such as its alignment.
 >=20
+> This requires the trait to be `unsafe` since it is now possible for
+> implementors to break soundness by returning a misaligned pointer.
+>=20
+> Encoding the pointer type in the trait (and avoiding pointer casts)
+> allows the compiler to check that implementors return the correct
+> pointer type. This is preferable to directly encoding the alignment in
+> the trait using a constant as the compiler would be unable to check it.
+>=20
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
 > Reviewed-by: Fiona Behrens <me@kloenk.dev>
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-
-Two nits below, but this looks good regardless, so:
-
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 > ---
->=20
-> This patch is a dependency for Rust `configfs` abstractions. It allows bo=
-th
-> `Box` and `Arc` to be used as pointer types in the `configfs` hierarchy.
-> ---
->  rust/kernel/sync/arc.rs | 21 ++++++++++++++++-----
->  1 file changed, 16 insertions(+), 5 deletions(-)
->=20
-> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index dfe4abf82c25c..503e318b4c4ef 100644
-> --- a/rust/kernel/sync/arc.rs
-> +++ b/rust/kernel/sync/arc.rs
-> @@ -143,7 +143,7 @@ pub struct Arc<T: ?Sized> {
->  #[doc(hidden)]
->  #[pin_data]
->  #[repr(C)]
-> -pub struct ArcInner<T: ?Sized> {
-> +struct ArcInner<T: ?Sized> {
->      refcount: Opaque<bindings::refcount_t>,
->      data: T,
->  }
-> @@ -345,18 +345,25 @@ pub fn into_unique_or_drop(self) -> Option<Pin<Uniq=
-ueArc<T>>> {
->=20
->  // SAFETY: The `into_foreign` function returns a pointer that is well-al=
-igned.
->  unsafe impl<T: 'static> ForeignOwnable for Arc<T> {
-> -    type PointedTo =3D ArcInner<T>;
-> +    type PointedTo =3D T;
->      type Borrowed<'a> =3D ArcBorrow<'a, T>;
->      type BorrowedMut<'a> =3D Self::Borrowed<'a>;
->=20
->      fn into_foreign(self) -> *mut Self::PointedTo {
-> -        ManuallyDrop::new(self).ptr.as_ptr()
-> +        let x =3D ManuallyDrop::new(self).ptr.as_ptr();
+>  rust/kernel/alloc/kbox.rs | 38 ++++++++++++++++++++------------------
+>  rust/kernel/miscdevice.rs |  7 ++++++-
+>  rust/kernel/pci.rs        |  2 ++
+>  rust/kernel/platform.rs   |  2 ++
+>  rust/kernel/sync/arc.rs   | 21 ++++++++++++---------
+>  rust/kernel/types.rs      | 46 +++++++++++++++++++++++++++++++----------=
+-----
+>  6 files changed, 73 insertions(+), 43 deletions(-)
 
-I would normally name such a variable `this`, but it's fine as-is.
+When compiling this (on top of rust-next), I get the following error:
 
-> +        // SAFETY: `x` is a valid pointer to `Self` so the projection be=
-low is
-> +        // in bounds of the allocation.
-> +        unsafe { core::ptr::addr_of_mut!((*x).data) }
->      }
->=20
->      unsafe fn from_foreign(ptr: *mut Self::PointedTo) -> Self {
-> +        // SAFETY: We did the reverse offset calculation in `into_foreig=
-n`, so
-> +        // the offset calculation below is in bounds of the allocation.
-> +        let inner_ptr =3D unsafe { kernel::container_of!(ptr, ArcInner<T=
->, data).cast_mut() };
-> +
->          // SAFETY: The safety requirements of this function ensure that =
-`ptr` comes from a previous
->          // call to `Self::into_foreign`.
-> -        let inner =3D unsafe { NonNull::new_unchecked(ptr) };
-> +        let inner =3D unsafe { NonNull::new_unchecked(inner_ptr) };
->=20
->          // SAFETY: By the safety requirement of this function, we know t=
-hat `ptr` came from
->          // a previous call to `Arc::into_foreign`, which guarantees that=
- `ptr` is valid and
-> @@ -365,9 +372,13 @@ unsafe fn from_foreign(ptr: *mut Self::PointedTo) ->=
- Self {
->      }
->=20
->      unsafe fn borrow<'a>(ptr: *mut Self::PointedTo) -> ArcBorrow<'a, T> =
-{
-> +        // SAFETY: We did the reverse offset calculation in `into_foreig=
-n`, so
-> +        // the offset calculation below is in bounds of the allocation.
-> +        let inner_ptr =3D unsafe { kernel::container_of!(ptr, ArcInner<T=
->, data).cast_mut() };
+    error[E0308]: mismatched types
+       --> rust/kernel/miscdevice.rs:300:62
+        |
+    300 |     let device =3D unsafe { <T::Ptr as ForeignOwnable>::borrow(pr=
+ivate) };
+        |                           ---------------------------------- ^^^^=
+^^^ expected `*mut <<T as MiscDevice>::Ptr as ForeignOwnable>::PointedTo`, =
+found `*mut c_void`
+        |                           |
+        |                           arguments to this function are incorrec=
+t
+        |
+        =3D note: expected raw pointer `*mut <<T as MiscDevice>::Ptr as For=
+eignOwnable>::PointedTo`
+                   found raw pointer `*mut c_void`
+        =3D help: consider constraining the associated type `<<T as MiscDev=
+ice>::Ptr as ForeignOwnable>::PointedTo` to `c_void` or calling a method th=
+at returns `<<T as MiscDevice>::Ptr as ForeignOwnable>::PointedTo`
+        =3D note: for more information, visit https://doc.rust-lang.org/boo=
+k/ch19-03-advanced-traits.html
+    note: associated function defined here
+       --> rust/kernel/types.rs:98:15
+        |
+    98  |     unsafe fn borrow<'a>(ptr: *mut Self::PointedTo) -> Self::Borr=
+owed<'a>;
+        |               ^^^^^^
+   =20
+    error: aborting due to 1 previous error
 
-You could call this variable `ptr` and avoid the change below, but
-either way is fine.
+Can anyone reproduce?
 
 ---
 Cheers,
 Benno
-
-> +
->          // SAFETY: The safety requirements of this function ensure that =
-`ptr` comes from a previous
->          // call to `Self::into_foreign`.
-> -        let inner =3D unsafe { NonNull::new_unchecked(ptr) };
-> +        let inner =3D unsafe { NonNull::new_unchecked(inner_ptr) };
->=20
->          // SAFETY: The safety requirements of `from_foreign` ensure that=
- the object remains alive
->          // for the lifetime of the returned value.
->=20
-> --
-> 2.47.0
->=20
->=20
 
