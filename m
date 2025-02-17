@@ -1,153 +1,248 @@
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97ADD372;
-	Mon, 17 Feb 2025 20:48:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FDF8226545;
+	Mon, 17 Feb 2025 21:07:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739825289; cv=none; b=AG23b7GfoCiz/+Za38QO8BzugGDkig4n4BCyno62QEnMicdSrEwD36tIztdlbxV4EEafzhdk/ogpGFqF9i2X+cVeHuj36Fwq1e6B52WbpB3es2uVBp/caxBhl5eE8xUCSiN2aqy+4bYX+ivBFFxTyqLrQhKrC3O6w+N6jzynp/A=
+	t=1739826472; cv=none; b=QPG36kWh5G8TTlpRpoXlW/RU0Dtju3z8MhDlLNeN7ZSVi1MVGR7Ee95YTt8QtyhaInJd6TJCWWJTRg80Df+oBICYrUYhGVXDqg1aaeSRUBbbgoAUuDpeHq8l4bzG2a8BIgig8/Kn+5imROpDfR9NEo7SNLLy7gyQiv49yvPcm2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739825289; c=relaxed/simple;
-	bh=sI5r+O0It/cjZ9CmL0lR7e4Q/GPxg0ZGywqZjOSz+vs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MPnkKX8ovo4CQXaO7pjaHnj4FBCGyDIyJ5azg/0DHDkVaD25AIlLdHZpqPyqnMuisEhsc/PzkK1jlgaJxnml6P/NQ2G4rH8p5GNqte/RcHTXcEE1ZYHhb1ybKXJvO3sL/wBNxrq0HWUI09x/n7DCm0zhJbbn5xPV7PC6tAJ5mYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wbb0lRqS; arc=none smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1739826472; c=relaxed/simple;
+	bh=LsYRpOjpOL3V/STxpqzTCiQRToI3srOvQgLq+WUoynM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=M6oFzLMKsUHS3jr0ZfGmeJexgXez+o8mSyCjMIkPr7EQK+saMJnN6VJ5vPZHF4dd3CrtZY6buCVF6oQycVtcgDB8HvgnIMRNIbrlFWxvBabeOQ+pdA7domDvEIKh77nZYmy4L876ps9KSA7RGrgldtIUEoKwCFJtFiLhq3IPbZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=X6zfjovR; arc=none smtp.client-ip=49.12.72.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wbb0lRqS"
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-30920855d5bso34950281fa.0;
-        Mon, 17 Feb 2025 12:48:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739825285; x=1740430085; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PBnEtgDXrS3Iq43NK/WiujJi82KZNp8oMdM7dL15NAw=;
-        b=Wbb0lRqSCn6gUB0uV5hD95+fQNHTMixflJChN7TOs76bEdk4HWZJsZJ+OWOWC0mW43
-         7/4V/6GJBZIWKQ265DJSNCAuBPmf5SUaj+2UiXmC0+iLj8VoxVvSjfGtuEx6Jjb5RYYr
-         2F32Xz2NAhz323eFEeIiBdjwlXcmnxZzcD3KnsCTzyuFFa9hH09NYSTmk0Q9QwbOR1MI
-         6qqMkCGU7M2ZBn7qLdyROyhcEvhq1dwoT2kt9SrQf07nt7M7vDY1YPpb2Hsp2FDsWkbn
-         AqVYuwCMQkt4D4j5QD1YiaFSB8dXKQolHI+BonTIQzvQS2IcfvrHBpd/KzhNp0uNAodQ
-         /kuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739825285; x=1740430085;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PBnEtgDXrS3Iq43NK/WiujJi82KZNp8oMdM7dL15NAw=;
-        b=HCD8hOudSbFXRQmTE+seSq6wHqut243jabmgp84qXlWlQN2Z1FElhAv8Lduk4Q9yhF
-         W5JJdXQdfA0IqYl6xzqo1GFh4+zggGskG1/igPakUnqKV30D0Bk6wUeBQAxK42tSixJf
-         KOFaK0nHzqFCWltO4/tl8a9Zo+Xyvbd4JUF+Yl1eyLc9GRxvwdEUHaMPTPgRCQRkHeEs
-         crG5tMMM4Toch7pCZK3Km+LpqJ1nHT4e6h7WCDaR4FWx481x+wVFYkT5BSuR81pdHNIv
-         TmXM8OISDY66aswW69NLdZ7xB/wbuBAp1YAokvO1QTdSozaVMmbzoEW8QriDu1Pggt4e
-         XZEA==
-X-Forwarded-Encrypted: i=1; AJvYcCU/X7jSLB/e/tdm/74jMA9Gq8vGo5FGZTSmjcW6T4//tiFZrNnJQBQ5u1FdhV76Sf7jDq6WRf9Ek1UUni8Qf5c=@vger.kernel.org, AJvYcCXqIQCKHAmp/kNndMxfBWRbzjCWyJqXaLl4OxLl7Kwosx+vUAVDkRnzlLjmx3k2GqAmkVCWKYZ1q51RC10=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgTdhHij2Hus4TGi5IyXyROSwf+wSvrxv5Y0NGThraPK2IqUZM
-	h36CerTq0ivsnLzoomYJgHLBHbvIV9KQeNSLkZuVqNjrnbwXltXWKl6YadIBQTRDttpdOxh9Xt9
-	oMrseGAemHIf2OutnFb4nLxbOYBzxaoWQh6Q=
-X-Gm-Gg: ASbGnctXaeLlrL+r9noiJVHGuZDme+6MI8Y2gLIDOQFx/GsHVStDoxI7V46jeFbWToD
-	zxXL/mJ6b8JVGMYNj1h3HJJIb874Pi9tlOMR+XT+1Ml4ToYMSXSVePpzWFfCfg/XdBL5dHAM=
-X-Google-Smtp-Source: AGHT+IE2HIK55IZ0WC8oiPzUGf3+qIkZjooYuFgwlxN7ic0lMuYmKdXdCrYqMbDIIPjb16hn+uYvN37aRRh2Mmw54r8=
-X-Received: by 2002:a2e:8615:0:b0:309:1f1a:276b with SMTP id
- 38308e7fff4ca-309288dd3d9mr24735151fa.10.1739825285303; Mon, 17 Feb 2025
- 12:48:05 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="X6zfjovR"
+From: Fiona Behrens <me@kloenk.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
+	t=1739825928; bh=BRHWXSncwQHxJEXz+lPaEWqa58lv4Bor0CGJfRHxbg8=;
+	h=From:Date:Subject:To:Cc;
+	b=X6zfjovRH7NkXptn/J6mtDR9BX1owDj0vx8EV5djizyPDLDXxE8bLKkwQ71nb7SUg
+	 VtH09O2H2PNU8NmTSQ5qbQ+k+FdeSwYyoTq7IMbClzFWK79RfKpPMGLgH1PvvpaZmH
+	 AZtwS6REop8NX1W58OuDmboOfIPviUDnpE24sC2k=
+Date: Mon, 17 Feb 2025 21:58:14 +0100
+Subject: [PATCH] rust: io: rename `io::Io` accessors
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250217-nova_timer-v1-0-78c5ace2d987@nvidia.com> <20250217-nova_timer-v1-1-78c5ace2d987@nvidia.com>
-In-Reply-To: <20250217-nova_timer-v1-1-78c5ace2d987@nvidia.com>
-From: =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
-Date: Mon, 17 Feb 2025 21:47:29 +0100
-X-Gm-Features: AWEUYZkhMupaOKDqUFGG02klV236GSJkG6vgCUJ5hwk1HNdZbu8uVT8mYAd_O24
-Message-ID: <CAA76j90OV5OpCVLGFrGVL4-DRSFreZDj8FUmx_nkOq9HL1x2cQ@mail.gmail.com>
-Subject: Re: [PATCH RFC 1/3] rust: add useful ops for u64
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, 
-	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250217-io-generic-rename-v1-1-06d97a9e3179@kloenk.dev>
+X-B4-Tracking: v=1; b=H4sIAOWis2cC/x3MQQqAIBBA0avErBswy4KuEi1MR5tFUyhEIN09a
+ fkX7xfIlJgyzE2BRDdnPqVG1zbgdiuRkH1t0EobpbsJ+cRIUpHDRGIPQqN9b4PZhrEPUN2VKPD
+ zP5f1fT9gApy0YwAAAA==
+X-Change-ID: 20250217-io-generic-rename-52d3af5b463f
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Bjorn Helgaas <bhelgaas@google.com>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-pci@vger.kernel.org, Fiona Behrens <me@kloenk.dev>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7615; i=me@kloenk.dev;
+ h=from:subject:message-id; bh=LsYRpOjpOL3V/STxpqzTCiQRToI3srOvQgLq+WUoynM=;
+ b=owJ4nJvAy8zAJdbGuXyr5NPHToyn1ZIY0jcv+n/TearU7Binj3UPrrXaX8ufesZINmrV44PFF
+ xsatwapOO7qKGVhEONikBVTZNnidf/+j8xlWfb373bDzGFlAhnCwMUpABPJ3Mfwz+5N3OuTYjd9
+ 4p/23YmUebR7y1GPXquAgsTprs519xZoTGP4767yYn6X6k6r8utWjqEZJjkCNae4JbddlHKzP9m
+ xbUIFDwDSDk9S
+X-Developer-Key: i=me@kloenk.dev; a=openpgp;
+ fpr=B44ADFDFF869A66A3FDFDD8B8609A7B519E5E342
 
-On Mon, 17 Feb 2025 at 15:07, Alexandre Courbot <acourbot@nvidia.com> wrote=
-:
->
-> It is common to build a u64 from its high and low parts obtained from
-> two 32-bit registers. Conversely, it is also common to split a u64 into
-> two u32s to write them into registers. Add an extension trait for u64
-> that implement these methods in a new `num` module.
->
-> It is expected that this trait will be extended with other useful
-> operations, and similar extension traits implemented for other types.
->
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-> ---
->  rust/kernel/lib.rs |  1 +
->  rust/kernel/num.rs | 32 ++++++++++++++++++++++++++++++++
->  2 files changed, 33 insertions(+)
->
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 496ed32b0911a9fdbce5d26738b9cf7ef910b269..8c0c7c20a16aa96e3d3e444be=
-3e03878650ddf77 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -59,6 +59,7 @@
->  pub mod miscdevice;
->  #[cfg(CONFIG_NET)]
->  pub mod net;
-> +pub mod num;
->  pub mod of;
->  pub mod page;
->  #[cfg(CONFIG_PCI)]
-> diff --git a/rust/kernel/num.rs b/rust/kernel/num.rs
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..5e714cbda4575b8d74f506605=
-80dc4c5683f8c2b
-> --- /dev/null
-> +++ b/rust/kernel/num.rs
-> @@ -0,0 +1,32 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Numerical and binary utilities for primitive types.
-> +
-> +/// Useful operations for `u64`.
-> +pub trait U64Ext {
-> +    /// Build a `u64` by combining its `high` and `low` parts.
-> +    ///
-> +    /// ```
-> +    /// use kernel::num::U64Ext;
-> +    /// assert_eq!(u64::from_u32s(0x01234567, 0x89abcdef), 0x01234567_89=
-abcdef);
-> +    /// ```
-> +    fn from_u32s(high: u32, low: u32) -> Self;
-> +
-> +    /// Returns the `(high, low)` u32s that constitute `self`.
-> +    ///
-> +    /// ```
-> +    /// use kernel::num::U64Ext;
-> +    /// assert_eq!(u64::into_u32s(0x01234567_89abcdef), (0x1234567, 0x89=
-abcdef));
-> +    /// ```
-> +    fn into_u32s(self) -> (u32, u32);
-> +}
-> +
-> +impl U64Ext for u64 {
-> +    fn from_u32s(high: u32, low: u32) -> Self {
-> +        ((high as u64) << u32::BITS) | low as u64
-> +    }
-> +
-> +    fn into_u32s(self) -> (u32, u32) {
-> +        ((self >> u32::BITS) as u32, self as u32)
-> +    }
-> +}
->
-> --
-> 2.48.1
->
->
-Looks good :)
-Reviewed-by: Sergio Gonz=C3=A1lez Collado <sergio.collado@gmail.com>
+Rename the I/O accessors provided by `Io` to encode the type as
+number instead of letter. This is in preparation for Port I/O support
+to use a trait for generic accessors.
+
+Add a `c_fn` argument to the accessor generation macro to translate
+between rust and C names.
+
+Suggested-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/PIO.20support/near/499460541
+Signed-off-by: Fiona Behrens <me@kloenk.dev>
+---
+ rust/kernel/io.rs               | 66 ++++++++++++++++++++---------------------
+ samples/rust/rust_driver_pci.rs | 12 ++++----
+ 2 files changed, 39 insertions(+), 39 deletions(-)
+
+diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+index d4a73e52e3ee68f7b558749ed0108acde92ae5fe..72d80a6f131e3e826ecd9d2c3bcf54e89aa60cc3 100644
+--- a/rust/kernel/io.rs
++++ b/rust/kernel/io.rs
+@@ -98,9 +98,9 @@ pub fn maxsize(&self) -> usize {
+ ///# fn no_run() -> Result<(), Error> {
+ /// // SAFETY: Invalid usage for example purposes.
+ /// let iomem = unsafe { IoMem::<{ core::mem::size_of::<u32>() }>::new(0xBAAAAAAD)? };
+-/// iomem.writel(0x42, 0x0);
+-/// assert!(iomem.try_writel(0x42, 0x0).is_ok());
+-/// assert!(iomem.try_writel(0x42, 0x4).is_err());
++/// iomem.write32(0x42, 0x0);
++/// assert!(iomem.try_write32(0x42, 0x0).is_ok());
++/// assert!(iomem.try_write32(0x42, 0x4).is_err());
+ /// # Ok(())
+ /// # }
+ /// ```
+@@ -108,7 +108,7 @@ pub fn maxsize(&self) -> usize {
+ pub struct Io<const SIZE: usize = 0>(IoRaw<SIZE>);
+ 
+ macro_rules! define_read {
+-    ($(#[$attr:meta])* $name:ident, $try_name:ident, $type_name:ty) => {
++    ($(#[$attr:meta])* $name:ident, $try_name:ident, $c_fn:ident -> $type_name:ty) => {
+         /// Read IO data from a given offset known at compile time.
+         ///
+         /// Bound checks are performed on compile time, hence if the offset is not known at compile
+@@ -119,7 +119,7 @@ pub fn $name(&self, offset: usize) -> $type_name {
+             let addr = self.io_addr_assert::<$type_name>(offset);
+ 
+             // SAFETY: By the type invariant `addr` is a valid address for MMIO operations.
+-            unsafe { bindings::$name(addr as _) }
++            unsafe { bindings::$c_fn(addr as _) }
+         }
+ 
+         /// Read IO data from a given offset.
+@@ -131,13 +131,13 @@ pub fn $try_name(&self, offset: usize) -> Result<$type_name> {
+             let addr = self.io_addr::<$type_name>(offset)?;
+ 
+             // SAFETY: By the type invariant `addr` is a valid address for MMIO operations.
+-            Ok(unsafe { bindings::$name(addr as _) })
++            Ok(unsafe { bindings::$c_fn(addr as _) })
+         }
+     };
+ }
+ 
+ macro_rules! define_write {
+-    ($(#[$attr:meta])* $name:ident, $try_name:ident, $type_name:ty) => {
++    ($(#[$attr:meta])* $name:ident, $try_name:ident, $c_fn:ident <- $type_name:ty) => {
+         /// Write IO data from a given offset known at compile time.
+         ///
+         /// Bound checks are performed on compile time, hence if the offset is not known at compile
+@@ -148,7 +148,7 @@ pub fn $name(&self, value: $type_name, offset: usize) {
+             let addr = self.io_addr_assert::<$type_name>(offset);
+ 
+             // SAFETY: By the type invariant `addr` is a valid address for MMIO operations.
+-            unsafe { bindings::$name(value, addr as _, ) }
++            unsafe { bindings::$c_fn(value, addr as _, ) }
+         }
+ 
+         /// Write IO data from a given offset.
+@@ -160,7 +160,7 @@ pub fn $try_name(&self, value: $type_name, offset: usize) -> Result {
+             let addr = self.io_addr::<$type_name>(offset)?;
+ 
+             // SAFETY: By the type invariant `addr` is a valid address for MMIO operations.
+-            unsafe { bindings::$name(value, addr as _) }
++            unsafe { bindings::$c_fn(value, addr as _) }
+             Ok(())
+         }
+     };
+@@ -218,43 +218,43 @@ fn io_addr_assert<U>(&self, offset: usize) -> usize {
+         self.addr() + offset
+     }
+ 
+-    define_read!(readb, try_readb, u8);
+-    define_read!(readw, try_readw, u16);
+-    define_read!(readl, try_readl, u32);
++    define_read!(read8, try_read8, readb -> u8);
++    define_read!(read16, try_read16, readw -> u16);
++    define_read!(read32, try_read32, readl -> u32);
+     define_read!(
+         #[cfg(CONFIG_64BIT)]
+-        readq,
+-        try_readq,
+-        u64
++        read64,
++        try_read64,
++        readq -> u64
+     );
+ 
+-    define_read!(readb_relaxed, try_readb_relaxed, u8);
+-    define_read!(readw_relaxed, try_readw_relaxed, u16);
+-    define_read!(readl_relaxed, try_readl_relaxed, u32);
++    define_read!(read8_relaxed, try_read8_relaxed, readb_relaxed -> u8);
++    define_read!(read16_relaxed, try_read16_relaxed, readw_relaxed -> u16);
++    define_read!(read32_relaxed, try_read32_relaxed, readl_relaxed -> u32);
+     define_read!(
+         #[cfg(CONFIG_64BIT)]
+-        readq_relaxed,
+-        try_readq_relaxed,
+-        u64
++        read64_relaxed,
++        try_read64_relaxed,
++        readq_relaxed -> u64
+     );
+ 
+-    define_write!(writeb, try_writeb, u8);
+-    define_write!(writew, try_writew, u16);
+-    define_write!(writel, try_writel, u32);
++    define_write!(write8, try_write8, writeb <- u8);
++    define_write!(write16, try_write16, writew <- u16);
++    define_write!(write32, try_write32, writel <- u32);
+     define_write!(
+         #[cfg(CONFIG_64BIT)]
+-        writeq,
+-        try_writeq,
+-        u64
++        write64,
++        try_write64,
++        writeq <- u64
+     );
+ 
+-    define_write!(writeb_relaxed, try_writeb_relaxed, u8);
+-    define_write!(writew_relaxed, try_writew_relaxed, u16);
+-    define_write!(writel_relaxed, try_writel_relaxed, u32);
++    define_write!(write8_relaxed, try_write8_relaxed, writeb_relaxed <- u8);
++    define_write!(write16_relaxed, try_write16_relaxed, writew_relaxed <- u16);
++    define_write!(write32_relaxed, try_write32_relaxed, writel_relaxed <- u32);
+     define_write!(
+         #[cfg(CONFIG_64BIT)]
+-        writeq_relaxed,
+-        try_writeq_relaxed,
+-        u64
++        write64_relaxed,
++        try_write64_relaxed,
++        writeq_relaxed <- u64
+     );
+ }
+diff --git a/samples/rust/rust_driver_pci.rs b/samples/rust/rust_driver_pci.rs
+index 1fb6e44f33951c521c8b086a7a3a012af911cf26..ddc52db71a82a79657ec53025f9ef81d620516fc 100644
+--- a/samples/rust/rust_driver_pci.rs
++++ b/samples/rust/rust_driver_pci.rs
+@@ -43,17 +43,17 @@ struct SampleDriver {
+ impl SampleDriver {
+     fn testdev(index: &TestIndex, bar: &Bar0) -> Result<u32> {
+         // Select the test.
+-        bar.writeb(index.0, Regs::TEST);
++        bar.write8(index.0, Regs::TEST);
+ 
+-        let offset = u32::from_le(bar.readl(Regs::OFFSET)) as usize;
+-        let data = bar.readb(Regs::DATA);
++        let offset = u32::from_le(bar.read32(Regs::OFFSET)) as usize;
++        let data = bar.read8(Regs::DATA);
+ 
+         // Write `data` to `offset` to increase `count` by one.
+         //
+-        // Note that we need `try_writeb`, since `offset` can't be checked at compile-time.
+-        bar.try_writeb(data, offset)?;
++        // Note that we need `try_write8`, since `offset` can't be checked at compile-time.
++        bar.try_write8(data, offset)?;
+ 
+-        Ok(bar.readl(Regs::COUNT))
++        Ok(bar.read32(Regs::COUNT))
+     }
+ }
+ 
+
+---
+base-commit: 2408a807bfc3f738850ef5ad5e3fd59d66168996
+change-id: 20250217-io-generic-rename-52d3af5b463f
+
+Best regards,
+-- 
+Fiona Behrens <me@kloenk.dev>
+
