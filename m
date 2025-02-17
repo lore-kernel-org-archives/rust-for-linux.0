@@ -1,121 +1,160 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FAB372;
-	Mon, 17 Feb 2025 00:10:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3201AD528
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Feb 2025 00:21:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739751021; cv=none; b=bmTvjXIU20hT0JsDaSovLurPoFPgUdIJpUb9MExlInfUfPhMAHyKqirpJ8JaIaXJCh+zRPR2wnjdtVk/lGRHuyWZic1btWKY0qGcfncN/LrDUj8WexlfEYWcnpIFbt/738rVRe0EstBwi35xPwvbjQWRwnH/ZnsCV2Prv8aeJ84=
+	t=1739751685; cv=none; b=n1c5v61q/KTRRkKoIAbW7tE68UhEnfhxqvcF4osq3DGaJDTqMD1/tdYZG9vlgjJMuHgycHcE9OgPPoMeB2P8PSRI5Wyjq7XhLTuWCWbcCOi+PoV1pJkIoxAzsPMFTKmvxLEn5++7sPZ4kALQManS8F3x4miTjFYbQEcPAlB8YmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739751021; c=relaxed/simple;
-	bh=3cbz5T9dWjwcE8bACWKVwDdL67Jyo8olEYlqpTmJe60=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=njq5edk3A1BwX/atZ1iUnFM7073Xkr0Z9eN2MqhOcShRLzs31ndiJ+5slkaE+MSOoxhNCy3dnbl+qBZ69MgIK2jT4K4lM/XVgItCi2/0acuETyssg9c48JsRIrej6dhRJ6kO2DO2Uxf0mgbyzMvO0Bt7ecPrSncranaV/F4c6OU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kQegHQV6; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1739751685; c=relaxed/simple;
+	bh=WCG/lAj06OrR+lKbK3UKi69SncQAWptH7uHVK7VD1bs=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YkMD9s8wsuBY182nno0Gdf5IaMMsM7rYYucCQ9JUFPuzp3ZoYLZial2e6Fzdn+9tbc0g4kiVDGq7KQSY+ePQqvnW22EC5wCfC6s1IRGgluYp4ZudGh2mUbS3p53UIdkGvitc4XCi8w1nbJNMYkYTfeHWx3imlRhpEYpui+LiZQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=DH769yMn; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kQegHQV6"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2fbffe0254fso7065473a91.3;
-        Sun, 16 Feb 2025 16:10:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739751019; x=1740355819; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YOyckpAB1M5l9vVDvm7vTiKfe8H6EV3gsz1q0DN3TFA=;
-        b=kQegHQV6lFPmm+gfoZaOFtzKHR2QpomQMEGBj1AHX9VM7r1ZeMrnvFHlawVD9zodaY
-         iHdN+B1no2lbSjou5sUid17HM82NPFpLooNhNLjiQ9rnKTYppjBrrQ3xJvlEyKyMC4ia
-         YiqYfAOpBbwO77sydXMp/ZcQG0i+jZznmDY8Eq7VwOhCZoeaaYz1fWKVZBK/8PtjrVJK
-         2v3EC4jB+uuS4qt+RcYjYq0fDOYy8DQ/Ca8tlVlZfHO2FEci0cB91V3vmvIVK2yDzSA1
-         KsBq3A0+TnN9dx9KWypgDMxvRx78EYewH03GSmg6d2G6K6+Zv+FbmqumH3NLATf+PARa
-         VGFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739751019; x=1740355819;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=YOyckpAB1M5l9vVDvm7vTiKfe8H6EV3gsz1q0DN3TFA=;
-        b=CTtP+UDrGWxlSlcZMLtFDnOTOoM5SupvdEd/WX/7KFpGV+x438cMeJqh4dMDYxzzNs
-         IhVO1jynDYxFvdtj8cjjJzTMIo6/LQd0vrxVamvTN5w5mgWpDeyeuYo0CKRkaXYCmMEw
-         X+19sI8ORI2HyQmNbahTb83NsAKZrGZm+OVlJmwNm6uDnQCCR2w1hSgyxskE6rp52ucl
-         ninp+eAg00naHVZJjZrTD5vZKRg93rVrB5tLDSr0v9ERYO0DSeEpGRG0O3C/NPm3vgob
-         WlG7ZnjQlLtQmZ0yIwryg6+KePOaUKO+b1PLtdHnynALKjIHV7HszeAD3zzDkJ251nij
-         TCCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWjq61v/Tf78EOzyHGEtKdB+Zt4F8a/K3KwNfNHh2ZLvrFvEItygCPqofaOxdavDb1I0bK6o5PMBHQeycPMNVs=@vger.kernel.org, AJvYcCWzzvI7LTPtL5OGXXPCEMhQ1Cl0J1aqmtHIPMZEp8yoe4j/cq26kDvnow5z0MCL1rysLp9zHbw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBFSx390R63NA/qgHhLyAVUScaIQDuXrOhqIeFpdPDrH6rml/K
-	68gcgSEBu8NPvD3pMskZaJlRf2tfmLkTSSUunVl4Ffh3GVZvmSOg
-X-Gm-Gg: ASbGncvoE67pQU28CUcJA4XA5aT8cFqaoUayow/sM9/uB/oU1xnDuvrMLoh79kEtH63
-	X0S9vuDPAsXOKwyyfPRaOPhcqweVL9vDouy0uY4XEBj3C+J3YdOWO4m++RLuthh+2KMgx0ZfsTG
-	a3DxJhmdggLcIv1J5mGWDbsGSSpK8+JCltBeDdNuucIOEmNCcPAz9kia04HIE8iAAvmRQQLpeD1
-	aBPF0fKS8exCURWkvWMebFaFh3s1Efn3hdbw07L4GKd04XnqNGkp1+XLvicmPc75YvdVeIC9wKk
-	lYmIHprRDqG885rzXnxZqSxrmEue34o6JcMZ6Z00qbc1Uc42ha3x5196cYVnfiHfjNBNo3lP
-X-Google-Smtp-Source: AGHT+IEovMlmLAtfgVM28puXaF5TqCZBfp6QtFyYhKBd0gbsDSkEfXrSTPFBNlYbyjCfuM/3623nwA==
-X-Received: by 2002:a17:90b:510c:b0:2ee:53b3:3f1c with SMTP id 98e67ed59e1d1-2fc40d14c1emr11723123a91.5.1739751018763;
-        Sun, 16 Feb 2025 16:10:18 -0800 (PST)
-Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fbf98d05cesm8870850a91.18.2025.02.16.16.10.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Feb 2025 16:10:18 -0800 (PST)
-Date: Mon, 17 Feb 2025 09:10:08 +0900 (JST)
-Message-Id: <20250217.091008.1729482605084144345.fujita.tomonori@gmail.com>
-To: anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
- jstultz@google.com, sboyd@kernel.org
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
- tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- a.hindborg@samsung.com, aliceryhl@google.com, arnd@arndb.de,
- mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
- vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
- bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
- tgunders@redhat.com, me@kloenk.dev
-Subject: Re: [PATCH v10 6/8] MAINTAINERS: rust: Add TIMEKEEPING and TIMER
- abstractions
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <20250207132623.168854-7-fujita.tomonori@gmail.com>
-References: <20250207132623.168854-1-fujita.tomonori@gmail.com>
-	<20250207132623.168854-7-fujita.tomonori@gmail.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="DH769yMn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1739751675; x=1740010875;
+	bh=qB3VQYx7RnSiaMOOBLyFE+y1XndT5PX2EloQky+RacA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=DH769yMnTdBBRAP1BY+PfJc8g2dy8E8jKKsw3rAjP4RYBE5vd1EvlWEmWsGoMCvPU
+	 /M+ZNORtOX35ABcXki+C/szkSpx69guzVx1y0XGE5i5BnBlEihKF62PmsRCn1GaY7N
+	 EZYfg6fIqayYoit3WOftAz+CZ513CFY+WPjXz+S0INwCDV443O7FZajQ4GzoxQdPbq
+	 LfeOfyvK5ojHPV1ro+I8a4tHBVrEHfFTMJjj8YdeuWn1vK8dDE0GDoKLnKBCykETVU
+	 8XTyiPO1CjjFUeHSVPUavvKgfnqI+yuUKxmzPPPuI037W6GK9jBu98if0sDiW/CPDL
+	 TvPufMnEkNiBw==
+Date: Mon, 17 Feb 2025 00:21:09 +0000
+To: Andreas Hindborg <a.hindborg@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Joel Becker <jlbec@evilplan.org>, Christoph Hellwig <hch@lst.de>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Fiona Behrens <me@kloenk.dev>, Charalampos Mitrodimas <charmitro@posteo.net>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] rust: sync: change `<Arc<T> as ForeignOwnable>::PointedTo` to `T`
+Message-ID: <9f9641de-72ea-4aa1-827c-3bc6c97938b0@proton.me>
+In-Reply-To: <20250207-configfs-v2-1-f7a60b24d38e@kernel.org>
+References: <20250207-configfs-v2-0-f7a60b24d38e@kernel.org> <20250207-configfs-v2-1-f7a60b24d38e@kernel.org>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: a5099023aa2f2ab4d90b3c3db77daaa097752d5b
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri,  7 Feb 2025 22:26:21 +0900
-FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
+On 07.02.25 15:41, Andreas Hindborg wrote:
+> Using `ArcInner` as `PoinedTo` in the `ForeignOwnable` implementation for
+> `Arc` is a bit unfortunate. Using `T` as `PointedTo` does not remove any
+> functionality, but allows `ArcInner` to be private. Further, it allows
+> downstream users to write code that is generic over `Box` and `Arc`, when
+> downstream users need access to `T` after calling `into_foreign`.
+>=20
+> Reviewed-by: Fiona Behrens <me@kloenk.dev>
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-> Add Rust TIMEKEEPING and TIMER abstractions to the maintainers entry
-> respectively.
-> 
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Two nits below, but this looks good regardless, so:
+
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+
 > ---
->  MAINTAINERS | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index c8d9e8187eb0..987a25550853 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -10353,6 +10353,7 @@ F:	kernel/time/sleep_timeout.c
->  F:	kernel/time/timer.c
->  F:	kernel/time/timer_list.c
->  F:	kernel/time/timer_migration.*
-> +F:	rust/kernel/time/delay.rs
->  F:	tools/testing/selftests/timers/
->  
->  HIGH-SPEED SCC DRIVER FOR AX.25
-> @@ -23852,6 +23853,7 @@ F:	kernel/time/timeconv.c
->  F:	kernel/time/timecounter.c
->  F:	kernel/time/timekeeping*
->  F:	kernel/time/time_test.c
-> +F:	rust/kernel/time.rs
->  F:	tools/testing/selftests/timers/
+>=20
+> This patch is a dependency for Rust `configfs` abstractions. It allows bo=
+th
+> `Box` and `Arc` to be used as pointer types in the `configfs` hierarchy.
+> ---
+>  rust/kernel/sync/arc.rs | 21 ++++++++++++++++-----
+>  1 file changed, 16 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+> index dfe4abf82c25c..503e318b4c4ef 100644
+> --- a/rust/kernel/sync/arc.rs
+> +++ b/rust/kernel/sync/arc.rs
+> @@ -143,7 +143,7 @@ pub struct Arc<T: ?Sized> {
+>  #[doc(hidden)]
+>  #[pin_data]
+>  #[repr(C)]
+> -pub struct ArcInner<T: ?Sized> {
+> +struct ArcInner<T: ?Sized> {
+>      refcount: Opaque<bindings::refcount_t>,
+>      data: T,
+>  }
+> @@ -345,18 +345,25 @@ pub fn into_unique_or_drop(self) -> Option<Pin<Uniq=
+ueArc<T>>> {
+>=20
+>  // SAFETY: The `into_foreign` function returns a pointer that is well-al=
+igned.
+>  unsafe impl<T: 'static> ForeignOwnable for Arc<T> {
+> -    type PointedTo =3D ArcInner<T>;
+> +    type PointedTo =3D T;
+>      type Borrowed<'a> =3D ArcBorrow<'a, T>;
+>      type BorrowedMut<'a> =3D Self::Borrowed<'a>;
+>=20
+>      fn into_foreign(self) -> *mut Self::PointedTo {
+> -        ManuallyDrop::new(self).ptr.as_ptr()
+> +        let x =3D ManuallyDrop::new(self).ptr.as_ptr();
 
-TIMERS and TIMEKEEPING maintainers,
+I would normally name such a variable `this`, but it's fine as-is.
 
-You would prefer to add rust files to a separate entry for Rust? Or
-you prefer a different option?
+> +        // SAFETY: `x` is a valid pointer to `Self` so the projection be=
+low is
+> +        // in bounds of the allocation.
+> +        unsafe { core::ptr::addr_of_mut!((*x).data) }
+>      }
+>=20
+>      unsafe fn from_foreign(ptr: *mut Self::PointedTo) -> Self {
+> +        // SAFETY: We did the reverse offset calculation in `into_foreig=
+n`, so
+> +        // the offset calculation below is in bounds of the allocation.
+> +        let inner_ptr =3D unsafe { kernel::container_of!(ptr, ArcInner<T=
+>, data).cast_mut() };
+> +
+>          // SAFETY: The safety requirements of this function ensure that =
+`ptr` comes from a previous
+>          // call to `Self::into_foreign`.
+> -        let inner =3D unsafe { NonNull::new_unchecked(ptr) };
+> +        let inner =3D unsafe { NonNull::new_unchecked(inner_ptr) };
+>=20
+>          // SAFETY: By the safety requirement of this function, we know t=
+hat `ptr` came from
+>          // a previous call to `Arc::into_foreign`, which guarantees that=
+ `ptr` is valid and
+> @@ -365,9 +372,13 @@ unsafe fn from_foreign(ptr: *mut Self::PointedTo) ->=
+ Self {
+>      }
+>=20
+>      unsafe fn borrow<'a>(ptr: *mut Self::PointedTo) -> ArcBorrow<'a, T> =
+{
+> +        // SAFETY: We did the reverse offset calculation in `into_foreig=
+n`, so
+> +        // the offset calculation below is in bounds of the allocation.
+> +        let inner_ptr =3D unsafe { kernel::container_of!(ptr, ArcInner<T=
+>, data).cast_mut() };
+
+You could call this variable `ptr` and avoid the change below, but
+either way is fine.
+
+---
+Cheers,
+Benno
+
+> +
+>          // SAFETY: The safety requirements of this function ensure that =
+`ptr` comes from a previous
+>          // call to `Self::into_foreign`.
+> -        let inner =3D unsafe { NonNull::new_unchecked(ptr) };
+> +        let inner =3D unsafe { NonNull::new_unchecked(inner_ptr) };
+>=20
+>          // SAFETY: The safety requirements of `from_foreign` ensure that=
+ the object remains alive
+>          // for the lifetime of the returned value.
+>=20
+> --
+> 2.47.0
+>=20
+>=20
+
