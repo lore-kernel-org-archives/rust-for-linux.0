@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A1226B0AF;
-	Tue, 18 Feb 2025 16:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A4D14A4E7;
+	Tue, 18 Feb 2025 16:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739896547; cv=none; b=l2ksCnQBVy+kzcONOKbKqPMLoM81c+sDeEqFPVrzQ95m84MrmPby/Z2KM3+mbhMx02NppIxIRshss7RT9bPnAqtMxoDBnz+x8i6sbR+QLgV/F+X1pt8uUQ3TihSCqW4tqvqOzWxT+jC+ER3SMkaFX0dFkLkWoOJl+Mb01AUCPQI=
+	t=1739896788; cv=none; b=avPbfdS+T1tLhlxJwOXR4KrqAk1L5o5Ul/EOH5rhNoLK+ndI1woixPs/MKLELyQS6r6SffRRUab6S7vaFEf22khR1yBbE4Zw2GV2icsA3GM1Fafb5OH4P0HDouTf3bd74aVrY4rXY8pIHWumD4YIvP2YTVosivmA4h+lpNN0AHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739896547; c=relaxed/simple;
-	bh=w7JBv0Itab43P9O0fBMbKgbOx837okF7MY9ILu9zSVo=;
+	s=arc-20240116; t=1739896788; c=relaxed/simple;
+	bh=cg5/3BAZlORtrYfBYZr2jWQTm4leoG/KUOjUf75pbPE=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=utmw0IBVDNZtzAhdnUWN8odvvTvsY1QKPWJcsHdD7J/gCoOC28IzJJ6IYlI6XDMD5wZceqtQ3IPk/ED79HN5T59QBFok47063DEYughPX0zd0yknT12aJQn/G1Qn+P6ELtANfFlJa6+ZE3OVuXJxHktyBWqpSUeAp1zwR9wPKT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RibUiXdZ; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:MIME-Version; b=Od61gLUGW3nX4p10t1Ac/vZFZGpcR8/VQ064mRzwTRGplkjfEXPVmnmgtvAJglNriNcnvWkWPNTALxhg3g++wQg32vpUXDVpGq3WtKpjCrxzlPTWmLYgOEFe+6fXK1SpXBLSu2NXcsJcLMMSRQUcufhtgKSsMwIyjxRB+g0uRoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=muT7cUu4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RibUiXdZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5EF9C4CEE2;
-	Tue, 18 Feb 2025 16:35:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="muT7cUu4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54BEAC4CEE8;
+	Tue, 18 Feb 2025 16:39:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739896545;
-	bh=w7JBv0Itab43P9O0fBMbKgbOx837okF7MY9ILu9zSVo=;
+	s=k20201202; t=1739896787;
+	bh=cg5/3BAZlORtrYfBYZr2jWQTm4leoG/KUOjUf75pbPE=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=RibUiXdZ8SKRertBNYUYpQRKLnYvoqzvD6sYy7pHiKkdcT8Ow2URjR7ZR+n7kvl8w
-	 SQgzCRrjBp9HZqldX3MxJEG3TG/58+l/EG+fdoaupfXvc2ZZEAxfhAbftqld/i6KIa
-	 yTAXCwiHbt03f2/2xR6XD3EXLk03dt4fsTPup+sOfEi4cpurxqYoOesJEr9Gv3DU2h
-	 28kk2CycEUwimX78tmIN6PGv/WoRLMcBfHw5fI32tI8Tc9GFa14oTEv9NBxvUhkKen
-	 AZXRFSHuUZMoaBPKQDiStH0mzr2OvZ39/zpQhlwzT4HlEvzQe/UXOFxXHRlE15MtqA
-	 0eAjFF1qJS+Rg==
-Message-ID: <36783d51be7576fcdbf8facc3c94193d78240816.camel@kernel.org>
+	b=muT7cUu4Y3bH+7Rnpp4hsnHBjw92sI2MrtoQ2d4KHHUVkwDOsGAyLp0pppEateRFv
+	 wck4ymenYKZmNHNePExiOjkS4ef8Bqn9ectzgk6OFjiG1KvNQVMc3J0L+QmLd5UKuB
+	 VZ6f4sXbzXPIDf/9pxC9rVpHoUEeyfaPv2gK9rbrl4a17NY7Kpym2o2cq+IAvNvAEL
+	 s1O8/hbpt+0QPvJtfg+UPgZbZSlt1hgXv20LS67/jt2RtFRdrI68s78aGHidLO/khw
+	 a+Hch3l3kw102V11dNBXlS8ZjLUAioR/Yv6UjCQx0cOGCr9izdgUcQDKDAFATIGLu/
+	 bLJKv42F4CDgA==
+Message-ID: <4cbd3baf81ca3ff5e8c967b16fc13673d84139e8.camel@kernel.org>
 Subject: Re: Rust kernel policy
 From: Jarkko Sakkinen <jarkko@kernel.org>
 To: Christoph Hellwig <hch@infradead.org>, Miguel Ojeda
@@ -35,9 +35,10 @@ Cc: rust-for-linux <rust-for-linux@vger.kernel.org>, Linus Torvalds
  <torvalds@linux-foundation.org>, Greg KH <gregkh@linuxfoundation.org>,
  David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
  ksummit@lists.linux.dev
-Date: Tue, 18 Feb 2025 18:35:40 +0200
-In-Reply-To: <Z7SwcnUzjZYfuJ4-@infradead.org>
+Date: Tue, 18 Feb 2025 18:39:44 +0200
+In-Reply-To: <36783d51be7576fcdbf8facc3c94193d78240816.camel@kernel.org>
 References: <Z7SwcnUzjZYfuJ4-@infradead.org>
+	 <36783d51be7576fcdbf8facc3c94193d78240816.camel@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
@@ -48,26 +49,32 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Tue, 2025-02-18 at 08:08 -0800, Christoph Hellwig wrote:
-> On Sun, Feb 09, 2025 at 09:56:35PM +0100, Miguel Ojeda wrote:
-> > Hi all,
+On Tue, 2025-02-18 at 18:35 +0200, Jarkko Sakkinen wrote:
+> On Tue, 2025-02-18 at 08:08 -0800, Christoph Hellwig wrote:
+> > On Sun, Feb 09, 2025 at 09:56:35PM +0100, Miguel Ojeda wrote:
+> > > Hi all,
+> > >=20
+> > > Given the discussions in the last days, I decided to publish this
+> > > page
+> > > with what our understanding is:
+> > >=20
+> > > =C2=A0=C2=A0=C2=A0 https://rust-for-linux.com/rust-kernel-policy
+> > >=20
+> > > I hope it helps to clarify things. I intend to keep it updated as
+> > > needed.
 > >=20
-> > Given the discussions in the last days, I decided to publish this
-> > page
-> > with what our understanding is:
-> >=20
-> > =C2=A0=C2=A0=C2=A0 https://rust-for-linux.com/rust-kernel-policy
-> >=20
-> > I hope it helps to clarify things. I intend to keep it updated as
-> > needed.
+> > I don't think having a web page in any form is useful.=C2=A0 If you wan=
+t
+> > it
+> > to be valid it has to be in the kernel tree and widely agreed on.
 >=20
-> I don't think having a web page in any form is useful.=C2=A0 If you want
-> it
-> to be valid it has to be in the kernel tree and widely agreed on.
+> I'd emphasize here that MUST be in the kernel tree. Otherwise, it by
+> the
+> process can be safely ignored without a second thought.
+>=20
+> Doing random pointless annoucements is LF thing, not korg thing ;-)
 
-I'd emphasize here that MUST be in the kernel tree. Otherwise, it by the
-process can be safely ignored without a second thought.
-
-Doing random pointless annoucements is LF thing, not korg thing ;-)
+... underlining that it would be also welcome take. But like that
+the policy plain sucks tbh.
 
 BR, Jarkko
