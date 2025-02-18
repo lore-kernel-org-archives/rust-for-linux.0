@@ -1,108 +1,153 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5031DF73C;
-	Tue, 18 Feb 2025 08:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6540922E00E;
+	Tue, 18 Feb 2025 08:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739866040; cv=none; b=FTVJmazPx1sHe+uEGlqm5ZPX9NPP5ytPjKKNTQ/4R/ChBqT/ev43t9oYug2/Hgoy9naIy6Dsvom7sACA3/rPuGbJCwIKJQ7uF85qmrzQAmtQ43kAFN3rYc98SjHUEaghgGWE+qSXfnO7OgXCgg2CAliPYbSuDclMT349lHkOQjc=
+	t=1739868158; cv=none; b=EM0HMgOmGrBav2A91mpBmFBmy4nQMOWPTjsoCjaQPP0NzRZ/gAq04IiYU/BOtsXXE3jStTBH0bL7XJl8LAMTwz2bpNFG3BwKI/36LKsYKeDjZS4WY/CWBI9N7LqVB628YRHtTJA/NOLQlFS7ArtrOZHDlor21QkpXW40GUpgGmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739866040; c=relaxed/simple;
-	bh=0nJNYoHEPY55ekPjs2MDTQbDYT48weyBXJTKQum9lYM=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HdxV0dDZkC2IqubZZRGwjiiFhyMKu4Mc0n2Oe3fvu3xUthGF6g7jFsneiGAF0Xujtc7hwym7QP1NZya1bymDki7+XWKT1qyhVuRicMnG+UF8/VCJoaY6syKi5/vSFyikdwZ7Zp4GPn0st5WTMa6A8cEcn90l3gm6h4RHsZV7oUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYtwZ3rw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739868158; c=relaxed/simple;
+	bh=IRJMwmgzOFNxmUBfeQTrD+oa8rPnhXa3yiox7PonBmo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=c+hP05O2U72PoQMYos6nDb0EXdwt+dlFBKjf3en2/I9QdTNmXn7GwdZZIL7J0EdKwFTXG1RpvnzCkcZcqMOFkz0n9oBWHNHE9HFk8TzzXZ9ZGWB1RSUFcl882CzPdf7UbiD40Cq+3mrRBUK06wzl4RUwShvcgyfdermCEkt2jnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EtcEA10d; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYtwZ3rw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E3AC4CEE6;
-	Tue, 18 Feb 2025 08:07:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739866038;
-	bh=0nJNYoHEPY55ekPjs2MDTQbDYT48weyBXJTKQum9lYM=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=JYtwZ3rwsLQu4WBaDduY/mEVvInOMPJ16YmXZDER0bYrEWJ7sdc7ZYLPmZh3GGD9r
-	 ESqOX2EZjua0kKcrx9D+Lgm3sRAiIBYUth0/RuncbJL/eXmaEYJ+CB9msS8pozxVDE
-	 1J+N56X+jVbr+Qg7Di4W4B8vCuSz8MTDnZTlbyp4=
-Date: Tue, 18 Feb 2025 09:07:15 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Alexandre Courbot <acourbot@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	David Airlie <airlied@gmail.com>,
-	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
- implementation
-Message-ID: <2025021830-segment-boil-5ff7@gregkh>
-References: <20250217-nova_timer-v1-0-78c5ace2d987@nvidia.com>
- <Z7NaPYvuRF11uxnM@phenom.ffwll.local>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EtcEA10d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CBADC4CEE2;
+	Tue, 18 Feb 2025 08:42:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739868157;
+	bh=IRJMwmgzOFNxmUBfeQTrD+oa8rPnhXa3yiox7PonBmo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=EtcEA10dRrCBuV5qVNJANROtXj7bJjYrPr1UjmVWGdzmq5Ffpo1G5CyOap1gUUx1F
+	 NBc4B8n2UUHiKhwL5Wak6z3/xi0pD/FeiJHhPMa1fw4gWrhXwIARrJDe8EqUvTSIuj
+	 FRVDYkn17YjHh2KSpWGKp4eM25Q4u+sUNOjawSyv5HSEK1sBOA3PGT0r9Uv6DYzMRV
+	 Zw0udL5uSuBvsUKP6IszPRUyomnjJ9Mp+h62eZqB2zKMe3XWUiRfmta5e5FBWKoCF5
+	 Sz7K2AfVEdA8HoYxf0B8s5ZshjTp4sfv9lwgWPtiDRplCr+ntH9owd0ALV65g0OqIm
+	 Su7z/TBa3VbGg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Benno Lossin" <benno.lossin@proton.me>
+Cc: "Danilo Krummrich" <dakr@kernel.org>,  "Miguel Ojeda"
+ <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
+ <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
+ =?utf-8?Q?=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor
+ Gross" <tmgross@umich.edu>,  "Joel Becker" <jlbec@evilplan.org>,
+  "Christoph Hellwig" <hch@lst.de>,  "Peter Zijlstra"
+ <peterz@infradead.org>,  "Ingo Molnar" <mingo@redhat.com>,  "Will Deacon"
+ <will@kernel.org>,  "Waiman Long" <longman@redhat.com>,  "Fiona Behrens"
+ <me@kloenk.dev>,  "Charalampos Mitrodimas" <charmitro@posteo.net>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 2/3] rust: configfs: introduce rust support for configfs
+In-Reply-To: <354dbebd-b211-4e8f-a181-8fbacb0e89c8@proton.me> (Benno Lossin's
+	message of "Mon, 17 Feb 2025 23:04:39 +0000")
+References: <20250207-configfs-v2-0-f7a60b24d38e@kernel.org>
+	<20250207-configfs-v2-2-f7a60b24d38e@kernel.org>
+	<S6DKlLVx4KKevl_q2zrW69Z7oS0jwyX4DXpDZrFiIy1lKo4VYHM52aDiV82c2yf52Ecr7t9FayuqBUPR9onvZA==@protonmail.internalid>
+	<dd63fcde-ba4c-4a6e-9bde-1af5af37e91b@proton.me>
+ <87h64su8ux.fsf@kernel.org>
+	<Kkrr23DbfvS1nChcwAfhrogDdCOO92FQ2-9JUCab-_6CREP4iBX8k1KuxaJb-yv_ErGv9TbzDWwBZHvaszFS7w==@protonmail.internalid>
+	<bfd79db6-bd79-4187-8577-3ae412f36f35@proton.me>
+ <87bjv0u5j0.fsf@kernel.org>
+	<tcJpvFhkOFzCzmninRJkr73k-06Rk0phzD0fSRQqeLPcGS9dR06GpRzWI-xxIhnRksFDhfNaLsrI-YfpraVcZg==@protonmail.internalid>
+	<354dbebd-b211-4e8f-a181-8fbacb0e89c8@proton.me>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Tue, 18 Feb 2025 09:40:53 +0100
+Message-ID: <87eczvhch6.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z7NaPYvuRF11uxnM@phenom.ffwll.local>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 17, 2025 at 04:48:13PM +0100, Simona Vetter wrote:
-> On Mon, Feb 17, 2025 at 11:04:45PM +0900, Alexandre Courbot wrote:
-> > Hi everyone,
-> > 
-> > This short RFC is based on top of Danilo's initial driver stub series
-> > [1] and has for goal to initiate discussions and hopefully some design
-> > decisions using the simplest subdevice of the GPU (the timer) as an
-> > example, before implementing more devices allowing the GPU
-> > initialization sequence to progress (Falcon being the logical next step
-> > so we can get the GSP rolling).
-> > 
-> > It is kept simple and short for that purpose, and to avoid bumping into
-> > a wall with much more device code because my assumptions were incorrect.
-> > 
-> > This is my first time trying to write Rust kernel code, and some of my
-> > questions below are probably due to me not understanding yet how to use
-> > the core kernel interfaces. So before going further I thought it would
-> > make sense to raise the most obvious questions that came to my mind
-> > while writing this draft:
-> > 
-> > - Where and how to store subdevices. The timer device is currently a
-> >   direct member of the GPU structure. It might work for GSP devices
-> >   which are IIUC supposed to have at least a few fixed devices required
-> >   to bring the GSP up ; but as a general rule this probably won't scale
-> >   as not all subdevices are present on all GPU variants, or in the same
-> >   numbers. So we will probably need to find an equivalent to the
-> >   `subdev` linked list in Nouveau.
-> > 
-> > - BAR sharing between subdevices. Right now each subdevice gets access
-> >   to the full BAR range. I am wondering whether we could not split it
-> >   into the relevant slices for each-subdevice, and transfer ownership of
-> >   each slice to the device that is supposed to use it. That way each
-> >   register would have a single owner, which is arguably safer - but
-> >   maybe not as flexible as we will need down the road?
-> > 
-> > - On a related note, since the BAR is behind a Devres its availability
-> >   must first be secured before any hardware access using try_access().
-> >   Doing this on a per-register or per-operation basis looks overkill, so
-> >   all methods that access the BAR take a reference to it, allowing to
-> >   call try_access() from the highest-level caller and thus reducing the
-> >   number of times this needs to be performed. Doing so comes at the cost
-> >   of an extra argument to most subdevice methods ; but also with the
-> >   benefit that we don't need to put the BAR behind another Arc and share
-> >   it across all subdevices. I don't know which design is better here,
-> >   and input would be very welcome.
-> > 
-> > - We will probably need sometime like a `Subdevice` trait or something
-> >   down the road, but I'll wait until we have more than one subdevice to
-> >   think about it.
-> 
-> It might make sense to go with a full-blown aux bus. Gives you a lot of
-> structures and answers to these questions, but also might be way too much.
+"Benno Lossin" <benno.lossin@proton.me> writes:
 
-No, it's not too much, that's exactly what the auxbus code is for
-(splitting a real device into child ones where they all share the same
-physical resources.)  So good suggestion.
+> On 17.02.25 13:20, Andreas Hindborg wrote:
+>> "Benno Lossin" <benno.lossin@proton.me> writes:
+>>> On 17.02.25 12:08, Andreas Hindborg wrote:
+>>>>>> +
+>>>>>> +/// A `configfs` subsystem.
+>>>>>> +///
+>>>>>> +/// This is the top level entrypoint for a `configfs` hierarchy. To=
+ register
+>>>>>> +/// with configfs, embed a field of this type into your kernel modu=
+le struct.
+>>>>>> +#[pin_data(PinnedDrop)]
+>>>>>> +pub struct Subsystem<Data> {
+>>>>>
+>>>>> Usually, we don't have multi-character generics, any specific reason
+>>>>> that you chose `Data` here over `T` or `D`?
+>>>>
+>>>> Yes, I find it more descriptive. The patch set went through quite a bit
+>>>> of evolution, and the generics got a bit complicated in earlier
+>>>> iterations, which necessitated more descriptive generic type parameter
+>>>> names. It's not so bad in this version after I restricted the pointer
+>>>> type to just `Arc`, but I still think that using a word rather a single
+>>>> letter makes the code easier to comprehend at first pass.
+>>>
+>>> Makes sense. I'm not opposed to it, but I am a bit cautious, because one
+>>> disadvantage with using multi-character names for generics is that one
+>>> cannot easily see if a type is a generic or not. Maybe that is not as
+>>> important as I think it could be, but to me it seems useful.
+>>
+>> If you use an editor with semantic highlighting, you can style the
+>> generic identifiers. I am currently trying out Helix, and that is
+>> unfortunately on of the features it is missing. Can't have it all I
+>> guess.
+>
+> That is true, but there are a lot of places where Rust code is put that
+> aren't my editor (git diffs/commit messages, mails, lore.kernel.org,
+> github) and there it'll become more difficult to read (also people might
+> not have their editor configured to highlight them).
+>
+> So I think we should at least consider it more.
 
-thanks,
+There is a trade-off to be made for sure.
 
-greg k-h
+>
+>>>>>> +                    // SAFETY: We are expanding `configfs_attrs`.
+>>>>>> +                    static [< $data:upper _ $name:upper _ATTR >]:
+>>>>>> +                      $crate::configfs::Attribute<$attr, $data, $da=
+ta> =3D
+>>>>>> +                        unsafe {
+>>>>>> +                            $crate::configfs::Attribute::new(c_str!=
+(::core::stringify!($name)))
+>>>>>> +                        };
+>>>>>> +                }
+>>>>>> +            )*
+>>>>>> +
+>>>>>> +
+>>>>>> +            const N: usize =3D $cnt + 1usize;
+>>>>>
+>>>>> Why do we need an additional copy? To have a zero entry at the end fo=
+r C
+>>>>> to know it's the end of the list? If so, a comment here would be very
+>>>>> helpful.
+>>>>
+>>>> Yes, we need space for a null terminator. I'll add a comment.
+>>>>
+>>>> We actually have a static check to make sure that we not missing this.
+>>>
+>>> Where is this static check?
+>>
+>> In `Attribute::add`:
+>>
+>>         if I >=3D N - 1 {
+>>             kernel::build_error!("Invalid attribute index");
+>>         }
+>
+> Ahh I see, would be also nice to have a comment there explaining why the
+> check is `>=3D N - 1`.
+
+I'll add a comment =F0=9F=91=8D
+
+
+Best regards,
+Andreas Hindborg
+
+
+
