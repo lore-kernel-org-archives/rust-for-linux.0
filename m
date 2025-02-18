@@ -1,103 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A99C22B5AB;
-	Tue, 18 Feb 2025 09:00:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3966232792;
+	Tue, 18 Feb 2025 09:58:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739869207; cv=none; b=o0ph3VZTx9Y0iukUZiQZD7fTS6DPSQ+JlI+vgbkf96bm6zo0wBukp6FujHT8oLfkG/tvlkE2BEn+fVOL5ed4uzox79yb3MwsdbNKrm3qtAt8+YHUnwJsHc97HvxMbA+kj/6mfc/Y7piuh3VsOHBACLZkpCpRvAMePof8hyydmRM=
+	t=1739872719; cv=none; b=bhhA78WK3XEExMTcL/zsureOgP3tTIu2XCirdeRDaN7UJ36s663Tw05tlV9LxkcoyNLzmyWlp3hz9PkK7JBGkAj1qmkhZkaShSIsQOiN3tp1L7UOx4Qg4jNTHw8YjMcWoa9DI7vaEGe6GIVOFOjhjCJbcmNX9zjK/Im5gOgCstY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739869207; c=relaxed/simple;
-	bh=H/v7Fskhbm2aFw2aebMkkvyoEe1vUWaWSgGks+kLW88=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=EA1ksJZFWzP8d2LiJA1aXymmvbFw2pfnZS9FhhfHHdRKR7zkjcK6/WjLtteY1Bq+v6wOs7bR9+2ViWURLu1Na7Zkc4DUkE0bH+b13qLIR14s7HDED1s/KlDBoU/nnriy+yAxawaKwR2pS+8BYpAc04DwgCrJHqieoTmTTMDoXcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XwVvkqKX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739872719; c=relaxed/simple;
+	bh=6cooqqHCoA6P1atL6E2YmZn6GVJWVgjv5JafkIvyAbI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=a0pkbeL53ZgY2Yl/SiQFosWzRmssJQj5jyH+M/6I+CiIITalK2mDfKICg4hCbQh/LvoxzS/iytxgoFdji7tYfHuMl4KqlRrFl20YVFO9BbdNPmm1wGKQiMx+dBa03M5b6e59sueoknCksBE/NgaFckxY36vmpYKhTV+2FXYJC1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GvUsczMz; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XwVvkqKX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F67AC4CEE2;
-	Tue, 18 Feb 2025 09:00:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739869207;
-	bh=H/v7Fskhbm2aFw2aebMkkvyoEe1vUWaWSgGks+kLW88=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=XwVvkqKX8kUTYZcBIV3jWudd9dj/gZFpKdPS3y8aY/3dN4IQm29++sn+39O3aTHYJ
-	 tsEFP3bbudhRL4BxujQVuhkZVMHElEOJHD6EG2MiK12Dh43l00ozIigGiW46VDgYYF
-	 60tY4OVNJh6RlsGlAmPDggn3lO5Q0q3DRWoERkhfmrpjYvAdfaqpBtPlDNYhJyVlJR
-	 dzTq5ja+3nmfHpHtmtIloNQKdtjDPM3oarJ6K9cSQQ20UuB2mGOgTsU0+FCANacFhI
-	 DhZDdphz8WbZ2DM/KWPAN7lnVXvHT5xZhipE5vR7ulFDu7dGYL0rNjWh40ike9ICos
-	 //2uYoiv4S53Q==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>
-Cc: "Tamir Duberstein" <tamird@gmail.com>,  "Miguel Ojeda"
- <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
- <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
- =?utf-8?Q?=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
-  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Matthew Wilcox" <willy@infradead.org>,  "Bjorn Helgaas"
- <bhelgaas@google.com>,  "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-  "Rafael J. Wysocki" <rafael@kernel.org>,  "FUJITA Tomonori"
- <fujita.tomonori@gmail.com>,  "Rob Herring (Arm)" <robh@kernel.org>,
-  =?utf-8?Q?Ma=C3=ADra?= Canal <mcanal@igalia.com>,  "Asahi Lina"
- <lina@asahilina.net>,
-  <rust-for-linux@vger.kernel.org>,  <linux-fsdevel@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>,  <linux-pci@vger.kernel.org>,  "Fiona
- Behrens" <me@kloenk.dev>
-Subject: Re: [PATCH v16 2/4] rust: types: add `ForeignOwnable::PointedTo`
-In-Reply-To: <Z7MnxKSSNY7IyExt@cassiopeiae> (Danilo Krummrich's message of
-	"Mon, 17 Feb 2025 13:12:52 +0100")
-References: <20250207-rust-xarray-bindings-v16-0-256b0cf936bd@gmail.com>
-	<20250207-rust-xarray-bindings-v16-2-256b0cf936bd@gmail.com>
-	<8jX_IItQHwgOxPXY0A1Dv0p49eCTrRu8RSushmbMOVMHDrJrQdARRmV_sDrioN4y_4YlDdS9ghrUKy0bO6l7bw==@protonmail.internalid>
-	<Z7MnxKSSNY7IyExt@cassiopeiae>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Tue, 18 Feb 2025 09:59:55 +0100
-Message-ID: <878qq3hblg.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GvUsczMz"
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-545fed4642aso2505587e87.0;
+        Tue, 18 Feb 2025 01:58:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739872716; x=1740477516; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lmts2CcKs4nwISoE8RyWH4djGtBRCn0gg8bpEKNfluA=;
+        b=GvUsczMzokWbBz6nDDNHcgePYCB7OpPCZXZvUyt7pQLwVQofMRPOxBt7jhbf8aSaGR
+         KIOnhGPAkMSGqqor9iNYE3/Athm/WUVS56movIxXBKPWyI6MdMA7zg/pc63dAu18+wnY
+         kxIat9W6wLOV0A6bZWAyFvKHTkMJsjHaqMq1BIrKYzmJI75iDZhe65CvHx5wPt7t5/RT
+         3t4NaQhiWVU7IbnqFOH/SS5483lyVPuo6oXOAMBFd1yK31PjoDg26OcV9VBzVgubs7Mf
+         puEGXCaFfqX5TGMhmEpSFAVpkZVQisCwUY9Qodduk2HlVDSaFstJ6wGTgU8StNfh+lxf
+         MrPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739872716; x=1740477516;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lmts2CcKs4nwISoE8RyWH4djGtBRCn0gg8bpEKNfluA=;
+        b=l8swpZdZzyqpSvL0nc8JmfnlPLxl9oen9go218Xp3ZqJRcOxSe+HuD4+hg/nBOSCQO
+         k8GVDv9Ckl9RuFWqELDh1K3mhftBqM2XC7Geij5w3KQL4y3cpdzquo+j5NMH25bnRJO3
+         mUTbUxHsaZA7H8FpsBAy2hYflnDWCgChQ4WNWj1yoTfOF4BKJXSQwPpRej3JS4Uf5c2w
+         oiLpbBN3jrvT+6V+MDg+M1zAfAgy68LkMI0+HJPLpmYyb6cw77XMInQHLlOnOwOYiLMH
+         6AkNvF4M04ZIzC2QkDKVVyxtEAydp0a9e8+F4rjjlnqXqU08AzYioErT9w/O1YGpxtSD
+         kO3A==
+X-Forwarded-Encrypted: i=1; AJvYcCXwXnaS1xDVHr/U5sJypZenTIuxqVUuqY05gZyXlDE+uPIzBqe3e4ImgE/UI0/DAH99QOlL+BJMMNJwaJ8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwoQN66p21hl/Leg0bW00qwxolp+BVNu9QWRetYdFFe/sEQJZWn
+	W1Oq3CvYYX3+gD2jykY1zWh984N02Vr6d3AAk9CY+kSUmuJXRr1M
+X-Gm-Gg: ASbGncsB5UVVccjs1hlLDk8n1HDuvY+gF3Rf7Pc/Z8LpPVjVUO5EISoCjUlAOrukOFN
+	MXhUmU+AWcuqkfw164CIwTxp5647SMmrYd2oqW1eybQ5LiUBSrlDRUDeBas4R80zbGBnnLKjPyc
+	3IiTUg+4FlxVq6o7go+wUgmhFji0E6CJVEK4/GykFuY9NDrbT2HJJOB5cR9bSzyfhfdSHRv8mCy
+	qsawz8q9RM52pa4V5Y+VUAJhRAuiaYQBXrRhk942Dr7tmr5DwU9EfU1ZH+6/0/Ed185QtgLMgzU
+	3B5j9oxcohe9VJqNPP1o1RErzG4NMgVNpp4pF37EaHxYW4XFQvDetal7GTPbaQ==
+X-Google-Smtp-Source: AGHT+IFSgaLtcnavys5mJwrcFVSSqID4HA2Wxm607QSTsSZJ468RX9mWtnC6yEKMzbHenx1fdpwcuA==
+X-Received: by 2002:a05:6512:2398:b0:545:b89:309b with SMTP id 2adb3069b0e04-5452fe955efmr5596497e87.44.1739872715711;
+        Tue, 18 Feb 2025 01:58:35 -0800 (PST)
+Received: from [192.168.1.146] (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30931b895e5sm11078211fa.113.2025.02.18.01.58.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Feb 2025 01:58:35 -0800 (PST)
+Message-ID: <2b019479-2d32-433f-af78-c3378dee4e2b@gmail.com>
+Date: Tue, 18 Feb 2025 11:58:33 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 2/3] rust: add dma coherent allocator abstraction.
+To: Robin Murphy <robin.murphy@arm.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>
+Cc: rust-for-linux@vger.kernel.org, dakr@kernel.org, aliceryhl@google.com,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Valentin Obst <kernel@valentinobst.de>,
+ open list <linux-kernel@vger.kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+ "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+References: <20250123104333.1340512-1-abdiel.janulgue@gmail.com>
+ <20250123104333.1340512-3-abdiel.janulgue@gmail.com>
+ <633274AD-E55C-4A90-AB72-33D3E176176F@collabora.com>
+ <dd57c3ba-246e-414d-a9c1-eb2cff032d83@arm.com>
+Content-Language: en-US
+From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+In-Reply-To: <dd57c3ba-246e-414d-a9c1-eb2cff032d83@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-"Danilo Krummrich" <dakr@kernel.org> writes:
+Hi Robin,
 
-> On Fri, Feb 07, 2025 at 08:58:25AM -0500, Tamir Duberstein wrote:
->> Allow implementors to specify the foreign pointer type; this exposes
->> information about the pointed-to type such as its alignment.
->>
->> This requires the trait to be `unsafe` since it is now possible for
->> implementors to break soundness by returning a misaligned pointer.
->>
->> Encoding the pointer type in the trait (and avoiding pointer casts)
->> allows the compiler to check that implementors return the correct
->> pointer type. This is preferable to directly encoding the alignment in
->> the trait using a constant as the compiler would be unable to check it.
->>
->> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
->> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
->> Reviewed-by: Fiona Behrens <me@kloenk.dev>
->
-> I know that Andreas also asked you to pick up the RBs from [1], but - without
-> speaking for any of the people above - given that you changed this commit after
-> you received all those RBs you should also consider dropping them. Especially,
-> since you do not mention the changes you did for this commit in the version
-> history.
->
-> Just to be clear, often it is also fine to keep tags for minor changes, but then
-> you should make people aware of them in the version history, such that they get
-> the chance to double check.
->
-> [1] https://lore.kernel.org/rust-for-linux/20250131-configfs-v1-1-87947611401c@kernel.org/
->
+On 17/02/2025 15:52, Robin Murphy wrote:
+> FWIW we've been wanting to steer away from relying on the default mask 
+> in new code, so it would be quite neat to actually enforce that 
+> allocations fail if dma_coherent_mask hasn't been explicitly set 
+> (assuming it's sufficiently cheap to keep a flag in the Device handle or 
+> something like that - it's not the end of the world if it isn't practical).
 
-As long as the commit was not radically changed, I see no point in
-dropping the commit trailers. Same policy as for dropping review tags
-when issuing a new version of a series should be applied.
+I just had a quick look on how to possible approach this and indeed 
+would refactor the Device binding a bit. If it is okay with you this 
+could go in a follow-up patch? I was hoping to upstream the initial 
+support first - at least with the dma_set_mask/dma_set_coherent_mask put 
+in place already.
 
-
-Best regards,
-Andreas Hindborg
-
-
+Thanks!
+/Abdiel
