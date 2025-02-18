@@ -1,43 +1,43 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8E42475D8
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Feb 2025 12:41:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50824248167;
+	Tue, 18 Feb 2025 12:43:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739882510; cv=none; b=hFUKBoeh7pBnR8GlezaMOSDn4ScpfXH0qIv5pq/cvcACdbXxVqFrPuX6QT0Iq/fF6PReG/bgBScGHKgoKq5jU/exyfFNS2uKTEGQgQgKG/ALZxJRU5i3cmzWYngjfdQ9bPwWypJ+Qb2hjK8Vk3E7Ba4FO7owsw8zQ8jkPF5RBvM=
+	t=1739882617; cv=none; b=op6TOMnyCJ/ei2To6zCNJr0kWH14kyWgYzKHThk3mllcyAFtd3qpUFBUsYQIFoHQytonRGlQteWL3dYLNGV6bgtT+fnjirWQqFoOMj/S96g5UIy3RfpAzqURGk8ng06GPTPD+qm2JW59/ymAA4NvqObwtNrhVzTz8JEpi5JOiN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739882510; c=relaxed/simple;
-	bh=LzEymOzbsaFCfZbS8DvP7Xa5WpoPyDkfBS8NNNj1zBs=;
+	s=arc-20240116; t=1739882617; c=relaxed/simple;
+	bh=PPfx+qN+r3fsPzBvaolV7hOKBn7l6DYQD6YgdMuZ/SI=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UfzENkyDyr7IRQ2bIbnUSA4ytXpQNu1xEf4euZJrVmGnEZGWVf65Cj7B8SZjoiHjc768zzzqlxFHWZ0g8aWW1rf3r85wnV/8c8zR1HSTVKARUabzKb1S/ON+6Y23a8xwozfr1aCC/Qd41Gv1px/Pi9FyxmlfVsnMFAxeuY0dxMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=OtwbyIby; arc=none smtp.client-ip=185.70.40.131
+	 MIME-Version:Content-Type; b=as0wjBgkdgwtiyq7Z+pE+F/+nbmp4MIKCWFZsx68XrS8cFp8kkkcs38afGqxKPgLeVyRBgqBYv1B1/hmm9/6XJmO/NAZACR7/j5VlIQMSqy0tO2FHj85c5mDoOUL7Bj5LaG11Jkt9WznCNI60TMdK9lZwNotOi3mglzAofilXss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=ZNx5BYbL; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="OtwbyIby"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ZNx5BYbL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1739882499; x=1740141699;
-	bh=LzEymOzbsaFCfZbS8DvP7Xa5WpoPyDkfBS8NNNj1zBs=;
+	s=q3sgjaww3zf6jjt5pzlzd6ux3u.protonmail; t=1739882607; x=1740141807;
+	bh=8nsvnyARfLGt6tPfX961veuIV9VExo8yct+FDPP2mDI=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=OtwbyIbyZ12RfK0U18KBp0C8/Kw4Q4+weM+sx73BEMPrYwwAR7Rmo+p+yLMRqplCd
-	 HSZxuNl/vcP6IJYgR8JqCCD61bFQHywIcEILWZ0qOXljtHL+7yPaIMSfDTy/dg7ei2
-	 Ubn8G6mTe+2NBXR5zasSq8VxxB+XnaamstrKpsF+QBRsr8E89xPLDHLfZ+7BlBbcfG
-	 DpX1MLvdX2ySI0EHrtHj1qnjfGXH4zPrMgGHxvBMaQd19rtyPz+xkXksb9oN5/x7ny
-	 e1+XsnLqvfxTwnQjZVQmd2XzIW4ahjIHC37kApzhp5U6JuXU9GHvVfFYoc0HPZTJJc
-	 7au8hbqILgmGA==
-Date: Tue, 18 Feb 2025 12:41:35 +0000
-To: Andreas Hindborg <a.hindborg@kernel.org>
+	b=ZNx5BYbL9RA91zzUIBpyXgcwhSHUGEJJ62FPKJ/ni2mbVu4fDzxJ+3N608wx+Z4VV
+	 wyhDLZXIS5LPCGmcQDzVA3kHiRJBukQ5IZFZUjQEttI9uXG69wnHBAVW+5yiAFoXU/
+	 j7Hsm3yjfJpTSA2bECMDKUMWh1IAD1Hg364bn2XnQ+1+t01Bw99HBnRirfBVh+0KHE
+	 921f5TtLBtG6vv5RRw+jhBuqsnOoG/r4C7j8hSlIOe9I2oSPBb+esjkXgPubAPeCtk
+	 W7uLhY/SrY5HMUq+K4zK/fXV2D6DtT7KGDY59IXXohyoBmZwBiYrzw6Ap7YT8FvxGg
+	 7vk6JAU8w7NYA==
+Date: Tue, 18 Feb 2025 12:43:21 +0000
+To: Andreas Hindborg <a.hindborg@kernel.org>, Gary Guo <gary@garyguo.net>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Joel Becker <jlbec@evilplan.org>, Christoph Hellwig <hch@lst.de>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Fiona Behrens <me@kloenk.dev>, Charalampos Mitrodimas <charmitro@posteo.net>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] rust: configfs: introduce rust support for configfs
-Message-ID: <d76a0453-86d3-40c4-bc39-2ec8a71fbcb6@proton.me>
-In-Reply-To: <87ldu3fnwf.fsf@kernel.org>
-References: <20250207-configfs-v2-0-f7a60b24d38e@kernel.org> <20250207-configfs-v2-2-f7a60b24d38e@kernel.org> <S6DKlLVx4KKevl_q2zrW69Z7oS0jwyX4DXpDZrFiIy1lKo4VYHM52aDiV82c2yf52Ecr7t9FayuqBUPR9onvZA==@protonmail.internalid> <dd63fcde-ba4c-4a6e-9bde-1af5af37e91b@proton.me> <87h64su8ux.fsf@kernel.org> <Kkrr23DbfvS1nChcwAfhrogDdCOO92FQ2-9JUCab-_6CREP4iBX8k1KuxaJb-yv_ErGv9TbzDWwBZHvaszFS7w==@protonmail.internalid> <bfd79db6-bd79-4187-8577-3ae412f36f35@proton.me> <87bjv0u5j0.fsf@kernel.org> <87ldu3fnwf.fsf@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Luis Chamberlain <mcgrof@kernel.org>, Trevor Gross <tmgross@umich.edu>, Adam Bratschi-Kaye <ark.email@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, Daniel Gomez <da.gomez@samsung.com>, Simona Vetter <simona.vetter@ffwll.ch>, Greg KH <gregkh@linuxfoundation.org>, linux-modules@vger.kernel.org
+Subject: Re: [PATCH v6 2/6] rust: str: implement `Index` for `BStr`
+Message-ID: <86474714-24a5-49ff-9767-23e25afee7d3@proton.me>
+In-Reply-To: <87wmdnfqt0.fsf@kernel.org>
+References: <20250211-module-params-v3-v6-0-24b297ddc43d@kernel.org> <20250211-module-params-v3-v6-2-24b297ddc43d@kernel.org> <kW0CDyK5M8DuLPr_1HwIXcnVP4x8evlFoq0BOjldchTZqkGiqzNJ-dtpV7s5QHLbbmm6cW529GeDTo_GoDKfdQ==@protonmail.internalid> <20250211164004.6de768c3@eugeo> <87lduc44c3.fsf@kernel.org> <2m_bB1GvgxV0DoM1PIggnkJD83g9AA6EeW5bgH1JmfZBG1P8D_DE966KAg53gCK8KmWgjpdCUPU6T-5xuZ-FYg==@protonmail.internalid> <20250212090914.6ef7e83b@eugeo> <87wmdnfqt0.fsf@kernel.org>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: a9d121d1e911990ed26e6657f63e404cfee26057
+X-Pm-Message-ID: 7deb9b54b3c5e867e75199ddc60dac1ad16802d2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,52 +47,85 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 18.02.25 13:17, Andreas Hindborg wrote:
-> Andreas Hindborg <a.hindborg@kernel.org> writes:
+On 18.02.25 12:14, Andreas Hindborg wrote:
+> "Gary Guo" <gary@garyguo.net> writes:
 >=20
->> "Benno Lossin" <benno.lossin@proton.me> writes:
+>> On Tue, 11 Feb 2025 21:24:44 +0100
+>> Andreas Hindborg <a.hindborg@kernel.org> wrote:
 >>
->>> On 17.02.25 12:08, Andreas Hindborg wrote:
->>
->> [...]
->>
->>>>>
->>>>>> +//!
->>>>>> +//! See the [rust_configfs.rs] sample for a full example use of thi=
-s module.
->>>>>
->>>>> It could also be useful to just put the example directly here into th=
-e
->>>>> docs instead of/additionally to having it as a sample.
->>>>
->>>> I don't think we should duplicate the code. As long as the link works,=
- I
->>>> think having it separately is fine.
+>>> "Gary Guo" <gary@garyguo.net> writes:
 >>>
->>> When I'm coding in my editor and read some docs directly in it, it ofte=
-n
->>> is annoying to find a link, because then I have to open the docs in my
->>> web-browser.
->>> I understand that you don't want to duplicate the code (and it also is =
-a
->>> bit too much for a short example), so how about having a simpler
->>> example? Maybe with only a single operation that has no associated data
->>> (use `()`)?
+>>>> On Tue, 11 Feb 2025 16:57:36 +0100
+>>>> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>>>>
+>>>>> The `Index` implementation on `BStr` was lost when we switched `BStr`=
+ from
+>>>>> a type alias of `[u8]` to a newtype. This patch adds back `Index` by
+>>>>> implementing `Index` for `BStr` when `Index` would be implemented for
+>>>>> `[u8]`.
+>>>>>
+>>>>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>>>>> ---
+>>>>>  rust/kernel/str.rs | 11 +++++++++++
+>>>>>  1 file changed, 11 insertions(+)
+>>>>>
+>>>>> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+>>>>> index 002dcddf7c768..1eb945bed77d6 100644
+>>>>> --- a/rust/kernel/str.rs
+>>>>> +++ b/rust/kernel/str.rs
+>>>>> @@ -114,6 +114,17 @@ fn eq(&self, other: &Self) -> bool {
+>>>>>      }
+>>>>>  }
+>>>>>
+>>>>> +impl<Idx> Index<Idx> for BStr
+>>>>> +where
+>>>>> +    Idx: core::slice::SliceIndex<[u8], Output =3D [u8]>,
+>>>>
+>>>> I think I'd prefer
+>>>>
+>>>> =09[T]: Index<Idx>,
+>>>
+>>> Is that equivalent?
 >>
->> Sure, we can do that.
+>> Sorry, I meant `[u8]: Index<Idx>`. This makes more semantic sense that
+>> "what ever can index a byte slice, it can also index BStr". This is
+>> also how our CStr and the array primitive type implements its Index
+>> operation.
+>>
+>> They should be equivalent as libcore does
+>>
+>> =09impl<T, I> Index<I> for [T] where I: SliceIndex<[T]> { ... }
+>>
 >=20
-> Actually, I am having some problems making the inline example compile.
-> `configfs_attrs!` references `THIS_MODULE`, which is not present for
-> doctests.
+> What I originally wrote is `Idx` must be usable as an index for `[u8]`,
+> yielding `[u8]` when indexing.
+>=20
+> The new one you suggest, I parse as `[u8]` should be indexable by `Idx`.
+> This is less info. The compiler will also complain about the missing info=
+:
+>=20
+> error[E0308]: mismatched types
+>    --> /home/aeh/src/linux-rust/module-params/rust/kernel/str.rs:141:26
+>     |
+> 141 |         BStr::from_bytes(&self.0[index])
+>     |         ---------------- ^^^^^^^^^^^^^^ expected `&[u8]`, found `&<=
+[u8] as Index<Idx>>::Output`
+>     |         |
+>     |         arguments to this function are incorrect
+>     |
+>     =3D note: expected reference `&[u8]`
+>                found reference `&<[u8] as Index<Idx>>::Output`
+>     =3D help: consider constraining the associated type `<[u8] as Index<I=
+dx>>::Output` to `[u8]`
+>=20
+> If I constrain the output it's all fine again:
+>=20
+>     [u8]: Index<Idx, Output =3D [u8]>,
+>=20
+>=20
+> But as I said, I don't think it matters which direction we put this?
 
-I see. Does KUNIT have a THIS_MODULE that we could use? If so, we might
-want to make that accessible in the test harness. Does anyone know more
-about this?
-
-> I'll add the example but mark it `ignore` ?
-
-Sounds good. If we end up adding a THIS_MODULE to the test harness, we
-can remove the ignore later.
+I think it's better to depend on `Index` compared to `SliceIndex`.
 
 ---
 Cheers,
