@@ -1,54 +1,44 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7881F26B09B;
-	Tue, 18 Feb 2025 15:24:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7443C1779B8;
+	Tue, 18 Feb 2025 16:08:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739892280; cv=none; b=k9ttj28rxFERDvyjOBwvPMBu6JoIMfuQYdqKPciNEFo/mtkB1UsYMP1Zok8fa/dtVVnBGIV2kvVo+fzlAdqmSftiP9/lg+59idKKsAwoCc+KwI5vZlBI2oY+lITiYdPBokz9sY9544vHBy3qNmhOHZSl0wOpyFwCajf0b/OmOt0=
+	t=1739894902; cv=none; b=i8TLY926CQlbtWoCA3q9NxUSRNnFc77ik3a0Gq3/eyu2lK1ZlKfxWPazrLkvekufqYai/l4Yb2whudi5/4dI4ugDUSevfGDlVrr3uhgr6TnNN8aaJ3oPYBbyG2Zvgn1WrPA+7ZFEXyePBb1olLy2SatgJE4Io1NxA8oDngLiZgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739892280; c=relaxed/simple;
-	bh=TB4nv8hn+O/HSxNWQn+GodE7JrdKRLhqMpoEBtPoIuU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VgslxscEuNDkOU10TEcV/YiMGCv0f8T1RmbxFJ9msXf1kf7HKKLdEJmfjDPfFFDQH1Khtc0FW7MAa21Yrcxpj0tEKYu/qCPN4FU9iue4b+C7d50VjzrYbmpOSuAmI08iw7L3yxoCMo0z88R+XTSqti5oLEffbdUEKwmQyP/D3VU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eWQce89l; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739894902; c=relaxed/simple;
+	bh=Ar43CwdCRmCaVipaXBSUFI/s0uXR7F77JPuCLWSSxxY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=t62w51CvMu35KynOEQgvpM+RY14VfioJf1My/ihZ5RjQMZO/Hd/BTm/80zVPtUMmsjtjTzGkc5O8MZD+NHAYmJmCRMNzfCW7vEIHXq9BlCQYB2xNEalUBX3PcmIBcSiSB9gAh/44cjfi0qV3Kx5wt3Yu/4MS0xwezIQS9JINx34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=vvXoi6Rq; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eWQce89l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1000C4CEE2;
-	Tue, 18 Feb 2025 15:24:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739892280;
-	bh=TB4nv8hn+O/HSxNWQn+GodE7JrdKRLhqMpoEBtPoIuU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eWQce89l5hCWid+82f3s1KD/CfccKWGp+s+7ayW71dT/5p95y7sbwbqNTO/ps3RCa
-	 CTvWkPaGaqex5pMqUEKhbLTRRcB8UKp8CD+f25NWjKtVwNU05E5PmHdFaxoPg/csos
-	 FE+hUb7XHC8NTPi3FRtbTveLMY3y+m9eMlC2+6l7cnmmRdNN0jWaUWTCcvfwiONv+M
-	 /D7jEevk9cyGcTMBBH63KJ77xOqxasnpVA0JUMwLXPZe+4ynym9e3TIe4F5f/LRL+q
-	 e9s04oUfKlzwpdVd1lb4fR9AgAztia50tF6Z67GS1QgZIpCKKQKOQ4KKeAtxraLBxQ
-	 4CcOUwdomhH3w==
-Date: Tue, 18 Feb 2025 16:24:33 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Matthew Wilcox <willy@infradead.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>,
-	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH v17 1/3] rust: types: add `ForeignOwnable::PointedTo`
-Message-ID: <Z7SmMdl5Hl_CRAzs@pollux>
-References: <20250218-rust-xarray-bindings-v17-0-f3a99196e538@gmail.com>
- <20250218-rust-xarray-bindings-v17-1-f3a99196e538@gmail.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="vvXoi6Rq"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding
+	:Content-ID:Content-Description:References;
+	bh=9ddc9DCFXCayEdKH/c7/U+it8NB/dGaAi7b6YfBjejI=; b=vvXoi6RqXVhrBN6uHS1FprrQAH
+	l7jgjAOb541F+Ugf+i01Tve/HlgxTbcfIMYKDByozXAUBUi0sjRUxVMNuTbYO1VBLrdbVNan34Lr8
+	72hiwWq90eGRj1LqbARnKZTbKWzI9DJ628c5uK3vFf4+2iJuAUAxFXkIyGkUP+eRVGuCDzWw/n38f
+	NIdLMk5yy7gwBsnwHdJNqCCRUT6hH5ZCvWeNKnf3DxBQvuG1BdqLAYWSTd+6x+tZjULxAoCrR6lkD
+	6/pUjf+VrlsoL0tP54EXJFOrgB5y1u9UGSiCianFjUXcKjYXYyeMBzxDvz/idG5+vlOruMNcvlNpY
+	OQ9glKSQ==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
+	id 1tkQ8w-00000008tKN-2syO;
+	Tue, 18 Feb 2025 16:08:18 +0000
+Date: Tue, 18 Feb 2025 08:08:18 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: rust-for-linux <rust-for-linux@vger.kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
+	ksummit@lists.linux.dev
+Subject: Re: Rust kernel policy
+Message-ID: <Z7SwcnUzjZYfuJ4-@infradead.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,20 +47,88 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250218-rust-xarray-bindings-v17-1-f3a99196e538@gmail.com>
+In-Reply-To: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-On Tue, Feb 18, 2025 at 09:37:43AM -0500, Tamir Duberstein wrote:
-> Allow implementors to specify the foreign pointer type; this exposes
-> information about the pointed-to type such as its alignment.
+On Sun, Feb 09, 2025 at 09:56:35PM +0100, Miguel Ojeda wrote:
+> Hi all,
 > 
-> This requires the trait to be `unsafe` since it is now possible for
-> implementors to break soundness by returning a misaligned pointer.
+> Given the discussions in the last days, I decided to publish this page
+> with what our understanding is:
 > 
-> Encoding the pointer type in the trait (and avoiding pointer casts)
-> allows the compiler to check that implementors return the correct
-> pointer type. This is preferable to directly encoding the alignment in
-> the trait using a constant as the compiler would be unable to check it.
+>     https://rust-for-linux.com/rust-kernel-policy
 > 
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> I hope it helps to clarify things. I intend to keep it updated as needed.
 
-Acked-by: Danilo Krummrich <dakr@kernel.org>
+I don't think having a web page in any form is useful.  If you want it
+to be valid it has to be in the kernel tree and widely agreed on.
+
+It also states factually incorrect information.  E.g.
+
+"Some subsystems may decide they do not want to have Rust code for the
+time being, typically for bandwidth reasons. This is fine and expected."
+
+while Linus in private said that he absolutely is going to merge Rust
+code over a maintainers objection.  (He did so in private in case you
+are looking for a reference).
+
+So as of now, as a Linux developer or maintainer you must deal with
+Rust if you want to or not.
+
+Where Rust code doesn't just mean Rust code [1] - the bindings look
+nothing like idiomatic Rust code, they are very different kind of beast
+trying to bridge a huge semantic gap.  And they aren't doing that in a
+few places, because they are showed into every little subsystem and
+library right now.
+
+So we'll have these bindings creep everywhere like a cancer and are
+very quickly moving from a software project that allows for and strives
+for global changes that improve the overall project to increasing
+compartmentalization [2].  This turns Linux into a project written in
+multiple languages with no clear guidelines what language is to be used
+for where [3].  Even outside the bindings a lot of code isn't going to
+be very idiomatic Rust due to kernel data structures that intrusive and
+self referencing data structures like the ubiquitous linked lists.
+Aren't we doing a disservice both to those trying to bring the existing
+codebase into a better safer space and people doing systems programming
+in Rust?
+
+Having worked on codebase like that they are my worst nightmare, because
+there is a constant churn of rewriting parts from language A to language
+B because of reason X and then back because of reason Z.  And that is
+without the usual "creative" Linux process of infighting maintainers.
+
+I'd like to understand what the goal of this Rust "experiment" is:  If
+we want to fix existing issues with memory safety we need to do that for
+existing code and find ways to retrofit it.  A lot of work went into that
+recently and we need much more.  But that also shows how core maintainers
+are put off by trivial things like checking for integer overflows or
+compiler enforced synchronization (as in the clang thread sanitizer).
+How are we're going to bridge the gap between a part of the kernel that
+is not even accepting relatively easy rules for improving safety vs
+another one that enforces even strong rules.
+
+If we just want to make writing drivers easier a new language for that
+pushes even more work and increases the workload on the already
+overworked people keeping the core infrastructure in shape.
+
+So I don't think this policy document is very useful.  Right now the
+rules is Linus can force you whatever he wants (it's his project
+obviously) and I think he needs to spell that out including the
+expectations for contributors very clearly.
+
+For myself I can and do deal with Rust itself fine, I'd love bringing
+the kernel into a more memory safe world, but dealing with an uncontrolled
+multi-language codebase is a pretty sure way to get me to spend my
+spare time on something else.  I've heard a few other folks mumble
+something similar, but not everyone is quite as outspoken.
+
+
+[1] I've written and worked on a fair bit of userspace Rust code, but
+I'm not an expert by any means, so take this with a grain of salt
+
+[2] The idea of drivers in eBPF as done by HID also really doesn't help
+with that as much as I like eBPF for some use cases
+
+[3] Unless Linus forces it onto your subsystem, or Dave decides anything
+touching Nvidia hardware must be in Rust of course
