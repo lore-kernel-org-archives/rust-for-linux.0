@@ -1,80 +1,127 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7490B2500B5;
-	Tue, 18 Feb 2025 12:44:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BB022FF31;
+	Tue, 18 Feb 2025 13:00:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739882697; cv=none; b=C0ElD3ROcY2UqyfCkRi4/kdJegEJlVMb+Rcsilu59tSmzt0yb5ZMxfcBcLMNLQPphImuTV1PkHuVl0CKaz7ikoHYaZc2hdFJU1ApSVsNheW8xCoTrm+HY20o+rgruxUkpp8YuZMYUBNR4J3Mj4VGfccfJ87fZbTStm35U3fC5+c=
+	t=1739883647; cv=none; b=kP58NUTK7iuWt6yJ6xA9mTRC1Y2kUROeg8OyRr9DJlh+xSvr5Eyd/P2UIl05RzLwuko0l5QvVHhOPFhTuYCbMF7+8jCd+EiAiUd5B4KTVMxn+KxntJHyU9Sv0PM/OmCrK4ARTZCoYDOGfo7/B9tKv4RuHEfvizvGFcc2kTHhFJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739882697; c=relaxed/simple;
-	bh=SLEG1NMoLrdX1Aw1CSXmVF23VQoV4gcupTERGEEsR/g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uD5SPhTFJr1rI1v9hlDiWT/x7TqhKgEBT/VUFfM+8yYMIfcfN9IVE/NAbg/laPaBDPMJYOOQDGIZ+jGb/a/FhWwskb8D28fSRD5FhWwTTzD+mjMegj2XwO/J7b3dX5GYVFD7xpRpbmdCNP267lsDz0aIEqMjPFqLdaUnuK/WaDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 62068152B;
-	Tue, 18 Feb 2025 04:45:14 -0800 (PST)
-Received: from [10.1.196.40] (e121345-lin.cambridge.arm.com [10.1.196.40])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3E4BB3F59E;
-	Tue, 18 Feb 2025 04:44:53 -0800 (PST)
-Message-ID: <60701cf8-f00e-4f95-a89a-b1970775f868@arm.com>
-Date: Tue, 18 Feb 2025 12:44:51 +0000
+	s=arc-20240116; t=1739883647; c=relaxed/simple;
+	bh=GDpD05YzyjayjIzK9MSpI8Tss4m7PkJ8S7ngYrvM31A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DFt9PXYytb38TvTqd1qTKMCwN63mf4xfBbuL0zR7BSDvNGi2bB46p0LccMUd2rkMf3c2PHdon/hzHpVW1ZAw2GnYcPMvrYl0I5VxGGHfEChlW9ckaFoOgMn4f9oqQudh0Haqk7DxJOtzu6mCkE+PTiennH6jWTLiw6VWjWIRP/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oxXDodDl; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oxXDodDl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A434FC4CEE2;
+	Tue, 18 Feb 2025 13:00:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739883647;
+	bh=GDpD05YzyjayjIzK9MSpI8Tss4m7PkJ8S7ngYrvM31A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oxXDodDlyPmuHgrYMb3Uk1sFK7RuSZjH8XN5j40YuN5BKiwHtcon2CjI3PsQn9uOW
+	 N2rRq7rMjOWpDwiiNbebK2C17L0CaDPNj4oloISoU6ZhV7Vu3RzFG0s2nSgBKQEs/B
+	 5slXGke5UKr209UWjw/TAAESd/9RINiOiHxI2v2XY9BuIQqheaKxYGvkNBLcXVJ1tC
+	 gnNZr6Pmh4WpXGeN6jAYaGiN6LSiEzGkQeFolQBsVDrMFZr3fK0cfhiWPixil5q3fn
+	 wNnALSeR5c0B4a3wtyU1g6GsMmqoUo9sfgIGZ693+moC2gCDKcHPnL8dWZd9ybaubY
+	 N2J/HxoQHZDkw==
+Date: Tue, 18 Feb 2025 14:00:40 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Joel Becker <jlbec@evilplan.org>, Christoph Hellwig <hch@lst.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>, Fiona Behrens <me@kloenk.dev>,
+	Charalampos Mitrodimas <charmitro@posteo.net>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/3] rust: configfs: introduce rust support for
+ configfs
+Message-ID: <Z7SEeBFJT7fRtvVN@pollux>
+References: <20250207-configfs-v2-0-f7a60b24d38e@kernel.org>
+ <20250207-configfs-v2-2-f7a60b24d38e@kernel.org>
+ <S6DKlLVx4KKevl_q2zrW69Z7oS0jwyX4DXpDZrFiIy1lKo4VYHM52aDiV82c2yf52Ecr7t9FayuqBUPR9onvZA==@protonmail.internalid>
+ <dd63fcde-ba4c-4a6e-9bde-1af5af37e91b@proton.me>
+ <87h64su8ux.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 2/3] rust: add dma coherent allocator abstraction.
-To: Daniel Almeida <daniel.almeida@collabora.com>,
- Abdiel Janulgue <abdiel.janulgue@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, dakr@kernel.org, aliceryhl@google.com,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- Valentin Obst <kernel@valentinobst.de>,
- open list <linux-kernel@vger.kernel.org>, Christoph Hellwig <hch@lst.de>,
- Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
- "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
-References: <20250123104333.1340512-1-abdiel.janulgue@gmail.com>
- <20250123104333.1340512-3-abdiel.janulgue@gmail.com>
- <633274AD-E55C-4A90-AB72-33D3E176176F@collabora.com>
- <dd57c3ba-246e-414d-a9c1-eb2cff032d83@arm.com>
- <2b019479-2d32-433f-af78-c3378dee4e2b@gmail.com>
- <E4FEFE5F-77C4-4ADB-AEFA-2580CA75BCFD@collabora.com>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <E4FEFE5F-77C4-4ADB-AEFA-2580CA75BCFD@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87h64su8ux.fsf@kernel.org>
 
-On 18/02/2025 12:19 pm, Daniel Almeida wrote:
-> Hi Abdiel,
+On Mon, Feb 17, 2025 at 12:08:22PM +0100, Andreas Hindborg wrote:
+> "Benno Lossin" <benno.lossin@proton.me> writes:
 > 
->> On 18 Feb 2025, at 06:58, Abdiel Janulgue <abdiel.janulgue@gmail.com> wrote:
->>
->> Hi Robin,
->>
->> On 17/02/2025 15:52, Robin Murphy wrote:
->>> FWIW we've been wanting to steer away from relying on the default mask in new code, so it would be quite neat to actually enforce that allocations fail if dma_coherent_mask hasn't been explicitly set (assuming it's sufficiently cheap to keep a flag in the Device handle or something like that - it's not the end of the world if it isn't practical).
->>
->> I just had a quick look on how to possible approach this and indeed would refactor the Device binding a bit. If it is okay with you this could go in a follow-up patch? I was hoping to upstream the initial support first - at least with the dma_set_mask/dma_set_coherent_mask put in place already.
->>
->> Thanks!
->> /Abdiel
->>
+> > On 07.02.25 15:41, Andreas Hindborg wrote:
+> >> +//!
+> >> +//! C header: [`include/linux/configfs.h`](srctree/include/linux/configfs.h)
+> >> +//!
+> >> +//! [C documentation]: srctree/Documentation/filesystems/configfs.rst
+> >> +//! [rust_configfs.rs]: srctree/samples/rust/rust_configfs.rs
+> >> +
+> >> +use crate::alloc::flags;
+> >> +use crate::container_of;
+> >> +use crate::page::PAGE_SIZE;
+> >> +use crate::prelude::*;
+> >> +use crate::str::CString;
+> >> +use crate::sync::Arc;
+> >> +use crate::types::ForeignOwnable;
+> >> +use crate::types::Opaque;
+> >> +use core::cell::UnsafeCell;
+> >> +use core::marker::PhantomData;
+> >> +use core::ptr::addr_of;
+> >> +use core::ptr::addr_of_mut;
+> >
+> > I usually would import this like so:
+> >
+> >     use crate::{
+> >         alloc::flags,
+> >         container_of,
+> >         page::PAGE_SIZE,
+> >         prelude::*,
+> >         str::CString,
+> >         sync::Arc,
+> >         types::{ForeignOwnable, Opaque},
+> >     };
+> >     use core::{
+> >         cell::UnsafeCell,
+> >         marker::PhantomData,
+> >         ptr::{addr_of, addr_of_mut},
+> >     };
+> >
+> > To me this is more readable.
 > 
-> FYI: I don’t mind a follow-up patch.
+> I disagree with that. I don't think what you suggest is easier to read,
+> and it is much more difficult to work with when rebasing and merging
+> things.
 
-Agreed, as I say it's far from critical anyway - being able to make the 
-correct dma_set_coherent_mask() call at all is the only thing we need 
-for sure. I just see a slightly selfish opportunity here, that if the 
-binding layer could make it impossible to call the API incorrectly then 
-hopefully I should never have to review any of its users :D
+I have to agree that it is more difficult to work with. So far I used the style
+as proposed by Benno, but it creates unncessary big and difficult to review
+diffs when rustfmt moves things from a horizontal list to a vertical one and
+vice versa.
 
-Cheers,
-Robin.
+> >> +    /// Implementations can use this method to do house keeping before
+> >> +    /// `configfs` drops its reference to `Child`.
+> >> +    fn drop_item(
+> >
+> > `drop` doesn't really fit here, I think something like `unlink_item`
+> > fits better, since the child isn't actually dropped after this function
+> > returns.
+> 
+> Yea, I know. But the function is called `drop_item` on the C side of
+> things. Usually we keep the C names.
+
+I agree C names should be kept as possible.
+
+To me it seems obvious from the context, but maybe it'd still makes sense to add
+a brief note that this callback's name is not related to 'drop' in the sense of
+Rust?
