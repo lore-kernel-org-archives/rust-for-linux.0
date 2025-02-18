@@ -1,127 +1,307 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BB022FF31;
-	Tue, 18 Feb 2025 13:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E91B266F19;
+	Tue, 18 Feb 2025 13:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739883647; cv=none; b=kP58NUTK7iuWt6yJ6xA9mTRC1Y2kUROeg8OyRr9DJlh+xSvr5Eyd/P2UIl05RzLwuko0l5QvVHhOPFhTuYCbMF7+8jCd+EiAiUd5B4KTVMxn+KxntJHyU9Sv0PM/OmCrK4ARTZCoYDOGfo7/B9tKv4RuHEfvizvGFcc2kTHhFJM=
+	t=1739883696; cv=none; b=Vv83MODJD+1cDMh4awQUhrgyACzKF0Qt+mgIGooc5zWuQXK3SH7tQr9JsHP8bDKo/sa2Dn5kq3fSCnEEoWzA8sBoBTyhdLqVEJlZ96LxxQJL58j/sMhV0CcMzYWzkc3IyWCZCha05JBZ0yKR2oYoKTJ0K+NNqV96TOy1SIpbnqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739883647; c=relaxed/simple;
-	bh=GDpD05YzyjayjIzK9MSpI8Tss4m7PkJ8S7ngYrvM31A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DFt9PXYytb38TvTqd1qTKMCwN63mf4xfBbuL0zR7BSDvNGi2bB46p0LccMUd2rkMf3c2PHdon/hzHpVW1ZAw2GnYcPMvrYl0I5VxGGHfEChlW9ckaFoOgMn4f9oqQudh0Haqk7DxJOtzu6mCkE+PTiennH6jWTLiw6VWjWIRP/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oxXDodDl; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739883696; c=relaxed/simple;
+	bh=utOYMK9wxdhg7AQtrh9ChFcDPs7Qi9/RVDGLNBePUoU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=GmMGaufLaFb81hbFOpt/F3rzaIRTKtc+jxwoERVWycZzvRVWXNGmBY8zm3EZUM+UnEedKfY8k9h2cChVgJvVEP8OwqmboyHHs5+0yy9P9nheJ2NA6tC2EnKVNFpi8vImVfW53Sp3vpK8XcxX4SCqyOnph2X65oVweLEmIQWsT8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gjRa/E+2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oxXDodDl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A434FC4CEE2;
-	Tue, 18 Feb 2025 13:00:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gjRa/E+2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3238C4CEE6;
+	Tue, 18 Feb 2025 13:01:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739883647;
-	bh=GDpD05YzyjayjIzK9MSpI8Tss4m7PkJ8S7ngYrvM31A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oxXDodDlyPmuHgrYMb3Uk1sFK7RuSZjH8XN5j40YuN5BKiwHtcon2CjI3PsQn9uOW
-	 N2rRq7rMjOWpDwiiNbebK2C17L0CaDPNj4oloISoU6ZhV7Vu3RzFG0s2nSgBKQEs/B
-	 5slXGke5UKr209UWjw/TAAESd/9RINiOiHxI2v2XY9BuIQqheaKxYGvkNBLcXVJ1tC
-	 gnNZr6Pmh4WpXGeN6jAYaGiN6LSiEzGkQeFolQBsVDrMFZr3fK0cfhiWPixil5q3fn
-	 wNnALSeR5c0B4a3wtyU1g6GsMmqoUo9sfgIGZ693+moC2gCDKcHPnL8dWZd9ybaubY
-	 N2J/HxoQHZDkw==
-Date: Tue, 18 Feb 2025 14:00:40 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Joel Becker <jlbec@evilplan.org>, Christoph Hellwig <hch@lst.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>, Fiona Behrens <me@kloenk.dev>,
-	Charalampos Mitrodimas <charmitro@posteo.net>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] rust: configfs: introduce rust support for
- configfs
-Message-ID: <Z7SEeBFJT7fRtvVN@pollux>
-References: <20250207-configfs-v2-0-f7a60b24d38e@kernel.org>
- <20250207-configfs-v2-2-f7a60b24d38e@kernel.org>
- <S6DKlLVx4KKevl_q2zrW69Z7oS0jwyX4DXpDZrFiIy1lKo4VYHM52aDiV82c2yf52Ecr7t9FayuqBUPR9onvZA==@protonmail.internalid>
- <dd63fcde-ba4c-4a6e-9bde-1af5af37e91b@proton.me>
- <87h64su8ux.fsf@kernel.org>
+	s=k20201202; t=1739883695;
+	bh=utOYMK9wxdhg7AQtrh9ChFcDPs7Qi9/RVDGLNBePUoU=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=gjRa/E+2VqZEgbzH2IgMG0bXv1F0TZo2/B/7EjgaTaATDR0bHPuo8ttuJ2KEKz4dD
+	 CAyZ+mJLdlsRADqRWcgbmGFJz7czhJh4l5A9YSGt5P45UHMen0/Fqs8XnTdG5Ju7X5
+	 CNLuEEVAuW1OUwnRb3jTpxSoZvXsl+NTFkwAf51kMJD7HDdOOAEqnLY4AKf7Xrk1x2
+	 ic9u4eCz1IKgrVXlhd14yOrKoaU5SMK24FmkLpoCSZYf498Ks+wYutn8NKKbKx/LB4
+	 syEytg4TCyMonsjmwn+UioSwq8SqL7cLZNfpVJegv/iFJt7re72n6UE10FrH+w8XCv
+	 PriNDQ9yfUPwA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Tue, 18 Feb 2025 13:57:18 +0100
+Subject: [PATCH v3 3/4] rust: configfs: add a sample demonstrating configfs
+ usage
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87h64su8ux.fsf@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250218-configfs-v3-3-0e40c0778187@kernel.org>
+References: <20250218-configfs-v3-0-0e40c0778187@kernel.org>
+In-Reply-To: <20250218-configfs-v3-0-0e40c0778187@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Peter Zijlstra <peterz@infradead.org>, 
+ Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
+ Waiman Long <longman@redhat.com>, Danilo Krummrich <dakr@kernel.org>, 
+ Joel Becker <jlbec@evilplan.org>, Christoph Hellwig <hch@lst.de>, 
+ Fiona Behrens <me@kloenk.dev>, 
+ Charalampos Mitrodimas <charmitro@posteo.net>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6453; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=utOYMK9wxdhg7AQtrh9ChFcDPs7Qi9/RVDGLNBePUoU=;
+ b=owEBbQKS/ZANAwAIAeG4Gj55KGN3AcsmYgBntIPAMU1QnCc4uVHRNsgKlsG9VzjytL4o/H9Ga
+ ZBI+WFxEPWJAjMEAAEIAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCZ7SDwAAKCRDhuBo+eShj
+ d7aFD/4+0UNN7hgWFNnRmCkW5MpE/aRmgbio6dEkzdLSvbYwsvtOAIQdK/WSAmTaC4bJ853V0gU
+ W1Vx6K0fqLhZD8LWvVwKMYydQN410+yFAx+mdXDWRzqdbZbAXagIV95uYUqJXMsfL9Orf5p4N43
+ Kr6xRKTg3juscIwoq9Pm1T+FTy2rYR+XPbatVuCr5Odjl889i0oGeZKcTO+loSXCvmZqQ+UU+Lx
+ DdtdI9uY3gCyuRsh0V15QQfZLd819hRpQG8Lp7SACGb2mXhlasNFkU0T8c4tP6Njygs3AXLWFbu
+ OCeghUQ6lSiPQSpK0F2zO6PS4IZKpvmST3cD/U1p+2bzWIG6bSmLRVzczX+9P/Bx4CyDxErav60
+ OX2/XNBHdmgoAAnLfcl2ZT0q/V1gynaqYQZZ6p9Y7oaoR1UJ9wL+1gr92YADf9xUQC7vAYAyiOk
+ FDr9+NZyTOBNiqp16BA4TUJUuFmG6I9MHf6XJDu9r0K6sEaqgQFHqr8i5EVAIn8AmwDUKxGLjDT
+ UILXqdDpLtFA+BPaZH/nDZO0gnPZW1aXZCQTfGYTBvH+rJAkJI+gsf+m03UpEvWL+lA3kjEYn8K
+ EZR9Y0DuTNcTAUR+jfaqxAw331gmeNGKzTRysGd71SPLZXIFoG+DzFQnK/T0TD1KLtBCNinGS0G
+ 2BORAale5DTVCAA==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-On Mon, Feb 17, 2025 at 12:08:22PM +0100, Andreas Hindborg wrote:
-> "Benno Lossin" <benno.lossin@proton.me> writes:
-> 
-> > On 07.02.25 15:41, Andreas Hindborg wrote:
-> >> +//!
-> >> +//! C header: [`include/linux/configfs.h`](srctree/include/linux/configfs.h)
-> >> +//!
-> >> +//! [C documentation]: srctree/Documentation/filesystems/configfs.rst
-> >> +//! [rust_configfs.rs]: srctree/samples/rust/rust_configfs.rs
-> >> +
-> >> +use crate::alloc::flags;
-> >> +use crate::container_of;
-> >> +use crate::page::PAGE_SIZE;
-> >> +use crate::prelude::*;
-> >> +use crate::str::CString;
-> >> +use crate::sync::Arc;
-> >> +use crate::types::ForeignOwnable;
-> >> +use crate::types::Opaque;
-> >> +use core::cell::UnsafeCell;
-> >> +use core::marker::PhantomData;
-> >> +use core::ptr::addr_of;
-> >> +use core::ptr::addr_of_mut;
-> >
-> > I usually would import this like so:
-> >
-> >     use crate::{
-> >         alloc::flags,
-> >         container_of,
-> >         page::PAGE_SIZE,
-> >         prelude::*,
-> >         str::CString,
-> >         sync::Arc,
-> >         types::{ForeignOwnable, Opaque},
-> >     };
-> >     use core::{
-> >         cell::UnsafeCell,
-> >         marker::PhantomData,
-> >         ptr::{addr_of, addr_of_mut},
-> >     };
-> >
-> > To me this is more readable.
-> 
-> I disagree with that. I don't think what you suggest is easier to read,
-> and it is much more difficult to work with when rebasing and merging
-> things.
+Add a sample to the samples folder, demonstrating the intended use of the
+rust configfs API.
 
-I have to agree that it is more difficult to work with. So far I used the style
-as proposed by Benno, but it creates unncessary big and difficult to review
-diffs when rustfmt moves things from a horizontal list to a vertical one and
-vice versa.
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+ samples/rust/Kconfig          |  11 +++
+ samples/rust/Makefile         |   1 +
+ samples/rust/rust_configfs.rs | 179 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 191 insertions(+)
 
-> >> +    /// Implementations can use this method to do house keeping before
-> >> +    /// `configfs` drops its reference to `Child`.
-> >> +    fn drop_item(
-> >
-> > `drop` doesn't really fit here, I think something like `unlink_item`
-> > fits better, since the child isn't actually dropped after this function
-> > returns.
-> 
-> Yea, I know. But the function is called `drop_item` on the C side of
-> things. Usually we keep the C names.
+diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
+index 918dbead2c0b4..2f97bf9a7b4cc 100644
+--- a/samples/rust/Kconfig
++++ b/samples/rust/Kconfig
+@@ -10,6 +10,17 @@ menuconfig SAMPLES_RUST
+ 
+ if SAMPLES_RUST
+ 
++config SAMPLE_RUST_CONFIGFS
++	tristate "Configfs sample"
++	depends on CONFIGFS_FS
++	help
++	  This option builds the Rust configfs sample.
++
++	  To compile this as a module, choose M here:
++	  the module will be called rust_configfs.
++
++	  If unsure, say N.
++
+ config SAMPLE_RUST_MINIMAL
+ 	tristate "Minimal"
+ 	help
+diff --git a/samples/rust/Makefile b/samples/rust/Makefile
+index 5a8ab0df0567c..72122f010cafc 100644
+--- a/samples/rust/Makefile
++++ b/samples/rust/Makefile
+@@ -6,6 +6,7 @@ obj-$(CONFIG_SAMPLE_RUST_MISC_DEVICE)		+= rust_misc_device.o
+ obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
+ obj-$(CONFIG_SAMPLE_RUST_DRIVER_PCI)		+= rust_driver_pci.o
+ obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+= rust_driver_platform.o
++obj-$(CONFIG_SAMPLE_RUST_CONFIGFS)		+= rust_configfs.o
+ 
+ rust_print-y := rust_print_main.o rust_print_events.o
+ 
+diff --git a/samples/rust/rust_configfs.rs b/samples/rust/rust_configfs.rs
+new file mode 100644
+index 0000000000000..36a2c848a979a
+--- /dev/null
++++ b/samples/rust/rust_configfs.rs
+@@ -0,0 +1,179 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Rust configfs sample.
++
++use kernel::alloc::flags;
++use kernel::c_str;
++use kernel::configfs;
++use kernel::configfs_attrs;
++use kernel::new_mutex;
++use kernel::page::PAGE_SIZE;
++use kernel::prelude::*;
++use kernel::sync::Mutex;
++
++module! {
++    type: RustConfigfs,
++    name: "rust_configfs",
++    author: "Rust for Linux Contributors",
++    description: "Rust configfs sample",
++    license: "GPL",
++}
++
++#[pin_data]
++struct RustConfigfs {
++    #[pin]
++    config: configfs::Subsystem<Configuration>,
++}
++
++#[pin_data]
++struct Configuration {
++    message: &'static CStr,
++    #[pin]
++    bar: Mutex<(KBox<[u8; PAGE_SIZE]>, usize)>,
++}
++
++impl Configuration {
++    fn new() -> impl PinInit<Self, Error> {
++        try_pin_init!(Self {
++            message: c_str!("Hello World\n"),
++            bar <- new_mutex!((KBox::new([0; PAGE_SIZE], flags::GFP_KERNEL)?, 0)),
++        })
++    }
++}
++
++impl kernel::InPlaceModule for RustConfigfs {
++    fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
++        pr_info!("Rust configfs sample (init)\n");
++
++        let item_type = configfs_attrs! {
++            container: configfs::Subsystem<Configuration>,
++            data: Configuration,
++            child: Child,
++            attributes: [
++                message: 0,
++                bar: 1,
++            ],
++        };
++
++        try_pin_init!(Self {
++            config <- configfs::Subsystem::new(
++                c_str!("rust_configfs"), item_type, Configuration::new()
++            ),
++        })
++    }
++}
++
++#[vtable]
++impl configfs::GroupOperations for Configuration {
++    type Child = Child;
++
++    fn make_group(&self, name: &CStr) -> Result<impl PinInit<configfs::Group<Child>, Error>> {
++        let tpe = configfs_attrs! {
++            container: configfs::Group<Child>,
++            data: Child,
++            child: GrandChild,
++            attributes: [
++                baz: 0,
++            ],
++        };
++
++        Ok(configfs::Group::new(name.try_into()?, tpe, Child::new()))
++    }
++}
++
++#[vtable]
++impl configfs::AttributeOperations<0> for Configuration {
++    type Data = Configuration;
++
++    fn show(container: &Configuration, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
++        pr_info!("Show message\n");
++        let data = container.message;
++        page[0..data.len()].copy_from_slice(data);
++        Ok(data.len())
++    }
++}
++
++#[vtable]
++impl configfs::AttributeOperations<1> for Configuration {
++    type Data = Configuration;
++
++    fn show(container: &Configuration, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
++        pr_info!("Show bar\n");
++        let guard = container.bar.lock();
++        let data = guard.0.as_slice();
++        let len = guard.1;
++        page[0..len].copy_from_slice(&data[0..len]);
++        Ok(len)
++    }
++
++    fn store(container: &Configuration, page: &[u8]) -> Result {
++        pr_info!("Store bar\n");
++        let mut guard = container.bar.lock();
++        guard.0[0..page.len()].copy_from_slice(page);
++        guard.1 = page.len();
++        Ok(())
++    }
++}
++
++#[pin_data]
++struct Child {}
++
++impl Child {
++    fn new() -> impl PinInit<Self, Error> {
++        try_pin_init!(Self {})
++    }
++}
++
++#[vtable]
++impl configfs::GroupOperations for Child {
++    type Child = GrandChild;
++
++    fn make_group(&self, name: &CStr) -> Result<impl PinInit<configfs::Group<GrandChild>, Error>> {
++        let tpe = configfs_attrs! {
++            container: configfs::Group<GrandChild>,
++            data: GrandChild,
++            attributes: [
++                gc: 0,
++            ],
++        };
++
++        Ok(configfs::Group::new(
++            name.try_into()?,
++            tpe,
++            GrandChild::new(),
++        ))
++    }
++}
++
++#[vtable]
++impl configfs::AttributeOperations<0> for Child {
++    type Data = Child;
++
++    fn show(_container: &Child, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
++        pr_info!("Show baz\n");
++        let data = c"Hello Baz\n".to_bytes();
++        page[0..data.len()].copy_from_slice(data);
++        Ok(data.len())
++    }
++}
++
++#[pin_data]
++struct GrandChild {}
++
++impl GrandChild {
++    fn new() -> impl PinInit<Self, Error> {
++        try_pin_init!(Self {})
++    }
++}
++
++#[vtable]
++impl configfs::AttributeOperations<0> for GrandChild {
++    type Data = GrandChild;
++
++    fn show(_container: &GrandChild, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
++        pr_info!("Show baz\n");
++        let data = c"Hello GC\n".to_bytes();
++        page[0..data.len()].copy_from_slice(data);
++        Ok(data.len())
++    }
++}
 
-I agree C names should be kept as possible.
+-- 
+2.47.0
 
-To me it seems obvious from the context, but maybe it'd still makes sense to add
-a brief note that this callback's name is not related to 'drop' in the sense of
-Rust?
+
