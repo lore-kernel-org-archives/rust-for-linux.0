@@ -1,232 +1,260 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2044.outbound.protection.outlook.com [40.107.92.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390F32690FE;
-	Tue, 18 Feb 2025 13:02:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739883759; cv=none; b=aH+9vV0x66yYIWMZzUwIF06k9GRl9JUT0XmdyYnMfeRG8sJU75st7cjRza/RMXSFIptoyGaWXUPoZ8fWzyL1jxzFJ7zkrE2B8UkvFuqLHcoKfuE/K2wSZBF/8G6sBqF1znRhCDERslEeKMzDPQ/05gH8ake3MLBYj0QvKzvjqOE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739883759; c=relaxed/simple;
-	bh=jWLHgVG8nC8c9GDtbpXvmNb1F/5RvzNYNwR5cozqw5M=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=H9llJVCcnqqUivwqjghT1BQlH/M7D3ZZ1Ju/ga+kEOgOVu5DEKJMrWWzfV7jIhAtV/5Zhn65706GH8wSRU0oyCUi5QKZgpIiM5mD7bqloL5moBfV0jnO9RQOfFtZ+LKE2wRgyx5dvMqy1XMjYsEjVYQwUIItTpxNg1m+Jb5lYwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o0LSRf6d; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1982417CF;
+	Tue, 18 Feb 2025 13:07:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739884041; cv=fail; b=nP1cq8Hx05glm1J0duWg24U/6RrVV9RoCoDsPQwRG+/CcnAizgnJlN7vgQ4vhXNWtv+1b6OIvPjcLbXxh2KltPm0Zc1o9fp6OUAefjocNkbUhJQxnmdh4jRfvQDwuhzBZMxoCdAgl8VvPhiRIVmyguSurWqsjSGbZVX2x5UHl/o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739884041; c=relaxed/simple;
+	bh=lLd9ie5bvxvJGCzBT4NT2s/FNcFrFpnENo752QMjDqk=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=HIQIFljDUB6ctKFMBSQFMAO5N7xAtVLKCRKmMYEKyzg3iRuGxwlrazv+Q+NuU2A6qVMhJE4cHbteJAIJEEsa1zKa9LfdrWA2ZYtpyPddjediHdWhYhLwIn3YE6XIHvK75zMYgGoIdbKVwX+sa++LqcVBcTNu1BvmUaJ7KtlyqAE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=pXRNX6aL; arc=fail smtp.client-ip=40.107.92.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o0LSRf6d"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B538C4CEE2;
-	Tue, 18 Feb 2025 13:02:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739883758;
-	bh=jWLHgVG8nC8c9GDtbpXvmNb1F/5RvzNYNwR5cozqw5M=;
-	h=From:Subject:Date:To:Cc:From;
-	b=o0LSRf6d9TIQqGfdRsH48P+5AFIM4sRKFZERjRbdTCHjGRjGti3BqOVcVtK4lIYjw
-	 PyaJIBPfDHocQJOPaVUc3x7zreeAgzNU6tRDnRihl6u745Sb33mRnwe7KvgbqtrIap
-	 FmmTtjCcxuq26x2HU4T7zq0ZKf4uUX141duGx9ibmgnTTJLcvLRYDiYVMJmiSi8Lzh
-	 ctE7wLvZNvC4f0fgDLDsn1rf3y1Ok90iCDJJbfCQyYxTSNNum+zQHfrzkPj+y4safu
-	 NKi/abYi8xxIv3V05ssNq9H4DEUoF9Zknua6vf9m8rR9EQwWPobaieQ3+JHC/6WPn1
-	 gpQVohm3A7IrA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Subject: [PATCH v7 0/6] rust: extend `module!` macro with integer parameter
- support
-Date: Tue, 18 Feb 2025 14:00:42 +0100
-Message-Id: <20250218-module-params-v3-v7-0-5e1afabcac1b@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="pXRNX6aL"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rCrpNM6M+h1A7avKhcILNlMKXUY6wSqBr2Xje0y9PGnXf/G5FVMiSCCJGI1NV1uHxSsAVQ/8emyAlqwpv3umUSN2ZwdBR9VgwjhMTVfI7GsPg+R/YvB8R0+AqoTM9COdPGREnRfJke0+zTi4BaYJZ4WiVSODcT0I4uwVOaM+GAgCby7QBTXoHTUOEVPnm7KZ5WDHAzjfRePIyu3iF3vHTVVLgTlDZbEF8Jfh8fJd9xhYuT/x5p834X75njMpppF+eN05swlqhcoJDeJpfGDSA67PQoQV8yqzGWNVuyOBGXt9sO4gZylvUwCmPZNR5lOVbdXmHPSDViQBuHag8efonw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NAMtxm/Z/eSzPdWjqOWrL4eOoGajBOl4GN9ewFtawp8=;
+ b=c2LuzLGSIcN2fS5dAXCN6Ryp8WuMCgOyhzMEnj18JlXqBg/+np/Dy1LFMT9yWHQaas5XQMflwtSJjnkUuohLviHKmXA70lcWHeHsWqb7pDfTRNw/dfhLd8vNMP63BMLqLIgL1Q0raeFTCwkB6b7assNTSxy59K0IGzVgo7D/HCAkFavjHfe2HSJx8fCnwWZ+/zGjUehrrgYjLu1LyLpTh1wxtMXYEwjG8dBd6xCYuFp1zASGIEZxSuDAF7Xspl1Oa5xto2ERc+5CJW6BeS57u483lNqkQsx093J/SNJbSSy8jTPittwOzR3qNNqoA3Qq8tHwjG2OlhCaOsiBTJu3VQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NAMtxm/Z/eSzPdWjqOWrL4eOoGajBOl4GN9ewFtawp8=;
+ b=pXRNX6aL8xc0fogKGf4+azHRDVeOPhCzHsHBo+4jg6J+G0Vej9wBPtF7JAqWytabfttFLkRkkd8/IV5/xRTV5r2wQ4QOWHkq7tuJc42WK5tD12p9riFmjMHbNxodxlT1x6887uxUtlkKS8avpQ6QC1OBjPvLmM96YxaetjPTu06FCXe16ZW8HaWA7wlQFqzQLYOhvvzq3Y9RjVKl9NbT68kAiArjPu1v4IKsYa3amDfqp/ID1evAqi+9pZuLg+6ctp8ePWJKJHoQMTju3wepHIwQdNkTNedU6sLMr9qQKBCmZUek1KF60Hnl9E6D+JrvpTsPfWPBTilFbAswZJ4YCg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by BY5PR12MB4084.namprd12.prod.outlook.com (2603:10b6:a03:205::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.14; Tue, 18 Feb
+ 2025 13:07:14 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99%6]) with mapi id 15.20.8445.017; Tue, 18 Feb 2025
+ 13:07:13 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 18 Feb 2025 22:07:10 +0900
+Message-Id: <D7VLEXCQ5VYN.3N0G7XXCVLH6L@nvidia.com>
+Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>
+Subject: Re: [PATCH RFC 1/3] rust: add useful ops for u64
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Dirk Behme" <dirk.behme@de.bosch.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "David Airlie" <airlied@gmail.com>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Ben Skeggs" <bskeggs@nvidia.com>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <20250217-nova_timer-v1-0-78c5ace2d987@nvidia.com>
+ <20250217-nova_timer-v1-1-78c5ace2d987@nvidia.com>
+ <8d95cfde-30bc-4937-99d3-0077df43867a@de.bosch.com>
+In-Reply-To: <8d95cfde-30bc-4937-99d3-0077df43867a@de.bosch.com>
+X-ClientProxiedBy: OSTPR01CA0073.jpnprd01.prod.outlook.com
+ (2603:1096:604:21a::9) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAHqEtGcC/23QTW7CMBAF4KtEXmPkcewksOo9qi78MwELElM7W
- K0Qd2cAIVolkjfPmvlGeheWMQXMbFtdWMIScogjhXZVMbc34w558JSZFFKBBOBD9Ocj8pNJZsi
- 81Nxgi9p1vrPaMFo7JezDz4P8/KK8D3mK6fdxodT33xdWzzF6gqtOGwHaOOn6jwOmEY/rmHbsr
- hX1ErQAsVkQFAlOis663iLAXNBvQQq1IGgSbK+RFAWN1DOh+SMsVVIaEqSyctN671Tt/wnXZ0k
- Jv89U9/RsilmTkbs4DGHaVqVZg+LJAU1fbzR9TcekAQAA
-X-Change-ID: 20241211-module-params-v3-ae7e5c8d8b5a
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Masahiro Yamada <masahiroy@kernel.org>, 
- Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
- Luis Chamberlain <mcgrof@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Adam Bratschi-Kaye <ark.email@gmail.com>, linux-kbuild@vger.kernel.org, 
- Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, 
- Daniel Gomez <da.gomez@samsung.com>, Simona Vetter <simona.vetter@ffwll.ch>, 
- Greg KH <gregkh@linuxfoundation.org>, linux-modules@vger.kernel.org
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7161; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=jWLHgVG8nC8c9GDtbpXvmNb1F/5RvzNYNwR5cozqw5M=;
- b=owEBbQKS/ZANAwAIAeG4Gj55KGN3AcsmYgBntISCSdEQxT8vQFZff10Wp258DdMA4JOlk6pYl
- tzigaFH3L2JAjMEAAEIAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCZ7SEggAKCRDhuBo+eShj
- d+BnD/0UUZSFN4fQeUFtpswqlscHJ4tU+08aUjIvVk91j9tbo7EUHzbYiiCN7BZYpdCV/sqqsou
- B4i2n+cGCvZFfEjASU+l9QSmF5x8mAMKU/tJaKxvtuZj2IJNJeeV7hXF4G0O7Z6UC88JIq6Hpnd
- 4hEKppJT35sp+WTaGkE4+2GzvGZrBk1yGxUeX8T8yqW5Si1EWsG73cNAMtgMcA5FThpwyvVTNNY
- B2GgpdjjOtGJnomNNeNqV0JM6LngP9miiVu3MDfMymDz3kZlXd8xKFcsfNSWDjGmypG7m3FZ034
- Ze5c7AaaYOy9FVR51b18m/fAcVngfhmNFMxG3ab1B2/UZ9mf0oLo/vuTP7yza2jGGkPBf3ARYuW
- INiLo6Phv+enRYRwmzkRy3RtnZsWruZftYLVSpz9/7m9mRqfeRkqGxACvsTifa/rdYlxwgmpneA
- KNtS6KyT1x+xPdsxnlIw4kYTCMZGNsKdZZt9u8Wgn+HVT8fHbuk0IHvsGjCr8tx57qm4HnKeiZQ
- h5xFx43t9uEHIg6FuNDtBCmh5GAaNTHnFX0E0v1TqBhov3q2JPACj9X5ccBmXuHyVm/1YcJ2p+Q
- i+jN7/XrKrS1K6zuifong4213e32HAr5KZ8MiLma/9qnZwe3xWFGk1jskOKNEPQ2ZZ46jlrEjAU
- fkxTSM8WDqNr0VQ==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|BY5PR12MB4084:EE_
+X-MS-Office365-Filtering-Correlation-Id: b1f06011-135d-4d80-b16d-08dd501d2983
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|10070799003;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bVRFZ3RDOXdWRjR3Vm9JNUFYeDQ5V0xRSzk1MTM2dGpBZUlKN0F6UnFMdVZm?=
+ =?utf-8?B?WTIwVVZnL0p2OGhZSWlQZTNJOFFXSUVsTEkwMWVXV3BvbFVycGFMa0grMXho?=
+ =?utf-8?B?cUJPc1MyenF6NlM3bHJvb1B4VVFHejF6NmtMZEdUT25pWjczT05odXpMRU5q?=
+ =?utf-8?B?QitDUWhRdFRnRjYwVVcvL0ZHUWxiSWthZ1hjZTVPRThqZUc1MVZNTFM0MHBX?=
+ =?utf-8?B?NGV5ekV4YmhGV1kzVWR0MGFsSStqYm9kdnA1ZTN2NU5IYTNFS3M2dW9hNXNz?=
+ =?utf-8?B?NG9seEtvME51TExTeEw0SnNPN2pGcDlwdTlyc21waXp0bEtJTDhINjVaTzQ4?=
+ =?utf-8?B?akVkYVBIczNRd0tPUmQ5Q2k1eVlZY3BzcnpZc1ZlYmR1dFJGK08yUVB6d2dC?=
+ =?utf-8?B?cWJraU81amZ6ZGZYREhDNVcxeWlrc29KOVhXSGNGOVlGUkh5T3FWQnJHSm1u?=
+ =?utf-8?B?T2xiM0ZoQWk2c2pOcHpFSmpwVFNaSmR0b0h5Q0FvTGxackNYMlE0UTR4bStM?=
+ =?utf-8?B?aHVvT1ZiUm54c1RNVks3WXNvT3Z1eTd2QVFZbkZXRlJNeHRrUDMwYzdlSHRI?=
+ =?utf-8?B?ZWxmMkMxclYwWkgxZlh2NG9YSGxVS2FVUWZodzUrbnFiSDNSU1IwUW0rZzJx?=
+ =?utf-8?B?VkVydlowMXBmL3ZNWlcwa1RaRXZ0MGZHVEhTZEwvQjIwcmJpNFRrMHdTYmkr?=
+ =?utf-8?B?RXZpNUIyL0JBQmszRWM5Uk9KVVpYeTlYYlZBRDVVbTVBbkk5alYwVUcvS1Rx?=
+ =?utf-8?B?WDhibFAxeUk4R1Q3OUVsTVZFNmZFSWtDY25lMzNCNzJYLzZkSkJwdW0wRG84?=
+ =?utf-8?B?M0dKL0R1VFEwVnVMNWd3cWVHRFlUS0lEa21jSDJPZEFRekRuaVhEa21wV3Zn?=
+ =?utf-8?B?RGJmbGNLNkpPL2FITHhaT3FoeXMrSUFHZmpRbEtwai94akZXVHNOZ0pqQlNu?=
+ =?utf-8?B?Z3BIRG9nTFo2THIyUzZBMlpmOGVYKzAramYrR2NTU2UzNlV3bm52SkZlalll?=
+ =?utf-8?B?THpzR2VveDR5R09NRndVTmxQWmM5d1NTWXZST1Bxb1JLUmR6Mzl4VjhNYlVN?=
+ =?utf-8?B?MDJHZEZZc3VYRzNObEo5UWlscjJSejQxU1ozUW55dGVTR3gwRy9qZ1E4aDlO?=
+ =?utf-8?B?UUJtOVVHYjRRUFlZUzdObkxTU3VwbVNOcE92T0w2b2FYNndaVksxUTM5dEtD?=
+ =?utf-8?B?YlpLZG9FZEJRUFZ3eHBTWWVncUNBc2h4UnVVenlHd3ZFSytoeWxzZXRZUW85?=
+ =?utf-8?B?MDJsSldaSi9kYm5OcDBxd0c3UjNNRkR2ZmlmZk14TTcxNXVHb0M3R1g5d1N2?=
+ =?utf-8?B?ait1K2t5OFpORENWSU1oL01lMVVmcmN0R2l3NDU2UDlhZTVvTHVkQkZldExM?=
+ =?utf-8?B?UG1xQ1dCRjZad1hLNWFxLzI3ODA3Q2JBa0hXbmtNUTRGYWpLdENTYXFUMkZQ?=
+ =?utf-8?B?Vi83SW55aXZycGMrMXJxdHAreGtZaGFKd1ZoTUlUdWp1TFhvNGRTb0RDTzc2?=
+ =?utf-8?B?M0czRFk0c2Q1OVhjcXNSUDdkOGtoSGVlYVc1ZGtBK3JNTkRXZUI3dEYvSWZp?=
+ =?utf-8?B?VlhZbHNmTWM0dElXVy9udEdGbHpIVHh1SWU5QVFRSVBXVXNZSUIvOWVobU03?=
+ =?utf-8?B?YktaQWE0Z2Q0aXREZWxZRUJUT1JyRGFtaisyNzQxbkZ2QWJsZWh3MUFCaDhm?=
+ =?utf-8?B?TzE0cUVBdjkySXU5OXB5amVRR0tDUDJBd3NEekU0ZmdRNjFOYW1mYUVhdGNl?=
+ =?utf-8?B?NElhcGVwWkNMV2dXaThPUmgyZ29GWXFvRkE4WG1LYUR3RkRib2d5NUVNeFNW?=
+ =?utf-8?B?K1FhTmQ1MmMrWHVBRTZUMmVDcUdPcDZHelk3YWcxaEtROTdWbXhPdDgzM1lX?=
+ =?utf-8?Q?a1wmhZEX2IOBQ?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(10070799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dUs0dEszVEZuSDcxd0VZb3RsUVdyTWxBTUw4NXU0ekE0cDlBczdjalQzdUxK?=
+ =?utf-8?B?RnBjRFh2T05iSmYyMU0vWi91OHJLc1NHc0xDK08rSDAwRVhRVnJLMDRQTUdW?=
+ =?utf-8?B?ZG5yOGdXQnRxMURUeEw2WXhqRkxaS1FqOW9SZkxPLzdVL0o1UXQ1VU9Nd0xU?=
+ =?utf-8?B?VVJHalNQWDBCekVCZjV5U2pqeTloRWRBSGEzRUNiVUo5YVUxTklFNmErUWNr?=
+ =?utf-8?B?Z2tJOXlsODM3NFIxQWZaZUpmSDV5ZHRkSUNiQjAzcGtZeUpuOGxMY2hOTm9C?=
+ =?utf-8?B?dmljNFF6UllCSnRGUXZuMjNISFlaRTZBQ2FvdHFzQVpiQ0FRQnJRMmNodExo?=
+ =?utf-8?B?Y3pZaDM4RndpYTBXL3c1L3doZ1NHL1Avemt0TStLYURwTzNjWGEwc2JrTG1P?=
+ =?utf-8?B?K2pxeXpPMGJ0S3JQUFo0RmtLTFp1NXF0STRBK3lJOTRaQmo2YkJVbUN1cTN6?=
+ =?utf-8?B?c1c2b1dsR1R4S20yM21IczFRc28zK0Q1NjJpR1NjV1luTUR6QVpCeDFwRWhI?=
+ =?utf-8?B?anh5ajZvRVBQNkkvYmlSb1d2OUFvcVpDYkNLSElWMGtDZ0NKRFRCM0kxeGdY?=
+ =?utf-8?B?c0FKcGNFWGg5N0M4ZmJSeXJXeXBTWENIZ0NaNjNzMjBUMENrL1VGTkZVY1Nv?=
+ =?utf-8?B?ZVNUNFBXWUxrQ2NEV3gvR2JVMTJnek1XTU16VXVTSzR4bTFEV1BvVHZlR29h?=
+ =?utf-8?B?R2tNa0lmMU12cDRxcFBpdVhSNU1QMlp0M2cyYzluUTlWNnR6OUhlL2x0THlj?=
+ =?utf-8?B?bDZEeWRyV2ZDU1FSL2o4Q0EweVAxSjRqNWZMSytFK25kVlpqQWwwU1lBZ0V3?=
+ =?utf-8?B?bXo0Q3ptYmFoQ1IwWG1FcjlqTWIreVArcUMwcklDdWRwbnBiOHVsZXZ3N1oy?=
+ =?utf-8?B?ZCsrSFNkZ0lWenZKbHJBU3lBR0VGS0NlbzN6a1piN1NGN0hFaFVEM1N3VWhF?=
+ =?utf-8?B?SHBieDFLaWNqUnc4ZEVoVUJMTmZKVGNPTXBxelJOaTZZQVIzT3RndHZmTzB1?=
+ =?utf-8?B?R29BaFhkY21PUWttMWVGOVptNk5YL2ducEVGbll0TnlwYVQxSks4b2lGTXU1?=
+ =?utf-8?B?b25xUklXT0lERU5SdFZFcksvbFdOYUpzYVFORGlsdFRiMXV3UTlneWNKOG0r?=
+ =?utf-8?B?dFhRdnpCakZNaFhCOE8vQkdtWUoyeEJ0WWRYNXpuZnl2SUliYzh0VE1rUkx6?=
+ =?utf-8?B?dzZ5MEpTMlJVbW12SUpOUnBjbkQrNkVRS2Q0dk5hL1BGV0FsVG1aQkRzTDQy?=
+ =?utf-8?B?Vk50MUFQVHRFWTc0QnRTTkhqeFZVZTIrZTltZXhPL3JzV05WMzV0UGRNMHl0?=
+ =?utf-8?B?b2xDNkp2enlRWjVmdGFsUkNDNHpSTmN6ejZBSkY5OGRaajEyaGdrV1JYNllQ?=
+ =?utf-8?B?Ujg2bllrR3Y1RjZ1UitBMXdhUjF1Z0l2VUVjZFFqUHNSNUxhY0hPeE5EcXdo?=
+ =?utf-8?B?MVFSWHk0Tzk2N0NpeW5Ham5IeFdRUWxlSWtwQTRvbVR4TE5PS2FWRnBmTUtV?=
+ =?utf-8?B?b2JIRUs5b0JPUUVlcHRJU0l6YUlrQ2Q2TzQvbFIxdlg0WldtbmtvN0FEa1VP?=
+ =?utf-8?B?cUpMQ2twaWZXbHFYbHQzcW5MS3V6M2hCT3dKT3FNYXd1K0d6VU8veTBadW8w?=
+ =?utf-8?B?dm5zTjRjT0F2WjZJWktCcFdTMHlEWThkSnBXVEJUYjAyelkzUTJsd3Bsa05L?=
+ =?utf-8?B?WUowTzF5aUhpRDJveWIwY2hyVnZhcWhIdlV3NjdrS05SeUtRTnpWSTJXU1pR?=
+ =?utf-8?B?SGZUb1ovczNSa1ZVM0U3R2Nhbk9BbmQyajB4c0R5MTVxaG1wZnVxYndhVFlo?=
+ =?utf-8?B?UTVjbnM2UmxPeGlXTERDaDJILzB2WkJPRUpzb00rek1PWTlNWEtrbjFCUzEy?=
+ =?utf-8?B?eEU3SStuRDZjRVlnN3R4MTJBcWdMaVlFaTkvT0htMHl2VEsvT3U5NFVDQm8r?=
+ =?utf-8?B?ZVdaU1FweWp4YTVyL2ZERHNBNEZQSy9uUVZ5WVRKRzIxdDQvblhJQUtsN2pM?=
+ =?utf-8?B?VHVjcURFSWVCOFV6c0Fjek1NbXJOamUxWkFmdDZXMVI0MktvaGRGMTZTUmx4?=
+ =?utf-8?B?ajV4Vzc0ZWJuYWgzVDZVdkFzcUxCdkVIUXFkdURWaWhzeDZGTXAzbHlJb3du?=
+ =?utf-8?B?ejJqdWF2azc5cE1MdFFSMTVDY205d1pEeEtLVDlLeHdrZXJmYjVudlA1RVkx?=
+ =?utf-8?Q?nq8xEPH7tFCKoQwooqO3LxLxUjVUj4Rw0BcPpM7Vj4A5?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b1f06011-135d-4d80-b16d-08dd501d2983
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Feb 2025 13:07:13.8761
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hGA/qDR5VNAeFO+C6xPh2t2T1mI5vnCLLo/gKaiSm5RzD39OZWWNwcrtPzwKK8pdTKY1cR4D3j3qCssR+QDiJQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4084
 
-This series extends the `module!` macro with support module parameters. It
-also adds some string to integer parsing functions and updates `BStr` with
-a method to strip a string prefix.
+On Tue Feb 18, 2025 at 7:07 PM JST, Dirk Behme wrote:
+> On 17/02/2025 15:04, Alexandre Courbot wrote:
+>> It is common to build a u64 from its high and low parts obtained from
+>> two 32-bit registers. Conversely, it is also common to split a u64 into
+>> two u32s to write them into registers. Add an extension trait for u64
+>> that implement these methods in a new `num` module.
+>>=20
+>> It is expected that this trait will be extended with other useful
+>> operations, and similar extension traits implemented for other types.
+>>=20
+>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+>> ---
+>>  rust/kernel/lib.rs |  1 +
+>>  rust/kernel/num.rs | 32 ++++++++++++++++++++++++++++++++
+>>  2 files changed, 33 insertions(+)
+>>=20
+>> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+>> index 496ed32b0911a9fdbce5d26738b9cf7ef910b269..8c0c7c20a16aa96e3d3e444b=
+e3e03878650ddf77 100644
+>> --- a/rust/kernel/lib.rs
+>> +++ b/rust/kernel/lib.rs
+>> @@ -59,6 +59,7 @@
+>>  pub mod miscdevice;
+>>  #[cfg(CONFIG_NET)]
+>>  pub mod net;
+>> +pub mod num;
+>>  pub mod of;
+>>  pub mod page;
+>>  #[cfg(CONFIG_PCI)]
+>> diff --git a/rust/kernel/num.rs b/rust/kernel/num.rs
+>> new file mode 100644
+>> index 0000000000000000000000000000000000000000..5e714cbda4575b8d74f50660=
+580dc4c5683f8c2b
+>> --- /dev/null
+>> +++ b/rust/kernel/num.rs
+>> @@ -0,0 +1,32 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +
+>> +//! Numerical and binary utilities for primitive types.
+>> +
+>> +/// Useful operations for `u64`.
+>> +pub trait U64Ext {
+>> +    /// Build a `u64` by combining its `high` and `low` parts.
+>> +    ///
+>> +    /// ```
+>> +    /// use kernel::num::U64Ext;
+>> +    /// assert_eq!(u64::from_u32s(0x01234567, 0x89abcdef), 0x01234567_8=
+9abcdef);
+>> +    /// ```
+>> +    fn from_u32s(high: u32, low: u32) -> Self;
+>> +
+>> +    /// Returns the `(high, low)` u32s that constitute `self`.
+>> +    ///
+>> +    /// ```
+>> +    /// use kernel::num::U64Ext;
+>> +    /// assert_eq!(u64::into_u32s(0x01234567_89abcdef), (0x1234567, 0x8=
+9abcdef));
+>> +    /// ```
+>> +    fn into_u32s(self) -> (u32, u32);
+>> +}
+>> +
+>> +impl U64Ext for u64 {
+>> +    fn from_u32s(high: u32, low: u32) -> Self {
+>> +        ((high as u64) << u32::BITS) | low as u64
+>> +    }
+>> +
+>> +    fn into_u32s(self) -> (u32, u32) {
+>> +        ((self >> u32::BITS) as u32, self as u32)
+>> +    }
+>> +}
+> Just as a question: Would it make sense to make this more generic?
+>
+> For example
+>
+> u64 -> u32, u32 / u32, u32 -> u64 (as done here)
+> u32 -> u16, u16 / u16, u16 -> u32
+> u16 -> u8, u8 / u8, u8 -> u16
+>
+> Additionally, I wonder if this might be combined with the Integer trait
+> [1]? But the usize and signed ones might not make sense here...
+>
+> Dirk
+>
+> [1] E.g.
+>
+> https://github.com/senekor/linux/commit/7291dcc98e8ab74e34c1600784ec9ff3e=
+2fa32d0
 
-This series stated out as code by Adam Bratschi-Kaye lifted from the original
-`rust` branch [1].
+I agree something more generic would be nice. One drawback I see though
+is that it would have to use more generic (and lengthy) method names -
+i.e. `from_components(u32, u32)` instead of `from_u32s`.
 
-After a bit of discussion on v3 about whether or not module parameters
-is a good idea, it seems that module parameters in Rust has a place
-in the kernel for now. This series is a dependency for `rnull`, the Rust
-null block driver [2].
+I quickly tried to write a completely generic trait where the methods
+are auto-implemented from constants and associated types, but got stuck
+by the impossibility to use `as` in that context without a macro.
 
----
-Module subsystem people: how do you want to handle merging of the patches and
-subsequent maintenance of code?
-
-I think we discussed you guys taking this under the current module maintainer
-entry? If that is correct, will you add the new files to your entry yourself, or
-should I include an update to MAINTAINERS in this series?
-
-If prefer another solution, let me know and we can figure that out.
-
-To: Miguel Ojeda <ojeda@kernel.org>
-To: Alex Gaynor <alex.gaynor@gmail.com>
-To: Boqun Feng <boqun.feng@gmail.com>
-To: Gary Guo <gary@garyguo.net>
-To: Björn Roy Baron <bjorn3_gh@protonmail.com>
-To: Benno Lossin <benno.lossin@proton.me>
-To: Alice Ryhl <aliceryhl@google.com>
-To: Masahiro Yamada <masahiroy@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>
-To: Nicolas Schier <nicolas@fjasle.eu>
-To: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Trevor Gross <tmgross@umich.edu>
-Cc: Adam Bratschi-Kaye <ark.email@gmail.com>
-Cc: rust-for-linux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-kbuild@vger.kernel.org
-Cc: Petr Pavlu <petr.pavlu@suse.com>
-Cc: Sami Tolvanen <samitolvanen@google.com>
-Cc: Daniel Gomez <da.gomez@samsung.com>
-Cc: Simona Vetter <simona.vetter@ffwll.ch>
-Cc: Greg KH <gregkh@linuxfoundation.org>
-Cc: linux-modules@vger.kernel.org
-Link: https://github.com/Rust-for-Linux/linux/tree/bc22545f38d74473cfef3e9fd65432733435b79f [1]
-Link: https://git.kernel.org/pub/scm/linux/kernel/git/a.hindborg/linux.git/log/?h=rnull [2]
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-
----
-Changes in v7:
-- Remove dependency on `pr_warn_once` patches, replace with TODO.
-- Rework `ParseInt::from_str` to avoid allocating.
-- Add a comment explaining how we parse "0".
-- Change trait bound on `Index` impl for `BStr` to match std library approach.
-- Link to v6: https://lore.kernel.org/r/20250211-module-params-v3-v6-0-24b297ddc43d@kernel.org
-
-Changes in v6:
-- Fix a bug that prevented parsing of negative default values for
-  parameters in the `module!` macro.
-- Fix a bug that prevented parsing zero in `strip_radix`. Also add a
-  test case for this.
-- Add `AsRef<BStr>` for `[u8]` and `BStr`.
-- Use `impl AsRef<BStr>` as type of prefix in `BStr::strip_prefix`.
-- Link to v5: https://lore.kernel.org/r/20250204-module-params-v3-v5-0-bf5ec2041625@kernel.org
-
-Changes in v5:
-- Fix a typo in a safety comment in `set_param`.
-- Use a match statement in `parse_int::strip_radix`.
-- Add an implementation of `Index` for `BStr`.
-- Fix a logic inversion bug where parameters would not be parsed.
-- Use `kernel::ffi::c_char` in `set_param` rather than the one in `core`.
-- Use `kernel::c_str!` rather than `c"..."` literal in module macro.
-- Rebase on v6.14-rc1.
-- Link to v4: https://lore.kernel.org/r/20250109-module-params-v3-v4-0-c208bcfbe11f@kernel.org
-
-Changes in v4:
-- Add module maintainers to Cc list (sorry)
-- Add a few missing [`doc_links`]
-- Add panic section to `expect_string_field`
-- Fix a typo in safety requirement of `module_params::free`
-- Change `assert!` to `pr_warn_once!` in `module_params::set_param`
-- Remove `module_params::get_param` and install null pointer instead
-- Remove use of the unstable feature `sync_unsafe_cell`
-- Link to v3: https://lore.kernel.org/r/20241213-module-params-v3-v3-0-485a015ac2cf@kernel.org
-
-Changes in v3:
-- use `SyncUnsafeCell` rather than `static mut` and simplify parameter access
-- remove `Display` bound from `ModuleParam`
-- automatically generate documentation for `PARAM_OPS_.*`
-- remove `as *const _ as *mut_` phrasing
-- inline parameter name in struct instantiation in  `emit_params`
-- move `RacyKernelParam` out of macro template
-- use C string literals rather than byte string literals with explicit null
-- template out `__{name}_{param_name}` in `emit_param`
-- indent template in `emit_params`
-- use let-else expression in `emit_params` to get rid of an indentation level
-- document `expect_string_field`
-- move invication of `impl_int_module_param` to be closer to macro def
-- move attributes after docs in `make_param_ops`
-- rename `impl_module_param` to impl_int_module_param`
-- use `ty` instead of `ident` in `impl_parse_int`
-- use `BStr` instead of `&str` for string manipulation
-- move string parsing functions to seperate patch and add examples, fix bugs
-- degrade comment about future support from doc comment to regular comment
-- remove std lib path from `Sized` marker
-- update documentation for `trait ModuleParam`
-- Link to v2: https://lore.kernel.org/all/20240819133345.3438739-1-nmi@metaspace.dk/
-
-Changes in v2:
-- Remove support for params without values (`NOARG_ALLOWED`).
-- Improve documentation for `try_from_param_arg`.
-- Use prelude import.
-- Refactor `try_from_param_arg` to return `Result`.
-- Refactor `ParseInt::from_str` to return `Result`.
-- Move C callable functions out of `ModuleParam` trait.
-- Rename literal string field parser to `expect_string_field`.
-- Move parameter parsing from generation to parsing stage.
-- Use absolute type paths in macro code.
-- Inline `kparam`and `read_func` values.
-- Resolve TODO regarding alignment attributes.
-- Remove unnecessary unsafe blocks in macro code.
-- Improve error message for unrecognized parameter types.
-- Do not use `self` receiver when reading parameter value.
-- Add parameter documentation to `module!` macro.
-- Use empty `enum` for parameter type.
-- Use `addr_of_mut` to get address of parameter value variable.
-- Enabled building of docs for for `module_param` module.
-- Link to v1: https://lore.kernel.org/rust-for-linux/20240705111455.142790-1-nmi@metaspace.dk/
-
----
-Andreas Hindborg (6):
-      rust: str: implement `PartialEq` for `BStr`
-      rust: str: implement `Index` for `BStr`
-      rust: str: implement `AsRef<BStr>` for `[u8]` and `BStr`
-      rust: str: implement `strip_prefix` for `BStr`
-      rust: str: add radix prefixed integer parsing functions
-      rust: add parameter support to the `module!` macro
-
- rust/kernel/lib.rs           |   1 +
- rust/kernel/module_param.rs  | 226 +++++++++++++++++++++++++++++++++++++++++++
- rust/kernel/str.rs           | 163 +++++++++++++++++++++++++++++++
- rust/macros/helpers.rs       |  25 +++++
- rust/macros/lib.rs           |  31 ++++++
- rust/macros/module.rs        | 191 ++++++++++++++++++++++++++++++++----
- samples/rust/rust_minimal.rs |  10 ++
- 7 files changed, 629 insertions(+), 18 deletions(-)
----
-base-commit: 379487e17ca406b47392e7ab6cf35d1c3bacb371
-change-id: 20241211-module-params-v3-ae7e5c8d8b5a
-
-Best regards,
--- 
-Andreas Hindborg <a.hindborg@kernel.org>
-
-
+Regardless, I was looking for an already existing trait/module to
+leverage instead of introducing a whole new one, maybe the one you
+linked is what I was looking for?
