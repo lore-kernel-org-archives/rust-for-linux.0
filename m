@@ -1,102 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDED32417E3;
-	Tue, 18 Feb 2025 12:17:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739881035; cv=none; b=UHx1Lo/OZsAqgvmrUDcJmhtG43WJqyrGxhC9wE/lk+cz5IwXw6uYXu/ZF6mx/hXLF/L/903y0x7s8xz9mkaiTN2et2KXF0edTLUZR4aLfFvPMVMEGxA1oquQeaKCMaZhoDQN8Hh5myqznisqxPaqVlns3nFPbt4+i1p9DViaCOU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739881035; c=relaxed/simple;
-	bh=jycLROXglpyoglhdlFPQwOaGmcaR5KbAPUIoKVdoTlc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=IiYoEJ4rc0oeWvOOhMZF89sTTAvPcfSwzOO8/YwA/qwU2TlOprzS/Kx9cLoBQnTumhlbmxPpP+Cy4DvTFrvHe0jne3Mg+PpPDUOAE0XORDGeDOJY40ICJNvgiGhcAKcHjzl7RYORtxBKJlsurC9k/93YEOchwSM9fdloYRjSQSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rre/sk3d; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E18B10F4;
+	Tue, 18 Feb 2025 12:20:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739881228; cv=pass; b=sytStNd5nX1a5UNPT9M7otKh2FXv9tPDh9z2b3D2sbtHgkmx5jGr1jEoQMpgYWYSNsUWxzG9jzP3oUZ/Hvo/d8raqq/n0aIp2RrH8JAx/+vBFss34ujob3/kaVJ9E7kbI7PofqufS1+Nmsq89sy+agTVQtChkwV1uSyLVGEzA2A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739881228; c=relaxed/simple;
+	bh=7wG+k/J27UhE0wr9moyh2JThWcB7wEZyZUkzLHmMNAc=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=YMkl7amyO0D6fn+tBCiVuri41gt8OVjjzx6YYoC9rVpvLufnhrEOgdMCNrn66MoH0uEZkq/o/w0Ug5mCO/0t79RXTCwk2X2Z/sl91nVvSE+bQYaSdG2KTXQdSNnvbo+p6bRbz2EeH9whmKGonNYb5XceUPE1dWOYl6Nvgu5cTF0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=k2o8+YsR; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rre/sk3d"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC64C4CEE6;
-	Tue, 18 Feb 2025 12:17:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739881035;
-	bh=jycLROXglpyoglhdlFPQwOaGmcaR5KbAPUIoKVdoTlc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Rre/sk3dCpaHx5Y1Rx5a5LoWjxy1KENcGvvwHBZKn4YwR5Z3LtP9kouLfiOgsldSK
-	 5/s9lYMdTVB/7jtq5p4mEdUSQT/chbjAVA7psAGvydumrgrvMwYYLiy3jqzGDwn68F
-	 fDQ94oElGyCTR06JXM7rfdCHpve/XhZO3XyxkdAQ0GMwuHN6c2rJdYAdyA+kXcKbiI
-	 uDgfHdOssmLvQ/nnQNkzEs02KbxyIUkxFCMdS7+KwY0xcI97LdR9caPLNzqPkpIt5N
-	 wm3AX9EH4iXrYmEwL9pWHyVbKADlCKxPj/DvXbL43NJZ5qg4YnLCX73sp4w3/feG2Y
-	 uXP78+WrD9aTQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Benno Lossin" <benno.lossin@proton.me>
-Cc: "Danilo Krummrich" <dakr@kernel.org>,  "Miguel Ojeda"
- <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
- <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
- =?utf-8?Q?=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor
- Gross" <tmgross@umich.edu>,  "Joel Becker" <jlbec@evilplan.org>,
-  "Christoph Hellwig" <hch@lst.de>,  "Peter Zijlstra"
- <peterz@infradead.org>,  "Ingo Molnar" <mingo@redhat.com>,  "Will Deacon"
- <will@kernel.org>,  "Waiman Long" <longman@redhat.com>,  "Fiona Behrens"
- <me@kloenk.dev>,  "Charalampos Mitrodimas" <charmitro@posteo.net>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 2/3] rust: configfs: introduce rust support for configfs
-In-Reply-To: <87bjv0u5j0.fsf@kernel.org> (Andreas Hindborg's message of "Mon,
-	17 Feb 2025 13:20:19 +0100")
-References: <20250207-configfs-v2-0-f7a60b24d38e@kernel.org>
-	<20250207-configfs-v2-2-f7a60b24d38e@kernel.org>
-	<S6DKlLVx4KKevl_q2zrW69Z7oS0jwyX4DXpDZrFiIy1lKo4VYHM52aDiV82c2yf52Ecr7t9FayuqBUPR9onvZA==@protonmail.internalid>
-	<dd63fcde-ba4c-4a6e-9bde-1af5af37e91b@proton.me>
- <87h64su8ux.fsf@kernel.org>
-	<Kkrr23DbfvS1nChcwAfhrogDdCOO92FQ2-9JUCab-_6CREP4iBX8k1KuxaJb-yv_ErGv9TbzDWwBZHvaszFS7w==@protonmail.internalid>
-	<bfd79db6-bd79-4187-8577-3ae412f36f35@proton.me>
- <87bjv0u5j0.fsf@kernel.org>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Tue, 18 Feb 2025 13:17:04 +0100
-Message-ID: <87ldu3fnwf.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="k2o8+YsR"
+ARC-Seal: i=1; a=rsa-sha256; t=1739881194; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=oGjXYGqxVAaQvjPL6J0oChYi7O14uxalRxAVSbOKNImPXpApIvWUQq2ILUaSiOvArjnGS07kGjCHwaXHtyf8AgMZJbnnfi3E5GzyBrAD5+gMTYj7VMAROAfNihIfANS3uxSTAgXJBzoucH7P8Ch7QGjD1WpoQ/qZ9KDNNsxwOjY=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1739881194; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=7wG+k/J27UhE0wr9moyh2JThWcB7wEZyZUkzLHmMNAc=; 
+	b=ZFW7JcyThRzv5FOvC4onq+bxF4M8EaRZk6aZD/JMEb9Tt6UiYac2mC1Xdj4MZBkwXlM3jR0JR4I9ktA4cI2umuSaK1K6HXbXtSZuhOST0ajwjoNQRtW9yvJW8S1z2mQ8XTB7s3LXv1VYLhvf6EcqZK5Ck/uifFl3I4m8dUh5NRs=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1739881194;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=7wG+k/J27UhE0wr9moyh2JThWcB7wEZyZUkzLHmMNAc=;
+	b=k2o8+YsRfBvh1gD5rj+DG2L7sdQoD7piyxZp0lABE4/bbdDs5gFtBKlLDVTVJz0T
+	JBbiJuECpD65vbol2UnZghnPNwCd5qFBq5HQn6f0d85ixjXuMY1APaC3pWEh/A0z37s
+	QkMwt+/1GnT6tHXOx7EycRrmU1saERxg/p5qo9Oc=
+Received: by mx.zohomail.com with SMTPS id 1739881191996449.9203601583672;
+	Tue, 18 Feb 2025 04:19:51 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
+Subject: Re: [PATCH v11 2/3] rust: add dma coherent allocator abstraction.
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <2b019479-2d32-433f-af78-c3378dee4e2b@gmail.com>
+Date: Tue, 18 Feb 2025 09:19:34 -0300
+Cc: Robin Murphy <robin.murphy@arm.com>,
+ rust-for-linux@vger.kernel.org,
+ dakr@kernel.org,
+ aliceryhl@google.com,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Valentin Obst <kernel@valentinobst.de>,
+ open list <linux-kernel@vger.kernel.org>,
+ Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ airlied@redhat.com,
+ "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <E4FEFE5F-77C4-4ADB-AEFA-2580CA75BCFD@collabora.com>
+References: <20250123104333.1340512-1-abdiel.janulgue@gmail.com>
+ <20250123104333.1340512-3-abdiel.janulgue@gmail.com>
+ <633274AD-E55C-4A90-AB72-33D3E176176F@collabora.com>
+ <dd57c3ba-246e-414d-a9c1-eb2cff032d83@arm.com>
+ <2b019479-2d32-433f-af78-c3378dee4e2b@gmail.com>
+To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+X-Mailer: Apple Mail (2.3826.300.87.4.3)
+X-ZohoMailClient: External
 
-Andreas Hindborg <a.hindborg@kernel.org> writes:
+Hi Abdiel,
 
-> "Benno Lossin" <benno.lossin@proton.me> writes:
->
->> On 17.02.25 12:08, Andreas Hindborg wrote:
->
-> [...]
->
->>>>
->>>>> +//!
->>>>> +//! See the [rust_configfs.rs] sample for a full example use of this module.
->>>>
->>>> It could also be useful to just put the example directly here into the
->>>> docs instead of/additionally to having it as a sample.
->>>
->>> I don't think we should duplicate the code. As long as the link works, I
->>> think having it separately is fine.
->>
->> When I'm coding in my editor and read some docs directly in it, it often
->> is annoying to find a link, because then I have to open the docs in my
->> web-browser.
->> I understand that you don't want to duplicate the code (and it also is a
->> bit too much for a short example), so how about having a simpler
->> example? Maybe with only a single operation that has no associated data
->> (use `()`)?
->
-> Sure, we can do that.
+> On 18 Feb 2025, at 06:58, Abdiel Janulgue <abdiel.janulgue@gmail.com> =
+wrote:
+>=20
+> Hi Robin,
+>=20
+> On 17/02/2025 15:52, Robin Murphy wrote:
+>> FWIW we've been wanting to steer away from relying on the default =
+mask in new code, so it would be quite neat to actually enforce that =
+allocations fail if dma_coherent_mask hasn't been explicitly set =
+(assuming it's sufficiently cheap to keep a flag in the Device handle or =
+something like that - it's not the end of the world if it isn't =
+practical).
+>=20
+> I just had a quick look on how to possible approach this and indeed =
+would refactor the Device binding a bit. If it is okay with you this =
+could go in a follow-up patch? I was hoping to upstream the initial =
+support first - at least with the dma_set_mask/dma_set_coherent_mask put =
+in place already.
+>=20
+> Thanks!
+> /Abdiel
+>=20
 
-Actually, I am having some problems making the inline example compile.
-`configfs_attrs!` references `THIS_MODULE`, which is not present for
-doctests.
+FYI: I don=E2=80=99t mind a follow-up patch.=20
 
-I'll add the example but mark it `ignore` ?
-
-
-Best regards,
-Andreas Hindborg
-
-
+=E2=80=94 Daniel=
