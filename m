@@ -1,147 +1,104 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB561BC094;
-	Wed, 19 Feb 2025 12:37:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98771DF974
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Feb 2025 12:42:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739968650; cv=none; b=A/xaMXJJbj3Kuq6bGF/cr/wFwoFwixy0iVyq3PbTs9cn7gMe4iwKON/rrfPWnGZmX4Td60l/I5xGA3Tn0jyG441Hz++83Z3pL7No8ENACR0gnHlkVfKbuKlRciRp10iCAw/zCZNTNT6nprRyoyhDpIbPk0CfG49zYqv3G3gufkQ=
+	t=1739968954; cv=none; b=N7bIe1lIei4ChiHLZrZMyW7oKDfEJH5Y7Ho6b8g6rs23dkZNqHCxOQn0bWNwfdRmGmvVqAOnmshZc/s/UToyfPjJ1XmhZYQmN689RFphFIcpTuD1mKVlTPMo5aAaMjdXOqkWvMNaGz/NtEwM7tk3Nfy2xS88vru8EXS25044zUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739968650; c=relaxed/simple;
-	bh=E813glZGEIsjJKozV+8mvsfIKuE0KjS7+ddAIv9uWM0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Vj+IjSPBonFUUn/7do1XrDp2AqNUOjQ/8jGNm9JYMlvHa42dAc9FNaGeiQXkvnxKK+6XxBxRAcC1lXqioEUMw2rvFPjkd1xvC3dL7PsFFSJRgpuT+2USD5tulWTdwKHNx5cqBCsbYknj7NugkurmBGEtcb0xkzXffYe56gtamrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Oao6lIRj; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1739968954; c=relaxed/simple;
+	bh=aEZmkm1hV21rp3YTZCGbmxtF7lznLzqBxNFTStfv000=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=CbVrf9uLpJYQnm9/obcC//4EpHXaF0kjfPpBNbpbu0oJUTBc3yf/WO4ibH9bmyDHAv7MK28+pkRIFNYKbjTTlLjR5CXHmyqGQRng9ZbZbcDuExOiOVRQT5mL7niM3IvRO/HY69OAI5i/PNugBjRRJS9Zc2EDLrr+/DkKyt0eECk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=kFciqOF7; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Oao6lIRj"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-220c895af63so16733495ad.0;
-        Wed, 19 Feb 2025 04:37:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739968648; x=1740573448; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SwBIlI1n79R/XlsUJ+sAd01jk9yBUFHSETkcNVTiiLc=;
-        b=Oao6lIRjkK62pvHqbhU+YBCcz9JkXvkvBjBhZmp0+bG+RE1TRUMB2vHP2NvOfZ9YKK
-         O5aEeZSTN/eVKEOmzgZQROrrLMYhTdE86is7Kr9bZJ8ypGWG+6oMNklzeYyD20IBrOYY
-         baFuqM1HvvSzzq00TQOBzzaAGCzBqUPzLPyzyKcu58jutjeVQqalh2npGF2BaY+HjnxY
-         9CWQpQRCvhY3AdCr+EB9XmF0Al+Au/0Be5iTUaO/MqYg2UKjxytd8P+Xh7Cy6Z64FvZ9
-         pPOhQ7A9cSBxS8riQGgk3VuRpO5ZTMANNRD3pp73h9usSVLlZ97Utbch/Eb/oO9YbOlD
-         ZYUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739968648; x=1740573448;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SwBIlI1n79R/XlsUJ+sAd01jk9yBUFHSETkcNVTiiLc=;
-        b=c2Or2/yXZddGivhcvsyhR0FY0Cvj0/ixugzkv6rt3jBQpmT5M0rQNu+odnPex8lKtD
-         Nf8EruBRYrAJ6NqJtnSSZ8RSAcTtsWqbOkh78uvP7iuM867bOp1sR687ZMlOCw3Zfq88
-         tVLNqvcAZK6Hal6Bn3iwhmVH4VRruyd/JHdQ4p1B1fG2sX58cnXVGGR66KsuPt+OmSdX
-         bsMMr1i/bgCGA8qVlPjbACUo2a67/8amtBYCLZFQ6O16iY1G9FhmRrC4oGj/oAo6+gDT
-         ueBKJ+dNLzm+iB8B8vAfsw/hx/fxjIiJnCuvgWxsVujJXJYN3upiwdw5g4j6evZ5WXkf
-         Xg1A==
-X-Forwarded-Encrypted: i=1; AJvYcCUYXyqqmp+4rTATkFgxbkEcyn1u0xNqJRBPB5BRaojheA1qbyhYJCWwaf77pnRRqvlyIq9f4jf3KEOKxU0=@vger.kernel.org, AJvYcCVfd+GEfcB0s9U0psBiAvKnn+u4JKoqZddTgW0bgmWNsN9TGjcZMl9tsqEBhJEE6iGa/0fsOdmRd/4ZbxCg+t8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzrIx30t2lHP9u7Av6vvwsTyZRVVKYVyvXrccumkF9WHVObxWUc
-	1P0SWAIkaeeHu8+57/08smlqRWglHX4OiXckIEf5oidu7KuEASINN5IeVZoEbfvM9SENqgTkWI0
-	lRjEsHhvSZoFRG5Umh53PIHWk1v8=
-X-Gm-Gg: ASbGncsnySWS/QPl2mHSIfQXZuCMuZXjPznIvNLfPlcsuu0r3oIyOLTsr90Avp+TF6q
-	Sr0kCCqAT/shaoUJUTlq1+dCXkSHCMZJvoh6lV4YWUHMj0wlwUqED462E+wf8Ouidsxys767j
-X-Google-Smtp-Source: AGHT+IHGuzdVoj4DUc0V6CPQAtNFQQa8+o/lS+AhLidpTfJOfRjd1JGY1VvdIdIPp56m5UyTVUurCp9a7A3Hqb4IYWc=
-X-Received: by 2002:a17:902:cf0b:b0:215:3862:603a with SMTP id
- d9443c01a7336-2210406ab92mr115183515ad.10.1739968647833; Wed, 19 Feb 2025
- 04:37:27 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="kFciqOF7"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id 06BB9240103
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Feb 2025 13:42:24 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1739968945; bh=aEZmkm1hV21rp3YTZCGbmxtF7lznLzqBxNFTStfv000=;
+	h=From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:To:Cc:From;
+	b=kFciqOF7S+S+lUYsOZoMYpGVAw2fVaHmSdIxpySR5gNUVensULp1uJ5+V6DT86iPO
+	 HLddDm3YY1quwhj4J91Eten351mOR/Zf3Ai3gHP61PMbo5vc3eAhE5eqQGblVZZ9WA
+	 4Sbsh7VUmZgD7bJPFVK72uJc83WfXHC+4G6PNCvOwmsfi85GOyLE0Z3AkDr1qX+TbY
+	 K2SJWWq5s+e6smIHAurH57lx4478N9bxYf/k4/CxmE1mnlJYkfOSFG5KnaNNABIvw5
+	 HqeI0arTI1C4pk4iQpvKuGXgvlcNJNDN+/wjQDtnXxs9rAe7jyE2EXNznr2FB97vig
+	 +Juk5OicXaN8w==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4YybdB0TTPz6twQ;
+	Wed, 19 Feb 2025 13:42:21 +0100 (CET)
+From: Charalampos Mitrodimas <charmitro@posteo.net>
+Date: Wed, 19 Feb 2025 12:41:55 +0000
+Subject: [PATCH net v2] net: phy: qt2025: Fix hardware revision check
+ comment
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
- <Z7SwcnUzjZYfuJ4-@infradead.org> <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
- <326CC09B-8565-4443-ACC5-045092260677@zytor.com> <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
- <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
-In-Reply-To: <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 19 Feb 2025 13:37:15 +0100
-X-Gm-Features: AWEUYZmONFRA2mgKmckBIb7dfp2PpDahkYzIqYDpp7AYTW7SX9Iq-XzBK6AJUKo
-Message-ID: <CANiq72mtX08qvFHDdoiSKKAB4z6QyNz=WTcXY36JZzxs-JzhWw@mail.gmail.com>
-Subject: Re: Rust kernel policy
-To: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Christoph Hellwig <hch@infradead.org>, rust-for-linux <rust-for-linux@vger.kernel.org>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Greg KH <gregkh@linuxfoundation.org>, 
-	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250219-qt2025-comment-fix-v2-1-029f67696516@posteo.net>
+X-B4-Tracking: v=1; b=H4sIAJLRtWcC/32NTQ7CIBCFr9LM2jFAUYgr72FcVBwsi0ILhGga7
+ i5yAHfvJ+97OySKjhJchh0iFZdc8M2IwwBmnvyL0D2bB8HEiQmuccs/iSYsC/mM1r1x5JOy2pq
+ HOUtowzVSizv0Bp4y3Fs4u5RD/PSjwnv1j1k4clRyJK0MY5KZ6xpSpnDsvFrrF0cv2YG6AAAA
+X-Change-ID: 20250218-qt2025-comment-fix-31a7f8fcbc64
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+ Trevor Gross <tmgross@umich.edu>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1739968933; l=1517;
+ i=charmitro@posteo.net; s=20250218; h=from:subject:message-id;
+ bh=aEZmkm1hV21rp3YTZCGbmxtF7lznLzqBxNFTStfv000=;
+ b=rjm5rN4NKlBBwxqtODOZ62E5SaiIwJVOr7MYv+DUdwOfAoKfVDgfiHI+azP52m/u1tkggWizk
+ 96yrORzotrkCAN9hSMpfRgWQviEksl+UYf1bvmTy5AvGN3kmPMY4z/8
+X-Developer-Key: i=charmitro@posteo.net; a=ed25519;
+ pk=tqvFF75nwS3URscujaAaCD+j9ViKh5jLMkj1mnX7Rws=
 
-On Wed, Feb 19, 2025 at 2:00=E2=80=AFAM H. Peter Anvin <hpa@zytor.com> wrot=
-e:
->
-> So at this point Rust-only kernel code (other than experimental/staging)
-> should be deferred to 2034 -- or later if the distributions not included
-> in the "same" are considered important -- if Rust is being held to the
-> same standard as C.
+Correct the hardware revision check comment in the QT2025 driver. The
+revision value was documented as 0x3b instead of the correct 0xb3,
+which matches the actual comparison logic in the code.
 
-This paragraph does not really give a reason, apart from "to be like C".
+Fixes: fd3eaad826da ("net: phy: add Applied Micro QT2025 PHY driver")
+Reviewed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
+---
+Changes in v2:
+- Resend with proper patch subject, according to netdev documentation
+- Add "Fixes: " tag
+- Link to v1: https://lore.kernel.org/r/20250218-qt2025-comment-fix-v1-1-743e87c0040c@posteo.net
+---
+ drivers/net/phy/qt2025.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Why should the kernel (and its users) wait until 2034 to take advantage of =
-it?
+diff --git a/drivers/net/phy/qt2025.rs b/drivers/net/phy/qt2025.rs
+index 1ab065798175b4f54c5f2fd6c871ba2942c48bf1..7e754d5d71544c6d6b6a6d90416a5a130ba76108 100644
+--- a/drivers/net/phy/qt2025.rs
++++ b/drivers/net/phy/qt2025.rs
+@@ -41,7 +41,7 @@ impl Driver for PhyQT2025 {
+ 
+     fn probe(dev: &mut phy::Device) -> Result<()> {
+         // Check the hardware revision code.
+-        // Only 0x3b works with this driver and firmware.
++        // Only 0xb3 works with this driver and firmware.
+         let hw_rev = dev.read(C45::new(Mmd::PMAPMD, 0xd001))?;
+         if (hw_rev >> 8) != 0xb3 {
+             return Err(code::ENODEV);
 
-And, even if there were a rule about "we need to be like C", you are
-not mentioning that when Clang support was introduced, it only offered
-a single release of support, and then they grew the window over time,
-just like we are doing for Rust. And that was for *C*. Please let me
-quote commit 3519c4d6e08e ("Documentation: add minimum clang/llvm
-version"):
+---
+base-commit: beeb78d46249cab8b2b8359a2ce8fa5376b5ad2d
+change-id: 20250218-qt2025-comment-fix-31a7f8fcbc64
 
-    Based on a vote at the LLVM BoF at Plumbers 2020, we decided to start
-    small, supporting just one formal upstream release of LLVM for now.
+Best regards,
+-- 
+Charalampos Mitrodimas <charmitro@posteo.net>
 
-    We can probably widen the support window of supported versions over
-    time.  Also, note that LLVM's release process is different than GCC's.
-    GCC tends to have 1 major release per year while releasing minor update=
-s
-    to the past 3 major versions.  LLVM tends to support one major release
-    and one minor release every six months.
-
-> Well, these cases predated 2024 and the 1.78 compiler you mentioned above=
-.
-
-Not sure what you mean, but I think we are agreeing, i.e. before we
-established the minimum, we did not attempt to support several
-versions (obviously).
-
-> That is of course pushing the time line even further out.
-
-If you mean that we cannot just drop C in core subsystems today, then
-yes, that is correct.
-
-But we can still add Rust code for quite a lot of useful things
-meanwhile, such as Android and Asahi, which already work today.
-
-The constraint is really "drop C code" here, not "adding Rust code" --
-you could, in theory, keep C code around and duplicate it in Rust. The
-kernel doesn't generally do that, though.
-
-> You can't convert the *entire existing kernel code base* with a single
-> patch set, most of which can be mechanically or semi-mechanically
-> generated (think Coccinelle) while retaining the legibility and
-> maintainability of the code (which is often the hard part of automatic
-> code conversion.)
-
-Compiling as C++ is fine, but to get to the real benefits of using
-C++, you would still have to rework and redesign code.
-
-And, even then, you would not be able to express what Rust allows and
-thus you would not get memory safety.
-
-In summary: in a different timeline, where Rust did not exist and
-"Safe C++" were implemented by GCC and Clang, I could agree with you.
-
-If you mean doing that on top of doing Rust, then that is yet another
-discussion, but: you would need people to learn C++ and Rust, and it
-would complicate interop with Rust substantially.
-
-Cheers,
-Miguel
