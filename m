@@ -1,177 +1,137 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34DEE1FDE39
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Feb 2025 16:28:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843411DE4C6;
+	Wed, 19 Feb 2025 16:32:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739982542; cv=none; b=Rc8x9WL5MFlKSTE9gyaEVahTbNvsHy9DHZWfhRL/jHd1PAeYeqJvKmrzLL2+A6vF4mS9rphhX8BlGxR7UbZUJ9MxLaT3gq5XxJ1t/63jp0asjrSSttrrsgkRpLPiRZqNd9WZ/HxLeOHV/pC9NNqD7Qf/6nmaxHwrT+CqPgiamIw=
+	t=1739982757; cv=none; b=TJIm+TuxkRF/3ZIIeqIUqbidtwASR3kB0lYMj8eBXCng+FpM7Q7IG3/0Fpe8uDghq2uZxiVOr6nzc5N+4tfKZHNaU40xJvCwz3xm3RbGM4th4Orv0S+fsiVp0o4n2VY/eCdBi4POmSX/5Ntea6nmlADkbhy1VGItiOB4ZAAoIBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739982542; c=relaxed/simple;
-	bh=emJwioSET82ma5wk2Wj8pD4x+CUD8+IT98gNrkXVzjc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=c8dWNBzl4WuILxQEI6h4IBL/AuSBjQx1AjCcnrsaGWtLAVQGg74pEJxKj250Qqr0a+Wf8pI8IppJbiTvuqtMPk8oEIeOk4Ic93M2GhCFdQ55sIagmPHuTwNOUbOkffm9tFkRU41b85YzCb4GTxmG6I5VyQOfDsRIj8KWjSY/Ljg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fYQ5Ev10; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1739982757; c=relaxed/simple;
+	bh=U7UKDDct2JmHX2nQHZkafEBGmzkjbHYCn5AQoY3wfnk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nbSpTDoPcOxrpkpXezqqQHnvLk9LCSSFrjx0jNv5kY1l9RtcMcn4MEx1wuN+Ht1GS1CHHPST5Z4M5tdsV8pu4NkgDmwb9sTE8GIMO90VOUsjDGFqRnIVOkntnWmvImdauWSS3ANIV32gMjhCFWFJSsXuDgjXLuyyMqD9llsiQNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=IepXjtx3; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fYQ5Ev10"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-38f26a82d1dso3501421f8f.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 19 Feb 2025 08:28:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1739982538; x=1740587338; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IFRbR48ppuOSqbaCOW7HIqpzgud5csABpIpz146ytiI=;
-        b=fYQ5Ev10eVsP5Sr2D1seGuqe7mqlEQO7yz/XkdDL0J4XsrXEBuNY7WQMi4UQdTQSlX
-         Kt9r2AaoC0DPd2e8BQOkWbIy9Ax2y7ln2U6SXa/sO1Ct3UJbKaXdXjvtNUkx2D7O+MAD
-         5uS8SXF6WS+Osy1Cbo9RSgbQFRwEOLUYIgROHCXsZmJqFJpOnS2KX3yBYXcM2J1VtiN0
-         aJatPAfA2bk7u7FikJYyWScnjf/EWWmsUEKPzoMHaNjq7llzdj2sPxZU6J8ObQsJrJ0l
-         Z7MRFAZAC0YHVB/+EtYfLAt+1ow6+uL5sijFRWLa0VYsTdgs1Gi27hoTKuxLfcJtxfJn
-         JjBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739982538; x=1740587338;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IFRbR48ppuOSqbaCOW7HIqpzgud5csABpIpz146ytiI=;
-        b=dTPtZg+CfYy4lliB5PE7YD0wSs8XmUcwcfCkv8HUjU6wgzi2H6QuiO+2O/rBSDGZmk
-         w8Tc0vlkIX9ZYiltoZix7ObWYeGh/KeVp3dAI2boq/hV6ym1zmKiUVuy7jDNEbgGDu6L
-         bV7vZnXvfptZJCLW3id533RawH37rgywQzxfX+drhwT7yVtl0Aun0SpYu0pfgCkrTQEA
-         ZZYtvu566DfbjPaODNkspInCnwKQdQIEkC92qZVshswrh1t5crxhNg9/cpPTQUhIrr8o
-         aJ576AutFIdAZbTsHh1bU3g3Kd+dZwa+J/tIoQ23DxQA25PrJ7/A8zdOnITXbQbtPZo8
-         0QmA==
-X-Forwarded-Encrypted: i=1; AJvYcCW4mBaH/MTOh0eZCw4ql8r9y6dQ4NqKBN6cJlDQyLTuDMR7oMBhhtazTXiYy4rG23C05um3oFp7zxU3Xi+DZA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2WCXIA6qrwfak0F++Gi745P9ytvn9XlbcPwTmVPdyn2Ab0i5B
-	6kNHC6X2BIk79auusV3DqJxz4inybY9S/QAK2c5BG0oR/D4LZhhDruhI/+pnkh3YfT3hf7WMh8L
-	WwHRUdeP1yPCF2rp8cH+626ixFiMS/rl60CEH
-X-Gm-Gg: ASbGnctc5bLNhB6VEjPJg1W2I0dLGP81HFF2zfiRv7znnhORfI4fhTO6cXB/3MMHvcX
-	DXnBNFzkHfTeOwKYB3ZE8woL9OkRgeMSADWxxB7l76F0b4ENrY1vClUEi+XDAZXyZ/NF3G/QMvp
-	IAHZ7L+NysAE9/FQcLu44a3Wau
-X-Google-Smtp-Source: AGHT+IG495bFTbE1P6h3BVXkY4LEgL34rIWGX80Z/ZM6WtwUQeIReUc06KCZ2SrkFKNMU2/Qx08kXHZdYYzMqhAy6s8=
-X-Received: by 2002:a5d:5888:0:b0:38f:27d3:1b3b with SMTP id
- ffacd0b85a97d-38f33f11925mr15697927f8f.11.1739982538436; Wed, 19 Feb 2025
- 08:28:58 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="IepXjtx3"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id E5AD76B5;
+	Wed, 19 Feb 2025 17:31:03 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1739982664;
+	bh=U7UKDDct2JmHX2nQHZkafEBGmzkjbHYCn5AQoY3wfnk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IepXjtx3vA+/V6o4yrz3CDFEyQ678epC/hBiYOz1e20hOxJduirqi0oeiBS5mfmcy
+	 YNtQ99igkDCg41/egD5ma1XEsB2mfGE6VGJoShqzbwGXNsBIhaTdPohALa21wy9yGC
+	 pJGRM4dNLnUVCIi98I1xADWtlAKYnhhT5N7JCLSg=
+Date: Wed, 19 Feb 2025 18:32:11 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Willy Tarreau <w@1wt.eu>
+Cc: James Bottomley <James.Bottomley@HansenPartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Christoph Hellwig <hch@infradead.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	rust-for-linux <rust-for-linux@vger.kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
+	ksummit@lists.linux.dev
+Subject: Re: Rust kernel policy
+Message-ID: <20250219163211.GC11480@pendragon.ideasonboard.com>
+References: <Z7SwcnUzjZYfuJ4-@infradead.org>
+ <b7a3958e-7a0a-482e-823a-9d6efcb4b577@stanley.mountain>
+ <2bcf7cb500403cb26ad04934e664f34b0beafd18.camel@HansenPartnership.com>
+ <yq1mseim24a.fsf@ca-mkp.ca.oracle.com>
+ <c1693d15d0a9c8b7d194535f88cbc5b07b5740e5.camel@HansenPartnership.com>
+ <20250219153350.GG19203@1wt.eu>
+ <e42e8e79a539849419e475ef8041e87b3bccbbfe.camel@HansenPartnership.com>
+ <20250219155617.GH19203@1wt.eu>
+ <20250219160723.GB11480@pendragon.ideasonboard.com>
+ <20250219161543.GI19203@1wt.eu>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250219162517.278362-1-daniel.almeida@collabora.com>
-In-Reply-To: <20250219162517.278362-1-daniel.almeida@collabora.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 19 Feb 2025 16:28:46 +0000
-X-Gm-Features: AWEUYZnQJ9lIBvSmKT_baEuG0BJNmNaSDuOffAsZaEl1gqpYyNt5U2oDUDBg0Fw
-Message-ID: <CAH5fLgiErvnziU-hSCV6djNq7Q56ZfX9gZudmX7+r06hWoX0Tw@mail.gmail.com>
-Subject: Re: [PATCH] rust: regulator: add a bare minimum regulator abstraction
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: lgirdwood@gmail.com, broonie@kernel.org, sebastian.reichel@collabora.com, 
-	sjoerd.simons@collabora.co.uk, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	a.hindborg@kernel.org, benno.lossin@proton.me, tmgross@umich.edu, 
-	dakr@kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250219161543.GI19203@1wt.eu>
 
-On Wed, Feb 19, 2025 at 4:26=E2=80=AFPM Daniel Almeida
-<daniel.almeida@collabora.com> wrote:
->
-> Add a bare minimum regulator abstraction to be used by Rust drivers.
-> This abstraction adds a small subset of the regulator API, which is
-> thought to be sufficient for the drivers we have now.
->
-> Regulators provide the power needed by many hardware blocks and thus are
-> likely to be needed by a lot of drivers.
->
-> It was tested on rk3588, where it was used to power up the "mali"
-> regulator in order to power up the GPU.
->
-> Note that each instance of [`Regulator`] obtained from
-> `Regulator::get()` can only be enabled once. This ensures that the calls
-> to enable and disable are perfectly balanced before `regulator_put()` is
-> called, as mandated by the C API.
->
-> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-> ---
->  rust/bindings/bindings_helper.h |   1 +
->  rust/kernel/lib.rs              |   2 +
->  rust/kernel/regulator.rs        | 120 ++++++++++++++++++++++++++++++++
->  3 files changed, 123 insertions(+)
->  create mode 100644 rust/kernel/regulator.rs
->
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
-per.h
-> index 55354e4dec14..92504f19655e 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -28,6 +28,7 @@
->  #include <linux/poll.h>
->  #include <linux/property.h>
->  #include <linux/refcount.h>
-> +#include <linux/regulator/consumer.h>
->  #include <linux/sched.h>
->  #include <linux/security.h>
->  #include <linux/slab.h>
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 496ed32b0911..0224f4c248c0 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -68,6 +68,8 @@
->  pub mod prelude;
->  pub mod print;
->  pub mod rbtree;
-> +#[cfg(CONFIG_REGULATOR)]
-> +pub mod regulator;
->  pub mod revocable;
->  pub mod security;
->  pub mod seq_file;
-> diff --git a/rust/kernel/regulator.rs b/rust/kernel/regulator.rs
-> new file mode 100644
-> index 000000000000..df6eb325d11a
-> --- /dev/null
-> +++ b/rust/kernel/regulator.rs
-> @@ -0,0 +1,120 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Regulator abstractions.
-> +//!
-> +//! C header: [`include/linux/regulator/consumer.h`](srctree/include/lin=
-ux/regulator/consumer.h)
-> +
-> +use crate::{
-> +    bindings,
-> +    device::Device,
-> +    error::{from_err_ptr, to_result, Result},
-> +    prelude::*,
-> +};
-> +
-> +use core::ptr::NonNull;
-> +
-> +/// A `struct regulator` abstraction.
-> +///
-> +/// Note that each instance of [`Regulator`] obtained from `Regulator::g=
-et()`
-> +/// can only be enabled once. This ensures that the calls to enable and =
-disable
-> +/// are perfectly balanced before `regulator_put()` is called, as mandat=
-ed by
-> +/// the C API.
-> +///
-> +/// # Invariants
-> +///
-> +/// - [`Regulator`] is a non-null wrapper over a pointer to a `struct re=
-gulator`
-> +///   obtained from `regulator_get()`.
-> +/// - Each instance of [`Regulator`] obtained from `Regulator::get()` ca=
-n only
-> +///   be enabled once.
-> +pub struct Regulator {
-> +    inner: NonNull<bindings::regulator>,
-> +    enabled: bool,
-> +}
+On Wed, Feb 19, 2025 at 05:15:43PM +0100, Willy Tarreau wrote:
+> On Wed, Feb 19, 2025 at 06:07:23PM +0200, Laurent Pinchart wrote:
+> 
+> > > Regardless I do understand how these cleanups can help in a number of
+> > > case, at least to avoid some code duplication.
+> > 
+> > They're particularly useful to "destroy" local variables that don't need
+> > to be returned. This allows implementing scope guards, to facilitate
+> > lock handling for instance. Once a mutex guard is instantiated, the
+> > mutex is locked, and it will be guaranteed to be unlocked in every
+> > return path.
+> 
+> Yeah absolutely. However I remember having faced code in the past where
+> developers had abused this "unlock on return" concept resulting in locks
+> lazily being kept way too long after an operation. I don't think this
+> will happen in the kernel thanks to reviews, but typically all the stuff
+> that's done after a locked retrieval was done normally is down outside
+> of the lock, while here for the sake of not dealing with unlocks, quite
+> a few lines were still covered by the lock for no purpose. Anyway
+> there's no perfect solution.
 
-I wonder if enabled vs disabled should be two different types?
+There actually is in this case :-) You can reduce the scope with scoped
+guards:
 
-Alice
+static int gpio_mockup_get_multiple(struct gpio_chip *gc,
+				    unsigned long *mask, unsigned long *bits)
+{
+	struct gpio_mockup_chip *chip = gpiochip_get_data(gc);
+	unsigned int bit, val;
+
+	scoped_guard(mutex, &chip->lock) {
+		for_each_set_bit(bit, mask, gc->ngpio) {
+			val = __gpio_mockup_get(chip, bit);
+			__assign_bit(bit, bits, val);
+		}
+	}
+
+	return 0;
+}
+
+which is equivalent to
+
+static int gpio_mockup_get_multiple(struct gpio_chip *gc,
+				    unsigned long *mask, unsigned long *bits)
+{
+	struct gpio_mockup_chip *chip = gpiochip_get_data(gc);
+	unsigned int bit, val;
+
+	{
+		guard(mutex)(&chip->lock);
+
+		for_each_set_bit(bit, mask, gc->ngpio) {
+			val = __gpio_mockup_get(chip, bit);
+			__assign_bit(bit, bits, val);
+		}
+	}
+
+	return 0;
+}
+
+In this particular example there's nothing being done after the scope,
+but you could have more code there.
+
+> Ideally when a compiler is smart enough to say "I would have cleaned
+> up here", it could be cool to just have a warning so that the developer
+> decides where to perform it. The problem is that it'd quickly becomes
+> a mess since the compiler cannot guess that you've done your own cleanup
+> before (without yet other anotations), which precisely is the point of
+> doing it unconditionally when leaving scope.
+
+-- 
+Regards,
+
+Laurent Pinchart
