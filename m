@@ -1,138 +1,90 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8101221423F;
-	Wed, 19 Feb 2025 17:11:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739985076; cv=pass; b=TKlxl4fDnJyNO8CnSEX9W+fZ21kcjd1/WdwO9bUwzqYb8F6yexQR2XjW44I3PIuZkvcQliRySydclppUdyhdrVEoZECfoiAK52cKHAlPu0Uk+cozdMGT3NpRLE3tgFojvVoZpl5NbF8+Ew+rH1QTw4Iy3iXzq2CEfyG0O6yoDsA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739985076; c=relaxed/simple;
-	bh=64//cwvqZljD4DhFAn2LbHsdiVrVrYGj0JhPZZKChF0=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=KG83Iwb8rVH44WAWgZIfXaIzCpPBqnY9oGuZlE0Jjao8SGQBEzzU+Av6W2TCvkhw3J5Doa6v+Vt3K3dUF6vzErSH/eLRFUxTkr1qIuT8Jeid9Us1vgXHfKY/7vneHuq1CMatASlw+2aVoXaU8ytJujs4IqUYpkasbo/opZPTW+o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=GsU00JH5; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BACCC1E00BE;
+	Wed, 19 Feb 2025 18:22:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739989366; cv=none; b=fwlxxX0mM8zlt82t1jTjmJ0qqkAkuXNxgAOseDW1RKUlezlAfzc+vd9ibUfJEucvNWy5Qi4c6FrYBNnoam992BtBJJifRr3OjOGSK0hcnjGHIfrfkRAtPFgo4IA5YAEeS/wMQ3n7Hoj6fky8XEDu2YNRrMv+6B8c+BbXQEZzxWw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739989366; c=relaxed/simple;
+	bh=3cuVV+ZiWEkaHnhK7iDFTiWlorqOZJvAW3TN09roTdM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=pDiBjf2wzXiDR3k5xUwQfRROLIy2LmUqssjzffLadcLhBZImX8klSo959847InyQ0djjWHKCpcSj+uJYLad+5a3KWsYk7qKBt4dm0ynl6o4wDUZYCQvGqtURRdG0yvE6uF7Nsf0ylsiWfF7Zo7Civ/RRq3AUcAw2IIrLS1ozlT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GDn3RV1r; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="GsU00JH5"
-ARC-Seal: i=1; a=rsa-sha256; t=1739985048; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=B2gQVaWKYzh9iY/yq6HzDStvCZuc2z27HYNs55w+7ixPz9ccT/gUQSk5WDVLo/okYCync4b0f5+FtPfgDb1R2wLKeu9XPfcrJ651+PPTrehwDWrrS6Ami3vfp1x6NICau1YMrpw0TwlY0TeaXGtKtG9gzs05odx+gKH7aipenow=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1739985048; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=64//cwvqZljD4DhFAn2LbHsdiVrVrYGj0JhPZZKChF0=; 
-	b=kJr/8t/3snpCPutPOGSF+Uv30Wj6TPJXHWjYeFwQt4uzS3bO5J39qxfgSDj4ahTMrMNFw4PIMphDSY4uOaCXvWjpE0f2Led6Q+SnJ9mc8cgdfMeAWf/oKKkZfZ2PcDssZEhZF+39be8zX/saeYrYzJfZxQ9xu0MiSVmU4CsMvDU=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1739985048;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=64//cwvqZljD4DhFAn2LbHsdiVrVrYGj0JhPZZKChF0=;
-	b=GsU00JH5GuZ25c9v3NmLIvoWgw0Q/HYE0/HIN7FjgWSsn4urIZ5dwUa03INZbCBK
-	P2dWMJyNGWsuXGZL365CspqPxQndUX8K8/oyXH0RQKkilRPm0G83p2gmt2nmf0dLuwW
-	Q+793qYsAx6h48FA3rk9nkxLW5TISKoSeZmGgveo=
-Received: by mx.zohomail.com with SMTPS id 1739985042434177.93514813296724;
-	Wed, 19 Feb 2025 09:10:42 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GDn3RV1r"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB15CC4CED1;
+	Wed, 19 Feb 2025 18:22:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739989366;
+	bh=3cuVV+ZiWEkaHnhK7iDFTiWlorqOZJvAW3TN09roTdM=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=GDn3RV1rg7bo71UO7nn8v0QAJJ9GG4IoUX5eujr7KsThEwyTLK/yAp0AcFjDiiIDq
+	 C+RbMwiQaUvTkrpnYhpfiOXpyeqg2ztady7goxVKr5b/nCXaVwDDEgeLbl/9m9i2BQ
+	 +bVFWaHB8aT8f4v1Vyw7US2cPjOXoiu8bTScT4icquaGHsU3dh41J+PTu9tZtI4nCv
+	 eQ/0zHBVOwRyN12pIPEQNyt6+EXIe5h9VJ46ojpRepF+5sOSn9gWrSLpWgxDqEmFP1
+	 fmcRAXFRc8lY+yEb6Thb8tUBwG25PAAutorjLjdHOjSKpLwn/NTSylenugUSQ5jNZ8
+	 J4FkKLwSZdL3g==
+Message-ID: <f9e01d23e0711c3a3ec17c251277c58ff8aa3657.camel@kernel.org>
+Subject: Re: Rust kernel policy
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Steven Rostedt <rostedt@goodmis.org>, Willy Tarreau <w@1wt.eu>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, James Bottomley	
+ <James.Bottomley@HansenPartnership.com>, "Martin K. Petersen"	
+ <martin.petersen@oracle.com>, Dan Carpenter <dan.carpenter@linaro.org>, 
+ Christoph Hellwig	 <hch@infradead.org>, Miguel Ojeda
+ <miguel.ojeda.sandonis@gmail.com>,  rust-for-linux
+ <rust-for-linux@vger.kernel.org>, Linus Torvalds
+ <torvalds@linux-foundation.org>, Greg KH	 <gregkh@linuxfoundation.org>,
+ David Airlie <airlied@gmail.com>, 	linux-kernel@vger.kernel.org,
+ ksummit@lists.linux.dev
+Date: Wed, 19 Feb 2025 20:22:41 +0200
+In-Reply-To: <20250219113331.17f014f4@gandalf.local.home>
+References: 
+	<CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
+		<Z7SwcnUzjZYfuJ4-@infradead.org>
+		<b7a3958e-7a0a-482e-823a-9d6efcb4b577@stanley.mountain>
+		<2bcf7cb500403cb26ad04934e664f34b0beafd18.camel@HansenPartnership.com>
+		<yq1mseim24a.fsf@ca-mkp.ca.oracle.com>
+		<c1693d15d0a9c8b7d194535f88cbc5b07b5740e5.camel@HansenPartnership.com>
+		<20250219153350.GG19203@1wt.eu>
+		<e42e8e79a539849419e475ef8041e87b3bccbbfe.camel@HansenPartnership.com>
+		<20250219155617.GH19203@1wt.eu>
+		<20250219160723.GB11480@pendragon.ideasonboard.com>
+		<20250219161543.GI19203@1wt.eu>
+	 <20250219113331.17f014f4@gandalf.local.home>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
-Subject: Re: [PATCH] rust: regulator: add a bare minimum regulator abstraction
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <CAH5fLgiErvnziU-hSCV6djNq7Q56ZfX9gZudmX7+r06hWoX0Tw@mail.gmail.com>
-Date: Wed, 19 Feb 2025 14:10:24 -0300
-Cc: lgirdwood@gmail.com,
- broonie@kernel.org,
- sebastian.reichel@collabora.com,
- sjoerd.simons@collabora.co.uk,
- ojeda@kernel.org,
- alex.gaynor@gmail.com,
- boqun.feng@gmail.com,
- gary@garyguo.net,
- bjorn3_gh@protonmail.com,
- a.hindborg@kernel.org,
- benno.lossin@proton.me,
- tmgross@umich.edu,
- dakr@kernel.org,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <E24A1EA3-DC87-4A33-AD93-1E3B307942E8@collabora.com>
-References: <20250219162517.278362-1-daniel.almeida@collabora.com>
- <CAH5fLgiErvnziU-hSCV6djNq7Q56ZfX9gZudmX7+r06hWoX0Tw@mail.gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-X-Mailer: Apple Mail (2.3826.300.87.4.3)
-X-ZohoMailClient: External
+MIME-Version: 1.0
 
-Hi Alice,
-
-> On 19 Feb 2025, at 13:28, Alice Ryhl <aliceryhl@google.com> wrote:
+On Wed, 2025-02-19 at 11:33 -0500, Steven Rostedt wrote:
 >=20
-> I wonder if enabled vs disabled should be two different types?
+> But we should be encouraging the use of:
 >=20
-> Alice
+> 	scoped_guard(mutex)(&my_mutex) {
+> 		/* Do the work needed for for my_mutex */
+> 	}
+>=20
+> Which does work out very well. And the fact that the code guarded by
+> the
+> mutex is now also indented, it makes it easier to review.
 
-I thought about having two types too, but I think it complicates the =
-design.
+I just discovered this two days working while working on a new
+V4L2 driver. They are a gem! Definitely will decorate most of
+lock use with them for the RFC patch set.
 
+Don't need must pitch with those tbh...
 
-```
-let foo: Regulator =3D Regulator::get(/*=E2=80=A6*/)?;
-let foo_enabled: EnabledRegulator =3D foo.enable()?:
-```
+>=20
+> -- Steve
+>=20
 
-Let=E2=80=99s first agree that `Regulator::drop` is the right place to =
-have `regulator_put`, since
-`Regulator::get()` acquired the reference in the first place.
-
-This means that now, `EnabledRegulator` has to depend on `Regulator` =
-somehow to ensure
-a proper drop order. Otherwise you might have an enabled regulator for =
-which you don=E2=80=99t own
-the refcount. Furthermore, if Regulator drops while EnabledRegulator is =
-alive, you get a splat.
-
-In a driver, you now have to store both Regulator - for the refcount - =
-and EnabledRegulator
-- as a way to tell the system you need that regulator to be active.
-
-If EnabledRegulator is a guard type, this doesn=E2=80=99t work, as it =
-creates a self-reference - on top
-of being extremely clunky.
-
-You can then have EnabledRegulator consume Regulator, but this assumes =
-that the regulator
-will be on all the time, which is not true. A simple pattern of
-
-```
-regulator_enable()
-do_fancy_stuff()
-regulator_disable()
-```
-
-Becomes a pain when one type consumes the other:
-
-```
-self.my_regulator.enable() // error, moves out of `&self`
-```=20
-
-I am sure we can find ways around that, but a simple `bool` here seems =
-to fix this problem.
-
-Now you only have to store `Regulator`. If you need another part of your =
-code to also keep
-the regulator enabled, you store a `Regulator` there and enable that as =
-well. All calls to
-enable and disable will be automatically balanced for all instances of =
-`Regulator` by
-virtue of the `enabled` bool as well.
-
-=E2=80=94 Daniel
+BR, Jarkko
 
