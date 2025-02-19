@@ -1,130 +1,363 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105402144C8;
-	Wed, 19 Feb 2025 23:05:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171AB25E442
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Feb 2025 23:10:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740006353; cv=none; b=UPl5eog6QNJ6zcATXCDPt/VzCNEcPS1MLFgasP2egO9pBRQ1n2RWl4ovhRoO27rjtWs7yud9wGoKKgioOn1n/5Uk0T8DQy7FZoYaknizBKI+FJuWKyNG/FIbNIHjcEMuV3S6jlbEpQ3NL7RYKQ/CS8jPxsVX1a3dPsU2SIy/PxQ=
+	t=1740006624; cv=none; b=AtJBWpkyc/GB8q/P27u7a5A30inaflzlIChTo53ppXtOwPpVmoQJuxfPFddj2ugdN4T25JQoqb4ZFKNJZJvuZqOkvvFLwxg8eNSSi9C9a70hBlmTOGjqwNL+XObOfzGlYNiPrH99JmAMcDKhX5XkvgTw9top6+Gg6YsJM2a/0UU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740006353; c=relaxed/simple;
-	bh=DTzPPqe0O4cNq4p4RtACXCPaCu/r7pdVALi3NsTKirk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p8yMF/J6HguoZaaCppuVEV1doquBLHRfKzgY/9wB58bZ6TLc4mrNWffDsxxJ9yQpBR2KNhdv8eeZVsQTKBydEoe9VxzWDrttrvExd90GwyzDcfFh3Ko1slfz3ysFfFlZlqSUxh6190g/XpNk6Rx+FGTYGoH0yVwgg9UVxIpdf0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oxncCs9K; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740006624; c=relaxed/simple;
+	bh=2v3fbJENcPCOsiSlqCuhDArUF6IFIdzSWeYv9YS73YY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iJklvqPsbQ0hC54Tgjf7X5r1Dou7oelU3w7XlRNn+kNVnM09ZgAyJr3yorhR3A4NUauEMMONpA0gjpvxqLlRYFNWheDQfrC0dcVITKOEJsX2Q/K9LYeLhQyqsCfXmt3ZHmZ9DxBgNh4Ru8CDd/GaQJTPZOWA5GE1mFmy+QJJgQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H8vElUH1; arc=none smtp.client-ip=209.85.219.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oxncCs9K"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B942BC4CED1;
-	Wed, 19 Feb 2025 23:05:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740006352;
-	bh=DTzPPqe0O4cNq4p4RtACXCPaCu/r7pdVALi3NsTKirk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oxncCs9KZCUT5oDWQN6XL+IYhZCqePwCA4BwRvMg9HCfxJf+ubR67n6gmt2fKwPol
-	 C74znfVmqw084fAxE3iIqoP8GZL2Cv++OBmv2eu65VT09r7AJMy5xoD3iiprI7emNl
-	 aKEUl/8ZlHfjovILr71IEo8v+W76SX6t3GFTeZ5Dwu46H1Du1qd1dyc6XV1ZG75gRy
-	 E0MAOk7ehTWpNYER7CtxZJ1AErrrXO1RV7uIKNG5wt6RBrhvkdGoMqTp5kZfHHdeMh
-	 oc7SSqAPC5vv2YTLlmCYNdqmgI2hvkhYDSweNONbrHadjsA1nSvzo1GxFNH1dg2tVa
-	 X/sr7t5AJM7aw==
-Date: Wed, 19 Feb 2025 23:05:48 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: lgirdwood@gmail.com, sebastian.reichel@collabora.com,
-	sjoerd.simons@collabora.co.uk, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
-	benno.lossin@proton.me, aliceryhl@google.com, tmgross@umich.edu,
-	dakr@kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: regulator: add a bare minimum regulator abstraction
-Message-ID: <Z7ZjzJ2Rfrt8j0s1@finisterre.sirena.org.uk>
-References: <20250219162517.278362-1-daniel.almeida@collabora.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H8vElUH1"
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6e44fda56e3so3702296d6.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 19 Feb 2025 15:10:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1740006621; x=1740611421; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dxDOtVT8g3qbzXn2w5KHZMQo+N1woVaWlFhDh/fHi0s=;
+        b=H8vElUH1IBWNhrIgen/wZyeCYTF34vdouzpK0ALmRI6Kl+m1hKkTEuL5avS04SSs74
+         cN6qzd1DkBT2Ip1nq3itrAGtn7P1jkc3uD6ypr6GDfMcnxxI1kCi1VUnWc8rVkhcAt5z
+         cIF8V0UzNgSzVlzbYlRJgebvdtFDQ1e2Jj1/zbJ2QMN4ABUkckf3nMVv6jANLoMXWkd8
+         WcaomXV2B2wZOUE4MkXOPMHSbB7wW/OKl998IT2f47J7fKp8Ef3LW4RXckhUZLurgBuu
+         YWQ7HrDxs7LhsCtgWwYJD7+ZTV0nsiZ36V6Ook3Fxr76CNlFG/a/NeSKFbZNvfkAdStd
+         Ev9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740006621; x=1740611421;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dxDOtVT8g3qbzXn2w5KHZMQo+N1woVaWlFhDh/fHi0s=;
+        b=gFKdShQqvpTcpIgKNYDIHvWKmpyLfxEizYnni3a2J0MfmBajsLXuFj8ZTwb7vvuC0W
+         PAnGYpVAZzTnkeh5xbyPUqE6T/LssaILS6TxqKTYym3TkQeUH6AWT/0ev6X3V8pahyj6
+         DpV9flK34zHBHwuHC8EYaoHXbRwXR7p8AxLksMwvsTr+CMpqsgYMUAxhvj82exs5Sgzl
+         FXG9sdtWbWltCCQgXNcxQQkjThoN+9n/WZD7umlKy+90yMLVj8e8xmuGK9QSaBKpI87V
+         FdjwFjpFE0tNzQ0hxz94K6AFvkTxUdNpjj3twh3rDC8yGgS8h36jSCpG5swJZUIhTy9Q
+         pTnw==
+X-Forwarded-Encrypted: i=1; AJvYcCVbF+AHXyTSPMgnBrRxWg2tzJQp7j3ngL2Mnq/D5xTr2fqEh7IrsTe29rPzimxzpN03sowjmVydh+oashS/oQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2Ab4EP5TK42jTiz/Qn1ZjnvxgVXGyPPwnHN4dbqNGYa6X6xAX
+	r/Ey7tGDeQgznIstjqRXLpJENt42lNbq++Ua5D5JKFyGax0LCUJooO3PU27Bwnrx+Cu99uT3HME
+	exDwZ56y0vI7qBk3qeddCPlia0SxMT5IeaG+y
+X-Gm-Gg: ASbGnctJYCWWTCkdIOoDl7NsF5R4yuah5Mr9NpRX3Ls9+kj3Pk75+MPhj3eHhBycj9M
+	hTcUHGDTu6QBY8hhsD36FDVbEP0h3SNHb0K1F4zOipsvtPzGIN3zB4wvo9asfoQoY45NvRcAb6A
+	lxB8GzdOSBhUrkgCwyuZcdCAaB8wVFXVU=
+X-Google-Smtp-Source: AGHT+IEw/mpr7Oz2wdmnj9Oda8U1Bn34wzWNruZoEp5Td7KL4zsegVlhKsPNH7lpeKFCF81jQzEpT14QjvWmwK9bxNc=
+X-Received: by 2002:ad4:5aac:0:b0:6e4:5971:135d with SMTP id
+ 6a1803df08f44-6e6a26396a4mr17987456d6.18.1740006620727; Wed, 19 Feb 2025
+ 15:10:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="5Fr4XABoh4dw3S0W"
-Content-Disposition: inline
-In-Reply-To: <20250219162517.278362-1-daniel.almeida@collabora.com>
-X-Cookie: Editing is a rewording activity.
+References: <20250202192412.340848-1-sergio.collado@gmail.com>
+ <CA+GJov6+TPSm6ns8+MrSytWF5qsS1cm=KFJrUivPtzc5QvgARQ@mail.gmail.com> <CAA76j93VLJc=ocGYHqN-LSd717ip3kQFzk9EN789+Sq382g72g@mail.gmail.com>
+In-Reply-To: <CAA76j93VLJc=ocGYHqN-LSd717ip3kQFzk9EN789+Sq382g72g@mail.gmail.com>
+From: Rae Moar <rmoar@google.com>
+Date: Wed, 19 Feb 2025 18:10:08 -0500
+X-Gm-Features: AWEUYZmA9y1IK7t8yZ1EpnrJjF_VBJnhxF8CEsJZWnAav7LBMLY2NYNsOtING80
+Message-ID: <CA+GJov6oxnFp-XYtQVxdWbGAWpCkNjmUZZi=iRPj-eWUZWOvKA@mail.gmail.com>
+Subject: Re: [PATCH v8] Kunit to check the longest symbol length
+To: =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
+Cc: David Gow <davidgow@google.com>, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, David Rheinsberg <david@readahead.eu>, 
+	rust-for-linux@vger.kernel.org, x86@kernel.org, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Shuah Khan <skhan@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Mon, Feb 17, 2025 at 3:30=E2=80=AFPM Sergio Gonz=C3=A1lez Collado
+<sergio.collado@gmail.com> wrote:
+>
+> Hello,
+>
+> On Fri, 7 Feb 2025 at 22:54, Rae Moar <rmoar@google.com> wrote:
+> >
+> > On Sun, Feb 2, 2025 at 2:24=E2=80=AFPM Sergio Gonz=C3=A1lez Collado
+> > <sergio.collado@gmail.com> wrote:
+> > >
+> > > The longest length of a symbol (KSYM_NAME_LEN) was increased to 512
+> > > in the reference [1]. This patch adds kunit test suite to check the l=
+ongest
+> > > symbol length. These tests verify that the longest symbol length defi=
+ned
+> > > is supported.
+> > >
+> > > This test can also help other efforts for longer symbol length,
+> > > like [2].
+> > >
+> > > The test suite defines one symbol with the longest possible length.
+> > >
+> > > The first test verify that functions with names of the created
+> > > symbol, can be called or not.
+> > >
+> > > The second test, verify that the symbols are created (or
+> > > not) in the kernel symbol table.
+> > >
+> > > [1] https://lore.kernel.org/lkml/20220802015052.10452-6-ojeda@kernel.=
+org/
+> > > [2] https://lore.kernel.org/lkml/20240605032120.3179157-1-song@kernel=
+.org/
+> > >
+> > > Tested-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> > > Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+> > > Reviewed-by: Rae Moar <rmoar@google.com>
+> > > Signed-off-by: Sergio Gonz=C3=A1lez Collado <sergio.collado@gmail.com=
+>
+> > > Link: https://github.com/Rust-for-Linux/linux/issues/504
+> >
+> > Hello!
+> >
+> > Thanks for fixing the typo and this new version! This patch still does
+> > not apply cleanly in the Makefile for me. Have you rebased it on the
+> > kselftest/kunit branch? I also have a few more questions that I just
+> > noticed.
+> >
+> > Thanks!
+> > -Rae
+> >
+> > > ---
+> > > V7 -> V8: typo fixed & rebased
+> > > ---
+> > > V6 -> V7: rebased
+> > > ---
+> > > V5 -> V6: remove tests with symbols of length KSYM_NAME_LEN+1
+> > > ---
+> > > V4 -> V5: fixed typo, added improved description
+> > > ---
+> > > V3 -> V4: add x86 mantainers, add new reference.
+> > > ---
+> > > V2 -> V3: updated base and added MODULE_DESCRIPTION() and MODULE_AUTH=
+OR()
+> > > ---
+> > > V1 -> V2: corrected CI tests. Added fix proposed at [3]
+> > >
+> > > [3] https://lore.kernel.org/lkml/Y9ES4UKl%2F+DtvAVS@gmail.com/T/#m3ef=
+0e12bb834d01ed1ebdcae12ef5f2add342077
+> > >
+> > > The test execution should result in something like:
+> > > ```
+> > > [20:04:35] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D longest-symb=
+ol (4 subtests) =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > > [20:04:35] [PASSED] test_longest_symbol
+> > > [20:04:35] [PASSED] test_longest_symbol_kallsyms
+> > > [20:04:35] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D [PASSE=
+D] longest-symbol =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > > [20:04:35] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > > [20:04:35] Testing complete. Ran 4 tests: passed: 4
+> > > ```
+> > > ---
+> > >  arch/x86/tools/insn_decoder_test.c |  3 +-
+> > >  lib/Kconfig.debug                  |  9 ++++
+> > >  lib/Makefile                       |  2 +
+> > >  lib/longest_symbol_kunit.c         | 84 ++++++++++++++++++++++++++++=
+++
+> > >  4 files changed, 97 insertions(+), 1 deletion(-)
+> > >  create mode 100644 lib/longest_symbol_kunit.c
+> > >
+> > > diff --git a/arch/x86/tools/insn_decoder_test.c b/arch/x86/tools/insn=
+_decoder_test.c
+> > > index 472540aeabc2..6c2986d2ad11 100644
+> > > --- a/arch/x86/tools/insn_decoder_test.c
+> > > +++ b/arch/x86/tools/insn_decoder_test.c
+> > > @@ -10,6 +10,7 @@
+> > >  #include <assert.h>
+> > >  #include <unistd.h>
+> > >  #include <stdarg.h>
+> > > +#include <linux/kallsyms.h>
+> > >
+> > >  #define unlikely(cond) (cond)
+> > >
+> > > @@ -106,7 +107,7 @@ static void parse_args(int argc, char **argv)
+> > >         }
+> > >  }
+> > >
+> > > -#define BUFSIZE 256
+> > > +#define BUFSIZE (256 + KSYM_NAME_LEN)
+> >
+> > I'm not too familiar with this test. I believe this would potentially
+> > make a symbol with a length that exceeds the KSYM_NAME_LEN. What is
+> > the intention for this line?
+> That will define how much space to write a symbol. I'm also not
+> familiar with that test, but I know had to be fixed:
+> https://lore.kernel.org/lkml/Y9ES4UKl%2F+DtvAVS@gmail.com/T/#m3ef0e12bb83=
+4d01ed1ebdcae12ef5f2add342077
+>
+> >
+> > >
+> > >  int main(int argc, char **argv)
+> > >  {
+> > > diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+> > > index 1af972a92d06..62d43aa9e8f0 100644
+> > > --- a/lib/Kconfig.debug
+> > > +++ b/lib/Kconfig.debug
+> > > @@ -2838,6 +2838,15 @@ config FORTIFY_KUNIT_TEST
+> > >           by the str*() and mem*() family of functions. For testing r=
+untime
+> > >           traps of FORTIFY_SOURCE, see LKDTM's "FORTIFY_*" tests.
+> > >
+> > > +config LONGEST_SYM_KUNIT_TEST
+> > > +       tristate "Test the longest symbol possible" if !KUNIT_ALL_TES=
+TS
+> > > +       depends on KUNIT && KPROBES
+> > > +       default KUNIT_ALL_TESTS
+> > > +       help
+> > > +         Tests the longest symbol possible
+> > > +
+> > > +         If unsure, say N.
+> > > +
+> > >  config HW_BREAKPOINT_KUNIT_TEST
+> > >         bool "Test hw_breakpoint constraints accounting" if !KUNIT_AL=
+L_TESTS
+> > >         depends on HAVE_HW_BREAKPOINT
+> > > diff --git a/lib/Makefile b/lib/Makefile
+> > > index d5cfc7afbbb8..e8fec9defec2 100644
+> > > --- a/lib/Makefile
+> > > +++ b/lib/Makefile
+> > > @@ -393,6 +393,8 @@ obj-$(CONFIG_FORTIFY_KUNIT_TEST) +=3D fortify_kun=
+it.o
+> > >  obj-$(CONFIG_CRC_KUNIT_TEST) +=3D crc_kunit.o
+> > >  obj-$(CONFIG_SIPHASH_KUNIT_TEST) +=3D siphash_kunit.o
+> > >  obj-$(CONFIG_USERCOPY_KUNIT_TEST) +=3D usercopy_kunit.o
+> > > +obj-$(CONFIG_LONGEST_SYM_KUNIT_TEST) +=3D longest_symbol_kunit.o
+> > > +CFLAGS_longest_symbol_kunit.o +=3D $(call cc-disable-warning, missin=
+g-prototypes)
+> > >
+> > >  obj-$(CONFIG_GENERIC_LIB_DEVMEM_IS_ALLOWED) +=3D devmem_is_allowed.o
+> >
+> > These are the lines that are causing the patch to not apply cleanly.
+> > The change list that applies cleanly for me is:
+> >
+> >  obj-$(CONFIG_FORTIFY_KUNIT_TEST) +=3D fortify_kunit.o
+> >  obj-$(CONFIG_SIPHASH_KUNIT_TEST) +=3D siphash_kunit.o
+> >  obj-$(CONFIG_USERCOPY_KUNIT_TEST) +=3D usercopy_kunit.o
+> >  obj-$(CONFIG_CRC16_KUNIT_TEST) +=3D crc16_kunit.o
+> > +obj-$(CONFIG_LONGEST_SYM_KUNIT_TEST) +=3D longest_symbol_kunit.o
+> > +CFLAGS_longest_symbol_kunit.o +=3D $(call cc-disable-warning, missing-=
+prototypes)
+> >
+> >  obj-$(CONFIG_GENERIC_LIB_DEVMEM_IS_ALLOWED) +=3D devmem_is_allowed.o
+> >
+> I will create a new rebased version of the patch.
+>
+> > >
+> > > diff --git a/lib/longest_symbol_kunit.c b/lib/longest_symbol_kunit.c
+> > > new file mode 100644
+> > > index 000000000000..2a2dd1151097
+> > > --- /dev/null
+> > > +++ b/lib/longest_symbol_kunit.c
+> > > @@ -0,0 +1,84 @@
+> > > +// SPDX-License-Identifier: GPL-2.0
+> > > +/*
+> > > + * Test the longest symbol length. Execute with:
+> > > + *  ./tools/testing/kunit/kunit.py run longest-symbol
+> > > + *  --arch=3Dx86_64 --kconfig_add CONFIG_KPROBES=3Dy --kconfig_add C=
+ONFIG_MODULES=3Dy
+> > > + *  --kconfig_add CONFIG_RETPOLINE=3Dn --kconfig_add CONFIG_CFI_CLAN=
+G=3Dn
+> > > + *  --kconfig_add CONFIG_MITIGATION_RETPOLINE=3Dn
+> > > + */
+> > > +
+> > > +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+> >
+> > I don't believe you use this macro. Could probably be deleted.
+> >
+> This macro should work out of the box by means of the pr_*() macros:
+> https://docs.kernel.org/core-api/printk-basics.html#c.pr_fmt
 
---5Fr4XABoh4dw3S0W
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hi! Thanks for your responses.
 
-On Wed, Feb 19, 2025 at 01:25:16PM -0300, Daniel Almeida wrote:
+This seems good to me. Thanks for the explanation.
 
-> Add a bare minimum regulator abstraction to be used by Rust drivers.
-> This abstraction adds a small subset of the regulator API, which is
-> thought to be sufficient for the drivers we have now.
+>
+> >
+> > > +
+> > > +#include <kunit/test.h>
+> > > +#include <linux/stringify.h>
+> > > +#include <linux/kprobes.h>
+> > > +#include <linux/kallsyms.h>
+> > > +
+> > > +#define DI(name) s##name##name
+> > > +#define DDI(name) DI(n##name##name)
+> > > +#define DDDI(name) DDI(n##name##name)
+> > > +#define DDDDI(name) DDDI(n##name##name)
+> > > +#define DDDDDI(name) DDDDI(n##name##name)
+> > > +
+> > > +#define PLUS1(name) __PASTE(name, e)
+> >
+> > I don't think you use this anymore with the new changes. Can probably
+> > be deleted.
+> >
+> Indeed, I totally overlooked that.
+>
+> >
+> > > +
+> > > +/*Generate a symbol whose name length is 511 */
+> > > +#define LONGEST_SYM_NAME  DDDDDI(g1h2i3j4k5l6m7n)
+> > > +
+> > > +#define RETURN_LONGEST_SYM 0xAAAAA
+> > > +
+> > > +noinline int LONGEST_SYM_NAME(void);
+> > > +noinline int LONGEST_SYM_NAME(void)
+> > > +{
+> > > +       return RETURN_LONGEST_SYM;
+> > > +}
+> > > +
+> > > +_Static_assert(sizeof(__stringify(LONGEST_SYM_NAME)) =3D=3D KSYM_NAM=
+E_LEN,
+> > > +"Incorrect symbol length found. Expected KSYM_NAME_LEN: "
+> > > +__stringify(KSYM_NAME) ", but found: "
+> > > +__stringify(sizeof(LONGEST_SYM_NAME)));
+> >
+> > Should this error return __stringify(KSYM_NAME_LEN) instead of
+> > __stringify(KSYM_NAME) to give the maximum length?
+> >
+> It is done on purpose to show what the actual symbol is. Under some
+> conditions the names can incorporate
+> prefix symbols, for example:
+> https://lore.kernel.org/lkml/20221028194453.526899822@infradead.org/,
+> if this happens it will be easier to spot what is going on.
 
-...
+Right now this outputs: "Incorrect symbol len. Expected KSYM_NAME_LEN:
+KSYM_NAME, but found: sizeof(snn...6m7n)"
+This seems incorrect because KSYM_NAME has no value. Instead I would
+expect:  "Incorrect symbol len. Expected KSYM_NAME_LEN: 512, but
+found: sizeof(snn...6m7n)".
 
-> Note that each instance of [`Regulator`] obtained from
-> `Regulator::get()` can only be enabled once. This ensures that the calls
-> to enable and disable are perfectly balanced before `regulator_put()` is
-> called, as mandated by the C API.
+>
+> >
+> > Also, I get an error because the length of LONGEST_SYM_NAME is 512.
+> > The error is produced by this code:
+> > https://elixir.bootlin.com/linux/v6.13.1/source/scripts/kallsyms.c#L152
+> > and alerts if the symbol length is >=3D to KSYM_NAME_LEN. That is fine
+> > as long as that is the intention of this test to produce a warning. Or
+> > should this warning change to be "> KSYM_NAME_LEN" if usage of symbols
+> > that are the maximum length is allowed?
+> >
+> Indeed that is expected, as the limit is reached. I think it may not
+> be really needed to update the condition to "> KSYM_NAME_LEN".
+>
 
-This sounds very wrong, a major use case for consumers is to enable and
-disable regulators at runtime.  I would expect that the Rust code might
-want to have it's own reference counting (and probably should), but not
-being able to disable a regulator after enabling it seems to be a great
-big red flag.
+That seems good to me.
 
-> +    /// Enable the regulator.
-> +    pub fn enable(&mut self) -> Result {
-> +        if self.enabled {
-> +            return Ok(());
-> +        }
+Thanks!
+-Rae
 
-This isn't what the changelog claimed, it's silently ignoring duplicate
-attempts to enable and...
-
-> +        // SAFETY: Safe as per the type invariants of `Regulator`.
-> +        let res = to_result(unsafe { bindings::regulator_disable(self.inner.as_ptr()) });
-> +        if res.is_ok() {
-> +            self.enabled = false;
-> +        }
-
-...we actually support disabling and reenabling multiple times, it's
-just that there's a maximum of one enable at once from the consumer and
-we silently ignore duplicated enables and disables.  That's better but
-it's asking for trouble.
-
-If you're going to support both enable and disable (and all things
-considered you probably should TBH) it would be better to just reference
-count the enables like the C code does and then complain about it if
-someone tries to free the regulator object without underwinding their
-enables, or just possibly just clean them up.  Silently ignoring
-duplicate enables or overflowing disables doesn't seem like it plays
-well with the safety goals that Rust has, it's asking for bugs - a big
-part of the reason the C API does things the way it does is that it will
-notice if the enables and disables aren't joined up.  You can easily
-wind up with one part of the code disabling the regulator underneath
-another part that's still trying to use the hardware and things tend not
-to go well when that happens.
-
-Perhaps an enable should be an object that's allocated and carried about
-by whatever's holding the reference, I don't know if that plays nicely
-with how Rust likes to ensure safety with this stuff?
-
---5Fr4XABoh4dw3S0W
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAme2Y8wACgkQJNaLcl1U
-h9CT5ggAhRkr4SzbYtDwL6cfX2kD58rUcq69T1ulK8Wj/Q+AIBo5mONaGiR8BcAt
-rQJ7y0vJnkMPKkpTTwaUmVJ71A850XNs6Qt5ovadztkwzGAdOowpEd1A93u0hVKZ
-HQLBKYF/hxvttJeAparl8NniOqHBQr9VT2UQDNKo4dOjxxKCONxJAcnh/LPxWMPL
-zIJGd3nqEluz+DJNJpj0lFa5PSnaUj1Am/okVJC5FBxT4GAitG02cZcRvkIo999/
-9mMwaLnurr1L2ep1ozT3YVzD1EJcl8ouTP+DG/pV90/eZBgO1OHP1fP2kreqEuIg
-Sl+7cxA8hX/qGgrHbrFtWUGqRbPFRg==
-=xR9t
------END PGP SIGNATURE-----
-
---5Fr4XABoh4dw3S0W--
+>
+> Thanks a lot for your remarks.
+> Cheers!
