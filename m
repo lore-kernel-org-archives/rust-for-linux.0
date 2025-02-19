@@ -1,47 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0856C1C461F
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Feb 2025 08:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93791B041F
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Feb 2025 08:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739952401; cv=none; b=qntqb8S0aRur7V1L8HwcvsJ82AK1A6sm1ESdKwM6pY34YJ9IY9Q4lZFNba85LP54F42dQHVdZ5VrnhvNJD82tSzXXYxPi7GVTggSGi2YZ5jtZthDlC3eO7Ay4FMfCgl+BF0zeUwmo3qUfx89Ym7qt2QnVXM8Ge0FujCW+mHMBxk=
+	t=1739952403; cv=none; b=DOWeZp+lKnboyluS+GI7DvDqYVajL5/9dolDIG1cy+FmOQLpB5NkTaVSvAD5TTT8+LUfPLom0uTxilkhlodZ0ABiYY8TkYVoUdQT3ODll5MZZ8V7pKP1mcjpZH3ZtQpmjYqO0+zNCSc9HEbGChh9lOK0cqAApHzJTtzXp1XyGa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739952401; c=relaxed/simple;
-	bh=ilB6+AZVQjW4QlhXgck5DQoMaIcE47j5ttP/tGFVamk=;
+	s=arc-20240116; t=1739952403; c=relaxed/simple;
+	bh=sehgEn5MFULuwed4oCHT44wDHyKnMYzxVfU3Jc0gUnk=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Z/N3pBqBVu/egrghgUbz4DrrXaAPWrXCxsTw6GwSscTEzlDs1ru5+NpjBEZYM6sStEO25LmAp2SievGoByYI36FLUD6vpLDWwtGXTRD5iKEQ1QKZxFjgPgg3N0lQrKDAIQGg/wSMNNF9I5S8CQy/W8adDKYiJxl8SqdFZC8AYbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CdKgNYZg; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=JTEF+eMdX/FlNTn5qOeU86Has0K/Mrw/NrdHCvBQkF6UTXv7dHWWg0xJDgNWDIIKXdFkVnfBtuZZ/IuKOaY1p6aVmu99GzgmE2C/vL0l9dc84kQ3EkaPXpp0ZOVhQPolI1Ti87CeAbCz5o1kgY6GbWpXRM37c9eXEz622hQ8QKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jkx2EqE+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CdKgNYZg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D7BC4CEE7;
-	Wed, 19 Feb 2025 08:06:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jkx2EqE+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E700C4CEE7;
+	Wed, 19 Feb 2025 08:06:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739952400;
-	bh=ilB6+AZVQjW4QlhXgck5DQoMaIcE47j5ttP/tGFVamk=;
+	s=k20201202; t=1739952403;
+	bh=sehgEn5MFULuwed4oCHT44wDHyKnMYzxVfU3Jc0gUnk=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=CdKgNYZg8E/hBU4iNwMswL2yi3v05TbV2ospUHXyPymspU25sLfmZYf8gCwf+sGoy
-	 f0z3pOsBY7cv5AlSCGTiOhgv2SIBUfQzVEz+YkhAZ2n0cgYFQw4BwPSplM7rd9icas
-	 3QHWZ7G99oDgdlAIlxbrGQpIthA8xZI9gXzxJ151byikQPbEIZ7z2GM1CVQEypoWqr
-	 6Di3hW9+e4VFV1TMjnsGlqIFNugU/2wWsHA/BEQwfB2m0qGUx/SEe3BMPAx7RYMfpj
-	 O0HEL3qLUw3Fb6kf0Ht6Rn/d2PVIhxgpQC7MnmwCvWCbsxK/wxYeZlWJhSuLEMwKBT
-	 mYhJQi7+/emeg==
+	b=Jkx2EqE+CEZa7BdYWQ/3XRolqzoYyUZRyPmwdT9QYvysljYacVv5wJIEN1Xkrh3SK
+	 GkmOTfZYWHCI/HFzOw7IiwT0Zu3S3J8jodQUp2VcnSTF89IeDjNqrfrTBKJQYbuxXk
+	 50Yd4kHoHZAq6ZbsnvQEkBWFdF2qoPY4bqkP/3VF7aIxvchbZBOxf07lgjpDeUQ5NN
+	 pUuSRILnel4b/VLhMSxUhOImSS8c9wN24gCJ4Q56J3fFM71whiTct2OGhZ4+ADWtyT
+	 UO97nxVdxzN6qi/m53pJXDx0wlX9F0vtfZgjhFhvMoUVDsdTZuMIHvpmM0faRex7jx
+	 9wOgaDVJenjYg==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: "Dirk Behme" <dirk.behme@de.bosch.com>
 Cc: <rust-for-linux@vger.kernel.org>,  <ojeda@kernel.org>,
   <daniel.almeida@collabora.com>,  "Boqun Feng" <boqun.feng@gmail.com>,
   "Gary Guo" <gary@garyguo.net>,  "Alice Ryhl" <aliceryhl@google.com>,
   "Trevor Gross" <tmgross@umich.edu>
-Subject: Re: [PATCH v2 2/2] rust: types: `Opaque` doc: Add some destructor
- description
-In-Reply-To: <20250219055516.359454-2-dirk.behme@de.bosch.com> (Dirk Behme's
-	message of "Wed, 19 Feb 2025 06:55:16 +0100")
-References: <20250219055516.359454-1-dirk.behme@de.bosch.com>
-	<qR15TFA5w7m-em7Om-XpDqJvZbPA4T-_wgdtpb2lzfqhHWXVz6MT3cIurrB2_JbUbNqqlffrtGTN8cSUrtTL1A==@protonmail.internalid>
-	<20250219055516.359454-2-dirk.behme@de.bosch.com>
+Subject: Re: [PATCH v2 1/2] rust: types: `Opaque` doc: Add some intra doc
+ linkage
+In-Reply-To: <20250219055516.359454-1-dirk.behme@de.bosch.com> (Dirk Behme's
+	message of "Wed, 19 Feb 2025 06:55:15 +0100")
+References: <QD0GOJgCH2aX4JQuTDvwU-r5K8zcpSxD3eN6ixps2goHl3elDKOJFlkzUpSQSKaYDFls5CElJa-QXcoHLpInog==@protonmail.internalid>
+	<20250219055516.359454-1-dirk.behme@de.bosch.com>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Wed, 19 Feb 2025 09:06:26 +0100
-Message-ID: <87seoae4u5.fsf@kernel.org>
+Date: Wed, 19 Feb 2025 08:59:38 +0100
+Message-ID: <87y0y2e55h.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -52,66 +51,34 @@ Content-Type: text/plain
 
 "Dirk Behme" <dirk.behme@de.bosch.com> writes:
 
-> In the discussion [1] some `Opaque` documentation updates have
-> been proposed. In that discussion it was clarified that `Opaque`
-> is intended to be used for (partial) uninitialized or changing C
-> structs. And which consequences this has for using raw pointers
-> or the destruction. Improve the `Opaque` documentation by adding
-> these conclusions from that discussion.
+> Add some missing intra doc linkage `[...]`.
 >
-> Suggested-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Link: https://lore.kernel.org/rust-for-linux/F8AB1160-F8CF-412F-8B88-4C79D65B53A1@collabora.com/ [1]
 > Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
 > ---
 > Changes in v2:
->  * Split patch into two (Miguel)
->  * Improve commit message and subject (Miguel)
+>   * Split out this change into this extra patch (Miguel)
 >
->  rust/kernel/types.rs | 14 ++++++++++----
->  1 file changed, 10 insertions(+), 4 deletions(-)
+>  rust/kernel/types.rs | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 >
 > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index 8ed802444c594..08ff4949d2a61 100644
+> index c3dc798221dbc..8ed802444c594 100644
 > --- a/rust/kernel/types.rs
 > +++ b/rust/kernel/types.rs
-> @@ -274,14 +274,20 @@ fn drop(&mut self) {
->  /// [`Opaque<T>`] is meant to be used with FFI objects that are never interpreted by Rust code.
+> @@ -271,10 +271,10 @@ fn drop(&mut self) {
+>
+>  /// Stores an opaque value.
+>  ///
+> -/// `Opaque<T>` is meant to be used with FFI objects that are never interpreted by Rust code.
+> +/// [`Opaque<T>`] is meant to be used with FFI objects that are never interpreted by Rust code.
 >  ///
 >  /// It is used to wrap structs from the C side, like for example `Opaque<bindings::mutex>`.
-> -/// It gets rid of all the usual assumptions that Rust has for a value of type `T`:
-> -///
-> -/// * The value is allowed to be uninitialized (for example have invalid bit patterns: `3` for a
-> -///   [`bool`]).
-> +/// This is useful for C structs that are not fully initialized (yet) or might change their
-> +/// content from C side at runtime. [`Opaque<T>`] gets rid of all the usual assumptions that
-> +/// Rust has for a value of type `T`:
-> +///
-> +/// * The value is allowed to be uninitialized or invalid (for example have invalid bit patterns:
-> +///   `3` for a [`bool`]).
-> +/// * By dereferencing a raw pointer to the value you are unsafely asserting that the value is
-> +///   valid *right now*.
->  /// * The value is allowed to be mutated, when a `&Opaque<T>` exists on the Rust side.
->  /// * No uniqueness for mutable references: it is fine to have multiple `&mut Opaque<T>` point to
->  ///   the same value.
->  /// * The value is not allowed to be shared with other threads (i.e. it is `!Sync`).
-> +/// * The destructor of [`Opaque<T>`] does *not* run the destructor of `T`, as `T` may
-> +///   be uninitialized, as described above.
+> -/// It gets rid of all the usual assumptions that Rust has for a value:
+> +/// It gets rid of all the usual assumptions that Rust has for a value of type `T`:
 
-Thanks for clarifying the docs. What you write is correct, but I would
-prefer a more terse and formal language, at least for the first
-paragraph. Perhaps you can include the following in some form:
+You yank the effect of this change in patch 2, so maybe just leave it
+till then?
 
-  > Opaque opts out of the following rust language invariants for the
-  > contained `T`:
-  > 
-  > - Initialization invariant - the contained value is allowed to be
-  >   uninitialized and contain invalid bit patterns.
-  > - Immutability invariant - `Opaque` allows interior mutability.
-  > - Uniqueness invariant - `Opaque` allows aliasing of shared references.
-  > 
-  > Further, `Opaque` is `!Unpin`.
-
-And then after that paragraph, you could elaborate with examples and so forth?
 
 Best regards,
 Andreas Hindborg
