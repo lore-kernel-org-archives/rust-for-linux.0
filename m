@@ -1,92 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC49F4C6D;
-	Wed, 19 Feb 2025 06:20:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9B217BB21;
+	Wed, 19 Feb 2025 06:26:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739946040; cv=none; b=qcCVSDbx4jjx42mV/7k/wnxHe2m3dWyH4N++2xlNpmJI82tn1u/vlYpz2+2LWo622b5f+yDAYxnRfwrSGmtKo48S7KHWi/gAShlAv8GDt+LCvdfgvXKlKEk1V58avplev2ZjRQYHjC5QUlapI2SFWHvDbEnsvHzMchnp/DnAjw0=
+	t=1739946374; cv=none; b=hvD2vcuJDd/pD0EYrJBjlpS8AGdNniAvpBuHedIbr/3iiVOUvC/1xVnzJtEO1IR0JKg+mjyZQhVym/xKYVoQeHACBYTO5sk7EZRHVwD3bnOhUvIPtLqgZz8EpJi87Ze2rVNGz79bMlvIh6YcqWxKMsXCSUteDT3nTqvrJUX0gUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739946040; c=relaxed/simple;
-	bh=mvpIJujt6K2Fgjy733qQ0XmMrWAySwCrA5Yn0K0WhYQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=U53Lj2/Xh7//d97vOBP/xeQFo6K+39447scL/tA6xETbqG1Yp5GXcSfH3Ma751JhjUMkDbT/Us/Wl8fGMopB/upVgQhaAuJbCTcx3SksWEzSwX8Wi8QYaBEy95hRoBM8ZwEc3MjSVe2mXRrqwHdamo8t5S/zDR6lz4m3Spy6ISI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SLdoCnYj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739946374; c=relaxed/simple;
+	bh=YLRfZjNmZEwt2J4sS1CuWL+Dyi6Eo3SE1Lf0l46ZiwY=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=nJ7qeKUtcohGR1zhTKSB6x+ivxLVq3drcZwfPuQZ5VXq7t8W00X8Kmoa2FFxS6vDQYDZsoTfXxC0rPrRMQAeFttc99Y5V0CcZuPKUZjhH9AeSM5EBI6gUaVxfXPQ63tQ9RDWy3uEbo0hTsy/olwRC2ECRVrhJBcVdTW/LAif7ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eHvSeb2f; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SLdoCnYj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C326AC4CED1;
-	Wed, 19 Feb 2025 06:20:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739946039;
-	bh=mvpIJujt6K2Fgjy733qQ0XmMrWAySwCrA5Yn0K0WhYQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=SLdoCnYjuw/R2HaxyvNKEZrnZL7obJAM+iNu8pNRzkdsLCFpO2HIlLqvGgA8geeO9
-	 9EXSjdTfUsmOsO/sl2EwdyOUenstL5HR62lHM6tkChPDuldgVoqXMlt+9BK8pQveiJ
-	 YZx9UhLQCQM32RY+nTDXqgv5X0/20RNdPMNFGbYHxxquRpt0oTzGB+zklfz4y5i0n9
-	 V9prwUX7IwSTQuHAdG4lQQGoa3KuYGRgBwqHcrFWpHV8uNN3jFt8HZqPrJOyOJ6YS5
-	 LK1OGBY5JWG9hB7qoNmhrdzmZX25mp2U+VOSyCe4LI5DFc2wN667vz/wcmNIUkbxSM
-	 Av1b08Tpr0VgA==
-Message-ID: <615ce44fa528ad7be28ba518e14a970f04481078.camel@kernel.org>
-Subject: Re: Rust kernel policy
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Christoph Hellwig <hch@infradead.org>, Miguel Ojeda	
- <miguel.ojeda.sandonis@gmail.com>, rust-for-linux	
- <rust-for-linux@vger.kernel.org>, Linus Torvalds
- <torvalds@linux-foundation.org>,  Greg KH <gregkh@linuxfoundation.org>,
- David Airlie <airlied@gmail.com>, 	linux-kernel@vger.kernel.org,
- ksummit@lists.linux.dev
-Date: Wed, 19 Feb 2025 08:20:31 +0200
-In-Reply-To: <Z7T5_WGX_VXBby9k@boqun-archlinux>
-References: <Z7SwcnUzjZYfuJ4-@infradead.org>
-	 <36783d51be7576fcdbf8facc3c94193d78240816.camel@kernel.org>
-	 <4cbd3baf81ca3ff5e8c967b16fc13673d84139e8.camel@kernel.org>
-	 <e63089e15c6f4d19e77d2920d576e0134d8b7aa7.camel@kernel.org>
-	 <Z7T5_WGX_VXBby9k@boqun-archlinux>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eHvSeb2f"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2f44353649aso8921499a91.0;
+        Tue, 18 Feb 2025 22:26:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739946372; x=1740551172; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3kZElKND3kCKGrS1g7RYXmXU6YgLKTvquyxfdR0pRBg=;
+        b=eHvSeb2fT4bXIWF3jfazaay8rfw/7JBEp19VWt1Ap0ba98MYZJUQ/2OtTHq1BSs5JS
+         XMQfz5KTb57AfMToe/GOAbFfuYdhabg/hnHdKSQGWoTsembCD14weUcFstxwPzKPBapy
+         CV9C4ZbwhdoUzWcnrN3lt4jdNqYRqRQwuX3AF9xt/k0HqXHnOBfwbH6zSb8Mr0IJvZNZ
+         +V5jzxgGiY9JMVLcIQF5k19hErd7F6rq2YRN8R8SBJNSd54twQf37eRwsZqvKbsL+H2U
+         7UJCDqBeBtwGYANpk1EtrL7B5JFVuwdOKXUI1Mm/Q2ljvpze3p4aHuvfhjfBKl0qBz5D
+         eOXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739946372; x=1740551172;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=3kZElKND3kCKGrS1g7RYXmXU6YgLKTvquyxfdR0pRBg=;
+        b=ZEMWFW9mcolkL49S2PflFR99RJuoPdTuShTpn7bqY+VuYZhSwMEDgOxP2Y7eUyolsm
+         A4BSGpqkr6D60u9ji6w/7mOxPreJsZrCeIiun83Q3FSoSNAUa8wTiyZMiSfWYfSbATby
+         SFXTYUneS4olUsniSA/M0SMGoI9vXIUMiKaaQeOYp1FWQGv9eTpXp4e7J6SHTFdHlCTE
+         GcZY3hHK8QjJCQ6xVPU0OznEyPYPD/VZLUtUINhDGd+dYG3MMx07PiN0Yx2hd9P+d0gh
+         7Fl3GiBMlNajMYiJ3T9HxjF3Rn3jKKDAhEIxrkRA7Ntry7OPCBNWrHGzzYPQqchHMv+7
+         IwNg==
+X-Forwarded-Encrypted: i=1; AJvYcCVHOtdtsmEH7RoRAyE/Fa5Ly4wgIbGFAgLFX5jGYapcnWJ0Hiq6d+2f/qGXH0IyjpPQB3NfQjZ0@vger.kernel.org, AJvYcCVlt4EUaiItHco1yW8IRCR3Nd56AQAPqKMyTUHhBIxZptD7TAnCngCWoWYj3R5Aam27hj3qUUwP2sNW72Ax5Rc=@vger.kernel.org, AJvYcCVpVGZQTIyxpEJ3dqzvJvLj50KxqkNonT28EqIPsETIXZ0i/mjjfO9RlHRuA9wKi61DcILuyv7SJCTQqDk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFs8dLpDGZ73ennXJqwhOsuOh3dI7ERX9rxqpjgTTP1poUTQBp
+	5sxZ0tytzLwLp6HS9lZUGH3GLQ9BqcpLQ7GbHg+vWySwhmRHYCpQ
+X-Gm-Gg: ASbGncu9+ojZEQRCFiT4Alu5CXoTuVkdhE1uyVjwAhV3LUOpBWEuDFm4wvxN2dzo+F8
+	m9JURbsq6j2FA0XQ8g6t2jInAvO11hU1/fnK2Akc7gVZeZCz0mCwZZBi9hZnFYcE4W6wtf1VnS7
+	V+xdaLqApaPtCaDz57i5ksKWb9QDhIw6qxGV+9NH3+DoyZsVu7i/H65RcvwNX0jQDacmnK9HY39
+	WVHpX/gptfmeCQ+ZJVHLNwhsqVJFLmtMi2DRR5JutevXZuTivKWRr9PJ2CLpcWBswMsKpWC5aIg
+	8Eeq+gBsrDMIvrr9y1c2t4n0bbHP7og4afAHse10i0Va+S4P1k8ns9DzLTQJX84Dq+RO5ZRN
+X-Google-Smtp-Source: AGHT+IE7Ce4LdfDebhYA+Q4CG7Lr1YqDWI7NHJxGkePySSwowWVZA/9C6wEyMSCkX4JxZx62eXof3Q==
+X-Received: by 2002:aa7:88d5:0:b0:725:e4b9:a600 with SMTP id d2e1a72fcca58-732618e50d1mr25994703b3a.16.1739946372290;
+        Tue, 18 Feb 2025 22:26:12 -0800 (PST)
+Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73274a11a0bsm5866711b3a.123.2025.02.18.22.26.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Feb 2025 22:26:11 -0800 (PST)
+Date: Wed, 19 Feb 2025 15:26:02 +0900 (JST)
+Message-Id: <20250219.152602.1131699707200242344.fujita.tomonori@gmail.com>
+To: frederic@kernel.org
+Cc: fujita.tomonori@gmail.com, anna-maria@linutronix.de,
+ tglx@linutronix.de, jstultz@google.com, sboyd@kernel.org,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, aliceryhl@google.com, arnd@arndb.de,
+ mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+ vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
+ bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+ tgunders@redhat.com, me@kloenk.dev
+Subject: Re: [PATCH v10 6/8] MAINTAINERS: rust: Add TIMEKEEPING and TIMER
+ abstractions
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <Z7M8IDI_caXqBvMp@localhost.localdomain>
+References: <20250207132623.168854-7-fujita.tomonori@gmail.com>
+	<20250217.091008.1729482605084144345.fujita.tomonori@gmail.com>
+	<Z7M8IDI_caXqBvMp@localhost.localdomain>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Tue, 2025-02-18 at 13:22 -0800, Boqun Feng wrote:
-> FWIW, usually Rust code has doc tests allowing you to run it with
-> kunit,
-> see:
->=20
-> 	https://docs.kernel.org/rust/testing.html=09
+On Mon, 17 Feb 2025 14:39:44 +0100
+Frederic Weisbecker <frederic@kernel.org> wrote:
 
-I know this document and this was what I used to compile DMA patches.
-Then I ended up into "no test, no go" state :-)
+>> > diff --git a/MAINTAINERS b/MAINTAINERS
+>> > index c8d9e8187eb0..987a25550853 100644
+>> > --- a/MAINTAINERS
+>> > +++ b/MAINTAINERS
+>> > @@ -10353,6 +10353,7 @@ F:	kernel/time/sleep_timeout.c
+>> >  F:	kernel/time/timer.c
+>> >  F:	kernel/time/timer_list.c
+>> >  F:	kernel/time/timer_migration.*
+>> > +F:	rust/kernel/time/delay.rs
+>> >  F:	tools/testing/selftests/timers/
+>> >  
+>> >  HIGH-SPEED SCC DRIVER FOR AX.25
+>> > @@ -23852,6 +23853,7 @@ F:	kernel/time/timeconv.c
+>> >  F:	kernel/time/timecounter.c
+>> >  F:	kernel/time/timekeeping*
+>> >  F:	kernel/time/time_test.c
+>> > +F:	rust/kernel/time.rs
+>> >  F:	tools/testing/selftests/timers/
+>> 
+>> TIMERS and TIMEKEEPING maintainers,
+>> 
+>> You would prefer to add rust files to a separate entry for Rust? Or
+>> you prefer a different option?
+> 
+> It's probably a better idea to keep those rust entries to their own sections.
+> This code will be better handled into your more capable hands.
 
-I put this is way. If that is enough, or perhaps combined with
-submitting-patches.rst, why this email thread exists?
+Got it. I'll create new sections for Rust's TIMERS and TIMEKEEPING.
 
->=20
-> , I took a look at the DMA patches, there is one doc test, but
-> unfortunately it's only a function definition, i.e. it won't run
-> these
-> DMA bindings.
->=20
-> I agree that test payload should be provided, there must be something
-> mentioning this in Documentation/process/submitting-patches.rst
-> already?
-
-Partly yes. This what was exactly what I was wondering when I read
-through the thread, i.e. why no one is speaking about tests :-)
-
->=20
-> Regards,
-> Boqun
-
-Thanks for responding, definitely not picking a fight here. I
-actually just wanted to help, and doing kernel QA is the best
-possible way to take the first baby steps on a new subsystem,
-and sort of area where I'm professional already as a kernel
-maintainer.
-
-BR, Jarkko
+Thanks!
