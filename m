@@ -1,73 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA65192580;
-	Wed, 19 Feb 2025 15:58:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81EE91F941B;
+	Wed, 19 Feb 2025 16:03:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739980729; cv=none; b=blrqpp07OAxpwfEwhxKg9OtRWe1YiN06v0Zkbx8YRZKu7Sb9aC2oTuIWaea1MK8Kux8VBsXRJj1nDknLoLeJv0fXR4RqBOdiR/u55dd3+wxT+op57AY9OmpaAs0oSIs2ZIbqnl3gpgLqhfctI9tVqURyizMMKYFWG18eJLs3dB0=
+	t=1739981012; cv=none; b=eg59Nw8JfrPBLJBEgv3Omm1XN68ZbNBnPeVvGUpg+jQKl5WY/gINGYP9lzivrwbBKl3cu/Dicc2+HIPKzFTecTMVNRBT6zCsQ64w/VK/E6+wmeLD8xibUjKgNbnsD0j9kazr/v2075JRCSCgTrZQs7xa2980WiPbdlYpy+fcJK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739980729; c=relaxed/simple;
-	bh=Q9QZKVxCZAmZgmwBcV2lUKpoTiM7WVccubym2Jp3FaE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MaM9WMLEjmKL0OcT8SPKyiNyJRovS5wLMikM+jXGqnuxrfSbCLL3/T189BN0Qa1ZvAHYStYYeVOx9o1meUmq9xPD0hVRfv0/rykQmjjdPWoZKkbNnH0eCbi8hBcq0N0LLlrAwqdLGSfl5QlQbZPZBKaAWBOJ4HLP7U72crATPW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UvtxlCVR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739981012; c=relaxed/simple;
+	bh=eDaowLk9u711gWU4IoVBOR9PiROZhzla/cX3KdS4Nx4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=SkPV/FzL/JzmDHRQPD+DcnUH1l9Xpv174KkdKcVFD25Nhh/rU4CS+bed/xrtTgtH1VMJX2BNfRuxfH19OA7M/D9sZp8u08yZMnUHVvcIvdoQyiT3Qsf/E+wJ28CNS9lBwvTAG+1kD66LWCABeAvz2v28qHuND8GbPIVMQTsnZDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=jIEjzIXX; arc=none smtp.client-ip=198.37.111.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UvtxlCVR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB71FC4CED1;
-	Wed, 19 Feb 2025 15:58:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739980729;
-	bh=Q9QZKVxCZAmZgmwBcV2lUKpoTiM7WVccubym2Jp3FaE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UvtxlCVRUeE1cAxvkFEvKx43aFldmi2UE5+sG4Sd7ytoKj5fPv/apRs2qp25Za8eb
-	 /kkxpG88d/8eDmvxRAHCYhERI+rEf4u39BPepfXBtGO8PsSkVu3rPR3rfyvFFtKFwg
-	 WYofqwQQ1gwCplQepOnX57sGcgGWRBf77lUpj2Rk=
-Date: Wed, 19 Feb 2025 16:58:46 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: miscdevice: change how f_ops vtable is constructed
-Message-ID: <2025021926-transport-fridge-bc43@gregkh>
-References: <20250117-miscdevice-fops-change-v1-1-ec04b701c076@google.com>
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="jIEjzIXX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1739981009;
+	bh=eDaowLk9u711gWU4IoVBOR9PiROZhzla/cX3KdS4Nx4=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=jIEjzIXXjbrpZ7YD8W7UnpaaD+KA6QHhlbN3c7nqYUK/B/gv+khxhrApCJQ8B0CGr
+	 R+pBakMnX/5yrbTg671aGpdi6fxwwD2jvGmdKGpIi5Vae1xqAfjlt2piAEpaufhaw2
+	 oedd0TpmZfeegB7/hNAHSJr+UR3sXG6j+ye8Z4dY=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::db7])
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 409001C254A;
+	Wed, 19 Feb 2025 11:03:29 -0500 (EST)
+Message-ID: <a627845f73f2f7bedc7a820cfdf476be9993e30f.camel@HansenPartnership.com>
+Subject: Re: Rust kernel policy
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Christoph Hellwig <hch@infradead.org>, rust-for-linux
+ <rust-for-linux@vger.kernel.org>, Linus Torvalds
+ <torvalds@linux-foundation.org>,  Greg KH <gregkh@linuxfoundation.org>,
+ David Airlie <airlied@gmail.com>,  linux-kernel@vger.kernel.org,
+ ksummit@lists.linux.dev
+Date: Wed, 19 Feb 2025 11:03:28 -0500
+In-Reply-To: <CANiq72nnnOsGZDrPDm8iWxYn2FL=wJqx-P8aS63dFYez3_FEOg@mail.gmail.com>
+References: <Z7SwcnUzjZYfuJ4-@infradead.org>
+	 <b0a8ee53b767b7684de91eeb6924ecdf5929d31e.camel@HansenPartnership.com>
+	 <CANiq72nnnOsGZDrPDm8iWxYn2FL=wJqx-P8aS63dFYez3_FEOg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250117-miscdevice-fops-change-v1-1-ec04b701c076@google.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jan 17, 2025 at 02:22:32PM +0000, Alice Ryhl wrote:
-> I was helping someone with writing a new Rust abstraction, and we were
-> using the miscdevice abstraction as an example. While doing this, it
-> became clear to me that the way I implemented the f_ops vtable is
-> confusing to new Rust users, and that the approach used by the block
-> abstractions is less confusing.
+On Wed, 2025-02-19 at 16:08 +0100, Miguel ol9 wrote:
+> On Wed, Feb 19, 2025 at 3:05 PM James Bottomley
+> <James.Bottomley@hansenpartnership.com> wrote:
+> > 
+> > So here's a proposal to fix this: could we not annotate the C
+> > headers with the API information in such a way that a much improved
+> > rust bindgen can simply generate the whole cloth API binding from
+> > the C code?  We would also need an enhanced sparse like tool for C
+> > that checked the annotations and made sure they got updated. 
+> > Something like this wouldn't solve every unintentional rust build
+> > break, but it would fix quite a few of them.  And more to the
+> > point, it would allow non-rust developers to update the kernel API
+> > with much less fear of breaking rust.
 > 
-> Thus, update the miscdevice abstractions to use the same approach as
-> rust/kernel/block/mq/operations.rs.
+> This has come up a few times, and we indeed would like to have some
+> annotations in the C headers so that we can generate more (and to
+> keep the information local).
 > 
-> Sorry about the large diff. This changes the indentation of a large
-> amount of code.
+> For instance, it would be nice to have bindgen's `__opaque` near the
+> C items, or being able to mark functions as `__safe`, or to have
+> other `enum`s-related annotations, or even custom attributes, as well
+> as "formatted-formally-enough" docs so that can be rendered properly
+> on the Rust side, or even references/lifetimes with an eventual "Safe
+> C"-like approach, and so on and so forth.
 > 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/kernel/miscdevice.rs | 295 ++++++++++++++++++++++------------------------
->  1 file changed, 141 insertions(+), 154 deletions(-)
+> However, even if we automate more and even reach a point where most C
+> APIs are e.g. "safe" (which would be great),
 
-This doesn't apply against a clean 6.14-rc2 tree, what is is made
-against?
+I wouldn't say C API safety would be the main goal, although it might
+be a nice add on feature.
 
-thanks,
+>  it wouldn't prevent breakage -- the C APIs would still need to be
+> stable enough so that you don't break callers,
 
-greg k-h
+Just so we're on the same page, kernel API stability can't be the goal.
+We can debate how valuable the current API instability is, but it's a
+fact of life.  The point of the proposal is not to stabilise the C API
+but to allow the instability to propagate more easily to the rust side.
+
+>  including C ones. It would still be great to have that information
+> formally expressed, though, of course, and it would help maintain the
+> Rust sid
+
+This very much depends on how the callers are coded, I think.  When I
+looked at Wedson's ideas on this, the C API contracts were encoded in
+the headers, so mostly only the headers not the body of the code had to
+change (so the headers needed updating when the C API contract
+changed). If the enhanced bindgen produces new headers then code like
+this will just update without breaking (I admit not all code will work
+like that, but it's still a useful property).
+
+> We have also discussed at times is documenting the C side more, e.g.
+> the pre/post/invariants we use on the Rust side. That would be useful
+> for the C side to know something is being relied upon from Rust (and
+> other C callers) and for the Rust side to document why something is
+> sound. Of course, it is a lot of work, and the more we can express as
+> code instead of as documentation, the better.
+
+So I do think this feeds into the documentation project as well.  We've
+already decided that the best way to document an API is in the code for
+it, so adding annotations that can be checked is better than adding
+docbook that not many people check; although hopefully we could still
+generate documentation from the annotations.
+
+Regards,
+
+James
+
