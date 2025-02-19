@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0EAA1C68B6;
-	Wed, 19 Feb 2025 08:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04461F3BB6;
+	Wed, 19 Feb 2025 08:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739954296; cv=none; b=Y7uwBMyamSCeaPsIKNd3IMoBkGfgggBwVkTgnJdXbqEC7mNrjS/uarlvQbPScAYPCCQ4znqFx2WoLJP0TxU46zYr+51a5+SU54JgTwk9wg9/jPCgBs+noArfcMCPITKXGQsTM4+e93DgsZnc3zNGvo/Q5MOC1d11+rhsOdAmXbo=
+	t=1739954820; cv=none; b=nIcKfiayTjaqL+j4vRr3zqjjYQRXPzKQH34m/mIFXM/p4vJ8rZtKTvlrqumEQimG52HEm820hcNgs+6RZKHmZ0D1hS0+7DduXjo3JDB52a6e6czsl9jYqBOhxy+w+PGq4MxfrHh6PwgnkykLHywQ5fKoQg9y2e7GIRixE7GtksY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739954296; c=relaxed/simple;
-	bh=hk/K7Xy7+TFm7X+Cn6nnIxxhnI2tKh7frk+g37U2Q3I=;
+	s=arc-20240116; t=1739954820; c=relaxed/simple;
+	bh=/m2FmsbmklUHkDMFAYB5nNLniP8aogv96FU1XtosaoY=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=oE5MkctxSTRK9AkGKLU4AG22Jb+lJhoELxRWwHwfRURUSOeOkj+o/yLHLEL6dsk9iffm/HhNXm0HOOEkfOdThZYU5tpbPHw7pr2thBjxpu8BNE6He4rMPT1v89kVU9jSNPSWt3Or88X/p22/LBQnVzzCnDshUd/vdrOsfR95VsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CdiEO0bX; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=rthxJmemKI3jT/Bnjb+9rsap3k5/zm3/UjqI/sydYO/IGawXTqqqhngWv7ATCzUIumBIUC/AAnI05EauYCHeKmeJy9lBsSUXVqD9m3oPGbzXbdFBI0aPDQ1Cd+5z+JxvxvmfY48C5MAFcrneZQWFNeND9ojj0qkjKYLHUFWzlbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pGpH9mTb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CdiEO0bX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9381CC4CEE6;
-	Wed, 19 Feb 2025 08:38:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pGpH9mTb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B27C4CED1;
+	Wed, 19 Feb 2025 08:46:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739954296;
-	bh=hk/K7Xy7+TFm7X+Cn6nnIxxhnI2tKh7frk+g37U2Q3I=;
+	s=k20201202; t=1739954819;
+	bh=/m2FmsbmklUHkDMFAYB5nNLniP8aogv96FU1XtosaoY=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=CdiEO0bXmEsZKXKRm0QcP4p39t9yOvQaGKeztiXyCnaLcA+iLGYNj3M7FDnz60HT0
-	 IlZRSHn5bf8rt8snl1f97UsInPv0X+dtmdiwfqW/Son+bpG512eW8srjisHQ+NjyeA
-	 Lht9aAWWsN1fkZlJAXCyBovI6hMUp6xNPciTCEdnTUbXl631eqHtSVunWCVtcEPCFF
-	 c4/pGLrZTSqfoIZs62RSylT05bhAGNYWhluDhB3HmOeJqaHpuz5MRXYBs/Lh2554Yu
-	 W8M5soPpqrgv4BpgF2eAI22kg6QjPB2eHie8rS5eNWykXdgBjMe7qGYuVMs+jf5xK3
-	 jHy8G32JIuT2Q==
+	b=pGpH9mTbVX6yzKBAb2dDLu93MENVlPzYABTAkvNa9uIIMk7Z96wUtZhWHVUiSAA+p
+	 A2lNQWSOIY3pBZJpMZR++14HdwIlAhn2MIuKbUaoFYpvPfm3msEIPXj7FVK7gtHsRe
+	 ruhURUC1P05+9YlbKJf0CP4XfVx6wOn29qQcqxCXtJq4ywmg2hcxbNdC2Rm6QsrI2Q
+	 6mOUAuMTVzI64JjfnzNTWI0veUhHMPOpfZSW5SjbWKyuG5XooySMxLZurFXMvcx2ty
+	 CQWEjRIXutcYN+lqlN6aYGRc+ZFOM95/sfjolTrS98C+NfRaTY6fHLc4uX3BUQ0ARe
+	 zTlfruthpWphA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: "Asahi Lina" <lina@asahilina.net>
 Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
@@ -41,42 +41,69 @@ Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
   <linux-mm@kvack.org>,  <airlied@redhat.com>,  "Abdiel Janulgue"
  <abdiel.janulgue@gmail.com>,  <rust-for-linux@vger.kernel.org>,
   <linux-kernel@vger.kernel.org>,  <asahi@lists.linux.dev>
-Subject: Re: [PATCH 1/6] rust: types: Add Ownable/Owned types
-In-Reply-To: <20250202-rust-page-v1-1-e3170d7fe55e@asahilina.net> (Asahi
-	Lina's message of "Sun, 02 Feb 2025 22:05:43 +0900")
+Subject: Re: [PATCH 2/6] rust: page: Convert to Ownable
+In-Reply-To: <20250202-rust-page-v1-2-e3170d7fe55e@asahilina.net> (Asahi
+	Lina's message of "Sun, 02 Feb 2025 22:05:44 +0900")
 References: <20250202-rust-page-v1-0-e3170d7fe55e@asahilina.net>
-	<VqpY5D3uyf3txHBNgKZ7F-R6-AjemjEi3R2pH_tiaqEKbp8yxfK4YSqd6TxwvBrZ-MgC-xMbGufMlhXj8_ZWAg==@protonmail.internalid>
-	<20250202-rust-page-v1-1-e3170d7fe55e@asahilina.net>
+	<MbcmURUJ_wZdg4knkI3W95ZyOnefwXlfV2hkOjh8CS8MeRBBMtRzqO_ghFNp8nnMD4DrIw1sxWBVH5Pkqkr08Q==@protonmail.internalid>
+	<20250202-rust-page-v1-2-e3170d7fe55e@asahilina.net>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Wed, 19 Feb 2025 09:37:50 +0100
-Message-ID: <87h64qe3dt.fsf@kernel.org>
+Date: Wed, 19 Feb 2025 09:46:45 +0100
+Message-ID: <87bjuye2yy.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
 "Asahi Lina" <lina@asahilina.net> writes:
 
-> By analogy to AlwaysRefCounted and ARef, an Ownable type is a (typically
-> C FFI) type that *may* be owned by Rust, but need not be. Unlike
-> AlwaysRefCounted, this mechanism expects the reference to be unique
-> within Rust, and does not allow cloning.
->
-> Conceptually, this is similar to a KBox<T>, except that it delegates
-> resource management to the T instead of using a generic allocator.
+> This allows Page references to be returned as borrowed references,
+> without necessarily owning the struct page.
 >
 > Signed-off-by: Asahi Lina <lina@asahilina.net>
+> ---
+>  rust/kernel/page.rs | 30 ++++++++++++++++--------------
+>  1 file changed, 16 insertions(+), 14 deletions(-)
+>
+> diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+> index fdac6c375fe46e1ba589f1640afeae3e001e39ae..0b6cbe02522ab6e6e1810288a=
+d23af4e4aa587d8 100644
+> --- a/rust/kernel/page.rs
+> +++ b/rust/kernel/page.rs
+> @@ -7,6 +7,7 @@
+>      bindings,
+>      error::code::*,
+>      error::Result,
+> +    types::{Opaque, Ownable, Owned},
+>      uaccess::UserSliceReader,
+>  };
+>  use core::ptr::{self, NonNull};
+> @@ -30,13 +31,10 @@ pub const fn page_align(addr: usize) -> usize {
+>      (addr + (PAGE_SIZE - 1)) & PAGE_MASK
+>  }
+>
+> -/// A pointer to a page that owns the page allocation.
+> -///
+> -/// # Invariants
+> -///
+> -/// The pointer is valid, and has ownership over the page.
+> +/// An object representing a memory page in the kernel (`struct page`).
 
-Over all looks good to me - I agree with the points already discussed.
+Can you  link to the header file containing `struct page`?
 
-Could you put it in a separate module and file? `kernel::types::ownable`
-and then `pub use` in `types.rs`. `types.rs` is getting quite busy.
+.. memory page in the kernel ([`struct page`]).
+
+[`struct page`]: srctree/include/linux/mm_types.h
+
+Otherwise looks good =F0=9F=91=8D
 
 
 Best regards,
 Andreas Hindborg
+
 
 
