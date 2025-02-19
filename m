@@ -1,41 +1,41 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from sender3-pp-f112.zoho.com (sender3-pp-f112.zoho.com [136.143.184.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C2425B664;
-	Wed, 19 Feb 2025 23:13:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3181B87EB;
+	Wed, 19 Feb 2025 23:36:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.184.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740006825; cv=pass; b=J9VykJyuWaUCAHDIf5c67ShYk5QZxlLJRG8BU9SWGjsNnSQw/zTjVYdgYdElXIuRP3pd2KK/H+NMHiHu0laGUZwDAWKwIQkka+LZtb+ZCDmwRLzQZ89K3XuJvTAGwSwmW44X4LiSjw5Ec6h6OETdKuGqrXCXAaEP0RIXpKS7vT0=
+	t=1740008191; cv=pass; b=NVb7lVGGy5tmeXyYSR+8j4piaZi8RIcKPkyZKRF0K3IVRtEDAkonPcfk9aDzymTl5GEhH/5WgXTox5p0GKmrtvsvcpNlCDoqHPseZj1x/tQudQW9FpgnroC45ZmMuHr010Ua0aphfLmP3C7qTfojAPlrDLGMq9SswtFsn54S0F0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740006825; c=relaxed/simple;
-	bh=SwDmvvzK1Qn1frWQJvzXkHMRQJGUI0Oks7o4Oa3lN8I=;
+	s=arc-20240116; t=1740008191; c=relaxed/simple;
+	bh=B3sy8Cxh+EnoriTU5vxUqf51qpiP6eFOoFGMd2MlSH8=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=T1CKXFtI+bmKhWnJV6hpPkfM7lsk/HlZ35k4zWy6z3eF6xc+yH1yX8QuBvJVE4p0Igx24THQ9Zx6G0vMfFiUpkHxz/tV2nVt3uwRFuetgE6wQ8PGoaASkmY0U2cWYI3Yb0TwfU60FiNZN4QsO70pO+cmahvak4ECcRszu4cv36Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=NBQFYdJV; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=LSEmldJxhaMzZcoGAkQSineUjIwhaUUMEgNaP+4uFA2mcBs6VuL1a07urZVELDUefOTNkoNyr3xhV7WenQBkz+UbGo7a2p93KA5j5fzpWp6oRJl/7Se0ZwMAviJxAGMoWedXbrHFyOftH63I6nFxFlbyf3JDOJbZgMmahCr2u2U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Tzgych9A; arc=pass smtp.client-ip=136.143.184.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="NBQFYdJV"
-ARC-Seal: i=1; a=rsa-sha256; t=1740006814; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Tzgych9A"
+ARC-Seal: i=1; a=rsa-sha256; t=1740008166; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=d8aKRIxU3l8XlTRQEM9685tTMXH5AqKtOf6F87tkY9qm9vwsLiTZyCqysAx2InJs13/MgjYSrfli88xXpElB/rZ83iXRF7jkbmmQ4kCxmsu4tX3AHCi3jmOiyALjA9XD5PAOgjRNmbLwTXxNhdU1/UconIGTOtsJKspu2LOHoT0=
+	b=iT4+XJqeX04IKZDtcnWuTImiCqcpvDYac8myU3zaC73Sx9D/0XW69CQ0fvd6ycrii8COpqlZweV6MGhFuzSbp1FjiZyawaHdQ8Zht1q9HH1VEETwN7KRSH3Nux2dEsmKbm/Q8bydPlS6jJb/xS14yyPURzSTw05tbejrBIShWSk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1740006814; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=yYsvej7hta50BXSo4O/kInYZNSTmLUgaMrj4n0kXVMA=; 
-	b=OVViB7v1dwUFhDrRdcbZ2766nsGflsj1tunY+Xw8sOE4Cc8xSgneCkiPLqSjp8G5MJ7Qg8uq9HwDQy5g+/BqZNx7Of5Smz09a8eEzUF8NFu9HF4HVanStqoT9D/KwmRdWA7UxfO01rK5KtNn+8Xv/41/GtNT+CE26/gfUKkpfp0=
+	t=1740008166; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=z9zBRcRrIN+gbKJfa3s2WwYoCc1xTTd7FgPo3CUQyCQ=; 
+	b=ec0lWeqKjAPzfS/M7YyrbQInX6MBBUNdc5tOoypLcJC6dyQLI6Lctka3CB5FO2g65PWa9O5mOJlIEYJ+bNYvaSTLN9p2xga0gHi1mDISCsFDjfOD52VoPjf3dNo1MU6tRSgg6+lVMTbMcrvE28AkZngDUZFlmlUzHTFFR7xmCSw=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1740006814;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1740008166;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=yYsvej7hta50BXSo4O/kInYZNSTmLUgaMrj4n0kXVMA=;
-	b=NBQFYdJVnDoiFp0z4H+BuyCpQDo0SKKYGuyeZ/UwkjGqSMHSxH50rWoRlOxzw6kO
-	VZVXqzLV5fbepi05sriU2H2OhtApWCevNMfCuRY4z8Zx5BidiHRJUxRqOpS9ynDYgQZ
-	XDferigcuF0iIJVt5WWy8Vx3nUAzQuRO99sFHxok=
-Received: by mx.zohomail.com with SMTPS id 1740006811017578.3153222760697;
-	Wed, 19 Feb 2025 15:13:31 -0800 (PST)
+	bh=z9zBRcRrIN+gbKJfa3s2WwYoCc1xTTd7FgPo3CUQyCQ=;
+	b=Tzgych9AeYNHVVI4e4VFC6ciCV4gnIcKkV+pHtTaK/Joo1GMYluwYqfwHC+lwGwa
+	c8DU8KTfAfW3SW5kEfoji1l/tvU3Mg4ug9B/CtTD5ATbse3JOPJ6O1w0MKS1SSYw2er
+	MP1M3CBKKH55BWPhlh/1OzXlSoHhXl5Fh0/v5TR4=
+Received: by mx.zohomail.com with SMTPS id 1740008164074315.64003209659415;
+	Wed, 19 Feb 2025 15:36:04 -0800 (PST)
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -44,68 +44,152 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
-Subject: Re: [PATCH RFC 1/3] rust: add useful ops for u64
+Subject: Re: [PATCH] rust: regulator: add a bare minimum regulator abstraction
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <CAPM=9txmQWO+SHnZhr8zXHCZ=S8CNY=PryRVkWWuHyor-ajU6A@mail.gmail.com>
-Date: Wed, 19 Feb 2025 20:13:15 -0300
-Cc: John Hubbard <jhubbard@nvidia.com>,
- Alexandre Courbot <acourbot@nvidia.com>,
- Timur Tabi <ttabi@nvidia.com>,
- "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
- "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
- "dakr@kernel.org" <dakr@kernel.org>,
- Ben Skeggs <bskeggs@nvidia.com>
+In-Reply-To: <Z7ZjzJ2Rfrt8j0s1@finisterre.sirena.org.uk>
+Date: Wed, 19 Feb 2025 20:35:47 -0300
+Cc: lgirdwood@gmail.com,
+ sebastian.reichel@collabora.com,
+ sjoerd.simons@collabora.co.uk,
+ ojeda@kernel.org,
+ alex.gaynor@gmail.com,
+ boqun.feng@gmail.com,
+ gary@garyguo.net,
+ bjorn3_gh@protonmail.com,
+ a.hindborg@kernel.org,
+ benno.lossin@proton.me,
+ aliceryhl@google.com,
+ tmgross@umich.edu,
+ dakr@kernel.org,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <1597EDB7-D91B-4660-ADDC-D2252B26CB22@collabora.com>
-References: <20250217-nova_timer-v1-0-78c5ace2d987@nvidia.com>
- <20250217-nova_timer-v1-1-78c5ace2d987@nvidia.com>
- <C1FF4314-C013-4AE1-A94E-444AFACDB4AC@collabora.com>
- <D7VLMD31YB0V.OKHDSVUPAZTE@nvidia.com>
- <1b8921d46f7d70c7467ea0940d60220f05cccc5d.camel@nvidia.com>
- <D7W119MHCCWH.IS600FTIOV8O@nvidia.com>
- <e6322f90-08bd-4e86-8dad-2ddbd7e5cece@nvidia.com>
- <D7WFP99SMV3H.26AJWK17S0UPX@nvidia.com>
- <fd920faf-a707-4c6d-8c0b-3d59c010da1d@nvidia.com>
- <CAPM=9txmQWO+SHnZhr8zXHCZ=S8CNY=PryRVkWWuHyor-ajU6A@mail.gmail.com>
-To: Dave Airlie <airlied@gmail.com>
+Message-Id: <5E354BB7-9CD5-4615-8EAF-98B9F498713A@collabora.com>
+References: <20250219162517.278362-1-daniel.almeida@collabora.com>
+ <Z7ZjzJ2Rfrt8j0s1@finisterre.sirena.org.uk>
+To: Mark Brown <broonie@kernel.org>
 X-Mailer: Apple Mail (2.3826.300.87.4.3)
 X-ZohoMailClient: External
 
+Hi Mark,
 
-
-> On 19 Feb 2025, at 17:23, Dave Airlie <airlied@gmail.com> wrote:
+> On 19 Feb 2025, at 20:05, Mark Brown <broonie@kernel.org> wrote:
 >=20
-> On Thu, 20 Feb 2025 at 06:22, John Hubbard <jhubbard@nvidia.com> =
-wrote:
->>=20
->> On 2/19/25 4:51 AM, Alexandre Courbot wrote:
->>> Yes, that looks like the optimal way to do this actually. It also
->>> doesn't introduce any overhead as the destructuring was doing both
->>> high_half() and low_half() in sequence, so in some cases it might
->>> even be more efficient.
->>>=20
->>> I'd just like to find a better naming. high() and low() might be =
-enough?
->>> Or are there other suggestions?
->>>=20
->>=20
->> Maybe use "32" instead of "half":
->>=20
->>     .high_32()  / .low_32()
->>     .upper_32() / .lower_32()
->>=20
+> On Wed, Feb 19, 2025 at 01:25:16PM -0300, Daniel Almeida wrote:
 >=20
-> The C code currently does upper_32_bits and lower_32_bits, do we want
-> to align or diverge here?
+>> Add a bare minimum regulator abstraction to be used by Rust drivers.
+>> This abstraction adds a small subset of the regulator API, which is
+>> thought to be sufficient for the drivers we have now.
 >=20
-> Dave.
+> ...
+>=20
+>> Note that each instance of [`Regulator`] obtained from
+>> `Regulator::get()` can only be enabled once. This ensures that the =
+calls
+>> to enable and disable are perfectly balanced before `regulator_put()` =
+is
+>> called, as mandated by the C API.
+>=20
+> This sounds very wrong, a major use case for consumers is to enable =
+and
+> disable regulators at runtime.  I would expect that the Rust code =
+might
+> want to have it's own reference counting (and probably should), but =
+not
+> being able to disable a regulator after enabling it seems to be a =
+great
+> big red flag.
+>=20
+>> +    /// Enable the regulator.
+>> +    pub fn enable(&mut self) -> Result {
+>> +        if self.enabled {
+>> +            return Ok(());
+>> +        }
+>=20
+> This isn't what the changelog claimed, it's silently ignoring =
+duplicate
+> attempts to enable and...
+>=20
+>> +        // SAFETY: Safe as per the type invariants of `Regulator`.
+>> +        let res =3D to_result(unsafe { =
+bindings::regulator_disable(self.inner.as_ptr()) });
+>> +        if res.is_ok() {
+>> +            self.enabled =3D false;
+>> +        }
+>=20
+> ...we actually support disabling and reenabling multiple times, it's
+> just that there's a maximum of one enable at once from the consumer =
+and
+> we silently ignore duplicated enables and disables.  That's better but
+> it's asking for trouble.
 
+Maybe there was a language issue on my end here.
 
-My humble suggestion here is to use the same nomenclature. =
-`upper_32_bits` and
-`lower_32_bits` immediately and succinctly informs the reader of what is =
-going on.
+When I say once, I mean exactly what the source code shows, i.e.: it can =
+be
+enabled once, and further calls will be ignored. If it is disabled, it =
+can then be
+enabled once, with all further calls ignored, etc.
+
+What I wanted to say is that this abstraction does not support exactly =
+what you
+suggested, i.e.: a refcount of how many times it was enabled.
+
+I agree that this is not what the word =E2=80=9Conce=E2=80=9D means. =
+Sorry for the confusion.
+
+>=20
+> If you're going to support both enable and disable (and all things
+> considered you probably should TBH) it would be better to just =
+reference
+> count the enables like the C code does and then complain about it if
+> someone tries to free the regulator object without underwinding their
+> enables, or just possibly just clean them up.  Silently ignoring
+> duplicate enables or overflowing disables doesn't seem like it plays
+> well with the safety goals that Rust has, it's asking for bugs - a big
+> part of the reason the C API does things the way it does is that it =
+will
+> notice if the enables and disables aren't joined up.  You can easily
+> wind up with one part of the code disabling the regulator underneath
+> another part that's still trying to use the hardware and things tend =
+not
+> to go well when that happens.
+
+I thought about that, something like:
+
+```
+  fn drop(&mut self) {
+
+   // someone probably forgot to call disable?
+    while self.enabled_count > 0 {
+
+            // Try to disable, this will decrement self.enabled_count
+            if let Err(e) =3D self.disable() {
+
+              // But don=E2=80=99t loop forever if it fails
+              break;
+            }
+        }
+  }
+```
+
+I asked for a few opinions privately and was told that =E2=80=9Cif the C =
+API prefers not to do that
+why should you?=E2=80=9D
+
+>=20
+> Perhaps an enable should be an object that's allocated and carried =
+about
+> by whatever's holding the reference, I don't know if that plays nicely
+> with how Rust likes to ensure safety with this stuff?
+
+As I said, this doesn=E2=80=99t work very well, unless someone corrects =
+my reasoning on a
+previous email. Having a single type =E2=80=9CRegulator=E2=80=9D is =
+probably much saner than =E2=80=9CRegulator=E2=80=9D
+and =E2=80=9CEnabledRegulator=E2=80=9D.
+
+Your =E2=80=9Crefcount=E2=80=9D idea works just fine, though. I=E2=80=99ll=
+ send a v2.
 
 =E2=80=94 Daniel=
