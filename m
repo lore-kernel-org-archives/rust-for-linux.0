@@ -1,115 +1,147 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4661DFE1C
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Feb 2025 11:58:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB561BC094;
+	Wed, 19 Feb 2025 12:37:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739966302; cv=none; b=ZYHkVKlCz/AJ3123DPIRlSW8ZdJcYAo8t1HMhwq2Z7ykRoq5hvn6ET5xErehgPNLLeZc+/cgOEZ6iUnZP59ShjcpX/lGtOnqQs3Hn3QIYRId4q/Mw0I4Uc6MQxhYB0BkdSx6Wo1t0TjL0e0RKVVXW8PQrYYV9OmqcKBJGlkXtgA=
+	t=1739968650; cv=none; b=A/xaMXJJbj3Kuq6bGF/cr/wFwoFwixy0iVyq3PbTs9cn7gMe4iwKON/rrfPWnGZmX4Td60l/I5xGA3Tn0jyG441Hz++83Z3pL7No8ENACR0gnHlkVfKbuKlRciRp10iCAw/zCZNTNT6nprRyoyhDpIbPk0CfG49zYqv3G3gufkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739966302; c=relaxed/simple;
-	bh=IQwB3NFG8/IhCwRhCtQX9kYWbIOJ6ONhh9w6/Sqv+yM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=euIBlJJKfH7H02P2BDRnOQeSwQ1ZvYbZIAB4P4X92s98DcljYgBprBRUthsfOH6l+699miPOrXGgbE0FGuRnQeeg+jhfxXWuN/zsgCtCRvpHXoZoHT7DCxIr0UWFaVbfn2r5p1NbBtalVxG9cQNKE0yG3mClekMHJHkVG2JFIwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=l9XZjGoK; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1739968650; c=relaxed/simple;
+	bh=E813glZGEIsjJKozV+8mvsfIKuE0KjS7+ddAIv9uWM0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Vj+IjSPBonFUUn/7do1XrDp2AqNUOjQ/8jGNm9JYMlvHa42dAc9FNaGeiQXkvnxKK+6XxBxRAcC1lXqioEUMw2rvFPjkd1xvC3dL7PsFFSJRgpuT+2USD5tulWTdwKHNx5cqBCsbYknj7NugkurmBGEtcb0xkzXffYe56gtamrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Oao6lIRj; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="l9XZjGoK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1739966297; x=1740225497;
-	bh=1yjPbPUkyS2rXPiH+2wA1L6mLSmah2RfaLYZpwcCsXs=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=l9XZjGoKFBcUwlPCk+rTDU+AsAOQO8vTEBzcOLWwuyaqckUcQpdAREHDpd/pAOz15
-	 rcXhaVq3u1ekNK4R/bJ6MTuB0gJ1iUbbxAWJz9fhNXVHtdiSqi1PSpOKb9yw7nVgL5
-	 gtbkr1BxgvXq4+Ie8yxCgw6twpVg4squfulBavusGIN2oz9llaxligHRITcUkGibDm
-	 wNNCZfLggrtrnPO1OL1dVkFuHkUGnfvRucsBquV1ugAoAh7m6suiH3bs426vHqzSPi
-	 ntvkGXJWhHyRcEbiLCdMGzi3TgeuqgxJuwcCocUnafqGJw+R5IjAAMlwwuSp8RUvhN
-	 o+Ac7F/Q0eAkA==
-Date: Wed, 19 Feb 2025 11:58:11 +0000
-To: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Danilo Krummrich <dakr@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 01/14] rust: time: Add Ktime::from_ns()
-Message-ID: <693e39f6-70ac-4752-b371-74a3bd1fcf16@proton.me>
-In-Reply-To: <20250218-hrtimer-v3-v6-12-rc2-v8-1-48dedb015eb3@kernel.org>
-References: <20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org> <20250218-hrtimer-v3-v6-12-rc2-v8-1-48dedb015eb3@kernel.org>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 32e962c8e2da76ac38d1e5ab0428cf13ed85b6af
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Oao6lIRj"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-220c895af63so16733495ad.0;
+        Wed, 19 Feb 2025 04:37:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739968648; x=1740573448; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SwBIlI1n79R/XlsUJ+sAd01jk9yBUFHSETkcNVTiiLc=;
+        b=Oao6lIRjkK62pvHqbhU+YBCcz9JkXvkvBjBhZmp0+bG+RE1TRUMB2vHP2NvOfZ9YKK
+         O5aEeZSTN/eVKEOmzgZQROrrLMYhTdE86is7Kr9bZJ8ypGWG+6oMNklzeYyD20IBrOYY
+         baFuqM1HvvSzzq00TQOBzzaAGCzBqUPzLPyzyKcu58jutjeVQqalh2npGF2BaY+HjnxY
+         9CWQpQRCvhY3AdCr+EB9XmF0Al+Au/0Be5iTUaO/MqYg2UKjxytd8P+Xh7Cy6Z64FvZ9
+         pPOhQ7A9cSBxS8riQGgk3VuRpO5ZTMANNRD3pp73h9usSVLlZ97Utbch/Eb/oO9YbOlD
+         ZYUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739968648; x=1740573448;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SwBIlI1n79R/XlsUJ+sAd01jk9yBUFHSETkcNVTiiLc=;
+        b=c2Or2/yXZddGivhcvsyhR0FY0Cvj0/ixugzkv6rt3jBQpmT5M0rQNu+odnPex8lKtD
+         Nf8EruBRYrAJ6NqJtnSSZ8RSAcTtsWqbOkh78uvP7iuM867bOp1sR687ZMlOCw3Zfq88
+         tVLNqvcAZK6Hal6Bn3iwhmVH4VRruyd/JHdQ4p1B1fG2sX58cnXVGGR66KsuPt+OmSdX
+         bsMMr1i/bgCGA8qVlPjbACUo2a67/8amtBYCLZFQ6O16iY1G9FhmRrC4oGj/oAo6+gDT
+         ueBKJ+dNLzm+iB8B8vAfsw/hx/fxjIiJnCuvgWxsVujJXJYN3upiwdw5g4j6evZ5WXkf
+         Xg1A==
+X-Forwarded-Encrypted: i=1; AJvYcCUYXyqqmp+4rTATkFgxbkEcyn1u0xNqJRBPB5BRaojheA1qbyhYJCWwaf77pnRRqvlyIq9f4jf3KEOKxU0=@vger.kernel.org, AJvYcCVfd+GEfcB0s9U0psBiAvKnn+u4JKoqZddTgW0bgmWNsN9TGjcZMl9tsqEBhJEE6iGa/0fsOdmRd/4ZbxCg+t8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzrIx30t2lHP9u7Av6vvwsTyZRVVKYVyvXrccumkF9WHVObxWUc
+	1P0SWAIkaeeHu8+57/08smlqRWglHX4OiXckIEf5oidu7KuEASINN5IeVZoEbfvM9SENqgTkWI0
+	lRjEsHhvSZoFRG5Umh53PIHWk1v8=
+X-Gm-Gg: ASbGncsnySWS/QPl2mHSIfQXZuCMuZXjPznIvNLfPlcsuu0r3oIyOLTsr90Avp+TF6q
+	Sr0kCCqAT/shaoUJUTlq1+dCXkSHCMZJvoh6lV4YWUHMj0wlwUqED462E+wf8Ouidsxys767j
+X-Google-Smtp-Source: AGHT+IHGuzdVoj4DUc0V6CPQAtNFQQa8+o/lS+AhLidpTfJOfRjd1JGY1VvdIdIPp56m5UyTVUurCp9a7A3Hqb4IYWc=
+X-Received: by 2002:a17:902:cf0b:b0:215:3862:603a with SMTP id
+ d9443c01a7336-2210406ab92mr115183515ad.10.1739968647833; Wed, 19 Feb 2025
+ 04:37:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
+ <Z7SwcnUzjZYfuJ4-@infradead.org> <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
+ <326CC09B-8565-4443-ACC5-045092260677@zytor.com> <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
+ <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
+In-Reply-To: <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 19 Feb 2025 13:37:15 +0100
+X-Gm-Features: AWEUYZmONFRA2mgKmckBIb7dfp2PpDahkYzIqYDpp7AYTW7SX9Iq-XzBK6AJUKo
+Message-ID: <CANiq72mtX08qvFHDdoiSKKAB4z6QyNz=WTcXY36JZzxs-JzhWw@mail.gmail.com>
+Subject: Re: Rust kernel policy
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Christoph Hellwig <hch@infradead.org>, rust-for-linux <rust-for-linux@vger.kernel.org>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Greg KH <gregkh@linuxfoundation.org>, 
+	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 18.02.25 14:27, Andreas Hindborg wrote:
-> From: Lyude Paul <lyude@redhat.com>
->=20
-> A simple function to turn the provided value in nanoseconds into a Ktime
-> value. We allow any type which implements Into<bindings::ktime_t>, which
-> resolves to Into<i64>.
->=20
-> This is useful for some of the older DRM APIs that never got moved to
-> Ktime.
+On Wed, Feb 19, 2025 at 2:00=E2=80=AFAM H. Peter Anvin <hpa@zytor.com> wrot=
+e:
+>
+> So at this point Rust-only kernel code (other than experimental/staging)
+> should be deferred to 2034 -- or later if the distributions not included
+> in the "same" are considered important -- if Rust is being held to the
+> same standard as C.
 
-Are these older DRM APIs on the C side, or on the Rust side? If they are
-on the Rust side, we should just move them to Ktime, no?
+This paragraph does not really give a reason, apart from "to be like C".
 
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> Reviewed-by: Lyude Paul <lyude@redhat.com>
+Why should the kernel (and its users) wait until 2034 to take advantage of =
+it?
 
-This seems wrong considering the `From Lyude Paul` line above :) (or is
-it possible to review your own patch?)
+And, even if there were a rule about "we need to be like C", you are
+not mentioning that when Clang support was introduced, it only offered
+a single release of support, and then they grew the window over time,
+just like we are doing for Rust. And that was for *C*. Please let me
+quote commit 3519c4d6e08e ("Documentation: add minimum clang/llvm
+version"):
 
-The patch itself looks good, so iff the above question is answered with
-"the older DRM APIs are on the C side" then:
+    Based on a vote at the LLVM BoF at Plumbers 2020, we decided to start
+    small, supporting just one formal upstream release of LLVM for now.
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+    We can probably widen the support window of supported versions over
+    time.  Also, note that LLVM's release process is different than GCC's.
+    GCC tends to have 1 major release per year while releasing minor update=
+s
+    to the past 3 major versions.  LLVM tends to support one major release
+    and one minor release every six months.
 
----
+> Well, these cases predated 2024 and the 1.78 compiler you mentioned above=
+.
+
+Not sure what you mean, but I think we are agreeing, i.e. before we
+established the minimum, we did not attempt to support several
+versions (obviously).
+
+> That is of course pushing the time line even further out.
+
+If you mean that we cannot just drop C in core subsystems today, then
+yes, that is correct.
+
+But we can still add Rust code for quite a lot of useful things
+meanwhile, such as Android and Asahi, which already work today.
+
+The constraint is really "drop C code" here, not "adding Rust code" --
+you could, in theory, keep C code around and duplicate it in Rust. The
+kernel doesn't generally do that, though.
+
+> You can't convert the *entire existing kernel code base* with a single
+> patch set, most of which can be mechanically or semi-mechanically
+> generated (think Coccinelle) while retaining the legibility and
+> maintainability of the code (which is often the hard part of automatic
+> code conversion.)
+
+Compiling as C++ is fine, but to get to the real benefits of using
+C++, you would still have to rework and redesign code.
+
+And, even then, you would not be able to express what Rust allows and
+thus you would not get memory safety.
+
+In summary: in a different timeline, where Rust did not exist and
+"Safe C++" were implemented by GCC and Clang, I could agree with you.
+
+If you mean doing that on top of doing Rust, then that is yet another
+discussion, but: you would need people to learn C++ and Rust, and it
+would complicate interop with Rust substantially.
+
 Cheers,
-Benno
-
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
->  rust/kernel/time.rs | 8 ++++++++
->  1 file changed, 8 insertions(+)
->=20
-> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-> index 379c0f5772e57..87e47f2f5618d 100644
-> --- a/rust/kernel/time.rs
-> +++ b/rust/kernel/time.rs
-> @@ -8,6 +8,8 @@
->  //! C header: [`include/linux/jiffies.h`](srctree/include/linux/jiffies.=
-h).
->  //! C header: [`include/linux/ktime.h`](srctree/include/linux/ktime.h).
->=20
-> +use core::convert::Into;
-> +
->  /// The number of nanoseconds per millisecond.
->  pub const NSEC_PER_MSEC: i64 =3D bindings::NSEC_PER_MSEC as i64;
->=20
-> @@ -63,6 +65,12 @@ pub fn to_ns(self) -> i64 {
->      pub fn to_ms(self) -> i64 {
->          self.divns_constant::<NSEC_PER_MSEC>()
->      }
-> +
-> +    /// Creates a new Ktime from the given duration in nanoseconds.
-> +    #[inline]
-> +    pub fn from_nanos(ns: impl Into<bindings::ktime_t>) -> Self {
-> +        Self { inner: ns.into() }
-> +    }
->  }
->=20
->  /// Returns the number of milliseconds between two ktimes.
->=20
-> --
-> 2.47.0
->=20
->=20
-
+Miguel
