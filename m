@@ -1,113 +1,191 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6581B6D0F;
-	Wed, 19 Feb 2025 06:35:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD891BEF95;
+	Wed, 19 Feb 2025 07:05:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739946928; cv=none; b=ukAOCdupSIKzZD0XVGGo3VUj2SXr7eYUFJEhUcWxXTj5PX832cW27est+niRjTWvEfZ2WfieBIqXbQtIuJzz8HmVKJ+eb5eOMHcTLaE2xU4O9dLIJpGY6hpHOyLxg5d/PMp5jb3BPTZxqjTRfhbdMyJ5+PPTY73Vh8BS9SQY9R4=
+	t=1739948722; cv=none; b=LD8sI4INayA+SIag9YiSZwEwdWVTZssEf+obslDiiotuDeBTcgNAqmrpK5CXL7hPMHGZgionvZ9+uYafAeMnpS2O65fWCW8goE3UjR0vNLFB/7hPwfUAAuSXeVdCM4ZSbljR18mUZG5xoUIVu9aoVmDcuTHbycX5TK3m05hUThc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739946928; c=relaxed/simple;
-	bh=7cszKDQt9XMv02a+ZwGltOu4Yj63M69diOpbFNtrAPw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tWHVWLK0I+pXTEMAhvImDWIWlGWEV47zYMKg0RXDCpbmCahMtt0vSHBAr8dbyBBm2RMKnwEhazvKSgwYwQnfsgQshh+Zgpk6PK/Gfh7q+wmtq3MiqSu1/YBSLYlVbxeENcDb3U1l9XU8GdLk1jiE6cftpflzgDDFgAYjTYhFox0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nmXZreSO; arc=none smtp.client-ip=209.85.218.47
+	s=arc-20240116; t=1739948722; c=relaxed/simple;
+	bh=FEqzqA1JniSzrQgsbCgTp05lnoy3SxHbt9/3jeLjZDo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B0SuqaYomzmJK1EBbmL8kJKoXy3kyVzo5AIzgc96FkmGFdcovDtlILUDaEkFHhidfspOcuX2qbzlJ7agDoO/xiQEiOl7T1IsLLQuGiOJwY4XXW2eSKzN/c2Abc6jOW4GwQpalMBKg/iZ2se7CcDqZS89sO8XtA6pSvhx9gpzr90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QpffJIWR; arc=none smtp.client-ip=209.85.160.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nmXZreSO"
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-abbda4349e9so29980266b.0;
-        Tue, 18 Feb 2025 22:35:26 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QpffJIWR"
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-472087177a5so8847321cf.2;
+        Tue, 18 Feb 2025 23:05:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739946925; x=1740551725; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=57W5SvEFGc40K4otu3jc8MLgWskx5YF0tVueFcEL808=;
-        b=nmXZreSOyqWM/mzIx2IGS36RTa+1eumLWLZuPAy6a0uxdrIxbvjax6/2tQ4CQLjZjR
-         66I2ATtpQjqdFjRznNz0ilyrG6csSQdvpiYQftnIBTPx1B7I5omNezui3ikkcEbhbSZC
-         ZYxNp7uFa5sPdCQK8M5lJY7HDKzuOJHpdQDO86QrWKIOh7rgbfjCT99daHgYmID+WTgF
-         HOHpyqUvOQ6JAy+RR1Em31MrzXYPJ5vSRdXQauGa7oQ/6IY3JLeZihDBdrrhw1072cuw
-         j4yXCCopqa3Vj9aAO94D1ji6SGzDPVUz0D/9HGwv5epUWXa9WULh+OZjg+0OogQbJRtm
-         e0jg==
+        d=gmail.com; s=20230601; t=1739948720; x=1740553520; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3dpgoJ1SsdygRr/FpJ1lhm0fZp9b2UMRqLfRvgPfCdM=;
+        b=QpffJIWRcXlKaF7ODV2gaPW6ZAW9RD3/lFy05yvGfV9OPPVHzJS4BhM9QvW6tfJLV7
+         iIn3n/b8MLedInQyfyq7v454w/kDN5o6bSfuIgd6C85uL5S3ZYr3l3hUwTykYH105amu
+         /3bbdj+KgMHvetztR6tstyxuEKXHS3EQqcJ6QU0ydBDCq1xQk1jbEGX28kF/iUp2EPw6
+         Ej2HjokhjLg85x6Nx8cOebQt+xOSufYj5IaDGADI7S1sxwyyjaoNoqKYyx0mbmxL7ghO
+         Zy9JgmWe5Q0CVEC0DfLpmb0or/djSSXBN+eWy2M8NuXHj13OBM9ipbR61yM6qngHHufO
+         Z+VQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739946925; x=1740551725;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=57W5SvEFGc40K4otu3jc8MLgWskx5YF0tVueFcEL808=;
-        b=LCsveiANG56rQEuMPJLTOYltp7FMDw1B+ryUVXTLFcDpEzmyyCcS3TAKrCc3NiujRv
-         P/oLlF/AJmxsiZjnrRbYSwC2CvRrhXbY2eiNfRlaqDVk6pe5YgwpmkBROw+6AIVwlxjT
-         LelmLfC/1RI9MgIAyzOnBf+DlKor8TBEYOHvQdt/NXssPz9plSLffuaEij2/acCnXw1K
-         oHb+Y8+6vmRdKsvsfGwMD7hSK0k3VKFHOI7me7aayfzrctnq+S6wSkupy57fa/dB8kHO
-         ligXcnocLxjgzWOBSnfgi5VtSbjzFiEh8eCajZQz+P5WKBCc5gHdcQxpozVYGr4Lj9C9
-         FvHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW9KggovmWhWOz9UjGq/WMEVLR/6HYVVsznkf0R0TUOq9B2CPuEHP2sPqGIXo4Aj+tEbc6NDXaeQgeJEayr+VI=@vger.kernel.org, AJvYcCXx6LluWhjJ2HFoMYnrzApsOa8xU2IaSpBdVqU6A9cewPdluPBWHj9sNnZSiR1QPeijHB+sfrZUvOWlugU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPAyhoijKgaNqoV243/9Xr6ZZSZRXrPGRLiR3e2HDuoC5UgRO3
-	D0hwBfM+PLcRd1YNFqH5MHX09C/UxfenTvZuHO/Tj79OCRk1qj/wLbsWP6Y4ie6kCxN3GZL25Zh
-	FH92DoV6emsSY6pk8N7zvaMWcXvgOmg==
-X-Gm-Gg: ASbGncsptYGXzl00SAfFsGMyPscWTeP0ktaobYiOoxJVCmxQIpWRYKYMyGku98gRj6Z
-	aundOfbjKDhVelgNXHsAWsbS69L5r9/EAY6BAcgbozbZ5snSs078CthRKvM8k/XzPQSKfgCE=
-X-Google-Smtp-Source: AGHT+IHM8K/ufJhZwysVLMejsQ7FWat25JMEeR9lhuWlXykaokUltSn4JDH67VDt6SmdhK2xCiK9VCOQHkX9jfG6si8=
-X-Received: by 2002:a17:906:370c:b0:abb:519e:d395 with SMTP id
- a640c23a62f3a-abb70a959d9mr1374646266b.20.1739946925026; Tue, 18 Feb 2025
- 22:35:25 -0800 (PST)
+        d=1e100.net; s=20230601; t=1739948720; x=1740553520;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3dpgoJ1SsdygRr/FpJ1lhm0fZp9b2UMRqLfRvgPfCdM=;
+        b=JOaiRF+9IjKj4px+aw1w0D0Yp3iUzYs6PzBMixgUgbwMqPlz+i0yfxyonJ/1JYvCeP
+         Lw7bfFYJs1D8WKJZNuczpUll/KA1pv12QER7Gf8Qg3fQ8Plk1lW8kq/SozOuyA/Rp2TS
+         a23/2mIw/A4kwdUu1PlsXvSVhsoKbQqAiUGFd1HE2+HM4y6uxQMBz9zoty/qUVDTwkll
+         rYQ3UkwGHkZI5RktH8/XpkIUAHm0InbYjIdXOVBXT5dXHGgv8BSHecC9eOWBz3nc6B+C
+         tqbMXL2j1LRgbG+06Jfj6Y3XWV4PGd/kwYM1aPg/RThM+RHReFwhgIWxC/GjoR8R0tnZ
+         gC5g==
+X-Forwarded-Encrypted: i=1; AJvYcCUic0ltR/uloN00adK7O07r7ss9mIeFxB84QN83fDgrExAT9EwpBqInaMtXFaWM48OyGGqq60Jrw9qaI4g=@vger.kernel.org, AJvYcCWbY10AiG+rUydZ/vXWmkD/VwHW5FLHeU/CzRfXCKRv+H8tq/2z1LdCkxqdqKx0fsAKFvW5OkddcdNajKv7lnA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJqyWmaH9TaSYWX+iTHZy8xQ2sKi6RU5Hp2hsEIy3UkdRCt5Rl
+	jYsx9+S0rpkf7Z9HmWWu1OiYyOZ6Bf41qxuOraJNh4S36D75pL/0z1pe7A==
+X-Gm-Gg: ASbGncs74Wp9efYLkah+sQe4HmX+AvBRuxRdmdmTsErbPIetgagQ1JBWUZjhPAg2he/
+	v48/jXzbAc88f4jl7mu/Ytfl5LA3gFixy3FfhqkIrx5DMZQX1U4LyFGWbod2ruDdDEhuBOrh55o
+	5FSt9MwV/qyV4H7RFNz31Khf96aY/K26150pOFP9nnhQ+a3XdCMsmnbIQbWJo2S6UaAMRsy26MP
+	d6cLqVPepsglC5TrIlcRHcqRDu8McRn46OJ+o4FbhXEg2Z7QgWtRGp6C5Lsa6p5g3vooqeD7HSA
+	4ehFUzKYnpraE6ugPxGxgVkewp/gAdwr2GsQDvR/UIfk2yOKyv+m+7MXBf9mv3zK2UKw0v35Q9G
+	lvPwKHw==
+X-Google-Smtp-Source: AGHT+IEu/xVTjGPkhCSiQcN/p/y1POCQeyzFKs71dvKS8dTXpXC+2tdA2RpTNjwOMD7M3vkWDPzXYw==
+X-Received: by 2002:a05:622a:59c6:b0:471:f5d8:5f56 with SMTP id d75a77b69052e-471f5d86142mr147882231cf.1.1739948719777;
+        Tue, 18 Feb 2025 23:05:19 -0800 (PST)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-47205063be2sm11789801cf.73.2025.02.18.23.05.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Feb 2025 23:05:19 -0800 (PST)
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id B7F721200043;
+	Wed, 19 Feb 2025 02:05:18 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Wed, 19 Feb 2025 02:05:18 -0500
+X-ME-Sender: <xms:roK1Z8C0MIONmz0qBttWukADNeAEySf-9pcOtCSX3dXvH1dPVJzs_Q>
+    <xme:roK1Z-iRFwd_Lhs9bO_HZwEJv3e1tn1EYDJPo_eAnoeJRa31R_NYsXxlH49m0200A
+    q46dpMn6N04L2JkZw>
+X-ME-Received: <xmr:roK1Z_nnX9thhFC3mDhRfsV1wlx5d31kfjTK4a5Ll4IeTf-HNEFNVhFYkw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeifeehkecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
+    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
+    drtghomheqnecuggftrfgrthhtvghrnhephfetvdfgtdeukedvkeeiteeiteejieehvdet
+    heduudejvdektdekfeegvddvhedtnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenuc
+    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhn
+    odhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejje
+    ekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhn
+    rghmvgdpnhgspghrtghpthhtohepuddtpdhmohguvgepshhmthhpohhuthdprhgtphhtth
+    hopehjrghrkhhkoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohephhgthhesihhnfhhr
+    rgguvggrugdrohhrghdprhgtphhtthhopehmihhguhgvlhdrohhjvggurgdrshgrnhguoh
+    hnihhssehgmhgrihhlrdgtohhmpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhig
+    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhorhhvrghlughssehlih
+    hnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehgrhgvghhkhheslhhi
+    nhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegrihhrlhhivggusehgmh
+    grihhlrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgv
+    rhhnvghlrdhorhhgpdhrtghpthhtohepkhhsuhhmmhhitheslhhishhtshdrlhhinhhugi
+    druggvvh
+X-ME-Proxy: <xmx:roK1Zyznrp4YrHTsb1XJFSyCEBnb0tTjE98T9y19GmWTgqr6quSvlw>
+    <xmx:roK1ZxS6_TRKxgL5Mx_quixPNmAp04jUCz1_nQJQgJXOh05yogRXEw>
+    <xmx:roK1Z9bOjOjTi97cg5Rc-u7_R77JX6UXsCVGloiMzbArvGUuzmIzFw>
+    <xmx:roK1Z6TmrTnJWkiOnMfCosImrWJsuwozsmoKWYqu5sJ9nfiWUMWawA>
+    <xmx:roK1Z7BYI6yyWzxSVYPoBmW_ZFVzv33uOCqHftUERnNAA3cD5okeEk43>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 19 Feb 2025 02:05:18 -0500 (EST)
+Date: Tue, 18 Feb 2025 23:05:16 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	rust-for-linux <rust-for-linux@vger.kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
+	ksummit@lists.linux.dev
+Subject: Re: Rust kernel policy
+Message-ID: <Z7WCrA_bbWR6PQQG@Mac.home>
+References: <Z7SwcnUzjZYfuJ4-@infradead.org>
+ <36783d51be7576fcdbf8facc3c94193d78240816.camel@kernel.org>
+ <4cbd3baf81ca3ff5e8c967b16fc13673d84139e8.camel@kernel.org>
+ <e63089e15c6f4d19e77d2920d576e0134d8b7aa7.camel@kernel.org>
+ <Z7T5_WGX_VXBby9k@boqun-archlinux>
+ <615ce44fa528ad7be28ba518e14a970f04481078.camel@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <Z7SwcnUzjZYfuJ4-@infradead.org> <36783d51be7576fcdbf8facc3c94193d78240816.camel@kernel.org>
- <4cbd3baf81ca3ff5e8c967b16fc13673d84139e8.camel@kernel.org>
- <e63089e15c6f4d19e77d2920d576e0134d8b7aa7.camel@kernel.org>
- <Z7T5_WGX_VXBby9k@boqun-archlinux> <615ce44fa528ad7be28ba518e14a970f04481078.camel@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <615ce44fa528ad7be28ba518e14a970f04481078.camel@kernel.org>
-From: Dave Airlie <airlied@gmail.com>
-Date: Wed, 19 Feb 2025 16:35:13 +1000
-X-Gm-Features: AWEUYZk1tP58mZwBWrZ_OnI_ofVylDGmguJN0E4-Lra6JB37GljlIo3vIoHrYPs
-Message-ID: <CAPM=9txBg1m=qp9=nHJXS1h2XB8TSL1tj6CF=Z802u=YX7hBDg@mail.gmail.com>
-Subject: Re: Rust kernel policy
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Christoph Hellwig <hch@infradead.org>, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
-	rust-for-linux <rust-for-linux@vger.kernel.org>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Greg KH <gregkh@linuxfoundation.org>, 
-	linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
 
-On Wed, 19 Feb 2025 at 16:20, Jarkko Sakkinen <jarkko@kernel.org> wrote:
->
+On Wed, Feb 19, 2025 at 08:20:31AM +0200, Jarkko Sakkinen wrote:
 > On Tue, 2025-02-18 at 13:22 -0800, Boqun Feng wrote:
 > > FWIW, usually Rust code has doc tests allowing you to run it with
 > > kunit,
 > > see:
-> >
-> >       https://docs.kernel.org/rust/testing.html
->
+> > 
+> > 	https://docs.kernel.org/rust/testing.html	
+> 
 > I know this document and this was what I used to compile DMA patches.
 > Then I ended up into "no test, no go" state :-)
->
+> 
+
+Good to know, thanks for giving it a try!
+
 > I put this is way. If that is enough, or perhaps combined with
 > submitting-patches.rst, why this email thread exists?
+> 
+> > 
+> > , I took a look at the DMA patches, there is one doc test, but
+> > unfortunately it's only a function definition, i.e. it won't run
+> > these
+> > DMA bindings.
+> > 
+> > I agree that test payload should be provided, there must be something
+> > mentioning this in Documentation/process/submitting-patches.rst
+> > already?
+> 
+> Partly yes. This what was exactly what I was wondering when I read
+> through the thread, i.e. why no one is speaking about tests :-)
+> 
 
-There is users for the DMA stuff (now there should be some more
-tests), the problem is posting the users involves all the precursor
-patches for a bunch of other subsystems,
+In my opinion, about testing, code style check, commit log, etc. Rust
+patches should be the same as C patches, at least during my reviews, I
+treat both the same. Therefore I wasn't clear about why you want
+additional information about Rust patch only, or what you exactly
+proposed to add into kernel documentation for Rust patch.
 
-There's no nice way to get this all bootstrapped, two methods are:
+The policy documentation in this email clarifies some higher level
+stuffs than patch submission and development, such as "How is Rust
+introduced in a subsystem", this is for developers' information maybe
+even before development work. And I agree with Miguel, if we want this
+information in-tree, we can certainly do that.
 
-a) posting complete series crossing subsystems, people get pissed off
-and won't review because it's too much
-b) posting series for review that don't have a full user in the
-series, people get pissed off because of lack of users.
+Hope this can answer your question?
 
-We are mostly moving forward with (b) initially, this gets rust folks
-to give reviews and point out any badly thought out rust code, and
-give others some ideas for what the code looks like and that it exists
-so others don't reinvent the wheel.
+> > 
+> > Regards,
+> > Boqun
+> 
+> Thanks for responding, definitely not picking a fight here. I
 
-Maybe we can add more rust tests to that particular patch series? but
-this is the wrong thread to discuss it, so maybe ask on that thread
-rather on this generic thread.
+Oh, I didn't think it was picking a fight, just not sure what you
+exactly proposed, hence I had to ask.
 
-Dave.
+> actually just wanted to help, and doing kernel QA is the best
+> possible way to take the first baby steps on a new subsystem,
+
+Agreed! Appreciate the help.
+
+Regards,
+Boqun
+
+> and sort of area where I'm professional already as a kernel
+> maintainer.
+> 
+> BR, Jarkko
