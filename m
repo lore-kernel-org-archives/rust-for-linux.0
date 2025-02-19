@@ -1,116 +1,230 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2070.outbound.protection.outlook.com [40.107.96.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62EC1EEE0;
-	Wed, 19 Feb 2025 01:02:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739926928; cv=none; b=pqH3HbsnYXUJfjfKU45uiO6W3UC0+Ygrn5z4l8n/EoFpWtkCgr8Mdllnrca4y3702p91lcHsdHdlTgCt9NPatiU6Tr5AxcZg2UZJ94Jl+6XPtjSu4Ikf6tFgAWWG+JLm1CPoH5JmHewQpCTqekeobh4KKRYqxpG6GtA3hgv55m4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739926928; c=relaxed/simple;
-	bh=CQEyO1JD29FoLIyqEIIaWwb0FvYhYniLQFwCCAw62SQ=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=VVb6+p4zcfT97V5bU9GX499VqpY8jScKe4/IxHisS4EZOZ/p2dV+SYGuQzhexOJTeF8tn5IDQvXbFN2i7sPLNefHSuGhMwFd/eaHkOpe6/6Cy6tkZEMQEc+huoGemEnZx+lmozkl6+Dk67kMB3PGKWdg4ifrj+/RwFW+ju9e/OU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IeFj9wNu; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE83246447;
+	Wed, 19 Feb 2025 01:21:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.70
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739928108; cv=fail; b=eRlq00TMThte7q3oYlIDfU4T/s8Y78tI7Y94zCoNACdOc9IkIRL/TU5mzSZOzss3LjCWb9OO0vxGrTsRU/LTxWrYZCwpWA0ZeN/2lTVDc6BGzBwkqiCM1SoB9+JMiZtYSd8hKJwMEfnrWQrTdhdocqw5kRSgyE72cy79Oj9Sb00=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739928108; c=relaxed/simple;
+	bh=1iq68DtojOzEzbPaAg2K4vZy6tn+nUBPGUoT7ViRn9c=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=SZctRKK2Ozqvqa6vFkvvPMvpxj8Y8dMc+MlF8CSvxPVurezy7TopTNFBPPlm6dFgzO9Cy179/rJsOJWoJ1iebP1yS0fzveqaz0dkYHvrXuVsTCqBfb61DthanYI5QZkS2FZdppOyejjvNqAsifnDJIFRdHbvk5duKecblE1qpv0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=KtVBV5UW; arc=fail smtp.client-ip=40.107.96.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IeFj9wNu"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-221057b6ac4so62545725ad.2;
-        Tue, 18 Feb 2025 17:02:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739926926; x=1740531726; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VA5g+eIODwuOxOovCAv0vuRoM9QGVOHfzYRSjAmXfsM=;
-        b=IeFj9wNu5WsNl4ggz8owRvMELtuaWqb5B/bz5J247DrGJC1CI0YJqi2RVI1SrrC+vH
-         e6Y1xHhgMwOBbf+DEjeIYQ+oabfs7g4eM49sQkMx+aG5EWwo4S5n17tUr2wU3VcPf0WU
-         nQs3yiMijU5QcOIrkuAxKHAkg6Enmjyunk+unl1BOMRbPuj48udp2fT6Ep9kdfq+9j9c
-         Cfy0Z4TY/rFoKpSaK0x1GvQtTZUYL1rSlgVqPW1aHs6uocjYghq+xPsooYssjNGx+ROQ
-         h0R62UI2PmbyOPguRAe6IBczWesas7j0Wv4hFWTOCDCo7ujArzNKb4CyQ4KkD6qUOjmE
-         ZLlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739926926; x=1740531726;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=VA5g+eIODwuOxOovCAv0vuRoM9QGVOHfzYRSjAmXfsM=;
-        b=pqOkiHvCdTOkcICjopEzUyrgF0WZNqsnEyVKHSzZZAXSPKjNROSMOycRxHCzm4KcW4
-         GuubuDgbpk9M3oXe8BHl07NrE5uXgYNMDqqVszKAXk7LZTT/bveGqB+ufNOw2Wb7iaQH
-         lIEWPmi4TpwCcSZQ4/8VHk8fvhxlXzBXQcALHfOc6WXo17bqpPkFvh66mmSu46r6BosO
-         c+AzTOqKZxA0ipKfev8Afsws5AWiUZMwsCDht7YqWqZOTxbcY93FHbEXtbTv1sH3cM4U
-         +uazHi2PfowGdOmm/o7h0RdVbeQDKMu6we4yHIup3i8zzkX+gP/QLNrgkJteJQHCZM5h
-         1j3w==
-X-Forwarded-Encrypted: i=1; AJvYcCUgm2wvZQ6+ZHJznirXkdbXkV87eVOOgaxGo2QXVVv8R/GT4w4T5VdzWOXbxawY/EncksEK3TWU@vger.kernel.org, AJvYcCWB4lWuucSsS0WgD2rlx+K6lqCPN3FG8uWeIQTR/wvabcwtUke4gfMK7Px+/Cu/vjEfnW1nTaCR0iYQVZUjEwc=@vger.kernel.org, AJvYcCWGocBSe55qjJzMbX+ZO7qTFAY9EXY2A0s/+edWrKjM8ovEARlY7PhWs8tSn54YG87yR5k476OE978vveo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy133rnbFKX0azw4QxcZN/xcYPlumf/w/epMHRvTn/woLODICyl
-	vvRzH/oiFf1SSov9qDL9WBb3u8WPgk48L9mny2gA3ZEwKRNIaiI4
-X-Gm-Gg: ASbGnct0VX9BsfBL3lKn6E1jWVWf9qwo2h8GeuqWTDgJgLoJ20NN3My342d0U1fAcet
-	UbO/J8OjyMKkQmg2OylQ9tgQGFwHWw3ifAjs1sxxHaWzcenePJ+DeQwE+m311oQ+KHCzFmltI9S
-	cVA1FjFxfsZlidgFs8F30RjDU9/2Q+E88LM1/DW/tbHNLdoPn4cBo0bPyeaR7IjiZ2qlC9o8t2V
-	ZOpmTlyFFAAZ054jQZIsx8+tm4saNyBhX6c11L3iUNsyuKkhTYcjHzroV05yVtXB7LOOwilJB/u
-	FvbScGjaPKpNR79ZMsYhRhW0g+XmBMyF4kEbZkRVDVnnmTFmh+bi2IwH9gI5tkSta2X9R1cR
-X-Google-Smtp-Source: AGHT+IFPDjZZ2jSWkDcDwN7HnAAvy+rcAZMJ8/BmyCkzIX2EoFGyQ7lLauZiw3lALlG+AjbDXGkZMA==
-X-Received: by 2002:a17:902:d507:b0:216:2dc4:50ab with SMTP id d9443c01a7336-22103efc1d9mr249370005ad.2.1739926926221;
-        Tue, 18 Feb 2025 17:02:06 -0800 (PST)
-Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-220d545d474sm93826385ad.116.2025.02.18.17.02.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Feb 2025 17:02:05 -0800 (PST)
-Date: Wed, 19 Feb 2025 10:02:00 +0900 (JST)
-Message-Id: <20250219.100200.440798533601878204.fujita.tomonori@gmail.com>
-To: charmitro@posteo.net
-Cc: fujita.tomonori@gmail.com, tmgross@umich.edu, andrew@lunn.ch,
- hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: phy: qt2025: Fix hardware revision check comment
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <20250218-qt2025-comment-fix-v1-1-743e87c0040c@posteo.net>
-References: <20250218-qt2025-comment-fix-v1-1-743e87c0040c@posteo.net>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="KtVBV5UW"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XLAJSwU6UiCLA0iqIMurL8+V/ZEEhLGWh+LSkkCiQaqsqXe3E+ypIaaSp2nhT6McLjyEmJNCDQsWehflVQYJ5fUZBfM2SkHbW2yTGZdpLfuY67duRKXxM7oYyGZvXA+CfZJYhklWekfDtROfmu8VRTiSwHH4BV5xPWnCRNYG4M0UpzCSsYgJ2yilpQJVNdvuQz1Tube8whgUX1twJ7PMqotdlEveUhLn6C+RUEO2cXIgKBCwseW22lu/+S55ZwQINH5auVbkrWomFnmtvbyD8h15hAloBXQDfJ2lnMHDQVQ0c6mV4aFkkOvPsLr6ri10XYHbhkrx6308ak440+ip+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iUhhhAW7132e4vs7ozelPqy3ZytRAuG043zBXRY+Ifw=;
+ b=LXSHhaL+rp/H6KlDD3taoPVHFKoNN2H1WVu4rr0NE0E5SnWaRETqrsgpj2AlSpODB9CUbg52wQy0NTCALLgnsxw+28eU5jB70TWMkVPtol/on2taaS861rHlPbQ8db2E72pzLK0FzFIBMQskqvRyxqYFI+c0F0EacZgqrJXEE3yVeAkDzy6/2BlvJ9ZApP2yUqzFL/CJWI9BwDoN84QEBRq+Q2lgu7RZgg5R68Y4Vid9t9+69KaT+OHEHZGKDV7xR6jJjaMyYuNNhIhZAWl7wejvGv4tDhOr8JDmyv3BDewAqip2JmUGNC4dXIlptePjkffpxby7BMLH2oigt4EYVw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iUhhhAW7132e4vs7ozelPqy3ZytRAuG043zBXRY+Ifw=;
+ b=KtVBV5UWgsh5+UWGal5vkhTXP+c5RaWLMSZ3SYIvGPWnrBWE5mdISNojfN0p0knuw6tQIduDR13P1drvXiUhFg3ISyFfAGMf9a14mIwH+a/ga8C3wMrITmP0oIoD31XeMOuFGBERdH+XC54W5JKoMo+2we1M09zNoUtW0+MrXzNAdt1GFqkQsYZj4t3J2YJWZKHXYgMzyiSytBKqNa812DHkpUURVyoX48JwJZyHPYm2r8k0E1VmNjXyyENe8+Vq4Fs5zJ7qX0PY7DPWu3VD+K9UZolwkYX8J6PrmfOHjCrafVVEK+fsD7j9ej9RrBnrHNDRqnQxTBUyExTSBDLo6g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by BY5PR12MB4260.namprd12.prod.outlook.com (2603:10b6:a03:206::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.14; Wed, 19 Feb
+ 2025 01:21:43 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99%6]) with mapi id 15.20.8445.017; Wed, 19 Feb 2025
+ 01:21:43 +0000
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 19 Feb 2025 10:21:38 +0900
+Message-Id: <D7W119MHCCWH.IS600FTIOV8O@nvidia.com>
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "dri-devel@lists.freedesktop.org"
+ <dri-devel@lists.freedesktop.org>, "rust-for-linux@vger.kernel.org"
+ <rust-for-linux@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "nouveau@lists.freedesktop.org"
+ <nouveau@lists.freedesktop.org>, "dakr@kernel.org" <dakr@kernel.org>,
+ "airlied@gmail.com" <airlied@gmail.com>, "Ben Skeggs" <bskeggs@nvidia.com>
+Subject: Re: [PATCH RFC 1/3] rust: add useful ops for u64
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Timur Tabi" <ttabi@nvidia.com>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, "daniel.almeida@collabora.com"
+ <daniel.almeida@collabora.com>
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <20250217-nova_timer-v1-0-78c5ace2d987@nvidia.com>
+ <20250217-nova_timer-v1-1-78c5ace2d987@nvidia.com>
+ <C1FF4314-C013-4AE1-A94E-444AFACDB4AC@collabora.com>
+ <D7VLMD31YB0V.OKHDSVUPAZTE@nvidia.com>
+ <1b8921d46f7d70c7467ea0940d60220f05cccc5d.camel@nvidia.com>
+In-Reply-To: <1b8921d46f7d70c7467ea0940d60220f05cccc5d.camel@nvidia.com>
+X-ClientProxiedBy: OS3P301CA0021.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:604:21f::15) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|BY5PR12MB4260:EE_
+X-MS-Office365-Filtering-Correlation-Id: 85bc1b3b-b65a-45e0-046e-08dd5083c516
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?N3RMN3ZrR0UyakJ3ZEZkd3ErdHpKcURVcTE2M0dsMkNWN1hyN0liT1pLV3Nl?=
+ =?utf-8?B?K1JMQUs3NkRpTVNRYmdYSTZNTzBLb2c2aXBjVHBzMXd2QzV3MkxJNzBZbmZz?=
+ =?utf-8?B?MlZSVGFrcXlmR0twUUhHQUlvSUtiSDJaaDNPQyt6b2NBMFZVcW9kZm5hNE5a?=
+ =?utf-8?B?QjFLcFJTOEFTckx5ZmdRQmp5WVo2SzlyRW9WOVhUZ0VlMDB5Uk9Ldk9abXFr?=
+ =?utf-8?B?eVd0YkgzbWxXZmlKaGI0K3FsNk1xT04yNmVpV2N6ckJtVUU2eUhJd1JrczMx?=
+ =?utf-8?B?QmE4QXdaN0hKQk5KY0Z3WGZmWmNDT1N6eXZaWkxGVmNuSWdJb01BSGNOSElG?=
+ =?utf-8?B?aDhaNitrOEk4YURwSUtRcWFINVMwWmxUOEFzN1VFN25tTXVtMEYvWlQ5ZVJR?=
+ =?utf-8?B?UVl5dm5xSkRtcGJKV1VmN05iRXpKOGx2YUxRSjBlVFMyYUNQZjVBQjN2TElG?=
+ =?utf-8?B?eHpsY2pwUTRrYWozOHUvSUE2dnBSQVRHWkhoTTV2OG5ZNWZMT3M0TFJtbHd2?=
+ =?utf-8?B?VjdqTEFBdjBFN0JNY2N4MFloZU83NEVSUWdqUUJKMjFLbW9rMi9pa01tMmM1?=
+ =?utf-8?B?WTFVRDFkYTRwUzFFeTJXOXBEVWJkVzJ1Y1dJaEtTZVNDT0dUeS83S29GNEJz?=
+ =?utf-8?B?Z09mNXpNUUltSndOMlFTUVVoY1FseHZPY3FFQzZlMXhUVERhR25tV09uVVBl?=
+ =?utf-8?B?NysvbFJPd2pURVByekdIRm56Rk1MalhKQ2ZjbjdjRVlFbGNLdXByeGU5Qy90?=
+ =?utf-8?B?TDZ5VGc0OGNFa1QxM21oRlpYd0tucUJ2Y1JRa3ZFNW5QeTZSQjdmVjVVdU9q?=
+ =?utf-8?B?Q2IyRytKUG8xSC9KUXExYis2TjZIc0wrcDNjRDJXNk1PK2pCUldHNG5Qdjdl?=
+ =?utf-8?B?YnArTFBPMzF5YTN5MHdEbWNwOWtadlJ1UjNVVGRuWTlxQmMyYjMwMk9MdEdr?=
+ =?utf-8?B?ZlZyTmZNc240eFFvMVlGanZ6M0JqZDhrb2ZnMFF6NmtBUzFTTXpxaDNuSXZD?=
+ =?utf-8?B?a1FWVE9taFNkdGJKd3orNk5iUnY3QXhCZWIra29YMnV0cm0zS2Q5K2NTdTkr?=
+ =?utf-8?B?WkdxTEszbnRDeUZSNUNPM3lGcUUyTzdaeEdXbDlPNndHcHZNbi9lcU5IYzVp?=
+ =?utf-8?B?bDh2cUo4TWNMNjFNR1pFL0xGeHBNV0ZrZFI2K0VHclRmck9rSEpwWTlGa3BN?=
+ =?utf-8?B?QTBCenRCY2pmNGRDd1k4Y0tFL3VBbDMwNmZaa0Z0SVVsUG9rT1ZkZUpVdU4w?=
+ =?utf-8?B?VVBlVXhoV2NncWYrYkNOQXpKMDFpb0NJNFpxOHpMWGxHZU0vcHl5NEhrVERy?=
+ =?utf-8?B?VS91NUwvVkk0VGJ1bk42YjJjTEppVjcvcTU5OU9tYmtwUGVLcG9CNXViZWR5?=
+ =?utf-8?B?aG9Ia3BYdTByRDg1bmtrNVlVRk1uNXN2TEZyNWdHMkpmMWFrTjJ2aitZZThX?=
+ =?utf-8?B?SmV1YldJaHExdmNNd0xodEFSWjA4MWhlWGFOSnJiVEF2ZVlIZ1U1amtqQ2Uy?=
+ =?utf-8?B?NGZkRVowOWdYVHY1eGtnU3VBN3JhK2ZzUkZDV2tQTXViZUEvbmxnalduR1Y2?=
+ =?utf-8?B?VnQ5LzVHTUJFMWNJQ2JvRU56ekJ5WDUvNCtXMHl4MkZOaW1pQ2tpYXBpYVlx?=
+ =?utf-8?B?azlsQUNvc29yL0ZXSlkrcGZSVG9ma0JGTXZBcVhrL0E1ejBvcnF0ZEhGQ21W?=
+ =?utf-8?B?SXZVL2VlbE1rU1hYS0tDemdQeGNzQ21MSkNxbTQwTU1PZnhrK3UzblhFa09w?=
+ =?utf-8?B?ckJIMUd0bkEvY0RaenRuUnZ1dVk4T29Za2JVQjlRbnVxTERsYWNJRDF4RVhI?=
+ =?utf-8?B?V2RqenA2bnZQU25zeWJGWTh0MTRtcnAxbmZaUHVPbkcrT1R3WGxmZ2xNMUgx?=
+ =?utf-8?Q?5zJGggtZFQ2xr?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MEkwdzNIYkw1VThyblNMV1ZZTVozaC83dDRZK25DbkpVdXlRR1g4K05KcXhW?=
+ =?utf-8?B?LzVRS3d5d0dFTWVRMS9EZlpFZ05XODZZMGpoSGkrb2tNYjRiaWh6WTB5YWJF?=
+ =?utf-8?B?UWhxS1NFNC8yVGdjaW5VbVlFa3pFYzlsamxVbmU1YUN2eXcwd0JvSkJidlpK?=
+ =?utf-8?B?L21ndXZiOVpHVEZGVUgyVUhJQ3I5UDdXMVpUbzNvNXNzL1l5WmJzU0RxeEZL?=
+ =?utf-8?B?eUtDd0dSSUhVVHlEendKRTRCSWZDMEdoWVhGQWo4LzlyYmdtZnZjQUgwL21K?=
+ =?utf-8?B?Y1lrRHpkTjVieGJFS25ydWdwbnUwKzNWa0ZhSXpnUWxNeUx3WEdMQ0h1NWox?=
+ =?utf-8?B?QUtmVmxKdHVad0UydzNWYlFkSkZ0N2lGWWxJejlFTDhoK0hyKzFDY29IdW5W?=
+ =?utf-8?B?MFR0M0JvYWZEaEdKc1FHajRXckFmOXorTWdlUzl3OC94d2ZQTTR3djBRb1Y3?=
+ =?utf-8?B?NDMzU2dxSElQaU1qRU1NZjdGcWJqVUxVNWFia1Nic2FWZEV3Y1VVdjV1U28r?=
+ =?utf-8?B?YWZTT2czRTN5Um1iOXJUTno0RmNjd1VpSnZkVVExdGpOL2xNS2FObURMSkVX?=
+ =?utf-8?B?Zk02OWxESW5IdmdmRFVMdFpOVktVSmJUa08wWEhWSlN0U0M0WTVxUjZHaXZQ?=
+ =?utf-8?B?TFRTd3JqejhZTkVFSHhxL2VoMFFrcGd6dGdiZkltaXZTQXFCVTRabUIxVXRE?=
+ =?utf-8?B?bVFNdllRM0hZQ3locnU5OGlQcDJ5UCtSYUxHazZBdVQyUHBNQlBaaFZrK1RL?=
+ =?utf-8?B?OGhDV3ZyTWNqd1p4aGFWRGtEQTd0a0NvR2NndGhtbkJQZlZ5WWFOWW9kUlVT?=
+ =?utf-8?B?WitmR1pZUkZQS2tWNXZmTEZoZTVwa1dURUVNSE93Qm9sUkdmUEdsVVFwaUtk?=
+ =?utf-8?B?TjFzS1cwOWplbXAxQ2ZLTTVva2hFdzArTFlZTXJYNWlIR2E4ZUVZbGxaMVcr?=
+ =?utf-8?B?eXg2VFVwdFFVWlR2djhVZ3N1S09lcDNSOTJYdmh6RGZ5ZHN5NnYwVm04eUw5?=
+ =?utf-8?B?S2ZsREcxN3RNNWw0YURPVklTVVdxbE1meGVlR2R1cldUcFBTekJMTEVzMDRL?=
+ =?utf-8?B?ZGNMbmRYaUE0TCt3NHJsRWVteUkxZy9pSDV2WXpMNWlHRjI0ZXpzZUtjaU5a?=
+ =?utf-8?B?YkdLVmJCMlRIb0kydW5rVDhDMHpBM0hTRzJGZEF1aGNxSjcrd3BEOTlXVHhS?=
+ =?utf-8?B?SWFyN3RsZUdwMHlpdllyYjRZVTlmYS9ZQW11UXZ5RWM0MFJaMis4bHF2V0kx?=
+ =?utf-8?B?alhsNlhKbzJYUzlIeUxDRDE5VVBJSzIrM1RjdHlxNnovRTJjUlBHWGtSSklN?=
+ =?utf-8?B?WFJaNmZIYy80QythVnpBRi92UDhYV0ljOEJOUXVpU3hYZXdGbUNVVUtmanNw?=
+ =?utf-8?B?amRmVDFOc2twNkNIVE5rYm5JOXZBbnlUNXZCaWp4VGlFRVdpRWo1Sk9HUXJo?=
+ =?utf-8?B?cjJVdlZHVmVOUWpwRzVsaVpsUTk4U3Z4d0dmYXRmem5jNG1ja0pMMTF2T1hO?=
+ =?utf-8?B?SUtCa09KSFRtcmZXQW9vVHBRNFp1OTFVS2tKTUY2QkRoUUVYT2loT1JWQ0tO?=
+ =?utf-8?B?QnJrZnVnalNsQ0Yrbm9YeVEydGtORHlTMkJMNjlqY0hHaHV1ckxEMWdibDlX?=
+ =?utf-8?B?WS8xdTVaeHdjOExvRzdXQVpmZ1FIVDc2Kzd2Q2l6ZGNBL0VDZVgvaFU5WjdG?=
+ =?utf-8?B?OFlSckhKM2ZMNWkzWWdrTnZla3d0UjNpV0lPaWw2UVVheWFYVm9LeHVqbm5F?=
+ =?utf-8?B?cGFIVm5UQWd4MitYT3dBMURWb2pMQmpYWmNpZU43N3pzd3BQNVg4eUdZb0JE?=
+ =?utf-8?B?U2E4VFhZcmowcFg3VXVraHU0OUtTcW14bXBianFNME9ZbzRDODZVSnBoMGRp?=
+ =?utf-8?B?YklTQW1JYXBJMVJwSWNxaFdTUHhlank3aDBTbjd4bUI5bXVnR21zRWx2SGpS?=
+ =?utf-8?B?TUk2V1VWb1JOY1g2R3MxMEhxZUE2S29pNjZQSkFLQ1RKdHdDWlFJREFYRnVO?=
+ =?utf-8?B?U3p4ZjNBQmRLOWtDYUFnS3BQOERVY2Z1RW9HRHp0bFdBSjF0NWJyTFlsUzZ4?=
+ =?utf-8?B?dGFxc2FjaGVDKzJ5bXM4dlpvS1Z0Y1RPWm1KT1JQZTU2eVBISnQ5YXM0cDBI?=
+ =?utf-8?Q?1Gbyc66jRybfNhP3ELzVzOLI2?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 85bc1b3b-b65a-45e0-046e-08dd5083c516
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2025 01:21:43.5878
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wYLP4VlzOOdK5L/5isSgSq8rZWkw7lVx/LgYhMbSZHaAagbBQ65O0YATdPrDxEx7m/do6uqD7c84nnQg3g4UEw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4260
 
-On Mon, 17 Feb 2025 23:53:50 +0000
-Charalampos Mitrodimas <charmitro@posteo.net> wrote:
+On Wed Feb 19, 2025 at 5:51 AM JST, Timur Tabi wrote:
+> On Tue, 2025-02-18 at 22:16 +0900, Alexandre Courbot wrote:
+>> > A proper struct with `high` and `low` might be more verbose, but
+>> > it rules out this issue.
+>>=20
+>> Mmm indeed, so we would have client code looking like:
+>>=20
+>> =C2=A0 let SplitU64 { high, low } =3D some_u64.into_u32();
+>>=20
+>> instead of=20
+>>=20
+>> =C2=A0 let (high, low) =3D some_u64.into_u32();
+>>=20
+>> which is correct, and
+>>=20
+>> =C2=A0 let (low, high) =3D some_u64.into_u32();
+>>=20
+>> which is incorrect, but is likely to not be caught.
+>
+> I'm new to Rust, so let me see if I get this right.
+>
+> struct SplitU64 {
+>   high: u32,
+>   low: u32
+> }
+>
+> So if you want to extract the upper 32 bits of a u64, you have to do this=
+:
+>
+> let split =3D some_u64.into_u32s();
+> let some_u32 =3D split.high;
 
-> Correct the hardware revision check comment in the QT2025 driver. The
-> revision value was documented as 0x3b instead of the correct 0xb3,
-> which matches the actual comparison logic in the code.
-> 
-> Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
-> ---
->  drivers/net/phy/qt2025.rs | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/phy/qt2025.rs b/drivers/net/phy/qt2025.rs
-> index 1ab065798175b4f54c5f2fd6c871ba2942c48bf1..7e754d5d71544c6d6b6a6d90416a5a130ba76108 100644
-> --- a/drivers/net/phy/qt2025.rs
-> +++ b/drivers/net/phy/qt2025.rs
-> @@ -41,7 +41,7 @@ impl Driver for PhyQT2025 {
->  
->      fn probe(dev: &mut phy::Device) -> Result<()> {
->          // Check the hardware revision code.
-> -        // Only 0x3b works with this driver and firmware.
-> +        // Only 0xb3 works with this driver and firmware.
->          let hw_rev = dev.read(C45::new(Mmd::PMAPMD, 0xd001))?;
->          if (hw_rev >> 8) != 0xb3 {
->              return Err(code::ENODEV);
+More likely this would be something like:
 
-Oops,
+  let SplitU64 { high: some_u32, .. } =3D some_u64;
 
-Reviewed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Which is still a bit verbose, but a single-liner.
 
-Given that this patch is expected to be merged via netdev, you might
-need to resend with a proper subject:
+Actually. How about adding methods to this trait that return either
+component?
 
-https://elixir.bootlin.com/linux/v6.13/source/Documentation/process/maintainer-netdev.rst
+  let some_u32 =3D some_u64.high_half();
+  let another_u32 =3D some_u64.low_half();
 
-Thanks,
+These should be used most of the times, and using destructuring/tuple
+would only be useful for a few select cases.
+
+>
+> as opposed to your original design:
+>
+> let (some_u32, _) =3D some_u64.into_u32s();
+>
+> Personally, I prefer the latter.  The other advantage is that into_u32s a=
+nd
+> from_u32s are reciprocal:
+>
+> assert_eq!(u64::from_u32s(u64::into_u32s(some_u64)), some_u64);
+>
+> (or something like that)
+
+Yeah, having symmetry is definitely nice. OTOH there are no safeguards
+against mixing up the order and the high and low components, so a
+compromise will have to be made one way or the other. But if we also add
+the methods I proposed above, that question should matter less.
