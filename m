@@ -1,88 +1,100 @@
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA50622F167
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Feb 2025 20:34:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9593D1DF24F;
+	Wed, 19 Feb 2025 20:45:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739997286; cv=none; b=EaSIdmTOaMCiO5kRBCogF0vJ5xCJAMYxYedUnbXHsFcxU7GKEaDGXa6R+90CNwi6IwMZF8TuE4OTwK3wFzrEd2UQgylayk8JK9voDgAphHvj1emsMIXuS43aeVvM03RazCJOUztocGgRxPGaBppnoI1tKKlnq1+R+DptIv0R5kQ=
+	t=1739997947; cv=none; b=W+zw+t0dNUSce8I7d0DgZp0AC3XrTUOXVPksUYwwMerIE7SCpY36z/O+W3zFhQQfRzaEBLE37kMum6wMTMCeyxwXR4OZwop5j/GV+/7ebm681eSAxIlnQwuDTzDAqv8ZfZ5y/BDgCClmKvgbH2Uz46/3NQ4CN15usUbkA+dNqf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739997286; c=relaxed/simple;
-	bh=0Jqf+omiFLsX4+96qMFq8xeNWsCoOr/inj2nXuUmJzE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=H0vg1Mtj68P3yT6cdJitPPnpTklDouSNwwWc6rr05Kdg3P7+zKsU4cq3ggs1xb5gQYdlltVbDFUHdHd8VMY42hCzGUUUD82LPfuNfXW/8mIko0zNEE0kZoeXiMeDhaCFeBdbE9ZYLVjrZmla1XtZhhv6AjzDupp9uY3MB2Rr3U0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=XVEwtH/q; arc=none smtp.client-ip=209.85.219.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="XVEwtH/q"
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e5dcc3b0c77so246048276.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 19 Feb 2025 12:34:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1739997283; x=1740602083; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0Jqf+omiFLsX4+96qMFq8xeNWsCoOr/inj2nXuUmJzE=;
-        b=XVEwtH/q3uwtahemtZIZYeVgKt2oPwscKFU1Ma8Fa8b/Pjkl/G6QTzN5W19YmDZGUr
-         L8OPMduNH/bepK7iBePi7EJYxObBXWUSD+3pgcVJ7O6FNAYYhHgZ+E44WuLQ80k/dHQy
-         J+FJr1wDHF+uTNt6rwyzIKPjUd89QCAkphiKLZiWR4HeS6TPlX82p6kcTsLFB8oIn9TV
-         aZ/5KRF1prwWkJUKByVqZX6dnCax8MS153Vzc9opihcJs9vDSfExdMFTHtKV/fxIGjWX
-         JHpBCaly0Za5g1oC0oXzSWxwwp3TSYKlNRFRMxe1nH7RzGdFR47JXdfpylDsrZEF6U0v
-         AzXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739997283; x=1740602083;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0Jqf+omiFLsX4+96qMFq8xeNWsCoOr/inj2nXuUmJzE=;
-        b=q9IXa1QvoH4SOdM41TiOdC1lNUt7SxKtwjwLI4aCjKk4jmKYo+M3WzM1ZW2Pk32ciH
-         sbU8oMBWPcfotBxxNtMc/77krzakf3SuwJrCgrzWPKYMLPXpDK7vj0rJ//R1gjtcsG3r
-         fPsmRDY5Zpgjme4grD7YXq4j4vlSofE4CnNQMxVZpcqvXIE+66JKMTWaPw2Eppr6+YOs
-         M81NLd3whJN3MH/ZEppoD0Bh2MxEKhtymUEetv8YfLTz/ljOAPrVARD4YgkoMZNXRtoU
-         3mR9Kn+dn1KpnXnl+nYhZa9Sa09Vdtnwr7YZaCASsrfk7TLSQf4CGiHrtX1PQERa2Es0
-         nnnw==
-X-Forwarded-Encrypted: i=1; AJvYcCW0iUDtlsj6WCJZttbwVulzqtbZrRvPuuyuf8pOlbrN90pfskNwuKcu0O56jXgo+nZs70RchUovaquyQjlcYQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7ANpDVCqEaGiQPCb79INL0199Lkg7m8Z1jYu+rkSBaQ9y2myB
-	oL2IlckPOdi1TkcwPD8br6uo20RmfDas6qrKvLBIUw/keX0xJ6wFKJF898zObht1I6r30ZCgFZh
-	sAfqqNMTOTZr7FCCUfyVXWyi+LmwGPnIt92jm7g==
-X-Gm-Gg: ASbGncvzwoEujhmUH2MhuJbxjkIMMj1mFJtHfddnpMTHrvlsN1PL9KwV3/lVA0Buj/Z
-	Tq00uxsWgWlFI96ouH1xRy8L8fGTdhQj7DZD1iil4um1X4vuEbRyLdhhXg1Vevz65CQ5gyLzU
-X-Google-Smtp-Source: AGHT+IGePlpcMLMtkO0p0cMKs45EJcgHTubpVnR0FVFgPsZCN8wY2WvKVp8xiCuIu+uMpB2IgJhvErQ0UfEdqhRd4gc=
-X-Received: by 2002:a05:6902:f0c:b0:e5e:1433:d93d with SMTP id
- 3f1490d57ef6-e5e1433d9d8mr2320341276.29.1739997283704; Wed, 19 Feb 2025
- 12:34:43 -0800 (PST)
+	s=arc-20240116; t=1739997947; c=relaxed/simple;
+	bh=RYwHnw45/MEFs5Axvyvrt2KBWzat47/DZtEE1DHf4NI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FETad1JojANTJv4WrRdl4OQHeQHY7UB+VDMjfJCwHj6qNHah2qzlzZQvogp3nkvrzHOIY/VFUotJaaxTPwdT4wAk5EqutAcDRasVqWwhNn3SPNWdISWl+3EaGbOKIVuEXYbIG+8TXC+Admv1m2ojWMOdQpkDsu3+7iRR/2u2O8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB25C4CEE6;
+	Wed, 19 Feb 2025 20:45:45 +0000 (UTC)
+Date: Wed, 19 Feb 2025 15:46:10 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Kees Cook <kees@kernel.org>, Miguel Ojeda
+ <miguel.ojeda.sandonis@gmail.com>, Christoph Hellwig <hch@infradead.org>,
+ rust-for-linux <rust-for-linux@vger.kernel.org>, Linus Torvalds
+ <torvalds@linux-foundation.org>, Greg KH <gregkh@linuxfoundation.org>,
+ David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
+ ksummit@lists.linux.dev
+Subject: Re: Rust kernel policy
+Message-ID: <20250219154610.30dc6223@gandalf.local.home>
+In-Reply-To: <20250219202751.GA42073@nvidia.com>
+References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
+	<Z7SwcnUzjZYfuJ4-@infradead.org>
+	<CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
+	<202502191026.8B6FD47A1@keescook>
+	<20250219140821.27fa1e8a@gandalf.local.home>
+	<202502191117.8E1BCD4615@keescook>
+	<20250219202751.GA42073@nvidia.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250219-qt2025-comment-fix-v2-1-029f67696516@posteo.net>
-In-Reply-To: <20250219-qt2025-comment-fix-v2-1-029f67696516@posteo.net>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Wed, 19 Feb 2025 15:34:31 -0500
-X-Gm-Features: AWEUYZn--jUstxIYkGocBKiiriYS1hZyBvCJukvbSsj7phyx-28qwZS8FcNku2Q
-Message-ID: <CALNs47uJKvdL4r9r=4iv6Y1TJn93aizOfXYoPCFc2ifwvSyTJw@mail.gmail.com>
-Subject: Re: [PATCH net v2] net: phy: qt2025: Fix hardware revision check comment
-To: Charalampos Mitrodimas <charmitro@posteo.net>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Feb 19, 2025 at 7:42=E2=80=AFAM Charalampos Mitrodimas
-<charmitro@posteo.net> wrote:
->
-> Correct the hardware revision check comment in the QT2025 driver. The
-> revision value was documented as 0x3b instead of the correct 0xb3,
-> which matches the actual comparison logic in the code.
->
-> Fixes: fd3eaad826da ("net: phy: add Applied Micro QT2025 PHY driver")
-> Reviewed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
+On Wed, 19 Feb 2025 16:27:51 -0400
+Jason Gunthorpe <jgg@nvidia.com> wrote:
 
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
+> Can someone do some data mining and share how many "rust
+> opportunities" are there per cycle? Ie entirely new drivers introduced
+> (maybe bucketed per subsystem) and lines-of-code of C code in those
+> drivers.
+> 
+> My gut feeling is that the security argument is not so strong, just
+> based on numbers. We will still have so much code flowing in that will
+> not be Rust introducing more and more bugs. Even if every new driver
+> is Rust the reduction in bugs will be percentage small.
+> 
+> Further, my guess is the majority of new drivers are embedded
+> things. I strongly suspect entire use cases, like a hypervisor kernel,
+> server, etc, will see no/minimal Rust adoption or security improvement
+> at all as there is very little green field / driver work there that
+> could be in Rust.
+> 
+> Meaning, if you want to make the security argument strong you must
+> also argue for strategically rewriting existing parts of the kernel,
+> and significantly expanding the Rust footprint beyond just drivers. ie
+> more like binder is doing.
+> 
+> I think this is also part of the social stress here as the benefits of
+> Rust are not being evenly distributed across the community.
+
+Drivers is the biggest part of the Linux kernel and has the biggest churn.
+A lot of them are "drive by" submissions too (Let's add a driver for our
+new device and work on something else). These are written by people that
+are not kernel maintainers but just people trying to get their devices
+working on Linux. That means they are the ones to introduce the most bugs
+that Rust would likely prevent.
+
+I was going through my own bugs to see how much Rust would help, and the
+percentage was rather small. I did have a few ref counter bugs. Not the
+kind for freeing, but for which left things in a state that the system
+couldn't be modified (the ref count was to lock access). I'm not sure Rust
+would have solved that.
+
+So most of the bugs were accounting issues. I found a couple that were
+memory safety bugs but those are not as common. I guess that's because I do
+test with kmemleak which will usually detect that.
+
+Perhaps I wouldn't need to do all the memory tests if I wrote the code in
+Rust? But that's not what you are asking. As a maintainer of core code, I
+run a lot of tests before sending to Linus. Which I would hope keeps the
+number of bugs I introduce to a minimum. But I can't say the same for the
+driver code. That's a much different beast, as to test that code, you also
+need the hardware that the driver is for.
+
+I do feel that new drivers written in Rust would help with the
+vulnerabilities that new drivers usually add to the kernel.
+
+-- Steve
