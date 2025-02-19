@@ -1,40 +1,74 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FAF61B6CF5;
-	Wed, 19 Feb 2025 05:39:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EDCA1B4154;
+	Wed, 19 Feb 2025 05:53:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739943554; cv=none; b=J40dKHIV/LPqlNRyg06B36qQA6Jcif9Jh5p0GqkillNHZp13cHhe6LIZROa4fyg7qz0djY3EFTrNHO9H3IBCud4XHpOjTOiPEoavNkLn8kVxjIeUz5g4k73Z5/EhT9qiFNwHmFcKinkEejG+V0N1rm7DxJpY1HrTWyCLUKwwtqU=
+	t=1739944428; cv=none; b=aLSh8ccCdQGCo4EBSqi0U2UoKy2rYgdpz2V/JaI4lbTIRrVZO7MSwrKu2KHggvAVFdCM/dyaaXrSO76aHrpmFlEDIPD5n6udGL4xARBhz7p96ONMbuKJXEZfmK2EqP3ZxSGw2sSSADdXvP80h0GXYDi1AFllF2lld3zcrKQ46Lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739943554; c=relaxed/simple;
-	bh=oKbdu5vxvrH/+KgQ9L3W4XVVFt99O7X/wIVK3KrLAGA=;
+	s=arc-20240116; t=1739944428; c=relaxed/simple;
+	bh=8w9lDl6R8vzWwfEIaXGD9eQE08gjr+XxPDBnLJ7uMSY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kmoNqwFuWGjgLUKHKsBUmeflZ2jy9W8hIT7w3+pvCG8OOYCyftQ4gSi9xpd8X+h32gMc+fUP6IDUP0YcMIZ+TbRv3EKprVwmwbZTIuAszvZ8+CpYb7zCFMV8Xi8By9oBY07eEQ93LEgaRMiSo0FnDm5fdbUz9b7+EhPo9b9XbMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gNbcKA7s; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=ANyiPkH6KiLVcDH5sgjdIkZE5Q49SrZTt0V4ibOLKDpqtF0oQy+38OXYwrjDlHmkiVsNyQECy119BdXrmgqiDNXJxl4B3jN2+9p0NGMjvi0NL7z28oJ9srk2yP5tvek5Qhii7vZ3610pkQvvU/jJwAKKKUVXT2/YKI7fg/p/D7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mAh5ldSt; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gNbcKA7s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8595CC4CED1;
-	Wed, 19 Feb 2025 05:39:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739943553;
-	bh=oKbdu5vxvrH/+KgQ9L3W4XVVFt99O7X/wIVK3KrLAGA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gNbcKA7s/VvC6/xgEwpnwnWIuzUzqFuPUXwfMk2xYhsG6mUQINRicdWA2hJoptEQR
-	 ddFyY7xCcUfUDPtT90ZxB1znK+iIVM/ZgFSURS72GtW9bLATp23ha/jOEvU/vWV2vV
-	 4r6dRuEPct6WAfqn+ToyhH8uzkXAD2VNNI6jqWWY=
-Date: Wed, 19 Feb 2025 06:39:10 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mAh5ldSt"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-abbb12bea54so377743666b.0;
+        Tue, 18 Feb 2025 21:53:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739944425; x=1740549225; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hoYubNUM/g2rCAi4UMr65fRF8j4p6OJUT/42WzZwWKc=;
+        b=mAh5ldStRmUs9TxM3gDfJY7TtdYRmxzS/QxcgX1930HvJgIBiUu6LsO3yQ8mq81HLZ
+         74MGJrVXpGADJecVJyju+EmrbEET4cnlSyiJ085d+NyXh6WzaB2Sib85+tGOltI+wNUE
+         7cXu2WWaH6CsjlrN5jhp4APyH8eDyvVSLvF6Yi2LU1tH/NgynHEOald28vVvwkcCdzmB
+         ittxHOzrrYKCpAoBpVZlBx0ChxhDPpDuX9HZoIyp701Z79XULlME69xeZ5EmxYkkp92b
+         Cv4sJQ1Yd2keStd8+pveVXvUbzJ6c+MUr0U7MpWajUK72trAXcXyHeLSJP42GZPKkZCe
+         sYdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739944425; x=1740549225;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hoYubNUM/g2rCAi4UMr65fRF8j4p6OJUT/42WzZwWKc=;
+        b=GIN+Eajn+v0j7glhbQhvFJAroM4WlHPKw1UXXMiPLOLH9a4gduuWG+BIO8m81OUqiA
+         yF2QVvO0UF5WRViRiOSbDqqYCAwLLYhMCFERuyG4SJavVAYTvibLqKFmCmjlJOWi1azi
+         0T4wSoKx3qjCIPiaosZnRq9sBdh92CeQ63+m5Sswahnb54nfU+UBAmZu7BmA2isa+vbe
+         4FXmEzsiZGDAijFrMYWpHNuEbJY29M2YcK/fwp7HXRsLirEqxnSMQ//cx4ZZkjfKIlKT
+         Ir9q2QD+435gadqUDArsJ78jPxfZw9QH9uUvco3TrCCMdpIogxCcyyNl34QLiuwS+DqS
+         xboA==
+X-Forwarded-Encrypted: i=1; AJvYcCVSV2MiH35JfDvVwyC5OC06gOTgjIL4iLkEOnWODtWK4/sXlVLzJKL558uSqrS0jcnDoSPhA9i+t+LDIT4vFnM=@vger.kernel.org, AJvYcCWlYzX9JYNDyH816a5oHs/CQbpDCzVOmQcRj7PJCdsQOwi6S0FWwu7txjUFBIq8FeUYEzOnI5dog260N0g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxlrsT5Xxkumo5a98uulqby0fr4w/KfbLD5LMvOCg+DQsAVFqNz
+	UuKepDQ0MrfJN/WsQIS4zMhAe4XrA4YN8FFHjDZ5GKjjQF8+h9NNbTlV
+X-Gm-Gg: ASbGncszXGeAnHXboi9/bwOpfrpodLpYIQGwHHos4Q4Rm5TiMdHerompUH6yxEHsyuE
+	6kpQoCIsfUJLAmjZkI6Zik5nJzi54jg+uch/xhyF5uTsEb1PpcpitaN8m+UIAsNoe345HSkpWsP
+	zeAEBxUKFGspQv/aWE46Crv8ell1CVo56uCaL2E+z3sXcU6v1bzvfSWN/MMFAajdKJYZSt3nruH
+	gHYV+XI7BG/6P2yW5+g73ldj5+WcbhWXSTl1Do/TbLnuSAd/hjjqaojdQTlfqSpO+dx09pg2/A7
+	ZeNOxEbBBB5k6clJnUm73jZ+BcU3hPGZdF6OGt0YAG0UncyKrViz/ENFog==
+X-Google-Smtp-Source: AGHT+IELbGf/jgctoWR5SBQOWdjIhRQbBm1V/RRwJ/UxCtMTP7qhBsZEyQgnBj6aaSRi9z2h2/QvQw==
+X-Received: by 2002:a17:906:eb04:b0:abb:b092:dad9 with SMTP id a640c23a62f3a-abbb092de7fmr698590066b.37.1739944424725;
+        Tue, 18 Feb 2025 21:53:44 -0800 (PST)
+Received: from p183 (dynamic-vpdn-brest-46-53-133-68.brest.telecom.by. [46.53.133.68])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aba532802a1sm1192544766b.76.2025.02.18.21.53.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Feb 2025 21:53:44 -0800 (PST)
+Date: Wed, 19 Feb 2025 08:53:42 +0300
+From: Alexey Dobriyan <adobriyan@gmail.com>
 To: Boqun Feng <boqun.feng@gmail.com>
 Cc: "H. Peter Anvin" <hpa@zytor.com>,
 	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
 	Christoph Hellwig <hch@infradead.org>,
 	rust-for-linux <rust-for-linux@vger.kernel.org>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
+	Greg KH <gregkh@linuxfoundation.org>,
 	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
 	ksummit@lists.linux.dev
 Subject: Re: Rust kernel policy
-Message-ID: <2025021954-flaccid-pucker-f7d9@gregkh>
+Message-ID: <c0798016-b0e9-4af0-b6aa-48903b4718b3@p183>
 References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
  <Z7SwcnUzjZYfuJ4-@infradead.org>
  <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
@@ -48,7 +82,7 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 In-Reply-To: <Z7VKW3eul-kGaIT2@Mac.home>
 
@@ -72,82 +106,18 @@ On Tue, Feb 18, 2025 at 07:04:59PM -0800, Boqun Feng wrote:
 > component, due to the complexity, memory safety issues (and other
 > issues) are likely to happen. So using a language providing type safety
 > can help that. Replacing inlines and macros with neat template tricks is
-> not the point, at least from what I can tell, inlines and macros are not
+> not the point,
+
+In fact, this is the point.
+
+> at least from what I can tell, inlines and macros are not
 > the main source of bugs (or are they any source of bugs in production?).
 > Maybe you have an example?
 
-As someone who has seen almost EVERY kernel bugfix and security issue
-for the past 15+ years (well hopefully all of them end up in the stable
-trees, we do miss some at times when maintainers/developers forget to
-mark them as bugfixes), and who sees EVERY kernel CVE issued, I think I
-can speak on this topic.
+C's weak type system forces people to use preprocessor which is much weaker
+language.
 
-The majority of bugs (quantity, not quality/severity) we have are due to
-the stupid little corner cases in C that are totally gone in Rust.
-Things like simple overwrites of memory (not that rust can catch all of
-these by far), error path cleanups, forgetting to check error values,
-and use-after-free mistakes.  That's why I'm wanting to see Rust get
-into the kernel, these types of issues just go away, allowing developers
-and maintainers more time to focus on the REAL bugs that happen (i.e.
-logic issues, race conditions, etc.)
+So instead of solving problems with more capable language people are forced
+to solve it will less capable one.
 
-I'm all for moving our C codebase toward making these types of problems
-impossible to hit, the work that Kees and Gustavo and others are doing
-here is wonderful and totally needed, we have 30 million lines of C code
-that isn't going anywhere any year soon.  That's a worthy effort and is
-not going to stop and should not stop no matter what.
-
-But for new code / drivers, writing them in rust where these types of
-bugs just can't happen (or happen much much less) is a win for all of
-us, why wouldn't we do this?  C++ isn't going to give us any of that any
-decade soon, and the C++ language committee issues seem to be pointing
-out that everyone better be abandoning that language as soon as possible
-if they wish to have any codebase that can be maintained for any length
-of time.
-
-Rust also gives us the ability to define our in-kernel apis in ways that
-make them almost impossible to get wrong when using them.  We have way
-too many difficult/tricky apis that require way too much maintainer
-review just to "ensure that you got this right" that is a combination of
-both how our apis have evolved over the years (how many different ways
-can you use a 'struct cdev' in a safe way?) and how C doesn't allow us
-to express apis in a way that makes them easier/safer to use.  Forcing
-us maintainers of these apis to rethink them is a GOOD thing, as it is
-causing us to clean them up for EVERYONE, C users included already,
-making Linux better overall.
-
-And yes, the Rust bindings look like magic to me in places, someone with
-very little Rust experience, but I'm willing to learn and work with the
-developers who have stepped up to help out here.  To not want to learn
-and change based on new evidence (see my point about reading every
-kernel bug we have.)
-
-Rust isn't a "silver bullet" that will solve all of our problems, but it
-sure will help in a huge number of places, so for new stuff going
-forward, why wouldn't we want that?
-
-Linux is a tool that everyone else uses to solve their problems, and
-here we have developers that are saying "hey, our problem is that we
-want to write code for our hardware that just can't have all of these
-types of bugs automatically".
-
-Why would we ignore that?
-
-Yes, I understand our overworked maintainer problem (being one of these
-people myself), but here we have people actually doing the work!
-
-Yes, mixed language codebases are rough, and hard to maintain, but we
-are kernel developers dammit, we've been maintaining and strengthening
-Linux for longer than anyone ever thought was going to be possible.
-We've turned our development model into a well-oiled engineering marvel
-creating something that no one else has ever been able to accomplish.
-Adding another language really shouldn't be a problem, we've handled
-much worse things in the past and we shouldn't give up now on wanting to
-ensure that our project succeeds for the next 20+ years.  We've got to
-keep pushing forward when confronted with new good ideas, and embrace
-the people offering to join us in actually doing the work to help make
-sure that we all succeed together.
-
-thanks,
-
-greg k-h
+This is not how it should be.
