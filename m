@@ -1,363 +1,111 @@
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171AB25E442
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Feb 2025 23:10:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740006624; cv=none; b=AtJBWpkyc/GB8q/P27u7a5A30inaflzlIChTo53ppXtOwPpVmoQJuxfPFddj2ugdN4T25JQoqb4ZFKNJZJvuZqOkvvFLwxg8eNSSi9C9a70hBlmTOGjqwNL+XObOfzGlYNiPrH99JmAMcDKhX5XkvgTw9top6+Gg6YsJM2a/0UU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740006624; c=relaxed/simple;
-	bh=2v3fbJENcPCOsiSlqCuhDArUF6IFIdzSWeYv9YS73YY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iJklvqPsbQ0hC54Tgjf7X5r1Dou7oelU3w7XlRNn+kNVnM09ZgAyJr3yorhR3A4NUauEMMONpA0gjpvxqLlRYFNWheDQfrC0dcVITKOEJsX2Q/K9LYeLhQyqsCfXmt3ZHmZ9DxBgNh4Ru8CDd/GaQJTPZOWA5GE1mFmy+QJJgQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H8vElUH1; arc=none smtp.client-ip=209.85.219.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C2425B664;
+	Wed, 19 Feb 2025 23:13:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740006825; cv=pass; b=J9VykJyuWaUCAHDIf5c67ShYk5QZxlLJRG8BU9SWGjsNnSQw/zTjVYdgYdElXIuRP3pd2KK/H+NMHiHu0laGUZwDAWKwIQkka+LZtb+ZCDmwRLzQZ89K3XuJvTAGwSwmW44X4LiSjw5Ec6h6OETdKuGqrXCXAaEP0RIXpKS7vT0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740006825; c=relaxed/simple;
+	bh=SwDmvvzK1Qn1frWQJvzXkHMRQJGUI0Oks7o4Oa3lN8I=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=T1CKXFtI+bmKhWnJV6hpPkfM7lsk/HlZ35k4zWy6z3eF6xc+yH1yX8QuBvJVE4p0Igx24THQ9Zx6G0vMfFiUpkHxz/tV2nVt3uwRFuetgE6wQ8PGoaASkmY0U2cWYI3Yb0TwfU60FiNZN4QsO70pO+cmahvak4ECcRszu4cv36Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=NBQFYdJV; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H8vElUH1"
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6e44fda56e3so3702296d6.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 19 Feb 2025 15:10:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740006621; x=1740611421; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dxDOtVT8g3qbzXn2w5KHZMQo+N1woVaWlFhDh/fHi0s=;
-        b=H8vElUH1IBWNhrIgen/wZyeCYTF34vdouzpK0ALmRI6Kl+m1hKkTEuL5avS04SSs74
-         cN6qzd1DkBT2Ip1nq3itrAGtn7P1jkc3uD6ypr6GDfMcnxxI1kCi1VUnWc8rVkhcAt5z
-         cIF8V0UzNgSzVlzbYlRJgebvdtFDQ1e2Jj1/zbJ2QMN4ABUkckf3nMVv6jANLoMXWkd8
-         WcaomXV2B2wZOUE4MkXOPMHSbB7wW/OKl998IT2f47J7fKp8Ef3LW4RXckhUZLurgBuu
-         YWQ7HrDxs7LhsCtgWwYJD7+ZTV0nsiZ36V6Ook3Fxr76CNlFG/a/NeSKFbZNvfkAdStd
-         Ev9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740006621; x=1740611421;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dxDOtVT8g3qbzXn2w5KHZMQo+N1woVaWlFhDh/fHi0s=;
-        b=gFKdShQqvpTcpIgKNYDIHvWKmpyLfxEizYnni3a2J0MfmBajsLXuFj8ZTwb7vvuC0W
-         PAnGYpVAZzTnkeh5xbyPUqE6T/LssaILS6TxqKTYym3TkQeUH6AWT/0ev6X3V8pahyj6
-         DpV9flK34zHBHwuHC8EYaoHXbRwXR7p8AxLksMwvsTr+CMpqsgYMUAxhvj82exs5Sgzl
-         FXG9sdtWbWltCCQgXNcxQQkjThoN+9n/WZD7umlKy+90yMLVj8e8xmuGK9QSaBKpI87V
-         FdjwFjpFE0tNzQ0hxz94K6AFvkTxUdNpjj3twh3rDC8yGgS8h36jSCpG5swJZUIhTy9Q
-         pTnw==
-X-Forwarded-Encrypted: i=1; AJvYcCVbF+AHXyTSPMgnBrRxWg2tzJQp7j3ngL2Mnq/D5xTr2fqEh7IrsTe29rPzimxzpN03sowjmVydh+oashS/oQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2Ab4EP5TK42jTiz/Qn1ZjnvxgVXGyPPwnHN4dbqNGYa6X6xAX
-	r/Ey7tGDeQgznIstjqRXLpJENt42lNbq++Ua5D5JKFyGax0LCUJooO3PU27Bwnrx+Cu99uT3HME
-	exDwZ56y0vI7qBk3qeddCPlia0SxMT5IeaG+y
-X-Gm-Gg: ASbGnctJYCWWTCkdIOoDl7NsF5R4yuah5Mr9NpRX3Ls9+kj3Pk75+MPhj3eHhBycj9M
-	hTcUHGDTu6QBY8hhsD36FDVbEP0h3SNHb0K1F4zOipsvtPzGIN3zB4wvo9asfoQoY45NvRcAb6A
-	lxB8GzdOSBhUrkgCwyuZcdCAaB8wVFXVU=
-X-Google-Smtp-Source: AGHT+IEw/mpr7Oz2wdmnj9Oda8U1Bn34wzWNruZoEp5Td7KL4zsegVlhKsPNH7lpeKFCF81jQzEpT14QjvWmwK9bxNc=
-X-Received: by 2002:ad4:5aac:0:b0:6e4:5971:135d with SMTP id
- 6a1803df08f44-6e6a26396a4mr17987456d6.18.1740006620727; Wed, 19 Feb 2025
- 15:10:20 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="NBQFYdJV"
+ARC-Seal: i=1; a=rsa-sha256; t=1740006814; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=d8aKRIxU3l8XlTRQEM9685tTMXH5AqKtOf6F87tkY9qm9vwsLiTZyCqysAx2InJs13/MgjYSrfli88xXpElB/rZ83iXRF7jkbmmQ4kCxmsu4tX3AHCi3jmOiyALjA9XD5PAOgjRNmbLwTXxNhdU1/UconIGTOtsJKspu2LOHoT0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1740006814; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=yYsvej7hta50BXSo4O/kInYZNSTmLUgaMrj4n0kXVMA=; 
+	b=OVViB7v1dwUFhDrRdcbZ2766nsGflsj1tunY+Xw8sOE4Cc8xSgneCkiPLqSjp8G5MJ7Qg8uq9HwDQy5g+/BqZNx7Of5Smz09a8eEzUF8NFu9HF4HVanStqoT9D/KwmRdWA7UxfO01rK5KtNn+8Xv/41/GtNT+CE26/gfUKkpfp0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1740006814;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=yYsvej7hta50BXSo4O/kInYZNSTmLUgaMrj4n0kXVMA=;
+	b=NBQFYdJVnDoiFp0z4H+BuyCpQDo0SKKYGuyeZ/UwkjGqSMHSxH50rWoRlOxzw6kO
+	VZVXqzLV5fbepi05sriU2H2OhtApWCevNMfCuRY4z8Zx5BidiHRJUxRqOpS9ynDYgQZ
+	XDferigcuF0iIJVt5WWy8Vx3nUAzQuRO99sFHxok=
+Received: by mx.zohomail.com with SMTPS id 1740006811017578.3153222760697;
+	Wed, 19 Feb 2025 15:13:31 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250202192412.340848-1-sergio.collado@gmail.com>
- <CA+GJov6+TPSm6ns8+MrSytWF5qsS1cm=KFJrUivPtzc5QvgARQ@mail.gmail.com> <CAA76j93VLJc=ocGYHqN-LSd717ip3kQFzk9EN789+Sq382g72g@mail.gmail.com>
-In-Reply-To: <CAA76j93VLJc=ocGYHqN-LSd717ip3kQFzk9EN789+Sq382g72g@mail.gmail.com>
-From: Rae Moar <rmoar@google.com>
-Date: Wed, 19 Feb 2025 18:10:08 -0500
-X-Gm-Features: AWEUYZmA9y1IK7t8yZ1EpnrJjF_VBJnhxF8CEsJZWnAav7LBMLY2NYNsOtING80
-Message-ID: <CA+GJov6oxnFp-XYtQVxdWbGAWpCkNjmUZZi=iRPj-eWUZWOvKA@mail.gmail.com>
-Subject: Re: [PATCH v8] Kunit to check the longest symbol length
-To: =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
-Cc: David Gow <davidgow@google.com>, linux-kselftest@vger.kernel.org, 
-	kunit-dev@googlegroups.com, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, David Rheinsberg <david@readahead.eu>, 
-	rust-for-linux@vger.kernel.org, x86@kernel.org, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Shuah Khan <skhan@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
+Subject: Re: [PATCH RFC 1/3] rust: add useful ops for u64
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <CAPM=9txmQWO+SHnZhr8zXHCZ=S8CNY=PryRVkWWuHyor-ajU6A@mail.gmail.com>
+Date: Wed, 19 Feb 2025 20:13:15 -0300
+Cc: John Hubbard <jhubbard@nvidia.com>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ Timur Tabi <ttabi@nvidia.com>,
+ "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+ "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
+ "dakr@kernel.org" <dakr@kernel.org>,
+ Ben Skeggs <bskeggs@nvidia.com>
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <1597EDB7-D91B-4660-ADDC-D2252B26CB22@collabora.com>
+References: <20250217-nova_timer-v1-0-78c5ace2d987@nvidia.com>
+ <20250217-nova_timer-v1-1-78c5ace2d987@nvidia.com>
+ <C1FF4314-C013-4AE1-A94E-444AFACDB4AC@collabora.com>
+ <D7VLMD31YB0V.OKHDSVUPAZTE@nvidia.com>
+ <1b8921d46f7d70c7467ea0940d60220f05cccc5d.camel@nvidia.com>
+ <D7W119MHCCWH.IS600FTIOV8O@nvidia.com>
+ <e6322f90-08bd-4e86-8dad-2ddbd7e5cece@nvidia.com>
+ <D7WFP99SMV3H.26AJWK17S0UPX@nvidia.com>
+ <fd920faf-a707-4c6d-8c0b-3d59c010da1d@nvidia.com>
+ <CAPM=9txmQWO+SHnZhr8zXHCZ=S8CNY=PryRVkWWuHyor-ajU6A@mail.gmail.com>
+To: Dave Airlie <airlied@gmail.com>
+X-Mailer: Apple Mail (2.3826.300.87.4.3)
+X-ZohoMailClient: External
 
-On Mon, Feb 17, 2025 at 3:30=E2=80=AFPM Sergio Gonz=C3=A1lez Collado
-<sergio.collado@gmail.com> wrote:
->
-> Hello,
->
-> On Fri, 7 Feb 2025 at 22:54, Rae Moar <rmoar@google.com> wrote:
-> >
-> > On Sun, Feb 2, 2025 at 2:24=E2=80=AFPM Sergio Gonz=C3=A1lez Collado
-> > <sergio.collado@gmail.com> wrote:
-> > >
-> > > The longest length of a symbol (KSYM_NAME_LEN) was increased to 512
-> > > in the reference [1]. This patch adds kunit test suite to check the l=
-ongest
-> > > symbol length. These tests verify that the longest symbol length defi=
-ned
-> > > is supported.
-> > >
-> > > This test can also help other efforts for longer symbol length,
-> > > like [2].
-> > >
-> > > The test suite defines one symbol with the longest possible length.
-> > >
-> > > The first test verify that functions with names of the created
-> > > symbol, can be called or not.
-> > >
-> > > The second test, verify that the symbols are created (or
-> > > not) in the kernel symbol table.
-> > >
-> > > [1] https://lore.kernel.org/lkml/20220802015052.10452-6-ojeda@kernel.=
-org/
-> > > [2] https://lore.kernel.org/lkml/20240605032120.3179157-1-song@kernel=
-.org/
-> > >
-> > > Tested-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-> > > Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
-> > > Reviewed-by: Rae Moar <rmoar@google.com>
-> > > Signed-off-by: Sergio Gonz=C3=A1lez Collado <sergio.collado@gmail.com=
->
-> > > Link: https://github.com/Rust-for-Linux/linux/issues/504
-> >
-> > Hello!
-> >
-> > Thanks for fixing the typo and this new version! This patch still does
-> > not apply cleanly in the Makefile for me. Have you rebased it on the
-> > kselftest/kunit branch? I also have a few more questions that I just
-> > noticed.
-> >
-> > Thanks!
-> > -Rae
-> >
-> > > ---
-> > > V7 -> V8: typo fixed & rebased
-> > > ---
-> > > V6 -> V7: rebased
-> > > ---
-> > > V5 -> V6: remove tests with symbols of length KSYM_NAME_LEN+1
-> > > ---
-> > > V4 -> V5: fixed typo, added improved description
-> > > ---
-> > > V3 -> V4: add x86 mantainers, add new reference.
-> > > ---
-> > > V2 -> V3: updated base and added MODULE_DESCRIPTION() and MODULE_AUTH=
-OR()
-> > > ---
-> > > V1 -> V2: corrected CI tests. Added fix proposed at [3]
-> > >
-> > > [3] https://lore.kernel.org/lkml/Y9ES4UKl%2F+DtvAVS@gmail.com/T/#m3ef=
-0e12bb834d01ed1ebdcae12ef5f2add342077
-> > >
-> > > The test execution should result in something like:
-> > > ```
-> > > [20:04:35] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D longest-symb=
-ol (4 subtests) =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > > [20:04:35] [PASSED] test_longest_symbol
-> > > [20:04:35] [PASSED] test_longest_symbol_kallsyms
-> > > [20:04:35] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D [PASSE=
-D] longest-symbol =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > > [20:04:35] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > > [20:04:35] Testing complete. Ran 4 tests: passed: 4
-> > > ```
-> > > ---
-> > >  arch/x86/tools/insn_decoder_test.c |  3 +-
-> > >  lib/Kconfig.debug                  |  9 ++++
-> > >  lib/Makefile                       |  2 +
-> > >  lib/longest_symbol_kunit.c         | 84 ++++++++++++++++++++++++++++=
-++
-> > >  4 files changed, 97 insertions(+), 1 deletion(-)
-> > >  create mode 100644 lib/longest_symbol_kunit.c
-> > >
-> > > diff --git a/arch/x86/tools/insn_decoder_test.c b/arch/x86/tools/insn=
-_decoder_test.c
-> > > index 472540aeabc2..6c2986d2ad11 100644
-> > > --- a/arch/x86/tools/insn_decoder_test.c
-> > > +++ b/arch/x86/tools/insn_decoder_test.c
-> > > @@ -10,6 +10,7 @@
-> > >  #include <assert.h>
-> > >  #include <unistd.h>
-> > >  #include <stdarg.h>
-> > > +#include <linux/kallsyms.h>
-> > >
-> > >  #define unlikely(cond) (cond)
-> > >
-> > > @@ -106,7 +107,7 @@ static void parse_args(int argc, char **argv)
-> > >         }
-> > >  }
-> > >
-> > > -#define BUFSIZE 256
-> > > +#define BUFSIZE (256 + KSYM_NAME_LEN)
-> >
-> > I'm not too familiar with this test. I believe this would potentially
-> > make a symbol with a length that exceeds the KSYM_NAME_LEN. What is
-> > the intention for this line?
-> That will define how much space to write a symbol. I'm also not
-> familiar with that test, but I know had to be fixed:
-> https://lore.kernel.org/lkml/Y9ES4UKl%2F+DtvAVS@gmail.com/T/#m3ef0e12bb83=
-4d01ed1ebdcae12ef5f2add342077
->
-> >
-> > >
-> > >  int main(int argc, char **argv)
-> > >  {
-> > > diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-> > > index 1af972a92d06..62d43aa9e8f0 100644
-> > > --- a/lib/Kconfig.debug
-> > > +++ b/lib/Kconfig.debug
-> > > @@ -2838,6 +2838,15 @@ config FORTIFY_KUNIT_TEST
-> > >           by the str*() and mem*() family of functions. For testing r=
-untime
-> > >           traps of FORTIFY_SOURCE, see LKDTM's "FORTIFY_*" tests.
-> > >
-> > > +config LONGEST_SYM_KUNIT_TEST
-> > > +       tristate "Test the longest symbol possible" if !KUNIT_ALL_TES=
-TS
-> > > +       depends on KUNIT && KPROBES
-> > > +       default KUNIT_ALL_TESTS
-> > > +       help
-> > > +         Tests the longest symbol possible
-> > > +
-> > > +         If unsure, say N.
-> > > +
-> > >  config HW_BREAKPOINT_KUNIT_TEST
-> > >         bool "Test hw_breakpoint constraints accounting" if !KUNIT_AL=
-L_TESTS
-> > >         depends on HAVE_HW_BREAKPOINT
-> > > diff --git a/lib/Makefile b/lib/Makefile
-> > > index d5cfc7afbbb8..e8fec9defec2 100644
-> > > --- a/lib/Makefile
-> > > +++ b/lib/Makefile
-> > > @@ -393,6 +393,8 @@ obj-$(CONFIG_FORTIFY_KUNIT_TEST) +=3D fortify_kun=
-it.o
-> > >  obj-$(CONFIG_CRC_KUNIT_TEST) +=3D crc_kunit.o
-> > >  obj-$(CONFIG_SIPHASH_KUNIT_TEST) +=3D siphash_kunit.o
-> > >  obj-$(CONFIG_USERCOPY_KUNIT_TEST) +=3D usercopy_kunit.o
-> > > +obj-$(CONFIG_LONGEST_SYM_KUNIT_TEST) +=3D longest_symbol_kunit.o
-> > > +CFLAGS_longest_symbol_kunit.o +=3D $(call cc-disable-warning, missin=
-g-prototypes)
-> > >
-> > >  obj-$(CONFIG_GENERIC_LIB_DEVMEM_IS_ALLOWED) +=3D devmem_is_allowed.o
-> >
-> > These are the lines that are causing the patch to not apply cleanly.
-> > The change list that applies cleanly for me is:
-> >
-> >  obj-$(CONFIG_FORTIFY_KUNIT_TEST) +=3D fortify_kunit.o
-> >  obj-$(CONFIG_SIPHASH_KUNIT_TEST) +=3D siphash_kunit.o
-> >  obj-$(CONFIG_USERCOPY_KUNIT_TEST) +=3D usercopy_kunit.o
-> >  obj-$(CONFIG_CRC16_KUNIT_TEST) +=3D crc16_kunit.o
-> > +obj-$(CONFIG_LONGEST_SYM_KUNIT_TEST) +=3D longest_symbol_kunit.o
-> > +CFLAGS_longest_symbol_kunit.o +=3D $(call cc-disable-warning, missing-=
-prototypes)
-> >
-> >  obj-$(CONFIG_GENERIC_LIB_DEVMEM_IS_ALLOWED) +=3D devmem_is_allowed.o
-> >
-> I will create a new rebased version of the patch.
->
-> > >
-> > > diff --git a/lib/longest_symbol_kunit.c b/lib/longest_symbol_kunit.c
-> > > new file mode 100644
-> > > index 000000000000..2a2dd1151097
-> > > --- /dev/null
-> > > +++ b/lib/longest_symbol_kunit.c
-> > > @@ -0,0 +1,84 @@
-> > > +// SPDX-License-Identifier: GPL-2.0
-> > > +/*
-> > > + * Test the longest symbol length. Execute with:
-> > > + *  ./tools/testing/kunit/kunit.py run longest-symbol
-> > > + *  --arch=3Dx86_64 --kconfig_add CONFIG_KPROBES=3Dy --kconfig_add C=
-ONFIG_MODULES=3Dy
-> > > + *  --kconfig_add CONFIG_RETPOLINE=3Dn --kconfig_add CONFIG_CFI_CLAN=
-G=3Dn
-> > > + *  --kconfig_add CONFIG_MITIGATION_RETPOLINE=3Dn
-> > > + */
-> > > +
-> > > +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-> >
-> > I don't believe you use this macro. Could probably be deleted.
-> >
-> This macro should work out of the box by means of the pr_*() macros:
-> https://docs.kernel.org/core-api/printk-basics.html#c.pr_fmt
 
-Hi! Thanks for your responses.
 
-This seems good to me. Thanks for the explanation.
+> On 19 Feb 2025, at 17:23, Dave Airlie <airlied@gmail.com> wrote:
+>=20
+> On Thu, 20 Feb 2025 at 06:22, John Hubbard <jhubbard@nvidia.com> =
+wrote:
+>>=20
+>> On 2/19/25 4:51 AM, Alexandre Courbot wrote:
+>>> Yes, that looks like the optimal way to do this actually. It also
+>>> doesn't introduce any overhead as the destructuring was doing both
+>>> high_half() and low_half() in sequence, so in some cases it might
+>>> even be more efficient.
+>>>=20
+>>> I'd just like to find a better naming. high() and low() might be =
+enough?
+>>> Or are there other suggestions?
+>>>=20
+>>=20
+>> Maybe use "32" instead of "half":
+>>=20
+>>     .high_32()  / .low_32()
+>>     .upper_32() / .lower_32()
+>>=20
+>=20
+> The C code currently does upper_32_bits and lower_32_bits, do we want
+> to align or diverge here?
+>=20
+> Dave.
 
->
-> >
-> > > +
-> > > +#include <kunit/test.h>
-> > > +#include <linux/stringify.h>
-> > > +#include <linux/kprobes.h>
-> > > +#include <linux/kallsyms.h>
-> > > +
-> > > +#define DI(name) s##name##name
-> > > +#define DDI(name) DI(n##name##name)
-> > > +#define DDDI(name) DDI(n##name##name)
-> > > +#define DDDDI(name) DDDI(n##name##name)
-> > > +#define DDDDDI(name) DDDDI(n##name##name)
-> > > +
-> > > +#define PLUS1(name) __PASTE(name, e)
-> >
-> > I don't think you use this anymore with the new changes. Can probably
-> > be deleted.
-> >
-> Indeed, I totally overlooked that.
->
-> >
-> > > +
-> > > +/*Generate a symbol whose name length is 511 */
-> > > +#define LONGEST_SYM_NAME  DDDDDI(g1h2i3j4k5l6m7n)
-> > > +
-> > > +#define RETURN_LONGEST_SYM 0xAAAAA
-> > > +
-> > > +noinline int LONGEST_SYM_NAME(void);
-> > > +noinline int LONGEST_SYM_NAME(void)
-> > > +{
-> > > +       return RETURN_LONGEST_SYM;
-> > > +}
-> > > +
-> > > +_Static_assert(sizeof(__stringify(LONGEST_SYM_NAME)) =3D=3D KSYM_NAM=
-E_LEN,
-> > > +"Incorrect symbol length found. Expected KSYM_NAME_LEN: "
-> > > +__stringify(KSYM_NAME) ", but found: "
-> > > +__stringify(sizeof(LONGEST_SYM_NAME)));
-> >
-> > Should this error return __stringify(KSYM_NAME_LEN) instead of
-> > __stringify(KSYM_NAME) to give the maximum length?
-> >
-> It is done on purpose to show what the actual symbol is. Under some
-> conditions the names can incorporate
-> prefix symbols, for example:
-> https://lore.kernel.org/lkml/20221028194453.526899822@infradead.org/,
-> if this happens it will be easier to spot what is going on.
 
-Right now this outputs: "Incorrect symbol len. Expected KSYM_NAME_LEN:
-KSYM_NAME, but found: sizeof(snn...6m7n)"
-This seems incorrect because KSYM_NAME has no value. Instead I would
-expect:  "Incorrect symbol len. Expected KSYM_NAME_LEN: 512, but
-found: sizeof(snn...6m7n)".
+My humble suggestion here is to use the same nomenclature. =
+`upper_32_bits` and
+`lower_32_bits` immediately and succinctly informs the reader of what is =
+going on.
 
->
-> >
-> > Also, I get an error because the length of LONGEST_SYM_NAME is 512.
-> > The error is produced by this code:
-> > https://elixir.bootlin.com/linux/v6.13.1/source/scripts/kallsyms.c#L152
-> > and alerts if the symbol length is >=3D to KSYM_NAME_LEN. That is fine
-> > as long as that is the intention of this test to produce a warning. Or
-> > should this warning change to be "> KSYM_NAME_LEN" if usage of symbols
-> > that are the maximum length is allowed?
-> >
-> Indeed that is expected, as the limit is reached. I think it may not
-> be really needed to update the condition to "> KSYM_NAME_LEN".
->
-
-That seems good to me.
-
-Thanks!
--Rae
-
->
-> Thanks a lot for your remarks.
-> Cheers!
+=E2=80=94 Daniel=
