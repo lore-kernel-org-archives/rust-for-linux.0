@@ -1,140 +1,67 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039C645C14;
-	Wed, 19 Feb 2025 13:40:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12881E7C25;
+	Wed, 19 Feb 2025 13:56:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739972431; cv=none; b=oB9qqCSiypSarOPMeJo++3nqMqPfh9LIfpwBkdbYE3bDAzgw6SHR/IuCqiIDfBNX3F4rZFey6dEtjVsRa6Zu1Nx71pWsYcuLbpQ+rmFioLkwCU95vcROFn6sjgbq7/+zxVkb59mKduEEU8Zj+hpEwRAOKhYyjf7twluGSQdS5w4=
+	t=1739973392; cv=none; b=MTkkq3wZei9jTB0Bc6aKusmd5rWFlwn+Vq0FGhJIDucNlGqyrwwx3Yvc41udqsBfK4I+R6IDVl7IhnMzvqh6DIZFtvfjjtqkBCJd7gVoK+iPkZOgxgTDr8yEp6LuvEP/nfCpfVfywkGcJdbEU21SnA5EGPIYMfMtAmkhHXn2UZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739972431; c=relaxed/simple;
-	bh=Ou5pxRezs1aBOt3lM/TjdmGtd6VomJ3FNkyrguOOr08=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dV6vLeZHi/W13cFCRZzxV9Hd5cpSVwsnCMIx9rw82STUAnXZHeR6oMd9ga2Ng/HfyzfuAuKjrdZNEW8HD5hJnXKk3jv5sQFo+Yp7qZHtPfbQJxzNjgDYbPUx03gC2EGZWKfmAjQmslL4dH7iNWc67vB6Ed5N+Sux5tJ9aZlsiJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o+oJ4hdy; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739973392; c=relaxed/simple;
+	bh=ot8GgkLyzCkE9gV1gX3O8wm6e8Ok+KnDVvkcfBXptq4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iygdjXQpg8bz6ZIE/nF/7ve5oM/n/lNSKvQLuVvvhT7s/3mEy83zMJMlwEClN0vDnpmvsd35SScQwQe7WL67gFTIsew8BR6ul9SYmIYF6s966PnAJmhI2RXAHJfSh/xHta2347+XQlP9NB2f8of1BtCTHVTM6xHPpXJWOb/RGHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=t1ido8M+; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o+oJ4hdy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F5EC4CED1;
-	Wed, 19 Feb 2025 13:40:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739972430;
-	bh=Ou5pxRezs1aBOt3lM/TjdmGtd6VomJ3FNkyrguOOr08=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=o+oJ4hdyECBra1THVr/8eFpFQhLg2bnNUT167GbdCNDq+ZMWpFJEpVjKyT2MJUAqj
-	 1qjXAb83qsndH+sG5f2mg9mKciz4YBp/f3M3i1yXSCKPZG8x1wIhXIVICJwSVi8Kot
-	 TGSoiQR4Py6/czmIBxL84zr9lK+2iLlDruOSkQF3yn1p26WmMlZ6Q5ut837mESOm8p
-	 PygKz7ig5S6IN5qHmTXAqn3uOHurf333GEiBHtWuiZk4yEZ/tekYDhpuvuELjj9fIp
-	 lqsa/KjzIueQ+Op3svL3W9oj6mihPzMFuFq8RHtn7B/GwikL6de/OYGRzGpW/wkWnE
-	 5RdEBn/+EF42w==
-Message-ID: <db09c80285c412725a1857588d2a38f987a28996.camel@kernel.org>
-Subject: Re: Rust kernel policy
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Dave Airlie <airlied@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
- Christoph Hellwig	 <hch@infradead.org>, Miguel Ojeda
- <miguel.ojeda.sandonis@gmail.com>,  rust-for-linux
- <rust-for-linux@vger.kernel.org>, Linus Torvalds
- <torvalds@linux-foundation.org>, Greg KH	 <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, 	ksummit@lists.linux.dev
-Date: Wed, 19 Feb 2025 15:40:25 +0200
-In-Reply-To: <CAMuHMdWNQfmNgMBkkMezeUt573fczzyf7FhXKEo7621xuhWC4Q@mail.gmail.com>
-References: <Z7SwcnUzjZYfuJ4-@infradead.org>
-	 <36783d51be7576fcdbf8facc3c94193d78240816.camel@kernel.org>
-	 <4cbd3baf81ca3ff5e8c967b16fc13673d84139e8.camel@kernel.org>
-	 <e63089e15c6f4d19e77d2920d576e0134d8b7aa7.camel@kernel.org>
-	 <Z7T5_WGX_VXBby9k@boqun-archlinux>
-	 <615ce44fa528ad7be28ba518e14a970f04481078.camel@kernel.org>
-	 <CAPM=9txBg1m=qp9=nHJXS1h2XB8TSL1tj6CF=Z802u=YX7hBDg@mail.gmail.com>
-	 <c84254c0164de551189a1f92ddec71f5dc222e42.camel@kernel.org>
-	 <CAMuHMdWNQfmNgMBkkMezeUt573fczzyf7FhXKEo7621xuhWC4Q@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="t1ido8M+"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=uc23WWc/UZMSXW1WlLBjBply3DEitxnwU2hL2lfpwFk=; b=t1ido8M+pdbcQX1NZUeudBofN0
+	dmEXdi064iyem4MfY0K9sAKl1gPYMX3m/aM7MBDT8nOw+7B4dVz3vPGF1WlRds1F62oil0h1JLUsK
+	NIGu9RRZC0NMXsLe5jUdJAXho88FtZ3MO1F4QG+Kz4txCSfDIq+6XGPIlxPwUHnDCJhg=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tkkYf-00Fe8g-Qc; Wed, 19 Feb 2025 14:56:13 +0100
+Date: Wed, 19 Feb 2025 14:56:13 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Charalampos Mitrodimas <charmitro@posteo.net>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2] net: phy: qt2025: Fix hardware revision check
+ comment
+Message-ID: <4bf73cd3-6504-4ead-9405-0e28b2666088@lunn.ch>
+References: <20250219-qt2025-comment-fix-v2-1-029f67696516@posteo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250219-qt2025-comment-fix-v2-1-029f67696516@posteo.net>
 
-On Wed, 2025-02-19 at 14:25 +0100, Geert Uytterhoeven wrote:
-> Hi Jarkko,
->=20
-> On Wed, 19 Feb 2025 at 12:39, Jarkko Sakkinen <jarkko@kernel.org>
-> wrote:
-> > On Wed, 2025-02-19 at 16:35 +1000, Dave Airlie wrote:
-> > > On Wed, 19 Feb 2025 at 16:20, Jarkko Sakkinen <jarkko@kernel.org>
-> > > wrote:
-> > > > On Tue, 2025-02-18 at 13:22 -0800, Boqun Feng wrote:
-> > > > > FWIW, usually Rust code has doc tests allowing you to run it
-> > > > > with
-> > > > > kunit,
-> > > > > see:
-> > > > >=20
-> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 https://docs.kernel.org/rust/testi=
-ng.html
-> > > >=20
-> > > > I know this document and this was what I used to compile DMA
-> > > > patches.
-> > > > Then I ended up into "no test, no go" state :-)
-> > > >=20
-> > > > I put this is way. If that is enough, or perhaps combined with
-> > > > submitting-patches.rst, why this email thread exists?
-> > >=20
-> > > There is users for the DMA stuff (now there should be some more
-> > > tests), the problem is posting the users involves all the
-> > > precursor
-> > > patches for a bunch of other subsystems,
-> > >=20
-> > > There's no nice way to get this all bootstrapped, two methods
-> > > are:
-> > >=20
-> > > a) posting complete series crossing subsystems, people get pissed
-> > > off
-> > > and won't review because it's too much
-> > > b) posting series for review that don't have a full user in the
-> > > series, people get pissed off because of lack of users.
-> > >=20
-> > > We are mostly moving forward with (b) initially, this gets rust
-> > > folks
-> > > to give reviews and point out any badly thought out rust code,
-> > > and
-> > > give others some ideas for what the code looks like and that it
-> > > exists
-> > > so others don't reinvent the wheel.
-> > >=20
-> > > Maybe we can add more rust tests to that particular patch series?
-> > > but
-> > > this is the wrong thread to discuss it, so maybe ask on that
-> > > thread
-> > > rather on this generic thread.
-> >=20
-> > Here's one way to do it:
-> >=20
-> > 1. Send the patch set as it is.
->=20
-> You mean the series from b) above, right?
-> (To be repeated for each subsystem for which you have such a series).
+On Wed, Feb 19, 2025 at 12:41:55PM +0000, Charalampos Mitrodimas wrote:
+> Correct the hardware revision check comment in the QT2025 driver. The
+> revision value was documented as 0x3b instead of the correct 0xb3,
+> which matches the actual comparison logic in the code.
+> 
+> Fixes: fd3eaad826da ("net: phy: add Applied Micro QT2025 PHY driver")
+> Reviewed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
 
-Ya.
->=20
-> > 2. Point out to Git tree with branch containing the patches +
-> > patches
-> > =C2=A0=C2=A0 for e.g. driver (hopefully for something that QEMU is able=
- to
-> > emulate)
-> > =C2=A0=C2=A0 and other stuff/shenanigans that allows to test them.
->=20
-> Exactly.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-OK, great. As long as I have some reasonable means to put it live,
-I'm totally fine.=20
-
->=20
-> Gr{oetje,eeting}s,
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Geert
->=20
-
-BR, Jarkko
+    Andrew
