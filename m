@@ -1,115 +1,73 @@
-Received: from 1wt.eu (ded1.1wt.eu [163.172.96.212])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2F71F8AE5;
-	Wed, 19 Feb 2025 15:56:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=163.172.96.212
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA65192580;
+	Wed, 19 Feb 2025 15:58:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739980592; cv=none; b=lwY5kXw0SZaKPq9h/PSqZMmKKW2pK1NJp8ag4N8I3X5XJA26Bcy8kgRz6BQ/Y6387fMvmG1CutCd/t5AWkEbtuk9Zknus+nIJpAOlTZPseBtxf7iVyyBe1eqoup5UqqDBuCyOucESc3QOhp/Vw5j30A1ZwagvI/b4Z/5f7DvMig=
+	t=1739980729; cv=none; b=blrqpp07OAxpwfEwhxKg9OtRWe1YiN06v0Zkbx8YRZKu7Sb9aC2oTuIWaea1MK8Kux8VBsXRJj1nDknLoLeJv0fXR4RqBOdiR/u55dd3+wxT+op57AY9OmpaAs0oSIs2ZIbqnl3gpgLqhfctI9tVqURyizMMKYFWG18eJLs3dB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739980592; c=relaxed/simple;
-	bh=qPZnrOyaKEYq5hbsMRbqV7X6oIhpSL4apigxMYTnzfo=;
+	s=arc-20240116; t=1739980729; c=relaxed/simple;
+	bh=Q9QZKVxCZAmZgmwBcV2lUKpoTiM7WVccubym2Jp3FaE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OxsRfgfVZpt/q6cSm9c/mo5RcNPKl6YP6HR35ggfC8Ob07PBQIWDwvFr6QA+mwU84o+ooQpG0E6PymYrZF7C8OpInXaqpOjPKbNFL6F8EhKg5ujEMV44uyEtHNP5yz53ycr430LTGMdydqOqFvhnFMJmFbrw15/yed43aDuHjcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=1wt.eu; spf=pass smtp.mailfrom=1wt.eu; arc=none smtp.client-ip=163.172.96.212
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=1wt.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1wt.eu
-Received: (from willy@localhost)
-	by pcw.home.local (8.15.2/8.15.2/Submit) id 51JFuHFe022922;
-	Wed, 19 Feb 2025 16:56:17 +0100
-Date: Wed, 19 Feb 2025 16:56:17 +0100
-From: Willy Tarreau <w@1wt.eu>
-To: James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
-        Christoph Hellwig <hch@infradead.org>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg KH <gregkh@linuxfoundation.org>, David Airlie <airlied@gmail.com>,
-        linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
-Subject: Re: Rust kernel policy
-Message-ID: <20250219155617.GH19203@1wt.eu>
-References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
- <Z7SwcnUzjZYfuJ4-@infradead.org>
- <b7a3958e-7a0a-482e-823a-9d6efcb4b577@stanley.mountain>
- <2bcf7cb500403cb26ad04934e664f34b0beafd18.camel@HansenPartnership.com>
- <yq1mseim24a.fsf@ca-mkp.ca.oracle.com>
- <c1693d15d0a9c8b7d194535f88cbc5b07b5740e5.camel@HansenPartnership.com>
- <20250219153350.GG19203@1wt.eu>
- <e42e8e79a539849419e475ef8041e87b3bccbbfe.camel@HansenPartnership.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=MaM9WMLEjmKL0OcT8SPKyiNyJRovS5wLMikM+jXGqnuxrfSbCLL3/T189BN0Qa1ZvAHYStYYeVOx9o1meUmq9xPD0hVRfv0/rykQmjjdPWoZKkbNnH0eCbi8hBcq0N0LLlrAwqdLGSfl5QlQbZPZBKaAWBOJ4HLP7U72crATPW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UvtxlCVR; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UvtxlCVR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB71FC4CED1;
+	Wed, 19 Feb 2025 15:58:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1739980729;
+	bh=Q9QZKVxCZAmZgmwBcV2lUKpoTiM7WVccubym2Jp3FaE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UvtxlCVRUeE1cAxvkFEvKx43aFldmi2UE5+sG4Sd7ytoKj5fPv/apRs2qp25Za8eb
+	 /kkxpG88d/8eDmvxRAHCYhERI+rEf4u39BPepfXBtGO8PsSkVu3rPR3rfyvFFtKFwg
+	 WYofqwQQ1gwCplQepOnX57sGcgGWRBf77lUpj2Rk=
+Date: Wed, 19 Feb 2025 16:58:46 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: miscdevice: change how f_ops vtable is constructed
+Message-ID: <2025021926-transport-fridge-bc43@gregkh>
+References: <20250117-miscdevice-fops-change-v1-1-ec04b701c076@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e42e8e79a539849419e475ef8041e87b3bccbbfe.camel@HansenPartnership.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20250117-miscdevice-fops-change-v1-1-ec04b701c076@google.com>
 
-On Wed, Feb 19, 2025 at 10:46:03AM -0500, James Bottomley wrote:
-> > > > I like using cleanup attributes for some error handling. However,
-> > > > I'm finding that in many cases I want to do a bit more than a
-> > > > simple kfree(). And at that point things get syntactically messy
-> > > > in the variable declarations and harder to read than just doing a
-> > > > classic goto style unwind.
-> > > 
-> > > So the way systemd solves this is that they define a whole bunch of
-> > > _cleanup_<type>_ annotations which encode the additional logic.  It
-> > > does mean you need a globally defined function for each cleanup
-> > > type, but judicious use of cleanup types seems to mean they only
-> > > have a few dozen of these.
-> > 
-> > I may be missing something obvious, but this seems super dangerous to
-> > me to perform lightly without reference counting, as it increases the
-> > risks of use-after-free and double-free in case one of the allocated
-> > objects in question can sometimes be returned.
+On Fri, Jan 17, 2025 at 02:22:32PM +0000, Alice Ryhl wrote:
+> I was helping someone with writing a new Rust abstraction, and we were
+> using the miscdevice abstraction as an example. While doing this, it
+> became clear to me that the way I implemented the f_ops vtable is
+> confusing to new Rust users, and that the approach used by the block
+> abstractions is less confusing.
 > 
-> Who said anything about not reference counting?
-
-Nobody, but it was not said either that they were used at all!
-
->  One the things the
-> _cleanup_X annotations can do is drop references (or even locks).
-
-OK then!
-
-> >  Users of such mechanisms must be extremely cautious never to ever
-> > return a pointer derivated from a variable tagged as such, or to
-> > properly NULL-assign the original object for it not to double-free.
-> > So it might in the end require to be careful about null-setting on
-> > return instead of explicitly freeing what was explicitly allocated.
-> > I'm not sure about the overall benefit.
-> > Also I suspect it encourages to multiply the return points, which
-> > makes it even more difficult to possibly fix what needs to be fixed
-> > without coming from a locally allocated variable (e.g. restore a
-> > state in a parser etc). Maybe it's just me not seeing the whole
-> > picture, but as a general case I prefer to forget a free() call
-> > (worst case: memory leak) than forget a foo=NULL that may result in a
-> > double free, and the description here makes me think the latter might
-> > more easily happen.
+> Thus, update the miscdevice abstractions to use the same approach as
+> rust/kernel/block/mq/operations.rs.
 > 
-> Well we could all speculate about the mess we'll make with any new
-> tool.  All I'm saying is that another project with a large code base
-> (systemd), which you can go an look at, managed to use these
-> annotations very successfully to simplify their error legs. Perhaps
-> there are reasons why the kernel can't be as successful, but I think
-> assuming failure from the outset isn't the best way to flush these
-> reasons out.
+> Sorry about the large diff. This changes the indentation of a large
+> amount of code.
+> 
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/kernel/miscdevice.rs | 295 ++++++++++++++++++++++------------------------
+>  1 file changed, 141 insertions(+), 154 deletions(-)
 
-I'm not trying to assume failure or anything, just saying that it's
-probably not always as simple as calling kfree() on anything locally
-allocated for error paths to be magically cleaned, and it actually is
-more subtle (and Laurent confirmed my concerns illustrating that this
-case is precisely covered in glib using transfer of ownership).
+This doesn't apply against a clean 6.14-rc2 tree, what is is made
+against?
 
-And the temptation to return from everywhere since it's the only
-required statement (instead of a goto to a collecting place) becomes
-great and should sometimes be resisted to.
+thanks,
 
-Regardless I do understand how these cleanups can help in a number of
-case, at least to avoid some code duplication.
-
-Regards,
-Willy
+greg k-h
