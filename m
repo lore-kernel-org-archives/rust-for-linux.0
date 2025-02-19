@@ -1,100 +1,83 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from 002.mia.mailroute.net (002.mia.mailroute.net [199.89.3.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9593D1DF24F;
-	Wed, 19 Feb 2025 20:45:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598682528E6;
+	Wed, 19 Feb 2025 20:55:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739997947; cv=none; b=W+zw+t0dNUSce8I7d0DgZp0AC3XrTUOXVPksUYwwMerIE7SCpY36z/O+W3zFhQQfRzaEBLE37kMum6wMTMCeyxwXR4OZwop5j/GV+/7ebm681eSAxIlnQwuDTzDAqv8ZfZ5y/BDgCClmKvgbH2Uz46/3NQ4CN15usUbkA+dNqf8=
+	t=1739998544; cv=none; b=qcelu+yeIMEhRCpjmnCmiPGyUNlQbDwJs7deKk+L5AFYO+iy15yOjojKE+FYlwUQtyOsNX7GUXC4uGXn8YKAEj/Ss+3l5F6QQh6Fr2+22v7GRogoEQvdhDSZaFjZQ5B/zmjJZqIsebt1JgTGx9h0upLeJ0cd6FoZ75pZ/7lYcpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739997947; c=relaxed/simple;
-	bh=RYwHnw45/MEFs5Axvyvrt2KBWzat47/DZtEE1DHf4NI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FETad1JojANTJv4WrRdl4OQHeQHY7UB+VDMjfJCwHj6qNHah2qzlzZQvogp3nkvrzHOIY/VFUotJaaxTPwdT4wAk5EqutAcDRasVqWwhNn3SPNWdISWl+3EaGbOKIVuEXYbIG+8TXC+Admv1m2ojWMOdQpkDsu3+7iRR/2u2O8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB25C4CEE6;
-	Wed, 19 Feb 2025 20:45:45 +0000 (UTC)
-Date: Wed, 19 Feb 2025 15:46:10 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Kees Cook <kees@kernel.org>, Miguel Ojeda
- <miguel.ojeda.sandonis@gmail.com>, Christoph Hellwig <hch@infradead.org>,
- rust-for-linux <rust-for-linux@vger.kernel.org>, Linus Torvalds
- <torvalds@linux-foundation.org>, Greg KH <gregkh@linuxfoundation.org>,
- David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
- ksummit@lists.linux.dev
-Subject: Re: Rust kernel policy
-Message-ID: <20250219154610.30dc6223@gandalf.local.home>
-In-Reply-To: <20250219202751.GA42073@nvidia.com>
-References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
-	<Z7SwcnUzjZYfuJ4-@infradead.org>
-	<CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
-	<202502191026.8B6FD47A1@keescook>
-	<20250219140821.27fa1e8a@gandalf.local.home>
-	<202502191117.8E1BCD4615@keescook>
-	<20250219202751.GA42073@nvidia.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1739998544; c=relaxed/simple;
+	bh=czMByyYReIpUlR6GzNLR1SALmS9l1XM4mmWYhV9IfLM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lIqGokDytUTUiklRAH0ORJ6xlmcSufXCpBHDQNiyy/8C20Xb/Sw3S7dvK2HbAbu2FYOmM3rrMCy510O4p15s1HZoluYxGsZbRIOMma+ekIMWzf/D3wyISwAjSYvivxpuq52IDn0imSKJkfCPEa/PQI31Fp22g/5EfFH+nhRW7H0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=N4/a9lUP; arc=none smtp.client-ip=199.89.3.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="N4/a9lUP"
+Received: from localhost (localhost [127.0.0.1])
+	by 002.mia.mailroute.net (Postfix) with ESMTP id 4YypVg5hFzzlsBGD;
+	Wed, 19 Feb 2025 20:52:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1739998346; x=1742590347; bh=czMByyYReIpUlR6GzNLR1SAL
+	mS9l1XM4mmWYhV9IfLM=; b=N4/a9lUP5L6UKs/agVhzbsZ0TIWrZE/+ExuiLCb5
+	0qFSMK8zpFReC0lckEdW/kEeGlbsGBY5HME5QA/U2VWvDwpYRafvkM3I+h/dIIt5
+	lXGlgENhlQRokMW5QW8Lx39uOaXKp52xjE7fDfhZbpK7S2mg5QyP28CXpDlsArs/
+	jBeh8I5yx0BW3nK1wXtLg5k+PWpiN61TTjVANrTN96NCqW0jMg7RPBYSizMx1hFb
+	Ex/ikitJQuXDZa/r3hoLBAhCcgZKnSmuJi+7sojAXW+uE8llJnmOJ9XnC8FQtnN7
+	rkengsBmMoO2fzrIA1jZoqBUa0VbULqvPK1jdEdT96g4Dw==
+X-Virus-Scanned: by MailRoute
+Received: from 002.mia.mailroute.net ([127.0.0.1])
+ by localhost (002.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id pk2laRYKX8zR; Wed, 19 Feb 2025 20:52:26 +0000 (UTC)
+Received: from [100.66.154.22] (unknown [104.135.204.82])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 002.mia.mailroute.net (Postfix) with ESMTPSA id 4YypVV3frrzlsCZW;
+	Wed, 19 Feb 2025 20:52:17 +0000 (UTC)
+Message-ID: <97841173-1de8-4221-8bf3-3470a5ac98a7@acm.org>
+Date: Wed, 19 Feb 2025 12:52:14 -0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: Rust kernel policy
+To: Steven Rostedt <rostedt@goodmis.org>, Jason Gunthorpe <jgg@nvidia.com>
+Cc: Kees Cook <kees@kernel.org>,
+ Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Christoph Hellwig <hch@infradead.org>,
+ rust-for-linux <rust-for-linux@vger.kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Greg KH <gregkh@linuxfoundation.org>, David Airlie <airlied@gmail.com>,
+ linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
+References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
+ <Z7SwcnUzjZYfuJ4-@infradead.org>
+ <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
+ <202502191026.8B6FD47A1@keescook>
+ <20250219140821.27fa1e8a@gandalf.local.home>
+ <202502191117.8E1BCD4615@keescook> <20250219202751.GA42073@nvidia.com>
+ <20250219154610.30dc6223@gandalf.local.home>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20250219154610.30dc6223@gandalf.local.home>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On Wed, 19 Feb 2025 16:27:51 -0400
-Jason Gunthorpe <jgg@nvidia.com> wrote:
+On 2/19/25 12:46 PM, Steven Rostedt wrote:
+> I do feel that new drivers written in Rust would help with the
+> vulnerabilities that new drivers usually add to the kernel.
 
-> Can someone do some data mining and share how many "rust
-> opportunities" are there per cycle? Ie entirely new drivers introduced
-> (maybe bucketed per subsystem) and lines-of-code of C code in those
-> drivers.
-> 
-> My gut feeling is that the security argument is not so strong, just
-> based on numbers. We will still have so much code flowing in that will
-> not be Rust introducing more and more bugs. Even if every new driver
-> is Rust the reduction in bugs will be percentage small.
-> 
-> Further, my guess is the majority of new drivers are embedded
-> things. I strongly suspect entire use cases, like a hypervisor kernel,
-> server, etc, will see no/minimal Rust adoption or security improvement
-> at all as there is very little green field / driver work there that
-> could be in Rust.
-> 
-> Meaning, if you want to make the security argument strong you must
-> also argue for strategically rewriting existing parts of the kernel,
-> and significantly expanding the Rust footprint beyond just drivers. ie
-> more like binder is doing.
-> 
-> I think this is also part of the social stress here as the benefits of
-> Rust are not being evenly distributed across the community.
+For driver developers it is easier to learn C than to learn Rust. I'm
+not sure that all driver developers, especially the "drive by"
+developers, have the skills to learn Rust.
 
-Drivers is the biggest part of the Linux kernel and has the biggest churn.
-A lot of them are "drive by" submissions too (Let's add a driver for our
-new device and work on something else). These are written by people that
-are not kernel maintainers but just people trying to get their devices
-working on Linux. That means they are the ones to introduce the most bugs
-that Rust would likely prevent.
-
-I was going through my own bugs to see how much Rust would help, and the
-percentage was rather small. I did have a few ref counter bugs. Not the
-kind for freeing, but for which left things in a state that the system
-couldn't be modified (the ref count was to lock access). I'm not sure Rust
-would have solved that.
-
-So most of the bugs were accounting issues. I found a couple that were
-memory safety bugs but those are not as common. I guess that's because I do
-test with kmemleak which will usually detect that.
-
-Perhaps I wouldn't need to do all the memory tests if I wrote the code in
-Rust? But that's not what you are asking. As a maintainer of core code, I
-run a lot of tests before sending to Linus. Which I would hope keeps the
-number of bugs I introduce to a minimum. But I can't say the same for the
-driver code. That's a much different beast, as to test that code, you also
-need the hardware that the driver is for.
-
-I do feel that new drivers written in Rust would help with the
-vulnerabilities that new drivers usually add to the kernel.
-
--- Steve
+Bart.
