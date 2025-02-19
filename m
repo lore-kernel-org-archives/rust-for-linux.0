@@ -1,95 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36091D63E8;
-	Wed, 19 Feb 2025 09:24:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239881DE4E9
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Feb 2025 10:54:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739957060; cv=none; b=ojx7/1vmDs8NtirMhSJCjc2QwcEUMdSlLm+Ot4qHq3nQ8M1No8jVWS1COKzxgqfO+iRlSNetZpHbUW6jNDEhnkjKBpLh9HXIRM9EOulSvNyuKdbqZiYPW/p4R8wq6xQPFsPrXaiV9Y3FySbd4izhuyrT+RgatK0kQfFOvXN95Fs=
+	t=1739962490; cv=none; b=UfsZkxVkAPNJ2bmlPUsl7EwfrwyHlaoErXGBBMnzCf+K+f0DVhgFtPwPjJ8uUl9DSxqkW0hAIYJ02b7ZEOeQ/HkWAp5mzMAllu3kOSoJeHr0VvIoFtJ4nUqa8ij5pT2FJNtKNlbpzU9RUAVOkFGQm5gT4BDOeh4L7oUjM52a6C4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739957060; c=relaxed/simple;
-	bh=jiEWU0rM/r0YOGnhMn0CTqavsshglptprIK688rzVEE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=YLXLTTE0ZlGVwZm168/YozjlNd16GC6LsjX3IfNrVd2CMtpXaOPB3SCY2ayPvgNHN3VFmpX5IpRtLGlJUHfvk1dKzk5hiIPpvRX1g8H8fzl2E/L4pwLkdvlYlP71YJKlfb6N7MIKSb1pdnHs7mUNm4xFmfz7agM4z8whu3J16AQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=StVso1oo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739962490; c=relaxed/simple;
+	bh=xIiVR/mUs6fGi4kFkCT5HKpm2bDuCcmRpr3uLRr7IEc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MD0QidVyHhOgzs3AOqY+w68rl16yx6RwPvOphgWxo1ffm9UOBBOIEf6UoYgH71kgiR8QoZAK4y72Z1bUqwwNASC+y8dVh8g1Z7qbd+HZ1RmhuBcI+ZvxYfsY9PUOPwjXbAC193Rntl9snxKXSP4Kv9USwEiMu31A52z4jn/S+f8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=REaMlzi/; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="StVso1oo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B822AC4CEE6;
-	Wed, 19 Feb 2025 09:24:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739957060;
-	bh=jiEWU0rM/r0YOGnhMn0CTqavsshglptprIK688rzVEE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=StVso1ooh0uccS8QdlDZ5wLzVWRjloPAlErH08LDb7nFHd0LDQmN5as22l/KdZ5V1
-	 hW+YQgzXhxiBff1tiHpVktYRH+51YEwBYIx0YJn6OCsQuo1bDfqY7aTIe3WNIZmvvf
-	 lG74mEe01eHleaZASmKI0s/5WQefDgrqfHyTYv+KQd9NqoO2TOrwwjRsoFh0p2ZYc0
-	 yUuGkSRo9l9Jz+GDkwloHSM9pZCTa1JRhrOnNkRATQF5lCDXl5Aaw4IIRt5pa84Cny
-	 cvIu33FWL5BlW+Mv2SjH/sylMT+VzRT3w8CVZziw/uFjotjR1xHs+eJkTpVewACaQh
-	 ulZfIxO5VieuA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Abdiel Janulgue" <abdiel.janulgue@gmail.com>
-Cc: "Asahi Lina" <lina@asahilina.net>,  "Miguel Ojeda" <ojeda@kernel.org>,
-  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
- <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
- =?utf-8?Q?=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
-  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Jann Horn" <jannh@google.com>,  "Matthew Wilcox" <willy@infradead.org>,
-  "Paolo Bonzini" <pbonzini@redhat.com>,  "Wedson Almeida Filho"
- <wedsonaf@gmail.com>,  "Valentin Obst" <kernel@valentinobst.de>,  "Andrew
- Morton" <akpm@linux-foundation.org>,  <linux-mm@kvack.org>,
-  <airlied@redhat.com>,  <rust-for-linux@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>,  <asahi@lists.linux.dev>,  "Danilo
- Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH 0/6] rust: page: Support borrowing `struct page` and
- physaddr conversion
-In-Reply-To: <a204824d-2280-4402-b870-9db3e2e15aba@gmail.com> (Abdiel
-	Janulgue's message of "Mon, 17 Feb 2025 10:50:28 +0200")
-References: <20250202-rust-page-v1-0-e3170d7fe55e@asahilina.net>
-	<Z6CY4TvZwLkWmB3I@pollux>
-	<a3551d7d-14c7-40a0-90ff-1fcce93be62a@asahilina.net>
-	<cae5503e-4330-4c44-8a50-1ebf63ea5a24@asahilina.net>
-	<XG7vFvm1LjZiRjXm55DgLGvzsoFsJsk1s6-1T2uKilk9MghGYKSsf5-vcDnbpDMfuePjbxm3u8fQBhFnJhRKfw==@protonmail.internalid>
-	<a204824d-2280-4402-b870-9db3e2e15aba@gmail.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Wed, 19 Feb 2025 10:24:07 +0100
-Message-ID: <87frkacmo8.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="REaMlzi/"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2f74e6c6cbcso1453143a91.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 19 Feb 2025 02:54:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739962488; x=1740567288; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xIiVR/mUs6fGi4kFkCT5HKpm2bDuCcmRpr3uLRr7IEc=;
+        b=REaMlzi/wb2yZiCzQ7U99VQdm/x012B31oZgj+1dZVxnis7kt+A7IiNHdcVaDEJPlk
+         KRU2/ZqHJwXQzm6WD7NnTSnWISu/X0LgHReWJxhL3dqZ5sfkHM0YxBMm/+orcquyOOXN
+         VGT60+eZysw/35dLv+JZGOqb2jOeq5R8sJQHUzYAc6u2AacDWaF1C/tP68ghfn1yPjwE
+         nSQXdmrh4/x1w4DN01Sd6a3S32Ao+63Umg2otCxri9SO/6KrnZKMNXCN9jp8ssYqhz/b
+         deMxVHgQVD+XRaq8IQGRDQDSwpSIwMvhhTeuHFyJCFB8MJxZYzQl0a6R9gGZIk2v1gaH
+         Na4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739962488; x=1740567288;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xIiVR/mUs6fGi4kFkCT5HKpm2bDuCcmRpr3uLRr7IEc=;
+        b=MbBZUy1NBizfZtnnlbNyzgHHk7CEZRvSkLEP4NN1ZjsiYbppcNsuUgND4Rr91E8RJg
+         4cV+YgS+b3FqlqAwyamvtWRKxulk74O3nS4PJpd1gkZo3LRcLpypuw+IAYEtr9295oPL
+         r1/7HsMSyLvO5uvzVKGVaOyvTj7fmDaiVePDxybtaACA6rSZAKPbm8Py3pUcgBpcoJWG
+         CXynBk1Zusl5Bqo3X3gc5q6HOoJC05rdGQjLFmqAfSKJiFERp62w3q/uIwmShnxKvkPj
+         Ki6qf6z+UZjHSfv88veTt9ldJUJTRhMcxHt3zT6wR5WkgM1osi5VONYuwD5KT3bGDrcO
+         +W3g==
+X-Forwarded-Encrypted: i=1; AJvYcCXPvoESf+3pDmD7r9frfIB+MC1r7NHfQlrynFj3PE/1Z4m7CWOgXLDpMPTdnTMc96fcOcTt9MQeVnWuOIPmmA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLZ9Jty20rCoAPt5R0JGNkrR6mzmlGSynwm9FrTVIZd+0adWk2
+	1AbFTM2xXyFX8veYdx7YSn8QdipowJINyng2Ue8maSwcloPqaXNnebTbL3WtGyO2A0vrumPZUr6
+	gIKnicPge6gP3jE1wxW+i+dCoEZI=
+X-Gm-Gg: ASbGncscurZVqmxrSLg0tUzezpkoMmGSw2sOBFZQZofiwzXKW23F8lfbDxQj3KMgmgV
+	RHPVsdloG1PVT46d4aXb/KXYM8G14+BaVpI57hc7RmHG8C+/jJw8ak9o8sTNnUJY4niuGFANV
+X-Google-Smtp-Source: AGHT+IFQ+crdBFh3PJXSlTobLC8BmDEvCYXRkcMpyS58m2ETuUUA47rX2L2H5kWaraHK03EltJ9v24TeoQgQfBG+Bd8=
+X-Received: by 2002:a17:90b:1e05:b0:2fa:17d2:158 with SMTP id
+ 98e67ed59e1d1-2fc40790a64mr10845548a91.0.1739962488276; Wed, 19 Feb 2025
+ 02:54:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <QD0GOJgCH2aX4JQuTDvwU-r5K8zcpSxD3eN6ixps2goHl3elDKOJFlkzUpSQSKaYDFls5CElJa-QXcoHLpInog==@protonmail.internalid>
+ <20250219055516.359454-1-dirk.behme@de.bosch.com> <87y0y2e55h.fsf@kernel.org>
+In-Reply-To: <87y0y2e55h.fsf@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 19 Feb 2025 11:54:35 +0100
+X-Gm-Features: AWEUYZkSvzj7MGGs_fJPUYe6SnTEWBl_4MuDVLXkyh-6B9TN-kGsVbE9i8p4Wk0
+Message-ID: <CANiq72=ixg0kg7gY1m32pQ0f4hZDDdgpZ30hotHD=C7trevMtA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] rust: types: `Opaque` doc: Add some intra doc linkage
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Dirk Behme <dirk.behme@de.bosch.com>, rust-for-linux@vger.kernel.org, 
+	ojeda@kernel.org, daniel.almeida@collabora.com, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-"Abdiel Janulgue" <abdiel.janulgue@gmail.com> writes:
-
-> Hi,
+On Wed, Feb 19, 2025 at 9:06=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel=
+.org> wrote:
 >
-> On 15/02/2025 21:47, Asahi Lina wrote:
->>
->> Given the discussion in the other subthreads, it looks like this is not
->> the best approach for page table management and using it for crash dumps
->> of arbitrary physical memory pages raises some eyebrows, so I'm going to
->> abandon this series.
->>
->> Abdiel, if the first two patches are helpful to your work, please feel
->> free to incorporate them into a v4. Otherwise, just go ahead with
->> whatever works for you!
->>
->
-> Thanks you for improving the series, much appreciated! I will try to
-> incorporate your improvements.
->
-> Btw, I'll most probably pick this up again once I'm finished with the
-> rust dma coherent allocator bindings.
+> You yank the effect of this change in patch 2, so maybe just leave it
+> till then?
 
-The series has application in `rnull` as well and I will probably add it
-as a dependency for next version.
+It is fine -- this could have been an independent patch.
 
-
-Best regards,
-Andreas Hindborg
-
-
-
+Cheers,
+Miguel
