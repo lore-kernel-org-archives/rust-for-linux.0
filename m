@@ -1,158 +1,155 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailrelay.tugraz.at (mailrelay.tugraz.at [129.27.2.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28ABC1A8F94;
-	Thu, 20 Feb 2025 14:08:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A7B1BC073;
+	Thu, 20 Feb 2025 14:09:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.27.2.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740060484; cv=none; b=oR2br47hbmZ5ILOayV2daGpPiiL1IQvOv1aM2KWwIfdDxgZhw4Um1E3248iTqgnNKk6Ua17sivt66kusTeBaWvfK7b5qyrAebcPOkFuM+J3QTeDGoaY6U6fnmw2n0q0YPsuqJpzcwzDP65/QfdfpodiDjTKYBR9JxGSFAjBeUJM=
+	t=1740060574; cv=none; b=lsXIbBrxU7hkJcx1gdBBq/i7svsQe5e6Zw5DWxsf5FKvNImj6ZenmqMPgLkvoUrN7B8dBana/cMDbBN5eVMK6/QzAOE2SFDZCrukLLqiK8HfO61HRgv+myNNYzPqdmWwKtgUeN7WUl8lnqHgbLeDUm4jVvQZeIuDOpETrWOzJAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740060484; c=relaxed/simple;
-	bh=BUAFupbmeOg5OQr/zoe76B/ATDMFC2NaHM0MAwh8poA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lBYxKKnILllAH3OGytTmy3dDLeuoq2W7AGwT1RK/cNHQBogSphxYorbUi8UlSKIK7U6qGlNdqEsKo/1HM/YbmVkCPVD0w4By9O5Fobbu4y7mzqdWOXXPw83U8z4DXvGPbXIl1nGzz5V5w7KV8A/xNAfzDD4ry3V1FFcpYKCiQ2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R1TcKTdZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740060574; c=relaxed/simple;
+	bh=i3lojv9jXoafhxwWr5vyNvm/ejeuGaXs3UkBEGJVqbg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=U6IQvj/DwutsHVKZOIg6TxC7oQMGt0b+lHkTdmGXr00rVtY4sicTDCNuy7jtd+rYvDcdoJEG1Gz4zbiacGg6PiLQD45/pBVHXiSww1V8XnVzHnVRdW2HyqBvxnuRrO2GubhOaQ6jXUSRUmgy+XU9kgGbnUoOPscgh9UQwYIAmoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at; spf=pass smtp.mailfrom=tugraz.at; dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b=kLKtEQvS; arc=none smtp.client-ip=129.27.2.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tugraz.at
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R1TcKTdZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17F65C4CEE2;
-	Thu, 20 Feb 2025 14:08:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740060483;
-	bh=BUAFupbmeOg5OQr/zoe76B/ATDMFC2NaHM0MAwh8poA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=R1TcKTdZUzXz/x1a39o81aw14MuhGwJsF4M6GpI2JB2Sma+oDayeqIdc8JPt6g4TX
-	 IJTT9xJhJi++YRfIV+qqM6v/VXvPipQXSTAP37Jjs9kMmTOdJ5nuVLonKeiGgli3KH
-	 dVGbzBlgGoMJi0/Ic1gK1WlnbuM+vHjPWhlIf3rHm0rBs5gCocNPZR+EFycoQ+PFSE
-	 X+4AIRclvO796gbR3MvWtACI8dbCJafMPViKtcZRaL9VmRSGYETupJ+MZp/YwEs5hq
-	 kqs8y9dE8WQrXJmajXx9YkmPR6B1eFCE5nbvRJIXw2MJbP9HVDBAivtmMQV+9Du95K
-	 Z4FPKEzV2b1hg==
-Date: Thu, 20 Feb 2025 16:07:58 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Fiona Behrens <me@kloenk.dev>
-Cc: Bart Van Assche <bvanassche@acm.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Jason Gunthorpe <jgg@nvidia.com>, Kees Cook <kees@kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	rust-for-linux <rust-for-linux@vger.kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
-	ksummit@lists.linux.dev
+	dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b="kLKtEQvS"
+Received: from vra-171-197.tugraz.at (vra-171-197.tugraz.at [129.27.171.197])
+	by mailrelay.tugraz.at (Postfix) with ESMTPSA id 4YzFW60G74z3wZp;
+	Thu, 20 Feb 2025 15:09:21 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tugraz.at;
+	s=mailrelay; t=1740060564;
+	bh=HztTRfmRt7WiQiZUmT+AkwOLG4UPjcXadpDkmMR2uVE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=kLKtEQvSAsAM0lJQ13jTmiBk4YudiFJERltVS/TR98sarsF9pUDFYiTXrcei0lauz
+	 cZ1/DTfk/mWTJ9iyjoX8FI48XvDTiR4L4PjGEIyQNI8lxY5W/PQBdj3ccnNM/Quajy
+	 kexFPU8TTDDDE54FvGeQkY1BKcT5tPf7FA2QUUjA=
+Message-ID: <1f31a16d3898e0e9b5d94f9bcc12a1b73ac97982.camel@tugraz.at>
 Subject: Re: Rust kernel policy
-Message-ID: <Z7c3PguDn-sEl3gm@kernel.org>
+From: Martin Uecker <uecker@tugraz.at>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Boqun Feng <boqun.feng@gmail.com>,
+  "H. Peter Anvin" <hpa@zytor.com>, Miguel Ojeda
+ <miguel.ojeda.sandonis@gmail.com>, Christoph Hellwig <hch@infradead.org>,
+ rust-for-linux <rust-for-linux@vger.kernel.org>, Linus Torvalds
+ <torvalds@linux-foundation.org>, David Airlie <airlied@gmail.com>, 
+ linux-kernel@vger.kernel.org, ksummit@lists.linux.dev, Justin Stitt
+ <justinstitt@google.com>, Kees Cook <keescook@chromium.org>
+Date: Thu, 20 Feb 2025 15:09:21 +0100
+In-Reply-To: <962fa158-5315-4d93-afb1-8a1c08787ad8@stanley.mountain>
 References: <Z7SwcnUzjZYfuJ4-@infradead.org>
- <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
- <202502191026.8B6FD47A1@keescook>
- <20250219140821.27fa1e8a@gandalf.local.home>
- <202502191117.8E1BCD4615@keescook>
- <20250219202751.GA42073@nvidia.com>
- <20250219154610.30dc6223@gandalf.local.home>
- <97841173-1de8-4221-8bf3-3470a5ac98a7@acm.org>
- <89f2547edcaaba53d9965cab9133d809607330ac.camel@kernel.org>
- <87pljc6d7s.fsf@kloenk.dev>
+	 <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
+	 <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
+	 <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
+	 <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
+	 <Z7VKW3eul-kGaIT2@Mac.home> <2025021954-flaccid-pucker-f7d9@gregkh>
+	 <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
+	 <2025022024-blooper-rippling-2667@gregkh>
+	 <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
+	 <962fa158-5315-4d93-afb1-8a1c08787ad8@stanley.mountain>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87pljc6d7s.fsf@kloenk.dev>
+X-TUG-Backscatter-control: G/VXY7/6zeyuAY/PU2/0qw
+X-Spam-Scanner: SpamAssassin 3.003001 
+X-Spam-Score-relay: 0.0
+X-Scanned-By: MIMEDefang 2.74 on 129.27.10.116
 
-On Thu, Feb 20, 2025 at 12:57:11PM +0100, Fiona Behrens wrote:
-> Jarkko Sakkinen <jarkko@kernel.org> writes:
-> 
-> > On Wed, 2025-02-19 at 12:52 -0800, Bart Van Assche wrote:
-> >> On 2/19/25 12:46 PM, Steven Rostedt wrote:
-> >> > I do feel that new drivers written in Rust would help with the
-> >> > vulnerabilities that new drivers usually add to the kernel.
-> >> 
-> >> For driver developers it is easier to learn C than to learn Rust. I'm
-> >> not sure that all driver developers, especially the "drive by"
-> >> developers, have the skills to learn Rust.
-> >
-> > IMHO, Rust is not that difficult to learn but it is difficult to
-> > run.
-> >
-> > One point of difficulty for me still is the QA part, not really the
-> > code. QuickStart discusses on how to install all the shenanigans
-> > with distribution package managers.
-> >
-> > The reality of actual kernel development is that you almost never
-> > compile/run host-to-host, rendering that part of the documentation
-> > in the battlefield next to useless.
-> >
-> > Instead it should have instructions for BuildRoot, Yocto and
-> > perhaps NixOS (via podman). It should really explain this instead
-> > of dnf/apt-get etc.
-> 
-> What do you mean with via podman for NixOS?
+Am Donnerstag, dem 20.02.2025 um 16:46 +0300 schrieb Dan Carpenter:
+> On Thu, Feb 20, 2025 at 09:57:29AM +0100, Martin Uecker wrote:
+> > In particulary, I have a relatively concrete plan to have a memory safe
+> > mode for C that can be toggled for some region of code and would make
+> > sure there is no UB or memory safety issues left (I am experimenting wi=
+th
+> > this in the GCC FE).=C2=A0 So the idea is that one could start to activ=
+ate this
+> > for certain critical=C2=A0regions of code to make sure there is no sign=
+ed
+> > integer overflow or OOB access in it.
+>=20
+> I don't think diferentiating between signed and unsigned integer
+> overflows is useful.  In the kernel, most security issues from integer
+> overflows are from unsigned integer overflows.  Kees says that we
+> should warn about "Unexpected" behavior instead of "Undefined".  In fact,
+> Justin Stitt has done the opposite of what you're doing and only checks
+> for unsigned overflows.  He created a sanitizer that warns about integer
+> overflows involving size_t type (which is unsigned), because sizes are
+> so important.  (Checking only size_t avoids probably the largest source
+> of harmless integer overflows which is dealing with time).
 
-I sometimes use NixOS to test more complex kernel configurations. See
+I agree with you.  We were also discussing an attribute that
+can be attached to certain unsigned types to indicate that
+wrapping is an error.=C2=A0
 
-https://social.kernel.org/notice/ArHkwNIVWamGvUzktU
+My more limited aim (because my personal time is very limited)
+is to define a memory safe subset and in such a subset you can
+not have UB.  Hence, I am more focussed on signed overflow at
+the moment, but I agree that safety in general must go beyond=C2=A0
+this.
 
-I'm planning to use this approach to check if I could use that to
-build efficiently kernels with Rust.
+But this is why I want the kernel community to be more involved,
+to get more resources and more experience into these discussions.
 
-I've not been so far successful to do it with BuildRoot, which has
-zeroed out any possible contributions for rust linux. Writing code
-is like 5% of kernel development. Edit-compile-run cycle is the
-95%.
+>=20
+> The sanitizer has a list of exceptions like if (a < a + b) where the
+> integer overflow is idiomatic.  But the concern was that there might be
+> other deliberate integer overflows which aren't in the exception list so
+> Justin also created a macro to turn off the santizer.
+>=20
+> 	x =3D wrapping_ok(a + b);
 
-> I do still have on my ToDo list to build and publish a better nix
-> development shell for kernel with rust enabled, and could also add a
-> section on how to build a NixOS iso in the same nix code.
-> But sadly time is a finite resource and so did not yet got to it.
+Indeed. This is the main issue with unsigned wraparound. Exactly
+because it was always defined, simply screening for wraparound
+yields many false positives.=20
 
-Please do ping me if you move forward with this. IMHO, why wouldn't
-you contribute that straight to the kernel documentation? Right no
-there are exactly zero approaches in kernel documentation on how
-test all of this.
+(BTW: Rust is also not perfectly immune to such errors:
+https://rustsec.org/advisories/RUSTSEC-2023-0080.html)
 
-The best known method I know is to extend this type of example I
-did year ago:
 
-#!/usr/bin/env bash
+>=20
+> What I would like is a similar macro so we could write code like:
+>=20
+> 	x =3D saturate_math(a + b + c + d * d_size);
+>=20
+> If anything overflowed the result would be ULONG_MAX.  In the kernel,
+> we have the size_add() and size_mul() macros which do saturation math
+> instead of wrapping math but we'd have to say:
+>=20
+> 	x =3D size_add(a, size_add(b, size_add(c, size_add(size_mul(d, d_size)))=
+));
+>=20
+> Which is super ugly.  Maybe we could create something like this macro?
+>=20
+> #define saturate_math(x) ({             \
+>         unsigned long res;              \
+>         __trap_overflow(label_name));   \
+>         res =3D (x);                      \
+>         if (0) {                        \
+> lable_name:                             \
+>                 res =3D ULONG_MAX;        \
+>         }                               \
+>         res;                            \
+> })
+>=20
 
-set -e
+We added checked arhithmetic to C23, we could add saturating
+math to C2Y if this is needed.  (although I admit I do not fully
+understand the use case of saturating math, a saturated value
+still seems to be an error? Statistics, where it does not matter?)
 
-make defconfig
-scripts/config --set-str CONFIG_INITRAMFS_SOURCE "initramfs.txt"
-yes '' | make oldconfig
+In general, if people have good ideas what compilers or the language
+standard can do to help, please talk to us. It is possible to
+improve compilers and/or the language itself.
 
-cat > initramfs.txt << EOF
-dir /dev 755 0 0
-nod /dev/console 644 0 0 c 5 1
-nod /dev/loop0 644 0 0 b 7 0
-dir /bin 755 1000 1000
-slink /bin/sh busybox 777 0 0
-file /bin/busybox initramfs/busybox 755 0 0
-dir /proc 755 0 0
-dir /sys 755 0 0
-dir /mnt 755 0 0
-file /init initramfs/init.sh 755 0 0
-EOF
 
-mkdir initramfs
+Martin
 
-curl -sSf https://dl-cdn.alpinelinux.org/alpine/edge/main/x86_64/busybox-static-1.36.1-r25.apk | tar zx --strip-components 1
-cp busybox.static initramfs/busybox
 
-cat > initramfs/init.sh << EOF
-#!/bin/sh
-mount -t proc none /proc
-mount -t sysfs none /sys
-sh
-EOF
-
-and then qemu-system-x86_64 -kernel arch/x86/boot/bzImage
-
-It's sad really.
-
-> 
-> Fiona
-
-BR, Jarkko
