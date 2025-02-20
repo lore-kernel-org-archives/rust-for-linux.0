@@ -1,110 +1,288 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2440722087;
-	Thu, 20 Feb 2025 21:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FAE1D54D1;
+	Thu, 20 Feb 2025 21:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740085419; cv=none; b=mIvKPBzTAU/bPi1VfR0OaS2FcyjImRX7aIeZsF2Mqk53uq0/+Hbu2uWnZaYnQIu/kNQvVTbVWDLsskFjeZ2WUopx8eekTSHUaEQywGBOCr23l3OLo4vnLvvPdlvsdVatvGvT0qnnPy2kfB+1En2zkqKAs8lzroZGAhOdEttbz8g=
+	t=1740086350; cv=none; b=LXJb7sQ6rfakMCfym+qn1IGFpLZBdj7Pv/mLF7r3YYCajABy6H8o63d439qLHig1s5r/8U4yPIqP+flYAzhPK6tqHRGnmlnMx7NQYuGFd2P3BPnq8YTUt/D9qeYj5wgIu0oK0l/MRpZoXIQt3aaqLWxGq8ERD/C7CIQDhO9Rl/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740085419; c=relaxed/simple;
-	bh=1lEWNQw2QxR1fSbR0O+DjUoBzz4cKEriWifSC/6F4Tk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hHq26SBiwdxJwRakTHSkmBbu4ULotiWLmKJyBIwyxsq+RUXUhjUgUmoPDSGwUuqmW7MKD5//SXGcI9RMbHG+MOrIo3CQNDVa8E+2ZXCiDkH14hW7GPMGABnZWOdd1zt4W7wpr7KCqoW/R16tz74vp4KuwRtRqYaDuzAVGF0AHoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KfCEgNXM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740086350; c=relaxed/simple;
+	bh=uoOMnodQ4Ci7A6GqubZ3v3byPCrusiTbmbos5sLMOZc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Pws3dwJhZbO9P9XJBPxMsic4LRjSm1kABxQFpI8btHel9cx9NtiojmlkzxMFlKh4GDkkBQRewZ+KZVS4UW9ShBexx6+COONYgbSvfXDD4bhP7bMAmub71QS4wVzfBPVnbJsytuj6H4HOJNry+4zXuwTX+Wv/jfqGaBZt75vpMPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LuLc+8Wo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KfCEgNXM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21435C4CED6;
-	Thu, 20 Feb 2025 21:03:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LuLc+8Wo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB90C4CED1;
+	Thu, 20 Feb 2025 21:19:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740085418;
-	bh=1lEWNQw2QxR1fSbR0O+DjUoBzz4cKEriWifSC/6F4Tk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KfCEgNXMQKkQLlWRQSpT1qNC7ESfqy8J6Ko1drBXAMA5A/NkLf1ijhGenTHdQKb7+
-	 YbCXH/j+L+ZrjMyOs3VZ5QeAWZ0PYyuR+Xkh0PuB6SddcMqR0wDsyCaxxhyBHO0MPQ
-	 JaWeXr6m7EEt9GFTHQDRcb+92lexvOjwA55XbFwtqw7xyVfYj7/aEw+v0H6WHdk7Vy
-	 sTmoNEcS1X6aMqeIYBShxtyPiLoKYOI9HNkHsBUmE8nLooIzg7/mSzfECaCu77AFgy
-	 Lw1b7UAzKrYFBkUNLJ2kIHt9njGyVQm7wyB7TpVzXtrHHWaPMaVK6r9xVjJz8ZX6IX
-	 gckFPUPBfwsiw==
-Date: Thu, 20 Feb 2025 22:03:35 +0100
-From: Frederic Weisbecker <frederic@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>,
-	Dirk Behme <dirk.behme@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 00/14] hrtimer Rust API
-Message-ID: <Z7eYp_vZo5yDVOdI@pavilion.home>
-References: <aIJ0ymzdUceCN05hwJpth4erH5u2SHYzYl52wGeT3uiO9bdk92ZkEmEEq9a9NXsInJYSz9uziwq-1fvdsXoeDA==@protonmail.internalid>
- <20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org>
- <877c5mci3p.fsf@kernel.org>
+	s=k20201202; t=1740086350;
+	bh=uoOMnodQ4Ci7A6GqubZ3v3byPCrusiTbmbos5sLMOZc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=LuLc+8WozM5j7JeVycSXrkgTXL3eeLPquUfkOOFMk10cWdNpryahqiwDBzigrbP23
+	 o35hM60CJVHBhk7Q1/3xhB4lDrZbnIKDRhNMFZP2rt9kdiMSR7j16VNCaqYba58IM3
+	 oEjDB2tJ6sTM8jZWEG6ukGkthPisrTIKaN+vcv0EeVIlAoGlqL16orYdX9lX7afZ2W
+	 URaCsC8Lr08we/rBIHvENCojvb0EDoDCluExcOOR2FOm38ke+fN5pqN7aR9PHInl8v
+	 ZdaHxThiLRRrgfwrJvcqhftRnZWwhVuBB2QsUxmEQdnTe88hHZp2avzfl9DmuwvC+W
+	 L7uhxGDkFpnXQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Tamir Duberstein" <tamird@gmail.com>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Anna-Maria Behnsen"
+ <anna-maria@linutronix.de>,  "Frederic Weisbecker" <frederic@kernel.org>,
+  "Thomas Gleixner" <tglx@linutronix.de>,  "Danilo Krummrich"
+ <dakr@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
+ <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
+ =?utf-8?Q?=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
+  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
+  "Lyude Paul" <lyude@redhat.com>,  "Guangbo Cui" <2407018371@qq.com>,
+  "Dirk Behme" <dirk.behme@gmail.com>,  "Daniel Almeida"
+ <daniel.almeida@collabora.com>,  <rust-for-linux@vger.kernel.org>,
+  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v8 02/14] rust: hrtimer: introduce hrtimer support
+In-Reply-To: <CAJ-ks9ncOyGyQsDFOBxg-7wmXkrQYiZr6H6eEFWsFstk=p1uAA@mail.gmail.com>
+ (Tamir
+	Duberstein's message of "Thu, 20 Feb 2025 12:04:29 -0500")
+References: <20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org>
+	<20250218-hrtimer-v3-v6-12-rc2-v8-2-48dedb015eb3@kernel.org>
+	<KDmrJnQA2_Ojf67mD8WA_UafgVCACRRleB9t-D_1yl_bua8e1VWdGQAUvmMGHscqRHu1gzPJCKe_BfotutZm5Q==@protonmail.internalid>
+	<CAJ-ks9ncOyGyQsDFOBxg-7wmXkrQYiZr6H6eEFWsFstk=p1uAA@mail.gmail.com>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Thu, 20 Feb 2025 22:18:59 +0100
+Message-ID: <87wmdkgvr0.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <877c5mci3p.fsf@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Le Wed, Feb 19, 2025 at 12:02:50PM +0100, Andreas Hindborg a écrit :
-> "Andreas Hindborg" <a.hindborg@kernel.org> writes:
-> 
-> > This series adds support for using the `hrtimer` subsystem from Rust code.
-> >
-> > The series adds support for timer mode and clock source configuration during
-> > timer initialization. Examples and functionality to execute closures at timer
-> > expiration has been removed, as these depend on either atomics [3] or
-> > `SpinLockIrq` [4], which are still being worked on.
-> >
-> > This series is a dependency for unmerged features of the Rust null block driver
-> > [1], and for rkvms [2].
-> >
-> 
-> @ timer subsystem maintainers: did you discuss how you want to set up
-> maintenance for this yet? As mentioned, I'm happy stepping up to
-> maintain this, but if you want to handle it with existing resources that
-> is perfectly fine as well.
+"Tamir Duberstein" <tamird@gmail.com> writes:
 
-You're the best candidate to maintain this code since you wrote it :-)
+> On Tue, Feb 18, 2025 at 8:29=E2=80=AFAM Andreas Hindborg <a.hindborg@kern=
+el.org> wrote:
+>>
 
-Also I personally have near zero skills in Rust as of today so all I can do
-is to vaguely keep an eye on the binding's interface and keep in touch
-with the changes.
+[...]
 
-So I suggest you to add a new entry with you as a maintainer (I suggested
-something similar to Fujita for some other timer related things) but please
-keep us Cc'ed for future changes.
+>> +//! ## State Diagram
+>> +//!
+>> +//! ```text
+>> +//!                  <-- Stop ----
+>> +//!                  <-- Cancel --
+>> +//!                  --- Start -->
+>> +//!        +---------+        +---------+
+>> +//!   O--->| Stopped |        | Running |---o
+>> +//!        +---------+        +---------+   |
+>> +//!                                  ^      |
+>> +//!                  <- Expire --    |      |
+>> +//!                                  o------o
+>> +//!                                   Restart
+>> +//! ```
+>> +//!
+>> +//! A timer is initialized in the **stopped** state. A stopped timer ca=
+n be
+>> +//! **started** with an **expiry** time. After the timer is started, it=
+ is
+>> +//! **running**. When the timer **expires**, the timer handler is execu=
+ted.
+>> +//! After the handler has executed, the timer may be **restarted** or
+>> +//! **stopped**. A running timer can be **canceled** before it's handle=
+r is
+>
+> "it's" =3D it is. This should be "its" (possessive).
 
-> I was hoping we could merge the patches in the near future. The patches
-> have been on list for quite a while now, and I am happy with the shape
-> of them. They are in my critical path for merging dependent code in the
-> rust null block driver.
-> 
-> Let me know if there is anything I can do to help move the process
-> forward.
+Thanks =F0=9F=91=8D
 
-Let me have a last look...
+> Just to be clear, after the handler has executed and before the timer
+> has been **restarted** or **stopped** the timer is still in the
+> **running** state?
 
-Thanks.
+It depends on the return value of the handler. If the handler returns resta=
+rt,
+the timer the timer does not enter the stopped state. If the handler
+returns stop, the timer enters the stopped state.
+
+The timer is still considered to be in running state the handler is
+running.
+
+I can add this info to the section.
+
+>
+>
+>> +//! executed. A timer that is cancelled enters the **stopped** state.
+>> +//!
+>> +
+>> +use crate::{init::PinInit, prelude::*, time::Ktime, types::Opaque};
+>> +use core::marker::PhantomData;
+>> +
+>> +/// A timer backed by a C `struct hrtimer`.
+>> +///
+>> +/// # Invariants
+>> +///
+>> +/// * `self.timer` is initialized by `bindings::hrtimer_setup`.
+>> +#[pin_data]
+>> +#[repr(C)]
+>> +pub struct HrTimer<T> {
+>> +    #[pin]
+>> +    timer: Opaque<bindings::hrtimer>,
+>> +    _t: PhantomData<T>,
+>> +}
+>> +
+>> +// SAFETY: Ownership of an `HrTimer` can be moved to other threads and
+>> +// used/dropped from there.
+>> +unsafe impl<T> Send for HrTimer<T> {}
+>> +
+>> +// SAFETY: Timer operations are locked on C side, so it is safe to oper=
+ate on a
+>> +// timer from multiple threads
+>> +unsafe impl<T> Sync for HrTimer<T> {}
+>> +
+>> +impl<T> HrTimer<T> {
+>> +    /// Return an initializer for a new timer instance.
+>> +    pub fn new() -> impl PinInit<Self>
+>> +    where
+>> +        T: HrTimerCallback,
+>> +    {
+>> +        pin_init!(Self {
+>> +            // INVARIANTS: We initialize `timer` with `hrtimer_setup` b=
+elow.
+>> +            timer <- Opaque::ffi_init(move |place: *mut bindings::hrtim=
+er| {
+>> +                // SAFETY: By design of `pin_init!`, `place` is a point=
+er to a
+>> +                // live allocation. hrtimer_setup will initialize `plac=
+e` and
+>> +                // does not require `place` to be initialized prior to =
+the call.
+>> +                unsafe {
+>> +                    bindings::hrtimer_setup(
+>> +                        place,
+>> +                        Some(T::CallbackTarget::run),
+>> +                        bindings::CLOCK_MONOTONIC as i32,
+>> +                        bindings::hrtimer_mode_HRTIMER_MODE_REL,
+>> +                    );
+>> +                }
+>> +            }),
+>> +            _t: PhantomData,
+>> +        })
+>> +    }
+>> +
+>> +    /// Get a pointer to the contained `bindings::hrtimer`.
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// `ptr` must point to a live allocation of at least the size of `=
+Self`.
+>> +    unsafe fn raw_get(ptr: *const Self) -> *mut bindings::hrtimer {
+>> +        // SAFETY: The field projection to `timer` does not go out of b=
+ounds,
+>> +        // because the caller of this function promises that `ptr` poin=
+ts to an
+>> +        // allocation of at least the size of `Self`.
+>> +        unsafe { Opaque::raw_get(core::ptr::addr_of!((*ptr).timer)) }
+>> +    }
+>
+> Can you help me understand why the various functions here operate on
+> *const Self? I understand the need to obtain a C pointer to interact
+> with bindings, but I don't understand why we're dealing in raw
+> pointers to the abstraction rather than references.
+
+We cannot reference the `bindings::hrtimer` without wrapping it in
+`Opaque`. This would be the primary reason. At other times, we cannot
+produce references because we might not be able to prove that we satisfy
+the safety requirements for turning a pointer into a reference. If we
+are just doing offset arithmetic anyway, we don't need a reference.
 
 
-> 
-> 
-> Best regards,
-> Andreas Hindborg
-> 
-> 
-> 
-> 
+> This extends to
+> HrTimerPointer, which is intended to be implemented by *pointers to*
+> structs that embed `HrTimer`; why isn't it implemented on by the
+> embedder itself?
+
+Not sure what you mean here. If you refer to for instance the
+implementation of `HrTimerPointer for Arc<T>`, I get why you might
+wonder, why does `HasHrTimer::start` not take a reference instead of a
+pointer? We could do that, but we would just immediately break it down
+again in the implementation of `HasHrTimer::start`. Might still be a
+good idea though.
+
+>
+> I realize we discussed this on v6, sorry for not keeping up there.
+
+No worries, it is good that we discuss this.
+
+[...]
+
+>> +
+>> +/// A handle representing a potentially running timer.
+>> +///
+>> +/// More than one handle representing the same timer might exist.
+>> +///
+>> +/// # Safety
+>> +///
+>> +/// When dropped, the timer represented by this handle must be cancelle=
+d, if it
+>> +/// is running. If the timer handler is running when the handle is drop=
+ped, the
+>> +/// drop method must wait for the handler to finish before returning.
+>
+> Between this comment and the comment on cancel we say "if it is
+> running" 3 times. Can we say it just once, on the method, and here say
+> that cancel must be called in Drop?
+
+Well, the comment on `cancel` is just a description of what the function
+does. This piece of text is a safety requirement.
+
+We could make the safety requirement for implementing the trait "Implement
+the methods according to their documentation". But that would not help with
+the drop requirement.
+
+>
+>> +pub unsafe trait HrTimerHandle {
+>> +    /// Cancel the timer, if it is running. If the timer handler is run=
+ning, block
+>> +    /// till the handler has finished.
+>> +    fn cancel(&mut self) -> bool;
+>> +}
+>> +
+>> +/// Implemented by structs that contain timer nodes.
+>> +///
+>> +/// Clients of the timer API would usually safely implement this trait =
+by using
+>> +/// the [`crate::impl_has_hr_timer`] macro.
+>> +///
+>> +/// # Safety
+>> +///
+>> +/// Implementers of this trait must ensure that the implementer has a [=
+`HrTimer`]
+>> +/// field at the offset specified by `OFFSET` and that all trait method=
+s are
+>> +/// implemented according to their documentation.
+>> +///
+>> +/// [`impl_has_timer`]: crate::impl_has_timer
+>> +pub unsafe trait HasHrTimer<T> {
+>> +    /// Offset of the [`HrTimer`] field within `Self`
+>> +    const OFFSET: usize;
+>
+> Does this need to be part of the trait? As an alternative the provided
+> methods could be generated in the macro below and reduce the
+> opportunity to implement this trait incorrectly.
+
+There is no risk of implementing the trait wrong, because it is usually
+derived by a macro.
+
+We need at least one of the methods to be able to have the type system
+verify that the type for which we implement `HasHrTImer` actually has a
+field with the name we specify, and that this field has the right type.
+And to have that, we need the OFFSET.
+
+
+
+Best regards,
+Andreas Hindborg
+
+
