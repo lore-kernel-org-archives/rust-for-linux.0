@@ -1,100 +1,145 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23D71F7910;
-	Thu, 20 Feb 2025 13:24:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21ED1F6679
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Feb 2025 13:46:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740057852; cv=none; b=FEJ0o8Y2Ud7CittKzIxnEzZ5Vix85hM7wxd46Y55MwvUhdQaIq+PNAT7E4EDBN7MhWyEsyUwGtdJGmfOAEwDvtH82EZr7Ty0MeKTjKsewtZMYX7gpbKqPXfDwhH3dx7N190tXPhnbPZFFwtK9FfgfDuIPwh4JM4CDNjae9XZjbk=
+	t=1740059212; cv=none; b=nrNeH1gojL9WHin7+IYQgzkPeZYeQrPvLDWwynrWzOekw3Ezok4ph8FXvBDJ8996KOPUT2iHpCBBhPACJcy1MjRs3q7WyO2hCUciA8h9gUtvxFYADKyioXCn4ZvTwicsWNRk8o1oLSiyD814xBzVG3hn7dCuB3KDTytmxyToHaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740057852; c=relaxed/simple;
-	bh=dOdvPQ6dysn6f0iIXIyYxVeHePOqbU19F/Sa7CvIDTM=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=is8MGLFazHOcIymx/V6Vk+/lCdlZ8YKmpylp/VF/T7Ra7G9YpakzBoIPY6g9zuQzCpwOfVHTapM0DiK1o2hym7Wr9dKfc177PsDv5TP+1IaFApFd68P0f9h4uulVlFKZ6uAl9pmifjCNkfNR862zPCrvSI8xY7X6e+ImmcY84Ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=Tj0Y5N/E; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+	s=arc-20240116; t=1740059212; c=relaxed/simple;
+	bh=1jVbThmX/xBa44klFEKjAJ5W34MO3vftIlESOdgboYQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t1ZyUSQeTfOBcBhFfBQpl6pmifQH/+bRzBQvr1IgpKPEK0AGqMKvTnNnB59r3B86Vkr5LNmFKcQxfM73Ui4aeH/1BC6tupLf34qN+79jZ2sj6A83Sy1/bjJWxpX/YL7qLoU/d5gL/z6CqoU6GrvaKTYrFE8YgntELn8QDHWNv+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=D3t75xax; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="Tj0Y5N/E"
-Received: from [127.0.0.1] ([76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 51KDNsoG2216050
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Thu, 20 Feb 2025 05:23:55 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 51KDNsoG2216050
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025021701; t=1740057836;
-	bh=dOdvPQ6dysn6f0iIXIyYxVeHePOqbU19F/Sa7CvIDTM=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=Tj0Y5N/EqrIWF7XArfkaqfFvxuxq+3zvBT3x0KkfhTyLbBSQKLYbYCgOcjJnZWnpT
-	 N3+Pv5klrOvIxfClH4UIdZzltn1uYPQsFCCHDZaFJ9HxCpfiedhi0Yd74jnzVJBHL5
-	 D3GWAGJqD6HapImgkKQkr4AyksDoCmjRlLMS9rAH04lCtBsJ3q7+03bFWdpXLntXCq
-	 /pe8Dch6qmVvHl0L2rkKi6cRCzufEh+3/nYAhEqWq2wiCJfjne1BeYU2DahEsH+A/W
-	 eOl7LrOK12XyEhWO3yyzzhoQSez0+M8lUmayto/AWxdUZ/IQF4GlKQyNuQbcax0Ufi
-	 +LXvnkvwpVSBw==
-Date: Thu, 20 Feb 2025 05:23:54 -0800
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Greg KH <gregkh@linuxfoundation.org>, Jan Engelhardt <ej@inai.de>
-CC: Boqun Feng <boqun.feng@gmail.com>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
-        ksummit@lists.linux.dev
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="D3t75xax"
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5dee07e51aaso1733584a12.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 20 Feb 2025 05:46:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1740059209; x=1740664009; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Zn8iEIUMrS40tjZsG1qyBPqsWfjDSZ0FtFQ9slyGvJ4=;
+        b=D3t75xaxbMbBs5SEYz8soWwwNhJBAX14DFyj9Gyk27nUzXSMddSJOjnFejCKBJdmwU
+         6c6I/bKv1SIOAxpP9fcKrcynHla32Jovp8Q7uG6cuRLwuwHo9NTuMFrXBgIyvfsDpt0H
+         +0CXlcaAArdZ/6niJJry2uLCsAiQSzueqSaMNoDfbRv1h8Hbor9A5iywvpqMoZrhpCWg
+         CgaJ8ZwyOTU4cbYrUJDH4lXqVlAnu97PS0jg0Ssele8mMsFBwCMpJqUJUTMfL/JeT4sa
+         OGFdsq+CXElJPN17hb6y2foAYPozBXdSC0IRC6PGKdhBdJAvtjKWmEkVS7frMjcxubkB
+         st1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740059209; x=1740664009;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Zn8iEIUMrS40tjZsG1qyBPqsWfjDSZ0FtFQ9slyGvJ4=;
+        b=p2skF+4HI2WH9Aznpre27iV6q25TWrPTgGbNZc03Ibu0o+maD1K0MvvIJl41lF5kR2
+         qk0I0t90UcMU5v6nJ4MbvWpfVaIgv3hbH3mdSaiHugUUGf6okvXy2urUA/FWmpzJGbpZ
+         NbRR02MMSLxItSr6wjmpdHKOkA1OszsTNqhhk4S/3Vd+znZBy58WNy9OaVG1r64hu6ZS
+         5osjYcq3/ckFxfOSPSR3G89L8Qlni0R5MehEA+aRNbvwrd9AgqW3Bkn1U93dz87cYzIj
+         MTqQ1Wv7mxfOhHk6A76veM1Zp5H/xAAATzCkaxf4p66R7un9dis6Gxf/lAy1XHBlRuFV
+         yAuA==
+X-Forwarded-Encrypted: i=1; AJvYcCUUI6inwVdF21dTA0p2rQwXtAm8vAj4zcSnfhn8uDCm6woQ9dOsyg+SRe8Toty5dFzeKWuT9LdVoaWjqV+BNQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGwGgdWbYIwiVlLIXdXQqBqEkVQGy7E1GbwZEvhfEVd4tGZV8N
+	yDlBkot50OMd0Et4ihQnGhV7Ux4bC+0MKMz/weD8+K6iATmyEVUcrF2V9ZYEyHw=
+X-Gm-Gg: ASbGncsskPqNJJdNzE3n2BPy5zxTPcH9TdBxQUOv53WDdV4KX5rjfCFmzHCUwW+sgcI
+	otZ+4ksTPeOJJh0I2tiiu58JIRitmsM3Y3qqkhEkzJkPWSkV1gTg3doG+XGrqAjSxDGkIJ1XQF5
+	sW6yn22NI1CE2Z4Zy8MAvm4CLd2y15KidyUmdiaNj1iAWFJ2PRYSDwcnBAsFqrHGRqgBtg3TGs8
+	DMS2Qpox3SPSidaZFzpNAqhnz+NJDyoxZg3z+mpAN/Gqc2hn1Gke9Glhyj9546bMCs855x+/vqc
+	8JSEDKUoUOpWavBwh+5Z
+X-Google-Smtp-Source: AGHT+IEfkrRQ85xe9pOj5R5EwLaYpo72DL1cc79Csvepxg+wxeNncqBoFZXg3h/koqsH8dAFU2C0hg==
+X-Received: by 2002:a05:6402:40c4:b0:5dc:929a:a726 with SMTP id 4fb4d7f45d1cf-5e0a4bae4bemr1740318a12.26.1740059208978;
+        Thu, 20 Feb 2025 05:46:48 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-5dece1b4e80sm12119627a12.13.2025.02.20.05.46.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Feb 2025 05:46:48 -0800 (PST)
+Date: Thu, 20 Feb 2025 16:46:43 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Martin Uecker <uecker@tugraz.at>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Boqun Feng <boqun.feng@gmail.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	rust-for-linux <rust-for-linux@vger.kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
+	ksummit@lists.linux.dev, Justin Stitt <justinstitt@google.com>,
+	Kees Cook <keescook@chromium.org>
 Subject: Re: Rust kernel policy
-User-Agent: K-9 Mail for Android
-In-Reply-To: <2025022052-ferment-vice-a30b@gregkh>
-References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com> <Z7SwcnUzjZYfuJ4-@infradead.org> <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com> <326CC09B-8565-4443-ACC5-045092260677@zytor.com> <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com> <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com> <Z7VKW3eul-kGaIT2@Mac.home> <2025021954-flaccid-pucker-f7d9@gregkh> <2nn05osp-9538-11n6-5650-p87s31pnnqn0@vanv.qr> <2025022052-ferment-vice-a30b@gregkh>
-Message-ID: <9B01858A-7EBD-4570-AC51-3F66B2B1E868@zytor.com>
+Message-ID: <962fa158-5315-4d93-afb1-8a1c08787ad8@stanley.mountain>
+References: <Z7SwcnUzjZYfuJ4-@infradead.org>
+ <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
+ <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
+ <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
+ <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
+ <Z7VKW3eul-kGaIT2@Mac.home>
+ <2025021954-flaccid-pucker-f7d9@gregkh>
+ <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
+ <2025022024-blooper-rippling-2667@gregkh>
+ <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
 
-On February 20, 2025 4:37:46 AM PST, Greg KH <gregkh@linuxfoundation=2Eorg>=
- wrote:
->On Thu, Feb 20, 2025 at 01:28:58PM +0100, Jan Engelhardt wrote:
->>=20
->> On Wednesday 2025-02-19 06:39, Greg KH wrote:
->> >
->> >The majority of bugs (quantity, not quality/severity) we have are due =
-to
->> >the stupid little corner cases in C that are totally gone in Rust=2E
->>=20
->> If and when Rust receives its own corner cases in the future,
->> I will happily point back to this statement=2E
->
->I'm not saying that rust has no such issues, I'm saying that a huge
->majority of the stupid things we do in C just don't happen in the same
->code implemented in rust (i=2Ee=2E memory leaks, error path cleanups, ret=
-urn
->value checking, etc=2E)
->
->So sure, let's make different types of errors in the future, not
->continue to make the same ones we should have learned from already
->please :)
->
->thanks,
->
->greg k-h
->
+On Thu, Feb 20, 2025 at 09:57:29AM +0100, Martin Uecker wrote:
+> In particulary, I have a relatively concrete plan to have a memory safe
+> mode for C that can be toggled for some region of code and would make
+> sure there is no UB or memory safety issues left (I am experimenting with
+> this in the GCC FE).  So the idea is that one could start to activate this
+> for certain critical regions of code to make sure there is no signed
+> integer overflow or OOB access in it.
 
-I would like to point out that quite frankly we have been using a C style =
-which is extremely traditional, but which have been known to cause problems=
- many times; specifically, using *alloc, memcpy() and memset() with explici=
-t sizes; migrating towards using sizeof() but still having to type it expli=
-citly, and the known confusion of sizeof(ptr) and sizeof(*ptr)=2E This coul=
-d and probably should be macroized to avoid the redundancy=2E
+I don't think diferentiating between signed and unsigned integer
+overflows is useful.  In the kernel, most security issues from integer
+overflows are from unsigned integer overflows.  Kees says that we
+should warn about "Unexpected" behavior instead of "Undefined".  In fact,
+Justin Stitt has done the opposite of what you're doing and only checks
+for unsigned overflows.  He created a sanitizer that warns about integer
+overflows involving size_t type (which is unsigned), because sizes are
+so important.  (Checking only size_t avoids probably the largest source
+of harmless integer overflows which is dealing with time).
 
-In the NASM codebase I long ago started using nasm_new() and nasm_zero() m=
-acros for this purpose, and structure copies really can just be aasignment =
-statements=2E People writing C seem to have a real aversion for using struc=
-tures as values (arguments, return values or assignments) even though that =
-has been valid since at least C90 and can genuinely produce better code in =
-some cases=2E
+The sanitizer has a list of exceptions like if (a < a + b) where the
+integer overflow is idiomatic.  But the concern was that there might be
+other deliberate integer overflows which aren't in the exception list so
+Justin also created a macro to turn off the santizer.
+
+	x = wrapping_ok(a + b);
+
+What I would like is a similar macro so we could write code like:
+
+	x = saturate_math(a + b + c + d * d_size);
+
+If anything overflowed the result would be ULONG_MAX.  In the kernel,
+we have the size_add() and size_mul() macros which do saturation math
+instead of wrapping math but we'd have to say:
+
+	x = size_add(a, size_add(b, size_add(c, size_add(size_mul(d, d_size)))));
+
+Which is super ugly.  Maybe we could create something like this macro?
+
+#define saturate_math(x) ({             \
+        unsigned long res;              \
+        __trap_overflow(label_name));   \
+        res = (x);                      \
+        if (0) {                        \
+lable_name:                             \
+                res = ULONG_MAX;        \
+        }                               \
+        res;                            \
+})
+
+regards,
+dan carpenter
+
