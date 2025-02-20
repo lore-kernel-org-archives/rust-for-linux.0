@@ -1,194 +1,130 @@
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2057.outbound.protection.outlook.com [40.107.220.57])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E67418C07;
-	Thu, 20 Feb 2025 00:14:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740010494; cv=fail; b=HnFY1WTUTod+5OXPAQdEPqSyc5HLtqkS4dpdKNw5z8K3bvMfvLoRbKNm/T159hmuz9YPkS3T/EioRLZdKUxJ4lk9jU6TuZ48wBz6XrgF2NcR81i8aynd+sMwahLVU24pqdfOE+j7lvYnUZI1QHQHnXw7XjEugjqdUce7U98HZqM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740010494; c=relaxed/simple;
-	bh=1vr+885HAitsFRCU+RhFm4u53S0eo++v/HtaQSGbTHw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=GD9yAPR2t9Fe31f2hm0ah6x6cYMZPkBJQIAOO10tzdQhOipLHx//y4DHlKqFBrfp0t3+E184K9ghe1/O/+TvYnbkQodgTCyrSsTGpFKo1zAGPn659GV4r1yc7gzXD3/bfbOJKek+sYxBjtglMbv7l88Ta7+PI2c+oX+ZDjGrj84=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=lsiiiqbD; arc=fail smtp.client-ip=40.107.220.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB377082E;
+	Thu, 20 Feb 2025 01:37:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740015428; cv=none; b=FLQt2okhceJt/YYL4E7IRxKHvRt0R811fKz1BTFjDxDQ/91W3y4RuZzD0ETTv904YeU0XFuO+tjBUcwFsUBq/uzTzBoxkqppkLh5UeJeieRCd4C+rHZHSitxDyekswQZEXxvqPtCee0s+ayn/vE8Z/kVxERuKpljtNUFTN6x6/4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740015428; c=relaxed/simple;
+	bh=VPcuvEk0iI9GFGUTnNy8HOu+Mf7ZlLyBHNfRr5sIbiE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cckhU+g9ABMZGpeUVmNtitpN6K9NOWLnJg7uoXw3M8LWwK2xV6aERoS01rk/foeYe+kOTdWOGgt7kQpwLk6Br3/0pshaPmdHI2MTbKMZrYNESymxzRAhkkAGCGIIb+6HK68naJmNnBZisYOmih6XMTSmBimojje96xbwzmQIric=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O8VZJLad; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="lsiiiqbD"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bVU8f8HPvYnx7GHlMgtzd/kx1LBqi2JsxRlIfrhKKUuEhUkghJ4P1usPV+LCC27uAhw1mfEZbwua4xNKTW2HPShb+GskV+o6VYtxA0+ZG5WDTe0gd38NXhj46sd4rE7/q0gvwJ6iDH7ETcsnonym94L4U8IU7MxZMhhSDL10caz87WHsuSalNKts6YvlhWjZQzIHD3QH1v4KzFEhvOiqa3pFLou98zIBuZ4nEqtGJ4/DNLa+snzVS8QOxfbH6oFnRT8yUA0MsHMrfIK2EdLrd0KySDGpwikFvqhVHzM++nz0ISzxDY9iV1bIOq7X0v4EhIJXyFuJwNP2l3xRWnr5Tg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DFsqL1NktK/fHA0DJigkpSCvKuijjprl4aeQbDBCKHc=;
- b=IChIbbqeld8cIz/q+TZ4tPGos3wYG94yqz2X0x9vPXbFoGJjVIYb5T/ZbBcCA5PFHnxHc3DSwmbQc1erJ7JXZ7aDuEYiiYJ7Mjf1TftI1t0IDO4UCNbT6V65QPgJ47dhvVO1y+px85I2iPyXMNyP9C2LanBl1mZUb7KHJmPjSx2ClhZqfB9onIM57Lkmf4ilsN907vneMsNkV2fbV7VINjp8hHu57SD3eYdDFZrbBDaaDIJPvJMomdL9Hw16uUszKIovFdxxXvNxt6jsO9Q1ozgzaXmDgQdhThVSOroB68w/CGFwbDqh9dhCqf3v82n1hlc1/ZpdabePPWeeHfuZ5g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=collabora.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DFsqL1NktK/fHA0DJigkpSCvKuijjprl4aeQbDBCKHc=;
- b=lsiiiqbDaokl8bOCnL5bFVRhQCsz/y5QWiod8wQ6pjHGkKfwiVSO/c3B/B01b/R/59M+b86XAkZyJUuPBTldTroPj5M6byRgDe1feG28GD5VQgg/ozeeAb8QLhorQwmdYHtMuJwDam7hPtXVBJS4p719EIO2fpwCGxH/hpaa9QD4i6OOCWUsMoYfIEmJPCSD0v3jL3T614GUNzKrIqViToMpE4dMhXGqKs5ALT0Buxi1U2sQqWuHecq9JAqWmBpMF3ai4TVaM6aYO9UaZSOL2/f3KBJcFFolx1maJ2pQxRTb+5P+LjeexZo7/OdONGbT1QnhQP9wu2T8L8W882Z5xA==
-Received: from SJ0PR05CA0179.namprd05.prod.outlook.com (2603:10b6:a03:339::34)
- by IA1PR12MB7757.namprd12.prod.outlook.com (2603:10b6:208:422::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.19; Thu, 20 Feb
- 2025 00:14:47 +0000
-Received: from CO1PEPF000042AC.namprd03.prod.outlook.com
- (2603:10b6:a03:339:cafe::3c) by SJ0PR05CA0179.outlook.office365.com
- (2603:10b6:a03:339::34) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8466.14 via Frontend Transport; Thu,
- 20 Feb 2025 00:14:46 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- CO1PEPF000042AC.mail.protection.outlook.com (10.167.243.41) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8466.11 via Frontend Transport; Thu, 20 Feb 2025 00:14:46 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 19 Feb
- 2025 16:14:32 -0800
-Received: from [10.110.48.28] (10.126.230.35) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 19 Feb
- 2025 16:14:32 -0800
-Message-ID: <41cf1c79-f61c-47e7-a0ed-afb8e82d50e6@nvidia.com>
-Date: Wed, 19 Feb 2025 16:14:31 -0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O8VZJLad"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A41AC4CED1;
+	Thu, 20 Feb 2025 01:37:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740015427;
+	bh=VPcuvEk0iI9GFGUTnNy8HOu+Mf7ZlLyBHNfRr5sIbiE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=O8VZJLad05CT2+FTceie6emBPRSqFMwJas7oNKKqlWX/Zp4eXdiRxRq965AzTwY2q
+	 0JHRI+6BVSVs5T4u2yipe88OdS345a8Mf7AnNobMPTGntHdWW5ja1pOnGEbw12Lpbc
+	 iLZb14aCx4Re0nuHNVsgT8NhnajegQ6mILOmLqNm656z8cYw9XuMXCLX7S0f7egedT
+	 NnJTotYDmuHe0MTlzpuOS5oSsBUqXHq0c1oFoSMf9yQa4r1aX2aBrRYNNSmibDOcc/
+	 pbAIlI4GQQ4MBSFtAysoa2gD30tFCpotIaqHTPR0jYaTOhc5Z9iM4qtk2lhv4G+SEI
+	 eI+H0rCVSc0lg==
+Date: Thu, 20 Feb 2025 01:37:04 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: lgirdwood@gmail.com, sebastian.reichel@collabora.com,
+	sjoerd.simons@collabora.co.uk, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
+	benno.lossin@proton.me, aliceryhl@google.com, tmgross@umich.edu,
+	dakr@kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: regulator: add a bare minimum regulator abstraction
+Message-ID: <Z7aHQBYXZ5jlGRte@finisterre.sirena.org.uk>
+References: <20250219162517.278362-1-daniel.almeida@collabora.com>
+ <Z7ZjzJ2Rfrt8j0s1@finisterre.sirena.org.uk>
+ <5E354BB7-9CD5-4615-8EAF-98B9F498713A@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 1/3] rust: add useful ops for u64
-To: Daniel Almeida <daniel.almeida@collabora.com>, Dave Airlie
-	<airlied@gmail.com>
-CC: Alexandre Courbot <acourbot@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
-	"dakr@kernel.org" <dakr@kernel.org>, Ben Skeggs <bskeggs@nvidia.com>
-References: <20250217-nova_timer-v1-0-78c5ace2d987@nvidia.com>
- <20250217-nova_timer-v1-1-78c5ace2d987@nvidia.com>
- <C1FF4314-C013-4AE1-A94E-444AFACDB4AC@collabora.com>
- <D7VLMD31YB0V.OKHDSVUPAZTE@nvidia.com>
- <1b8921d46f7d70c7467ea0940d60220f05cccc5d.camel@nvidia.com>
- <D7W119MHCCWH.IS600FTIOV8O@nvidia.com>
- <e6322f90-08bd-4e86-8dad-2ddbd7e5cece@nvidia.com>
- <D7WFP99SMV3H.26AJWK17S0UPX@nvidia.com>
- <fd920faf-a707-4c6d-8c0b-3d59c010da1d@nvidia.com>
- <CAPM=9txmQWO+SHnZhr8zXHCZ=S8CNY=PryRVkWWuHyor-ajU6A@mail.gmail.com>
- <1597EDB7-D91B-4660-ADDC-D2252B26CB22@collabora.com>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <1597EDB7-D91B-4660-ADDC-D2252B26CB22@collabora.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000042AC:EE_|IA1PR12MB7757:EE_
-X-MS-Office365-Filtering-Correlation-Id: 204f521a-83c0-4893-5e30-08dd5143957a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|36860700013|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MllyUk8yLzRoNi9VdXFpeTZhNG1RaUNxRXFadzBTSUtMaEFVUUh3ZC9BeG4r?=
- =?utf-8?B?MTZITk9iV1E2bVFWU2J6TGNWdXF1UjRld2Y2UktZUzZ3cWs1d3pRRzBNZWl6?=
- =?utf-8?B?eUhGaE80US9VVFUzSHJVYVppVExjOWw2QXBTNjNpTDlwNnhzVVlEbkdDRk8x?=
- =?utf-8?B?OS9RSWtINXFTZkttdUk1anJvcVhhUDZ6STRmNXFXaGVmVnozK2dTTHh1UHVP?=
- =?utf-8?B?dnlPb2hqVFZ0WnA3M3Nsd3JpYm1VK3ZoWFdKMUVXd1ZXOUloQ0ZVM2kvazhR?=
- =?utf-8?B?emZmVE95SkVIREhOOTg3bjFZZjUyd2RuNHVTOWtqSFdHSEVjQ2xyc3RwNTlR?=
- =?utf-8?B?UEplbDJYODljbUZ1OWlVSGJqejJtSWQ0d0NpSWRqRkk3NlcraWJWL3NKNHIz?=
- =?utf-8?B?ZkxmOVBiNVV3TGhGcWpTYVlhZjhWUW9SNkZhcTRWdUYxWjlLa05RQ0QxeFUw?=
- =?utf-8?B?dnFyNW1aR0YwREV3a011UTR3bmJMYWtCSWlKZWpwWG5aY3VhcVJDVnFNV3NQ?=
- =?utf-8?B?eGJ1cEhYNTBDYkowa3ZZQytzbmwrYVZlQnR3VStyS0FUMDhuNERhNEt2MGpM?=
- =?utf-8?B?SWNPR1NHTVh1eDVtaUdPUEtKS0krdk9QdVJuR1E4dHh5NVNmazVwZWpoWUp6?=
- =?utf-8?B?ZjRJdEFkZ29EUmExeFRYY3FJdkhHRGRRSjZZS3NyNUxzelJQM1ZJYm05Q2Nw?=
- =?utf-8?B?Q3cwdVNlVjRRMDVleEs5S3lWbEVVbjhaR3hiSDQ3eEdSUXowcE1SbWoyaVJL?=
- =?utf-8?B?UWZLZ2RCaTZKYUVjTEM1OXF5Tkw4U1hNSW9mRXp0VXMzTXJUQ2d2MStXaDcy?=
- =?utf-8?B?SUJYTzlOS0plalIrSUIrRjhTWGVJY0IvOVh0Z1c0Ym1HN21KTDdUamhjOTNW?=
- =?utf-8?B?bzlPM3AwTWNEMXhYTTBrNGczdUZkMndTQVdqb3p3K2krS3drNnFxT3c0b3dC?=
- =?utf-8?B?L2JsR0JRbWVwU0dwcmZ3b1dsUGdQdVp1N0gzcnZESnNpOUt5VU1UamFvcmxq?=
- =?utf-8?B?NFZGb0JubjhRMzdlT1VzbjBxZjgyR0V3Vk5JUE5vd0pZUkJ2eEhQQ3gyMHZY?=
- =?utf-8?B?M3I1R3c0VGphNVJwc2Jrb0ZhbmdKNUtGY0hIVnZvMnhzSGFSU04vWnFpay9m?=
- =?utf-8?B?eWpFTFJJZDl5Q3NvNzlteXR6U0hHTkhiRVo0QmVjL3k0VzNSLzE0WW13Mk5Y?=
- =?utf-8?B?QithSWZsUnpIdkdtRmVxeHlzWm9wd1V1U0hidEVkcDBzZ3RGYlhqK3dVT1Uy?=
- =?utf-8?B?eklESTVRajEvSmwyd3VBczNQcEI0NHNqMWlkeVJJeEJ3Sk55RWNFa21ybi81?=
- =?utf-8?B?MnpHMytDaE01ckdFSFE5ZnEzM1dLVmNDWmlidkpka3NzNkxsSmRtaXZHTXRY?=
- =?utf-8?B?L2pabGw0MUlOdVo5K014Qzg2WVRpRXNWOWRsMUx2VE9ialhrMVo5bmFrYm13?=
- =?utf-8?B?REZtcnFDU3BVbnVOSDkzT2Ezd2tyekVteUhWRFNpUjlNKzhVSkhLcjhKdFNp?=
- =?utf-8?B?KzcvS0NQWjhHWDNidlArWisxOVpNNkRmMkszZHpQU2JMTFRWcjlqd0VFYUFE?=
- =?utf-8?B?eWJURlY5Z1NZaFZOOEZxTkJBNjR6OCtFd2VxY0N3Y2FkcWJTL0F0cFAzODFi?=
- =?utf-8?B?K0pIT0sxQXh1eENnaDR0aDg5cHFOZzNnODJLRlQyOExhUlVlT1Q1VWpsV04v?=
- =?utf-8?B?TzEvOWhyY1pKUFVlakYxSm1kMzYvYlhRampZcXpjdGFMNVl5Z2w4aWFaUmd4?=
- =?utf-8?B?WEtDbXZBeUZ2WVZ3RXFPd0N4QmtqemI2Wk8vcUVIcmE3ci8zUnQwREZxREd5?=
- =?utf-8?B?WDFBSVkyd0FEb2JCUURLK3Y3d0EvOEg2V04yT2IyZHFkSVovcWVRUEg4c2ds?=
- =?utf-8?B?cFVDMW9GZTQ4OUw0VEUvNENVRTZPMUZ2dFJWNStyWkZwbjl2Z1U0Wkx1aTJE?=
- =?utf-8?B?TVZsbWdUeGJpS3JoelJRMytTaURpc01uamxIT2d6RkFpcFBHUVdSUGhwaTNz?=
- =?utf-8?Q?1cLfXDUp48M9Xalfg9+wkf/oonbt/Y=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(1800799024)(36860700013)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2025 00:14:46.6930
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 204f521a-83c0-4893-5e30-08dd5143957a
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000042AC.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7757
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="jlR5tKu8Pp0dmxDQ"
+Content-Disposition: inline
+In-Reply-To: <5E354BB7-9CD5-4615-8EAF-98B9F498713A@collabora.com>
+X-Cookie: Editing is a rewording activity.
 
-On 2/19/25 3:13 PM, Daniel Almeida wrote:
->> On 19 Feb 2025, at 17:23, Dave Airlie <airlied@gmail.com> wrote:
->> On Thu, 20 Feb 2025 at 06:22, John Hubbard <jhubbard@nvidia.com> wrote:
->>> On 2/19/25 4:51 AM, Alexandre Courbot wrote:
->>>> Yes, that looks like the optimal way to do this actually. It also
->>>> doesn't introduce any overhead as the destructuring was doing both
->>>> high_half() and low_half() in sequence, so in some cases it might
->>>> even be more efficient.
->>>>
->>>> I'd just like to find a better naming. high() and low() might be enough?
->>>> Or are there other suggestions?
->>>>
->>>
->>> Maybe use "32" instead of "half":
->>>
->>>      .high_32()  / .low_32()
->>>      .upper_32() / .lower_32()
->>>
->>
->> The C code currently does upper_32_bits and lower_32_bits, do we want
->> to align or diverge here?
 
-This sounds like a trick question, so I'm going to go with..."align". haha :)
+--jlR5tKu8Pp0dmxDQ
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->>
->> Dave.
-> 
-> 
-> My humble suggestion here is to use the same nomenclature. `upper_32_bits` and
-> `lower_32_bits` immediately and succinctly informs the reader of what is going on.
-> 
+On Wed, Feb 19, 2025 at 08:35:47PM -0300, Daniel Almeida wrote:
+> > On 19 Feb 2025, at 20:05, Mark Brown <broonie@kernel.org> wrote:
 
-Yes. I missed the pre-existing naming in C, but since we have it and it's
-well-named as well, definitely this is the way to go.
+> > If you're going to support both enable and disable (and all things
+> > considered you probably should TBH) it would be better to just reference
+> > count the enables like the C code does and then complain about it if
+> > someone tries to free the regulator object without underwinding their
+> > enables, or just possibly just clean them up.  Silently ignoring
+> > duplicate enables or overflowing disables doesn't seem like it plays
+> > well with the safety goals that Rust has, it's asking for bugs - a big
+> > part of the reason the C API does things the way it does is that it will
+> > notice if the enables and disables aren't joined up.  You can easily
+> > wind up with one part of the code disabling the regulator underneath
+> > another part that's still trying to use the hardware and things tend not
+> > to go well when that happens.
 
-thanks,
--- 
-John Hubbard
+> I thought about that, something like:
 
+> ```
+>   fn drop(&mut self) {
+>=20
+
+> I asked for a few opinions privately and was told that =E2=80=9Cif the C =
+API prefers not to do that
+> why should you?=E2=80=9D
+
+Well, the C API also doesn't ignore either enable or disable attempts...
+the theory is that if the consumer messed up it's safer to not power the
+hardware off suddenly when something might not have been cleaned up.
+The general approach the API takes is to only take actions it's been
+explicitly asked to do, that way we're not hard coding anything that
+causes trouble for consumers and since we need constraints to enable any
+action that gets taken we're less likely to have default behaviour
+causing hardware damage somehow.  If we think we've lost track of the
+reference counting we just scream about it but don't try to take
+corrective action.
+
+> > Perhaps an enable should be an object that's allocated and carried about
+> > by whatever's holding the reference, I don't know if that plays nicely
+> > with how Rust likes to ensure safety with this stuff?
+
+> As I said, this doesn=E2=80=99t work very well, unless someone corrects m=
+y reasoning on a
+
+I don't think I saw the previous mail?
+
+> previous email. Having a single type =E2=80=9CRegulator=E2=80=9D is proba=
+bly much saner than =E2=80=9CRegulator=E2=80=9D
+> and =E2=80=9CEnabledRegulator=E2=80=9D.
+
+OK.  It's a bit of a shame that there's not an idiomatic way to help
+with the reference counting here.
+
+--jlR5tKu8Pp0dmxDQ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAme2hz0ACgkQJNaLcl1U
+h9CrrAf/YBzZZMHNWVte3uV3zeSAnj3ol+1bKYACfLySI1EEAhZXtVQFEN8ujKc2
+bVvaAP9ngSwZqtOy1JUQ1ZlWKvY9rsq3oplUFaTlx/PNXoiX1Dp2L5kekA2iHhy6
+jisn+brT3/u0LY3N4f72RJc7JM9iKdhmTFTuwyI8WQHV0bPxJljGthb6+sEgTXen
+PN1EtSIXm7vJiCccPy2m+gzbi9muwcRdxN9cyDIBaUtkRMy/FmX5NZ9oB1lNB7UP
+xrPE3tVoKxwGqV0ppAUraG2PSKYcImZ7KUcGuasfagqnRZD4eFHhyq/hVKyMgyCn
+nqexGLhGlkimzl/xTR3pNsIzyiCnSw==
+=jJ1N
+-----END PGP SIGNATURE-----
+
+--jlR5tKu8Pp0dmxDQ--
