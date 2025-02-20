@@ -1,145 +1,319 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21ED1F6679
-	for <rust-for-linux@vger.kernel.org>; Thu, 20 Feb 2025 13:46:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740059212; cv=none; b=nrNeH1gojL9WHin7+IYQgzkPeZYeQrPvLDWwynrWzOekw3Ezok4ph8FXvBDJ8996KOPUT2iHpCBBhPACJcy1MjRs3q7WyO2hCUciA8h9gUtvxFYADKyioXCn4ZvTwicsWNRk8o1oLSiyD814xBzVG3hn7dCuB3KDTytmxyToHaE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740059212; c=relaxed/simple;
-	bh=1jVbThmX/xBa44klFEKjAJ5W34MO3vftIlESOdgboYQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t1ZyUSQeTfOBcBhFfBQpl6pmifQH/+bRzBQvr1IgpKPEK0AGqMKvTnNnB59r3B86Vkr5LNmFKcQxfM73Ui4aeH/1BC6tupLf34qN+79jZ2sj6A83Sy1/bjJWxpX/YL7qLoU/d5gL/z6CqoU6GrvaKTYrFE8YgntELn8QDHWNv+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=D3t75xax; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1450B1FCF7C;
+	Thu, 20 Feb 2025 13:49:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740059358; cv=pass; b=NFmNFV30dFGmYX/BgzMlFOVjTP/ednKkgL4c8xsWLhtEwV1qp7mxxcnA/MXQAoagPw9W8rxpQ/I3PffgVbJT1vaaVj5sgk/6Tt940aSBD07QhMZWr7wH3iEsIGvgLa/sHhoDVeJpsdnAN4jTcnb/oSwg0ytt6T7OTaxml7C6yDc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740059358; c=relaxed/simple;
+	bh=sAItakCC+ihqDayZZe3hHiON83+dti11YznYUnH5Skw=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=kuJcRAGfJlFAN0UYDaE5OFDmFqeHUpCrXSw/TWS87oJ5THVebArlvjDb3z8GL6aSFlLb+to7Ra7sTgHD+6Ua3SNGi5x+ngSPfVMrw9Qdkwv6YuerTwxnmHpz7LMHM45lUl9s1v3DiryExn5L8rcQm2NXGwl6ME2U3hrWlPpQGOE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=CuMISBEn; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="D3t75xax"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5dee07e51aaso1733584a12.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 20 Feb 2025 05:46:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1740059209; x=1740664009; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Zn8iEIUMrS40tjZsG1qyBPqsWfjDSZ0FtFQ9slyGvJ4=;
-        b=D3t75xaxbMbBs5SEYz8soWwwNhJBAX14DFyj9Gyk27nUzXSMddSJOjnFejCKBJdmwU
-         6c6I/bKv1SIOAxpP9fcKrcynHla32Jovp8Q7uG6cuRLwuwHo9NTuMFrXBgIyvfsDpt0H
-         +0CXlcaAArdZ/6niJJry2uLCsAiQSzueqSaMNoDfbRv1h8Hbor9A5iywvpqMoZrhpCWg
-         CgaJ8ZwyOTU4cbYrUJDH4lXqVlAnu97PS0jg0Ssele8mMsFBwCMpJqUJUTMfL/JeT4sa
-         OGFdsq+CXElJPN17hb6y2foAYPozBXdSC0IRC6PGKdhBdJAvtjKWmEkVS7frMjcxubkB
-         st1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740059209; x=1740664009;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zn8iEIUMrS40tjZsG1qyBPqsWfjDSZ0FtFQ9slyGvJ4=;
-        b=p2skF+4HI2WH9Aznpre27iV6q25TWrPTgGbNZc03Ibu0o+maD1K0MvvIJl41lF5kR2
-         qk0I0t90UcMU5v6nJ4MbvWpfVaIgv3hbH3mdSaiHugUUGf6okvXy2urUA/FWmpzJGbpZ
-         NbRR02MMSLxItSr6wjmpdHKOkA1OszsTNqhhk4S/3Vd+znZBy58WNy9OaVG1r64hu6ZS
-         5osjYcq3/ckFxfOSPSR3G89L8Qlni0R5MehEA+aRNbvwrd9AgqW3Bkn1U93dz87cYzIj
-         MTqQ1Wv7mxfOhHk6A76veM1Zp5H/xAAATzCkaxf4p66R7un9dis6Gxf/lAy1XHBlRuFV
-         yAuA==
-X-Forwarded-Encrypted: i=1; AJvYcCUUI6inwVdF21dTA0p2rQwXtAm8vAj4zcSnfhn8uDCm6woQ9dOsyg+SRe8Toty5dFzeKWuT9LdVoaWjqV+BNQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGwGgdWbYIwiVlLIXdXQqBqEkVQGy7E1GbwZEvhfEVd4tGZV8N
-	yDlBkot50OMd0Et4ihQnGhV7Ux4bC+0MKMz/weD8+K6iATmyEVUcrF2V9ZYEyHw=
-X-Gm-Gg: ASbGncsskPqNJJdNzE3n2BPy5zxTPcH9TdBxQUOv53WDdV4KX5rjfCFmzHCUwW+sgcI
-	otZ+4ksTPeOJJh0I2tiiu58JIRitmsM3Y3qqkhEkzJkPWSkV1gTg3doG+XGrqAjSxDGkIJ1XQF5
-	sW6yn22NI1CE2Z4Zy8MAvm4CLd2y15KidyUmdiaNj1iAWFJ2PRYSDwcnBAsFqrHGRqgBtg3TGs8
-	DMS2Qpox3SPSidaZFzpNAqhnz+NJDyoxZg3z+mpAN/Gqc2hn1Gke9Glhyj9546bMCs855x+/vqc
-	8JSEDKUoUOpWavBwh+5Z
-X-Google-Smtp-Source: AGHT+IEfkrRQ85xe9pOj5R5EwLaYpo72DL1cc79Csvepxg+wxeNncqBoFZXg3h/koqsH8dAFU2C0hg==
-X-Received: by 2002:a05:6402:40c4:b0:5dc:929a:a726 with SMTP id 4fb4d7f45d1cf-5e0a4bae4bemr1740318a12.26.1740059208978;
-        Thu, 20 Feb 2025 05:46:48 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-5dece1b4e80sm12119627a12.13.2025.02.20.05.46.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Feb 2025 05:46:48 -0800 (PST)
-Date: Thu, 20 Feb 2025 16:46:43 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Martin Uecker <uecker@tugraz.at>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Boqun Feng <boqun.feng@gmail.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	rust-for-linux <rust-for-linux@vger.kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
-	ksummit@lists.linux.dev, Justin Stitt <justinstitt@google.com>,
-	Kees Cook <keescook@chromium.org>
-Subject: Re: Rust kernel policy
-Message-ID: <962fa158-5315-4d93-afb1-8a1c08787ad8@stanley.mountain>
-References: <Z7SwcnUzjZYfuJ4-@infradead.org>
- <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
- <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
- <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
- <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
- <Z7VKW3eul-kGaIT2@Mac.home>
- <2025021954-flaccid-pucker-f7d9@gregkh>
- <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
- <2025022024-blooper-rippling-2667@gregkh>
- <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="CuMISBEn"
+ARC-Seal: i=1; a=rsa-sha256; t=1740059331; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=FD0AWTgHte3ctO5Qht9ky6kIu2p8LYN1A6pRSFPdf3EOAa/+Px/p+UxOTm/E3TkWvxcmVmZ8G5GHkxctbokgGkucOoM+CrODa9jgY7xMpIMsSq3LZ8EWj3rSXMiEQElzhJ0UPlPgS7lNGgBkKoNxX6KztlA/foWgVtnojMIb6Ao=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1740059331; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=WF6vfyJp4QhpNjr/nJ2H9NjFuFzr9IejWmcU1daW58E=; 
+	b=HuTKH4l8NemCRYp1fgEp9r7cjHMqbZOaPcoGnYYDFuc6Jdt1VrMO0Zh16Iynvx6Qg74KUEu8Km+jqOVnh4+VKdxCjE2dJ/n+k2fUeHkwXd+5JyobWvds76PSy+QiI4aZun1n5tVpou9UMeOANuPBr0iYr0cKNpIhqwXKjBrBqPo=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1740059331;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=WF6vfyJp4QhpNjr/nJ2H9NjFuFzr9IejWmcU1daW58E=;
+	b=CuMISBEnx9nE8jG4HYbG0gSeRus5czuVGGFsWtJZIa1dKcbo+8RMwgDHYZJ4cjmY
+	7zzyHbPXzRovOLr01S0yMgks15KB6TBYpeRVTrlirBbova5aEaNWeyDq3z/skRHosWb
+	St0XqjDnpLcWkveUw2nc0SAjt08Pf6jiUROsV0f4=
+Received: by mx.zohomail.com with SMTPS id 1740059328558287.2716659174573;
+	Thu, 20 Feb 2025 05:48:48 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
+Subject: Re: [PATCH] rust: regulator: add a bare minimum regulator abstraction
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <Z7cbkfvJqkWaSwKR@finisterre.sirena.org.uk>
+Date: Thu, 20 Feb 2025 10:48:31 -0300
+Cc: Alice Ryhl <aliceryhl@google.com>,
+ lgirdwood@gmail.com,
+ sebastian.reichel@collabora.com,
+ sjoerd.simons@collabora.co.uk,
+ ojeda@kernel.org,
+ alex.gaynor@gmail.com,
+ boqun.feng@gmail.com,
+ gary@garyguo.net,
+ bjorn3_gh@protonmail.com,
+ a.hindborg@kernel.org,
+ benno.lossin@proton.me,
+ tmgross@umich.edu,
+ dakr@kernel.org,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <53A50677-CB35-441F-8E58-0FB1EA577C4E@collabora.com>
+References: <20250219162517.278362-1-daniel.almeida@collabora.com>
+ <CAH5fLgiErvnziU-hSCV6djNq7Q56ZfX9gZudmX7+r06hWoX0Tw@mail.gmail.com>
+ <E24A1EA3-DC87-4A33-AD93-1E3B307942E8@collabora.com>
+ <Z7cbkfvJqkWaSwKR@finisterre.sirena.org.uk>
+To: Mark Brown <broonie@kernel.org>
+X-Mailer: Apple Mail (2.3826.300.87.4.3)
+X-ZohoMailClient: External
 
-On Thu, Feb 20, 2025 at 09:57:29AM +0100, Martin Uecker wrote:
-> In particulary, I have a relatively concrete plan to have a memory safe
-> mode for C that can be toggled for some region of code and would make
-> sure there is no UB or memory safety issues left (I am experimenting with
-> this in the GCC FE).  So the idea is that one could start to activate this
-> for certain critical regions of code to make sure there is no signed
-> integer overflow or OOB access in it.
 
-I don't think diferentiating between signed and unsigned integer
-overflows is useful.  In the kernel, most security issues from integer
-overflows are from unsigned integer overflows.  Kees says that we
-should warn about "Unexpected" behavior instead of "Undefined".  In fact,
-Justin Stitt has done the opposite of what you're doing and only checks
-for unsigned overflows.  He created a sanitizer that warns about integer
-overflows involving size_t type (which is unsigned), because sizes are
-so important.  (Checking only size_t avoids probably the largest source
-of harmless integer overflows which is dealing with time).
 
-The sanitizer has a list of exceptions like if (a < a + b) where the
-integer overflow is idiomatic.  But the concern was that there might be
-other deliberate integer overflows which aren't in the exception list so
-Justin also created a macro to turn off the santizer.
+> On 20 Feb 2025, at 09:09, Mark Brown <broonie@kernel.org> wrote:
+>=20
+> On Wed, Feb 19, 2025 at 02:10:24PM -0300, Daniel Almeida wrote:
+>=20
+>> This means that now, `EnabledRegulator` has to depend on `Regulator` =
+somehow to ensure
+>> a proper drop order. Otherwise you might have an enabled regulator =
+for which you don=E2=80=99t own
+>> the refcount. Furthermore, if Regulator drops while EnabledRegulator =
+is alive, you get a splat.
+>=20
+> Having an enabled regulator object depend on a regulator object seems
+> like a goal rather than a problem, surely it's common to need such
+> relationships and there's an idiomatic way to do it?  It seems to be =
+how
+> Rust does mutexes=E2=80=A6
 
-	x = wrapping_ok(a + b);
+Not when you need to store both of them at the same time.
 
-What I would like is a similar macro so we could write code like:
+For Mutex<T>, for example, you don=E2=80=99t store both Mutex<T> and =
+MutexGuard<'_,T>
+at the same time. You store a Mutex<T>, and create MutexGuard<'_, T> on =
+the
+stack by locking the Mutex when you need to access T. When MutexGuard =
+goes away,
+the Mutex is automatically unlocked.
 
-	x = saturate_math(a + b + c + d * d_size);
+The equivalent behavior for us here would be to enable a regulator on =
+the
+stack, perform some work, and then have this regulator be automatically
+disabled. There would be no way to keep it enabled for a longer period.
 
-If anything overflowed the result would be ULONG_MAX.  In the kernel,
-we have the size_add() and size_mul() macros which do saturation math
-instead of wrapping math but we'd have to say:
+>=20
+>> In a driver, you now have to store both Regulator - for the refcount =
+- and EnabledRegulator
+>> - as a way to tell the system you need that regulator to be active.
+>=20
+> That's true, unless you can make a type of enable that just fully =
+takes
+> ownership of the regulator (which TBH people want, people really want =
+a
+> devm_regulator_get_enable() C API which just gets and holds an enabled
+> regulator for the simple case where you don't actually ever manage the
+> power).  It's possible there's a need to split simple and complex
+> consumer APIs in Rust?
+>=20
+>> If EnabledRegulator is a guard type, this doesn=E2=80=99t work, as it =
+creates a self-reference - on top
+>> of being extremely clunky.
+>>=20
+>> You can then have EnabledRegulator consume Regulator, but this =
+assumes that the regulator
+>> will be on all the time, which is not true. A simple pattern of
+>=20
+> I don't understand the self reference thing?
 
-	x = size_add(a, size_add(b, size_add(c, size_add(size_mul(d, d_size)))));
+It=E2=80=99s a Rust thing.
 
-Which is super ugly.  Maybe we could create something like this macro?
+Let=E2=80=99s say you have this:
 
-#define saturate_math(x) ({             \
-        unsigned long res;              \
-        __trap_overflow(label_name));   \
-        res = (x);                      \
-        if (0) {                        \
-lable_name:                             \
-                res = ULONG_MAX;        \
-        }                               \
-        res;                            \
-})
+```
+let regulator: Regulator =3D Regulator::get(/*=E2=80=A6*/)?;
+let regulator_enable: EnabledRegulator =3D regulator.enable()?;
+```
 
-regards,
-dan carpenter
+You can encode that `EnabledRegulator` depends on Regulator, i.e.: that =
+it must
+not outlive it:
 
+```
+struct EnabledRegulator<=E2=80=98a>(&=E2=80=99a Regulator);
+
+<snip>=20
+
+impl Regulator {
+  pub fn enable(&self) -> Result<EnabledRegulator<=E2=80=98_>> {
+    /* do the work to enable, error check, etc, then.. */
+   =20
+    EnabledRegulator(&self) // EnabledRegulator keeps a reference to =
+Regulator
+  }
+}
+```
+
+Now the compiler will enforce that EnabledRegulator doesn=E2=80=99t =
+outlive
+Regulator:
+
+```
+let regulator =3D Regulator::get(/*=E2=80=A6*/)?;
+let enabled_regulator =3D regulator.enable()?;
+
+ // error: regulator is needed by enabled_regulator, so you can=E2=80=99t =
+do this.
+core::mem::drop(regulator);
+```
+
+This is fine on the stack, but if you want to store both of them in a =
+struct,
+that is a problem.
+
+```
+struct Foo {
+  // A refcount obtained by regulator_get()
+  regulator: Regulator,
+  =20
+  // Indicates that the regulator is enabled.
+  enabled: EnabledRegulator<=E2=80=98a>  // error: what is =E2=80=98a ?
+}=20
+```
+
+Now `enabled` contains an internal reference to `regulator`, which is a =
+sibling
+member.
+
+This is where my =E2=80=9Cself-reference=E2=80=9D comment comes from, =
+i.e.: Foo has a
+member that has a reference to another member of Foo itself.
+
+The problem here is that Rust has move semantics by default. If you =
+allow a
+struct to keep a reference to parts of itself, this breaks when the type =
+is
+moved. In other words, if Foo is ever moved, `enabled` would contain a
+reference to the location it was moved from, which would be unsound.
+
+There is no way to fix this, because, unlike C++, Rust does not have =
+move
+constructors, move assignments and etc. Here, moving means a bitwise =
+copy from
+address A to B, where A is then invalidated. This means that =
+self-references
+are simply disallowed. (Well, there is Pin<T>, but let's not get into =
+that)
+
+Note that, in this particular example, we never access this reference, =
+it's
+there just to tell the compiler that we need a Regulator to be alive in =
+order
+for a EnabledRegulator to exist. It does not matter though, it still =
+won't
+compile.
+
+Even if we use the PhantomData type, which doesn't store a reference to =
+the
+actual memory location within it, just the lifetime itself, it will =
+still not
+work for the same reason. At no point can you create a self-referential
+type even when there is no actual memory location involved.
+
+
+I am not saying that we cannot encode this relationship through some =
+other
+means. I am merely saying that doing it *this way* will not work.
+
+>=20
+>> ```
+>> regulator_enable()
+>> do_fancy_stuff()
+>> regulator_disable()
+>> ```
+>=20
+>> Becomes a pain when one type consumes the other:
+>>=20
+>> ```
+>> self.my_regulator.enable() // error, moves out of `&self`
+>> ```
+>=20
+> Your second block of code doesn't look obviously painful there?
+
+It is painful in the sense that it won=E2=80=99t even compile.
+
+This example assumes a different API where EnabledRegulator consumes =
+Regulator
+to exist, instead of keeping an internal reference:
+
+```
+impl Regulator {
+  // Note that we take `self`, not `&self`, so this moves `Regulator` =
+into
+  // `enable()`, therefore 'killing' it.
+
+  fn enable(self) -> Result<EnabledRegulator> {
+
+    /* enable, do error checking, etc, and then */
+
+    EnabledRegulator(self) // We transformed Regulator into =
+EnabledRegulator.
+  }
+}
+
+In our struct Foo example, this would move the Regulator out of the =
+field, i.e.:
+
+```
+let foo =3D Foo { regulator: Regulator::get(/*...*/)?; };
+
+let regulator_enabled =3D foo.regulator.enable()?;
+```
+
+This is an error, because if we move out of foo.regulator to create
+EnabledRegulator, then what would be left in there?
+
+We can get around this using Option<T>:
+
+```
+let foo =3D Foo { regulator: Some(Regulator::get(/*...*/)?); };
+
+let regulator_enabled =3D foo.regulator.take()?.enable()?;
+```
+
+But this is extremely unergonomic because Option<T> is meant for cases =
+where we
+may or may not have something, but this is not the case here. We're =
+simply
+abusing its API to make our own Regulator API work.
+
+>=20
+>> I am sure we can find ways around that, but a simple `bool` here =
+seems to fix this problem.
+>=20
+>> Now you only have to store `Regulator`. If you need another part of =
+your code to also keep
+>> the regulator enabled, you store a `Regulator` there and enable that =
+as well. All calls to
+>> enable and disable will be automatically balanced for all instances =
+of `Regulator` by
+>> virtue of the `enabled` bool as well.
+>=20
+> What you're describing here with creating one Regulator object per
+> enable sounds more like you want it to be an error to do multiple
+> enables on a single regulator.  Instead of reference counting or
+> silently ignoring duplicate enables it should error out on a duplicate
+> enable.
+
+The problem here isn't necessarily forbiding multiple enables, but =
+figuring out
+a way to make sure they are balanced in Rust. Let me think this through =
+some
+more, because I do not have a solution in hand right now.
+
+=E2=80=94 Daniel=
