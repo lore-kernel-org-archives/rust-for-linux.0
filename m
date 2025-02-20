@@ -1,97 +1,143 @@
-Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38171EE01B;
-	Thu, 20 Feb 2025 11:57:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D391F4611;
+	Thu, 20 Feb 2025 11:58:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740052642; cv=none; b=WMGAdIjBLyaBZwmYTkWehHGizlfUj/hscC8d4y0wGjjJC2mkmKULfsnabIiY5cEgSBqhHLrQQOwyprxvag2SCrNMgZrMFP9vHHOEMW/II/MKJl+fE4+f/NYdu/taFDb0YRSOSDsbrL1A8erUuhUdXwoVcrPZMy4LP9buML2aQi4=
+	t=1740052714; cv=none; b=Q3+FJG/jNG6aQCeEjaIOnVHYrAsx8NR74THBXhGKhxlhwgdKBJ2d3vOy9+unkYcI21qowD09OpFzxhENkl1WXVmWmzSFd/MYfFnpO9d5Rjt+rbapOwW+yKV8D4/hSrkvgKsBDSvTvdd9tYKnV+YR/bzYt/4mpytxLuM2CZf36JU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740052642; c=relaxed/simple;
-	bh=CArsqcWhGizkeiG7wKjwp3IOv3hSwBEcxCzbBao/Zk4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=fuQWb/bJ9rdkgwpRi4B92U6TEkDr/ecUdseLcmHgwSgdZQ/2wHEUR+s2wun+c4Lm2XR2rL0LFRf7vKqaaBjIE/G3h0jEfj2CEdAmKvNNOEUFVZPjodPm1if5Iuslz7HCuG4w29PHFub8qJikasIJkqB5Mxqc7Bpb79K4CK2SMbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=Q1cW/5Yu; arc=none smtp.client-ip=49.12.72.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
+	s=arc-20240116; t=1740052714; c=relaxed/simple;
+	bh=A+pBhXsrKiI9TzxWiBBxgW90MXEZJeSooMsZ82URFgk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EZNISu/edVKUleaVhPhE81scEHXhWs7LUbLdw1hwna08gd4bSbBqDEQX4bPfu3XwGxg2ncMCduW2ahgrRfVNtDSmSGKozT7M7NrK/z4ANVDLT+2RK/aXjP6PzHkIl5FDuqwsbIXB3kCAYzHkxZXbvqRQC3UKCObUKQXyAwnUR3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C+Eg4qtP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="Q1cW/5Yu"
-From: Fiona Behrens <me@kloenk.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1740052632; bh=q5JoUJwBv/CiMFU1ElCY7M1WksjUZ2azkZJP1PhEzUo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=Q1cW/5YuayzXA0m4zWXQcoXS1FcZ1g1bJWMZSEBf3BCizvf6WYeQwV+FU57thRTB8
-	 2d6ShjXwigB9g+3CU/MYhxi8nx+FWO36jIFkK9mUKpCgT20T21Ja72pAC1LFof8crc
-	 OTit9X7Fg69WJNn8qVbsHLHFx3IGf3TWWGLE0ajY=
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Bart Van Assche <bvanassche@acm.org>,  Steven Rostedt
- <rostedt@goodmis.org>,  Jason Gunthorpe <jgg@nvidia.com>,  Kees Cook
- <kees@kernel.org>,  Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-  Christoph Hellwig <hch@infradead.org>,  rust-for-linux
- <rust-for-linux@vger.kernel.org>,  Linus Torvalds
- <torvalds@linux-foundation.org>,  Greg KH <gregkh@linuxfoundation.org>,
-  David Airlie <airlied@gmail.com>,  linux-kernel@vger.kernel.org,
-  ksummit@lists.linux.dev
-Subject: Re: Rust kernel policy
-In-Reply-To: <89f2547edcaaba53d9965cab9133d809607330ac.camel@kernel.org>
-	(Jarkko Sakkinen's message of "Thu, 20 Feb 2025 10:13:52 +0200")
-References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
-	<Z7SwcnUzjZYfuJ4-@infradead.org>
-	<CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
-	<202502191026.8B6FD47A1@keescook>
-	<20250219140821.27fa1e8a@gandalf.local.home>
-	<202502191117.8E1BCD4615@keescook> <20250219202751.GA42073@nvidia.com>
-	<20250219154610.30dc6223@gandalf.local.home>
-	<97841173-1de8-4221-8bf3-3470a5ac98a7@acm.org>
-	<89f2547edcaaba53d9965cab9133d809607330ac.camel@kernel.org>
-Date: Thu, 20 Feb 2025 12:57:11 +0100
-Message-ID: <87pljc6d7s.fsf@kloenk.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C+Eg4qtP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF124C4CED1;
+	Thu, 20 Feb 2025 11:58:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740052714;
+	bh=A+pBhXsrKiI9TzxWiBBxgW90MXEZJeSooMsZ82URFgk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=C+Eg4qtPsHQ5CG4gDt/hFRt8KMk4god0R4jHpg75FFWW+qA/494OYgshurJZwzlmi
+	 olcU0yZ5v56KQrSairG2fTltH8TsdWeAQEVaBcbUfEQ2K1pplEP8VBXheL2kKzGEgZ
+	 zOj5tIxJNhjG4bXB9w02Hlnb/+kSBcvPXGtaCcxmlb95Culto072shL5Y/7J9fiOjh
+	 I47RXujevAXU4whJMDuKuEmDobbED+KEyoqqAXtaxJ04MqH5PzUUdJe7XHmxFW7qT2
+	 THCXaZcC69mXH2Zqy1H3077s8JXP0q+CmIA8pi1UuUE/UgpWlmnyhuRM2Y6k2bHMOA
+	 J33mhRqvGId7A==
+Date: Thu, 20 Feb 2025 11:58:30 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: lgirdwood@gmail.com, sebastian.reichel@collabora.com,
+	sjoerd.simons@collabora.co.uk, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
+	benno.lossin@proton.me, aliceryhl@google.com, tmgross@umich.edu,
+	dakr@kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: regulator: add a bare minimum regulator abstraction
+Message-ID: <Z7cY5pr8DW92zt46@finisterre.sirena.org.uk>
+References: <20250219162517.278362-1-daniel.almeida@collabora.com>
+ <Z7ZjzJ2Rfrt8j0s1@finisterre.sirena.org.uk>
+ <5E354BB7-9CD5-4615-8EAF-98B9F498713A@collabora.com>
+ <Z7aHQBYXZ5jlGRte@finisterre.sirena.org.uk>
+ <7099F7DD-C806-4DA9-A7C5-595428289497@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="wUCTRlCbFOMPt/KK"
+Content-Disposition: inline
+In-Reply-To: <7099F7DD-C806-4DA9-A7C5-595428289497@collabora.com>
+X-Cookie: Editing is a rewording activity.
 
-Jarkko Sakkinen <jarkko@kernel.org> writes:
 
-> On Wed, 2025-02-19 at 12:52 -0800, Bart Van Assche wrote:
->> On 2/19/25 12:46 PM, Steven Rostedt wrote:
->> > I do feel that new drivers written in Rust would help with the
->> > vulnerabilities that new drivers usually add to the kernel.
->> 
->> For driver developers it is easier to learn C than to learn Rust. I'm
->> not sure that all driver developers, especially the "drive by"
->> developers, have the skills to learn Rust.
->
-> IMHO, Rust is not that difficult to learn but it is difficult to
-> run.
->
-> One point of difficulty for me still is the QA part, not really the
-> code. QuickStart discusses on how to install all the shenanigans
-> with distribution package managers.
->
-> The reality of actual kernel development is that you almost never
-> compile/run host-to-host, rendering that part of the documentation
-> in the battlefield next to useless.
->
-> Instead it should have instructions for BuildRoot, Yocto and
-> perhaps NixOS (via podman). It should really explain this instead
-> of dnf/apt-get etc.
+--wUCTRlCbFOMPt/KK
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-What do you mean with via podman for NixOS?
+On Thu, Feb 20, 2025 at 06:42:25AM -0300, Daniel Almeida wrote:
 
-I do still have on my ToDo list to build and publish a better nix
-development shell for kernel with rust enabled, and could also add a
-section on how to build a NixOS iso in the same nix code.
-But sadly time is a finite resource and so did not yet got to it.
+> >> I asked for a few opinions privately and was told that =E2=80=9Cif the=
+ C API prefers not to do that
+> >> why should you?=E2=80=9D
 
-Fiona
+> > Well, the C API also doesn't ignore either enable or disable attempts...
+> > the theory is that if the consumer messed up it's safer to not power the
+> > hardware off suddenly when something might not have been cleaned up.
+> > The general approach the API takes is to only take actions it's been
+> > explicitly asked to do, that way we're not hard coding anything that
+> > causes trouble for consumers and since we need constraints to enable any
+> > action that gets taken we're less likely to have default behaviour
+> > causing hardware damage somehow.  If we think we've lost track of the
+> > reference counting we just scream about it but don't try to take
+> > corrective action.
 
->
->> 
->> Bart.
->> 
->
-> BR, Jarkko
+> So, are you OK with this approach? i.e.:
+
+> > ```
+> >  fn drop(&mut self) {
+> >=20
+> >    while self.enabled_count > 0 {
+> >=20
+> >            if let Err(e) =3D self.disable() {
+> >              break;
+> >            }
+> >        }
+> >  }
+> > ```
+
+> Where `enable()` increments self.enable_count and `disable()` decrements =
+it.
+
+It's not ideal since it'll just silently clean up any enables that were
+done, ideally the Rust bindings would prevent leaks of enables like they
+are intended to prevent memory leaks and this wouldn't come up at all.
+This seems less safe than the C API since we don't even detect any
+possible isues, we'll just silently hide leaks.
+
+> >>> Perhaps an enable should be an object that's allocated and carried ab=
+out
+> >>> by whatever's holding the reference, I don't know if that plays nicely
+> >>> with how Rust likes to ensure safety with this stuff?
+
+> >> As I said, this doesn=E2=80=99t work very well, unless someone correct=
+s my reasoning on a
+
+> > I don't think I saw the previous mail?
+
+> You didn=E2=80=99t get this?
+
+> https://lore.kernel.org/rust-for-linux/Z7aHQBYXZ5jlGRte@finisterre.sirena=
+=2Eorg.uk/T/#m9348ad4fdc056d7f6d0bfec6529d4c80afdcd335
+
+Don't think so (but the copy I'm getting from the archive has mangled
+formatting with weird line lengths, it's possible that it got hit by
+spam filtering or I discarded it manually as junk due to the
+formatting).  I'm not sure I understand the concerns raised there, but
+it's possible Rust is less helpful for this stuff than I had imagined,
+or that the whole thing with layering Rust on top of the C code is
+getting in the way of whatever idioms fully native Rust code would use
+to avoid issues.  I'll reply there...
+
+--wUCTRlCbFOMPt/KK
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAme3GOQACgkQJNaLcl1U
+h9DDAAf9EJB96D8QCHIfDsl/Zc8SC6ndACVxKFtDUqI5Q+n6keKZu9mh+zNK3IiZ
+1G5gFr2qP7UxS9VvsCgDDd7nBlV2PLS2yZ+I0G3FVKx8JxE7kEjLS0wdqai4CZcC
+czqA36rejT9AIXxDcNRwf32y1afLPpKi8millOe3hfFj1dfFr65nnl6ePMSGMlC3
+KegiGWpRUm+7CHJvGCfbOitZcTQkpa5FPj04lBJh/QVUtVcB+rnz4+jHN73JfhJc
+HGf48VdzjCsolBrclYfGgM1ROJF2RhukTgnDhpOg5HGZG3YJGiIPVTwL6LTr1PfV
+t5fbMX6dXseP4qiiwIPcET8etl4tzw==
+=38Mv
+-----END PGP SIGNATURE-----
+
+--wUCTRlCbFOMPt/KK--
