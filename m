@@ -1,48 +1,48 @@
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02EB825760;
-	Thu, 20 Feb 2025 06:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4CA18C322;
+	Thu, 20 Feb 2025 06:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740033184; cv=none; b=bfQ8odPqZJRguGwQmPutxJMRdtehVrsX/G7Tx3Rl+VInwk7P/dEsTXRCK89b8a6YU3+GRBXcf9fiuRPc/uw+bVMVKOQDZJ1QrO6fpTYJ42bJz/v5rEt53oN8VuAmGtqlerGQ0EhHl0krvcBQJ8LhUZSH3xglmptYOsObKkHFk3o=
+	t=1740033753; cv=none; b=AyLgIMCPgN3nBm3e+h8oQBtbcq2eTyPpCOfd8koCPvijjtnegxw3lZK6Ltis3T7shH7rapd2HF9EUhD3bTjHJ0GiSv+myBTVwGHnpSKLbL1jBTxNd4c6J45qXpmRxuYhxjOp4ILmlB2aqY6xicEdMG57W8r4YwYnW07TUltpkVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740033184; c=relaxed/simple;
-	bh=CsIKT7rs9zrHL6VYaLhsv5flP79D10ZOGjOixxslX3U=;
+	s=arc-20240116; t=1740033753; c=relaxed/simple;
+	bh=n41e5Oiomf7d7XkNFbNpqL7PIJEd7BcHe06PwR2A1/c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ckiW+zg2+HWymkk60E1eq331mEUFbUjBHIXn+mnDku1oXnvLDBwWLH5srrf4d9aWYB/gCLmCX99ckuiYf4jNup3qsWoiOrOc+zJ5+B1vH5UJ626vTKl83EASRD6UYvTzr83e1l5AE6G9apLFytNE9fhEXygNsmrtVtVaBlufHAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=N40ZSDWG; arc=none smtp.client-ip=198.137.202.133
+	 Content-Type:Content-Disposition:In-Reply-To; b=hJiOyj5Z5PZSt2dLwx98mntfV8+y3XMpOGdfejQyd3iG4gzfP2g9gbrZcyG6Ywfjz++//Cgo28hhad3SOceNhdw8eoHYk9fmWSdud+2Pmqi2GkuvUbsIMnSuC+dICeOD8H+pX69VAva1w7QalhIZtPsAq9JHpzi2dIsQMXS1WZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=DXDj2k/V; arc=none smtp.client-ip=198.137.202.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="N40ZSDWG"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="DXDj2k/V"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
 	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=/UyTduM4ptNAxZlxL6Vr7DQS5QVkhj4idYmNNIkyK4I=; b=N40ZSDWGzTKs7AL3gSV3O/8ShI
-	ZAoho7Sxqqz81Pcb9L7O5Qa1msahkl4/J5LQhIdcuK51yBGfLHukkKxvEGaWLuHcMPlx4sLbmWKQI
-	0UlIER4dYSL2hy6Q1W5Zq7grud/+wwpH9+r8Pwe8oZxh2pLFMWtjKguvG95jgiWE4p0R1g5qX51KA
-	588FiaY+EoXvn70I2JoK/hjvRkxjY6ogK5KFOBccDl9Ijv1b3JwEOt6R7WAyVDL8htFPPScIhPzam
-	HdriNkinCoOobwlPSFye9eox6c67+nOyXSnMh9TrBYbpEu2cz5F0Xq//Bk1eAntqaGCLHclkXwBxO
-	gyuIip2w==;
+	bh=6LtIK8uPo9YjWjZpMmXR4Lu8Pnx4oyMc1ml30IHmbZg=; b=DXDj2k/VPh19fTEpHyANnYxfET
+	0+plalpIX2L1uAjtPJRBxW4BnzFanc8sS2Opnmw6BGK4jEx5BkCK7zjJd9XW5uDaUd/H5Z9f7ZNTK
+	wiZYqlHXYzSDXZGl9mVmMp+3/q5QlMuREmJ9DMAII6Fpwrmpnrul42sMrUvzmIsyuvLr6wdR1fumo
+	aGTN1a8zZR/cuwEWA+wApmeqgxPAYmMcL0DrLvvXyMt5VqrYkoS9yKu7xo6lWUtLLcmA2zpqlEVbq
+	S6CtvX4kGcyPUGUXVBF5yiopCDXpLeAlZyI3qnrRLJhuoavRdlu5PoYk2L6ywTOJZO66r1+EUcqn0
+	DQeI1KLg==;
 Received: from hch by bombadil.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1tl07K-0000000GxAk-24hX;
-	Thu, 20 Feb 2025 06:33:02 +0000
-Date: Wed, 19 Feb 2025 22:33:02 -0800
+	id 1tl0GU-0000000GzSQ-30Vx;
+	Thu, 20 Feb 2025 06:42:30 +0000
+Date: Wed, 19 Feb 2025 22:42:30 -0800
 From: Christoph Hellwig <hch@infradead.org>
-To: Jiri Kosina <jikos@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc: Christoph Hellwig <hch@infradead.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
 	rust-for-linux <rust-for-linux@vger.kernel.org>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
 	Greg KH <gregkh@linuxfoundation.org>,
 	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
 	ksummit@lists.linux.dev
 Subject: Re: Rust kernel policy
-Message-ID: <Z7bMnpq1cUezsNDl@infradead.org>
-References: <Z7SwcnUzjZYfuJ4-@infradead.org>
- <45rpsr92-4416-9no4-8o26-r0998nr77nr8@xreary.bet>
+Message-ID: <Z7bO1jT2onZFZwgH@infradead.org>
+References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
+ <Z7SwcnUzjZYfuJ4-@infradead.org>
+ <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -51,21 +51,64 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <45rpsr92-4416-9no4-8o26-r0998nr77nr8@xreary.bet>
+In-Reply-To: <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-On Tue, Feb 18, 2025 at 06:36:55PM +0100, Jiri Kosina wrote:
-> > [2] The idea of drivers in eBPF as done by HID also really doesn't help
-> > with that as much as I like eBPF for some use cases
+On Tue, Feb 18, 2025 at 07:46:29PM +0100, Miguel Ojeda wrote:
+> > while Linus in private said that he absolutely is going to merge Rust
+> > code over a maintainers objection.  (He did so in private in case you
+> > are looking for a reference).
 > 
-> I don't necessarily agree on this specific aspect, but what (at least to 
-> me personally) is the crucial point here -- if we at some point decide 
-> that HID-eBPF is somehow potentially unhealthy for the project / 
-> ecosystem, we can just drop it and convert the existing eBPF snippets to a 
-> proper simple HID bus drivers trivially (I'd even dare to say that to some 
-> extent perhaps programatically).
+> The document does not claim Linus cannot override maintainers anymore.
 
-Well, Linus declared any bpf kfunc / helper program type change that
-breaks userspace as a no-go.  And such a change very much does.
+The document claims no subsystem is forced to take Rust.  That's proven
+to be wrong by Linus.  And while you might not have known that when
+writing the document, you absolutely did when posting it to the list.
 
+That is a very dishonest way of communication.
+
+> You were in the meeting that the document mentions in the next
+> paragraph, so I am not sure why you bring this point up again. I know
+> you have raised your concerns about Rust before; and, as we talked in
+> private, I understand your reasoning, and I agree with part of it. But
+> I still do not understand what you expect us to do -- we still think
+> that, today, Rust is worth the tradeoffs for Linux.
+
+And I fundamentally disagree with that approach.
+
+> If the only option you are offering is dropping Rust completely, that
+> is fine and something that a reasonable person could argue, but it is
+> not on our plate to decide.
+
+We'll it's up to Linus to decide, and he hides behind the experiment
+thing in public without giving much guidance, and then decides
+differently in private.  Coupled with the misleading policy document
+this doesn't even make it clear what contributors and maintainers are
+getting themselves into.
+
+> > So as of now, as a Linux developer or maintainer you must deal with
+> > Rust if you want to or not.
+> 
+> It only affects those that maintain APIs that are needed by a Rust
+> user, not every single developer.
+
+Which given the binding creep means every single non-leaf subsystem
+eventually.
+
+> But it is also true that there are kernel maintainers saying publicly
+> that they want to proceed with this. Even someone with 20 years of
+> experience saying "I don't ever want to go back to C based development
+> again". Please see the slides above for the quotes.
+
+I'm not sure how that matters.  Of course your Rust testimonials are
+going to like it, otherwise you would not have quoted it.  They
+generally are not the people who do the grunt work to keep the core
+kernel alive.  And I absolutely do understand everyone who would rather
+spend their time on a higher level language with more safety, but that's
+not the point here.
+
+> We also have a bunch of groups and companies waiting to use Rust.
+
+Well, obviously you do.  But as in many other things I would usually
+not count corporate pressure as a good thing.
 
