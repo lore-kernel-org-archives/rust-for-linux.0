@@ -1,114 +1,103 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6425E1DED7C
-	for <rust-for-linux@vger.kernel.org>; Thu, 20 Feb 2025 19:49:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6AC1E9B29;
+	Thu, 20 Feb 2025 20:34:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740080944; cv=none; b=msZBwJjEQpR0ZZIr1Fwez+nL32fZIyyHhH9scjl7ITB+sJyh52IWcNA9RRBrUUhveNb7p2XB4YA78ttXVXNDbX69OXFIXFyCsf4ZLrvUx238u508HF8R0sg1XNEAZkqWttKnenX7NZ9O1RLiuBxXL8DtHN2DZhe7Ir/uyrlWTpo=
+	t=1740083661; cv=none; b=cnepvhh19akt1E9SRkI+ieapIcZ5n4oYJX1l/QKozCmMa/PuhjeI1ZCIw9WnmGwik4f17zNuP1zkYf/N/xtWDN5RAysAosKLO4GeySad/jRAtEQ0NkYS3R1gzcUmhEJogTMw/oDekzLTdmKep7dAvvPkyZXKyvatatjZDYYZHKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740080944; c=relaxed/simple;
-	bh=rA0Kwp16xeeS5LZ0BAYWfUuav/tin7pCBKweDIt+JDg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dqslEbeSemxIGu3KZV1DvN1TTLKYJj08eU+eH/pdUVOdxtf27/KjLf89Q8GKY4TK2AK6DzTSPCwAWYq6mYL9nKSAslbgnQVk08Pxjh/XicSAmxTLqsS2jNDEtVWaK0Z/+4sI1Z1jvToL3oO8If2IUtMXL8psHROT+2/nmRmQeVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IDU2D95w; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1740083661; c=relaxed/simple;
+	bh=PJCMa8esoX4W/csdW3slZ1rUS3bEqx3KRq3GD9X0zt8=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=qkOQfBcENdt/TMACmF8HKkkGeGXHoz2yv0fA4GXwnwDvxS+kXkGip5NZWUoaxbuWRIVH3j5hCapFc/Z6BnHXUcqFwdihFs7JQG+nhzuEWBOX2LQB3+oxpwUuQu8sDqOLEOsUsr9fTFRRxVrjUXHACmDDEVV9d/xRyiNy50s3m7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=H9yy1T1p; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IDU2D95w"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-43995b907cfso8778435e9.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 20 Feb 2025 11:49:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740080941; x=1740685741; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rA0Kwp16xeeS5LZ0BAYWfUuav/tin7pCBKweDIt+JDg=;
-        b=IDU2D95wuGSE/yigRn1TH4y4aiizsQMowCXbqHlV2QRvKgPjCoB1VLpeE90a8AQQtG
-         r4Ned7tLH5XIgluAbEv8QS/SdB6C7aWwfn9AbFf6DdqoGJEZfMRQauJMd/plWLq3IuoY
-         OKWAtVlOnEhYgIJfCE8miJjq5/8y47txTUszVT7mBxBk57SnGl6GtiamPtpt88C8yb6l
-         U/oZQFLUnWDN0iEtvtAWc3cOo9ID0j72oqeYtuPkNCGVvTwappKxgcVrtVwJsGg7+ZPI
-         13mwrxi6O/yvQJ4pEVG+1jRJ8ci02D1bdetNoT8bygH94HL1VThxQ3Y4QmeXPErhTQu4
-         u4HA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740080941; x=1740685741;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rA0Kwp16xeeS5LZ0BAYWfUuav/tin7pCBKweDIt+JDg=;
-        b=rrV1gPoyaMte80ns/6tE0oDeHUu0xjO5enPhz8vfPO3tYc1JWiRHhlJxGjyEdnaS95
-         CplbKHMyhwhb99DHafmpaxiS+BeypMjhShdOqVBJqO27NZSBN1ns57bOp0+hllz1KhbP
-         0QcYJ3ouutLWs7lD7KB7pIZ0zSd6w00oq+XgZMN1xLC+qeob3gAIbHc7hUbXIuiD3bmx
-         HeHCNkKc3vmjqqN/uZaHR1Ikldh0l9Dj/frU/gmiYZMI+6Mz4zMTc6J4ZuqGP1MAtgeK
-         e5nZSvBsrzpimrVG9PrZG7MlGJX9zMz2K9LHB/ILiRUyNS1DIxt2hvVYnH0OomsAMU4f
-         KtfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU+1cOZxuJU4ENQic4lVxNJmAiXbYBZOpzJeC1Oz28ZE1g4AUA2pVtzXd4qvPQ2+0vxo7lZ8hEeoKtTb9cBGw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0SLyPqBfp7RKJec11l3KziLT098vMO82RK7XCJNm/sPAbl+Ke
-	Wc6TO0U3xvTRs19X6DQekEATd7psHsOznGm311EOrfo0C9yvJn4DKmBxjq/EUcvnyovuRYcQlvY
-	2dFrYPvB5Vc+CQgZEaKu1NfQ5xEJ8sGzYWTDK
-X-Gm-Gg: ASbGncsnybNyaCZ1qJtU0NgYq3CdCE+VQwLnmYbxMXMrpjWN+VY7Dr2qOv/hZdUtqxE
-	JwKveccDsesu35ORuN76JOvfMVrPOFJ79FdIOypQfMOS1UDueiauyUkO59N2FdHsACOtyoj+I
-X-Google-Smtp-Source: AGHT+IHsln79wPXKAWyhMpVjNEVQXJOEfV3EjLn1vu36fg+0aATwmiU66VTWmmNBOeV+D4kqoTots+5AOWDkCwXqDGk=
-X-Received: by 2002:a05:600c:3b93:b0:439:96b2:e9b with SMTP id
- 5b1f17b1804b1-439ae1e6a3amr3860425e9.9.1740080940624; Thu, 20 Feb 2025
- 11:49:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="H9yy1T1p"
+Received: from [127.0.0.1] ([76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 51KKY6gT2365356
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Thu, 20 Feb 2025 12:34:06 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 51KKY6gT2365356
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025021701; t=1740083647;
+	bh=A7JEGdkOq24itmNx5uIDCiMePe/00fDHMbG1zsvPgk0=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=H9yy1T1pR8WT5CqSVYBTSeNQ9Rpk3W4Bf66RIIQeZNqLAXjqHFCymfgB2tayLVP7F
+	 sx62fzfZC2YPCMyvtOeQSaVDrjLTiYxE+dRfo9P9d9WzdMvP1i2BAx3FtPkF3WK8ID
+	 9WlpJsgi8iz/7UTNkqZOXXjsiwHiya8/1luv7zHj30VZhgnOTFDe5eIgmLU+1eA3Dm
+	 d9QFitxI1W+8fhqYqHR5FNNcU2NHAqZJ65SOPRhfKkeyAEEGuIeTWE/FmM9pFmVGVC
+	 AjAFHtCgAe82a9Rk1gytpMNRVoBBrC5Aojjs11PHFfHop+tAVOYGtDuaT5ONka0naT
+	 rBmPL1D0r+fJw==
+Date: Thu, 20 Feb 2025 12:34:05 -0800
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Jan Engelhardt <ej@inai.de>
+CC: Greg KH <gregkh@linuxfoundation.org>, Boqun Feng <boqun.feng@gmail.com>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        rust-for-linux <rust-for-linux@vger.kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
+        ksummit@lists.linux.dev
+Subject: Re: C aggregate passing (Rust kernel policy)
+User-Agent: K-9 Mail for Android
+In-Reply-To: <n05p910s-r5o3-0n36-5s44-qr769prp69r5@vanv.qr>
+References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com> <Z7SwcnUzjZYfuJ4-@infradead.org> <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com> <326CC09B-8565-4443-ACC5-045092260677@zytor.com> <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com> <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com> <Z7VKW3eul-kGaIT2@Mac.home> <2025021954-flaccid-pucker-f7d9@gregkh> <2nn05osp-9538-11n6-5650-p87s31pnnqn0@vanv.qr> <2025022052-ferment-vice-a30b@gregkh> <9B01858A-7EBD-4570-AC51-3F66B2B1E868@zytor.com> <n05p910s-r5o3-0n36-5s44-qr769prp69r5@vanv.qr>
+Message-ID: <F7E6DA3E-9B5C-4FDF-B7E7-0F1F02C5E74D@zytor.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250203-cstr-core-v8-0-cb3f26e78686@gmail.com>
- <CAJ-ks9kyozt45VeXG7GBTN-ejy_HGMOekFYFMmzS8AbEusZMWQ@mail.gmail.com>
- <CAH5fLgjUuCo5Ayx4WCfnrVAC1prvUbY-pvZdinkAb+KcSOWvpA@mail.gmail.com> <CAJ-ks9=JMWQMTdJSkdVGJus1mcRQWZ-34B_s4Ti7ab5NAdA6pg@mail.gmail.com>
-In-Reply-To: <CAJ-ks9=JMWQMTdJSkdVGJus1mcRQWZ-34B_s4Ti7ab5NAdA6pg@mail.gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 20 Feb 2025 19:48:48 +0000
-X-Gm-Features: AWEUYZntgDVdVP1SJ-D0umjAVRTDDGHObfW5v-Y7ttmdAu1IfOZB5UZocBar5Hw
-Message-ID: <CAH5fLgjnYrfqmsv+nFpBr=cNHosfzY2VRzVU=Zn_PwPe8Ww=0g@mail.gmail.com>
-Subject: Re: [PATCH v8 0/4] rust: replace kernel::str::CStr w/ core::ffi::CStr
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Michal Rostecki <vadorovsky@protonmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 19, 2025 at 2:33=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
- wrote:
+On February 20, 2025 7:17:07 AM PST, Jan Engelhardt <ej@inai=2Ede> wrote:
 >
-> On Wed, Feb 19, 2025 at 9:21=E2=80=AFAM Alice Ryhl <aliceryhl@google.com>=
- wrote:
-> >
-> > On Tue, Feb 18, 2025 at 5:05=E2=80=AFPM Tamir Duberstein <tamird@gmail.=
-com> wrote:
-> > >
-> > > Gentle ping. Trevor, Alice, Benno: you all participated in the last
-> > > round of review - I'd appreciate it if you could take a look at this
-> > > series.
-> >
-> > The primary thing that comes to mind looking at this is that losing
-> > the Display impl is pretty sad. Having to jump through hoops every
-> > time you want to print a string isn't great :(
+>On Thursday 2025-02-20 14:23, H=2E Peter Anvin wrote:
+>>
+>>People writing C seem to have a real aversion for using structures
+>>as values (arguments, return values or assignments) even though that
+>>has been valid since at least C90 and can genuinely produce better
+>>code in some cases=2E
 >
-> There's the practical answer and the philosophical one. The former is
-> that core::ffi::CStr doesn't impl Display. The latter is that Display
-> implementations aren't meant to be lossy, and we shouldn't make it
-> ergonomic to do things that might surprise the user.
+>The aversion stems from compilers producing "worse" ASM to this
+>date, as in this case for example:
+>
+>```c
+>#include <sys/stat=2Eh>
+>extern struct stat fff();
+>struct stat __attribute__((noinline)) fff()
+>{
+>        struct stat sb =3D {};
+>        stat("=2E", &sb);
+>        return sb;
+>}
+>```
+>
+>Build as C++ and C and compare=2E
+>
+>$ g++-15 -std=3Dc++23 -O2 -x c++ -c x=2Ec && objdump -Mintel -d x=2Eo
+>$ gcc-15 -std=3Dc23 -O2 -c x=2Ec && objdump -Mintel -d x=2Eo
+>
+>Returning aggregates in C++ is often implemented with a secret extra
+>pointer argument passed to the function=2E The C backend does not
+>perform that kind of transformation automatically=2E I surmise ABI reason=
+s=2E
 
-I don't think there's any problem with a lossy Display impl. It's
-supposed to be user-facing, and that's more or less what it requires.
-Does kernel printing even require the string to be utf-8 in the first
-place? I guess there's a mismatch about that here.
+The ABI is exactly the same for C and C++ in that case (hidden pointer), s=
+o that would be a code quality bug=2E=20
 
-> We could add our own UnicodeCStr which could impl Display and be
-> AsRef<CStr>. Do you think that should gate this work?
+But I expect that that is a classic case of "no one is using it, so no one=
+ is optimizing it, so no one is using it=2E" =2E=2E=2E and so it has been s=
+tuck for 35 years=2E=20
 
-The solution I actually want is just for CStr to be Display, but
-that's not something we can control on the kernel-side. I won't block
-this change over it.
-
-Alice
+But as Linus pointed out, even the C backend does quite well if the aggreg=
+ate fits in two registers; pretty much every ABI I have seen pass two-machi=
+ne-word return values in registers (even the ones that pass arguments on th=
+e stack=2E)
