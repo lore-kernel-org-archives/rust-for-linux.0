@@ -1,82 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-10629.protonmail.ch (mail-10629.protonmail.ch [79.135.106.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5DE91EC01F;
-	Thu, 20 Feb 2025 22:35:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59253264616
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Feb 2025 23:18:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740090932; cv=none; b=RMexlEA2KSCT2Fw6zl43d0NRxfFBt10C78+U0O7OEsDEtz2mH6jqsxFNH1YhfvrF2L23XuMSuN1Vy60KIP3X8MnHUFwTJwiOmRXmZ/Jth0mmZhPfvQomMisQwZcro05MhO9tf2h86errNaEwSnrTTYjgWTGg68B1YtHcB4JhiZ4=
+	t=1740093502; cv=none; b=Cuu8IUB2Jmr1chCnCX6JRLMNo7AkHLvPCKrOK9JtmQuhtpgsSyIW3lWfzSnjKH2pIM9OuFn0n83JV7XfRtmkjlSGz5RVq2rxRkMuyP69YwhplLPpZUKZl3HkLDpYqDgIScPRbupGBwe+JdSCAmZ8RGbe+iUL+bFUZ3oGBMMumTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740090932; c=relaxed/simple;
-	bh=4OJg0oQ7N4XigOkvF4kaDEF/g5zSymWc9IjT0ma+hQY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZPIZzmIeb+BvGXZSFYjFsDSDGD+2fYEFopfV8O+LVDarWuH1xPjWPryx/ak62DFztU+lHHKRGMt04qVFfdpY/v+ndV+iDsAocTJFB+7zhyf2wYlF3o+NIxV6GwvCoUMHPBLY7ERz4q9jkc+rxzdF72vMy9PddsTtxzwnZnS5d9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=THyuoZEH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740093502; c=relaxed/simple;
+	bh=ST5U7QVnOkl5OWzRD8d4A0n1T3JArlpyXLEdYbY75DE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Lcsyfr+DfqzxsbX0DxMgfsP5GXsr13Px52X1+ps4YFtY+gxzsBpumRql9RSEiOUDA9quSbE6iNtUhAw2OKCy+s6GRt0YzS26Khi0M/tUY7Hb0TnBSgkR4c2AKTHK3A7K9z4QWF+HGLCeiUymabrFeTX3Aou5koPkyqrdh6LCAo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=nDY90JqB; arc=none smtp.client-ip=79.135.106.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="THyuoZEH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEE39C4CED1;
-	Thu, 20 Feb 2025 22:35:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740090932;
-	bh=4OJg0oQ7N4XigOkvF4kaDEF/g5zSymWc9IjT0ma+hQY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=THyuoZEHpLqWtVOC9CsvbfbVFtufYSHgkiq9Ic/LvkfTQt3N+EbWOwXhTYnfY9PcW
-	 3RMnSOij/q/EA4ubIop/D9NlptpCyC3aG0LVUaD3JHsZ13HktVKLgft+op/Nm9MgxB
-	 LytONxyOpCBd0zuKX38NUZEyqfJMUXO0KOt5fhhhNEHIrd3Radn1RO2DD6CuHmKk0+
-	 jMsLEOxYZdtiJSmD83sYhA8/t/4JnZF/pqOj2GW2emz/DcWcj+8bzi7czSXyxyBC7X
-	 nlm2A6YByIB57oh9IkMspEp89dhBlkWGMgjfBeuPAtYIdDMgcwwXkJ3CilrG9o5z0T
-	 3WuRHmAovUozw==
-Date: Thu, 20 Feb 2025 23:35:29 +0100
-From: Frederic Weisbecker <frederic@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>,
-	Dirk Behme <dirk.behme@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 00/14] hrtimer Rust API
-Message-ID: <Z7euMa5zYgHvWBsY@pavilion.home>
-References: <20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="nDY90JqB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=3ofknypmdref5pex6ox2hfphjy.protonmail; t=1740093493; x=1740352693;
+	bh=bQv18O6BE32RRp46j1r2K56INFBlD0xqJNVS8ByKQ78=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=nDY90JqBTJAvNz+i/JIHbcmdg3S/mqGCHLiqcw1PSx3BokN2gQuAVEut0b6r6w1KJ
+	 qRxBnGLowoEN+bsjwiDOTGSvcKpLthNUn+s4R7/NYO+nuWCA/AzRLoraCagBw50ZxI
+	 WWaN2hf70JdB5ycDpNEHeMWD3jggZRkwbuu996KRWHPr1vpG56P8kJSHfnGHfU9vel
+	 NX8H0OOqW5XBKAOnAJn35gG2+6TSe5+4crQ7+lqSOY5R6+0prEctj4sXQ2/ujhKunB
+	 Rs1cH1yDwcd9QV3FWTOlSL2jTP5VOGthCk98cYwbBOpyqj1WzlK+2Lsci0ewYgBcZq
+	 LeMeXNjM3ILgg==
+Date: Thu, 20 Feb 2025 23:18:07 +0000
+To: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Danilo Krummrich <dakr@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v8 06/14] rust: hrtimer: add `UnsafeHrTimerPointer`
+Message-ID: <7c3c758d-658c-4cea-9533-9bbe7b3e285d@proton.me>
+In-Reply-To: <20250218-hrtimer-v3-v6-12-rc2-v8-6-48dedb015eb3@kernel.org>
+References: <20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org> <20250218-hrtimer-v3-v6-12-rc2-v8-6-48dedb015eb3@kernel.org>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: b48ae727e84febc5af3498e06639422415bbf860
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Le Tue, Feb 18, 2025 at 02:27:05PM +0100, Andreas Hindborg a écrit :
-> This series adds support for using the `hrtimer` subsystem from Rust code.
-> 
-> The series adds support for timer mode and clock source configuration during
-> timer initialization. Examples and functionality to execute closures at timer
-> expiration has been removed, as these depend on either atomics [3] or
-> `SpinLockIrq` [4], which are still being worked on.
-> 
-> This series is a dependency for unmerged features of the Rust null block driver
-> [1], and for rkvms [2].
-> 
-> Link: https://git.kernel.org/pub/scm/linux/kernel/git/a.hindborg/linux.git/log/?h=rnull-v6.11-rc2 [1]
-> Link: https://gitlab.freedesktop.org/lyudess/linux/-/tree/rvkms-wip [2]
-> Link: https://lore.kernel.org/rust-for-linux/20240612223025.1158537-1-boqun.feng@gmail.com/ [3]
-> Link: https://lore.kernel.org/rust-for-linux/20240916213025.477225-1-lyude@redhat.com/ [4]
+On 18.02.25 14:27, Andreas Hindborg wrote:
+> Add a trait to allow unsafely queuing stack allocated timers.
+>=20
 > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-Let me repeat again that I have extremely limited understanding of this.
-But let's say I haven't spotted a major issue on the interface...
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
-	    Acked-by: Frederic Weisbecker <frederic@kernel.org>
+> ---
+>  rust/kernel/time/hrtimer.rs | 31 +++++++++++++++++++++++++++++++
+>  1 file changed, 31 insertions(+)
+>=20
+> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
+> index e342193f985eb..196794089f033 100644
+> --- a/rust/kernel/time/hrtimer.rs
+> +++ b/rust/kernel/time/hrtimer.rs
+> @@ -157,6 +157,37 @@ pub trait HrTimerPointer: Sync + Sized {
+>      fn start(self, expires: Ktime) -> Self::TimerHandle;
+>  }
+>=20
+> +/// Unsafe version of [`HrTimerPointer`] for situations where leaking th=
+e
+> +/// [`HrTimerHandle`] returned by `start` would be unsound. This is the =
+case for
+> +/// stack allocated timers.
+> +///
+> +/// Typical implementers are pinned references such as [`Pin<&T>`].
+> +///
+> +/// # Safety
+> +///
+> +/// Implementers of this trait must ensure that instances of types imple=
+menting
+> +/// [`UnsafeHrTimerPointer`] outlives any associated [`HrTimerPointer::T=
+imerHandle`]
+> +/// instances.
+> +pub unsafe trait UnsafeHrTimerPointer: Sync + Sized {
+> +    /// A handle representing a running timer.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// If the timer is running, or if the timer callback is executing w=
+hen the
+> +    /// handle is dropped, the drop method of [`Self::TimerHandle`] must=
+ not return
+> +    /// until the timer is stopped and the callback has completed.
+> +    type TimerHandle: HrTimerHandle;
+> +
+> +    /// Start the timer after `expires` time units. If the timer was alr=
+eady
+> +    /// running, it is restarted at the new expiry time.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Caller promises keep the timer structure alive until the timer i=
+s dead.
+> +    /// Caller can ensure this by not leaking the returned [`Self::Timer=
+Handle`].
+> +    unsafe fn start(self, expires: Ktime) -> Self::TimerHandle;
 
-Thanks!
+I have an interesting idea to make this function safe, but I don't want
+to block this series.
+
+How about we have the following signature:
+
+    fn start(self, expires: Ktime) -> impl PinInit<Self::TimerHandle>;
+
+And in the safety requirements of the trait we ask that `TimerHandle` be
+`!Unpin`. Then the TimerHandle cannot be forgotten because it is pinned
+and pinned values have the drop guarantee [1].
+
+You can then use `stack_pin_init!` to pin the value directly on the
+stack (dropping it by leaving its scope will then cancel the timer &
+possibly wait for the timer callback to finish running).
+
+[1]: https://doc.rust-lang.org/std/pin/index.html#drop-guarantee
+
+---
+Cheers,
+Benno
+
+> +}
+> +
+>  /// Implemented by [`HrTimerPointer`] implementers to give the C timer c=
+allback a
+>  /// function to call.
+>  // This is split from `HrTimerPointer` to make it easier to specify trai=
+t bounds.
+>=20
+> --
+> 2.47.0
+>=20
+>=20
+
