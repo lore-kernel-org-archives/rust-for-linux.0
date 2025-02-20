@@ -1,132 +1,79 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EEC01DE4D2;
-	Thu, 20 Feb 2025 09:43:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740044592; cv=pass; b=EEs2I79OqPG9uFqai6yOT/5RykDnzxxUsIpCWLrVmtwJ2Qecuh1YIdXM8sacSs2PtHlEU3PnNyLypSIkW+DQm/Hoxrt4FQI2TuTb2aApPyy06GDAOzbeLyAu1A9bk0urI7rgmP8UZ6W2tsRqAkXv0f9zki29GStsdzeDzdHcpTA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740044592; c=relaxed/simple;
-	bh=X0VeiW5jvO2DWfIISsx666tpZYWzFwJZKbBhi8i0+Bw=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=tgyGSvTvCF/gNFOR6QOriV7wR5VK7AFunIHQh8woos08ZaholDGHoRIzozT8VKUJTpE/eLfL5jHRAKQ2G6hTpZv7zE8KaZ8cJgnuc7yjWLwsZXIH8OzbfgEayZ6dAnivvFjQJ3j1yEoblP7u3JQpsoT5l91AbIiizqPDxwVL83Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=F548C7qr; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB6A101DE;
+	Thu, 20 Feb 2025 09:55:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740045326; cv=none; b=lIPwk/EjeNSWfa/EgR6bL1BHcI4DPbd++RFamg20VwoDx+ql1Wd50B+YXSByqOWQdFjumiKQ3ywdvb8IjYuXVJ6pir6BJjQCOcFoBqit0NxbK5X+So7Q57/jryHFDk/6jywdsJ2vis8UPOyRa6hXwPk3WA8FLUammKDNStzYZ+c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740045326; c=relaxed/simple;
+	bh=xzS6h5KnBHNIoiPvclSQAAioVfZWDom2cKt1SBCr86w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JROAdKQB0WVRzoIqc5GsdByD/+p75oZCH/ffUPQDZI1a1EQBNULTe2Br4cDH2I1XlejiBd3UWmBZLZmfPD9MGfkyPqAbu+fGGKnFDhCRoaqlvRwUKV3MWVKrQwcPk0cGwq8QMRlC+1PePSr+SpNeNKYxPdk5tL2HnypsIxwJR34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GQijEXKe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="F548C7qr"
-ARC-Seal: i=1; a=rsa-sha256; t=1740044565; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=YnRMlazNktHPkIJxQHEi2TMJg93m1xEYcwaZ5kYWLqBbXibFI7b4rQzbSFsKfju+zqCReMD8HK0YqRFfrw6a2VQV4lMC9Jz4PywCcTJNQH4XYZ5Go8aKZ2wEibi0anZn1hWwI7r4fjQ8CGjoj+Fj2zd7GzBuQt34XDtBxbeZEmU=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1740044565; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=G1w/QgJH/sS0bXOc4MnMWKj+MEaxGsFuliB931Wa9fw=; 
-	b=lh34xO7OIpdHb5j3v5PvWf8nFdWsL9Qn8SuYw7oP6Yf9IPezdyHsAQ3H4lyPKTTw3dBCUDLlDSucQLxbKgi/7i38YeCmsrRtCH1FfuWRPIvIBr9Op20pDxM/7sMHwR52CMbblLpLPO97xa7YtGX/V3rKnxXiuPMnYOPyuL6+GKs=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1740044565;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=G1w/QgJH/sS0bXOc4MnMWKj+MEaxGsFuliB931Wa9fw=;
-	b=F548C7qr110UvJghNgsV248jCxTkN4C0LyWnXWK+PYvWLy+sScWufzCmt1EijPuh
-	+be+DkTZqoSsxbm4JXB/hJLA92Y+GUAJ/GdtNU+yJ2ydDiYJEq+MXEnPj1YL+EhuTSI
-	bbLsYuQrEBe6hy7fhvifrLdEQMi9aaJvVjxIjecw=
-Received: by mx.zohomail.com with SMTPS id 1740044562759715.5588790038047;
-	Thu, 20 Feb 2025 01:42:42 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GQijEXKe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66189C4CED1;
+	Thu, 20 Feb 2025 09:55:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740045325;
+	bh=xzS6h5KnBHNIoiPvclSQAAioVfZWDom2cKt1SBCr86w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GQijEXKeznE+q3VYmV/ySgRAcUNRB/51FmRor5HU8HyTJ3he5KdezGi+spOmHeliF
+	 5WJztNXBI3+pRk/+clHPp1xkjFbR7mWFJTAaThQiRxU+Zokb/f9l6py4MrygtBJOIA
+	 xY+LVJWNm3+LWMTNnzUZO4s9juml8nZRkdy+hYlrclOHP/TTI9LyaKcSDxl+Ex3k4k
+	 b7kBy2G3zpcNHuQJQsWqLcuAZA0L3sqhqJLH0d/tsuqNCJTH6nm9a1mRNZ6eYPtEOz
+	 hAWsjq8i2wLqcTjPxUmeZGMxdIHWnOiThX6P8ipeM5NHdIffN8pXboohgClckt0Y79
+	 fzOmjWhuP9F/A==
+Date: Thu, 20 Feb 2025 11:55:21 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Jason Gunthorpe <jgg@nvidia.com>,
+	Kees Cook <kees@kernel.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	rust-for-linux <rust-for-linux@vger.kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
+	ksummit@lists.linux.dev
+Subject: Re: Rust kernel policy
+Message-ID: <20250220095521.GP53094@unreal>
+References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
+ <Z7SwcnUzjZYfuJ4-@infradead.org>
+ <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
+ <202502191026.8B6FD47A1@keescook>
+ <20250219140821.27fa1e8a@gandalf.local.home>
+ <202502191117.8E1BCD4615@keescook>
+ <20250219202751.GA42073@nvidia.com>
+ <20250219154610.30dc6223@gandalf.local.home>
+ <97841173-1de8-4221-8bf3-3470a5ac98a7@acm.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
-Subject: Re: [PATCH] rust: regulator: add a bare minimum regulator abstraction
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <Z7aHQBYXZ5jlGRte@finisterre.sirena.org.uk>
-Date: Thu, 20 Feb 2025 06:42:25 -0300
-Cc: lgirdwood@gmail.com,
- sebastian.reichel@collabora.com,
- sjoerd.simons@collabora.co.uk,
- ojeda@kernel.org,
- alex.gaynor@gmail.com,
- boqun.feng@gmail.com,
- gary@garyguo.net,
- bjorn3_gh@protonmail.com,
- a.hindborg@kernel.org,
- benno.lossin@proton.me,
- aliceryhl@google.com,
- tmgross@umich.edu,
- dakr@kernel.org,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <7099F7DD-C806-4DA9-A7C5-595428289497@collabora.com>
-References: <20250219162517.278362-1-daniel.almeida@collabora.com>
- <Z7ZjzJ2Rfrt8j0s1@finisterre.sirena.org.uk>
- <5E354BB7-9CD5-4615-8EAF-98B9F498713A@collabora.com>
- <Z7aHQBYXZ5jlGRte@finisterre.sirena.org.uk>
-To: Mark Brown <broonie@kernel.org>
-X-Mailer: Apple Mail (2.3826.300.87.4.3)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <97841173-1de8-4221-8bf3-3470a5ac98a7@acm.org>
 
-Hi Mark,
+On Wed, Feb 19, 2025 at 12:52:14PM -0800, Bart Van Assche wrote:
+> On 2/19/25 12:46 PM, Steven Rostedt wrote:
+> > I do feel that new drivers written in Rust would help with the
+> > vulnerabilities that new drivers usually add to the kernel.
+> 
+> For driver developers it is easier to learn C than to learn Rust. I'm
+> not sure that all driver developers, especially the "drive by"
+> developers, have the skills to learn Rust.
 
->=20
->> I asked for a few opinions privately and was told that =E2=80=9Cif =
-the C API prefers not to do that
->> why should you?=E2=80=9D
->=20
-> Well, the C API also doesn't ignore either enable or disable =
-attempts...
-> the theory is that if the consumer messed up it's safer to not power =
-the
-> hardware off suddenly when something might not have been cleaned up.
-> The general approach the API takes is to only take actions it's been
-> explicitly asked to do, that way we're not hard coding anything that
-> causes trouble for consumers and since we need constraints to enable =
-any
-> action that gets taken we're less likely to have default behaviour
-> causing hardware damage somehow.  If we think we've lost track of the
-> reference counting we just scream about it but don't try to take
-> corrective action.
+From what I saw, copy-paste is a classical development model for new
+drivers. Copy-paste from C drivers is much more easy than from Rust
+ones, simply because there are much more C drivers.
 
-So, are you OK with this approach? i.e.:
+Thanks
 
-> ```
->  fn drop(&mut self) {
->=20
->    while self.enabled_count > 0 {
->=20
->            if let Err(e) =3D self.disable() {
->              break;
->            }
->        }
->  }
-> ```
-
-Where `enable()` increments self.enable_count and `disable()` decrements =
-it.
-
->>> Perhaps an enable should be an object that's allocated and carried =
-about
->>> by whatever's holding the reference, I don't know if that plays =
-nicely
->>> with how Rust likes to ensure safety with this stuff?
->=20
->> As I said, this doesn=E2=80=99t work very well, unless someone =
-corrects my reasoning on a
->=20
-> I don't think I saw the previous mail?
-
-You didn=E2=80=99t get this?
-
-=
-https://lore.kernel.org/rust-for-linux/Z7aHQBYXZ5jlGRte@finisterre.sirena.=
-org.uk/T/#m9348ad4fdc056d7f6d0bfec6529d4c80afdcd335
-
-
-=E2=80=94 Daniel=
+> 
+> Bart.
+> 
