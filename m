@@ -1,183 +1,144 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A0F26561A;
-	Thu, 20 Feb 2025 23:27:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652C226389E
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Feb 2025 23:36:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740094063; cv=none; b=WKzSaUU7NVcv5HvNgB2b9a4SPVjq7OVgTPWr/swhkf6asRuyi5nsNQNnx3l+qn7BK7tjyz1UpeU66m5ReXQhu0fazFDkFr6FJqTMm5rkVsGOIQshErWJ9MSq0dVBvWmu1EiCevRbnqH4FuI+YY+bc5utf6Acf8AFH/9BhcUpBGI=
+	t=1740094585; cv=none; b=ZmlTHOPGMzgt7l/Ners4mjUn3XS2HVr2EOC3QlTWNzUHDuwSg7ZvFPda5VbMe4KoTuIR7kmsEWOmuaQNdLA+IP2KKZv1uHKuFvnJ+gG4IONFEa/HaM7cFY38cTbJp1wvFtep/tKWaLPtm0KzaQDWmzeYUidvt58wpMDXmn3Jnog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740094063; c=relaxed/simple;
-	bh=IDL/W8pOfs1xYSMe5XgJ5ubEC/gtEpro6a8n9++yLY8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hjUFOdIItVZmxZDq+s+fJlciUMiPcwLs+sLwyRZc3bOS9i2n9h9S28Sbs/pnwMM49UXOEKbuaPXPMs4RilxlNOL4ae5FzhzAusj7GbI95Gv9NOlCuzqD9xD/9OBxPSuwYbF8g+gIMisxywZ8EgtaXnSIv9TmVPrw/I7ZuczqX3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=NJEnqJ3C; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1740094585; c=relaxed/simple;
+	bh=Z9rlOKsYkSiSq3B/m2yiuXoWI6S0rVlJ+V/aoQY6ZzA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=o0TvmuOjcNKxIgMycJE5Q+RoZeixb9kp9xexXz0vC/BE2TVNHMrIo+ZCA+qFu/veB0jPlKWtt5RzRx71a+e35Bl1QcDQuWR/xBuBeZZXUVpvzzZwuT7VEvo4Swlc/mG8wIGalp7plDn9kadJLmdUoeVL9SvnylsUF1k1qwH0GwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=dfqDKRYk; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="NJEnqJ3C"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1740094058; x=1740353258;
-	bh=Dxo1SNAGaRSwPdhf0PEYylFzTQk2lGj8jYFGi3keDjM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=NJEnqJ3CMGMUH/ZjENhy4QUXYVBDdKW1Oi/hYjBbJ9Ns6Nj2WpMhuD2BC8SMDYSke
-	 3f0zS+Y72gqkZLeX28PbN6hkJEJq/Y2bg3IfwMEUECAXllHOrUJwR9hd6FKAlUpsb5
-	 TTrdZqbq3SOs9tkkhVNjI8PHwt/UyKC4M+h7rmHam5n9+1O6Wx1z1GUGCE4prObPrs
-	 82TSgXBoTMGk9LNFEq38kGeXCAP7yioM88nypqdpVGlcixBYOG5KFGDRQSTe5d8cb/
-	 M26P666YtZH6ExXiS11IcP74zhV2g11AplIx/kPa4L4q+u7qEkfFJMIoqxGZMlR6Ep
-	 N0au4f+sNp+oQ==
-Date: Thu, 20 Feb 2025 23:27:34 +0000
-To: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Danilo Krummrich <dakr@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 13/14] rust: hrtimer: add clocksource selection through `ClockSource`
-Message-ID: <f2066461-8a10-4d5e-bce9-989f9bbade2c@proton.me>
-In-Reply-To: <20250218-hrtimer-v3-v6-12-rc2-v8-13-48dedb015eb3@kernel.org>
-References: <20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org> <20250218-hrtimer-v3-v6-12-rc2-v8-13-48dedb015eb3@kernel.org>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 038ad877f331f246724e40ce89b20b41c42a57ae
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="dfqDKRYk"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 5A14824002A
+	for <rust-for-linux@vger.kernel.org>; Fri, 21 Feb 2025 00:36:16 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1740094576; bh=Z9rlOKsYkSiSq3B/m2yiuXoWI6S0rVlJ+V/aoQY6ZzA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 From;
+	b=dfqDKRYk5INa4ZSVXa1etFrBZSQ1Q3WSYiFhA5jW/FjJJnhy7udM3KKUcuO/CuzrQ
+	 pAq/L/jiD4HiIa+jl2eFLBKgJEt7cs3uqzfkpINTiWci/oYp6EWJjl/69dIFAaL41L
+	 60fYEXqs6KInHx3QSnLSCVPm/R0psvBiObjVgyvx3DIPTQk3VV+j3pptsIOXz2QqJV
+	 wvf584JaF13ozIFt7cKvQ+40HeEzgDhGp15naLlaD6VLknIGQ0acY9cdytS9jpYF61
+	 vlvOkvstUJSEGB7jdnfDDzzW7Qh4HCO0x4SZqGo9AmzJjJ38TKCDdg84B2a7V7lmyQ
+	 YoySinZe1inOw==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4YzV571Zd5z6tw2;
+	Fri, 21 Feb 2025 00:36:11 +0100 (CET)
+From: Charalampos Mitrodimas <charmitro@posteo.net>
+To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+Cc: a.hindborg@kernel.org,  alex.gaynor@gmail.com,  aliceryhl@google.com,
+  apw@canonical.com,  arnd@arndb.de,  aswinunni01@gmail.com,
+  axboe@kernel.dk,  benno.lossin@proton.me,  bhelgaas@google.com,
+  bjorn3_gh@protonmail.com,  boqun.feng@gmail.com,  dakr@kernel.org,
+  dwaipayanray1@gmail.com,  ethan.twardy@gmail.com,
+  fujita.tomonori@gmail.com,  gary@garyguo.net,
+  gregkh@linuxfoundation.org,  joe@perches.com,  lukas.bulwahn@gmail.com,
+  ojeda@kernel.org,  pbonzini@redhat.com,  tmgross@umich.edu,
+  walmeida@microsoft.com,  rust-for-linux@vger.kernel.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V3 2/2] checkpatch: throw error for malformed arrays
+In-Reply-To: <20250220161951.844367-3-trintaeoitogc@gmail.com>
+References: <20250220161951.844367-1-trintaeoitogc@gmail.com>
+	<20250220161951.844367-3-trintaeoitogc@gmail.com>
+Date: Thu, 20 Feb 2025 23:36:03 +0000
+Message-ID: <m2pljcgpek.fsf@Mac.home>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On 18.02.25 14:27, Andreas Hindborg wrote:
-> Allow selecting a clock source for timers by passing a `ClockSource`
-> variant to `HrTimer::new`.
->=20
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+Guilherme Giacomo Simoes <trintaeoitogc@gmail.com> writes:
+
+> Implement a check to ensure these fields are correctly formatted. If a
+> line contains one of these keys that should be of type Vec<String>, use
+> a regex to verify whether the array holds multiple values.
+> * If the array contains more than one value, enforce vertical formatting
+> * If the array has only one value, it can remain on the same line
+>
+> Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
 > ---
->  rust/kernel/time/hrtimer.rs | 52 +++++++++++++++++++++++++++++++++++++++=
-++++--
->  1 file changed, 50 insertions(+), 2 deletions(-)
->=20
-> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-> index db49061f830c3..2b46d66eaa313 100644
-> --- a/rust/kernel/time/hrtimer.rs
-> +++ b/rust/kernel/time/hrtimer.rs
-> @@ -73,7 +73,7 @@ unsafe impl<T> Sync for HrTimer<T> {}
->=20
->  impl<T> HrTimer<T> {
->      /// Return an initializer for a new timer instance.
-> -    pub fn new(mode: HrTimerMode) -> impl PinInit<Self>
-> +    pub fn new(mode: HrTimerMode, clock: ClockSource) -> impl PinInit<Se=
-lf>
->      where
->          T: HrTimerCallback,
->      {
-> @@ -87,7 +87,7 @@ pub fn new(mode: HrTimerMode) -> impl PinInit<Self>
->                      bindings::hrtimer_setup(
->                          place,
->                          Some(T::CallbackTarget::run),
-> -                        bindings::CLOCK_MONOTONIC as i32,
-> +                        clock.into(),
->                          mode.into(),
->                      );
->                  }
-> @@ -448,6 +448,54 @@ fn from(value: HrTimerMode) -> Self {
->      }
->  }
->=20
-> +/// The clock source to use for a [`HrTimer`].
-> +pub enum ClockSource {
-> +    /// A settable system-wide clock that measures real (i.e., wall-cloc=
-k) time.
-
-Missing newline here to separate the short one-line description and the
-rest of the docs. (also below)
-
-> +    /// Setting this clock requires appropriate privileges. This clock i=
-s
-> +    /// affected by discontinuous jumps in the system time (e.g., if the=
- system
-> +    /// administrator manually changes the clock), and by frequency adju=
-stments
-> +    /// performed by NTP and similar applications via adjtime(3), adjtim=
-ex(2),
-> +    /// clock_adjtime(2), and ntp_adjtime(3). This clock normally counts=
- the
-> +    /// number of seconds since 1970-01-01 00:00:00 Coordinated Universa=
-l Time
-> +    /// (UTC) except that it ignores leap seconds; near a leap second it=
- is
-> +    /// typically adjusted by NTP to stay roughly in sync with UTC.
-
-Thanks for the extensive descriptions of the various clock sources!
-
-> +    RealTime,
-> +    /// A nonsettable system-wide clock that represents monotonic time s=
-ince=E2=80=94as
-> +    /// described by POSIX=E2=80=94"some unspecified point in the past".=
- On Linux, that
-> +    /// point corresponds to the number of seconds that the system has b=
-een
-> +    /// running since it was booted.
-> +    ///
-> +    /// The CLOCK_MONOTONIC clock is not affected by discontinuous jumps=
- in the
-> +    /// system time (e.g., if the system administrator manually changes =
-the
-> +    /// clock), but is affected by frequency adjustments. This clock doe=
-s not
-> +    /// count time that the system is suspended.
-> +    Monotonic,
-> +    /// A nonsettable system-wide clock that is identical to CLOCK_MONOT=
-ONIC,
-> +    /// except that it also includes any time that the system is suspend=
-ed. This
-> +    /// allows applications to get a suspend-aware monotonic clock witho=
-ut
-> +    /// having to deal with the complications of CLOCK_REALTIME, which m=
-ay have
-> +    /// discontinuities if the time is changed using settimeofday(2) or =
-similar.
-> +    BootTime,
-> +    /// A nonsettable system-wide clock derived from wall-clock time but
-> +    /// counting leap seconds. This clock does not experience discontinu=
-ities or
-> +    /// frequency adjustments caused by inserting leap seconds as CLOCK_=
-REALTIME
-> +    /// does.
-> +    ///
-> +    /// The acronym TAI refers to International Atomic Time.
-
-In that case, I would expect the acronym to be `IAT`.
-
-> +    TAI,
-> +}
+>  scripts/checkpatch.pl | 43 +++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 43 insertions(+)
+>
+> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+> index 7b28ad331742..1133fe68054b 100755
+> --- a/scripts/checkpatch.pl
+> +++ b/scripts/checkpatch.pl
+> @@ -2775,6 +2775,9 @@ sub process {
+>  	$realcnt = 0;
+>  	$linenr = 0;
+>  	$fixlinenr = -1;
 > +
-> +impl From<ClockSource> for bindings::clockid_t {
-> +    fn from(value: ClockSource) -> Self {
-> +        match value {
-> +            ClockSource::RealTime =3D> bindings::CLOCK_REALTIME as i32,
-> +            ClockSource::Monotonic =3D> bindings::CLOCK_MONOTONIC as i32=
-,
-> +            ClockSource::BootTime =3D> bindings::CLOCK_BOOTTIME as i32,
-> +            ClockSource::TAI =3D> bindings::CLOCK_TAI as i32,
-> +        }
-> +    }
-> +}
-
-Same question here as for the `HrTimerMode`, do drivers need this impl?
-If not, then I think a private conversion function is a better fit.
-
----
-Cheers,
-Benno
-
+> +	my %array_parse_module;
 > +
->  /// Use to implement the [`HasHrTimer<T>`] trait.
->  ///
->  /// See [`module`] documentation for an example.
->=20
-> --
-> 2.47.0
->=20
->=20
+>  	foreach my $line (@lines) {
+>  		$linenr++;
+>  		$fixlinenr++;
+> @@ -3567,6 +3570,46 @@ sub process {
+>  # ignore non-hunk lines and lines being removed
+>  		next if (!$hunk_line || $line =~ /^-/);
+>  
+> +# check if arrays has more than one value in the same line
+> +		my $inline = 0;
+> +		my $key = "";
+> +		my $add_line = $line =~ /^\+/;
+> +
+> +		if ($line =~ /\s*.*\b(author|alias|firmware)\s*:\s*\[/) {
 
+Hi Guilherme,
+
+Will this work now that the field is called "authors" and not "author"?
+I think you forgot to update the regex here.
+
+> +			$inline = 1;
+> +			$array_parse_module{$1} = 1;
+> +		}
+> +
+> +		my @keys = keys %array_parse_module;
+> +		if (@keys) {
+> +			$key = $keys[0];
+> +		}
+> +
+> +		if ($add_line && $key) {
+> +			my $herevet = "$here\n" . cat_vet($rawline) . "\n";
+> +
+> +			my $counter = () = $line =~ /"/g;
+> +			my $more_than_one = $counter > 2;
+> +			if ($more_than_one) {
+> +				WARN("ARRAY_MODULE_MACRO",
+> +                     "Prefer a single-line value$herevet");
+
+What do you think about this instead?
+"Prefer each array element on a separate line$herevet"
+
+> +			} elsif ($inline && $line !~ /\]/ && $line !~ /,/ && $line =~ /"/) {
+> +				WARN("ARRAY_MODULE_MACRO",
+> +                     "Prefer declare ] on the same line$herevet");
+> +			} elsif (!$inline && $line =~ /\]/ && $line =~ /\"/) {
+> +				WARN("ARRAY_MODULE_MACRO",
+> +                     "Prefer a new line after the last value and before ]$herevet");
+> +			} elsif ($inline && $line =~ /,/ && $line !~ /\]/) {
+> +				WARN("ARRAY_MODULE_MACRO",
+> +                     "Prefer a new line after [$herevet");
+> +			}
+> +		}
+> +
+> +		#END OF ANALYZE FIELD
+> +		if ($line =~ /\]/) {
+> +			delete $array_parse_module{$key};
+> +		}
+> +
+>  #trailing whitespace
+>  		if ($line =~ /^\+.*\015/) {
+>  			my $herevet = "$here\n" . cat_vet($rawline) . "\n";
