@@ -1,167 +1,236 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC691CEADB;
-	Thu, 20 Feb 2025 14:53:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36231D61A3;
+	Thu, 20 Feb 2025 15:04:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740063234; cv=none; b=nZIiKmJgfwOSxhtQMRCRGMPlP9q1csU9Y1qAbm/fyrCE5RCnljbHguCVwvVMrn8WTaW3FakqlhKBL8ODJle+0MdRdH75tqcorAmB6C65RdZDW2YFQeYQ6KnXl323XeIVlpRUw2Jzn1sDCKs0qQYToK+GBbDGC+nSvHVvY6ZVNEQ=
+	t=1740063900; cv=none; b=VpRutEiyV8zjsN8PWZ9O4p45zuZbLhDWHpmd3TFt2E5KtDDekUcmiK8W6V84DWAHS3jmOMjodWw3Wdp2VuRE3CAVgqtS57yfcKhe9MZd5Vz7PVrhC9vGl4U7tNu27G0ZcND+WEqGDbK0ovQnrvMSPvQQ04b3IfqalYAWYX4uf/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740063234; c=relaxed/simple;
-	bh=Sh1gnYO1v4bmBmmM8gmqJJQ9lElifSTky1LxF8q7DSI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bvQIPFXcI0N6zDGSG69dFKBhfcBj/9Cc0VTUjWVsBV+RrKhn6C6ggbMpA9jTfb4dmhWKOMR7xvztMl0x5VMQ7DZ4CmIMOvrcibxk8DZ+rxiHB5mr9DnhxUEwjrj+4QkjpRMkOablqR9UQD1V/eXoEeTrdhHnDHMuewKlJmBBAms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BA25XDsT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740063900; c=relaxed/simple;
+	bh=C725kGToJoPoK2G0Lb1yujtgeuzXvOOs4p8Mky4Q6Jo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=sRW7V0sg+ARmNvPEJQC/34r6q5yZIpumBCtyrdoY7IhQqWGingxAd5Torc0kwaRuyUsy9tH9We9RBhkaZBGjfDbLcVzr6A32IBVBZD6DRZyQ6c8brBDS25E872g4fjO9xK6VALVa/Z9ZajCftgRtw/nBbMPLEAR9zV5HlbSIooc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=C9PECO/N; arc=none smtp.client-ip=49.12.72.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BA25XDsT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C40A4C4CEE2;
-	Thu, 20 Feb 2025 14:53:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740063233;
-	bh=Sh1gnYO1v4bmBmmM8gmqJJQ9lElifSTky1LxF8q7DSI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BA25XDsTHuzE8WV26EB6hHzVvzvnh0My5vPGh0vwnZ43dfZoAO6vm6mV+mftFWKg6
-	 zpi4orU+FK1lnsa4Gf3ASXKEHJyO9RD3Pf3kPLQh3/qcGtcJwilLABz6UbS5WgGosW
-	 bZ24nZuq857KsCyn19jP3zfU5cRKIdYgEgU7xrNY=
-Date: Thu, 20 Feb 2025 15:53:50 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Martin Uecker <uecker@tugraz.at>
-Cc: Boqun Feng <boqun.feng@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	rust-for-linux <rust-for-linux@vger.kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
-	ksummit@lists.linux.dev
-Subject: Re: Rust kernel policy
-Message-ID: <2025022042-jot-favored-e755@gregkh>
-References: <Z7SwcnUzjZYfuJ4-@infradead.org>
- <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
- <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
- <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
- <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
- <Z7VKW3eul-kGaIT2@Mac.home>
- <2025021954-flaccid-pucker-f7d9@gregkh>
- <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
- <2025022024-blooper-rippling-2667@gregkh>
- <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
+	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="C9PECO/N"
+From: Fiona Behrens <me@kloenk.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
+	t=1740063892; bh=xE7UPFqOCh2yzLVioDt6U+D3sE8g86i5EoCqXGfP4Os=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=C9PECO/NQF4RP2myoNM6V39SwYz0sLtIp0Ope7rh/jvYw36Qisepp3hljzprWD0Q8
+	 nTvaL3MqJNrKM3SLGaTzNxtUX5RT2Er4GFXZ5TLfsOJhI3ElsUxWcOO5NGA7p+oOTn
+	 px0grqC0IgbJFkwmzYkuNfz3UvjAP4g/aIgbFU1M=
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: linux-kernel@vger.kernel.org,  Daniel Almeida
+ <daniel.almeida@collabora.com>,  rust-for-linux@vger.kernel.org,
+  netdev@vger.kernel.org,  andrew@lunn.ch,  hkallweit1@gmail.com,
+  tmgross@umich.edu,  ojeda@kernel.org,  alex.gaynor@gmail.com,
+  gary@garyguo.net,  bjorn3_gh@protonmail.com,  benno.lossin@proton.me,
+  a.hindborg@samsung.com,  aliceryhl@google.com,  anna-maria@linutronix.de,
+  frederic@kernel.org,  tglx@linutronix.de,  arnd@arndb.de,
+  jstultz@google.com,  sboyd@kernel.org,  mingo@redhat.com,
+  peterz@infradead.org,  juri.lelli@redhat.com,
+  vincent.guittot@linaro.org,  dietmar.eggemann@arm.com,
+  rostedt@goodmis.org,  bsegall@google.com,  mgorman@suse.de,
+  vschneid@redhat.com,  tgunders@redhat.com,  david.laight.linux@gmail.com
+Subject: Re: [PATCH v11 7/8] rust: Add read_poll_timeout functions
+In-Reply-To: <20250220070611.214262-8-fujita.tomonori@gmail.com> (FUJITA
+	Tomonori's message of "Thu, 20 Feb 2025 16:06:09 +0900")
+References: <20250220070611.214262-1-fujita.tomonori@gmail.com>
+	<20250220070611.214262-8-fujita.tomonori@gmail.com>
+Date: Thu, 20 Feb 2025 16:04:50 +0100
+Message-ID: <878qq064j1.fsf@kloenk.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
+Content-Type: text/plain
 
-On Thu, Feb 20, 2025 at 09:57:29AM +0100, Martin Uecker wrote:
-> Am Donnerstag, dem 20.02.2025 um 08:10 +0100 schrieb Greg KH:
-> > On Thu, Feb 20, 2025 at 08:03:02AM +0100, Martin Uecker wrote:
-> > > Am Mittwoch, dem 19.02.2025 um 06:39 +0100 schrieb Greg KH:
-> > > > On Tue, Feb 18, 2025 at 07:04:59PM -0800, Boqun Feng wrote:
-> > > > > On Tue, Feb 18, 2025 at 04:58:27PM -0800, H. Peter Anvin wrote:
-> > > > > [...]
-> > > > > > > > 
-> > > ...
-> > > > 
-> > > > 
-> > > > I'm all for moving our C codebase toward making these types of problems
-> > > > impossible to hit, the work that Kees and Gustavo and others are doing
-> > > > here is wonderful and totally needed, we have 30 million lines of C code
-> > > > that isn't going anywhere any year soon.  That's a worthy effort and is
-> > > > not going to stop and should not stop no matter what.
-> > > 
-> > > It seems to me that these efforts do not see nearly as much attention
-> > > as they deserve.
-> > 
-> > What more do you think needs to be done here?  The LF, and other
-> > companies, fund developers explicitly to work on this effort.  Should we
-> > be doing more, and if so, what can we do better?
-> 
-> Kees communicates with the GCC side and sometimes this leads to
-> improvements, e.g. counted_by (I was peripherily involved in the
-> GCC implementation). But I think much much more could be done,
-> if there was a collaboration between compilers, the ISO C working
-> group, and the kernel community to design and implement such
-> extensions and to standardize them in ISO C.
+FUJITA Tomonori <fujita.tomonori@gmail.com> writes:
 
-Sorry, I was referring to the kernel work happening here by Kees and
-Gustavo and others.  Not ISO C stuff, I don't know of any company that
-wants to fund that :(
+> Add read_poll_timeout functions which poll periodically until a
+> condition is met or a timeout is reached.
+>
+> The C's read_poll_timeout (include/linux/iopoll.h) is a complicated
+> macro and a simple wrapper for Rust doesn't work. So this implements
+> the same functionality in Rust.
+>
+> The C version uses usleep_range() while the Rust version uses
+> fsleep(), which uses the best sleep method so it works with spans that
+> usleep_range() doesn't work nicely with.
+>
+> The sleep_before_read argument isn't supported since there is no user
+> for now. It's rarely used in the C version.
+>
+> read_poll_timeout() can only be used in a nonatomic context. This
+> requirement is not checked by these abstractions, but it is intended
+> that klint [1] or a similar tool will be used to check it in the
+> future.
+>
+> Link: https://rust-for-linux.com/klint [1]
+> Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-> > > I also would like to point out that there is not much investments
-> > > done on C compiler frontends (I started to fix bugs in my spare time
-> > > in GCC because nobody fixed the bugs I filed), and the kernel 
-> > > community also is not currently involved in ISO C standardization.
-> > 
-> > There are kernel developers involved in the C standard committee work,
-> > one of them emails a few of us short summaries of what is going on every
-> > few months.  Again, is there something there that you think needs to be
-> > done better, and if so, what can we do?
-> > 
-> > But note, ISO standards work is really rough work, I wouldn't recommend
-> > it for anyone :)
-> 
-> I am a member of the ISO C working group. Yes it it can be painful, but
-> it is also interesting and people a generally very nice.
-> 
-> There is currently no kernel developer actively involved, but this would
-> be very helpful.
-> 
-> (Paul McKenney is involved in C++ regarding atomics and Miguel is
-> also following what we do.)
+Reviewed-by: Fiona Behrens <me@kloenk.dev>
 
-Yes, some of us get reports from them and a few others at times as to
-what's going on, but finding people, and companies, that want to do this
-work is hard.  I recommend it for people that want to do this, and
-applaud those that do, and am involved in other specification work at
-the moment so I know the issues around all of this.
+> ---
+>  rust/helpers/helpers.c |   1 +
+>  rust/helpers/kernel.c  |  18 +++++++
+>  rust/kernel/cpu.rs     |  13 +++++
+>  rust/kernel/error.rs   |   1 +
+>  rust/kernel/io.rs      |   2 +
+>  rust/kernel/io/poll.rs | 120 +++++++++++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs     |   1 +
+>  7 files changed, 156 insertions(+)
+>  create mode 100644 rust/helpers/kernel.c
+>  create mode 100644 rust/kernel/cpu.rs
+>  create mode 100644 rust/kernel/io/poll.rs
+>
+> diff --git a/rust/kernel/io/poll.rs b/rust/kernel/io/poll.rs
+> new file mode 100644
+> index 000000000000..5977b2082cc6
+> --- /dev/null
+> +++ b/rust/kernel/io/poll.rs
+> @@ -0,0 +1,120 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! IO polling.
+> +//!
+> +//! C header: [`include/linux/iopoll.h`](srctree/include/linux/iopoll.h).
+> +
+> +use crate::{
+> +    cpu::cpu_relax,
+> +    error::{code::*, Result},
+> +    time::{delay::fsleep, Delta, Instant},
+> +};
+> +
+> +/// Polls periodically until a condition is met or a timeout is reached.
+> +///
+> +/// The function repeatedly executes the given operation `op` closure and
+> +/// checks its result using the condition closure `cond`.
+> +/// If `cond` returns `true`, the function returns successfully with the result of `op`.
+> +/// Otherwise, it waits for a duration specified by `sleep_delta`
+> +/// before executing `op` again.
+> +/// This process continues until either `cond` returns `true` or the timeout,
+> +/// specified by `timeout_delta`, is reached. If `timeout_delta` is `None`,
+> +/// polling continues indefinitely until `cond` evaluates to `true` or an error occurs.
+> +///
+> +/// # Examples
+> +///
+> +/// ```rust,ignore
+> +/// fn wait_for_hardware(dev: &mut Device) -> Result<()> {
+> +///     // The `op` closure reads the value of a specific status register.
+> +///     let op = || -> Result<u16> { dev.read_ready_register() };
+> +///
+> +///     // The `cond` closure takes a reference to the value returned by `op`
+> +///     // and checks whether the hardware is ready.
+> +///     let cond = |val: &u16| *val == HW_READY;
+> +///
+> +///     match read_poll_timeout(op, cond, Delta::from_millis(50), Some(Delta::from_secs(3))) {
+> +///         Ok(_) => {
+> +///             // The hardware is ready. The returned value of the `op`` closure isn't used.
+> +///             Ok(())
+> +///         }
+> +///         Err(e) => Err(e),
+> +///     }
+> +/// }
+> +/// ```
+> +///
+> +/// ```rust
+> +/// use kernel::io::poll::read_poll_timeout;
+> +/// use kernel::time::Delta;
+> +/// use kernel::sync::{SpinLock, new_spinlock};
+> +///
+> +/// let lock = KBox::pin_init(new_spinlock!(()), kernel::alloc::flags::GFP_KERNEL)?;
+> +/// let g = lock.lock();
+> +/// read_poll_timeout(|| Ok(()), |()| true, Delta::from_micros(42), Some(Delta::from_micros(42)));
+> +/// drop(g);
+> +///
+> +/// # Ok::<(), Error>(())
+> +/// ```
+> +#[track_caller]
+> +pub fn read_poll_timeout<Op, Cond, T>(
+> +    mut op: Op,
+> +    mut cond: Cond,
+> +    sleep_delta: Delta,
+> +    timeout_delta: Option<Delta>,
 
-> > > I find this strange, because to me it is very obvious that a lot more
-> > > could be done towards making C a lot safer (with many low hanging fruits),
-> > > and also adding a memory safe subset seems possible.
-> > 
-> > Are there proposals to C that you feel we should be supporting more?
-> 
-> There are many things.
-> 
-> For example, there is an effort to remove cases of UB.  There are about
-> 87 cases of UB in the core language (exlcuding preprocessor and library)
-> as of C23, and we have removed 17 already for C2Y (accepted by WG14 into
-> the working draft) and we have concrete propsoals for 12 more.  This
-> currently focusses on low-hanging fruits, and I hope we get most of the
-> simple cases removed this year to be able to focus on the harder issues.
-> 
-> In particulary, I have a relatively concrete plan to have a memory safe
-> mode for C that can be toggled for some region of code and would make
-> sure there is no UB or memory safety issues left (I am experimenting with
-> this in the GCC FE).  So the idea is that one could start to activate this
-> for certain critical regions of code to make sure there is no signed
-> integer overflow or OOB access in it.   This is still in early stages, but
-> seems promising. Temporal memory safety is harder and it is less clear
-> how to do this ergonomically, but Rust shows that this can be done.
+Fun idea I just had, though not sure it is of actuall use (probably not).
+Instead of `Option<Delta> we could use `impl Into<Option<Delta>>`,
+that enables to use both, so not having to write Some if we have a value.
 
-What do you mean by "memory safe" when it comes to C?  Any pointers to
-that (pun intended)?
-
-> I also have a proposal for a length-prefixed string type and for 
-> polymorhic types / genericity, but this may not be so relevant to the
-> kernel at this point.
-
-We have a string type in the kernel much like this, it's just going to
-take some work in plumbing it up everywhere.  Christoph touched on that
-in one of his emails in this thread many messages ago.  Just grinding
-out those patches is "all" that is needed, no need for us to wait for
-any standard committee stuff.
-
-> Even more important than ISO C proposals would be compiler extensions
-> that can be tested before standardization.
-
-We support a few already for gcc, and I don't think we've refused
-patches to add more in the past, but I might have missed them.
-
-thanks,
-
-greg k-h
+> +) -> Result<T>
+> +where
+> +    Op: FnMut() -> Result<T>,
+> +    Cond: FnMut(&T) -> bool,
+> +{
+> +    let start = Instant::now();
+> +    let sleep = !sleep_delta.is_zero();
+> +
+> +    if sleep {
+> +        might_sleep();
+> +    }
+> +
+> +    loop {
+> +        let val = op()?;
+> +        if cond(&val) {
+> +            // Unlike the C version, we immediately return.
+> +            // We know the condition is met so we don't need to check again.
+> +            return Ok(val);
+> +        }
+> +        if let Some(timeout_delta) = timeout_delta {
+> +            if start.elapsed() > timeout_delta {
+> +                // Unlike the C version, we immediately return.
+> +                // We have just called `op()` so we don't need to call it again.
+> +                return Err(ETIMEDOUT);
+> +            }
+> +        }
+> +        if sleep {
+> +            fsleep(sleep_delta);
+> +        }
+> +        // fsleep() could be busy-wait loop so we always call cpu_relax().
+> +        cpu_relax();
+> +    }
+> +}
+> +
+> +/// Annotation for functions that can sleep.
+> +///
+> +/// Equivalent to the C side [`might_sleep()`], this function serves as
+> +/// a debugging aid and a potential scheduling point.
+> +///
+> +/// This function can only be used in a nonatomic context.
+> +#[track_caller]
+> +fn might_sleep() {
+> +    #[cfg(CONFIG_DEBUG_ATOMIC_SLEEP)]
+> +    {
+> +        let loc = core::panic::Location::caller();
+> +        // SAFETY: FFI call.
+> +        unsafe {
+> +            crate::bindings::__might_sleep_precision(
+> +                loc.file().as_ptr().cast(),
+> +                loc.file().len() as i32,
+> +                loc.line() as i32,
+> +            )
+> +        }
+> +    }
+> +
+> +    // SAFETY: FFI call.
+> +    unsafe { crate::bindings::might_resched() }
+> +}
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 496ed32b0911..415c500212dd 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -40,6 +40,7 @@
+>  pub mod block;
+>  #[doc(hidden)]
+>  pub mod build_assert;
+> +pub mod cpu;
+>  pub mod cred;
+>  pub mod device;
+>  pub mod device_id;
