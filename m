@@ -1,79 +1,75 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-o94.zoho.com (sender4-pp-o94.zoho.com [136.143.188.94])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB6A101DE;
-	Thu, 20 Feb 2025 09:55:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740045326; cv=none; b=lIPwk/EjeNSWfa/EgR6bL1BHcI4DPbd++RFamg20VwoDx+ql1Wd50B+YXSByqOWQdFjumiKQ3ywdvb8IjYuXVJ6pir6BJjQCOcFoBqit0NxbK5X+So7Q57/jryHFDk/6jywdsJ2vis8UPOyRa6hXwPk3WA8FLUammKDNStzYZ+c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740045326; c=relaxed/simple;
-	bh=xzS6h5KnBHNIoiPvclSQAAioVfZWDom2cKt1SBCr86w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JROAdKQB0WVRzoIqc5GsdByD/+p75oZCH/ffUPQDZI1a1EQBNULTe2Br4cDH2I1XlejiBd3UWmBZLZmfPD9MGfkyPqAbu+fGGKnFDhCRoaqlvRwUKV3MWVKrQwcPk0cGwq8QMRlC+1PePSr+SpNeNKYxPdk5tL2HnypsIxwJR34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GQijEXKe; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC7C2862BD;
+	Thu, 20 Feb 2025 11:26:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.94
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740050790; cv=pass; b=VJy87mvmDOAR3ZgGTuNgqus2/AY1HnpE920hXmvIA1HlcLfEFDzxobTrKhG+zXii9YOl9rY4svrfgW+8pm6z+0KFT2KXLPqsgPsJB/lZiT0pKIaHnGPhheStZaiQS2VMoxK929sBsVPy7A+baKUQj1V6a0c2B/Ak/IyxyAEsuB0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740050790; c=relaxed/simple;
+	bh=UcTySv7yRgTK+Er4uEWu3DshPkzc+A+pII3v5N4La2w=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=FbZAyT81NC33sW6enCE3chYMgjL5mkHuZWH0jJsAM8HnRBJ/vM8yJEpEiEg4yUD89D0vpymJQw3Q3IApa1q4MCOB/Vj18nNd2NUZOoF33foVZJxp1Ka7XfVMYV7/3gxz1ms3GYwQIZ1lBLfrXobMc5IX2jKaJB7MAKes9Dgkk+Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com; spf=pass smtp.mailfrom=zohomail.com; dkim=pass (1024-bit key) header.d=zohomail.com header.i=safinaskar@zohomail.com header.b=CIjUyMZw; arc=pass smtp.client-ip=136.143.188.94
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GQijEXKe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66189C4CED1;
-	Thu, 20 Feb 2025 09:55:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740045325;
-	bh=xzS6h5KnBHNIoiPvclSQAAioVfZWDom2cKt1SBCr86w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GQijEXKeznE+q3VYmV/ySgRAcUNRB/51FmRor5HU8HyTJ3he5KdezGi+spOmHeliF
-	 5WJztNXBI3+pRk/+clHPp1xkjFbR7mWFJTAaThQiRxU+Zokb/f9l6py4MrygtBJOIA
-	 xY+LVJWNm3+LWMTNnzUZO4s9juml8nZRkdy+hYlrclOHP/TTI9LyaKcSDxl+Ex3k4k
-	 b7kBy2G3zpcNHuQJQsWqLcuAZA0L3sqhqJLH0d/tsuqNCJTH6nm9a1mRNZ6eYPtEOz
-	 hAWsjq8i2wLqcTjPxUmeZGMxdIHWnOiThX6P8ipeM5NHdIffN8pXboohgClckt0Y79
-	 fzOmjWhuP9F/A==
-Date: Thu, 20 Feb 2025 11:55:21 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Bart Van Assche <bvanassche@acm.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Jason Gunthorpe <jgg@nvidia.com>,
-	Kees Cook <kees@kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	rust-for-linux <rust-for-linux@vger.kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
-	ksummit@lists.linux.dev
+	dkim=pass (1024-bit key) header.d=zohomail.com header.i=safinaskar@zohomail.com header.b="CIjUyMZw"
+ARC-Seal: i=1; a=rsa-sha256; t=1740050775; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=T7xFPqBdoxerqbeMe1yzwjWAGpS+Y5w3CEiczOwVyLoYvPwp4SVRVeBC3D6GYbRpx8hm1sjZ6w9gEts1D06pmqWptIiPSroa5P80eXQXNuU2FLz8JrquoA8clKE2cMUEQ6/UUTT2ycrNILqKYadOnbLfpBLe7TpnG0vXIgMeEL0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1740050775; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=UcTySv7yRgTK+Er4uEWu3DshPkzc+A+pII3v5N4La2w=; 
+	b=WJFDDw4bPYahOQY5nXA4LuqQ714yQfMJIYio7pB4YM7Bic88oONVF0hkJnbhhoXWfeVM6ISyIHdZBMnFeIbc1MN1xDdRd99fkeDUWZ7AGvneYVlaLncEnAk9HENVrpfh9xhyWzypfK9CL0knpRZ/sBjCXpSYxrS2VLL2HTaMccs=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=zohomail.com;
+	spf=pass  smtp.mailfrom=safinaskar@zohomail.com;
+	dmarc=pass header.from=<safinaskar@zohomail.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1740050775;
+	s=zm2022; d=zohomail.com; i=safinaskar@zohomail.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Feedback-ID:Reply-To;
+	bh=UcTySv7yRgTK+Er4uEWu3DshPkzc+A+pII3v5N4La2w=;
+	b=CIjUyMZwgejveaRMbS0/DDfMwI7BJ1/pB+oBMgRefs3Z9M7gOij/96HnvwovwlAD
+	1uWW7CQA4X2IlwfJRTqRsZjGndQqiuRc7E74Ku7gG1b22fdRbfW80U4qwTqoya6Ezv2
+	sLJIH9i/4t87o835FLCHtTmu2FJk7OtnxEiX3etk=
+Received: by mx.zohomail.com with SMTPS id 1740050773492288.7099199553145;
+	Thu, 20 Feb 2025 03:26:13 -0800 (PST)
+From: Askar Safin <safinaskar@zohomail.com>
+To: hpa@zytor.com
+Cc: airlied@gmail.com,
+	gregkh@linuxfoundation.org,
+	hch@infradead.org,
+	ksummit@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	miguel.ojeda.sandonis@gmail.com,
+	rust-for-linux@vger.kernel.org,
+	torvalds@linux-foundation.org
 Subject: Re: Rust kernel policy
-Message-ID: <20250220095521.GP53094@unreal>
-References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
- <Z7SwcnUzjZYfuJ4-@infradead.org>
- <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
- <202502191026.8B6FD47A1@keescook>
- <20250219140821.27fa1e8a@gandalf.local.home>
- <202502191117.8E1BCD4615@keescook>
- <20250219202751.GA42073@nvidia.com>
- <20250219154610.30dc6223@gandalf.local.home>
- <97841173-1de8-4221-8bf3-3470a5ac98a7@acm.org>
+Date: Thu, 20 Feb 2025 14:26:08 +0300
+Message-Id: <20250220112608.38689-1-safinaskar@zohomail.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
+References: <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <97841173-1de8-4221-8bf3-3470a5ac98a7@acm.org>
+Content-Transfer-Encoding: 8bit
+Feedback-ID: rr080112275422e61a1a58357afe378aac00003d1164aa230fcf63c5871fcd730d1108f86aecec240cbf592f:zu0801122769cb5feecf658d2ef00c864b00004d7be2ff8ee73349425b32e13002307bc2df5bdb4888642d74:rf0801122d971e074fe3376032099687aa0000f4264f89751fa38743803f9dabb168aa10d602f5ff2d2ecb3ea9d4111f90b8:ZohoMail
+X-ZohoMailClient: External
 
-On Wed, Feb 19, 2025 at 12:52:14PM -0800, Bart Van Assche wrote:
-> On 2/19/25 12:46 PM, Steven Rostedt wrote:
-> > I do feel that new drivers written in Rust would help with the
-> > vulnerabilities that new drivers usually add to the kernel.
-> 
-> For driver developers it is easier to learn C than to learn Rust. I'm
-> not sure that all driver developers, especially the "drive by"
-> developers, have the skills to learn Rust.
+> As far as I understand, Rust-style memory safety is being worked on for C++
 
-From what I saw, copy-paste is a classical development model for new
-drivers. Copy-paste from C drivers is much more easy than from Rust
-ones, simply because there are much more C drivers.
+Yes, there is PoC called "Safe C++" [1]. And it is already implemented in Circle C++ compiler.
+You can see at the link how Safe C++ looks like. But it seems that this proposal will not be
+accepted to standard, so if we choose this path, our code will not be written in standard C++.
 
-Thanks
+As you can see, Safe C++ is much different from normal C or C++. So if we choose Safe C++, whole
+kernel should be rewritten. (But I personally will totally love if some company spends billions of
+dollars for such rewritting.)
 
-> 
-> Bart.
-> 
+[1]: https://safecpp.org/draft.html
