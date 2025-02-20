@@ -1,78 +1,165 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FA117BD9;
-	Thu, 20 Feb 2025 12:37:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773B579CD;
+	Thu, 20 Feb 2025 12:46:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740055070; cv=none; b=O/Fcqi/5gxEqKsPyZ39sCqGMf6Jna01QcPfKVCd9DXvXfhNiBYehd3HXdPyUCrjbFGL23OFpNrf4DOwej5J/Jpi6mzWF9H2GOFCejCLltEU8H7X3H4fblYSo+ij2QVGuChZiaPc0JL2b3mrLdUtrh9ht5HsRmsTpkS5zaUputA4=
+	t=1740055592; cv=none; b=cMr1eXjTs6huR460rqLwbwCt+hXi/A2jm3xvrN5dSJiZJqxJ8qfy3dWnwitwyDLGD9zlzcQsl0/kGVnzVEhlYEnptn9+zPln/mRJ/cduftDmwlt6jHgQGM1Av7pRdb1ielgc6nEnR27iwKjdmNYqGo64Jcs8LyGEI/Q27apqf0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740055070; c=relaxed/simple;
-	bh=giOkKYSWvXP5XpSwiqiqP2R17fK2x7YAHCFDt+x1ZxU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fokAVsf4xq946CmJV2Lz1gJHg8FPY1FTSjk6SVhXpSN8m/GQkxWKJXKKNCs6Goo0qFiOtJiz/bqruts+HldrJnBdzlEY3IXJhTlLvROd6BOnmKapkAJkMQZ6yXvbb6pvFX9auFekmKDQrqgmFL1oTzFeTuj7WZvfrOc6T6DPFkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ynP4yddS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740055592; c=relaxed/simple;
+	bh=22lsmoPowc52Hi4mQD+2kdYb1bae2R5reXgDwM5IHNM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=oP+Ncx+mbB3wvK1E8F5R4LOTtmt6AsC3j5XsxPDHv6FH6TnzYK55ctjR9BxAJFjOJ+J6joswzfcgzcaBODRvkry0ApF9DylnC3KNeh8Tp65q+/N17HWDGJcibH2Qf2tGlHKYCoePe5dsI69rc7G1x3NlbfR42MPrmFUcdfo1nvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=rDfOqb7B; arc=none smtp.client-ip=49.12.72.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ynP4yddS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26BACC4CED1;
-	Thu, 20 Feb 2025 12:37:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740055069;
-	bh=giOkKYSWvXP5XpSwiqiqP2R17fK2x7YAHCFDt+x1ZxU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ynP4yddSXKFK/K9mc/U5Yn7NVo480h1xiEIN1UuRYkR0Kr+JnS+6BLV/ekCTWjvD2
-	 +ki998if/ulYG3k4rXsEWgOJnO5JPyES8gEgRjDkPjG9l8eXFfWphbIMc6r7WKdN/o
-	 fzn+ebNHRKZ5UWGHiN+u9G0zS1ku74l17oGJteYs=
-Date: Thu, 20 Feb 2025 13:37:46 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jan Engelhardt <ej@inai.de>
-Cc: Boqun Feng <boqun.feng@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	rust-for-linux <rust-for-linux@vger.kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
-	ksummit@lists.linux.dev
-Subject: Re: Rust kernel policy
-Message-ID: <2025022052-ferment-vice-a30b@gregkh>
-References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
- <Z7SwcnUzjZYfuJ4-@infradead.org>
- <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
- <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
- <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
- <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
- <Z7VKW3eul-kGaIT2@Mac.home>
- <2025021954-flaccid-pucker-f7d9@gregkh>
- <2nn05osp-9538-11n6-5650-p87s31pnnqn0@vanv.qr>
+	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="rDfOqb7B"
+From: Fiona Behrens <me@kloenk.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
+	t=1740055586; bh=+5Hriei/4orgcIc6p+422qMKgtVSC7Hm3HwgFOrINsU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=rDfOqb7BB3I3aZoorFjkDqlP0pzNufijzwS6Dzg8HbRyG1oPJrwR/lMnqBuRuFg/0
+	 i5AVA93ztX8WmU5OcoxPslQDr6+kkgagGj7A1jDr2GbHG+NazD/orT6WKuCFlXLbdi
+	 Bw8tkN2wrxOn4bmBVBhLqs/f60s/KVTjcI1cpe3U=
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
+  Boqun Feng <boqun.feng@gmail.com>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  Benno Lossin <benno.lossin@proton.me>,
+  Andreas Hindborg <a.hindborg@kernel.org>,  Alice Ryhl
+ <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,  Danilo
+ Krummrich <dakr@kernel.org>,  Will Deacon <will@kernel.org>,  Peter
+ Zijlstra <peterz@infradead.org>,  Mark Rutland <mark.rutland@arm.com>,
+  Tamir Duberstein <tamird@gmail.com>,  Lyude Paul <lyude@redhat.com>,
+  Wedson Almeida Filho <wedsonaf@gmail.com>,
+  rust-for-linux@vger.kernel.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/4] rust: implement `kernel::sync::Refcount`
+In-Reply-To: <20250219201602.1898383-2-gary@garyguo.net> (Gary Guo's message
+	of "Wed, 19 Feb 2025 20:15:30 +0000")
+References: <20250219201602.1898383-1-gary@garyguo.net>
+	<20250219201602.1898383-2-gary@garyguo.net>
+Date: Thu, 20 Feb 2025 13:46:26 +0100
+Message-ID: <87h64o6axp.fsf@kloenk.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2nn05osp-9538-11n6-5650-p87s31pnnqn0@vanv.qr>
+Content-Type: text/plain
 
-On Thu, Feb 20, 2025 at 01:28:58PM +0100, Jan Engelhardt wrote:
-> 
-> On Wednesday 2025-02-19 06:39, Greg KH wrote:
-> >
-> >The majority of bugs (quantity, not quality/severity) we have are due to
-> >the stupid little corner cases in C that are totally gone in Rust.
-> 
-> If and when Rust receives its own corner cases in the future,
-> I will happily point back to this statement.
+Gary Guo <gary@garyguo.net> writes:
 
-I'm not saying that rust has no such issues, I'm saying that a huge
-majority of the stupid things we do in C just don't happen in the same
-code implemented in rust (i.e. memory leaks, error path cleanups, return
-value checking, etc.)
+> This is a wrapping layer of `include/linux/refcount.h`. Currently the
+> kernel refcount has already been used in `Arc`, however it calls into
+> FFI directly.
+>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
 
-So sure, let's make different types of errors in the future, not
-continue to make the same ones we should have learned from already
-please :)
+With the doc link fixed below
 
-thanks,
+Reviewed-by: Fiona Behrens <me@kloenk.dev>
 
-greg k-h
+> ---
+[snip]
+> diff --git a/rust/kernel/sync/refcount.rs b/rust/kernel/sync/refcount.rs
+> new file mode 100644
+> index 000000000000..a6a683f5d7b8
+> --- /dev/null
+> +++ b/rust/kernel/sync/refcount.rs
+> @@ -0,0 +1,86 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Atomic reference counting.
+> +//!
+> +//! C header: [`include/linux/refcount.h`](srctree/include/linux/refcount.h)
+> +
+> +use crate::types::Opaque;
+> +
+> +/// Atomic reference counter.
+> +///
+> +/// This type is conceptually an atomic integer, but provides saturation semantics compared to
+> +/// normal atomic integers. Values in the negative range when viewed as a signed integer are
+> +/// saturation (bad) values. For details about the saturation semantics, please refer to top of
+> +/// [`include/linux/refcount.h`](srctree/include/refcount.h).
+
+Link is not pointing to the linux directory as in the text of the link.
+
+Thanks,
+Fiona
+
+> +///
+> +/// Wraps the kernel's C `refcount_t`.
+> +#[repr(transparent)]
+> +pub struct Refcount(Opaque<bindings::refcount_t>);
+> +
+> +impl Refcount {
+> +    /// Construct a new [`Refcount`] from an initial value.
+> +    #[inline]
+> +    pub fn new(value: i32) -> Self {
+> +        // SAFETY: There are no safety requirements for this FFI call.
+> +        Self(Opaque::new(unsafe { bindings::REFCOUNT_INIT(value) }))
+> +    }
+> +
+> +    #[inline]
+> +    fn as_ptr(&self) -> *mut bindings::refcount_t {
+> +        self.0.get()
+> +    }
+> +
+> +    /// Set a refcount's value.
+> +    #[inline]
+> +    pub fn set(&self, value: i32) {
+> +        // SAFETY: `self.as_ptr()` is valid.
+> +        unsafe { bindings::refcount_set(self.as_ptr(), value) }
+> +    }
+> +
+> +    /// Increment a refcount.
+> +    ///
+> +    /// It will saturate if overflows and `WARN`. It will also `WARN` if the refcount is 0, as this
+> +    /// represents a possible use-after-free condition.
+> +    ///
+> +    /// Provides no memory ordering, it is assumed that caller already has a reference on the
+> +    /// object.
+> +    #[inline]
+> +    pub fn inc(&self) {
+> +        // SAFETY: self is valid.
+> +        unsafe { bindings::refcount_inc(self.as_ptr()) }
+> +    }
+> +
+> +    /// Decrement a refcount.
+> +    ///
+> +    /// It will `WARN` on underflow and fail to decrement when saturated.
+> +    ///
+> +    /// Provides release memory ordering, such that prior loads and stores are done
+> +    /// before.
+> +    #[inline]
+> +    pub fn dec(&self) {
+> +        // SAFETY: `self.as_ptr()` is valid.
+> +        unsafe { bindings::refcount_dec(self.as_ptr()) }
+> +    }
+> +
+> +    /// Decrement a refcount and test if it is 0.
+> +    ///
+> +    /// It will `WARN` on underflow and fail to decrement when saturated.
+> +    ///
+> +    /// Provides release memory ordering, such that prior loads and stores are done
+> +    /// before, and provides an acquire ordering on success such that memory deallocation
+> +    /// must come after.
+> +    ///
+> +    /// Returns true if the resulting refcount is 0, false otherwise.
+> +    #[inline]
+> +    #[must_use = "use `dec` instead you do not need to test if it is 0"]
+> +    pub fn dec_and_test(&self) -> bool {
+> +        // SAFETY: `self.as_ptr()` is valid.
+> +        unsafe { bindings::refcount_dec_and_test(self.as_ptr()) }
+> +    }
+> +}
+> +
+> +// SAFETY: `refcount_t` is thread-safe.
+> +unsafe impl Send for Refcount {}
+> +
+> +// SAFETY: `refcount_t` is thread-safe.
+> +unsafe impl Sync for Refcount {}
