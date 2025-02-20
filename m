@@ -1,40 +1,56 @@
-Received: from 1wt.eu (ded1.1wt.eu [163.172.96.212])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52EEE35942;
-	Thu, 20 Feb 2025 13:53:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=163.172.96.212
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28ABC1A8F94;
+	Thu, 20 Feb 2025 14:08:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740059611; cv=none; b=dvmDqeL5252kdo4jChxoVuoIQTBJP3bV8NbUmnvhYsKU3ICMdjQqHRCxiIu8aQaqIb56RUGoT/CsxQZNtLAAbXdvlvWuVoxIlesXDm/4khUXN3XL/IW06Rdl4PIibrZCbcfz4ttY0QjZK6malvpsSD1KlUU/JGSkGCaaVx/fDTw=
+	t=1740060484; cv=none; b=oR2br47hbmZ5ILOayV2daGpPiiL1IQvOv1aM2KWwIfdDxgZhw4Um1E3248iTqgnNKk6Ua17sivt66kusTeBaWvfK7b5qyrAebcPOkFuM+J3QTeDGoaY6U6fnmw2n0q0YPsuqJpzcwzDP65/QfdfpodiDjTKYBR9JxGSFAjBeUJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740059611; c=relaxed/simple;
-	bh=YTrfqrXQzae09PdK/UYmPBhj3Ws6othGssExcxPJGyQ=;
+	s=arc-20240116; t=1740060484; c=relaxed/simple;
+	bh=BUAFupbmeOg5OQr/zoe76B/ATDMFC2NaHM0MAwh8poA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TyjSsV5rTvAIbLiU7av9v1NJeWqX6NlDJlhbRjOOahPQyo9oVJMpwIkWs9BwQh9t86u3vqntyu+Kk1dr5gOwFOu4gsd4ou10z5JTWqMkWo69zGK9eXCl9GtatjiQYGTB7Zy7I0sJ3DKUpu2qOPoMMLs3/E65luke8foRRoxMc4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=1wt.eu; spf=pass smtp.mailfrom=1wt.eu; arc=none smtp.client-ip=163.172.96.212
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=1wt.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1wt.eu
-Received: (from willy@localhost)
-	by pcw.home.local (8.15.2/8.15.2/Submit) id 51KDrCqC031662;
-	Thu, 20 Feb 2025 14:53:12 +0100
-Date: Thu, 20 Feb 2025 14:53:12 +0100
-From: Willy Tarreau <w@1wt.eu>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>,
-        Kees Cook <kees@kernel.org>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
-        ksummit@lists.linux.dev
+	 Content-Type:Content-Disposition:In-Reply-To; b=lBYxKKnILllAH3OGytTmy3dDLeuoq2W7AGwT1RK/cNHQBogSphxYorbUi8UlSKIK7U6qGlNdqEsKo/1HM/YbmVkCPVD0w4By9O5Fobbu4y7mzqdWOXXPw83U8z4DXvGPbXIl1nGzz5V5w7KV8A/xNAfzDD4ry3V1FFcpYKCiQ2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R1TcKTdZ; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R1TcKTdZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17F65C4CEE2;
+	Thu, 20 Feb 2025 14:08:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740060483;
+	bh=BUAFupbmeOg5OQr/zoe76B/ATDMFC2NaHM0MAwh8poA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=R1TcKTdZUzXz/x1a39o81aw14MuhGwJsF4M6GpI2JB2Sma+oDayeqIdc8JPt6g4TX
+	 IJTT9xJhJi++YRfIV+qqM6v/VXvPipQXSTAP37Jjs9kMmTOdJ5nuVLonKeiGgli3KH
+	 dVGbzBlgGoMJi0/Ic1gK1WlnbuM+vHjPWhlIf3rHm0rBs5gCocNPZR+EFycoQ+PFSE
+	 X+4AIRclvO796gbR3MvWtACI8dbCJafMPViKtcZRaL9VmRSGYETupJ+MZp/YwEs5hq
+	 kqs8y9dE8WQrXJmajXx9YkmPR6B1eFCE5nbvRJIXw2MJbP9HVDBAivtmMQV+9Du95K
+	 Z4FPKEzV2b1hg==
+Date: Thu, 20 Feb 2025 16:07:58 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Fiona Behrens <me@kloenk.dev>
+Cc: Bart Van Assche <bvanassche@acm.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Jason Gunthorpe <jgg@nvidia.com>, Kees Cook <kees@kernel.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	rust-for-linux <rust-for-linux@vger.kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
+	ksummit@lists.linux.dev
 Subject: Re: Rust kernel policy
-Message-ID: <20250220135312.GC31486@1wt.eu>
-References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
- <Z7SwcnUzjZYfuJ4-@infradead.org>
+Message-ID: <Z7c3PguDn-sEl3gm@kernel.org>
+References: <Z7SwcnUzjZYfuJ4-@infradead.org>
  <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
  <202502191026.8B6FD47A1@keescook>
- <785A9F60-F687-41DE-A116-34E37F5B407A@zytor.com>
- <f77d549c-b776-4182-b170-571d1e5bb288@p183>
- <2025022007-angelfish-smite-a69d@gregkh>
+ <20250219140821.27fa1e8a@gandalf.local.home>
+ <202502191117.8E1BCD4615@keescook>
+ <20250219202751.GA42073@nvidia.com>
+ <20250219154610.30dc6223@gandalf.local.home>
+ <97841173-1de8-4221-8bf3-3470a5ac98a7@acm.org>
+ <89f2547edcaaba53d9965cab9133d809607330ac.camel@kernel.org>
+ <87pljc6d7s.fsf@kloenk.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -43,19 +59,100 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2025022007-angelfish-smite-a69d@gregkh>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <87pljc6d7s.fsf@kloenk.dev>
 
-On Thu, Feb 20, 2025 at 07:53:28AM +0100, Greg KH wrote:
-> the proposal from Google about
-> Carbon, a way to evolve a C++ codebase into something else that is
-> maintainable and better overall.  I recommend reading at least the
-> introduction here:
-> 	https://docs.carbon-lang.dev/
-> for details, and there are many other summaries like this one that go
-> into more:
-> 	https://herecomesthemoon.net/2025/02/carbon-is-not-a-language/
+On Thu, Feb 20, 2025 at 12:57:11PM +0100, Fiona Behrens wrote:
+> Jarkko Sakkinen <jarkko@kernel.org> writes:
+> 
+> > On Wed, 2025-02-19 at 12:52 -0800, Bart Van Assche wrote:
+> >> On 2/19/25 12:46 PM, Steven Rostedt wrote:
+> >> > I do feel that new drivers written in Rust would help with the
+> >> > vulnerabilities that new drivers usually add to the kernel.
+> >> 
+> >> For driver developers it is easier to learn C than to learn Rust. I'm
+> >> not sure that all driver developers, especially the "drive by"
+> >> developers, have the skills to learn Rust.
+> >
+> > IMHO, Rust is not that difficult to learn but it is difficult to
+> > run.
+> >
+> > One point of difficulty for me still is the QA part, not really the
+> > code. QuickStart discusses on how to install all the shenanigans
+> > with distribution package managers.
+> >
+> > The reality of actual kernel development is that you almost never
+> > compile/run host-to-host, rendering that part of the documentation
+> > in the battlefield next to useless.
+> >
+> > Instead it should have instructions for BuildRoot, Yocto and
+> > perhaps NixOS (via podman). It should really explain this instead
+> > of dnf/apt-get etc.
+> 
+> What do you mean with via podman for NixOS?
 
-Interesting contents there, thanks for sharing!
+I sometimes use NixOS to test more complex kernel configurations. See
 
-Willy
+https://social.kernel.org/notice/ArHkwNIVWamGvUzktU
+
+I'm planning to use this approach to check if I could use that to
+build efficiently kernels with Rust.
+
+I've not been so far successful to do it with BuildRoot, which has
+zeroed out any possible contributions for rust linux. Writing code
+is like 5% of kernel development. Edit-compile-run cycle is the
+95%.
+
+> I do still have on my ToDo list to build and publish a better nix
+> development shell for kernel with rust enabled, and could also add a
+> section on how to build a NixOS iso in the same nix code.
+> But sadly time is a finite resource and so did not yet got to it.
+
+Please do ping me if you move forward with this. IMHO, why wouldn't
+you contribute that straight to the kernel documentation? Right no
+there are exactly zero approaches in kernel documentation on how
+test all of this.
+
+The best known method I know is to extend this type of example I
+did year ago:
+
+#!/usr/bin/env bash
+
+set -e
+
+make defconfig
+scripts/config --set-str CONFIG_INITRAMFS_SOURCE "initramfs.txt"
+yes '' | make oldconfig
+
+cat > initramfs.txt << EOF
+dir /dev 755 0 0
+nod /dev/console 644 0 0 c 5 1
+nod /dev/loop0 644 0 0 b 7 0
+dir /bin 755 1000 1000
+slink /bin/sh busybox 777 0 0
+file /bin/busybox initramfs/busybox 755 0 0
+dir /proc 755 0 0
+dir /sys 755 0 0
+dir /mnt 755 0 0
+file /init initramfs/init.sh 755 0 0
+EOF
+
+mkdir initramfs
+
+curl -sSf https://dl-cdn.alpinelinux.org/alpine/edge/main/x86_64/busybox-static-1.36.1-r25.apk | tar zx --strip-components 1
+cp busybox.static initramfs/busybox
+
+cat > initramfs/init.sh << EOF
+#!/bin/sh
+mount -t proc none /proc
+mount -t sysfs none /sys
+sh
+EOF
+
+and then qemu-system-x86_64 -kernel arch/x86/boot/bzImage
+
+It's sad really.
+
+> 
+> Fiona
+
+BR, Jarkko
