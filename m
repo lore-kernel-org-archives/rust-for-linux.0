@@ -1,144 +1,111 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652C226389E
-	for <rust-for-linux@vger.kernel.org>; Thu, 20 Feb 2025 23:36:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F26E026463B;
+	Thu, 20 Feb 2025 23:41:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740094585; cv=none; b=ZmlTHOPGMzgt7l/Ners4mjUn3XS2HVr2EOC3QlTWNzUHDuwSg7ZvFPda5VbMe4KoTuIR7kmsEWOmuaQNdLA+IP2KKZv1uHKuFvnJ+gG4IONFEa/HaM7cFY38cTbJp1wvFtep/tKWaLPtm0KzaQDWmzeYUidvt58wpMDXmn3Jnog=
+	t=1740094872; cv=none; b=p2i99PR9zlFMzkFmIQ9rzlfU/v583CfHBpLi9aLtH9LXu2coVh2QlrgXp3wS11yfxelapBzcnt/+MNtQdLbIC2wqd8PLQvB+NCzvXR3gpvLuoJxKO9oKGc3Q6v0RAcgn2km7Q4dv6KMyp0PT78+Kexvdyq6c+ygLhgN1iM/iO9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740094585; c=relaxed/simple;
-	bh=Z9rlOKsYkSiSq3B/m2yiuXoWI6S0rVlJ+V/aoQY6ZzA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=o0TvmuOjcNKxIgMycJE5Q+RoZeixb9kp9xexXz0vC/BE2TVNHMrIo+ZCA+qFu/veB0jPlKWtt5RzRx71a+e35Bl1QcDQuWR/xBuBeZZXUVpvzzZwuT7VEvo4Swlc/mG8wIGalp7plDn9kadJLmdUoeVL9SvnylsUF1k1qwH0GwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=dfqDKRYk; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
+	s=arc-20240116; t=1740094872; c=relaxed/simple;
+	bh=irbzh/oe51A79xVYF3jxZzKe+dVGiUXNJMFjUvq6beY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZF8QlyZfkzMOwdR5p26lotGLBxkFG9fl/BlYfaWUhfLhosbhEioASwcQ6cpLxpnPCAFDsYOUCujKeamjT6F/fMoZpGlRxPCRtFIMwZgWEjHofuY6eT7gAiAjz9E0CcIt00raAufFrcgnxaNY8FX1ihW4At22pzspu3lR6dwMUpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UxBspcVw; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="dfqDKRYk"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 5A14824002A
-	for <rust-for-linux@vger.kernel.org>; Fri, 21 Feb 2025 00:36:16 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1740094576; bh=Z9rlOKsYkSiSq3B/m2yiuXoWI6S0rVlJ+V/aoQY6ZzA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
-	 From;
-	b=dfqDKRYk5INa4ZSVXa1etFrBZSQ1Q3WSYiFhA5jW/FjJJnhy7udM3KKUcuO/CuzrQ
-	 pAq/L/jiD4HiIa+jl2eFLBKgJEt7cs3uqzfkpINTiWci/oYp6EWJjl/69dIFAaL41L
-	 60fYEXqs6KInHx3QSnLSCVPm/R0psvBiObjVgyvx3DIPTQk3VV+j3pptsIOXz2QqJV
-	 wvf584JaF13ozIFt7cKvQ+40HeEzgDhGp15naLlaD6VLknIGQ0acY9cdytS9jpYF61
-	 vlvOkvstUJSEGB7jdnfDDzzW7Qh4HCO0x4SZqGo9AmzJjJ38TKCDdg84B2a7V7lmyQ
-	 YoySinZe1inOw==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4YzV571Zd5z6tw2;
-	Fri, 21 Feb 2025 00:36:11 +0100 (CET)
-From: Charalampos Mitrodimas <charmitro@posteo.net>
-To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-Cc: a.hindborg@kernel.org,  alex.gaynor@gmail.com,  aliceryhl@google.com,
-  apw@canonical.com,  arnd@arndb.de,  aswinunni01@gmail.com,
-  axboe@kernel.dk,  benno.lossin@proton.me,  bhelgaas@google.com,
-  bjorn3_gh@protonmail.com,  boqun.feng@gmail.com,  dakr@kernel.org,
-  dwaipayanray1@gmail.com,  ethan.twardy@gmail.com,
-  fujita.tomonori@gmail.com,  gary@garyguo.net,
-  gregkh@linuxfoundation.org,  joe@perches.com,  lukas.bulwahn@gmail.com,
-  ojeda@kernel.org,  pbonzini@redhat.com,  tmgross@umich.edu,
-  walmeida@microsoft.com,  rust-for-linux@vger.kernel.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V3 2/2] checkpatch: throw error for malformed arrays
-In-Reply-To: <20250220161951.844367-3-trintaeoitogc@gmail.com>
-References: <20250220161951.844367-1-trintaeoitogc@gmail.com>
-	<20250220161951.844367-3-trintaeoitogc@gmail.com>
-Date: Thu, 20 Feb 2025 23:36:03 +0000
-Message-ID: <m2pljcgpek.fsf@Mac.home>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UxBspcVw"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2f2f5e91393so368180a91.0;
+        Thu, 20 Feb 2025 15:41:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740094870; x=1740699670; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=irbzh/oe51A79xVYF3jxZzKe+dVGiUXNJMFjUvq6beY=;
+        b=UxBspcVw702KjLZ2SYc+H3HdVoZNipdIGC84Qviuy/FU1w5m2WLBdWIjIn2yFDLcOi
+         b5mOziwdkjqKBQsbSi/D+2mzpmalslm08ScWATcC84Iyo5FgVdr4RjVNeHZjN9+xJwlT
+         xcAykwv24GlhyvyH8tERbOGpvQN3jQNlQjT2YzSMMMXcrL9J/ZEoPiXtcp/FiEjD85iR
+         KWzwNVuA8+mFE5riTHvYCYvot3TFJucBm+0Qc9yPoB0MDyXJghemk3XmOlkMAbbqM1VI
+         yxivh5vjsfvO8z8YUq+aZxOXFGyDgdvn7p/SQCGC2N+7Rn5+vSldQnx5cMCNzOF2lxC4
+         GXgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740094870; x=1740699670;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=irbzh/oe51A79xVYF3jxZzKe+dVGiUXNJMFjUvq6beY=;
+        b=VXv7KyP64qsNxi75aErd0a6UQGTM4FktBfcJRZaXiw6ca3Jjovg8i2PX4dq7e+ND9K
+         acIdao/FCQJRhynB6s8l1oQXWT6rEtbDmULIdJg4qj37Ha0Zga61WksaUQJ5PCBLg7DI
+         vFd926y3F8u7MXSqQnPImxWsAQKp5xzdXgIzpxk6y/I/ZXPkaDS7+ysxFOHGT2JuFgFo
+         IkIa4delWVSCUC6falP48SrHTAKGd37rR/Bro3BeOCA7DR/LMcjNCxkU/yXoUPRVWCYB
+         uAaDyNnj5odj34FDzcBPk3tMb6+ia1SJNpsTPQRhUhLSz5w/ae7sqtzctmdBIdWYwAkx
+         GITQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWCuLIf6M+xxjwyOqXYdFDvjoAelGFIVI1yvCXWYYYd+Wk1vLRem3MNDdW/BgbGnjY9gGcpw5knvy4mdBc=@vger.kernel.org, AJvYcCXuxh3/Q00vSmgu7FMx8XCxpffxhZQ55zpeVfoZ1KmJUEOQ9HufnKmFh08AkDoXZEy0mQJl6MaqTn9mXzhNnrU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVJP5r0fBisYWtGHXeZOZEnoKevnXgrHULFOcEPH6Q15A5DX0U
+	T7NWNiUhdfHQnVDFrcAXhagrX8WBDw9CrifDNvNEDeW+Axx8ALvG7fLsFMa7+rF6d6j1Ip3nky/
+	EDxS6A9KSfnX7O/0r46LEULATVIc=
+X-Gm-Gg: ASbGnctuzOW6gFxvSmazkbsPgjRFc6Mg1/zv+C8VaLH1Xwh48Hgjyq5ZLiI32qjkxYy
+	bDa0tvFCYplP/wmQL1R5kBNu+Davhua1a4tXCN86LjvzfeI6N6RpNBNELssprAbbTAciKa523
+X-Google-Smtp-Source: AGHT+IE3tTMC50ciOK+8N/4de26wZ6Pg8vooUK40uWXc0KvimGcWwvs1xaU2vMuCSIhfeBeWHEofydflMa9Ma5wDnkg=
+X-Received: by 2002:a17:90b:1e05:b0:2fa:17d2:158 with SMTP id
+ 98e67ed59e1d1-2fce75dfdb1mr694090a91.0.1740094870138; Thu, 20 Feb 2025
+ 15:41:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <Z7SwcnUzjZYfuJ4-@infradead.org> <b0a8ee53b767b7684de91eeb6924ecdf5929d31e.camel@HansenPartnership.com>
+ <CANiq72nnnOsGZDrPDm8iWxYn2FL=wJqx-P8aS63dFYez3_FEOg@mail.gmail.com>
+ <a627845f73f2f7bedc7a820cfdf476be9993e30f.camel@HansenPartnership.com>
+ <CANiq72m5KB-X1zck1E43yffXOTeD4xRmZgDx_oUiNwR941ce0w@mail.gmail.com> <20250219170623.GB1789203@mit.edu>
+In-Reply-To: <20250219170623.GB1789203@mit.edu>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 21 Feb 2025 00:40:57 +0100
+X-Gm-Features: AWEUYZmuZcjvGrCyDvmTbEKuMO6tYd_p5yChnLfIZmwrF8AsdfajLNX5ZuOK-5U
+Message-ID: <CANiq72=O+sz0mU-urYmviCm55GL0jWzsbjAJviJpT+3MLmQSCA@mail.gmail.com>
+Subject: Re: Rust kernel policy
+To: "Theodore Ts'o" <tytso@mit.edu>
+Cc: James Bottomley <James.Bottomley@hansenpartnership.com>, 
+	Christoph Hellwig <hch@infradead.org>, rust-for-linux <rust-for-linux@vger.kernel.org>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Greg KH <gregkh@linuxfoundation.org>, 
+	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Guilherme Giacomo Simoes <trintaeoitogc@gmail.com> writes:
-
-> Implement a check to ensure these fields are correctly formatted. If a
-> line contains one of these keys that should be of type Vec<String>, use
-> a regex to verify whether the array holds multiple values.
-> * If the array contains more than one value, enforce vertical formatting
-> * If the array has only one value, it can remain on the same line
+On Wed, Feb 19, 2025 at 6:06=E2=80=AFPM Theodore Ts'o <tytso@mit.edu> wrote=
+:
 >
-> Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-> ---
->  scripts/checkpatch.pl | 43 +++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 43 insertions(+)
->
-> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-> index 7b28ad331742..1133fe68054b 100755
-> --- a/scripts/checkpatch.pl
-> +++ b/scripts/checkpatch.pl
-> @@ -2775,6 +2775,9 @@ sub process {
->  	$realcnt = 0;
->  	$linenr = 0;
->  	$fixlinenr = -1;
-> +
-> +	my %array_parse_module;
-> +
->  	foreach my $line (@lines) {
->  		$linenr++;
->  		$fixlinenr++;
-> @@ -3567,6 +3570,46 @@ sub process {
->  # ignore non-hunk lines and lines being removed
->  		next if (!$hunk_line || $line =~ /^-/);
->  
-> +# check if arrays has more than one value in the same line
-> +		my $inline = 0;
-> +		my $key = "";
-> +		my $add_line = $line =~ /^\+/;
-> +
-> +		if ($line =~ /\s*.*\b(author|alias|firmware)\s*:\s*\[/) {
+> I do understand (now) what Wedson was trying to do, was to show off
+> how expressive and powerful Rust can be, even in the face of a fairly
+> complex interface.
 
-Hi Guilherme,
+Thanks for saying that.
 
-Will this work now that the field is called "authors" and not "author"?
-I think you forgot to update the regex here.
+> It turns out there were some good reasons for why
+> the VFS handles inode creation, but in general, I'd encourage us to
+> consider whether there are ways to change the abstractions on the C
+> side so that:
 
-> +			$inline = 1;
-> +			$array_parse_module{$1} = 1;
-> +		}
-> +
-> +		my @keys = keys %array_parse_module;
-> +		if (@keys) {
-> +			$key = $keys[0];
-> +		}
-> +
-> +		if ($add_line && $key) {
-> +			my $herevet = "$here\n" . cat_vet($rawline) . "\n";
-> +
-> +			my $counter = () = $line =~ /"/g;
-> +			my $more_than_one = $counter > 2;
-> +			if ($more_than_one) {
-> +				WARN("ARRAY_MODULE_MACRO",
-> +                     "Prefer a single-line value$herevet");
+Definitely -- improving the C side (not just for Rust callers, but
+also for C ones) would be great, whether that is with extra
+annotations/extensions or redesigns.
 
-What do you think about this instead?
-"Prefer each array element on a separate line$herevet"
+In the beginning (pre-merge), we tried hard not to require changes on
+the C side, because we wanted to show that it is possible to use Rust
+(i.e. create safe abstractions for C APIs) even with minimal or no
+changes to C headers. We thought it was a useful property.
 
-> +			} elsif ($inline && $line !~ /\]/ && $line !~ /,/ && $line =~ /"/) {
-> +				WARN("ARRAY_MODULE_MACRO",
-> +                     "Prefer declare ] on the same line$herevet");
-> +			} elsif (!$inline && $line =~ /\]/ && $line =~ /\"/) {
-> +				WARN("ARRAY_MODULE_MACRO",
-> +                     "Prefer a new line after the last value and before ]$herevet");
-> +			} elsif ($inline && $line =~ /,/ && $line !~ /\]/) {
-> +				WARN("ARRAY_MODULE_MACRO",
-> +                     "Prefer a new line after [$herevet");
-> +			}
-> +		}
-> +
-> +		#END OF ANALYZE FIELD
-> +		if ($line =~ /\]/) {
-> +			delete $array_parse_module{$key};
-> +		}
-> +
->  #trailing whitespace
->  		if ($line =~ /^\+.*\015/) {
->  			my $herevet = "$here\n" . cat_vet($rawline) . "\n";
+But then we got C maintainers that welcomed improvements that would
+benefit both sides, which was nice to see, and opens up some doors --
+as a simple example, Greg added made some APIs `const`-correct so that
+we got the right pointer type on the Rust bindings.
+
+So, yeah, anything in that direction (that either improves the C side
+and/or simplifies the Rust bindings/abstractions) would be great.
+
+Cheers,
+Miguel
