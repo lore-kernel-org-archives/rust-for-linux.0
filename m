@@ -1,163 +1,165 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CBE1C5D50;
-	Thu, 20 Feb 2025 14:14:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C248E1F8AE5;
+	Thu, 20 Feb 2025 14:40:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740060885; cv=none; b=NmmbsBJb0y25szzWongJfuFQwXpLg0HnrssdHkbgGMd+s9+/5uCrKYYlhuhcBQ1+YXCVIfScIPHVDC1MRQVSZO4c//5OvBEyb0SdRafDAoNb0UpO/7aroxhJjCdObiEFOD6bMnfCnpZXgEBkTQb47o3cADoNcvdIbF4i6YbxqpA=
+	t=1740062452; cv=none; b=DpmfAVl3qP0frs8hS1cACsoMJ98bHg+0IM79HtHBPc976cfRq30c6JsEEXAR1hWEsDzOHxoDNqiHeZAk/GqwmnXVX5bpJ+5iaaOMPylZSxyQgBvliisn1SdwJWYUUfEd7tLIkf23Z69Z+PdqXOK7xYfAAu+K4dDFdZG4QOmQWOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740060885; c=relaxed/simple;
-	bh=tRvBsp0FoTr3Xw2gpKLC0wmeZR2OTTjOzu4hfQPoswY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KU/7/AaOwrCAgu2PtcBhkfYpjNUzplyFwmMGkOWUdr/eihFGDZF+tO95t1gUv5zdAOK9NOMK1jRWiqWzXn1Y6scowLOUv1vAA3v2rAIXiPlhEBuQWlsHweRQsAgIhjIGf+A5gJNDQrr7uD3JP2bwf+Zc2gWCk01qPf1vRJeOauU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fmQ940Zh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740062452; c=relaxed/simple;
+	bh=IBHb0xhy/Vz/yCAtJf68B3zsc2IBnauKNXtm7Hq7SR8=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=DYcVZGBW/RPH0jeluTfvzBoG/csG71VpXClF9Yrwn/bm3KokR7Fwx6J075JiusR/fDklkbjnacCJ+JoUQDRNZGcTzA4CgP9HipT5/PgKKA1lYpLpQRkCQEDxr883At/AQaepAfdc+bnutpXyJhBum7idz8T37uRmfiROYbus74w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=szi5hDdF; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fmQ940Zh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A720C4CED1;
-	Thu, 20 Feb 2025 14:14:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740060885;
-	bh=tRvBsp0FoTr3Xw2gpKLC0wmeZR2OTTjOzu4hfQPoswY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fmQ940ZhDJ9WVV7a49mjcrFFFKqur53Blpcjd7d/xN9S+aHr1siSXs0wralhMoehc
-	 Sag/gfBjLWaxlat4yMYzDBUx0q86F7zZouTPiWZUG5k6V/rvINkX9SUD9PE8sfrqgr
-	 4RFBXqkgT9K/O+FSdvaRgRWornmX/JKNmC/NmGtw+XG9yI+4BKUPl4Ludooqv7FiP0
-	 imFMpdQ9jyt7Q/oyHu8YuGe0BA1iiG5IV2STqTPl+l2Nvnm84sb79wlaFP8tDycDlG
-	 1//u4Lja0VI5G9D7Jx5Xllvvp1ANVTGKA3t3+/h8TDsfibnz2yIyCNw/nBHOsFIWpR
-	 tIxCdkLchVaww==
-Date: Thu, 20 Feb 2025 14:14:41 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, lgirdwood@gmail.com,
-	sebastian.reichel@collabora.com, sjoerd.simons@collabora.co.uk,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
-	benno.lossin@proton.me, tmgross@umich.edu, dakr@kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: regulator: add a bare minimum regulator abstraction
-Message-ID: <Z7c40fpQVelj20gE@finisterre.sirena.org.uk>
-References: <20250219162517.278362-1-daniel.almeida@collabora.com>
- <CAH5fLgiErvnziU-hSCV6djNq7Q56ZfX9gZudmX7+r06hWoX0Tw@mail.gmail.com>
- <E24A1EA3-DC87-4A33-AD93-1E3B307942E8@collabora.com>
- <Z7cbkfvJqkWaSwKR@finisterre.sirena.org.uk>
- <53A50677-CB35-441F-8E58-0FB1EA577C4E@collabora.com>
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="szi5hDdF"
+Received: from [127.0.0.1] ([76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 51KEcK4P2238927
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Thu, 20 Feb 2025 06:38:21 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 51KEcK4P2238927
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025021701; t=1740062301;
+	bh=09AX5hzejmVf61n1uIS4Ec7rPnID14l13a6oxb//yAU=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=szi5hDdF/eY3Sns+sNZsPc1qCtGN0TNNz0Zhrr+oqfHpDINzHeWo8y9nCmqO/xJSx
+	 dAWerVAi68XcQB+64pxJz0w0Wqtck0nvNc084eTPLcgk45hyGL6+EMKsiovT5P8uwQ
+	 DI7dSWXtB81+xQ8+07N3MWuCfcdfacAqREXmWZFVrPZJj0bmi4NCzsoEAaEyCtMoHQ
+	 GgwyTAb2ek4BiZziof1g0nAmtPzE+t4s28nqDlo96Tp0nu/C4dYVnXFqN/UDpUDbJG
+	 FUQQSQecqKc4a9NhMPqPhM32sqK1QDR5XxlqXOUSlB4GndOZJWCpGwN/FbwbR0fC5o
+	 JoCeD1azyHDpQ==
+Date: Thu, 20 Feb 2025 06:38:20 -0800
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Martin Uecker <uecker@tugraz.at>, Dan Carpenter <dan.carpenter@linaro.org>
+CC: Greg KH <gregkh@linuxfoundation.org>, Boqun Feng <boqun.feng@gmail.com>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        rust-for-linux <rust-for-linux@vger.kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
+        ksummit@lists.linux.dev, Justin Stitt <justinstitt@google.com>,
+        Kees Cook <keescook@chromium.org>
+Subject: Re: Rust kernel policy
+User-Agent: K-9 Mail for Android
+In-Reply-To: <1f31a16d3898e0e9b5d94f9bcc12a1b73ac97982.camel@tugraz.at>
+References: <Z7SwcnUzjZYfuJ4-@infradead.org> <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com> <326CC09B-8565-4443-ACC5-045092260677@zytor.com> <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com> <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com> <Z7VKW3eul-kGaIT2@Mac.home> <2025021954-flaccid-pucker-f7d9@gregkh> <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at> <2025022024-blooper-rippling-2667@gregkh> <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at> <962fa158-5315-4d93-afb1-8a1c08787ad8@stanley.mountain> <1f31a16d3898e0e9b5d94f9bcc12a1b73ac97982.camel@tugraz.at>
+Message-ID: <58959F5F-2207-4FE0-A077-273493F2D9EF@zytor.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="GQKO3yGFd7H6YRNI"
-Content-Disposition: inline
-In-Reply-To: <53A50677-CB35-441F-8E58-0FB1EA577C4E@collabora.com>
-X-Cookie: Editing is a rewording activity.
-
-
---GQKO3yGFd7H6YRNI
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 20, 2025 at 10:48:31AM -0300, Daniel Almeida wrote:
-> > On 20 Feb 2025, at 09:09, Mark Brown <broonie@kernel.org> wrote:
+On February 20, 2025 6:09:21 AM PST, Martin Uecker <uecker@tugraz=2Eat> wro=
+te:
+>Am Donnerstag, dem 20=2E02=2E2025 um 16:46 +0300 schrieb Dan Carpenter:
+>> On Thu, Feb 20, 2025 at 09:57:29AM +0100, Martin Uecker wrote:
+>> > In particulary, I have a relatively concrete plan to have a memory sa=
+fe
+>> > mode for C that can be toggled for some region of code and would make
+>> > sure there is no UB or memory safety issues left (I am experimenting =
+with
+>> > this in the GCC FE)=2E=C2=A0 So the idea is that one could start to a=
+ctivate this
+>> > for certain critical=C2=A0regions of code to make sure there is no si=
+gned
+>> > integer overflow or OOB access in it=2E
+>>=20
+>> I don't think diferentiating between signed and unsigned integer
+>> overflows is useful=2E  In the kernel, most security issues from intege=
+r
+>> overflows are from unsigned integer overflows=2E  Kees says that we
+>> should warn about "Unexpected" behavior instead of "Undefined"=2E  In f=
+act,
+>> Justin Stitt has done the opposite of what you're doing and only checks
+>> for unsigned overflows=2E  He created a sanitizer that warns about inte=
+ger
+>> overflows involving size_t type (which is unsigned), because sizes are
+>> so important=2E  (Checking only size_t avoids probably the largest sour=
+ce
+>> of harmless integer overflows which is dealing with time)=2E
+>
+>I agree with you=2E  We were also discussing an attribute that
+>can be attached to certain unsigned types to indicate that
+>wrapping is an error=2E=C2=A0
+>
+>My more limited aim (because my personal time is very limited)
+>is to define a memory safe subset and in such a subset you can
+>not have UB=2E  Hence, I am more focussed on signed overflow at
+>the moment, but I agree that safety in general must go beyond=C2=A0
+>this=2E
+>
+>But this is why I want the kernel community to be more involved,
+>to get more resources and more experience into these discussions=2E
+>
+>>=20
+>> The sanitizer has a list of exceptions like if (a < a + b) where the
+>> integer overflow is idiomatic=2E  But the concern was that there might =
+be
+>> other deliberate integer overflows which aren't in the exception list s=
+o
+>> Justin also created a macro to turn off the santizer=2E
+>>=20
+>> 	x =3D wrapping_ok(a + b);
+>
+>Indeed=2E This is the main issue with unsigned wraparound=2E Exactly
+>because it was always defined, simply screening for wraparound
+>yields many false positives=2E=20
+>
+>(BTW: Rust is also not perfectly immune to such errors:
+>https://rustsec=2Eorg/advisories/RUSTSEC-2023-0080=2Ehtml)
+>
+>
+>>=20
+>> What I would like is a similar macro so we could write code like:
+>>=20
+>> 	x =3D saturate_math(a + b + c + d * d_size);
+>>=20
+>> If anything overflowed the result would be ULONG_MAX=2E  In the kernel,
+>> we have the size_add() and size_mul() macros which do saturation math
+>> instead of wrapping math but we'd have to say:
+>>=20
+>> 	x =3D size_add(a, size_add(b, size_add(c, size_add(size_mul(d, d_size)=
+))));
+>>=20
+>> Which is super ugly=2E  Maybe we could create something like this macro=
+?
+>>=20
+>> #define saturate_math(x) ({             \
+>>         unsigned long res;              \
+>>         __trap_overflow(label_name));   \
+>>         res =3D (x);                      \
+>>         if (0) {                        \
+>> lable_name:                             \
+>>                 res =3D ULONG_MAX;        \
+>>         }                               \
+>>         res;                            \
+>> })
+>>=20
+>
+>We added checked arhithmetic to C23, we could add saturating
+>math to C2Y if this is needed=2E  (although I admit I do not fully
+>understand the use case of saturating math, a saturated value
+>still seems to be an error? Statistics, where it does not matter?)
+>
+>In general, if people have good ideas what compilers or the language
+>standard can do to help, please talk to us=2E It is possible to
+>improve compilers and/or the language itself=2E
+>
+>
+>Martin
+>
+>
+>
+>
 
-> > Having an enabled regulator object depend on a regulator object seems
-> > like a goal rather than a problem, surely it's common to need such
-> > relationships and there's an idiomatic way to do it?  It seems to be how
-> > Rust does mutexes=E2=80=A6
-
-> Not when you need to store both of them at the same time.
-
-> For Mutex<T>, for example, you don=E2=80=99t store both Mutex<T> and Mute=
-xGuard<'_,T>
-> at the same time. You store a Mutex<T>, and create MutexGuard<'_, T> on t=
-he
-> stack by locking the Mutex when you need to access T. When MutexGuard goe=
-s away,
-> the Mutex is automatically unlocked.
-
-> The equivalent behavior for us here would be to enable a regulator on the
-> stack, perform some work, and then have this regulator be automatically
-> disabled. There would be no way to keep it enabled for a longer period.
-
-Surely this need also exists with other lock types in Rust?  Holding a
-semaphore for a long lived series of operations or similar.  It seems
-surprising that this isn't a standard pattern.
-
-> >> ```
-> >> self.my_regulator.enable() // error, moves out of `&self`
-> >> ```
-
-> > Your second block of code doesn't look obviously painful there?
-
-> It is painful in the sense that it won=E2=80=99t even compile.
-
-> This example assumes a different API where EnabledRegulator consumes Regu=
-lator
-> to exist, instead of keeping an internal reference:
-
-As I mentioned that sounds like something users do want.
-
-> But this is extremely unergonomic because Option<T> is meant for cases wh=
-ere we
-> may or may not have something, but this is not the case here. We're simply
-> abusing its API to make our own Regulator API work.
-
-Are we?  We may or may not have enabled the regulator.
-
-> >> I am sure we can find ways around that, but a simple `bool` here seems=
- to fix this problem.
-> >=20
-> >> Now you only have to store `Regulator`. If you need another part of yo=
-ur code to also keep
-> >> the regulator enabled, you store a `Regulator` there and enable that a=
-s well. All calls to
-> >> enable and disable will be automatically balanced for all instances of=
- `Regulator` by
-> >> virtue of the `enabled` bool as well.
-
-> > What you're describing here with creating one Regulator object per
-> > enable sounds more like you want it to be an error to do multiple
-> > enables on a single regulator.  Instead of reference counting or
-> > silently ignoring duplicate enables it should error out on a duplicate
-> > enable.
-
-> The problem here isn't necessarily forbiding multiple enables, but figuri=
-ng out
-> a way to make sure they are balanced in Rust. Let me think this through s=
-ome
-> more, because I do not have a solution in hand right now.
-
-Right, what I'm saying is that when you talk above about each part of
-the code getting another Regulator for the same underlying regulator and
-doing it's enable there that sounds like a pattern where each Regulator
-has a maximum enable count of one - if it's idiomatic to have different
-Regulator objects for different uses then you can say that each use
-can have only one enable and needs to resolve it's own concurrency
-issues.  The C regulator API is perfectly happy with this (modulo
-exclusive regulators which you've not covered here) so if it simplifies
-things that should be fine.
-
-Your formatting here is still odd BTW, line lengths are too long (though
-less long than on the prior mail) and it looks like there's some '''
-formatting rather than indents around code that looks like one of the
-structured text formats?
-
---GQKO3yGFd7H6YRNI
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAme3ONAACgkQJNaLcl1U
-h9BBlwf9FFGzDfZGnuMx586lEWURM6YNmL0aXnBnq/EnMUOchEdBRDcZ+RotXD5T
-OT75ha/HOrh5PMFv82jTj7mzZOt6WfgzAEUAP+EUHfx9OX1Iw3YVlFk7LyO9JHpK
-yqR4OtScz5aeFNZIMuICNz2M+sdV2VnDoBtcCKGuOeUCULD4BYU8wutnILCHXzXR
-U8HkLOIG030BB3t1CAYIxdX69cOADQV9WcbqQav2MNsrkdQi+Xdfw8r65ZqtkGHf
-raNmAXHJUk9n0YHhYp9PsPh5JFldYMRBfh91xV+D1oGnTla8DxEijwIDm3iRrKYX
-lK2ZsecW6icPU/6SXonl9XTSPU75IQ==
-=CDQq
------END PGP SIGNATURE-----
-
---GQKO3yGFd7H6YRNI--
+This is exactly the sort of things quick is quite easy to do with C++ but =
+requires ad hoc compiler extensions for C=2E
