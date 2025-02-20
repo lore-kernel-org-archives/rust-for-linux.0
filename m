@@ -1,162 +1,132 @@
-Received: from mailrelay.tugraz.at (mailrelay.tugraz.at [129.27.2.202])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41577179A7;
-	Thu, 20 Feb 2025 08:57:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.27.2.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740041862; cv=none; b=gp3jxy0Zja4SeAh779dT8AbQrn1doOgsPFFNfGU9Hg/onk23Yn5LNpjQcjlH01bPsY99zF14clGSE5kBeD6Ar9MnM8q/smtaFpoH4sZcT8PNQx+G2rXyeDgtmcxfLGvfz+++HztLqZGkRaHY8xXHsDbf1MUH+gBx/THaK2xpD2k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740041862; c=relaxed/simple;
-	bh=G/gVJPNMpPDZIVUs4ZDdcewvmRtxv1X63Vhw+bB/80c=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=AqTk9ty7JUTZF3xEhebEATFiXgDgFY3t7evfd+sMfK8QZ75yJjFQdQG0vxbiQHkzC5cMjr6o1Rz9tM3ixTE/XVdXDry/vAKXVfSKvTa4alPUArZ+ZFw8Rg23xeNbgdNYHo3sKjB9hp4vEVZzb8QKBJ6PYPkxSDTaPkF2jKQq184=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at; spf=pass smtp.mailfrom=tugraz.at; dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b=iHI39HL9; arc=none smtp.client-ip=129.27.2.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tugraz.at
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EEC01DE4D2;
+	Thu, 20 Feb 2025 09:43:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740044592; cv=pass; b=EEs2I79OqPG9uFqai6yOT/5RykDnzxxUsIpCWLrVmtwJ2Qecuh1YIdXM8sacSs2PtHlEU3PnNyLypSIkW+DQm/Hoxrt4FQI2TuTb2aApPyy06GDAOzbeLyAu1A9bk0urI7rgmP8UZ6W2tsRqAkXv0f9zki29GStsdzeDzdHcpTA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740044592; c=relaxed/simple;
+	bh=X0VeiW5jvO2DWfIISsx666tpZYWzFwJZKbBhi8i0+Bw=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=tgyGSvTvCF/gNFOR6QOriV7wR5VK7AFunIHQh8woos08ZaholDGHoRIzozT8VKUJTpE/eLfL5jHRAKQ2G6hTpZv7zE8KaZ8cJgnuc7yjWLwsZXIH8OzbfgEayZ6dAnivvFjQJ3j1yEoblP7u3JQpsoT5l91AbIiizqPDxwVL83Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=F548C7qr; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b="iHI39HL9"
-Received: from vra-171-197.tugraz.at (vra-171-197.tugraz.at [129.27.171.197])
-	by mailrelay.tugraz.at (Postfix) with ESMTPSA id 4Yz6bG0M1fz1JJCX;
-	Thu, 20 Feb 2025 09:57:29 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailrelay.tugraz.at 4Yz6bG0M1fz1JJCX
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tugraz.at;
-	s=mailrelay; t=1740041851;
-	bh=534sbKTPRc7qHLB2YPR/YBjYkUkFE06mby8ks5Lw8Ew=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=iHI39HL91aLUMbJnTq4yXwFllS62GrBQfohmv+pnMIj/wTJM5uoySVWEhL2NEUs+1
-	 x0QBcWAmPMfKMET/U6IjWAxNvwF3c9zHw1KfDsTZB8St6knyJQXn13oyTno6KG9was
-	 4oxDoyM5+3vFKVa2NDgtvBBX/OfZHM4Er0hNoss8=
-Message-ID: <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
-Subject: Re: Rust kernel policy
-From: Martin Uecker <uecker@tugraz.at>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, 
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Christoph Hellwig
- <hch@infradead.org>, rust-for-linux <rust-for-linux@vger.kernel.org>, Linus
- Torvalds <torvalds@linux-foundation.org>,  David Airlie
- <airlied@gmail.com>, linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
-Date: Thu, 20 Feb 2025 09:57:29 +0100
-In-Reply-To: <2025022024-blooper-rippling-2667@gregkh>
-References: 
-	<CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
-	 <Z7SwcnUzjZYfuJ4-@infradead.org>
-	 <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
-	 <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
-	 <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
-	 <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
-	 <Z7VKW3eul-kGaIT2@Mac.home> <2025021954-flaccid-pucker-f7d9@gregkh>
-	 <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
-	 <2025022024-blooper-rippling-2667@gregkh>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="F548C7qr"
+ARC-Seal: i=1; a=rsa-sha256; t=1740044565; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=YnRMlazNktHPkIJxQHEi2TMJg93m1xEYcwaZ5kYWLqBbXibFI7b4rQzbSFsKfju+zqCReMD8HK0YqRFfrw6a2VQV4lMC9Jz4PywCcTJNQH4XYZ5Go8aKZ2wEibi0anZn1hWwI7r4fjQ8CGjoj+Fj2zd7GzBuQt34XDtBxbeZEmU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1740044565; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=G1w/QgJH/sS0bXOc4MnMWKj+MEaxGsFuliB931Wa9fw=; 
+	b=lh34xO7OIpdHb5j3v5PvWf8nFdWsL9Qn8SuYw7oP6Yf9IPezdyHsAQ3H4lyPKTTw3dBCUDLlDSucQLxbKgi/7i38YeCmsrRtCH1FfuWRPIvIBr9Op20pDxM/7sMHwR52CMbblLpLPO97xa7YtGX/V3rKnxXiuPMnYOPyuL6+GKs=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1740044565;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=G1w/QgJH/sS0bXOc4MnMWKj+MEaxGsFuliB931Wa9fw=;
+	b=F548C7qr110UvJghNgsV248jCxTkN4C0LyWnXWK+PYvWLy+sScWufzCmt1EijPuh
+	+be+DkTZqoSsxbm4JXB/hJLA92Y+GUAJ/GdtNU+yJ2ydDiYJEq+MXEnPj1YL+EhuTSI
+	bbLsYuQrEBe6hy7fhvifrLdEQMi9aaJvVjxIjecw=
+Received: by mx.zohomail.com with SMTPS id 1740044562759715.5588790038047;
+	Thu, 20 Feb 2025 01:42:42 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-TUG-Backscatter-control: G/VXY7/6zeyuAY/PU2/0qw
-X-Spam-Scanner: SpamAssassin 3.003001 
-X-Spam-Score-relay: 0.0
-X-Scanned-By: MIMEDefang 2.74 on 129.27.10.116
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
+Subject: Re: [PATCH] rust: regulator: add a bare minimum regulator abstraction
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <Z7aHQBYXZ5jlGRte@finisterre.sirena.org.uk>
+Date: Thu, 20 Feb 2025 06:42:25 -0300
+Cc: lgirdwood@gmail.com,
+ sebastian.reichel@collabora.com,
+ sjoerd.simons@collabora.co.uk,
+ ojeda@kernel.org,
+ alex.gaynor@gmail.com,
+ boqun.feng@gmail.com,
+ gary@garyguo.net,
+ bjorn3_gh@protonmail.com,
+ a.hindborg@kernel.org,
+ benno.lossin@proton.me,
+ aliceryhl@google.com,
+ tmgross@umich.edu,
+ dakr@kernel.org,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <7099F7DD-C806-4DA9-A7C5-595428289497@collabora.com>
+References: <20250219162517.278362-1-daniel.almeida@collabora.com>
+ <Z7ZjzJ2Rfrt8j0s1@finisterre.sirena.org.uk>
+ <5E354BB7-9CD5-4615-8EAF-98B9F498713A@collabora.com>
+ <Z7aHQBYXZ5jlGRte@finisterre.sirena.org.uk>
+To: Mark Brown <broonie@kernel.org>
+X-Mailer: Apple Mail (2.3826.300.87.4.3)
+X-ZohoMailClient: External
 
-Am Donnerstag, dem 20.02.2025 um 08:10 +0100 schrieb Greg KH:
-> On Thu, Feb 20, 2025 at 08:03:02AM +0100, Martin Uecker wrote:
-> > Am Mittwoch, dem 19.02.2025 um 06:39 +0100 schrieb Greg KH:
-> > > On Tue, Feb 18, 2025 at 07:04:59PM -0800, Boqun Feng wrote:
-> > > > On Tue, Feb 18, 2025 at 04:58:27PM -0800, H. Peter Anvin wrote:
-> > > > [...]
-> > > > > > >=20
-> > ...
-> > >=20
-> > >=20
-> > > I'm all for moving our C codebase toward making these types of proble=
-ms
-> > > impossible to hit, the work that Kees and Gustavo and others are doin=
-g
-> > > here is wonderful and totally needed, we have 30 million lines of C c=
-ode
-> > > that isn't going anywhere any year soon.  That's a worthy effort and =
-is
-> > > not going to stop and should not stop no matter what.
-> >=20
-> > It seems to me that these efforts do not see nearly as much attention
-> > as they deserve.
->=20
-> What more do you think needs to be done here?  The LF, and other
-> companies, fund developers explicitly to work on this effort.  Should we
-> be doing more, and if so, what can we do better?
-
-Kees communicates with the GCC side and sometimes this leads to
-improvements, e.g. counted_by (I was peripherily involved in the
-GCC implementation). But I think much much more could be done,
-if there was a collaboration between compilers, the ISO C working
-group, and the kernel community to design and implement such
-extensions and to standardize them in ISO C.
+Hi Mark,
 
 >=20
-> > I also would like to point out that there is not much investments
-> > done on C compiler frontends (I started to fix bugs in my spare time
-> > in GCC because nobody fixed the bugs I filed), and the kernel=C2=A0
-> > community also is not currently involved in ISO C standardization.
+>> I asked for a few opinions privately and was told that =E2=80=9Cif =
+the C API prefers not to do that
+>> why should you?=E2=80=9D
 >=20
-> There are kernel developers involved in the C standard committee work,
-> one of them emails a few of us short summaries of what is going on every
-> few months.  Again, is there something there that you think needs to be
-> done better, and if so, what can we do?
+> Well, the C API also doesn't ignore either enable or disable =
+attempts...
+> the theory is that if the consumer messed up it's safer to not power =
+the
+> hardware off suddenly when something might not have been cleaned up.
+> The general approach the API takes is to only take actions it's been
+> explicitly asked to do, that way we're not hard coding anything that
+> causes trouble for consumers and since we need constraints to enable =
+any
+> action that gets taken we're less likely to have default behaviour
+> causing hardware damage somehow.  If we think we've lost track of the
+> reference counting we just scream about it but don't try to take
+> corrective action.
+
+So, are you OK with this approach? i.e.:
+
+> ```
+>  fn drop(&mut self) {
 >=20
-> But note, ISO standards work is really rough work, I wouldn't recommend
-> it for anyone :)
-
-I am a member of the ISO C working group. Yes it it can be painful, but
-it is also interesting and people a generally very nice.
-
-There is currently no kernel developer=C2=A0actively involved, but this wou=
-ld
-be very helpful.
-
-(Paul McKenney is involved in C++ regarding atomics and Miguel is
-also following what we do.)
-
+>    while self.enabled_count > 0 {
 >=20
-> > I find this strange, because to me it is very obvious that a lot more
-> > could be done towards making C a lot safer (with many low hanging fruit=
-s),
-> > and also adding a memory safe=C2=A0subset seems possible.
+>            if let Err(e) =3D self.disable() {
+>              break;
+>            }
+>        }
+>  }
+> ```
+
+Where `enable()` increments self.enable_count and `disable()` decrements =
+it.
+
+>>> Perhaps an enable should be an object that's allocated and carried =
+about
+>>> by whatever's holding the reference, I don't know if that plays =
+nicely
+>>> with how Rust likes to ensure safety with this stuff?
 >=20
-> Are there proposals to C that you feel we should be supporting more?
+>> As I said, this doesn=E2=80=99t work very well, unless someone =
+corrects my reasoning on a
+>=20
+> I don't think I saw the previous mail?
 
-There are many things.
+You didn=E2=80=99t get this?
 
-For example, there is an effort to remove cases of UB.  There are about
-87 cases of UB in the core language (exlcuding preprocessor and library)
-as of C23, and we have removed 17 already for C2Y (accepted by WG14 into
-the working draft) and we have concrete propsoals for 12 more. =C2=A0This
-currently focusses on low-hanging fruits, and I hope we get most of the
-simple cases removed this year to be able to focus on the harder issues.
-
-In particulary, I have a relatively concrete plan to have a memory safe
-mode for C that can be toggled for some region of code and would make
-sure there is no UB or memory safety issues left (I am experimenting with
-this in the GCC FE).=C2=A0 So the idea is that one could start to activate =
-this
-for certain critical=C2=A0regions of code to make sure there is no signed
-integer overflow or OOB access in it.   This is still in early stages, but
-seems promising. Temporal memory safety is harder and it is less clear
-how to do this ergonomically, but Rust shows that this can be done.
+=
+https://lore.kernel.org/rust-for-linux/Z7aHQBYXZ5jlGRte@finisterre.sirena.=
+org.uk/T/#m9348ad4fdc056d7f6d0bfec6529d4c80afdcd335
 
 
-I also have a proposal for a length-prefixed string type and for=C2=A0
-polymorhic types / genericity, but this may not be so relevant to the
-kernel at this point.
-
-Even more important than ISO C proposals would be compiler extensions
-that can be tested before standardization.
-
-
-Martin
-
-
-
+=E2=80=94 Daniel=
