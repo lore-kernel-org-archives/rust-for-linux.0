@@ -1,43 +1,43 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8614826561A
-	for <rust-for-linux@vger.kernel.org>; Thu, 20 Feb 2025 23:18:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27013266192
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Feb 2025 23:20:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740093533; cv=none; b=PhkO8qiQO+/BEX7KA6R0uUjymm4Pq0/UAiZK9JtzTcpUAJNop9IQvaWL7s8OvsQmcwK5l7b9riyXhBn1gP/KaW5Dgf01Qo0a/KAaL6ASrNPw2dEXWYBTXLscGiQJtIZR8XS0qx2TZ7w8T8kGowiKY5J6rkc3ktU7ScD4Rjpxt+M=
+	t=1740093614; cv=none; b=fb08fuZYzGiqwtGhrY8uA75Jk8tD4383XNk95jHyU6pNPy1j8y1a8PzmRB51MOgbiNDffklEfclbPJ+YnTSjBleizAjwkWJ0BV0i7pQqICk3xvBugs9PuUesnPbGOG91ltEetipvXxSWQpX0oxKLiufmPoPT3TEuHeajgn6NL4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740093533; c=relaxed/simple;
-	bh=qekYXtKUzur6RQDfjSqpA7I2U8CUtJ0pCQjlkDyL+rk=;
+	s=arc-20240116; t=1740093614; c=relaxed/simple;
+	bh=2ei6Xr8KtKfCuxF3biIuGcx1xmTWqeXDWTditoITIUs=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AVvT3MhhD/+5IPPp5hKvF5LymX1KgxzQ5hintiunr2Ipizl31+QU9M271YNJt45tSd3GHYCH2T7euhSFTsWTTg6E+TYbHMG3lEgcdaXZpr8989QobZknrOZzgi9rW46X0S3BeUsn+4f3WryAORk39pUOcmHnzo3Fup9VSXZkdxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=DrIlFi7T; arc=none smtp.client-ip=185.70.40.134
+	 MIME-Version:Content-Type; b=VSi60hdBQ1JUb3E6G9Z1hvokEEO39M8kbJ/tEEm/mX99HjXyGqWNv4Rjo30XvhCYIK7VD5JUbnP2JR9k8LLMOxBbWUuxiUDkRvbCipMcQcu+nrYPnJgTd5QDve/lHGZh2dBUML5Q7nwDKhxZ5GmTedeG+951+1f9vfv8TiA4Kvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=I5XwWEB9; arc=none smtp.client-ip=185.70.40.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="DrIlFi7T"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="I5XwWEB9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=6xsbb6fazjaphi6ls2p4sq5lzq.protonmail; t=1740093523; x=1740352723;
-	bh=xBQAiFiI1yIVO0u4bFT+4KE+i0yQ/3TAu9mAqC+PYkY=;
+	s=hf4scjpobzbqbotakuxbbsmlbu.protonmail; t=1740093610; x=1740352810;
+	bh=R0xXNryglluujxdF1vg6HlVzkuQzuuyku/Gv+SN/ma4=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=DrIlFi7TxaAkgKZLu7kjtdgvh1bQEboPQwtYIZe2nq2ARp3BxZZXJGO1Vo1TPTr5u
-	 RAmRbdJidSVqVTd/qrfYtzDHBgXHln5xNmSJrC/umA09qvTa30Q4CcGcEnI7H8vaVo
-	 1Pk5CYpQuA4WGuMPT219qFMoEYl3KY/GHaIwfHR9KARZr80cabpAd2sCyUwmuVTff9
-	 lrMPN3EPYg0viAm0Uk6Re3ev6W/MUQeFuBVY661cufAdSQJb+eZX//4cCXUUqFmISK
-	 d9Wm5vqWfNpPehuzz6v4qI+BKPcOsli031+jhuP/zOxPRGNdE1hUUbqWuEMtrZdx7T
-	 21BNUsjGjhh9w==
-Date: Thu, 20 Feb 2025 23:18:36 +0000
+	b=I5XwWEB9oCiZSQLGZThpNvKa1tZx+ebcEoQ5JD1bBpqke73RCtzaoluhYftci4m/p
+	 6doCLvRIjgqnTXtHKMYOo/efw8vCdQu6e/Fwi/hRL0Z2sZvwjiV43RcJ1oCu3sbGbw
+	 cXORL99EwF75W72rWrByZGzIoFTDsOkSxZ2ShipUeNuLylnO8tLfyA9FGxFx+lyAS7
+	 K6xH1E8quXz8oqpSNr2Nq9e4NXzZfySevh4GBAx0vRu126/mkymOitN5af/86dF6OP
+	 QUo85TeYWjhzFqSftXHgYx7bn+EfnqZu8uUKxy04gBNyOvhW4VAtHo4NL5G6ka7Wcr
+	 zMBDo59DJ/zVQ==
+Date: Thu, 20 Feb 2025 23:20:03 +0000
 To: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Danilo Krummrich <dakr@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 03/14] rust: sync: add `Arc::as_ptr`
-Message-ID: <59064411-ae6c-4adb-8b3a-186f8004c2a0@proton.me>
-In-Reply-To: <20250218-hrtimer-v3-v6-12-rc2-v8-3-48dedb015eb3@kernel.org>
-References: <20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org> <20250218-hrtimer-v3-v6-12-rc2-v8-3-48dedb015eb3@kernel.org>
+Subject: Re: [PATCH v8 10/14] rust: alloc: add `Box::into_pin`
+Message-ID: <2a7283fb-4c93-42c4-a895-36a6e3d1935d@proton.me>
+In-Reply-To: <20250218-hrtimer-v3-v6-12-rc2-v8-10-48dedb015eb3@kernel.org>
+References: <20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org> <20250218-hrtimer-v3-v6-12-rc2-v8-10-48dedb015eb3@kernel.org>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 8ef93b80597a1bd31e1f6b807ae9da724a7d71a3
+X-Pm-Message-ID: 542a649b1cda4b467438e54e139b96c08afc3fe5
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,12 +48,15 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
 On 18.02.25 14:27, Andreas Hindborg wrote:
-> Add a method to get a pointer to the data contained in an `Arc`.
->=20
-> Reviewed-by: Lyude Paul <lyude@redhat.com>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Add an associated function to convert a `Box<T>` into a `Pin<Box<T>>`.
+
+Why don't you use `into()` directly where you need it? Do you want the
+function call to be more descriptive?
+(To be clear, I'm not against the addition, just wanting to check if our
+motivation is the same)
+
+> Acked-by: Danilo Krummrich <dakr@kernel.org>
 > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
 
 Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
@@ -61,56 +64,30 @@ Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 Cheers,
 Benno
 
->=20
-> This is a dependency for:
->=20
-> rust: hrtimer: implement `HrTimerPointer` for `Arc`
 > ---
->  rust/kernel/sync/arc.rs | 13 +++++++++++--
->  1 file changed, 11 insertions(+), 2 deletions(-)
+>  rust/kernel/alloc/kbox.rs | 6 ++++++
+>  1 file changed, 6 insertions(+)
 >=20
-> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index 3cefda7a43725..1dfa75714f9d6 100644
-> --- a/rust/kernel/sync/arc.rs
-> +++ b/rust/kernel/sync/arc.rs
-> @@ -246,6 +246,15 @@ pub fn into_raw(self) -> *const T {
->          unsafe { core::ptr::addr_of!((*ptr).data) }
+> diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
+> index cb4ebea3b0742..9da4a32e60bc3 100644
+> --- a/rust/kernel/alloc/kbox.rs
+> +++ b/rust/kernel/alloc/kbox.rs
+> @@ -245,6 +245,12 @@ pub fn pin(x: T, flags: Flags) -> Result<Pin<Box<T, =
+A>>, AllocError>
+>          Ok(Self::new(x, flags)?.into())
 >      }
 >=20
-> +    /// Return a raw pointer to the data in this arc.
-> +    pub fn as_ptr(this: &Self) -> *const T {
-> +        let ptr =3D this.ptr.as_ptr();
-> +
-> +        // SAFETY: As `ptr` points to a valid allocation of type `ArcInn=
-er`,
-> +        // field projection to `data`is within bounds of the allocation.
-> +        unsafe { core::ptr::addr_of!((*ptr).data) }
+> +    /// Convert a [`Box<T,A>`] to a [`Pin<Box<T,A>>`]. If `T` does not i=
+mplement
+> +    /// [`Unpin`], then `x` will be pinned in memory and can't be moved.
+> +    pub fn into_pin(this: Self) -> Pin<Self> {
+> +        this.into()
 > +    }
 > +
->      /// Recreates an [`Arc`] instance previously deconstructed via [`Arc=
-::into_raw`].
->      ///
->      /// # Safety
-> @@ -539,11 +548,11 @@ unsafe fn new(inner: NonNull<ArcInner<T>>) -> Self =
-{
->      }
->=20
->      /// Creates an [`ArcBorrow`] to an [`Arc`] that has previously been =
-deconstructed with
-> -    /// [`Arc::into_raw`].
-> +    /// [`Arc::into_raw`] or [`Arc::as_ptr`].
->      ///
->      /// # Safety
->      ///
-> -    /// * The provided pointer must originate from a call to [`Arc::into=
-_raw`].
-> +    /// * The provided pointer must originate from a call to [`Arc::into=
-_raw`] or [`Arc::as_ptr`].
->      /// * For the duration of the lifetime annotated on this `ArcBorrow`=
-, the reference count must
->      ///   not hit zero.
->      /// * For the duration of the lifetime annotated on this `ArcBorrow`=
-, there must not be a
+>      /// Forgets the contents (does not run the destructor), but keeps th=
+e allocation.
+>      fn forget_contents(this: Self) -> Box<MaybeUninit<T>, A> {
+>          let ptr =3D Self::into_raw(this);
 >=20
 > --
 > 2.47.0
