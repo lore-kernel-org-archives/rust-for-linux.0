@@ -1,134 +1,121 @@
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8511FFC6C
-	for <rust-for-linux@vger.kernel.org>; Thu, 20 Feb 2025 16:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BEA1214217;
+	Thu, 20 Feb 2025 16:52:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740070040; cv=none; b=kg7+6herT09mM0PchoH5rPA5fwTVUaheK8d/VcUOFpiSi0sx+za12e/O/dFZroFoQdMJvp1uxI/i7RG1k0Pd+LHLDxGkGwWk7u1fQYdGfAoII1E1xTbDvqHP6fSwxIycpCP45702Zvx1RQ3RYmr7cxrv5RLD8HWfzcdaXdUiT0Y=
+	t=1740070354; cv=none; b=gOzZCFvWe1ckCVDb1gh8mxVJlnayqqHxr69f8ADfx+kR3n8VCdfXFD0g7PLxOzqS63386yQqQKB5nN8anJjnYd/uxvLa8ci2a5xTbmhp853LaL+y3q1gajvcrIxOiYJ8OVf64Zp0pma9cm0Sa1AkomxhpKRnEEJAy20lsIrRjWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740070040; c=relaxed/simple;
-	bh=dQbcpcb/Fr1fg1CoD0pZkGdNzzEl80AydjsiI1ZsQkE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XJeRND2ZZo2GnRxkkXm7kRaFQMGtAli21/OjlS8mplk2WE6UyhGKcUT5ZQcSG/0BnKUrzV69uPhV0iKL35DpuoO2KevDK/cVrIho8lV7dN9nsyL5qlNnClRqurIhL/eze2B6EjbjphZXMSj4/SN7DoKV82o2cREgSmdTTF76itA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=YL5CHTuc; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1740070354; c=relaxed/simple;
+	bh=y/AlVIT3kLymBFi+Y3/Zj0WV5ydUhq8hGVLV1npStzo=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=D1sMrRLxVTz1W1zdi5TygJxgHIMKngAyIEuTSjaABBEi4OSGBhWZYbr6smAZw3dS0QeuKjrCIsTDmHDrTeDJWkY0i8rVpj9QBpofxOLeU4McmQUJFTBlKT6BFasXXz/oN4ZDd+mLE+YHgyXg/LKj1/3xbyX6Va1AywmhqCyM5CE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aFYoJXz7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="YL5CHTuc"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-aaec61d0f65so248223166b.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 20 Feb 2025 08:47:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1740070036; x=1740674836; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=YZPfZYNg8NOtUAiK1S11L7/kf32fZfQ/BKwR+IkGA/Y=;
-        b=YL5CHTucO+0iTnKBuNAcx1vkPolAbqVV2jYc5nwzBsrS/UEtQD2eGPDNJDMi/DJowA
-         eyxA1el94w8Tmtu2AaJssChpvA7P82JCE40FMD8+tbXLwZW6rCu26APGa3JYwZoDngIA
-         d884ZF7iZ3T97mjXSuKx557jJirkjpENOkXRE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740070036; x=1740674836;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YZPfZYNg8NOtUAiK1S11L7/kf32fZfQ/BKwR+IkGA/Y=;
-        b=J+jC/dvhL4vCeyRAWwsELRhyvXEQsA8VZM/YwfF8idr8PCBXQoGX5106I/ffEaZ5gR
-         4OUraaHauivVDfv/OCehpM0Ibp4dpcQpB1u8SG9x2MTW03k0/KzgY34QnCF27aZp4KQr
-         QRVeTRFsZxS9sD4k3mqSQ5ZnT6uCFm2wjbQkRw4sPKOj+I5YVjIYGFbGEx7eRplxIsTa
-         LDpnvL0gyQWXZ+2JciR3yUwcZVnxKR4CTQWeQAUzLDlrJDGCiOZTmuhV/6mSdkuW/450
-         Qv4Vuaz4Jpx2fqQ+jQoljKgCwm35DclXxQ60kLoX47LjhpW+AZQTLl9+UOE8mtRaq0Wp
-         FOzA==
-X-Forwarded-Encrypted: i=1; AJvYcCU/ssKjU6CJt94PB9vsbytoW+m1HYu9l3jy3MlrMh0HlxjM1b31nBgMw2g7pqE5+SVKDTxDuZOEG3L1OxTihg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEwq//9TbYgKGmnpAIrCuPFvvzVFjUwAVCG2CWVB/UcOdVkqXg
-	K68N+UxF5KjJTc1xOKwachssRcEq12A0L+WqwwHz4OFKlP2Ad7K9gogg1Wh2ZKptHUZEywRHciO
-	H1o8=
-X-Gm-Gg: ASbGnctknn0xAeUdsDPO/DglakTr9+Mcm8ylgdfINjGpDEwn2WrKJWhh8CjdClP8ij+
-	xfMpkxmRmadLWHfSbPTJGOPXyoCJSokxV9avB3jpFSLcXPnnAsWydWi/n0TATh0wme43SPkNpUY
-	il0WV0rz/VGjxfRlLNSha53ayAhWWWh+dAlskv4wGBNVx7XCvabZZuxJbKH7Fr/pRuOhYbvGI5i
-	imo3P/+xvFqSs9LKDNy+I9LmcLPNA00EKBelv7cbpYKUDXVgYyiaxMCN3UIr4WHeAhdn/eDCwLB
-	FDckQnV0z8Ix0K7zsYSanKYHyTiGnh9hDE8TXB98KZdfPXMmy9xZh85XCuIFs7q7WQ==
-X-Google-Smtp-Source: AGHT+IHwJj9pl80EvrX7bYo54QNICieHhAfvwHRp5b8rBXQu01nGMgA8J4HNRPlsBpvS0WQ8jYOplQ==
-X-Received: by 2002:a17:907:1ca2:b0:abb:eec3:3941 with SMTP id a640c23a62f3a-abc09c10d29mr836166b.45.1740070036008;
-        Thu, 20 Feb 2025 08:47:16 -0800 (PST)
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com. [209.85.218.42])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abbc0d0b882sm521693566b.109.2025.02.20.08.47.14
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Feb 2025 08:47:14 -0800 (PST)
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-abbd96bef64so190018166b.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 20 Feb 2025 08:47:14 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUj9Z237rKDP5B9oIfVjNMhxNXRSVQG4lDYvWJgFppe1XIjOKBGT5TzS4Mkz+YRdEf/W5NSPEymFzZSK+MAzQ==@vger.kernel.org
-X-Received: by 2002:a17:907:7743:b0:ab9:137d:f6e7 with SMTP id
- a640c23a62f3a-abc099ca6bfmr2068366b.7.1740070033907; Thu, 20 Feb 2025
- 08:47:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aFYoJXz7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8DDDC4CEDD;
+	Thu, 20 Feb 2025 16:52:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740070353;
+	bh=y/AlVIT3kLymBFi+Y3/Zj0WV5ydUhq8hGVLV1npStzo=;
+	h=Subject:From:To:Date:In-Reply-To:References:From;
+	b=aFYoJXz7gmhnfIFYZCXBkDEozmmsX4/STMr9zkqagwhQqgFNueICwHGUlUmiRe4fP
+	 uImHlgSyREV65OkNUWzX7CdT3WfxD0K6FM6KKuvpfKFwO/JbVcV0DiG0Z1gR4savqA
+	 RHjhwHBMMB2KHhQloC5B2ydH7+fa9hXSFwWsizvcH859Gh0ft30HGFU6WTWjOb4Tlm
+	 uVlYYR5/W2pXinAVedoEiIrvkAcG4N0Y949rmjKGtRZ/tNe2YuK/iOepLCYeJ588Hp
+	 F/3Kgqxg77/W8B/kS1rLlHMBHueo8et7psA3MrFAC7WGiH6Gnah6fwHqiMEv7Qi69e
+	 l7gKAJ1+91oPA==
+Message-ID: <b286d05d02671cbb8622d77ed9968dc3f16ba841.camel@kernel.org>
+Subject: Re: On community influencing (was Re: [PATCH v8 2/2] rust: add dma
+ coherent allocator abstraction.)
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>, David Airlie <airlied@redhat.com>, 
+ Theodore Ts'o	 <tytso@mit.edu>, "Dr. Greg" <greg@enjellic.com>, Linus
+ Torvalds	 <torvalds@linux-foundation.org>, Hector Martin
+ <marcan@marcan.st>, Dave Airlie	 <airlied@gmail.com>, Greg KH
+ <gregkh@linuxfoundation.org>, phasta@kernel.org,  Christoph Hellwig	
+ <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda	
+ <miguel.ojeda.sandonis@gmail.com>, Abdiel Janulgue
+ <abdiel.janulgue@gmail.com>, 	daniel.almeida@collabora.com,
+ aliceryhl@google.com, robin.murphy@arm.com, 
+	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex
+ Gaynor	 <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary
+ Guo	 <gary@garyguo.net>, Bj??rn Roy Baron <bjorn3_gh@protonmail.com>, Benno
+ Lossin	 <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>, Valentin Obst <kernel@valentinobst.de>,
+ open list	 <linux-kernel@vger.kernel.org>, Marek Szyprowski
+ <m.szyprowski@samsung.com>,  "open list:DMA MAPPING HELPERS"	
+ <iommu@lists.linux.dev>, DRI Development <dri-devel@lists.freedesktop.org>
+Date: Thu, 20 Feb 2025 18:52:28 +0200
+In-Reply-To: <20250220163747.GA69996@nvidia.com>
+References: <20250131135421.GO5556@nvidia.com>
+	 <2b9b75d1-eb8e-494a-b05f-59f75c92e6ae@marcan.st>
+	 <Z6OzgBYZNJPr_ZD1@phenom.ffwll.local>
+	 <CAPM=9tzPR9wd=3Wbjnp-T0W8-dDfGah-H3Ny52G85B+2Ev9ksA@mail.gmail.com>
+	 <208e1fc3-cfc3-4a26-98c3-a48ab35bb9db@marcan.st>
+	 <CAHk-=wi=ZmP2=TmHsFSUGq8vUZAOWWSK1vrJarMaOhReDRQRYQ@mail.gmail.com>
+	 <20250207121638.GA7356@wind.enjellic.com>
+	 <20250208204416.GL1130956@mit.edu>
+	 <CAMwc25pxz2+B329BArDQMpxOvpMtvhop1u_Uwc0axn2LqNP0vA@mail.gmail.com>
+	 <Z7dXIfFJ2qXNKtwT@phenom.ffwll.local> <20250220163747.GA69996@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
- <Z7SwcnUzjZYfuJ4-@infradead.org> <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
- <326CC09B-8565-4443-ACC5-045092260677@zytor.com> <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
- <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com> <Z7VKW3eul-kGaIT2@Mac.home>
- <2025021954-flaccid-pucker-f7d9@gregkh> <2nn05osp-9538-11n6-5650-p87s31pnnqn0@vanv.qr>
- <2025022052-ferment-vice-a30b@gregkh> <9B01858A-7EBD-4570-AC51-3F66B2B1E868@zytor.com>
- <n05p910s-r5o3-0n36-5s44-qr769prp69r5@vanv.qr>
-In-Reply-To: <n05p910s-r5o3-0n36-5s44-qr769prp69r5@vanv.qr>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 20 Feb 2025 08:46:56 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wgb1g9VVHRaAnJjrfRFWAOVT2ouNOMqt0js8h3D6zvHDw@mail.gmail.com>
-X-Gm-Features: AWEUYZnMkN-x0Rtej4417GBTUm2ZZTOyavgfNoxIwCkZFobkcHssn8sD-O-61LI
-Message-ID: <CAHk-=wgb1g9VVHRaAnJjrfRFWAOVT2ouNOMqt0js8h3D6zvHDw@mail.gmail.com>
-Subject: Re: C aggregate passing (Rust kernel policy)
-To: Jan Engelhardt <ej@inai.de>
-Cc: "H. Peter Anvin" <hpa@zytor.com>, Greg KH <gregkh@linuxfoundation.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
-	Christoph Hellwig <hch@infradead.org>, rust-for-linux <rust-for-linux@vger.kernel.org>, 
-	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 20 Feb 2025 at 07:17, Jan Engelhardt <ej@inai.de> wrote:
->
->
-> On Thursday 2025-02-20 14:23, H. Peter Anvin wrote:
-> >
-> >People writing C seem to have a real aversion for using structures
-> >as values (arguments, return values or assignments) even though that
-> >has been valid since at least C90 and can genuinely produce better
-> >code in some cases.
->
-> The aversion stems from compilers producing "worse" ASM to this
-> date, as in this case for example:
+On Thu, 2025-02-20 at 12:37 -0400, Jason Gunthorpe wrote:
+> > =C2=A0=C2=A0=C2=A0 I think one of key advantages of open source is that=
+ people
+> > stick
+> > =C2=A0=C2=A0=C2=A0 around for a very long time. Even when they switch j=
+obs or move
+> > =C2=A0=C2=A0=C2=A0 around. Maybe the usual =E2=80=9Cfor life=E2=80=9D q=
+ualifier isn=E2=80=99t really a
+> > great
+> > =C2=A0=C2=A0=C2=A0 choice, since it sounds more like a mandatory senten=
+ce than
+> > something
+> > =C2=A0=C2=A0=C2=A0 done by choice. What I object to is the =E2=80=9Cdic=
+tator=E2=80=9D part, since
+> > if your
+> > =C2=A0=C2=A0=C2=A0 goal is to grow a great community and maybe reach wo=
+rld
+> > domination,
+> > =C2=A0=C2=A0=C2=A0 then you as the maintainer need to serve that commun=
+ity. And
+> > not that
+> > =C2=A0=C2=A0=C2=A0 the community serves you.
+>=20
+> +1
+>=20
+> I agree and try, as best I can, to embody this.
 
-We actually use structures for arguments and return values in the
-kernel, and it really does generate better code - but only for
-specific situations.
+I keep four simple rules of email response list these days when
+I response to LKML:
 
-In particular, it really only works well for structures that fit in
-two registers. That's the magic cut-off point, partly due calling
-convention rules, but also due to compiler implementation issues (ie
-gcc has lots of special code for two registers, I am pretty sure clang
-does too).
+1. Be honest.
+2. Address your concerns.
+3. Ask for help where you need it.
+4. Admit your possible misconceptions (getting things wrong is not a mistak=
+e).
 
-So in the kernel, we use this whole "pass structures around by value"
-(either as arguments or return values) mainly in very specific areas.
-The main - and historical: we've been doing it for decades - case is
-the page table entries. But there are other cases where it happens.
+It's quite easy actually shift away from these even if you
+don't do it purposely. So I actually just read what I'm going
+to respond and reflect to these :-) It's anyhow usually best
+to keep a short break and breath-in/outs before triggering
+send, right?
 
-The other problem with aggregate data particularly for return values
-is that it gets quite syntactically ugly in C. You can't do ad-hoc
-things like
+The fourth one addresses so called "toxic positive" responses
+as addresses in the associated Mastodon thread [1] :-)
 
-   { a, b } = function_with_two_return_values();
+> Jason
 
-like you can in some other languages (eg python), so it only tends to
-work cleanly only with things that really are "one" thing, and it gets
-pretty ugly if you want to return something like an error value in
-addition to some other thing.
+[1] https://social.kernel.org/notice/ArH99Q2ErS20vJB7Tc
 
-Again, page table entries are a perfect example of where passing
-aggregate values around works really well, and we have done it for a
-long long time because of that.
-
-            Linus
+BR, Jarkko
