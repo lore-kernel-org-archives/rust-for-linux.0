@@ -1,175 +1,189 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B841C3BE0;
-	Thu, 20 Feb 2025 16:20:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B616320485F
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Feb 2025 16:24:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740068425; cv=none; b=hYPNc9malfd8T7y6zCwqEYbKmd0Em8Fq0ajYUnmGXc1GHgQZeXq/4W7ztaG3JfM+OHOz6YGB2VHQErF44U94UKY/MJWB5AMWBwRKblNNS7kwa2RZcF93veJzDveIFabD8TDW1iC10nJAoY1YiA4RD0xzPGHBtH+LZ3urlcUQKQ8=
+	t=1740068649; cv=none; b=EvHKat+9MVvIcdAVfydecC8XpVpzHy3m104SxpKZ04CIwa6N7wjIpxF92wjENXKM13MZgWf34xgJ+dcuRX4xWikcIgVwgdxmf9YGrdbn7+KO2mIToh19U3k+Z+tw+iw3MspfUJZ4ZHo1HciL5RXRM5o34u2VRAv2dgBY2dFJRP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740068425; c=relaxed/simple;
-	bh=guogj3y+P7Pi0BeCcNdzvEnqnzDhTZwGUnlfgQM1mLM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=iVfcpBK74GwW+5WKlsUgYb9tacvJy/jwF8GbusZJzZ5EE/DAuLR9AGram4Ko81muc77iedgu2yk8G/YoroUjmshRv97LkF+dd2LVdHXGcmsO7daMJ7FQVuXwB4bh2CUZYZpLIKGajbTibkunC2HaIGFP8lc6RYYV7pvHfKuVuC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mYe2WYKU; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740068649; c=relaxed/simple;
+	bh=A98u9Pi7cA4PP0YNnK0cMws0e33F70bGk0qUEsxsUgc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YnIb0azLSTCi/8uV3tfoUHfFPx5v7t2k78hWtmlbf4zWf0olaJIq4Ary3gxznK6HiNL6kCc7R5/AyZP/ogHbB6Hsp+9ENFNyelOwJ9kE99lEzAkBJXm8BP6AEGsUmE1/qH95/rL9yeD/OkmSNg1gQUEjOOwsfVeaiHlNtWNL+5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=IBK9tEAg; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mYe2WYKU"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-220ec47991aso15620885ad.1;
-        Thu, 20 Feb 2025 08:20:23 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="IBK9tEAg"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-439950a45daso7376505e9.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 20 Feb 2025 08:24:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740068423; x=1740673223; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=m35314KpzK46gpcYRFPo8w1pzpvFqAfLP65RS4pzhwc=;
-        b=mYe2WYKUKBKEDttU0OluYs1C0FctLv+0ZeJkgGOq6vgapmYQoAQtyyhUM8dR+Td/2C
-         xnuDln74hACIMryxRo9IE5ZykWOAiXzirgvAkgiCcPjTCHUlRJmUSxS1VydAPL9KTCC4
-         B49kt+/PE2nC8FmsBdpViWl4y6xSYMkXQ1UlSnWGeiCpgkXMxnM0lW6lxIvtGLnyCflf
-         KL2gKOyfn8Ae6wm9hks797dMQEladCJbyusOp0245vCCqAT76VaWOVllEw6zGVWZ/mpw
-         LHL55yizRC7Q6DZQJKbEHqLtPQ8ZroN2tj79aPMN+x7RkUmHPHboR5QhKLD/LefaIpaf
-         3tlg==
+        d=ffwll.ch; s=google; t=1740068646; x=1740673446; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:mail-followup-to:message-id:subject:cc:to
+         :from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HHNQaW7mzEdCd/TPuQOkmBComqEtaa6hiKEAKod6XVI=;
+        b=IBK9tEAgkZtHD61zrjMCR4jAz6GZqjDPbL7lIfZRgkqqukUmtH19IFXkrzxxovmb8t
+         46xCZo0L7fOBGtEK3HKaGoneo2Vvguu27tj8nmelGzSImCwcpKuzsQjlT4OKp7lAbR39
+         gompR/0AOvtRPQWdHLrb5MacZYY0gPmwOeLXo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740068423; x=1740673223;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=m35314KpzK46gpcYRFPo8w1pzpvFqAfLP65RS4pzhwc=;
-        b=gEGBnYyRWSpv6RRJXg7XUoZ++Ax0kjLKqaDGaQ9AhqL0WdFZ663YB93mlO2XF9BKFZ
-         7qFq3Lpz7JLMKkHHoYAWBQ5TQS3eapDKlYlF6blg2o3fSVdkCQL5byvs/aiXsciIvjBp
-         siANLRO0/TPlwbGwPUcQVIuwrpT/jTpbGMO7GmjC/2MgY1uOze+bXpRO/cK7ebGwIrYw
-         N+t+Nz3ln1h8ZDqQ4QS6FVkDzhOmo87E+U2oW6HYo0s8k3mYk3mz2IvudKM4p7UjOem/
-         gPZoxNlV7/NPV0vgSfuCxiMcS9G1bOAlmzuClHgX0VGPqyahRygkGTjUwpoQxg//MZw2
-         hunw==
-X-Forwarded-Encrypted: i=1; AJvYcCUG+adkXveGjCTWJvAsrj4BiLd+qjCe6BkYa4aVoSn8JnuSIBJ9Eh2UKUWZQstCu9XpDi6KYLMSfjs4rgE=@vger.kernel.org, AJvYcCXr2h+Yao/E5KOEN9UQGLXkod1zCNA/egIRYz10JeGRTKB5zwMg//tOZ6TobXi7RDX8VRcDlRzwLyGRPXC4VZs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsmRxe2jwPTy5Za0a5wRM6AY3ep8iAT+5kAJ8G5VIh1CZ0Lrs2
-	cYuRQ6A5ahlibWxhlAYpud20Gu2ZA846/7EENWbpxxmtisn0K81Nr52uL743
-X-Gm-Gg: ASbGncvITExozqzuqFSILcR4QTo7tYcoc7Gz29Ydux07Ooj3diqToGziz8gZJONbg/4
-	5B0+0yDN+O4etJQ0YogEBGDoG5in1eDNhH1xZB5pmkzqJ97M/8n4DNbjNDcDOVpQsLZFNT4g9iH
-	fHSQDVrqCa0EIRXqOkPW7Z/mO2nsBHEW0RGy0ntFdTuzSV17ZNfHGr+oYtG2RjJlApK53GrLXxU
-	lQC8wYqVMfYM/KTemaQ6eSQu56zbyO1WeoHRAcMw5Bw/kvb0Dkf78kYlxBOsWmwAWs5zA7syb/P
-	BwU2U1aQ/NKp/Va1WauERQs=
-X-Google-Smtp-Source: AGHT+IHmSIiGta3r3CZMbfAGsZelk/nWOw+xjsGTGZkfR+siWKpKItpXaxt9bzaRT/MhG2oMGz91fQ==
-X-Received: by 2002:a17:902:d50d:b0:21f:bd66:cafa with SMTP id d9443c01a7336-22170968ad1mr128803405ad.17.1740068423004;
-        Thu, 20 Feb 2025 08:20:23 -0800 (PST)
-Received: from linuxsimoes.. ([177.21.141.136])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-220d7a540aasm120910545ad.245.2025.02.20.08.20.16
+        d=1e100.net; s=20230601; t=1740068646; x=1740673446;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:mail-followup-to:message-id:subject:cc:to
+         :from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HHNQaW7mzEdCd/TPuQOkmBComqEtaa6hiKEAKod6XVI=;
+        b=gGmCzDc7LoiqbIKnsTvsTpbyHQNvM/XZgJR82G+/khTEmF8nnf1tSIfoB5tPu5+jwn
+         fTenmIeY71fNe/LWwjse4RyWt4fRHmP66JhDUiyjPp100yr+DzSNd1dxv/Yr3oKvK9DZ
+         EZk7njfi9+MvmvcRPpkSF37BDxoL+aduRgBFMS4lloE7fl3BGaAZbQKRcko0CvnVLMyZ
+         gLfSUZfneuuNJtjwmo/jIcE6niyF0GBe1whaQIIx8Y/2wxNKegqrHFiYNviOwRJaWDHC
+         bn8UjYvGhwAVpT5Jzf2+l38hEmkr8cVOw49KmYNOaPx8/vCqqYbplhOqQLSaJaS66QTt
+         Q1sw==
+X-Forwarded-Encrypted: i=1; AJvYcCVf7z29mrdK9Fk1u0W6Ik6sd3S6/ixl9MCWIoCBPzn99vXcPzFFRG1wwdXORhgI5ad0u0iuldiX/AgoiDBRAw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxjTV3vTLq6CHdi+NFsx1OKob+FFgDdSfQbk4k6yXMKiSr/Fsc
+	NFbYeb2gB9rKyGDbCED8y+jBZ4mReTI/IYuTcPB6BZZi6TphjIdmCc5GpW83qKc=
+X-Gm-Gg: ASbGnctxwzrd04rbYi8Co6YPGR+gGBim1/ClUCnfnUz2qchjVTgaBduk0o+OogCNdCd
+	ppLkC9qD4F1se0gqNAYsLV1hJwWSAgAJYzRYh6pjxwVIBqlSFueA3EK0ky1fI/G+nSrVFGUwcfQ
+	Ns0lsquv8SqhsnLnPybLgtMxGFuHxcHU8kb8f3Xoc9nvDFcCgK4tg3U4No+DV3DiwHHyAzErDnj
+	poWhyXxEim+ULnUp71UQpWlejFRhyeCKAakOzPxfq+LSiH8TVer2H/828MX8/5jni7finWkQETx
+	juAy25AXqetxJKF95RNak4GDYzc=
+X-Google-Smtp-Source: AGHT+IGO2UBg3ppa7TE2D8LMax0SXOyah2tNEU1Go0U95uL3vj126aJdb3xWmggfe65ARa8Fbl4nTQ==
+X-Received: by 2002:a05:600c:4fc2:b0:439:91dd:cf9c with SMTP id 5b1f17b1804b1-43991ddd158mr132576415e9.10.1740068645761;
+        Thu, 20 Feb 2025 08:24:05 -0800 (PST)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4395a1aa7c7sm249594765e9.27.2025.02.20.08.24.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Feb 2025 08:20:22 -0800 (PST)
-From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-To: a.hindborg@kernel.org,
-	alex.gaynor@gmail.com,
-	aliceryhl@google.com,
-	apw@canonical.com,
-	arnd@arndb.de,
-	aswinunni01@gmail.com,
-	axboe@kernel.dk,
-	benno.lossin@proton.me,
-	bhelgaas@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	dakr@kernel.org,
-	dwaipayanray1@gmail.com,
-	ethan.twardy@gmail.com,
-	fujita.tomonori@gmail.com,
-	gary@garyguo.net,
-	gregkh@linuxfoundation.org,
-	joe@perches.com,
-	lukas.bulwahn@gmail.com,
-	ojeda@kernel.org,
-	pbonzini@redhat.com,
-	tmgross@umich.edu,
-	walmeida@microsoft.com
-Cc: trintaeoitogc@gmail.com,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH V3 2/2] checkpatch: throw error for malformed arrays
-Date: Thu, 20 Feb 2025 13:19:51 -0300
-Message-Id: <20250220161951.844367-3-trintaeoitogc@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250220161951.844367-1-trintaeoitogc@gmail.com>
-References: <20250220161951.844367-1-trintaeoitogc@gmail.com>
+        Thu, 20 Feb 2025 08:24:05 -0800 (PST)
+Date: Thu, 20 Feb 2025 17:24:01 +0100
+From: Simona Vetter <simona.vetter@ffwll.ch>
+To: David Airlie <airlied@redhat.com>
+Cc: Theodore Ts'o <tytso@mit.edu>, "Dr. Greg" <greg@enjellic.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Hector Martin <marcan@marcan.st>, Dave Airlie <airlied@gmail.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Greg KH <gregkh@linuxfoundation.org>, phasta@kernel.org,
+	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	daniel.almeida@collabora.com, aliceryhl@google.com,
+	robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Bj??rn Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Valentin Obst <kernel@valentinobst.de>,
+	open list <linux-kernel@vger.kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
+	DRI Development <dri-devel@lists.freedesktop.org>
+Subject: Re: On community influencing (was Re: [PATCH v8 2/2] rust: add dma
+ coherent allocator abstraction.)
+Message-ID: <Z7dXIfFJ2qXNKtwT@phenom.ffwll.local>
+Mail-Followup-To: David Airlie <airlied@redhat.com>,
+	Theodore Ts'o <tytso@mit.edu>, "Dr. Greg" <greg@enjellic.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Hector Martin <marcan@marcan.st>, Dave Airlie <airlied@gmail.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Greg KH <gregkh@linuxfoundation.org>, phasta@kernel.org,
+	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	daniel.almeida@collabora.com, aliceryhl@google.com,
+	robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Bj??rn Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Valentin Obst <kernel@valentinobst.de>,
+	open list <linux-kernel@vger.kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
+	DRI Development <dri-devel@lists.freedesktop.org>
+References: <2025013148-reversal-pessimism-1515@gregkh>
+ <20250131135421.GO5556@nvidia.com>
+ <2b9b75d1-eb8e-494a-b05f-59f75c92e6ae@marcan.st>
+ <Z6OzgBYZNJPr_ZD1@phenom.ffwll.local>
+ <CAPM=9tzPR9wd=3Wbjnp-T0W8-dDfGah-H3Ny52G85B+2Ev9ksA@mail.gmail.com>
+ <208e1fc3-cfc3-4a26-98c3-a48ab35bb9db@marcan.st>
+ <CAHk-=wi=ZmP2=TmHsFSUGq8vUZAOWWSK1vrJarMaOhReDRQRYQ@mail.gmail.com>
+ <20250207121638.GA7356@wind.enjellic.com>
+ <20250208204416.GL1130956@mit.edu>
+ <CAMwc25pxz2+B329BArDQMpxOvpMtvhop1u_Uwc0axn2LqNP0vA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMwc25pxz2+B329BArDQMpxOvpMtvhop1u_Uwc0axn2LqNP0vA@mail.gmail.com>
+X-Operating-System: Linux phenom 6.12.11-amd64
 
-Implement a check to ensure these fields are correctly formatted. If a
-line contains one of these keys that should be of type Vec<String>, use
-a regex to verify whether the array holds multiple values.
-* If the array contains more than one value, enforce vertical formatting
-* If the array has only one value, it can remain on the same line
+On Thu, Feb 13, 2025 at 08:20:52PM +1000, David Airlie wrote:
+> On Sun, Feb 9, 2025 at 6:48 AM Theodore Ts'o <tytso@mit.edu> wrote:
+> >
+> > On Fri, Feb 07, 2025 at 06:16:38AM -0600, Dr. Greg wrote:
+> > >
+> > > The all powerful sub-system maintainer model works well if the big
+> > > technology companies can employ omniscient individuals in these roles,
+> > > but those types are a bit hard to come by.
+> >
+> > I'll let you in a secret.  The maintainers are not "all-powerfui".  We
+> > are the "thin blue line" that is trying to keep the code to be
+> > maintainable and high quality.  Like most leaders of volunteer
+> > organization, whether it is the Internet Engineerint Task Force (the
+> > standards body for the Internet), we actually have very little power.
+> > We can not *command* people to work on retiring technical debt, or to
+> > improve testing infrastructure, or work on some particular feature
+> > that we'd very like for our users.
+> 
+> Just as a courtesy to others can we not use the "thin blue line"
+> analogy in this community, it has had some bad connotation thrown on
+> it in the US context over the past few years, and I'd rather not as a
+> maintainer be aligned with current connotation/interpretations of it,
+> despite having family involved in our local force.
 
-Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
----
- scripts/checkpatch.pl | 43 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+Agreed. I dropped a bit the ball on this, because at first I thought this
+was only posted on part of the thread that wasn't cc'ed to dri-devel - I
+can't pick a fight with the kernel community at large for everything that
+happens. And then I let Dave handle this, because I couldn't come up with
+anything that's not a nuclear table flip. 2 weeks later I'm still not
+better, so let me instead express positively what kind of maintainership I
+strive for by linking to an old talk of mine:
 
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 7b28ad331742..1133fe68054b 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -2775,6 +2775,9 @@ sub process {
- 	$realcnt = 0;
- 	$linenr = 0;
- 	$fixlinenr = -1;
-+
-+	my %array_parse_module;
-+
- 	foreach my $line (@lines) {
- 		$linenr++;
- 		$fixlinenr++;
-@@ -3567,6 +3570,46 @@ sub process {
- # ignore non-hunk lines and lines being removed
- 		next if (!$hunk_line || $line =~ /^-/);
- 
-+# check if arrays has more than one value in the same line
-+		my $inline = 0;
-+		my $key = "";
-+		my $add_line = $line =~ /^\+/;
-+
-+		if ($line =~ /\s*.*\b(author|alias|firmware)\s*:\s*\[/) {
-+			$inline = 1;
-+			$array_parse_module{$1} = 1;
-+		}
-+
-+		my @keys = keys %array_parse_module;
-+		if (@keys) {
-+			$key = $keys[0];
-+		}
-+
-+		if ($add_line && $key) {
-+			my $herevet = "$here\n" . cat_vet($rawline) . "\n";
-+
-+			my $counter = () = $line =~ /"/g;
-+			my $more_than_one = $counter > 2;
-+			if ($more_than_one) {
-+				WARN("ARRAY_MODULE_MACRO",
-+                     "Prefer a single-line value$herevet");
-+			} elsif ($inline && $line !~ /\]/ && $line !~ /,/ && $line =~ /"/) {
-+				WARN("ARRAY_MODULE_MACRO",
-+                     "Prefer declare ] on the same line$herevet");
-+			} elsif (!$inline && $line =~ /\]/ && $line =~ /\"/) {
-+				WARN("ARRAY_MODULE_MACRO",
-+                     "Prefer a new line after the last value and before ]$herevet");
-+			} elsif ($inline && $line =~ /,/ && $line !~ /\]/) {
-+				WARN("ARRAY_MODULE_MACRO",
-+                     "Prefer a new line after [$herevet");
-+			}
-+		}
-+
-+		#END OF ANALYZE FIELD
-+		if ($line =~ /\]/) {
-+			delete $array_parse_module{$key};
-+		}
-+
- #trailing whitespace
- 		if ($line =~ /^\+.*\015/) {
- 			my $herevet = "$here\n" . cat_vet($rawline) . "\n";
+https://blog.ffwll.ch/2017/01/maintainers-dont-scale.html
+
+> I'm open to suggestions for any better analogies.
+
+Better analogy aside, I fundamentally disagree with understanding
+maintainership as a gatekeeper role that exists to keep the chaos out. My
+goal is to help build a community where people enjoy collaborating, and
+then gtfo so I don't hinder them. I think the talk I linked above is
+holding up quite well even years later, but the last part really embodies
+that idea, so let me just quote that:
+
+    Be a Steward, Not a Lord
+
+    I think one of key advantages of open source is that people stick
+    around for a very long time. Even when they switch jobs or move
+    around. Maybe the usual “for life” qualifier isn’t really a great
+    choice, since it sounds more like a mandatory sentence than something
+    done by choice. What I object to is the “dictator” part, since if your
+    goal is to grow a great community and maybe reach world domination,
+    then you as the maintainer need to serve that community. And not that
+    the community serves you.
+
+Cheers, Sima
 -- 
-2.34.1
-
+Simona Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
