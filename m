@@ -1,345 +1,124 @@
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAAB1264F84;
-	Thu, 20 Feb 2025 21:37:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D061EEA56;
+	Thu, 20 Feb 2025 22:08:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740087473; cv=none; b=J99uZ4gwnIo4g2Eq4C3zLpOVvkcoQRDwPDICABMun/2VAIvkhSX7IdNgzpkglRs6+7k+j3Hjd7w8syo0zvEKg9dhcerTZ5MYE1Wsyh0pe27nULy5iLA3NWgCMPWOfCTEd8LQ2daW2KSGqupa+Rtc9mr804Y8ErBrZF6MoY4OxWk=
+	t=1740089314; cv=none; b=LeO4+qgXqUCKmDx8vkq+jpQu3V7rJ7EW4yd2JtCL9ZajADcbESP2gE959RBJqRWJh6z0DH26Oq0CptUayvPHEJTku+TSmxOb+l0tTOQkIPOYfNvzT9IVgg0chJ7eH0soDLvk+BlQC4ccujgu/dG58SDFw3cRkntKR60GgkL7deg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740087473; c=relaxed/simple;
-	bh=ZMzUV7EagjYA+QnVxN3/s78mmN3Mb1SrscUo0Fe/3wk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=O3NwwDp/kfNA5CnAY97mQx5oa7vD1VnWlvGo3ip4peNXIzTPNBmAof9PsfUGuo/0ony4it/E7JFrsmm8Ig85DbytbGPXQkITenn69uPZ36vATdUrO8weuqD3jpGbuNAOY4YMegOUAmB9887kKWZuB7MALEgfnBlBQ1IzadRyOUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZdxNSsVJ; arc=none smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740089314; c=relaxed/simple;
+	bh=KNC8/ble1a51wEJCVVgUKrJKL/UmcG6qjNPA3yY3AFE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lAxSoEj7L2O6n7vmU93Yl/COaFaNOH69pI5A6VtdOpw5t5uB2b4wvEBcErLYp/jdk2+42G16R0mnaFwJjAvp3G5mQZiqlyXsqI1nj7xv++S2j97VJfKFKAqh7iBDre//22+F8w+WuySN1OHrlpmLEMSeGWmCmDkhy7IGzM7iZQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=js8iXzQs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZdxNSsVJ"
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-30a440effcfso25454031fa.0;
-        Thu, 20 Feb 2025 13:37:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740087470; x=1740692270; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3/AHxN53omPCKDXXdtdccLlHfpgjy3pWDMb4ampTqog=;
-        b=ZdxNSsVJ+e+3qyZ1LZBNzM5vIAsFfB3Ciar9H8NMvNxpKGb6w8DRIWV1qdOHTWB4Or
-         h0FU1u5vV7gJWbEsG1o9proV3WxZ+HuS6IyHHrEBcinBW9aHGsJSs794ufrhWDgg2Qjq
-         6g00Uzp0atSw6dQx0Av/xNp6vmlBPrGSUXh7CCobIIJ8/whicEEpBpWLvoJ1EswH8u+B
-         wj24CydfVQ7hWygQ9qMsqBIeFYBrMr3Iy5q4Vq9+cq4t8d3n0arHW8NMzHkhN7u0xDd3
-         pkZo8c6qKrnUkDWxXbfpr8FQ2xwzy8Wxgsq+4FXhnaOYlhAzU09Ngk/wYKz4LoWPuwIC
-         fltg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740087470; x=1740692270;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3/AHxN53omPCKDXXdtdccLlHfpgjy3pWDMb4ampTqog=;
-        b=se+33muFYlAuM91aAB9jsnyHnYtCU63KJgM9IrfVcakOe1obgg3cZ3DUWIeK60pDyr
-         zjYQv5UiAlvWsNQFu1MtF+Xhcyl6mFuso9feX241LifybW4Zhem68K5F/QLvepfSpjVl
-         wvfvEWaI1l7XkTjlJpzZyzT7NIJ9MNy3GAompRx8JZWmcZs0UsuFBpL9IcqTy6Ho+Tfq
-         9sxO01tLlmE7XONwtDmgWRBBBi2pfsc2U6CsECBhz5wJXDK4Njh+o5J6ZgDpJBu8a5OC
-         1FkH/90YVa7sb9FgT/gyJIpz4L4mCMOV1DNZY8WjR2pWjgSPyP7/IlXa2xH4/rsbbZAq
-         swvg==
-X-Forwarded-Encrypted: i=1; AJvYcCWQD6myUk2PcfSCg6buxSN+g9In9s7VATP0fKJ15OIC8YbWuXAA5fd4xMj+7CYkpM/TJIhgt8P+1ZZuqnI=@vger.kernel.org, AJvYcCWZ584yMhl/lIl8iq84n4LHmy4NN0oASn2B7ZeNDP4BKFrKsN3PyHlLAlg6BTrASQGJEYw5aGuDIpJOmoBDHDw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQGgqnkogAChiUzBbv/0K+lsWkvXTtv6febHa/s4UgIxmCmTat
-	m/2+7ZADi2Zc4xNw1YyAg06Clp6rU6yGK+IsHAoIm4/MmEIvT+9p0XUzuayAvllWWPZTDuYDm+I
-	Hm5TaQnj1v/Zq3ReO6Ab+a4IaBW0=
-X-Gm-Gg: ASbGncs1QUrEgiQMXABCSvdSxjnc/shpKkE6nQx3+6KTvGwP7c/Li7C2+VbX4MPByAE
-	GsXZ2KoeD6GPfC7V0HwQVZ5f6Hbxrfe8ssIwwTQjST8RuwfJeHFMMkRRVuYZX6qY6BYVk+Jqr7/
-	+GrsljHZntHHyv
-X-Google-Smtp-Source: AGHT+IHdSCDkdxH6Hph3vQPQOkkb7o/CwxydrLmfjQec6aN1CpZ6Znom9bkSkM5L8ajHu6+nL2LCTH97mNKWdeuMMoY=
-X-Received: by 2002:a2e:3c14:0:b0:309:2999:77d4 with SMTP id
- 38308e7fff4ca-30a505d863cmr18037481fa.6.1740087469451; Thu, 20 Feb 2025
- 13:37:49 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="js8iXzQs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2260DC4CED1;
+	Thu, 20 Feb 2025 22:08:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740089314;
+	bh=KNC8/ble1a51wEJCVVgUKrJKL/UmcG6qjNPA3yY3AFE=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+	b=js8iXzQsnrwsQPyaQ06mGtfEgGiKIenWUNo0Kd5B/+FBImGB4NNtCGRGh22blFZaT
+	 9SibicOYQ/JrmhmZHwTgwoMnNY4Pyyye3lGLxY565HtXJ++PzyfDSkWZGBb+s50qX4
+	 y6FetYaYiakEwhwhgw60DwwtEjeLMYcPOcNZ0iwfJaawo4DuSjBpWm92vMHoESvDIO
+	 V6IXyILiGtVY0lXZ3nO7myoFY2qDQ8Hm/zK+42TqfVr1vTf1mSH10pCbW8NZ+eNcRg
+	 m9ZbTsAz4tl0FVMdm/BRhd1VgAqcp6ipNikIVbxCdad2v8A+WlRIb4Cu0r5g/S8UtY
+	 FTQpvkSGAnj2Q==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id C4155CE0B34; Thu, 20 Feb 2025 14:08:33 -0800 (PST)
+Date: Thu, 20 Feb 2025 14:08:33 -0800
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Martin Uecker <uecker@tugraz.at>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Boqun Feng <boqun.feng@gmail.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	rust-for-linux <rust-for-linux@vger.kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
+	ksummit@lists.linux.dev
+Subject: Re: Rust kernel policy
+Message-ID: <f3d4bf70-699e-4a53-a40d-dd6de691cf50@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <Z7SwcnUzjZYfuJ4-@infradead.org>
+ <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
+ <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
+ <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
+ <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
+ <Z7VKW3eul-kGaIT2@Mac.home>
+ <2025021954-flaccid-pucker-f7d9@gregkh>
+ <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
+ <2025022024-blooper-rippling-2667@gregkh>
+ <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org>
- <20250218-hrtimer-v3-v6-12-rc2-v8-2-48dedb015eb3@kernel.org>
- <KDmrJnQA2_Ojf67mD8WA_UafgVCACRRleB9t-D_1yl_bua8e1VWdGQAUvmMGHscqRHu1gzPJCKe_BfotutZm5Q==@protonmail.internalid>
- <CAJ-ks9ncOyGyQsDFOBxg-7wmXkrQYiZr6H6eEFWsFstk=p1uAA@mail.gmail.com> <87wmdkgvr0.fsf@kernel.org>
-In-Reply-To: <87wmdkgvr0.fsf@kernel.org>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Thu, 20 Feb 2025 16:37:13 -0500
-X-Gm-Features: AWEUYZliI_VrX4T85KKg7MveWeq-OsXOuwjUJx6sq2N3HSgYQwiWJGGDJMDmzvU
-Message-ID: <CAJ-ks9mNidHZvWkFJE1jExc2oVk_bbJpiO_DRMrWu5nYhTpKgg@mail.gmail.com>
-Subject: Re: [PATCH v8 02/14] rust: hrtimer: introduce hrtimer support
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
-	Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>, 
-	Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
 
-On Thu, Feb 20, 2025 at 4:19=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
->
-> "Tamir Duberstein" <tamird@gmail.com> writes:
->
-> > On Tue, Feb 18, 2025 at 8:29=E2=80=AFAM Andreas Hindborg <a.hindborg@ke=
-rnel.org> wrote:
-> >>
->
-> [...]
->
-> >> +//! ## State Diagram
-> >> +//!
-> >> +//! ```text
-> >> +//!                  <-- Stop ----
-> >> +//!                  <-- Cancel --
-> >> +//!                  --- Start -->
-> >> +//!        +---------+        +---------+
-> >> +//!   O--->| Stopped |        | Running |---o
-> >> +//!        +---------+        +---------+   |
-> >> +//!                                  ^      |
-> >> +//!                  <- Expire --    |      |
-> >> +//!                                  o------o
-> >> +//!                                   Restart
-> >> +//! ```
-> >> +//!
-> >> +//! A timer is initialized in the **stopped** state. A stopped timer =
-can be
-> >> +//! **started** with an **expiry** time. After the timer is started, =
-it is
-> >> +//! **running**. When the timer **expires**, the timer handler is exe=
-cuted.
-> >> +//! After the handler has executed, the timer may be **restarted** or
-> >> +//! **stopped**. A running timer can be **canceled** before it's hand=
-ler is
-> >
-> > "it's" =3D it is. This should be "its" (possessive).
->
-> Thanks =F0=9F=91=8D
->
-> > Just to be clear, after the handler has executed and before the timer
-> > has been **restarted** or **stopped** the timer is still in the
-> > **running** state?
->
-> It depends on the return value of the handler. If the handler returns res=
-tart,
-> the timer the timer does not enter the stopped state. If the handler
-> returns stop, the timer enters the stopped state.
->
-> The timer is still considered to be in running state the handler is
-> running.
->
-> I can add this info to the section.
+On Thu, Feb 20, 2025 at 09:57:29AM +0100, Martin Uecker wrote:
+> Am Donnerstag, dem 20.02.2025 um 08:10 +0100 schrieb Greg KH:
+> > On Thu, Feb 20, 2025 at 08:03:02AM +0100, Martin Uecker wrote:
+> > > Am Mittwoch, dem 19.02.2025 um 06:39 +0100 schrieb Greg KH:
+> > > > On Tue, Feb 18, 2025 at 07:04:59PM -0800, Boqun Feng wrote:
+> > > > > On Tue, Feb 18, 2025 at 04:58:27PM -0800, H. Peter Anvin wrote:
+> > > > > [...]
+> > > > > > > > 
+> > > ...
+> > > > 
+> > > > 
+> > > > I'm all for moving our C codebase toward making these types of problems
+> > > > impossible to hit, the work that Kees and Gustavo and others are doing
+> > > > here is wonderful and totally needed, we have 30 million lines of C code
+> > > > that isn't going anywhere any year soon.  That's a worthy effort and is
+> > > > not going to stop and should not stop no matter what.
+> > > 
+> > > It seems to me that these efforts do not see nearly as much attention
+> > > as they deserve.
+> > 
+> > What more do you think needs to be done here?  The LF, and other
+> > companies, fund developers explicitly to work on this effort.  Should we
+> > be doing more, and if so, what can we do better?
+> 
+> Kees communicates with the GCC side and sometimes this leads to
+> improvements, e.g. counted_by (I was peripherily involved in the
+> GCC implementation). But I think much much more could be done,
+> if there was a collaboration between compilers, the ISO C working
+> group, and the kernel community to design and implement such
+> extensions and to standardize them in ISO C.
+> 
+> > 
+> > > I also would like to point out that there is not much investments
+> > > done on C compiler frontends (I started to fix bugs in my spare time
+> > > in GCC because nobody fixed the bugs I filed), and the kernel 
+> > > community also is not currently involved in ISO C standardization.
+> > 
+> > There are kernel developers involved in the C standard committee work,
+> > one of them emails a few of us short summaries of what is going on every
+> > few months.  Again, is there something there that you think needs to be
+> > done better, and if so, what can we do?
+> > 
+> > But note, ISO standards work is really rough work, I wouldn't recommend
+> > it for anyone :)
+> 
+> I am a member of the ISO C working group. Yes it it can be painful, but
+> it is also interesting and people a generally very nice.
+> 
+> There is currently no kernel developer actively involved, but this would
+> be very helpful.
+> 
+> (Paul McKenney is involved in C++ regarding atomics and Miguel is
+> also following what we do.)
 
-Yeah, some clarification here would be useful.
+Sadly, I must pick my battles extremely carefully.  So additional people
+from the Linux-kernel community being involved in standards work would
+be a very good thing from my viewpoint.
 
-> >
-> >
-> >> +//! executed. A timer that is cancelled enters the **stopped** state.
-> >> +//!
-> >> +
-> >> +use crate::{init::PinInit, prelude::*, time::Ktime, types::Opaque};
-> >> +use core::marker::PhantomData;
-> >> +
-> >> +/// A timer backed by a C `struct hrtimer`.
-> >> +///
-> >> +/// # Invariants
-> >> +///
-> >> +/// * `self.timer` is initialized by `bindings::hrtimer_setup`.
-> >> +#[pin_data]
-> >> +#[repr(C)]
-> >> +pub struct HrTimer<T> {
-> >> +    #[pin]
-> >> +    timer: Opaque<bindings::hrtimer>,
-> >> +    _t: PhantomData<T>,
-> >> +}
-> >> +
-> >> +// SAFETY: Ownership of an `HrTimer` can be moved to other threads an=
-d
-> >> +// used/dropped from there.
-> >> +unsafe impl<T> Send for HrTimer<T> {}
-> >> +
-> >> +// SAFETY: Timer operations are locked on C side, so it is safe to op=
-erate on a
-> >> +// timer from multiple threads
-> >> +unsafe impl<T> Sync for HrTimer<T> {}
-> >> +
-> >> +impl<T> HrTimer<T> {
-> >> +    /// Return an initializer for a new timer instance.
-> >> +    pub fn new() -> impl PinInit<Self>
-> >> +    where
-> >> +        T: HrTimerCallback,
-> >> +    {
-> >> +        pin_init!(Self {
-> >> +            // INVARIANTS: We initialize `timer` with `hrtimer_setup`=
- below.
-> >> +            timer <- Opaque::ffi_init(move |place: *mut bindings::hrt=
-imer| {
-> >> +                // SAFETY: By design of `pin_init!`, `place` is a poi=
-nter to a
-> >> +                // live allocation. hrtimer_setup will initialize `pl=
-ace` and
-> >> +                // does not require `place` to be initialized prior t=
-o the call.
-> >> +                unsafe {
-> >> +                    bindings::hrtimer_setup(
-> >> +                        place,
-> >> +                        Some(T::CallbackTarget::run),
-> >> +                        bindings::CLOCK_MONOTONIC as i32,
-> >> +                        bindings::hrtimer_mode_HRTIMER_MODE_REL,
-> >> +                    );
-> >> +                }
-> >> +            }),
-> >> +            _t: PhantomData,
-> >> +        })
-> >> +    }
-> >> +
-> >> +    /// Get a pointer to the contained `bindings::hrtimer`.
-> >> +    ///
-> >> +    /// # Safety
-> >> +    ///
-> >> +    /// `ptr` must point to a live allocation of at least the size of=
- `Self`.
-> >> +    unsafe fn raw_get(ptr: *const Self) -> *mut bindings::hrtimer {
-> >> +        // SAFETY: The field projection to `timer` does not go out of=
- bounds,
-> >> +        // because the caller of this function promises that `ptr` po=
-ints to an
-> >> +        // allocation of at least the size of `Self`.
-> >> +        unsafe { Opaque::raw_get(core::ptr::addr_of!((*ptr).timer)) }
-> >> +    }
-> >
-> > Can you help me understand why the various functions here operate on
-> > *const Self? I understand the need to obtain a C pointer to interact
-> > with bindings, but I don't understand why we're dealing in raw
-> > pointers to the abstraction rather than references.
->
-> We cannot reference the `bindings::hrtimer` without wrapping it in
-> `Opaque`. This would be the primary reason. At other times, we cannot
-> produce references because we might not be able to prove that we satisfy
-> the safety requirements for turning a pointer into a reference. If we
-> are just doing offset arithmetic anyway, we don't need a reference.
-
-Why do we have a pointer, rather than a reference, to Self in the
-first place? I think this is the key thing I don't understand.
-
->
->
-> > This extends to
-> > HrTimerPointer, which is intended to be implemented by *pointers to*
-> > structs that embed `HrTimer`; why isn't it implemented on by the
-> > embedder itself?
->
-> Not sure what you mean here. If you refer to for instance the
-> implementation of `HrTimerPointer for Arc<T>`, I get why you might
-> wonder, why does `HasHrTimer::start` not take a reference instead of a
-> pointer? We could do that, but we would just immediately break it down
-> again in the implementation of `HasHrTimer::start`. Might still be a
-> good idea though.
-
-I was trying to say that my question (which I clarified above,
-hopefully) extends to the description and name of this trait.
-Specifically for this trait I don't understand why its semantics are
-described in terms of pointers rather than references (and AsRef, to
-allow for Arc and friends).
-
-> >
-> > I realize we discussed this on v6, sorry for not keeping up there.
->
-> No worries, it is good that we discuss this.
->
-> [...]
->
-> >> +
-> >> +/// A handle representing a potentially running timer.
-> >> +///
-> >> +/// More than one handle representing the same timer might exist.
-> >> +///
-> >> +/// # Safety
-> >> +///
-> >> +/// When dropped, the timer represented by this handle must be cancel=
-led, if it
-> >> +/// is running. If the timer handler is running when the handle is dr=
-opped, the
-> >> +/// drop method must wait for the handler to finish before returning.
-> >
-> > Between this comment and the comment on cancel we say "if it is
-> > running" 3 times. Can we say it just once, on the method, and here say
-> > that cancel must be called in Drop?
->
-> Well, the comment on `cancel` is just a description of what the function
-> does. This piece of text is a safety requirement.
->
-> We could make the safety requirement for implementing the trait "Implemen=
-t
-> the methods according to their documentation". But that would not help wi=
-th
-> the drop requirement.
-
-My suggestion is that the safety comment read: when dropped,
-[Self::cancel] must be called. Something like that.
-
->
-> >
-> >> +pub unsafe trait HrTimerHandle {
-> >> +    /// Cancel the timer, if it is running. If the timer handler is r=
-unning, block
-> >> +    /// till the handler has finished.
-> >> +    fn cancel(&mut self) -> bool;
-> >> +}
-> >> +
-> >> +/// Implemented by structs that contain timer nodes.
-> >> +///
-> >> +/// Clients of the timer API would usually safely implement this trai=
-t by using
-> >> +/// the [`crate::impl_has_hr_timer`] macro.
-> >> +///
-> >> +/// # Safety
-> >> +///
-> >> +/// Implementers of this trait must ensure that the implementer has a=
- [`HrTimer`]
-> >> +/// field at the offset specified by `OFFSET` and that all trait meth=
-ods are
-> >> +/// implemented according to their documentation.
-> >> +///
-> >> +/// [`impl_has_timer`]: crate::impl_has_timer
-> >> +pub unsafe trait HasHrTimer<T> {
-> >> +    /// Offset of the [`HrTimer`] field within `Self`
-> >> +    const OFFSET: usize;
-> >
-> > Does this need to be part of the trait? As an alternative the provided
-> > methods could be generated in the macro below and reduce the
-> > opportunity to implement this trait incorrectly.
->
-> There is no risk of implementing the trait wrong, because it is usually
-> derived by a macro.
-
-There's no risk when it's implemented by the macro, but you used the
-word usually,  which means there is a risk.
-
-> We need at least one of the methods to be able to have the type system
-> verify that the type for which we implement `HasHrTImer` actually has a
-> field with the name we specify, and that this field has the right type.
-> And to have that, we need the OFFSET.
-
-I don't follow this logic. OFFSET is calculated in the body of the
-macro. I'm suggesting that the macro generate the method
-implementations (which would no longer be provided). In effect I'm
-saying: keep OFFSET private.
-
-I'm also noticing now that the macro generates an implementation of
-raw_get_timer *in addition to* the provided implementation. Why are
-both needed?
-
->
->
->
-> Best regards,
-> Andreas Hindborg
->
->
+							Thanx, Paul
