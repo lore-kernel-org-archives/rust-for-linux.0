@@ -1,189 +1,145 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2CAB211296
-	for <rust-for-linux@vger.kernel.org>; Fri, 21 Feb 2025 15:24:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740151493; cv=none; b=BcRYimtYxtlTbIk8pZMJp5T+JXIEpOsbXACTvVTf29IMwUNk4I6glI6BKZEtvo6VUllQ59tHr/f16GH0kq6K6nA7SOekZ1w9KQX7xJrDDUxeW5B4WYw57Yn9lGdcaa7nitJi7IgFTjhPgE8135UdIYkfYMjnGNS3WVCLGcu6+bM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740151493; c=relaxed/simple;
-	bh=WK1lZZTa1x1pAgT3SVfcXVsjeamzVsyIDq5PHkT0TDo=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC2521147D;
+	Fri, 21 Feb 2025 15:28:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740151735; cv=pass; b=k3q/ropHf1fnlbrhzL0woU+bJDgm6lJEsBa/ZTj8bdtBmGCZ/O4qzU1Z3H9SZQa1aJoOMBCGTkbyi2HEjhkwboJa/CrCaQ2Z3yH1YFqyRi7NlgYUYfLRGyooTddjhrhaS1wNbPGO9Z65ODEZntpe3qFm/APmMFl4TnZ6Rxetn8Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740151735; c=relaxed/simple;
+	bh=btfqHh6gmsSIJcjU3GbXMDgWDvFVm8dzoDhioK/7wOI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j5zf7RxtKvWyfoupcVDyBUy/EXtbNWwUMvjuqJw5VnLYvfFl/1vzLQcV3E+Tq8U40VemAn6YAdB32fpWmcLM0C0Zaaf44P1zZVMlkZ06GbimdxcUxWzcpW8Za9zHDV6JO4kgkqXpzvQngC/R8HLLMYD5UBPORkKNLbS4KnJrvuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=aYZN3qJI; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=g4QBT6Fez0Ij+2XJm7XK09HN+L7fhiBSkly32QFooBhjOk1tWAIy2Kilwps5hj8XVsDCwesqGTMOEPIwDTVXZCzjRPC6AcJ9KmE2qWLUahSlHDkkzPTzHWjUkRbHTGJkg/EOoT1iFBs7pPrt9PDmFhsiwyNoUn/792GJg66SwkE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b=igFUWHSG; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="aYZN3qJI"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4394345e4d5so15082035e9.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 21 Feb 2025 07:24:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1740151490; x=1740756290; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:mail-followup-to:message-id:subject:cc:to
-         :from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CT2C4f9jm5PWW5vBDYC1RD3DaXN0lCMpCnB9dLdCgXg=;
-        b=aYZN3qJI2qLv+njQmSse74KLKHfts3EznSBdbrexaXEJa2wo6SXQVhb1Yyu+hEFTNJ
-         6SWmwgjphq1RCMA8PBT+YfygV22hCtN7+3oQn7fToHPxkJOvpwMnHRpZ7HIIo/5xp5ee
-         xjm5z6DovxvdGpw42NrMUA1GlosmUK8jom99w=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740151490; x=1740756290;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:mail-followup-to:message-id:subject:cc:to
-         :from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CT2C4f9jm5PWW5vBDYC1RD3DaXN0lCMpCnB9dLdCgXg=;
-        b=KyM3xYVzYPjI8wRkD8UMHI+inv2hO0ID3Sow1wyA7YgYi1mHQxWkamHZEW7fbK10Sd
-         o2V9P0LBrJShmK1XMmeS1thyTsZtdyTqd6/nu5kVne7IPmXFZqoDQAPwl2FyeoGfm6+j
-         3TXvd3LoqSH+2W++Bwzqjb9zhkdzD4PkymxjTdtj2m2gsPgm6/M6KgkpIyXzNqCASfTS
-         XN0XFolBjbMhUKezSJCXT7cTMXPj++gRXp/la1YT4rbkANAbraCKf6VbyXJL7YAQSETa
-         DeQ8ml6XK1lehuCKmZ+patmM54AfywLPKJVKNgrDsVWSmM5Xn8FysVyJojs7YKPTw/Oe
-         IVhw==
-X-Forwarded-Encrypted: i=1; AJvYcCXKTv9GNfMJPjOA2V0Bje3rtwSmxwEmpPSvrGnajCLEIXJAApIj0L+t1hNbcvhKntR1k5f1Vet7n7dTof7d+g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyazklln34wOSr+wUrisNhTxsqdIob7d3/0oX8uX/Oy/lwBxVN6
-	PV57o/BRku+f1EFZL1fav1GwBHaZsErB4gR2wZyv22eX+x0rHIQdyt9OxkI3VpY=
-X-Gm-Gg: ASbGncurkJSPvLi5uIRwZjrMzIPpxgWNRNDRa0z/GRNtihgy+GaD6Evh9aURQh/uXM1
-	Ee8cdlQy0IJRKIOkqahOJeLvFijjrxCxkWA+Tr+YVOJJYeKQM7sKX5lG8gtf+IjN3MFbibmwXwn
-	KRYp/cfPaSVeA8tFLwa4864Zm7SaS35H/GXcrO6NU/dpw+oNssvrUhK66AT2zfbqi9uNvrKEAlc
-	xZesBNt9jTMCQ7E+ryB5GSHIlsi00u1w/VXZnXXeurkNRGcnqoBK52ztBQJ2FBAx8wdZlSvhIyV
-	xzQRMZXoKgbFLoQrE26N0tXgAyQmruSAhSOJNA==
-X-Google-Smtp-Source: AGHT+IEtmkzFkOqaG3XvlyBf1nNbqOpqNG9470mVBupdomsnEpdGJKAmORNNEt1KQvh271XfF3xsZA==
-X-Received: by 2002:a05:600c:5487:b0:439:9946:af72 with SMTP id 5b1f17b1804b1-439aeae026amr27674585e9.3.1740151489706;
-        Fri, 21 Feb 2025 07:24:49 -0800 (PST)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-439b02ce735sm20492365e9.3.2025.02.21.07.24.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Feb 2025 07:24:49 -0800 (PST)
-Date: Fri, 21 Feb 2025 16:24:47 +0100
-From: Simona Vetter <simona.vetter@ffwll.ch>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Christoph Hellwig <hch@infradead.org>,
-	rust-for-linux <rust-for-linux@vger.kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
-	ksummit@lists.linux.dev
-Subject: Re: Rust kernel policy
-Message-ID: <Z7iav4U7k9AJDzay@phenom.ffwll.local>
-Mail-Followup-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	rust-for-linux <rust-for-linux@vger.kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
-	ksummit@lists.linux.dev
-References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
- <Z7SwcnUzjZYfuJ4-@infradead.org>
- <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
- <Z7bO1jT2onZFZwgH@infradead.org>
- <CANiq72mM3tVmT6MQZqpzGEW4hJABVHRiODL0SnP2u+0ES4=pjw@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b="igFUWHSG"
+ARC-Seal: i=1; a=rsa-sha256; t=1740151705; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=ETIPuLM6VzvUWWHUMIH7mvkbk+G00Mc52iuUtqTsQjo/FcOhLTllrie0OVJeiq2TCNXOlZ7QK5CL05uY7fR8JWfFGdONNSR0iNN4DP/8evV5WKXEzsB0rUt3fzYmU6Zmzb9DHzBuhxM+eCa4KDkfURwvYJuJCDt6Km9JvRbuJOg=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1740151705; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=btfqHh6gmsSIJcjU3GbXMDgWDvFVm8dzoDhioK/7wOI=; 
+	b=lYkTsng4RjSYwfRMWG+t3ZfcbH+Zof52remAbATqeErSTKXSnGeuFA2yttTRt04KTxVvr8aQy1nWTWMWORryLgEPF1f14pAnOohgEup3ql3HpU1KplokTZgo692ZCIu4GoYtIbOHQZ+IGTFYFvwovSCVk4psPr5zEIJvHOeMAWw=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=sebastian.reichel@collabora.com;
+	dmarc=pass header.from=<sebastian.reichel@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1740151705;
+	s=zohomail; d=collabora.com; i=sebastian.reichel@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
+	bh=btfqHh6gmsSIJcjU3GbXMDgWDvFVm8dzoDhioK/7wOI=;
+	b=igFUWHSGKkX9Vaftwno4xBOvaOCkuK2X1S/vdVFYFUgj+mxT8BCmZfUxBAvNo3iF
+	RTeKXOQqsnztJzj+NOQHtkiQ5V8qAMoMZx8xoD7RTjkFLRVllFzhJ9tmx5O6l6pSjV8
+	q3ERmLpe1ldSN0fXXPWFhAPd/RmRzL7j5xJem4kY=
+Received: by mx.zohomail.com with SMTPS id 1740151703226401.9144883348604;
+	Fri, 21 Feb 2025 07:28:23 -0800 (PST)
+Received: by venus (Postfix, from userid 1000)
+	id 1DF301826F6; Fri, 21 Feb 2025 16:28:18 +0100 (CET)
+Date: Fri, 21 Feb 2025 16:28:18 +0100
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Russell King <linux@armlinux.org.uk>, linux-clk@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH V2 2/2] rust: Add basic bindings for clk APIs
+Message-ID: <aoprvojsnmkbzmmpgx5wxjqtamnr3jyhyqfcqnwhxulp34gn32@aau57u4cotpe>
+References: <cover.1740118863.git.viresh.kumar@linaro.org>
+ <a0a1ba4e27c3a0d9e38c677611eb88027e463287.1740118863.git.viresh.kumar@linaro.org>
+ <Z7iGHiQcqa-_AXli@pollux>
+ <4AD8A8F3-EA7E-4FBE-9F0D-58CF7BB09ED5@collabora.com>
+ <Z7iSHR0F2QpiNpMZ@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="k3zauxydw4h5jdhh"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72mM3tVmT6MQZqpzGEW4hJABVHRiODL0SnP2u+0ES4=pjw@mail.gmail.com>
-X-Operating-System: Linux phenom 6.12.11-amd64
+In-Reply-To: <Z7iSHR0F2QpiNpMZ@pollux>
+X-Zoho-Virus-Status: 1
+X-Zoho-AV-Stamp: zmail-av-1.4.2/240.10.19
+X-ZohoMailClient: External
 
-Hi Miguel
 
-Disregarding the specific discussion here, but this just felt like a good
-place to thank you for your work to bring rust to linux. Your calm and
-understanding approach to figure out what fits best in each case, from "go
-away, don't bother me with rust" through "I like this, but I have no clue"
-all the way to "uh so we have four drivers now in progress, this is
-getting messy" has and continues to enormously help in making this all a
-success.
+--k3zauxydw4h5jdhh
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH V2 2/2] rust: Add basic bindings for clk APIs
+MIME-Version: 1.0
 
-Thank you!
+Hi,
 
-Obviously not diminishing everyone else's work here, just that Miguel's
-effort on the culture and people impact of r4l stands out to me.
+On Fri, Feb 21, 2025 at 03:47:57PM +0100, Danilo Krummrich wrote:
+> On Fri, Feb 21, 2025 at 11:29:21AM -0300, Daniel Almeida wrote:
+> > > On 21 Feb 2025, at 10:56, Danilo Krummrich <dakr@kernel.org> wrote:
+> > > On Fri, Feb 21, 2025 at 12:03:39PM +0530, Viresh Kumar wrote:
+> > >> +/// A simple implementation of `struct clk` from the C code.
+> > >> +#[repr(transparent)]
+> > >> +pub struct Clk(*mut bindings::clk);
+> > >=20
+> > > I remember that Stephen explained that NULL is valid value for struct=
+ clk. As a
+> > > consequence, all functions implemented for `Clk` have to consider thi=
+s.
+> >=20
+> > I am a bit confused here. If NULL is valid, then why should we have to =
+specifically
+> > consider that in the functions? No functions so far explicitly derefere=
+nces that value,
+> > they only pass it to the clk framework.
+>=20
+> This was badly phrased, the current implementation does not need to consi=
+der it
+> indeed. What I meant is that we have to consider it potentially. Especial=
+ly,
+> when adding new functionality later on. For instance, when accessing fiel=
+ds of
+> struct clk directly.=20
 
-Cheers, Sima
+Just a drive-by comment - the current implementation will never have
+a NULL clock anyways. That is only returned by the clk_get functions
+with the _optional() suffix. You are right now only using clk_get(),
+which will instead returns ERR_PTR(-ENOENT).
 
-On Fri, Feb 21, 2025 at 12:44:31AM +0100, Miguel Ojeda wrote:
-> On Thu, Feb 20, 2025 at 7:42 AM Christoph Hellwig <hch@infradead.org> wrote:
-> >
-> > The document claims no subsystem is forced to take Rust.  That's proven
-> > to be wrong by Linus.  And while you might not have known that when
-> > writing the document, you absolutely did when posting it to the list.
-> >
-> > That is a very dishonest way of communication.
-> >
-> > And while you might not have known that when
-> > writing the document, you absolutely did when posting it to the list.
-> 
-> I did know -- Linus told both of us in the private thread. I am not
-> sure what that has to do with anything.
-> 
-> As I told you in the previous reply, please read the next paragraph of
-> the document:
-> 
->     Now, in the Kernel Maintainers Summit 2022, we asked for flexibility
->     when the time comes that a major user of Rust in the kernel requires
->     key APIs for which the maintainer may not be able to maintain Rust
->     abstractions for it. This is the needed counterpart to the ability
->     of maintainers to decide whether they want to allow Rust or not.
-> 
-> The point is that maintainers decide how to handle Rust (and some have
-> indeed rejected Rust), but that flexibility is needed if a maintainer
-> that owns a core API does not want Rust, because otherwise it blocks
-> everything, as is your case.
-> 
-> In summary: you were in that meeting, you own a core API, you do not
-> want Rust, you are blocking everything. So flexibility is needed. Thus
-> we asked you what can be done, how we can help, etc. You did not
-> accept other maintainers, did not want to have the code anywhere in
-> the tree, nor wanted to work on a compromise at all. You, in fact,
-> said "I will do everything I can do to stop this.". So that is not
-> providing flexibility, quite the opposite of it. So Linus eventually
-> had to make a decision to provide that flexibility.
-> 
-> I am not sure how that contradicts the document -- the document is
-> precisely talking about this situation.
-> 
-> By the way, I do not take lightly that you accuse me of dishonesty.
-> 
-> > Which given the binding creep means every single non-leaf subsystem
-> > eventually.
-> 
-> If Rust keeps growing in the kernel, then obviously more and more
-> non-leaf maintainers get affected.
-> 
-> But that just means more people is getting involved and more
-> subsystems are accepting Rust for their use cases. So that would just
-> mean it was, indeed, a good idea in the end.
-> 
-> > I'm not sure how that matters.  Of course your Rust testimonials are
-> > going to like it, otherwise you would not have quoted it.  They
-> 
-> Not at all. As I say in the talk, I included every single quote I got,
-> even up to the night before the keynote.
-> 
-> It is nevertheless very biased, because I asked people we interacted
-> with, which were mostly positive or neutral. I acknowledged this bias
-> in the talk too.
-> 
-> However, just so that others are aware, I did email others that are
-> negative about it too, such as you. And you did not reply.
-> 
-> > Well, obviously you do.  But as in many other things I would usually
-> > not count corporate pressure as a good thing.
-> 
-> Corporate pressure is not good. Corporate support is.
-> 
-> And we need that support to accomplish something like this.
-> 
-> Cheers,
-> Miguel
+> Maybe this only becomes relevant once we write a clk driver itself
+> in Rust, but still.
 
--- 
-Simona Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+For a clock provider implementation you will mainly use 'struct
+clk_hw', which is different from 'struct clk'.
+
+Greetings,
+
+-- Sebastian
+
+--k3zauxydw4h5jdhh
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAme4m4cACgkQ2O7X88g7
++prYUQ//f59hToVXMAIGJ333jfHjvWUJFxssHgqDUIQPMSlxxpg9H6v8PiiZeIQf
+wFMPxKupdjH8J97e5hZy0U4NLVwDvj/RzyBPObVtV1f1/1RF2l4dp/gLqj25Hx3u
+zl2ZZhIFQRcfpbawE2FE10Dlk0Yswehiw5wB8HAbdHusjCzSFCZRkt51mEorFpPd
+7IwV/f+lpUgXueohG8JWVoQk2SsW0BOlsvZ3CMv6BuTtFfNDDUubEwja6ZzxV8ZW
+bRdUfEWnQuEd5ukSn39azfQ8obRwEJsmwuennHY0IR699PJIpPNqhCq5p7G6ldSy
+VsirllZ9OX4H2hR0PExn28VX6E6cln3vWlmh3Cw7zIwfaa6FvGL8hY75HkH+IEOq
+bOolzIJAcgTsqb9IFAbsCbPEl4OII87eBf6pABL8DSKnhFzu9KfNYvSKGhCiAiqe
+rHCsX2kElQud5R186pkoDKPNdfQEPuMFUa6eDt465hHP+fKbZ6Oso8PaRxZ8mGCw
+PeCwR5uKVhr7UQCPosrKRRJEZWBiP7lf3wE7TIPEYKl3sZyl8PW5mRUUt+mrIXs9
+AasBjvmHLzVm/TrAYop8vUx8Gcz9GiKKkGNVTTZ3ATvQoeyIyGa3rbxB5wRuynGt
+opY/3Sm3EjAObQTfAnMH5/A9CYnGSpwZtYdY01QxD0hPzZb2uNU=
+=khOL
+-----END PGP SIGNATURE-----
+
+--k3zauxydw4h5jdhh--
