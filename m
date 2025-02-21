@@ -1,101 +1,131 @@
-Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBCD11F758F;
-	Fri, 21 Feb 2025 05:59:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443231E3DCF
+	for <rust-for-linux@vger.kernel.org>; Fri, 21 Feb 2025 06:33:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740117564; cv=none; b=qnvGJBooNAjoPKbqRAw+lxmUF3jHp8GiKEqyWkpDcZPNuHB7I7f7F/TdbxMqRowrHVwygAyBsn2k/i+qRfgW1tqYUOJzirTTOayfnYRKsy6Rahzj6a/iS9sLuQdB+j1j9urbKkbYSfiFe7q8XZfGMvAe7G6Mwco0UUb5x4zvlS4=
+	t=1740119633; cv=none; b=mSe9a6O3XaTaBuUA/W9KSWGy3dNh3i8f1aFVxITgnLJiE5/9gUMkBKs9mnnDRp5urDEH1Vef0Pysw04bB3Sbvt/X0PAQ/tofvkREKI7cvxpHiQ+X5EIa1ZKCR4gzT6F8BtDx+1O+ml2XadGwiSiYH2XAO12O/SRA+bBPJFxhinQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740117564; c=relaxed/simple;
-	bh=ibHzWRvBjhxfOa5MDrD8eYfboMb902KHcCF3VtsllUw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cjp9OY6t9MYQy8RSgFB1G7h+P6AAGr+xb3Xe/NWU+wufbxXWQLBE82k4HUMg02crvrCvSJ1J4qmtdmrxbUnZQjTc3uouZtF4P/DjR1c/raIf/ks1Ppg81KI3lq3hfvYcI8LdAePDtTCFsxiFwI979zTxjefqW5GnDfSHhFiFhNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JP2QvTkz; arc=none smtp.client-ip=209.85.221.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740119633; c=relaxed/simple;
+	bh=UnV/+GfcAYzsBk/o1/mbrqjdXTKd+qmvgLBpMdIuhrI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=C3xSsZtw4ycYa0Y/PJVGQC4txnJrMy+ZDgsH9Thco3qTZd3piH2cU3hCS9CMuWpXINi3mvZYRnSx8YGry61mhbKYpqU0uoxve8efhFulfiELkyGs49H2EKgeIQSAxNYXXxMhJNtzWzdsqN9t8ku0PbjlFcs0XGAL8QzroImGmiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PlcTKdCK; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JP2QvTkz"
-Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-520847ad493so1052870e0c.1;
-        Thu, 20 Feb 2025 21:59:22 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PlcTKdCK"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-220bff984a0so33691555ad.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 20 Feb 2025 22:33:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740117562; x=1740722362; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Gwyvrx/Jezq/07hjLkAb8nbo563bqDJpeescdjeTq+k=;
-        b=JP2QvTkzx4+HyfkJmdgLCPUMovyM5bqAFrlhCGDtrLRWS7YfZiTpEMFi6yQ3yZTmSq
-         +cYTC4JVI2I1oCLymzP6jyWWnlWowXXhu38eDSWfTsAzSquTk1SXa3JxDEopqZbpH5TB
-         gArdiSY0waVv7rqd55G0z4wx9dprsZ8vzPit/BWHXIjsoYmW0HBE/bw8453QcXIbAqU/
-         vgBpevfbZL8du4rFw7QW8z7HMy+V6WTD/es2itM1RsBP8MHGD9eUooEcDUT4bQy/xOUF
-         WBCbekmjTHvnla/n0V/8TiHYzLhIDplMU0NppNem3/B5vjZIhjR9WycqghdrfNRsfno3
-         JKqw==
+        d=linaro.org; s=google; t=1740119631; x=1740724431; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q3qkD2W8GHPxS6rjoat2i19yWeUXmPG3MQqxSAFZ/8c=;
+        b=PlcTKdCKDpi1QO7NG8AQYezLG/xToMvncu9ycJf9FhoLe2ZTRb9jfTPK998MKrBpKn
+         +ZOVThGps+zEJqqz6fLAa7SrK9Fz7ahCfSRTtbfR1NOYrI6EMF1nyHuWV9M3VYU7g2b3
+         EG/ldhckbswoCKjp7JNIBeyV1rJFjPipK/xeR4/WQx4W/WdjK0M4uyEFgahdrRObY5hh
+         vIS+mgHgHllHQjR4uMArpRYwdyiEQu03hWzFejE6rKIFz97MQCMUPz03MolP2V6kR6mW
+         1y0/mKdP2RV4MdomVsLK0ZwQ3xoR9MsdH/h2iumaq1XcuCHS6jQA8Atr2paIfNikn/xL
+         Nzmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740117562; x=1740722362;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1740119631; x=1740724431;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Gwyvrx/Jezq/07hjLkAb8nbo563bqDJpeescdjeTq+k=;
-        b=D02IBSMMeTGsaz3MieObNSAB/hm0FIuaiKCKEeEQ02tM8THKCBRVMZOnjSFaVlm5b0
-         vxae1Fxw8dW5XojGhi/XsSa/RHjE1UhkgyS54r123zwU6QPAUaqux1ZxZwZkfWhhIgm4
-         bbrnMXKcN2t2tJ3iUJ5tEjcTwml5HiXAf8Ay0jOsdzCxYR0M1QyFnJVgs7H5FcHm/2+p
-         M9yr3WUp/iF55XlJyXhS/uu+0s9/x4ZNVFvqXCK99wSrYeRWbaLHGJriDoXx7J9+jqn5
-         J37Y74f3LUzr0DaE1FVm6Yrb80cLx/EUtGF7hS8qX8I401d5n9NLjIDZHe/cbkZokd+f
-         qw5w==
-X-Forwarded-Encrypted: i=1; AJvYcCVGF9WIlT3xa6X1WLRZ/m7hB4OdmmlCXes/lsj3jIUMwjDmSyW66V/as4etZecvt7L+M6UMkManT8wdAjXhcO4=@vger.kernel.org, AJvYcCXNxVGRgES+wrXcPojGFdRLSyHXVQ8thnVq7sRMdIuR3FcqgmyJqw2LwxOvxR2+Q2doGk2ujS35p9kkhgo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgTnkMkprCSDPNoYx934i9cLncxmEvpfHC3cuxAz2pcaI15wAT
-	xHtBM4a6enRfJys6Gsgi6LFgLR6DNcYXnQJCs+Y9X6sJv5q2R+cwP4ZzvahviUYenniDt7VTtCL
-	wrJjGlkDFFwHSIHGPsChfHl2vGOw=
-X-Gm-Gg: ASbGnctcWa3+KLouFbua9r7zVIzeHKkn6SmBMwqCYuGthsAhaQv3dBCXkSChVMk4pv7
-	X/or3xo4qG/qVGUhxJ1E2mdyqr8m3RZcgZUaWg062x3I/6TbRjUoN3PAC2+1K6zL/1uwBsTbSoh
-	kyuwNGpGcg2pKjFdqQAJlFADTfjdB/lcq75VUspTFW
-X-Google-Smtp-Source: AGHT+IFK0Te2gAAu9/ippDJ8IfNRI2f4AiOjMhPMlVJgO17ZMIkw5wXZbxAhshYN4Tkjwgte5xFD1iXsknqV9tsPGRY=
-X-Received: by 2002:a05:6122:3d03:b0:51f:3fa3:d9af with SMTP id
- 71dfb90a1353d-521efb1aa44mr620312e0c.1.1740117561686; Thu, 20 Feb 2025
- 21:59:21 -0800 (PST)
+        bh=Q3qkD2W8GHPxS6rjoat2i19yWeUXmPG3MQqxSAFZ/8c=;
+        b=B1EjfOEXJaMTzVZn1gqQK24vfX1FBwaMcUuquS7EYLNaO0Z6gho4ehYVBNo6PI9iyN
+         EyWugo4Fbhmbtw6Do81hOt+fJJxkScMWnpyMN/St2p9tr2WYaio4HwsBSp3DjxZMhfqC
+         Eh25qlcj0B5q8NiIEgrU9ve93kkSL75Yu6DFd9J778GxcgRJmDPh/h9YiET6JonmmQPY
+         vWfhugExsohMb7FfjB+2QbomuzzYo5bhMT1EgPCRx77nnRtET+3oPCvpvN6pT9OG6TYN
+         wa4DGh2l+2g9Ts78rMDKzCXc3Az5+FtOGkz2eztXAZ02dSa9WRatzCQ9yEnGNZoAa8Ne
+         QUGA==
+X-Forwarded-Encrypted: i=1; AJvYcCX84Nz49jZtJ/KqvZ6FghYUw09mnGoLDO97xPhm44elmfnvpHOVJSMfJ204/u+VvptFe1d97zfYPOAMxAPDHQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzaq5xrmOwbebEjCYIjU0N2akpIQtosW0SU+wSn3VKb6vITKhaJ
+	4QEVXogyxpLXdmrJAInUmBg1Qx53e2UQWrnFFLTKj9T6NlxsiSJoIblSUPdY1nA=
+X-Gm-Gg: ASbGncvRUgZOSUAgo7Dnxw3YGJRsdpRvCCOkt9o3dF2quBN29R892k9ysgNq+VF7QKZ
+	LwfqxxVugTQ35dMlstT0LJ9vFBoeFIan8AXoNTatiKrvm9cNMknJeDKiij59wMgEwjwIRYMLxRv
+	Gws6rum7EsKEq+P+hqF9FtTOs7ISjoGkXgbepFycVZn5UzPZ+HatYYk9bL7ShwbnvQuit8NJatb
+	Xx5G0SHRBD5TL5FNzbS5iEhW7io+uFN5MaPMByEkQgf6YDEC1ruxdGUxSxtMH31vQWg81aqC8ah
+	8jA/kLu+m86kZxT4tSWTtQwKl0MQ
+X-Google-Smtp-Source: AGHT+IGBFTKUqNROscBFlXFQPsAysi8TjZrSjaBBpoMwqoUOJ2o4jmxLvYsGM0FXUS1xsZzgGKCJBg==
+X-Received: by 2002:a17:902:d2c7:b0:21d:3bee:990c with SMTP id d9443c01a7336-2219ffb5fa6mr30105085ad.42.1740119631572;
+        Thu, 20 Feb 2025 22:33:51 -0800 (PST)
+Received: from localhost ([122.172.84.139])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fceb02d7dasm523355a91.5.2025.02.20.22.33.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Feb 2025 22:33:50 -0800 (PST)
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Alex Gaynor <alex.gaynor@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Benno Lossin <benno.lossin@proton.me>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+	Russell King <linux@armlinux.org.uk>,
+	linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH V2 0/2] rust: Add basic clock bindings
+Date: Fri, 21 Feb 2025 12:03:37 +0530
+Message-Id: <cover.1740118863.git.viresh.kumar@linaro.org>
+X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2025021954-flaccid-pucker-f7d9@gregkh> <20250221051909.37478-1-felipe.contreras@gmail.com>
- <Z7gQ3kSeCf7gY1i9@Mac.home>
-In-Reply-To: <Z7gQ3kSeCf7gY1i9@Mac.home>
-From: Felipe Contreras <felipe.contreras@gmail.com>
-Date: Thu, 20 Feb 2025 23:59:10 -0600
-X-Gm-Features: AWEUYZm-dCCYDK7IVFbcHBzJ3z4WArMhXwpI8ggrnPh3sijx9AIfdIEQ8lnlDjM
-Message-ID: <CAMP44s1Ai5qMU4yV+Rwz4cY869ZA=cxBcTf2wuaUY1oyLKUNCg@mail.gmail.com>
-Subject: Re: Rust kernel policy
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: gregkh@linuxfoundation.org, airlied@gmail.com, hch@infradead.org, 
-	hpa@zytor.com, ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org, 
-	torvalds@linux-foundation.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Boqun Feng wrote:
->
-> On Thu, Feb 20, 2025 at 11:19:09PM -0600, Felipe Contreras wrote:
-> > Greg KH wrote:
-> > > But for new code / drivers, writing them in rust where these types of
-> > > bugs just can't happen (or happen much much less) is a win for all of
-> > > us, why wouldn't we do this?
-> >
-> > *If* they can be written in Rust in the first place. You are skipping that
-> > very important precondition.
->
-> Hmm.. there are multiple old/new drivers (not a complete list) already
-> in Rust:
+Hello,
 
-That is a black swan fallacy. Just because you've seen 4 white swans
-that doesn't mean all swans are white.
+This adds initial bindings for the clk APIs. These provide the minimal
+functionality needed for common use cases, making them straightforward
+to introduce in the first iteration.
 
-> , so is there still a question that drivers can be written in Rust?
+These will be used by Rust based cpufreq / OPP layers to begin with.
 
-I didn't say no driver can be written Rust, I questioned whether *all*
-drivers can be written in Rust.
+For now I have added them under the maintainership umbrella of the common clk
+framework, please let me know if I should do it differently.
 
-People are operating under that assumption, but it isn't necessarily true.
+This was posted earlier as part of the series implementing cpufreq/OPP Rust
+bindings [1] (since its V6 version). In order to make sure this gets properly
+reviewed and I don't accidentally miss relevant reviewers, I am posting it
+separately now.
+
+If possible, I would like to get these merged via the PM tree along with
+cpufreq/OPP bindings, but its okay otherwise too.
+
+--
+Viresh
+
+[1] https://lore.kernel.org/all/cover.1738832118.git.viresh.kumar@linaro.org/
+
+V1->V2:
+- Post this as an independent series.
+- Include more APIs, apart from clk_get() and clk_put().
+
+Viresh Kumar (2):
+  rust: Add clk helpers
+  rust: Add basic bindings for clk APIs
+
+ MAINTAINERS                     |   2 +
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers/clk.c              |  57 +++++++++++++++++
+ rust/helpers/helpers.c          |   1 +
+ rust/kernel/clk.rs              | 104 ++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   1 +
+ 6 files changed, 166 insertions(+)
+ create mode 100644 rust/helpers/clk.c
+ create mode 100644 rust/kernel/clk.rs
 
 -- 
-Felipe Contreras
+2.31.1.272.g89b43f80a514
+
