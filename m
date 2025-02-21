@@ -1,174 +1,93 @@
-Received: from mailrelay.tugraz.at (mailrelay.tugraz.at [129.27.2.202])
+Received: from a3.inai.de (a3.inai.de [144.76.212.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2270525291E;
-	Fri, 21 Feb 2025 19:59:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.27.2.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9C9252909;
+	Fri, 21 Feb 2025 20:06:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.212.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740167987; cv=none; b=mfGjHCQCdzKw8N8wfOrjd8U9CUdU/1qsdEz4EPtBeE0ACsLTRGKhXIHeM5O+hioh/CNaBJOJdZnFtRJ9jf+0IL4BjeALTd0DUutF2vgIOw98eapT9jyDGXQK1UW/xp8s+kLN9nLDzwFBktWHyMd6ENQ8Fn5LcdweIREKVSCSa6Y=
+	t=1740168384; cv=none; b=GN5vw9bmzYK+oQVS7zbSzQjE2AwjrBgVClzsa05NQmmM7p4uuhvTWrRrIru+bBWXVYqmyEsoLSsY1f7zQdi+rq54rkYKZ/bREfakoCv/vigsiiXih40ypCyf+SH5qXrwpl1PocFosWKA6g7mgIFJg+s8nXrdV6b0f8UrTWFE1gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740167987; c=relaxed/simple;
-	bh=aun+RPo8XWnUox5THxIKBXlvYRObBaQI2FEDg4/W19k=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gcLtLKlF+HNt51XVBwpj7cmW0kRdWTYmGNPWd8fw/plHh/11bV1KaQmH1pv83jRKRH4V6v8GSYuXbOKstNE0ngF3OvcNKYKn5U2ewxi5h11ddZbTtlaprWYJ9KYME+VAEeBebzNTAvHNF3lfeNuUu5rgu3M4FOhSWe4O72V/Szg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at; spf=pass smtp.mailfrom=tugraz.at; dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b=tktMuV4i; arc=none smtp.client-ip=129.27.2.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tugraz.at
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b="tktMuV4i"
-Received: from vra-171-233.tugraz.at (vra-171-233.tugraz.at [129.27.171.233])
-	by mailrelay.tugraz.at (Postfix) with ESMTPSA id 4Z01Dl0Llcz1JJCW;
-	Fri, 21 Feb 2025 20:59:34 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailrelay.tugraz.at 4Z01Dl0Llcz1JJCW
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tugraz.at;
-	s=mailrelay; t=1740167976;
-	bh=daHf1z8lJ31bFj+fSX9TjMZapPE1WbLyymgeRwxtVNo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=tktMuV4ieti8guHZ8t9O0LF+NrvjbAD1OfN0/GAtqrfHDYDXp6rqornOihXdduPn3
-	 Owby2PWHLt4nU1bkC/StUSz2IFiYcSUxow3Z7WGd7S5acShC5apTDdrGowcPaohFZN
-	 wZYwMD4kJ2Ae96+oImzuiDCnCpm4uBIJqakgIu5o=
-Message-ID: <008cc0939c130ee24fbc71a0407ff82772076668.camel@tugraz.at>
-Subject: Re: Rust kernel policy
-From: Martin Uecker <uecker@tugraz.at>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Dan Carpenter
- <dan.carpenter@linaro.org>, Greg KH <gregkh@linuxfoundation.org>, Boqun
- Feng <boqun.feng@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, Miguel Ojeda
- <miguel.ojeda.sandonis@gmail.com>, Christoph Hellwig <hch@infradead.org>, 
- rust-for-linux <rust-for-linux@vger.kernel.org>, David Airlie
- <airlied@gmail.com>, linux-kernel@vger.kernel.org,  ksummit@lists.linux.dev
-Date: Fri, 21 Feb 2025 20:59:34 +0100
-In-Reply-To: <CAHk-=wg=pZvE9cHJUPKGCajRUCtDoW73xwY5UfJApCWms_FgYw@mail.gmail.com>
-References: <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
-	 <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
-	 <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
-	 <Z7VKW3eul-kGaIT2@Mac.home> <2025021954-flaccid-pucker-f7d9@gregkh>
-	 <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
-	 <2025022024-blooper-rippling-2667@gregkh>
-	 <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
-	 <2025022042-jot-favored-e755@gregkh>
-	 <b9a5de64fe1ded2ad3111763f35af9901bd81cc4.camel@tugraz.at>
-	 <caea3e79-78e6-4d98-9f3b-f8e7f6f00196@stanley.mountain>
-	 <61a7e7db786d9549cbe201b153647689cbe12d75.camel@tugraz.at>
-	 <20250221124304.5dec31b2@gandalf.local.home>
-	 <CAHk-=wgg2A_iHNwf_JDjYJF=XHnKVGOjGp50FzVWniA2Z010bw@mail.gmail.com>
-	 <6b3e4d3bdc9b6efd69068e5b22cfd05d370aed19.camel@tugraz.at>
-	 <CAHk-=wg=pZvE9cHJUPKGCajRUCtDoW73xwY5UfJApCWms_FgYw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+	s=arc-20240116; t=1740168384; c=relaxed/simple;
+	bh=Bz/CAy2MJIX56MZmp5WzaPMfPF3mqjkLstosHAlZl9g=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=ErvVnlXlrltg3MYvFJapoOUuA6mkjisxVl4dnD2XYSL41XXnkpv5Swn/vcLIsaJwTL90wZJq2YdWvSDQHjz6iZT7BclWFlNax4O0MClFA4m8gR3B/EpOpP3GTQ0pjTjykAOd+5WUV2lldh7diDDvehhIh6oqLqb7aBi6EXa7YI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=inai.de; spf=fail smtp.mailfrom=inai.de; arc=none smtp.client-ip=144.76.212.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=inai.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=inai.de
+Received: by a3.inai.de (Postfix, from userid 25121)
+	id 0C14E1003E1299; Fri, 21 Feb 2025 21:06:14 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by a3.inai.de (Postfix) with ESMTP id 0A332110075443;
+	Fri, 21 Feb 2025 21:06:14 +0100 (CET)
+Date: Fri, 21 Feb 2025 21:06:14 +0100 (CET)
+From: Jan Engelhardt <ej@inai.de>
+To: David Laight <david.laight.linux@gmail.com>
+cc: "H. Peter Anvin" <hpa@zytor.com>, Greg KH <gregkh@linuxfoundation.org>, 
+    Boqun Feng <boqun.feng@gmail.com>, 
+    Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
+    Christoph Hellwig <hch@infradead.org>, 
+    rust-for-linux <rust-for-linux@vger.kernel.org>, 
+    Linus Torvalds <torvalds@linux-foundation.org>, 
+    David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org, 
+    ksummit@lists.linux.dev
+Subject: Re: C aggregate passing (Rust kernel policy)
+In-Reply-To: <20250221183437.1e2b5b94@pumpkin>
+Message-ID: <p7946077-rn30-n3p3-ppp0-80o9n9p07718@vanv.qr>
+References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com> <Z7SwcnUzjZYfuJ4-@infradead.org> <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com> <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
+ <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com> <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com> <Z7VKW3eul-kGaIT2@Mac.home> <2025021954-flaccid-pucker-f7d9@gregkh> <2nn05osp-9538-11n6-5650-p87s31pnnqn0@vanv.qr> <2025022052-ferment-vice-a30b@gregkh>
+ <9B01858A-7EBD-4570-AC51-3F66B2B1E868@zytor.com> <n05p910s-r5o3-0n36-5s44-qr769prp69r5@vanv.qr> <20250221183437.1e2b5b94@pumpkin>
+User-Agent: Alpine 2.26 (LSU 649 2022-06-02)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-TUG-Backscatter-control: G/VXY7/6zeyuAY/PU2/0qw
-X-Spam-Scanner: SpamAssassin 3.003001 
-X-Spam-Score-relay: 0.0
-X-Scanned-By: MIMEDefang 2.74 on 129.27.10.116
+Content-Type: text/plain; charset=US-ASCII
 
-Am Freitag, dem 21.02.2025 um 11:30 -0800 schrieb Linus Torvalds:
-> On Fri, 21 Feb 2025 at 10:31, Martin Uecker <uecker@tugraz.at> wrote:
-> >=20
-> > The issue with __attribute__ is that it is always tied to a specific
-> > syntactic construct.  Possible it could be changed, but then I do
-> > not see a major difference to _Pragma, or?
->=20
-> Oh, _Pragma() is certainly more usable from a pre-processor
-> standpoint, but it's still garbage exactly because it doesn't nest,
-> and has no sane scoping rules, and is basically compiler-specific.
->=20
-> Don't use it.
->=20
-> It's not any better than __attribute__(()), though. The scoping rules
-> for _pragma() are basically completely random, and depends on what you
-> do. So it might be file-scope, for example (some pragmas are for
-> things like "this is a system header file, don't warn about certain
-> things for this"), or it might be random "manual scope" like "pragma
-> pack()/unpack()".
->=20
-> It's still complete garbage.
 
-The standardized version of __attribute__(()) would look=C2=A0like
+On Friday 2025-02-21 19:34, David Laight wrote:
+>> 
+>> Returning aggregates in C++ is often implemented with a secret extra
+>> pointer argument passed to the function. The C backend does not
+>> perform that kind of transformation automatically. I surmise ABI reasons.
+>
+>Have you really looked at the generated code?
+>For anything non-trivial if gets truly horrid.
+>
+>To pass a class by value the compiler has to call the C++ copy-operator to
+>generate a deep copy prior to the call, and then call the destructor after
+>the function returns - compare against passing a pointer to an existing
+>item (and not letting it be written to).
 
-[[safety(ON)]];
-....
+And that is why people generally don't pass aggregates by value,
+irrespective of the programming language.
 
-[[safety(OFF)]];
+>Returning a class member is probably worse and leads to nasty bugs.
+>In general the called code will have to do a deep copy from the item
+>being returned
 
-which is not bad (and what C++ seems to plan for profiles),
-but this also does not nest and is a bit more limited to where
-it can be used relative _Pragma.  I don't really see any advantage.
+People have thought of that already and you can just
+`return std::move(a.b);`.
 
-GCC has=20
+>Then you get code like:
+>	const char *foo = data.func().c_str();
+>very easily written looks fine, but foo points to garbage.
 
-#pragma GCC diagnostic push "-Wxyz"
-#pragma GCC diagnostic pop
+Because foo is non-owning, and the only owner has gone out of scope.
+You have to be wary of that.
 
-for nesting. Also not great.
+>You can return a reference - that doesn't go out of scope.
 
->=20
-> > > This is non-negotiable. Anybody who thinks that a compiler is valid
-> > > warning about
-> > >=20
-> > >          if (x < 0 || x >=3D 10) {
-> > >=20
-> > > just because 'x' may in some cases be an unsigned entity is not worth
-> > > even discussing with.
-> >=20
-> > Do you think the warning is useless in macros, or in general?
->=20
-> Oh, I want to make it clear: it's not ":useless". It's MUCH MUCH
-> WORSE. It's actively wrong, it's dangerous, and it makes people write
-> crap code.
->=20
-> And yes, it's wrong in general. The problems with "x < 0" warning for
-> an unsigned 'x' are deep and fundamental, and macros that take various
-> types is only one (perhaps more obvious) example of how brokent that
-> garbage is.
->=20
-> The whole fundamental issue is that the signedness of 'x' MAY NOT BE
-> OBVIOUS, and that the safe and human-legible way to write robust code
-> is to check both limits.
->=20
-> Why would the signedness of an expression not be obvious outside of macro=
-s?
->=20
-> There's tons of reasons. The trivial one is "the function is large,
-> and the variable was declared fifty lines earlier, and you don't see
-> the declaration in all the places that use it".
->=20
-> Remember: source code is for HUMANS. If we weren't human, we'd write
-> machine code directly. Humans don't have infinite context. When you
-> write trivial examples, the type may be trivially obvious, but REAL
-> LIFE IS NOT TRIVIAL.
->=20
-> And honestly, even if the variable type declaration is RIGHT THERE,
-> signedness may be very non-obvious indeed. Signedness can depend on
->=20
->  (a) architecture (example: 'char')
->=20
->  (b) typedef's (example: too many to even mention)
->=20
->  (c) undefined language behavior (example: bitfields)
->=20
->  (d) various other random details (example: enum types)
->=20
-> Dammit, I'm done with this discussion. We are not enabling that
-> shit-for-brains warning. If you are a compiler person and think the
-> warning is valid, you should take up some other work. Maybe you can
-> become a farmer or something useful, instead of spreading your manure
-> in technology.
->=20
-> And if you think warning about an extra "x < 0" check is about
-> "security", you are just a joke.
+That depends on the refererred item.
+	string &f() { string z; return z; }
+is going to explode (despite returning a reference).
 
-Just in case this was lost somewhere in this discussion:=C2=A0
-it was not me=C2=A0proposing to add this warning.=20
+>(Apart from the fact that c++ makes it hard to ensure all the non-class
+>members are initialised.)
 
-Martin
+	struct stat x{};
+	struct stat x = {};
 
->=20
->               Linus
-
+all of x's members (which are scalar and thus non-class) are
+initialized. The second line even works in C.
