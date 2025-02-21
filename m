@@ -1,155 +1,239 @@
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673AA1DC9B0;
-	Fri, 21 Feb 2025 17:28:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4390E35955;
+	Fri, 21 Feb 2025 17:32:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740158908; cv=none; b=eg87LW0cmiZMIN2QI7hU1y1H7J+dndGTZUhqPNBqrpjlrp92CQhaM0ija2ytqK4LsqClUH5Z2WCkSyW4pbLOf12vBFomiqWF6xL38EHqSs84fjg7f2OIDoVHFqa7/GT6aEcyH0LMXAk60gLs+61wB9G49pJeL00ajOazjaBWaVk=
+	t=1740159167; cv=none; b=GnAxUThcVU3qz90ww6iDAyBLc46FwkkX0Q40k+NFK0ETKAi+JazQQyvKW2hYdgr8vOBXw1H8sAC7G8LmPqV4NBgJ1K79A1vGsIlZJZx5v/FkThmJOrmJTyIgy56RmJxiJxdJWOYl7ePUFs/msbYqYb4OJY+fSDdntKmasY/0ado=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740158908; c=relaxed/simple;
-	bh=HPrP3ojvkSVZ5Kc1kBEaZImgxfvHyX7Dpb88DUxTK4M=;
+	s=arc-20240116; t=1740159167; c=relaxed/simple;
+	bh=ZP/AZtmKekbdVa5h3wfllziVebzm3Pt0LiN8jFoe/t0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UlcfDEg3lz9z3dYPC1KejuPOeeO6NkcYVVK425TIgN+GgIyqwXp3OZmG8j75Ilxo1JkcmTWDvwqai5kId1IFq1+HyzdEhC/fue9gBQTZKYV/UZ5mBQ/DkjYEQbe6JfipYBJJIVMdZXH8M3H8Jf1fM96ZTBrnz/roZxcZKeMo4mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WgletZSw; arc=none smtp.client-ip=209.85.167.50
+	 To:Cc:Content-Type; b=GVVp7JzsvnRdUWYPmg9P9XTTsDRI2+/S5hCo87dIAjicFtUKKxxNz2ErWl+TC9FHudNp32TZfRGqihsWukIKFgwwyVLCag8btZVkipFQtHLznT5oBk1w1mYD0ROZWSMA1xj6Qft2DkLJlo3/cwKXaAs+zv5iA6BhowOqV0Z4FUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bcE6nUxw; arc=none smtp.client-ip=209.85.208.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WgletZSw"
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5452ed5b5b2so2399460e87.0;
-        Fri, 21 Feb 2025 09:28:26 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bcE6nUxw"
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-30a2594435dso34078941fa.1;
+        Fri, 21 Feb 2025 09:32:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740158904; x=1740763704; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1740159163; x=1740763963; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=B+ovilXkqh0uwuaQP4pyblGCdU8pjRUdN2KKRsegnNo=;
-        b=WgletZSwZ4SGaf/hAAeRY/xbqfO15cVvimdv+AvnjivpHxYnp1JC1boTaZDeZyKx7r
-         squ53cv3a2oEDbs8nDI0psMwHrcN4+smIfT9olIF8K8mQBfG4ZyqVtU1EkA++wzcrYs/
-         toxpsnso1h2JfQLxi6QdmyH3yZp5rIdcGUEw7K85+FboiAi4KXFNrZzO/1gAd4pJII6e
-         nCD4V4dhr98YU72VqLSh7JNAyq/xkHJuXj3uYZsYZF/5cKNaVWG4pJ8Oqp1QtoBIC+87
-         rMiLAfH02kY2s+G4rHmZ6If67bAvG5h+x7s6gfFigCYfp+9bh08NgqhqFlbQBks1a6V3
-         2ohg==
+        bh=jJaML9956P6Qct9n7YoV3xhm6iSp4V2wMSvsIOJXqbc=;
+        b=bcE6nUxwH6eW0OOHJDmFP4Zj5LHwD8oU46+OD9awqFqZOID8LIvURwGCs1UGIlOJI3
+         PWjv0bjxMK7qBidibKtiHplDyD1qMgfc1IaDRiII30d7Uti4g8JH6sslQXyvCR12AonM
+         eEdySvIxRzcd0KafXAQMtBXiOlKfQ1uCVGmaI6LbVrBNO4EV2jW5ppoOe1mgrQbOcbCP
+         sMAhq8l0OXL2CIq5eWNjAU4eaAMM9QjDb2CYEttSrGXhOkpqSMcJd0sLAZVkZqMLYNlI
+         K0/+fpfZj+I0oBIqPcBI4GwrXCll/2+TbWteK2dfJ/7f1dl99RPyX3X9/VoU7iLISJWd
+         cTUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740158904; x=1740763704;
+        d=1e100.net; s=20230601; t=1740159163; x=1740763963;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=B+ovilXkqh0uwuaQP4pyblGCdU8pjRUdN2KKRsegnNo=;
-        b=HOrkIrmW14pEqMTmm7dye7atavEHods1ZHd0uNb7Wvvj2Byi9I15db51ajBcdLeBtG
-         kAjSaszcfzbGlaWOjHcksuxuLTEjX8qRC/R/OAooj603jhFhLBwS28UELe3t0QIiFrvW
-         itoszwVm3o5TQhyUM0/JgWfQoqsE0VJUHKsif3KxgC74vyJsb9gsax/E99orGTDcZVVa
-         55mkluiiWb91MeQQru8ZKquxLN4jqr4vEmfa4argyqle6rmq/LwoO687pNFpNYHcFYFt
-         1f89GBea/KYS8XQcramd1IOSLio25oydUAGX3dyfLb3b2LluKM8KBc3ILiiMevowZode
-         Za8g==
-X-Forwarded-Encrypted: i=1; AJvYcCVZPI13x1Wg6+p1g20AhTXFCSwtSXLW/su6TbGOUqgFtBwha/zWDLQA5xDeiztUUtYy7he/iwXLMGoehnM=@vger.kernel.org, AJvYcCWJDTBrDI1hd7uXnn0CAf4YMKhMZGfZ33PPN6Oznqz0UrE4auyIwNOhSmbYsFyecM2PZvVyLAKYQz70PZlqb0A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNGxOoUYqqPwljssomq8k3StMjdWo5EDhMXr7OeLukWnObBcvI
-	qPoVujTjBEzjnRD3b5QdD0FWSLthJ4MtYVZVpkbp8aR0NImpbgwWek5OpTl8DxpKoBxInbq0S7H
-	qHgrmekXy6RTct3gG8LaP626vPKk=
-X-Gm-Gg: ASbGncunC6o9MOE6VzB8O9B/u2vIErHXRA2WiU+xTDe6KXggoxIqXCO2uKYezRQEaYo
-	ub2ODvVZLEYCX8QhU264/VEKBMlLixPqSfXN55AYTX49BjFnVOzViAhNUA2kBYoKJrRDCH81Q1n
-	wz+/hn8/Wr0tJhEKSA4qdBIKT7+4xycjkTdHc7RCc1AA==
-X-Google-Smtp-Source: AGHT+IFuk7rvEriHtLyIjuxhzbA0Y1/+LDTO72neye7ue98KceMlFPUJ/lFcETbG78MbjmQLgJbcisuEkYYRBxTlZes=
-X-Received: by 2002:a05:6512:ad2:b0:545:191:81db with SMTP id
- 2adb3069b0e04-54838f5e248mr1332168e87.50.1740158904361; Fri, 21 Feb 2025
- 09:28:24 -0800 (PST)
+        bh=jJaML9956P6Qct9n7YoV3xhm6iSp4V2wMSvsIOJXqbc=;
+        b=NUWZ8nNLvTC7Hzv0FKpiqWeV9Bm/DDUsrlcJsnxkkmdaMGt3ZSSsy26hjpGzrpXwhi
+         zkOAigPl4QZ7raX0wg7eRl60Ne6Sf0xoIffCQhxSM8FFT8Eu7UqkmPHyX/nx27WpvRXm
+         h8N9jLSsESv870UswzMaO9yYPgoFhDTM2SLleh/LRIP2qQC3aaKInV47wXY5d2i8UMkG
+         S1kUpPzzm5Omn4DP6oSU0hoe3WTaR7QclPxOq9KrdDvULnubHXMYWOHmmoOUlvb30Ym6
+         mXUwymUZOrqkPxD/scvHchuxZZvi9e9wSvQNAk0xFmJczagcp3CYcO69YjW67sN83HJw
+         nVdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUBJgwBlTQiF6ILPzJlzOggZX5HzzIA9j7ne7DHqb37dUekNOmbIamMMwT99+OeCieQ4tTFaD8aGlcjAoFw@vger.kernel.org, AJvYcCV6y7oVx9vd+AotpWnp3j9+7ZOGMjusl0dqHvdy+DJwVWvmML/dAblNvsa6tBO7wD/geAIhlArq40PSoxU8SgY=@vger.kernel.org, AJvYcCXZzbUqRa4UdwEzKDmFwAzDbaZ8sxuyljPVHL5mS40FFRe6h0IAhuQz4x3K9Pi+R1KR5l+cbz40Iqtm@vger.kernel.org, AJvYcCXmVzlQAAyqp6QV8QBhDIew0hBRbCy9Bkbx2aBDT4E5AWTryDLWDwrFg6koLaNHXV4nG8UZ2EpJbJ7QAeEg@vger.kernel.org
+X-Gm-Message-State: AOJu0YxU6PHjgW+wjEm9rLZOSNcwKPj23QbRbJGsikXgs9IZ5o8fd63g
+	bOEF/drkEw10cTuV+GU8gzJd2rhYuU/MprgTxnyiBN5bKxwpHzlr+GR9VPC6XTgPCPVcxR7PJOp
+	zit03K5e3IMCUNtXXNZf+75ZgyKA=
+X-Gm-Gg: ASbGnct8ezAk7rZ9ip3uurpVvqx0NZHoxHfThugK6lWYz4VTlHA3b23tAuezouIyGdD
+	o19tAGzbJKkmXQaINr/T10aKk5CndKOFddSiQ6f/lEzfDX8UGhZH1YrRabkG7zi8RXRkKKEDBBW
+	Qrw48upo7A2TlHKWMR5xQ4/+ttaVvwqyVjITLmFObh3Q==
+X-Google-Smtp-Source: AGHT+IFxT4w66GaPlc3A/wTppIBJfgqA6VUJQjnIKnRHSb865LLrlRfQ3PC+ljynjrcEeQeBBsji2Xh3J+hIuoVgSws=
+X-Received: by 2002:a2e:95cf:0:b0:309:271d:711a with SMTP id
+ 38308e7fff4ca-30a5997e02dmr13064501fa.13.1740159163087; Fri, 21 Feb 2025
+ 09:32:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250219201602.1898383-1-gary@garyguo.net> <20250219201602.1898383-3-gary@garyguo.net>
- <CAJ-ks9npk8oSFHZHdViR1XhF+A8e2L+P0wCgmjE7mzAxS9WK1g@mail.gmail.com> <20250221161439.0e34fba9@eugeo>
-In-Reply-To: <20250221161439.0e34fba9@eugeo>
+References: <20250218-rust-xarray-bindings-v17-0-f3a99196e538@gmail.com>
+ <20250218-rust-xarray-bindings-v17-2-f3a99196e538@gmail.com> <Z7imafmrrK0_TO65@pollux>
+In-Reply-To: <Z7imafmrrK0_TO65@pollux>
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Fri, 21 Feb 2025 12:27:46 -0500
-X-Gm-Features: AWEUYZnyeU1ZybS_ViUrsCp6ilnp2HGYKCgnGG028bJ5uhhlpMxXUWt8nmnM4LE
-Message-ID: <CAJ-ks9=dsrsMD261HEbgHOUMXm=nj-GUymuCtZ8oeDFCx7JtrQ@mail.gmail.com>
-Subject: Re: [PATCH v3 2/4] rust: convert `Arc` to use `Refcount`
-To: Gary Guo <gary@garyguo.net>
+Date: Fri, 21 Feb 2025 12:32:06 -0500
+X-Gm-Features: AWEUYZmPYku9SRhQtPs7zcM_PkSwe-MlLN_XcNfWi4R554FoIu-TSTRLf0mVB_s
+Message-ID: <CAJ-ks9nQhjXYfjr=kPU1RQON83iWkFXrxM7oXzSrSxRVbg_xTg@mail.gmail.com>
+Subject: Re: [PATCH v17 2/3] rust: xarray: Add an abstraction for XArray
+To: Danilo Krummrich <dakr@kernel.org>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Wedson Almeida Filho <walmeida@microsoft.com>, 
-	Alex Mantel <alexmantel93@mailbox.org>, Will Deacon <will@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	Matthew Wilcox <willy@infradead.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, "Rob Herring (Arm)" <robh@kernel.org>, 
+	=?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
+	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pci@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 21, 2025 at 11:14=E2=80=AFAM Gary Guo <gary@garyguo.net> wrote:
->
-> On Wed, 19 Feb 2025 17:12:10 -0500
-> Tamir Duberstein <tamird@gmail.com> wrote:
->
-> >
-> > Why did this signature need to change?
->
-> I think I mentioned this in a earlier series. Smart pointers are not
-> supposed to have methods (i.e. with a self receiver) as it may shadow
-> deref'ed functions.
+(resending because gmail decided =F0=9F=91=8D is only allowed in HTML)
 
-That probably deserves a separate commit, or at least a mention in the
-commit message.
-
-> > We could retain the unsynchronized operation here by taking a mutable
-> > reference above and writing through it. Right? Could we remove `set`
-> > from the abstraction in the previous patch?
+On Fri, Feb 21, 2025 at 11:14=E2=80=AFAM Danilo Krummrich <dakr@kernel.org>=
+ wrote:
 >
-> This was suggested as well in a previous series but I don't think it's
-> a good idea. Creating a mutable reference and using unsynchronized
-> write requires `unsafe`. `set` doesn't.
+> On Tue, Feb 18, 2025 at 09:37:44AM -0500, Tamir Duberstein wrote:
 >
-> Note that the `set` here is relaxed order. I doubt (if things are
-> inlined properly) there'll be any codegen difference with a completely
-> unsynchronized write.
+> [...]
 >
-> Not having an additional unsafe is a good trade-off to me.
-
-Ack.
-
-> > > @@ -412,16 +402,14 @@ fn clone(&self) -> Self {
-> > >
-> > >  impl<T: ?Sized> Drop for Arc<T> {
-> > >      fn drop(&mut self) {
-> > > -        // SAFETY: By the type invariant, there is necessarily a ref=
-erence to the object. We cannot
-> > > -        // touch `refcount` after it's decremented to a non-zero val=
-ue because another thread/CPU
-> > > -        // may concurrently decrement it to zero and free it. It is =
-ok to have a raw pointer to
-> > > -        // freed/invalid memory as long as it is never dereferenced.
-> > > -        let refcount =3D unsafe { self.ptr.as_ref() }.refcount.get()=
-;
-> > > -
-> > >          // INVARIANT: If the refcount reaches zero, there are no oth=
-er instances of `Arc`, and
-> > >          // this instance is being dropped, so the broken invariant i=
-s not observable.
-> > > -        // SAFETY: Also by the type invariant, we are allowed to dec=
-rement the refcount.
-> > > -        let is_zero =3D unsafe { bindings::refcount_dec_and_test(ref=
-count) };
-> > > +        // SAFETY: By the type invariant, there is necessarily a ref=
-erence to the object.
-> > > +        // NOTE: we cannot touch `refcount` after it's decremented t=
-o a non-zero value because
-> > > +        // another thread/CPU may concurrently decrement it to zero =
-and free it. However it is okay
-> > > +        // to have a transient reference to decrement the refcount, =
-see
-> > > +        // https://github.com/rust-lang/rust/issues/55005.
-> > > +        let is_zero =3D unsafe { self.ptr.as_ref().refcount.dec_and_=
-test() };
-> >
-> > How come this careful handling is not required in into_unique_or_drop?
-> > At least, the SAFETY comment there is much more mundane.
+> > +
+> > +impl<T: ForeignOwnable> XArray<T> {
+> > +    /// Creates a new [`XArray`].
+> > +    pub fn new(kind: AllocKind) -> impl PinInit<Self> {
+> > +        let flags =3D match kind {
+> > +            AllocKind::Alloc =3D> bindings::XA_FLAGS_ALLOC,
+> > +            AllocKind::Alloc1 =3D> bindings::XA_FLAGS_ALLOC1,
+> > +        };
+> > +        pin_init!(Self {
+> > +            // SAFETY: `xa` is valid while the closure is called.
+> > +            xa <- Opaque::ffi_init(|xa| unsafe {
+> > +                bindings::xa_init_flags(xa, flags)
+> > +            }),
+> > +            _p: PhantomData,
+> > +        })
 >
-> Because `into_unique_or_drop` doesn't actually remove the allocation
-> (it only decrements refcount for non-zero or turn it into `UniqueArc`).
+> I think this needs an `INVARIANT` comment.
 
-I don't follow. This comment here talks about a race with another CPU
-decrementing to zero; isn't the same race possible between any
-combination of `into_unique_or_drop` and `drop` callers?
+=F0=9F=91=8D
+
+> [...]
+>
+> > +/// The error returned by [`store`](Guard::store).
+> > +///
+> > +/// Contains the underlying error and the value that was not stored.
+> > +pub struct StoreError<T> {
+> > +    /// The error that occurred.
+> > +    pub error: Error,
+> > +    /// The value that was not stored.
+> > +    pub value: T,
+> > +}
+> > +
+> > +impl<T> From<StoreError<T>> for Error {
+> > +    fn from(value: StoreError<T>) -> Self {
+> > +        let StoreError { error, value: _ } =3D value;
+> > +        error
+> > +    }
+>
+> Still think this should just be `value.error`.
+>
+> If it is important to especially point out that `value` is dropped, maybe=
+ a
+> comment is the better option.
+>
+> IMHO, adding additionally code here just throws up questions on why that
+> additional code is needed.
+
+OK.
+
+> > +}
+> > +
+> > +impl<'a, T: ForeignOwnable> Guard<'a, T> {
+> > +    fn load<F, U>(&self, index: usize, f: F) -> Option<U>
+> > +    where
+> > +        F: FnOnce(NonNull<T::PointedTo>) -> U,
+> > +    {
+> > +        // SAFETY: `self.xa.xa` is always valid by the type invariant.
+> > +        let ptr =3D unsafe { bindings::xa_load(self.xa.xa.get(), index=
+) };
+> > +        let ptr =3D NonNull::new(ptr.cast())?;
+> > +        Some(f(ptr))
+> > +    }
+> > +
+> > +    /// Provides a reference to the element at the given index.
+> > +    pub fn get(&self, index: usize) -> Option<T::Borrowed<'_>> {
+> > +        self.load(index, |ptr| {
+> > +            // SAFETY: `ptr` came from `T::into_foreign`.
+> > +            unsafe { T::borrow(ptr.as_ptr()) }
+> > +        })
+> > +    }
+> > +
+> > +    /// Provides a mutable reference to the element at the given index=
+.
+> > +    pub fn get_mut(&mut self, index: usize) -> Option<T::BorrowedMut<'=
+_>> {
+> > +        self.load(index, |ptr| {
+> > +            // SAFETY: `ptr` came from `T::into_foreign`.
+> > +            unsafe { T::borrow_mut(ptr.as_ptr()) }
+> > +        })
+> > +    }
+> > +
+> > +    /// Removes and returns the element at the given index.
+> > +    pub fn remove(&mut self, index: usize) -> Option<T> {
+> > +        // SAFETY: `self.xa.xa` is always valid by the type invariant.
+> > +        //
+> > +        // SAFETY: The caller holds the lock.
+>
+> I think we only want one `SAFETY` section with an enumeration.
+
+=F0=9F=91=8D
+
+> > +        let ptr =3D unsafe { bindings::__xa_erase(self.xa.xa.get(), in=
+dex) }.cast();
+> > +        // SAFETY: `ptr` is either NULL or came from `T::into_foreign`=
+.
+> > +        //
+> > +        // SAFETY: `&mut self` guarantees that the lifetimes of [`T::B=
+orrowed`] and
+> > +        // [`T::BorrowedMut`] borrowed from `self` have ended.
+>
+> Same here...
+
+=F0=9F=91=8D
+
+> > +        unsafe { T::try_from_foreign(ptr) }
+> > +    }
+> > +
+> > +    /// Stores an element at the given index.
+> > +    ///
+> > +    /// May drop the lock if needed to allocate memory, and then reacq=
+uire it afterwards.
+> > +    ///
+> > +    /// On success, returns the element which was previously at the gi=
+ven index.
+> > +    ///
+> > +    /// On failure, returns the element which was attempted to be stor=
+ed.
+> > +    pub fn store(
+> > +        &mut self,
+> > +        index: usize,
+> > +        value: T,
+> > +        gfp: alloc::Flags,
+> > +    ) -> Result<Option<T>, StoreError<T>> {
+> > +        build_assert!(
+> > +            mem::align_of::<T::PointedTo>() >=3D 4,
+> > +            "pointers stored in XArray must be 4-byte aligned"
+> > +        );
+> > +        let new =3D value.into_foreign();
+> > +
+> > +        let old =3D {
+> > +            let new =3D new.cast();
+> > +            // SAFETY: `self.xa.xa` is always valid by the type invari=
+ant.
+> > +            //
+> > +            // SAFETY: The caller holds the lock.
+>
+> ...and here.
+
+=F0=9F=91=8D
+
+> > +            //
+> > +            // INVARIANT: `new` came from `T::into_foreign`.
+> > +            unsafe { bindings::__xa_store(self.xa.xa.get(), index, new=
+, gfp.as_raw()) }
+> > +        };
