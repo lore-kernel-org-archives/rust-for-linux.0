@@ -1,126 +1,123 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B9025335A;
-	Fri, 21 Feb 2025 20:27:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50F8228CBA;
+	Fri, 21 Feb 2025 20:56:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740169672; cv=none; b=PNyeWUiT6p4zjTldpZGj7WM35RmJSthfekwQIQDvo9OUdZmFXJUUXtf1WbYK1Cz+jpt7rbXuE1fi6bciZyC9C3EaC0hr475047bow1Q+o7+8w39OXa/dWiNjtFYIIb02TzIJlMiboHmv9MWPMuM1gqCrexM2ufEAuwwiiYAoYG8=
+	t=1740171417; cv=none; b=iykcksh/KWHtv1hQ+ALCuDGYytBO1Pi+rQDTUskBHEyi8onxnX2XAe0iO4mZ0rdg7CDhT5BTLGCUDD/rkSD7t0BjAyx2Qsiji5TRq4PT5lDHneC+YbdgHsjn2uIW92tI+tuLdIKPX759xIvKQfAQDV6xzuGgpmxvUSkSCUkgEtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740169672; c=relaxed/simple;
-	bh=nGhttoR1swOP1QTQwepuqeDirYgZPEDMvtJFLrL5dpk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=T4R1ac/tAw4e+Ccr/Hq8DWy7t9mMmztRZnlEu+S/RQD3VDvQ24QUpWVf20u4SdUtg4z9EjdzshDRtD81UECOFhCsX2qj4yesNgZ8bfUSSDQvb+iDQdj2FwBbr2db+9WYdJgDLMq2aLziwoiyE4a2b/T31jWinHbBkrp0GhboV/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f0ZBdYYL; arc=none smtp.client-ip=209.85.222.172
+	s=arc-20240116; t=1740171417; c=relaxed/simple;
+	bh=/7+cCF97LVI2LZ3uAXEdDIX21F0soxUVOoE6LZY7lpc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sAkZXI1+QZUi+O+q0itgAnJJUeADx3DJP8debLsEPZkv+0hBK5dRQpMe2FV9PCllAZMd+EIDLigU1jMUZblz0ic0D10yX/XXIgchNKFeYJFbRM5AbS6D2rZOpnypy4E5y9SEgFXPO5nUW/6cM9LOOh7tl6nMTqi9pPO8X/+HEbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cHrfXLzL; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f0ZBdYYL"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7be8f281714so286979385a.1;
-        Fri, 21 Feb 2025 12:27:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cHrfXLzL"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-22114b800f7so50762975ad.2;
+        Fri, 21 Feb 2025 12:56:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740169669; x=1740774469; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ipEWRTbUNI0fhw7p2quxgycmIwXwELriTrZg15QiXvk=;
-        b=f0ZBdYYLTwTUzg8FTtxf3KU6TgUtjekCsKIZA6luesUxMxxt5lLHxi0hhWxr3rvWEh
-         lkZeLh887xL1D5KhFReVhzQcDlnQ7uRxVezFnbel+SksGa95XXDesXf16TbD4LsuGVZA
-         FdbYtXuGJuDCFvTsunNS66G+L+6fwjSQdoXfnYw/knXey3aXXvbZ1a615or719J+W6KV
-         GkSs5H9LHNiywGZZar91lYHw5Qwb46ps5HSr+Wdc6XVBJ7h1ARzE/vkaz5np3GTYPX4s
-         ArX9+U12YFmRhZhpy8823m0LRaZfbNmGN0p2ZLtZGf3LdVjP/vnOXSScJGyjLZX5b2Kn
-         DJYw==
+        d=gmail.com; s=20230601; t=1740171414; x=1740776214; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z8lhhVeH9X9OD7xrq+ml0fQUZEnU/MtBX4pCJFfiH3Y=;
+        b=cHrfXLzLeCiBctYDt7eyGs+c255csl8Byl1cw2l3IXmxM7HP3DoEOJvjJeSLY2VBQ4
+         JoASFiE2x73qBQYw55Ac+P6afwb7okYAr9Fh9bLTEC183YoFxOkJPKs1WN5158UBzbUG
+         G7ORgjIOfPFWo4Ml7bsU5UFoElcjnj62cfiNxx56k0PgUT90DM0EGq8DnYhpU3HK33wK
+         nYWw4iHGInGRiEfZmVNoikP2uqs6lD4FjrJ1bvkgX+NMuood3WBCjMZhj3OC1EVjf0/T
+         3NLVvDTDtyZ7Ba6TJasiP8w4eGou15EkbHava4uRBEuRAiVL2dI77OifcqLosMAactUX
+         8Ppw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740169669; x=1740774469;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ipEWRTbUNI0fhw7p2quxgycmIwXwELriTrZg15QiXvk=;
-        b=aW4dMi6tAwP8xjJc9xCQYWUwn740aWZf/DTuvP1NFqxLwzHDcz8zY+dXCGWYhuTxle
-         R/RNydIM6C6AetdkmBcASC+SezVUjyvizAit89WzMJPyQjIwmt8CnUUKTTqKHJyTFKqI
-         h583qEmn/Gd3aOp5r86wtiz5g1olrptSPqwxNxFws1TOmLoQXVGPeYRQViLtvVlmWJ1o
-         uSHInCwcDnlc+OV8vDv/tpU5ybP0VNIi4B1fKMSxKVK5lDes8hcp4bzLihrBMpBBFdWv
-         Qj/uOR0dDppT9uWo5J+jvppqpCS5qFKyNPgXNnqnjk4WzooM9hQoQqa28WDqzV7Dn7zh
-         DNWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUGx7BXOSv46MpgWdW90FDWXLwc4He/NDioBcGmJjsSVKGW7nz6lDo9l8T3+JeerJN55ebZf9urKMtWWYJ2@vger.kernel.org, AJvYcCUd04E5DFszz+ObBHAs1grwf/hfJ5s57669z/43NDhxMGln5LnumBVy2JKYy9D7itaTMbAthMsc2UGREc4F@vger.kernel.org, AJvYcCV4u2v4P8pq6oo93JhkOgkjj0kOepkss5jWTEZD0rdTuhZgQ1Vrd+M5jQmjmY6fxBr5ibsVD4HN3R0n@vger.kernel.org, AJvYcCVsER99ejtFFngJYSK2qdUNoq/4UOVU/csxxLXzGndh+4IC9KCNNHqwJG8WClDUhR/yhgJ2tNwOlMKP8Chtj8w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyzk53oPGF3pzyct4teOPhPgaMeiGxVeoS0rRQsjqM/ocsNRW1Z
-	mLfamS/FiOI+VcSN7tkOsrbNpFcHIv229QyybGylqhWyj3qCCK8Z
-X-Gm-Gg: ASbGncucSlqKMb4QPYBsR3nzgekM4vHW7p6Q+2WVmzyokFVC1s/5KRpodxN2vYiUUwI
-	L3kt+Giu+ljQYHHOE7ImW5/7IOBCcrMalL2Yfqv+IOxBKUUrSTmnoIrUfDYLCsEnUcpaHDznfYy
-	/zLvUbBQu1ZmKctvEJaSW1KNX/0cdceNG6xqn1b2QONeMpuxGkAXcBj7/pXo3QWUKZ6JeyuMmDb
-	nz+D0Onoy2ZnrSalgjyJ1zkV/QbY2qe8jdn4Le8aXLsv9j+jdooB1qt1sA7KCL5nqWp5b/RIwHU
-	suiVHnOSr9J/8JHRlIire6JUkIdAEVlwsF/HIDeqv5D01oR1Rw==
-X-Google-Smtp-Source: AGHT+IGzdMSv/oYQrAzUn6Bchc187UjEzN2FLNKCWP2FOrjv2+RNm6uEFODoqMSglyfAVjItmAIXJQ==
-X-Received: by 2002:a05:620a:2b86:b0:7c0:a2d9:cb65 with SMTP id af79cd13be357-7c0cef66eb1mr679494585a.57.1740169669461;
-        Fri, 21 Feb 2025 12:27:49 -0800 (PST)
-Received: from tamird-mac.local ([2600:4041:5be7:7c00:880f:47d4:56c6:b852])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c0a99d363csm539224985a.70.2025.02.21.12.27.47
+        d=1e100.net; s=20230601; t=1740171414; x=1740776214;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Z8lhhVeH9X9OD7xrq+ml0fQUZEnU/MtBX4pCJFfiH3Y=;
+        b=SwrikKUV8dxhzluzC5b1YDYRfF+aqE7r77dNLuxtzLlG0Ovc1rLk1fvrx1r8PUh0Uk
+         800Q9kWorefOiFHSor/RLjx13iBM+2PKia022WmsZArCR5DAodxIrXOq7S2+07f/oilG
+         l4CKjCdSHRx8f4UhpaDatIq6q2p0hm1YN9H5naW1wHholPSjUAoZ+s6IKPby4P/9o/a2
+         sOJsBO8LlHP6FNoc2PsDLslLXqCVmBdDqOGUeP8nljWOp8cFnY0h1Kw+e6paWSks79uV
+         3n262/0+Q38iL9jSGxC5qhWp/t/mliJ4C4IVaG3n0Bq9OwFvZxos8HRj4vs6sJJXFzsm
+         Z3hg==
+X-Forwarded-Encrypted: i=1; AJvYcCU0J4qr/iIx9eCRHzCbZFvA5e3PveSepdfEVmYYkmc6QftdVn7HRUVq0YUgo50hmLHi0mXSSrXG3MmPSjA=@vger.kernel.org, AJvYcCV1/mM4sH5hoXaekLdCIK3SC6dpQ3jKPTeayX8eSK/a27bmUya+JPDaB4gqF78IG4FYnZ7AEVALvquUhHr/+TU=@vger.kernel.org, AJvYcCVzCsG03cjNS62IQ8FwPrhnbsNdzb1U6lYbkfqgIzpDVwiaSZHo6jjdGJf8Cahez+bpHoXJBNA2e7A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyEo8fZIzRmtplGa/CIHOj7ZU6hT6sukXIelaM3T8sraVv4Es62
+	4WWSVCUX+p9Lq58co5Orzb28quDVjlwraH+g6R4EVgDt2mnBpvYY
+X-Gm-Gg: ASbGncutOrMm++F71tLs6I9ZK6YF95N1ZNTGIKPNCkzISqKfgh1tGsTIf3jSkhpT7Ml
+	z5L5LHro/VE3h0QNofDRbLmRLguLHwhd71veJ9eNGbMTqNu3KlDasHWbHj9wWsQZ2e4nL/yO7zh
+	2n3jWCCUFcwx/WQK5SvViWj+91+Q97ynJ3ygziyyRu1JK/v52o/9xyesbVZbfpJd1ey2sM2Fcrq
+	63LwjdI/I/wfc4nazlcwbvuv8jHX6i5GzbC09xe8wizXTBB+KRiKwlPiaQmH9bGEDzUUlfo691h
+	En+sgipYEfyDfEi4kY2reQ5FMg==
+X-Google-Smtp-Source: AGHT+IFRImKa4DoPyReOUvSXgQZq1X5x1z6dYzGTDKMLJGX3yWLR8EyKsJPywhTzWA46IVhMKnABsQ==
+X-Received: by 2002:a17:903:32c2:b0:220:d078:eb28 with SMTP id d9443c01a7336-2219fff356dmr58787965ad.48.1740171413934;
+        Fri, 21 Feb 2025 12:56:53 -0800 (PST)
+Received: from localhost ([216.228.125.130])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-220d5585220sm139846785ad.215.2025.02.21.12.56.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Feb 2025 12:27:48 -0800 (PST)
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Fri, 21 Feb 2025 15:27:42 -0500
-Subject: [PATCH v18 3/3] MAINTAINERS: add entry for Rust XArray API
+        Fri, 21 Feb 2025 12:56:53 -0800 (PST)
+From: Yury Norov <yury.norov@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Danilo Krummrich <dakr@redhat.com>
+Cc: Yury Norov <yury.norov@gmail.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Nishanth Menon <nm@ti.com>,
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+	Erik Schilling <erik.schilling@linaro.org>,
+	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Joakim Bech <joakim.bech@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	linux-pm@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] Bitmap bindings for rust
+Date: Fri, 21 Feb 2025 15:56:36 -0500
+Message-ID: <20250221205649.141305-1-yury.norov@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250221-rust-xarray-bindings-v18-3-cbabe5ddfc32@gmail.com>
-References: <20250221-rust-xarray-bindings-v18-0-cbabe5ddfc32@gmail.com>
-In-Reply-To: <20250221-rust-xarray-bindings-v18-0-cbabe5ddfc32@gmail.com>
-To: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Matthew Wilcox <willy@infradead.org>, 
- Bjorn Helgaas <bhelgaas@google.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Tamir Duberstein <tamird@gmail.com>, 
- FUJITA Tomonori <fujita.tomonori@gmail.com>, 
- "Rob Herring (Arm)" <robh@kernel.org>
-Cc: =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>, 
- Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-pci@vger.kernel.org
-X-Mailer: b4 0.15-dev
+Content-Transfer-Encoding: 8bit
 
-Add an entry for the Rust xarray abstractions.
+Hi Viresh, Miguel, Danilo and everyone,
 
-Acked-by: Andreas Hindborg <a.hindborg@kernel.org>
-Signed-off-by: Tamir Duberstein <tamird@gmail.com>
----
- MAINTAINERS | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+Please review the bindings and a new maintenance entry together with my
+understanding of our way to collaborate. I tried to summarize the recent
+discussions in patch 2. If you have any thoughts please let me know.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index efee40ea589f..f8d6a5f4a4cc 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -25794,6 +25794,17 @@ F:	lib/test_xarray.c
- F:	lib/xarray.c
- F:	tools/testing/radix-tree
- 
-+XARRAY API [RUST]
-+M:	Tamir Duberstein <tamird@gmail.com>
-+M:	Andreas Hindborg <a.hindborg@kernel.org>
-+L:	rust-for-linux@vger.kernel.org
-+S:	Supported
-+W:	https://rust-for-linux.com
-+B:	https://github.com/Rust-for-Linux/linux/issues
-+C:	https://rust-for-linux.zulipchat.com
-+T:	git https://github.com/Rust-for-Linux/linux.git rust-next
-+F:	rust/kernel/xarray.rs
-+
- XBOX DVD IR REMOTE
- M:	Benjamin Valentin <benpicco@googlemail.com>
- S:	Maintained
+Thanks,
+Yury
+
+Viresh Kumar (1):
+  rust: Add cpumask helpers
+
+Yury Norov (1):
+  bitmap: add rust bindings entry in MAINTAINERS
+
+ MAINTAINERS                     |  5 +++++
+ rust/bindings/bindings_helper.h |  1 +
+ rust/helpers/cpumask.c          | 40 +++++++++++++++++++++++++++++++++
+ rust/helpers/helpers.c          |  1 +
+ 4 files changed, 47 insertions(+)
+ create mode 100644 rust/helpers/cpumask.c
 
 -- 
-2.48.1
+2.43.0
 
