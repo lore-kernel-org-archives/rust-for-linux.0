@@ -1,69 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF17E21128F;
-	Fri, 21 Feb 2025 18:19:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81751D5AA7;
+	Fri, 21 Feb 2025 18:22:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740161952; cv=none; b=sSldo94E+BXYXhQy+QePJK9z2eDEbE+b1VImAFu+ZHWGdltoVmaJ9JeGUeKoqgwl+DLXcqQtut0h2rIpZ0pwDPHN3Y/sJUiA66XK6V2XoEW8dXpOXFC+9c9RDxg2Hbc5H9HGqy+6Qv5xVnpQJ/njoIgukNvOHCZD7QqpN2ZSGSI=
+	t=1740162135; cv=none; b=jaTVEakr9rbIyOn9oPhYxkk03iajmeqlYtcG6DclXiNGSsWgfUUUvtVUAxVlUqR8IPRvwQQHOFeAnhBOehBl/K/YnsOXhd6307HoXjwmVYGa1guYZW3NFRbektT0c5v+mwvfm8P0W31k4Xq8Bn56AmMWr1I5FQa/qt+g3e6uKK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740161952; c=relaxed/simple;
-	bh=Es7ghDygD2xkMuhK4aDVfA9oFbdQaNPrdep7ueQDqz4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Jwmt3toh0YlCZKpMInM7Z7o6JOitZPYWnL4XlY7vUCVNjouKOdL+6Blmcm5y6GH/vTsXFUpICMeA3SCrXnzvlb0IP/Up+VdIRvC/MduMWKrU5q5IuoeERAfUpDX3DRw6TcCnNVacHmCf/5qY1kc4pRTzh6wvGi6bpaCrjpETu7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B6CCC4CED6;
-	Fri, 21 Feb 2025 18:19:10 +0000 (UTC)
-Date: Fri, 21 Feb 2025 13:19:10 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Martin Uecker <uecker@tugraz.at>, Dan Carpenter
- <dan.carpenter@linaro.org>, Greg KH <gregkh@linuxfoundation.org>, Boqun
- Feng <boqun.feng@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, Miguel Ojeda
- <miguel.ojeda.sandonis@gmail.com>, Christoph Hellwig <hch@infradead.org>,
- rust-for-linux <rust-for-linux@vger.kernel.org>, David Airlie
- <airlied@gmail.com>, linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
-Subject: Re: Rust kernel policy
-Message-ID: <20250221131910.5ddac0f3@batman.local.home>
-In-Reply-To: <CAHk-=wgg2A_iHNwf_JDjYJF=XHnKVGOjGp50FzVWniA2Z010bw@mail.gmail.com>
-References: <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
-	<CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
-	<a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
-	<Z7VKW3eul-kGaIT2@Mac.home>
-	<2025021954-flaccid-pucker-f7d9@gregkh>
-	<4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
-	<2025022024-blooper-rippling-2667@gregkh>
-	<1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
-	<2025022042-jot-favored-e755@gregkh>
-	<b9a5de64fe1ded2ad3111763f35af9901bd81cc4.camel@tugraz.at>
-	<caea3e79-78e6-4d98-9f3b-f8e7f6f00196@stanley.mountain>
-	<61a7e7db786d9549cbe201b153647689cbe12d75.camel@tugraz.at>
-	<20250221124304.5dec31b2@gandalf.local.home>
-	<CAHk-=wgg2A_iHNwf_JDjYJF=XHnKVGOjGp50FzVWniA2Z010bw@mail.gmail.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1740162135; c=relaxed/simple;
+	bh=L5Girfd3B73kfvjAEBHiRwPqWXrE3xTavT1abxWzlMc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=f1G8EvCBwNTQHfZk5Mh7ZuqcYUTOWqXDUMwXO3UurOd4riI5RafHVjy5RawqhJtlzyABillByIz2img4u0VjJ+UjyrHUpT161jjHYRQgM9dmMYD2Pt5Ul92XxNZBREFwrf8xbUOX4LS3De01ifCUaGfZxOm8L2vKDB+L85IvnBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kimbYH3f; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kimbYH3f"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-22100006bc8so44506035ad.0;
+        Fri, 21 Feb 2025 10:22:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740162133; x=1740766933; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WkJW9xIrJMOBXhMyWGWR5ruS6dpL++0YVSfzdFkJuS8=;
+        b=kimbYH3fkSpvOjL/z+Ad3TStuRVo4vp/ZKLt7N2jwrfgu++xLLZ9q9H0eeS9D2Kbzb
+         aPBcQakbGkYaOAzpttZOsLLLdknMCF85j+2U+05QIYz4QgMyNJreHXVml9m+n9Ta8dY9
+         aLP0LdlheUVQNXqJ9pwCwR4DLnvi8hfZ+QsootmTIFNhR3yTQx2B2BbhGkEVTXqtwO3z
+         SX/CnArdibTHGRl+HmtY5XJqGAhJrUfgqzqmWUtWVRFM7B1P/VV5ZIzzosAxEMMF9THA
+         P9HgvJ0UdPJqU7nTNddLbOtdGUnSP82+/P4CPFV/4f2zgdVlJUYrD1RfTPFY30EF2zFw
+         foqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740162133; x=1740766933;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WkJW9xIrJMOBXhMyWGWR5ruS6dpL++0YVSfzdFkJuS8=;
+        b=EfCjjR4ZLbNYLNyyM4nFntZ7yqnR0A0Na6DDa8Smxm82CxJcUNjYbgBAROybFiHa93
+         5bAEwkIuX3vPV2Gzv6J0Qe6+aCrGneGra7sSFJ0CUT98gj49xuDwd/lYeiaAXdyCOGGM
+         +wUBht6uIlxCfj2KWtqVfCS7+pYQVUPNwV+UZde6bW6b2gQCXIwyAshkVQFS/V8NGKz7
+         cEXhsfD0f4DpduXg613sHaJiLAywJ8kpyT92KotG79t/ls5qne1ECqYEFYoay8IlJ8hu
+         KLjb//5chn3jMnr3SmOXtBZAiGnuEqh0AvHWFBn/fCtxSW7VDGssjJWVZHdqNu5UpWww
+         N/3A==
+X-Forwarded-Encrypted: i=1; AJvYcCV7Hpl92iapVHwthjU8z6bR8qFTSFC3OjPxfIXe9x2fbYIwcJL6aUZhkd9oGuvqf1XjiuMgnI4KKp306yw=@vger.kernel.org, AJvYcCX4nSJVWeKuAh91nB5MtHZ+2Q+UF5zO62/ToYIj4dWP83jQ07czsAjSlvgi4RMVuq+GMnfMOMFTLggJA5NZRf0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRzPlTujysrTL0Hnznn3IleJuMrBEP6W8kMtuqp1ck7Ytocdp/
+	IQYmaszptAnFWmnaDWprXUCo2nxniPI/2UFH+B2FqwI1hnFxG+Yg
+X-Gm-Gg: ASbGnctcLqCVvUFhnou1q4oca/icBQWtJdNjUQI/67J86plNVwTd6+02/7Sv6TaE60o
+	gdlIGwzoeaH3fs8IZnApMkYPastrW/IFvK6slHLHASQoscrCC60zvzNHuYRk1Ordpya1Mg3uTi8
+	m6GkmHQ4nJp8/Yq6pDjLdsDlRrNzUmh37nJ9f3+xvM37ptq0hFiwg5N6wl+ieRASSa2GH0n1RhY
+	7ZNLdVobkoJHyeiyV8irsByxHFANF1fWBvL52RLX4M/pVEH3poFH0HKvgEciGqedL0w0vrXeiJv
+	8NcBQpuiphG6qhIqC/b8XRALopTeutoBCw==
+X-Google-Smtp-Source: AGHT+IEUjY22pHVSXXxBPcdVvc8Va6HuIxppxZw7ZP2raDq0CUy81ZDTd99tOa0SLVskT9pVa1I0gA==
+X-Received: by 2002:a05:6a21:394a:b0:1ee:e30c:68d8 with SMTP id adf61e73a8af0-1eef3c88b2bmr7343020637.12.1740162133346;
+        Fri, 21 Feb 2025 10:22:13 -0800 (PST)
+Received: from linuxsimoes.. ([177.21.141.136])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-adb5a52aefbsm14767948a12.62.2025.02.21.10.22.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Feb 2025 10:22:13 -0800 (PST)
+From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+To: a.hindborg@kernel.org,
+	alex.gaynor@gmail.com,
+	aliceryhl@google.com,
+	apw@canonical.com,
+	arnd@arndb.de,
+	aswinunni01@gmail.com,
+	axboe@kernel.dk,
+	benno.lossin@proton.me,
+	bhelgaas@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	dakr@kernel.org,
+	dwaipayanray1@gmail.com,
+	ethan.twardy@gmail.com,
+	fujita.tomonori@gmail.com,
+	gary@garyguo.net,
+	gregkh@linuxfoundation.org,
+	joe@perches.com,
+	lukas.bulwahn@gmail.com,
+	ojeda@kernel.org,
+	pbonzini@redhat.com,
+	tmgross@umich.edu,
+	walmeida@microsoft.com
+Cc: trintaeoitogc@gmail.com,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH V4 0/2] author field in module! macro should be a array
+Date: Fri, 21 Feb 2025 15:21:40 -0300
+Message-Id: <20250221182142.42134-1-trintaeoitogc@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Fri, 21 Feb 2025 10:07:42 -0800
-Linus Torvalds <torvalds@linux-foundation.org> wrote:
+In the module! macro, the author field is currently of type String.
+Since modules can have multiple authors, this limitation prevents
+specifying more than one.
 
->          if (x < 0 || x >= 10) {
-> 
-> just because 'x' may in some cases be an unsigned entity is not worth
-> even discussing with.
-> 
-> Educate yourself. The "unsigned smaller than 0" warning is not valid.
+- Change the author field to Option<Vec<String>> to allow creating
+  modules with multiple authors.
 
-Bah, you're right. I wasn't looking at the x >= 10 part, and just fixed
-a bug in user space that was caused by an unsigend < 0, and my mind was
-on that.
+- rename the field from author to authors to make it explicit that it
+  can refer to multiple authors.
 
-Sorry for the noise here.
+- In modules that use the author field, update its value to an array of
+  strings, and also rename it from author to authors.
 
--- Steve
+- Change the checkpatch.pl to find poorly formatted arrays in the macro
+  module!
+
+---
+V4 changes 
+
+- Improved checkpatch warning messages
+- Improved shiftwidth
+- Fixed the regex in checkpatch
+---
+
+Guilherme Giacomo Simoes (2):
+  rust: module: change author to an array
+  checkpatch: throw error for malformed arrays
+
+ drivers/block/rnull.rs               |  2 +-
+ rust/kernel/net/phy.rs               |  4 +--
+ rust/kernel/pci.rs                   |  2 +-
+ rust/macros/lib.rs                   |  6 ++--
+ rust/macros/module.rs                | 12 ++++----
+ samples/rust/rust_driver_faux.rs     |  2 +-
+ samples/rust/rust_driver_pci.rs      |  2 +-
+ samples/rust/rust_driver_platform.rs |  2 +-
+ samples/rust/rust_minimal.rs         |  2 +-
+ samples/rust/rust_misc_device.rs     |  2 +-
+ samples/rust/rust_print_main.rs      |  2 +-
+ scripts/checkpatch.pl                | 43 ++++++++++++++++++++++++++++
+ 12 files changed, 63 insertions(+), 18 deletions(-)
+
+-- 
+2.34.1
+
