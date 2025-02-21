@@ -1,140 +1,195 @@
-Received: from mail-10631.protonmail.ch (mail-10631.protonmail.ch [79.135.106.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1862638A3
-	for <rust-for-linux@vger.kernel.org>; Thu, 20 Feb 2025 23:47:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B711B65C
+	for <rust-for-linux@vger.kernel.org>; Fri, 21 Feb 2025 00:40:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740095260; cv=none; b=HalBHCCt/BLuziTfxDpUlatVphMlSQ0hIkN41yhFGNf80PPmU7x13K4LggivqX5/bUV5wIHfxmvgZ/hwiDBi/fFWS9ZKEC/TW2SRm4jK+3g6+AKMWLC5tdJM9CB6Bz5TG4HY8+0nKw4XV5uM0LWUa1L8L/+DlZD6SDrKny3Xxzw=
+	t=1740098421; cv=none; b=HZZ98DSEbAeNUxZSyTIqohr8HRBmyfUEYK2UHcOK1N5sHGlqbNZku4bUY+mvr7xd40YhwA3UPoIxQJnMnNZ9hLHcpCxMgHIpuGh1rN5byqujN/tFhopApgDcnG8v8ej10/1SwU0MrvIyA6BXEnM64aFFnyFyNcc61Sh9m0EwdFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740095260; c=relaxed/simple;
-	bh=w4T+ah5JQ4iTdSqvx3oac5Qkn0xWU1VeqbTpWFAvsOg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ABmALSU6vip2qwUVyyFtYWonHvwx1+GbkPkFzdKxeBuiJRHMqaQ8DXM72JzoH6fLIiTbdA96Vc+Viph54Henhe0UhxUuzgFrMT26nRgTLpxPkfvS0+j0iNk+e0uTt3872tqmpUvS2l+0EZZQKT+75+cvDe2Z4JJQ50+5wEMAgDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=anElHFl+; arc=none smtp.client-ip=79.135.106.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1740098421; c=relaxed/simple;
+	bh=4TZmT0OVj6lmyqRooEpFA8ZqX8x6sU7ElubS1e40FT8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Wy7szalf3iIMUnh4tHWeBVakWI3vPHAETn0ovfmDkO0sB3zNZMxwd5YbzYRqhAcw2DLAfyWNkahdaqG1od3S1IiXSSGxLkVuSblBhXUJ7HOgptS7ldRdXtEBXKQNyko77+Aqp6aT4gKdhR2XL1+cagMYIwGqabSOvwJxBJVeJrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=OLWLCW56; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="anElHFl+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=vxt2o2rruvf2dl4kokok72a5ha.protonmail; t=1740095255; x=1740354455;
-	bh=j5eID5FuIaYQp8zzP16hSMfM0CmS/MS5iWnefkVTiRU=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=anElHFl+SurPlTO0kvSIz0NlSPmGlTo2bxlUJI3w6AclZrCAhW03nO6Q2heuLAEJK
-	 yJsCWW3H/g6MExV5WNF6uJk/IQnlhYknqAAdaNxoAT8lxGcwUnlA60Q+j5RuuxL2P6
-	 ZcjQ7LW8MOToDgT2C8PtRw8FAJiNIG03SQdFXV8HJabqWvwlrr/aiXADJJ1ybj2qlz
-	 G/FDYSqNNhBlkJmyeyD2uRnE4lJWZkz7zqRUzuPPSjh6XSE2ChsTD/N6voYytNg/ln
-	 4dLC3ZURK91Zq+RADBydbB3Qxi09DrCWbh4gEEIyMSzb+mOPCDfQte6rQytcK4hPLM
-	 NLmpKGZ0uawDA==
-Date: Thu, 20 Feb 2025 23:47:30 +0000
-To: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Danilo Krummrich <dakr@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 05/14] rust: hrtimer: allow timer restart from timer handler
-Message-ID: <8e32c3e1-0b55-4809-92ad-f968252a05f8@proton.me>
-In-Reply-To: <20250218-hrtimer-v3-v6-12-rc2-v8-5-48dedb015eb3@kernel.org>
-References: <20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org> <20250218-hrtimer-v3-v6-12-rc2-v8-5-48dedb015eb3@kernel.org>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 767350196db5980b1a5d90fe6a7915a1a9f9791a
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="OLWLCW56"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5e058ca6806so2793053a12.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 20 Feb 2025 16:40:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1740098417; x=1740703217; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=IIRyFU8js5MTrYu3kLLDCqOpLqxeTQMOioCoscja6X0=;
+        b=OLWLCW56OcgSQuwQyYvNAeN+ju6tl0cJQDIRFq774y/I8245K/ddPULdhvLDAp8EY1
+         0CjP11k5Hyz843TpgpRCNqyYo+dpfCog2droIYQgcQDBmHf5jIyP6GBTyipJJHhNuKiY
+         W6grixhHkcpw29culiybkw1FvoGBB7CJhRwW8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740098417; x=1740703217;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IIRyFU8js5MTrYu3kLLDCqOpLqxeTQMOioCoscja6X0=;
+        b=nl2dPv28oXZK7X/sAL4jMwOYHZm1AL4LNWj9pT62fGOMixBOH0osEUpAt5TpGy/wdG
+         dO3S+aZlEdKIEXh7itBFdU+3bt9HQ6TCiog+b2ix7fVTaevpuxEJXi9lA0ded4jLFFbv
+         Xs4X7JsKgSvznQoIGrukAem7Dj2hum090BWU8cIPpKd60qhlo97BjadKNHZOUczh2+Xg
+         FLY/z2FZ5SKWsZ4XyeG77hh5QrxsKKkQPcMWqOYQIQs+eLcQPe+Qko6wF/nF8I75Kd4n
+         IzTzMHP/Fv9BQ72ihfO9sQ260xDdwgs+NHoe/w0lxvVi3nc6eszMrHjrKN1zAXMMlDF5
+         e1FQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUm+WtqTaxZgKArNLXUEJVlIUB3AeIEI8j52KUDAPYmIE6cK6ZulfqoD4XKFx/zgoo8w8pVwvZ8YWmKF9y3WA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyN8A9JZj/zD4bKBZmsXoAgs2tCRpXl7Rdi3UAFo42cTKG3TsOf
+	teuNx+cLDEbllJicZUfrNLhBo/RrMzjKxbNsXOZEG2qC3j02vvXodyIOm2SX9px0MzpTkqNVmkJ
+	hdkY=
+X-Gm-Gg: ASbGncsQX6HZu5guIaHXkbu7GSG3+QR6FHMCNaoxZ8hELPeS81nYLngk2NYTduZhlr0
+	Cca1wIFXvSBKtKkqGWi/BOrjSz8mJFNNVWq9rnB+WbhI18wj3nR0ouLoe1tYwMfH7q7Jaa2OgOl
+	dVNAO24ZXbIT0G/hPc3RBxU0RTVaOPalCeOiKuveH+U9NSG29QJWU+UQwnLBQ6fQXOYPqf1e9Nn
+	wsVCGlP9Aw9H/9KZyBkK5tebuERWAyBFstYxzupzBFv7CL9o0q5U0o3eTTBnfm6BGkqvTS7b8wX
+	TAq1qhd2A/JBAMsEQNcJkl8F9crYyS1p0KaJRpfum1of/RUHxwq7sRbL1D391A6Evg==
+X-Google-Smtp-Source: AGHT+IE1m0KhXIlSEogKN91wG2zUK/sSSzD26Iei8UmRqf6LCnV3o1+NzRRDbCGTsPl5qh6M6iNzbQ==
+X-Received: by 2002:a05:6402:3506:b0:5de:c9d0:672f with SMTP id 4fb4d7f45d1cf-5e0b710711cmr750477a12.16.1740098417089;
+        Thu, 20 Feb 2025 16:40:17 -0800 (PST)
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com. [209.85.218.51])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5dece2709b4sm12683006a12.57.2025.02.20.16.40.15
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Feb 2025 16:40:16 -0800 (PST)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-ab7430e27b2so271171766b.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 20 Feb 2025 16:40:15 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVOijLaFLzheSU78MDimKxdBaFU0ZmfsrFPyqxdemftenco1MWIjM41oEaWnd+Im1UCmro0CboQh0rabnr/AA==@vger.kernel.org
+X-Received: by 2002:a17:906:f5a9:b0:abb:a88d:ddaf with SMTP id
+ a640c23a62f3a-abc0df5d5a1mr76770566b.55.1740098415082; Thu, 20 Feb 2025
+ 16:40:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
+ <Z7SwcnUzjZYfuJ4-@infradead.org> <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
+ <Z7bO1jT2onZFZwgH@infradead.org>
+In-Reply-To: <Z7bO1jT2onZFZwgH@infradead.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Thu, 20 Feb 2025 16:39:58 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wgLbz1Bm8QhmJ4dJGSmTuV5w_R0Gwvg5kHrYr4Ko9dUHQ@mail.gmail.com>
+X-Gm-Features: AWEUYZl110dqtgnPbf_5O23eqr6Efb1z5WIykrA3dNVGStovQIgnPSeO4hmGu6I
+Message-ID: <CAHk-=wgLbz1Bm8QhmJ4dJGSmTuV5w_R0Gwvg5kHrYr4Ko9dUHQ@mail.gmail.com>
+Subject: Re: Rust kernel policy
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
+	rust-for-linux <rust-for-linux@vger.kernel.org>, Greg KH <gregkh@linuxfoundation.org>, 
+	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On 18.02.25 14:27, Andreas Hindborg wrote:
-> This patch allows timer handlers to report that they want a timer to be
-> restarted after the timer handler has finished executing.
->=20
-> Also update the `hrtimer` documentation to showcase the new feature.
->=20
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
->  rust/kernel/time/hrtimer.rs     | 28 +++++++++++++++++++++++++++-
->  rust/kernel/time/hrtimer/arc.rs |  4 +---
->  2 files changed, 28 insertions(+), 4 deletions(-)
->=20
-> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-> index b2a3130bc21d7..e342193f985eb 100644
-> --- a/rust/kernel/time/hrtimer.rs
-> +++ b/rust/kernel/time/hrtimer.rs
-> @@ -183,7 +183,7 @@ pub trait HrTimerCallback {
->      type CallbackTargetParameter<'a>;
->=20
->      /// Called by the timer logic when the timer fires.
-> -    fn run(this: Self::CallbackTargetParameter<'_>)
-> +    fn run(this: Self::CallbackTargetParameter<'_>) -> HrTimerRestart
->      where
->          Self: Sized;
->  }
-> @@ -278,6 +278,32 @@ unsafe fn start(self_ptr: *const Self, expires: Ktim=
-e) {
->      }
->  }
->=20
-> +/// Restart policy for timers.
-> +pub enum HrTimerRestart {
-> +    /// Timer should not be restarted.
-> +    NoRestart,
-> +    /// Timer should be restarted.
-> +    Restart,
-> +}
-> +
-> +impl From<bindings::hrtimer_restart> for HrTimerRestart {
-> +    fn from(value: u32) -> Self {
-> +        match value {
-> +            bindings::hrtimer_restart_HRTIMER_NORESTART =3D> Self::NoRes=
-tart,
-> +            _ =3D> Self::Restart,
-> +        }
-> +    }
-> +}
-> +
-> +impl From<HrTimerRestart> for bindings::hrtimer_restart {
-> +    fn from(value: HrTimerRestart) -> Self {
-> +        match value {
-> +            HrTimerRestart::NoRestart =3D> bindings::hrtimer_restart_HRT=
-IMER_NORESTART,
-> +            HrTimerRestart::Restart =3D> bindings::hrtimer_restart_HRTIM=
-ER_RESTART,
-> +        }
-> +    }
-> +}
+On Wed, 19 Feb 2025 at 22:42, Christoph Hellwig <hch@infradead.org> wrote:
+>
+> The document claims no subsystem is forced to take Rust.  That's proven
+> to be wrong by Linus.  And while you might not have known that when
+> writing the document, you absolutely did when posting it to the list.
 
-Do drivers need these impls? If no, I would prefer a private conversion
-function just for the abstraction.
+I was hopeful, and I've tried to just see if this long thread results
+in anything constructive, but this seems to be going backwards (or at
+least not forwards).
 
----
-Cheers,
-Benno
+The fact is, the pull request you objected to DID NOT TOUCH THE DMA
+LAYER AT ALL.
 
-> +
->  /// Use to implement the [`HasHrTimer<T>`] trait.
->  ///
->  /// See [`module`] documentation for an example.
-> diff --git a/rust/kernel/time/hrtimer/arc.rs b/rust/kernel/time/hrtimer/a=
-rc.rs
-> index d1c90631d0036..109eded0e73be 100644
-> --- a/rust/kernel/time/hrtimer/arc.rs
-> +++ b/rust/kernel/time/hrtimer/arc.rs
-> @@ -82,8 +82,6 @@ impl<T> RawHrTimerCallback for Arc<T>
->          // timer. This `T` is contained in an `Arc`.
->          let receiver =3D unsafe { ArcBorrow::from_raw(data_ptr) };
->=20
-> -        T::run(receiver);
-> -
-> -        bindings::hrtimer_restart_HRTIMER_NORESTART
-> +        T::run(receiver).into()
->      }
->  }
->=20
-> --
-> 2.47.0
->=20
->=20
+It was literally just another user of it, in a completely separate
+subdirectory, that didn't change the code you maintain in _any_ way,
+shape, or form.
 
+I find it distressing that you are complaining about new users of your
+code, and then you keep bringing up these kinds of complete garbage
+arguments.
+
+Honestly, what you have been doing is basically saying "as a DMA
+maintainer I control what the DMA code is used for".
+
+And that is not how *any* of this works.
+
+What's next? Saying that particular drivers can't do DMA, because you
+don't like that device, and as a DMA maintainer you control who can
+use the DMA code?
+
+That's _literally_ exactly what you are trying to do with the Rust code.
+
+You are saying that you disagree with Rust - which is fine, nobody has
+ever required you to write or read Rust code.
+
+But then you take that stance to mean that the Rust code cannot even
+use or interface to code you maintain.
+
+So let me be very clear: if you as a maintainer feel that you control
+who or what can use your code, YOU ARE WRONG.
+
+I respect you technically, and I like working with you.
+
+And no, I am not looking for yes-men, and I like it when you call me
+out on my bullshit. I say some stupid things at times, there needs to
+be people who just stand up to me and tell me I'm full of shit.
+
+But now I'm calling you out on *YOURS*.
+
+So this email is not about some "Rust policy". This email is about a
+much bigger issue: as a maintainer you are in charge of your code,
+sure - but you are not in charge of who uses the end result and how.
+
+You don't have to like Rust. You don't have to care about it. That's
+been made clear pretty much from the very beginning, that nobody is
+forced to suddenly have to learn a new language, and that people who
+want to work purely on the C side can very much continue to do so.
+
+So to get back to the very core of your statement:
+
+   "The document claims no subsystem is forced to take Rust"
+
+that is very much true.
+
+You are not forced to take any Rust code, or care about any Rust code
+in the DMA code. You can ignore it.
+
+But "ignore the Rust side" automatically also means that you don't
+have any *say* on the Rust side.
+
+You can't have it both ways. You can't say "I want to have nothing to
+do with Rust", and then in the very next sentence say "And that means
+that the Rust code that I will ignore cannot use the C interfaces I
+maintain".
+
+Maintainers who *want* to be involved in the Rust side can be involved
+in it, and by being involved with it, they will have some say in what
+the Rust bindings look like. They basically become the maintainers of
+the Rust interfaces too.
+
+But maintainers who are taking the "I don't want to deal with Rust"
+option also then basically will obviously not have to bother with the
+Rust bindings - but as a result they also won't have any say on what
+goes on on the Rust side.
+
+So when you change the C interfaces, the Rust people will have to deal
+with the fallout, and will have to fix the Rust bindings. That's kind
+of the promise here: there's that "wall of protection" around C
+developers that don't want to deal with Rust issues in the promise
+that they don't *have* to deal with Rust.
+
+But that "wall of protection" basically goes both ways. If you don't
+want to deal with the Rust code, you get no *say* on the Rust code.
+
+Put another way: the "nobody is forced to deal with Rust" does not
+imply "everybody is allowed to veto any Rust code".
+
+See?
+
+And no, I don't actually think it needs to be all that
+black-and-white. I've stated the above in very black-and-white terms
+("becoming a maintainer of the Rust bindings too" vs "don't want to
+deal with Rust at all"), but in many cases I suspect it will be a much
+less harsh of a line, where a subsystem maintainer may be *aware* of
+the Rust bindings, and willing to work with the Rust side, but perhaps
+not hugely actively involved.
+
+So it really doesn't have to be an "all or nothing" situation.
+
+                  Linus
