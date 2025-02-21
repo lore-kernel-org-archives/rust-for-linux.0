@@ -1,145 +1,119 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC2521147D;
-	Fri, 21 Feb 2025 15:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DFC11E7640;
+	Fri, 21 Feb 2025 15:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740151735; cv=pass; b=k3q/ropHf1fnlbrhzL0woU+bJDgm6lJEsBa/ZTj8bdtBmGCZ/O4qzU1Z3H9SZQa1aJoOMBCGTkbyi2HEjhkwboJa/CrCaQ2Z3yH1YFqyRi7NlgYUYfLRGyooTddjhrhaS1wNbPGO9Z65ODEZntpe3qFm/APmMFl4TnZ6Rxetn8Y=
+	t=1740152804; cv=pass; b=fPjEfGGhSVBOfMWyYktf0Nx1i8AK0YfMLQs3i0+VffKFq+OMyjFk6RsZc5j4fYN/ZGWBDaLWOFMvEkr5lBnmxfqQfPHAi5LotcUpWxXkUK/0+veRJ5cMpGplZxXyLsMgIlz1XWUvFsOmE6D/xXkLkPqsLLjmaO/IiwoFF7kDoAQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740151735; c=relaxed/simple;
-	bh=btfqHh6gmsSIJcjU3GbXMDgWDvFVm8dzoDhioK/7wOI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g4QBT6Fez0Ij+2XJm7XK09HN+L7fhiBSkly32QFooBhjOk1tWAIy2Kilwps5hj8XVsDCwesqGTMOEPIwDTVXZCzjRPC6AcJ9KmE2qWLUahSlHDkkzPTzHWjUkRbHTGJkg/EOoT1iFBs7pPrt9PDmFhsiwyNoUn/792GJg66SwkE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b=igFUWHSG; arc=pass smtp.client-ip=136.143.188.112
+	s=arc-20240116; t=1740152804; c=relaxed/simple;
+	bh=pn2MuqrPPywukUfVG1Tn4il5fz+cXCZkczWE+P6YzHQ=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=QF/X3up895yKgnHpsIdAbGFyqNkSIyQ+xCoexGXAs9SJQpY2g4J/4CRYFugiZABCazGYgm28fkJ8QLfnfQ95pztmdbFfl+N6I2F/MSX5MP9UfIfO+uMMoPav8pYUn1F43yWe80TZuk49TSvbowv1rKpkwdB2uItJKKa4QqVHM1U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=P0PAcyep; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b="igFUWHSG"
-ARC-Seal: i=1; a=rsa-sha256; t=1740151705; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="P0PAcyep"
+ARC-Seal: i=1; a=rsa-sha256; t=1740152768; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=ETIPuLM6VzvUWWHUMIH7mvkbk+G00Mc52iuUtqTsQjo/FcOhLTllrie0OVJeiq2TCNXOlZ7QK5CL05uY7fR8JWfFGdONNSR0iNN4DP/8evV5WKXEzsB0rUt3fzYmU6Zmzb9DHzBuhxM+eCa4KDkfURwvYJuJCDt6Km9JvRbuJOg=
+	b=fEgPaftwiozQnitf44S47NOq3cGA765xGRmrLZK6Sv3ypHwd0sOcHHQBYY/g0zOzRfZfLhXULDWAugrpAKwlz3mkoo6qh19HQjrA0fc/ZPK0dyA+th5DQk8aOCDgc4UvqW8EA+bj1MTWJ5XQgnLLUSPRwtVNay9mR72ZTsANy5w=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1740151705; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=btfqHh6gmsSIJcjU3GbXMDgWDvFVm8dzoDhioK/7wOI=; 
-	b=lYkTsng4RjSYwfRMWG+t3ZfcbH+Zof52remAbATqeErSTKXSnGeuFA2yttTRt04KTxVvr8aQy1nWTWMWORryLgEPF1f14pAnOohgEup3ql3HpU1KplokTZgo692ZCIu4GoYtIbOHQZ+IGTFYFvwovSCVk4psPr5zEIJvHOeMAWw=
+	t=1740152768; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=CgG3qgCstWdH24HcDyLIW/wtQ4JGMB+RlmP0pIdS1Lw=; 
+	b=lHE4vmXcYUF3YdMuFKVCuo7dUd33aSvyV9EqAL5vVM5xyaeCU9si7PAGJy8XeFohGAlvNTNkhg61+rDmf5HiEZUoIbTnMrlUuZdlQLEAMZGk0zxSy5z7W/YqSqe4J14SIiXOy44AyPrCZwKjn2HNdOKpHASkT7rNI7GWT9cbg68=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=sebastian.reichel@collabora.com;
-	dmarc=pass header.from=<sebastian.reichel@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1740151705;
-	s=zohomail; d=collabora.com; i=sebastian.reichel@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=btfqHh6gmsSIJcjU3GbXMDgWDvFVm8dzoDhioK/7wOI=;
-	b=igFUWHSGKkX9Vaftwno4xBOvaOCkuK2X1S/vdVFYFUgj+mxT8BCmZfUxBAvNo3iF
-	RTeKXOQqsnztJzj+NOQHtkiQ5V8qAMoMZx8xoD7RTjkFLRVllFzhJ9tmx5O6l6pSjV8
-	q3ERmLpe1ldSN0fXXPWFhAPd/RmRzL7j5xJem4kY=
-Received: by mx.zohomail.com with SMTPS id 1740151703226401.9144883348604;
-	Fri, 21 Feb 2025 07:28:23 -0800 (PST)
-Received: by venus (Postfix, from userid 1000)
-	id 1DF301826F6; Fri, 21 Feb 2025 16:28:18 +0100 (CET)
-Date: Fri, 21 Feb 2025 16:28:18 +0100
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Russell King <linux@armlinux.org.uk>, linux-clk@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH V2 2/2] rust: Add basic bindings for clk APIs
-Message-ID: <aoprvojsnmkbzmmpgx5wxjqtamnr3jyhyqfcqnwhxulp34gn32@aau57u4cotpe>
-References: <cover.1740118863.git.viresh.kumar@linaro.org>
- <a0a1ba4e27c3a0d9e38c677611eb88027e463287.1740118863.git.viresh.kumar@linaro.org>
- <Z7iGHiQcqa-_AXli@pollux>
- <4AD8A8F3-EA7E-4FBE-9F0D-58CF7BB09ED5@collabora.com>
- <Z7iSHR0F2QpiNpMZ@pollux>
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1740152768;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=CgG3qgCstWdH24HcDyLIW/wtQ4JGMB+RlmP0pIdS1Lw=;
+	b=P0PAcyepf6usrkvthJZSHWojSPwAEcyiKMjZrkIcG6lJqEsbJsm4zCqEmsJYOuIn
+	3pnnDJNDQmNjJuo/dCx33cgE+ZXa8qRq8tWPHwMa1WWzf3Gt9C2PAg+YDmUIym+BPUM
+	olWFM6uxhyoh7FSykeJ6zSu6KD4GRKFDm7g2U8PQ=
+Received: by mx.zohomail.com with SMTPS id 1740152765928241.70092754235043;
+	Fri, 21 Feb 2025 07:46:05 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="k3zauxydw4h5jdhh"
-Content-Disposition: inline
-In-Reply-To: <Z7iSHR0F2QpiNpMZ@pollux>
-X-Zoho-Virus-Status: 1
-X-Zoho-AV-Stamp: zmail-av-1.4.2/240.10.19
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
+Subject: Re: [PATCH v7 0/6] rust: extend `module!` macro with integer
+ parameter support
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20250218-module-params-v3-v7-0-5e1afabcac1b@kernel.org>
+Date: Fri, 21 Feb 2025 12:45:48 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Masahiro Yamada <masahiroy@kernel.org>,
+ Nathan Chancellor <nathan@kernel.org>,
+ Nicolas Schier <nicolas@fjasle.eu>,
+ Luis Chamberlain <mcgrof@kernel.org>,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Adam Bratschi-Kaye <ark.email@gmail.com>,
+ linux-kbuild@vger.kernel.org,
+ Petr Pavlu <petr.pavlu@suse.com>,
+ Sami Tolvanen <samitolvanen@google.com>,
+ Daniel Gomez <da.gomez@samsung.com>,
+ Simona Vetter <simona.vetter@ffwll.ch>,
+ Greg KH <gregkh@linuxfoundation.org>,
+ linux-modules@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <F882BB02-A795-4F79-A2AF-CBA9608470A5@collabora.com>
+References: <20250218-module-params-v3-v7-0-5e1afabcac1b@kernel.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: Apple Mail (2.3826.300.87.4.3)
 X-ZohoMailClient: External
 
+Hi Andreas,
 
---k3zauxydw4h5jdhh
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH V2 2/2] rust: Add basic bindings for clk APIs
-MIME-Version: 1.0
-
-Hi,
-
-On Fri, Feb 21, 2025 at 03:47:57PM +0100, Danilo Krummrich wrote:
-> On Fri, Feb 21, 2025 at 11:29:21AM -0300, Daniel Almeida wrote:
-> > > On 21 Feb 2025, at 10:56, Danilo Krummrich <dakr@kernel.org> wrote:
-> > > On Fri, Feb 21, 2025 at 12:03:39PM +0530, Viresh Kumar wrote:
-> > >> +/// A simple implementation of `struct clk` from the C code.
-> > >> +#[repr(transparent)]
-> > >> +pub struct Clk(*mut bindings::clk);
-> > >=20
-> > > I remember that Stephen explained that NULL is valid value for struct=
- clk. As a
-> > > consequence, all functions implemented for `Clk` have to consider thi=
-s.
-> >=20
-> > I am a bit confused here. If NULL is valid, then why should we have to =
-specifically
-> > consider that in the functions? No functions so far explicitly derefere=
-nces that value,
-> > they only pass it to the clk framework.
+> On 18 Feb 2025, at 10:00, Andreas Hindborg <a.hindborg@kernel.org> =
+wrote:
 >=20
-> This was badly phrased, the current implementation does not need to consi=
-der it
-> indeed. What I meant is that we have to consider it potentially. Especial=
-ly,
-> when adding new functionality later on. For instance, when accessing fiel=
-ds of
-> struct clk directly.=20
+> This series extends the `module!` macro with support module =
+parameters. It
+> also adds some string to integer parsing functions and updates `BStr` =
+with
+> a method to strip a string prefix.
+>=20
+> This series stated out as code by Adam Bratschi-Kaye lifted from the =
+original
+> `rust` branch [1].
+>=20
+> After a bit of discussion on v3 about whether or not module parameters
+> is a good idea, it seems that module parameters in Rust has a place
+> in the kernel for now. This series is a dependency for `rnull`, the =
+Rust
+> null block driver [2].
+>=20
 
-Just a drive-by comment - the current implementation will never have
-a NULL clock anyways. That is only returned by the clk_get functions
-with the _optional() suffix. You are right now only using clk_get(),
-which will instead returns ERR_PTR(-ENOENT).
+```
+$ sudo modprobe rust_minimal test_parameter=3D2
+[  251.384125] rust_minimal: Rust minimal sample (init)
+[  251.384600] rust_minimal: Am I built-in? false
+[  251.385010] rust_minimal: My parameter: 2
+```
 
-> Maybe this only becomes relevant once we write a clk driver itself
-> in Rust, but still.
+Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
 
-For a clock provider implementation you will mainly use 'struct
-clk_hw', which is different from 'struct clk'.
+IMHO, this is slightly confusing, since the parameter is named
+=E2=80=9Ctest_parameter=E2=80=9D, but you=E2=80=99re printing =E2=80=9CMy =
+parameter=E2=80=9D.
 
-Greetings,
+This is of course very minor. Overall, congrats on getting this to work =
+:)
 
--- Sebastian
-
---k3zauxydw4h5jdhh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAme4m4cACgkQ2O7X88g7
-+prYUQ//f59hToVXMAIGJ333jfHjvWUJFxssHgqDUIQPMSlxxpg9H6v8PiiZeIQf
-wFMPxKupdjH8J97e5hZy0U4NLVwDvj/RzyBPObVtV1f1/1RF2l4dp/gLqj25Hx3u
-zl2ZZhIFQRcfpbawE2FE10Dlk0Yswehiw5wB8HAbdHusjCzSFCZRkt51mEorFpPd
-7IwV/f+lpUgXueohG8JWVoQk2SsW0BOlsvZ3CMv6BuTtFfNDDUubEwja6ZzxV8ZW
-bRdUfEWnQuEd5ukSn39azfQ8obRwEJsmwuennHY0IR699PJIpPNqhCq5p7G6ldSy
-VsirllZ9OX4H2hR0PExn28VX6E6cln3vWlmh3Cw7zIwfaa6FvGL8hY75HkH+IEOq
-bOolzIJAcgTsqb9IFAbsCbPEl4OII87eBf6pABL8DSKnhFzu9KfNYvSKGhCiAiqe
-rHCsX2kElQud5R186pkoDKPNdfQEPuMFUa6eDt465hHP+fKbZ6Oso8PaRxZ8mGCw
-PeCwR5uKVhr7UQCPosrKRRJEZWBiP7lf3wE7TIPEYKl3sZyl8PW5mRUUt+mrIXs9
-AasBjvmHLzVm/TrAYop8vUx8Gcz9GiKKkGNVTTZ3ATvQoeyIyGa3rbxB5wRuynGt
-opY/3Sm3EjAObQTfAnMH5/A9CYnGSpwZtYdY01QxD0hPzZb2uNU=
-=khOL
------END PGP SIGNATURE-----
-
---k3zauxydw4h5jdhh--
+=E2=80=94 Daniel=20=
