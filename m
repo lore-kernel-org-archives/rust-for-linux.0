@@ -1,109 +1,134 @@
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D894E1DA53;
-	Fri, 21 Feb 2025 14:46:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1519520FAA1;
+	Fri, 21 Feb 2025 14:48:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740149209; cv=none; b=o4WVHDXguwrXmJe1Jr3n+OXGH4PAN8yKaIPjBcvEyP5K0iiCWOguoA0EOvTz3vMLrvNwtt1Tg5i/kEwvDSB4FW9ZZ6/zYTAqQ+2JaHKW6P2neqFFGeJWCFlDTAPaZ1GKiD1KbSA+W7AoWUoqXhP27+4cpghP15rCKAGnp0qC8g4=
+	t=1740149284; cv=none; b=rn0QErbI+XQNIMX6eFF6tinTwoEftBqRYyudB2njohLo2Jk3ZLl78n7V17dR+HD2txnA1xOiO0CCLuxn9Q/hqLfwezThqXTPkm/JJkOdY9JIF1hGueWkZePoQKpOvhaX1PstLRSIKMOgZ2qgetF4lOLTUPwDwZFj+oMDU+Go3cQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740149209; c=relaxed/simple;
-	bh=5GOU+RIMfCC5N0gNEUaBFnynin/UwOsQsntoyaSlWqk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OzAvU1teZ4fP5J47hD38wacnykhbisrA+LfUoc6pIv6OCopq3OyuUhVfaCAbKKZrkVsK0zcavwAPwrc6t5uFl2pU0dm+Euv8YddQzGIFR+DTalh0AuvPJTO+NvwO27Pbx9TJ9Pu6Pjpwx3aCKuYU09TM9YBPTlVJDkAE0guB7Yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KghgJ7Vy; arc=none smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740149284; c=relaxed/simple;
+	bh=Pydel3GDch9z7hvM8q8bAh48qo5Vb3Mw8itGDgMptC4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uZcX/TLmFBkIa30emInHbxtiCdEYqiDT/wSPX6jDqVNEvt91G41bmw7OzFDdH5yqi9HirA8q02+q4GBXfHue8aEOExoh8wvHMFskRZT9Y9d0ERKFWdih3ZQE118+MJnGtRN8evqCnh950eDZFwOm7CjeAst3xbBMWKzudXtYLo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kyph6rtQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KghgJ7Vy"
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-307bc125e2eso20791801fa.3;
-        Fri, 21 Feb 2025 06:46:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740149206; x=1740754006; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6W8WbGFo8CWgWYywBvp5OKFnvaxV0YCRUMlkTvha3ZE=;
-        b=KghgJ7Vy9jtpqHUnxJY2zaCrOWxngN5wRmk8XP7ZHV6QpEuRjo8kXJHt6+JFnBcPso
-         jXuVw1U7elw4kQO6b0sZRAnrED69Yd/Meer6reiXCUX2wIZsB30C65x3PzfQuB5Mvnxf
-         sPZw6wdUul448uVaTaO1I4AQb+pPc1Cg0Z25HCIv5/hxddFd8dHPLQqqI2k+Mz2wIXC4
-         AiJZEgCZ/qMuDs1iWPmujCjgA54tw5bC7FyxJBc+4SGRDBQJI2eG6DbRAtIyQm8w/TNH
-         B9v8GPh5m5OxHauD9Sx+18bC/rZRjGFq4u20JCh+QzgwL+l6i7YR7L+Xh1nwvLY1PqdD
-         lJ3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740149206; x=1740754006;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6W8WbGFo8CWgWYywBvp5OKFnvaxV0YCRUMlkTvha3ZE=;
-        b=ixY0UiqHrbpgZH/fWFprL5BQg/9sXVAMIbuRbtSeXq6a0kgGjJhqMRKW6Tr0mkFOh/
-         LoSHhJpXy8Umoc3G4UTv4HOHA8r7RA4WYk9hpbbuH0DTtmrmP2LAVCVYG7YHMOUjr3Eo
-         PEOf+JK9/uydbdH3Ot6uRe5yuhOxQWt3TjunnD06n5SDmdbYcYpMyCQgw6AgQ5o6zn58
-         ZLpd0nirGfijPMw6bloTdUNm9pSz6ritwUoPSVtjAQd8g+SF4HGaiIFUmWzPyl5tVbW9
-         6Jjo9cnaAoGMz3UbOxcSmT2q35HInss8mnozQ8obhSm81iOsSk+vhOSLM8NdA8GVGB9L
-         lb4g==
-X-Forwarded-Encrypted: i=1; AJvYcCVzM4gr3VSZk49LUFR6fUdiDNFOYY9wh8PvK0twEl53MYa+fteQwGDF9trCa4ByHd1wjMxqMvUvPvwMrw8=@vger.kernel.org, AJvYcCW6dFgBbdtGsLm9GAwHgOyYGp03oImo4qk5gj6p1f3mKzAPA2ve+nCMiO0XA4eulDrWHSu2F6JB0tkOBPFEQqg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUWFjSSdupdit6OARPj6YooFt416i+ZxiRSt9VmdGtqCwIzuhV
-	ak91kpmBSaNNAMRUgp9+LExBaFCWwChOZ1tjYbgRs5ukvNs1YMWv1AcAOuU+5rOz8dMRQpmJ+pW
-	esBZxE8xHgdmALjdgYZKsDWywa3Q=
-X-Gm-Gg: ASbGncs9v9GpYw1bNP+PjuI/p13fMiDKOKxx+DIgL4k+l5WJobUZkBXkD5TyTc4/Oc9
-	nFYjMhwAcSUcZCmHjCVIbsfLv9BJh40OqmKSGhdsAOelV0ZAduAvQtqrVanrVHvcL7mo9A1u2nA
-	xdRGPIJPlObd1JI9Lx+cKIZQdbNWWTqoBCXfPAeURs
-X-Google-Smtp-Source: AGHT+IElrI9KTo+gODJDgq/zIjPYKjl+Qr5uMMLPLsXW0QDD+KQtvWuMXiFonZl3R8QnrJ/25gE9xkg47ViIKsFgU1w=
-X-Received: by 2002:a2e:98cd:0:b0:309:2283:bea8 with SMTP id
- 38308e7fff4ca-30a59994e41mr14438821fa.34.1740149205041; Fri, 21 Feb 2025
- 06:46:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kyph6rtQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 041BCC4CED6;
+	Fri, 21 Feb 2025 14:47:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740149283;
+	bh=Pydel3GDch9z7hvM8q8bAh48qo5Vb3Mw8itGDgMptC4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kyph6rtQprpre7Tyd49/a/29K19NpkavMg0LywEqDU/Oyut1MviU1AJOCooSkjVnV
+	 vgUpsdp4744feuGl4XEgGrZQdE6NL3sPidMF85rw49qERD++bL6fBtgcPL0LaW1scc
+	 bPOkgUko76Q5egbkgxkGQuBY3xLWbqy3LFJV5OB2p5wmL2jPxT7GW5g1Z3FSX2MK0+
+	 uh6jrLq3Z5SvVA70iKCKEUR+/vdxHZVVa2YvWxHpMCyo0ptQO/hKKhbPL7ivYH6+/M
+	 jSmaAzTL91UHcucDaXBt59XNYXyrrCuf3CXxD4gO3DUyghNtg4IgIgizHRYq49hYHi
+	 QNvl1BEfXmvGQ==
+Date: Fri, 21 Feb 2025 15:47:57 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Russell King <linux@armlinux.org.uk>, linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH V2 2/2] rust: Add basic bindings for clk APIs
+Message-ID: <Z7iSHR0F2QpiNpMZ@pollux>
+References: <cover.1740118863.git.viresh.kumar@linaro.org>
+ <a0a1ba4e27c3a0d9e38c677611eb88027e463287.1740118863.git.viresh.kumar@linaro.org>
+ <Z7iGHiQcqa-_AXli@pollux>
+ <4AD8A8F3-EA7E-4FBE-9F0D-58CF7BB09ED5@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org>
- <20250218-hrtimer-v3-v6-12-rc2-v8-2-48dedb015eb3@kernel.org>
- <KDmrJnQA2_Ojf67mD8WA_UafgVCACRRleB9t-D_1yl_bua8e1VWdGQAUvmMGHscqRHu1gzPJCKe_BfotutZm5Q==@protonmail.internalid>
- <CAJ-ks9ncOyGyQsDFOBxg-7wmXkrQYiZr6H6eEFWsFstk=p1uAA@mail.gmail.com>
- <87wmdkgvr0.fsf@kernel.org> <djAeSx8DNZwss2-UqXGmhVPqYm2z4LhKWC70jPHPisd1w70qmpmOfVbHfhqJErhoFwVFM8IpbTv4MKkk_BIpQw==@protonmail.internalid>
- <CAJ-ks9mNidHZvWkFJE1jExc2oVk_bbJpiO_DRMrWu5nYhTpKgg@mail.gmail.com>
- <87ldtzhexi.fsf@kernel.org> <87cyfbe89x.fsf@kernel.org> <Z7iQcDa72XnJ5zGC@Mac.home>
-In-Reply-To: <Z7iQcDa72XnJ5zGC@Mac.home>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Fri, 21 Feb 2025 09:46:08 -0500
-X-Gm-Features: AWEUYZk1J2lmqhCaJhG6uOBA7TXJ46zV-bEeC2VNizbAo2dhpik8C1JEQG5L9q0
-Message-ID: <CAJ-ks9kQccoa7znFNzWAgi6_G0TKvLUARWPZ_Dbed1C-d4Lr+Q@mail.gmail.com>
-Subject: Re: [PATCH v8 02/14] rust: hrtimer: introduce hrtimer support
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Danilo Krummrich <dakr@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>, 
-	Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4AD8A8F3-EA7E-4FBE-9F0D-58CF7BB09ED5@collabora.com>
 
-On Fri, Feb 21, 2025 at 9:40=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
->
-> Hmm... if you mean:
->
-> trait HasHrTimer {
->     unsafe fn start(&self, expires: Ktime) {
->         ...
->     }
-> }
->
-> Then it'll be problematic because the pointer derived from `&self`
-> doesn't have write provenance, therefore in a timer callback, the
-> pointer cannot be used for write, which means for example you cannot
-> convert the pointer back into a `Pin<Box<HasTimer>>`.
->
-> To answer Tamir's question, pointers are heavily used here because we
-> need to preserve the provenance.
+On Fri, Feb 21, 2025 at 11:29:21AM -0300, Daniel Almeida wrote:
+> 
+> 
+> > On 21 Feb 2025, at 10:56, Danilo Krummrich <dakr@kernel.org> wrote:
+> > 
+> > On Fri, Feb 21, 2025 at 12:03:39PM +0530, Viresh Kumar wrote:
+> >> +/// A simple implementation of `struct clk` from the C code.
+> >> +#[repr(transparent)]
+> >> +pub struct Clk(*mut bindings::clk);
+> > 
+> > I remember that Stephen explained that NULL is valid value for struct clk. As a
+> > consequence, all functions implemented for `Clk` have to consider this.
+> 
+> I am a bit confused here. If NULL is valid, then why should we have to specifically
+> consider that in the functions? No functions so far explicitly dereferences that value,
+> they only pass it to the clk framework.
 
-Wouldn't the natural implication be that &mut self is needed? Maybe
-you can help me understand why pointers can express a contract that
-references can't?
+This was badly phrased, the current implementation does not need to consider it
+indeed. What I meant is that we have to consider it potentially. Especially,
+when adding new functionality later on. For instance, when accessing fields of
+struct clk directly. Maybe this only becomes relevant once we write a clk driver
+itself in Rust, but still.
+
+> 
+> Or are you referring to the safety comments only? In which case I do agree (sorry for
+> the oversight by the way)
+> 
+> > 
+> > I wonder if it could make sense to have a transparent wrapper type
+> > `MaybeNull<T>` (analogous to `NonNull<T>`) to make this fact more obvious for
+> > cases like this?
+> 
+> MaybeNull<T> sounds nice.
+
+Yeah, it's probably the correct thing to do, to make things obvious.
+
+> 
+> > 
+> >> +
+> >> +impl Clk {
+> >> +    /// Creates `Clk` instance for a device and a connection id.
+> >> +    pub fn new(dev: &Device, name: Option<&CStr>) -> Result<Self> {
+> >> +        let con_id = if let Some(name) = name {
+> >> +            name.as_ptr() as *const _
+> >> +        } else {
+> >> +            ptr::null()
+> >> +        };
+> >> +
+> >> +        // SAFETY: It is safe to call `clk_get()`, on a device pointer earlier received from the C
+> >> +        // code.
+> >> +        Ok(Self(from_err_ptr(unsafe {
+> >> +            bindings::clk_get(dev.as_raw(), con_id)
+> >> +        })?))
+> >> +    }
+> >> +
+> >> +    /// Obtain the raw `struct clk *`.
+> >> +    pub fn as_raw(&self) -> *mut bindings::clk {
+> >> +        self.0
+> >> +    }
+> >> +
+> >> +    /// Clock enable.
+> >> +    pub fn enable(&self) -> Result<()> {
+> >> +        // SAFETY: By the type invariants, we know that `self` owns a reference, so it is safe to
+> >> +        // use it now.
+> > 
+> > This is not true.
+> > 
+> > 1. There is no type invariant documented for `Clk`.
+> > 2. The pointer contained in an instance of `Clk` may be NULL, hence `self` does
+> >   not necessarily own a reference.
+> 
+> > 
+> > The same applies for all other functions in this implementation.
+> > 
+> 
+> 
