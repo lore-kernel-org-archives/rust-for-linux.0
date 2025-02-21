@@ -1,106 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-10630.protonmail.ch (mail-10630.protonmail.ch [79.135.106.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5C720102C;
-	Fri, 21 Feb 2025 10:15:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C321205E24
+	for <rust-for-linux@vger.kernel.org>; Fri, 21 Feb 2025 10:15:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740132913; cv=none; b=Oh/UAPJ+4JTYXWt5eroSrH2QqUqNxXCsedolw5crBLkVBZEx+5zEFZfm60fxOcHJ26HHUI9Rla1KPCKC8yVpcj01iOaUYOLWJP5gJADTMCp7+hico8VQt92ill7lc4E1CZkdwyXofXM05u8CEQF9qnePQwLJWEmZ8uMCbK1L6fo=
+	t=1740132930; cv=none; b=AuBD5dKirxHjThkM9IXwzEd2Ymdkiw4+Po1VR1iU8LJLjCawjmWlK7QGn6PU8qNPbuwly49G9vZ4y+t7D0drdXp7LyMePCSCQcgz8rQAHP2pc+1kgvDfl2lq4PPvzNBCbPN7jK2XBXDuT3yCX0e+plES//KpzVlk2dhuGbCrf+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740132913; c=relaxed/simple;
-	bh=wSC1GjhCo5yf/kHGrfCrHB0JMy0/s+ydsKQOikv6YFk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=u0ooObf0AXSzQVrzMd/vxjoc/8oXVXONCZydPj3nEigTORmgc3BBUA7B3m6xg68CYQ+63ZZ0oivWZFCto+r+fymN9uXGHCrVV170LVFMpGjiG1Of+GW3GR6xLUeyn1U+kIP7ZdECDzcrTqLAneAj16SKDCK0XYG7uE/i7eUsIf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uhnm/i47; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740132930; c=relaxed/simple;
+	bh=pYlG2WV/q5fgqaIrf4eiL8NfB35rdADEB88ims0ixMs=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KwLW0IufXEkyj+tbecc9MBToTCcnEsKB1MDwAFGPjFd8eYlZXlZKl4RUcnyj6A2ohiIlNyLWMqL38sD2e4qB0NBTu0trq5adXaRUHm8vLXY30HJA9hxBGsGoVf4LfaFMLFSmdelobvjoj0432sFZE6RO4LfhZiasL5nkgbd7Zpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=llpjHVYH; arc=none smtp.client-ip=79.135.106.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uhnm/i47"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18DCCC4CEDD;
-	Fri, 21 Feb 2025 10:15:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740132913;
-	bh=wSC1GjhCo5yf/kHGrfCrHB0JMy0/s+ydsKQOikv6YFk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=uhnm/i47xWKDTDC+WORmaeS/i9A6T5FDykwbHKd776VLG5f1RrUNO2K5yVdfErkTt
-	 fNPDsa865hKmr2WZeXju5lqF1czCiGW2HuA0WspjtfGUAl9LF1wzWCS7I0UfvHXlA+
-	 4caO8sDfcm0n1N3Z73kWO13xFARf9TIVGc7PgwFfG4VQt44rAH9SxXWbzHjfgvkxxl
-	 pE5s1IAsh3+w/ricieEwmZN6J/JYnEHBTEtGARiqO78roRzUAIBFyYo6Z59M9Q6Xiy
-	 14p4+AuCUktMZ0nqB8w8mvlWq28SNGeulZdTRpx6JZoGHozISBfWag114ptIuHDsHu
-	 SeaMI6kWHjJLg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Benno Lossin" <benno.lossin@proton.me>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Anna-Maria Behnsen"
- <anna-maria@linutronix.de>,  "Frederic Weisbecker" <frederic@kernel.org>,
-  "Thomas Gleixner" <tglx@linutronix.de>,  "Danilo Krummrich"
- <dakr@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
- <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
- =?utf-8?Q?=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor
- Gross" <tmgross@umich.edu>,  "Lyude Paul" <lyude@redhat.com>,  "Guangbo
- Cui" <2407018371@qq.com>,  "Dirk Behme" <dirk.behme@gmail.com>,  "Daniel
- Almeida" <daniel.almeida@collabora.com>,  "Tamir Duberstein"
- <tamird@gmail.com>,  <rust-for-linux@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v8 02/14] rust: hrtimer: introduce hrtimer support
-In-Reply-To: <87a5afhdq0.fsf@kernel.org> (Andreas Hindborg's message of "Fri,
-	21 Feb 2025 10:03:03 +0100")
-References: <20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org>
-	<20250218-hrtimer-v3-v6-12-rc2-v8-2-48dedb015eb3@kernel.org>
-	<1id7is_U22yzuGODgkUIoB5AFM6snF9CPu7F_sY7Mfkn3EwQRPfjB5JNkRFYu6DX1N8X_OQvdEB2BT-l3rFhwg==@protonmail.internalid>
-	<df748ac2-3551-460f-a16f-85d805671a3f@proton.me>
- <87a5afhdq0.fsf@kernel.org>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Fri, 21 Feb 2025 11:15:01 +0100
-Message-ID: <875xl3fvtm.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="llpjHVYH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1740132921; x=1740392121;
+	bh=utLG4Pvkh7OuzllYzzEViXcvOHNbmHD6EALvUcEmpus=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=llpjHVYHqo+8Fpbh2ZQxl3c6jV1AX1pd4gDGXe5EFrGHsKrGA/vl2m9cu5cFgp4+h
+	 ZGmKLsUeNjDJVinEOJZ3rGhaOESB4tWNatofQVmefIxj1KQOvdye2hQA0TyOCoTN5A
+	 xcgtLMZgRS5nNB6QQI2h0oGQrxSSiGE5WRjTZtKSKm6K83IWg8ynq5gvfrkUJStpqW
+	 epZZ4CpWakuIH1JEyhFEwr7ZSP61+b5j4QbiLaTcrng49rcrbKINu4xDmajejh5V5T
+	 tuKCoXqbpyN212iavjvek8plF7iechTHnE6yMeld0BNWmAG4TNrLsrQHKI9CCY0RRB
+	 T4Eo9f0oyYjHQ==
+Date: Fri, 21 Feb 2025 10:15:16 +0000
+To: Andreas Hindborg <a.hindborg@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v8 05/14] rust: hrtimer: allow timer restart from timer handler
+Message-ID: <7536dcf0-ed86-48ab-af35-bf86fcdc5601@proton.me>
+In-Reply-To: <87y0xzfyv8.fsf@kernel.org>
+References: <20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org> <20250218-hrtimer-v3-v6-12-rc2-v8-5-48dedb015eb3@kernel.org> <F56YWuamHrpLM1KaPiwECr4Ta19VkAWdbhcMhII5pfM1kSjl3_RAR6elrNAjL6ZqVurGdjj1Fn-0wyfZNDHKRg==@protonmail.internalid> <8e32c3e1-0b55-4809-92ad-f968252a05f8@proton.me> <87y0xzfyv8.fsf@kernel.org>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: fbbba1720b3bf99016645cb74a0b38280a71e469
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Andreas Hindborg <a.hindborg@kernel.org> writes:
-
+On 21.02.25 10:09, Andreas Hindborg wrote:
 > "Benno Lossin" <benno.lossin@proton.me> writes:
->
+>=20
 >> On 18.02.25 14:27, Andreas Hindborg wrote:
->>> +pub trait HrTimerCallback {
->>> +    /// The type whose [`RawHrTimerCallback::run`] method will be invoked when
->>> +    /// the timer expires.
->>> +    type CallbackTarget<'a>: RawHrTimerCallback;
+>>> This patch allows timer handlers to report that they want a timer to be
+>>> restarted after the timer handler has finished executing.
+>>>
+>>> Also update the `hrtimer` documentation to showcase the new feature.
+>>>
+>>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>>> ---
+>>>  rust/kernel/time/hrtimer.rs     | 28 +++++++++++++++++++++++++++-
+>>>  rust/kernel/time/hrtimer/arc.rs |  4 +---
+>>>  2 files changed, 28 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
+>>> index b2a3130bc21d7..e342193f985eb 100644
+>>> --- a/rust/kernel/time/hrtimer.rs
+>>> +++ b/rust/kernel/time/hrtimer.rs
+>>> @@ -183,7 +183,7 @@ pub trait HrTimerCallback {
+>>>      type CallbackTargetParameter<'a>;
+>>>
+>>>      /// Called by the timer logic when the timer fires.
+>>> -    fn run(this: Self::CallbackTargetParameter<'_>)
+>>> +    fn run(this: Self::CallbackTargetParameter<'_>) -> HrTimerRestart
+>>>      where
+>>>          Self: Sized;
+>>>  }
+>>> @@ -278,6 +278,32 @@ unsafe fn start(self_ptr: *const Self, expires: Kt=
+ime) {
+>>>      }
+>>>  }
+>>>
+>>> +/// Restart policy for timers.
+>>> +pub enum HrTimerRestart {
+>>> +    /// Timer should not be restarted.
+>>> +    NoRestart,
+>>> +    /// Timer should be restarted.
+>>> +    Restart,
+>>> +}
 >>> +
->>> +    /// This type is passed to the timer callback function. It may be a borrow
->>> +    /// of [`Self::CallbackTarget`], or it may be `Self::CallbackTarget` if the
->>> +    /// implementation can guarantee exclusive access to the target during timer
+>>> +impl From<bindings::hrtimer_restart> for HrTimerRestart {
+>>> +    fn from(value: u32) -> Self {
+>>> +        match value {
+>>> +            bindings::hrtimer_restart_HRTIMER_NORESTART =3D> Self::NoR=
+estart,
+>>> +            _ =3D> Self::Restart,
+>>> +        }
+>>> +    }
+>>> +}
+>>> +
+>>> +impl From<HrTimerRestart> for bindings::hrtimer_restart {
+>>> +    fn from(value: HrTimerRestart) -> Self {
+>>> +        match value {
+>>> +            HrTimerRestart::NoRestart =3D> bindings::hrtimer_restart_H=
+RTIMER_NORESTART,
+>>> +            HrTimerRestart::Restart =3D> bindings::hrtimer_restart_HRT=
+IMER_RESTART,
+>>> +        }
+>>> +    }
+>>> +}
 >>
->> Technically "exclusive" access is correct if the `CallbackTarget` is
->> `Pin<&Self>`, since you will get exclusive access to a `Pin<&Self>`, but
->> it might confuse people, because there can be multiple `Pin<&Self>`. So
->> I would just drop the word "exclusive" here.
->
-> Yes, maybe it should be "shared or exclusive access, depending on the type"?
->
->>
->>> +    /// handler execution.
->>> +    type CallbackTargetParameter<'a>;
->>
->> Also why can't this type be an associated type of `HrTimerPointer`?
->> Since this seems to always be constrained in the impls of
->> `RawHrTimerCallback`.
->
-> That might be a nice improvement, I'll try that out.
+>> Do drivers need these impls? If no, I would prefer a private conversion
+>> function just for the abstraction.
+>=20
+> No, drivers would not need these. I can hide them.
 
-Looking closer at this, I don't see how to achieve this. We need access
-to the type here, because it is used in the signature of `run`.
-`HrTimerCallback` has no bounds on it, and that is nice. If we want to
-move these associated types, we have to introduce a bound here.
+Sounds good, you can add:
 
-We need to be generic over the type of the parameter to `run`, and by
-the time the user implements this trait, the type must be known and so
-the user has to specify somehow.
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
-
-Best regards,
-Andreas Hindborg
-
+---
+Cheers,
+Benno
 
