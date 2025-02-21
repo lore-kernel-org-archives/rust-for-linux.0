@@ -1,58 +1,58 @@
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA3920F07C;
-	Fri, 21 Feb 2025 14:19:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE01120F07C;
+	Fri, 21 Feb 2025 14:21:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740147595; cv=none; b=fpMUjDvQvw4i+HEgElxuYlvZbPoT3iHk3ps5W/QNaLMpJyE4OV6fWLMcyIG8vnQPbMZlaTMvIX4sFi8Kx3zdBWigIiMSTDCE00eK2MVFopAv/zSofN2ayB5MK0XVaRMc9tC7C5U7DsiEZl5iqvDLuQSRbQNXl9fZLE3GuMP64wk=
+	t=1740147714; cv=none; b=HGE0s2c6kBCAih65Y1JsZvebcehcd1mW2bet95ba48JpjVcqDUnXtCoMg1NQt0DqcgV3dmOU7x9GBfXn4G0RiOAiPy7ehppr2ampYbv/hWsU31LkKfFm7Et1Prx/GbI7LI740aJwpu8LBWeiV8tCJ1qkO2JGWLBH9MWF45sFBZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740147595; c=relaxed/simple;
-	bh=/FPue+W8pYp4zo9g8cxyH68F9XCko5YVnlu6UClRU7Y=;
+	s=arc-20240116; t=1740147714; c=relaxed/simple;
+	bh=KH2LSxp5HiskMIEy8B2KMY95P7tOmxPEnEzALdzM8H0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YBz1QEZJYhhBUWEpFgjAbpQFyiGlc6HpOQjFJqgKPXEetpC21ONe3xx2/i+jdj++O8Hm0J8neL3AOGP/krVOZObpKmttolxMx4waqmA4M5BlTRA9IDFaA8OS2ve6S4pUCk0F385JqhzpZpINyxBNz0/jC2IadlR/o31odaj/f0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eSt2iKVG; arc=none smtp.client-ip=209.85.208.181
+	 To:Cc:Content-Type; b=HtSM/EmQA35LLjbRZ5F83h5iKyJNXKMPsnMmL/Rbxlywh40w4ClCoBe1K1AyMqDdgxu0G9bptdL58AFzZ5BtFwjUGjQbkiiDQaQfSL+pfAy/bsbm4GzYT6mpC7q4T6PdEtVqG9IMK+tt1Ku6t9RUw+mq0dtFBQ6g1TpVr2VDHrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QrhLm364; arc=none smtp.client-ip=209.85.208.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eSt2iKVG"
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-30737db1aa9so20699111fa.1;
-        Fri, 21 Feb 2025 06:19:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QrhLm364"
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-30761be8fcfso19644971fa.0;
+        Fri, 21 Feb 2025 06:21:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740147592; x=1740752392; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1740147711; x=1740752511; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Birrd+3gPFpNagYjlEO10/s2HIO1cCg043jKV8DRXcw=;
-        b=eSt2iKVGJYziYs/glvO4xW7Gax9oMOqzufkHqPiJZmfeqXn4homWDs+itDDJ5tnouo
-         RtJO48ElHTT2tyMuj2v6Znl7oU5EYfPHMrXmE6mi/iMDpfMPmatb9Sv5Rg9Ewm3hdPu2
-         SnsSMs/OllYXp/xjIW1qwoMuFM0GXGZiY8Z3gqnWkiQyj3CqDfWL0ivPcfljpt/0Yex8
-         c+BbeWj4QWwGCSHtrwuE98847Ga+qcIpB6W+9mdhaVFcHMbteGKkbBJ7lECvebnhW8bQ
-         syfCY+C9Kbyhm74AneS/ZlR2uViJWMNPJK+0dTR9+sEXJlktQGAWZPcLxdE9nSYRXFzh
-         oCWg==
+        bh=GZCJvRxi0/Mr6eA3W6ftvDTnj6qidWIEoe/AxCuI3i4=;
+        b=QrhLm364o2UCsqNnfLllW7sJdT8rz9GdbuTLrKz4HRVHKu33/WY3v1WXC60M67Zqvh
+         E6c9Ch8AwXv8HOhl6TgGO5LPVsQeX6prXqMHEPANlQkEArlVzG6fDAYcpfWDDWsvkRAS
+         rHst6gPD5xinLPAoClJHLwLgmoCkarHWCBjl5uiUIGVGClQKhsq82JY9lS8C2PJUg4T0
+         fS2kXwO36mMlLTZxcpgsTqeQ9P4Hzqt3pE+jDkuaNGb5G3ErjgED41S7NN7aAtew1PbQ
+         HeG4Ea5TeCQKgveOosKh0I+pXJqgNC1jnlIO2UB/1xeu9rIrjmS+goz+U7qtX9STsD7w
+         nhvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740147592; x=1740752392;
+        d=1e100.net; s=20230601; t=1740147711; x=1740752511;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Birrd+3gPFpNagYjlEO10/s2HIO1cCg043jKV8DRXcw=;
-        b=uHs1hhALoq0byrG5y04T3xdzxTPScfhsqMoAbPBHNc34YOutAE3Kys1JO/hAXm5aRA
-         vAg4X3ZwsdTMOq860dWJTJykQB1N0tXfI3HR+pUvAQxTKzMvj94DeifmP5sOnbpTIh2D
-         jfvOrO2/iqrjSHBhy/RHmFMgKGIhkju6pVuXcLL6Y9xkvtIgsF4IIuloM1J99QUqZmmH
-         rMbivtVFj72KGmXe4pYl6gvd2cLANQZ/a839itjLL8uAK6gJKY/NRpNLKDcr41P30H7F
-         j1bzq8C4LhqimR7DSqYN8wa/dXYac9iuOaWvF7dcNQEvyX+an+zwkrzD/efTGskEQib5
-         P9Ew==
-X-Forwarded-Encrypted: i=1; AJvYcCUhpMh9LLDMHXmTgRWUXd4vS9S/lrUO69dZwHynALuiLhvLKgkecLoqkMg2UDeYMCHctzi3Am9v6FZOKbds3Zw=@vger.kernel.org, AJvYcCW2RjTeG8GlLl9zKv0iHFkA6Oiml6eRS7JsZE29j3klBQ8mX9Cwjhlh/mIoHZREWq8Li+/MuD7S5vhAH6c=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7+ZUsNXFx4OGGt+cAmuCt+g855VAe3+1m1YWolcax6AdlQJyI
-	34KRtthADUa9po7zt89/auB30Gtr1zcomCaiR4GE2LnbXZDRMPTj/9dlG71sUvxaHAqZ2oCt2Io
-	cfvtjlT1qJFUgvM6m6ur6Z3/kpBY=
-X-Gm-Gg: ASbGncvDmO+yY9QULF3jyLZpDZnmHI5xwwqiSwySVgt7zCqsqLF0Qbxfc7iQ7+3FjLu
-	QrlLKbWiIhRADq2yzNVq0RRm30hK9G0TBYHtYwkmMfGtTaM4VOboT1BeIW7DWFAVgp7PMfyow1N
-	/ctnzeRkqujzlT1wODuxmcnbALnOGKlUiZlIXfjTSefA==
-X-Google-Smtp-Source: AGHT+IECYvMffRe/CwTv3YbcNqtmr67OzVDLF9WvXZS6URmgxiPIh+4hFJC0vFX/0uVp/lK8TYj+vQbKp55C9EXBl/Q=
-X-Received: by 2002:a2e:7a02:0:b0:308:f827:f8e4 with SMTP id
- 38308e7fff4ca-30a5985d90bmr9587741fa.7.1740147591733; Fri, 21 Feb 2025
- 06:19:51 -0800 (PST)
+        bh=GZCJvRxi0/Mr6eA3W6ftvDTnj6qidWIEoe/AxCuI3i4=;
+        b=ou1raNICMMOcUyaVWdKaIS/g0ztap2I0adSB1gGTQNmKMi3+nvn/9Xp5asXZBxUqUM
+         GcfPt49OgTHfyD1YWQ5gS6fGZfV7kBZS5pJ8cPXh1ieGOTNbREZKVyNnFahIYaeOv+/n
+         sPWyilAABlkZdxCGnAMGwH2dwoFpQ9hchZxtaJJIrNbd2N0kPACXvM14xQU5W39wXMLV
+         neEkr22tkRx/2iNdjw7o5YyuhEtiC1F/zEBvzm+VZ0EBhG6EXHMivUIOZUsYCD24wLov
+         PUMIsPQB2K+PDWkU3jM0fppSBARFAgBEpcgb9SM4+B4U0QgtFtWqwip2HFp/EedYbJPM
+         mZGg==
+X-Forwarded-Encrypted: i=1; AJvYcCVNMOhMJSdjk+ISqI92x+GnxLEDHT9HwgaI6EouUJiJ8IySlQIL+SN2nSwBbOMueMO32HBxgW4funQsIuh5Buk=@vger.kernel.org, AJvYcCX+bSM7a1jVGwQiCIo73q2YxsoJ4khmBYaqK50olhdWlrR7cQqmFrhpZQvIlYmrM61J7X90Cg40R9fbLE4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxh4qJ7gHnEDv6ZmOFvZjo8JQyrKVEpiKDDH8eDglOp9LqdQ2BC
+	nAHI7hG1nJXbpZLBx6ghTf6BhNoPJ1f3p1zVIgN7f9Y38ozwURzaK6KlrmHlZyrjwZtAiQD/Yyp
+	nEmGVcZ6e5u9qC90E2haCAoSTrmk=
+X-Gm-Gg: ASbGncsgyUtmfXx3KwT65LHhjTUHPMWbqTLkMQkc3wHMVDrQcM8NN865dC76tMGsc2E
+	s76yCJL+QpUlpzLh7z1fXB5IkJUdYe681INSYWwqa6Py2IXm1ELS+tUttNbbLNk4qhVGimMRaJR
+	dcV9oZEMl5H5I/rHYGNI+V77B9Pi+44UVE1ur+uF9Nig==
+X-Google-Smtp-Source: AGHT+IFqP7xajTtZNtfZfejub1Ng/e8qr2zLLbAwq8N/lJl9rRWBeUk52pbuAomwIloFgGZ0pI3sGoO2oVqDFEywaHE=
+X-Received: by 2002:a2e:3516:0:b0:306:1524:4a65 with SMTP id
+ 38308e7fff4ca-30a598e59f5mr10809971fa.20.1740147710726; Fri, 21 Feb 2025
+ 06:21:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -65,13 +65,12 @@ References: <20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org>
  <CAJ-ks9ncOyGyQsDFOBxg-7wmXkrQYiZr6H6eEFWsFstk=p1uAA@mail.gmail.com>
  <87wmdkgvr0.fsf@kernel.org> <djAeSx8DNZwss2-UqXGmhVPqYm2z4LhKWC70jPHPisd1w70qmpmOfVbHfhqJErhoFwVFM8IpbTv4MKkk_BIpQw==@protonmail.internalid>
  <CAJ-ks9mNidHZvWkFJE1jExc2oVk_bbJpiO_DRMrWu5nYhTpKgg@mail.gmail.com>
- <87r03rhfpu.fsf@kernel.org> <mEsEoJuiP_lEKsnf8nfVaquySinIsovqCT5_TxJD_22KTGqOgH7NO9jKYy1W-q95uiGd50brnTE13ydtRZgioA==@protonmail.internalid>
- <CAJ-ks9mfe3JBVALO6RJPie6Ae1afH7jsE5jR1jWo_sK266_XPQ@mail.gmail.com> <87ikp3e8t6.fsf@kernel.org>
-In-Reply-To: <87ikp3e8t6.fsf@kernel.org>
+ <87ldtzhexi.fsf@kernel.org> <87cyfbe89x.fsf@kernel.org>
+In-Reply-To: <87cyfbe89x.fsf@kernel.org>
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Fri, 21 Feb 2025 09:19:14 -0500
-X-Gm-Features: AWEUYZnvhlW14fwAn-9GPsDeMTMCqxb1MLWuh8E7wlTF06MAzMCQN7YTkQyHvNY
-Message-ID: <CAJ-ks9=P2W9+qk216N5HnTvW+yvfPfGbJf87cFjhv8SuayyW6w@mail.gmail.com>
+Date: Fri, 21 Feb 2025 09:21:14 -0500
+X-Gm-Features: AWEUYZkNiPFPPOYhdALIzKHcQSsexL6ZJWm5YYY9rkDBZjc4PJ9zmsqmRRpvGYQ
+Message-ID: <CAJ-ks9kLZ7LCTW+W4jhUqmF1ypJ7i56oSizdFV-1Ks5DiCoKsA@mail.gmail.com>
 Subject: Re: [PATCH v8 02/14] rust: hrtimer: introduce hrtimer support
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
@@ -86,113 +85,74 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.d
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 21, 2025 at 8:17=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel=
+On Fri, Feb 21, 2025 at 8:29=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel=
 .org> wrote:
 >
-> "Tamir Duberstein" <tamird@gmail.com> writes:
+> Andreas Hindborg <a.hindborg@kernel.org> writes:
 >
-> > On Fri, Feb 21, 2025 at 3:20=E2=80=AFAM Andreas Hindborg <a.hindborg@ke=
-rnel.org> wrote:
-> >>
-> >> "Tamir Duberstein" <tamird@gmail.com> writes:
-> >>
-> >> > On Thu, Feb 20, 2025 at 4:19=E2=80=AFPM Andreas Hindborg <a.hindborg=
-@kernel.org> wrote:
-> >>
-> >> [...]
-> >>
-> >> >> >> +pub unsafe trait HrTimerHandle {
-> >> >> >> +    /// Cancel the timer, if it is running. If the timer handle=
-r is running, block
-> >> >> >> +    /// till the handler has finished.
-> >> >> >> +    fn cancel(&mut self) -> bool;
-> >> >> >> +}
-> >> >> >> +
-> >> >> >> +/// Implemented by structs that contain timer nodes.
-> >> >> >> +///
-> >> >> >> +/// Clients of the timer API would usually safely implement thi=
-s trait by using
-> >> >> >> +/// the [`crate::impl_has_hr_timer`] macro.
-> >> >> >> +///
-> >> >> >> +/// # Safety
-> >> >> >> +///
-> >> >> >> +/// Implementers of this trait must ensure that the implementer=
- has a [`HrTimer`]
-> >> >> >> +/// field at the offset specified by `OFFSET` and that all trai=
-t methods are
-> >> >> >> +/// implemented according to their documentation.
-> >> >> >> +///
-> >> >> >> +/// [`impl_has_timer`]: crate::impl_has_timer
-> >> >> >> +pub unsafe trait HasHrTimer<T> {
-> >> >> >> +    /// Offset of the [`HrTimer`] field within `Self`
-> >> >> >> +    const OFFSET: usize;
-> >> >> >
-> >> >> > Does this need to be part of the trait? As an alternative the pro=
-vided
-> >> >> > methods could be generated in the macro below and reduce the
-> >> >> > opportunity to implement this trait incorrectly.
-> >> >>
-> >> >> There is no risk of implementing the trait wrong, because it is usu=
-ally
-> >> >> derived by a macro.
-> >> >
-> >> > There's no risk when it's implemented by the macro, but you used the
-> >> > word usually,  which means there is a risk.
-> >> >
-> >> >> We need at least one of the methods to be able to have the type sys=
-tem
-> >> >> verify that the type for which we implement `HasHrTImer` actually h=
-as a
-> >> >> field with the name we specify, and that this field has the right t=
-ype.
-> >> >> And to have that, we need the OFFSET.
-> >> >
-> >> > I don't follow this logic. OFFSET is calculated in the body of the
-> >> > macro. I'm suggesting that the macro generate the method
-> >> > implementations (which would no longer be provided). In effect I'm
-> >> > saying: keep OFFSET private.
-> >> >
-> >> > I'm also noticing now that the macro generates an implementation of
-> >> > raw_get_timer *in addition to* the provided implementation. Why are
-> >> > both needed?
-> >>
-> >> HasHrTimer is unsafe, because it would be unsound to implement, if the
-> >> type it is implemented on does not have a `Timer` at the specified
-> >> offset.
-> >>
-> >> To be able to implement it safely with a macro, the macro must verify
-> >> that the type we implement the trait on satisfies the safety
-> >> requirement. That is, we have to have the macro verify that the type
-> >> indeed has a field of type `Timer` with the given name. If that is the
-> >> case, the macro can calculate OFFSET.
-> >>
-> >> The way we achieve this is we re-implement on of the trait methods in
-> >> such a way that it only compiles if the type we reimplement trait
-> >> on actually have the field of the right type.
-> >>
-> >> I want to generate as little code as possible in the macro, and I woul=
-d
-> >> rather rely on the default implementations given in the trait, than ha=
-ve
-> >> the macro generate implementations for all the methods. Generated code
-> >> are more difficult to reason about.
+> > "Tamir Duberstein" <tamird@gmail.com> writes:
 > >
-> > Again, I don't follow. The provided implementation of raw_get_timer is
-> > either not used (in the presence of the macro) or it relies on the
-> > implementer correctly setting OFFSET, which the compiler cannot check
-> > and which can break at a distance.
-> >
-> > Wouldn't it be simpler to just generate both functions that rely on
-> > OFFSET? They're both one-liners that delegate to other existing
-> > macros.
+> >> On Thu, Feb 20, 2025 at 4:19=E2=80=AFPM Andreas Hindborg <a.hindborg@k=
+ernel.org> wrote:
+> >>>
+> >>> "Tamir Duberstein" <tamird@gmail.com> writes:
+> >>>
+> >>> > On Tue, Feb 18, 2025 at 8:29=E2=80=AFAM Andreas Hindborg <a.hindbor=
+g@kernel.org> wrote:
 >
-> No, I would rather generate as little code as possible. The only reason
-> I am generating `raw_get_timer` is to be able to type check that the
-> field name given to the macro has the right type.
+> [...]
+>
+> >>> >> +    /// Get a pointer to the contained `bindings::hrtimer`.
+> >>> >> +    ///
+> >>> >> +    /// # Safety
+> >>> >> +    ///
+> >>> >> +    /// `ptr` must point to a live allocation of at least the siz=
+e of `Self`.
+> >>> >> +    unsafe fn raw_get(ptr: *const Self) -> *mut bindings::hrtimer=
+ {
+> >>> >> +        // SAFETY: The field projection to `timer` does not go ou=
+t of bounds,
+> >>> >> +        // because the caller of this function promises that `ptr=
+` points to an
+> >>> >> +        // allocation of at least the size of `Self`.
+> >>> >> +        unsafe { Opaque::raw_get(core::ptr::addr_of!((*ptr).timer=
+)) }
+> >>> >> +    }
+> >>> >
+> >>> > Can you help me understand why the various functions here operate o=
+n
+> >>> > *const Self? I understand the need to obtain a C pointer to interac=
+t
+> >>> > with bindings, but I don't understand why we're dealing in raw
+> >>> > pointers to the abstraction rather than references.
+> >>>
+> >>> We cannot reference the `bindings::hrtimer` without wrapping it in
+> >>> `Opaque`. This would be the primary reason. At other times, we cannot
+> >>> produce references because we might not be able to prove that we sati=
+sfy
+> >>> the safety requirements for turning a pointer into a reference. If we
+> >>> are just doing offset arithmetic anyway, we don't need a reference.
+> >>
+> >> Why do we have a pointer, rather than a reference, to Self in the
+> >> first place? I think this is the key thing I don't understand.
+> >
+> > Perhaps it makes more sense if you look at the context. One of the entr=
+y
+> > points to `HrTimer::raw_get` is via `<ArcHrTimerHandle as
+> > HrTimerHandle>::cancel`. This user facing method takes `&mut self`. The
+> > handle contains an arc to a type that contains a `Timer` and implements
+> > `HasHrTImer`. To get to the timer, we need to do pointer manipulation.
+> > We only know how to get the `Timer` field via the `OFFSET`. The natural
+> > return value from the offset operation is a raw pointer. Rather than
+> > convert back to a reference, we stay in pointer land when we call
+> > `HrTimer::raw_cancel`, because we need a pointer to the
+> > `bindings::hrtimer` anyway, not a reference.
+>
+> I changed `HasHrTimer::start` to take a reference, and I think that
+> makes sense =F0=9F=91=8D Taking an `impl AsRef` does not work out when `S=
+elf` is
+> `Pin<&T>`. I'll go over the whole thing and see of other places could
+> benefit.
 
-At a minimum this code is inconsistent because it includes a provided
-implementation which is never used.
-
-But I continue to disagree that generating OFFSET and then doing raw
-pointer manipulation is better than just generating a one-line method.
-Perhaps someone else could weigh in.
+Can you elaborate please? Pin<&T>::get_ref returns &T, which gets you
+to the AsRef you need, no?
