@@ -1,169 +1,65 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from qs51p00im-qukt01072101.me.com (qs51p00im-qukt01072101.me.com [17.57.155.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB21F1E7C0A;
-	Fri, 21 Feb 2025 18:34:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54501FC7E3
+	for <rust-for-linux@vger.kernel.org>; Fri, 21 Feb 2025 18:44:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.57.155.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740162882; cv=none; b=dTReCyc6c3Ii0stwvNmA4tzj6sxf7PB5/NDiKq3VNsyxsDFUUPLNg8Y/7hRttCb9kJOPBI5C11LZVBEjBTIweaYg4rXvLbjnC3kZ1CF4xWpNRL7dYGSeaxulFBO/QSXbv8/ofiYdU1+N2AQrchNToFejDFWV236YI6smv8dt79k=
+	t=1740163493; cv=none; b=ZzBbxhQQSdphTiR27h41g95okJJ9uPPmF0/gmRmofvdlnoli7+TClhLlidVR4Vjf2az+j12/lu2qoUwC2uCW/WR7lw20Jwgd5y+7LmO2CMXUo+L2xR6lLmf7idZsauVAtuFiIAUFN2DXpmXMzkYxbeLY5PtJB7uHAYE23xchcEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740162882; c=relaxed/simple;
-	bh=K1euvi218QtGDVfU+jRQE7kWk0UjLLsjTd5RBkDtOKs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I+/uFoVWmpt4rnjrpB054L9t002fyPlDEM7ruiFezNvhSJjoniTasmW45U0Li4wKZh4ImP24MJtD3wiCmMJaFad3/jwyS66e3jOouD2O5x7vpzWFqtrOgo1m63+JlLHtnT5nA6xio51OHvxRwzLOSIw9hNOF6A4/DomajDKX5Zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lmwr+5SO; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740163493; c=relaxed/simple;
+	bh=KnR4EzoEBt+ftRx4nnv86SWVgm+uf9RfVItsvP3UHHs=;
+	h=Content-Type:From:Mime-Version:Date:Subject:Message-Id:Cc:To; b=Yh0oQ5dXbeUneD4JkNSYZVoYx/t59W1gylZCPwgZW6DLIfyP+W2sVJHbwoiFXVKmsA35Ey27ONcud+f/HbEYw3HgXrX5u/ARFxjSi0nUsLsl6V/3VSchRDYJxa6MHGoYn5fvyCe7Yg3KaeGtOJ0IaB1xbJiYj+eal4O5O0DyBVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=0GOAwDtb; arc=none smtp.client-ip=17.57.155.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lmwr+5SO"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-38f1e8efe82so2699786f8f.0;
-        Fri, 21 Feb 2025 10:34:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740162879; x=1740767679; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZrGiJcdjwdCBMTHzMbFP8clEmCxmNCyAUHf0UccRpxQ=;
-        b=Lmwr+5SOO2xBc1f46TDVNneQmo3/69RqXsmMdSXD8RCXAFtqj7Njk1ULvx91Jc22GG
-         J4r5LWW7Tfb42k/ywOjA/PhX6MzBhqqSDCR8Rhg8ZrORC/fPP0Ippdo6xsvJg84K3FI3
-         K723EGdEFU1pSth6Ug54iKSptdoGsWAq98BUG0o4eHS9NncwXm/fZAe6STG0AcyYgA1J
-         zOTP1gtOwRUbSEWpE/SJ9iJbStFegxIcy06NVBczQOr5ASV3jooOSSTD6d2g4E/v33Wa
-         GZyWDkDdmGdXJu+aL47QpNYsdnBn/rwBjTzT6aliXGWttl1lI8j1mkdOAg6R5eDUDRRT
-         LRiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740162879; x=1740767679;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZrGiJcdjwdCBMTHzMbFP8clEmCxmNCyAUHf0UccRpxQ=;
-        b=XrFoyIQ3N5Oxpd54XGlvYbps7TOTLJSt00YcDy9EadSjuwA7quY7x3esFUPL+oDNCJ
-         EPbzZEdEFVSQC7dhNHRLavJR8wOUO169F2ZMIJGSoHzfcWwY0u+fuEigGSVXKtdcK7o0
-         LzX7kI/jckSf4s1NSO2kPBKc6wYo38uWWPwAouOpXrzJwoGBhBX/vJkTL4n9uf8Qk25L
-         vDBTVRAEvQJhd0P2oSzzKhfQ/riHZTWJSSKvDgW7FeXdoli9uVxxbo8oYavpgUlaHrJx
-         AZCk0OslAjqfQsJvCBRIfA+PSxivnMCR34FR18NW+2eB8Vg9Oh4MhXTxyT9QwssA4s92
-         FFrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVb1T3ljDYq4RBHp58pw5+LhSn6Pp2VEbKFoioa6J1H8uozj1scJPhAZYu/IVnvovWsGPwbzMcGm2+0TNQ=@vger.kernel.org, AJvYcCVcEvXbaUPQ3dKzuircEei/beldu9TSdAUv9K0lt/JWOKk8DssK15r6lQNL+mtzsaDH6s8bJxJLcwiYxUho3vE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwVifA9yT+GhWzpYymwwuEk6ZQoN0sODcfKhboRJdRYVHjyDl2P
-	dmuoI35yVczxu8HQnsoOfNt7fBW3UJnDAeC6uiPuPcbiZcutAZTY0Nz9sA==
-X-Gm-Gg: ASbGncvyfP+K3J7pPGwPsjH7R9wArYvj/e0m9qfu5u8KHl3qSGOq+v34Qzbg/BGbY07
-	MMntGQH90utA4FYDx1Hh6WBePXRei7SYLR4nGU2VgxEpp7tAYEZU84fslT7/rflAsT1a8OBqzYP
-	UxlIZnwFkxbxM5awSElQt8cxuGV2HZ7VcTF7hNhGXtav9mwdutUMj4wxdGzzz8mEDBvbJ4G21Ge
-	U0G1JPV1kzrsff1zb27GrYXnomITk/3ZWK97suCGMLlw9yV+atVPkRexr+kU/GreacAi0CwFltg
-	h2OX6qJ8ACYz9FfbN7k0ClKOOqPQauFVwt+51wPNnaLTFP+HPcMcQom8CNfGvY9W
-X-Google-Smtp-Source: AGHT+IFu3pBLM4BG9HpyDU3xaz6bWoZ/qR4n4K+OaxFPRhle1mo7ALTGO5sJuO7n6dg9d922Pza9WQ==
-X-Received: by 2002:a5d:4c81:0:b0:38e:48a6:280b with SMTP id ffacd0b85a97d-38f6f096a76mr2806405f8f.34.1740162878585;
-        Fri, 21 Feb 2025 10:34:38 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f258ddbb2sm23668086f8f.40.2025.02.21.10.34.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Feb 2025 10:34:38 -0800 (PST)
-Date: Fri, 21 Feb 2025 18:34:37 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Jan Engelhardt <ej@inai.de>
-Cc: "H. Peter Anvin" <hpa@zytor.com>, Greg KH <gregkh@linuxfoundation.org>,
- Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda
- <miguel.ojeda.sandonis@gmail.com>, Christoph Hellwig <hch@infradead.org>,
- rust-for-linux <rust-for-linux@vger.kernel.org>, Linus Torvalds
- <torvalds@linux-foundation.org>, David Airlie <airlied@gmail.com>,
- linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
-Subject: Re: C aggregate passing (Rust kernel policy)
-Message-ID: <20250221183437.1e2b5b94@pumpkin>
-In-Reply-To: <n05p910s-r5o3-0n36-5s44-qr769prp69r5@vanv.qr>
-References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
-	<Z7SwcnUzjZYfuJ4-@infradead.org>
-	<CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
-	<326CC09B-8565-4443-ACC5-045092260677@zytor.com>
-	<CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
-	<a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
-	<Z7VKW3eul-kGaIT2@Mac.home>
-	<2025021954-flaccid-pucker-f7d9@gregkh>
-	<2nn05osp-9538-11n6-5650-p87s31pnnqn0@vanv.qr>
-	<2025022052-ferment-vice-a30b@gregkh>
-	<9B01858A-7EBD-4570-AC51-3F66B2B1E868@zytor.com>
-	<n05p910s-r5o3-0n36-5s44-qr769prp69r5@vanv.qr>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="0GOAwDtb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; bh=KnR4EzoEBt+ftRx4nnv86SWVgm+uf9RfVItsvP3UHHs=;
+	h=Content-Type:From:Mime-Version:Date:Subject:Message-Id:To:x-icloud-hme;
+	b=0GOAwDtb8TvFA5B0Tmj7wIdC2s+yxYpzThjDF64LXoPA9MmmQPs7OAqHaJNkBdqve
+	 3vt6P53wPJtzsNTYS2gT1iz9lArQkc6ASiDwWApPl3TgO47LrzO51TzCT+3BJzzARe
+	 jAk/0tneOx3ufdvf5b3U3RG8LC+vsUdogx6lNXFOZQSCbW8Z0pFiBNvn0Wma7yghvN
+	 qk7MmSXnMOj26erXiqaYmYAMBC9J+7RVZMocg5yM3Ux2frvQEjT06Jc35vYOMPRISK
+	 LTqjt/MVPMZ0ODJIFfnH66mOckRwtBw1KnuUtg82jI+LnW14BozltAEnkeWzBfRlZ6
+	 2GjCgD0Wlft9g==
+Received: from smtpclient.apple (qs51p00im-dlb-asmtp-mailmevip.me.com [17.57.155.28])
+	by qs51p00im-qukt01072101.me.com (Postfix) with ESMTPSA id D2780402AD;
+	Fri, 21 Feb 2025 18:44:47 +0000 (UTC)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+From: MICHAEL TURNER <kameronwayneturner@icloud.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (1.0)
+Date: Fri, 21 Feb 2025 12:44:29 -0600
+Subject: Re: [PATCH v2 2/3] rust: configfs: introduce rust support for configfs
+Message-Id: <2930AE30-63B7-4CD7-99A9-096AB6A06EC5@icloud.com>
+Cc: alex.gaynor@gmail.com, aliceryhl@google.com, benno.lossin@proton.me,
+ bjorn3_gh@protonmail.com, boqun.feng@gmail.com, charmitro@posteo.net,
+ dakr@kernel.org, gary@garyguo.net, hch@lst.de, jlbec@evilplan.org,
+ linux-kernel@vger.kernel.org, longman@redhat.com, me@kloenk.dev,
+ mingo@redhat.com, ojeda@kernel.org, peterz@infradead.org,
+ rust-for-linux@vger.kernel.org, tmgross@umich.edu, will@kernel.org
+To: a.hindborg@kernel.org
+X-Mailer: iPhone Mail (22D72)
+X-Proofpoint-ORIG-GUID: YXtC74PVPtZruquuXKpV8S6UpvQSHG3I
+X-Proofpoint-GUID: YXtC74PVPtZruquuXKpV8S6UpvQSHG3I
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-21_05,2025-02-20_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=555
+ spamscore=0 phishscore=0 bulkscore=0 adultscore=0 mlxscore=0 clxscore=1011
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2502210129
 
-On Thu, 20 Feb 2025 16:17:07 +0100 (CET)
-Jan Engelhardt <ej@inai.de> wrote:
-
-> On Thursday 2025-02-20 14:23, H. Peter Anvin wrote:
-> >
-> >People writing C seem to have a real aversion for using structures
-> >as values (arguments, return values or assignments) even though that
-> >has been valid since at least C90 and can genuinely produce better
-> >code in some cases.  
-> 
-> The aversion stems from compilers producing "worse" ASM to this
-> date, as in this case for example:
-> 
-> ```c
-> #include <sys/stat.h>
-> extern struct stat fff();
-> struct stat __attribute__((noinline)) fff()
-> {
->         struct stat sb = {};
->         stat(".", &sb);
->         return sb;
-> }
-> ```
-> 
-> Build as C++ and C and compare.
-> 
-> $ g++-15 -std=c++23 -O2 -x c++ -c x.c && objdump -Mintel -d x.o
-> $ gcc-15 -std=c23 -O2 -c x.c && objdump -Mintel -d x.o
-> 
-> Returning aggregates in C++ is often implemented with a secret extra
-> pointer argument passed to the function. The C backend does not
-> perform that kind of transformation automatically. I surmise ABI reasons.
-
-Have you really looked at the generated code?
-For anything non-trivial if gets truly horrid.
-
-To pass a class by value the compiler has to call the C++ copy-operator to
-generate a deep copy prior to the call, and then call the destructor after
-the function returns - compare against passing a pointer to an existing
-item (and not letting it be written to).
-
-Returning a class member is probably worse and leads to nasty bugs.
-In general the called code will have to do a deep copy from the item
-being returned and then (quite likely) call the destructor for the
-local variable being returned (if a function always returns a specific
-local then the caller-provided temporary might be usable).
-The calling code now has a temporary local variable that is going
-to go out of scope (and be destructed) very shortly - I think the
-next sequence point.
-So you have lots of constructors, copy-operators and destructors
-being called.
-Then you get code like:
-	const char *foo = data.func().c_str();
-very easily written looks fine, but foo points to garbage.
-
-I've been going through some c++ code pretty much removing all the
-places that classes get returned by value.
-You can return a reference - that doesn't go out of scope.
-Or, since most of the culprits are short std::string, replace them by char[].
-Code is better, shorter, and actually less buggy.
-(Apart from the fact that c++ makes it hard to ensure all the non-class
-members are initialised.)
-
-As Linus said, most modern ABI pass short structures in one or two registers
-(or stack slots).
-But aggregate returns are always done by passing a hidden pointer argument.
-It is annoying that double-sized integers (u64 on 32bit and u128 on 64bit)
-are returned in a register pair - but similar sized structures have to be
-returned by value.
-It is possible to get around this with #defines that convert the value
-to a big integer (etc) - but I don't remember that actually being done.
-
-	David
-
-
-
+Need help deleting all processes=20
+I didn=E2=80=99t want non of this=20
+No url no kernel functions=20
+This is theft=20
+Against my will
+Sent from my iPhone=
