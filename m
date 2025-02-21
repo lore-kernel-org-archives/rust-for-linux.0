@@ -1,109 +1,91 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CABE20E326
-	for <rust-for-linux@vger.kernel.org>; Fri, 21 Feb 2025 12:05:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B857B155336;
+	Fri, 21 Feb 2025 12:16:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740139546; cv=none; b=XOewByfxZTkYM4y+pNnJ5knspIEXm+X0VA4H5MHPNmaGIzV07bTO9A3GU2tVebKloIpjk8x8+YRLY2WQtZcGhO72TsQxc2oVU4WURDTiRx79SRBPknN/J8sm3obRLMFT1tiXqB/eAphW9eJYXmBLZpwVxTzlEHiUrcapQnhrGgc=
+	t=1740140187; cv=none; b=uWbCO5GSuOmEFz8BPMtjH0dVFNSlTvYbtReNPQRRxyGa8mQCVi4/cbJKLKgN1+09iwZpc1gvgshJ12s57rhFd08Mpc4pa+1SXYrgUXwQcCkCd9hPM2yzfdEN7pB4ganZ3/VCDe4Go9pPpJxTzoRGYA3xaTwz2f1RXA5B1jQTNOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740139546; c=relaxed/simple;
-	bh=BQstsiPQ8cT1WzjLJVwY7xRdnhbI7ttgU9Qm/4wMFTM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YTntMEbij1C19waUHkyKGzCra/BOtHrfZk6875GzNUjz407FFYhCdf/D19NUSVDXaaqds5RE2yrG5WYonEpnAdXCMPjCsiuExsM3S0PA5TrZo+6m1dpne6DXarOWTEEl5XXTE6FS8DSFD3/08RRdBJ2tCnJngnF0DgE0X5bnhWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1paXrxSH; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1740140187; c=relaxed/simple;
+	bh=FcXDvJYEKyRapwRCxZsFoz/Xi48GMchrB8hzwuFfctU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sbjMKzLuoLJS3x++xqmBLn6Mo9IQj02LWCQY6opWBckLA7EIcrhKS6y+26vP01C9rDIDCEIQ4zo2aknKNt6NaheMeStEkr0fiGP2jjroIFLs37fJ2Ol20aus3OUQ+QzDRIko48aTIUpuPGF4L5ntYYK52MRfWjG8d6fYXnWGxjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RGoxfQ6l; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1paXrxSH"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4394a0c65fcso19990545e9.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 21 Feb 2025 04:05:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740139542; x=1740744342; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ehjj0CJUAO6DDOfCpZiQMMSQ39JXaHMG2u6ksCe/iG8=;
-        b=1paXrxSHsWBYYNlDgE6IXrnA+K1FLhErkROnj2jPfkxEoaXNwBrD+SkbqY5+AYrsP7
-         o98SbkY6YVxj8acfo4xk7vh0ygGzRs/T7NNjik+GzoII+dodp4UkC9jnBGD+MvRPb1Cg
-         V28hPS4uGCX/XF15fKV87/w66zaUsTc/sXgUZ0A94KAeyN68tJ0dDzBkrEyt9vnG2LAE
-         57r58DSTOFs0BbgN7lUO6YLGl0AP7EyHDGELLHBVG81CrTBERTL0kmly4s0wtYxaZyN4
-         o4hEvwnCVuG3cWnoj7lQTcnPwxHgWTYyZajorOgjWPLWyw0eqtfCDkpjoR3RNTsH7J0P
-         oNew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740139542; x=1740744342;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ehjj0CJUAO6DDOfCpZiQMMSQ39JXaHMG2u6ksCe/iG8=;
-        b=E83/VHDjsrgabqpD33LYtcBy765nhVXS+d9FF9Wz84XM16VmaYQDCMKpxC3azxZKaH
-         bhQKmFtutQGl9281uMN867eoAX5eOMiKO4xaMEN222zeo8TzTjg34tj3PdsJ0CGTn2nh
-         BzP6/cjpIXsuYL2ID/rb6nClCvmHTzVYuvt78MvghCZnlckCOeaUyl4MFo4sr+uRsHwp
-         FHpsmsX9vxExzqT8udIAHq1KzM0+qBXsfQZ/Nw48OCwxAb0Yta+sXp9qYGq5z+wud4Dt
-         6YM7SK1ey9VKsF3CpbrV2LmEQqUqRnAqYjzy5vLBEiTqK7m2I/5G9PR5lcqJfWxbgOSX
-         UGeg==
-X-Forwarded-Encrypted: i=1; AJvYcCW2VjE1YB5PEaCAMCFDpFQYGqEnTOces/Sqgv/wHnW8/W1YCuc3OkukA//nQcZCYJ6zJLHRAa++61oeyf7yFw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2H4RO9ZfZLU0RCJ4WQV/lFO6DNNpkg4YZqR1koxguFVEKQiIK
-	0EkuzAeIjX/HmUTfQKizkBryyIqxRH8BGWSX30UAJpCrvD3CYx0vC7fccoYke/rBhWuZ+sXeESq
-	xoPFivDUujb2aLKbu8rc9whgQ2CWSEL10R1wN
-X-Gm-Gg: ASbGncve8TfDGif8wS6ZjCQNc94mca9zw8u/C9IUYRlTnMoTYrRo3Df2FGl3n249RP7
-	TNI15MohGW3E9XNEWW031LpV2n9c30PeNeLs2afnEztL2xWmjdIL2H5087FktiNUWkSsnHVw6D6
-	IsxlEKbRxSApA0t7bxC8GbZjdcp5u1tmqmOO8=
-X-Google-Smtp-Source: AGHT+IFUVqGJpEfAn3seSUzRTwg2k1L+NzWo5q83w6Bc89WWGUBJughjK3PTWCt5aJQbVcCE48SJfo3U/1oy8D2Zi4w=
-X-Received: by 2002:a05:6000:1447:b0:38f:2f0e:9813 with SMTP id
- ffacd0b85a97d-38f6e4c074bmr2748320f8f.0.1740139541509; Fri, 21 Feb 2025
- 04:05:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RGoxfQ6l"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74D65C4CED6;
+	Fri, 21 Feb 2025 12:16:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740140187;
+	bh=FcXDvJYEKyRapwRCxZsFoz/Xi48GMchrB8hzwuFfctU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RGoxfQ6ljvx0Qgt/e9/YI6OAtuKFODPGK5+oIM9C7oDT61Aa1kXunL8KhYNMYT/jW
+	 llmTETlvg4U7bkil7IxbOWwBjWhS7LVrMFunU98PGNUrKa+zCbrNAotLiQgkbHHolw
+	 mCHiN7W4OvPNR5Hza8FeaItxRiCnXoCztAM1+Lk/tt2KZIzztE5OTkt8etJ5iQJ2GG
+	 8+4B9Sx1WVL1IcIac4YGvUX98mTRDCtXCl3SYEEv2MDNCNVgCBpObVCutY8x8t1HuG
+	 i0MmFyL05Bsg3B7k19Mutzls+dm49W6SKPB7nkg7WJZDDPIWgToEpRvnZZJOObok0D
+	 OsP/il6p5xSgQ==
+Date: Fri, 21 Feb 2025 13:16:22 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Christoph Hellwig <hch@infradead.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	rust-for-linux <rust-for-linux@vger.kernel.org>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
+	ksummit@lists.linux.dev
+Subject: Re: Rust kernel policy
+Message-ID: <Z7hulnJ4fwslRILy@pollux>
+References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
+ <Z7SwcnUzjZYfuJ4-@infradead.org>
+ <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
+ <Z7bO1jT2onZFZwgH@infradead.org>
+ <CAHk-=wgLbz1Bm8QhmJ4dJGSmTuV5w_R0Gwvg5kHrYr4Ko9dUHQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250219201602.1898383-1-gary@garyguo.net> <20250219201602.1898383-3-gary@garyguo.net>
-In-Reply-To: <20250219201602.1898383-3-gary@garyguo.net>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 21 Feb 2025 12:05:27 +0000
-X-Gm-Features: AWEUYZlMILyXoM87TavacNdZrv7qxkgn9wtRgwQznZAn-Ot0POHswTlmHPK0Q8M
-Message-ID: <CAH5fLghKXePs1bJA1pHtnofKRmbwEt_PjdB380-zjQZ4PSxzgA@mail.gmail.com>
-Subject: Re: [PATCH v3 2/4] rust: convert `Arc` to use `Refcount`
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@gmail.com>, 
-	Wedson Almeida Filho <walmeida@microsoft.com>, Alex Mantel <alexmantel93@mailbox.org>, 
-	Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Mark Rutland <mark.rutland@arm.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wgLbz1Bm8QhmJ4dJGSmTuV5w_R0Gwvg5kHrYr4Ko9dUHQ@mail.gmail.com>
 
-On Wed, Feb 19, 2025 at 8:17=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
->
-> With `Refcount` type created, `Arc` can use `Refcount` instead of
-> calling into FFI directly.
->
-> Signed-off-by: Gary Guo <gary@garyguo.net>
+On Thu, Feb 20, 2025 at 04:39:58PM -0800, Linus Torvalds wrote:
+> Honestly, what you have been doing is basically saying "as a DMA
+> maintainer I control what the DMA code is used for".
+> 
+> And that is not how *any* of this works.
+> 
+> What's next? Saying that particular drivers can't do DMA, because you
+> don't like that device, and as a DMA maintainer you control who can
+> use the DMA code?
 
-Overall LGTM. Other than Tamir's questions, I have one:
+[...]
 
-> +        if refcount.dec_and_test() {
-> +            refcount.set(1);
->
-> -            // INVARIANT: We own the only refcount to this arc, so we ma=
-y create a `UniqueArc`. We
-> -            // must pin the `UniqueArc` because the values was previousl=
-y in an `Arc`, and they pin
-> -            // their values.
-> +            // INVARIANT: If the refcount failed to decrement because it=
- is 1, then we have the
-> +            // exclusive ownership, so we may create a `UniqueArc`. We m=
-ust pin the `UniqueArc`
-> +            // because the values was previously in an `Arc`, and they p=
-in their values.
+> So let me be very clear: if you as a maintainer feel that you control
+> who or what can use your code, YOU ARE WRONG.
 
-"If the refcount failed to decrement" seems to be leftover from a
-previous version. This should say "If the refcount was decremented to
-zero" or similar.
+When I added you to the original thread [1], it was exactly to get some
+clarification on this specific point.
 
-Alice
+In my perception, a lot (if not all) of the subsequent discussions evolved
+around different aspects, while this specific one is not even limited to Rust in
+the kernel.
+
+Hence, I'm happy to see this clarified from your side; it was still a remaining
+concern from my side, regardless of whether the PR in question will make it or
+not.
+
+However, I also want to clarify that I think that maintainers *do* have a veto
+when it comes to how the API they maintain is used in the kernel. For instance,
+when an API is abused for things it has not been designed for, which may hurt
+the kernel as a whole.
+
+But as mentioned previously, I do not think that this veto can be justified with
+personal preference, etc.
+
+- Danilo
+
+[1] https://lore.kernel.org/lkml/Z5qeoqRZKjiR1YAD@pollux/
