@@ -1,216 +1,109 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2061.outbound.protection.outlook.com [40.107.237.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58DB71FBE8E;
-	Fri, 21 Feb 2025 11:36:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740137763; cv=fail; b=Pgyexfe16QLci+KuVO75W6oTfQHP1r2RaH9oPGSOTlo3uGLbg4h0Rmq0gSqooKfva/JsmspMDKmbHtZiJiZba8FDbKPvMNAKU0Ek+EN0QRD57QmR/mxnjyMHxDXgR9dufB4PCM7/FWFC3xwwlTeFp/MXBqJsK89cSfISEUXeK80=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740137763; c=relaxed/simple;
-	bh=8UF/bgSQGPPBlaEzd0OWxKCaLOnE47KieJAWbqiqpjE=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=PGiOBelwH/amDcSPbp2L4pLn/K+YW+EMGF4sfa7/bC69rzEVdPUJMNGFN5gY63dtc8n+BaEzxBkM+WvvQjVH8c6Kirq60uqWbNTo7PlHnpFJBg2CwI6QbYFcpHR2OT+kxegeG85FjUD8xAfycICG3h06HZAE2R6btrWDyn/MG4s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=KgJaEJl2; arc=fail smtp.client-ip=40.107.237.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CABE20E326
+	for <rust-for-linux@vger.kernel.org>; Fri, 21 Feb 2025 12:05:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740139546; cv=none; b=XOewByfxZTkYM4y+pNnJ5knspIEXm+X0VA4H5MHPNmaGIzV07bTO9A3GU2tVebKloIpjk8x8+YRLY2WQtZcGhO72TsQxc2oVU4WURDTiRx79SRBPknN/J8sm3obRLMFT1tiXqB/eAphW9eJYXmBLZpwVxTzlEHiUrcapQnhrGgc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740139546; c=relaxed/simple;
+	bh=BQstsiPQ8cT1WzjLJVwY7xRdnhbI7ttgU9Qm/4wMFTM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YTntMEbij1C19waUHkyKGzCra/BOtHrfZk6875GzNUjz407FFYhCdf/D19NUSVDXaaqds5RE2yrG5WYonEpnAdXCMPjCsiuExsM3S0PA5TrZo+6m1dpne6DXarOWTEEl5XXTE6FS8DSFD3/08RRdBJ2tCnJngnF0DgE0X5bnhWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1paXrxSH; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="KgJaEJl2"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LPYIaHmxtFYpcpPpGwL/dTYE8VgyESKYBwSYzeMM2PqTMVi1xYixWbwXiaq4shjLQXM5pexv+kg6Rv4688q6WsPJkdZnX1+bMP0Fdrx70fwhop/6KokpcQDCAKwOVv+L4XJUgsAs1RBIEIqRuPv1t47pIOjoGKHX6b1tbvLW+f+YwcD0PKmuA/DL0QTMMl7gnA2qYmz40ftstbPJcWhAKhXVspmAc+oDxj0ToJbry69qqVK+iB+LzBxxOwuhv5mp9v6vETJpjYb0WtiHlX8e7iDhNKZH7OyXmWP5DIiYLTEda4gOE/g5mRyDiSYdsXM9+SqHIvKlnok2E/KtA5IPpQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Q6UxIPxgPUb/hyBwCEI7G/KIJZAF+KWVAQJnNsmgqJc=;
- b=Tj+gbIVYQv6jdw4IR8jyP0RiVxovfAcTUqM7ePXTk+8pwTP43axtkTjlhafFwgbcklp6Sv//irLoMm0hC2Qkcy3H2lpmzSL737gD00q3tXQIOdOoF/L+nuL9CYHEZRWr2dTFu4SVd2qfok5aYMWtpnu8mY/arpwXGc4tb1/vFQQ3w4A3NrWc6QBSb+8hDiO7xBbiP6q0aGj2Ne6WDxgW0x7iWcyc5Wp7vKm6BujL8lhIxpMH0qHMk4tzBvN+CLOBzSORaKWOTiMmsWYECgTX/hg6KYl6uoFsRXeb+A0JWiV1+C++joc4n6MEznYrOjKcsjH5E1GA8WGUwqo0mmGYUQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Q6UxIPxgPUb/hyBwCEI7G/KIJZAF+KWVAQJnNsmgqJc=;
- b=KgJaEJl2EsL93HCL5RNH38ifraTjzvm+VIT6DCAOYn5Q7ytN/weiwpT95OQQ27/8issPavGOgGZMNRfrDpqZEMr0WLmq4CGeouVVqKAECtB0JOcz2eex4pDMpCAk5eAp8+9JOEAUVmiKASoEv9KlItfFpHNWeBa5SfZW/WcoDpEYb8gZeITI35+e10JPndPk3meUNZb45MGmn5Nf98wGhvnL7vVyCJulnlHo41wnYIKp04wt9+ujHFPfUyct7K//oWMjvozWwbFIIT2asMNkPjQZmH0P6GpLB7+zumYNxHW1GvgeZ2Afw3unZSDTTHxDaPClsZdzJzgdIeRTNcUo/w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by SJ5PPF75EAF8F39.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::999) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.17; Fri, 21 Feb
- 2025 11:35:58 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99%6]) with mapi id 15.20.8466.015; Fri, 21 Feb 2025
- 11:35:58 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 21 Feb 2025 20:35:54 +0900
-Message-Id: <D7Y3CO9OMZBQ.1QGFV73NZBBIF@nvidia.com>
-Cc: "Timur Tabi" <ttabi@nvidia.com>, "dri-devel@lists.freedesktop.org"
- <dri-devel@lists.freedesktop.org>, "rust-for-linux@vger.kernel.org"
- <rust-for-linux@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "nouveau@lists.freedesktop.org"
- <nouveau@lists.freedesktop.org>, "dakr@kernel.org" <dakr@kernel.org>, "Ben
- Skeggs" <bskeggs@nvidia.com>, "Nouveau"
- <nouveau-bounces@lists.freedesktop.org>
-Subject: Re: [PATCH RFC 1/3] rust: add useful ops for u64
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "John Hubbard" <jhubbard@nvidia.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Dave Airlie" <airlied@gmail.com>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250217-nova_timer-v1-0-78c5ace2d987@nvidia.com>
- <20250217-nova_timer-v1-1-78c5ace2d987@nvidia.com>
- <C1FF4314-C013-4AE1-A94E-444AFACDB4AC@collabora.com>
- <D7VLMD31YB0V.OKHDSVUPAZTE@nvidia.com>
- <1b8921d46f7d70c7467ea0940d60220f05cccc5d.camel@nvidia.com>
- <D7W119MHCCWH.IS600FTIOV8O@nvidia.com>
- <e6322f90-08bd-4e86-8dad-2ddbd7e5cece@nvidia.com>
- <D7WFP99SMV3H.26AJWK17S0UPX@nvidia.com>
- <fd920faf-a707-4c6d-8c0b-3d59c010da1d@nvidia.com>
- <CAPM=9txmQWO+SHnZhr8zXHCZ=S8CNY=PryRVkWWuHyor-ajU6A@mail.gmail.com>
- <1597EDB7-D91B-4660-ADDC-D2252B26CB22@collabora.com>
- <41cf1c79-f61c-47e7-a0ed-afb8e82d50e6@nvidia.com>
-In-Reply-To: <41cf1c79-f61c-47e7-a0ed-afb8e82d50e6@nvidia.com>
-X-ClientProxiedBy: OS7PR01CA0036.jpnprd01.prod.outlook.com
- (2603:1096:604:257::10) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1paXrxSH"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4394a0c65fcso19990545e9.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 21 Feb 2025 04:05:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1740139542; x=1740744342; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ehjj0CJUAO6DDOfCpZiQMMSQ39JXaHMG2u6ksCe/iG8=;
+        b=1paXrxSHsWBYYNlDgE6IXrnA+K1FLhErkROnj2jPfkxEoaXNwBrD+SkbqY5+AYrsP7
+         o98SbkY6YVxj8acfo4xk7vh0ygGzRs/T7NNjik+GzoII+dodp4UkC9jnBGD+MvRPb1Cg
+         V28hPS4uGCX/XF15fKV87/w66zaUsTc/sXgUZ0A94KAeyN68tJ0dDzBkrEyt9vnG2LAE
+         57r58DSTOFs0BbgN7lUO6YLGl0AP7EyHDGELLHBVG81CrTBERTL0kmly4s0wtYxaZyN4
+         o4hEvwnCVuG3cWnoj7lQTcnPwxHgWTYyZajorOgjWPLWyw0eqtfCDkpjoR3RNTsH7J0P
+         oNew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740139542; x=1740744342;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ehjj0CJUAO6DDOfCpZiQMMSQ39JXaHMG2u6ksCe/iG8=;
+        b=E83/VHDjsrgabqpD33LYtcBy765nhVXS+d9FF9Wz84XM16VmaYQDCMKpxC3azxZKaH
+         bhQKmFtutQGl9281uMN867eoAX5eOMiKO4xaMEN222zeo8TzTjg34tj3PdsJ0CGTn2nh
+         BzP6/cjpIXsuYL2ID/rb6nClCvmHTzVYuvt78MvghCZnlckCOeaUyl4MFo4sr+uRsHwp
+         FHpsmsX9vxExzqT8udIAHq1KzM0+qBXsfQZ/Nw48OCwxAb0Yta+sXp9qYGq5z+wud4Dt
+         6YM7SK1ey9VKsF3CpbrV2LmEQqUqRnAqYjzy5vLBEiTqK7m2I/5G9PR5lcqJfWxbgOSX
+         UGeg==
+X-Forwarded-Encrypted: i=1; AJvYcCW2VjE1YB5PEaCAMCFDpFQYGqEnTOces/Sqgv/wHnW8/W1YCuc3OkukA//nQcZCYJ6zJLHRAa++61oeyf7yFw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2H4RO9ZfZLU0RCJ4WQV/lFO6DNNpkg4YZqR1koxguFVEKQiIK
+	0EkuzAeIjX/HmUTfQKizkBryyIqxRH8BGWSX30UAJpCrvD3CYx0vC7fccoYke/rBhWuZ+sXeESq
+	xoPFivDUujb2aLKbu8rc9whgQ2CWSEL10R1wN
+X-Gm-Gg: ASbGncve8TfDGif8wS6ZjCQNc94mca9zw8u/C9IUYRlTnMoTYrRo3Df2FGl3n249RP7
+	TNI15MohGW3E9XNEWW031LpV2n9c30PeNeLs2afnEztL2xWmjdIL2H5087FktiNUWkSsnHVw6D6
+	IsxlEKbRxSApA0t7bxC8GbZjdcp5u1tmqmOO8=
+X-Google-Smtp-Source: AGHT+IFUVqGJpEfAn3seSUzRTwg2k1L+NzWo5q83w6Bc89WWGUBJughjK3PTWCt5aJQbVcCE48SJfo3U/1oy8D2Zi4w=
+X-Received: by 2002:a05:6000:1447:b0:38f:2f0e:9813 with SMTP id
+ ffacd0b85a97d-38f6e4c074bmr2748320f8f.0.1740139541509; Fri, 21 Feb 2025
+ 04:05:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SJ5PPF75EAF8F39:EE_
-X-MS-Office365-Filtering-Correlation-Id: 03b4731d-c3c2-49dc-b324-08dd526be896
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|10070799003|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QTlGb1BrVlUya2JiN0kxM1EwUytsaTFSRWRlVlN5Um44QkJVK2JRKzFndnp6?=
- =?utf-8?B?cHdPbFhGZ3J3NXVlRzdXVTNWbmFaRGlZS2drQ1FUdTBxQWZEMW9IN1IzYU5i?=
- =?utf-8?B?M3RhQ2RhMzk1T0x5bGlsOHhyS2V1Uk5nZ0xka2tlWG5NS21SZStkbFdhU2ZC?=
- =?utf-8?B?THFTNjFsc3JwNysxcWRFWHp3ZVBod25acXZaLy9vVHpvVW1KM3kzU1FWR3pl?=
- =?utf-8?B?ZVJEOEljeEtWSWVJSCtYVEZSeTRzT01ydXUvTkdBQUs4TFN3bnMvdkZ4a1c2?=
- =?utf-8?B?RVp4OVRLUkJMUEdsUnJxakx3RWpxVXN2V2twZ2ljbVBtK291SXRTVUZYRWdP?=
- =?utf-8?B?Mzk3QzFiK3pXVHJCbUs4ZzAvWlQ3bW9iekxJRGRxd0M3YlBpVUxZVTl5M0pm?=
- =?utf-8?B?anNJZFA5dHVoTXpEVWM1Mm1OY1hUQ2tsRlcxRnphWUxzcXBUVDFQK0NGTXJ5?=
- =?utf-8?B?MTlEQVphQkFuZHpiblhGQXNFQmZoMkMzOEZxMFppTWsrL3RobEQ2aldFU09N?=
- =?utf-8?B?Vnc5Ry9ITTdhZTdDK0VIdkQ0bVhlVXlTT2xKL1VYNUhzVGZhRDErVzJkNUNl?=
- =?utf-8?B?NzdwV1d5ZkJoY1B4ZjN1d2hFdVg1aVBMK2Q4dG1VMm5MSEdBRTd0d2dMTThN?=
- =?utf-8?B?NHIzeUo3ME84ejhmaHdWamhQcnBEdlliUGFJY25LTW02c0U1YXdoZjRzcTRt?=
- =?utf-8?B?NDVndGFMZEkxVzhTM2xSeTQyWURWRW5UZWd3Um5xaW9FRTZLbXB3OGNEbVMz?=
- =?utf-8?B?U1lBK29Yb1c3SnVsNDA4Ym9uSWNydERRc2traGROZUFFbjJnakhRbHlPQ3l6?=
- =?utf-8?B?dFRSYVJqQkVleFYxQ2ZLaHRyRDlFQnVXR3FJOTN5R0JCcFp4Y3dyLzR2T1pa?=
- =?utf-8?B?TW42L1hiaGV2amI2NnVOdFlpU1p3NTV0eS9pL1dFRU1FWUZzTVdISGNjOFVy?=
- =?utf-8?B?VnQyaTI3YXNsY0ZubmtySHdKdHphQnlLOVhLSitIdzkzMDJWcjRBT3NtSzAv?=
- =?utf-8?B?VFBrQzh5MEU5eERtYk1vMHlNVXlGS1d4QXJJamN5N1oyZVR6TTM2bnJMSDB0?=
- =?utf-8?B?S004a1BnQk9sdHJjU0JHbEdUWmtPYTE1YjUvb1RNbkVHaUUrMFN2bVdQUktu?=
- =?utf-8?B?dmxIdVNrVDNNNzczZytWYStGZjk5Zy9yKzR1TUk5Y1pVUWs1U2pOSjJzZFM1?=
- =?utf-8?B?MGJxcXhVZE5XaTg2dGo5b0lEZWwrYU1kRHNXbXB4T05iYXlDbldKRm9OOE1R?=
- =?utf-8?B?U1dBcGpIWFAyR3hDWmhIbks4RFhXMkk3NWJTRURGNCtJdTRQcDZIcEhicDFY?=
- =?utf-8?B?SmsxSWdERXpoUnZJeCtsSTlsQXlFcXRHKytjL21wV3pnR0tIekVjWXZjN1NL?=
- =?utf-8?B?bkMzZ1ZFYys1KzRuYVZaTFRsT1laWWszV1BvVjZEOXl2aU1XR0xZdWZxMUVQ?=
- =?utf-8?B?THRtODFabUk3N29KY1BKaHZ3Zkg2Sm5JM0N4M0RjK1FWcnU1MkxaTkI1TGxl?=
- =?utf-8?B?cnVwaW9CWi9wMllNdkhoZ2QvczJGeVY2RFBpMU9xZVNCV1Arb3RqWkVZemMr?=
- =?utf-8?B?VExSRDE4SEpQaGpFSUpoeGFQOUM1Q1V2MmwzYnVVczdVYVFTbFRidGZKVXc3?=
- =?utf-8?B?OHdlNG0vYThlaTJtb0VQR3UxdE1VbVRHRTg1SjBSSk1uMUZmQUVKRVJHTHFG?=
- =?utf-8?B?VFpvV1ArVi9TMWJ5VWJsdG5VTCtWclZjVzV1RWFqdm5TVXRxTWR5R1d5Y2Mr?=
- =?utf-8?B?ZW5NdVArTTFCb3JqL0JmWEVlOUpaQjVEcjFUeE5NQTJDUm5OcmtWQWlxcmhl?=
- =?utf-8?B?N3R1ODMwcEgyRnk3WHFQd0ttcUp2eXVBamVvTXdxOUVZVlJGWFNUSEtxRFlS?=
- =?utf-8?Q?svhEqhPn+AY1K?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(10070799003)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QjMxdUJxRmhDYXJDSkFWeFRocG1zdFJiOHh5WGhxWEMwbmtLMm1RQVlWbTV4?=
- =?utf-8?B?dXM1U1VaZXFReUprUFV1YS81Q2NGUTNKSVZDRllrZmZNb0h0bjk5YUFGaU8r?=
- =?utf-8?B?eldIZ1pSNkQrdk03bEwxK1VhMjdFRUk2Y2tJTjA1WE04aXdmMlJWeXZaeU1h?=
- =?utf-8?B?bWgzZW1iZ2dCOHJhZXJRNFBVNnRDcGtMcTlZTzcyT0RXQ0wvTHpwenkvaDY1?=
- =?utf-8?B?OHd4cmRRTVl3QzUvR0FzQnRoYXg5dlRMRFhBQUxNU1ZURUZLbHZGSjJuRnFF?=
- =?utf-8?B?UjdlMDJpdG5JTkYxcGRJVk5lUlI5NE9jZ2N3TFRRVEFOVGxaUDRpQlJNTzBI?=
- =?utf-8?B?bVJoaU1XYnJsWTlibDhYbkZIS3J1NjU3Z2tZNnQ5MkQ2eDNuZG4zVVMxVzIz?=
- =?utf-8?B?cTZhOGl0MkVtR1VQVmpBQ1RyaGFJalpKVmR5UVlxU1ZDeVpQaWxncXlhTWwy?=
- =?utf-8?B?cDNCNW5Qd1drdEVLb1l4SXFwL2JpQ0RBYnRuY09BblZtZVFQVWRLQkpzZVBp?=
- =?utf-8?B?T0kreXdUT3hVWDU3TnRYMEJtQkpsNVd4R2k3WU1SQ2Jyam5ma1A5cmxnaTZS?=
- =?utf-8?B?WXBEa3huY3owYkJFU2NwSlp3YzJWTnd0U3RUVUFZM2ZRcEZ2ZnlKQklyRHdm?=
- =?utf-8?B?OCt2bUROMnB3NXE1NVZKSXEwQk9lc29ZNG5ETjgxVi9QYklYS2xZejBEbTh0?=
- =?utf-8?B?UjRPcjhMQjYxNkJYeFFVNlFHeWxuUkI2ZndVTkhNOERJdnhya2RweXY0RkRL?=
- =?utf-8?B?di9qelVzczJJQlowK3N5MEN2SFo4VzRRY2pXRUxjeW1qOVh0d2xvbWQwRGRR?=
- =?utf-8?B?dTJoaU1iemFpNkJlU3k2NEVxeDJpM0JoVVF2UmtDL2VtVXphbnNDanV0cndI?=
- =?utf-8?B?OHc5SkFxcGtXeVBwbGg1bldiWTRTT3MzTks5SVpuVWViT0RZUzBubWhDRCtX?=
- =?utf-8?B?OHNHbGllNXZvT0NZTWpOV3I4N1kwZ1JLbzV3UHU5NVloNTFIa3dOcHd2TEFt?=
- =?utf-8?B?cThBQ0U2a3VTeHlxQ3dwU3RSMlpFN3F3WHdFQ3dYV3pHYzl4WjJtZlZTTGRj?=
- =?utf-8?B?TG9OK2hkNlRDWFlEbEVEY3BGR2hBQzQybzNhQ2h1WDVRdlBrOVlrSGRnWEND?=
- =?utf-8?B?Y0FzUFg3cXlGSzJzd3FKTUZpdlhwa0l6d29HTThGOWgzNXY1OFJtNXhVRkxu?=
- =?utf-8?B?UUN0bnRQQTVNd3NuUnZZL0tpY0ZFbkJnNkhqTDR3a2NzTmJ2TGhBblBNSHNE?=
- =?utf-8?B?VFJSK3AzRXVMeGQxZzJ0bjViTnB6ZTZEZG5qeWZGQ3YzZktOSnZZNFpobmZl?=
- =?utf-8?B?aHhFL1hOckY1ZzlsSDlGQlN6dkNKRlhFZ2prNkZmRTdMZ1Fkc1RmUFBoM0ty?=
- =?utf-8?B?bGhwYURBdVF0UGdLZDVEUGNLRHNTR2NJbUVwR3ZuWWt0b09tOXNmczBia2RO?=
- =?utf-8?B?L0tVd0U1UkdJY3gvVXhpMHZldXZWR2hFV1pYa2hyb3AyYzVyZndVaE5yU1VL?=
- =?utf-8?B?Nk5RL0dVN0dnWCswbDFJRGRmTjR5V3Nya1I5aDBmMUNwdTMrN1pNNkx6V1dQ?=
- =?utf-8?B?bG0zeU9hcWJUTVUwbWNFRmc3dkpzK0pPZjNkVmtDeCtLRmc0NzZ4WUUwaUxH?=
- =?utf-8?B?VmN3L3VSMDgrTmpEOFNmem0rUGI5RSttc254SUJmY3NzZHhnbHZnUkQ4Q2FV?=
- =?utf-8?B?MHA0Vk5FYy93ZWtVOTRLN3VpL0hkV1Yxd1ZHYmhiRWg4d3dUN3RpR0ZiVVdM?=
- =?utf-8?B?bXZDVFU1VmZiL0tIZ3BlaWFQK01SRHpSbWQ3SUJHTGM4TllTdVZZSGd2MUFa?=
- =?utf-8?B?b0MxTzI2MmFtYUZhcElHL0FJZFZtS3hkbWYwLzltbWVtakVLOEQ3S3RYRlNJ?=
- =?utf-8?B?SmpKMkxpK091MEFqd2RrYVA1Q0ozcTFpVDJTOEV0Tk9iVVE2b3dVNlpGNVRN?=
- =?utf-8?B?Ykp5OVVuZmI0bjhMRW5yK0RzcW04Q1BmN08zYmdCYm4vQ3lyamg5eGhFTjF6?=
- =?utf-8?B?L0dObjkrMkxFUFJBOENjYVVhR29zWXh2MXNwb2prZExsTmlTcUgySFRlazFZ?=
- =?utf-8?B?MDg3d1BvekIydVZraXpQdGdOaWZ0Mlo1OVYxb3JvK3NXOEkzVGhzQ0pkcmlP?=
- =?utf-8?B?ZnhCcWo2czRJdnUrcFIyQUlOdGFJdDFLUmpvSDRaUExDK2FHZUEra2o1U2No?=
- =?utf-8?Q?kXjhIu3kptpPZCw8tEEWm1AFZD/TUFl4qmpU7gdl5i6q?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 03b4731d-c3c2-49dc-b324-08dd526be896
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2025 11:35:58.1474
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Dw6UFkVkjWV4/Ezs6I/1feGjMdjWj8QMRQ0MSQ93ezc0d3elKbUhbsS1bDvwbrUbPWb8yFhxJ6ochN5nFC67fQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF75EAF8F39
+References: <20250219201602.1898383-1-gary@garyguo.net> <20250219201602.1898383-3-gary@garyguo.net>
+In-Reply-To: <20250219201602.1898383-3-gary@garyguo.net>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 21 Feb 2025 12:05:27 +0000
+X-Gm-Features: AWEUYZlMILyXoM87TavacNdZrv7qxkgn9wtRgwQznZAn-Ot0POHswTlmHPK0Q8M
+Message-ID: <CAH5fLghKXePs1bJA1pHtnofKRmbwEt_PjdB380-zjQZ4PSxzgA@mail.gmail.com>
+Subject: Re: [PATCH v3 2/4] rust: convert `Arc` to use `Refcount`
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@gmail.com>, 
+	Wedson Almeida Filho <walmeida@microsoft.com>, Alex Mantel <alexmantel93@mailbox.org>, 
+	Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Mark Rutland <mark.rutland@arm.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu Feb 20, 2025 at 9:14 AM JST, John Hubbard wrote:
-> On 2/19/25 3:13 PM, Daniel Almeida wrote:
->>> On 19 Feb 2025, at 17:23, Dave Airlie <airlied@gmail.com> wrote:
->>> On Thu, 20 Feb 2025 at 06:22, John Hubbard <jhubbard@nvidia.com> wrote:
->>>> On 2/19/25 4:51 AM, Alexandre Courbot wrote:
->>>>> Yes, that looks like the optimal way to do this actually. It also
->>>>> doesn't introduce any overhead as the destructuring was doing both
->>>>> high_half() and low_half() in sequence, so in some cases it might
->>>>> even be more efficient.
->>>>>
->>>>> I'd just like to find a better naming. high() and low() might be enou=
-gh?
->>>>> Or are there other suggestions?
->>>>>
->>>>
->>>> Maybe use "32" instead of "half":
->>>>
->>>>      .high_32()  / .low_32()
->>>>      .upper_32() / .lower_32()
->>>>
->>>
->>> The C code currently does upper_32_bits and lower_32_bits, do we want
->>> to align or diverge here?
+On Wed, Feb 19, 2025 at 8:17=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
 >
-> This sounds like a trick question, so I'm going to go with..."align". hah=
-a :)
+> With `Refcount` type created, `Arc` can use `Refcount` instead of
+> calling into FFI directly.
 >
->>>
->>> Dave.
->>=20
->>=20
->> My humble suggestion here is to use the same nomenclature. `upper_32_bit=
-s` and
->> `lower_32_bits` immediately and succinctly informs the reader of what is=
- going on.
->>=20
->
-> Yes. I missed the pre-existing naming in C, but since we have it and it's
-> well-named as well, definitely this is the way to go.
+> Signed-off-by: Gary Guo <gary@garyguo.net>
 
-Agreed, I wasn't aware of the C equivalents either, but since they exist
-we should definitely use the same naming scheme.
+Overall LGTM. Other than Tamir's questions, I have one:
+
+> +        if refcount.dec_and_test() {
+> +            refcount.set(1);
+>
+> -            // INVARIANT: We own the only refcount to this arc, so we ma=
+y create a `UniqueArc`. We
+> -            // must pin the `UniqueArc` because the values was previousl=
+y in an `Arc`, and they pin
+> -            // their values.
+> +            // INVARIANT: If the refcount failed to decrement because it=
+ is 1, then we have the
+> +            // exclusive ownership, so we may create a `UniqueArc`. We m=
+ust pin the `UniqueArc`
+> +            // because the values was previously in an `Arc`, and they p=
+in their values.
+
+"If the refcount failed to decrement" seems to be leftover from a
+previous version. This should say "If the refcount was decremented to
+zero" or similar.
+
+Alice
