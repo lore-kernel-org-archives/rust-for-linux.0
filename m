@@ -1,118 +1,141 @@
-Received: from mailrelay.tugraz.at (mailrelay.tugraz.at [129.27.2.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19701F03F2;
-	Fri, 21 Feb 2025 18:31:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.27.2.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E3B1E7C0A;
+	Fri, 21 Feb 2025 18:33:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740162690; cv=none; b=taaqg06K6KdM6kFELQrsLYPb1LPxTcOzCCKQ5ll75QWUe4Q/NcWggjLEp5/hb9rYFRW7jgVXFnBR0mA4eDvRoTmfTxFpcVx7ziHf5xT72axTFC099OmjuxndF42S9yIt29Rw4ZTrAXwFjKZsqVAp5/0MlJ8GgeVVOIFInh1DrGw=
+	t=1740162836; cv=none; b=XYwUjwZkENMQMgaNjpDKuj6nrpZ5I5U+jA4niGAMcL4Q9ivsCF4d/+vUTmf4Go1SvKtPTRBhJmkSaezjs2LEJqmLyVxH9JS07zCBblKTF3l2BbSoD9kv00u1GeJEsd/MEHQ64nMlIwuefi9wt06gm25cXM2jMGtEXyMqlP7SieQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740162690; c=relaxed/simple;
-	bh=MxpumlDwhnylpkxHEgoZ0MXmhXAvcnQNyZqB93PA5AY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Zb7Am+3APyH9gL9t/cHQJ8u3GCY2vDBbXCft6S8PrK2mfwxkBu/2xSl9Zxf0P/MaVTk3NGqk63OtKLSZfnn9sz7Dj6heJp6pw0/t/LeynRBg1nYgiBopcNTyM8I5BtmzG5Llg6e+975r/eyU8NlRbSi2HhZuI6Ai/tmc6lO7sx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at; spf=pass smtp.mailfrom=tugraz.at; dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b=JCg4unUf; arc=none smtp.client-ip=129.27.2.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tugraz.at
+	s=arc-20240116; t=1740162836; c=relaxed/simple;
+	bh=SevsMtAd6pcMIukozWoqRpvrs5tEn8so48kD9lEs31w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FXruqHKxPBoA6ZjWAR23rv3F7Ynrf7wmUygniEBwILuZZHwhxBjIqVaQo5v7MiSRONGiXpTsUkP7b2+haoDJMosWXwbBh5cblc+Swq7ujX4kDKrRrsq4uosu6TJmDh5CSQL8G0ml8u986DvEC0mife37qYRium0auF5ntwbBoM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N4VRijN8; arc=none smtp.client-ip=209.85.208.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b="JCg4unUf"
-Received: from vra-171-233.tugraz.at (vra-171-233.tugraz.at [129.27.171.233])
-	by mailrelay.tugraz.at (Postfix) with ESMTPSA id 4YzzGl5gKZz1LLyr;
-	Fri, 21 Feb 2025 19:31:11 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailrelay.tugraz.at 4YzzGl5gKZz1LLyr
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tugraz.at;
-	s=mailrelay; t=1740162672;
-	bh=/+dtQ4s+qGuePICY9AN+id1kJcoRIC7mJUtJi5sAuCs=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=JCg4unUf2mZWL8AqlPSBPf7kO5cMjGm1uMeqrNChJEUDiE6EO5aEjL3cb6NxkwiHj
-	 zqWdd3XRmYeg2I1Stxr9SLA94cPZVze+lrjna6OXiGdb2wJR5XgLjKEJj+8MAOxU1A
-	 dZ8b1YyhZIduyrlFpYyw4EW21v41/gep59bbslSg=
-Message-ID: <6b3e4d3bdc9b6efd69068e5b22cfd05d370aed19.camel@tugraz.at>
-Subject: Re: Rust kernel policy
-From: Martin Uecker <uecker@tugraz.at>
-To: Linus Torvalds <torvalds@linux-foundation.org>, Steven Rostedt
-	 <rostedt@goodmis.org>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>, Greg KH
- <gregkh@linuxfoundation.org>, Boqun Feng <boqun.feng@gmail.com>, "H. Peter
- Anvin" <hpa@zytor.com>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Christoph Hellwig <hch@infradead.org>, rust-for-linux
- <rust-for-linux@vger.kernel.org>, David Airlie <airlied@gmail.com>,
- linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
-Date: Fri, 21 Feb 2025 19:31:11 +0100
-In-Reply-To: <CAHk-=wgg2A_iHNwf_JDjYJF=XHnKVGOjGp50FzVWniA2Z010bw@mail.gmail.com>
-References: <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
-	 <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
-	 <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
-	 <Z7VKW3eul-kGaIT2@Mac.home> <2025021954-flaccid-pucker-f7d9@gregkh>
-	 <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
-	 <2025022024-blooper-rippling-2667@gregkh>
-	 <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
-	 <2025022042-jot-favored-e755@gregkh>
-	 <b9a5de64fe1ded2ad3111763f35af9901bd81cc4.camel@tugraz.at>
-	 <caea3e79-78e6-4d98-9f3b-f8e7f6f00196@stanley.mountain>
-	 <61a7e7db786d9549cbe201b153647689cbe12d75.camel@tugraz.at>
-	 <20250221124304.5dec31b2@gandalf.local.home>
-	 <CAHk-=wgg2A_iHNwf_JDjYJF=XHnKVGOjGp50FzVWniA2Z010bw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N4VRijN8"
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-30918c29da2so25331621fa.0;
+        Fri, 21 Feb 2025 10:33:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740162833; x=1740767633; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ALbOSHAT/15UhdWN8gs88HPU77uFzWDWuyK2nCKLT/8=;
+        b=N4VRijN8iYya26KXN6IeB+tvjV1LkjibM//m9VIbWwhfh/Mq/6ub4AI8pvGoLVCTHc
+         bUqWh4bH4sE59ZGkx9YAJ8sPNLJq5+r6kiTOK+XBfX6H2k/GFYPIhhUTAEruZMxz3nAp
+         qDkXmkk+vPi+TPap4C/z7zEiD7He+FJGtw0/WYGo0DGJY15uIsyfqt6y2MQAHNM+Au1C
+         UEjYcUPA3raDobmz8yoDSeUbQeh62OFKtgTAcH8qIR4IodF+YnVzhAB7dnlyeGJVzyGW
+         a3kVTVz6BsgQ8oNU8c0B2PQswUSxbQkL5TD7x4NgO2Dsg9oDx32eSNujOA9j+MdzMFWa
+         Qq0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740162833; x=1740767633;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ALbOSHAT/15UhdWN8gs88HPU77uFzWDWuyK2nCKLT/8=;
+        b=Zw8YzQTtbtfzR0PFZTlmZVHHSjPeK1JI5frWO8XrcjooyFoJBjqxozQAJuPLt/mF3i
+         hU2gRVyLToBHPhfAoiqSbAUhHxADDHUOJ21TkPJ2YFBuvW44A8NoRdRuMJV4QAXicXp2
+         p1fA+6CliySDJ14GEIjQf2V/WnZt7+Qb2L34vrU6C8w0oxStNioznV9/W1Z2zCPVSkEt
+         oKA5oXFs53fSau8os0OWc4KWQJssOPZfTuGSyLvCPfLLTQK4jfjmnwLA2OEL2Oq9vEFW
+         ng/3w7bV1M7oYC7w01xDgjqZoI7vOKlwl+xI63PotEppeNa515Mpr4CZtRC3CPCVWjuO
+         cGXw==
+X-Forwarded-Encrypted: i=1; AJvYcCWkFcWecV0xka7JCRuB3ghFlJ0qVf6xly4wYldyLReqai4X3HZ9HjyFrzvRGodgBY+ifAlYNIoAS/kPtrk=@vger.kernel.org, AJvYcCXZ5B4u2bo/nL980vfRtKtNawQm8VHsszkCRcQFqPLuOevrQQEz07pkELwy3ucWLLSZOLZoxMqlr48GrWz/9ys=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzv9uchfrx4/rvrBzGrVfLd7+Kc7GulRzYEZgB6FKbQws3azT8J
+	ts0K0k+6RhLJiUqNY2j7a8q06CCBC7mPcCX+76KgHCFDdZHvu/tL/UZhCioC+oDBr0IJHE2lq6U
+	6ZEpHOSUIrkrbQy7XO7hwRmI7+/w=
+X-Gm-Gg: ASbGncupDtOhtKZNMG89ejMgXTWm3zuHo0fafyI8nRut0FNHUukj9yxK4+j49ELLfaQ
+	bdByXJCMcClct7GMICQWqH1f8j20NNdHeSbHB5HC4pqAD69vhr4pmp7XBfqDVnvrI5n3rKxC9gg
+	ESQDBL2KeeijC2vX473c3Kqz0aRnkbw1FwgEqA+ji7
+X-Google-Smtp-Source: AGHT+IFrZ5qWP8BWvDyM+87TXPkiHJKiCRiTHy/tsrLiZw2sSYYR8doiBaLEh16SqrYOijCsJSfFMjxUY7+n9GKA4Rw=
+X-Received: by 2002:a2e:9e89:0:b0:2ff:e7c3:9e2e with SMTP id
+ 38308e7fff4ca-30a598f4177mr17615651fa.17.1740162832958; Fri, 21 Feb 2025
+ 10:33:52 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-TUG-Backscatter-control: G/VXY7/6zeyuAY/PU2/0qw
-X-Spam-Scanner: SpamAssassin 3.003001 
-X-Spam-Score-relay: 0.0
-X-Scanned-By: MIMEDefang 2.74 on 129.27.10.117
+References: <20250219201602.1898383-1-gary@garyguo.net> <20250219201602.1898383-3-gary@garyguo.net>
+ <CAJ-ks9npk8oSFHZHdViR1XhF+A8e2L+P0wCgmjE7mzAxS9WK1g@mail.gmail.com>
+ <20250221161439.0e34fba9@eugeo> <CAJ-ks9=dsrsMD261HEbgHOUMXm=nj-GUymuCtZ8oeDFCx7JtrQ@mail.gmail.com>
+ <20250221182849.21e9d83a@eugeo>
+In-Reply-To: <20250221182849.21e9d83a@eugeo>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Fri, 21 Feb 2025 13:33:16 -0500
+X-Gm-Features: AWEUYZkpfYBKeGoYR72o0-nZ-YvzRuTGZLJyuZf6llFk580pjfq9TBiJfwJbll4
+Message-ID: <CAJ-ks9muOuM_WpVKGOmcgd3LE_eQXL1jNQfT-yTQPcSkSeysRA@mail.gmail.com>
+Subject: Re: [PATCH v3 2/4] rust: convert `Arc` to use `Refcount`
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Wedson Almeida Filho <walmeida@microsoft.com>, 
+	Alex Mantel <alexmantel93@mailbox.org>, Will Deacon <will@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Am Freitag, dem 21.02.2025 um 10:07 -0800 schrieb Linus Torvalds:
-> On Fri, 21 Feb 2025 at 09:42, Steven Rostedt <rostedt@goodmis.org> wrote:
-> >=20
-> > Because they are arcane and even the gcc documentation recommends avoid=
-ing
-> > them.
-> >=20
-> >  "Note that in general we do not recommend the use of pragmas"
-> >  https://gcc.gnu.org/onlinedocs/gcc/Pragmas.html
->=20
-> Yeah, #pragma is complete garbage and should never be used. It's a
-> fundamentally broken feature because it doesn't work AT ALL with a
-> very core piece of C infrastructure: the pre-processor.
->=20
-> Now, we all hopefully know that the C pre-processor is the _real_
-> fundamental problem here in how limited it is, but it is what it is.
-> Given the fact of how weak C pre-processing is, adding a feature like
-> #pragma was a complete failure.
+On Fri, Feb 21, 2025 at 1:29=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+>
+> On Fri, 21 Feb 2025 12:27:46 -0500
+> Tamir Duberstein <tamird@gmail.com> wrote:
+>
+> > > > > @@ -412,16 +402,14 @@ fn clone(&self) -> Self {
+> > > > >
+> > > > >  impl<T: ?Sized> Drop for Arc<T> {
+> > > > >      fn drop(&mut self) {
+> > > > > -        // SAFETY: By the type invariant, there is necessarily a=
+ reference to the object. We cannot
+> > > > > -        // touch `refcount` after it's decremented to a non-zero=
+ value because another thread/CPU
+> > > > > -        // may concurrently decrement it to zero and free it. It=
+ is ok to have a raw pointer to
+> > > > > -        // freed/invalid memory as long as it is never dereferen=
+ced.
+> > > > > -        let refcount =3D unsafe { self.ptr.as_ref() }.refcount.g=
+et();
+> > > > > -
+> > > > >          // INVARIANT: If the refcount reaches zero, there are no=
+ other instances of `Arc`, and
+> > > > >          // this instance is being dropped, so the broken invaria=
+nt is not observable.
+> > > > > -        // SAFETY: Also by the type invariant, we are allowed to=
+ decrement the refcount.
+> > > > > -        let is_zero =3D unsafe { bindings::refcount_dec_and_test=
+(refcount) };
+> > > > > +        // SAFETY: By the type invariant, there is necessarily a=
+ reference to the object.
+> > > > > +        // NOTE: we cannot touch `refcount` after it's decrement=
+ed to a non-zero value because
+> > > > > +        // another thread/CPU may concurrently decrement it to z=
+ero and free it. However it is okay
+> > > > > +        // to have a transient reference to decrement the refcou=
+nt, see
+> > > > > +        // https://github.com/rust-lang/rust/issues/55005.
+> > > > > +        let is_zero =3D unsafe { self.ptr.as_ref().refcount.dec_=
+and_test() };
+> > > >
+> > > > How come this careful handling is not required in into_unique_or_dr=
+op?
+> > > > At least, the SAFETY comment there is much more mundane.
+> > >
+> > > Because `into_unique_or_drop` doesn't actually remove the allocation
+> > > (it only decrements refcount for non-zero or turn it into `UniqueArc`=
+).
+> >
+> > I don't follow. This comment here talks about a race with another CPU
+> > decrementing to zero; isn't the same race possible between any
+> > combination of `into_unique_or_drop` and `drop` callers?
+>
+> Oh you're right. It's indeed the same situation. However I'd want to
+> avoid repeating justification multiple times, given that this is really
+> an explaination note to the reader. Do you have any suggestion on how
+> to organise the comment so I can avoid repeating this multiple times?
 
-Isn't this what _Pragma() is for? =20
-
->=20
-> So gcc - and other compilers - have figured out alternatives to pragma
-> that actually work within the context of the C pre-processor. The main
-> one tends to be to use __attribute__(()) to give magical extra
-> context.
-
-The issue with __attribute__ is that it is always tied to a specific
-syntactic construct.  Possible it could be changed, but then I do
-not see a major difference to _Pragma, or?
-
-...[Linus' rant]...
-
->=20
-> This is non-negotiable. Anybody who thinks that a compiler is valid
-> warning about
->=20
->          if (x < 0 || x >=3D 10) {
->=20
-> just because 'x' may in some cases be an unsigned entity is not worth
-> even discussing with.
-
-Do you think the warning is useless in macros, or in general?
-
-Martin
-
-
-
-
+The usual thing is to extract a helper. Is that possible here?
