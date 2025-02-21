@@ -1,124 +1,93 @@
-Received: from mail-10630.protonmail.ch (mail-10630.protonmail.ch [79.135.106.30])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C321205E24
-	for <rust-for-linux@vger.kernel.org>; Fri, 21 Feb 2025 10:15:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74EA01C1F2F;
+	Fri, 21 Feb 2025 10:19:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740132930; cv=none; b=AuBD5dKirxHjThkM9IXwzEd2Ymdkiw4+Po1VR1iU8LJLjCawjmWlK7QGn6PU8qNPbuwly49G9vZ4y+t7D0drdXp7LyMePCSCQcgz8rQAHP2pc+1kgvDfl2lq4PPvzNBCbPN7jK2XBXDuT3yCX0e+plES//KpzVlk2dhuGbCrf+A=
+	t=1740133171; cv=none; b=AnglqSbHkssa9boJPxgJbRYEPnhNHCTHdnB/0clbXreZRZllNje7BgLjY8FQGJJ0J8mp+VlNUppd0v3ihQvYZSzHgWZ/k8STfOQtbYNFAiBVgVSzJS4sdl68fbjVzrktjpdm7d2fyG50/ljIaocyBO83ucw8/Dh2K9x+8F45nIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740132930; c=relaxed/simple;
-	bh=pYlG2WV/q5fgqaIrf4eiL8NfB35rdADEB88ims0ixMs=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KwLW0IufXEkyj+tbecc9MBToTCcnEsKB1MDwAFGPjFd8eYlZXlZKl4RUcnyj6A2ohiIlNyLWMqL38sD2e4qB0NBTu0trq5adXaRUHm8vLXY30HJA9hxBGsGoVf4LfaFMLFSmdelobvjoj0432sFZE6RO4LfhZiasL5nkgbd7Zpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=llpjHVYH; arc=none smtp.client-ip=79.135.106.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1740133171; c=relaxed/simple;
+	bh=YY8uYjHQDlkfjosJamgPP8wd1Y99KQMuAmgv78r48/o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AnstnLSCfouMTlHqUAAFOzvSd0PvbgG4PPEazyxkdZBVMI95Go2aYXP0EJ6sPFh6HJHBhkslDdQOyyZkOsJfJ8CHeT6lb1RRSxZFwkadP7c+/PlQgZWJk3ClO1HJ4dMNFM+Nu+VyIvS0N8hAnXcdIRdv++GIvsr3vi40UriyQQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cykWH0xk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="llpjHVYH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1740132921; x=1740392121;
-	bh=utLG4Pvkh7OuzllYzzEViXcvOHNbmHD6EALvUcEmpus=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=llpjHVYHqo+8Fpbh2ZQxl3c6jV1AX1pd4gDGXe5EFrGHsKrGA/vl2m9cu5cFgp4+h
-	 ZGmKLsUeNjDJVinEOJZ3rGhaOESB4tWNatofQVmefIxj1KQOvdye2hQA0TyOCoTN5A
-	 xcgtLMZgRS5nNB6QQI2h0oGQrxSSiGE5WRjTZtKSKm6K83IWg8ynq5gvfrkUJStpqW
-	 epZZ4CpWakuIH1JEyhFEwr7ZSP61+b5j4QbiLaTcrng49rcrbKINu4xDmajejh5V5T
-	 tuKCoXqbpyN212iavjvek8plF7iechTHnE6yMeld0BNWmAG4TNrLsrQHKI9CCY0RRB
-	 T4Eo9f0oyYjHQ==
-Date: Fri, 21 Feb 2025 10:15:16 +0000
-To: Andreas Hindborg <a.hindborg@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 05/14] rust: hrtimer: allow timer restart from timer handler
-Message-ID: <7536dcf0-ed86-48ab-af35-bf86fcdc5601@proton.me>
-In-Reply-To: <87y0xzfyv8.fsf@kernel.org>
-References: <20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org> <20250218-hrtimer-v3-v6-12-rc2-v8-5-48dedb015eb3@kernel.org> <F56YWuamHrpLM1KaPiwECr4Ta19VkAWdbhcMhII5pfM1kSjl3_RAR6elrNAjL6ZqVurGdjj1Fn-0wyfZNDHKRg==@protonmail.internalid> <8e32c3e1-0b55-4809-92ad-f968252a05f8@proton.me> <87y0xzfyv8.fsf@kernel.org>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: fbbba1720b3bf99016645cb74a0b38280a71e469
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cykWH0xk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58561C4CED6;
+	Fri, 21 Feb 2025 10:19:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740133170;
+	bh=YY8uYjHQDlkfjosJamgPP8wd1Y99KQMuAmgv78r48/o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cykWH0xkjDnCEfX/X2aPcgUXmh+LveKiRjagk4LFrag9ucfi/bO5qM/5if28oA8ZD
+	 ADSQ+n4JRFoaKaJhI+83pP41A+6c8zenohxQyrgFvXJqupw5Omxly5ZLRelgwlulzB
+	 ygLzKrPvvhr2LSuQVPiaUUQ4CtLW7QpJFuHb0T4x/Y/dKjURRPfLm3hHgRqvTKyM/p
+	 Jwx3+vHytb0wyzmKytQFFJE0BSjjrWcZrBrwlW06VmpW6JZVhd69hXoDZhm94RCw4r
+	 HFJ3wz3rc+JxtVnzm2tKWaqhgDz4VO+C5fW1CkJwJgYEoQj4ZW5MYMzbtUk87/OBCI
+	 B/p5MOqu7QNCQ==
+Date: Fri, 21 Feb 2025 12:19:26 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Fiona Behrens <me@kloenk.dev>
+Cc: Bart Van Assche <bvanassche@acm.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Jason Gunthorpe <jgg@nvidia.com>, Kees Cook <kees@kernel.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	rust-for-linux <rust-for-linux@vger.kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
+	ksummit@lists.linux.dev
+Subject: Re: Rust kernel policy
+Message-ID: <Z7hTLsaqNU0rlpwV@kernel.org>
+References: <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
+ <202502191026.8B6FD47A1@keescook>
+ <20250219140821.27fa1e8a@gandalf.local.home>
+ <202502191117.8E1BCD4615@keescook>
+ <20250219202751.GA42073@nvidia.com>
+ <20250219154610.30dc6223@gandalf.local.home>
+ <97841173-1de8-4221-8bf3-3470a5ac98a7@acm.org>
+ <89f2547edcaaba53d9965cab9133d809607330ac.camel@kernel.org>
+ <87pljc6d7s.fsf@kloenk.dev>
+ <Z7c3PguDn-sEl3gm@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z7c3PguDn-sEl3gm@kernel.org>
 
-On 21.02.25 10:09, Andreas Hindborg wrote:
-> "Benno Lossin" <benno.lossin@proton.me> writes:
->=20
->> On 18.02.25 14:27, Andreas Hindborg wrote:
->>> This patch allows timer handlers to report that they want a timer to be
->>> restarted after the timer handler has finished executing.
->>>
->>> Also update the `hrtimer` documentation to showcase the new feature.
->>>
->>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->>> ---
->>>  rust/kernel/time/hrtimer.rs     | 28 +++++++++++++++++++++++++++-
->>>  rust/kernel/time/hrtimer/arc.rs |  4 +---
->>>  2 files changed, 28 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
->>> index b2a3130bc21d7..e342193f985eb 100644
->>> --- a/rust/kernel/time/hrtimer.rs
->>> +++ b/rust/kernel/time/hrtimer.rs
->>> @@ -183,7 +183,7 @@ pub trait HrTimerCallback {
->>>      type CallbackTargetParameter<'a>;
->>>
->>>      /// Called by the timer logic when the timer fires.
->>> -    fn run(this: Self::CallbackTargetParameter<'_>)
->>> +    fn run(this: Self::CallbackTargetParameter<'_>) -> HrTimerRestart
->>>      where
->>>          Self: Sized;
->>>  }
->>> @@ -278,6 +278,32 @@ unsafe fn start(self_ptr: *const Self, expires: Kt=
-ime) {
->>>      }
->>>  }
->>>
->>> +/// Restart policy for timers.
->>> +pub enum HrTimerRestart {
->>> +    /// Timer should not be restarted.
->>> +    NoRestart,
->>> +    /// Timer should be restarted.
->>> +    Restart,
->>> +}
->>> +
->>> +impl From<bindings::hrtimer_restart> for HrTimerRestart {
->>> +    fn from(value: u32) -> Self {
->>> +        match value {
->>> +            bindings::hrtimer_restart_HRTIMER_NORESTART =3D> Self::NoR=
-estart,
->>> +            _ =3D> Self::Restart,
->>> +        }
->>> +    }
->>> +}
->>> +
->>> +impl From<HrTimerRestart> for bindings::hrtimer_restart {
->>> +    fn from(value: HrTimerRestart) -> Self {
->>> +        match value {
->>> +            HrTimerRestart::NoRestart =3D> bindings::hrtimer_restart_H=
-RTIMER_NORESTART,
->>> +            HrTimerRestart::Restart =3D> bindings::hrtimer_restart_HRT=
-IMER_RESTART,
->>> +        }
->>> +    }
->>> +}
->>
->> Do drivers need these impls? If no, I would prefer a private conversion
->> function just for the abstraction.
->=20
-> No, drivers would not need these. I can hide them.
+On Thu, Feb 20, 2025 at 04:07:58PM +0200, Jarkko Sakkinen wrote:
+> > I do still have on my ToDo list to build and publish a better nix
+> > development shell for kernel with rust enabled, and could also add a
+> > section on how to build a NixOS iso in the same nix code.
+> > But sadly time is a finite resource and so did not yet got to it.
+> 
+> Please do ping me if you move forward with this. IMHO, why wouldn't
+> you contribute that straight to the kernel documentation? Right no
+> there are exactly zero approaches in kernel documentation on how
+> test all of this.
 
-Sounds good, you can add:
+I initiated something that makes sense to me:
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+https://codeberg.org/jarkko/linux-tpmdd-nixos
 
----
-Cheers,
-Benno
+I'll extend this to Rust shenanigans. The milestone zero was to
+figure out mandatory hashes of NixOS. It uses a combination of
+nix-prefetch-git and environment variable for that. I'm still
+fixing some glitches but from it should be easy to extend
+to Rust kernels.
 
+Note that I'm using Fedora in my host and NixOS is only the
+easiest route I've found so far to compile Rust-enabled kernel
+with user space (for C I used BuildRoot) so I have a wild guess
+that what you're looking into is something that makes sense
+for NixOS users, right?
+
+I compile this by podman-compose up --build :-)
+
+BR, Jarkko
