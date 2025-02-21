@@ -1,191 +1,124 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021080.outbound.protection.outlook.com [52.101.100.80])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430822505D3;
-	Fri, 21 Feb 2025 18:53:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.80
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740163986; cv=fail; b=Bvi8ehOrUTGTx4nooYFTiCL9l3/m/8Eb81kXyIuHKDDdMAKpjYp5GC8yqs4Wc+8aczlb8vPdgTIHiSyiqgaodoUmjkNyOuzEj5CAdAw725dI1InzzuvagFTTh2WQW1iGh12eDrt+k92++Mq7dc9btJsUqITr1sVTMd3B9VogRmk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740163986; c=relaxed/simple;
-	bh=IrSryUHmZOD2oOBt0mxnudgaRznAHEwmQDeYiS5o3UQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=oZ6K82uvQjDDjUhRzaNN0ECXCs696IKyCeSv+jXEkQnqHNCr4Y772GmnlznoBrilt6wlxy9oBDMHmo5olYzpUllhLe7toNShYjBNvSz+tvnS9EL/iXhkNVmx5LZETZIt9+vnPOLdpYzvzG90e48xY4219h1PeNjxghOto+YqkJ4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=kry8Cziz; arc=fail smtp.client-ip=52.101.100.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1473250BE2
+	for <rust-for-linux@vger.kernel.org>; Fri, 21 Feb 2025 19:12:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740165171; cv=none; b=kEp7BWFd1YFQhhCC8xOhC1rsoZxa2SyBbkMP4zdf8C8xZhh9qCI5Gu2KvCjoaq2xwrDVsBIoEMfK4oOltS9MBLwATE0WNIV8EnybaBQqfVCGkn8k0a0g+aI2a3fl7qRR4pdTYQvRjAaliKGCLRzFdNwpUI876yQEdjjxAaDwxN4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740165171; c=relaxed/simple;
+	bh=ycAq18Hl2Osak2ytc9YhbxBtTZWY1af4b1+0AgXoSAY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=syfuA3D2UkV0VAJgdnGh+yMgCy6qFR9NSQC+5jCsDDvf8FHXHrL0IJLy2d2f0f6wO9COf5cnrJ4lAv5DvGFeFp/5QMw+LeMi8qzjZ39T0j6YQcXh8eptt/BKyQu/KeZEXeVSDzoQ1EPeQ8cptPpf4YL5riqxFhuS7F6tVL4RGew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Cx6biBf7; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="kry8Cziz"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=v0f3s4SAfbhfFAoaQW6busiv3R0GU/J3pB5w0B4e1hlnQsKIJH+f7uWo49nfklQtNhygr3meeBmchxQy0rcqoBHnDYIIbndZlBzLR3Yf7nDHFvvK0HsyF0bJiSnBmq3b8ucEAqKqfkWOGF1abtvUKxwU9kw7ab/J/Q8VkQ3R+752vZMtui9b+x9XR7q0yE8XXlg1yyAzIvGHAWZK0bShfsimRZGst/JYkvuRAhu8wK6Q0kS0G6vKE9OhY5yrERtknosPO8rwQ12yty+qii3TRS1HC/fgY7BcXrty9CncdQYokH4dNEx8h8VZew27oeK7TuzWmMQNcxU1aVJUvqUu0g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dKYHj+Pz0kxowbKeASvTi1uFgp61Zwp47aIwiTORX6s=;
- b=EuJI8Lu9b6KnNhv44GZoqalpS1IP3jOUJkFrdgsKLOXP5EKB9mPrRl6XrAFvdXxgjOyLePWYs4JRwnUzJHRW+ubeHcSn5dtufq4k4KA32CtnXLHm7y+jm2MreTK63vHNxQCpH1gJSFBYscOts+Ha8GHZUKWzdTks2Z0YkchY4ty+D8TC2YKvnS65EZ1ih3tM3kKgHj4AvRAZumEPyFlXwxVYjXfHD+nNH4jHxkBXMjdm+7iI324+GrFXeGa6mJnWdi05w5XwI0/mnSfcGUAfQ6A28m3E/qJgv4RPuuv0CaKpSlc4jsxd9jXOCinIUaCx1bzmAAlJoJvnd86mtHvxeQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dKYHj+Pz0kxowbKeASvTi1uFgp61Zwp47aIwiTORX6s=;
- b=kry8CzizdtUllhlVPc2rNEvW2IljdzxLCxFpB2Y9NcYgNwJu2ajTDQaj16bhPWLka3fksM+fd8gkcJ7sMYe1tucGKnB1XACQQK1KzVAXcRfYjgfXumrsf7wCTgstSddcQnU1BsU+kSx7gZHYTUkMtgVrzd1SXT6sn4n4p2UyTl0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO0P265MB7207.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:335::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.17; Fri, 21 Feb
- 2025 18:52:59 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7%4]) with mapi id 15.20.8466.016; Fri, 21 Feb 2025
- 18:52:59 +0000
-Date: Fri, 21 Feb 2025 18:52:55 +0000
-From: Gary Guo <gary@garyguo.net>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?B?QmrDtnJu?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Masahiro
- Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Nicolas Schier <nicolas@fjasle.eu>, Luis Chamberlain <mcgrof@kernel.org>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Adam
- Bratschi-Kaye <ark.email@gmail.com>, linux-kbuild@vger.kernel.org, Petr
- Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>,
- Daniel Gomez <da.gomez@samsung.com>, Simona Vetter
- <simona.vetter@ffwll.ch>, Greg KH <gregkh@linuxfoundation.org>,
- linux-modules@vger.kernel.org
-Subject: Re: [PATCH v7 3/6] rust: str: implement `AsRef<BStr>` for `[u8]`
- and `BStr`
-Message-ID: <20250221185255.6cc33367@eugeo>
-In-Reply-To: <20250218-module-params-v3-v7-3-5e1afabcac1b@kernel.org>
-References: <20250218-module-params-v3-v7-0-5e1afabcac1b@kernel.org>
-	<20250218-module-params-v3-v7-3-5e1afabcac1b@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO0P123CA0002.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:354::13) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Cx6biBf7"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5dccaaca646so4401418a12.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 21 Feb 2025 11:12:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1740165167; x=1740769967; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=PpPO+UoqYur20fhUIihwHOS5iBey4AF8c1A/KbY6wDQ=;
+        b=Cx6biBf7q6qju6hPNwYiHvjIhfB39HyTwRPGSBk2BwJX55uRtavfDNwJAYGU0w4rAd
+         07LB7u2sXPN+Pe0QLIy0NIxCLopuadqV0UZ57YgKwL0LDcGPODwQaR18cxDn4D5AhDkb
+         UJu4lLf7SdxYLnCYVLm4B0J7pf+r7tUYE6FU4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740165167; x=1740769967;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PpPO+UoqYur20fhUIihwHOS5iBey4AF8c1A/KbY6wDQ=;
+        b=Cdvfj8mhdmsEJentOZDMRfq+ipPQgZBanbHooNwuF7zPKAyuy6SlWlSeyexWlc+72i
+         QhWgVCmzQ78aqFc62IuURVl0jLVx1TEnfVKzPgBXGVYuNXfovsZCWdCt5sVoy7xIcnfq
+         6JO5PFsxZRnEibHDTgyTMv8hrK9ENS7yvH83VcI/xZTfCvGdhqazY+Wq2Ksk+69zmO8d
+         jkMwopxyPVJit9e2K0GLXVGd2IChO+D4PDio8kzMOYl1Omao09B5DEMHvpWBeZRoZLWH
+         RkA7EJ6ugD7ZFE7Y2VZF1JqvKdI7sj2iY3XH9hWRMPOJCT1WEoTCFLFk3SBZ5PQpZfEr
+         qBKw==
+X-Forwarded-Encrypted: i=1; AJvYcCU24aTKib4Zi3jnFLQsB62onfagMpNXDAjvbvrgvE1aVYLHZArx6Bkr308MCNWYEKqYMHS6TyX8/NqrKABlaw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx73gJDQIAyZD6z1LyFh0Yi8XN59OmCsPvWYWmEDG2+iFzJtNOr
+	1Ur5l9jfHd028oBOvh9k8s7G+7DMqFf3HeDe71IWatu1BRjX9q6GRE66pCj69QD6p5WXc57mFst
+	8328=
+X-Gm-Gg: ASbGncudhSj4Xh861/DeWjeZk+qieiQUJV9Ngg2N7YbqrFgSdFz94D6dXsKyOmpx0hw
+	BhJxpDVLA11v7EHxLDg1M1aAqAYv2z+KFwR0qCkm5xxfdp68ph8Jl2P4ydlbAl6lpGlmtTrr4O6
+	jCZ8T6+nsCaslQ0iNas/KQsnbJeX24wf12r7jmB0ufJqPBmqqX7lawDY/38NKGOeOTScy5UOh4m
+	2dXfSS6bPcZnLr0qqVtk9fwSA+aRRXzJxGNfWDG9z2orvUPAZYruTCsbIgYxvDQAtmY8fSQHLxV
+	JlVmZyLqUPmb+HETDRUKW3jXZhnpiBmXYUvkGZUFTLbTvfdLR8aiK4p8rYXn9KZJ6g3bWQAZlVF
+	t
+X-Google-Smtp-Source: AGHT+IGvmaaZALY0qg8r6ZvaxCr+7jNo5dbANP/h2o9z/slLkSjdmQ+D9xos2k7M5xiU5L7mSoIlxw==
+X-Received: by 2002:a05:6402:42c7:b0:5e0:8840:5032 with SMTP id 4fb4d7f45d1cf-5e0a11ffb02mr8119988a12.3.1740165166970;
+        Fri, 21 Feb 2025 11:12:46 -0800 (PST)
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com. [209.85.218.42])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5dece1b4debsm14109823a12.15.2025.02.21.11.12.44
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 21 Feb 2025 11:12:45 -0800 (PST)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-abbdf897503so584146866b.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 21 Feb 2025 11:12:44 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUMjQuKaYv0910iG5U8Kl5QjXfQ21HXsfT42gwamrmmVc5slvUkHwkRhxdURBwtIaVjFfBThQlz2/F+gXV89w==@vger.kernel.org
+X-Received: by 2002:a17:907:97d0:b0:abb:ec29:d40f with SMTP id
+ a640c23a62f3a-abc0ae8ac7bmr518893266b.13.1740165164023; Fri, 21 Feb 2025
+ 11:12:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO0P265MB7207:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2014e4e8-d853-45db-2229-08dd52a8f5ec
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?SLZ2vGzruWu2eYPliggPXN2RQzyEi7O+hzH45xpFuYNIpB2OcVBnRFuup/R4?=
- =?us-ascii?Q?BFpy2Dxdwq8r7FXxkCNc3ZDC1a2eeMbOtKVXw6JJIRHefQ91WBFprbcKcU+f?=
- =?us-ascii?Q?mJ2I+VrT3jUoBpqRBNyN9gmgfafz8xPOFUu4r84fnfMQpyezKww7CYcrY7Qf?=
- =?us-ascii?Q?EHtaZlLGt/CrlYdY0/qyFvzvWAFmZpBj+JdPucFrGlsrfTdmXFg9kroJmVQY?=
- =?us-ascii?Q?s0K37nBJ96kwqGI0kW7ZCbmbnPyF5zL6Ezs1nmVc8jIVckJphF6Q2iSWCtSV?=
- =?us-ascii?Q?GVtwPfpScIOxaUKOmlv0IGJqiD7rvbG2IMrQbQywv+8/ZXNXRfg4FQCsY0wc?=
- =?us-ascii?Q?oAk5FOFig6KQHam/tEXtL1cII9Z14siQdJ1CumxMzic6fElcIYLKmovZJh0U?=
- =?us-ascii?Q?38C1EuOh7c1U9tUPwcI9VKww9+fFbZzYx+nCqIsJBU94QhA12y1w+i6DZgmN?=
- =?us-ascii?Q?dZURcMn1GFVLhmwqiAXdqYzBHK9Q5v7vR1UhuFRcwYj1e5QcB8RekTBnB2rD?=
- =?us-ascii?Q?AL1r3bepyD+RSXbJBXEvIRieubEqTl8PnI651PanbhlHb2bltLBJ+4h044hY?=
- =?us-ascii?Q?Wru/nKxRH9EuL+mF9pIOlWrEBEbSZdzOxNwNiFku1tzRIbc5DqmcOF2h5d/X?=
- =?us-ascii?Q?1d4c9blPrJen/05fQiROhpyTfHUci3fJF3RNNxI6p4Ehtn40I3d18VXo9DLI?=
- =?us-ascii?Q?jwBXKQkr/Cez6eqLClIWxLLmc5PQXPsI4pZ87wJz/hLc48cq43VvPTH0X9zo?=
- =?us-ascii?Q?fbW5AIJ6EWIPLPaT/tl10SwFlqeer+frTwn8GHVQxis+EeG4HANVbWU8qd0n?=
- =?us-ascii?Q?GTHe0olSj6lmCLvyD95hp9lkhLKbhVYCVAVGIm94Xre/O4iFMmQylLNuZyhS?=
- =?us-ascii?Q?Iyzep44ttYuO9kOsnBKO7NONmVA0q6qOrG86HVqBwe1mQ2CbHru0K9Pwma6+?=
- =?us-ascii?Q?0lAGy7uarFS4QLgTjwhKZibKlnSIKxuazTTJRTVkQIMOtmzR/3+Go95oIpFz?=
- =?us-ascii?Q?hyIidPTnOGkiyVu8gXVvvxM7n/Nhib4ZiZrRLsp2F8/3g6D6i2AN9tQ23JHh?=
- =?us-ascii?Q?x/GmI73i7Jff2PMEI1RUKgLDPHbhMaO0S1+u3yvzqsBz/D2aA7jtRlyu2h96?=
- =?us-ascii?Q?hEXhV+f1J5G4ZP9soOUXTbMRlpHnsRwVlLAD2ZNGNyMvrs3SB3t6biyXJXDP?=
- =?us-ascii?Q?wpV1vCjMQ5vDfMvFalqz1db88HOV9GRspbawZgBqsJwj/6+h9cjCpMDIrYwZ?=
- =?us-ascii?Q?InkvjXxMPjVoETpOUL8+1DWRlb2zMdHqeyLI/g5pyltk5p9AUo+lEuad4hW7?=
- =?us-ascii?Q?FF8SYWgWlJZ1r9mdLhfFedNkKQyhEazDfBGwAQlP3SqM5vQ8tCq+PmneR2VS?=
- =?us-ascii?Q?HrKEzpNEtcoyawXXUCLmaYjELDHJ?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?YvkUcxg1mkydjsj0INFoAzulJtBbFWyvtvqE7FjP7ozknImnezswIOLi//Kg?=
- =?us-ascii?Q?/FBFl8iHYIIhn+NJ3AfkADIKQ5MtAHKylbp1O8qRUIW/z42Gm/XLZB8hvEMc?=
- =?us-ascii?Q?VJqBDhHcNRFGrn3KpQKeEzFVFiutiT2K7neWa9mIfAK2ls+pJZDSIQNA4EDQ?=
- =?us-ascii?Q?Sz+n2ru/2HNleHT8IKDUVDuweoEoQBIBifnI7wNEg9Yk0RnHW5FIr1+Eb1t7?=
- =?us-ascii?Q?YTgrR3Y2ril1LnbbgGWw14KrIyWke8TW0OPYTbQzn0Jb5DS8hrBn0SLPhg8T?=
- =?us-ascii?Q?4UUT1XEtZXbOYq0ZcZKjhXGwf8/t3S1AfkdE8tJ6x66C4KMV7kel74Q8MYNc?=
- =?us-ascii?Q?DcYPW5M3aP6kl/VR2AR9nlhA4dJkghT2xa5GQ4/4+CPb3vdSJMCCPr5oupfR?=
- =?us-ascii?Q?22Lc8mFtb1lWVEEXeRzOFrHieMz9MYJ1YTDF0QoJ49VhnYswhb4M/h+FEhSu?=
- =?us-ascii?Q?xYHPxzV58XZx8fIGmxlCIb2pNScIHymdaqfXe2xfJLFEV5Z1bS7uE0IaK6A2?=
- =?us-ascii?Q?GdrFSM/hGYj3uBr5/WmP765qiN4i6Jh5xKLrjeBHuAQYjJGwROKyj+eg9YyJ?=
- =?us-ascii?Q?/jb3xxaM4O/2qnEjiZQR29cQEMDqxc4Ml9ss+wyg5mmivy8/uZWGLf7u3wEy?=
- =?us-ascii?Q?s3/wmGw9dW6mvgAAfgJbpgbUI4HgEiPpus2Llx6VY064z/tbu8uPTBLVfI+0?=
- =?us-ascii?Q?mV3WqsB1kOF/dYIk+zzFKd6mQAnmZMiJ9F9dDrkBM8LqpMJeKhvZyFRpty5N?=
- =?us-ascii?Q?cQGEJoqAO73TMCfYttkhlSUSi223cK4POe5NtzgZGmWVnqR4Pyl4GlUaZE/N?=
- =?us-ascii?Q?SMjwdCLlAyjXUPugOWf6PoVBkmJCohdloccsOAcjNALXFfaLlhgEcmQTewcA?=
- =?us-ascii?Q?CM/nqijOkYePJ85sgTIBO/Re8oyZ/upkV9XB9XaXkM/vfbMoop5WDkZwn/4s?=
- =?us-ascii?Q?qgkHBLGThx9aSsTBqRUoVzcsmQrwRi+3AGLBMAIRmjynTet6Qily12byXtmf?=
- =?us-ascii?Q?sqw3/tS1XE3eTkkDReMQ30q7I85AzWbDcmbTgcxMiY+5FoOT8F2Owhmh5v9Z?=
- =?us-ascii?Q?rMysmuE0uyFropp5FoILu3s6zq7hss6RdBYrV2p7TDcLB6NU/Nz27CUMzyUE?=
- =?us-ascii?Q?OAI6z//qHzYD2lb8C7Bpv+p2hHS8zS5x6nUf17+KtggtxsmCfk5rPv6qI5+l?=
- =?us-ascii?Q?IaziyRGz6npPzI+arrqu40fh5l/fJAvWGONm8LNx2LsDoFNhtCr6x/FfUZS8?=
- =?us-ascii?Q?TYNVYnjqIczRJ10NZYeie9vivDxrhER+LGR45TFxXL3VvdIDws1Z6v/l5d8R?=
- =?us-ascii?Q?tcWT94V0DjvNg2qGtRy90nfUZ1sPyo9hr4gE3i7H1bP1ZyTyVAOrGXlSadRE?=
- =?us-ascii?Q?a33B9KXAi1AhC0cM035xm3RyCrr7OG8YfGcVnJafdF494AJNiLCwTVRAY8JJ?=
- =?us-ascii?Q?S6kPzKzQMaGzNTC058opwz4hs4hvPGDCp6nGIKJbYYlkLfJYAWH+s0nECkhn?=
- =?us-ascii?Q?rE5JfAqQo8HCB9/1/6Avf3yDWb9G0eICg9a544StjEi+fbORR3sfNptQFENw?=
- =?us-ascii?Q?QqRXunQjjc1Wh7qo0Tc=3D?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2014e4e8-d853-45db-2229-08dd52a8f5ec
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2025 18:52:59.2289
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tJvWbzVidw/jLShOYq0YnCtLdHmTaECn/vdFKd6ifd5qT5ouQCGm+qHF4SejQKJGAW2rYJF0k0igBQpmgsxfIA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB7207
+References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
+ <Z7SwcnUzjZYfuJ4-@infradead.org> <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
+ <326CC09B-8565-4443-ACC5-045092260677@zytor.com> <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
+ <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com> <Z7VKW3eul-kGaIT2@Mac.home>
+ <2025021954-flaccid-pucker-f7d9@gregkh> <2nn05osp-9538-11n6-5650-p87s31pnnqn0@vanv.qr>
+ <2025022052-ferment-vice-a30b@gregkh> <9B01858A-7EBD-4570-AC51-3F66B2B1E868@zytor.com>
+ <n05p910s-r5o3-0n36-5s44-qr769prp69r5@vanv.qr> <20250221183437.1e2b5b94@pumpkin>
+In-Reply-To: <20250221183437.1e2b5b94@pumpkin>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Fri, 21 Feb 2025 11:12:27 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wjF0wjD4ko7MgrZ1wBZ9QOrQd_AnyhDDUJQ1L5+i-o22A@mail.gmail.com>
+X-Gm-Features: AWEUYZmM9QfL00hwgEM8sBRcCKHPzsXEZopO9LOxfzNGM8PLhnN7fh_mlPWpfF8
+Message-ID: <CAHk-=wjF0wjD4ko7MgrZ1wBZ9QOrQd_AnyhDDUJQ1L5+i-o22A@mail.gmail.com>
+Subject: Re: C aggregate passing (Rust kernel policy)
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Jan Engelhardt <ej@inai.de>, "H. Peter Anvin" <hpa@zytor.com>, Greg KH <gregkh@linuxfoundation.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
+	Christoph Hellwig <hch@infradead.org>, rust-for-linux <rust-for-linux@vger.kernel.org>, 
+	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 18 Feb 2025 14:00:45 +0100
-Andreas Hindborg <a.hindborg@kernel.org> wrote:
+On Fri, 21 Feb 2025 at 10:34, David Laight <david.laight.linux@gmail.com> wrote:
+>
+> As Linus said, most modern ABI pass short structures in one or two registers
+> (or stack slots).
+> But aggregate returns are always done by passing a hidden pointer argument.
+>
+> It is annoying that double-sized integers (u64 on 32bit and u128 on 64bit)
+> are returned in a register pair - but similar sized structures have to be
+> returned by value.
 
-> Implement `AsRef<BStr>` for `[u8]` and `BStr` so these can be used
-> interchangeably for operations on `BStr`.
-> 
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+No, they really don't. At least not on x86 and arm64 with our ABI.
+Two-register structures get returned in registers too.
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
+Try something like this:
 
-> ---
->  rust/kernel/str.rs | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> 
-> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-> index ba6b1a5c4f99d..c6bd2c69543dc 100644
-> --- a/rust/kernel/str.rs
-> +++ b/rust/kernel/str.rs
-> @@ -125,6 +125,18 @@ fn index(&self, index: Idx) -> &Self::Output {
->      }
->  }
->  
-> +impl AsRef<BStr> for [u8] {
-> +    fn as_ref(&self) -> &BStr {
-> +        BStr::from_bytes(self)
-> +    }
-> +}
-> +
-> +impl AsRef<BStr> for BStr {
-> +    fn as_ref(&self) -> &BStr {
-> +        self
-> +    }
-> +}
-> +
->  /// Creates a new [`BStr`] from a string literal.
->  ///
->  /// `b_str!` converts the supplied string literal to byte string, so non-ASCII
-> 
+  struct a {
+        unsigned long val1, val2;
+  } function(void)
+  { return (struct a) { 5, 100 }; }
 
+and you'll see both gcc and clang generate
+
+        movl $5, %eax
+        movl $100, %edx
+        retq
+
+(and you'll similar code on other architectures).
+
+But it really is just that the two-register case is special.
+Immediately when it grows past that size then yes, it ends up being
+returned through indirect memory.
+
+               Linus
