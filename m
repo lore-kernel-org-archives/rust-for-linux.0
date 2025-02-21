@@ -1,126 +1,79 @@
-Received: from 003.mia.mailroute.net (003.mia.mailroute.net [199.89.3.6])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E882528E5;
-	Fri, 21 Feb 2025 22:17:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DEDC2045B7;
+	Fri, 21 Feb 2025 22:23:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740176257; cv=none; b=u4zTz87JdUDPbi2xvKB0Uqqv/H7G49bzh3HKuad5kyfLl/ML9Sv+jlO7cdBNmStbx0rR9kTkl14yHyW2R6o9fJrobYOItgT26BJ7kSMGmkFiL+20f6wrqHDj/nTqg0GJ13MCsqyLEl04sC376kHdX+SfynnQW+6ZSejN1bLy5hE=
+	t=1740176627; cv=none; b=DwPrg8bG9GclZJ5Pha5a42/nl0doP8zGCWSR1U3AHp8sSjrgZWNP7BlKPxh0MJPteMoYUHTL+ayEilXYEl09bYI0fsTzditnRMX3vca1iBQQPFlhsRaOTm7hYlf5dCJ/j8/hY1iTBhwFGb+8U4Lacy4x2cpsxCjEmqxpZ+HFYxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740176257; c=relaxed/simple;
-	bh=Ci3gisbLXRxROB64O9pHO44MI+ObXvntWq5pIqDL81k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rEuafgCeYJGGz9weDfJ6f0z7YE3oHWy0Fluym1Hk7nGj/l4e0SDXVBSo/o66EZjaMHx1888o16eJZs/y19Kh4JPGAubGLiV7IqAbzYOZw6eu9PCAeexMbleMcjMT7aU9u+FplUpVZMJyk91VQYTCcAOdWpEUVT5VvHMOUq1h43o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=0U6dckmc; arc=none smtp.client-ip=199.89.3.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="0U6dckmc"
-Received: from localhost (localhost [127.0.0.1])
-	by 003.mia.mailroute.net (Postfix) with ESMTP id 4Z04Cd1HlWzlrwfX;
-	Fri, 21 Feb 2025 22:13:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1740176026; x=1742768027; bh=Rpv6qg5LJ6vh68awsAl0E+as
-	qhk7CuPogw8UREwVqAg=; b=0U6dckmcqX9LtnZXE5xmuCnA3ixG9loGUnrl/dvI
-	UEbXsokv+pv7MF+U1z9CNP2p5TJybCDDWW/PGOSBfBhxpRKuoQDnunWzgl7Kti+u
-	ybJODXttnYQM8JfLAqqqigh8dRLXWkAA73yASlRQKkAOK25k44DHhEa/X9P0G5fc
-	lc30W59Q2VhFKGHzXXoOlOa//iGn0QspjivRW4ciwH+jJAtXVTEab0/OUFQ8d6oc
-	8o1jcQHUHyfuyx+5hMZeG1C9I4EKBlSj8G60/NxnKKFzEy3Af7SKtihbP5+JkWTz
-	wiXmkEfXeIv5B7W11AWJ1mUbV4qaPzT1f9CSaZKPdozmYg==
-X-Virus-Scanned: by MailRoute
-Received: from 003.mia.mailroute.net ([127.0.0.1])
- by localhost (003.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id Wx3eBg_UPJEB; Fri, 21 Feb 2025 22:13:46 +0000 (UTC)
-Received: from [100.66.154.22] (unknown [104.135.204.82])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 003.mia.mailroute.net (Postfix) with ESMTPSA id 4Z04CX48QtzlrnRt;
-	Fri, 21 Feb 2025 22:13:43 +0000 (UTC)
-Message-ID: <917f49a5-dae4-4810-8116-9bc93ddcd9f5@acm.org>
-Date: Fri, 21 Feb 2025 14:13:42 -0800
+	s=arc-20240116; t=1740176627; c=relaxed/simple;
+	bh=L+WRYZAtwOgscC+CovPo7Vs26ly8n19IaxeU6ex2VFE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=alskSVZaXjcoNvh5LlkFfeKwDD23XwS15JxDF1PFRk7Pv9k9fH6q7iRsPwEvRpYmcGEZeXQbreV0L42T6aFlI/JaPZ2uSjTUveZ99peNVE/sjpwF4OVvX3YUqWeB7p8oECF46hS0p9PzOOArigP4JMNhUtYQAyw7cKooeMSr2Kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE30FC4CED6;
+	Fri, 21 Feb 2025 22:23:45 +0000 (UTC)
+Date: Fri, 21 Feb 2025 17:24:15 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Martin Uecker <uecker@tugraz.at>, Dan Carpenter
+ <dan.carpenter@linaro.org>, Greg KH <gregkh@linuxfoundation.org>, Boqun
+ Feng <boqun.feng@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, Miguel Ojeda
+ <miguel.ojeda.sandonis@gmail.com>, Christoph Hellwig <hch@infradead.org>,
+ rust-for-linux <rust-for-linux@vger.kernel.org>, David Airlie
+ <airlied@gmail.com>, linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
+Subject: Re: Rust kernel policy
+Message-ID: <20250221172415.5b632ae6@gandalf.local.home>
+In-Reply-To: <CAHk-=wg=pZvE9cHJUPKGCajRUCtDoW73xwY5UfJApCWms_FgYw@mail.gmail.com>
+References: <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
+	<CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
+	<a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
+	<Z7VKW3eul-kGaIT2@Mac.home>
+	<2025021954-flaccid-pucker-f7d9@gregkh>
+	<4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
+	<2025022024-blooper-rippling-2667@gregkh>
+	<1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
+	<2025022042-jot-favored-e755@gregkh>
+	<b9a5de64fe1ded2ad3111763f35af9901bd81cc4.camel@tugraz.at>
+	<caea3e79-78e6-4d98-9f3b-f8e7f6f00196@stanley.mountain>
+	<61a7e7db786d9549cbe201b153647689cbe12d75.camel@tugraz.at>
+	<20250221124304.5dec31b2@gandalf.local.home>
+	<CAHk-=wgg2A_iHNwf_JDjYJF=XHnKVGOjGp50FzVWniA2Z010bw@mail.gmail.com>
+	<6b3e4d3bdc9b6efd69068e5b22cfd05d370aed19.camel@tugraz.at>
+	<CAHk-=wg=pZvE9cHJUPKGCajRUCtDoW73xwY5UfJApCWms_FgYw@mail.gmail.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: C aggregate passing (Rust kernel policy)
-To: David Laight <david.laight.linux@gmail.com>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Jan Engelhardt <ej@inai.de>, "H. Peter Anvin" <hpa@zytor.com>,
- Greg KH <gregkh@linuxfoundation.org>, Boqun Feng <boqun.feng@gmail.com>,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Christoph Hellwig <hch@infradead.org>,
- rust-for-linux <rust-for-linux@vger.kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
- ksummit@lists.linux.dev
-References: <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
- <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com> <Z7VKW3eul-kGaIT2@Mac.home>
- <2025021954-flaccid-pucker-f7d9@gregkh>
- <2nn05osp-9538-11n6-5650-p87s31pnnqn0@vanv.qr>
- <2025022052-ferment-vice-a30b@gregkh>
- <9B01858A-7EBD-4570-AC51-3F66B2B1E868@zytor.com>
- <n05p910s-r5o3-0n36-5s44-qr769prp69r5@vanv.qr>
- <20250221183437.1e2b5b94@pumpkin>
- <p7946077-rn30-n3p3-ppp0-80o9n9p07718@vanv.qr>
- <20250221202332.GA6576@pendragon.ideasonboard.com>
- <20250221220201.7068dfa3@pumpkin>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20250221220201.7068dfa3@pumpkin>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 2/21/25 2:02 PM, David Laight wrote:
-> And there is nothing to stop (I think even std::string) using ref-counted
-> buffers for large malloc()ed strings.
+On Fri, 21 Feb 2025 11:30:41 -0800
+Linus Torvalds <torvalds@linux-foundation.org> wrote:
 
-This is what an LLM told me about this topic (this matches what I 
-remember about the std::string implementation):
+> And yes, it's wrong in general. The problems with "x < 0" warning for
+> an unsigned 'x' are deep and fundamental, and macros that take various
+> types is only one (perhaps more obvious) example of how brokent that
+> garbage is.
 
-<quote>
-Does the std::string implementation use a reference count?
+The bug I recently fixed, and I still constantly make, where this does
+help, is the difference between size_t vs ssize_t. I keep forgetting that
+size_t is unsigned, and I'll check a return of a function that returns
+negative on error with it.
 
-No. [ ... ]
+If I could just get a warning for this stupid mistake:
 
-Why does std::string not use a reference count? Has this always been the
-case?
+	size_t ret;
 
-[ ... ]
-Reference counting adds overhead. Every time a string is copied or 
-assigned, the reference count has to be incremented or decremented, and 
-when it reaches zero, memory has to be deallocated. This adds both time 
-complexity (due to the need to update the reference count) and space 
-complexity (to store the count alongside the string data).
+	ret = func();
+	if (ret < 0)
+		error();
 
-The goal with std::string is to minimize this overhead as much as 
-possible for the most common cases, particularly short strings, which 
-are frequent in real-world applications. The small string optimization 
-(SSO) allows short strings to be stored directly within the std::string 
-object itself, avoiding heap allocation and reference counting 
-altogether. For long strings, reference counting might not provide much 
-of an advantage anyway because memory management would still have to 
-involve the heap.
-[ ... ]
-Reference counting introduces unpredictable performance in terms of 
-memory management, especially in multithreaded applications. Each string 
-operation might require atomic operations on the reference count, 
-leading to potential contention in multithreaded environments.
-[ ... ]
-Initially, early implementations of std::string may have used CoW or 
-reference counting techniques. However, over time, as the language 
-evolved and as multithreading and performance became more of a priority, 
-the C++ standard moved away from these features. Notably, the C++11 
-standard explicitly banned CoW for std::string in order to avoid its 
-pitfalls.
-[ ... ]
-</quote>
 
-Bart.
+I'd be very happy.
+
+-- Steve
