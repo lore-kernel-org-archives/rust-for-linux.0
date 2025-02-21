@@ -1,55 +1,53 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE3F209663;
-	Fri, 21 Feb 2025 11:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806C62066F4;
+	Fri, 21 Feb 2025 11:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740136827; cv=none; b=Z1T/y2mjfYMb/8uTUbFhZt2lDVmT1lkjZgGTSfMw2XMSp28G6nfAd0dsg5kl9ALyhrBJcmtxaWKpFcm4cT07tQVn9yLqUcLKIi610VHP7dSDqW36MiykwF/H+TyPDXGDTV8SxwKL/hgX24iecvVfWDbFdMhWbWL6PeNiFtUgUa4=
+	t=1740137395; cv=none; b=D6k3EuEhyqzCil/RWdGiRm3zoHeMjvujqoTunxtbcctjmmbEJAA3u9Hl1qTqbBwkjGLR/uubZA5wtRisRjSe9avWH/FYik1fFXkwlgnI+mEXQBMQK5HgxSjMc5+NV0P2wLwcAWP7KXEUuqDncQ9EupwAmQ5rxNoUfse9j3ezD5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740136827; c=relaxed/simple;
-	bh=uwrptfZQzR8vm3LwuylnJoiSnoBFnYe+OC5GIF2p1Bw=;
+	s=arc-20240116; t=1740137395; c=relaxed/simple;
+	bh=IH3OpXE+ypHgIXe/4FhMfuMZ2At7xnoqqHXA6TJ/Qj8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZG2sw0+rHhYzjeUC3D9AWgU2pJqTMicA9adKjqJH6kzu/GxSGycPz4NprdkAKEuDxiwhC4oSN+ALaNrFftY28tKppqQ12LJlriHpgNmtjLQ7PT0FemcIovWwQUOhnbd/WCKppNT9eOiaOeKPqbHtjOs2LF4Nng3irIACPkj88A8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qUMwypBu; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=kM3adHHuTXBQlufRaQruGn0DJ0kbAWpQ3dYvB9GjQXgP2ymF2Yypu48Yjcx09C1LWVHbGJKtR/GbM2eSIA5OLtGE6BsYd2CfvUgOD2eBF+g1B3OymhiJDqxfxRNcIWjVM3mRb86VHoTIkQbwRniChPYkSLS5EM+em5y1tBLYsug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DroJ5kOb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qUMwypBu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B078C4CED6;
-	Fri, 21 Feb 2025 11:20:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DroJ5kOb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98DD1C4CED6;
+	Fri, 21 Feb 2025 11:29:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740136827;
-	bh=uwrptfZQzR8vm3LwuylnJoiSnoBFnYe+OC5GIF2p1Bw=;
+	s=k20201202; t=1740137394;
+	bh=IH3OpXE+ypHgIXe/4FhMfuMZ2At7xnoqqHXA6TJ/Qj8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qUMwypBu/fKYQCW+249jHHx/HqxvFxgByl5kaqE8QGFbM0KakwjmDN43KzOayAzms
-	 LFcMl3C9TNs8TpHG8XxcOLCz9YvMn23zQGl+5Den4XoI7tM6948guHdVQK+LwZyxt6
-	 BwKedziN4jQNWdrFpXhWKL80TWBMeUfcWE26pqsKzIEOEY2z+Nm4xadl5LjO9mpwrP
-	 qsAAVorKr5BZ2b6NB6BMRp3oEqvGEN5ENiyJUwPufTJS1jGRymvYYCYVPKRa8uK/He
-	 Uhj6Pi2QKxR3J6SY48uS+i+6+l21NTx5FF7MdoH2H9kxUYt79rUuQDg7ZIACatTo/1
-	 WlInyDNRIuY9g==
-Date: Fri, 21 Feb 2025 12:20:24 +0100
+	b=DroJ5kObeXnjc/XlaSgZTqF1LgwuiTHKtLYArfYQ2TFwKmQNrFYbPATOHD/u32hIv
+	 5d6xoamJN2Q/hs7PlkzP2nUb7o5cta5auedyFAtdKMwLBlIZui0cNucc79gTbhBziH
+	 07n39vTnOtVIrp3NlyD258SHmKKSyI6wqSENtataVmn6jXo7Uj4nPm6msRVPTSI1j9
+	 qPmGo5NQjbXm/aShBdQdweGxlZm0gQp75Arq+c7qD7qLAQ+RHsyTjyQLStH9l0y5p8
+	 /AWSKC2X7sZBPZnRO4abOX5vdonKnrcZZMG3nnHm9EUPhC8+cA0QTiC+jTb7D6Llxy
+	 14fEWXVYFiqzA==
+Date: Fri, 21 Feb 2025 12:29:51 +0100
 From: Frederic Weisbecker <frederic@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Anna-Maria Behnsen <anna-maria@linutronix.de>,
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
 	Thomas Gleixner <tglx@linutronix.de>,
-	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
 	Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>,
 	Dirk Behme <dirk.behme@gmail.com>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
 	Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 00/14] hrtimer Rust API
-Message-ID: <Z7hheOSAuKdhq-1C@pavilion.home>
-References: <aIJ0ymzdUceCN05hwJpth4erH5u2SHYzYl52wGeT3uiO9bdk92ZkEmEEq9a9NXsInJYSz9uziwq-1fvdsXoeDA==@protonmail.internalid>
- <20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org>
- <877c5mci3p.fsf@kernel.org>
- <5kF-NYTBZbEqnnQud5LKnRXO0lfM0i6I2PoeFrpKDhCYwUuk_bG2Li1T1Nuv82r3VFD8adTcdx7yenXSIfTwmw==@protonmail.internalid>
- <Z7eYp_vZo5yDVOdI@pavilion.home>
- <87frk7hera.fsf@kernel.org>
+Subject: Re: [PATCH v8 02/14] rust: hrtimer: introduce hrtimer support
+Message-ID: <Z7hjrzyVNd5BIcEy@pavilion.home>
+References: <20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org>
+ <20250218-hrtimer-v3-v6-12-rc2-v8-2-48dedb015eb3@kernel.org>
+ <df748ac2-3551-460f-a16f-85d805671a3f@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -59,75 +57,109 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87frk7hera.fsf@kernel.org>
+In-Reply-To: <df748ac2-3551-460f-a16f-85d805671a3f@proton.me>
 
-Le Fri, Feb 21, 2025 at 09:40:41AM +0100, Andreas Hindborg a écrit :
-> "Frederic Weisbecker" <frederic@kernel.org> writes:
+Le Thu, Feb 20, 2025 at 11:46:10PM +0000, Benno Lossin a écrit :
+> On 18.02.25 14:27, Andreas Hindborg wrote:
+> > This patch adds support for intrusive use of the hrtimer system. For now,
+> > only one timer can be embedded in a Rust struct.
+> > 
+> > The hrtimer Rust API is based on the intrusive style pattern introduced by
+> > the Rust workqueue API.
+> > 
+> > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> > ---
+> >  rust/kernel/time.rs         |   2 +
+> >  rust/kernel/time/hrtimer.rs | 312 ++++++++++++++++++++++++++++++++++++++++++++
+> >  2 files changed, 314 insertions(+)
+> > 
+> > diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+> > index 87e47f2f5618d..2cf365cfb412e 100644
+> > --- a/rust/kernel/time.rs
+> > +++ b/rust/kernel/time.rs
+> > @@ -10,6 +10,8 @@
+> > 
+> >  use core::convert::Into;
+> > 
+> > +pub mod hrtimer;
+> > +
+> >  /// The number of nanoseconds per millisecond.
+> >  pub const NSEC_PER_MSEC: i64 = bindings::NSEC_PER_MSEC as i64;
+> > 
+> > diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
+> > new file mode 100644
+> > index 0000000000000..a6332924efabd
+> > --- /dev/null
+> > +++ b/rust/kernel/time/hrtimer.rs
+> > @@ -0,0 +1,312 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +//! Intrusive high resolution timers.
+> > +//!
+> > +//! Allows running timer callbacks without doing allocations at the time of
+> > +//! starting the timer. For now, only one timer per type is allowed.
+> > +//!
+> > +//! # Vocabulary
+> > +//!
+> > +//! States:
+> > +//!
+> > +//! * Stopped
+> > +//! * Running
+> > +//!
+> > +//! Operations:
+> > +//!
+> > +//! * Start
+> > +//! * Cancel
+> > +//! * Stop
+> > +//! * Restart
+> > +//!
+> > +//! Events:
+> > +//!
+> > +//! * Expire
+> > +//!
+> > +//! ## State Diagram
+> > +//!
+> > +//! ```text
+> > +//!                  <-- Stop ----
+> > +//!                  <-- Cancel --
+> > +//!                  --- Start -->
+> > +//!        +---------+        +---------+
+> > +//!   O--->| Stopped |        | Running |---o
+> > +//!        +---------+        +---------+   |
+> > +//!                                  ^      |
+> > +//!                  <- Expire --    |      |
+> > +//!                                  o------o
+> > +//!                                   Restart
+> > +//! ```
+> > +//!
+> > +//! A timer is initialized in the **stopped** state. A stopped timer can be
+> > +//! **started** with an **expiry** time. After the timer is started, it is
+> > +//! **running**. When the timer **expires**, the timer handler is executed.
+> > +//! After the handler has executed, the timer may be **restarted** or
+> > +//! **stopped**. A running timer can be **canceled** before it's handler is
 > 
-> > Le Wed, Feb 19, 2025 at 12:02:50PM +0100, Andreas Hindborg a écrit :
-> >> "Andreas Hindborg" <a.hindborg@kernel.org> writes:
-> >>
-> >> > This series adds support for using the `hrtimer` subsystem from Rust code.
-> >> >
-> >> > The series adds support for timer mode and clock source configuration during
-> >> > timer initialization. Examples and functionality to execute closures at timer
-> >> > expiration has been removed, as these depend on either atomics [3] or
-> >> > `SpinLockIrq` [4], which are still being worked on.
-> >> >
-> >> > This series is a dependency for unmerged features of the Rust null block driver
-> >> > [1], and for rkvms [2].
-> >> >
-> >>
-> >> @ timer subsystem maintainers: did you discuss how you want to set up
-> >> maintenance for this yet? As mentioned, I'm happy stepping up to
-> >> maintain this, but if you want to handle it with existing resources that
-> >> is perfectly fine as well.
-> >
-> > You're the best candidate to maintain this code since you wrote it :-)
-> >
-> > Also I personally have near zero skills in Rust as of today so all I can do
-> > is to vaguely keep an eye on the binding's interface and keep in touch
-> > with the changes.
-> >
-> > So I suggest you to add a new entry with you as a maintainer (I suggested
-> > something similar to Fujita for some other timer related things) but please
-> > keep us Cc'ed for future changes.
+> This confuses me a bit, in the other thread you wrote that the handler
+> decides if the timer should restart or be stopped. But What happens when
+> I call `cancel` on the `HrTimerHandle` while the handler is running, but
+> finishes shortly after with a restart request? Will it be canceled?
 > 
-> Alright, lets do that.
-> 
-> Do you want to pick future changes to this directly form list or would
-> you prefer that I send you a PR with changes?
+> I also have a bit of a wording issue with "the timer is running" IIUC,
+> this means that the timer subsystem keeps track of the expiry time and
+> when the time is elapsed, it fires the code that you registered prior.
+> At first, I thought that "the timer is running" meant that the
+> registered code is running. Maybe we should have two different terms for
+> that? I personally would prefer "active timer" for "the timer subsystem
+> is currently tracking the time and when it is elapsed, it will run the
+> code" and "running timer" for "the timer's expiry time has elapsed and
+> the timer callback is currently being executed".
 
-I was thinking the patchset would be better routed towards the Rust tree?
+Good point. "Running" in the hrtimer terminology is usually to
+describe a running callback and not just an elapsing (or say started) timer.
 
-How do you guys proceed usually with bindings tree maintainance?
+I would rather have:
 
-I read yesterday Linus saying that Rust bindings are users of existing
-kernel infrastructure just like any other driver. I personally think it's
-more than that, and probably he does to, but anyway he has a point in that
-they are not changing the core infrastructures. Functionally they are
-eventually new API users.
-
-Adding to that, Rust bindings require quite some specific knowledge that
-is mostly to be found among the Rust tree developers for now (and not much
-shared elsewhere I suspect), I think it's a better idea that you guys handle
-this hrtimer binding within the Rust tree. You'll be more flexible and people
-applying the related patches will know what they are doing.
-
-What do you think?
-
-> 
-> We are probably going to have a new iteration anyway, as discussion
-> picked up again.
-
-Ok.
+Stopped: initialized but not started, or cancelled, or not restarted
+Started: initialized and started or restarted
+Running: executing the callback
 
 Thanks.
-
-> 
-> 
-> Best regards,
-> Andreas Hindborg
-> 
-> 
-> 
