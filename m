@@ -1,91 +1,118 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B857B155336;
-	Fri, 21 Feb 2025 12:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46087207A15;
+	Fri, 21 Feb 2025 12:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740140187; cv=none; b=uWbCO5GSuOmEFz8BPMtjH0dVFNSlTvYbtReNPQRRxyGa8mQCVi4/cbJKLKgN1+09iwZpc1gvgshJ12s57rhFd08Mpc4pa+1SXYrgUXwQcCkCd9hPM2yzfdEN7pB4ganZ3/VCDe4Go9pPpJxTzoRGYA3xaTwz2f1RXA5B1jQTNOg=
+	t=1740140252; cv=none; b=IQYSDCN7yjZgzzi6Dhm5k1/S5a6xc71Nhtwh6iUHqslVom816sNHI4Xqt+EPcXbjYjQfX2MFSIL3csnuQ2Ih8BC24FPD9k7L9n3RMnT6TQDceDAIsMhAi4Y1twY8QD0AQ0QxOmdYd04tBcTwVHWCrGCtv3L5uy7N9VEKzpQvSYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740140187; c=relaxed/simple;
-	bh=FcXDvJYEKyRapwRCxZsFoz/Xi48GMchrB8hzwuFfctU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sbjMKzLuoLJS3x++xqmBLn6Mo9IQj02LWCQY6opWBckLA7EIcrhKS6y+26vP01C9rDIDCEIQ4zo2aknKNt6NaheMeStEkr0fiGP2jjroIFLs37fJ2Ol20aus3OUQ+QzDRIko48aTIUpuPGF4L5ntYYK52MRfWjG8d6fYXnWGxjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RGoxfQ6l; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740140252; c=relaxed/simple;
+	bh=+wzFFw1THANHueG/2oJHJC/Y9M9X02s9gVTYFzS0Vvo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=EPvpxU2bpFUXJvW0XRTRA65IliVhaXpq33kn5JSn0QumIsQCPFdbjZGRH8db5Y6QPPIDXU63P62KO4ZC/34CDCM/+oPyXjqxy+mwrJVkgj5gNuvWiVV9y0ypxWb8oHYttydzqJb5vSjW+mNlngzWDjX4xFYx/vVKMTZYJxZ9lxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sViiXE1c; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RGoxfQ6l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74D65C4CED6;
-	Fri, 21 Feb 2025 12:16:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sViiXE1c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39CB4C4CED6;
+	Fri, 21 Feb 2025 12:17:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740140187;
-	bh=FcXDvJYEKyRapwRCxZsFoz/Xi48GMchrB8hzwuFfctU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RGoxfQ6ljvx0Qgt/e9/YI6OAtuKFODPGK5+oIM9C7oDT61Aa1kXunL8KhYNMYT/jW
-	 llmTETlvg4U7bkil7IxbOWwBjWhS7LVrMFunU98PGNUrKa+zCbrNAotLiQgkbHHolw
-	 mCHiN7W4OvPNR5Hza8FeaItxRiCnXoCztAM1+Lk/tt2KZIzztE5OTkt8etJ5iQJ2GG
-	 8+4B9Sx1WVL1IcIac4YGvUX98mTRDCtXCl3SYEEv2MDNCNVgCBpObVCutY8x8t1HuG
-	 i0MmFyL05Bsg3B7k19Mutzls+dm49W6SKPB7nkg7WJZDDPIWgToEpRvnZZJOObok0D
-	 OsP/il6p5xSgQ==
-Date: Fri, 21 Feb 2025 13:16:22 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Christoph Hellwig <hch@infradead.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	rust-for-linux <rust-for-linux@vger.kernel.org>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
-	ksummit@lists.linux.dev
-Subject: Re: Rust kernel policy
-Message-ID: <Z7hulnJ4fwslRILy@pollux>
-References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
- <Z7SwcnUzjZYfuJ4-@infradead.org>
- <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
- <Z7bO1jT2onZFZwgH@infradead.org>
- <CAHk-=wgLbz1Bm8QhmJ4dJGSmTuV5w_R0Gwvg5kHrYr4Ko9dUHQ@mail.gmail.com>
+	s=k20201202; t=1740140251;
+	bh=+wzFFw1THANHueG/2oJHJC/Y9M9X02s9gVTYFzS0Vvo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=sViiXE1cISXk6aPSsd0k3bxlJnN1pK10kqs3Kroe5XXSGPEF/ykyK9gNiX2+dZwbi
+	 nowjOXnlM6ES7qRaVGpTc+MOzDPZbt9pjYJJapEFNgQ4n76JnWqcNLd2ienOnsEQNG
+	 /gdH46oaRne8z71CFNVokSgfKRhWBzduE+K3VMDDWnBUB8IK1pDTHwUn5cYa1V4dlT
+	 h8k3XfWsncfhIEqk8+5+OQIXawdcYldFTnljkU6yT3sBfvoCx9BNAvy4e9uRW9x0hx
+	 LkKOgOlgYT9qNtKIywy1YJ9gTH95aJ3jA0yWinWOhHHnVI0yfId5HJO+7SkQz5t8GH
+	 Vpet5C47xCTCQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Benno Lossin" <benno.lossin@proton.me>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Anna-Maria Behnsen"
+ <anna-maria@linutronix.de>,  "Frederic Weisbecker" <frederic@kernel.org>,
+  "Thomas Gleixner" <tglx@linutronix.de>,  "Danilo Krummrich"
+ <dakr@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
+ <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
+ =?utf-8?Q?=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor
+ Gross" <tmgross@umich.edu>,  "Lyude Paul" <lyude@redhat.com>,  "Guangbo
+ Cui" <2407018371@qq.com>,  "Dirk Behme" <dirk.behme@gmail.com>,  "Daniel
+ Almeida" <daniel.almeida@collabora.com>,  "Tamir Duberstein"
+ <tamird@gmail.com>,  <rust-for-linux@vger.kernel.org>,
+  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v8 02/14] rust: hrtimer: introduce hrtimer support
+In-Reply-To: <841150db-2f92-4cfe-bb1f-29b34b4662c1@proton.me> (Benno Lossin's
+	message of "Fri, 21 Feb 2025 11:05:49 +0000")
+References: <20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org>
+	<20250218-hrtimer-v3-v6-12-rc2-v8-2-48dedb015eb3@kernel.org>
+	<1id7is_U22yzuGODgkUIoB5AFM6snF9CPu7F_sY7Mfkn3EwQRPfjB5JNkRFYu6DX1N8X_OQvdEB2BT-l3rFhwg==@protonmail.internalid>
+	<df748ac2-3551-460f-a16f-85d805671a3f@proton.me>
+ <87a5afhdq0.fsf@kernel.org>
+	<875xl3fvtm.fsf@kernel.org>
+	<uoEWs3I3Cf4H5QBXCk4i1-gCs_nR7fJAX7z9JyvaEIP_yrPckvsgcC8fWctvwPY91ZLOwk041dhytXFtSwDFOA==@protonmail.internalid>
+	<841150db-2f92-4cfe-bb1f-29b34b4662c1@proton.me>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Fri, 21 Feb 2025 13:17:17 +0100
+Message-ID: <87o6yveble.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wgLbz1Bm8QhmJ4dJGSmTuV5w_R0Gwvg5kHrYr4Ko9dUHQ@mail.gmail.com>
+Content-Type: text/plain
 
-On Thu, Feb 20, 2025 at 04:39:58PM -0800, Linus Torvalds wrote:
-> Honestly, what you have been doing is basically saying "as a DMA
-> maintainer I control what the DMA code is used for".
-> 
-> And that is not how *any* of this works.
-> 
-> What's next? Saying that particular drivers can't do DMA, because you
-> don't like that device, and as a DMA maintainer you control who can
-> use the DMA code?
+"Benno Lossin" <benno.lossin@proton.me> writes:
 
-[...]
+> On 21.02.25 11:15, Andreas Hindborg wrote:
+>> Andreas Hindborg <a.hindborg@kernel.org> writes:
+>>
+>>> "Benno Lossin" <benno.lossin@proton.me> writes:
+>>>
+>>>> On 18.02.25 14:27, Andreas Hindborg wrote:
+>>>>> +pub trait HrTimerCallback {
+>>>>> +    /// The type whose [`RawHrTimerCallback::run`] method will be invoked when
+>>>>> +    /// the timer expires.
+>>>>> +    type CallbackTarget<'a>: RawHrTimerCallback;
+>>>>> +
+>>>>> +    /// This type is passed to the timer callback function. It may be a borrow
+>>>>> +    /// of [`Self::CallbackTarget`], or it may be `Self::CallbackTarget` if the
+>>>>> +    /// implementation can guarantee exclusive access to the target during timer
+>>>>
+>>>> Technically "exclusive" access is correct if the `CallbackTarget` is
+>>>> `Pin<&Self>`, since you will get exclusive access to a `Pin<&Self>`, but
+>>>> it might confuse people, because there can be multiple `Pin<&Self>`. So
+>>>> I would just drop the word "exclusive" here.
+>>>
+>>> Yes, maybe it should be "shared or exclusive access, depending on the type"?
+>>>
+>>>>
+>>>>> +    /// handler execution.
+>>>>> +    type CallbackTargetParameter<'a>;
+>>>>
+>>>> Also why can't this type be an associated type of `HrTimerPointer`?
+>>>> Since this seems to always be constrained in the impls of
+>>>> `RawHrTimerCallback`.
+>>>
+>>> That might be a nice improvement, I'll try that out.
+>>
+>> Looking closer at this, I don't see how to achieve this. We need access
+>> to the type here, because it is used in the signature of `run`.
+>> `HrTimerCallback` has no bounds on it, and that is nice. If we want to
+>> move these associated types, we have to introduce a bound here.
+>>
+>> We need to be generic over the type of the parameter to `run`, and by
+>> the time the user implements this trait, the type must be known and so
+>> the user has to specify somehow.
+>
+> I think if you put the associated type on the `RawHrTimerCallback`
+> trait, it should work.
 
-> So let me be very clear: if you as a maintainer feel that you control
-> who or what can use your code, YOU ARE WRONG.
+What would be the signature of `HrTimerCallback::run` in that case?
 
-When I added you to the original thread [1], it was exactly to get some
-clarification on this specific point.
 
-In my perception, a lot (if not all) of the subsequent discussions evolved
-around different aspects, while this specific one is not even limited to Rust in
-the kernel.
+Best regards,
+Andreas Hindborg
 
-Hence, I'm happy to see this clarified from your side; it was still a remaining
-concern from my side, regardless of whether the PR in question will make it or
-not.
 
-However, I also want to clarify that I think that maintainers *do* have a veto
-when it comes to how the API they maintain is used in the kernel. For instance,
-when an API is abused for things it has not been designed for, which may hurt
-the kernel as a whole.
 
-But as mentioned previously, I do not think that this veto can be justified with
-personal preference, etc.
-
-- Danilo
-
-[1] https://lore.kernel.org/lkml/Z5qeoqRZKjiR1YAD@pollux/
