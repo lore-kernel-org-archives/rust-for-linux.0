@@ -1,138 +1,136 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4C91FF7CC;
-	Fri, 21 Feb 2025 20:07:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49881E7C1E
+	for <rust-for-linux@vger.kernel.org>; Fri, 21 Feb 2025 20:11:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740168452; cv=none; b=sLdzZBvL+M3PWdLZBBHV6tsmXmjKV3xh3wn7XTY+7WM0ObLVe53bTzR6FY1MibdbogW4qgkbrr+GPxz/5wwoXDKv8LHlPB2bennvp/H8bNUtqdZvxiQRZNSEq5CQC8NamLcidhO5HtLXhH5Awa28CSWDM2pCGShXq4jqfM8hkYo=
+	t=1740168715; cv=none; b=DzrjU6WpgBiyNztBCP9OlMGkibVeXsptBGZ3HhxkEyoOPDXsQl3rf1CmuyUzoKIn/qXuvBQW9WHa4qfNvMX2u23uqHKVL3z7rSd/YZTSTZEtAcm2gzwdw1k8v8Xdwq5Ym4wjhuVU4c5ecU2zPw434U267OTK6XIAxXbLk3Y5um0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740168452; c=relaxed/simple;
-	bh=J8i3DZmAPGrWlElVvpG1UCxEbqCR2ykVCXYwjltceaQ=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=MTqD8BDHO5n4F+vCqmd7bChCWIuKNOjC4GHwz4o7nKnL6QM7wlt15hfGgFJM7m5BWJ2PoR5yxsvwVXrN1lnSa+xcGErB+wUE+bKmqGFEfqf/YbvMrK3tPI/YMDODIB+bSDHg9bhEOhS3IZFeWUQmAJzvGiqHQCQU3KbJYE6K9os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B2+qfeAq; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740168715; c=relaxed/simple;
+	bh=sHDT7bse50uCAtNjA78tyEQ3rjAX9mJG1DMhp6e+0tw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sSlxwSuGHfNC/6SBvr2PNQ+tWpkpkGI7TaxVQcclULwDyrG3AhcG+tYQ8u/RN89+gmsR2Ho0qlf+E6RRtPydedFL+Q5hC9BA8B3/hDNfzWn4qpR1gawgL33Va8YfWNwqAPsmZSGaYtD5bb0lTsS111ezmxefDhWoVSGmj0a72tM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Ifx8txNa; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B2+qfeAq"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-220c2a87378so44837745ad.1;
-        Fri, 21 Feb 2025 12:07:30 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Ifx8txNa"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-ab744d5e567so437857566b.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 21 Feb 2025 12:11:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740168450; x=1740773250; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RB1lR+aB2DFBicW90ROYujqbV0AEbnFQJOUJctGhXRI=;
-        b=B2+qfeAqD1z6KOnQTUb1NgnQRJRn74wGvwDU60HUYjfNDtpUzo5r3yRKI7gYsRkMsR
-         Nkilg4RjGEYhhusUBCzFrerPtwZrZZTYXzM1Rn9MjmqecBr2rlrX8rixYIoS8YmBO031
-         QXKmmas6+z4okWuzU4ZxiM8D0VwAVf53s8G3wPt90t5KNnZifQB1q4N9j4maiFAaJDbY
-         I/QZ1oWsqJUbb1SEupA3WHbgjarNh//9i6AXlaq5YvUIH8cWEUwlUP4z6uBrMCpUKaYa
-         nqmXTY5JTaO5LD6W+n9DPlK5FPghcm4dLVAyoO2ujR7cy9b9xH8qN1Dxp0hy0ek5u0mG
-         LtnQ==
+        d=linux-foundation.org; s=google; t=1740168711; x=1740773511; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=CcGCG2WSdQQovy8qS/ohnfSZbfooRumEZHN+xZ7cilE=;
+        b=Ifx8txNa3aZd2mXmXPHM0flt+njiEbTk1z6/Gir+aDORjgFJm5Dz/Ho1XT983nHOgy
+         6LOC1HtrxfccNwNxXG5ljX9D/RCqVcOTlAg+HwxTkAzxojeN3VGhU9/yipQ5302HUuou
+         ue+e7jvHNtX2qXavZSNh0EsLLBFBU+sCMp+rw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740168450; x=1740773250;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RB1lR+aB2DFBicW90ROYujqbV0AEbnFQJOUJctGhXRI=;
-        b=T/d3BVWoXpRogBE1KAv0QZLvoMU7OtFWJgtJI28Lzcq4vNeDegut/mP4Nzx86Ez01X
-         Ye6o3/3nP6YLvgpTpRefkl9EwWf/QY2bjmTIQn+NxkD0d/OAUcat7lWrc5nkL2yijU2H
-         LVfoprEPF6gQ2Ibx/znACt0WmdxW7CrpefhFrRDZTGjiF03Eg7PyJWVni382WcC+pd+2
-         xQtpDsygW5miBhZOjwh82CviGF0V4NEo1RomNm3M6uuzvOHxPNg4XilGiaHKqJR26ICh
-         OCTz/SNJgdENbSd1RtEDrUHaW9ljoeCBmZk1oXdmgQ9J9dFxq8ADZa0sMWYo89anpxZr
-         fZTg==
-X-Forwarded-Encrypted: i=1; AJvYcCU28rMl7Gw2n/3a6yPd3LHbcQrkIzS8KR7JnHIKs/6DlsC4Jckn0VlFCQboqRF3ApdnhwX1pb6493T0jmzAS4w=@vger.kernel.org, AJvYcCU4Pi7pNy4ikotJLkuqeteHZQOWaF/gFLHvqQpTvT6e6mm9Pnf+WnL9q3yE1JIthynXFarXZ4PuFQ0saag=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzauGH/AmnBLaemcx/K3e+pBLlV32C6debHGdpEoNw0gUreGXxH
-	TsNvJ0WSn2fTFKyY0r5gS5MEyCG6qVexBNqOOsQdlo9aNXIxeyjk
-X-Gm-Gg: ASbGncuGhDuIeP4+wZOHmGmzESNjNzko3xskubcvn0e2C1hgEDITf1k64LtRuYT4war
-	LnllMpJ32VlVsvcJJLyEVIfVFX6E/UeIaUAMY6oMuDXOMb7ZdfYgLkXWIuKyTphmpCLsjgYqtR/
-	RFZjiU+ps9+Z6HsaXCisiB/5dVBtsvrqbR2W7O/03fPSoNteRaajU4cOLk0xjDimY9OqYcf6z7A
-	wdfibPNpX3h89/Bay/dm00oT01ODxcYjyWIuUKo8ohV1XSvf8Bthjk6b4tDNGMWxkF4jc7rDGzE
-	KBq8ks7c2PGhDrZz11IJJRy4k+Cv/Z2KFH0hmsx+mnQT96B6
-X-Google-Smtp-Source: AGHT+IEV/9ceYaqgCzY1ZQH1uaVVHner+kvO/+TD3nG4jkQEysozy99K0MOUnJ7/OVsYVjRbB6Us6Q==
-X-Received: by 2002:a17:903:2309:b0:220:eaaf:f6ec with SMTP id d9443c01a7336-221a0ec9501mr72162795ad.5.1740168450001;
-        Fri, 21 Feb 2025 12:07:30 -0800 (PST)
-Received: from smtpclient.apple ([2601:645:4300:5ca0:35f7:b1dc:26f7:f292])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ae624a00dc8sm4660203a12.34.2025.02.21.12.07.28
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 21 Feb 2025 12:07:29 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+        d=1e100.net; s=20230601; t=1740168711; x=1740773511;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CcGCG2WSdQQovy8qS/ohnfSZbfooRumEZHN+xZ7cilE=;
+        b=S9FBigvbvuXxx+EL4XMKg/OnfzrOuBHg/IzF/AkWu9jcF3Oj+xJJtmhyZnuMpS3plA
+         vQcCCaZC2FSXh/EMqmfzS+l7OlgIXDo+EWPjZ+g5061Dd+rzciibz6QCLve/EaYWV0fv
+         w+JFOnloA/Zqy21c4PSd4gDvCLNC+JX5QUTUx1+BWhkSnVuyIdRIkbjbFXE2p1j/K6Mo
+         n10RYrYg/DKCCx9yIgxWvzqqEiEtHKrlXyfRUHwG2jWHA12DJOsv9trvDgykmqEkqrZU
+         xA0Cfpjzlk7BZWLnsCWSQoiKcLZ33ofjuy0Dvucjnyk8NxsC3wiOsA1oyRdRotRkCYwV
+         uYjA==
+X-Forwarded-Encrypted: i=1; AJvYcCVc1sp0mCGQjjbj8JHOX9zpDrwAIdcnOD5DfShAxVeZ7IYbUxpHQeKXoyahQT2neIbRfhVLQq5LnZgx8mI7SQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzxCFot3jv7h8yX6y6U742tO4B0xGYD9J9Wuoiwcp0ZWAf5hE7/
+	Lnn08nHUJEb4iFSEEh8/m2GTOEb10MscCDaGfJSzjiwpAPOhtM+i+8o/23J0yeQfzXADsqRbWOu
+	tS4A=
+X-Gm-Gg: ASbGnct5q7+CGywxqtCBL23ZPCPi9RwfUP010Zl1yfCZ/pFKw3Z9mKNzIerLW436z1G
+	XmgnfKjd/W61bQqnRY0QZifArCKExf3y59Zbr+QbPMp02iFNyhLwM/mNPBpK49b6NeYhguxUwjJ
+	WDaKtVICbvjWhdeq5GH3d5+5w5YkLUGw62rn9IIEIzxwhxqqGHPaaCdqc1MewNnpUIRrvoKZZmW
+	9FeRq3a3jpDFplgbFYWxI8mbrZgEY1IscdHY0x7kZNRW25zTV7ZxqNJDqUPHi5Dsiyxndr3+PQv
+	GnND+h0CojTZYcJNtQtNMdzZxAhvFNTkQI8+Xbx2ENB8r+P+TFCe2ZIr2x8uXI/rS5EcoP9x3bq
+	1
+X-Google-Smtp-Source: AGHT+IE1ilLv52ZZyD9WBUHhNJ9l2IgXbRz7dH5tM86/DEi2+Rk4+3kgt8jv9FWJU9D75026Rs7cpQ==
+X-Received: by 2002:a17:907:8b96:b0:abb:ebf8:72d9 with SMTP id a640c23a62f3a-abbeddc91a6mr998784966b.15.1740168710821;
+        Fri, 21 Feb 2025 12:11:50 -0800 (PST)
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com. [209.85.218.42])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abb9553fbd0sm1080773966b.84.2025.02.21.12.11.49
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 21 Feb 2025 12:11:49 -0800 (PST)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-abbdf897503so594217766b.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 21 Feb 2025 12:11:49 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXRWpJ7pzBsuSGyUC6iMzzlZY5fnpq2kVXeNFbB9MEXaaaEwgcpe5thA80hsVfjlKZzNWPsFKgdqK9z1wOqxA==@vger.kernel.org
+X-Received: by 2002:a17:907:9989:b0:abb:daa7:f769 with SMTP id
+ a640c23a62f3a-abbed5b21b4mr870873866b.0.1740168709416; Fri, 21 Feb 2025
+ 12:11:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.400.131.1.6\))
-Subject: Re: C aggregate passing (Rust kernel policy)
-From: comex <comexk@gmail.com>
-In-Reply-To: <CAHk-=wjF0wjD4ko7MgrZ1wBZ9QOrQd_AnyhDDUJQ1L5+i-o22A@mail.gmail.com>
-Date: Fri, 21 Feb 2025 12:07:17 -0800
-Cc: David Laight <david.laight.linux@gmail.com>,
- Jan Engelhardt <ej@inai.de>,
- "H. Peter Anvin" <hpa@zytor.com>,
- Greg KH <gregkh@linuxfoundation.org>,
- Boqun Feng <boqun.feng@gmail.com>,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Christoph Hellwig <hch@infradead.org>,
- rust-for-linux <rust-for-linux@vger.kernel.org>,
- David Airlie <airlied@gmail.com>,
- linux-kernel@vger.kernel.org,
- ksummit@lists.linux.dev
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <ACFAF4FA-755C-4AD8-9826-168E4A7337B9@gmail.com>
-References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
- <Z7SwcnUzjZYfuJ4-@infradead.org>
- <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
- <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
+MIME-Version: 1.0
+References: <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
  <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
  <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com> <Z7VKW3eul-kGaIT2@Mac.home>
- <2025021954-flaccid-pucker-f7d9@gregkh>
- <2nn05osp-9538-11n6-5650-p87s31pnnqn0@vanv.qr>
- <2025022052-ferment-vice-a30b@gregkh>
- <9B01858A-7EBD-4570-AC51-3F66B2B1E868@zytor.com>
- <n05p910s-r5o3-0n36-5s44-qr769prp69r5@vanv.qr>
- <20250221183437.1e2b5b94@pumpkin>
- <CAHk-=wjF0wjD4ko7MgrZ1wBZ9QOrQd_AnyhDDUJQ1L5+i-o22A@mail.gmail.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-X-Mailer: Apple Mail (2.3826.400.131.1.6)
+ <2025021954-flaccid-pucker-f7d9@gregkh> <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
+ <2025022024-blooper-rippling-2667@gregkh> <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
+ <2025022042-jot-favored-e755@gregkh> <b9a5de64fe1ded2ad3111763f35af9901bd81cc4.camel@tugraz.at>
+ <caea3e79-78e6-4d98-9f3b-f8e7f6f00196@stanley.mountain> <61a7e7db786d9549cbe201b153647689cbe12d75.camel@tugraz.at>
+ <20250221124304.5dec31b2@gandalf.local.home> <CAHk-=wgg2A_iHNwf_JDjYJF=XHnKVGOjGp50FzVWniA2Z010bw@mail.gmail.com>
+ <6b3e4d3bdc9b6efd69068e5b22cfd05d370aed19.camel@tugraz.at>
+ <CAHk-=wg=pZvE9cHJUPKGCajRUCtDoW73xwY5UfJApCWms_FgYw@mail.gmail.com> <008cc0939c130ee24fbc71a0407ff82772076668.camel@tugraz.at>
+In-Reply-To: <008cc0939c130ee24fbc71a0407ff82772076668.camel@tugraz.at>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Fri, 21 Feb 2025 12:11:33 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wj5Rt_xhp_n4_gEyGG9LKFOiTrsvN0ueo3q5PyjJPU+AQ@mail.gmail.com>
+X-Gm-Features: AWEUYZnIN0fhlIm3BbR3TnvejgU7vmWR4MU8kuJXCz4EmowYIdocxYD5OpC83wk
+Message-ID: <CAHk-=wj5Rt_xhp_n4_gEyGG9LKFOiTrsvN0ueo3q5PyjJPU+AQ@mail.gmail.com>
+Subject: Re: Rust kernel policy
+To: Martin Uecker <uecker@tugraz.at>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Dan Carpenter <dan.carpenter@linaro.org>, 
+	Greg KH <gregkh@linuxfoundation.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
+	Christoph Hellwig <hch@infradead.org>, rust-for-linux <rust-for-linux@vger.kernel.org>, 
+	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
+On Fri, 21 Feb 2025 at 11:59, Martin Uecker <uecker@tugraz.at> wrote:
+>
+> The standardized version of __attribute__(()) would look like
+>
+> [[safety(ON)]];
+> ....
+>
+> [[safety(OFF)]];
+>
+> which is not bad (and what C++ seems to plan for profiles),
+> but this also does not nest and is a bit more limited to where
+> it can be used relative _Pragma.  I don't really see any advantage.
+>
+> GCC has
+>
+> #pragma GCC diagnostic push "-Wxyz"
+> #pragma GCC diagnostic pop
+>
+> for nesting. Also not great.
 
+I realize that the manual nesting model can be useful, but I do think
+the "default" should be to aim for always associating these kinds of
+things with actual code (or data), and use the normal block nesting
+rules.
 
-> On Feb 21, 2025, at 11:12=E2=80=AFAM, Linus Torvalds =
-<torvalds@linux-foundation.org> wrote:
->=20
-> On Fri, 21 Feb 2025 at 10:34, David Laight =
-<david.laight.linux@gmail.com> wrote:
->>=20
->> As Linus said, most modern ABI pass short structures in one or two =
-registers
->> (or stack slots).
->> But aggregate returns are always done by passing a hidden pointer =
-argument.
->>=20
->> It is annoying that double-sized integers (u64 on 32bit and u128 on =
-64bit)
->> are returned in a register pair - but similar sized structures have =
-to be
->> returned by value.
->=20
-> No, they really don't. At least not on x86 and arm64 with our ABI.
-> Two-register structures get returned in registers too.
+If you are writing safe code - or better yet, you are compiling
+everything in safe mode, and have to annotate the unsafe code - you
+want to annotate the particular *block* that is safe/unsafe. Not this
+kind of "safe on/safe off" model.
 
-This does happen on older ABIs though.
+At least with the __attribute__ model (or "[[..]]" if you prefer that
+syntax) it is very much designed for the proper nesting behavior.
+That's how attributes were designed.
 
-With default compiler flags, two-register structures get returned on the =
-stack on 32-bit x86, 32-bit ARM, 32-bit MIPS, both 32- and 64-bit POWER =
-(but not power64le), and 32-bit SPARC.  On most of those, =
-double-register-sized integers still get returned in registers.
+Afaik #pragma has _no_ such mode at all (but hey, most of it is
+compiler-specific random stuff, so maybe some of the #pragma uses are
+"this block only"), and I don't think _Pragma() is not any better in
+that respect (but again, since it has no real rules, again I guess it
+could be some random thing for different pragmas).
 
-I tested this with GCC and Clang on Compiler Explorer:
-https://godbolt.org/z/xe43Wdo5h
-
-Again, that=E2=80=99s with default compiler flags.  On 32-bit x86, Linux =
-passes -freg-struct-return which avoids this problem.  But I don=E2=80=99t=
- know whether or not there=E2=80=99s anything similar on other =
-architectures.  This could be easily answered by checking actual kernel =
-binaries, but I didn=E2=80=99t :)=
+              Linus
