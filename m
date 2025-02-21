@@ -1,113 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out162-62-57-49.mail.qq.com (out162-62-57-49.mail.qq.com [162.62.57.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4923D1FE470;
-	Fri, 21 Feb 2025 08:40:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486CE200B99;
+	Fri, 21 Feb 2025 08:54:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740127254; cv=none; b=B2ibBlaI/Wc8K2vfvl/7oIpQriuBtjB4kktN9xKjMgSNlLuV2WDl+G3pa20LBuXh+OyXRG+2R1aacPMetwWvkuZfeFREE++iqGi1la0vW/EDehaJgaPCUST6pvk+w2rt0GvLHBJsxuxiiSGDiWmgDIBEnmH3r0O7+gqePG38wqs=
+	t=1740128074; cv=none; b=hNS2Rl+58Vlj3wGBX/BH0cdqAIFIyFtSujhjqeM/zvuo3lPoIM8M4xrtz3fTcVAu/6ceEyAAaI/IfzAwWUKdjiW36kF5KGAIVeZrtcx151m4LVUVIiFbh0HBlgZMlQ0envsOmK4RoRuXLDPbGSlp4yzxpdbpbflcaDXIWQoDWW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740127254; c=relaxed/simple;
-	bh=ksiB2feXfFyAELIxHHK8fCEYWlhK7aI5fAfT5cd0t0c=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=rzxHblYedxX2mX07snz+Xe1uaqpJRuBi/TorV+eBuHoeFJVtaDWal07e9JBrqB2OeGJtVIKkozk0W+Tzrd1KmI0cCs6Sk4csmTVFXENe2TNLzAD1NAu2vGpOHYwBQd0jZgGA/zENQbyfIXeIRFGCe3a3NVb0Vq8cmZrVWTJ3s3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FYVfyiFm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740128074; c=relaxed/simple;
+	bh=sOpoaaYi70tIuun+k4bCpzt72Cgn3AbfOmLUzsM8dlo=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=A2kD1/jw/0haU+aBjoFCRZvSjoF76UW62GKVwtIINX87X7nH+p888CcasQ7c4BdLNumnKHRPE49pLyX/Nph5qMKpAL7Sp6m+LeZ8LOkElcyk0Y0d3La6BERybknDUvebOsPy5lZMKn4H1bfJ/bc99/aE66cmXoeCcQCv4mV/Tso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=E8+H5pAu; arc=none smtp.client-ip=162.62.57.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FYVfyiFm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99FB6C4CED6;
-	Fri, 21 Feb 2025 08:40:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740127253;
-	bh=ksiB2feXfFyAELIxHHK8fCEYWlhK7aI5fAfT5cd0t0c=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=FYVfyiFmh5QuGh0Vp1hYQumPGGAjAaTaJE7TQ4wiOyLLDp1svjzeIXzKH0oizVoRZ
-	 pvwF1Cr1jUUZ3hH+1dHhqIkJ8nQM0hq2y/R+5IA89UXH2YeMGMVTUkjMbxLTxU6fw9
-	 OXyt10P6naj5fLTWprcUT0yULsCWNDwkeQymG5y8lb+/I9St/uT+a7p7SvlUhFAbIy
-	 9aZVTRqUfYSF5IHV8xUEP2RK725NVhaCam69EmkgEtbMY5dtZdBLoRNxywa9D+u5i8
-	 kiw54MSb1Bc69JwJK50E/7O+MWDNoHA8rDdUvI9jFMS2L30IZ56X2Qu4Lzi0uVj/47
-	 R6jk3WqmZlBPA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Frederic Weisbecker" <frederic@kernel.org>
-Cc: "Anna-Maria Behnsen" <anna-maria@linutronix.de>,  "Thomas Gleixner"
- <tglx@linutronix.de>,  "Miguel Ojeda" <ojeda@kernel.org>,  "Danilo
- Krummrich" <dakr@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,
-  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,
-  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,  "Benno
- Lossin"
- <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor
- Gross" <tmgross@umich.edu>,  "Lyude Paul" <lyude@redhat.com>,  "Guangbo
- Cui" <2407018371@qq.com>,  "Dirk Behme" <dirk.behme@gmail.com>,  "Daniel
- Almeida" <daniel.almeida@collabora.com>,  "Tamir Duberstein"
- <tamird@gmail.com>,  <rust-for-linux@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v8 00/14] hrtimer Rust API
-In-Reply-To: <Z7eYp_vZo5yDVOdI@pavilion.home> (Frederic Weisbecker's message
-	of "Thu, 20 Feb 2025 22:03:35 +0100")
-References: <aIJ0ymzdUceCN05hwJpth4erH5u2SHYzYl52wGeT3uiO9bdk92ZkEmEEq9a9NXsInJYSz9uziwq-1fvdsXoeDA==@protonmail.internalid>
-	<20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org>
-	<877c5mci3p.fsf@kernel.org>
-	<5kF-NYTBZbEqnnQud5LKnRXO0lfM0i6I2PoeFrpKDhCYwUuk_bG2Li1T1Nuv82r3VFD8adTcdx7yenXSIfTwmw==@protonmail.internalid>
-	<Z7eYp_vZo5yDVOdI@pavilion.home>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Fri, 21 Feb 2025 09:40:41 +0100
-Message-ID: <87frk7hera.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="E8+H5pAu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1740128058;
+	bh=sOpoaaYi70tIuun+k4bCpzt72Cgn3AbfOmLUzsM8dlo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=E8+H5pAuiy2qfrB4e4BISZp/rtcEF7Q7lg2V5kHxwBuKek0x0J5+uCZopzUA82Pme
+	 bS26LK0wOly3w0JbeAYENaZSGsoIM/48y+BckS/lAbQ/CwfFzJpnkpjN83TK0j0uX4
+	 ykWudvPj72Zf/YBDQAQdbdfUqNb3EKIrz/bxDhuw=
+Received: from localhost.localdomain ([112.2.252.119])
+	by newxmesmtplogicsvrszb16-1.qq.com (NewEsmtp) with SMTP
+	id 7DB05E70; Fri, 21 Feb 2025 16:31:27 +0800
+X-QQ-mid: xmsmtpt1740126687tmzom3y51
+Message-ID: <tencent_9877F4C8240A0DDA7399A0F8E2EEE71E5D0A@qq.com>
+X-QQ-XMAILINFO: MqswyhUqVe0Clb7vetySGil+QBrDiZ9UDLfyhWTRdv38s6p/9DZL03cObi+ps0
+	 TDR4+jSOSddH6EeX/N6vw14iDreotcGMJncR7grnxz/hhvQOKO6DGoisUr99ENwKtkMq6bVEwO+9
+	 0uY/E7wKnrK32VyqrtrPxok7fYlBE/+BxKTGssd9dAi3uAIWJcctxirSauwGkB3rdbCGu0gNMQiv
+	 7Na68RqwSaq6hsa7jrt3KroV8gl5Q6CX904QZ6axfUOQ5YJ0Hg2UcB153paY0LLRkk75Cc4EEQJ/
+	 Qx5Ro0hM9z8Fj76T8v5mf1GSYBRxAfTDat5+PRjstW/fljah10yRD/Lb4phn1CfnnggFKlRs7lzg
+	 Nf471kOdeMeUgSTFc/6X4/+Hun9lWe76DaBX4XL1UMqT+z6MHQyCowz2WZSv6IZ63FITCVZtgqRG
+	 wsu7JtBfN4/PxcEwPk2xlSzMqZ90sHgEFbaWA6lJ2Hd8/CqB6rVv7MgpoCwG3uewLaRmkINK6Oj0
+	 4Ytr4N9ss3UKUB4kABWjtsvYGc0mdME+rbqJcOvOfKXsgaTI02zWImp5f6r/hy4XzyjBHYXgZtSi
+	 31HhRDDE+4rRDpYhEMO45eQ7tj/bkZPtOIhtWcOdrc7uV0kbJIgQLyJ21/+hME7fwEvG7YAOXa9V
+	 bxjyioJGGeum0EURXYldvF6t867LkxzMXU1LD6j620wJOpgsj14vQb6a7ysTWlNJukFSq+YJuOni
+	 nrLo8Hj46sBXMsQLzkkVF3eYE/T/Qbee1T44fsoe/zPdHp2w0LYBuQM+eAgKJmGimUdGoBEYlb07
+	 cDnmadBraNUxaS/wmmb2Kkd1Y2HUGn6VwJcMRqqZoRJzSaiwbL2hig0j4ooj4HALPbl5YyOxHCUv
+	 /RWgWJyU3JRbMdqc0Vg6q6LKRqs2VbNDgyTagdwCFfY1Gp68VqmJZaVcieaUQKHk7rwNWrll/tmN
+	 l/yKSDWoA16sbnGqiRglgBnS067o4gG6AT7YKM2DOmfff1sibmYw==
+X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
+From: HUANG Zhaobin <huang_zhaobin@foxmail.com>
+To: ej@inai.de
+Cc: airlied@gmail.com,
+	boqun.feng@gmail.com,
+	gregkh@linuxfoundation.org,
+	hch@infradead.org,
+	hpa@zytor.com,
+	ksummit@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	miguel.ojeda.sandonis@gmail.com,
+	rust-for-linux@vger.kernel.org,
+	torvalds@linux-foundation.org
+Subject: Re: C aggregate passing (Rust kernel policy)
+Date: Fri, 21 Feb 2025 16:31:27 +0800
+X-OQ-MSGID: <20250221083127.54494-1-huang_zhaobin@foxmail.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <n05p910s-r5o3-0n36-5s44-qr769prp69r5@vanv.qr>
+References: <n05p910s-r5o3-0n36-5s44-qr769prp69r5@vanv.qr>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-"Frederic Weisbecker" <frederic@kernel.org> writes:
-
-> Le Wed, Feb 19, 2025 at 12:02:50PM +0100, Andreas Hindborg a =C3=A9crit :
->> "Andreas Hindborg" <a.hindborg@kernel.org> writes:
->>
->> > This series adds support for using the `hrtimer` subsystem from Rust c=
-ode.
->> >
->> > The series adds support for timer mode and clock source configuration =
-during
->> > timer initialization. Examples and functionality to execute closures a=
-t timer
->> > expiration has been removed, as these depend on either atomics [3] or
->> > `SpinLockIrq` [4], which are still being worked on.
->> >
->> > This series is a dependency for unmerged features of the Rust null blo=
-ck driver
->> > [1], and for rkvms [2].
->> >
->>
->> @ timer subsystem maintainers: did you discuss how you want to set up
->> maintenance for this yet? As mentioned, I'm happy stepping up to
->> maintain this, but if you want to handle it with existing resources that
->> is perfectly fine as well.
+On Thu, 20 Feb 2025 16:17:07 +0100 (CET), Jan Engelhardt <ej@inai.de> wrote:
 >
-> You're the best candidate to maintain this code since you wrote it :-)
->
-> Also I personally have near zero skills in Rust as of today so all I can =
-do
-> is to vaguely keep an eye on the binding's interface and keep in touch
-> with the changes.
->
-> So I suggest you to add a new entry with you as a maintainer (I suggested
-> something similar to Fujita for some other timer related things) but plea=
-se
-> keep us Cc'ed for future changes.
+> Returning aggregates in C++ is often implemented with a secret extra
+> pointer argument passed to the function. The C backend does not
+> perform that kind of transformation automatically. I surmise ABI reasons.
 
-Alright, lets do that.
+No, in both C and C++, fff accepts a secret extra pointer argument.
 
-Do you want to pick future changes to this directly form list or would
-you prefer that I send you a PR with changes?
+https://godbolt.org/z/13K9aEffe
 
-We are probably going to have a new iteration anyway, as discussion
-picked up again.
+For gcc, the difference is that `sb` is allocated then copied back in C,
+while in C++ NRVO is applied so there is no extra allocation and copy.
 
+Clang does NRVO for both C and C++ in this case, thus generating exactly
+the same codes for them.
 
-Best regards,
-Andreas Hindborg
-
-
+I have no idea why gcc doesn't do the same.
 
