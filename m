@@ -1,43 +1,43 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B80204F6F
-	for <rust-for-linux@vger.kernel.org>; Fri, 21 Feb 2025 10:19:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC0761DFDB9;
+	Fri, 21 Feb 2025 10:22:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740133187; cv=none; b=BUi0UHPzty+c0u0fEjANVL9cRuN+kEFwQiPYLAskj5uO70KssH8F3wvnuVktrffb/yPNVnfrbI0rga7iVfrr/fyiBA2dA4n9cstYz2coeDKzRGp+zUz9Sk4J4qdP4Rb/rqhxQjE0jIB5j9wzEKVBvL8lUrZCzWaUytIZ3IZ6nYw=
+	t=1740133354; cv=none; b=ky3PH/fuDn91nNAq9hLPAf+JX265ZKXUUFxEdv2uS7RQ1N8IvpZeugu1ft0/Qf5EovErbHjM2ZfeHMc34U3EfQDii2kJunaWZggPsMMO1MzER35M+kFv0g8Me4mYUSWgNC/Xk6ItR6gJHCpOCJTg+fqVIJHpkiWwDa1JEDEmO8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740133187; c=relaxed/simple;
-	bh=g0Sk/QrxwpF69dyrv1JuM8BhT+7G1NCMXiAoHgNZkOY=;
+	s=arc-20240116; t=1740133354; c=relaxed/simple;
+	bh=L1Hc1NyK8oBmOxUpaLFZxP68BKn50ePdzdoBKcdg/8c=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oxNOtE4SRPpblus3imjvHlPfrNgVp43s9cs4WSgtogHNAi6l3rrYia6m/q1zRSJWTmj/6yTA4iHiken2bHJyfuMsKJMZ5fjOFU2A/k3GaJdIvCQ8oVcRnn5x+ItNLgQIYvk1CJrjtAVBXjyLR87NGQVLOWyF2cYJBXEq+2i2oVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=nwtsvjlw; arc=none smtp.client-ip=185.70.40.131
+	 MIME-Version:Content-Type; b=EGnhR5C8ZMjbcg4RFsHvZLtUgNLDl6Ft1WEZh/5q9m3DMJnBzhybUxgw4KUEYUw8NSc6WeTekT5xb2hPEAOjtIDWB9UqRntzAH19MHw/O2/cDShn/1CSSvkcw26uWzqmFo+R4ELoF1t08bUAidc6ptVepJc1NQ+VI09HgG58qYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=j9K4D5Td; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="nwtsvjlw"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="j9K4D5Td"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1740133178; x=1740392378;
-	bh=O0Dk15RNp3yHIefmio/QAeO68s9O9AgRtxMCfnwCnso=;
+	s=protonmail; t=1740133349; x=1740392549;
+	bh=6u1YPUHmQ0Q6bi5JBJ45QYNmpBvfB0XVEZTH15dlImk=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=nwtsvjlwq8p/oGmrvjl36/A0o7U4Up2P6R98vho/z1vOVod7I+fR9hgFPwxq91nVR
-	 npfIB1n5mk/RlmSzG0P1c/H4Q0ka81F1erTfOIROovE0v1tZyk9nycRbmIhTL437q7
-	 YZwV5ppbLflvmXP8FitRiZGqXAzsfc7QeKISAjtEKEEcEXr43kVxWe/g5divL15ENI
-	 hV/J9eX8zLHY4vZmDmF1VQ6zbJPHFuTbXRzKBhiBacSMx5pJfTMMGrRVMcqidUqAmq
-	 3ywsCxjwN2D7J07wivcg1KNnIEW9F2aFr/D6q4Ef5nCU5yyOTXuStd5i5CaRs6lt83
-	 M++titB5Dvu9A==
-Date: Fri, 21 Feb 2025 10:19:34 +0000
+	b=j9K4D5TdNO7Eqh9Mt6BeEpoFNTtUlVb+vcApJc3OiNV//rTpMofQ2yKVHdDH0Ywds
+	 0egDonrnVhDuvQCqSUKaRsoaVG+tmzHXvHZVQ+hVoD0p57EiHNKwB4/wDMXD+9oNMu
+	 GNT08trrVNNVKJT0dB/H+O+WyiGI8y7AhTh/Cmz1E6xlR7tUkneVasR0GKCKrZaZ2f
+	 mvHjlrAHe0gX18kr60Q7PTojQuOkMo58LO4FcZEcXm1/29SZkmkSYcZgh2fvvrfgmn
+	 r+UgwC5/k/0Wcqy0eZ4bmM5Nmh0pK0Ty27WtpYsUP00HlEd91bXl4Ka7ov9Nx9sSVZ
+	 W0/bUGpzBhDXw==
+Date: Fri, 21 Feb 2025 10:22:26 +0000
 To: Andreas Hindborg <a.hindborg@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, "Timothy G." <c6qchwbke@relay.firefox.com>
-Subject: Re: [PATCH v8 12/14] rust: hrtimer: add `HrTimerMode`
-Message-ID: <59728663-3baf-449a-b0af-931e9490db19@proton.me>
-In-Reply-To: <87mseffyh7.fsf@kernel.org>
-References: <20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org> <20250218-hrtimer-v3-v6-12-rc2-v8-12-48dedb015eb3@kernel.org> <ysjzL6zVfMAm7OLlJMCtBkEnfdFAS2VeO4PYUFzUxcRZvKNxuRlLWPA29gJQOWa8QaH-S5K1WElhtuwWMBF4EA==@protonmail.internalid> <a87ef54e-9a09-4cf6-bfe8-4bb98850cdda@proton.me> <87mseffyh7.fsf@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v8 13/14] rust: hrtimer: add clocksource selection through `ClockSource`
+Message-ID: <ec4977d7-7df3-44f4-80c7-3ecdfc6266d1@proton.me>
+In-Reply-To: <87h64nfxxk.fsf@kernel.org>
+References: <20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org> <20250218-hrtimer-v3-v6-12-rc2-v8-13-48dedb015eb3@kernel.org> <_PhcA_mgs6P2AIFlF8RGVU5_-q4wrrdHR0xxDRGJUKPGsIGK56Uae6RS-dAqE5lRQZ61SR35ysRU7Yj_gqmVGg==@protonmail.internalid> <f2066461-8a10-4d5e-bce9-989f9bbade2c@proton.me> <87h64nfxxk.fsf@kernel.org>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: fcfc052e860013fcab2644172ebcefdcb935d6d8
+X-Pm-Message-ID: 119ec2bb485c30bef4631c99eb2b86ec1918c27c
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,131 +47,160 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 21.02.25 10:17, Andreas Hindborg wrote:
+On 21.02.25 10:29, Andreas Hindborg wrote:
 > "Benno Lossin" <benno.lossin@proton.me> writes:
 >=20
 >> On 18.02.25 14:27, Andreas Hindborg wrote:
->>> +/// Operational mode of [`HrTimer`].
->>> +#[derive(Clone, Copy)]
->>> +pub enum HrTimerMode {
->>> +    /// Timer expires at the given expiration time.
->>> +    Absolute,
->>> +    /// Timer expires after the given expiration time interpreted as a=
- duration from now.
->>> +    Relative,
->>> +    /// Timer does not move between CPU cores.
->>> +    Pinned,
->>> +    /// Timer handler is executed in soft irq context.
->>> +    Soft,
->>> +    /// Timer handler is executed in hard irq context.
->>> +    Hard,
->>> +    /// Timer expires at the given expiration time.
->>> +    /// Timer does not move between CPU cores.
->>> +    AbsolutePinned,
->>> +    /// Timer expires after the given expiration time interpreted as a=
- duration from now.
->>> +    /// Timer does not move between CPU cores.
->>> +    RelativePinned,
->>> +    /// Timer expires at the given expiration time.
->>> +    /// Timer handler is executed in soft irq context.
->>> +    AbsoluteSoft,
->>> +    /// Timer expires after the given expiration time interpreted as a=
- duration from now.
->>> +    /// Timer handler is executed in soft irq context.
->>> +    RelativeSoft,
->>> +    /// Timer expires at the given expiration time.
->>> +    /// Timer does not move between CPU cores.
->>> +    /// Timer handler is executed in soft irq context.
->>> +    AbsolutePinnedSoft,
->>> +    /// Timer expires after the given expiration time interpreted as a=
- duration from now.
->>> +    /// Timer does not move between CPU cores.
->>> +    /// Timer handler is executed in soft irq context.
->>> +    RelativePinnedSoft,
->>> +    /// Timer expires at the given expiration time.
->>> +    /// Timer handler is executed in hard irq context.
->>> +    AbsoluteHard,
->>> +    /// Timer expires after the given expiration time interpreted as a=
- duration from now.
->>> +    /// Timer handler is executed in hard irq context.
->>> +    RelativeHard,
->>> +    /// Timer expires at the given expiration time.
->>> +    /// Timer does not move between CPU cores.
->>> +    /// Timer handler is executed in hard irq context.
->>> +    AbsolutePinnedHard,
->>> +    /// Timer expires after the given expiration time interpreted as a=
- duration from now.
->>> +    /// Timer does not move between CPU cores.
->>> +    /// Timer handler is executed in hard irq context.
->>> +    RelativePinnedHard,
->>> +}
+>>> Allow selecting a clock source for timers by passing a `ClockSource`
+>>> variant to `HrTimer::new`.
+>>>
+>>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>>> ---
+>>>  rust/kernel/time/hrtimer.rs | 52 +++++++++++++++++++++++++++++++++++++=
+++++++--
+>>>  1 file changed, 50 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
+>>> index db49061f830c3..2b46d66eaa313 100644
+>>> --- a/rust/kernel/time/hrtimer.rs
+>>> +++ b/rust/kernel/time/hrtimer.rs
+>>> @@ -73,7 +73,7 @@ unsafe impl<T> Sync for HrTimer<T> {}
+>>>
+>>>  impl<T> HrTimer<T> {
+>>>      /// Return an initializer for a new timer instance.
+>>> -    pub fn new(mode: HrTimerMode) -> impl PinInit<Self>
+>>> +    pub fn new(mode: HrTimerMode, clock: ClockSource) -> impl PinInit<=
+Self>
+>>>      where
+>>>          T: HrTimerCallback,
+>>>      {
+>>> @@ -87,7 +87,7 @@ pub fn new(mode: HrTimerMode) -> impl PinInit<Self>
+>>>                      bindings::hrtimer_setup(
+>>>                          place,
+>>>                          Some(T::CallbackTarget::run),
+>>> -                        bindings::CLOCK_MONOTONIC as i32,
+>>> +                        clock.into(),
+>>>                          mode.into(),
+>>>                      );
+>>>                  }
+>>> @@ -448,6 +448,54 @@ fn from(value: HrTimerMode) -> Self {
+>>>      }
+>>>  }
+>>>
+>>> +/// The clock source to use for a [`HrTimer`].
+>>> +pub enum ClockSource {
+>>> +    /// A settable system-wide clock that measures real (i.e., wall-cl=
+ock) time.
 >>
->> At some point we probably want to move this to bitfields, or do you
->> think it's better to keep it like this?
+>> Missing newline here to separate the short one-line description and the
+>> rest of the docs. (also below)
 >=20
-> Yes, eventually the would transition. The main difficulty is that not
-> all flag combinations are legal, and the zero value is also a flag.
-> There was some promising work being shared on Zulip for this [1], but I
-> don't think it is completed yet. Added Timothy to CC.
+> Right. It is copy pasta from the C code, but I guess we can add some newl=
+ines.
 >=20
-> [1] https://rust-for-linux.zulipchat.com/#narrow/channel/291565-Help/topi=
-c/Best.20way.20to.20handle.20enum.2Fflags.20situation
-
-Ah yeah I remember that. And also the complication about certain
-combinations not being allowed.
-
->>> +
->>> +impl From<HrTimerMode> for bindings::hrtimer_mode {
->>> +    fn from(value: HrTimerMode) -> Self {
->>> +        use bindings::*;
->>> +        match value {
->>> +            HrTimerMode::Absolute =3D> hrtimer_mode_HRTIMER_MODE_ABS,
->>> +            HrTimerMode::Relative =3D> hrtimer_mode_HRTIMER_MODE_REL,
->>> +            HrTimerMode::Pinned =3D> hrtimer_mode_HRTIMER_MODE_PINNED,
->>> +            HrTimerMode::Soft =3D> hrtimer_mode_HRTIMER_MODE_SOFT,
->>> +            HrTimerMode::Hard =3D> hrtimer_mode_HRTIMER_MODE_HARD,
->>> +            HrTimerMode::AbsolutePinned =3D> hrtimer_mode_HRTIMER_MODE=
-_ABS_PINNED,
->>> +            HrTimerMode::RelativePinned =3D> hrtimer_mode_HRTIMER_MODE=
-_REL_PINNED,
->>> +            HrTimerMode::AbsoluteSoft =3D> hrtimer_mode_HRTIMER_MODE_A=
-BS_SOFT,
->>> +            HrTimerMode::RelativeSoft =3D> hrtimer_mode_HRTIMER_MODE_R=
-EL_SOFT,
->>> +            HrTimerMode::AbsolutePinnedSoft =3D> hrtimer_mode_HRTIMER_=
-MODE_ABS_PINNED_SOFT,
->>> +            HrTimerMode::RelativePinnedSoft =3D> hrtimer_mode_HRTIMER_=
-MODE_REL_PINNED_SOFT,
->>> +            HrTimerMode::AbsoluteHard =3D> hrtimer_mode_HRTIMER_MODE_A=
-BS_HARD,
->>> +            HrTimerMode::RelativeHard =3D> hrtimer_mode_HRTIMER_MODE_R=
-EL_HARD,
->>> +            HrTimerMode::AbsolutePinnedHard =3D> hrtimer_mode_HRTIMER_=
-MODE_ABS_PINNED_HARD,
->>> +            HrTimerMode::RelativePinnedHard =3D> hrtimer_mode_HRTIMER_=
-MODE_REL_PINNED_HARD,
->>> +        }
->>> +    }
->>> +}
->>> +
->>> +impl From<HrTimerMode> for u64 {
->>> +    fn from(value: HrTimerMode) -> Self {
->>> +        Into::<bindings::hrtimer_mode>::into(value) as u64
->>> +    }
->>> +}
 >>
->> Hmm do drivers really need these impls? If not, then you could also just
->> have a private function that does the conversion and use it only in the
->> abstraction layer.
+>>> +    /// Setting this clock requires appropriate privileges. This clock=
+ is
+>>> +    /// affected by discontinuous jumps in the system time (e.g., if t=
+he system
+>>> +    /// administrator manually changes the clock), and by frequency ad=
+justments
+>>> +    /// performed by NTP and similar applications via adjtime(3), adjt=
+imex(2),
+>>> +    /// clock_adjtime(2), and ntp_adjtime(3). This clock normally coun=
+ts the
+>>> +    /// number of seconds since 1970-01-01 00:00:00 Coordinated Univer=
+sal Time
+>>> +    /// (UTC) except that it ignores leap seconds; near a leap second =
+it is
+>>> +    /// typically adjusted by NTP to stay roughly in sync with UTC.
+>>
+>> Thanks for the extensive descriptions of the various clock sources!
 >=20
-> Similar to the other impls you commented on, I can move them private. I
-> would prefer using `From` rather than some other function.
+> Just FYI, I pulled these from other documentation sources, I didn't
+> author all of this.
 
-What's the reason for you preferring `From`? I don't think it's
-important to forbid access from the drivers, but if it's unnecessary,
-why would we give them access in the first place?
+I still find it useful for you to copy these, I've seen a patch in the
+past where the C documentation gave more information than the Rust
+abstraction.
+
+>>> +    RealTime,
+>>> +    /// A nonsettable system-wide clock that represents monotonic time=
+ since=E2=80=94as
+>>> +    /// described by POSIX=E2=80=94"some unspecified point in the past=
+" On Linux, that
+>>> +    /// point corresponds to the number of seconds that the system has=
+ been
+>>> +    /// running since it was booted.
+>>> +    ///
+>>> +    /// The CLOCK_MONOTONIC clock is not affected by discontinuous jum=
+ps in the
+>>> +    /// system time (e.g., if the system administrator manually change=
+s the
+>>> +    /// clock), but is affected by frequency adjustments. This clock d=
+oes not
+>>> +    /// count time that the system is suspended.
+>>> +    Monotonic,
+>>> +    /// A nonsettable system-wide clock that is identical to CLOCK_MON=
+OTONIC,
+>>> +    /// except that it also includes any time that the system is suspe=
+nded. This
+>>> +    /// allows applications to get a suspend-aware monotonic clock wit=
+hout
+>>> +    /// having to deal with the complications of CLOCK_REALTIME, which=
+ may have
+>>> +    /// discontinuities if the time is changed using settimeofday(2) o=
+r similar.
+>>> +    BootTime,
+>>> +    /// A nonsettable system-wide clock derived from wall-clock time b=
+ut
+>>> +    /// counting leap seconds. This clock does not experience disconti=
+nuities or
+>>> +    /// frequency adjustments caused by inserting leap seconds as CLOC=
+K_REALTIME
+>>> +    /// does.
+>>> +    ///
+>>> +    /// The acronym TAI refers to International Atomic Time.
+>>
+>> In that case, I would expect the acronym to be `IAT`.
+>=20
+> Yea, this one is funny. The abbreviation apparently is French [1] and
+> TAI is the correct and agreed upon (beyond Linux) abbreviation to use.
+
+What a world we have... :)
 
 ---
 Cheers,
 Benno
+
+> [1] https://en.wikipedia.org/wiki/International_Atomic_Time
+>=20
+>>
+>>> +    TAI,
+>>> +}
+>>> +
+>>> +impl From<ClockSource> for bindings::clockid_t {
+>>> +    fn from(value: ClockSource) -> Self {
+>>> +        match value {
+>>> +            ClockSource::RealTime =3D> bindings::CLOCK_REALTIME as i32=
+,
+>>> +            ClockSource::Monotonic =3D> bindings::CLOCK_MONOTONIC as i=
+32,
+>>> +            ClockSource::BootTime =3D> bindings::CLOCK_BOOTTIME as i32=
+,
+>>> +            ClockSource::TAI =3D> bindings::CLOCK_TAI as i32,
+>>> +        }
+>>> +    }
+>>> +}
+>>
+>> Same question here as for the `HrTimerMode`, do drivers need this impl?
+>> If not, then I think a private conversion function is a better fit.
+>=20
+> I will hide it.
+>=20
+>=20
+> Best regards,
+> Andreas Hindborg
+>=20
+>=20
 
