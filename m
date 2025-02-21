@@ -1,184 +1,114 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C43D20A5D2;
-	Fri, 21 Feb 2025 12:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600911E9B0D;
+	Fri, 21 Feb 2025 12:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740140262; cv=none; b=p6yn9LjFeiau07tbS91f9kcymgsoSJlykni4o60TywxKQc4lKLxa79I9RInNZA46cwjwwmJ6UlzMsWZTU4ytIcbNeVYkKNfw+M6KaDIZaXcjRCXv0+OGPCW+qocKIICa3x0toeR5lRTZN/Sb0RGgRgkWIhVr/4VxLQR3HQaQ30Q=
+	t=1740141104; cv=none; b=UBlZ43rYBBdILq5rz46UDfXZQM35TAcm4mVrIFlozuQLxVw2ilJ7M3oubYDyWPAoZM3q7Lu0oR/kCvr7wnWVJ6Qz5j9iSghIsyfxepIU+553X5mjpgT0zRODlseZXhxHJlQLJqmUEoix+BFhhJO5LR5WC5Y8UKJlDHNYmoznP94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740140262; c=relaxed/simple;
-	bh=2wtTNZErjn1SqfWUbPF2f49AL1ImwjpkG6hFzaWY16o=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Z5jaZb3nlFoVP+E6uzJgYp1/WbLEMHrRnT3vQF0bNLOrKMWiXy9tijQqSZI/vmB1RgxHdrPdqrTezPI9Pj5cRDaq6FXyoHHLAosEKsOGWHVK2zDPPPELGFhJuIZfpFusI9iLG4yeTvEt/bUTmfE/J6hwjvdbWjzB33TiSTbslpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hiZbOIHB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740141104; c=relaxed/simple;
+	bh=q8WccUvMCEjEq8D445PcgFQTfSEcnZeGJELN1WQnJpM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bSSxQgY1k6/2U46xavAXowEdzda0liY9GCoIcgmRnloi6fFu//MgDtShHJJYLcZROQiCULWFPZqh0eZLwriUSUGkU04w5tyC5SSfLURYqTp28yn+fuEPtzOpVnC+m3OLDbQX8RxcyUHl7JTGH5j86lSGnfFbuya0NPoU7JwQWVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TyleH0/G; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hiZbOIHB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74D51C4CED6;
-	Fri, 21 Feb 2025 12:17:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TyleH0/G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6271BC4CED6;
+	Fri, 21 Feb 2025 12:31:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740140261;
-	bh=2wtTNZErjn1SqfWUbPF2f49AL1ImwjpkG6hFzaWY16o=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=hiZbOIHBg+3gKpFdnS9fpc/4Gt1itvBGqGC2BBqIJHnX/JyspISk3/qrnK6ddxakz
-	 q3BtBxLNzjtQIzeH581rkU3nVg8Ocne1thbGqIaT/EzQTFwSUWjswY3N0Iwn6EixB0
-	 lSaq0z0A2N0grUvIqldxxV54OtSyJkP20jnhGS9/Qss+jmC6Gee5TY3Zr9DMQQKBRe
-	 7yEVxtmJfcuBJ68sZOnJ8URl5ZI4wWPfFBSxdZY6FC1u6sQDH2yZbMrRF6CcYIKJSf
-	 rfoIV/S8cdID30bdS3ulGpONsi34d+h21ft3HUZVTgqTQuJdxaPpvXnZECb39/xItO
-	 BPEh0RWLUrZgQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Frederic Weisbecker" <frederic@kernel.org>
-Cc: "Benno Lossin" <benno.lossin@proton.me>,  "Miguel Ojeda"
- <ojeda@kernel.org>,  "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
-  "Thomas Gleixner" <tglx@linutronix.de>,  "Danilo Krummrich"
- <dakr@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
- <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
- =?utf-8?Q?=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor
- Gross" <tmgross@umich.edu>,  "Lyude Paul" <lyude@redhat.com>,  "Guangbo
- Cui" <2407018371@qq.com>,  "Dirk Behme" <dirk.behme@gmail.com>,  "Daniel
- Almeida" <daniel.almeida@collabora.com>,  "Tamir Duberstein"
- <tamird@gmail.com>,  <rust-for-linux@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v8 02/14] rust: hrtimer: introduce hrtimer support
-In-Reply-To: <Z7hjrzyVNd5BIcEy@pavilion.home> (Frederic Weisbecker's message
-	of "Fri, 21 Feb 2025 12:29:51 +0100")
-References: <20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org>
-	<20250218-hrtimer-v3-v6-12-rc2-v8-2-48dedb015eb3@kernel.org>
-	<df748ac2-3551-460f-a16f-85d805671a3f@proton.me>
-	<knRTiXibND0ILf7cUQ5sOLy-c9oVveVdLy2b4iN1kIh0_XPwARxjXset0ads8-7zJAaG2YnLHx3WK6vY-nXyEw==@protonmail.internalid>
-	<Z7hjrzyVNd5BIcEy@pavilion.home>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Fri, 21 Feb 2025 12:44:53 +0100
-Message-ID: <87tt8ned3e.fsf@kernel.org>
+	s=k20201202; t=1740141103;
+	bh=q8WccUvMCEjEq8D445PcgFQTfSEcnZeGJELN1WQnJpM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TyleH0/GM5J84z9onnQrMroU9wvXKOptL1fakQv4PcmqK7ukY1tfLzxO0Y2HrOREJ
+	 LmwH48qpkhDBzGHgcKREumi0uVK39mfYYiUTbfeqhX7+FiI9Hdi9rcaUldEeITPuDt
+	 GzH0OIGc3OQxBQTzYc7yhI6cIHL5XfseEm2jn9ihiyup/43v5DeMtg3+5t3kMVUv5X
+	 msW72GqQ4gywSELxcAx6InTB5uoHXAPsolLgGSmp+tyYATQ7gWAe1MnEcOvlwRZyA1
+	 +ai0Pu0D9sf6ZLcKZQgXGD64UT2LIeHdX993FSvAzxpRAe4IBwarUfBw1fUvlxd6VZ
+	 bBZztWPKcn0fw==
+Date: Fri, 21 Feb 2025 13:31:38 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Dave Airlie <airlied@gmail.com>, Timur Tabi <ttabi@nvidia.com>,
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
+	Ben Skeggs <bskeggs@nvidia.com>,
+	Nouveau <nouveau-bounces@lists.freedesktop.org>
+Subject: Re: [PATCH RFC 1/3] rust: add useful ops for u64
+Message-ID: <Z7hyKm1jcRtdrmh9@pollux>
+References: <D7VLMD31YB0V.OKHDSVUPAZTE@nvidia.com>
+ <1b8921d46f7d70c7467ea0940d60220f05cccc5d.camel@nvidia.com>
+ <D7W119MHCCWH.IS600FTIOV8O@nvidia.com>
+ <e6322f90-08bd-4e86-8dad-2ddbd7e5cece@nvidia.com>
+ <D7WFP99SMV3H.26AJWK17S0UPX@nvidia.com>
+ <fd920faf-a707-4c6d-8c0b-3d59c010da1d@nvidia.com>
+ <CAPM=9txmQWO+SHnZhr8zXHCZ=S8CNY=PryRVkWWuHyor-ajU6A@mail.gmail.com>
+ <1597EDB7-D91B-4660-ADDC-D2252B26CB22@collabora.com>
+ <41cf1c79-f61c-47e7-a0ed-afb8e82d50e6@nvidia.com>
+ <D7Y3CO9OMZBQ.1QGFV73NZBBIF@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <D7Y3CO9OMZBQ.1QGFV73NZBBIF@nvidia.com>
 
-"Frederic Weisbecker" <frederic@kernel.org> writes:
+On Fri, Feb 21, 2025 at 08:35:54PM +0900, Alexandre Courbot wrote:
+> On Thu Feb 20, 2025 at 9:14 AM JST, John Hubbard wrote:
+> > On 2/19/25 3:13 PM, Daniel Almeida wrote:
+> >>> On 19 Feb 2025, at 17:23, Dave Airlie <airlied@gmail.com> wrote:
+> >>> On Thu, 20 Feb 2025 at 06:22, John Hubbard <jhubbard@nvidia.com> wrote:
+> >>>> On 2/19/25 4:51 AM, Alexandre Courbot wrote:
+> >>>>> Yes, that looks like the optimal way to do this actually. It also
+> >>>>> doesn't introduce any overhead as the destructuring was doing both
+> >>>>> high_half() and low_half() in sequence, so in some cases it might
+> >>>>> even be more efficient.
+> >>>>>
+> >>>>> I'd just like to find a better naming. high() and low() might be enough?
+> >>>>> Or are there other suggestions?
+> >>>>>
+> >>>>
+> >>>> Maybe use "32" instead of "half":
+> >>>>
+> >>>>      .high_32()  / .low_32()
+> >>>>      .upper_32() / .lower_32()
+> >>>>
+> >>>
+> >>> The C code currently does upper_32_bits and lower_32_bits, do we want
+> >>> to align or diverge here?
+> >
+> > This sounds like a trick question, so I'm going to go with..."align". haha :)
+> >
+> >>>
+> >>> Dave.
+> >> 
+> >> 
+> >> My humble suggestion here is to use the same nomenclature. `upper_32_bits` and
+> >> `lower_32_bits` immediately and succinctly informs the reader of what is going on.
+> >> 
+> >
+> > Yes. I missed the pre-existing naming in C, but since we have it and it's
+> > well-named as well, definitely this is the way to go.
+> 
+> Agreed, I wasn't aware of the C equivalents either, but since they exist
+> we should definitely use the same naming scheme.
 
-> Le Thu, Feb 20, 2025 at 11:46:10PM +0000, Benno Lossin a =C3=A9crit :
->> On 18.02.25 14:27, Andreas Hindborg wrote:
->> > This patch adds support for intrusive use of the hrtimer system. For n=
-ow,
->> > only one timer can be embedded in a Rust struct.
->> >
->> > The hrtimer Rust API is based on the intrusive style pattern introduce=
-d by
->> > the Rust workqueue API.
->> >
->> > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->> > ---
->> >  rust/kernel/time.rs         |   2 +
->> >  rust/kernel/time/hrtimer.rs | 312 +++++++++++++++++++++++++++++++++++=
-+++++++++
->> >  2 files changed, 314 insertions(+)
->> >
->> > diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
->> > index 87e47f2f5618d..2cf365cfb412e 100644
->> > --- a/rust/kernel/time.rs
->> > +++ b/rust/kernel/time.rs
->> > @@ -10,6 +10,8 @@
->> >
->> >  use core::convert::Into;
->> >
->> > +pub mod hrtimer;
->> > +
->> >  /// The number of nanoseconds per millisecond.
->> >  pub const NSEC_PER_MSEC: i64 =3D bindings::NSEC_PER_MSEC as i64;
->> >
->> > diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
->> > new file mode 100644
->> > index 0000000000000..a6332924efabd
->> > --- /dev/null
->> > +++ b/rust/kernel/time/hrtimer.rs
->> > @@ -0,0 +1,312 @@
->> > +// SPDX-License-Identifier: GPL-2.0
->> > +
->> > +//! Intrusive high resolution timers.
->> > +//!
->> > +//! Allows running timer callbacks without doing allocations at the t=
-ime of
->> > +//! starting the timer. For now, only one timer per type is allowed.
->> > +//!
->> > +//! # Vocabulary
->> > +//!
->> > +//! States:
->> > +//!
->> > +//! * Stopped
->> > +//! * Running
->> > +//!
->> > +//! Operations:
->> > +//!
->> > +//! * Start
->> > +//! * Cancel
->> > +//! * Stop
->> > +//! * Restart
->> > +//!
->> > +//! Events:
->> > +//!
->> > +//! * Expire
->> > +//!
->> > +//! ## State Diagram
->> > +//!
->> > +//! ```text
->> > +//!                  <-- Stop ----
->> > +//!                  <-- Cancel --
->> > +//!                  --- Start -->
->> > +//!        +---------+        +---------+
->> > +//!   O--->| Stopped |        | Running |---o
->> > +//!        +---------+        +---------+   |
->> > +//!                                  ^      |
->> > +//!                  <- Expire --    |      |
->> > +//!                                  o------o
->> > +//!                                   Restart
->> > +//! ```
->> > +//!
->> > +//! A timer is initialized in the **stopped** state. A stopped timer =
-can be
->> > +//! **started** with an **expiry** time. After the timer is started, =
-it is
->> > +//! **running**. When the timer **expires**, the timer handler is exe=
-cuted.
->> > +//! After the handler has executed, the timer may be **restarted** or
->> > +//! **stopped**. A running timer can be **canceled** before it's hand=
-ler is
->>
->> This confuses me a bit, in the other thread you wrote that the handler
->> decides if the timer should restart or be stopped. But What happens when
->> I call `cancel` on the `HrTimerHandle` while the handler is running, but
->> finishes shortly after with a restart request? Will it be canceled?
->>
->> I also have a bit of a wording issue with "the timer is running" IIUC,
->> this means that the timer subsystem keeps track of the expiry time and
->> when the time is elapsed, it fires the code that you registered prior.
->> At first, I thought that "the timer is running" meant that the
->> registered code is running. Maybe we should have two different terms for
->> that? I personally would prefer "active timer" for "the timer subsystem
->> is currently tracking the time and when it is elapsed, it will run the
->> code" and "running timer" for "the timer's expiry time has elapsed and
->> the timer callback is currently being executed".
->
-> Good point. "Running" in the hrtimer terminology is usually to
-> describe a running callback and not just an elapsing (or say started) tim=
-er.
->
-> I would rather have:
->
-> Stopped: initialized but not started, or cancelled, or not restarted
-> Started: initialized and started or restarted
-> Running: executing the callback
+IIUC, we're still talking about extending the u64 primitive type.
 
-Alright, we can do that. That makes sense =F0=9F=91=8D
+Hence, I think there is no necessity to do align with the corresponding C
+nameing scheme. I think this would only be the case if we'd write an abstraction
+for the C API.
 
+In this case though we extend an existing Rust type, so we should do something
+that aligns with the corresponding Rust type.
 
+In this specific case I think it goes hand in hand though.
 
-Best regards,
-Andreas Hindborg
-
-
+- Danilo
