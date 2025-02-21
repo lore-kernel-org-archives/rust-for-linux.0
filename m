@@ -1,109 +1,219 @@
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-10628.protonmail.ch (mail-10628.protonmail.ch [79.135.106.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A4F1FBC83;
-	Fri, 21 Feb 2025 07:05:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8636C45009;
+	Fri, 21 Feb 2025 08:04:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740121511; cv=none; b=ji7owNb1cp/ji1Lk51QVojjieqeFObUIwjT/E5K/oGAGFDGqvHoz4bAXN2jsr9nbtYFcbY6q+MfXktNlyZ//1NPe8Xa5UdnCJGBsYyWdo0vS7xnZDZUNLwWIlTbepg1KizcBleGlnihTVxoibCEfjh3OTRT+GAJ8N442mwZFfuA=
+	t=1740125085; cv=none; b=Ap1W396epa1TntxfXpdj9NAvk+tO8SnjM8oFIrp8RpeVqSy/TUUca5iIWrLVC+Zy8TVPlDZ4Zh3X4wul+4ZXfYBHMLcgriyliOZXGoIK2Av/GKKTaBSusl5yZAGc1dlCgfDaBCgAOhzprx7ifKf/0jiw0/bVAjbyzCsTuSyH3k0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740121511; c=relaxed/simple;
-	bh=sl7zCBDomJhdG0gnHNMB5kkyU6PcHulXkuYhL3ng/6w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Fhr7CMiQYHKV5Bbdhr/27NzRWtidrTsax3l8C0Bk5yqrHASUIHW2EG6EOE5o4iWQiVTVTslWuOq0IcugJLD5wCMQkXy38ZR6RvBZyKbFNIDFDs+OKFyL0BikCrf/SCORJU9GUb+TL7vZDJXhjlfbY0qEyfceLnryNWQZNHCb5a8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mCHsm1xb; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740125085; c=relaxed/simple;
+	bh=1jDuaZhpY3OAoCtRoNYbxRb877unFdjhCXXR4q6yBjE=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=BZP2IlyJcP+BGANZKjETRJHBGmjfV80ktesV3d8iMdq8d5l4tPCDg/B2dJcdvjg2XVZHH8E6UZe5pz0tR5HVe/DfsdehqK6BO1mggx2oUdm/pM19MqpSTu4U0guvvzv6yF1M3opI4fX9IdOGPKMEdCCDWF/DKzgTw+Z09k02YFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=emJEO8gl; arc=none smtp.client-ip=79.135.106.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mCHsm1xb"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-aaecf50578eso348240666b.2;
-        Thu, 20 Feb 2025 23:05:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740121508; x=1740726308; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=sl7zCBDomJhdG0gnHNMB5kkyU6PcHulXkuYhL3ng/6w=;
-        b=mCHsm1xbFl7o/vrdwxNupzDTxd6+DqrrpncWd7uEKldHQGXFO5zBFZ94sB2jR9hYD2
-         CDBwbJi7q6oVikIt0A9EUXiLPlnF//mi5LM+b4by7BfHvqop8PlFx9nVb5M4ouxncNoa
-         VIA4327WymWtBzNz4v9Fd8TGy2wbRzZSFrrQfaQh6OEJDDcpQOxdlInG867kqckHrhCn
-         FCWEgHsOQQCGqHaSvCjPd2Er3MlRMuV+OHXyM6vSoWQO+7qDns3mvRhu9H0XP86GTYW2
-         GQ1ZZ0Ah/sGeMWkFMQE8WfyvACfqVU1tgPnU+Niuxans/UoHywnvQmrkv5xE4NeNwPe2
-         6jwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740121508; x=1740726308;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sl7zCBDomJhdG0gnHNMB5kkyU6PcHulXkuYhL3ng/6w=;
-        b=Lsph4jlAUbUihyWOn+vII8steH8hVYA3SZHwW9h6gRxK5d9km5VsfzKMIlBCEZwRyy
-         99vg3f+AK7DZXuNTsxKPbhF/gGKhZMNi2P+wh2KyWPiwIAbYooupLKCiLk/AfyNLEHJP
-         vHWeQNRMQCAK/8GwztgHfm/+em7+AVIA89Yui+DRkvL07j7Gb2jbtZUo+z31QNZJMnpl
-         wdNLKr4xAwOMI9HQB1NoX7JcjK520eqgLqEMJlye7ALmhmD7GtvcT9ndQIFnW//HJYq4
-         zl8nrr1EnLE+p06K/XrTREKMfBleTya9Dg9EnoTp1FNWXjYo3G3bIyKPVBDAqn/XwgRx
-         +K1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUwes9sxJwZbSdXJ6E6+3qHhILUIEpwTeMc6YWxGZqgVR80KMcoo8kIDLQE/m5PuspiaTuMZwMYkErWp6NjNP0=@vger.kernel.org, AJvYcCX0lgwI2mY4V2rRgPnccsnDhxsEbH9R+i/WT+PF6sThhhl27gPwKk9c3ySqem3pJ4tckK7gCkec+1T9bUM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwpbCtUGW52eeJ8mvtrZD3JTQqa9vduEu9gsTJOElBXBqwQTAm
-	Fjrz3arwO+g8DnTWENPEoBXv/23RYTQh70z6VyKmvUAlNOlhCqtf9fsXSDAsluy2EsXnmLNj2lP
-	4kS3zxRHc6SNfkEeSvlQb9yq56qk=
-X-Gm-Gg: ASbGncvx8rpIqAJWmIU6GOBRHCKl8u7+qW8S1BNQ6pWZDF5NKFIYGSiPVOzZxzZ0PF6
-	BviagxZJuFb/gAaavFVIesN07M4c5GYkxhj17j4pG7tV0O8UAiSyJD9HSpfpcvOBf/CKpYj+l0Z
-	ymcv/CtA==
-X-Google-Smtp-Source: AGHT+IHOQbo+TvMcu4+X/+LIeByPRKMQIlrYI0AV8qGp1AuzuqpbQz1twMeHfEV8p9x5EVqT5UvJoJGtCx8O1rMKfvg=
-X-Received: by 2002:a17:907:1c28:b0:ab7:462f:647f with SMTP id
- a640c23a62f3a-abc0da36418mr148564466b.25.1740121507765; Thu, 20 Feb 2025
- 23:05:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="emJEO8gl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1740125081; x=1740384281;
+	bh=s4MaT8EpzLOIrBMu7LxBFgCvBxyFVd7XYAuYGPCa9zs=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
+	 List-Unsubscribe:List-Unsubscribe-Post;
+	b=emJEO8gl2XY7/Afsy2yxXVkH9fJntP+AOZ3QVXnP8d78aUJ5JBdSltkh32ii999Jg
+	 HatY4M8FGuNEW795+imQPqTrBU1kLukO6wXJYDy77Z5S2kNCs9II/geTC6xGKhBoSu
+	 QS8/2SL76uGmGsbFqcWqu3nrJ1oWGgz/OagjsQ+rFrhhOmhxP9Cfw8OOTiIRBOq9sL
+	 wU739bowzsmdOZF2r3dIiGdsLjoUgM9p8b+J6Tz1qYiIqSoVngfAgge/4l6wIpgCUc
+	 ocpYk7UMJPOpUMYenRnRL3Vfj+2yVtLEPV8TJysvkTNFH4/ATPC8Bjbs0JcQQli2/A
+	 sgnwQ/kX0nw1g==
+Date: Fri, 21 Feb 2025 08:04:34 +0000
+To: Andreas Hindborg <a.hindborg@kernel.org>
+From: Oliver Mangold <oliver.mangold@pm.me>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: [PATCH] Rust: Implement a unique reference type URef supplementing ARef
+Message-ID: <SpXhwnZO__ST8sHQ3HQ3ygThOcnmn0x2JlJ_nwJglL87vw5XfQA8sDH6HdkrGgFVycLhPBlCc6-UtEImTvY26A==@protonmail.internalid>
+Feedback-ID: 31808448:user:proton
+X-Pm-Message-ID: 7a8d7fefe8c1e88d106d46b24ce25bf2360a8609
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2025021954-flaccid-pucker-f7d9@gregkh> <20250221051909.37478-1-felipe.contreras@gmail.com>
- <Z7gQ3kSeCf7gY1i9@Mac.home> <CAMP44s1Ai5qMU4yV+Rwz4cY869ZA=cxBcTf2wuaUY1oyLKUNCg@mail.gmail.com>
-In-Reply-To: <CAMP44s1Ai5qMU4yV+Rwz4cY869ZA=cxBcTf2wuaUY1oyLKUNCg@mail.gmail.com>
-From: Dave Airlie <airlied@gmail.com>
-Date: Fri, 21 Feb 2025 17:04:55 +1000
-X-Gm-Features: AWEUYZkbvphXlwFSnn15e6k57DAgnH-HQV5ZI0ER8aN1n4x5jMTuqqoaJo3XkBs
-Message-ID: <CAPM=9ty9KWFE+AkHi5FDrb8=O5bzbVEroT2fx7jLG5JK6HZ+tg@mail.gmail.com>
-Subject: Re: Rust kernel policy
-To: Felipe Contreras <felipe.contreras@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, gregkh@linuxfoundation.org, hch@infradead.org, 
-	hpa@zytor.com, ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org, 
-	torvalds@linux-foundation.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 21 Feb 2025 at 15:59, Felipe Contreras
-<felipe.contreras@gmail.com> wrote:
->
-> Boqun Feng wrote:
-> >
-> > On Thu, Feb 20, 2025 at 11:19:09PM -0600, Felipe Contreras wrote:
-> > > Greg KH wrote:
-> > > > But for new code / drivers, writing them in rust where these types of
-> > > > bugs just can't happen (or happen much much less) is a win for all of
-> > > > us, why wouldn't we do this?
-> > >
-> > > *If* they can be written in Rust in the first place. You are skipping that
-> > > very important precondition.
-> >
-> > Hmm.. there are multiple old/new drivers (not a complete list) already
-> > in Rust:
->
-> That is a black swan fallacy. Just because you've seen 4 white swans
-> that doesn't mean all swans are white.
->
-> > , so is there still a question that drivers can be written in Rust?
->
-> I didn't say no driver can be written Rust, I questioned whether *all*
-> drivers can be written in Rust.
->
-> People are operating under that assumption, but it isn't necessarily true.
+For usage with block-mq, we found that having a variant of ARef which is gu=
+aranteed to be unique is useful. As chances are it is useful in general, I =
+implemented it as kernel::types::URef. The difference between ARef and URef=
+ is basically the same as between Arc and UniqueArc.
 
-That doesn't make sense, like you could make a statement that not all
-drivers could be written in C, but it would be trash, so why do you
-think rust is different?
+Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
+---
+ rust/kernel/block/mq/request.rs | 97 +++++++++++++++++++++++++++++++++++++=
+++++++++++++++++++++++++------------------------------------
+ 1 file changed, 61 insertions(+), 36 deletions(-)
 
-if you said 100% safe rust I'd agree, but that isn't the goal.
+diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+index 55ddd50e8aaa..80dc9edef1b9 100644
+--- a/rust/kernel/types.rs
++++ b/rust/kernel/types.rs
+@@ -543,6 +543,12 @@ fn from(b: &T) -> Self {
+     }
+ }
+=20
++impl<T: UniqueRefCounted> From<URef<T>> for ARef<T> {
++    fn from(b: URef<T>) -> Self {
++        UniqueRefCounted::unique_to_shared(b)
++    }
++}
++
+ impl<T: AlwaysRefCounted> Drop for ARef<T> {
+     fn drop(&mut self) {
+         // SAFETY: The type invariants guarantee that the `ARef` owns the =
+reference we're about to
+@@ -551,6 +557,119 @@ fn drop(&mut self) {
+     }
+ }
+=20
++/// Types that are `AlwaysRefCounted` and can be safely converted to an `U=
+Ref`
++///
++pub unsafe trait UniqueRefCounted: AlwaysRefCounted + Sized {
++    /// Checks if the the [ARef] is unique and convert it
++    /// to an [URef] it that is that case.
++    /// Otherwise it returns again an [ARef] to the same
++    /// underlying object.
++    fn try_shared_to_unique(this: ARef<Self>) -> Result<URef<Self>,ARef<Se=
+lf>>;
++    /// Converts the [URef] into an [ARef].
++    fn unique_to_shared(this: URef<Self>) -> ARef<Self>;
++}
++
++/// An unique owned reference to an always-reference-counted object.
++///
++/// It works the same ways as [`ARef`] but ensures that the reference is u=
+nique
++/// and thus can be dereferenced mutably.
++///
++/// # Invariants
++///
++/// The pointer stored in `ptr` is non-null and valid for the lifetime of =
+the [`ARef`] instance. In
++/// particular, the [`ARef`] instance owns an increment on the underlying =
+object's reference count.
++pub struct URef<T: UniqueRefCounted> {
++    ptr: NonNull<T>,
++    _p: PhantomData<T>,
++}
++
++// SAFETY: It is safe to send `URef<T>` to another thread when the underly=
+ing `T` is `Sync` because
++// it effectively means sharing `&T` (which is safe because `T` is `Sync`)=
+; additionally, it needs
++// `T` to be `Send` because any thread that has an `URef<T>` may ultimatel=
+y access `T` using a
++// mutable reference, for example, when the reference count reaches zero a=
+nd `T` is dropped.
++unsafe impl<T: UniqueRefCounted + Sync + Send> Send for URef<T> {}
++
++// SAFETY: It is safe to send `&URef<T>` to another thread when the underl=
+ying `T` is `Sync`
++// because it effectively means sharing `&T` (which is safe because `T` is=
+ `Sync`); additionally,
++// it needs `T` to be `Send` because any thread that has a `&URef<T>` may =
+clone it and get an
++// `URef<T>` on that thread, so the thread may ultimately access `T` using=
+ a mutable reference, for
++// example, when the reference count reaches zero and `T` is dropped.
++unsafe impl<T: UniqueRefCounted + Sync + Send> Sync for URef<T> {}
++
++impl<T: UniqueRefCounted> URef<T> {
++    /// Creates a new instance of [`URef`].
++    ///
++    /// It takes over an increment of the reference count on the underlyin=
+g object.
++    ///
++    /// # Safety
++    ///
++    /// Callers must ensure that the reference count is set to such a valu=
+e
++    /// that a call to AlwaysRefCounted::dec_ref() will release the underl=
+ying object
++    /// in the way which is expected when the last reference is dropped.
++    /// Callers must not use the underlying object anymore --
++    /// it is only safe to do so via the newly created [`URef`].
++    pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
++        // INVARIANT: The safety requirements guarantee that the new insta=
+nce now owns the
++        // increment on the refcount.
++        Self {
++            ptr,
++            _p: PhantomData,
++        }
++    }
++
++    /// Consumes the `URef`, returning a raw pointer.
++    ///
++    /// This function does not change the refcount. After calling this fun=
+ction, the caller is
++    /// responsible for the refcount previously managed by the `URef`.
++    pub fn into_raw(me: Self) -> NonNull<T> {
++        ManuallyDrop::new(me).ptr
++    }
++}
++
++impl<T: UniqueRefCounted> Deref for URef<T> {
++    type Target =3D T;
++
++    fn deref(&self) -> &Self::Target {
++        // SAFETY: The type invariants guarantee that the object is valid.
++        unsafe { self.ptr.as_ref() }
++    }
++}
++
++impl<T: UniqueRefCounted> DerefMut for URef<T> {
++
++    fn deref_mut(&mut self) -> &mut Self::Target {
++        // SAFETY: The type invariants guarantee that the object is valid.
++        unsafe { self.ptr.as_mut() }
++    }
++}
++
++impl<T: UniqueRefCounted> From<&T> for URef<T> {
++    /// Converts the [URef] into an [ARef] by calling [UniqueRefCounted::u=
+nique_to_shared] on it.
++    fn from(b: &T) -> Self {
++        b.inc_ref();
++        // SAFETY: We just incremented the refcount above.
++        unsafe { Self::from_raw(NonNull::from(b)) }
++    }
++}
++
++impl<T: UniqueRefCounted> TryFrom<ARef<T>> for URef<T> {
++    type Error =3D ARef<T>;
++    /// Tries to convert the [ARef] to an [URef] by calling [UniqueRefCoun=
+ted::try_shared_to_unique].
++    /// In case the [ARef] is not unique it returns again an [ARef] to the=
+ same
++    /// underlying object.
++    fn try_from(b: ARef<T>) -> Result<URef<T>,Self::Error> {
++        UniqueRefCounted::try_shared_to_unique(b)
++    }
++}
++
++impl<T: UniqueRefCounted> Drop for URef<T> {
++    fn drop(&mut self) {
++        // SAFETY: The type invariants guarantee that the `URef` owns the =
+reference we're about to
++        // decrement.
++        unsafe { T::dec_ref(self.ptr) };
++    }
++}
++
+ /// A sum type that always holds either a value of type `L` or `R`.
+ ///
+ /// # Examples
+---
 
-Dave.
