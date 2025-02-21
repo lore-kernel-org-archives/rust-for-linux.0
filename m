@@ -1,175 +1,160 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailrelay.tugraz.at (mailrelay.tugraz.at [129.27.2.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FD91F0E36;
-	Fri, 21 Feb 2025 18:22:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F231F0E36;
+	Fri, 21 Feb 2025 18:23:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.27.2.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740162155; cv=none; b=sz5ol7izJpcyOvMUVeZa1pemDWB3Prqg7UnlOQE+V1g4aftPy7R0w72L47/EdnC6VeP04DT9TDa5o7Xqhl3CHDhsYdzLaYqiVyBc84bdJNvzusrIn5hgDNpU4uHCEDNxG/HuPERmBT9eTTy7oRJBkKiOb6EvZwzXKYpVoAkSGqY=
+	t=1740162234; cv=none; b=E51uctd2RN2Y6vJTuW2bTEXiXA4GequuZN+AET8cMzliITJi3Iubp1yqG5KBqUd9vM0WPww+5PdObX+wQIIqOxkZDpjCw44nacEx7U8kZo3zmOhZB892PqPfltoc6pG9MMD7Gxwub1O1aAf4XmRHlPrnqOUpSBWxvU8gD5QeqlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740162155; c=relaxed/simple;
-	bh=XEJSkpcRT+l1bJmdwz/TSZDGUSyUv+uf4slwZFfLi/A=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VSNnQ2sSuMgS4xYB3Pb/6W75wd4ywsUqZuqnsu0rL1Mq1B9N6crZRZU3h5s4m3akyEdCIUAWfsIWEvR9CSnKwgd5gjlCrj2p4pfJ0ifPhjy4WPvm6fJM6Gl5W17E/+JwonXYwM/KE1ROHajDnxgYQOnIk1D3ObwKMLdVT4ggX1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NffydXzh; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740162234; c=relaxed/simple;
+	bh=JJS7QruWUFJ8IeCrfzhQBFz5px6Z310Jl8emUW2sx0g=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=QaaQDsOtQ2ioguDQMG+3i4YBFDbVO5ODZqf8LgCLQqJdB8es3paCddCuSPBxSAi3jPRlfpDhKooVvYc0DsNuc0ReKVomOxXKwkqYxjWSu+f77UYd2cKW4daHR0Rr4hefGNJyQY8NfByCERFSHaeMd6Vokjha0+CZ6bdTjYLmTN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at; spf=pass smtp.mailfrom=tugraz.at; dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b=DCM21qme; arc=none smtp.client-ip=129.27.2.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tugraz.at
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NffydXzh"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-22104c4de96so43838245ad.3;
-        Fri, 21 Feb 2025 10:22:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740162153; x=1740766953; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DHL7vPjPelCu7vXwBnwg1cjqjcfxa3A6QUyECJhbzJ8=;
-        b=NffydXzh9IPIoG4OL/t/sc/FEJBqCCpVR+G6IXTYlYebp3SzCUabpNEuhXoc5+JBjt
-         MyBQ2BEp8EmVcMsiLzsTiDnHJcd8w5JM5wZsIdQkBfCM/sx/CiODgjPtqxvcd8DJL6B6
-         Ic3ZjvqzzMlwioqJlw2OiV24L5bWhJHmbItCmfAbdgOyQG3FSzsdcjzbwo8pettvZtxt
-         nmsw+RI9A4q3kyvAsyqXQadKYABNHESM7OvElw1UQEWKRmaAzp5YbHW5Y7DEeybqk1YM
-         45ScR9eRC7Jzl+6ANuDmFc8yrT1+xpk1jV0a7eVuLhucW00oGipExBqfRCyZm7S8an4q
-         kdOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740162153; x=1740766953;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DHL7vPjPelCu7vXwBnwg1cjqjcfxa3A6QUyECJhbzJ8=;
-        b=bFoYiYVUA4Kd38DEoqEVLeSemLZTBHWkQossf/VXqZGuNPmkpQlpXPOM5czcQJ3381
-         2McawOQq0eqalp7fRklQSKRdMlZfzMxFJFMuIySzygNtt4t7ssbGT5+xQA0PDsPAloRK
-         6Of7SOxTbwCL2IN+P9wOY2ot+s61uFZRoKnkBjBs5OeZmDBqeguZHyhtUrWpFdd9BvfN
-         gYS7T6CyLz4/xtiWUGWmbMXX01u3tIlTjOlZ+69We9c9eMwQ6bUJdYQoOm89yEwFM7++
-         8/d45Uzwa2edSUcKIpH0mM5DLehOBM2UpNNL5lMKiNawyNwZ8Ljct9XVdxJ8jwQXTEfH
-         ni6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXIi/up3w9c0Jd5L/90YMZQUS8ODSNFJWoSL/WqwRX7BRtFTVumZWReznE00gk6w4zxHzfmM1BVWdQvfr7V/kA=@vger.kernel.org, AJvYcCXeTFyanxTaq9gZLJv7o00zPfw+ht7zyH7n6dxxxKcL6h0QIgpnpNrOIg0oLNgm0h1uMB9mR6F0Iyfdr68=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzeV5oVqNFDOqVrfgu5ucXqNgK6MotkLl7Oi4r/Gk39X4RmF8TH
-	Nel9mnLjEEnmNC3/T33Av+RI97MOKlrcFOYWOb2nVsro63dAt2bS
-X-Gm-Gg: ASbGncsElj9Jhbac/c4srzAJHaOhIlkS28QIqGhj8eBQhIEM8RhTwi+13WKgtMbwrtb
-	XOmbIDvyZpeP8E1crrY3AWMIeLTMKva0hvnSomnSYxuTdiUlQBp2b/JjsZTqjR2M28J+GR7M4vq
-	CVe6VhbrN646SdvV4nwJ2jiBu9Xi5nku286JEDk5A9vKNtIiGi7bVvv9AgaD4V7bIWjzt0TGksX
-	+AplGg4oQzk+woJ6DAG5Ee0VsVlMXs83PWEUNsRKhrWABBpRbprGQvTYr0No9rRaIegga00xQs/
-	uYTMrH6kr4HYMOGVZ2bDllocr23M7YHrGg==
-X-Google-Smtp-Source: AGHT+IFmSCg5zSc1oP8FO256fDI+PNQxG+YloMlQVhJ8OyzeMb3h/2ZIeEAZdH4eT9dksJQ3BfEOXw==
-X-Received: by 2002:a05:6a21:33a4:b0:1ee:e785:a08a with SMTP id adf61e73a8af0-1eef3da4c68mr7421042637.29.1740162153171;
-        Fri, 21 Feb 2025 10:22:33 -0800 (PST)
-Received: from linuxsimoes.. ([177.21.141.136])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-adb5a52aefbsm14767948a12.62.2025.02.21.10.22.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Feb 2025 10:22:32 -0800 (PST)
-From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-To: a.hindborg@kernel.org,
-	alex.gaynor@gmail.com,
-	aliceryhl@google.com,
-	apw@canonical.com,
-	arnd@arndb.de,
-	aswinunni01@gmail.com,
-	axboe@kernel.dk,
-	benno.lossin@proton.me,
-	bhelgaas@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	dakr@kernel.org,
-	dwaipayanray1@gmail.com,
-	ethan.twardy@gmail.com,
-	fujita.tomonori@gmail.com,
-	gary@garyguo.net,
-	gregkh@linuxfoundation.org,
-	joe@perches.com,
-	lukas.bulwahn@gmail.com,
-	ojeda@kernel.org,
-	pbonzini@redhat.com,
-	tmgross@umich.edu,
-	walmeida@microsoft.com
-Cc: trintaeoitogc@gmail.com,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH V4 2/2] checkpatch: throw error for malformed arrays
-Date: Fri, 21 Feb 2025 15:21:42 -0300
-Message-Id: <20250221182142.42134-3-trintaeoitogc@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250221182142.42134-1-trintaeoitogc@gmail.com>
-References: <20250221182142.42134-1-trintaeoitogc@gmail.com>
+	dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b="DCM21qme"
+Received: from vra-171-233.tugraz.at (vra-171-233.tugraz.at [129.27.171.233])
+	by mailrelay.tugraz.at (Postfix) with ESMTPSA id 4Yzz625GkKz3wgg;
+	Fri, 21 Feb 2025 19:23:38 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tugraz.at;
+	s=mailrelay; t=1740162219;
+	bh=ddA/arXohRuHGlkh46j54jfFS3gTQITB9tdWH3dQ5Lw=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=DCM21qmecSKhNZWipPsk23RCL9gQnFwN3GWXMkfpyRX89+1clbKf8PBdYoSPdaxVE
+	 qoliRK/3fjbOUPsx4eI/xWuT6rdhRyzPUj0yKg1kWLGPihm9JWUS2F8HWHhByvv0dv
+	 I2s8e1jxKibPB/pPeYO2d9COznu5QhGepBzkZ6gA=
+Message-ID: <59a4f3f7641c47494b53f788684aa703a02acca1.camel@tugraz.at>
+Subject: Re: Rust kernel policy
+From: Martin Uecker <uecker@tugraz.at>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>, Greg KH
+ <gregkh@linuxfoundation.org>, Boqun Feng <boqun.feng@gmail.com>, "H. Peter
+ Anvin" <hpa@zytor.com>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Christoph Hellwig <hch@infradead.org>, rust-for-linux
+ <rust-for-linux@vger.kernel.org>, Linus Torvalds
+ <torvalds@linux-foundation.org>, David Airlie <airlied@gmail.com>, 
+ linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
+Date: Fri, 21 Feb 2025 19:23:38 +0100
+In-Reply-To: <20250221124304.5dec31b2@gandalf.local.home>
+References: <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
+	 <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
+	 <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
+	 <Z7VKW3eul-kGaIT2@Mac.home> <2025021954-flaccid-pucker-f7d9@gregkh>
+	 <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
+	 <2025022024-blooper-rippling-2667@gregkh>
+	 <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
+	 <2025022042-jot-favored-e755@gregkh>
+	 <b9a5de64fe1ded2ad3111763f35af9901bd81cc4.camel@tugraz.at>
+	 <caea3e79-78e6-4d98-9f3b-f8e7f6f00196@stanley.mountain>
+	 <61a7e7db786d9549cbe201b153647689cbe12d75.camel@tugraz.at>
+	 <20250221124304.5dec31b2@gandalf.local.home>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-TUG-Backscatter-control: G/VXY7/6zeyuAY/PU2/0qw
+X-Spam-Scanner: SpamAssassin 3.003001 
+X-Spam-Score-relay: 0.0
+X-Scanned-By: MIMEDefang 2.74 on 129.27.10.116
 
-Implement a check to ensure these fields are correctly formatted. If a
-line contains one of these keys that should be of type Vec<String>, use
-a regex to verify whether the array holds multiple values.
-* If the array contains more than one value, enforce vertical formatting
-* If the array has only one value, it can remain on the same line
+Am Freitag, dem 21.02.2025 um 12:43 -0500 schrieb Steven Rostedt:
+> On Fri, 21 Feb 2025 17:28:30 +0100
+> Martin Uecker <uecker@tugraz.at> wrote:
+>=20
+>=20
+> > >=20
+> > > This kind of #pragma is basically banned in the kernel.  It's used
+> > > in drivers/gpu/drm but it disables the Sparse static checker. =20
+> >=20
+> > Why is this?
+>=20
+> Because they are arcane and even the gcc documentation recommends avoidin=
+g
+> them.
+>=20
+>  "Note that in general we do not recommend the use of pragmas"
+>  https://gcc.gnu.org/onlinedocs/gcc/Pragmas.html
 
-Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
----
- scripts/checkpatch.pl | 43 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+If you click on the link that provides the explanation, it says
 
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 7b28ad331742..21a5ef4fd8b8 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -2775,6 +2775,9 @@ sub process {
- 	$realcnt = 0;
- 	$linenr = 0;
- 	$fixlinenr = -1;
-+
-+	my %array_parse_module;
-+
- 	foreach my $line (@lines) {
- 		$linenr++;
- 		$fixlinenr++;
-@@ -3567,6 +3570,46 @@ sub process {
- # ignore non-hunk lines and lines being removed
- 		next if (!$hunk_line || $line =~ /^-/);
- 
-+# check if arrays has more than one value in the same line
-+		my $inline = 0;
-+		my $key = "";
-+		my $add_line = $line =~ /^\+/;
-+
-+		if ($line =~ /\s*.*\b(authors|alias|firmware)\s*:\s*\[/) {
-+			$inline = 1;
-+			$array_parse_module{$1} = 1;
-+		}
-+
-+		my @keys = keys %array_parse_module;
-+		if (@keys) {
-+			$key = $keys[0];
-+		}
-+
-+		if ($add_line && $key) {
-+			my $herevet = "$here\n" . cat_vet($rawline) . "\n";
-+
-+			my $counter = () = $line =~ /"/g;
-+			my $more_than_one = $counter > 2;
-+			if ($more_than_one) {
-+				WARN("ARRAY_MODULE_MACRO",
-+				"Prefer each array element on a separate line\n$herevet");
-+			} elsif ($inline && $line !~ /\]/ && $line !~ /,/ && $line =~ /"/) {
-+				WARN("ARRAY_MODULE_MACRO",
-+				"Prefer declare ] on the same line\n$herevet");
-+			} elsif (!$inline && $line =~ /\]/ && $line =~ /\"/) {
-+				WARN("ARRAY_MODULE_MACRO",
-+				"Prefer a new line after the last value and before ]\n$herevet");
-+			} elsif ($inline && $line =~ /,/ && $line !~ /\]/) {
-+				WARN("ARRAY_MODULE_MACRO",
-+				"Prefer a new line after [\n$herevet");
-+			}
-+		}
-+
-+		#END OF ANALYZE FIELD
-+		if ($line =~ /\]/) {
-+			delete $array_parse_module{$key};
-+		}
-+
- #trailing whitespace
- 		if ($line =~ /^\+.*\015/) {
- 			my $herevet = "$here\n" . cat_vet($rawline) . "\n";
--- 
-2.34.1
+"It has been found convenient to use __attribute__ to achieve a natural
+attachment of attributes to their corresponding declarations, whereas
+#pragma is of use for compatibility with other compilers or constructs
+that do not naturally form part of the grammar. "
+
+Regions of code do not naturally form part of the grammar, and
+this is why I would like to use pragmas here. =20
+
+
+But I still wonder why it affects sparse?
+
+...
+
+
+> >=20
+> > > >=20
+> > > > I would also have a DYNAMIC mode that traps for UB detected at
+> > > > run-time (but I understand that this is not useful for the kernel).=
+  =20
+> > >=20
+> > > No, this absolutely is useful.  This is what UBSan does now.
+> > >  =20
+> >=20
+> > Yes, it is similar to UBSan. The ideas to make sure that in the
+> > mode there is *either* a compile-time warning *or* run-time
+> > trap for any UB.  So if you fix all warnings, then any remaining
+> > UB is trapped at run-time.
+>=20
+> As long as we allow known UB. We have code that (ab)uses UB behavior in g=
+cc
+> that can't work without it. For instance, static calls. Now if the compil=
+er
+> supported static calls, it would be great if we can use that.
+>=20
+> What's a static call?
+>=20
+> It's a function call that can be changed to call other functions without
+> being an indirect function call (as spectre mitigations make that horribl=
+y
+> slow). We use dynamic code patching to update the static calls.
+>=20
+> It's used for functions that are decided at run time. For instance, are w=
+e
+> on AMD or Intel to decide which functions to implement KVM.
+>=20
+> What's the UB behavior? It's calling a void function with no parameters
+> that just returns where the caller is calling a function with parameters.
+> That is:
+>=20
+> 	func(a, b, c)
+>=20
+> where func is defined as:
+>=20
+> 	void func(void) { return ; }
+
+Calling a function declared in this way with arguments
+would be rejected by the compiler, so I am not sure how
+this works now.
+
+If you used=20
+
+void func();
+
+to declare the function, this is not possible anymore in C23.
+
+
+But in any case, I think it is a major strength of C that you can
+escape its rules when necessary. I do not intend to change this.
+I just want to give people a tool to prevent unintended consequences
+of UB.
+
+Martin
 
