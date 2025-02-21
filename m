@@ -1,170 +1,167 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA83E1D5AA7
-	for <rust-for-linux@vger.kernel.org>; Fri, 21 Feb 2025 19:31:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7571FBEBE;
+	Fri, 21 Feb 2025 19:46:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740166263; cv=none; b=EjRT32HWAEFXQWKcpq0zSQNAVju2cYrGmqspA5LJVbaSlbIijlKnRhwrJWEoAd6LUIawIlANZumGYoVLBm010DMA/EMGfe0z6VaZu8AX/4hQf7NwWh48varSjjkyTDD7mq5/TfjasWncnqtoneKUWdDSN1rJcHvnC+Haq4Ekeg0=
+	t=1740167207; cv=none; b=uiRLcekPnouaYNasPbMhioRanoshpcpCnJiLJzfT6u6Sm/JEHkcfEYiB8i9v2fkxuDdlER+QUNLVtZbczqbo7We5EK+8ShFPzM9toe6reOc1zIXbWcNRhp389gw6ImbKh5d8ZbcaGNg+BeDvzKN5cU+MqZIk/jkWFghz0azPbpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740166263; c=relaxed/simple;
-	bh=+RfEgo2NPzN8K1yBWcrB0J1ymaB8NkbaJD+o1y0UEQg=;
+	s=arc-20240116; t=1740167207; c=relaxed/simple;
+	bh=EvNaOjdpYA/Meze32ov+VQ+P3oHG1oAT5LZpWYvWbUY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RnB8XqtbZ0RrJgJiK2/Q6+rHai0HQqq5dv/5wsbZsMdf21GpMMU3jm2n5NImIDU4bJRcB4SyocwhYu0piO6kwtto1oGn1fs2L/BzCdpbH3FFX0G8iUEoagLoN8TvXf0d2uTr4r7Ufi/pz3HcQhNAGwP5f9QAEy2uPBjoQrenADY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=QjAyn5RN; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	 To:Cc:Content-Type; b=lyDXtFPno/OdSqqD1gUfbIKfHbs7AziZD2hWDlGfsAH0F11+K9bboDgXsGpopSdZll25excsheyOkGS/xEcArQnTR4oAN1jxyzNMUyzJ1EO0nxAxcJtm6X11xd1Sf1uitJioOKqxu+jwXBx7Zs/JWrl9IA8lXAVAl6+Vv3DUawc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S4yHutMz; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="QjAyn5RN"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5deb956aa5eso3068359a12.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 21 Feb 2025 11:31:01 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S4yHutMz"
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-3091fecb637so19945981fa.1;
+        Fri, 21 Feb 2025 11:46:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1740166260; x=1740771060; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=5CaSzc1+NZ6cbiR+JimbofLj0D3GrK6Qy70Ol4U5T84=;
-        b=QjAyn5RNmGInj+cmxqhsnMd8q+qEaroENQKDOYM6RU6QVkW7vvOl52ZWw1KN+Fw+Cd
-         s+TDEpLPj1WjG8qZccbURMZzUwxf+GFExDa5DicVDT6a81zWqxFqdPd6wDk8n7pfvgHe
-         qjRtqCV37ZS8KG0blhArsP7Cjv7xEyfFruH/Y=
+        d=gmail.com; s=20230601; t=1740167203; x=1740772003; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3bYx7lKloKyg+UYaN5Q/XJxk/HLY0nsNiep4bhpWcTA=;
+        b=S4yHutMzLA3T0OlDFElJ6aGu3hBjoXuaMF0ulXF9Z9jPi84bCMqGenpwoblIsEJnp5
+         8GHcwQXvmQikEKrn0d3X/MtGY53ozhGVA1hE4OdNh1HXBglQmUi8jrCt8rM8a/qw8buZ
+         XXIEyOro8lQJ68b0qv7SfgIZvBYa8RtjaHTOYH8+yW35veSZCE9n90Dkvzpo7E76GEcz
+         igiWA9N+fgzICPkEnnpzynxdaS4GEyDcl/jIQe3zmOOcbwWL7301OPMAS+oYHl1en0GG
+         9YVimiqAowTSB2H6WV3CTJxvxGqw0ssESJSay7cx1cJycaP6EPlpjS08wYacdSxE14Ty
+         ZviA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740166260; x=1740771060;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5CaSzc1+NZ6cbiR+JimbofLj0D3GrK6Qy70Ol4U5T84=;
-        b=QWYdkcnWThsmgomyvWXWxhrkydaLJf10+m6DOmZeT8Ju7fXlKru6sJe4n12PDks8wg
-         PqYStnLetJS1wBnph7z32S5FCe3vRqpcPMJJppFwVzmzDTzIA04dmshaxQC2tdzpAGgt
-         dKryKJ77fdKbHICGRoJJUj7xSKWcc9/YeOJgBAe8Im0LD7NINFS0oV0F6qx71BfvEvAP
-         WkYSZvop6XIWG6ikKtLr1xNeP8VsFneKx+QZp8WE+gkpYsi07A7NYwKqeDSEHOQ1suXf
-         btW6nl6EGy3AhgRqeg1MIBrh9XFXgeht1mZgV0RYFBWqr9CJNPIjSwoj0ZIwzPNnvLhy
-         c2SA==
-X-Forwarded-Encrypted: i=1; AJvYcCVTw+EiX2ohlUh/ZiixEMQyX/0LFoHn0oZ1z/WNB2P7FQnUHwfda70LK/l+gfuO5+xf9t9aymC1CU72jZyz9g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzf0HG3zDx6XVtskafgHFWxmxmyCe7XPw28moF5Jv/ihOHVn4P6
-	MZG+FdLTdm+5Sqh0UdLxJbo71b7GafHtlwCwqRTWLA7uZiMvxpGmuncyxLgSGouELir017TbtCN
-	nRY0=
-X-Gm-Gg: ASbGncsgxWtRFXLqzSHGvmfu/czAQk2iM9Kh5RCxdVLwOy60r99aWyFAmbC7mNt1W0E
-	mWtHxrNIu65sn9eUZhvMl07H8WPqiGgow6KX61JbYHv6sACEicT9Vc5hvfKdJNR0k4H2hNEN62a
-	6jNcbjjbUSKE3M41JoB8Lkt4w+/kTHKRviZU2DbH5t/vo5gdOHYiALuyzxBKQJGl+SOA6JYgHZX
-	zgESfav2f1CwKcXLZo4WJ5Eh6PyeNHbljRNwy3HyRMkobWqLTT6rzki0ECilbFXoTycJuXWzvZ/
-	pfIB2NVFj9F9p2YN52d2bzEJ5Mig+EN2wUnIUqpNzDuYFDZ85BtW9Xva0TvKoTR8yPud/rzAHli
-	y
-X-Google-Smtp-Source: AGHT+IG/Ehf4iW6EraJcP+SQjbbThuGJ33q0oe/0VNQupjFs1OsQMncmyEfJgwwGj+zR/UorQQXmPg==
-X-Received: by 2002:a05:6402:234f:b0:5df:b6e1:4690 with SMTP id 4fb4d7f45d1cf-5e0b7106a9cmr9778822a12.12.1740166259811;
-        Fri, 21 Feb 2025 11:30:59 -0800 (PST)
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com. [209.85.218.43])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abbb297ccd6sm817446466b.160.2025.02.21.11.30.58
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Feb 2025 11:30:58 -0800 (PST)
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-abbae92be71so285940666b.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 21 Feb 2025 11:30:58 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUUCkvEW/2TJvpwboJn0f5h+FqlVG0LLKIeJExWplt292MFMjFEVaCPL7kYyCR257P2RawsZJhHYcb/yoyVfQ==@vger.kernel.org
-X-Received: by 2002:a05:6402:530d:b0:5dc:5ada:e0c7 with SMTP id
- 4fb4d7f45d1cf-5e0b7253852mr10092967a12.26.1740166258146; Fri, 21 Feb 2025
- 11:30:58 -0800 (PST)
+        d=1e100.net; s=20230601; t=1740167203; x=1740772003;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3bYx7lKloKyg+UYaN5Q/XJxk/HLY0nsNiep4bhpWcTA=;
+        b=qtEE2EHp4xE543o/FOIvYw2MTO01KWgG3GtyMzGZg4RrqX+c7WqyJGPBYFNkuMFNeG
+         nHWP95GIIBLkH0Yfo9Ven5O0XjFMZVmdH9/cauQa+SoDZPLjFZSLm9/9SUmglPwJ0/zB
+         W3VczxROMNo4JlYxs7zj38armDX8hoZtcN2HJMl+h3JNuTEilPaZzmueA4SBSrEi0Skx
+         Mxy48cyFewsWMlzPmPm4DdN5G+kA1vWZDUWPpz6xc9wyU+p2qIDfFymWk+0TOj6IBTxW
+         Gk3fN2Avo465U0IGvCjGj62bMcLI27EsYWxWKAulLXBlwKn2RKwit9VxSXl9QudMAHtI
+         cBJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVqUQOirxwZjLUPwZJqEFctl17Zyc5zgFrQOppkH9ZjwlRiiMAtL3Oa3y5vi2ROoXflZjgwpAdmA9xWV1A=@vger.kernel.org, AJvYcCXKIfiabukrxQ+luz6cAiDnqnJEjP82YKmINK4MUonPW5WPtiYuyaF0rQ6YFE2qrwwBlnqw7vkXTTOY53MFVXk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRYD8jEOS4z3xzzY9bIcJm4mtCd8alhu7eZmwTPa8Mn6NzYWuJ
+	W/LC7ZWhAVtdpTDW3QNhL31NUbh/uyC91YuuVn0l1beSHIdDMvbZokvn2XJT4Do4Ton/v4ryjYw
+	3OQkR9PEtcWpIpEVbc0hNhwd/Rb0=
+X-Gm-Gg: ASbGncsvSriK2D+XErfnaa9B0TR65qpU0GBSuCsSaZ5aG6XZhmZdY8sFg9C8LNTFeeC
+	3GCCyccD8hiLmDvhl4deLO7RZZ1XkpCze/QQyZG9uwJ19WIBPpG82D8IRlli1EUORsgBPyZjCRV
+	h3rshVagsrvlBZ9W3UMuDGdAjjEuDcCbr/R1EKssCfFg==
+X-Google-Smtp-Source: AGHT+IEssYdLCQMaKWr9Fsmsz96kxOj8CVC+OVps927oFZ1uFTyt9hGj5b2TFamn7WpPzQEvImXyxlQ0/pqSzt5/0sA=
+X-Received: by 2002:a2e:9b0e:0:b0:308:fedf:8c26 with SMTP id
+ 38308e7fff4ca-30a5985e000mr13638691fa.7.1740167203144; Fri, 21 Feb 2025
+ 11:46:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
- <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
- <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com> <Z7VKW3eul-kGaIT2@Mac.home>
- <2025021954-flaccid-pucker-f7d9@gregkh> <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
- <2025022024-blooper-rippling-2667@gregkh> <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
- <2025022042-jot-favored-e755@gregkh> <b9a5de64fe1ded2ad3111763f35af9901bd81cc4.camel@tugraz.at>
- <caea3e79-78e6-4d98-9f3b-f8e7f6f00196@stanley.mountain> <61a7e7db786d9549cbe201b153647689cbe12d75.camel@tugraz.at>
- <20250221124304.5dec31b2@gandalf.local.home> <CAHk-=wgg2A_iHNwf_JDjYJF=XHnKVGOjGp50FzVWniA2Z010bw@mail.gmail.com>
- <6b3e4d3bdc9b6efd69068e5b22cfd05d370aed19.camel@tugraz.at>
-In-Reply-To: <6b3e4d3bdc9b6efd69068e5b22cfd05d370aed19.camel@tugraz.at>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Fri, 21 Feb 2025 11:30:41 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wg=pZvE9cHJUPKGCajRUCtDoW73xwY5UfJApCWms_FgYw@mail.gmail.com>
-X-Gm-Features: AWEUYZk2ROF9Gz3ijYo2QrCtR7asAMoIhd-gvs3NVhzWEfN_JKozPalppZ_7PrY
-Message-ID: <CAHk-=wg=pZvE9cHJUPKGCajRUCtDoW73xwY5UfJApCWms_FgYw@mail.gmail.com>
-Subject: Re: Rust kernel policy
-To: Martin Uecker <uecker@tugraz.at>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Dan Carpenter <dan.carpenter@linaro.org>, 
-	Greg KH <gregkh@linuxfoundation.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
-	Christoph Hellwig <hch@infradead.org>, rust-for-linux <rust-for-linux@vger.kernel.org>, 
-	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
+References: <20250218-hrtimer-v3-v6-12-rc2-v8-2-48dedb015eb3@kernel.org>
+ <KDmrJnQA2_Ojf67mD8WA_UafgVCACRRleB9t-D_1yl_bua8e1VWdGQAUvmMGHscqRHu1gzPJCKe_BfotutZm5Q==@protonmail.internalid>
+ <CAJ-ks9ncOyGyQsDFOBxg-7wmXkrQYiZr6H6eEFWsFstk=p1uAA@mail.gmail.com>
+ <87wmdkgvr0.fsf@kernel.org> <djAeSx8DNZwss2-UqXGmhVPqYm2z4LhKWC70jPHPisd1w70qmpmOfVbHfhqJErhoFwVFM8IpbTv4MKkk_BIpQw==@protonmail.internalid>
+ <CAJ-ks9mNidHZvWkFJE1jExc2oVk_bbJpiO_DRMrWu5nYhTpKgg@mail.gmail.com>
+ <87ldtzhexi.fsf@kernel.org> <87cyfbe89x.fsf@kernel.org> <Z7iQcDa72XnJ5zGC@Mac.home>
+ <CAJ-ks9kQccoa7znFNzWAgi6_G0TKvLUARWPZ_Dbed1C-d4Lr+Q@mail.gmail.com> <Z7iZevQkYVGDoeTa@Mac.home>
+In-Reply-To: <Z7iZevQkYVGDoeTa@Mac.home>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Fri, 21 Feb 2025 14:46:07 -0500
+X-Gm-Features: AWEUYZkhuy5uUEVC6MbUc90Erat1K-bUPqslx53fLBY9rVvn-TXqcFsbGm6329I
+Message-ID: <CAJ-ks9=f45WJKFwB4J0_a4j_Urf=yR_wukmfhRwRqtczDXfSPg@mail.gmail.com>
+Subject: Re: [PATCH v8 02/14] rust: hrtimer: introduce hrtimer support
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Danilo Krummrich <dakr@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>, 
+	Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 21 Feb 2025 at 10:31, Martin Uecker <uecker@tugraz.at> wrote:
+On Fri, Feb 21, 2025 at 10:19=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com> =
+wrote:
 >
-> The issue with __attribute__ is that it is always tied to a specific
-> syntactic construct.  Possible it could be changed, but then I do
-> not see a major difference to _Pragma, or?
-
-Oh, _Pragma() is certainly more usable from a pre-processor
-standpoint, but it's still garbage exactly because it doesn't nest,
-and has no sane scoping rules, and is basically compiler-specific.
-
-Don't use it.
-
-It's not any better than __attribute__(()), though. The scoping rules
-for _pragma() are basically completely random, and depends on what you
-do. So it might be file-scope, for example (some pragmas are for
-things like "this is a system header file, don't warn about certain
-things for this"), or it might be random "manual scope" like "pragma
-pack()/unpack()".
-
-It's still complete garbage.
-
-> > This is non-negotiable. Anybody who thinks that a compiler is valid
-> > warning about
+> On Fri, Feb 21, 2025 at 09:46:08AM -0500, Tamir Duberstein wrote:
+> > On Fri, Feb 21, 2025 at 9:40=E2=80=AFAM Boqun Feng <boqun.feng@gmail.co=
+m> wrote:
+> > >
+> > > Hmm... if you mean:
+> > >
+> > > trait HasHrTimer {
+> > >     unsafe fn start(&self, expires: Ktime) {
+> > >         ...
+> > >     }
+> > > }
+> > >
+> > > Then it'll be problematic because the pointer derived from `&self`
+> > > doesn't have write provenance, therefore in a timer callback, the
+> > > pointer cannot be used for write, which means for example you cannot
+> > > convert the pointer back into a `Pin<Box<HasTimer>>`.
+> > >
+> > > To answer Tamir's question, pointers are heavily used here because we
+> > > need to preserve the provenance.
 > >
-> >          if (x < 0 || x >= 10) {
-> >
-> > just because 'x' may in some cases be an unsigned entity is not worth
-> > even discussing with.
+> > Wouldn't the natural implication be that &mut self is needed? Maybe
 >
-> Do you think the warning is useless in macros, or in general?
+> For an `Arc<HasTimer>`, you cannot get `&mut self`.
+>
+> > you can help me understand why pointers can express a contract that
+> > references can't?
+>
+> I assume you already know what a pointer provenance is?
+>
+>         http://doc.rust-lang.org/std/ptr/index.html#provenance
+>
+> Passing a pointer (including offset operation on it) preserves the
+> provenance (determined as derive time), however, deriving a pointer from
+> a reference gives the pointer a provenance based on the reference type.
+> For example, let's say we have an `Arc<i32>` and a clone:
+>
+>         let arc =3D Arc::new(42);
+>         let clone =3D arc.clone();
+>
+> you can obviously do a into_raw() + from_raw() pair:
+>
+>         let ptr =3D Arc::into_raw(arc);
+>         let arc =3D unsafe { Arc::from_raw(arc) };
+>
+> however, if you create a reference based on `Arc::into_raw()`, and then
+> derive a pointer from that, you change the provenance, therefore the
+> below code would generate UB:
+>
+>         // cannot mutably borrow because of clone.
+>         let ptr =3D unsafe { &*Arc::into_raw(arc) } as *const i32;
+>
+>         let arc =3D unsafe { Arc::from_raw(ptr) };
+>
+>
+> (playground code snippet for this example)
+>
+>         https://play.rust-lang.org/?version=3Dstable&mode=3Ddebug&edition=
+=3D2021&gist=3D15e051db46c3886b29ed02e579562278
+>
+> As you already know, the whole thing about pointers/references here is
+> passing the value to the callback and the callback can "reconstruct" the
+> data, in such a case, reborrowing in the middle of the chain into a
+> reference is not necessary, and as the above shows, it can be
+> problematic.
+>
+> Hope this could be helpful.
+>
+> Regards,
+> Boqun
 
-Oh, I want to make it clear: it's not ":useless". It's MUCH MUCH
-WORSE. It's actively wrong, it's dangerous, and it makes people write
-crap code.
-
-And yes, it's wrong in general. The problems with "x < 0" warning for
-an unsigned 'x' are deep and fundamental, and macros that take various
-types is only one (perhaps more obvious) example of how brokent that
-garbage is.
-
-The whole fundamental issue is that the signedness of 'x' MAY NOT BE
-OBVIOUS, and that the safe and human-legible way to write robust code
-is to check both limits.
-
-Why would the signedness of an expression not be obvious outside of macros?
-
-There's tons of reasons. The trivial one is "the function is large,
-and the variable was declared fifty lines earlier, and you don't see
-the declaration in all the places that use it".
-
-Remember: source code is for HUMANS. If we weren't human, we'd write
-machine code directly. Humans don't have infinite context. When you
-write trivial examples, the type may be trivially obvious, but REAL
-LIFE IS NOT TRIVIAL.
-
-And honestly, even if the variable type declaration is RIGHT THERE,
-signedness may be very non-obvious indeed. Signedness can depend on
-
- (a) architecture (example: 'char')
-
- (b) typedef's (example: too many to even mention)
-
- (c) undefined language behavior (example: bitfields)
-
- (d) various other random details (example: enum types)
-
-Dammit, I'm done with this discussion. We are not enabling that
-shit-for-brains warning. If you are a compiler person and think the
-warning is valid, you should take up some other work. Maybe you can
-become a farmer or something useful, instead of spreading your manure
-in technology.
-
-And if you think warning about an extra "x < 0" check is about
-"security", you are just a joke.
-
-              Linus
+Thanks for the explanation. I think where I'm still confused is that
+provenance is to pointers as the type system is to references. In
+other words, it's not clear to me how using pointers solves the
+problem of wanting to write through an Arc. Is the idea that the
+pointer inside the Arc has write provenance, and that by doing pointer
+offsets instead of going through references we get to break rules
+about mutability?
