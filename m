@@ -1,79 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DEDC2045B7;
-	Fri, 21 Feb 2025 22:23:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377091FFC6A;
+	Fri, 21 Feb 2025 22:36:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740176627; cv=none; b=DwPrg8bG9GclZJ5Pha5a42/nl0doP8zGCWSR1U3AHp8sSjrgZWNP7BlKPxh0MJPteMoYUHTL+ayEilXYEl09bYI0fsTzditnRMX3vca1iBQQPFlhsRaOTm7hYlf5dCJ/j8/hY1iTBhwFGb+8U4Lacy4x2cpsxCjEmqxpZ+HFYxg=
+	t=1740177374; cv=none; b=Xw1Bg/Z/Xo/q5SuUiv3rey28a9U/SubG7yXJQGeJngOeP446nsZsCw1rMvMGe8AyjA0NbWMSYw+qCzO2UTTGLwkWOPVyTowm3o56apXVTVbelGh/uIMWabkkPEjni691hzPIZVbfTwiqVcqls+RZvUlQhE8xteajAwkGAVRiGpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740176627; c=relaxed/simple;
-	bh=L+WRYZAtwOgscC+CovPo7Vs26ly8n19IaxeU6ex2VFE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=alskSVZaXjcoNvh5LlkFfeKwDD23XwS15JxDF1PFRk7Pv9k9fH6q7iRsPwEvRpYmcGEZeXQbreV0L42T6aFlI/JaPZ2uSjTUveZ99peNVE/sjpwF4OVvX3YUqWeB7p8oECF46hS0p9PzOOArigP4JMNhUtYQAyw7cKooeMSr2Kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE30FC4CED6;
-	Fri, 21 Feb 2025 22:23:45 +0000 (UTC)
-Date: Fri, 21 Feb 2025 17:24:15 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Martin Uecker <uecker@tugraz.at>, Dan Carpenter
- <dan.carpenter@linaro.org>, Greg KH <gregkh@linuxfoundation.org>, Boqun
- Feng <boqun.feng@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, Miguel Ojeda
- <miguel.ojeda.sandonis@gmail.com>, Christoph Hellwig <hch@infradead.org>,
- rust-for-linux <rust-for-linux@vger.kernel.org>, David Airlie
- <airlied@gmail.com>, linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
-Subject: Re: Rust kernel policy
-Message-ID: <20250221172415.5b632ae6@gandalf.local.home>
-In-Reply-To: <CAHk-=wg=pZvE9cHJUPKGCajRUCtDoW73xwY5UfJApCWms_FgYw@mail.gmail.com>
-References: <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
-	<CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
-	<a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
-	<Z7VKW3eul-kGaIT2@Mac.home>
-	<2025021954-flaccid-pucker-f7d9@gregkh>
-	<4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
-	<2025022024-blooper-rippling-2667@gregkh>
-	<1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
-	<2025022042-jot-favored-e755@gregkh>
-	<b9a5de64fe1ded2ad3111763f35af9901bd81cc4.camel@tugraz.at>
-	<caea3e79-78e6-4d98-9f3b-f8e7f6f00196@stanley.mountain>
-	<61a7e7db786d9549cbe201b153647689cbe12d75.camel@tugraz.at>
-	<20250221124304.5dec31b2@gandalf.local.home>
-	<CAHk-=wgg2A_iHNwf_JDjYJF=XHnKVGOjGp50FzVWniA2Z010bw@mail.gmail.com>
-	<6b3e4d3bdc9b6efd69068e5b22cfd05d370aed19.camel@tugraz.at>
-	<CAHk-=wg=pZvE9cHJUPKGCajRUCtDoW73xwY5UfJApCWms_FgYw@mail.gmail.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1740177374; c=relaxed/simple;
+	bh=Df/G3F66VFOOMEBPuY0a6bwDc8reB4bv6DCHqqRUiiU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O2V/jbS/GdpvrHb+B2IJ0ihJ+9Kw2viU+5EK4v41yX4MEApe0qoqUO+A4RYZhpI7sqr5bYgCCSdNJFKkPgfEqPrOudFbpAdr/hlHbvDZOOAUuBl9SyC2CMEhHxWyFeHkVanrajJ7TblwqEEDx9tBUwh7Ri7YfDuDL3kXSbBLayo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=X+qgijfs; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="X+qgijfs"
+Received: from hm-sls2.lan (bras-base-toroon4332w-grc-32-142-114-216-132.dsl.bell.ca [142.114.216.132])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 768DB205367B;
+	Fri, 21 Feb 2025 14:36:11 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 768DB205367B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1740177372;
+	bh=QTP8p/YkwjP9gnklyqmthyBoYuNs/td42uSQ7HlcEOs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=X+qgijfsLtfYqQcRGCQIQsObPy/ZqDfKpL/fOLRWSHCI42u6XsimtNtMFq+knyWKh
+	 pKxna2quG+D2/rKVDPYtFhQJKP4cBF6upILOCEdwl5WFVp+rSFqiGWgDN9wWif1PBX
+	 e9c+x68b5I3pXPohD7km8IeqjGSrJxSR9kJo/1v0=
+From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+To: rust-for-linux@vger.kernel.org
+Cc: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Wedson Almeida Filho <walmeida@microsoft.com>,
+	Nell Shamrell-Harrington <nells@linux.microsoft.com>,
+	Dirk Behme <dirk.behme@gmail.com>,
+	Konstantin Andrikopoulos <kernel@mandragore.io>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Roland Xu <mu001999@outlook.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] rust: workqueue: define built-in bh queues
+Date: Fri, 21 Feb 2025 17:35:31 -0500
+Message-ID: <20250221223533.158959-1-hamzamahfooz@linux.microsoft.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Fri, 21 Feb 2025 11:30:41 -0800
-Linus Torvalds <torvalds@linux-foundation.org> wrote:
+We provide these methods because it lets us access these queues from
+Rust without using unsafe code.
 
-> And yes, it's wrong in general. The problems with "x < 0" warning for
-> an unsigned 'x' are deep and fundamental, and macros that take various
-> types is only one (perhaps more obvious) example of how brokent that
-> garbage is.
+Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+---
+ rust/kernel/workqueue.rs | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-The bug I recently fixed, and I still constantly make, where this does
-help, is the difference between size_t vs ssize_t. I keep forgetting that
-size_t is unsigned, and I'll check a return of a function that returns
-negative on error with it.
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index 0cd100d2aefb..68ce70d94f2d 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -703,3 +703,21 @@ pub fn system_freezable_power_efficient() -> &'static Queue {
+     // SAFETY: `system_freezable_power_efficient_wq` is a C global, always available.
+     unsafe { Queue::from_raw(bindings::system_freezable_power_efficient_wq) }
+ }
++
++/// Returns the system bottom halves work queue (`system_bh_wq`).
++///
++/// It is similar to the one returned by [`system`] but for work items which
++/// need to run from a softirq context.
++pub fn system_bh() -> &'static Queue {
++    // SAFETY: `system_bh_wq` is a C global, always available.
++    unsafe { Queue::from_raw(bindings::system_bh_wq) }
++}
++
++/// Returns the system bottom halves high-priority work queue (`system_bh_highpri_wq`).
++///
++/// It is similar to the one returned by [`system_bh`] but for work items which
++/// require higher scheduling priority.
++pub fn system_bh_highpri() -> &'static Queue {
++    // SAFETY: `system_bh_highpri_wq` is a C global, always available.
++    unsafe { Queue::from_raw(bindings::system_bh_highpri_wq) }
++}
+-- 
+2.47.1
 
-If I could just get a warning for this stupid mistake:
-
-	size_t ret;
-
-	ret = func();
-	if (ret < 0)
-		error();
-
-
-I'd be very happy.
-
--- Steve
