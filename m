@@ -1,158 +1,193 @@
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020092.outbound.protection.outlook.com [52.101.195.92])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE01120F07C;
-	Fri, 21 Feb 2025 14:21:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740147714; cv=none; b=HGE0s2c6kBCAih65Y1JsZvebcehcd1mW2bet95ba48JpjVcqDUnXtCoMg1NQt0DqcgV3dmOU7x9GBfXn4G0RiOAiPy7ehppr2ampYbv/hWsU31LkKfFm7Et1Prx/GbI7LI740aJwpu8LBWeiV8tCJ1qkO2JGWLBH9MWF45sFBZU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740147714; c=relaxed/simple;
-	bh=KH2LSxp5HiskMIEy8B2KMY95P7tOmxPEnEzALdzM8H0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HtSM/EmQA35LLjbRZ5F83h5iKyJNXKMPsnMmL/Rbxlywh40w4ClCoBe1K1AyMqDdgxu0G9bptdL58AFzZ5BtFwjUGjQbkiiDQaQfSL+pfAy/bsbm4GzYT6mpC7q4T6PdEtVqG9IMK+tt1Ku6t9RUw+mq0dtFBQ6g1TpVr2VDHrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QrhLm364; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79CA620F08F;
+	Fri, 21 Feb 2025 14:28:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.92
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740148104; cv=fail; b=I6+kgl2B6yqocqYX5hqAjf+FD91hwfiyPjq8jnosKMPqdf6WRvKaXQjQ5roIpo9DBwq7qZ9SMLpDH7cahmmgnP5uFmVm9R+Mjj9HVJ4kP+Yo7H8zCsj7iCS/oXvmDBVtFs7k5O698W+XgUyjdWoooJuUGDSzBmXXBt54YWhVLZg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740148104; c=relaxed/simple;
+	bh=9/XCgbLOiX+O5x2O81JQNIe4x0Ss95sACdumhvod/+8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=CbJkfR7GpTMbLKDAMRJk10baiNTCS5RwNJx18ITyKTfMfGLNtS0KXSIqa0vMtdZkj43fk2enh8BMF9EEJEzIXMvNigypJSlT3lcBMBkovhU462EN6r6o3waG5jpRw456/S7jTkV75r5753m3zP/d65ponzCFZ/nXOniyAh1A84Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=cYA1a5nG; arc=fail smtp.client-ip=52.101.195.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QrhLm364"
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-30761be8fcfso19644971fa.0;
-        Fri, 21 Feb 2025 06:21:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740147711; x=1740752511; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GZCJvRxi0/Mr6eA3W6ftvDTnj6qidWIEoe/AxCuI3i4=;
-        b=QrhLm364o2UCsqNnfLllW7sJdT8rz9GdbuTLrKz4HRVHKu33/WY3v1WXC60M67Zqvh
-         E6c9Ch8AwXv8HOhl6TgGO5LPVsQeX6prXqMHEPANlQkEArlVzG6fDAYcpfWDDWsvkRAS
-         rHst6gPD5xinLPAoClJHLwLgmoCkarHWCBjl5uiUIGVGClQKhsq82JY9lS8C2PJUg4T0
-         fS2kXwO36mMlLTZxcpgsTqeQ9P4Hzqt3pE+jDkuaNGb5G3ErjgED41S7NN7aAtew1PbQ
-         HeG4Ea5TeCQKgveOosKh0I+pXJqgNC1jnlIO2UB/1xeu9rIrjmS+goz+U7qtX9STsD7w
-         nhvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740147711; x=1740752511;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GZCJvRxi0/Mr6eA3W6ftvDTnj6qidWIEoe/AxCuI3i4=;
-        b=ou1raNICMMOcUyaVWdKaIS/g0ztap2I0adSB1gGTQNmKMi3+nvn/9Xp5asXZBxUqUM
-         GcfPt49OgTHfyD1YWQ5gS6fGZfV7kBZS5pJ8cPXh1ieGOTNbREZKVyNnFahIYaeOv+/n
-         sPWyilAABlkZdxCGnAMGwH2dwoFpQ9hchZxtaJJIrNbd2N0kPACXvM14xQU5W39wXMLV
-         neEkr22tkRx/2iNdjw7o5YyuhEtiC1F/zEBvzm+VZ0EBhG6EXHMivUIOZUsYCD24wLov
-         PUMIsPQB2K+PDWkU3jM0fppSBARFAgBEpcgb9SM4+B4U0QgtFtWqwip2HFp/EedYbJPM
-         mZGg==
-X-Forwarded-Encrypted: i=1; AJvYcCVNMOhMJSdjk+ISqI92x+GnxLEDHT9HwgaI6EouUJiJ8IySlQIL+SN2nSwBbOMueMO32HBxgW4funQsIuh5Buk=@vger.kernel.org, AJvYcCX+bSM7a1jVGwQiCIo73q2YxsoJ4khmBYaqK50olhdWlrR7cQqmFrhpZQvIlYmrM61J7X90Cg40R9fbLE4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxh4qJ7gHnEDv6ZmOFvZjo8JQyrKVEpiKDDH8eDglOp9LqdQ2BC
-	nAHI7hG1nJXbpZLBx6ghTf6BhNoPJ1f3p1zVIgN7f9Y38ozwURzaK6KlrmHlZyrjwZtAiQD/Yyp
-	nEmGVcZ6e5u9qC90E2haCAoSTrmk=
-X-Gm-Gg: ASbGncsgyUtmfXx3KwT65LHhjTUHPMWbqTLkMQkc3wHMVDrQcM8NN865dC76tMGsc2E
-	s76yCJL+QpUlpzLh7z1fXB5IkJUdYe681INSYWwqa6Py2IXm1ELS+tUttNbbLNk4qhVGimMRaJR
-	dcV9oZEMl5H5I/rHYGNI+V77B9Pi+44UVE1ur+uF9Nig==
-X-Google-Smtp-Source: AGHT+IFqP7xajTtZNtfZfejub1Ng/e8qr2zLLbAwq8N/lJl9rRWBeUk52pbuAomwIloFgGZ0pI3sGoO2oVqDFEywaHE=
-X-Received: by 2002:a2e:3516:0:b0:306:1524:4a65 with SMTP id
- 38308e7fff4ca-30a598e59f5mr10809971fa.20.1740147710726; Fri, 21 Feb 2025
- 06:21:50 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="cYA1a5nG"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MS5bdgUzYIyiHJnO3zoGsBv7t/hRLRjmfY98uL6DQxR4CyM6v/JKB8z5d3DJRXE1N/aQ3CwauguEJtEh3KGGJF4D4Y6GrY/0qoffODOzNfxpWV5OE+yFf/il9kERyErt/A6kWgHRK0g6CWSHZFpXrk9wKsV90Xjsrx57jzUEHnh7lNHTuZM2zXhjvJ4agoAigJidRWLKvOQw69wEHgE1MnOKceiXlBcc1kydfGbzwyGkXWmaQUsZUOsB2ANDC+gSIE2i5bPacTQTJZoMYMj5v82ZgLCdkxRXQjOyllg4Jmtse88K4QkI8PBF6wL3uQbuEIgI1dmtprjhxRwrEMA5hQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9/XCgbLOiX+O5x2O81JQNIe4x0Ss95sACdumhvod/+8=;
+ b=H91IDQ/E/SBk3YKSzixpZ/Lm4bYfhMkkLVw7MLmsffr0rpZVZBWzN+N77z9WcYwWTgUychKmwaPhBL87uZodML0V/AULqXJa+1CSeKFxZzlvxaarcPlWKP1AEUimE8GI09+88RiLnXXdFJ5/PT9S+xYuqyTVj8D733hMjFH4b7N1I5TxI1siBNHgZta5HDN5mapdZmPlCB7ohqEl3w60csyzFw9azvxWDSJTsQFmbckNkY40yCcjfwOIdYup2lt/6EExwBe887KkwLiX0ql1BwIjGT4KRXACh4OAV+T7jslFJoJXtWHJFGUUhmoo5AwW3/sXNORGUrKTAPQucpIZfQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9/XCgbLOiX+O5x2O81JQNIe4x0Ss95sACdumhvod/+8=;
+ b=cYA1a5nGTbR6g25TY5WCDU/5Y281TFgbXsLY+HXvqK7hyz9TKe2UyajLhMMhyeI2tOFPMyJg+tLZVXIztlXEOwUArKPJpIEEmtAzxI1Gbz1eVestv8q8WxKmPQYeS+BeLVOhZ3eUobsJ2yaNl/aljhKJvNWjXc+E83H75+N2Pzs=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by CWXP265MB2807.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:c1::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.17; Fri, 21 Feb
+ 2025 14:28:19 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7%4]) with mapi id 15.20.8466.016; Fri, 21 Feb 2025
+ 14:28:19 +0000
+Date: Fri, 21 Feb 2025 14:28:16 +0000
+From: Gary Guo <gary@garyguo.net>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Tamir Duberstein <tamird@gmail.com>, Michal Rostecki
+ <vadorovsky@protonmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
+ <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor
+ Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v8 0/4] rust: replace kernel::str::CStr w/
+ core::ffi::CStr
+Message-ID: <20250221142816.0c015e9f@eugeo>
+In-Reply-To: <CAH5fLgjUuCo5Ayx4WCfnrVAC1prvUbY-pvZdinkAb+KcSOWvpA@mail.gmail.com>
+References: <20250203-cstr-core-v8-0-cb3f26e78686@gmail.com>
+	<CAJ-ks9kyozt45VeXG7GBTN-ejy_HGMOekFYFMmzS8AbEusZMWQ@mail.gmail.com>
+	<CAH5fLgjUuCo5Ayx4WCfnrVAC1prvUbY-pvZdinkAb+KcSOWvpA@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: LO4P302CA0027.GBRP302.PROD.OUTLOOK.COM
+ (2603:10a6:600:2c1::17) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org>
- <20250218-hrtimer-v3-v6-12-rc2-v8-2-48dedb015eb3@kernel.org>
- <KDmrJnQA2_Ojf67mD8WA_UafgVCACRRleB9t-D_1yl_bua8e1VWdGQAUvmMGHscqRHu1gzPJCKe_BfotutZm5Q==@protonmail.internalid>
- <CAJ-ks9ncOyGyQsDFOBxg-7wmXkrQYiZr6H6eEFWsFstk=p1uAA@mail.gmail.com>
- <87wmdkgvr0.fsf@kernel.org> <djAeSx8DNZwss2-UqXGmhVPqYm2z4LhKWC70jPHPisd1w70qmpmOfVbHfhqJErhoFwVFM8IpbTv4MKkk_BIpQw==@protonmail.internalid>
- <CAJ-ks9mNidHZvWkFJE1jExc2oVk_bbJpiO_DRMrWu5nYhTpKgg@mail.gmail.com>
- <87ldtzhexi.fsf@kernel.org> <87cyfbe89x.fsf@kernel.org>
-In-Reply-To: <87cyfbe89x.fsf@kernel.org>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Fri, 21 Feb 2025 09:21:14 -0500
-X-Gm-Features: AWEUYZkNiPFPPOYhdALIzKHcQSsexL6ZJWm5YYY9rkDBZjc4PJ9zmsqmRRpvGYQ
-Message-ID: <CAJ-ks9kLZ7LCTW+W4jhUqmF1ypJ7i56oSizdFV-1Ks5DiCoKsA@mail.gmail.com>
-Subject: Re: [PATCH v8 02/14] rust: hrtimer: introduce hrtimer support
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
-	Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>, 
-	Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWXP265MB2807:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8138b919-7a27-4189-7576-08dd5283fcea
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|10070799003|366016|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?UExRTTZEOXllT2Njd3NkRjlZMWF1WktjOEZYT21WOG9OWGlkZjZhTFJkeGM0?=
+ =?utf-8?B?K2h4cmt1bTMxVE1pK2tqakU5SXVZRWN5ZVp0emNjQzMvbThuMUhPZG9TSW5M?=
+ =?utf-8?B?UnVSOWJqT01DNUtkOG9TRi9LZktFZU5pYktCRXcxRGFaMHl1ZS9kamhTbHcx?=
+ =?utf-8?B?aFk4UHFSMFg3a3ZISzlWSVA1TWViRUtab280b1FBdUFXaUxqUEM4WC9yeDBu?=
+ =?utf-8?B?alJNVmJPTzlhMnRud1E2aHZzdHQwc0FIMUxkZ1RTbXdJNHVTWnNmdk5SZEE2?=
+ =?utf-8?B?NW5iRUhoMk53dUh4aWMrMlRMcDdhSjczVXIwSVJyVWhpK0Q3M3FWSWRKT1RP?=
+ =?utf-8?B?THZhNHlDRSs3bWlPR1BpdVlsYk53MDAzTFFub1N1anIyK3hQT2RzZ2dNeW1x?=
+ =?utf-8?B?S0pGY1c3dktNUkhialJBa093VE1UNTVuV2FQUGpRNXVXWHpqWXUySnhsVWVJ?=
+ =?utf-8?B?UTlCOUFORHVVQjRBNTN5V2JzQzkxckQvWGluQnppOEFiUE9wMXVqRGhhVUYv?=
+ =?utf-8?B?ZzZuZi8wa2pDV0t0MmVzbElObWJ5ZlNqK09BdmZlbHdhZWxldFFMN1FVeWJP?=
+ =?utf-8?B?S1g3V1ZwLy96NXJLV29XbU9HcFdSSzZQb1c5SUI1MXMreVlMeGd3WmhCRTNW?=
+ =?utf-8?B?a0tXbkI3WWg3Z2dyTmY5ejAySmJIa2pFb2dQZGFnWXlkMzhvNHJKbXplRUFI?=
+ =?utf-8?B?NXphV29mdzU4NjFqYTBMeTlKSVBKemdBM2lYWDlTWUtqRXZqY3F1TmRuWjRV?=
+ =?utf-8?B?cnZ0K0ZGZWVZWnlDN1BUdTBxZElmVUVsZlVMaEd0QXdMTzRCNHhzRUJ5Zm42?=
+ =?utf-8?B?blVEaFE1cGJJODhEQ3NEcThoWTBzekxLOVpkQ2cxNTRYMEpLbTJBckxQaFRO?=
+ =?utf-8?B?TzFwT1RlTmg4bkdENHhZSk15WDVDNUtVQlFLVk5jdDQvNkozSzE1WDY3Z3JJ?=
+ =?utf-8?B?V2FCa2ExU1NoQVd4N092Wm5zUkRxQUZkZkRwNDdkaGd5c09WTUJvZWFiSnFN?=
+ =?utf-8?B?MlRnbVEwd3phT3h6MmVGWGUzSGw4RiswTEdHbE9kU0wvZXFvcnk5dlM0N084?=
+ =?utf-8?B?NmFMcXFJNnBhUUNxZHhCb2ZCdkZ3OGRkOG1jbDlmRjMvdklWblc5WkFYRGxG?=
+ =?utf-8?B?YkVUOGdlRFN1c3A4MExYU2d0MVpWVVJIVjBjeXJFM2dNVkR5dGVCaUtCQzRV?=
+ =?utf-8?B?aHRQb1dZVlVpd0laU1lFL2Y1cytQR0tQcjF2d2NHcjZGL1B3YUc2L2tOUE9j?=
+ =?utf-8?B?OWM0ZjdKcno4Sy9tRmw3WDJtamx2SkJtR2N5U2xwQS9hL1BPV29abGYrNXgy?=
+ =?utf-8?B?N1lTb28vdC9GVlg0OUdBb1hqbkFBdVpZZjN5aFRpTkhlRU1ndC9BSHYwS1NV?=
+ =?utf-8?B?aXFXMlBjeERXV3lhOWVhTms0cThoRU93em5TREJpQ0UzcUprcFFmVVZrb1NX?=
+ =?utf-8?B?bVlmUFRqQ1ZzMmVvdlFEMzNUNFRIZTY0UnZsQkJOSnk0dERUeWZKQUNTM3Rt?=
+ =?utf-8?B?dExRY2swOGIybS9EdlRad3B1dE9KWCt4ekVGaXErdFlMNmFucXN3cy81d1I5?=
+ =?utf-8?B?NkNKbkN3a0FURTBjTXNXN3VXREh6djV3RnplK3I3aVNjZ1RKWnNYelV4eTR4?=
+ =?utf-8?B?aUYzbUZzZHFENXl4UUZKUW9GRTNhRHlHL0M3UDBlRlhVaEljdmtWUGlyeTNq?=
+ =?utf-8?B?RkFnVTdLek0zUHQ4NTFRZVVJenB1ckhRNmU2czAzMEdXaXZ4YXlNNUpoSk55?=
+ =?utf-8?B?RzRndTE5aWx2S1R3YnFtSGliZzlTdEF6WGw3anFPWGJ1L1JWMktFeEl1OFdD?=
+ =?utf-8?B?L0hBVVVrblNJbGgrMUpXNjhHbjVPZ2hiVUFjWkYvdlB5NXREbnhkVWpralNa?=
+ =?utf-8?Q?XtxN7h3vH7LB4?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VnViVDlkMFhESVM1VFVZR3dTTGgvbnVtYU0rdTNOVDdNMXIvUXV0bmJQQzVl?=
+ =?utf-8?B?c1JrL1prZ05hak11S0ZaVXEyUUc2WDR3YzlNY0x2OVdLWVExRzVqOHkxZ3lQ?=
+ =?utf-8?B?WWF2eXQ5RzJQWTZkVEl5dlBYUXJlN3c0Uk1BTUtIYzBoTWxyTFhPRnNESVhF?=
+ =?utf-8?B?bHhxWFI2c1FTNHZ5ZEJIOHRWbEdwR0wrdmpObmdWTy9ZM2FCeHZMOHlUY0lR?=
+ =?utf-8?B?dEdkaHpXWkhMZTFOem1MOTBsL3BUM0p2TDJPUmdFalQxcDVFbUlxaDQ0b3lk?=
+ =?utf-8?B?QjlONFBjbXZIR3BnUWJpMkNnMmxEU3ZSc0dNT1JNWDZCUmlEYmMycTZEQW9m?=
+ =?utf-8?B?bkVZR2loMTNUTGlkL2IwV05oUmRzVzM4L3FQUmk0SkNRejY2Vm9aRkhDY0xT?=
+ =?utf-8?B?K0ZCZld1L1pkY0U1Vm1UZWp3Q2JjQi9mcHlRMDZhdGJ0c1JmZWdOOW1oTE5i?=
+ =?utf-8?B?cmtxYXlrOTV4ZFJDeGdMcDlWaEpOVjEwY1VTdVBYcnRWY2dEVldpTjRJTW1s?=
+ =?utf-8?B?czRxelNDclcvdGpMMU9QYktqcE9pVkxVSU4xSU1UZzdWbEhJcjVDYkJUY2ZO?=
+ =?utf-8?B?Mlo5bjVQdy9mNElDbWx4Nnl1My91NXVnSHgwTUFuN3djS1VuUUFzNUxNRFNO?=
+ =?utf-8?B?NFJVOGZGK3F4OEtDOUp2ZEcxRXVQbjFQTTU5ZDhMM1I0UG0rMDVEbG1YeFQ5?=
+ =?utf-8?B?Z3NLTTdYaGxvRlVZMFVNdFd3Qjhkdml3WmUrdUFsM0Y1bXhlOVVVUnp4NjZx?=
+ =?utf-8?B?eEpabzRZaFhxS3M4bTJEL3dYQnVSNGVDYmlHNHRDc0xIdE5melhLMUNwV2ZF?=
+ =?utf-8?B?YVRFNkgyWWN4dDNwK2wzZDJEVDhiQU5kTm41ck9DOXJkZytuVCt6ZVpQdDRF?=
+ =?utf-8?B?ejdJVDN1Z09iblRYR0JLQTdIZjBNVGFLb0FrT1N5eVQzc1NhbS84MmhkZW14?=
+ =?utf-8?B?ODlOL1VzN0hSWUR6bGFOOVhLUERmdUFYYUYrWWVydXpubjAyNFgybGxwR0g5?=
+ =?utf-8?B?ZDBGWm9uRkt2Vk41NjFnbUJBeU5XUW9yWmFqVVNnV1pMeWRDSURnSmljQmp1?=
+ =?utf-8?B?ZmhpMmh0TWpnc0l0TU9URUxzV0tRaHNOK0xKS0lMWldlWEZ1SUU4UlJ3NjN3?=
+ =?utf-8?B?QlNxSm9EZFNWaE5mMTVBd0l1bmhENnlFQlN2VWM1YktycUdqaUtWWVU5c05V?=
+ =?utf-8?B?aEh6NFhsVGN3L0RXcmdvK3BOYkwrK3VRdW5BeS80VmFlWCtRTDd0azVCNnpl?=
+ =?utf-8?B?QWhTTzFjMEYwQkpnejVrMzFYSTRrc1Q2QmNjdlpqRXdGbkREQ2NFM1JiR2lh?=
+ =?utf-8?B?SlFyZUp4N1orMTJBQi9xSStGUkFLYnBzQUp5dkpob0RMbTRHZFpXRlVYaEJa?=
+ =?utf-8?B?YjB0VjZYbXlDWUd5ZlJQTG10b3RoTVFHYTl4cVdPYU41T2hZRUJDTU5vS3I3?=
+ =?utf-8?B?T1VZRndpTEp3cjVmZCs0VEhqdU13ZFp3dkplLzhvbTQrU3c1MEdZNzFZQ0N0?=
+ =?utf-8?B?RzNxK25DR2hYd0tFQldRVHlQUUtQa0QwMnE0NUhCNmJHZWdrQ2NndjJQUDUz?=
+ =?utf-8?B?QlBqenBHTFpzTmVQd2RTVjhWblYrVWVyMzVWNHVnaDN3WVR0WjcvMTlsRUdY?=
+ =?utf-8?B?RDNtY0h4RVJEVWdDVTNWcnYrekxtSEVRSEtkVG1LUjhRc0tjdDVQZTgwMjUz?=
+ =?utf-8?B?NTE0cHpxbTVNaFE2OFowVXZmL2FzMC82VWZNVGJiRnd1WDRmTkZjOWZRV3Bn?=
+ =?utf-8?B?alE0bjYyYUd4ZUU1MUpzMXowQ081cDk0L2VSS3E3SG5mZWpzQS91c1RJalJG?=
+ =?utf-8?B?NkNsVURzWWhoVnhLWEhFT2dnRGpvT0dweWpUZHlTU1UzczIwWHpEemkxWVl2?=
+ =?utf-8?B?RC94M2lnTlNuM2p2WVQ2Yi8ydlYvWHBXRGtDWVBKVER0TjNVcFlGWW1TY2do?=
+ =?utf-8?B?bHFmQ3pZOXJMczIwR0k1Nkp2NHU4TjhUTlJtaE1aZkpKci84ZEN1d3ZaR3J4?=
+ =?utf-8?B?YW01WmxiY0htUHFDOERsVTlYUWxnOFNPWFp6RSthRGgxTlQrVGpPTWZaSHhF?=
+ =?utf-8?B?bVI3NXdoOS96OG9nTGZsNXJmdlZVcTdnSVF6SlBEQXV5dldScEgrNHFSK2Vv?=
+ =?utf-8?B?anBGZ0ppSkZCOU9xMC9oZGR3UkZKRVd1Qis5Vks4M1VoR0JxdEpTWWtZUGZ6?=
+ =?utf-8?Q?Xxg3PnH3P6P9UoufmaM/CFQ=3D?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8138b919-7a27-4189-7576-08dd5283fcea
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2025 14:28:19.5471
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: e6MMRqyaN2dZZlT9F8ym4yE5tXID0dTmnBANgJx7EGM6RLLPK5nJl7Hmfg4/0I/WfMn82dxtbIIZVdIcsKTinQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB2807
 
-On Fri, Feb 21, 2025 at 8:29=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
->
-> Andreas Hindborg <a.hindborg@kernel.org> writes:
->
-> > "Tamir Duberstein" <tamird@gmail.com> writes:
-> >
-> >> On Thu, Feb 20, 2025 at 4:19=E2=80=AFPM Andreas Hindborg <a.hindborg@k=
-ernel.org> wrote:
-> >>>
-> >>> "Tamir Duberstein" <tamird@gmail.com> writes:
-> >>>
-> >>> > On Tue, Feb 18, 2025 at 8:29=E2=80=AFAM Andreas Hindborg <a.hindbor=
-g@kernel.org> wrote:
->
-> [...]
->
-> >>> >> +    /// Get a pointer to the contained `bindings::hrtimer`.
-> >>> >> +    ///
-> >>> >> +    /// # Safety
-> >>> >> +    ///
-> >>> >> +    /// `ptr` must point to a live allocation of at least the siz=
-e of `Self`.
-> >>> >> +    unsafe fn raw_get(ptr: *const Self) -> *mut bindings::hrtimer=
- {
-> >>> >> +        // SAFETY: The field projection to `timer` does not go ou=
-t of bounds,
-> >>> >> +        // because the caller of this function promises that `ptr=
-` points to an
-> >>> >> +        // allocation of at least the size of `Self`.
-> >>> >> +        unsafe { Opaque::raw_get(core::ptr::addr_of!((*ptr).timer=
-)) }
-> >>> >> +    }
-> >>> >
-> >>> > Can you help me understand why the various functions here operate o=
-n
-> >>> > *const Self? I understand the need to obtain a C pointer to interac=
-t
-> >>> > with bindings, but I don't understand why we're dealing in raw
-> >>> > pointers to the abstraction rather than references.
-> >>>
-> >>> We cannot reference the `bindings::hrtimer` without wrapping it in
-> >>> `Opaque`. This would be the primary reason. At other times, we cannot
-> >>> produce references because we might not be able to prove that we sati=
-sfy
-> >>> the safety requirements for turning a pointer into a reference. If we
-> >>> are just doing offset arithmetic anyway, we don't need a reference.
-> >>
-> >> Why do we have a pointer, rather than a reference, to Self in the
-> >> first place? I think this is the key thing I don't understand.
-> >
-> > Perhaps it makes more sense if you look at the context. One of the entr=
-y
-> > points to `HrTimer::raw_get` is via `<ArcHrTimerHandle as
-> > HrTimerHandle>::cancel`. This user facing method takes `&mut self`. The
-> > handle contains an arc to a type that contains a `Timer` and implements
-> > `HasHrTImer`. To get to the timer, we need to do pointer manipulation.
-> > We only know how to get the `Timer` field via the `OFFSET`. The natural
-> > return value from the offset operation is a raw pointer. Rather than
-> > convert back to a reference, we stay in pointer land when we call
-> > `HrTimer::raw_cancel`, because we need a pointer to the
-> > `bindings::hrtimer` anyway, not a reference.
->
-> I changed `HasHrTimer::start` to take a reference, and I think that
-> makes sense =F0=9F=91=8D Taking an `impl AsRef` does not work out when `S=
-elf` is
-> `Pin<&T>`. I'll go over the whole thing and see of other places could
-> benefit.
+On Wed, 19 Feb 2025 14:21:35 +0000
+Alice Ryhl <aliceryhl@google.com> wrote:
 
-Can you elaborate please? Pin<&T>::get_ref returns &T, which gets you
-to the AsRef you need, no?
+> On Tue, Feb 18, 2025 at 5:05=E2=80=AFPM Tamir Duberstein <tamird@gmail.co=
+m> wrote:
+> >
+> > Gentle ping. Trevor, Alice, Benno: you all participated in the last
+> > round of review - I'd appreciate it if you could take a look at this
+> > series. =20
+>=20
+> The primary thing that comes to mind looking at this is that losing
+> the Display impl is pretty sad. Having to jump through hoops every
+> time you want to print a string isn't great :(
+>=20
+> Alice
+
+I'd want to add that we currently also have our own `BStr` and then we
+have the `CStr` -> `BStr` -> `[u8]` deref chain which is quite often
+useful. If we move to the `core::ffi::CStr` then we would lose ability
+to do so.
+
+The `BStr` is quite useful as a thin layer on `[u8]` to give a
+semantical meaning that this is supposed to be printable, user-facing
+string, but it isn't always UTF-8.
+
+Best,
+Gary
