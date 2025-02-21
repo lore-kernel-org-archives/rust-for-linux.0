@@ -1,89 +1,85 @@
-Received: from out162-62-57-49.mail.qq.com (out162-62-57-49.mail.qq.com [162.62.57.49])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486CE200B99;
-	Fri, 21 Feb 2025 08:54:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60962200136;
+	Fri, 21 Feb 2025 09:29:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740128074; cv=none; b=hNS2Rl+58Vlj3wGBX/BH0cdqAIFIyFtSujhjqeM/zvuo3lPoIM8M4xrtz3fTcVAu/6ceEyAAaI/IfzAwWUKdjiW36kF5KGAIVeZrtcx151m4LVUVIiFbh0HBlgZMlQ0envsOmK4RoRuXLDPbGSlp4yzxpdbpbflcaDXIWQoDWW8=
+	t=1740130191; cv=none; b=n4CyK90XKXraIBDd/vDScg/81AIRkXfgIF3TaRo5FjvoQ4JHbs0p5ZL3WW4OoGIQYb4UvsZ6ukyzvHrCOFJRd1kzbElPpK63fqYpoDWtAN0wquBISDjnja88UG4y+4dUgNxJfrEv8hfl6v0NswRE5RIvYr2/wkgFbVq9Jiq7PXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740128074; c=relaxed/simple;
-	bh=sOpoaaYi70tIuun+k4bCpzt72Cgn3AbfOmLUzsM8dlo=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=A2kD1/jw/0haU+aBjoFCRZvSjoF76UW62GKVwtIINX87X7nH+p888CcasQ7c4BdLNumnKHRPE49pLyX/Nph5qMKpAL7Sp6m+LeZ8LOkElcyk0Y0d3La6BERybknDUvebOsPy5lZMKn4H1bfJ/bc99/aE66cmXoeCcQCv4mV/Tso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=E8+H5pAu; arc=none smtp.client-ip=162.62.57.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+	s=arc-20240116; t=1740130191; c=relaxed/simple;
+	bh=jSFGUiq9JED1xzgk3rpGKc7M1sHXoxnKnQ7G38B4wqQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=o/P0ivg4X9+Ybyyk99qGHaoVSPJ/rWBclPQSbepZHln14G6WR2gmL+/S0LE5GpfqNu35hWWnRMzbsntqthDe9dt0oooPuN8CV7sVHbDTSsyrSjDBZQa/PZmMBZax4JgAyGfX+TFpj0R2CdBpQNL7KfXCUDJ7ECvC/EHkZ6WRHwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LFQm88om; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="E8+H5pAu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1740128058;
-	bh=sOpoaaYi70tIuun+k4bCpzt72Cgn3AbfOmLUzsM8dlo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=E8+H5pAuiy2qfrB4e4BISZp/rtcEF7Q7lg2V5kHxwBuKek0x0J5+uCZopzUA82Pme
-	 bS26LK0wOly3w0JbeAYENaZSGsoIM/48y+BckS/lAbQ/CwfFzJpnkpjN83TK0j0uX4
-	 ykWudvPj72Zf/YBDQAQdbdfUqNb3EKIrz/bxDhuw=
-Received: from localhost.localdomain ([112.2.252.119])
-	by newxmesmtplogicsvrszb16-1.qq.com (NewEsmtp) with SMTP
-	id 7DB05E70; Fri, 21 Feb 2025 16:31:27 +0800
-X-QQ-mid: xmsmtpt1740126687tmzom3y51
-Message-ID: <tencent_9877F4C8240A0DDA7399A0F8E2EEE71E5D0A@qq.com>
-X-QQ-XMAILINFO: MqswyhUqVe0Clb7vetySGil+QBrDiZ9UDLfyhWTRdv38s6p/9DZL03cObi+ps0
-	 TDR4+jSOSddH6EeX/N6vw14iDreotcGMJncR7grnxz/hhvQOKO6DGoisUr99ENwKtkMq6bVEwO+9
-	 0uY/E7wKnrK32VyqrtrPxok7fYlBE/+BxKTGssd9dAi3uAIWJcctxirSauwGkB3rdbCGu0gNMQiv
-	 7Na68RqwSaq6hsa7jrt3KroV8gl5Q6CX904QZ6axfUOQ5YJ0Hg2UcB153paY0LLRkk75Cc4EEQJ/
-	 Qx5Ro0hM9z8Fj76T8v5mf1GSYBRxAfTDat5+PRjstW/fljah10yRD/Lb4phn1CfnnggFKlRs7lzg
-	 Nf471kOdeMeUgSTFc/6X4/+Hun9lWe76DaBX4XL1UMqT+z6MHQyCowz2WZSv6IZ63FITCVZtgqRG
-	 wsu7JtBfN4/PxcEwPk2xlSzMqZ90sHgEFbaWA6lJ2Hd8/CqB6rVv7MgpoCwG3uewLaRmkINK6Oj0
-	 4Ytr4N9ss3UKUB4kABWjtsvYGc0mdME+rbqJcOvOfKXsgaTI02zWImp5f6r/hy4XzyjBHYXgZtSi
-	 31HhRDDE+4rRDpYhEMO45eQ7tj/bkZPtOIhtWcOdrc7uV0kbJIgQLyJ21/+hME7fwEvG7YAOXa9V
-	 bxjyioJGGeum0EURXYldvF6t867LkxzMXU1LD6j620wJOpgsj14vQb6a7ysTWlNJukFSq+YJuOni
-	 nrLo8Hj46sBXMsQLzkkVF3eYE/T/Qbee1T44fsoe/zPdHp2w0LYBuQM+eAgKJmGimUdGoBEYlb07
-	 cDnmadBraNUxaS/wmmb2Kkd1Y2HUGn6VwJcMRqqZoRJzSaiwbL2hig0j4ooj4HALPbl5YyOxHCUv
-	 /RWgWJyU3JRbMdqc0Vg6q6LKRqs2VbNDgyTagdwCFfY1Gp68VqmJZaVcieaUQKHk7rwNWrll/tmN
-	 l/yKSDWoA16sbnGqiRglgBnS067o4gG6AT7YKM2DOmfff1sibmYw==
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
-From: HUANG Zhaobin <huang_zhaobin@foxmail.com>
-To: ej@inai.de
-Cc: airlied@gmail.com,
-	boqun.feng@gmail.com,
-	gregkh@linuxfoundation.org,
-	hch@infradead.org,
-	hpa@zytor.com,
-	ksummit@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	miguel.ojeda.sandonis@gmail.com,
-	rust-for-linux@vger.kernel.org,
-	torvalds@linux-foundation.org
-Subject: Re: C aggregate passing (Rust kernel policy)
-Date: Fri, 21 Feb 2025 16:31:27 +0800
-X-OQ-MSGID: <20250221083127.54494-1-huang_zhaobin@foxmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <n05p910s-r5o3-0n36-5s44-qr769prp69r5@vanv.qr>
-References: <n05p910s-r5o3-0n36-5s44-qr769prp69r5@vanv.qr>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LFQm88om"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D86CC4CED6;
+	Fri, 21 Feb 2025 09:29:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740130190;
+	bh=jSFGUiq9JED1xzgk3rpGKc7M1sHXoxnKnQ7G38B4wqQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=LFQm88om/4383Lrv/7Ek+dFeJIGasPorWjQednm2V47ECR+hIUSsBJbNu01GGwGr5
+	 qdaW/9JWzlD0B0ep55us/9oNGiu/yESw3VLHYNgVB9dwxeZDWq/uZWJz038m6KhmKB
+	 TeSypotvScoj+aEKTTkWDUpo8yP0JvIuKSy0WVtaFb3AEhp92vXzBgnrQdzOLhgS5X
+	 QraER06aYtUC5LKWYKeKJJ76wwpEBH1ko0Yjz2cmkNrEzqn8XqyXw/Az1eJyg0ktm2
+	 4IDjDrEzC0qciE9wwUsvVuplYISf61lomF28PmUbQu8XeqntX6AsYetTll2A4XOgvQ
+	 YuN0aMtPc2GdA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Benno Lossin" <benno.lossin@proton.me>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Anna-Maria Behnsen"
+ <anna-maria@linutronix.de>,  "Frederic Weisbecker" <frederic@kernel.org>,
+  "Thomas Gleixner" <tglx@linutronix.de>,  "Danilo Krummrich"
+ <dakr@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
+ <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
+ =?utf-8?Q?=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor
+ Gross" <tmgross@umich.edu>,  "Lyude Paul" <lyude@redhat.com>,  "Guangbo
+ Cui" <2407018371@qq.com>,  "Dirk Behme" <dirk.behme@gmail.com>,  "Daniel
+ Almeida" <daniel.almeida@collabora.com>,  "Tamir Duberstein"
+ <tamird@gmail.com>,  <rust-for-linux@vger.kernel.org>,
+  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v8 02/14] rust: hrtimer: introduce hrtimer support
+In-Reply-To: <df748ac2-3551-460f-a16f-85d805671a3f@proton.me> (Benno Lossin's
+	message of "Thu, 20 Feb 2025 23:46:10 +0000")
+References: <20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org>
+	<20250218-hrtimer-v3-v6-12-rc2-v8-2-48dedb015eb3@kernel.org>
+	<1id7is_U22yzuGODgkUIoB5AFM6snF9CPu7F_sY7Mfkn3EwQRPfjB5JNkRFYu6DX1N8X_OQvdEB2BT-l3rFhwg==@protonmail.internalid>
+	<df748ac2-3551-460f-a16f-85d805671a3f@proton.me>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Fri, 21 Feb 2025 10:05:11 +0100
+Message-ID: <874j0nhdmg.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 20 Feb 2025 16:17:07 +0100 (CET), Jan Engelhardt <ej@inai.de> wrote:
+"Benno Lossin" <benno.lossin@proton.me> writes:
+
+> On 18.02.25 14:27, Andreas Hindborg wrote:
+>> +
+>> +    /// Cancel an initialized and potentially running timer.
+>> +    ///
+>> +    /// If the timer handler is running, this will block until the hand=
+ler is
+>> +    /// finished.
+>> +    ///
+>> +    /// Users of the `HrTimer` API would not usually call this method d=
+irectly.
+>> +    /// Instead they would use the safe `cancel` method on the [`HrTime=
+rHandle`]
 >
-> Returning aggregates in C++ is often implemented with a secret extra
-> pointer argument passed to the function. The C backend does not
-> perform that kind of transformation automatically. I surmise ABI reasons.
+> Can you link to the `cancel` function?
 
-No, in both C and C++, fff accepts a secret extra pointer argument.
+Yes =F0=9F=91=8D
 
-https://godbolt.org/z/13K9aEffe
 
-For gcc, the difference is that `sb` is allocated then copied back in C,
-while in C++ NRVO is applied so there is no extra allocation and copy.
+Best regards,
+Andreas Hindborg
 
-Clang does NRVO for both C and C++ in this case, thus generating exactly
-the same codes for them.
-
-I have no idea why gcc doesn't do the same.
 
