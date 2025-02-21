@@ -1,179 +1,117 @@
-Received: from mailrelay.tugraz.at (mailrelay.tugraz.at [129.27.2.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D76DB1EE028;
-	Fri, 21 Feb 2025 16:28:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.27.2.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57794214A7D;
+	Fri, 21 Feb 2025 16:53:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740155331; cv=none; b=Oxt+HubVihIiQ6YLZa98Qy62x5xxJjw2GVL2e2zb7mO2iBjM2zZ3+N21Re6t+CatgfEeaSrlUeB5d29+lrbJfpWelsc8AuawyMPiyl4+E2DyYO5qrFFJlz3O2TTyzZ6IDPmlRmV2k+AtGwHVXXN5ub8AfQ3E92DlS+yWwb4cvn0=
+	t=1740156822; cv=none; b=KRJ4PPjnF/0Mdv95EPMHyjYHPJEhp+WVlfz3xZ3j0lYwIlZGJvhpb14VV7CqQn5/JFZdTGsrtn7/goHJ0MTImbdkwtx21lb33nsRaad5Uh0GstIAYk35T1p/Zr7qKwzfW3uvdXTmZ9076baQceK5Y3Rabdlat00jbfGWFJU7YjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740155331; c=relaxed/simple;
-	bh=itDtkLuv9PHUCMQ37TmiQonIka0iF299AgH2m8mj9vU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dvzSXt0p9Ah/CLLHlmEVevFQm1Nv1vgv8VLr5V0SbdWqJ6H2x4wmTws+c2s703FQfgmNUHT5l4uU3oYardL7qMydL0E6rbsvqgqnQZeyYm+UdqiPkT3D3B2hSicfg4PKEBL1vsDE86wyPL0Q6CRE/fb7pDy6dQEQs9PjcnWy3Kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at; spf=pass smtp.mailfrom=tugraz.at; dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b=Q+oy6TDV; arc=none smtp.client-ip=129.27.2.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tugraz.at
+	s=arc-20240116; t=1740156822; c=relaxed/simple;
+	bh=RNR8mEUOnIVJUD2/SSlodw5N9H3r9pd1pvfEYexodzw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=WOnVrqhOL86sFrKzHJYx6msGX9j8M51+ERtiR9LPm+Ok+bvMusTJGO9Fahb1lSzPgJjNTw/7krUrsKp40+Xyf0WZv50iQ5N6j+dpydk4mL9U/mbIcFYxvTwvK34Ekn8Ps+3lw2p596zqGo1u+sJbK1/5W4fTKPisiv1AIECxrNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jVfNoyIU; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b="Q+oy6TDV"
-Received: from vra-171-233.tugraz.at (vra-171-233.tugraz.at [129.27.171.233])
-	by mailrelay.tugraz.at (Postfix) with ESMTPSA id 4YzwYC00wkz3xGX;
-	Fri, 21 Feb 2025 17:28:30 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tugraz.at;
-	s=mailrelay; t=1740155313;
-	bh=A5/Vf9HW8Yy4Pzv/cgrk4LjgVOJx+yDRb5XqnCH19cE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Q+oy6TDVd8IkqCcuadMv4XLA6bxeK3zaqbOiqeIQAFY9VTMYpH1ZH3ZxEESZSTfwx
-	 yfz6jMoqGbDsTMDzmnqYAS61rxBYftoAlgIk8CgNw/y49LIlPkWQlChtLPItqSa/7N
-	 +tqxUwRjicObCRyXPzym8v7FecEKkIRcOTuOOJ5I=
-Message-ID: <61a7e7db786d9549cbe201b153647689cbe12d75.camel@tugraz.at>
-Subject: Re: Rust kernel policy
-From: Martin Uecker <uecker@tugraz.at>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Boqun Feng <boqun.feng@gmail.com>,
-  "H. Peter Anvin" <hpa@zytor.com>, Miguel Ojeda
- <miguel.ojeda.sandonis@gmail.com>, Christoph Hellwig <hch@infradead.org>,
- rust-for-linux <rust-for-linux@vger.kernel.org>, Linus Torvalds
- <torvalds@linux-foundation.org>, David Airlie <airlied@gmail.com>, 
- linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
-Date: Fri, 21 Feb 2025 17:28:30 +0100
-In-Reply-To: <caea3e79-78e6-4d98-9f3b-f8e7f6f00196@stanley.mountain>
-References: <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
-	 <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
-	 <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
-	 <Z7VKW3eul-kGaIT2@Mac.home> <2025021954-flaccid-pucker-f7d9@gregkh>
-	 <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
-	 <2025022024-blooper-rippling-2667@gregkh>
-	 <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
-	 <2025022042-jot-favored-e755@gregkh>
-	 <b9a5de64fe1ded2ad3111763f35af9901bd81cc4.camel@tugraz.at>
-	 <caea3e79-78e6-4d98-9f3b-f8e7f6f00196@stanley.mountain>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jVfNoyIU"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-22114b800f7so46546375ad.2;
+        Fri, 21 Feb 2025 08:53:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740156820; x=1740761620; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=j/zBaSuV0apxI2fraq701Zzbl3a70mLl15KTuoHr3ig=;
+        b=jVfNoyIUf/4dRmDNGEkwd67K/BFu+DYb3qTW7V2KJh1yNhjxNAIaLeymHIeWvWAEX/
+         ShD0iZ+NEmNopiQnsFkKPpvZx0L282DwE4jUa66RWwHt9K5vOI2TfKZ8R90kdhfaCWMX
+         XReBYH9gwcaNlQPJ6QOl7cU+rp4CvV2++oEhRJIghthWydD/vDwDaA1dhKu2UPI7X13x
+         iYBnwATwBZOam6kr3n3fHFb0rFFLpPQ/uhdvdks2YmfStVKfRZ3+Kngleu6YhR3e2No4
+         8yKhF0vUj+izUogZnA8Z2Pr/5fJ8VjXXH8a+lcjq5VDM0PXqxD5OQsmk0XUObCdDOoQR
+         PwhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740156820; x=1740761620;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=j/zBaSuV0apxI2fraq701Zzbl3a70mLl15KTuoHr3ig=;
+        b=JwS3esup63nQE06ioddP3lnMLfQsqmk05rkCpCjR5+qVCvlvWq4Av3brc2FnsIccaL
+         L7IRA62S1C/m9xMIphebBakPbIWyH3evKdG3OJlAzOBoArxyEqkyK7WQVhTO64iy+9Ks
+         ov3WydWGfJ/dYojTj869eSb8V4hxoSaOstYxVwQ3Inkmj+kWWrQUbILcdePQrwUQ77oF
+         P2TUmhTAhHihhcJPAS2v984D2rJsiI/Ab+mINghLXzx3N+P/HxcjYuIzQNcrfFIdaLPY
+         NykR2YSyjOZXcYjZmFvl/qSYBOiLDa7xG7r+s+7Y9IIBY1qLPSEF77DCvQIRYPn9Ba4g
+         T8BQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUOSsZBaoh12CctpzGzdK5AWpEDPuKZedmewlZ6YQCnGtrA9/H1bin1PyGMqjAdRwPcwVwBwsRViRIHaPVcHYQ=@vger.kernel.org, AJvYcCXa2Cagoz12f0ZYk6A620B1u6x3Wv/St9KEa6UXvzSBYLdj6gbBwTYMhlmmcbDSH26n5SDt5XQzVCs+7Z8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyEH9iJZopqiB1iDZ8XKsTM4otDPexJQhBSGJyEW6sxqqcpkv++
+	TxzSOBHacy714wdvTnZAc2UzdNY1sXz0+AbpjbiP7DYdiKdugiJe
+X-Gm-Gg: ASbGncsGdqS8E5ZQEmGUTrUdJXN7v97QMaGvmz4tdQeAM7RIg+quXGnB8hGlfYfXeLd
+	yMzZyFipLoN+tJcwCufwStofcA5+5vmrE2x2A7iCVOafJVaZbi+vPpaSl801hM9IDJJByWPmQJW
+	gfWevLnfisykAmeDyy2NcRotjumAXnt+IiHf9Lf7DSTVMOSwUIAnDurNnl2QHpz5J/AAcb5FU+u
+	zghqlZY2AJ6BS+v0NsyllhuBLagC+oNKXe0rm0LoLQW17kUaG/MPulGuqSKpoIbLJYQdNHo5Mx1
+	bIBrDy9qaBXysNxXpxdj0iaSFKi7zjCOdQ==
+X-Google-Smtp-Source: AGHT+IF2YMDyHbwTmyW38BAvJ0G7QtBOaYJTYewQDESOFgJXibuRb0b6kmUsta1MzqxBRVKAe5316A==
+X-Received: by 2002:a05:6a00:3d0a:b0:730:87cf:a7cd with SMTP id d2e1a72fcca58-73426cb12bbmr7543385b3a.8.1740156820211;
+        Fri, 21 Feb 2025 08:53:40 -0800 (PST)
+Received: from linuxsimoes.. ([177.21.141.136])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7325b1afd0esm13525983b3a.137.2025.02.21.08.53.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Feb 2025 08:53:39 -0800 (PST)
+From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+To: charmitro@posteo.net
+Cc: a.hindborg@kernel.org,
+	alex.gaynor@gmail.com,
+	aliceryhl@google.com,
+	apw@canonical.com,
+	arnd@arndb.de,
+	aswinunni01@gmail.com,
+	axboe@kernel.dk,
+	benno.lossin@proton.me,
+	bhelgaas@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	dakr@kernel.org,
+	dwaipayanray1@gmail.com,
+	ethan.twardy@gmail.com,
+	fujita.tomonori@gmail.com,
+	gary@garyguo.net,
+	gregkh@linuxfoundation.org,
+	joe@perches.com,
+	linux-kernel@vger.kernel.org,
+	lukas.bulwahn@gmail.com,
+	ojeda@kernel.org,
+	pbonzini@redhat.com,
+	rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu,
+	trintaeoitogc@gmail.com,
+	walmeida@microsoft.com
+Subject: Re: [PATCH V3 2/2] checkpatch: throw error for malformed arrays
+Date: Fri, 21 Feb 2025 13:53:27 -0300
+Message-Id: <20250221165327.5459-1-trintaeoitogc@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <m2pljcgpek.fsf@Mac.home>
+References: <m2pljcgpek.fsf@Mac.home>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-TUG-Backscatter-control: G/VXY7/6zeyuAY/PU2/0qw
-X-Spam-Scanner: SpamAssassin 3.003001 
-X-Spam-Score-relay: 0.0
-X-Scanned-By: MIMEDefang 2.74 on 129.27.10.117
+Content-Transfer-Encoding: 8bit
 
-Am Freitag, dem 21.02.2025 um 12:48 +0300 schrieb Dan Carpenter:
-> On Thu, Feb 20, 2025 at 04:40:02PM +0100, Martin Uecker wrote:
-> > I mean "memory safe" in the sense that you can not have an OOB access
-> > or use-after-free or any other UB.  The idea would be to mark certain
-> > code regions as safe, e.g.
-> >=20
-> > #pragma MEMORY_SAFETY STATIC
->=20
-> Could we tie this type of thing to a scope instead?  Maybe there
-> would be a compiler parameter to default on/off and then functions
-> and scopes could be on/off if we need more fine control.
+Charalampos Mitrodimas <charmitro@posteo.net> wrote:
+> Hi Guilherme,
+> 
+> Will this work now that the field is called "authors" and not "author"?
+> I think you forgot to update the regex here.
+I don't know, I make change in modules and samples, and I forget runing again
+the checkpatch.
+Sorry .. 
+I will send a v4 
 
-At the moment my feeling is that tying it to a specific scope
-would not be flexible enough.=20
+> What do you think about this instead?
+> "Prefer each array element on a separate line$herevet"
+For me, looks like great
 
-The model I have in my mind are the pragmas GCC has
-to turn on and off diagnostics for regions of code=20
-(i.e. #pragma GCC diagnostic warning, etc.). These memory
-safety modes would still be based on many different individual
-warnings that are can then be jointly toggled using these
-pragmas but which could also individually be toggled as usual.
-
->=20
-> This kind of #pragma is basically banned in the kernel.  It's used
-> in drivers/gpu/drm but it disables the Sparse static checker.
-
-Why is this?
-
->=20
-> > unsigned int foo(unsigned int a, unsigned int b)
-> > {
-> >   return a * b;
-> > }
-> >=20
-> > static int foo(const int a[static 2])
-> > {
-> >   int r =3D 0;
-> >   if (ckd_mul(&r, a[0], a[1]))
-> >     return -1;
-> >   return r;
-> > }
-> >=20
-> > static int bar(int x)
-> > {
-> >   int a[2] =3D { x, x };
-> >   return foo(a);
-> > }
-> >=20
-> >=20
-> > and the compiler would be required to emit a diagnostic when there
-> > is any operation that could potentially cause UB.
->=20
-> I'm less convinced by the static analysis parts of this...  The kernel
-> disables checking for unsigned less than zero by default because there
-> are too many places which do:
->=20
-> 	if (x < 0 || x >=3D 10) {
->=20
-> That code is perfectly fine so why is the compiler complaining?  But at
-> the same time, being super strict is the whole point of Rust and people
-> love Rust so maybe I have misread the room.
-
-What is a bit weird is that on the one side there are people
-who think we absolutely need=C2=A0 compiler-ensured memory safety
-and this might be even worth rewriting code from scratch and
-on the other side there are people who think that dealing with
-new false positives in existing code when adding new warnings
-is already too much of a burden.
-
-> >=20
-> > I would also have a DYNAMIC mode that traps for UB detected at
-> > run-time (but I understand that this is not useful for the kernel).=20
->=20
-> No, this absolutely is useful.  This is what UBSan does now.
->=20
-
-Yes, it is similar to UBSan. The ideas to make sure that in the
-mode there is *either* a compile-time warning *or* run-time
-trap for any UB.  So if you fix all warnings, then any remaining
-UB is trapped at run-time.
-
->   You're
-> basically talking about exception handling.  How could that not be
-> the most useful thing ever?
-
-At the moment, I wasn't thinking about a mechanism to catch those
-exceptions, but just to abort the program directly (or just emit
-a diagnostic and continue. =20
-
-
-BTW: Another option I am investigating it to have UBsan insert traps
-into the code and then have the compiler emit a warning only when
-it actually emits the trapping instruction after optimization. So
-you only get the warning if the optimizer does not remove the trap. =20
-Essentially, this means that one can use the optimizer to prove that
-the code does not have certain issues. For example, you could use the=20
-signed-overflow sanitizer to insert a conditional trap everywhere
-where there could be signed overflow, and if the optimizer happens
-to remove all such traps because they are unreachable, then it is
-has shown that the code can never have a signed overflow at run-time.
-This is super easy to implement (I have a patch for GCC) and
-seems promising.  One problem with this is that any change in the
-optimizer could change whether you get a warning or not.
-
-Martin
-
-
-
-
-
->=20
-> regards,
-> dan carpenter
->=20
-
+Thanks,
+Guilherme
