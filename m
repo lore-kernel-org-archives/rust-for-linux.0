@@ -1,117 +1,64 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mr85p00im-ztdg06011101.me.com (mr85p00im-ztdg06011101.me.com [17.58.23.185])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57794214A7D;
-	Fri, 21 Feb 2025 16:53:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA53D21D590
+	for <rust-for-linux@vger.kernel.org>; Fri, 21 Feb 2025 17:00:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740156822; cv=none; b=KRJ4PPjnF/0Mdv95EPMHyjYHPJEhp+WVlfz3xZ3j0lYwIlZGJvhpb14VV7CqQn5/JFZdTGsrtn7/goHJ0MTImbdkwtx21lb33nsRaad5Uh0GstIAYk35T1p/Zr7qKwzfW3uvdXTmZ9076baQceK5Y3Rabdlat00jbfGWFJU7YjM=
+	t=1740157212; cv=none; b=lCAeVkSxj1MVBkBj5JbjufM4ViASsSqjFT+TiaA2fwWeOgUAEFWJyPCYXhv/Q/8sU5nq+5h4IZH2bB3AQ6xBreYsyxmJEFQ0wz8d5rRpdHnjXkM59+cCuM4VKE9gbs4gVhkOBezpBODKOkswRSbaF1CMCyVJ8vfLFjtg9rES00g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740156822; c=relaxed/simple;
-	bh=RNR8mEUOnIVJUD2/SSlodw5N9H3r9pd1pvfEYexodzw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WOnVrqhOL86sFrKzHJYx6msGX9j8M51+ERtiR9LPm+Ok+bvMusTJGO9Fahb1lSzPgJjNTw/7krUrsKp40+Xyf0WZv50iQ5N6j+dpydk4mL9U/mbIcFYxvTwvK34Ekn8Ps+3lw2p596zqGo1u+sJbK1/5W4fTKPisiv1AIECxrNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jVfNoyIU; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740157212; c=relaxed/simple;
+	bh=LRLjnoPeYF6ilJFr8bD8PfFt+L04X0ykkN1u8Qbb7sc=;
+	h=Content-Type:From:Mime-Version:Date:Subject:Message-Id:Cc:To; b=T64cf0bYXc+v5H1vSu6GmC4yH4XnfQyxIys8Yp0Z9l8OfW6pMsRUiwYxb0meXIeJMBCM6+uGfCZ89SO2RH4yEoRGsGbYW8FHK7zTVD47UqNHUuvcDONBPL7y7KAD218U7h0Yde0zHdtZaAoH00TjGCI2Oy44gYYxKhQtbWhYnok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=esKVWQ8V; arc=none smtp.client-ip=17.58.23.185
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jVfNoyIU"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-22114b800f7so46546375ad.2;
-        Fri, 21 Feb 2025 08:53:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740156820; x=1740761620; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=j/zBaSuV0apxI2fraq701Zzbl3a70mLl15KTuoHr3ig=;
-        b=jVfNoyIUf/4dRmDNGEkwd67K/BFu+DYb3qTW7V2KJh1yNhjxNAIaLeymHIeWvWAEX/
-         ShD0iZ+NEmNopiQnsFkKPpvZx0L282DwE4jUa66RWwHt9K5vOI2TfKZ8R90kdhfaCWMX
-         XReBYH9gwcaNlQPJ6QOl7cU+rp4CvV2++oEhRJIghthWydD/vDwDaA1dhKu2UPI7X13x
-         iYBnwATwBZOam6kr3n3fHFb0rFFLpPQ/uhdvdks2YmfStVKfRZ3+Kngleu6YhR3e2No4
-         8yKhF0vUj+izUogZnA8Z2Pr/5fJ8VjXXH8a+lcjq5VDM0PXqxD5OQsmk0XUObCdDOoQR
-         PwhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740156820; x=1740761620;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=j/zBaSuV0apxI2fraq701Zzbl3a70mLl15KTuoHr3ig=;
-        b=JwS3esup63nQE06ioddP3lnMLfQsqmk05rkCpCjR5+qVCvlvWq4Av3brc2FnsIccaL
-         L7IRA62S1C/m9xMIphebBakPbIWyH3evKdG3OJlAzOBoArxyEqkyK7WQVhTO64iy+9Ks
-         ov3WydWGfJ/dYojTj869eSb8V4hxoSaOstYxVwQ3Inkmj+kWWrQUbILcdePQrwUQ77oF
-         P2TUmhTAhHihhcJPAS2v984D2rJsiI/Ab+mINghLXzx3N+P/HxcjYuIzQNcrfFIdaLPY
-         NykR2YSyjOZXcYjZmFvl/qSYBOiLDa7xG7r+s+7Y9IIBY1qLPSEF77DCvQIRYPn9Ba4g
-         T8BQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUOSsZBaoh12CctpzGzdK5AWpEDPuKZedmewlZ6YQCnGtrA9/H1bin1PyGMqjAdRwPcwVwBwsRViRIHaPVcHYQ=@vger.kernel.org, AJvYcCXa2Cagoz12f0ZYk6A620B1u6x3Wv/St9KEa6UXvzSBYLdj6gbBwTYMhlmmcbDSH26n5SDt5XQzVCs+7Z8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEH9iJZopqiB1iDZ8XKsTM4otDPexJQhBSGJyEW6sxqqcpkv++
-	TxzSOBHacy714wdvTnZAc2UzdNY1sXz0+AbpjbiP7DYdiKdugiJe
-X-Gm-Gg: ASbGncsGdqS8E5ZQEmGUTrUdJXN7v97QMaGvmz4tdQeAM7RIg+quXGnB8hGlfYfXeLd
-	yMzZyFipLoN+tJcwCufwStofcA5+5vmrE2x2A7iCVOafJVaZbi+vPpaSl801hM9IDJJByWPmQJW
-	gfWevLnfisykAmeDyy2NcRotjumAXnt+IiHf9Lf7DSTVMOSwUIAnDurNnl2QHpz5J/AAcb5FU+u
-	zghqlZY2AJ6BS+v0NsyllhuBLagC+oNKXe0rm0LoLQW17kUaG/MPulGuqSKpoIbLJYQdNHo5Mx1
-	bIBrDy9qaBXysNxXpxdj0iaSFKi7zjCOdQ==
-X-Google-Smtp-Source: AGHT+IF2YMDyHbwTmyW38BAvJ0G7QtBOaYJTYewQDESOFgJXibuRb0b6kmUsta1MzqxBRVKAe5316A==
-X-Received: by 2002:a05:6a00:3d0a:b0:730:87cf:a7cd with SMTP id d2e1a72fcca58-73426cb12bbmr7543385b3a.8.1740156820211;
-        Fri, 21 Feb 2025 08:53:40 -0800 (PST)
-Received: from linuxsimoes.. ([177.21.141.136])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7325b1afd0esm13525983b3a.137.2025.02.21.08.53.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Feb 2025 08:53:39 -0800 (PST)
-From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-To: charmitro@posteo.net
-Cc: a.hindborg@kernel.org,
-	alex.gaynor@gmail.com,
-	aliceryhl@google.com,
-	apw@canonical.com,
-	arnd@arndb.de,
-	aswinunni01@gmail.com,
-	axboe@kernel.dk,
-	benno.lossin@proton.me,
-	bhelgaas@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	dakr@kernel.org,
-	dwaipayanray1@gmail.com,
-	ethan.twardy@gmail.com,
-	fujita.tomonori@gmail.com,
-	gary@garyguo.net,
-	gregkh@linuxfoundation.org,
-	joe@perches.com,
-	linux-kernel@vger.kernel.org,
-	lukas.bulwahn@gmail.com,
-	ojeda@kernel.org,
-	pbonzini@redhat.com,
-	rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu,
-	trintaeoitogc@gmail.com,
-	walmeida@microsoft.com
-Subject: Re: [PATCH V3 2/2] checkpatch: throw error for malformed arrays
-Date: Fri, 21 Feb 2025 13:53:27 -0300
-Message-Id: <20250221165327.5459-1-trintaeoitogc@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <m2pljcgpek.fsf@Mac.home>
-References: <m2pljcgpek.fsf@Mac.home>
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="esKVWQ8V"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; bh=LRLjnoPeYF6ilJFr8bD8PfFt+L04X0ykkN1u8Qbb7sc=;
+	h=Content-Type:From:Mime-Version:Date:Subject:Message-Id:To:x-icloud-hme;
+	b=esKVWQ8V4ak7wpeBevg37+9kVQPuDAo7vPIpDyGYonLK8HwxuaQpEvrhgPzQv7wNo
+	 MBF9i0I7TgzY940DzDJCo8y+Fr84OZXHiVAcr8NU+jmzg3cD/qFa07FCNDcK+Z0Va3
+	 Fsl4JJL3DXbrapeExxvC+nT0NwF0OowXd/C/spcnq1/1v6ekfNkFeXPh2W6BJLuJX+
+	 aXajuonQ6SLQshZOyllB6ht7igw/pn/QA9Q2UHQjhnWxtWrrTJvxJpYto7HJnGNslp
+	 7f2vSHETXGj44zE7oYNr19/o0hx/C2wttTltNJZneGYoZ5/QWANhKA2EtyJAaufGHQ
+	 RKO2/dlbPTFvw==
+Received: from smtpclient.apple (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
+	by mr85p00im-ztdg06011101.me.com (Postfix) with ESMTPSA id 1F73CDA040D;
+	Fri, 21 Feb 2025 17:00:07 +0000 (UTC)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+From: MICHAEL TURNER <kameronwayneturner@icloud.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (1.0)
+Date: Fri, 21 Feb 2025 10:59:53 -0600
+Subject: Re: [PATCH v2 2/5] modules: Refactor + kdoc elf_validity_cached_copy
+Message-Id: <75A63190-F010-4CF5-B09D-45BF74FD3909@icloud.com>
+Cc: gary@garyguo.net, laura@labbott.name, linux-kbuild@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, masahiroy@kernel.org, mcgrof@kernel.org,
+ mmaurer@google.com, nathan@kernel.org, ndesaulniers@google.com,
+ nicolas@fjasle.eu, ojeda@kernel.org, rust-for-linux@vger.kernel.org
+To: greg@kroah.com
+X-Mailer: iPhone Mail (22D72)
+X-Proofpoint-GUID: WE4r5jYP7-uRAtXQs623InvNKiKYM718
+X-Proofpoint-ORIG-GUID: WE4r5jYP7-uRAtXQs623InvNKiKYM718
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-21_05,2025-02-20_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 phishscore=0 bulkscore=0
+ suspectscore=0 mlxlogscore=643 adultscore=0 spamscore=0 mlxscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2502210120
 
-Charalampos Mitrodimas <charmitro@posteo.net> wrote:
-> Hi Guilherme,
-> 
-> Will this work now that the field is called "authors" and not "author"?
-> I think you forgot to update the regex here.
-I don't know, I make change in modules and samples, and I forget runing again
-the checkpatch.
-Sorry .. 
-I will send a v4 
+Remove everything that is attacking me this is invalid=20
+All information. Has been stolen I=E2=80=99ve been attacked over 2yrs=20
+Please stop all of this=20
+I didn=E2=80=99t approve any of this=20
 
-> What do you think about this instead?
-> "Prefer each array element on a separate line$herevet"
-For me, looks like great
-
-Thanks,
-Guilherme
+Sent from my iPhone=
