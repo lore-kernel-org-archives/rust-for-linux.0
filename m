@@ -1,51 +1,89 @@
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3055E1DFED
-	for <rust-for-linux@vger.kernel.org>; Sat, 22 Feb 2025 22:46:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9182CCDB;
+	Sat, 22 Feb 2025 23:34:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740264404; cv=none; b=eMgQKBZ80vB+52a4dElHg/82W6WxLbHY1tnc3G4L7WAdT3oaHZVPPe9E6CSSTOzh7U9EznVhWCeyCbU+2Lgl21pphgSqrJhHsOkBalK4xlU0+BQ8m/ss9bvMzL1TBgXTDs4snvi5PvT5mjBjk7VcCfXxnT/EScHYCahZX+F+cgE=
+	t=1740267287; cv=none; b=ZWWIx2jPYvcq2P+7oQ8HzOThG/erNsdzOb7C0gKWabV2coB7d8feDfB5nXv9B4XIBHxlwq3KKosuDya3MzjMDsnq2MUY0sx85d4EEVQjlR4cZGgi3+D1QA5KpnUV1q07nsvzGd4ZuWtzrm0S+h3SXeCH/NF10bEU466sgV5XV50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740264404; c=relaxed/simple;
-	bh=dqd6e5582W7ouO6Ok0F7TnHQx3FojKM/y/C664TvmMk=;
+	s=arc-20240116; t=1740267287; c=relaxed/simple;
+	bh=tU3r286zfMEzp509S4Nwj3oJKm1dT+refdlYwbG487A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F/wT768YhFkFiGUqxUDWF7Z+THjKzW9SSX9TwHa9+f6PvbIax9Hbn3bEOOx86kT4h73CPkpAERRGQI46ocuyGNEfhckBOPfqSNqUWWxj5LvEcBas/ilVeWo4SSPAPaIiIkIX0x+94hUqk+t41oet0Ex8JcMNgHU1bC6rPzSsWBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=YDvgYYAy; arc=none smtp.client-ip=95.215.58.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	 Content-Type:Content-Disposition:In-Reply-To; b=EUwUNNBwqopGMGpW7m1Ck0xXq1SZ6SCi+kApeoh+49uD0UFqcshtcFgLXIhHY3FZDwbtGu3ExnZcMBMQUDzmK1ZDcLYuAfgf+NpsSJbfVMWi0zFAcpzB9E80ZelLoub1mI+gIcnmd5CGsGpCw8C/DIN+qCm8mgw/LvfuyOOrHTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PJ0JYvrD; arc=none smtp.client-ip=209.85.128.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="YDvgYYAy"
-Date: Sat, 22 Feb 2025 17:46:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1740264399;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hrF8aSLXZNr45CTHT1KgBxYHTkkv6mPKwquxfVgQvwU=;
-	b=YDvgYYAyUzRvnYlacV/OVnEHS9hytphrwytNjiOKInB4o6ZEI4qdC/Urb/Lu+WSszf7ckR
-	8QcRBbLULnFjy8Ccf/Umv+wa6QPNDQgcy81EzHZVIhB02ERBo2cnawbwZ2rW0ES+0cFoQv
-	GvRNUgR8GKxe3IE8VmdoQLqDlKmrJkw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Ventura Jack <venturajack85@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, airlied@gmail.com, boqun.feng@gmail.com, ej@inai.de, 
-	gregkh@linuxfoundation.org, hch@infradead.org, ksummit@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
-Subject: Re: C aggregate passing (Rust kernel policy)
-Message-ID: <okfluptw2nqnxzcqhgbjz6ap7z5fgxfjv3ukh4rqd3bkadi326@btn45hcawpkt>
-References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
- <20250222141521.1fe24871@eugeo>
- <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
- <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
- <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
- <yuwkqfbunlymofpd4kpqmzpiwbxxxupyj57tl5hblf7vsvebhm@ljz6u26eg5ft>
- <6EFFB41B-9145-496E-8217-07AF404BE695@zytor.com>
- <c3spwcoq7j4fx5yg4l7njeiofhkaasbknze3byh4dl45yeacvr@rb6u6j5kz7oe>
- <20250222221248.772b4bf6@pumpkin>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PJ0JYvrD"
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-6fb3a611afdso27781647b3.0;
+        Sat, 22 Feb 2025 15:34:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740267285; x=1740872085; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=/2b+ymF1Y/6cEr1vN13eZ8XRTQyUDfjNMs7g+mlMvUo=;
+        b=PJ0JYvrDMtayd5cj2X8RdD2q9bDoJnbxlR5f5gYsgYZv80WdqOIvb8MYx3t0C/G8S8
+         6DOMkZz1jcdZ6BGWSi+GvWYS5QnSDLqw9yBusc8XxnC28oXSoupoatwYmMDcfwZuRkvC
+         No2XDBHCgroAP3cy3SLqFVkvl6FE4gzVanDSnTct4YxZ3ixz4IapuTf/DONM7o/xDrJe
+         oEsX/UDjcZRhoilZkbBtgixOQKKUuFyNPNrFcIyVII1PibrPcx4kfW2l1/W80TN/qAHc
+         WEgx3ya8Akg2350xhj8AXvs536ZVvf5kPtg1/ZOYNwYiheisWVmDd/yvhdexcPvC0YJc
+         qgaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740267285; x=1740872085;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/2b+ymF1Y/6cEr1vN13eZ8XRTQyUDfjNMs7g+mlMvUo=;
+        b=q4IizJKroa0SSbnkTmcfEv2AohMOAzEj4CiX0hPMMv0q5yNT4hLUpNXOPROzNQdcDW
+         WL7BjVrD3mOV4O0MOhJtCRyA6v9+pPUUa/A/yOh9muoo72MLYDBcATw2kBNpKhW6Vt/A
+         mF2N1JkY9JrCp3eKSIqj7bFyr90PTROrOxKGVJlP5N/fLinEsxOzpOfTAWIYL74ZosVj
+         HqZ4QJKGaZ1YZZIfh75mJ06l3SlXcmzK3MYtXdrV0G+vpeD1B1GzwvKmEANMvLL6lDAE
+         +AeURuZ4zgEkOmiGQJE/QSCzUjwV8fS8/8O96OQWes4FoSDUyJ18h07t9MYbGOiIY9SV
+         Lw7g==
+X-Forwarded-Encrypted: i=1; AJvYcCVIQNTmT6lQHeO2nrzmIA3OA/jIDiB/YPKPH7IAdbJAQ/4fse/uevtFk5kNzwmZN2RqgC+4+mn/jII=@vger.kernel.org, AJvYcCVUuJ4L3mWc/YVXOwnygoE3oPEnklwMH1Xh+PqeA+jo/kVg5kobsgR7giSN+wlY+JhBa2CnmSejfDERFt4=@vger.kernel.org, AJvYcCVnzIJnyNvaHqjyQfiYYT/LohQBZAigApzHkim/ZL2xS4CtCKmp8xk1NimeiBgToTX/5hqWOvb+AFJy9ZjitME=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBwvnYTjklJsiHLf9mA1aB/lq4Ohz0r3aE2XjB/ny+TaYhgmxK
+	2HbuuKqjDLuh2lF7PVeAiopVn3xyjQttEjWWKSgXDbbSbPTX3IJt
+X-Gm-Gg: ASbGncuVLD6G8JWXa5zX8Uz+B3Sj2gVI/MBBlkJ8Z6rI5dMIvaZk09EgXxRXcpqFHdE
+	XfI/nteTCqCNJLTg2cr17nxY+hR7mMvcCZv1joCo1z/tMeyTmYywkUYUHVbUIqeauuOlGPNBpxv
+	mK+Br1Mp2qcVkKqjLd9RgnAJ/MFZnBEyNpjM71V9Bdv1aCIbSMD0CRkbGoC1H38Nt/4IJf9qglc
+	Y5oExWQjhhzxm66kC2EZEySEU4Yhb0feH6Ad+3tAvnwDgG0eqClhqg7ghAZU+QmUlOVwgIoAVPZ
+	8ALNTFyQPdNxLRtEJkXrWrM0CRGIR/x9/wFEHfty7+r57bc/nJUKdZ/rFrdisA==
+X-Google-Smtp-Source: AGHT+IFX+yydMfA2KvN3qR8wwEAWMY6dCzO7XD1Jpai1WZCyjR83OHW/VfW2eSTH7oe0ieczq9aNOA==
+X-Received: by 2002:a05:690c:6c8e:b0:6fb:9389:3cde with SMTP id 00721157ae682-6fbcc1ffb02mr73850507b3.3.1740267284829;
+        Sat, 22 Feb 2025 15:34:44 -0800 (PST)
+Received: from localhost (c-73-224-175-84.hsd1.fl.comcast.net. [73.224.175.84])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-6fce175d7c7sm4656927b3.80.2025.02.22.15.34.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 22 Feb 2025 15:34:43 -0800 (PST)
+Date: Sat, 22 Feb 2025 18:34:42 -0500
+From: Yury Norov <yury.norov@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+	Danilo Krummrich <dakr@redhat.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+	Erik Schilling <erik.schilling@linaro.org>,
+	Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
+	Christoph Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>, linux-pm@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] MAINTAINERS: add rust bindings entry for bitmap API
+Message-ID: <Z7pfBoXDoH5x-MEq@thinkpad>
+References: <20250221205649.141305-1-yury.norov@gmail.com>
+ <20250221205649.141305-3-yury.norov@gmail.com>
+ <CANiq72=ctKoDz+Kf7UFBTD-oF17cTHBcrkNN_5cqxQeK609OVA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -55,39 +93,39 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250222221248.772b4bf6@pumpkin>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <CANiq72=ctKoDz+Kf7UFBTD-oF17cTHBcrkNN_5cqxQeK609OVA@mail.gmail.com>
 
-On Sat, Feb 22, 2025 at 10:12:48PM +0000, David Laight wrote:
-> On Sat, 22 Feb 2025 16:22:08 -0500
-> Kent Overstreet <kent.overstreet@linux.dev> wrote:
+On Sat, Feb 22, 2025 at 02:50:50PM +0100, Miguel Ojeda wrote:
+> On Fri, Feb 21, 2025 at 9:57 PM Yury Norov <yury.norov@gmail.com> wrote:
+> >
+> > Bitmap developers do their best to keep the API stable. When API or
+> > user-visible behavior needs to be changed such that it breaks rust,
+> > bitmap and rust developers collaborate as follows:
 > 
-> > On Sat, Feb 22, 2025 at 12:54:31PM -0800, H. Peter Anvin wrote:
-> > > VLIW and OoO might seem orthogonal, but they aren't – because they are
-> > > trying to solve the same problem, combining them either means the OoO
-> > > engine can't do a very good job because of false dependencies (if you
-> > > are scheduling molecules) or you have to break them instructions down
-> > > into atoms, at which point it is just a (often quite inefficient) RISC
-> > > encoding. In short, VLIW *might* make sense when you are statically
-> > > scheduling a known pipeline, but it is basically a dead end for
-> > > evolution – so unless you can JIT your code for each new chip
-> > > generation...  
-> > 
-> > JITing for each chip generation would be a part of any serious new VLIW
-> > effort. It's plenty doable in the open source world and the gains are
-> > too big to ignore.
-> 
-> Doesn't most code get 'dumbed down' to whatever 'normal' ABI compilers
-> can easily handle.
-> A few hot loops might get optimised, but most code won't be.
-> Of course AI/GPU code is going to spend a lot of time in some tight loops.
-> But no one is going to go through the TCP stack and optimise the source
-> so that a compiler can make a better job of it for 'this years' cpu.
+> If I understand correctly, you are proposing to a "temporarily stable
+> API", i.e. to add new APIs while keeping old ones for a bit until the
+> Rust side updates to the new one (including perhaps workarounds in the
+> helpers when needed). Is that correct?
 
-We're not actually talking about the normal sort of JIT, nothing profile
-guided and no dynamic recompilation - just specialization based on the
-exact microarchitecture you're running on.
+Yes. Keeping them under CONFIG_RUST for a while, or moving directly to
+rust helpers would be an option.
 
-You'd probably do it by deferring the last stage of compilation and
-plugging it into the dynamic linker with an on disk cache - so it can
-work with the LLVM toolchain and all the languages that target it.
+> In other words, while the entry is about the helpers file, the policy
+> is about all APIs (since some APIs are called directly), right?
+
+Yes, it's about all functions used by rust. I can underline it in
+the commit message. 
+ 
+> (Up to you, Viresh et al., of course, i.e. I am just trying to follow)
+
+What I want to make clear to my contributors is that lack of proficiency
+in rust will never become a problem for them. If they have an improvement
+that may break something on rust side, there will be someone who will take
+care of it - this way or another.
+
+I think rust developers need similar guarantees form rust maintainers:
+there will be a rust engineer who will keep the bindings on rust side in
+a good shape. Viresh, as per my understanding, has committed on that.
+
+Thanks,
+Yury
