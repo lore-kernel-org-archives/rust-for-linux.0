@@ -1,124 +1,248 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5965B1D7E42
-	for <rust-for-linux@vger.kernel.org>; Sat, 22 Feb 2025 21:22:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0DD20468D;
+	Sat, 22 Feb 2025 21:26:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740259378; cv=none; b=d3bdnWo8JwdgeuQ2I0dfYrijCa7cOXqX6CZMjvTrF1p5jp1Npr5av7lnxgMg5ZCsCylrse64jZKnh/zMasTvfXDqYlPW0FW+vOa2Aak7FVkeaYzuQw52vKUSwim+CTpMMsO0WEjZUzr6tOMdoqkBUsPvJS/y6iLiXKRuQKXQmko=
+	t=1740259583; cv=none; b=mvxKjjacMytpckcriM8e+HbLUuy8AkGpXTjT7NAI672AyEwr0QjirC9z7UjTQTxBeLFcvxa01oNDX/DCeLn+dX3Nr3axewqmtdYAym3jUtYi6q5/85IslvmbYjjFCL7D2giTSTLqMgZIDJQ9DkMHwn8xQxXKkQah9c/DXzOzxdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740259378; c=relaxed/simple;
-	bh=wksg7Ssp0B5fCpUThY7XyozB7dKQo0DeSRiYBXMj6os=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bQZpxqYikzxpXrPqHSzgZf62puVuLId3zXMTtyEM6PrQyTgTixsqn+13WknQKDcBm2hQ5beGc4zsZqmzSBHVnOOj4Wmnw4mxN4H4NslXZS7aiEbWIpn5uxbFB13F78clVYYy0X2AEb/G0nYrNOSVS6MHDy96zwCOtXTqA4OtGIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=GsH69NUl; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1740259583; c=relaxed/simple;
+	bh=cqEf+aQvCd21+lVXTtNOyHA4FiqVkg85I2UEZ1HyaqQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=akUrSQx5bhyecWgjAUWrUF2tJ3xMaIVHLzCuZTiCHmjJa87qFToGvSyRZR4uIB05vdRP2NnFv2vJAp95Ecw83yk3KJlPD9SHThcnsauqp5n/0omwhggNiVh9K80jojUQXAMaA+KH7nttHBeEXIU8Ye/zw4iMnaglZhAMNFRwSwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DmIdt5iK; arc=none smtp.client-ip=209.85.222.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="GsH69NUl"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-abbda4349e9so465725066b.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 22 Feb 2025 13:22:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DmIdt5iK"
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-7c07cd527e4so306267185a.3;
+        Sat, 22 Feb 2025 13:26:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1740259374; x=1740864174; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4iEhhaz8KH8wSaw5vdKbNXgznw8OSlCEKiD6GpJBrEE=;
-        b=GsH69NUla+wP9NzwNU0EsvI+AmHaoSYIgdalpFVd8BehgMAxyy7HbOUmz71AoXG4v3
-         EFKd8u/P2sBQv7wTaE9I61u96uM2OfC9TAqRO1EyRRbotq1OXl6UOY/M8jfwOD5aKxc2
-         HLvHE1FlbgP0ucLgd6e6mRO0/BDp1HTDMEdCw=
+        d=gmail.com; s=20230601; t=1740259580; x=1740864380; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=0yhDnARrBdVqwowHBLWajQ+jKlgWjbT7txKq6E4c1n8=;
+        b=DmIdt5iKtufiY6xETnja3aWruo5omPEOP4pPXPcybSuvImWMr7l5wdwodPo0U677N9
+         7+OnMoZoSr2vPMczwrrbo65YUA+RYWlAc5QHyVfzTLdsVwlYl5N5Fb6nAyuhsn0/pQGV
+         ATZWzh9OI2K3Zpk/+02RU6imzi5WgMkbzOCqwsai+phQ3J+pAo9D0LExcxQbMx2Y6SmI
+         DHKYgqW3A/5+Oaxa4CBC77lX4Opd4UaHfuvUPl/3nGCQRP0jryDBDgJSd/faQrDUWzpi
+         Tzjf2gsQt4eWryQT4XHn+cimSvtvJjahof/be5EtWH+O9J3q7DWVpwW8VbtoKs6iqADO
+         NXHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740259374; x=1740864174;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4iEhhaz8KH8wSaw5vdKbNXgznw8OSlCEKiD6GpJBrEE=;
-        b=tmKi6k+RkH5ZF/1XwUKaajysQcD3gl0Vt5oKaVW3E92Ss8HjoayWWutHGXOC8H69GZ
-         POX2gkkIqQCp5Jn3kruAi2Rf1tBKDyf9EZ5GF+pTYQUdIzYraeD7BbcOo3Wu39+SP0C6
-         XFT+CvGd3Q0EmEfXFLtFOzMPXn8gWQLwwTdsAQD1+bQ35ImcSYMy7RSPNkHV2ZPkFFha
-         0n7KNZpi8PwkefPoKZpX+rKPCkhdSqxjRZj6F9YFuIbzA2UaWjsRhDEduWhyAubR51WO
-         0vF5r/4y11e905FtUhappH/PY5QDOiqhCsiygXYwNlZuv3rGYu9bD6MlFZlDqzoZ/SM7
-         tR4w==
-X-Forwarded-Encrypted: i=1; AJvYcCWMKzNgU5rtaDFkv/qAg2qUkjUfirEb9tYf6QQn1eB7j1uVAXJDoPZJh0/ATGikt9XcdfimkOidlrAkJSFRhg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyaLky9lwBp3QIH342wM4qQ9B8W11SqppiTdNumZ5QjOTFWc9U5
-	2KmIndVRdalSeskZCPbBLwI6UjkmG9TEH1utONrXhDvVFj9G3t6rGvjvOUJgMSLZFY0+LoS/NtJ
-	4FdU=
-X-Gm-Gg: ASbGncv9mE8l59/U/bXDQJ2wuuv0e4Gis7V84SiS0uADkVFYw6M4lIqRqf4cNHMaQs5
-	lgUq5PrJTlt/z+ZbqDWPFX0ppede+2/7mu4NpcHFo6uOcZRdxtHbV2zHu5sA6GA4dVMzEMpuWAl
-	CuRmIs7kh78sLYAe1UIDY407sgKZGRuOi6g49wXeZAGbBRN45r6KOS0Qw0pkw1lnse/Tkf9b++a
-	/tOzD9W04Y4MymyaVSdYXn1rpuk1Oa/q8vZt/ztdDCQlmLHPZfkWdfpL2QTfCKahmY6Muav2x1S
-	E3xc8MNEo4YOBhxU0OywVEcC3qLBmOchO878qCNRwzd3JbZ0XHnfyEW3YiaXQbyMjAm+8PSpk/o
-	e
-X-Google-Smtp-Source: AGHT+IFoadBgicWuBygVslpNlBPCrkN2pznKUGAtA6KWCsGxINPZDyaJgswKQxfKQ/SyCnsY5w9QUQ==
-X-Received: by 2002:a17:907:94c8:b0:aa6:6c46:7ca1 with SMTP id a640c23a62f3a-abc0d97e4eemr705255366b.10.1740259373190;
-        Sat, 22 Feb 2025 13:22:53 -0800 (PST)
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com. [209.85.218.52])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abbc3d4bed6sm923603266b.116.2025.02.22.13.22.51
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 22 Feb 2025 13:22:51 -0800 (PST)
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-abbda4349e9so465718066b.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 22 Feb 2025 13:22:51 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUliRWLjdkNExAiacsYNV/lntulqaxZ00iiiiFF2ZX8oyZ+ja9eGWvlaSvmJrOpppWksMhGUc7X/NwIIIgU5g==@vger.kernel.org
-X-Received: by 2002:a17:906:6a02:b0:ab7:b9b5:60e7 with SMTP id
- a640c23a62f3a-abc0de0dfbfmr702171766b.40.1740259371241; Sat, 22 Feb 2025
- 13:22:51 -0800 (PST)
+        d=1e100.net; s=20230601; t=1740259580; x=1740864380;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0yhDnARrBdVqwowHBLWajQ+jKlgWjbT7txKq6E4c1n8=;
+        b=foa51ZN4k8KGgHRICC06Jpgd9KnFMGYzaolZ1wy4QG8PZRAz+drKOEV8mm/Sj23gNo
+         DNiQL52WYvE2RJQlnXK6tyCVviTMXWnWEExWhr1Qi87efanQ7EYkg1pi5sIZia2eAFEb
+         DPuDoJzSEfLDE/QE8oYMPyPqWzirXo5We1ydTpjHnF5rZZDsYKB+8PXSH6MFM6GfOVMK
+         thMPw3PGZKY9aBrgt4Uc3hBjF3Jx1Tf/aLnrR+BSz0BL9wgxu1A8McRp83eFZXoZ6pzz
+         NdWQdHqMSxRgOLEhbaHhQBrcTSKfWl0ogeDVFqu6rywI6/qG4xO3xAsZktlxN+hob3DM
+         8CQw==
+X-Forwarded-Encrypted: i=1; AJvYcCVFQF5XA17W6inRrjd6IpqWNmphV7u48nI3Su4DlmX/L5DPhaOPoJb8DV0N3zN7SuON5f5SmxE6Yts0ZLZHCP8=@vger.kernel.org, AJvYcCVr8HroozwYfFAozPiQHdTf/iNHQxsBOd15wv8aoWaIIPEPMe1ZbJIIphv+ZVNZDWi753dVA29SQJg/c0Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGZPz9C91exeZIPx1GoaVEDRnER8MYiW5j0JPl+JDvFrFajTqu
+	Pu3F806HBx3razDOYLGTULjPgl1uSbWgTzo1f3BC4EE+9p9blu5Q
+X-Gm-Gg: ASbGncuCQw8hOjsslzZHGdXuClQlI771M1EgIySemoOWybp0W9Wdl6X4xosPB2+KasB
+	TcS63NdqtNbOytBsCpU8Hp/K/VtdQ/k/XgO5/34Y1JOr4NLTc23pS+Pgfuu8497/43B5LT4bwex
+	M/mg7vIa199oVXYpmL9tPP2CpdmuE8ddJsrCf+yeJ3lhEQeMM2blHvq2onwex9oll1k/KHjY+Mq
+	u0euY9rdzscAjEO9CszP8pWwfJPHRiZRiZGxH1y+8Obg7nHkCRT1sYeaYxIw/HgrA8o5Iu0fZFL
+	fQksq+sgrGOhM+vtLxWqmN1HB5a/pDeE/OyGdAs0qsVSTkiA6IpqWi6+/Rv4KMlifnqq/iETZ3q
+	SM7EEk0cCyPIIc0ld
+X-Google-Smtp-Source: AGHT+IGVGTHfLEg+mckIv5sJYQeZvhy+BiBIC5AirMgVAY0yuRgym4DzxeJ639TCzHVdvxQe4qoeqw==
+X-Received: by 2002:a05:6214:f61:b0:6e1:f40c:b558 with SMTP id 6a1803df08f44-6e6ae9a1285mr91214886d6.44.1740259580302;
+        Sat, 22 Feb 2025 13:26:20 -0800 (PST)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e65d7848ebsm114317086d6.32.2025.02.22.13.26.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 22 Feb 2025 13:26:19 -0800 (PST)
+Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 406571200066;
+	Sat, 22 Feb 2025 16:26:19 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Sat, 22 Feb 2025 16:26:19 -0500
+X-ME-Sender: <xms:-0C6ZzCMcuXkp9sBenTi-a26abNcnJg_xyzPRVOiNwy-0zemUFhcjw>
+    <xme:-0C6Z5js7r_FdYnPy879sRxndMHkqpLCUGjLME5bEj5Dk_red--8QNcxJvvcX1Wdu
+    RNTZeUWcb2EYuf1yw>
+X-ME-Received: <xmr:-0C6Z-mky0Qmg84Tnei3X5B0fN_pslO29RVElpsLgzPCHXtLtvg3na5-WL0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdejgedttdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddt
+    jeenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
+    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeeugeefvedvieejkeeludehgfehvdejtdej
+    fffftddtffefgeelleethedvudejvdenucffohhmrghinhepiihulhhiphgthhgrthdrtg
+    homhdprhhushhtqdhlrghnghdrohhrghdpohhpvghnqdhsthgurdhorhhgnecuvehluhhs
+    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvsh
+    hmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheeh
+    vddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpd
+    hnsggprhgtphhtthhopedvtddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprgdr
+    hhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehtrghmihhrugesgh
+    hmrghilhdrtghomhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopegrnhhnrgdqmhgrrhhirgeslhhinhhuthhrohhnihigrdguvgdprhgtphhtth
+    hopehfrhgvuggvrhhitgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhglhigsehl
+    ihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrgh
+    dprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthht
+    ohepghgrrhihsehgrghrhihguhhordhnvght
+X-ME-Proxy: <xmx:-0C6Z1z5jZqy9fsPdyN0g8XnHQAMhLz3QKYDm4Qqs4jdHGGOFJVn0g>
+    <xmx:-0C6Z4SYj0H7F8haFfsxKbTinSDL07vLNx71--kMdqTA6pyYe06RwQ>
+    <xmx:-0C6Z4YkwX9xllKaYBEkHJ0Ywoa1v6MVbzb2EIIZgHHWoVra_UQuFg>
+    <xmx:-0C6Z5SCMj4zMS3JIdpSR35tRMdaOQ8jXBBAOTE3fYupXBofNBdvNw>
+    <xmx:-0C6Z-Bd8523-TNttsod7k8_QgOtJvsP21AUpYQzqBz9u7KsLESYZNLA>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 22 Feb 2025 16:26:18 -0500 (EST)
+Date: Sat, 22 Feb 2025 13:25:46 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>,
+	Dirk Behme <dirk.behme@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v8 02/14] rust: hrtimer: introduce hrtimer support
+Message-ID: <Z7pA2rnb3a892r1S@boqun-archlinux>
+References: <djAeSx8DNZwss2-UqXGmhVPqYm2z4LhKWC70jPHPisd1w70qmpmOfVbHfhqJErhoFwVFM8IpbTv4MKkk_BIpQw==@protonmail.internalid>
+ <CAJ-ks9mNidHZvWkFJE1jExc2oVk_bbJpiO_DRMrWu5nYhTpKgg@mail.gmail.com>
+ <87ldtzhexi.fsf@kernel.org>
+ <87cyfbe89x.fsf@kernel.org>
+ <Z7iQcDa72XnJ5zGC@Mac.home>
+ <CAJ-ks9kQccoa7znFNzWAgi6_G0TKvLUARWPZ_Dbed1C-d4Lr+Q@mail.gmail.com>
+ <lP-bWmvvDdcUDicFow-u6piINSeNk1_a_BWKDDFMbFpE3Mo_5lxqfpA6v_8yYqTXNDmVZLXyz6RY3cQHhMoVrA==@protonmail.internalid>
+ <Z7iZevQkYVGDoeTa@Mac.home>
+ <87y0xycowa.fsf@kernel.org>
+ <87h64mcimw.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
- <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
- <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
- <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
- <yuwkqfbunlymofpd4kpqmzpiwbxxxupyj57tl5hblf7vsvebhm@ljz6u26eg5ft> <6EFFB41B-9145-496E-8217-07AF404BE695@zytor.com>
-In-Reply-To: <6EFFB41B-9145-496E-8217-07AF404BE695@zytor.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sat, 22 Feb 2025 13:22:35 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wjS8hzLyOEAxhHR3miajBHdXXSpyhq54iCb6dKuJxP4Yw@mail.gmail.com>
-X-Gm-Features: AWEUYZn2q7vlrnil44LrRbnQ_gYsOI4ICZfisQzq90rI5rzF1ykDwwh3NLl2oAo
-Message-ID: <CAHk-=wjS8hzLyOEAxhHR3miajBHdXXSpyhq54iCb6dKuJxP4Yw@mail.gmail.com>
-Subject: Re: C aggregate passing (Rust kernel policy)
-To: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>, Ventura Jack <venturajack85@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, airlied@gmail.com, boqun.feng@gmail.com, 
-	david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, 
-	hch@infradead.org, ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87h64mcimw.fsf@kernel.org>
 
-On Sat, 22 Feb 2025 at 12:54, H. Peter Anvin <hpa@zytor.com> wrote:
->
-> VLIW and OoO might seem orthogonal, but they aren't =E2=80=93 because the=
-y are
-> trying to solve the same problem, combining them either means the OoO
-> engine can't do a very good job because of false dependencies (if you
-> are scheduling molecules) or you have to break them instructions down
-> into atoms, at which point it is just a (often quite inefficient) RISC
-> encoding.
+(we had some discussion on zulip: 
 
-Exactly. Either you end up tracking things at bundle boundaries - and
-screwing up your OoO - or you end up tracking things as individual
-ops, and then all the VLIW advantages go away (but the disadvantages
-remain).
+	https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/Timer.20support/near/501291973
 
-The only reason to combine OoO and VLIW is because you started out
-with a bad VLIW design (*cough*itanium*cough*) and it turned into a
-huge commercial success (oh, not itanium after all, lol), and now you
-need to improve performance while keeping backwards compatibility.
+, replying to restate what I've said for list discussion)
 
-So at that point you make it OoO to make it viable, and the VLIW side
-remains as a bad historical encoding / semantic footnote.
+On Sat, Feb 22, 2025 at 12:40:23PM +0100, Andreas Hindborg wrote:
+> Andreas Hindborg <a.hindborg@kernel.org> writes:
+> 
+> > "Boqun Feng" <boqun.feng@gmail.com> writes:
+> >
+> >> On Fri, Feb 21, 2025 at 09:46:08AM -0500, Tamir Duberstein wrote:
+> >>> On Fri, Feb 21, 2025 at 9:40 AM Boqun Feng <boqun.feng@gmail.com> wrote:
+> >>> >
+> >>> > Hmm... if you mean:
+> >>> >
+> >>> > trait HasHrTimer {
+> >>> >     unsafe fn start(&self, expires: Ktime) {
+> >>> >         ...
+> >>> >     }
+> >>> > }
+> >>> >
+> >>> > Then it'll be problematic because the pointer derived from `&self`
+> >>> > doesn't have write provenance, therefore in a timer callback, the
+> >>> > pointer cannot be used for write, which means for example you cannot
+> >>> > convert the pointer back into a `Pin<Box<HasTimer>>`.
+> >>> >
+> >>> > To answer Tamir's question, pointers are heavily used here because we
+> >>> > need to preserve the provenance.
+> >>>
+> >>> Wouldn't the natural implication be that &mut self is needed? Maybe
+> >>
+> >> For an `Arc<HasTimer>`, you cannot get `&mut self`.
+> >>
+> >>> you can help me understand why pointers can express a contract that
+> >>> references can't?
+> >>
+> >> I assume you already know what a pointer provenance is?
+> >>
+> >> 	http://doc.rust-lang.org/std/ptr/index.html#provenance
+> >>
+> >> Passing a pointer (including offset operation on it) preserves the
+> >> provenance (determined as derive time), however, deriving a pointer from
+> >> a reference gives the pointer a provenance based on the reference type.
+> >> For example, let's say we have an `Arc<i32>` and a clone:
+> >>
+> >> 	let arc = Arc::new(42);
+> >> 	let clone = arc.clone();
+> >>
+> >> you can obviously do a into_raw() + from_raw() pair:
+> >>
+> >> 	let ptr = Arc::into_raw(arc);
+> >> 	let arc = unsafe { Arc::from_raw(arc) };
+> >>
+> >> however, if you create a reference based on `Arc::into_raw()`, and then
+> >> derive a pointer from that, you change the provenance,
+> >
+> > In this case, the pointer will have the pointer of `Arc::into_raw()`
+> > will have the provenance of the original reference. When you turn that
+> > pointer back into a reference, won't the reference inherit the
+> > provenance of the pointer, which is the same as the original reference?
 
-> In short, VLIW *might* make sense when you are statically
-> scheduling a known pipeline, but it is basically a dead end for
-> evolution =E2=80=93 so unless you can JIT your code for each new chip
-> generation...
+If the reference is an immutable one, then it won't have the write
+provenance, and if the reference is only to the `Timer` field, it won't
+have the provenance for the whole `HasHrTimer` struct.
 
-.. which is how GPUs do it, of course. So in specialized environments,
-VLIW works fine.
+> >
+> > As I read the docs, getting a reference to a `Timer` from a reference to
+> > a `<MyType as HasHrTimer>` by converting `&MyType` to a `*const MyType`,
+> > doing a `ptr.cast::<u8>().add(offset).cast::<HrTimer<T>>()` and
+> > converting that pointer to a reference should be fine? The final pointer
+> > before converting back to a reference will still have provenance of the
+> > original reference. Converting to a reference at the end will shrink the
+> > provenance, but it is still fine.
+> >
+> > Going from a `&HrTimer<T>` to a `&T` is a problem, because that would
+> > require offset outside spatial permission of pointer provenance, and it
+> > would require increasing the size of the spatial permission.
+> >
+> > Is this correctly understood?
 
-          Linus
+Right. Also in this case, since eventually, we need to convert to a
+`Arc<T>`, the pointer from `&HrTimer` or `&T` doesn't work because write
+provenance is required.
+
+> 
+> How does provenance work across language boundaries? Should we actually
+> use `with_addr` [1] when we get pointers from C round trips?
+> 
+
+I would suggest we assume that C can pass the provenance via pointers,
+that is, if we pass a pointer value to C and eventually get it back from
+C, we should treat it as having the same provenance. The rationale is 1)
+considering LTO, C may also have the same or similar provenance model
+(e.g [1]), and 2) the C part may get rewritten into Rust in the future,
+the correctness about provenance should not be changed by that
+possibility. `with_addr()` is not necessary then, because pointers
+should have the proper provenance when it passes Rust/C boundary.
+
+[1]: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3005.pdf
+
+Regards,
+Boqun
+
+> 
+> Best regards,
+> Andreas Hindborg
+> 
+> 
+> 
+> [1] https://doc.rust-lang.org/stable/std/primitive.pointer.html#method.with_addr
+> 
