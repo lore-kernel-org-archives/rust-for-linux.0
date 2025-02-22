@@ -1,131 +1,130 @@
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.maslowski.xyz (mail.maslowski.xyz [45.77.158.94])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9182CCDB;
-	Sat, 22 Feb 2025 23:34:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB913202C24;
+	Sat, 22 Feb 2025 23:49:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.77.158.94
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740267287; cv=none; b=ZWWIx2jPYvcq2P+7oQ8HzOThG/erNsdzOb7C0gKWabV2coB7d8feDfB5nXv9B4XIBHxlwq3KKosuDya3MzjMDsnq2MUY0sx85d4EEVQjlR4cZGgi3+D1QA5KpnUV1q07nsvzGd4ZuWtzrm0S+h3SXeCH/NF10bEU466sgV5XV50=
+	t=1740268202; cv=none; b=mP1sD4w6teDAh7wPYMe215TIV7ZAMli28KZ1JQJoPfAZ9AJEQmjN5R+jtsEvkAyTH8YAo6eN7XeM3SkbbQmssqh+o4Wr459LMnH3vuvyrdDK5f+2evvTVQiOOIMtfzNERThq8X6iG5tYWjKsfuD+TWGUsHFBzIJ2/uEy3aOYxjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740267287; c=relaxed/simple;
-	bh=tU3r286zfMEzp509S4Nwj3oJKm1dT+refdlYwbG487A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EUwUNNBwqopGMGpW7m1Ck0xXq1SZ6SCi+kApeoh+49uD0UFqcshtcFgLXIhHY3FZDwbtGu3ExnZcMBMQUDzmK1ZDcLYuAfgf+NpsSJbfVMWi0zFAcpzB9E80ZelLoub1mI+gIcnmd5CGsGpCw8C/DIN+qCm8mgw/LvfuyOOrHTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PJ0JYvrD; arc=none smtp.client-ip=209.85.128.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740268202; c=relaxed/simple;
+	bh=3z9CKU4X7u0WJNsFUPjx/98hXkKogbxuvLD2pclMvvY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=DPPsA51oohAsjotZx6L4TnkB+PTx2xnhtsjax+CsJg1IUAwSqGg43NuToZ6tKAf0PNZZVoJ7fOjWzKHc4fHuhTePoXCPPJVeWtNCofpMbgjnELM1vjiIDkpp3pP49HDK41jATlDvSiiS9IGh27cmlkCt+RP+uciX28wwu9Wendo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=maslowski.xyz; spf=pass smtp.mailfrom=maslowski.xyz; dkim=pass (2048-bit key) header.d=maslowski.xyz header.i=@maslowski.xyz header.b=MnexX9od; arc=none smtp.client-ip=45.77.158.94
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=maslowski.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=maslowski.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PJ0JYvrD"
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-6fb3a611afdso27781647b3.0;
-        Sat, 22 Feb 2025 15:34:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740267285; x=1740872085; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=/2b+ymF1Y/6cEr1vN13eZ8XRTQyUDfjNMs7g+mlMvUo=;
-        b=PJ0JYvrDMtayd5cj2X8RdD2q9bDoJnbxlR5f5gYsgYZv80WdqOIvb8MYx3t0C/G8S8
-         6DOMkZz1jcdZ6BGWSi+GvWYS5QnSDLqw9yBusc8XxnC28oXSoupoatwYmMDcfwZuRkvC
-         No2XDBHCgroAP3cy3SLqFVkvl6FE4gzVanDSnTct4YxZ3ixz4IapuTf/DONM7o/xDrJe
-         oEsX/UDjcZRhoilZkbBtgixOQKKUuFyNPNrFcIyVII1PibrPcx4kfW2l1/W80TN/qAHc
-         WEgx3ya8Akg2350xhj8AXvs536ZVvf5kPtg1/ZOYNwYiheisWVmDd/yvhdexcPvC0YJc
-         qgaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740267285; x=1740872085;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/2b+ymF1Y/6cEr1vN13eZ8XRTQyUDfjNMs7g+mlMvUo=;
-        b=q4IizJKroa0SSbnkTmcfEv2AohMOAzEj4CiX0hPMMv0q5yNT4hLUpNXOPROzNQdcDW
-         WL7BjVrD3mOV4O0MOhJtCRyA6v9+pPUUa/A/yOh9muoo72MLYDBcATw2kBNpKhW6Vt/A
-         mF2N1JkY9JrCp3eKSIqj7bFyr90PTROrOxKGVJlP5N/fLinEsxOzpOfTAWIYL74ZosVj
-         HqZ4QJKGaZ1YZZIfh75mJ06l3SlXcmzK3MYtXdrV0G+vpeD1B1GzwvKmEANMvLL6lDAE
-         +AeURuZ4zgEkOmiGQJE/QSCzUjwV8fS8/8O96OQWes4FoSDUyJ18h07t9MYbGOiIY9SV
-         Lw7g==
-X-Forwarded-Encrypted: i=1; AJvYcCVIQNTmT6lQHeO2nrzmIA3OA/jIDiB/YPKPH7IAdbJAQ/4fse/uevtFk5kNzwmZN2RqgC+4+mn/jII=@vger.kernel.org, AJvYcCVUuJ4L3mWc/YVXOwnygoE3oPEnklwMH1Xh+PqeA+jo/kVg5kobsgR7giSN+wlY+JhBa2CnmSejfDERFt4=@vger.kernel.org, AJvYcCVnzIJnyNvaHqjyQfiYYT/LohQBZAigApzHkim/ZL2xS4CtCKmp8xk1NimeiBgToTX/5hqWOvb+AFJy9ZjitME=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBwvnYTjklJsiHLf9mA1aB/lq4Ohz0r3aE2XjB/ny+TaYhgmxK
-	2HbuuKqjDLuh2lF7PVeAiopVn3xyjQttEjWWKSgXDbbSbPTX3IJt
-X-Gm-Gg: ASbGncuVLD6G8JWXa5zX8Uz+B3Sj2gVI/MBBlkJ8Z6rI5dMIvaZk09EgXxRXcpqFHdE
-	XfI/nteTCqCNJLTg2cr17nxY+hR7mMvcCZv1joCo1z/tMeyTmYywkUYUHVbUIqeauuOlGPNBpxv
-	mK+Br1Mp2qcVkKqjLd9RgnAJ/MFZnBEyNpjM71V9Bdv1aCIbSMD0CRkbGoC1H38Nt/4IJf9qglc
-	Y5oExWQjhhzxm66kC2EZEySEU4Yhb0feH6Ad+3tAvnwDgG0eqClhqg7ghAZU+QmUlOVwgIoAVPZ
-	8ALNTFyQPdNxLRtEJkXrWrM0CRGIR/x9/wFEHfty7+r57bc/nJUKdZ/rFrdisA==
-X-Google-Smtp-Source: AGHT+IFX+yydMfA2KvN3qR8wwEAWMY6dCzO7XD1Jpai1WZCyjR83OHW/VfW2eSTH7oe0ieczq9aNOA==
-X-Received: by 2002:a05:690c:6c8e:b0:6fb:9389:3cde with SMTP id 00721157ae682-6fbcc1ffb02mr73850507b3.3.1740267284829;
-        Sat, 22 Feb 2025 15:34:44 -0800 (PST)
-Received: from localhost (c-73-224-175-84.hsd1.fl.comcast.net. [73.224.175.84])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-6fce175d7c7sm4656927b3.80.2025.02.22.15.34.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Feb 2025 15:34:43 -0800 (PST)
-Date: Sat, 22 Feb 2025 18:34:42 -0500
-From: Yury Norov <yury.norov@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>,
-	Danilo Krummrich <dakr@redhat.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
-	Erik Schilling <erik.schilling@linaro.org>,
-	Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
-	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
-	Christoph Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>, linux-pm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] MAINTAINERS: add rust bindings entry for bitmap API
-Message-ID: <Z7pfBoXDoH5x-MEq@thinkpad>
-References: <20250221205649.141305-1-yury.norov@gmail.com>
- <20250221205649.141305-3-yury.norov@gmail.com>
- <CANiq72=ctKoDz+Kf7UFBTD-oF17cTHBcrkNN_5cqxQeK609OVA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=maslowski.xyz header.i=@maslowski.xyz header.b="MnexX9od"
+Received: from localhost (ett230.neoplus.adsl.tpnet.pl [83.20.165.230])
+	by mail.maslowski.xyz (Postfix) with ESMTPSA id 233587E9E1;
+	Sat, 22 Feb 2025 23:42:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=maslowski.xyz;
+	s=mail; t=1740267732;
+	bh=3z9CKU4X7u0WJNsFUPjx/98hXkKogbxuvLD2pclMvvY=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=MnexX9odlJgn6rN1fPtImras+40ieMFdF1zlf4PS+QF9+07VJXZ1wRy2x4ctxZRF5
+	 tuxpJb57YClLmKhGpKVT8otj5vZLLoZci/ZpBzLeVw7ByZ3ZKGETBNfsiGtNY+wcjM
+	 G4NmOH2atBpov153fnREFEKV8SqPm3ZsTB2Jc2uiMgSYAuqfZC+Mj8pCN1Ylbow2Z9
+	 bQuZZgS4zj4VAqoA4cuSeQnoDnJYpPJuoujb2ZaIrp2EyJPaqBjKrwpzOKR0NXnKpZ
+	 pIv7UTrIOxWS/n+EjqlNuFH37DiWAgCBXUDzNkJRYlTUZ0LsX3iGgMfcSu5Z2BDuY1
+	 mZHNvva08EoVA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72=ctKoDz+Kf7UFBTD-oF17cTHBcrkNN_5cqxQeK609OVA@mail.gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 23 Feb 2025 00:42:06 +0100
+Message-Id: <D7ZDF8NZGPS3.3QBMAVC1NTUDM@maslowski.xyz>
+Cc: "Greg KH" <gregkh@linuxfoundation.org>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, "Miguel Ojeda"
+ <miguel.ojeda.sandonis@gmail.com>, "Christoph Hellwig" <hch@infradead.org>,
+ "rust-for-linux" <rust-for-linux@vger.kernel.org>, "Linus Torvalds"
+ <torvalds@linux-foundation.org>, "David Airlie" <airlied@gmail.com>,
+ <linux-kernel@vger.kernel.org>, <ksummit@lists.linux.dev>
+Subject: Re: Rust kernel policy
+From: =?utf-8?q?Piotr_Mas=C5=82owski?= <piotr@maslowski.xyz>
+To: "Martin Uecker" <uecker@tugraz.at>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com> <Z7SwcnUzjZYfuJ4-@infradead.org> <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com> <326CC09B-8565-4443-ACC5-045092260677@zytor.com> <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com> <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com> <Z7VKW3eul-kGaIT2@Mac.home> <2025021954-flaccid-pucker-f7d9@gregkh> <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at> <2025022024-blooper-rippling-2667@gregkh> <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
+In-Reply-To: <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
 
-On Sat, Feb 22, 2025 at 02:50:50PM +0100, Miguel Ojeda wrote:
-> On Fri, Feb 21, 2025 at 9:57 PM Yury Norov <yury.norov@gmail.com> wrote:
-> >
-> > Bitmap developers do their best to keep the API stable. When API or
-> > user-visible behavior needs to be changed such that it breaks rust,
-> > bitmap and rust developers collaborate as follows:
-> 
-> If I understand correctly, you are proposing to a "temporarily stable
-> API", i.e. to add new APIs while keeping old ones for a bit until the
-> Rust side updates to the new one (including perhaps workarounds in the
-> helpers when needed). Is that correct?
+On Thu Feb 20, 2025 at 9:57 AM CET, Martin Uecker wrote:
+>
+> For example, there is an effort to remove cases of UB.  There are about
+> 87 cases of UB in the core language (exlcuding preprocessor and library)
+> as of C23, and we have removed 17 already for C2Y (accepted by WG14 into
+> the working draft) and we have concrete propsoals for 12 more. =C2=A0This
+> currently focusses on low-hanging fruits, and I hope we get most of the
+> simple cases removed this year to be able to focus on the harder issues.
+>
+> In particulary, I have a relatively concrete plan to have a memory safe
+> mode for C that can be toggled for some region of code and would make
+> sure there is no UB or memory safety issues left (I am experimenting with
+> this in the GCC FE).=C2=A0 So the idea is that one could start to activat=
+e this
+> for certain critical=C2=A0regions of code to make sure there is no signed
+> integer overflow or OOB access in it.   This is still in early stages, bu=
+t
+> seems promising. Temporal memory safety is harder and it is less clear
+> how to do this ergonomically, but Rust shows that this can be done.
+>
 
-Yes. Keeping them under CONFIG_RUST for a while, or moving directly to
-rust helpers would be an option.
+I'm sure you already know this, but the idea of safety in Rust isn't
+just about making elementary language constructs safe. Rather, it is
+primarily about designing types and code in such a way one can't "use
+them wrong". As far as I understand it, anything that can blow up from
+misuse (i.e. violate invariants or otherwise cause some internal state
+corruption) should be marked `unsafe`, even if it does not relate to
+memory safety and even if the consequences are fully defined.
 
-> In other words, while the entry is about the helpers file, the policy
-> is about all APIs (since some APIs are called directly), right?
 
-Yes, it's about all functions used by rust. I can underline it in
-the commit message. 
- 
-> (Up to you, Viresh et al., of course, i.e. I am just trying to follow)
+In programming language theory there's this concept of total vs partial
+functions. While the strict mathematical definition is simply concerned
+with all possible inputs being assigned some output value, in practice
+it's pretty useless unless you also make the said output meaningful.
+This is quite abstract, so here's an (extremely clich=C3=A9) example:
 
-What I want to make clear to my contributors is that lack of proficiency
-in rust will never become a problem for them. If they have an improvement
-that may break something on rust side, there will be someone who will take
-care of it - this way or another.
+Let's say we're working with key-value maps `Dict : Type=C3=97Type -> Type`=
+.
+A naive way to look up a value behind some key would be
+`get : Dict<k,v> =C3=97 k -> v`. But what should the result be when a given
+key isn't there? Well, you can change the return type to clearly reflect
+that this is a possibility: `get : Dict<k,v> =C3=97 k -> Optional<v>`. On t=
+he
+other hand, if you have some special value `null : a` (for any `a`), you
+can technically make the first way total as well. But this is precisely
+why it's not really useful =E2=80=93 it's some special case you need to kee=
+p in
+mind and be careful to always handle. As someone here has said already,
+besides undefined behavior we also need to avoid "unexpected behavior".
 
-I think rust developers need similar guarantees form rust maintainers:
-there will be a rust engineer who will keep the bindings on rust side in
-a good shape. Viresh, as per my understanding, has committed on that.
+(Another way to make such function total is to show a given key will
+always be there. You can achieve it by requiring a proof of this in
+order to call the function:
+`get : (dict : Dict<k,v>) =C3=97 (key : k) =C3=97 IsElem<dict,key> -> v`.)
 
-Thanks,
-Yury
+
+Overall, making a codebase safe in this sense requires an entirely
+different approach to writing code and not just some annotations
+(like some other people here seem to suggest).
+
+
+And while I'm at it, let me also point out that the concept of ownership
+is really not about memory safety. Memory allocations are just the most
+obvious use case for it. One could say that it is rather about something
+like "resource safety". But instead of trying (and miserably failing) to
+explain it, I'll link to this excellent blog post which talks about how
+it works under the hood and what awesome things one can achieve with it:
+<https://borretti.me/article/introducing-austral#linear>
+
+Oh, and once again: I am sure you knew all of this. It's just that a lot
+of people reading these threads think adding a few annotations here and
+there will be enough to achieve a similar level of safety | robustness
+as what newly-designed languages can offer.
+
+Best regards,
+Piotr Mas=C5=82owski
