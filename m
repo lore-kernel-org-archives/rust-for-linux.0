@@ -1,112 +1,112 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-184.mta1.migadu.com (out-184.mta1.migadu.com [95.215.58.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A13342A95
-	for <rust-for-linux@vger.kernel.org>; Sat, 22 Feb 2025 18:44:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5F735961
+	for <rust-for-linux@vger.kernel.org>; Sat, 22 Feb 2025 18:46:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740249900; cv=none; b=S3O/Rb3BxhcsKt0sG050t7kx+4FiRQYKtpoAvOp5whdGvwTL85zGJ5EuVTN3PCAH1ZHm+qFtzWMrKLUJLtKzqT+zRXddGzJvQlL64Kx0KqHhkZgDld8wWOhqOLP245t36GHuBAMNKahoKqhweFvnyUkJRZKpU+Mx9Gp56FLAY88=
+	t=1740250005; cv=none; b=F+PyEry0KPUtYw7CdIR8iFly6nHBRDQ1KtLYCyVsqeTBhY9ATjPKU5IFTe8LgcK7V6/RmOIUEo8jwAtXRIc0FU1cg9ce/+nevZjes1BL7lWX017Wu2ArUAN2rg31gMGxctOosJV0AoyDAVcEFBEy+EEBTlUYwWFMaPIp/JioNbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740249900; c=relaxed/simple;
-	bh=OWQ/8rNUcjck7tkRuYyqikXWKplXwhxhtLF2xDKFeXM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sNu0figeJjSdHGKCJpvAl3KEkkgexGJpr13GEDse1CfsJLOcVMEIPTYgnR2RPY+mYNIm2wpvGJImNs8c8bQ7QxgXkoQvA+lzbW/5xltsjxlyoOBOQtYgM/0nUpYYf2XvWqbDkG9tIxW28bGoQCF3l2wxV+h4vgkw+OYM/UDz0bI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=WZ9pS68U; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1740250005; c=relaxed/simple;
+	bh=7sIwnY6/3gZT+k1BZR3Ol1zXU2KSCV3hVwQK1y2xfNM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SlYFCtyuuzkP6k1ZpLzKbwhAiBBIm6h96kX+zaFlMC0eOX+323Ebya/fHHxGC8sADvV1KG+QzqV4if1xK9HqbmG2fBAorEZwdp6yq6drWn1Kr1bjuqm3F9KBjzssmRai/kAtPO1GUasrhE+6XkWRneCL7MMuI5o9hUM1zy+WWvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=gjVPkBt9; arc=none smtp.client-ip=95.215.58.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="WZ9pS68U"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5dedae49c63so5796655a12.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 22 Feb 2025 10:44:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1740249896; x=1740854696; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=2GmfLwYqjSfqdj0NeOV5aIVpVPfwUhlh0DRZJ2UKXos=;
-        b=WZ9pS68UZoF3civ3+ZMVmUX+87KUI6lHsCGR9+jFMWJTOiQv2NN18HGhvcXxPMEfCB
-         khZ1k6X9QlM7D3tTkiV1MsY/Q15WpyBXx1MbVOcSvkUN58GbuMZKsAtjDhbVZOzlvyaB
-         g5X6L2REhHEtb57wYtdl2Ssks1DWCrhCnHe+A=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740249896; x=1740854696;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2GmfLwYqjSfqdj0NeOV5aIVpVPfwUhlh0DRZJ2UKXos=;
-        b=ge2aydTQmx96cZ5vl6OpKM5mYTP1kjQBb2Is539S9AYuS1GJ1L7fU4t8UoWEufhNa0
-         fPqPRm4nyw8nP+Q+AQcWPWGxLUxcOzcDKy4hA7mdjIJ9IzEmxExn/sCRoGDADsVc1W1V
-         1NMfwv+EKiBAgAINm3mI923WzOnqhvMhSmUVEeqeJOD8POS13ZhLHK8BccMTHn6mNmid
-         r6On/k7fqUhH9b+IHxZMMwTtCCrXfddHaqPVu+phYfdUpNxXbKKCftNoFIYtEioqu4lY
-         529NPhokgf4AJm60cIEGOkmAHiJMDTR4+nbZ/kwt8sEJuHrDexpH9XjsBFVWCRyQGbIs
-         xgPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXnA61a94OgCpP+CiJ/fxnyQtIH52KSg1Gpyyp+1oQbMhbsJRZRwzSl1/vaQi7HDLprGp+/aN2uPyFfoddAJQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzVFhTr8PYFML4rBaSccizXaXwttg/4OBt3xx8OMgxnzabnSlf
-	UY/ON6nYG0bWr7ueQm8caKhhp+lLhjMaJXBA/WuhaUILO4OEheKpYnfYXssZCSRpNpsBarSL4nL
-	wpPQ=
-X-Gm-Gg: ASbGncvLCmyLfZ962IL7acru7Nd0bEWfBAh/tehEzQiNwaCcaxOQpAUSYekBdeUkNr7
-	Y4STQ0v/zfHyZdo7AsKeKB5NJX/jVixdPljnwSDFgS8x4DX2CP7pI9sNgIEHRfHYCJTnHeConDA
-	53SH7gnqYwwAU+KnmMv2H9knEjG/oZvHTv9/rpoZ/g1FIiaG+QvZMSv4oW0C+HZZJJF5B0X7pLi
-	Af68zZm47ldnV9VMhm2pFuFgU2CuvQA6xO2hG0ESIw8x8JqRJQCR8x3J01XjTKT2AGws/REUGSN
-	l23rbt3C/XWr8gmQX8nHGVgYF7mdt7Sst0V9gvPZboKZsFyISiF+hnbkQGrh7Ptjkdw6rd8C9Sg
-	9
-X-Google-Smtp-Source: AGHT+IFc8ClBcI2NQtaslImFDEhS50ezAAz+gMCmfYasxy/MHWQJNWydIGaXjyNOB+MihVzjqjwEdA==
-X-Received: by 2002:a17:907:3f8e:b0:aae:c3c1:1361 with SMTP id a640c23a62f3a-abc0de14acemr713844666b.44.1740249896404;
-        Sat, 22 Feb 2025 10:44:56 -0800 (PST)
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com. [209.85.218.52])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abb8a647c7dsm1348701066b.72.2025.02.22.10.44.55
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 22 Feb 2025 10:44:55 -0800 (PST)
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-aaf3c3c104fso546290966b.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 22 Feb 2025 10:44:55 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUv4G+xJiRNNsQFjblLAZjJcexpP+plaCSz2hag2SpeF5wbWCOkXSCi3DiJ3KP/eVOd0R8lxEKtry55agKpkg==@vger.kernel.org
-X-Received: by 2002:a17:907:724f:b0:ab7:9a7a:d37a with SMTP id
- a640c23a62f3a-abc0de1954emr621935366b.43.1740249895227; Sat, 22 Feb 2025
- 10:44:55 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="gjVPkBt9"
+Date: Sat, 22 Feb 2025 13:46:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1740250000;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3f/0VAaSYr2M8Qek1+ROCrWl7o/8nq+xAmZ5OglDyZs=;
+	b=gjVPkBt9Hn/WFy+N8kKxgmv7+wVzaqQqMlyI0BAJA4G4GmnJZcii6Be39bx5Xg+EUPv43C
+	stBErpVS63lWVaWZcQWnIkoAMQ0UE46oOK7hPUKJR2+d7wsYYZ59udRpJelUgnrQEy3vFD
+	VRUeCwXPsRC5suVr12pNonWGDD8kUC4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: Dave Airlie <airlied@gmail.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>, 
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Christoph Hellwig <hch@infradead.org>, 
+	rust-for-linux <rust-for-linux@vger.kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>, 
+	Greg KH <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
+Subject: Re: Rust kernel policy
+Message-ID: <nuxose4hzqvrmuvtbzio4x4n3y7tzbxmtwtwipafz7mhqd7zin@zvm6khg4mtrn>
+References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
+ <Z7SwcnUzjZYfuJ4-@infradead.org>
+ <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
+ <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
+ <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
+ <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
+ <CAPM=9twZYgp4skmHCcpRr4z8pne-3LN=J=Dan-sEAwJEpttXSA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2025022042-jot-favored-e755@gregkh> <b9a5de64fe1ded2ad3111763f35af9901bd81cc4.camel@tugraz.at>
- <caea3e79-78e6-4d98-9f3b-f8e7f6f00196@stanley.mountain> <61a7e7db786d9549cbe201b153647689cbe12d75.camel@tugraz.at>
- <20250221124304.5dec31b2@gandalf.local.home> <CAHk-=wgg2A_iHNwf_JDjYJF=XHnKVGOjGp50FzVWniA2Z010bw@mail.gmail.com>
- <6b3e4d3bdc9b6efd69068e5b22cfd05d370aed19.camel@tugraz.at>
- <CAHk-=wg=pZvE9cHJUPKGCajRUCtDoW73xwY5UfJApCWms_FgYw@mail.gmail.com>
- <20250221172415.5b632ae6@gandalf.local.home> <CAHk-=wjQ94GipftbNo0PbfuUxFMXFyp2bWGJJPNUngyf17Ai8A@mail.gmail.com>
- <y75v63zqmgd3n42bprrbs2ppg32vhk2isppi6wxn7lfsdwd5sn@jm74cuwhadbj>
-In-Reply-To: <y75v63zqmgd3n42bprrbs2ppg32vhk2isppi6wxn7lfsdwd5sn@jm74cuwhadbj>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sat, 22 Feb 2025 10:44:38 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wjEQ7wd=iRN1Du-_fAqXgqEfCZH27PisDNPCpusv3Swxg@mail.gmail.com>
-X-Gm-Features: AWEUYZkGmBfM4yXjsFNaaBKIjcw5m0UrJ9-jgNYDnIvr-gmrGabmAZy5fq4X8l8
-Message-ID: <CAHk-=wjEQ7wd=iRN1Du-_fAqXgqEfCZH27PisDNPCpusv3Swxg@mail.gmail.com>
-Subject: Re: Rust kernel policy
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Martin Uecker <uecker@tugraz.at>, 
-	Dan Carpenter <dan.carpenter@linaro.org>, Greg KH <gregkh@linuxfoundation.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Christoph Hellwig <hch@infradead.org>, 
-	rust-for-linux <rust-for-linux@vger.kernel.org>, David Airlie <airlied@gmail.com>, 
-	linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAPM=9twZYgp4skmHCcpRr4z8pne-3LN=J=Dan-sEAwJEpttXSA@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
 
-On Sat, 22 Feb 2025 at 09:53, Kent Overstreet <kent.overstreet@linux.dev> wrote:
->
-> Because it sounds like coming up with a different way to write range
-> checks is going to be easier than coming up with pattern matching magic.
+On Wed, Feb 19, 2025 at 03:59:27PM +1000, Dave Airlie wrote:
+> On Wed, 19 Feb 2025 at 11:00, H. Peter Anvin <hpa@zytor.com> wrote:
+> >
+> > On 2/18/25 14:54, Miguel Ojeda wrote:
+> > > On Tue, Feb 18, 2025 at 10:49 PM H. Peter Anvin <hpa@zytor.com> wrote:
+> > >>
+> > >> I have a few issues with Rust in the kernel:
+> > >>
+> > >> 1. It seems to be held to a *completely* different and much lower standard than the C code as far as stability. For C code we typically require that it can compile with a 10-year-old version of gcc, but from what I have seen there have been cases where Rust level code required not the latest bleeding edge compiler, not even a release version.
+> > >
+> > > Our minimum version is 1.78.0, as you can check in the documentation.
+> > > That is a very much released version of Rust, last May. This Thursday
+> > > Rust 1.85.0 will be released.
+> > >
+> > > You can already build the kernel with the toolchains provided by some
+> > > distributions, too.
+> > >
+> >
+> > So at this point Rust-only kernel code (other than experimental/staging)
+> > should be deferred to 2034 -- or later if the distributions not included
+> > in the "same" are considered important -- if Rust is being held to the
+> > same standard as C.
+> 
+> Rust is currently planned for non-core kernel things first, binder,
+> drivers, maybe a filesystem,
+> There will be production kernel drivers for new hardware shipping in
+> the next few years, not 2034 that will require rust to work.
 
-Sure. But honestly, forcing humans to write non-obvious code is almost
-always the exact wrong answer.
+If we can ever get the bindings merged, I want to start using Rust in
+bcachefs yesterday. I'm already using it in userspace, and already have
+Rust bindings for the core btree API.
 
-When the basic pattern is an obvious and legible one:
+Initially it'll just be for the debugfs code so that we can test things
+out on a non critical component (make sure the toolchain works, make
+sure the distros aren't screaming too much).
 
-        if (a < X || a > Y)
+But the sooner I can switch to writing new code in Rust, the better.
 
-saying " use a different helper pattern for this" is the WRONG
-SOLUTION. You're making the source code worse.
+Re: compiler requirements, all this stuff is driven by practical
+considerations. No one is shipping a 10 year old Rust compiler, and as
+distros have become more modern and better at shipping updates there
+won't ever be any reason to.
 
-Make the tools better. Don't make humans jump through hoops because
-the tools are spouting garbage.
+Rewriting some ancient driver that people use on ancient machines with
+ancient distros would be a problem, so we won't do that.
 
-               Linus
+What the actual toolchain stability requirements end up looking like in
+10 years is anyone's guess (Will gcc-rs become mainstream? Will llvm
+start supporting the necessary architectures? Will we just not care as
+much about niche architectures? How will distros be at shipping
+updates?) - so we can't say with any degree of certainty what the long
+term policy will be.
+
+But I'm sure we'll be talking to all the relevant users and stakeholders
+and coming up with something reasonable.
