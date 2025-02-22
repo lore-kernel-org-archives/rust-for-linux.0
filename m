@@ -1,106 +1,91 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4493535949;
-	Sat, 22 Feb 2025 13:51:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440AF126C05;
+	Sat, 22 Feb 2025 13:54:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740232271; cv=none; b=GsEnd/wJER8T5VjmwZmecav5r/+/1iw9I0b03F+DlWABu6o0eYH5PhpBRT4mYTq+y7Dz6o6891KSXZaqgHl0ZfVMrjsDy/dRxGI3bqAkyYAPu2oTg8EZDxGrIOYABkBZ9aB/qtjwhNFDEqnz303kcmeY5KW6Z/yQKgrTiSijGcg=
+	t=1740232482; cv=none; b=o0AhpM3Dtkyl9kTuRRE7f1c8qrgeg2S6NGWvg+DQJ/geJ9HGmExymV/5VpsvgY6133hpOEXhVDC+BfxJOcfiCLQ/9UX5b9nYTrRIdhozgUktC11b+763mPsUaXW05iLV3FoFhYE/UuQk2wuNWjpPLUR65szg68YffZY4IagCkAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740232271; c=relaxed/simple;
-	bh=7XvebaarfPWYMLZS8DRSVmQKGFCvLowf4P4Z/yIOI4A=;
+	s=arc-20240116; t=1740232482; c=relaxed/simple;
+	bh=VweE6tS4QeR472TULvZT7bEsIw1ivQkAGZ7DzKeVTOY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ieByRL9Jc/VB7kIpWaDvprDtGmAyGvvh8UZlxLLOY9Kbae46f4ImoDQwUkZOxRzGs5v6TrRflB68g9SYuvEjluhFXoduhcGo867CahkrtpK9YiWCCwpwMJu8NWWeYznqrMCJrxSdmAdVIIMfSrAWkS0zpbGsn/wjFCvGTPnfWWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MBU8AN+2; arc=none smtp.client-ip=209.85.167.54
+	 To:Cc:Content-Type; b=rVfpzUkH0SHfWbLl5pUdva6+J/umH30lOxd6d4NDLGXnGwrHQG90Rlv/Qxs5ADgJwr/rCxzUSyQnWmAsQtUFZeJw39xAWgLgOs27y/RfphWXVcL3OdUnuSMedpOaEmvF2Zu8duzZNE9Vv8yzIQnIHIrxA1iXxan5N8lnAtKHlt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LlK1Y+Cj; arc=none smtp.client-ip=209.85.167.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MBU8AN+2"
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-548043a912fso344628e87.2;
-        Sat, 22 Feb 2025 05:51:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LlK1Y+Cj"
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-54529583c39so460755e87.1;
+        Sat, 22 Feb 2025 05:54:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740232267; x=1740837067; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1740232479; x=1740837279; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7XvebaarfPWYMLZS8DRSVmQKGFCvLowf4P4Z/yIOI4A=;
-        b=MBU8AN+2XkRKQ9cCFmyFfUlbI5GaEYHFtF4tkcgBAE8MXy+YR8/zsoPGXy6Bg9G5dV
-         cJ37MoBpZth4O+lXgej8KZ27jDKiqzoPT/2bAYMIMSh2sGgcNKocPnoUoHHwuXchd62E
-         MsRf16xMYtuSvsXeRIh61fuhySoLOBtqpr8QHWwQ012jN/b25oWQzAhBcFIOMq+mkjAs
-         TaEVnonGNnatMf57xHRnQPksQ2QP1NMljdIp/nfd86Rc2X+EWi64ZJzxOUBnosZVVuLl
-         UMZ3PvYaUrf4gg8vgNABndA0smDYeFFiOINfJ4dIFYT8kW28zSfPlzN9jmsQjEOzmd0/
-         sN2g==
+        bh=VweE6tS4QeR472TULvZT7bEsIw1ivQkAGZ7DzKeVTOY=;
+        b=LlK1Y+CjYrtoCMnfUUDfnnyBZzIFYQgy9lxUfUy0MkLgizv5dTc+9q+6aa6QIYBhfo
+         KNjTlDRnHUgYQLyniDovQB7d7GIKq2m3UEfAOhWaq+VSgTkVWoPIQFhT6TX3+adznLcA
+         54RU9KwTzsmNfQksbKOR88J+scksCU1RlExTDQUdRXsrwcAjFIb1JGcIECE3mS1sGGH/
+         WGcnYobwdfMBQDzpWuvoyUX/B+IpWZdA5TxnVgkLGH45tfi4aQFpNfA/1tOhcnVuV7eq
+         eAzNRzx8XjdzqvnwBSqv5ydTUbiZGPqwhV+Yn6gwPfuOjJcW/Y/qFKtvHZ7ZVWglJA7U
+         bfPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740232267; x=1740837067;
+        d=1e100.net; s=20230601; t=1740232479; x=1740837279;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7XvebaarfPWYMLZS8DRSVmQKGFCvLowf4P4Z/yIOI4A=;
-        b=PJezCn2aGoTKItK0R6XINKGqPiKB5uLyBznqu1S3D1AGIDdKy9lo34eGa57Z67wFwP
-         G4FqFHDtG8yBPJMyKPzM5/L7lB+p05Ivgc1FEQocQzW05OqZc7JTLpSA1Jv6qXqjAhS7
-         kFf3MxoNaGo/bsf7LQd+1mFB6RN79d9SVvpzqHIjbb7+q8eG8gTrYoj1Ybu9wEv1NLAE
-         z8PNz19nOw7vWOOAE8cdE84oJ7C8mmO++djEtyFuwixxT56+kes9mByhB1gMFH0ByRa1
-         d0+EfbymJv7HKd0E0rTnj+/5u0Bw1MZGPvQXiBQIBdOCbvZR/OaaSvXzCC+hKOZ3Ur8E
-         5a3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVib9HqF9j1wYHiFbPMTzib7wuGiWs8t8KstUWA64pEkciGi1GLGKzJxv+RaY6TUVp2VaYRZbhoCqGhCxsL6+U=@vger.kernel.org, AJvYcCW0dOHO3/+ZJbuC0Pwzr6zOyyFbhV9oz0Fim7Kv09LJB0bt7NwTROcbueFxGaX/6vpxnF5Q0hAcOUNNhu4=@vger.kernel.org, AJvYcCXwUznJOPFWzxxJpe99IjugZXr3gt6mc8QpJkAKZ/Svval8WOeXXY2o0cp3wqFn9PG+BTVrgctYyNA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBKQsUwfMAIXlr78a16I5Bfq6xxgNC7Nhy5oWxMKn6ejJFEu0P
-	5aQ6ZWmMrZb5yo0fwgQsaN6FDD34JZKINocPnn84L6HZBZMsfPWMVl7QX6yvMNwdxqppuE2JHtN
-	b356RL8FqKnd5AB1idCuIODWiSKo=
-X-Gm-Gg: ASbGncsdLxioemT6qRS5J5Q3nBE8SKKntps+13yyDaWdgtLfM7m6LvajajzTtemtMRY
-	m3xNWjw8pVok0hMzClm9SKCRX1oFuELpmDdzcH0z8CfpUOowGjeA/qxb5dvsFC+RcqGRWaOEHiz
-	4hFdPHSsI=
-X-Google-Smtp-Source: AGHT+IEiprFzehPTOxru2M93tQg4m3wL/6UlJh/OyAX0ySYI2kjESez6vGmCeLbUDX5qhzIjXc8BWzRwjAt+mbpFnZk=
-X-Received: by 2002:a05:651c:1b14:b0:307:2aea:559a with SMTP id
- 38308e7fff4ca-30a59997932mr9566891fa.9.1740232267051; Sat, 22 Feb 2025
- 05:51:07 -0800 (PST)
+        bh=VweE6tS4QeR472TULvZT7bEsIw1ivQkAGZ7DzKeVTOY=;
+        b=WthcKwKbb3mvgS+jWppeSF/h/mZocTcE0hWvBOhI9U+Ia+bMSctlL9rrl8hwkUduNn
+         KD4GkLeezyh0DpytX2AdY3CCL/LuAgRHg1xiiKDYInGAh7qPUdouBYRBqOffkJXq+v8h
+         fUs3dM9ibTViNzCpSCIblaprKCDgoUsGzkPqpJ/qu7OFODyjDpH7uuD+ffDP7Wpg2WnV
+         MDZM5SZ4fE55OKi2K6//vlD7sAZTjx0AWcM25J/HDY4c3OaAxH7P/M4YJvqPmXqvBcqJ
+         EPWvHC1HN5IcZyUfYLvBZgWdRGKwltDl7rK9OAIynkaNAVVwPbbTVug6WCH8RzmTfanL
+         CH7g==
+X-Forwarded-Encrypted: i=1; AJvYcCVDc2Zajo7YLn2YHLOd5I/X27YMJe00wdj5jUQ5kOC6uaDZ4geZnFUKrOSv/U5lPm3YvLAOndZaw/oD5q0=@vger.kernel.org, AJvYcCXU9co62OVWIdU1Bb4qrUJjsmc4wRB3LuOPXAfGyp3etXHLS/yV42DJ0tDtDULKCZH6RIyqMYF+/RPf@vger.kernel.org, AJvYcCXtUymFaxnhjpT8ESn+eBMFT0h+sUjSvWuIV9SXyo0qmE2RpIJNUwBahB3Q9URRNkBEhFjycGyku7uVF+MQ3Y4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxaaJifSsCIzuC8a2VncPAj5ugsmpTYPS9qGXlghVP15cxV/RQl
+	KMaGeNVLAMqbAuu/LirxUVmfq8gfrxc4wrZdJISA/vn5DgHnGCujLmrcptKTNKTQd7y3OL66jp3
+	XB955XTZAZncw/yZffWcaAMqDsAk=
+X-Gm-Gg: ASbGncsEAbmChc/KFN7vW7TsCt0TorVpq3YPW+J91xII0IgxTB6mY4/2XAjGW8jfX9M
+	AfWm3HZVs1eFV/fkR/TN0nK4qRtqALm0+HTOUmUOZVaPilsrGlc1VsdxLsa/ocOwgWaSxf1TB+8
+	hzMgTv/K8=
+X-Google-Smtp-Source: AGHT+IHAbhfIomZjI7CPGUcwHAIlJKeobEzwTsXiVQ/Lp45cLpV8JVRBlaMa+HIJ9lvixKOZsueu2rYFHzgtS/uKrJ8=
+X-Received: by 2002:a05:6512:110d:b0:545:60b:f387 with SMTP id
+ 2adb3069b0e04-54838edd25emr918688e87.3.1740232479166; Sat, 22 Feb 2025
+ 05:54:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250221205649.141305-1-yury.norov@gmail.com> <20250221205649.141305-3-yury.norov@gmail.com>
-In-Reply-To: <20250221205649.141305-3-yury.norov@gmail.com>
+References: <20250217-io-generic-rename-v1-1-06d97a9e3179@kloenk.dev> <2025021817-chirping-fencing-d991@gregkh>
+In-Reply-To: <2025021817-chirping-fencing-d991@gregkh>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 22 Feb 2025 14:50:50 +0100
-X-Gm-Features: AWEUYZkMOIblNgQKZQV0DVwztTF32mbQDrM8xd4mK5hBqeEGuus0sxvxiKDGStk
-Message-ID: <CANiq72=ctKoDz+Kf7UFBTD-oF17cTHBcrkNN_5cqxQeK609OVA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] MAINTAINERS: add rust bindings entry for bitmap API
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>, Danilo Krummrich <dakr@redhat.com>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+Date: Sat, 22 Feb 2025 14:54:25 +0100
+X-Gm-Features: AWEUYZnYVLorTgwzThDBUoami7P8oPoQ8xqFPisrXxR0sWEuZ3sWkzPXy71DQM0
+Message-ID: <CANiq72kTcceaCEv0ETdN_zninTwJKAoPDvzz0Eorb5udGgTkDg@mail.gmail.com>
+Subject: Re: [PATCH] rust: io: rename `io::Io` accessors
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Fiona Behrens <me@kloenk.dev>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>, 
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, Erik Schilling <erik.schilling@linaro.org>, 
-	=?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
-	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>, Christoph Hellwig <hch@lst.de>, 
-	Jason Gunthorpe <jgg@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, linux-pm@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	Bjorn Helgaas <bhelgaas@google.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 21, 2025 at 9:57=E2=80=AFPM Yury Norov <yury.norov@gmail.com> w=
-rote:
+On Tue, Feb 18, 2025 at 8:57=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> Bitmap developers do their best to keep the API stable. When API or
-> user-visible behavior needs to be changed such that it breaks rust,
-> bitmap and rust developers collaborate as follows:
+> Want me to take this through my tree?
 
-If I understand correctly, you are proposing to a "temporarily stable
-API", i.e. to add new APIs while keeping old ones for a bit until the
-Rust side updates to the new one (including perhaps workarounds in the
-helpers when needed). Is that correct?
+Sure, as you prefer! Happy either way. Thanks!
 
-In other words, while the entry is about the helpers file, the policy
-is about all APIs (since some APIs are called directly), right?
-
-(Up to you, Viresh et al., of course, i.e. I am just trying to follow)
-
-Thanks!
+(The alias thing can be improved later)
 
 Cheers,
 Miguel
