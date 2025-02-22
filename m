@@ -1,101 +1,89 @@
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD99A13E02D
-	for <rust-for-linux@vger.kernel.org>; Sat, 22 Feb 2025 15:03:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F0219882B;
+	Sat, 22 Feb 2025 15:14:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740236639; cv=none; b=oM4Nfq6LOU1Dk1ukxUoKp3cgDQQAS3RG7+lAahtaJAP4t5yYnbr/eeppUlaOdIHGslsqglqY5qSSLoHboC7E/3UKwxm06AipMZiSxyuDXeBii27R+itl/3nqAZwPic645MjGpB90v0OgpYHeOxZ8nSyZsiPX3hUZpHtaNp6doTc=
+	t=1740237271; cv=none; b=e85x3HPLf35uXqizAxWECV/EOOOcy0P1uo+RjxHDuCOGIBWwq5kQp/hgNPmuA0Mpqk+xccRllt/l+3pmQ2VUQxeZJdPnzrSw3gIK3QLKOQYcHeh/2V/E5Ek909TEu2H3ySRvK4MRpcmT5/vOqgdzLyrbxm3A+76vldXBeburcFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740236639; c=relaxed/simple;
-	bh=kPNPLou+FgmzvO1cy0TDusxy2DcTdZeiwQPQcVKNWQI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KCi0ixt8ba3qSnnwn/pMSI3N3Vkq6KU6/9mZTzMxw1wKGrfoDl3QmF5EY9o7rxuN91SXh8WCl92lcysE9y/7rteJS5V/vPBxrF7FnAQdfJ6mD2+CKv40vCO/P8hTMmCC5wYudYauzDRmpd3zdBo4s4ZDCSghNRuUBggRkU3oWho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=dDneDw4O; arc=none smtp.client-ip=95.215.58.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1740237271; c=relaxed/simple;
+	bh=gb4Sl+NAFfnDd3eu0lMM0znOWH1iZWbVNbCdUr6/vmE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rhtNAZn5WHFJYGYU26bLg368uNAUji22oCM+fX2ScHd7yJKHiRePIUcPFwqSbpMxHkuXVda9I3nnP+Rt/ZDNAJi2ChDwFaEfJTcQ7HCb/AlomFpG64Z+0cyscA+ghpwsqgeOw7C/z3y1TJ6kYVFgO1UAo+jWSIBEthDYbfj0IDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eITl0yA7; arc=none smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="dDneDw4O"
-Date: Sat, 22 Feb 2025 10:03:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1740236625;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=n2fx+V6MOFz4dl61jiVYfggTt1KOJsIBw37HV+8BuLk=;
-	b=dDneDw4OLoPce16o1fWZ6PzClFRUnwADAvcfy9fvSbp+DD4HHKyPT1svcYNWWzTU4jO5Nr
-	sI7S5hTinnI0qMRTASqeN6B91XCzOYYlclEdz2xSrSgo+8v6eSQLEZHmJvLiNAmi+NFDKi
-	xnxTLR6OvmHX5Y/Q/KN2Xkht2zxt2wI=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Theodore Ts'o <tytso@mit.edu>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, Christoph Hellwig <hch@infradead.org>, 
-	rust-for-linux <rust-for-linux@vger.kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>, 
-	Greg KH <gregkh@linuxfoundation.org>, David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org, 
-	ksummit@lists.linux.dev
-Subject: Re: Rust kernel policy
-Message-ID: <2cbxfvvsau5sobm3zo5ds7u26jeiskxs6cavp5a7hbokjisobi@2ybqbl6iry6k>
-References: <Z7SwcnUzjZYfuJ4-@infradead.org>
- <b0a8ee53b767b7684de91eeb6924ecdf5929d31e.camel@HansenPartnership.com>
- <CANiq72nnnOsGZDrPDm8iWxYn2FL=wJqx-P8aS63dFYez3_FEOg@mail.gmail.com>
- <a627845f73f2f7bedc7a820cfdf476be9993e30f.camel@HansenPartnership.com>
- <CANiq72m5KB-X1zck1E43yffXOTeD4xRmZgDx_oUiNwR941ce0w@mail.gmail.com>
- <20250219170623.GB1789203@mit.edu>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eITl0yA7"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5456a71a7d9so532710e87.3;
+        Sat, 22 Feb 2025 07:14:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740237268; x=1740842068; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gb4Sl+NAFfnDd3eu0lMM0znOWH1iZWbVNbCdUr6/vmE=;
+        b=eITl0yA7Drayy6Et1i8gGRpTP5I0u8QQINLZglpysJzRhCqKquswYdxneS8RFzTbSb
+         3lJ2S/MfpKIQBnHd+vPDXC+SrrX7xI8fJVXyz9ulKky2Fufydtz8vOryxuUraDuZ349m
+         d95smFGOiqk4fJm6oPuz3DA5TZa4gvHF/8JcawWNhISJZBjnvwOmePuo3ji5WhBa9PCS
+         XyEbhw6zL152f1xoh837W47WTOSX5wkdLCZR62RkqtPuWvAYndwVDwIiVxUqcyC6VA6o
+         0t0IMEEdSQpxWpXp/8yEqaerkVBCu4dNRgmodhtQOqPBtacyIHkAX9vTDoHOkrQqx00Q
+         tLKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740237268; x=1740842068;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gb4Sl+NAFfnDd3eu0lMM0znOWH1iZWbVNbCdUr6/vmE=;
+        b=m/6xiBpFMiIygZkvqLaI6ITCXcmEBaluf3tENazKfB+9Mhunewjm7Npi7/RteQr0L1
+         37R40IqKUZnAljpvvTxnSXCXSbc9FYZvcXeRtmdqEeHXBdng6RR04imtrnNF7UOPIQRv
+         osMOF/txwhQCzVfN5HgKb94GcjQBhAisQj9R18kP7Orh8Ppfmt6irnZflXslFdIOoC28
+         xdTA0GmRGwO18bSzdXfuHs/jJVRxB/0yQKj+K+poBk7xMaHp7O7y4Xj9QaR3jeXxkzcw
+         Md8KkPp5wXtDE1IUTPJbQqBobhE3/ImaaIRZI/AW5uUasU6Szr9mHE/47IE/7F6ZXaSx
+         CVPg==
+X-Forwarded-Encrypted: i=1; AJvYcCUpMwoTNge1IJIaRocDy682q0nj6zR6vudBSdi5HLmoBjJXUJbbctlCNKasTedy/ry3tjVg0uQf2vARKS0=@vger.kernel.org, AJvYcCXDAfHPZJS7vbtk7mR2pJKFzIYLOdUhgkq7LiKjULQMiOtrj24AiHzqTyUzfE1DFqy5v4kzqWWaWvrxG88wp1c=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywfwak0Wur6EFhHN7DzVLVKEq+AK1ZrCK7UEFXsaxg1viz4H7b1
+	BN82LEQE3sutbFhjyJfCCdtZw3WQB/rh1iOKkPr5AXkBrun/oXQB3oah70qXA6hTxvJrgJOPQQ+
+	/QsHLrWJp9YreWIe7GyAavQpfrTw=
+X-Gm-Gg: ASbGncuI8WyWuyimOXeTz5zzF/RpNVDLx4UIgwAcT6X8KOd5YCkuFy9NKbJFGt1VvNO
+	Gn8ht3zL7Opkg1AtVlO4gtJ3LMh7ZwHwLeltEO48nmbrhMPbQuRBaoCtDuxvSl8c6PMNUca6EmX
+	vzlD52H0s=
+X-Google-Smtp-Source: AGHT+IH8Tym24vcrnRxEuyslXSwW3y9ZazTyaHZg3gYD5Yy0qwHtZLgjrL5WHKrpGR42kgpwlimOtJGd7bnoDbYEgQ8=
+X-Received: by 2002:a05:6512:e99:b0:545:2fae:cffe with SMTP id
+ 2adb3069b0e04-54838f5a573mr936010e87.10.1740237267476; Sat, 22 Feb 2025
+ 07:14:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250219170623.GB1789203@mit.edu>
-X-Migadu-Flow: FLOW_OUT
+References: <ef950304-0e98-4c91-8fa1-d236cbb782b8@disroot.org> <CANiq72=WyQdQfoOeb_mK=J_5GtiWBenqzA+mOr=8mN8OTWPB-g@mail.gmail.com>
+In-Reply-To: <CANiq72=WyQdQfoOeb_mK=J_5GtiWBenqzA+mOr=8mN8OTWPB-g@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 22 Feb 2025 16:14:12 +0100
+X-Gm-Features: AWEUYZkDVyQ7F4Gp9ybyNiW1F1rAJPNqvAp0Zrl2cJ0pS2ctF7P1QLlwfAuRl3I
+Message-ID: <CANiq72=gJCauuTv3_+vvHU2r=nFpKCdL5tsjS+mj7Ttqra5oLA@mail.gmail.com>
+Subject: Re: FTBFS: Rust firmware abstractions in current stable (6.13.4) on
+ arm64 with rustc 1.85.0
+To: NoisyCoil <noisycoil@disroot.org>, Danilo Krummrich <dakr@kernel.org>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 19, 2025 at 12:06:23PM -0500, Theodore Ts'o wrote:
-> On Wed, Feb 19, 2025 at 05:44:16PM +0100, Miguel Ojeda wrote:
-> > Hmm... I am not sure exactly what you mean here. Are you referring to
-> > Wedson's FS slides from LSF/MM/BPF? i.e are you referring to Rust
-> > signatures?
-> > 
-> > If yes, those signatures are manually written, they are not the
-> > generated bindings. We typically refer to those as "abstractions", to
-> > differentiate from the generated stuff.
-> 
-> The problem with the bindings in Wedson's FS slides is that it's
-> really unreasonable to expect C programmers to understand them.  In my
-> opinion, it was not necessarily a wise decision to use bindings as
-> hyper-complex as a way to convince C developers that Rust was a net
-> good thing.
+On Sat, Feb 22, 2025 at 1:20=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> Thanks for the report! Yeah, I noticed in my builds too but didn't get
+> to it yet (there are also a couple Clippy warnings in the QR code too,
+> in case you see them).
+>
+> Cc'ing Danilo in case he wants to send the fix, otherwise I will.
 
-You keep talking about how the problem was Wedson's talk, but really the
-problem was you derailing because you were freaking out over something
-you didn't understand.
+s/fix/backport -- actually, sorry, I just sent it.
 
-The example was fine. It wasn't overly complicated.
-
-You've been an engineer for decades, taking in and digesting new
-information about complex systems is something we have to do on a
-regular basis. A little new syntax shouldn't be giving you that much
-trouble; come on.
-
-> I do understand (now) what Wedson was trying to do, was to show off
-> how expressive and powerful Rust can be, even in the face of a fairly
-> complex interface.  It turns out there were some good reasons for why
-> the VFS handles inode creation, but in general, I'd encourage us to
-> consider whether there are ways to change the abstractions on the C
-> side so that:
-
-It wasn't a "gentle introduction to Rust" talk. You can get that
-anywhere.
-
-It was a talk _specific to the VFS_, so "how does Rust cope with core
-VFS interfaces" was precisely the point of the talk.
-
-If you wanted to take up that much time in our presentation, you
-should've prepared a bit better by aquiring at least a bit of
-familiarity with Rust syntax beforehand. You shouldn't need to be
-spoonefed, the rest of us have done that on our own time.
-
-Just please try to have some etiquette.
+Cheers,
+Miguel
