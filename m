@@ -1,58 +1,43 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-10629.protonmail.ch (mail-10629.protonmail.ch [79.135.106.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443812066C6;
-	Sat, 22 Feb 2025 09:25:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570E4207A10
+	for <rust-for-linux@vger.kernel.org>; Sat, 22 Feb 2025 09:34:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740216333; cv=none; b=QjVYOgAGYW24eGu8+R+gfhCN2Cq7+yMilrMBd3dBc1v3czolDX710a461rBWj4toO5AjWiGx+onZ1hNaEkPEepyHgV1plSiwPelKb7R6MEVvM/6YUsNXln1FLlsmUKchOWDuIclCSnibtpmjNJzKwvpOBK6c6+lFRyNYR8f7bpU=
+	t=1740216883; cv=none; b=u+NC1pfNpTfi7VB5uDWLYbtBGpxP9dsqWo66/Bt2jOSzHr2xx3X4OiHF9uxAlYTRy9e5KFgwA6JHUVG6fOlQIgUsSX5cD/S6hNwnUGHRCOJ/gwPeIfgcPgkKpPB5GDdXPwD3Eqwc4vSs3EoYAHp+14K6u1F/HQ3TxEqHcdRt+SY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740216333; c=relaxed/simple;
-	bh=56hDo32Azb2ahbyNFuHrL/IGY3jiwnJ7XKs0zeaPLXA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ItHqEPXSFfJgsWXWWEw4tO55FT92r5aqVNMC7/qRKGQBgBjuNRpx9RRtX2Bm5YlGhldYupWGTCIRndbgPIhOPN2xtdJ8e1FNeeU3IVKoIwBX8PfS5EOB7n+Ixbb/uDc0S1LbhSRSrWSfiuku3ML0ERePDz/Kn9XAkq3CmyaUtxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MG81fplp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740216883; c=relaxed/simple;
+	bh=CwANs9YY78ymGn+sKefGYOoQ37cQb0yCalp/EVd8Jwg=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mB1GYOdqpOLu2LtIVa+8yJHn1BtIFhbYMFxj+LyOulwQZlPQP57lP908AhTktM+ogXyekwcFP9pJXp6UI8fjfJ6c0Uwd/B6Oq6TWzXRoy0l9Hd0hplg2PzTPLDKu2EhFRaofDK+I67girWhar86B0yqr6MjaJAlCssKUSAgKuio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=FTgUbEL2; arc=none smtp.client-ip=79.135.106.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MG81fplp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1056C4CED1;
-	Sat, 22 Feb 2025 09:25:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740216332;
-	bh=56hDo32Azb2ahbyNFuHrL/IGY3jiwnJ7XKs0zeaPLXA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=MG81fplpFrsuDjg3WTz0jxHwueyoxNfjF4uKD6V0q2v05PQLkIXqjRgb/YMy+oQlw
-	 iATZasoPsLb2y+5xa6e5cugeRiUzD2D5oyUtRJCxaD5Fjw51+nhhyzvhaKQpJK4eBs
-	 5EKtZo25IiwPPER++nRnpdBWSIqxueH4w5OhbZkSO4hJweK6acRZ7jVRY/4l1bZtOK
-	 eFHtRhgiBYl75vX9kbMiMod8EuWCt2rMie51f6Edp0+XvbvMFGshi9x/QUOnPSYTBP
-	 ByjbOI1RRLBo4VFw5uaXFVwkf6b5qc5ie4rC2hyBgy7MeEnjAfNd++zaTJHux9I7T3
-	 VPnMp+2oYN5Pw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Daniel Almeida" <daniel.almeida@collabora.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno
- Lossin" <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,
-  "Trevor Gross" <tmgross@umich.edu>,  "Masahiro Yamada"
- <masahiroy@kernel.org>,  "Nathan Chancellor" <nathan@kernel.org>,
-  "Nicolas Schier" <nicolas@fjasle.eu>,  "Luis Chamberlain"
- <mcgrof@kernel.org>,  <rust-for-linux@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>,  "Adam Bratschi-Kaye"
- <ark.email@gmail.com>,  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu"
- <petr.pavlu@suse.com>,  "Sami Tolvanen" <samitolvanen@google.com>,
-  "Daniel Gomez" <da.gomez@samsung.com>,  "Simona Vetter"
- <simona.vetter@ffwll.ch>,  "Greg KH" <gregkh@linuxfoundation.org>,
-  <linux-modules@vger.kernel.org>
-Subject: Re: [PATCH v7 0/6] rust: extend `module!` macro with integer
- parameter support
-In-Reply-To: <F882BB02-A795-4F79-A2AF-CBA9608470A5@collabora.com> (Daniel
-	Almeida's message of "Fri, 21 Feb 2025 12:45:48 -0300")
-References: <20250218-module-params-v3-v7-0-5e1afabcac1b@kernel.org>
-	<UymzM42tyVZD_DUcMoDIfNqTrk-B7QbvdKTEvMOjrOtwnqYN7v1fK2dLnKnGAyND_6LOE4bhRxwzd1GH9SqrLQ==@protonmail.internalid>
-	<F882BB02-A795-4F79-A2AF-CBA9608470A5@collabora.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Sat, 22 Feb 2025 09:49:13 +0100
-Message-ID: <874j0me54m.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="FTgUbEL2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1740216872; x=1740476072;
+	bh=81wCAGdGDWABM9NB8Pe5SGShGnERYX8IHDQ9bHUHuqw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=FTgUbEL2etV5pq0ZSQvfUW4bRqYez1ee0PpNGKElj/hjz671XK6VsZb+CO3Jbg5lm
+	 1fH4McklYlzSDDMVONqTUxfYec3sY8aR33SPefSTHo9ArJJ2tT94EeQLCf0EBNC4d1
+	 WrmppAardBmrgOIvAKwL35WwvqFjY+LXjEuqsRBY/C3KTYsbKg07Pip0WeQo9bBAqT
+	 rka2ImHcLYz94wsz7wrz8b7gsKq9iIjwbU1d2YYBfDGCcovzFeSsnQ3OYY/329yCXy
+	 SMMJgYrXT7DRrlAXCI87rLWAEcDdGe0QVP27rWtwLr3Ge+tRcPXuK7wtKK9nmhrjz3
+	 Lve12i9DqQXhw==
+Date: Sat, 22 Feb 2025 09:34:25 +0000
+To: Andreas Hindborg <a.hindborg@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, "Timothy G." <c6qchwbke@relay.firefox.com>
+Subject: Re: [PATCH v8 12/14] rust: hrtimer: add `HrTimerMode`
+Message-ID: <c750f04e-1b0b-4818-8554-c30fc535d07d@proton.me>
+In-Reply-To: <87zfifedc4.fsf@kernel.org>
+References: <20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org> <20250218-hrtimer-v3-v6-12-rc2-v8-12-48dedb015eb3@kernel.org> <ysjzL6zVfMAm7OLlJMCtBkEnfdFAS2VeO4PYUFzUxcRZvKNxuRlLWPA29gJQOWa8QaH-S5K1WElhtuwWMBF4EA==@protonmail.internalid> <a87ef54e-9a09-4cf6-bfe8-4bb98850cdda@proton.me> <87mseffyh7.fsf@kernel.org> <Qc288_gOFSgerx6GNw2kPqnwcTqQzGUTOlONfJMr2mOAsOQ7j5V5zr_lT2v5GLGN7s7HFl0_WkJD3VRgwJBNOg==@protonmail.internalid> <59728663-3baf-449a-b0af-931e9490db19@proton.me> <87zfifedc4.fsf@kernel.org>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: a44164e348d626570252e11a161392298cab2ca3
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -62,46 +47,157 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-"Daniel Almeida" <daniel.almeida@collabora.com> writes:
-
-> Hi Andreas,
->
->> On 18 Feb 2025, at 10:00, Andreas Hindborg <a.hindborg@kernel.org> wrote:
+On 21.02.25 12:39, Andreas Hindborg wrote:
+> "Benno Lossin" <benno.lossin@proton.me> writes:
+>=20
+>> On 21.02.25 10:17, Andreas Hindborg wrote:
+>>> "Benno Lossin" <benno.lossin@proton.me> writes:
+>>>
+>>>> On 18.02.25 14:27, Andreas Hindborg wrote:
+>>>>> +/// Operational mode of [`HrTimer`].
+>>>>> +#[derive(Clone, Copy)]
+>>>>> +pub enum HrTimerMode {
+>>>>> +    /// Timer expires at the given expiration time.
+>>>>> +    Absolute,
+>>>>> +    /// Timer expires after the given expiration time interpreted as=
+ a duration from now.
+>>>>> +    Relative,
+>>>>> +    /// Timer does not move between CPU cores.
+>>>>> +    Pinned,
+>>>>> +    /// Timer handler is executed in soft irq context.
+>>>>> +    Soft,
+>>>>> +    /// Timer handler is executed in hard irq context.
+>>>>> +    Hard,
+>>>>> +    /// Timer expires at the given expiration time.
+>>>>> +    /// Timer does not move between CPU cores.
+>>>>> +    AbsolutePinned,
+>>>>> +    /// Timer expires after the given expiration time interpreted as=
+ a duration from now.
+>>>>> +    /// Timer does not move between CPU cores.
+>>>>> +    RelativePinned,
+>>>>> +    /// Timer expires at the given expiration time.
+>>>>> +    /// Timer handler is executed in soft irq context.
+>>>>> +    AbsoluteSoft,
+>>>>> +    /// Timer expires after the given expiration time interpreted as=
+ a duration from now.
+>>>>> +    /// Timer handler is executed in soft irq context.
+>>>>> +    RelativeSoft,
+>>>>> +    /// Timer expires at the given expiration time.
+>>>>> +    /// Timer does not move between CPU cores.
+>>>>> +    /// Timer handler is executed in soft irq context.
+>>>>> +    AbsolutePinnedSoft,
+>>>>> +    /// Timer expires after the given expiration time interpreted as=
+ a duration from now.
+>>>>> +    /// Timer does not move between CPU cores.
+>>>>> +    /// Timer handler is executed in soft irq context.
+>>>>> +    RelativePinnedSoft,
+>>>>> +    /// Timer expires at the given expiration time.
+>>>>> +    /// Timer handler is executed in hard irq context.
+>>>>> +    AbsoluteHard,
+>>>>> +    /// Timer expires after the given expiration time interpreted as=
+ a duration from now.
+>>>>> +    /// Timer handler is executed in hard irq context.
+>>>>> +    RelativeHard,
+>>>>> +    /// Timer expires at the given expiration time.
+>>>>> +    /// Timer does not move between CPU cores.
+>>>>> +    /// Timer handler is executed in hard irq context.
+>>>>> +    AbsolutePinnedHard,
+>>>>> +    /// Timer expires after the given expiration time interpreted as=
+ a duration from now.
+>>>>> +    /// Timer does not move between CPU cores.
+>>>>> +    /// Timer handler is executed in hard irq context.
+>>>>> +    RelativePinnedHard,
+>>>>> +}
+>>>>
+>>>> At some point we probably want to move this to bitfields, or do you
+>>>> think it's better to keep it like this?
+>>>
+>>> Yes, eventually the would transition. The main difficulty is that not
+>>> all flag combinations are legal, and the zero value is also a flag.
+>>> There was some promising work being shared on Zulip for this [1], but I
+>>> don't think it is completed yet. Added Timothy to CC.
+>>>
+>>> [1] https://rust-for-linux.zulipchat.com/#narrow/channel/291565-Help/to=
+pic/Best.20way.20to.20handle.20enum.2Fflags.20situation
 >>
->> This series extends the `module!` macro with support module parameters. =
-It
->> also adds some string to integer parsing functions and updates `BStr` wi=
-th
->> a method to strip a string prefix.
+>> Ah yeah I remember that. And also the complication about certain
+>> combinations not being allowed.
 >>
->> This series stated out as code by Adam Bratschi-Kaye lifted from the ori=
-ginal
->> `rust` branch [1].
+>>>>> +
+>>>>> +impl From<HrTimerMode> for bindings::hrtimer_mode {
+>>>>> +    fn from(value: HrTimerMode) -> Self {
+>>>>> +        use bindings::*;
+>>>>> +        match value {
+>>>>> +            HrTimerMode::Absolute =3D> hrtimer_mode_HRTIMER_MODE_ABS=
+,
+>>>>> +            HrTimerMode::Relative =3D> hrtimer_mode_HRTIMER_MODE_REL=
+,
+>>>>> +            HrTimerMode::Pinned =3D> hrtimer_mode_HRTIMER_MODE_PINNE=
+D,
+>>>>> +            HrTimerMode::Soft =3D> hrtimer_mode_HRTIMER_MODE_SOFT,
+>>>>> +            HrTimerMode::Hard =3D> hrtimer_mode_HRTIMER_MODE_HARD,
+>>>>> +            HrTimerMode::AbsolutePinned =3D> hrtimer_mode_HRTIMER_MO=
+DE_ABS_PINNED,
+>>>>> +            HrTimerMode::RelativePinned =3D> hrtimer_mode_HRTIMER_MO=
+DE_REL_PINNED,
+>>>>> +            HrTimerMode::AbsoluteSoft =3D> hrtimer_mode_HRTIMER_MODE=
+_ABS_SOFT,
+>>>>> +            HrTimerMode::RelativeSoft =3D> hrtimer_mode_HRTIMER_MODE=
+_REL_SOFT,
+>>>>> +            HrTimerMode::AbsolutePinnedSoft =3D> hrtimer_mode_HRTIME=
+R_MODE_ABS_PINNED_SOFT,
+>>>>> +            HrTimerMode::RelativePinnedSoft =3D> hrtimer_mode_HRTIME=
+R_MODE_REL_PINNED_SOFT,
+>>>>> +            HrTimerMode::AbsoluteHard =3D> hrtimer_mode_HRTIMER_MODE=
+_ABS_HARD,
+>>>>> +            HrTimerMode::RelativeHard =3D> hrtimer_mode_HRTIMER_MODE=
+_REL_HARD,
+>>>>> +            HrTimerMode::AbsolutePinnedHard =3D> hrtimer_mode_HRTIME=
+R_MODE_ABS_PINNED_HARD,
+>>>>> +            HrTimerMode::RelativePinnedHard =3D> hrtimer_mode_HRTIME=
+R_MODE_REL_PINNED_HARD,
+>>>>> +        }
+>>>>> +    }
+>>>>> +}
+>>>>> +
+>>>>> +impl From<HrTimerMode> for u64 {
+>>>>> +    fn from(value: HrTimerMode) -> Self {
+>>>>> +        Into::<bindings::hrtimer_mode>::into(value) as u64
+>>>>> +    }
+>>>>> +}
+>>>>
+>>>> Hmm do drivers really need these impls? If not, then you could also ju=
+st
+>>>> have a private function that does the conversion and use it only in th=
+e
+>>>> abstraction layer.
+>>>
+>>> Similar to the other impls you commented on, I can move them private. I
+>>> would prefer using `From` rather than some other function.
 >>
->> After a bit of discussion on v3 about whether or not module parameters
->> is a good idea, it seems that module parameters in Rust has a place
->> in the kernel for now. This series is a dependency for `rnull`, the Rust
->> null block driver [2].
->>
->
-> ```
-> $ sudo modprobe rust_minimal test_parameter=3D2
-> [  251.384125] rust_minimal: Rust minimal sample (init)
-> [  251.384600] rust_minimal: Am I built-in? false
-> [  251.385010] rust_minimal: My parameter: 2
-> ```
->
-> Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
->
-> IMHO, this is slightly confusing, since the parameter is named
-> =E2=80=9Ctest_parameter=E2=80=9D, but you=E2=80=99re printing =E2=80=9CMy=
- parameter=E2=80=9D.
+>> What's the reason for you preferring `From`? I don't think it's
+>> important to forbid access from the drivers, but if it's unnecessary,
+>> why would we give them access in the first place?
+>=20
+> TIL trait implementations cannot be hidden.
 
-You are right, let's change that to "test_parameter: ".
+Yeah trait impls are always public.
 
+> I like `From` because every single rust developer seeing a `From`
+> implementation will immediately know what it does. It is more
+> idiomatic in that way than having another conversion function. I think
+> using existing traits with well defined semantics is preferable to a
+> local function.
 
-Best regards,
-Andreas Hindborg
+Well yes, but that only holds if other people need to use it.
 
+> But since driver implementer do not need it, I'm undecided. If you want
+> them converted to a private function I can do that, for all the ones you
+> called out. But I am also OK with keeping as is. You decide.
 
+I think it's better to keep these enums somewhat opaque.
+
+---
+Cheers,
+Benno
 
