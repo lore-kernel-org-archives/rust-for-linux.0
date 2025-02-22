@@ -1,124 +1,132 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B3EE1519A2;
-	Sat, 22 Feb 2025 05:56:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C367C101E6;
+	Sat, 22 Feb 2025 06:04:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740203798; cv=none; b=o2N0c7Trib3XdGNUbhz5ABVKBqmGu3jMPP7BsUOXX4scbHlcMm/2vUDnRRcVfUz6AoVCGrKj5Q60yhfLI1bqQYdP3GFNtW9tkOVSgmBWcceJshDGnEl5pnDYEuFe5U9sEpVe7mLBFnuNUdYiEZgSX0OlYuAptLrAqu6gCsxvpVs=
+	t=1740204264; cv=none; b=t1QP3kN31Udki0s1HApeciY9biNLtVelF9qZQ4Kr2Mv34WACrcIaodcN6KnWyx0QEQ/L6GnSK/vm+8bo1cCfzlrG8xHgK542GPWv5dXz4KOkJE7+JLIAqocMHIpChnudbm5sJZaHiObxi79wthBEMQ2+7XeWFvSxmcCZF+aSDLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740203798; c=relaxed/simple;
-	bh=C+stmj8U4y5ym21F+sMcdLbl+U7vfbBp14zzEbI48W4=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=D/wVCqcJPc8d9a1RP4XmbdqTcTtAKm4wDThjGfmN+GXhGsDo+0mGYdZEm0Nq5CNqahOEqvlnze4VRFSCY+yd+BRxETP8xW5ERnCGmm+8HXJrB46/6Fxa5xs9jzGYQDkTi8op6zNZv/OHD/Y3rVWZ8W/mKTSgCMayRcOSUYlnPIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JLWlCsno; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740204264; c=relaxed/simple;
+	bh=duzOIBj+WvWSqYXc4UWBI/jJcPgeKRT2xWPYPWTrPz8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=NKi9UQNW5+61wZeJxiBvSb6BQiGAiwJhUcE0+oqT/TNzdqOFxWtnqH2+FSsv+5XNQIZOdgNTLw/rQW11DwL8ZkEHKRXVvsobELzny6zn3oIyLYrQVxz3FFPHh/GEmaTskrtmVAFGj/d0WHMJCxaQKYahtO5sDEG1U58CSVdW5II=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=buRjWkec; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JLWlCsno"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-22128b7d587so55469755ad.3;
-        Fri, 21 Feb 2025 21:56:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740203796; x=1740808596; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9toe4jz2yTh5fR2DruBYvXF93WBq57gFVoRlebFiqAk=;
-        b=JLWlCsno51ioaCLRqztusZ7XTS3QTCAvnVdNwX/RNxCEnkvurYxuVtdByyxDF91vJ6
-         rcUK961ZqvFl8Cuoa6ZNjNC3t+d5L52d5Axp+Y3vOIB9rv/Iw1iZF6xkTneZ1AJTFhmw
-         Tnty9SgDLVWruJN2U8aHx72wSVqE8azwzgjsSdZ5OafT2WebSDZuYSKsJCZdXv9AzJu0
-         qB1/GvhL/UzBra7qNvAhfMk8e9X0lIWJXOPCEhW5y4EBQNNvbgdw7cweMMbL8eCcVru4
-         IYqEpQu1LaLokqRtcXuvi+aE1ZkxedrGEiUNSEW1LmaOLE6iXowpg4pgOge3M30vYQpT
-         Qyqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740203796; x=1740808596;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9toe4jz2yTh5fR2DruBYvXF93WBq57gFVoRlebFiqAk=;
-        b=SeGkMmtUHttjTb8GTq4/vD5iYrtjNMxGSzpT43NHe2tOk71DpMqEP8LU6zzlYRTOtx
-         3k/qxavQlBI1ly3kAPRj65Uieq3p19JbblxJFk7Q1iUJn3YjMZIO4+rAaDwW33SwuxcP
-         EBUutcmn0VsldbEPSnnKHkMK6gHtJMCamkFshxYIq5TELJQ2ZQA5SyrBg2+OFUsxXn1Q
-         0JK+yx2pIwxbY5VEZm8tpkp7qcPrFJBcavGuIoVsUIJJgpmsdhWuweTLdspkVlsHKP8h
-         836eXrOwd3o4EM1JWDGFxheFIv8M4rQho0yLJyW6pLVSXfojjxib1IaJO8cLUhjIdACf
-         H0ZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUjVm4PM1D6K/+qc+6SmW2SLOT1m1NbBMSNt5+yhaPbCtYIT7NdHtHYiDBfulM5oah/+TR4Tq/XnFXC5y0=@vger.kernel.org, AJvYcCWpqpoHjeExi93gvShbEzcrbwi8PLBq6rbVfwkHmFmHZAcBWLdliZi6jWs4GPZMUqXDVQmkbB8dQpbk4aMZ3QE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8BGarwSaSKeVb2cQWvu7W5D52G22rGnMWqQaS3NMWAZ0XQxwN
-	P9/H4gTb0w68Bf4LQiLCEAJ+7kZFaymR3KtVWaOzb+cnNx9eHMBu
-X-Gm-Gg: ASbGncufeuEuZkXQT/t5jR/sSfv/iPQU8PCIjolwKzilpY9o4RGKelwOkCz8BxKTzg+
-	xFarViMHY/fEhPxMxHAWY8h5d01HIRS/R+qfrH2q4h11mSgNZqjkjiy6g8FE6afwJSgi5+9j31d
-	AbH/vAamdSRuGNcgK+QTEPq0R1nM/omXKP1ctn8K29qrU5DscQDpPdhSu9GhwwlrYGNX92NSvIN
-	yBIfTWTjw5gxr+O/m+tHIrtoYNDlu6rTXmCIWDb4avx1GRSwRLovB5nPjMcJYNFCKe+NIlU/4Ky
-	tSU7YwG9IwsO/NKOQczffD+wMXeCj3XnHdPNMwaK45guOzNR
-X-Google-Smtp-Source: AGHT+IE4NzvtvNaLq+BC50x7+IEs35DdLd3D1KdoFJPlnLEPZKxkTfB0OERGN6Dm5auQQeaXxUuQrQ==
-X-Received: by 2002:a17:902:d4cf:b0:21d:cd54:c7ef with SMTP id d9443c01a7336-2219ff31902mr88562285ad.9.1740203796361;
-        Fri, 21 Feb 2025 21:56:36 -0800 (PST)
-Received: from smtpclient.apple ([2601:645:4300:5ca0:35f7:b1dc:26f7:f292])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-220d536439bsm145851455ad.81.2025.02.21.21.56.35
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 21 Feb 2025 21:56:35 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="buRjWkec"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91617C4CED1;
+	Sat, 22 Feb 2025 06:04:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740204264;
+	bh=duzOIBj+WvWSqYXc4UWBI/jJcPgeKRT2xWPYPWTrPz8=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=buRjWkecRfA2bXqvU/V1obcs/SoMhlXySQKVDmRHT1CKGOBdYhfe2jRRglAR8arvv
+	 jS5dSXRLUnErU9Mv3kbnk8JbAbiB9tgng85F0F6OKmtDhHFe1IF4aeyzKRvlW2QT38
+	 KUH6pXZU8eF5pYo3FkGgQx3M9m8zZymnYfg9HypHd1y6couAn2oVjfCqHBOh5FT6aL
+	 QM/LfX0Ulhoxp0yZTeVn8YwBGQ/CfR6At9yxKDZM94CSXcWir65tYbqg5RQer5nSvA
+	 p2qoyKsD0Qxm/6XpYP10EvMNPm/lhyIcyHeNP9fhXOT+WgD7r/XTC22SPYHJDLNhiI
+	 /sLqPFNdeYXWA==
+Message-ID: <f9b783dff11a923b53cb654a843af7ae33478f30.camel@kernel.org>
+Subject: Re: [PATCH] rust: workqueue: define built-in bh queues
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Hamza Mahfooz	
+ <hamzamahfooz@linux.microsoft.com>, Tejun Heo <tj@kernel.org>, Lai
+ Jiangshan	 <jiangshanlai@gmail.com>, rust-for-linux@vger.kernel.org, Miguel
+ Ojeda	 <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo	
+ <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
+ Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+ Gross <tmgross@umich.edu>,  Wedson Almeida Filho <walmeida@microsoft.com>,
+ Nell Shamrell-Harrington <nells@linux.microsoft.com>, Dirk Behme	
+ <dirk.behme@gmail.com>, Konstantin Andrikopoulos <kernel@mandragore.io>, 
+ Danilo Krummrich	 <dakr@kernel.org>, Roland Xu <mu001999@outlook.com>, 
+	linux-kernel@vger.kernel.org
+Date: Sat, 22 Feb 2025 08:04:19 +0200
+In-Reply-To: <Z7lVeWFX-8uQJaJC@Mac.home>
+References: <20250221223533.158959-1-hamzamahfooz@linux.microsoft.com>
+	 <CANiq72nsDgRJeKk=B7C9Zo7HL12az+ZLR27qxckqi5H=cmuV5w@mail.gmail.com>
+	 <Z7lP5VA374-TuNZz@kernel.org> <Z7lUcq3PycSSHiXx@kernel.org>
+	 <Z7lVeWFX-8uQJaJC@Mac.home>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.400.131.1.6\))
-Subject: Re: C aggregate passing (Rust kernel policy)
-From: comex <comexk@gmail.com>
-In-Reply-To: <917f49a5-dae4-4810-8116-9bc93ddcd9f5@acm.org>
-Date: Fri, 21 Feb 2025 21:56:24 -0800
-Cc: David Laight <david.laight.linux@gmail.com>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Jan Engelhardt <ej@inai.de>,
- "H. Peter Anvin" <hpa@zytor.com>,
- Greg KH <gregkh@linuxfoundation.org>,
- Boqun Feng <boqun.feng@gmail.com>,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Christoph Hellwig <hch@infradead.org>,
- rust-for-linux <rust-for-linux@vger.kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- David Airlie <airlied@gmail.com>,
- linux-kernel@vger.kernel.org,
- ksummit@lists.linux.dev
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <57A4AE10-546F-402D-A04E-3EC323A86AC5@gmail.com>
-References: <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
- <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com> <Z7VKW3eul-kGaIT2@Mac.home>
- <2025021954-flaccid-pucker-f7d9@gregkh>
- <2nn05osp-9538-11n6-5650-p87s31pnnqn0@vanv.qr>
- <2025022052-ferment-vice-a30b@gregkh>
- <9B01858A-7EBD-4570-AC51-3F66B2B1E868@zytor.com>
- <n05p910s-r5o3-0n36-5s44-qr769prp69r5@vanv.qr>
- <20250221183437.1e2b5b94@pumpkin>
- <p7946077-rn30-n3p3-ppp0-80o9n9p07718@vanv.qr>
- <20250221202332.GA6576@pendragon.ideasonboard.com>
- <20250221220201.7068dfa3@pumpkin>
- <917f49a5-dae4-4810-8116-9bc93ddcd9f5@acm.org>
-To: Bart Van Assche <bvanassche@acm.org>
-X-Mailer: Apple Mail (2.3826.400.131.1.6)
+MIME-Version: 1.0
 
-
-
-> On Feb 21, 2025, at 2:13=E2=80=AFPM, Bart Van Assche =
-<bvanassche@acm.org> wrote:
+On Fri, 2025-02-21 at 20:41 -0800, Boqun Feng wrote:
+> On Sat, Feb 22, 2025 at 06:37:06AM +0200, Jarkko Sakkinen wrote:
+> > On Sat, Feb 22, 2025 at 06:17:41AM +0200, Jarkko Sakkinen wrote:
+> > > On Fri, Feb 21, 2025 at 11:45:38PM +0100, Miguel Ojeda wrote:
+> > > > On Fri, Feb 21, 2025 at 11:36=E2=80=AFPM Hamza Mahfooz
+> > > > <hamzamahfooz@linux.microsoft.com> wrote:
+> > > > >=20
+> > > > > We provide these methods because it lets us access these
+> > > > > queues from
+> > > > > Rust without using unsafe code.
+> > > > >=20
+> > > > > Signed-off-by: Hamza Mahfooz
+> > > > > <hamzamahfooz@linux.microsoft.com>
+> > > >=20
+> > > > Cc'ing WORKQUEUE -- thanks!
+> > >=20
+> > > Not meaning to complain but it by practical has no commit
+> > > message.
+> >=20
+> > oops, sorry, "... but by practical means it ..."
+> >=20
+> > Anyway I hope my message was received ;-) Leaves me wonder tho why
+> > this was queued because it apparently is not even part of a patch
 >=20
-> Initially, early implementations of std::string may have used CoW or =
-reference counting techniques.
+> What do you mean by "queued"? IIUC, Miguel was just copying workqueue
+> maintainers, since they should be in the review process.
+>=20
+> Thanks for your review in another email anyway!
 
-More accurately, you can=E2=80=99t have one without the other.  =
-std::string is mutable, so reference counting requires copy-on-write =
-(and of course copy-on-write wouldn=E2=80=99t make sense without =
-multiple references).
+Ah sorry! I have dyslexia (for real) and I did read that the patch
+was queued :-) Thanks for correcting and please do also the next
+time!
 
-> Notably, the C++11 standard explicitly banned CoW for std::string in =
-order to avoid its pitfalls.
-> [ ... ]
+I spent also last 48h awake setting up my personal Rust development
+and QA environment... [1]
 
-The C++11 spec doesn=E2=80=99t explicitly say =E2=80=98thou shalt not =
-copy-on-write=E2=80=99, but it requires std::string's operator[] to be =
-O(1), which effectively bans it because copying is O(n).
+Anyway, to soften my feedback a bit I'll say this: everything else was
+great:
 
-Which forced libstdc++ to break their ABI, since they were using =
-copy-on-write before.=
+1. Code was great
+2. It was commented like you'd expect.
+
+And I don't have much to complain about code quality in any other
+patches I've seen so far.
+
+I've been silently following this list for some time and this is a
+common problem that the commit messages are quite bad. Thus, I even
+wrote a public post about the topic now that I had this in mind:
+
+https://social.kernel.org/notice/ArMk27Ism4Citb90K0
+
+There's two great arguments to improve across the board:
+
+1. Education
+2. Integrity. E.g. AI is actually acceptable for short a patch, if
+   you can in detail unmask the implementation (as is e.g. Windows
+   notepad or really anything that produces text). But AI can be also
+   used to engineer harmless looking changes that are actually vulns.
+   By being punctual in expalanations we also contribute to the=20
+   governance of our ecosystem.
+
+I'm personally reading this list exactly for learning purposes because I
+have a roadmap to Rust driver ongoing, and explanations even in trivial
+things help to gather bits and pieces... So please help me to succeed
+by doing just a tiny bit more effort ;-)
+
+> Regards,
+> Boqun
+
+[1] https://codeberg.org/jarkko/linux-tpmdd-nixos
+
+BR, Jarkko
