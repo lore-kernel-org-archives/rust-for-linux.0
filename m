@@ -1,91 +1,163 @@
-Received: from 1wt.eu (ded1.1wt.eu [163.172.96.212])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9E382063E3;
-	Sat, 22 Feb 2025 09:11:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=163.172.96.212
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC63C2063FC;
+	Sat, 22 Feb 2025 09:25:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740215509; cv=none; b=oJS9MDXIvUtNbfU5Z8okrxRs4kppo9qr9V7ExKNtbcnNA4f+7Ngl1lJEz8CbUjuiDgvwsp0vAaiy0S6IRdDulq4bVnlBA0RlRcl0sbQkPzkRX+dlz9OITW3mqVLS5ijflRMtCYNYlRzhrC0Y9zgUQokRVJjxKyAu8xLCYtvfD38=
+	t=1740216327; cv=none; b=HWdzHAcNT52K712qQF53bEuDdiMKMAbkI2bS6Chl15epFxJAwNc3agN/JS+zKaIvQjVck9yDKh8cRIhdIAwReRsyYKlSYQrRQ5w8zivKqIrY4v8j4EMSscFIFnM1cDCex3pkYya7drto8QK8pf6JlLnQVmqj+qGnx6InXxq9JMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740215509; c=relaxed/simple;
-	bh=BUjO5GOu/xxfnRUpdXkDqZ4gAiwB8QGdG4O8Sqatxl0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sJF4Suzvb97BgEOaC7F+EuzwaS3Ft4crxELtHrwkN9Fj7c/aa8WV+VYrYltCgd7lql61/9/nQ6jRfC9LQ4VTpk/Z4nuHSwR3XMAOfU56CCuF0mGQtOMKZ2GYJd4UhShfW9mv3XDbTRE2CB1BC3mKNrB/C/lKlToO4KLO8MElisE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=1wt.eu; spf=pass smtp.mailfrom=1wt.eu; arc=none smtp.client-ip=163.172.96.212
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=1wt.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1wt.eu
-Received: (from willy@localhost)
-	by pcw.home.local (8.15.2/8.15.2/Submit) id 51M9Bawf013131;
-	Sat, 22 Feb 2025 10:11:36 +0100
-Date: Sat, 22 Feb 2025 10:11:36 +0100
-From: Willy Tarreau <w@1wt.eu>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-        Jan Engelhardt <ej@inai.de>, "H. Peter Anvin" <hpa@zytor.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
-        ksummit@lists.linux.dev
-Subject: Re: C aggregate passing (Rust kernel policy)
-Message-ID: <20250222091136.GA12873@1wt.eu>
-References: <2nn05osp-9538-11n6-5650-p87s31pnnqn0@vanv.qr>
- <2025022052-ferment-vice-a30b@gregkh>
- <9B01858A-7EBD-4570-AC51-3F66B2B1E868@zytor.com>
- <n05p910s-r5o3-0n36-5s44-qr769prp69r5@vanv.qr>
- <20250221183437.1e2b5b94@pumpkin>
- <CAHk-=wjF0wjD4ko7MgrZ1wBZ9QOrQd_AnyhDDUJQ1L5+i-o22A@mail.gmail.com>
- <20250221214501.11b76aa8@pumpkin>
- <20250222063210.GA11482@1wt.eu>
- <20250222063730.GB11482@1wt.eu>
- <20250222084112.23eb2856@pumpkin>
+	s=arc-20240116; t=1740216327; c=relaxed/simple;
+	bh=IMcz2FR9FyEmU9VdznZ5X96EJVgFB1Vgb5+TmAyVvZU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=CGj8jiAix/LXTe7bf+tdLwt2Z1gZn7jZFhjNYtT3X6287O7bpzVLkE+64Uaou81T4TXISFj+ZifLHCoBGJ3gDL/cJ7ICg0KdwUk7h2aletYnhhFTaLPiwDsahZ9jOSd7UsN+LHXFKIXAtcUBrkiSkO8zeQJiMZfV/V6EFtyfRLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NAKDB5vm; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NAKDB5vm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE65C4CED1;
+	Sat, 22 Feb 2025 09:25:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740216327;
+	bh=IMcz2FR9FyEmU9VdznZ5X96EJVgFB1Vgb5+TmAyVvZU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=NAKDB5vm9wJVend3wFBqfIvJfoE8yqbf+HYWkHmxseZtRL881gkgrz8qGktlNM0z9
+	 03ojd1ZC/90sucn8uIFtLwXv6hTJfyAy73P16tChTnpvV/8uqKojNXsSIRTyaoSFJC
+	 +Aw/eVxQ4yvy42sdcT27Ri8jzFdwu9s3yoAf3bJ6YNgkNMb5RKFCk1IkzzfFX+TgLC
+	 /jOvSOnpibFXbVDWcybT/1sIjOEdMmF37bQ0dSOxoAb7vofhMv9JkoHlNxaDAmrqK5
+	 lDzTbpOEHFb2s6+MvZ3V4jjdtRDOL4B8448GD39Eb6t1EcLznoC7JUsYKEdG6q4/E7
+	 Rx4rzWc3DFiBg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Boqun Feng" <boqun.feng@gmail.com>
+Cc: "Tamir Duberstein" <tamird@gmail.com>,  "Miguel Ojeda"
+ <ojeda@kernel.org>,  "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
+  "Frederic Weisbecker" <frederic@kernel.org>,  "Thomas Gleixner"
+ <tglx@linutronix.de>,  "Danilo Krummrich" <dakr@kernel.org>,  "Alex
+ Gaynor" <alex.gaynor@gmail.com>,  "Gary Guo" <gary@garyguo.net>,
+  =?utf-8?Q?Bj=C3=B6rn?=
+ Roy Baron <bjorn3_gh@protonmail.com>,  "Benno Lossin"
+ <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor
+ Gross" <tmgross@umich.edu>,  "Lyude Paul" <lyude@redhat.com>,  "Guangbo
+ Cui" <2407018371@qq.com>,  "Dirk Behme" <dirk.behme@gmail.com>,  "Daniel
+ Almeida" <daniel.almeida@collabora.com>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v8 02/14] rust: hrtimer: introduce hrtimer support
+In-Reply-To: <Z7iZevQkYVGDoeTa@Mac.home> (Boqun Feng's message of "Fri, 21 Feb
+	2025 07:19:22 -0800")
+References: <20250218-hrtimer-v3-v6-12-rc2-v8-2-48dedb015eb3@kernel.org>
+	<KDmrJnQA2_Ojf67mD8WA_UafgVCACRRleB9t-D_1yl_bua8e1VWdGQAUvmMGHscqRHu1gzPJCKe_BfotutZm5Q==@protonmail.internalid>
+	<CAJ-ks9ncOyGyQsDFOBxg-7wmXkrQYiZr6H6eEFWsFstk=p1uAA@mail.gmail.com>
+	<87wmdkgvr0.fsf@kernel.org>
+	<djAeSx8DNZwss2-UqXGmhVPqYm2z4LhKWC70jPHPisd1w70qmpmOfVbHfhqJErhoFwVFM8IpbTv4MKkk_BIpQw==@protonmail.internalid>
+	<CAJ-ks9mNidHZvWkFJE1jExc2oVk_bbJpiO_DRMrWu5nYhTpKgg@mail.gmail.com>
+	<87ldtzhexi.fsf@kernel.org> <87cyfbe89x.fsf@kernel.org>
+	<Z7iQcDa72XnJ5zGC@Mac.home>
+	<CAJ-ks9kQccoa7znFNzWAgi6_G0TKvLUARWPZ_Dbed1C-d4Lr+Q@mail.gmail.com>
+	<lP-bWmvvDdcUDicFow-u6piINSeNk1_a_BWKDDFMbFpE3Mo_5lxqfpA6v_8yYqTXNDmVZLXyz6RY3cQHhMoVrA==@protonmail.internalid>
+	<Z7iZevQkYVGDoeTa@Mac.home>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Sat, 22 Feb 2025 10:25:09 +0100
+Message-ID: <87y0xycowa.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250222084112.23eb2856@pumpkin>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Feb 22, 2025 at 08:41:12AM +0000, David Laight wrote:
-> On Sat, 22 Feb 2025 07:37:30 +0100
-> Willy Tarreau <w@1wt.eu> wrote:
-> 
-> ...
-> > Update: I found in my code a comment suggesting that it works when using
-> > -freg-struct (which is in fact -freg-struct-return) which works both on
-> > i386 and ARM.
-> 
-> The problem is that you need it to be an __attribute__(()) so it can
-> be per-function without breaking ABI.
+"Boqun Feng" <boqun.feng@gmail.com> writes:
 
-Yes I agree that it would be better.
+> On Fri, Feb 21, 2025 at 09:46:08AM -0500, Tamir Duberstein wrote:
+>> On Fri, Feb 21, 2025 at 9:40=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com=
+> wrote:
+>> >
+>> > Hmm... if you mean:
+>> >
+>> > trait HasHrTimer {
+>> >     unsafe fn start(&self, expires: Ktime) {
+>> >         ...
+>> >     }
+>> > }
+>> >
+>> > Then it'll be problematic because the pointer derived from `&self`
+>> > doesn't have write provenance, therefore in a timer callback, the
+>> > pointer cannot be used for write, which means for example you cannot
+>> > convert the pointer back into a `Pin<Box<HasTimer>>`.
+>> >
+>> > To answer Tamir's question, pointers are heavily used here because we
+>> > need to preserve the provenance.
+>>
+>> Wouldn't the natural implication be that &mut self is needed? Maybe
+>
+> For an `Arc<HasTimer>`, you cannot get `&mut self`.
+>
+>> you can help me understand why pointers can express a contract that
+>> references can't?
+>
+> I assume you already know what a pointer provenance is?
+>
+> 	http://doc.rust-lang.org/std/ptr/index.html#provenance
+>
+> Passing a pointer (including offset operation on it) preserves the
+> provenance (determined as derive time), however, deriving a pointer from
+> a reference gives the pointer a provenance based on the reference type.
+> For example, let's say we have an `Arc<i32>` and a clone:
+>
+> 	let arc =3D Arc::new(42);
+> 	let clone =3D arc.clone();
+>
+> you can obviously do a into_raw() + from_raw() pair:
+>
+> 	let ptr =3D Arc::into_raw(arc);
+> 	let arc =3D unsafe { Arc::from_raw(arc) };
+>
+> however, if you create a reference based on `Arc::into_raw()`, and then
+> derive a pointer from that, you change the provenance,
 
-> > I just didn't remember about this and couldn't find it when
-> > looking at gcc docs.
-> 
-> I can never find anything in there either.
-> And then I wish they say when it was introduced.
+In this case, the pointer will have the pointer of `Arc::into_raw()`
+will have the provenance of the original reference. When you turn that
+pointer back into a reference, won't the reference inherit the
+provenance of the pointer, which is the same as the original reference?
 
-Same here. At least on gcc-2.95 it was already recognized and worked fine:
+As I read the docs, getting a reference to a `Timer` from a reference to
+a `<MyType as HasHrTimer>` by converting `&MyType` to a `*const MyType`,
+doing a `ptr.cast::<u8>().add(offset).cast::<HrTimer<T>>()` and
+converting that pointer to a reference should be fine? The final pointer
+before converting back to a reference will still have provenance of the
+original reference. Converting to a reference at the end will shrink the
+provenance, but it is still fine.
 
-- without:
-  fct:
-        movl 4(%esp),%ecx
-        movl $5,%eax
-        movl $100,%edx
-        movl %eax,(%ecx)
-        movl %edx,4(%ecx)
-        movl %ecx,%eax
-        ret $4
+Going from a `&HrTimer<T>` to a `&T` is a problem, because that would
+require offset outside spatial permission of pointer provenance, and it
+would require increasing the size of the spatial permission.
 
-- with:
-  fct:
-        movl $5,%eax
-        movl $100,%edx
-        ret
+Is this correctly understood?
 
-Willy
+> therefore the
+> below code would generate UB:
+>
+> 	// cannot mutably borrow because of clone.
+> 	let ptr =3D unsafe { &*Arc::into_raw(arc) } as *const i32;
+>
+> 	let arc =3D unsafe { Arc::from_raw(ptr) };
+>
+>
+> (playground code snippet for this example)
+>
+> 	https://play.rust-lang.org/?version=3Dstable&mode=3Ddebug&edition=3D2021=
+&gist=3D15e051db46c3886b29ed02e579562278
+>
+> As you already know, the whole thing about pointers/references here is
+> passing the value to the callback and the callback can "reconstruct" the
+> data, in such a case, reborrowing in the middle of the chain into a
+> reference is not necessary, and as the above shows, it can be
+> problematic.
+
+Thanks for bringing this up, I forgot about it.
+
+
+Best regards,
+Andreas Hindborg
+
+
