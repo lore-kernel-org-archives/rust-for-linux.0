@@ -1,100 +1,152 @@
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B437727453
-	for <rust-for-linux@vger.kernel.org>; Sat, 22 Feb 2025 17:53:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4694433A8;
+	Sat, 22 Feb 2025 18:26:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740246815; cv=none; b=UicdSXx4tZIkDe/1t6KYJAmNmntjbqSnzZF7jx6u1tsJukKja87Os77XLTrhwQvALZVRZuhhxiySMN9S2aYopRxe/ZAvSB8ESKO3qWXPL/Z78+tdtOWu8xVvlFr+NnRdbxzq/0hlDAjcxya4fow8/qqY0Dji1tVUDSY4cb+0iiw=
+	t=1740248768; cv=none; b=VAMqEzdynKF59rLnNniD9G1oyEfLir2QrfHtBdbZjT2wkDw1SDsJfMHyS3CsptqgyDwDMfdGX0Mkvi0OJQGOGp5yagymg1TBWmW1U+YBiQpCXmEs14OIKEqv1zb6kRmRG3u7Y3IKdQ2hBnH25wjCy2K7o3MdT+L9vNO3PGfbKPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740246815; c=relaxed/simple;
-	bh=Bd+cF6ZDc8d5lLMFOb4t0fSXN9Dl2OCUPQ9TWu1caoo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bu8VOfBbEptONRNMWzc4yWUIEfGjhb255zppWCpKZeNJPFZ8J/RPd5VnA6Y0UffAjs45Z+W/B+dNotEQR3bwexFZmEy51ECXygYBeeNQ2YgTBqEF9RTQdGiAp7IK22sT1K5MopT9REEyEYhmLmy64a8VF/k4IuLmew7y0tZRgas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=TaVMtr3V; arc=none smtp.client-ip=95.215.58.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1740248768; c=relaxed/simple;
+	bh=Ll5rBv+g/tB5EVHHJARLnz1+gDcYymcrgifMDHDztbA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=sQoSysiH1YuVqOmhpHn3kS6GTE4Z/g6vDW1T/Dtrj1mlNoazmznRSSwvCAofAxGkWSMULBT3T+5p0muCb277x6h2Ih32wZx0jhq5x3vu7gkyCAA5dQpWKdyH/tIwtrKNUWvo0A7/cjdoN8pZfnvxYbtfl8C/eJ84lx2h5l6x+Jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kZ+WvHtW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="TaVMtr3V"
-Date: Sat, 22 Feb 2025 12:53:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1740246801;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5a6RYsG1OU9EJMu9S6crDh5yo/kv7CmeJiF+giYLU/g=;
-	b=TaVMtr3VjnmDNLw6QvUk84kSt+F84LXM10GdmGJqaz+OCglFWwCjkp1DvI8Sf1hXv77G1Q
-	dDLv6L/Zo+zEWDmEOUVPg35/LQWiHCl9hipjZiEgViyA0tYTvocYC+J+SDujtCrV7wrk8c
-	LW0ilKd86dzsB6+xuFly53P0j7TsKxo=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Martin Uecker <uecker@tugraz.at>, 
-	Dan Carpenter <dan.carpenter@linaro.org>, Greg KH <gregkh@linuxfoundation.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Christoph Hellwig <hch@infradead.org>, 
-	rust-for-linux <rust-for-linux@vger.kernel.org>, David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org, 
-	ksummit@lists.linux.dev
-Subject: Re: Rust kernel policy
-Message-ID: <y75v63zqmgd3n42bprrbs2ppg32vhk2isppi6wxn7lfsdwd5sn@jm74cuwhadbj>
-References: <2025022042-jot-favored-e755@gregkh>
- <b9a5de64fe1ded2ad3111763f35af9901bd81cc4.camel@tugraz.at>
- <caea3e79-78e6-4d98-9f3b-f8e7f6f00196@stanley.mountain>
- <61a7e7db786d9549cbe201b153647689cbe12d75.camel@tugraz.at>
- <20250221124304.5dec31b2@gandalf.local.home>
- <CAHk-=wgg2A_iHNwf_JDjYJF=XHnKVGOjGp50FzVWniA2Z010bw@mail.gmail.com>
- <6b3e4d3bdc9b6efd69068e5b22cfd05d370aed19.camel@tugraz.at>
- <CAHk-=wg=pZvE9cHJUPKGCajRUCtDoW73xwY5UfJApCWms_FgYw@mail.gmail.com>
- <20250221172415.5b632ae6@gandalf.local.home>
- <CAHk-=wjQ94GipftbNo0PbfuUxFMXFyp2bWGJJPNUngyf17Ai8A@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kZ+WvHtW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8DAEC4CED1;
+	Sat, 22 Feb 2025 18:26:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740248767;
+	bh=Ll5rBv+g/tB5EVHHJARLnz1+gDcYymcrgifMDHDztbA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=kZ+WvHtWb48zB8PWZfic0+zVwMJTnfSxX75jSQL6ZYiBdIfVYqCbrIG15yD0hzXpN
+	 cGCFpS/qJNHnF25/CO1fZIKEuWaR2uytGGOxug6RibzxHfPhYdInz2DeThRDtsYc6x
+	 xLC8W4olpNR7FGAMY5Nb+o8F+dyczYDxVy+oGtZ2NT0+XL8fG2ZT+oR0nPeST0oRjI
+	 G1jhgfmeb3AvlKxn3RUTAQ9ltl2G0X7wVVJAYJMbpOchu9IRPMGltN0tiwFIvCRuja
+	 Zxag6P0WRK92jDpAkVVZio6oQxCdzgd2+QnTreAXpg7gxg4hKagEEGtP+zZJEwoNnS
+	 iUVk5QJk9Or0w==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Tamir Duberstein" <tamird@gmail.com>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Anna-Maria Behnsen"
+ <anna-maria@linutronix.de>,  "Frederic Weisbecker" <frederic@kernel.org>,
+  "Thomas Gleixner" <tglx@linutronix.de>,  "Danilo Krummrich"
+ <dakr@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
+ <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
+ =?utf-8?Q?=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
+  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
+  "Lyude Paul" <lyude@redhat.com>,  "Guangbo Cui" <2407018371@qq.com>,
+  "Dirk Behme" <dirk.behme@gmail.com>,  "Daniel Almeida"
+ <daniel.almeida@collabora.com>,  <rust-for-linux@vger.kernel.org>,
+  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v8 02/14] rust: hrtimer: introduce hrtimer support
+In-Reply-To: <CAJ-ks9kLZ7LCTW+W4jhUqmF1ypJ7i56oSizdFV-1Ks5DiCoKsA@mail.gmail.com>
+ (Tamir
+	Duberstein's message of "Fri, 21 Feb 2025 09:21:14 -0500")
+References: <20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org>
+	<20250218-hrtimer-v3-v6-12-rc2-v8-2-48dedb015eb3@kernel.org>
+	<KDmrJnQA2_Ojf67mD8WA_UafgVCACRRleB9t-D_1yl_bua8e1VWdGQAUvmMGHscqRHu1gzPJCKe_BfotutZm5Q==@protonmail.internalid>
+	<CAJ-ks9ncOyGyQsDFOBxg-7wmXkrQYiZr6H6eEFWsFstk=p1uAA@mail.gmail.com>
+	<87wmdkgvr0.fsf@kernel.org>
+	<djAeSx8DNZwss2-UqXGmhVPqYm2z4LhKWC70jPHPisd1w70qmpmOfVbHfhqJErhoFwVFM8IpbTv4MKkk_BIpQw==@protonmail.internalid>
+	<CAJ-ks9mNidHZvWkFJE1jExc2oVk_bbJpiO_DRMrWu5nYhTpKgg@mail.gmail.com>
+	<87ldtzhexi.fsf@kernel.org> <87cyfbe89x.fsf@kernel.org>
+	<SGJdAUqcAKv4KQX4f0wlLJtusvoK2zk7V_R6njD97VbfqqpS7ppRcIpCtSOtKbkDBNecXiJlQS9NcsuILxNCfA==@protonmail.internalid>
+	<CAJ-ks9kLZ7LCTW+W4jhUqmF1ypJ7i56oSizdFV-1Ks5DiCoKsA@mail.gmail.com>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Sat, 22 Feb 2025 19:25:51 +0100
+Message-ID: <87bjutdefk.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wjQ94GipftbNo0PbfuUxFMXFyp2bWGJJPNUngyf17Ai8A@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 21, 2025 at 03:04:04PM -0800, Linus Torvalds wrote:
-> On Fri, 21 Feb 2025 at 14:23, Steven Rostedt <rostedt@goodmis.org> wrote:
-> >
-> > If I could just get a warning for this stupid mistake:
-> >
-> >         size_t ret;
-> >
-> >         ret = func();
-> >         if (ret < 0)
-> >                 error();
-> 
-> Note that my main beef with the crazy compiler warning is that it
-> literally triggers for *RANGE CHECKS*.
-> 
-> IOW, it's literally the "if (a < 0 || a > XYZ)" thing that absolutely
-> MUST NOT WARN. EVER.  If it does, the compiler is broken.
-> 
-> And gcc still warns of it with -Wtype-limits. So we turn that garbage off.
-> 
-> It's worth noting that "-Wtype-limits" is simply a broken concept for
-> other reasons too. It's not just the "unsigned type cannot be
-> negative" thing. It has the exact same problems on the other end.
-> 
-> Imagine that you have macros that do sanity testing of their
-> arguments, including things like checking for overflow conditions or
-> just checking for invalid values. What a concept - safe programming
-> practices with proper error handling.
-> 
-> Now imagine that you pass that an argument that comes from - for
-> example - a "unsigned char". It's the same exact deal. Now the
-> compiler warns about YOUR CODE BEING CAREFUL.
-> 
-> See why I hate that warning so much? It's fundamentally garbage, and
-> it's not even about your error condition at all.
+"Tamir Duberstein" <tamird@gmail.com> writes:
 
-Hang on, it sounds like you're calling that warning garbage purely
-because it triggers on range checks macros?
+> On Fri, Feb 21, 2025 at 8:29=E2=80=AFAM Andreas Hindborg <a.hindborg@kern=
+el.org> wrote:
+>>
+>> Andreas Hindborg <a.hindborg@kernel.org> writes:
+>>
+>> > "Tamir Duberstein" <tamird@gmail.com> writes:
+>> >
+>> >> On Thu, Feb 20, 2025 at 4:19=E2=80=AFPM Andreas Hindborg <a.hindborg@=
+kernel.org> wrote:
+>> >>>
+>> >>> "Tamir Duberstein" <tamird@gmail.com> writes:
+>> >>>
+>> >>> > On Tue, Feb 18, 2025 at 8:29=E2=80=AFAM Andreas Hindborg <a.hindbo=
+rg@kernel.org> wrote:
+>>
+>> [...]
+>>
+>> >>> >> +    /// Get a pointer to the contained `bindings::hrtimer`.
+>> >>> >> +    ///
+>> >>> >> +    /// # Safety
+>> >>> >> +    ///
+>> >>> >> +    /// `ptr` must point to a live allocation of at least the si=
+ze of `Self`.
+>> >>> >> +    unsafe fn raw_get(ptr: *const Self) -> *mut bindings::hrtime=
+r {
+>> >>> >> +        // SAFETY: The field projection to `timer` does not go o=
+ut of bounds,
+>> >>> >> +        // because the caller of this function promises that `pt=
+r` points to an
+>> >>> >> +        // allocation of at least the size of `Self`.
+>> >>> >> +        unsafe { Opaque::raw_get(core::ptr::addr_of!((*ptr).time=
+r)) }
+>> >>> >> +    }
+>> >>> >
+>> >>> > Can you help me understand why the various functions here operate =
+on
+>> >>> > *const Self? I understand the need to obtain a C pointer to intera=
+ct
+>> >>> > with bindings, but I don't understand why we're dealing in raw
+>> >>> > pointers to the abstraction rather than references.
+>> >>>
+>> >>> We cannot reference the `bindings::hrtimer` without wrapping it in
+>> >>> `Opaque`. This would be the primary reason. At other times, we cannot
+>> >>> produce references because we might not be able to prove that we sat=
+isfy
+>> >>> the safety requirements for turning a pointer into a reference. If we
+>> >>> are just doing offset arithmetic anyway, we don't need a reference.
+>> >>
+>> >> Why do we have a pointer, rather than a reference, to Self in the
+>> >> first place? I think this is the key thing I don't understand.
+>> >
+>> > Perhaps it makes more sense if you look at the context. One of the ent=
+ry
+>> > points to `HrTimer::raw_get` is via `<ArcHrTimerHandle as
+>> > HrTimerHandle>::cancel`. This user facing method takes `&mut self`. The
+>> > handle contains an arc to a type that contains a `Timer` and implements
+>> > `HasHrTImer`. To get to the timer, we need to do pointer manipulation.
+>> > We only know how to get the `Timer` field via the `OFFSET`. The natural
+>> > return value from the offset operation is a raw pointer. Rather than
+>> > convert back to a reference, we stay in pointer land when we call
+>> > `HrTimer::raw_cancel`, because we need a pointer to the
+>> > `bindings::hrtimer` anyway, not a reference.
+>>
+>> I changed `HasHrTimer::start` to take a reference, and I think that
+>> makes sense =F0=9F=91=8D Taking an `impl AsRef` does not work out when `=
+Self` is
+>> `Pin<&T>`. I'll go over the whole thing and see of other places could
+>> benefit.
+>
+> Can you elaborate please? Pin<&T>::get_ref returns &T, which gets you
+> to the AsRef you need, no?
 
-Because it sounds like coming up with a different way to write range
-checks is going to be easier than coming up with pattern matching magic.
+Right, that works. But if I pass in &self it's not really needed. You
+can see for yourself in next version.
+
+Hopefully I did not break any provenance rules.
+
+
+Best regards,
+Andreas Hindborg
+
+
