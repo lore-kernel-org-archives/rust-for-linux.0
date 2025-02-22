@@ -1,177 +1,159 @@
-Received: from 1wt.eu (ded1.1wt.eu [163.172.96.212])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B97A72EB10;
-	Sat, 22 Feb 2025 06:37:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=163.172.96.212
+Received: from mailrelay.tugraz.at (mailrelay.tugraz.at [129.27.2.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D9A1FA15E;
+	Sat, 22 Feb 2025 07:20:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.27.2.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740206259; cv=none; b=OnFCs4sha1IzqF76kBdOiuRZ+ElHWLLx0gns7i71vUePostWI8ILEg+XherjduqFM3d2UsRYa0MV9JMSNcEN9YoqvhUE7Y/uUBaiwK8lEqEipUTWorL4/bfLqbhYRfccfrxOzoHjS1V8SJTPGdLFt7IkF44dWTP5jEI+j2Ic7G4=
+	t=1740208832; cv=none; b=tMxTscY2h0Jc1U75FPoq4juAb/farlP9WAdk7Ta6EUQKvZis9yMsyIwHObLxndDzgWuY+6jHtr+kos9fmAjtSY5JhZwq66SABtNdkxthq6t8IPOgG721K3IQyu1PY0Vw1E29afXs7G7N7QqEwzvgRZa6E3gd/lbvmGtLO3Wp8VE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740206259; c=relaxed/simple;
-	bh=swLoCvJQnqrFGFthTxPH8lzA9/e2VWZZg3VqNHBeVmc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WZt6jfFfiNDCdvPQPx9y/5rq+nrSqyHVBreeGTNE8nSGuUbuimURciSZYdsmfZwjPOAMESHwYk8JLpMcwcTsFdDTKZTdLWJ7dgwzREN6dIGx83OLuRHWHYG9wg76GLOEqO5uVhGe6aD0upiDMQHiJma/HOH1oCSEEaRKKdkc5cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=1wt.eu; spf=pass smtp.mailfrom=1wt.eu; arc=none smtp.client-ip=163.172.96.212
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=1wt.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1wt.eu
-Received: (from willy@localhost)
-	by pcw.home.local (8.15.2/8.15.2/Submit) id 51M6bUeU012004;
-	Sat, 22 Feb 2025 07:37:30 +0100
-Date: Sat, 22 Feb 2025 07:37:30 +0100
-From: Willy Tarreau <w@1wt.eu>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-        Jan Engelhardt <ej@inai.de>, "H. Peter Anvin" <hpa@zytor.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
-        ksummit@lists.linux.dev
-Subject: Re: C aggregate passing (Rust kernel policy)
-Message-ID: <20250222063730.GB11482@1wt.eu>
-References: <Z7VKW3eul-kGaIT2@Mac.home>
- <2025021954-flaccid-pucker-f7d9@gregkh>
- <2nn05osp-9538-11n6-5650-p87s31pnnqn0@vanv.qr>
- <2025022052-ferment-vice-a30b@gregkh>
- <9B01858A-7EBD-4570-AC51-3F66B2B1E868@zytor.com>
- <n05p910s-r5o3-0n36-5s44-qr769prp69r5@vanv.qr>
- <20250221183437.1e2b5b94@pumpkin>
- <CAHk-=wjF0wjD4ko7MgrZ1wBZ9QOrQd_AnyhDDUJQ1L5+i-o22A@mail.gmail.com>
- <20250221214501.11b76aa8@pumpkin>
- <20250222063210.GA11482@1wt.eu>
+	s=arc-20240116; t=1740208832; c=relaxed/simple;
+	bh=oagXNzkOV6KSuctkCl5gvSg2Z1l3eJ73jxyB1wAI6Js=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=burB0DDB2etN3k20H9/9WCyPsDHt0NV7kikJnmkTrRGMQyk9wQ/MfnOY09AnVoBI1sqDjZd/By+s3R5RpxLO2IPUiEpu/ems5vOy6q8uIZL2VXMhkefgLlrLXm+AyTn4wS4Smja8/C1XZT/mVxBXDMwBbcbytv6Z15OItul5zsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at; spf=pass smtp.mailfrom=tugraz.at; dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b=J16ksXje; arc=none smtp.client-ip=129.27.2.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tugraz.at
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b="J16ksXje"
+Received: from vra-171-156.tugraz.at (vra-171-156.tugraz.at [129.27.171.156])
+	by mailrelay.tugraz.at (Postfix) with ESMTPSA id 4Z0JL519GMz3wGD;
+	Sat, 22 Feb 2025 08:20:12 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tugraz.at;
+	s=mailrelay; t=1740208815;
+	bh=SmYAkhIaHBL8Km4TDg1K0OIvSYnVEOYNlWg73OMrNRc=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=J16ksXjeKtAfbR1UV3GeK0MInBhz4XIycAc3r+x7p1gbNeNMWCj6yyDv/bmwnRbGQ
+	 c2HavY7eNd08wsYSDkoMUvVXUbVS+n9Ankd5Kuvqz91qB4/DF2zmCyRp8UrTTlR00+
+	 ciEGzkM6mQ5YQeKzUQuKcquz/YNSFhwTw+aYNIEY=
+Message-ID: <e525cd59ebec54b153f56b602b545007fc03f12a.camel@tugraz.at>
+Subject: Re: Rust kernel policy
+From: Martin Uecker <uecker@tugraz.at>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Dan Carpenter
+ <dan.carpenter@linaro.org>, Greg KH <gregkh@linuxfoundation.org>, Boqun
+ Feng <boqun.feng@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, Miguel Ojeda
+ <miguel.ojeda.sandonis@gmail.com>, Christoph Hellwig <hch@infradead.org>, 
+ rust-for-linux <rust-for-linux@vger.kernel.org>, David Airlie
+ <airlied@gmail.com>, linux-kernel@vger.kernel.org,  ksummit@lists.linux.dev
+Date: Sat, 22 Feb 2025 08:20:12 +0100
+In-Reply-To: <CAHk-=wj5Rt_xhp_n4_gEyGG9LKFOiTrsvN0ueo3q5PyjJPU+AQ@mail.gmail.com>
+References: <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
+	 <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
+	 <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
+	 <Z7VKW3eul-kGaIT2@Mac.home> <2025021954-flaccid-pucker-f7d9@gregkh>
+	 <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
+	 <2025022024-blooper-rippling-2667@gregkh>
+	 <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
+	 <2025022042-jot-favored-e755@gregkh>
+	 <b9a5de64fe1ded2ad3111763f35af9901bd81cc4.camel@tugraz.at>
+	 <caea3e79-78e6-4d98-9f3b-f8e7f6f00196@stanley.mountain>
+	 <61a7e7db786d9549cbe201b153647689cbe12d75.camel@tugraz.at>
+	 <20250221124304.5dec31b2@gandalf.local.home>
+	 <CAHk-=wgg2A_iHNwf_JDjYJF=XHnKVGOjGp50FzVWniA2Z010bw@mail.gmail.com>
+	 <6b3e4d3bdc9b6efd69068e5b22cfd05d370aed19.camel@tugraz.at>
+	 <CAHk-=wg=pZvE9cHJUPKGCajRUCtDoW73xwY5UfJApCWms_FgYw@mail.gmail.com>
+	 <008cc0939c130ee24fbc71a0407ff82772076668.camel@tugraz.at>
+	 <CAHk-=wj5Rt_xhp_n4_gEyGG9LKFOiTrsvN0ueo3q5PyjJPU+AQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250222063210.GA11482@1wt.eu>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TUG-Backscatter-control: G/VXY7/6zeyuAY/PU2/0qw
+X-Spam-Scanner: SpamAssassin 3.003001 
+X-Spam-Score-relay: 0.0
+X-Scanned-By: MIMEDefang 2.74 on 129.27.10.116
 
-On Sat, Feb 22, 2025 at 07:32:10AM +0100, Willy Tarreau wrote:
-> On Fri, Feb 21, 2025 at 09:45:01PM +0000, David Laight wrote:
-> > On Fri, 21 Feb 2025 11:12:27 -0800
-> > Linus Torvalds <torvalds@linux-foundation.org> wrote:
-> > 
-> > > On Fri, 21 Feb 2025 at 10:34, David Laight <david.laight.linux@gmail.com> wrote:
-> > > >
-> > > > As Linus said, most modern ABI pass short structures in one or two registers
-> > > > (or stack slots).
-> > > > But aggregate returns are always done by passing a hidden pointer argument.
-> > > >
-> > > > It is annoying that double-sized integers (u64 on 32bit and u128 on 64bit)
-> > > > are returned in a register pair - but similar sized structures have to be
-> > > > returned by value.  
-> > > 
-> > > No, they really don't. At least not on x86 and arm64 with our ABI.
-> > > Two-register structures get returned in registers too.
-> > > 
-> > > Try something like this:
-> > > 
-> > >   struct a {
-> > >         unsigned long val1, val2;
-> > >   } function(void)
-> > >   { return (struct a) { 5, 100 }; }
-> > > 
-> > > and you'll see both gcc and clang generate
-> > > 
-> > >         movl $5, %eax
-> > >         movl $100, %edx
-> > >         retq
-> > > 
-> > > (and you'll similar code on other architectures).
-> > 
-> > Humbug, I'm sure it didn't do that the last time I tried it.
-> 
-> You have not dreamed, most likely last time you tried it was on
-> a 32-bit arch like i386 or ARM. Gcc doesn't do that there, most
-> likely due to historic reasons that couldn't be changed later,
-> it passes a pointer argument to write the data there:
-> 
->   00000000 <fct>:
->      0:   8b 44 24 04             mov    0x4(%esp),%eax
->      4:   c7 00 05 00 00 00       movl   $0x5,(%eax)
->      a:   c7 40 04 64 00 00 00    movl   $0x64,0x4(%eax)
->     11:   c2 04 00                ret    $0x4
-> 
-> You can improve it slightly with -mregparm but that's all,
-> and I never found an option nor attribute to change that:
-> 
->   00000000 <fct>:
->      0:   c7 00 05 00 00 00       movl   $0x5,(%eax)
->      6:   c7 40 04 64 00 00 00    movl   $0x64,0x4(%eax)
->      d:   c3                      ret
-> 
-> ARM does the same on 32 bits:
-> 
->   00000000 <fct>:
->      0:   2105            movs    r1, #5
->      2:   2264            movs    r2, #100        ; 0x64
->      4:   e9c0 1200       strd    r1, r2, [r0]
->      8:   4770            bx      lr
-> 
-> I think it's simply that this practice arrived long after these old
-> architectures were fairly common and it was too late to change their
-> ABI. But x86_64 and aarch64 had the opportunity to benefit from this.
-> For example, gcc-3.4 on x86_64 already does the right thing:
-> 
->   0000000000000000 <fct>:
->      0:   ba 64 00 00 00          mov    $0x64,%edx
->      5:   b8 05 00 00 00          mov    $0x5,%eax
->      a:   c3                      retq
->   
-> So does aarch64 since the oldest gcc I have that supports it (linaro 4.7):
-> 
->   0000000000000000 <fct>:
->      0:   d28000a0        mov     x0, #0x5                        // #5
->      4:   d2800c81        mov     x1, #0x64                       // #100
->      8:   d65f03c0        ret
-> 
-> For my use cases I consider that older architectures are not favored but
-> they are not degraded either, while newer ones do significantly benefit
-> from the approach, that's why I'm using it extensively.
-> 
-> Quite frankly, there's no reason to avoid using this for pairs of pointers
-> or (status,value) pairs or coordinates etc. And if you absolutely need to
-> also support 32-bit archs optimally, you can do it using a macro to turn
-> your structs to a larger register and back:
-> 
->   struct a {
->           unsigned long v1, v2;
->   };
-> 
->   #define MKPAIR(x) (((unsigned long long)(x.v1) << 32) | (x.v2))
->   #define GETPAIR(x) ({ unsigned long long _x = x; (struct a){ .v1 = (_x >> 32), .v2 = (_x)}; })
-> 
->   unsigned long long fct(void)
->   {
->           struct a a = { 5, 100 };
->           return MKPAIR(a);
->   }
-> 
->   long caller(void)
->   {
->           struct a a = GETPAIR(fct());
->           return a.v1 + a.v2;
->   }
-> 
->   00000000 <fct>:
->      0:   b8 64 00 00 00          mov    $0x64,%eax
->      5:   ba 05 00 00 00          mov    $0x5,%edx
->      a:   c3                      ret
-> 
->   0000000b <caller>:
->      b:   b8 69 00 00 00          mov    $0x69,%eax
->     10:   c3                      ret
-> 
-> But quite frankly due to their relevance these days I don't think it's
-> worth the effort.
+Am Freitag, dem 21.02.2025 um 12:11 -0800 schrieb Linus Torvalds:
+> On Fri, 21 Feb 2025 at 11:59, Martin Uecker <uecker@tugraz.at> wrote:
+> >=20
+> > The standardized version of __attribute__(()) would look like
+> >=20
+> > [[safety(ON)]];
+> > ....
+> >=20
+> > [[safety(OFF)]];
+> >=20
+> > which is not bad (and what C++ seems to plan for profiles),
+> > but this also does not nest and is a bit more limited to where
+> > it can be used relative _Pragma.  I don't really see any advantage.
+> >=20
+> > GCC has
+> >=20
+> > #pragma GCC diagnostic push "-Wxyz"
+> > #pragma GCC diagnostic pop
+> >=20
+> > for nesting. Also not great.
+>=20
+> I realize that the manual nesting model can be useful, but I do think
+> the "default" should be to aim for always associating these kinds of
+> things with actual code (or data), and use the normal block nesting
+> rules.
+>=20
+> If you are writing safe code - or better yet, you are compiling
+> everything in safe mode, and have to annotate the unsafe code - you
+> want to annotate the particular *block* that is safe/unsafe. Not this
+> kind of "safe on/safe off" model.
+>=20
+> At least with the __attribute__ model (or "[[..]]" if you prefer that
+> syntax) it is very much designed for the proper nesting behavior.
+> That's how attributes were designed.
 
-Update: I found in my code a comment suggesting that it works when using
--freg-struct (which is in fact -freg-struct-return) which works both on
-i386 and ARM. I just didn't remember about this and couldn't find it when
-looking at gcc docs.
+There is no way to attach a GCC attribute to
+a compound-statement.   For [[]] this is indeed allowed,
+so you could write
 
-Willy
+void f()
+{
+	[[safety(DYNAMIC)]] {
+	}
+}
+
+but then you also force the user to create compound-statement.
+Maybe this is what we want, but it seems restrictive.  But I
+will need to experiment with this anyhow to find out what works
+best.
+
+>=20
+> Afaik #pragma has _no_ such mode at all (but hey, most of it is
+> compiler-specific random stuff, so maybe some of the #pragma uses are
+> "this block only"), and I don't think _Pragma() is not any better in
+> that respect (but again, since it has no real rules, again I guess it
+> could be some random thing for different pragmas).
+
+For all the STDC pragmas that already exist in ISO C, they are
+effective until the end of a compund-statement.  These pragmas
+are all for floating point stuff.
+
+void f()
+{
+#pragma STDC FP_CONTRACT ON
+}
+// state is restored
+
+but you also toggle it inside a compund-statement
+
+
+void f()
+{
+#pragma STDC FP_CONTRACT ON
+   xxx;
+#pragma STDC FP_CONTRACT OFF
+   yyy;
+}
+// state is restored
+
+
+The problem with those is currently, that GCC does not=C2=A0
+implement them. =20
+
+I will need to think about this more.
+
+Martin
+
+
