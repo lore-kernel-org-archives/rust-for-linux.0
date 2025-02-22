@@ -1,102 +1,70 @@
-Received: from out-184.mta1.migadu.com (out-184.mta1.migadu.com [95.215.58.184])
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1740B14037F
-	for <rust-for-linux@vger.kernel.org>; Sat, 22 Feb 2025 15:21:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D912AEE1
+	for <rust-for-linux@vger.kernel.org>; Sat, 22 Feb 2025 15:30:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740237707; cv=none; b=j3OYOE26GxYyqVfTCXDl2hxR4PihleEvBc10uUFz2KS+B8vRv00XPX1rnUzUiflKRi1GdL+2wWq6Hs7DgQ48jIv56ukPiXXz1EqbqWihZ2yjSAFAW6Gzgbtgik8z9BD565S72H150io3ZgaGvvmXRAs93QkbCmr/1mvnGnXazcc=
+	t=1740238252; cv=none; b=M1bKtyhzRfUHR1ronqHJLZ1Yqh5Yts6thNbyf2DGCrAy4oXJ4fi4fvPD5Tl5Uhe4vAobKxIJkFnmnGn/mSVuH/YCWrtC0dttuRyP9lpySXGK7yE0ma5MefWtuUnN6hGyhYANL0IynOrj0OLCuZOVF/dC+UO1Fh5wCLWHYqU82tI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740237707; c=relaxed/simple;
-	bh=0RQL9RDIa/a10b73LeMPQ07MYqfKsWcK7om94Ma9j3M=;
+	s=arc-20240116; t=1740238252; c=relaxed/simple;
+	bh=r4tzzLkSDnrOdH/18W6LteR1pX1etKjfWltoHzgwLnw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m5Rj0d9gidnTTwJzzkull2+CEu/agi6ca3JSScdLPjo7+Kc+sBxk03/ImRegAjNQqzmQeLbPN1qdXGZtrUEMhE96PyyXsnSCfa01V/AKkslM8/Uwg0nR94U1fMPZXk0HTR6QbYZt973KmqwwMSJtOdiGdYTR89yclHB8wixRBKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=uxCA2qTa; arc=none smtp.client-ip=95.215.58.184
+	 Content-Type:Content-Disposition:In-Reply-To; b=cjv0JFuQfIcuNTuHt/JHBD9FAgjou3nuV9bQa0sCikEL3jnaiP+HzLcKMZNVzYLbgiksJrPt4D4O41oKeNtxQmhjeipiLJe6bFIUHUh5cYUlzwTZFB0C0wozhAmr1xRrAdPuT9RnyYADsybu3pXBXD2jSErn7HwUXCu1KplHirI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=XmixloNv; arc=none smtp.client-ip=95.215.58.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="uxCA2qTa"
-Date: Sat, 22 Feb 2025 10:21:39 -0500
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="XmixloNv"
+Date: Sat, 22 Feb 2025 10:30:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1740237703;
+	t=1740238238;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hFVisseoGUDFJLItKPqXUKJ5q5lMT6Dx6imnkdSreQQ=;
-	b=uxCA2qTaWEvAo6Je5Wz2xpLD1bnSSDYfoDlgUibR4iU6QvfC+u/WpcluUiwtubAJXRD8M1
-	wO82fMVIdNVg4w2op6nHJLmasIHInjEh0AtCgmOBcqLIoVxdScd1v++stszLZT+UwOsTct
-	Nto0UaYnfI+tHSgDb6+UpIj7NRD3bw4=
+	bh=2O6LlMiroyX8s3OR/vMtwOCtpXSsWXnlWltLALK/Npo=;
+	b=XmixloNvYGi22sDde5+ivm+PQZYuJGWbvwGchK+dt0rDiPXOJedHUJ0u29AwsZ1C5O7gmq
+	tkumgOF0EAu8WAXK1rXBQlpMTl84/ji4lm2K+Z2ZP55WiljBTMKwE4Qd2tdtu8Y/vKwiLp
+	uJ5FJue7+kaGtoHP/jW+Ht1fMK8q8r0=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>, Kees Cook <kees@kernel.org>, 
+To: Martin Uecker <uecker@tugraz.at>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>, 
+	Greg KH <gregkh@linuxfoundation.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
 	Christoph Hellwig <hch@infradead.org>, rust-for-linux <rust-for-linux@vger.kernel.org>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Greg KH <gregkh@linuxfoundation.org>, 
-	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
+	Linus Torvalds <torvalds@linux-foundation.org>, David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org, 
+	ksummit@lists.linux.dev, Justin Stitt <justinstitt@google.com>, 
+	Kees Cook <keescook@chromium.org>
 Subject: Re: Rust kernel policy
-Message-ID: <nptg4kade7gjjggphsbltu6t42wpqhppvgmraezcuhqvt2plnw@pjgwgwtmwovs>
-References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
- <Z7SwcnUzjZYfuJ4-@infradead.org>
- <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
- <202502191026.8B6FD47A1@keescook>
- <785A9F60-F687-41DE-A116-34E37F5B407A@zytor.com>
- <CANiq72nwouotAqJh_cm=9RG3Ns4wxX0LWXcVwp_bswE29kCrYA@mail.gmail.com>
+Message-ID: <4edgqqhbwn56jnz3fraowgyuwhjs33uw3545mnksxwrng42wa6@fbaqfqlhru7g>
+References: <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
+ <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
+ <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
+ <Z7VKW3eul-kGaIT2@Mac.home>
+ <2025021954-flaccid-pucker-f7d9@gregkh>
+ <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
+ <2025022024-blooper-rippling-2667@gregkh>
+ <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
+ <962fa158-5315-4d93-afb1-8a1c08787ad8@stanley.mountain>
+ <1f31a16d3898e0e9b5d94f9bcc12a1b73ac97982.camel@tugraz.at>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72nwouotAqJh_cm=9RG3Ns4wxX0LWXcVwp_bswE29kCrYA@mail.gmail.com>
+In-Reply-To: <1f31a16d3898e0e9b5d94f9bcc12a1b73ac97982.camel@tugraz.at>
 X-Migadu-Flow: FLOW_OUT
 
-On Fri, Feb 21, 2025 at 12:42:46AM +0100, Miguel Ojeda wrote:
-> On Wed, Feb 19, 2025 at 8:34 PM H. Peter Anvin <hpa@zytor.com> wrote:
-> >
-> > a. The apparent vast gap in maturity required of Rust versus C. What is our maturity policy going to be? Otherwise we are putting a lot of burden on C maintainers which is effectively wasted of the kernel configuration pulls in even one line of Rust.
-> >
-> > This is particularly toxic given the "no parallel code" claimed in this policy document (which really needs references if it is to be taken seriously; as written, it looks like a specific opinion.)
-> 
-> There is no "no parallel code" in the document, and I would like a
-> clarification on what you mean by "toxic" here.
-> 
-> I tried really hard to avoid misrepresenting anything, and the
-> document explicitly mentions at the top that this is our
-> understanding, and that the policy could change depending on what key
-> maintainers and the community discuss. (If it is put into the kernel
-> tree, then that solves that.).
-> 
-> Anyway, I can only guess you are referring to the "Are duplicated
-> C/Rust drivers allowed?" point. If so, since you want references, here
-> is one:
-> 
->     No, don't do that, it's horrid and we have been down that road in the
->     past and we don't want to do it again.  One driver per device please.
-> 
->     https://lore.kernel.org/rust-for-linux/2023091349-hazelnut-espionage-4f2b@gregkh/
+On Thu, Feb 20, 2025 at 03:09:21PM +0100, Martin Uecker wrote:
+> We added checked arhithmetic to C23, we could add saturating
+> math to C2Y if this is needed.  (although I admit I do not fully
+> understand the use case of saturating math, a saturated value
+> still seems to be an error? Statistics, where it does not matter?)
 
-I think we need a more nuanced rule there.
-
-When you're rolling out something new of a nontrivial size, you always
-want to stage the release. You don't want everyone to start using
-10k-100k lines of new code at once, you want it to first hit your power
-users that can debug - and maybe the new thing isn't feature complete
-yet.
-
-If a big driver is being rewritten in Rust (e.g. if we went all the way
-with the nvme driver; that was one of the first prototypes) I would want
-and expect that we ship both in parallel for a few cycles and make sure
-the new one is working for everyone before deleting the old one.
-
-And tends to be what we do in practice, where appropriate. blk-mq was
-incrementally rolled out. No one's even contemplating ripping out
-fs/aio.c and replacing it with an io_uring wrapper.
-
-Wholesale rewrites of entire subsystems in the kernel are rare (because
-we can refactor), but with Rust we'll be seeing more and more of that -
-because most of the really tricky safety sandmines do occur at FFI
-boundaries.
+Saturating is mainly for refcounts. If the refcount overflows, you want
+it to saturate and _stay there_, because you no longer know what the
+value should be so never freeing the object is the safest option.
