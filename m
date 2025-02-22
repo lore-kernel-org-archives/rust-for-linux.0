@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8907ABA2D;
-	Sat, 22 Feb 2025 04:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D3EF4FA;
+	Sat, 22 Feb 2025 04:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740197866; cv=none; b=L0uMYTUfKacqz28yRJ/qtBT3bPFey+rv78wTnr/+PlbRSWWsUHjzkal7kqm8r4wZwsO16LQYZpztM5HSXVznHKFiZGNJ8LNq4T7n2hNXhcwmYbErP06Kk+ysQZDwHpkYC9xcp1hF9iXy8M9PszzGAdK+FNLPb8c0iLz1WRFyO8o=
+	t=1740199032; cv=none; b=ZaewnMS8XN7PARLgk5AlNMeGecuu5YS9qF52nX8az1KNEnvW5nM8FoMVfkfG4hOPM7F3yAe5MAITDX0oFnKnhq1ZSG4SzeXf86wvHeAbQj1au3PFsFjTzNGBizf87sLUwFuIQOTvyBySctKxFXyn8aJeYFRU7EfP9JVqmaEFESU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740197866; c=relaxed/simple;
-	bh=XGzj2md212LaOjPHOjWC7GnDU4NWo1XIpaMinL5/MHY=;
+	s=arc-20240116; t=1740199032; c=relaxed/simple;
+	bh=6eq/g2PeyxDykwM+pXNkLQVHqJBcSYgmgzkucXSwI/U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OPqRJEEL+AeSiOjXxpgiV/LaG2l0TEvSysg7/YfcZbyybROgz749mlJ37+DXZ1KHw9sdsjopHilKWDJ7zSwi8Hs43wkLxjrP6+d0EQoS+KJRI2k26o/hZE+iEU9sn5sBF4xig1J/GOE2NEUzHLJ/I3Hqq8r/YWKQiA/blqx2P5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G297iUlI; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=tcD4FfZMvC5XZCV1gpfJAuSspwXIL/bqYU3f7P/1FxyhTengD1idkqPh6PZ0kOkkjIpqx3TETIKP9t8Y5vZUOpwvmN+v1fGPZVa8CTP7hUD+28OTI0QVFq3i401OiVJbou1fUwnJjyrGJZEsw3atnTx6Jl1YpwYP3YMDvqFq+HE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U1JvcrCM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G297iUlI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE36C4CED1;
-	Sat, 22 Feb 2025 04:17:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U1JvcrCM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C5EAC4CED1;
+	Sat, 22 Feb 2025 04:37:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740197865;
-	bh=XGzj2md212LaOjPHOjWC7GnDU4NWo1XIpaMinL5/MHY=;
+	s=k20201202; t=1740199032;
+	bh=6eq/g2PeyxDykwM+pXNkLQVHqJBcSYgmgzkucXSwI/U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=G297iUlISYs8cijPfToFlxvk0zIc+29EfqwR34hgjXrhP0cBDkrCmaIoljJY5lPrI
-	 ciPJvilarAmN/o/o3A3+XacaAyvugBtbIwY5bs/V3kpt/nvnkmqGh42zAyBLRvOOG7
-	 QTWdwOrzXeDvsB2C+OkJJGxvZeCELeS1ExzgshM/2RrYe1GJUZMb3ShWLj0xjMocza
-	 QmIEf4uTJTkVeSQrrY1VdP7j3tnar+CorCL1woKfV2j2w9s9OoOA5ggggEZ1IuVOjB
-	 5xyTjP5BZag24NPuSoBt8HU2eewnuimxnMC2bMaRFugFhwNlXneHnQOfk82bUYjYJC
-	 /PyPfad30TMAg==
-Date: Sat, 22 Feb 2025 06:17:41 +0200
+	b=U1JvcrCMzhduMegcbMfStWlWM7YTbzUWKvqwstztcIHlIs6LLuXDgX/MB/AE9KF6m
+	 pn4oOLlkChQ3oBelN0pIyblgVVOSASQw4SYgV78fCheNowlYrUx12WbTxkerZ/azvI
+	 p+LNta7yOVGVAuf6rgQVa2Qvtp9ncBL1MBfFqOc/v1TM5mD7PsIECcEg0xuunDaYmQ
+	 tih+3IZoHGQ6EzyaUDeEwUnh8MdUdshSCwH28K6LdHXg3AZSrmn99OWNEYdYuLaIlV
+	 huAIHnzOvFrAWcdzeYvi/8lSlPl+QNjzU7ssiTHd4ek7GcMBn+xW2bGwTfc4H2Wm5I
+	 OLhulvtX4R8qg==
+Date: Sat, 22 Feb 2025 06:37:06 +0200
 From: Jarkko Sakkinen <jarkko@kernel.org>
 To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
@@ -45,9 +45,10 @@ Cc: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Roland Xu <mu001999@outlook.com>, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] rust: workqueue: define built-in bh queues
-Message-ID: <Z7lP5VA374-TuNZz@kernel.org>
+Message-ID: <Z7lUcq3PycSSHiXx@kernel.org>
 References: <20250221223533.158959-1-hamzamahfooz@linux.microsoft.com>
  <CANiq72nsDgRJeKk=B7C9Zo7HL12az+ZLR27qxckqi5H=cmuV5w@mail.gmail.com>
+ <Z7lP5VA374-TuNZz@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,30 +58,29 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72nsDgRJeKk=B7C9Zo7HL12az+ZLR27qxckqi5H=cmuV5w@mail.gmail.com>
+In-Reply-To: <Z7lP5VA374-TuNZz@kernel.org>
 
-On Fri, Feb 21, 2025 at 11:45:38PM +0100, Miguel Ojeda wrote:
-> On Fri, Feb 21, 2025 at 11:36 PM Hamza Mahfooz
-> <hamzamahfooz@linux.microsoft.com> wrote:
-> >
-> > We provide these methods because it lets us access these queues from
-> > Rust without using unsafe code.
-> >
-> > Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+On Sat, Feb 22, 2025 at 06:17:41AM +0200, Jarkko Sakkinen wrote:
+> On Fri, Feb 21, 2025 at 11:45:38PM +0100, Miguel Ojeda wrote:
+> > On Fri, Feb 21, 2025 at 11:36 PM Hamza Mahfooz
+> > <hamzamahfooz@linux.microsoft.com> wrote:
+> > >
+> > > We provide these methods because it lets us access these queues from
+> > > Rust without using unsafe code.
+> > >
+> > > Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+> > 
+> > Cc'ing WORKQUEUE -- thanks!
 > 
-> Cc'ing WORKQUEUE -- thanks!
+> Not meaning to complain but it by practical has no commit message.
 
-Not meaning to complain but it by practical has no commit message.
+oops, sorry, "... but by practical means it ..."
 
-Does not meet any quality standards in that area tbh. In order to
-make Rust more appealing you really should pay more attention to
-this. 
+Anyway I hope my message was received ;-) Leaves me wonder tho why
+this was queued because it apparently is not even part of a patch
+set. "zero callers" should never be merged to mainline...
 
-I learned absolutely nothing from this.
+If however such patch is merged, the commit message should probably
+address this exceptional condition.
 
-> 
-> Cheers,
-> Miguel
-> 
-
-BR, Jarkko
+R, Jarkko
