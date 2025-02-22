@@ -1,115 +1,106 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6AA10E4;
-	Sat, 22 Feb 2025 13:30:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4493535949;
+	Sat, 22 Feb 2025 13:51:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740231057; cv=none; b=sRcAK7JOqMLj1eZ0MRjfMhmZVf7dXR6JI3E+9ofg4Pzfo3EVQ/dnuaVsirtRwBn2M+BTCGTaa9SV5k27Uwpf5MWZRZ1g6Gzewus2Q/jSdxysSfHIPIqCX2i9psetZBIP/rgPGjg15YFvyHYJEA7ZqjS8T/uq4pC2l/zFsB5S/ys=
+	t=1740232271; cv=none; b=GsEnd/wJER8T5VjmwZmecav5r/+/1iw9I0b03F+DlWABu6o0eYH5PhpBRT4mYTq+y7Dz6o6891KSXZaqgHl0ZfVMrjsDy/dRxGI3bqAkyYAPu2oTg8EZDxGrIOYABkBZ9aB/qtjwhNFDEqnz303kcmeY5KW6Z/yQKgrTiSijGcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740231057; c=relaxed/simple;
-	bh=qVwkWQrnc4RfSv99Z9GdvkC+lVtOV3oanEN68KieaUc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oMRZuhN15yWDZZM21+1XD629dnZTf+AdKpwNQHvmdqXLh3tGMC1Xe49g8mIzB7Vea7LGzKUlzHKfhdFlnWYD9mK5aLhopfMfcwYEts7Dp0ShDCiBA8N5LITBiCFu4lklfc4bSBdgIzxGKbhRHFFvzUhnusc+uIN6R11mocUmON4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=msh3/Sn1; arc=none smtp.client-ip=209.85.214.177
+	s=arc-20240116; t=1740232271; c=relaxed/simple;
+	bh=7XvebaarfPWYMLZS8DRSVmQKGFCvLowf4P4Z/yIOI4A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ieByRL9Jc/VB7kIpWaDvprDtGmAyGvvh8UZlxLLOY9Kbae46f4ImoDQwUkZOxRzGs5v6TrRflB68g9SYuvEjluhFXoduhcGo867CahkrtpK9YiWCCwpwMJu8NWWeYznqrMCJrxSdmAdVIIMfSrAWkS0zpbGsn/wjFCvGTPnfWWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MBU8AN+2; arc=none smtp.client-ip=209.85.167.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="msh3/Sn1"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-220d28c215eso46739885ad.1;
-        Sat, 22 Feb 2025 05:30:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MBU8AN+2"
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-548043a912fso344628e87.2;
+        Sat, 22 Feb 2025 05:51:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740231055; x=1740835855; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1740232267; x=1740837067; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qVwkWQrnc4RfSv99Z9GdvkC+lVtOV3oanEN68KieaUc=;
-        b=msh3/Sn1wMvij6K5ARLqfhi6mgcwraU4og7YsULUSkCaxYlknRuq6J6pQfhQ4VIGzW
-         /NBymebBX+h/GcAdl92VTDrXvlUDWr+Ol+uPwqVW/b9fMbSN515JlHeo8nthCxUlzaPm
-         Qg1btgCIVO7Clbry9pDAtwZZ2i/ol7YS9OWvcBhvsZEoh9o839Es0rwH7PQ1grAaGHIa
-         SPl+pRX2tr8f/5LURzoiVRu+9PugYFPyypURIpr1K9MHGG89rCUx2nr1obVaMSFhIUTO
-         5OsNrZET8RTRB8UaL5Hkm7ispfbpapjeEbNl+zCXtYK8eaVXPbXaQX8FbIOfe9q6Wpyh
-         Q/iA==
+        bh=7XvebaarfPWYMLZS8DRSVmQKGFCvLowf4P4Z/yIOI4A=;
+        b=MBU8AN+2XkRKQ9cCFmyFfUlbI5GaEYHFtF4tkcgBAE8MXy+YR8/zsoPGXy6Bg9G5dV
+         cJ37MoBpZth4O+lXgej8KZ27jDKiqzoPT/2bAYMIMSh2sGgcNKocPnoUoHHwuXchd62E
+         MsRf16xMYtuSvsXeRIh61fuhySoLOBtqpr8QHWwQ012jN/b25oWQzAhBcFIOMq+mkjAs
+         TaEVnonGNnatMf57xHRnQPksQ2QP1NMljdIp/nfd86Rc2X+EWi64ZJzxOUBnosZVVuLl
+         UMZ3PvYaUrf4gg8vgNABndA0smDYeFFiOINfJ4dIFYT8kW28zSfPlzN9jmsQjEOzmd0/
+         sN2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740231055; x=1740835855;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1740232267; x=1740837067;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qVwkWQrnc4RfSv99Z9GdvkC+lVtOV3oanEN68KieaUc=;
-        b=wukhzEL6PWUGeZAXg4OLOUKhD09FDhARF34Mj4bOyP/qPJV9VOsUtQpyPCkiXrEPR0
-         aH8g6lh1A2BqZFR53RRWC5sEMuwy34G+OcqY1ommKEKZ63rwYqT8Tb04W1KFDvlB0ekp
-         GwUfnn5PASuUpk+5IQvE1xven0cKDijGMiyfKLzGAaAwiuealby/Octi3j82lXli4bRO
-         B5nB2h6hu0eLXiP83/8zrFCFogsxHAUGhIpFi1cW4wJQiATw85ZIZl0UnO8M01soStC2
-         53bWLy4E7blpVjJcp0lo8zRiPR2eAYjsXuX78Ety5J4DrGYJNTxdt0csPCj+xFBM/5AI
-         IquA==
-X-Forwarded-Encrypted: i=1; AJvYcCVDHXJcf6YxDd73FXwyNuHkn1EoqCcYhXAXXhELEvfWoF/DHRFJNpv8WKqpELZdVHv4DUwqLHZCtCoxbdEouxo=@vger.kernel.org, AJvYcCVkOfScrJgIl5rfXCMgMmfqQTm0J24r7RTOcbnlS+IFe4fRDFdYnRRGwho5oQ9crldA7S5uM7YEAVXx4lM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YykbbbkGqhO+8EiVRlU5ulbhuTZ943iKUO0cpEO3ZKb/jT7yVgI
-	ipaRZcXvrNM3ugGmKnVnqdjUKP/nO171YjcbqnKjFA0IbnRi/mUA
-X-Gm-Gg: ASbGncvZiB+1s0ffW+ONAg0YbdyLXJXyuy5M4+pEfGB3XVwcC5u0/WMaf9/cFkPyZty
-	0Ca+yCJY4PQIhHJsw6CnFyElabIRBxzQudu7+4w8iSeCXfe2WSpn8m7UReRiS2DlGlO+0XUXXIl
-	HluSEKCWyknAnSdXB6XZizcxwFK/tt8xds4VWOSlgjlW0ZhE8Rq8cH/v+Xt0TFWHItas2nLe78V
-	M6ED2pw4URIqed4h5tEDSarhJie7mBXLsXs3m4cwv+rdfg0qny6Re3rIH78XCmf6wYfXUKU7nBI
-	/7KHSxOQtQQ2rL15WnqnoXIVXMxBM/I6/Q==
-X-Google-Smtp-Source: AGHT+IH1WkKIqcJbrqWygAXxhVdvJ56E5Yt2n51iO0Vp+5fjNIVkve9v3zLJF+kbOXOhcoML4uQJGA==
-X-Received: by 2002:a17:902:ce84:b0:21f:6a36:7bf3 with SMTP id d9443c01a7336-2219ff56334mr138798345ad.12.1740231055039;
-        Sat, 22 Feb 2025 05:30:55 -0800 (PST)
-Received: from linuxsimoes.. ([177.21.141.136])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-220d545d021sm153885215ad.157.2025.02.22.05.30.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Feb 2025 05:30:54 -0800 (PST)
-From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-To: joe@perches.com
-Cc: a.hindborg@kernel.org,
-	alex.gaynor@gmail.com,
-	aliceryhl@google.com,
-	apw@canonical.com,
-	arnd@arndb.de,
-	aswinunni01@gmail.com,
-	axboe@kernel.dk,
-	benno.lossin@proton.me,
-	bhelgaas@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	dakr@kernel.org,
-	dwaipayanray1@gmail.com,
-	ethan.twardy@gmail.com,
-	fujita.tomonori@gmail.com,
-	gary@garyguo.net,
-	gregkh@linuxfoundation.org,
-	linux-kernel@vger.kernel.org,
-	lukas.bulwahn@gmail.com,
-	ojeda@kernel.org,
-	pbonzini@redhat.com,
-	rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu,
-	trintaeoitogc@gmail.com,
-	walmeida@microsoft.com
-Subject: Re: [PATCH V4 2/2] checkpatch: throw error for malformed arrays
-Date: Sat, 22 Feb 2025 10:30:44 -0300
-Message-Id: <20250222133044.56698-1-trintaeoitogc@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <b150157b266b0aa78e26b1feb5a6b3d7735a2293.camel@perches.com>
-References: <b150157b266b0aa78e26b1feb5a6b3d7735a2293.camel@perches.com>
+        bh=7XvebaarfPWYMLZS8DRSVmQKGFCvLowf4P4Z/yIOI4A=;
+        b=PJezCn2aGoTKItK0R6XINKGqPiKB5uLyBznqu1S3D1AGIDdKy9lo34eGa57Z67wFwP
+         G4FqFHDtG8yBPJMyKPzM5/L7lB+p05Ivgc1FEQocQzW05OqZc7JTLpSA1Jv6qXqjAhS7
+         kFf3MxoNaGo/bsf7LQd+1mFB6RN79d9SVvpzqHIjbb7+q8eG8gTrYoj1Ybu9wEv1NLAE
+         z8PNz19nOw7vWOOAE8cdE84oJ7C8mmO++djEtyFuwixxT56+kes9mByhB1gMFH0ByRa1
+         d0+EfbymJv7HKd0E0rTnj+/5u0Bw1MZGPvQXiBQIBdOCbvZR/OaaSvXzCC+hKOZ3Ur8E
+         5a3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVib9HqF9j1wYHiFbPMTzib7wuGiWs8t8KstUWA64pEkciGi1GLGKzJxv+RaY6TUVp2VaYRZbhoCqGhCxsL6+U=@vger.kernel.org, AJvYcCW0dOHO3/+ZJbuC0Pwzr6zOyyFbhV9oz0Fim7Kv09LJB0bt7NwTROcbueFxGaX/6vpxnF5Q0hAcOUNNhu4=@vger.kernel.org, AJvYcCXwUznJOPFWzxxJpe99IjugZXr3gt6mc8QpJkAKZ/Svval8WOeXXY2o0cp3wqFn9PG+BTVrgctYyNA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBKQsUwfMAIXlr78a16I5Bfq6xxgNC7Nhy5oWxMKn6ejJFEu0P
+	5aQ6ZWmMrZb5yo0fwgQsaN6FDD34JZKINocPnn84L6HZBZMsfPWMVl7QX6yvMNwdxqppuE2JHtN
+	b356RL8FqKnd5AB1idCuIODWiSKo=
+X-Gm-Gg: ASbGncsdLxioemT6qRS5J5Q3nBE8SKKntps+13yyDaWdgtLfM7m6LvajajzTtemtMRY
+	m3xNWjw8pVok0hMzClm9SKCRX1oFuELpmDdzcH0z8CfpUOowGjeA/qxb5dvsFC+RcqGRWaOEHiz
+	4hFdPHSsI=
+X-Google-Smtp-Source: AGHT+IEiprFzehPTOxru2M93tQg4m3wL/6UlJh/OyAX0ySYI2kjESez6vGmCeLbUDX5qhzIjXc8BWzRwjAt+mbpFnZk=
+X-Received: by 2002:a05:651c:1b14:b0:307:2aea:559a with SMTP id
+ 38308e7fff4ca-30a59997932mr9566891fa.9.1740232267051; Sat, 22 Feb 2025
+ 05:51:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250221205649.141305-1-yury.norov@gmail.com> <20250221205649.141305-3-yury.norov@gmail.com>
+In-Reply-To: <20250221205649.141305-3-yury.norov@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 22 Feb 2025 14:50:50 +0100
+X-Gm-Features: AWEUYZkMOIblNgQKZQV0DVwztTF32mbQDrM8xd4mK5hBqeEGuus0sxvxiKDGStk
+Message-ID: <CANiq72=ctKoDz+Kf7UFBTD-oF17cTHBcrkNN_5cqxQeK609OVA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] MAINTAINERS: add rust bindings entry for bitmap API
+To: Yury Norov <yury.norov@gmail.com>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>, Danilo Krummrich <dakr@redhat.com>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>, 
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, Erik Schilling <erik.schilling@linaro.org>, 
+	=?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>, Christoph Hellwig <hch@lst.de>, 
+	Jason Gunthorpe <jgg@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, linux-pm@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Joe Perches <joe@perches.com> wrote:
-> check if what kind of array otherwise this comment is very poor.
-> Arrays commonly have more than one value assigned on a single line like
-yes, you is right, I will send a v5
+On Fri, Feb 21, 2025 at 9:57=E2=80=AFPM Yury Norov <yury.norov@gmail.com> w=
+rote:
+>
+> Bitmap developers do their best to keep the API stable. When API or
+> user-visible behavior needs to be changed such that it breaks rust,
+> bitmap and rust developers collaborate as follows:
 
-> The initial "\s*.*" portion of this regex isn't necessary
-> and can be removed
-I will make a test without "\s*.*" and working I will send this change in a v5
+If I understand correctly, you are proposing to a "temporarily stable
+API", i.e. to add new APIs while keeping old ones for a bit until the
+Rust side updates to the new one (including perhaps workarounds in the
+helpers when needed). Is that correct?
 
-> As I wrote in an earlier submission, please align to open parenthesis
-> and use the common form for the message with $herevet
-Okay, this will be changed.
+In other words, while the entry is about the helpers file, the policy
+is about all APIs (since some APIs are called directly), right?
 
-Thanks,
-Guilherme
+(Up to you, Viresh et al., of course, i.e. I am just trying to follow)
+
+Thanks!
+
+Cheers,
+Miguel
