@@ -1,174 +1,134 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68B02E401
-	for <rust-for-linux@vger.kernel.org>; Sat, 22 Feb 2025 21:46:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9439A1EA7EA;
+	Sat, 22 Feb 2025 22:12:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740260817; cv=none; b=U67odKDzLkQIoW4txhrvk/7+RuB3mrBbKHIcIjOY8o/6Qri/tr4pA8zvPbV0MzhPstJFR+kxF0ARiS9edF50n2OFtEGM5RHHmm5KA7biGHykx3paVlwLq2fu9BmWDI1uje4ANmtKKPJc1PdZnAkvJeKYYMXve0sD9e0kye50a84=
+	t=1740262376; cv=none; b=Ya27j1X/TmHmAq40fe4C+v4zsFm2C1KDxDyHzD1IGUbL6Bn2jGB+nrrS7VYyqpdBzsq1JCpDO1ZEttDOc1+JiKMOG2nnhs1LB6JnRSiIWa7yUww+yXEajwrPH/FRFjRE25XnCd+qhO7RWbX7wW9zoaZbEFZslt6KvPU4wSAcyic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740260817; c=relaxed/simple;
-	bh=R/cqKSeDckVDEF7yPpH+aIK1cWmoP4uCgucXOhuI4zE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Wv8KzSqfDld3JhnYlam2hkZpwtgijtT9w2bJiY6W7g9e+dRg68cHIYsbq04KKkcJSOB8Bo3Gw+dx6NO/q9ymWUpUsnUvQoRPJhj8/GEnRkK1/0pi6Kd2XtCSpp76J3KxZeEryFhAwpZAjMR6sSnhLy3eeBDg5RsBBy0BYO3mY8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=iIVrzF7J; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1740262376; c=relaxed/simple;
+	bh=0kVZChQIdT05i2ugJJnK3LxJC0uLV6WBEoEYYYnfB0A=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BH1adHY8izptFZRO+bxhsCTI1rrhY61TUyQ39Btk7UTKAatrrJMwNPNr7b7PdtxLjBOanuTZPUeemuFKQKFcWMnX8pqfxW7orAbgocDdHSdpsrjnRk+XWDAtcpvAmyd3bYIm28SfXFjVyMkfWlEYH114K89TN9kwBaZCh+VfvlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P6x+4lGL; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="iIVrzF7J"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-abb90c20baeso427914166b.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 22 Feb 2025 13:46:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P6x+4lGL"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-38f2f748128so1453344f8f.1;
+        Sat, 22 Feb 2025 14:12:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1740260814; x=1740865614; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=TIAnEzzzjax0vkLbj+pBB4HtwVvgwKWI24/rmxYjENo=;
-        b=iIVrzF7JK1DmnRjcKWuroDiYtbq6fN15AHTNzfLJnlbfa6boItnUxWX1j9wfvYqTOd
-         VVMHBk1Xo8Xpgs4tSO8afXJ++Ci+boeYKbvxeU2kAoXpCgKu+TDrRr1p40I4xPeN8uc0
-         iK0kdR6ndipa7nZ8GXUdHizI+3B/g4k1YUT9A=
+        d=gmail.com; s=20230601; t=1740262373; x=1740867173; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2XocSJp5y9VHtgpY1Xznfpqr9ru+r8Xd3NaR0HKrcKs=;
+        b=P6x+4lGLNub2urV5oBjuYl1RSmGFN45tW+91oy4gHvVOwWj1fQodZbAPHT+hB7xDLB
+         uTSSYjeijjxzGnSs/GesK3NzR388NmU+KLyQHg5El0EkhZFWdq0e8Q2Sbw+looAoQOOV
+         CKgcRltyR7wkNgb2dVJa3g5UuDiGcHJTzDczevokloKps3NjAH9RuqHRfReEv2znFsuU
+         QQIBY92rGob+j4cqXx3lptt4ZtguunlFbvZwxfJjuhhQb0q15PGZZGs8im/4pFX/dzOJ
+         nNqXNej1RM8smsYAO5kgIHOdOMbFT1IKzJIUFL/1fL68umlgU4ECXpTEv2q3c1rBEiKh
+         pu+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740260814; x=1740865614;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TIAnEzzzjax0vkLbj+pBB4HtwVvgwKWI24/rmxYjENo=;
-        b=Yhj0vocvmRCCYB19kuRjH+zwAWg3j0+yFBES1TbszVhze0nOI6ri3z8TWuZ3GDc321
-         rtrPkJS2MHOyhtKdEWdkhBbh274wNnYbGM2bHkufNSECfHdXi1d7aIoKkr3kodRljkFO
-         fcywKwl3aQpwkG+fRic10bPBObgilpXIlT0hvj5+ZYL1EHkfE/IN1xK+ykhFHg1voRGP
-         tpGzar14WD/LVSXhqvLtIxrtUMhP2BPK6oGmggj+RmgtjIB4+5dTu2g1qrJn+YnPv0Ic
-         hG4fSup4iVaKt5RsA2X84mkLZ8HNmBLSPB8DprwfmzUSa2Btc/p43gRuwB/ErFlyUXPa
-         JAww==
-X-Forwarded-Encrypted: i=1; AJvYcCXT/GJK8fwJVcafaAM1QftifCszrFK3/kD7mBIXytnLYrM1BHX3ksbYWPPX9UueE+ZxAQLiwSbmAbpu6SD9SA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx72MFJy8hscNA1OqTW9COscKEGEVPIYfLMzkE3Rg1GtowUB2+J
-	q/xjVdpfORpzyZUegwCv/ueTf0tHWuKxfNKrRHPQGhmPu50CORSlBaDtfl1WCDa1UeBa+TA+Y1n
-	2xkI=
-X-Gm-Gg: ASbGncsta0Go1DBcFUgK0o5lnJd35KkggPGWwA21+bRzKZTWIQPJ7eioA9KRnm/vbwZ
-	9Z7+cDyPRP/LmBPTB8AT0ywEAYze6orpkFuZnq92vUIB2duv7EkF4GhC7aAffrM4J49kkdvWGUO
-	ImV8A08oxmqbS8PcQrt34LPzf6eBnfYlpn4e5XgUsLhm23T4S9ml7yabDzLOAaBvwyVnNwiRMFB
-	QXEbYhIyUNMqMIsSNP/hPF/7sdZiD00NBvpE90qVe4TsSsSXmPACdqM8RK44tndS9ALEEAXZEVh
-	7PumMRW45HhWmUMdLf8Lvmj0FAIwDjDK1qGskBcuablbg4wUUfqxQVxXJMfFhxKgl2r/ZxnzKFf
-	i
-X-Google-Smtp-Source: AGHT+IHARk5S6qz6Ruob+wnJOsHKNSUodHJ/MHpYx48/h8wjFxDVgnlZ2vPq0TKWcc1G1ZcNuxFtJw==
-X-Received: by 2002:a17:906:7311:b0:ab7:cfe7:116f with SMTP id a640c23a62f3a-abc0de0de62mr666814566b.46.1740260813634;
-        Sat, 22 Feb 2025 13:46:53 -0800 (PST)
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com. [209.85.218.52])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abb78ea4c1asm1465246466b.123.2025.02.22.13.46.51
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 22 Feb 2025 13:46:53 -0800 (PST)
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-abb90c20baeso427908366b.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 22 Feb 2025 13:46:51 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVZS763S7NrCzH0am2/QZsaLYr5HDFIQIML/tjYwwanJen7fkdyOFxDsu/StEI9+jvnnHz2VgSHFKgQNlgWlg==@vger.kernel.org
-X-Received: by 2002:a17:907:970c:b0:abb:d047:960b with SMTP id
- a640c23a62f3a-abc0d9885e7mr719250966b.4.1740260810677; Sat, 22 Feb 2025
- 13:46:50 -0800 (PST)
+        d=1e100.net; s=20230601; t=1740262373; x=1740867173;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2XocSJp5y9VHtgpY1Xznfpqr9ru+r8Xd3NaR0HKrcKs=;
+        b=nYanHo5iyqgBYo8VKI3xSv8+IchP1ILH9uYjCLV1c6GLGYk1ujflLqGc6iN0w3z6mq
+         NZGqUJO/H72IRvRrnAxz1oAxKDyjnXVtXCtKk0pnJoggbQVjL+iUvfJRlSv17P+cTujW
+         ZLepTXM8uissTjclEodV/bP1Q+oN3B8Cxi5D09J/1ww39buUgNDzhSCBT8BeAZPuIQxy
+         NiVcxs/m72UlPaJYDo1n6N24VbnFJ1SKoW5SGXudyNxQJLJJaxB0Tl9bVybrbtG2yKPT
+         xB3ltqYsdX7pSnCpScZGUsucV6tNpnElJc+RI5DtXFjLVBjA4vB5QJ35F1gjBqGT/w/k
+         SsSg==
+X-Forwarded-Encrypted: i=1; AJvYcCVuBULrs6DSKCrRxqWg6zDedELSL/Acviykq53XTfbowLXqOqCJhXdB+hDWl01WNKY+h5NQ6QiVeMjvHVzLdp8=@vger.kernel.org, AJvYcCXmdAWZLlRSIskBzWAKHIfZ2+xStdSzcvnXzbgXfj/xmEpvWbhb5uDh+R4Aqr4OuubhrYIY4x2xB3N/WnQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6vszBNaFwyLHgGOCBXLNEFyoMtckuPUBICpcew8qHymJLbRh3
+	S6xaDL5PfpO/snggL4o6O6ATP82sB9Y1auRu4T4YzMv6Jec8JAeR
+X-Gm-Gg: ASbGncskICOlffdY2wTUNUgQ8H0ZvyV9riOqBIxyxuPk2nHUGn8NMjWYfBrri1g9T/Z
+	fP/WOlUPF9JTG0EA7ZEfHoK3IeGnGU7ISCZwsOdupFjifXYpRXrqwCJtjSgWWf9TpWXhioV981v
+	P5vhJtGe/hww4mUZSH19say+XutgOo+l33gVoVMXDR87L/lFzNmM8iMAaCKhqYQ6WjxxMPqZ6ru
+	HvgraP7PonTi0x0xKqxjCXIe7E24wsGZCbravXSZ35DS6a0U1H8C73mrxb3+m1TQoMc+7aYEtm5
+	nF6xm6hIPAHJz+kwb631DximL1wmmOnRQOab9TV/hwZjIPNLbUF2o7A9jeWL8JFw
+X-Google-Smtp-Source: AGHT+IH++ps/T2w03Bu4CN8he1k98DEeg+N3rfDsfaT/b0Jrqdk/zL6D2AMk8zqDe8Q6Vd2lstNpbQ==
+X-Received: by 2002:a05:6000:144a:b0:38f:4d40:358 with SMTP id ffacd0b85a97d-38f6e7587c5mr6985640f8f.9.1740262372632;
+        Sat, 22 Feb 2025 14:12:52 -0800 (PST)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f258b4314sm27002426f8f.9.2025.02.22.14.12.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 22 Feb 2025 14:12:52 -0800 (PST)
+Date: Sat, 22 Feb 2025 22:12:48 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: "H. Peter Anvin" <hpa@zytor.com>, Linus Torvalds
+ <torvalds@linux-foundation.org>, Ventura Jack <venturajack85@gmail.com>,
+ Gary Guo <gary@garyguo.net>, airlied@gmail.com, boqun.feng@gmail.com,
+ ej@inai.de, gregkh@linuxfoundation.org, hch@infradead.org,
+ ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
+ miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
+Subject: Re: C aggregate passing (Rust kernel policy)
+Message-ID: <20250222221248.772b4bf6@pumpkin>
+In-Reply-To: <c3spwcoq7j4fx5yg4l7njeiofhkaasbknze3byh4dl45yeacvr@rb6u6j5kz7oe>
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
+	<20250222141521.1fe24871@eugeo>
+	<CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+	<6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+	<CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+	<yuwkqfbunlymofpd4kpqmzpiwbxxxupyj57tl5hblf7vsvebhm@ljz6u26eg5ft>
+	<6EFFB41B-9145-496E-8217-07AF404BE695@zytor.com>
+	<c3spwcoq7j4fx5yg4l7njeiofhkaasbknze3byh4dl45yeacvr@rb6u6j5kz7oe>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
- <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
- <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
- <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
- <yuwkqfbunlymofpd4kpqmzpiwbxxxupyj57tl5hblf7vsvebhm@ljz6u26eg5ft>
- <6EFFB41B-9145-496E-8217-07AF404BE695@zytor.com> <c3spwcoq7j4fx5yg4l7njeiofhkaasbknze3byh4dl45yeacvr@rb6u6j5kz7oe>
-In-Reply-To: <c3spwcoq7j4fx5yg4l7njeiofhkaasbknze3byh4dl45yeacvr@rb6u6j5kz7oe>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sat, 22 Feb 2025 13:46:33 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wi0UmOAhyDjOeCJcL7eEt+ygKnMqtx+RcHtzZGd7OY4Kw@mail.gmail.com>
-X-Gm-Features: AWEUYZlfgH2FWGDgxF-FUknCaXkkoysm8XxdV5A68axeTzsJ2Kz9bsbxjCAZi30
-Message-ID: <CAHk-=wi0UmOAhyDjOeCJcL7eEt+ygKnMqtx+RcHtzZGd7OY4Kw@mail.gmail.com>
-Subject: Re: C aggregate passing (Rust kernel policy)
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: "H. Peter Anvin" <hpa@zytor.com>, Ventura Jack <venturajack85@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	airlied@gmail.com, boqun.feng@gmail.com, david.laight.linux@gmail.com, 
-	ej@inai.de, gregkh@linuxfoundation.org, hch@infradead.org, 
-	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, 22 Feb 2025 at 13:22, Kent Overstreet <kent.overstreet@linux.dev> wrote:
->
-> Power hungry and prone to information leaks, though.
+On Sat, 22 Feb 2025 16:22:08 -0500
+Kent Overstreet <kent.overstreet@linux.dev> wrote:
 
-The power argument is bogus.
+> On Sat, Feb 22, 2025 at 12:54:31PM -0800, H. Peter Anvin wrote:
+> > VLIW and OoO might seem orthogonal, but they aren't =E2=80=93 because t=
+hey are
+> > trying to solve the same problem, combining them either means the OoO
+> > engine can't do a very good job because of false dependencies (if you
+> > are scheduling molecules) or you have to break them instructions down
+> > into atoms, at which point it is just a (often quite inefficient) RISC
+> > encoding. In short, VLIW *might* make sense when you are statically
+> > scheduling a known pipeline, but it is basically a dead end for
+> > evolution =E2=80=93 so unless you can JIT your code for each new chip
+> > generation... =20
+>=20
+> JITing for each chip generation would be a part of any serious new VLIW
+> effort. It's plenty doable in the open source world and the gains are
+> too big to ignore.
 
-The fact is, high performance is <i>always</i> "inefficient". Anybody
-who doesn't understand that doesn't understand reality.
+Doesn't most code get 'dumbed down' to whatever 'normal' ABI compilers
+can easily handle.
+A few hot loops might get optimised, but most code won't be.
+Of course AI/GPU code is going to spend a lot of time in some tight loops.
+But no one is going to go through the TCP stack and optimise the source
+so that a compiler can make a better job of it for 'this years' cpu.
 
-And I very much say "reality". Because it has nothing to do with CPU
-design, and everything to do with "that is how reality is".
+For various reasons ended up writing a simple 32bit cpu last year (in VHDL =
+for an fgpa).
+The ALU is easy - just a big MUX.
+The difficulty is feeding the result of one instruction into the next.
+Normal code needs to do that all the time, you can't afford a stall
+(never mind the 3 clocks writing to/from the register 'memory' would take).
+In fact the ALU dependencies [1] ended up being slower than the instruction=
+ fetch
+code, so I managed to take predicted and unconditional branches without a s=
+tall.
+So no point having the 'branch delay slot' of sparc32.
+[1] multiply was the issue, even with a pipeline stall if the result has ne=
+eded.
+In any case it only had to run at 62.5MHz (related to the PCIe speed).
 
-Look at biology. Look at absolutely <i>any</i> other area of
-technology. Are you a car nut? Performance cars are not efficient.
+Was definitely an interesting exercise.
 
-Efficiency comes at a very real cost in performance. It's basically a
-fundamental rule of entropy, but if you want to call it anything else,
-you can attribute it to me.
+	David
 
-Being a high-performance warm-blooded mammal takes a lot of energy,
-but only a complete nincompoop then takes that as a negative. You'd be
-*ignorant* and stupid to make that argument.
-
-But somehow when it comes to technology, people _do_ make that
-argument, and other people take those clowns seriously. It boggles the
-mind.
-
-Being a snake is a _hell_ of a lot more "efficient". You might only
-need to eat once a month. But you have to face the reality that that
-particular form of efficiency comes at a very real cost, and saying
-that being "cold-blooded" is more efficient than being a warm-blooded
-mammal is in many ways a complete lie and is distorting the truth.
-
-It's only more efficient within the narrow band where it works, and
-only if you are willing to take the very real costs that come with it.
-
-If you need performance in the general case, it's not at all more
-efficient any more: it's dead.
-
-Yes, good OoO takes power. But I claim - and history backs me up -
-that it does so by outperforming the alternatives.
-
-The people who try to claim anything else are deluded and wrong, and
-are making arguments based on fever dreams and hopes and rose-tinted
-glasses.
-
-It wasn't all that long ago that the ARM people claimed that their
-in-order cores were better because they were lower power and more
-efficient. Guess what? When they needed higher performance, those
-delusions stopped, and they don't make those stupid and ignorant
-arguments any more. They still try to mumble about "little" cores, but
-if you look at the undisputed industry leader in ARM cores (hint: it
-starts with an 'A' and sounds like a fruit), even the "little" cores
-are OoO.
-
-The VLIW people have proclaimed the same efficiency advantages for
-decades. I know. I was there (with Peter ;), and we tried. We were
-very very wrong.
-
-At some point you just have to face reality.
-
-The vogue thing now is to talk about explicit parallelism, and just
-taking lots of those lower-performance (but thus more "efficient" -
-not really: they are just targeting a different performance envelope)
-cores perform as well as OoO cores.
-
-And that's _lovely_ if your load is actually that parallel and you
-don't need a power-hungry cross-bar to make them all communicate very
-closely.
-
-So if you're a GPU - or, as we call them now: AI accelerators - you'd
-be stupid to do anything else.
-
-Don't believe the VLIW hype.  It's literally the snake of the CPU
-world: it can be great in particular niches, but it's not some "answer
-to efficiency". Keep it in your DSP's, and make your GPU's use a
-metric shit-load of them, but don't think that being good at one thing
-makes you somehow the solution in the general purpose computing model.
-
-It's not like VLIW hasn't been around for many decades. And there's a
-reason you don't see it in GP CPUs.
-
-                Linus
