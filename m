@@ -1,168 +1,153 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB70D7081A;
-	Sun, 23 Feb 2025 18:03:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264D38C1E
+	for <rust-for-linux@vger.kernel.org>; Sun, 23 Feb 2025 18:32:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740333830; cv=none; b=gq6OLWdahS1qpS8ZSGbe+0AZIexM5G4MywIOB66+KK0SyNmxk1PHYn4DhtYcA6D0TsNR5zjr3KngMTjkX7DQDqoQn/23SZ14APlB7GpAw8WLyzMvkgiMwZPAbz81BgrdM22wIH7YVoqHvtAK11TsQoaNiMICOsdHeQkwBpDy0RA=
+	t=1740335531; cv=none; b=mEEnCxExakNA2bnf7raLe/K8g+wYDAuU5X7YpoPIhR+DSB1x5rANIDEklvqAkBOdxPAglbvatzuIPW4ZG6RuZgW9qK8LAczcJW4I/z+kc1DUu8ENcdiHPI9Fz22oYRhuS17fZdThRT4eqrGlhUSwilZjy2c6hPvRtDZ8PbDGNao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740333830; c=relaxed/simple;
-	bh=vHoTYqH5kYLdCvoAFtXVHET6Lr3U8dENcUD3HaYCcZA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=flQ8VSf2KEBAkuDXTNU36XkrkVviaOxD764pT9lmP0XxEi8eRbA0sEG8m3sOYaLMjABU6dUPCSX3acR9Vwy1PeLoTFeVzIFlLcfH7RJbd6mQcLYLJQ1bGE1gUjyJ7UhmE60oAJ373Qfl33RUWOVC09viDKHeLP2T0x2AEXjbW88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=eHGwCXnx; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1740335531; c=relaxed/simple;
+	bh=F16gjWpfzILm5UlOwuP2B/0g3980gm949Ip5/wshaZM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DhvjX9cE6JUX85tBZLkGRjjkNkX8nvBtWU2CzLyLcXlLEg0F/F0H5TlXcqww1KyeT4BcNAB2oPntt/RBX5pkWaVoPxouqZmcBkpp8xL7EqVQTlPX3BLA0HJTTNg4QOmP94fPms86eB4rKqSgTSabBMaQxIU9MmwqUt3T8XdzO7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=JlgVKMLy; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="eHGwCXnx"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 56592496;
-	Sun, 23 Feb 2025 19:02:21 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1740333741;
-	bh=vHoTYqH5kYLdCvoAFtXVHET6Lr3U8dENcUD3HaYCcZA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eHGwCXnxIBw6QRhY2zd1Ly9pL5XvMggWiB/ic03NPfxDJk0V4Lb/Md/lW6Arekk6p
-	 mlDk9Msq7eM41N7Px1H5K0NcWrYHD4RIpvHaXg1aixW2v3uE7kf91/ESk16VfaF39Y
-	 yHilU8aQvTSzkpIq46v2pa/EnC1kDRXfvjRWm+Y0=
-Date: Sun, 23 Feb 2025 20:03:30 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	rust-for-linux <rust-for-linux@vger.kernel.org>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
-	ksummit@lists.linux.dev
-Subject: Re: Rust kernel policy
-Message-ID: <20250223180330.GC15078@pendragon.ideasonboard.com>
-References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
- <Z7SwcnUzjZYfuJ4-@infradead.org>
- <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
- <Z7bO1jT2onZFZwgH@infradead.org>
- <CAHk-=wgLbz1Bm8QhmJ4dJGSmTuV5w_R0Gwvg5kHrYr4Ko9dUHQ@mail.gmail.com>
- <Z7hulnJ4fwslRILy@pollux>
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="JlgVKMLy"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5ded1395213so6176683a12.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 23 Feb 2025 10:32:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1740335527; x=1740940327; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=TcuxBHhEa12WEoosMAkaHe0om9pJLB2v6SQU4kBUAzc=;
+        b=JlgVKMLy+9isG5N/Jk0HLvfHtU9N0HQrOWNKompjMOCyjJACzSMQbHD0/JL4RXP6uB
+         Eqhnh89PSzp5pFZ8cPXJdYpiEl//NukTXgr2Hvhez8ktqwfQDcStEoyijPXO3t7aJkj5
+         /c1YX7vKLE3+7Wx9k+L9j4fNS+IDw+yLV2JVU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740335527; x=1740940327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TcuxBHhEa12WEoosMAkaHe0om9pJLB2v6SQU4kBUAzc=;
+        b=oYn15wAl8JLuuoKNpzReTeZPeFIA9X7opoDwILUbzxGZYyeVgY7kUXlnT0ZCrxmiwh
+         0BH4XgO0b/jAgUKaHPB0Dvy8XuZ9+W12ak+01M96HvCjGg8kPBDx5zdXp7fAV415HRYk
+         0RW3jWEmSQ/VoP5GX7aUL2GpULDOxDIq5TTlVlHJrye5ujwjQgjrKUOxDdD7lx0cVdRa
+         iye8jAuJRdpPQKzbUxdc5PfThAGYTZAe9Xk0wBNNH3wFn2eLlFmDjxE+fLvETKadCtyA
+         vJttBFFthpmds2tjSWhm8DtRs41dXdyrQfo0OPWAjPxsWORpp4OIp4Ep3KW3m7Q0jBqP
+         lZ1A==
+X-Forwarded-Encrypted: i=1; AJvYcCVHOOLm88fl/j0NBuF0zGiSa4ZevoKbb7oZ5CyBa2GjDouo3VV6I6y+KKyjR2DfQs8NeQKXCXa9SCUf19jKJA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2a+2+Dp00m9H5BWJ6rnzLorqBadNjitORo2OlG3Ckt26gTz0T
+	6NJ0AiovQ7oRjGc9marxwn6CdFPSzI7zdIVvlZqCo+9NulTkVc3pVAgJt45WeaSAU7PjMRAZyBJ
+	E8zs=
+X-Gm-Gg: ASbGnctyxbt8pvvmoq/G1K7eXAv7ly+XOWycJXNIJLTvNc6L6y9sRIzjgorvetHyEZp
+	zSsd1b2GtfODpTB2qVDObYh+4TvFVTp1eUQyLiQty8aKdTgiaH34ECjuCe3Hqt7iWovLUAiNTE+
+	Ev1sSgHWJIdkTeoU6V7PT1wfVtoVgjhLmXVrgV83qrPqVCiW+4kOYcRJKVSBLMxh/KqrnuhJrqm
+	IHD7l0mUrGnEWID1MUySRXqcIsDF0lK3IevstQR1LILxqDM95Vnu4R7Ika4kk2YBkfaNoIVr/eh
+	spROxkO0PxcHIclTvUG9Sh6RgxKzWtnRepoLn5B6rFBDXU7LPqZCg1aBQNoI9w3ZBFpRFzCLRa6
+	I
+X-Google-Smtp-Source: AGHT+IFIlgWwrH/tIypfITOnmTBjadUC0hdRApQWEC198OpU0MnUAvhl3s7gsrUot6jGgml7bXxguw==
+X-Received: by 2002:a17:907:2d06:b0:ab6:ed9e:9739 with SMTP id a640c23a62f3a-abc09c0aa77mr1184886166b.42.1740335527016;
+        Sun, 23 Feb 2025 10:32:07 -0800 (PST)
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com. [209.85.208.41])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aba532322f1sm2102757966b.19.2025.02.23.10.32.06
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 23 Feb 2025 10:32:06 -0800 (PST)
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5dca468c5e4so6655178a12.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 23 Feb 2025 10:32:06 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUI3OmPcFOvFpW6vpzgw7v5G30giG4NXpuyZRY9GA6kskzrzsoCH+ek3gT9P2vO4pJ3MkP6eJHDU4DYvSlz+A==@vger.kernel.org
+X-Received: by 2002:a17:906:6a10:b0:ab7:76d7:dcb with SMTP id
+ a640c23a62f3a-abc09a97b01mr1026613166b.28.1740335526003; Sun, 23 Feb 2025
+ 10:32:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <Z7hulnJ4fwslRILy@pollux>
+References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
+ <Z7SwcnUzjZYfuJ4-@infradead.org> <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
+ <Z7bO1jT2onZFZwgH@infradead.org> <CAHk-=wgLbz1Bm8QhmJ4dJGSmTuV5w_R0Gwvg5kHrYr4Ko9dUHQ@mail.gmail.com>
+ <Z7hulnJ4fwslRILy@pollux> <20250223180330.GC15078@pendragon.ideasonboard.com>
+In-Reply-To: <20250223180330.GC15078@pendragon.ideasonboard.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sun, 23 Feb 2025 10:31:49 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wie_Winz7CtRCM62S2b1pWKN2Jt2wdGHgFBv=aBU8qwqg@mail.gmail.com>
+X-Gm-Features: AWEUYZmAe5aQKMqbMOvhjrLvqPDF0CXPi8iaHSYLNnVAdHMEHMUU3HW0e3qcqRo
+Message-ID: <CAHk-=wie_Winz7CtRCM62S2b1pWKN2Jt2wdGHgFBv=aBU8qwqg@mail.gmail.com>
+Subject: Re: Rust kernel policy
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Christoph Hellwig <hch@infradead.org>, 
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
+	rust-for-linux <rust-for-linux@vger.kernel.org>, Greg KH <gregkh@linuxfoundation.org>, 
+	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Feb 21, 2025 at 01:16:22PM +0100, Danilo Krummrich wrote:
-> On Thu, Feb 20, 2025 at 04:39:58PM -0800, Linus Torvalds wrote:
-> > Honestly, what you have been doing is basically saying "as a DMA
-> > maintainer I control what the DMA code is used for".
-> > 
-> > And that is not how *any* of this works.
-> > 
-> > What's next? Saying that particular drivers can't do DMA, because you
-> > don't like that device, and as a DMA maintainer you control who can
-> > use the DMA code?
-> 
-> [...]
-> 
-> > So let me be very clear: if you as a maintainer feel that you control
-> > who or what can use your code, YOU ARE WRONG.
-> 
-> When I added you to the original thread [1], it was exactly to get some
-> clarification on this specific point.
-> 
-> In my perception, a lot (if not all) of the subsequent discussions evolved
-> around different aspects, while this specific one is not even limited to Rust in
-> the kernel.
-> 
-> Hence, I'm happy to see this clarified from your side; it was still a remaining
-> concern from my side, regardless of whether the PR in question will make it or
-> not.
-> 
-> However, I also want to clarify that I think that maintainers *do* have a veto
-> when it comes to how the API they maintain is used in the kernel. For instance,
-> when an API is abused for things it has not been designed for, which may hurt
-> the kernel as a whole.
+On Sun, 23 Feb 2025 at 10:03, Laurent Pinchart
+<laurent.pinchart@ideasonboard.com> wrote:
+>
+>   > I can't answer for Linus, sorry.  But a generic "hey, this broke our
+>   > working toolchain builds" is something that is much much much
+>   > different than "an api changed so I now have to turn off this driver
+>   > in my build" issue.
+>
+>   I haven't found a clear statement from Linus on this topic.
+>
+> Those three statements can't all be true together, we can at best have
+> two. I would like to understand which one we will drop first, and I
+> believe many other developers and maintainers are wondering the same.
 
-I've been thinking this through over the weekend, and I see an elephant
-in the room that makes me feel uncomfortable.
+This is literally why linux-next exists. It's where breakage is
+supposed to be found.
 
-Three important statements have been made on the topic of rust for
-Linux. I'm going to include some quotes below, alongside with how I
-understand them. My understanding may be wrong, please let me know when
-that's the case.
+And guys, you have to realize that there is no such thing as "works
+every time". Just this merge window, we had a case where I didn't pull
+some stuff because it broke 'bindgen', and the reason was simply that
+not a lot of people seem to be running the rust builds on linux-next.
+But realistically, my normal build testing has had rust enabled for
+the last year or so, and that was literally the first time something
+like this happened.
 
-- No maintainer is forced to deal with rust code at the time being.
+So be realistic: can rust cause toolchain problems? Sure.
 
-  This was mentioned multiple times in different forms, for instance by
-  Miguel in [1] as
+But we have that issue - and we've had it *much*more* - with the
+regular C side too. We have those kinds of issues pretty much every
+single release, and it's usually "this doesn't build on some esoteric
+architecture that people don't test any more".
 
-  "Some subsystems may decide they do not want to have Rust code for the
-  time being, typically for bandwidth reasons. This is fine and
-  expected."
+For example, this merge window I did have that unusual "this doesn't
+work for my rust build" situation, but that one was caught and fixed
+before the merge window even closed. Guess what *wasn't* caught, and
+then wasn't fixed until -rc3? A bog-standard build error on the
+esoteric platform called "i386".
 
-  or by Linus in [2] as
+Yes, linux-next is supposed to catch interactions between different
+development trees. And yes, various build bots test different
+configurations. But nothing is ever perfect, and you really shouldn't
+expect it to be.
 
-  > You don't have to like Rust. You don't have to care about it. That's
-  > been made clear pretty much from the very beginning, that nobody is
-  > forced to suddenly have to learn a new language, and that people who
-  > want to work purely on the C side can very much continue to do so.
+At the same time, people harping on some rust issues seem to do so not
+because rust is any worse, but because they have internalized our
+*normal* issues so much that they don't even think about them. EVERY
+SINGLE RELEASE Guenter Rockl sends out his test-results for -rc1, and
+EVERY SINGLE RELEASE we have new failed tests and most of the time we
+have several build errors too.
 
-- No maintainer can (ab)use their power by nacking rust abstractions for
-  the API their maintains.
+Guys and gals - this is *normal*. You should expect it. Breakage
+happens. All the time. And that has nothing to do with Rust. It has to
+do with the fact that we are doing software development.
 
-  This was made clear by Linus in [2]:
+Ask yourself: how many problems has rust caused you in the last year?
+I'm claiming that the main problem has been people who have been
+forthing at the mouth, not the actual rust support.
 
-  > So let me be very clear: if you as a maintainer feel that you
-  > control who or what can use your code, YOU ARE WRONG.
+So next time you want to write an email to complain about rust
+support: take a look in the mirror.
 
-- Breaking compilation of rust code in a released kernel is not allowed.
+Is the problem actually the rust code causing you issue, or is the
+problem between the keyboard and the chair, and you just want to vent?
 
-  This statement is less clear in my opinion. It's made by Miguel in [1]:
-
-  "The usual kernel policy applies. So, by default, changes should not
-  be introduced if they are known to break the build, including Rust.
-
-  However, exceptionally, for Rust, a subsystem may allow to temporarily
-  break Rust code. The intention is to facilitate friendly adoption of
-  Rust in a subsystem without introducing a burden to existing
-  maintainers who may be working on urgent fixes for the C side. The
-  breakage should nevertheless be fixed as soon as possible, ideally
-  before the breakage reaches Linus."
-
-  The "ideally" in the last sentence is a subtle but important detail.
-
-  Then we had some patches that broke the -next rust build and were
-  dropped from v6.14, as mentionned in [3]. Greg
-
-  > > Regardless of holidays, you seem to be saying that Linus should
-  > > have accepted Andrew's PR and left rust with build failures?
-  >
-  > I can't answer for Linus, sorry.  But a generic "hey, this broke our
-  > working toolchain builds" is something that is much much much
-  > different than "an api changed so I now have to turn off this driver
-  > in my build" issue.
-
-  I haven't found a clear statement from Linus on this topic.
-
-Those three statements can't all be true together, we can at best have
-two. I would like to understand which one we will drop first, and I
-believe many other developers and maintainers are wondering the same.
-
-[1] https://rust-for-linux.com/rust-kernel-policy
-[2] https://lore.kernel.org/all/CAHk-=wgLbz1Bm8QhmJ4dJGSmTuV5w_R0Gwvg5kHrYr4Ko9dUHQ@mail.gmail.com/
-[3] https://lore.kernel.org/all/2025013148-reversal-pessimism-1515@gregkh/
-
-> But as mentioned previously, I do not think that this veto can be justified with
-> personal preference, etc.
-> 
-> - Danilo
-> 
-> [1] https://lore.kernel.org/lkml/Z5qeoqRZKjiR1YAD@pollux/
-
--- 
-Regards,
-
-Laurent Pinchart
+                 Linus
