@@ -1,177 +1,168 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD07158558;
-	Sun, 23 Feb 2025 17:42:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB70D7081A;
+	Sun, 23 Feb 2025 18:03:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740332560; cv=none; b=H1Lsqrj9Sp2MqvTCHhijBVzTnOp1AaJkGhA/vDNQFdQF7mSj5KgaKP3K+/wHo6DdtcIUgkGhRG8Vs+vp7P14y7OBs+ZuckRMbuDQOnB1HxUODNXA6ulfua8W0N7KJnBBaM/yInZVwgygczWaL+uUgCLW2+XLAf5SrcI9YiXupMo=
+	t=1740333830; cv=none; b=gq6OLWdahS1qpS8ZSGbe+0AZIexM5G4MywIOB66+KK0SyNmxk1PHYn4DhtYcA6D0TsNR5zjr3KngMTjkX7DQDqoQn/23SZ14APlB7GpAw8WLyzMvkgiMwZPAbz81BgrdM22wIH7YVoqHvtAK11TsQoaNiMICOsdHeQkwBpDy0RA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740332560; c=relaxed/simple;
-	bh=Z9EHzj/9TMsdRybcSGrBxIUApr0DZUACq6j0urRmUsI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=c8n0xGKRPP8MTgE2ZOoBm1aHoKOB5en2Z/V1deuQydnN5SYL43DnE4xy+L6Fx5NCLUKfgOdp6ifp1pwBXllt1niI86oX6tHt2ielitdjIK16hu8OyxmvB84OnLlbmRMYqgKj6glzfGaLkMT+1Qd8fAE9VYNHjjeXY+LhZyA365c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HTNKRxuF; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740333830; c=relaxed/simple;
+	bh=vHoTYqH5kYLdCvoAFtXVHET6Lr3U8dENcUD3HaYCcZA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=flQ8VSf2KEBAkuDXTNU36XkrkVviaOxD764pT9lmP0XxEi8eRbA0sEG8m3sOYaLMjABU6dUPCSX3acR9Vwy1PeLoTFeVzIFlLcfH7RJbd6mQcLYLJQ1bGE1gUjyJ7UhmE60oAJ373Qfl33RUWOVC09viDKHeLP2T0x2AEXjbW88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=eHGwCXnx; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HTNKRxuF"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2fcb6c42c47so5693450a91.1;
-        Sun, 23 Feb 2025 09:42:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740332558; x=1740937358; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A+/OYTmylIIw4plgNkwf6eTBea+h42xj2aKz3F23uVE=;
-        b=HTNKRxuFGVXCH9RPih7FnU9R/H/7CSE1NcztR7wsptyPWhAt0FDsuDvUXdhJdRBBH3
-         b9Dc6zI3tCBW2z9kZkSdg9t1dM+gPJwfFg65msFM3msM8ntNK5uE1T85FfXnSDQpWtvK
-         JQeZglVg7cc0c1kCeHtiHqJLbZetWAX+s+w+LDWmvIxXgDQf8YyYsE74f9W5PfDN+FLG
-         Mi5MaSwINNPe8vy38hyR0vwGnPZ2HeJJA0v+6ZphQi1hl1v/BCOnVrhw0SqwziFBebUr
-         LH4ioYwcZ44us9jp1fFobmdk5p5w5KSrMwtAcpmhhOSj4/Zt04duK3XqLlzBNIXMIJfK
-         cRbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740332558; x=1740937358;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=A+/OYTmylIIw4plgNkwf6eTBea+h42xj2aKz3F23uVE=;
-        b=AbInw6iqCgHWUORgAjUvitGsXynWq4HGLHwly6Be+nrvZHkYquWcSWe2B3uJP3PeLR
-         ceskmiTNACUcIi6G65dB4kBfkrnZhVzoTZaZp7zTHx0FVsf/ICLpvanhqu43xh7RvCHy
-         FLUkJPvi3EO6EaKDebZ5WUEULzi4pHAlcvDAGKvwLlL7vjt7B+uQmBzWohBP0ugmPhkI
-         PzjMmRPbX+ZlSLgCwVAFxIKzZqG3KtjertIFIxqvU7okJl1mTKJ+0uXOU6Mk1Lrm7IX+
-         /4e+ekgeKEMlpVhb1CYNPleRNP3LwNWEBqcg6WFmkOfFElvyxk313/NsZq7lnWd6sYfa
-         SZqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVEtm0okF8lPMV7Mp+S+bFOWeddkjT8ibIYZvz/GUQzsZrQQ5bEXPbW0uXI3mvLcsawb/gWXVfk7Mh1TivsJYQ=@vger.kernel.org, AJvYcCWhdcIsQq/KTxnwRVq+FFW6aPAnKwTtsviSYvgiidcE1rC2gx6+B5UtiXf1gWaqIZJeMA0doqT3fybcNI8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6CjsXitkycjbGwnDgP6bg6YvKE19YgHcEBDo/lZv2S7XhtZqm
-	IPLTg/S2armU6nOEi4z7Fg6A7hxLfOU/kgiXrXd4q+jPAdA0vIvv
-X-Gm-Gg: ASbGncu2DcgwlpuPqP0VcYEAsuUHQn+8DJ1owGN9zuWrO+SNY/BEW0EInlayzglMlGK
-	AMziKfRDQuUtHQc0/LQIxrvaa/L27HTT/pxcjwOzzo5E4tLHOJFpD2ewvTNiNK9NrMdJ6fR2426
-	Oj52rbXfjjguLoVRygLr9TYv6GDY4Vlqp+t2HQuQi1SezD5+z/vcNiWxuCz366PO9ZsqdfznG6s
-	zBl8vT2sp8Tuaabn3+hZhGC2EIP2xCIO7bRbsUWGLKx6ST3TItoTle+rii1JuT/7wSL3akcOHTb
-	i8T8lO1ZjfaJkPJzZUqb2xGcyQDrTu888Q==
-X-Google-Smtp-Source: AGHT+IE7wAeQ0OmTe+ASeV4iyklAhyLabEc7dmvwMoDTWTlzoTjT9dcAh0mXSC4no787TtfbCR7Fxw==
-X-Received: by 2002:a05:6a21:9218:b0:1ee:cb08:d0a8 with SMTP id adf61e73a8af0-1eef3cb91d7mr19610972637.21.1740332558209;
-        Sun, 23 Feb 2025 09:42:38 -0800 (PST)
-Received: from linuxsimoes.. ([177.21.141.136])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-adb5aa21bbfsm17433834a12.74.2025.02.23.09.42.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Feb 2025 09:42:37 -0800 (PST)
-From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-To: a.hindborg@kernel.org,
-	alex.gaynor@gmail.com,
-	aliceryhl@google.com,
-	apw@canonical.com,
-	arnd@arndb.de,
-	aswinunni01@gmail.com,
-	axboe@kernel.dk,
-	benno.lossin@proton.me,
-	bhelgaas@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	dakr@kernel.org,
-	dwaipayanray1@gmail.com,
-	ethan.twardy@gmail.com,
-	fujita.tomonori@gmail.com,
-	gary@garyguo.net,
-	gregkh@linuxfoundation.org,
-	joe@perches.com,
-	lukas.bulwahn@gmail.com,
-	ojeda@kernel.org,
-	pbonzini@redhat.com,
-	tmgross@umich.edu,
-	walmeida@microsoft.com
-Cc: trintaeoitogc@gmail.com,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH V6 2/2] checkpatch: check format of Vec<String> in modules
-Date: Sun, 23 Feb 2025 14:42:05 -0300
-Message-Id: <20250223174205.48404-3-trintaeoitogc@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250223174205.48404-1-trintaeoitogc@gmail.com>
-References: <20250223174205.48404-1-trintaeoitogc@gmail.com>
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="eHGwCXnx"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 56592496;
+	Sun, 23 Feb 2025 19:02:21 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1740333741;
+	bh=vHoTYqH5kYLdCvoAFtXVHET6Lr3U8dENcUD3HaYCcZA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eHGwCXnxIBw6QRhY2zd1Ly9pL5XvMggWiB/ic03NPfxDJk0V4Lb/Md/lW6Arekk6p
+	 mlDk9Msq7eM41N7Px1H5K0NcWrYHD4RIpvHaXg1aixW2v3uE7kf91/ESk16VfaF39Y
+	 yHilU8aQvTSzkpIq46v2pa/EnC1kDRXfvjRWm+Y0=
+Date: Sun, 23 Feb 2025 20:03:30 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	Christoph Hellwig <hch@infradead.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	rust-for-linux <rust-for-linux@vger.kernel.org>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
+	ksummit@lists.linux.dev
+Subject: Re: Rust kernel policy
+Message-ID: <20250223180330.GC15078@pendragon.ideasonboard.com>
+References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
+ <Z7SwcnUzjZYfuJ4-@infradead.org>
+ <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
+ <Z7bO1jT2onZFZwgH@infradead.org>
+ <CAHk-=wgLbz1Bm8QhmJ4dJGSmTuV5w_R0Gwvg5kHrYr4Ko9dUHQ@mail.gmail.com>
+ <Z7hulnJ4fwslRILy@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <Z7hulnJ4fwslRILy@pollux>
 
-Implement a check to ensure that the author, firmware, and alias fields
-of the module! macro are properly formatted.
+On Fri, Feb 21, 2025 at 01:16:22PM +0100, Danilo Krummrich wrote:
+> On Thu, Feb 20, 2025 at 04:39:58PM -0800, Linus Torvalds wrote:
+> > Honestly, what you have been doing is basically saying "as a DMA
+> > maintainer I control what the DMA code is used for".
+> > 
+> > And that is not how *any* of this works.
+> > 
+> > What's next? Saying that particular drivers can't do DMA, because you
+> > don't like that device, and as a DMA maintainer you control who can
+> > use the DMA code?
+> 
+> [...]
+> 
+> > So let me be very clear: if you as a maintainer feel that you control
+> > who or what can use your code, YOU ARE WRONG.
+> 
+> When I added you to the original thread [1], it was exactly to get some
+> clarification on this specific point.
+> 
+> In my perception, a lot (if not all) of the subsequent discussions evolved
+> around different aspects, while this specific one is not even limited to Rust in
+> the kernel.
+> 
+> Hence, I'm happy to see this clarified from your side; it was still a remaining
+> concern from my side, regardless of whether the PR in question will make it or
+> not.
+> 
+> However, I also want to clarify that I think that maintainers *do* have a veto
+> when it comes to how the API they maintain is used in the kernel. For instance,
+> when an API is abused for things it has not been designed for, which may hurt
+> the kernel as a whole.
 
-* If the array contains more than one value, enforce vertical
-  formatting.
-* If the array contains only one value, it may be formatted on a single
-  line
+I've been thinking this through over the weekend, and I see an elephant
+in the room that makes me feel uncomfortable.
 
-Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
----
- scripts/checkpatch.pl | 43 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+Three important statements have been made on the topic of rust for
+Linux. I'm going to include some quotes below, alongside with how I
+understand them. My understanding may be wrong, please let me know when
+that's the case.
 
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 7b28ad331742..54e1893d13aa 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -2775,6 +2775,9 @@ sub process {
- 	$realcnt = 0;
- 	$linenr = 0;
- 	$fixlinenr = -1;
-+
-+	my %array_parse_module;
-+
- 	foreach my $line (@lines) {
- 		$linenr++;
- 		$fixlinenr++;
-@@ -3567,6 +3570,46 @@ sub process {
- # ignore non-hunk lines and lines being removed
- 		next if (!$hunk_line || $line =~ /^-/);
- 
-+# check if the field is about author, firmware or alias from module! macro and find malformed arrays
-+		my $inline = 0;
-+		my $key = "";
-+		my $add_line = $line =~ /^\+/;
-+
-+		if ($line =~ /\b(authors|alias|firmware)\s*:\s*\[/) {
-+			$inline = 1;
-+			$array_parse_module{$1} = 1;
-+		}
-+
-+		my @keys = keys %array_parse_module;
-+		if (@keys) {
-+			$key = $keys[0];
-+		}
-+
-+		if ($add_line && $key) {
-+			my $herevet = "$here\n" . cat_vet($rawline) . "\n";
-+
-+			my $counter = () = $line =~ /"/g;
-+			my $more_than_one = $counter > 2;
-+			if ($more_than_one) {
-+				WARN("ARRAY_MODULE_MACRO",
-+				     "Prefer each array element on a separate line\n". $herevet);
-+			} elsif ($inline && $line !~ /\]/ && $line !~ /,/ && $line =~ /"/) {
-+				WARN("ARRAY_MODULE_MACRO",
-+				     "Prefer declare ] on the same line\n" . $herevet);
-+			} elsif (!$inline && $line =~ /\]/ && $line =~ /\"/) {
-+				WARN("ARRAY_MODULE_MACRO",
-+				     "Prefer a new line after the last value and before ]\n" . $herevet);
-+			} elsif ($inline && $line =~ /,/ && $line !~ /\]/) {
-+				WARN("ARRAY_MODULE_MACRO",
-+				     "Prefer a new line after [\n" . $herevet);
-+			}
-+		}
-+
-+		#END OF ANALYZE FIELD
-+		if ($line =~ /\]/) {
-+			delete $array_parse_module{$key};
-+		}
-+
- #trailing whitespace
- 		if ($line =~ /^\+.*\015/) {
- 			my $herevet = "$here\n" . cat_vet($rawline) . "\n";
+- No maintainer is forced to deal with rust code at the time being.
+
+  This was mentioned multiple times in different forms, for instance by
+  Miguel in [1] as
+
+  "Some subsystems may decide they do not want to have Rust code for the
+  time being, typically for bandwidth reasons. This is fine and
+  expected."
+
+  or by Linus in [2] as
+
+  > You don't have to like Rust. You don't have to care about it. That's
+  > been made clear pretty much from the very beginning, that nobody is
+  > forced to suddenly have to learn a new language, and that people who
+  > want to work purely on the C side can very much continue to do so.
+
+- No maintainer can (ab)use their power by nacking rust abstractions for
+  the API their maintains.
+
+  This was made clear by Linus in [2]:
+
+  > So let me be very clear: if you as a maintainer feel that you
+  > control who or what can use your code, YOU ARE WRONG.
+
+- Breaking compilation of rust code in a released kernel is not allowed.
+
+  This statement is less clear in my opinion. It's made by Miguel in [1]:
+
+  "The usual kernel policy applies. So, by default, changes should not
+  be introduced if they are known to break the build, including Rust.
+
+  However, exceptionally, for Rust, a subsystem may allow to temporarily
+  break Rust code. The intention is to facilitate friendly adoption of
+  Rust in a subsystem without introducing a burden to existing
+  maintainers who may be working on urgent fixes for the C side. The
+  breakage should nevertheless be fixed as soon as possible, ideally
+  before the breakage reaches Linus."
+
+  The "ideally" in the last sentence is a subtle but important detail.
+
+  Then we had some patches that broke the -next rust build and were
+  dropped from v6.14, as mentionned in [3]. Greg
+
+  > > Regardless of holidays, you seem to be saying that Linus should
+  > > have accepted Andrew's PR and left rust with build failures?
+  >
+  > I can't answer for Linus, sorry.  But a generic "hey, this broke our
+  > working toolchain builds" is something that is much much much
+  > different than "an api changed so I now have to turn off this driver
+  > in my build" issue.
+
+  I haven't found a clear statement from Linus on this topic.
+
+Those three statements can't all be true together, we can at best have
+two. I would like to understand which one we will drop first, and I
+believe many other developers and maintainers are wondering the same.
+
+[1] https://rust-for-linux.com/rust-kernel-policy
+[2] https://lore.kernel.org/all/CAHk-=wgLbz1Bm8QhmJ4dJGSmTuV5w_R0Gwvg5kHrYr4Ko9dUHQ@mail.gmail.com/
+[3] https://lore.kernel.org/all/2025013148-reversal-pessimism-1515@gregkh/
+
+> But as mentioned previously, I do not think that this veto can be justified with
+> personal preference, etc.
+> 
+> - Danilo
+> 
+> [1] https://lore.kernel.org/lkml/Z5qeoqRZKjiR1YAD@pollux/
+
 -- 
-2.34.1
+Regards,
 
+Laurent Pinchart
