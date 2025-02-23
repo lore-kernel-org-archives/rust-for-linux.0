@@ -1,119 +1,107 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F1F2046B1;
-	Sun, 23 Feb 2025 10:55:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED971DB548;
+	Sun, 23 Feb 2025 14:35:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740308114; cv=none; b=OnlZbQyz3QT9i5RIshmUqSZ6fVQrCAWfjH7gaAgIwlUycXKEkMSaMMj5BoVpXYyNwMKcEgdl0xId0qVrQx2wxxdkctQETCCJXHlZR53HTIBshb5x3Z3z4wRyx0lhIppT80ep1AGg87jPtMWWsm+lIuRLYa78eLHjMgNoPLRqPj0=
+	t=1740321341; cv=none; b=rHFGFOq5QieKLSmkZbQdJ7KcsPeQp251iRKfF5a509KecwtKK5CyW4rBk0+niFsZdhwC23inRI9FkNOwOZZxq0RXQOfo0ogkjHgN1/9k4ddsGmrCrAQI22bGU9NEOp03VnVILCRSCUM9AlnI4bBmVB0q0yMEHTrl9jqmZzY6yRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740308114; c=relaxed/simple;
-	bh=q+XKvnoPYXVMw3lt5027W6PxhHtQyOx1spmmaf15AQM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oD38SUKcikReLCCBJssblz7xkrI/x8Jf7iEj4HMqU6Cb8LDYKaXWPAcF/KYh3NcNGXDGS6fQt7am+QaUkOcYLtCQcJIBUwMlk5rN0Bq9hvZqQ4iw9cPQHYgEt96lUn2JhH+CuSifhtOYxuhJXAZ9UX9AO5R/Ay6JcJb04KAZhWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=TIc8+i4n; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="TIc8+i4n"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1740308105; x=1740567305;
-	bh=ftzWwZe5dgJ/2krdr+BnmHjM/Of8UIn31pqhWbkUW0w=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=TIc8+i4nJO4GaclByTGBjPsuhaA1wqdCDfdcFs6d22nhJbCAIDlyvsoA6yvtiS14L
-	 +LQu+NNL6H76fvUJL0IT58ZiOiCPmeY94l55YR8q7ZSY+NcrG+Uo3CJzctLQhfzIoc
-	 MBZZKpWH2KJj+ZihjO9zuJQDjucCgkAF6cVjSm86hs9lonDN9P/Y0rhwbWFfeNk03J
-	 2Ld9HW8CY0UDhElS44ZP1LFiWPEfKFy4AkZWhR5r22xHfDSH2GAGtvPCAudURLcWh6
-	 AYBLsEGfLJND3rneszZDnUDcAQSivOuHR6mMOZBrhlN5mATrsjFtCV4MYNq9flmbq8
-	 sFWx//4ZhNSAQ==
-Date: Sun, 23 Feb 2025 10:54:59 +0000
-To: Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-Subject: Re: [PATCH] rust: sync: lock: Add an example for Guard::lock_ref()
-Message-ID: <f834d8bf-3860-4087-937d-d9937c1be3f2@proton.me>
-In-Reply-To: <20250223072114.3715-1-boqun.feng@gmail.com>
-References: <20250223072114.3715-1-boqun.feng@gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 41ca317b5d80adbd5557b5012302b0a3c5eb8c34
+	s=arc-20240116; t=1740321341; c=relaxed/simple;
+	bh=S/4W+YLqPBFiEMJLqaBlV8vLZnmayjH5UEE/GmTDXs8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=o80eMAaOTnLvVvuPRzH1dKbtA51A+hDJJUn5HPwMibineACgoJTfXk7VTDOPNzcjqtLtbHkTgs59ivuRlaueRKwdmR1T1xn+A/geFZmeQWGIz7KPrrA9CApGrprBJajYjxbu1sz4OZZhdfy90NHXFKSZ4qASxxRa1SdMP7TWmto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com; spf=pass smtp.mailfrom=perches.com; arc=none smtp.client-ip=216.40.44.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perches.com
+Received: from omf10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 85DA2B81D9;
+	Sun, 23 Feb 2025 14:34:42 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf10.hostedemail.com (Postfix) with ESMTPA id 06E672F;
+	Sun, 23 Feb 2025 14:34:35 +0000 (UTC)
+Message-ID: <3ccc3d3e756e82af53b4f75c4ab9cc99e555da1a.camel@perches.com>
+Subject: Re: [PATCH V5 2/2] checkpatch: throw error for malformed arrays
+From: Joe Perches <joe@perches.com>
+To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>,
+ a.hindborg@kernel.org, 	alex.gaynor@gmail.com, aliceryhl@google.com,
+ apw@canonical.com, arnd@arndb.de, 	aswinunni01@gmail.com, axboe@kernel.dk,
+ benno.lossin@proton.me, 	bhelgaas@google.com, bjorn3_gh@protonmail.com,
+ boqun.feng@gmail.com, 	dakr@kernel.org, dwaipayanray1@gmail.com,
+ ethan.twardy@gmail.com, 	fujita.tomonori@gmail.com, gary@garyguo.net,
+ gregkh@linuxfoundation.org, 	lukas.bulwahn@gmail.com, ojeda@kernel.org,
+ pbonzini@redhat.com, tmgross@umich.edu, 	walmeida@microsoft.com
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Sun, 23 Feb 2025 06:34:35 -0800
+In-Reply-To: <20250223002119.2432-3-trintaeoitogc@gmail.com>
+References: <20250223002119.2432-1-trintaeoitogc@gmail.com>
+	 <20250223002119.2432-3-trintaeoitogc@gmail.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: h7z75neheimcbby7aqpuc9hsqhew13ss
+X-Rspamd-Server: rspamout01
+X-Rspamd-Queue-Id: 06E672F
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX1/Uyv2/o6G5DO6f9Ko/Le6bwc4zAd8K2bA=
+X-HE-Tag: 1740321275-503264
+X-HE-Meta: U2FsdGVkX1/56NPq0mWbL0T1zCvh170oWjpbgD9WjUhsFmy+assQ+cqrGuankm2LejnpLxfbjYLpVQGO9S414dH/kNy6WEcC67zyyzeDsqdbtSrdzpZiq9Po4QjKGu6ruBo9isdoUpidFucXaoYOTKzGRldT9eFA/F7lAhkPmzeqJdrBddM/acCYgODZuVQRRzUOVbjDyOmpmj3wYyCmPNaLqJ5VaIXHkAupcfzh6U5pLlTcz72hi7eTspERHmFVc2ev/iGZ+XYUJXZLoyMBUyLIpgX552+o84RfiDD6x6RnqHbqyNrTjE4E2I8q13KM
 
-On 23.02.25 08:21, Boqun Feng wrote:
-> To provide examples on usage of `Guard::lock_ref()` along with the unit
-> test, an "assert a lock is held by a guard" example is added.
->=20
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+On Sat, 2025-02-22 at 21:21 -0300, Guilherme Giacomo Simoes wrote:
+> Implement a check to ensure that the author, firmware, and alias fields
+> of the module! macro are properly formatted.
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Poor email subject.
 
-> ---
-> This depends on Alice's patch:
->=20
-> =09https://lore.kernel.org/all/20250130-guard-get-lock-v1-1-8ed87899920a@=
-google.com/
->=20
-> I'm also OK to fold this in if Alice thinks it's fine.
->=20
->  rust/kernel/sync/lock.rs | 24 ++++++++++++++++++++++++
->  1 file changed, 24 insertions(+)
->=20
-> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-> index 3701fac6ebf6..6d868e35b0a3 100644
-> --- a/rust/kernel/sync/lock.rs
-> +++ b/rust/kernel/sync/lock.rs
-> @@ -201,6 +201,30 @@ unsafe impl<T: Sync + ?Sized, B: Backend> Sync for G=
-uard<'_, T, B> {}
->=20
->  impl<'a, T: ?Sized, B: Backend> Guard<'a, T, B> {
->      /// Returns the lock that this guard originates from.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// The following example shows how to use [`Guard::lock_ref()`] to =
-assert the corresponding
-> +    /// lock is held.
-> +    ///
-> +    /// ```
-> +    /// # use kernel::{new_spinlock, stack_pin_init, sync::lock::{Backen=
-d, Guard, Lock}};
-> +    ///
-> +    /// fn assert_held<T, B: Backend>(guard: &Guard<'_, T, B>, lock: &Lo=
-ck<T, B>) {
-> +    ///     // Address-equal means the same lock.
-> +    ///     assert!(core::ptr::eq(guard.lock_ref(), lock));
-> +    /// }
-> +    ///
-> +    /// // Creates a new lock on stack.
+> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+[]
+> @@ -3567,6 +3570,46 @@ sub process {
+>  # ignore non-hunk lines and lines being removed
+>  		next if (!$hunk_line || $line =3D~ /^-/);
+> =20
+> +# check if the field is about author, firmware or alias from module! mac=
+ro and find malformed arrays
+> +		my $inline =3D 0;
+> +		my $key =3D "";
+> +		my $add_line =3D $line =3D~ /^\+/;
+> +
+> +		if ($line =3D~ /\b(authors|alias|firmware)\s*:\s*\[/) {
+> +			$inline =3D 1;
+> +			$array_parse_module{$1} =3D 1;
+> +		}
+> +
+> +		my @keys =3D keys %array_parse_module;
+> +		if (@keys) {
+> +			$key =3D $keys[0];
+> +		}
+> +
+> +		if ($add_line && $key) {
+> +			my $herevet =3D "$here\n" . cat_vet($rawline) . "\n";
+> +
+> +			my $counter =3D () =3D $line =3D~ /"/g;
+> +			my $more_than_one =3D $counter > 2;
+> +			if ($more_than_one) {
+> +				WARN("ARRAY_MODULE_MACRO",
+> +				     "Prefer each array element on a separate line\n". $herevet);
+> +			} elsif ($inline && $line !~ /\]/ && $line !~ /,/ && $line =3D~ /"/) =
+{
+> +				WARN("ARRAY_MODULE_MACRO",
+> +				     "Prefer declare ] on the same line\n$herevet");
 
-I would be inclined to write "new lock on the stack.", but maybe that is
-incorrect.
+Convert all the messages.  Use consistent style.
 
----
-Cheers,
-Benno
+> +			} elsif (!$inline && $line =3D~ /\]/ && $line =3D~ /\"/) {
+> +				WARN("ARRAY_MODULE_MACRO",
+> +				     "Prefer a new line after the last value and before ]\n" . $here=
+vet);
+> +			} elsif ($inline && $line =3D~ /,/ && $line !~ /\]/) {
+> +				WARN("ARRAY_MODULE_MACRO",
+> +				     "Prefer a new line after [\n$herevet");
 
-> +    /// stack_pin_init!{
-> +    ///     let l =3D new_spinlock!(42)
-> +    /// }
-> +    ///
-> +    /// let g =3D l.lock();
-> +    ///
-> +    /// // `g` originates from `l`.
-> +    /// assert_held(&g, &l);
-> +    /// ```
->      pub fn lock_ref(&self) -> &'a Lock<T, B> {
->          self.lock
->      }
-> --
-> 2.39.5 (Apple Git-154)
->=20
+twice.
 
