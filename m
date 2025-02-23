@@ -1,98 +1,119 @@
-Received: from mailrelay.tugraz.at (mailrelay.tugraz.at [129.27.2.202])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D813161FFE;
-	Sun, 23 Feb 2025 08:11:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.27.2.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F1F2046B1;
+	Sun, 23 Feb 2025 10:55:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740298266; cv=none; b=KyfRU40w9wpluTbFPt3jA8DSdhfh/kuKbUXrRsv7+ef+osZI6WjZZJhgHx+XGmnK4ZnDZetZ+GQE/ulzQ6j9tM5HUbRNNY1MaJG3lFnKKrwCAsRW5GxUfRfgvlAsr26Gj0fLLAGZoIKu/RJD+A88LtC0KGEri3Qwg/ERAE1Qb4M=
+	t=1740308114; cv=none; b=OnlZbQyz3QT9i5RIshmUqSZ6fVQrCAWfjH7gaAgIwlUycXKEkMSaMMj5BoVpXYyNwMKcEgdl0xId0qVrQx2wxxdkctQETCCJXHlZR53HTIBshb5x3Z3z4wRyx0lhIppT80ep1AGg87jPtMWWsm+lIuRLYa78eLHjMgNoPLRqPj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740298266; c=relaxed/simple;
-	bh=FO+ewNzs077bRy2Y7BPoaLABNBn813HrzRSMC+/zC0k=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jH+zAWGSNMzTWzui5KXLtx0k5Y0UoNHEgd8aoWj4/kBu+p/93lkd50lapaAlUIUZ+1WVNqN8mlxb44WiCAU3sejTINfaNhPsXxYiWgFrugzcfVaoaisQITaZuoIeWj1WJwYLkClMm4b6xKBpDrUThTlOFEM1u6X3qEfOteRfvic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at; spf=pass smtp.mailfrom=tugraz.at; dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b=WWaxrVTl; arc=none smtp.client-ip=129.27.2.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tugraz.at
+	s=arc-20240116; t=1740308114; c=relaxed/simple;
+	bh=q+XKvnoPYXVMw3lt5027W6PxhHtQyOx1spmmaf15AQM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oD38SUKcikReLCCBJssblz7xkrI/x8Jf7iEj4HMqU6Cb8LDYKaXWPAcF/KYh3NcNGXDGS6fQt7am+QaUkOcYLtCQcJIBUwMlk5rN0Bq9hvZqQ4iw9cPQHYgEt96lUn2JhH+CuSifhtOYxuhJXAZ9UX9AO5R/Ay6JcJb04KAZhWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=TIc8+i4n; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b="WWaxrVTl"
-Received: from vra-172-163.tugraz.at (vra-172-163.tugraz.at [129.27.172.163])
-	by mailrelay.tugraz.at (Postfix) with ESMTPSA id 4Z0xPt52wlz3wPk;
-	Sun, 23 Feb 2025 09:10:42 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tugraz.at;
-	s=mailrelay; t=1740298243;
-	bh=LMpP0PNtOPYY2TeGglWfTOfZrmn0PHBp00YQa8N0dVk=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=WWaxrVTlShi5aCaXfkcSEkDelV6036VV/oNtbKakqH03VZVZYTc3GFTPaFa99E4el
-	 ZUAraMwFNo4xw9OMfOsfxb1kb3gugsitbKKxS84yJVUcBerX5HOFCJHl4mIdozvyv/
-	 +K9dPq1pzYQ04yJ4MfUZBxhYyD5/PFVg2BotrTHQ=
-Message-ID: <06a07d325f7555c3dc72e4aac90580541ca61697.camel@tugraz.at>
-Subject: Re: Rust kernel policy
-From: Martin Uecker <uecker@tugraz.at>
-To: Piotr =?UTF-8?Q?Mas=C5=82owski?= <piotr@maslowski.xyz>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Boqun Feng <boqun.feng@gmail.com>,
-  "H. Peter Anvin" <hpa@zytor.com>, Miguel Ojeda
- <miguel.ojeda.sandonis@gmail.com>, Christoph Hellwig <hch@infradead.org>,
- rust-for-linux <rust-for-linux@vger.kernel.org>, Linus Torvalds
- <torvalds@linux-foundation.org>, David Airlie <airlied@gmail.com>, 
- linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
-Date: Sun, 23 Feb 2025 09:10:41 +0100
-In-Reply-To: <D7ZDF8NZGPS3.3QBMAVC1NTUDM@maslowski.xyz>
-References: 
-	<CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
-	 <Z7SwcnUzjZYfuJ4-@infradead.org>
-	 <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
-	 <326CC09B-8565-4443-ACC5-045092260677@zytor.com>
-	 <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
-	 <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
-	 <Z7VKW3eul-kGaIT2@Mac.home> <2025021954-flaccid-pucker-f7d9@gregkh>
-	 <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
-	 <2025022024-blooper-rippling-2667@gregkh>
-	 <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
-	 <D7ZDF8NZGPS3.3QBMAVC1NTUDM@maslowski.xyz>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="TIc8+i4n"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1740308105; x=1740567305;
+	bh=ftzWwZe5dgJ/2krdr+BnmHjM/Of8UIn31pqhWbkUW0w=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=TIc8+i4nJO4GaclByTGBjPsuhaA1wqdCDfdcFs6d22nhJbCAIDlyvsoA6yvtiS14L
+	 +LQu+NNL6H76fvUJL0IT58ZiOiCPmeY94l55YR8q7ZSY+NcrG+Uo3CJzctLQhfzIoc
+	 MBZZKpWH2KJj+ZihjO9zuJQDjucCgkAF6cVjSm86hs9lonDN9P/Y0rhwbWFfeNk03J
+	 2Ld9HW8CY0UDhElS44ZP1LFiWPEfKFy4AkZWhR5r22xHfDSH2GAGtvPCAudURLcWh6
+	 AYBLsEGfLJND3rneszZDnUDcAQSivOuHR6mMOZBrhlN5mATrsjFtCV4MYNq9flmbq8
+	 sFWx//4ZhNSAQ==
+Date: Sun, 23 Feb 2025 10:54:59 +0000
+To: Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+Subject: Re: [PATCH] rust: sync: lock: Add an example for Guard::lock_ref()
+Message-ID: <f834d8bf-3860-4087-937d-d9937c1be3f2@proton.me>
+In-Reply-To: <20250223072114.3715-1-boqun.feng@gmail.com>
+References: <20250223072114.3715-1-boqun.feng@gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 41ca317b5d80adbd5557b5012302b0a3c5eb8c34
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-TUG-Backscatter-control: G/VXY7/6zeyuAY/PU2/0qw
-X-Spam-Scanner: SpamAssassin 3.003001 
-X-Spam-Score-relay: 0.0
-X-Scanned-By: MIMEDefang 2.74 on 129.27.10.116
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Am Sonntag, dem 23.02.2025 um 00:42 +0100 schrieb Piotr Mas=C5=82owski:
-> On Thu Feb 20, 2025 at 9:57 AM CET, Martin Uecker wrote:
-...
+On 23.02.25 08:21, Boqun Feng wrote:
+> To provide examples on usage of `Guard::lock_ref()` along with the unit
+> test, an "assert a lock is held by a guard" example is added.
 >=20
-> Oh, and once again: I am sure you knew all of this. It's just that a lot
-> of people reading these threads think adding a few annotations here and
-> there will be enough to achieve a similar level of safety | robustness
-> as what newly-designed languages can offer.
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 
-I have been looking at programming languages, safety,=C2=A0
-and type theory for a long time, even before Rust existed.
-I heard all these arguments and I do not believe that we=C2=A0
-need (or should use) a newly-designed language.
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
-(Of course, adding annotations would not usually be enough,
-one often would have to refactor the code a bit, but if
-it is already well designed, not too much)
+> ---
+> This depends on Alice's patch:
+>=20
+> =09https://lore.kernel.org/all/20250130-guard-get-lock-v1-1-8ed87899920a@=
+google.com/
+>=20
+> I'm also OK to fold this in if Alice thinks it's fine.
+>=20
+>  rust/kernel/sync/lock.rs | 24 ++++++++++++++++++++++++
+>  1 file changed, 24 insertions(+)
+>=20
+> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> index 3701fac6ebf6..6d868e35b0a3 100644
+> --- a/rust/kernel/sync/lock.rs
+> +++ b/rust/kernel/sync/lock.rs
+> @@ -201,6 +201,30 @@ unsafe impl<T: Sync + ?Sized, B: Backend> Sync for G=
+uard<'_, T, B> {}
+>=20
+>  impl<'a, T: ?Sized, B: Backend> Guard<'a, T, B> {
+>      /// Returns the lock that this guard originates from.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// The following example shows how to use [`Guard::lock_ref()`] to =
+assert the corresponding
+> +    /// lock is held.
+> +    ///
+> +    /// ```
+> +    /// # use kernel::{new_spinlock, stack_pin_init, sync::lock::{Backen=
+d, Guard, Lock}};
+> +    ///
+> +    /// fn assert_held<T, B: Backend>(guard: &Guard<'_, T, B>, lock: &Lo=
+ck<T, B>) {
+> +    ///     // Address-equal means the same lock.
+> +    ///     assert!(core::ptr::eq(guard.lock_ref(), lock));
+> +    /// }
+> +    ///
+> +    /// // Creates a new lock on stack.
 
-But while I would love discussing this more, I do not=C2=A0
-think this is the right place for these discussion nor
-would it be insightful in the current situation.
+I would be inclined to write "new lock on the stack.", but maybe that is
+incorrect.
 
-In any case, there is so much existing C code that
-it should be clear that we also have to do something
-about it.  So I do not think the question is even that
-relevant.=20
+---
+Cheers,
+Benno
 
-
-Martin
-
-
+> +    /// stack_pin_init!{
+> +    ///     let l =3D new_spinlock!(42)
+> +    /// }
+> +    ///
+> +    /// let g =3D l.lock();
+> +    ///
+> +    /// // `g` originates from `l`.
+> +    /// assert_held(&g, &l);
+> +    /// ```
+>      pub fn lock_ref(&self) -> &'a Lock<T, B> {
+>          self.lock
+>      }
+> --
+> 2.39.5 (Apple Git-154)
+>=20
 
