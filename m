@@ -1,92 +1,97 @@
-Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70A03FBB3;
-	Mon, 24 Feb 2025 13:51:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FD447CF16;
+	Mon, 24 Feb 2025 14:23:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740405064; cv=none; b=tAsWAFUqAMgSIgeCSfbzrGigXb5UY5MwZ/yw9uvjYgHcwSyHhA1HdB85vgntiq11w5rlkf6X4C643IbtOtWlevdZ3275CSMAQyoVqHoPFoCp0iCOLv0PVpvkK8kdsB5vyBsfoMk7OX4zOZO/uHKgpYHmub3pR7t2vtgIDQ6DRTs=
+	t=1740407037; cv=none; b=EW4olFgj2zokSor4Nw4f6qBUtlQVMJH0aX6Ob5EE7F+6/bbOrSk1X2/XEqEHgakbl1+IYYuoHSB9Mnk449Rrfp197VMMIbFCOIAz1gHhG+HNCsYXtmRWhF2soEglFcFdmIZlmaOjIFy7C0sKXyZFeWTFyhYl8kCbqtbu4v3QbpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740405064; c=relaxed/simple;
-	bh=9RDuIIDDoRX3iUwz/B6eYJZ3G8+IPjNTeRWnefHxkUw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Oz6V04Yahp+R9+1TSZj+E2yabxfmlpxJnk1hCh53Gz6PEcskySrY7Uve84Dq0AEjopfbJYantDAU62dW9q82+5+9JQW3U/LNQzs4OolM502HpRuKi+mL4pwuX2m0t4HQ9oH6TG+isTTGq07vC2ADQ3nurIjwtLemPZe1h1TAFmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=EYmG3eqn; arc=none smtp.client-ip=49.12.72.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
+	s=arc-20240116; t=1740407037; c=relaxed/simple;
+	bh=E2lAPAZ2LYqRrh+gSq4+glJVFwMQxQGVoWqwBtpJP1U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R46SYFWpQ1n5T+ww+Ky0Wqe/tkS8fyVNUAO4q/hfx1SoGzy8SgOmiHLp2SDtjYBj1dtsuluQ4veGrCxjSsRVoDA6Z5qfuOnmJX+GP6Tzr6wwVYe+uvKWa8yg792IKR/nt6E6d9lNWveYGvyXtSLusb66QATsmvSO2gNxXC2Nixc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=YrVCLYDY; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="EYmG3eqn"
-From: Fiona Behrens <me@kloenk.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1740405052; bh=GoyOgU4F8MJF8xBQLwzVC2scpgFAnMUGWJKmA0XPqNw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=EYmG3eqnM4MCQ0hLO2jgmWLWjqkqd00n6N6mN7raLyGsb/UFfbcyOO5mMQ/PIPf+z
-	 l/XQMWRzSY1FO4WSPtodgX95I3F4KIonw8h3eM7Nb7i3CaVAOXrc4qSYyCIYKgyLRs
-	 GFqMGgPIBwl5fdpk+qDGDgi8qJsISOryviETc/4I=
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
-  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,
-  =?utf-8?Q?Bj=C3=B6rn?=
- Roy Baron <bjorn3_gh@protonmail.com>,  Benno Lossin
- <benno.lossin@proton.me>,  Alice Ryhl <aliceryhl@google.com>,  Trevor
- Gross <tmgross@umich.edu>,  Masahiro Yamada <masahiroy@kernel.org>,
-  Nathan Chancellor <nathan@kernel.org>,  Nicolas Schier
- <nicolas@fjasle.eu>,  Luis Chamberlain <mcgrof@kernel.org>,
-  rust-for-linux@vger.kernel.org,  linux-kernel@vger.kernel.org,  Adam
- Bratschi-Kaye <ark.email@gmail.com>,  linux-kbuild@vger.kernel.org,  Petr
- Pavlu <petr.pavlu@suse.com>,  Sami Tolvanen <samitolvanen@google.com>,
-  Daniel Gomez <da.gomez@samsung.com>,  Simona Vetter
- <simona.vetter@ffwll.ch>,  Greg KH <gregkh@linuxfoundation.org>,
-  linux-modules@vger.kernel.org
-Subject: Re: [PATCH v7 2/6] rust: str: implement `Index` for `BStr`
-In-Reply-To: <20250218-module-params-v3-v7-2-5e1afabcac1b@kernel.org> (Andreas
-	Hindborg's message of "Tue, 18 Feb 2025 14:00:44 +0100")
-References: <20250218-module-params-v3-v7-0-5e1afabcac1b@kernel.org>
-	<20250218-module-params-v3-v7-2-5e1afabcac1b@kernel.org>
-Date: Mon, 24 Feb 2025 14:50:51 +0100
-Message-ID: <87y0xvpi2s.fsf@kloenk.dev>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="YrVCLYDY"
+Received: from hm-sls2.lan (unknown [142.114.216.132])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 34285203CDDE;
+	Mon, 24 Feb 2025 06:23:48 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 34285203CDDE
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1740407029;
+	bh=s6W1mOT343rnBx7peL+teMTPd68LRu36Duj+5rUo2os=;
+	h=From:To:Cc:Subject:Date:From;
+	b=YrVCLYDYjeN2WKG5EXpSQvQGwBsDFvl+phqCiXab0dXi6QJbv9Eo7k2TFRix06b9c
+	 3usHzj0UShjcXVe5tL9iwR+YfCY11TXrwkJ/owHCu8D++eENcBT11Ad4FcrKtu7vuW
+	 oWPKIs1hQYCiAd/MW3LcitkhjhbSkpRnFeeSAaIU=
+From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+To: rust-for-linux@vger.kernel.org
+Cc: Tejun Heo <tj@kernel.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Wedson Almeida Filho <walmeida@microsoft.com>,
+	Dirk Behme <dirk.behme@gmail.com>,
+	Konstantin Andrikopoulos <kernel@mandragore.io>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Roland Xu <mu001999@outlook.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] rust: workqueue: define built-in bh queues
+Date: Mon, 24 Feb 2025 09:23:23 -0500
+Message-ID: <20250224142326.38396-1-hamzamahfooz@linux.microsoft.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-Andreas Hindborg <a.hindborg@kernel.org> writes:
+Provide safe getters to the system bh work queues. They will be used
+to reimplement the Hyper-V VMBus in rust.
 
-> The `Index` implementation on `BStr` was lost when we switched `BStr` from
-> a type alias of `[u8]` to a newtype. This patch adds back `Index` by
-> implementing `Index` for `BStr` when `Index` would be implemented for
-> `[u8]`.
->
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+---
+v2: make the commit message suck less.
+---
+ rust/kernel/workqueue.rs | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-Reviewed-by: Fiona Behrens <me@kloenk.dev>
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index 0cd100d2aefb..68ce70d94f2d 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -703,3 +703,21 @@ pub fn system_freezable_power_efficient() -> &'static Queue {
+     // SAFETY: `system_freezable_power_efficient_wq` is a C global, always available.
+     unsafe { Queue::from_raw(bindings::system_freezable_power_efficient_wq) }
+ }
++
++/// Returns the system bottom halves work queue (`system_bh_wq`).
++///
++/// It is similar to the one returned by [`system`] but for work items which
++/// need to run from a softirq context.
++pub fn system_bh() -> &'static Queue {
++    // SAFETY: `system_bh_wq` is a C global, always available.
++    unsafe { Queue::from_raw(bindings::system_bh_wq) }
++}
++
++/// Returns the system bottom halves high-priority work queue (`system_bh_highpri_wq`).
++///
++/// It is similar to the one returned by [`system_bh`] but for work items which
++/// require higher scheduling priority.
++pub fn system_bh_highpri() -> &'static Queue {
++    // SAFETY: `system_bh_highpri_wq` is a C global, always available.
++    unsafe { Queue::from_raw(bindings::system_bh_highpri_wq) }
++}
+-- 
+2.47.1
 
-> ---
->  rust/kernel/str.rs | 11 +++++++++++
->  1 file changed, 11 insertions(+)
->
-> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-> index 002dcddf7c768..ba6b1a5c4f99d 100644
-> --- a/rust/kernel/str.rs
-> +++ b/rust/kernel/str.rs
-> @@ -114,6 +114,17 @@ fn eq(&self, other: &Self) -> bool {
->      }
->  }
->  
-> +impl<Idx> Index<Idx> for BStr
-> +where
-> +    [u8]: Index<Idx, Output = [u8]>,
-> +{
-> +    type Output = Self;
-> +
-> +    fn index(&self, index: Idx) -> &Self::Output {
-> +        BStr::from_bytes(&self.0[index])
-> +    }
-> +}
-> +
->  /// Creates a new [`BStr`] from a string literal.
->  ///
->  /// `b_str!` converts the supplied string literal to byte string, so non-ASCII
