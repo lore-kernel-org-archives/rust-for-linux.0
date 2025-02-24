@@ -1,126 +1,105 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09B42747B;
-	Mon, 24 Feb 2025 01:40:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD63EEA8
+	for <rust-for-linux@vger.kernel.org>; Mon, 24 Feb 2025 05:14:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740361238; cv=none; b=Q+1KZOjXQqn7cuP8MIzrcLzoojZvWBrVk5RxBDAziICIMDwADYjmJEHKaSGc0U7YKfPt6Spkwy72+DdJ+XHGJyAsur66kb8W0ZGFu0GOoaT4DyoS3UtsFGWwmlrelatJK2tI8VuXGvlb4F8JZxwed7tKCMKxHRKj6o5COSwTQDQ=
+	t=1740374049; cv=none; b=sh8IeM5hsMey6KnIk/B8BQAAiv/9xEc3rYubl1ayc8yIIncTb0SwKm4Fy142JPK+YIz/v9BMowMb3t6g1/8TYxBUJQ3IJqEnJWjAC8vCpACvAz/AJu+VNdeVJqQawQ2MDNQnQaLUCgKPTLZOjkcIUFwM+dD64iUAd1tWvdJivm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740361238; c=relaxed/simple;
-	bh=3IUTZmFWM7/bE7zsQEmlvs6HW+7+545qgn3Ky5CMvnc=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=CjMMMpj3J2kJXGZe6OiC5/FfGg6wymioctnp2haVEBJkuXbXlMtO1Rb/D8MBOge9dtqq2vjN4pyBArcgwQ2B/+Webt9ynptCOHfJbSNwKQ7luXiV9i8GzxKvx53Ukr3onUs++N29K4S6kkxNDAXwJKNEC86DH27PjzxFs78CbVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZmOWCz1f; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740374049; c=relaxed/simple;
+	bh=cxSQuQQtbQOCfR6+umVvSr7i7TkqT67zGAdQTxDz4gE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KSue8x24hOmxrsZZjI5+ozAjG3/CSfm3wScR/boBcYIhHMaF41tAG02w157EGDgIkAIIKasC9sxTDZi30+XL0iIMDgwsnrG+C/YmL8fiQwdOkmL84vhsUYmbdUxQTvrF5He7Ig8+NBV1uJDq8UmDRjYAbQnOgO1qOlpucmoXoSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XefuTDvg; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZmOWCz1f"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2fbfe16cc39so7815052a91.3;
-        Sun, 23 Feb 2025 17:40:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XefuTDvg"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2fcf3a69c3cso3215506a91.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 23 Feb 2025 21:14:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740361236; x=1740966036; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=P4iFAlpXooA80lhqQNHi8N3JDWtHvtfY51ovaQDKNWA=;
-        b=ZmOWCz1fxIDPKbPgB7IW8XPVuS0uKKHaGrGgzbCvgYQftG2cnUC0OCp/XJ/3rdRBbl
-         fRuT65AnHLpBim6KR0epdgPnyighyHskBSsGUJrHbRTfoE2l/huI/hSvCnIr780pVNon
-         YL5JeAOqyyjn+XLTFLTAX5VXXxnFjkV3Ywl5zMhDw4hQOQv+q/lxpRI8sJO+4K5O1aXc
-         ystkkFNDlTmf206Qhve7NApA5IPQSIRCchAU9I/GN1YjNohVG4GduMTAjFVUoNPZy8Sd
-         mPlfHfGPPr7s4M5VtkQ1iSn6cdiI1JhTIcL5mF22ohDCV9gWn4K0RSXXvM54DyvM/Tr0
-         Ox+w==
+        d=linaro.org; s=google; t=1740374047; x=1740978847; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+joD/tYf7d881SCRKiox9DoLZN0Dh3msjbOhq+t3e2c=;
+        b=XefuTDvgkxfT5r/jEba2bPNa9ZbIBvu8r27O/lGhKRM4cbc6Zrs1/RnhnIkIp5//8b
+         Ft9n38+xgCzKVuAT871Xgj3drLI49JRJAyYyLbzm9XVSHeo5pGGK1lacSaJY1G6cnqZe
+         vCDOS3e2j5f8AV9pbr8fVLdth7+vlFVtPjLpd3TOAi6161TBL4YhR4Li/z8cBqtYot7s
+         dgtRMeEIzXTML0LnZp9ugyxmPiBCN+EVeaKjqx8kvGrnI2KPN8m/LFK8idb4DeaphcDM
+         uuflKyGkRaTZVtdLGxj8w3Rbh5h8QOebtmgJc2rC9uF1IJ8eEtrhMhqVEjINNs8sE2dp
+         JnTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740361236; x=1740966036;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=P4iFAlpXooA80lhqQNHi8N3JDWtHvtfY51ovaQDKNWA=;
-        b=gosGJvr3s7hhyc80hOn1VxPbUZT1ipw1D80EO/pMJ0QvN/NJJzrUORa3S+glqzrNPd
-         cADrMbnzdepVZOnp6WLxHF7dR8LLnYDWZ4YjxwcuGP8B5U/SQBMBjt9L6ogkDR8Ivh8Y
-         nKgJSqOj7qWcWiqCF0ij5YE/0ylnbCG7hds99Hb7DEULrTxTGwg6mqbY/0C+HlGFOXPm
-         ATWfiQ1tAInhI3Qvgtw8FE38tNQtknU903XaUl8PaNSjbulB/X0tkkoNetJHSg7v6OEF
-         jHKoz7ONUVRXKyOGu/uythpciXPxoyaHwWzpxPnCFCl31yf8lnfsDJcyIZfDKA0PK4F3
-         +H3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWBOqXEKHpLxo87+Yy+MPJTp+gd9AzjwGLvuyQwxR5w24KKrcSRP6g7VQVbxULWYDjfYTO4bfla1bgTuj0VRLM=@vger.kernel.org, AJvYcCX2IkMwpVu903iezfnD0esOZcfapN5ahX+t0J22yJU1hx/3wiHXckwC7MlaMCcXXDP/4JNhcmc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwbLuJ6hj+vWf0P+aEk5u402CJUdQiRR1DJbukAP259f5QDV9z8
-	iPSHX3HA7bQX5X1bzPbAj+sQHRrKU68/4UMxjZ+tjCHNEYyVoJn0
-X-Gm-Gg: ASbGncuWRTP5Suj8Pdi4649VtAuXECLFbeqrJvGgQIRkTbyAKY6rt+VyeIOpRh/0Bkd
-	mG0r7fkLwAbVkjeSmezcbdmIBdRSi3i51ZOftr7OlGbFdArhoilOZtivRi6zo11uMkNDGQ5cpnU
-	qPnroYIA1wzDdEIzS09tMFDlSUFzvq0t7PXrY+Uj/kQhmKhamLW686uSf3rCSnrmIaTV8xSI04n
-	yCtiptpk4h+ITd59FvjKGBJ6DvHdwACMt4mCiIBY0sonn4ORshbIk2ynZSZk6ibqOdYZT6ZRkmj
-	I7HGd5sFAztXaILwabC0U/vHqu9BB3HzL4pGfCg9oe/+hCTnq9Q3Pp5WTSPn/mphvzQl3zyj+6Y
-	GxAB7aEg=
-X-Google-Smtp-Source: AGHT+IHZ03r/R6ZSzFCsSoO99TzAkfJFcDQZ64v+Ptlgu3TSFxuhkakn95yNTkit3rWqPwXFA4Y2lg==
-X-Received: by 2002:a17:90b:3807:b0:2ee:d63f:d71 with SMTP id 98e67ed59e1d1-2fce86ae672mr22731055a91.14.1740361235981;
-        Sun, 23 Feb 2025 17:40:35 -0800 (PST)
-Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-220d5596394sm170286095ad.250.2025.02.23.17.40.28
+        d=1e100.net; s=20230601; t=1740374047; x=1740978847;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+joD/tYf7d881SCRKiox9DoLZN0Dh3msjbOhq+t3e2c=;
+        b=ITCexW8AbZ1k0OgVQaB+Qb6I5yo5D3zbQL0DkiuU0bj0fyylptH9LcQy2wVDjUYOAQ
+         9X/mQ6mXttDYgiuyUQUHP+kFS+zC28xD8Cj+9JG576sFTv00jTeEPx9pF0AJUUVuj8ds
+         tg4/ytUZLFNQxI0DLKQZ3IUFFnrNSqc4+56BOAjRuhGYQwqjw4AJ+rFfHHjyq4bHKTgc
+         yQWD4oz4Ansvc1ydnJ+VQ7QBsTpMGdiKmg/6UHiXBqdgJgtNXcLbqxD/PeGlkX2pW7tn
+         Uz95u2y/8WjhMvibabAcq2cfujWGWyRwlVahmKs4VZ44tB+uU8MV+Q8X/vEuFtcItpwR
+         4sdg==
+X-Forwarded-Encrypted: i=1; AJvYcCVXESmNkOeoqr9y8kbLDmBx4sNbDXkTUQ3OrHfxIv2UmDvK0NojFoVtUNmryTpXPNvIapiYqbfwCf2bSH4UhA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWqSlfnxGsIc8gWMUqziuKE1KO4VdeXFJo7bK20uXv12QkSURr
+	6+FO6itQQPpNG8YRSYV8Vosmbl457zxzxsVYzoQvw2uXJ8X7zYM0z8V2DFyzuew=
+X-Gm-Gg: ASbGncvQ9q1G4nJYcUcmVrWa2PHkaW9g6S5w9iOcGI5Hr4k5Eu8ebpw6L33ilMQ0H1n
+	qL87/423rKnyKrMmcow2m8Ir6Six09f5CmAUpgyw/fClZpk2mXcN5rjVkDYYCpgs0MmymVY3ju7
+	uCJVGz1ehyWwx2AC66EZmQcJozFVCAoEQxIjvPFnQE1aw9r/O2uYcdxqourbYSCbGynkaJ77ID5
+	jluvndnR8HmhpGqQq8XLRq/LRWpJ2Eq89QpmLj5IuDAxt3dMBZ2S7mLMLc1t9jT23DfDdTUr+y7
+	ZpvmcX7NVIsN8xNOebseDogO1Ns=
+X-Google-Smtp-Source: AGHT+IG0b6emkD0CmhSV1QNXb4HVeu5MkvIkiNO02AEPBxGCijtAK2X6heTwZs19Vt7813cTnGENng==
+X-Received: by 2002:a05:6a20:6a0b:b0:1e1:ad39:cc5c with SMTP id adf61e73a8af0-1eef3c7718dmr22515662637.14.1740374046890;
+        Sun, 23 Feb 2025 21:14:06 -0800 (PST)
+Received: from localhost ([122.172.84.15])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-adb57c5dee4sm18114799a12.14.2025.02.23.21.14.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Feb 2025 17:40:35 -0800 (PST)
-Date: Mon, 24 Feb 2025 10:40:25 +0900 (JST)
-Message-Id: <20250224.104025.43839253856223839.fujita.tomonori@gmail.com>
-To: mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
- vincent.guittot@linaro.org
-Cc: linux-kernel@vger.kernel.org, daniel.almeida@collabora.com,
- aliceryhl@google.com, boqun.feng@gmail.com,
- rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, andrew@lunn.ch,
- hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
- alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- benno.lossin@proton.me, a.hindborg@samsung.com, anna-maria@linutronix.de,
- frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de,
- jstultz@google.com, sboyd@kernel.org, dietmar.eggemann@arm.com,
- rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
- vschneid@redhat.com, tgunders@redhat.com, me@kloenk.dev,
- david.laight.linux@gmail.com
-Subject: Re: [PATCH v11 1/8] sched/core: Add __might_sleep_precision()
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <20250220070611.214262-2-fujita.tomonori@gmail.com>
-References: <20250220070611.214262-1-fujita.tomonori@gmail.com>
-	<20250220070611.214262-2-fujita.tomonori@gmail.com>
+        Sun, 23 Feb 2025 21:14:06 -0800 (PST)
+Date: Mon, 24 Feb 2025 10:44:03 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Yury Norov <yury.norov@gmail.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Danilo Krummrich <dakr@redhat.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+	Erik Schilling <erik.schilling@linaro.org>,
+	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
+	Christoph Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>, linux-pm@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] MAINTAINERS: add rust bindings entry for bitmap API
+Message-ID: <20250224051403.k2x6deccboytjcjw@vireshk-i7>
+References: <20250221205649.141305-1-yury.norov@gmail.com>
+ <20250221205649.141305-3-yury.norov@gmail.com>
+ <CANiq72=ctKoDz+Kf7UFBTD-oF17cTHBcrkNN_5cqxQeK609OVA@mail.gmail.com>
+ <Z7pfBoXDoH5x-MEq@thinkpad>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z7pfBoXDoH5x-MEq@thinkpad>
 
-On Thu, 20 Feb 2025 16:06:03 +0900
-FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
+On 22-02-25, 18:34, Yury Norov wrote:
+> I think rust developers need similar guarantees form rust maintainers:
+> there will be a rust engineer who will keep the bindings on rust side in
+> a good shape. Viresh, as per my understanding, has committed on that.
 
-> Add __might_sleep_precision(), Rust friendly version of
-> __might_sleep(), which takes a pointer to a string with the length
-> instead of a null-terminated string.
-> 
-> Rust's core::panic::Location::file(), which gives the file name of a
-> caller, doesn't provide a null-terminated
-> string. __might_sleep_precision() uses a precision specifier in the
-> printk format, which specifies the length of a string; a string
-> doesn't need to be a null-terminated.
-> 
-> Modify __might_sleep() to call __might_sleep_precision() but the
-> impact should be negligible. When printing the error (sleeping
-> function called from invalid context), the precision string format is
-> used instead of the simple string format; the precision specifies the
-> the maximum length of the displayed string.
-> 
-> Note that Location::file() providing a null-terminated string for
-> better C interoperability is under discussion [1].
-> 
-> [1]: https://github.com/rust-lang/libs-team/issues/466
-> 
-> Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> ---
->  include/linux/kernel.h |  2 ++
->  kernel/sched/core.c    | 61 +++++++++++++++++++++++++++---------------
->  2 files changed, 42 insertions(+), 21 deletions(-)
+Yes.
 
-SCHEDULER maintainers,
-
-Can I get an ack for this? Or you prefer a different approach?
+-- 
+viresh
