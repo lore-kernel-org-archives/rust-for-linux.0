@@ -1,121 +1,103 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E2524A053
-	for <rust-for-linux@vger.kernel.org>; Mon, 24 Feb 2025 09:59:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B777F18C924;
+	Mon, 24 Feb 2025 10:06:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740391199; cv=none; b=CFNYUy92WtM3Katvxg7PJrhDDK3R2zIB6SiMXKOUAOy+jtagExQ1Kd8ivvuHbTATQN2tClG1TurVlrEJB9ZYbAt3A1ZBQqtkXSDVPQdvbIUYn57ZU36sdrKxhgHkqDhrh5i2p9NgRFPvq0g7ooSTEp4BQUrZ9KUJry0BnaqaMwE=
+	t=1740391608; cv=none; b=BWMcsKCYB8Buzb/x9SKBWfh7qPCHUnfpfmPoAY7FLtCgsgFLoI7Jpt542rVqhRFAjk9sjxAPUNN6kjHRZSzMstbSRp1ezEF1PmLHEk8h8XMtN/gmzGgO3bfjYIOumE9doiUwCEWq/TPGkRm6e3ufuUpBgrthlB0gphKFQ0hE/CQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740391199; c=relaxed/simple;
-	bh=gkcWo6CbuipnuwBWmiERHV9pRVv4+yAvrJkF5cLVnqo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GE2KoUTT7R2O4QKG9v1C3Pln9zSU5qSJz0TeqtApM0D96QPx3Kmzp55qjueFwWltKhgevDwv+b8EEu7jzz7c4zvu0k2UsPZ/FxRB+31S7AHQjXEBdMRKOMvJ9xOo6yvwH81HZ1STHGky5P0x+GEVDU29JuuHyso3u31YVM3w8FQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xmfp9WQS; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1740391608; c=relaxed/simple;
+	bh=iG0pOq7skTua110Kfdnnzrm6EfHdFkinT2pLrXudrJg=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kz3pdejsTdF2jTMRKGA3AO6xxfjXOGHGEjpG1XYuzWml21SyHCeyGCw2QKeQgh/FFyWJbYzHp0GIRQNGPWCVxktzHgo757TBjt4g8kcBqXWiAnssKTEbrWxMQ16LDgbt4Tki/nYmUnekDL22aQhJ8DtGvWmZ59Hcblce08xtuE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=nsh21lt8; arc=none smtp.client-ip=185.70.40.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xmfp9WQS"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2fcce9bb0ecso8222926a91.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 24 Feb 2025 01:59:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1740391197; x=1740995997; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5m/misXjt0Q5BUlaADzuQsIymnQ6d4dUSOqiq4YJRiI=;
-        b=xmfp9WQSnKiUHR/OQ9XeMlpxl/W8kLoEFW24Zc1zxPooalMafc5nahHvVIwhB0hpGJ
-         klpdF+2aOotaZoA4ycsOTXN7pECOh3qEWvE+usSXy6e9vYUWwyFd+UJz1zy2A+uKXaaa
-         jTUJhLp2zh6GjhhtgfLShWG0zrZdNRxncvm9w7tgy7EkojPD0rtpjAvVYMZkLVzN7zWd
-         gp0UC4IhgOFz2dBNali8fAUayQMUVRzNYQz9vWrSHQ7LSI3c4C02bFmwXHfXxoH1tiof
-         LSOx5eJZodjKuFtVufo0PUKDfet5K18E6dtyJp4rG9WlHvXU3zGnpWh83NaplXszcF/9
-         H4MQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740391197; x=1740995997;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5m/misXjt0Q5BUlaADzuQsIymnQ6d4dUSOqiq4YJRiI=;
-        b=fQmWN1jC/MdHvBwTojBg4iNha1QSbu6nZJvhApH/kNCwn7B9GOXLaM3vnUrgRsaqfM
-         YJUkMwqk4wuvr2Nq5dLrgMBKCL2h3WZ0M09bbm7fAP1j4EJGsLUfpi5kCIjxeZPRrM2L
-         sbbvsDZWXgEw/dRwZBOvJFaUCymqTJK2qyMhLkXBcHOxV0uDQoWO4i6j2jyNknCHVml3
-         ye5DJ7t+HxsogiVCYm6VfxxZpXckx6gxb2a8E1sOY4jOW2PEcxt0NCMmuCiaVt1PJQnb
-         5Wb+OFYWDtu+c1Jn7PThKY5CpdOQ3dMbTDtdlxhB5MhQFu8roLuLIDAVcwpB7SXETkJk
-         UT9w==
-X-Forwarded-Encrypted: i=1; AJvYcCUAIvi+2Ewv7DxHzQhWhPmeJ84c5wQ6V9XOJlD1iCtvpKOZJDKu7MiXSaxiRDbnD3201I2sq5seUNcZlAiFxA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9Jvf6VJYivFNNkFXYSWK4iSdDnmEq3KF+lXW5u8D2A4QMWJn5
-	sikJyYzPKO61Jk+WRwHMLAYuD21nURTh7TO7ajy1rs/cj3A/CYnx5KIKhMGfg9I=
-X-Gm-Gg: ASbGncuLkaX4UZYf8l7e+J2rHQzKIc07nDiMdeWVcjhBKbOkZXieMlhtN5R6eGCq0XR
-	e8QsWGxgqcutsI3Q4yBEy5bU4PCno8Xsnli4w4yHgKo2cs6zGRlBhr0e4qyE1hEpkPi2ko3fQiP
-	A45k4fjfIVIRiYQZ+2TM+slt6dw8WWoL7sQ9DVFg0ZYLotcAuC4i5l/07skTJpphuUYa1OqpdCk
-	ntfBJ1kgD2Wa4xKPbkBEz6FLURKHwH3T2cNj2g8zn8fBiNWlysmx+NJMMV+2tpvtc7Moin3jo18
-	re2EOfu0Sw9R3hi6ZbzYGn8lYSs=
-X-Google-Smtp-Source: AGHT+IFGXKt2Ne+312FHQKlsxHl1O51sDX7kIoA6jMtZwlTfC7DlPo6BokxDsPaa+yv/IacOx2QUMw==
-X-Received: by 2002:a17:90b:2644:b0:2fa:d95:4501 with SMTP id 98e67ed59e1d1-2fce78c90damr24754674a91.18.1740391196814;
-        Mon, 24 Feb 2025 01:59:56 -0800 (PST)
-Received: from localhost ([122.172.84.15])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fceb10fb5bsm6054636a91.33.2025.02.24.01.59.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Feb 2025 01:59:55 -0800 (PST)
-Date: Mon, 24 Feb 2025 15:29:45 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Rob Herring <robh@kernel.org>
-Cc: Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Russell King <linux@armlinux.org.uk>, linux-clk@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH V2 2/2] rust: Add basic bindings for clk APIs
-Message-ID: <20250224095945.xjcjwkoqlgcsd2np@vireshk-i7>
-References: <cover.1740118863.git.viresh.kumar@linaro.org>
- <a0a1ba4e27c3a0d9e38c677611eb88027e463287.1740118863.git.viresh.kumar@linaro.org>
- <Z7iGHiQcqa-_AXli@pollux>
- <4AD8A8F3-EA7E-4FBE-9F0D-58CF7BB09ED5@collabora.com>
- <Z7iSHR0F2QpiNpMZ@pollux>
- <aoprvojsnmkbzmmpgx5wxjqtamnr3jyhyqfcqnwhxulp34gn32@aau57u4cotpe>
- <20250221215931.GA134397-robh@kernel.org>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="nsh21lt8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=2eggbcunrrgmnef7zk3fuhzcjm.protonmail; t=1740391598; x=1740650798;
+	bh=yBthN9NjWnE1WZ5jO+aZCi8NljUP2Ml09wtArQ+KDzo=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=nsh21lt8d3j7AJIXOZnv+HKf4AQPP/Vc7IlakTcJqfMcvosWTSHoPpTbRCNXEs2A4
+	 WjEuUJVyrU5JuWPhINhN5X2aGFiJPHVVRThVHuY8z4C2y5wo8ET4wtjOybHhBH6cK2
+	 3iGFm0UeBVnwIxo0cSGZD34k+gTBXJADsqo0+8B+C/+wBp+/A7AmYYeEH6FaHrSK75
+	 C4ImrW4UIrngBwlV446UQPh1WeBaXJZNMrA2Kjec0MKjDxVARAP3IQcKyrCGiuDkXK
+	 VLWou/x84rtjBZakA95Gs/hQEcpCDbq3KSeDxzuU1srKMLzCMe7AVe0a1xQmWDLXBS
+	 sa8+OfgWA829Q==
+Date: Mon, 24 Feb 2025 10:06:35 +0000
+To: Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun.feng@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+Subject: Re: [PATCH] rust: sync: lock: Add an example for Guard::lock_ref()
+Message-ID: <304505cb-9f68-4d34-b4f1-7d703baba012@proton.me>
+In-Reply-To: <87wmdf22ae.fsf@kernel.org>
+References: <20250223072114.3715-1-boqun.feng@gmail.com> <87wmdf22ae.fsf@kernel.org>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 44a2cd62d22bf5bd2b7781e011132f4265e83c73
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250221215931.GA134397-robh@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 21-02-25, 15:59, Rob Herring wrote:
-> It would be nice to handle the optional case from the start. Otherwise, 
-> driver writers handle optional or not optional themselves. The not 
-> optional case is typically some form of error message duplicated in 
-> every driver.
-> 
-> Every foo_get() needs foo_get_optional(), so let's figure out the rust 
-> way to handle this once for everyone.
+On 24.02.25 09:08, Andreas Hindborg wrote:
+> Boqun Feng <boqun.feng@gmail.com> writes:
+>=20
+>> To provide examples on usage of `Guard::lock_ref()` along with the unit
+>> test, an "assert a lock is held by a guard" example is added.
+>>
+>> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+>> ---
+>> This depends on Alice's patch:
+>>
+>> =09https://lore.kernel.org/all/20250130-guard-get-lock-v1-1-8ed87899920a=
+@google.com/
+>>
+>> I'm also OK to fold this in if Alice thinks it's fine.
+>>
+>>  rust/kernel/sync/lock.rs | 24 ++++++++++++++++++++++++
+>>  1 file changed, 24 insertions(+)
+>>
+>> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+>> index 3701fac6ebf6..6d868e35b0a3 100644
+>> --- a/rust/kernel/sync/lock.rs
+>> +++ b/rust/kernel/sync/lock.rs
+>> @@ -201,6 +201,30 @@ unsafe impl<T: Sync + ?Sized, B: Backend> Sync for =
+Guard<'_, T, B> {}
+>>
+>>  impl<'a, T: ?Sized, B: Backend> Guard<'a, T, B> {
+>>      /// Returns the lock that this guard originates from.
+>> +    ///
+>> +    /// # Examples
+>> +    ///
+>> +    /// The following example shows how to use [`Guard::lock_ref()`] to=
+ assert the corresponding
+>> +    /// lock is held.
+>> +    ///
+>> +    /// ```
+>> +    /// # use kernel::{new_spinlock, stack_pin_init, sync::lock::{Backe=
+nd, Guard, Lock}};
+>> +    ///
+>> +    /// fn assert_held<T, B: Backend>(guard: &Guard<'_, T, B>, lock: &L=
+ock<T, B>) {
+>> +    ///     // Address-equal means the same lock.
+>> +    ///     assert!(core::ptr::eq(guard.lock_ref(), lock));
+>> +    /// }
+>=20
+> This seems super useful. Perhaps add this method as part of the lock api
+> instead of just having it in the example?
 
-Are we talking about adding another field here (like below code) or
-something else ?
+I don't think it should be an assert. Instead make it return a
+`Result<(), ()>`. (or create better named unit error types)
 
-impl Clk {
-        pub fn get(dev: &Device, name: Option<&CStr>, optional: bool) -> Result<Self> {
-                ...
+---
+Cheers,
+Benno
 
-                let clk = if optional {
-                        bindings::clk_get(dev.as_raw(), con_id)
-                else {
-                        bindings::clk_get_optional(dev.as_raw(), con_id)
-                };
-
-                Ok(Self(from_err_ptr(clk)?))
-        }
-}
-
--- 
-viresh
