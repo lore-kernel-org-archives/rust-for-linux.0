@@ -1,186 +1,188 @@
-Received: from mail-lf1-f67.google.com (mail-lf1-f67.google.com [209.85.167.67])
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4FD265CBC;
-	Mon, 24 Feb 2025 16:57:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE6B2641D4;
+	Mon, 24 Feb 2025 17:01:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740416278; cv=none; b=A+UU+n3kl/bhduBrKpX2FzIb69shy2++9go5vd/MXAuy6LKmkoylAVHsZZEOxQpZwxfRQSAW3rFAUz46OZ/+R1HSbvf4Y5kOM2MziHX1qgyToOqZ3ZvELQX9e66M8T8rYlMIe3zuWzeOoEOWT87zc1suBWyx0LWlshYbSyU9/zM=
+	t=1740416510; cv=none; b=tjTGqSpRQ+iVtAC+XjH/uj0+6nAe+tezq/IRqvnZ0ssfoGUGVCCFVqfkKh6UJzWi/IJRmDOr3WOOS+joq4rxYmk1iM/SvgS33XvXKhlyfpiofvPe9ogcQY8bLzXa/KLyarx05tWWDg/s9Yu+z3Bl8DxBWS1zh0YvEs5kEdWhtM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740416278; c=relaxed/simple;
-	bh=9AkYuCDxcIMGop0F0nXFLogpfd+Onp8GeWGOnM+by0o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e0qXmuX4rT0p9HPJIaYrc0yDHJqubGLpafFN3nwRN4oA3No7Y9YqqYaL3VdeJBipYR9J1YLgF8YdhS2q5U4YVV8PL4XTQeSqy1Su9oqVW+O0+XjzadfVbB07dnbCL33bDMZ/4Bpz+Z1KRYzTgwunBaLMEXWITqN/MO+eealN/IA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VNRQApxj; arc=none smtp.client-ip=209.85.167.67
+	s=arc-20240116; t=1740416510; c=relaxed/simple;
+	bh=21Fx0YdOPOhmq0ZvDOd6fNkcas2nl9DSL3oBegOTdvE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lgf8Gq5MTq5mGmDWe5Nzb6x171QE+TmIZwpVyWjXQw+5HCJpIPhWqceFzYrnCpisHrqJ18hgJXIIDDAkUM08ItuFBy7jIVxQ/IPMzIdfhhUJ0K439fxmYmvcjNACfoYxNEF9kZYLyy90x+7bEXO8SDI8kwdpiyShV8gZ0uROYyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k/HjYPvj; arc=none smtp.client-ip=209.85.160.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VNRQApxj"
-Received: by mail-lf1-f67.google.com with SMTP id 2adb3069b0e04-5452e6f2999so4978413e87.3;
-        Mon, 24 Feb 2025 08:57:56 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k/HjYPvj"
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-46fa7678ef3so44640241cf.1;
+        Mon, 24 Feb 2025 09:01:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740416275; x=1741021075; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+yFjW1zH+gD+0Z6S7sAaI1nnRNP2Mxs8668OLM/EkQk=;
-        b=VNRQApxjAdpPytk34zPMsnsvRNTCtKR4XmRZgIM62ObFkYZ13DybB44Xy+pErEAzFf
-         20Z5LMzgYKlByi4R6ZLPAUBOLYjmql/2MN8vrRakFWUCdMzO7jibT4zZqklviNHu4MAS
-         qu6Mv8GdXAd7BcSVSVqbpBiQY1rzEvFLw8zcei0tnoc36mVu/d5+t0dpaL/A54BhfnsX
-         l5/CNNOUE0mIwk1ujHZX3FaF4oMXT0k+w2dRsYJh5AXml0MVAiXRb1fXd9CtPuB+Hbl+
-         ocjdHmqUJhkIBVXk7E5LTHw8TaGZHOdbEWEYGQEA6zz9aQcL05gumEvJAug2y259YcnK
-         yGxw==
+        d=gmail.com; s=20230601; t=1740416507; x=1741021307; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=EcvdHU1j5+XOAtX/UODZiTGaxETgaZmb3P60ivZS9HQ=;
+        b=k/HjYPvjtdrlg6H4GnE2nX0agwBEcf8pIl3H/7NGGClnCtAUay9ObjOy/He8ELmIGy
+         kwy4uc6vRKSZ1IHQRWQZdYU7/LCll9ihkjDr+xs+gLizBqQdTpYiAJ0ucL8SoPE0gmFP
+         D7XPSVKS5qjBRR5Q4MycqyTY/FzLeoNCDAnza0aUkI3bQ3lLcs1IQQRr8riz8ftXlW6j
+         luzRsccgeSfFIUjpmNINyhZ198hWAHEN9O4KyQy0pmiMT63bjpocJiWTi+0k7hGi1V29
+         dX565eZ3Sxumxt3jw1T2ZCBkcZrY8bV7eTChrGZQu9JCx+0FQQmAF2y8cJYInbJEWyJ8
+         7nUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740416275; x=1741021075;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+yFjW1zH+gD+0Z6S7sAaI1nnRNP2Mxs8668OLM/EkQk=;
-        b=KTKrCvzKVfFprbKUkHBZLzsCzqGnKla7EktroQnyVh2hHoykkVFo5vKVKwGy9u0bcZ
-         SsgPQAbTcL2/H45xAiZu5boLuS8pbkmCF8nrTwfFBZApJenHAT0fZ+p6JMnx38gnU1Nn
-         89t617D5ydBZl4KaPokYErXnbne/zFWuqxtwARr/aRYb1p/yyMAb7CnSm/MzfmFzjaAL
-         k8jQYqQkHrzQpfOXvLqrRX2sV3QuRgvkXblOBWxZeN5BEAYHKz2ArUjyeNAf7xUTZTTv
-         VN92MuiSVy1L3nhwOc3uBc9QSWyHFxvOCtmGzMu6QctLL3+hLFlH34j8jI03DfJy81Ho
-         KteA==
-X-Forwarded-Encrypted: i=1; AJvYcCWh3HiBTsG6YOJrupwCTvctUynzgph/hof1lKsZZ6w+g4P58rxoE/1kyYktktsJbNfD6W3f5ATbSbrcpUC6x1w=@vger.kernel.org, AJvYcCXF0qVjxLxEHvJPEVWPP22LfEFL4gMMV/TgLggjnYUSR3ouITgsFBH/tclyVziq1YSDEJIqD4Ks8eTppTU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxfkD7F9aHEbaCNNtjuGbNEQc7wCxpyT1Gyd2kGAire6iggHD5a
-	TnXCacLrEaWqEENGPUrQUIbZQV2flvWfydcoOO+8567tOEE0BIQh40cLJZXTOFvPiHWgrfdGeSS
-	ZEXuxgvPFtiJg32LyL/IsIB7FJUk=
-X-Gm-Gg: ASbGncsesGNBNZkiGnKZtdieY2UxdXDaU23VV/9AHRLelrGnpMMKyszr2dvJZkAnko8
-	5NySDSIcUsnRDAp/V2ZAe4tEolMxRWK2H927qPF26ryfpYd0qUohFWp8lZXHKZTc4Be7FNNd4np
-	UYIV14s0nH
-X-Google-Smtp-Source: AGHT+IHP2RFtRRFgPClAmeR5ehEd+2cm9UqNvHlbg+2L/TpXnPY8RInvpcCNChJWYqXNBEYE3uOLKncWh/I2IMVw2Mw=
-X-Received: by 2002:a05:6512:3da2:b0:545:fad:a757 with SMTP id
- 2adb3069b0e04-54838ef8a13mr4353079e87.29.1740416274400; Mon, 24 Feb 2025
- 08:57:54 -0800 (PST)
+        d=1e100.net; s=20230601; t=1740416507; x=1741021307;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EcvdHU1j5+XOAtX/UODZiTGaxETgaZmb3P60ivZS9HQ=;
+        b=GGoYQhrfLJMHlxfhAuk807PUbhA5UADP8d4FDXi5sqIEb5d7woyw2B9JNlDj4wvgE1
+         EP41msmBuFH3LYpEnFO7qf07nDgQmD9DZ9WD0sgWA4b4DnpQYITm4awHO+VHpx0k6RCv
+         YAKh6MwZ3J2rdOsgcvALrHDEhJw7GuAcAVqJY2RzjTlg7/uMDWHPI9GE7CLuMBaSfKXn
+         Z1mW8iZLlRkh8qCQcVmqJqBqjOrNfKLB3wdE0welRYxDRKzw+Vl2EzHoK11oVEnUQdj7
+         jmCodwYlCfwQvNcMSUEGx75O4GVH/HFp+97jkqqfeULEfY7rTqlM61esFYmvf8M1pL+E
+         KT9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXTwvXsvCty9Y8ZVxz0Nwl2Ma1wBPipp6iFUexa6yu5Y/lzOcQK5Ni3R62IUzv10/O41kfzlHa4lM1Q2IHQL6Q=@vger.kernel.org, AJvYcCXZyGNthP9Ze+G5cXjvD5OcyKC8+AebaoHPHE/WaknC4Bc6g98CJNWYhrYqAiJWSNUIHiEnp/JdG0Ifqak=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZ6kg+cwFi2Wu7HbG4Kh/lILLihaAxo6MWGA9xm5LY18ms3MIW
+	AlCn67xAoiLn62RnanFH2UovgaaQJz8ihcZrbAfydckHD+8j9jSQuIuDcA==
+X-Gm-Gg: ASbGnctQ3bnvoZ0mVa4AS1Q2Hq5cDX2/Sb/9WnL7YlCUBoMpzKLpvdiJF1zINjgYHhx
+	VmhPan0A7fa9fTJBsxVPxg55Lompp8aBlAvPWxA5IsxP6x+PvtEMH5/iE4Cqzu94lFKsP0YryXW
+	vGAdZGareCtKKrpa4kmyFXTjKWr0nPqpOrMNMwnuI4NpRwUyj/34yJ9YIRchfs6FpdbvOS6PRzp
+	LHMZmLnAGJs5o1BCOe4n3YW3V0fveIhHwtVx9GcW7+/Xbxg5EuvnbcuzdzYkoltkfD7IMSAoMtg
+	rk5fFoc5kbI1c14xMnvHdDbhdbDr6hOoHg1GKr/zjf6abDw3KqOMidDs6QFNFfeTJ4miGPsxja3
+	HFhdoMLmSkYIm8RAG
+X-Google-Smtp-Source: AGHT+IFJW1E0n+Ql+maql2hXwKRz+zBCJeKLEhSum8UGBDkukPnP2DcvcXhhU/gNDHG8rCyexx20fw==
+X-Received: by 2002:a05:622a:1211:b0:472:2bc:874e with SMTP id d75a77b69052e-472228be93dmr177934221cf.15.1740416507207;
+        Mon, 24 Feb 2025 09:01:47 -0800 (PST)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4720bc52905sm67711211cf.26.2025.02.24.09.01.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Feb 2025 09:01:46 -0800 (PST)
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 3B96F1200068;
+	Mon, 24 Feb 2025 12:01:46 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-10.internal (MEProxy); Mon, 24 Feb 2025 12:01:46 -0500
+X-ME-Sender: <xms:-qW8Z35MxQt3XkFY2y3Ci0E9RrjEYP1_VOJswRl3FSMoFhREn3x0rw>
+    <xme:-qW8Z87h2FX64HmElJ40y7O2blx4DUYUUniEDtIrUeBMb6cbwRrezwVNBFzqEC-uR
+    Kb0Nc26dl3WGOdUDw>
+X-ME-Received: <xmr:-qW8Z-eQfy3rCBLboVhtb6DdGqeYOXPguUEyVnfP2gTpvUw4GxWrkfJRxQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdejleeffecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddt
+    jeenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
+    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeevgffhueevkedutefgveduuedujeefledt
+    hffgheegkeekiefgudekhffggeelfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
+    grmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgr
+    lhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppe
+    hgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvddupdhm
+    ohguvgepshhmthhpohhuthdprhgtphhtthhopehmihhguhgvlhdrohhjvggurgdrshgrnh
+    guohhnihhssehgmhgrihhlrdgtohhmpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehk
+    vghrnhgvlhdrohhrghdprhgtphhtthhopehfrhgvuggvrhhitgeskhgvrhhnvghlrdhorh
+    hgpdhrtghpthhtoheprghnnhgrqdhmrghrihgrsehlihhnuhhtrhhonhhigidruggvpdhr
+    tghpthhtohepthhglhigsehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepuggrkh
+    hrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgr
+    ihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpth
+    htohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhm
+X-ME-Proxy: <xmx:-qW8Z4KoVyeiluHvS8w33etm3N1C-W9eEVChdWOVwRJZa1F1-8rgPA>
+    <xmx:-qW8Z7JP09EjloEAjdbh7AOLI0vF52pG_j81D8WRzjrKNP4KfFOpvQ>
+    <xmx:-qW8Zxx3kYU53_h_rWB0ai8lgjtif4_2KCRRXb0d9GAjC_I7_Ldypw>
+    <xmx:-qW8Z3JwYBi8YHsLF1-qEcQhyxLS7V93s2Ew7s_fKAQkb7I2rg7svQ>
+    <xmx:-qW8Z2YZ35POedQZ39Pw1Mbl7rP6o7wu2IoDcOIm0oaS4wKjn49SifAc>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 24 Feb 2025 12:01:45 -0500 (EST)
+Date: Mon, 24 Feb 2025 09:01:44 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>,
+	Dirk Behme <dirk.behme@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>
+Subject: Re: [PATCH v9 01/13] rust: hrtimer: introduce hrtimer support
+Message-ID: <Z7yl-LsSkVIDAfMF@Mac.home>
+References: <20250224-hrtimer-v3-v6-12-rc2-v9-0-5bd3bf0ce6cc@kernel.org>
+ <Fg4QliwzbHj3m-Fr3ZeUiU11d6Bu-I7w_9xzSsnDlzQtqCkjgqxJpI6_YxuXnB8m0MqESq6V7vK7FhPnEcvGwg==@protonmail.internalid>
+ <20250224-hrtimer-v3-v6-12-rc2-v9-1-5bd3bf0ce6cc@kernel.org>
+ <874j0j1nv2.fsf@kernel.org>
+ <Z7yUTNEg6gMW0G7b@Mac.home>
+ <CANiq72kx31exTFohb3+9_=PGUq_JtqpCvG8=oQUc_gZB+De5og@mail.gmail.com>
+ <Z7ye0MsACNWe7Mbr@Mac.home>
+ <CANiq72=qayfPk+W4BRiXe9xBGcgP2zPf-Q3K6GXTg8MKy-Kg=Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
- <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
- <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
- <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
- <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
- <20250224002745.7d7460a7.gary@garyguo.net> <CAFJgqgSNjF=LfrCNTH3GdYssXz9YG-AeCtpibejJ7Ywtx0m3HQ@mail.gmail.com>
- <4cb1d98b-f94b-410a-be90-4394c48bdbf2@proton.me> <CAFJgqgQ3P81-iskGu9R+T=c=wyB2K0JqUhx+Gj+6mkYeY8-ORg@mail.gmail.com>
- <a4b79751-f1c8-4476-98a5-c59fb2e545ad@proton.me>
-In-Reply-To: <a4b79751-f1c8-4476-98a5-c59fb2e545ad@proton.me>
-From: Ventura Jack <venturajack85@gmail.com>
-Date: Mon, 24 Feb 2025 09:57:41 -0700
-X-Gm-Features: AWEUYZlW-Dr9Wj_nVWLIHYCRytgyFrZfCz9iJ9M6YRwrculG79d-CGIFN3fd43o
-Message-ID: <CAFJgqgRdiQ29bWvwsu11yokZb4OFF7pYYUU=ES6CYv9847KgVg@mail.gmail.com>
-Subject: Re: C aggregate passing (Rust kernel policy)
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Gary Guo <gary@garyguo.net>, Linus Torvalds <torvalds@linux-foundation.org>, 
-	Kent Overstreet <kent.overstreet@linux.dev>, airlied@gmail.com, boqun.feng@gmail.com, 
-	david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, 
-	hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72=qayfPk+W4BRiXe9xBGcgP2zPf-Q3K6GXTg8MKy-Kg=Q@mail.gmail.com>
 
-On Mon, Feb 24, 2025 at 5:47=E2=80=AFAM Benno Lossin <benno.lossin@proton.m=
-e> wrote:
->
-> On 24.02.25 13:21, Ventura Jack wrote:
+On Mon, Feb 24, 2025 at 05:45:03PM +0100, Miguel Ojeda wrote:
+> On Mon, Feb 24, 2025 at 5:31 PM Boqun Feng <boqun.feng@gmail.com> wrote:
 > >
-> > From what I can see in the documentation, `&UnsafeCell<T>` also does no=
-t
-> > behave like `T*` in C. In C, especially if "strict aliasing" is turned
-> > off in the
-> > compiler, `T*` does not have aliasing requirements. You can have multip=
-le
-> > C `T*` pointers pointing to the same object, and mutate the same object=
-.
->
-> This is true for `&UnsafeCell<T>`. You can have multiple of those and
-> mutate the same value via only shared references. Note that
-> `UnsafeCell<T>` is `!Sync`, so it cannot be shared across threads, so
-> all of those shared references have to be on the same thread. (there is
-> the `SyncUnsafeCell<T>` type that is `Sync`, so it does allow for
-> across-thread mutations, but that is much more of a footgun, since you
-> still have to synchronize the writes/reads)
->
-> > The documentation for `UnsafeCell` conversely spends a lot of space
-> > discussing invariants and aliasing requirements.
->
-> Yes, since normally in Rust, you can either have exactly one mutable
-> reference, or several shared references (which cannot be used to mutate
-> a value). `UnsafeCell<T>` is essentially a low-level primitive that can
-> only be used with `unsafe` to build for example a mutex.
->
-> > I do not understand why you claim:
+> > On Mon, Feb 24, 2025 at 05:23:59PM +0100, Miguel Ojeda wrote:
+> > >
+> > > side -- Andreas and I discussed it the other day. The description of
+> > > the issue has some lines, but perhaps the commit message could
 > >
-> >     "`&UnsafeCell<T>` behaves like `T*` in C,"
-> >
-> > That statement is false as far as I can figure out, though I have taken=
- it
-> > out of context here.
->
-> Not sure how you arrived at that conclusion, the following code is legal
-> and sound Rust:
->
->     let val =3D UnsafeCell::new(42);
->     let x =3D &val;
->     let y =3D &val;
->     unsafe {
->         *x.get() =3D 0;
->         *y.get() =3D 42;
->         *x.get() =3D 24;
->     }
->
-> You can't do this with `&mut i32`.
+> > Do you have a link to the issue?
+> 
+> Sorry, I meant "description of the symbol", i.e. the description field
+> in the patch.
+> 
 
-I think I see what you mean. The specific Rust "const reference"
-`&UnsafeCell<T>` sort of behaves like C `T*`. But you have to get a
-Rust "mutable raw pointer" `*mut T` when working with it using
-`UnsafeCell::get()`. And you have to be careful with lifetimes if you
-do any casts or share it or certain other things. And to dereference a
-Rust "mutable raw pointer", you must use unsafe Rust. And you have to
-understand aliasing.
+Oh, I see. Yes, the patch description should provide more information
+about what the kconfig means for hrtimer maintainers' development.
 
-One example I tested against MIRI:
+> > I asked because hrtimer API is always available regardless of the
+> > configuration, and it's such a core API, so it should always be there
+> > (Rust or C).
+> 
+> It may not make sense for something that is always built on the C
+> side, yeah. I think the intention here may be that one can easily
+> disable it while "developing" a change on the C side. I am not sure
+> what "developing" means here, though, and we need to be careful --
+> after all, Kconfig options are visible to users and they do not care
+> about that.
+> 
 
-    use std::cell::UnsafeCell;
+Personally, I don't think CONFIG_RUST_HRTIMER is necessarily because as
+you mentioned below, people can disable Rust entirely during
+"developing".
 
-    fn main() {
+And if I understand the intention correctly, the CONFIG_RUST_HRTIMER
+config provides hrtimer maintainers a way that they could disable Rust
+hrtimer abstraction (while enabling other Rust component) when they're
+developing a change on the C side, right? If so, it's hrtimer
+maintainers' call, and this patch should provide more information on
+this.
 
-        let val: UnsafeCell<i32> =3D UnsafeCell::new(42);
-        let x: & UnsafeCell<i32> =3D &val;
-        let y: & UnsafeCell<i32> =3D &val;
+Back to my personal opinion, I don't think this is necessary ;-)
+Particularly because I can fix if something breaks Rust side, and I'm
+confident and happy to do so for hrtimer ;-)
 
-        unsafe {
+Regards,
+Boqun
 
-            // UB.
-            //let pz: & i32 =3D & *val.get();
-
-            // UB.
-            //let pz: &mut i32 =3D &mut *val.get();
-
-            // Okay.
-            //let pz: *const i32 =3D &raw const *val.get();
-
-            // Okay.
-            let pz: *mut i32 =3D &raw mut *val.get();
-
-            let px: *mut i32 =3D x.get();
-            let py: *mut i32 =3D y.get();
-
-            *px =3D 0;
-            *py +=3D 42;
-            *px +=3D 24;
-
-            println!("x, y, z: {}, {}, {}", *px, *py, *pz);
-        }
-    }
-
-It makes sense that the Rust "raw pointers" `*const i32` and `*mut
-i32` are fine here, and that taking Rust "references" `& i32` and
-`&mut i32` causes UB, since Rust "references" have aliasing rules that
-must be followed.
-
-Best, VJ.
+> If it is just for local development, then I would expect the
+> maintainers to simply disable Rust entirely. I guess that may be
+> harder in the medium/long-term future, but currently, I don't see a
+> big issue not enabling Rust while developing the C side, no?
+> 
+> Cheers,
+> Miguel
