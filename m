@@ -1,124 +1,109 @@
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD727243951;
-	Mon, 24 Feb 2025 09:08:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA5F19068E
+	for <rust-for-linux@vger.kernel.org>; Mon, 24 Feb 2025 09:45:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740388140; cv=none; b=kZmskZi+elgX6e9kUZsJQ3QipZPYuck9rdxmX9hx2Iyytf1Ml+WFfNQoeYDrPfOpLaQk87JcfJ0nCnsYjwvhihwsVO5nK9M2UWmqGY0Y28Rq46tpzRJLF1DZUYC1tmh5QoU71RAD1Ti5ngZj9K0vCeNY7JpNaqv3fLIpHfWivU8=
+	t=1740390352; cv=none; b=F7F/ni21w4l0WEk2XAPAXInyaxG/jvn87ELByY9DtrMJGikqrYjmO4SFFiduk1FjmaQqzaGrRJeoBMisFsrGfP+dHSQCwgQ2Pe0F2QVjJ+AnC7130FV7vxzlQ/rylsVFgjj0uxdsPod8atTsrcGN5QKyRvQJOL5g9z+RpJeAl2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740388140; c=relaxed/simple;
-	bh=daM8eCpYsb21gX9QsirhUsHYuQ1YdkY3jqPS9x3ir38=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cLgpXfyRpRANC3j4lk6XZb7ilVMCLMcYgQtjmqyI8cBYvCxQ6iPhazTNzcVWYwDkMcTI42f9zcY32n7PhJypH6OJPnrKcYyELZw91qING5fw2/LEvjazggqNZOu8f3MgOzQSVjOIn/nVkoGoNQh4KKpMP9H1P5LjkyxXfW9HFt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hisG+jAm; arc=none smtp.client-ip=209.85.222.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740390352; c=relaxed/simple;
+	bh=yI9tsEdrCq+JVlU4+kbKkbwWKZIvMC5rRRc9jI/P0aI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jAN0wk8U19+LGLRcN3ITJ0pvMoPgR+tReFitJ7AKYodwyKuIgLFF8lu/XtACwAdzYVGh+/vhc4p+zAGdWOwMxmCnYZWrzEIJEDiZEK9QV+IAzucEAY4O9kv0Z6SmqYj1HSn0sk9z9PbK+M3TYH4dPiSUrBifAwolHaydwcZ7rt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=I4eU5hQ9; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hisG+jAm"
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-7c089b2e239so447293885a.0;
-        Mon, 24 Feb 2025 01:08:58 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="I4eU5hQ9"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-220bfdfb3f4so91963195ad.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 24 Feb 2025 01:45:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740388137; x=1740992937; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=s8Z8QEwUCxkupWd1+3HNImprL2CAvRRP+kS3TrK5QZE=;
-        b=hisG+jAm6PXct5rOjPJ5jyYe/mo2VdwwoNh05uC3w5P3vmM8feBCOFNkTnkLrnPyD8
-         rOeBS+G/JVnRfQHZ3Dx/DrgOu7XTICR9JhCudVDgulkd6BQH9p+F+fJQKRpeR/QRWksh
-         6u2MgZYSm1/E6ar8TSDQozfTjhJMmrsBNZvXVG0ZPkQO8ZLZbC/hsqbocAfFflAwDcZT
-         KMo7GRTCfLoIfxN0WI+aEJfUvRjsf4SOjexN4cze7ihHk/999AgaCm5gjNghtmeNhgn3
-         VJhlhGk2EYkIRZ/a0eIm6mo+Sol7SSb0/yI7tLNoX6Y54NpzRfUbyMCFO1iu3Te8loOW
-         hzpQ==
+        d=linaro.org; s=google; t=1740390351; x=1740995151; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=RxGqqeJLsYbeTE+fl2BbkVU3VCr8NgnhEkdjvf5/E4g=;
+        b=I4eU5hQ96a3BiKJELv/W5VvP4ql8/+5FakUXyNF9yyQ89OgNA4TTEcOz6VADNhn574
+         tDpjrdZzAaMVCfgrBP9w4wgwIMPeUXI7hKCf2185ulMVnIlVG1hn8DpQhB8Bfr5ZSwE2
+         TOPk/lCzFyYCF8/o9z0Nh9/MEnOTYXbldgauErMmgw2hvy6iUZGPb9I7A7wDW/rS15mO
+         jMirpWR9gpYo9szt5uWmiiKSoG0rGzYBVZkEcUfY0o5uB4OXMTOznDhDnmTztBFpq8ql
+         ROGfgqqk76i1XxX5iPGRPP8phk/ljgjWXBEyMYQB20UNiwKJkmkw3F1r8Bmm2pyv7NSV
+         hZUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740388137; x=1740992937;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=s8Z8QEwUCxkupWd1+3HNImprL2CAvRRP+kS3TrK5QZE=;
-        b=oury54QmCepou0UHSdtKhhAEgQyHy5RI+VGM1mk/vvAzA7b0cVmWJQDi7/A+Z5000B
-         SXkRmUKcsriI9jIemrRi9aYVFA+bY8NBvop1GUnXeZH5GAB/0GiR4ws7NvEjbGrALkTM
-         RGe49DUtV1d9v/C5r/Snsl3jtCYU5PbDutx6sHDNHBRswlfMcCHyD7UI896gr5ggsNPc
-         Y3BjGulyrvUjPkqBgauSC972GXMyvv3eot8ryvf2RCpYLxXKnfLt5fWr9sKy0MsfY1eL
-         RjFaLRKQF11/LqxVjici0fE7Jh1+iO9fKg7trck7UbKz/QRAOH8PTejIVSYwqoIYJ8Hk
-         UlyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUuVoevrTbnCJml4ORrYKvl1DyrF9jxCfHYGLZaqoKXvdIBzZQXz4TWGqi/CvmanbbxOay84ba9TUq48UlK314=@vger.kernel.org, AJvYcCWm1wmOoLwLehTqM1VopU0GBaW1MgqTFhliJnbSF60zqBkeVFXTtrB2SwbbaEuMdTkr70+OGGUb6DXzfis=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2o1z6Yv31zrGmYquTQhbv1Ze0WCR6+fCtAIfDSV8OqmoZHVEB
-	DE9/OPDHDWdfg1g6T46r0bLZrxB8chjICvUe04iLAJ6cD1iybNGPwjR3a8exOhCfn1n3tcqiDsb
-	O/CdCDDkWrO/qIQMbvxhn8lghpIM=
-X-Gm-Gg: ASbGncsp65fOSPgQV4dOvCqnAF/HDMilH1bPPPDFN1QpmjFA/eowx77/KEOq0koBobt
-	SZgKXcWc+9M9jnaobDnTCTTamUjRU7sEMlBnF6Vu5Hn+RMP6l3656ZyPwbJL2nzjiwmRkhuJHoo
-	OJVgNDsJdN
-X-Google-Smtp-Source: AGHT+IGjG8I5drO+X1eEUiibGtzlCaFmdmDDWxEcy/DATfn0GZv0YcS1x2zAkBvkENKOLf26xD8UR2442xGniu3XVH8=
-X-Received: by 2002:a05:620a:4405:b0:7a8:554:c368 with SMTP id
- af79cd13be357-7c0c2164e93mr2368642885a.6.1740388137584; Mon, 24 Feb 2025
- 01:08:57 -0800 (PST)
+        d=1e100.net; s=20230601; t=1740390351; x=1740995151;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RxGqqeJLsYbeTE+fl2BbkVU3VCr8NgnhEkdjvf5/E4g=;
+        b=tfvx9dzcs0Wqivt3wk+eWNK4QM7Tmlaotsq3VqGAU735Ci5/vHBItzZg73DwIXshAr
+         Wo9ULputE8fcwTS2DJCbMMOi15LCmEp6lvObbu98ImUt+0GfPXhPL066ci/puxm1Ouxj
+         tRYBfqlk3B+lhpxnzQvhGNuYOfYhg8GxE/bnm/bG08ycM3W6odHy7ljqC80GBDxwbjtx
+         5dnIMEi9TQfkjMekAWMeuySDNS4NADDFK182O81/miZvmdpUrweWyw7xmNF7+68jemDU
+         DjEByGN4K/9mFgABQl6V26vZd/C0ibW1hotCwoeNck5ylKvGodHyIMWxaCZd6Q+7JXCS
+         lqKg==
+X-Forwarded-Encrypted: i=1; AJvYcCXxQafjdxvrRq50mUibCgQML6oAr1Q+Jg7C9vp3tQV5e+4iZOOpYXuV4fw889qIWTpY5/EJ1ZQGly+Ws2n2rw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxE0iYPZLeNUo2aQVGecesuuIGoWqfpVgXqJiN8Wxa0acJWp4e3
+	fxBMEfrQ63SEehrcp63V2NIP/4A6mAz9DJD/308D6rIfoQDJhrdWKeCwlk8NGqk=
+X-Gm-Gg: ASbGnctd+KrVTg9azwiohvwbWbHl68iogD8P4oaRU5bMz7ottuVoib7Wj1XQiOXsDF+
+	+nPoRC17tvMTK/2cjnxU4XWefDvLfNWe4epXwn0sgfF0iQOzjnO9wPiUlduTOWFyQWOVhe4Z4IC
+	7uuiNMlqx0K9rizWp6UWpqf7//P7y19iO1nLCS4riF9wDWBbB6wP9bsAw9HKTYENBFX4AAmi13y
+	H3oNYNNFTweh9Uroo9fF8yob3jXpofwVbDz2IwGxLfEO5XnLsWVEHIccoLDsm8LsCrFxnOoJeLk
+	ZgTkfD3MsxAl6qzzu9AAOBTWV8I=
+X-Google-Smtp-Source: AGHT+IFJVi7/YSBChXY4dh8iK5Nu0pMgjUbuxiXxygSfU840h8IClcdVJYvYBB1ghUBATj9XYVnhcA==
+X-Received: by 2002:a05:6a00:1956:b0:732:6480:2bed with SMTP id d2e1a72fcca58-73426ce76a4mr21390090b3a.13.1740390350591;
+        Mon, 24 Feb 2025 01:45:50 -0800 (PST)
+Received: from localhost ([122.172.84.15])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73287ed12e8sm12957914b3a.180.2025.02.24.01.45.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Feb 2025 01:45:49 -0800 (PST)
+Date: Mon, 24 Feb 2025 15:15:47 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Russell King <linux@armlinux.org.uk>, linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH V2 2/2] rust: Add basic bindings for clk APIs
+Message-ID: <20250224094547.dv3apdbpwhesminm@vireshk-i7>
+References: <cover.1740118863.git.viresh.kumar@linaro.org>
+ <a0a1ba4e27c3a0d9e38c677611eb88027e463287.1740118863.git.viresh.kumar@linaro.org>
+ <Z7iGHiQcqa-_AXli@pollux>
+ <4AD8A8F3-EA7E-4FBE-9F0D-58CF7BB09ED5@collabora.com>
+ <Z7iSHR0F2QpiNpMZ@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANiq72m-R0tOakf=j7BZ78jDHdy=9-fvZbAT8j91Je2Bxy0sFg@mail.gmail.com>
- <Z7SwcnUzjZYfuJ4-@infradead.org> <CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
- <326CC09B-8565-4443-ACC5-045092260677@zytor.com> <CANiq72m+r1BZVdVHn2k8XeU37ZeY6VT2S9KswMuFA=ZO3e4uvQ@mail.gmail.com>
- <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com> <Z7VKW3eul-kGaIT2@Mac.home>
- <2025021954-flaccid-pucker-f7d9@gregkh> <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
- <2025022024-blooper-rippling-2667@gregkh> <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
- <D7ZDF8NZGPS3.3QBMAVC1NTUDM@maslowski.xyz> <E0BD1BDB-0EBC-4E27-9324-7CA70ACE194B@gmail.com>
-In-Reply-To: <E0BD1BDB-0EBC-4E27-9324-7CA70ACE194B@gmail.com>
-From: Ventura Jack <venturajack85@gmail.com>
-Date: Mon, 24 Feb 2025 02:08:45 -0700
-X-Gm-Features: AWEUYZnfy9opWscz-4jFfz1MccFJtXuWWbjaTV1FP0XPTI4GXNbYujZ-2jgW9oU
-Message-ID: <CAFJgqgSCW9XbVYr7yTa47Miax+LGM9jNNE5Yuw1xQE2BZ9gkTQ@mail.gmail.com>
-Subject: Re: Rust kernel policy
-To: comex <comexk@gmail.com>
-Cc: =?UTF-8?Q?Piotr_Mas=C5=82owski?= <piotr@maslowski.xyz>, 
-	Martin Uecker <uecker@tugraz.at>, Greg KH <gregkh@linuxfoundation.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Christoph Hellwig <hch@infradead.org>, 
-	rust-for-linux <rust-for-linux@vger.kernel.org>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, David Airlie <airlied@gmail.com>, 
-	linux-kernel@vger.kernel.org, ksummit@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z7iSHR0F2QpiNpMZ@pollux>
 
-On Sun, Feb 23, 2025 at 4:32=E2=80=AFPM comex <comexk@gmail.com> wrote:
->
-> > On Feb 22, 2025, at 3:42=E2=80=AFPM, Piotr Mas=C5=82owski <piotr@maslow=
-ski.xyz> wrote:
-> >
-> > I'm sure you already know this, but the idea of safety in Rust isn't
-> > just about making elementary language constructs safe. Rather, it is
-> > primarily about designing types and code in such a way one can't "use
-> > them wrong=E2=80=9D.
->
-> And importantly, it=E2=80=99s very hard to replicate this approach in C, =
-even in a hypothetical =E2=80=98C + borrow checker=E2=80=99, because C has =
-no generic types.  Not all abstractions need generics, but many do.
+On 21-02-25, 15:47, Danilo Krummrich wrote:
+> This was badly phrased, the current implementation does not need to consider it
+> indeed. What I meant is that we have to consider it potentially. Especially,
+> when adding new functionality later on. For instance, when accessing fields of
+> struct clk directly. Maybe this only becomes relevant once we write a clk driver
+> itself in Rust, but still.
 
-True, a more expressive and complex language like Rust, C++, Swift,
-Haskell, etc. will typically have better facilities for creating good
-abstractions. That expressiveness has its trade-offs. I do think the
-costs of expressive and complex languages can very much be worth it
-for many different kinds of projects. A rule of thumb may be that a
-language that is expressive and complex, may allow writing programs
-that are simpler relative to if those programs were written in a
-simpler and less expressive language. But one should research and be
-aware that there are trade-offs for a language being expressive and
-complex. In a simplistic view, a language designer will try to
-maximize the benefits from expressiveness of a complex language, and
-try to minimize the costs of that expressiveness and complexity.
+I don't think we will _ever_ access fields of the struct clk directly.
+For the most common use, common clk API, the struct clk is defined in
+drivers/clk/clk.c.
 
-Rust stands out due to its lifetimes and borrow checker, in addition
-to it being newer and having momentum.
+> > MaybeNull<T> sounds nice.
+> 
+> Yeah, it's probably the correct thing to do, to make things obvious.
 
-What are the trade-offs of a more complex language? One trade-off is
-that implementing a compiler for the language can be a larger and more
-difficult undertaking than if the language was simpler. As an example,
-to date, there is only one major Rust compiler, rustc, while gccrs is
-not yet ready. Another example is that it can be more difficult to
-ensure high quality of a compiler for a complex language than for a
-simpler language.
+Still need this ? Any example code that I can refer to implement it or
+if someone can help with implementing it ?
 
-Best, VJ.
+-- 
+viresh
