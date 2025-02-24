@@ -1,98 +1,176 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C64125A2D1;
-	Mon, 24 Feb 2025 11:28:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5767B25D546;
+	Mon, 24 Feb 2025 11:50:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740396492; cv=none; b=ip1fRJcOzk/v+mYt3dptHSRwU+N0Qp5sx62RO5AMj5Io6XIEFwRUTkFccTJSb8ua+Dm9mQPeHUa6eTsnjfDB2k1oWDH9dfewWqPhEeuVwa5YkIgqQ5xsBy77RVq4kJW/WV+OJUG6meinlg9eHV7CdBwp7jTnitIg5tehuHcPOHk=
+	t=1740397837; cv=none; b=cS1J2JVLG90BKRuBDFGETlZtX4QSbhQH9uUJExlypaCQeNXU+i1pmKqrXm5bOOx8+Secn6gM4jtVGMmgApzHv5e+UBUmfbb5OYe+qbDiKHox7MmYT0tY3tAlsGCuDVrY+rn4b4ZMOspy1pND423DpI3it/kqtKlFQk2+mDQQJIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740396492; c=relaxed/simple;
-	bh=wMBKiyOZ9vgChPGZe1p/asOkvswkGQx02TjhWX4vQ7I=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ePlRlrMpBvCm9UcjkMKBCussLFbn3GVVgqZc/LMzu5xF5LjXgO/n1qdOdRlgOBZQw891InKueXdzu+QXZnxwnwGj9LyM0J+z62gJYuc50yuBNA9Zp1L8RlGtwyRUiuOsGPrKzgfefdyxZ4RMXngRJy7TLnoBnEZirggJH3seq+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PZeU5eho; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740397837; c=relaxed/simple;
+	bh=YDNlTCQoGkJaNVtqgLpI0u33kBZS6sYuWLEQLNwBwM4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Vu1TmC8Lg44lJS6PzG5GJgphqF1chVyYDHcU52Codj936/udcTgPAh0Rwta67x3l7SdAqozJizTOAu9yWZxiNhUFrwko/NXrXmWHn3xeyDZfKKR8/aNFGVhWRFTDTq4rGybN3cCOIpf/34aF2bkBvMLTkNgz/ZIjelKwXKMMNwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZeRwyg45; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PZeU5eho"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE64C4CED6;
-	Mon, 24 Feb 2025 11:28:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740396491;
-	bh=wMBKiyOZ9vgChPGZe1p/asOkvswkGQx02TjhWX4vQ7I=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=PZeU5eho82z/uA42c7FJtxfs66KEeLlHc6fPoxrbm0doYw+YmSoZ+TNrDp5BnU4rw
-	 +OMsSSWyORMlYBGTRxnbhhnJd1XjOpPumvBOtVVkSTobY3w5FH8ZFTP/yeWPP/7CnT
-	 Kcuks2WmzEG1W1DUCozs1ClAsVijMPhgkQGSyRfQOAtllydQnuA7JlM3SOfFFQt+qD
-	 pxqL7RgoC9h2nhMZyplBRsIcJclN419e+lCt+FNuzjJWJftfqovVeT3qd6D32dt/c1
-	 4vUN2WSHV5xpQ+IGDptthbFbh7inS4HCeRmpDZrBfjXUVBotccierB6Av23HVbVA8M
-	 Fla1sS0TVQtFg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Petr Pavlu" <petr.pavlu@suse.com>
-Cc: "Alex Gaynor" <alex.gaynor@gmail.com>,
-	"Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,
-	=?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	"Benno Lossin" <benno.lossin@proton.me>,
-	"Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
-	"Masahiro Yamada" <masahiroy@kernel.org>,
-	"Nathan Chancellor" <nathan@kernel.org>,
-	"Nicolas Schier" <nicolas@fjasle.eu>,
-	"Luis Chamberlain" <mcgrof@kernel.org>,  <rust-for-linux@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>,
-	"Adam Bratschi-Kaye" <ark.email@gmail.com>,
-	<linux-kbuild@vger.kernel.org>,
-	"Daniel Gomez" <da.gomez@samsung.com>,
-	"Simona Vetter" <simona.vetter@ffwll.ch>,
-	"Greg KH" <gregkh@linuxfoundation.org>,  <linux-modules@vger.kernel.org>,
-	"Miguel Ojeda" <ojeda@kernel.org>, "Sami Tolvanen"
- <samitolvanen@google.com>
-Subject: Re: [PATCH v7 0/6] rust: extend `module!` macro with integer
- parameter support
-In-Reply-To: <20250218-module-params-v3-v7-0-5e1afabcac1b@kernel.org> (Andreas
-	Hindborg's message of "Tue, 18 Feb 2025 14:00:42 +0100")
-References: <JKqjFnoTeEbURcTQ5PpmUZWDS2VMEt0eZl68dWkgk3e8ROFpb2eTWH2mStKkkXJw__Ql5DdYvIR9I7qYks-lag==@protonmail.internalid>
-	<20250218-module-params-v3-v7-0-5e1afabcac1b@kernel.org>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Mon, 24 Feb 2025 12:27:59 +0100
-Message-ID: <87ldtv1t1c.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZeRwyg45"
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-30613802a04so45806951fa.2;
+        Mon, 24 Feb 2025 03:50:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740397832; x=1741002632; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0nvYQvXkD0Ar4QdoxJqSHp8EpN6ZHUmaSp2XNQrJj5I=;
+        b=ZeRwyg451Z5schit36GmoBUtdITPztp+vOK65yGZj+pk23AfD/l1VD3aQKEpSObunA
+         AZ4OHqOAOQ0juDR0pmEp1zZ2DdS81b7AIRRBq7hWsDAOhctTbQInZ7YRtYmebVFlyUrg
+         FTxsGaQILueEdi9PCWgXE+ZdjvySLL4PLJXf54TEye8SDlOBq2IDWjCEChoQP7Auzd6K
+         PxJiEhBF1e/frXGwF9xSchhVrB4TMoRMAyolc6bE7EaKYgHScsg35cxei6594qm4W19n
+         U5BOjpO9QPEvNhW0q/uhKcH2DgeqFkMLvTWxQ3CnEr8cIO5js7O1ezKbjhBFeTYmcB1s
+         XLWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740397832; x=1741002632;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0nvYQvXkD0Ar4QdoxJqSHp8EpN6ZHUmaSp2XNQrJj5I=;
+        b=XXHVNt7FntVF5CIu+xzzONwds42oUDMZA69475+7HELZXNXvbnAVYVniR46IuF55oA
+         2dCBCRHvcnbm+45CD1WVnsMUn++Qk9+brblUZVAGBi/gBaL9X8DBXBUxkjptE65Tnt1f
+         8KqBUl4EyheAknUKNWDDcEkh8665/lC2a3vuBzZJ3oxPFxwvmzIIYgL5SzxWL70fuhNG
+         pM5jHHLFq1aoIZclFHX53jYhpesQfwTYynykKw2Bb5QyeaNTi/m36iWrkKDw51qMrL+s
+         48e9ms1yE7n5zDNYZh/lcb4NTTW75Xd0sDKiGdt1ikwRXSdD62YrxCKSFv6oZqeIda40
+         gvsA==
+X-Forwarded-Encrypted: i=1; AJvYcCVcDifvlyVAwHmGFVtSdJXPgTNBUXQlN+1qIVakNFWzO3joylt1eBpTIXBvpfYSEihe3CQ8i+AAZJfhMwk=@vger.kernel.org, AJvYcCWIx0SGXDzE/iflnP9jPlOdzcFgQQATO6KwZk76uDFsAoeW26zsh/dA9pwF9J1sK0yS9xWmdLktK3y3h7cxx3Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYzRh3hNJzw3xcvxg3S+TWuP+F5qxeoMR15cEWFWocTsTsXy7y
+	XXs9ILZtu7Vewefs2WdjrkeWshtW5CtXG3Q8WZJm+SwP9M61Dih2
+X-Gm-Gg: ASbGnctfNFZSh6pq0UTl7pDhUuyZQ7RSsIhkwTW3OHt09k0mJbZV0oMog7ahwDs9Z+s
+	Tw+zCtM/rA0XhoIQbL3K2RqWk4A881hVTtNXVa/nyzlGpXpp1tY+aGPIVZ4FVaCk0PwA6KeA8cp
+	s8rFMnoaL7E99fAY0Uyuh6OTHGIAr5/TuK404NovkRzVVzlnBXgK5cZZYyAZSY/YYMQSWT0KLHg
+	nEzULgxN+CHBr/CtdIePXVBr/dHoZ3cjmTeEHkb+IcHwoBHUvJL5nE0mHNzAe/2s8Ysa0xna5Dr
+	ho8lsku+o0CWkrBqOu5k8bIc4/91Bbc4bcZp2MNBVdd5fJK/UShCvbYCr31eq8fJIdJKCpwZ
+X-Google-Smtp-Source: AGHT+IFPu6tr3k4lr0i+UTEWtLUz2QUN9RBBkDDNDW6fc64OhExid58PNm2lBtTjf3FY6e5KF3KbtQ==
+X-Received: by 2002:a2e:9f42:0:b0:309:2653:5dc9 with SMTP id 38308e7fff4ca-30a5b217b39mr38422761fa.37.1740397832198;
+        Mon, 24 Feb 2025 03:50:32 -0800 (PST)
+Received: from abj-NUC9VXQNX.. (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3091f26cd5bsm33174541fa.18.2025.02.24.03.50.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Feb 2025 03:50:30 -0800 (PST)
+From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+To: aliceryhl@google.com,
+	dakr@kernel.org,
+	robin.murphy@arm.com,
+	daniel.almeida@collabora.com,
+	rust-for-linux@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Valentin Obst <kernel@valentinobst.de>,
+	linux-kernel@vger.kernel.org (open list),
+	Christoph Hellwig <hch@lst.de>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	airlied@redhat.com,
+	iommu@lists.linux.dev (open list:DMA MAPPING HELPERS),
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Subject: [PATCH v12 0/3] rust: add dma coherent allocator abstraction
+Date: Mon, 24 Feb 2025 13:49:04 +0200
+Message-ID: <20250224115007.2072043-1-abdiel.janulgue@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Petr,
+This series adds the rust bindings for the dma coherent allocator which
+is needed for nova-core[0]. This is tested on a Nvidia GA104 GPU device
+using PoC code which parses and loads the GSP firmware via DMA.
 
-"Andreas Hindborg" <a.hindborg@kernel.org> writes:
+Changes since v11:
+- Ensure robust handling for potential pointer arithmetic overflows
+  in bounds checking (Petr Tesařík).
+- Add dma mask helpers (Daniel Almeida).
+- Clarification in the safety aspects of the as_slice/as_slice_mut API,
+  Use ManuallyDrop trait as a replacement for into_parts(),
+  Add dma_read!/dma_write! helper macros (Alice Ryhl).
+- Link to v11: https://lore.kernel.org/lkml/20250123104333.1340512-1-abdiel.janulgue@gmail.com/
 
-> This series extends the `module!` macro with support module parameters. It
-> also adds some string to integer parsing functions and updates `BStr` with
-> a method to strip a string prefix.
->
-> This series stated out as code by Adam Bratschi-Kaye lifted from the original
-> `rust` branch [1].
->
-> After a bit of discussion on v3 about whether or not module parameters
-> is a good idea, it seems that module parameters in Rust has a place
-> in the kernel for now. This series is a dependency for `rnull`, the Rust
-> null block driver [2].
+Changes since v10:
+- rename read() to as_slice() (Boqun Feng)
+- Do a bitwise copy of ARef<Device> in into_parts() when returning the
+  device reference (Alice Ryhl).
+
+Changes since v9:
+- Use ARef<Device> in the constructor arguments, docs clarification avoid
+  manually dropping the refcount for the device in into_parts(), use
+  add() instead of wrapping_add() in the pointer arithmetic for performance
+  (Alice Ryhl).
+
+Changes since v8:
+- Add MAINTAINERS entry
+- Fix build issues due to switch from core::ffi to crate:ffi in bindgen.
+- Ensure the wrapped attribute is non-pub in struct Attrs, declare it 
+  #[repr(transparent)] as well (Daniel Sedlak)
+
+Changes since v7:
+- Remove cpu_buf() and cpu_buf_mut() as exporting a r/w interface via
+  a slice is undefined behaviour due to slice's requirement that the
+  underlying pointer should not be modified (Alice Ryhl, Robin Murphy).
+- Reintroduce r/w helpers instead which includes proper safety
+  invariants (Daniel Almeida).
+
+Changes since v6:
+- Include the dma_attrs in the constructor, use alloc::Flags as inpiration
+
+Changes since v5:
+- Remove unnecessary lifetime annotation when returning the CPU buffer.
+
+Changes since v4:
+- Documentation and example fixes, use Markdown formatting (Miguel Ojeda).
+- Discard read()/write() helpers to remove bound on Copy and fix overhead
+  (Daniel Almeida).
+- Improve error-handling in the constructor block (Andreas Hindborg).
+
+Changes since v3:
+- Reject ZST types by checking the type size in the constructor in
+  addition to requiring FromBytes/AsBytes traits for the type (Alice Ryhl).
+
+Changes since v2:
+- Fixed missing header for generating the bindings.
+
+Changes since v1:
+- Fix missing info in commit log where EOVERFLOW is used.
+- Restrict the dma coherent allocator to numeric types for now for valid
+  behaviour (Daniel Almeida).
+- Build slice dynamically.
+
+[0] https://lore.kernel.org/lkml/20250131220432.17717-1-dakr@kernel.org/
+
+Abdiel Janulgue (3):
+  rust: error: Add EOVERFLOW
+  rust: add dma coherent allocator abstraction.
+  MAINTAINERS: add entry for Rust dma mapping helpers device driver API
+
+ MAINTAINERS                     |  12 +
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers/dma.c              |  14 ++
+ rust/helpers/helpers.c          |   1 +
+ rust/kernel/dma.rs              | 411 ++++++++++++++++++++++++++++++++
+ rust/kernel/error.rs            |   1 +
+ rust/kernel/lib.rs              |   1 +
+ 7 files changed, 441 insertions(+)
+ create mode 100644 rust/helpers/dma.c
+ create mode 100644 rust/kernel/dma.rs
 
 
-Luis told me you are the one wearing the modules hat for the moment. How
-do you want to handle merging of patch 6 and subsequent maintenance of
-the code?
-
-I think we discussed you guys taking this under the current module
-maintainer entry? If that is correct, will you add the new files to your
-entry yourself, or should I include an update to MAINTAINERS in the next
-version of this series?
-
-If prefer another solution, let me know and we can figure that out.
-
-
-Best regards,
-Andreas Hindborg
-
-
+base-commit: beeb78d46249cab8b2b8359a2ce8fa5376b5ad2d
+-- 
+2.43.0
 
