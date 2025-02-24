@@ -1,50 +1,49 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA20263F41;
-	Mon, 24 Feb 2025 17:19:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C47261370
+	for <rust-for-linux@vger.kernel.org>; Mon, 24 Feb 2025 17:24:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740417587; cv=none; b=Pte2mj/VoMc2dcvIJLeKTcEqLOMSJuc5L57kKAqbO7ucT02QxMuUsioBnt2EYNQHIut+tDYr2sWHJw+rO/3WNT0uTJW7tuR1B/JVtvkIlfWiclYcLEfGyuXtIm6dxM1BMQ5Exj7/uKAWljpDLK5fM3911rVcPzkSiQ+gova0nJs=
+	t=1740417874; cv=none; b=OrrfL1c0mQDTvdUL+IwvH/OQfCkiowfywdkM5JRaj14ULagSYf3sPW8F5DSCx7iJSxcwgMtrNW0gExPiumbLzgPqquolLffFay2jHbguAYK18SUz/h3u0dHnNxpSrSCaC7dlmScYMmFbR4PtBWtsCtjWJ9a+LA5WlEr4HWIZIA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740417587; c=relaxed/simple;
-	bh=2JkK49D5kslLlDTcfz9RF/ZSparlD8LgrmourQdVShA=;
+	s=arc-20240116; t=1740417874; c=relaxed/simple;
+	bh=VYM8yVRItIuMduZwBffZeSAKQxqZUBVKRYC8TNCa/uQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aX5TxT1YL3vzC+DLWzvhzt/f6QU0Y+aBwqzcTLHg4Snb16tEOW4s52NmIDsjb+O7yfD7kfm6FT2iCB+u15AxAT66aaTLwSCGoCrUf/NmZRYMfRfdoTNnU+6aZxYoa/2mqbQkUJl/l1utybyeWzhtrpx5boTapHK6C7YUa2HcTPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sOJUVlp3; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=UHORQEenM+gBqtOnFAXmFtBH5G+WHqgrKKM27j/93EEUIl1JVokfujur3hy3U4aasVO9dlXMulzt4FZ/p29cJuXo/0tAVkkZQijGDSOYLx2ECvqzUgcXwMSPi0A81vXOAbF4RbMVU+64YZS4kFNP2I6bmHEeQbV0e6Z5OcbLbos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=tcnUKDoS; arc=none smtp.client-ip=95.215.58.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sOJUVlp3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC333C4CEDD;
-	Mon, 24 Feb 2025 17:19:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740417586;
-	bh=2JkK49D5kslLlDTcfz9RF/ZSparlD8LgrmourQdVShA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sOJUVlp3PCeLeXKfAgaxYqH3gEnUCpfY404RUTwpVGha2NTheRr9Ag3dIDNx2Mr7r
-	 6qY91wkz0nPwviqnND1BrIGwiU9/8vvr2OAofkAxq5XNuRg8pG/vQyncjJuSF5P+jW
-	 L8gyhnZQ7grIVEv1g3QYlIeZp3C48DLb78pI5H7KjJCf6Pb/eu5xo6U1nMLatQiMlQ
-	 C4+L4DqHsCwIjKC4Z2gGDoZXhcSPhGV3Y70W7sCS1rzoDYxSEg3w2B0b1kTr9CCL9y
-	 7u8Amqd/ZxwzNX+N3OrjNtbmha9qBNLe0VltK4pJXXXJOCS92CJtAJrIXa/xBdVvFI
-	 hhWXopQfJJDlw==
-Date: Mon, 24 Feb 2025 07:19:45 -1000
-From: Tejun Heo <tj@kernel.org>
-To: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Wedson Almeida Filho <walmeida@microsoft.com>,
-	Nell Shamrell-Harrington <nells@linux.microsoft.com>,
-	Dirk Behme <dirk.behme@gmail.com>,
-	Konstantin Andrikopoulos <kernel@mandragore.io>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Roland Xu <mu001999@outlook.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: workqueue: define built-in bh queues
-Message-ID: <Z7yqMdOGeOUzZ7um@slm.duckdns.org>
-References: <20250221223533.158959-1-hamzamahfooz@linux.microsoft.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="tcnUKDoS"
+Date: Mon, 24 Feb 2025 12:24:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1740417870;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VYM8yVRItIuMduZwBffZeSAKQxqZUBVKRYC8TNCa/uQ=;
+	b=tcnUKDoSra3uvYyGRmdRLXW0zPNX8tpyhGMBXBl4uk3wQXfFEsI0jesrD7S2KMtmW4BrJb
+	OppTxxbj77ARX5Pm22weGSaFYLndKUSkcFLyWX7/su4oXUhI19ihcMzCgj39A4+56btaHg
+	toP7smwDkf2nPaFhJH9WBSMtWQ93LNc=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Theodore Ts'o <tytso@mit.edu>, Ventura Jack <venturajack85@gmail.com>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
+	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
+	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: C aggregate passing (Rust kernel policy)
+Message-ID: <xm5i4ojrwxubao7sj4w7o564aox73no4v5u5pioofamllvnvwt@444xi7c73qdj>
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
+ <20250222141521.1fe24871@eugeo>
+ <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+ <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+ <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+ <20250224125805.GA5729@mit.edu>
+ <CANiq72kMQW6a991e9TgR39pmG5hVd-NcoeJANum4ap-6n=Mhhw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -53,20 +52,23 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250221223533.158959-1-hamzamahfooz@linux.microsoft.com>
+In-Reply-To: <CANiq72kMQW6a991e9TgR39pmG5hVd-NcoeJANum4ap-6n=Mhhw@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
 
-On Fri, Feb 21, 2025 at 05:35:31PM -0500, Hamza Mahfooz wrote:
-> We provide these methods because it lets us access these queues from
-> Rust without using unsafe code.
-> 
-> Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+On Mon, Feb 24, 2025 at 04:43:46PM +0100, Miguel Ojeda wrote:
+> We also got the question about future subsystems a few times -- could
+> they be implemented in Rust without wrapping C? That would simplify
+> greatly some matters and reduce the amount of unsafe code. However, if
+> the code is supposed to be used by everybody, then that would make
+> some architectures second-class citizens, even if they do not have
+> users depending on that feature today, and thus it may be better to
+> wait until GCC gets to the right point before attempting something
+> like that.
 
-Acked-by: Tejun Heo <tj@kernel.org>
+If gccrs solves the archictecture issues, this would be nice - because
+from what I've seen the FFI issues look easier and less error prone when
+Rust is the one underneath.
 
-Please feel free to route it through rust tree. If you'd prefer it to be
-routed to workqueue tree, please let me know.
-
-Thanks.
-
--- 
-tejun
+There are some subtle gotchas w.r.t. lifetimes at FFI boundaries that
+the compiler can't warn about - because that's where you translate to
+raw untracked pointers.
