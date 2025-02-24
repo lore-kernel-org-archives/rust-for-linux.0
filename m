@@ -1,49 +1,58 @@
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C47261370
-	for <rust-for-linux@vger.kernel.org>; Mon, 24 Feb 2025 17:24:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DEF7263F5F;
+	Mon, 24 Feb 2025 17:26:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740417874; cv=none; b=OrrfL1c0mQDTvdUL+IwvH/OQfCkiowfywdkM5JRaj14ULagSYf3sPW8F5DSCx7iJSxcwgMtrNW0gExPiumbLzgPqquolLffFay2jHbguAYK18SUz/h3u0dHnNxpSrSCaC7dlmScYMmFbR4PtBWtsCtjWJ9a+LA5WlEr4HWIZIA4=
+	t=1740417988; cv=none; b=j7+38S2MYe1s4IifTezueCS3NGBFh3OF2YbeZ3rXV+fCcUjlXKgUBqYe8+yGE7dwwY+2nEVRgi8ziIN8atoDFtErH0s2OiNYTSl2I90Wq0v4UCh6I8mWKvPeg3Z5AD7aLARNw1hFHAtNdi13fE9juVC17HJhyR3JVPL4obdxK7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740417874; c=relaxed/simple;
-	bh=VYM8yVRItIuMduZwBffZeSAKQxqZUBVKRYC8TNCa/uQ=;
+	s=arc-20240116; t=1740417988; c=relaxed/simple;
+	bh=tZ+lB45WUACqJMBa1PQ9dGIjsqcHvzTG2FfmVJNzSp0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UHORQEenM+gBqtOnFAXmFtBH5G+WHqgrKKM27j/93EEUIl1JVokfujur3hy3U4aasVO9dlXMulzt4FZ/p29cJuXo/0tAVkkZQijGDSOYLx2ECvqzUgcXwMSPi0A81vXOAbF4RbMVU+64YZS4kFNP2I6bmHEeQbV0e6Z5OcbLbos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=tcnUKDoS; arc=none smtp.client-ip=95.215.58.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	 Content-Type:Content-Disposition:In-Reply-To; b=NXXHCIGwXzYWZ9SuL2Jbuc8N5C2wuMFeGStoYRiBxLNmw/cIwLGHaWPRJ2XtksRVyXFvxTq680zWEU0cv0ERpyVOPy8sNFBzdOviqHarwtiwzUj+9QmpzutuLdXnf70MbfP/c4ESe9lNqHLfZcHLMgHp9nfPzqGdRydZyYhay0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MbOX/TPF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="tcnUKDoS"
-Date: Mon, 24 Feb 2025 12:24:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1740417870;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VYM8yVRItIuMduZwBffZeSAKQxqZUBVKRYC8TNCa/uQ=;
-	b=tcnUKDoSra3uvYyGRmdRLXW0zPNX8tpyhGMBXBl4uk3wQXfFEsI0jesrD7S2KMtmW4BrJb
-	OppTxxbj77ARX5Pm22weGSaFYLndKUSkcFLyWX7/su4oXUhI19ihcMzCgj39A4+56btaHg
-	toP7smwDkf2nPaFhJH9WBSMtWQ93LNc=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MbOX/TPF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5266AC4CEDD;
+	Mon, 24 Feb 2025 17:26:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740417987;
+	bh=tZ+lB45WUACqJMBa1PQ9dGIjsqcHvzTG2FfmVJNzSp0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MbOX/TPF93uC83/U6DTN+NYOh5nm0n7qRe9uT5KOxKC06Lb6FI6fDwCY4Iiyxg5Gm
+	 p6BmGfK3UzkigK8YC3+UdgErqqvilP8zS2CWcwTGwnoP42P8dkU4+YMdxjyXnx19+r
+	 mTSEKryiACmQW2N6VIMJ5eZSkWu4wd2lYnnwvAXBmXfJLj3x3m6KDZzxL7MWufZqYd
+	 ToF2mTibkMKlXhEqnrEXwy2igFgGRWY2ugReju56GxTOHG2opN4x1kg5v2d/alZ+ZK
+	 URQXnoyD6iKTeevD9IKGtTVkf4p3pzUzNhgoF2FoRPUNdSifVn+JWWZYXyl6o4acRa
+	 fGDs/oup4BN3g==
+Date: Mon, 24 Feb 2025 07:26:26 -1000
+From: Tejun Heo <tj@kernel.org>
 To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Theodore Ts'o <tytso@mit.edu>, Ventura Jack <venturajack85@gmail.com>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
-	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
-	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: C aggregate passing (Rust kernel policy)
-Message-ID: <xm5i4ojrwxubao7sj4w7o564aox73no4v5u5pioofamllvnvwt@444xi7c73qdj>
-References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
- <20250222141521.1fe24871@eugeo>
- <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
- <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
- <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
- <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
- <20250224125805.GA5729@mit.edu>
- <CANiq72kMQW6a991e9TgR39pmG5hVd-NcoeJANum4ap-6n=Mhhw@mail.gmail.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Wedson Almeida Filho <walmeida@microsoft.com>,
+	Nell Shamrell-Harrington <nells@linux.microsoft.com>,
+	Dirk Behme <dirk.behme@gmail.com>,
+	Konstantin Andrikopoulos <kernel@mandragore.io>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Roland Xu <mu001999@outlook.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: workqueue: define built-in bh queues
+Message-ID: <Z7yrwkGlJZPC99uL@slm.duckdns.org>
+References: <20250221223533.158959-1-hamzamahfooz@linux.microsoft.com>
+ <CANiq72nsDgRJeKk=B7C9Zo7HL12az+ZLR27qxckqi5H=cmuV5w@mail.gmail.com>
+ <Z7lP5VA374-TuNZz@kernel.org>
+ <Z7lUcq3PycSSHiXx@kernel.org>
+ <Z7lVeWFX-8uQJaJC@Mac.home>
+ <f9b783dff11a923b53cb654a843af7ae33478f30.camel@kernel.org>
+ <CANiq72=c9EZOuwjBz7FjvAe0Hw4Wbyg0w6Za8rZV1kf3uWCtNQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -52,23 +61,38 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CANiq72kMQW6a991e9TgR39pmG5hVd-NcoeJANum4ap-6n=Mhhw@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <CANiq72=c9EZOuwjBz7FjvAe0Hw4Wbyg0w6Za8rZV1kf3uWCtNQ@mail.gmail.com>
 
-On Mon, Feb 24, 2025 at 04:43:46PM +0100, Miguel Ojeda wrote:
-> We also got the question about future subsystems a few times -- could
-> they be implemented in Rust without wrapping C? That would simplify
-> greatly some matters and reduce the amount of unsafe code. However, if
-> the code is supposed to be used by everybody, then that would make
-> some architectures second-class citizens, even if they do not have
-> users depending on that feature today, and thus it may be better to
-> wait until GCC gets to the right point before attempting something
-> like that.
+On Sat, Feb 22, 2025 at 12:57:03PM +0100, Miguel Ojeda wrote:
+...
+> Moreover, I do take issue with your social media post. You claim:
+> 
+>     "Rust kernel patches should really level up on commit messages and
+> not merging random code with zero callers."
+> 
+> We do _not_ merge random code. In fact, my message above was Cc'ing
+> workqueue precisely because we do not just randomly merge code.
+> 
+> Not just that -- if you had actually checked the Git log, you would
+> have seen that Tejun himself merged the bulk of the content in that
+> file. So it seems now you have just blamed two different subsystems
+> entirely.
+> 
+> Regarding "zero callers": that is the usual rule, yes, but it can
+> happen when there are expected users in the future, and in the end it
+> is up to the judgement of the maintainers. For instance, in this file,
+> there are other queues that do not have users yet.
 
-If gccrs solves the archictecture issues, this would be nice - because
-from what I've seen the FFI issues look easier and less error prone when
-Rust is the one underneath.
+FWIW, the commit message could be better but at the same time I'm not sure
+commit message bar is any higher for C patches for something this trivial.
+As for no-immediate-user policy, yes, generally true but again it's sometims
+a necessity or just more convenient to merge these API patches separately -
+e.g. features straddling across subsystems, straightforward prep patches and
+so on. So, that's the *general* rule but rules without flexibility are often
+silly things and it's not like culling these trivial wrappers afterwards is
+difficult.
 
-There are some subtle gotchas w.r.t. lifetimes at FFI boundaries that
-the compiler can't warn about - because that's where you translate to
-raw untracked pointers.
+Thanks.
+
+-- 
+tejun
