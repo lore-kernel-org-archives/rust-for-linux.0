@@ -1,116 +1,141 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f66.google.com (mail-lf1-f66.google.com [209.85.167.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BAE61DF73D;
-	Mon, 24 Feb 2025 22:50:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0C6197558;
+	Mon, 24 Feb 2025 23:04:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740437453; cv=none; b=DqDXgi0ImT3xoNO5ONzP7ZCW2f+vOzi7wOvJfjCudR9IawJ4ntpMtm1dLmX4CbBa3RSiRhpGDF0KrIXN7GrdF9ykLZXP4HIf7TihWICSqEhfzltqFuTq9fZs8FMoJnbU+EIr3+JXhO3YqG1eHgJouKE2B3x2UA1tk7vJg81L/Iw=
+	t=1740438268; cv=none; b=rM/f2lEqBMoIm/yFT65QpAhx0+xj70oWKHhMHZlq9fxf8YPAVsI+NGPYmiUM3VVfVGJqU2nbATH+3OVZOsufNThlnfyU5vVBiYEwLcRs3hyMkPHJ+d1M9orurZj1Rc20LU2PXd568O55LxVVDpDlPk3zquKDwVfSHBV25dDIynY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740437453; c=relaxed/simple;
-	bh=JjSeIZn3Tl9arL130X2XuGh1fuwhuZw06qHF7VDxXy0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pOWsTCH4K5YSOGmE4MTbLFSoprkpn8mjEJq3mxTPDb9Zr8GDai0/HndIqaEut05+CrxDQWibKV+JsWyDDFfkPTxQxz2VBidrcLgahdH29NIEP/4bZZFno7NIiVdjOKkwh5I4FYj3irQgbp/WRKCURfos4JJjZTG1y+xUOh08Nlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=EpMhakMt; arc=none smtp.client-ip=185.70.40.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1740438268; c=relaxed/simple;
+	bh=9dolYcrAbvw6zVWOc0wIyblpS+7dFxmtgKlmfHND2C0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SQbru5TNreA9MApaHFMPA9h1LtiOIv3vE/NT0mKIz268lxB1XNlP8IN9zTR3bbX7DzqFo5HQtN4OXyu+b7iOJVJ0VksJqPFUjxYDDcZRFHYU/YPUD7IyfBG794ucbDhJdOYPLl68dv82JKd7n2CkwPZcM5CPRKKOeP0VQ2qMcc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ks4zqbtL; arc=none smtp.client-ip=209.85.167.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="EpMhakMt"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=pmao5xsvivachg434437b6glrm.protonmail; t=1740437448; x=1740696648;
-	bh=SWT1E+FxSOhMjfUbqdRk62nYCu2aUsyvX/tzao+XenA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=EpMhakMtQ6hQpOr5d0e4XIPEj+DdTuu7vD23MEv4qtOJt9PKfn3qbBp377DB37GhA
-	 NbmESAubI746u4ff4rJIfkFuOFPWIfqCOY/71MEmhVxJyRlBpl4+C504fpbQWFSGLZ
-	 AE+tSd9uEyVQO8FyhKuwYlB8ClANyfjXPxUYlweuFO+u0Ro6PRJoyndMUZf7zv6WK6
-	 mT0tGqqXywxkImmboezuReiWNh7KpH6dsnkNXdZBBMFdkhFsZkgqtQGe1j8XO0RiPT
-	 MUMBuiCiP5siql0WjVqDqXHHlcjb45M2d+rReSieTkiu6TdcS64CcMTfDhyKzrvaHI
-	 L4G29v236pfww==
-Date: Mon, 24 Feb 2025 22:50:44 +0000
-To: Andreas Hindborg <a.hindborg@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-Subject: Re: [PATCH] rust: sync: lock: Add an example for Guard::lock_ref()
-Message-ID: <e3fc00dd-144a-4885-b8c7-76cd9322211a@proton.me>
-In-Reply-To: <87r03n1tmd.fsf@kernel.org>
-References: <20250223072114.3715-1-boqun.feng@gmail.com> <87wmdf22ae.fsf@kernel.org> <abHXLME4gEkYx7XkPVjZGIFs7Uuur8t0PkXDscTQPCvJCRsEfxM7gUS3K4MqegDt_nBDQJQDjLf5utZREFhDzA==@protonmail.internalid> <304505cb-9f68-4d34-b4f1-7d703baba012@proton.me> <87r03n1tmd.fsf@kernel.org>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 491b7f34fa77b5ea96d496a7a34fdf529b8ea894
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ks4zqbtL"
+Received: by mail-lf1-f66.google.com with SMTP id 2adb3069b0e04-5461dab4bfdso5997786e87.3;
+        Mon, 24 Feb 2025 15:04:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740438264; x=1741043064; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bX2vJHkSIfnPYXDLQCf3MUVX+uxwLZX1jGt0RGQn/JM=;
+        b=ks4zqbtLBYZxHpNs6Da0MddYiPsLXa90wZ4Di/coV4WKlaDuEyTr9+12D+g+8lVia+
+         UgHWb4gNwf4N7RmUiM5JJXa/Y5Wl5BPSB5aO8Qe6L3xLLdZh4ebkDuQJoVNOqhbBb7YI
+         tjuDypSpIoKw4yYxYEbW6bV3AkKXpVUStLjVc3vqoL8odKQ7VMm9SfAx+BWdwyaP0Gd1
+         2B5FEU4C6F0wXusn6M/hegzikatQcQtCjklnbL8gvyIIIhWkZvuAs50k7cOKfan1Kwe6
+         CObZG5lEDlf/Z5B6kFMmZ1b8NnKt5GESptfJevzi3LHjZPBVAEmhCVjBlIey5q7Qz1nQ
+         MKPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740438264; x=1741043064;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bX2vJHkSIfnPYXDLQCf3MUVX+uxwLZX1jGt0RGQn/JM=;
+        b=LguMaakpM5WiMZl9rw1y6vGmlCqmQWAT5hW3aRg2tM47NhkLA35Gyyxpi13YR2Yzae
+         rCe7SBipyT6F7kqR5fk9pDs6JpzakwuxAgmrPJEOOS5jaGgokPLdbb3OH9GGMesf2p2v
+         A2ydevCT5Xms/0jqI4IJ4sVcmNTZfsAS8DvnQ91QPwMj6AtByOaNgckYtptVeLkCz0ag
+         zyp7L6iKap+bgOOAaVgD7QdaWi2shByMF4+ny1UUqOxBHu2axze391TWVxO93gMpNq/Z
+         EG7AUZQr//K8cdJuivJfipWETI3uEAU8GCW8KGJX4HzYtafdUWWz9iPHzrkV8p9bB+xh
+         j75A==
+X-Forwarded-Encrypted: i=1; AJvYcCWU1j0wXOckZdAEx7Pq8qdPdo8ag4TimDZh8aDJ3tVDMVczE7lu3lGdiiHmnuo1aYWzyby0zcRl1izT8+U=@vger.kernel.org, AJvYcCXrmmXiwndGggsr9XBPASp0+OLuBtsJe5FkqNdAMp59hwUGB/+ZW8bwXkqxI1JGwYXVn40H5uSr1XMUzXUfTSw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3s6ACWKEIFDb+r2ztMMWbe9/InM2H4brsFwIBf+eU1N2IuY/e
+	JiQhvNOqXq5nAFefV33wyT5lTTXFFzE2FNlnf5GTn6JZhsQPEOf8Cddr3I/5UgpZf12y9tR8Hax
+	dcvDhp2s4pxSiWi3DrvYEHaMhJtY=
+X-Gm-Gg: ASbGncumopqTdkpKGJxDwfi1pLK82tBz9S4kdI2CjtroZkU9eOwef2Rz0rp72InBuSC
+	pYkaDGFAkUcOLXOMW1cwVoNLwH68/oTcgDv8BW1P3WwoLN6pxlNqxHTNuMI4O0QYFwBR8FgZf2g
+	NQU35xt95u
+X-Google-Smtp-Source: AGHT+IFFJhRE3Al38mb61oLdXyI6FGFfcEO4jXtiTTGVk6/pwT9T82qqzausAEPp4MaJUT8MU6L1pcwLsqha9GhCWTM=
+X-Received: by 2002:a05:6512:108b:b0:545:bf4:4bc7 with SMTP id
+ 2adb3069b0e04-54838ee9139mr5750419e87.19.1740438263970; Mon, 24 Feb 2025
+ 15:04:23 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
+ <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+ <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+ <20250224002745.7d7460a7.gary@garyguo.net> <CAFJgqgSNjF=LfrCNTH3GdYssXz9YG-AeCtpibejJ7Ywtx0m3HQ@mail.gmail.com>
+ <4cb1d98b-f94b-410a-be90-4394c48bdbf2@proton.me> <CAFJgqgQ3P81-iskGu9R+T=c=wyB2K0JqUhx+Gj+6mkYeY8-ORg@mail.gmail.com>
+ <a4b79751-f1c8-4476-98a5-c59fb2e545ad@proton.me> <CAFJgqgRdiQ29bWvwsu11yokZb4OFF7pYYUU=ES6CYv9847KgVg@mail.gmail.com>
+ <c05cb400-969d-44a1-bd40-9b799ed894d7@proton.me>
+In-Reply-To: <c05cb400-969d-44a1-bd40-9b799ed894d7@proton.me>
+From: Ventura Jack <venturajack85@gmail.com>
+Date: Mon, 24 Feb 2025 16:04:11 -0700
+X-Gm-Features: AWEUYZm3FQUc7v5ynrtRFpLc3fAluhwUO3IC2tdoYT596U8GBpUsWxMZSKRfhHM
+Message-ID: <CAFJgqgTs3h5YagY1RU2AZf3wKWKfXiPTE2mx7CuWyzN=ee-k3g@mail.gmail.com>
+Subject: Re: C aggregate passing (Rust kernel policy)
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Gary Guo <gary@garyguo.net>, Linus Torvalds <torvalds@linux-foundation.org>, 
+	Kent Overstreet <kent.overstreet@linux.dev>, airlied@gmail.com, boqun.feng@gmail.com, 
+	david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, 
+	hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 24.02.25 12:15, Andreas Hindborg wrote:
-> "Benno Lossin" <benno.lossin@proton.me> writes:
->=20
->> On 24.02.25 09:08, Andreas Hindborg wrote:
->>> Boqun Feng <boqun.feng@gmail.com> writes:
->>>
->>>> To provide examples on usage of `Guard::lock_ref()` along with the uni=
-t
->>>> test, an "assert a lock is held by a guard" example is added.
->>>>
->>>> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
->>>> ---
->>>> This depends on Alice's patch:
->>>>
->>>> =09https://lore.kernel.org/all/20250130-guard-get-lock-v1-1-8ed8789992=
-0a@google.com/
->>>>
->>>> I'm also OK to fold this in if Alice thinks it's fine.
->>>>
->>>>  rust/kernel/sync/lock.rs | 24 ++++++++++++++++++++++++
->>>>  1 file changed, 24 insertions(+)
->>>>
->>>> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
->>>> index 3701fac6ebf6..6d868e35b0a3 100644
->>>> --- a/rust/kernel/sync/lock.rs
->>>> +++ b/rust/kernel/sync/lock.rs
->>>> @@ -201,6 +201,30 @@ unsafe impl<T: Sync + ?Sized, B: Backend> Sync fo=
-r Guard<'_, T, B> {}
->>>>
->>>>  impl<'a, T: ?Sized, B: Backend> Guard<'a, T, B> {
->>>>      /// Returns the lock that this guard originates from.
->>>> +    ///
->>>> +    /// # Examples
->>>> +    ///
->>>> +    /// The following example shows how to use [`Guard::lock_ref()`] =
-to assert the corresponding
->>>> +    /// lock is held.
->>>> +    ///
->>>> +    /// ```
->>>> +    /// # use kernel::{new_spinlock, stack_pin_init, sync::lock::{Bac=
-kend, Guard, Lock}};
->>>> +    ///
->>>> +    /// fn assert_held<T, B: Backend>(guard: &Guard<'_, T, B>, lock: =
-&Lock<T, B>) {
->>>> +    ///     // Address-equal means the same lock.
->>>> +    ///     assert!(core::ptr::eq(guard.lock_ref(), lock));
->>>> +    /// }
->>>
->>> This seems super useful. Perhaps add this method as part of the lock ap=
-i
->>> instead of just having it in the example?
->>
->> I don't think it should be an assert. Instead make it return a
->> `Result<(), ()>`. (or create better named unit error types)
->=20
-> No, this should not be part of usual control flow, and developers should
-> not make control flow decisions based on this. It would always be an
-> assertion. But you are right that `assert!` is probably not what we
-> want. `debug_assert!` might be fine though.
+On Mon, Feb 24, 2025 at 3:03=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
+e> wrote:
+>
+> On 24.02.25 17:57, Ventura Jack wrote:
+> > One example I tested against MIRI:
+> >
+> >     use std::cell::UnsafeCell;
+> >
+> >     fn main() {
+> >
+> >         let val: UnsafeCell<i32> =3D UnsafeCell::new(42);
+> >         let x: & UnsafeCell<i32> =3D &val;
+> >         let y: & UnsafeCell<i32> =3D &val;
+> >
+> >         unsafe {
+> >
+> >             // UB.
+> >             //let pz: & i32 =3D & *val.get();
+> >
+> >             // UB.
+> >             //let pz: &mut i32 =3D &mut *val.get();
+> >
+> >             // Okay.
+> >             //let pz: *const i32 =3D &raw const *val.get();
+> >
+> >             // Okay.
+> >             let pz: *mut i32 =3D &raw mut *val.get();
+> >
+> >             let px: *mut i32 =3D x.get();
+> >             let py: *mut i32 =3D y.get();
+> >
+> >             *px =3D 0;
+> >             *py +=3D 42;
+> >             *px +=3D 24;
+> >
+> >             println!("x, y, z: {}, {}, {}", *px, *py, *pz);
+> >         }
+> >     }
+> >
+> > It makes sense that the Rust "raw pointers" `*const i32` and `*mut
+> > i32` are fine here, and that taking Rust "references" `& i32` and
+> > `&mut i32` causes UB, since Rust "references" have aliasing rules that
+> > must be followed.
+>
+> So it depends on what exactly you do, since if you just uncomment one of
+> the "UB" lines, the variable never gets used and thus no actual UB
+> happens. But if you were to do this:
 
-I agree, that it shouldn't be used for driver logic, but you still might
-want to warn/warn_once instead of panic (or debug_assert).
+I did actually test it against MIRI with only one line commented in at
+a time, and the UB lines did give UB according to MIRI, I did not
+explain that. It feels a lot like juggling with very sharp knives, but
+I already knew that, because the Rust community generally does a great
+job of warning people against unsafe. MIRI is very good, but it cannot
+catch everything, so it cannot be relied upon in general. And MIRI
+shares some of the advantages and disadvantages of sanitizers for C.
 
----
-Cheers,
-Benno
-
+Best, VJ.
