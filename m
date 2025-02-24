@@ -1,53 +1,53 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6944823BCF1;
-	Mon, 24 Feb 2025 13:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE21204C19;
+	Mon, 24 Feb 2025 13:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740402682; cv=none; b=jWNa6PW60d8+LvWqS2oh1KhcZ8F+2Mr3VuDqjA69c2RtlGJglgOiggt9tPZFqb9FcL2n6rdVCvnpUbRdgUska2nWqY4QKK65K0+crCX8/NcAGS9rAnqTI51sv5TP3WG/lSeC7T/ci7ryihpvRlAuOrkxwVmlczuMBODpvMneXdE=
+	t=1740403198; cv=none; b=ko83P2hUYyycUCF9uLdgW37/OQmNJX6zy7W7oIuRRFswkjicIU3Ml3yFaSiXwGZtlWd4bqjIXXd27xxmb4MP5Q1XII6R+KDw5CeOUOn7xzqLnge+TqgteGY5JfFrSVxmMsRiT1kn0D994uAgfssPHJexBt3EzAxdo8Fbaj0YoHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740402682; c=relaxed/simple;
-	bh=LYdAXzO8SbVG83HH+nxA4TnZc//nwyYpcvy5mTdmdKE=;
+	s=arc-20240116; t=1740403198; c=relaxed/simple;
+	bh=KA0U3yGXGRApRKSXSLe/A+8EbnTuZLr33bkGUSV34E8=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=q7Vu7ipZrJ9e7F3Fjf0thRFnQvDNfRw9qUPJkJbYZovhqs6zbm58UpAwKN/TMI4hhkQtTSeaGp7VFsSRcqDGqy4n8RC3M7rYKoK8dz/wxmxuaIRdSJSGlNJDRsVTWzFaWqsvwBht0nYU0MttiYk2q21gCYhq+YsX72DYbIgnaJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ctvpDCg5; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=cZJtbMGrUECqcI3xm4M0g8Lzu0ACb2fmTgUtPNPYJd4RVn2hoEcHR03Q3yxL7JJdTyqf1zn5qFgLjQ7iQWWUxpX4Tww2lw1/L4pulFQNnmI7wD9EviwjQJPub128UoQYUv7p0m4v91TIxAv4LBSQ2Q7rM7msv8d/KxUPdq7zhfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WC67035u; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ctvpDCg5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D2F1C4CED6;
-	Mon, 24 Feb 2025 13:11:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WC67035u"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16342C4CEE9;
+	Mon, 24 Feb 2025 13:19:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740402682;
-	bh=LYdAXzO8SbVG83HH+nxA4TnZc//nwyYpcvy5mTdmdKE=;
+	s=k20201202; t=1740403197;
+	bh=KA0U3yGXGRApRKSXSLe/A+8EbnTuZLr33bkGUSV34E8=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=ctvpDCg5YqsORrsRWCcvWjHj1c9z3quO4ellroNdFN8RHnhvnjXwKZu5pu+HyFRo0
-	 6xnq9lXzwNJgW8LUmQWA94VKHw/tZ2Y8zPEo1T6p/xgtTb2ZOEjKdbjKrbmSe1Zgvl
-	 YCEImmXaYHj3MB/pVu5JUgecqIniz4c40Y/W1CXrR3guezSPMOqdJj40h3FH1/CBBm
-	 LFRdRqu85znYx/Ag+Zuh0jANmqRuE3TPKiki+kRSwMBmboBR6VwJ4JOK/QqMo147Vr
-	 VeFHhD2f6xE4PIcyQOzPPnNJDcJnQRI1JJXowGnWAqEtEka9BkHe0CSKYKYjOdXD6C
-	 G9/XbNR7oUBcA==
+	b=WC67035uEDhZLCLF+fM4DWybhrnc8ELZshTrBfgVskOrNof/rUw5S1UH66RZH9R5A
+	 7KqdlmPoqur6lqx3I4SyvB8fZpyAloOMXdd3FO1dygceg5cPmEsgyrYKBEwfPGAgom
+	 pqgbh7LmWC8CXMXHRciufEBtBDgnhah3lLf+SX57xKNrVXgD82rA7Xkl69usXlQFeA
+	 /SRfE0pfrrXjn7AQ69Be8O2HXTWfovejM7dry8bhLAbF6u/hF3eB5a0qmESkw5fMyV
+	 sdg8ahrlHW5EeD0FU9vyS1UABvb/lkUKlz7SCGZhVRjh1ya86IJOdOdqo4GGpBGvQ2
+	 +moOnfmVO4g2w==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Abdiel Janulgue" <abdiel.janulgue@gmail.com>
-Cc: <aliceryhl@google.com>,  <dakr@kernel.org>,  <robin.murphy@arm.com>,
-  <daniel.almeida@collabora.com>,  <rust-for-linux@vger.kernel.org>,
-  "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno
- Lossin" <benno.lossin@proton.me>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Valentin Obst" <kernel@valentinobst.de>,
-  <linux-kernel@vger.kernel.org>,  "Christoph Hellwig" <hch@lst.de>,
-  "Marek Szyprowski" <m.szyprowski@samsung.com>,  <airlied@redhat.com>,
-  <iommu@lists.linux.dev>
-Subject: Re: [PATCH v12 1/3] rust: error: Add EOVERFLOW
-In-Reply-To: <20250224115007.2072043-2-abdiel.janulgue@gmail.com> (Abdiel
-	Janulgue's message of "Mon, 24 Feb 2025 13:49:05 +0200")
-References: <20250224115007.2072043-1-abdiel.janulgue@gmail.com>
-	<L-IMnzWNMQGcB6Qt5mnpFrsDdcoiVceLvT66VTWw_ZEbn1eD-t7bRJz5qFocbRfIDXJIiVKEeCVM-EbOZgAM7A==@protonmail.internalid>
-	<20250224115007.2072043-2-abdiel.janulgue@gmail.com>
+To: "Frederic Weisbecker" <frederic@kernel.org>
+Cc: "Anna-Maria Behnsen" <anna-maria@linutronix.de>, "Thomas Gleixner"
+ <tglx@linutronix.de>,  "Danilo Krummrich" <dakr@kernel.org>,  "Alex
+ Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,
+  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
+  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
+  "Lyude Paul" <lyude@redhat.com>,  "Guangbo Cui" <2407018371@qq.com>,
+  "Dirk Behme" <dirk.behme@gmail.com>,  "Daniel Almeida"
+ <daniel.almeida@collabora.com>,  "Tamir Duberstein" <tamird@gmail.com>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
+ "Miguel Ojeda" <ojeda@kernel.org>
+Subject: Re: [PATCH v9 01/13] rust: hrtimer: introduce hrtimer support
+In-Reply-To: <20250224-hrtimer-v3-v6-12-rc2-v9-1-5bd3bf0ce6cc@kernel.org>
+	(Andreas Hindborg's message of "Mon, 24 Feb 2025 13:03:35 +0100")
+References: <20250224-hrtimer-v3-v6-12-rc2-v9-0-5bd3bf0ce6cc@kernel.org>
+	<Fg4QliwzbHj3m-Fr3ZeUiU11d6Bu-I7w_9xzSsnDlzQtqCkjgqxJpI6_YxuXnB8m0MqESq6V7vK7FhPnEcvGwg==@protonmail.internalid>
+	<20250224-hrtimer-v3-v6-12-rc2-v9-1-5bd3bf0ce6cc@kernel.org>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Mon, 24 Feb 2025 14:11:10 +0100
-Message-ID: <87a5ab1o9d.fsf@kernel.org>
+Date: Mon, 24 Feb 2025 14:19:45 +0100
+Message-ID: <874j0j1nv2.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -56,20 +56,24 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-"Abdiel Janulgue" <abdiel.janulgue@gmail.com> writes:
+Hi Frederic,
 
-> Trivial addition for missing EOVERFLOW error. This is used by a
-> subsequent patch that might require returning EOVERFLOW as a result
-> of `checked_mul`.
+"Andreas Hindborg" <a.hindborg@kernel.org> writes:
+
+> This patch adds support for intrusive use of the hrtimer system. For now,
+> only one timer can be embedded in a Rust struct.
 >
-> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> The hrtimer Rust API is based on the intrusive style pattern introduced by
+> the Rust workqueue API.
+>
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> ---
 
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+I dropped your ack because I added the kconfig. Re-ack if you are still
+happy :)
 
 
 Best regards,
 Andreas Hindborg
-
 
 
