@@ -1,43 +1,43 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B777F18C924;
-	Mon, 24 Feb 2025 10:06:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3B6158558;
+	Mon, 24 Feb 2025 10:31:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740391608; cv=none; b=BWMcsKCYB8Buzb/x9SKBWfh7qPCHUnfpfmPoAY7FLtCgsgFLoI7Jpt542rVqhRFAjk9sjxAPUNN6kjHRZSzMstbSRp1ezEF1PmLHEk8h8XMtN/gmzGgO3bfjYIOumE9doiUwCEWq/TPGkRm6e3ufuUpBgrthlB0gphKFQ0hE/CQ=
+	t=1740393105; cv=none; b=E1oxokQDGRFnHdKGzJk/u5Qcu1w59HT0zXkECDxjzLTga2SEdJsPIkaA3l5jpXOSLqBo2QMsIlxMj5PphM3PykZ5l86wM9YJ9u6M0Qgypr2AM/C8PfSSqoPXwlCsbImKk9KL1YeFUmYBFPa+L+CKNcSWhAYNU1s34YJd60wc+G0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740391608; c=relaxed/simple;
-	bh=iG0pOq7skTua110Kfdnnzrm6EfHdFkinT2pLrXudrJg=;
+	s=arc-20240116; t=1740393105; c=relaxed/simple;
+	bh=YEqwAb4jpfigQsG7TUy3nfN96kHKam8dsx5o2/l+LRc=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kz3pdejsTdF2jTMRKGA3AO6xxfjXOGHGEjpG1XYuzWml21SyHCeyGCw2QKeQgh/FFyWJbYzHp0GIRQNGPWCVxktzHgo757TBjt4g8kcBqXWiAnssKTEbrWxMQ16LDgbt4Tki/nYmUnekDL22aQhJ8DtGvWmZ59Hcblce08xtuE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=nsh21lt8; arc=none smtp.client-ip=185.70.40.131
+	 MIME-Version:Content-Type; b=r/Fzs2ReMs9shyWPlj15/ZRSR1BvlUNBzUeyOpeGq3W1Ns+EIRLhLW2DzYCz3CtYGwr6S2+WWZfB++wvX4skUi8Km80uL23HbfvXFvcYJEla6K6w/n0qX5km14Gv5kXBv9/xHALUH9TRUp0OuMzavYQV9mW3Xu5nY3A2H98xeG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=X48YGP+B; arc=none smtp.client-ip=185.70.40.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="nsh21lt8"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="X48YGP+B"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=2eggbcunrrgmnef7zk3fuhzcjm.protonmail; t=1740391598; x=1740650798;
-	bh=yBthN9NjWnE1WZ5jO+aZCi8NljUP2Ml09wtArQ+KDzo=;
+	s=protonmail; t=1740393093; x=1740652293;
+	bh=CyvL81nQqc7Glcr/5M3NTDnb4ToLegoQ7u3L4LySJ0M=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=nsh21lt8d3j7AJIXOZnv+HKf4AQPP/Vc7IlakTcJqfMcvosWTSHoPpTbRCNXEs2A4
-	 WjEuUJVyrU5JuWPhINhN5X2aGFiJPHVVRThVHuY8z4C2y5wo8ET4wtjOybHhBH6cK2
-	 3iGFm0UeBVnwIxo0cSGZD34k+gTBXJADsqo0+8B+C/+wBp+/A7AmYYeEH6FaHrSK75
-	 C4ImrW4UIrngBwlV446UQPh1WeBaXJZNMrA2Kjec0MKjDxVARAP3IQcKyrCGiuDkXK
-	 VLWou/x84rtjBZakA95Gs/hQEcpCDbq3KSeDxzuU1srKMLzCMe7AVe0a1xQmWDLXBS
-	 sa8+OfgWA829Q==
-Date: Mon, 24 Feb 2025 10:06:35 +0000
-To: Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun.feng@gmail.com>
+	b=X48YGP+BmWrP66qBQtOwFg1HuJMzimXUlkpUzhM3/RvuWcvyo7Tlcmx31hTTirfQt
+	 SxHp8tfmFpwN7oCRCYyD9Pzr4bHe6XXXuOnipM4fgiaTqJcIl2FVYnFKvnqiGEHWrm
+	 RiGtWUO864Rm8OHUWgMSJkWp0AAl9BEE7jV0BvBGtRf2/MuxjyjccPogppRnJK5EWL
+	 x09j4bu3fTuSMWCsiaQC0wj9LpGFvce/yjahMGjdHKtACblUi85gyzxoK1qZkDV63S
+	 d0m1s0Fz3Vm3j+A8OobmnGajACDLF1pqttIjB8Emb3vSJDLXrO/olSfiBfPe565dJU
+	 H5/DFn/NrUPmQ==
+Date: Mon, 24 Feb 2025 10:31:30 +0000
+To: Ventura Jack <venturajack85@gmail.com>, Gary Guo <gary@garyguo.net>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-Subject: Re: [PATCH] rust: sync: lock: Add an example for Guard::lock_ref()
-Message-ID: <304505cb-9f68-4d34-b4f1-7d703baba012@proton.me>
-In-Reply-To: <87wmdf22ae.fsf@kernel.org>
-References: <20250223072114.3715-1-boqun.feng@gmail.com> <87wmdf22ae.fsf@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Kent Overstreet <kent.overstreet@linux.dev>, airlied@gmail.com, boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
+Subject: Re: C aggregate passing (Rust kernel policy)
+Message-ID: <4cb1d98b-f94b-410a-be90-4394c48bdbf2@proton.me>
+In-Reply-To: <CAFJgqgSNjF=LfrCNTH3GdYssXz9YG-AeCtpibejJ7Ywtx0m3HQ@mail.gmail.com>
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com> <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com> <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c> <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com> <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com> <20250224002745.7d7460a7.gary@garyguo.net> <CAFJgqgSNjF=LfrCNTH3GdYssXz9YG-AeCtpibejJ7Ywtx0m3HQ@mail.gmail.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 44a2cd62d22bf5bd2b7781e011132f4265e83c73
+X-Pm-Message-ID: 9760e1a328d1ec9880efa1afb336abcc8ff10c8a
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,55 +47,134 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 24.02.25 09:08, Andreas Hindborg wrote:
-> Boqun Feng <boqun.feng@gmail.com> writes:
+On 24.02.25 10:57, Ventura Jack wrote:
+> On Sun, Feb 23, 2025 at 5:27=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote=
+:
+>>
+>> On Sun, 23 Feb 2025 08:30:06 -0700
+>> Ventura Jack <venturajack85@gmail.com> wrote:
+>>
+>>> - In unsafe Rust, it is the programmer's responsibility
+>>>     to obey the aliasing rules, though the type system
+>>>     can offer limited help.
+>>> - The aliasing rules in Rust are possibly as hard or
+>>>     harder than for C "restrict", and it is not possible to
+>>>     opt out of aliasing in Rust, which is cited by some
+>>>     as one of the reasons for unsafe Rust being
+>>>     harder than C.
+>>
+>> The analogy is correct, you can more or less treat all Rust references
+>> a `restrict` pointers. However it is possible to opt out, and it is
+>> done at a per-type basis.
+>>
+>> Rust provides `UnsafeCell` to make a immutable reference mutable (i.e.
+>> "interior mutability"), and this makes `&UnsafeCell<T>` behaves like
+>> `T*` in C.
+>>
+>> There's another mechanism (currently under rework, though) that makes a
+>> mutable reference behave like `T*` in C.
+>>
+>> RfL provides a `Opaque` type that wraps these mechanisms so it
+>> absolutely cancel out any assumptions that the compiler can make about
+>> a pointer whatsoever. For extra peace of mind, this is used for all
+>> data structure that we share with C.
+>>
+>> This type granularity is very useful. It allows selective opt-out for
+>> harder to reason stuff, while it allows the compiler (and programmers!)
+>> to assume that, say, if you're dealing with an immutable sequence of
+>> bytes, then calling an arbitrary function will not magically change
+>> contents of it.
+>>
+>> Best,
+>> Gary
 >=20
->> To provide examples on usage of `Guard::lock_ref()` along with the unit
->> test, an "assert a lock is held by a guard" example is added.
->>
->> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
->> ---
->> This depends on Alice's patch:
->>
->> =09https://lore.kernel.org/all/20250130-guard-get-lock-v1-1-8ed87899920a=
-@google.com/
->>
->> I'm also OK to fold this in if Alice thinks it's fine.
->>
->>  rust/kernel/sync/lock.rs | 24 ++++++++++++++++++++++++
->>  1 file changed, 24 insertions(+)
->>
->> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
->> index 3701fac6ebf6..6d868e35b0a3 100644
->> --- a/rust/kernel/sync/lock.rs
->> +++ b/rust/kernel/sync/lock.rs
->> @@ -201,6 +201,30 @@ unsafe impl<T: Sync + ?Sized, B: Backend> Sync for =
-Guard<'_, T, B> {}
->>
->>  impl<'a, T: ?Sized, B: Backend> Guard<'a, T, B> {
->>      /// Returns the lock that this guard originates from.
->> +    ///
->> +    /// # Examples
->> +    ///
->> +    /// The following example shows how to use [`Guard::lock_ref()`] to=
- assert the corresponding
->> +    /// lock is held.
->> +    ///
->> +    /// ```
->> +    /// # use kernel::{new_spinlock, stack_pin_init, sync::lock::{Backe=
-nd, Guard, Lock}};
->> +    ///
->> +    /// fn assert_held<T, B: Backend>(guard: &Guard<'_, T, B>, lock: &L=
-ock<T, B>) {
->> +    ///     // Address-equal means the same lock.
->> +    ///     assert!(core::ptr::eq(guard.lock_ref(), lock));
->> +    /// }
->=20
-> This seems super useful. Perhaps add this method as part of the lock api
-> instead of just having it in the example?
+> In regards to `UnsafeCell`, I believe that you are correct in regards
+> to mutability. However, if I understand you correctly, and if I
+> am not mistaken, I believe that you are wrong about `UnsafeCell`
+> making it possible to opt-out of the aliasing rules. And thus that
+> `UnsafeCell` does not behave like `T*` in C.
 
-I don't think it should be an assert. Instead make it return a
-`Result<(), ()>`. (or create better named unit error types)
+`UnsafeCell<T>` does not behave like `T*` in C, because it isn't a
+pointer. Like Gary said, `&UnsafeCell<T>` behaves like `T*` in C, while
+`&mut UnsafeCell<T>` does not. That is what you quote from the docs
+below. (Those ampersands mark references in Rust, pointers that have
+additional guarantees [1])
+
+For disabling the uniqueness guarantee for `&mut`, we use an official
+"hack" that the Rust language developers are working on replacing with
+a better mechanism (this was also mentioned by Gary above).
+
+[1]: https://doc.rust-lang.org/std/primitive.reference.html
+
+> Documentation for `UnsafeCell`:
+>     https://doc.rust-lang.org/std/cell/struct.UnsafeCell.html
+>=20
+>     "Note that only the immutability guarantee for shared
+>     references is affected by `UnsafeCell`. The uniqueness
+>     guarantee for mutable references is unaffected. There is no
+>     legal way to obtain aliasing `&mut`, not even with `UnsafeCell<T>`."
+>=20
+>     "Note that whilst mutating the contents of an `&UnsafeCell<T>`
+>     (even while other `&UnsafeCell<T>` references alias the cell) is
+>     ok (provided you enforce the above invariants some other way),
+>     it is still undefined behavior to have multiple
+>     `&mut UnsafeCell<T>` aliases."
+>=20
+> The documentation for `UnsafeCell` is long, and also mentions
+> that the precise aliasing rules for Rust are somewhat in flux.
+>=20
+>     "The precise Rust aliasing rules are somewhat in flux, but the
+>     main points are not contentious:"
+>=20
+> In regards to the `Opaque` type, it looks a bit like a C++
+> "smart pointer" or wrapper type, if I am not mistaken.
+
+It is not a smart pointer, as it has nothing to do with allocating or
+deallocating. But it is a wrapper type that just removes all aliasing
+guarantees if it is placed behind a reference (be it immutable or
+mutable).
+
+> Documentation and related links for `Opaque`:
+>     https://rust.docs.kernel.org/kernel/types/struct.Opaque.html
+>     https://rust.docs.kernel.org/src/kernel/types.rs.html#307-310
+>     https://github.com/Rust-for-Linux/pinned-init
+>=20
+> It uses `UnsafeCell`, Rust "pinning", and the Rust for Linux library
+> "pinned-init".
+
+pinned-init is not specific to `Opaque` and not really relevant with
+respect to discussing aliasing guarantees.
+
+> "pinned-init" uses a number of experimental, unstable and nightly
+> features of Rust.
+
+This is wrong. It uses no unstable features when you look at the version
+in-tree (at `rust/kernel/init.rs`). The user-space version uses a single
+unstable feature: `allocator_api` for accessing the `AllocError` type
+from the standard library. You can disable the `alloc` feature and use
+it on a stable compiler as written in the readme.
+
+> Working with the library implementation requires having a good
+> understanding of unsafe Rust and many advanced features of Rust.
+
+pinned-init was explicitly designed such that you *don't* have to write
+unsafe code for initializing structures that require pinning from the
+get-go (such as the kernel's mutex). Yes, at some point you need to use
+`unsafe` (eg in the `Mutex::new` function), but that will only be
+required in the abstraction.
+I don't know which "advanced features of Rust" you are talking about,
+since a user will only need to read the docs and then use one of the
+`[try_][pin_]init!` macros to initialize their struct.
+(If you have any suggestions for what to improve in the docs, please let
+me know. Also if you think something isn't easy to understand also let
+me know, then I might be able to improve it. Thanks!)
+
+> `Opaque` looks interesting. Do you know if it will become a more
+> widely used abstraction outside the Linux kernel?
+
+Only in projects that do FFI with C/C++ (or other such languages).
+Outside of that the `Opaque` type is rather useless, since it disables
+normal guarantees and makes working with the inner type annoying.
 
 ---
 Cheers,
