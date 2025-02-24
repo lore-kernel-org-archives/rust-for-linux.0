@@ -1,38 +1,106 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC63265CC7;
-	Mon, 24 Feb 2025 18:03:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE817BAEC;
+	Mon, 24 Feb 2025 18:09:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740420239; cv=none; b=eALzd1wTCXDCLNuWRVyfpUmt8SYhO+RcUCgecJ0PcTrSxlS3DA6TKlP6YhTLLgBb/OdW2WvhbCxk3xtdzNpMB/JWgd6VJrk63uSwhPARhRPTNlt3cjcO1YOb8NwDSUT0PcZJdI8/FgMJdLzXMjhC/6VpNank9Lp45ON8QFOQCPU=
+	t=1740420600; cv=none; b=j225kSe33pORxEc1/YwSuimhtcgIdPCZLrvdMqTTfyPMBAkk1aXSuJxKw8YOuPAMJrkhQt1PaI6RsGJVbSkvEDKR4wLGMqf2sKdFJ4oaxnTs3Z7c/cUryZHJHUR46MDEM3IMGeZyxYeDMJvoJ58ppgBoNBjL1OvsKpz3s4bjTMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740420239; c=relaxed/simple;
-	bh=cgzLQwBCDfKRaWD7SiW5ribqbmcPwvUXFZODbdvUuAI=;
+	s=arc-20240116; t=1740420600; c=relaxed/simple;
+	bh=gU/CvK4LTvvfzt5OL3/XHB79eCswcfCi/MwYgtvXhAI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l+s+JTMlGbJu7qpYKYWcHLNzA3kREPM+6aeHallS84/IbQ+IopLcDJYrPrG0re9mhjLmVL8ZTBLp4X7nuJ5L/y6l1xZraCwEPmpr16zrc+sLH3hIO2Rz9GIPMOvetDfA3CIesHe33fZaMrIPli6sulga0MoIuxiPJyixA2Q3dyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=lR5RGht4; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=cBf3hgqxuWVoX/husmwEZrUYfRJDjPKCpl8/Yb3dIV0p6dbukp/U8/oYM5eoiss6rxAMdpSyelO4TstPNJRg/lDY2Cwrm+k+0zUYKtpQKBLz6MF3F75dzshWmCh2EjsjY7ItRUy5Ogi0pws95QwkX5IUaYhByY58Rcmyv37bKnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DyM+P3nl; arc=none smtp.client-ip=209.85.219.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="lR5RGht4"
-Received: from hm-sls2 (bras-base-toroon4332w-grc-32-142-114-216-132.dsl.bell.ca [142.114.216.132])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 8A81320376D0;
-	Mon, 24 Feb 2025 10:03:56 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8A81320376D0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1740420237;
-	bh=uLG6vEMaW8gpv5F+S3c/S5AJWW46BKdcE4ru+h4q8a8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lR5RGht4yTR/C72u7mR8k3uoCiiKr621ctR90Ca6YYCsKRVVCcJlUFalhWTUtyDD6
-	 a0UPD58sWaSYY3Xvk369VoUSQTWw2ehVjg3gRDhDqxZpmEBjVdrRJBhKHMCgHZgT2e
-	 HVJpiwAPf3I+HsqoCk28rxLucJl4hi5Mo+QF8Pd8=
-Date: Mon, 24 Feb 2025 13:03:48 -0500
-From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-To: Tejun Heo <tj@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, Lai Jiangshan <jiangshanlai@gmail.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DyM+P3nl"
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-6dd1962a75bso37060526d6.3;
+        Mon, 24 Feb 2025 10:09:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740420597; x=1741025397; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5REyHtGy5MsWEghLjl4rKd5uHvNMAxs6Ggs15MzzX90=;
+        b=DyM+P3nlcu13f73ajYoE8s+dvvvyGrOoEun6u/dBfNUdChMkoCr1nV9Ew9zG9xBmH9
+         VENAHMW57O3f8+Ibt7ij69x4GlLd5cmXXb4Uf3HWhmASOIXYQSCMKowVezzAhczuLrbC
+         Fq2L78eu5qx0Hiheqf2kbCFfRFeY9PgAxAt/tN46J6L0cdDmTFF4dpUSwX6xG8Lhdx+O
+         XOii7zpG2Yd80N4C8o0uWR1YowJcFzYqV7Csa0hfvl9wAazGiWf3mH9n2IB+LAHrYuML
+         s0Z8hQnIGdoo6GPy3hxmyxNgkSIuVjC6PqFuFhbyrP9z23HDLmmbVU4IwFlyXATSo7bn
+         fI4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740420597; x=1741025397;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5REyHtGy5MsWEghLjl4rKd5uHvNMAxs6Ggs15MzzX90=;
+        b=aRxSKiSrSQegn3A7jFaa4aCuelPjRLKa9O9d5a3IHQLK1VtQBNjKE6UgwrAPetZKsl
+         H2N/gVmmEivoKqeWEFYDGEPof2atTi3EeQSxWdqfwsBIfTjeeIOHVAbFJQcBthc1GDGk
+         t1OtmYe7+piPhY2MzBjFdwfcp8BGSSmMiJAq0tTVKjbw6PaveRCpknmvYjiAcLEvbHRE
+         wYdpcoysA3Leo1MqPLFtvlUea7q1kd//rvdfcYh+K2TTLugM3TVTBbmGLyZ29JGXhgiM
+         A7Myuwxdd0ohWSjm4/+sXRXoDfDHKXly52HcJlyw14+duiZSyVagfdLB+IfrapWWZZoP
+         w3CA==
+X-Forwarded-Encrypted: i=1; AJvYcCWxm1XaQLkAmzzeTJ3MglpZNRiVxPtVVhKs81Y7n0Hj7rn59jmLeff8YLXch/2865shel2a+0oKloakAmw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUsRXyBS9/lYtwYsF9oamt7x/w0nDs/pbrVEWdJ+n5XSsWUPs6
+	dzyjHzN5vaBKs42Tdi+0lubdfWKv03J/aEZCugkXFXLWfBGS0hoi
+X-Gm-Gg: ASbGncugsnPRKgitJa9TYuGRUuKN6rpHY0QEU/ONU51zd/j6CGKJ+/8IQOgk6RSbXk1
+	nceu9T0oefx6qkBhc2xxm0KyM6BQ/0kboijYg3SpJaCXFkZknI4N6gILouL2HbOkz8W/g+K7RPA
+	wpin/U7cwUCkOhuP5q1KKu136Qy5y650E2rAp85TczRUpCZUW42XBR2O3qd2CRQ3QpSCIhY2inW
+	p1eoQD9ZUM3Qkvh38em3tcYiEafJcuJx+WuYPwfbAhYSlwwZO5x+Nm49sBX5Jl5x4vWUrgv8hk7
+	QXB5vER6AtbZqYVAgXiY2nWa9nSeApReOEjSUipo3nqAX7iaJnbu2uwkCQ+eRcSVlDmRKlo6fFP
+	qJ0kBAlwHazDpBiU1
+X-Google-Smtp-Source: AGHT+IF8fmg4I+B8rEkpCzJ9vZrzmfrPoPS7NxmAcijA8z9J02igDc/sMh0QE8yYMXtrJcly3KuVbg==
+X-Received: by 2002:a05:6214:230e:b0:6e6:5efa:4dfa with SMTP id 6a1803df08f44-6e6b010d162mr218039686d6.21.1740420597220;
+        Mon, 24 Feb 2025 10:09:57 -0800 (PST)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e6b1759af6sm45083216d6.93.2025.02.24.10.09.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Feb 2025 10:09:56 -0800 (PST)
+Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 285C01200068;
+	Mon, 24 Feb 2025 13:09:56 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Mon, 24 Feb 2025 13:09:56 -0500
+X-ME-Sender: <xms:9LW8Z3v4khZ874NcNBmIIVm-GOYNs4Z60AyCMFOZiqVpdom6m8MfOg>
+    <xme:9LW8Z4dqLKvuBkw0Oljzf7Q5ABsBzq5Wnu_u1siNVw4QXG5labOv66PJ2_fOCZzLN
+    XvRnbCSGKM1eLtNJQ>
+X-ME-Received: <xmr:9LW8Z6z9cgefCXi9SweXhp4JtiHtQuU081-586KjchNlH8OmFq971qu33p4>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdejleegjecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
+    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
+    drtghomheqnecuggftrfgrthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleel
+    ieevtdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
+    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
+    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeduledpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtohephhgrmhiirghmrghhfhhoohiisehlihhnuh
+    igrdhmihgtrhhoshhofhhtrdgtohhmpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhn
+    uhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhjsehkvghrnhgvlh
+    drohhrghdprhgtphhtthhopehjihgrnhhgshhhrghnlhgrihesghhmrghilhdrtghomhdp
+    rhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgi
+    drghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihg
+    uhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrd
+    gtohhmpdhrtghpthhtohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgv
+X-ME-Proxy: <xmx:9LW8Z2P2UcOGPZF1fv6VVdHbI3bQhNG2tHFSkFj-Jda1y40JNfrgbA>
+    <xmx:9LW8Z3-eygbY6aDUy991ql--SViGlzLdLQgE4ES7SoYqrYCGHnotsg>
+    <xmx:9LW8Z2Uypq6enlIKURQtqg1vecHYfsosILMcdA1wadLBhce5IfSOzg>
+    <xmx:9LW8Z4fEwyvetslMAn3kE3KeDFib9nu5XysSSCxeuuWkmSCFtxjuJw>
+    <xmx:9LW8Z1fEEMzpxYNOnco5UHe17XoqEMjrT2pWO-uAAlQZT70tdKOdWgc0>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 24 Feb 2025 13:09:55 -0500 (EST)
+Date: Mon, 24 Feb 2025 10:09:17 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Cc: rust-for-linux@vger.kernel.org, Tejun Heo <tj@kernel.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
 	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
@@ -42,9 +110,8 @@ Cc: rust-for-linux@vger.kernel.org, Lai Jiangshan <jiangshanlai@gmail.com>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Roland Xu <mu001999@outlook.com>, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v2] rust: workqueue: define built-in bh queues
-Message-ID: <Z7y0hMZ-wAKkMrvP@hm-sls2>
+Message-ID: <Z7y1zZTi3UQzsvQh@boqun-archlinux>
 References: <20250224142326.38396-1-hamzamahfooz@linux.microsoft.com>
- <Z7ytBYLKNabbm1m4@slm.duckdns.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -53,25 +120,55 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z7ytBYLKNabbm1m4@slm.duckdns.org>
+In-Reply-To: <20250224142326.38396-1-hamzamahfooz@linux.microsoft.com>
 
-On Mon, Feb 24, 2025 at 07:31:49AM -1000, Tejun Heo wrote:
-> On Mon, Feb 24, 2025 at 09:23:23AM -0500, Hamza Mahfooz wrote:
-> > Provide safe getters to the system bh work queues. They will be used
-> > to reimplement the Hyper-V VMBus in rust.
-> > 
-> > Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-> 
-> Ah, you already sent v2.
-> 
->   Acked-by: Tejun Heo <tj@kernel.org>
-> 
-> Again, let me know how you want route it.
+Hi Hamza,
 
-I would prefer it it went through the workqueue tree, thanks!
+On Mon, Feb 24, 2025 at 09:23:23AM -0500, Hamza Mahfooz wrote:
+> Provide safe getters to the system bh work queues. They will be used
+> to reimplement the Hyper-V VMBus in rust.
+> 
+> Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+> ---
+> v2: make the commit message suck less.
+> ---
+>  rust/kernel/workqueue.rs | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
+> 
 
-> 
-> Thanks.
-> 
+while you're at it, could you also add some usage of system_bh() in the
+example at around line 77 in workqueue.rs? It could demonstrate the
+usage and generate unit tests. Thanks!
+
+Regards,
+Boqun
+
+> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+> index 0cd100d2aefb..68ce70d94f2d 100644
+> --- a/rust/kernel/workqueue.rs
+> +++ b/rust/kernel/workqueue.rs
+> @@ -703,3 +703,21 @@ pub fn system_freezable_power_efficient() -> &'static Queue {
+>      // SAFETY: `system_freezable_power_efficient_wq` is a C global, always available.
+>      unsafe { Queue::from_raw(bindings::system_freezable_power_efficient_wq) }
+>  }
+> +
+> +/// Returns the system bottom halves work queue (`system_bh_wq`).
+> +///
+> +/// It is similar to the one returned by [`system`] but for work items which
+> +/// need to run from a softirq context.
+> +pub fn system_bh() -> &'static Queue {
+> +    // SAFETY: `system_bh_wq` is a C global, always available.
+> +    unsafe { Queue::from_raw(bindings::system_bh_wq) }
+> +}
+> +
+> +/// Returns the system bottom halves high-priority work queue (`system_bh_highpri_wq`).
+> +///
+> +/// It is similar to the one returned by [`system_bh`] but for work items which
+> +/// require higher scheduling priority.
+> +pub fn system_bh_highpri() -> &'static Queue {
+> +    // SAFETY: `system_bh_highpri_wq` is a C global, always available.
+> +    unsafe { Queue::from_raw(bindings::system_bh_highpri_wq) }
+> +}
 > -- 
-> tejun
+> 2.47.1
+> 
