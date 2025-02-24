@@ -1,79 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE21204C19;
-	Mon, 24 Feb 2025 13:19:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4019D254844
+	for <rust-for-linux@vger.kernel.org>; Mon, 24 Feb 2025 13:22:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740403198; cv=none; b=ko83P2hUYyycUCF9uLdgW37/OQmNJX6zy7W7oIuRRFswkjicIU3Ml3yFaSiXwGZtlWd4bqjIXXd27xxmb4MP5Q1XII6R+KDw5CeOUOn7xzqLnge+TqgteGY5JfFrSVxmMsRiT1kn0D994uAgfssPHJexBt3EzAxdo8Fbaj0YoHU=
+	t=1740403325; cv=none; b=KhevKYuNnmzv41DYOJaGwFbwUNedm5Z501XULmaR+JZlZFUt/vmkRyWkdTX80jYxfEcC4w0w7iZH3cZlsYVnv8eVHF3AlSyDvy2Ds/kiq4YmUD4bbKJyoumsie8rl4cnu9cnPDqcxtgbijFrtUFFaI3UP2eHoEnMWQ6V2gHfgGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740403198; c=relaxed/simple;
-	bh=KA0U3yGXGRApRKSXSLe/A+8EbnTuZLr33bkGUSV34E8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=cZJtbMGrUECqcI3xm4M0g8Lzu0ACb2fmTgUtPNPYJd4RVn2hoEcHR03Q3yxL7JJdTyqf1zn5qFgLjQ7iQWWUxpX4Tww2lw1/L4pulFQNnmI7wD9EviwjQJPub128UoQYUv7p0m4v91TIxAv4LBSQ2Q7rM7msv8d/KxUPdq7zhfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WC67035u; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740403325; c=relaxed/simple;
+	bh=Xj1kzyc2WJ6AjAa3xK3LVX/Vz40HDej/IgKIgDxXOQw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tB4yTTxzQ2ElnO5Q9c8CVogXEvIM15UvIUkgW49Sp8DVb0nwlcC5lVQlWSr1l1RiDn+RUds62bRsEsZ6LhGW5L/Hx1HkQ23QbmBq94rlfYO21A5Yk+f/LRKZq2hSUv20rC0ABD4zRg14pX9FsTmYMQwUB0yoZtYMDirx9Xt+rQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uYL73n9L; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WC67035u"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16342C4CEE9;
-	Mon, 24 Feb 2025 13:19:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740403197;
-	bh=KA0U3yGXGRApRKSXSLe/A+8EbnTuZLr33bkGUSV34E8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=WC67035uEDhZLCLF+fM4DWybhrnc8ELZshTrBfgVskOrNof/rUw5S1UH66RZH9R5A
-	 7KqdlmPoqur6lqx3I4SyvB8fZpyAloOMXdd3FO1dygceg5cPmEsgyrYKBEwfPGAgom
-	 pqgbh7LmWC8CXMXHRciufEBtBDgnhah3lLf+SX57xKNrVXgD82rA7Xkl69usXlQFeA
-	 /SRfE0pfrrXjn7AQ69Be8O2HXTWfovejM7dry8bhLAbF6u/hF3eB5a0qmESkw5fMyV
-	 sdg8ahrlHW5EeD0FU9vyS1UABvb/lkUKlz7SCGZhVRjh1ya86IJOdOdqo4GGpBGvQ2
-	 +moOnfmVO4g2w==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Frederic Weisbecker" <frederic@kernel.org>
-Cc: "Anna-Maria Behnsen" <anna-maria@linutronix.de>, "Thomas Gleixner"
- <tglx@linutronix.de>,  "Danilo Krummrich" <dakr@kernel.org>,  "Alex
- Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,
-  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
-  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Lyude Paul" <lyude@redhat.com>,  "Guangbo Cui" <2407018371@qq.com>,
-  "Dirk Behme" <dirk.behme@gmail.com>,  "Daniel Almeida"
- <daniel.almeida@collabora.com>,  "Tamir Duberstein" <tamird@gmail.com>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
- "Miguel Ojeda" <ojeda@kernel.org>
-Subject: Re: [PATCH v9 01/13] rust: hrtimer: introduce hrtimer support
-In-Reply-To: <20250224-hrtimer-v3-v6-12-rc2-v9-1-5bd3bf0ce6cc@kernel.org>
-	(Andreas Hindborg's message of "Mon, 24 Feb 2025 13:03:35 +0100")
-References: <20250224-hrtimer-v3-v6-12-rc2-v9-0-5bd3bf0ce6cc@kernel.org>
-	<Fg4QliwzbHj3m-Fr3ZeUiU11d6Bu-I7w_9xzSsnDlzQtqCkjgqxJpI6_YxuXnB8m0MqESq6V7vK7FhPnEcvGwg==@protonmail.internalid>
-	<20250224-hrtimer-v3-v6-12-rc2-v9-1-5bd3bf0ce6cc@kernel.org>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Mon, 24 Feb 2025 14:19:45 +0100
-Message-ID: <874j0j1nv2.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uYL73n9L"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-38f26a82d1dso2232448f8f.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 24 Feb 2025 05:22:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1740403321; x=1741008121; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=N/oiaAMAVxmEUGQ/a+kIBTCrAHvCn9ugUOtP/RUtk38=;
+        b=uYL73n9LJI1lCB/jwV6l2PmchEVs27RNUisH8kJFYlJ195PFqNdJadfRzrewct50zW
+         2JhMkR4Xwfkz7jm56gIQY1uIcvIE//5uy0Kt4U9DWM5jHY29boCEZ0TSYI3XrnP7U0D3
+         YsZoGlrQMMUuiWR/lWaAEz9i4GBHNDiNqCgC2hT+XlyW2Yg1WY1eDDr7IF+3tHlIvOxp
+         doPd2dPfCO94kGdeebvjjFNYXhFquqqFtgdsWoKdxqc0n+bBjVjJawoCYxvdSPiTv6aH
+         Nq523Z/WC329SL5x6hctyCXrh89cOq+0+nOzFDAE9ff1iA1RqBZm6qkoMmxN5kMVY/U9
+         ayhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740403321; x=1741008121;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=N/oiaAMAVxmEUGQ/a+kIBTCrAHvCn9ugUOtP/RUtk38=;
+        b=bCllSAlzrVH2+rFxzwzzEs9xkijkcXaOKjoXQm2eoFyqZrHopCjjSX22iLaPFdHjx9
+         OZ0kv8H8Dr3LrwYnAi2xlvs5ezLH4K78kxPGXRyg4sEbWsM96Y1OZk1Q4AWrLOpFAZHg
+         012ONdGmzZQSIYnx6tmjtw79UdIZ9dGClPHIMaZcUu78HPN70gvUp378T/sg+GjOFZjr
+         zEr0qCeKkNxg3zmx8rbY5wLb6nxL+llwvI1s0AMOgi8d2CYEKP9AX+H3eZoAJOeLN1jL
+         ww7TFy4hRTvVsSZXVUGK49Hc4DCfVaCNz4QJd3rsKZ1Ko+VS5CDUnmiSycZOuK4c8X+4
+         O2uQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU4TfSzVIRLeSRASgJmoBSH+YPd76EgD8muaiSeRBhE5NJ3BDlAuhgK8aLlolZ6nUFfBtArwmYv42lVBqU7DQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwG9CsWbftjkfSrhNCnaxj/t2VELB4Ig7xSXPAJ+8jatLIRp0sb
+	UcFtkGyezNbTgN9qNXFViE9yQ49Ll7k53jEAa6lTULLq6qIbhigY7maXxtMffjzkOqV9Ke81Ttk
+	X8oWLKbNahIO+ZQhXLrs+JtI/czaF9sPSBm7otqwBZWml1GeUAw==
+X-Gm-Gg: ASbGncvgBnMB+ef2g5FWzs4BY+11u3pTeN7hXggRkU+2zYY98viDtSTPDMlZQT0Y7rE
+	trXD6esg95+prmUm/sf7JSwpBdnmZUQkjFhYFCZMHPrU1YUGpsletUGpBG+YVDNj2R+o/8lYrVn
+	otmYltfVA55BenK0WrFsiXe7FqF66caSOH7lS7
+X-Google-Smtp-Source: AGHT+IFATPleR0RJ6PuqfMEUDzRhsvzlMhaXdbWqxYCjtXu9VzNOnOg+cerl/y4Uo40ThVMEEUAZP+PRp26SoFcKstI=
+X-Received: by 2002:a05:6000:2a4:b0:38d:e48b:1766 with SMTP id
+ ffacd0b85a97d-38f6e75848cmr10390968f8f.6.1740403320054; Mon, 24 Feb 2025
+ 05:22:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20250224115007.2072043-1-abdiel.janulgue@gmail.com> <20250224115007.2072043-3-abdiel.janulgue@gmail.com>
+In-Reply-To: <20250224115007.2072043-3-abdiel.janulgue@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 24 Feb 2025 14:21:47 +0100
+X-Gm-Features: AWEUYZmLTsIy1fyUwTzeMd_646qNT7R9svbjnKF5MTp-t9JjPz9vZCjijiRddJM
+Message-ID: <CAH5fLggU_sU56dEz6hQvMwjY=G2TuC9GYiVEBZFtE=Tk2QW4Fw@mail.gmail.com>
+Subject: Re: [PATCH v12 2/3] rust: add dma coherent allocator abstraction.
+To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Cc: dakr@kernel.org, robin.murphy@arm.com, daniel.almeida@collabora.com, 
+	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Valentin Obst <kernel@valentinobst.de>, 
+	open list <linux-kernel@vger.kernel.org>, Christoph Hellwig <hch@lst.de>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com, 
+	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Frederic,
-
-"Andreas Hindborg" <a.hindborg@kernel.org> writes:
-
-> This patch adds support for intrusive use of the hrtimer system. For now,
-> only one timer can be embedded in a Rust struct.
+On Mon, Feb 24, 2025 at 12:50=E2=80=AFPM Abdiel Janulgue
+<abdiel.janulgue@gmail.com> wrote:
 >
-> The hrtimer Rust API is based on the intrusive style pattern introduced by
-> the Rust workqueue API.
+> Add a simple dma coherent allocator rust abstraction. Based on
+> Andreas Hindborg's dma abstractions from the rnvme driver, which
+> was also based on earlier work by Wedson Almeida Filho.
 >
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
+> Nacked-by: Christoph Hellwig <hch@lst.de>
+> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
 
-I dropped your ack because I added the kconfig. Re-ack if you are still
-happy :)
+> +    /// Create a duplicate of the `CoherentAllocation` object but preven=
+t it from being dropped.
+> +    pub fn skip_drop(self) -> CoherentAllocation<T> {
+> +        let me =3D core::mem::ManuallyDrop::new(self);
+> +        Self {
+> +            // SAFETY: The refcount of `dev` will not be decremented bec=
+ause this doesn't actually
+> +            // duplicafe `ARef` and the use of `ManuallyDrop` forgets th=
+e originals.
+> +            dev: unsafe { core::ptr::read(&me.dev) },
+> +            dma_handle: me.dma_handle,
+> +            count: me.count,
+> +            cpu_addr: me.cpu_addr,
+> +            dma_attrs: me.dma_attrs,
+> +        }
+> +    }
 
+The skip_drop pattern requires the return value to use a different
+struct with the same fields, because otherwise you don't really skip
+the destructor. But I don't think you have the user for this method
+anymore so maybe just drop it.
 
-Best regards,
-Andreas Hindborg
+> +    /// Retrieve a single entry from the region with bounds checking. `o=
+ffset` is in units of `T`,
+> +    /// not the number of bytes.
+> +    pub fn item_from_index(&self, offset: usize) -> Result<*mut T> {
+> +        if offset >=3D self.count {
+> +            return Err(EINVAL);
+> +        }
+> +        // SAFETY:
+> +        // - The pointer is valid due to type invariant on `CoherentAllo=
+cation`
+> +        // and we've just checked that the range and index is within bou=
+nds.
+> +        // - `offset` can't overflow since it is smaller than `self.coun=
+t` and we've checked
+> +        // that `self.count` won't overflow early in the constructor.
+> +        Ok(unsafe { &mut *self.cpu_addr.add(offset) })
 
+The point of the dma_read/dma_write macros is to avoid creating
+references to the dma memory, so don't create a reference here.
 
+Ok(unsafe { self.cpu_addr.add(offset) })
+
+Alice
