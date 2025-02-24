@@ -1,58 +1,58 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46B1156F44;
-	Mon, 24 Feb 2025 14:47:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0066224EF70;
+	Mon, 24 Feb 2025 14:54:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740408475; cv=none; b=V/KrlfVbdkjuDth/VJPdl8wkJ03pQvPoMc9tjzTX5kTRfkjb83ytN+xVFTuV9LZKs9jwht4ZUV8AHO0npHYGM3Q+YOncjEXi1r1DizjplC19Xqm1a6MPKVZPxrX6GOK23jVPGQm1fAmPFkAsirDtZp0zX+5yQBpqQBP2vZSTI6o=
+	t=1740408868; cv=none; b=ZNg5UwS3bcJDLllKnq6ElSVfKscAOmq5EwHSug/zkWceHV6ljjfF/P+OYDBNTesx1lPcKVG1nb/XZ1EGT7TAwKTllkCcXnmyVPVY7GJ/zx1XRKeKLXdfGBWkdSIGufF+YPfRfDkuHAWbHi1WYXaFWSITJqmGLvgIiBpVOLT+mAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740408475; c=relaxed/simple;
-	bh=89ktW5BzAn9iOHa5jek6f3ZHeVoyWQD1oH7vDvuK3rc=;
+	s=arc-20240116; t=1740408868; c=relaxed/simple;
+	bh=KLul3ZTAtHJe/n3xu+7cwVDZJuShWGTqS305WKdQyAo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dFLCF3uQFYo+LSF5amgZyW3NRPzxNI0lvRiD1rCGBomQfuP6tYQApGmQvZSHF8yie+/OEDdHtYd/pCpxL5JeAs0ekjuipp1tCZ0SLURWODzg3JjWKgOq352rRgwTzNYOgmCogy3jRd4XBXmV/R9OS7nLE2lsC+FkvK1EZuu1kzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T5JB5Sjg; arc=none smtp.client-ip=209.85.214.173
+	 To:Cc:Content-Type; b=QXRE1Kpp5Ql5kJdDnnuAXGdJLquVGb0iKe4dI8whBiiXMe4e3bB5o2C8Ti6LWMfNPcgDk6tchwYquJ0idA1S1AblL60RlNGs15eUO7gCmIhLGOCDA3p2TnbivU99nxxLocxp86dtqWt/5kyKoC9sEEOv9SDkgDTwe1D4epsijSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NxiXwruL; arc=none smtp.client-ip=209.85.216.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T5JB5Sjg"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-222def4189aso2129995ad.0;
-        Mon, 24 Feb 2025 06:47:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NxiXwruL"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2fe5d75ff8cso106050a91.3;
+        Mon, 24 Feb 2025 06:54:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740408473; x=1741013273; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1740408866; x=1741013666; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RtB7Dub5njCes9mrJllt2CsrhPv34KUY3ewp7hLxbD8=;
-        b=T5JB5SjgO5FYCP7jlpu7ICh0WWNF8tS799AXQVnBH4p7x4d//RvXsfQwJUOBjcAefV
-         nzyO29d+5AnCV5IpdQkZNYn5Z8GCD5r1Mny5HA9qUPqMDNk9mzWydJZNJxDdH8PgWcQ5
-         Ory0+3hDuM4sqznppSULm/5AunOXiFwNtLp/lgKhmIwFa95lkRmKGSWQ3eEoxVBQD2cy
-         3A/XLYy8NgDBGrwOJXI2nRLT6s7KERsotQ+s7bmTvktJKzoovyWiBzgsITesUkJQVIaH
-         QfIS6CZnZASMzQXpOYB3s+DtBQJfehFid43Pb3sJXSJbk4JiU0kV382YJteH4aiOuDFB
-         8Pcw==
+        bh=vcJQ2PByz6Lu9IM3XdLufcM/7wqjI4LpjnZF5XQFLRQ=;
+        b=NxiXwruL6QDjNIxvG+r7exkLpfAhSUMj3DnZ0rgGHotuTXaSSpvklOWa1IsJgZtJaT
+         +jd7MftBdRvUCAY1pAZNC+gMLt1w9JxOJosa3KFd9vuNBJQ9+F8NYtldFrzljyPRNX0T
+         BkuxQIizFocQlGNe8rYJRrYEfJmqTkRSp1DrMnG85GcBt9AzDx81ceMoc1Pn9gO4Fjsr
+         isu1TuNC8h+VjXomxzvFZKk+7t9SyW1ar0C9y4LVqjZHGwxWpHM1EkZE4mJO4j6F1wIj
+         eInr1ysTIzfRx/MFJciTZsZu/NTJRphBfRsS3dEYPdqsyEwOWnHjR/YogO+H93mXSZNa
+         opag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740408473; x=1741013273;
+        d=1e100.net; s=20230601; t=1740408866; x=1741013666;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=RtB7Dub5njCes9mrJllt2CsrhPv34KUY3ewp7hLxbD8=;
-        b=cJf+d1kuXrWE5snVTo5s1DNiH9OZLhSMVSAsmFuPEN4G43Iq1B69tawjeqNnhGwtHb
-         fE8IryaN8fXVtSHA6J9ALiFKMFb2lvvkuAOIY7qBJVfCf9rTwgoSpKxM+aplpLc5A22V
-         f2FX7HNA721OywLzqs88SRzd08NrCIzBbohEeOG21/bjCEkAF4rs0XrBzgYR/PJAnF+h
-         D/TbVMsIjoeTYxFTiQo4i+f4JqKKzLLrOVVCP1pV2SoUDGONR4PiA0etOE39KjZ1UR0k
-         u1Dg2Vwnxp+H6Tee61WS2xs/qIQazml7y/yA03pv3R/QHdRWZDw1FYE6NOJ8C4ZYRr7B
-         6RgA==
-X-Forwarded-Encrypted: i=1; AJvYcCUxRpBkRJxwHpgwvc1M0E/tO5gqcpcNQ23+q3PtKryKwK6uTVKvB1EjspqMHE3shH/aX17JX6rIZCL8cqtTK+s=@vger.kernel.org, AJvYcCV1GA8nbAlEmgMsVHnFvEDHTuSezGcXXW21g9hSKzskKd6m59CZktpA8cYS2WuAqxIwvhmMLji/qXyy5A4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsBeB6yP7ppexKfMnP0F/bjPaCxFNjHcPLAddbvDh9at9GsQJW
-	gXvlNgedtDzSE6/jcerIDMYxO6p01VW0XVXCC0rZSMv9eKZg1OO7lCptqp0xWotqRIbIXuYOmNK
-	+i8Ccyl8Ge+Fj8D49T3fbFfhGSvbpl/7QYC0=
-X-Gm-Gg: ASbGncv4AIK1uas3nHbhA0mY/BOKgfCAfpuLyoT7zr5QtJuU++kcOPC4Hg4+bFmXmCG
-	lv0pM1LiLh/ke0Ka7kBtnvEbwo98YP/LKYSnPgtyVpcqRN6Kr5qdHIijOBXIvu7C9vZMDo3cTYk
-	IjJ8mivMs=
-X-Google-Smtp-Source: AGHT+IFtHAt/2673bkl85WSepaiv/6+wkEUSaW/P5TB+5VYx4rV2nWG972KMsbRKwHotrhVZYVS2P5weLvxESTGhMug=
-X-Received: by 2002:a17:90b:3848:b0:2ee:acea:9ec4 with SMTP id
- 98e67ed59e1d1-2fce7af8da8mr8559798a91.3.1740408472804; Mon, 24 Feb 2025
- 06:47:52 -0800 (PST)
+        bh=vcJQ2PByz6Lu9IM3XdLufcM/7wqjI4LpjnZF5XQFLRQ=;
+        b=XfyYTuPgflG74E1Ojed8XpAmbaEIB5jib9k5ivHEs8/fQmtR/Y3lrxxcGRECo+u+hG
+         3pX4DNPu7PHt3nrILM6NbEEC749pdF702cTYJMPwWp78yOTzsqi7t+qMf/izjVnPCrZD
+         lsV6gMVLa5G1q++yWj+FgdbX7F23f7HSx/E6rpiLafnS6NGbylTW9j3vkhfZUPgBRNGi
+         4VCeif5RTrJJ20MS4yNwT9sbLLmZf5wpDe1MbbtA7ShiCWBcW+Oyfbp+8C28eoviq/Jf
+         xWns3N5Yn1MVBsgVRGYV9XitybHWLzXn/KaXO71uT1aawsztC8ENG5zLD6HO3wez410U
+         7LYg==
+X-Forwarded-Encrypted: i=1; AJvYcCVV2F1CxnaahnTEuIn9GMbFuJtVSj03qbPzG0/XgH01Q/RXsqSJe918latXuqyhMotyhHS63UCbYxvF2uc=@vger.kernel.org, AJvYcCXeHrVmB6DE3eUGBUDI0tPScbAt3lEz/6Q2Bh9+5W9cSMuqYQ7xBeGJFnEB7Ww0JUDmKQtubMQKv5fMO8lkkTg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCwfst7NVAY8tNTxC/lpKQXTjf19zYpkKqwMfd1vWQP1dr9eza
+	/wwuW29AtrYwIFevlrkqoQbOYij53NKAvdmXR3J5keujm9/kuRaGxG7t7A0DzRoFHvB4DT7uXlf
+	Bem7SA8oi+bZhzm/RxX9Z4u7/K8M=
+X-Gm-Gg: ASbGncvj3GH9PKYl5hb5poPwB0kJWXor4LbW5sU12p6I6v6htTX4VelIhEEW3N8uxsy
+	CvkyiwfH9iMHmjsuaAiPWB820bDbD/KExDFg3ZTcBRXNfX4pgCu+JapzYLR+ZDbvbTdEJauI3WQ
+	ULnvnT6IQ=
+X-Google-Smtp-Source: AGHT+IGDjahBUVO6BXevnVMHWjQyKi4BqDRHKTF8y7apvI5jM3Rv1j7RNOMukgd4iq3HaXOneLmH+308oWENkLJBz9E=
+X-Received: by 2002:a17:90b:4f85:b0:2f2:f6e5:d28e with SMTP id
+ 98e67ed59e1d1-2fce7aef8damr8610160a91.3.1740408866030; Mon, 24 Feb 2025
+ 06:54:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -63,12 +63,13 @@ References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
  <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
  <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
  <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
- <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com> <20250224125805.GA5729@mit.edu>
-In-Reply-To: <20250224125805.GA5729@mit.edu>
+ <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+ <20250224125805.GA5729@mit.edu> <CANiq72k-K3-Cbnm=0556sXAWs0kXBCB4oR67M4UtD=fq=kyp7A@mail.gmail.com>
+In-Reply-To: <CANiq72k-K3-Cbnm=0556sXAWs0kXBCB4oR67M4UtD=fq=kyp7A@mail.gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 24 Feb 2025 15:47:39 +0100
-X-Gm-Features: AWEUYZlCQihPBjrSNYZpOKd-BwVo0fXGumHDWwVlhI4X09pccnCoeiBNU37wuHI
-Message-ID: <CANiq72k-K3-Cbnm=0556sXAWs0kXBCB4oR67M4UtD=fq=kyp7A@mail.gmail.com>
+Date: Mon, 24 Feb 2025 15:54:12 +0100
+X-Gm-Features: AWEUYZmiNFSazSTTuGNZbCDwsIIxYoIgz2rLtYlFv5_7wXS0fxYpgaGNrAtv5_E
+Message-ID: <CANiq72mfQk_ViHJ9Y_rU0etS8XpORvZUNMc5m2iHL=pQDiVFSg@mail.gmail.com>
 Subject: Re: C aggregate passing (Rust kernel policy)
 To: "Theodore Ts'o" <tytso@mit.edu>
 Cc: Ventura Jack <venturajack85@gmail.com>, Linus Torvalds <torvalds@linux-foundation.org>, 
@@ -76,56 +77,39 @@ Cc: Ventura Jack <venturajack85@gmail.com>, Linus Torvalds <torvalds@linux-found
 	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
 	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, 
 	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Ralf Jung <post@ralfj.de>
+	rust-for-linux@vger.kernel.org, Ralf Jung <post@ralfj.de>, 
+	Antoni Boucher <bouanto@zoho.com>, Arthur Cohen <arthur.cohen@embecosm.com>, 
+	Philip Herron <herron.philip@googlemail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 24, 2025 at 1:58=E2=80=AFPM Theodore Ts'o <tytso@mit.edu> wrote=
-:
+On Mon, Feb 24, 2025 at 3:47=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> Hmm, I wonder if this is the reason of the persistent hostility that I
-> keep hearing about in the Rust community against alternate
-> implementations of the Rust compiler, such as the one being developed
-> using the GCC backend.  *Since* the aliasing model hasn't been
+> On Mon, Feb 24, 2025 at 1:58=E2=80=AFPM Theodore Ts'o <tytso@mit.edu> wro=
+te:
+> >
+> > Hmm, I wonder if this is the reason of the persistent hostility that I
+> > keep hearing about in the Rust community against alternate
+> > implementations of the Rust compiler, such as the one being developed
+> > using the GCC backend.  *Since* the aliasing model hasn't been
+>
+> I guess you are referring to gccrs, i.e. the new GCC frontend
+> developed within GCC (the other one, which is a backend,
+> rustc_codegen_gcc, is part of the Rust project, so no hostility there
+> I assume).
+>
+> In any case, yes, there are some people out there that may not agree
+> with the benefits/costs of implementing a new frontend in, say, GCC.
+> But that does not imply everyone is hostile. In fact, as far as I
+> understand, both Rust and gccrs are working together, e.g. see this
+> recent blog post:
+>
+>     https://blog.rust-lang.org/2024/11/07/gccrs-an-alternative-compiler-f=
+or-rust.html
 
-I guess you are referring to gccrs, i.e. the new GCC frontend
-developed within GCC (the other one, which is a backend,
-rustc_codegen_gcc, is part of the Rust project, so no hostility there
-I assume).
-
-In any case, yes, there are some people out there that may not agree
-with the benefits/costs of implementing a new frontend in, say, GCC.
-But that does not imply everyone is hostile. In fact, as far as I
-understand, both Rust and gccrs are working together, e.g. see this
-recent blog post:
-
-    https://blog.rust-lang.org/2024/11/07/gccrs-an-alternative-compiler-for=
--rust.html
-
-> developed yet, potential alternate implementations might have
-> different semantics --- for example, I suspect a GCC-based backend
-> might *have* a way of opting out of aliasing, much like gcc and clang
-> has today, and this might cramp rustcc's future choices if the kernel
-> were to depend on it.
-
-The aliasing model is not fully defined, but you can still develop
-unsafe code being conservative, i.e. avoiding to rely on details that
-are not established yet and thus could end up being allowed or not.
-
-In addition, the models being researched, like the new Tree Borrows
-one I linked above, are developed with existing code in mind, i.e.
-they are trying to find a model that does not break the patterns that
-people actually want to write. For instance, in the paper they show
-how they tested ~670k tests across ~30k crates for conformance to the
-new model.
-
-In any case, even if, say, gccrs were to provide a mode that changes
-the rules, I doubt we would want to use it, for several reasons, chief
-among them because we would want to still compile with `rustc`, but
-also because we will probably want the performance, because some
-kernel developers may want to share code between userspace and
-kernelspace (e.g. for fs tools) and because we may want to eventually
-reuse some third-party code (e.g. a compression library).
+Cc'ing Antoni, Arthur and Philip, in case they want to add, clarify
+and/or correct me.
 
 Cheers,
 Miguel
