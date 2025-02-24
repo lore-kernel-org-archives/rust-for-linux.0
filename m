@@ -1,105 +1,100 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD63EEA8
-	for <rust-for-linux@vger.kernel.org>; Mon, 24 Feb 2025 05:14:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3705B27453;
+	Mon, 24 Feb 2025 08:08:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740374049; cv=none; b=sh8IeM5hsMey6KnIk/B8BQAAiv/9xEc3rYubl1ayc8yIIncTb0SwKm4Fy142JPK+YIz/v9BMowMb3t6g1/8TYxBUJQ3IJqEnJWjAC8vCpACvAz/AJu+VNdeVJqQawQ2MDNQnQaLUCgKPTLZOjkcIUFwM+dD64iUAd1tWvdJivm8=
+	t=1740384500; cv=none; b=qLwwqvBMmAdgg5u4Oic7ukZJugoA0zx1YUmr4/o+G9++18+k9bxX49vkvxCLsWVS/uACwFP2Wymtip8kNcIZrRpwmjLg23vp26CkCMGXfUd0hf6PbTnvMQveTHHw3g9qY0HpCO3+Pt8oWXIZpINkJG9r/mPNpUHH5RR958php3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740374049; c=relaxed/simple;
-	bh=cxSQuQQtbQOCfR6+umVvSr7i7TkqT67zGAdQTxDz4gE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KSue8x24hOmxrsZZjI5+ozAjG3/CSfm3wScR/boBcYIhHMaF41tAG02w157EGDgIkAIIKasC9sxTDZi30+XL0iIMDgwsnrG+C/YmL8fiQwdOkmL84vhsUYmbdUxQTvrF5He7Ig8+NBV1uJDq8UmDRjYAbQnOgO1qOlpucmoXoSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XefuTDvg; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1740384500; c=relaxed/simple;
+	bh=1oTcQ9B9UWI2JXHrdtNmloGlEojxNB4930GlWltLit0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=fOPtynIhoxbrcZhtXGJbtrDh1EM4eph2GBTzaYg69jyuoM1UxmVNkMedne9omiU4VhkNu3xUlJXqLUysZTZoorubltGR/JgzSajnTnrxGhRxCWunZ+XT2YfibhoE8Aeqicsj7xczvBDt7SoWc/OOMwvY5f2HY/wLAVh7j/779dI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q4U48zGR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XefuTDvg"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2fcf3a69c3cso3215506a91.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 23 Feb 2025 21:14:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1740374047; x=1740978847; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+joD/tYf7d881SCRKiox9DoLZN0Dh3msjbOhq+t3e2c=;
-        b=XefuTDvgkxfT5r/jEba2bPNa9ZbIBvu8r27O/lGhKRM4cbc6Zrs1/RnhnIkIp5//8b
-         Ft9n38+xgCzKVuAT871Xgj3drLI49JRJAyYyLbzm9XVSHeo5pGGK1lacSaJY1G6cnqZe
-         vCDOS3e2j5f8AV9pbr8fVLdth7+vlFVtPjLpd3TOAi6161TBL4YhR4Li/z8cBqtYot7s
-         dgtRMeEIzXTML0LnZp9ugyxmPiBCN+EVeaKjqx8kvGrnI2KPN8m/LFK8idb4DeaphcDM
-         uuflKyGkRaTZVtdLGxj8w3Rbh5h8QOebtmgJc2rC9uF1IJ8eEtrhMhqVEjINNs8sE2dp
-         JnTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740374047; x=1740978847;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+joD/tYf7d881SCRKiox9DoLZN0Dh3msjbOhq+t3e2c=;
-        b=ITCexW8AbZ1k0OgVQaB+Qb6I5yo5D3zbQL0DkiuU0bj0fyylptH9LcQy2wVDjUYOAQ
-         9X/mQ6mXttDYgiuyUQUHP+kFS+zC28xD8Cj+9JG576sFTv00jTeEPx9pF0AJUUVuj8ds
-         tg4/ytUZLFNQxI0DLKQZ3IUFFnrNSqc4+56BOAjRuhGYQwqjw4AJ+rFfHHjyq4bHKTgc
-         yQWD4oz4Ansvc1ydnJ+VQ7QBsTpMGdiKmg/6UHiXBqdgJgtNXcLbqxD/PeGlkX2pW7tn
-         Uz95u2y/8WjhMvibabAcq2cfujWGWyRwlVahmKs4VZ44tB+uU8MV+Q8X/vEuFtcItpwR
-         4sdg==
-X-Forwarded-Encrypted: i=1; AJvYcCVXESmNkOeoqr9y8kbLDmBx4sNbDXkTUQ3OrHfxIv2UmDvK0NojFoVtUNmryTpXPNvIapiYqbfwCf2bSH4UhA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWqSlfnxGsIc8gWMUqziuKE1KO4VdeXFJo7bK20uXv12QkSURr
-	6+FO6itQQPpNG8YRSYV8Vosmbl457zxzxsVYzoQvw2uXJ8X7zYM0z8V2DFyzuew=
-X-Gm-Gg: ASbGncvQ9q1G4nJYcUcmVrWa2PHkaW9g6S5w9iOcGI5Hr4k5Eu8ebpw6L33ilMQ0H1n
-	qL87/423rKnyKrMmcow2m8Ir6Six09f5CmAUpgyw/fClZpk2mXcN5rjVkDYYCpgs0MmymVY3ju7
-	uCJVGz1ehyWwx2AC66EZmQcJozFVCAoEQxIjvPFnQE1aw9r/O2uYcdxqourbYSCbGynkaJ77ID5
-	jluvndnR8HmhpGqQq8XLRq/LRWpJ2Eq89QpmLj5IuDAxt3dMBZ2S7mLMLc1t9jT23DfDdTUr+y7
-	ZpvmcX7NVIsN8xNOebseDogO1Ns=
-X-Google-Smtp-Source: AGHT+IG0b6emkD0CmhSV1QNXb4HVeu5MkvIkiNO02AEPBxGCijtAK2X6heTwZs19Vt7813cTnGENng==
-X-Received: by 2002:a05:6a20:6a0b:b0:1e1:ad39:cc5c with SMTP id adf61e73a8af0-1eef3c7718dmr22515662637.14.1740374046890;
-        Sun, 23 Feb 2025 21:14:06 -0800 (PST)
-Received: from localhost ([122.172.84.15])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-adb57c5dee4sm18114799a12.14.2025.02.23.21.14.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Feb 2025 21:14:06 -0800 (PST)
-Date: Mon, 24 Feb 2025 10:44:03 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Danilo Krummrich <dakr@redhat.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
-	Erik Schilling <erik.schilling@linaro.org>,
-	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
-	Christoph Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>, linux-pm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] MAINTAINERS: add rust bindings entry for bitmap API
-Message-ID: <20250224051403.k2x6deccboytjcjw@vireshk-i7>
-References: <20250221205649.141305-1-yury.norov@gmail.com>
- <20250221205649.141305-3-yury.norov@gmail.com>
- <CANiq72=ctKoDz+Kf7UFBTD-oF17cTHBcrkNN_5cqxQeK609OVA@mail.gmail.com>
- <Z7pfBoXDoH5x-MEq@thinkpad>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q4U48zGR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B776C4CED6;
+	Mon, 24 Feb 2025 08:08:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740384499;
+	bh=1oTcQ9B9UWI2JXHrdtNmloGlEojxNB4930GlWltLit0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=q4U48zGRGUATADJ5sVGS7QHOT2kBfxtnUk78ZluIipuXhbasGCpMdSe22VmkB9KWo
+	 7V0I58wZUqvMQat9I6c5a1DU11he/kRymuWS/dH4MegNSy1l5NSIidOo1rkXRPCCFL
+	 GWhcV7dd+UQZYjO6LJzDQuXMoAXJU+osoReP50lAgteEZJ4FJJy3O5ipgsI9GiN7ha
+	 0BVxPlZ0wHyXdDVew2xyALYYB73XBrD8sTkZzcp0sIi8UYI2F4nLinxZ4+WMwdvwFI
+	 zQ+WGhUL02AGkfub1gXAY1NOBGE/YN3pDSL4IILBycce4yZA0Pc5foEbY6bhHYqlmZ
+	 0sXkWMPHBSO0Q==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: linux-kernel@vger.kernel.org,  rust-for-linux@vger.kernel.org,  Peter
+ Zijlstra <peterz@infradead.org>,  Ingo Molnar <mingo@redhat.com>,  Will
+ Deacon <will@kernel.org>,  Waiman Long <longman@redhat.com>,  Miguel Ojeda
+ <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,  Gary Guo
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  Benno
+ Lossin <benno.lossin@proton.me>,  Alice Ryhl <aliceryhl@google.com>,
+  Trevor Gross <tmgross@umich.edu>
+Subject: Re: [PATCH] rust: sync: lock: Add an example for Guard::lock_ref()
+In-Reply-To: <20250223072114.3715-1-boqun.feng@gmail.com> (Boqun Feng's
+	message of "Sat, 22 Feb 2025 23:21:14 -0800")
+References: <20250223072114.3715-1-boqun.feng@gmail.com>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Mon, 24 Feb 2025 09:08:09 +0100
+Message-ID: <87wmdf22ae.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z7pfBoXDoH5x-MEq@thinkpad>
+Content-Type: text/plain
 
-On 22-02-25, 18:34, Yury Norov wrote:
-> I think rust developers need similar guarantees form rust maintainers:
-> there will be a rust engineer who will keep the bindings on rust side in
-> a good shape. Viresh, as per my understanding, has committed on that.
+Boqun Feng <boqun.feng@gmail.com> writes:
 
-Yes.
+> To provide examples on usage of `Guard::lock_ref()` along with the unit
+> test, an "assert a lock is held by a guard" example is added.
+>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> ---
+> This depends on Alice's patch:
+>
+> 	https://lore.kernel.org/all/20250130-guard-get-lock-v1-1-8ed87899920a@google.com/
+>
+> I'm also OK to fold this in if Alice thinks it's fine.
+>
+>  rust/kernel/sync/lock.rs | 24 ++++++++++++++++++++++++
+>  1 file changed, 24 insertions(+)
+>
+> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> index 3701fac6ebf6..6d868e35b0a3 100644
+> --- a/rust/kernel/sync/lock.rs
+> +++ b/rust/kernel/sync/lock.rs
+> @@ -201,6 +201,30 @@ unsafe impl<T: Sync + ?Sized, B: Backend> Sync for Guard<'_, T, B> {}
+>  
+>  impl<'a, T: ?Sized, B: Backend> Guard<'a, T, B> {
+>      /// Returns the lock that this guard originates from.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// The following example shows how to use [`Guard::lock_ref()`] to assert the corresponding
+> +    /// lock is held.
+> +    ///
+> +    /// ```
+> +    /// # use kernel::{new_spinlock, stack_pin_init, sync::lock::{Backend, Guard, Lock}};
+> +    ///
+> +    /// fn assert_held<T, B: Backend>(guard: &Guard<'_, T, B>, lock: &Lock<T, B>) {
+> +    ///     // Address-equal means the same lock.
+> +    ///     assert!(core::ptr::eq(guard.lock_ref(), lock));
+> +    /// }
 
--- 
-viresh
+This seems super useful. Perhaps add this method as part of the lock api
+instead of just having it in the example?
+
+
+Best regards,
+Andreas Hindborg
+
+
+
