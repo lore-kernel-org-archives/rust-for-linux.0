@@ -1,99 +1,98 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B1B25EF8C
-	for <rust-for-linux@vger.kernel.org>; Mon, 24 Feb 2025 11:19:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C64125A2D1;
+	Mon, 24 Feb 2025 11:28:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740395982; cv=none; b=aRsic04X5tq9Fn5zhP1A6XYAkUtayd0oJkUhCmW/sZ9z25QDleYMr7XXokEKVP145n12UT60YpXR/kxBkMaRBSiIPnkkf7b5EPf/J0AFgmE/aDf2mtX0IgOnVP0pRFrzI1QdUzDj4p/NTqCwL4TKAdTYM6DXiZnsaRR4hzVBqk4=
+	t=1740396492; cv=none; b=ip1fRJcOzk/v+mYt3dptHSRwU+N0Qp5sx62RO5AMj5Io6XIEFwRUTkFccTJSb8ua+Dm9mQPeHUa6eTsnjfDB2k1oWDH9dfewWqPhEeuVwa5YkIgqQ5xsBy77RVq4kJW/WV+OJUG6meinlg9eHV7CdBwp7jTnitIg5tehuHcPOHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740395982; c=relaxed/simple;
-	bh=nbthR7RhGoVVTUAl39Aagc6UcJUc0m+dmOqj/KUfZkI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Pz2fi/Btr+pl16pCk13eIF7P7vq9PbKl8nRhyRprh7yt8jv3g5if6IbwhZIc0qPEKJ66zKRz5NtrhEoqwI3h7k0o5aQW34ZuLIQtEDxzt5K02gSRV3FAtM/HnuxJ2Edolj+0hr4iCegKe4IDf2FnXuweFX06T+a1CCAmytlnewg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0VZ4GezC; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1740396492; c=relaxed/simple;
+	bh=wMBKiyOZ9vgChPGZe1p/asOkvswkGQx02TjhWX4vQ7I=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ePlRlrMpBvCm9UcjkMKBCussLFbn3GVVgqZc/LMzu5xF5LjXgO/n1qdOdRlgOBZQw891InKueXdzu+QXZnxwnwGj9LyM0J+z62gJYuc50yuBNA9Zp1L8RlGtwyRUiuOsGPrKzgfefdyxZ4RMXngRJy7TLnoBnEZirggJH3seq+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PZeU5eho; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0VZ4GezC"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-38f6287649eso3344122f8f.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 24 Feb 2025 03:19:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740395979; x=1741000779; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rKNwKhh4dEnTxVcOajigIGSRE5tzPUoKtH97+XkBOAY=;
-        b=0VZ4GezCHOwKdwLfQ5VDyjZVSCXbOP0WjrkfEAJDlxXvGmbi4j89u6ULlqzWekFGQD
-         /RpJSkB/zWldxW2cGeVLX6xjkT96koI3DmOo9BmTmsVlkFJ0EXxVr+LseevM519Ooz7d
-         gH3eFRNhS4+E+0j01rFtHiGcyDxOG5k7LcsFA9Wty53FHACDYX5xku8QbM7lJTmdbG/N
-         wJmsoTTXzu64C2KOLCp8JvWh0q75bK1YNz3AzGkqNKyI/SCuAGwo8n0d9uePwxhNm+zJ
-         wmDWnqR1JHaI99ygIE1AlHk0hSFmdix2n+FhQvnXcGy88RVByyDcoO4sRVSzTJBV3kVS
-         +vgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740395979; x=1741000779;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rKNwKhh4dEnTxVcOajigIGSRE5tzPUoKtH97+XkBOAY=;
-        b=idzjiOXY138zlIjfWfkBJEP9SbJ5875jQu9/B+VnP03Veq5SEuoM5HqKGqX9XiNuBe
-         Cf2MBO3KKAIMjT93M+XZb5WfRTfn+n8APS2aii5rNydZspk3W97qODRBkkLVvhZ94utC
-         Mr0oe6G1lLW5Rnla9qmpHXNuqL+eXQOGi4mUSDi0dp2sheIb7qx/MN2/uQq6JsWyyD7G
-         f36S2xu5Ipx5aFihJt/9nj3IRInb8k7a5DWQzoOZ9qyvalO18PZlBo0EOQgtUYxpsNNi
-         6f48GfEbusR333ECBuxBUjvO5k5VgegIu7CPQN2SFmBzuc6nLVQvyNHGyJWbeipZ+npj
-         RLww==
-X-Forwarded-Encrypted: i=1; AJvYcCUDyTP3hpxIT2gEiCb9MP2bNKgTsuV6BKG8jOcOXUr+Z8xTqC249wQUELQGbzxAdV9yrf0DqB4toKHRp7U67w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+02AkXENFLKYIwEZMVep0zMErfs9kKgQKR6Ti4BZRHLfzJoSA
-	rgLkKxQX4h+z0VWdvB/6aSGMgSdbc9wEKeYUOx9BdHKlLfbSCXP1SXWLa8q9qw3z2Gsju/D8l8C
-	IjIMP+34QP9hDas3De7F3lk6WSin3XlMDsojA
-X-Gm-Gg: ASbGncuDoueFNE7BhRoMIKqwlgm9qXa04eXz2Gm9tv0P7FZA3QvoGrfjKe6TENX2zbQ
-	QZsnxjH/aORebPHNkAWQCsZYDixo07QNmyKZDcTAMUYSSRR5kY6QtjlXnuspu6H3TaCrdYRf4qE
-	F2IVmVh1lp+cO/ux0sUCZvm9bk50NuIAUMXTaz
-X-Google-Smtp-Source: AGHT+IHfngivAfolpBCcXGBcAYbBekzzGYNr0zyvzMbAGXe+oiu7MNfqwRvlRvu1E0aoJ70PuTQ8YmFBD7fGj1cJG6E=
-X-Received: by 2002:a05:6000:154e:b0:38f:4d20:4a17 with SMTP id
- ffacd0b85a97d-38f70799935mr9568176f8f.13.1740395979256; Mon, 24 Feb 2025
- 03:19:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PZeU5eho"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE64C4CED6;
+	Mon, 24 Feb 2025 11:28:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740396491;
+	bh=wMBKiyOZ9vgChPGZe1p/asOkvswkGQx02TjhWX4vQ7I=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=PZeU5eho82z/uA42c7FJtxfs66KEeLlHc6fPoxrbm0doYw+YmSoZ+TNrDp5BnU4rw
+	 +OMsSSWyORMlYBGTRxnbhhnJd1XjOpPumvBOtVVkSTobY3w5FH8ZFTP/yeWPP/7CnT
+	 Kcuks2WmzEG1W1DUCozs1ClAsVijMPhgkQGSyRfQOAtllydQnuA7JlM3SOfFFQt+qD
+	 pxqL7RgoC9h2nhMZyplBRsIcJclN419e+lCt+FNuzjJWJftfqovVeT3qd6D32dt/c1
+	 4vUN2WSHV5xpQ+IGDptthbFbh7inS4HCeRmpDZrBfjXUVBotccierB6Av23HVbVA8M
+	 Fla1sS0TVQtFg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Petr Pavlu" <petr.pavlu@suse.com>
+Cc: "Alex Gaynor" <alex.gaynor@gmail.com>,
+	"Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,
+	=?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	"Benno Lossin" <benno.lossin@proton.me>,
+	"Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
+	"Masahiro Yamada" <masahiroy@kernel.org>,
+	"Nathan Chancellor" <nathan@kernel.org>,
+	"Nicolas Schier" <nicolas@fjasle.eu>,
+	"Luis Chamberlain" <mcgrof@kernel.org>,  <rust-for-linux@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>,
+	"Adam Bratschi-Kaye" <ark.email@gmail.com>,
+	<linux-kbuild@vger.kernel.org>,
+	"Daniel Gomez" <da.gomez@samsung.com>,
+	"Simona Vetter" <simona.vetter@ffwll.ch>,
+	"Greg KH" <gregkh@linuxfoundation.org>,  <linux-modules@vger.kernel.org>,
+	"Miguel Ojeda" <ojeda@kernel.org>, "Sami Tolvanen"
+ <samitolvanen@google.com>
+Subject: Re: [PATCH v7 0/6] rust: extend `module!` macro with integer
+ parameter support
+In-Reply-To: <20250218-module-params-v3-v7-0-5e1afabcac1b@kernel.org> (Andreas
+	Hindborg's message of "Tue, 18 Feb 2025 14:00:42 +0100")
+References: <JKqjFnoTeEbURcTQ5PpmUZWDS2VMEt0eZl68dWkgk3e8ROFpb2eTWH2mStKkkXJw__Ql5DdYvIR9I7qYks-lag==@protonmail.internalid>
+	<20250218-module-params-v3-v7-0-5e1afabcac1b@kernel.org>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Mon, 24 Feb 2025 12:27:59 +0100
+Message-ID: <87ldtv1t1c.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250223072114.3715-1-boqun.feng@gmail.com>
-In-Reply-To: <20250223072114.3715-1-boqun.feng@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 24 Feb 2025 12:19:27 +0100
-X-Gm-Features: AWEUYZlG3dBja0S9lUuTrhyjnlqfO-rrsKw667VUMX7yjVkDuivZCQ1hf-oSPHg
-Message-ID: <CAH5fLgi2iXKg+Mwze41KHk1rLa1=f7=ofhbq_wz6mxmC4GNe6w@mail.gmail.com>
-Subject: Re: [PATCH] rust: sync: lock: Add an example for Guard::lock_ref()
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
-	Waiman Long <longman@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Sun, Feb 23, 2025 at 8:21=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
+Hi Petr,
+
+"Andreas Hindborg" <a.hindborg@kernel.org> writes:
+
+> This series extends the `module!` macro with support module parameters. It
+> also adds some string to integer parsing functions and updates `BStr` with
+> a method to strip a string prefix.
 >
-> To provide examples on usage of `Guard::lock_ref()` along with the unit
-> test, an "assert a lock is held by a guard" example is added.
+> This series stated out as code by Adam Bratschi-Kaye lifted from the original
+> `rust` branch [1].
 >
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> After a bit of discussion on v3 about whether or not module parameters
+> is a good idea, it seems that module parameters in Rust has a place
+> in the kernel for now. This series is a dependency for `rnull`, the Rust
+> null block driver [2].
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-> This depends on Alice's patch:
->
->         https://lore.kernel.org/all/20250130-guard-get-lock-v1-1-8ed87899=
-920a@google.com/
->
-> I'm also OK to fold this in if Alice thinks it's fine.
+Luis told me you are the one wearing the modules hat for the moment. How
+do you want to handle merging of patch 6 and subsequent maintenance of
+the code?
 
-I think we can just keep two patches :)
+I think we discussed you guys taking this under the current module
+maintainer entry? If that is correct, will you add the new files to your
+entry yourself, or should I include an update to MAINTAINERS in the next
+version of this series?
 
-Alice
+If prefer another solution, let me know and we can figure that out.
+
+
+Best regards,
+Andreas Hindborg
+
+
+
