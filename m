@@ -1,124 +1,116 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE98202F93;
-	Mon, 24 Feb 2025 22:36:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740436580; cv=pass; b=XSkQhRoCAhWa8kJImRmRfDKURbLBET3rbYM9UYD/dfbGHGWOrsdJ4NKFBQqGsmCYsvqer62WvnFDo4n5xqvceit55KEniT3EsEl8ohhyD7r0G1bA59w08BMJJ0ye6Gl5rXR/OHvPgapRUh+JHhO7WE57unR1gRyU5VN0uKzxFl8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740436580; c=relaxed/simple;
-	bh=FGn/OcZD++sMSp+EacZdPtWL50VqZpRylr+EGHDXth0=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=I445s995mQIBsEmJ0Lg4bKpOyZqUi/pxkF1w7oB/sAZvg4YRE5fSCOnzgUMbs8VuxNlk70Y7GGm540NiuAG8VJHck5MC17QEtYbC5INvlpkydNFcwzRoNTyiKZaPys/O/Wg3U5LwqOE5BJqJYQjLqMmKyyHNsVRo82RPRq2xCBM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Vi/zuP9k; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BAE61DF73D;
+	Mon, 24 Feb 2025 22:50:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740437453; cv=none; b=DqDXgi0ImT3xoNO5ONzP7ZCW2f+vOzi7wOvJfjCudR9IawJ4ntpMtm1dLmX4CbBa3RSiRhpGDF0KrIXN7GrdF9ykLZXP4HIf7TihWICSqEhfzltqFuTq9fZs8FMoJnbU+EIr3+JXhO3YqG1eHgJouKE2B3x2UA1tk7vJg81L/Iw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740437453; c=relaxed/simple;
+	bh=JjSeIZn3Tl9arL130X2XuGh1fuwhuZw06qHF7VDxXy0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pOWsTCH4K5YSOGmE4MTbLFSoprkpn8mjEJq3mxTPDb9Zr8GDai0/HndIqaEut05+CrxDQWibKV+JsWyDDFfkPTxQxz2VBidrcLgahdH29NIEP/4bZZFno7NIiVdjOKkwh5I4FYj3irQgbp/WRKCURfos4JJjZTG1y+xUOh08Nlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=EpMhakMt; arc=none smtp.client-ip=185.70.40.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Vi/zuP9k"
-ARC-Seal: i=1; a=rsa-sha256; t=1740436545; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=eHWtoo5rdNpFEt3CzgTvU8EObGuS0KRK4kWHO+zNBcduUwfCpRaLwAmwAhf1noIm3VLUUcxdRnLhlvWO432AyhzOg9roesQE5vKxkx7VpggUdlJ1oBVLvCKZQHvEW9CNpWJOgR8D6VUTErRP7Lq2RAQRwdqqbxfF6C9nxKecZQI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1740436545; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=SdyERRxHHdW7zgOlR6t3ukNnwkuWUi84nscbihMEp6w=; 
-	b=C3XMPYXlXmHMqazBpUXkiTSVuskL194HkWOJbTPrf2/U99cg3khIXYR0ltvQZDOqyDrK4Kqj4XBGPbk3ylIQRlMbeb/bXBmMFpF6+l8o/PRloESdgAh7mHzL9zV0xA/A15iJsEi2yftDP+gojmLSDRwo1K8k8ZWh69ZiLDdEC1w=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1740436545;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=SdyERRxHHdW7zgOlR6t3ukNnwkuWUi84nscbihMEp6w=;
-	b=Vi/zuP9kxsLmIC3oWyRFl53ZGoN7CLm9BayLmRbEnPPtbwWELD5cVT3fW5nEmTFI
-	SjdRi+5+YAmE++c2XW37rnCI0lQwEIj79zGLeoLJ6TPT9wQ1x8BQvg0DCQzTMVekYUl
-	Y/ioV8lmkM0DbXw/L2YN6pMzDeEnJ/bePYKGorLE=
-Received: by mx.zohomail.com with SMTPS id 1740436543880453.22386984310026;
-	Mon, 24 Feb 2025 14:35:43 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="EpMhakMt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=pmao5xsvivachg434437b6glrm.protonmail; t=1740437448; x=1740696648;
+	bh=SWT1E+FxSOhMjfUbqdRk62nYCu2aUsyvX/tzao+XenA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=EpMhakMtQ6hQpOr5d0e4XIPEj+DdTuu7vD23MEv4qtOJt9PKfn3qbBp377DB37GhA
+	 NbmESAubI746u4ff4rJIfkFuOFPWIfqCOY/71MEmhVxJyRlBpl4+C504fpbQWFSGLZ
+	 AE+tSd9uEyVQO8FyhKuwYlB8ClANyfjXPxUYlweuFO+u0Ro6PRJoyndMUZf7zv6WK6
+	 mT0tGqqXywxkImmboezuReiWNh7KpH6dsnkNXdZBBMFdkhFsZkgqtQGe1j8XO0RiPT
+	 MUMBuiCiP5siql0WjVqDqXHHlcjb45M2d+rReSieTkiu6TdcS64CcMTfDhyKzrvaHI
+	 L4G29v236pfww==
+Date: Mon, 24 Feb 2025 22:50:44 +0000
+To: Andreas Hindborg <a.hindborg@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+Subject: Re: [PATCH] rust: sync: lock: Add an example for Guard::lock_ref()
+Message-ID: <e3fc00dd-144a-4885-b8c7-76cd9322211a@proton.me>
+In-Reply-To: <87r03n1tmd.fsf@kernel.org>
+References: <20250223072114.3715-1-boqun.feng@gmail.com> <87wmdf22ae.fsf@kernel.org> <abHXLME4gEkYx7XkPVjZGIFs7Uuur8t0PkXDscTQPCvJCRsEfxM7gUS3K4MqegDt_nBDQJQDjLf5utZREFhDzA==@protonmail.internalid> <304505cb-9f68-4d34-b4f1-7d703baba012@proton.me> <87r03n1tmd.fsf@kernel.org>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 491b7f34fa77b5ea96d496a7a34fdf529b8ea894
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
-Subject: Re: [PATCH v12 2/3] rust: add dma coherent allocator abstraction.
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <6f154af8-6379-4b1f-9e30-2b99f7f736dd@gmail.com>
-Date: Mon, 24 Feb 2025 19:35:26 -0300
-Cc: Andreas Hindborg <a.hindborg@kernel.org>,
- aliceryhl@google.com,
- dakr@kernel.org,
- robin.murphy@arm.com,
- rust-for-linux@vger.kernel.org,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Trevor Gross <tmgross@umich.edu>,
- Valentin Obst <kernel@valentinobst.de>,
- linux-kernel@vger.kernel.org,
- Christoph Hellwig <hch@lst.de>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- airlied@redhat.com,
- iommu@lists.linux.dev
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <39A0DA3F-0ECF-4FD2-A46E-4F831C194C17@collabora.com>
-References: <20250224115007.2072043-1-abdiel.janulgue@gmail.com>
- <k3GMnfXzzvUVOgSnuMlEq3eVRyq1qjcf_tDtILRbOwj08EIQpwQ4bGtGhwWufr8lUn-VlHnNjP8FxIA48Jv-Ug==@protonmail.internalid>
- <20250224115007.2072043-3-abdiel.janulgue@gmail.com>
- <87seo3z9qr.fsf@kernel.org> <6f154af8-6379-4b1f-9e30-2b99f7f736dd@gmail.com>
-To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-X-Mailer: Apple Mail (2.3826.300.87.4.3)
-X-ZohoMailClient: External
 
-Hi Abdiel
+On 24.02.25 12:15, Andreas Hindborg wrote:
+> "Benno Lossin" <benno.lossin@proton.me> writes:
+>=20
+>> On 24.02.25 09:08, Andreas Hindborg wrote:
+>>> Boqun Feng <boqun.feng@gmail.com> writes:
+>>>
+>>>> To provide examples on usage of `Guard::lock_ref()` along with the uni=
+t
+>>>> test, an "assert a lock is held by a guard" example is added.
+>>>>
+>>>> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+>>>> ---
+>>>> This depends on Alice's patch:
+>>>>
+>>>> =09https://lore.kernel.org/all/20250130-guard-get-lock-v1-1-8ed8789992=
+0a@google.com/
+>>>>
+>>>> I'm also OK to fold this in if Alice thinks it's fine.
+>>>>
+>>>>  rust/kernel/sync/lock.rs | 24 ++++++++++++++++++++++++
+>>>>  1 file changed, 24 insertions(+)
+>>>>
+>>>> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+>>>> index 3701fac6ebf6..6d868e35b0a3 100644
+>>>> --- a/rust/kernel/sync/lock.rs
+>>>> +++ b/rust/kernel/sync/lock.rs
+>>>> @@ -201,6 +201,30 @@ unsafe impl<T: Sync + ?Sized, B: Backend> Sync fo=
+r Guard<'_, T, B> {}
+>>>>
+>>>>  impl<'a, T: ?Sized, B: Backend> Guard<'a, T, B> {
+>>>>      /// Returns the lock that this guard originates from.
+>>>> +    ///
+>>>> +    /// # Examples
+>>>> +    ///
+>>>> +    /// The following example shows how to use [`Guard::lock_ref()`] =
+to assert the corresponding
+>>>> +    /// lock is held.
+>>>> +    ///
+>>>> +    /// ```
+>>>> +    /// # use kernel::{new_spinlock, stack_pin_init, sync::lock::{Bac=
+kend, Guard, Lock}};
+>>>> +    ///
+>>>> +    /// fn assert_held<T, B: Backend>(guard: &Guard<'_, T, B>, lock: =
+&Lock<T, B>) {
+>>>> +    ///     // Address-equal means the same lock.
+>>>> +    ///     assert!(core::ptr::eq(guard.lock_ref(), lock));
+>>>> +    /// }
+>>>
+>>> This seems super useful. Perhaps add this method as part of the lock ap=
+i
+>>> instead of just having it in the example?
+>>
+>> I don't think it should be an assert. Instead make it return a
+>> `Result<(), ()>`. (or create better named unit error types)
+>=20
+> No, this should not be part of usual control flow, and developers should
+> not make control flow decisions based on this. It would always be an
+> assertion. But you are right that `assert!` is probably not what we
+> want. `debug_assert!` might be fine though.
 
-> On 24 Feb 2025, at 13:27, Abdiel Janulgue <abdiel.janulgue@gmail.com> =
-wrote:
->=20
->=20
-> On 24/02/2025 16:40, Andreas Hindborg wrote:
->> "Abdiel Janulgue" <abdiel.janulgue@gmail.com> writes:
->> [...]
->>> +/// Inform the kernel about the device's DMA addressing =
-capabilities. This will set the mask for
->>> +/// both streaming and coherent APIs together.
->>> +pub fn dma_set_mask_and_coherent(dev: &Device, mask: u64) -> i32 {
->>> +    // SAFETY: device pointer is guaranteed as valid by invariant =
-on `Device`.
->>> +    unsafe { bindings::dma_set_mask_and_coherent(dev.as_raw(), =
-mask) }
->>> +}
->>> +
->>> +/// Same as `dma_set_mask_and_coherent`, but set the mask only for =
-streaming mappings.
->>> +pub fn dma_set_mask(dev: &Device, mask: u64) -> i32 {
->>> +    // SAFETY: device pointer is guaranteed as valid by invariant =
-on `Device`.
->>> +    unsafe { bindings::dma_set_mask(dev.as_raw(), mask) }
->>> +}
->> Sorry if it was asked before, I am late to the party. But would it =
-make
->> sense to put these to functions on `Device` and make them take =
-`&self`.
->=20
-> Thanks for checking this. The API is about the dma addressing =
-capabalities of the device, my thoughts would be to group them with the =
-rest of the dma API? But either way, I don't have a strong preference. =
-I'll let others comment.
->=20
-> Daniel, Danilo?
->=20
-> Regards,
-> Abdiel
+I agree, that it shouldn't be used for driver logic, but you still might
+want to warn/warn_once instead of panic (or debug_assert).
 
-IIRC, that was already suggested by either Alice or someone else =
-previously. Also (and again IIRC), you were going to
-split that part into a separate patch?=20
+---
+Cheers,
+Benno
 
-=E2=80=94 Daniel=
