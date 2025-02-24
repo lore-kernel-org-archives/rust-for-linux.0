@@ -1,98 +1,211 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f66.google.com (mail-lf1-f66.google.com [209.85.167.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6FC194A44;
-	Mon, 24 Feb 2025 12:11:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10A621931F;
+	Mon, 24 Feb 2025 12:21:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740399083; cv=none; b=HABZ98tqXMaAqh59+yw7jI9GrHClt6ZzqJWLJDKs6tVDX5h70siZi1smXgQKQjL0/SyRWnzXFuSX9OsSmR5yjbVp+/2/EAQXYFUddxizD1Zqw1gupFqabMbSEHBoMSjZ9TUex/XIm9s9vUBrWygHYxAi+LEhuGlaa5qm7LCrDaY=
+	t=1740399699; cv=none; b=T8d/iBiVbcqgFL0awkoJ05BceWMN2hHn51CCpzc7oVc69+ZT6f/qUDz1jO6k9RE93EVxXX534o/ai04IzgiH9aRLcOGl1rLd1ZQHp6af027CC5M2HfuXN49E+UhEdMbuBBoRX685812JZGZTcqDT2C3hQ1SPWC8/ZACOy0oLfgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740399083; c=relaxed/simple;
-	bh=ji86S+6hkK6jvEu8J3uKVH9gFMsbNKK9qSj8rPf2IYo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pNRJv5wJhK6wjaG40kQ3V125mY5SN8YZpTSjoCGabC3D9QuvDAqicXQskchIF3xNP9+LCxqH1GVOpxbIGeVq6Mmqb6Yq04PztoQQshco4Z1Wuz21gAu6Q2e7BQDdoNRfvFwSeow8XGvZ/xb4ZsBFKHUFoAFDUZS2K/tGCJ6o1zE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WjLUBFT+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740399699; c=relaxed/simple;
+	bh=c/0MoOdjamanUJmTHJ0B14Pe8e4uSePSvvWTapuIgp8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XW0gXo+U5fsAp91/vkgNMKHmQsilR1C3q2EjMpuGVXx7H8Acg6UGTeLEEH4dO0I/hR82J7sEQ9ljj3L5lJt+8OhxgJMFfxkvr0tGT3XC7ogk8RUSvodANuALWUixw+JLD5aE9cOzG9tWxJo3X7TEvk0u6sb3T3u/mRx7/7HTP9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kezcIo3C; arc=none smtp.client-ip=209.85.167.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WjLUBFT+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E8EAC4CED6;
-	Mon, 24 Feb 2025 12:11:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740399083;
-	bh=ji86S+6hkK6jvEu8J3uKVH9gFMsbNKK9qSj8rPf2IYo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WjLUBFT+aQe/w0i30iEK0+Bl/rX6PURlwNIcc12p7APTHAvuAc2UMi+I5qBs2tKGn
-	 4l7p/pxNtSEZpc0qflUFl0Z/Xk2tMeCF42QFAdEru26eHTkPmsTRMHrD1vCs5IZOcJ
-	 8JZXbQETu+0OKu+BkgchYQCFhch7XKPOBvkWYRB78S5RFIW+Rx+yWn4Vh/Cl8usQRI
-	 z0R2MlmtaBrGDOOVxWTIjC0mOKnV0iyXgrrm3xiw9NipF9NoQJq08nERJeefr+jg5f
-	 XrxpHk1fyYqIP+oiziXTePlI0FAdiu5b+/b3fgxrcQqIe7lUy32DA3QDPHJxttskdc
-	 zEPYIgddcwS3w==
-Date: Mon, 24 Feb 2025 13:11:17 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
- implementation
-Message-ID: <Z7xh5bEyh_MII4WV@pollux>
-References: <20250217-nova_timer-v1-0-78c5ace2d987@nvidia.com>
- <Z7OrKX3zzjrzZdyz@pollux>
- <CAPM=9tyu84z4Xk5X0fykO3Dazby2UqRgwtN4woNKe4Z2yMyDZg@mail.gmail.com>
- <D80AK2CLL4AZ.1G6R7OBHOF08O@nvidia.com>
- <Z7xg8uArPlr2gQBU@pollux>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kezcIo3C"
+Received: by mail-lf1-f66.google.com with SMTP id 2adb3069b0e04-5461dab4bfdso5307464e87.3;
+        Mon, 24 Feb 2025 04:21:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740399696; x=1741004496; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IWmOfEdSXzaBBdG333oww2KYZMfQXKcB4kFwGEnLasM=;
+        b=kezcIo3CC/x38Gs4FFUc0ZbWna0oGz/lsZiPqZQvGNvr4muIOoNGIny1h714ybtIAJ
+         kdUisxBuoitVOiq6E65hdf0E0bCw8pCduDQ9e7+8EJiq70fg+0HyFb/4cAUIqPuYww6T
+         F5MuLVq0KPzS4lzMTYxX3+1z2c+vQ3kfXF/1nDNsWp5550BlXcBwtGqkjJT6iEokh6rR
+         EpNOf32H/CNVSfmNLKesIRxsreSGM8v17YgtVZAUhY0kIv3O/QTmZVxk6eKrvf/FX2h9
+         voWw/DyeJUK5YJG6VBu4Z0bhSPErpllubn3bJSBR7wplMTRXwEbUXZDhzDH3gk34Tpmj
+         P6sQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740399696; x=1741004496;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IWmOfEdSXzaBBdG333oww2KYZMfQXKcB4kFwGEnLasM=;
+        b=T7DBM6R6M1wMtzNiICFoewsmSl60hSzUa0K/1QIpbNjit0bBl1XjPTkEPSWpmoA6fa
+         +9uszXkUxVsUwwklE402cmqprSC0HWRg9bBYQYobirzlsoZmkcPVG3scbBglV618dmvo
+         uHi+M6vasJkrc70q9d+6H9GMPNN8tInVarqd6ihcprdxKf457qx+Ze89l94AVFtzRsl9
+         g0fFZW9fQngkhLUhWUkhrsnLC4IyF+q46ESaUolzBp8KI7o0r5ojexR4Oq91frna4NkU
+         pe01GbSc2pTNcsuV019uGdGvawMRXeF6LQAAzsPaUiPcM5Yj5/w3OkEa6ro5mzyZLHxV
+         R0kg==
+X-Forwarded-Encrypted: i=1; AJvYcCUJNjYZVm+6oJpIzFe8FKka0gNsVqihu7C2PFE3A8WGAvgCh5xTfY1moY5dtf2tzDHCqe9i/wLAGuws8No=@vger.kernel.org, AJvYcCUnipPExmnKMPETkuoJNzbH0UNKb1RHHQRQtCc2WyzRVtmrZ8lDscYYejo3eDoCjPAbzGllW/4uwzXhbWlf9tM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyuh4jiNEOrS1Yl/Te1t5+ib5mHtwX9N7BCRxyYmqKb7x4f9a1x
+	XAp0RN00h2IjyQi4xPKmqBDBxkEEPNTArW/I3KsLvNb9lkId9GvbKA6dlGL9SQO1FY4qBUffvdz
+	Tlf2oaNd8WteNVWTbXYdugjpaYWs=
+X-Gm-Gg: ASbGncsNBiKF5qC6jrwH0013T7DnDvuNloYCEe0St33Wc0pJH+7aCQWUJ47O4cCDTw9
+	V8miE7GTEEHhc543wJP1wcEzFGnrQ+Es2TtbYdz4f8n6M3G1JrwekIfVZOqqvpymS1Cfs6/LehV
+	MlFHXtlwtG
+X-Google-Smtp-Source: AGHT+IH2c4YXSrUFIM8m/cIdnso6oiTzGNNXNjULwiaY1NOd65Qxm1jJJr3q91sh9mzEWfc8vGw0MuG3NJk+3gUjqoY=
+X-Received: by 2002:a05:6512:b9d:b0:545:e2e:842b with SMTP id
+ 2adb3069b0e04-54838eddd50mr4261726e87.9.1740399695761; Mon, 24 Feb 2025
+ 04:21:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z7xg8uArPlr2gQBU@pollux>
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
+ <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+ <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+ <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+ <20250224002745.7d7460a7.gary@garyguo.net> <CAFJgqgSNjF=LfrCNTH3GdYssXz9YG-AeCtpibejJ7Ywtx0m3HQ@mail.gmail.com>
+ <4cb1d98b-f94b-410a-be90-4394c48bdbf2@proton.me>
+In-Reply-To: <4cb1d98b-f94b-410a-be90-4394c48bdbf2@proton.me>
+From: Ventura Jack <venturajack85@gmail.com>
+Date: Mon, 24 Feb 2025 05:21:20 -0700
+X-Gm-Features: AWEUYZmWJgurU6G-WWMuuBdcrkMGAbk8dsKVeoYyziZ88-TkzAQTxVNTTtG_9_I
+Message-ID: <CAFJgqgQ3P81-iskGu9R+T=c=wyB2K0JqUhx+Gj+6mkYeY8-ORg@mail.gmail.com>
+Subject: Re: C aggregate passing (Rust kernel policy)
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Gary Guo <gary@garyguo.net>, Linus Torvalds <torvalds@linux-foundation.org>, 
+	Kent Overstreet <kent.overstreet@linux.dev>, airlied@gmail.com, boqun.feng@gmail.com, 
+	david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, 
+	hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 24, 2025 at 01:07:19PM +0100, Danilo Krummrich wrote:
-> CC: Gary
-> 
-> On Mon, Feb 24, 2025 at 10:40:00AM +0900, Alexandre Courbot wrote:
-> > This inability to sleep while we are accessing registers seems very
-> > constraining to me, if not dangerous. It is pretty common to have
-> > functions intermingle hardware accesses with other operations that might
-> > sleep, and this constraint means that in such cases the caller would
-> > need to perform guard lifetime management manually:
-> > 
-> >   let bar_guard = bar.try_access()?;
-> >   /* do something non-sleeping with bar_guard */
-> >   drop(bar_guard);
-> > 
-> >   /* do something that might sleep */
-> > 
-> >   let bar_guard = bar.try_access()?;
-> >   /* do something non-sleeping with bar_guard */
-> >   drop(bar_guard);
-> > 
-> >   ...
-> > 
-> > Failure to drop the guard potentially introduces a race condition, which
-> > will receive no compile-time warning and potentialy not even a runtime
-> > one unless lockdep is enabled. This problem does not exist with the
-> > equivalent C code AFAICT
+On Mon, Feb 24, 2025 at 3:31=E2=80=AFAM Benno Lossin <benno.lossin@proton.m=
+e> wrote:
+>
+> On 24.02.25 10:57, Ventura Jack wrote:
+> >
+> > In regards to `UnsafeCell`, I believe that you are correct in regards
+> > to mutability. However, if I understand you correctly, and if I
+> > am not mistaken, I believe that you are wrong about `UnsafeCell`
+> > making it possible to opt-out of the aliasing rules. And thus that
+> > `UnsafeCell` does not behave like `T*` in C.
+>
+> `UnsafeCell<T>` does not behave like `T*` in C, because it isn't a
+> pointer. Like Gary said, `&UnsafeCell<T>` behaves like `T*` in C, while
+> `&mut UnsafeCell<T>` does not. That is what you quote from the docs
+> below. (Those ampersands mark references in Rust, pointers that have
+> additional guarantees [1])
 
-Without klint [1] it is exactly the same as in C, where I have to remember to
-not call into something that might sleep from atomic context.
+From what I can see in the documentation, `&UnsafeCell<T>` also does not
+behave like `T*` in C. In C, especially if "strict aliasing" is turned
+off in the
+compiler, `T*` does not have aliasing requirements. You can have multiple
+C `T*` pointers pointing to the same object, and mutate the same object.
+The documentation for `UnsafeCell` conversely spends a lot of space
+discussing invariants and aliasing requirements.
 
-> > which makes the Rust version actually more
-> > error-prone and dangerous, the opposite of what we are trying to achieve
-> > with Rust. Or am I missing something?
-> 
-> Generally you are right, but you have to see it from a different perspective.
-> 
-> What you describe is not an issue that comes from the design of the API, but is
-> a limitation of Rust in the kernel. People are aware of the issue and with klint
-> [1] there are solutions for that in the pipeline, see also [2] and [3].
-> 
-> [1] https://rust-for-linux.com/klint
-> [2] https://github.com/Rust-for-Linux/klint/blob/trunk/doc/atomic_context.md
-> [3] https://www.memorysafety.org/blog/gary-guo-klint-rust-tools/
+I do not understand why you claim:
+
+    "`&UnsafeCell<T>` behaves like `T*` in C,"
+
+That statement is false as far as I can figure out, though I have taken it
+out of context here. Is the argument in regards to mutability? But `T*` in =
+C
+allows mutability. If you looked at C++ instead of C, maybe a `const`
+pointer would be closer in semantics and behavior.
+
+> below. (Those ampersands mark references in Rust, pointers that have
+> additional guarantees [1])
+>
+>[omitted]
+>
+> [1]: https://doc.rust-lang.org/std/primitive.reference.html
+
+There is also https://doc.rust-lang.org/reference/types/pointer.html .
+But, references must follow certain aliasing rules, and in unsafe Rust,
+it is the programmer that has the burden of upholding those aliasing rules,
+right?
+
+> For disabling the uniqueness guarantee for `&mut`, we use an official
+> "hack" that the Rust language developers are working on replacing with
+> a better mechanism (this was also mentioned by Gary above).
+
+Are you referring to `Opaque`?
+
+> > Documentation and related links for `Opaque`:
+> >     https://rust.docs.kernel.org/kernel/types/struct.Opaque.html
+> >     https://rust.docs.kernel.org/src/kernel/types.rs.html#307-310
+> >     https://github.com/Rust-for-Linux/pinned-init
+> >
+> > It uses `UnsafeCell`, Rust "pinning", and the Rust for Linux library
+> > "pinned-init".
+>
+> pinned-init is not specific to `Opaque` and not really relevant with
+> respect to discussing aliasing guarantees.
+
+Is `Opaque` really able to avoid aliasing requirements for users,
+without internally using "pinned-init"/derivative or the pinning
+feature used in its implementation?
+
+> > "pinned-init" uses a number of experimental, unstable and nightly
+> > features of Rust.
+>
+> This is wrong. It uses no unstable features when you look at the version
+> in-tree (at `rust/kernel/init.rs`). The user-space version uses a single
+> unstable feature: `allocator_api` for accessing the `AllocError` type
+> from the standard library. You can disable the `alloc` feature and use
+> it on a stable compiler as written in the readme.
+
+Interesting, I did not realize that the Rust for Linux project uses
+a fork or derivative of "pinned-init" in-tree, not "pinned-init" itself.
+
+What I can read in the README.md:
+    https://github.com/Rust-for-Linux/pinned-init/tree/main
+
+    "Nightly Needed for alloc feature
+
+    This library requires the allocator_api unstable feature
+    when the alloc feature is enabled and thus this feature
+    can only be used with a nightly compiler. When enabling
+    the alloc feature, the user will be required to activate
+    allocator_api as well.
+
+    The feature is enabled by default, thus by default
+    pinned-init will require a nightly compiler. However, using
+    the crate on stable compilers is possible by disabling alloc.
+    In practice this will require the std feature, because stable
+    compilers have neither Box nor Arc in no-std mode."
+
+Rust in Linux uses no_std, right? So Rust in Linux would not be
+able to use the original "pinned_init" library as it currently is without
+using currently nightly/unstable features, until the relevant feature(s)
+is stabilized.
+
+> > Working with the library implementation requires having a good
+> > understanding of unsafe Rust and many advanced features of Rust.
+>
+> pinned-init was explicitly designed such that you *don't* have to write
+> unsafe code for initializing structures that require pinning from the
+> get-go (such as the kernel's mutex).
+
+Sorry, I sought to convey that I was referring to the internal library
+implementation, not the usage of the library.
+
+For the library implementation, do you agree that a good
+understanding of unsafe Rust and many advanced features
+are required to work with the library implementation? Such as
+pinning?
+
+> > `Opaque` looks interesting. Do you know if it will become a more
+> > widely used abstraction outside the Linux kernel?
+>
+> Only in projects that do FFI with C/C++ (or other such languages).
+> Outside of that the `Opaque` type is rather useless, since it disables
+> normal guarantees and makes working with the inner type annoying.
+
+Interesting.
+
+Best, VJ.
