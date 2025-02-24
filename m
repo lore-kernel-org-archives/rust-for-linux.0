@@ -1,84 +1,87 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64EA20AF7D
-	for <rust-for-linux@vger.kernel.org>; Mon, 24 Feb 2025 08:13:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55107242912
+	for <rust-for-linux@vger.kernel.org>; Mon, 24 Feb 2025 08:56:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740384783; cv=none; b=JrAcVmXeE/SV0P9W30NG3T9xvVg4V3mCw2l5NbI/6Rqvjm16GjieYxbcAck8pnIa+OqKk7QqC9gxVb60eExAzXt+K3ATeZbxBKraOIcVcFnKHLDTKbFWiliuVQBvqBDuUR3TWc1IKS/EEMAV8H4sTbQmKq1AVJWFruOccbpddAA=
+	t=1740387378; cv=none; b=S/bvxaKbkWDrym72nNJdTtv2x4kzKqUoQ4Ntzm4OVyly3AcTBrwTkfvhCvpqTzIzepvv1VK1haZDqk+ArayUYo2qzBDCIyTvncMaBaGXgMtfCMBLY4kTUijRplI9+iotND/h1gvOiD1CN8LK6PaHdNlGfOYlEGyvAJD6URJ2a10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740384783; c=relaxed/simple;
-	bh=zm1XGdW8b7MAbdzYL+ivC3Vm7Q33WGsikbRPl+MehKg=;
+	s=arc-20240116; t=1740387378; c=relaxed/simple;
+	bh=06AblsnnP+1xAekOfi7Ql/W2vrMIvov4zF/dPunqSk4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=czTwy8XJEesUdI3NslJe6yWOlLNxItyQLAuT8b3RoOtRXBhQFjubui0J8+RIQFicG6cpj5RvzF3GkBmc77J7c9FuL4EqbkeAcSWNCx2M2vxIUp1UO40Vj3sz6dJjN0sD9zNBRxGWRi3xmQbTGiyBh+XPCPWLyNMiyz958f+Tj5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=njvpp7yR; arc=none smtp.client-ip=209.85.208.53
+	 Content-Type:Content-Disposition:In-Reply-To; b=H1j6HvS3kEbWwVaMj9v+77y1UOXLoNGzq5rXPYagDTzqGeC2bWl5Eu/MSg8epAB1EvR1FqWkeJVZNnh2SpP+FM81gCheMsEyBvSnd9zuYOyibJQljbvRNZu9253uzGWWOCoqKqqXcflm80N53gBT3Ow2/KMefjX6rD8GaMyaD14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Fl4GN5s1; arc=none smtp.client-ip=209.85.216.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="njvpp7yR"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5e033c2f106so5396119a12.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 24 Feb 2025 00:13:01 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Fl4GN5s1"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2fcb6c42c47so6340652a91.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 24 Feb 2025 00:56:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1740384780; x=1740989580; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1740387376; x=1740992176; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Oy/VDejTz9+C/5BlUy0JQ2ySPwy1T3j7TGBJKfwzWTE=;
-        b=njvpp7yRglPfwx7t9O0F4oxTFetAtdRcb0rWJ7oujTljI3JCYHR6CzO7xNCyemNtoI
-         Ce1nUPAJ4I5mv5fT3djW/1vKERx6Ac44G/UaNuGlSHhjT4CPEyrSlILnAxibnS5Hw+ka
-         ssNYC1l9bcCC+ZPhpNorstAeL5ZLusJaBRNy7Hvr49w9HnXN2jrRiuIt4FO5TA1koGe/
-         kLYDvbgT020gckVM/Ni2uhZQw79xZYhzzwCw6/Y74SxLdYOTciPGPmjQp7AhZS3TWfq2
-         G0kOrJncmIY2fp4hTS584ISyKNf052Mi0F5NPpSKwFjFobjS+hewtwhNLaI/sDHfk/+S
-         mWqA==
+        bh=TaBv8v02Nb3a5UGjEfTd42AEkkKkLNKGhI6ZakaIigA=;
+        b=Fl4GN5s1yDCpk7u6QvDORnFrj1KzI1f4ncIRJ4sP9Gv4vhbkuTHZQU8mNzT2YqUnyf
+         mWuALNw2DfeDR71uhv8k9dh/6Hy5sHadU0mYF4XiAgEmzigEnoq7s1lAEiC/UgMJ7+2O
+         WoGRrnKi+FcmqT6xc0k7IXCXgi8MMWtpq11rPV6AO4LY+Iz1BN01Ej/y9Lf5zxufLAvX
+         t9gdPIe6MZRusdGlA4JehdGXQX5vic+hY2uVY/xCAE7FvhQUr6yzLXPp1p0nkHJdhPZF
+         vEIqAgTvhovNVnCaR5o2qGHoIp+RGX6JkQR0tdo/mPqyNY1c6JNDpjcJx0pcLLohv9/6
+         tpKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740384780; x=1740989580;
+        d=1e100.net; s=20230601; t=1740387376; x=1740992176;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Oy/VDejTz9+C/5BlUy0JQ2ySPwy1T3j7TGBJKfwzWTE=;
-        b=iX1Vn9+UbPOiA4UVAFEDVLQEVvR3o1WfehzeBYYoUC9iqqzGnFxGiepGzCTzLxGsY0
-         A6MhnU2ocX3/LlMQziQ2LYcZIlKhL04BrqcGEMfa3DkYd0hSW9U8MQAThDpVmh77ZL1q
-         NcxNXTjSQ5ycqZfjDndHti+rUesMLcP3A7Ix+ijTRpG6bRuJDZqFZIK0Lay15xlzZD95
-         x9kBGaFeh/uevOn/DcyGjs8uT88vKkGxug4z1IQT8kkRqm0b8eukFpnHCGxoVHR5lrAq
-         /YRDN8e0E1PVZSB4Ybj7hYP6DPEFU5l+3SuFhsvq+jfYXlayUPj+x4JufJYZE5aj+i8I
-         sJMw==
-X-Forwarded-Encrypted: i=1; AJvYcCWWxPrU+yPR3BmbUp4lzvF1yqV1H7D/AjWo4nh/MTBLam7Pd8qYzFghWvzvgjQx0iOLY+HuG/4Anu1TOBykTg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqOWejkVPhkHjbViBD/9CxVafn0AA1evpBGscJjf+UIIBVYdM5
-	r5fXN0a8jtf+ygDAwW2+HwTrc9uoxUYfqB+OYaCxi/vDRnueWyoLRVCjPh/BY6s=
-X-Gm-Gg: ASbGnctO6ThETzSUZIg7vBftSk65ylS3j+QNwXqpr4UfQeeqLUAJ/qkIxs8sboo1R/Z
-	uT4YxyZro1KSiho3ORnDDCA3PgDMWaJNcu4U/sd+quHmhFw0nJgsrhYMDzS2Fu1xjTX5CVY5hi7
-	oxfgxEYwgJCqucE3mHAVt+yGtWaTGuwbkLYGZhtcflSdW6dTYDxpeF76IipjHWGB0DVby1x/rfu
-	75wNZzGZAsd821AN9mOK7kkGTiHVw7su/SbhcDYBybxSVJTiBHL4f89GewJJUl47U7Aq2ORT7ZD
-	ygwTjwDrTP3mSTJjZjudImyf7yMmGYg=
-X-Google-Smtp-Source: AGHT+IHsJX9ApcHkuTvjiz8vGIYCMMUHA/6LWXZOxZXsrIXHc5WgXLFFAoSh0lWFQE/xDMuQC0Y3EQ==
-X-Received: by 2002:a05:6402:3815:b0:5de:b438:1fdb with SMTP id 4fb4d7f45d1cf-5e0b7266b9amr27595493a12.30.1740384780220;
-        Mon, 24 Feb 2025 00:13:00 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-abb7200144fsm1792040966b.184.2025.02.24.00.12.43
+        bh=TaBv8v02Nb3a5UGjEfTd42AEkkKkLNKGhI6ZakaIigA=;
+        b=n6g68UQtVaCGiteD63lhX4s0Xku4z9Pwo2MtsTGMF3RrHK0egGDuE2LYtdpXj72VN8
+         nSvwDkCr/xPxPOBdlF+vjQXAToKQNSgNyGrBQLTylqlvNp6WglIsSn963Jsz7/Tpm8qj
+         /E655U6pp2TRwi9bF8+otDzHvCJXdx9euKMqSxfw9aQAlXWQMJa2SXqvNEroZPg+w+fA
+         QbVyPYgYt3rNAeDxRCXpU3fkUDw5IxJaRzQOE/3CNtFOif9/Luxhwf8GeAoeaDrdLOTz
+         rHxpVy90sjhbIoUjNGpPpaPaG2jBIe7oKk5E0XyBAU0Re7A+YRvkr4pWK32MI+oMe6At
+         j9LQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXFOOorUAJS18B8xwuICWoXGrGDFLDTS6y5uZPB9v3Qr+vJOi/q8MY9lsFpAK9dHfx1+GWZtFgloBL75ggn6w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjsbbT/0IgE66HuSl0jYAttpnPYzaM/xQXqigr4JoR6gtfZGrj
+	MZSgAj29Rv8g0wFd+s3Xo6xiJnL3Jf7MIo1+DP1LMlrUTXAhoKdE5ioAyg4/N5w=
+X-Gm-Gg: ASbGnctNRuGeUIKeDOL4fFIlvYidw62WYzoJigBcXN+Y1k8D9fIG48KDnvGmseS9feh
+	srpBtiuskPWG7gTGyYisbIe/dIIKNdF1+sip6EINhVg2EElAn8CxLq1Thlme9sjL7xsWU/s7yo4
+	JvaXp3QHOQGt0G+1Q0Z6YR6qW73EbLZGQnOJ75l4dYy8+b+wbDqa/NK0qgH6Ivbg1ywGCp9C1ch
+	mj9mIDlgVNwASD3ibqIu8ZkUPviI+aduS4/mdI5A4+ZOQaQDcVyR3puZBBCzDbuqZmVNiUDSyAx
+	1jUWRAA5YuYCJ2l6h4CXdY/x5Qc=
+X-Google-Smtp-Source: AGHT+IGY+3wZyrH4ts9kooPUWiPLq9Tpuvj09t7MxZdfeBddQhQdu28WeUptIuYXx4KhcW9eZJ1mmA==
+X-Received: by 2002:a17:90b:2246:b0:2ee:693e:ed7a with SMTP id 98e67ed59e1d1-2fce7b3e4cdmr21262746a91.35.1740387376617;
+        Mon, 24 Feb 2025 00:56:16 -0800 (PST)
+Received: from localhost ([122.172.84.15])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fceb0499c2sm6028625a91.12.2025.02.24.00.56.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Feb 2025 00:12:43 -0800 (PST)
-Date: Mon, 24 Feb 2025 11:12:39 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Theodore Ts'o <tytso@mit.edu>
-Cc: Martin Uecker <uecker@tugraz.at>, Greg KH <gregkh@linuxfoundation.org>,
-	Boqun Feng <boqun.feng@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	rust-for-linux <rust-for-linux@vger.kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
-	ksummit@lists.linux.dev
-Subject: Re: Rust kernel policy
-Message-ID: <9a134f1b-a661-4372-9336-289d5734bcab@stanley.mountain>
-References: <a7c5973a-497c-4f31-a7be-b3123bddb6dd@zytor.com>
- <Z7VKW3eul-kGaIT2@Mac.home>
- <2025021954-flaccid-pucker-f7d9@gregkh>
- <4e316b01634642cf4fbb087ec8809d93c4b7822c.camel@tugraz.at>
- <2025022024-blooper-rippling-2667@gregkh>
- <1d43700546b82cf035e24d192e1f301c930432a3.camel@tugraz.at>
- <2025022042-jot-favored-e755@gregkh>
- <b9a5de64fe1ded2ad3111763f35af9901bd81cc4.camel@tugraz.at>
- <caea3e79-78e6-4d98-9f3b-f8e7f6f00196@stanley.mountain>
- <20250221181154.GB2128534@mit.edu>
+        Mon, 24 Feb 2025 00:56:15 -0800 (PST)
+Date: Mon, 24 Feb 2025 14:26:13 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Yury Norov <yury.norov@gmail.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Danilo Krummrich <dakr@redhat.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+	Erik Schilling <erik.schilling@linaro.org>,
+	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
+	Christoph Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>, linux-pm@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] rust: Add cpumask helpers
+Message-ID: <20250224085613.ksburgsarl35tvnh@vireshk-i7>
+References: <20250221205649.141305-1-yury.norov@gmail.com>
+ <20250221205649.141305-2-yury.norov@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -87,42 +90,37 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250221181154.GB2128534@mit.edu>
+In-Reply-To: <20250221205649.141305-2-yury.norov@gmail.com>
 
-On Fri, Feb 21, 2025 at 01:11:54PM -0500, Theodore Ts'o wrote:
-> On Fri, Feb 21, 2025 at 12:48:11PM +0300, Dan Carpenter wrote:
-> > On Thu, Feb 20, 2025 at 04:40:02PM +0100, Martin Uecker wrote:
-> > > I mean "memory safe" in the sense that you can not have an OOB access
-> > > or use-after-free or any other UB.  The idea would be to mark certain
-> > > code regions as safe, e.g.
-> > > 
-> > > #pragma MEMORY_SAFETY STATIC
-> > 
-> > Could we tie this type of thing to a scope instead?  Maybe there
-> > would be a compiler parameter to default on/off and then functions
-> > and scopes could be on/off if we need more fine control.
-> > 
-> > This kind of #pragma is basically banned in the kernel.  It's used
-> > in drivers/gpu/drm but it disables the Sparse static checker.
-> 
-> I'm not sure what you mean by "This kind of #pragma"?  There are quite
-> a lot of pragma's in the kernel sources today; surely it's only a
-> specific #pragma directive that disables sparse?
-> 
-> Not a global, general rule: if sparse sees a #pragma, it exits, stage left?
-> 
-> 					- Ted
+Hi Yury,
 
-Oh, yeah, you're right.  My bad.  Sparse ignores pragmas.
+On 21-02-25, 15:56, Yury Norov wrote:
+> Question: zalloc_cpumask_war() is a convenient wrapper around
+> alloc_cpumask_var_node(). Maybe rust can use the latter directly as it's
+> a true outlined function? There's more flexibility, if you need it, but
+> also a higher risk that the API will change: ~40 users vs 180 for zalloc
+> thing. Up to you guys. I can send v2 if needed.
 
-I was thinking of something else.  In the amdgpu driver, it uses
-#pragma pack(), which Sparse ignores, then since structs aren't
-packed the build time assert fails and that's actually what disables
-Sparse.
+I looked at the APIs again and here is what I feel:
 
-  CHECK   drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c: note: in included file (through drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h, drivers/gpu/drm/amd/amdgpu/amdgpu.h):
-drivers/gpu/drm/amd/amdgpu/amdgv_sriovmsg.h:414:49: error: static assertion failed: "amd_sriov_msg_vf2pf_info must be 1 KB"
+- I am not sure if the Rust code will have any users of the *_node()
+  APIs in the near future. i.e. There is no need for the Rust code to
+  implement Cpumask::new_node() version for now.
 
-regards,
-dan carpenter
+- I have missed implementing the uninitialized version earlier,
+  alloc_cpumask_var(), which I think should be implemented right away.
+  Bindings for alloc_cpumask_var() are required to be added for this
+  though.
+
+- One advantage of using zalloc_cpumask_var() instead of
+  alloc_cpumask_var() is that we don't need to open code it in the
+  Rust code, specifically for the !CONFIG_CPUMASK_OFFSTACK case where
+  we need to call cpumask_clear() separately.
+
+- The Rust side can have following abstractions for now:
+
+  pub fn new() -> Result<Self>;
+  pub fn new_zeroed() -> Result<Self>;
+
+-- 
+viresh
