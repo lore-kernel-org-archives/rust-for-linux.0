@@ -1,126 +1,186 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f67.google.com (mail-lf1-f67.google.com [209.85.167.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033CF26159A;
-	Mon, 24 Feb 2025 16:57:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740416236; cv=pass; b=dJiM9ChyC9okSj7myiZzT6Q2+Qc+C1K7AGwYxLZ+maC7E8JtRT1gyIBP9wnu+RjKLoP3K8aWjTbyQUQyBBOhZVhS2OpatJoLChhUoQKvo3CNXVZR8oddfPshsw3+56qUBiFKwLG2B8WiFPrtRL8+NSLhAYhxiumSlKPNGaXlTjo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740416236; c=relaxed/simple;
-	bh=Fob64pLhn756yjaoPrNGQR7uCYfjnodEB+ZsKpoZcXU=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=JY8TEsrX+INOEnBnJl706owDbYs6DrmU97Yfy2nM98MMKHm7RPJgkIuYZxoiBZNJ9kWlqNJ/AJO73vwyduxj2WEqr2Zluo0iBYNA+9TFOKUKG/0TZHFXPtAhQqNophsweZBs+PpmF+MJVglBFMU7iUejYkr/ZcpYbdOW1AyWgTk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=BxtokHy5; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4FD265CBC;
+	Mon, 24 Feb 2025 16:57:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.67
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740416278; cv=none; b=A+UU+n3kl/bhduBrKpX2FzIb69shy2++9go5vd/MXAuy6LKmkoylAVHsZZEOxQpZwxfRQSAW3rFAUz46OZ/+R1HSbvf4Y5kOM2MziHX1qgyToOqZ3ZvELQX9e66M8T8rYlMIe3zuWzeOoEOWT87zc1suBWyx0LWlshYbSyU9/zM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740416278; c=relaxed/simple;
+	bh=9AkYuCDxcIMGop0F0nXFLogpfd+Onp8GeWGOnM+by0o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=e0qXmuX4rT0p9HPJIaYrc0yDHJqubGLpafFN3nwRN4oA3No7Y9YqqYaL3VdeJBipYR9J1YLgF8YdhS2q5U4YVV8PL4XTQeSqy1Su9oqVW+O0+XjzadfVbB07dnbCL33bDMZ/4Bpz+Z1KRYzTgwunBaLMEXWITqN/MO+eealN/IA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VNRQApxj; arc=none smtp.client-ip=209.85.167.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="BxtokHy5"
-ARC-Seal: i=1; a=rsa-sha256; t=1740416179; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=DvI2yCqDHBN2rMIWC22aJWiMUTS+/9F5bs15FZudJRxJQQWzlSaWY7lZttMLjY417fYnl4ywZQ4uEFZBvkQ9gPL+IDSyuA9NPeqS1wG1KQlsO67F8vvVeqe0WRBPaSoY791xK/dNm/HuWxKB9DZV2QukbYPnshGU9HLurF+8Y8M=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1740416179; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=3nu4ebyfHfzLRDpB6Q0n/OaNzHps1VPFty98l4YJd1Y=; 
-	b=Ec2clG+dJfak9OJnzXnKhrY78CgVAIi2uGPJvxIhawLigCsZOdwF8TGXDkQu6Ze/2Ad/20Bds7ZfHJhWkR/Ti0lVfFVsj3CHGsP7xEwb5eUNwgmVKaSGhu1KC3A+yvK2fupzq9Vig2BV41seKIfqCB5IUhYOmtAYhjnnAXsDuUE=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1740416179;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=3nu4ebyfHfzLRDpB6Q0n/OaNzHps1VPFty98l4YJd1Y=;
-	b=BxtokHy5zPWsJEFy989rH28CALuW7ihfjqmpspWD3liURD2FmBzBTCUOXLwVvbMB
-	hC4ZiHznON+WgdKU2Mx7cIYh3SuIrsyQSWwF2zdP1SNO4enMXz8ySsUiiRNeyX9PS6T
-	F5YPbb4k23nbwo3gxcekffR80DPoWRlOX6GPklgw=
-Received: by mx.zohomail.com with SMTPS id 1740416177044884.7695181829265;
-	Mon, 24 Feb 2025 08:56:17 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VNRQApxj"
+Received: by mail-lf1-f67.google.com with SMTP id 2adb3069b0e04-5452e6f2999so4978413e87.3;
+        Mon, 24 Feb 2025 08:57:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740416275; x=1741021075; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+yFjW1zH+gD+0Z6S7sAaI1nnRNP2Mxs8668OLM/EkQk=;
+        b=VNRQApxjAdpPytk34zPMsnsvRNTCtKR4XmRZgIM62ObFkYZ13DybB44Xy+pErEAzFf
+         20Z5LMzgYKlByi4R6ZLPAUBOLYjmql/2MN8vrRakFWUCdMzO7jibT4zZqklviNHu4MAS
+         qu6Mv8GdXAd7BcSVSVqbpBiQY1rzEvFLw8zcei0tnoc36mVu/d5+t0dpaL/A54BhfnsX
+         l5/CNNOUE0mIwk1ujHZX3FaF4oMXT0k+w2dRsYJh5AXml0MVAiXRb1fXd9CtPuB+Hbl+
+         ocjdHmqUJhkIBVXk7E5LTHw8TaGZHOdbEWEYGQEA6zz9aQcL05gumEvJAug2y259YcnK
+         yGxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740416275; x=1741021075;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+yFjW1zH+gD+0Z6S7sAaI1nnRNP2Mxs8668OLM/EkQk=;
+        b=KTKrCvzKVfFprbKUkHBZLzsCzqGnKla7EktroQnyVh2hHoykkVFo5vKVKwGy9u0bcZ
+         SsgPQAbTcL2/H45xAiZu5boLuS8pbkmCF8nrTwfFBZApJenHAT0fZ+p6JMnx38gnU1Nn
+         89t617D5ydBZl4KaPokYErXnbne/zFWuqxtwARr/aRYb1p/yyMAb7CnSm/MzfmFzjaAL
+         k8jQYqQkHrzQpfOXvLqrRX2sV3QuRgvkXblOBWxZeN5BEAYHKz2ArUjyeNAf7xUTZTTv
+         VN92MuiSVy1L3nhwOc3uBc9QSWyHFxvOCtmGzMu6QctLL3+hLFlH34j8jI03DfJy81Ho
+         KteA==
+X-Forwarded-Encrypted: i=1; AJvYcCWh3HiBTsG6YOJrupwCTvctUynzgph/hof1lKsZZ6w+g4P58rxoE/1kyYktktsJbNfD6W3f5ATbSbrcpUC6x1w=@vger.kernel.org, AJvYcCXF0qVjxLxEHvJPEVWPP22LfEFL4gMMV/TgLggjnYUSR3ouITgsFBH/tclyVziq1YSDEJIqD4Ks8eTppTU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfkD7F9aHEbaCNNtjuGbNEQc7wCxpyT1Gyd2kGAire6iggHD5a
+	TnXCacLrEaWqEENGPUrQUIbZQV2flvWfydcoOO+8567tOEE0BIQh40cLJZXTOFvPiHWgrfdGeSS
+	ZEXuxgvPFtiJg32LyL/IsIB7FJUk=
+X-Gm-Gg: ASbGncsesGNBNZkiGnKZtdieY2UxdXDaU23VV/9AHRLelrGnpMMKyszr2dvJZkAnko8
+	5NySDSIcUsnRDAp/V2ZAe4tEolMxRWK2H927qPF26ryfpYd0qUohFWp8lZXHKZTc4Be7FNNd4np
+	UYIV14s0nH
+X-Google-Smtp-Source: AGHT+IHP2RFtRRFgPClAmeR5ehEd+2cm9UqNvHlbg+2L/TpXnPY8RInvpcCNChJWYqXNBEYE3uOLKncWh/I2IMVw2Mw=
+X-Received: by 2002:a05:6512:3da2:b0:545:fad:a757 with SMTP id
+ 2adb3069b0e04-54838ef8a13mr4353079e87.29.1740416274400; Mon, 24 Feb 2025
+ 08:57:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
-Subject: Re: [PATCH v4 0/4] rust: configfs abstractions
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250224-configfs-v4-0-9af9b5e611f6@kernel.org>
-Date: Mon, 24 Feb 2025 13:55:59 -0300
-Cc: Danilo Krummrich <dakr@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Joel Becker <jlbec@evilplan.org>,
- Christoph Hellwig <hch@lst.de>,
- Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>,
- Will Deacon <will@kernel.org>,
- Waiman Long <longman@redhat.com>,
- Fiona Behrens <me@kloenk.dev>,
- Charalampos Mitrodimas <charmitro@posteo.net>,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
+MIME-Version: 1.0
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
+ <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+ <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+ <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+ <20250224002745.7d7460a7.gary@garyguo.net> <CAFJgqgSNjF=LfrCNTH3GdYssXz9YG-AeCtpibejJ7Ywtx0m3HQ@mail.gmail.com>
+ <4cb1d98b-f94b-410a-be90-4394c48bdbf2@proton.me> <CAFJgqgQ3P81-iskGu9R+T=c=wyB2K0JqUhx+Gj+6mkYeY8-ORg@mail.gmail.com>
+ <a4b79751-f1c8-4476-98a5-c59fb2e545ad@proton.me>
+In-Reply-To: <a4b79751-f1c8-4476-98a5-c59fb2e545ad@proton.me>
+From: Ventura Jack <venturajack85@gmail.com>
+Date: Mon, 24 Feb 2025 09:57:41 -0700
+X-Gm-Features: AWEUYZlW-Dr9Wj_nVWLIHYCRytgyFrZfCz9iJ9M6YRwrculG79d-CGIFN3fd43o
+Message-ID: <CAFJgqgRdiQ29bWvwsu11yokZb4OFF7pYYUU=ES6CYv9847KgVg@mail.gmail.com>
+Subject: Re: C aggregate passing (Rust kernel policy)
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Gary Guo <gary@garyguo.net>, Linus Torvalds <torvalds@linux-foundation.org>, 
+	Kent Overstreet <kent.overstreet@linux.dev>, airlied@gmail.com, boqun.feng@gmail.com, 
+	david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, 
+	hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <E12F1175-63AB-47BE-88E7-B6DA627DA8E6@collabora.com>
-References: <20250224-configfs-v4-0-9af9b5e611f6@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: Apple Mail (2.3826.300.87.4.3)
-X-ZohoMailClient: External
 
-Hi Andreas, FYI:
+On Mon, Feb 24, 2025 at 5:47=E2=80=AFAM Benno Lossin <benno.lossin@proton.m=
+e> wrote:
+>
+> On 24.02.25 13:21, Ventura Jack wrote:
+> >
+> > From what I can see in the documentation, `&UnsafeCell<T>` also does no=
+t
+> > behave like `T*` in C. In C, especially if "strict aliasing" is turned
+> > off in the
+> > compiler, `T*` does not have aliasing requirements. You can have multip=
+le
+> > C `T*` pointers pointing to the same object, and mutate the same object=
+.
+>
+> This is true for `&UnsafeCell<T>`. You can have multiple of those and
+> mutate the same value via only shared references. Note that
+> `UnsafeCell<T>` is `!Sync`, so it cannot be shared across threads, so
+> all of those shared references have to be on the same thread. (there is
+> the `SyncUnsafeCell<T>` type that is `Sync`, so it does allow for
+> across-thread mutations, but that is much more of a footgun, since you
+> still have to synchronize the writes/reads)
+>
+> > The documentation for `UnsafeCell` conversely spends a lot of space
+> > discussing invariants and aliasing requirements.
+>
+> Yes, since normally in Rust, you can either have exactly one mutable
+> reference, or several shared references (which cannot be used to mutate
+> a value). `UnsafeCell<T>` is essentially a low-level primitive that can
+> only be used with `unsafe` to build for example a mutex.
+>
+> > I do not understand why you claim:
+> >
+> >     "`&UnsafeCell<T>` behaves like `T*` in C,"
+> >
+> > That statement is false as far as I can figure out, though I have taken=
+ it
+> > out of context here.
+>
+> Not sure how you arrived at that conclusion, the following code is legal
+> and sound Rust:
+>
+>     let val =3D UnsafeCell::new(42);
+>     let x =3D &val;
+>     let y =3D &val;
+>     unsafe {
+>         *x.get() =3D 0;
+>         *y.get() =3D 42;
+>         *x.get() =3D 24;
+>     }
+>
+> You can't do this with `&mut i32`.
 
-Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
+I think I see what you mean. The specific Rust "const reference"
+`&UnsafeCell<T>` sort of behaves like C `T*`. But you have to get a
+Rust "mutable raw pointer" `*mut T` when working with it using
+`UnsafeCell::get()`. And you have to be careful with lifetimes if you
+do any casts or share it or certain other things. And to dereference a
+Rust "mutable raw pointer", you must use unsafe Rust. And you have to
+understand aliasing.
 
-i.e.:
+One example I tested against MIRI:
 
-```
-sudo cat /mnt/rust_configfs/message=20
-[  234.971000] rust_configfs: Show message
-Hello World
+    use std::cell::UnsafeCell;
 
-sudo cat /mnt/rust_configfs/bar
-[  335.542585] rust_configfs: Show bar
+    fn main() {
 
-sudo sh -c "echo new_bar > /mnt/rust_configfs/bar"
-[  382.114901] rust_configfs: Store bar
+        let val: UnsafeCell<i32> =3D UnsafeCell::new(42);
+        let x: & UnsafeCell<i32> =3D &val;
+        let y: & UnsafeCell<i32> =3D &val;
 
-sudo cat /mnt/rust_configfs/bar
-[  401.348487] rust_configfs: Show bar
-new_bar
+        unsafe {
 
-sudo mkdir /mnt/rust_configfs/child
+            // UB.
+            //let pz: & i32 =3D & *val.get();
 
-sudo ls /mnt/rust_configfs/
-bar      child/   message
+            // UB.
+            //let pz: &mut i32 =3D &mut *val.get();
 
-sudo ls /mnt/rust_configfs/child/
-baz
+            // Okay.
+            //let pz: *const i32 =3D &raw const *val.get();
 
-sudo cat /mnt/rust_configfs/child/baz=20
-[  600.651618] rust_configfs: Show baz
-Hello Baz
+            // Okay.
+            let pz: *mut i32 =3D &raw mut *val.get();
 
-sudo mkdir /mnt/rust_configfs/child/grandchild
+            let px: *mut i32 =3D x.get();
+            let py: *mut i32 =3D y.get();
 
-sudo ls /mnt/rust_configfs/child/grandchild/
-gc
+            *px =3D 0;
+            *py +=3D 42;
+            *px +=3D 24;
 
-sudo cat /mnt/rust_configfs/child/grandchild/gc
-[  670.093647] rust_configfs: Show baz
-Hello GC
-```
+            println!("x, y, z: {}, {}, {}", *px, *py, *pz);
+        }
+    }
 
-Is that last one (for the grandchild) really supposed to print =E2=80=9CSh=
-ow baz=E2=80=9D ?
+It makes sense that the Rust "raw pointers" `*const i32` and `*mut
+i32` are fine here, and that taking Rust "references" `& i32` and
+`&mut i32` causes UB, since Rust "references" have aliasing rules that
+must be followed.
 
-Please let me know if there=E2=80=99s anything else needed to test this =
-fully. A review will soon follow.
-
-=E2=80=94 Daniel=
+Best, VJ.
