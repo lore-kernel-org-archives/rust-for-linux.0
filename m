@@ -1,160 +1,185 @@
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E7D953BE;
-	Mon, 24 Feb 2025 20:37:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740429471; cv=none; b=XS7T7FlPUeLXr92PH/rI7TDb9fU48uUSMYR3X/+J0/Hvc5hBGSuzCVg6jX+QE4qXzJejvNE0SrYqVttwfq83R/U9I0ph/1Z7ZrL0ZwCqXkIoX0p63nBeaS2r47ugm77vJxS7v4m/afCGKJIbCAsDbQF8DeEIIEOG6xr0uU6tD0g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740429471; c=relaxed/simple;
-	bh=CSaM3CTsdB8VvBBuF2udjUi2OuNHmqw4SUCPz7jaLFs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bN2dSfvbcaSHCGzBPhcI+1Iic9PNC/lzlh7f4ABGQ8feSovI1DTP6GoDfyWTHH8TvLgVT0LjjasTlrxHp3fS4sWBRXNSjMx0YeHKxH962NZxuxc2xXvTNqwJxJYD9T/zOPcBY1Br1Id2I7BmqcVWHwvu95alM6DFi4mU3T/SkZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jhyZvxnD; arc=none smtp.client-ip=209.85.222.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE0221DD874;
+	Mon, 24 Feb 2025 21:23:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740432206; cv=pass; b=UVmE4vl6/xz45DfxVfR51xXsZd5Gkdh6Eep4U1qHgOhcTpi2nPdIGcXoC9QuzXnOWfrr2xGfhWZkDC/nE1Z2UfttEhJsISJDTYoWjmQTLWpybOlgontpnCOxvupvE+LEcgaOHeTexk9b53YkbgxgXvdUN1quraKKxEPo54DRfkI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740432206; c=relaxed/simple;
+	bh=CiQCFozHRMC5GSFLhzKvrkJ++OZ4CJ/yKjFd6Kp60Pc=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=NkwBD3jZRvi4+cpjlitSHezXY8IJielY7bUl9VtBhLTM9enRC5nMzZutpaDKN4DAYlo1SirWcJqXBZXEDDDNleRk1O+KBYQNroatO4h3aYcrR8oY35PPyVFxwynJcU4uZahbqRwC1kob0l9gvlRd1btHtAxwdjTUHH7cLUUA9rs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=F7hu11Ca; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jhyZvxnD"
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7c0ba9825e9so308897085a.0;
-        Mon, 24 Feb 2025 12:37:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740429468; x=1741034268; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hvTahac7VoN8UIfPPDTOy2XoASsmvBZhy0HRy4LhMqE=;
-        b=jhyZvxnDQ55KXT1t9s4U+7Uw/2ITujjH/izFFV16moE4khHikdCgPL/gniFWExu730
-         WNGaXT03BkALh2KX9rRij+tf6z7nSnZg7K6m2vW1CMuF+6ZYA6Ad1cyTGWoT/POf67jP
-         C91b7/XNBMFJYaGRdQ/gw7/zg7LS/JbTrzNo5QbJo+vhysdnU16QRA9D8gJsNx+iHxJW
-         WnQnuqsJ8BrNeWaTTj2fYTfbMiu1Reg6Egb8xxWOQHO7OyOfwpadDx0eJq5sZfeYDkDU
-         lV0kUYUC3HV5wUG2+RrFWFEvIOWTjEg5xoT4f++QLs7at49JI9kwxDdBEVxGEuSiwPIZ
-         B2Ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740429468; x=1741034268;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hvTahac7VoN8UIfPPDTOy2XoASsmvBZhy0HRy4LhMqE=;
-        b=xGQYnLhJV2Asay9Fx7PKm8b/D7lE2lEIS4Pnh12GyGYMaylTyxU6/I1uB8rP+TFPjd
-         ReqgTZe4IP95LPzMyKUNCqGJWf5l0cvpuh60f/gdVKd/HHaLy1klTtP0xmH0iQOg4NLD
-         4OviCn53ICst3R1vberpUTiw6P7pAQFg8izz/aUXId/PeUAVMCY2ZtQB/fy2Lo4UKnxo
-         kJPf1OumueQFTyD5k6UTL6i5G+SZ4oQwa6sr//qb/2TivxnBHslh8EqMKv3uN9NSl92Y
-         4LUxy4COPNBU4f0X9nnd8H9FSb3OiASTml+G0J9vr4AbF94JjQZqCxql/fUxg+hEEHAk
-         taxA==
-X-Forwarded-Encrypted: i=1; AJvYcCUFck4hvIBdtY3O9CLLKhIqkj+yTC5bYuJrzLexHhWcdS4PJN2zMZsgawH80cU40uq2sjdAui5fP6k5B0LnPWg=@vger.kernel.org, AJvYcCX1pUUgxxsGYWxfxIRVwenI/OV98u/DV7aZHqJC6Y9SpIkypUO9Ou2KpuJAxl24XStY16x6qPN6n7FpjRo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMMUqGqwdjhCjBnv0Yr/1p8hBlwsn8STurHUyrDqitvOYuQeLK
-	gGez3fWAZmNsnzO4G4VeajDKUe8yHKIVWgxt8fcWhWcy+PQW531h
-X-Gm-Gg: ASbGncvTYjmmE19MvjYpNkR3ovmj4GhPxt8mPVoJblsWHocIgvRlNzxMg4aygepb44D
-	JZ8lESVCoxowGbJRFNpXgrbkZpCUckW5b87GIsRoJ5jOxBlSTE+KLexg4EKyh7PzVSaTDu5KS4m
-	QX45tdh3ASGHUdqhhIwIZgQeQwiBiiHUCErxwCj8LC16/XguP5qOYJsPAP0Nwb2iHcux4wPvb55
-	zzWpgFz7vzkBpJ433pY7MlQbPvGZm8yc40d18IsKO8Gy9Tsexfho8Eq3KsA5gh39mujDH3iB+6e
-	XLu2Jd4OMFsBhr2IBhf2NOGS6sgR4yzZ6tL7TdYeI4BU+nktRhmYuQhDehWYKLn+l/oQyc35H3J
-	QELwcK7APQlJyPxC+
-X-Google-Smtp-Source: AGHT+IFT4gDG2ylFYDoxJMqAedimzIeqWHVtIBuyFpPAl0k5SuiVG6BEh2+gKDUkXECGw8juLszw+g==
-X-Received: by 2002:a05:620a:170f:b0:7c0:a5f4:4df with SMTP id af79cd13be357-7c0cef12528mr1893154985a.34.1740429468409;
-        Mon, 24 Feb 2025 12:37:48 -0800 (PST)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c23c329852sm16364385a.72.2025.02.24.12.37.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Feb 2025 12:37:48 -0800 (PST)
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 9E1EF1200068;
-	Mon, 24 Feb 2025 15:37:47 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Mon, 24 Feb 2025 15:37:47 -0500
-X-ME-Sender: <xms:m9i8Z3htkq1szULmKOCJ93b3ZDcZqF5GQYWy3ist86cWawfG9AyCwg>
-    <xme:m9i8Z0CISLhmKQZwUJoNh5An7DQbWTzOxWW__l3ngPsdTmDO9zC8tI-fRBATHF7wO
-    cwPFvt62hCGWM6I7A>
-X-ME-Received: <xmr:m9i8Z3Hbq7NL8kTiKhzQmPEfo_tcPPwW_yXp6yW3Jvoj17jO84rclhBNWU8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdejleejjecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
-    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
-    drtghomheqnecuggftrfgrthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleel
-    ieevtdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
-    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
-    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeduuddpmhho
-    uggvpehsmhhtphhouhhtpdhrtghpthhtohepfhgvlhhiphgvrdgtohhnthhrvghrrghsse
-    hgmhgrihhlrdgtohhmpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggr
-    thhiohhnrdhorhhgpdhrtghpthhtoheprghirhhlihgvugesghhmrghilhdrtghomhdprh
-    gtphhtthhopehhtghhsehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohephhhprges
-    iiihthhorhdrtghomhdprhgtphhtthhopehkshhumhhmihhtsehlihhsthhsrdhlihhnuh
-    igrdguvghvpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhn
-    vghlrdhorhhgpdhrtghpthhtohepmhhighhuvghlrdhojhgvuggrrdhsrghnughonhhish
-    esghhmrghilhdrtghomhdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhg
-    vghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:m9i8Z0RhY3borjabk8JHmynQuNN9pOs47w3GYNM0zdqMjWzgx3cjQw>
-    <xmx:m9i8Z0xGp5A9H-SE-jJX5OYR8HBG_lFTiI-LIBct7WSS8aMDWkznHw>
-    <xmx:m9i8Z67SVxfeJlSqQCo90n5QFPATcX0yuhcXqX2at_2Lxus7QFGH2Q>
-    <xmx:m9i8Z5yZsmZuS4_xuOcWgjQrM9QfxuKohipBko2pSxzAcnzIwfajBg>
-    <xmx:m9i8Z0hcjhwwU-R2TUr3LvYVUDj1M_dYx0ehe_xwlVxVTUwXBqkPvWiz>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 24 Feb 2025 15:37:47 -0500 (EST)
-Date: Mon, 24 Feb 2025 12:37:08 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Felipe Contreras <felipe.contreras@gmail.com>
-Cc: gregkh@linuxfoundation.org, airlied@gmail.com, hch@infradead.org,
-	hpa@zytor.com, ksummit@lists.linux.dev,
-	linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com,
-	rust-for-linux@vger.kernel.org, torvalds@linux-foundation.org
-Subject: Re: Rust kernel policy
-Message-ID: <Z7zYdEM5TkT2LNN1@boqun-archlinux>
-References: <2025021954-flaccid-pucker-f7d9@gregkh>
- <20250221051909.37478-1-felipe.contreras@gmail.com>
- <Z7gQ3kSeCf7gY1i9@Mac.home>
- <CAMP44s1Ai5qMU4yV+Rwz4cY869ZA=cxBcTf2wuaUY1oyLKUNCg@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="F7hu11Ca"
+ARC-Seal: i=1; a=rsa-sha256; t=1740432158; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Ktye3AcPnFCS56IwjIoT21xG1YEXmvOV7hbyNP3D1EiFbiuklctz3VthmOL7GUpkECO3vnyJ/9CycbWAtWSUf3UMdXOcJzJcrnNpfoM5yvhaw6PUJiJe33bvFZfSXfONxVxZY/IhZ83kbPR7k5Lw76Y00xgnMwG1WOTA4SdC/ys=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1740432158; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=Jwgy8EHw2ByXiT/plCbjBi2u1K3sOMpK7LJiWKz5MpI=; 
+	b=aD7TC7JE5Q/VulEeFl2ZDdxHsZNgzFAv7bV3YuQ+XA62IvmetTyMFKfBqcgCVlQQBeGbzcOHkobUZ9F6jGEG21JffuCnXZPsMu1HjJRZrHTWwHcaPATx2RVj0GKGZKLC39UA43HCuvJJPM+m1mJ1RGP+v70YtA/GwEEIEoSIJo0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1740432158;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=Jwgy8EHw2ByXiT/plCbjBi2u1K3sOMpK7LJiWKz5MpI=;
+	b=F7hu11CaCZwNU2vKsF/EJ0Xc7AATEwfyQxA+EN9PXrf8wQeoa7iSgpmwHQfuFafy
+	CVeY0A34N02lXenQ9PKKznXT+a2gnZgCoUUW1bXjXFJ0UBU/xWyuO5oGMTwf31TDUZk
+	5v8wVocIVw9MK7kdZ8Tvkfy7gB7NuPE6xoKzhHy0=
+Received: by mx.zohomail.com with SMTPS id 1740432155442578.9933183629962;
+	Mon, 24 Feb 2025 13:22:35 -0800 (PST)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMP44s1Ai5qMU4yV+Rwz4cY869ZA=cxBcTf2wuaUY1oyLKUNCg@mail.gmail.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
+Subject: Re: [PATCH v4 1/4] rust: sync: change `<Arc<T> as
+ ForeignOwnable>::PointedTo` to `T`
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20250224-configfs-v4-1-9af9b5e611f6@kernel.org>
+Date: Mon, 24 Feb 2025 18:22:16 -0300
+Cc: Danilo Krummrich <dakr@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Joel Becker <jlbec@evilplan.org>,
+ Christoph Hellwig <hch@lst.de>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@redhat.com>,
+ Will Deacon <will@kernel.org>,
+ Waiman Long <longman@redhat.com>,
+ Fiona Behrens <me@kloenk.dev>,
+ Charalampos Mitrodimas <charmitro@posteo.net>,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <B462F0CD-60F2-4494-B1DA-B19A54944EAE@collabora.com>
+References: <20250224-configfs-v4-0-9af9b5e611f6@kernel.org>
+ <20250224-configfs-v4-1-9af9b5e611f6@kernel.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: Apple Mail (2.3826.300.87.4.3)
+X-ZohoMailClient: External
 
-On Thu, Feb 20, 2025 at 11:59:10PM -0600, Felipe Contreras wrote:
-> Boqun Feng wrote:
-> >
-> > On Thu, Feb 20, 2025 at 11:19:09PM -0600, Felipe Contreras wrote:
-> > > Greg KH wrote:
-> > > > But for new code / drivers, writing them in rust where these types of
-> > > > bugs just can't happen (or happen much much less) is a win for all of
-> > > > us, why wouldn't we do this?
-> > >
-> > > *If* they can be written in Rust in the first place. You are skipping that
-> > > very important precondition.
-> >
-> > Hmm.. there are multiple old/new drivers (not a complete list) already
-> > in Rust:
-> 
-> That is a black swan fallacy. Just because you've seen 4 white swans
-> that doesn't mean all swans are white.
-> 
-> > , so is there still a question that drivers can be written in Rust?
-> 
-> I didn't say no driver can be written Rust, I questioned whether *all*
-> drivers can be written in Rust.
-> 
+Hi Andreas,
 
-Huh? Your previous reply is:
+> On 24 Feb 2025, at 10:21, Andreas Hindborg <a.hindborg@kernel.org> =
+wrote:
+>=20
+> Using `ArcInner` as `PoinedTo` in the `ForeignOwnable` implementation =
+for
+> `Arc` is a bit unfortunate. Using `T` as `PointedTo` does not remove =
+any
+> functionality, but allows `ArcInner` to be private. Further, it allows
+> downstream users to write code that is generic over `Box` and `Arc`, =
+when
+> downstream users need access to `T` after calling `into_foreign`.
+>=20
+> Reviewed-by: Fiona Behrens <me@kloenk.dev>
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> ---
+>=20
+> This patch is a dependency for Rust `configfs` abstractions. It allows =
+both
+> `Box` and `Arc` to be used as pointer types in the `configfs` =
+hierarchy.
+> ---
+> rust/kernel/sync/arc.rs | 21 ++++++++++++++++-----
+> 1 file changed, 16 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+> index dfe4abf82c25..3d77a31e116f 100644
+> --- a/rust/kernel/sync/arc.rs
+> +++ b/rust/kernel/sync/arc.rs
+> @@ -143,7 +143,7 @@ pub struct Arc<T: ?Sized> {
+> #[doc(hidden)]
+> #[pin_data]
+> #[repr(C)]
+> -pub struct ArcInner<T: ?Sized> {
+> +struct ArcInner<T: ?Sized> {
+>     refcount: Opaque<bindings::refcount_t>,
+>     data: T,
+> }
+> @@ -345,18 +345,25 @@ pub fn into_unique_or_drop(self) -> =
+Option<Pin<UniqueArc<T>>> {
+>=20
+> // SAFETY: The `into_foreign` function returns a pointer that is =
+well-aligned.
+> unsafe impl<T: 'static> ForeignOwnable for Arc<T> {
+> -    type PointedTo =3D ArcInner<T>;
+> +    type PointedTo =3D T;
+>     type Borrowed<'a> =3D ArcBorrow<'a, T>;
+>     type BorrowedMut<'a> =3D Self::Borrowed<'a>;
+>=20
+>     fn into_foreign(self) -> *mut Self::PointedTo {
+> -        ManuallyDrop::new(self).ptr.as_ptr()
+> +        let this =3D ManuallyDrop::new(self).ptr.as_ptr();
+> +        // SAFETY: `x` is a valid pointer to `Self` so the projection =
+below is
+> +        // in bounds of the allocation.
+> +        unsafe { core::ptr::addr_of_mut!((*this).data) }
+>     }
+>=20
+>     unsafe fn from_foreign(ptr: *mut Self::PointedTo) -> Self {
+> +        // SAFETY: We did the reverse offset calculation in =
+`into_foreign`, so
+> +        // the offset calculation below is in bounds of the =
+allocation.
+> +        let inner_ptr =3D unsafe { kernel::container_of!(ptr, =
+ArcInner<T>, data).cast_mut() };
+> +
+>         // SAFETY: The safety requirements of this function ensure =
+that `ptr` comes from a previous
+>         // call to `Self::into_foreign`.
+> -        let inner =3D unsafe { NonNull::new_unchecked(ptr) };
+> +        let inner =3D unsafe { NonNull::new_unchecked(inner_ptr) };
+>=20
+>         // SAFETY: By the safety requirement of this function, we know =
+that `ptr` came from
+>         // a previous call to `Arc::into_foreign`, which guarantees =
+that `ptr` is valid and
+> @@ -365,9 +372,13 @@ unsafe fn from_foreign(ptr: *mut Self::PointedTo) =
+-> Self {
+>     }
+>=20
+>     unsafe fn borrow<'a>(ptr: *mut Self::PointedTo) -> ArcBorrow<'a, =
+T> {
+> +        // SAFETY: We did the reverse offset calculation in =
+`into_foreign`, so
+> +        // the offset calculation below is in bounds of the =
+allocation.
+> +        let inner_ptr =3D unsafe { kernel::container_of!(ptr, =
+ArcInner<T>, data).cast_mut() };
+> +
+>         // SAFETY: The safety requirements of this function ensure =
+that `ptr` comes from a previous
+>         // call to `Self::into_foreign`.
+> -        let inner =3D unsafe { NonNull::new_unchecked(ptr) };
+> +        let inner =3D unsafe { NonNull::new_unchecked(inner_ptr) };
+>=20
+>         // SAFETY: The safety requirements of `from_foreign` ensure =
+that the object remains alive
+>         // for the lifetime of the returned value.
+>=20
+> --=20
+> 2.47.0
+>=20
+>=20
 
-"*If* they can be written in Rust in the first place. You are skipping
-that very important precondition."
 
-how does that imply you questioned whether *all* drivers can be written
-in Rust.
-
-Care to explain your logic?
-
-Regards,
-Boqun
-
-> People are operating under that assumption, but it isn't necessarily true.
-> 
-> -- 
-> Felipe Contreras
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
