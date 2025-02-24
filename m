@@ -1,109 +1,165 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-qk1-f195.google.com (mail-qk1-f195.google.com [209.85.222.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA5F19068E
-	for <rust-for-linux@vger.kernel.org>; Mon, 24 Feb 2025 09:45:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E21324292F;
+	Mon, 24 Feb 2025 09:57:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740390352; cv=none; b=F7F/ni21w4l0WEk2XAPAXInyaxG/jvn87ELByY9DtrMJGikqrYjmO4SFFiduk1FjmaQqzaGrRJeoBMisFsrGfP+dHSQCwgQ2Pe0F2QVjJ+AnC7130FV7vxzlQ/rylsVFgjj0uxdsPod8atTsrcGN5QKyRvQJOL5g9z+RpJeAl2Y=
+	t=1740391070; cv=none; b=jVZt1I16IReZlHnsI00gpeXcMwc15bka9TEWZKGhL7YVdhy3zEGJe6JOWuJ6FPS2IOdpNDpe0rT0bhlF+GyOE42LXQ6VhWDEe4ZhCW69FWGnZnsChduh/rnCQEnbipnQylG+bNHC7Rtr4m5cvYQzUKEeBfdQh4yi6Nhso1pCqPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740390352; c=relaxed/simple;
-	bh=yI9tsEdrCq+JVlU4+kbKkbwWKZIvMC5rRRc9jI/P0aI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jAN0wk8U19+LGLRcN3ITJ0pvMoPgR+tReFitJ7AKYodwyKuIgLFF8lu/XtACwAdzYVGh+/vhc4p+zAGdWOwMxmCnYZWrzEIJEDiZEK9QV+IAzucEAY4O9kv0Z6SmqYj1HSn0sk9z9PbK+M3TYH4dPiSUrBifAwolHaydwcZ7rt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=I4eU5hQ9; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1740391070; c=relaxed/simple;
+	bh=s8OaGW99ppf2hWfSu+1vSCOUtbexOxS5yMUTM4p0Bc0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bhpBjfPqQowPl2w7y8pOm/govDFNjneHEFAg6olrPPQqz2y0IvnZrJpnIrDAgRQphitIWH+BnvvJ2wez4ZfXi2M3XeXlZHOmwVGvWjZ4bvIs55Cf8Vab/NSDyoaO2Z7kHFUXcvbV/Q4ubhjKGMTZub8snh8EjcsZC6ESXw3LJa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PsnC3izb; arc=none smtp.client-ip=209.85.222.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="I4eU5hQ9"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-220bfdfb3f4so91963195ad.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 24 Feb 2025 01:45:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PsnC3izb"
+Received: by mail-qk1-f195.google.com with SMTP id af79cd13be357-7c0ade6036aso512282185a.0;
+        Mon, 24 Feb 2025 01:57:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1740390351; x=1740995151; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RxGqqeJLsYbeTE+fl2BbkVU3VCr8NgnhEkdjvf5/E4g=;
-        b=I4eU5hQ96a3BiKJELv/W5VvP4ql8/+5FakUXyNF9yyQ89OgNA4TTEcOz6VADNhn574
-         tDpjrdZzAaMVCfgrBP9w4wgwIMPeUXI7hKCf2185ulMVnIlVG1hn8DpQhB8Bfr5ZSwE2
-         TOPk/lCzFyYCF8/o9z0Nh9/MEnOTYXbldgauErMmgw2hvy6iUZGPb9I7A7wDW/rS15mO
-         jMirpWR9gpYo9szt5uWmiiKSoG0rGzYBVZkEcUfY0o5uB4OXMTOznDhDnmTztBFpq8ql
-         ROGfgqqk76i1XxX5iPGRPP8phk/ljgjWXBEyMYQB20UNiwKJkmkw3F1r8Bmm2pyv7NSV
-         hZUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740390351; x=1740995151;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1740391067; x=1740995867; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RxGqqeJLsYbeTE+fl2BbkVU3VCr8NgnhEkdjvf5/E4g=;
-        b=tfvx9dzcs0Wqivt3wk+eWNK4QM7Tmlaotsq3VqGAU735Ci5/vHBItzZg73DwIXshAr
-         Wo9ULputE8fcwTS2DJCbMMOi15LCmEp6lvObbu98ImUt+0GfPXhPL066ci/puxm1Ouxj
-         tRYBfqlk3B+lhpxnzQvhGNuYOfYhg8GxE/bnm/bG08ycM3W6odHy7ljqC80GBDxwbjtx
-         5dnIMEi9TQfkjMekAWMeuySDNS4NADDFK182O81/miZvmdpUrweWyw7xmNF7+68jemDU
-         DjEByGN4K/9mFgABQl6V26vZd/C0ibW1hotCwoeNck5ylKvGodHyIMWxaCZd6Q+7JXCS
-         lqKg==
-X-Forwarded-Encrypted: i=1; AJvYcCXxQafjdxvrRq50mUibCgQML6oAr1Q+Jg7C9vp3tQV5e+4iZOOpYXuV4fw889qIWTpY5/EJ1ZQGly+Ws2n2rw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxE0iYPZLeNUo2aQVGecesuuIGoWqfpVgXqJiN8Wxa0acJWp4e3
-	fxBMEfrQ63SEehrcp63V2NIP/4A6mAz9DJD/308D6rIfoQDJhrdWKeCwlk8NGqk=
-X-Gm-Gg: ASbGnctd+KrVTg9azwiohvwbWbHl68iogD8P4oaRU5bMz7ottuVoib7Wj1XQiOXsDF+
-	+nPoRC17tvMTK/2cjnxU4XWefDvLfNWe4epXwn0sgfF0iQOzjnO9wPiUlduTOWFyQWOVhe4Z4IC
-	7uuiNMlqx0K9rizWp6UWpqf7//P7y19iO1nLCS4riF9wDWBbB6wP9bsAw9HKTYENBFX4AAmi13y
-	H3oNYNNFTweh9Uroo9fF8yob3jXpofwVbDz2IwGxLfEO5XnLsWVEHIccoLDsm8LsCrFxnOoJeLk
-	ZgTkfD3MsxAl6qzzu9AAOBTWV8I=
-X-Google-Smtp-Source: AGHT+IFJVi7/YSBChXY4dh8iK5Nu0pMgjUbuxiXxygSfU840h8IClcdVJYvYBB1ghUBATj9XYVnhcA==
-X-Received: by 2002:a05:6a00:1956:b0:732:6480:2bed with SMTP id d2e1a72fcca58-73426ce76a4mr21390090b3a.13.1740390350591;
-        Mon, 24 Feb 2025 01:45:50 -0800 (PST)
-Received: from localhost ([122.172.84.15])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73287ed12e8sm12957914b3a.180.2025.02.24.01.45.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Feb 2025 01:45:49 -0800 (PST)
-Date: Mon, 24 Feb 2025 15:15:47 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Russell King <linux@armlinux.org.uk>, linux-clk@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH V2 2/2] rust: Add basic bindings for clk APIs
-Message-ID: <20250224094547.dv3apdbpwhesminm@vireshk-i7>
-References: <cover.1740118863.git.viresh.kumar@linaro.org>
- <a0a1ba4e27c3a0d9e38c677611eb88027e463287.1740118863.git.viresh.kumar@linaro.org>
- <Z7iGHiQcqa-_AXli@pollux>
- <4AD8A8F3-EA7E-4FBE-9F0D-58CF7BB09ED5@collabora.com>
- <Z7iSHR0F2QpiNpMZ@pollux>
+        bh=EE27tvEZr9+4KilAFSdeS60EG0pfp9dwkIWt3ppECpg=;
+        b=PsnC3izb0NSuWQbekFJeBH2HkPCx0+r3vphKkXgTF3A5/7BrPnw4T4k9n3E5fWfZ4B
+         AP17pZV0j4a3aFeJlkTnM9s0slAQYwu+r9rIkAjN0s16QkbgxdKln7sDDWN4f09LN76W
+         Qs8w3od1Ncmj6KgsW023yeuQEMessOvG83NbJGS0yQ1izIqRYRMi0JFPUGCb7COlHLDL
+         GlUVXswN/R7Ign1LY1jv2fHdd+ukO0TT0vfcWTv2DLkztNj5/zrDdW7yyPxIoufw8rHc
+         xs9dvRMCjNFt4XxOTirgMC70EYrhO3ACGGExeqyp/GGPeh+/4CtDtzE0CwMg8zyuMGkh
+         AfHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740391067; x=1740995867;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EE27tvEZr9+4KilAFSdeS60EG0pfp9dwkIWt3ppECpg=;
+        b=gBpchRrkbhq/KVUqeYLH35ewIS8K5mExsyllKjR5t1SEVk4tidkB7QnTDJakPkEgwi
+         HY5aXSuFXLAJW7IVQsHnbcnmhg1JPIST3Y/pw79hjU38W+Y42f+A4TX4bVlPA60X3KPu
+         qvTpO1CebumefEye6WL3NAdRTZ3zD6arHjGNRwUYNwJJtYdepjsIAjJiOmsD3Oae5R5k
+         C9kgmL8DAQgh7biT8pCVWOluIUg5LxLICUIRfEgk057zGb/vX+Jax1r5TNwpx5Y7FuFe
+         MzdIKHtXH0PEDJXX8/hNAh88ZNiZ1cwdCtooy2Cy5O076I/YKgy5uPdRnMvf4qFRAqIm
+         1eiw==
+X-Forwarded-Encrypted: i=1; AJvYcCUWiqirH4weoleFPmWN9WBQEuLyjT5M519UoylhD81Si7IjlkDCvUw+xbxCUjCtqsvzXE6aLIFZXNJCC+U=@vger.kernel.org, AJvYcCWg8hS2AfwBwhWz/24YtnzDiJdH7rNfuXPXdLC1rdF+N/AR12hAqaHS6j+S36M5Ymgmk7fo8HKrYLYEJK4iroU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywj7EcZBy6AwVt5AkYZ1eFdoS/59e0HvAPu+HbdCbadMlM1MiUI
+	QJNhJ6u3FxeelvaYKcjgZkwn1WcvDHI6Pm5VZTXYxvUL1HiH4vQyULbAXBZ4Ti7AH2os9ufM+sO
+	1K5tazpP7AXO7JDp4nnuxNkkwtTU=
+X-Gm-Gg: ASbGncuc1Q2Q1bGARVN2QLrEZhySYatvkYaBw9N1YccIXeMCKHnYlFbPClvFepDc9rO
+	VrZ9P5ygEq3+1/114xAmnLaXJI/hFrvfxdWahiZHIbtQCRhvsKZQ1K8mzBbOz6+GihOvHlBegrL
+	3Trc2lsUlu
+X-Google-Smtp-Source: AGHT+IEiyTlMxnXD1UshSUQEKFq+P4LKtaQ419LnEHYH321oIBTcL/NjQ/kVZ4EfJbLVh4mLO+rdrNOxdDxtei5gAEg=
+X-Received: by 2002:a05:620a:1a18:b0:7c0:a944:c22b with SMTP id
+ af79cd13be357-7c0cf118597mr1720922085a.15.1740391067228; Mon, 24 Feb 2025
+ 01:57:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z7iSHR0F2QpiNpMZ@pollux>
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
+ <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+ <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+ <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com> <20250224002745.7d7460a7.gary@garyguo.net>
+In-Reply-To: <20250224002745.7d7460a7.gary@garyguo.net>
+From: Ventura Jack <venturajack85@gmail.com>
+Date: Mon, 24 Feb 2025 02:57:35 -0700
+X-Gm-Features: AWEUYZkXEmHOLDHI6rOFs3YyFgA2bH0xuZYKDQwMN5FBqg4lzIlviFarR_mQuDA
+Message-ID: <CAFJgqgSNjF=LfrCNTH3GdYssXz9YG-AeCtpibejJ7Ywtx0m3HQ@mail.gmail.com>
+Subject: Re: C aggregate passing (Rust kernel policy)
+To: Gary Guo <gary@garyguo.net>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+	Kent Overstreet <kent.overstreet@linux.dev>, airlied@gmail.com, boqun.feng@gmail.com, 
+	david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, 
+	hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 21-02-25, 15:47, Danilo Krummrich wrote:
-> This was badly phrased, the current implementation does not need to consider it
-> indeed. What I meant is that we have to consider it potentially. Especially,
-> when adding new functionality later on. For instance, when accessing fields of
-> struct clk directly. Maybe this only becomes relevant once we write a clk driver
-> itself in Rust, but still.
+On Sun, Feb 23, 2025 at 5:27=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+>
+> On Sun, 23 Feb 2025 08:30:06 -0700
+> Ventura Jack <venturajack85@gmail.com> wrote:
+>
+> > - In unsafe Rust, it is the programmer's responsibility
+> >     to obey the aliasing rules, though the type system
+> >     can offer limited help.
+> > - The aliasing rules in Rust are possibly as hard or
+> >     harder than for C "restrict", and it is not possible to
+> >     opt out of aliasing in Rust, which is cited by some
+> >     as one of the reasons for unsafe Rust being
+> >     harder than C.
+>
+> The analogy is correct, you can more or less treat all Rust references
+> a `restrict` pointers. However it is possible to opt out, and it is
+> done at a per-type basis.
+>
+> Rust provides `UnsafeCell` to make a immutable reference mutable (i.e.
+> "interior mutability"), and this makes `&UnsafeCell<T>` behaves like
+> `T*` in C.
+>
+> There's another mechanism (currently under rework, though) that makes a
+> mutable reference behave like `T*` in C.
+>
+> RfL provides a `Opaque` type that wraps these mechanisms so it
+> absolutely cancel out any assumptions that the compiler can make about
+> a pointer whatsoever. For extra peace of mind, this is used for all
+> data structure that we share with C.
+>
+> This type granularity is very useful. It allows selective opt-out for
+> harder to reason stuff, while it allows the compiler (and programmers!)
+> to assume that, say, if you're dealing with an immutable sequence of
+> bytes, then calling an arbitrary function will not magically change
+> contents of it.
+>
+> Best,
+> Gary
 
-I don't think we will _ever_ access fields of the struct clk directly.
-For the most common use, common clk API, the struct clk is defined in
-drivers/clk/clk.c.
+In regards to `UnsafeCell`, I believe that you are correct in regards
+to mutability. However, if I understand you correctly, and if I
+am not mistaken, I believe that you are wrong about `UnsafeCell`
+making it possible to opt-out of the aliasing rules. And thus that
+`UnsafeCell` does not behave like `T*` in C.
 
-> > MaybeNull<T> sounds nice.
-> 
-> Yeah, it's probably the correct thing to do, to make things obvious.
+Documentation for `UnsafeCell`:
+    https://doc.rust-lang.org/std/cell/struct.UnsafeCell.html
 
-Still need this ? Any example code that I can refer to implement it or
-if someone can help with implementing it ?
+    "Note that only the immutability guarantee for shared
+    references is affected by `UnsafeCell`. The uniqueness
+    guarantee for mutable references is unaffected. There is no
+    legal way to obtain aliasing `&mut`, not even with `UnsafeCell<T>`."
 
--- 
-viresh
+    "Note that whilst mutating the contents of an `&UnsafeCell<T>`
+    (even while other `&UnsafeCell<T>` references alias the cell) is
+    ok (provided you enforce the above invariants some other way),
+    it is still undefined behavior to have multiple
+    `&mut UnsafeCell<T>` aliases."
+
+The documentation for `UnsafeCell` is long, and also mentions
+that the precise aliasing rules for Rust are somewhat in flux.
+
+    "The precise Rust aliasing rules are somewhat in flux, but the
+    main points are not contentious:"
+
+In regards to the `Opaque` type, it looks a bit like a C++
+"smart pointer" or wrapper type, if I am not mistaken.
+
+Documentation and related links for `Opaque`:
+    https://rust.docs.kernel.org/kernel/types/struct.Opaque.html
+    https://rust.docs.kernel.org/src/kernel/types.rs.html#307-310
+    https://github.com/Rust-for-Linux/pinned-init
+
+It uses `UnsafeCell`, Rust "pinning", and the Rust for Linux library
+"pinned-init". "pinned-init" uses a number of experimental,
+unstable and nightly features of Rust. Working with the library
+implementation requires having a good understanding of unsafe
+Rust and many advanced features of Rust.
+
+`Opaque` looks interesting. Do you know if it will become a more
+widely used abstraction outside the Linux kernel?
+
+Best, VJ.
