@@ -1,210 +1,123 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3A8267F63
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 11:41:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE17420C027
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 11:48:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740483700; cv=none; b=OF57xj7RmY3oi14YhUch9PJlWgSN3TnQzDHxODAYtAAdIijjHbvDeO31rAIizY3cq9o0qj0vb7emq4p8ayy/+RYyHZgLXJyfN6Ks43Sfc6LY/87VkKTe2Tgqv/QCUeO7CjWkCdtK2Bnr4fw+80vj5dFzV5dozrPcTp6MLbzVQ20=
+	t=1740484115; cv=none; b=IXGFWD8Ql5gUM5AlUk06UfErfe2OrvCtoQ0E8ADPoQa9UHWyyqIYlSG5kMsKQinw1jsYYbWhLKxCg7zcxpI3ytXYDCC8lfR5RUcOXePLQFpspBh4k/lf1DIZzxb1KaV2yZQWRBqM7Q8OoiCGBb3I6hDpwmTj5of0p3ZioamR8EI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740483700; c=relaxed/simple;
-	bh=E1V6508zNUccyqy2uSeE8ZccUTOvY3wLWIxatRFbS1I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=IUtwUNgmKN3bnWrA6kkml4p4IxcOHxHmVontDL9qZirnf9o5zmdBoQhYxS9OU84rA++VNpMP4X90/h/UZ50s03/6c7gcWYRIro0dK6Jp/2EXZItIRxWQrBDLwSWbrm0/jwop8ck1VFUSmHWF5pZqKnHWotnrEdzbx49GrhVb7PY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0JZC0Zwt; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=WN3VmE+C; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0JZC0Zwt; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=WN3VmE+C; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1740484115; c=relaxed/simple;
+	bh=jwIlbIZa94zqM8VMYCdmZHEfQAR94TbRRxSjsWwuhj4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rozjZS3NPAvRRTed9TwYNzdnGlgvkSbrkekPiVPqUqeNFOsUaxdXR1YZ+Eb3ybANzjTWLlV7//fnKrqO99iTVgrnSio2EuNYRP/0Laa7fZ0MjzacSVvDmyWqTOV/bMHhFZ0lx7JG8PONOdavw0pS1asI4Vh6RL0ztKBDlApVlKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=q1Qc/GVJ; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0JZC0Zwt";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="WN3VmE+C";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0JZC0Zwt";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="WN3VmE+C"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id ABE7D1F44F;
-	Tue, 25 Feb 2025 11:41:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1740483696; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UbsGQ9aQt0jmmsDa4NSHqjZXwDsdSzxo3e8MlkHByxU=;
-	b=0JZC0ZwtsRG5PNFqFzv2uyjg0djWNy5a7Me6o6HwegoGYfepnjLFxklkIYDTQE8X9CajDM
-	51GbJv4kqWVCbaZiiu9vNE82M0zBQLZxYyuFT7rWNFzVN/sBLl/pAbjNCsIr+Lq+vHiDmP
-	b2AjCEmv1kd3mZP3g/h2nCuz0tjJFcE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1740483696;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UbsGQ9aQt0jmmsDa4NSHqjZXwDsdSzxo3e8MlkHByxU=;
-	b=WN3VmE+C0NweJ5MWe+tstnV3mrGoI5oXyjEKQQ9UOJxYaKYDaARMV+nTFXeRtBNuSh8mWR
-	WTPHyxHoVZSUrnDQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1740483696; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UbsGQ9aQt0jmmsDa4NSHqjZXwDsdSzxo3e8MlkHByxU=;
-	b=0JZC0ZwtsRG5PNFqFzv2uyjg0djWNy5a7Me6o6HwegoGYfepnjLFxklkIYDTQE8X9CajDM
-	51GbJv4kqWVCbaZiiu9vNE82M0zBQLZxYyuFT7rWNFzVN/sBLl/pAbjNCsIr+Lq+vHiDmP
-	b2AjCEmv1kd3mZP3g/h2nCuz0tjJFcE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1740483696;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UbsGQ9aQt0jmmsDa4NSHqjZXwDsdSzxo3e8MlkHByxU=;
-	b=WN3VmE+C0NweJ5MWe+tstnV3mrGoI5oXyjEKQQ9UOJxYaKYDaARMV+nTFXeRtBNuSh8mWR
-	WTPHyxHoVZSUrnDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 24F8113332;
-	Tue, 25 Feb 2025 11:41:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id My/YB3CsvWfkQAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 25 Feb 2025 11:41:36 +0000
-Message-ID: <f1ea30fe-8cb8-41fd-bc85-d511c800e594@suse.de>
-Date: Tue, 25 Feb 2025 12:41:35 +0100
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="q1Qc/GVJ"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-22114b800f7so108104625ad.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 03:48:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1740484113; x=1741088913; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Qdo+jGz+lwZjU3PirrnDaRQoK8hS5+i1xXbU75YPLdM=;
+        b=q1Qc/GVJVwX+ME8zwLw/SeZ1lv+FVhFgUk11WLduiLPKLLOcraR1t5O6oi6ZLkIsck
+         cz81exzZ3LOu9nSKrsJ7UMALSZfUNXqawXrc+N81ZA2LYlMkDSncZhcr7mmzTKl7qJly
+         AX6LwEzW3c70iFU5xteMy3jxSv/tLJhJQOCqDoswDauU9DH4B6F2rQPbbR9Obi4oh65s
+         hIbJdAxbR5ukUAiza73ziXDxR17VxW3U97/KFVGJ3Q/ouFXTsYmRTGtAopJM53yoyHw/
+         fSwN1VWsNXpBqjrMTaa6qaQhzijA14+Kr657ItfxV8RZXngI8b35hSINBlLMB8NP8XyG
+         OXSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740484113; x=1741088913;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Qdo+jGz+lwZjU3PirrnDaRQoK8hS5+i1xXbU75YPLdM=;
+        b=St++mnl8xEKPaCkI22JQK4WQrsCUo7zyEQO6KPx8N1q1xgtEqzbxdgOITdpMqTq7Vf
+         p/1vDfMh5AewrzwYteLINgDTmjUii3S1luylCEc0r8Mrkq5br+iKzK6dm0tJzPwJBOGp
+         0yv/EuU/NBPegE8IeaLu6cvpkrg8RuOQug1Cc7t9fvBrBLw0WOhjj1YCj9gy3cqCSG3r
+         MKj9VsDHvzONtmj2xYt0X+wWK6lshnwP8Kg9ALVaQRRfLMkEr9pd6WRJQmOQNNBpA2xm
+         lmJ1U9upIiaja2735vVcObwdq8KpalgIBT3cLWtoR70VhhTvc+u1rKA6fK0s555oy/vU
+         9bEA==
+X-Forwarded-Encrypted: i=1; AJvYcCWrI2ukbuihcVWgXS6KPIcosYnjg1IDXRNm36N7hSiWPc1SM0tcgoydsfp/cc3ktdAEtxQ7TRy04xvE4sjzaQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyK/PATvH/fvTKMglytL7/FhReH7/pSfnKmbdA5PR1vb1XNPwko
+	9AshzaajGHgIDx0AjEBkmSQl896g/ll/RYVxiM33cAJxxEI3Rt0yWLbn3isWzeQ=
+X-Gm-Gg: ASbGncsh/9rGaAUyD08fGvmh5tpl/RhRedM4ZRH0h+3W4koAckoh9iBm/UOnVsgK4H0
+	pY7LFU63nupUfndBHM/hulqsHvWWu+3l+bLZL6qMb6B/fsqYC9zXeUHqF8vNJQF38V/E0lmxWOr
+	LPHZT7Dn0Uj27w+oqwR+MoviRF5kf5TQ0g1BC0mZQrsVltIy6RaKmep0BdY7yJo8dcPKRkHPngM
+	Lt/KxEJW3H0sDnSRCcSgQy45Ue1bjSwd5pLZptNg8dEgfP4hcnZnBvWo/RmJ53eq7xb51GHJAJ7
+	ogJm+8tPDbNemLSoPosPbuja+40=
+X-Google-Smtp-Source: AGHT+IGUKnJVC/nEaDn3iOHt54ul5Z63F/FxOemwqa0BCGDkyy9oqbocMm7EHttfLYn/TzlCRx8DIw==
+X-Received: by 2002:a17:902:f550:b0:220:e63c:5b13 with SMTP id d9443c01a7336-2219fff4ef2mr264491505ad.46.1740484113106;
+        Tue, 25 Feb 2025 03:48:33 -0800 (PST)
+Received: from localhost ([122.172.84.15])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2230a000964sm12370925ad.48.2025.02.25.03.48.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Feb 2025 03:48:32 -0800 (PST)
+Date: Tue, 25 Feb 2025 17:18:30 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@redhat.com>, rust-for-linux@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>
+Subject: Re: [PATCH 1/2] rust: Add initial cpumask abstractions
+Message-ID: <20250225114830.64p56bndn4hkkkgq@vireshk-i7>
+References: <cover.1740475625.git.viresh.kumar@linaro.org>
+ <68ac0f0ee3c0ebd3d3cc078a6270752778a1b732.1740475625.git.viresh.kumar@linaro.org>
+ <CAH5fLgg7o7hs5B4mMzPd6RzYm+RcX8gw1Aw8voJqnmfnA_aM4Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 9/9] drm/vkms: convert to use faux_device
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, Lyude Paul <lyude@redhat.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- Alexander Lobakin <aleksander.lobakin@intel.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Lukas Wunner <lukas@wunner.de>,
- Mark Brown <broonie@kernel.org>, =?UTF-8?Q?Ma=C3=ADra_Canal?=
- <mairacanal@riseup.net>, Robin Murphy <robin.murphy@arm.com>,
- Simona Vetter <simona.vetter@ffwll.ch>, Zijun Hu <quic_zijuhu@quicinc.com>,
- linux-usb@vger.kernel.org, rust-for-linux@vger.kernel.org,
- Haneen Mohammed <hamohammed.sa@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Melissa Wen <melissa.srw@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
- dri-devel@lists.freedesktop.org
-References: <2025021023-sandstorm-precise-9f5d@gregkh>
- <2025021029-snout-swivel-9a45@gregkh> <Z6oPNmRo4XQQVEI8@louis-chauvet-laptop>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <Z6oPNmRo4XQQVEI8@louis-chauvet-laptop>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.997];
-	MIME_GOOD(-0.10)[text/plain];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,vger.kernel.org,redhat.com,kernel.org,intel.com,linux.intel.com,google.com,huawei.com,gmail.com,wunner.de,riseup.net,arm.com,ffwll.ch,quicinc.com,lists.freedesktop.org];
-	TAGGED_RCPT(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
-X-Spam-Level: 
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLgg7o7hs5B4mMzPd6RzYm+RcX8gw1Aw8voJqnmfnA_aM4Q@mail.gmail.com>
 
-Hi
+On 25-02-25, 10:55, Alice Ryhl wrote:
+> On Tue, Feb 25, 2025 at 10:47 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
+> > +    /// Creates cpumask.
+> > +    #[cfg(not(CONFIG_CPUMASK_OFFSTACK))]
+> > +    fn new_inner(empty: bool) -> Result<Self> {
+> > +        let ptr = KBox::into_raw(KBox::new([bindings::cpumask::default(); 1], GFP_KERNEL)?);
+> 
+> I don't really understand this CPUMASK_OFFSTACK logic. You seem to
+> always allocate memory, but if OFFSTACK=n, then shouldn't it be on the
+> stack ...?
 
-Am 10.02.25 um 15:37 schrieb Louis Chauvet:
-> On 10/02/25 - 13:30, Greg Kroah-Hartman wrote:
->> The vkms driver does not need to create a platform device, as there is
->> no real platform resources associated it,  it only did so because it was
->> simple to do that in order to get a device to use for resource
->> management of drm resources.  Change the driver to use the faux device
->> instead as this is NOT a real platform device.
->>
->> Cc: Louis Chauvet <louis.chauvet@bootlin.com>
->> Cc: Haneen Mohammed <hamohammed.sa@gmail.com>
->> Cc: Simona Vetter <simona@ffwll.ch>
->> Cc: Melissa Wen <melissa.srw@gmail.com>
->> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
->> Cc: Maxime Ripard <mripard@kernel.org>
->> Cc: Thomas Zimmermann <tzimmermann@suse.de>
->> Cc: David Airlie <airlied@gmail.com>
->> Cc: dri-devel@lists.freedesktop.org
->> Reviewed-by: Lyude Paul <lyude@redhat.com>
->> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+IIUC, the idea of the config option is to prevent stack overflow on
+systems with high number of CPUs (> 256), in which case the memory for
+the masks is allocated dynamically. Otherwise a local variable, in a
+function or a struct (which may itself get allocated dynamically) is
+fine.
 
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+In the CONFIG_CPUMASK_OFFSTACK=y case, the cpumask C core does the
+allocation and the Rust code doesn't need to take care of the same.
 
-> Tested-by: Louis Chauvet <louis.chauvet@bootlin.com>
-> Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
->
-> Thanks for the modification, it seems to work.
+In the CONFIG_CPUMASK_OFFSTACK=n case, the allocation must be done by
+the caller (on stack or heap) and the cpumask C core will only clear
+the mask.
 
-Should this patch be merged through DRM trees? drm-misc-next is at 
-v6.14-rc4 and has struct faux_device.
+I tried with an on-stack variable earlier but ran into problems as the
+memory is shared with the C FFI and Rust moves it unless it is pinned.
 
-Best regards
-Thomas
+One easy way to make it work was using Box, which keeps the code
+simple.
 
-
-
->
-> Louis chauvet
->
+Should I do it differently ?
 
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
-
+viresh
