@@ -1,180 +1,150 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71A9183CB0;
-	Tue, 25 Feb 2025 16:09:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86DB18C00B
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 16:12:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740499782; cv=none; b=K9rTEDZb7inbzW+vs1ZIugnwDjosOXo9RKJTvz7eUPMa+Xj/bCKBSo2QRUUnjjMDfjzR30WIu3RQFDeyBu1srZxk71tpJ8cSVJPuGhKa5tH0rWan2aQ7GwUQp0X5baqGVNejJdeBCOPqVQdnNBYAomNc10jPLNNi15hAa7na8O0=
+	t=1740499975; cv=none; b=WK5OF1KJhHvJ1DHRZRM2DwGHANeVOXFOp1UZlLIxEC8INFFeQS5maFe02ZarfgzQkl3c9+ReDPFoY1i6P6WYtjs+wJfeYQOXnJUeKxKVGt9On6Y0bvVfw1cmaGjBC0fH4SqGkvQR/FCc0OCYjQWCsRNXprnTDKbfHx9ezSomMhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740499782; c=relaxed/simple;
-	bh=I20S5zLsI09uH923+Gw4yF8I4LEHCIvUKO/1coMGedA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KYtDljTosHeVTMnFnww8T0HpZSzkhujHq8DoCX4nbCQNrig8O2FO41ZEp1wd0ET1XCZg4aW5d8Sml0LxPy4PQTgBwK6MqscmVupSblpgcQfkvItNtNLVskdh5eQI38R7J/zOM+CSMpobWEnAf20fQf0exTC9IGf0+hmrlyWca18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aQepiuiJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740499975; c=relaxed/simple;
+	bh=JcbH6xbF+kVoY6mPq3WSvzHL/f+wVG6jHsP4CM8z2Xw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bG49y+MHzuq0po3c99jZsBZzVKY9QARTrdIjQjaqrA3wULzNL67VFsr+m0Qv9pvgZT6YB+0zKGobz3IxZUQd6FGG2yI03kWw4mF346+1qrl9E5xaW7HdO1p/MT4NwfUqwJSR6AWyXy00qLnHJrifZaqspusPoP7KhI9l5btl5Tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JQwwYa0F; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aQepiuiJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7965AC4CEDD;
-	Tue, 25 Feb 2025 16:09:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740499781;
-	bh=I20S5zLsI09uH923+Gw4yF8I4LEHCIvUKO/1coMGedA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aQepiuiJ+Omgulrzo81kfMVxOpMfNzcQRfXL1T88akjWoX6V1Kk1ZRyRtuZC6NVwt
-	 DB1PJJTchvpYWXsgmmtQkmPPKI56uOYi73bkWk1YP1HZd6pELL8s1MuZ9H8WGBW4SH
-	 iCTROOx4YTc8KqwLhIfZeNrQfQRGbHLaENXXDx+a5yg41ct2f/t841Y29XmZ32qBwa
-	 OyzEpRPCP3tBnQUjP3/OeAoU9iwb2b53bTht7xD72BqPKU26dOqL5OTgsnh+Ddq4Qz
-	 R9KmyqvyE9OFY0kCHmtNOp5Y+1UwcrUimbENPzYdmvbxoe/Tej9g2j8JQoTZtQfjrs
-	 iiNv/1Ga057cA==
-Date: Tue, 25 Feb 2025 17:09:35 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: Alexandre Courbot <acourbot@nvidia.com>,
-	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	paulmck@kernel.org
-Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
- implementation
-Message-ID: <Z73rP4secPlUMIoS@cassiopeiae>
-References: <20250217-nova_timer-v1-0-78c5ace2d987@nvidia.com>
- <Z7OrKX3zzjrzZdyz@pollux>
- <CAPM=9tyu84z4Xk5X0fykO3Dazby2UqRgwtN4woNKe4Z2yMyDZg@mail.gmail.com>
- <D80AK2CLL4AZ.1G6R7OBHOF08O@nvidia.com>
- <Z7xg8uArPlr2gQBU@pollux>
- <Z7xh5bEyh_MII4WV@pollux>
- <20250224184502.GA1599486@joelnvbox>
- <Z70EcwNIX0KtWy36@cassiopeiae>
- <2f062199-8d69-48a2-baa6-abb755479a16@nvidia.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JQwwYa0F"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-38f5fc33602so3367195f8f.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 08:12:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1740499972; x=1741104772; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p+IbGw1yOaO8wpgyinqYsYfkRN9BZ1H7KtNvprS9eFQ=;
+        b=JQwwYa0FUMbQ5ZQSCI9HzN5q8vKKdzz2MlVt4MAzOiwpBnnHAzwBvP1F1aGmJ42neO
+         lf6b9IjkGrsuZkyPdNEAQUaLsiNfY4X1p6WIkfGUCNenk0VL3MfzQLN3K0r1NGsEiCOs
+         kwCBJSrJnVeI/DoTNFSWNE1dUznIzCwTOM0jUzsRkvZN+ITMeoSFPz/nFcabKlP+4+Tl
+         cNOmu/Ig9esII3QLkif0fiXxv64SaEBQRvy4Imv/5b5qzmW/m5eOKSE61Jj/1jPi8w5s
+         bJ0cJedpXPpkpZFdJ4iAznb7uAUADVL34VZ/ToXV52McaztBjeIifBHVwIr4DlahGkjY
+         m7Rg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740499972; x=1741104772;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=p+IbGw1yOaO8wpgyinqYsYfkRN9BZ1H7KtNvprS9eFQ=;
+        b=G2Vxed3xqaM0bc0Ydb7zyc0b4WLIeHXM9K04imyhKXEm6hPH2bIYHFv2BxpkeJOv0H
+         pDHNEyGlkjnALVuAGw6qibcMtP0v4yhdrby/dT2bULX9lh4ACQBiAQdLhID5GSB++kZX
+         rZGLhM9aLITCY3OAQypxYXiZ1k6KkC6L2Yl/rQq/uk7cYt8UdMAs/wxf/mDM0TcKUOtP
+         9IZ+oYga93SnIjYqiXKYPiXMIa1FSmStXqfqQE1CrFDrJXFFglrOASXbXbtKAIybSowA
+         jHD0ZC8YlgJMoFVgWPIQeuYM40tWXbPRcJiyrEOjO5YLM+B5Uimh4PcCco4s/J6krR7E
+         m8dQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUTH3Gr+17LX5xOzjm1xx23keaPGBDUCoGtqq2/tJDuH5qYcXdxB4vXfLvu9PZekcEl2WzpdHUAhqA88+G7Cw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1zxyXLC6Rq46ZXi0xeDXgKaotDMUpaLkOjmF5mKfvFpmF1rCI
+	GVEG+22HQ6BPoYQUHvNANNelYTPIMPmZttNx8XQJrxdxsniwJyM4temeM2bI0rNadyFH2/u6Uwd
+	+xQU8FKWmSunhH8+nynlO71qcuCul4YUXqWth
+X-Gm-Gg: ASbGncs+UhmNj77OJuYNrW17mSOok3HJmnJ3e0LT874tRvEqnptjR/w2MzqQJFJLLB7
+	ijBu92OALSnucnJ6NdUlO/B7nXlFzpp/CGX3gI3zmYGAvg571B3PqG8NoHeeedGer4E0DXg9hHo
+	U3k2nNNm28ul0uNqjd4LTvZFRaC7b49yWDROOTXg==
+X-Google-Smtp-Source: AGHT+IERrAzfsQ+2vuobOjf/H2nk2QFz1j28McsGB1U9oXx7WWKXyXxUSYxjItIeHzW3MoL6kdZmhf2JM57dNE5za7Q=
+X-Received: by 2002:a05:6000:1563:b0:386:374b:e8bc with SMTP id
+ ffacd0b85a97d-38f615bc9dfmr16670217f8f.15.1740499971902; Tue, 25 Feb 2025
+ 08:12:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2f062199-8d69-48a2-baa6-abb755479a16@nvidia.com>
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
+ <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+ <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com> <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+In-Reply-To: <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 25 Feb 2025 17:12:39 +0100
+X-Gm-Features: AQ5f1JrjfQJh76BFqnmr7NKwuzVljSVd0iXKiJJ1_U95jYSuu4wa6KKMNxHfNZU
+Message-ID: <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
+Subject: Re: C aggregate passing (Rust kernel policy)
+To: Ventura Jack <venturajack85@gmail.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+	Kent Overstreet <kent.overstreet@linux.dev>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
+	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
+	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, 
+	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 25, 2025 at 10:52:41AM -0500, Joel Fernandes wrote:
-> 
-> 
-> On 2/24/2025 6:44 PM, Danilo Krummrich wrote:
-> > On Mon, Feb 24, 2025 at 01:45:02PM -0500, Joel Fernandes wrote:
-> >> Hi Danilo,
-> >>
-> >> On Mon, Feb 24, 2025 at 01:11:17PM +0100, Danilo Krummrich wrote:
-> >>> On Mon, Feb 24, 2025 at 01:07:19PM +0100, Danilo Krummrich wrote:
-> >>>> CC: Gary
-> >>>>
-> >>>> On Mon, Feb 24, 2025 at 10:40:00AM +0900, Alexandre Courbot wrote:
-> >>>>> This inability to sleep while we are accessing registers seems very
-> >>>>> constraining to me, if not dangerous. It is pretty common to have
-> >>>>> functions intermingle hardware accesses with other operations that might
-> >>>>> sleep, and this constraint means that in such cases the caller would
-> >>>>> need to perform guard lifetime management manually:
-> >>>>>
-> >>>>>   let bar_guard = bar.try_access()?;
-> >>>>>   /* do something non-sleeping with bar_guard */
-> >>>>>   drop(bar_guard);
-> >>>>>
-> >>>>>   /* do something that might sleep */
-> >>>>>
-> >>>>>   let bar_guard = bar.try_access()?;
-> >>>>>   /* do something non-sleeping with bar_guard */
-> >>>>>   drop(bar_guard);
-> >>>>>
-> >>>>>   ...
-> >>>>>
-> >>>>> Failure to drop the guard potentially introduces a race condition, which
-> >>>>> will receive no compile-time warning and potentialy not even a runtime
-> >>>>> one unless lockdep is enabled. This problem does not exist with the
-> >>>>> equivalent C code AFAICT
-> >>>
-> >>> Without klint [1] it is exactly the same as in C, where I have to remember to
-> >>> not call into something that might sleep from atomic context.
-> >>>
-> >>
-> >> Sure, but in C, a sequence of MMIO accesses don't need to be constrained to
-> >> not sleeping?
-> > 
-> > It's not that MMIO needs to be constrained to not sleeping in Rust either. It's
-> > just that the synchronization mechanism (RCU) used for the Revocable type
-> > implies that.
-> > 
-> > In C we have something that is pretty similar with drm_dev_enter() /
-> > drm_dev_exit() even though it is using SRCU instead and is specialized to DRM.
-> > 
-> > In DRM this is used to prevent accesses to device resources after the device has
-> > been unplugged.
-> 
-> Thanks a lot for the response. Might it make more sense to use SRCU then? The
-> use of RCU seems overly restrictive due to the no-sleep-while-guard-held thing.
+On Sun, Feb 23, 2025 at 4:30=E2=80=AFPM Ventura Jack <venturajack85@gmail.c=
+om> wrote:
+>
+> Just to be clear and avoid confusion, I would
+> like to clarify some aspects of aliasing.
+> In case that you do not already know about this,
+> I suspect that you may find it very valuable.
+>
+> I am not an expert at Rust, so for any Rust experts
+> out there, please feel free to point out any errors
+> or mistakes that I make in the following.
+>
+> The Rustonomicon is (as I gather) the semi-official
+> documentation site for unsafe Rust.
+>
+> Aliasing in C and Rust:
+>
+> C "strict aliasing":
+> - Is not a keyword.
+> - Based on "type compatibility".
+> - Is turned off by default in the kernel by using
+>     a compiler flag.
+>
+> C "restrict":
+> - Is a keyword, applied to pointers.
+> - Is opt-in to a kind of aliasing.
+> - Is seldom used in practice, since many find
+>     it difficult to use correctly and avoid
+>     undefined behavior.
+>
+> Rust aliasing:
+> - Is not a keyword.
+> - Applies to certain pointer kinds in Rust, namely
+>     Rust "references".
+>     Rust pointer kinds:
+>     https://doc.rust-lang.org/reference/types/pointer.html
+> - Aliasing in Rust is not opt-in or opt-out,
+>     it is always on.
+>     https://doc.rust-lang.org/nomicon/aliasing.html
+> - Rust has not defined its aliasing model.
+>     https://doc.rust-lang.org/nomicon/references.html
+>         "Unfortunately, Rust hasn't actually
+>         defined its aliasing model.
+>         While we wait for the Rust devs to specify
+>         the semantics of their language, let's use
+>         the next section to discuss what aliasing is
+>         in general, and why it matters."
+>     There is active experimental research on
+>     defining the aliasing model, including tree borrows
+>     and stacked borrows.
+> - The aliasing model not being defined makes
+>     it harder to reason about and work with
+>     unsafe Rust, and therefore harder to avoid
+>     undefined behavior/memory safety bugs.
 
-Allowing to hold on to the guard for too long is a bit contradictive to the goal
-of detecting hotunplug I guess.
+I think all of this worrying about Rust not having defined its
+aliasing model is way overblown. Ultimately, the status quo is that
+each unsafe operation that has to do with aliasing falls into one of
+three categories:
 
-Besides that I don't really see why we can't just re-acquire it after we sleep?
-Rust provides good options to implement it ergonimcally I think.
+* This is definitely allowed.
+* This is definitely UB.
+* We don't know whether we want to allow this yet.
 
-> 
-> Another colleague told me RDMA also uses SRCU for a similar purpose as well.
+The full aliasing model that they want would eliminate the third
+category. But for practical purposes you just stay within the first
+subset and you will be happy.
 
-See the reasoning against SRCU from Sima [1], what's the reasoning of RDMA?
-
-[1] https://lore.kernel.org/nouveau/Z7XVfnnrRKrtQbB6@phenom.ffwll.local/
-
-> 
-> >> I am fairly new to rust, could you help elaborate more about why these MMIO
-> >> accesses need to have RevocableGuard in Rust? What problem are we trying to
-> >> solve that C has but Rust doesn't with the aid of a RCU read-side section? I
-> >> vaguely understand we are trying to "wait for an MMIO access" using
-> >> synchronize here, but it is just a guest.
-> > 
-> > Similar to the above, in Rust it's a safety constraint to prevent MMIO accesses
-> > to unplugged devices.
-> > 
-> > The exact type in Rust in this case is Devres<pci::Bar>. Within Devres, the
-> > pci::Bar is placed in a Revocable. The Revocable is revoked when the device
-> > is detached from the driver (for instance because it has been unplugged).
-> 
-> I guess the Devres concept of revoking resources on driver detach is not a rust
-> thing (even for PCI)... but correct me if I'm wrong.
-
-I'm not sure what you mean with that, can you expand a bit?
-
-> 
-> > By revoking the Revocable, the pci::Bar is dropped, which implies that it's also
-> > unmapped; a subsequent call to try_access() would fail.
-> > 
-> > But yes, if the device is unplugged while holding the RCU guard, one is on their
-> > own; that's also why keeping the critical sections short is desirable.
-> 
-> I have heard some concern around whether Rust is changing the driver model when
-> it comes to driver detach / driver remove.  Can you elaborate may be a bit about
-> how Rust changes that mechanism versus C, when it comes to that?
-
-I think that one is simple, Rust does *not* change the driver model.
-
-What makes you think so?
-
-> Ideally we
-> would not want Rust drivers to have races with user space accesses when they are
-> detached/remove. But we also don't want accesses to be non-sleepable sections
-> where this guard is held, it seems restrictive (though to your point the
-> sections are expected to be small).
-
-In the very extreme case, nothing prevents you from implementing a wrapper like:
-
-	fn my_write32(bar: &Devres<pci::Bar>, offset: usize) -> Result<u32> {
-		let bar = bar.try_access()?;
-		bar.read32(offset);
-	}
-
-Which limits the RCU read side critical section to my_write32().
-
-Similarly you can have custom functions for short sequences of I/O ops, or use
-closures. I don't understand the concern.
+Alice
