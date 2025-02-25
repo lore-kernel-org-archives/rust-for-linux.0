@@ -1,118 +1,157 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D50A267B64
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 11:53:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043C9266F0B;
+	Tue, 25 Feb 2025 11:55:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740484435; cv=none; b=pfbj0bcQWgGn6BI7pa3hgeV+nRDOcel6GwhVLKNdhNnYiag76aDN3/GQIct84+7cLX5KNG654Yi+ssliNFlycNTl02Rg5Zsk0RLDeZ1G2win6Tcf1zxftL9NZDsX3P7CaoqC1Jm0BtfEYeXGRJ362flpTRl0K9uIB4plTxQ/fFY=
+	t=1740484505; cv=none; b=e0825pIAj/6zbyeeRDsBTAoJV9Qy5/BuYtGGdaOXk3bVA0+8C3ndRARMkNLC1NCIr1Hgy9066lF7+89QnPC5PxJ4hxom4tLl5zoeQVSNJ1yhZo+LlAR8r1cmZiSt7lCvm4cVuBCYOGWnFHdaO3hVcNU39xo9dqkpN6RqcpemU5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740484435; c=relaxed/simple;
-	bh=a9fb9/Po8fkbGsNdxEzFM4ny3tzW4+avELTv+pAGvKg=;
+	s=arc-20240116; t=1740484505; c=relaxed/simple;
+	bh=r5JN9Vpy+k9kBOTQAeA4M6aHP/JfjZFJb0kvjJVQzTs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cen374Uuw5k6XMXDCuUcqZ9ORcIkZmZTWHvNHHaL5zGIizBwoixb3RGkyJ9ocBZE5MPbewJF94PZe+Z6bMyTGlnZSOf5HtlrCNqcGZar6P8QdvahUr5tXSixwDQHkqQ84qSFxSgQT72qLsQZg9Ke9LQBgVWYI3XeL/P1Zoss4wA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pGcZCtM5; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=Fvk3kLSEOMrWU8X7NXtW3BP0a+AYJ8jfp0FRe9nfRa8bMjACVF3yjLXD7Uidm2AGFEnYa+Gq2+XQ2gfRxC6/F7rmTuRC8Yi3ESoKcvLSAJqdv7b8wgujOQrZvdWQ+wwb0r7/Ntut3w+DsSVQkqNZ+KhC/hn0PtbtHAHW525s7eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ARHTNXcX; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pGcZCtM5"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-38f2b7ce319so4559911f8f.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 03:53:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ARHTNXcX"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2fe5d75ff8cso319557a91.3;
+        Tue, 25 Feb 2025 03:55:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740484432; x=1741089232; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1740484503; x=1741089303; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/KKh9bgDpR6Lw5wYeyXdJoUFBHhy20zpW+hZJGoTw/I=;
-        b=pGcZCtM5kpkIoddGsPoMKiwlf/bOR+Rmy3xhb8OQ0rBQa9vQGGwO5S4DVcZmBx7s/c
-         f1xvjTIcc9JUxaVP2fIbrqhf1qPTAnjcMPHOVDG2aH03mpYUmlogOrQYv6YcCoLnIscv
-         c7VYEJe1CVsAZk7eFGriEVMwVLX34IlyE43isLW7DJkbY9Lb1xisYkWWUNDEsGsir3ly
-         EMR54WsGiDnyf1oTdS45ItkyGo+c3Tvui4Heecdn+kxboq3Ou07WtP/pmqVaMc5pRQjo
-         gj7No3xjaX6L68aKcYSiT0k04j3T4Z2ByswSlx1vfm6QQtB60djgG9dJPOXuGzbCpqe7
-         pDwA==
+        bh=cbVTvGgXxhFelIHlamzHjkhHuV2P21Bf5xkdpR0z7yo=;
+        b=ARHTNXcXY7vKmZ5bVX90BxdvwGOnNvZBDu+Y8VHtyCzs8uRLNyINbo5toraJVTjkrn
+         vgLdXyC+EKrMpyvUEf9xgvDsluvpzNY2QC8+s0KKOnb/nhTJ17KlaI/HLpPGIZA4bHFU
+         5jg2YEGGob7PGRIFlXCNM/7+v/wqDc0xdLQmDuzHJkXtM9+hpe2fUOLoooUAv5aTOGrX
+         n+kz6xH2OzZPceWHWN45tm5N1D+N1lcBum1CtFfSQ0msb+5KZyDJ5M3+MgLcFYJKPVSy
+         G+kadLWWtnB7KafZcrNRTjqA3QX7pwWS4WH9bArPx7bddJAb4pf1DiWLwQ1etBDahAh2
+         KyXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740484432; x=1741089232;
+        d=1e100.net; s=20230601; t=1740484503; x=1741089303;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/KKh9bgDpR6Lw5wYeyXdJoUFBHhy20zpW+hZJGoTw/I=;
-        b=GpyIbk+wiDaYQmIDC4W9vU1ZZJIT512CwWQ1EYnbOH68BjREjtjA4Z9FbVg9z1UfNZ
-         INxwLr9jQihwWHrjrMIhyrC2JKbdGKYWBbDHczq5oukFeX8YCMHLIfIz2pBwTtKqX3cX
-         Dq7cPNAfp19CitVuAOx1gSuSCIVaznK7WJKVdMr2pohfLZ72h/IKIh+FfA1+EPZRbO1W
-         u+GCoYOO2Va0BWnkGs59qO2pPoFz5d69XwZMMYNDUDwz79gZHszJShs69+40e964gYnF
-         9fpAu4ie9nArYsp3Iulk7Aap0XjmXieP/ypesGKe3dN/YdxMY572qXGqHt/TiNr6OtQr
-         edvg==
-X-Forwarded-Encrypted: i=1; AJvYcCUSsHkTdHs9THYtaVf4le62+99cAIQImSB/QUwwxPo46NnijWJXrZ0F70SzRinMcK4KS5ltIzfeWNQHN0tffQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2buj14Hh+B8232fA8h6A2MripGduMfsUi2P1PhUhuotugnwVp
-	Wy491oE5XPFQYhhryvlCPxkjB1mwQr1+orU+g3nJxaIazpoPYk0HAF3gulty7AjcoptOLUMuzWg
-	9olUr3AgCJeTtQMMjtbf7Wx0aUuai5HywoVDV
-X-Gm-Gg: ASbGnctXLnPR7iiY3iDWxE9p4Al4dfGiWZOpzaSUywI1mAFca96KO0rxwg2RFIzSzWO
-	DfhUJRqN9R/0iqw8YU8cHVhbsQ5c1f8aN6ebbY6CqCWdMUQRSfqur5dJYZAqspLUvN7O4cbIhG4
-	5Cy5UJYyAwjaMr4fJHgI9HGUp8md2DCrN4iO/aIA==
-X-Google-Smtp-Source: AGHT+IHqY/a0ChgzNsrPhlIq4n2vGB9QqapOJaINrWTcYZxBCWa17WZrPYgX7RCd5da6qGdapIXwpxNB4adzRUzEdrE=
-X-Received: by 2002:a05:6000:1a86:b0:38f:39e5:6b5d with SMTP id
- ffacd0b85a97d-38f6f09f959mr15938375f8f.44.1740484432531; Tue, 25 Feb 2025
- 03:53:52 -0800 (PST)
+        bh=cbVTvGgXxhFelIHlamzHjkhHuV2P21Bf5xkdpR0z7yo=;
+        b=KAYBfncGY3FbNWJP8yArEf+BT6TVBrDq7NphVQ7szgIjMQifhqr9ku83TP4tEVQZ+I
+         Sb93u0G4e6pbN29GM7/afIedKtlnv3DQX8FY+eyN0aQmG40fJpp7evFuvWPVZvVElXhQ
+         SrWrbLwchAF4u/yA2NMQZJdBAch0PTEiK5NvgKFPjASk5mAUdxSzbOkMf5CcxZzuOmSS
+         8sl+qnFKHVY7esTXEqSM7T4R2i3e82tkGSakuGjTMLuCGjVROiE3jQz1Rm/vth8v4v4i
+         3hJ2IQkOp35JTMk4ZU5IqvGBW9sPnSoJVOoW2toc2zqEramGy47VngvzkToTze4nSNeW
+         eWQw==
+X-Forwarded-Encrypted: i=1; AJvYcCUivvYGwC4aLMQw+OJU9Z77AXdgYIl7HYKwL6aZ1mS++498neHShPbI5Ggtvxm5ehpVHIF85goB6ejnY65Y@vger.kernel.org, AJvYcCUrACeWgIDtnj4rIkM6xxQ5DqI7w5txKKybd1/3XhVbR2hy8OdAF7OhEFfDMVa3+9dKGob6eF1arS17jos=@vger.kernel.org, AJvYcCW/KfMFAb6ODG29NcwH54dJbFpmNxQn9ItCfLv3K0AV37wdvqXjDq5JmUMiMcvzwQT66gSvhmQI+GSWmsqP3Q==@vger.kernel.org, AJvYcCXmQvxg9UIDky87nw1XuwchKI2LUDgrV2KfS3JnGJIRG3rBHF6MEMaRQWNj3QWx5O9rIkOjiWdeBYUPWgT5Um8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwS39p2oN50T0PzMdWN/ZKT8nWELuKkJEN0O64TF6Y8/BesssSY
+	HbYzC4OTpCZGZRitRLUVR5uBqTLPZGXY4e/9Ir4K+T4qM2lkwOW2gCVQ4ylB5vqQBUmz4sRJ1Vk
+	EBYSlbQHLS8loJGtVAGNQwwj1oEo=
+X-Gm-Gg: ASbGncuCmCWEFgaWqrPhUZtEXkvkG+8pmz9jZ3/0yK8JxteiHnk5KH1uu9xwkqm/GGX
+	GeXaTjx2KwcROxbRWOyLJf9MNMQbOKjBypn8PLM8q5KwN06z/U8azWh61v6DHecWbwpczB2B4wS
+	aMA/Ttajs=
+X-Google-Smtp-Source: AGHT+IHEGGS2hZODF1j2LQFT/BO+tJNXwtLqVVcttKdrdibUSLC7XukpDcWfSsRTIz2LPeVWqzcA/ddQe+FUevK6qJs=
+X-Received: by 2002:a17:90b:390e:b0:2fc:25b3:6a91 with SMTP id
+ 98e67ed59e1d1-2fce7b014b9mr11568427a91.5.1740484503189; Tue, 25 Feb 2025
+ 03:55:03 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1740475625.git.viresh.kumar@linaro.org> <68ac0f0ee3c0ebd3d3cc078a6270752778a1b732.1740475625.git.viresh.kumar@linaro.org>
- <CAH5fLgg7o7hs5B4mMzPd6RzYm+RcX8gw1Aw8voJqnmfnA_aM4Q@mail.gmail.com> <20250225114830.64p56bndn4hkkkgq@vireshk-i7>
-In-Reply-To: <20250225114830.64p56bndn4hkkkgq@vireshk-i7>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 25 Feb 2025 12:53:40 +0100
-X-Gm-Features: AQ5f1Jo457oNbGYfpXGn9Th4VDyFePvYBY05vhtLSFU8gDXlKbKgNgPnMpCHaRA
-Message-ID: <CAH5fLghUDz8tpkTuvWZgwT2_VKgxuS+iZKnoT4prKwS9tbp8wA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rust: Add initial cpumask abstractions
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+References: <JKqjFnoTeEbURcTQ5PpmUZWDS2VMEt0eZl68dWkgk3e8ROFpb2eTWH2mStKkkXJw__Ql5DdYvIR9I7qYks-lag==@protonmail.internalid>
+ <20250218-module-params-v3-v7-0-5e1afabcac1b@kernel.org> <87ldtv1t1c.fsf@kernel.org>
+ <0d9e596a-5316-4e00-862b-fd77552ae4b5@suse.com>
+In-Reply-To: <0d9e596a-5316-4e00-862b-fd77552ae4b5@suse.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 25 Feb 2025 12:54:50 +0100
+X-Gm-Features: AQ5f1JoDLXuN07QEu3NdVPUgz3gtpTCAJ68Ip0LupLzn-yJQ2Gg6MLSBFUJM3h0
+Message-ID: <CANiq72nBK=HZ=ZL9bYhB8Z+U5QK3xmsQesO9axf_Fz0_1mWREA@mail.gmail.com>
+Subject: Re: [PATCH v7 0/6] rust: extend `module!` macro with integer
+ parameter support
+To: Petr Pavlu <petr.pavlu@suse.com>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	Danilo Krummrich <dakr@redhat.com>, rust-for-linux@vger.kernel.org, 
-	Vincent Guittot <vincent.guittot@linaro.org>
+	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
+	Luis Chamberlain <mcgrof@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Adam Bratschi-Kaye <ark.email@gmail.com>, 
+	linux-kbuild@vger.kernel.org, Daniel Gomez <da.gomez@samsung.com>, 
+	Simona Vetter <simona.vetter@ffwll.ch>, Greg KH <gregkh@linuxfoundation.org>, 
+	linux-modules@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Sami Tolvanen <samitolvanen@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 25, 2025 at 12:48=E2=80=AFPM Viresh Kumar <viresh.kumar@linaro.=
-org> wrote:
+On Tue, Feb 25, 2025 at 11:22=E2=80=AFAM Petr Pavlu <petr.pavlu@suse.com> w=
+rote:
 >
-> On 25-02-25, 10:55, Alice Ryhl wrote:
-> > On Tue, Feb 25, 2025 at 10:47=E2=80=AFAM Viresh Kumar <viresh.kumar@lin=
-aro.org> wrote:
-> > > +    /// Creates cpumask.
-> > > +    #[cfg(not(CONFIG_CPUMASK_OFFSTACK))]
-> > > +    fn new_inner(empty: bool) -> Result<Self> {
-> > > +        let ptr =3D KBox::into_raw(KBox::new([bindings::cpumask::def=
-ault(); 1], GFP_KERNEL)?);
-> >
-> > I don't really understand this CPUMASK_OFFSTACK logic. You seem to
-> > always allocate memory, but if OFFSTACK=3Dn, then shouldn't it be on th=
-e
-> > stack ...?
+> I'd say the easiest is for the entire series to go through the Rust
+> tree. I'd also propose that any updates go primarily through that tree
+> as well.
 >
-> IIUC, the idea of the config option is to prevent stack overflow on
-> systems with high number of CPUs (> 256), in which case the memory for
-> the masks is allocated dynamically. Otherwise a local variable, in a
-> function or a struct (which may itself get allocated dynamically) is
-> fine.
+> Makes sense, I think it is useful for all changes to this code to be
+> looked at by both Rust and modules people. To that effect, we could add
+> the following under the MODULES SUPPORT entry:
+> F:      rust/kernel/module_param.rs
+> F:      rust/macros/module.rs
 >
-> In the CONFIG_CPUMASK_OFFSTACK=3Dy case, the cpumask C core does the
-> allocation and the Rust code doesn't need to take care of the same.
->
-> In the CONFIG_CPUMASK_OFFSTACK=3Dn case, the allocation must be done by
-> the caller (on stack or heap) and the cpumask C core will only clear
-> the mask.
->
-> I tried with an on-stack variable earlier but ran into problems as the
-> memory is shared with the C FFI and Rust moves it unless it is pinned.
+> My slight worry is that this might suggest the entirety of maintenance
+> is on the modules folks. Fortunately, adding the above and running
+> get_maintainer.pl on rust/kernel/module_param.rs gives me a list of
+> people for both Rust and modules, so this could be ok?
 
-Is it a problem if a value of type struct cpumask is moved? It looks
-like it is just an array of longs?
+Up to you, of course -- a couple days ago (in the context of the
+hrtimer thread) I wrote a summary of the usual discussion we have
+around this (copy-pasting here for convenience):
 
-Alice
+    So far, what we have been doing is ask maintainers, first, if they
+    would be willing take the patches themselves -- they are the experts
+    of the subsystem, know what changes are incoming, etc. Some subsystems
+    have done this (e.g. KUnit). That is ideal, because the goal is to
+    scale and allows maintainers to be in full control.
+
+    Of course, sometimes maintainers are not fully comfortable doing that,
+    since they may not have the bandwidth, or the setup, or the Rust
+    knowledge. In those cases, we typically ask if they would be willing
+    to have a co-maintainer (i.e. in their entry, e.g. like locking did),
+    or a sub-maintainer (i.e. in a new entry, e.g. like block did), that
+    would take care of the bulk of the work from them.
+
+    I think that is a nice middle-ground -- the advantage of doing it like
+    that is that you get the benefits of knowing best what is going on
+    without too much work (hopefully), and it may allow you to get more
+    and more involved over time and confident on what is going on with the
+    Rust callers, typical issues that appear, etc. Plus the sub-maintainer
+    gets to learn more about the subsystem, its timelines, procedures,
+    etc., which you may welcome (if you are looking for new people to get
+    involved).
+
+    I think that would be a nice middle-ground. As far as I understand,
+    Andreas would be happy to commit to maintain the Rust side as a
+    sub-maintainer (for instance). He would also need to make sure the
+    tree builds properly with Rust enabled and so on. He already does
+    something similar for Jens. Would that work for you?
+
+    You could take the patches directly with his RoBs or Acked-bys, for
+    instance. Or perhaps it makes more sense to take PRs from him (on the
+    Rust code only, of course), to save you more work. Andreas does not
+    send PRs to anyone yet, but I think it would be a good time for him to
+    start learning how to apply patches himself etc.
+
+    If not, then the last fallback would be putting it in the Rust tree as
+    a sub-entry or similar.
+
+    I hope that clarifies (and thanks whatever you decide!).
+
+    https://lore.kernel.org/rust-for-linux/CANiq72mpYoig2Ro76K0E-sUtP31fW+0=
+403zYWd6MumCgFKfTDQ@mail.gmail.com/
+
+Would any of those other options work for you?
+
+Thanks!
+
+Cheers,
+Miguel
