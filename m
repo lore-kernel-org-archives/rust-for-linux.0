@@ -1,310 +1,163 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2071.outbound.protection.outlook.com [40.107.94.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157A21A7044;
-	Tue, 25 Feb 2025 21:02:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.71
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740517354; cv=fail; b=k6R8zvTERu5Xe5ksoyuuUC+QeaHCsoTdRlW/pEfiVZiE6PZyX9yfk1VrY0YG6Rtt4KNhVPGyU2SyxOO7ETZef4EtxGUmGiSkwOIkQzqlriICbOg9JAIeRQyADZbQOa4CYgXERQUwXNYavM1+KAxHOS6gXycbR6ua+EWNgWrY/Eo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740517354; c=relaxed/simple;
-	bh=yiF+euSSgVpwSVcmzAa0AdR6IM/quVR92dSDbmgFlpM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=eDjfXVd+iuNDaHxQx0jxInlWdTOebso8d+InFUOghyn0/sFIMsVwNm1S9qHrVvnswz0Zltg6VVMLnIx5tGx434BIrBlNeN5U/iupcb81Ln3sqwQPi6whl9Z2LU7FN/xMyeHknHDEwn9kpS+DsSlKJJDFsSCQSVjYSZyJTNIjYA0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=BWSE2bIz; arc=fail smtp.client-ip=40.107.94.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FEB420C48E
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 21:25:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740518705; cv=none; b=ZHp6vOnV6nc983o/Pd8rO3MUQtxlUeyirXJUEGsTtdhnLytzLOSUqbGCh1zJw0S362gDEkKmW4c/OjhXjHCtDgkpX0nSaD1ALLhbzXOt5g++JKBwYrchua3yA5gvJwUG6XkrqWRsyJJW7FyQ5Nex8/inetHwSEeRxTKPiMYHLZ8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740518705; c=relaxed/simple;
+	bh=TT313L3NHuTIEIP3Ta9oDB6MUWAlR8LnnBX8lq4WH7g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=heh1xtRhsBln5fX2Wf83YptSUSp+kD/7Iq9Iz2R5bD/5uKbx5vZn7f3ibzAX4XDGhNCcJqfcZeV8wkdNEOE+q1muEG8jkwLNFucA7jl9hd+qWsoQnulJlUgXM+MaxWj18W5qbZB7bUxh+TDiMCK2ustVP6yeqrpXpUMF2/7fGY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=h7DIY8tW; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="BWSE2bIz"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fP82h7LcEhOpr4wX8dnDanYiCBPNqL96GZFbbmB3v9GffM6stfxPbkkNd7InFbL6aLaoG3aUg4lQeaoRweL0yfyxqFnuhOo/OIif4T952YcldIxeP1p8SIDI4uUxV/fWXoaV7Uwr3A3uVq1OIXp7i7zOVTMV0gSPLQ9vC+QEWdxlOTXHidOqnCAGNis4BLt/1/Hih0AcOhERMRBNFleXpzbW4kz33rDJE7Z9Vz2K/kXzstWR4qBijnj6MLwB3KBrJLA/SvfpnGREHorb7O+GsoXkEK1oqvPXAqha+HeGDdlL0aItvUTQU6JlCBXgZUL3sGXZOFdC4mFzQe0O6JDtpw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=T/JDlv985s7SMkDyrawNWQM/qQ+AzbeSVAc0b7mQ9Bo=;
- b=aZaWmBKOVuMT8Ju/mQc1eMU8oYi3idxFRQ2Rx4IOiozbKB5f12+88DfSZ0pET+fFeeRPFOnkjy2QFs5vChnb5aI1rm7jS4zj+b/pnu1Pg1AfSqbNbEuOPe7slVZKw3DVQ085juOswv6P9PfLiynAUq50VaTzB87TFaMq1B6WmpTn6vJPBrLHGoXg8V/uq/UReTBFFWTKOgYEJAO12z8ttWA0NgH4r4grMD7uLMhM1lL/wiv8pT7Oq4g5nrejYUgA6f0KKPXsLjztfxtJVUylJPkjPBpidmMnvGAZ7rk6o8LYCKM4IR55yDNDaqCv+ycOlTDcXZnkCL7NvRy0D5bNDw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=T/JDlv985s7SMkDyrawNWQM/qQ+AzbeSVAc0b7mQ9Bo=;
- b=BWSE2bIzzDUtgdfY3pTphBF8sBLZ/S81KStdV6Nezo9kEE003sDZXo5ihj8+RCLuAvX6CpkukRKel2bIUnLRUc4+bnMgKzvPv2w6IgzhoFXxBrt5b7CUv9giABmIaWiOg1DZ2kFON7xdmJ0iwXvRLOA4WMAIy/OffwcdydW+CsoBa3BJ5bvIIixTmsRZCDAN8AjzwXEtMimMQobbWmKyVC1kKLDnMC1/FuEzpHctJeljTFcqKhLsRnXfech566+P6Qb85mye1PE2qlmr/c9nXjR6LU4ESpgeSVQU49uZjc65INXWPW3HDr8h7oXIwi+nuzhgshdPUh91ksfVUMwTZw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
- by DS0PR12MB8576.namprd12.prod.outlook.com (2603:10b6:8:165::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.20; Tue, 25 Feb
- 2025 21:02:30 +0000
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91%5]) with mapi id 15.20.8466.016; Tue, 25 Feb 2025
- 21:02:30 +0000
-Date: Tue, 25 Feb 2025 16:02:28 -0500
-From: Joel Fernandes <joelagnelf@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Alexandre Courbot <acourbot@nvidia.com>,
-	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	paulmck@kernel.org, Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
- implementation
-Message-ID: <20250225210228.GA1801922@joelnvbox>
-References: <20250217-nova_timer-v1-0-78c5ace2d987@nvidia.com>
- <Z7OrKX3zzjrzZdyz@pollux>
- <CAPM=9tyu84z4Xk5X0fykO3Dazby2UqRgwtN4woNKe4Z2yMyDZg@mail.gmail.com>
- <D80AK2CLL4AZ.1G6R7OBHOF08O@nvidia.com>
- <Z7xg8uArPlr2gQBU@pollux>
- <Z7xh5bEyh_MII4WV@pollux>
- <20250224184502.GA1599486@joelnvbox>
- <Z70EcwNIX0KtWy36@cassiopeiae>
- <2f062199-8d69-48a2-baa6-abb755479a16@nvidia.com>
- <Z73rP4secPlUMIoS@cassiopeiae>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z73rP4secPlUMIoS@cassiopeiae>
-X-ClientProxiedBy: MN0PR02CA0006.namprd02.prod.outlook.com
- (2603:10b6:208:530::24) To SN7PR12MB8059.namprd12.prod.outlook.com
- (2603:10b6:806:32b::7)
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="h7DIY8tW"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-ab78e6edb99so864416966b.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 13:25:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1740518701; x=1741123501; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YVCy8UyD4kIHBFsMDFYHTvvtj3ZtXS1BkBR61VGCyI4=;
+        b=h7DIY8tW8KEOiYiKTAqPXHnVc/aDTbpMSaS6uKoKwAFu2cYFA02PfJksrOcC9KzbXl
+         6OOD1XcVbuakbz0qi3d35E14t7VHUd84ezydlN3Q3qCa43PgUKLoWDF7NxdGmdEZb0X3
+         AbBhtq6bwet5hYOI2AkC6iRbK2SpjCmuyKw5s=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740518701; x=1741123501;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YVCy8UyD4kIHBFsMDFYHTvvtj3ZtXS1BkBR61VGCyI4=;
+        b=lhsAAX5nCjv0Iu6HxhZcbE8I7mYXTjPxDac9BcRQ/5gm+WxPjIcN7DDgGvUH+OlyZt
+         hqM/RTfBi7E50PMSJoy9bL0Gzho7g1wEw9J3DDZhc3vtPvZORxNKZLXiZiN7lmYOQsV4
+         bdttjaZ7fXtBP1ckq34tbLDkxHOU7mhYHFIC16r1f8/fECr5hiuhBDqxK+mvwpJv9HW8
+         djuaSU+5fTl8qHD8dCaHhocxy1E1JIQ9D4JRynwCTxBuBIhjGvVdjHBJm47Gz90H2N7s
+         ckXfrSDeMy9FpaCRVWYq2SyhH1C9QpE50fdmRiXnU0rqORkkcaIzadEt0pVEPZ3IPZaB
+         RwkA==
+X-Forwarded-Encrypted: i=1; AJvYcCXoTryfjJaSNPZnhimowkNZNUA29IVmcCYUaqm0u9DhrDJEO3+vlzS5dUV6zLUYaMXk610/59ZhlfzhH32/nA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywd9aq/l8RAv5uEGJ4EHTfWQiwFTrfza4RMSc5X71bFb4BQ+B51
+	wBvu9rjc7FlSTTWJdowFTDdxK2G/uC8t+7dgAITFSQZ5aWI6RPES1B6ekIWdTRJ2GXLz+alRBfw
+	MKVE=
+X-Gm-Gg: ASbGncuh/kvozBvcx7haP2nrGsEhBjtlEzhUXqp/IwnOPY+96novNq7Vw0lOsRCfggc
+	8vkDTanwNu/E+UeWcHMvWebaP1mK3cZTJddPxnn4SpbDaOfEfrQosDNPzvCZqKW77CWzcI641ap
+	tqdRszV14EOliAM8/gWDVpAiPRNGDvADxBbJ6lpcAD8i28kZUYXsgalmorddzz/rUlLZAazvnUT
+	MHk2oFfxpnx0gCc/ZVMcaCwyHZOy63pYfOWes/KHj0IJ3uo7ZK0gpkGd6va0XPmYadEc/m4OzGI
+	i9inLRmxl614w7PPAnpMgpVr7C/zySjQMsM2eGyVzbj+KshzPwca7p/B0ScS1B40rtoUUC8QOeY
+	U
+X-Google-Smtp-Source: AGHT+IFEG3AMCav/cjnrF6kBhXnGj9/hdn15HUykaWiLgj5gOwRd8k2NJf+qz3ocfAsAtWBU2zYt0g==
+X-Received: by 2002:a17:906:32d6:b0:abb:514d:1f39 with SMTP id a640c23a62f3a-abeeedc2519mr66751166b.23.1740518701097;
+        Tue, 25 Feb 2025 13:25:01 -0800 (PST)
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com. [209.85.208.47])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e45a8b8b48sm1776140a12.20.2025.02.25.13.24.59
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Feb 2025 13:24:59 -0800 (PST)
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5e0452f859cso9639357a12.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 13:24:59 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWWWPmyuJuFd+lIauiLrBRrhYqt0P+pIBCuVTSFaBLv0dsI8Rqaou2Dkk0vAnaqtCcrj2jHJaVFrmfgUNCr4w==@vger.kernel.org
+X-Received: by 2002:a17:907:86a5:b0:abe:ea8d:a8a2 with SMTP id
+ a640c23a62f3a-abeeee40ec6mr75902266b.33.1740518698732; Tue, 25 Feb 2025
+ 13:24:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|DS0PR12MB8576:EE_
-X-MS-Office365-Filtering-Correlation-Id: fe9c7ef6-dd9e-4271-43e3-08dd55dfb75e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?cG13QlN2croAkAZi1497K3iB35kpgmV6DuyLPkCJ1KFTzcN9tbGiljMZO1jJ?=
- =?us-ascii?Q?9gij6uD3XJXdwEJEMFhNjSOsybROu71PwB7/T+deB1wA0kFw4UbadDQs0khw?=
- =?us-ascii?Q?F9zYcS1zpMAwmxpsWmf+j6T9rrJrpgr7J9fRuq7pXX5nRDQ6MtFgU4Nd6fzU?=
- =?us-ascii?Q?Pg7keeAs5409xWB7VHMlA7GA+XH/4ZTl5BajdA7Y8s6ScaEBSEB3zu3TcYUm?=
- =?us-ascii?Q?TFgM0MAQ7X55j4h3M+i6kfpxvf6y6ZcIUusaRitrwxNCv/SLRAa+EVEHfN96?=
- =?us-ascii?Q?/OpYP3qvBJPPayv8QbAEV+sfQYCO20IwO0VeHI7iuV3aPPW79nD06RKZSk6c?=
- =?us-ascii?Q?hu0tNWeje7Z9bQ44NXcY8o2WY4jrgywTZkXxhKxECqAZn/slEyhZtFdt9yFK?=
- =?us-ascii?Q?VvnK5nkHu03kTK1ruhQJmAswKaelK5fKRsrZ6COCoQSU5c39do+/Y0TUCgWR?=
- =?us-ascii?Q?b+u5hRE6lGDloH/W5Qyi99YcktgcQ5UU0Ol6gwOM8dWIT26YGdSxW8lU6LVx?=
- =?us-ascii?Q?kdsGh+XEEK+Lk7Wt0CQyYmGydt5zPy1p/Db6vY/WwwWKCOwbEZ0Sy0httEqx?=
- =?us-ascii?Q?dqdadOftcw+33ugfxvoX/K5dp1SM9xSYKblQeMWSEl6Nkw7FFfKRGCVzRIN2?=
- =?us-ascii?Q?23mAI9JOUqHTy5/aL69ob603KTXqFOEsvqMxYDqgzu3yN8GYK4xzpLLVoc2Z?=
- =?us-ascii?Q?C/GZ9X/Kg+LSesNZdgD1hOM52H/HRqmQBKo2oDuy0jjXqhG6OQ6jkb+cWido?=
- =?us-ascii?Q?fFrdfzvNZYxdHH0J14Et1KXZW0quDm4qbm0AqdPZZ4SqJleSJV6Kh80TRI1C?=
- =?us-ascii?Q?58wYwEZ7l/KIA0NnBe/i9NvzR0tFhLulhIwQ4+kOsVMVWU/AUKWLK1gXclHL?=
- =?us-ascii?Q?cQHgk0umil8tNUfi6jtLXIe7rNQjrkv+bApX16MV3OyrbnfOz5psL24sHXn0?=
- =?us-ascii?Q?P6r9PvnlY/dD4xCbTmZX9tJh/ssPi3OesJdspabSo3Sn+PQkwReNnfoddlmW?=
- =?us-ascii?Q?gAhX4KdZxfrVAvshBxDkx8YGDvBozlsQFlckhmuyQH6G1Hvw1I77ILjMcIig?=
- =?us-ascii?Q?F2xUrVJNRc6G9Rior9/Y0tBMFjCIzf6mCq+OZaWhAwjXgkLTcRs0UsaYFW/i?=
- =?us-ascii?Q?F7lEGqrTVdbjwNb5tX/9Px4+2tOCVeS9Vk/fj+vtwCwHOUFEOq0TXfhTUzDi?=
- =?us-ascii?Q?Bleqb3NRhOJVSSbAm9NVSFwTsWWL7fan/4/XRezPwSD4SukKRBb1Z/j+Hdm2?=
- =?us-ascii?Q?wo2lq8vk13qIcUyf+rF1y4j/Fksr6CVhl92ci3G7D0FHSqJl2B242UPg+khb?=
- =?us-ascii?Q?QW6vyOx3MWrqABhm7jczdOcEERFOJtX5C/J6g2iND4rF3+NZbHotwlsOTHdv?=
- =?us-ascii?Q?PJGQySy7mhCAF1k9YNKq8Baz3yWu?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(13003099007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?lTz5Y6D+rvRIE9rB+SMu/NOTM83sKPNXHC5l3P2lHT5tZAFzXqYjv860Mcoc?=
- =?us-ascii?Q?cNEMAzZVTCYKyDNIdxQx0+f4aYoQb/4f3feqU79U3QL9RSHiD6FoT9O0p3P1?=
- =?us-ascii?Q?HyhfKc1uh5g7X4yK3RBz71DYwlfYgfsnKJ38n14/PtSZuX3igq5u1oqAzK4T?=
- =?us-ascii?Q?Bf9RqA3xJBBn84QixJZwXIFt96AXwV5n3BJqDt57jBbm5BiQJJdH4hiwy1FE?=
- =?us-ascii?Q?VSyBQjjiAphihyr93R4uV+plgxUef3+KTWjeemNdpslaNJLaz105vLJqhlfi?=
- =?us-ascii?Q?6tRBaz0X/0sCCcJwxgqoYkZXskuSJz+CwaDvC/ga2TopEW2SH5q4dyIaL86J?=
- =?us-ascii?Q?oSmqaK8zZtWgVxfVzK3cbQjbmF7WgiOCi/pHlIg0vRubc9f3vCxBIkhvexVJ?=
- =?us-ascii?Q?FP8vDA0RBrL1wVMxy4DdKAQl7MoNqcHFdHR3166Gl+FTPAtLUktogO18e3c+?=
- =?us-ascii?Q?61LPZhLijmJpTlngT7DF6noCZ6QhIsHNni7h/zTS0ByWva8mzjVILnlrRqEw?=
- =?us-ascii?Q?UUC4OmHVq4msEn2bUlk5rtoQJ/O+iWHFTxfFW28jjyoS5GssLIzhKaXiAjFP?=
- =?us-ascii?Q?fG28+iwLQsAfvxBBdXXWwEj603T9iuCy2JdHznmWn8lH+lJqLsp/6ZW3NHev?=
- =?us-ascii?Q?n5rSrqeb6wCOXqEEQCspKGAbrmq7cfc7jLJsmc53gZFODODyMVkJ+pkFCAyd?=
- =?us-ascii?Q?gy2wcXydNWmsilGW2drS5To6zYmwRbPY2lSl346XnuXOiA+pGhIrObxltQLS?=
- =?us-ascii?Q?Wi/VmXO4Owcb26SEAWJK0jiNdZAsZ7wJMzgkLTGGyqtbrxwRxXldDIeuns6q?=
- =?us-ascii?Q?OKspkWk/ovIUPWnNrsRQ5SB+HetbGfqsT6jmJShpyf6rAJtbljE/7Xw0q/li?=
- =?us-ascii?Q?SOsqWTk2SUTFm61saJEDAFKiVrghsLaaJceEgkvIyI9i+aHtwVEEgP6ul9f7?=
- =?us-ascii?Q?U6DzZPzcARWEfi86BVvyeC+WEWVP91LIKRhw/g6HVLfJDW1lSt6XkxebdiZp?=
- =?us-ascii?Q?MN6YPauaMJFaPI0d/tZVWpx5HtoEPwri+h/Q90n67t506UaVW65uvm3BvjuZ?=
- =?us-ascii?Q?cS9W4huJRb8HQN3Xd4WUpV75adMy0xpMIz1BCDz3X9bQOEiodWaQuKp+DxsC?=
- =?us-ascii?Q?a+pCVS2nXs3ga6S1JzzI61uJRVdJlb5QNU76R1Rl29A98J/wsSXkuhyEKr8u?=
- =?us-ascii?Q?XcSjpR0oqDXQapwrppSAk2bIx0Z+atU1/AwhV1CsJpU/62ksBVwsUPftl37m?=
- =?us-ascii?Q?DyWkix6/rrl70aWvl8dBrEEqRwZncYuC1lfJqU8ePASqXsvXp4VaVganirnF?=
- =?us-ascii?Q?42n/Z+eNnvNvjfb4oZ/9CKjE8TNGQEVpPHeK5gMgtqUnz9Sh2JFUUwBbHKD1?=
- =?us-ascii?Q?FOHPK4bjPTZMfqECHS1T2NBvZXdToD90Z4YiN2F2ege3RjWDGDEnwkoSgBUX?=
- =?us-ascii?Q?xiEK77wXpQRe1n0hu3mzJ0TnZfw4+6xWuXghVMFadkVdWY4dfU+QxnRNqLH8?=
- =?us-ascii?Q?7hpNU4oo45L9lOR/GjZmSm+lv+J9V0OWlSM0ezD0FSt17TzF7WNroWblYU1+?=
- =?us-ascii?Q?r3UFTex9ps465dUD3UaewZWry1Rpx1Awh+xWeukD?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fe9c7ef6-dd9e-4271-43e3-08dd55dfb75e
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2025 21:02:30.0536
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9VnS5BsuIDwkp/w4nE5uxcg7Xpab2mSS/5NmPSNKpVk7/YjfnBatXb2/9tsq2t3d67w9/HA35vDletdmrSaOvQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8576
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
+ <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+ <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+ <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+ <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
+ <CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com>
+ <gqw7cvclnfa7x4xdz4vkns2msf2bqrms5ecxp2lwzbws7ab6dt@7zbli7qwiiz6>
+ <CAHk-=whGY2uYcXog8kmuAAAPJy4R84Jy9rEfXfoHBe-evmuYDQ@mail.gmail.com> <4l6xl5vnpulcvssfestsgrzoazoveopzupb32z5bv6mk23gazo@qn63k7rgsckv>
+In-Reply-To: <4l6xl5vnpulcvssfestsgrzoazoveopzupb32z5bv6mk23gazo@qn63k7rgsckv>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Tue, 25 Feb 2025 13:24:42 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wgMnSOnaddFzfAFwjT-dGO9yeSkv6Lt21LgWmCKYCM7cg@mail.gmail.com>
+X-Gm-Features: AWEUYZmB_Wr6TV7gwJy_39meCdZ0vPmT0Ykzda91InpP6j1aByc6OUNdAIm7q8c
+Message-ID: <CAHk-=wgMnSOnaddFzfAFwjT-dGO9yeSkv6Lt21LgWmCKYCM7cg@mail.gmail.com>
+Subject: Re: C aggregate passing (Rust kernel policy)
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Alice Ryhl <aliceryhl@google.com>, Ventura Jack <venturajack85@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, airlied@gmail.com, boqun.feng@gmail.com, 
+	david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, 
+	hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 25, 2025 at 05:09:35PM +0100, Danilo Krummrich wrote:
-> On Tue, Feb 25, 2025 at 10:52:41AM -0500, Joel Fernandes wrote:
-> > 
-> > 
-> > On 2/24/2025 6:44 PM, Danilo Krummrich wrote:
-> > > On Mon, Feb 24, 2025 at 01:45:02PM -0500, Joel Fernandes wrote:
-> > >> Hi Danilo,
-> > >>
-> > >> On Mon, Feb 24, 2025 at 01:11:17PM +0100, Danilo Krummrich wrote:
-> > >>> On Mon, Feb 24, 2025 at 01:07:19PM +0100, Danilo Krummrich wrote:
-> > >>>> CC: Gary
-> > >>>>
-> > >>>> On Mon, Feb 24, 2025 at 10:40:00AM +0900, Alexandre Courbot wrote:
-> > >>>>> This inability to sleep while we are accessing registers seems very
-> > >>>>> constraining to me, if not dangerous. It is pretty common to have
-> > >>>>> functions intermingle hardware accesses with other operations that might
-> > >>>>> sleep, and this constraint means that in such cases the caller would
-> > >>>>> need to perform guard lifetime management manually:
-> > >>>>>
-> > >>>>>   let bar_guard = bar.try_access()?;
-> > >>>>>   /* do something non-sleeping with bar_guard */
-> > >>>>>   drop(bar_guard);
-> > >>>>>
-> > >>>>>   /* do something that might sleep */
-> > >>>>>
-> > >>>>>   let bar_guard = bar.try_access()?;
-> > >>>>>   /* do something non-sleeping with bar_guard */
-> > >>>>>   drop(bar_guard);
-> > >>>>>
-> > >>>>>   ...
-> > >>>>>
-> > >>>>> Failure to drop the guard potentially introduces a race condition, which
-> > >>>>> will receive no compile-time warning and potentialy not even a runtime
-> > >>>>> one unless lockdep is enabled. This problem does not exist with the
-> > >>>>> equivalent C code AFAICT
-> > >>>
-> > >>> Without klint [1] it is exactly the same as in C, where I have to remember to
-> > >>> not call into something that might sleep from atomic context.
-> > >>>
-> > >>
-> > >> Sure, but in C, a sequence of MMIO accesses don't need to be constrained to
-> > >> not sleeping?
-> > > 
-> > > It's not that MMIO needs to be constrained to not sleeping in Rust either. It's
-> > > just that the synchronization mechanism (RCU) used for the Revocable type
-> > > implies that.
-> > > 
-> > > In C we have something that is pretty similar with drm_dev_enter() /
-> > > drm_dev_exit() even though it is using SRCU instead and is specialized to DRM.
-> > > 
-> > > In DRM this is used to prevent accesses to device resources after the device has
-> > > been unplugged.
-> > 
-> > Thanks a lot for the response. Might it make more sense to use SRCU then? The
-> > use of RCU seems overly restrictive due to the no-sleep-while-guard-held thing.
-> 
-> Allowing to hold on to the guard for too long is a bit contradictive to the goal
-> of detecting hotunplug I guess.
-> 
-> Besides that I don't really see why we can't just re-acquire it after we sleep?
-> Rust provides good options to implement it ergonimcally I think.
-> 
-> > 
-> > Another colleague told me RDMA also uses SRCU for a similar purpose as well.
-> 
-> See the reasoning against SRCU from Sima [1], what's the reasoning of RDMA?
-> 
-> [1] https://lore.kernel.org/nouveau/Z7XVfnnrRKrtQbB6@phenom.ffwll.local/
+On Tue, 25 Feb 2025 at 12:55, Kent Overstreet <kent.overstreet@linux.dev> w=
+rote:
+>
+> The problem isn't that "pointer aliasing is fundamentally unsafe and
+> dangerous and therefore the compiler just has to stay away from it
+> completely" - the problem has just been the lack of a workable model.
 
-Hmm, so you're saying SRCU sections blocking indefinitely is a concern as per
-that thread. But I think SRCU GPs should not be stalled in normal operation.
-If it is, that is a bug anyway. Stalling SRCU grace periods is not really a
-good thing anyway, you could run out of memory (even though stalling RCU is
-even more dangerous).
+It's not entirely clear that a workable aliasing model exists outside
+of "don't assume lack of aliasing".
 
-For RDMA, I will ask Jason Gunthorpe to chime in, I CC'd him. Jason, correct
-me if I'm wrong about the RDMA user but this is what I recollect discussing
-with you.
+Because THAT is the only truly workable model I know of. It's the one
+we use in the kernel, and it works just fine.
 
-> > 
-> > >> I am fairly new to rust, could you help elaborate more about why these MMIO
-> > >> accesses need to have RevocableGuard in Rust? What problem are we trying to
-> > >> solve that C has but Rust doesn't with the aid of a RCU read-side section? I
-> > >> vaguely understand we are trying to "wait for an MMIO access" using
-> > >> synchronize here, but it is just a guest.
-> > > 
-> > > Similar to the above, in Rust it's a safety constraint to prevent MMIO accesses
-> > > to unplugged devices.
-> > > 
-> > > The exact type in Rust in this case is Devres<pci::Bar>. Within Devres, the
-> > > pci::Bar is placed in a Revocable. The Revocable is revoked when the device
-> > > is detached from the driver (for instance because it has been unplugged).
-> > 
-> > I guess the Devres concept of revoking resources on driver detach is not a rust
-> > thing (even for PCI)... but correct me if I'm wrong.
-> 
-> I'm not sure what you mean with that, can you expand a bit?
+For anything else, we only have clear indications that _unworkable_
+models exist.
 
-I was reading the devres documentation earlier. It mentios that one of its
-use is to clean up resources. Maybe I mixed up the meaning of "clean up" and
-"revoke" as I was reading it.
+We know type aliasing is garbage.
 
-Honestly, I am still confused a bit by the difference between "revoking" and
-"cleaning up".
+We know "restrict" doesn't work very well: part of that is that it's
+fairly cumbersome to use, but a large part of that is that a pointer
+will be restricted in one context and not another, and it's just
+confusing and hard to get right.
 
-> > 
-> > > By revoking the Revocable, the pci::Bar is dropped, which implies that it's also
-> > > unmapped; a subsequent call to try_access() would fail.
-> > > 
-> > > But yes, if the device is unplugged while holding the RCU guard, one is on their
-> > > own; that's also why keeping the critical sections short is desirable.
-> > 
-> > I have heard some concern around whether Rust is changing the driver model when
-> > it comes to driver detach / driver remove.  Can you elaborate may be a bit about
-> > how Rust changes that mechanism versus C, when it comes to that?
-> 
-> I think that one is simple, Rust does *not* change the driver model.
-> 
-> What makes you think so?
+That, btw, tends to just generally indicate that any model where you
+expect the programmer to tell you the aliasing rule is likely to be
+unworkable. Not because it might not be workable from a *compiler*
+standpoint (restrict certainly works on that level), but because it's
+simply not a realistic model for most programmers.
 
-Well, the revocable concept for one is rust-only right?
+What we do know works is hard rules based on provenance. All compilers
+will happily do sane alias analysis based on "this is a variable that
+I created, I know it cannot alias with anything else, because I didn't
+expose the address to anything else".
 
-It is also possibly just some paranoia based on discussions, but I'm not sure
-at the moment.
+I argued a few years ago that while "restrict" doesn't work in C, what
+would have often worked is to instead try to attribute things with
+their provenance. People already mark allocator functions, so that
+compilers can see "oh, that's a new allocation, I haven't exposed the
+result to anything yet, so I know it can't be aliasing anything else
+in this context". That was a very natural extension from what C
+compilers already do with local on-stack allocations etc.
 
-> > Ideally we
-> > would not want Rust drivers to have races with user space accesses when they are
-> > detached/remove. But we also don't want accesses to be non-sleepable sections
-> > where this guard is held, it seems restrictive (though to your point the
-> > sections are expected to be small).
-> 
-> In the very extreme case, nothing prevents you from implementing a wrapper like:
-> 
-> 	fn my_write32(bar: &Devres<pci::Bar>, offset: usize) -> Result<u32> {
-> 		let bar = bar.try_access()?;
-> 		bar.read32(offset);
-> 	}
-> 
-> Which limits the RCU read side critical section to my_write32().
-> 
-> Similarly you can have custom functions for short sequences of I/O ops, or use
-> closures. I don't understand the concern.
+So *provenance*-based aliasing works, but it only works in contexts
+where you can see the provenance. Having some way to express
+provenance across functions (and not *just* at allocation time) might
+be a good model.
 
-Yeah, this is certainly possible. I think one concern is similar to what you
-raised on the other thread you shared [1]:
-"Maybe we even want to replace it with SRCU entirely to ensure that drivers
-can't stall the RCU grace period for too long by accident."
+But in the absence of knowledge, and in the absence of
+compiler-imposed rules (and "unsafe" is by *definition* that absence),
+I think the only rule that works is "don't assume they don't alias".
 
-[1] https://lore.kernel.org/nouveau/Z7XVfnnrRKrtQbB6@phenom.ffwll.local/
+Some things are simply undecidable. People should accept that. It's
+obviously true in a theoretical setting (CS calls it "halting
+problem", the rest of the academic world calls it "G=C3=B6del's
+incompleteness theorem").
 
-thanks,
+But it is even *MORE* true in practice, and I think your "the problem
+has just been the lack of a workable model" is naive. It implies there
+must be a solution to aliasing issues. And I claim that there is no
+"must" there.
 
- - Joel
+Just accept that things alias, and that you might sometimes get
+slightly worse code generation. Nobody cares. Have you *looked* at the
+kind of code that gets productized?
 
-
+              Linus
