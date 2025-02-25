@@ -1,72 +1,71 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 268FF3209
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 21:47:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D3023209
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 21:49:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740520023; cv=none; b=nG785TbzxX/6wJbuD4jDPMyAj6sp67vvFkZjJUKmTHuFab4m+q0yp/5wSxfbu6o2OFdW/EZMrQsdjFtr++WeorfKfiGOfzd22GVS7CHwP8Taxy4JnJcMu++09ANIv9jOZ7weO8pnPuaJYuKNwS33Tv/FusIaTmmjPhbSFLbfTyM=
+	t=1740520162; cv=none; b=CsWhyCnaxEzUfGzQek3BalOCVGrf2C3mzXwo+R13kYio+Z1Eo0AFGJeNeoqUxjgYFqitF9uskqGcMQcgouYQBP5WJqtWlhrmWHjPdTObkaxc5BZ5Rte/YTDdVP0N56ppJLfsGUKCSeQWGsfkWQhXbhkkFTyP7YEofuAsGrtQmjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740520023; c=relaxed/simple;
-	bh=Dd4FDWX55U8JDjTqXNIPVbqbgEBJTlyyTkKLPD4jZ8M=;
+	s=arc-20240116; t=1740520162; c=relaxed/simple;
+	bh=VKNxRHi2D6umO36SuqbvpNFiYn+4Hb7BqASVuNiGQS0=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LjIRnmH754weWY3FtAHMkjtJwIw2Lilt5DlEnsxvzEBX9VQVrPIiy8v13SEcZzGnONWwFHSua5dsW4WoCq2LIRMaPHpIBvJSU1Yi0pdCe9jvhK7y58v9a7fnHMNw2rdSn/RUb97Scw8D9WY3dlD7H3uo59Ek4AIZhKD00DFqBlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UTS/yCPx; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=hPg9D1Fg6r9PhJc+sqh1EuFkA9TNjROtLRDcw22NDe/WHhfK80yoV9ih7jQ1bIZM6vZIirduS3DytLQmFtPBRrzh8w8Uonr67mPs8aNDMT6xzGb7n0BTHyyvoRM6cvX9Q1GrTG80AfcgZ5hWmhSVsMiGGB0l1psBjKFXfEY5gmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DahQP3jZ; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UTS/yCPx"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DahQP3jZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740520020;
+	s=mimecast20190719; t=1740520159;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hixInctp0sj/T6DzXoQCh0GNQNMDodz6yvtLzJb+/4U=;
-	b=UTS/yCPxsyW7dRKcaPBa8KppFjAFBzHJXVI0C+x4l5XlAHKMqnrE9kke41XIZu9XSzkhUM
-	ocddy57EuZD8HH1MTP+N+LdDQnoLKrXTQK486brdZBQUctHs0Vrlb05pTJ6hrQOgv33uFP
-	Ga8y8EzKeT9yM3/GbgkuFDSS6yEyTSI=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=VKNxRHi2D6umO36SuqbvpNFiYn+4Hb7BqASVuNiGQS0=;
+	b=DahQP3jZC6IXbDYXuG7xRz+OAa7PUvU3BhCj+Wx1tA4udH9KtaCCW2d2HH/pZ45J68AF/+
+	IKrAF+14XL1t3Ld+eNNyAjQXMoTjFp+PNzVFyqM/VeB8oKBPZoKgcuycFnyU8+7eP6e1yh
+	+4Jn0f2NxjIWD3PyhrI+gIH/WdYeGnI=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-509-ceASrh4eMRaGwuY_-xGFxw-1; Tue, 25 Feb 2025 16:46:59 -0500
-X-MC-Unique: ceASrh4eMRaGwuY_-xGFxw-1
-X-Mimecast-MFC-AGG-ID: ceASrh4eMRaGwuY_-xGFxw_1740520019
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7c0ab4035a1so1102805885a.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 13:46:59 -0800 (PST)
+ us-mta-640-837-JZ63PNaAtFvlim2bvA-1; Tue, 25 Feb 2025 16:49:18 -0500
+X-MC-Unique: 837-JZ63PNaAtFvlim2bvA-1
+X-Mimecast-MFC-AGG-ID: 837-JZ63PNaAtFvlim2bvA_1740520158
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-6e65f2d9495so4183246d6.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 13:49:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740520019; x=1741124819;
+        d=1e100.net; s=20230601; t=1740520158; x=1741124958;
         h=mime-version:user-agent:content-transfer-encoding:organization
          :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hixInctp0sj/T6DzXoQCh0GNQNMDodz6yvtLzJb+/4U=;
-        b=F6InwC4JgJoXQfxLhF6/Af1LZW7xLx6ilbuy2Nj1XdyAuunC7y7mJkoAMQjxoeNB3K
-         r6qW+0S2+JXLeZyvGPtll7enWOsouuI3rhDBllYVIynwIXMFlkf+Uose7Xw2UUf7rkJX
-         bex+bRT2f9DkhckNsnrpvyU9bydmuuM7vjyRUYgG6J/7XMoRVryjaiZlVrNSrXJveHJ+
-         HR8TkPHuGuGj8edcaFB4tXq4OzbD/COkvn2YXizpE6XwcKQ9D7xxq8K4zlFEKhJeKrEA
-         iASHuGyUZDogJqH0X4g/bSudiGAQ4MuHq1HAnm+zsqEfZYK0nRqQqPoo+dW0JpDWKa0R
-         iT0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUKb53adLoJixu1V0uRZia/V5c5Bz8tW0Wix4M8HSH4RHfP//Bs6uSkcGpWvJWlduRnvZCiVK//xQfD8Kj6QQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwR63QDI9uRKYVN6urvCm1XiQfJT0Sk4pR5EcHRl3Y6Z4rK7KU8
-	4ZAyAk/LnOLyFFNx9hAR10PGu0fhU2iFbiEIfadXr8xJRA9Y1xF1jM8x5+u/9U82Ic76FwgGXVO
-	GNgA4UB6/WgxoXK6MKdBTUwRBcs5S1GJ+VCdMp6O2h4dK6FUs1VJhC8nlkN2W1xKf
-X-Gm-Gg: ASbGnct4ZB9jMGhxEkufyYvhjYmMKFw8EUKS/Tjhyb1TlN/bpf23jPlOnEUWfDmhNz7
-	JjjYJTwaC+z4WMorPRG2hrWwsZglYM6Du2FAPtdB91Yy8TaRxRNYbUAWqS9Xbut278Nw5M7fwZs
-	FdtOE0AxT2S0c6rIdYOyovghir2NQf4NoljU68MPUidKb/UD7eYdQM5ZaQ6O3E0YS81Dg7j9iFJ
-	DJT91Y+clvcJwDofwDQO+dWpKXT2/CBWdGZvfPfggqbMLnBHkNNKN2lJ+jwwQ/LLR9RzWhKblvs
-	QVhcqjSQC6CETeRFJGk0uahBT5T0uNiDkzZcnjfnoy85/OIGGx9G9t7aIcdCkw==
-X-Received: by 2002:a05:620a:29c2:b0:7c0:af78:17ab with SMTP id af79cd13be357-7c0ceef9c90mr2781857785a.18.1740520018865;
-        Tue, 25 Feb 2025 13:46:58 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHoULLMoN+0EXVGBR+fdjD+8p7ZDwPSmk+cSaPz/XEe0urn5m8XE2zWmIZwyxH4U+KVdUW9pg==
-X-Received: by 2002:a05:620a:29c2:b0:7c0:af78:17ab with SMTP id af79cd13be357-7c0ceef9c90mr2781854685a.18.1740520018508;
-        Tue, 25 Feb 2025 13:46:58 -0800 (PST)
+        bh=VKNxRHi2D6umO36SuqbvpNFiYn+4Hb7BqASVuNiGQS0=;
+        b=sFpYK4eX+NNuKgE0NChwe/aJqvnmdi9JQY52G93tDcv2jiro6RdkHF/5VX/6S740T0
+         ndzRihb+qW8S7kz+aR9G9yWo9MzZQvtgkoYyZl4cSBisV0zFC8WLRfv5Zv+Gs9jABU29
+         B42rbruKNfewkPkldZ+iucQlosmKE3NqNd44aD1g4LGRXFNDI1PKFwx2EaH6JcvZQem2
+         VIPvT34htFgLy9k6aFTumOI/ArmJZxpu290cJTqx78tI5tjsYHPSlp0JTASX/THc5Luk
+         1eeCwl3poV/Wg62ojN7pCeBoqKEBxstKrvhsyPSgW4VQN09mSLCwriKzQttCjXd74e65
+         wmbw==
+X-Forwarded-Encrypted: i=1; AJvYcCXwabOB55guBw2FHVkw6o+KPX883vHDjRm0FYEgMb7lUOBxudVd30JjHIjCi/0PFu5j7W5I5qtSX0PCz8c1+A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxlntkab/sWu6229wyyTO5C4k1QDyvfvdpR4fT1hm5uGRlx+e0n
+	rbCCPbpKEwwNC8xd2XlXIKo6YfAAEO1fW2LZwO1ws7lu/o5IJA6Hu1YHT4RIkBNJX+/Pc1CtifO
+	JaLDukmR9zyEsCQxzIg1PSUK67nt99xYcFdOABBH54jJTBh0MUhUCKmqXHGXUOoxx
+X-Gm-Gg: ASbGncuUElY+J3eY/wwL7F2jtJt2EA89MKR9VYvrK8awGeqr7M2Q55QhBwVXkWt/pTg
+	Hl1c+YU7272oVGMynnm/AohVj8yVEOIPFVSZIxbT5Ys3ccnRwUklgsnZu3BatXfoYQT4pz2sM5w
+	9T6lb3EEdu1R0rqRC/aJ+CxS+oMqI8O4T2tH9p9yYbrMkmcQFJN3JKaBa9GE9R5O3CO2dEEyiGO
+	BV9gEMdMu9jYpEwsNwRjRf14CV11I5jBHvIrNCm42HbW1105WM3yd5viHdua7doaSghUU6QLUwx
+	1tMxEIU4fXhEO1ZdkTMe4LVaHOAHq8Lf8gdOlvCXx6qsffB0BCCb4Dz4sPyAXw==
+X-Received: by 2002:ad4:576c:0:b0:6e4:47b0:8b53 with SMTP id 6a1803df08f44-6e6a25a05b0mr316584236d6.9.1740520157883;
+        Tue, 25 Feb 2025 13:49:17 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEccH9/ZkpFeW0x3Nx5qws8SHXrqfaRJFiyuVaPY1ct+y7BfLjjtjv2GMYJ67+20txyQO3XEg==
+X-Received: by 2002:ad4:576c:0:b0:6e4:47b0:8b53 with SMTP id 6a1803df08f44-6e6a25a05b0mr316584006d6.9.1740520157603;
+        Tue, 25 Feb 2025 13:49:17 -0800 (PST)
 Received: from ?IPv6:2600:4040:5c4c:a000:e00f:8b38:a80e:5592? ([2600:4040:5c4c:a000:e00f:8b38:a80e:5592])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c23c298f08sm159564585a.5.2025.02.25.13.46.56
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e87b09e60csm14239276d6.56.2025.02.25.13.49.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Feb 2025 13:46:57 -0800 (PST)
-Message-ID: <6c2a299ec594fbaae294037e36c78cb37aaa7f33.camel@redhat.com>
-Subject: Re: [PATCH v9 04/13] rust: hrtimer: allow timer restart from timer
- handler
+        Tue, 25 Feb 2025 13:49:16 -0800 (PST)
+Message-ID: <0eb2c20dd003158be8f647c4098cfd44f9197354.camel@redhat.com>
+Subject: Re: [PATCH v9 11/13] rust: hrtimer: add `HrTimerMode`
 From: Lyude Paul <lyude@redhat.com>
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen	
@@ -79,13 +78,13 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen
 	 <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida	
  <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, 
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 25 Feb 2025 16:46:56 -0500
-In-Reply-To: <877c5exuwu.fsf@kernel.org>
+Date: Tue, 25 Feb 2025 16:49:15 -0500
+In-Reply-To: <87v7sywg30.fsf@kernel.org>
 References: <20250224-hrtimer-v3-v6-12-rc2-v9-0-5bd3bf0ce6cc@kernel.org>
-		<20250224-hrtimer-v3-v6-12-rc2-v9-4-5bd3bf0ce6cc@kernel.org>
-		<bbtTga1W7J8Ur61sLLE4K8a3B0oe5iDhuHVNs9dTAf8EX2PUf_jloAt7U3xki4WZB3IkWyPHErVMMLx_vwXXlg==@protonmail.internalid>
-		<0fb37c2b2d1a28d2096ffdb08df15404d870d68a.camel@redhat.com>
-	 <877c5exuwu.fsf@kernel.org>
+		<20250224-hrtimer-v3-v6-12-rc2-v9-11-5bd3bf0ce6cc@kernel.org>
+		<Sk36nx_Y-idodXXeE2t7pzk0a29qre1l249TK_Ln9v2J8R0y3K6aMhv4JZqTh46Po5hPAE6jfC39dDJTw-TCJw==@protonmail.internalid>
+		<96f4ee3fd83d4b248441f536fae8f694af52d567.camel@redhat.com>
+	 <87v7sywg30.fsf@kernel.org>
 Organization: Red Hat Inc.
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41)
 Precedence: bulk
@@ -95,123 +94,28 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: YNqxaXiRPunCQrVoZkcU8R1SMoiVQmgTq11WXcNrqYE_1740520019
+X-Mimecast-MFC-PROC-ID: 1J6CZRkqBsrlnUqxnbaSLqNhLlIusWhzckupYrjdnOo_1740520158
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 2025-02-25 at 09:58 +0100, Andreas Hindborg wrote:
-> "Lyude Paul" <lyude@redhat.com> writes:
->=20
-> > On Mon, 2025-02-24 at 13:03 +0100, Andreas Hindborg wrote:
-> > > This patch allows timer handlers to report that they want a timer to =
-be
-> > > restarted after the timer handler has finished executing.
-> > >=20
-> > > Also update the `hrtimer` documentation to showcase the new feature.
-> > >=20
-> > > Acked-by: Frederic Weisbecker <frederic@kernel.org>
-> > > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> > > ---
-> > >  rust/kernel/time/hrtimer.rs     | 19 ++++++++++++++++++-
-> > >  rust/kernel/time/hrtimer/arc.rs |  4 +---
-> > >  2 files changed, 19 insertions(+), 4 deletions(-)
-> > >=20
-> > > diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.r=
-s
-> > > index d08fd7de158d..a431c8b728ae 100644
-> > > --- a/rust/kernel/time/hrtimer.rs
-> > > +++ b/rust/kernel/time/hrtimer.rs
-> > > @@ -207,7 +207,7 @@ pub trait HrTimerCallback {
-> > >      type Pointer<'a>: RawHrTimerCallback;
-> > >=20
-> > >      /// Called by the timer logic when the timer fires.
-> > > -    fn run(this: <Self::Pointer<'_> as RawHrTimerCallback>::Callback=
-Target<'_>)
-> > > +    fn run(this: <Self::Pointer<'_> as RawHrTimerCallback>::Callback=
-Target<'_>) -> HrTimerRestart
-> > >      where
-> > >          Self: Sized;
-> > >  }
-> > > @@ -313,6 +313,23 @@ unsafe fn start(self_ptr: *const Self, expires: =
-Ktime) {
-> > >      }
-> > >  }
-> > >=20
-> > > +/// Restart policy for timers.
-> > > +pub enum HrTimerRestart {
-> > > +    /// Timer should not be restarted.
-> > > +    NoRestart,
-> > > +    /// Timer should be restarted.
-> > > +    Restart,
-> > > +}
+On Tue, 2025-02-25 at 10:04 +0100, Andreas Hindborg wrote:
+> > > +/// Operational mode of [`HrTimer`].
+> > > +#[derive(Clone, Copy)]
 > >=20
-> > Should we have #[derive(Copy, Clone, PartialEq, Eq)] here?
+> > PartialEq, Eq?
 >=20
-> Yea, lets do that. `Debug` as well?
+> Sure, why not. I'm not sure if there is any negative side effects of
+> this? `Debug` too?
 
-sgtm
+Not really! It's free traits :). I personally think it's good to have too
+because you never know if someone is going to try comparing values like thi=
+s,
+and I don't think the compiler really complains if the implementations don'=
+t
+get used.
 
->=20
-> >=20
-> > Also, I feel like I might have asked this a few versions ago so hopeful=
-ly i'm
-> > not asking again: but what's the reason for us not just using the
-> > discriminants of `HrTimerRestart` here:
-> >=20
-> > /// Restart policy for timers.
-> > #[repr(u32)]
-> > pub enum HrTimerRestart {
-> >     /// Timer should not be restarted.
-> >     NoRestart =3D bindings::hrtimer_restart_HRTIMER_NORESTART,
-> >     /// Timer should be restarted.
-> >     Restart =3D bindings::hrtimer_restart_HRTIMER_RESTART,
-> > }
->=20
-> I forget if we discussed this, but it does not make much of a
-> difference, does it?
->=20
-> With a Rust enum, we get a smaller storage type maybe with better
-> support for niche optimizations? And then pay a bit more for conversion.
-> All in all, I don't think it makes much difference.
-
-No idea about performance wise, but I -think- it would actually cut down on
-the code that you need - particularly for the larger enums here. Mainly
-because you only would need to manually specify each variant for converting
-from bindings::hrtimer_restart to HrTimerRestart, but not the other way
-around:
-
-   /// Restart policy for timers.
-   #[repr(u32)]
-   pub enum HrTimerRestart {
-       /// Timer should not be restarted.
-       NoRestart =3D bindings::hrtimer_restart_HRTIMER_NORESTART,
-       /// Timer should be restarted.
-       Restart =3D bindings::hrtimer_restart_HRTIMER_RESTART,
-   }
-  =20
-   impl From<bindings::hrtimer_restart> for HrTimerRestart {
-       fn from(value: u32) -> Self {
-           match value {
-               bindings::hrtimer_restart_HRTIMER_NORESTART =3D> Self::NoRes=
-tart,
-               _ =3D> Self::Restart,
-           }
-       }
-   }
-  =20
-   impl From<HrTimerRestart> for bindings::hrtimer_restart {
-       fn from(value: HrTimerRestart) -> Self {
-           value as Self
-       }
-   }
-
->=20
->=20
-> Best regards,
-> Andreas Hindborg
->=20
->=20
+Also yeah - Debug couldn't hurt as well
 
 --=20
 Cheers,
