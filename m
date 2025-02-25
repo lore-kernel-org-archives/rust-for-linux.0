@@ -1,105 +1,192 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-lf1-f68.google.com (mail-lf1-f68.google.com [209.85.167.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01EC1DF24E
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 17:12:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4539821ABC6;
+	Tue, 25 Feb 2025 17:21:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740503570; cv=none; b=BYUNZzM24gYGGInC2O2t71DVZUrhHQesm9on0OhvfgyrbAcj8nUvkaothUvVgzc8eZCeVdnFVr5JdZYwMRk6glgXnU0AmUFKU8/Ay/w3kp/dLRKGdBKOPw8CbG/nYcLJfkLLz0mMlG7BzoM6nSN7XILkR0AoeWXwLJUok+K6nSI=
+	t=1740504106; cv=none; b=WDgMbz9++JwNdGPA/co7mwUem5DiWS8Lp8HfjDzThfyTKAX8MgwGoSyGKsiDQ1IcVE+X7R1TmHNDL+0BpX0kO4f31Lo21W06IxbKJpz8KaG5qGD2JQ0AuHvwlbzIUVRqZRGv/g/vNhsYkD7QDwK2SiR3fWZQ+uh8xFy2kxzg7r8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740503570; c=relaxed/simple;
-	bh=ednjTSjvw9Gt99tA22MMvDogCLInNdUvhE7Mq9C+1L4=;
+	s=arc-20240116; t=1740504106; c=relaxed/simple;
+	bh=g8b94iQeKit7M6efwtxa16qoL3Q0/wQFaWwGXIVnAsc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lxS76n0XgV90XoswX2EBp/I9tAJqgv30HilqgR4JNBK+rqlhfU7KQs4N3y5L1451ymBWzxM0KO9gTaPrCyk4/yDUMXNJdyQteA14Wr+CAaRxkJTIKpwS1sQtISC0YktG8KOg9vjhGyz1MCbuOfzoPYOVfmtw4nxNoVzp9hLKd28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=r0mOhkKe; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=NZP0FGYXLGE5RaRYNM+P+Hdn6l38WUVUMQLZ1p5rHb/uVuwCo4zE1IOhpoEMLhYhfHUaLRAOl16uRocpxJ27pzLe+rRiLB8uEktdxt6fEniRsYCoubew/y5W8Se7HDxOdAc+JULKt9sELzkCcC5XHxKPjKsum0xlywfcg+7L+68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AZWAVlzM; arc=none smtp.client-ip=209.85.167.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="r0mOhkKe"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-390cf7458f5so860980f8f.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 09:12:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AZWAVlzM"
+Received: by mail-lf1-f68.google.com with SMTP id 2adb3069b0e04-54298ec925bso8193991e87.3;
+        Tue, 25 Feb 2025 09:21:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740503567; x=1741108367; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1740504102; x=1741108902; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ednjTSjvw9Gt99tA22MMvDogCLInNdUvhE7Mq9C+1L4=;
-        b=r0mOhkKe52C5HSBcSuZib+01ooiaaXSa8OeULguCFDcuOUlBBec4b4bsNwAmhh7LhX
-         pImjvjtHsEUr+NIL8ekHZHzIFmnjHK7RAP19zt65Gv905ZFC+9z9s9spGvti+jwlE3h6
-         sWtl3AF094JttZd8Zlnu+E9OCTdv0UwdxE1c/m0OAjMZA1RRsuDzhzashXa5RY1NWdeX
-         P7+o3ugmbKIKha43Qmw3KLGS+YUrTKYzt77gJ1Jx0kP0viM0FFo0ev5IwQhlSWY1JOsY
-         ucO9JdJ5flqRygi0xl9nsd72kjwjkUWErL6K8unClBs+33NWuBD03oVhjdN0wN6qfC2T
-         FHvg==
+        bh=MFp1PXg9ibzgWTyF7i/yFKZcS7KZ9Zv8rxtRiXS5hLs=;
+        b=AZWAVlzMdwdjIGOrezZTMBWOz56YA2HBpLlNos2w6jQRp0lE8f24w42E7e4b+YwU1U
+         VVfKgfyF1v+/lWAUx+4Yf68IxkLqfOcCWA9Sdxne0QEn4kQxGeQT9Hm1IzMyS7alaRpx
+         ZUbLRF2fyOfrtKvF1XaJgkndQK5stnSiA3uXH190SnFEo0YD4o6dYxuYzMnUVk9j1saO
+         qeDsugHQShTW0/I3zkaxHbnVTMohkORJQnRj6glrDTLJwsp4ee1mBBCse28Fj3d3vxh+
+         1bL+fsJkd7Phw3c1IhSHpSuBXPU2xZSpjBibJ7oHWqCNypB5RJGKd3pnw97XlEkHe0ej
+         jujQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740503567; x=1741108367;
+        d=1e100.net; s=20230601; t=1740504102; x=1741108902;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ednjTSjvw9Gt99tA22MMvDogCLInNdUvhE7Mq9C+1L4=;
-        b=g/9r6FXWqentK5w8/FSyfS+wAmwj2w2mvBTbisSF/yb2LuV9jBaNSS4uLdGCgoMXud
-         bDdfRUX55bYIxF1KlLOJWa9Q0Gw1hgPDLYU1hwDSQXE35vGj2KAjk6ABD24tof2pK2oZ
-         a8yVIvFcnIgeVGFZ3kBC/8BbzqK2J1sh9g5qb0OZPNn9taEPtZsFx+btAIOmnLs4JY9l
-         yWL+mnn2GMBLVahKoO0zxdSYTJhqRHDNAa22iaqH7309SA8+s2Omh80ZMAooqbB/LI2a
-         ePeScjcFfZC4vl1hbzQSeaPk7d94atKvDQoAsQmW3vorQWFAxlf1LNRQ6LgVz9Mo/2Kg
-         dPGA==
-X-Forwarded-Encrypted: i=1; AJvYcCX319lilmKdJ46sq/TzQiuVipY8UKWIPYDKBcXEQYxIzBzGZCtWM7wtLe21UZVZUziWKtwRHUVD1+zMnu/TIw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwlaB0RSAZW2uW7EtX2eyCfYUEgBorYqadD8Rv8sTATNHKxJzdG
-	r5SnlVLPywKZWZT+X1VKGJzLrRlVD5nZa3ZPUrlqxVZoMten20VPbpZJ8RfQm7mJ4igyibprunJ
-	lRcUvvILS9Y1q9Oo0/4rVguWKhelThvP/hzMP
-X-Gm-Gg: ASbGncvj1E2ek496k5/BqV4YWWgMbiQQaCz4D4yfoAUCAU/uBg0GQms7liSQ0OTQiOE
-	OTLvD+vPHcfpjk9b8rss+Px8/HckFZd/Vn+l867LNDg0GGpydAaJJfLPSycC6gf1O7LafmT20Xk
-	THJyCGmDo6AJRMuNIKCKj/gNAlPlHEJAE2Gfm/mQ==
-X-Google-Smtp-Source: AGHT+IENL3tkr5YY1W1LPao/+fxPS1FpvFsCT1UPYovJTPV5D1zitQeIdtwEVZnuTIAS+IO71JyVmXj+d+y+IFJL6GI=
-X-Received: by 2002:a5d:6c6e:0:b0:38d:dce1:f207 with SMTP id
- ffacd0b85a97d-390cc631a3emr4656547f8f.44.1740503567098; Tue, 25 Feb 2025
- 09:12:47 -0800 (PST)
+        bh=MFp1PXg9ibzgWTyF7i/yFKZcS7KZ9Zv8rxtRiXS5hLs=;
+        b=wCar+sF5tySi9SNRETVCcwRN/c5P4Y/X7AuqOs6sa1shnM7/kzEYhQK7Y6+1kT/HXq
+         MnmkBlvCp2juOWZEKF9M0pLzTHvt7xQA1q5q8Z67iKqTd6HZlbNO/s789B/T2RVMfbQW
+         yu/tkVdKPkDJXW4ALBQm2/RmEmJ38XWC8PYVp+eRwvGwvfIgM/RkGujQQwqZE2SlxnQf
+         u5kQSc/OpOaWQHBMEL4EzKJ60/7+L+7uzBY6AfU5sx4S+O0GIFn5Kga+H54aCWgzE+l2
+         tb1UL23G276W/pdYCZPP/9FUShs/CnDHIxb45t7ueDjC6cwkr8skxGLk/shXbfT9ek9p
+         0k1w==
+X-Forwarded-Encrypted: i=1; AJvYcCULH0kEbWQnkoxdyxDzQseWAiv8EuMUpRDarTB8kctAsOTF592G0uJOY9vStv17G6JGfv0OmKJZQxci76A=@vger.kernel.org, AJvYcCUeS94/zCjsktjSImEK4p+wxjmtRSkgfKYiR+Tg1+u9KZeIFSLjyiPnl8FIR6X8ihxCnZd8d3lmVD0HsmwzA9Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqyvgA+PhTG+xfQ1Ep4aRtMXYBtOHRaLTFhfj2oZYIoNRfXo1w
+	/++hrAtoUiLtTBlV4/6e7CY4bUugAT7bUd9x94qR1arBM/RA8st3lADshMUHgLDFwVg/L52iTYG
+	dX5CtoGNW+V2pwLLBYGY0hgu5Oyw=
+X-Gm-Gg: ASbGncu07hyFRA5R1gZ5+13+BSNG6uYapn9YPR0hwMEfbfa572D/XOocmBf/ENeQsNj
+	TMTAl8uXB0euDsD/kmBTfcO1kpAEKmZCWRVocMubKxB5GevHll3D1qw8ONGiNt4wX9R+rc7WKaj
+	oAG2pRBbUa
+X-Google-Smtp-Source: AGHT+IGg0L2G18ybzjJhT/nuNLljUfMebQR4U+Qx20CQIV2uJH1FVYMEDY2DEJ77A8Q/BgGVqabuhNZ/bsrJvAlDy/I=
+X-Received: by 2002:a05:6512:39c5:b0:545:d70:1d0e with SMTP id
+ 2adb3069b0e04-5493c54ce34mr128422e87.3.1740504101982; Tue, 25 Feb 2025
+ 09:21:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1740475625.git.viresh.kumar@linaro.org> <68ac0f0ee3c0ebd3d3cc078a6270752778a1b732.1740475625.git.viresh.kumar@linaro.org>
- <CAH5fLgg7o7hs5B4mMzPd6RzYm+RcX8gw1Aw8voJqnmfnA_aM4Q@mail.gmail.com>
- <20250225114830.64p56bndn4hkkkgq@vireshk-i7> <CAH5fLghUDz8tpkTuvWZgwT2_VKgxuS+iZKnoT4prKwS9tbp8wA@mail.gmail.com>
- <CAKohpo=uiCS6nyissb3ugiyniwnZYu5kCf4+bp32dDzRhgGfCQ@mail.gmail.com>
-In-Reply-To: <CAKohpo=uiCS6nyissb3ugiyniwnZYu5kCf4+bp32dDzRhgGfCQ@mail.gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 25 Feb 2025 18:12:35 +0100
-X-Gm-Features: AQ5f1JrsvkSYfxf47nMcctFkIDr7cuUGNXZJBCZDafLE5kFdCo2jxMcIoSYI5eI
-Message-ID: <CAH5fLggyEXyyaFNnmBCPOSX051TiFyAp0B8GfahbPg=+LrtUWA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rust: Add initial cpumask abstractions
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	Danilo Krummrich <dakr@redhat.com>, rust-for-linux@vger.kernel.org, 
-	Vincent Guittot <vincent.guittot@linaro.org>
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
+ <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+ <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+ <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com> <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
+In-Reply-To: <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
+From: Ventura Jack <venturajack85@gmail.com>
+Date: Tue, 25 Feb 2025 10:21:28 -0700
+X-Gm-Features: AWEUYZkUwDT8aBSZwqWOVandZso4Q43TwCtZOPgm5JWe1L0EPqYxR9ThVnT5vic
+Message-ID: <CAFJgqgREAj-eP-d244WpqO-9H48ajZh83AxE31GqoONZ=DJe-g@mail.gmail.com>
+Subject: Re: C aggregate passing (Rust kernel policy)
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+	Kent Overstreet <kent.overstreet@linux.dev>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
+	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
+	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, 
+	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 25, 2025 at 6:02=E2=80=AFPM Viresh Kumar <viresh.kumar@linaro.o=
-rg> wrote:
+On Tue, Feb 25, 2025 at 9:12=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+rote:
 >
-> On Tue, 25 Feb 2025 at 17:23, Alice Ryhl <aliceryhl@google.com> wrote:
+> On Sun, Feb 23, 2025 at 4:30=E2=80=AFPM Ventura Jack <venturajack85@gmail=
+.com> wrote:
+> >
+> > Just to be clear and avoid confusion, I would
+> > like to clarify some aspects of aliasing.
+> > In case that you do not already know about this,
+> > I suspect that you may find it very valuable.
+> >
+> > I am not an expert at Rust, so for any Rust experts
+> > out there, please feel free to point out any errors
+> > or mistakes that I make in the following.
+> >
+> > The Rustonomicon is (as I gather) the semi-official
+> > documentation site for unsafe Rust.
+> >
+> > Aliasing in C and Rust:
+> >
+> > C "strict aliasing":
+> > - Is not a keyword.
+> > - Based on "type compatibility".
+> > - Is turned off by default in the kernel by using
+> >     a compiler flag.
+> >
+> > C "restrict":
+> > - Is a keyword, applied to pointers.
+> > - Is opt-in to a kind of aliasing.
+> > - Is seldom used in practice, since many find
+> >     it difficult to use correctly and avoid
+> >     undefined behavior.
+> >
+> > Rust aliasing:
+> > - Is not a keyword.
+> > - Applies to certain pointer kinds in Rust, namely
+> >     Rust "references".
+> >     Rust pointer kinds:
+> >     https://doc.rust-lang.org/reference/types/pointer.html
+> > - Aliasing in Rust is not opt-in or opt-out,
+> >     it is always on.
+> >     https://doc.rust-lang.org/nomicon/aliasing.html
+> > - Rust has not defined its aliasing model.
+> >     https://doc.rust-lang.org/nomicon/references.html
+> >         "Unfortunately, Rust hasn't actually
+> >         defined its aliasing model.
+> >         While we wait for the Rust devs to specify
+> >         the semantics of their language, let's use
+> >         the next section to discuss what aliasing is
+> >         in general, and why it matters."
+> >     There is active experimental research on
+> >     defining the aliasing model, including tree borrows
+> >     and stacked borrows.
+> > - The aliasing model not being defined makes
+> >     it harder to reason about and work with
+> >     unsafe Rust, and therefore harder to avoid
+> >     undefined behavior/memory safety bugs.
 >
-> > Is it a problem if a value of type struct cpumask is moved? It looks
-> > like it is just an array of longs?
+> I think all of this worrying about Rust not having defined its
+> aliasing model is way overblown. Ultimately, the status quo is that
+> each unsafe operation that has to do with aliasing falls into one of
+> three categories:
 >
-> With the current code, if I replace the Box with an on-stack variable,
-> the kernel crashes.
+> * This is definitely allowed.
+> * This is definitely UB.
+> * We don't know whether we want to allow this yet.
 >
-> In my usecase, the pointer to the cpumask array is sent to the OPP
-> core, which may update the content, though it doesn't save the pointer.
+> The full aliasing model that they want would eliminate the third
+> category. But for practical purposes you just stay within the first
+> subset and you will be happy.
 >
-> But for another usecase, the C code may end up saving the pointer.
+> Alice
 
-I don't think that case applies here. Variables that could be stashed
-like that need a destructor that removes the pointer from the relevant
-C structures. This is because pinning only prevents the owner from
-moving the variable - it doesn't prevent the owner from destroying it.
+Is there a specification for aliasing that defines your first bullet
+point, that people can read and use, as a kind of partial
+specification? Or maybe a subset of your first bullet point, as a
+conservative partial specification? I am guessing that stacked
+borrows or tree borrows might be useful for such a purpose.
+But I do not know whether either of stacked borrows or tree
+borrows have only false positives, only false negatives, or both.
 
-Alice
+For Rust documentation, I have heard of the official
+documentation websites at
+
+    https://doc.rust-lang.org/book/
+    https://doc.rust-lang.org/nomicon/
+
+And various blogs, forums and research papers.
+
+If there is no such conservative partial specification for
+aliasing yet, I wonder if such a conservative partial
+specification could be made with relative ease, especially if
+it is very conservative, at least in its first draft. Though there
+is currently no specification of the Rust language and just
+one major compiler.
+
+I know that Java defines an additional conservative reasoning
+model for its memory model that is easier to reason about
+than the full memory model, namely happens-before
+relationship. That conservative reasoning model is taught in
+official Java documentation and in books.
+
+On the topic of difficulty, even if there was a full specification,
+it might still be difficult to work with aliasing in unsafe Rust.
+For C "restrict", I assume that "restrict" is fully specified, and
+C developers still typically avoid "restrict". And for unsafe
+Rust, the Rust community helpfully encourages people to
+avoid unsafe Rust when possible due to its difficulty.
+
+Best, VJ.
