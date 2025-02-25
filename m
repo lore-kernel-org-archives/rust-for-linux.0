@@ -1,192 +1,163 @@
-Received: from mail-lf1-f68.google.com (mail-lf1-f68.google.com [209.85.167.68])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4539821ABC6;
-	Tue, 25 Feb 2025 17:21:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1FB18E34A
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 17:24:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740504106; cv=none; b=WDgMbz9++JwNdGPA/co7mwUem5DiWS8Lp8HfjDzThfyTKAX8MgwGoSyGKsiDQ1IcVE+X7R1TmHNDL+0BpX0kO4f31Lo21W06IxbKJpz8KaG5qGD2JQ0AuHvwlbzIUVRqZRGv/g/vNhsYkD7QDwK2SiR3fWZQ+uh8xFy2kxzg7r8=
+	t=1740504268; cv=none; b=jVlUd0mSnoKt5prthyzXqUJ/duraZPxKax37nFBxGpEuiHJVKv1gofpSLEf2+03VFcXLjEB8s5TgbYGhT/TVcEpB3L5T7bCIRyT0brO+zHhBowlYg3CEcKzCOobc4jVBaQ4+d0umD3Cpldaf2wEyU1aBlupCwRTlyII+qqyb6cA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740504106; c=relaxed/simple;
-	bh=g8b94iQeKit7M6efwtxa16qoL3Q0/wQFaWwGXIVnAsc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NZP0FGYXLGE5RaRYNM+P+Hdn6l38WUVUMQLZ1p5rHb/uVuwCo4zE1IOhpoEMLhYhfHUaLRAOl16uRocpxJ27pzLe+rRiLB8uEktdxt6fEniRsYCoubew/y5W8Se7HDxOdAc+JULKt9sELzkCcC5XHxKPjKsum0xlywfcg+7L+68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AZWAVlzM; arc=none smtp.client-ip=209.85.167.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740504268; c=relaxed/simple;
+	bh=95Dcrv2uDHGC0Dp8iVXfb4heiQgHSuPG8+H5erWocUs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=r4DFgxYOUWU/X7hNUF6LZS2a2UlrqLu1FndA2q05jwLwb80YwDTXa3evQjUqMPUCYbLp90E5BfrxvzR+SnPER68y6d5cbScwW2qJuEbu7tgzpwhljofkeKy6pJO/mma0SmADhXd+TxxjFq6MbkeHmUJlDXXWxDAdbpAY1VGSxX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embecosm.com; spf=pass smtp.mailfrom=embecosm.com; dkim=pass (2048-bit key) header.d=embecosm.com header.i=@embecosm.com header.b=hgkhFd6O; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embecosm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embecosm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AZWAVlzM"
-Received: by mail-lf1-f68.google.com with SMTP id 2adb3069b0e04-54298ec925bso8193991e87.3;
-        Tue, 25 Feb 2025 09:21:43 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=embecosm.com header.i=@embecosm.com header.b="hgkhFd6O"
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5ded51d31f1so10473217a12.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 09:24:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740504102; x=1741108902; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MFp1PXg9ibzgWTyF7i/yFKZcS7KZ9Zv8rxtRiXS5hLs=;
-        b=AZWAVlzMdwdjIGOrezZTMBWOz56YA2HBpLlNos2w6jQRp0lE8f24w42E7e4b+YwU1U
-         VVfKgfyF1v+/lWAUx+4Yf68IxkLqfOcCWA9Sdxne0QEn4kQxGeQT9Hm1IzMyS7alaRpx
-         ZUbLRF2fyOfrtKvF1XaJgkndQK5stnSiA3uXH190SnFEo0YD4o6dYxuYzMnUVk9j1saO
-         qeDsugHQShTW0/I3zkaxHbnVTMohkORJQnRj6glrDTLJwsp4ee1mBBCse28Fj3d3vxh+
-         1bL+fsJkd7Phw3c1IhSHpSuBXPU2xZSpjBibJ7oHWqCNypB5RJGKd3pnw97XlEkHe0ej
-         jujQ==
+        d=embecosm.com; s=google; t=1740504264; x=1741109064; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=y6zk364J/R5KD/YYx6jHat209JOl1kXKWaOdP8jqqrU=;
+        b=hgkhFd6OyQD87FwCjbiWamzHEe2SmlHP3LugXWmrZs409aTnTp6H3ygczZkvOP5gV2
+         UTnnV+FPSjm5uepghCDDRXH+8Cp7NbK6era0bp0XL0mTW3k7wjXzFo5nA5tms2FCQ/uL
+         naPp1hVm/Wrn6DMfF5WyHa1/ZQAN7WPAy/ZcDDHTgxO82ID6U7/z2q+QD2ZONZDLyNIt
+         ZjEQpMMrFtcZqd7CxO/FPKWCPKT2+AczBtMSCm/Rgl8lML/Hom+vVuxjXvEKS/tdhRoe
+         y/el8M8EyrYmWtYe+XsJoAyqeKlrt9ztvx6yKmMWwJRY/bk98Jp0Hw+iTbjEeFr1aDv7
+         rZgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740504102; x=1741108902;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MFp1PXg9ibzgWTyF7i/yFKZcS7KZ9Zv8rxtRiXS5hLs=;
-        b=wCar+sF5tySi9SNRETVCcwRN/c5P4Y/X7AuqOs6sa1shnM7/kzEYhQK7Y6+1kT/HXq
-         MnmkBlvCp2juOWZEKF9M0pLzTHvt7xQA1q5q8Z67iKqTd6HZlbNO/s789B/T2RVMfbQW
-         yu/tkVdKPkDJXW4ALBQm2/RmEmJ38XWC8PYVp+eRwvGwvfIgM/RkGujQQwqZE2SlxnQf
-         u5kQSc/OpOaWQHBMEL4EzKJ60/7+L+7uzBY6AfU5sx4S+O0GIFn5Kga+H54aCWgzE+l2
-         tb1UL23G276W/pdYCZPP/9FUShs/CnDHIxb45t7ueDjC6cwkr8skxGLk/shXbfT9ek9p
-         0k1w==
-X-Forwarded-Encrypted: i=1; AJvYcCULH0kEbWQnkoxdyxDzQseWAiv8EuMUpRDarTB8kctAsOTF592G0uJOY9vStv17G6JGfv0OmKJZQxci76A=@vger.kernel.org, AJvYcCUeS94/zCjsktjSImEK4p+wxjmtRSkgfKYiR+Tg1+u9KZeIFSLjyiPnl8FIR6X8ihxCnZd8d3lmVD0HsmwzA9Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxqyvgA+PhTG+xfQ1Ep4aRtMXYBtOHRaLTFhfj2oZYIoNRfXo1w
-	/++hrAtoUiLtTBlV4/6e7CY4bUugAT7bUd9x94qR1arBM/RA8st3lADshMUHgLDFwVg/L52iTYG
-	dX5CtoGNW+V2pwLLBYGY0hgu5Oyw=
-X-Gm-Gg: ASbGncu07hyFRA5R1gZ5+13+BSNG6uYapn9YPR0hwMEfbfa572D/XOocmBf/ENeQsNj
-	TMTAl8uXB0euDsD/kmBTfcO1kpAEKmZCWRVocMubKxB5GevHll3D1qw8ONGiNt4wX9R+rc7WKaj
-	oAG2pRBbUa
-X-Google-Smtp-Source: AGHT+IGg0L2G18ybzjJhT/nuNLljUfMebQR4U+Qx20CQIV2uJH1FVYMEDY2DEJ77A8Q/BgGVqabuhNZ/bsrJvAlDy/I=
-X-Received: by 2002:a05:6512:39c5:b0:545:d70:1d0e with SMTP id
- 2adb3069b0e04-5493c54ce34mr128422e87.3.1740504101982; Tue, 25 Feb 2025
- 09:21:41 -0800 (PST)
+        d=1e100.net; s=20230601; t=1740504264; x=1741109064;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=y6zk364J/R5KD/YYx6jHat209JOl1kXKWaOdP8jqqrU=;
+        b=VroSvwG6OEt3mVIOWVVpDYnO1D6KkIM9BgGs63kJZ9Rc1uQ2McsVOEcxLHoymcuCvv
+         +cO9K9uFtsvG16eG7eLqRJc+8rGDwtUj4Y8+Ljv0C70HqrHJgMmbpcSbIqpYeRP86UhD
+         Al1UjfcIDQQF7R8P4GBvAgZXoo1jZK2mP6D4LLcCfbjf23MZfzE3zxkz2nLGnwfI1sHN
+         +GuKqnJkOgYBGkMPsw5LQp+5vR7zkZTGU/SbI2F+HE09Mt/7rJc0oz2Xn9eTJBq0MEJs
+         5J3HmZ95fhKEkMNQynNN4rgz5geymmodPEpcwEim7L0qcYDFQNqzen+sU1r+TwmP6aid
+         wMLg==
+X-Forwarded-Encrypted: i=1; AJvYcCWl7x0pM8ULaKCVjzx6GQn/G11Ltx0vuT1nRtARuxInzPECpu9PTalnH9+UE2taRrFSf+4iKIgMYB2aXXAJ7A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHGI9gcTuCAkKMDRK539/YYxh9yAmtAXTF9MiZUz+uAaSeNjSc
+	IxirvItyBcQA7Uj/E1LogXmjkwfEFCDWCLh4DrcoIVkYswMW5qCxmcPUdjmpOg==
+X-Gm-Gg: ASbGnctU4HvDtKdVA82IMbXUo53KwwOBjXKiu24pCD2eidZpyb+3LBu21rH8VfF0Kti
+	NhPWyhLXqzweSgsrcYanOjsoogEDLEyloZ8Bu2pUZ6Wi3KZI2StUXI9PYTjnCoUiklisTS3U7Bd
+	SrOjsHhfKJBNf9+ep08QpuD2ul7x9yoDHRvrOEsnAd5lTw75/xY1m/jsVewNTljqMHA+F2YVw2e
+	nPxrxv+NlRnHFOLa+xI0D539WFN9TamUm/GjtVtMS6h6HxCZnSPm5sMEccDl+aSi48ZCOEV3UAm
+	efEps2jynq0KooXJmMq1QFNx3ccGzIsOeYbWFKH05fsOHFE67eRwj85DX8XFyzbMuH7aDO13efY
+	=
+X-Google-Smtp-Source: AGHT+IFYgTuccyfOVhiD9IFpsBxuvShI076f0NTIveSZFdhJ2xPS/YHIZsCzb0q4s7AgcB0dNm1cxQ==
+X-Received: by 2002:a05:6402:3493:b0:5d0:e563:4475 with SMTP id 4fb4d7f45d1cf-5e4a0e16844mr411687a12.29.1740504263983;
+        Tue, 25 Feb 2025 09:24:23 -0800 (PST)
+Received: from ?IPV6:2a04:cec2:9:b8f7:ed4c:446e:5532:d388? ([2a04:cec2:9:b8f7:ed4c:446e:5532:d388])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e460ff866asm1483748a12.52.2025.02.25.09.24.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Feb 2025 09:24:23 -0800 (PST)
+Message-ID: <4c9573ba-b939-4ac7-a163-9e8bd7052fe5@embecosm.com>
+Date: Tue, 25 Feb 2025 18:30:01 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: C aggregate passing (Rust kernel policy)
+To: Ventura Jack <venturajack85@gmail.com>,
+ Philip Herron <herron.philip@googlemail.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Theodore Ts'o <tytso@mit.edu>, Linus Torvalds
+ <torvalds@linux-foundation.org>, Kent Overstreet
+ <kent.overstreet@linux.dev>, Gary Guo <gary@garyguo.net>, airlied@gmail.com,
+ boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de,
+ gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com,
+ ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, Ralf Jung <post@ralfj.de>,
+ Antoni Boucher <bouanto@zoho.com>
 References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
- <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <20250222141521.1fe24871@eugeo>
+ <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
  <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
  <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
- <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com> <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
-In-Reply-To: <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
-From: Ventura Jack <venturajack85@gmail.com>
-Date: Tue, 25 Feb 2025 10:21:28 -0700
-X-Gm-Features: AWEUYZkUwDT8aBSZwqWOVandZso4Q43TwCtZOPgm5JWe1L0EPqYxR9ThVnT5vic
-Message-ID: <CAFJgqgREAj-eP-d244WpqO-9H48ajZh83AxE31GqoONZ=DJe-g@mail.gmail.com>
-Subject: Re: C aggregate passing (Rust kernel policy)
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
-	Kent Overstreet <kent.overstreet@linux.dev>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
-	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
-	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, 
-	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+ <20250224125805.GA5729@mit.edu>
+ <CANiq72k-K3-Cbnm=0556sXAWs0kXBCB4oR67M4UtD=fq=kyp7A@mail.gmail.com>
+ <CANiq72mfQk_ViHJ9Y_rU0etS8XpORvZUNMc5m2iHL=pQDiVFSg@mail.gmail.com>
+ <CAEvRbeo3QujuvRxjonhzqjQbO5e1_ut0LOSQsukH1T5vx=jzuw@mail.gmail.com>
+ <CAFJgqgS8u=HZ4kps=9iEcw4ra2ocLU5YL+=YNB3Vo9E+1jNnXg@mail.gmail.com>
+Content-Language: en-US
+From: Arthur Cohen <arthur.cohen@embecosm.com>
+In-Reply-To: <CAFJgqgS8u=HZ4kps=9iEcw4ra2ocLU5YL+=YNB3Vo9E+1jNnXg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Feb 25, 2025 at 9:12=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> On Sun, Feb 23, 2025 at 4:30=E2=80=AFPM Ventura Jack <venturajack85@gmail=
-.com> wrote:
-> >
-> > Just to be clear and avoid confusion, I would
-> > like to clarify some aspects of aliasing.
-> > In case that you do not already know about this,
-> > I suspect that you may find it very valuable.
-> >
-> > I am not an expert at Rust, so for any Rust experts
-> > out there, please feel free to point out any errors
-> > or mistakes that I make in the following.
-> >
-> > The Rustonomicon is (as I gather) the semi-official
-> > documentation site for unsafe Rust.
-> >
-> > Aliasing in C and Rust:
-> >
-> > C "strict aliasing":
-> > - Is not a keyword.
-> > - Based on "type compatibility".
-> > - Is turned off by default in the kernel by using
-> >     a compiler flag.
-> >
-> > C "restrict":
-> > - Is a keyword, applied to pointers.
-> > - Is opt-in to a kind of aliasing.
-> > - Is seldom used in practice, since many find
-> >     it difficult to use correctly and avoid
-> >     undefined behavior.
-> >
-> > Rust aliasing:
-> > - Is not a keyword.
-> > - Applies to certain pointer kinds in Rust, namely
-> >     Rust "references".
-> >     Rust pointer kinds:
-> >     https://doc.rust-lang.org/reference/types/pointer.html
-> > - Aliasing in Rust is not opt-in or opt-out,
-> >     it is always on.
-> >     https://doc.rust-lang.org/nomicon/aliasing.html
-> > - Rust has not defined its aliasing model.
-> >     https://doc.rust-lang.org/nomicon/references.html
-> >         "Unfortunately, Rust hasn't actually
-> >         defined its aliasing model.
-> >         While we wait for the Rust devs to specify
-> >         the semantics of their language, let's use
-> >         the next section to discuss what aliasing is
-> >         in general, and why it matters."
-> >     There is active experimental research on
-> >     defining the aliasing model, including tree borrows
-> >     and stacked borrows.
-> > - The aliasing model not being defined makes
-> >     it harder to reason about and work with
-> >     unsafe Rust, and therefore harder to avoid
-> >     undefined behavior/memory safety bugs.
->
-> I think all of this worrying about Rust not having defined its
-> aliasing model is way overblown. Ultimately, the status quo is that
-> each unsafe operation that has to do with aliasing falls into one of
-> three categories:
->
-> * This is definitely allowed.
-> * This is definitely UB.
-> * We don't know whether we want to allow this yet.
->
-> The full aliasing model that they want would eliminate the third
-> category. But for practical purposes you just stay within the first
-> subset and you will be happy.
->
-> Alice
+Hi!
 
-Is there a specification for aliasing that defines your first bullet
-point, that people can read and use, as a kind of partial
-specification? Or maybe a subset of your first bullet point, as a
-conservative partial specification? I am guessing that stacked
-borrows or tree borrows might be useful for such a purpose.
-But I do not know whether either of stacked borrows or tree
-borrows have only false positives, only false negatives, or both.
+On 2/25/25 4:55 PM, Ventura Jack wrote:
+> On Mon, Feb 24, 2025 at 9:42 AM Philip Herron
+> <herron.philip@googlemail.com> wrote:
+>> My 50 cents here is that gccrs is trying to follow rustc as a guide, and
+>> there are a lot of assumptions in libcore about the compiler, such as lang
+>> items, that we need to follow in order to compile Rust code. [Omitted]
+>>
+>> Thanks
+>>
+>> --Phil
+> 
+> Is this snippet from the Rust standard library an example of one
+> of the assumptions about the compiler that the Rust standard library
+> makes? The code explicitly assumes that LLVM is the backend of
+> the compiler.
+> 
+> https://github.com/rust-lang/rust/blob/master/library/core/src/ffi/va_list.rs#L292-L301
+> 
+>          // FIXME: this should call `va_end`, but there's no clean way to
+>          // guarantee that `drop` always gets inlined into its caller,
+>          // so the `va_end` would get directly called from the same function as
+>          // the corresponding `va_copy`. `man va_end` states that C
+> requires this,
+>          // and LLVM basically follows the C semantics, so we need to make sure
+>          // that `va_end` is always called from the same function as `va_copy`.
+>          // For more details, see https://github.com/rust-lang/rust/pull/59625
+>          // and https://llvm.org/docs/LangRef.html#llvm-va-end-intrinsic.
+>          //
+>          // This works for now, since `va_end` is a no-op on all
+> current LLVM targets.
+> 
+> How do you approach, or plan to approach, code like the above in gccrs?
+> Maybe make a fork of the Rust standard library that only replaces the
+> LLVM-dependent parts of the code? I do not know how widespread
+> LLVM-dependent code is in the Rust standard library, nor how
+> well-documented the dependence on LLVM typically is. In the above
+> case, it is well-documented.
+> 
+> Best, VJ.
 
-For Rust documentation, I have heard of the official
-documentation websites at
+Things like that can be special-cased somewhat easily without 
+necessarily forking the Rust standard library, which would make a lot of 
+things a lot more difficult for us and would also not align with our 
+objectives of not creating a rift in the Rust ecosystem.
 
-    https://doc.rust-lang.org/book/
-    https://doc.rust-lang.org/nomicon/
+The `VaListImpl` is a lang item in recent Rust versions as well as the 
+one we currently target, which means it is a special type that the 
+compiler has to know about, and that we can easily access its methods or 
+trait implementation and add special consideration for instances of this 
+type directly from the frontend. If we need to add a call to `va_end` 
+anytime one of these is created, then we'll do so.
 
-And various blogs, forums and research papers.
+We will take special care to ensure that the code produced by gccrs 
+matches the behavior of the code produced by rustc. To us, having the 
+same behavior as rustc does not just mean behaving the same way when 
+compiling code but also creating executables and libraries that behave 
+the same way. We have already started multiple efforts towards comparing 
+the behavior of rustc and gccrs and plan to continue working on this in 
+the future to ensure maximum compatibility.
 
-If there is no such conservative partial specification for
-aliasing yet, I wonder if such a conservative partial
-specification could be made with relative ease, especially if
-it is very conservative, at least in its first draft. Though there
-is currently no specification of the Rust language and just
-one major compiler.
+Kindly,
 
-I know that Java defines an additional conservative reasoning
-model for its memory model that is easier to reason about
-than the full memory model, namely happens-before
-relationship. That conservative reasoning model is taught in
-official Java documentation and in books.
-
-On the topic of difficulty, even if there was a full specification,
-it might still be difficult to work with aliasing in unsafe Rust.
-For C "restrict", I assume that "restrict" is fully specified, and
-C developers still typically avoid "restrict". And for unsafe
-Rust, the Rust community helpfully encourages people to
-avoid unsafe Rust when possible due to its difficulty.
-
-Best, VJ.
+Arthur
