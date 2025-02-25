@@ -1,206 +1,151 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B42D176FB0;
-	Tue, 25 Feb 2025 18:16:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4B11A0BD6
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 18:55:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740507405; cv=none; b=rahhZNS/teNQhhVRYVZb4gJXtB8FX3KEy9gtJMaDYZuO7BJ6uwfvkgAB1PiE1/lL6Fc1QOWaLTyVNgcqINiTZiTOnYPdQLjkcjYytzy2DopqsTZDBf/cVJIrEXIO1eiqF0fG8otf1L1eKYVkb4LgWiSnXeFCafL3Ot+qqOV2oj8=
+	t=1740509708; cv=none; b=Stt79VhKWjRxznf75wEvHNvptnJb6jMKtpyyNzG5kIQfz3j9hH+7+dPgoSHCkq+hWdZuFmRqTMPhtl5c2huEdDp3c/k3GKQhNEIInnKpvQBjaqHQkBlTKKbPkxP0GKpp4UL/2N9RW6Za50lSnuAQ2imSL2lfBWJoioztsMKy+Jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740507405; c=relaxed/simple;
-	bh=eoJLsORUr3+sG19g827exZFY9w4G8hTvu/Hliq9HRVk=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=TpaFDXIsnbzRsq/jrhLfN2JLRBJq4lNJZzeppJq1UL3LykYiTNZcu5vOff4xm8RnDKAXJy78STzAVBUSt/AIE91CrV8gUXiIcA9nmqj4s8X16CyoA/w9JL1LXlmjGMUopbXF0ANW/mMMeNXejiye8f+fNPyysSLEMIJu8xh3yiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=uBBdwVA6; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+	s=arc-20240116; t=1740509708; c=relaxed/simple;
+	bh=PYHSgLO7lQsS8Kx+B9mtZoE1y7zDRkButLc9RwemdLY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=REBE6RHYw05zKbp5dYlQbLW0tsiWQlqKt4y1fkT+cn222oVACpG9iqTNC1kTlPzFp59L9XjMkJnRpS8radWJz/xjEZuGwQOWVuJeoBmozPI5Q0YrWGOwvXwZ5/+iPv1KgEh5jIfhsJerklXJGqnpQoF7JDhsy/hyA3om2PWfJWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=hHNq/Wot; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="uBBdwVA6"
-Received: from [127.0.0.1] ([76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 51PIGJhK1382724
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Tue, 25 Feb 2025 10:16:20 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 51PIGJhK1382724
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025021701; t=1740507382;
-	bh=mXZUNxkU+u+ykvS8KwB7Tu/GeSnEZCinpL/GVgJGwu8=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=uBBdwVA6JNXCBEE2cKEl5kXQV/tOVS6CQ1kl3UkuukMMYET8Jzu2YIi9YxWbEU7xv
-	 vVPRpgQp+oOUvvW99F3m74dXHWrjCMbTflsIcRMdqWbH1amqKgvNUM7gSvft8Vjhro
-	 BMC/hPaySRIhOlOYgDoU8CxyH9mh6fwRMRrtyocIDMtkOqIgzNX2H8HQFfekw/eh9W
-	 bVwO590dNpZtT6WlMApSxVI6GzrvBfNTecoeIKYZgKRnIgBr5VTTeqH9cmAIA5kw+p
-	 MFGEC12BpDZEY4XDL8iu82mXNiMIQxHFcQnPH3753aiD7TC40GFNbh5f5WWya58lm6
-	 uxs/Lkfq4T7Sw==
-Date: Tue, 25 Feb 2025 10:16:17 -0800
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Alice Ryhl <aliceryhl@google.com>, Ventura Jack <venturajack85@gmail.com>
-CC: Linus Torvalds <torvalds@linux-foundation.org>,
-        Kent Overstreet <kent.overstreet@linux.dev>,
-        Gary Guo <gary@garyguo.net>, airlied@gmail.com, boqun.feng@gmail.com,
-        david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org,
-        hch@infradead.org, ksummit@lists.linux.dev,
-        linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com,
-        rust-for-linux@vger.kernel.org
-Subject: Re: C aggregate passing (Rust kernel policy)
-User-Agent: K-9 Mail for Android
-In-Reply-To: <CAH5fLghEMtT663SNogAGad-qk7umefGeBKbm+QjKKzoskjOubw@mail.gmail.com>
-References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com> <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com> <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c> <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com> <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com> <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com> <CAFJgqgREAj-eP-d244WpqO-9H48ajZh83AxE31GqoONZ=DJe-g@mail.gmail.com> <CAH5fLghEMtT663SNogAGad-qk7umefGeBKbm+QjKKzoskjOubw@mail.gmail.com>
-Message-ID: <5E3FEDC4-DBE3-45C7-A331-DAADD3E7EB42@zytor.com>
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="hHNq/Wot"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5e0939c6456so9538344a12.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 10:55:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1740509704; x=1741114504; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=i+rWhtD5x8D6XUhYZf1P7I+awMTvGfoNgd9n4DqDTvI=;
+        b=hHNq/WotNYTl3z7a+5CNnaT3hnGJuXTtwQmwKDbmKzrg/75nP9y0CA/38MGzA4YuaV
+         /0lpfjR/1WyxszTo9drZgCx1PFms6IUe7xzEeaklxeGgYNQ+3pzkE+EtlNHIwYhfaXBk
+         FeOtZx2s7jfJnzJDcKB+yA0edvPj9xo9Z/1LY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740509704; x=1741114504;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=i+rWhtD5x8D6XUhYZf1P7I+awMTvGfoNgd9n4DqDTvI=;
+        b=GvV7RbmJI7kT/37MYdAL+5JC/wvujpAtBimaCK64EvSHtLIIe4ODR7trUUk/NFk7kz
+         S6qa3uIf6U2NwmXNwc4Dq5fr167bBN0cKA0WmNESfzkkoPMkRI2jA7cNk60ZC2u0hHrH
+         5uv2VwmCaPprwtbc3d1z9iuh/JbsyDF0tRc85x5r9q6lADC99SHTrotPPwMH3zsTr0YM
+         6V5IElr5IhOF/nC7UpnEAiEvipEpNALa0f/EmS2ud8jK+BaRkix0xnVKQWmXTGKKQHfb
+         gj+2mzPw6NJr8yPgZA7gKfuecKE63E8sMKegJyH0W2TRHX6NWXiVd77wb1+Ew8YOJD0j
+         bwvg==
+X-Forwarded-Encrypted: i=1; AJvYcCWvI0BfrUPysTQ5484FMwQGPKY/PfPqbZQHMq35GMEJJ3hzP342DLC5+Qmj6KmuVZBUOU3OHghPXL2xFK8buQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwlxTxaoQrOtg0NYZ+UTutEzHzMiRQ39RuCeobg9TpqMUHeSMGo
+	v5ETaHrcfXkF/jBliGeTRGqK78T2uZvb9KyfkYUa1T6swRkmeP/4mv3876ictoibB0JurBl3qpp
+	Vu9U=
+X-Gm-Gg: ASbGncuRaJUUedoQcDnQzA9c6Tn1mPR8fa2dX3eAIyiSoKqzU6iSp/WK7zWSf7TKmpZ
+	rVeYGsF21phHj3dDJNyz0j3WU5QnMl8fz0+DaG1b7VXjWkp4pOw3/Q0atU4FfhZCa6H/bHUG2TZ
+	9pPECpB1aUdrlNZyx91LQpJCgj3WmGRTHhBA0g7Z1YOh0WtiUDLKIAU4pstDLliwZMOLR6CLBBG
+	nKT9P3FzcMLiSm6h+4XOorL1rAbS0f5kpcGkYTdv4xRZlH8MRYbiCABFrANKi0kb9ngDB4xDDY3
+	a612hmn3KmSTBgVk8knR+4YkkL1q7LSXTf9dJ1utUe8C9ufbQczNgwOo3YrB8lQrOZoxEybykmU
+	n
+X-Google-Smtp-Source: AGHT+IEH8BDfnODoXc5USWk6r7MRrFtkKtpQR7hNClGkLo4fC+N4CacTKmkkiZTTK7Hepibt6w8rdw==
+X-Received: by 2002:a17:906:c103:b0:abc:c42:5c7a with SMTP id a640c23a62f3a-abc0da2f10bmr2098743566b.31.1740509704337;
+        Tue, 25 Feb 2025 10:55:04 -0800 (PST)
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com. [209.85.208.50])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abed20466a6sm183341966b.127.2025.02.25.10.55.03
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Feb 2025 10:55:03 -0800 (PST)
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5e0939c6456so9538296a12.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 10:55:03 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUX4qxiSad0KlTTi3JrItjSCiIH3lLMvpbTuWQ9qLUom2X5Q98y0EyoqKdU4KOlJsG5OmqAxCQzM2GGV51lIA==@vger.kernel.org
+X-Received: by 2002:a05:6402:2b86:b0:5d9:a54:f8b4 with SMTP id
+ 4fb4d7f45d1cf-5e0b70dc05emr16845178a12.11.1740509703150; Tue, 25 Feb 2025
+ 10:55:03 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
+ <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+ <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+ <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com> <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
+In-Reply-To: <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Tue, 25 Feb 2025 10:54:46 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com>
+X-Gm-Features: AWEUYZk0cXay_isXRx72KKy4FfsgUiBHKihS09o_3cl8pFnpf_e0Ez6oe_KpUXU
+Message-ID: <CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com>
+Subject: Re: C aggregate passing (Rust kernel policy)
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Ventura Jack <venturajack85@gmail.com>, Kent Overstreet <kent.overstreet@linux.dev>, 
+	Gary Guo <gary@garyguo.net>, airlied@gmail.com, boqun.feng@gmail.com, 
+	david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, 
+	hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On February 25, 2025 9:36:07 AM PST, Alice Ryhl <aliceryhl@google=2Ecom> wr=
-ote:
->On Tue, Feb 25, 2025 at 6:21=E2=80=AFPM Ventura Jack <venturajack85@gmail=
-=2Ecom> wrote:
->>
->> On Tue, Feb 25, 2025 at 9:12=E2=80=AFAM Alice Ryhl <aliceryhl@google=2E=
-com> wrote:
->> >
->> > On Sun, Feb 23, 2025 at 4:30=E2=80=AFPM Ventura Jack <venturajack85@g=
-mail=2Ecom> wrote:
->> > >
->> > > Just to be clear and avoid confusion, I would
->> > > like to clarify some aspects of aliasing=2E
->> > > In case that you do not already know about this,
->> > > I suspect that you may find it very valuable=2E
->> > >
->> > > I am not an expert at Rust, so for any Rust experts
->> > > out there, please feel free to point out any errors
->> > > or mistakes that I make in the following=2E
->> > >
->> > > The Rustonomicon is (as I gather) the semi-official
->> > > documentation site for unsafe Rust=2E
->> > >
->> > > Aliasing in C and Rust:
->> > >
->> > > C "strict aliasing":
->> > > - Is not a keyword=2E
->> > > - Based on "type compatibility"=2E
->> > > - Is turned off by default in the kernel by using
->> > >     a compiler flag=2E
->> > >
->> > > C "restrict":
->> > > - Is a keyword, applied to pointers=2E
->> > > - Is opt-in to a kind of aliasing=2E
->> > > - Is seldom used in practice, since many find
->> > >     it difficult to use correctly and avoid
->> > >     undefined behavior=2E
->> > >
->> > > Rust aliasing:
->> > > - Is not a keyword=2E
->> > > - Applies to certain pointer kinds in Rust, namely
->> > >     Rust "references"=2E
->> > >     Rust pointer kinds:
->> > >     https://doc=2Erust-lang=2Eorg/reference/types/pointer=2Ehtml
->> > > - Aliasing in Rust is not opt-in or opt-out,
->> > >     it is always on=2E
->> > >     https://doc=2Erust-lang=2Eorg/nomicon/aliasing=2Ehtml
->> > > - Rust has not defined its aliasing model=2E
->> > >     https://doc=2Erust-lang=2Eorg/nomicon/references=2Ehtml
->> > >         "Unfortunately, Rust hasn't actually
->> > >         defined its aliasing model=2E
->> > >         While we wait for the Rust devs to specify
->> > >         the semantics of their language, let's use
->> > >         the next section to discuss what aliasing is
->> > >         in general, and why it matters=2E"
->> > >     There is active experimental research on
->> > >     defining the aliasing model, including tree borrows
->> > >     and stacked borrows=2E
->> > > - The aliasing model not being defined makes
->> > >     it harder to reason about and work with
->> > >     unsafe Rust, and therefore harder to avoid
->> > >     undefined behavior/memory safety bugs=2E
->> >
->> > I think all of this worrying about Rust not having defined its
->> > aliasing model is way overblown=2E Ultimately, the status quo is that
->> > each unsafe operation that has to do with aliasing falls into one of
->> > three categories:
->> >
->> > * This is definitely allowed=2E
->> > * This is definitely UB=2E
->> > * We don't know whether we want to allow this yet=2E
->> >
->> > The full aliasing model that they want would eliminate the third
->> > category=2E But for practical purposes you just stay within the first
->> > subset and you will be happy=2E
->> >
->> > Alice
->>
->> Is there a specification for aliasing that defines your first bullet
->> point, that people can read and use, as a kind of partial
->> specification? Or maybe a subset of your first bullet point, as a
->> conservative partial specification? I am guessing that stacked
->> borrows or tree borrows might be useful for such a purpose=2E
->> But I do not know whether either of stacked borrows or tree
->> borrows have only false positives, only false negatives, or both=2E
+On Tue, 25 Feb 2025 at 08:12, Alice Ryhl <aliceryhl@google.com> wrote:
 >
->In general I would say read the standard library docs=2E But I don't
->know of a single resource with everything in one place=2E
+> I think all of this worrying about Rust not having defined its
+> aliasing model is way overblown. Ultimately, the status quo is that
+> each unsafe operation that has to do with aliasing falls into one of
+> three categories:
 >
->Stacked borrows and tree borrows are attempts at creating a full model
->that puts everything in the two first categories=2E They are not
->conservative partial specifications=2E
->
->> For Rust documentation, I have heard of the official
->> documentation websites at
->>
->>     https://doc=2Erust-lang=2Eorg/book/
->>     https://doc=2Erust-lang=2Eorg/nomicon/
->>
->> And various blogs, forums and research papers=2E
->>
->> If there is no such conservative partial specification for
->> aliasing yet, I wonder if such a conservative partial
->> specification could be made with relative ease, especially if
->> it is very conservative, at least in its first draft=2E Though there
->> is currently no specification of the Rust language and just
->> one major compiler=2E
->>
->> I know that Java defines an additional conservative reasoning
->> model for its memory model that is easier to reason about
->> than the full memory model, namely happens-before
->> relationship=2E That conservative reasoning model is taught in
->> official Java documentation and in books=2E
->
->On the topic of conservative partial specifications, I like the blog
->post "Tower of weakenings" from back when the strict provenance APIs
->were started, which I will share together with a quote from it:
->
->> Instead, we should have a tower of Memory Models, with the ones at the =
-top being =E2=80=9Cwhat users should think about and try to write their cod=
-e against=E2=80=9D=2E As you descend the tower, the memory models become in=
-creasingly complex or vague but critically always more permissive than the =
-ones above it=2E At the bottom of the tower is =E2=80=9Cwhatever the compil=
-er actually does=E2=80=9D (and arguably =E2=80=9Cwhatever the hardware actu=
-ally does=E2=80=9D in the basement, if you care about that)=2E
->> https://faultlore=2Ecom/blah/tower-of-weakenings/
->
->You can also read the docs for the ptr module:
->https://doc=2Erust-lang=2Eorg/stable/std/ptr/index=2Ehtml
->
->> On the topic of difficulty, even if there was a full specification,
->> it might still be difficult to work with aliasing in unsafe Rust=2E
->> For C "restrict", I assume that "restrict" is fully specified, and
->> C developers still typically avoid "restrict"=2E And for unsafe
->> Rust, the Rust community helpfully encourages people to
->> avoid unsafe Rust when possible due to its difficulty=2E
->
->This I will not object to :)
->
->Alice
->
->
+> * This is definitely allowed.
+> * This is definitely UB.
+> * We don't know whether we want to allow this yet.
 
-I do have to say one thing about the standards process: it forces a real s=
-pecification to be written, as in a proper interface contract, including th=
-e corner cases (which of course may be "undefined", but the idea is that ev=
-en what is out of scope is clear=2E)
+Side note: can I please ask that the Rust people avoid the "UD" model
+as much as humanly possible?
+
+In particular, if there is something that is undefined behavior - even
+if it's in some "unsafe" mode, please please please make the rule be
+that
+
+ (a) either the compiler ends up being constrained to doing things in
+some "naive" code generation
+
+or it's a clear UB situation, and
+
+ (b) the compiler will warn about it
+
+IOW, *please* avoid the C model of "Oh, I'll generate code that
+silently takes advantage of the fact that if I'm wrong, this case is
+undefined".
+
+And BTW, I think this is _particularly_ true for unsafe rust. Yes,
+it's "unsafe", but at the same time, the unsafe parts are the fragile
+parts and hopefully not _so_ hugely performance-critical that you need
+to do wild optimizations.
+
+So the cases I'm talking about is literally re-ordering accesses past
+each other ("Hey, I don't know if these alias or not, but based on
+some paper standard - rather than the source code - I will assume they
+do not"), and things like integer overflow behavior ("Oh, maybe this
+overflows and gives a different answer than the naive case that the
+source code implies, but overflow is undefined so I can screw it up").
+
+I'd just like to point to one case where the C standards body seems to
+have actually at least consider improving on undefined behavior (so
+credit where credit is due, since I often complain about the C
+standards body):
+
+   https://www9.open-std.org/JTC1/SC22/WG14/www/docs/n3203.htm
+
+where the original "this is undefined" came from the fact that
+compilers were simple and restricting things like evaluation order
+caused lots of problems. These days, a weak ordering definition causes
+*many* more problems, and compilers are much smarter, and just saying
+that the code has to act as if there was a strict ordering of
+operations still allows almost all the normal optimizations in
+practice.
+
+This is just a general "please avoid the idiocies of the past". The
+potential code generation improvements are not worth the pain.
+
+              Linus
