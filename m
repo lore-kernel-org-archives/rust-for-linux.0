@@ -1,56 +1,51 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50366215164;
-	Tue, 25 Feb 2025 23:26:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9754A23370B
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 23:34:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740526019; cv=none; b=FNe4uG4bUwIAIG6c4vCrO2fqBH4qbb6Uh57v1Z5/69aVKnFREK8h4nzslg2kfxgmNseF5wSbQhSJOvTNz1xg0JUsOdmTetRB9cmc8oXaZMaHKNjh9CQnzxwDWs6ktQGgwxHW4rrj5hC2OwMagnmNmzrplBqM+PJ6ciOIVrF2jYg=
+	t=1740526501; cv=none; b=pjf9n5iDSt/8o6L+8ITj7d6f4G3Endex6z09qgy7jfhCeM0MJ9XBXVW5FoeLvgfgCmj6zg/vdUlQ+gZIo69Zt6MeNQXxjTG+P+EoYdJY2yOtelU1q4NnyUFUTXFK4pN5vVMWD6Fxmf5NZ9dU8nTNFwz91qiFDGgUiAOtyVdY0Mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740526019; c=relaxed/simple;
-	bh=ibAdGeayJwCauyp3OQL2DUFoUDuFf6aXjCY4OlFfh/8=;
+	s=arc-20240116; t=1740526501; c=relaxed/simple;
+	bh=W2U3OCVP08ILGCN0pvTsVdLcGG7RpAJsKKWk8SJXRUE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ix2bUK8BqYA8ZD1axZ+ptYjPX7s2u3+OzcBvtXaj1o4L3Cv749ZUz4mzNYujOmZ5P7LS04UCTU2HfvmeaiG/2uR9gr+aXCxEvEwTe3xwwFTxwPNuToMoXgevfA1s06IO5q+5333tEv12Ejv1Y8/EO4gQXOt7sXNnf15Ksm7KesI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fdofdHDY; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=aQFONcUwIpYz86DpwZqdVbTk6dvmZ4EDBmyTrdEgRCIBb23ZsIT34fSYkHhF0ungNTUGRQxK8QhuQU0kDkakuA+Hn9PtfSNc6O+onLL7VWoeYPMlr8tGE3oSMCnGVM2of39r69EYZCLBFdXFo/1af99obHb15Ub2bIMfVEU5iPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=NOVOkcB8; arc=none smtp.client-ip=91.218.175.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fdofdHDY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A7FC4CEDD;
-	Tue, 25 Feb 2025 23:26:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740526018;
-	bh=ibAdGeayJwCauyp3OQL2DUFoUDuFf6aXjCY4OlFfh/8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fdofdHDYJmVgwd5SbpoRfwuuUiVWfm0Mgv0L+/ovSo49vnfbP77ctkJCr3rjOC8wq
-	 f4O9pk67EBlKjzGrXfKrxCnoBl6vwIfb4urPebINmvWq9Jr6J23B6rURn62m/KklNn
-	 3jV9WoJrUSsmYRz2SfRPpQoKwvST+JpVIJRumiylC0+s1SM7awNyhYsHm9t3bjqRKP
-	 nyk88IOM+/N70YLZolcMCrlsY1Kobw8VUv6/qscKjBQx4+MkszIs/5MWi+2nY5VN64
-	 BAIsj5uw4cVz5Yx1FwPIa+dL8/OxUrd+uKG/Ayiz5LxqQbjWQD3vDoqWTw0hXaNYtr
-	 rby230WMJ2n+g==
-Date: Wed, 26 Feb 2025 00:26:53 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Joel Fernandes <joelagnelf@nvidia.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	paulmck@kernel.org
-Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
- implementation
-Message-ID: <Z75RvU-Yb70iFyor@cassiopeiae>
-References: <CAPM=9tyu84z4Xk5X0fykO3Dazby2UqRgwtN4woNKe4Z2yMyDZg@mail.gmail.com>
- <D80AK2CLL4AZ.1G6R7OBHOF08O@nvidia.com>
- <Z7xg8uArPlr2gQBU@pollux>
- <Z7xh5bEyh_MII4WV@pollux>
- <20250224184502.GA1599486@joelnvbox>
- <Z70EcwNIX0KtWy36@cassiopeiae>
- <2f062199-8d69-48a2-baa6-abb755479a16@nvidia.com>
- <Z73rP4secPlUMIoS@cassiopeiae>
- <20250225210228.GA1801922@joelnvbox>
- <20250225225756.GA4959@nvidia.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="NOVOkcB8"
+Date: Tue, 25 Feb 2025 18:34:42 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1740526487;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ymij2cOzOeeGgSy9Fk623wKplb3B9+lyzrX4hrokkAY=;
+	b=NOVOkcB8k3QXQjujzoLxuI3ZDjaujT9CqT5eVInjhO62pBCuFgAs6wgq4DAHanidZjcrfM
+	fWHAoyNUKARiSxGxdZ1KLj7C4Ih1AZrZroIGrAs/TLnUG+ub0x3wmlG1wxZmX/8EWkRBro
+	Ptsku2BYZNxyigRS4TI3skGmtlzUWUY=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, 
+	Ventura Jack <venturajack85@gmail.com>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
+	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
+	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
+Subject: Re: C aggregate passing (Rust kernel policy)
+Message-ID: <hofm7mo46jzkevpr6fkqe2jnl3zrp5uxdux457hli3ywkneaij@yhhibsnuqfny>
+References: <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+ <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+ <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+ <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
+ <CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com>
+ <gqw7cvclnfa7x4xdz4vkns2msf2bqrms5ecxp2lwzbws7ab6dt@7zbli7qwiiz6>
+ <CAHk-=whGY2uYcXog8kmuAAAPJy4R84Jy9rEfXfoHBe-evmuYDQ@mail.gmail.com>
+ <4l6xl5vnpulcvssfestsgrzoazoveopzupb32z5bv6mk23gazo@qn63k7rgsckv>
+ <CAHk-=wgMnSOnaddFzfAFwjT-dGO9yeSkv6Lt21LgWmCKYCM7cg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -59,75 +54,77 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250225225756.GA4959@nvidia.com>
+In-Reply-To: <CAHk-=wgMnSOnaddFzfAFwjT-dGO9yeSkv6Lt21LgWmCKYCM7cg@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
 
-On Tue, Feb 25, 2025 at 06:57:56PM -0400, Jason Gunthorpe wrote:
-> I think this resource-revoke idea is deviating from the normal
-> expected driver model by allowing driver code to continue to run in
-> other threads once remove completes. That is definitely abnormal at
-> least.
-
-No, it simply guarantees that once remove() completed the pointer to the
-resource can't be accessed anymore and the resource can't be kept alive
-(which includes the actual memory mapping as well as the allocated resource
-region).
-
-It also solves the unplug problem, where ioctls can't access the resource
-anymore after remove(). This is indeed a problem that does not affect all
-subsystems.
-
+On Tue, Feb 25, 2025 at 01:24:42PM -0800, Linus Torvalds wrote:
+> On Tue, 25 Feb 2025 at 12:55, Kent Overstreet <kent.overstreet@linux.dev> wrote:
+> >
+> > The problem isn't that "pointer aliasing is fundamentally unsafe and
+> > dangerous and therefore the compiler just has to stay away from it
+> > completely" - the problem has just been the lack of a workable model.
 > 
-> It is not necessarily *wrong*, but it sure is weird and as I explained
-> above it has bad system level properties.
+> It's not entirely clear that a workable aliasing model exists outside
+> of "don't assume lack of aliasing".
 > 
-> Further, it seems to me there is a very unique DRM specific issue at
-> work "time unbounded driver callbacks". A weird solution to this
-> should not be baked into the common core kernel rust bindings and
-> break the working model of all other subsystems that don't have that
-> problem.
+> Because THAT is the only truly workable model I know of. It's the one
+> we use in the kernel, and it works just fine.
 > 
-> > > Similarly you can have custom functions for short sequences of I/O ops, or use
-> > > closures. I don't understand the concern.
-> > 
-> > Yeah, this is certainly possible. I think one concern is similar to what you
-> > raised on the other thread you shared [1]:
-> > "Maybe we even want to replace it with SRCU entirely to ensure that drivers
-> > can't stall the RCU grace period for too long by accident."
+> For anything else, we only have clear indications that _unworkable_
+> models exist.
 > 
-> I'd be worried about introducing a whole bunch more untestable failure
-> paths in drivers. Especially in areas like work queue submit that are
-> designed not to fail [2]. Non-failing work queues is a critical property
-> that I've relied on countless times. I'm not sure you even *can* recover
-> from this correctly in all cases.
-> 
-> Then in the other email did you say that even some memory allocations
-> go into this scheme? Yikes!
+> We know type aliasing is garbage.
 
-"For instance, let's take devm_kzalloc(). Once the device is detached
-from the driver the memory allocated with this function is freed automatically.
+The C people thinking casting to a union was a workable escape hatch was
+hilarious, heh. But now we've got mem::transmute(), i.e. that can (and
+must be) annotated to the compiler.
 
-The additional step in Rust is, that we'd not only free the memory, but also
-revoke the access to the pointer that has been returned by devm_kzalloc() for
-the driver, such that it can't be used by accident anymore."
+> We know "restrict" doesn't work very well: part of that is that it's
+> fairly cumbersome to use, but a large part of that is that a pointer
+> will be restricted in one context and not another, and it's just
+> confusing and hard to get right.
 
-This was just an analogy to explain what we're doing here. Obviously, memory
-allocations can be managed by Rust's object lifetime management.
+And it only works at all in the simplest of contexts...
 
-The reason we have Devres for device resources is that the lifetime of a
-pci::Bar is *not* bound to the object lifetime directly, but to the lifetime of
-the binding between a device and a driver. That's why it needs to be revoked
-(which forcefully drops the object) when the device is unbound *not* when the
-pci::Bar object is dropped regularly.
+> What we do know works is hard rules based on provenance. All compilers
+> will happily do sane alias analysis based on "this is a variable that
+> I created, I know it cannot alias with anything else, because I didn't
+> expose the address to anything else".
 
-That's all the magic we're doing here. And again, this is not a change to the
-device / driver model. It is making use of the device / driver model to ensure
-safety.
+Yep. That's what all this is based on.
 
-> 
-> Further, hiding a synchronize_rcu in a devm destructor [3], once per
-> revocable object is awful. If you imagine having a rcu around each of
-> your revocable objects, how many synchronize_rcu()s is devm going to
-> call post-remove()?
+> So *provenance*-based aliasing works, but it only works in contexts
+> where you can see the provenance. Having some way to express
+> provenance across functions (and not *just* at allocation time) might
+> be a good model.
 
-As many as you have MMIO mappings in your driver. But we can probably optimize
-this to just a single synchronize_rcu().
+We have that! That's exactly what lifetime annotations are.
+
+We don't have that for raw pointers, but I'm not sure that would ever be
+needed since you use raw pointers in small and localized places, and a
+lot of the places where aliasing comes up in C (e.g. memmove()) you
+express differently in Rust, with slices and indices.
+
+(You want to drop from references to raw pointers at the last possible
+moment).
+
+And besides, a lot of the places where aliasing comes up in C are
+already gone in Rust, there's a lot of little things that help.
+Algebraic data types are a big one, since a lot of the sketchy hackery
+that goes on in C where aliasing is problematic is just working around
+the lack of ADTs.
+
+> But in the absence of knowledge, and in the absence of
+> compiler-imposed rules (and "unsafe" is by *definition* that absence),
+> I think the only rule that works is "don't assume they don't alias".
+
+Well, for the vast body of Rust code that's been written that just
+doesn't seem to be the case, and I think it's been pretty well
+demonstrated that anything we can do in C, we can also do just as
+effectively in Rust.
+
+treeborrow is already merged into Miri - this stuff is pretty far along.
+
+Now if you're imagining directly translating all the old grotty C code I
+know you have in your head - yeah, that won't work. But we already knew
+that.
