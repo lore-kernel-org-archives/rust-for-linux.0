@@ -1,114 +1,108 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77255207653;
-	Tue, 25 Feb 2025 09:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5AD2266B4C;
+	Tue, 25 Feb 2025 09:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740476397; cv=pass; b=ngiSj0d9kFTLaDXGuEWUlJb+z1WopAjg73DJUNginOLZ1S6u68BK/iG3IspWaVSgEnM4wGqeLdgFQ4Y3Hutjxj240jg1g9BBxOVuHPmRaqDO20IMp6zGiACTdcbKAM0yBve4oPSltjNqI7wMt92dZXSbBn1m9kcZ9/wNOOaECKw=
+	t=1740476661; cv=pass; b=kwtj1PxDCYNx2cE3yeWOz/evwpjWnKBIom4n2A6IgIZdv/ncy1A5kAL93K3UjoadBh+6gXl6mMPxgy9OXwxZW+YZGvUM99DjSaO92OxpqZZ2jv4v24YzSvlLyMcU2cmsOJFy+49xp+b5DO//GimwvWyS54FlDpys7QAo/bYCCLY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740476397; c=relaxed/simple;
-	bh=UzMDKQkt/APhAY845N7QOMHur70PW2mkFrgoMVI+9Hk=;
+	s=arc-20240116; t=1740476661; c=relaxed/simple;
+	bh=mGa1ZVpVEgPerlEBMmFu55L7BuMoyO1RjFa7unAYWsE=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=K/fPZ535K6GdgWJstqsqdeQThbgXifcbSMh7SLgyca2nA4qVPcC3W89R9b5zXrpdzMQaGBfNf64Bzbi3M4tGsBRDsJqyjn8fQQZQiH+J7Ax/ZwAsiJqNUsfAaZA6KBiIhnGNIYfKYxbSdkJcg8unR4nYJLXN3LKtEx5tYGUBmBE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=hvrX7kV1; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=EdUrn4zDv/ltTlBViPNAbMqdvNn8uKluYKoup+WKgpe1X6lzAKxM9iRNZtzY5u+TG+38UgxvIiZzZthkiw8tcEKYU4OzspM4JXeBcVbQcHZSoHiseBCVx4JBBr5y9+oUcQRq56u9c0fetV0IwxczNnSJ3El7Cz4pUtnxgDcqI6I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=iqgJce1V; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="hvrX7kV1"
-ARC-Seal: i=1; a=rsa-sha256; t=1740476343; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="iqgJce1V"
+ARC-Seal: i=1; a=rsa-sha256; t=1740476632; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=lKfwm+GPGJHlomdOtbhL4nq673l9r+hfg/rzvXJLptro37IyLVJkuwTn1bISBbdYQNzNv6iqLdiv2RJZ1LV/waygQ+hbKlWlCvOc1QvjSf1PQ6MjlyjvIIe9iOlURL9rdVsbs7TBUpGznokogv9nvxAYzTwiSYdH+93d/+JQREM=
+	b=hOAzLH10upnYM8mrUCJKeSFvpPQF4X8pbBP9U6Ib/J7wI6gKqAAg4x5D8BL+LJz18gdMEEWwAOxYCaGB97NqmdSU4Xz4JctrwSmMqKO9GpxyVOLWKq8sK6uAxreSaYlvk4vvl1ENV/rdNL4B5qdfc1L4g5M0KIhNUyee/Ieo3Po=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1740476343; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=aFI/b2Tgjv0Ejq2UEKDmEnSYenBMkOjErWg/HfODXaM=; 
-	b=MeuxPlFZhCK/HUxOfsw3E5IfUTYhlHyX1xaYNNkRqt+4aqso1ZuFGo1ac5qjswMaukwdpgBedPpzodtdGTae4I3fw7Wmyg7mfSgoZ29RkDih9oxyD65kwzP92Rw1GW/bC7ZDJxkFMVU3VtyQJem3y7gMUi28ZmmtuMsVFyWZpYA=
+	t=1740476632; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=mGa1ZVpVEgPerlEBMmFu55L7BuMoyO1RjFa7unAYWsE=; 
+	b=BwekNULxccjsZMNQ2D+mGAlVx8pLyZLfiTRT1g3RySnmMJIStUHZZKlEhWhVwJxxEd6p1vIZPnqpvUlbigZAxhB5E1Hy5GNbgXQh2WXOti62u5uusjvrOPXHDRq4sWrPJcXhLUwnHn5kZ+vo9PTAuEzWTWZEskE2BQE9FJm3FcI=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1740476343;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1740476632;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=aFI/b2Tgjv0Ejq2UEKDmEnSYenBMkOjErWg/HfODXaM=;
-	b=hvrX7kV1Khy07WyM9Yc3x1OUPJLy6kTcKN3Vbpr9KTLdMwsEtnni2IsI14jk1Wda
-	KbzQCO3d8TrVmvgEK9Wp++bjQNC/kF7wF9lIzGWqa8MOTp1/E7RS3MnCywn16nOc478
-	9ZP6m8TMz4yMjzzRzroG2dewbuQFAMxZGc3Ovo9M=
-Received: by mx.zohomail.com with SMTPS id 1740476340814587.5627182901516;
-	Tue, 25 Feb 2025 01:39:00 -0800 (PST)
+	bh=mGa1ZVpVEgPerlEBMmFu55L7BuMoyO1RjFa7unAYWsE=;
+	b=iqgJce1VS9nGMtrO+a5XqdIt09odx5cAGf8CDtM6aHzUc5+szZL4elVjc0e0UpLt
+	z7pqmLPMaT3PTcEfQGp+ogA6fT9gsY08KsVPuJ6exnvUVafH9iI/udDcI36SC3G/y3Q
+	F4Mr6GwIXFKpwtTinI4J1RbPqVxQIDfj7as9+YUo=
+Received: by mx.zohomail.com with SMTPS id 1740476629225362.08681216406217;
+	Tue, 25 Feb 2025 01:43:49 -0800 (PST)
 Content-Type: text/plain;
-	charset=us-ascii
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
-Subject: Re: [PATCH v4 4/4] MAINTAINERS: add entry for configfs Rust
- abstractions
+Subject: Re: [PATCH 1/2] rust: Add cpumask helpers
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250224-configfs-v4-4-9af9b5e611f6@kernel.org>
-Date: Tue, 25 Feb 2025 06:38:44 -0300
-Cc: Danilo Krummrich <dakr@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>,
+In-Reply-To: <20250224233938.3158-2-yury.norov@gmail.com>
+Date: Tue, 25 Feb 2025 06:43:31 -0300
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Danilo Krummrich <dakr@redhat.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
  Alex Gaynor <alex.gaynor@gmail.com>,
  Boqun Feng <boqun.feng@gmail.com>,
  Gary Guo <gary@garyguo.net>,
  =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
  Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
  Alice Ryhl <aliceryhl@google.com>,
  Trevor Gross <tmgross@umich.edu>,
- Joel Becker <jlbec@evilplan.org>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Stephen Boyd <sboyd@kernel.org>,
+ Nishanth Menon <nm@ti.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Erik Schilling <erik.schilling@linaro.org>,
+ =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Joakim Bech <joakim.bech@linaro.org>,
+ Rob Herring <robh@kernel.org>,
  Christoph Hellwig <hch@lst.de>,
- Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>,
- Will Deacon <will@kernel.org>,
- Waiman Long <longman@redhat.com>,
- Fiona Behrens <me@kloenk.dev>,
- Charalampos Mitrodimas <charmitro@posteo.net>,
+ Jason Gunthorpe <jgg@nvidia.com>,
+ John Hubbard <jhubbard@nvidia.com>,
+ linux-pm@vger.kernel.org,
  rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: 7bit
-Message-Id: <FF9232AA-9511-4E55-BC7C-EE42EBB8FBC1@collabora.com>
-References: <20250224-configfs-v4-0-9af9b5e611f6@kernel.org>
- <20250224-configfs-v4-4-9af9b5e611f6@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <9E7A81AA-6460-4F87-942E-2EEA145257F2@collabora.com>
+References: <20250224233938.3158-1-yury.norov@gmail.com>
+ <20250224233938.3158-2-yury.norov@gmail.com>
+To: Yury Norov <yury.norov@gmail.com>
 X-Mailer: Apple Mail (2.3826.300.87.4.3)
 X-ZohoMailClient: External
 
-Hi Andreas,
+Hi Yury,
 
-> On 24 Feb 2025, at 10:21, Andreas Hindborg <a.hindborg@kernel.org> wrote:
-> 
-> Update MAINTAINERS with entry for Rust configfs abstractions.
-> 
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
-> MAINTAINERS | 7 +++++++
-> 1 file changed, 7 insertions(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 896a307fa065..9b4d5c12eb43 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -5870,6 +5870,13 @@ F: fs/configfs/
-> F: include/linux/configfs.h
-> F: samples/configfs/
-> 
-> +CONFIGFS [RUST]
-> +M: Andreas Hindborg <a.hindborg@kernel.org>
-> +L: rust-for-linux@vger.kernel.org
-> +S: Supported
-> +F: rust/kernel/configfs.rs
-> +F: samples/rust/rust_configfs.rs
-> +
-> CONGATEC BOARD CONTROLLER MFD DRIVER
-> M: Thomas Richard <thomas.richard@bootlin.com>
-> S: Maintained
-> 
-> -- 
-> 2.47.0
-> 
-> 
+> On 24 Feb 2025, at 20:39, Yury Norov <yury.norov@gmail.com> wrote:
+>=20
+> From: Viresh Kumar <viresh.kumar@linaro.org>
+>=20
+> In order to prepare for adding Rust abstractions for cpumask, add
+> the required helpers for inline cpumask functions that cannot be
+> called by rust code directly.
 
-Acked-by: Daniel Almeida <daniel.almeida@collabora.com>
+I don=E2=80=99t understand what is going on here. You apparently did not =
+provide the
+Rust code itself.
+
+Usually, when I see a =E2=80=9Cin order to prepare for =E2=80=A6=E2=80=9D =
+I expect the actual patch to
+follow in the same series.
+
+Right now - and correct me if I'm wrong - it seems like you=E2=80=99ve =
+essentially added
+dead code.
+
+=E2=80=94 Daniel=
