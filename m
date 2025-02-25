@@ -1,102 +1,113 @@
-Received: from sender3-pp-f112.zoho.com (sender3-pp-f112.zoho.com [136.143.184.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA860267B18;
-	Tue, 25 Feb 2025 11:00:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.184.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740481203; cv=pass; b=chAJQQynesXPYyFV8ZVwGN+wVHQOQLsDhedOGLodzwggAxWn8WV1iHathV1dpovu/doJkNqstDnxG45EfcljOEgUhqzWfgpY87PFXi5AfIbgXl4A/O0DBANX7lt3G7vseul7LD63II4NXPsjPlEf6GapVPrSKv6sDkdo4A/6pIc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740481203; c=relaxed/simple;
-	bh=kMJF5RSaJ61dbim2W+thvBAvxXWLB/VBFcKTy/Oq1fs=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=XpPO3E0epPVnsyvfgm0d6yj1pGqsCQEehZ7k0RaEhZxCvqBc5bNQQSCPZWWugHalKzKkfchuHg5bUxuoL/SbZIG5vbUBrReWQIYhCNXncK6KfABpOYokyd49onvZQ2/vmO7ZqKL/4XKVpnDHMdM/6yZ3LyblWZdyHQoQfrjH2Os=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=gs9tJBBj; arc=pass smtp.client-ip=136.143.184.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6630264F9D;
+	Tue, 25 Feb 2025 11:04:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740481485; cv=none; b=lKlUHNW4EGbAOILzzS13NPAM4gOP0H4mHT3w4QOnWklZd8TJhd5N+0TGO8b31L4UtFYG7y+XdtU8WeMxSKD6LAFSUvjQRKt7euZnEqsMrmXJpdQ+98Md9CC1Cp6wUzO4jYTPVFkEIPtAmLddSQ4odEqr2R8dIny1K3C5aYRRaz0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740481485; c=relaxed/simple;
+	bh=yG++BUr1pNW36WEJ6xY32Zg5CTCOUnmylM4FpVv0kMQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B24Qxb+deaOrk5zTL29EbeGtmBzxCCtDkWDx8uhjsQwX2eJSpjt5m1ZIZ//JC3vJMPyUvETrxv/XiIlJd3kYY6EZP7So0jZgTrK0VKxkpdd2/89Ia7HACWcaBAltYrw4YQ2d2F4dxp7jclpsD9+RaaxsDDFLTsxjeGYERfWWvY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A1UR7qNU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="gs9tJBBj"
-ARC-Seal: i=1; a=rsa-sha256; t=1740481157; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=EEOktX0Ife7MXXH/CydtCb+of+IdoQY8sPzF9qw+AIVj0BXhzRCEKxj9yQovTZ1xs5U1aYWGm82OplGqPtfveycV7rlPsklHz5wtON5m0isbiYak7ZLxfC6bsnPhqfKKD97gHDGe2WSRNbMaNfxPtZ4Lgt1ym6I5iN0EDZzGO/o=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1740481157; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=kMJF5RSaJ61dbim2W+thvBAvxXWLB/VBFcKTy/Oq1fs=; 
-	b=egVWqt3dpXAKwR1H8Ap+krgj0jnBOHFu8dCv664ce42cAGg53HtLNFNANr4kJp2NieuI9T9Y655Y3R03YghkXWUgtk0/fnhx8Zik466WJt+55Kj/PQQsHgYlhf6rn3kwyGFgMMWu3HbjwgMHKORjE2m6s1o5ru7fVn5pwQmYb/o=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1740481157;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=kMJF5RSaJ61dbim2W+thvBAvxXWLB/VBFcKTy/Oq1fs=;
-	b=gs9tJBBjU5wjlAeRpSVZNDM9Cv4pqPytKW1YT6grFjwuFh0zQAOslFSHzyzpFzLa
-	t3VIVorJVI2t+h4NJb2sH1aDOg0kGfCZ8Lg21y/ae3nWX7cJMLW0U5KGnywghoFo0Xr
-	Sytpbk0s4dqQoKk5UUX0/bE//funywJHL3reCaWk=
-Received: by mx.zohomail.com with SMTPS id 1740481154165258.02998640409817;
-	Tue, 25 Feb 2025 02:59:14 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A1UR7qNU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA153C4CEDD;
+	Tue, 25 Feb 2025 11:04:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740481484;
+	bh=yG++BUr1pNW36WEJ6xY32Zg5CTCOUnmylM4FpVv0kMQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=A1UR7qNUbDGRyiD1BhKsH5VWnThtZcFC0d27b9VJeHmkHZxNCdC6Ckq8KDmabuyhu
+	 L5g08E7PlSDrM54pDhgvaMHfZ09mqWSNccGhPVlc9rG+G/Pzxtbn4U0v4PjUpe8Ppj
+	 gF+fG5gJ5z3rnDfLDakSHIpRa9mnNEkPEQP9c5XPXefnzdLkCzk2k+0hN5ht3Ps6ym
+	 E5Z6gu8sEAqI6Xfpe/EdrXaSR14kPDAYqZAWoFcVIhFfC25WFfRJQpfuAH5JueBd98
+	 ayRBqiZirbr4/LPy8PqGdeSdPtSxZVfcrjBNBto088z/zUVFJm5w8ANmqTbw/CyUD8
+	 lZJP6AlKfBcqA==
+Date: Tue, 25 Feb 2025 12:04:35 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Alistair Popple <apopple@nvidia.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	tmgross@umich.edu, a.hindborg@samsung.com, aliceryhl@google.com,
+	airlied@gmail.com, fujita.tomonori@gmail.com, lina@asahilina.net,
+	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
+	robh@kernel.org, daniel.almeida@collabora.com, saravanak@google.com,
+	dirk.behme@de.bosch.com, j@jannau.net, fabien.parent@linaro.org,
+	chrisi.schrefl@gmail.com, paulmck@kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
+	rcu@vger.kernel.org
+Subject: Re: [PATCH v7 07/16] rust: add `io::{Io, IoRaw}` base types
+Message-ID: <Z72jw3TYJHm7N242@pollux>
+References: <20241219170425.12036-1-dakr@kernel.org>
+ <20241219170425.12036-8-dakr@kernel.org>
+ <g63h5f3zowy375yutftautqhurflahq3o5nmujbr274c5d7u7u@j5cbqi5aba6k>
+ <CANiq72=gZhG8MOCqPi8F0yp3WR1oW77V+MXdLP=RK_R2Jzg-cw@mail.gmail.com>
+ <wnzq3vlgawjdchjck7nzwlzmm5qbmactwlhtj44ak7s7kefphd@m7emgjnmnkjn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
-Subject: Re: [PATCH v4 3/4] rust: configfs: add a sample demonstrating
- configfs usage
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <87jz9ewcf1.fsf@kernel.org>
-Date: Tue, 25 Feb 2025 07:58:56 -0300
-Cc: Danilo Krummrich <dakr@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Joel Becker <jlbec@evilplan.org>,
- Christoph Hellwig <hch@lst.de>,
- Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>,
- Will Deacon <will@kernel.org>,
- Waiman Long <longman@redhat.com>,
- Fiona Behrens <me@kloenk.dev>,
- Charalampos Mitrodimas <charmitro@posteo.net>,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <9E46FCD7-E913-43DF-91F7-417EF41A35B7@collabora.com>
-References: <20250224-configfs-v4-0-9af9b5e611f6@kernel.org>
- <20250224-configfs-v4-3-9af9b5e611f6@kernel.org>
- <gFsQNuXNmyVQmdawZnfoGhTe3Fu7W0K5VeoiM5tjROpKWVojf48IOHIQT0JY77AFiTPPLHk3f_gjzEGilH7vLQ==@protonmail.internalid>
- <CB975A56-A8D5-4615-8755-04D7B0BBBCA5@collabora.com>
- <87jz9ewcf1.fsf@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: Apple Mail (2.3826.300.87.4.3)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <wnzq3vlgawjdchjck7nzwlzmm5qbmactwlhtj44ak7s7kefphd@m7emgjnmnkjn>
 
+On Tue, Feb 25, 2025 at 04:50:05PM +1100, Alistair Popple wrote:
+> Kind of, but given the current state of build_assert's and the impossiblity of
+> debugging them should we avoid adding them until they can be fixed?
 
->>=20
->> As I said in the previous patch, this macro is a bit complex. Is =
-there anything more you can do with it?
->>=20
->> If so, it better be in this driver, because I hardly think anybody =
-will go through the source code itself
->> to figure out. My 2c.
->=20
-> I can add some inline comments on the usage here. Is that what you are
-> thinking of?
->=20
+If you build the module as built-in the linker gives you some more hints, but
+I agree it's still not great.
 
-That can=E2=80=99t hurt, but my point is, if you can think of any other =
-example that is substantially different from
-what you have, include it, specially if it involves some different =
-syntax somehow.
+I think build_assert() is not widely used yet and, until the situation improves,
+we could also keep a list of common pitfalls if that helps?
 
-Otherwise this is fine as is.
+> Unless the code absolutely cannot compile without them I think it would be
+> better to turn them into runtime errors that can at least hint at what might
+> have gone wrong. For example I think a run-time check would have been much more
+> appropriate and easy to debug here, rather than having to bisect my changes.
 
-=E2=80=94 Daniel=
+No, especially for I/O the whole purpose of the non-try APIs is to ensure that
+boundary checks happen at compile time.
+
+> I was hoping I could suggest CONFIG_RUST_BUILD_ASSERT_ALLOW be made default yes,
+> but testing with that also didn't yeild great results - it creates a backtrace
+> but that doesn't seem to point anywhere terribly close to where the bad access
+> was, I'm guessing maybe due to inlining and other optimisations - or is
+> decode_stacktrace.sh not the right tool for this job?
+
+I was about to suggest CONFIG_RUST_BUILD_ASSERT_ALLOW=y to you, since this will
+make the kernel panic when hitting a build_assert().
+
+I gave this a quick try with [1] in qemu and it lead to the following hint,
+right before the oops:
+
+[    0.957932] rust_kernel: panicked at /home/danilo/projects/linux/nova/nova-next/rust/kernel/io.rs:216:9:
+
+Seeing this immediately tells me that I'm trying to do out of bound I/O accesses
+in my driver, which indeed doesn't tell me the exact line (in case things are
+inlined too much to gather it from the backtrace of the oops), but it should be
+good enough, no?
+
+[1]
+
+diff --git a/samples/rust/rust_driver_pci.rs b/samples/rust/rust_driver_pci.rs
+index 1fb6e44f3395..2ff3af11d711 100644
+--- a/samples/rust/rust_driver_pci.rs
++++ b/samples/rust/rust_driver_pci.rs
+@@ -13,7 +13,7 @@ impl Regs {
+     const OFFSET: usize = 0x4;
+     const DATA: usize = 0x8;
+     const COUNT: usize = 0xC;
+-    const END: usize = 0x10;
++    const END: usize = 0x2;
+ }
+
+ type Bar0 = pci::Bar<{ Regs::END }>;
