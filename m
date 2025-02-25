@@ -1,151 +1,532 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4B11A0BD6
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 18:55:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DBC21ABC6;
+	Tue, 25 Feb 2025 19:12:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740509708; cv=none; b=Stt79VhKWjRxznf75wEvHNvptnJb6jMKtpyyNzG5kIQfz3j9hH+7+dPgoSHCkq+hWdZuFmRqTMPhtl5c2huEdDp3c/k3GKQhNEIInnKpvQBjaqHQkBlTKKbPkxP0GKpp4UL/2N9RW6Za50lSnuAQ2imSL2lfBWJoioztsMKy+Jg=
+	t=1740510772; cv=none; b=fyRzAFx/g6jJjLXY8V1rZeSMWXlHyb3ULpgCmC5H+jXlGvbFAZHzO2IPTh6PjHMymsIUnS2kbPk77UWrK2/eH1PN8dN4t6U1BWTzLugRsh3ywwoE8rqkUU4qplleY7Z4fiLLE9VpW/MoLhCVYNd+0rwaTpXaPvuLWmo2940OqqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740509708; c=relaxed/simple;
-	bh=PYHSgLO7lQsS8Kx+B9mtZoE1y7zDRkButLc9RwemdLY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=REBE6RHYw05zKbp5dYlQbLW0tsiWQlqKt4y1fkT+cn222oVACpG9iqTNC1kTlPzFp59L9XjMkJnRpS8radWJz/xjEZuGwQOWVuJeoBmozPI5Q0YrWGOwvXwZ5/+iPv1KgEh5jIfhsJerklXJGqnpQoF7JDhsy/hyA3om2PWfJWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=hHNq/Wot; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1740510772; c=relaxed/simple;
+	bh=qPbSmshp41FTFt/PIHGXVaM5JtY3yEQ5bjSxdIguvwM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Ld7EoQzU7VvoMfksiYqB/BGqbexNHNetDVdv34qA5bJvfcUEOlmJsMXJx6cSYTZVYwalSyPt6YqYbclHZD7hXnUR8Pw7cu89CD6aHjqULZACGQCTpmR6tq1PAtY/M4DQBTfefw3r5gdp9c6bdKOdd/8fLTaEohnW0WBsBVyr3is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZyvWGhuF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="hHNq/Wot"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5e0939c6456so9538344a12.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 10:55:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1740509704; x=1741114504; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=i+rWhtD5x8D6XUhYZf1P7I+awMTvGfoNgd9n4DqDTvI=;
-        b=hHNq/WotNYTl3z7a+5CNnaT3hnGJuXTtwQmwKDbmKzrg/75nP9y0CA/38MGzA4YuaV
-         /0lpfjR/1WyxszTo9drZgCx1PFms6IUe7xzEeaklxeGgYNQ+3pzkE+EtlNHIwYhfaXBk
-         FeOtZx2s7jfJnzJDcKB+yA0edvPj9xo9Z/1LY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740509704; x=1741114504;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=i+rWhtD5x8D6XUhYZf1P7I+awMTvGfoNgd9n4DqDTvI=;
-        b=GvV7RbmJI7kT/37MYdAL+5JC/wvujpAtBimaCK64EvSHtLIIe4ODR7trUUk/NFk7kz
-         S6qa3uIf6U2NwmXNwc4Dq5fr167bBN0cKA0WmNESfzkkoPMkRI2jA7cNk60ZC2u0hHrH
-         5uv2VwmCaPprwtbc3d1z9iuh/JbsyDF0tRc85x5r9q6lADC99SHTrotPPwMH3zsTr0YM
-         6V5IElr5IhOF/nC7UpnEAiEvipEpNALa0f/EmS2ud8jK+BaRkix0xnVKQWmXTGKKQHfb
-         gj+2mzPw6NJr8yPgZA7gKfuecKE63E8sMKegJyH0W2TRHX6NWXiVd77wb1+Ew8YOJD0j
-         bwvg==
-X-Forwarded-Encrypted: i=1; AJvYcCWvI0BfrUPysTQ5484FMwQGPKY/PfPqbZQHMq35GMEJJ3hzP342DLC5+Qmj6KmuVZBUOU3OHghPXL2xFK8buQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwlxTxaoQrOtg0NYZ+UTutEzHzMiRQ39RuCeobg9TpqMUHeSMGo
-	v5ETaHrcfXkF/jBliGeTRGqK78T2uZvb9KyfkYUa1T6swRkmeP/4mv3876ictoibB0JurBl3qpp
-	Vu9U=
-X-Gm-Gg: ASbGncuRaJUUedoQcDnQzA9c6Tn1mPR8fa2dX3eAIyiSoKqzU6iSp/WK7zWSf7TKmpZ
-	rVeYGsF21phHj3dDJNyz0j3WU5QnMl8fz0+DaG1b7VXjWkp4pOw3/Q0atU4FfhZCa6H/bHUG2TZ
-	9pPECpB1aUdrlNZyx91LQpJCgj3WmGRTHhBA0g7Z1YOh0WtiUDLKIAU4pstDLliwZMOLR6CLBBG
-	nKT9P3FzcMLiSm6h+4XOorL1rAbS0f5kpcGkYTdv4xRZlH8MRYbiCABFrANKi0kb9ngDB4xDDY3
-	a612hmn3KmSTBgVk8knR+4YkkL1q7LSXTf9dJ1utUe8C9ufbQczNgwOo3YrB8lQrOZoxEybykmU
-	n
-X-Google-Smtp-Source: AGHT+IEH8BDfnODoXc5USWk6r7MRrFtkKtpQR7hNClGkLo4fC+N4CacTKmkkiZTTK7Hepibt6w8rdw==
-X-Received: by 2002:a17:906:c103:b0:abc:c42:5c7a with SMTP id a640c23a62f3a-abc0da2f10bmr2098743566b.31.1740509704337;
-        Tue, 25 Feb 2025 10:55:04 -0800 (PST)
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com. [209.85.208.50])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abed20466a6sm183341966b.127.2025.02.25.10.55.03
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Feb 2025 10:55:03 -0800 (PST)
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5e0939c6456so9538296a12.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 10:55:03 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUX4qxiSad0KlTTi3JrItjSCiIH3lLMvpbTuWQ9qLUom2X5Q98y0EyoqKdU4KOlJsG5OmqAxCQzM2GGV51lIA==@vger.kernel.org
-X-Received: by 2002:a05:6402:2b86:b0:5d9:a54:f8b4 with SMTP id
- 4fb4d7f45d1cf-5e0b70dc05emr16845178a12.11.1740509703150; Tue, 25 Feb 2025
- 10:55:03 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZyvWGhuF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F00C4CEDD;
+	Tue, 25 Feb 2025 19:12:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740510772;
+	bh=qPbSmshp41FTFt/PIHGXVaM5JtY3yEQ5bjSxdIguvwM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=ZyvWGhuF76dw8YwPH8Q3I/aHO83xZqelFAss9SH/is1NAnbAOpife1OZmCXvyV7AP
+	 uJI0xacoCno0LK9yzZRTscF+BMflQpjZAiH6HE2NS8kOU5lAXJwdV3pbXqxSi0aLgP
+	 UKfcZFDpJwdCsRrUvaNgdR+E28z3CCjzq1SU+TjRHBS9aW54RNSVPIxFP7TZDBY2Pb
+	 0TZogaSXmUadJOLVfvWuAIvdVlzLBIaeZ9BE2BGaCo+nbgYaIae5JC0d/OwtMXy3JZ
+	 av+GXVikergJ9TArYfcS7rJu7uKp/zv0j4ed+qxU1bLR6a4u7zrZiUdZhZiKLZpVbK
+	 uhdXO0B7D2/0g==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Tamir Duberstein" <tamird@gmail.com>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Anna-Maria Behnsen"
+ <anna-maria@linutronix.de>,  "Frederic Weisbecker" <frederic@kernel.org>,
+  "Thomas Gleixner" <tglx@linutronix.de>,  "Danilo Krummrich"
+ <dakr@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
+ <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
+ =?utf-8?Q?=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
+  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
+  "Lyude Paul" <lyude@redhat.com>,  "Guangbo Cui" <2407018371@qq.com>,
+  "Dirk Behme" <dirk.behme@gmail.com>,  "Daniel Almeida"
+ <daniel.almeida@collabora.com>,  <rust-for-linux@vger.kernel.org>,
+  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v9 01/13] rust: hrtimer: introduce hrtimer support
+In-Reply-To: <CAJ-ks9=PR-Laj37NqG5s_TbKddONWxp4-Cf3C57AMk9z92mfDQ@mail.gmail.com>
+ (Tamir
+	Duberstein's message of "Tue, 25 Feb 2025 10:37:46 -0500")
+References: <20250224-hrtimer-v3-v6-12-rc2-v9-0-5bd3bf0ce6cc@kernel.org>
+	<20250224-hrtimer-v3-v6-12-rc2-v9-1-5bd3bf0ce6cc@kernel.org>
+	<q5sIYQbnCqKmdnZZy-eaKvSUY7O5pOy2-QzwWwCo9VoormFcKS6RS3OVIIby-Pf5PDpTRh67txem3sXQKSB1JQ==@protonmail.internalid>
+	<CAJ-ks9nj8+fXM_oo0LJo4O6Q=skFRcHwz8TLxw-yB3QTcDF9GA@mail.gmail.com>
+	<87cyf6xv7g.fsf@kernel.org>
+	<Wy3wqzRK5qG3GyHC7oEg3NR3tv9-Uv7m_tmgKZTHNEU6aZX5hxrIXLudLfzQvuZNvIz1Av2fKzH5eTvomny1Vg==@protonmail.internalid>
+	<CAJ-ks9=PR-Laj37NqG5s_TbKddONWxp4-Cf3C57AMk9z92mfDQ@mail.gmail.com>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Tue, 25 Feb 2025 20:12:39 +0100
+Message-ID: <87r03lvnx4.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
- <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
- <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
- <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
- <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com> <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
-In-Reply-To: <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Tue, 25 Feb 2025 10:54:46 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com>
-X-Gm-Features: AWEUYZk0cXay_isXRx72KKy4FfsgUiBHKihS09o_3cl8pFnpf_e0Ez6oe_KpUXU
-Message-ID: <CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com>
-Subject: Re: C aggregate passing (Rust kernel policy)
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Ventura Jack <venturajack85@gmail.com>, Kent Overstreet <kent.overstreet@linux.dev>, 
-	Gary Guo <gary@garyguo.net>, airlied@gmail.com, boqun.feng@gmail.com, 
-	david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, 
-	hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 25 Feb 2025 at 08:12, Alice Ryhl <aliceryhl@google.com> wrote:
+"Tamir Duberstein" <tamird@gmail.com> writes:
+
+> On Tue, Feb 25, 2025 at 3:52=E2=80=AFAM Andreas Hindborg <a.hindborg@kern=
+el.org> wrote:
+>>
+>> "Tamir Duberstein" <tamird@gmail.com> writes:
+>>
+>> > Hi Andreas, mostly grammar and prose clarity comments below.
+>> >
+>> > I still think HasHrTimer::OFFSET is less clear and more fragile than
+>> > just generating compiler-checked implementations in the macro (you're
+>> > already generating OFFSET and one method implementation rather than
+>> > generating 2 method implementations).
+>>
+>> I don't agree with you assessment. My argument is that I would rather
+>> generate as little code as possible in the macro, and the trait would in
+>> practice never be implemented by hand.
 >
-> I think all of this worrying about Rust not having defined its
-> aliasing model is way overblown. Ultimately, the status quo is that
-> each unsafe operation that has to do with aliasing falls into one of
-> three categories:
+> In the current patch, the trait:
+> - provides raw_get_timer
+> - provides timer_container_of
+> and the macro:
+> - defines OFFSET
+> - defines raw_get_timer
 >
-> * This is definitely allowed.
-> * This is definitely UB.
-> * We don't know whether we want to allow this yet.
+> The justification for the redundancy is that without defining
+> raw_get_timer in the macro the user might invoke the macro
+> incorrectly.
 
-Side note: can I please ask that the Rust people avoid the "UD" model
-as much as humanly possible?
+It's not that they might invoke the macro incorrectly, it's that we
+would not be able to make the macro safe. The way it is implemented now,
+it will only compile if it is safe.
 
-In particular, if there is something that is undefined behavior - even
-if it's in some "unsafe" mode, please please please make the rule be
-that
+> But why is that better than defining both methods in the
+> macro?
 
- (a) either the compiler ends up being constrained to doing things in
-some "naive" code generation
+Because it is generating less code. I would rather write the library code t=
+han
+have the macro generate the code for us on every invocation.
 
-or it's a clear UB situation, and
+> Either way the macro provides 2 items. The key benefit of
+> defining both methods in the macro is that there's no dead-code
+> implementation of raw_get_pointer in the trait. It also reduces the
+> surface of the trait, which is always a benefit due to Hyrum's law.
 
- (b) the compiler will warn about it
+When you say that the surface would be smaller, you mean that by
+dropping OFFSET entirely, the trait would have fewer items?
 
-IOW, *please* avoid the C model of "Oh, I'll generate code that
-silently takes advantage of the fact that if I'm wrong, this case is
-undefined".
+I'm not familiar with Hyrum's law.
 
-And BTW, I think this is _particularly_ true for unsafe rust. Yes,
-it's "unsafe", but at the same time, the unsafe parts are the fragile
-parts and hopefully not _so_ hugely performance-critical that you need
-to do wild optimizations.
+>
+>>
+>> >
+>> > On Mon, Feb 24, 2025 at 7:06=E2=80=AFAM Andreas Hindborg <a.hindborg@k=
+ernel.org> wrote:
+>> >>
+>>
+>> [...]
+>>
+>> >> +//! # Vocabulary
+>> >> +//!
+>> >> +//! States:
+>> >> +//!
+>> >> +//! - Stopped: initialized but not started, or cancelled, or not res=
+tarted.
+>> >> +//! - Started: initialized and started or restarted.
+>> >> +//! - Running: executing the callback.
+>> >> +//!
+>> >> +//! Operations:
+>> >> +//!
+>> >> +//! * Start
+>> >> +//! * Cancel
+>> >> +//! * Restart
+>> >> +//!
+>> >> +//! Events:
+>> >> +//!
+>> >> +//! * Expire
+>> >> +//!
+>> >> +//! ## State Diagram
+>> >> +//!
+>> >> +//! ```text
+>> >> +//!                                                   Return NoResta=
+rt
+>> >> +//!                       +-----------------------------------------=
+----------------------------+
+>> >> +//!                       |                                         =
+                            |
+>> >> +//!                       |                                         =
+                            |
+>> >> +//!                       |                                         =
+                            |
+>> >> +//!                       |                                         =
+Return Restart              |
+>> >> +//!                       |                                      +--=
+----------------------+     |
+>> >> +//!                       |                                      |  =
+                      |     |
+>> >> +//!                       |                                      |  =
+                      |     |
+>> >> +//!                       v                                      v  =
+                      |     |
+>> >> +//!           +-----------------+      Start      +-----------------=
+-+           +--------+-----+--+
+>> >> +//!           |                 +---------------->|                 =
+ |           |                 |
+>> >> +//! Init      |                 |                 |                 =
+ |  Expire   |                 |
+>> >> +//! --------->|    Stopped      |                 |      Started    =
+ +---------->|     Running     |
+>> >> +//!           |                 |     Cancel      |                 =
+ |           |                 |
+>> >> +//!           |                 |<----------------+                 =
+ |           |                 |
+>> >> +//!           +-----------------+                 +---------------+-=
+-+           +-----------------+
+>> >> +//!                                                     ^         |
+>> >> +//!                                                     |         |
+>> >> +//!                                                     +---------+
+>> >> +//!                                                      Restart
+>> >> +//! ```
+>> >> +//!
+>> >> +//!
+>> >> +//! A timer is initialized in the **stopped** state. A stopped timer=
+ can be
+>> >> +//! **started** by the `start` operation, with an **expiry** time. A=
+fter the
+>> >> +//! `start` operation, the timer is in the **started** state. When t=
+he timer
+>> >> +//! **expires**, the timer enters the **running** state and the hand=
+ler is
+>> >> +//! executed. After the handler has finished executing, the timer ma=
+y enter the
+>> >> +//! **started* or **stopped** state, depending on the return value o=
+f the
+>> >> +//! handler. A running timer can be **canceled** by the `cancel` ope=
+ration. A
+>> >> +//! timer that is cancelled enters the **stopped** state.
+>> >
+>> > This is a bit confusing because it sounds like you're describing a
+>> > *started* timer. After reading the next paragraph I think this wording
+>> > applies to both *started* and *running*, but it isn't unambiguous.
+>>
+>> Right, I think I understand. It's a mistake. Last sentence should be:
+>>
+>>   A timer in the **started** or **running** state be **canceled** by the
+>>   `cancel` operation. A timer that is cancelled enters the **stopped**
+>>   state.
+>
+> I think you meant "*may* be canceled"? I assume this replaces the last
+> two sentences?
 
-So the cases I'm talking about is literally re-ordering accesses past
-each other ("Hey, I don't know if these alias or not, but based on
-some paper standard - rather than the source code - I will assume they
-do not"), and things like integer overflow behavior ("Oh, maybe this
-overflows and gives a different answer than the naive case that the
-source code implies, but overflow is undefined so I can screw it up").
+Yes and yes.
 
-I'd just like to point to one case where the C standards body seems to
-have actually at least consider improving on undefined behavior (so
-credit where credit is due, since I often complain about the C
-standards body):
 
-   https://www9.open-std.org/JTC1/SC22/WG14/www/docs/n3203.htm
+> I noticed below I had suggested talking about the handler as
+> "returning" rather than "finishing execution"; please consider that
+> throughout.
 
-where the original "this is undefined" came from the fact that
-compilers were simple and restricting things like evaluation order
-caused lots of problems. These days, a weak ordering definition causes
-*many* more problems, and compilers are much smarter, and just saying
-that the code has to act as if there was a strict ordering of
-operations still allows almost all the normal optimizations in
-practice.
+I do not prefer one over the other. Do you care strongly about this one?
 
-This is just a general "please avoid the idiocies of the past". The
-potential code generation improvements are not worth the pain.
+>
+>>
+>> >
+>> >> +//!
+>> >> +//! A `cancel` or `restart` operation on a timer in the **running** =
+state takes
+>> >> +//! effect after the handler has finished executing and the timer ha=
+s transitioned
+>> >> +//! out of the **running** state.
+>> >
+>> > There's no external restart, right?
+>>
+>> There will be, eventually. Conceptually there is, because the state
+>> diagram and this text describe the operation.
+>
+> OK.
+>
+>>
+>> > I think this wording is confused
+>> > by the unification of cancel and restart under operations, though they
+>> > are not isomorphic.
+>>
+>> Hmm, I am not following. Can you elaborate? The set of operations is
+>> start, cancel, restart.
+>
+> I wrote this when I thought there was no external restart. By the way,
+> what is the difference between restart and start? Can a running timer
+> not be started, or does that do something other than reset it to the
+> new expiry time?
 
-              Linus
+That is good question. I will add the following to address that
+question:
+
+//! When a type implements both `HrTimerPointer` and `Clone`, it is possibl=
+e to
+//! issue the `start` operation while the timer is in the **started** state=
+ In
+//! this case the `start` operation is equivalent to the `restart` operatio=
+n.
+
+>> > Restart (as I understand it) can only happen from
+>> > the handler, and cancel can only happen via a call to hrtimer_cancel.
+>>
+>> This text introduces the restart operation. There is no code path to
+>> reach it from rust at the moment, but I am inclined to add the function
+>> due to this confusion. It would be dead code for now though.
+>>
+>> > It's also a bit strange that start isn't mentioned whenever cancel and
+>> > restart are mentioned.
+>>
+>> Why is that?
+>
+> See above - I think I am confused about the difference between start
+> and restart when called on a running timer.
+
+OK.
+
+[...]
+
+>> >
+>> > But maybe this should use the same wording from Opaque::raw_get?
+>> >
+>> >     /// This function is useful to get access to the value without
+>> > creating intermediate
+>> >     /// references.
+>>
+>> To me those two wordings have the same effect. I don't mind changing the
+>> wording if you feel strongly about it.
+>
+> Yeah, I would prefer the wording be the exact same if it is intended
+> to have the same meaning. Using different wording may trigger Chekov's
+> Gun in the reader's mind (as it did for me).
+
+I'm not familiar with any guns =F0=9F=98=85
+
+I'll apply your suggestion.
+
+[...]
+
+>> >
+>> >> +    ///
+>> >> +    /// # Safety
+>> >> +    ///
+>> >> +    /// `ptr` must point to a live allocation of at least the size o=
+f `Self`.
+>> >> +    unsafe fn raw_get(ptr: *const Self) -> *mut bindings::hrtimer {
+>> >> +        // SAFETY: The field projection to `timer` does not go out o=
+f bounds,
+>> >> +        // because the caller of this function promises that `ptr` p=
+oints to an
+>> >> +        // allocation of at least the size of `Self`.
+>> >> +        unsafe { Opaque::raw_get(core::ptr::addr_of!((*ptr).timer)) }
+>> >> +    }
+>> >> +
+>> >> +    /// Cancel an initialized and potentially running timer.
+>> >> +    ///
+>> >> +    /// If the timer handler is running, this will block until the h=
+andler is
+>> >> +    /// finished.
+>> >
+>> > nit: s/is finished/returns/ and maybe clarify the ordering, namely
+>> > that the timer is definitely in a stopped state after this returns.
+>>
+>>     /// If the timer handler is running, this function will block until =
+the
+>>     /// handler returns. Before this function returns, the timer will be=
+ in the
+>>     /// stopped state.
+>>
+>> If we have a concurrent call to start, the timer might actually be in
+>> the started state when this function returns. But this function will
+>> transition the timer to the stopped state.
+>
+> Got it. Consider dropping the last sentence ("before this function
+> returns..."), I don't think it makes this clearer.
+
+OK.
+
+>
+>>
+>> >
+>> >> +    ///
+>> >> +    /// Users of the `HrTimer` API would not usually call this metho=
+d directly.
+>> >> +    /// Instead they would use the safe [`HrTimerHandle::cancel`] on=
+ the handle
+>> >> +    /// returned when the timer was started.
+>> >> +    ///
+>> >> +    /// This function does not create any references.
+>> >> +    ///
+>> >> +    /// # Safety
+>> >> +    ///
+>> >> +    /// `self_ptr` must point to a valid `Self`.
+>> >
+>> > Why use different phrasing here than on raw_get? The parameter name is
+>> > also different. Would be nice to be consistent.
+>>
+>> They are different requirements, one is stronger than the other. I
+>> construct safety requirements based on the unsafe operations in the
+>> function. The unsafe operations in these two functions have different
+>> requirements. I would not impose a stronger requirement than I have to.
+>
+> Ah, the requirement is stronger here than on `raw_get`. Thanks for clarif=
+ying.
+>
+> How about the parameter name bit? Can we be consistent?
+> Opaque::raw_get calls it "this".
+
+Yes, I applied this throughout where a pointer to `Self` is passed.
+
+>
+>>
+>> >
+>> >> +    #[allow(dead_code)]
+>> >> +    pub(crate) unsafe fn raw_cancel(self_ptr: *const Self) -> bool {
+>> >> +        // SAFETY: timer_ptr points to an allocation of at least `Hr=
+Timer` size.
+>> >> +        let c_timer_ptr =3D unsafe { HrTimer::raw_get(self_ptr) };
+>> >> +
+>> >> +        // If the handler is running, this will wait for the handler=
+ to finish
+>> >> +        // before returning.
+>> >> +        // SAFETY: `c_timer_ptr` is initialized and valid. Synchroni=
+zation is
+>> >> +        // handled on C side.
+>> >
+>> > missing article here.
+>>
+>> =F0=9F=91=8D
+>>
+>> >
+>> >> +        unsafe { bindings::hrtimer_cancel(c_timer_ptr) !=3D 0 }
+>> >> +    }
+>> >> +}
+>> >> +
+>> >> +/// Implemented by pointer types that point to structs that embed a =
+[`HrTimer`].
+>
+> This comment says "embed a [`HrTimer`]" but in `trait HrTimer` the
+> wording is "Implemented by structs that contain timer nodes."
+
+I don't follow. There is no `trait HrTimer`, there is a `struct
+HrTimer`, but it has no such wording.
+
+> Is the difference significant?
+
+No, I would say they are semantically the same. Whether a struct
+contains a field of a type or it embeds another struct - I would say
+that is the same.
+
+> Also the naming of the two traits feels inconsistent; one contains
+> "Has" and the other doesn't.
+
+One is not a trait, not sure if you are looking on another item than
+`struct HrTimer`?
+
+>
+>> >> +///
+>> >> +/// Target (pointee) must be [`Sync`] because timer callbacks happen=
+ in another
+>> >> +/// thread of execution (hard or soft interrupt context).
+>> >
+>> > Is this explaining the bound on the trait, or something that exists
+>> > outside the type system? If it's the former, isn't the Sync bound on
+>> > the trait going to apply to the pointer rather than the pointee?
+>>
+>> It is explaining the bound on the trait, and as you say it is not
+>> correct. Pointer types that do not apply synchronization internally can
+>> only be `Sync` when their target is `Sync`, which was probably my line
+>> of thought.
+>>
+>> I will rephrase:
+>>
+>>   `Self` must be [`Sync`] because timer callbacks happen in another
+>>   thread of execution (hard or soft interrupt context).
+>
+> How about "...because it is passed to timer callbacks in another
+> thread of execution ..."?
+
+OK.
+
+>
+>> >
+>> >> +///
+>> >> +/// Starting a timer returns a [`HrTimerHandle`] that can be used to=
+ manipulate
+>> >> +/// the timer. Note that it is OK to call the start function repeate=
+dly, and
+>> >> +/// that more than one [`HrTimerHandle`] associated with a [`HrTimer=
+Pointer`] may
+>> >> +/// exist. A timer can be manipulated through any of the handles, an=
+d a handle
+>> >> +/// may represent a cancelled timer.
+>> >> +pub trait HrTimerPointer: Sync + Sized {
+>> >> +    /// A handle representing a started or restarted timer.
+>> >> +    ///
+>> >> +    /// If the timer is running or if the timer callback is executin=
+g when the
+>> >> +    /// handle is dropped, the drop method of [`HrTimerHandle`] shou=
+ld not return
+>> >> +    /// until the timer is stopped and the callback has completed.
+>> >> +    ///
+>> >> +    /// Note: When implementing this trait, consider that it is not =
+unsafe to
+>> >> +    /// leak the handle.
+>> >
+>> > What does leak mean in this context?
+>>
+>> The same as in all other contexts (I think?). Leave the object alive for
+>> 'static and forget the address. Thus never drop it and thus never run
+>> the drop method.
+>
+> Got it. Is leaking memory generally allowed in the kernel? In other
+> words, is there nothing that will complain about such memory never
+> being reclaimed?
+
+Leaking is generally unacceptable in the kernel. However, leaking is
+considered safe in rust and is possible within the safe subset of rust.
+
+The first time I implemented this trait, it was unsound in the face of
+the handle being leaked. Of curse this is no different than any other
+code, and we can generally not hinge soundness on things not being
+leaked. But after I foot gunned myself with this, I put the comment.
+
+[...]
+
+>> >> +/// A handle representing a potentially running timer.
+>> >> +///
+>> >> +/// More than one handle representing the same timer might exist.
+>> >> +///
+>> >> +/// # Safety
+>> >> +///
+>> >> +/// When dropped, the timer represented by this handle must be cance=
+lled, if it
+>> >> +/// is running. If the timer handler is running when the handle is d=
+ropped, the
+>> >> +/// drop method must wait for the handler to finish before returning.
+>> >> +///
+>> >> +/// Note: One way to satisfy the safety requirement is to call `Self=
+::cancel` in
+>> >> +/// the drop implementation for `Self.`
+>> >> +pub unsafe trait HrTimerHandle {
+>> >> +    /// Cancel the timer, if it is running. If the timer handler is =
+running, block
+>> >> +    /// till the handler has finished.
+>> >
+>> > Here's another case where "running" is confusingly used to refer to
+>> > the timer being in the state before the handler has begun to execute,
+>> > and also to the state after the handler has begun to execute.
+>>
+>> Thanks for catching this. How is this:
+>>
+>>     /// Cancel the timer, if it is in the started or running state. If t=
+he timer
+>>     /// is in the running state, block till the handler has finished exe=
+cuting.
+>
+> Certainly better. Consider dropping "if it is in the started or running s=
+tate".
+
+OK.
+
+
+Best regards,
+Andreas Hindborg
+
+
