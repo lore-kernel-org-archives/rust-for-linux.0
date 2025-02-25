@@ -1,118 +1,94 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F198E36124;
-	Tue, 25 Feb 2025 05:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6300A254AE0;
+	Tue, 25 Feb 2025 06:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740462919; cv=none; b=jnOx7XE4L96e3ByXsrkArxXSUwJF1lbOkKtOjv5Xb58XawyOiBIFjVcGd3OnmiD7zxKrks6tbZtnVFZypo3ZiPtTOgxKQNwhVt9LFXZxCNtvscrtIIb05qfeKpJenM9FCvy9KyreVf7bS/h7CqEhjDXU7qDdf+Z2sjnUCc4exOg=
+	t=1740465422; cv=none; b=VnMxBRfMtLMcgdoX99UCI4L/0Y00shcPy8gwhnyMnE2AELaXizNiMpoYhLN4K9Hwc9yrLIte3CDidBNqe9ZKm9JnolfVy4vO4hazBMKQ7Vm2i+HimNQSEePL14BJX22BPrVyujUf2YTTf5fjO4dA73dHc3Ci9JK+YGB9hpfLayE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740462919; c=relaxed/simple;
-	bh=z/n0ecmeuHsI6oH5v9VDQSdSll/BCv4bxwUSARxaT8c=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=nz8UNXbFYq7RLjv4InfpiL7oaPcSXqu2US2OhX63FF9ROvjsg1ccLD79MmV1HQSZ3+dTDot6zGMbkjSHF4lZuQxTA3NI6phuI6NZXndVznh3mDlXU7ls8aRwS8iek/xPfBOtOCvL5dSo6IDOq7LE0QIKO7PaopTRPchYexrYE5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kWmwkQhl; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740465422; c=relaxed/simple;
+	bh=zmf1BVxC0a6BVEtBTXrRMRPg+UxzEgS6AlCS1ZVuRak=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Mubv/apBKz2HvEYmO5bGsk5ORtiTUGQOGjXgVT25DqyndDtbE866FURL5Eyfo/7MevYVNcX+9lSYH9amNWNe7X5YEQHa91auOXDvQpbE0RaMVwENDaMKQDxtQngQwu3uCGmrt+843/2NoZhIWr49ap4w941J0t2DcUDgbt0MFTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QjV336V8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kWmwkQhl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F6CC4CEDD;
-	Tue, 25 Feb 2025 05:55:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740462918;
-	bh=z/n0ecmeuHsI6oH5v9VDQSdSll/BCv4bxwUSARxaT8c=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=kWmwkQhljPmntmcEC/IzNKPb7DCR31kahxvqoAOp4hqCBP6A7AZ+nIEvysYxYblE+
-	 yHCa6Hp1qVKCIlQT/sdP3cMtGDrdX9Nf1zwPLJ1hWosxwYzNUlhjmiKZCMQY3JGNib
-	 XIKkJvt997eagCvwY7jV8OP4ZROf6FaR30dZW0Un657xBvOeGsk1n/jZEQ6Gc8N3li
-	 aJqTBNiCkldsbQdjoM4rYjYGq+5ZfFKjIQcJFMWdgtKMvPRScxJFyUH1W5bwssKfw7
-	 PKsemGTkOXu/0P5fpUq34kCM3uh4uErwnF7MxlBWo1Qu+vWkCHsCPYKIGejD+oBvSB
-	 eVshhZ+lsyQIA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Janne Grunau" <j@jannau.net>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno
- Lossin" <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,
-  "Trevor Gross" <tmgross@umich.edu>,  "Masahiro Yamada"
- <masahiroy@kernel.org>,  "Nathan Chancellor" <nathan@kernel.org>,
-  "Nicolas Schier" <nicolas@fjasle.eu>,  "Luis Chamberlain"
- <mcgrof@kernel.org>,  <rust-for-linux@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>,  "Adam Bratschi-Kaye"
- <ark.email@gmail.com>,  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu"
- <petr.pavlu@suse.com>,  "Sami Tolvanen" <samitolvanen@google.com>,
-  "Daniel Gomez" <da.gomez@samsung.com>,  "Simona Vetter"
- <simona.vetter@ffwll.ch>,  "Greg KH" <gregkh@linuxfoundation.org>,
-  <linux-modules@vger.kernel.org>
-Subject: Re: [PATCH v7 5/6] rust: str: add radix prefixed integer parsing
- functions
-In-Reply-To: <20250224223032.GA615664@robin.jannau.net> (Janne Grunau's
-	message of "Mon, 24 Feb 2025 23:30:32 +0100")
-References: <20250218-module-params-v3-v7-0-5e1afabcac1b@kernel.org>
-	<20250218-module-params-v3-v7-5-5e1afabcac1b@kernel.org>
-	<pxb9YSTFjQxi7OFAjJ0RYOrJ8AmteN_UzJU-aeQA1wbQMquZLi99UDcDWHMw5ImXYDLj9ADxJ33K7huT1nq7Vw==@protonmail.internalid>
-	<20250224223032.GA615664@robin.jannau.net>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Tue, 25 Feb 2025 06:54:45 +0100
-Message-ID: <87tt8iy3fe.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QjV336V8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51E8DC4CEDD;
+	Tue, 25 Feb 2025 06:37:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1740465421;
+	bh=zmf1BVxC0a6BVEtBTXrRMRPg+UxzEgS6AlCS1ZVuRak=;
+	h=From:To:Cc:Subject:Date:From;
+	b=QjV336V8aed5lDhxO8cUVwtntyqcr17IdLVODRAxYbp5v0JuOgK8HNvnfJoLuNsgJ
+	 MCOay4oN3xUHGXEkDW0fY5sHQzmfiRd6ucGVUxVEfJHS6VFjKW01SbodTNfWRcKmDO
+	 fZ3YaQVXCqoX37tiMqRMWXTkz9OQuW4O2HsVLrTM=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org
+Cc: rust-for-linux@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Kurt Borja <kuurtb@gmail.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH] driver core: faux: only create the device if probe() succeeds
+Date: Tue, 25 Feb 2025 07:35:46 +0100
+Message-ID: <2025022545-unroasted-common-fa0e@gregkh>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1967; i=gregkh@linuxfoundation.org; h=from:subject:message-id; bh=zmf1BVxC0a6BVEtBTXrRMRPg+UxzEgS6AlCS1ZVuRak=; b=owGbwMvMwCRo6H6F97bub03G02pJDOl7Uw6K3Fzz7VTbLGv5pMb4N2HeLG6Guunf5xyfzf5L8 u7vC/rLOmJZGASZGGTFFFm+bOM5ur/ikKKXoe1pmDmsTCBDGLg4BWAi+4IY5qk0/3imaHw2IjNX ZIcl+zKdxhghO4b52Z9PZcbIWp4z3xq3PWxJ8HqvsrefAA==
+X-Developer-Key: i=gregkh@linuxfoundation.org; a=openpgp; fpr=F4B60CC5BF78C2214A313DCB3147D40DDB2DFB29
+Content-Transfer-Encoding: 8bit
 
-"Janne Grunau" <j@jannau.net> writes:
+It's really hard to know if a faux device properly passes the callback
+to probe() without having to poke around in the faux_device structure
+and then clean up.  Instead of having to have every user of the api do
+this logic, just do it in the faux device core itself.
 
-> On Tue, Feb 18, 2025 at 02:00:47PM +0100, Andreas Hindborg wrote:
->> Add the trait `ParseInt` for parsing string representations of integers
->> where the string representations are optionally prefixed by a radix
->> specifier. Implement the trait for the primitive integer types.
->>
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->> ---
->>  rust/kernel/str.rs | 118 +++++++++++++++++++++++++++++++++++++++++++++++++++++
->>  1 file changed, 118 insertions(+)
->>
->> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
->> index db272d2198fcc..8b0d814b47f52 100644
->> --- a/rust/kernel/str.rs
->> +++ b/rust/kernel/str.rs
->> @@ -945,3 +945,121 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
->
-> [...]
->
->> +    pub trait ParseInt: FromStrRadix + TryFrom<i128> {
->> +        /// Parse a string according to the description in [`Self`].
->> +        fn from_str(src: &BStr) -> Result<Self> {
->> +            match src.deref() {
->> +                [b'-', rest @ ..] => {
->> +                    let (radix, digits) = strip_radix(rest.as_ref());
->> +                    // 2's complement values range from -2^(b-1) to 2^(b-1)-1.
->> +                    // So if we want to parse negative numbers as positive and
->> +                    // later multiply by -1, we have to parse into a larger
->> +                    // integer. We choose i128 as sufficiently large.
->> +                    let val = i128::from_str_radix(
->
-> The usage of i128 causes here following link errors on arm64 with
-> "rustc 1.84.1 (e71f9a9a9 2025-01-27) (Fedora 1.84.1-1.fc41)"
->
-> | ld: rust/kernel.o: in function `<i128>::from_str_radix':
-> | /usr/lib/rustlib/src/rust/library/core/src/num/mod.rs:1563:(.text+0x3bc): undefined reference to `__muloti4'
-> | ld: /usr/lib/rustlib/src/rust/library/core/src/num/mod.rs:1563:(.text+0x440): undefined reference to `__muloti4'
-> | ld: rust/kernel.o: in function `<i128>::overflowing_mul':
-> | /usr/lib/rustlib/src/rust/library/core/src/num/int_macros.rs:2517:(.text+0x4b4): undefined reference to `__muloti4'
-> | ld: /usr/lib/rustlib/src/rust/library/core/src/num/int_macros.rs:2517:(.text+0x534): undefined reference to `__muloti4'
->
-> The errors go away after exchanging i128 with i64 (while breaking the
-> parsing for large values).
+This makes the use of a custom probe() callback for a faux device much
+simpler overall.
 
-Thanks for reporting! I will have to find a better way to fix this issue
-then.
+Suggested-by: Kurt Borja <kuurtb@gmail.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/base/faux.c |   15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-
-Best regards,
-Andreas Hindborg
-
-
-
+diff --git a/drivers/base/faux.c b/drivers/base/faux.c
+index 531e9d789ee0..407c1d1aad50 100644
+--- a/drivers/base/faux.c
++++ b/drivers/base/faux.c
+@@ -102,7 +102,9 @@ static void faux_device_release(struct device *dev)
+  *
+  * Note, when this function is called, the functions specified in struct
+  * faux_ops can be called before the function returns, so be prepared for
+- * everything to be properly initialized before that point in time.
++ * everything to be properly initialized before that point in time.  If the
++ * probe callback (if one is present) does NOT succeed, the creation of the
++ * device will fail and NULL will be returned.
+  *
+  * Return:
+  * * NULL if an error happened with creating the device
+@@ -147,6 +149,17 @@ struct faux_device *faux_device_create_with_groups(const char *name,
+ 		return NULL;
+ 	}
+ 
++	/*
++	 * Verify that we did bind the driver to the device (i.e. probe worked),
++	 * if not, let's fail the creation as trying to guess if probe was
++	 * successful is almost impossible to determine by the caller.
++	 */
++	if (!dev->driver) {
++		dev_err(dev, "probe did not succeed, tearing down the device\n");
++		faux_device_destroy(faux_dev);
++		faux_dev = NULL;
++	}
++
+ 	return faux_dev;
+ }
+ EXPORT_SYMBOL_GPL(faux_device_create_with_groups);
