@@ -1,57 +1,58 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8076B186287
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 17:02:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01EC1DF24E
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 17:12:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740502960; cv=none; b=lGAySFsgjjhfhuE4j9TSY6MbW63oKOgaipJyInOv7cKWKBy93ErhYVJywOGP0ajMeey3jVBtNE9Yw7Exv3NIZR6UyTv4DJ4b7r7h/7KclOUIyPXoemdeV9yfuRYfhj1ogIyfLE5E8mi0X7z5Yt4ZKD0ESqZ8t8ntS9kUTSx0tTY=
+	t=1740503570; cv=none; b=BYUNZzM24gYGGInC2O2t71DVZUrhHQesm9on0OhvfgyrbAcj8nUvkaothUvVgzc8eZCeVdnFVr5JdZYwMRk6glgXnU0AmUFKU8/Ay/w3kp/dLRKGdBKOPw8CbG/nYcLJfkLLz0mMlG7BzoM6nSN7XILkR0AoeWXwLJUok+K6nSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740502960; c=relaxed/simple;
-	bh=inxYI7a0SFVXalZa+rRuAYm01VsT7jhCgH6Sa5CcZ34=;
+	s=arc-20240116; t=1740503570; c=relaxed/simple;
+	bh=ednjTSjvw9Gt99tA22MMvDogCLInNdUvhE7Mq9C+1L4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Yk/H0DB0J4acwOuHdK5i3a1aun+GHAYmVESxMBFIywRcPrzyX30I0v8t3ca7ZgDHaBzJP2E5JuGha2xGnXapu9F2KyzP8ObNmWT95/D0g2RMHaLBOMNHhZu4FbalkSqdJSb/hIlYB8x7tPqcNox31Fmc8Q2cO4x+pi6RXZfMArA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nHsr4JI7; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 To:Cc:Content-Type; b=lxS76n0XgV90XoswX2EBp/I9tAJqgv30HilqgR4JNBK+rqlhfU7KQs4N3y5L1451ymBWzxM0KO9gTaPrCyk4/yDUMXNJdyQteA14Wr+CAaRxkJTIKpwS1sQtISC0YktG8KOg9vjhGyz1MCbuOfzoPYOVfmtw4nxNoVzp9hLKd28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=r0mOhkKe; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nHsr4JI7"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5dc89df7eccso10512836a12.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 09:02:38 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="r0mOhkKe"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-390cf7458f5so860980f8f.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 09:12:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1740502957; x=1741107757; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=inxYI7a0SFVXalZa+rRuAYm01VsT7jhCgH6Sa5CcZ34=;
-        b=nHsr4JI7tM2bcbdQYjBNo6OE0j7gMJLJvSXHVJceN7jref5wUf8hOfWs5rARDdHaE1
-         E/KurbQl3OKuieRyy7MzBpmUO8FxlV5DUyUbXZF/RAtOC8Vyhkhv6/zfsmEM78GpsSYJ
-         VHoKOGzkuzNt0Q4dj7kjfwpXEe7FU7f+F9GqILFSilEAGbZKivsA9FWfxe6QhfMi12r4
-         T3pjEE9KWRuldP8eGSdwCY0wjR95poWszHNi3rolnoI2QrNLGsxAOswDdjRHxiQy8uQ3
-         wOHLTPh+ecV0DRYs78fR9QwQ6QdPDYu7iRd+HJTPGI9th95MY3RgFsQVfRqQKIbHlVqj
-         SSzA==
+        d=google.com; s=20230601; t=1740503567; x=1741108367; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ednjTSjvw9Gt99tA22MMvDogCLInNdUvhE7Mq9C+1L4=;
+        b=r0mOhkKe52C5HSBcSuZib+01ooiaaXSa8OeULguCFDcuOUlBBec4b4bsNwAmhh7LhX
+         pImjvjtHsEUr+NIL8ekHZHzIFmnjHK7RAP19zt65Gv905ZFC+9z9s9spGvti+jwlE3h6
+         sWtl3AF094JttZd8Zlnu+E9OCTdv0UwdxE1c/m0OAjMZA1RRsuDzhzashXa5RY1NWdeX
+         P7+o3ugmbKIKha43Qmw3KLGS+YUrTKYzt77gJ1Jx0kP0viM0FFo0ev5IwQhlSWY1JOsY
+         ucO9JdJ5flqRygi0xl9nsd72kjwjkUWErL6K8unClBs+33NWuBD03oVhjdN0wN6qfC2T
+         FHvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740502957; x=1741107757;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=inxYI7a0SFVXalZa+rRuAYm01VsT7jhCgH6Sa5CcZ34=;
-        b=CqRscrlrLDg5pr8AOzHsQ4YcWPlyGbPEfvPvTmKKkFXZvdRySMe/Mp6ZLaMCac0WFb
-         TAtngjFxleYXvFVhE4y9kTJuwKefzknOPLUrdfSsBtzYTzPnxP2Zbl5SboFsWFHn0goI
-         VCc3r7ciskUGE35ZBR3320Ua4+Qycgzm/PBAecIpPlhkUew1ryOTzJ4cPcKkU8/a9VHq
-         0HJWlHKocwlWiT4i8Px5UrKDOaPRU3yhoh8Xq6YnIL5YZkruYKlrOwi6gNdna9AHLUk/
-         B4Cd6VMal2WsfXVBJzbMm2I7MfIlubN/tT2SCuIijhx+4+LMndGge8sLOUutDBrxyLXo
-         K4JQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVbGJbSc1khLv7DjAgj65I94pB05P/YeVYt4Z7lonlmQi4FN8xyxR6zEULlErYROX00v6ZJmClAwg7tIATtzQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yze0KcTQ3ihFH2+WOdn0agFD0SLk9BxlVfs1Idkzptsf2ESjzON
-	sgz4BKB/hiCNjcUc93LbwGtCuYiOZ6UXFdYDf6dil/qVBHnlwSUQoVqWPnKrQ9XJ2haJX4B/Ahm
-	DtZJZewI3Cs/Eawm5maUw+R/jvPu/6rjm2tn8FA==
-X-Gm-Gg: ASbGncuid7x7jlzPqlSLq70TlFQkwCu61s0czIA6ZUzPHSMA1vI/4C6o+ZA1daobO+z
-	fN1bN/UqbDwsKAqIq6uo2msAGjQFPcfsRklcZK8Fa6TSshi6U8sBovBHE3jllZytT7kbOHxrdbx
-	PemGBzj8E=
-X-Google-Smtp-Source: AGHT+IHG7KWqmrrEfmkHl16lnyEnUFqzJos/oKExNnyPDEP4u1yoAp+TQVlLKnzCiELY1vOHL9S07T288ex08DhPTV4=
-X-Received: by 2002:a05:6402:520d:b0:5dc:7fbe:7310 with SMTP id
- 4fb4d7f45d1cf-5e44448119amr4294661a12.6.1740502956713; Tue, 25 Feb 2025
- 09:02:36 -0800 (PST)
+        d=1e100.net; s=20230601; t=1740503567; x=1741108367;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ednjTSjvw9Gt99tA22MMvDogCLInNdUvhE7Mq9C+1L4=;
+        b=g/9r6FXWqentK5w8/FSyfS+wAmwj2w2mvBTbisSF/yb2LuV9jBaNSS4uLdGCgoMXud
+         bDdfRUX55bYIxF1KlLOJWa9Q0Gw1hgPDLYU1hwDSQXE35vGj2KAjk6ABD24tof2pK2oZ
+         a8yVIvFcnIgeVGFZ3kBC/8BbzqK2J1sh9g5qb0OZPNn9taEPtZsFx+btAIOmnLs4JY9l
+         yWL+mnn2GMBLVahKoO0zxdSYTJhqRHDNAa22iaqH7309SA8+s2Omh80ZMAooqbB/LI2a
+         ePeScjcFfZC4vl1hbzQSeaPk7d94atKvDQoAsQmW3vorQWFAxlf1LNRQ6LgVz9Mo/2Kg
+         dPGA==
+X-Forwarded-Encrypted: i=1; AJvYcCX319lilmKdJ46sq/TzQiuVipY8UKWIPYDKBcXEQYxIzBzGZCtWM7wtLe21UZVZUziWKtwRHUVD1+zMnu/TIw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwlaB0RSAZW2uW7EtX2eyCfYUEgBorYqadD8Rv8sTATNHKxJzdG
+	r5SnlVLPywKZWZT+X1VKGJzLrRlVD5nZa3ZPUrlqxVZoMten20VPbpZJ8RfQm7mJ4igyibprunJ
+	lRcUvvILS9Y1q9Oo0/4rVguWKhelThvP/hzMP
+X-Gm-Gg: ASbGncvj1E2ek496k5/BqV4YWWgMbiQQaCz4D4yfoAUCAU/uBg0GQms7liSQ0OTQiOE
+	OTLvD+vPHcfpjk9b8rss+Px8/HckFZd/Vn+l867LNDg0GGpydAaJJfLPSycC6gf1O7LafmT20Xk
+	THJyCGmDo6AJRMuNIKCKj/gNAlPlHEJAE2Gfm/mQ==
+X-Google-Smtp-Source: AGHT+IENL3tkr5YY1W1LPao/+fxPS1FpvFsCT1UPYovJTPV5D1zitQeIdtwEVZnuTIAS+IO71JyVmXj+d+y+IFJL6GI=
+X-Received: by 2002:a5d:6c6e:0:b0:38d:dce1:f207 with SMTP id
+ ffacd0b85a97d-390cc631a3emr4656547f8f.44.1740503567098; Tue, 25 Feb 2025
+ 09:12:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -61,13 +62,14 @@ MIME-Version: 1.0
 References: <cover.1740475625.git.viresh.kumar@linaro.org> <68ac0f0ee3c0ebd3d3cc078a6270752778a1b732.1740475625.git.viresh.kumar@linaro.org>
  <CAH5fLgg7o7hs5B4mMzPd6RzYm+RcX8gw1Aw8voJqnmfnA_aM4Q@mail.gmail.com>
  <20250225114830.64p56bndn4hkkkgq@vireshk-i7> <CAH5fLghUDz8tpkTuvWZgwT2_VKgxuS+iZKnoT4prKwS9tbp8wA@mail.gmail.com>
-In-Reply-To: <CAH5fLghUDz8tpkTuvWZgwT2_VKgxuS+iZKnoT4prKwS9tbp8wA@mail.gmail.com>
-From: Viresh Kumar <viresh.kumar@linaro.org>
-Date: Tue, 25 Feb 2025 22:32:28 +0530
-X-Gm-Features: AQ5f1JryIXlM3NUmzUgSEkX5tUke-JsoANytTchV55hGvhuch6fz7U_D9kJhvX0
-Message-ID: <CAKohpo=uiCS6nyissb3ugiyniwnZYu5kCf4+bp32dDzRhgGfCQ@mail.gmail.com>
+ <CAKohpo=uiCS6nyissb3ugiyniwnZYu5kCf4+bp32dDzRhgGfCQ@mail.gmail.com>
+In-Reply-To: <CAKohpo=uiCS6nyissb3ugiyniwnZYu5kCf4+bp32dDzRhgGfCQ@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 25 Feb 2025 18:12:35 +0100
+X-Gm-Features: AQ5f1JrsvkSYfxf47nMcctFkIDr7cuUGNXZJBCZDafLE5kFdCo2jxMcIoSYI5eI
+Message-ID: <CAH5fLggyEXyyaFNnmBCPOSX051TiFyAp0B8GfahbPg=+LrtUWA@mail.gmail.com>
 Subject: Re: [PATCH 1/2] rust: Add initial cpumask abstractions
-To: Alice Ryhl <aliceryhl@google.com>
+To: Viresh Kumar <viresh.kumar@linaro.org>
 Cc: Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
 	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -77,19 +79,27 @@ Cc: Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.d
 	Danilo Krummrich <dakr@redhat.com>, rust-for-linux@vger.kernel.org, 
 	Vincent Guittot <vincent.guittot@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 25 Feb 2025 at 17:23, Alice Ryhl <aliceryhl@google.com> wrote:
+On Tue, Feb 25, 2025 at 6:02=E2=80=AFPM Viresh Kumar <viresh.kumar@linaro.o=
+rg> wrote:
+>
+> On Tue, 25 Feb 2025 at 17:23, Alice Ryhl <aliceryhl@google.com> wrote:
+>
+> > Is it a problem if a value of type struct cpumask is moved? It looks
+> > like it is just an array of longs?
+>
+> With the current code, if I replace the Box with an on-stack variable,
+> the kernel crashes.
+>
+> In my usecase, the pointer to the cpumask array is sent to the OPP
+> core, which may update the content, though it doesn't save the pointer.
+>
+> But for another usecase, the C code may end up saving the pointer.
 
-> Is it a problem if a value of type struct cpumask is moved? It looks
-> like it is just an array of longs?
+I don't think that case applies here. Variables that could be stashed
+like that need a destructor that removes the pointer from the relevant
+C structures. This is because pinning only prevents the owner from
+moving the variable - it doesn't prevent the owner from destroying it.
 
-With the current code, if I replace the Box with an on-stack variable,
-the kernel crashes.
-
-In my usecase, the pointer to the cpumask array is sent to the OPP
-core, which may update the content, though it doesn't save the pointer.
-
-But for another usecase, the C code may end up saving the pointer.
-
---
-Viresh
+Alice
