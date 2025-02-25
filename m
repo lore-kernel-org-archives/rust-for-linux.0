@@ -1,184 +1,110 @@
-Received: from sender3-op-o12.zoho.com (sender3-op-o12.zoho.com [136.143.184.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CBE810E4
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 10:08:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.184.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740478108; cv=pass; b=lAnsEITk2CL4io4dWC7+be56b6xG9pSLWYRgE8oI8HTkeJZo54MensIEm20H9AsWYTj6mWGJtmM85quA0Ph5jUrYjvegeO1yKdIAFRMGole55VEKLakuP5kBykrhc0msP6j5KXbzbpQqulgwyshqZ1tDNOxyfqqGGKTU95pMaaM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740478108; c=relaxed/simple;
-	bh=DT/K4LUz9mRky/gVLcHBgRitqPaNuFUPZW//Y1x0J98=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=gAQRCNc4UrEMh/uf9f7dkEvH8fduoeVxEMYcoSwsh+uNo2o8cs09HZIKEDCec69BouC8v3EuNyYP8YPJuuclV9an0nCXQRqEYe4z/o9cyJ4it34B9vbnjn0Qqemph/nsFJQ5XCuLt+tnHdHnNcAb2ULTVoGO0MRYtESm81XHNPs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=fAagK/DV; arc=pass smtp.client-ip=136.143.184.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAEC4206F25
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 10:10:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740478234; cv=none; b=EBU9k7BpbCzlytK5hly9TH7xywo/jhDFoWkVy7A3mNejEsArF7MUIhyd1BRcm7gqMxww6kUS0T7KFjYA2wLfE7cmr9lENWE0HBKrhmKt4jAiuXpVfTTQNFlU/GE+hoTKlgnQSp07gM8xQi2EIWP5pTaoa+fhdZCAwkMBExMKGMY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740478234; c=relaxed/simple;
+	bh=HEsaUBqbvlmmIMeWKimYYIriYFk+t+jpsGuibbCtBMM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=blSXxrUza2xCta9VUnn+aHjrp42f3WwAis6xxxnXRLd9DbQ5g+6aCb67PhhuTHRnc9f95eqVmP3G8uGBQ4zRW9Rvr+HDGMlu7/a51hTiWYjkrUTFND+otwoMfYY798Y5thkEQtf0KZ7vskfm3o+qItQ8jCEDWhsYNv07oB49Zjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YB7PyxLl; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="fAagK/DV"
-ARC-Seal: i=1; a=rsa-sha256; t=1740478090; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=bjCE3lYgrRu6qduOY7CcXc5r/OZ+LQUT9P6U57RE4iUPnKuKkSGfJWIszcfgCOAQY6CtdD6j6mV/XNrHerlkAIGrsqLVcy3Y0DlZKrsqzD6gBwsWFrYBGd5+zLa6bQhZxF3An856Q3HrBJqc/U2AFiJKoPwxdfefTDFClK5m1OM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1740478090; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=IeuGKlxkDRWpEvw871NJWEMXU/W/lnplCizDAK0isUM=; 
-	b=cd+E+GFgeF427nA7poqfSItBP2Vps+BsdNoXwFC/Lr3GO497EV9+qPCR1KcbKTyjr0SUO7yYvsU571bUUG5cwvZSxBoSkpnu4KnO6pugMojtdal+Zl3idmYAE2llVSgXvA2wlN/uKWFBuk9h3nokeoHlpJ6JwkVkQAQNCqGzczM=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1740478090;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=IeuGKlxkDRWpEvw871NJWEMXU/W/lnplCizDAK0isUM=;
-	b=fAagK/DVlKnW7zF9wRSN+RH4G0W8xO83eywwMuKXu3jQhTdJ5Y16qIA8RObNRE39
-	IB2rECwMOrLAC7tS2WUUO+2bed/oCNMCGR8I5lB9ZwNWC4xWVdw7B0Ziwgn5kd8+s7S
-	0PJbMN61skr5v/SpoiRlmNxjIE0PuzWpgNRhQrmY=
-Received: by mx.zohomail.com with SMTPS id 1740478087785762.1541628229277;
-	Tue, 25 Feb 2025 02:08:07 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YB7PyxLl"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-38f5fc33602so3050488f8f.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 02:10:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1740478231; x=1741083031; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bNwJF7WbQ7qHyWG41GyMTL4WrQ1xaWCn+JBYGaDY5JI=;
+        b=YB7PyxLlozGRuNxh5oxEwYbvI6QEOP2nI4VKQl8Ppd0J/4MExMa+hhBpe/7wO1piP2
+         Hjef3ZbKNwz/cpgLzC+4mpzZF2D3wh6/pj08D3gXODyFmP4ZfXnVf6xvh0eEOXUoq6dq
+         3qy0jzO7cxA4d60g/pyb8NO8KQhvuQSya8EXeZA2KkVqNES3XlGw7bGTzsMZqFGVI4qQ
+         CaivB66K0KNKSOiqFOlwc4g0xGSeJbiLi93KybSk3yUTzK9NMY4YHPdkiHfgGGEUhO1P
+         wPNTBml+WPRc8hSjuZ4dHrpOCIJj1P+6CyZjVC08jW45uiyL4yzO1rLLeOEH9zCTWCS3
+         vI8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740478231; x=1741083031;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bNwJF7WbQ7qHyWG41GyMTL4WrQ1xaWCn+JBYGaDY5JI=;
+        b=IwnijGBFSgzhEt3OfsavDhfADZKsJradKCWMFsySETzEP9zQtReiIfTT+K+LD4KVjf
+         KdsuI5JnKNWqaOkjvgebeb6Y0CixXdlzDqFh+zrKdZU0ZapDGHre3fxSMa/z4CuQ3btz
+         2vqd2+KkjKT4uMm/d/fE9ccWmZgzME6bqFNWRwxbEKZUC/czKI6QPxc9fYP6EjIH7hY7
+         CsCNm2S4MlB4L6UE+npZADUrMUrvnRqVjdkXkiUu8JpeTV3C27ytkGiiCZrU/nbWDhfA
+         pFwSenw2gArJIxtBFMERkPuJOcq4HxQDtgogaZjsXE7yFCoEQwKQh/bvIvtirUoPv+Pt
+         8sVg==
+X-Forwarded-Encrypted: i=1; AJvYcCVkeE6XOlWYtSc1v3qhTYt7vfma2NylM6lgnyehJKdT8Iv3PFB/ByPQnX35sWvcvzTP6ayWgroaPHBqj4A9zw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YygZXkeTItVDDa6Zp51dl/tPwfHBVPvsyPK46TcO8qVfTMMY9g3
+	3ZwKiIXaaNsAZmph+CiXS1mDiPEPW4hiMtIdJnr+y/WF2C/5w3LArCtOuWoBdkT7cUAjExMGC01
+	3y4gzhsistgNkblPZtDVEgXOFPtK2ljTGpK8d
+X-Gm-Gg: ASbGncsFYq5N0waHbvgR+hePjg24pGoZV4S5ochG70RxG60z82FxABQly9KdttIi0hb
+	XLoyJyfnJkiCdXp++/aWFe5suvOUYn3eLx16lp/ey7wAJtWEgEVjRm/XiNlUpTGguSBZpx9E66v
+	/RMaNDHK0u/Z1WvMHo1PkYrsqaDGdkhzyZxLsFXA==
+X-Google-Smtp-Source: AGHT+IGfaWyqkCsllYHWsajFAN0pn2xeUEdUV0MH6OkubIeJVTJI7wG01uTF59yTNz1OwLNz8deLmppVNDVmY7bgr/c=
+X-Received: by 2002:a5d:6c6f:0:b0:38d:df15:2770 with SMTP id
+ ffacd0b85a97d-38f613fa36emr17275090f8f.0.1740478230765; Tue, 25 Feb 2025
+ 02:10:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
-Subject: Re: [PATCH v2 2/2] rust: types: `Opaque` doc: Add some destructor
- description
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <87seoae4u5.fsf@kernel.org>
-Date: Tue, 25 Feb 2025 07:07:53 -0300
-Cc: Dirk Behme <dirk.behme@de.bosch.com>,
- rust-for-linux@vger.kernel.org,
- ojeda@kernel.org,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>
+MIME-Version: 1.0
+References: <20250117-miscdevice-fops-change-v1-1-ec04b701c076@google.com> <2025021926-transport-fridge-bc43@gregkh>
+In-Reply-To: <2025021926-transport-fridge-bc43@gregkh>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 25 Feb 2025 11:10:17 +0100
+X-Gm-Features: AQ5f1JpRZUEexW9GquiI18Q-SWyBfLM83cXvJiOZFncKVQCL9J-DvkDBnBORXeU
+Message-ID: <CAH5fLggCjB0ePQvPFeTuy9m0UC_KkHa6-qU8AhQ+P8oHbAhZLA@mail.gmail.com>
+Subject: Re: [PATCH] rust: miscdevice: change how f_ops vtable is constructed
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <CE22ECC5-135D-473D-AD79-A07510432A4A@collabora.com>
-References: <20250219055516.359454-1-dirk.behme@de.bosch.com>
- <qR15TFA5w7m-em7Om-XpDqJvZbPA4T-_wgdtpb2lzfqhHWXVz6MT3cIurrB2_JbUbNqqlffrtGTN8cSUrtTL1A==@protonmail.internalid>
- <20250219055516.359454-2-dirk.behme@de.bosch.com> <87seoae4u5.fsf@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: Apple Mail (2.3826.300.87.4.3)
-X-ZohoMailClient: External
 
-Hi Andreas,
+On Wed, Feb 19, 2025 at 4:58=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Fri, Jan 17, 2025 at 02:22:32PM +0000, Alice Ryhl wrote:
+> > I was helping someone with writing a new Rust abstraction, and we were
+> > using the miscdevice abstraction as an example. While doing this, it
+> > became clear to me that the way I implemented the f_ops vtable is
+> > confusing to new Rust users, and that the approach used by the block
+> > abstractions is less confusing.
+> >
+> > Thus, update the miscdevice abstractions to use the same approach as
+> > rust/kernel/block/mq/operations.rs.
+> >
+> > Sorry about the large diff. This changes the indentation of a large
+> > amount of code.
+> >
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> >  rust/kernel/miscdevice.rs | 295 ++++++++++++++++++++++----------------=
+--------
+> >  1 file changed, 141 insertions(+), 154 deletions(-)
+>
+> This doesn't apply against a clean 6.14-rc2 tree, what is is made
+> against?
 
-> On 19 Feb 2025, at 05:06, Andreas Hindborg <a.hindborg@kernel.org> =
-wrote:
->=20
-> "Dirk Behme" <dirk.behme@de.bosch.com> writes:
->=20
->> In the discussion [1] some `Opaque` documentation updates have
->> been proposed. In that discussion it was clarified that `Opaque`
->> is intended to be used for (partial) uninitialized or changing C
->> structs. And which consequences this has for using raw pointers
->> or the destruction. Improve the `Opaque` documentation by adding
->> these conclusions from that discussion.
->>=20
->> Suggested-by: Daniel Almeida <daniel.almeida@collabora.com>
->> Link: =
-https://lore.kernel.org/rust-for-linux/F8AB1160-F8CF-412F-8B88-4C79D65B53A=
-1@collabora.com/ [1]
->> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
->> ---
->> Changes in v2:
->> * Split patch into two (Miguel)
->> * Improve commit message and subject (Miguel)
->>=20
->> rust/kernel/types.rs | 14 ++++++++++----
->> 1 file changed, 10 insertions(+), 4 deletions(-)
->>=20
->> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
->> index 8ed802444c594..08ff4949d2a61 100644
->> --- a/rust/kernel/types.rs
->> +++ b/rust/kernel/types.rs
->> @@ -274,14 +274,20 @@ fn drop(&mut self) {
->> /// [`Opaque<T>`] is meant to be used with FFI objects that are never =
-interpreted by Rust code.
->> ///
->> /// It is used to wrap structs from the C side, like for example =
-`Opaque<bindings::mutex>`.
->> -/// It gets rid of all the usual assumptions that Rust has for a =
-value of type `T`:
->> -///
->> -/// * The value is allowed to be uninitialized (for example have =
-invalid bit patterns: `3` for a
->> -///   [`bool`]).
->> +/// This is useful for C structs that are not fully initialized =
-(yet) or might change their
->> +/// content from C side at runtime. [`Opaque<T>`] gets rid of all =
-the usual assumptions that
->> +/// Rust has for a value of type `T`:
->> +///
->> +/// * The value is allowed to be uninitialized or invalid (for =
-example have invalid bit patterns:
->> +///   `3` for a [`bool`]).
->> +/// * By dereferencing a raw pointer to the value you are unsafely =
-asserting that the value is
->> +///   valid *right now*.
->> /// * The value is allowed to be mutated, when a `&Opaque<T>` exists =
-on the Rust side.
->> /// * No uniqueness for mutable references: it is fine to have =
-multiple `&mut Opaque<T>` point to
->> ///   the same value.
->> /// * The value is not allowed to be shared with other threads (i.e. =
-it is `!Sync`).
->> +/// * The destructor of [`Opaque<T>`] does *not* run the destructor =
-of `T`, as `T` may
->> +///   be uninitialized, as described above.
->=20
-> Thanks for clarifying the docs. What you write is correct, but I would
-> prefer a more terse and formal language, at least for the first
-> paragraph. Perhaps you can include the following in some form:
->=20
->> Opaque opts out of the following rust language invariants for the
->> contained `T`:
->>=20
->> - Initialization invariant - the contained value is allowed to be
->>  uninitialized and contain invalid bit patterns.
->> - Immutability invariant - `Opaque` allows interior mutability.
->> - Uniqueness invariant - `Opaque` allows aliasing of shared =
-references.
->>=20
->> Further, `Opaque` is `!Unpin`.
->=20
-> And then after that paragraph, you could elaborate with examples and =
-so forth?
->=20
-> Best regards,
-> Andreas Hindborg
+I will rebase.
 
-IMHO, your =E2=80=9Cterseness=E2=80=9D suggestion goes against the very =
-intent of this patch.
+Are there any other miscdevice commits that have landed this cycle
+that it might conflict with? If so, I can base it on your branch to
+avoid such conflicts.
 
-It takes something extremely clear, and places it behind some technical =
-terms.
-
-In as much as I agree with making things formal and professional, our =
-first priority should
-be making sure that the docs for this type are clear as day, so that =
-people do not misuse it
-to introduce bugs.
-
-Note that this discussion sprung up because it=E2=80=99s hard to =
-understand what exactly this type
-does and when exactly it should be used. The code is conceptually =
-simple, but things like
-
-
->> +/// * The destructor of [`Opaque<T>`] does *not* run the destructor =
-of `T`, as `T` may
->> +///   be uninitialized, as described above.
-
-are 100% a pitfall that should be warned against in bold letters and =
-plain terms.
-
-
-=E2=80=94 Daniel
-
-
-
+Alice
