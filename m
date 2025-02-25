@@ -1,301 +1,184 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender3-op-o12.zoho.com (sender3-op-o12.zoho.com [136.143.184.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64132690ED
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 09:55:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740477332; cv=none; b=BjVInyn5OYhKF300qv73w61HMR44KTY6PNSNs0tEGd8Cq3+YOwNRBrEQupB8BGoZHLgD8jDuYgERgRUu6XCPHfgJyNANlfKCw4qYxN/CLX/Y8tKxZHIUCU6NBDwYEAQxKei1aOarnPm7TL/7JR3XvTIHKf/q9TN5gzqLEhpbDgs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740477332; c=relaxed/simple;
-	bh=6WofqscdOjqMijz3N9pp8TU409eaANCWzBo+sQz0RLA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rGQoGUGpLWwbh4Tkp7CLKYCaBzUpBwLQSvo2QSqGtBPij48XPDAVKr4spjpCCcf2LJ6mMSybsNZEHCR1szCmV4XmZg4HRZMC2sSIQNFo+SHT1ABZ2WhKqviD3QyPPT13LILD7hP4SJMAAlRZ2dUUr+GM68BXvyG9m5DigU9ymFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dl6pwGNE; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CBE810E4
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 10:08:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.184.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740478108; cv=pass; b=lAnsEITk2CL4io4dWC7+be56b6xG9pSLWYRgE8oI8HTkeJZo54MensIEm20H9AsWYTj6mWGJtmM85quA0Ph5jUrYjvegeO1yKdIAFRMGole55VEKLakuP5kBykrhc0msP6j5KXbzbpQqulgwyshqZ1tDNOxyfqqGGKTU95pMaaM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740478108; c=relaxed/simple;
+	bh=DT/K4LUz9mRky/gVLcHBgRitqPaNuFUPZW//Y1x0J98=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=gAQRCNc4UrEMh/uf9f7dkEvH8fduoeVxEMYcoSwsh+uNo2o8cs09HZIKEDCec69BouC8v3EuNyYP8YPJuuclV9an0nCXQRqEYe4z/o9cyJ4it34B9vbnjn0Qqemph/nsFJQ5XCuLt+tnHdHnNcAb2ULTVoGO0MRYtESm81XHNPs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=fAagK/DV; arc=pass smtp.client-ip=136.143.184.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dl6pwGNE"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-38f26a82d1dso2743090f8f.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 01:55:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740477329; x=1741082129; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DPxaQia6Cvd2gxcPU/EG6ad16GELvZyMWz258B0x5vU=;
-        b=dl6pwGNE0xkTnOzaQfvTSfrRRqCTh7tV8WJZOtE0y5pLgbg2kNOtpEUjfMREgJtcDO
-         XA8tTky6i/QOdKs8OiI9cHp7kK6QzVqbjxUjJnq1v498agOrW6URiYmWUrH/7kWca2bg
-         kSC13xtAhRZYNTEt9VmRJUhtMj7j83GGK5gueLQS4pwePiL/h84ugSM/PRrCmWUgpmqY
-         Es7EdPsnXQbgAmtGekNoclXuN1FR01Smwm4JdbR60yITLiTF+vyfGaoIewXdd8jVR4P7
-         rjZ0pUK6DtDnc8t6r0Swnq/X4wyhSL+kGuhfuTnIs8sgf0eEsc9c/6Jlk6xUczIp+pqI
-         b/wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740477329; x=1741082129;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DPxaQia6Cvd2gxcPU/EG6ad16GELvZyMWz258B0x5vU=;
-        b=Mjg/h8vNH8tdaIU3g+xu2b6nNTJJe0/EtzA3oz7Bhe3FwqR3+VyRPQHig6lMF1/dTF
-         86gC2qoZbBgORbUTj+iepB9jElI/jb8KMgM6HnB7KVDffCduUTozCx0t1oqQLbKPgBKL
-         qiVI9QtXWNydxS26VFsvjmBYTZcuxwVrwy+pzv91uftxqWZd5fiUVakRLHfIYCVTt76g
-         1bcSKtBF9P0r6//DZ8EzqHwA+SKskx+DAJL7XdnHVEFpAWFQA42txy+sllqYIqFPZ8S2
-         WHVkA+rpWuBvQdidxF8pbU6FIgcHX/fdfp+qoHexeXtBsksSkwpzZpEwd5EURdeJ86TN
-         sdvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWU/QRb63z83ErPcSY/0TdZaPL7tcTKIJ71UOMxrpTw/+X2+EE3c8ziLBYO5Yxy6z0TWYFHjZ9mN+vTurCxOg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAJFlO88hHHY3WXwX0xG98IVKmaQ/gwAtHTz5+bwPH/61R2L48
-	222gCqGbw6ZIpndiciMK/Zoqqaf0BqsBMVIvoDFkyCdMWIYZnnwrLmCfks3AoTEqiD+wpqVAyc1
-	vtHi79tgWEcsa/gq4ZCzToMRtvlcMfeXdDsWE
-X-Gm-Gg: ASbGncvb7hx6JMZBVaQRhr/fGsn5owO8D+8pavfN9r5ptFr6GeBdtN115qZ0eeMKXIj
-	YugDm+v24ZSHw1bQXy9+JzZJo4gKg2HGD6Jjz0CCezWU7uZOd3Ho/B+42ttTKNZpqC7IzlfReMD
-	VNqtmyKNI/khOWDpPj00K0fL6K62Wg+4KWNzq0dw==
-X-Google-Smtp-Source: AGHT+IFgvJGRsWUD8wDqc0CmBB3fAAIHAhx4Jx/iLEXYfAX75626uh/92RniiahYJU5Ze0IAc077HhN54wYWIRv3SdU=
-X-Received: by 2002:adf:e74a:0:b0:38f:225b:3122 with SMTP id
- ffacd0b85a97d-390cc630d47mr1713381f8f.44.1740477328936; Tue, 25 Feb 2025
- 01:55:28 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="fAagK/DV"
+ARC-Seal: i=1; a=rsa-sha256; t=1740478090; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=bjCE3lYgrRu6qduOY7CcXc5r/OZ+LQUT9P6U57RE4iUPnKuKkSGfJWIszcfgCOAQY6CtdD6j6mV/XNrHerlkAIGrsqLVcy3Y0DlZKrsqzD6gBwsWFrYBGd5+zLa6bQhZxF3An856Q3HrBJqc/U2AFiJKoPwxdfefTDFClK5m1OM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1740478090; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=IeuGKlxkDRWpEvw871NJWEMXU/W/lnplCizDAK0isUM=; 
+	b=cd+E+GFgeF427nA7poqfSItBP2Vps+BsdNoXwFC/Lr3GO497EV9+qPCR1KcbKTyjr0SUO7yYvsU571bUUG5cwvZSxBoSkpnu4KnO6pugMojtdal+Zl3idmYAE2llVSgXvA2wlN/uKWFBuk9h3nokeoHlpJ6JwkVkQAQNCqGzczM=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1740478090;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=IeuGKlxkDRWpEvw871NJWEMXU/W/lnplCizDAK0isUM=;
+	b=fAagK/DVlKnW7zF9wRSN+RH4G0W8xO83eywwMuKXu3jQhTdJ5Y16qIA8RObNRE39
+	IB2rECwMOrLAC7tS2WUUO+2bed/oCNMCGR8I5lB9ZwNWC4xWVdw7B0Ziwgn5kd8+s7S
+	0PJbMN61skr5v/SpoiRlmNxjIE0PuzWpgNRhQrmY=
+Received: by mx.zohomail.com with SMTPS id 1740478087785762.1541628229277;
+	Tue, 25 Feb 2025 02:08:07 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <cover.1740475625.git.viresh.kumar@linaro.org> <68ac0f0ee3c0ebd3d3cc078a6270752778a1b732.1740475625.git.viresh.kumar@linaro.org>
-In-Reply-To: <68ac0f0ee3c0ebd3d3cc078a6270752778a1b732.1740475625.git.viresh.kumar@linaro.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 25 Feb 2025 10:55:17 +0100
-X-Gm-Features: AQ5f1JrlE3fKBz1AuXpYeG-8bidig5hJE5ASmGeypi8dyqvZFnkfRS8vXFlUP0o
-Message-ID: <CAH5fLgg7o7hs5B4mMzPd6RzYm+RcX8gw1Aw8voJqnmfnA_aM4Q@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rust: Add initial cpumask abstractions
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	Danilo Krummrich <dakr@redhat.com>, rust-for-linux@vger.kernel.org, 
-	Vincent Guittot <vincent.guittot@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
+Subject: Re: [PATCH v2 2/2] rust: types: `Opaque` doc: Add some destructor
+ description
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <87seoae4u5.fsf@kernel.org>
+Date: Tue, 25 Feb 2025 07:07:53 -0300
+Cc: Dirk Behme <dirk.behme@de.bosch.com>,
+ rust-for-linux@vger.kernel.org,
+ ojeda@kernel.org,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <CE22ECC5-135D-473D-AD79-A07510432A4A@collabora.com>
+References: <20250219055516.359454-1-dirk.behme@de.bosch.com>
+ <qR15TFA5w7m-em7Om-XpDqJvZbPA4T-_wgdtpb2lzfqhHWXVz6MT3cIurrB2_JbUbNqqlffrtGTN8cSUrtTL1A==@protonmail.internalid>
+ <20250219055516.359454-2-dirk.behme@de.bosch.com> <87seoae4u5.fsf@kernel.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: Apple Mail (2.3826.300.87.4.3)
+X-ZohoMailClient: External
 
-On Tue, Feb 25, 2025 at 10:47=E2=80=AFAM Viresh Kumar <viresh.kumar@linaro.=
-org> wrote:
->
-> Add initial Rust abstractions for struct cpumask, covering a subset of
-> its APIs. Additional APIs can be added as needed.
->
-> These abstractions will be used in upcoming Rust support for cpufreq and
-> OPP frameworks.
->
-> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-> ---
->  rust/kernel/cpumask.rs | 168 +++++++++++++++++++++++++++++++++++++++++
->  rust/kernel/lib.rs     |   1 +
->  2 files changed, 169 insertions(+)
->  create mode 100644 rust/kernel/cpumask.rs
->
-> diff --git a/rust/kernel/cpumask.rs b/rust/kernel/cpumask.rs
-> new file mode 100644
-> index 000000000000..13864424420b
-> --- /dev/null
-> +++ b/rust/kernel/cpumask.rs
-> @@ -0,0 +1,168 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! CPU mask abstractions.
-> +//!
-> +//! C header: [`include/linux/cpumask.h`](srctree/include/linux/cpumask.=
-h)
-> +
-> +use crate::{bindings, error::Result, prelude::ENOMEM};
-> +
-> +#[cfg(not(CONFIG_CPUMASK_OFFSTACK))]
-> +use crate::prelude::{KBox, GFP_KERNEL};
-> +
-> +#[cfg(CONFIG_CPUMASK_OFFSTACK)]
-> +use core::ptr;
-> +
-> +/// A simple implementation of `struct cpumask` from the C code.
-> +pub struct Cpumask {
-> +    ptr: *mut bindings::cpumask,
-> +    owned: bool,
-> +}
-> +
-> +impl Cpumask {
-> +    /// Creates cpumask.
-> +    #[cfg(CONFIG_CPUMASK_OFFSTACK)]
-> +    fn new_inner(empty: bool) -> Result<Self> {
-> +        let mut ptr: *mut bindings::cpumask =3D ptr::null_mut();
-> +
-> +        // SAFETY: Depending on the value of `gfp_flags`, this call may =
-sleep. Other than that, it
-> +        // is always safe to call this method.
-> +        if !unsafe {
-> +            if empty {
-> +                bindings::zalloc_cpumask_var(&mut ptr, bindings::GFP_KER=
-NEL)
-> +            } else {
-> +                bindings::alloc_cpumask_var(&mut ptr, bindings::GFP_KERN=
-EL)
-> +            }
-> +        } {
-> +            return Err(ENOMEM);
-> +        }
-> +
-> +        Ok(Self { ptr, owned: true })
-> +    }
-> +
-> +    /// Creates cpumask.
-> +    #[cfg(not(CONFIG_CPUMASK_OFFSTACK))]
-> +    fn new_inner(empty: bool) -> Result<Self> {
-> +        let ptr =3D KBox::into_raw(KBox::new([bindings::cpumask::default=
-(); 1], GFP_KERNEL)?);
+Hi Andreas,
 
-I don't really understand this CPUMASK_OFFSTACK logic. You seem to
-always allocate memory, but if OFFSTACK=3Dn, then shouldn't it be on the
-stack ...?
+> On 19 Feb 2025, at 05:06, Andreas Hindborg <a.hindborg@kernel.org> =
+wrote:
+>=20
+> "Dirk Behme" <dirk.behme@de.bosch.com> writes:
+>=20
+>> In the discussion [1] some `Opaque` documentation updates have
+>> been proposed. In that discussion it was clarified that `Opaque`
+>> is intended to be used for (partial) uninitialized or changing C
+>> structs. And which consequences this has for using raw pointers
+>> or the destruction. Improve the `Opaque` documentation by adding
+>> these conclusions from that discussion.
+>>=20
+>> Suggested-by: Daniel Almeida <daniel.almeida@collabora.com>
+>> Link: =
+https://lore.kernel.org/rust-for-linux/F8AB1160-F8CF-412F-8B88-4C79D65B53A=
+1@collabora.com/ [1]
+>> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+>> ---
+>> Changes in v2:
+>> * Split patch into two (Miguel)
+>> * Improve commit message and subject (Miguel)
+>>=20
+>> rust/kernel/types.rs | 14 ++++++++++----
+>> 1 file changed, 10 insertions(+), 4 deletions(-)
+>>=20
+>> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+>> index 8ed802444c594..08ff4949d2a61 100644
+>> --- a/rust/kernel/types.rs
+>> +++ b/rust/kernel/types.rs
+>> @@ -274,14 +274,20 @@ fn drop(&mut self) {
+>> /// [`Opaque<T>`] is meant to be used with FFI objects that are never =
+interpreted by Rust code.
+>> ///
+>> /// It is used to wrap structs from the C side, like for example =
+`Opaque<bindings::mutex>`.
+>> -/// It gets rid of all the usual assumptions that Rust has for a =
+value of type `T`:
+>> -///
+>> -/// * The value is allowed to be uninitialized (for example have =
+invalid bit patterns: `3` for a
+>> -///   [`bool`]).
+>> +/// This is useful for C structs that are not fully initialized =
+(yet) or might change their
+>> +/// content from C side at runtime. [`Opaque<T>`] gets rid of all =
+the usual assumptions that
+>> +/// Rust has for a value of type `T`:
+>> +///
+>> +/// * The value is allowed to be uninitialized or invalid (for =
+example have invalid bit patterns:
+>> +///   `3` for a [`bool`]).
+>> +/// * By dereferencing a raw pointer to the value you are unsafely =
+asserting that the value is
+>> +///   valid *right now*.
+>> /// * The value is allowed to be mutated, when a `&Opaque<T>` exists =
+on the Rust side.
+>> /// * No uniqueness for mutable references: it is fine to have =
+multiple `&mut Opaque<T>` point to
+>> ///   the same value.
+>> /// * The value is not allowed to be shared with other threads (i.e. =
+it is `!Sync`).
+>> +/// * The destructor of [`Opaque<T>`] does *not* run the destructor =
+of `T`, as `T` may
+>> +///   be uninitialized, as described above.
+>=20
+> Thanks for clarifying the docs. What you write is correct, but I would
+> prefer a more terse and formal language, at least for the first
+> paragraph. Perhaps you can include the following in some form:
+>=20
+>> Opaque opts out of the following rust language invariants for the
+>> contained `T`:
+>>=20
+>> - Initialization invariant - the contained value is allowed to be
+>>  uninitialized and contain invalid bit patterns.
+>> - Immutability invariant - `Opaque` allows interior mutability.
+>> - Uniqueness invariant - `Opaque` allows aliasing of shared =
+references.
+>>=20
+>> Further, `Opaque` is `!Unpin`.
+>=20
+> And then after that paragraph, you could elaborate with examples and =
+so forth?
+>=20
+> Best regards,
+> Andreas Hindborg
 
-> +        // SAFETY: Depending on the value of `gfp_flags`, this call may =
-sleep. Other than that, it
-> +        // is always safe to call this method.
-> +        if !unsafe {
-> +            if empty {
-> +                bindings::zalloc_cpumask_var(ptr, bindings::GFP_KERNEL)
-> +            } else {
-> +                bindings::alloc_cpumask_var(ptr, bindings::GFP_KERNEL)
-> +            }
-> +        } {
-> +            return Err(ENOMEM);
-> +        }
-> +
-> +        Ok(Self {
-> +            ptr: ptr as *mut _,
-> +            owned: true,
-> +        })
-> +    }
-> +
-> +    /// Creates empty cpumask.
-> +    pub fn new() -> Result<Self> {
-> +        Self::new_inner(true)
-> +    }
-> +
-> +    /// Creates uninitialized cpumask.
-> +    fn new_uninit() -> Result<Self> {
-> +        Self::new_inner(false)
-> +    }
-> +
-> +    /// Clones cpumask.
-> +    pub fn try_clone(&self) -> Result<Self> {
-> +        let mut cpumask =3D Self::new_uninit()?;
-> +
-> +        self.copy(&mut cpumask);
-> +        Ok(cpumask)
-> +    }
-> +
-> +    /// Creates a new abstraction instance of an existing `struct cpumas=
-k` pointer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that `ptr` is valid, and non-null.
-> +    #[cfg(CONFIG_CPUMASK_OFFSTACK)]
-> +    pub unsafe fn get_cpumask(ptr: &mut *mut bindings::cpumask) -> Self =
-{
-> +        Self {
-> +            ptr: *ptr,
-> +            owned: false,
+IMHO, your =E2=80=9Cterseness=E2=80=9D suggestion goes against the very =
+intent of this patch.
 
-Using an owned variable in this way isn't great, IMO. We should use
-two different types such as Owned<CpuMask> and &CpuMask to represent
-owned vs borrowed instead.
+It takes something extremely clear, and places it behind some technical =
+terms.
 
-> +        }
-> +    }
-> +
-> +    /// Creates a new abstraction instance of an existing `struct cpumas=
-k` pointer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that `ptr` is valid, and non-null.
-> +    #[cfg(not(CONFIG_CPUMASK_OFFSTACK))]
-> +    pub unsafe fn get_cpumask(ptr: &mut bindings::cpumask_var_t) -> Self=
- {
-> +        Self {
-> +            ptr: ptr as *mut _,
-> +            owned: false,
-> +        }
-> +    }
-> +
-> +    /// Obtain the raw `struct cpumask *`.
-> +    pub fn as_raw(&mut self) -> *mut bindings::cpumask {
-> +        self.ptr
-> +    }
-> +
-> +    /// Sets CPU in the cpumask.
-> +    ///
-> +    /// Update the cpumask with a single CPU.
-> +    pub fn set(&mut self, cpu: u32) {
-> +        // SAFETY: `ptr` is guaranteed to be valid for the lifetime of `=
-self`. And it is safe to
-> +        // call `cpumask_set_cpus()` for any CPU.
-> +        unsafe { bindings::cpumask_set_cpu(cpu, self.ptr) };
-> +    }
-> +
-> +    /// Clears CPU in the cpumask.
-> +    ///
-> +    /// Update the cpumask with a single CPU.
-> +    pub fn clear(&mut self, cpu: i32) {
-> +        // SAFETY: `ptr` is guaranteed to be valid for the lifetime of `=
-self`. And it is safe to
-> +        // call `cpumask_clear_cpu()` for any CPU.
-> +        unsafe { bindings::cpumask_clear_cpu(cpu, self.ptr) };
-> +    }
-> +
-> +    /// Sets all CPUs in the cpumask.
-> +    pub fn set_all(&mut self) {
-> +        // SAFETY: `ptr` is guaranteed to be valid for the lifetime of `=
-self`. And it is safe to
-> +        // call `cpumask_setall()`.
-> +        unsafe { bindings::cpumask_setall(self.ptr) };
-> +    }
-> +
-> +    /// Gets weight of a cpumask.
-> +    pub fn weight(&self) -> u32 {
-> +        // SAFETY: `ptr` is guaranteed to be valid for the lifetime of `=
-self`. And it is safe to
-> +        // call `cpumask_weight()`.
-> +        unsafe { bindings::cpumask_weight(self.ptr) }
-> +    }
-> +
-> +    /// Copies cpumask.
-> +    pub fn copy(&self, dstp: &mut Self) {
-> +        // SAFETY: `ptr` is guaranteed to be valid for the lifetime of `=
-self`. And it is safe to
-> +        // call `cpumask_copy()`.
-> +        unsafe { bindings::cpumask_copy(dstp.as_raw(), self.ptr) };
-> +    }
-> +}
-> +
-> +impl Drop for Cpumask {
-> +    fn drop(&mut self) {
-> +        if self.owned {
-> +            // SAFETY: `ptr` is guaranteed to be valid for the lifetime =
-of `self`. And it is safe
-> +            // to call `free_cpumask_var()`.
-> +            unsafe { bindings::free_cpumask_var(self.ptr) }
+In as much as I agree with making things formal and professional, our =
+first priority should
+be making sure that the docs for this type are clear as day, so that =
+people do not misuse it
+to introduce bugs.
 
-This is missing a semicolon, but it's not the last statement in the
-block. Did you compile this with CPUMASK_OFFSTACK=3Dn? I don't think it
-compiles with that setting.
+Note that this discussion sprung up because it=E2=80=99s hard to =
+understand what exactly this type
+does and when exactly it should be used. The code is conceptually =
+simple, but things like
 
-> +            #[cfg(not(CONFIG_CPUMASK_OFFSTACK))]
-> +            // SAFETY: The pointer was earlier initialized from the resu=
-lt of `KBox::into_raw()`.
-> +            unsafe {
-> +                drop(KBox::from_raw(self.ptr))
-> +            };
 
-This looks like you did not run rustfmt.
+>> +/// * The destructor of [`Opaque<T>`] does *not* run the destructor =
+of `T`, as `T` may
+>> +///   be uninitialized, as described above.
 
-Alice
+are 100% a pitfall that should be warned against in bold letters and =
+plain terms.
+
+
+=E2=80=94 Daniel
+
+
+
