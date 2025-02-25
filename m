@@ -1,152 +1,95 @@
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755D119DFA2;
-	Tue, 25 Feb 2025 16:53:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8076B186287
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 17:02:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740502433; cv=none; b=EVGrMPvlB+In0M6iKnixWceeNhlJDjxSkxe052vymWacRzSPFk52Jp4yJyzuPWyooznIodD64WOjnlkBJUtLoQWl/T6FbyCJBTmX7gpBiZwcWeK1Tzd27H5GipFRTa98NCtYjx+cQy6Bek/TjqsDX1OoYBbbboiksq+Doyr8fzc=
+	t=1740502960; cv=none; b=lGAySFsgjjhfhuE4j9TSY6MbW63oKOgaipJyInOv7cKWKBy93ErhYVJywOGP0ajMeey3jVBtNE9Yw7Exv3NIZR6UyTv4DJ4b7r7h/7KclOUIyPXoemdeV9yfuRYfhj1ogIyfLE5E8mi0X7z5Yt4ZKD0ESqZ8t8ntS9kUTSx0tTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740502433; c=relaxed/simple;
-	bh=fAZ9eBfqUZ1j1hJE/SKqho5/8TZT9csYTO59O+is2ao=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CiaqxvqZmU5dYjB9W569mI2n61VZRQcG2zSIBfYEJq79vxTlj9uEIEL3VWO6KHoKHjG1876QTx7/CMZBwrjLfUNtZT471xjIl2YrKlxO3xpTSXI/r48eOage2FHEcvFpHY72M2ehidxmzyN/M5/qrUh2VbOHNAXhtja8H/LH6zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Plc0twXl; arc=none smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740502960; c=relaxed/simple;
+	bh=inxYI7a0SFVXalZa+rRuAYm01VsT7jhCgH6Sa5CcZ34=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Yk/H0DB0J4acwOuHdK5i3a1aun+GHAYmVESxMBFIywRcPrzyX30I0v8t3ca7ZgDHaBzJP2E5JuGha2xGnXapu9F2KyzP8ObNmWT95/D0g2RMHaLBOMNHhZu4FbalkSqdJSb/hIlYB8x7tPqcNox31Fmc8Q2cO4x+pi6RXZfMArA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nHsr4JI7; arc=none smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Plc0twXl"
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-46fcbb96ba9so71193991cf.0;
-        Tue, 25 Feb 2025 08:53:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nHsr4JI7"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5dc89df7eccso10512836a12.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 09:02:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740502429; x=1741107229; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=8bdae5F+VYfuzrIBEblkvYdYq9m8ykaFmUEScrQDhWY=;
-        b=Plc0twXlEqOoRpeEMLVcPpeSjFk0AStf0c4d3nftTw7ZnYR6o7vFwng050asiDzigt
-         Wzczr7UJlO70fbjXy8aKu8IIUMnePz4uzwSVzp2jfX4+4j7lXa//iylosisscXAfRgVD
-         3SclX9/sYD6LQuKlDPk9g3t7Pb4dnKgFXB2aL1gT4/y96tAMJ2BfdtWlrgv0KNBcMVXY
-         wdNYD+uw+lIwQQOgBx5R2YxIb1fPnS329ZDbayXqF08AumnhfpFen3msSb1Noosjp+yO
-         tZlXbv+AXRKDyOO4XwfEgZM/j+nhF7GO44Rcl2y1iUjgrouiRM/VBH6iQJhhjQAHZpC6
-         slIg==
+        d=linaro.org; s=google; t=1740502957; x=1741107757; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=inxYI7a0SFVXalZa+rRuAYm01VsT7jhCgH6Sa5CcZ34=;
+        b=nHsr4JI7tM2bcbdQYjBNo6OE0j7gMJLJvSXHVJceN7jref5wUf8hOfWs5rARDdHaE1
+         E/KurbQl3OKuieRyy7MzBpmUO8FxlV5DUyUbXZF/RAtOC8Vyhkhv6/zfsmEM78GpsSYJ
+         VHoKOGzkuzNt0Q4dj7kjfwpXEe7FU7f+F9GqILFSilEAGbZKivsA9FWfxe6QhfMi12r4
+         T3pjEE9KWRuldP8eGSdwCY0wjR95poWszHNi3rolnoI2QrNLGsxAOswDdjRHxiQy8uQ3
+         wOHLTPh+ecV0DRYs78fR9QwQ6QdPDYu7iRd+HJTPGI9th95MY3RgFsQVfRqQKIbHlVqj
+         SSzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740502429; x=1741107229;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1740502957; x=1741107757;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=8bdae5F+VYfuzrIBEblkvYdYq9m8ykaFmUEScrQDhWY=;
-        b=JU8OvTlgx4qeoCI4DxaBTR+DPIxt/skoHvFtz5luWTHhz9X4okJz7SRX2cK5Zx6e8v
-         /7TEQzdHeLn5d2wSqOqDp2/T8MzXW0/AHMAYb7J2KuML6TVdOUi8GdOBr9Zb3YqYWK+w
-         jqYn/Nqafx7Lx+571UNDopZ6xaNSlTbz9fv0CmLK4paQAv0J9yuwv3Hci5ScOw0VeyDc
-         ZlewcLbMpdS9ZFJ2KIHeT4MNF+d8A1anQzDtCrmuQs1OaKGUuiSTrhxKFdxbAw9KVIQ0
-         EAYF9KxKjXo1iLjRq5pEtRNP0FlH5bejMR9NO2ETE4TvRtUwvqLzHbX3G/iyP9K7mpfF
-         5RnA==
-X-Forwarded-Encrypted: i=1; AJvYcCUz0oMeBFFjAp34TTQkaeqqC9qWvCbwwK/kYwsPHeN4rho26KB7VQQ2uiDFKAg5AMfqtbMTZy/Mai/mBMy9eg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7FHKi6RcrL/IRER15LTWwZDL5pD5R+OlZgqhgUOQ4G4vc5ppQ
-	VNqtxxuJVpp4GUpvqQjtQs/wlVR4uPTZO+GPTiUG2A+PMza5XJJt
-X-Gm-Gg: ASbGncv3DnUzJVneR/gd56MF1+uFucsrD9ygfv29x+obTRy47Q++x21QaJjUjl6/QFH
-	M+168EBbhdhcUoyEb7wgCDPDNIdf0ZMXDCqPasm0YcTt2Q9SurJyZlMKtWIpC3wIrqzmAaM9XxN
-	BR2QxSV6lafA+OP/sogEf3AnCrQhLjue6avXtU1ETZimJvHcSZGtq6M0+6cAlwBpEi0sQMecdem
-	iRDCHP3cla0VaCg7NS6oOphw6I2ZzcerJ+yQdqvGS8gCZq2gcV9xbnW+/VlmtmVFs4R0EHgHoCH
-	ekFhgaLeFRZCY1amoV8+e+njI1P1NrLIAqygYdpY/Xt7VG6n04xfYYS6u0MTv+T2mNfVVH2wWmw
-	v6Km+r/X118WMQa97
-X-Google-Smtp-Source: AGHT+IEdAlXI9gLk8gU5udKtO9vQTmAP70Bf9d5luqy/QHbshdtVPFsvLdDyNnBaZ3uXW70i7Xahag==
-X-Received: by 2002:ac8:7f51:0:b0:471:eca0:1135 with SMTP id d75a77b69052e-4737725d52emr49743711cf.40.1740502428751;
-        Tue, 25 Feb 2025 08:53:48 -0800 (PST)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-47377e071c2sm11930861cf.10.2025.02.25.08.53.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Feb 2025 08:53:48 -0800 (PST)
-Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
-	by mailfauth.phl.internal (Postfix) with ESMTP id D6A9D1200068;
-	Tue, 25 Feb 2025 11:53:47 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-09.internal (MEProxy); Tue, 25 Feb 2025 11:53:47 -0500
-X-ME-Sender: <xms:m_W9ZwFv5B-L0DBfAQq7kAKGnBzgm8yW2l2PIA1C9D50RuqMZiv4sQ>
-    <xme:m_W9Z5VF4Eqy8zr1-8gMwEYXNAOcKVHAFccNQYtbTL4sv9U1DinQayLAZSFjRdORR
-    MpUYj4A8AgMzYcxhg>
-X-ME-Received: <xmr:m_W9Z6LWvbK_Wi_dTc8RNr_EzjhVFOkqMghS2nhf5utnVDiLX-XKHE70Ug>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekvddvgecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddt
-    jeenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
-    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeejhfeikeekffejgeegueevffdtgeefudet
-    leegjeelvdffteeihfelfeehvdegkeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgne
-    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhu
-    nhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqdduje
-    ejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdr
-    nhgrmhgvpdhnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhhtpdhrtghpth
-    htoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtoheplhhinhhu
-    gidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhush
-    htqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
-    phgvthgvrhiisehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepmhhinhhgohesrh
-    gvughhrghtrdgtohhmpdhrtghpthhtohepfihilhhlsehkvghrnhgvlhdrohhrghdprhgt
-    phhtthhopehlohhnghhmrghnsehrvgguhhgrthdrtghomhdprhgtphhtthhopehojhgvug
-    grsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgr
-    ihhlrdgtohhm
-X-ME-Proxy: <xmx:m_W9ZyFb5Uc9vuFNsBspS5ZMZpwOp-UtoC-FzDF5uTv6vjfhSZIN6w>
-    <xmx:m_W9Z2U3N4lvgrEjIQzNPDaZAAL_h5qwwJiaJz48ZB2ApiuHviNmGQ>
-    <xmx:m_W9Z1PwSTDLmDRE0M-iQPWn2LrlbPTgcdSmehM6h03bWVJSEf3xCg>
-    <xmx:m_W9Z912h_abwn0eIpITxof1Fl6TG3E5PHML1Om2fvb9NBPOBlvLdw>
-    <xmx:m_W9Z_X25O6fun012i9ZeKl4W_7EntffNmOOsBAIE40sYD9_6XnQX8zh>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 25 Feb 2025 11:53:47 -0500 (EST)
-Date: Tue, 25 Feb 2025 08:53:46 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>
-Subject: Re: [PATCH] rust: sync: lock: Add an example for Guard::lock_ref()
-Message-ID: <Z731mvxPATfDhQ6l@Mac.home>
-References: <20250223072114.3715-1-boqun.feng@gmail.com>
- <CAH5fLgi2iXKg+Mwze41KHk1rLa1=f7=ofhbq_wz6mxmC4GNe6w@mail.gmail.com>
+        bh=inxYI7a0SFVXalZa+rRuAYm01VsT7jhCgH6Sa5CcZ34=;
+        b=CqRscrlrLDg5pr8AOzHsQ4YcWPlyGbPEfvPvTmKKkFXZvdRySMe/Mp6ZLaMCac0WFb
+         TAtngjFxleYXvFVhE4y9kTJuwKefzknOPLUrdfSsBtzYTzPnxP2Zbl5SboFsWFHn0goI
+         VCc3r7ciskUGE35ZBR3320Ua4+Qycgzm/PBAecIpPlhkUew1ryOTzJ4cPcKkU8/a9VHq
+         0HJWlHKocwlWiT4i8Px5UrKDOaPRU3yhoh8Xq6YnIL5YZkruYKlrOwi6gNdna9AHLUk/
+         B4Cd6VMal2WsfXVBJzbMm2I7MfIlubN/tT2SCuIijhx+4+LMndGge8sLOUutDBrxyLXo
+         K4JQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVbGJbSc1khLv7DjAgj65I94pB05P/YeVYt4Z7lonlmQi4FN8xyxR6zEULlErYROX00v6ZJmClAwg7tIATtzQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yze0KcTQ3ihFH2+WOdn0agFD0SLk9BxlVfs1Idkzptsf2ESjzON
+	sgz4BKB/hiCNjcUc93LbwGtCuYiOZ6UXFdYDf6dil/qVBHnlwSUQoVqWPnKrQ9XJ2haJX4B/Ahm
+	DtZJZewI3Cs/Eawm5maUw+R/jvPu/6rjm2tn8FA==
+X-Gm-Gg: ASbGncuid7x7jlzPqlSLq70TlFQkwCu61s0czIA6ZUzPHSMA1vI/4C6o+ZA1daobO+z
+	fN1bN/UqbDwsKAqIq6uo2msAGjQFPcfsRklcZK8Fa6TSshi6U8sBovBHE3jllZytT7kbOHxrdbx
+	PemGBzj8E=
+X-Google-Smtp-Source: AGHT+IHG7KWqmrrEfmkHl16lnyEnUFqzJos/oKExNnyPDEP4u1yoAp+TQVlLKnzCiELY1vOHL9S07T288ex08DhPTV4=
+X-Received: by 2002:a05:6402:520d:b0:5dc:7fbe:7310 with SMTP id
+ 4fb4d7f45d1cf-5e44448119amr4294661a12.6.1740502956713; Tue, 25 Feb 2025
+ 09:02:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLgi2iXKg+Mwze41KHk1rLa1=f7=ofhbq_wz6mxmC4GNe6w@mail.gmail.com>
+References: <cover.1740475625.git.viresh.kumar@linaro.org> <68ac0f0ee3c0ebd3d3cc078a6270752778a1b732.1740475625.git.viresh.kumar@linaro.org>
+ <CAH5fLgg7o7hs5B4mMzPd6RzYm+RcX8gw1Aw8voJqnmfnA_aM4Q@mail.gmail.com>
+ <20250225114830.64p56bndn4hkkkgq@vireshk-i7> <CAH5fLghUDz8tpkTuvWZgwT2_VKgxuS+iZKnoT4prKwS9tbp8wA@mail.gmail.com>
+In-Reply-To: <CAH5fLghUDz8tpkTuvWZgwT2_VKgxuS+iZKnoT4prKwS9tbp8wA@mail.gmail.com>
+From: Viresh Kumar <viresh.kumar@linaro.org>
+Date: Tue, 25 Feb 2025 22:32:28 +0530
+X-Gm-Features: AQ5f1JryIXlM3NUmzUgSEkX5tUke-JsoANytTchV55hGvhuch6fz7U_D9kJhvX0
+Message-ID: <CAKohpo=uiCS6nyissb3ugiyniwnZYu5kCf4+bp32dDzRhgGfCQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rust: Add initial cpumask abstractions
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	Danilo Krummrich <dakr@redhat.com>, rust-for-linux@vger.kernel.org, 
+	Vincent Guittot <vincent.guittot@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Feb 24, 2025 at 12:19:27PM +0100, Alice Ryhl wrote:
-> On Sun, Feb 23, 2025 at 8:21 AM Boqun Feng <boqun.feng@gmail.com> wrote:
-> >
-> > To provide examples on usage of `Guard::lock_ref()` along with the unit
-> > test, an "assert a lock is held by a guard" example is added.
-> >
-> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> 
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> 
+On Tue, 25 Feb 2025 at 17:23, Alice Ryhl <aliceryhl@google.com> wrote:
 
-Thanks!
+> Is it a problem if a value of type struct cpumask is moved? It looks
+> like it is just an array of longs?
 
-> > This depends on Alice's patch:
-> >
-> >         https://lore.kernel.org/all/20250130-guard-get-lock-v1-1-8ed87899920a@google.com/
-> >
-> > I'm also OK to fold this in if Alice thinks it's fine.
-> 
-> I think we can just keep two patches :)
-> 
+With the current code, if I replace the Box with an on-stack variable,
+the kernel crashes.
 
-Fine by me.
+In my usecase, the pointer to the cpumask array is sent to the OPP
+core, which may update the content, though it doesn't save the pointer.
 
-Regards,
-Boqun
+But for another usecase, the C code may end up saving the pointer.
 
-> Alice
+--
+Viresh
