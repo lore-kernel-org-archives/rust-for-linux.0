@@ -1,101 +1,283 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248252676F2
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 11:36:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F384C80
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 11:38:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740483407; cv=none; b=CInkc2/MI+x+mSIt9tK4KtHR+41H3QxT2sKYXKmssdavworB15CTu3V5KoGe1xiUUSHasVVmwWQjM3WHZ9+zrWW6uokj6WSXSB9VbS5iWVtsVwDsM51vOv7sltaGLixlRirXJlOdTXtDe1OT9MdzB9JtJS9TV+cFJqlKxau5b8A=
+	t=1740483541; cv=none; b=phu6LXKS9TANzr3ly4RFLFmq7ya46UATecCwGSI0x2g+sLHqg4/UVPPyXCCTIIYnkgBQKz+fHFOTXamzPw5tLjhKWdO9lwewlxGoO7qhl4vQw7KDd/mDiFMVCezGUgZKcjEbH8bFL5BjLhO7BE6CNDMiHijHhESrn/mTT8X1WfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740483407; c=relaxed/simple;
-	bh=SPyeeF8ZDM6n3BTkbmavwfPW3rzBXox6GvsTJ1dVtH4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aZPYJgBJuxQxGk2MuSjndNPKFM3/AQCmwVGzldULFcOiKrFwnSQBPe7mbYxQXAC3h3d3LeTzDbk45g49x0h2shOD5YmNcVHBmzZckwlOd9vunAt9g2VENQD3v0YP31dMoE7B8H2DgvH9LLXVqTqOEEQdzH7g1ee9dqMkdFegGao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XPpsczPE; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1740483541; c=relaxed/simple;
+	bh=oTQLEnucV542M6ZP7k68h/PprEj6H6WKWkGdXbGouV0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gm9uk2ydtQrgw/JMED+Pr/jmgyPDyTHrNQ16mWBhs09EA//NXuXYQ6TnOGV+gYwxQ3V+d24zqfdzmKpfCrsDOfVOS5QqSqSKsHkr0D5tqiAKmTLC36ZsSTS3AE3BEjXAx64d0kOLXN5BJSqkIxKHisIFxNdMwA59IEOS/k8f898=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=FcL3YFbE; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=0qVbW/6+; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=FcL3YFbE; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=0qVbW/6+; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XPpsczPE"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-220d398bea9so86149135ad.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 03:36:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1740483405; x=1741088205; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WC5C3PmHDugL9d2JtiXigt+VtVDMX7X1fFRsAgejZKI=;
-        b=XPpsczPEga9uRDg0PbzIhCzB0QMqEBg9peZEIxqbORhGvZlp88cC5uPDQbBXT0rSWL
-         jt2629EU6DGBZaSjTatwybtPWhO7T9VaSY218uC1QOA8W5oM7tUAdeyvK9eU5u7Afknj
-         3sJuNWdqCG5W+NnVlvoTEqhNpkDdpBVPhN9pXecQxQSOlD2OPCspZwCkmYcsga8JciJc
-         HoaejBYZ7yu91HionGAKtiOssHIj3iy6e+LQtEvcqBAJploPsBYNqQV/dHWZYfhpb37N
-         il1c0Q8VfyxZ7FqKKli7VjTcpfpHK++7/OxgADSGdXJ7L+mgBKMcHovDmp/M4q89r03O
-         BOXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740483405; x=1741088205;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WC5C3PmHDugL9d2JtiXigt+VtVDMX7X1fFRsAgejZKI=;
-        b=FDENe/I6ww+nKf8E8uxgAjE0uVpulh3MpcRHfN5T/XqybXTwgmAdl6pzSalGuPqLjf
-         9tdUAIXcAGKGu1bQ4x7/ue0tSl0Gz07bLDDk5wyec+xozrzlc3LMXMp3A8T585/S5de5
-         n1ThrkY0UKYncMmorfamgynYnmXSa+gj0gsXsxbz0BS3PXkuasyclI+2kbEJIR92F1mM
-         m0MaTh2wxf90L7wzIthWQUxzhtMpz2vAPJ7ne0pFMQjrNp71UEb0d1qbTeLHus+sqjuM
-         MUljz3nTWuns3AJugTEYWzVPSrtHSIFt3t8VX1t0p2S7+mBAFjrcanC0bbl0dCWFVJ7D
-         Qt8w==
-X-Forwarded-Encrypted: i=1; AJvYcCW6c6YdbNA1NfqfoNzw5/Quwrvzn2xZSqK/hsmlFYTBBdqPkEEf/Aa5o3M4mgmFCVd6p4vXm49gZ5Px5M/Agg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YybXfeg9jhZchr8iq6rDYicZX8S1cnnjS6ps3TYSLKaiuzzL8Q4
-	6cxswSIuKFDC+TTAGvmJPMGI7nkdoWb3mrNdQBaugzvgloGOB3GFaHENu1VJCj0=
-X-Gm-Gg: ASbGncsWPJJD/FWyUO1Tn9+JhbBB8vBBoXRhESsK6gPkUmKuJWS5pQOXmoOnCLE5YRU
-	KoRxa4iA2EDlrr3usBniATkStr/FCJ4VHhb9tobu/359ntb9SslxoLWxalbLMrS/MOZ3JBiNDV9
-	4RXrdNdQlydotSZ2knCaf+Z0TZITNj4MMF6mUoxvBjz5YkqRbHTau0o4BgIuDlFgJf06uWpav15
-	Fe+oK/li4KsL0kcCE6G3UZ1OJ8pUYB5lUFLS0AoS0zfbaaFay6aioAP62UOce4HOpiTynNwBfTz
-	WuzwunrBFZB2jZ4+scRYom9HcT8=
-X-Google-Smtp-Source: AGHT+IFf9+/TCwETlYZrGvNe//P5GmUmZ2zWdQMKr87qE/PBaYFhyRDJ/Ygg/isUFT38R/PMmw+VtQ==
-X-Received: by 2002:a05:6a20:6a04:b0:1f1:431:edaf with SMTP id adf61e73a8af0-1f10431edc5mr1333969637.10.1740483405445;
-        Tue, 25 Feb 2025 03:36:45 -0800 (PST)
-Received: from localhost ([122.172.84.15])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-aedaac32a42sm1091445a12.70.2025.02.25.03.36.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Feb 2025 03:36:44 -0800 (PST)
-Date: Tue, 25 Feb 2025 17:06:42 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
-	Danilo Krummrich <dakr@redhat.com>, rust-for-linux@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>
-Subject: Re: [PATCH 1/2] rust: Add initial cpumask abstractions
-Message-ID: <20250225113642.5fek3cy3jvmusunz@vireshk-i7>
-References: <cover.1740475625.git.viresh.kumar@linaro.org>
- <68ac0f0ee3c0ebd3d3cc078a6270752778a1b732.1740475625.git.viresh.kumar@linaro.org>
- <CAH5fLgg7o7hs5B4mMzPd6RzYm+RcX8gw1Aw8voJqnmfnA_aM4Q@mail.gmail.com>
- <20250225105425.ooqvefiae5bmr723@vireshk-i7>
- <CAH5fLgjbW0yGm0TQcQEG9cc+i3WxbF8JKaqBUFD7=pJ-JkJ9zg@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="FcL3YFbE";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="0qVbW/6+";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="FcL3YFbE";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="0qVbW/6+"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 304B321166;
+	Tue, 25 Feb 2025 11:38:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1740483536; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=9ABMn7Jnj5cUGatJDRKKEvt77TfWyRb9+YXDUVL7Yu0=;
+	b=FcL3YFbELTx/aoLFqOZ24dpe6vTz+A7ywqjE2yHsCtjrT0lI3hvZuYnqDrKbGkgAvDjBsY
+	g+RV8AwwEBu5/HAj84arrCNVdq7u1+lGyKJ0v+pq1pyD1FgfC7AFxxdbKvZCYxyHBlcSMe
+	MXezsJCWwHjFlI1gsmnyEJrDx5P17z4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1740483536;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=9ABMn7Jnj5cUGatJDRKKEvt77TfWyRb9+YXDUVL7Yu0=;
+	b=0qVbW/6+Xz6goX9bcZCpXGXPLU5P9zeiDr6Ny5P+j6tAHOONtpAuNmYS+iWS89F6qIYx6e
+	5SZRnnSrp0mR++CQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1740483536; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=9ABMn7Jnj5cUGatJDRKKEvt77TfWyRb9+YXDUVL7Yu0=;
+	b=FcL3YFbELTx/aoLFqOZ24dpe6vTz+A7ywqjE2yHsCtjrT0lI3hvZuYnqDrKbGkgAvDjBsY
+	g+RV8AwwEBu5/HAj84arrCNVdq7u1+lGyKJ0v+pq1pyD1FgfC7AFxxdbKvZCYxyHBlcSMe
+	MXezsJCWwHjFlI1gsmnyEJrDx5P17z4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1740483536;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=9ABMn7Jnj5cUGatJDRKKEvt77TfWyRb9+YXDUVL7Yu0=;
+	b=0qVbW/6+Xz6goX9bcZCpXGXPLU5P9zeiDr6Ny5P+j6tAHOONtpAuNmYS+iWS89F6qIYx6e
+	5SZRnnSrp0mR++CQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CE0C913332;
+	Tue, 25 Feb 2025 11:38:54 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id oyCqMM6rvWfoPwAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Tue, 25 Feb 2025 11:38:54 +0000
+Message-ID: <0e6817b1-d52e-407f-bdb9-93919f849edc@suse.de>
+Date: Tue, 25 Feb 2025 12:38:54 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAH5fLgjbW0yGm0TQcQEG9cc+i3WxbF8JKaqBUFD7=pJ-JkJ9zg@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 8/9] drm/vgem/vgem_drv convert to use faux_device
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, Lyude Paul <lyude@redhat.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>
+Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Lukas Wunner <lukas@wunner.de>,
+ Mark Brown <broonie@kernel.org>, =?UTF-8?Q?Ma=C3=ADra_Canal?=
+ <mairacanal@riseup.net>, Robin Murphy <robin.murphy@arm.com>,
+ Simona Vetter <simona.vetter@ffwll.ch>, Zijun Hu <quic_zijuhu@quicinc.com>,
+ linux-usb@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, dri-devel@lists.freedesktop.org
+References: <2025021023-sandstorm-precise-9f5d@gregkh>
+ <2025021028-brigade-create-37de@gregkh>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <2025021028-brigade-create-37de@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.998];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_ALL(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[23];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[intel.com,linux.intel.com,google.com,huawei.com,gmail.com,wunner.de,kernel.org,riseup.net,arm.com,ffwll.ch,quicinc.com,vger.kernel.org,lists.freedesktop.org];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email,suse.de:mid]
+X-Spam-Score: -4.30
+X-Spam-Flag: NO
 
-On 25-02-25, 12:34, Alice Ryhl wrote:
-> Hmm, ok. I would have expected it to format on one line:
-> unsafe { drop(KBox::from_raw(self.ptr)) };
+Hi
 
-I did try this earlier and rustfmt suggested to format it the way I
-have done it currently :)
+Am 10.02.25 um 13:30 schrieb Greg Kroah-Hartman:
+> The vgem driver does not need to create a platform device, as there is
+> no real platform resources associated it,  it only did so because it was
+> simple to do that in order to get a device to use for resource
+> management of drm resources.  Change the driver to use the faux device
+> instead as this is NOT a real platform device.
+>
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Cc: dri-devel@lists.freedesktop.org
+> Reviewed-by: Lyude Paul <lyude@redhat.com>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-> That is what normally happens when the semi-colon is outside the
-> block. Not sure why it did not happen in this case.
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+
+Should this patch be merged through DRM trees?
+
+Best regards
+Thomas
+
+> ---
+> v4: - api tweaked due to parent pointer added to faux_device create
+>        function.
+>   v3: new patch in the series.  For an example of the api working, does
+>       not have to be merged at this time, but I can take it if the
+>       maintainers give an ack.
+>   drivers/gpu/drm/vgem/vgem_drv.c | 30 +++++++++++++++---------------
+>   1 file changed, 15 insertions(+), 15 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/vgem/vgem_drv.c b/drivers/gpu/drm/vgem/vgem_drv.c
+> index 2752ab4f1c97..260c64733972 100644
+> --- a/drivers/gpu/drm/vgem/vgem_drv.c
+> +++ b/drivers/gpu/drm/vgem/vgem_drv.c
+> @@ -32,7 +32,7 @@
+>   
+>   #include <linux/dma-buf.h>
+>   #include <linux/module.h>
+> -#include <linux/platform_device.h>
+> +#include <linux/device/faux.h>
+>   #include <linux/shmem_fs.h>
+>   #include <linux/vmalloc.h>
+>   
+> @@ -52,7 +52,7 @@
+>   
+>   static struct vgem_device {
+>   	struct drm_device drm;
+> -	struct platform_device *platform;
+> +	struct faux_device *faux_dev;
+>   } *vgem_device;
+>   
+>   static int vgem_open(struct drm_device *dev, struct drm_file *file)
+> @@ -127,27 +127,27 @@ static const struct drm_driver vgem_driver = {
+>   static int __init vgem_init(void)
+>   {
+>   	int ret;
+> -	struct platform_device *pdev;
+> +	struct faux_device *fdev;
+>   
+> -	pdev = platform_device_register_simple("vgem", -1, NULL, 0);
+> -	if (IS_ERR(pdev))
+> -		return PTR_ERR(pdev);
+> +	fdev = faux_device_create("vgem", NULL, NULL);
+> +	if (!fdev)
+> +		return -ENODEV;
+>   
+> -	if (!devres_open_group(&pdev->dev, NULL, GFP_KERNEL)) {
+> +	if (!devres_open_group(&fdev->dev, NULL, GFP_KERNEL)) {
+>   		ret = -ENOMEM;
+>   		goto out_unregister;
+>   	}
+>   
+> -	dma_coerce_mask_and_coherent(&pdev->dev,
+> +	dma_coerce_mask_and_coherent(&fdev->dev,
+>   				     DMA_BIT_MASK(64));
+>   
+> -	vgem_device = devm_drm_dev_alloc(&pdev->dev, &vgem_driver,
+> +	vgem_device = devm_drm_dev_alloc(&fdev->dev, &vgem_driver,
+>   					 struct vgem_device, drm);
+>   	if (IS_ERR(vgem_device)) {
+>   		ret = PTR_ERR(vgem_device);
+>   		goto out_devres;
+>   	}
+> -	vgem_device->platform = pdev;
+> +	vgem_device->faux_dev = fdev;
+>   
+>   	/* Final step: expose the device/driver to userspace */
+>   	ret = drm_dev_register(&vgem_device->drm, 0);
+> @@ -157,19 +157,19 @@ static int __init vgem_init(void)
+>   	return 0;
+>   
+>   out_devres:
+> -	devres_release_group(&pdev->dev, NULL);
+> +	devres_release_group(&fdev->dev, NULL);
+>   out_unregister:
+> -	platform_device_unregister(pdev);
+> +	faux_device_destroy(fdev);
+>   	return ret;
+>   }
+>   
+>   static void __exit vgem_exit(void)
+>   {
+> -	struct platform_device *pdev = vgem_device->platform;
+> +	struct faux_device *fdev = vgem_device->faux_dev;
+>   
+>   	drm_dev_unregister(&vgem_device->drm);
+> -	devres_release_group(&pdev->dev, NULL);
+> -	platform_device_unregister(pdev);
+> +	devres_release_group(&fdev->dev, NULL);
+> +	faux_device_destroy(fdev);
+>   }
+>   
+>   module_init(vgem_init);
 
 -- 
-viresh
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
+
