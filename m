@@ -1,50 +1,82 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203441FDE18
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 10:36:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FD626738A
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 10:54:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740479818; cv=none; b=NBrcdL98XVuYdsvghduwPZmf0p1P5c+iEMryotMkD2oQDVxf1xrKriDvSVa2E8SkFzvUORW95PcIVekaJzl4i8bhmVDauurfJRa1W/i627O0s04AwwY9oIsb9QbJVWoB+PpMiVv5jJ8RJN2+vdf3AFCLhocva3bLmz910WtFOdo=
+	t=1740480870; cv=none; b=egOlecJvbCKBR9jZ5rE9TbTw4roeEBnPl//yHp6Ha1LA6imuaPhqhTxWN5Uh7lnyz5ik/4ftGmuvkZK13XgadIh+nnjzb7dDl6DHRC+g993GSVy3AOeNfcMeMqdxVwREBzeaW0ePvSVHtWXXq6jcYspK92NoTSiKiEiE3NDK4Cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740479818; c=relaxed/simple;
-	bh=Ekfy5t2+AnwD9Ib8TYPstbTl6XFvkAmIEDzshxQlttY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=GpEJzEFyRYUQIuqujXjsOJgFY8gCa1j/HuKzM3KwyY7pjxOGVVzU6WLWSYhzSNDUubn9HfpIkZx11mEFQGidyoXIxvqchqsY0vKhQHm6zC+DENxw8E3gp7PIV1htuYTpg6AIrbytc1oCZL73pPreAIu8oW/Wxkpia9QDjlk0BM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A8Jl5ZvZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740480870; c=relaxed/simple;
+	bh=Nlblt9Q1ES9xX9+QoDGnrD/VUnOCuS5GL3nVG3iQZ00=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ODru/L0c3DH8LXBS3avjmHSSVzeZZ7ZiRbGU/ECP1IBkEJxCZT4bCXkcRakDvjUzIA8S9nbj+qTAP7Q4kOsx+s8TaqZPuoq2tw/t6zkbAp7fNFFK0ClZICH/9ERBWAYDGGqoW3S18QavHB8TjqbtNrgm17iI6ugiUA5go9H1n/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Uqb6u9BG; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A8Jl5ZvZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3ACFC4CEDD;
-	Tue, 25 Feb 2025 10:36:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740479817;
-	bh=Ekfy5t2+AnwD9Ib8TYPstbTl6XFvkAmIEDzshxQlttY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=A8Jl5ZvZJIpACXE4eNVO8xgwJVMx9DwYOsoUCuv+IsnLbMWiJAh8WhU15L6bYuI9R
-	 PDDgm3BawGeGVwCSXkT75yqGbTEEM4C34JaLlkGOwDd7ALlgdRrA2Wo+AJGdlX8Y0W
-	 ewySyxXKTHKsJselYzMLRJ6I256AAs9Ibex1saq+HiqLgu2dA9IteUHEOUpvK6hSt0
-	 UFMPjVAEjoVpWosY/5eOO2VFg/YgcZNvBWVDta0NLcci60MMu+nySKcSFsA0AGhovY
-	 B+QsUKXYX9siEaC1QB1F431boRWT1nCtN0+0xMEQPLqNMs83/7R3APKnXYty/hJNoG
-	 7diZHNUMWNjdg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Daniel Almeida" <daniel.almeida@collabora.com>
-Cc: "Dirk Behme" <dirk.behme@de.bosch.com>,
-  <rust-for-linux@vger.kernel.org>,  <ojeda@kernel.org>,  "Boqun Feng"
- <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  "Alice Ryhl"
- <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>
-Subject: Re: [PATCH v2 2/2] rust: types: `Opaque` doc: Add some destructor
- description
-In-Reply-To: <CE22ECC5-135D-473D-AD79-A07510432A4A@collabora.com> (Daniel
-	Almeida's message of "Tue, 25 Feb 2025 07:07:53 -0300")
-References: <20250219055516.359454-1-dirk.behme@de.bosch.com>
-	<qR15TFA5w7m-em7Om-XpDqJvZbPA4T-_wgdtpb2lzfqhHWXVz6MT3cIurrB2_JbUbNqqlffrtGTN8cSUrtTL1A==@protonmail.internalid>
-	<20250219055516.359454-2-dirk.behme@de.bosch.com>
-	<87seoae4u5.fsf@kernel.org>
-	<sIRpnzf3y8_6biksXe5aWklTZ83XbfdBrVhcleCmFxXzkYVbLyHRFPRGUdzN-RyQud7qXRwhZaKLhcIFWIrr8A==@protonmail.internalid>
-	<CE22ECC5-135D-473D-AD79-A07510432A4A@collabora.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Tue, 25 Feb 2025 11:36:47 +0100
-Message-ID: <87eczmwbsw.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Uqb6u9BG"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-220ec47991aso74524195ad.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 02:54:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1740480868; x=1741085668; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ywJx3h0ZJvqjojvcAw8b7KbSJw+rY7IXbqqxP13I3pQ=;
+        b=Uqb6u9BGoNTIq5VlNwpUosXmVAghTzaLqvnQoF1j27Cp4La4ztDzfvztZzP3EEj7EE
+         ywSBwZLVZ8TaSvJYfWWUgdyjkUBCYBXwW0uvcx2CNfd4M/aF/Gp3/iGmqmy6sUZzeBN4
+         Ubg2AeWLPF3W0FgU7OkjkCZoYLI8GqZJYZkBKqeqDYpIi+zx2zk6FbXHIc9pBUvMApJ5
+         fA+aa8g1yNWjpuQ6A09FTzaI6gPX/BEmpnbI7loRbB/Up39na+H+TuVDIgQfCxsYpXM7
+         et0ghuz/LOcVurIh9cBpRKakyKm+i2MbeJR5eyRY+iipIH6kixFc9lPx3HxMTBgFr2bU
+         UMZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740480868; x=1741085668;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ywJx3h0ZJvqjojvcAw8b7KbSJw+rY7IXbqqxP13I3pQ=;
+        b=ZwEeWbF3E7zIitFEtus95TeqI7gu/uCOWNmwNOjaWl2pVkS02r7mK7wWJs2eJDwX4K
+         MEqJTHipO6eXnmpHOEzZgfP0Lu1v4XJd6DLQ7e4L4OfYU/BXuiW51q/eYcHLcgvuSS4P
+         gl+gAMkQJVzkqrxZGy0HrvljxWIVjbPraM9fwXw4RXwqXPgslbtutrQnF34iJ4ua+Yk9
+         2AQROmuKRroyKk5AJoqE8s2F1XfQne/8oxNDd6+R7+5Ky73gIux1nig8m0J7kJTJhjIG
+         LgN+ZFKRsERY9Mi0ZM84BKOQa3HWl17l2+TPwXbhkWkUjwQeECQOSOWHtPh8PL5zzqm1
+         roNg==
+X-Forwarded-Encrypted: i=1; AJvYcCUW2oRwChU97hu/uXOUHtjDgqEn5tHCscAI8Nct5/uE8wV4uGzJdLC9Fheox8v3oGCre2bWFxmsJR9+rv5hAQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwqzWrfAvIoZO1vFcdduiP5ciJgzdZMd1bZreFjNKj3XZ2mm0YH
+	iphHyDm3P0HBgHZkWjYI+W89bQ+6K9TCsJxETqFGJxwYh2hH0EsbxbQ2axzo4nVrvmKUusBzZxK
+	s
+X-Gm-Gg: ASbGncuRR2feCYmTgk75pHSAS/DaC9AGX4PCUL+1XgpUHImrB1S29D/u4Il0a76kb06
+	0plzgg4eJQ+wq9VfGiB+I9sTyXrLR1YVY+bHwH0SkjTl3FssyAVvj2fdOlJeUYiQ/Z0UQCS7xTg
+	iUy4zohcx1EKuASMeSYQUN/wQA7gRBd+5cmdfwLORq2l/dg32wPr471HFQtHcXARenp9ulykVQw
+	EG55pUzA/QcDMKkPZsdCzqtj6bjAU2jbUq3Dc/YTAtMrinnGy5pM2xC9uTPiX9bY+lQ3HqUJZkv
+	IJ9Uik3Ko43RN52yYXf+pXctEo0=
+X-Google-Smtp-Source: AGHT+IGoJFVYUA+pbas1YPlSrtUdxisbU+dBwLRwJk/y+b4li8vEnSApiSuQK3C7VAjyR5NAwMkJiQ==
+X-Received: by 2002:a17:902:f545:b0:216:282d:c69b with SMTP id d9443c01a7336-2219ffc00a1mr258165835ad.50.1740480868315;
+        Tue, 25 Feb 2025 02:54:28 -0800 (PST)
+Received: from localhost ([122.172.84.15])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7347a6f761fsm1188981b3a.47.2025.02.25.02.54.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Feb 2025 02:54:27 -0800 (PST)
+Date: Tue, 25 Feb 2025 16:24:25 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@redhat.com>, rust-for-linux@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>
+Subject: Re: [PATCH 1/2] rust: Add initial cpumask abstractions
+Message-ID: <20250225105425.ooqvefiae5bmr723@vireshk-i7>
+References: <cover.1740475625.git.viresh.kumar@linaro.org>
+ <68ac0f0ee3c0ebd3d3cc078a6270752778a1b732.1740475625.git.viresh.kumar@linaro.org>
+ <CAH5fLgg7o7hs5B4mMzPd6RzYm+RcX8gw1Aw8voJqnmfnA_aM4Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -52,143 +84,54 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLgg7o7hs5B4mMzPd6RzYm+RcX8gw1Aw8voJqnmfnA_aM4Q@mail.gmail.com>
 
-"Daniel Almeida" <daniel.almeida@collabora.com> writes:
+On 25-02-25, 10:55, Alice Ryhl wrote:
+> On Tue, Feb 25, 2025 at 10:47 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
+> > +impl Drop for Cpumask {
+> > +    fn drop(&mut self) {
+> > +        if self.owned {
+> > +            // SAFETY: `ptr` is guaranteed to be valid for the lifetime of `self`. And it is safe
+> > +            // to call `free_cpumask_var()`.
+> > +            unsafe { bindings::free_cpumask_var(self.ptr) }
+> 
+> This is missing a semicolon, but it's not the last statement in the
+> block. Did you compile this with CPUMASK_OFFSTACK=n? I don't think it
+> compiles with that setting.
 
-> Hi Andreas,
->
->> On 19 Feb 2025, at 05:06, Andreas Hindborg <a.hindborg@kernel.org> wrote:
->>
->> "Dirk Behme" <dirk.behme@de.bosch.com> writes:
->>
->>> In the discussion [1] some `Opaque` documentation updates have
->>> been proposed. In that discussion it was clarified that `Opaque`
->>> is intended to be used for (partial) uninitialized or changing C
->>> structs. And which consequences this has for using raw pointers
->>> or the destruction. Improve the `Opaque` documentation by adding
->>> these conclusions from that discussion.
->>>
->>> Suggested-by: Daniel Almeida <daniel.almeida@collabora.com>
->>> Link: https://lore.kernel.org/rust-for-linux/F8AB1160-F8CF-412F-8B88-4C=
-79D65B53A1@collabora.com/ [1]
->>> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
->>> ---
->>> Changes in v2:
->>> * Split patch into two (Miguel)
->>> * Improve commit message and subject (Miguel)
->>>
->>> rust/kernel/types.rs | 14 ++++++++++----
->>> 1 file changed, 10 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
->>> index 8ed802444c594..08ff4949d2a61 100644
->>> --- a/rust/kernel/types.rs
->>> +++ b/rust/kernel/types.rs
->>> @@ -274,14 +274,20 @@ fn drop(&mut self) {
->>> /// [`Opaque<T>`] is meant to be used with FFI objects that are never i=
-nterpreted by Rust code.
->>> ///
->>> /// It is used to wrap structs from the C side, like for example `Opaqu=
-e<bindings::mutex>`.
->>> -/// It gets rid of all the usual assumptions that Rust has for a value=
- of type `T`:
->>> -///
->>> -/// * The value is allowed to be uninitialized (for example have inval=
-id bit patterns: `3` for a
->>> -///   [`bool`]).
->>> +/// This is useful for C structs that are not fully initialized (yet) =
-or might change their
->>> +/// content from C side at runtime. [`Opaque<T>`] gets rid of all the =
-usual assumptions that
->>> +/// Rust has for a value of type `T`:
->>> +///
->>> +/// * The value is allowed to be uninitialized or invalid (for example=
- have invalid bit patterns:
->>> +///   `3` for a [`bool`]).
->>> +/// * By dereferencing a raw pointer to the value you are unsafely ass=
-erting that the value is
->>> +///   valid *right now*.
->>> /// * The value is allowed to be mutated, when a `&Opaque<T>` exists on=
- the Rust side.
->>> /// * No uniqueness for mutable references: it is fine to have multiple=
- `&mut Opaque<T>` point to
->>> ///   the same value.
->>> /// * The value is not allowed to be shared with other threads (i.e. it=
- is `!Sync`).
->>> +/// * The destructor of [`Opaque<T>`] does *not* run the destructor of=
- `T`, as `T` may
->>> +///   be uninitialized, as described above.
->>
->> Thanks for clarifying the docs. What you write is correct, but I would
->> prefer a more terse and formal language, at least for the first
->> paragraph. Perhaps you can include the following in some form:
->>
->>> Opaque opts out of the following rust language invariants for the
->>> contained `T`:
->>>
->>> - Initialization invariant - the contained value is allowed to be
->>>  uninitialized and contain invalid bit patterns.
->>> - Immutability invariant - `Opaque` allows interior mutability.
->>> - Uniqueness invariant - `Opaque` allows aliasing of shared references.
->>>
->>> Further, `Opaque` is `!Unpin`.
->>
->> And then after that paragraph, you could elaborate with examples and so =
-forth?
->>
->> Best regards,
->> Andreas Hindborg
->
-> IMHO, your =E2=80=9Cterseness=E2=80=9D suggestion goes against the very i=
-ntent of this patch.
->
-> It takes something extremely clear, and places it behind some technical t=
-erms.
->
-> In as much as I agree with making things formal and professional, our fir=
-st priority should
-> be making sure that the docs for this type are clear as day, so that peop=
-le do not misuse it
-> to introduce bugs.
->
-> Note that this discussion sprung up because it=E2=80=99s hard to understa=
-nd what exactly this type
-> does and when exactly it should be used. The code is conceptually simple,=
- but things like
+I would always add a semicolon here, yeah I missed adding that but ..
 
-Just to clarify, I do not suggest to yank the addition that this patch
-provides. I think it is a valuable addition.
+I have missed minor things before sending a series a few times in the
+past and this one really scared me thinking here I did it again :)
 
-We need to strike a balance, which is why I suggested having the short,
-to the point, more formal wording first - and then elaborate with the
-more wordy, talkative, explanatory paragraph.
+Though I was sure that I have built the code with both
+CPUMASK_OFFSTACK=y and =n, I performed the builds again and it worked
+(again).  That confused me even more :)
 
-People who are very familiar with the rust language and/or relevant
-invariants will immediately have the info they need after the first
-"terse" paragraph.
+And here is what I think is happening here (which makes it build fine
+accidentally):
+- free_cpumask_var() has a return type of void.
+- The block {} allows it to build fine without a semicolon here.
+- I performed a simple test for this [1] and it works too.
 
-People who need a bit more guidance can get that by reading further into
-the docs.
+> > +            #[cfg(not(CONFIG_CPUMASK_OFFSTACK))]
+> > +            // SAFETY: The pointer was earlier initialized from the result of `KBox::into_raw()`.
+> > +            unsafe {
+> > +                drop(KBox::from_raw(self.ptr))
+> > +            };
+> 
+> This looks like you did not run rustfmt.
 
->
->
->>> +/// * The destructor of [`Opaque<T>`] does *not* run the destructor of=
- `T`, as `T` may
->>> +///   be uninitialized, as described above.
->
-> are 100% a pitfall that should be warned against in bold letters and plai=
-n terms.
->
+I did this:
 
-True. I would add it to the last line of my suggestion:
+make CLIPPY=1 rustfmtcheck ARCH=arm64 O=../barm64t/ -j8 CROSS_COMPILE=aarch64-linux-gnu- CONFIG_DEBUG_SECTION_MISMATCH=y
 
-  Further, `Opaque` is `!Unpin` and will not run the drop method of the
-  contained `T` when dropped.
+I hope that is all I need ? I checked again with both CONFIG options,
+doesn't complain with rustc 1.84.1.
 
+-- 
+viresh
 
-
-Best regards,
-Andreas Hindborg
-
-
+[1] https://play.rust-lang.org/?version=stable&mode=debug&edition=2024&gist=70cd7d31633d98774a088fed68ebb00d
