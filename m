@@ -1,74 +1,71 @@
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022093.outbound.protection.outlook.com [52.101.96.93])
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2080.outbound.protection.outlook.com [40.107.212.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9CF26B0BF;
-	Tue, 25 Feb 2025 15:14:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.93
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C50726AA93;
+	Tue, 25 Feb 2025 15:24:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.80
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740496464; cv=fail; b=uo5gKXyh+45OVzUUqwgAzo7BJi/O/2kcVVRJb/abz8q68MsQp0jzZCycA8QgGzzymIgHgNI++UBnTs63jEPUSKMvH2ZUMO/61v7U7oxYaSm8roTpQstjlkUcHIZ2N7K+7KJNAkW7gJwg98WmheePqnNbxT1p7MnEgNmwWFKg+HY=
+	t=1740497089; cv=fail; b=bHwelGPm8Tr1/asYcUNp2zkCPhmh9o6sWj71RU6BqGuu86i+DefpX+HixJItnrnq0+bB0f/QwUKc8W/yORgTiwFXHlF2OOptdSdGd0AGZpdmYQI3wMvfkH9OrDCCMojT64nvR1434/3n13NboJqXl/DjSXX5ukh73gbHjdau6yI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740496464; c=relaxed/simple;
-	bh=nCm3y2BCgmf+rZYs7jwlUu0QSkOkUZ+3v1bJdP/LGY0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VzQ8K1t8t2mwq1Py/PtT+PQSNM6655wV6eJv0u2ftogpATdiiD6eYH1UDTcJKZGkdNB9pc5Uf/hDqIgkb2c7aLZCo4Lf3jmPk5zNl3/o2M2b1WCOESvY4AmlU/orU2zCjzJsq/8PkQUueS125IIuADrzxx3yPgFtElmtjHyeZp4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=LpkhGqzi; arc=fail smtp.client-ip=52.101.96.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1740497089; c=relaxed/simple;
+	bh=yRYAjMsXbuUpdW026idBvCUTU5Cjczg2UXZWMyV8Jkg=;
+	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
+	 In-Reply-To:MIME-Version; b=QYs87vPi1W0tLOecv+FIK/oD5hM2VYESJGQMDX7jQfx8R/94arT/5gCY2vhy2W3eZG2ORAZmiagsazd1DyyMmTAQHvlzRHDOv4T93W28UjxgsFWxt+hbZ/9Vhj+5QGao1udcrgSVMklkiEIbWlbWBYUJ/UjfSbqIDG1s55uZ5E4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=GqCYE4NL; arc=fail smtp.client-ip=40.107.212.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="LpkhGqzi"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="GqCYE4NL"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=s127KXY23PCztTtwDNck6smIq7lM77IPartacTaIJa1Q5L1n9yG4tSTDXNxyVLy8yfRBBWSnZ2HUda6UEzkKoivtCMnZzAuHqLBu6a4yzEAB98I5lhgkRwbeg6m0DvyKcEhEhGk+LHMH9kZ3esbLgI66mZIZrxrC3jKn5jYLsmCgSrxxo53xlu29aRo43hcLAzQMIIrnkjuc9cNYIgaI3SP/Z6sutmoAQzM6rKBpmR4yogS4p+eTezbmE0VuyT5CnO2ku3dz+7O/A22yWqy/pHm7r+1GR6Nb2qmeWltXFWUghE2p9L3xGxMvQtVn8IKOTEBs5Aj6qvuyoZCZYBTl8Q==
+ b=U8pqeFP0/ybdFlD8O3ZEU9G9K0lKnlxaAwgP5zCf/icTxbUa+3mlroUXLLMFTlMs6puAiiYDZ9XXX+vzcbNxvhtFiDdqdw60ZT+uejIoGxjxQGWqJBHnCM05yWNeYkp6IOz6n2WUySdi8JTUoB7KpQWdKZQS02geo8L4SNrQkw5OwqGTpR5abwyOlbMRPuPVkRdT07g3uefFD1CdUklLlWgwH1ckJvD7KX/JuDIALwXwjZ6gVCDz2NYd42AJ5gA5jc0ibLc3f8gtkVDyYilq7zTEclC4YyXlq+O6WdWNmMIQW/CFPeVx3UrIzMfDwecaEQ/7g+XlHHrhlubOH7L46A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vcE7AJS4cGFVEcpTM8sZpDw4IcrXvlwvhRPUbIcJN64=;
- b=m5I+Qs4pyIE8OpGURK99enAencIha+ptyI5+Oe2sJ1aoXfJg/uA33xzEbnf7RgZf0jOvsNj1nTqTyq9WdH9kVrtdH/lJZTGA2HzEFobeZQxcK8Ks0L/lQyf2mBZpQu9oC3gRrwMQ8ECA2Hy3zeUX2imuM6ilrandc2vBHUxeMB4EHBnTDbm3ZN+FB9JyokAdW4m03L6qWPeYGnLy9YUUY133tVLiD1pj3wZQC0c7o9NtQr6vENsN9LSmXkqBA5Uwe8O/qkrrwTeIqu11a1ozgtDMJOAE5ITO6SBa0S/SZuZCnaPOnjB8dRwwkUvWDAyVs8XP163DdBgRwPHKky6ZXQ==
+ bh=j1XRnt5uJ/SHga63cVIKjgO8xyPh6IxjVLMvp8nAXpM=;
+ b=k1YPujxQTA9dPwaIMNVjXAfI/Akn30okMDAoExzI1F6VPETHHrVw7U/GB2LKRvOgoTGEOvldUVurLKiVNFsayU3dyCP/3krHUAQ+4ieYzBxeZrGjkfS7TxrXWFzhlvFCUxpSrg6wpEfkOYJSCfiiDaBzq+5Fy3jkNc0/CKc5Uj0jFaxzeDr3KICT6qc1BGoE1EI41wABn3ooIJaOyHIAHsRa2doXEhJs/rv9mNe2IP6IvqHz4G2GVHjt4Z53RjSFqoPCaYCSCF/c65n5Y2xgDAVdkaUfJD8qKbzyAqduAtFKNU7l8LlephSJc8vxD061fR82aQuUpx8M5wl8MPATvA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vcE7AJS4cGFVEcpTM8sZpDw4IcrXvlwvhRPUbIcJN64=;
- b=LpkhGqziLzPNo2Dwl6LqB7GAkUMCuRlcIRvTe4INPkSullVbeJHC1QVF4d033oIjvbt4N+t+c+baPnSX5SV9dHFEpjHAo8RmPfpwdjBSA5OWKwmfyU33ayLeWR4xhBHmjjPfalaENwVfJN2VQ7lPZ3yIb+fZsSKWWqPTMbeD6eE=
+ bh=j1XRnt5uJ/SHga63cVIKjgO8xyPh6IxjVLMvp8nAXpM=;
+ b=GqCYE4NLg84YCjrKLgR+Z4LWFXHrKzGBojN5wXqYRF3rezSc58eFnbvkmvXw320SE9P+fvliyiuRzsTvnmlomsnbyvXzWEGgwkIQkTcpwBQdPMEKhzqpF4VFvLlUOrBZZniKbcc7TWhF6u0yV8UQhso5Xf6OLuwT7FuaCfszVW6qqdujLEnj8bpbpDUVu7OQatMkpx+MDeNqRvP8YCsDzr2YaMoeN6o+oppia/A9gsEVpQzSpSDmBWZvGVOuqiXyeY0JrD310dxPbyEBBkz8gVFPNpSjxjDYpZjAZPMuU1ZGQxAEm+pPbY30lRV1xtbx0q7L9IEREsQqdTP49ZSAsg==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by CWLP265MB3121.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:ba::9) with
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MN2PR12MB3997.namprd12.prod.outlook.com (2603:10b6:208:161::11)
+ by DS7PR12MB9476.namprd12.prod.outlook.com (2603:10b6:8:250::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.18; Tue, 25 Feb
- 2025 15:14:19 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7%5]) with mapi id 15.20.8489.014; Tue, 25 Feb 2025
- 15:14:19 +0000
-Date: Tue, 25 Feb 2025 15:14:17 +0000
-From: Gary Guo <gary@garyguo.net>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?B?QmrDtnJu?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Masahiro
- Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Nicolas Schier <nicolas@fjasle.eu>, Luis Chamberlain <mcgrof@kernel.org>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Adam
- Bratschi-Kaye <ark.email@gmail.com>, linux-kbuild@vger.kernel.org, Petr
- Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>,
- Daniel Gomez <da.gomez@samsung.com>, Simona Vetter
- <simona.vetter@ffwll.ch>, Greg KH <gregkh@linuxfoundation.org>,
- linux-modules@vger.kernel.org
-Subject: Re: [PATCH v7 6/6] rust: add parameter support to the `module!`
- macro
-Message-ID: <20250225151417.7805b697@eugeo>
-In-Reply-To: <20250218-module-params-v3-v7-6-5e1afabcac1b@kernel.org>
-References: <20250218-module-params-v3-v7-0-5e1afabcac1b@kernel.org>
-	<20250218-module-params-v3-v7-6-5e1afabcac1b@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LNXP123CA0020.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:d2::32) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+ 2025 15:24:38 +0000
+Received: from MN2PR12MB3997.namprd12.prod.outlook.com
+ ([fe80::d161:329:fdd3:e316]) by MN2PR12MB3997.namprd12.prod.outlook.com
+ ([fe80::d161:329:fdd3:e316%6]) with mapi id 15.20.8466.016; Tue, 25 Feb 2025
+ 15:24:38 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 26 Feb 2025 00:23:40 +0900
+Message-Id: <D81MP8Y5ME66.3SLPVNXERH1HU@nvidia.com>
+Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
+ implementation
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>
+Cc: "Dave Airlie" <airlied@gmail.com>, "Gary Guo" <gary@garyguo.net>, "Joel
+ Fernandes" <joel@joelfernandes.org>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "John Hubbard" <jhubbard@nvidia.com>, "Ben Skeggs" <bskeggs@nvidia.com>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+ "Nouveau" <nouveau-bounces@lists.freedesktop.org>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <20250217-nova_timer-v1-0-78c5ace2d987@nvidia.com>
+ <Z7OrKX3zzjrzZdyz@pollux>
+ <CAPM=9tyu84z4Xk5X0fykO3Dazby2UqRgwtN4woNKe4Z2yMyDZg@mail.gmail.com>
+ <D80AK2CLL4AZ.1G6R7OBHOF08O@nvidia.com> <Z7xg8uArPlr2gQBU@pollux>
+ <D81L5PE1SPWC.O56MB6SRS0XK@nvidia.com> <Z73cXGkookq5-NON@cassiopeiae>
+In-Reply-To: <Z73cXGkookq5-NON@cassiopeiae>
+X-ClientProxiedBy: TY2PR02CA0025.apcprd02.prod.outlook.com
+ (2603:1096:404:a6::13) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -76,312 +73,223 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWLP265MB3121:EE_
-X-MS-Office365-Filtering-Correlation-Id: c99edb37-c7ab-426b-623e-08dd55af137b
+X-MS-TrafficTypeDiagnostic: MN2PR12MB3997:EE_|DS7PR12MB9476:EE_
+X-MS-Office365-Filtering-Correlation-Id: 02dceb35-5446-4a54-ad78-08dd55b06ee1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|7053199007;
+	BCL:0;ARA:13230040|376014|7416014|366016|10070799003|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?YTexDWIx3h5ufp9xcwQA5h4vWfNeK4GLtM0LfCnizXww9AlqBSj27kCRThiI?=
- =?us-ascii?Q?OZ4KMRTJXmLrW/2VNHEfFPQg04jxJbr9NLjRqW30aQDnU4dGBJ3KvbKDB23w?=
- =?us-ascii?Q?rSNq+BIRszxoRhmgd73M95A1KuwXtjwNAXbbAwlOPACKT9oSSEYLmpk3UsaM?=
- =?us-ascii?Q?q1y8z5zGpA+eh5e093liyP/U0VvimBZB7qrS6gpETo9k09Tu21aDMGAUtos1?=
- =?us-ascii?Q?0s6/7YMCn1+oj1ySdGvTf5hwpd9vXaHqX5Esc9u2QKW3fpfFjD4sxh+2O6lt?=
- =?us-ascii?Q?muHPpgH26dTQlAmxw8DpCJ2S9OfUVJkNd75Gb0hYkDC0BSJhYg+xFTHejxY0?=
- =?us-ascii?Q?g0Trapl5F9e0plttdVt/8JNiNPLqHmZeZO8mtcWGcqQjp1GdEJLMI+jI2hLL?=
- =?us-ascii?Q?kAimJfOFZgwxXDd2hyV6UlP7D63ghj3OY3vsk7FL2pzBdn90VdkxTYrgHxdN?=
- =?us-ascii?Q?7n5iwCOrcXDDdFiA5jtqJYeuPDIKQ5S9+ca9+XwU/z0QMTMyrE2dwbVjVvK6?=
- =?us-ascii?Q?UW9oyjp6n8ipYqbJJKygYnqN0NVYb9XHuvR8njtyGBeHMoZndr9VM2HkGfDP?=
- =?us-ascii?Q?H//fXLEgnv5/KlnWzIG35s1ucyTpILzSU+LP6zIHqMH0lCrvBUhKLlIvBbYU?=
- =?us-ascii?Q?FvJ3NMeNmiOSSKV/QO26RxmQ7X7v/vGXQz+JdKuZtt9g9XBQFdGWrryRI+NA?=
- =?us-ascii?Q?eUpEnix3fzi7gRW0C6kPhqaEyypITUpu2k55mQULHfx2zSyAcB8g4XGjEnW/?=
- =?us-ascii?Q?ViAqsv8FJGjDPo+7raJHnlDaLEOPmXWmRmD/aXRRvfwWNAmeS5b7T3JLZw2R?=
- =?us-ascii?Q?dwBoLX8z2iXBFs5OlyZ+YK2oWgg5DkUDz2RQPHD14zeq8mOeDXUX2mFMI93O?=
- =?us-ascii?Q?v6NpmruKuMX6DkIycl/1uKaeGEP5m6HUAWJA4hL9oO/W1b8w8Ap0K3Jd1Mjv?=
- =?us-ascii?Q?/o4V9V3CAVf8/ydOLzdZBdLZfdxTiT2fb4bbjBpxKK7VjZyLOWFze6ZQiwi4?=
- =?us-ascii?Q?Rv/wlUeDdTpOEA6vUTSk84Q8FHCubWZT3l9Sx66Zl12anLv6knRrdZhXXrXk?=
- =?us-ascii?Q?YkPpZ2dzVtyn9gBOk+zFiZt/DQgAu70ahK5M8Bl29DAeiniD2dmpjnz199vN?=
- =?us-ascii?Q?aATZ5wvlvNdohGLWnMqAzb+wZyaOU5vRQlouGBz6zEBgyrExyX7608NL+Ae1?=
- =?us-ascii?Q?r1phnjzDMbx4vEgrB+t3FWRdGUvtTPcY0/yXTnysJyq5b4UxpurcCydOPL2A?=
- =?us-ascii?Q?8LDfKOWezL1aL6Pruj766JToHDyxQp/pdmfp8k6tHf5KHSzNQA/v0xdVzSNO?=
- =?us-ascii?Q?nm/AV+SvuScC+PH4Rtxr4V/C/BxqycFFfnZxdP2wywhsL8cf9nx6vpvy18B8?=
- =?us-ascii?Q?OWsBwH+ng08hQeeOeZHcuPZGZULj?=
+	=?utf-8?B?RGd1cTkyZkhmamovdGtTMHBNZXRLSXEvcFVzVldVb2FyREtoeUZWWHFBeDFI?=
+ =?utf-8?B?dVVrejBDemtkcVdTejl6TUdLaFJ1UGtabS9FVm10c1Q2YXBaOXJIZFdHbG5G?=
+ =?utf-8?B?WWNtaUowN3o2UEVVNm96eWRCWndMdjJIYjhseXJaWnJuOVRQdVBUNkhzTXQy?=
+ =?utf-8?B?cHNTczZnWjFwSnZpRW1ndWVSaG4zdDQxL05ZdjlrRzREbXdlOTRGWlByd0hm?=
+ =?utf-8?B?UWE5Nkhpb2NFYVNFbC93QllJWklXSnB1ZDAzZGhITlhwQXNxTTU5Ymw2bUdz?=
+ =?utf-8?B?bmdlb25RNHkvWHhoQ1pJVGI3RnlhaW43UmE4NmtxV2JUdlZvUVZYRmdmYzZR?=
+ =?utf-8?B?Y09JRDNMVVpkd0dNUHdramVFY3p6b3RMSDdaeFltck4wUGx2Q3Y5Vm5uNS9i?=
+ =?utf-8?B?dlVOa2IrMURZdWtsVnFJUSt2M3JFK01hOG1BODg4dnpYUkFJMENEU2NqWGZL?=
+ =?utf-8?B?VElZTm1XZzFVRUZCcUU4aUE2TDB4NDBJSzFhdWZza0EwRloyU3UyL0lWc1Vy?=
+ =?utf-8?B?eklZbUhQa2YvZWJqelp3SzVaVjdrelY4cThjTmtRNENJSnZvZ1gwSUFiY1gy?=
+ =?utf-8?B?d3UrZHE1cDNkcFU5T01uOU1KY1RKWjdZN3AybWxCUzhNTHF5dlFETDQ4MlVm?=
+ =?utf-8?B?a0N5cEViN3Q4Z2E3d2lZWmtvaVkrRkdMQjBjRjZsckRQSjc2NzBJc3pUQnpy?=
+ =?utf-8?B?ZU55bUZyL3FjZzY0WkRBZ3hmd2VwdERod3VibTdaVWdSOEVvUUdvdWMwbWN0?=
+ =?utf-8?B?UGdTOUdNVW9HK0M2WmhrSFpWb1B4Sks1U3RtZlZnYWtCeEgvcjBFVXhvQlll?=
+ =?utf-8?B?Q2paemluNnVXQ2hlQmRJN2FmVG5tMm0vaVBFYnZ6QU5HLzZnV2tydDBsVGFZ?=
+ =?utf-8?B?ZFZQU3A5MGo4QlpRbExQK2wvTnFQYm5ydHJLVXlnakVST3FuSVUzdEhiaGlI?=
+ =?utf-8?B?M1JzYlMvWkR0eHowamdMeG1sR3BpNnNUemhVMXg0T2VRWVNNb2NXWUZyb3p5?=
+ =?utf-8?B?S2lQVTBSYldZejRObm4yUGRNVkRNSFh6TGNiU29PMkZVaFNqNzZLK0ZSdEdQ?=
+ =?utf-8?B?UzhGdW5QWEcvWlViZE9VeVJJdnFQMlQzZzZPMEpERnBCUXdVRDFxb0hmdTJn?=
+ =?utf-8?B?amZBbXdoYU5GcDZNdU03cVUvd1NZZjVnZlZmZ0dmQlhlaExJa0tQV2J3ZUVL?=
+ =?utf-8?B?RUZmOEtsSXhTNEN4OTNrczA2cGV5bHZHdmJoY1puRnd0VStwQlFDZko3ZWRL?=
+ =?utf-8?B?cDVQaldrMWtLRWpRTW15MFJ6MWx2bklING53a2dhVGdmMWJzbjhuVjBQUVgr?=
+ =?utf-8?B?SXRONkFmd2REL2ZtdVBjSktlYjJZdmJNaXQxeWlTZy9lQ3pHVnR0NzJlTzh3?=
+ =?utf-8?B?RFhJMm5HS0VseGthL0tlc2VkaUZFWEZQaWNVTEhUOStQVlRicGlDVlRTOEFz?=
+ =?utf-8?B?Y01aTXRocyt5cTdPR0ZJTytaM2pZdmU2R2tJaHN6TGxpR0tuU2prRlhyRkJs?=
+ =?utf-8?B?WEZqeVRXalhkalpBUHdlSzQySzJ4RGx4ZXpHWWNjdlNLdFhWbUtYQ2d1SFdE?=
+ =?utf-8?B?akpGNTNJZjQ4L0l5SjBKS0p3WjFMSit2bTN0SktlZzhOS2JOYkxoMUovRk5x?=
+ =?utf-8?B?TlowMmpkTHNWVk81ODQ5OFhsdi9ONzZwUU5zNHdiRmp0MDNUbEM5Nnd2RjZ3?=
+ =?utf-8?B?aGt1SXFva1g0Qk1ORklqUzMwa3E1Ym1XNGxIZys1bmpXR3EvckY2ME1oYXJG?=
+ =?utf-8?B?bjhqNWlkekxhTVdXWmhFbE4vRTRHMkE0ejdIUnpSYWV0dGxic2NxQld3SUFS?=
+ =?utf-8?B?N0N5aU9oSTBkU3ZZeHJwN3hUbkY4clNZNkdKcVNoditmcGJRY2lPbWlXenAz?=
+ =?utf-8?Q?Z0Mal5wwWswvR?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(7053199007);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB3997.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(10070799003)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?vm93QmPT/hISMs6yvqdM8TlCpv3rt8tkZ7eQO9Gf7dhEWwJRk99liU31gWqi?=
- =?us-ascii?Q?UUzI822qgs0F9ztQYk1dXaRI8dZyyK8PEiLXd784YJWRSr059z239mh1nRCt?=
- =?us-ascii?Q?0tCmnC+Sj8RZeECi4G1WuSvFnU3ujmd+cTeTKi7fBZlLFs1bHw5+Uj0K8ZQH?=
- =?us-ascii?Q?XgzBi91IJVIGs5kIEbby6M1p0meaz8JgZEYd9gzbvZxJOq7Xv7L0v47zic91?=
- =?us-ascii?Q?1GLmFOLgDVbEZsH95V3csK5yQ1+McO3zF/4ZOardho2uIISv7LUAAerxUlhH?=
- =?us-ascii?Q?2XjZth69XFXyUKkLyQJjbhnQ8ByKZ06eUaNCKfWP5HdEHJ8/GyU05GznoyVr?=
- =?us-ascii?Q?P7C2zrgagSqdFhcQopWreR15L5baCi1k6T0zdhn4yQQkJz8FKPwgV/otPO2Y?=
- =?us-ascii?Q?WhmRglqJAHVbFVcYlXYxD9t++b1Z25ug9m5T80RoiMddk4KCW7M9W5878eNb?=
- =?us-ascii?Q?jJFfikM3Rqccg5a7yfnrfAWWULbWnq7V0O+EXglOrxxdsFL1bByuReLI45X/?=
- =?us-ascii?Q?otFo8ympeNNV9Ll4KzbfY7x0wnOWOlYHInS7y2hIE47aKyvGtrTcn31usYxF?=
- =?us-ascii?Q?t6klVBa0Zc62uGX8Fj6q0UKfdeMxsfwnBTrmvRJoSejPuJExoc91SXOeWu++?=
- =?us-ascii?Q?crFTa6ascjLMm+5NccSegwGB+HDSU7wvpDp3zoU+8obFy3k4BIg148mtCCe2?=
- =?us-ascii?Q?sjfB6ObfQCk36zMVxadmQ/EvxJ2qn0GA/aKYQMFF/ne7YFlcnmPqMIb6yH0u?=
- =?us-ascii?Q?laGg5oQT2eT4yBxYzXo+dkfGrM+8w1y+kVBEyAOm4p/Y8ya6n8fa88GpV3Rt?=
- =?us-ascii?Q?RMTIshg13Pa0W+ZLj8sMEr/8EX3VM0rF09kvsRTFq/xuk/wrsXIiPa6AM+ED?=
- =?us-ascii?Q?eZXbcmWYlvpEdW7xv2RUPn6Gf1fjcEyrSz7QKGdT9uateVQcd7/9DD3ZRPfq?=
- =?us-ascii?Q?LEM6X9l6EiUgmDciUkhvozmr+LFa8Juh8IJjCnm+pSLnzoIP3DFfD3tbbtLl?=
- =?us-ascii?Q?rmB5aYp96qQul5tRwHon8eLQDlFiH+ZZGUSUl+ChgEQUnq8ML3Vwc9gq0J87?=
- =?us-ascii?Q?ZqbDCLWqxLsnytP92NPZbASr0DMB9rAU1dgd3GtVd3Vd9+Ocuow/oWmGAFKr?=
- =?us-ascii?Q?zkJjtAozR0bk7b3P6CkBfhgfRPz1bMKzIKtiwQcpiiMg/vejvRqXc6Z6h7zW?=
- =?us-ascii?Q?ooa7UMm2hTcE/WW2d726uT1O8oE7Xb2IwnUc6AEEws6jdgD33X8kEEyNlq/m?=
- =?us-ascii?Q?UnbFMrZve0Wl1n1zT8ZRLXN3oPI22J0yJdgAVxFNifS7mM/G+y8iEaVz9rR0?=
- =?us-ascii?Q?TNi/Xtih+WGC4+YUovAEomd0O/HkrEDW+F5m5lqtvccnwJ2lmoey8tzfSi5q?=
- =?us-ascii?Q?1QonmpSqx+M46OWkK4TtiE0VfOdbu108U8kP6gwSmaTGSf2ivSw1FtrWiVdv?=
- =?us-ascii?Q?7g/rwt3hBr+yVOW8I3B/T/IR6NBfIZ5DNIvmEpLq4ivz1jedMtk9KrCVQI/i?=
- =?us-ascii?Q?bGmuZO+5nWcRRuGev4lTQDb0YrYQGZK3TeGLOWutUZzndY4mdRqCNNTPZjHR?=
- =?us-ascii?Q?cpsEL/FJV8P8tYc6lWn0Rx+c2BeSLAIyb5jU3opP?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: c99edb37-c7ab-426b-623e-08dd55af137b
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+	=?utf-8?B?cFg5TjVUUVJ1bGpzQWltQUk1d2ZPYWVFQ0R4cjN6RXJHeUlHUXVoRVExT0R5?=
+ =?utf-8?B?bzBPTkVsTml3V1IxUW81Z3ptRVk1ejJSbGR1K3hRWU9PNDdZNVMvZC9BbXo0?=
+ =?utf-8?B?aGM4YXJsOWFUTDlodkZTdVNtU05HZXd0VGNHdFk1elpQUVBzcDdWVjk1MVkw?=
+ =?utf-8?B?R1pyVE9lYmhWNFBOdGhjZUxvS3g0QnRLMzdYVVBrcG5DZkI0YzBHdXBLZnYv?=
+ =?utf-8?B?TlQ2SXRxT3grRjZudjZVaVhJcEFBT2N4d3JjeDQ3d01hbVVrSGZ2MnZpVjZy?=
+ =?utf-8?B?VTJQNmdzcDB3NFJqY2U1WTRZamF6WXRXWG0wOHoyNUdrbWVYS0JzNHpDc0Q2?=
+ =?utf-8?B?djRpWFFhb2ZHcU1qaDU1UGlreTVlSDlqQXVnSi9YVU5BWXR5VFRxNTRFY2lE?=
+ =?utf-8?B?a3E2ZlhqNEtSWGJMWkZzSlpsUjBhUkVHWm9zT3RZdlIrNjIwcjB4czk0MVJt?=
+ =?utf-8?B?OTc5N3VBbldCRmdZOXBheG9rYlU3amM1aVFWeTZEZmxmR01EL0VGVHQxdW5O?=
+ =?utf-8?B?ZlQza1hJWEd4R2pzcWVuZEpWVjJ3L0JxYjVjR3FSRC9KeDVFMlRaRk9kTWMw?=
+ =?utf-8?B?WjduZXdSRm16ZkpCWkNISERyZXBkdjk5ZURqdFFRbXJuVkxqcEtRU1RuTUl0?=
+ =?utf-8?B?ckoxZVd0U1ZFZWtvb2RFenZhZTF1Vkl0WkxMK283VFNwd0s5VERtT0RTcnNK?=
+ =?utf-8?B?RnpsNmV4dWl4ZXIvcE5MYU9WK0tXdTdEanhwK3dNcVBjYU1oQmR2Ym9naHpv?=
+ =?utf-8?B?Sk8rWkhuVWhLVHIyT1pHYnlZZ1lGbTR4YXFGKzJPeFRpbUdNWEtrSE5KODNx?=
+ =?utf-8?B?TVM2anNhZGZwWWExREVTVnBlR3F3YjNOM0xraUJkU0JaWnRDa2pENitYdFJS?=
+ =?utf-8?B?Ulp1KzczcWFvN2YwbitPUW0yQ3QvemhuUUhJRFoyeUhIMm04cEd1RGg5VjAr?=
+ =?utf-8?B?anlhL1lNZk5PeHlIVEk1L3YraVZPY0UvSTFJaHlqMU5ycnVPeEtDY2ZRRlNH?=
+ =?utf-8?B?TkM5Y055T3UrNWxOQytKdERVbE56VzRJcEsrNmY4OUtERnVtUTNiSFFSU0U5?=
+ =?utf-8?B?OTByaTQvcWNqcklVV1NGV0tDbXBsRnZJZUFyTm9RRnE0b3hqUlZaazVSQTdI?=
+ =?utf-8?B?ellsbFFtWHRqRVc4RFNvc0FhTVpHYkVUV1ljbjZMQmxzWWZlL3dWazZuL05G?=
+ =?utf-8?B?NTQ0N25pMVYzZlZtUGJmS0JxZzlxQmFURnZ2L1RaWTBQY25xOE8yblpNV2ZB?=
+ =?utf-8?B?ellKdUJURTN1Wk1sdFQ1b2x0YktYaWtpSG5rbThZVkxMVEMwektvRXcwc2pq?=
+ =?utf-8?B?K1UxMW9DRHJaTUd3RTlVb2t1WDFRZ0Fxai9ZN3IzYVBoanBSNHlIQk9kKzAx?=
+ =?utf-8?B?WWNaYTd2T3Jybm9ZWVdVZGRmWDlnRDIzWmQvMFJ3dzVLMlVVdk5YUnJHUk9a?=
+ =?utf-8?B?bHp2Q1JKaWhVZGF2WkFSQk5WdUdwaUZOcVJpUDgzbUR4azNJaFI5bDFvUmw0?=
+ =?utf-8?B?SDY0VW5xbVM5a1FXM0RZdkVFL3c2VGNOa0FLQXJ6blh2RXkzKzdwZStyNGdw?=
+ =?utf-8?B?d3diSExiVGtFb0pDcjdTaVYyUG92M0tycjdvZGZRd3RRN3U4eHp0eDZyZ3l0?=
+ =?utf-8?B?czcxYk0vc2xWb2tuemNLamF0b3dFMlFIOCtIQkNxREhRTjk1VHo2SDh1aVJJ?=
+ =?utf-8?B?aHFTRlJCWEpTVzYyOTUvL1BMR3l5S2x6Um1YNDF5RWc2Rkl4N1huMVJRRHhJ?=
+ =?utf-8?B?Z000SHZGZ1piZlVmckorWU5JRDFJVlQ0TlhZNVdKTzlJNnpkRU9uak5MZFdz?=
+ =?utf-8?B?Y2lxY0ExZVNYL0F6QTd1ZEpuZ2E1TDYzdDJIN1hWd1Z6Qm12czd5TEVrWERs?=
+ =?utf-8?B?eitIaTdQTFVvQlFRMjhFZVJmUS9raXJXSmM0aGlET05TS3hYbkZZVVh2dU10?=
+ =?utf-8?B?aW9nenJlaWF1YTFPcHQ1cUltSWxXbWthOWdZYldlcVdabHJyejgxekhTTEYw?=
+ =?utf-8?B?dG1wNzFhMkkzQ1phSjNZN3BTOU1GZmdYeDhBaVJQSThoWVBHMXNac05YV05r?=
+ =?utf-8?B?eXlnUGk1bDFBODBydlZQL2hPUGR4cnJIdUVlSWFvZnlSTVNtQ3oyZVZxMzZh?=
+ =?utf-8?B?R1JFZjRqVEEzR2tOcXJvTUdCNDlWLzlJRGVrZmhyQ3p0U3dzekU2aVJCRm94?=
+ =?utf-8?Q?IrkBO/B6Ohe+WdMuyyblAcrvT7f0seKSZ+Z5sUqETUqU?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 02dceb35-5446-4a54-ad78-08dd55b06ee1
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2025 15:14:19.3135
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2025 15:24:38.3119
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 59vNpvOG64pDqikdE0OYe/rAME8IV35UNuTQ2OFVIrbMuTJuEKZEOnUmKYwPS4LLb2SHnOnpQ2KVn1AGK8JxHQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB3121
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6S2UvTJVlqZlsZdlgjNZ0KvaVBFexXkuq0XjYjn88SuPBaE0ddKhfFSLBemcSvSl9uRx+gDWA2ei64yradapKw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB9476
 
-On Tue, 18 Feb 2025 14:00:48 +0100
-Andreas Hindborg <a.hindborg@kernel.org> wrote:
+On Wed Feb 26, 2025 at 12:06 AM JST, Danilo Krummrich wrote:
+> On Tue, Feb 25, 2025 at 11:11:07PM +0900, Alexandre Courbot wrote:
+>> On Mon Feb 24, 2025 at 9:07 PM JST, Danilo Krummrich wrote:
+>> > CC: Gary
+>> >
+>> > On Mon, Feb 24, 2025 at 10:40:00AM +0900, Alexandre Courbot wrote:
+>> >> This inability to sleep while we are accessing registers seems very
+>> >> constraining to me, if not dangerous. It is pretty common to have
+>> >> functions intermingle hardware accesses with other operations that mi=
+ght
+>> >> sleep, and this constraint means that in such cases the caller would
+>> >> need to perform guard lifetime management manually:
+>> >>=20
+>> >>   let bar_guard =3D bar.try_access()?;
+>> >>   /* do something non-sleeping with bar_guard */
+>> >>   drop(bar_guard);
+>> >>=20
+>> >>   /* do something that might sleep */
+>> >>=20
+>> >>   let bar_guard =3D bar.try_access()?;
+>> >>   /* do something non-sleeping with bar_guard */
+>> >>   drop(bar_guard);
+>> >>=20
+>> >>   ...
+>> >>=20
+>> >> Failure to drop the guard potentially introduces a race condition, wh=
+ich
+>> >> will receive no compile-time warning and potentialy not even a runtim=
+e
+>> >> one unless lockdep is enabled. This problem does not exist with the
+>> >> equivalent C code AFAICT, which makes the Rust version actually more
+>> >> error-prone and dangerous, the opposite of what we are trying to achi=
+eve
+>> >> with Rust. Or am I missing something?
+>> >
+>> > Generally you are right, but you have to see it from a different persp=
+ective.
+>> >
+>> > What you describe is not an issue that comes from the design of the AP=
+I, but is
+>> > a limitation of Rust in the kernel. People are aware of the issue and =
+with klint
+>> > [1] there are solutions for that in the pipeline, see also [2] and [3]=
+.
+>> >
+>> > [1] https://rust-for-linux.com/klint
+>> > [2] https://github.com/Rust-for-Linux/klint/blob/trunk/doc/atomic_cont=
+ext.md
+>> > [3] https://www.memorysafety.org/blog/gary-guo-klint-rust-tools/
+>>=20
+>> Thanks, I wasn't aware of klint and it looks indeed cool, even if not pe=
+rfect by
+>> its own admission. But even if the ignore the safety issue, the other on=
+e
+>> (ergonomics) is still there.
+>>=20
+>> Basically this way of accessing registers imposes quite a mental burden =
+on its
+>> users. It requires a very different (and harsher) discipline than when w=
+riting
+>> the same code in C
+>
+> We need similar solutions in C too, see drm_dev_enter() / drm_dev_exit() =
+and
+> drm_dev_unplug().
 
-> This patch includes changes required for Rust kernel modules to utilize
-> module parameters. This code implements read only support for integer
-> types without `sysfs` support.
-> 
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Acked-by: Petr Pavlu <petr.pavlu@suse.com> # from modules perspective
-> ---
->  rust/kernel/lib.rs           |   1 +
->  rust/kernel/module_param.rs  | 226 +++++++++++++++++++++++++++++++++++++++++++
->  rust/macros/helpers.rs       |  25 +++++
->  rust/macros/lib.rs           |  31 ++++++
->  rust/macros/module.rs        | 191 ++++++++++++++++++++++++++++++++----
->  samples/rust/rust_minimal.rs |  10 ++
->  6 files changed, 466 insertions(+), 18 deletions(-)
-> 
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 496ed32b0911a..aec04df2bac9f 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -57,6 +57,7 @@
->  pub mod kunit;
->  pub mod list;
->  pub mod miscdevice;
-> +pub mod module_param;
->  #[cfg(CONFIG_NET)]
->  pub mod net;
->  pub mod of;
-> diff --git a/rust/kernel/module_param.rs b/rust/kernel/module_param.rs
-> new file mode 100644
-> index 0000000000000..0047126c917f4
-> --- /dev/null
-> +++ b/rust/kernel/module_param.rs
-> @@ -0,0 +1,226 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Types for module parameters.
-> +//!
-> +//! C header: [`include/linux/moduleparam.h`](srctree/include/linux/moduleparam.h)
-> +
-> +use crate::prelude::*;
-> +use crate::str::BStr;
-> +
-> +/// Newtype to make `bindings::kernel_param` [`Sync`].
-> +#[repr(transparent)]
-> +#[doc(hidden)]
-> +pub struct RacyKernelParam(pub ::kernel::bindings::kernel_param);
-> +
-> +// SAFETY: C kernel handles serializing access to this type. We never access
-> +// from Rust module.
-> +unsafe impl Sync for RacyKernelParam {}
+Granted, but the use of these is much more coarsed-grained than what is
+expected of IO resources, right?
 
-I wonder if we should have a custom impl of `SyncUnsafeCell` for this
-kind of usage (so that when it is stabilized by Rust, we can just switc
-over).
+>
+>> and the correct granularity to use is unclear to me.
+>>=20
+>> For instance, if I want to do the equivalent of Nouveau's nvkm_usec() to=
+ poll a
+>> particular register in a busy loop, should I call try_access() once befo=
+re the
+>> loop? Or every time before accessing the register?
+>
+> I think we should re-acquire the guard in each iteration and drop it befo=
+re the
+> delay. I think a simple closure would work very well for this pattern?
+>
+>> I'm afraid having to check
+>> that the resource is still alive before accessing any register is going =
+to
+>> become tedious very quickly.
+>>=20
+>> I understand that we want to protect against accessing the IO region of =
+an
+>> unplugged device ; but still there is no guarantee that the device won't=
+ be
+>> unplugged in the middle of a critical section, however short. Thus the d=
+river
+>> code should be able to recognize that the device has fallen off the bus =
+when it
+>> e.g. gets a bunch of 0xff instead of a valid value. So do we really need=
+ to
+>> extra protection that AFAICT isn't used in C?
+>
+> As mentioned above, we already do similar things in C.
+>
+> Also, think about what's the alternative. If we remove the Devres wrapper=
+ of
+> pci::Bar, we lose the control over the lifetime of the bar mapping and it=
+ can
+> easily out-live the device / driver binding. This makes the API unsound.
 
-> +
-> +/// Types that can be used for module parameters.
-> +///
-> +/// Note that displaying the type in `sysfs` will fail if
-> +/// [`Display`](core::fmt::Display) implementation would write more than
-> +/// [`PAGE_SIZE`] - 1 bytes.
-> +///
-> +/// [`PAGE_SIZE`]: `bindings::PAGE_SIZE`
-> +pub trait ModuleParam: Sized {
-> +    /// The [`ModuleParam`] will be used by the kernel module through this type.
-> +    ///
-> +    /// This may differ from `Self` if, for example, `Self` needs to track
-> +    /// ownership without exposing it or allocate extra space for other possible
-> +    /// parameter values.
-> +    // This is required to support string parameters in the future.
-> +    type Value: ?Sized;
-> +
-> +    /// Parse a parameter argument into the parameter value.
-> +    ///
-> +    /// `Err(_)` should be returned when parsing of the argument fails.
-> +    ///
-> +    /// Parameters passed at boot time will be set before [`kmalloc`] is
-> +    /// available (even if the module is loaded at a later time). However, in
-> +    /// this case, the argument buffer will be valid for the entire lifetime of
-> +    /// the kernel. So implementations of this method which need to allocate
-> +    /// should first check that the allocator is available (with
-> +    /// [`crate::bindings::slab_is_available`]) and when it is not available
-> +    /// provide an alternative implementation which doesn't allocate. In cases
-> +    /// where the allocator is not available it is safe to save references to
-> +    /// `arg` in `Self`, but in other cases a copy should be made.
-> +    ///
-> +    /// [`kmalloc`]: srctree/include/linux/slab.h
-> +    fn try_from_param_arg(arg: &'static [u8]) -> Result<Self>;
-> +}
-> +
-> +/// Set the module parameter from a string.
-> +///
-> +/// Used to set the parameter value at kernel initialization, when loading
-> +/// the module or when set through `sysfs`.
-> +///
-> +/// `param.arg` is a pointer to `*mut T` as set up by the [`module!`]
-> +/// macro.
-> +///
-> +/// See `struct kernel_param_ops.set`.
-> +///
-> +/// # Safety
-> +///
-> +/// If `val` is non-null then it must point to a valid null-terminated
-> +/// string. The `arg` field of `param` must be an instance of `T`.
-> +///
-> +/// # Invariants
-> +///
-> +/// Currently, we only support read-only parameters that are not readable
-> +/// from `sysfs`. Thus, this function is only called at kernel
-> +/// initialization time, or at module load time, and we have exclusive
-> +/// access to the parameter for the duration of the function.
-> +///
-> +/// [`module!`]: macros::module
-> +unsafe extern "C" fn set_param<T>(
-> +    val: *const kernel::ffi::c_char,
-> +    param: *const crate::bindings::kernel_param,
-> +) -> core::ffi::c_int
-> +where
-> +    T: ModuleParam,
-> +{
-> +    // NOTE: If we start supporting arguments without values, val _is_ allowed
-> +    // to be null here.
-> +    if val.is_null() {
-> +        // TODO: Use pr_warn_once available.
-> +        crate::pr_warn!("Null pointer passed to `module_param::set_param`");
-> +        return crate::error::code::EINVAL.to_errno();
+Oh my issue is not with the Devres wrapper, I think it makes sense -
+it's more the use of RCU to control access to the resource that I find
+too constraining. And I'm pretty sure there will be more users of the
+same opinion as more drivers using it get written.
 
-This is already in prelude, so you can just use `EINVAL` directly.
+>
+> With this drivers would be able to keep resources acquired. What if after=
+ a
+> hotplug the physical address region is re-used and to be mapped by anothe=
+r
+> driver?
 
-> +    }
-> +
-> +    // SAFETY: By function safety requirement, val is non-null and
-> +    // null-terminated. By C API contract, `val` is live and valid for reads
-> +    // for the duration of this function.
-> +    let arg = unsafe { CStr::from_char_ptr(val).as_bytes() };
-> +
-> +    crate::error::from_result(|| {
-> +        let new_value = T::try_from_param_arg(arg)?;
-> +
-> +        // SAFETY: `param` is guaranteed to be valid by C API contract
-> +        // and `arg` is guaranteed to point to an instance of `T`.
-> +        let old_value = unsafe { (*param).__bindgen_anon_1.arg as *mut T };
-> +
-> +        // SAFETY: `old_value` is valid for writes, as we have exclusive
-> +        // access. `old_value` is pointing to an initialized static, and
-> +        // so it is properly initialized.
-> +        unsafe { core::ptr::replace(old_value, new_value) };
-> +        Ok(0)
-> +    })
-> +}
-> +
-> +/// Drop the parameter.
-> +///
-> +/// Called when unloading a module.
-> +///
-> +/// # Safety
-> +///
-> +/// The `arg` field of `param` must be an initialized instance of `T`.
-> +unsafe extern "C" fn free<T>(arg: *mut core::ffi::c_void)
-> +where
-> +    T: ModuleParam,
-> +{
-> +    // SAFETY: By function safety requirement, `arg` is an initialized
-> +    // instance of `T`. By C API contract, `arg` will not be used after
-> +    // this function returns.
-> +    unsafe { core::ptr::drop_in_place(arg as *mut T) };
-> +}
-> +
-> +macro_rules! impl_int_module_param {
-> +    ($ty:ident) => {
-> +        impl ModuleParam for $ty {
-> +            type Value = $ty;
-> +
-> +            fn try_from_param_arg(arg: &'static [u8]) -> Result<Self> {
-> +                let bstr = BStr::from_bytes(arg);
+Actually - wouldn't that issue also be addressed by a PCI equivalent to
+drm_dev_enter() and friends that ensures the device (and thus its
+devres resources) stay in place?
 
-Why isn't `arg` BStr in the first place?
-
-> +                <$ty as crate::str::parse_int::ParseInt>::from_str(bstr)
-> +            }
-> +        }
-> +    };
-> +}
-> +
-> +impl_int_module_param!(i8);
-> +impl_int_module_param!(u8);
-> +impl_int_module_param!(i16);
-> +impl_int_module_param!(u16);
-> +impl_int_module_param!(i32);
-> +impl_int_module_param!(u32);
-> +impl_int_module_param!(i64);
-> +impl_int_module_param!(u64);
-> +impl_int_module_param!(isize);
-> +impl_int_module_param!(usize);
-> +
-> +/// A wrapper for kernel parameters.
-> +///
-> +/// This type is instantiated by the [`module!`] macro when module parameters are
-> +/// defined. You should never need to instantiate this type directly.
-> +#[repr(transparent)]
-> +pub struct ModuleParamAccess<T> {
-> +    data: core::cell::UnsafeCell<T>,
-> +}
-> +
-> +// SAFETY: We only create shared references to the contents of this container,
-> +// so if `T` is `Sync`, so is `ModuleParamAccess`.
-> +unsafe impl<T: Sync> Sync for ModuleParamAccess<T> {}
-> +
-> +impl<T> ModuleParamAccess<T> {
-> +    #[doc(hidden)]
-> +    pub const fn new(value: T) -> Self {
-> +        Self {
-> +            data: core::cell::UnsafeCell::new(value),
-> +        }
-> +    }
-> +
-> +    /// Get a shared reference to the parameter value.
-> +    // Note: When sysfs access to parameters are enabled, we have to pass in a
-> +    // held lock guard here.
-> +    pub fn get(&self) -> &T {
-> +        // SAFETY: As we only support read only parameters with no sysfs
-> +        // exposure, the kernel will not touch the parameter data after module
-> +        // initialization.
-> +        unsafe { &*self.data.get() }
-> +    }
-> +
-> +    /// Get a mutable pointer to the parameter value.
-> +    pub const fn as_mut_ptr(&self) -> *mut T {
-> +        self.data.get()
-> +    }
-> +}
-> +
+Using Rust, I can imagine (but not picture precisely yet) some method of
+the device that returns a reference to an inner structure containing its
+resources, available with immediate access. Since it would be
+coarser-grained, it could rely on something less constraining than RCU
+without a noticeable performance penalty.
