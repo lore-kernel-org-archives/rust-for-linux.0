@@ -1,108 +1,116 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5AD2266B4C;
-	Tue, 25 Feb 2025 09:44:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740476661; cv=pass; b=kwtj1PxDCYNx2cE3yeWOz/evwpjWnKBIom4n2A6IgIZdv/ncy1A5kAL93K3UjoadBh+6gXl6mMPxgy9OXwxZW+YZGvUM99DjSaO92OxpqZZ2jv4v24YzSvlLyMcU2cmsOJFy+49xp+b5DO//GimwvWyS54FlDpys7QAo/bYCCLY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740476661; c=relaxed/simple;
-	bh=mGa1ZVpVEgPerlEBMmFu55L7BuMoyO1RjFa7unAYWsE=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=EdUrn4zDv/ltTlBViPNAbMqdvNn8uKluYKoup+WKgpe1X6lzAKxM9iRNZtzY5u+TG+38UgxvIiZzZthkiw8tcEKYU4OzspM4JXeBcVbQcHZSoHiseBCVx4JBBr5y9+oUcQRq56u9c0fetV0IwxczNnSJ3El7Cz4pUtnxgDcqI6I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=iqgJce1V; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1867266570
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 09:47:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740476844; cv=none; b=Gecwly3FwqrQAuYNmN8KxGmXT2L25RRtzJ5wKHBHXfE7NOOvQwJUzh+Zab+XNhTWEDFtPQg0UiygmeBQGdiFwCJuvFWCyYSRfAeHG6EjtXwxA/YasK5h0AqT6Of5/vp6SAmKDQEjzzNDzbDybEOqKqVRVHNY3A24afq6PBDipO4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740476844; c=relaxed/simple;
+	bh=wP27JPweH/6fjM+NMVybUHMlDRdaIL6FUjjR0i8msYc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lP/MO/s4rsKOGE02ts7HjNBjIfaLVgmXcoOZgQB1WW5M3cxR8V1i/emsrqdqNty3WsiXSuaqhm9c/XKCEKOi9MZaLRUS2kFzgagC5Nx7vOPCzzgYrOLMhapxZPMnzWna3hw30ONY/P/+YmEviz+KtsCfZlmCK/2nXObBmDl71cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=YxUfeHQY; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="iqgJce1V"
-ARC-Seal: i=1; a=rsa-sha256; t=1740476632; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=hOAzLH10upnYM8mrUCJKeSFvpPQF4X8pbBP9U6Ib/J7wI6gKqAAg4x5D8BL+LJz18gdMEEWwAOxYCaGB97NqmdSU4Xz4JctrwSmMqKO9GpxyVOLWKq8sK6uAxreSaYlvk4vvl1ENV/rdNL4B5qdfc1L4g5M0KIhNUyee/Ieo3Po=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1740476632; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=mGa1ZVpVEgPerlEBMmFu55L7BuMoyO1RjFa7unAYWsE=; 
-	b=BwekNULxccjsZMNQ2D+mGAlVx8pLyZLfiTRT1g3RySnmMJIStUHZZKlEhWhVwJxxEd6p1vIZPnqpvUlbigZAxhB5E1Hy5GNbgXQh2WXOti62u5uusjvrOPXHDRq4sWrPJcXhLUwnHn5kZ+vo9PTAuEzWTWZEskE2BQE9FJm3FcI=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1740476632;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=mGa1ZVpVEgPerlEBMmFu55L7BuMoyO1RjFa7unAYWsE=;
-	b=iqgJce1VS9nGMtrO+a5XqdIt09odx5cAGf8CDtM6aHzUc5+szZL4elVjc0e0UpLt
-	z7pqmLPMaT3PTcEfQGp+ogA6fT9gsY08KsVPuJ6exnvUVafH9iI/udDcI36SC3G/y3Q
-	F4Mr6GwIXFKpwtTinI4J1RbPqVxQIDfj7as9+YUo=
-Received: by mx.zohomail.com with SMTPS id 1740476629225362.08681216406217;
-	Tue, 25 Feb 2025 01:43:49 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="YxUfeHQY"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2fbf77b2b64so10879873a91.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 01:47:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1740476842; x=1741081642; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=T+f+044xs9oe+QU9W9buNo+/acydIG20YX/T/a/LsZc=;
+        b=YxUfeHQYZS9+9UqfDZE2+WbJIw5q8IME+o6qeHuufATz0PgJfa1wJpUDROVhaQ/dYX
+         eh5vDiDhTjRrFI1SgHspgXJqgwnHV/bKVOhwswxqr934rvGACUGB01TXtSJMQjhw/Cxi
+         PCCNrG69yfACsZXF6EQ8lrk0E5cuB7K1Tx/zm2DQjTlXA09I/xiOT1gkKMG8eoukSbCD
+         BW9LTJpVO7ZqSF5QSvwyPxwHkJCpJVEVVBkuDa7rSfvPgKwoHAdowy9EBOpPtJh8RHA/
+         ffiM3D/zfqBWYnwIoztbktQC+mAyjCt1XgpNSwZExK7vu7z1j044WKZA6CNNP+rIrn0o
+         agZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740476842; x=1741081642;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=T+f+044xs9oe+QU9W9buNo+/acydIG20YX/T/a/LsZc=;
+        b=diXyPT8tlEDEUmEwlT0crWVKaBVO7bCQIfla20x7ZELh3zVTT7kvEGZ9GuBi3hVQVU
+         VBoJ39cL0lZ/gZPEWe1BnoQFImaoEcCcibzmnMutP/+8xTBCmpVs6farSqCpQtZgfCUP
+         YRbzuCTQCV4T/f3qeJNlEj2cZ/1zvlkNJxCEkD4GnHUT5Mn4juoqYUFhf4fzMljiCsYL
+         qX2aVVmtIwSFiCJp0A9WTj13RatWiK9+Tn8xgYVDkeRP3aZxHXJLJnXde77YO47KNDD8
+         dTKVn5if9d0Qpt1dbZgDGFOhrFvxygG/dRJp3lkUWb6ij/umf7lGUF5EavwPUdXfqje+
+         PNeA==
+X-Forwarded-Encrypted: i=1; AJvYcCWMUaRx0at0ZMD0d4+3JNHWS0KGHcEqQxQ/xxc2VBYn1zhlcVDr0pmfLKGXqimt7FIxLLgUaK8XmW9mrG+6NQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLiRaQeIaVTmoqmdrjErVEOobm8FbQ5emUREada7z2hJgVx6DP
+	PJUhvmAymdhkO4zwSyl29+Kx5BF2wsBgMh6RKsY/EixfEu1rKGl+UqMqoApBlXU=
+X-Gm-Gg: ASbGncuP5Rx8f/7PEghO2L+HgsqNHzQ4mJUx4/zsa3kw6nvF3bHGipgcKvHhfjxsMTM
+	VmmsI1uZloyNlW2nf15/QSvDU1VeFJkMb//FCRLIDgcukLAlrVtU758Yz6N5Ajikh/F9zEjxdNn
+	sODZq9y41sOkbNAdmUT44e/Zw2HSVP/Tq2FxWcVEACKQiV+DpAj0ZAcgCbcpWcXTKyP4TN4roPw
+	h4k/g+KzcX3EK5gUE75Q5c/gKZ+GPb9HSCPerKcHg/GgrANvqxCKJcwYp746Tvw3U8P33PL3nu9
+	uGY/zNomc4M78a76jcIIXobj2qU=
+X-Google-Smtp-Source: AGHT+IEpV3O0DpZJB5fu1atlN0Tq9K+PHFsKxd1ALff89Dfbc3fdDd/hO40dZKnKimmZmJUjhEkl7Q==
+X-Received: by 2002:a17:90b:2644:b0:2ee:dcf6:1c8f with SMTP id 98e67ed59e1d1-2fce78c78a0mr31431819a91.16.1740476841935;
+        Tue, 25 Feb 2025 01:47:21 -0800 (PST)
+Received: from localhost ([122.172.84.15])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fceb05f913sm8077113a91.25.2025.02.25.01.47.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Feb 2025 01:47:21 -0800 (PST)
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Benno Lossin <benno.lossin@proton.me>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Viresh Kumar <viresh.kumar@linaro.org>
+Cc: linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@redhat.com>,
+	rust-for-linux@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>
+Subject: [PATCH 0/2] Rust: Add cpumask abstractions
+Date: Tue, 25 Feb 2025 15:17:13 +0530
+Message-Id: <cover.1740475625.git.viresh.kumar@linaro.org>
+X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
-Subject: Re: [PATCH 1/2] rust: Add cpumask helpers
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250224233938.3158-2-yury.norov@gmail.com>
-Date: Tue, 25 Feb 2025 06:43:31 -0300
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Danilo Krummrich <dakr@redhat.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Stephen Boyd <sboyd@kernel.org>,
- Nishanth Menon <nm@ti.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Erik Schilling <erik.schilling@linaro.org>,
- =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Joakim Bech <joakim.bech@linaro.org>,
- Rob Herring <robh@kernel.org>,
- Christoph Hellwig <hch@lst.de>,
- Jason Gunthorpe <jgg@nvidia.com>,
- John Hubbard <jhubbard@nvidia.com>,
- linux-pm@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <9E7A81AA-6460-4F87-942E-2EEA145257F2@collabora.com>
-References: <20250224233938.3158-1-yury.norov@gmail.com>
- <20250224233938.3158-2-yury.norov@gmail.com>
-To: Yury Norov <yury.norov@gmail.com>
-X-Mailer: Apple Mail (2.3826.300.87.4.3)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi Yury,
+Hello,
 
-> On 24 Feb 2025, at 20:39, Yury Norov <yury.norov@gmail.com> wrote:
->=20
-> From: Viresh Kumar <viresh.kumar@linaro.org>
->=20
-> In order to prepare for adding Rust abstractions for cpumask, add
-> the required helpers for inline cpumask functions that cannot be
-> called by rust code directly.
+This series adds initial cpumask Rust abstractions and adds a new maintenance
+entry for the same.
 
-I don=E2=80=99t understand what is going on here. You apparently did not =
-provide the
-Rust code itself.
+This was earlier sent as part of a larger series [1] and it was suggested to
+send these separately.
 
-Usually, when I see a =E2=80=9Cin order to prepare for =E2=80=A6=E2=80=9D =
-I expect the actual patch to
-follow in the same series.
+Depends on: [2].
 
-Right now - and correct me if I'm wrong - it seems like you=E2=80=99ve =
-essentially added
-dead code.
+--
+Viresh
 
-=E2=80=94 Daniel=
+
+[1] https://lore.kernel.org/all/cover.1738832118.git.viresh.kumar@linaro.org/
+[2] https://lore.kernel.org/all/20250224233938.3158-1-yury.norov@gmail.com/
+
+Viresh Kumar (2):
+  rust: Add initial cpumask abstractions
+  MAINTAINERS: Add entry for Rust bitmap API
+
+ MAINTAINERS            |   6 ++
+ rust/kernel/cpumask.rs | 168 +++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs     |   1 +
+ 3 files changed, 175 insertions(+)
+ create mode 100644 rust/kernel/cpumask.rs
+
+-- 
+2.31.1.272.g89b43f80a514
+
