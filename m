@@ -1,68 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5704E19415E;
-	Tue, 25 Feb 2025 22:07:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5257A21E08A
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 22:38:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740521280; cv=none; b=W8CyXpLWXeFbsPdPfH3lfoMqWGIqr8kcCZy9YbU6gcyjjjnkNq+dKAaZ881+6dxu7Jc6IxgqDRrvn2nP6QsmnetGqExLeOh3jvljyfKdfs1ISClzjoJmuWJF1zMS7eJkikPkyl/Yb9yrGqrHeUs+U9/I3R5I+H7qyYLdOKj/Bec=
+	t=1740523133; cv=none; b=qcYFEGmwNGPkXVqkGLIIHM03xZGjr0eQLtLXCPqJu2cwMwUWPTg09Nr6R7pSNHPU4QXvfTC6gMQryF6HSM+gDKNmDnyScxAIELyUa5V86WeKghLZQ49wkt37hLS7laXmpsMtWS14lar69k4PdgZMd9e3NRWH9WZLUlL6yQRYceI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740521280; c=relaxed/simple;
-	bh=0NcnfcWnvhmaN3XeVuV1OJeIKLaEyYNHBl+5GykE8Xo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YaEYom1MnZZ3ka2B2hDAICcONLUuCZzXljnw/fyLPF4zFO7rs7cBtIcr+Iz3Ag4Z7E6IrN6Y4h+eRHoHjxVx5vEEYbZfIDwIPPFUPr1cBBzUHu4B06BBV5qeAVJr4FkMNIZSeyHJyY6SMv9NFii+Oq8BVVK0fV2fterP6EudPXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uh3uiWde; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740523133; c=relaxed/simple;
+	bh=w5FW7h/yUxboAaOc5OmV7ZmGXIvSw/HF/DLPTQh4ppM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OdQC372ZJ0zWD6o8wAg1hAmiiJebr7u0I+NQZvo73zdO9IoZLlcBEQegli0vilbArs5qnkPGgeOxuTlCjJyc6ncwMbaPOZPX/KWMp6PUdCCY+qEkbjzngGTAaeBbFdOkwwKcipO8VC9LZYCS8wpv28QhTLKW8yHsSiDw0R4AtqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=gAmHrLj+; arc=none smtp.client-ip=185.70.40.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uh3uiWde"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9347C4CEDD;
-	Tue, 25 Feb 2025 22:07:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740521279;
-	bh=0NcnfcWnvhmaN3XeVuV1OJeIKLaEyYNHBl+5GykE8Xo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Uh3uiWdef72dvl149o9u47xcNbMbLPVbdtdmwTLVcK85olNQSjF6ATId68LBsI/eL
-	 DylIN94K8lz6mH6rBJ/xN2SfqgCM1GMuK2rbZh5s6S5iD1spmN/2cmeafJa5A912r7
-	 EeLph/5AxQX1eH0Rwx5jblpCrAlgVE4F8ATtB0AKRGeLEpgTczqjKM3attTazZ2hTK
-	 4mNdgM6LCNQKiBbKx+Ib1qKhzL+vHPG4wZNXC0nM0ot18fEHoWL6+5z5dliV/sUXZQ
-	 8VVsTsWBHQUG+8eLBbdYl/kX5vwd2fh9UtZSxdRsyDlkmDNgIvp0c6ypahdWWp7COI
-	 Q1wuY9hVh8ggQ==
-Date: Tue, 25 Feb 2025 23:07:53 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Lyude Paul <lyude@redhat.com>
-Cc: rust-for-linux@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] rust/faux: Add missing parent argument to
- Registration::new()
-Message-ID: <Z74_OalguCdq8uqU@pollux>
-References: <20250225213112.872264-1-lyude@redhat.com>
- <20250225213112.872264-3-lyude@redhat.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="gAmHrLj+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1740523124; x=1740782324;
+	bh=88Qb5r2k24m8btzn9eRsnUKvo0/OE1vp3DxskSMq4Qg=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=gAmHrLj+KfQkCTEdh+DOiXcCKFV5Ulsx0PaafwD45BjxA2iTzS7TStN11kEiKSXYA
+	 NyrDhx1CZsEfgCo0PRw4AWufeOo8DblBe8rrS+WVREU11hNkMIxggLexoASEdkjep1
+	 p/U89hmPzjzYFaJjqw66Ud+CkFENTU3UUN0og5V5kqdOxMva6H/wR+VKlBojn5Vw1K
+	 /HwCQ66sz2RRKvZjy1fwUBBk++DHO8VmuR0D8qojxJH8c6hkwiGb4lkLp+6/ekZ0J1
+	 d4Lur9lMwJ6vb5aMgnGxAMNR+y5wWqofeWJWVBXRWFFsOstGDdPgo2viiE3dgISHw+
+	 aL2fo83/WdXTw==
+Date: Tue, 25 Feb 2025 22:38:38 +0000
+To: Ventura Jack <venturajack85@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Gary Guo <gary@garyguo.net>, Linus Torvalds <torvalds@linux-foundation.org>, Kent Overstreet <kent.overstreet@linux.dev>, airlied@gmail.com, boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
+Subject: Re: C aggregate passing (Rust kernel policy)
+Message-ID: <137dd7ef-b8f6-43df-87e0-115f913d0465@proton.me>
+In-Reply-To: <CAFJgqgTs3h5YagY1RU2AZf3wKWKfXiPTE2mx7CuWyzN=ee-k3g@mail.gmail.com>
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com> <20250224002745.7d7460a7.gary@garyguo.net> <CAFJgqgSNjF=LfrCNTH3GdYssXz9YG-AeCtpibejJ7Ywtx0m3HQ@mail.gmail.com> <4cb1d98b-f94b-410a-be90-4394c48bdbf2@proton.me> <CAFJgqgQ3P81-iskGu9R+T=c=wyB2K0JqUhx+Gj+6mkYeY8-ORg@mail.gmail.com> <a4b79751-f1c8-4476-98a5-c59fb2e545ad@proton.me> <CAFJgqgRdiQ29bWvwsu11yokZb4OFF7pYYUU=ES6CYv9847KgVg@mail.gmail.com> <c05cb400-969d-44a1-bd40-9b799ed894d7@proton.me> <CAFJgqgTs3h5YagY1RU2AZf3wKWKfXiPTE2mx7CuWyzN=ee-k3g@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 259cf80a5554941d7ef56c78bfbc5d5f5e50fff5
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250225213112.872264-3-lyude@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 25, 2025 at 04:29:01PM -0500, Lyude Paul wrote:
-> A little late in the review of the faux device interface, we added the
-> ability to specify a parent device when creating new faux devices - but
-> this never got ported over to the rust bindings. So, let's add the missing
-> argument now so we don't have to convert other users later down the line.
-> 
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+On 25.02.25 00:04, Ventura Jack wrote:
+> On Mon, Feb 24, 2025 at 3:03=E2=80=AFPM Benno Lossin <benno.lossin@proton=
+.me> wrote:
+>>
+>> On 24.02.25 17:57, Ventura Jack wrote:
+>>> One example I tested against MIRI:
+>>>
+>>>     use std::cell::UnsafeCell;
+>>>
+>>>     fn main() {
+>>>
+>>>         let val: UnsafeCell<i32> =3D UnsafeCell::new(42);
+>>>         let x: & UnsafeCell<i32> =3D &val;
+>>>         let y: & UnsafeCell<i32> =3D &val;
+>>>
+>>>         unsafe {
+>>>
+>>>             // UB.
+>>>             //let pz: & i32 =3D & *val.get();
+>>>
+>>>             // UB.
+>>>             //let pz: &mut i32 =3D &mut *val.get();
+>>>
+>>>             // Okay.
+>>>             //let pz: *const i32 =3D &raw const *val.get();
+>>>
+>>>             // Okay.
+>>>             let pz: *mut i32 =3D &raw mut *val.get();
+>>>
+>>>             let px: *mut i32 =3D x.get();
+>>>             let py: *mut i32 =3D y.get();
+>>>
+>>>             *px =3D 0;
+>>>             *py +=3D 42;
+>>>             *px +=3D 24;
+>>>
+>>>             println!("x, y, z: {}, {}, {}", *px, *py, *pz);
+>>>         }
+>>>     }
+>>>
+>>> It makes sense that the Rust "raw pointers" `*const i32` and `*mut
+>>> i32` are fine here, and that taking Rust "references" `& i32` and
+>>> `&mut i32` causes UB, since Rust "references" have aliasing rules that
+>>> must be followed.
+>>
+>> So it depends on what exactly you do, since if you just uncomment one of
+>> the "UB" lines, the variable never gets used and thus no actual UB
+>> happens. But if you were to do this:
+>=20
+> I did actually test it against MIRI with only one line commented in at
+> a time, and the UB lines did give UB according to MIRI, I did not
+> explain that.
 
-Acked-by: Danilo Krummrich <dakr@kernel.org>
+I do not get UB when I comment out any of the commented lines. Can you
+share the output of MIRI?
+
+---
+Cheers,
+Benno
+
+> It feels a lot like juggling with very sharp knives, but
+> I already knew that, because the Rust community generally does a great
+> job of warning people against unsafe. MIRI is very good, but it cannot
+> catch everything, so it cannot be relied upon in general. And MIRI
+> shares some of the advantages and disadvantages of sanitizers for C.
+>=20
+> Best, VJ.
+
