@@ -1,155 +1,142 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com [209.85.222.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D44320D4FA;
-	Tue, 25 Feb 2025 13:03:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740488584; cv=pass; b=tUBrv9x6X7gmqt+VDqg0suPxK+h8IvLpcgmhpeLeKIvqc7jmXXp/fUOwp/3IG7mQZFZEOpMLmjAIu3RF8Dg8zqJnpEPIrAZItkdhgCfD4uT3gNN8ZKO+HpDpWub4wDi1wVC2slBUIJgCmHTgOE6zOgN4AT2vJkFKUgrI8PqSEY8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740488584; c=relaxed/simple;
-	bh=tQnceEmFZXQjFeG66AjLVsaLAOoe3bzhozDgQsU6dyM=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=f4hrCnSSFNt+u1BLeks+CDBJE6ezqLAKVLobsWUG8sR/n6SHdHE7tmUFQXwJ4NEg1H77l714FvtLxn+Kpc07CYReYXa6J53aBapLS0stkyTPPIaV2NPOpiQOB+m9GGl+ZNJ5xlbtuCB5u1omU4iVyOcoqiAOpOB+jHWp+0DhqzQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=JqEupYK1; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57134199931;
+	Tue, 25 Feb 2025 13:23:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740489827; cv=none; b=JlH0GrJdJ5XfYN4k/V3IpdB3mJ4TwNmNDw0t6a6TnrYxYXpY2HE1HlLq4J5R1UJ5/YsqKqizzU3r77n8Lj12okc4cjpHqdwsLcwVdfKg7nGphscTM9JerpaP7TqVbuENqvmDxccoTSpMkDGTFi/Mt/1ebhhdFem/Ei3OJQ/N4so=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740489827; c=relaxed/simple;
+	bh=eYQLyPcfZ+OwSEdHs4rtzsqq/imMglzI8Xe60lKHac4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=dob++n6NO7HP3EY3YpyGSVBkT1zFncOvi3rzVk8Z37hFsLc7C7z2OUGyXIfh0bCIhEXmtNcS125vpDDGrrlsBaOITQ/C+OB/Ub4A4BoR1vku5zfxYkD+t0SFR4dFFwUFshrR/PpNba7KmLYObMOZ32l2AA+eBHYzf7AsNnibFyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=azOl+RGa; arc=none smtp.client-ip=209.85.222.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="JqEupYK1"
-ARC-Seal: i=1; a=rsa-sha256; t=1740488536; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=bx5p8TnAINx6MKry4un1Rj6TZST3VxaVsCDq/qLhcQXOFb+gTUFq5ouyn+iZJH9lhg9DhcEZzGrdcYAWmYWDoXrv1YbbgC/ac8izMc5JSu2hKvYzCQq4QWw67HSByVw3Ir+9hpKjf2EwDduELE3tpDN44lfqY936qDWETBJRP94=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1740488536; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=gb8b9ieYfWwUHDImrjBLv13v+4ud8B3oKFwWOrvA9i8=; 
-	b=PuDvukpP4bLBvBFEak/Nw+rsBHnslhYIkOdEQXJhwgKIUSBR8jqE35XieXDa7tiz3LmYJqW+oDU0XEhoICu/PtegzY692lWEtFaGyW7IWXLH/iLZVBaJCj9fgWqlG8DDtNWfd8zGFFGycf8iMJdOlHU7PADb0linNzxyxth4KZU=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1740488535;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=gb8b9ieYfWwUHDImrjBLv13v+4ud8B3oKFwWOrvA9i8=;
-	b=JqEupYK1fimntgNzlGtPmhbeEnK22ZGiEt0SQ4I5dZ/ot8yPbUEaon9x8agigcuu
-	5JEndeOdQ/boZKzMw7mBS+JBzcTqgtsMNEQCOTBzr2Rmlh4EXCHEAMkqj0cFTID3Acj
-	qbqsLE6zvWUei2/IOwYp0cD5KFlRSNM/QW6JGZkw=
-Received: by mx.zohomail.com with SMTPS id 17404885330511015.3322192127805;
-	Tue, 25 Feb 2025 05:02:13 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="azOl+RGa"
+Received: by mail-ua1-f49.google.com with SMTP id a1e0cc1a2514c-86718541914so3568571241.1;
+        Tue, 25 Feb 2025 05:23:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740489825; x=1741094625; darn=vger.kernel.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ckOtxyjtIW2AH2r69vdE9B1FOmdVAD+zQUQJS1G5lBE=;
+        b=azOl+RGa1UpKr0IQXnFDx5rc8dE97+UPbxGHQ3nBi3b0IRHc8WWxMB9yjpNRIi21aI
+         z3lXALZAv62bD+vmFUHTE72pbrZfRqxrhdA57XLUH/KsYiI7S2Z7olbCubvZCFldvwaS
+         SdsLVXr/vcQDrjqVXdj9Rd+q8Bi2jsHh0VWXtGgmvSXcw2OuL5+7Aenl6rwxY6eRyvTE
+         Hq3w38hFahIAEdBxdHi00W3YZGcuQl+yKi5s61xWWSdh/UicMmeOUYC9C9xbIlKv7jU/
+         YIwI4XlBSHzuVwij5+Uu0BW8nzr+iucpfgkOuHixkEs0RdEC/GTX4WoHWhck7H7T2C2y
+         vdeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740489825; x=1741094625;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ckOtxyjtIW2AH2r69vdE9B1FOmdVAD+zQUQJS1G5lBE=;
+        b=tM6hiONyKIZZcfKUmOlG9l6W1RR5cw0P/tmQ3T32WTRIl0rAqB3LKUohik80BbEMO9
+         KKoGG86gXV9byPClBzuYouYqIAro43p2DvdFJxlC3nEcvOmrRGA/P/jhJC4XdyOQD+WB
+         5vhm4PC+eGqjrpROywi1zBeg4KxLzcc1Xvf8lRJA/0z6UuGaNrT64nY1nfi60Vm5Qgll
+         nJSNbrh/yOfowRkf9l8q50fnPswr/yl+ClFPiU71+9gWCkYqbBImdypuFa5tRjlIfZ4r
+         f8KAoPoSaM/IYkTmTL1f0xhgnsYTWqu8iOUx7IKhcHGmg5fpmgORRpjqbeACZ++NBcSH
+         T80w==
+X-Forwarded-Encrypted: i=1; AJvYcCW6L4UQ80dpUiNExaPEcu6OvoffQjjWtdX5TvwAfUvF85GSGV/kT9zfgOrNR6eR8zOQBn7o95bck1qGLGI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxye7m72vJANMYixkthGKVy2Qu3i3TOGkQYRT4e8EsCVTZwaCMS
+	bYhmZF/HWnq70WYjDHsYx1BzZb/Y5uGBCbiXS5I3SSKbijNnWGUJ
+X-Gm-Gg: ASbGnctWwjRlMnnlNDZQcMsWsH9zNO22DVM0oRGgWamEldorhVF5f46nq1xx8nxvmJ0
+	6KpZNolMtRyKg152VBoiKT0ZY/PorxIuGbFTGsEyUcJzLtQ/ewtMHQSlAJ4PFeaqze1QIicpNqm
+	CD156Qo5SsVqbVdosN+6w/I9BeZ6YInB7up9iA7BkMf38DlpflX2MhjwkFx9dikTt4lcBkU90ti
+	xQlGvghYG9I1o1WVBF9KM7mFNMQSLhEdHCB7KBy08TkYknBJhCZIMiJzC5N33kRBa0BXLgqRAOI
+	i3YbO0USL2322y//sw==
+X-Google-Smtp-Source: AGHT+IGIkyuEYA2zbEotMtn1x7kyHb4VfD7RmJvAePSwAeTPjgAeh3Ae626awicRdjpQYfudjVyJfg==
+X-Received: by 2002:a05:6122:3783:b0:520:b76d:f3c9 with SMTP id 71dfb90a1353d-521dcd709b4mr12321983e0c.1.1740489825146;
+        Tue, 25 Feb 2025 05:23:45 -0800 (PST)
+Received: from localhost ([2800:bf0:82:3d2:9e61:1a62:1a8c:3e62])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-86b1ed2cfd4sm310606241.3.2025.02.25.05.23.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Feb 2025 05:23:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
-Subject: Re: [PATCH v4 2/4] rust: configfs: introduce rust support for
- configfs
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <8734g2w6ka.fsf@kernel.org>
-Date: Tue, 25 Feb 2025 10:01:55 -0300
-Cc: Danilo Krummrich <dakr@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Joel Becker <jlbec@evilplan.org>,
- Christoph Hellwig <hch@lst.de>,
- Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>,
- Will Deacon <will@kernel.org>,
- Waiman Long <longman@redhat.com>,
- Fiona Behrens <me@kloenk.dev>,
- Charalampos Mitrodimas <charmitro@posteo.net>,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <FD609CD0-D3A1-47D5-8D5C-E8DB57003932@collabora.com>
-References: <20250224-configfs-v4-0-9af9b5e611f6@kernel.org>
- <20250224-configfs-v4-2-9af9b5e611f6@kernel.org>
- <lOoYh91-WphgZiaB1UWmZfYfG8hcG7pCydLGcO6VmeHOfZir-M4jz0KEO2AUMTkugvDLkvKw-M4Kl40xG8sgvg==@protonmail.internalid>
- <F1FA8DA8-A54D-49B1-BE8F-2B0DE14F4899@collabora.com>
- <87plj6wcz3.fsf@kernel.org>
- <Qb0gTp0yipgyPUH5_OOewMKao_hniHD2k1C4li2QpXqETWNHRjBzMt8q4bxwIr3_r1mqxJ2Tx2D8rS7EDak_2w==@protonmail.internalid>
- <118A2077-91B6-485F-AA5F-03D54AC5771C@collabora.com>
- <8734g2w6ka.fsf@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: Apple Mail (2.3826.300.87.4.3)
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 25 Feb 2025 08:23:42 -0500
+Message-Id: <D81K5EDVAF9B.1MY63B8DYC7PE@gmail.com>
+Subject: Re: [PATCH] driver core: faux: only create the device if probe()
+ succeeds
+From: "Kurt Borja" <kuurtb@gmail.com>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ <linux-kernel@vger.kernel.org>
+Cc: <rust-for-linux@vger.kernel.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Danilo Krummrich" <dakr@kernel.org>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <2025022545-unroasted-common-fa0e@gregkh>
+In-Reply-To: <2025022545-unroasted-common-fa0e@gregkh>
 
+On Tue Feb 25, 2025 at 1:35 AM -05, Greg Kroah-Hartman wrote:
+> It's really hard to know if a faux device properly passes the callback
+> to probe() without having to poke around in the faux_device structure
+> and then clean up.  Instead of having to have every user of the api do
+> this logic, just do it in the faux device core itself.
+>
+> This makes the use of a custom probe() callback for a faux device much
+> simpler overall.
+>
+> Suggested-by: Kurt Borja <kuurtb@gmail.com>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
->=20
->>=20
->>>=20
->>> [...]
->>>=20
->>>>> +
->>>>> +/// # Safety
->>>>> +///
->>>>> +/// `this` must be a valid pointer.
->>>>> +///
->>>>> +/// If `this` does not represent the root group of a `configfs` =
-subsystem,
->>>>> +/// `this` must be a pointer to a `bindings::config_group` =
-embedded in a
->>>>> +/// `Group<Parent>`.
->>>>> +///
->>>>> +/// Otherwise, `this` must be a pointer to a =
-`bindings::config_group` that
->>>>> +/// is embedded in a `bindings::configfs_subsystem` that is =
-embedded in a
->>>>> +/// `Subsystem<Parent>`.
->>>>> +unsafe fn get_group_data<'a, Parent>(this: *mut =
-bindings::config_group) -> &'a Parent {
->>>>> +    // SAFETY: `this` is a valid pointer.
->>>>> +    let is_root =3D unsafe { (*this).cg_subsys.is_null() };
->>>>> +
->>>>> +    if !is_root {
->>>>> +        // SAFETY: By C API contact, `this` is a pointer to a
->>>>> +        // `bindings::config_group` that we passed as a return =
-value in from
->>>>> +        // `make_group`. Such a pointer is embedded within a =
-`Group<Parent>`.
->>>>=20
->>>> This phrase is confusing.
->>>=20
->>> I am not sure how to rephrase it to be less confusing. The pointer =
-is
->>> the thing returned from `make_group`. `make_group` would only return =
-a
->>> pointer into a `Group<Parent>`.
->>=20
->> The problem is this: "that we passed as a return value in from=E2=80=9D=
-, to pass something as a return value
->> is already hard to parse, and when you reach the =E2=80=9Cin from=E2=80=
-=9D part, it becomes even harder.
->>=20
->> Just say a variation of what you said above, that is perfectly =
-understandable.
->>=20
->> What about:
->>=20
->> ```
->>=20
->> `this` is a pointer to a `bindings::config_group` that was returned =
-from a call to `make_group`. The pointer is known
->> to be embedded within a `Group<Parent>`.
->>=20
->> ```
->=20
-> How is this:
->=20
->        // SAFETY: By C API contact,`this` was returned from a call to
->        // `make_group`. The pointer is known to be embedded within a
->        // `Group<Parent>`.
->=20
+Thanks for considering this!
 
-This is good.
+Reviewed-by: Kurt Borja <kuurtb@gmail.com>
 
-=E2=80=94 Daniel
-
+> ---
+>  drivers/base/faux.c |   15 ++++++++++++++-
+>  1 file changed, 14 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/base/faux.c b/drivers/base/faux.c
+> index 531e9d789ee0..407c1d1aad50 100644
+> --- a/drivers/base/faux.c
+> +++ b/drivers/base/faux.c
+> @@ -102,7 +102,9 @@ static void faux_device_release(struct device *dev)
+>   *
+>   * Note, when this function is called, the functions specified in struct
+>   * faux_ops can be called before the function returns, so be prepared fo=
+r
+> - * everything to be properly initialized before that point in time.
+> + * everything to be properly initialized before that point in time.  If =
+the
+> + * probe callback (if one is present) does NOT succeed, the creation of =
+the
+> + * device will fail and NULL will be returned.
+>   *
+>   * Return:
+>   * * NULL if an error happened with creating the device
+> @@ -147,6 +149,17 @@ struct faux_device *faux_device_create_with_groups(c=
+onst char *name,
+>  		return NULL;
+>  	}
+> =20
+> +	/*
+> +	 * Verify that we did bind the driver to the device (i.e. probe worked)=
+,
+> +	 * if not, let's fail the creation as trying to guess if probe was
+> +	 * successful is almost impossible to determine by the caller.
+> +	 */
+> +	if (!dev->driver) {
+> +		dev_err(dev, "probe did not succeed, tearing down the device\n");
+> +		faux_device_destroy(faux_dev);
+> +		faux_dev =3D NULL;
+> +	}
+> +
+>  	return faux_dev;
+>  }
+>  EXPORT_SYMBOL_GPL(faux_device_create_with_groups);
+--=20
+ ~ Kurt
