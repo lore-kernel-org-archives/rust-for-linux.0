@@ -1,150 +1,115 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86DB18C00B
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 16:12:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D5AA189912
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 16:14:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740499975; cv=none; b=WK5OF1KJhHvJ1DHRZRM2DwGHANeVOXFOp1UZlLIxEC8INFFeQS5maFe02ZarfgzQkl3c9+ReDPFoY1i6P6WYtjs+wJfeYQOXnJUeKxKVGt9On6Y0bvVfw1cmaGjBC0fH4SqGkvQR/FCc0OCYjQWCsRNXprnTDKbfHx9ezSomMhA=
+	t=1740500060; cv=none; b=h6M6WyOEpC9i0JFMGTIZI170xm+17/cC79lvaYe81OmG/JsI0EEo/clct6cbI12KwlFw40wiSpPj2P7T9IC6UMGBlAz0VIzEySAbxftBNBXN8WSFhvu7ZjDdVzk/F8V6HLtsG08D9qls0/GaQcyBhmW2tRpv5FgbFWNasg62MDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740499975; c=relaxed/simple;
-	bh=JcbH6xbF+kVoY6mPq3WSvzHL/f+wVG6jHsP4CM8z2Xw=;
+	s=arc-20240116; t=1740500060; c=relaxed/simple;
+	bh=XK+5lo3HBdUQbAUVlBZxC7V4AlAb8QMJsjpC+v4brkQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bG49y+MHzuq0po3c99jZsBZzVKY9QARTrdIjQjaqrA3wULzNL67VFsr+m0Qv9pvgZT6YB+0zKGobz3IxZUQd6FGG2yI03kWw4mF346+1qrl9E5xaW7HdO1p/MT4NwfUqwJSR6AWyXy00qLnHJrifZaqspusPoP7KhI9l5btl5Tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JQwwYa0F; arc=none smtp.client-ip=209.85.221.47
+	 To:Cc:Content-Type; b=ffer/sT94IkOfLlg2KHDdXtDRCTah8VvFyY6DcuBWfjXmV1CSsYBuPYBw6yIDIxmj8r0TZcuF6u3HbAZt4JKFfgyIw85D6QC0qUrdQ0jN+mUYeTEYgEB0A/RHTkVRqtXu8s3b0cj5WxopzMkk5kO8PlqIeDNx44etTbvfRUhV64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xk8NaZSy; arc=none smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JQwwYa0F"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-38f5fc33602so3367195f8f.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 08:12:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xk8NaZSy"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-38f73e6ed7fso2169205f8f.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 08:14:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740499972; x=1741104772; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1740500057; x=1741104857; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=p+IbGw1yOaO8wpgyinqYsYfkRN9BZ1H7KtNvprS9eFQ=;
-        b=JQwwYa0FUMbQ5ZQSCI9HzN5q8vKKdzz2MlVt4MAzOiwpBnnHAzwBvP1F1aGmJ42neO
-         lf6b9IjkGrsuZkyPdNEAQUaLsiNfY4X1p6WIkfGUCNenk0VL3MfzQLN3K0r1NGsEiCOs
-         kwCBJSrJnVeI/DoTNFSWNE1dUznIzCwTOM0jUzsRkvZN+ITMeoSFPz/nFcabKlP+4+Tl
-         cNOmu/Ig9esII3QLkif0fiXxv64SaEBQRvy4Imv/5b5qzmW/m5eOKSE61Jj/1jPi8w5s
-         bJ0cJedpXPpkpZFdJ4iAznb7uAUADVL34VZ/ToXV52McaztBjeIifBHVwIr4DlahGkjY
-         m7Rg==
+        bh=XK+5lo3HBdUQbAUVlBZxC7V4AlAb8QMJsjpC+v4brkQ=;
+        b=xk8NaZSySvzvLkIg2A1tdUlO/BC15aQVv7gi7jecJJTPJswvNo4y9+o7XMotzX7EH8
+         953Oiolq/vmneRrCPa5bbidqncbMBOSTsem84NMtdsKpKZb+aekK1v9Zk/3saPGQne3d
+         0QnUbyA5uaHYQ9ASlWlLY3SkIHvf1VhHUUwNlAx4lsVoa3LNSRIWDKSwvXJGovMkF0fH
+         zg6XBsHRdhEnw8lxkPbCuoI5SeLtVPWCKhuigVMusRbvXE+yI+CAwr3A7LPs030ZUHoU
+         3iggvq3Uvw3vY0P6tdIQ078tWpNq/QbhO+ZWb1C16f6oy7S2kRPlF6XDhDTI78cEqcbE
+         +vyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740499972; x=1741104772;
+        d=1e100.net; s=20230601; t=1740500057; x=1741104857;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=p+IbGw1yOaO8wpgyinqYsYfkRN9BZ1H7KtNvprS9eFQ=;
-        b=G2Vxed3xqaM0bc0Ydb7zyc0b4WLIeHXM9K04imyhKXEm6hPH2bIYHFv2BxpkeJOv0H
-         pDHNEyGlkjnALVuAGw6qibcMtP0v4yhdrby/dT2bULX9lh4ACQBiAQdLhID5GSB++kZX
-         rZGLhM9aLITCY3OAQypxYXiZ1k6KkC6L2Yl/rQq/uk7cYt8UdMAs/wxf/mDM0TcKUOtP
-         9IZ+oYga93SnIjYqiXKYPiXMIa1FSmStXqfqQE1CrFDrJXFFglrOASXbXbtKAIybSowA
-         jHD0ZC8YlgJMoFVgWPIQeuYM40tWXbPRcJiyrEOjO5YLM+B5Uimh4PcCco4s/J6krR7E
-         m8dQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUTH3Gr+17LX5xOzjm1xx23keaPGBDUCoGtqq2/tJDuH5qYcXdxB4vXfLvu9PZekcEl2WzpdHUAhqA88+G7Cw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1zxyXLC6Rq46ZXi0xeDXgKaotDMUpaLkOjmF5mKfvFpmF1rCI
-	GVEG+22HQ6BPoYQUHvNANNelYTPIMPmZttNx8XQJrxdxsniwJyM4temeM2bI0rNadyFH2/u6Uwd
-	+xQU8FKWmSunhH8+nynlO71qcuCul4YUXqWth
-X-Gm-Gg: ASbGncs+UhmNj77OJuYNrW17mSOok3HJmnJ3e0LT874tRvEqnptjR/w2MzqQJFJLLB7
-	ijBu92OALSnucnJ6NdUlO/B7nXlFzpp/CGX3gI3zmYGAvg571B3PqG8NoHeeedGer4E0DXg9hHo
-	U3k2nNNm28ul0uNqjd4LTvZFRaC7b49yWDROOTXg==
-X-Google-Smtp-Source: AGHT+IERrAzfsQ+2vuobOjf/H2nk2QFz1j28McsGB1U9oXx7WWKXyXxUSYxjItIeHzW3MoL6kdZmhf2JM57dNE5za7Q=
-X-Received: by 2002:a05:6000:1563:b0:386:374b:e8bc with SMTP id
- ffacd0b85a97d-38f615bc9dfmr16670217f8f.15.1740499971902; Tue, 25 Feb 2025
- 08:12:51 -0800 (PST)
+        bh=XK+5lo3HBdUQbAUVlBZxC7V4AlAb8QMJsjpC+v4brkQ=;
+        b=IldtIGHjdd6pymAES47J/AV+fwVl1JHR58ScT38vkYYuAtaSGLPA3saYE7VPdsHHFB
+         UcOf6mRmuFbMJv9LAUTp4yCTpGPCbuRHtDvWYr57XOOIhFF9+WmV6FUjp7bZuSsUc1f8
+         PMYyYudP7/XVl7mgCRH95y5QZq3mLUpNwJ+NfdOu6pN2VD0lWLLrCejHctRINDi9/cGQ
+         AYRo9hUFD6J3+I8MiylwJhg46F1vD+fz3cSj2VARKjnZ/JilY0jbV4qe+eBRiOHtDcUL
+         gT/Jgbo5/9FdLHIm5ExckXVxyolmBgKmdBzg1SsXSkdbzvG+0y1s5YmtAZnpTiLPVDD0
+         5P6g==
+X-Forwarded-Encrypted: i=1; AJvYcCUKLcv8xy0km84fXTQTgPXFPKxEaBRbRwY2ER6TuztOp9Bp60HiYUfSyGJjnYjLglWguNUhTnYlACphyBbadg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGtWdn64yIXBgYMgt+JyWzm0K0JdiApjYKPPxrqbcEjS/byr+q
+	d3/OnjHq/68V9ZdA4w3s1PXLL1IBRvkSdCvL95pmBVlP4iq4N7J80wrstkpOCiOD5+1TktAusRf
+	8/g1zpNa9HaGtDe/3SDqh6IyJXVRWNd5RsluO
+X-Gm-Gg: ASbGncsIfCsO+FZzWh4gYbh3UzffMby+yaqYVc+2/ayN19cL+IxsZmKS0LwW9L+lUTH
+	q0I3Pu8310zOS3By5XwDB9yrt8ABS9U7t9CWUQ5Gz6V3BY+iFruTf3eh1/HrROpuZt3WL3PL1In
+	eIXrwYGs5X7Oa240CED0TaCYYhKdjhTIJVONvebg==
+X-Google-Smtp-Source: AGHT+IFeOrnS2YilApBIdrzwq/ZX/O6MVfPF3KockjevL9jqE9VGA4rrlvEu3VXcwoVdvaUuGAyA9tFzp4UCo8Dc3v8=
+X-Received: by 2002:a5d:5f52:0:b0:38f:277a:4ec0 with SMTP id
+ ffacd0b85a97d-38f6e74f162mr15327640f8f.6.1740500056610; Tue, 25 Feb 2025
+ 08:14:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
- <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
- <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
- <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com> <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
-In-Reply-To: <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+References: <20250213-vma-v14-0-b29c47ab21f5@google.com> <20250213-vma-v14-3-b29c47ab21f5@google.com>
+ <20250225160603.4d4a2893@eugeo>
+In-Reply-To: <20250225160603.4d4a2893@eugeo>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 25 Feb 2025 17:12:39 +0100
-X-Gm-Features: AQ5f1JrjfQJh76BFqnmr7NKwuzVljSVd0iXKiJJ1_U95jYSuu4wa6KKMNxHfNZU
-Message-ID: <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
-Subject: Re: C aggregate passing (Rust kernel policy)
-To: Ventura Jack <venturajack85@gmail.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
-	Kent Overstreet <kent.overstreet@linux.dev>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
-	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
-	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, 
-	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
+Date: Tue, 25 Feb 2025 17:14:03 +0100
+X-Gm-Features: AQ5f1JoGbOrMtDQMPf3ikgvl4jGB3lyR6mbHfF9fDJZgtAdACnHj8fwMViezsGo
+Message-ID: <CAH5fLgirLZE4MWwQ5B1W=ri+fTiriWtjJRmD5SZbKTUBR+GzAw@mail.gmail.com>
+Subject: Re: [PATCH v14 3/8] mm: rust: add vm_insert_page
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Feb 23, 2025 at 4:30=E2=80=AFPM Ventura Jack <venturajack85@gmail.c=
-om> wrote:
+On Tue, Feb 25, 2025 at 5:06=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
 >
-> Just to be clear and avoid confusion, I would
-> like to clarify some aspects of aliasing.
-> In case that you do not already know about this,
-> I suspect that you may find it very valuable.
+> On Thu, 13 Feb 2025 11:04:02 +0000
+> Alice Ryhl <aliceryhl@google.com> wrote:
 >
-> I am not an expert at Rust, so for any Rust experts
-> out there, please feel free to point out any errors
-> or mistakes that I make in the following.
+> > The vm_insert_page method is only usable on vmas with the VM_MIXEDMAP
+> > flag, so we introduce a new type to keep track of such vmas.
+> >
+> > The approach used in this patch assumes that we will not need to encode
+> > many flag combinations in the type. I don't think we need to encode mor=
+e
+> > than VM_MIXEDMAP and VM_PFNMAP as things are now. However, if that
+> > becomes necessary, using generic parameters in a single type would scal=
+e
+> > better as the number of flags increases.
+> >
+> > Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 >
-> The Rustonomicon is (as I gather) the semi-official
-> documentation site for unsafe Rust.
+> LGTM, so:
 >
-> Aliasing in C and Rust:
+> Reviewed-by: Gary Guo <gary@garyguo.net>
 >
-> C "strict aliasing":
-> - Is not a keyword.
-> - Based on "type compatibility".
-> - Is turned off by default in the kernel by using
->     a compiler flag.
->
-> C "restrict":
-> - Is a keyword, applied to pointers.
-> - Is opt-in to a kind of aliasing.
-> - Is seldom used in practice, since many find
->     it difficult to use correctly and avoid
->     undefined behavior.
->
-> Rust aliasing:
-> - Is not a keyword.
-> - Applies to certain pointer kinds in Rust, namely
->     Rust "references".
->     Rust pointer kinds:
->     https://doc.rust-lang.org/reference/types/pointer.html
-> - Aliasing in Rust is not opt-in or opt-out,
->     it is always on.
->     https://doc.rust-lang.org/nomicon/aliasing.html
-> - Rust has not defined its aliasing model.
->     https://doc.rust-lang.org/nomicon/references.html
->         "Unfortunately, Rust hasn't actually
->         defined its aliasing model.
->         While we wait for the Rust devs to specify
->         the semantics of their language, let's use
->         the next section to discuss what aliasing is
->         in general, and why it matters."
->     There is active experimental research on
->     defining the aliasing model, including tree borrows
->     and stacked borrows.
-> - The aliasing model not being defined makes
->     it harder to reason about and work with
->     unsafe Rust, and therefore harder to avoid
->     undefined behavior/memory safety bugs.
+> BTW, any reason that this specialised type is called
+> `VmaMixedMap` but the base type is called `VmaRef` rather than just
+> `Vma`?
 
-I think all of this worrying about Rust not having defined its
-aliasing model is way overblown. Ultimately, the status quo is that
-each unsafe operation that has to do with aliasing falls into one of
-three categories:
-
-* This is definitely allowed.
-* This is definitely UB.
-* We don't know whether we want to allow this yet.
-
-The full aliasing model that they want would eliminate the third
-category. But for practical purposes you just stay within the first
-subset and you will be happy.
+I used to have a VmaMut type, which motivated the VmaRef name. Then, I
+removed VmaMut and later I added VmaMixedMap.
 
 Alice
