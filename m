@@ -1,214 +1,176 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020104.outbound.protection.outlook.com [52.101.195.104])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C04918C91F
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 16:25:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740500727; cv=none; b=lLloMHF5Du4bVt3jp+wFbLVH9KT0MdsL3Q3h4ee+JGDd8ryecxOKhhADTimAFf6hwYHd0IgNMaX3Mb6pDB0KhKPjGRH45pdrmSXbpoldPDBArnB+bs+Ofc+4IIgF68E3trPOG1iSI/KOvPWN/cB7Rqk8qqZk9+AiqPk5278QDms=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740500727; c=relaxed/simple;
-	bh=JKe3mTg9NjACJAebdmc0vAEZvPQt6d7vSJJ/iXEv0qw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YCbgcAPo7l5/OEpAvI6zjDDS6+Xx8cpHRAIM2/9b6AdA3GKq1BA6488WVSQkIvqW67STYChPyEHQ/6jVPAby+vN0ehyl8BlF59gxZgkr5b2vFE7tXagyCbJd51MQSuDUHrG8BUUXfIeFGW1CqPAqO6raRgHoopydGW1NXg1VwYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mszWsEjE; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B060818F2FB;
+	Tue, 25 Feb 2025 16:28:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.104
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740500935; cv=fail; b=Wlb3PRj00OqiK5APJGprKmO7RlCbD+aVsWPoNMKFetiVVjevUYTTvqHq4R0my8zuxBjx9TFExRFgYn9vwR5roeE0uFR7Hh6vwohwApJYKlKw9Mv2JUgsWqD/JPGllyh9wGQaFj6jSDMjpR5ynYsn20iNy3Xy4Aa+w4ITxCAGZhw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740500935; c=relaxed/simple;
+	bh=vlyg1zpV7rxy7YOtvlfVh3y5EJqwnp+MFs1Nufx7WV8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=o83TzjoY1ehMq4IyYBgajkdiI7UJdCt9pojDUeyca3gf5ky2ulE2ySI14rUL9wRum4DgcukNIBylkW5b3+D5qntL/z9y5h7go0v/vVmM+5VsTk0N+QHde8e09wOwknnalO2cLBexbt79zeyg+Ej4L0pAuiFFGm431cu3ooYWwXc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=ReWoh7pt; arc=fail smtp.client-ip=52.101.195.104
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mszWsEjE"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-38f325dd9e6so3062146f8f.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 25 Feb 2025 08:25:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740500723; x=1741105523; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cLxFWJr5SBm2uwG1aose8lFaFsHP1M9jCT6EPEpJIsU=;
-        b=mszWsEjEUHt0Oopifc7O0MeWBCZMyQvnCof/YJGaTqYYo1gvpz+EaHpgt9WYshhhj3
-         vckQ7lyUodrzHY4aVQxdrGRui3XT6fylwgKtFq1YjLo4tjlfQxTTOJ3+bbWKFRnrqj8W
-         OeKImyXyIpIHaYC5JKZD3htGN63ts37cHWtRN6JHE2RY5wcE+5WwkE5w0vHLbQ0ZZiU+
-         565l4xii7WQNCCDAiPg5J9hoWU8zUNVcsTGCsdVPbfwksTBoaB+Y+xJPbE/XNuTY2M4U
-         u5F8nOkP/UF2zSaTeDSBEUxHAY/bSa2+0cagx60nxWBSmpYCPhj41Vkr1NPfuKW9Immc
-         jkFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740500723; x=1741105523;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cLxFWJr5SBm2uwG1aose8lFaFsHP1M9jCT6EPEpJIsU=;
-        b=MhSKm4yHbulNVQNze1T/r/0aqljLY17SDUqBh8gTMfNSB7NdpwuhBESI8T2GVy+SyQ
-         PrPbIS71cKnfdtb940E9V31O7CX2ogDjIzLNLNwY7Etj6O5hgGo97ZUvqV51FwmI5PWz
-         zILILxexilNeIW+m/G0xrcnSLsWXfA46AN6Ib6/mz/mFDQcEFL/FmtveQUrWv/t8I7Fr
-         bvsIW+2hAAT0tpCD8Le1HbzykpuxFK974k2BElGwgpD6V5qmD3cParLerzdZ6rQ2GoDB
-         qpHNkLMzMQrgx+4kPul8J9c+6fyS4X8pA34aA3yk7nCQ7GSW43oaBDwx1dr4CGUCUq3k
-         V4oQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWaq6tFbpdYIFsSdA0fOKWh/9wrebX/KFYVY/OI3hIaylQpcAp+Y9jxUopfD7bdY/gEBEnOzzYHmqrwKipYtA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YymCrL2dcgi1Eatn+otoI6igouDh/3bFcio4+Ew/JprPeNCPRc8
-	sMUpurF1oZ5vtHxv7Qu1+IZunQT5DxLWKtDPN6NFJDaFvvfPegcNW//G9jSgvB6YKu+BxYtSODg
-	Ibd/kAj8ofRW7Ca1SNqRBRHydIy/Nm0UKPnsT
-X-Gm-Gg: ASbGncuG3bIiZk9zM9kTAjbZ6amv5bwBOxIqFYcsjUepF4bPIAqOMAGJBn4SXNndW+8
-	e4sG6nSjIUfSTLFw9L+1I64MdGFasnsMwF41DnnBFMoJsEHEQPrOy5bX+QraLHx6XjppMTqAY2V
-	weUmtmVOAI4U3wPoNvd99xDK2c7fT3gm5uns6++w==
-X-Google-Smtp-Source: AGHT+IEL/VAlIzC/72gt6UlPgqwmOgVfnvRRlHIzH2wOPjqxna9GiiQv4vbpSwWWRe3ewdVZoSIlBFaXfkrlmy6v6H0=
-X-Received: by 2002:a05:6000:154a:b0:38f:4251:5971 with SMTP id
- ffacd0b85a97d-38f6e753b0bmr14003071f8f.6.1740500723345; Tue, 25 Feb 2025
- 08:25:23 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="ReWoh7pt"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YGWU6QGGfN7XCiCzusr3c3g4SWdFCmrpkYutaQ45NP7/5+acBB7E4oOxl5p4kPvZESRF1ZT+DzN0MCMmFTYI2lxdLKZOlavAQLvze+Fk+rWVpEB567nj+MxzhFfzry3fKQ//P2gu4sgXyAVKlPeuCj0mGNGdGnXV10Vtm9OmfTe5CISkBtDQaTXaZN23FSnrpdGNkq0wToMg3tfO4kykdEnqtWvhrEDuKvqiEbT9Gbpg3g3+ywe1xrf08vC+ib965StFB+tjHEU/umLII3cNA5yMRc4aFX51zW4CdLPBU2r4ebL6QoPpsaIhXxIZqjefh1wc/9SLKQM781rzVamVOA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=d4S67MEk0nyjtZlka9a0nURpb/hAjOMpKlH+aU0rTng=;
+ b=pwE7paj9r8qlASth3a0wdtnc8l5ePZyC52uk8Ok6OQmH/Pzom9d3unI58wjQohEBBuWU8k/n5egGJjsg0gjZfyBKHd9z44m/GHQhGmbRCWYcOk1nimpXrdSuUlgPmy4Nax9WDYF69sjiE2SqRq7jMIV1u1w4nmSKzzwtNThnLPjH8yKHo2MwVHVvpbYsj2K4YeiR18oNPGRX6fPRaHoEzory2VDe+J1Ncwpz2VQ+g8jsdAoM7N6gv8I2kVBHUmnlG4EZv5ON4EO6jLKISrLIBKGPY6ogDMPpxj+5/TIMzncSySLyhQjpdm/ivVhgUpDarOZzRXdx7cN9UPF3Qya2uQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=d4S67MEk0nyjtZlka9a0nURpb/hAjOMpKlH+aU0rTng=;
+ b=ReWoh7ptgC8/kVL3UwtRzrsbEwXVIe3Z37MAFlrRb852WBRoE0PfIgswxPzfMcgdj8fSl2pzrloj8HXvl++R7FHsJOVYZrpi3FWkdSc1kclvgj3FvQlft1yubsMg6mrEfcw5zaxQCzRI4eCqbNTs+el/EBRsk/T7CsP/oLqkRhw=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by CWXP265MB2805.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:c5::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.17; Tue, 25 Feb
+ 2025 16:28:51 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7%5]) with mapi id 15.20.8489.014; Tue, 25 Feb 2025
+ 16:28:51 +0000
+Date: Tue, 25 Feb 2025 16:28:48 +0000
+From: Gary Guo <gary@garyguo.net>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>,
+ Jann Horn <jannh@google.com>, Suren Baghdasaryan <surenb@google.com>, Alex
+ Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, "
+ =?UTF-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin
+ <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor
+ Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v14 4/8] mm: rust: add lock_vma_under_rcu
+Message-ID: <20250225162848.730a420e@eugeo>
+In-Reply-To: <20250213-vma-v14-4-b29c47ab21f5@google.com>
+References: <20250213-vma-v14-0-b29c47ab21f5@google.com>
+	<20250213-vma-v14-4-b29c47ab21f5@google.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0331.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:18c::12) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250213-vma-v14-0-b29c47ab21f5@google.com> <20250213-vma-v14-6-b29c47ab21f5@google.com>
- <20250225162400.37187f22@eugeo>
-In-Reply-To: <20250225162400.37187f22@eugeo>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 25 Feb 2025 17:25:11 +0100
-X-Gm-Features: AQ5f1JoEC3x9WNKgVd-On0faB1EZd0DxKFqSTrzCe8bV0fCShAQBPXTzoaNz4yc
-Message-ID: <CAH5fLgh-OKgpom+F30xON3hmiWzS_g-BqK0r9mdVoQdGZoO0ag@mail.gmail.com>
-Subject: Re: [PATCH v14 6/8] mm: rust: add VmaNew for f_ops->mmap()
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWXP265MB2805:EE_
+X-MS-Office365-Filtering-Correlation-Id: 56c5f514-dd6a-4c56-7c1d-08dd55b97ccb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|10070799003|7416014|1800799024|376014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?poxd4q3wZr3DE8g50UB2VX48Vu+GJ4QnuqWz/eymmaykeG+hhD3OHAMk5V2J?=
+ =?us-ascii?Q?8p8J8aKqRBRkuQDN9hZe2Xetp19NjOPean43sy0TD5B1H3mDw/vALCVOKGfq?=
+ =?us-ascii?Q?kaNUDxab9OIshdvV/Oc3scdmlf66j1uRe3PonkO6KloKRSqp9+EnekiOOPx6?=
+ =?us-ascii?Q?uyLsdQAjIsXzX0OHbx1TIfWD5wDJP4CIx00Ed6AZWScQ5L3z9HC1EFGM/52L?=
+ =?us-ascii?Q?bvO56Os7fCsON7FLv+f2EJfwMMvRFXNhTC8bnIhhg4/inGNPCSKLH5Pw068p?=
+ =?us-ascii?Q?I2fFzry1M8SfjD7oFMgH00RqTHNDBr/hiRib/slarMgKT3kO26B2D1YoCzfI?=
+ =?us-ascii?Q?RfFVOVekOCDmVcWkiFyIiDc5lrmUtuHKWJ20tvuTGYePW2CXXXpTXslZd/KA?=
+ =?us-ascii?Q?c+Bb3Gvq2nnJQNhlKZIPIJIPBZtIXfgp8mMP+ci2W+zBnWROVV0nbHD7bcGW?=
+ =?us-ascii?Q?xC5GYoELjUiv9NGLWRg30XhkijrP9eCir8AYYajerz1y7T/3KPQeDOiU5DYs?=
+ =?us-ascii?Q?aP94n1vlstgdohixilkHK5v1psjOyniTjCVP6RlqEGAbnILacclVHtuZFM7R?=
+ =?us-ascii?Q?qiT6sRt8jUV3el/QLm7p9AGMrRPkJ/I8llmtTeLJeheASIpFlMO8Ld3KFGnX?=
+ =?us-ascii?Q?tBjqvlYYtxzbxD3DRS24Ai9302gzcRvslf28cYGpOKIZZBtx8y9+gQixg8Wi?=
+ =?us-ascii?Q?HAWYUKg+hJOESfaO6K8kdQdGaKonepmiPOpq5iGN72GXV2Sb2tLX2T4c7J4W?=
+ =?us-ascii?Q?VCjXfq6oU/NJbk+Wa9QUqAGyUHBcuBCYRPClgRpHgP8piWKF9SHDfgfFZ3fn?=
+ =?us-ascii?Q?7HJYUEQZRTvyQAFfdWpdQgcDh4uUQUBCsFwxveSLjlzHpjN77dDYG3ihi9DZ?=
+ =?us-ascii?Q?i9TITkTYphyux6+G/wqT15d7qZoUI3may75BEIyjD4/4gr5PG/dxYywZxgUE?=
+ =?us-ascii?Q?8ItRXAJfPD+G5ftQBXaZbtLTs0W/z+4MS1cm7qlFPGEwNqDbhKia9GYSZZc3?=
+ =?us-ascii?Q?ZrZ9oY8KlGP6eY/zCbFxUEzFeGqdoFot9yv6Yf0nC6KAkfvz308ur00pO6pB?=
+ =?us-ascii?Q?WP2RywblXwdjnKd4svZv7RxDbnE+ZPpGODWrwpf8455KqEj72zKwa7zUREAs?=
+ =?us-ascii?Q?kcYyqv1M04iVYpf2073Nwa7HlsaqxH+UQ1382CVCHbz10hm9/Ck3T0MakpdD?=
+ =?us-ascii?Q?uT3Bxf0pwY2PYwW7kl7bLYwBHvVY3b0gFNgduHauHx93B+IBK+JXDhABJhGa?=
+ =?us-ascii?Q?GSpbavK9vx+ohKSX7aVWhAwpVaAUefnF8nX04mcpaITx4JY9wxT/59GNW0gw?=
+ =?us-ascii?Q?OQIaBd8QaJBAEuXoippTH/IGJ+3ucXR7ryxrbCcTiCoW4pi0YK6iA2aWufPZ?=
+ =?us-ascii?Q?Xfrm3U5wLdHCQcrT+E388hq61CX5?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(7416014)(1800799024)(376014)(7053199007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?phlM9WRKjXoskDrIG2WkoWLk4pCM3wfnTmQQRz7iGVybPwxmSUbYvTaolvrO?=
+ =?us-ascii?Q?jrG6okZ0cty7UITGQoY9kDNLPfyAqwV5DvcSZ55P9ylMszI3Pa/VYT4Ehruk?=
+ =?us-ascii?Q?/9aHfB173dGEOtqFTJOUONyvhR7sFpzZ4BPXrR6yrAy3JPsp9TVbA4bq8ZKC?=
+ =?us-ascii?Q?7jvLUMzIOlYzxZmbBx1t9dKwr9dW/OLwmx2DdVyYC3XFuA4kSirHq3jluAat?=
+ =?us-ascii?Q?wvKRqIF0qiC+G8p0tEuOQxaose2BKe4QYXlPDzFiVJhvShHV+R9HmdZShSh5?=
+ =?us-ascii?Q?ZBvNnLOpG/khNK81fWQpseEVEbyegoptsqvzuUkC07d2FYfF/32658rnEs8i?=
+ =?us-ascii?Q?BCdfEZMzUZhDF2Zg9iFej+vqnkpSvIQsoFwN6xWFWp1GR3dBXo/huHlK0n6Y?=
+ =?us-ascii?Q?rN/TbqAPJ47YT4n/RmEk0K/yvGvUMh3jYFMgTwWzvlhugmJ6E6x1rZ+1om6i?=
+ =?us-ascii?Q?WIbXzrROSQXUvHMcQ7c6aWvWN2APxMJpbcxWl0FYCDIU2yfiXJ0L4Wq+VXKY?=
+ =?us-ascii?Q?Wx8T27ju9SXYDGK7LzwqzellAikc6VXaqJ/QudQt+Md/0dwwN9xrFfuvnIfC?=
+ =?us-ascii?Q?uOqtDOf+pRzwyO9TfeFuovqWl7mbDdy7OEwwBqlIfAv9h4KmyO35OY+dDxfi?=
+ =?us-ascii?Q?rNkI+hHlUlPBtY6UJ5ETX2WtEUTV30r7DbOUwrU3P2BfM6vnY9IaA2noTFDB?=
+ =?us-ascii?Q?/9lH6D/FYOjjwGiimJCqCR2wLmImK8EnFFEOaWwLC+TFrVzkA/uIWiw4zaFc?=
+ =?us-ascii?Q?jkJLUb7k692Ft9V49GOfPTkfEitXZY+/0bKv2w/fVXDK/yESNPz+kPHVi8t5?=
+ =?us-ascii?Q?hpG/VVEvLlNGt4twwqnXs9w3ZdFGWmKTVXOrZDo5ub/l/kSRUC4OE7Vh8vwx?=
+ =?us-ascii?Q?gwEqkzCTxQWJwnDFvbKxPeBLeE+pGMcDc6gfizOSA1IyaPY6fZsok9s3NYOe?=
+ =?us-ascii?Q?q+WsMTO5qAnmTMvb1Vqf+B3H6PRfg+OmEsCa8SV5rYTPgPltqxWSxyf+MkdN?=
+ =?us-ascii?Q?0MpfgLjIZoRdexZ5G7nGtsbEiyHxjgfs82d9q1nrLanUZJnuwanPLJU/c9tL?=
+ =?us-ascii?Q?F5Z7KAy/+iTGy/vzAxX4NT5cyV7yWgGxWUXfZ5MNlmcgPjjAU318gxsxVxRP?=
+ =?us-ascii?Q?VXLZQwMcgHqVC/PnsEieMjyamJmY/8XQl0xfdyhmYH+AAcT+bduzLokhO9+B?=
+ =?us-ascii?Q?1qmWhVMU8JOV66zsA6E6+WSN3WnNR5frJLABFUMUX+wjG7G/7q9VG8sR9Nbv?=
+ =?us-ascii?Q?gNy1UyPPyQAAy2H+Gp6j7RnxuDGMNvuoKCqDiRi4E69GQsKt/w2zFo+MzWPM?=
+ =?us-ascii?Q?OanLzLs5JEFuFHG+1t01ln7yUj/05BN4cPEyErGGH079NEGWkhgyH3BlcEFk?=
+ =?us-ascii?Q?zKJSUoELGvCxOuQxnEFkK1AFCuKIzixuI+sMh+qRJtHWnl4dmgErkunT1Nju?=
+ =?us-ascii?Q?muQFdcCOmQK6MWi90nNMd7i9wdktwSWRAn369yeFgxstYBqnvBRDiRJDUL0h?=
+ =?us-ascii?Q?+Nhc8E76Qcc3oCUOpc2HZuTblYOhUR5EBH12yF/eKhvUPLBL1a9WGqJEUPYF?=
+ =?us-ascii?Q?WKwSHV1FNkRfS0ls7m2LbWwHuAvmlpVeTsThQ6Ym/PioemQudePUB4+GBPmw?=
+ =?us-ascii?Q?Fw=3D=3D?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 56c5f514-dd6a-4c56-7c1d-08dd55b97ccb
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2025 16:28:50.9064
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Qgdy2N0bHlJg2ew1vXaDcTftwZaeHoJzEAGG+k42XX5FWHqtZawp5g0RPQLKWQKGGkU4+dgRv7LCZFQH33HiVw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB2805
 
-On Tue, Feb 25, 2025 at 5:24=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
->
-> On Thu, 13 Feb 2025 11:04:05 +0000
-> Alice Ryhl <aliceryhl@google.com> wrote:
->
-> > This type will be used when setting up a new vma in an f_ops->mmap()
-> > hook. Using a separate type from VmaRef allows us to have a separate se=
-t
-> > of operations that you are only able to use during the mmap() hook. For
-> > example, the VM_MIXEDMAP flag must not be changed after the initial
-> > setup that happens during the f_ops->mmap() hook.
-> >
-> > To avoid setting invalid flag values, the methods for clearing
-> > VM_MAYWRITE and similar involve a check of VM_WRITE, and return an erro=
-r
-> > if VM_WRITE is set. Trying to use `try_clear_maywrite` without checking
-> > the return value results in a compilation error because the `Result`
-> > type is marked #[must_use].
-> >
-> > For now, there's only a method for VM_MIXEDMAP and not VM_PFNMAP. When
-> > we add a VM_PFNMAP method, we will need some way to prevent you from
-> > setting both VM_MIXEDMAP and VM_PFNMAP on the same vma.
-> >
-> > Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > Reviewed-by: Jann Horn <jannh@google.com>
-> > Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
-> >  rust/kernel/mm/virt.rs | 186 +++++++++++++++++++++++++++++++++++++++++=
-+++++++-
-> >  1 file changed, 185 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
-> > index 3e2eabcc2145..31803674aecc 100644
-> > --- a/rust/kernel/mm/virt.rs
-> > +++ b/rust/kernel/mm/virt.rs
-> > @@ -16,7 +16,7 @@
-> >
-> >  use crate::{
-> >      bindings,
-> > -    error::{to_result, Result},
-> > +    error::{code::EINVAL, to_result, Result},
-> >      mm::MmWithUser,
-> >      page::Page,
-> >      types::Opaque,
-> > @@ -198,6 +198,190 @@ pub fn vm_insert_page(&self, address: usize, page=
-: &Page) -> Result {
-> >      }
-> >  }
-> >
-> > +/// A configuration object for setting up a VMA in an `f_ops->mmap()` =
-hook.
-> > +///
-> > +/// The `f_ops->mmap()` hook is called when a new VMA is being created=
-, and the hook is able to
-> > +/// configure the VMA in various ways to fit the driver that owns it. =
-Using `VmaNew` indicates that
-> > +/// you are allowed to perform operations on the VMA that can only be =
-performed before the VMA is
-> > +/// fully initialized.
-> > +///
-> > +/// # Invariants
-> > +///
-> > +/// For the duration of 'a, the referenced vma must be undergoing init=
-ialization in an
-> > +/// `f_ops->mmap()` hook.
-> > +pub struct VmaNew {
-> > +    vma: VmaRef,
-> > +}
-> > +
-> > +// Make all `VmaRef` methods available on `VmaNew`.
->
-> Are there operations that can't be performed when VMA is still being
-> setup? If so, using typestate might be more preferrable to Deref.
+On Thu, 13 Feb 2025 11:04:03 +0000
+Alice Ryhl <aliceryhl@google.com> wrote:
 
-I don't think so.
+> Currently, the binder driver always uses the mmap lock to make changes
+> to its vma. Because the mmap lock is global to the process, this can
+> involve significant contention. However, the kernel has a feature called
+> per-vma locks, which can significantly reduce contention. For example,
+> you can take a vma lock in parallel with an mmap write lock. This is
+> important because contention on the mmap lock has been a long-term
+> recurring challenge for the Binder driver.
+> 
+> This patch introduces support for using `lock_vma_under_rcu` from Rust.
+> The Rust Binder driver will be able to use this to reduce contention on
+> the mmap lock.
+> 
+> Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Reviewed-by: Jann Horn <jannh@google.com>
+> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-> > +impl Deref for VmaNew {
-> > +    type Target =3D VmaRef;
-> > +
-> > +    #[inline]
-> > +    fn deref(&self) -> &VmaRef {
-> > +        &self.vma
-> > +    }
-> > +}
-> > +
-> > +impl VmaNew {
-> > +    /// Access a virtual memory area given a raw pointer.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// Callers must ensure that `vma` is undergoing initial vma setup=
- for the duration of 'a.
-> > +    #[inline]
-> > +    pub unsafe fn from_raw<'a>(vma: *mut bindings::vm_area_struct) -> =
-&'a Self {
-> > +        // SAFETY: The caller ensures that the invariants are satisfie=
-d for the duration of 'a.
-> > +        unsafe { &*vma.cast() }
-> > +    }
-> > +
-> > +    /// Internal method for updating the vma flags.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// This must not be used to set the flags to an invalid value.
-> > +    #[inline]
-> > +    unsafe fn update_flags(&self, set: vm_flags_t, unset: vm_flags_t) =
-{
-> > +        let mut flags =3D self.flags();
-> > +        flags |=3D set;
-> > +        flags &=3D !unset;
-> > +
-> > +        // SAFETY: This is not a data race: the vma is undergoing init=
-ial setup, so it's not yet
->
-> It is possible to make this API `&mut self` then?
+Reviewed-by: Gary Guo <gary@garyguo.net>
 
-No because of pinning. And taking `self: Pin<&mut Self>` is obnoxious.
-
-> > +        // shared. Additionally, `VmaNew` is `!Sync`, so it cannot be =
-used to write in parallel.
-> > +        // The caller promises that this does not set the flags to an =
-invalid value.
->
-> Does `VmaRef` has to be `!Sync`? I wonder if we should explicitly mark
-> `VmaNew` as `!Sync` so this is more explicitly correct.
-
-See above.
-
-Alice
+> ---
+>  rust/helpers/mm.c |  5 +++++
+>  rust/kernel/mm.rs | 60 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
