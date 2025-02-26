@@ -1,111 +1,101 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFAB21ABA9;
-	Wed, 26 Feb 2025 19:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384BE24634F;
+	Wed, 26 Feb 2025 19:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740598427; cv=none; b=Z1gt0b4HCqGXQ8Qbq/BRprtl/cK8bFOQrzxlSidgRqZeF8D6kccfJH7e/eDAfvhzZGpWmTpECtBsLmvePJRm7I3HqO/JfbAHgdxArkEbqaKOxCNwWOg3w8f9t2pqpKHNQbeGyBpg2d0jkwlWyyybfNUAJwerIwcq/Pm/r+hXaZ8=
+	t=1740598811; cv=none; b=VwA35YsC2SgfKbPXib6K3f9Ix/KC1MGNG0GjTko1E2/mZWdl65y3S4eJ0NTMCVVjZTIhF94Q0+0t2ZCKvz0IGir6vIzpiHZleJqvspbWlQ4te0LToGkMcvY7DAJH9OtIv1e4rwU+lJUYad+6+l/NSJhreFK7ZqzrRQqJz3PxOBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740598427; c=relaxed/simple;
-	bh=kZ9rIq7rbJMYNQBhDU2KfRNXZ4jZx+RJE2OfPefQzY4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NPkke+2skB1ukBGsZCTZ8+85QDwCVAmSS3crjUot0xy7ecVBSGOaW4M/edQegxEc4hEUNVTYQY9WPw1OLz4kz1VibOmmDyIpIRSQ+Px4/lzkAUn9p90N6iaky4l/xgjEw6jWGDQs/nDAnNQ6WjT/JCQv6cXztS6SiVKXTtxjiNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NX0chk+2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740598811; c=relaxed/simple;
+	bh=iqsdq2p5uze2ya4zhfPOi6HCsOmbEwMOmKjx129lr6A=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=lGrrgI3hiwqetymkLvnOJxWVXGKnrkY0xrB8o+IaP60mTMIXCCQRo5lCOj0uNkiaL+Dyo1MYHWx4ulYOAcGQrG8XdiuWoleu0VE7vhimWyg6aCaxg3Y/vhvJlnjh4ImxhTawro43QVJAVpwqeCeVmf1zOHP2B5dj35oHGp/4otE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LXp5HnXI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NX0chk+2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18512C4CED6;
-	Wed, 26 Feb 2025 19:33:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740598427;
-	bh=kZ9rIq7rbJMYNQBhDU2KfRNXZ4jZx+RJE2OfPefQzY4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NX0chk+2GsU5vFXy1cTpOS3T/Qhq9Oeggbl+4VMbq5H9uN6wq0rqYgjOWKu5uYdPY
-	 m6vTN/YoafXfzX9COt3ucNb8oVmclD3bLQ0/9xzY2DgVEW2pYxw8Sh+QnrbKoCzl4S
-	 amlOJU+06Z5+znHfvFhPqQGwaenFkGI+dBqCAQLI=
-Date: Wed, 26 Feb 2025 11:32:38 -0800
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Kurt Borja <kuurtb@gmail.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH] driver core: faux: only create the device if probe()
- succeeds
-Message-ID: <2025022616-refute-unmarked-a4be@gregkh>
-References: <2025022545-unroasted-common-fa0e@gregkh>
- <Z72oceZFfJcMAf-D@pollux>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LXp5HnXI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DDDDC4CEE7;
+	Wed, 26 Feb 2025 19:40:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740598809;
+	bh=iqsdq2p5uze2ya4zhfPOi6HCsOmbEwMOmKjx129lr6A=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=LXp5HnXIU93C2GpA3Ioh6xBPLKGb8n8eIb+n3KK6ZSi1RAFO4i4taQT9DLrlTqon+
+	 WiV6Z1KTeHYfDqm3YFqRhVwZdM39aV1c8V2vWUwOZmWw/UQ+4hX7LAAJjhIZrjBDAv
+	 WvpJjLhC/ghljgU+UxQHaGGXqcRSgSD3PrDhH9Q0XU2yBMPyBoqd1MkxjstC8XAKyi
+	 yOvauVBlwqVQn3ww+Kp0pNKv87DrfUVn9T64QJB7VRRE7GhW2Wmo1KN5VWOAkIT5DU
+	 7sKHC4gsUm+W3gBQMw5f+tktMBaapO5D9ALsazdXLDfeLGnK+g7WnYCQUAzsLu2FPi
+	 CVds/UXAMdeQw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>
+Cc: <linux-kernel@vger.kernel.org>,  <rust-for-linux@vger.kernel.org>,
+  <x86@kernel.org>,  <linux-riscv@lists.infradead.org>,
+  <linux-arm-kernel@lists.infradead.org>,  <loongarch@lists.linux.dev>,
+  <tglx@linutronix.de>,  <mingo@redhat.com>,  <bp@alien8.de>,
+  <dave.hansen@linux.intel.com>,  <peterz@infradead.org>,  <hpa@zytor.com>,
+  <paul.walmsley@sifive.com>,  <palmer@dabbelt.com>,
+  <aou@eecs.berkeley.edu>,  <catalin.marinas@arm.com>,  <will@kernel.org>,
+  <chenhuacai@kernel.org>,  <kernel@xen0n.name>,
+  <tangyouling@loongson.cn>,  <hejinyang@loongson.cn>,
+  <yangtiezhu@loongson.cn>,  <ojeda@kernel.org>,  <alex.gaynor@gmail.com>,
+  <boqun.feng@gmail.com>,  <gary@garyguo.net>,  <bjorn3_gh@protonmail.com>,
+  <benno.lossin@proton.me>,  <aliceryhl@google.com>,  <tmgross@umich.edu>
+Subject: Re: [PATCH v3 0/5] rust: Add bug/warn abstractions
+In-Reply-To: <20250213135759.190006-1-fujita.tomonori@gmail.com> (FUJITA
+	Tomonori's message of "Thu, 13 Feb 2025 22:57:54 +0900")
+References: <yy_ESUuchCjlaGIJHzCPAcP_d9ucSD0CGXaoZNNkY7BmN5Ch1J8avsA9QpKO5LkTjlGpu99jl8NrFl5NFSQXuw==@protonmail.internalid>
+	<20250213135759.190006-1-fujita.tomonori@gmail.com>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Wed, 26 Feb 2025 20:39:45 +0100
+Message-ID: <8734g0v6ke.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z72oceZFfJcMAf-D@pollux>
+Content-Type: text/plain
 
-On Tue, Feb 25, 2025 at 12:24:33PM +0100, Danilo Krummrich wrote:
-> On Tue, Feb 25, 2025 at 07:35:46AM +0100, Greg Kroah-Hartman wrote:
-> > It's really hard to know if a faux device properly passes the callback
-> > to probe() without having to poke around in the faux_device structure
-> > and then clean up.  Instead of having to have every user of the api do
-> > this logic, just do it in the faux device core itself.
-> > 
-> > This makes the use of a custom probe() callback for a faux device much
-> > simpler overall.
-> > 
-> > Suggested-by: Kurt Borja <kuurtb@gmail.com>
-> > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> > Cc: Danilo Krummrich <dakr@kernel.org>
-> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > ---
-> >  drivers/base/faux.c |   15 ++++++++++++++-
-> >  1 file changed, 14 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/base/faux.c b/drivers/base/faux.c
-> > index 531e9d789ee0..407c1d1aad50 100644
-> > --- a/drivers/base/faux.c
-> > +++ b/drivers/base/faux.c
-> > @@ -102,7 +102,9 @@ static void faux_device_release(struct device *dev)
-> >   *
-> >   * Note, when this function is called, the functions specified in struct
-> >   * faux_ops can be called before the function returns, so be prepared for
-> > - * everything to be properly initialized before that point in time.
-> > + * everything to be properly initialized before that point in time.  If the
-> > + * probe callback (if one is present) does NOT succeed, the creation of the
-> > + * device will fail and NULL will be returned.
-> >   *
-> >   * Return:
-> >   * * NULL if an error happened with creating the device
-> > @@ -147,6 +149,17 @@ struct faux_device *faux_device_create_with_groups(const char *name,
-> >  		return NULL;
-> >  	}
-> >  
-> > +	/*
-> > +	 * Verify that we did bind the driver to the device (i.e. probe worked),
-> > +	 * if not, let's fail the creation as trying to guess if probe was
-> > +	 * successful is almost impossible to determine by the caller.
-> > +	 */
-> > +	if (!dev->driver) {
-> 
-> Seems like really_probe() cleans things up properly through
-> device_unbind_cleanup(), such that dev->driver is guaranteed to be NULL on
-> failure.
 
-Yes.
+Hi Fujita,
 
-> > +		dev_err(dev, "probe did not succeed, tearing down the device\n");
-> > +		faux_device_destroy(faux_dev);
-> > +		faux_dev = NULL;
-> 
-> NIT: Maybe return NULL directly (like above) in case a subsequent change adds
-> more code to the end of this function and does not consider that we fall
-> through.
-> 
-> Either way,
-> 
-> Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+"FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
 
-Thanks for the review!
+> This patchset adds warn_on and warn_on_once macros with the bug/warn
+> abstraction.
+>
+> Wrapping C's BUG/WARN macros does not work well for x86, RISC-V,
+> ARM64, and LoongArch. Rust code needs to directly execute the same
+> assembly code used on the C side. To avoid duplicating the assembly
+> code, this approach mirrors what the static branch code does: it
+> generates the assembly code for Rust using the C preprocessor at
+> compile time.
+>
+> The 1st to 4th patches export the BUG/WARN assembly code for Rust on
+> each architecture, with no functional changes on the C side. The
+> changes for x86 and RISC-V are straightforward. However, the ARM64 and
+> LoongArch assembly code are designed differently; they are used by
+> both C inline assembly and assembly code. As a result, sharing this
+> code with Rust is complicated.
+>
+> The last patch adds the bug abstraction with warn_on and warn_on_once
+> implementations.
+>
+> This has been tested on x86, ARM64, and RISC-V (QEMU), with only a
+> compile test performed for LoongArch.
+>
+> The assembly code can be used for both BUG and WARN, but currently
+> only supports warn_on and warn_on_once. I will work on the remaining
+> functionality after this abstraction is merged.
+>
 
-greg k-h
+How does this series compare/overlap with [1] ?
+
+
+Best regards,
+Andreas Hindborg
+
+
+
+[1] https://lore.kernel.org/all/20241126-pr_once_macros-v4-0-410b8ca9643e@tuta.io/
+
