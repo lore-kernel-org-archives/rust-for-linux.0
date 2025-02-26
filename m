@@ -1,130 +1,95 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D53220694;
-	Wed, 26 Feb 2025 16:17:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1981F16B;
+	Wed, 26 Feb 2025 16:31:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740586658; cv=none; b=XO3E0PnoWYQ52msUZr4sT+fZyeAehpRJyP5S2Qr2lfzSnZ799pmCCkfhNzwAj0YA5FQ0sZEJk/xIp8aZI4TnDtBzHrB/zv8RpPmCPui8XdOeF2QXAZ/BcLdIJ8Cj7P0GZpKNmnM55OAmREGx4Mrd/fWyUFFbQBaZi0LB1+rAA4M=
+	t=1740587492; cv=none; b=j8oqQw7OU/wP1mTQw/HKJPDW60+UDWq3L++jTNA/re+X1zD5NpM047mr1MPYity5s4A1olnkU1PPv+gAOP3qaeAp5RyCUrhQ/tCdJncSf4ivQ/QlvKDyFZTkZpmIW+PhjZdMcbu6FxFr/UNjlojiD4lb4EU7GOmwHDdhCsEVIzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740586658; c=relaxed/simple;
-	bh=p+rEInh5x8k2va/qGDSY6xNcd5VCL+2UkWvotiVe6qw=;
+	s=arc-20240116; t=1740587492; c=relaxed/simple;
+	bh=fbUyMbVzemgHgNjXulx1F/b+A8SvYzgDEV9k1ywZNr0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l8ctONfR1cttyOL6QCF2gXLfPOuBNSkrlzdZjlzAJrPBP3Tqm/G52SnNSLWCkdTbFoY95Bh956kY4xVovnKBE7udAZcA0xb6A4aYT6QZ/bwuRgY5wsrZ3H38q9NwXmP+GfMEM26Woof8O32NxnIiA3M9YlcStr9tBGjg955fa78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hRZId4xf; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=qEGNPgBTtR+b0IRXJQLbvQshzE1IzZ6ykheNulRTKZlgPr3kBV4GfhXCPHaaiZO//DtzvN4p6svTTLiVHS/NO5uGhXtpcHk7vnfnn/Meb2TkhzznsIsvVq85swNgYVjlcnozoubSog8bGa9dTlvV98T1QDTtwMa3WngZ+Eo/AWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JNTEV8UQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hRZId4xf"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2210d92292eso59403675ad.1;
-        Wed, 26 Feb 2025 08:17:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740586656; x=1741191456; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=pqqE8TPgTHo5XiZCNnju5LBuzlT14gu1LDeKWI2DZxs=;
-        b=hRZId4xfsql6WdscV+LYmHCUZmUbcOd2xezQ/m4RZ15iY0KYeEySCqPVaIOfi7Sk8z
-         CfIZBx6QvrNR55KN7uchbz6v6tUQ7P00asakiBESHLWBiyfIoXUYepCfeiFOnxFkd4Xk
-         4XH0nSu2nYYXCtbkCawiarnllvl4HBB2W/YFIaLeuWTtyOqIQJkmPv0xt+wYIMlBDO6w
-         ceM7H/R1VsNmzzpni1CV0i20hqyfxdp1BMHiIZfXvmvflBmfVm6MMH6P9lwKJWRNE4Tt
-         MdBED0QasB0LETe+kM2VC5rufwk9E627fnAwmjyBMvNoMeYyZBHGutGuf/wMNuEErErn
-         oxYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740586656; x=1741191456;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pqqE8TPgTHo5XiZCNnju5LBuzlT14gu1LDeKWI2DZxs=;
-        b=mqToQ3jkzf++urwNLphlfUOh+Zm/vTAfK15terux+R4NiHRZdswJRBN2JSwmf0AoMr
-         7xhJYydN3azgLsrzx3n1e91LPmWSXgLQob8JYbeTZ8Om27G6ceoFjjaJhA2dNOV+61Y9
-         Zsj+y/bgMw87Y7gsqreG5/JIOHCVBA1JZ5pMozjkqUqRCMQy6P+6JkG7nrP8pAON3y6l
-         KJ4nlpEZ3wHq7nJIC9agkcsxTnM4TxyDBjoomt1uK12K9LbfdmLsZeMWg3h9OlM9bwk5
-         3f9cIu4PtyVk7LBxWIvhX6kv0ee52pP7aG14Vlx2gPpFpnX8jX3n65xn6NOks371xx8n
-         ZR9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCViPbhKUHCuyX9W6IECjOU3l+PuCJVMHCl51xaT0xc3ymcTwPvVPrE3PN2YZhdt6tiYEkZEj5HbiqYPgTI=@vger.kernel.org, AJvYcCWrODWSJIJCLJ8itVQh+eoHxEYmmIMZysLyG2C0NE9uj8nBMgtrZIVy12srDLZlKdjeZ3LbudRv8VN4IK3tTw8=@vger.kernel.org, AJvYcCXlLPL3FmIhv7YKhBv7DvzE4Z0oA/m0SzJ7k5nt+Qe9cLO3+40N4X54xI+4IggkxMDxjIHL9j4bdEY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzwp185e9Y5DO6kNGLgMzbT5L2vfbMkEQEVk6Z2BlN3pSOPN1TN
-	tu0oAQ12akS79M80j/J2chAuHu6IRPsfTEzB9/ZjHzOdda20kMly
-X-Gm-Gg: ASbGncsgm12W9iEdH8wAeJKtLVNexvJv80Snk605qivod0uqF34lNmj5bogmb1eZrzC
-	4ykMFLEIxHUPw9PTNSVWN6w9tv4xhQ4ZPmNNpT20JSiruj+r/KgZxctPzY6EbFgRnahwFnDQx70
-	ir6rjsyyzpys2XKoL53nhU5B4d/582GZ/7OOlyckDSh0hTcTsCAEyXPzEFNREzRf78OJj52KZ7v
-	nu5sbqtjp4XZJdyQ4YKMYAaraWp0bPHOBQ1GDno/oE/WLdOZMMAHyTlk5U+jvfrZLae9N+6TfAL
-	BkfXxRUzWadzZRArUqeB30WR8NSDFxeeGGV8S0Lx/59FlbTQAg==
-X-Google-Smtp-Source: AGHT+IH8h2IxG3eh4Z6IeNx2FDs2WI0YxImOCdZZjE4/c53o1KddiVOiXptTcTDkc9A7LfuRetwA6w==
-X-Received: by 2002:a17:902:c951:b0:215:431f:268f with SMTP id d9443c01a7336-2232008266emr55812535ad.10.1740586656347;
-        Wed, 26 Feb 2025 08:17:36 -0800 (PST)
-Received: from localhost (maglev-oncall.nvidia.com. [216.228.125.128])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2233254efacsm13220145ad.230.2025.02.26.08.17.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Feb 2025 08:17:35 -0800 (PST)
-Date: Wed, 26 Feb 2025 11:17:33 -0500
-From: Yury Norov <yury.norov@gmail.com>
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JNTEV8UQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 689E0C4CED6;
+	Wed, 26 Feb 2025 16:31:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740587491;
+	bh=fbUyMbVzemgHgNjXulx1F/b+A8SvYzgDEV9k1ywZNr0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JNTEV8UQ3w24YfxS2uL9nYsCo2h26uXzC+2iBxJ4wI6zk8ghUfiZDM4PkSyqpGjIu
+	 VwzzGVCfYRJuUwN2smbBoyQ0r1vjwvY8ht8mPeKMQgmVH2tlQJSH7+t8GX8vkdJYT3
+	 1msT3nxeKjxSgvA62ZyCbNaHmpbNRSkFFsfKLXYX+ZgCMwylrx4BS7TJIbZFWpNGf/
+	 zR5GcADgmdevAYk7qWcvPXASC5cdgi35rGmqetWoUXEs8HWirRQ8Hv/25XYUB4/AkQ
+	 fzvX1gL09nMp5SZKd1CWhZvEzsEhoo/6BQSgLsOC8ndfc8pZ/HFjb0zA+LdlbiUUPc
+	 dlEgOIMtp2h6g==
+Date: Wed, 26 Feb 2025 17:31:29 +0100
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
 	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Danilo Krummrich <dakr@redhat.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
-	Erik Schilling <erik.schilling@linaro.org>,
-	Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
-	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
-	Christoph Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>, linux-pm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] rust: Add cpumask helpers
-Message-ID: <Z78-l1wBYk7nlR5i@thinkpad>
-References: <20250224233938.3158-1-yury.norov@gmail.com>
- <20250224233938.3158-2-yury.norov@gmail.com>
- <9E7A81AA-6460-4F87-942E-2EEA145257F2@collabora.com>
- <20250225095054.fp5xdolezdh2yalc@vireshk-i7>
+	Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>,
+	Dirk Behme <dirk.behme@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>
+Subject: Re: [PATCH v9 01/13] rust: hrtimer: introduce hrtimer support
+Message-ID: <Z79B4brrB_-SBstl@localhost.localdomain>
+References: <Z7yUTNEg6gMW0G7b@Mac.home>
+ <CANiq72kx31exTFohb3+9_=PGUq_JtqpCvG8=oQUc_gZB+De5og@mail.gmail.com>
+ <Z7ye0MsACNWe7Mbr@Mac.home>
+ <CANiq72=qayfPk+W4BRiXe9xBGcgP2zPf-Q3K6GXTg8MKy-Kg=Q@mail.gmail.com>
+ <WlwmQ3r8VXTu77m77jclUgLjPh65ztwxUu_mXaElarFHBBiG2kWi0ZLYWNxKAUF9LK2QYrOWhtlFYhwaaNjYRA==@protonmail.internalid>
+ <Z7yl-LsSkVIDAfMF@Mac.home>
+ <87msebyxtv.fsf@kernel.org>
+ <4UoaifxB7JgBVKsNQyFR_T8yc3Vtn5TLAEdxdXrojNmOzJSEncopauEyjDpnbqzr8Z74ZWjd_N-bB-BwBS-7aQ==@protonmail.internalid>
+ <Z7zF8KF9qTCr_n4l@boqun-archlinux>
+ <87bjuryvb0.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250225095054.fp5xdolezdh2yalc@vireshk-i7>
+In-Reply-To: <87bjuryvb0.fsf@kernel.org>
 
-On Tue, Feb 25, 2025 at 03:20:54PM +0530, Viresh Kumar wrote:
-> On 25-02-25, 06:43, Daniel Almeida wrote:
-> > I don’t understand what is going on here. You apparently did not provide the
-> > Rust code itself.
-> > 
-> > Usually, when I see a “in order to prepare for …” I expect the actual patch to
-> > follow in the same series.
-> > 
-> > Right now - and correct me if I'm wrong - it seems like you’ve essentially added
-> > dead code.
+Le Mon, Feb 24, 2025 at 08:52:35PM +0100, Andreas Hindborg a �crit :
+> > It's of course up to hrtimer maintainers. But I personally nack this
+> > kconfig, because it's not necessary, and hrtimer API has been stable for
+> > a while.
 > 
-> Rust abstractions:
+> Having the switch is fine for me, removing it is fine as well. It's just
+> an added convenience that might come in handy. But having this kconfig
+> very close to zero overhead, so I do not really understand your
+> objection. I would like to better understand your reasoning.
+
+If you choose to make a such a Kconfig switch, it would only make sense
+in order to spare some bytes when no drivers use it for example. But if
+you're afraid that the Rust binding is on the way while the core is
+changing some API then I guess simply disabling Rust would be enough for
+testing.
+
+I don't think it's necessary (unless it's strictly selected by drivers).
+But it's your call.
+
+Thanks.
+
 > 
-> https://lore.kernel.org/all/cover.1740475625.git.viresh.kumar@linaro.org/
-
-Yes, it's a dead code. 
-
-Cpumasks is a library, and people sometimes submit library code separately
-from their main projects, so it becomes unused for a while. GENMASK_U128()
-is one recent example.
-
-I'm not happy about it, but I understand why people do so - it's important
-for them to have stable API, and their big project may take longer to get
-upstreamed.
-
-So, if nobody's strongly opposite, I will move it myself. Alternatively,
-we can ask Viresh to take over the patches and move them together with
-his series.
-
-Thanks,
-Yury
+> 
+> Best regards,
+> Andreas Hindborg
+> 
+> 
