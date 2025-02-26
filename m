@@ -1,143 +1,173 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31266229B37;
-	Wed, 26 Feb 2025 17:49:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68430229B2D;
+	Wed, 26 Feb 2025 17:56:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740592169; cv=none; b=SrBxEQYvHthcA18x78OO8FjGCb8pDGIxb0h7Qai5ZSe0mInyBcbXTZqoeDb+eyVp9CdS2m5tj46HL+UJ/KloFuC1u+Y00rbPesVsccD7SX8NsxTSALgoI00IM7DdQxeCPJaKnrRNrd4fbUZ0lfy9KYSH5pgWiKa/PqlCBcF3GUU=
+	t=1740592562; cv=none; b=XEQVMx1JWeTfbXAStdIVvkvrZiM2cHIBHG+WXwACEW+JEZP8QexUTjSYBJuLv2bTDkJ9R2T4Vx1cmYfo/lkETsEndoMJwZ55DsLwCt2M/pGE58fM5KOCtuhHT7WoLS++pYCkQ8fdICj4wzm4UzcliXl993FNP4Mnh4lrlK0l838=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740592169; c=relaxed/simple;
-	bh=pf1Ym/LYuPGVWFiM/lTbZoBgNa4GshyrvXq8DdYjCZs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HBGqJbzkwEghFwOISXSu4zUHFEa5FEbsB5X55f+bfBT8Te8Qb5bc/y/YCIKS5K/O/cS01dqiwwmnpMIht8eRTO6erqgN47ywqG0zI/TPObj4eWDAw0BXiZ97AB0cyb8NX7lgA18GJ9PgCSPqSuabqE+o+LeeEPICzy+HPggw2a8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZDKnBqdE; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740592562; c=relaxed/simple;
+	bh=QPYFUuaMu35HLYW7kKnNg81fs68Lz1/Mi5HfamjHDUQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tOnK8q8N76GgMr1ZTTxl45cwQ3VJDE8u5i2KFl397HHtP4hdZ2eON1dd/S5olGFAVfT6Cl8TqUCnb6/BLJQofUoRBYZVMqe/WbcYkYM3G0EbtCEyWRWuX2gRAdeyum5J0alMkZTCG0M+j3d+Y5TxOXCjRH39VqU5tD+EEXfuhxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HD5HAJCG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZDKnBqdE"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2fe9fd5e7f8so27101a91.3;
-        Wed, 26 Feb 2025 09:49:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740592167; x=1741196967; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0j14nTPHAtaZCMj0Cm4vQzM1gNJxu1aU5P8x9//E1lQ=;
-        b=ZDKnBqdExuf+QXInkI2n0Egsogyb1gu0Br23U5jftrldzI/6k9WwzNog8JbetgLT0A
-         8NUgeoLKXKFau/XfLJfc0FuqoydgVWbeGjxJ3nntnXB+Uw3n5w+Mt1p8dgGWoPRkF6J/
-         PYyGy4+eK3zLTme5Jmurhw9pori5fBA9ggxrS5L78KJFYENcFckH1zIontP5XPCrh8Ht
-         BHlj38/j5XYExveKldoxEGYcVWuVsYhM1JQrefSzGCGGcXHLtZm1NjhCbpBSpvUQI93q
-         8UjiQaLiEJu/qEDMsllCPEbVB8UwZtLw8ZesijlM7SOQnlbCiTIZf+UJN2zXEwML8cRs
-         O8XQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740592167; x=1741196967;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0j14nTPHAtaZCMj0Cm4vQzM1gNJxu1aU5P8x9//E1lQ=;
-        b=B6lh0n0uHy6tKazp1rKbTRNO/oEpAEHDdRLw3dLRAdO/5vgk+hrd4H0JnZDwD5+W1e
-         vHGJXMUtP1jonEAymOeFgpqCn37K1DQpAXid8gz71OsFZLfN4sTg5RIiqhKZ+yLEeE2J
-         aoxKQju9s0hSPLoCCM7JMQTauhBe/EEk2zvt1d+2vb7rSniXb10MESlBn3KSZ+CV+eNq
-         0gvQfW5ZZYu8SqBrRAxJz/FkE0csxaSN4Q5mgutetGRL8kxaD5mtoV63/IrQCWhAXaFV
-         pUACcNC1rpF0cb70kyA/2A4dv0EbmtbfU7utbeqRBhGdtcs+69HO2qsTeFmrVNyMjXsj
-         dx5g==
-X-Forwarded-Encrypted: i=1; AJvYcCWYH0LcXgPfm4w+S0lTZIuK518P+DKyAoFL5SyGDzV40ga7x7z/vNX+LjPcwfrfEhBL0xTkMBIHvRvZPa8=@vger.kernel.org, AJvYcCXi/z585H4or53Ao3CHClN2LXjEqpNUpk0+igpWqTTsBxH5FtOSwJhyl2Im/e3UMpCq7LPhp5V4hcicJhkDvtU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzoiI5Y37lvYpCAFQnZ7b/52l/jDj12rXGnOuHLEjdqtoc5mlHF
-	dXk4p/9055gGFmdAevI2hOL6xMc6AnjyAHCYpWHDsYeht6T4VCV0QgkeVXt0PDpHHfPspLlF3xB
-	49DIJW5UgIpU+94Cg+1Mrj2MurM8=
-X-Gm-Gg: ASbGnctRr9OqYGoiKL9zPExMZ01S7IuPwxSyG/z2jYYt6F+ytSc+CjDmbhiP4OkVHSQ
-	UmiA/tp01QEtLrC6hzLa2oXYc4H/Ms3tcMiALZsRg6/Agn+pEeN4QXO8KPxNx6/Wz8tofWaWS+E
-	cAv8X2WJM=
-X-Google-Smtp-Source: AGHT+IFW6GDWlGGpqjVzew7MkW1wPR2FwG46MyiXnmowTmnlMztbQM15bxmK//Vd/Upz5e/qpaEJMEC2Of8ep15DZMc=
-X-Received: by 2002:a17:90b:38c3:b0:2fb:f9de:9497 with SMTP id
- 98e67ed59e1d1-2fce7b0946fmr14733330a91.5.1740592167400; Wed, 26 Feb 2025
- 09:49:27 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HD5HAJCG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A41E1C4CED6;
+	Wed, 26 Feb 2025 17:55:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740592561;
+	bh=QPYFUuaMu35HLYW7kKnNg81fs68Lz1/Mi5HfamjHDUQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=HD5HAJCG9a/rJtsRlc7D4DIwHSobBAAqvA8qRLRovcyXgkpcC6IzynVJ8rnuvDXyD
+	 2FZqe0k5Qx7d9tDD57/gPW6pKtcBeRNS5xrRBbImP+pUCD9W8lQA3dnR7HmDIYKvqD
+	 QH1E/Y8Qh2yD+TAflg3SGKGQj5BRm4iQGNymqy6/x1MB7o3gsdqFNJDJA13VLceov8
+	 vkFyjnmys3wsj5Lk+gWRNKmxSUb+4SxT9YwyIFx1WCd7qzANx1tuowsizYn3gkv50s
+	 sI1jtoQ+hf1KJ6MlXQHEf05D1hci+Nd3S8QOA6ZcA7Deu3Zt+Xh06hh4kXDPnYUa43
+	 4n3wWS3y59FSQ==
+From: Danilo Krummrich <dakr@kernel.org>
+To: airlied@gmail.com,
+	simona@ffwll.ch,
+	corbet@lwn.net,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	ajanulgu@redhat.com,
+	lyude@redhat.com,
+	pstanner@redhat.com,
+	zhiw@nvidia.com,
+	cjia@nvidia.com,
+	jhubbard@nvidia.com,
+	bskeggs@nvidia.com,
+	acurrid@nvidia.com
+Cc: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	mcgrof@kernel.org,
+	russ.weight@linux.dev,
+	dri-devel@lists.freedesktop.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	nouveau@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH v4 0/6] Initial Nova Core series
+Date: Wed, 26 Feb 2025 18:55:42 +0100
+Message-ID: <20250226175552.29381-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
- <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
- <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
- <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
- <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
- <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
- <CAFJgqgREAj-eP-d244WpqO-9H48ajZh83AxE31GqoONZ=DJe-g@mail.gmail.com>
- <CAH5fLghEMtT663SNogAGad-qk7umefGeBKbm+QjKKzoskjOubw@mail.gmail.com>
- <CAFJgqgRxfTVxrWja=ZW=mTj1ShPE5s-atAqxzMOq5poajMh=4A@mail.gmail.com>
- <CANiq72mA4Pbx1BeCZdg7Os3FtGkrwx6T8_+=+-=-o9+TOMv+EA@mail.gmail.com> <CAFJgqgSzqGKdeT88fJzrFOex7i-yvVte3NiQDdgXeWEFtnq=9A@mail.gmail.com>
-In-Reply-To: <CAFJgqgSzqGKdeT88fJzrFOex7i-yvVte3NiQDdgXeWEFtnq=9A@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 26 Feb 2025 18:49:12 +0100
-X-Gm-Features: AQ5f1JpctmKLQF0BCjDn8OovkDnRBgv6fuJL4nftVzeYKWrkU3F2aUL59QzVDxY
-Message-ID: <CANiq72m8zKABR0dXtkB-UiF-GeP5J4nAGqoabdmR=CfPsJejzg@mail.gmail.com>
-Subject: Re: C aggregate passing (Rust kernel policy)
-To: Ventura Jack <venturajack85@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Linus Torvalds <torvalds@linux-foundation.org>, 
-	Kent Overstreet <kent.overstreet@linux.dev>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
-	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
-	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, 
-	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Ralf Jung <post@ralfj.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Feb 26, 2025 at 4:21=E2=80=AFPM Ventura Jack <venturajack85@gmail.c=
-om> wrote:
->
-> I am not certain that I understand either you or Alice correctly.
-> But Ralf Jung or others will probably help clarify matters.
+This is the initial series for the nova-core stub driver.
 
-When you said:
+nova-core is intended to serve as a common base for nova-drm (the
+corresponding DRM driver) and the vGPU manager VFIO driver, serving as a
+hard- and firmware abstraction layer for GSP-based NVIDIA GPUs.
 
-    "In a preprint paper, both stacked borrows and tree burrows
-     are as far as I can tell described as having false positives."
+The Nova project, including nova-core and nova-drm, in the long term,
+is intended to serve as the successor of Nouveau for all GSP-based GPUs.
 
-I think that you mean to say that the new model allows/rejects
-something that unsafe code out there wants/doesn't want to do. That is
-fine and expected, although of course it would be great to have a
-model that is simple, fits perfectly all the code out there and
-optimizes well.
+The motivation for both, starting a successor project for Nouveau and
+doing so using the Rust programming language, is documented in detail
+through a previous post on the mailing list [1], an LWN article [2] and a
+talk from LPC '24.
 
-However, that is very different from what you say afterwards:
+In order to avoid the chicken and egg problem to require a user to
+upstream Rust abstractions, but at the same time require the Rust
+abstractions to implement the driver, nova-core kicks off as a driver
+stub and is subsequently developed upstream.
 
-    "Are you sure that both stacked borrows and tree borrows are
-     meant to be full models with no false positives and false negatives,"
+Besides the driver itself and the corresponding documentation, i.e. guidelines,
+task list, etc., this series also carries a few more patches to more flexibly
+compose firmware path strings for the .modinfo section.
 
-Which I read as you thinking that the new model doesn't say whether a
-given program has UB or not.
+Link: https://lore.kernel.org/dri-devel/Zfsj0_tb-0-tNrJy@cassiopeiae/T/#u [1]
+Link: https://lwn.net/Articles/990736/ [2]
+Link: https://youtu.be/3Igmx28B3BQ?si=sBdSEer4tAPKGpOs [3]
 
-Thus I think you are using the phrase "false positives" to refer to
-two different things.
+Changes in v4:
+  - in `regs::Boot0` take a `&Bar0` and let deref coercion do its thing
+    (Alexandre)
+  - add missing firmware path string to the .modinfo section (Greg)
+  - add some infrastructure to compose firmware path strings more flexibly
 
-> You are right that I should have written "currently tied", not "tied", an=
-d
-> I do hope and assume that the work with aliasing will result
-> in some sorts of specifications.
->
-> The language reference directly referring to LLVM's aliasing rules,
-> and that the preprint paper also refers to LLVM, does indicate a tie-in,
-> even if that tie-in is incidental and not desired. With more than one
-> major compiler, such tie-ins are easier to avoid.
+Changes in v3:
+  - impl TryFrom<u32> for Chipset
+  - add Chipset::arch()
+  - initialize revision from Boot0
+  - in Firmware, eliminate repeating code pattern using a closure (thanks to
+    Alexandre)
+  - use #[expect(dead_code)] for Firmware
+  - Replace some Rust specific rules with links to existing R4L documentation.
+  - Link in R4L submit checklist.
+  - Update task entry "Page abstraction for foreign pages" with Lina's work.
 
-Ralf, who is pretty much the top authority on this as far as I
-understand, already clarified this:
+Changes in v2:
+  - Fix module name in Kconfig description. (John)
+  - Expand Kconfig description a bit. (John)
+  - Expand name for PCI BAR0 region.
+  - Do not store / print boot0 raw register value. (John)
+  - Rename CardType to Architecture, rename enum names to represent the
+    architecture name and adjust enum values according to the register
+    definition. (John)
+  - Add an abstraction for register accesses.
+  - Print chipset, architecture and revision.
+  - Load bootloader firmware. (Timur)
+  - Add task "Generic register abstraction".
+  - Change complexity of "Debugfs abstractions".
 
-    "we absolutely do *not* want Rust to be tied to LLVM's aliasing rules"
+Danilo Krummrich (6):
+  rust: module: add type `LocalModule`
+  rust: str: provide const fn as_bytes() for BStr
+  rust: firmware: introduce `firmware::ModInfoBuilder`
+  rust: firmware: add `module_firmware!` macro
+  gpu: nova-core: add initial driver stub
+  gpu: nova-core: add initial documentation
 
-The paper mentioning LLVM to explain something does not mean the model
-is tied to LLVM.
+ Documentation/gpu/drivers.rst              |   1 +
+ Documentation/gpu/nova/core/guidelines.rst |  24 ++
+ Documentation/gpu/nova/core/todo.rst       | 446 +++++++++++++++++++++
+ Documentation/gpu/nova/guidelines.rst      |  69 ++++
+ Documentation/gpu/nova/index.rst           |  30 ++
+ MAINTAINERS                                |  11 +
+ drivers/gpu/Makefile                       |   1 +
+ drivers/gpu/nova-core/Kconfig              |  14 +
+ drivers/gpu/nova-core/Makefile             |   3 +
+ drivers/gpu/nova-core/driver.rs            |  47 +++
+ drivers/gpu/nova-core/firmware.rs          |  45 +++
+ drivers/gpu/nova-core/gpu.rs               | 225 +++++++++++
+ drivers/gpu/nova-core/nova_core.rs         |  19 +
+ drivers/gpu/nova-core/regs.rs              |  55 +++
+ drivers/video/Kconfig                      |   1 +
+ rust/kernel/firmware.rs                    | 177 ++++++++
+ rust/kernel/str.rs                         |   6 +
+ rust/macros/module.rs                      |   2 +
+ 18 files changed, 1176 insertions(+)
+ create mode 100644 Documentation/gpu/nova/core/guidelines.rst
+ create mode 100644 Documentation/gpu/nova/core/todo.rst
+ create mode 100644 Documentation/gpu/nova/guidelines.rst
+ create mode 100644 Documentation/gpu/nova/index.rst
+ create mode 100644 drivers/gpu/nova-core/Kconfig
+ create mode 100644 drivers/gpu/nova-core/Makefile
+ create mode 100644 drivers/gpu/nova-core/driver.rs
+ create mode 100644 drivers/gpu/nova-core/firmware.rs
+ create mode 100644 drivers/gpu/nova-core/gpu.rs
+ create mode 100644 drivers/gpu/nova-core/nova_core.rs
+ create mode 100644 drivers/gpu/nova-core/regs.rs
 
-And the Rust reference, which you quote, is not the Rust specification
--- not yet at least. From its introduction:
 
-    "should not be taken as a specification for the Rust language"
+base-commit: ac9c34d1e45a4c25174ced4fc0cfc33ff3ed08c7
+-- 
+2.48.1
 
-When the Rust specification is finally published, if they still refer
-to LLVM (in a normative way), then we could say it is tied, yes.
-
-Cheers,
-Miguel
