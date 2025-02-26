@@ -1,100 +1,68 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DCD926FA5D
-	for <rust-for-linux@vger.kernel.org>; Wed, 26 Feb 2025 09:51:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3573624DFFC;
+	Wed, 26 Feb 2025 10:30:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740563505; cv=none; b=lS/RfH7Bp2Z5ZPemUtBg5UnIn7FVg+Mnjp9OKELmi5l6uSa/zC4NY3RPd1ot97AOOHyQFH6dBWUvWLOX+1CnB003BmBltJXgmHnfpLDU4ICE7a8YXWbELzKxIumoQDUJrZTxEik4JvRG5Y6WFyIAw9WjEq0AYWhUj/YN1u3yrro=
+	t=1740565852; cv=none; b=A3SPNAgU5KHOmlWMsXllT5ZDn64X3pdyBaFZAXQJa2nlxtqTRFa/1MsOZGav3nM78zT0rY6DmRVPk+PvmNnXFUptBCWOk4ErPgVAB1cJlCmx9p7RlaUYf44BPJL+xx0GBEAyvwlefgpJBYzMd4/aDG0XSI2xCFiFhlLx3AdHe38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740563505; c=relaxed/simple;
-	bh=S0lf+4lpRcgKLyFrQA4J4yGE3pMr3w4x+Dy8wCIY3K4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tMssBb2agFCSgyPMdGI1mcO5kA535FHR9ToJk9eVPtesMfziQOBxdTdneQ5XaSzZMG6vslmIIPaPup4NjxzrCnNNtHIwImRJCCjHVw4SgcPSzDzWR8wE4j3f4DiAVkqrnZ9b5dCZhWRuuXJty5Sz5H1GRI+m323LAAOlanr9Iz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2sqBm7Bs; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1740565852; c=relaxed/simple;
+	bh=gBqmRYLZTiA61NRk59tztCQvGKgpwFwHg9wfQKyCanE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=civqnymXTHPNjOBMiJfcsZ6yAJP1eVcb32s4WwNKYEBvTNcr8UcCB20V+ztd8bjRHEukmoXIm6w67FKmEtpjY8RvF7jGEJ7osgCn6NTxbeW0rcNKTeYd3AM/f5YaOx0hB7rG1yGq4kb4WsWr43p4ga9h9Asg3rhGm+PfCX3oaV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RC0XrhAk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2sqBm7Bs"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-439a4dec9d5so63842265e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 26 Feb 2025 01:51:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740563502; x=1741168302; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Fs3KHXpUNRxMmVWzA96rGcxfnFDlH+HIbmMfpIXANCA=;
-        b=2sqBm7BsTzQGnNSTrk1rWkHtMkBkvRJjxLjMqk7gR1qn4Sxy3H8m7HDlIyNMmnx+1d
-         Thl3DqDx68uCuC5rmRqTIYyMDN8JRkaR2Lbw+uu1A+OznweHgsgI2UmZZX2VIn9VFlbH
-         c4g8Jk6MeoQ1JQaCsJCE5EPUcONKVQHrPWtFBBQhRSQl1EEviG389ai+lGMiA1/w4mFc
-         IT4fjuobrtBzAGjHIuw2yttUscUrAtYCyeqJy8PUieAk1D2yzMAWOu/LqoV0e6sLqhmO
-         aSCGsWOJ32GwjIsNEnCCKMNn2hMEczEgEYtvhA0ju3NtFGI9bwarzugeXK8QmvQYt1Ib
-         Mdfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740563502; x=1741168302;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Fs3KHXpUNRxMmVWzA96rGcxfnFDlH+HIbmMfpIXANCA=;
-        b=wtyloEcMbmKP/NqaedIAn5Fzrw/7bxO/p1fEizbTZzlndsWAk5MPYwJxwkDikHH//b
-         hFil7csDbhhTQKJm3aatzwSCq2fIn2AkVCXMxHPcGqNtbb7BUlWsUWH054dRfy7GfhDr
-         5lq6eWjF27LknV/r8MaXVuDqXjg3MYDEunjV3v6KsrhtZl6lgL9DOKre+towwBhkdFyW
-         PT/GJg49R2jNhQE33AuF78+hGafsj9o+gxeWMpeyvv5cRD3p7ra+znG9POWdm5VK/+JX
-         7FGqYwt/vwwp7GtPY0JE2PdvE8z4NWOXGEK/h8Dd7aieZMYiP9gqAJjkOf7/vmqQZUgj
-         UwTw==
-X-Forwarded-Encrypted: i=1; AJvYcCVTL9uDiiCozi2E68lRDB4HR7Kp5mqJulGcy5c1HheYcPLlTMXWND3PmznN4Bn4knTMj7snLKOf4jQ/RXSefQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YygVrQ8Nnj03I0AHaioLUDtiEsYgAZMfle4KRY+R/Z1ErTAxscQ
-	aKWwgycuQ/97z3v1DosJXjJsb6RVsRy9SVjM8qvtUKzrTTpeyv/G0NHW4Knx151Fp+nQmn358nJ
-	9gfR121FlaWGVdaXwYrkEyN4K/x4vhQFlJ2UK
-X-Gm-Gg: ASbGnctK0gl53JbSMezsZLeBfAznqNAt0kxentTFHD/Vcd3GLh1avMCvG9PquDXjxjT
-	a5+dRe6ilZRRH/U0at2Y2kMZHM/mRhXCJ52W8kelwLaum32P3y5zJrygog974PGKBfHIBS1/pHE
-	k5B7w2+okfkArM0rKmeOWF5C5mMcbThYutsxmKWQ==
-X-Google-Smtp-Source: AGHT+IFzkzJ5/4WNBf/eUvAla7YnSGL8/zujS1ENNCn/0BVBUdNATnqHxqboRA/r8AMv7ru+zuk+H/oh43/NlTYn2r4=
-X-Received: by 2002:a5d:5887:0:b0:38f:2f0e:9813 with SMTP id
- ffacd0b85a97d-390cc3b0eabmr6802995f8f.0.1740563501628; Wed, 26 Feb 2025
- 01:51:41 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RC0XrhAk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF96C4CED6;
+	Wed, 26 Feb 2025 10:30:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1740565851;
+	bh=gBqmRYLZTiA61NRk59tztCQvGKgpwFwHg9wfQKyCanE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RC0XrhAkzNz+p6JbxrgTDtxyFO/pcOXEeUY/1krdkFIBt5oOs3wb9TlRltiNkmjtD
+	 Uubfi2OgAcBBK50Rs1F3PyShNY6kUGnFsBB5kgftfx/tr40pYU2c7m7lHsIyrU2+ee
+	 AqVcfvInjjelURfszsnRtrV47kmY3gGyPZkxffiY=
+Date: Wed, 26 Feb 2025 10:58:17 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, kernel@dakr.org,
+	a.hindborg@kernel.org, alex.gaynor@gmail.com,
+	benno.lossin@proton.me, bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net,
+	linux-kernel@vger.kernel.org, lyude@redhat.com,
+	mairacanal@riseup.net, ojeda@kernel.org, rafael@kernel.org,
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu
+Subject: Re: [PATCH 2/2] rust/faux: Add missing parent argument to
+ Registration::new()
+Message-ID: <2025022659-spray-treble-759f@gregkh>
+References: <ea2466c4d250ff953b3be9602a3671fb@dakr.org>
+ <20250226092339.989767-1-aliceryhl@google.com>
+ <Z77iHj56551mDybd@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <ea2466c4d250ff953b3be9602a3671fb@dakr.org> <20250226092339.989767-1-aliceryhl@google.com>
- <Z77iHj56551mDybd@pollux>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <Z77iHj56551mDybd@pollux>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 26 Feb 2025 10:51:29 +0100
-X-Gm-Features: AQ5f1JpdXtqu7VfocuWmKcaKp_qdfUhQx-EMFBcwwtZWxteqzCABmqL2DsXyZP0
-Message-ID: <CAH5fLggcAPgaQRrpcTd-+bzrarO=fUaQjg=rXTjZNS7DyfPhjQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] rust/faux: Add missing parent argument to Registration::new()
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: kernel@dakr.org, a.hindborg@kernel.org, alex.gaynor@gmail.com, 
-	benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
-	lyude@redhat.com, mairacanal@riseup.net, ojeda@kernel.org, rafael@kernel.org, 
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 26, 2025 at 10:43=E2=80=AFAM Danilo Krummrich <dakr@kernel.org>=
- wrote:
->
+On Wed, Feb 26, 2025 at 10:42:54AM +0100, Danilo Krummrich wrote:
 > On Wed, Feb 26, 2025 at 09:23:39AM +0000, Alice Ryhl wrote:
-> > On Wed, Feb 26, 2025 at 10:06=E2=80=AFAM <kernel@dakr.org> wrote:
+> > On Wed, Feb 26, 2025 at 10:06 AM <kernel@dakr.org> wrote:
 > > >
 > > > On 2025-02-26 09:38, Alice Ryhl wrote:
-> > > > On Tue, Feb 25, 2025 at 10:31=E2=80=AFPM Lyude Paul <lyude@redhat.c=
-om> wrote:
+> > > > On Tue, Feb 25, 2025 at 10:31 PM Lyude Paul <lyude@redhat.com> wrote:
 > > > >>
-> > > >> A little late in the review of the faux device interface, we added=
- the
-> > > >> ability to specify a parent device when creating new faux devices =
--
+> > > >> A little late in the review of the faux device interface, we added the
+> > > >> ability to specify a parent device when creating new faux devices -
 > > > >> but
 > > > >> this never got ported over to the rust bindings. So, let's add the
 > > > >> missing
-> > > >> argument now so we don't have to convert other users later down th=
-e
+> > > >> argument now so we don't have to convert other users later down the
 > > > >> line.
 > > > >>
 > > > >> Signed-off-by: Lyude Paul <lyude@redhat.com>
@@ -111,97 +79,99 @@ e
 > > > >> @@ -23,11 +23,17 @@
 > > > >>
 > > > >>  impl Registration {
-> > > >>      /// Create and register a new faux device with the given name=
-.
+> > > >>      /// Create and register a new faux device with the given name.
 > > > >> -    pub fn new(name: &CStr) -> Result<Self> {
 > > > >> +    pub fn new(name: &CStr, parent: Option<&device::Device>) ->
 > > > >> Result<Self> {
 > > > >>          // SAFETY:
-> > > >>          // - `name` is copied by this function into its own stora=
-ge
-> > > >>          // - `faux_ops` is safe to leave NULL according to the C =
-API
-> > > >> -        let dev =3D unsafe {
-> > > >> bindings::faux_device_create(name.as_char_ptr(), null_mut(), null(=
-))
+> > > >>          // - `name` is copied by this function into its own storage
+> > > >>          // - `faux_ops` is safe to leave NULL according to the C API
+> > > >> -        let dev = unsafe {
+> > > >> bindings::faux_device_create(name.as_char_ptr(), null_mut(), null())
 > > > >> };
-> > > >> +        let dev =3D unsafe {
+> > > >> +        let dev = unsafe {
 > > > >> +            bindings::faux_device_create(
 > > > >> +                name.as_char_ptr(),
 > > > >> +                parent.map_or(null_mut(), |p| p.as_raw()),
 > > > >> +                null(),
 > > > >
-> > > > This function signature only requires that `parent` is valid for th=
-e
+> > > > This function signature only requires that `parent` is valid for the
 > > > > duration of this call to `new`, but `faux_device_create` stashes a
 > > > > pointer without touching the refcount. How do you ensure that the
 > > > > `parent` pointer does not become dangling?
 > > >
-> > > I was wondering the same, but it seems that the subsequent device_add=
-()
+> > > I was wondering the same, but it seems that the subsequent device_add()
 > > > call takes care of that:
 > > >
-> > > https://elixir.bootlin.com/linux/v6.14-rc3/source/drivers/base/core.c=
-#L3588
+> > > https://elixir.bootlin.com/linux/v6.14-rc3/source/drivers/base/core.c#L3588
 > > >
 > > > device_del() drops the reference.
 > > >
 > > > This makes device->parent only valid for the duration between
 > > > faux_device_create() and faux_device_remove().
 > > >
-> > > But this detail shouldn=E2=80=99t be relevant for this API.
-> >
+> > > But this detail shouldn’t be relevant for this API.
+> > 
 > > I think this could use a few more comments to explain it. E.g.:
-> >
+> > 
 > > diff --git a/drivers/base/faux.c b/drivers/base/faux.c
 > > index 531e9d789ee0..674db8863d96 100644
 > > --- a/drivers/base/faux.c
 > > +++ b/drivers/base/faux.c
-> > @@ -131,6 +131,7 @@ struct faux_device *faux_device_create_with_groups(=
-const char *name,
-> >
+> > @@ -131,6 +131,7 @@ struct faux_device *faux_device_create_with_groups(const char *name,
+> >  
 > >         device_initialize(dev);
-> >         dev->release =3D faux_device_release;
+> >         dev->release = faux_device_release;
 > > +       /* The refcount of dev->parent is incremented in device_add. */
->
+> 
 > Yeah, this one is a bit odd to rely on a subsequent device_add() call, it
 > clearly deserves a comment.
->
+
+What do you mean?  That's the way the driver model works, a parent
+always gets the reference count incremented as it can not go away until
+all of the children are gone.
+
+So if you pass a parent pointer into a "create" function in the driver
+core, it will be incremented, you don't have to worry about it.
+
+I don't understand the issue with the rust binding here, it's not saving
+a pointer to the parent device, as long as it is valid going in, that's
+all that matters.
+
+
+
 > >         if (parent)
-> >                 dev->parent =3D parent;
+> >                 dev->parent = parent;
 > >         else
 > > diff --git a/rust/kernel/faux.rs b/rust/kernel/faux.rs
 > > index 7673501ebe37..713ee6842e3f 100644
 > > --- a/rust/kernel/faux.rs
 > > +++ b/rust/kernel/faux.rs
-> > @@ -28,6 +28,7 @@ pub fn new(name: &CStr, parent: Option<&device::Devic=
-e>) -> Result<Self> {
+> > @@ -28,6 +28,7 @@ pub fn new(name: &CStr, parent: Option<&device::Device>) -> Result<Self> {
 > >          // SAFETY:
 > >          // - `name` is copied by this function into its own storage
 > >          // - `faux_ops` is safe to leave NULL according to the C API
-> > +        // - `faux_device_create` ensures that `parent` stays alive un=
-til `faux_device_destroy`.
->
+> > +        // - `faux_device_create` ensures that `parent` stays alive until `faux_device_destroy`.
+> 
 > Not sure that's a safety requirement for faux_device_create().
->
-> The typical convention is that a caller must hold a reference to the obje=
-ct
-> behind the pointer when passing it to another function. If the callee dec=
-ides
+
+It's by default what the driver model does for you.
+
+> The typical convention is that a caller must hold a reference to the object
+> behind the pointer when passing it to another function. If the callee decides
 > to store the pointer elsewhere, it's on the callee to take an additional
 > reference.
->
-> I think if we want to add something to the safety comment, it should be s=
-omthing
-> along the line of "the type of `parent` implies that for the duration of =
-this
+
+Exactly, the driver core handles this.
+
+> I think if we want to add something to the safety comment, it should be somthing
+> along the line of "the type of `parent` implies that for the duration of this
 > call `parent` is a valid device with a non-zero reference count".
 
-True, we can move it above the safety comment:
+I don't understand the need for any safety comment about the parent
+here.  Again, as long as it is valid when the call is made, that is all
+that is needed.
 
-// Note that `faux_device_create` ensures that `parent` stays alive
-// until `faux_device_destroy`.
-// SAFETY: ...
+thanks,
 
-
-Alice
+greg k-h
