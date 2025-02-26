@@ -1,226 +1,120 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7209221DA6;
-	Wed, 26 Feb 2025 14:57:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0704190665;
+	Wed, 26 Feb 2025 15:03:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740581867; cv=none; b=hhd+TdoX3BAkYVcQKkJhi73zKBNf1f89xZeZLGwnEb4LiY2I2p9/njTwlez/fRAy91Ro9aJbKmysRb8Vxd5+12sKam9QpAeFKC8de6BPg8lQSR6CJex2vgYaxrf6z0ayV6HVCXTeHFgM/Ucdk7WEdF+Vmg4/KEgCkDTfPZJMLL0=
+	t=1740582191; cv=none; b=R8xS+dOUL2q+TZBqIYGQFC9wDwN6trbpNlMO9s9rNnDQNNf1QefHxHFfUe4tLkAyunCpm4c3wR3UqIoyL9WYL4krfs8NKRWu1eUdSNYtXN/l4DY0zP2GToeORuSk89KgJ9vZXgAIAISEC5oCtJWuZBFvNEp146FmojCJYMO9mT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740581867; c=relaxed/simple;
-	bh=exPTYl/G8xGMJ5KWmnWY4lMJepkIK8e+z9ezmnXgxK8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mM63Q89nuKMseepWt17boNCmrJXkw2ejqKzQO7qr1F5BgzUj6a495rUl/cmu9Wc2cV4aIJ5VQJ8J2HjYFiENsZ9BozzPUcQ2Uces8r6gL0r8mbvxxRGTzIWPpBoQBXn0b8jYHnOt90JP2qVZf3ZDOoTlFQM1I2drDD2cofShomw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hMQtpBFq; arc=none smtp.client-ip=209.85.167.49
+	s=arc-20240116; t=1740582191; c=relaxed/simple;
+	bh=fMoKzn75GHUYA90ipZu+q71iCAH9WvdZFZJ+RHG3XAs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rGLxX3PSaBegnQZoe9z6PcbgvtwhSu0lMJiWFl9QQ0o2J2/Lr4yKkVF61P4ToLVi+tWPMD/Pl2bgfni8DKNXid9owjkD+eR3cqm5HX0HaTHNpy9Dp7U9uEXcr4GoxRrJSqf3/bK00Xopg7JRiCOHbzMuezOMgzCher+eW/0Dg4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YVFfL316; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hMQtpBFq"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5485646441cso2093504e87.2;
-        Wed, 26 Feb 2025 06:57:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YVFfL316"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-220f4dd756eso149137065ad.3;
+        Wed, 26 Feb 2025 07:03:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740581864; x=1741186664; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UmBQUH+CeL/df1c+D6bwSNj4KBzbPZ0tvqWc/Hm8TeE=;
-        b=hMQtpBFqC0AGWQ+FzuJ5H95AJTgVkX2FpWxqSOJMbeBsUECTJESY2WYO7c3a5RdmmO
-         Vzw/zd3zEKrVfZ2n5IVPAgRED0e9aBWb9EsU/txfL1/CW4m6NmTI+uwnTPMl4rjoRWaw
-         PA+/sCpJK/AVXmLqTjLlDIgpvKm+NKkQ4+bL2RN5DbcSi/YjbeC0Ak7Bvh+1d1uCNdcN
-         ONu8t7nGeyN4Qhd++3nHRONKyyydH7+srOagNWo3RkpAe+PTWZKVyIBR3k9F8BRHZfT9
-         AC4xuQPCn9uzQd5leXSsgqqwEz+E5Ndb5tfEZFUSEAQQ7N4aRa8ek8YPYhHNPOMUGVrG
-         ZSEA==
+        d=gmail.com; s=20230601; t=1740582189; x=1741186989; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lgmChzRUPWrxU/Ro0HZWigmuIxGgec64e1FE97Altvs=;
+        b=YVFfL3164/k2C18lmdJE9Wc5Xx3i/DzJaujEnVvW4fN+Q1l72XfnflOSiVo8FAhQkC
+         IrTPU5jlJAzqNLOAC+KqPHbebPA4cbjyzHACSW0TKfEn0mHWJ6mS4NhT4ZzTkgsq5n4M
+         ogS8Rzk9sb8MZVVg1YY/wnA1e8Vo+mrda2nocwPvgbZOmeT1urRh/vAc24VUcS+cMXGz
+         Edvxpac1EK9zOne/Kfg5vVlCkjRX9NBPbXwO2M0rebgE+OmCeOZtV2yp/Yah868bY7CO
+         gghY8rAQzxiuCOMvSS1VfenTEKp/ncD0vOeKXwRVxOulNAWSTjW1J3dYB/I+wwOjD8sj
+         tV/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740581864; x=1741186664;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UmBQUH+CeL/df1c+D6bwSNj4KBzbPZ0tvqWc/Hm8TeE=;
-        b=JGso3ssCHPY1GHtlt0WzDm5n5enLztw0n6qgFOZjpZv3jwWdDg11Gtp2d+SyypV0XC
-         7KnWNHl6xP+HEMH9OivUHKQCkP6Of3u0vmbZpCGrRrBpSzLva0q3RZ6FvznKijf31iO+
-         wFHTv8CtO2Z64sxGlQsiuFiIdRJWlP8t5WdY06eJvDXAoBeICCe85DlIMyyRrJQtgM7F
-         uYAZ9yPAIf23m1oHJaglwDw3ImWGG5Mkp7YWszSvJOo4lYBNLaIUMfkQuIzAvAHn7gSQ
-         6wv2en0CfsoOIJXeS0MUvU7WVVysAcFvWb6iv+BtGqhHYpHwTTkYk5QIukwidPwBf1Ac
-         eJ0A==
-X-Forwarded-Encrypted: i=1; AJvYcCUGyM4itOJ/hZELFGOjsMMA+b8vihLom6kFWwF7nfSLGmegkXhROdbYwHEYJXMCbGYWoA/SLPGh1TvmiRc=@vger.kernel.org, AJvYcCVSz+NSQtZu94xQZM0uowQ0OU+qWKB8NpoMqmKRhpuidovr95aZkWCHJYY7JgiJ0X60dogd0iQfWugMR9UrX74=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXsJcvWYX17UN2xXRFshBDZwfQWzzJdxAaTZQdqU2nJJJqLIYx
-	E0j2fzDkkk+z+B1BctLTKULJ1IGu1K6q9l4qVSlHDceo8L0cxCx8Ke2YeLPkfURUgnphP/xo9u8
-	vuWCEsyzKZUn06mOKDUuncJWQA8c=
-X-Gm-Gg: ASbGncu72LlU39Ner3SJVXDG5JCQz4SJirk9Ly7T0ML/SNuvwdVF5+CQ7UM1fMvunnV
-	6U8FaclYSheQkVzm3/OxgR3HClWVfsT9CgwB9trHUg9dtKPYfSXHVLpK3c6/P+nDo268LySP6xw
-	2bH2FrLVfj
-X-Google-Smtp-Source: AGHT+IHGpxJyYcpdkSCW/SXyfWqVlUKVzz1DxVDanEf1VcEX2yQEWccPlzUMrzF1K0HO2xZ9I2fHAsrmagv051PGdWM=
-X-Received: by 2002:a05:6512:68e:b0:545:3dd:aa5f with SMTP id
- 2adb3069b0e04-548510ecfadmr4470175e87.36.1740581863683; Wed, 26 Feb 2025
- 06:57:43 -0800 (PST)
+        d=1e100.net; s=20230601; t=1740582189; x=1741186989;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lgmChzRUPWrxU/Ro0HZWigmuIxGgec64e1FE97Altvs=;
+        b=tB15cbaXnq1D8T/qOzT0PqoavkF6ACRVk4JbC92W4tdJyek6uy5/tyC5YgnQsbdjRu
+         RG9wndbJT5bcsbTtwFUrrzgkm+RN6ObQ1Je3mtVhRSklRWeZQfT30sK2gttGpgA2GK7t
+         G8KyqPLiOZmloSlViWXYzfC/67hIaF0TyIbq09DMplojDpnHcbkB83NwXFvTOEYzP1Tu
+         feVkV7ui27XsRT+5AsdfaYRHCl4PPY7rm4KREcsI8Vd4UZZrnTOOJH6x4p8Ux1MhT1AG
+         kAjA48biK8GdDjGJLt2Q6ln6qzK5bQdXucdN0j6Kr2ELBYyq6g63FRB6IBPiBdMAbfdJ
+         53mQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV6uM2g+DY7DYpQvEB5mojjnNNoR9/GFHuNKSrNd/o/jiB8dXT6OpS6JK9jXnPFNYJHZaNaPKcZ+2q+nN8ZQqQ=@vger.kernel.org, AJvYcCVK4uoeTf63Wftk2QkvweZ5YIeZqay+FggWp40S4H9Cjdotsf07mL9OidDCoLDTPcH9IcvhQgCuaGl701M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWvqKD924RAOaTYgerKTetwO/2eMtalyNm+daEbxVldLUnDhuF
+	nMTVc+2KUX8ulJOnO6nqavmkEEJNg12wY8OljZFKZt/+ODT4ZJbd4OE9t/7d
+X-Gm-Gg: ASbGncuRVPNmOyK6rUlE5N44Tyz7NO1fNei2LdnUKu8IXU2lwz1EZvtGFcaWg36+WAY
+	7qbBX40tNC67dqwh/YmiJYyz8clu6DHLITf8ELBKaAxzM0Fd0bXgXP9gfayW2PMAtJQLv2fAZRi
+	6z9l3eBHwRu1adiMHCIZLQEYiEuqwt/Ae0e56y6HIwqGUwbtEySJnl+YfpwKu5VfjgNS2kHCNEI
+	JJLmZm7P5F5j4DR0Oferi0MybcJReW6Vcy8SCnvMhVoo8M5qzVOKiqioLcv2u7SNu/otJWakxxo
+	FrpjdERZ9qTCXdgWd7qLl2zdjCzIRc1s4IkKd24vNHD2OI8X1g==
+X-Google-Smtp-Source: AGHT+IFl++KPanhHASqmMVGgwPLmI6jBBycifC3LPnORcJTe5GZAgJBB2UNwedgMdxS/e6kNWR6Xhw==
+X-Received: by 2002:a17:902:e5c2:b0:215:9470:7e82 with SMTP id d9443c01a7336-22307b455dcmr130723185ad.4.1740582188873;
+        Wed, 26 Feb 2025 07:03:08 -0800 (PST)
+Received: from localhost (maglev-oncall.nvidia.com. [216.228.125.128])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2230a01fe8bsm33339875ad.54.2025.02.26.07.03.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Feb 2025 07:03:08 -0800 (PST)
+Date: Wed, 26 Feb 2025 10:03:06 -0500
+From: Yury Norov <yury.norov@gmail.com>
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
+	rust-for-linux@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>
+Subject: Re: [PATCH 2/2] MAINTAINERS: Add entry for Rust bitmap API
+Message-ID: <Z78tKmTa3RVH327d@thinkpad>
+References: <cover.1740475625.git.viresh.kumar@linaro.org>
+ <8c6249c6631f47565541d584fbec78cd2fbe60c1.1740475625.git.viresh.kumar@linaro.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
- <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
- <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
- <CANiq72mdzUJocjXhPRQEEdgRXsr+TEMt99V5-9R7TjKB7Dtfaw@mail.gmail.com>
- <lz7hsnvexoywjgdor33mcjrcztxpf7lzvw3khwzd5rifetwrcf@g527ypfkbhp2> <780ff858-4f8e-424f-b40c-b9634407dce3@ralfj.de>
-In-Reply-To: <780ff858-4f8e-424f-b40c-b9634407dce3@ralfj.de>
-From: Ventura Jack <venturajack85@gmail.com>
-Date: Wed, 26 Feb 2025 07:57:29 -0700
-X-Gm-Features: AQ5f1Jo9IzYuf4E5AC_RcTEU4bX39JC8MluDSFJpsvCTKdWgDEaxM6M0ch_TWZM
-Message-ID: <CAFJgqgRN0zwwaNttS_9qnncTDnSA-HU5EgAXFrNHoPQ7U8fUxw@mail.gmail.com>
-Subject: Re: C aggregate passing (Rust kernel policy)
-To: Ralf Jung <post@ralfj.de>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	torvalds@linux-foundation.org, airlied@gmail.com, boqun.feng@gmail.com, 
-	david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, 
-	hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8c6249c6631f47565541d584fbec78cd2fbe60c1.1740475625.git.viresh.kumar@linaro.org>
 
-On Wed, Feb 26, 2025 at 4:34=E2=80=AFAM Ralf Jung <post@ralfj.de> wrote:
->
-> Let me also reply to some statements made further up-thread by Ventura Ja=
-ck (in
-> <https://lore.kernel.org/rust-for-linux/CAFJgqgSqMO724SQxinNqVGCGc7=3DibU=
-vVq-f7Qk1=3DS3A47Mr-ZQ@mail.gmail.com/>):
->
-> > - Aliasing in Rust is not opt-in or opt-out,
-> >     it is always on.
-> >     https://doc.rust-lang.org/nomicon/aliasing.html
->
-> This is true, but only for references. There are no aliasing requirements=
- on raw
-> pointers. There *are* aliasing requirements if you mix references and raw
-> pointers to the same location, so if you want to do arbitrary aliasing yo=
-u have
-> to make sure you use only raw pointers, no references. So unlike in C, yo=
-u have
-> a way to opt-out entirely within standard Rust.
+On Tue, Feb 25, 2025 at 03:17:15PM +0530, Viresh Kumar wrote:
+> Update the MAINTAINERS file to include the Rust abstractions for bitmap
+> API.
+> 
+> Yury has indicated that he does not wish to maintain the Rust code but
+> would like to be listed as a reviewer.
+> 
+> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 
-Fair, though I did have this list item:
+Reviewed-by: Yury Norov <yury.norov@gmail.com>
 
-- Applies to certain pointer kinds in Rust, namely
-    Rust "references".
-    Rust pointer kinds:
-    https://doc.rust-lang.org/reference/types/pointer.html
-
-where I wrote that the aliasing rules apply to Rust "references".
-
->
-> > - Rust has not defined its aliasing model.
->
-> Correct. But then, neither has C. The C aliasing rules are described in E=
-nglish
-> prose that is prone to ambiguities and misintepretation. The strict alias=
-ing
-> analysis implemented in GCC is not compatible with how most people read t=
-he
-> standard (https://bugs.llvm.org/show_bug.cgi?id=3D21725). There is no too=
-l to
-> check whether code follows the C aliasing rules, and due to the aforement=
-ioned
-> ambiguities it would be hard to write such a tool and be sure it interpre=
-ts the
-> standard the same way compilers do.
->
-> For Rust, we at least have two candidate models that are defined in full
-> mathematical rigor, and a tool that is widely used in the community, ensu=
-ring
-> the models match realistic use of Rust.
-
-But it is much more significant for Rust than for C, at least in
-regards to C's "restrict", since "restrict" is rarely used in C, while
-aliasing optimizations are pervasive in Rust. For C's "strict aliasing",
-I think you have a good point, but "strict aliasing" is still easier to
-reason about in my opinion than C's "restrict". Especially if you
-never have any type casts of any kind nor union type punning.
-
-And there have been claims in blog posts and elsewhere in the
-Rust community that unsafe Rust is harder than C and C++.
-
->
-> > - The aliasing rules in Rust are possibly as hard or
-> >     harder than for C "restrict", and it is not possible to
-> >     opt out of aliasing in Rust, which is cited by some
-> >     as one of the reasons for unsafe Rust being
-> >     harder than C.
->
-> That is not quite correct; it is possible to opt-out by using raw pointer=
-s.
-
-Again, I did have this list item:
-
-- Applies to certain pointer kinds in Rust, namely
-    Rust "references".
-    Rust pointer kinds:
-    https://doc.rust-lang.org/reference/types/pointer.html
-
-where I wrote that the aliasing rules apply to Rust "references".
-
-> >     the aliasing rules, may try to rely on MIRI. MIRI is
-> >     similar to a sanitizer for C, with similar advantages and
-> >     disadvantages. MIRI uses both the stacked borrow
-> >     and the tree borrow experimental research models.
-> >     MIRI, like sanitizers, does not catch everything, though
-> >     MIRI has been used to find undefined behavior/memory
-> >     safety bugs in for instance the Rust standard library.
->
-> Unlike sanitizers, Miri can actually catch everything. However, since the=
- exact
-> details of what is and is not UB in Rust are still being worked out, we c=
-annot
-> yet make in good conscience a promise saying "Miri catches all UB". Howev=
-er, as
-> the Miri README states:
-> "To the best of our knowledge, all Undefined Behavior that has the potent=
-ial to
-> affect a program's correctness is being detected by Miri (modulo bugs), b=
-ut you
-> should consult the Reference for the official definition of Undefined Beh=
-avior.
-> Miri will be updated with the Rust compiler to protect against UB as it i=
-s
-> understood by the current compiler, but it makes no promises about future
-> versions of rustc."
-> See the Miri README (https://github.com/rust-lang/miri/?tab=3Dreadme-ov-f=
-ile#miri)
-> for further details and caveats regarding non-determinism.
->
-> So, the situation for Rust here is a lot better than it is in C. Unfortun=
-ately,
-> running kernel code in Miri is not currently possible; figuring out how t=
-o
-> improve that could be an interesting collaboration.
-
-I do not believe that you are correct when you write:
-
-    "Unlike sanitizers, Miri can actually catch everything."
-
-Critically and very importantly, unless I am mistaken about MIRI, and
-similar to sanitizers, MIRI only checks with runtime tests. That means
-that MIRI will not catch any undefined behavior that a test does
-not encounter. If a project's test coverage is poor, MIRI will not
-check a lot of the code when run with those tests. Please do
-correct me if I am mistaken about this. I am guessing that you
-meant this as well, but I do not get the impression that it is
-clear from your post.
-
-Further, MIRI, similar to sanitizers, runs much more slowly than
-regular tests. I have heard numbers of MIRI running 50x slower
-than the tests when not run with MIRI. This blog post claims
-400x running time in one case.
-
-    https://zackoverflow.dev/writing/unsafe-rust-vs-zig/
-        "The interpreter isn=E2=80=99t exactly fast, from what I=E2=80=99ve=
- observed
-        it=E2=80=99s more than 400x slower. Regular Rust can run the tests
-        I wrote in less than a second, but Miri takes several minutes."
-
-This does not count against MIRI, since it is similar to some
-other sanitizers, as I understand it. But it does mean that MIRI
-has some similar advantages and disadvantages to sanitizers.
-
-Best, VJ.
+> ---
+>  MAINTAINERS | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index ec2428b82103..17e98d757b9b 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -4034,6 +4034,12 @@ M:	Yury Norov <yury.norov@gmail.com>
+>  S:	Maintained
+>  F:	rust/helpers/cpumask.c
+>  
+> +BITMAP API [RUST]
+> +M:	Viresh Kumar <viresh.kumar@linaro.org> (cpumask)
+> +R:	Yury Norov <yury.norov@gmail.com>
+> +S:	Maintained
+> +F:	rust/kernel/cpumask.rs
+> +
+>  BITOPS API
+>  M:	Yury Norov <yury.norov@gmail.com>
+>  R:	Rasmus Villemoes <linux@rasmusvillemoes.dk>
+> -- 
+> 2.31.1.272.g89b43f80a514
