@@ -1,72 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from r-passerv.ralfj.de (r-passerv.ralfj.de [109.230.236.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361605383;
-	Wed, 26 Feb 2025 11:02:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FAB421517F;
+	Wed, 26 Feb 2025 11:38:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.230.236.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740567767; cv=none; b=dlfHsZDHXY5vgV07tY+AridgWCi143pZA9JG1WrmSTer2ZzYrbS32OlCVCsKfj3VndS4BHrL7s2U3Mv2+E6bi7icsd7D4heIHLPow0dm2FT+oi1zmZCtOvF1gVE5Xyxh3B3dAAarfmndHxgsNa8VFsO3jbDURw0cHVbPzhZ1DBk=
+	t=1740569898; cv=none; b=Aii5L4Lp9MYjaNim++dwdCKQlZVeKN5wnVe7ykajT5xMXqIolNaX6z9JYbjD7ZXZkEj+I9gcKHS7dLJ2fKsxOhbe9VBYmGal5IDteXK+nnBUonNhZo1pKH79N5R4E4/8UQdlglbnhRtMw6S8agj0x5KlHUnCP4/Xk3J1E+7U7/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740567767; c=relaxed/simple;
-	bh=iSD4Z5lcR52lioqNrIqieEQJwLbz630xNMhePckaLms=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GLogmYY+h/oS1kPqqPfHxV+uKEmTXpJRiaDWVYsxqoG8egFa2yRgWuifAk8adLxyQIEvsYJ/4kDjScXduNEBCpEQ86OQn2m/qI+jSJkt2wdGSbsQc0liZiBhcSySa5Nv5eysj1wAZ47n3iCEGbyhaNomDTAhwGwVApSrIgZ/sZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N0u7EtvL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740569898; c=relaxed/simple;
+	bh=OC6u0I256yrrESBhOFslOEcd+zrgD1H+lv2qPm5w/sw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=avMQWa2xuvcinRRGY39G7uQ9D+7JEWhKY7kbKb6f8L8YWtLDKezDEF87UoRqHKbLkBXA+ha/NQLWQ5gIHtgs1FAn6uJXsXX8Lhbha6c0ocx+LkjxlGv+SDb2YqJvjsd0EDk1DsnCPOV8046Vy/eDE9ntIVvCK9PTcRr6jRY2neQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=STfJiQHg; arc=none smtp.client-ip=109.230.236.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ralfj.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N0u7EtvL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 903B6C4CED6;
-	Wed, 26 Feb 2025 11:02:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740567766;
-	bh=iSD4Z5lcR52lioqNrIqieEQJwLbz630xNMhePckaLms=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N0u7EtvLiBTOBi4xcuGleuhWPBwSzJl3tDCE7L7s2awTX1EQ1DWMpgXqsO8ONFicr
-	 vng2B5I1kg4qZGGBbcciNoHFa9smzNVmbpY5vDelrcFfxZdLkkHGr0ivmIoFdK3Kuq
-	 ej4a5lyuOO8nU/RlyF8oQ7uN6rCJlSZRBGseWTlo=
-Date: Wed, 26 Feb 2025 12:01:38 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, kernel@dakr.org,
-	a.hindborg@kernel.org, alex.gaynor@gmail.com,
-	benno.lossin@proton.me, bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net,
-	linux-kernel@vger.kernel.org, lyude@redhat.com,
-	mairacanal@riseup.net, ojeda@kernel.org, rafael@kernel.org,
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu
-Subject: Re: [PATCH 2/2] rust/faux: Add missing parent argument to
- Registration::new()
-Message-ID: <2025022609-hamper-paging-8761@gregkh>
-References: <ea2466c4d250ff953b3be9602a3671fb@dakr.org>
- <20250226092339.989767-1-aliceryhl@google.com>
- <Z77iHj56551mDybd@pollux>
- <2025022659-spray-treble-759f@gregkh>
- <Z77vYxUYVyFtW2lG@cassiopeiae>
+	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="STfJiQHg"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ralfj.de; s=mail;
+	t=1740569894; bh=OC6u0I256yrrESBhOFslOEcd+zrgD1H+lv2qPm5w/sw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=STfJiQHgC6hJ+LaHlk0O1ozcv+cl8bK1nwWfTLKHA3PwLZ/Q6oGH2sQmoQHhnl2/Z
+	 vUlhQhAOVPXQqrlLBnsz0CJwChcra5u5uxGj7rnBhBa/qDrzWMMOVz5RoQFLgM3y92
+	 mNrlCFeNtyheLow9+ZPl/W8QtlKK3irfY/fhwCzw=
+Received: from [IPV6:2001:67c:10ec:5784:8000::87] (2001-67c-10ec-5784-8000--87.net6.ethz.ch [IPv6:2001:67c:10ec:5784:8000::87])
+	by r-passerv.ralfj.de (Postfix) with ESMTPSA id 0CDD220513B3;
+	Wed, 26 Feb 2025 12:38:14 +0100 (CET)
+Message-ID: <2d553652-18f8-472d-bdd0-664164d10a11@ralfj.de>
+Date: Wed, 26 Feb 2025 12:38:13 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z77vYxUYVyFtW2lG@cassiopeiae>
+User-Agent: Mozilla Thunderbird
+Subject: Re: C aggregate passing (Rust kernel policy)
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Theodore Ts'o <tytso@mit.edu>
+Cc: Ventura Jack <venturajack85@gmail.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Kent Overstreet <kent.overstreet@linux.dev>, Gary Guo <gary@garyguo.net>,
+ airlied@gmail.com, boqun.feng@gmail.com, david.laight.linux@gmail.com,
+ ej@inai.de, gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com,
+ ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
+ <20250222141521.1fe24871@eugeo>
+ <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+ <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+ <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+ <20250224125805.GA5729@mit.edu>
+ <CANiq72k-K3-Cbnm=0556sXAWs0kXBCB4oR67M4UtD=fq=kyp7A@mail.gmail.com>
+Content-Language: en-US, de-DE
+From: Ralf Jung <post@ralfj.de>
+In-Reply-To: <CANiq72k-K3-Cbnm=0556sXAWs0kXBCB4oR67M4UtD=fq=kyp7A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Feb 26, 2025 at 11:39:31AM +0100, Danilo Krummrich wrote:
-> > > I think if we want to add something to the safety comment, it should be somthing
-> > > along the line of "the type of `parent` implies that for the duration of this
-> > > call `parent` is a valid device with a non-zero reference count".
-> > 
-> > I don't understand the need for any safety comment about the parent
-> > here.  Again, as long as it is valid when the call is made, that is all
-> > that is needed.
+Hi all,
+
+>> Hmm, I wonder if this is the reason of the persistent hostility that I
+>> keep hearing about in the Rust community against alternate
+>> implementations of the Rust compiler, such as the one being developed
+>> using the GCC backend.  *Since* the aliasing model hasn't been
 > 
-> Right, and we could mention that in the safety comment that something of the
-> type `&device::Device` is indeed valid by definition and hence fullfills the
-> requirement of faux_device_create() to get a valid pointer (or NULL).
+> I guess you are referring to gccrs, i.e. the new GCC frontend
+> developed within GCC (the other one, which is a backend,
+> rustc_codegen_gcc, is part of the Rust project, so no hostility there
+> I assume).
+> 
+> In any case, yes, there are some people out there that may not agree
+> with the benefits/costs of implementing a new frontend in, say, GCC.
+> But that does not imply everyone is hostile. In fact, as far as I
+> understand, both Rust and gccrs are working together, e.g. see this
+> recent blog post:
+> 
+>      https://blog.rust-lang.org/2024/11/07/gccrs-an-alternative-compiler-for-rust.html
 
-Agreed.  I'll go apply patch 1 of the series now and wait for a new
-version of 2/2.
+Indeed I want to push back hard against the claim that the Rust community as a 
+whole is "hostile" towards gcc-rs. There are a lot of people that do not share 
+the opinion that an independent implementation is needed, and there is some (IMO 
+justified) concern about the downsides of an independent implementation (mostly 
+concerning the risk of a language split / ecosystem fragmentation). However, the 
+gcc-rs folks have consistently stated that they are aware of this and intend 
+gcc-rs to be fully compatible with rustc by not providing any custom language 
+extensions / flags that could split the ecosystem, which has resolved all those 
+concerns at least as far as I am concerned. :)
 
-thanks!
+Kind regards,
+Ralf
 
-greg k-h
