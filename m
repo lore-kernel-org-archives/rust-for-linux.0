@@ -1,199 +1,290 @@
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948E04438B;
-	Wed, 26 Feb 2025 04:12:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47BE5258CEC
+	for <rust-for-linux@vger.kernel.org>; Wed, 26 Feb 2025 08:18:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740543129; cv=none; b=i/PyKu/bzEpqPtFy1GPdfpgsT/NitfhU96Q2sGit6LR7YgiGWz9hL73ya0ZQRjKfDaeAlWxiSiXmeUPZHVEccl+eICUuH7hO0Sd0oNbhNRkHSTFehErnwOeO0LKTunPX9cjiooysPHto2CVgNLDdUatA2zua9K8kiGU1mILQB/w=
+	t=1740557921; cv=none; b=LeuXDDKF9nq5Or8me6ZFV9QcVGGkDv2QkEUIyNQFF0R0qTJQxt2cedeJ9tBLE16WddLEHNsaofq1a7AG+s+uu9M08eOLovUo7fJGaZ0F8ibaeZUw+m5IPTbEPIXC1Orsyd+2Oatz5V1xDZS5GbBveZUyhWR7QtIcJSxXeq1Y250=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740543129; c=relaxed/simple;
-	bh=jE4HozIz4OJoK9RxPIgXqTheW2YckxNd8nlJKSHOSMI=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=YiMgKi4c0vDhxlZgv7HLu9NEozSD7hSp9YD9Pr72uEx6kWPQaYi/pgW/t5GDlPGUzPkyGrB/zeCHGsUsPy5XhncNX8I9NsWBdeW/AY4Xg6op3Zpqk+mN+ViyOeUnTIR+gRilgBdnjUQyc3cOVYHK7znE0yTLElJPdYjgUluwIsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IiQl63gJ; arc=none smtp.client-ip=209.85.222.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740557921; c=relaxed/simple;
+	bh=7iQXZFPV8xaSN9B38yfM2ZoDn4nINFBTgcSUh0agD3o=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=tknCb1ChSjQeM5NGN+MHW1m5lfpp3G+soO3a5np0Sn7AsKdD58elB4rjIv/c2O+A1yNEwnmKhs7bN1zSgx1UG0uAgmQ4PPpnU2LERP6eOVoHaFISRUf7YtkncKVpo2VBzCNurv0E0cPaNiuPkj85tX97mgM8C968dYlpxsQZyCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=vNjTUIvl; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=OqEUzyp9; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=vNjTUIvl; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=OqEUzyp9; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IiQl63gJ"
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7c08b14baa9so580195485a.3;
-        Tue, 25 Feb 2025 20:12:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740543126; x=1741147926; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=dZ7k0j3DLatcrnDMeGxc15Ktcta7+QFz88V0/sLszQw=;
-        b=IiQl63gJTyf3DmlYqJXVyH3sESaS0iQnsq3Gy5GFeGPcL/8muE3AgsfKjeo1j+fJXl
-         31QHazyFf6fMkckscA5s8deVn+woREm0n9CQA/UTUAp5T5Xjc1E2HsvHHeUfXTY06DXY
-         Ym/elbKBLBuOGuBri/mHxCVNXhETFClNbCGffiplQsl1UnmmM7RPXjs5hYaUE1TvgEb7
-         r9hVdx5iLCtijI6uj+ZUTZXD2xZGvPvOUnAV9kDsV9+Sl6mNHquSRt05PMLTcIQtwB2V
-         SzhrhYZE2ULKWSpIecKbYAxnlhRpRLHAOszUVGHAsK48JlZAeoF4xSFd+I+rsAdOdBdd
-         ysIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740543126; x=1741147926;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dZ7k0j3DLatcrnDMeGxc15Ktcta7+QFz88V0/sLszQw=;
-        b=jp3u46vHW5CeFMmHBRumnSlYKkYAp4IRxARkXdoEj8c+vnCGR4dxlFvcfxqv5bTJQQ
-         MgZRcbr40r9mXuopeipw0w22XS/3VU2PqHxfDnzMQWf0kZrG0wYZMi/TDndJBi42jUaT
-         +wrR6C088GpsHoT7MFlQJWbMsUWjrRMqYtjUYQPeWDXVDY1SBI097d2QapJ5GrBF9jqw
-         i3SwzIy19l4f5oRZ5Q0HvWknOvjd+VR8WQHDxzx56PR2qQ8D+f2Tw0No6oA+s9HIjmL6
-         wYVxZ+mhFEQo7ape9JQixIw5i0603EPpm3+PnchOuKLfYZl8Q3BRhrbbsj9h6gc/EyVm
-         UaAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUvfOh7dzf5GHAN/rvIQ1FI5XKTVVDbEbzG4yVbQNr6+H0MPEyznL7aS0z5WCzWnjGBLEHrMeUOLZxq8Ms=@vger.kernel.org, AJvYcCXchZkL4MjYzm1Df+HVI4jTWxcgVc8oyVV4KNR2BYC4Ik7dAY6WzLNjquqOl1WpWK7VwGlXJP+zcmdaqF+8kT0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZKN7tdacBmUCstJAMPMUhJTo7F4oqvV4LnqHUbmHnImHDVjNi
-	1JLFtUpYAN1K1S7Lt9O8RiYupKeIOkzd3OiRuX2ZD/pp+17yAq3j
-X-Gm-Gg: ASbGncshYdinSstlzgiap/l/zmFICCcJIGo7OqET55mFAgjys8h5Kiw05zHxhY15ZPp
-	2i59tF5HyBwpYSMyfRfrqsYrWEXbpPrr17rCHIKB6ApEfMHgWr94fDX6JiCv2RPfWhNXdA5xDGY
-	wabhAJnEiIo7bksEZJH2/KXtST2n7xBoO5Goc0OW+WReD0/4Gv9RKZ4oToOd2G+NvkAXGpyIp00
-	uRr0okjd3YftofT6McKeUee4woOKEB2VR2eFyciebOlMRgZ/bB+b4MzvIunXsTGcrQUZqvKIHkU
-	hQhigNCkzjWwhbXIIHGe269KqI+7QsGhhFhjeOUXjxGqoUuxzpoaLGxDqHH8xG9it/MPKS6uxS8
-	juKurCOtOhQ8b/W1l
-X-Google-Smtp-Source: AGHT+IFs8MtIbzS5E2ikOKDXRgSkM6VJLjoH49XxQv9iZB6hzt/LwkXt1vqPgLqQrZ401hrQVnyq7Q==
-X-Received: by 2002:ad4:4eea:0:b0:6e1:700e:488a with SMTP id 6a1803df08f44-6e87ab6fc30mr70140206d6.22.1740543126401;
-        Tue, 25 Feb 2025 20:12:06 -0800 (PST)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e87b19af0asm17647086d6.121.2025.02.25.20.12.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Feb 2025 20:12:05 -0800 (PST)
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 265781200043;
-	Tue, 25 Feb 2025 23:12:05 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Tue, 25 Feb 2025 23:12:05 -0500
-X-ME-Sender: <xms:lZS-Z4PxGm1mZ0b35FyJjpLzuORQebyhUygNfbLKFH-EhYx2GzupOg>
-    <xme:lZS-Z--iLjC3hlh3GyFjyJMQ0dIaL8x2RXCu9UWwj_iVNRVNPx2J4FpsjvVzhpBJm
-    x3Mgeo2aWz9PO5Tmg>
-X-ME-Received: <xmr:lZS-Z_Rx8tc_SzEGAAsnmrk-5qjnQlMUeA6PagEgITsVzViiSJ3d8vWJqQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekfeehkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfggtggusehttdertddttddvnecu
-    hfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtg
-    homheqnecuggftrfgrthhtvghrnhepledtfeeugeefhfeutdehfedvlefhfeetvdfhtdev
-    leeugedtjeejvdeiteetudfgnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlh
-    hushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhm
-    vghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekhe
-    ehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghm
-    vgdpnhgspghrtghpthhtohepudejpdhmohguvgepshhmthhpohhuthdprhgtphhtthhope
-    hpvghtvghriiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehmihhnghhosehr
-    vgguhhgrthdrtghomhdprhgtphhtthhopeifihhllheskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheplhhonhhgmhgrnhesrhgvughhrghtrdgtohhmpdhrtghpthhtoheplhhinhhu
-    gidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvg
-    gurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhm
-    rghilhdrtghomhdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtghomh
-    dprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvth
-X-ME-Proxy: <xmx:lZS-Zwspb64zqQG3_nCQlhqmwjSUTEK99c5HbyAahftHjGxh33LG5A>
-    <xmx:lZS-ZwcgnMDevN8uApbAQvcCB-yLRXCzQMT-IAFmgtvTTZppaThI7A>
-    <xmx:lZS-Z02JmmAO0dikeaFueVPmDUUigwURmTCqJWp8kp30RtvVTyvmgQ>
-    <xmx:lZS-Z081wcQzvn6oJZECT7PUVKfOf99sY5ETmUgfj-uSo6N2LSZr9g>
-    <xmx:lZS-Z395rQuEIe2jtdsqvHhExUDwtGitj26boZDWRVE92s0FNWb2Npau>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 25 Feb 2025 23:12:04 -0500 (EST)
-Date: Tue, 25 Feb 2025 20:12:03 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Peter Zijlstra <peterz@infradead.org>, mingo@redhat.com
-Cc: Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
-	linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
-Subject: [GIT PULL] LOCKDEP and Rust locking changes for v6.15
-Message-ID: <Z76Uk1d4SHPwVD6n@Mac.home>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="vNjTUIvl";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="OqEUzyp9";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="vNjTUIvl";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="OqEUzyp9"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 57FD51F387;
+	Wed, 26 Feb 2025 08:18:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1740557916; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=zAlwoLueuQSfuS2e6jssod8JXQot5CofYgSqId4LaO8=;
+	b=vNjTUIvlVLOjhS5WuAxG1Nvz0L7NFNHV6PO76Yd2ojxVdS4EJbYCod+owWW2Dy5YVJ5YqM
+	3GJcYgyXuweUieW2IUFSDEsW3RGb5HZYqLEaAeOPBYbAy9Pjm6E6P9W4E1ki9jxw/o8aJ+
+	zPWFd26EeTY74TQp4yuwAwEvr4QX1cY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1740557916;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=zAlwoLueuQSfuS2e6jssod8JXQot5CofYgSqId4LaO8=;
+	b=OqEUzyp9CDDDRXhcUy+GRNY/ZY2sNBqTu7kYpUAdrCOpepSpOLLX64M4tD5LzroCJR2sCW
+	yXbeg+upsmJvrCBw==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=vNjTUIvl;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=OqEUzyp9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1740557916; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=zAlwoLueuQSfuS2e6jssod8JXQot5CofYgSqId4LaO8=;
+	b=vNjTUIvlVLOjhS5WuAxG1Nvz0L7NFNHV6PO76Yd2ojxVdS4EJbYCod+owWW2Dy5YVJ5YqM
+	3GJcYgyXuweUieW2IUFSDEsW3RGb5HZYqLEaAeOPBYbAy9Pjm6E6P9W4E1ki9jxw/o8aJ+
+	zPWFd26EeTY74TQp4yuwAwEvr4QX1cY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1740557916;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=zAlwoLueuQSfuS2e6jssod8JXQot5CofYgSqId4LaO8=;
+	b=OqEUzyp9CDDDRXhcUy+GRNY/ZY2sNBqTu7kYpUAdrCOpepSpOLLX64M4tD5LzroCJR2sCW
+	yXbeg+upsmJvrCBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B24BF1377F;
+	Wed, 26 Feb 2025 08:18:35 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id kX3SKVvOvmcgQwAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Wed, 26 Feb 2025 08:18:35 +0000
+Message-ID: <08b1a062-739d-4db6-95a3-11e5ebe8623f@suse.de>
+Date: Wed, 26 Feb 2025 09:18:35 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 8/9] drm/vgem/vgem_drv convert to use faux_device
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, Lyude Paul <lyude@redhat.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>
+Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Lukas Wunner <lukas@wunner.de>,
+ Mark Brown <broonie@kernel.org>, =?UTF-8?Q?Ma=C3=ADra_Canal?=
+ <mairacanal@riseup.net>, Robin Murphy <robin.murphy@arm.com>,
+ Simona Vetter <simona.vetter@ffwll.ch>, Zijun Hu <quic_zijuhu@quicinc.com>,
+ linux-usb@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, dri-devel@lists.freedesktop.org
+References: <2025021023-sandstorm-precise-9f5d@gregkh>
+ <2025021028-brigade-create-37de@gregkh>
+ <0e6817b1-d52e-407f-bdb9-93919f849edc@suse.de>
+Content-Language: en-US
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <0e6817b1-d52e-407f-bdb9-93919f849edc@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 57FD51F387
+X-Spam-Score: -4.51
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCVD_TLS_ALL(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[23];
+	MIME_TRACE(0.00)[0:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[intel.com,linux.intel.com,google.com,huawei.com,gmail.com,wunner.de,kernel.org,riseup.net,arm.com,ffwll.ch,quicinc.com,vger.kernel.org,lists.freedesktop.org];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email,intel.com:email];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-Hi Peter & Ingo,
-
-Please pull the changes of lockdep and Rust locking for v6.15 into tip.
-
-The following changes since commit 337369f8ce9e20226402cf139c4f0d3ada7d1705:
-
-  locking/mutex: Add MUTEX_WARN_ON() into fast path (2025-02-21 20:19:12 +0100)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/boqun/linux.git tags/lockdep-for-tip.2025.02.25
-
-for you to fetch changes up to 3b5b307cf84ca3a73abe797df31e0efe897411a9:
-
-  rust: lockdep: Use Pin for all LockClassKey usages (2025-02-25 08:53:08 -0800)
 
 
-Regards,
-Boqun
+Am 25.02.25 um 12:38 schrieb Thomas Zimmermann:
+> Hi
+>
+> Am 10.02.25 um 13:30 schrieb Greg Kroah-Hartman:
+>> The vgem driver does not need to create a platform device, as there is
+>> no real platform resources associated it,  it only did so because it was
+>> simple to do that in order to get a device to use for resource
+>> management of drm resources.  Change the driver to use the faux device
+>> instead as this is NOT a real platform device.
+>>
+>> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+>> Cc: Maxime Ripard <mripard@kernel.org>
+>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+>> Cc: David Airlie <airlied@gmail.com>
+>> Cc: Simona Vetter <simona@ffwll.ch>
+>> Cc: dri-devel@lists.freedesktop.org
+>> Reviewed-by: Lyude Paul <lyude@redhat.com>
+>> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>
+> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+>
+> Should this patch be merged through DRM trees?
 
-----------------------------------------------------------------
-Lockdep changes for v6.15:
+Louis mentioned that the vkms patch will goes through DRM. If no one 
+objects, I'll merge this patch there as well.
 
-- Fix kernel-doc for rtmutex.
-- Fix lock wait context check on softirq for PREEMPT_RT.
-- Disable KASAN for lockdep to improve debug kernel performance.
+Best regards
+Thomas
 
-Miscellaneous locking changes for v6.15:
+>
+> Best regards
+> Thomas
+>
+>> ---
+>> v4: - api tweaked due to parent pointer added to faux_device create
+>>        function.
+>>   v3: new patch in the series.  For an example of the api working, does
+>>       not have to be merged at this time, but I can take it if the
+>>       maintainers give an ack.
+>>   drivers/gpu/drm/vgem/vgem_drv.c | 30 +++++++++++++++---------------
+>>   1 file changed, 15 insertions(+), 15 deletions(-)
+>>
+>> diff --git a/drivers/gpu/drm/vgem/vgem_drv.c 
+>> b/drivers/gpu/drm/vgem/vgem_drv.c
+>> index 2752ab4f1c97..260c64733972 100644
+>> --- a/drivers/gpu/drm/vgem/vgem_drv.c
+>> +++ b/drivers/gpu/drm/vgem/vgem_drv.c
+>> @@ -32,7 +32,7 @@
+>>     #include <linux/dma-buf.h>
+>>   #include <linux/module.h>
+>> -#include <linux/platform_device.h>
+>> +#include <linux/device/faux.h>
+>>   #include <linux/shmem_fs.h>
+>>   #include <linux/vmalloc.h>
+>>   @@ -52,7 +52,7 @@
+>>     static struct vgem_device {
+>>       struct drm_device drm;
+>> -    struct platform_device *platform;
+>> +    struct faux_device *faux_dev;
+>>   } *vgem_device;
+>>     static int vgem_open(struct drm_device *dev, struct drm_file *file)
+>> @@ -127,27 +127,27 @@ static const struct drm_driver vgem_driver = {
+>>   static int __init vgem_init(void)
+>>   {
+>>       int ret;
+>> -    struct platform_device *pdev;
+>> +    struct faux_device *fdev;
+>>   -    pdev = platform_device_register_simple("vgem", -1, NULL, 0);
+>> -    if (IS_ERR(pdev))
+>> -        return PTR_ERR(pdev);
+>> +    fdev = faux_device_create("vgem", NULL, NULL);
+>> +    if (!fdev)
+>> +        return -ENODEV;
+>>   -    if (!devres_open_group(&pdev->dev, NULL, GFP_KERNEL)) {
+>> +    if (!devres_open_group(&fdev->dev, NULL, GFP_KERNEL)) {
+>>           ret = -ENOMEM;
+>>           goto out_unregister;
+>>       }
+>>   -    dma_coerce_mask_and_coherent(&pdev->dev,
+>> +    dma_coerce_mask_and_coherent(&fdev->dev,
+>>                        DMA_BIT_MASK(64));
+>>   -    vgem_device = devm_drm_dev_alloc(&pdev->dev, &vgem_driver,
+>> +    vgem_device = devm_drm_dev_alloc(&fdev->dev, &vgem_driver,
+>>                        struct vgem_device, drm);
+>>       if (IS_ERR(vgem_device)) {
+>>           ret = PTR_ERR(vgem_device);
+>>           goto out_devres;
+>>       }
+>> -    vgem_device->platform = pdev;
+>> +    vgem_device->faux_dev = fdev;
+>>         /* Final step: expose the device/driver to userspace */
+>>       ret = drm_dev_register(&vgem_device->drm, 0);
+>> @@ -157,19 +157,19 @@ static int __init vgem_init(void)
+>>       return 0;
+>>     out_devres:
+>> -    devres_release_group(&pdev->dev, NULL);
+>> +    devres_release_group(&fdev->dev, NULL);
+>>   out_unregister:
+>> -    platform_device_unregister(pdev);
+>> +    faux_device_destroy(fdev);
+>>       return ret;
+>>   }
+>>     static void __exit vgem_exit(void)
+>>   {
+>> -    struct platform_device *pdev = vgem_device->platform;
+>> +    struct faux_device *fdev = vgem_device->faux_dev;
+>>         drm_dev_unregister(&vgem_device->drm);
+>> -    devres_release_group(&pdev->dev, NULL);
+>> -    platform_device_unregister(pdev);
+>> +    devres_release_group(&fdev->dev, NULL);
+>> +    faux_device_destroy(fdev);
+>>   }
+>>     module_init(vgem_init);
+>
 
-- Use wake_q for semaphore to avoid wake-up in lock critical sections.
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
 
-Rust locking changes for v6.15:
-
-- Fix the soundness issue around dynamically allocated lock class keys.
-- Add CondVar::wait_interruptible_freezable() to allow freezable waits.
-- Add Guard::lock_ref() to access the lock reference behind a lock
-  guard.
-
-----------------------------------------------------------------
-Alice Ryhl (2):
-      rust: sync: Add accessor for the lock behind a given guard
-      rust: sync: condvar: Add wait_interruptible_freezable()
-
-Boqun Feng (1):
-      rust: sync: lock: Add an example for Guard::lock_ref()
-
-Mitchell Levy (2):
-      rust: lockdep: Remove support for dynamically allocated LockClassKeys
-      rust: lockdep: Use Pin for all LockClassKey usages
-
-Randy Dunlap (1):
-      locking/rtmutex: Use struct keyword in kernel-doc comment
-
-Ryo Takakura (1):
-      lockdep: Fix wait context check on softirq for PREEMPT_RT
-
-Waiman Long (5):
-      locking/semaphore: Use wake_q to wake up processes outside lock critical section
-      locking/lock_events: Add locking events for rtmutex slow paths
-      locking/lock_events: Add locking events for lockdep
-      locking/lockdep: Disable KASAN instrumentation of lockdep.c
-      locking/lockdep: Add kasan_check_byte() check in lock_acquire()
-
- include/linux/bottom_half.h       |  8 +++++
- kernel/locking/Makefile           |  3 +-
- kernel/locking/lock_events_list.h | 28 +++++++++++++++++
- kernel/locking/lockdep.c          | 17 ++++++++++-
- kernel/locking/rtmutex.c          | 29 ++++++++++++++----
- kernel/locking/rtmutex_common.h   |  4 +--
- kernel/locking/semaphore.c        | 13 +++++---
- kernel/softirq.c                  | 12 ++++++++
- rust/helpers/helpers.c            |  1 +
- rust/helpers/sync.c               | 13 ++++++++
- rust/kernel/sync.rs               | 63 ++++++++++++++++++++++++++++++++-------
- rust/kernel/sync/condvar.rs       | 28 ++++++++++++++---
- rust/kernel/sync/lock.rs          | 35 ++++++++++++++++++++--
- rust/kernel/sync/lock/global.rs   |  5 ++--
- rust/kernel/sync/poll.rs          |  2 +-
- rust/kernel/task.rs               |  2 ++
- rust/kernel/workqueue.rs          |  2 +-
- 17 files changed, 231 insertions(+), 34 deletions(-)
- create mode 100644 rust/helpers/sync.c
