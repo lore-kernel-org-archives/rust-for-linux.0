@@ -1,32 +1,32 @@
 Received: from r-passerv.ralfj.de (r-passerv.ralfj.de [109.230.236.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4B120B1E1;
-	Wed, 26 Feb 2025 14:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5042F221711;
+	Wed, 26 Feb 2025 14:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.230.236.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740578873; cv=none; b=CRAMFdSJ2Thzy4dNWTMP2wFzywxZ40cVNJ4bM66pda1H+q4HDZGY1UrpBc2DFsF9aAq7NyxZZqufcIaSlgg8euZopyD2S1iD+IHIQWdVJo5i8ORUxVyhf5HEhd6ughQIVf4URODbjfnrpryLw6f1d8l/P48+gZf6PDge0MUCvEU=
+	t=1740579299; cv=none; b=kMrGt3A6X3R86Fj9yyYY+eiI26CQhjLeaUp52a3ZXHfsEkrIxGLxP8kAoqjrE+ICZORdsZ+Dhf1MkbSVuSsbUipueqE4wS3T8Djc5lyh4xWQPKZ/BPbzz5j8D5m9VZSpUqkx1t+dlWbDYABa529v9jiuYCKzoIm0YAY1K5wOAdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740578873; c=relaxed/simple;
-	bh=1RGyt1eH4Ka/VMgXhtB72g/eaGbygk0TK7AcRiMEwl4=;
+	s=arc-20240116; t=1740579299; c=relaxed/simple;
+	bh=coG8/tZzBytDDxqJEp/NCjNfmWL8rr4syevp4nIuyog=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=O7wODRXtnaFmxRJfIanmXlEOw+lFdabQsJ4taqVLZ900tpnugf7YjvLpK2WwNgwyYaddT5vZYwNNX0YWSy3LQ4f9Bx4RxgMrE1DxqPnBy6G6wMjT8yF5IV1uS7Fb4BZesnIqLalzeDQaY9D/Nl564Woztu28oZOavbwnSl8hX1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=uJyNltEI; arc=none smtp.client-ip=109.230.236.95
+	 In-Reply-To:Content-Type; b=c4H9bwFwSQIOwWsEIbR626tLoBA+nM11cbzkmQ5dwUjefW4Vr8NcMm09z6xG7LY7O46/WYwn1pb21DzUTWk0UsPsOrcLB/UIcIW1fqkfhcppteyztOSwjJa0EbpU/25ioIBGMDrhya+TCFsyXKEY7dCYzb+ez/lkLK2aeVNMAQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=llSTqnGU; arc=none smtp.client-ip=109.230.236.95
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ralfj.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="uJyNltEI"
+	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="llSTqnGU"
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ralfj.de; s=mail;
-	t=1740578870; bh=1RGyt1eH4Ka/VMgXhtB72g/eaGbygk0TK7AcRiMEwl4=;
+	t=1740579295; bh=coG8/tZzBytDDxqJEp/NCjNfmWL8rr4syevp4nIuyog=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uJyNltEIfKJUxsnzBoiT1Utnuz3R9n029HSPfVPfL1PxUg4FdYgiZyFQrp7qbhxu3
-	 V+Qel1VciKGsdbkBUhG6V5s+EsA/q6RN557AFlpWbtcDin4iJjiiGY+1+6e9rZWMZJ
-	 AXSk3Zggg8TZek+Dv2quoeSZBrgpFXb6B2g1mRNM=
+	b=llSTqnGUL8JOeW6QfSLsCl03gTTqLIZz82DepLZdR+nn7sAt7g4Cen28sIAZS/V5H
+	 eOJpe6LTsfrFGFvG54aFdb7Mofc2v6HRBfdsLAwpbXbOSTinySEbp0EGvxs/8YmqCw
+	 KOVs0mpWCx835aZLAZJ0OuaVf0q1Ix7pmHIM5haQ=
 Received: from [IPV6:2001:67c:10ec:5784:8000::87] (2001-67c-10ec-5784-8000--87.net6.ethz.ch [IPv6:2001:67c:10ec:5784:8000::87])
-	by r-passerv.ralfj.de (Postfix) with ESMTPSA id E0FB72052D08;
-	Wed, 26 Feb 2025 15:07:49 +0100 (CET)
-Message-ID: <ca0cca13-2e00-419d-88c9-06faff6aaa08@ralfj.de>
-Date: Wed, 26 Feb 2025 15:07:49 +0100
+	by r-passerv.ralfj.de (Postfix) with ESMTPSA id 805572052D08;
+	Wed, 26 Feb 2025 15:14:55 +0100 (CET)
+Message-ID: <91dbba64-ade3-4e46-854e-87cd9ecaa689@ralfj.de>
+Date: Wed, 26 Feb 2025 15:14:54 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -35,15 +35,13 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: C aggregate passing (Rust kernel policy)
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Ventura Jack <venturajack85@gmail.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>,
- "H. Peter Anvin" <hpa@zytor.com>, Alice Ryhl <aliceryhl@google.com>,
- Linus Torvalds <torvalds@linux-foundation.org>, Gary Guo <gary@garyguo.net>,
+To: Ventura Jack <venturajack85@gmail.com>, Alice Ryhl <aliceryhl@google.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ Kent Overstreet <kent.overstreet@linux.dev>, Gary Guo <gary@garyguo.net>,
  airlied@gmail.com, boqun.feng@gmail.com, david.laight.linux@gmail.com,
- ej@inai.de, gregkh@linuxfoundation.org, hch@infradead.org,
+ ej@inai.de, gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com,
  ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
+ miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
 References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
  <20250222141521.1fe24871@eugeo>
  <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
@@ -53,36 +51,73 @@ References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
  <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
  <CAFJgqgREAj-eP-d244WpqO-9H48ajZh83AxE31GqoONZ=DJe-g@mail.gmail.com>
  <CAH5fLghEMtT663SNogAGad-qk7umefGeBKbm+QjKKzoskjOubw@mail.gmail.com>
- <5E3FEDC4-DBE3-45C7-A331-DAADD3E7EB42@zytor.com>
- <2rrp3fmznibxyg3ocvsfasfnpwfp2skhf4x7ihrnvm72lemykf@lwp2jkdbwqgm>
- <CAFJgqgS-SMMEE2FktuCUimdGkPWMV3HB2Eg38SiUDQK1U8=rNg@mail.gmail.com>
- <CANiq72mOp0q1xgAHod1Y_mX86OESzdDsgSghtQCwe6iksNt-sA@mail.gmail.com>
+ <CAFJgqgRxfTVxrWja=ZW=mTj1ShPE5s-atAqxzMOq5poajMh=4A@mail.gmail.com>
 Content-Language: en-US, de-DE
 From: Ralf Jung <post@ralfj.de>
-In-Reply-To: <CANiq72mOp0q1xgAHod1Y_mX86OESzdDsgSghtQCwe6iksNt-sA@mail.gmail.com>
+In-Reply-To: <CAFJgqgRxfTVxrWja=ZW=mTj1ShPE5s-atAqxzMOq5poajMh=4A@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
 Hi all,
 
-On 26.02.25 14:53, Miguel Ojeda wrote:
-> On Wed, Feb 26, 2025 at 2:03 PM Ventura Jack <venturajack85@gmail.com> wrote:
->>
->> One worry I do have, is that the aliasing rules being officially
->> tied to LLVM instead of having its own separate specification,
->> may make it harder for other compilers like gccrs to implement
->> the same behavior for programs as rustc.
+> Tree borrows is, as far as I can tell, the successor to stacked borrows.
 > 
-> I don't think they are (or rather, will be) "officially tied to LLVM".
+>      https://perso.crans.org/vanille/treebor/
+>          "Tree Borrows is a proposed alternative to Stacked Borrows that
+>          fulfills the same role: to analyse the execution of Rust code at
+>          runtime and define the precise requirements of the aliasing
+>          constraints."
+> 
+> In a preprint paper, both stacked borrows and tree burrows are as
+> far as I can tell described as having false positives.
+> 
+>      https://perso.crans.org/vanille/treebor/aux/preprint.pdf
+>          "This overcomes the aforementioned limitations: our evaluation
+>          on the 30 000 most widely used Rust crates shows that Tree
+>          Borrows rejects 54% fewer test cases than Stacked Borrows does."
+> 
+> That paper also refers specifically to LLVM.
+> 
+>      https://perso.crans.org/vanille/treebor/aux/preprint.pdf
+>          "Tree Borrows (like Stacked Borrows) was designed with this in
+>          mind, so that a Rust program that complies with the rules of Tree
+>          Borrows should translate into an LLVM IR program that satisfies
+>          all the assumptions implied by noalias."
+> 
+> Are you sure that both stacked borrows and tree borrows are
+> meant to be full models with no false positives and false negatives,
+> and no uncertainty, if I understand you correctly?
 
-We do link to the LLVM aliasing rules from the reference, as VJ correctly 
-pointed out. This is basically a placeholder: we absolutely do *not* want Rust 
-to be tied to LLVM's aliasing rules, but we also are not yet ready to commit to 
-our own rules. (The ongoing work on Stacked Borrows and Tree Borrows has been 
-discussed elsewhere in this thread.)
+Speaking as an author of both models: yes. These models are candidates for the 
+*definition* of which programs are correct and which are not. In that sense, 
+once adopted, the model *becomes* the baseline, and by definition has no false 
+negative or false positives.
 
-Maybe we should remove that link from the reference. It just makes us look more 
-tied to LLVM than we are.
+
+> It should be
+> noted that they are both works in progress.
+> 
+> MIRI is also used a lot like a sanitizer, and that means that MIRI
+> cannot in general ensure that a program has no undefined
+> behavior/memory safety bugs, only at most that a given test run
+> did not violate the model. So if the test runs do not cover all
+> possible runs, UB may still hide.
+
+That is true: if coverage is incomplete or there is non-determinism, Miri can 
+miss bugs. Miri does testing, not verification. (However, verification tools are 
+in the works as well, and thanks to Miri we have a very good idea of what 
+exactly it is that these tools have to check for.)
+However, unlike sanitizers, Miri can at least catch every UB that arises *in a 
+given execution*, since it does model the *entire* Abstract Machine of Rust.
+And since we are part of the Rust project, we are doing everything we can to 
+ensure that this is the *same* Abstract machine as what the compiler implements.
+
+This is the big difference to C, where the standard is too ambiguous to uniquely 
+give rise to a single Abstract Machine, and where we are very far from having a 
+tool that fully implements the Abstract Machine of C in a way that is consistent 
+with a widely-used compiler, and that can be practically used to test real-world 
+code.
+
 
 Kind regards,
 Ralf
