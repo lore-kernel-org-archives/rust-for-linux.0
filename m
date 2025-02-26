@@ -1,120 +1,145 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0704190665;
-	Wed, 26 Feb 2025 15:03:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D518F2236FC;
+	Wed, 26 Feb 2025 15:22:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740582191; cv=none; b=R8xS+dOUL2q+TZBqIYGQFC9wDwN6trbpNlMO9s9rNnDQNNf1QefHxHFfUe4tLkAyunCpm4c3wR3UqIoyL9WYL4krfs8NKRWu1eUdSNYtXN/l4DY0zP2GToeORuSk89KgJ9vZXgAIAISEC5oCtJWuZBFvNEp146FmojCJYMO9mT0=
+	t=1740583322; cv=none; b=isoNed9oNzeJX+pwm3k6hPy7znIIDeop72mIOpYJYHIZKhjPH3+dCRhjykHkARXJp2ZLjyQb+C3J+WOOveOTmxJUcWPLaNJCzMZ1t+beoUdQNGo7o7VbIpY+xFr9VAOSqMoLiDX6MxTuE3wFc5aZZWH37+P0bIiuYAXch3zEup0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740582191; c=relaxed/simple;
-	bh=fMoKzn75GHUYA90ipZu+q71iCAH9WvdZFZJ+RHG3XAs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rGLxX3PSaBegnQZoe9z6PcbgvtwhSu0lMJiWFl9QQ0o2J2/Lr4yKkVF61P4ToLVi+tWPMD/Pl2bgfni8DKNXid9owjkD+eR3cqm5HX0HaTHNpy9Dp7U9uEXcr4GoxRrJSqf3/bK00Xopg7JRiCOHbzMuezOMgzCher+eW/0Dg4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YVFfL316; arc=none smtp.client-ip=209.85.214.174
+	s=arc-20240116; t=1740583322; c=relaxed/simple;
+	bh=yU8gNYOdF+KZIK43kgv3VmI3q8AVM3zFnCh57wmb8KY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lEiKFCt0SRaHJARfLEh5e1ROs95myX3WO9x0Tju3ug/jmxsufnx8WZTPWjLVra4tgnjcIna7EJLK+EX0+7k/Ct/dtEyxaC+ED2L7XHMIx6o7w8RPYz2LW4zQe41oNvWURsdABcnnRMt3pCG0ftRUZiY2fYsoKwzcK1JyZHkGqvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=llvSPuGJ; arc=none smtp.client-ip=209.85.208.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YVFfL316"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-220f4dd756eso149137065ad.3;
-        Wed, 26 Feb 2025 07:03:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="llvSPuGJ"
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-307325f2436so69631421fa.0;
+        Wed, 26 Feb 2025 07:22:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740582189; x=1741186989; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lgmChzRUPWrxU/Ro0HZWigmuIxGgec64e1FE97Altvs=;
-        b=YVFfL3164/k2C18lmdJE9Wc5Xx3i/DzJaujEnVvW4fN+Q1l72XfnflOSiVo8FAhQkC
-         IrTPU5jlJAzqNLOAC+KqPHbebPA4cbjyzHACSW0TKfEn0mHWJ6mS4NhT4ZzTkgsq5n4M
-         ogS8Rzk9sb8MZVVg1YY/wnA1e8Vo+mrda2nocwPvgbZOmeT1urRh/vAc24VUcS+cMXGz
-         Edvxpac1EK9zOne/Kfg5vVlCkjRX9NBPbXwO2M0rebgE+OmCeOZtV2yp/Yah868bY7CO
-         gghY8rAQzxiuCOMvSS1VfenTEKp/ncD0vOeKXwRVxOulNAWSTjW1J3dYB/I+wwOjD8sj
-         tV/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740582189; x=1741186989;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1740583319; x=1741188119; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lgmChzRUPWrxU/Ro0HZWigmuIxGgec64e1FE97Altvs=;
-        b=tB15cbaXnq1D8T/qOzT0PqoavkF6ACRVk4JbC92W4tdJyek6uy5/tyC5YgnQsbdjRu
-         RG9wndbJT5bcsbTtwFUrrzgkm+RN6ObQ1Je3mtVhRSklRWeZQfT30sK2gttGpgA2GK7t
-         G8KyqPLiOZmloSlViWXYzfC/67hIaF0TyIbq09DMplojDpnHcbkB83NwXFvTOEYzP1Tu
-         feVkV7ui27XsRT+5AsdfaYRHCl4PPY7rm4KREcsI8Vd4UZZrnTOOJH6x4p8Ux1MhT1AG
-         kAjA48biK8GdDjGJLt2Q6ln6qzK5bQdXucdN0j6Kr2ELBYyq6g63FRB6IBPiBdMAbfdJ
-         53mQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV6uM2g+DY7DYpQvEB5mojjnNNoR9/GFHuNKSrNd/o/jiB8dXT6OpS6JK9jXnPFNYJHZaNaPKcZ+2q+nN8ZQqQ=@vger.kernel.org, AJvYcCVK4uoeTf63Wftk2QkvweZ5YIeZqay+FggWp40S4H9Cjdotsf07mL9OidDCoLDTPcH9IcvhQgCuaGl701M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWvqKD924RAOaTYgerKTetwO/2eMtalyNm+daEbxVldLUnDhuF
-	nMTVc+2KUX8ulJOnO6nqavmkEEJNg12wY8OljZFKZt/+ODT4ZJbd4OE9t/7d
-X-Gm-Gg: ASbGncuRVPNmOyK6rUlE5N44Tyz7NO1fNei2LdnUKu8IXU2lwz1EZvtGFcaWg36+WAY
-	7qbBX40tNC67dqwh/YmiJYyz8clu6DHLITf8ELBKaAxzM0Fd0bXgXP9gfayW2PMAtJQLv2fAZRi
-	6z9l3eBHwRu1adiMHCIZLQEYiEuqwt/Ae0e56y6HIwqGUwbtEySJnl+YfpwKu5VfjgNS2kHCNEI
-	JJLmZm7P5F5j4DR0Oferi0MybcJReW6Vcy8SCnvMhVoo8M5qzVOKiqioLcv2u7SNu/otJWakxxo
-	FrpjdERZ9qTCXdgWd7qLl2zdjCzIRc1s4IkKd24vNHD2OI8X1g==
-X-Google-Smtp-Source: AGHT+IFl++KPanhHASqmMVGgwPLmI6jBBycifC3LPnORcJTe5GZAgJBB2UNwedgMdxS/e6kNWR6Xhw==
-X-Received: by 2002:a17:902:e5c2:b0:215:9470:7e82 with SMTP id d9443c01a7336-22307b455dcmr130723185ad.4.1740582188873;
-        Wed, 26 Feb 2025 07:03:08 -0800 (PST)
-Received: from localhost (maglev-oncall.nvidia.com. [216.228.125.128])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2230a01fe8bsm33339875ad.54.2025.02.26.07.03.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Feb 2025 07:03:08 -0800 (PST)
-Date: Wed, 26 Feb 2025 10:03:06 -0500
-From: Yury Norov <yury.norov@gmail.com>
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
-	rust-for-linux@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>
-Subject: Re: [PATCH 2/2] MAINTAINERS: Add entry for Rust bitmap API
-Message-ID: <Z78tKmTa3RVH327d@thinkpad>
-References: <cover.1740475625.git.viresh.kumar@linaro.org>
- <8c6249c6631f47565541d584fbec78cd2fbe60c1.1740475625.git.viresh.kumar@linaro.org>
+        bh=H0hFN/Q5bioCyAT9aA3v+FnRq1GwqeK2EWDX0R9FPAE=;
+        b=llvSPuGJkjn/55LU/xl80ez/vKWtscEIDVss8ebf5v8IoyycXJCcY4D04+1dzrN/pn
+         Xccp7D5Kwy38Gocdcy4U3dmt9wJquT+3IH7gCq7a05daDctEM2HKQTlhyIvx5WzAyEXn
+         MZ84ebYAFS5wH2woYIomueR66c+BIU3G4W7x3/9NxF9+zE43AMf4o4eElUtLATQ6Kzf5
+         ybwejX4fhb0daCs329ytNJZJ8uSyEh3VxoRjpy0RUC4FKd8usP3PBlb9w4CgiqPZrd3U
+         kW8M2GtOHwQjO/IwNUxrLYHs8LfUPL8UXm88PZhpomlw+S6HgJbfUoHrFyqBoUxA/dGJ
+         sFEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740583319; x=1741188119;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=H0hFN/Q5bioCyAT9aA3v+FnRq1GwqeK2EWDX0R9FPAE=;
+        b=EPj/oBwsOjf1vqDVLQspjdyKjG5ILOWSt8jadicn/7I3BZGMke0Vis1O2K1If1rbao
+         QNtCnCbcKQO2H+yY+Q9fC9JiqulydQ65x8TT/hoSYqGVC952Fmm7TmNINDCkBjUW6soe
+         CkzZCp92MVQ6hurrSDP/vKu4Dv/gZ5GJlNklDnjLvOXSZqatCixs7TYUd8IzV/K3xNqy
+         uDWtEM+XE6dd6NWRwmPcgNJnD+y9W2FTXxZ2/2CE1R8aaBBlDal00cGOqs8QMTftgey9
+         0BLpN1+Yj7ctKUKXYInt1TbP7t2kRbLqXc1KZKXRxPTA2vOuvplSgxcaW5Gkq2pc+e7K
+         ldFA==
+X-Forwarded-Encrypted: i=1; AJvYcCViCg5uZP12DEdU2e4y0bvifKn2k7/kPiH1O3SpRaOhHFDqsPuOFWLN7DaDK9AqmRcZkIQ303cSxEgySpTOnWE=@vger.kernel.org, AJvYcCX6xAgCmwPoZ43yM5M8J+AQ0CODXJjFBODOWPf59VPE9SobuwnI1GSvey0PikdW2TheAlHQXpm82DShxqY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YznzDFTX+pBYgUPaHT3tMgGFekQpCt8wu8nRbtci3EFy1mmp+D0
+	6NK3aR82YMc41AkL+G4sjgx2VCdbh3GK1S0/oR7TQrSaHC9un9kcZlJPuLK+XZxTer5ZZsqQrCV
+	OSoZUBHvx8iZK5eW8TDPA1AisO8s=
+X-Gm-Gg: ASbGncsKuEkXbBdKwO9vC5QIjSIETpN3FkIgZW5pIzwlocZrwdLCiYxfqm8MDR1rxGR
+	y0FQm6O/XbqAejCvbuQN9zJKseQBYtuk+/fLWS2NyiSp13dPbcQ94umEEQoXUoONO/A/nFTWzIr
+	6JVGWd7JQ/
+X-Google-Smtp-Source: AGHT+IHyRHWjbncLImDyeksSRZpjsqLCk2gH0nyAOGo3WeXuQNL4gvXvxUYeo01VFKJKwqmTifGfFsF2qzF1qZIU/hE=
+X-Received: by 2002:a05:6512:2314:b0:545:ab8:2be4 with SMTP id
+ 2adb3069b0e04-5493c57a2demr2783344e87.27.1740583318703; Wed, 26 Feb 2025
+ 07:21:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8c6249c6631f47565541d584fbec78cd2fbe60c1.1740475625.git.viresh.kumar@linaro.org>
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
+ <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+ <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+ <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+ <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
+ <CAFJgqgREAj-eP-d244WpqO-9H48ajZh83AxE31GqoONZ=DJe-g@mail.gmail.com>
+ <CAH5fLghEMtT663SNogAGad-qk7umefGeBKbm+QjKKzoskjOubw@mail.gmail.com>
+ <CAFJgqgRxfTVxrWja=ZW=mTj1ShPE5s-atAqxzMOq5poajMh=4A@mail.gmail.com> <CANiq72mA4Pbx1BeCZdg7Os3FtGkrwx6T8_+=+-=-o9+TOMv+EA@mail.gmail.com>
+In-Reply-To: <CANiq72mA4Pbx1BeCZdg7Os3FtGkrwx6T8_+=+-=-o9+TOMv+EA@mail.gmail.com>
+From: Ventura Jack <venturajack85@gmail.com>
+Date: Wed, 26 Feb 2025 08:21:45 -0700
+X-Gm-Features: AQ5f1JqXNq_djDucaFz0JfQlyejxMXbHKVh9InZ_hpbly_lGP7oSWSDqQNXn0as
+Message-ID: <CAFJgqgSzqGKdeT88fJzrFOex7i-yvVte3NiQDdgXeWEFtnq=9A@mail.gmail.com>
+Subject: Re: C aggregate passing (Rust kernel policy)
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Linus Torvalds <torvalds@linux-foundation.org>, 
+	Kent Overstreet <kent.overstreet@linux.dev>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
+	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
+	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, 
+	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Ralf Jung <post@ralfj.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 25, 2025 at 03:17:15PM +0530, Viresh Kumar wrote:
-> Update the MAINTAINERS file to include the Rust abstractions for bitmap
-> API.
-> 
-> Yury has indicated that he does not wish to maintain the Rust code but
-> would like to be listed as a reviewer.
-> 
-> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+On Wed, Feb 26, 2025 at 6:52=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Wed, Feb 26, 2025 at 1:36=E2=80=AFPM Ventura Jack <venturajack85@gmail=
+.com> wrote:
+> >
+> > In a preprint paper, both stacked borrows and tree burrows are as
+> > far as I can tell described as having false positives.
+> >
+> > Are you sure that both stacked borrows and tree borrows are
+> > meant to be full models with no false positives and false negatives,
+> > and no uncertainty, if I understand you correctly? It should be
+> > noted that they are both works in progress.
+>
+> I think you are mixing up two things: "a new model does not allow
+> every single unsafe code pattern out there" with "a new model, if
+> adopted, would still not be able to tell if something is UB or not".
 
-Reviewed-by: Yury Norov <yury.norov@gmail.com>
+I am not certain that I understand either you or Alice correctly.
+But Ralf Jung or others will probably help clarify matters.
 
-> ---
->  MAINTAINERS | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index ec2428b82103..17e98d757b9b 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -4034,6 +4034,12 @@ M:	Yury Norov <yury.norov@gmail.com>
->  S:	Maintained
->  F:	rust/helpers/cpumask.c
->  
-> +BITMAP API [RUST]
-> +M:	Viresh Kumar <viresh.kumar@linaro.org> (cpumask)
-> +R:	Yury Norov <yury.norov@gmail.com>
-> +S:	Maintained
-> +F:	rust/kernel/cpumask.rs
-> +
->  BITOPS API
->  M:	Yury Norov <yury.norov@gmail.com>
->  R:	Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> -- 
-> 2.31.1.272.g89b43f80a514
+> > The aliasing rules being tied to a specific compiler backend,
+> > instead of a specification, might make it harder for other
+> > Rust compilers, like gccrs, to implement the same behavior for
+> > compiled programs, as what the sole major Rust compiler,
+> > rustc, has of behavior for compiled programs.
+>
+> It is not "tied to a specific compiler backend". The reference (or
+> e.g. the standard library implementation, which you mentioned) may
+> mention LLVM, as well as other backends, but that does not imply the
+> final rules will (or need to) refer to the LLVM reference. And even if
+> a spec refers to a given revision of another spec (it is not
+> uncommon), that is different from being "tied to a specific compiler
+> backend".
+>
+> Moreover, if it makes it easier, another compiler could always assume les=
+s.
+
+You are right that I should have written "currently tied", not "tied", and
+I do hope and assume that the work with aliasing will result
+in some sorts of specifications.
+
+The language reference directly referring to LLVM's aliasing rules,
+and that the preprint paper also refers to LLVM, does indicate a tie-in,
+even if that tie-in is incidental and not desired. With more than one
+major compiler, such tie-ins are easier to avoid.
+
+    https://doc.rust-lang.org/stable/reference/behavior-considered-undefine=
+d.html
+        "Breaking the pointer aliasing rules
+        http://llvm.org/docs/LangRef.html#pointer-aliasing-rules
+        . Box<T>, &mut T and &T follow LLVM=E2=80=99s scoped noalias
+        http://llvm.org/docs/LangRef.html#noalias
+        model, except if the &T contains an UnsafeCell<U>.
+        References and boxes must not be dangling while they are
+        live. The exact liveness duration is not specified, but some
+        bounds exist:"
+
+Best, VJ.
