@@ -1,168 +1,104 @@
-Received: from r-passerv.ralfj.de (r-passerv.ralfj.de [109.230.236.95])
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE702222584;
-	Wed, 26 Feb 2025 16:32:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.230.236.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C309AEED7;
+	Wed, 26 Feb 2025 16:42:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740587561; cv=none; b=Q3Do+WiuXiVzwSxuAQhpUZqlpSsXg8j8m7H+MdgRQaeezSkOBdRVvGf9roqWL79eUnuc0W2A9tDPbgdwYDOfWpaO1i+l1RBg9VdnyjIb8m+SV3slnPsV/MoXg3V9gQ1wVAXi4ocw0FzX6MVJJzppCNa7oTTaZvxlAKCUdYy95Qs=
+	t=1740588165; cv=none; b=kNwgUraK4K+sN3xV3sc8Hpcx3XdBbjdNpU/nn8oDFQbOYWx0Z0E0oxHDmKaNKUQtTtSJIFQAYQG+OYBSoGFoa63on3vBLeI8Jz/nRfxGMGQPe0PBe+boyLQT1w6wN0U80HTMaaoAu6eQyQNZyGP/LiQKdpDvNgWn0BKoYgTCePw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740587561; c=relaxed/simple;
-	bh=dLY21KoCoTtcPIJVWDbdSVxDOSaKowQVO40jIG8etkA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BdiOOrhw/CC/Uz0XOw6RQGyZmWgbYCoyVGhJ1ti+5LFJProptGDc/lpeQPeAFrIUAzwqhnUy3J4JQbQ8jroOoLolH7eE3TYFUXOgNRvHlNbepXXlFgUGxilJn7JRLuqe93HXDxayn+lWhHYcxzG8tQB0LSK5Wg+DXbeJkd6IfyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=YjrkjbhZ; arc=none smtp.client-ip=109.230.236.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ralfj.de
+	s=arc-20240116; t=1740588165; c=relaxed/simple;
+	bh=j0Jdfh5ZTam2i9FjA30XjZbPHXQrlJPvw53xGy1ieHs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Uzju5iOhKsV7Gcv/AmfPdBSvg4S6fTdAZd1OOzyECHAlgua/B8xj/bTEdJjChp/e25VLFrGWfbqqgEQErbSMoC5IMr8U7oUL6fVzBXkbasCffiDNx3FCRd+TukPKQJQ1Ujffx2QR40dwUqoQuamCJondeLwc4ebHOB0YZ2LllwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=SSVOYE67; arc=none smtp.client-ip=198.37.111.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="YjrkjbhZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ralfj.de; s=mail;
-	t=1740587557; bh=dLY21KoCoTtcPIJVWDbdSVxDOSaKowQVO40jIG8etkA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YjrkjbhZwXRhQvII1s4aE5PcJLxidQ/y3EUYVfd5ao/jPD7hmKeH8Rpg+FBFYr/Z3
-	 GEW6dR8QNGwvdds5XTb5WZSomLCSYU1H++hfP9y/zasRqsWX1IV0If0Bj4w/hOsyNl
-	 0DikD4LnE3FzgTSweiaRv2duZ+Dv3bYYoVTJrGjY=
-Received: from [IPV6:2001:67c:10ec:5784:8000::12e7] (2001-67c-10ec-5784-8000--12e7.net6.ethz.ch [IPv6:2001:67c:10ec:5784:8000::12e7])
-	by r-passerv.ralfj.de (Postfix) with ESMTPSA id 143A22052D08;
-	Wed, 26 Feb 2025 17:32:37 +0100 (CET)
-Message-ID: <f3a83d60-3506-4e20-b202-ef2ea99ef4dc@ralfj.de>
-Date: Wed, 26 Feb 2025 17:32:36 +0100
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="SSVOYE67"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1740588162;
+	bh=j0Jdfh5ZTam2i9FjA30XjZbPHXQrlJPvw53xGy1ieHs=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=SSVOYE678KR2GDHy2EtEFvTuf7lqdjn0YzCHGpOE7neu1sCZRPwt6+RYEiOUwc12z
+	 a1wd3W4LwHQEp24uq1XApSsz/FWC+LZ6mWbX+Na/1Dc75ze7IrPMiIef6w5JYnhfwr
+	 cIOOqB8E7+7uzIBIDiVGDK4QVdIL7LXm7lQKmXOU=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id E48171C0034;
+	Wed, 26 Feb 2025 11:42:41 -0500 (EST)
+Message-ID: <9c443013493f8f380f9c4d51b1eeeb9d29b208a3.camel@HansenPartnership.com>
+Subject: Re: C aggregate passing (Rust kernel policy)
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Miguel Ojeda
+ <miguel.ojeda.sandonis@gmail.com>, Ventura Jack <venturajack85@gmail.com>, 
+ Kent Overstreet <kent.overstreet@linux.dev>, "H. Peter Anvin"
+ <hpa@zytor.com>, Alice Ryhl <aliceryhl@google.com>,  Linus Torvalds
+ <torvalds@linux-foundation.org>, Gary Guo <gary@garyguo.net>,
+ airlied@gmail.com,  boqun.feng@gmail.com, david.laight.linux@gmail.com,
+ hch@infradead.org,  ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, Ralf Jung <post@ralfj.de>
+Date: Wed, 26 Feb 2025 11:42:41 -0500
+In-Reply-To: <20250226110033.53508cbf@gandalf.local.home>
+References: 
+	<CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+	 <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+	 <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
+	 <CAFJgqgREAj-eP-d244WpqO-9H48ajZh83AxE31GqoONZ=DJe-g@mail.gmail.com>
+	 <CAH5fLghEMtT663SNogAGad-qk7umefGeBKbm+QjKKzoskjOubw@mail.gmail.com>
+	 <5E3FEDC4-DBE3-45C7-A331-DAADD3E7EB42@zytor.com>
+	 <2rrp3fmznibxyg3ocvsfasfnpwfp2skhf4x7ihrnvm72lemykf@lwp2jkdbwqgm>
+	 <CAFJgqgS-SMMEE2FktuCUimdGkPWMV3HB2Eg38SiUDQK1U8=rNg@mail.gmail.com>
+	 <CANiq72mOp0q1xgAHod1Y_mX86OESzdDsgSghtQCwe6iksNt-sA@mail.gmail.com>
+	 <f2bf76553c666178505cb9197659303a39faf7aa.camel@HansenPartnership.com>
+	 <2025022611-work-sandal-2759@gregkh>
+	 <16127450a24e9df8112a347fe5f6df9c9cca2926.camel@HansenPartnership.com>
+	 <20250226110033.53508cbf@gandalf.local.home>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: C aggregate passing (Rust kernel policy)
-To: Ventura Jack <venturajack85@gmail.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Gary Guo <gary@garyguo.net>,
- torvalds@linux-foundation.org, airlied@gmail.com, boqun.feng@gmail.com,
- david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org,
- hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
- <20250222141521.1fe24871@eugeo>
- <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
- <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
- <CANiq72mdzUJocjXhPRQEEdgRXsr+TEMt99V5-9R7TjKB7Dtfaw@mail.gmail.com>
- <lz7hsnvexoywjgdor33mcjrcztxpf7lzvw3khwzd5rifetwrcf@g527ypfkbhp2>
- <780ff858-4f8e-424f-b40c-b9634407dce3@ralfj.de>
- <CAFJgqgRN0zwwaNttS_9qnncTDnSA-HU5EgAXFrNHoPQ7U8fUxw@mail.gmail.com>
-Content-Language: en-US, de-DE
-From: Ralf Jung <post@ralfj.de>
-In-Reply-To: <CAFJgqgRN0zwwaNttS_9qnncTDnSA-HU5EgAXFrNHoPQ7U8fUxw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi VJ,
-
->>
->>> - Rust has not defined its aliasing model.
->>
->> Correct. But then, neither has C. The C aliasing rules are described in English
->> prose that is prone to ambiguities and misintepretation. The strict aliasing
->> analysis implemented in GCC is not compatible with how most people read the
->> standard (https://bugs.llvm.org/show_bug.cgi?id=21725). There is no tool to
->> check whether code follows the C aliasing rules, and due to the aforementioned
->> ambiguities it would be hard to write such a tool and be sure it interprets the
->> standard the same way compilers do.
->>
->> For Rust, we at least have two candidate models that are defined in full
->> mathematical rigor, and a tool that is widely used in the community, ensuring
->> the models match realistic use of Rust.
+On Wed, 2025-02-26 at 11:00 -0500, Steven Rostedt wrote:
+> On Wed, 26 Feb 2025 09:45:53 -0500
+> James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
 > 
-> But it is much more significant for Rust than for C, at least in
-> regards to C's "restrict", since "restrict" is rarely used in C, while
-> aliasing optimizations are pervasive in Rust. For C's "strict aliasing",
-> I think you have a good point, but "strict aliasing" is still easier to
-> reason about in my opinion than C's "restrict". Especially if you
-> never have any type casts of any kind nor union type punning.
-
-Is it easier to reason about? At least GCC got it wrong, making no-aliasing 
-assumptions that are not justified by most people's interpretation of the model:
-https://bugs.llvm.org/show_bug.cgi?id=21725
-(But yes that does involve unions.)
-
->>> - The aliasing rules in Rust are possibly as hard or
->>>      harder than for C "restrict", and it is not possible to
->>>      opt out of aliasing in Rust, which is cited by some
->>>      as one of the reasons for unsafe Rust being
->>>      harder than C.
->>
->> That is not quite correct; it is possible to opt-out by using raw pointers.
+> > > From some other rust boot system work, I know that the quality of
+> > > a  
+> > simple backtrace in rust where you just pick out addresses you
+> > think you know in the stack and print them as symbols can sometimes
+> > be rather misleading, which is why you need an unwinder to tell you
+> > exactly what happened.
 > 
-> Again, I did have this list item:
+> One thing I learned at GNU Cauldron last year is that the kernel
+> folks use the term "unwinding" incorrectly. Unwinding to the compiler
+> folks mean having full access to all the frames and variables and
+> what not for all the previous functions.
 > 
-> - Applies to certain pointer kinds in Rust, namely
->      Rust "references".
->      Rust pointer kinds:
->      https://doc.rust-lang.org/reference/types/pointer.html
-> 
-> where I wrote that the aliasing rules apply to Rust "references".
+> What the kernel calls "unwinding" the compiler folks call "stack
+> walking". That's a much easier task than doing an unwinding, and that
+> is usually all we need when something crashes.
 
-Okay, fair. But it is easy to misunderstand the other items in your list in 
-isolation.
+Well, that's not the whole story.  We do have at least three unwinders
+in the code base.  You're right in that we don't care about anything
+other than the call trace embedded in the frame, so a lot of unwind
+debug information isn't relevant to us and the unwinders ignore it.  In
+the old days we just used to use the GUESS unwinder which looks for
+addresses inside the text segment in the stack and prints them in
+order.  Now we (at least on amd64) use the ORC unwinder because it
+gives better traces:
 
-> 
->>>      the aliasing rules, may try to rely on MIRI. MIRI is
->>>      similar to a sanitizer for C, with similar advantages and
->>>      disadvantages. MIRI uses both the stacked borrow
->>>      and the tree borrow experimental research models.
->>>      MIRI, like sanitizers, does not catch everything, though
->>>      MIRI has been used to find undefined behavior/memory
->>>      safety bugs in for instance the Rust standard library.
->>
->> Unlike sanitizers, Miri can actually catch everything. However, since the exact
->> details of what is and is not UB in Rust are still being worked out, we cannot
->> yet make in good conscience a promise saying "Miri catches all UB". However, as
->> the Miri README states:
->> "To the best of our knowledge, all Undefined Behavior that has the potential to
->> affect a program's correctness is being detected by Miri (modulo bugs), but you
->> should consult the Reference for the official definition of Undefined Behavior.
->> Miri will be updated with the Rust compiler to protect against UB as it is
->> understood by the current compiler, but it makes no promises about future
->> versions of rustc."
->> See the Miri README (https://github.com/rust-lang/miri/?tab=readme-ov-file#miri)
->> for further details and caveats regarding non-determinism.
->>
->> So, the situation for Rust here is a lot better than it is in C. Unfortunately,
->> running kernel code in Miri is not currently possible; figuring out how to
->> improve that could be an interesting collaboration.
-> 
-> I do not believe that you are correct when you write:
-> 
->      "Unlike sanitizers, Miri can actually catch everything."
-> 
-> Critically and very importantly, unless I am mistaken about MIRI, and
-> similar to sanitizers, MIRI only checks with runtime tests. That means
-> that MIRI will not catch any undefined behavior that a test does
-> not encounter. If a project's test coverage is poor, MIRI will not
-> check a lot of the code when run with those tests. Please do
-> correct me if I am mistaken about this. I am guessing that you
-> meant this as well, but I do not get the impression that it is
-> clear from your post.
+https://docs.kernel.org/arch/x86/orc-unwinder.html
 
-Okay, I may have misunderstood what you mean by "catch everything". All 
-sanitizers miss some UB that actually occurs in the given execution. This is 
-because they are inserted in the pipeline after a bunch of compiler-specific 
-choices have already been made, potentially masking some UB. I'm not aware of a 
-sanitizer for sequence point violations. I am not aware of a sanitizer for 
-strict aliasing or restrict. I am not aware of a sanitizer that detects UB due 
-to out-of-bounds pointer arithmetic (I am not talking about OOB accesses; just 
-the arithmetic is already UB), or UB due to violations of "pointer lifetime end 
-zapping", or UB due to comparing pointers derived from different allocations. Is 
-there a sanitizer that correctly models what exactly happens when a struct with 
-padding gets copied? The padding must be reset to be considered "uninitialized", 
-even if the entire struct was zero-initialized before. Most compilers implement 
-such a copy as memcpy; a sanitizer would then miss this UB.
+while we don't need full unwind in rust, we do need enough to get
+traces working.
 
-In contrast, Miri checks for all the UB that is used anywhere in the Rust 
-compiler -- everything else would be a critical bug in either Miri or the compiler.
-But yes, it only does so on the code paths you are actually testing. And yes, it 
-is very slow.
+Regards,
 
-Kind regards,
-Ralf
+James
 
