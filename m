@@ -1,114 +1,74 @@
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C8E21D5A1;
-	Wed, 26 Feb 2025 15:41:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACAB428F3;
+	Wed, 26 Feb 2025 15:59:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740584464; cv=none; b=QkGckQfZgyZiFaqv13joxLKhl2Wk4cI6xK7S59mn9CPxrck8cyt5kCHlYwCZcQx8mb1kqw5VXpI+jW+bpQy5px24UnMazO//wy/l9gfXWudGURRR90ZNFzfBCnJlYwCQTQePnrpMw0gqHCh57ipxsTUlqekv+ktjxJEtEy53Llk=
+	t=1740585595; cv=none; b=hwUJk6OKHoyfFZdPEmQdlYGW0Ta3FJZEQxZ1OdGDHzmhiGuwyh7lTr3AG2xTeiuEhGe7ENS9n4AOLnHHcPc6ocQ8LgB+CBrhGfW+cucKdJHDLhRVjoGoTlIfHtOGaE9AVodOyRMrSJhD6XzpGw+3/WyoO+zV3ismjF2E7MF89bE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740584464; c=relaxed/simple;
-	bh=uwWzBgOkEu6tAt9RlvyuB/XrCzVCtBuoCGy7bItgOXc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I5ivY3AjUHTiHAITxbVfvyrvENWFfNMwOlGFL48aRV5nAjYKi8tN9nGpI5Vny5ri5TMUbbvpN0jROVYkrYEYWrgvvpTLjvvjRTTMLtbIw2VxP+ZKSLRUdqxc4OsdQvox8lot69HiexyyU/fK3ofVmiSHWX+9ObfEMqC0zV/3/TU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UoAs2gR5; arc=none smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UoAs2gR5"
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5452efeb87aso6967007e87.3;
-        Wed, 26 Feb 2025 07:41:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740584461; x=1741189261; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uwWzBgOkEu6tAt9RlvyuB/XrCzVCtBuoCGy7bItgOXc=;
-        b=UoAs2gR5DnjI8bLX/DeYzBVZFcHLf5L/aGD59YYFEyRMvQ5ODB+UYqC3euIsOXYXT+
-         LgEuhTWIbeC/HJuXWDSPSUaFcOZvIBPpMoccswO6igVZiCeZx8Vm9ywNU+ZzOEBIGajM
-         QoTQm8Nv6KNHMUQDKHjqm2BeHn3ESIO02DWZJAT8KJzGdq/4tSlOu5j6YaNbIbCIU0mb
-         dkKOxXULUxk6sOgu0JhtvRzQ2MXYHnpGMe36Y8JoCKt5TWb4fO8fdt1/C6q5k7i6hhTB
-         8SNC1uY7pVSIVs9rm+L9jJunzqLT+Ar7WICfcho+SoKffnSscu8wycIgfWX2HYQa8aM+
-         24EA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740584461; x=1741189261;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uwWzBgOkEu6tAt9RlvyuB/XrCzVCtBuoCGy7bItgOXc=;
-        b=n4zoNme4UEojoLgrPJvmG9YbXAxnBRtEFIy1IodbcY9axW48ufAVDNpf+NZ+beoWEO
-         /5Nv+zbuyGIU9QfJth62xrTHl7rHtFLAoeosdZMFaPeP5kt9dLSL7p4Cdf34caIJ7Uty
-         7LG5FDLwTKG7rzcT3ovsT1QuWzx1VeW+nW7DcRMaotAQjwj7jzQb0jz8Bsinyas2SI08
-         g5NVjC0064YQe6Y9XP9wK+GMtqtmHvkMEvOUUvWQDDMdr+tRs9MhsZ7ybe/UFEODfAe8
-         iP4tniBWUc91R1f/q6a4KWwQMHVVNTq6JKpObOja6ZroSOfiSIVhLnl4vcI0jauk6eu9
-         KVzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVsyzECEvPSjeP0Y7xZUkUup2FKIVU3DoMo+7rLykqcdJjpdyN/me5SbooJNNTFfBiEJNB6sDDEUQqgVPA+eq0=@vger.kernel.org, AJvYcCXIi3CwmIwxAiceK8WEBbAwe7R/wNGT2s8Cr6bpH10DjroFCw3XZvxMJgLfRtkDzdRjR+JhZvsQUkqjRRY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzhgzctU5Zcfg0L3JqyrLUhLPGvpz4wVYB/ZnE5mdwfE6KRRMuZ
-	KL6M4HbDjs3CAvIigAd3xUPYqHDNAJRrWfJF68lo9I1N/S5Jhjjr4Y3up+GpcCO2nN7lHspRr5N
-	rgVML0t9/XVYagtKAXivyVDfDexk=
-X-Gm-Gg: ASbGncvx1/YOXtV5296Dht7UzHetTOh7CLtYySnALdoqxBaMKtI/SurX1dj6Xcsm0TQ
-	Yjx1rFuajafiPPIqAOhaGHwSW8FxmI3Q59eTkAKQlJKOgQXDWOhobKrSGwJruQfpv1xx36d0F2T
-	WjI8Mus1nB
-X-Google-Smtp-Source: AGHT+IGWvtVF8xWWD8RBTOvu+8xeco4voQOBMX41WoZV9Ovk1e8nbIdwzOdsmKqOtELpZ+dTqQfiZ1hmxeZZjvkc79Q=
-X-Received: by 2002:a05:6512:281b:b0:545:a2f:22b4 with SMTP id
- 2adb3069b0e04-5493c5c0efemr2758222e87.40.1740584460979; Wed, 26 Feb 2025
- 07:41:00 -0800 (PST)
+	s=arc-20240116; t=1740585595; c=relaxed/simple;
+	bh=8U3HqDiHPY2xjpZ1i9Tfu5CN8cLyRtEgus9/9JMgOvU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=H9NqH8fRTuVlHKYrvBItzto3Eja7jVvJNpk2l2dec7WnNt1JgA0mX4D0ebbJ+3dhHEvVEH/T/YEhwSjnWo4FRKmRzNw16FK6wLc64LjfY2PQABBQKAXF5byDnYM2zERs0PW7A9Ny1KEtA9EM/xpQtJIMEW54tLa3FagsihJGogE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB04C4CEE8;
+	Wed, 26 Feb 2025 15:59:53 +0000 (UTC)
+Date: Wed, 26 Feb 2025 11:00:33 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Miguel Ojeda
+ <miguel.ojeda.sandonis@gmail.com>, Ventura Jack <venturajack85@gmail.com>,
+ Kent Overstreet <kent.overstreet@linux.dev>, "H. Peter Anvin"
+ <hpa@zytor.com>, Alice Ryhl <aliceryhl@google.com>, Linus Torvalds
+ <torvalds@linux-foundation.org>, Gary Guo <gary@garyguo.net>,
+ airlied@gmail.com, boqun.feng@gmail.com, david.laight.linux@gmail.com,
+ ej@inai.de, hch@infradead.org, ksummit@lists.linux.dev,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Ralf Jung
+ <post@ralfj.de>
+Subject: Re: C aggregate passing (Rust kernel policy)
+Message-ID: <20250226110033.53508cbf@gandalf.local.home>
+In-Reply-To: <16127450a24e9df8112a347fe5f6df9c9cca2926.camel@HansenPartnership.com>
+References: <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+	<CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+	<CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
+	<CAFJgqgREAj-eP-d244WpqO-9H48ajZh83AxE31GqoONZ=DJe-g@mail.gmail.com>
+	<CAH5fLghEMtT663SNogAGad-qk7umefGeBKbm+QjKKzoskjOubw@mail.gmail.com>
+	<5E3FEDC4-DBE3-45C7-A331-DAADD3E7EB42@zytor.com>
+	<2rrp3fmznibxyg3ocvsfasfnpwfp2skhf4x7ihrnvm72lemykf@lwp2jkdbwqgm>
+	<CAFJgqgS-SMMEE2FktuCUimdGkPWMV3HB2Eg38SiUDQK1U8=rNg@mail.gmail.com>
+	<CANiq72mOp0q1xgAHod1Y_mX86OESzdDsgSghtQCwe6iksNt-sA@mail.gmail.com>
+	<f2bf76553c666178505cb9197659303a39faf7aa.camel@HansenPartnership.com>
+	<2025022611-work-sandal-2759@gregkh>
+	<16127450a24e9df8112a347fe5f6df9c9cca2926.camel@HansenPartnership.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
- <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
- <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
- <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
- <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
- <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
- <CAFJgqgREAj-eP-d244WpqO-9H48ajZh83AxE31GqoONZ=DJe-g@mail.gmail.com>
- <CAH5fLghEMtT663SNogAGad-qk7umefGeBKbm+QjKKzoskjOubw@mail.gmail.com>
- <CAFJgqgRxfTVxrWja=ZW=mTj1ShPE5s-atAqxzMOq5poajMh=4A@mail.gmail.com> <91dbba64-ade3-4e46-854e-87cd9ecaa689@ralfj.de>
-In-Reply-To: <91dbba64-ade3-4e46-854e-87cd9ecaa689@ralfj.de>
-From: Ventura Jack <venturajack85@gmail.com>
-Date: Wed, 26 Feb 2025 08:40:44 -0700
-X-Gm-Features: AQ5f1JoXyOl8V4-EvSRgg4-KWz-YXXimRSHqSWOPiONotHcWRZZoZ5sJPppo77c
-Message-ID: <CAFJgqgTTgy=yae68AE29oJQc7Bi+NvkgsrBtOkVUvRt1O0GzSQ@mail.gmail.com>
-Subject: Re: C aggregate passing (Rust kernel policy)
-To: Ralf Jung <post@ralfj.de>
-Cc: Alice Ryhl <aliceryhl@google.com>, Linus Torvalds <torvalds@linux-foundation.org>, 
-	Kent Overstreet <kent.overstreet@linux.dev>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
-	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
-	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, 
-	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Feb 26, 2025 at 7:14=E2=80=AFAM Ralf Jung <post@ralfj.de> wrote:
->
-> Hi all,
->
-> > [Omitted]
-> >
-> > Are you sure that both stacked borrows and tree borrows are
-> > meant to be full models with no false positives and false negatives,
-> > and no uncertainty, if I understand you correctly?
->
-> Speaking as an author of both models: yes. These models are candidates fo=
-r the
-> *definition* of which programs are correct and which are not. In that sen=
-se,
-> once adopted, the model *becomes* the baseline, and by definition has no =
-false
-> negative or false positives.
+On Wed, 26 Feb 2025 09:45:53 -0500
+James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
 
-Thank you for the answer, that clarifies matters for me.
+> >From some other rust boot system work, I know that the quality of a  
+> simple backtrace in rust where you just pick out addresses you think
+> you know in the stack and print them as symbols can sometimes be rather
+> misleading, which is why you need an unwinder to tell you exactly what
+> happened.
 
-> [Omitted] (However, verification tools are
-> in the works as well, and thanks to Miri we have a very good idea of what
-> exactly it is that these tools have to check for.) [Omitted]
+One thing I learned at GNU Cauldron last year is that the kernel folks use
+the term "unwinding" incorrectly. Unwinding to the compiler folks mean
+having full access to all the frames and variables and what not for all the
+previous functions.
 
-Verification as in static verification? That is some interesting and
-exciting stuff if so.
+What the kernel calls "unwinding" the compiler folks call "stack walking".
+That's a much easier task than doing an unwinding, and that is usually all
+we need when something crashes.
 
-Best, VJ.
+That may be the confusion here.
+
+-- Steve
