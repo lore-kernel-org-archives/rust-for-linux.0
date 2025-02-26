@@ -1,67 +1,160 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37163223321;
-	Wed, 26 Feb 2025 21:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E15192D63;
+	Wed, 26 Feb 2025 21:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740605178; cv=none; b=d1tPnyu63/a85bEAbiRAZV3J4dDO8uXVN1J2tr9FmuHfMWfrXCCogCPiEYO1rgww6EY8eghJDfSuDRE+TBd6Ck8704xkto11ITE/JjSV/3FbFTNAVaKsDUqaw8lM5RmwppKdIfdVTeKRBWz9iuiBxtsMSd2sftNyDq/HTWSAaOk=
+	t=1740605477; cv=none; b=bQiNeyplhUUcGPiXfUpM8Sj/JeS13gLCsgdlbUX+DqIL7Z8DlwvenRA1yPzFaTiGBF6QT9j9ZZ3X7X2cz/WPaQ9JwcUY0QwC0RJiB/aWrYYVRLFwdcAiY+kMXmlAVYbV/OcwWBix4FAgLRR9v7xWsWXamNE+1t//pPpolELOOYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740605178; c=relaxed/simple;
-	bh=Yp/mMIwMpxDeFoFPJUGlW9naor6FAFBdrMt76B+P2rU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iBGwYIL4VL2bRZnFjJBx1m05PhiXWR44O/FNBExfTm4ycxbBkaQNbhZw31kW5X3w7hfzGeCOXhb+QCb0GPztGANkD3qIbJrmel1lqda+tzJCo50Vi+5xuJPABsGh7ZLYAQmeNKjw2c5QE9s/GLZQJgD2w1PHrCB9WhSEPlHUYUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CE6BC4CED6;
-	Wed, 26 Feb 2025 21:26:14 +0000 (UTC)
-Date: Wed, 26 Feb 2025 16:26:55 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Martin Uecker <uecker@tugraz.at>, Ralf Jung <post@ralfj.de>, "Paul E.
- McKenney" <paulmck@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Ventura
- Jack <venturajack85@gmail.com>, Kent Overstreet
- <kent.overstreet@linux.dev>, Gary Guo <gary@garyguo.net>,
- airlied@gmail.com, boqun.feng@gmail.com, david.laight.linux@gmail.com,
- ej@inai.de, gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com,
- ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
- miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
-Subject: Re: C aggregate passing (Rust kernel policy)
-Message-ID: <20250226162655.65ba4b51@gandalf.local.home>
-In-Reply-To: <CAHk-=whLSWX=-5-z4Q8x1f_NLrHd0e3afbEwYPkkVSXj=xT-JQ@mail.gmail.com>
-References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
-	<20250222141521.1fe24871@eugeo>
-	<CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
-	<6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
-	<CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
-	<CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
-	<CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
-	<CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com>
-	<5d7363b0-785c-4101-8047-27cb7afb0364@ralfj.de>
-	<CAHk-=wh=8sqvB-_TkwRnvL7jVA_xKbzsy9VH-GR93brSxTp60w@mail.gmail.com>
-	<ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at>
-	<CAHk-=whLSWX=-5-z4Q8x1f_NLrHd0e3afbEwYPkkVSXj=xT-JQ@mail.gmail.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1740605477; c=relaxed/simple;
+	bh=dtdm5QCuK+ylUVFnyHD+iIwr9QzhpWvNNNqtSoMMkzs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U4j3gn9JorBqXOUCHgZHJCEywXgwK5s61rfs9lNySOpvP/+mEepgKZP8L9hpE4UHbk4MsN38nSXQzsjZQEmS9+EsCCwnmaP9LsRvU26PrtTmxCcoTPotMBDnrfvlM2tly/LT6dBI6/59dVxAVtS6Q8w4AayuCk7nQT+1pWzzIJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=faGsjtBD; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="faGsjtBD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA086C4CED6;
+	Wed, 26 Feb 2025 21:31:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740605475;
+	bh=dtdm5QCuK+ylUVFnyHD+iIwr9QzhpWvNNNqtSoMMkzs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=faGsjtBDdDxDB4wnFlsJ9twdJiu5JkhIWlfWJL61nByZSjpGEHolejTLnRVUNoPnL
+	 PcjvTW3LMvJhxR8Kb0ymOzHCMzc7aFt1G+xL77wo3v7pTthsbUvnxFULNTLFjIideR
+	 nh/31bjc5MHKX6VhxuBxA0QpYtMatNwtuHX/EQco1uhTDZw7UrK3pHuVQAP4li6OWb
+	 nNsvgKpV64GQTbAtDj6EzSCrFoETlDeFYGkCz5VEiNHwhl+IVZ+3VN33ISDhM5ja/B
+	 ZuwKtU4f76QKIOn0MPwZg8uKTZQJZKoxs6KJ9EqFfwaeac2UggGG3TE3/9g/Oh+Ht7
+	 iHyq2b/AqA81Q==
+Date: Wed, 26 Feb 2025 22:31:10 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Joel Fernandes <joelagnelf@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	paulmck@kernel.org
+Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
+ implementation
+Message-ID: <Z7-IHgcVVS8XBurW@cassiopeiae>
+References: <20250224184502.GA1599486@joelnvbox>
+ <Z70EcwNIX0KtWy36@cassiopeiae>
+ <2f062199-8d69-48a2-baa6-abb755479a16@nvidia.com>
+ <Z73rP4secPlUMIoS@cassiopeiae>
+ <20250225210228.GA1801922@joelnvbox>
+ <20250225225756.GA4959@nvidia.com>
+ <Z75WKSRlUVEqpysJ@cassiopeiae>
+ <20250226004916.GB4959@nvidia.com>
+ <Z75riltJo0WvOsS5@cassiopeiae>
+ <20250226172120.GD28425@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250226172120.GD28425@nvidia.com>
 
-On Wed, 26 Feb 2025 13:14:30 -0800
-Linus Torvalds <torvalds@linux-foundation.org> wrote:
+On Wed, Feb 26, 2025 at 01:21:20PM -0400, Jason Gunthorpe wrote:
+> On Wed, Feb 26, 2025 at 02:16:58AM +0100, Danilo Krummrich wrote:
+> > Again, the reason a pci::Bar needs to be revocable in Rust is that we can't have
+> > the driver potentially keep the pci::Bar alive (or even access it) after the
+> > device is unbound.
+> 
+> My impression is that nobody has yet come up with a Rust way to
+> implement the normal kernel design pattern of revoke threads then free
+> objects in safe rust.
 
-> Similarly, if the source code has a single read, the compiler had
-> better not turn that into two reads (because of some register pressure
-> issue). That would *ALSO* be a bug, because of the whole TOCTOU issue
-> (ie the source code may have had one single access, done sanity
-> testing on the value before using it, and if the compiler turned it
-> all into "read+sanity test" and "read+use", the compiler is
-> introducing behavioral differences).
+I get where you're coming from (and I agree), but that is a different issue.
 
-As a bystander here, I just want to ask, do you mean basically to treat all
-reads as READ_ONCE() and all writes as WRITE_ONCE()?
+Let's take a step back and look again why we have Devres (and Revocable) for
+e.g. pci::Bar.
 
--- Steve
+The device / driver model requires that device resources are only held by a
+driver, as long as the driver is bound to the device.
+
+For instance, in C we achieve this by calling
+
+	pci_iounmap()
+	pci_release_region()
+
+from remove().
+
+We rely on this, we trust drivers to actually do this.
+
+We also trust drivers that they don't access the pointer originally returned by
+pci_iomap() after remove(). Typically, drivers do this by shutting down all
+asynchronous execution paths, e.g. workqueues. Some other drivers might still
+run code after remove() and hence needs some synchronization, like DRM.
+
+In Rust pci_iounmap() and pci_release_region() are called when the pci::Bar
+object is dropped. But we don't want to trust the driver to actually do this.
+Instead, we want to ensure that the driver can *not* do something that is not
+allowed by the device / driver model.
+
+Therefore, we never hand out a raw pci::Bar to driver, but a Devres<pci::Bar>.
+With this a driver can't prevent the pci::Bar being dropped once the device is
+unbound.
+
+So, the main objective here is to ensure that a driver can't keep the pci::Bar
+(and hence the memory mapping) alive arbitrarily.
+
+Now, let's get back to concurrent code that might still attempt to use the
+pci::Bar. Surely, we need mechanisms to shut down all asynchronous execution
+paths (e.g. workqueues) once the device is unbound. But that's not the job of
+Devres<pci::Bar>. The job of Devres<pci::Bar> is to be robust against misuse.
+
+Again, that the revocable characteristic comes in handy for drivers that still
+run code after remove() intentionally, is a nice coincidence.
+
+> 
+> Yes, this is a peculiar lifetime model, but it is pretty important in
+> the kernel. I'm not convinced you can just fully ignore it in Rust as
+> a design pattern. We use it pretty much everywhere a function pointer
+> is involved.
+> 
+> For instance, I'm looking at workqueue.rs and wondering why is it safe
+> against Execute After Free races. I see none of the C functions I
+> would expect to be used to prevent those races in the code.
+> 
+> Even the simple example:
+> 
+> //! fn print_later(val: Arc<MyStruct>) {
+> //!     let _ = workqueue::system().enqueue(val);
+> //! }
+> 
+> Seems to be missing the EAF prevention ie WorkItem::run() is in .text
+> of THIS_MODULE and I see nothing is preventing THIS_MODULE from being
+> unloaded.
+> 
+> The expectation of work queues is to follow the above revoke threads
+> then free pattern. A module should do that sequence in the driver
+> remove() or module __exit function.
+
+Fully agree with that.
+
+I guess you're referring to cancel_work_sync() and friends as well as
+destroy_workqueue(), etc.
+
+They're indeed missing, this is because the workqueue work originates from the
+Rust binder efforts and binder is only used builtin, so there was no need so
+far.
+
+But yes, once people start using workqueues for other modules, we surely need to
+extend the abstraction accordingly.
+
+Other abstractions do consider this though, e.g. the upcoming hrtimer work. [1]
+
+In terms of IOCTLs it depends on the particular subsystem, but this is (or will
+be) also reflected by the corresponding abstraction. Dropping a
+MiscDeviceRegistration [2] on module_exit() for instance will ensure that there
+are no concurrent IOCTLs, just like the corresponding C code.
+
+[1] https://lore.kernel.org/rust-for-linux/20250224-hrtimer-v3-v6-12-rc2-v9-0-5bd3bf0ce6cc@kernel.org/
+[2] https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/rust/kernel/miscdevice.rs#n50
