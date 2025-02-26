@@ -1,67 +1,58 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3D322A4F3
-	for <rust-for-linux@vger.kernel.org>; Wed, 26 Feb 2025 18:00:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF38622D78A;
+	Wed, 26 Feb 2025 18:09:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740592805; cv=none; b=QtkUygIZBhJDcgiU3DOtneRyFoY2ic7Odq6m9fN1oyNJ5yHOYjMirJr53iY/2bk89ge4MVkBXwqu0fB9mQaO9EydEpCMrNFlVQ7KVQqMe67WI+CeZJBnWW+3yaX322KLKgRJphLUBemK3F/8E4yLUyMoRyR+dddpADO7nPKkUcU=
+	t=1740593364; cv=none; b=EvAtHkWxcsPGNbQohminihIp/upvAIxPeAJVA88zRZeUvyPBUMPx3D1fho1K014QY5nCC5ynnaBEFhX0vBhEhESoW0iqviTVFIuQaIJjDQUKKUcTjsYtp2c3HDhtYjr9JzGn1La8J5FCNMDiTlspC9I75nF6H4IaL/yLwxOr7/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740592805; c=relaxed/simple;
-	bh=OcHOvGQB/t3qwwXBib/RirE/KtrFLYIGCcrfx/cQcj0=;
+	s=arc-20240116; t=1740593364; c=relaxed/simple;
+	bh=ghaLJqFogOvVe+OLYpjWEiRrvLS3b1151qU4t9x9ggU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=imHIaYwaLbI7e95pk3bwbmzq/lbT/wGRCwZ87a1g5hQCKH73CHMmcwwnQn3/lAfFEoICjR1ZkobvoJYQnyWuIm2htzs3z4FoHdnILn2n/Q1jTeq/r9rQ+uhzPR52Kr1gNT1KMTQADRYwvYsyHodxcL0CAC/N8DDlAOLImXEqKwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=X70DgwB2; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	 To:Cc:Content-Type; b=VOMErP0+hYb142inhi5qSfd9/RiwGhlsvNagJx8RzChiz+/svTenkcS6e1nvzTkok8WbtAdctzDEYPignMxEBqzRIMw3neeLkupkPiWVrvCaGBNIz4KWC2w4sbyqdG3LdWUVa9N51ei/X6Xn9WN97sqz93AFWsH3pRkm7emAgXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E/OP1QJW; arc=none smtp.client-ip=209.85.208.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="X70DgwB2"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5dedae49c63so12741976a12.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 26 Feb 2025 10:00:02 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E/OP1QJW"
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-30a2dfcfd83so1135051fa.1;
+        Wed, 26 Feb 2025 10:09:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1740592801; x=1741197601; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=K2pF5VtPLvizqkjhJdWgYLaGhWqd4Ef/Qdw8QfNuuuk=;
-        b=X70DgwB2ur1Z70svgW0YFv6J+YVxsgj4U9lixgzuZxnl9/oJ8DlD4HcsxbZjorjEX2
-         VhdNQpn6XcNoh8NS/tjGhcjgtlp40HZprmVkkzleIaTVNVsjI1NjcXVpdmuqI+UXapmO
-         YbsBo6c/OTUPU9Mg1pv5mYIbXjHmZdh1L+4yI=
+        d=gmail.com; s=20230601; t=1740593361; x=1741198161; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=A6P8EkSd3yrtJe7fRrTsqN53CGSCMEbijuvinHNryBE=;
+        b=E/OP1QJWb0EzH4ih5YXvRsuG8cAMFsTQCS/LmIxsSEN9S+j1f4V5P6f8cNq9CQY9Im
+         zHu8Qlu33n/Dfw9k6m91fS7KlGYDNVPPiq4BQ7KF7AbkdYT13jMkY3Uix3raYxbRwxDJ
+         QDVmnKfblHlCcFxdW61eAUjuM+DrAePsXuckDZWAtikm7eigRFc014MhOMEvgmT1XyUS
+         g4KK5od1omzQW40tOTd4zwefWcpZCIO5BktxkEWgsU+WDQeYunF1JGUqXqRSy7ygFNOb
+         5ZGdpEbY7YyRyU8QHRuIsVFKb8/0ydW6yfelZvTXdQthUcp12u/RAdWeQVnul6RZarMs
+         bzjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740592801; x=1741197601;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=K2pF5VtPLvizqkjhJdWgYLaGhWqd4Ef/Qdw8QfNuuuk=;
-        b=aaSNiNIXZ2xlipxX1ILqWTff/PSx9LOI0SL4+KYPCKhRprNcsAGXzPMg4eA9FtMSgH
-         wpxrzurKHfe6FtGbnvNZYzGnnZqcY9EdbLI3xcO3w+ZxxKVbp3bR8/uhQgJ5RWJmPole
-         8SMIJvoBc7E0WwKEhHGnpmkfLoBQLlvWig6hgi6omDOjwdrTPduUtPTvShRr9GoNZSuA
-         +KM1Ddslccs4yb9IEi32DefB4Bl6Cfxk1thg1xnphQzo77lyjaBv0MzzsGj5l5JGcU/6
-         0k3x45gcwR+t3yHafwUvT1pfhCEXqPobeVCglE44MdrzwPWxpoICHvzYN2y2k+obuYMR
-         glsw==
-X-Forwarded-Encrypted: i=1; AJvYcCWoQQPDnjV0Hx2gW/7Ku3QHJQ9nxWpcKgoLrgzcch5tSKhd2CjjWdtw+QplF2Prr/zxIDwVNzANYtT8mOOnCw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywvxfhflee7pwpIAiGUmV8aPROuRXgdC0lvpCdUBy/u3Ry0PB5W
-	8eSN6DoKD4v9UTZnxsnPTBm/DjvxZ4dNxfQAzpFxXyCY95gTR8BOZNzqsmpLA/NvkERaQVyTRHI
-	sblQ=
-X-Gm-Gg: ASbGncvQgAdC0l3ABlHW3iThYMjfiYGJLQDSt1tkRd233ymJX7XK2XMjeFbWFsmRgM4
-	t2iFQ6oGzfD+00aV2Rp9/hxhPkalrMvOCTUMDbjoEzpejJiGqCspyq2itDEkqUoIWXTMIkcaT8O
-	cD2sgVEZZLUbmAjzCZW+A928n1vZN6JDw7B1Bh9U56N8rOdTyoa+uFQh0wrys6SdmVgGouNP7hw
-	pdZTAWA1hVVSnEiBbn90yXwwPB8zMeR98q6V0z4k6wrfQPR9LZMu5+/Jrd9ljeDg2pI8/VyNEtE
-	JMJCXwXYkWEPQi2urS79pyWqROFiCeMZOThR/SQ3nWL9SgDg+KwWDYgFgMcEYGtas05vUdkE3yb
-	r
-X-Google-Smtp-Source: AGHT+IHW3pluHvZkBqG0ap3s+GhgRLaQtnOcVWmyDXm4FPmep7YnqvIMew8H4P0yeKNgwafZVYx3+Q==
-X-Received: by 2002:a17:907:7d89:b0:ab7:d6c:5781 with SMTP id a640c23a62f3a-abc0da36233mr2761865166b.24.1740592800664;
-        Wed, 26 Feb 2025 10:00:00 -0800 (PST)
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com. [209.85.218.45])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abed1da35absm365559266b.84.2025.02.26.09.59.58
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Feb 2025 09:59:59 -0800 (PST)
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ab7430e27b2so1103713666b.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 26 Feb 2025 09:59:58 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXX/jvYfow9rJC6Z1LBZd0oDi9HzP25i4Zv9VyesQ4rFyAZDJLylGXKa+H2SMhiDSkYuF2faBY6wxuuMVDDIA==@vger.kernel.org
-X-Received: by 2002:a17:906:308e:b0:ab6:511d:8908 with SMTP id
- a640c23a62f3a-abc0de19516mr1960252766b.40.1740592798401; Wed, 26 Feb 2025
- 09:59:58 -0800 (PST)
+        d=1e100.net; s=20230601; t=1740593361; x=1741198161;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=A6P8EkSd3yrtJe7fRrTsqN53CGSCMEbijuvinHNryBE=;
+        b=Pez/eLHu1yyK9r5DrdFVXbvqewEIvvoUypuvazsxHmg1DlSuqi3ss8oO1loI2ndNo1
+         bmAqd5/g4SJ3QEG4JTUByw65jMkCOfrJLxy7LbbtwMFjKsMjHV0exheS5sbH0t11CD+W
+         kGUa05p6heZ1l9X0LN7ZC1KjDpCLCAsFqABWIDAGHnywCy49aU7nWITuIChu//lxDztO
+         WnkrEbY2KV2eknTwsucOr7WsLTQGBHHW0kCqqBrzLfkf3d7HuxKZ9N24jrbEcdDq6RFc
+         U3fCXQXhtUa8deUUb8j6uHdxdti8A2B/EmoEgO9JZd50pk+wPtntbw3S1JilSQKsEFKO
+         sakA==
+X-Forwarded-Encrypted: i=1; AJvYcCU7/BCgj+zhiD8c7YxsWwJEHfQyxAkF84dkKRyQGSC1Oq5en9mZeySfN6j/9Y/Fq4K3MqlXg4JIJODnU1Q=@vger.kernel.org, AJvYcCXPKkqrLVcq0XVPcjHSZFDtvAaTAM8pnXo1boVU9X+FNUIyY51APHMUx6625ZdHpyo5AdnwV+flyI+l9fPjC/c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmqMZvOlxwbhoUx9zJmjdjWyMHNtWvqf7xyifqkWkTvsOL9Jq8
+	ddXILsyj8AbTYjC92dXyjE9LcRgw2XWjiXX3zfsEGY5Marc79CCgUXFpDfcxXftr0ArUssqazUt
+	WY14WqsdUfxeyfyMkwJ3u+cQz18IIbmuh
+X-Gm-Gg: ASbGncsFJdBsX6q/QQJdv/mf4IW4n3OGChcSeaC/bk5iWST0DPzkw2Jph4olnPpTS1a
+	yCnU9y8tXf+9mccYqRS58tFqzvnLmF3YWOiDlxylq7mNWiEY91KyjakXyDfTsvcs7arwTlDyS2w
+	E6x/2MHHp3
+X-Google-Smtp-Source: AGHT+IGJNa+ri2Oao//go0VSlyRtOlg3wgaCSf6LWBeLXhaVuBr+YK/0oze/PXh/F38YbXkdqfmir870UMfoNc57uc8=
+X-Received: by 2002:a2e:9590:0:b0:307:e498:1269 with SMTP id
+ 38308e7fff4ca-30a599a2963mr92116491fa.37.1740593360376; Wed, 26 Feb 2025
+ 10:09:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -71,132 +62,182 @@ MIME-Version: 1.0
 References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
  <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
  <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
- <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
- <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
- <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
- <CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com> <5d7363b0-785c-4101-8047-27cb7afb0364@ralfj.de>
-In-Reply-To: <5d7363b0-785c-4101-8047-27cb7afb0364@ralfj.de>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Wed, 26 Feb 2025 09:59:41 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wh=8sqvB-_TkwRnvL7jVA_xKbzsy9VH-GR93brSxTp60w@mail.gmail.com>
-X-Gm-Features: AQ5f1JqHaF8iBdXsZjiLGeP-Wg76QW9xhjWAhICZNldwiZDCjoY2SKOw5r5wwWM
-Message-ID: <CAHk-=wh=8sqvB-_TkwRnvL7jVA_xKbzsy9VH-GR93brSxTp60w@mail.gmail.com>
+ <CANiq72mdzUJocjXhPRQEEdgRXsr+TEMt99V5-9R7TjKB7Dtfaw@mail.gmail.com>
+ <lz7hsnvexoywjgdor33mcjrcztxpf7lzvw3khwzd5rifetwrcf@g527ypfkbhp2>
+ <780ff858-4f8e-424f-b40c-b9634407dce3@ralfj.de> <CAFJgqgRN0zwwaNttS_9qnncTDnSA-HU5EgAXFrNHoPQ7U8fUxw@mail.gmail.com>
+ <f3a83d60-3506-4e20-b202-ef2ea99ef4dc@ralfj.de>
+In-Reply-To: <f3a83d60-3506-4e20-b202-ef2ea99ef4dc@ralfj.de>
+From: Ventura Jack <venturajack85@gmail.com>
+Date: Wed, 26 Feb 2025 11:09:06 -0700
+X-Gm-Features: AQ5f1JpKwr8B5qkGZ9Z_bzqjhe0vCBiX0W_T_JL0hCE3Frc9QZXyZjcDXlFrTOQ
+Message-ID: <CAFJgqgR4Q=uDKNnU=2yo5zoyFOLERG+48bFuk4Dd-c+S6x+N5w@mail.gmail.com>
 Subject: Re: C aggregate passing (Rust kernel policy)
 To: Ralf Jung <post@ralfj.de>
-Cc: Alice Ryhl <aliceryhl@google.com>, Ventura Jack <venturajack85@gmail.com>, 
-	Kent Overstreet <kent.overstreet@linux.dev>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
-	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
-	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, 
-	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
+Cc: Kent Overstreet <kent.overstreet@linux.dev>, 
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	torvalds@linux-foundation.org, airlied@gmail.com, boqun.feng@gmail.com, 
+	david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, 
+	hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 26 Feb 2025 at 05:54, Ralf Jung <post@ralfj.de> wrote:
+On Wed, Feb 26, 2025 at 9:32=E2=80=AFAM Ralf Jung <post@ralfj.de> wrote:
 >
->      The only approach we know that we can actually
-> pull through systematically (in the sense of "at least in principle, we can
-> formally prove this correct") is to define the "visible behavior" of the source
-> program, the "visible behavior" of the generated assembly, and promise that they
-> are the same.
+> Hi VJ,
+>
+> >>
+> >>> - Rust has not defined its aliasing model.
+> >>
+> >> Correct. But then, neither has C. The C aliasing rules are described i=
+n English
+> >> prose that is prone to ambiguities and misintepretation. The strict al=
+iasing
+> >> analysis implemented in GCC is not compatible with how most people rea=
+d the
+> >> standard (https://bugs.llvm.org/show_bug.cgi?id=3D21725). There is no =
+tool to
+> >> check whether code follows the C aliasing rules, and due to the aforem=
+entioned
+> >> ambiguities it would be hard to write such a tool and be sure it inter=
+prets the
+> >> standard the same way compilers do.
+> >>
+> >> For Rust, we at least have two candidate models that are defined in fu=
+ll
+> >> mathematical rigor, and a tool that is widely used in the community, e=
+nsuring
+> >> the models match realistic use of Rust.
+> >
+> > But it is much more significant for Rust than for C, at least in
+> > regards to C's "restrict", since "restrict" is rarely used in C, while
+> > aliasing optimizations are pervasive in Rust. For C's "strict aliasing"=
+,
+> > I think you have a good point, but "strict aliasing" is still easier to
+> > reason about in my opinion than C's "restrict". Especially if you
+> > never have any type casts of any kind nor union type punning.
+>
+> Is it easier to reason about? At least GCC got it wrong, making no-aliasi=
+ng
+> assumptions that are not justified by most people's interpretation of the=
+ model:
+> https://bugs.llvm.org/show_bug.cgi?id=3D21725
+> (But yes that does involve unions.)
 
-That's literally what I ask for with that "naive" code generation, you
-just stated it much better.
+For that specific bug issue, there is a GitHub issue for it.
 
-I think some of the C standards problems came from the fact that at
-some point the standards people decided that the only way to specify
-the language was from a high-level language _syntax_ standpoint.
+    https://github.com/llvm/llvm-project/issues/22099
 
-Which is odd, because a lot of the original C semantics came from
-basically a "this is how the result works". It's where a lot of the
-historical C architecture-defined (and undefined) details come from:
-things like how integer division rounding happens, how shifts bigger
-than the word size are undefined, etc. But most tellingly, it's how
-"volatile" was defined.
+And the original test case appears to have been a compiler bug
+and have been fixed, at least when I run on Godbolt against
+a recent version of Clang. Another comment says.
 
-I suspect that what happened is that the C++ people hated the volatile
-definition *so* much (because of how they changed what an "access"
-means), that they then poisoned the C standards body against
-specifying behavior in terms of how the code *acts*, and made all
-subsequent C standards rules be about some much more abstract
-higher-level model that could not ever talk about actual code
-generation, only about syntax.
+    "The original testcase seems to be fixed now but replacing
+    the union by allocated memory makes the problem come back."
 
-And that was a fundamental shift, and not a good one.
+And the new test case the user mentions involves a void pointer.
 
-It caused basically insurmountable problems for the memory model
-descriptions. Paul McKenney tried to introduce the RCU memory model
-requirements into the C memory model discussion, and it was entirely
-impossible. You can't describe memory models in terms of types and
-syntax abstractions. You *have* to talk about what it means for the
-actual code generation.
+I wonder if they could close the issue and open a new issue
+in its stead that only contains the currently relevant compiler
+bugs if there are any. And have this new issue refer to the old
+issue. They brought the old issue over from the old bug tracker.
+But I do not have a good handle on that issue.
 
-The reason? The standards people wanted to describe the memory model
-not at a "this is what the program does" level, but at the "this is
-the type system and the syntactic rules" level. So the RCU accesses
-had to be defined in terms of the type system, but the actual language
-rules for the RCU accesses are about how the data is then used after
-the load.
+Unions in C, C++ and Rust (not Rust "enum"/tagged union) are
+generally sharp. In Rust, it requires unsafe Rust to read from
+a union.
 
-(We have various memory model documentation in
-tools/memory-model/Documentation and that goes into the RCU rules in
-*much* more detail, but simplified and much shortened: a
-"rcu_dereference()" could be seen as a much weaker form of
-"load_acquire": it's a barrier only to accesses that are
-data-dependencies, and if you turn a data dependency into a control
-dependency you have to then add specific barriers.
+> > [Omitted]
+>
+> Okay, fair. But it is easy to misunderstand the other items in your list =
+in
+> isolation.
 
-When a variable access is no longer about "this loads this value from
-memory", but is something much more high-level, trying to describe
-that is complete chaos. Plus the description gets to be so abstract
-that nobody understands it - neither the user of the language nor the
-person implementing the compiler.
+I agree, I should have made it unambiguous and made each item
+not require the context of other items, or have made the
+dependencies between items clearer, or some other way.
+I remember not liking the way I organized it, but did not
+improve it before sending, apologies.
 
-So I am personally - after having seen that complete failure as a
-by-stander - 100% convinced that the semantics of a language *should*
-be defined in terms of behavior, not in terms of syntax and types.
-Sure, you have to describe the syntax and type system *too*, but then
-you use those to explain the behavior and use the behavior to explain
-what the allowable optimizations are.
+> >>
+> >> [Omitted].
+> >
+> > I do not believe that you are correct when you write:
+> >
+> >      "Unlike sanitizers, Miri can actually catch everything."
+> >
+> > Critically and very importantly, unless I am mistaken about MIRI, and
+> > similar to sanitizers, MIRI only checks with runtime tests. That means
+> > that MIRI will not catch any undefined behavior that a test does
+> > not encounter. If a project's test coverage is poor, MIRI will not
+> > check a lot of the code when run with those tests. Please do
+> > correct me if I am mistaken about this. I am guessing that you
+> > meant this as well, but I do not get the impression that it is
+> > clear from your post.
+>
+> Okay, I may have misunderstood what you mean by "catch everything". All
+> sanitizers miss some UB that actually occurs in the given execution. This=
+ is
+> because they are inserted in the pipeline after a bunch of compiler-speci=
+fic
+> choices have already been made, potentially masking some UB. I'm not awar=
+e of a
+> sanitizer for sequence point violations. I am not aware of a sanitizer fo=
+r
+> strict aliasing or restrict. I am not aware of a sanitizer that detects U=
+B due
+> to out-of-bounds pointer arithmetic (I am not talking about OOB accesses;=
+ just
+> the arithmetic is already UB), or UB due to violations of "pointer lifeti=
+me end
+> zapping", or UB due to comparing pointers derived from different allocati=
+ons. Is
+> there a sanitizer that correctly models what exactly happens when a struc=
+t with
+> padding gets copied? The padding must be reset to be considered "uninitia=
+lized",
+> even if the entire struct was zero-initialized before. Most compilers imp=
+lement
+> such a copy as memcpy; a sanitizer would then miss this UB.
+>
+> In contrast, Miri checks for all the UB that is used anywhere in the Rust
+> compiler -- everything else would be a critical bug in either Miri or the=
+ compiler.
+> But yes, it only does so on the code paths you are actually testing. And =
+yes, it
+> is very slow.
 
-> So the Rust compiler promises nothing about the shape of the assembly
-> you will get, only about its "visible" behavior
+I may have been ambiguous again, or unclear or misleading,
+I need to work on that.
 
-Oh, absolutely. That should be the basic rule of optimization: you can
-do anything AT ALL, as long as the visible behavior is the same.
+The description you have here indicates that Miri is in many ways
+significantly better than sanitizers in general.
 
-> (and which exact memory access occurs when is generally
-> not considered "visible").
+I think it is more accurate of me to say that Miri in some aspects
+shares some of the advantages and disadvantages of sanitizers,
+and in other aspects is much better than sanitizers.
 
-.. but this really has to be part of it. It's obviously part of it
-when there might be aliases, but it's also part of it when there is
-_any_ question about threading and/or memory ordering.
+Is Miri the only one of its kind in the programming world?
+There are not many system languages in mass use, and
+those are the languages that first and foremost deal
+with undefined behavior. That would make Miri extra impressive.
 
-And just as an example: threading fundamentally introduces a notion of
-"aliasing" because different *threads* can access the same location
-concurrently. And that actually has real effects that a good language
-absolutely needs to deal with, even when there is absolutely *no*
-memory ordering or locking in the source code.
+>
 
-For example, it means that you cannot ever widen stores unless you
-know that the data you are touching is thread-local. Because the bytes
-*next* to you may not be things that you control.
+There are some issues in Rust that I am curious as to
+your views on. rustc or the Rust language has some type
+system holes, which still causes problems for rustc and
+their developers.
 
-It also *should* mean that a language must never *ever* rematerialize
-memory accesses (again, unless thread-local).
+    https://github.com/lcnr/solver-woes/issues/1
+    https://github.com/rust-lang/rust/issues/75992
 
-Seriously - I consider memory access rematerialization a huge bug, and
-both a security and correctness issue. I think it should be expressly
-forbidden in *any* language that claims to be reliablel.
-Rematerialization of memory accesses is a bug, and is *hugely* visible
-in the end result. It introduces active security issues and makes
-TOCTOU (Time-of-check to time-of-use) a much bigger problem than it
-needs to be.
+Those kinds of issues seem difficult to solve.
 
-So memory accesses need to be part of the "visible" rules.
+In your opinion, is it accurate to say that the Rust language
+developers are working on a new type system for
+Rust-the-language and a new solver for rustc, and that
+they are trying to make the new type system and new solver
+as backwards compatible as possible?
 
-I claim that C got that right with "volatile". What C got wrong was to
-move away from that concept, and _only_ have "volatile" defined in
-those terms. Because "volatile" on its own is not very good (and that
-"not very good" has nothing to do with the mess that C++ made of it).
-
-              Linus
+Best, VJ.
