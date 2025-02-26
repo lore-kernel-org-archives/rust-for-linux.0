@@ -1,120 +1,198 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE5724DFFC;
-	Wed, 26 Feb 2025 10:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7B64642D;
+	Wed, 26 Feb 2025 10:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740565856; cv=none; b=dP41ai0jeDahIdNATMEZ2dZlXYdTVHhlOG1byLy/tlEdbkUW/gghBVjBTyaP8toVSziAA6iahv7a3PD0d7ofACczi6M66hkmc1sK6A+2ftZVVvPpFmfCmnTSCgWuJYPIftWEBsBSDpqGm8cE9+XHqfKMPQrK99EVXnheWPHCVAo=
+	t=1740566378; cv=none; b=hzz9tSe3xEA0q0EL8VQqWgyZM8r5x5HAATcPUps09VY3EvgJhZVqLBeXLseJIdO7U+4oQavNwtns3C09IiUxhwg6NC5AHPqq9qAq96clSB3bUza8YMucUJvkzOdLCGRl4jriF8eGR2+wtqj3XkiMbLurkjlOwouSnDgnAk2Rzpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740565856; c=relaxed/simple;
-	bh=kBUtFhM8QF9lXl5OpGbCyIrYvEiAU3LRgYh6moTbcNk=;
+	s=arc-20240116; t=1740566378; c=relaxed/simple;
+	bh=z+ACc9/vEmMyxvrB3zAJly+TnJcjuVrM2NtlojVPahc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LIPQbe/ydLSYJpjxLISiYyQUPl0zGtYKbMqJDQRAWPBFIRHPC8AtMWMCD+rAKoMs41vA1o6xNOyqnHaYXZaVZeGdksvGkwjUjMnsnTTpA9aweEugoWJpVx83zdeKdo1t7TQ1ERXIM9iGPIR711p57zQmaVo4hm0sC+RllZYO+R4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x/z/PNKy; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=jFqegw9qu9L/N8SR9PxMkoYcgsQX4UuM/lilcDNlcaJ8QTEHHVFGCmNARLdgyyEgYkGQLxfB+goemz80C8FLBx8GDOiLOueC6mepMghsdMPhm9ftGUzuAxZPLvp+xZsF0Ooo7tjBQ06eQHDbKW7d80QXijBK/9XXbK7o27LFMus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BiWnfKXA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x/z/PNKy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7C58C4CEE2;
-	Wed, 26 Feb 2025 10:30:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740565855;
-	bh=kBUtFhM8QF9lXl5OpGbCyIrYvEiAU3LRgYh6moTbcNk=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BiWnfKXA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B92C4CED6;
+	Wed, 26 Feb 2025 10:39:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740566377;
+	bh=z+ACc9/vEmMyxvrB3zAJly+TnJcjuVrM2NtlojVPahc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=x/z/PNKyqA4PfaRNvSey27ZTn7J05bWCh1y6AuSHXaKbsuIZbgCgF5SfXl9GxP2Z7
-	 065ngG6haLk6ln7TkkSlWws7pfkhzxlXfPzhpjuytZpJR0F//RpCQLnhkfNJrpJhQK
-	 HRhuiH2KFKxSftKP77aaZn3LBM5y0sTRshzg8quY=
-Date: Wed, 26 Feb 2025 11:07:11 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Louis Chauvet <louis.chauvet@bootlin.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>, linux-kernel@vger.kernel.org,
-	Lyude Paul <lyude@redhat.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Liam Girdwood <lgirdwood@gmail.com>, Lukas Wunner <lukas@wunner.de>,
-	Mark Brown <broonie@kernel.org>,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Zijun Hu <quic_zijuhu@quicinc.com>, linux-usb@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Haneen Mohammed <hamohammed.sa@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Melissa Wen <melissa.srw@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	David Airlie <airlied@gmail.com>, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v4 9/9] drm/vkms: convert to use faux_device
-Message-ID: <2025022643-scouting-petticoat-492b@gregkh>
-References: <2025021023-sandstorm-precise-9f5d@gregkh>
- <2025021029-snout-swivel-9a45@gregkh>
- <Z6oPNmRo4XQQVEI8@louis-chauvet-laptop>
- <f1ea30fe-8cb8-41fd-bc85-d511c800e594@suse.de>
- <49cd8502-f11e-4ade-a3a0-b16ce0c6282f@bootlin.com>
+	b=BiWnfKXAgC/TYQa9VF3IfGq1FIaDa8/lsitIellUfrpvLbrymFLgoQvv7udZM89xr
+	 QNIk0whBQhCSjJ3D6q+OS+yO/UgMzGXeyaLTC75w0+WcYPE4T9D7jbHQbK7Ov4zJZU
+	 velRFQWDb7lx5Wz3TQrNXetlemsGPNBByNLpyvdarH4yout5zvVwEnYMzuNSlJqOMW
+	 MQ1WKg5RZnx8KWnlY+OOnkJ36Yj2DSfVYbMSRlBDZDozzrGSPInIQeo0OU3r5odrDb
+	 RIWTbZBGNvVLncJy11IdhwsJayvC4BX56qvQl67D4QHp9uN6h9UwKkRWE8jtPL1icW
+	 6r2YJU/EMsFng==
+Date: Wed, 26 Feb 2025 11:39:31 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, kernel@dakr.org,
+	a.hindborg@kernel.org, alex.gaynor@gmail.com,
+	benno.lossin@proton.me, bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net,
+	linux-kernel@vger.kernel.org, lyude@redhat.com,
+	mairacanal@riseup.net, ojeda@kernel.org, rafael@kernel.org,
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu
+Subject: Re: [PATCH 2/2] rust/faux: Add missing parent argument to
+ Registration::new()
+Message-ID: <Z77vYxUYVyFtW2lG@cassiopeiae>
+References: <ea2466c4d250ff953b3be9602a3671fb@dakr.org>
+ <20250226092339.989767-1-aliceryhl@google.com>
+ <Z77iHj56551mDybd@pollux>
+ <2025022659-spray-treble-759f@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <49cd8502-f11e-4ade-a3a0-b16ce0c6282f@bootlin.com>
+In-Reply-To: <2025022659-spray-treble-759f@gregkh>
 
-On Tue, Feb 25, 2025 at 02:51:40PM +0100, Louis Chauvet wrote:
-> 
-> 
-> Le 25/02/2025 à 12:41, Thomas Zimmermann a écrit :
-> > Hi
-> > 
-> > Am 10.02.25 um 15:37 schrieb Louis Chauvet:
-> > > On 10/02/25 - 13:30, Greg Kroah-Hartman wrote:
-> > > > The vkms driver does not need to create a platform device, as there is
-> > > > no real platform resources associated it,  it only did so because it was
-> > > > simple to do that in order to get a device to use for resource
-> > > > management of drm resources.  Change the driver to use the faux device
-> > > > instead as this is NOT a real platform device.
-> > > > 
-> > > > Cc: Louis Chauvet <louis.chauvet@bootlin.com>
-> > > > Cc: Haneen Mohammed <hamohammed.sa@gmail.com>
-> > > > Cc: Simona Vetter <simona@ffwll.ch>
-> > > > Cc: Melissa Wen <melissa.srw@gmail.com>
-> > > > Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> > > > Cc: Maxime Ripard <mripard@kernel.org>
-> > > > Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> > > > Cc: David Airlie <airlied@gmail.com>
-> > > > Cc: dri-devel@lists.freedesktop.org
-> > > > Reviewed-by: Lyude Paul <lyude@redhat.com>
-> > > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > 
-> > Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-> > 
-> > > Tested-by: Louis Chauvet <louis.chauvet@bootlin.com>
-> > > Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
+On Wed, Feb 26, 2025 at 10:58:17AM +0100, Greg KH wrote:
+> On Wed, Feb 26, 2025 at 10:42:54AM +0100, Danilo Krummrich wrote:
+> > On Wed, Feb 26, 2025 at 09:23:39AM +0000, Alice Ryhl wrote:
+> > > On Wed, Feb 26, 2025 at 10:06â€¯AM <kernel@dakr.org> wrote:
+> > > >
+> > > > On 2025-02-26 09:38, Alice Ryhl wrote:
+> > > > > On Tue, Feb 25, 2025 at 10:31â€¯PM Lyude Paul <lyude@redhat.com> wrote:
+> > > > >>
+> > > > >> A little late in the review of the faux device interface, we added the
+> > > > >> ability to specify a parent device when creating new faux devices -
+> > > > >> but
+> > > > >> this never got ported over to the rust bindings. So, let's add the
+> > > > >> missing
+> > > > >> argument now so we don't have to convert other users later down the
+> > > > >> line.
+> > > > >>
+> > > > >> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> > > > >> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > > >> ---
+> > > > >>  rust/kernel/faux.rs              | 10 ++++++++--
+> > > > >>  samples/rust/rust_driver_faux.rs |  2 +-
+> > > > >>  2 files changed, 9 insertions(+), 3 deletions(-)
+> > > > >>
+> > > > >> diff --git a/rust/kernel/faux.rs b/rust/kernel/faux.rs
+> > > > >> index 41751403cd868..ae99ea3d114ef 100644
+> > > > >> --- a/rust/kernel/faux.rs
+> > > > >> +++ b/rust/kernel/faux.rs
+> > > > >> @@ -23,11 +23,17 @@
+> > > > >>
+> > > > >>  impl Registration {
+> > > > >>      /// Create and register a new faux device with the given name.
+> > > > >> -    pub fn new(name: &CStr) -> Result<Self> {
+> > > > >> +    pub fn new(name: &CStr, parent: Option<&device::Device>) ->
+> > > > >> Result<Self> {
+> > > > >>          // SAFETY:
+> > > > >>          // - `name` is copied by this function into its own storage
+> > > > >>          // - `faux_ops` is safe to leave NULL according to the C API
+> > > > >> -        let dev = unsafe {
+> > > > >> bindings::faux_device_create(name.as_char_ptr(), null_mut(), null())
+> > > > >> };
+> > > > >> +        let dev = unsafe {
+> > > > >> +            bindings::faux_device_create(
+> > > > >> +                name.as_char_ptr(),
+> > > > >> +                parent.map_or(null_mut(), |p| p.as_raw()),
+> > > > >> +                null(),
+> > > > >
+> > > > > This function signature only requires that `parent` is valid for the
+> > > > > duration of this call to `new`, but `faux_device_create` stashes a
+> > > > > pointer without touching the refcount. How do you ensure that the
+> > > > > `parent` pointer does not become dangling?
+> > > >
+> > > > I was wondering the same, but it seems that the subsequent device_add()
+> > > > call takes care of that:
+> > > >
+> > > > https://elixir.bootlin.com/linux/v6.14-rc3/source/drivers/base/core.c#L3588
+> > > >
+> > > > device_del() drops the reference.
+> > > >
+> > > > This makes device->parent only valid for the duration between
+> > > > faux_device_create() and faux_device_remove().
+> > > >
+> > > > But this detail shouldnâ€™t be relevant for this API.
 > > > 
-> > > Thanks for the modification, it seems to work.
+> > > I think this could use a few more comments to explain it. E.g.:
+> > > 
+> > > diff --git a/drivers/base/faux.c b/drivers/base/faux.c
+> > > index 531e9d789ee0..674db8863d96 100644
+> > > --- a/drivers/base/faux.c
+> > > +++ b/drivers/base/faux.c
+> > > @@ -131,6 +131,7 @@ struct faux_device *faux_device_create_with_groups(const char *name,
+> > >  
+> > >         device_initialize(dev);
+> > >         dev->release = faux_device_release;
+> > > +       /* The refcount of dev->parent is incremented in device_add. */
 > > 
-> > Should this patch be merged through DRM trees? drm-misc-next is at
-> > v6.14-rc4 and has struct faux_device.
+> > Yeah, this one is a bit odd to rely on a subsequent device_add() call, it
+> > clearly deserves a comment.
 > 
-> Hi,
+> What do you mean?  That's the way the driver model works, a parent
+> always gets the reference count incremented as it can not go away until
+> all of the children are gone.
+
+That's all correct and I agree. I said it's a bit off because the reference is
+not taken in the pointer assignment in faux_device_create_with_groups(), i.e.
+
+	if (parent)
+		dev->parent = parent;
+
+but subsequently in device_add(). That doesn't make it obvious to the reader
+that the driver core does indeed do the correct thing.
+
 > 
-> I was not aware the faux-device was merged, as it is a new feature, I
-> expected it to reach drm-misc-next on 6.15-rc1.
-
-I added it to Linus's tree just so that DRM could get these changes into
-their tree now :)
-
-> I plan to merge [1] today/tomorrow (well tested with platform_device), and
-> then I will submit an updated version of this patch (only trivial conflicts,
-> but never tested with multiple VKMS devices).
+> So if you pass a parent pointer into a "create" function in the driver
+> core, it will be incremented, you don't have to worry about it.
 > 
-> [1]:https://lore.kernel.org/all/20250218101214.5790-1-jose.exposito89@gmail.com/
+> I don't understand the issue with the rust binding here, it's not saving
+> a pointer to the parent device, as long as it is valid going in, that's
+> all that matters.
 
-Great, thanks!
+There's none, that's what I pointed out earlier too. :-)
 
-greg k-h
+> 
+> 
+> 
+> > >         if (parent)
+> > >                 dev->parent = parent;
+> > >         else
+> > > diff --git a/rust/kernel/faux.rs b/rust/kernel/faux.rs
+> > > index 7673501ebe37..713ee6842e3f 100644
+> > > --- a/rust/kernel/faux.rs
+> > > +++ b/rust/kernel/faux.rs
+> > > @@ -28,6 +28,7 @@ pub fn new(name: &CStr, parent: Option<&device::Device>) -> Result<Self> {
+> > >          // SAFETY:
+> > >          // - `name` is copied by this function into its own storage
+> > >          // - `faux_ops` is safe to leave NULL according to the C API
+> > > +        // - `faux_device_create` ensures that `parent` stays alive until `faux_device_destroy`.
+> > 
+> > Not sure that's a safety requirement for faux_device_create().
+> 
+> It's by default what the driver model does for you.
+> 
+> > The typical convention is that a caller must hold a reference to the object
+> > behind the pointer when passing it to another function. If the callee decides
+> > to store the pointer elsewhere, it's on the callee to take an additional
+> > reference.
+> 
+> Exactly, the driver core handles this.
+
+Agreed.
+
+> 
+> > I think if we want to add something to the safety comment, it should be somthing
+> > along the line of "the type of `parent` implies that for the duration of this
+> > call `parent` is a valid device with a non-zero reference count".
+> 
+> I don't understand the need for any safety comment about the parent
+> here.  Again, as long as it is valid when the call is made, that is all
+> that is needed.
+
+Right, and we could mention that in the safety comment that something of the
+type `&device::Device` is indeed valid by definition and hence fullfills the
+requirement of faux_device_create() to get a valid pointer (or NULL).
