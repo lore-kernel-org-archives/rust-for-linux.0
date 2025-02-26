@@ -1,16 +1,16 @@
 Received: from hs01.dakr.org (hs01.dakr.org [173.249.23.66])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFE72135C8;
-	Wed, 26 Feb 2025 09:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A4181E1DE8;
+	Wed, 26 Feb 2025 09:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.249.23.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740560901; cv=none; b=pr7nlxZVT5fJaRK1QnqV99GOzOAwYyZcL5UXPxOgUoNu7rZDW5P11I/bMTKQJeYuvwHAd8idNroA483YsoEExdL/E0PxzvHhoeqVhWnkMmqI1SqHPtAkwTfbK1X+8EpASSAsvLwwTE+BL6jq/YTGC27eXFk85rJg8AmhjNcXbB0=
+	t=1740561200; cv=none; b=L72UYsZHY/fskUohDPObskYS/Fas/gZQYYKdLol2yt0JsmoeY/JBqKu6N2WciZbkuWmarvBKt5Qz0396XJn4qiTEcgRr3EmKF8rOfx+k6fAxPJ8THcf5436vSrJLl6lBcoS+K9iaJ+X4h8otXlDtfIVV50wyN5tLKo4rqI+rpR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740560901; c=relaxed/simple;
+	s=arc-20240116; t=1740561200; c=relaxed/simple;
 	bh=wqLvG3y2UMgVHqqoGv6tQ+X1KjSHy56FGjOmdX6Uhcw=;
 	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=Imyukr2qaAb3v1BI3M83SQEWILJ+FWu4KHw7Bj6wpSssnjS8ESNWy5Q8LWRrDab9S7aQK/KxnpOEiARElHBp/XCXVavAuCg6kqi7+BzG4FIxBayVyWiM2sh2KRzpgcICtwjJc+qiQCRzbp4odkkjiicBloh4j24wFTaIlCUvK20=
+	 Message-ID:Content-Type; b=rKaZuVkhGiuMEZQqwFRiV2BdtFAT8O/8o4DWz/L3T3eZdJDDsZiUv1j0xwhuGA7gcIuJNK9HyfDkm60qNT8aVQKr1b/JyeRy+PddeUMKsH0koG+FswPNQF9Cxqvr0yCaib+CgDEcr3FlubtobPfnzFMv1hYPWiayyY4KahCTZ18=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dakr.org; spf=pass smtp.mailfrom=dakr.org; arc=none smtp.client-ip=173.249.23.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dakr.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dakr.org
@@ -20,7 +20,7 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 26 Feb 2025 10:05:48 +0100
+Date: Wed, 26 Feb 2025 10:03:42 +0100
 From: kernel@dakr.org
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org, Greg
@@ -43,6 +43,7 @@ X-Sender: kernel@dakr.org
 Content-Type: text/plain; charset=UTF-8;
  format=flowed
 Content-Transfer-Encoding: 8bit
+Message-ID: <20250226090342.J142eqstLp0nreEJSUvOohqjOxOR3zrZydbUZO2It7w@z>
 
 On 2025-02-26 09:38, Alice Ryhl wrote:
 > On Tue, Feb 25, 2025 at 10:31 PM Lyude Paul <lyude@redhat.com> wrote:
