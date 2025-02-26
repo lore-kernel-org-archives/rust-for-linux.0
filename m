@@ -1,87 +1,76 @@
-Received: from r-passerv.ralfj.de (r-passerv.ralfj.de [109.230.236.95])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C92218ACA;
-	Wed, 26 Feb 2025 16:10:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.230.236.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0D221ADDB;
+	Wed, 26 Feb 2025 16:17:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740586253; cv=none; b=QCYWHLmw5x5awzR5FwAUFY0p343QBXZ1srrGFzP8LCLFrMvtOW7r8upP2eNLSgjGMSgMhfOJHFI/0+jUNyjYW7FrzYV1n6l4/DkHqPWcM6lAoJyMFia/9V9cogdBtZAPD4GoGhqZyd3yIiWZb/XmMpWQ8C7jXiIrQlUTD+/cq9o=
+	t=1740586652; cv=none; b=Uk+VOOpxMcRZaYHtj4RvnDsi3GMf0CYcdKWSg56yK7qgCYPgxum+T+qqoxHVCIR+TMyBcn4kOin2SB9zbRRVaDJEOB4cLpe3u489sTMZFz9dDI5QyTfVx0tNH/Q2BKAV3ngDM6LEIh3eMVxQlzI70KU/66LGz5iwMOT3pj7aTzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740586253; c=relaxed/simple;
-	bh=Sh654BeCHVU+iFhxxMO6lVNtnSopA0tl8/OEVey77ig=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jyx9neWAVuk0qultHdE4Nf9nNPc4lxCOLWRnGOBvWjb0JwIKQe4EuBTUjAfXpeMZMajItPZl01TaOMRfPDY8CMReEtFTlCh53yI8wJmzqqxUjHO1dUZeWVqUi8Kn+BOaAgNV6c5IZTxlARLjCUWM7OVuNDQxC3N97riM2aIR3Xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=Wn+KczOZ; arc=none smtp.client-ip=109.230.236.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ralfj.de
+	s=arc-20240116; t=1740586652; c=relaxed/simple;
+	bh=hTDll0v44fX4PzBDNzX/XDQI/T4ea8XLw46b2NQU8Os=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pAIgEy09ipUitZjJ4ju/f+YDeW7PV2TUgHBhFSHdJl7StA9m+Y9bxjD7+6s2PckgagzzbjG1MBomJ3Kuh0O2rBn8Ccy5nC45ra5i7Rj442kP8mdF3vfzdOQs5opOsTCg9si3sDE9KOgfFmKk3/DnB1IL8rGZEbpHI6q9ocKXgMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rfYmzpHJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="Wn+KczOZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ralfj.de; s=mail;
-	t=1740586250; bh=Sh654BeCHVU+iFhxxMO6lVNtnSopA0tl8/OEVey77ig=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Wn+KczOZrYKVjRn3aRSmjZmCnB1ZJqx1LAo17jSD/OrwiaxU6Ek0olkA8e2zlvXfv
-	 VThbkFO4/EvQIznrKVYuSIixZPPcq0J5ZvBqNihy6KGk2qLFllrM5/X+v0NQGh6A/i
-	 +FiFcIwY7+E1qA85n3XQdU01pNJEO28+nBFB/fPc=
-Received: from [IPV6:2001:67c:10ec:5784:8000::87] (2001-67c-10ec-5784-8000--87.net6.ethz.ch [IPv6:2001:67c:10ec:5784:8000::87])
-	by r-passerv.ralfj.de (Postfix) with ESMTPSA id F38692052D08;
-	Wed, 26 Feb 2025 17:10:49 +0100 (CET)
-Message-ID: <6983015e-4d6a-44d4-9f2e-203688263018@ralfj.de>
-Date: Wed, 26 Feb 2025 17:10:49 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rfYmzpHJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD82BC4CED6;
+	Wed, 26 Feb 2025 16:17:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740586652;
+	bh=hTDll0v44fX4PzBDNzX/XDQI/T4ea8XLw46b2NQU8Os=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rfYmzpHJx9xKYxDxXxz6F9KACvPpNPyeyEnDO9vWos6F335nFfvdRB6I7GscMvB5w
+	 wsOpFGOVsjoxIw26RKUQPZLmzdr7iUO9K1BpSJMrKf6FYwEDMxHdihKvHeqC6oxVVp
+	 LQNXnVwKPE/ArrjdryToY5fEkzcO/goFD9956nSrqlOtyY8eBCDLvB9tzfJe7rk5m+
+	 LjbcONHfFViZdN5/NB2PPfcnRdWC+zAucOAd/fWDZpTmOW6ZIegCn2opd+6CSh3GmT
+	 M+ixpoQfd1NPfeyZJ6h6MzWGWKr7KfcWI80REoFdHTg8SyXwUFSVlyc1IEdoVxMKGy
+	 5JONwROT2rEvg==
+Date: Wed, 26 Feb 2025 17:17:29 +0100
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>,
+	Dirk Behme <dirk.behme@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v9 13/13] rust: hrtimer: add maintainer entry
+Message-ID: <Z78-mVAHdSq1zbJr@localhost.localdomain>
+References: <20250224-hrtimer-v3-v6-12-rc2-v9-0-5bd3bf0ce6cc@kernel.org>
+ <20250224-hrtimer-v3-v6-12-rc2-v9-13-5bd3bf0ce6cc@kernel.org>
+ <Z7yT5XU5gAm0ZCZD@Mac.home>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: C aggregate passing (Rust kernel policy)
-To: Ventura Jack <venturajack85@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Kent Overstreet <kent.overstreet@linux.dev>, Gary Guo <gary@garyguo.net>,
- airlied@gmail.com, boqun.feng@gmail.com, david.laight.linux@gmail.com,
- ej@inai.de, gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com,
- ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
- miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
-References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
- <20250222141521.1fe24871@eugeo>
- <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
- <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
- <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
- <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
- <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
- <CAFJgqgREAj-eP-d244WpqO-9H48ajZh83AxE31GqoONZ=DJe-g@mail.gmail.com>
- <CAH5fLghEMtT663SNogAGad-qk7umefGeBKbm+QjKKzoskjOubw@mail.gmail.com>
- <CAFJgqgRxfTVxrWja=ZW=mTj1ShPE5s-atAqxzMOq5poajMh=4A@mail.gmail.com>
- <91dbba64-ade3-4e46-854e-87cd9ecaa689@ralfj.de>
- <CAFJgqgTTgy=yae68AE29oJQc7Bi+NvkgsrBtOkVUvRt1O0GzSQ@mail.gmail.com>
-Content-Language: en-US, de-DE
-From: Ralf Jung <post@ralfj.de>
-In-Reply-To: <CAFJgqgTTgy=yae68AE29oJQc7Bi+NvkgsrBtOkVUvRt1O0GzSQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Z7yT5XU5gAm0ZCZD@Mac.home>
 
-Hi,
-
->> [Omitted] (However, verification tools are
->> in the works as well, and thanks to Miri we have a very good idea of what
->> exactly it is that these tools have to check for.) [Omitted]
+Le Mon, Feb 24, 2025 at 07:44:37AM -0800, Boqun Feng a écrit :
+> On Mon, Feb 24, 2025 at 01:03:47PM +0100, Andreas Hindborg wrote:
+> > Add Andreas Hindborg as maintainer for Rust `hrtimer` abstractions. Also
+> > add Boqun Feng as reviewer.
+> > 
+> > Acked-by: Boqun Feng <boqun.feng@gmail.com>
+> > Acked-by: Frederic Weisbecker <frederic@kernel.org>
 > 
-> Verification as in static verification? That is some interesting and
-> exciting stuff if so.
+> Frederic, since you've reviewed the series, and we certainly need your
+> expertise here, do you want to be an reviewer in this maintainer entry
+> (to watch how we are doing maybe ;-))?
 
-Yes. There's various projects, from bounded model checkers (Kani) that can 
-"only" statically guarantee "all executions that run loops at most N times are 
-fine" to full-fledged static verification tools (Gillian-Rust, VeriFast, Verus, 
-Prusti, RefinedRust -- just to mention the ones that support unsafe code). None 
-of the latter tools is production-ready yet, and some will always stay research 
-prototypes, but there's a lot of work going on, and having a precise model of 
-the entire Abstract Machine that is blessed by the compiler devs (i.e., Miri) is 
-a key part for this to work. It'll be even better when this Abstract Machine 
-exists not just implicitly in Miri but explicitly in a Rust Specification, and 
-is subject to stability guarantees -- and we'll get there, but it'll take some 
-more time. :)
+Yes indeed! Please include me as a reviewer!
 
-Kind regards,
-Ralf
-
+Thanks!
