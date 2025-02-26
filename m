@@ -1,101 +1,97 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384BE24634F;
-	Wed, 26 Feb 2025 19:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8C1254B0D;
+	Wed, 26 Feb 2025 19:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740598811; cv=none; b=VwA35YsC2SgfKbPXib6K3f9Ix/KC1MGNG0GjTko1E2/mZWdl65y3S4eJ0NTMCVVjZTIhF94Q0+0t2ZCKvz0IGir6vIzpiHZleJqvspbWlQ4te0LToGkMcvY7DAJH9OtIv1e4rwU+lJUYad+6+l/NSJhreFK7ZqzrRQqJz3PxOBM=
+	t=1740599261; cv=none; b=pZWD5WAf07lf2eo6XzvRqhTTd9jDzcqchBlNLGpH7LuqmUdTf7IbvnfBK3VfnNgJEytvqLDgplr5c2uWZzXMDh9WRtpRY7nTawlH1yJF8wUBQ3uOcU2hLf75x5WGPDOWN7G3TjGu0TTjvYvE57KPjJYFmucw0GAshsPLZJjoJps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740598811; c=relaxed/simple;
-	bh=iqsdq2p5uze2ya4zhfPOi6HCsOmbEwMOmKjx129lr6A=;
+	s=arc-20240116; t=1740599261; c=relaxed/simple;
+	bh=kSTQh4ZFrGmP0eQD82eB6qaqkRhJbOfdSRo8DWtPJXY=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=lGrrgI3hiwqetymkLvnOJxWVXGKnrkY0xrB8o+IaP60mTMIXCCQRo5lCOj0uNkiaL+Dyo1MYHWx4ulYOAcGQrG8XdiuWoleu0VE7vhimWyg6aCaxg3Y/vhvJlnjh4ImxhTawro43QVJAVpwqeCeVmf1zOHP2B5dj35oHGp/4otE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LXp5HnXI; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=Oi+WZWrugsAjhVnNkwAlhHXjdiHBDeMxmLMFf1beJbZLBZfHhMhTxGNP9w9kUJS72Btg8k5XqjXCpnGMFFY0cn4UIfN5Wm18ZtO2Cuz+rt6NKRnLCp9dhZ4knz0Vcgp3twDxUl5m4lLd+ule8NlW/rj/Eqwbr/xrXAoTlH+HYdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ARv1ZI1i; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LXp5HnXI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DDDDC4CEE7;
-	Wed, 26 Feb 2025 19:40:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ARv1ZI1i"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D51C4CED6;
+	Wed, 26 Feb 2025 19:47:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740598809;
-	bh=iqsdq2p5uze2ya4zhfPOi6HCsOmbEwMOmKjx129lr6A=;
+	s=k20201202; t=1740599260;
+	bh=kSTQh4ZFrGmP0eQD82eB6qaqkRhJbOfdSRo8DWtPJXY=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=LXp5HnXIU93C2GpA3Ioh6xBPLKGb8n8eIb+n3KK6ZSi1RAFO4i4taQT9DLrlTqon+
-	 WiV6Z1KTeHYfDqm3YFqRhVwZdM39aV1c8V2vWUwOZmWw/UQ+4hX7LAAJjhIZrjBDAv
-	 WvpJjLhC/ghljgU+UxQHaGGXqcRSgSD3PrDhH9Q0XU2yBMPyBoqd1MkxjstC8XAKyi
-	 yOvauVBlwqVQn3ww+Kp0pNKv87DrfUVn9T64QJB7VRRE7GhW2Wmo1KN5VWOAkIT5DU
-	 7sKHC4gsUm+W3gBQMw5f+tktMBaapO5D9ALsazdXLDfeLGnK+g7WnYCQUAzsLu2FPi
-	 CVds/UXAMdeQw==
+	b=ARv1ZI1iWU+FJN4wd1NHMNnWSE2HLfdqhs2UhZvvlAhE7ok3kR9USW8KWuKX9Y9jW
+	 QW0ISZG7qV7vcsiapztWdMz2XTz5tP4M7gWKHV/l0UB8BUoYuzDDKxk7vUs9nLlurV
+	 Q5o0tCJDn6b9TxMmqleEqrPxPfXF2kOjaON7tu+jhkkMbxxnohoJvPZRjx8wxJpA1G
+	 dYMJgCYDbNSivxfHWFZF77p+NJY7OXeIHnio7KeWgu2x/HrXzBFdl8F0ZOLNyyBmb7
+	 cuc8aCsAswYU0+vB5A8+Z3thcNBcMgX0IYpuHyE8uLRdSKeThpk+rIaJoGgb/8GYvD
+	 Q6VI7ehdWy+Qg==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>
-Cc: <linux-kernel@vger.kernel.org>,  <rust-for-linux@vger.kernel.org>,
-  <x86@kernel.org>,  <linux-riscv@lists.infradead.org>,
-  <linux-arm-kernel@lists.infradead.org>,  <loongarch@lists.linux.dev>,
-  <tglx@linutronix.de>,  <mingo@redhat.com>,  <bp@alien8.de>,
-  <dave.hansen@linux.intel.com>,  <peterz@infradead.org>,  <hpa@zytor.com>,
-  <paul.walmsley@sifive.com>,  <palmer@dabbelt.com>,
-  <aou@eecs.berkeley.edu>,  <catalin.marinas@arm.com>,  <will@kernel.org>,
-  <chenhuacai@kernel.org>,  <kernel@xen0n.name>,
-  <tangyouling@loongson.cn>,  <hejinyang@loongson.cn>,
-  <yangtiezhu@loongson.cn>,  <ojeda@kernel.org>,  <alex.gaynor@gmail.com>,
-  <boqun.feng@gmail.com>,  <gary@garyguo.net>,  <bjorn3_gh@protonmail.com>,
-  <benno.lossin@proton.me>,  <aliceryhl@google.com>,  <tmgross@umich.edu>
-Subject: Re: [PATCH v3 0/5] rust: Add bug/warn abstractions
-In-Reply-To: <20250213135759.190006-1-fujita.tomonori@gmail.com> (FUJITA
-	Tomonori's message of "Thu, 13 Feb 2025 22:57:54 +0900")
-References: <yy_ESUuchCjlaGIJHzCPAcP_d9ucSD0CGXaoZNNkY7BmN5Ch1J8avsA9QpKO5LkTjlGpu99jl8NrFl5NFSQXuw==@protonmail.internalid>
-	<20250213135759.190006-1-fujita.tomonori@gmail.com>
+To: "Frederic Weisbecker" <frederic@kernel.org>
+Cc: "Boqun Feng" <boqun.feng@gmail.com>,  "Miguel Ojeda"
+ <miguel.ojeda.sandonis@gmail.com>,  "Anna-Maria Behnsen"
+ <anna-maria@linutronix.de>,  "Thomas Gleixner" <tglx@linutronix.de>,
+  "Danilo Krummrich" <dakr@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
+ =?utf-8?Q?=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
+  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
+  "Lyude Paul" <lyude@redhat.com>,  "Guangbo Cui" <2407018371@qq.com>,
+  "Dirk Behme" <dirk.behme@gmail.com>,  "Daniel Almeida"
+ <daniel.almeida@collabora.com>,  "Tamir Duberstein" <tamird@gmail.com>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
+  "Miguel Ojeda" <ojeda@kernel.org>
+Subject: Re: [PATCH v9 01/13] rust: hrtimer: introduce hrtimer support
+In-Reply-To: <Z79B4brrB_-SBstl@localhost.localdomain> (Frederic Weisbecker's
+	message of "Wed, 26 Feb 2025 17:31:29 +0100")
+References: <Z7yUTNEg6gMW0G7b@Mac.home>
+	<CANiq72kx31exTFohb3+9_=PGUq_JtqpCvG8=oQUc_gZB+De5og@mail.gmail.com>
+	<Z7ye0MsACNWe7Mbr@Mac.home>
+	<CANiq72=qayfPk+W4BRiXe9xBGcgP2zPf-Q3K6GXTg8MKy-Kg=Q@mail.gmail.com>
+	<WlwmQ3r8VXTu77m77jclUgLjPh65ztwxUu_mXaElarFHBBiG2kWi0ZLYWNxKAUF9LK2QYrOWhtlFYhwaaNjYRA==@protonmail.internalid>
+	<Z7yl-LsSkVIDAfMF@Mac.home> <87msebyxtv.fsf@kernel.org>
+	<4UoaifxB7JgBVKsNQyFR_T8yc3Vtn5TLAEdxdXrojNmOzJSEncopauEyjDpnbqzr8Z74ZWjd_N-bB-BwBS-7aQ==@protonmail.internalid>
+	<Z7zF8KF9qTCr_n4l@boqun-archlinux> <87bjuryvb0.fsf@kernel.org>
+	<YHV6PAwDnW48w8pF0E79C4QpO8sH_MSXF7-b9H_kxDetoAA3tlCUC7Udr_u0UUoBrelCaFusL4F8HyiOHr9qgw==@protonmail.internalid>
+	<Z79B4brrB_-SBstl@localhost.localdomain>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Wed, 26 Feb 2025 20:39:45 +0100
-Message-ID: <8734g0v6ke.fsf@kernel.org>
+Date: Wed, 26 Feb 2025 20:41:27 +0100
+Message-ID: <87wmdctrx4.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
+"Frederic Weisbecker" <frederic@kernel.org> writes:
 
-Hi Fujita,
+> Le Mon, Feb 24, 2025 at 08:52:35PM +0100, Andreas Hindborg a =C3=A9crit :
+>> > It's of course up to hrtimer maintainers. But I personally nack this
+>> > kconfig, because it's not necessary, and hrtimer API has been stable f=
+or
+>> > a while.
+>>
+>> Having the switch is fine for me, removing it is fine as well. It's just
+>> an added convenience that might come in handy. But having this kconfig
+>> very close to zero overhead, so I do not really understand your
+>> objection. I would like to better understand your reasoning.
+>
+> If you choose to make a such a Kconfig switch, it would only make sense
+> in order to spare some bytes when no drivers use it for example. But if
+> you're afraid that the Rust binding is on the way while the core is
+> changing some API then I guess simply disabling Rust would be enough for
+> testing.
+>
+> I don't think it's necessary (unless it's strictly selected by drivers).
+> But it's your call.
 
-"FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
-
-> This patchset adds warn_on and warn_on_once macros with the bug/warn
-> abstraction.
->
-> Wrapping C's BUG/WARN macros does not work well for x86, RISC-V,
-> ARM64, and LoongArch. Rust code needs to directly execute the same
-> assembly code used on the C side. To avoid duplicating the assembly
-> code, this approach mirrors what the static branch code does: it
-> generates the assembly code for Rust using the C preprocessor at
-> compile time.
->
-> The 1st to 4th patches export the BUG/WARN assembly code for Rust on
-> each architecture, with no functional changes on the C side. The
-> changes for x86 and RISC-V are straightforward. However, the ARM64 and
-> LoongArch assembly code are designed differently; they are used by
-> both C inline assembly and assembly code. As a result, sharing this
-> code with Rust is complicated.
->
-> The last patch adds the bug abstraction with warn_on and warn_on_once
-> implementations.
->
-> This has been tested on x86, ARM64, and RISC-V (QEMU), with only a
-> compile test performed for LoongArch.
->
-> The assembly code can be used for both BUG and WARN, but currently
-> only supports warn_on and warn_on_once. I will work on the remaining
-> functionality after this abstraction is merged.
->
-
-How does this series compare/overlap with [1] ?
+I that case, I will drop it. Thanks for chiming in.
 
 
 Best regards,
 Andreas Hindborg
 
-
-
-[1] https://lore.kernel.org/all/20241126-pr_once_macros-v4-0-410b8ca9643e@tuta.io/
 
