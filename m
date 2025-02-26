@@ -1,146 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF2341C71;
-	Wed, 26 Feb 2025 13:44:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81D4218858;
+	Wed, 26 Feb 2025 13:52:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740577442; cv=none; b=otPU6DrqiFVhoBCJR46UcBZTldy0Htid2DzPo2UIr832iEEePB0NUX35VqwpPgCxDjbV8XHp9jsDAZr5E+VnqzJVJNVLIjHnSBDqvgd0mSopJ158hV4neIr20kM3hzQfoijAG+rvYUYU3xjXcFcFB9hBkAHC5E6rIif25I4df7Y=
+	t=1740577981; cv=none; b=C7YMWR8xZ912a1EuHQQArp7ss7upBKXn/mwQZhxfp2DHK0AToB1Um4t6HN8Ykn8wD+1Ds/Ce74gVgBChMGuiVrw3daJ8I2uxSgqIReQhgvB5YVj1/HRp8MF/I3+IPpO1g8ApNse8e3/GnZsipbtkL5jvCgZAh2wbRCqMt69OWBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740577442; c=relaxed/simple;
-	bh=Tep2lPN+rpct37RYjZ6pG1IE0OH1XeA8ffgdNjYTmdk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=DusDiAofp+0b7MHAkjzDt9x1tmhaS/UEttDeosTNMJyIubmCgWTqrMYiaRep9wfwSURsIdqg+qxktqHZ0//sA9xFl4ZXJXC9RQyyagXAy79vsj4FjkaMMh2y2dLSgr2/km21FYIMXkrvckdCXwcZBSpV9IxR2CNQsX3STtdHd1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B6cR4tOn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740577981; c=relaxed/simple;
+	bh=JIQw7BJUPcwv3MicIWTcVIfMUs8AGxVyXTCLAcwQkQs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OthfjH/GJeP43ZkRdh6vYjyudvP9wbdgKOvJUQW9AcjlmsmEB7TZJhRkrTwpUzh0Jy8K9GaxFM26aOdPUojq7LmUpqWHhnDF1xpZRFwBlYrPQiIC7sRTlSrrAHuXbipaiFOBnlXJWRqdPi7fQIvFmnN8ZQnepzRA4KBkvBiPGUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kECxJz4l; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B6cR4tOn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E91BC4CED6;
-	Wed, 26 Feb 2025 13:43:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740577441;
-	bh=Tep2lPN+rpct37RYjZ6pG1IE0OH1XeA8ffgdNjYTmdk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=B6cR4tOnA/dc6AUxmnq8mg22Rxr4zD1iC9tp//6N2Xq7pVIkHYTRr7/6oKtgsdnA+
-	 Gfni78fLcV6fRZ4tC9VjliGOnxVdM0G4YnfExsDn7DVrEVpq2dnv4ns4nQ7filLPUS
-	 TJ9ASSSS50WBHscudXgtQY91oFy8JozPLfuYggSD/ousMA5ii/3xQKcWiL3GWIOW3M
-	 YhJmUhCi3iXIuNYNFJj1LYAc44TT6TJPLH1yI5JJPzUrEZc+LZi45rxRLJzTjh/aKz
-	 buVaT/PugBHmpz96g4rnfgo7Ep3OpVuYknshYmF+m7g2taLbxmnzcKFAKKoSWX5An5
-	 fSnLo+WRvGw2g==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Lyude Paul" <lyude@redhat.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Anna-Maria Behnsen"
- <anna-maria@linutronix.de>,  "Frederic Weisbecker" <frederic@kernel.org>,
-  "Thomas Gleixner" <tglx@linutronix.de>,  "Danilo Krummrich"
- <dakr@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
- <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
- =?utf-8?Q?=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
-  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Guangbo Cui" <2407018371@qq.com>,  "Dirk Behme" <dirk.behme@gmail.com>,
-  "Daniel Almeida" <daniel.almeida@collabora.com>,  "Tamir Duberstein"
- <tamird@gmail.com>,  <rust-for-linux@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v9 04/13] rust: hrtimer: allow timer restart from timer
- handler
-In-Reply-To: <6c2a299ec594fbaae294037e36c78cb37aaa7f33.camel@redhat.com>
-	(Lyude Paul's message of "Tue, 25 Feb 2025 16:46:56 -0500")
-References: <20250224-hrtimer-v3-v6-12-rc2-v9-0-5bd3bf0ce6cc@kernel.org>
-	<20250224-hrtimer-v3-v6-12-rc2-v9-4-5bd3bf0ce6cc@kernel.org>
-	<bbtTga1W7J8Ur61sLLE4K8a3B0oe5iDhuHVNs9dTAf8EX2PUf_jloAt7U3xki4WZB3IkWyPHErVMMLx_vwXXlg==@protonmail.internalid>
-	<0fb37c2b2d1a28d2096ffdb08df15404d870d68a.camel@redhat.com>
-	<877c5exuwu.fsf@kernel.org>
-	<ei-wpaJk-37J66majBflBYe_VA0QU4gcT2mJiTXB-kkkGHDXKoWZN2DVpKkKxCtmVFBcaVsCSZvHweJMEupknQ==@protonmail.internalid>
-	<6c2a299ec594fbaae294037e36c78cb37aaa7f33.camel@redhat.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Wed, 26 Feb 2025 14:43:49 +0100
-Message-ID: <878qpsvn1m.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kECxJz4l"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-22333fdc85aso1074285ad.3;
+        Wed, 26 Feb 2025 05:52:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740577979; x=1741182779; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JIQw7BJUPcwv3MicIWTcVIfMUs8AGxVyXTCLAcwQkQs=;
+        b=kECxJz4lBWJRTV+KWkRDIceDoqmHBMDEZFauCGpk5COAghl6hX42FQDyleEOml0PA2
+         7ngypTHR9loQl/nK7iD4u0Eosrq2yHq/tVeMz2t0UdCdnjNJWwZ3nxoqQU3KNTrRIiPG
+         5sV8tpuKbg/sz8rKUrBAXc+zMRBySPYmIfwigtZaM7+jZORfo2nU1qJkpa4UWkPFwHGf
+         czAU2RwMBB5lXjfEhadqFssX7QdkjK5qpzq7q3+MJoiOqDzizpSRlzsaibzJZbyd/IaZ
+         noNGaMeYZZwYoBhrRQjztlEAOQHok4fy0vYz2p8XHTu77tfSq9tyEY2sl2LqDPIQrJ1k
+         UdGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740577979; x=1741182779;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JIQw7BJUPcwv3MicIWTcVIfMUs8AGxVyXTCLAcwQkQs=;
+        b=C7fmf3S+i6HZVonkmhlD3bB6/pS2aMrU5cg8j4aqUUZWrsii9a1G1NXUuTHfy5RnxB
+         J09Nx9ljweBq5l0b9VwiRVOeplu/zwNwt5/WRnRlnfESTqo3mflJkgiQk2uawy3g5703
+         2aMom4QwSroWBwv5AMHhqv2K8R4BD3EWy0zS9C7TsLO+M5YkRZ4STc4ANKrwMGmaZxoJ
+         xOnvnsBNYECoBFQsdbqaNLQg1dgb7Di/Apn2uWJVIHcYo6aSM+lDK1EqGp3784tRqnnw
+         1ll84AgNap3a1MZJEDWi+lbsehHVYecR4h39DrYmAEmvHXlUaXrS/LvfPN5f6xROFsAn
+         7CSw==
+X-Forwarded-Encrypted: i=1; AJvYcCU0ilgk+5B9cnWB5s/4bpBYRacf7Np+fYa5Iz5CvwfRdjrjjEABvcAHvwINeTj8Ni45ZsWTm+8jJpHzOvBASrg=@vger.kernel.org, AJvYcCVG/KP6KgZbM8kF62/7AAb+8V28LollJiS4p+3I5UESHKZhZ9WrnSV/INEi+yXKvXcKCC0gegCde10WXaU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpjjfoiTGMBEr9qAsk7bHlaIpURsW02kCGbwkAWtwu3YWDptgO
+	/V4JiAn2IzN6P0WH1rFCTXMzn4m7tnkAMGPwgufBQrXD7Xt0+WE6f2hpyC/QVv5U55pkndCKG1E
+	4ukqYsbEo4ZO5oQO7BYbLZgvbSY4=
+X-Gm-Gg: ASbGncsUf/s8N4x2g8T4kLnWWdKUH347AffyrSllZy94jP3ORCWgYNAnOPEM3b0W4PC
+	wYvzwKBeTUiDHeasINr1ADtaNYdDTAdx+NQnO6m9gDJ3/lHChNVhl1eaVzfS0V217kZHcj3ZE1c
+	grIAr0D30=
+X-Google-Smtp-Source: AGHT+IGyNP7dmuRW0tYnk3XLWBi3p+ESw1dXk4s/7QyJ5jvUAPUAW4M9pIGB3pYT1Jc+VKm/uOZMy3RV5rpaubS7JAw=
+X-Received: by 2002:a17:903:230e:b0:216:30f9:93c5 with SMTP id
+ d9443c01a7336-2219ff56b99mr134581255ad.6.1740577979041; Wed, 26 Feb 2025
+ 05:52:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
+ <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+ <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+ <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+ <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
+ <CAFJgqgREAj-eP-d244WpqO-9H48ajZh83AxE31GqoONZ=DJe-g@mail.gmail.com>
+ <CAH5fLghEMtT663SNogAGad-qk7umefGeBKbm+QjKKzoskjOubw@mail.gmail.com> <CAFJgqgRxfTVxrWja=ZW=mTj1ShPE5s-atAqxzMOq5poajMh=4A@mail.gmail.com>
+In-Reply-To: <CAFJgqgRxfTVxrWja=ZW=mTj1ShPE5s-atAqxzMOq5poajMh=4A@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 26 Feb 2025 14:52:45 +0100
+X-Gm-Features: AQ5f1Jrt6D-MHqK_yymi1qP2f2dLOB4ls7cibDYNXeHA2afziYghxadGGv1x-Sw
+Message-ID: <CANiq72mA4Pbx1BeCZdg7Os3FtGkrwx6T8_+=+-=-o9+TOMv+EA@mail.gmail.com>
+Subject: Re: C aggregate passing (Rust kernel policy)
+To: Ventura Jack <venturajack85@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Linus Torvalds <torvalds@linux-foundation.org>, 
+	Kent Overstreet <kent.overstreet@linux.dev>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
+	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
+	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, 
+	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Ralf Jung <post@ralfj.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-"Lyude Paul" <lyude@redhat.com> writes:
-
-> On Tue, 2025-02-25 at 09:58 +0100, Andreas Hindborg wrote:
->> "Lyude Paul" <lyude@redhat.com> writes:
->>
->> > On Mon, 2025-02-24 at 13:03 +0100, Andreas Hindborg wrote:
->> >
->> > Also, I feel like I might have asked this a few versions ago so hopefully i'm
->> > not asking again: but what's the reason for us not just using the
->> > discriminants of `HrTimerRestart` here:
->> >
->> > /// Restart policy for timers.
->> > #[repr(u32)]
->> > pub enum HrTimerRestart {
->> >     /// Timer should not be restarted.
->> >     NoRestart = bindings::hrtimer_restart_HRTIMER_NORESTART,
->> >     /// Timer should be restarted.
->> >     Restart = bindings::hrtimer_restart_HRTIMER_RESTART,
->> > }
->>
->> I forget if we discussed this, but it does not make much of a
->> difference, does it?
->>
->> With a Rust enum, we get a smaller storage type maybe with better
->> support for niche optimizations? And then pay a bit more for conversion.
->> All in all, I don't think it makes much difference.
+On Wed, Feb 26, 2025 at 1:36=E2=80=AFPM Ventura Jack <venturajack85@gmail.c=
+om> wrote:
 >
-> No idea about performance wise, but I -think- it would actually cut down on
-> the code that you need - particularly for the larger enums here. Mainly
-> because you only would need to manually specify each variant for converting
-> from bindings::hrtimer_restart to HrTimerRestart, but not the other way
-> around:
+> In a preprint paper, both stacked borrows and tree burrows are as
+> far as I can tell described as having false positives.
 >
->    /// Restart policy for timers.
->    #[repr(u32)]
->    pub enum HrTimerRestart {
->        /// Timer should not be restarted.
->        NoRestart = bindings::hrtimer_restart_HRTIMER_NORESTART,
->        /// Timer should be restarted.
->        Restart = bindings::hrtimer_restart_HRTIMER_RESTART,
->    }
->
->    impl From<bindings::hrtimer_restart> for HrTimerRestart {
->        fn from(value: u32) -> Self {
->            match value {
->                bindings::hrtimer_restart_HRTIMER_NORESTART => Self::NoRestart,
->                _ => Self::Restart,
->            }
->        }
->    }
->
->    impl From<HrTimerRestart> for bindings::hrtimer_restart {
->        fn from(value: HrTimerRestart) -> Self {
->            value as Self
->        }
->    }
+> Are you sure that both stacked borrows and tree borrows are
+> meant to be full models with no false positives and false negatives,
+> and no uncertainty, if I understand you correctly? It should be
+> noted that they are both works in progress.
 
-I was implementing this, and it is fine for `HrTimerRestart`, but for
-`HrTimerMode` it does not work out. We have multiple flags with the same
-value:
+I think you are mixing up two things: "a new model does not allow
+every single unsafe code pattern out there" with "a new model, if
+adopted, would still not be able to tell if something is UB or not".
 
-  error[E0081]: discriminant value `2` assigned more than once
-    --> /home/aeh/src/linux-rust/hrtimer/rust/kernel/time/hrtimer.rs:689:1
-      |
-  689 | pub enum HrTimerMode {
-      | ^^^^^^^^^^^^^^^^^^^^
-  ...
-  695 |     Pinned = bindings::hrtimer_mode_HRTIMER_MODE_PINNED,
-      |              ------------------------------------------ `2` assigned here
-  ...
-  702 |     AbsolutePinned = bindings::hrtimer_mode_HRTIMER_MODE_ABS_PINNED,
-      |                      ---------------------------------------------- `2` assigned here
+> The aliasing rules being tied to a specific compiler backend,
+> instead of a specification, might make it harder for other
+> Rust compilers, like gccrs, to implement the same behavior for
+> compiled programs, as what the sole major Rust compiler,
+> rustc, has of behavior for compiled programs.
 
+It is not "tied to a specific compiler backend". The reference (or
+e.g. the standard library implementation, which you mentioned) may
+mention LLVM, as well as other backends, but that does not imply the
+final rules will (or need to) refer to the LLVM reference. And even if
+a spec refers to a given revision of another spec (it is not
+uncommon), that is different from being "tied to a specific compiler
+backend".
 
-Which is unfortunate. I'll keep the old style for this one and convert
-the others where applicable.
+Moreover, if it makes it easier, another compiler could always assume less.
 
+> I am also skeptical of the apparent reliance on MIRI in the
+> blog post and by some other Rust developers, since
+> MiRI according to its own documentation cannot catch
+> everything. It is better not to rely on a sanitizer for trying
+> to figure out the correctness of a program. Sanitizers are
+> useful for purposes like mitigation and debugging, not
+> necessarily for determining correctness.
 
-Best regards,
-Andreas Hindborg
+Please see the earlier reply from Ralf on this.
 
-
+Cheers,
+Miguel
