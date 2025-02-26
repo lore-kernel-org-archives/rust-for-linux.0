@@ -1,32 +1,32 @@
 Received: from r-passerv.ralfj.de (r-passerv.ralfj.de [109.230.236.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E72A178372;
-	Wed, 26 Feb 2025 14:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4B120B1E1;
+	Wed, 26 Feb 2025 14:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.230.236.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740578501; cv=none; b=qQvRjTLQbj4bVemnaq6g55gOjc9FqjPn9jRg9oLBoajf6GyOoVb8iHwbg4ehKTfZivhrAEUrisjlrkm5C/cU48iuw21F/FeWYyI9obPlz2LoIUUz9YthH0aoizlGzIg+DmCQVGgOjDVSE7irF53f4rgNX4QHDMkqCNmVTbjiIFc=
+	t=1740578873; cv=none; b=CRAMFdSJ2Thzy4dNWTMP2wFzywxZ40cVNJ4bM66pda1H+q4HDZGY1UrpBc2DFsF9aAq7NyxZZqufcIaSlgg8euZopyD2S1iD+IHIQWdVJo5i8ORUxVyhf5HEhd6ughQIVf4URODbjfnrpryLw6f1d8l/P48+gZf6PDge0MUCvEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740578501; c=relaxed/simple;
-	bh=C6T6y2VPwiS4NutYlB6fzvkoRVEmILwql/V6Jy+Nz+c=;
+	s=arc-20240116; t=1740578873; c=relaxed/simple;
+	bh=1RGyt1eH4Ka/VMgXhtB72g/eaGbygk0TK7AcRiMEwl4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TqrhjdvaQlrQzOZ1muWNJJo7gvo305RMEk876bnGnBtf6syMRYH3NOtf/3AvRHFwdeD3f5eUWhbmcf1SRRVrl4U+4ivJHilF3+XY8ABa5caQVvbfd3LzDctuB/GEzWT8qEQGgicK0xfIo6L5R3qIuI9h3wTUUjzQK21NgLi+Mos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=4nwKJttn; arc=none smtp.client-ip=109.230.236.95
+	 In-Reply-To:Content-Type; b=O7wODRXtnaFmxRJfIanmXlEOw+lFdabQsJ4taqVLZ900tpnugf7YjvLpK2WwNgwyYaddT5vZYwNNX0YWSy3LQ4f9Bx4RxgMrE1DxqPnBy6G6wMjT8yF5IV1uS7Fb4BZesnIqLalzeDQaY9D/Nl564Woztu28oZOavbwnSl8hX1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=uJyNltEI; arc=none smtp.client-ip=109.230.236.95
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ralfj.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="4nwKJttn"
+	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="uJyNltEI"
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ralfj.de; s=mail;
-	t=1740578497; bh=C6T6y2VPwiS4NutYlB6fzvkoRVEmILwql/V6Jy+Nz+c=;
+	t=1740578870; bh=1RGyt1eH4Ka/VMgXhtB72g/eaGbygk0TK7AcRiMEwl4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=4nwKJttnZHo4VuQvR9nHx0Ib0D+sS113oe8qv8PSBghGoME2J9o5Ym0PhYsMbDj16
-	 O9rlOWhd100KpgNmZDR4Z31HQm8PvgpWserABy5YED/m/HlSq14hvTZ3y7ZklA1VP/
-	 1iSA7D6Df6vRvWHQl9FAVOlsJ27t2FKqxnYmlDio=
+	b=uJyNltEIfKJUxsnzBoiT1Utnuz3R9n029HSPfVPfL1PxUg4FdYgiZyFQrp7qbhxu3
+	 V+Qel1VciKGsdbkBUhG6V5s+EsA/q6RN557AFlpWbtcDin4iJjiiGY+1+6e9rZWMZJ
+	 AXSk3Zggg8TZek+Dv2quoeSZBrgpFXb6B2g1mRNM=
 Received: from [IPV6:2001:67c:10ec:5784:8000::87] (2001-67c-10ec-5784-8000--87.net6.ethz.ch [IPv6:2001:67c:10ec:5784:8000::87])
-	by r-passerv.ralfj.de (Postfix) with ESMTPSA id 4D2DD2052D08;
-	Wed, 26 Feb 2025 15:01:37 +0100 (CET)
-Message-ID: <04d1cf43-9efe-4597-a6a9-8f2b801ec049@ralfj.de>
-Date: Wed, 26 Feb 2025 15:01:36 +0100
+	by r-passerv.ralfj.de (Postfix) with ESMTPSA id E0FB72052D08;
+	Wed, 26 Feb 2025 15:07:49 +0100 (CET)
+Message-ID: <ca0cca13-2e00-419d-88c9-06faff6aaa08@ralfj.de>
+Date: Wed, 26 Feb 2025 15:07:49 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -36,13 +36,14 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: C aggregate passing (Rust kernel policy)
 To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
- Alice Ryhl <aliceryhl@google.com>, Ventura Jack <venturajack85@gmail.com>,
- Gary Guo <gary@garyguo.net>, airlied@gmail.com, boqun.feng@gmail.com,
- david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org,
- hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+ Ventura Jack <venturajack85@gmail.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>,
+ "H. Peter Anvin" <hpa@zytor.com>, Alice Ryhl <aliceryhl@google.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, Gary Guo <gary@garyguo.net>,
+ airlied@gmail.com, boqun.feng@gmail.com, david.laight.linux@gmail.com,
+ ej@inai.de, gregkh@linuxfoundation.org, hch@infradead.org,
+ ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
 References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
  <20250222141521.1fe24871@eugeo>
  <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
@@ -50,42 +51,38 @@ References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
  <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
  <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
  <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
- <CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com>
- <gqw7cvclnfa7x4xdz4vkns2msf2bqrms5ecxp2lwzbws7ab6dt@7zbli7qwiiz6>
- <CANiq72kd2eTaPMcYSiQ61tZ2nX0jLM9SgsnbPEEbdNx+JQYFdg@mail.gmail.com>
+ <CAFJgqgREAj-eP-d244WpqO-9H48ajZh83AxE31GqoONZ=DJe-g@mail.gmail.com>
+ <CAH5fLghEMtT663SNogAGad-qk7umefGeBKbm+QjKKzoskjOubw@mail.gmail.com>
+ <5E3FEDC4-DBE3-45C7-A331-DAADD3E7EB42@zytor.com>
+ <2rrp3fmznibxyg3ocvsfasfnpwfp2skhf4x7ihrnvm72lemykf@lwp2jkdbwqgm>
+ <CAFJgqgS-SMMEE2FktuCUimdGkPWMV3HB2Eg38SiUDQK1U8=rNg@mail.gmail.com>
+ <CANiq72mOp0q1xgAHod1Y_mX86OESzdDsgSghtQCwe6iksNt-sA@mail.gmail.com>
 Content-Language: en-US, de-DE
 From: Ralf Jung <post@ralfj.de>
-In-Reply-To: <CANiq72kd2eTaPMcYSiQ61tZ2nX0jLM9SgsnbPEEbdNx+JQYFdg@mail.gmail.com>
+In-Reply-To: <CANiq72mOp0q1xgAHod1Y_mX86OESzdDsgSghtQCwe6iksNt-sA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
 Hi all,
 
->> I think the one thing that's missing w.r.t. aliasing that Rust could
->> maybe use is a kasan-style sanitizer, I think with treeborrows and "now
->> we have an actual model for aliasing optimizations" it should be possible
->> to write such a sanitizer. But the amount of code doing complicated
->> enough stuff with unsafe should really be quite small, so - shouldn't be
+On 26.02.25 14:53, Miguel Ojeda wrote:
+> On Wed, Feb 26, 2025 at 2:03 PM Ventura Jack <venturajack85@gmail.com> wrote:
+>>
+>> One worry I do have, is that the aliasing rules being officially
+>> tied to LLVM instead of having its own separate specification,
+>> may make it harder for other compilers like gccrs to implement
+>> the same behavior for programs as rustc.
 > 
-> Miri implements those models and can check code for conformance. It
-> can be used easily in the Rust playground (top-right corner -> Tools
-> -> Miri):
-> 
->      https://play.rust-lang.org
-> 
-> However, it does not work when you involved C FFI, though, but you can
-> play there. For more advanced usage, e.g. testing a particular model
-> like Tree Borrows, I think you need to use it locally, since I am not
-> sure if flags can be passed yet.
- >
-> I would like to get it, plus other tools, into Compiler Explorer, see
-> e.g. https://github.com/compiler-explorer/compiler-explorer/issues/2563.
+> I don't think they are (or rather, will be) "officially tied to LLVM".
 
-By default (and on the playground), Miri will check Stacked Borrows rules. Those 
-are almost always *more strict* than Tree Borrows rules.
+We do link to the LLVM aliasing rules from the reference, as VJ correctly 
+pointed out. This is basically a placeholder: we absolutely do *not* want Rust 
+to be tied to LLVM's aliasing rules, but we also are not yet ready to commit to 
+our own rules. (The ongoing work on Stacked Borrows and Tree Borrows has been 
+discussed elsewhere in this thread.)
 
-Unfortunately playground does not let you pass your own flags, so yeah getting 
-Miri on godbolt would be great. :D
+Maybe we should remove that link from the reference. It just makes us look more 
+tied to LLVM than we are.
 
 Kind regards,
 Ralf
