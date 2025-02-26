@@ -1,83 +1,105 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A882561D6;
-	Wed, 26 Feb 2025 22:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04DE26B968;
+	Wed, 26 Feb 2025 22:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740607655; cv=none; b=UnkjLOOy+eWBV6q4Av6y0/CuGmC3mh1RCOfbobfExv6CNAdPBHQWlK0RkrVzgHm35BsQ/Rp7tlOeG0VOhe3L8acDwubFIoVrpPmwfFyGk6PG4IsxL6ldwZe6bBXrAEW65WLWmrfXdfMoWoQ/Lvto2eGb35ODVFqfa2/meHQwYw0=
+	t=1740607962; cv=none; b=u1zgnpEw0I8saw9kOW1eRp+4EwocNSzUUlHlpITUgkci9gwldkFliJt36j7XBJ3CQIXqWFbmb3dY52fIZTmcKPTqC2RxK/80IxmM3f+2EBU32FxpXAA7CI5LzaRryX/7BI6G9Bg5o/1CR5Gq7XRn4kki9G4T2gTiZP761OfZrKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740607655; c=relaxed/simple;
-	bh=NmZ5J1Vr/23S3P/3myBW0sfcjDxrYkDuy0Q+NITqLcc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iyEyKeDE9O5fmNR2JNRHbncS/lMfmOp+Ry2eXgyb4L8XT+cuV5XNHb0L5qEeCZCeENKJoAqvobghcczOkaQBWREOyZusyP1pIzt/zFCsb4dxUJgQlg/a5WdaVyr2UpPL/TCwz/n+IUZiDGt2jrPcvccBuVeD8o55aQ+WsN86HwQ=
+	s=arc-20240116; t=1740607962; c=relaxed/simple;
+	bh=b9p2oinWw2oCx1q5fKm/fozu+hAAAf97Q6gyM8373gY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gWZUiIXocSNbcWUn3XJw1vqO6erOo9Va+L5pAU0fZ9TXZ9bUVHb2pN+t3ER9v8qu0t5S1jLBWjLvTlSkh+8tDk7x1tIcuXug2Rtq0h1y5ALDq2ZehiPoSB6gBWWPfs8qNoFBfh2K/09qj7axgk1BdJR2QzBxGTtLN7DUQOXPhrg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F6AC4CED6;
-	Wed, 26 Feb 2025 22:07:34 +0000 (UTC)
-Date: Wed, 26 Feb 2025 14:07:32 -0800
-From: Josh Poimboeuf <jpoimboe@redhat.com>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Ventura Jack <venturajack85@gmail.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Alice Ryhl <aliceryhl@google.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Gary Guo <gary@garyguo.net>, airlied@gmail.com,
-	boqun.feng@gmail.com, david.laight.linux@gmail.com,
-	hch@infradead.org, ksummit@lists.linux.dev,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Ralf Jung <post@ralfj.de>, Peter Zijlstra <peterz@infradead.org>
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4498DC4CED6;
+	Wed, 26 Feb 2025 22:12:40 +0000 (UTC)
+Date: Wed, 26 Feb 2025 17:13:21 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Martin Uecker <uecker@tugraz.at>, Ralf Jung <post@ralfj.de>, "Paul E.
+ McKenney" <paulmck@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Ventura
+ Jack <venturajack85@gmail.com>, Kent Overstreet
+ <kent.overstreet@linux.dev>, Gary Guo <gary@garyguo.net>,
+ airlied@gmail.com, boqun.feng@gmail.com, david.laight.linux@gmail.com,
+ ej@inai.de, gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com,
+ ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
+ miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
 Subject: Re: C aggregate passing (Rust kernel policy)
-Message-ID: <20250226220732.esiaz7jqskteitup@jpoimboe>
-References: <CANiq72mOp0q1xgAHod1Y_mX86OESzdDsgSghtQCwe6iksNt-sA@mail.gmail.com>
- <f2bf76553c666178505cb9197659303a39faf7aa.camel@HansenPartnership.com>
- <2025022611-work-sandal-2759@gregkh>
- <16127450a24e9df8112a347fe5f6df9c9cca2926.camel@HansenPartnership.com>
- <20250226110033.53508cbf@gandalf.local.home>
- <9c443013493f8f380f9c4d51b1eeeb9d29b208a3.camel@HansenPartnership.com>
- <ylsffirqsrogli5fqlyhklhy6s54ngolvk5hj5fnpn3ceglyii@cgcvtm4ohtra>
- <20250226115726.27530000@gandalf.local.home>
- <olxh7iwz5yjuuqwpbzgohrl3dkcurbmzij3o2dbha5mtkr2ipn@wtee4jjj7ope>
- <20250226124733.10b4b5fa@gandalf.local.home>
+Message-ID: <20250226171321.714f3b75@gandalf.local.home>
+In-Reply-To: <20250226165619.64998576@gandalf.local.home>
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
+	<20250222141521.1fe24871@eugeo>
+	<CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+	<6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+	<CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+	<CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+	<CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
+	<CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com>
+	<5d7363b0-785c-4101-8047-27cb7afb0364@ralfj.de>
+	<CAHk-=wh=8sqvB-_TkwRnvL7jVA_xKbzsy9VH-GR93brSxTp60w@mail.gmail.com>
+	<ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at>
+	<CAHk-=whLSWX=-5-z4Q8x1f_NLrHd0e3afbEwYPkkVSXj=xT-JQ@mail.gmail.com>
+	<20250226162655.65ba4b51@gandalf.local.home>
+	<CAHk-=wjAcA4KrZ-47WiPd3haQU7rh+i315ApH82d=oZmgBUT_A@mail.gmail.com>
+	<20250226165619.64998576@gandalf.local.home>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250226124733.10b4b5fa@gandalf.local.home>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Feb 26, 2025 at 12:47:33PM -0500, Steven Rostedt wrote:
-> On Wed, 26 Feb 2025 12:41:30 -0500
-> Kent Overstreet <kent.overstreet@linux.dev> wrote:
+On Wed, 26 Feb 2025 16:56:19 -0500
+Steven Rostedt <rostedt@goodmis.org> wrote:
+
+> 	r = *p;
+> 	if (r > 1000)
+> 		goto out;
+> 	x = r;
 > 
-> > It's been awhile since I've looked at one, I've been just automatically
-> > switching back to frame pointers for awhile, but - I never saw
-> > inaccurate backtraces, just failure to generate a backtrace - if memory
-> > serves.
+> to:
 > 
-> OK, maybe if the bug was bad enough, it couldn't get access to the ORC
-> tables for some reason.
+> 	if (*p > 1000)
+> 		goto out;
+> 	x = *p;
 
-ORC has been rock solid for many years, even for oopses.  Even if it
-were to fail during an oops for some highly unlikely reason, it falls
-back to the "guess" unwind which shows all the kernel text addresses on
-the stack.
+And you could replace *p with any variable that is visible outside the
+function. As that's where I have to remember to use READ_ONCE() all the
+time. When I need to access a variable that may change, but the old value
+may still be fine to use as long as it is consistent.
 
-The only known thing that will break ORC is if objtool warnings are
-ignored.  (BTW those will soon be upgraded to build errors by default)
+I take this is what you meant by following what the code does.
 
-ORC also gives nice clean stack traces through interrupts and
-exceptions.  Frame pointers *try* to do that, but for async code flows
-that's very much a best effort type thing.
+	r = global;
+	if (r > 1000)
+		goto out;
+	x = r;
 
-So on x86-64, frame pointers are very much deprecated.  In fact we've
-talked about removing the FP unwinder as there's no reason to use it
-anymore.  Objtool is always enabled by default anyway.
+Is the code saying to read "global" once. But today the compiler may not do
+that and we have to use READ_ONCE() to prevent it.
 
--- 
-Josh
+But if I used:
+
+	if (global > 1000)
+		goto out;
+	x = global;
+
+Then the code itself is saying it is fine to re-read global or not, and the
+compiler is fine with converting that to:
+
+	r = global;
+	if (r > 1000)
+		goto out;
+	x = r;
+
+I guess this is where you say "volatile" is too strong, as this isn't an
+issue and is an optimization the compiler can do. Where as the former
+(reading global twice) is a bug because the code did not explicitly state
+to do that.
+
+
+-- Steve
