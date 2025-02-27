@@ -1,103 +1,106 @@
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6E02253A8;
-	Thu, 27 Feb 2025 11:35:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897D022A4F4
+	for <rust-for-linux@vger.kernel.org>; Thu, 27 Feb 2025 11:52:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740656106; cv=none; b=cPL9fqRqlShQxc9QQAvuyOwBXsGqNGTx3LEW9XuU0AHhh+Lb5oFa+bZ0qqjQ06QtdfbB4FIyWaL/0EGpauobE2ig4Ev9TOcIlew7LJTgI63mwaCfuu2xXKQfbYB3OBa2pA+MCc2Bd4QebO1F7XRLPpyfUF24vKr14VoMVfIySbg=
+	t=1740657137; cv=none; b=TioFD3LseGFmkDELak2nsXS95v18ZEZk/6Sh2VAGU1CqR0+CpdSGOvcZLaCQd+P88hDSDnFsXU4dr0KSfNybmMUkeOjA8KFzwcDOHFsmYVQFW7LTV6EtJb/FsHX2pDxXLrG0maFYjU3cAdWAgKrj3Pesg9SQeu5J1otrDis6deE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740656106; c=relaxed/simple;
-	bh=ldwn/EiopZJQ++ZzPunfH17TEy2zzvdkMynUExTJI5M=;
+	s=arc-20240116; t=1740657137; c=relaxed/simple;
+	bh=ZaBaHlXpgISQnJ1vf38M4JccZJO/2KtLDXTAswU9l0I=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q4gIRS1QbNMwMTZQhaeEklJGc8SgZEuIsLXu/w/0TS49AkSfV7aX0DKJk0rw4cVMK2walFiiTTFgvfiEk0KeMo71cTGxmQBUtn5gzHkfWIX1C6EongjT+ojcyWJkFuUZI/pnXExtIownqoyBCi6c+5VWCJfaIMr3RSSsprWiMew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lWByfMdK; arc=none smtp.client-ip=209.85.208.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=sVSzBdX9I18aPhr/ESQAa+FgfgRmPsMswNZbPzElY7rPMRFKc/WLdba0nyCayINQKq1TqiBpxVLxZtCxswy2ywn5zVEAXHQqL0EuGVVlEH0LWM9s6j/5jyPYkzesxYMBXwHRShNG/9TWPyM+XjJp5zr4nxT/d5t/yQeHY/dnm0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Pke+xbY3; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lWByfMdK"
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-30a303a656aso9044911fa.0;
-        Thu, 27 Feb 2025 03:35:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Pke+xbY3"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43994ef3872so5636075e9.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 27 Feb 2025 03:52:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740656103; x=1741260903; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1740657134; x=1741261934; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ldwn/EiopZJQ++ZzPunfH17TEy2zzvdkMynUExTJI5M=;
-        b=lWByfMdKj6ohae8ozHILwMpC4TPsqTuZggu/DHz7SrSY6CBSB6bKF2P/3glyNltpQ7
-         016Nqq6jIA+ICqnKfJfByYj2dGGfx1mCkFIeeQvWNEwM+GafiyNt7mXIMDQVvG2NJ7eK
-         XtKjturgpdUgNV+P82LocjFB1eKAc0+ekYLMhqpRtIlaf2qRJsHgTL7uc2FmkgKX3aW2
-         F78U468F3rsMLArFnJ6mcwsUJxUlwSwxjrXbE1/Z9Lh6q4i0QEYVDElO2eQgdm7x5B90
-         vreFr47J3y0OE3wa3zvxtaCyYRqTbp4t4DQiKHu9HpY5xmBKQaq6/G7i/6gcoA5LYsr+
-         DNJA==
+        bh=CNdKucBFyLDnUpRRHMFpanrFUXUbOxjcG2NQFry4jEA=;
+        b=Pke+xbY3dU3Sz7NC4QJSWHHHQj3b5pbIFPMJki/MA4nPqUHqTjrqDnKGPXdybYCqBH
+         4ffqpIXT1KraM5jIs49Ij25xHYM2F+fbG4s803uzZ4UrkzZRhh8UR9Duph8Q+LTR5DY7
+         noNSkU3zGyZtT2rsCXhNg23gcymhsRQTOTrgDhAegubmY6dZGJFJuzTD55567i8ayl34
+         pOf/96ktJ/q9GIW1Re1aewCBusMkBcotxh89xlAei9qbuUvSkHaISquK0hu0BInSzy78
+         hAXOigAoh+QpPDZ7AXb1U/Hd0AmgCGz/SLtSGH5lge7e+KN4PJycOjaCUPGNw9UQo0sb
+         JKYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740656103; x=1741260903;
+        d=1e100.net; s=20230601; t=1740657134; x=1741261934;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ldwn/EiopZJQ++ZzPunfH17TEy2zzvdkMynUExTJI5M=;
-        b=ks6cDs9n5S60PKa8sYI5U7i0etZPIexs+b8982xmCoufmNTiAWZUUl02mGdbpkibvX
-         krbGq6EdBRY5h0r5MqU1oas3PUly1V0pBVyNZ21MUXV1sRpoNEcYAejSL5WyITpzCk9D
-         T76qgHW3602c+GlVq4T6ihmD2n7dBq6GOro4h4Zu0o0m0ot7Zht8kFugnJbN+WtO/Q+c
-         rmEau7JHbAM2jOY7c1j4WMq8aYXeUwht+eFj7qvjCuYmjq3QVIKNPTHwfwVePr6q1JsC
-         elAMYN/2Cxn04Hec/GOBhXfYZb+GT6lXiAnP1MvgR4L2G7i7AqaV37izAWRV9pt0PheB
-         0gGw==
-X-Forwarded-Encrypted: i=1; AJvYcCWTKwSr2KBqNouHxff/AKclbxg/+Cc3DOR49IBJMlpN/2i5fnII2Dx+woAcUe58Ps1YkQznEsouDsutIDwuNos=@vger.kernel.org, AJvYcCWuFuh1L6oNYxVAsbjsy/1FmPlh8aZHKomTl2AD6UfHVR7Lm+ruNcofOHvj72zdTmu1vo727UylzXt/@vger.kernel.org, AJvYcCXCKxfxfiJpLiIbLSXy7azVXs7Vwi1FTsWOlChtcFgGUzOz6nVjbPDm0bZGt8gkztZXzx1lqYHbCAEKNDE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3EJt4TXeYJP8934dtU1Qv+Iu4a1J8ZDa9U2dzo5QbDozw8mmi
-	R6WemHcyRMISWTnPTmn8pqro10ifQxgMJyz+q5puSDvy/X2o/wLGBPmBfTaWLT4h2Z7x9msMc2U
-	tmZHMwD0TarR7dZYw+CTNkj0B87w=
-X-Gm-Gg: ASbGncubz8dr2Jkah8EIYsx7+V4JrUpNrrV21IcD6MgXZ6EERPtr10+M7nAdyVT2iH7
-	SPLMAwRn+p9iCYWWhoHh8XuEkZrvN9NZkue9+bl1bXdBShPJkRjua4h/3feA6vlWofg3eD5k9Bb
-	WbvF72nwe2pZRiV2XMYTiMmBAZYSJDn8FOzj5h8/hg
-X-Google-Smtp-Source: AGHT+IGfOrPCkbMrZti+ZGk1EvzoYK3uaz1d4Bw2cJgZf/MCVPMPC0nhgo7sI8Z0VEVj/QUvOrKBtrvkFQZDRJz8Nv8=
-X-Received: by 2002:ac2:5b8d:0:b0:548:e44d:f3ee with SMTP id
- 2adb3069b0e04-548e44df52cmr4665298e87.10.1740656102882; Thu, 27 Feb 2025
- 03:35:02 -0800 (PST)
+        bh=CNdKucBFyLDnUpRRHMFpanrFUXUbOxjcG2NQFry4jEA=;
+        b=JMnyIOyVNYfNDj0GVaQbel2wABbbO9PAxarW8cZvG8dia0xesnc5dGLho3ycCL+Qj/
+         rYz7zHv1HLK6ZuEcNQKvMCj2w0ZSEv8Dwxt/IJOqII37IaroA2tDK8Cd4/+FoUocXH6p
+         YrjVUvEdPYH7uXpCPKXlZ3IBO4QOZzOwdvOPJ5i1HNQVdIgd2OQ0QDvjKRaJ+DO1VcsT
+         jGnrFauRFtmfEvtajJiKuWD0Ac/7kg5+5ypH+gEKzZ76Or8/kHxQAHz9QtFs3v0XuXI9
+         MKZYCek/SDEbckT+LvkdmtF1bkLN5GZi4yzUfiL4N6npt2PQYCwIcV7xIETT1ZF+kbzT
+         rUdg==
+X-Forwarded-Encrypted: i=1; AJvYcCVnTQSBFeVnyetMnOKUT82tp7dhl+taDNkc3w3B8zZmk+zMPSJAjFK2ZCZHOFHenh3AWzuDV7JfHbqhO/OejA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0VBN3jEiQfYFBQ8hyPaIXe2sb080XSe4hu7D+h2ew8yTyKEja
+	J+HC+URnRwDUg26H5v5aXYxXRD4/4atHrigmKtjqiapUsbNIPd9Smi0RLZTxBz5RvfPtGfmUeWu
+	XopyYXF8f60fgOFTXuDkv2V8B/soB7texpR0a
+X-Gm-Gg: ASbGncunF0OqpRXS23cWPZSMEW9k/Ct7AaZ/cztxd4AFUxvugFdEVTve3+EcknZ2QHu
+	T1xHeV4TckLXHSgHebFmFHUY/IQ2JeIYkXwd3nt0o7l9QIQJoBtLatXchW363b5vc1Mu7JOTdfi
+	O9OWIZtAsowB0CZncWXi2sWkwEoBm0GY/Bfy5xEw==
+X-Google-Smtp-Source: AGHT+IHFMCQU8NgWs1giXV4C3CXCYYEUJ/IZnhwhrgrkeisTz7Mc7yeRf4H7WaocW1dgWF/I8OCXnBza7JsyX98bFDQ=
+X-Received: by 2002:a05:6000:1864:b0:390:d954:5e7c with SMTP id
+ ffacd0b85a97d-390d9546117mr6217650f8f.38.1740657133802; Thu, 27 Feb 2025
+ 03:52:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250213-aligned-alloc-v7-1-d2a2d0be164b@gmail.com> <20250213142441.56532c18@eugeo>
-In-Reply-To: <20250213142441.56532c18@eugeo>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Thu, 27 Feb 2025 06:34:26 -0500
-X-Gm-Features: AQ5f1JqeXJBMpn3IDeg2JUq0K25kYq7vRyB5ZH5pUnKWBl2bps6_Fn4BTe1QRgo
-Message-ID: <CAJ-ks9mxUUQvbQp+cPx-5Vvs4gZQEkS=5NC9veuQ-qU9ZJn0JA@mail.gmail.com>
-Subject: Re: [PATCH v7] rust: alloc: satisfy POSIX alignment requirement
-To: Gary Guo <gary@garyguo.net>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, DJ Delorie <dj@redhat.com>, 
-	Eric Blake <eblake@redhat.com>, Paul Eggert <eggert@cs.ucla.edu>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-man@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250227030952.2319050-1-alistair@alistair23.me>
+ <20250227030952.2319050-10-alistair@alistair23.me> <2025022717-dictate-cortex-5c05@gregkh>
+In-Reply-To: <2025022717-dictate-cortex-5c05@gregkh>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 27 Feb 2025 12:52:02 +0100
+X-Gm-Features: AQ5f1JoXfYkoxQb4CZpqnD2kagTNPR0-RQG81bynqiWx3iUDZjKaVI-kJG8xNSA
+Message-ID: <CAH5fLgiQAdZMUEBsWS0v1M4xX+1Y5mzE3nBHduzzk+rG0ueskg@mail.gmail.com>
+Subject: Re: [RFC v2 09/20] PCI/CMA: Expose in sysfs whether devices are authenticated
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Alistair Francis <alistair@alistair23.me>, linux-cxl@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, lukas@wunner.de, linux-pci@vger.kernel.org, 
+	bhelgaas@google.com, Jonathan.Cameron@huawei.com, 
+	rust-for-linux@vger.kernel.org, akpm@linux-foundation.org, 
+	boqun.feng@gmail.com, bjorn3_gh@protonmail.com, wilfred.mallawa@wdc.com, 
+	ojeda@kernel.org, alistair23@gmail.com, a.hindborg@kernel.org, 
+	tmgross@umich.edu, gary@garyguo.net, alex.gaynor@gmail.com, 
+	benno.lossin@proton.me, Alistair Francis <alistair.francis@wdc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 13, 2025 at 9:24=E2=80=AFAM Gary Guo <gary@garyguo.net> wrote:
+On Thu, Feb 27, 2025 at 12:17=E2=80=AFPM Greg KH <gregkh@linuxfoundation.or=
+g> wrote:
 >
-> On Thu, 13 Feb 2025 06:34:18 -0500
-> Tamir Duberstein <tamird@gmail.com> wrote:
+> On Thu, Feb 27, 2025 at 01:09:41PM +1000, Alistair Francis wrote:
+> > +     return rust_authenticated_show(spdm_state, buf);
 >
-> > ISO C's `aligned_alloc` is partially implementation-defined; on some
-> > systems it inherits stricter requirements from POSIX's `posix_memalign`=
-.
-> >
-> > This causes the call added in commit dd09538fb409 ("rust: alloc:
-> > implement `Cmalloc` in module allocator_test") to fail on macOS because
-> > it doesn't meet the requirements of `posix_memalign`.
-> >
-> > Adjust the call to meet the POSIX requirement and add a comment. This
-> > fixes failures in `make rusttest` on macOS.
-> >
-> > Acked-by: Danilo Krummrich <dakr@kernel.org>
-> > Fixes: dd09538fb409 ("rust: alloc: implement `Cmalloc` in module alloca=
-tor_test")
-> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> Here you have C code calling into Rust code.  I'm not complaining about
+> it, but I think it will be the first use of this, and I didn't think
+> that the rust maintainers were willing to do that just yet.
 >
-> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Has that policy changed?
+>
+> The issue here is that the C signature for this is not being
+> auto-generated, you have to manually keep it in sync (as you did above),
+> with the Rust side.  That's not going to scale over time at all, you
+> MUST have a .h file somewhere for C to know how to call into this and
+> for the compiler to check that all is sane on both sides.
+>
+> And you are passing a random void * into the Rust side, what could go
+> wrong?  I think this needs more thought as this is fragile-as-f***.
 
-Thanks for the reviews! Gentle ping: are more reviews required?
+I don't think we have a policy against it? I'm pretty sure the QR code
+thing does it.
+
+Alice
