@@ -1,185 +1,116 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from r-passerv.ralfj.de (r-passerv.ralfj.de [109.230.236.95])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94FF231A4D;
-	Thu, 27 Feb 2025 13:49:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4859842C0B;
+	Thu, 27 Feb 2025 13:55:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.230.236.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740664148; cv=none; b=hx/sYoWhFOsvsLITHLGebEFRXsJvrQcATStADPCdMtRd9dPyxdL+i3+FM0Z7fTaTWNvnGq+3KrUzxnvlh6Ghd9onBJsgqtNBJVHw/QthfVRUIw2g9jn7yHCZqn6QwP0HytgEhwLwHi+uuhkEe8GRTkhL0viP6arc6bTRhsp9O2Y=
+	t=1740664539; cv=none; b=uxWkGmToA8Q4/MCxWp5CybtpSXjs6r2nLSrKNk48iLwFzXg3ocqIX/Dv/Zup3JeIVMBWQLE3tAgSoJ05j709hR17qpEDp3yNXdA96bKskTAJVuu5W8fjdnudq/L4iPW7RIYzs0T/fcl4oGrigvYa0xAE8wSdMa0xfnARknr7I8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740664148; c=relaxed/simple;
-	bh=P8IJYd8FR/Icvn1RJCn9y4YI8x1haSgI21fF0CZ+RPU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iidFnsmtpfFsd4Tyr8UcpdFiVyLTA6IAYgOeE+AokAVJBv4geludks1tIQCXtNHfvzbtmWY3+q0IqS5JtOnZ4PtEQO/xuwRI/MOFDSzZGUxIAe+hwdc33utysj96BsEsznH0y7nDIVDC0rA0C0FfhW7ebeA4/2N7uH0XxAGZIG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X/tduRXi; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740664539; c=relaxed/simple;
+	bh=MZ5feQNtisJgpeJy5xLzx0Y8Q+XnSBumrFimAbzZ9CM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=I+Pcq1A6JIUEL7mONV1k9pmiGik195G5LpNNi6a7/t/DF3T8B7vS8Bv2JMBn1bS1FupmHyAMK4OkF00cO1YW09CMsN7oq3L7yuhGCIPy3Ugtjm9qGUhEJJrHq3wfME9f9HhycJjku8a3V8B6Aulc7YQYNoiwX7lSdj9nyt8FDRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=EmSqhOjV; arc=none smtp.client-ip=109.230.236.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ralfj.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X/tduRXi"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5dedd4782c6so1622589a12.3;
-        Thu, 27 Feb 2025 05:49:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740664145; x=1741268945; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=14WfYF+JxUtInqVcnDAf3w6mUXX5Xz6J1f5cc1Inytw=;
-        b=X/tduRXi5aKihQkQojTV13zdzA8NC1ZLtPLFtvHjNPe0qDZsJ3CeF7DxxDxhkjVSZV
-         HiKzp5MVxs+WEsyAVPKfhCOIi7oY0ZgeB4J8cFCGqICD/gEo2bLyjdCwo0LlE/uXFquf
-         dgHmL2rrIQSeQu+JibKane+vBqAYwdpuwczuH3zqcv2znGcy30lXywgkqyn9RlNYZj7v
-         UR4WhRwYBAuGyJFfBh9e6EEbMhYF5N5ZpD+TDVrHdd77vxBB9pk9Uf6896b61PuIMW1a
-         OLLBNdiBF+r5FEMIkdCUy7sUDQsyEBueu0fcQC9RrHZv1wEA/xWnzqicGw/yL7n3w6nS
-         wbUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740664145; x=1741268945;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=14WfYF+JxUtInqVcnDAf3w6mUXX5Xz6J1f5cc1Inytw=;
-        b=GSXNyMos88Xfh2DxQDhUeheAzreEZZCW0hOB4LcpnwfeX82gZucGcx3OyXqrqnE1jz
-         ZLugNEah0D9+XOQwJR0swqqHSfgURoXD+Pe+vtApmLfATgrBL8MLq7hlXE8j+GH2Xblz
-         OKLAbjtd2s0oJabzYSccz0dP2kJHeX6x1znKcA4rfrMlZjx1UYQD9sBFCjTAkietZUbx
-         OJZEn3+xEZN3yvTXpxKjMh/Tmr74qTf/6XaQC/XzH+o/YKSyfmggDUhd7KbJz7cx/Hce
-         Gn9zjuvs+XTiwZn+a8p29cOiN9TF5fLYY3D1mqchKN07rxc+eg87LP54UFLoaR8+EEJn
-         T0rQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUWSyFJYZcYf3tQWFdvS9Hxu2NMNXMZ/iBTdeWnzanvVvrkFwFgmTHErVsAeiuAXJkHwedmT5OkET/AOTw=@vger.kernel.org, AJvYcCXpqjtZ+/ZQW0of5ANTVUscOEDqRU9tDUpuOzKU3RrkiaLeEkIqymvBNAcZoY23kfGQtdIdi2uAXEPYqm3g3g0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwI7AHkRtbmL3oEquqXgEMqEswn7htR7XjMdB8Fxycs6VOflNyF
-	ZMXoUid1d25z8+U8lifs3KOvIn25Uw3Psl6ZZTSXXZaag2S/sFpQVoWLc3/yrBKYJMk8uZhodt2
-	TviYpxwJEltIrIl2J5+rSlmYqNMU=
-X-Gm-Gg: ASbGncvUpy5UpwqNs5QrTgYtURto1KQN3djwgSc4rpDlJP1vLBfOkE98/Kp5++kA8FP
-	IR7wJXcUNKdWxjWMWzQoBPU77XD0wLXg+WFPYGZve7vxNLi5mRuaFY4teM79mkUbpO5VCppEch4
-	psMR/63PhJ+ikYANudrSgi1N1bmafg79/vRtiGXHPd
-X-Google-Smtp-Source: AGHT+IFrqmFPhnupTYYjxWUe3DTusMoVDTpQWWdo2IJDFGKcTSDAIGd3WmoPoKQWNXBjAvow9yTPQbKK60HJOeI6bq0=
-X-Received: by 2002:a05:6402:2787:b0:5dc:7f96:6263 with SMTP id
- 4fb4d7f45d1cf-5e4469daa04mr14622035a12.15.1740664144559; Thu, 27 Feb 2025
- 05:49:04 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="EmSqhOjV"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ralfj.de; s=mail;
+	t=1740664527; bh=MZ5feQNtisJgpeJy5xLzx0Y8Q+XnSBumrFimAbzZ9CM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=EmSqhOjVTv/5qycUfH0WaMucg+fhJaX+QaLJDaN7j5pv+AO3LHrkfHfhEz78bmFE8
+	 5Wmvn1X52+ZGUzV0+Stdk7alPHSvfNRXxNqy1bwepz5dx+8Bn1TEdqm3PBFf7I1NKc
+	 4yxnyQjNSmcPnthA3ukUCkq3/7nwB3yR/KSCtRhI=
+Received: from [IPV6:2001:67c:10ec:5784:8000::87] (2001-67c-10ec-5784-8000--87.net6.ethz.ch [IPv6:2001:67c:10ec:5784:8000::87])
+	by r-passerv.ralfj.de (Postfix) with ESMTPSA id 62DA02052A91;
+	Thu, 27 Feb 2025 14:55:27 +0100 (CET)
+Message-ID: <f2c2d7ae-08c1-4122-a131-f5a65e9ed3d2@ralfj.de>
+Date: Thu, 27 Feb 2025 14:55:22 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250227-configfs-v5-0-c40e8dc3b9cd@kernel.org> <20250227-configfs-v5-1-c40e8dc3b9cd@kernel.org>
-In-Reply-To: <20250227-configfs-v5-1-c40e8dc3b9cd@kernel.org>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Thu, 27 Feb 2025 08:48:27 -0500
-X-Gm-Features: AQ5f1JqqdLUSn16lxx8sMpg0_xRZhMsea0cF-Qy8ejK9uaChfCARGhlD-gE3w6w
-Message-ID: <CAJ-ks9=B=ceCN0VO3JH37LJbuVbQ5Y2sqfOgFCyJ0BfFGSEmkA@mail.gmail.com>
-Subject: Re: [PATCH v5 1/4] rust: sync: change `<Arc<T> as ForeignOwnable>::PointedTo`
- to `T`
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Joel Becker <jlbec@evilplan.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
-	Waiman Long <longman@redhat.com>, Fiona Behrens <me@kloenk.dev>, 
-	Charalampos Mitrodimas <charmitro@posteo.net>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: C aggregate passing (Rust kernel policy)
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Ventura Jack <venturajack85@gmail.com>,
+ Kent Overstreet <kent.overstreet@linux.dev>,
+ Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Gary Guo <gary@garyguo.net>,
+ torvalds@linux-foundation.org, airlied@gmail.com, boqun.feng@gmail.com,
+ ej@inai.de, gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com,
+ ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
+ <20250222141521.1fe24871@eugeo>
+ <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+ <CANiq72mdzUJocjXhPRQEEdgRXsr+TEMt99V5-9R7TjKB7Dtfaw@mail.gmail.com>
+ <lz7hsnvexoywjgdor33mcjrcztxpf7lzvw3khwzd5rifetwrcf@g527ypfkbhp2>
+ <780ff858-4f8e-424f-b40c-b9634407dce3@ralfj.de>
+ <CAFJgqgRN0zwwaNttS_9qnncTDnSA-HU5EgAXFrNHoPQ7U8fUxw@mail.gmail.com>
+ <f3a83d60-3506-4e20-b202-ef2ea99ef4dc@ralfj.de>
+ <CAFJgqgR4Q=uDKNnU=2yo5zoyFOLERG+48bFuk4Dd-c+S6x+N5w@mail.gmail.com>
+ <7edf8624-c9a0-4d8d-a09e-2eac55dc6fc5@ralfj.de>
+ <20250226230816.2c7bbc16@pumpkin>
+Content-Language: en-US, de-DE
+From: Ralf Jung <post@ralfj.de>
+In-Reply-To: <20250226230816.2c7bbc16@pumpkin>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Feb 27, 2025 at 7:37=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
->
-> Using `ArcInner` as `PoinedTo` in the `ForeignOwnable` implementation for
-> `Arc` is a bit unfortunate. Using `T` as `PointedTo` does not remove any
-> functionality, but allows `ArcInner` to be private. Further, it allows
-> downstream users to write code that is generic over `Box` and `Arc`, when
-> downstream users need access to `T` after calling `into_foreign`.
->
-> Reviewed-by: Fiona Behrens <me@kloenk.dev>
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
->
-> This patch is a dependency for Rust `configfs` abstractions. It allows bo=
-th
-> `Box` and `Arc` to be used as pointer types in the `configfs` hierarchy.
-> ---
->  rust/kernel/sync/arc.rs | 21 ++++++++++++++++-----
->  1 file changed, 16 insertions(+), 5 deletions(-)
->
-> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index dfe4abf82c25..3d77a31e116f 100644
-> --- a/rust/kernel/sync/arc.rs
-> +++ b/rust/kernel/sync/arc.rs
-> @@ -143,7 +143,7 @@ pub struct Arc<T: ?Sized> {
->  #[doc(hidden)]
->  #[pin_data]
->  #[repr(C)]
-> -pub struct ArcInner<T: ?Sized> {
-> +struct ArcInner<T: ?Sized> {
->      refcount: Opaque<bindings::refcount_t>,
->      data: T,
->  }
-> @@ -345,18 +345,25 @@ pub fn into_unique_or_drop(self) -> Option<Pin<Uniq=
-ueArc<T>>> {
->
->  // SAFETY: The `into_foreign` function returns a pointer that is well-al=
-igned.
->  unsafe impl<T: 'static> ForeignOwnable for Arc<T> {
-> -    type PointedTo =3D ArcInner<T>;
-> +    type PointedTo =3D T;
->      type Borrowed<'a> =3D ArcBorrow<'a, T>;
->      type BorrowedMut<'a> =3D Self::Borrowed<'a>;
->
->      fn into_foreign(self) -> *mut Self::PointedTo {
-> -        ManuallyDrop::new(self).ptr.as_ptr()
-> +        let this =3D ManuallyDrop::new(self).ptr.as_ptr();
-> +        // SAFETY: `x` is a valid pointer to `Self` so the projection be=
-low is
-> +        // in bounds of the allocation.
+Hi all,
 
-Isn't the unsafe bit `*this`, which is what this comment should
-justify? In Rust 1.82+ `addr_of_mut!` isn't unsafe I believe. Also `x`
-is likely meant to be `this`.
+> ...
+>>> Unions in C, C++ and Rust (not Rust "enum"/tagged union) are
+>>> generally sharp. In Rust, it requires unsafe Rust to read from
+>>> a union.
+>>
+>> Definitely sharp. At least in Rust we have a very clear specification though,
+>> since we do allow arbitrary type punning -- you "just" reinterpret whatever
+>> bytes are stored in the union, at whatever type you are reading things. There is
+>> also no "active variant" or anything like that, you can use any variant at any
+>> time, as long as the bytes are "valid" for the variant you are using. (So for
+>> instance if you are trying to read a value 0x03 at type `bool`, that is UB.)
+> 
+> That is actually a big f***ing problem.
+> The language has to define the exact behaviour when 'bool' doesn't contain
+> 0 or 1.
 
-> +        unsafe { core::ptr::addr_of_mut!((*this).data) }
->      }
->
->      unsafe fn from_foreign(ptr: *mut Self::PointedTo) -> Self {
-> +        // SAFETY: We did the reverse offset calculation in `into_foreig=
-n`, so
-> +        // the offset calculation below is in bounds of the allocation.
-> +        let inner_ptr =3D unsafe { kernel::container_of!(ptr, ArcInner<T=
->, data).cast_mut() };
-> +
->          // SAFETY: The safety requirements of this function ensure that =
-`ptr` comes from a previous
->          // call to `Self::into_foreign`.
-> -        let inner =3D unsafe { NonNull::new_unchecked(ptr) };
-> +        let inner =3D unsafe { NonNull::new_unchecked(inner_ptr) };
->
->          // SAFETY: By the safety requirement of this function, we know t=
-hat `ptr` came from
->          // a previous call to `Arc::into_foreign`, which guarantees that=
- `ptr` is valid and
-> @@ -365,9 +372,13 @@ unsafe fn from_foreign(ptr: *mut Self::PointedTo) ->=
- Self {
->      }
->
->      unsafe fn borrow<'a>(ptr: *mut Self::PointedTo) -> ArcBorrow<'a, T> =
-{
-> +        // SAFETY: We did the reverse offset calculation in `into_foreig=
-n`, so
-> +        // the offset calculation below is in bounds of the allocation.
-> +        let inner_ptr =3D unsafe { kernel::container_of!(ptr, ArcInner<T=
->, data).cast_mut() };
-> +
->          // SAFETY: The safety requirements of this function ensure that =
-`ptr` comes from a previous
->          // call to `Self::into_foreign`.
-> -        let inner =3D unsafe { NonNull::new_unchecked(ptr) };
-> +        let inner =3D unsafe { NonNull::new_unchecked(inner_ptr) };
->
->          // SAFETY: The safety requirements of `from_foreign` ensure that=
- the object remains alive
->          // for the lifetime of the returned value.
+No, it really does not. If you want a variable that can hold all values in 
+0..256, use `u8`. The entire point of the `bool` type is to represent values 
+that can only ever be `true` or `false`. So the language requires that when you 
+do type-unsafe manipulation of raw bytes, and when you then make the choice of 
+the `bool` type for that code (which you are not forced to!), then you must 
+indeed uphold the guarantees of `bool`: the data must be `0x00` or `0x01`.
 
-It might be good to extract a shared helper from `from_foreign` and
-`borrow`, though the duplication isn't new in this patch. Either way:
+> Much the same as the function call interface defines whether it is the caller
+> or called code is responsible for masking the high bits of a register that
+> contains a 'char' type.
+> 
+> Now the answer could be that 'and' is (or may be) a bit-wise operation.
+> But that isn't UB, just an undefined/unexpected result.
+> 
+> I've actually no idea if/when current gcc 'sanitises' bool values.
+> A very old version used to generate really crap code (and I mean REALLY)
+> because it repeatedly sanitised the values.
+> But IMHO bool just shouldn't exist, it isn't a hardware type and is actually
+> expensive to get right.
+> If you use 'int' with zero meaning false there is pretty much no ambiguity.
 
-Reviewed-by: Tamir Duberstein <tamird@gmail.com>
+We have many types in Rust that are not hardware types. Users can even define 
+them themselves:
+
+enum MyBool { MyFalse, MyTrue }
+
+This is, in fact, one of the entire points of higher-level languages like Rust: 
+to let users define types that represent concepts that are more abstract than 
+what exists in hardware. Hardware would also tell us that `&i32` and `*const 
+i32` are basically the same thing, and yet of course there's a world of a 
+difference between those types in Rust.
+
+Kind regards,
+Ralf
+
