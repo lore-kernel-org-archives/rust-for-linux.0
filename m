@@ -1,32 +1,32 @@
 Received: from r-passerv.ralfj.de (r-passerv.ralfj.de [109.230.236.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E93482EF;
-	Thu, 27 Feb 2025 18:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716BB20409A;
+	Thu, 27 Feb 2025 18:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.230.236.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740681191; cv=none; b=fR2caRVLO+wWMTAUkMe9czEqbbD219M8kk2PMbL3+A48S0kjmhNxNNJejC2Y7PptThC0iIQfHD0lhXUzzCLkBh+3+pnyVdZH/5THqRbVFx6ig1G62kuNO4t8FU1KDpJxgn4yjEMHs5uL0esVJVmpJIYVl8tissiEBS4/h2k7wyU=
+	t=1740681900; cv=none; b=GY4VVioRZLcM/iw708DCbVMJDHM+kbrgSUckHFv+stJQXReV/D++QIw5itWr4ExSEVW/QB6kRIc934wB+Tb9Pd33O9JGXmFXw8/uOpkrxZfQUFquNIVRzal40WwpEijUnMJT11wGNiibWzI1tiG+Gi6gMavtBLtJ9K3k+gQ18RE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740681191; c=relaxed/simple;
-	bh=Qg2hTQXyOPi46wn0RplEcoz1yo9Al144uQ6GPuvSJjQ=;
+	s=arc-20240116; t=1740681900; c=relaxed/simple;
+	bh=jPTjTgvjlrxaDcxejfvbSiaPv936H+Y8dBeB7m3EO0M=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PfllS/xgl4/n8Mhykj5DhE4hrS2PsuptHs8XV28ZC+9wDPURrtZqGgII5GnL5olzpBBGvuVi53CEJqtdacwDEcj9je6/NT+9jcyP6XmbTRaF4nEaVHLT+QD7GaaSIAVyEVfuFr/zySx4dtYtYCd9gDO+ZKHo1V3Iq8bKQ0H7Nc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=2ioeKNBd; arc=none smtp.client-ip=109.230.236.95
+	 In-Reply-To:Content-Type; b=D4+FUBp4GROuKivEVPtOouIqFQLGt37IUlwXrMkmU8K8IdhEmIh6MyNEWZh9Te6CBLu+CnD4pvbLreWEggNU+zqPDfyBsiDhiWvLmO71bgz7L+x/pWRWQSstkmeFR/Ci6QUcXLIs7UgxcZ5Qq5NAab9f98N5qFzzf1w3wGp9nJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=s4GkiV94; arc=none smtp.client-ip=109.230.236.95
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ralfj.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="2ioeKNBd"
+	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="s4GkiV94"
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ralfj.de; s=mail;
-	t=1740681187; bh=Qg2hTQXyOPi46wn0RplEcoz1yo9Al144uQ6GPuvSJjQ=;
+	t=1740681896; bh=jPTjTgvjlrxaDcxejfvbSiaPv936H+Y8dBeB7m3EO0M=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=2ioeKNBdiHR+wK18hrjRnoRMkNP5WVIW2Em4/06QjN8/GHpZE+cWmonKn6nyOAR7a
-	 CEYae1Y3bCU1jUJ7ma59X7mtJH0g7I1en3P6tFrVL5GiVtQ6y9qFJK75tOngbNJLzK
-	 4DH5NHQhSI6OJtLZZ/xDALFNQg9iWTu3i/aHGcT4=
+	b=s4GkiV94SUr13UlmFx0h+q55GTEas139UlMO9uqpC9/ZUfBBZTcvjVbKpiNuH5zg4
+	 Fsl/OnPe+fAWmNngvdLBJVBRQQRq5RIFDZ5J35RIMnvYnw70nyOLTJBSlFBSFNhvj5
+	 iSShteSlWLxZ4toVyL+0tOLF6xH9/pe+DrhQ1iuo=
 Received: from [IPV6:2001:8e0:207e:3500:4ab6:48fe:df57:b084] (2001-8e0-207e-3500-4ab6-48fe-df57-b084.ewm.ftth.ip6.as8758.net [IPv6:2001:8e0:207e:3500:4ab6:48fe:df57:b084])
-	by r-passerv.ralfj.de (Postfix) with ESMTPSA id 97CB92052A91;
-	Thu, 27 Feb 2025 19:33:07 +0100 (CET)
-Message-ID: <0f3bc0e8-5111-4e2f-83b5-36b3aec0cbbd@ralfj.de>
-Date: Thu, 27 Feb 2025 19:33:03 +0100
+	by r-passerv.ralfj.de (Postfix) with ESMTPSA id 870E22052A91;
+	Thu, 27 Feb 2025 19:44:56 +0100 (CET)
+Message-ID: <7d77b05f-393e-48d9-9f3f-31b80a64ae7a@ralfj.de>
+Date: Thu, 27 Feb 2025 19:44:56 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -36,15 +36,17 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: C aggregate passing (Rust kernel policy)
 To: Linus Torvalds <torvalds@linux-foundation.org>,
- Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Martin Uecker <uecker@tugraz.at>, "Paul E. McKenney"
- <paulmck@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Ventura Jack <venturajack85@gmail.com>, Gary Guo <gary@garyguo.net>,
+ Martin Uecker <uecker@tugraz.at>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Ventura Jack <venturajack85@gmail.com>,
+ Kent Overstreet <kent.overstreet@linux.dev>, Gary Guo <gary@garyguo.net>,
  airlied@gmail.com, boqun.feng@gmail.com, david.laight.linux@gmail.com,
  ej@inai.de, gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com,
  ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
  miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
-References: <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
+ <20250222141521.1fe24871@eugeo>
+ <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
  <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
  <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
  <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
@@ -54,92 +56,91 @@ References: <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
  <CAHk-=wh=8sqvB-_TkwRnvL7jVA_xKbzsy9VH-GR93brSxTp60w@mail.gmail.com>
  <ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at>
  <CAHk-=whLSWX=-5-z4Q8x1f_NLrHd0e3afbEwYPkkVSXj=xT-JQ@mail.gmail.com>
- <m4cbniqfsr5xpb2m7k53e7plc6he5ioyl2efiiftdmzod56usd@htwdppje6re5>
- <CAHk-=whEkEsGHWBMZ17v5=sq1uRe6g-BRHy5xNZK-2JBKRs=_A@mail.gmail.com>
+ <09e282a9c02fb07ba4fc248f14c0173d9b19179a.camel@tugraz.at>
+ <CAHk-=wjqmHD-3QQ_9o4hrkhH57pTs3c1zuU0EdXYW23Vo0KTmQ@mail.gmail.com>
 Content-Language: en-US, de-DE
 From: Ralf Jung <post@ralfj.de>
-In-Reply-To: <CAHk-=whEkEsGHWBMZ17v5=sq1uRe6g-BRHy5xNZK-2JBKRs=_A@mail.gmail.com>
+In-Reply-To: <CAHk-=wjqmHD-3QQ_9o4hrkhH57pTs3c1zuU0EdXYW23Vo0KTmQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Hi Linus,
+Hi,
 
-On 27.02.25 00:16, Linus Torvalds wrote:
-> On Wed, 26 Feb 2025 at 14:27, Kent Overstreet <kent.overstreet@linux.dev> wrote:
->>
->> This is another one that's entirely eliminated due to W^X references.
+> So "safe rust" should generally not be impacted, and you can make the
+> very true argument that safe rust can be optimized more aggressively
+> and migth be faster than unsafe rust.
 > 
-> Are you saying rust cannot have global flags?
+> And I think that should be seen as a feature, and as a basic tenet of
+> safe vs unsafe. A compiler *should* be able to do better when it
+> understands the code fully.
 
-The way you do global flags in Rust is like this:
+That's not quite how it works in Rust. One basic tenet of unsafe is that unsafe 
+does not impact program semantics at all. It would be very surprising to most 
+Rust folks if adding or removing or changing the scope of an unsafe block could 
+change what my program does (assuming the program still builds and passes the 
+usual safety checks).
 
-static FLAG: AtomicBool = AtomicBool::new(false);
+Now, is there an interesting design space for a language where the programmer 
+somehow marks blocks of code where the semantics should be "more careful"? 
+Absolutely, I think that is quite interesting. However, it's also not at all 
+clear to me how that should actually be done, if you try to get down to it and 
+write out the proper precise, ideally even formal, spec. Rust is not exploring 
+that design space, at least not thus far. In fact, it is common in Rust to use 
+`unsafe` to get better performance (e.g., by using a not-bounds-checked array 
+access), and so it would be counter to the goals of those people if we then 
+optimized their code less because it uses `unsafe`.
 
-// Thread A
-FLAG.store(true, Ordering::SeqCst); // or release/acquire/relaxed
-
-// Thread B
-let val = FLAG.load(Ordering::SeqCst);
-if val { // or release/acquire/relaxed
-   // ...
-}
-println!("{}", val);
-
-If you do this, the TOCTOU issues you mention all disappear. The compiler is 
-indeed *not* allowed to re-load `FLAG` a second time for the `println`.
-
-If you try do to do this without atomics, the program has a data race, and that 
-is considered UB in Rust just like in C and C++. So, you cannot do concurrency 
-with "*ptr = val;" or "ptr2.copy_from(ptr1)" or anything like that. You can only 
-do concurrency with atomics. That's how compilers reconcile "optimize sequential 
-code where there's no concurrency concerns" with "give programmers the ability 
-to reliably program concurrent systems": the programmer has to tell the compiler 
-whenever concurrency concerns are in play. This may sound terribly hard, but the 
-Rust type system is pretty good at tracking this, so in practice it is generally 
-not a big problem to keep track of which data can be accessed concurrently and 
-which cannot.
-
-Just to be clear, since I know you don't like "atomic objects": Rust does not 
-have atomic objects. The AtomicBool type is primarily a convenience so that you 
-don't accidentally cause a data race by doing concurrent non-atomic accesses. 
-But ultimately, the underlying model is based on the properties of individual 
-memory accesses (non-atomic, atomic-seqcst, atomic-relaxed, ...).
-
-By using the C++ memory model (in an access-based way, which is possible -- the 
-"object-based" view is not fundamental to the model), we can have reliable 
-concurrent programming (no TOCTOU introduced by the compiler) while also still 
-considering (non-volatile) memory accesses to be entirely "not observable" as 
-far as compiler guarantees go. The load and store in the example above are not 
-"observable" in that sense. After all, it's not the loads and stores that 
-matter, it's what the program does with the values it loads. However, the 
-abstract description of the possible behaviors of the source program above 
-*does* guarantee that `val` has the same value everywhere it is used, and 
-therefore everything you do with `val` that you can actually see (like printing, 
-or using it to cause MMIO accesses, or whatever) has to behave in a consistent 
-way. That may sound round-about, but it does square the circle successfully, if 
-one is willing to accept "the programmer has to tell the compiler whenever 
-concurrency concerns are in play". As far as I understand, the kernel already 
-effectively does this with a suite of macros, so this should not be a 
-fundamentally new constraint.
+There's also the problem that quite a few optimizations rely on "universal 
+properties" -- properties that are true everywhere in the program. If you allow 
+even the smallest exception, that reasoning breaks down. Aliasing rules are an 
+example of that: there's no point in saying "references are subject to strict 
+aliasing requirements in safe code, but in unsafe blocks you are allowed to 
+break that". That would be useless, then we might as well remove the aliasing 
+requirements entirely (for the optimizer; we'd keep the borrow checker of 
+course). The entire point of aliasing requirements is that when I optimize safe 
+code with no unsafe code in sight, I can make assumptions about the code in the 
+rest of the program. If I cannot make those assumptions any more, because some 
+unsafe code somewhere might actually legally break the aliasing rules, then I 
+cannot even optimize safe code any more. (I can still do the always-correct 
+purely local aliasing analysis you mentioned, of course. But I can no longer use 
+the Rust type system to provide any guidance, not even in entirely safe code.)
 
 Kind regards,
 Ralf
 
-
 > 
-> That seems unlikely. And broken if so.
+>> There would certainly be opposition if this fundamentally
+>> diverges from C++ because no compiler framework will seriously
+>> consider implementing a completely different memory model
+>> for C (or for Rust) than for C++.
 > 
->> IOW: if you're writing code where rematerializing reads is even a
->> _concern_ in Rust, then you had to drop to unsafe {} to do it - and your
->> code is broken, and yes it will have UB.
+> Well, if the C++ peoiple end up working on some "safe C" model, I bet
+> they'll face the same issues.
 > 
-> If you need to drop to unsafe mode just to read a global flag that may
-> be set concurrently, you're doing something wrong as a language
-> designer.
+>> I could also imagine that the problem here is that it is
+>> actually very difficult for compilers to give the guarantess
+>> you want, because they evolved from compilers
+>> doing optimization for single threads and and one would
+>> have to fix a lot of issues in the optimizers.  So the
+>> actually problem here might be that nobody wants to pay
+>> for fixing the compilers.
 > 
-> And if your language then rematerializes reads, the language is shit.
+> I actually suspect that most of the work has already been done in practice.
 > 
-> Really.
+> As mentioned, some time ago I checked the whole issue of
+> rematerializing loads, and at least gcc doesn't rematerialize loads
+> (and I just double-checked: bad_for_rematerialization_p() returns true
+> for mem-ops)
 > 
->               Linus
+> I have this memory that people told me that clang similarly
+> 
+> And the C standards committee already made widening stores invalid due
+> to threading issues.
+> 
+> Are there other issues? Sure. But remat of memory loads is at least
+> one issue, and it's one that has been painful for the kernel - not
+> because compilers do it, but because we *fear* compilers doing it so
+> much.
+> 
+>             Linus
 
