@@ -1,431 +1,318 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47DA520DD7A
-	for <rust-for-linux@vger.kernel.org>; Thu, 27 Feb 2025 10:17:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5D722B8B9
+	for <rust-for-linux@vger.kernel.org>; Thu, 27 Feb 2025 10:46:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740651464; cv=none; b=YHDFvRGHsuF8JCzstNb1IEqKmn88+90TKIufQDQfc6F1BBEbjjyyEy550dvfFhanCfHzdYLcM39Wn27OC5N18hwds1QeK9MQRiIpyRlx+TKuYCeGvEelkFzKuZESQDFVgJ0CMh0WOizcw+aJUGuw4tAmjXMCCOw7jsK4/syh/7o=
+	t=1740653206; cv=none; b=l0uJ1RS+G4PKoExmOBbpVh+Pj971ULeBDuLDylz+LDj35S4eTMRwTWqW4nfGhGBb7R+PlXz0WIjiNUW7OS4o3L4+ZWP2eYeMx78TOcrbO/A7XaPpgmzh0qY6JFQOlSm+VAb/aJ/QISb6LhBmukyj8LpdC07GPBCF4sixbRVCzO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740651464; c=relaxed/simple;
-	bh=q8O25ZErh+YLAy6NGyQso9ISXKK4chcQifjbXMLfS2k=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=dUBYTWr0UsDUKcZcSeI5IjdvPldRiNQJ/NQC3ZKiAaFmOhjUGPe+NZdPN7L7Agmp8qhXRFjoD69D9/sMeHWm7OnNVHzT5RRCQAPkhdx/ORKW2OpfF7pbdrlaTTCqI8RoU6xsUGDmxYuKiKmMwjidOaC4ydQ9prEm+HAZ5WxLias=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--bqe.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xdqbm/49; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--bqe.bounces.google.com
+	s=arc-20240116; t=1740653206; c=relaxed/simple;
+	bh=AS3enx0VSPZL/LhABYPa+TSz10WDZDGg6A6JN682kI4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K4qTQgpm4aHH2Sq1vZgyOK7ZxNsESQNBHlq+Z4Naz16zg0hxlaFcN00MMWZ7u1Eh4S/XRGAtM/cKtf+ZWTORURunFNxp58yl/Jkc/XDkIrB4R3SKtAUmLMG4sxWT5kMTMSWBl2rfgQj2dM+jLKFTbebhr24xk8O5GWQcbArA2lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kqe2S42D; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xdqbm/49"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43ba1a0a68dso3168145e9.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 27 Feb 2025 02:17:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kqe2S42D"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-22185cddbffso32796735ad.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 27 Feb 2025 02:46:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740651459; x=1741256259; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=kFj0ZzXY7CxT95rWrmk7m04DzCVcPn5EiM5UeE+gnaU=;
-        b=xdqbm/49J0PnffHbl3xtBc2zhia6jNUiozRjhs03RqeFNzE5XeUdYvHWvnhutjgaRi
-         NAxh5lQ8DlsxCqoyh16/dnmp+YX8ya3Os/OpKEYfPiog5xYNIzRlIe2rQdH3PKLorAGN
-         S9h9FsiGxPxWgwV/2IyqvX8KrC6lV+EzevrBdrBiSjfN49IST9FykzQ2Q3E34gxcBeTL
-         +u093hJdPCnm4Fv5lvPT/506fmGbpN75p7sKLz4VM1d3k4PbtYhvKboHGAVhE0UrDGMa
-         lND4ZH+XzAhnbEaGQ6ln8qWA79v2uolELvIYMgReXNDVYmXgD4tkO/gUsdWnSNq7pBfl
-         fS2g==
+        d=linaro.org; s=google; t=1740653204; x=1741258004; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=WQ17O1ETSxMB6WInt+9mPKK8vZgNC8yXnaT9wjZuPyc=;
+        b=kqe2S42DhMEljlD0HzQGXbeaMNtRAtgCYJy9RWXcijUfesOyMsxdEXmIcomxEmyDki
+         3OqX6tfVQhGC4enBCBkPnCQOzDQhaMb5GkIuGpNCiOBgGcsVC0abuo5F8LN0AL+d872q
+         wTFxIhVOtK3Cmf2JJd+I6vDCnyqIBvkqnC5afiHZC6JMCoOnU5u2h8fjcZIKaEWktTYs
+         ahroWKMSPfxtU5J+8Jy/M67kkbA8NkAMBlm20Q9q/FM151tii79/peWE2PsSm4p7a39k
+         DdkwebMuln2soYyZ2h61hHu+j5lF4bwprSxvLN6qOv1nW1RmglucTRHg/QG7/GIUu0/m
+         3xyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740651459; x=1741256259;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=kFj0ZzXY7CxT95rWrmk7m04DzCVcPn5EiM5UeE+gnaU=;
-        b=X4mdDnuI6x7EWv1z2VJl6gjVvQ8dnEC/r+0h4bN8eCECC3SOeQspSyXAaqnPlKkFSR
-         Om76yc3s2HLx9X2Yk4ELgMRrdiL35ZmVZk6yMaLTK0UpnelvGE635H8V7fry/9UCjKMi
-         5HIhSpBgboI4Pxhkfa3f7pog7bgRXy5emTf+n5FLYT+3xJJiQcoJMB2uDYlwnT712ESd
-         mmHKb7ojzOUMM01HS4HjsWFKF2edB7rmhaNl4f2k6rvhF2tFT2RPP3+I5ztey1oO+jAb
-         DuR8YMHUeiYWH/GSJHsclbMXguTuso+umNo9FeFztx0u4gXq3rF5EZvfFXUnaWZdnrC4
-         cbmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXs0mz03nVK3XXZ6D9NkdDSm3xPtgbGsusiADeid6YawFNJX14z/psplfume8aT0XBO2elAPYVOQ7+VGI4img==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0DJ8qGndNsxKRVLGyC0hYctZBA2mqoTwkCsFzo7Zw4T7rlGlu
-	c6FGlqSrGJ1JSOAnEJ/wfEvDKc7I16WYlc1jXbSnIXIJGBCx5rqAcC16t4nDr5ajQQ==
-X-Google-Smtp-Source: AGHT+IHLhrWF3dhK4n0mqgAn6rGmJPaaim2Cp9PRSW6vUchlM9/HHhIdNZgygcJCh7ZGnfwxeeEsTw4=
-X-Received: from wmbbi15.prod.google.com ([2002:a05:600c:3d8f:b0:439:8333:1efb])
- (user=bqe job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:a01:b0:439:9424:1b70
- with SMTP id 5b1f17b1804b1-43ab0f6fd2amr131962545e9.30.1740651459744; Thu, 27
- Feb 2025 02:17:39 -0800 (PST)
-Date: Thu, 27 Feb 2025 10:08:41 +0000
+        d=1e100.net; s=20230601; t=1740653204; x=1741258004;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WQ17O1ETSxMB6WInt+9mPKK8vZgNC8yXnaT9wjZuPyc=;
+        b=BSdn3CPGkLhxeWu+aZzQ/nHfQCAhPehUHW6twdvGon4t2LUvlyg+TElT8mQFAlDOiO
+         q4crqD2ZwFxCq39975NmcWj8CMGjtdIlf0c4TvlrTl7wb/QB3aH5JcIxjrE5MjtuVKfp
+         KFifs3MY66a/Ie9wx8VJxbiRd0dWFDqG63EAw2vwdkVLVpeM63NGrYenNd4jOHB/hCYd
+         oAOyG1XEjeItlt3zjt5YQFPpkGrhB7tatqupedelkIlERWfynAEInFrgFwFniF+Md4b4
+         QVAB7E/omS7Umr80uh3Ixvh/el9h7rUUB7TntRnRkeX0d+P++LtYg8Z5gCZAhNP9L4BE
+         Tz6w==
+X-Forwarded-Encrypted: i=1; AJvYcCX0tbtOQfJ1j+tvRpm29Lkilch0u4ioFzXExkK0yrfeeMMhS+tH+Lu+P19i85VwBWjAM7joQbJAuFhKF0wpNw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWCRt7PfNnJ0YE51Iaex1y28vyk6rucZC+yB5U9Gc6++vwNYSd
+	mt97yT3zTIDRzbNAL9z+zyW6pVdmTOioMJoBD1QeLqSm2QWkHaCWiH8jtvhT2DE=
+X-Gm-Gg: ASbGnctbohN9v1SkjjKD7FpSHhT9L01kWvPt7JiA+j1VpnnypXVrLvCIlXnwfNrzJce
+	5ZWyYfSsiPDhdkdskc3ZBFFSy85LSwWJxi6kge5kvNGlEIeIKn1MqN/2rSHFnjs/VA9UOy0/Qvv
+	RvCTkUO5nX6DE7inFQ+XpzOBAOHvfdMS//8QAcMio2RAE0mn53/95b4hOtT8uMQMGOrRyMFl8Hs
+	InZ8hT7fpKFturlR3Fz/VooO8kgebhckpkD3W0harp+QQAAxcn+DNa5KZCov1J8mXNYGT+odbxI
+	K8ebgPzYC+hN9fowchKV7b1Q+zg=
+X-Google-Smtp-Source: AGHT+IFw4U0Y14YqPHkOmM5GU7Aq2wPyaDmhjFD9e9oU7c3e7wrArjCROYbH+bI75H21AnEXa+gYfQ==
+X-Received: by 2002:a05:6a21:398b:b0:1f0:e2a9:fb2a with SMTP id adf61e73a8af0-1f2e3845c72mr4667894637.4.1740653203753;
+        Thu, 27 Feb 2025 02:46:43 -0800 (PST)
+Received: from localhost ([122.172.84.15])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-aee7dedf5b3sm1071213a12.73.2025.02.27.02.46.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Feb 2025 02:46:43 -0800 (PST)
+Date: Thu, 27 Feb 2025 16:16:40 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, benno.lossin@proton.me,
+	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@redhat.com,
+	gary@garyguo.net, linux-kernel@vger.kernel.org,
+	linux@rasmusvillemoes.dk, ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+	vincent.guittot@linaro.org, yury.norov@gmail.com
+Subject: Re: [PATCH 1/2] rust: Add initial cpumask abstractions
+Message-ID: <20250227104640.sa6vqdz7j5hwjigs@vireshk-i7>
+References: <CAH5fLggyEXyyaFNnmBCPOSX051TiFyAp0B8GfahbPg=+LrtUWA@mail.gmail.com>
+ <20250225180223.763026-1-aliceryhl@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.48.1.658.g4767266eb4-goog
-Message-ID: <20250227101720.1811578-1-bqe@google.com>
-Subject: [PATCH] rust: add bindings and API for bitmap.h and bitops.h.
-From: Burak Emir <bqe@google.com>
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Burak Emir <bqe@google.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250225180223.763026-1-aliceryhl@google.com>
 
-Adds a bitmap and bitops bindings and bitmap Rust API.
-These are for porting the approach from commit 15d9da3f818c ("binder:
-use bitmap for faster descriptor lookup") to Rust. The functionality
-in dbitmap.h makes use of bitmap and bitops.
+On 25-02-25, 18:02, Alice Ryhl wrote:
+> diff --git a/rust/kernel/cpumask.rs b/rust/kernel/cpumask.rs
+> +/// This corresponds to the C type alias `cpumask_var_t`.
+> +pub struct CpumaskBox {
+> +    #[cfg(CONFIG_CPUMASK_OFFSTACK)]
+> +    ptr: NonNull<Cpumask>,
+> +    #[cfg(not(CONFIG_CPUMASK_OFFSTACK))]
+> +    mask: Cpumask,
+> +}
+>  
+> +impl CpumaskBox {
+> +    pub fn new(_flags: Flags) -> Result<Self, AllocError> {
+> +        Ok(Self {
+> +            #[cfg(CONFIG_CPUMASK_OFFSTACK)]
+> +            ptr: {
+> +                let mut ptr: *mut bindings::cpumask = ptr::null_mut();
+> +                unsafe { bindings::zalloc_cpumask_var(&mut ptr, _flags.as_raw()) };
+> +                NonNull::new(ptr.cast()).ok_or(AllocError)?
+> +            },
+>              #[cfg(not(CONFIG_CPUMASK_OFFSTACK))]
+> -            // SAFETY: The pointer was earlier initialized from the result of `KBox::into_raw()`.
+> -            unsafe {
+> -                drop(KBox::from_raw(self.ptr))
+> -            };
+> -        }
+> +            mask: unsafe { core::mem::zeroed() },
 
-The Rust bitmap API provides an abstraction to underlying bitmaps
-and bitops operations. For now, we only include methods that are
-necessary for reimplementing dbitmap.h. It is straightforward to add
-more methods later, as needed. We offer a safe API through
-bounds checks which panic if violated.
+This will work correctly, yes, but I wasn't sure if the Rust code
+should do this or depend on the C API and call zalloc_cpumask_var().
+The implementation of struct cpumask allows this to work right now,
+but any change where some internal state management is done, for
+example, within the structure may break the Rust side.
 
-This series uses the usize type for sizes and indices into the bitmap,
-because Rust generally always uses that type for indices and lengths
-and it will be more convenient if the API accepts that type. This means
-that we need to perform some casts to/from u32 and usize, since the C
-headers use unsigned int instead of size_t/unsigned long for these
-numbers in some places.
+I am okay with this way of doing it if that looks okay to you.
 
-Adds F: entries to MAINTAINERS.
+I have made following changes over your diff.
 
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Burak Emir <bqe@google.com>
----
-This series adds a Rust abstraction for bitmap, and binding helpers
-for inline methods of bitmap.h bitops.h.
+Thanks for your help in simplifying the code.
 
-It depends on [1] and [2] which add bitmap helpers, MAINTAINERS entries
-and an abstraction that is part of the bitmaps Rust API.
-
-Question for Yury: What would you like us to do for the MAINTAINERS
-file? For now I just added the new files as F: entries.
-
-[1] https://lore.kernel.org/all/20250224233938.3158-1-yury.norov@gmail.com/
-[2] https://lore.kernel.org/all/cover.1740475625.git.viresh.kumar@linaro.org/
-
- MAINTAINERS                     |   4 +
- rust/bindings/bindings_helper.h |   1 +
- rust/helpers/bitmap.c           |   8 ++
- rust/helpers/bitops.c           |  13 +++
- rust/helpers/find.c             |  15 +++
- rust/helpers/helpers.c          |   3 +
- rust/kernel/bitmap.rs           | 182 ++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs              |   1 +
- 8 files changed, 227 insertions(+)
- create mode 100644 rust/helpers/bitmap.c
- create mode 100644 rust/helpers/bitops.c
- create mode 100644 rust/helpers/find.c
- create mode 100644 rust/kernel/bitmap.rs
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 6d6e55d8593b..359f09e8e2c0 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4033,12 +4033,16 @@ BITMAP API BINDINGS [RUST]
- M:	Yury Norov <yury.norov@gmail.com>
- S:	Maintained
- F:	rust/helpers/cpumask.c
-+F:	rust/helpers/find.c
-+F:	rust/helpers/bitmap.c
-+F:	rust/helpers/bitops.c
- 
- BITMAP API [RUST]
- M:	Viresh Kumar <viresh.kumar@linaro.org> (cpumask)
- R:	Yury Norov <yury.norov@gmail.com>
- S:	Maintained
- F:	rust/kernel/cpumask.rs
-+F:	rust/kernel/bitmap.rs
- 
- BITOPS API
- M:	Yury Norov <yury.norov@gmail.com>
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 673b1daa9a58..50416c1a3de9 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -7,6 +7,7 @@
-  */
- 
- #include <kunit/test.h>
-+#include <linux/bitmap.h>
- #include <linux/blk-mq.h>
- #include <linux/blk_types.h>
- #include <linux/blkdev.h>
-diff --git a/rust/helpers/bitmap.c b/rust/helpers/bitmap.c
-new file mode 100644
-index 000000000000..4fa4e4f76110
---- /dev/null
-+++ b/rust/helpers/bitmap.c
-@@ -0,0 +1,8 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/bitmap.h>
-+
-+void rust_helper_bitmap_copy(unsigned long *dst, const unsigned long *src, unsigned int nbits)
-+{
-+	bitmap_copy(dst, src, nbits);
-+}
-diff --git a/rust/helpers/bitops.c b/rust/helpers/bitops.c
-new file mode 100644
-index 000000000000..191ef0341fd5
---- /dev/null
-+++ b/rust/helpers/bitops.c
-@@ -0,0 +1,13 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/bitops.h>
-+
-+void rust_helper_set_bit(unsigned int nr, volatile unsigned long *addr)
-+{
-+	set_bit(nr, addr);
-+}
-+
-+void rust_helper_clear_bit(unsigned int nr, volatile unsigned long *addr)
-+{
-+	clear_bit(nr, addr);
-+}
-diff --git a/rust/helpers/find.c b/rust/helpers/find.c
-new file mode 100644
-index 000000000000..3841d3f0330f
---- /dev/null
-+++ b/rust/helpers/find.c
-@@ -0,0 +1,15 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/find.h>
-+
-+unsigned long rust_helper_find_last_bit(const unsigned long *addr, unsigned long size)
-+{
-+	return find_last_bit(addr, size);
-+}
-+
-+
-+unsigned long rust_helper_find_next_zero_bit(const unsigned long *addr, unsigned long size,
-+				 unsigned long offset)
-+{
-+	return find_next_zero_bit(addr, size, offset);
-+}
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index de2341cfd917..86ebbc97a57d 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -7,6 +7,8 @@
-  * Sorted alphabetically.
-  */
- 
-+#include "bitmap.c"
-+#include "bitops.c"
- #include "blk.c"
- #include "bug.c"
- #include "build_assert.c"
-@@ -15,6 +17,7 @@
- #include "cred.c"
- #include "device.c"
- #include "err.c"
-+#include "find.c"
- #include "fs.c"
- #include "io.c"
- #include "jump_label.c"
-diff --git a/rust/kernel/bitmap.rs b/rust/kernel/bitmap.rs
-new file mode 100644
-index 000000000000..25fe07a7073a
---- /dev/null
-+++ b/rust/kernel/bitmap.rs
-@@ -0,0 +1,182 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+// Copyright (C) 2025 Google LLC.
-+
-+//! Rust API for bitmap.
-+//!
-+//! C headers: [`include/linux/bitmap.h`](srctree/include/linux/bitmap.h).
-+
-+use crate::alloc::{AllocError, Flags};
-+use crate::bindings::{
-+    bitmap_copy, bitmap_free, bitmap_zalloc, clear_bit, find_last_bit, find_next_zero_bit, set_bit,
-+};
-+use core::ptr::NonNull;
-+
-+/// Wraps underlying C bitmap structure.
-+///
-+/// # Invariants
-+///
-+/// * `ptr` is obtained from a successful call to bitmap_zalloc and
-+///   holds the address of a zero-initialized array of unsigned long
-+///   that is large enough to hold `nbits` bits.
-+pub struct Bitmap {
-+    /// Pointer to an array of unsigned long.
-+    ptr: NonNull<usize>,
-+    /// How many bits this bitmap stores. Must be < 2^32.
-+    nbits: usize,
-+}
-+
-+impl Drop for Bitmap {
-+    fn drop(&mut self) {
-+        // SAFETY: `self.ptr` was returned by bitmap_zalloc.
-+        unsafe { bitmap_free(self.as_mut_ptr()) };
-+    }
-+}
-+
-+#[cold]
-+fn not_in_bounds_lt(arg: &'static str, len: usize, val: usize) -> ! {
-+    panic!("{arg} must be less than length {len}, was {val}");
-+}
-+
-+#[cold]
-+fn not_in_bounds_le(arg: &'static str, len: usize, val: usize) -> ! {
-+    panic!("{arg} must be less than or equal to length {len}, was {val}");
-+}
-+
-+impl Bitmap {
-+    /// Constructs a new Bitmap.
-+    ///
-+    /// Fails with AllocError if `nbits` is greater than or equal to 2^32,
-+    /// or when the bitmap could not be allocated.
-+    #[inline]
-+    pub fn new(nbits: usize, flags: Flags) -> Result<Self, AllocError> {
-+        if let Ok(nbits_u32) = u32::try_from(nbits) {
-+            // SAFETY: nbits == 0 is permitted and nbits fits in u32.
-+            let ptr = unsafe { bitmap_zalloc(nbits_u32, flags.as_raw()) };
-+            // Zero-size allocation is ok and yields a dangling pointer.
-+            let ptr = NonNull::new(ptr).ok_or(AllocError)?;
-+            Ok(Bitmap { ptr, nbits })
-+        } else {
-+            Err(AllocError)
-+        }
-+    }
-+
-+    /// Returns how many bits this bitmap holds.
-+    #[inline]
-+    pub fn len(&self) -> usize {
-+        self.nbits
-+    }
-+
-+    /// Returns true if this bitmap has length 0.
-+    #[inline]
-+    pub fn is_empty(&self) -> bool {
-+        self.nbits == 0
-+    }
-+
-+    /// Returns a mutable raw pointer to the backing bitmap.
-+    #[inline]
-+    pub fn as_mut_ptr(&mut self) -> *mut usize {
-+        self.ptr.as_ptr()
-+    }
-+
-+    /// Returns a raw pointer to the backing bitmap.
-+    #[inline]
-+    pub fn as_ptr(&self) -> *const usize {
-+        self.ptr.as_ptr()
-+    }
-+
-+    /// Sets bit with number `nr`.
-+    ///
-+    /// # Panics
-+    ///
-+    /// Panics if `nr` is greater than or equal to `self.nbits`.
-+    #[inline]
-+    pub fn set_bit(&mut self, nr: usize) {
-+        if self.nbits <= nr {
-+            not_in_bounds_lt("nr", self.nbits, nr)
-+        }
-+        // SAFETY: Bit nr is within bounds.
-+        unsafe { set_bit(nr as u32, self.as_mut_ptr()) };
-+    }
-+
-+    /// Clears bit with number `nr`.
-+    ///
-+    /// # Panics
-+    ///
-+    /// Panics if `nr` is greater than or equal to `self.nbits`.
-+    #[inline]
-+    pub fn clear_bit(&mut self, nr: usize) {
-+        if self.nbits <= nr {
-+            not_in_bounds_lt("nr", self.nbits, nr);
-+        }
-+        // SAFETY: Bit nr is within bounds.
-+        unsafe { clear_bit(nr as u32, self.as_mut_ptr()) };
-+    }
-+
-+    /// Copy up to `nbits` bits from this bitmap into another.
-+    ///
-+    /// # Panics
-+    ///
-+    /// Panics if `nbits` is too large for this bitmap or destination.
-+    #[inline]
-+    pub fn bitmap_copy(&self, dst: &mut Bitmap, nbits: usize) {
-+        if self.nbits < nbits {
-+            not_in_bounds_le("nbits", self.nbits, nbits);
-+        }
-+        if dst.nbits < nbits {
-+            not_in_bounds_le("nbits", dst.nbits, nbits);
-+        }
-+        // SAFETY: nbits == 0 is supported and access to `self` and `dst` is within bounds.
-+        unsafe { bitmap_copy(dst.as_mut_ptr(), self.ptr.as_ptr(), nbits as u32) };
-+    }
-+
-+    /// Finds the last bit.
-+    #[inline]
-+    pub fn find_last_bit(&self) -> usize {
-+        // SAFETY: nbits == 0 is supported and access is within bounds.
-+        unsafe { find_last_bit(self.as_ptr(), self.nbits) }
-+    }
-+
-+    /// Finds the last bit, searching up to `nbits` bits.
-+    ///
-+    /// # Panics
-+    ///
-+    /// Panics if `nbits` is too large for this bitmap.
-+    #[inline]
-+    pub fn find_last_bit_upto(&self, nbits: usize) -> usize {
-+        if self.nbits < nbits {
-+            not_in_bounds_le("nbits", self.nbits, nbits);
-+        }
-+        // SAFETY: nbits == 0 is supported and access is within bounds.
-+        unsafe { find_last_bit(self.as_ptr(), nbits) }
-+    }
-+
-+    /// Finds the next zero bit, searching up to `nbits`.
-+    ///
-+    /// # Panics
-+    ///
-+    /// Panics if `nbits` is too large for this bitmap.
-+    #[inline]
-+    pub fn find_next_zero_bit_upto(&self, nbits: usize) -> usize {
-+        if self.nbits < nbits {
-+            not_in_bounds_le("nbits", self.nbits, nbits);
-+        }
-+        // SAFETY: nbits == 0 is supported and access is within bounds.
-+        unsafe {
-+            find_next_zero_bit(self.as_ptr(), nbits, 0 /* offset */)
-+        }
-+    }
-+
-+    /// Finds the next zero bit, searching up to `nbits` bits, with offset `offset`.
-+    ///
-+    /// # Panics
-+    ///
-+    /// Panics if `nbits` is too large for this bitmap.
-+    pub fn find_next_zero_bit_upto_offset(&self, nbits: usize, offset: usize) -> usize {
-+        if self.nbits < nbits {
-+            not_in_bounds_le("nbits", self.nbits, nbits);
-+        }
-+        // SAFETY: nbits == 0 and out-of-bounds offset is supported, and access is within bounds.
-+        unsafe { find_next_zero_bit(self.as_ptr(), nbits, offset) }
-+    }
-+}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index efbd7be98dab..be06ffc47473 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -36,6 +36,7 @@
- pub use ffi;
- 
- pub mod alloc;
-+pub mod bitmap;
- #[cfg(CONFIG_BLOCK)]
- pub mod block;
- #[doc(hidden)]
 -- 
-2.48.1.658.g4767266eb4-goog
+viresh
 
+-------------------------8<-------------------------
+
+diff --git a/rust/kernel/cpumask.rs b/rust/kernel/cpumask.rs
+index f82dafbc4e61..d56f7dc9d762 100644
+--- a/rust/kernel/cpumask.rs
++++ b/rust/kernel/cpumask.rs
+@@ -13,20 +13,28 @@
+ #[cfg(CONFIG_CPUMASK_OFFSTACK)]
+ use core::ptr::{self, NonNull};
+ 
++#[cfg(not(CONFIG_CPUMASK_OFFSTACK))]
++use core::mem::MaybeUninit;
++
++use core::ops::{Deref, DerefMut};
++
+ /// This corresponds to the C type `struct cpumask`.
+ #[repr(transparent)]
+-pub struct Cpumask {
+-    mask: Opaque<bindings::cpumask>,
+-}
++pub struct Cpumask(Opaque<bindings::cpumask>);
+ 
+ impl Cpumask {
+-    /// Creates a reference to an existing `struct cpumask` pointer.
++    /// Creates a mutable reference to an existing `struct cpumask` pointer.
+     ///
+     /// # Safety
+     ///
+     /// The caller must ensure that `ptr` is valid for writing and remains valid for the lifetime
+     /// of the returned reference.
+-    pub unsafe fn from_raw_mut<'a>(ptr: *mut bindings::cpumask) -> &'a mut Self {
++    pub unsafe fn from_raw_mut<'a>(ptr: *mut bindings::cpumask_var_t) -> &'a mut Self {
++        // For this configuration, `cpumask_var_t` is defined as `[cpumask; 1]`.
++        #[cfg(not(CONFIG_CPUMASK_OFFSTACK))]
++        let ptr: *mut bindings::cpumask = ptr as *mut _;
++
++        // SAFETY: Guaranteed by the safety requirements of the function.
+         unsafe { &mut *ptr.cast() }
+     }
+ 
+@@ -36,7 +44,12 @@ pub unsafe fn from_raw_mut<'a>(ptr: *mut bindings::cpumask) -> &'a mut Self {
+     ///
+     /// The caller must ensure that `ptr` is valid for reading and remains valid for the lifetime
+     /// of the returned reference.
+-    pub unsafe fn from_raw<'a>(ptr: *const bindings::cpumask) -> &'a Self {
++    pub unsafe fn from_raw<'a>(ptr: *const bindings::cpumask_var_t) -> &'a Self {
++        // For this configuration, `cpumask_var_t` is defined as `[cpumask; 1]`.
++        #[cfg(not(CONFIG_CPUMASK_OFFSTACK))]
++        let ptr: *const bindings::cpumask = ptr as *const _;
++
++        // SAFETY: Guaranteed by the safety requirements of the function.
+         unsafe { &*ptr.cast() }
+     }
+ 
+@@ -45,41 +58,37 @@ pub fn as_raw(&self) -> *mut bindings::cpumask {
+         self as *const Cpumask as *mut bindings::cpumask
+     }
+ 
+-    /// Sets CPU in the cpumask.
+-    ///
+-    /// Update the cpumask with a single CPU.
++    /// Sets `cpu` in the cpumask.
+     pub fn set(&mut self, cpu: u32) {
+-        // SAFETY: `ptr` is guaranteed to be valid for the lifetime of `self`. And it is safe to
++        // SAFETY: `mask` is guaranteed to be valid for the lifetime of `self`. And it is safe to
+         // call `cpumask_set_cpus()` for any CPU.
+         unsafe { bindings::cpumask_set_cpu(cpu, self.as_raw()) };
+     }
+ 
+-    /// Clears CPU in the cpumask.
+-    ///
+-    /// Update the cpumask with a single CPU.
++    /// Clears `cpu` in the cpumask.
+     pub fn clear(&mut self, cpu: i32) {
+-        // SAFETY: `ptr` is guaranteed to be valid for the lifetime of `self`. And it is safe to
++        // SAFETY: `mask` is guaranteed to be valid for the lifetime of `self`. And it is safe to
+         // call `cpumask_clear_cpu()` for any CPU.
+         unsafe { bindings::cpumask_clear_cpu(cpu, self.as_raw()) };
+     }
+ 
+     /// Sets all CPUs in the cpumask.
+     pub fn set_all(&mut self) {
+-        // SAFETY: `ptr` is guaranteed to be valid for the lifetime of `self`. And it is safe to
++        // SAFETY: `mask` is guaranteed to be valid for the lifetime of `self`. And it is safe to
+         // call `cpumask_setall()`.
+         unsafe { bindings::cpumask_setall(self.as_raw()) };
+     }
+ 
+-    /// Gets weight of a cpumask.
++    /// Gets weight of the cpumask.
+     pub fn weight(&self) -> u32 {
+-        // SAFETY: `ptr` is guaranteed to be valid for the lifetime of `self`. And it is safe to
++        // SAFETY: `mask` is guaranteed to be valid for the lifetime of `self`. And it is safe to
+         // call `cpumask_weight()`.
+         unsafe { bindings::cpumask_weight(self.as_raw()) }
+     }
+ 
+     /// Copies cpumask.
+     pub fn copy(&self, dstp: &mut Self) {
+-        // SAFETY: `ptr` is guaranteed to be valid for the lifetime of `self`. And it is safe to
++        // SAFETY: `mask` is guaranteed to be valid for the lifetime of `self`. And it is safe to
+         // call `cpumask_copy()`.
+         unsafe { bindings::cpumask_copy(dstp.as_raw(), self.as_raw()) };
+     }
+@@ -94,26 +103,65 @@ pub struct CpumaskBox {
+ }
+ 
+ impl CpumaskBox {
++    /// Creates an initialized instance of the `CpumaskBox`.
+     pub fn new(_flags: Flags) -> Result<Self, AllocError> {
+         Ok(Self {
+             #[cfg(CONFIG_CPUMASK_OFFSTACK)]
+             ptr: {
+                 let mut ptr: *mut bindings::cpumask = ptr::null_mut();
++
++                // SAFETY: Depending on the value of `_flags`, this call may sleep. Other than
++                // that, it is always safe to call this method.
+                 unsafe { bindings::zalloc_cpumask_var(&mut ptr, _flags.as_raw()) };
+                 NonNull::new(ptr.cast()).ok_or(AllocError)?
+             },
++
+             #[cfg(not(CONFIG_CPUMASK_OFFSTACK))]
++            // SAFETY: FFI type is valid to be zero-initialized.
+             mask: unsafe { core::mem::zeroed() },
+         })
+     }
++
++    /// Creates an uninitialized instance of the `CpumaskBox`.
++    ///
++    /// # Safety
++    ///
++    /// The caller must ensure that the returned `CpumaskBox` is properly initialized before
++    /// getting used.
++    unsafe fn new_uninit(_flags: Flags) -> Result<Self, AllocError> {
++        Ok(Self {
++            #[cfg(CONFIG_CPUMASK_OFFSTACK)]
++            ptr: {
++                let mut ptr: *mut bindings::cpumask = ptr::null_mut();
++
++                // SAFETY: Depending on the value of `_flags`, this call may sleep. Other than
++                // that, it is always safe to call this method.
++                unsafe { bindings::alloc_cpumask_var(&mut ptr, _flags.as_raw()) };
++                NonNull::new(ptr.cast()).ok_or(AllocError)?
++            },
++            #[cfg(not(CONFIG_CPUMASK_OFFSTACK))]
++            // SAFETY: Guaranteed by the safety requirements of the function.
++            mask: unsafe { MaybeUninit::uninit().assume_init() },
++        })
++    }
++
++    /// Clones cpumask.
++    pub fn try_clone(cpumask: &Cpumask) -> Result<Self> {
++        // SAFETY: The returned cpumask_box is initialized right after this call.
++        let mut cpumask_box = unsafe { Self::new_uninit(GFP_KERNEL) }?;
++
++        cpumask.copy(&mut cpumask_box);
++        Ok(cpumask_box)
++    }
+ }
+ 
+ // Make CpumaskBox behave like a pointer to Cpumask.
+-impl core::ops::Deref for CpumaskBox {
++impl Deref for CpumaskBox {
+     type Target = Cpumask;
+ 
+     #[cfg(CONFIG_CPUMASK_OFFSTACK)]
+     fn deref(&self) -> &Cpumask {
++        // SAFETY: The caller owns CpumaskBox, so it is safe to deref the cpumask.
+         unsafe { &*self.ptr.as_ptr() }
+     }
+ 
+@@ -123,9 +171,23 @@ fn deref(&self) -> &Cpumask {
+     }
+ }
+ 
++impl DerefMut for CpumaskBox {
++    #[cfg(CONFIG_CPUMASK_OFFSTACK)]
++    fn deref_mut(&mut self) -> &mut Cpumask {
++        // SAFETY: The caller owns CpumaskBox, so it is safe to deref the cpumask.
++        unsafe { self.ptr.as_mut() }
++    }
++
++    #[cfg(not(CONFIG_CPUMASK_OFFSTACK))]
++    fn deref_mut(&mut self) -> &mut Cpumask {
++        &mut self.mask
++    }
++}
++
+ impl Drop for CpumaskBox {
+     fn drop(&mut self) {
+         #[cfg(CONFIG_CPUMASK_OFFSTACK)]
++        // SAFETY: It is safe to free the cpumask.
+         unsafe {
+             bindings::free_cpumask_var(self.as_raw())
+         };
