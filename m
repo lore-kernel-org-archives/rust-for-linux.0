@@ -1,178 +1,431 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C672C6A3;
-	Thu, 27 Feb 2025 10:02:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47DA520DD7A
+	for <rust-for-linux@vger.kernel.org>; Thu, 27 Feb 2025 10:17:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740650525; cv=none; b=lx+WnJQZKHmnRFpiXhttsotgfL+mRaX7NVrx/9fbnAHGAFTSjGiD+0IAlRjiw1WmWlzdqUdagFMl2sOgXKcKQfas9H/tHhtSjhLTi9+vMnHrdB2UWqP5Qe+COj4CmnltFGC3EsHFaQzFNxDXnt4k8mb2OFaypiyGL5Syhc6k0ow=
+	t=1740651464; cv=none; b=YHDFvRGHsuF8JCzstNb1IEqKmn88+90TKIufQDQfc6F1BBEbjjyyEy550dvfFhanCfHzdYLcM39Wn27OC5N18hwds1QeK9MQRiIpyRlx+TKuYCeGvEelkFzKuZESQDFVgJ0CMh0WOizcw+aJUGuw4tAmjXMCCOw7jsK4/syh/7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740650525; c=relaxed/simple;
-	bh=WFRK26x5tVbWE7gyjrMMLUCQC1MZqXSZkDzOkUqv5oY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ckhIYCYYL1fpEwgQLYr88DbVy/bOXMcfBlwbTPK3Z01jlF7vmwCbiAclJMPb18UBgO+ZLcrBLTLOhIas4ztaCJwATuDEN//29yUKvcYWnzapSh4EI8g57mujPHJbRljbyeSKw1xRiNXLpfk5mfSMrH6F4Ni4R0altwGv320WHTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OfrPz2JJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740651464; c=relaxed/simple;
+	bh=q8O25ZErh+YLAy6NGyQso9ISXKK4chcQifjbXMLfS2k=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=dUBYTWr0UsDUKcZcSeI5IjdvPldRiNQJ/NQC3ZKiAaFmOhjUGPe+NZdPN7L7Agmp8qhXRFjoD69D9/sMeHWm7OnNVHzT5RRCQAPkhdx/ORKW2OpfF7pbdrlaTTCqI8RoU6xsUGDmxYuKiKmMwjidOaC4ydQ9prEm+HAZ5WxLias=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--bqe.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xdqbm/49; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--bqe.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OfrPz2JJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AD98C4CEDD;
-	Thu, 27 Feb 2025 10:01:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740650524;
-	bh=WFRK26x5tVbWE7gyjrMMLUCQC1MZqXSZkDzOkUqv5oY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OfrPz2JJYBEDgWaFe3BuGfbg3eo3kF2eDRLJsTPndeTB4aLJd5thUDGFyC9NWCkYH
-	 2N2bCKSPMaqvYVDFRLyiEXe+NVt4ISgScLzFIH34TkEYDWhp4DfubKBQLfDMUwj7gV
-	 FFIJZTOexQVX8Wq6e541mI+MummpB92u4DMWRPaTvhfHrxCvKYruxrxcExyBvjFcAN
-	 tI/QsEnO5rLleFbRdBWeBkDMEaFVH38F3cW1c23YTRDGdnORsx2fMOrDRdLw5Twuvk
-	 2TemwYoi63k+IPrJtu6WZmYX1wL0nXwBS2MPy8SRocu3iWb/qrQVpeoG336elucQsN
-	 nj+/MEBqIGoGg==
-Date: Thu, 27 Feb 2025 11:01:55 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Alistair Popple <apopple@nvidia.com>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	tmgross@umich.edu, a.hindborg@samsung.com, aliceryhl@google.com,
-	airlied@gmail.com, fujita.tomonori@gmail.com, lina@asahilina.net,
-	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
-	robh@kernel.org, daniel.almeida@collabora.com, saravanak@google.com,
-	dirk.behme@de.bosch.com, j@jannau.net, fabien.parent@linaro.org,
-	chrisi.schrefl@gmail.com, paulmck@kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
-	rcu@vger.kernel.org
-Subject: Re: [PATCH v7 07/16] rust: add `io::{Io, IoRaw}` base types
-Message-ID: <Z8A4E_AyDlSUT5Bq@pollux>
-References: <20241219170425.12036-1-dakr@kernel.org>
- <20241219170425.12036-8-dakr@kernel.org>
- <g63h5f3zowy375yutftautqhurflahq3o5nmujbr274c5d7u7u@j5cbqi5aba6k>
- <CANiq72=gZhG8MOCqPi8F0yp3WR1oW77V+MXdLP=RK_R2Jzg-cw@mail.gmail.com>
- <wnzq3vlgawjdchjck7nzwlzmm5qbmactwlhtj44ak7s7kefphd@m7emgjnmnkjn>
- <Z72jw3TYJHm7N242@pollux>
- <nlngenb6udempavyevw62qvdzuo7jr4m5mt4fwvznza347vicl@ynn4c5lojoub>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xdqbm/49"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43ba1a0a68dso3168145e9.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 27 Feb 2025 02:17:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1740651459; x=1741256259; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=kFj0ZzXY7CxT95rWrmk7m04DzCVcPn5EiM5UeE+gnaU=;
+        b=xdqbm/49J0PnffHbl3xtBc2zhia6jNUiozRjhs03RqeFNzE5XeUdYvHWvnhutjgaRi
+         NAxh5lQ8DlsxCqoyh16/dnmp+YX8ya3Os/OpKEYfPiog5xYNIzRlIe2rQdH3PKLorAGN
+         S9h9FsiGxPxWgwV/2IyqvX8KrC6lV+EzevrBdrBiSjfN49IST9FykzQ2Q3E34gxcBeTL
+         +u093hJdPCnm4Fv5lvPT/506fmGbpN75p7sKLz4VM1d3k4PbtYhvKboHGAVhE0UrDGMa
+         lND4ZH+XzAhnbEaGQ6ln8qWA79v2uolELvIYMgReXNDVYmXgD4tkO/gUsdWnSNq7pBfl
+         fS2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740651459; x=1741256259;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kFj0ZzXY7CxT95rWrmk7m04DzCVcPn5EiM5UeE+gnaU=;
+        b=X4mdDnuI6x7EWv1z2VJl6gjVvQ8dnEC/r+0h4bN8eCECC3SOeQspSyXAaqnPlKkFSR
+         Om76yc3s2HLx9X2Yk4ELgMRrdiL35ZmVZk6yMaLTK0UpnelvGE635H8V7fry/9UCjKMi
+         5HIhSpBgboI4Pxhkfa3f7pog7bgRXy5emTf+n5FLYT+3xJJiQcoJMB2uDYlwnT712ESd
+         mmHKb7ojzOUMM01HS4HjsWFKF2edB7rmhaNl4f2k6rvhF2tFT2RPP3+I5ztey1oO+jAb
+         DuR8YMHUeiYWH/GSJHsclbMXguTuso+umNo9FeFztx0u4gXq3rF5EZvfFXUnaWZdnrC4
+         cbmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXs0mz03nVK3XXZ6D9NkdDSm3xPtgbGsusiADeid6YawFNJX14z/psplfume8aT0XBO2elAPYVOQ7+VGI4img==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx0DJ8qGndNsxKRVLGyC0hYctZBA2mqoTwkCsFzo7Zw4T7rlGlu
+	c6FGlqSrGJ1JSOAnEJ/wfEvDKc7I16WYlc1jXbSnIXIJGBCx5rqAcC16t4nDr5ajQQ==
+X-Google-Smtp-Source: AGHT+IHLhrWF3dhK4n0mqgAn6rGmJPaaim2Cp9PRSW6vUchlM9/HHhIdNZgygcJCh7ZGnfwxeeEsTw4=
+X-Received: from wmbbi15.prod.google.com ([2002:a05:600c:3d8f:b0:439:8333:1efb])
+ (user=bqe job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:a01:b0:439:9424:1b70
+ with SMTP id 5b1f17b1804b1-43ab0f6fd2amr131962545e9.30.1740651459744; Thu, 27
+ Feb 2025 02:17:39 -0800 (PST)
+Date: Thu, 27 Feb 2025 10:08:41 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <nlngenb6udempavyevw62qvdzuo7jr4m5mt4fwvznza347vicl@ynn4c5lojoub>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.48.1.658.g4767266eb4-goog
+Message-ID: <20250227101720.1811578-1-bqe@google.com>
+Subject: [PATCH] rust: add bindings and API for bitmap.h and bitops.h.
+From: Burak Emir <bqe@google.com>
+To: Yury Norov <yury.norov@gmail.com>
+Cc: Burak Emir <bqe@google.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Feb 27, 2025 at 11:25:55AM +1100, Alistair Popple wrote:
-> On Tue, Feb 25, 2025 at 12:04:35PM +0100, Danilo Krummrich wrote:
-> > On Tue, Feb 25, 2025 at 04:50:05PM +1100, Alistair Popple wrote:
-> 
-> > I think build_assert() is not widely used yet and, until the situation improves,
-> > we could also keep a list of common pitfalls if that helps?
-> 
-> I've asked a few times, but are there any plans/ideas on how to improve the
-> situation?
+Adds a bitmap and bitops bindings and bitmap Rust API.
+These are for porting the approach from commit 15d9da3f818c ("binder:
+use bitmap for faster descriptor lookup") to Rust. The functionality
+in dbitmap.h makes use of bitmap and bitops.
 
-I just proposed a few ones. If the limitation can be resolved I don't know.
+The Rust bitmap API provides an abstraction to underlying bitmaps
+and bitops operations. For now, we only include methods that are
+necessary for reimplementing dbitmap.h. It is straightforward to add
+more methods later, as needed. We offer a safe API through
+bounds checks which panic if violated.
 
-There are two different cases.
+This series uses the usize type for sizes and indices into the bitmap,
+because Rust generally always uses that type for indices and lengths
+and it will be more convenient if the API accepts that type. This means
+that we need to perform some casts to/from u32 and usize, since the C
+headers use unsigned int instead of size_t/unsigned long for these
+numbers in some places.
 
-	(1) build_assert() is evaluated in const context to false
-	(2) the compiler can't guarantee that build_assert() is evaluated to
-	    true at compile time
+Adds F: entries to MAINTAINERS.
 
-For (1) you get a proper backtrace by the compiler. For (2) there's currently
-only the option to make the linker fail, which doesn't produce the most useful
-output.
+Suggested-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Burak Emir <bqe@google.com>
+---
+This series adds a Rust abstraction for bitmap, and binding helpers
+for inline methods of bitmap.h bitops.h.
 
-If we wouldn't do (2) we'd cause a kernel panic on runtime, which can be
-enforced with CONFIG_RUST_BUILD_ASSERT_ALLOW=y.
+It depends on [1] and [2] which add bitmap helpers, MAINTAINERS entries
+and an abstraction that is part of the bitmaps Rust API.
 
-> I'm kind of suprised we're building things on top of a fairly broken
-> feature without an idea of how we might make that feature work. I'd love to
-> help, but being new to R4L no immediately useful ideas come to mind.
+Question for Yury: What would you like us to do for the MAINTAINERS
+file? For now I just added the new files as F: entries.
 
-The feature is not broken at all, it works perfectly fine. It's just that for
-(2) it has an ergonomic limitation.
+[1] https://lore.kernel.org/all/20250224233938.3158-1-yury.norov@gmail.com/
+[2] https://lore.kernel.org/all/cover.1740475625.git.viresh.kumar@linaro.org/
 
-> > > Unless the code absolutely cannot compile without them I think it would be
-> > > better to turn them into runtime errors that can at least hint at what might
-> > > have gone wrong. For example I think a run-time check would have been much more
-> > > appropriate and easy to debug here, rather than having to bisect my changes.
-> > 
-> > No, especially for I/O the whole purpose of the non-try APIs is to ensure that
-> > boundary checks happen at compile time.
-> 
-> To be honest I don't really understand the utility here because the compile-time
-> check can't be a definitive check. You're always going to have to fallback to
-> a run-time check because at least for PCI (and likely others) you can't know
-> for at compile time if the IO region is big enough or matches the compile-time
-> constraint.
+ MAINTAINERS                     |   4 +
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers/bitmap.c           |   8 ++
+ rust/helpers/bitops.c           |  13 +++
+ rust/helpers/find.c             |  15 +++
+ rust/helpers/helpers.c          |   3 +
+ rust/kernel/bitmap.rs           | 182 ++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   1 +
+ 8 files changed, 227 insertions(+)
+ create mode 100644 rust/helpers/bitmap.c
+ create mode 100644 rust/helpers/bitops.c
+ create mode 100644 rust/helpers/find.c
+ create mode 100644 rust/kernel/bitmap.rs
 
-That's not true, let me explain.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 6d6e55d8593b..359f09e8e2c0 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4033,12 +4033,16 @@ BITMAP API BINDINGS [RUST]
+ M:	Yury Norov <yury.norov@gmail.com>
+ S:	Maintained
+ F:	rust/helpers/cpumask.c
++F:	rust/helpers/find.c
++F:	rust/helpers/bitmap.c
++F:	rust/helpers/bitops.c
+ 
+ BITMAP API [RUST]
+ M:	Viresh Kumar <viresh.kumar@linaro.org> (cpumask)
+ R:	Yury Norov <yury.norov@gmail.com>
+ S:	Maintained
+ F:	rust/kernel/cpumask.rs
++F:	rust/kernel/bitmap.rs
+ 
+ BITOPS API
+ M:	Yury Norov <yury.norov@gmail.com>
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 673b1daa9a58..50416c1a3de9 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -7,6 +7,7 @@
+  */
+ 
+ #include <kunit/test.h>
++#include <linux/bitmap.h>
+ #include <linux/blk-mq.h>
+ #include <linux/blk_types.h>
+ #include <linux/blkdev.h>
+diff --git a/rust/helpers/bitmap.c b/rust/helpers/bitmap.c
+new file mode 100644
+index 000000000000..4fa4e4f76110
+--- /dev/null
++++ b/rust/helpers/bitmap.c
+@@ -0,0 +1,8 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/bitmap.h>
++
++void rust_helper_bitmap_copy(unsigned long *dst, const unsigned long *src, unsigned int nbits)
++{
++	bitmap_copy(dst, src, nbits);
++}
+diff --git a/rust/helpers/bitops.c b/rust/helpers/bitops.c
+new file mode 100644
+index 000000000000..191ef0341fd5
+--- /dev/null
++++ b/rust/helpers/bitops.c
+@@ -0,0 +1,13 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/bitops.h>
++
++void rust_helper_set_bit(unsigned int nr, volatile unsigned long *addr)
++{
++	set_bit(nr, addr);
++}
++
++void rust_helper_clear_bit(unsigned int nr, volatile unsigned long *addr)
++{
++	clear_bit(nr, addr);
++}
+diff --git a/rust/helpers/find.c b/rust/helpers/find.c
+new file mode 100644
+index 000000000000..3841d3f0330f
+--- /dev/null
++++ b/rust/helpers/find.c
+@@ -0,0 +1,15 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/find.h>
++
++unsigned long rust_helper_find_last_bit(const unsigned long *addr, unsigned long size)
++{
++	return find_last_bit(addr, size);
++}
++
++
++unsigned long rust_helper_find_next_zero_bit(const unsigned long *addr, unsigned long size,
++				 unsigned long offset)
++{
++	return find_next_zero_bit(addr, size, offset);
++}
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index de2341cfd917..86ebbc97a57d 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -7,6 +7,8 @@
+  * Sorted alphabetically.
+  */
+ 
++#include "bitmap.c"
++#include "bitops.c"
+ #include "blk.c"
+ #include "bug.c"
+ #include "build_assert.c"
+@@ -15,6 +17,7 @@
+ #include "cred.c"
+ #include "device.c"
+ #include "err.c"
++#include "find.c"
+ #include "fs.c"
+ #include "io.c"
+ #include "jump_label.c"
+diff --git a/rust/kernel/bitmap.rs b/rust/kernel/bitmap.rs
+new file mode 100644
+index 000000000000..25fe07a7073a
+--- /dev/null
++++ b/rust/kernel/bitmap.rs
+@@ -0,0 +1,182 @@
++// SPDX-License-Identifier: GPL-2.0
++
++// Copyright (C) 2025 Google LLC.
++
++//! Rust API for bitmap.
++//!
++//! C headers: [`include/linux/bitmap.h`](srctree/include/linux/bitmap.h).
++
++use crate::alloc::{AllocError, Flags};
++use crate::bindings::{
++    bitmap_copy, bitmap_free, bitmap_zalloc, clear_bit, find_last_bit, find_next_zero_bit, set_bit,
++};
++use core::ptr::NonNull;
++
++/// Wraps underlying C bitmap structure.
++///
++/// # Invariants
++///
++/// * `ptr` is obtained from a successful call to bitmap_zalloc and
++///   holds the address of a zero-initialized array of unsigned long
++///   that is large enough to hold `nbits` bits.
++pub struct Bitmap {
++    /// Pointer to an array of unsigned long.
++    ptr: NonNull<usize>,
++    /// How many bits this bitmap stores. Must be < 2^32.
++    nbits: usize,
++}
++
++impl Drop for Bitmap {
++    fn drop(&mut self) {
++        // SAFETY: `self.ptr` was returned by bitmap_zalloc.
++        unsafe { bitmap_free(self.as_mut_ptr()) };
++    }
++}
++
++#[cold]
++fn not_in_bounds_lt(arg: &'static str, len: usize, val: usize) -> ! {
++    panic!("{arg} must be less than length {len}, was {val}");
++}
++
++#[cold]
++fn not_in_bounds_le(arg: &'static str, len: usize, val: usize) -> ! {
++    panic!("{arg} must be less than or equal to length {len}, was {val}");
++}
++
++impl Bitmap {
++    /// Constructs a new Bitmap.
++    ///
++    /// Fails with AllocError if `nbits` is greater than or equal to 2^32,
++    /// or when the bitmap could not be allocated.
++    #[inline]
++    pub fn new(nbits: usize, flags: Flags) -> Result<Self, AllocError> {
++        if let Ok(nbits_u32) = u32::try_from(nbits) {
++            // SAFETY: nbits == 0 is permitted and nbits fits in u32.
++            let ptr = unsafe { bitmap_zalloc(nbits_u32, flags.as_raw()) };
++            // Zero-size allocation is ok and yields a dangling pointer.
++            let ptr = NonNull::new(ptr).ok_or(AllocError)?;
++            Ok(Bitmap { ptr, nbits })
++        } else {
++            Err(AllocError)
++        }
++    }
++
++    /// Returns how many bits this bitmap holds.
++    #[inline]
++    pub fn len(&self) -> usize {
++        self.nbits
++    }
++
++    /// Returns true if this bitmap has length 0.
++    #[inline]
++    pub fn is_empty(&self) -> bool {
++        self.nbits == 0
++    }
++
++    /// Returns a mutable raw pointer to the backing bitmap.
++    #[inline]
++    pub fn as_mut_ptr(&mut self) -> *mut usize {
++        self.ptr.as_ptr()
++    }
++
++    /// Returns a raw pointer to the backing bitmap.
++    #[inline]
++    pub fn as_ptr(&self) -> *const usize {
++        self.ptr.as_ptr()
++    }
++
++    /// Sets bit with number `nr`.
++    ///
++    /// # Panics
++    ///
++    /// Panics if `nr` is greater than or equal to `self.nbits`.
++    #[inline]
++    pub fn set_bit(&mut self, nr: usize) {
++        if self.nbits <= nr {
++            not_in_bounds_lt("nr", self.nbits, nr)
++        }
++        // SAFETY: Bit nr is within bounds.
++        unsafe { set_bit(nr as u32, self.as_mut_ptr()) };
++    }
++
++    /// Clears bit with number `nr`.
++    ///
++    /// # Panics
++    ///
++    /// Panics if `nr` is greater than or equal to `self.nbits`.
++    #[inline]
++    pub fn clear_bit(&mut self, nr: usize) {
++        if self.nbits <= nr {
++            not_in_bounds_lt("nr", self.nbits, nr);
++        }
++        // SAFETY: Bit nr is within bounds.
++        unsafe { clear_bit(nr as u32, self.as_mut_ptr()) };
++    }
++
++    /// Copy up to `nbits` bits from this bitmap into another.
++    ///
++    /// # Panics
++    ///
++    /// Panics if `nbits` is too large for this bitmap or destination.
++    #[inline]
++    pub fn bitmap_copy(&self, dst: &mut Bitmap, nbits: usize) {
++        if self.nbits < nbits {
++            not_in_bounds_le("nbits", self.nbits, nbits);
++        }
++        if dst.nbits < nbits {
++            not_in_bounds_le("nbits", dst.nbits, nbits);
++        }
++        // SAFETY: nbits == 0 is supported and access to `self` and `dst` is within bounds.
++        unsafe { bitmap_copy(dst.as_mut_ptr(), self.ptr.as_ptr(), nbits as u32) };
++    }
++
++    /// Finds the last bit.
++    #[inline]
++    pub fn find_last_bit(&self) -> usize {
++        // SAFETY: nbits == 0 is supported and access is within bounds.
++        unsafe { find_last_bit(self.as_ptr(), self.nbits) }
++    }
++
++    /// Finds the last bit, searching up to `nbits` bits.
++    ///
++    /// # Panics
++    ///
++    /// Panics if `nbits` is too large for this bitmap.
++    #[inline]
++    pub fn find_last_bit_upto(&self, nbits: usize) -> usize {
++        if self.nbits < nbits {
++            not_in_bounds_le("nbits", self.nbits, nbits);
++        }
++        // SAFETY: nbits == 0 is supported and access is within bounds.
++        unsafe { find_last_bit(self.as_ptr(), nbits) }
++    }
++
++    /// Finds the next zero bit, searching up to `nbits`.
++    ///
++    /// # Panics
++    ///
++    /// Panics if `nbits` is too large for this bitmap.
++    #[inline]
++    pub fn find_next_zero_bit_upto(&self, nbits: usize) -> usize {
++        if self.nbits < nbits {
++            not_in_bounds_le("nbits", self.nbits, nbits);
++        }
++        // SAFETY: nbits == 0 is supported and access is within bounds.
++        unsafe {
++            find_next_zero_bit(self.as_ptr(), nbits, 0 /* offset */)
++        }
++    }
++
++    /// Finds the next zero bit, searching up to `nbits` bits, with offset `offset`.
++    ///
++    /// # Panics
++    ///
++    /// Panics if `nbits` is too large for this bitmap.
++    pub fn find_next_zero_bit_upto_offset(&self, nbits: usize, offset: usize) -> usize {
++        if self.nbits < nbits {
++            not_in_bounds_le("nbits", self.nbits, nbits);
++        }
++        // SAFETY: nbits == 0 and out-of-bounds offset is supported, and access is within bounds.
++        unsafe { find_next_zero_bit(self.as_ptr(), nbits, offset) }
++    }
++}
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index efbd7be98dab..be06ffc47473 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -36,6 +36,7 @@
+ pub use ffi;
+ 
+ pub mod alloc;
++pub mod bitmap;
+ #[cfg(CONFIG_BLOCK)]
+ pub mod block;
+ #[doc(hidden)]
+-- 
+2.48.1.658.g4767266eb4-goog
 
-When you write a driver, you absolutely have to know the register layout. This
-means that you also know what the minimum PCI bar size has to be for your driver
-to work. If it would be smaller than what your driver expects, it can't function
-anyways. In Rust we make use of this fact.
-
-When you map  a PCI bar through `pdev.iomap_region_sized` you pass in a const
-generic (`SIZE`) representing the *expected* PCI bar size. This can indeed fail
-on run-time, but that's fine, as mentioned, if the bar is smaller than what your
-driver expect, it's useless anyways.
-
-If the call succeeds, it means that the actual PCI bar size is greater or equal
-to `SIZE`. Since `SIZE` is known at compile time all subsequent I/O operations
-can be boundary checked against `SIZE` at compile time, which additionally makes
-the call infallible. This works for most I/O operations drivers do.
-
-However, sometimes we need to do I/O ops at a PCI bar offset that is only known
-at run-time. In this case you can use the `try_*` variants, such as
-`try_read32()`. Those do boundary checks against the actual size of the PCI bar,
-which is only known at run-time and hence they're fallible.
-
-> 
-> So this seems more like a quiz for developers to check if they really do want
-> to access the given offset. It's not really doing any useful compile-time bounds
-> check that is preventing something bad from happening, becasue that has to
-> happen at run-time. Especially as the whole BAR is mapped anyway.
-
-See the explanation above.
-
-> 
-> Hence why I think an obvious run-time error instead of an obtuse and difficult
-> to figure out build error would be better. But maybe I'm missing some usecase
-> here that makes this more useful.
-
-No, failing the boundary check at compile time (if possible) is always better
-than failing it at run-time for obvious reasons.
-
-> 
-> > > I was hoping I could suggest CONFIG_RUST_BUILD_ASSERT_ALLOW be made default yes,
-> > > but testing with that also didn't yeild great results - it creates a backtrace
-> > > but that doesn't seem to point anywhere terribly close to where the bad access
-> > > was, I'm guessing maybe due to inlining and other optimisations - or is
-> > > decode_stacktrace.sh not the right tool for this job?
-> > 
-> > I was about to suggest CONFIG_RUST_BUILD_ASSERT_ALLOW=y to you, since this will
-> > make the kernel panic when hitting a build_assert().
-> > 
-> > I gave this a quick try with [1] in qemu and it lead to the following hint,
-> > right before the oops:
-> > 
-> > [    0.957932] rust_kernel: panicked at /home/danilo/projects/linux/nova/nova-next/rust/kernel/io.rs:216:9:
-> > 
-> > Seeing this immediately tells me that I'm trying to do out of bound I/O accesses
-> > in my driver, which indeed doesn't tell me the exact line (in case things are
-> > inlined too much to gather it from the backtrace of the oops), but it should be
-> > good enough, no?
-> 
-> *smacks forehead*
-> 
-> Yes. So to answer this question:
-> 
-> > or is decode_stacktrace.sh not the right tool for this job?
-> 
-> No, it isn't. Just reading the kernel logs properly would have been a better
-> option! I guess coming from C I'm just too used to jumping straight to the stack
-> trace in the case of BUG_ON(), etc. Thanks for point that out.
-
-Happy I could help.
