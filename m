@@ -1,106 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E2526E63F;
-	Thu, 27 Feb 2025 19:10:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8BA26F44D
+	for <rust-for-linux@vger.kernel.org>; Thu, 27 Feb 2025 19:16:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740683457; cv=none; b=F1UHkoyUHL7WZVdaigVXoP9XxqmH0QJP3UjwMoM7BupuY7NFXHkgR/dy9De65ro/baEgBAwXB5vavsXxPAiOCyRzYAZk1FNDzt6qEl0T3t8hBJX5gp7bkf1IuILGHZ4P0MfbiE3VZBVhltP7PoSwTGKfkZaBOPnbbmofVUegPuE=
+	t=1740683779; cv=none; b=PsjfqpvrAWHH3rP++7SyD6epNZk6oucsMl8eRewVDWx3J7pFUrYFIWWrnJbPBfgpX9eiu2szQscHLg78lDgo5XIVOgd/ojcPMI8pjdI2bgXOW8ADjjtiE17qum7GOH6zbtUp2nghhExtxxYE7VByEVwpqr7T/zzQKn561rsg1ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740683457; c=relaxed/simple;
-	bh=IcMDrCFUyWWuyUKJigwMhEoRpg9pbvdpgup3hiDyvDU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fh7wcse4ZwmMV339f8he3dVFKbWYfKsUnnWnjbTlX5y2GACv16wsaUNV151OponzlveaXuMFgPDgNwZn3sr5YXFRQK6M7QhD3q8TGvWIOpksZXh18iBG0yJNnE748Req6wD8VT2c/j37FqdvNJd3JpvFqGwYOn5rQXdq/D8Aw4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hVvDI46L; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740683779; c=relaxed/simple;
+	bh=mwTHVN620TX5ESULnZIeej/5etZx+q0PaqdGdgEQqhQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cjYl8+tEKoT/K+GrD/0TlRd+zeV7J59RWc08RjkJcu4r7o5SucM9661ptmVFUwhe5LLMPlX3APZ0VDwwnb9eDFch08ugprXyeVDHc5FhvOzM2DjKVu3Z1Vo5yoJBKICsli8Xds8O2Xfcj8t7vMBZNmUT2sBJboLK3CEfTQffVEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=LbI8t/5g; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hVvDI46L"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16031C4CEDD;
-	Thu, 27 Feb 2025 19:10:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740683457;
-	bh=IcMDrCFUyWWuyUKJigwMhEoRpg9pbvdpgup3hiDyvDU=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=hVvDI46LbUUXBr217w1MRrLcEeobjX7mjWP4O7tNTyNZVmNa+MB+bXIzYq60GmwJb
-	 sKwn+a4DALi9NxsdqbIh6AlAz24ODpQihY1e/7VjUoJRKl9mhMRsFQrGIq66ZEvb01
-	 Kh2TcqrcYfOzX9/FrSBfbhJ81T0QXC6GZQXDdeHYDeq385IT9n9n5PtTW5U52UiCUQ
-	 684nueLx7haLKuWnU+Lj8Tgidu2XK5ls5HMKOZ6eYe1q8+LinUwwaV8OlqbAgj+LoB
-	 Z0qIq76UYMBFI47woSjOtLfi8GIH/6APmESbJyKmBi9pSznN7sp6hSc0PK2hg0k1sv
-	 sc4SC1TngzUmg==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 9BF80CE0799; Thu, 27 Feb 2025 11:10:56 -0800 (PST)
-Date: Thu, 27 Feb 2025 11:10:56 -0800
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Martin Uecker <uecker@tugraz.at>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Ralf Jung <post@ralfj.de>, Alice Ryhl <aliceryhl@google.com>,
-	Ventura Jack <venturajack85@gmail.com>, Gary Guo <gary@garyguo.net>,
-	airlied@gmail.com, boqun.feng@gmail.com,
-	david.laight.linux@gmail.com, ej@inai.de,
-	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com,
-	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
-	miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
-Subject: Re: C aggregate passing (Rust kernel policy)
-Message-ID: <5ef99795-8d4e-48f9-909a-d752dc24c023@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <5d7363b0-785c-4101-8047-27cb7afb0364@ralfj.de>
- <CAHk-=wh=8sqvB-_TkwRnvL7jVA_xKbzsy9VH-GR93brSxTp60w@mail.gmail.com>
- <ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at>
- <CAHk-=whLSWX=-5-z4Q8x1f_NLrHd0e3afbEwYPkkVSXj=xT-JQ@mail.gmail.com>
- <09e282a9c02fb07ba4fc248f14c0173d9b19179a.camel@tugraz.at>
- <CAHk-=wjqmHD-3QQ_9o4hrkhH57pTs3c1zuU0EdXYW23Vo0KTmQ@mail.gmail.com>
- <2f5a537b895250c40676d122a08d31e23a575b81.camel@tugraz.at>
- <20250227092949.137a39e9@gandalf.local.home>
- <54b92e98-cabf-4ddc-b51b-496626ac3ccb@paulmck-laptop>
- <czke6xumgufksyvu7xgin2ygn2jx6uvgtgwfknafq4s4migccz@aih2ptkzw3jx>
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="LbI8t/5g"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5e4ad1d67bdso1842305a12.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 27 Feb 2025 11:16:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1740683776; x=1741288576; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=hvB+JZlfkgHPFuQYjc4Ck/8suSwxp4Qhz+OIGbF3Mns=;
+        b=LbI8t/5gF0uAp5jY9Ld96pPYYHmp9LxiI9ybexHb6xxg4pPvhQghew+uL6D0x/+g6P
+         C3iPKVDtpaX0lAkdFjMWDTGrNCwdTdQRL48IkJodtmFCWf5Hyn/+vd8qUTvLxwTGsXXF
+         sXlce2R4I7f4FuIRu0dwBfsJd6cdIzxaQl8gE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740683776; x=1741288576;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hvB+JZlfkgHPFuQYjc4Ck/8suSwxp4Qhz+OIGbF3Mns=;
+        b=Zu3fr/SKbK+w/cdTfAJDVKoQVVlqMDg64JJ6tmZ92zKXsMwwcw6X5J1EzhtHr2CVDE
+         9+FYd3tuZ9I8YOTkM14B2bZt3hNzYYTPmDwHiG1t/Upn5EYlP+c+3Tht4RcCDzWByFKa
+         pENWXT6IUZVN+vfcO0EPlPjQB0LA3+Rd2EWb+vYWxKD/ERPDu6TFhuOC8BOGawHNA0db
+         4ttkszAhxvnZdQeFV40EZjsOPtwQX8kbHYTgTF5hi8gfRGGSXfudxHvrtUfAzu5OsaPm
+         gsGWIQyIkv07yv04MUCVhFGykZvr/hCk4rXfdrg4zb4/Aixyvu+nzP69+b/IDeZkywr4
+         cxGA==
+X-Forwarded-Encrypted: i=1; AJvYcCUzWiE4fPaAk2Ja5X0oPO2tKwdwQ8qSsHGJDhsXe82CnBK7aT0THfQrtkkQxEtfofcA0vFBeOA1jldiPZArGQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCJP2fxJ2Xm0Nr1VCeVox3FDD3/YXw+DAsVoBUnhSRq4BY89b4
+	Pf/COuMulqcYtmBJHTQi5JMOEyvhf5w5Vxsjmdk0KGgXIWH28isu+iMvzgc3Yz2TwjaKCxOV32A
+	y7wHmBA==
+X-Gm-Gg: ASbGncstnSDsKErrHwuf3VNskNcG0QftQ8zwfNOI/Cpne7QdcZNd1A9do86WMKqhVPa
+	bYGrq+UIkxx5aIN6wqC4SgFFmq06S3NwFQ+Wk0lc8QfgFadjb0N2dfSUMbtipIOV8oso8MTZKhk
+	6MBIHa5YkM5mbaxWlUJsQCDiSKEMRGsvDO2DmhfFVPbrJjAWwGIQ9VjEFUveDCTICNqSKNKRnRB
+	2k7HYBHHvJdM35fOfjhn/Ky/wxXFr/x+kzqmykheRJvW5l8BvR/i2butoFKsMtSRrWh96XGzF6E
+	KNXu+hcnhXNe0R14Sk3Uqrribu9KuiwmLAc7pTCUHOP0tUJtNjgAf7ljTaIYBg/ceJtlxiie9hp
+	k
+X-Google-Smtp-Source: AGHT+IGx91RbuXjj/+IYrkzc2mTfEJuPPfQANoeIrk6jpL3q85x41rAmOlPLa+Z9CHyR3iHXguae4A==
+X-Received: by 2002:a17:906:f592:b0:ab7:d06d:b4bf with SMTP id a640c23a62f3a-abf265a3614mr67304066b.39.1740683775964;
+        Thu, 27 Feb 2025 11:16:15 -0800 (PST)
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com. [209.85.208.48])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abf0c6ed7d7sm165248566b.87.2025.02.27.11.16.11
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Feb 2025 11:16:11 -0800 (PST)
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5e4ad1d67bdso1842184a12.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 27 Feb 2025 11:16:11 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU4nc00atCk/V/yrtN7pObfi+ZVS0O7Yp8UOZxL7caW7NnZdFRxSugVE3fYPHEGQwD8X3xJswnS2p/RZwdf/g==@vger.kernel.org
+X-Received: by 2002:a17:907:86ac:b0:ab6:df79:f577 with SMTP id
+ a640c23a62f3a-abf25d945c1mr67115866b.9.1740683771357; Thu, 27 Feb 2025
+ 11:16:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <czke6xumgufksyvu7xgin2ygn2jx6uvgtgwfknafq4s4migccz@aih2ptkzw3jx>
+References: <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+ <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+ <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+ <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
+ <CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com>
+ <5d7363b0-785c-4101-8047-27cb7afb0364@ralfj.de> <CAHk-=wh=8sqvB-_TkwRnvL7jVA_xKbzsy9VH-GR93brSxTp60w@mail.gmail.com>
+ <ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at>
+ <CAHk-=whLSWX=-5-z4Q8x1f_NLrHd0e3afbEwYPkkVSXj=xT-JQ@mail.gmail.com>
+ <m4cbniqfsr5xpb2m7k53e7plc6he5ioyl2efiiftdmzod56usd@htwdppje6re5>
+ <CAHk-=whEkEsGHWBMZ17v5=sq1uRe6g-BRHy5xNZK-2JBKRs=_A@mail.gmail.com> <0f3bc0e8-5111-4e2f-83b5-36b3aec0cbbd@ralfj.de>
+In-Reply-To: <0f3bc0e8-5111-4e2f-83b5-36b3aec0cbbd@ralfj.de>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Thu, 27 Feb 2025 11:15:54 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wj37zT4Fy+mBFVRKPy=NMKcB6xBzqOuFrW0jOTv8LKozg@mail.gmail.com>
+X-Gm-Features: AQ5f1Jptz1SWwyUusZnRoigWvZHElhRRDe0KZ_mwrHUSOFHPo4sqdKCJh4Qdo6A
+Message-ID: <CAHk-=wj37zT4Fy+mBFVRKPy=NMKcB6xBzqOuFrW0jOTv8LKozg@mail.gmail.com>
+Subject: Re: C aggregate passing (Rust kernel policy)
+To: Ralf Jung <post@ralfj.de>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>, Martin Uecker <uecker@tugraz.at>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Ventura Jack <venturajack85@gmail.com>, Gary Guo <gary@garyguo.net>, airlied@gmail.com, 
+	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
+	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, 
+	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Feb 27, 2025 at 01:13:40PM -0500, Kent Overstreet wrote:
-> On Thu, Feb 27, 2025 at 09:35:10AM -0800, Paul E. McKenney wrote:
-> > On Thu, Feb 27, 2025 at 09:29:49AM -0500, Steven Rostedt wrote:
-> > > On Thu, 27 Feb 2025 07:56:47 +0100
-> > > Martin Uecker <uecker@tugraz.at> wrote:
-> > > 
-> > > > Observable is I/O and volatile accesses.  These are things considered
-> > > > observable from the outside of a process and the only things an
-> > > > optimizer has to preserve.  
-> > > > 
-> > > > Visibility is related to when stores are visible to other threads of
-> > > > the same process. But this is just an internal concept to give
-> > > > evaluation of expressions semantics in a multi-threaded 
-> > > > program when objects are accessed from different threads. But 
-> > > > the compiler is free to change any aspect of it, as  long as the 
-> > > > observable behavior stays the same.
-> > > > 
-> > > > In practice the difference is not so big for a traditional
-> > > > optimizer that only has a limited local view and where
-> > > > "another thread" is basically part of the "outside world".
-> > > 
-> > > So basically you are saying that if the compiler has access to the entire
-> > > program (sees the use cases for variables in all threads) that it can
-> > > determine what is visible to other threads and what is not, and optimize
-> > > accordingly?
-> > > 
-> > > Like LTO in the kernel?
-> > 
-> > LTO is a small step in that direction.  In the most extreme case, the
-> > compiler simply takes a quick glance at the code and the input data and
-> > oracularly generates the output.
-> > 
-> > Which is why my arguments against duplicating atomic loads have been
-> > based on examples where doing so breaks basic arithmetic.  :-/
-> 
-> Please tell me that wasn't something that seriously needed to be said...
+On Thu, 27 Feb 2025 at 10:33, Ralf Jung <post@ralfj.de> wrote:
+>
+> The way you do global flags in Rust is like this:
 
-You are really asking me to lie to you?  ;-)
+Note that I was really talking mainly about the unsafe cases, an din
+particular when interfacing with C code.
 
-							Thanx, Paul
+Also, honestly:
+
+> FLAG.store(true, Ordering::SeqCst); // or release/acquire/relaxed
+
+I suspect in reality it would be hidden as accessor functions, or
+people just continue to write things in C.
+
+Yes, I know all about the C++ memory ordering. It's not only a
+standards mess, it's all very illegible code too.
+
+             Linus
