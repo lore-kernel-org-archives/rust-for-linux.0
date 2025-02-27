@@ -1,123 +1,168 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F22EA59;
-	Thu, 27 Feb 2025 08:28:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35AC713A3F2;
+	Thu, 27 Feb 2025 08:31:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740644903; cv=none; b=YVd3kHxRNzc7yMiw5Ie6bK9llLQ+IL8cT2Znz6XiL3skWz6R8H4hXbEAGZ1jDCI4WH2Q5fqpI8oQ4M9YmNTOMo2lnDt+sxVkScyKeYKq3CEUeZMg/1XQxeWcvESIVWO9SVMPLn9v/G6s51sCC8XVp6FHhkhkLrl6IkXryArFTXM=
+	t=1740645104; cv=none; b=SWhp9+EblLQjo3xm6Ud8sBPEcyx2e8t/2MItchiid3UiZHif7raIeaib06iUXOs+ydQauO2LLIa4Mug3WCpdde0K09HAB+IZL3DPILw3nXJ2MbOb12Do3movFcDuAjNxoSojcqr7zW4+O4O1OFrL1X79uPIw+ioxHlAuWuBrvBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740644903; c=relaxed/simple;
-	bh=mL+ScEVoosTCLqReMvWvb0hKdFm7SzXMaD7EnmZ5gQU=;
+	s=arc-20240116; t=1740645104; c=relaxed/simple;
+	bh=wp4NsEbBkp29Slu4Hh3MmzhMSbSRMBd/TNrpeE+tQ2Y=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=beFmba2znEwpsZA5p8TdKpNLuad2VpUIRp0304iC9YM+OZYqWFnmJv6mEk1emnc9EKZgiS/UDQfDZI6BhnCoEm2FWFo3YqRSzEGrwkn0HP7rOFRIeYETb1ptdFiCRA0X4ZZ7YpuwmY8eB1oc79UOvWWqC/rpXLXFo2ymRbiSPUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UkCcNxAH; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=J84khgBofLB3dZo66pXDon3xCNxqlCj5dG/Vft/boBd8/6/nZcXXbLqIzFUm0HgtNTm5C81NORgcSXIzQma9vyRCcviIZsQjBksyvVNdpvgpmjM9E7f58A/dlYDsz0kvZXlN4kDTRdmR/KbDlWCFAvkNZxl9jCS6TX5dCfTxaF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=b7D8Z2LG; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=VUSBblrb; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UkCcNxAH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB7C8C4CEDD;
-	Thu, 27 Feb 2025 08:28:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740644902;
-	bh=mL+ScEVoosTCLqReMvWvb0hKdFm7SzXMaD7EnmZ5gQU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=UkCcNxAHNlb8KdOpVGBTAsjYUG5oG1EXqGPyEiclsxzBC4p+LOLBcG4nlsZ/bWo+k
-	 W+AZVnrXuaRNp4mDR5r14XtUQsblr0rPT8GQGXSvmHHye9M6QtKrggxgtlCWPBRshH
-	 VXHHQftNfX5UHocw4EVWQUQmUDQz4GzjrsIKq68nK/GgPYUU36Ou13zR4DA+XXyBwE
-	 VnpTHUvNXXG1VQHUqqmr5E8R4xbVpPoN8BgaUYrbR3al/9qF/BSs/eqYzBZCgu+gBm
-	 aUlhq9JEmKjqnqTOuaNi+lue7T7tGaier67NxH/nVOHEYQbBo2Sn4rUSxSu7KWkMMY
-	 sFWAD4mVSBNWA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>
-Cc: <linux-kernel@vger.kernel.org>,  <rust-for-linux@vger.kernel.org>,
-  <x86@kernel.org>,  <linux-riscv@lists.infradead.org>,
-  <linux-arm-kernel@lists.infradead.org>,  <loongarch@lists.linux.dev>,
-  <tglx@linutronix.de>,  <mingo@redhat.com>,  <bp@alien8.de>,
-  <dave.hansen@linux.intel.com>,  <peterz@infradead.org>,  <hpa@zytor.com>,
-  <paul.walmsley@sifive.com>,  <palmer@dabbelt.com>,
-  <aou@eecs.berkeley.edu>,  <catalin.marinas@arm.com>,  <will@kernel.org>,
-  <chenhuacai@kernel.org>,  <kernel@xen0n.name>,
-  <tangyouling@loongson.cn>,  <hejinyang@loongson.cn>,
-  <yangtiezhu@loongson.cn>,  <ojeda@kernel.org>,  <alex.gaynor@gmail.com>,
-  <boqun.feng@gmail.com>,  <gary@garyguo.net>,  <bjorn3_gh@protonmail.com>,
-  <benno.lossin@proton.me>,  <aliceryhl@google.com>,  <tmgross@umich.edu>
-Subject: Re: [PATCH v3 0/5] rust: Add bug/warn abstractions
-In-Reply-To: <20250227.155417.1610168537890385926.fujita.tomonori@gmail.com>
-	(FUJITA Tomonori's message of "Thu, 27 Feb 2025 15:54:17 +0900")
-References: <yy_ESUuchCjlaGIJHzCPAcP_d9ucSD0CGXaoZNNkY7BmN5Ch1J8avsA9QpKO5LkTjlGpu99jl8NrFl5NFSQXuw==@protonmail.internalid>
-	<20250213135759.190006-1-fujita.tomonori@gmail.com>
-	<8734g0v6ke.fsf@kernel.org>
-	<aPT3Afc47I_dmAxy1DPVKUobcIJLV0rRUOXJX-ab6IFWqflSxdlOVQdJT0rxYQHjDBeWHDFjWsdXfiCOZ5hPWg==@protonmail.internalid>
-	<20250227.155417.1610168537890385926.fujita.tomonori@gmail.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Thu, 27 Feb 2025 09:28:11 +0100
-Message-ID: <87frjzu6zo.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="b7D8Z2LG";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="VUSBblrb"
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1740645101;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GlclozudQH9jhCzVOaVyJdF4+dBg5b/b21AhYtkhsSk=;
+	b=b7D8Z2LGhBUaaWS1ZBEfzCfukxxtbxK9nwopB5xk02hNHSlNBn85HsrAFTHSOdY4m41qJk
+	QR0Uuvvx+GuXHtjahA9+9jLLQRrN25LATEss5WB+e6kObsMHEY5G7BfLjim330qNA7XTky
+	cfTXJDGJbyj5Qrxzi/XJhjQSLklFzCmoKDY/w1jMUnoxTtpT96R0BP06BTN9/GDK+APG7C
+	tnS+Q8Snn1p5KM/VsVA1QeQMQYgzah+ObQFMcSFIBjkk2FEcxBULRx3xJw9fIddV4BR/rC
+	Tap7/MVuwXiYkY6sbRZrqhIICRfVD/boxzVK+iQzxj4g6hVPvxijziB3i5QvMA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1740645101;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GlclozudQH9jhCzVOaVyJdF4+dBg5b/b21AhYtkhsSk=;
+	b=VUSBblrbGKmDw8yvfuVme4IVwm/ou5XR4u5J5H190uDNRc/ocgyAwmc6pLw+mpaiISrit5
+	KPeUl6JWEEErC0Bw==
+To: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda
+ <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>,
+ Frederic Weisbecker <frederic@kernel.org>, Danilo Krummrich
+ <dakr@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo
+ Cui <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida
+ <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Andreas
+ Hindborg <a.hindborg@kernel.org>
+Subject: Re: [PATCH v9 01/13] rust: hrtimer: introduce hrtimer support
+In-Reply-To: <20250224-hrtimer-v3-v6-12-rc2-v9-1-5bd3bf0ce6cc@kernel.org>
+References: <20250224-hrtimer-v3-v6-12-rc2-v9-0-5bd3bf0ce6cc@kernel.org>
+ <20250224-hrtimer-v3-v6-12-rc2-v9-1-5bd3bf0ce6cc@kernel.org>
+Date: Thu, 27 Feb 2025 09:31:40 +0100
+Message-ID: <87o6yneqkz.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-"FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
+On Mon, Feb 24 2025 at 13:03, Andreas Hindborg wrote:
+> This patch adds support for intrusive use of the hrtimer system. For
+> now,
 
-> On Wed, 26 Feb 2025 20:39:45 +0100
-> Andreas Hindborg <a.hindborg@kernel.org> wrote:
->
->> How does this series compare/overlap with [1] ?
->>
->> [1] https://lore.kernel.org/all/20241126-pr_once_macros-v4-0-410b8ca9643=
-e@tuta.io/
->
-> No overlap. Each solves a different problem. Both are necessary.
->
-> This patchset enables Rust code to call C's BUG/WARN properly.
->
-> Currently, Rust's BUG() is a simple wrapper for C's BUG()
-> (rust/helpers/bug.c). I added BUG() to rnull's init() and got the
-> following:
->
-> # insmod /root/rnull_mod.ko
-> rnull_mod: Rust null_blk loaded
-> ------------[ cut here ]------------
-> kernel BUG at rust/helpers/bug.c:7!
-> Oops: invalid opcode: 0000 [#1] SMP
-> CPU: 0 UID: 0 PID: 31 Comm: insmod Not tainted 6.14.0-rc1+ #103
-> RIP: 0010:rust_helper_BUG+0x8/0x10
-> (snip)
->
-> This is NOT debug information that we expect. The problem is that
-> BUG/WARN feature (lib/bug.c) can only be used from assembly.
->
-> This patchset includes only warn() but with bug() implementation on
-> top of this patchset, I got:
->
-> # insmod /root/rnull_mod.ko
-> rnull_mod: Rust null_blk loaded
-> ------------[ cut here ]------------
-> WARNING: CPU: 0 PID: 31 at /home/fujita/git/linux-rust/drivers/block/rnul=
-l.rs:46 _RNvXCsafUg3oOYix8_5rnullNtB2_13NullBlkModu]
-> Modules linked in: rnull_mod(+)
-> CPU: 0 UID: 0 PID: 31 Comm: insmod Not tainted 6.14.0-rc1+ #104
-> RIP: 0010:_RNvXCsafUg3oOYix8_5rnullNtB2_13NullBlkModuleNtCsaYBeKL739Xz_6k=
-ernel13InPlaceModule4init+0x71/0x4f0 [rnull_mod]
->
->
-> The [1] patchset adds an abstraciton for include/linux/once_lite.h,
-> 'call a function once' feature, with pr_*_once() implementation.
->
-> pr_*_once() just calls printk() once. Unlike BUG/WARN, no debug
-> information (call place, registers, stack trace, etc).
->
->
-> The only connection between two patchset is that WARN_ONCE() can be
-> built on top of both like the C side.
+git grep 'This patch' Documentation/process/
 
-Awesome, thanks for explaining =F0=9F=91=8D
+> only one timer can be embedded in a Rust struct.
+>
+> +//! ## State Diagram
+> +//!
+> +//! ```text
+> +//!                                                   Return NoRestart
+> +//!                       +---------------------------------------------------------------------+
+> +//!                       |                                                                     |
+> +//!                       |                                                                     |
+> +//!                       |                                                                     |
+> +//!                       |                                         Return Restart              |
+> +//!                       |                                      +------------------------+     |
+> +//!                       |                                      |                        |     |
+> +//!                       |                                      |                        |     |
+> +//!                       v                                      v                        |     |
+> +//!           +-----------------+      Start      +------------------+           +--------+-----+--+
+> +//!           |                 +---------------->|                  |           |                 |
+> +//! Init      |                 |                 |                  |  Expire   |                 |
+> +//! --------->|    Stopped      |                 |      Started     +---------->|     Running     |
+> +//!           |                 |     Cancel      |                  |           |                 |
+> +//!           |                 |<----------------+                  |           |                 |
+> +//!           +-----------------+                 +---------------+--+           +-----------------+
+> +//!                                                     ^         |
+> +//!                                                     |         |
+> +//!                                                     +---------+
+> +//!                                                      Restart
+> +//! ```
+> +//!
+> +//!
+> +//! A timer is initialized in the **stopped** state. A stopped timer can be
+> +//! **started** by the `start` operation, with an **expiry** time. After the
+> +//! `start` operation, the timer is in the **started** state. When the timer
+> +//! **expires**, the timer enters the **running** state and the handler is
+> +//! executed. After the handler has finished executing, the timer may enter the
+> +//! **started* or **stopped** state, depending on the return value of the
+> +//! handler. A running timer can be **canceled** by the `cancel` operation. A
+> +//! timer that is cancelled enters the **stopped** state.
+> +//!
+> +//! A `cancel` or `restart` operation on a timer in the **running** state takes
+> +//! effect after the handler has finished executing and the timer has transitioned
+> +//! out of the **running** state.
+> +//!
+> +//! A `restart` operation on a timer in the **stopped** state is equivalent to a
+> +//! `start` operation.
 
+Nice explanation!
 
-Best regards,
-Andreas Hindborg
+> +    /// Cancel an initialized and potentially running timer.
+> +    ///
+> +    /// If the timer handler is running, this will block until the handler is
+> +    /// finished.
+> +    ///
+> +    /// Users of the `HrTimer` API would not usually call this method directly.
+> +    /// Instead they would use the safe [`HrTimerHandle::cancel`] on the handle
+> +    /// returned when the timer was started.
+> +    ///
+> +    /// This function does not create any references.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `self_ptr` must point to a valid `Self`.
+> +    #[allow(dead_code)]
+> +    pub(crate) unsafe fn raw_cancel(self_ptr: *const Self) -> bool {
+> +        // SAFETY: timer_ptr points to an allocation of at least `HrTimer` size.
+> +        let c_timer_ptr = unsafe { HrTimer::raw_get(self_ptr) };
+> +
+> +        // If the handler is running, this will wait for the handler to finish
+> +        // before returning.
+> +        // SAFETY: `c_timer_ptr` is initialized and valid. Synchronization is
+> +        // handled on C side.
 
+You might want to be more explicit about the provided synchronization.
+The hrtimer core only guarantees that operations on the hrtimer object
+are strictly serialized. But it does not provide any guarantee about
+external concurrency. The following case cannot be handled by the core:
 
+         T0                         T1
+         cancel()                   start()
+           lock()
+           ....                     lock() <- contended
+           dequeue()
+           unlock()
+                                    enqueue()
+                                    unlock()
+
+So there is no guarantee for T0 that the timer is actually canceled in
+this case. The hrtimer core can do nothing about this, that's a problem
+of the call sites.
+
+We've implemented timer_shutdown() for the timer wheel timers, which
+prevents that the timer can be started after shutdown() succeeds. It
+might be a good thing to implement this for hrtimers as well.
+
+Thanks,
+
+        tglx
