@@ -1,186 +1,176 @@
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2069.outbound.protection.outlook.com [40.107.93.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0081241136;
-	Thu, 27 Feb 2025 14:46:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740667585; cv=fail; b=FESIqegOuj/kaZDBCwxWp6PnTlTRwFv651tWhTa2vLEaqul2eHH/SbA3xdof3+OZCQbg+mpYfT9N360IvTwgQu2nlQch0bpQdIxHa05ehooe5a5o8UjNKO8b8CI76V3McZkPX3jlo6Y9cJ8IdlfMvI9JIXLhL+CnhMZtZ6r803k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740667585; c=relaxed/simple;
-	bh=nDbFB+WMiEAipLGt3S+rCLyf9Hl8l7CM9tquJRH/gmg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=rcNUBmG4+8ZEsSXCxgmqb1onA9yoZQLwcs+T7Y3ZhrKNbjN0X62x2hWYUbGqtPQkqP4sLpE2fjVsqEIeevMkQtj08Fp+dN8b98/q09mcvrHQwkr/gkMXwHaDx/fa5tVZwVGSsHokDA7RpyvDkysQjpPNwzJtWkDk/U8crnhTvbs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=hwsq2dzj; arc=fail smtp.client-ip=40.107.93.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1252825E81B
+	for <rust-for-linux@vger.kernel.org>; Thu, 27 Feb 2025 14:55:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740668148; cv=none; b=OIGTFi6G/dWZltagXR+HoaNi+qd3fBB6HlCqA+d2fxBfaKlIPFaGkmaZDalqQfi9Vr/bAoTh9mtUPvdE0ayTdjw/9y08z2ubD6Jg422J530SLWqYwZzm0FZU+9Rziu0RceqYHJ52ryYdj4Q0V3DPRmPzEEPTq13jdyot3ebvWvM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740668148; c=relaxed/simple;
+	bh=04lXeR5WeBp3P02ZTmd2NJbVMZs6V5xG2AeeQAtEf/8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Hg8MgzBoAh2ZKkjhSSdhWehhF/PD962Dy5Ea5DGmHA1E/Lhzw/I5nQ9uHqXTs/mTf0zJKrmlP/8IdA1LTcfxX8EhbC9LfiGSvA2TyaF+hf7ZOoISfzCuRBMBYPRDMNBUaOHnpIP30ewYcpmCTmiu5xnXRu1XcUAOkWsQto83ZhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Fqg/ltkd; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="hwsq2dzj"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wCY31bOsZm/F/LZ3dThdG4psCCGGcNKInLxii+vFrXDHKS6S+C7HLF8kuqsagVAOINB24f3Mto6IsbPwRJEHR9c+HVUgVsAJLXW0F94QpoT/iRexnce8WxT9nMjcQUmZ/M1uoPi8tu14Jzmt4GqKDEclDjlirLa3o0QL+0r2QfRTYtjxTKj6s/NK2uuKuJRGlyi26LzwxM8YKSQ9e2wBXbE65SNNU+jlEmCiWvnmck7GjiRPAjDuZW9YZVd4eDLA6afPbHsb4yGNsOFSs8na2Eu0qJV8PZXASJncGZKIPASuXfu6+Gsh9yUouW25l9k/yQuYC/CTsPviws3zaFgCOg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nDbFB+WMiEAipLGt3S+rCLyf9Hl8l7CM9tquJRH/gmg=;
- b=taUxAw6+eyFvS1LDAWky+YU7LnoVuZ4hxxtVJcx13upwQ3eNU7em1L0K0n4WW//yEWSyAiObimdzlz5bqTxfkJ6+1XoTq14C2vqkHYo3sZ/LkfnHqhXI2vXEZqfgT+89sJdCMSImoCoqo61V6xRNt9X0nKNEviSlAm2jBN6qvjM0PgsnxsIk292kPH4ZqTHr8EzsCI/n+h/ed8RADv+0gnMN5QCmiVSi7Gs/YkBDAyIQxV7gi1dVdsV0RdZucCT/gAL1kZ3Uf9dhl9oS6qmRjEmADpCE16VdT/LPIV4HTf3LLul3/Pv1m/0eiZ45vZf9N/NPYXaLeU7Q4Mt1yLHWBA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nDbFB+WMiEAipLGt3S+rCLyf9Hl8l7CM9tquJRH/gmg=;
- b=hwsq2dzjyfrBwcI2F9Ql2Ir7vswVtgI7kqcD2TS4vPwqj/LmnZleWvJKphDmJ+dhKUy08twZj5ug+zVbrBJ5T6ORyp1yno6ksBIlOCJA7poZFbaX6shk55vU5kQrgodvHIblsAurOSGGjAj3miJT+vX5o6EPbpQvJWOvXu/YufNr38YPBNK1sZYmMlmTlWWtrx00pPQyHlHl694e9FIQ9X3ECtAadSiX3hAi5jCcFAtvH14K30zjl32wasZpasIFgClUQIjxnAhYnlnLZ0H0iJVjNfZUmqpjXYay146VvcHiYQqhu9zPKYOotP068e0ZjuGdinizw0vdtUj8YaNpOw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MW6PR12MB8663.namprd12.prod.outlook.com (2603:10b6:303:240::9)
- by SA5PPF9BB0D8619.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8d8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.18; Thu, 27 Feb
- 2025 14:46:20 +0000
-Received: from MW6PR12MB8663.namprd12.prod.outlook.com
- ([fe80::594:5be3:34d:77f]) by MW6PR12MB8663.namprd12.prod.outlook.com
- ([fe80::594:5be3:34d:77f%2]) with mapi id 15.20.8489.018; Thu, 27 Feb 2025
- 14:46:20 +0000
-Date: Thu, 27 Feb 2025 10:46:18 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	paulmck@kernel.org
-Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
- implementation
-Message-ID: <20250227144618.GE39591@nvidia.com>
-References: <Z73rP4secPlUMIoS@cassiopeiae>
- <20250225210228.GA1801922@joelnvbox>
- <20250225225756.GA4959@nvidia.com>
- <Z75WKSRlUVEqpysJ@cassiopeiae>
- <20250226004916.GB4959@nvidia.com>
- <Z75riltJo0WvOsS5@cassiopeiae>
- <20250226172120.GD28425@nvidia.com>
- <Z7-IHgcVVS8XBurW@cassiopeiae>
- <20250226234730.GC39591@nvidia.com>
- <Z7-0pOmWO6r_KeQI@boqun-archlinux>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z7-0pOmWO6r_KeQI@boqun-archlinux>
-X-ClientProxiedBy: BN9PR03CA0662.namprd03.prod.outlook.com
- (2603:10b6:408:10e::7) To MW6PR12MB8663.namprd12.prod.outlook.com
- (2603:10b6:303:240::9)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Fqg/ltkd"
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-ab771575040so382673966b.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 27 Feb 2025 06:55:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1740668144; x=1741272944; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=psgfZ9yFHMKvZ3U/C+2q+GvpOcP5tp1ObOW+btX8RAI=;
+        b=Fqg/ltkd6PSJeUE7abpVtA6aBiszv2SBSCT+RX4iPpwiH011okRBd0f0DG22WIZuR7
+         WXbcDl6A50tpf+avl672ZdjX/se7KDnwigleDSQWlfFoca3/QluNSz9rykKO9NBb2G00
+         3F/0LJd4HzFtIsr3hqOLk0zzY9Hfv9W8EZlJjcfrtKDeN58OBT1ChtobkBdbeTAUKSmp
+         u9dNMzGX5FMgym3wBAcW6p8LukuYT92O7LiawtTWr6n3medIrXvyPQuvlunCm6uo4tCu
+         bZgR6M22Xkq+YOstbsrVcmdEE8xGDwTMKvNWnIvA+v06PhFey3ljycdPN8syN5ivhwjo
+         f5dQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740668144; x=1741272944;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=psgfZ9yFHMKvZ3U/C+2q+GvpOcP5tp1ObOW+btX8RAI=;
+        b=KmPLjtbRz/EUcvhmvWA1Xy+Gu9OM5ja2OhQkmi8F9QpLvHi95vVujYlXXO4S5LXJrm
+         Wx72UZzzdbymuECnzCbeDND42OFqJYfCS7K3DxZaAIZ1kZDTKA0POs4DL5bLfIZW3jlX
+         NzVdjOjWA+SbVtyQu0viYEBDyBZzsEeJ1G9QgbJ3DdmIDt8Xp6yesGHL1NQPTu++G+vk
+         UVsGbRCOjib1nC+2AZG+da9XcFVb5e61I9kPMfCZSqeeHDGkUx9j2XWHAR2BeH2WLxbv
+         3NTAxhfh5H8P9vYesT8+YTPVru9yvkrbMm519k0TYUNmVaA69Rpn+UyMzt82iqjOIRpi
+         d6fg==
+X-Forwarded-Encrypted: i=1; AJvYcCX6WnGkvww24iPZOtN6zpZhAUzS376D0hNt59Prua3NE5lQQ2h6cqOx1zuIUvqhr/kEECdLiZ070KfO22iOmg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmFGcOSjMB5Xn5OhJco6zcIpsv17/MCidlXNQZUftQd4EPhZ4b
+	JrAib3f+tCy6fziZ5P+8k3mVpZ6xXBun2rA/GHrxMcabavcrQSgPpEWVzjmmygs=
+X-Gm-Gg: ASbGncthhCO54XHuesobNNWRG4Gg0/EpC9O9DiySXomJ7UfeUf2h5xpRvsJKQfnj9/7
+	+nU75g1IlnFL/OAxBwFLvUlIeyOIYlXpE5Q9Ze3kkT5ZdoWByumKcV0BhKZ5WcB6EwsdzXz+xsa
+	QMhmF+IMwnJNCY6wi2ldr0aU1jeWdquwyyUvwTr/MzmKlRv/zNB5KI1xyubS3WRefw67I7xS3Cv
+	PfN1dch6lpTL7Ea0x59IFBayWEj1ggEHeEWsYsb8nFbR+umUrFRKQ740iahq123RM2dKlB/pQJ/
+	m2ZBWMupzb35tlhqdl1FZt0/4TVRpw==
+X-Google-Smtp-Source: AGHT+IHM3y5ddErBEWtI/Hb72dFlr7ja17jLO2hZ3jK+9ep11ghJNXBhohGfhuKxIG5xOI9T5kAR0A==
+X-Received: by 2002:a17:906:6185:b0:abb:aa8f:c9cd with SMTP id a640c23a62f3a-abf062db58cmr468878666b.28.1740668144321;
+        Thu, 27 Feb 2025 06:55:44 -0800 (PST)
+Received: from [10.100.51.161] ([193.86.92.181])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abf0c0ba3dbsm134343466b.22.2025.02.27.06.55.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Feb 2025 06:55:43 -0800 (PST)
+Message-ID: <aa7c1589-7c36-4721-b815-0ab065130b83@suse.com>
+Date: Thu, 27 Feb 2025 15:55:42 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW6PR12MB8663:EE_|SA5PPF9BB0D8619:EE_
-X-MS-Office365-Filtering-Correlation-Id: f382f39a-6ec8-44a2-aa22-08dd573d7f22
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?52SwforIz2ccPqEyxuHGdDMsFk941LfXkrA8tFOWWtPdNWQ5yAZAYVcQvY9h?=
- =?us-ascii?Q?cAPcaZXZlvRCweEe81Rroe9z82SCNV/sZKz4ZcqRtztMzTbVc3YoYF86byq5?=
- =?us-ascii?Q?as9sZzCZiuh7ndcRjof5y9F9TKcTAAkQ6aXX8ikU0aqmM9yQ/ZkiBaZnKf8X?=
- =?us-ascii?Q?XS3jd4OHim2/s9NTOg6NfjJFyAWDQofnb3WVpVHXX/z6yYsJniGi6Wf8iw3y?=
- =?us-ascii?Q?VV3RN34dWnl0apk+j9vsrwyXUVlN+4X1HBXmn/a+rl0vPr83kJErSMy8Ruq6?=
- =?us-ascii?Q?q0u4/MCDk3whkhsnRjGaqhqB51BovML2kshfRGJCy3JKEVtnR57qIrT/7hB5?=
- =?us-ascii?Q?QH3aHmXJIEwWEKBjOunLJ/jjDfmndQEoo3QTMCFJV8PHyv/JzCleC8kn2/Wx?=
- =?us-ascii?Q?bj7DD4stDfxwv+Z+/ZLbAy9vcyBNomu1LL3k1pPy2vI0xVNx4kJWMuEsnqqE?=
- =?us-ascii?Q?OOnHPg6eqoTN1ZvUSMbWE7Dgt/c/e6a1jPnksa3Vc1iuM7Qio6qxbvtyhrMA?=
- =?us-ascii?Q?KBF3yfxo3Rz0D1FJTPaMt5+7u0Zzuid9Hz/CQZuGN1q44oSg6pKi2b4/STPs?=
- =?us-ascii?Q?aVETqpt8nx83U6TPf/A4Tqs9YJKLNUF+5refxys3URzvP9ZLUsxt3f9IeW1D?=
- =?us-ascii?Q?hwjWFA/pFMJAR9OFeiZ0ez/SbzBsXVRzHDJtEF3aBtDemV0ndjz+CcGIUYgo?=
- =?us-ascii?Q?QgpbfflWNozql/lB0tNjWZfz/P+SWcTE0xddMm1zabzF4wVDIUl19YNocYxm?=
- =?us-ascii?Q?pX1bvqy3DiLxn5WIjwiCJy1UCieu2VA5oPdviTJk4RnxP4dLNx7CiPmHKSls?=
- =?us-ascii?Q?hkr7MLal1BmxO6nYOH/sT3/y4vjyc31PRZu+kSGeDE+mpx27OHgXRhVPKMrq?=
- =?us-ascii?Q?cmn8rlwEAYOIQnGXp2PVeT429s3NEXeJp1yMRKpO0cH3s5tfQnjUGcpwAMuH?=
- =?us-ascii?Q?Pzs+VD+/c4WHJnzG+y6NruhsKPFu2kzvkPE+86/91lQ32m+NXZ/Dt2ailC63?=
- =?us-ascii?Q?N+2+mtIEU1xM5Tp34xCoCnGX9cVZACbuDzVsmMqO7Clujlq/7poEzE+R9uxN?=
- =?us-ascii?Q?oqpo2uG0pgXx/b94peZP7IRltOxP6HwMWIq13UyCeL+ESNJEknUCidDYc3LP?=
- =?us-ascii?Q?PuEpd9XcMmq8ezO34A6pwvxRbqevVYDOkgQq4wI9mT6TfvigqEt+QC2gBD/8?=
- =?us-ascii?Q?B/sn7+YCblihKsgxUTAehkplbqqC9AGW1Z/uBOlzea0o2YcZp0U2WgqrkTaD?=
- =?us-ascii?Q?zv3gIomtr9RjRIE50bkW1Fx9hhrxQRFO9vtwL7IKgQlYWq13bUGIwy78ma7H?=
- =?us-ascii?Q?g4Gf7XC/rXhZ4exmR/jRP5JOcACb49CwE8+qsChxbowsFUAETOyHXmazHHvR?=
- =?us-ascii?Q?eIZh/l+8MRIyUNV8VngqIFSVv0qP?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW6PR12MB8663.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?q4WawejWMzwrGk2uKAEanEE88/USitM8qLdHzQ6GZyAHuoa9d945wEhJsA5l?=
- =?us-ascii?Q?ftpcXrXyJdY0s5W9IpwiWh44eZCiWMHBnnu6REdj3QaHjkneSUGZhmw8tv2X?=
- =?us-ascii?Q?G7bXsyqocg6UWXEM29yxLWayGgJcjhrXYTW5tdMe1e+53Pm65mcWSdkJo3A7?=
- =?us-ascii?Q?bqSx3CgxhjW9EnnvL/YMf2sc4rjSvVrKSPwHrKJj+e1Fyk74HjqqnqFCssrx?=
- =?us-ascii?Q?IuuNxxyo996XYJFeYlheaCdE8ZKkADFHovmktI4YSjLAjZt6icALgtLYKR3W?=
- =?us-ascii?Q?Tdhl7uDpbN6/EjxHUCQxu8S+PBsd+GtO4Ssk/NX9kFFOQzi6KhZtJRUYvucs?=
- =?us-ascii?Q?aSpntUxOwc0CdzssoH8mXGA0UVMwxV3Zax/Jo2sWkfEZ2QcQ8ZnhbsvnO5OZ?=
- =?us-ascii?Q?5eHRcYm7+yL3HPDZplMNxpcup3yfSXI6ar5QRT7BvFr5eyiewActNSNgNUsM?=
- =?us-ascii?Q?bbxhjfe708vILUzz2t0Kq0//Iv6rxCJ+e9okiWaNw6gzz/1bAAO2YP9WBV9E?=
- =?us-ascii?Q?FKV4FEI2WlVuWn6VOKlGghT6QeuyQ8KCVnZlAM9CFV02QqHR2CRCecQ5y9OW?=
- =?us-ascii?Q?z94JgBasf5DZ7DgekwRQpgJRHqU/UcpTzsEHFx85aL7WAl7QNBv2pLerzAkL?=
- =?us-ascii?Q?i/sWfozhiHZpqsavTXwX7wyFBIpVEvZQD+rBRnS/H5loCCRBm7SpZwDmDC0Q?=
- =?us-ascii?Q?UVgKR3Uw3w1nVzkCHBdrPsV+sFUTkWWHEdJJSg+2305iH7m/Tn0W7Fj5hAm4?=
- =?us-ascii?Q?7W/7CwN4NR920y4OKdQ6YK8im71m6uUuuawiMla17p4nn+82HpCNPhB5eM1B?=
- =?us-ascii?Q?BeIu9bLwaIjZJLvoMpRfdUmHabMrBpgJ7owiOQAIJtMJeRX+qVsL8yN2ZbVZ?=
- =?us-ascii?Q?uiIOSMv6EIfTyOdavoiDokbN3T99vubCL0dxS+A2QAC15wh2CvMrkHF5jcHj?=
- =?us-ascii?Q?8DKyHJY78/u8LMacH/BYdWhhFAu51owea53n4Gv1OUfqehLemmZ4wtTuFTm/?=
- =?us-ascii?Q?1++lo+UdAtQB6Il725ZRdu6zYpggSD428/MwwPaDzs0ExewFg+PrdBrphwfJ?=
- =?us-ascii?Q?sBAIh7IkCKD3BXPUZT7pVPqWO36oVLjehvZ4tZzXuAncJXRejs/vSvGYe7E2?=
- =?us-ascii?Q?ukWeCm1G8KxwNAsmHTVe+1VmZaVhY4C9qg6Y6MHI5DobXAJT59ivSK93UcId?=
- =?us-ascii?Q?crq3/L7bnCo/+o70NCFeRhwZb2QfctPiYV145A+lIefmLWcgCt6zih5LeQN3?=
- =?us-ascii?Q?ZhhVZwCWJ0xZ4VWEKQG4LtFGJ5VJ8ZnqM70o5O9G+O5HGBaEt8YfGLob98uO?=
- =?us-ascii?Q?DuuqIZiiRnZYIEjiWtf0mtEaW86H9+ZryxopWlNcpaAyMHeY5zxwOpOHJ27r?=
- =?us-ascii?Q?EJFdf972YcR2uNu6hlXekFL9ZKbq1llMvfw9iwzwJt1Poao3HjykpNnRjJwZ?=
- =?us-ascii?Q?CRP16v4CNJCJ/tuwAAU8leWH33KS7+9P3Wg9ZH5Y83SQ2R0NdauYA/HxCU/C?=
- =?us-ascii?Q?H0q2Loh3Ru5cX3HB95/idQ5R9qQ6LaSMP751cW7i9wc7KI+n7iKUnnHfB78R?=
- =?us-ascii?Q?fuBp1q6WTjJdTQPgWHc=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f382f39a-6ec8-44a2-aa22-08dd573d7f22
-X-MS-Exchange-CrossTenant-AuthSource: MW6PR12MB8663.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2025 14:46:19.9389
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HG7+qCeIKyz6P/nKKwKbsv2REGEhppFnIwiekO1YI3ktWIKjMwcpoEbg8S1+zHUh
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPF9BB0D8619
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 0/6] rust: extend `module!` macro with integer
+ parameter support
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Luis Chamberlain <mcgrof@kernel.org>, Daniel Gomez <da.gomez@samsung.com>,
+ Sami Tolvanen <samitolvanen@google.com>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor
+ <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Adam Bratschi-Kaye <ark.email@gmail.com>, linux-kbuild@vger.kernel.org,
+ Simona Vetter <simona.vetter@ffwll.ch>, Greg KH
+ <gregkh@linuxfoundation.org>, linux-modules@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>
+References: <JKqjFnoTeEbURcTQ5PpmUZWDS2VMEt0eZl68dWkgk3e8ROFpb2eTWH2mStKkkXJw__Ql5DdYvIR9I7qYks-lag==@protonmail.internalid>
+ <20250218-module-params-v3-v7-0-5e1afabcac1b@kernel.org>
+ <87ldtv1t1c.fsf@kernel.org> <0d9e596a-5316-4e00-862b-fd77552ae4b5@suse.com>
+ <CANiq72nBK=HZ=ZL9bYhB8Z+U5QK3xmsQesO9axf_Fz0_1mWREA@mail.gmail.com>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <CANiq72nBK=HZ=ZL9bYhB8Z+U5QK3xmsQesO9axf_Fz0_1mWREA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Feb 26, 2025 at 04:41:08PM -0800, Boqun Feng wrote:
-> And if you don't store the HrTimerHandle anywhere, like you drop() it
-> right after start a hrtimer, it will immediately stop the timer. Does
-> this make sense?
+On 2/25/25 12:54, Miguel Ojeda wrote:
+> On Tue, Feb 25, 2025 at 11:22 AM Petr Pavlu <petr.pavlu@suse.com> wrote:
+>>
+>> I'd say the easiest is for the entire series to go through the Rust
+>> tree. I'd also propose that any updates go primarily through that tree
+>> as well.
+>>
+>> Makes sense, I think it is useful for all changes to this code to be
+>> looked at by both Rust and modules people. To that effect, we could add
+>> the following under the MODULES SUPPORT entry:
+>> F:      rust/kernel/module_param.rs
+>> F:      rust/macros/module.rs
+>>
+>> My slight worry is that this might suggest the entirety of maintenance
+>> is on the modules folks. Fortunately, adding the above and running
+>> get_maintainer.pl on rust/kernel/module_param.rs gives me a list of
+>> people for both Rust and modules, so this could be ok?
+> 
+> Up to you, of course -- a couple days ago (in the context of the
+> hrtimer thread) I wrote a summary of the usual discussion we have
+> around this (copy-pasting here for convenience):
+> 
+>     So far, what we have been doing is ask maintainers, first, if they
+>     would be willing take the patches themselves -- they are the experts
+>     of the subsystem, know what changes are incoming, etc. Some subsystems
+>     have done this (e.g. KUnit). That is ideal, because the goal is to
+>     scale and allows maintainers to be in full control.
+> 
+>     Of course, sometimes maintainers are not fully comfortable doing that,
+>     since they may not have the bandwidth, or the setup, or the Rust
+>     knowledge. In those cases, we typically ask if they would be willing
+>     to have a co-maintainer (i.e. in their entry, e.g. like locking did),
+>     or a sub-maintainer (i.e. in a new entry, e.g. like block did), that
+>     would take care of the bulk of the work from them.
+> 
+>     I think that is a nice middle-ground -- the advantage of doing it like
+>     that is that you get the benefits of knowing best what is going on
+>     without too much work (hopefully), and it may allow you to get more
+>     and more involved over time and confident on what is going on with the
+>     Rust callers, typical issues that appear, etc. Plus the sub-maintainer
+>     gets to learn more about the subsystem, its timelines, procedures,
+>     etc., which you may welcome (if you are looking for new people to get
+>     involved).
+> 
+>     I think that would be a nice middle-ground. As far as I understand,
+>     Andreas would be happy to commit to maintain the Rust side as a
+>     sub-maintainer (for instance). He would also need to make sure the
+>     tree builds properly with Rust enabled and so on. He already does
+>     something similar for Jens. Would that work for you?
+> 
+>     You could take the patches directly with his RoBs or Acked-bys, for
+>     instance. Or perhaps it makes more sense to take PRs from him (on the
+>     Rust code only, of course), to save you more work. Andreas does not
+>     send PRs to anyone yet, but I think it would be a good time for him to
+>     start learning how to apply patches himself etc.
+> 
+>     If not, then the last fallback would be putting it in the Rust tree as
+>     a sub-entry or similar.
+> 
+>     I hope that clarifies (and thanks whatever you decide!).
+> 
+>     https://lore.kernel.org/rust-for-linux/CANiq72mpYoig2Ro76K0E-sUtP31fW+0403zYWd6MumCgFKfTDQ@mail.gmail.com/
+> 
+> Would any of those other options work for you?
 
-Oh, I understand that, but it is not sufficient in the kernel.
+From what I can see in this series, the bindings required adding
+a number of generic functions to the Rust support code and also most
+discussion revolved around that. I'm worried this might be the case also
+for foreseeable future updates, until more building blocks are in place.
+It then makes me think most changes to this code will need to go through
+the Rust tree for now.
 
-You are making an implicit argument that something external to the
-rust universe will hold the module alive until all rust destructors
-are run. That is trivialy obvious in your example above.
+On the other hand, if the changes are reasonably limited to mostly
+rust/kernel/module_param.rs and rust/macros/module.rs, then yes, I'd say
+it should be ok to take the patches through the modules tree.
 
-However, make it more complex. Run the destructor call for your
-hrtimer in a workqueue thread. Use workqueue.rs. Now you don't have
-this implicit argument anymore, and it will EAF things.
+@Luis, Sami, Daniel, please shout if you see any problem with this.
 
-Danilo argues this is a bug in workqueue.rs.
-
-Regardless, it seems like EAF is an overlooked topic in the safety
-analysis.
-
-Further, you and Danilo are making opposing correctness arguments:
-
- 1) all rust destructors run before module __exit completes
- 2) rust destructors can run after driver removal completes
-
-I understand the technical underpinnings why these are different, but
-I feel that if you can make #1 reliably true for __exit then it is
-highly desirable to use the same techniques to make it true for
-remove() too.
-
-Jason
+-- 
+Thanks,
+Petr
