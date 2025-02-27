@@ -1,134 +1,249 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1F51B424D;
-	Thu, 27 Feb 2025 18:26:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6892C20B1E1;
+	Thu, 27 Feb 2025 18:30:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740680797; cv=none; b=fP4ZKxlGydOPB9K4gXXu5Rx9uns6RabxWDq/3Sp2vsKITX0IpKY0NA1VrD2fBbmKxxFFUsFMmkRGj+35zZwXbMvtGzkc26wAB8dpND2bO/IyPdL5D8r1jyYdIBL+Tfs4NQBVZIkbGzV+CqU6wmBqcYyW1Gy6mW0QcEnDBTg6eKQ=
+	t=1740681009; cv=none; b=ArXMUPIghPDZE/Uto0sTirfqwF6+oce+szN3S35BIiWbzeV4tHDj+xJhS3HU1mys2ZqrlI40oi9SrZdBVZzk22wyddgPihUuQEehiKxUnTwHmGDQVf8/hAS+GAj0s+E+eq/VpaTnXxQhJ3XEkkolWv0poKRsFXBYXTe+K6wZP4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740680797; c=relaxed/simple;
-	bh=YU70u+Lrzy3NIIllb8QVYgo1H7mfIbm+KM3tzzZcf6Q=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=OQzTAinuPTc4d7ItzgPfW045/9XCzEeJjHIO7t+vk5/W0SZMySz8YvPa9raNkHm9nHM4ezvqrldZ3224lP1HF5uDxxcIkJbY+mEJUeW7P1mCCSELf4HPMtqjHVhx5UfJpe2CwNPe7vO34rnM0uOsK88W0JtgDXmOThSBwXrajq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TvZxYJKR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740681009; c=relaxed/simple;
+	bh=OycL5tLSb6kRnrnNo/gopmbCdrp+VP1JmXoUjo62ZhQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m837gDov6D1B4VI0TUzJ0IHIPy2Io8gkTGhSS3ATjzXrlsDagh6pPZLfHlNnQb54URiEMPoQn4BdKEAnnMck20lhXcIvHMGGCnIOHSSsaArzk4FArmACCQfxBG1h8y86ZKLAJtjsrriRD43RfkE+MMUi87mqy4IHKe2wAzfVjoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ukv8ZNYh; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TvZxYJKR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63068C4CEDD;
-	Thu, 27 Feb 2025 18:26:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740680796;
-	bh=YU70u+Lrzy3NIIllb8QVYgo1H7mfIbm+KM3tzzZcf6Q=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=TvZxYJKRgbB2G2OLEyVlfL+mdNvysSF33CQSt1GOmzIEx7pdTY3U9z2XODUxOg33J
-	 TmbqsToF/lhstDr3tcBykMzOf6AhnwNwMFJ6BMOjbGoa3I2rWAPQhe7Wvbwyw7vGIt
-	 BkigdisaCDkQyYStz9WEAfmUy2riOhZKe6RJo1A+qamlszz5m+u2Uch/smlWARBNDN
-	 VySGas+8cNX2otAz6HAqw46rUxrdvaETeW3gZNdQ5/xUj1Pe+bAFbG/ELN3ldn1Hlw
-	 YpBYFKQiNKM1VVn29k2dHBj1Hwbdyj1uy43alOWwli5uGt2uqzm1fNCB0VoRq6kaC1
-	 dE6R/BvDXNK0g==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Tamir Duberstein" <tamird@gmail.com>
-Cc: "Danilo Krummrich" <dakr@kernel.org>,  "Miguel Ojeda"
- <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
- <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
- =?utf-8?Q?=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
-  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Joel Becker" <jlbec@evilplan.org>,  "Peter Zijlstra"
- <peterz@infradead.org>,  "Ingo Molnar" <mingo@redhat.com>,  "Will Deacon"
- <will@kernel.org>,  "Waiman Long" <longman@redhat.com>,  "Fiona Behrens"
- <me@kloenk.dev>,  "Charalampos Mitrodimas" <charmitro@posteo.net>,
-  "Daniel Almeida" <daniel.almeida@collabora.com>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5 1/4] rust: sync: change `<Arc<T> as
- ForeignOwnable>::PointedTo` to `T`
-In-Reply-To: <87o6ynp7nr.fsf@kernel.org> (Andreas Hindborg's message of "Thu,
-	27 Feb 2025 19:24:56 +0100")
-References: <20250227-configfs-v5-0-c40e8dc3b9cd@kernel.org>
-	<20250227-configfs-v5-1-c40e8dc3b9cd@kernel.org>
-	<CWcBoUvs9GV44AJgOvQffgsR1G-O58dn7IrSDXfpf0iskvvi98bw3hr9qDSNfZESFWRVP_WV-1hV2pXdM5IYag==@protonmail.internalid>
-	<CAJ-ks9=B=ceCN0VO3JH37LJbuVbQ5Y2sqfOgFCyJ0BfFGSEmkA@mail.gmail.com>
-	<87o6ynp7nr.fsf@kernel.org>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Thu, 27 Feb 2025 19:26:28 +0100
-Message-ID: <87ikovp7l7.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ukv8ZNYh"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-22328dca22fso21343215ad.1;
+        Thu, 27 Feb 2025 10:30:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740681006; x=1741285806; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=caOIB/kbSO6skFmZNg/mE0ddm8H3WZ0wS7C69kcXQ/A=;
+        b=Ukv8ZNYhLl4XcNPKsZEqQENYssDvJCu1JJjBaIBbpQgr1yg2FgF+Jrqm/B/xhp4f0F
+         ONiNcsHF1ML85GN/ulB0KZA/NrCEvAIrJXGACj4kEfZi3mLjPx+2jBas/VQgqLSUBncz
+         YXmH/gqQhj64KGD9g3lbFcFZPyB0Kv9aSqJwOCaSWKJHrvTvyxBbAPKfqS4/c1raHhnX
+         qVHxBlOrP3DSuDj4L157BlnlyhHpLL8qaiwFsarJv2PEGNnZOA00FR1Q9KUQ+TY+nvtb
+         rY+yaQrs5P+rtA3f5MlFxdphdRmaoV+xZywk6VoWVfbyBJlZ4RpWt6wl3gMJFy8BKCpf
+         0GWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740681006; x=1741285806;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=caOIB/kbSO6skFmZNg/mE0ddm8H3WZ0wS7C69kcXQ/A=;
+        b=faX1BAbpARhemyuulHpSdVtqb+fQXMWLw2xjvhCcetc+B60GW4WMFhMCqUugq6YUD3
+         oTW32PbPZN+yidaCIxCCNWX/g1moMZf49HXt7hYqo1bjgVpb6L7NLMyfZ5sMc4LfALwP
+         AIIc+0i+bLNbDU9Q3BXp/P1qEeGxJf3sNiW7ov8Hq4E1NIbon9+4yf2r7d+LH5tjZkZV
+         xhTuDVs2oX+deJiRAG9zR+/Ekuicid8dPL2JoRdAKQUOExHXNcMCR2t0QYTk0uxAu0UI
+         6CGacvXQM1z3F+NYtSshHAlYfrH9RTTWuvYe34urRsIFVepylmKKO5rAIyDCLMMcyA29
+         h2Ww==
+X-Forwarded-Encrypted: i=1; AJvYcCWaTMLq6M/x1YnIaiiv8AeoaM2qkTJRd14zT4yLmKhneIcNu3uQWV7KYscJ3GoQDnuLgTPiRrLbVTv0uphgQDY=@vger.kernel.org, AJvYcCWcCHwnKHR8tjnX0u8S9/7gHkK5RWEbmUzXtDpflNK6WLBRxyUITJDVXOV4juD5k0vPhz3r71d7/TueVn8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyp+g1J+u64R9xXPGfaClnEKhbJVd8dnkIV1NYJc4ao79NHKV+t
+	U7LsW/ydsBMFQcs4chTk1oN5zVGQc3yOM+MlxDkgE/7YSvaR6xlQ
+X-Gm-Gg: ASbGncteC2X+FiB4v48Tb6qBGMp90LhIq5E9qwBVhuT6bB+TrYyt3Z8dsouYzePnKXi
+	QZZbn89aHIcnlapPEGFDCsEJvndS1dJicO8jmeeTMleYuMZDC+WGmpfUx3eWioUq1C4htSyxhF0
+	GJ5z26c0alKp+tMOW4Wi9BpUwrDFfoa95kOnRBjcvCYLDNHXELZ3qRbzaDYa000Pzn9EGLqrySS
+	ly3KYy3G5WKtIXsnEPeN0CmZOx83N/33WIVgufgQ8nySbS17Jn0GL0JvLBM/bs3vFxZBQVkNiet
+	Qv6PTccJdgBvNn+UMX2pHKFZRiTV0lWmcLX2R/7gLwKhPy+Tuw==
+X-Google-Smtp-Source: AGHT+IGsfJjpo5l8BgWZFoLGtvXpgwVblWolnL+szEmEK/IVNKP+zBT3MDxaw5WEhutnZ/QH6UsBXA==
+X-Received: by 2002:a17:903:22d2:b0:220:fe51:1aab with SMTP id d9443c01a7336-2236924f926mr2439475ad.38.1740681006557;
+        Thu, 27 Feb 2025 10:30:06 -0800 (PST)
+Received: from localhost (maglev-oncall.nvidia.com. [216.228.125.128])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-734a003dcedsm1983557b3a.125.2025.02.27.10.30.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Feb 2025 10:30:06 -0800 (PST)
+Date: Thu, 27 Feb 2025 13:30:04 -0500
+From: Yury Norov <yury.norov@gmail.com>
+To: Burak Emir <bqe@google.com>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: add bindings and API for bitmap.h and bitops.h.
+Message-ID: <Z8CvLBwKeH2gM-2u@thinkpad>
+References: <20250227101720.1811578-1-bqe@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250227101720.1811578-1-bqe@google.com>
 
-Andreas Hindborg <a.hindborg@kernel.org> writes:
+On Thu, Feb 27, 2025 at 10:08:41AM +0000, Burak Emir wrote:
+> Adds a bitmap and bitops bindings and bitmap Rust API.
+> These are for porting the approach from commit 15d9da3f818c ("binder:
+> use bitmap for faster descriptor lookup") to Rust. The functionality
+> in dbitmap.h makes use of bitmap and bitops.
+> 
+> The Rust bitmap API provides an abstraction to underlying bitmaps
+> and bitops operations. For now, we only include methods that are
+> necessary for reimplementing dbitmap.h. It is straightforward to add
+> more methods later, as needed. We offer a safe API through
+> bounds checks which panic if violated.
+> 
+> This series uses the usize type for sizes and indices into the bitmap,
+> because Rust generally always uses that type for indices and lengths
+> and it will be more convenient if the API accepts that type. This means
+> that we need to perform some casts to/from u32 and usize, since the C
+> headers use unsigned int instead of size_t/unsigned long for these
+> numbers in some places.
+> 
+> Adds F: entries to MAINTAINERS.
+> 
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Burak Emir <bqe@google.com>
+> ---
+> This series adds a Rust abstraction for bitmap, and binding helpers
+> for inline methods of bitmap.h bitops.h.
+> 
+> It depends on [1] and [2] which add bitmap helpers, MAINTAINERS entries
+> and an abstraction that is part of the bitmaps Rust API.
+> 
+> Question for Yury: What would you like us to do for the MAINTAINERS
+> file? For now I just added the new files as F: entries.
+> 
+> [1] https://lore.kernel.org/all/20250224233938.3158-1-yury.norov@gmail.com/
+> [2] https://lore.kernel.org/all/cover.1740475625.git.viresh.kumar@linaro.org/
+> 
+>  MAINTAINERS                     |   4 +
+>  rust/bindings/bindings_helper.h |   1 +
+>  rust/helpers/bitmap.c           |   8 ++
+>  rust/helpers/bitops.c           |  13 +++
+>  rust/helpers/find.c             |  15 +++
+>  rust/helpers/helpers.c          |   3 +
+>  rust/kernel/bitmap.rs           | 182 ++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs              |   1 +
+>  8 files changed, 227 insertions(+)
+>  create mode 100644 rust/helpers/bitmap.c
+>  create mode 100644 rust/helpers/bitops.c
+>  create mode 100644 rust/helpers/find.c
+>  create mode 100644 rust/kernel/bitmap.rs
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 6d6e55d8593b..359f09e8e2c0 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -4033,12 +4033,16 @@ BITMAP API BINDINGS [RUST]
+>  M:	Yury Norov <yury.norov@gmail.com>
+>  S:	Maintained
+>  F:	rust/helpers/cpumask.c
+> +F:	rust/helpers/find.c
+> +F:	rust/helpers/bitmap.c
+> +F:	rust/helpers/bitops.c
 
-> "Tamir Duberstein" <tamird@gmail.com> writes:
->
->> On Thu, Feb 27, 2025 at 7:37=E2=80=AFAM Andreas Hindborg <a.hindborg@ker=
-nel.org> wrote:
->>>
->>> Using `ArcInner` as `PoinedTo` in the `ForeignOwnable` implementation f=
-or
->>> `Arc` is a bit unfortunate. Using `T` as `PointedTo` does not remove any
->>> functionality, but allows `ArcInner` to be private. Further, it allows
->>> downstream users to write code that is generic over `Box` and `Arc`, wh=
-en
->>> downstream users need access to `T` after calling `into_foreign`.
->>>
->>> Reviewed-by: Fiona Behrens <me@kloenk.dev>
->>> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
->>> Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
->>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->>> ---
->>>
->>> This patch is a dependency for Rust `configfs` abstractions. It allows =
-both
->>> `Box` and `Arc` to be used as pointer types in the `configfs` hierarchy.
->>> ---
->>>  rust/kernel/sync/arc.rs | 21 ++++++++++++++++-----
->>>  1 file changed, 16 insertions(+), 5 deletions(-)
->>>
->>> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
->>> index dfe4abf82c25..3d77a31e116f 100644
->>> --- a/rust/kernel/sync/arc.rs
->>> +++ b/rust/kernel/sync/arc.rs
->>> @@ -143,7 +143,7 @@ pub struct Arc<T: ?Sized> {
->>>  #[doc(hidden)]
->>>  #[pin_data]
->>>  #[repr(C)]
->>> -pub struct ArcInner<T: ?Sized> {
->>> +struct ArcInner<T: ?Sized> {
->>>      refcount: Opaque<bindings::refcount_t>,
->>>      data: T,
->>>  }
->>> @@ -345,18 +345,25 @@ pub fn into_unique_or_drop(self) -> Option<Pin<Un=
-iqueArc<T>>> {
->>>
->>>  // SAFETY: The `into_foreign` function returns a pointer that is well-=
-aligned.
->>>  unsafe impl<T: 'static> ForeignOwnable for Arc<T> {
->>> -    type PointedTo =3D ArcInner<T>;
->>> +    type PointedTo =3D T;
->>>      type Borrowed<'a> =3D ArcBorrow<'a, T>;
->>>      type BorrowedMut<'a> =3D Self::Borrowed<'a>;
->>>
->>>      fn into_foreign(self) -> *mut Self::PointedTo {
->>> -        ManuallyDrop::new(self).ptr.as_ptr()
->>> +        let this =3D ManuallyDrop::new(self).ptr.as_ptr();
->>> +        // SAFETY: `x` is a valid pointer to `Self` so the projection =
-below is
->>> +        // in bounds of the allocation.
->>
->> Isn't the unsafe bit `*this`, which is what this comment should
->> justify?
->
-> Yes, not sure what the origin of that name is. Good catch.
+bitops.c is part of BITOPS API, not the BITMAP one. I think we need a
+new record for it?
 
-Referring to the `x` part here.
+>  
+>  BITMAP API [RUST]
+>  M:	Viresh Kumar <viresh.kumar@linaro.org> (cpumask)
+>  R:	Yury Norov <yury.norov@gmail.com>
+>  S:	Maintained
+>  F:	rust/kernel/cpumask.rs
+> +F:	rust/kernel/bitmap.rs
+>  
+>  BITOPS API
+>  M:	Yury Norov <yury.norov@gmail.com>
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index 673b1daa9a58..50416c1a3de9 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -7,6 +7,7 @@
+>   */
+>  
+>  #include <kunit/test.h>
+> +#include <linux/bitmap.h>
+>  #include <linux/blk-mq.h>
+>  #include <linux/blk_types.h>
+>  #include <linux/blkdev.h>
+> diff --git a/rust/helpers/bitmap.c b/rust/helpers/bitmap.c
+> new file mode 100644
+> index 000000000000..4fa4e4f76110
+> --- /dev/null
+> +++ b/rust/helpers/bitmap.c
+> @@ -0,0 +1,8 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/bitmap.h>
+> +
+> +void rust_helper_bitmap_copy(unsigned long *dst, const unsigned long *src, unsigned int nbits)
+> +{
+> +	bitmap_copy(dst, src, nbits);
+> +}
+> diff --git a/rust/helpers/bitops.c b/rust/helpers/bitops.c
+> new file mode 100644
+> index 000000000000..191ef0341fd5
+> --- /dev/null
+> +++ b/rust/helpers/bitops.c
+> @@ -0,0 +1,13 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/bitops.h>
+> +
+> +void rust_helper_set_bit(unsigned int nr, volatile unsigned long *addr)
+> +{
+> +	set_bit(nr, addr);
+> +}
+> +
+> +void rust_helper_clear_bit(unsigned int nr, volatile unsigned long *addr)
+> +{
+> +	clear_bit(nr, addr);
+> +}
 
+So you mention that you're rewriting dbitmap, and I took a brief look
+at drivers/android/dbitmap.h.
 
-Best regards,
-Andreas Hindborg
+What I can say is that at least dbitmap_acquire_next_zero_bit() abuses 
+the set_bit() API. It should use non-atomic __set_bit(). If you're
+going to re-write it, can you review the existing code and make sure
+you're using the right API in a right way?
 
+> diff --git a/rust/helpers/find.c b/rust/helpers/find.c
+> new file mode 100644
+> index 000000000000..3841d3f0330f
+> --- /dev/null
+> +++ b/rust/helpers/find.c
+> @@ -0,0 +1,15 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/find.h>
+> +
+> +unsigned long rust_helper_find_last_bit(const unsigned long *addr, unsigned long size)
+> +{
+> +	return find_last_bit(addr, size);
+> +}
+> +
+> +
+> +unsigned long rust_helper_find_next_zero_bit(const unsigned long *addr, unsigned long size,
+> +				 unsigned long offset)
+> +{
+> +	return find_next_zero_bit(addr, size, offset);
+> +}
 
+For those two, the find_*_bit() are the wrappers around _find_*_bit()
+in lib/find_bit.c, with a few exceptions. The reason for having the
+wrappers is an optimization that improves code generation for small
+bitmaps.
+
+In your case, when you wrap a macro, the optimization becomes impossible,
+and the macro is unneeded.
+
+From technical perspective, the underscored _find_*_bit() functions
+should be accessible by rust directly. Can you confirm that? If so,
+maybe just use them and avoid bloating?
+
+Thanks,
+Yury
