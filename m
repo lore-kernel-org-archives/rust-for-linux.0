@@ -1,227 +1,243 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2073.outbound.protection.outlook.com [40.107.223.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E139927003D;
-	Thu, 27 Feb 2025 14:23:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740666182; cv=none; b=g4uBLCbWcAP7l48MaGEPJ6nag2YNXZ28SJF1TYuEGRxo0Rzox/n64RBjlolSqLHPitmEH4cAwg7aV1GrAm5PsJErc8giwMhDMZzjv4rz5KYV/HdPO7XHHUoztPaHm3tPYMrI196adGMbnne8egKrezeosDbgljITfmFLymVIb5g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740666182; c=relaxed/simple;
-	bh=gzvmafknzri2ipmITZT/bN8BfLwdcEv1P/o6zHOGJCo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=DC540s6KCBrxjlcwvyucpe3GoUqyk34qw8XbwZ4h0g+PaPSJxT/z0ehwczGfH5p+HoKywpKYEeU0PfnkkaOJO2z0S5qd7qp0a//tGRhzXtjnP6VkqSCzSbtdXmut+5wXlOiWmzR0v5yrGAwQRqD5Xx/pHNf5ZlQle65HB6wvfAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=n4dvxq4i; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qGE0oarY; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37B423959A;
+	Thu, 27 Feb 2025 14:23:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.73
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740666237; cv=fail; b=r+Do0fN9FwYzj92fjCCM7sQ5K2PdY8TNsNHxpcSvlbclWBIS3IgbLTMNqgexhOZ0cQt/hOQSbUPYKn8U0b6VxSTnfECVnROSP6/vk4OwX7grcMnAacmLcQCN7tte2hi5D7qYnV91WhbBlydkqwh25MaQBedGZawGhOaDwm7l2R4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740666237; c=relaxed/simple;
+	bh=dkJxJNxyE5fjpQehad5R/y6R3FHEt+GHKGPFDIH3fD0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=r8r/jrhVvru6cN6oGHqV4GSwY6VYQrJ4avtkVFKxSbdD0irnFW85Ltd1ISL/nHZIsLQln2zlHxMHxtrQYjxo3ndqAxUw5OemnM6IDyOw0dz/RIjEtcomg5qMAVV3zM9fQoFHzaxv5EWeEiCOd0/MYViUnOxo+dOohHyR9ch33Z8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=mOP5hwDV; arc=fail smtp.client-ip=40.107.223.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="n4dvxq4i";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qGE0oarY"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1740666178;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VCbvU0MLgYHYE7d1dnH4BqR40Q5JyRpISvK9luu+7i8=;
-	b=n4dvxq4iomqb6v0oRelwU2l+W0Wp0THoT8FAoBoQG/M3PjcPGRJvGNvgjz2VqES2VHzjQA
-	o5UDgRa2E1lZqkGe3y1cPLhPVLeMREflHbpjbRhAHikuai1/ulFnz+1/xrrX/G8Y25VE5b
-	ftmI/4+HW6YMJ/ctxehJgA3r/emLkcTPuj+yacEYs+qPbbHd5keziiSpWJB/bSNfyp0TvX
-	yKYPolEn1wO+XPSPawG4kC9RclLAJCL3+yiYibPH+elbTOeLRGzOmpeids9ca8abzp6WAH
-	HfdVsQLVFsTIjJ1NkK7z7zrqbZ2rUzqN7wMFFmvrhC/rpJKgRbUiY25fLrb87A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1740666178;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VCbvU0MLgYHYE7d1dnH4BqR40Q5JyRpISvK9luu+7i8=;
-	b=qGE0oarY2GXf+f9miDHKyzt1KGIQ0BxF6dSLAvmz2QkuNhrQy1FUKAM4uBLpcgRVfXcbK2
-	8FSnxOI8q9nWxzDw==
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen
- <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron <bjorn3_gh@protonmail.com>, Benno
- Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, Trevor
- Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui
- <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida
- <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v9 12/13] rust: hrtimer: add clocksource selection
- through `ClockSource`
-In-Reply-To: <87zfi7prf2.fsf@kernel.org>
-References: <20250224-hrtimer-v3-v6-12-rc2-v9-0-5bd3bf0ce6cc@kernel.org>
- <20250224-hrtimer-v3-v6-12-rc2-v9-12-5bd3bf0ce6cc@kernel.org>
- <6sz8JD2Jq54KZZ3nCKbMpvae2yHUmF2hHEP3qrQlbGY6RrWzS8BN5YxinlIQnIFkGfjAPauTxI8i3sZUhzoPiw==@protonmail.internalid>
- <87jz9beor7.ffs@tglx> <87zfi7prf2.fsf@kernel.org>
-Date: Thu, 27 Feb 2025 15:22:58 +0100
-Message-ID: <87bjuneabh.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="mOP5hwDV"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lGdZcBRRiKBrpzYbSfso+iNloaxRPhVeYoYF/+YCbe/BBpq2gmlvuSn2kRYr/Re1A0exUBTbxsByoffq2ssHPWxLDT/JB/hRFwK/DS2M86p91SapaAY0/j+cCaKj0Pg2F8aRw7M1WcNbXyd0V4Hf6G6xLa/HRSjf1NVdguCL3RAiwO/peD2kqixGT9fVZ5sUmhI5iQgGnZxqWVd+ChuKo10dWpq5WKJUQDIqM0aMk9wZv+2opc2hT3aoOW2wml2uCNqDYv44sC5tzTygMRmsjXdFt26MTPtNXKIRBB2RobY3aZaD4QXJRYu8IGrX6SbxlXkFSMoeykQ+8Gc+PODrkQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=afu03q5238/lQBxyOw8nKirxLROv5NDOcregH3Dajxg=;
+ b=pEMls04K/nPVfuUWDu9JykKxKn3G8EiFwDC/ybzXMNxbtgbSbzFh+3ZZgfSV6Xi8vQMgiK6Z0sQFezkJJO87z1cIXXXxxIxx7OUZeiWQW6vavcxZ9ldbPyFpQj30SIJoWKI5834EmZzBiU0MjXKUavgbyPiS4SR5xRYHL3i91TCOJ0ftS00zwB5Xgf+md3DvZWL0zId4PGtxT846HujqwflIgEE2NI7G62ja0liQk+OuDSlq7Fl7ELUw3xzH22Bf4cC/bVMd7iHcDVSGkg/CORzK8Zw4eZh5D1KVEce8oJi/CkzoAOPx4KRNdgZSrW4gTlDmlg6GeiV4mWGQ9K3QRA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=afu03q5238/lQBxyOw8nKirxLROv5NDOcregH3Dajxg=;
+ b=mOP5hwDV5M3LwFcjFmTpFC/jDVQdyAUMx8Uch3l5DGC9ZQBtQq1tfhsRA79N+BnqhZAoWDw2mmxaAYq7byrryGQ83yz8FgWdabC0c4h0mZ0tRcXx2GGXelzdiGa4THQCn5+VPY1kv5qDo0MOM+gaFLEAp61kBUFeAIMvD7ablvoSpPDav7LptMQGHaoUDWIdPPXAhMHsM6Ef+oWMNSP6aFwg9nCufM8VdtP+AG17T6hj6Gwwb7B95DVXtT9drvy3vfMU27918kLRV3sxErUz+mPh/1u53GsdIBKw6nCXdqQyCCFf23zegeqtJa56fWSPzw+knnO5q0ZbF5nko4TCFQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by DS0PR12MB8245.namprd12.prod.outlook.com (2603:10b6:8:f2::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.20; Thu, 27 Feb
+ 2025 14:23:51 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.8466.016; Thu, 27 Feb 2025
+ 14:23:50 +0000
+Date: Thu, 27 Feb 2025 10:23:49 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Danilo Krummrich <dakr@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	paulmck@kernel.org
+Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
+ implementation
+Message-ID: <20250227142349.GD39591@nvidia.com>
+References: <Z73rP4secPlUMIoS@cassiopeiae>
+ <20250225210228.GA1801922@joelnvbox>
+ <20250225225756.GA4959@nvidia.com>
+ <Z75WKSRlUVEqpysJ@cassiopeiae>
+ <20250226004916.GB4959@nvidia.com>
+ <Z75riltJo0WvOsS5@cassiopeiae>
+ <20250226172120.GD28425@nvidia.com>
+ <Z7-IHgcVVS8XBurW@cassiopeiae>
+ <20250226234730.GC39591@nvidia.com>
+ <2025022644-fleshed-petite-a944@gregkh>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025022644-fleshed-petite-a944@gregkh>
+X-ClientProxiedBy: MN2PR22CA0025.namprd22.prod.outlook.com
+ (2603:10b6:208:238::30) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|DS0PR12MB8245:EE_
+X-MS-Office365-Filtering-Correlation-Id: 86490536-4328-42cd-6488-08dd573a5b28
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?LDWRjYBcKqmAAy0qwuzfUjXt6nBBf6P47nqYmexNQAirnGHHdChh5YZjnmh8?=
+ =?us-ascii?Q?sDKAfcZzs6U85v+Z+Pjwfqzm49v9kS2MVIaUlqq8qtkPPY0jdmlygEgc2eS/?=
+ =?us-ascii?Q?oTlJ65doPZUADF0V89ok4xx8mhG9ftn6xVLOCAeXwEecpzdJGomYtD1vGq6j?=
+ =?us-ascii?Q?mE0oi1Jehsairzh4SI0OtorMPIOEsUYUip4HuUrNfOfyfW4EfsyoERglPGwO?=
+ =?us-ascii?Q?yfbIKUO+Hvrlu6CBeciz40kkHa+1ILokl4DthXyx++S/6ZkTIQVxeZ8aGxcu?=
+ =?us-ascii?Q?DSejIM8iKFQlYHvVWGph0wSi0gQc5Yrns6Dv1TgwvlBIoUcHbumkkTm9DMwE?=
+ =?us-ascii?Q?Ph6qqdf0kzywspdt/m5So/tyTbuSn2HDsgdHqQQ/cqXnwcSddmcxm4KFQ6cz?=
+ =?us-ascii?Q?y+PPJjx7eA/5SKC5PuWAV3meg+Jzvxk7enjMa0Yeg0CDj9E/CyW/MvuQmdl6?=
+ =?us-ascii?Q?MdQ9crng7e4L3ICSDxJjLphI7NwBpcTdbEIP5jhIZH5Md9nJLJGNpM3s8tLN?=
+ =?us-ascii?Q?6yi8lvo48ka2Zn2yf04VvQBUJFFkPPdfG+TdVgMCxPqBL8zBGAxDHe468jbJ?=
+ =?us-ascii?Q?+8qQVIkNiMt+onspqvbNmeia2fyGXh+gl819Sl1g1lAqr9MbKvHUiurh4IGQ?=
+ =?us-ascii?Q?eL8+yDYF5qrg7CYC8w3Qt3yzOqfPTmjzi2z/HX1B6jkboMimuiIjNYjug4iA?=
+ =?us-ascii?Q?HxA7aoJRxAWGEsMrzzOHEEaT7A0M0pGOG6CS5qKGvk/u3rSoqyY8ViFd6mmF?=
+ =?us-ascii?Q?ky6C+215fC421CGhL5TjbOsu8Bn3L15nLMEHiCPfKezC+U12Hov/x6bKLgb5?=
+ =?us-ascii?Q?KLku2m/9qOOMmH6Uxs+v0iiGksLStad/1Rp0XKgdSM+DM1THWW/b3YU1Mtco?=
+ =?us-ascii?Q?vZKdA/WEKrAwFkYeuf7vc4QmPovH/DZ5bjqMYzXOVHhs+iEFfhRtmGSv30ET?=
+ =?us-ascii?Q?9OzoDmWN4/5xsMxpE3CyUEAnrD47nrZJ1b5/k0TQnQ5UaasbVTiOFr+ZdjxE?=
+ =?us-ascii?Q?Qx66pZd90UXP1lweZXWTyCAYOgvQ8ZoX6Vn3AY0ufW/+UrJ8AUcNFXoofPa3?=
+ =?us-ascii?Q?YGBGoa4u0h3ZMQoJuc32q3NMIJkQGmXmiiHLgh0+tJ/e4yGO8BDoMmBgzWYh?=
+ =?us-ascii?Q?lLRBBXPHULDmrVuoPFjhTTZwLjE4xSbK7rupJRDxYkE8xOTCvLe86i6qwzJ/?=
+ =?us-ascii?Q?xd36Z7Vu4cRBRz2GdHgzAaSOj01OVojHKiTLiz9MkorBV3/X0/+iLynUcEcl?=
+ =?us-ascii?Q?IXF+q0t6A9lIIV0vGRJGmSfqKQN3lkwmuuE9u0PmzvK91gnYCjIWh4SUL+OV?=
+ =?us-ascii?Q?d8bWu5sIwW32t6Q7phhdfAvuhRQsIpG025puQJDs2ok6tFWtIfHEScXx4V31?=
+ =?us-ascii?Q?KH3blXrghG2P6S0n2Nu/d0b0p+30?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?kskd7AIO2xWpEyWdTYyt+8L+Au8BdFw6GzxC90T66LgXzGy6oTj8mcdeKvsQ?=
+ =?us-ascii?Q?oEiptpgGaxLU+lzI1sNlTK3QNk0AvadtO/KR9KSNG3WeLnlgCulNU/IOktYF?=
+ =?us-ascii?Q?XtPlNDHNclBTArrrarGIZ57JrQgqPTHJzttUeficA5bAquZyidtYRL/5boZu?=
+ =?us-ascii?Q?P2XePhiYZ9aCMo5moU/BcUZBbhByzz8khhJATNBNcsNvVgqx6cdpmMFu/b78?=
+ =?us-ascii?Q?7IEYKz7B5PYZPsWRMRBhSwhEWvFK+cClaRxZaj3HDZjpeurms2/mq8MwAm2P?=
+ =?us-ascii?Q?e+PQeAfVUntfoYQ5SCK+g1P87O0HTFtd0hWeA3ryvuWPuU7ugu/sQTnqrntZ?=
+ =?us-ascii?Q?asS8+ogefnLS1+6e6dYtnnzQd6vCwctRzm3QDpBEXBhpveGRAcAKRVXWeUnx?=
+ =?us-ascii?Q?j0loXzdOr2XAysePYWtmiyvWytZNQ1pKRy4WMjq3MMChShbcWfOznWotX5MY?=
+ =?us-ascii?Q?OSXI8hpHaK+Uo3456900/Qja7ddil0ZOMzfjeJjSdNZfJckPfg2RrnLkPpyM?=
+ =?us-ascii?Q?bhZRfO23t+ON1+b/9jo3XHqTPEKPmHwMv9QPbRt+7xg1PFi130Zyu82ZdBs6?=
+ =?us-ascii?Q?aU1jftvIeLrm+rumPd93JgUUzN0Q9dYWUJXMQIdxrhkiMM/LyUhu433sSarP?=
+ =?us-ascii?Q?TZShNYgzyrYqIZhB8zbOVxTGOb2YL97jCKZtAwFPI5x6hvhjUoXkPWvybOTG?=
+ =?us-ascii?Q?IB+ARIxpAePNX+BLaE21K6k8LgWSTUmBd3/de1OflO5p4cAbcd32LZF4xITc?=
+ =?us-ascii?Q?U0thWejuzgkQ8Vxznq85FcBpwGNzblFTeRYIWb8hq4iuD+vM+EtX5X3bUwfN?=
+ =?us-ascii?Q?SCktiXK5jxNqU6SGb7I+x8UDDXxsceQvD3b/G/oAp5Y+59OgIyDlUag8zFCe?=
+ =?us-ascii?Q?uwWvF4UICWzxv0UW6vL/gTifIlK6ZjqRemNiTZQYE+ecFmG1suYa5KaWF3ud?=
+ =?us-ascii?Q?7AhARiCDnSLSdQxP/b2LVlyXScL1ogSpHfHShU8Z/AX3It6S6er2ftKPI5H2?=
+ =?us-ascii?Q?TUemyC5ptdcTkFxAzG4swQqoAT5Uu1HTAlW5IRJn+5hUlYiWrFv1hm+h+ms1?=
+ =?us-ascii?Q?FqC4euEGryEOwV4ZDoWWb4UZiaeUrUhQJuLvebF4ytTdUnFBUhHN/9mZ5taw?=
+ =?us-ascii?Q?/pPOLIaWvCQrAMB03maNG0sGeVSVvmhodXkf9YuZG2Joaq0Sne7LNLmxWaKb?=
+ =?us-ascii?Q?dSWrmUph0R9oJWhpTo6OA8/5ao1DsJqDnpAi8AsEhZCv0TvRO7zSGRwJd4sM?=
+ =?us-ascii?Q?83jOaV680m8nwnKZ+GaMj01WWTLH2a7RfZjCbWgb6AZ2XKi4tPAq6HzVFlwv?=
+ =?us-ascii?Q?uBe9Jsa0ikbVtONqX7tFIeMUM3C2dJe6lpDVNfD7+KyZF0MFZGpxL8vCae4X?=
+ =?us-ascii?Q?p3q7GWKoh2Auayq430xa0vIOuvFQgGtCiLnggYctuIaTpzIpsZ0t8FTFU9lB?=
+ =?us-ascii?Q?arbEv4mJ6t7oDcLWfPG1CvbZD4CWgWNEGKE9tA9JPqeDviTytMrK8ZeEE/l+?=
+ =?us-ascii?Q?DARX7VO+ruBMpLYXxroFWskEJdJgfGYEYZgQsZRCcT4xW/zVfZjhmwH0SyvJ?=
+ =?us-ascii?Q?sk6oKl7T+/RgWH3iM/A=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 86490536-4328-42cd-6488-08dd573a5b28
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2025 14:23:50.7379
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GXqEnSsoing5JYzIPi1TS6qL/OYpPbvYg/8m3snL/mVGrNqnP8Zp4kDz7IH7CAS4
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8245
 
-On Thu, Feb 27 2025 at 12:18, Andreas Hindborg wrote:
-> "Thomas Gleixner" <tglx@linutronix.de> writes:
->>> +/// The clock source to use for a [`HrTimer`].
->>> +pub enum ClockSource {
->>
->> ClockSource is a confusing name as 'clocksource' is used in the kernel
->> already for devices providing counters, which can be used for
->> timekeeping.
->>
->> Also these clocks are not really hrtimer specific. These CLOCK ids are
->> system wide valid and are used for other purposes obviously internally
->> in timekeeping. hrtimers are built on top of timekeeping, which provides
->> the underlying time.
->
-> I see. How about renaming to `ClockId` and moving the type one level up
-> to `kernel::time`?
+On Wed, Feb 26, 2025 at 05:02:23PM -0800, Greg KH wrote:
+> On Wed, Feb 26, 2025 at 07:47:30PM -0400, Jason Gunthorpe wrote:
+> > The way misc device works you can't unload the module until all the
+> > FDs are closed and the misc code directly handles races with opening
+> > new FDs while modules are unloading. It is quite a different scheme
+> > than discussed in this thread.
+> 
+> And I would argue that is it the _right_ scheme to be following overall
+> here.  Removing modules with in-flight devices/drivers is to me is odd,
+> and only good for developers doing work, not for real systems, right?
 
-Yes.
+There are two issues and I've found these discussions get confused
+about two interrelated things:
 
->>> +    /// A settable system-wide clock that measures real (i.e., wall-clock) time.
->>> +    ///
->>> +    /// Setting this clock requires appropriate privileges. This clock is
->>> +    /// affected by discontinuous jumps in the system time (e.g., if the system
->>> +    /// administrator manually changes the clock), and by frequency adjustments
->>> +    /// performed by NTP and similar applications via adjtime(3), adjtimex(2),
->>> +    /// clock_adjtime(2), and ntp_adjtime(3). This clock normally counts the
->>> +    /// number of seconds since 1970-01-01 00:00:00 Coordinated Universal Time
->>> +    /// (UTC) except that it ignores leap seconds; near a leap second it is
->>> +    /// typically adjusted by NTP to stay roughly in sync with UTC.
->>
->> That's not correct. It depends on the implementation/configuration of
->> NTP. The default is that the leap second is actually applied at the
->> requested time, by setting the clock one second forth or back.
->>
->> Though there are NTP configurations/implementations out there which use
->> leap second "smearing" to avoid the jump. They adjust the conversion
->> factors around the leap second event by slowing down or speeding up for
->> a while. That avoids a few common issues, e.g. in data bases.
->>
->> But it brings all clocks out of sync with the actual progress of time, which
->> is patently bad for systems which require strict synchronization.
->>
->> The problem is that the kernel uses the NTP/PTP frequency adjustment to
->> steer the conversion of all clocks, except CLOCK_MONOTONIC_RAW. The
->> kernel internal base clock is CLOCK_MONOTONIC. The other clocks are
->> derived from that:
->>
->>         CLOCK_[X] = CLOCK_MONOTONIC + offset[X]
->
-> I see. I lifted the text from `clock_getres(2)` in linux-man [1]. We
-> might consider updating that source with the info we collect here.
+1) Module lifetime and when modules are refcounted
+2) How does device_driver remove() work, especially with hot unplug
+   and /sys/../unbind while the module is *still loaded*.
 
-Yup.
+Noting, very explicitly, that you can unbind a device_driver without
+unloading the module.
 
-> How about changing the text like so:
->
-> .. by frequency adjustments performed by NTP ...
->
-> to
->
-> .. by frequency adjustments performed by some implementations of NTP ...
->
-> ?
+#1 should be strictly based around the needs of function pointers in
+the system. Ie stuff like ".owner = THIS_MODULE".
 
-Frequency is adjusted by _all_ implementations of NTP and also by PTP,
-PPS and GPS. That's how the time synchronization daemons steer the clock
-to align with the master clock. This adjustment is done via adjtimex(2).
+#2 is challenging when the driver has a file descriptor.
 
-That affects all clocks except CLOCK_MONOTONIC_RAW, which is never
-adjusted and keeps the boot time frequency forever. 
+AFAIK there are only two broad choices:
+ a) wait for all FDs to close in remove() (boo!)
+ b) leave the FDs open but disable them and complete remove(). eg
+    return -ENODEV to all system calls
 
-CLOCK_REALTIME is not only frequency adjusted, it also can be set
-via settimeofday(2) and clock_settime((2), CLOCK_REALTIME).
+I think the kernel community has a strong preference for (b), but rdma
+had started with (a) long ago. So we fixed it to (b), netdev does (b),
+so do alot of places because (a) is, frankly, awful.
 
-But CLOCK_REALTIME _and_ CLOCK_TAI can also be set via adjtimex(2). For
-CLOCK_TAI this is required to set the offset between CLOCK_REALTIME and
-CLOCK_TAI correctly (at least during boot).
+Now.. how does that relate to module unbinding? The drivers are
+unbound now because we properly support hotunplug via (b). So when is
+it OK to allow a module with no bound drivers to remove while a zombie
+FD is still open?
 
-The last oddity are leap seconds. The standardized method is to actually
-jump the clock by one second at midnight of the day specified by the
-International Earth Rotation and Reference Systems Service (IERS).
+That largely revolves around who owns the struct file_operations. For
+misc_dev the driver module would own it, so it is impossible to unload
+the driver module even if the device driver was hot unplugged/unbound.
 
-That obviously causes problems because a minute having 61 seconds is not
-only beyond the comprehension of computer programmers, but is
-problematic in many areas like astronomy, satellite navigation, control
-systems, telecommunications .... Those industries largely switched to
-clock TAI or GPS time, where TAI is always ahead of GPS by constant 19
-seconds.
+For a subsystem, like rdma, the subsystem can own the
+file_operations. Now to allow the driver module to be unloaded we
+"simply" require the subsystem to fence all driver callbacks during
+device driver remove and subsystem unregister. ie if the subsystem
+knows it no longer can call the driver then it no longer needs a
+refcount on the driver module.
 
-In the recent years big companies like Google, Facebook, Alibaba and
-others implemented leap smearing to address the remaining issues in
-applications, which have to use clock REALTIME. But of course it's
-neither standardized nor did those clowns talk to each other. So we have
-today:
+This fence was necessary anyhow for RDMA because drivers had the
+pre-existing assumption that unregister was fencing all driver
+callbacks by waiting for the FDs to close. Drivers did not handle UAF
+races with something like pci_iounmp() and their concurrent driver
+callback threads.
 
-   Google:   24 h before the leap second
-   Facebook: 18 h after the leap second
-   Alibaba:  12 h before until 12 h after the leap second
-   ...       more incompatible variants of the same
+Once the fence was built it was straightforward to also allow driver
+module unload since the core code has NULL'd its copy of all the
+driver function pointers during unregister.
 
-This obviously creates just a different set of inconsistency problems
-not only between the networks of these giants but also with the rest of
-the (non smearing) world around the leap second event. Their notion of
-time is only coherent within their own network.
+Further, I'd argue this is the best model for subsystems to
+follow. Allowing driver code to continue to run after subsystem
+unregister forces the driver to deal with UAF removal races. This is
+too hard for drivers to implement correctly, and prevents unloading
+the driver module after the drivers have been unbound.
 
-On Linux (and other OSes) it also affects the accuracy of all other
-clocks during that time. The actual slowdown is marginal, e.g. on
-average 192nsec per minute in the Google case, but the accumulated one
-second offset over 24 hours is way more than what certain applications
-can tolerate.
+Why do people care? Aside from obvious hot-unplug cases, like physical
+PCI hot plug on high-avaibility servers hated (a), there was a strong
+desire from folks running software HA schemes to be able to upgrade
+the driver module with minimal hits. They want to leave the
+application running and it is able to fast-recover when the FD becomes
+-ENODEV by opening a new one and keeping most of their internal state
+alive.
 
->>> +    /// International Atomic Time.
->>> +    ///
->>> +    /// A nonsettable system-wide clock derived from wall-clock time but
->>> +    /// counting leap seconds. This clock does not experience discontinuities or
->>> +    /// frequency adjustments caused by inserting leap seconds as CLOCK_REALTIME
->>> +    /// does.
->>
->> Only partially correct.
->>
->> CLOCK_TAI can be set as CLOCK_TAI is obviously coupled to CLOCK_REALTIME
->> and vice versa.
->
-> So it cannot be set directly, but if CLOCK_REALTIME is set, CLOCK_TAI
-> will update?
->
-> In that case I would add the following paragraph:
->
->   This clock is coupled to CLOCK_REALTIME and will be set when
->   CLOCK_REALTIME is set.
+> What is the requirement that means that you have to do this for function
+> pointers? 
 
-It also can be set independently via adjtimex(2) by correcting the
-offset between REALTIME and TAI, which is done usually during system
-startup when the time synchronization deamon starts (ntpd, chrony,
-systemd-???, ....). Should not happen during normal operations, emphasis
-on *should*.
+I'm just pointing out that function pointers are not guaranteed to be
+valid forever in the linux model. Every function pointer is somehow
+being protected by a lifecycle that links back to the module
+lifecycle.
 
->> Also if the NTP implementation does leap seconds smearing then the
->> adjustment affects CLOCK_TAI as well. See above. That's compensated for
->> by adjusting the TAI offset to be in sync with reality, but during the
->> smear phase the readout is not precise.
->
-> I would add the following paragraph then:
->
->   However, if NTP adjusts CLOCK_REALTIME by leap second smearing, this
->   clock will not be precise during leap second smearing.
+Most of the time a driver author can ignore function pointer lifecycle
+analysis, but not always..
 
-Correct.
-
-The important part is that the selection of the clock depends on the
-actual use case. In some cases the usage of a particular clock is
-mandatory, e.g. in network protocols, filesystems ... In other cases the
-programmer has to decide which clock is best suited for the purpose. In
-most scenarios clock MONOTONIC is the best choice as it provides a
-accurate monotonic notion of time (leap second smearing ignored).
-
-Thanks
-
-        tglx
+Jason
