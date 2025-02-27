@@ -1,124 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2D3238D34;
-	Thu, 27 Feb 2025 14:39:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2254723AE96;
+	Thu, 27 Feb 2025 14:43:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740667194; cv=none; b=gyfqWNRGaeLA2Ri//WD0r/Rh5yy1XpzuWsrb9cYSOMYDBbCzjTnkf+xuzVo/X5PrLnIVbJUvYbd6HDmRg2IdRoDGTMcZ+p/2C2fkUfE13FurYCmcp/sxGE1ac/ULAsJywKWf4jbFITFhJCf4v+njTHtdYqRwSTemvrnqgz9jwoU=
+	t=1740667423; cv=none; b=ahar9veLwygMoZU3OQg+83kdFNiCEj28zDUyZxTTuY+xeKv334r0YWzle7Y3chrOF8waJUUi7KJsb9dM0M5DsyQMj6bLlpMitZscgx4ViIT4qPyR7+PjUsOci6HoG0kWqdVmL356PM6mBZTF6734d1P6keJnF/h+FIOG0YrxXUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740667194; c=relaxed/simple;
-	bh=K318bV0GaEBm1LLBOaM7D6mMUZFcC9BNiYbR/qpbYnw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=a2mmP6u0l2KK/0fdww5y4Kqkh5k7PQzfwHh4Y1iQq/ybHhGTXlZ5OhsTYjKgDLyvtSbvyD7J3gNIihYsBx7oBBvKkYZq1/Ax3hlq8HXmYQTFZh0rt/Y0gZFDzmPU7rG4z82UyVWL4OdVLwUvocW7iaemHuZCKK8Q8FKCH98QwNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W8Qa5Wd2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740667423; c=relaxed/simple;
+	bh=aHu4HjOiSkCHENsBL2+QjxQh/gEG6TIfQWWRKvIwFs0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=stvnQQSOjr3cQRamj+M9N9Qpz9nUlJ43xxLQKQBix9bohlE9SP/f/flVF7MV8t4SngxB17waGrQi5aKBvVs0xbom8wV8YpGCuwpp9ao5/sK/1ht1bE5tUUahRSNXFbKUXN19DJb1eBNNa+IHk8WGnX/4YMAJbm45nCt0X+ozpfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YvOzRGlv; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W8Qa5Wd2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA55C4CEDD;
-	Thu, 27 Feb 2025 14:39:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740667193;
-	bh=K318bV0GaEBm1LLBOaM7D6mMUZFcC9BNiYbR/qpbYnw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=W8Qa5Wd2dvUlpzK3EzbqyGoeIYK0Wu/gk9f2fs1FwZYmbJPnY1ST66O0fKK38lJVw
-	 mo9aNWKASJy9NX/Db0nJD6vXYKZFsWnMSipjPAl8VUJ7lKcAJkUgYCTjnMbv61pWJQ
-	 GAVfk6XlWk2FsIBIM/UkUWCcAr0ABvgI0Vk03ZRyRMTnQXtz8Hs/1isDlPf4kxUooG
-	 +R8Sde37o/WGLqywkgRuwvcrxo4DtzVwybr9DRIAncNMKfAvsdardMtYCLy8jZR0Ur
-	 nudSb5e0uxG1uZqQHI02U34elc8kzCvpE6583kva8v6lnO6nloUuMZBzK+a2RDmNpX
-	 oIvP8GldpoDfw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Thu, 27 Feb 2025 15:38:10 +0100
-Subject: [PATCH v8 4/7] rust: str: implement `strip_prefix` for `BStr`
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YvOzRGlv"
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-546267ed92fso1021309e87.2;
+        Thu, 27 Feb 2025 06:43:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740667420; x=1741272220; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lrQwoCf+jFDDz9zpktNsyPQTVzoYZj2045oO4CtLIj8=;
+        b=YvOzRGlvCU/EPLmn6rp3tJineLUiupOGf1qZqq5AJX9OSJUh+dJcYaUdL3f8/Mf3zR
+         Fzi0wRWjLuK/efkMhokHeXFlCm//5KG2gE44Ytcf8l1oQ5OU3O+xrQbM8EwCSXWH9lWp
+         CAeGbkbvR5fZbcevuZqkDH87cZEFjookAapxF1sHUodQ9duXBgynDDYss8KdTj4DCFU8
+         wB6yD+cLbYzgAm5CUuNk0QqVeSx04Q9BeY5S2GQyqJ6vPQylmyDrd77EuROYa2N7TwK8
+         /Z8PP8XiIc10BxnOATfivqVMmRSoZ9F+zgJypu0vNnkndIuuIA3gsTc7z9cN8Mna3Qt2
+         x+Kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740667420; x=1741272220;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lrQwoCf+jFDDz9zpktNsyPQTVzoYZj2045oO4CtLIj8=;
+        b=NA02foStNVC5DDeDUQV3/JWFhsAYzxWxy9mXyAXRGnQPrvuV3tRhigPDwfVsRHFoKE
+         ohI/OabaCwD3k9uTd/bJKckRZhEOgiWfId8sviNBlwvtwVskV+JtAeoLLnQeFlCq4a2L
+         JLhKztMFQY9c61AcencBEdBTuScbPJgm7MFv6pM4XB7Z4aQYNVyWP86F0efQzXSLeQNQ
+         iuCgcGDGggRlOiibcMXqBpg/Ztkh6U3WSxanj1MFuyKmhIxc+aWCbjffKna3pxUNb12C
+         RN6Vr3ftEMVHfjIfLowidl2miDmjgoGB1k4KmyIumMDOnFNs7IWvxQJw9uz9jyA8Qim+
+         8kaA==
+X-Forwarded-Encrypted: i=1; AJvYcCUfyJdiPWY1ep3f1RtZzVaOlo24XfpSHn2u+z7uvhRwL1VywgLhZek7hCIYRnePXeqFr0A8aKlLs1cZiDJ7Zp0=@vger.kernel.org, AJvYcCXFDEfsmnKjJKhkeTCM+JA7el8VwSYLyeUaSCkILVUI08RedkGYCSFzo/qSLUaRCWdM+F/u5U7ckwC4QKY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyhd84sHXKHUc9EkuDMMaKVF5nKVaU1J2IAj7lYtOg0y6xMArX4
+	wJDF7a/85P90RcQryN+xm6+0l5lMfPPjCYagZMcJGohTmRc81Ttc+dcKCrbng/06F7R0uc1x51o
+	lRy4D7eMORg+qrTquNe/XM/W+tJ8=
+X-Gm-Gg: ASbGncvSqjYSzlcNX2P1BQUFryAFfHYNGEUOlq+o//C+VdSqQCw9uHoAYb+DbHeiNyV
+	wyBmSlyh2s86ssFoiN0g+kUMttFnaWc8KLVhWLMwkVxcJjnjzWHnk8JivovIxkmK7y1keZg7Qos
+	EpkeAgYgLw
+X-Google-Smtp-Source: AGHT+IF2Ebq3Rent6Q8OTUwnDBzprobGcIoozGi87gZLcCKHId58DPsiZpKYoPLqcZfKxFk37rWwDUs2Lz+w9QpOQNE=
+X-Received: by 2002:a05:6512:128b:b0:545:ea9:1a24 with SMTP id
+ 2adb3069b0e04-548510cf634mr6927671e87.14.1740667419952; Thu, 27 Feb 2025
+ 06:43:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250227-module-params-v3-v8-4-ceeee85d9347@kernel.org>
-References: <20250227-module-params-v3-v8-0-ceeee85d9347@kernel.org>
-In-Reply-To: <20250227-module-params-v3-v8-0-ceeee85d9347@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
- Masahiro Yamada <masahiroy@kernel.org>, 
- Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
- Luis Chamberlain <mcgrof@kernel.org>
-Cc: Trevor Gross <tmgross@umich.edu>, 
- Adam Bratschi-Kaye <ark.email@gmail.com>, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
- Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, 
- Daniel Gomez <da.gomez@samsung.com>, Simona Vetter <simona.vetter@ffwll.ch>, 
- Greg KH <gregkh@linuxfoundation.org>, Fiona Behrens <me@kloenk.dev>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- linux-modules@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1719; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=K318bV0GaEBm1LLBOaM7D6mMUZFcC9BNiYbR/qpbYnw=;
- b=owEBbQKS/ZANAwAIAeG4Gj55KGN3AcsmYgBnwHjTVMvjPqeTRD5th5GEu03/Xwxi8SJ2/Zi0r
- wVlKT5/bK+JAjMEAAEIAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCZ8B40wAKCRDhuBo+eShj
- dwJAEACx/RHG4m20bbfs0jUSPCZ7+sbyD47sY3x7apz9kc//edLA7IkDUEltGLb7TWh9yCG7KA8
- BgHt+MdnLDJOGgwDAaUwE1XDh1p0lygvUaJDmygfQGsvLuhK+uyCOjQdPgY74ozjUsQweBhgnIL
- H+mekQ+0w21YdItK+EZvOJhkwhSWdq2D8rJpvR7C0/K5k1cS61aBmJuocaog3SZUZlHOobLVtLD
- GQUhw95rLOEOmejVzONC80GDqa4uLN0FuGUd1S2OLDDQkfVb24s+/9387QwE6PxzafJ/i+3xBRl
- k29iGWekEe5E9hqBJv9twO6J444wwE7xGdVEYvjK+ctUFg2qd274BUeBHpi2BQyW+VIXuBhyRzj
- tM6tXTIkddZ0+Xjr1QSGGRHfgO3u0LhsP9zjwi9Tk+1OGYYhKbg1UrRNTYNRri9s8LNjlJWbc/f
- cLxyrBUgNXKJwW1gyepiDY4lf5gyts4QKw/S1r/0lnrmNzjDLqd8hb5yE3JSe6PIses8udO+Nw9
- MLTDQRUQh//zP/v3IHEHNE15u8yu3r8wvll9JVk2eWvw4ufDSVvqHyySUyCs1cFNOQ45VlvSC7B
- 8agJPgR/Or3KtoxhU2SIk0nRm9D4Zfjq4xBYg3NFs6GDYiCXXZ/SHn62hM2O5KuvdFmvfC3nRW4
- HUrGvsfrKxxPc2A==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+References: <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+ <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+ <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+ <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
+ <CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com>
+ <gqw7cvclnfa7x4xdz4vkns2msf2bqrms5ecxp2lwzbws7ab6dt@7zbli7qwiiz6>
+ <CAHk-=whGY2uYcXog8kmuAAAPJy4R84Jy9rEfXfoHBe-evmuYDQ@mail.gmail.com>
+ <4l6xl5vnpulcvssfestsgrzoazoveopzupb32z5bv6mk23gazo@qn63k7rgsckv>
+ <CAHk-=wgMnSOnaddFzfAFwjT-dGO9yeSkv6Lt21LgWmCKYCM7cg@mail.gmail.com>
+ <hofm7mo46jzkevpr6fkqe2jnl3zrp5uxdux457hli3ywkneaij@yhhibsnuqfny> <20250226115744.024184b5.gary@garyguo.net>
+In-Reply-To: <20250226115744.024184b5.gary@garyguo.net>
+From: Ventura Jack <venturajack85@gmail.com>
+Date: Thu, 27 Feb 2025 07:43:24 -0700
+X-Gm-Features: AQ5f1Jqo_qhQ28y7ZKcJDKeDW7koaI5WfLn4CpiSw-oP4Tmva7WXiWcKvkc-wDM
+Message-ID: <CAFJgqgTD-N=Gd7TRBD7N-5vuojq8nWffn-J91egoUP1stTFkhQ@mail.gmail.com>
+Subject: Re: C aggregate passing (Rust kernel policy)
+To: Gary Guo <gary@garyguo.net>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Alice Ryhl <aliceryhl@google.com>, airlied@gmail.com, 
+	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
+	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, 
+	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Implement `strip_prefix` for `BStr` by deferring to `slice::strip_prefix`
-on the underlying `&[u8]`.
+On Wed, Feb 26, 2025 at 1:33=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+>
+>
+> If you translate some random C code to all-unsafe Rust I think there's
+> a good chance that it's (pedantically) undefined C code but well
+> defined Rust code!
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
+I do not believe that this holds all that often. If you look at the bug
+reports for one C to Rust transpiler,
 
-It is also possible to get this method by implementing
-`core::slice::SlicePattern` for `BStr`. `SlicePattern` is unstable, so this
-seems more reasonable.
----
- rust/kernel/str.rs | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+    https://github.com/immunant/c2rust/issues
 
-diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-index c6bd2c69543d..db272d2198fc 100644
---- a/rust/kernel/str.rs
-+++ b/rust/kernel/str.rs
-@@ -31,6 +31,22 @@ pub const fn from_bytes(bytes: &[u8]) -> &Self {
-         // SAFETY: `BStr` is transparent to `[u8]`.
-         unsafe { &*(bytes as *const [u8] as *const BStr) }
-     }
-+
-+    /// Strip a prefix from `self`. Delegates to [`slice::strip_prefix`].
-+    ///
-+    /// # Example
-+    /// ```
-+    /// use kernel::b_str;
-+    /// assert_eq!(Some(b_str!("bar")), b_str!("foobar").strip_prefix(b_str!("foo")));
-+    /// assert_eq!(None, b_str!("foobar").strip_prefix(b_str!("bar")));
-+    /// assert_eq!(Some(b_str!("foobar")), b_str!("foobar").strip_prefix(b_str!("")));
-+    /// assert_eq!(Some(b_str!("")), b_str!("foobar").strip_prefix(b_str!("foobar")));
-+    /// ```
-+    pub fn strip_prefix(&self, pattern: impl AsRef<Self>) -> Option<&BStr> {
-+        self.deref()
-+            .strip_prefix(pattern.as_ref().deref())
-+            .map(Self::from_bytes)
-+    }
- }
- 
- impl fmt::Display for BStr {
+some of them have basic C code. A major issue is that C, especially
+when "strict aliasing" is turned off through a compiler option,
+often in code have aliasing, while unsafe Rust does not protect
+against all aliasing and have stricter requirements in some
+ways. So it can often be the case that the original C code has
+no UB, but the transpiled unsafe Rust version has UB.
 
--- 
-2.47.0
+The blog posts.
 
+    https://lucumr.pocoo.org/2022/1/30/unsafe-rust/
+    https://chadaustin.me/2024/10/intrusive-linked-list-in-rust/
 
+also touch on this.
+
+Best, VJ.
