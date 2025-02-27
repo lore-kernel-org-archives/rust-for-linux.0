@@ -1,116 +1,118 @@
-Received: from r-passerv.ralfj.de (r-passerv.ralfj.de [109.230.236.95])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4859842C0B;
-	Thu, 27 Feb 2025 13:55:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.230.236.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C4A232386;
+	Thu, 27 Feb 2025 14:04:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740664539; cv=none; b=uxWkGmToA8Q4/MCxWp5CybtpSXjs6r2nLSrKNk48iLwFzXg3ocqIX/Dv/Zup3JeIVMBWQLE3tAgSoJ05j709hR17qpEDp3yNXdA96bKskTAJVuu5W8fjdnudq/L4iPW7RIYzs0T/fcl4oGrigvYa0xAE8wSdMa0xfnARknr7I8I=
+	t=1740665052; cv=none; b=JSqNtD+KcjFb5AhkXDinQX/aIc+mqsJe+MrgLtMjyGtN5o8VCnwJq47GAue6M5g0N2sgQct9vbcZupqfKnORmlO5ovuzOuzPCvXsZ8KQjqiBUFA6yVouDe2utXBtOa86MUEjg13u6l5tN/TmWL4+07gxwiVyq/BpnIu8TX2eug0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740664539; c=relaxed/simple;
-	bh=MZ5feQNtisJgpeJy5xLzx0Y8Q+XnSBumrFimAbzZ9CM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=I+Pcq1A6JIUEL7mONV1k9pmiGik195G5LpNNi6a7/t/DF3T8B7vS8Bv2JMBn1bS1FupmHyAMK4OkF00cO1YW09CMsN7oq3L7yuhGCIPy3Ugtjm9qGUhEJJrHq3wfME9f9HhycJjku8a3V8B6Aulc7YQYNoiwX7lSdj9nyt8FDRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=EmSqhOjV; arc=none smtp.client-ip=109.230.236.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ralfj.de
+	s=arc-20240116; t=1740665052; c=relaxed/simple;
+	bh=x3EH1dzuRBajur9OoQyJceNpHCd35poZLxfrn1dV8aI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rcFjdhcN7kFOmZCCl7fMyjR5ISkI2eScxEQuTNxiOX9FmoEone3fCwMVmikpJtiFREPI/96VsIFjOhPOWJFsybLdj6p7UHkLOXqH9PEAutIaQcMPFX7hCIm73kRcsK7hmo45UpJD8McAosDlG9W0LP0ignFfoORT/uPU0loFv8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gdTmA1Yd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="EmSqhOjV"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ralfj.de; s=mail;
-	t=1740664527; bh=MZ5feQNtisJgpeJy5xLzx0Y8Q+XnSBumrFimAbzZ9CM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=EmSqhOjVTv/5qycUfH0WaMucg+fhJaX+QaLJDaN7j5pv+AO3LHrkfHfhEz78bmFE8
-	 5Wmvn1X52+ZGUzV0+Stdk7alPHSvfNRXxNqy1bwepz5dx+8Bn1TEdqm3PBFf7I1NKc
-	 4yxnyQjNSmcPnthA3ukUCkq3/7nwB3yR/KSCtRhI=
-Received: from [IPV6:2001:67c:10ec:5784:8000::87] (2001-67c-10ec-5784-8000--87.net6.ethz.ch [IPv6:2001:67c:10ec:5784:8000::87])
-	by r-passerv.ralfj.de (Postfix) with ESMTPSA id 62DA02052A91;
-	Thu, 27 Feb 2025 14:55:27 +0100 (CET)
-Message-ID: <f2c2d7ae-08c1-4122-a131-f5a65e9ed3d2@ralfj.de>
-Date: Thu, 27 Feb 2025 14:55:22 +0100
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gdTmA1Yd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3FFDC4CEDD;
+	Thu, 27 Feb 2025 14:04:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1740665052;
+	bh=x3EH1dzuRBajur9OoQyJceNpHCd35poZLxfrn1dV8aI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gdTmA1YdBBfW6wo4+94dziVIHwE/P/95bRXfGAVJ01djQ6txE3jcUpLEmlIMdwGOF
+	 hgM7TgzqQvo+twf+pX9a3c08xDtQZZcsGtA8y+CTssAg/EalG6Oi2XdqOq1KeufcIX
+	 vhvx30CeBu71nUa+lv9/SjK7/HVmJTXmNCRENJ4o=
+Date: Thu, 27 Feb 2025 06:03:02 -0800
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Alistair Francis <alistair@alistair23.me>, linux-cxl@vger.kernel.org,
+	linux-kernel@vger.kernel.org, lukas@wunner.de,
+	linux-pci@vger.kernel.org, bhelgaas@google.com,
+	Jonathan.Cameron@huawei.com, rust-for-linux@vger.kernel.org,
+	akpm@linux-foundation.org, boqun.feng@gmail.com,
+	bjorn3_gh@protonmail.com, wilfred.mallawa@wdc.com, ojeda@kernel.org,
+	alistair23@gmail.com, a.hindborg@kernel.org, tmgross@umich.edu,
+	gary@garyguo.net, alex.gaynor@gmail.com, benno.lossin@proton.me,
+	Alistair Francis <alistair.francis@wdc.com>
+Subject: Re: [RFC v2 09/20] PCI/CMA: Expose in sysfs whether devices are
+ authenticated
+Message-ID: <2025022741-handwoven-game-df08@gregkh>
+References: <20250227030952.2319050-1-alistair@alistair23.me>
+ <20250227030952.2319050-10-alistair@alistair23.me>
+ <2025022717-dictate-cortex-5c05@gregkh>
+ <CAH5fLgiQAdZMUEBsWS0v1M4xX+1Y5mzE3nBHduzzk+rG0ueskg@mail.gmail.com>
+ <2025022752-pureblood-renovator-84a8@gregkh>
+ <CAH5fLghbScOTBnLLRDMdhE4RBhaPfhaqPr=Xivh8VL09wd5XGQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: C aggregate passing (Rust kernel policy)
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Ventura Jack <venturajack85@gmail.com>,
- Kent Overstreet <kent.overstreet@linux.dev>,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Gary Guo <gary@garyguo.net>,
- torvalds@linux-foundation.org, airlied@gmail.com, boqun.feng@gmail.com,
- ej@inai.de, gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com,
- ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
- <20250222141521.1fe24871@eugeo>
- <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
- <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
- <CANiq72mdzUJocjXhPRQEEdgRXsr+TEMt99V5-9R7TjKB7Dtfaw@mail.gmail.com>
- <lz7hsnvexoywjgdor33mcjrcztxpf7lzvw3khwzd5rifetwrcf@g527ypfkbhp2>
- <780ff858-4f8e-424f-b40c-b9634407dce3@ralfj.de>
- <CAFJgqgRN0zwwaNttS_9qnncTDnSA-HU5EgAXFrNHoPQ7U8fUxw@mail.gmail.com>
- <f3a83d60-3506-4e20-b202-ef2ea99ef4dc@ralfj.de>
- <CAFJgqgR4Q=uDKNnU=2yo5zoyFOLERG+48bFuk4Dd-c+S6x+N5w@mail.gmail.com>
- <7edf8624-c9a0-4d8d-a09e-2eac55dc6fc5@ralfj.de>
- <20250226230816.2c7bbc16@pumpkin>
-Content-Language: en-US, de-DE
-From: Ralf Jung <post@ralfj.de>
-In-Reply-To: <20250226230816.2c7bbc16@pumpkin>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLghbScOTBnLLRDMdhE4RBhaPfhaqPr=Xivh8VL09wd5XGQ@mail.gmail.com>
 
-Hi all,
-
-> ...
->>> Unions in C, C++ and Rust (not Rust "enum"/tagged union) are
->>> generally sharp. In Rust, it requires unsafe Rust to read from
->>> a union.
->>
->> Definitely sharp. At least in Rust we have a very clear specification though,
->> since we do allow arbitrary type punning -- you "just" reinterpret whatever
->> bytes are stored in the union, at whatever type you are reading things. There is
->> also no "active variant" or anything like that, you can use any variant at any
->> time, as long as the bytes are "valid" for the variant you are using. (So for
->> instance if you are trying to read a value 0x03 at type `bool`, that is UB.)
+On Thu, Feb 27, 2025 at 01:11:01PM +0100, Alice Ryhl wrote:
+> On Thu, Feb 27, 2025 at 1:01 PM Greg KH <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Thu, Feb 27, 2025 at 12:52:02PM +0100, Alice Ryhl wrote:
+> > > On Thu, Feb 27, 2025 at 12:17 PM Greg KH <gregkh@linuxfoundation.org> wrote:
+> > > >
+> > > > On Thu, Feb 27, 2025 at 01:09:41PM +1000, Alistair Francis wrote:
+> > > > > +     return rust_authenticated_show(spdm_state, buf);
+> > > >
+> > > > Here you have C code calling into Rust code.  I'm not complaining about
+> > > > it, but I think it will be the first use of this, and I didn't think
+> > > > that the rust maintainers were willing to do that just yet.
+> > > >
+> > > > Has that policy changed?
+> > > >
+> > > > The issue here is that the C signature for this is not being
+> > > > auto-generated, you have to manually keep it in sync (as you did above),
+> > > > with the Rust side.  That's not going to scale over time at all, you
+> > > > MUST have a .h file somewhere for C to know how to call into this and
+> > > > for the compiler to check that all is sane on both sides.
+> > > >
+> > > > And you are passing a random void * into the Rust side, what could go
+> > > > wrong?  I think this needs more thought as this is fragile-as-f***.
+> > >
+> > > I don't think we have a policy against it? I'm pretty sure the QR code
+> > > thing does it.
+> >
+> > Sorry, you are right, it does, and of course it happens (otherwise how
+> > would bindings work), but for small functions like this, how is the C
+> > code kept in sync with the rust side?  Where is the .h file that C
+> > should include?
 > 
-> That is actually a big f***ing problem.
-> The language has to define the exact behaviour when 'bool' doesn't contain
-> 0 or 1.
-
-No, it really does not. If you want a variable that can hold all values in 
-0..256, use `u8`. The entire point of the `bool` type is to represent values 
-that can only ever be `true` or `false`. So the language requires that when you 
-do type-unsafe manipulation of raw bytes, and when you then make the choice of 
-the `bool` type for that code (which you are not forced to!), then you must 
-indeed uphold the guarantees of `bool`: the data must be `0x00` or `0x01`.
-
-> Much the same as the function call interface defines whether it is the caller
-> or called code is responsible for masking the high bits of a register that
-> contains a 'char' type.
+> I don't think there is tooling for it today. We need the opposite of
+> bindgen, which does exist in a tool called cbindgen. Unfortunately,
+> cbindgen is written to only work in cargo-based build systems, so we
+> cannot use it.
 > 
-> Now the answer could be that 'and' is (or may be) a bit-wise operation.
-> But that isn't UB, just an undefined/unexpected result.
+> One trick you could do is write the signature in a header file, and
+> then compare what bindgen generates to the real signature like this:
 > 
-> I've actually no idea if/when current gcc 'sanitises' bool values.
-> A very old version used to generate really crap code (and I mean REALLY)
-> because it repeatedly sanitised the values.
-> But IMHO bool just shouldn't exist, it isn't a hardware type and is actually
-> expensive to get right.
-> If you use 'int' with zero meaning false there is pretty much no ambiguity.
+> const _: () = {
+>     if true {
+>         bindings::my_function
+>     } else {
+>         my_function
+>     };
+> };
+> 
+> This would only compile if the two function pointers have the same signature.
 
-We have many types in Rust that are not hardware types. Users can even define 
-them themselves:
+That feels just wrong :(
 
-enum MyBool { MyFalse, MyTrue }
+As this seems like it's going to be a longer-term issue, has anyone
+thought of how it's going to be handled?  Build time errors when
+functions change is the key here, no one remembers to manually verify
+each caller to verify the variables are correct anymore, that would be a
+big step backwards.
 
-This is, in fact, one of the entire points of higher-level languages like Rust: 
-to let users define types that represent concepts that are more abstract than 
-what exists in hardware. Hardware would also tell us that `&i32` and `*const 
-i32` are basically the same thing, and yet of course there's a world of a 
-difference between those types in Rust.
+thanks,
 
-Kind regards,
-Ralf
-
+greg k-h
