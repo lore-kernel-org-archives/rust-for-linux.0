@@ -1,64 +1,63 @@
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD034226551;
-	Thu, 27 Feb 2025 09:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B037F15DBB3;
+	Thu, 27 Feb 2025 09:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740647472; cv=none; b=HY3sHvARxGDcE364a5cna1faqmJx8Hg6rNpDK6d6QNm9/t1qcebJgMyMxu/UMh4r+hQ9ZLsnLcKr6yPfKpbbF1r4XvwUG8tAY+A0RKKMnJh62sVsc0LybSVPQLCjCoRALOybrAirGn8InJttPLOkD4iTYt3S2fPbR7N6tZHlt04=
+	t=1740647545; cv=none; b=jZzcINAjQWQ9Gxdp96GIZojqkGdGEmJWIhlLzYwOxbLibNDM1uwGVLFHTpCZh4lBRFWuKgSc8Y0zddrLO2JiGVXMIp7ELiU9OdCcb91yRu487raFJ+IUwFB1vSCBDhwPb5FpV0CZqjdXsBvprHYsxFxePYu++L1e7/ZfJa9J7t0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740647472; c=relaxed/simple;
-	bh=JOqY+CoNqMYtrEO1gJswp59niLfGfYa+1G5OdpGaJ64=;
+	s=arc-20240116; t=1740647545; c=relaxed/simple;
+	bh=im/KhgIT27JTLye0HNWO6s3AMwTgWu8CWXVg8AdZNy4=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=FRRE/ZvUytUM0QQxfBpzDg4Ex4uFk1r5LTcpcDQmUvZzgRKaqdojcMVhE0stOVl2dVqjFSkb6A41fWLNIf5U2/JS5QF88rpEJG/CZXZnKcff37LiKmXXnc8CvkOYgGUbPtqygV0umOeLrvqQI7QGVMfPB/cdJ648+s5aSsP9oik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3TufFS1F; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DbW7Shrx; arc=none smtp.client-ip=193.142.43.55
+	 MIME-Version:Content-Type; b=ECFPdxxyiqfRfabtABKSKb7JC+Oinm6pZp6JEcUY5PMXWjO5/wwZiQsiPRKG4BcWHIUr1Ho6wYt7Wc+j+ts1upagvNKdABqLy9teJbJTn4g047q4dG69zORczfcIHIQ0jjXu0mh7gFnUZzHQDtfsHVEUq91EWlkBC4vj4VqrjVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SXDUfcSD; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Gyv5+yDJ; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3TufFS1F";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DbW7Shrx"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SXDUfcSD";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Gyv5+yDJ"
 From: Thomas Gleixner <tglx@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1740647469;
+	s=2020; t=1740647541;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VjempoGvlVjLQ6oq69ccc+cgz6csDzLpGNNetDWHHeo=;
-	b=3TufFS1FpX0siM3OwozmM3yrAlVRb+AMcpGj4jpQ+mw9xu+9l3dTfGwahghmzLY6xsWF1L
-	SfEItRn+t4ldrI6bjKesQUKTrLq/fUXbIIY8o/NChJbc3ojOd8Qz8WmtVPBd1jRKNT0s0Q
-	kBVOuCmBHVR3m7GUZFtVSTNXhjNcld+zMprzlKMaWREh1sFrMITt1Q23BBeNENfLVserE1
-	Owd9LWEmiLYboE84cpp/Cr5yU9LnmUlK5FIF5lFZGP6ZLG/kb+nCArt7yajgmhQ8PzCw2F
-	tLAMcEhklbIU1efDTFAC4vr3vlvvNxtbnliwRIkw444GA0mqRetJjSK8V2eItQ==
+	bh=M6HL09mD6gtvtxUDNjs16icQacl6NdLheRr+sY4qWYg=;
+	b=SXDUfcSDJidBiDUoeawE5SkUufrC0pI/dyykfkJhgec3bEbq996Z8qiicgfSqHQyPNzWWQ
+	q/advMSQqnKnKLnSJPe8t5SQQxb/AdO8Mu6a8KFIciREciD6+2bvXMexi4H3ikEFBFHQEj
+	wxczT8B+dzyKwKUhss9uIybPrg+Vhj3KUt5lDHRZLL2MLPyGjijHjBk9hgoz1ovtlw3jeq
+	NItCH9GBGNBSrwJkfTb7o9NTxIvJXAF9thQtanKTqMULE9+V/vIhZeNJEiBIvLKS4YSOSu
+	iT0o2CI8AdmykHa6P11LeZtOtmykBKTRdwEMikAxKZFckOzvHHCILooz/zVSgw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1740647469;
+	s=2020e; t=1740647541;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VjempoGvlVjLQ6oq69ccc+cgz6csDzLpGNNetDWHHeo=;
-	b=DbW7Shrxvu4mXb5ArN/VR53PJip78EUQordzqJvdYAwHJUuXNsPAT1zJLiwcpcRfPIz02W
-	bf//dXOFI3+TR0Aw==
-To: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda
- <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>,
- Frederic Weisbecker <frederic@kernel.org>, Danilo Krummrich
- <dakr@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo
- Cui <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida
+	bh=M6HL09mD6gtvtxUDNjs16icQacl6NdLheRr+sY4qWYg=;
+	b=Gyv5+yDJ1s6M+alf1UVqMrV9JFV/VJ2b689jop0z5eg7KHR6Aoj8LOsWF6enD+9CKwtped
+	P8o5d2h7Oy2SKWCg==
+To: Frederic Weisbecker <frederic@kernel.org>, Boqun Feng
+ <boqun.feng@gmail.com>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda
+ <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Danilo
+ Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo
+ <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, Trevor
+ Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui
+ <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida
  <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Andreas
- Hindborg <a.hindborg@kernel.org>
-Subject: Re: [PATCH v9 12/13] rust: hrtimer: add clocksource selection
- through `ClockSource`
-In-Reply-To: <20250224-hrtimer-v3-v6-12-rc2-v9-12-5bd3bf0ce6cc@kernel.org>
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v9 13/13] rust: hrtimer: add maintainer entry
+In-Reply-To: <Z78-mVAHdSq1zbJr@localhost.localdomain>
 References: <20250224-hrtimer-v3-v6-12-rc2-v9-0-5bd3bf0ce6cc@kernel.org>
- <20250224-hrtimer-v3-v6-12-rc2-v9-12-5bd3bf0ce6cc@kernel.org>
-Date: Thu, 27 Feb 2025 10:11:08 +0100
-Message-ID: <87jz9beor7.ffs@tglx>
+ <20250224-hrtimer-v3-v6-12-rc2-v9-13-5bd3bf0ce6cc@kernel.org>
+ <Z7yT5XU5gAm0ZCZD@Mac.home> <Z78-mVAHdSq1zbJr@localhost.localdomain>
+Date: Thu, 27 Feb 2025 10:12:21 +0100
+Message-ID: <87h64feop6.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -68,110 +67,23 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 24 2025 at 13:03, Andreas Hindborg wrote:
->=20=20
-> +/// The clock source to use for a [`HrTimer`].
-> +pub enum ClockSource {
+On Wed, Feb 26 2025 at 17:17, Frederic Weisbecker wrote:
+> Le Mon, Feb 24, 2025 at 07:44:37AM -0800, Boqun Feng a =C3=A9crit :
+>> On Mon, Feb 24, 2025 at 01:03:47PM +0100, Andreas Hindborg wrote:
+>> > Add Andreas Hindborg as maintainer for Rust `hrtimer` abstractions. Al=
+so
+>> > add Boqun Feng as reviewer.
+>> >=20
+>> > Acked-by: Boqun Feng <boqun.feng@gmail.com>
+>> > Acked-by: Frederic Weisbecker <frederic@kernel.org>
+>>=20
+>> Frederic, since you've reviewed the series, and we certainly need your
+>> expertise here, do you want to be an reviewer in this maintainer entry
+>> (to watch how we are doing maybe ;-))?
+>
+> Yes indeed! Please include me as a reviewer!
 
-ClockSource is a confusing name as 'clocksource' is used in the kernel
-already for devices providing counters, which can be used for
-timekeeping.
-
-Also these clocks are not really hrtimer specific. These CLOCK ids are
-system wide valid and are used for other purposes obviously internally
-in timekeeping. hrtimers are built on top of timekeeping, which provides
-the underlying time.
-
-> +    /// A settable system-wide clock that measures real (i.e., wall-cloc=
-k) time.
-> +    ///
-> +    /// Setting this clock requires appropriate privileges. This clock is
-> +    /// affected by discontinuous jumps in the system time (e.g., if the=
- system
-> +    /// administrator manually changes the clock), and by frequency adju=
-stments
-> +    /// performed by NTP and similar applications via adjtime(3), adjtim=
-ex(2),
-> +    /// clock_adjtime(2), and ntp_adjtime(3). This clock normally counts=
- the
-> +    /// number of seconds since 1970-01-01 00:00:00 Coordinated Universa=
-l Time
-> +    /// (UTC) except that it ignores leap seconds; near a leap second it=
- is
-> +    /// typically adjusted by NTP to stay roughly in sync with UTC.
-
-That's not correct. It depends on the implementation/configuration of
-NTP. The default is that the leap second is actually applied at the
-requested time, by setting the clock one second forth or back.
-
-Though there are NTP configurations/implementations out there which use
-leap second "smearing" to avoid the jump. They adjust the conversion
-factors around the leap second event by slowing down or speeding up for
-a while. That avoids a few common issues, e.g. in data bases.
-
-But it brings all clocks out of sync with the actual progress of time, which
-is patently bad for systems which require strict synchronization.
-
-The problem is that the kernel uses the NTP/PTP frequency adjustment to
-steer the conversion of all clocks, except CLOCK_MONOTONIC_RAW. The
-kernel internal base clock is CLOCK_MONOTONIC. The other clocks are
-derived from that:
-
-        CLOCK_[X] =3D CLOCK_MONOTONIC + offset[X]
-
-> +    RealTime,
-> +    /// A monotonically increasing clock.
-> +    ///
-> +    /// A nonsettable system-wide clock that represents monotonic time s=
-ince=E2=80=94as
-> +    /// described by POSIX=E2=80=94"some unspecified point in the past".=
- On Linux, that
-> +    /// point corresponds to the number of seconds that the system has b=
-een
-> +    /// running since it was booted.
-> +    ///
-> +    /// The CLOCK_MONOTONIC clock is not affected by discontinuous jumps=
- in the
-> +    /// system time (e.g., if the system administrator manually changes =
-the
-
-s/system time/CLOCK_REALTIME/
-
-> +    /// clock), but is affected by frequency adjustments. This clock doe=
-s not
-> +    /// count time that the system is suspended.
-> +    Monotonic,
-> +    /// A monotonic that ticks while system is suspended.
-> +    ///
-> +    /// A nonsettable system-wide clock that is identical to CLOCK_MONOT=
-ONIC,
-> +    /// except that it also includes any time that the system is suspend=
-ed. This
-> +    /// allows applications to get a suspend-aware monotonic clock witho=
-ut
-> +    /// having to deal with the complications of CLOCK_REALTIME, which m=
-ay have
-> +    /// discontinuities if the time is changed using settimeofday(2) or =
-similar.
-> +    BootTime,
-> +    /// International Atomic Time.
-> +    ///
-> +    /// A nonsettable system-wide clock derived from wall-clock time but
-> +    /// counting leap seconds. This clock does not experience discontinu=
-ities or
-> +    /// frequency adjustments caused by inserting leap seconds as CLOCK_=
-REALTIME
-> +    /// does.
-
-Only partially correct.
-
-CLOCK_TAI can be set as CLOCK_TAI is obviously coupled to CLOCK_REALTIME
-and vice versa.
-
-Also if the NTP implementation does leap seconds smearing then the
-adjustment affects CLOCK_TAI as well. See above. That's compensated for
-by adjusting the TAI offset to be in sync with reality, but during the
-smear phase the readout is not precise.
+Please add Anna-Maria and myself to the reviewers list well.
 
 Thanks,
 
