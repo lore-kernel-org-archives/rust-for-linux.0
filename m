@@ -1,156 +1,69 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8439925D911;
-	Thu, 27 Feb 2025 19:25:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4A28BEC;
+	Thu, 27 Feb 2025 19:31:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740684336; cv=none; b=kBsf3KTyD+H/pAp9qbIhC9VdLta0ZAzcGnnrvjlU8SN8gAJ5PZuO7Vh8dFXk2ZRlP05rbTrsr078uvR8lg2V7SxvuxmPzrSirBt7beq7Hm64qIIUZbrnmraJUdPP99XAPjUs40HV5qsRzKozkCLgK2wd2+w67Qw7wEfXyNbIVAc=
+	t=1740684686; cv=none; b=HJEmBBYnATW0tbQmG2lZhcasLo2XrZi4oo4+qwDpcu96eLPmXXrBUuRqSIqgRNkUoDX1OyxFqEIKDDxnBIjnSIrPnbQCTEPSrOFCu70WHU5dKzWdjyeGdfOC+Fn4PHGC+gw4QrepVk/TKfokQ9YwSfxGR8NCZyQb5iUeiyXtmR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740684336; c=relaxed/simple;
-	bh=I4osQ5RPj6E7bXAobrn2V0yGZ0kIauATo/Cf+WI8eCY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ciL1SMYOY2dyoRK5Hom0B8jyK888AwjsCPFgy3d7ngEHUEEXumVNSfxH/ftQALxMbQ9teSaRlr2bK0aPU/ojPW8pFn6Z6ANLXOHVac60M7bALcBx0pWYdLnfzrORJO9ECa4u3mCIOrRjSNHEQqZdLABkLH1lXtziOS10HbESaiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YIkpYg7+; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740684686; c=relaxed/simple;
+	bh=4Fn5UhIhPYcL8P4sGtgmJOrflXe17/WSXKxIYHr+8XY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nKcVaoMxy55Hqh1xycEC8qotCUkd/Esk7X3OTq3zDgor/osohzt712fU1v8HKn49VNTzbaNIDTseAluZ6YT6nw9MHcLlVWQ1vwZ33yfKqnRQzhDkapdD60CMcSaDolFP6IW8go8k5E+9tBBcQjN3+zFBeLkz/W8CIjU4NwUG+jU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L5thVhER; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YIkpYg7+"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5485646441cso1401551e87.2;
-        Thu, 27 Feb 2025 11:25:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740684333; x=1741289133; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cocSoxI0vBLolc8jUN8YVirpU/dxiOfgNogxYs9IIlU=;
-        b=YIkpYg7+7tYmpr7UVMzDA4tEJQkWwCZtOu0YJ3COFAxkPWdH4VKQrvhLmg8EpLym6b
-         2RSvmwjzPbuSs817BpWejdtGq+JsjyV/o7GUsjablqIQFMNO1omRkrf8/Q4ZdgsfgWCN
-         fUFpiia0Zi+2yKchrD0zu0UWTG9HZVOMXutey52kI+qaf5Z8I0MRGoRX9wUi3huj8tpK
-         qvrm5vWtNZ+TgNvWY6tNyCpFBoZJEe7waxqlbntwBUhYY0aKC8CG/MhwvUfSreoHYE36
-         mpyguEQOsvhq9X0TqmoOaSU7PqLzScMJyPQ1KoX9gsMeZtR+Cfk8RZhR4dTwXvpdcMwK
-         slnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740684333; x=1741289133;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cocSoxI0vBLolc8jUN8YVirpU/dxiOfgNogxYs9IIlU=;
-        b=GYPre0N8YMcAYcjpFyjt+CpxAEzbentr/ZoaT/x7HofZrhEc/40pmPq0d+hoc2yWgU
-         7C1XG/wOhrMKN9U6eBTuHO2YU/6msktxaQHZ/Gao3ETB+yP5XKZXB9k/0Wk+OsFTuA2t
-         J60IoQu8KyfFwoOWASPKFDor9w6cfcSXwQVlnLp6drVNinEmTh9PqmbTKEKUTT6PKcSR
-         aCzG+m7ZlgwyYyLucHVR0F3BHl3h+SFaCCWWVK/BPWipsQcGW8rKXfxBYl8PLj5JGal9
-         49n6lY7qsUzvvkknNk/kiR6A6hBwx3IlRmtDhRY2FqHKYmmvwJt75k78YvQOhZMxHmKb
-         xSvA==
-X-Forwarded-Encrypted: i=1; AJvYcCXKt4UDhtldXpdSy5sOeCIF1Fj8rKPB0uq/nb4VKYTtYvb3XeB2gIIZy9bORqbl+2iuY6kKo/OQPMGbYFgi140=@vger.kernel.org, AJvYcCXPDetVFxnGbpGVD3fjt4/Cg0McBxpU+oyE3HMilkNvWTn95Mm951dGuQ0XcTTty+k2NGmEY6HFrNwhmJg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyN7wUwsYbO5PFAy9Z3C6N0LBv31N0e2VQLwgkW73OOWwcEJxCp
-	32i22d00Co++WwZqM/oy9/TA0LU5QLGJoy2rlU9hm7fP4sDVHCzX/1bjjLhGi7fUjuI8ZHEtXdO
-	9OoQUlib2fMqCtJULkG1FUUB73h8=
-X-Gm-Gg: ASbGnctBcNMjY/viNuVn8jv8ufXGQt4sd0qSnT60ei80+H7BUslYnKVurfvgGTl/SjY
-	I9CWmN8IVclHm1QotSv/VYbOGqJ2Hk+vLNIyvg6/uO1b0y2XFfR0YVO26a//POtCTZMrzCHMDLc
-	LjffYjZ05F
-X-Google-Smtp-Source: AGHT+IFSs2bI1kvd8svQvV0yYqC4L2f0QU31S933XS4fK48/mlI2CA8/SvzCilIe1uYB4dcFtVyxl2+NSdpFe8SrYp0=
-X-Received: by 2002:a05:6512:4021:b0:546:2f44:ee99 with SMTP id
- 2adb3069b0e04-5494c11b5b0mr270889e87.17.1740684332213; Thu, 27 Feb 2025
- 11:25:32 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L5thVhER"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28182C4CEDD;
+	Thu, 27 Feb 2025 19:31:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1740684686;
+	bh=4Fn5UhIhPYcL8P4sGtgmJOrflXe17/WSXKxIYHr+8XY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=L5thVhERB/7q2c3oBZZNuKv5cDoig05UugrwbeJRHuJZ2qLOvD42EEd9SZvIao0pu
+	 trIAAm5aJDvF1DyZ+SIOJNlp/sHWBW7HR4c0hiG170s5VvUNpJ+FD+G8Krwy3DODU2
+	 RvV9WJi7c0zqouAA/9LsM+s1RPheRzbJPOE3C7Ec=
+Date: Thu, 27 Feb 2025 11:30:16 -0800
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Petr Mladek <pmladek@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH 0/4] Check Rust signatures at compile time
+Message-ID: <2025022714-specked-refocus-b701@gregkh>
+References: <20250227-export-macro-v1-0-948775fc37aa@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
- <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
- <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
- <CANiq72mdzUJocjXhPRQEEdgRXsr+TEMt99V5-9R7TjKB7Dtfaw@mail.gmail.com>
- <lz7hsnvexoywjgdor33mcjrcztxpf7lzvw3khwzd5rifetwrcf@g527ypfkbhp2>
- <780ff858-4f8e-424f-b40c-b9634407dce3@ralfj.de> <CAFJgqgRN0zwwaNttS_9qnncTDnSA-HU5EgAXFrNHoPQ7U8fUxw@mail.gmail.com>
- <f3a83d60-3506-4e20-b202-ef2ea99ef4dc@ralfj.de> <CAFJgqgR4Q=uDKNnU=2yo5zoyFOLERG+48bFuk4Dd-c+S6x+N5w@mail.gmail.com>
- <7edf8624-c9a0-4d8d-a09e-2eac55dc6fc5@ralfj.de> <CAFJgqgS-S3ZbPfYsA-eJmCXHhMrzwaKW1-G+LegKJNqqGm31UQ@mail.gmail.com>
- <CANiq72mw_zo4ai7QWD5eLN_oFXE1RVkotFsGS+f=6LRmJoHM7Q@mail.gmail.com>
-In-Reply-To: <CANiq72mw_zo4ai7QWD5eLN_oFXE1RVkotFsGS+f=6LRmJoHM7Q@mail.gmail.com>
-From: Ventura Jack <venturajack85@gmail.com>
-Date: Thu, 27 Feb 2025 12:25:16 -0700
-X-Gm-Features: AQ5f1Jpv6efWrpBsz_NNHvYeXfkaD5e-40YnVta7Hcw-aWaliwo1gWLR8BsXl_0
-Message-ID: <CAFJgqgR+hFY3XkUusq0HkdgUEp54kpQH7zJi8WcgYNB7i33ygA@mail.gmail.com>
-Subject: Re: C aggregate passing (Rust kernel policy)
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Ralf Jung <post@ralfj.de>, Kent Overstreet <kent.overstreet@linux.dev>, 
-	Gary Guo <gary@garyguo.net>, torvalds@linux-foundation.org, airlied@gmail.com, 
-	boqun.feng@gmail.com, david.laight.linux@gmail.com, ej@inai.de, 
-	gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, 
-	ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250227-export-macro-v1-0-948775fc37aa@google.com>
 
-On Thu, Feb 27, 2025 at 10:59=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Thu, Feb 27, 2025 at 6:34=E2=80=AFPM Ventura Jack <venturajack85@gmail=
-.com> wrote:
-> >
-> > I have seen some Rust proponents literally say that there is
-> > a specification for Rust, and that it is called rustc/LLVM.
-> > Though those specific individuals may not have been the
-> > most credible individuals.
->
-> These "Some say..." arguments are not really useful, to be honest.
+On Thu, Feb 27, 2025 at 05:01:58PM +0000, Alice Ryhl wrote:
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-I disagree, I think they are fine to mention, especially
-if I add any necessary and relevant caveats.
+It's a bit odd to sign off on a 0/X email with no patch or description
+:)
 
-> > A fear I have is that there may be hidden reliance in
-> > multiple different ways on LLVM, as well as on rustc.
-> > Maybe even very deeply so. The complexity of Rust's
-> > type system and rustc's type system checking makes
-> > me more worried about this point. If there are hidden
-> > elements, they may turn out to be very difficult to fix,
-> > especially if they are discovered to be fundamental.
->
-> If you have concrete concerns (apart from the ones you already raised
-> so far which are not really applicable), please explain them.
->
-> Otherwise, this sounds a bit like an appeal to fear, sorry.
+Seriously, nice work!  This resolves the issues I had, and it looks like
+you found a needed fix already where things were not quite defined
+properly.
 
-But the concrete concerns I raised are applicable, I am
-very sorry, but you are wrong on this point as far as I can tell.
-
-And others also have fears in some related topics. Like the
-example I mentioned later in the email.
-
->>[Omitted] several
->> issues are labeled with "S-fear".
->>
->>      https://github.com/lcnr/solver-woes/issues
-
-Do you have any thoughts on those issues labeled
-with "S-fear"?
-
-And the argument makes logical sense. And Ralf Jung
-did discuss the issues of osssification and risk of
-overfitting.
-
-I am convinced that succeeding in having at least
-two major Rust compilers, gccrs being the most
-promising second one AFAIK, will be helpful directly, and
-also indirectly allay some concerns that some people have.
-
-> > You mention ossifying, but the more popular Rust becomes,
-> > the more painful breakage will be, and the less suited
-> > Rust will be as a research language.
->
-> Rust is not a research language -- I guess you may be including
-> features that are not promised to be stable, but that means even C
-> would a research language... :)
-
-I have heard others describe Rust as experimental,
-and used that as one justification for not adopting
-Rust. On the other hand, companies like Amazon
-Web Services have lots of employed Rust developers,
-AWS more than 300, and Rust is probably among the
-20 most used programming languages. Comparable
-in usage to Scala AFAIK, if for instance Redmonk's
-rankings are used.
-
-Best, VJ.
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
