@@ -1,291 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9CBC19D07C;
-	Thu, 27 Feb 2025 16:03:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860C826FDB7;
+	Thu, 27 Feb 2025 16:06:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740672229; cv=none; b=KA1VuhJeDpj3bzp442+MoVi4oCmeWdQYj4UqNEvD8b5+JUzCnwbMT0zagr6FVGrgMoDunQRRRjVdW53VnwDaoLDf4I3sSg4wuHSsv2HrmhD9dss0Zz9Ek5mE31s5eV3fSwPGps2m/OvwYzgWNpTU8A7iE9HFh2AsP71xeUiZUp8=
+	t=1740672403; cv=none; b=ntG45iO5WTLmGmXcmxcoytMC/irZiBJTlsYyd8sAhFq/S1KFm7tnmwqoA2MpL4Njjp+y8KQQpQT9vIZZhg+pQeSTelQHYP0pY6Cp82rY8h0sjK1xcOp+PNzqxa0PC3HwOLaXot1jTqfJ6KmFVJaZCn8pg9aYLcuBl9qz7KMb9GQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740672229; c=relaxed/simple;
-	bh=Vq9pRRc5BfHueS+vTDE4bALzNK4FWB32HuyBpbTBgdo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=KkYN57XOz+N1NuUqTiMU/tkejDIKk/RekOyhM2fKcOp1DlmNBPy9pms/D1+0UPwWp7g/5gBlKkzhmtCQNAYkpuvxN5czcJGx6mYrKyZnfLN4O7rF1FADbQcuCuMLbMXoGSOsHnX8tezDUFkydFAouZ1nI9jQ6HeXWw9gbF2uOGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gmnL121r; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740672403; c=relaxed/simple;
+	bh=PJfgPnKJ89sswz05HEjeGzyw+HZGCWBZpjHbZs0nHMA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VZtQzlOJWwYIuOKkTnFo2tgVXz0phz3Kqs5TslY32ihGLC2vRXn0uxq8DCE5WnHrG76OPjmraxGKoL+stxEHzPXNu9O0foNMdSHsPgW7RyRAe0eUrJ6mByQHjoa5hUVhoXvpCEsVweUaPvKhoo2+fW+JwMVkDvFUr1Pp1ZcIOkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I1yXLbDV; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gmnL121r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF66C4CEDD;
-	Thu, 27 Feb 2025 16:03:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740672229;
-	bh=Vq9pRRc5BfHueS+vTDE4bALzNK4FWB32HuyBpbTBgdo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=gmnL121rW8R47lTupspwERJNJbDvdVhL4/y62HeM05S7CPEevMY1bcGQ+lnwAonVT
-	 +Jch1Aj4bDCsJGIHeBbFhboM7LdvTYTTSLxZeugjvZg7tMB6EUlUGA7cvYywVXxmV/
-	 FCubvBC+QWQFbUGlqsDlVmcR4FdW/c3eisWOKMdlTla9rvlcEnmNww+BJtoJ7CUBUh
-	 govQU0hXtURtR/ay4DihJkJdpfm7N3A7NKqpTqA0NEtnjAiMQIYwm09vKGDwhyVKpM
-	 QnD0yaZyhe09ADPLExAogUjg6jYxGxiUoaVOf0OfsROG7w0WHcJIMkA1uH0oUqCMTe
-	 8+Id43A6p2SrA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Thomas Gleixner" <tglx@linutronix.de>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Anna-Maria Behnsen"
- <anna-maria@linutronix.de>,  "Frederic Weisbecker" <frederic@kernel.org>,
-  "Danilo Krummrich" <dakr@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno
- Lossin" <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,
-  "Trevor Gross" <tmgross@umich.edu>,  "Lyude Paul" <lyude@redhat.com>,
-  "Guangbo Cui" <2407018371@qq.com>,  "Dirk Behme" <dirk.behme@gmail.com>,
-  "Daniel Almeida" <daniel.almeida@collabora.com>,  "Tamir Duberstein"
- <tamird@gmail.com>,  <rust-for-linux@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v9 12/13] rust: hrtimer: add clocksource selection
- through `ClockSource`
-In-Reply-To: <87bjuneabh.ffs@tglx> (Thomas Gleixner's message of "Thu, 27 Feb
-	2025 15:22:58 +0100")
-References: <20250224-hrtimer-v3-v6-12-rc2-v9-0-5bd3bf0ce6cc@kernel.org>
-	<20250224-hrtimer-v3-v6-12-rc2-v9-12-5bd3bf0ce6cc@kernel.org>
-	<6sz8JD2Jq54KZZ3nCKbMpvae2yHUmF2hHEP3qrQlbGY6RrWzS8BN5YxinlIQnIFkGfjAPauTxI8i3sZUhzoPiw==@protonmail.internalid>
-	<87jz9beor7.ffs@tglx> <87zfi7prf2.fsf@kernel.org>
-	<0ePSCNg5vlevhPRhflq3lvzk2YBD5-uA5M0VWGr5gb-BldbGA9KzHxwkgP5zPayOl4vg9rjEK_Ku5ago9Vp-tQ==@protonmail.internalid>
-	<87bjuneabh.ffs@tglx>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Thu, 27 Feb 2025 17:03:37 +0100
-Message-ID: <87tt8fpe7a.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I1yXLbDV"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2fe8f6a4bfaso305367a91.0;
+        Thu, 27 Feb 2025 08:06:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740672402; x=1741277202; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PJfgPnKJ89sswz05HEjeGzyw+HZGCWBZpjHbZs0nHMA=;
+        b=I1yXLbDVK0AarkOV01ID3SFH86PTImcP6Rl0LikMc15i/7wNVUHSkjsYFyJWWpbngR
+         nUM0blQpCdHjHzq/l76H7FSG5RDcIbdzsO1kGxqwoMKHINCGJpID3jvlGx4S8pA/eCZs
+         v9QQb1yqKbj3puS77N0S1MimkGdEhtYY5vZvx7JFgZ7JGI0KvZlNCvd6xkBHK/Uv/XUK
+         L11bu4bMI2CONMMQlmgHmYvFbNYl9mULHHRLZw3Gy0pZw0+j6tmlL1hOEgWxS2869uzX
+         K2Ie1RgQ0+IRtQyPi80lWyTzX3mofmfjO4k1rEeNB4IosQHCEOINzzWclg88Hj3v0Bfo
+         gotQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740672402; x=1741277202;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PJfgPnKJ89sswz05HEjeGzyw+HZGCWBZpjHbZs0nHMA=;
+        b=o0hZBXoG2XhVoTBPchcMM7KsA1Pkm4I9ZpeJuvX43r94pWACFek4JkoWqunfMMcovQ
+         f0+b/shb8sGvvsG2nk4Y3+OyVgaek4kxDTDif+aCuAageCbcI8ZM2/SiChJ/feJFFYlu
+         3ajxYg6cZbDYzrimh7e+Pop1pp+9bEJGRulDznohjkk873LyfdI/3PKabooqKus7AjtM
+         mvxk8gRVPA6dzMio7PiqLAmmXOGMmEwZb9EPQtQBKFvUh/BspnpU4LuzfHhmO8lFDiYs
+         Y2SPWXtQ1dR4hFnYYCTB0xeMEU9PYv7UraCsGuqmqFpif9LDPxnFkbsUTP+YhUe5I3bp
+         jIng==
+X-Forwarded-Encrypted: i=1; AJvYcCUH2Bg/mHSw8Pm3zNvFvk8z80M1NwChqeC+dqX0XCBQwTTx76a8keSCOhGnlK4uYgK0MZiT9Ntisj6p@vger.kernel.org, AJvYcCVwYljQoJmwa3pbxplPYkm7/z9c0n8B+BX9aYLepEdzB39R9aWdkyZetCLlwzjojcPp2aQ7s71Wy/Wz@vger.kernel.org, AJvYcCWuDQ9kzkbj9NAgFPAoUwx0DwmDP96ermbDoxajHNgBmWnDKvYwXqTZvmSOUulEWiNw05vd27ipOg/URfNj6Io=@vger.kernel.org, AJvYcCXikuNVkGmgswLLCDIdgiVLnYZ7aP7giEF4XA3VxmqAwHu6XxGC9Gol6flhXT2Ytf1aYzt1@vger.kernel.org, AJvYcCXwE39QtVtPZRZ4Z8xWqyf82sgeHp/vQyf/W5vriy3OFwdMlLj94bsoYUNKhGRnxryIH2arTKEFOWwA2bCg@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjQGhAEWz7jaU4f2e4T+lydk6WHY5TORk2NRX0M6h39/+xPJqW
+	YctZdc1QRlj8sALnVXFqkdOEV0V7zVOZ84d/SXVvqUesCUympsVb7S6dt/R/SYUUafjFYSnPkUj
+	ALMNJQBy2b4bPlnXUOiu8vhnmQmw=
+X-Gm-Gg: ASbGnctcF3POyyvaBSUY/0As05pB8fFGUpCwz11535HESlgbv/AJSJgvtq8y2XDWsNS
+	NbK6uWhHEl6G/mDvTGQA0PZQkVd7MYT+FA9bzHp6Xs/cF87nRHdQeC0lIHPzmnUDHkbnK30DqyZ
+	xkl/s2lM8=
+X-Google-Smtp-Source: AGHT+IErgJSlzMKoFDBnkaE7/t4p7pkyKYyZBw7RJv2MRmTY5RNYgYWmYi0oEf6W6z4sa2855ARS13/cWfLtygNaRCM=
+X-Received: by 2002:a17:90b:3a8b:b0:2fe:a8b1:7cd with SMTP id
+ 98e67ed59e1d1-2fea8b1093cmr1569044a91.2.1740672401702; Thu, 27 Feb 2025
+ 08:06:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20241219170425.12036-1-dakr@kernel.org> <20241219170425.12036-8-dakr@kernel.org>
+ <g63h5f3zowy375yutftautqhurflahq3o5nmujbr274c5d7u7u@j5cbqi5aba6k>
+ <CANiq72=gZhG8MOCqPi8F0yp3WR1oW77V+MXdLP=RK_R2Jzg-cw@mail.gmail.com>
+ <wnzq3vlgawjdchjck7nzwlzmm5qbmactwlhtj44ak7s7kefphd@m7emgjnmnkjn>
+ <Z72jw3TYJHm7N242@pollux> <nlngenb6udempavyevw62qvdzuo7jr4m5mt4fwvznza347vicl@ynn4c5lojoub>
+In-Reply-To: <nlngenb6udempavyevw62qvdzuo7jr4m5mt4fwvznza347vicl@ynn4c5lojoub>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 27 Feb 2025 17:06:28 +0100
+X-Gm-Features: AQ5f1JqLW2JqfenVRPiw0Bw5DJ2q63fM_hLXAaW41V4GKj_UYjrOy-DoLwS8j8U
+Message-ID: <CANiq72n7gi=BJr72P1z_MKaOTRV5p2R3EoP_dUZ6C02xf2WA=g@mail.gmail.com>
+Subject: Re: [PATCH v7 07/16] rust: add `io::{Io, IoRaw}` base types
+To: Alistair Popple <apopple@nvidia.com>, Gary Guo <gary@garyguo.net>
+Cc: Danilo Krummrich <dakr@kernel.org>, gregkh@linuxfoundation.org, rafael@kernel.org, 
+	bhelgaas@google.com, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
+	tmgross@umich.edu, a.hindborg@samsung.com, aliceryhl@google.com, 
+	airlied@gmail.com, fujita.tomonori@gmail.com, lina@asahilina.net, 
+	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org, 
+	daniel.almeida@collabora.com, saravanak@google.com, dirk.behme@de.bosch.com, 
+	j@jannau.net, fabien.parent@linaro.org, chrisi.schrefl@gmail.com, 
+	paulmck@kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
+	devicetree@vger.kernel.org, rcu@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-"Thomas Gleixner" <tglx@linutronix.de> writes:
-
-> On Thu, Feb 27 2025 at 12:18, Andreas Hindborg wrote:
->> "Thomas Gleixner" <tglx@linutronix.de> writes:
->>>> +/// The clock source to use for a [`HrTimer`].
->>>> +pub enum ClockSource {
->>>
->>> ClockSource is a confusing name as 'clocksource' is used in the kernel
->>> already for devices providing counters, which can be used for
->>> timekeeping.
->>>
->>> Also these clocks are not really hrtimer specific. These CLOCK ids are
->>> system wide valid and are used for other purposes obviously internally
->>> in timekeeping. hrtimers are built on top of timekeeping, which provides
->>> the underlying time.
->>
->> I see. How about renaming to `ClockId` and moving the type one level up
->> to `kernel::time`?
+On Thu, Feb 27, 2025 at 1:26=E2=80=AFAM Alistair Popple <apopple@nvidia.com=
+> wrote:
 >
-> Yes.
->
->>>> +    /// A settable system-wide clock that measures real (i.e., wall-clock) time.
->>>> +    ///
->>>> +    /// Setting this clock requires appropriate privileges. This clock is
->>>> +    /// affected by discontinuous jumps in the system time (e.g., if the system
->>>> +    /// administrator manually changes the clock), and by frequency adjustments
->>>> +    /// performed by NTP and similar applications via adjtime(3), adjtimex(2),
->>>> +    /// clock_adjtime(2), and ntp_adjtime(3). This clock normally counts the
->>>> +    /// number of seconds since 1970-01-01 00:00:00 Coordinated Universal Time
->>>> +    /// (UTC) except that it ignores leap seconds; near a leap second it is
->>>> +    /// typically adjusted by NTP to stay roughly in sync with UTC.
->>>
->>> That's not correct. It depends on the implementation/configuration of
->>> NTP. The default is that the leap second is actually applied at the
->>> requested time, by setting the clock one second forth or back.
->>>
->>> Though there are NTP configurations/implementations out there which use
->>> leap second "smearing" to avoid the jump. They adjust the conversion
->>> factors around the leap second event by slowing down or speeding up for
->>> a while. That avoids a few common issues, e.g. in data bases.
->>>
->>> But it brings all clocks out of sync with the actual progress of time, which
->>> is patently bad for systems which require strict synchronization.
->>>
->>> The problem is that the kernel uses the NTP/PTP frequency adjustment to
->>> steer the conversion of all clocks, except CLOCK_MONOTONIC_RAW. The
->>> kernel internal base clock is CLOCK_MONOTONIC. The other clocks are
->>> derived from that:
->>>
->>>         CLOCK_[X] = CLOCK_MONOTONIC + offset[X]
->>
->> I see. I lifted the text from `clock_getres(2)` in linux-man [1]. We
->> might consider updating that source with the info we collect here.
->
-> Yup.
->
->> How about changing the text like so:
->>
->> .. by frequency adjustments performed by NTP ...
->>
->> to
->>
->> .. by frequency adjustments performed by some implementations of NTP ...
->>
->> ?
->
-> Frequency is adjusted by _all_ implementations of NTP and also by PTP,
-> PPS and GPS. That's how the time synchronization daemons steer the clock
-> to align with the master clock. This adjustment is done via adjtimex(2).
->
-> That affects all clocks except CLOCK_MONOTONIC_RAW, which is never
-> adjusted and keeps the boot time frequency forever.
->
-> CLOCK_REALTIME is not only frequency adjusted, it also can be set
-> via settimeofday(2) and clock_settime((2), CLOCK_REALTIME).
->
-> But CLOCK_REALTIME _and_ CLOCK_TAI can also be set via adjtimex(2). For
-> CLOCK_TAI this is required to set the offset between CLOCK_REALTIME and
-> CLOCK_TAI correctly (at least during boot).
->
-> The last oddity are leap seconds. The standardized method is to actually
-> jump the clock by one second at midnight of the day specified by the
-> International Earth Rotation and Reference Systems Service (IERS).
->
-> That obviously causes problems because a minute having 61 seconds is not
-> only beyond the comprehension of computer programmers, but is
-> problematic in many areas like astronomy, satellite navigation, control
-> systems, telecommunications .... Those industries largely switched to
-> clock TAI or GPS time, where TAI is always ahead of GPS by constant 19
-> seconds.
->
-> In the recent years big companies like Google, Facebook, Alibaba and
-> others implemented leap smearing to address the remaining issues in
-> applications, which have to use clock REALTIME. But of course it's
-> neither standardized nor did those clowns talk to each other. So we have
-> today:
->
->    Google:   24 h before the leap second
->    Facebook: 18 h after the leap second
->    Alibaba:  12 h before until 12 h after the leap second
->    ...       more incompatible variants of the same
->
-> This obviously creates just a different set of inconsistency problems
-> not only between the networks of these giants but also with the rest of
-> the (non smearing) world around the leap second event. Their notion of
-> time is only coherent within their own network.
->
-> On Linux (and other OSes) it also affects the accuracy of all other
-> clocks during that time. The actual slowdown is marginal, e.g. on
-> average 192nsec per minute in the Google case, but the accumulated one
-> second offset over 24 hours is way more than what certain applications
-> can tolerate.
+> I've asked a few times, but are there any plans/ideas on how to improve t=
+he
+> situation? I'm kind of suprised we're building things on top of a fairly =
+broken
+> feature without an idea of how we might make that feature work. I'd love =
+to
+> help, but being new to R4L no immediately useful ideas come to mind.
 
-Rereading the original paragraph, I think that it is consistent with
-what you write:
+It is not "broken" -- after all, it works as it was intended/designed
+when it was introduced, though it is definitely a hack and thus indeed
+the message could be improved greatly. :)
 
+As for how to improve it, e.g. Gary suggested the other day to use the
+DWARF information to locate the call site.
 
- - Setting this clock requires appropriate privileges.
+I guess another way would be to generate different symbol names per
+call site, so that we can embed the path and line number into it (more
+or less), so that the user at least has a hint, though that may have
+disadvantages.
 
- OK I assume.
-
-
-
- - This clock is affected by discontinuous jumps in the system time
-   (e.g., if the system administrator manually changes the clock),
-
- OK as well.
-
-
-
- - and by frequency adjustments performed by NTP and similar
-   applications via adjtime(3), adjtimex(2), clock_adjtime(2), and
-   ntp_adjtime(3).
-
- This also seems to align with what you explain. Even though PTP and GPS
-   is not mentioned, it does say "and similar applications".
-
-
-
- - This clock normally counts the number of seconds since 1970-01-01
-   00:00:00 Coordinated Universal Time (UTC)
-
- Seems OK.
-
-
-
- - except that it ignores leap seconds;
-
- The clock does not count leap seconds in the number of seconds elapsed
-   since epoch. A slightly confusing wording, but OK I guess?
-
-
-
- - near a leap second it is typically adjusted by NTP to stay roughly in
-   sync with UTC
-
- Also aligns with your explanation. We could rephrase a bit:
-
- - near a leap second it may be adjusted by leap second smearing to stay
-   roughly in sync with UTC. Leap second smearing applies frequency
-   adjustments to the clock to speed up or slow down the clock to
-   account for the leap second without discontinuities in the clock. If
-   leap second smearing is not applied, the clock will experience
-   discontinuity around leap second adjustment.
-
->
->>>> +    /// International Atomic Time.
->>>> +    ///
->>>> +    /// A nonsettable system-wide clock derived from wall-clock time but
->>>> +    /// counting leap seconds. This clock does not experience discontinuities or
->>>> +    /// frequency adjustments caused by inserting leap seconds as CLOCK_REALTIME
->>>> +    /// does.
->>>
->>> Only partially correct.
->>>
->>> CLOCK_TAI can be set as CLOCK_TAI is obviously coupled to CLOCK_REALTIME
->>> and vice versa.
->>
->> So it cannot be set directly, but if CLOCK_REALTIME is set, CLOCK_TAI
->> will update?
->>
->> In that case I would add the following paragraph:
->>
->>   This clock is coupled to CLOCK_REALTIME and will be set when
->>   CLOCK_REALTIME is set.
->
-> It also can be set independently via adjtimex(2) by correcting the
-> offset between REALTIME and TAI, which is done usually during system
-> startup when the time synchronization deamon starts (ntpd, chrony,
-> systemd-???, ....). Should not happen during normal operations, emphasis
-> on *should*.
-
-
-  This clock is coupled to CLOCK_REALTIME and will be set when
-  CLOCK_REALTIME is set, or when the offset to CLOCK_REALTIME is changed
-  via adjtimex(2). This usually happens during boot and **should** not
-  happen during normal operations.
-
->
->>> Also if the NTP implementation does leap seconds smearing then the
->>> adjustment affects CLOCK_TAI as well. See above. That's compensated for
->>> by adjusting the TAI offset to be in sync with reality, but during the
->>> smear phase the readout is not precise.
->>
->> I would add the following paragraph then:
->>
->>   However, if NTP adjusts CLOCK_REALTIME by leap second smearing, this
->>   clock will not be precise during leap second smearing.
->
-> Correct.
->
-> The important part is that the selection of the clock depends on the
-> actual use case. In some cases the usage of a particular clock is
-> mandatory, e.g. in network protocols, filesystems ... In other cases the
-> programmer has to decide which clock is best suited for the purpose. In
-> most scenarios clock MONOTONIC is the best choice as it provides a
-> accurate monotonic notion of time (leap second smearing ignored).
-
-I'll grab this paragraph to use as a base for documentation on the
-`ClockId` type.
-
-
-
-Best regards,
-Andreas Hindborg
-
-
-
+Cheers,
+Miguel
