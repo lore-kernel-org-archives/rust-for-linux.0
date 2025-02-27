@@ -1,176 +1,261 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2060.outbound.protection.outlook.com [40.107.223.60])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1252825E81B
-	for <rust-for-linux@vger.kernel.org>; Thu, 27 Feb 2025 14:55:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740668148; cv=none; b=OIGTFi6G/dWZltagXR+HoaNi+qd3fBB6HlCqA+d2fxBfaKlIPFaGkmaZDalqQfi9Vr/bAoTh9mtUPvdE0ayTdjw/9y08z2ubD6Jg422J530SLWqYwZzm0FZU+9Rziu0RceqYHJ52ryYdj4Q0V3DPRmPzEEPTq13jdyot3ebvWvM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740668148; c=relaxed/simple;
-	bh=04lXeR5WeBp3P02ZTmd2NJbVMZs6V5xG2AeeQAtEf/8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Hg8MgzBoAh2ZKkjhSSdhWehhF/PD962Dy5Ea5DGmHA1E/Lhzw/I5nQ9uHqXTs/mTf0zJKrmlP/8IdA1LTcfxX8EhbC9LfiGSvA2TyaF+hf7ZOoISfzCuRBMBYPRDMNBUaOHnpIP30ewYcpmCTmiu5xnXRu1XcUAOkWsQto83ZhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Fqg/ltkd; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4096B322B;
+	Thu, 27 Feb 2025 15:07:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.60
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740668836; cv=fail; b=rP8HunNSfyww7GagsC03c5YJTh7n6IUTE/G3TkWwhIx1PmNxFWaiFM94rXLR/I6J6iaVdJ88IRPKntawZCH+Hlb1270h1KgOchVXhJT79/Ri5H3ap+i8OZwKiLz/Db48V2MhYuLldoZidxzwTen6L6NH/t1MfqAzbjvzenMiOJ4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740668836; c=relaxed/simple;
+	bh=MhNorp3BdjwlWKoJL2xqInF5V/w97mo8dkY2Ew+F+Ck=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=F2rSHeG2+muEXz6ueigkGqIc9eilvF/y3pKk9p5OT/isdmAIrTkycKDrs1XA10AlbaBkVl30umLZN5mSsUcAT5htMMQj0TUTzS++NnVq1kH78Fct86zY0DzNcvnQplDJXxReqtn0PewaTdKi4QOAnJulbUPENOPRLO4tUxStI1Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=N2CW8q2C; arc=fail smtp.client-ip=40.107.223.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Fqg/ltkd"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-ab771575040so382673966b.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 27 Feb 2025 06:55:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1740668144; x=1741272944; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=psgfZ9yFHMKvZ3U/C+2q+GvpOcP5tp1ObOW+btX8RAI=;
-        b=Fqg/ltkd6PSJeUE7abpVtA6aBiszv2SBSCT+RX4iPpwiH011okRBd0f0DG22WIZuR7
-         WXbcDl6A50tpf+avl672ZdjX/se7KDnwigleDSQWlfFoca3/QluNSz9rykKO9NBb2G00
-         3F/0LJd4HzFtIsr3hqOLk0zzY9Hfv9W8EZlJjcfrtKDeN58OBT1ChtobkBdbeTAUKSmp
-         u9dNMzGX5FMgym3wBAcW6p8LukuYT92O7LiawtTWr6n3medIrXvyPQuvlunCm6uo4tCu
-         bZgR6M22Xkq+YOstbsrVcmdEE8xGDwTMKvNWnIvA+v06PhFey3ljycdPN8syN5ivhwjo
-         f5dQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740668144; x=1741272944;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=psgfZ9yFHMKvZ3U/C+2q+GvpOcP5tp1ObOW+btX8RAI=;
-        b=KmPLjtbRz/EUcvhmvWA1Xy+Gu9OM5ja2OhQkmi8F9QpLvHi95vVujYlXXO4S5LXJrm
-         Wx72UZzzdbymuECnzCbeDND42OFqJYfCS7K3DxZaAIZ1kZDTKA0POs4DL5bLfIZW3jlX
-         NzVdjOjWA+SbVtyQu0viYEBDyBZzsEeJ1G9QgbJ3DdmIDt8Xp6yesGHL1NQPTu++G+vk
-         UVsGbRCOjib1nC+2AZG+da9XcFVb5e61I9kPMfCZSqeeHDGkUx9j2XWHAR2BeH2WLxbv
-         3NTAxhfh5H8P9vYesT8+YTPVru9yvkrbMm519k0TYUNmVaA69Rpn+UyMzt82iqjOIRpi
-         d6fg==
-X-Forwarded-Encrypted: i=1; AJvYcCX6WnGkvww24iPZOtN6zpZhAUzS376D0hNt59Prua3NE5lQQ2h6cqOx1zuIUvqhr/kEECdLiZ070KfO22iOmg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmFGcOSjMB5Xn5OhJco6zcIpsv17/MCidlXNQZUftQd4EPhZ4b
-	JrAib3f+tCy6fziZ5P+8k3mVpZ6xXBun2rA/GHrxMcabavcrQSgPpEWVzjmmygs=
-X-Gm-Gg: ASbGncthhCO54XHuesobNNWRG4Gg0/EpC9O9DiySXomJ7UfeUf2h5xpRvsJKQfnj9/7
-	+nU75g1IlnFL/OAxBwFLvUlIeyOIYlXpE5Q9Ze3kkT5ZdoWByumKcV0BhKZ5WcB6EwsdzXz+xsa
-	QMhmF+IMwnJNCY6wi2ldr0aU1jeWdquwyyUvwTr/MzmKlRv/zNB5KI1xyubS3WRefw67I7xS3Cv
-	PfN1dch6lpTL7Ea0x59IFBayWEj1ggEHeEWsYsb8nFbR+umUrFRKQ740iahq123RM2dKlB/pQJ/
-	m2ZBWMupzb35tlhqdl1FZt0/4TVRpw==
-X-Google-Smtp-Source: AGHT+IHM3y5ddErBEWtI/Hb72dFlr7ja17jLO2hZ3jK+9ep11ghJNXBhohGfhuKxIG5xOI9T5kAR0A==
-X-Received: by 2002:a17:906:6185:b0:abb:aa8f:c9cd with SMTP id a640c23a62f3a-abf062db58cmr468878666b.28.1740668144321;
-        Thu, 27 Feb 2025 06:55:44 -0800 (PST)
-Received: from [10.100.51.161] ([193.86.92.181])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abf0c0ba3dbsm134343466b.22.2025.02.27.06.55.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Feb 2025 06:55:43 -0800 (PST)
-Message-ID: <aa7c1589-7c36-4721-b815-0ab065130b83@suse.com>
-Date: Thu, 27 Feb 2025 15:55:42 +0100
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="N2CW8q2C"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=X+vnDIRRa5YXr2DvoJriuc3GUGb5cFp7EsvFi8Nxlw1gJbDpU3mzb+xzZoTpoBwe4uW8Us1D0PRT9tYc1N9SBqGs/WjmU1aXh8cZbDHu2XissF6XmHc6O0bjbMBYn8s7TQ0WXfiUvQpufhwJPo7/YmF+UVpT1sBVtydDRC27k9kc0F11hTLvnX1n1de1wtWA31A4RrwJQsIl3z4i6CD9cxDomd8MTD/jpXuZLtsYvQ/nS2ItwtMBwDkaoFPvBuyf9suhHCMuTgBUmQRJu9tsZDIpx0DxuG2RhrtDgr0fORNrQXk6l3CYE/bYvpZ+JwjVZTwTgQ3xFk2jKDXGKXLdgQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=51Ptewq/Kws0Em0ekFIyNglr1Au2EBY4WW2AvDVBkVE=;
+ b=NxBysoK5jqByVdqPiXCfR2iuFdSGuJ9Bj0he5Z6S+5JFnJQB0R6O5atJwiNwUoZQewW69JkJ78zx2mttmlv00Crwk4L8d9av3rNkCNK8NRIjZDmoWMKzPGL5YYjOSLW1dvI8Qaxg1pa5ZslaUaaTK1EpLvKRNgHDhw/1dvf4bheSVIoqz7G9/RhnmGz/6/f+xM4VMnZJty0Y7tIpSoAtwINNGEfQvl9JpIa/4yRdaTHhx22aXtppFnq2VszfsNkYk0kGxhrsDhanVwAvWNjHrY9M+w5xSQcYCXVHplgDIHM32nccSqpf/DD5I5TiaFVoSiRBBL+64wsMKxtIteaLAA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=51Ptewq/Kws0Em0ekFIyNglr1Au2EBY4WW2AvDVBkVE=;
+ b=N2CW8q2CwM/sf8Wkp/nPOmFmwBlnXRqcyTu+9qIYMSHi+BiA7iL5ZySh1eEp55oOWpijEN0rOVmDaXYc4iaWR2PiYeuVBtWRXbBP3LD2t5zWEGzlSb6jCgH4t1X0Rz+aqflIooTIyjNSiC7dUPcnGSNT4lPIdUihrU4Aao3BEtbwGXfRUWCWnK/q3e5WnGGy4iFRvXfcPCehx7vPAvtXtdfoAoiIQFoFYWY9UEI5d1IInFnszhwxRmWN3WFjr8fAZv1bTChT2bhsGlD45aOnIKKX+a+eR9wvgr8pZ0SH5IKueRqc+0uZvaLbeyzqTCpe96sgZdatpHs20jZrgmfb9g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW6PR12MB8663.namprd12.prod.outlook.com (2603:10b6:303:240::9)
+ by BY5PR12MB4049.namprd12.prod.outlook.com (2603:10b6:a03:201::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.26; Thu, 27 Feb
+ 2025 15:07:11 +0000
+Received: from MW6PR12MB8663.namprd12.prod.outlook.com
+ ([fe80::594:5be3:34d:77f]) by MW6PR12MB8663.namprd12.prod.outlook.com
+ ([fe80::594:5be3:34d:77f%2]) with mapi id 15.20.8489.018; Thu, 27 Feb 2025
+ 15:07:11 +0000
+Date: Thu, 27 Feb 2025 11:07:09 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Joel Fernandes <joelagnelf@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	paulmck@kernel.org
+Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
+ implementation
+Message-ID: <20250227150709.GF39591@nvidia.com>
+References: <Z73rP4secPlUMIoS@cassiopeiae>
+ <20250225210228.GA1801922@joelnvbox>
+ <20250225225756.GA4959@nvidia.com>
+ <Z75WKSRlUVEqpysJ@cassiopeiae>
+ <20250226004916.GB4959@nvidia.com>
+ <Z75riltJo0WvOsS5@cassiopeiae>
+ <20250226172120.GD28425@nvidia.com>
+ <Z7-IHgcVVS8XBurW@cassiopeiae>
+ <20250226234730.GC39591@nvidia.com>
+ <Z8BNXdf3CgqGYjPV@pollux>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z8BNXdf3CgqGYjPV@pollux>
+X-ClientProxiedBy: BL1PR13CA0195.namprd13.prod.outlook.com
+ (2603:10b6:208:2be::20) To MW6PR12MB8663.namprd12.prod.outlook.com
+ (2603:10b6:303:240::9)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 0/6] rust: extend `module!` macro with integer
- parameter support
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Luis Chamberlain <mcgrof@kernel.org>, Daniel Gomez <da.gomez@samsung.com>,
- Sami Tolvanen <samitolvanen@google.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor
- <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- Adam Bratschi-Kaye <ark.email@gmail.com>, linux-kbuild@vger.kernel.org,
- Simona Vetter <simona.vetter@ffwll.ch>, Greg KH
- <gregkh@linuxfoundation.org>, linux-modules@vger.kernel.org,
- Miguel Ojeda <ojeda@kernel.org>
-References: <JKqjFnoTeEbURcTQ5PpmUZWDS2VMEt0eZl68dWkgk3e8ROFpb2eTWH2mStKkkXJw__Ql5DdYvIR9I7qYks-lag==@protonmail.internalid>
- <20250218-module-params-v3-v7-0-5e1afabcac1b@kernel.org>
- <87ldtv1t1c.fsf@kernel.org> <0d9e596a-5316-4e00-862b-fd77552ae4b5@suse.com>
- <CANiq72nBK=HZ=ZL9bYhB8Z+U5QK3xmsQesO9axf_Fz0_1mWREA@mail.gmail.com>
-Content-Language: en-US
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <CANiq72nBK=HZ=ZL9bYhB8Z+U5QK3xmsQesO9axf_Fz0_1mWREA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW6PR12MB8663:EE_|BY5PR12MB4049:EE_
+X-MS-Office365-Filtering-Correlation-Id: d416755e-7277-464c-d0ea-08dd5740691f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?9mIw10QfzbmbPJhY7G3AFo3FEQ8tnPPNnT7UokD0lJLhwjlZSZy9q+3zrm0i?=
+ =?us-ascii?Q?vBVM+UeNgl5CnhsZjGd30ttMBNaQ53OIvWOI2Ldo+IYDjd6y9pRM1n68MITQ?=
+ =?us-ascii?Q?AfOKRDVjd90ksuFcrUJZZya2f6QFb++gmk/ALg4Uqc2qyNYUzXDCh3NJjlJD?=
+ =?us-ascii?Q?K3EgB5kYsj2NFZ8xIxHBei9ZAzUgn8y9JKVOPILBWnN37b163ug27o2LcFQu?=
+ =?us-ascii?Q?YK76JdTXy96P5O7wVO+zzhijapAuerotr8mMDtP1IyM3qticrEknJa0bfVMW?=
+ =?us-ascii?Q?5rKRgEI7RGeYc3yzs54OHLUJoYkp7Na99u8gG2Ey73DUQeStf8fvl+OBCl/f?=
+ =?us-ascii?Q?F8Rv7MKMwQGFbRgfgFLIqWZn+kGJ4tbtZJ311RJZA8NOX0TAQjlPo6zjRrVt?=
+ =?us-ascii?Q?c5G2OK0XscQIkgrX7akH/fc6apw1ZFTTI4o74QehN7Quep6IhNPQiHpcqWB3?=
+ =?us-ascii?Q?zM7+8hqkY/86GHHQ7i8NbzU7mNqX7l6FkazMcQgV4iXpRB+oM7tbwdUNxr5q?=
+ =?us-ascii?Q?wQkicoLXs8F5MaMD5iCD92I5mlPY0797q5FyKJeErk6IspiLkL2Egp58hqxB?=
+ =?us-ascii?Q?ZCVzk04nk42T4JtGY12zblSZQ9jNRazFkhDRHLD52B1qBd1lXFMe3k4Y6yWn?=
+ =?us-ascii?Q?wo5l16vfCgh3I1ZZipecZZOdA1BxfB0g4fok2qI0285Sz8vZTLr/fMxN+Us2?=
+ =?us-ascii?Q?EoeOPBSR0ZsZMWxNKylh7ezknyNSPX2MldByLtGoybg30GcLfm0c+dj9GO9e?=
+ =?us-ascii?Q?ZRhn9qrZyMrJeSZiKuthvFyi041+9btog89evYzyLg/I2/AuQ6DV9TNzBtgE?=
+ =?us-ascii?Q?HKoYED7UhKa/ABdwgRfLcBzNvNp0SK/hRo+HUaOpalc5jNgjIHhbk7y1reLv?=
+ =?us-ascii?Q?rZAi+rJnED+QplGcyIYyeam9Jm1j//LpuvRd/WFEd9lrjkVbElrn7q4TNKCL?=
+ =?us-ascii?Q?PQYfvkGLvPmkz20KCa5WvE3z58+SNxw75AUHMEeMfScjzz7q5NMzZFFOnT0F?=
+ =?us-ascii?Q?A1MBnD04jMLoBaKoXY2+eanMrZR2X8ax3aj2NSxlaz2cwIzgAcvltxMvZbhf?=
+ =?us-ascii?Q?6CpqYXNJDFcKbN5knsxZr3KYbHl2WeAbFyB3/6BWjhDgrLXam/QqKJV5+A0G?=
+ =?us-ascii?Q?3E9LeeB0+d/7nWmOOhFBKp+j+LOyTVoLYNL+L+nr7IZTejIUeZB9ypBIQ6/M?=
+ =?us-ascii?Q?UJHjcR5j8REA/9A9Tm7zf1MgzB3X8BjvBSenWZKzdG+n4mCoG+ovI2byMfT4?=
+ =?us-ascii?Q?yl4YWBjjLboc8r1kqS/xaQJFYeYtTNks+EsZbLgTuMCzBJp7fcxc78rOQOQw?=
+ =?us-ascii?Q?HOASqAU1mPj7GAjlvkgcN11uIyS8gC9wfzHCZZXmgn7SoOLX/GIDsYl1rnXx?=
+ =?us-ascii?Q?F/OOMOWiaJ5chgAC0tmy4DPF0yTL?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW6PR12MB8663.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?gUmC4ZocrpQOT3rhjtUZjDetKbWtIE9hG8B61IwdcsvwFkZYZsij0OldKRwY?=
+ =?us-ascii?Q?w0tJWnS/rsV6tVlMybOFk5ph/QeYCiAe+83iXRV4/yg0yPi8YtdxKeR///Y1?=
+ =?us-ascii?Q?YBquAiZ1zCtvFUh1Udps2E8Vim0Vuw5lKl+rjM1lwIQIFiDebyBKTdMU6fd9?=
+ =?us-ascii?Q?QbjFJYf+qix9OYGCJK5AKb8R/jeKwcJkM1qFFVaYIeXTss7zDb7yATu+8CKG?=
+ =?us-ascii?Q?xaHfj+Hmg+8jjpLu/W2BO/KjeHNeUM3aIuwCtso8qkBBCMWVj4jS8R1nxmHD?=
+ =?us-ascii?Q?NSSgUX6o3q/r1ZGb3yOrAEjGmYAmF7ydsf00bM1LbqR9m4DXRUbFg0HaehAt?=
+ =?us-ascii?Q?Qn2sZu3/AM4KciOvCcWOmd20cl8SNfeFu/PEuxN5Ub3OjsjKarqoSb9TWTna?=
+ =?us-ascii?Q?qJCuCyQ2NjoHotGAg1QjCPdekANsJfgo/B44Q2IYFC5SZbPYMD2SSjKWc21X?=
+ =?us-ascii?Q?Uk1A0Se7KSiKkETCnV3hBodC4mH50V3daPb/a3/uj29IZJRd+fR5DtmThlES?=
+ =?us-ascii?Q?GNGqgcLk0wLPkOvi4IlNdHxFa4RbW6n8YqcquS7cZfxDhfi5pLtLc5pF3lKH?=
+ =?us-ascii?Q?p2NGrjHVzsfrBUfFfcpspUW/by/8lvX6YX/VqwmQGRYl/1kviomlXtG8Pzhy?=
+ =?us-ascii?Q?5F351cBdq44bLRL5WEBtOwl9b09Dio9AjntKH62vKeDZeXGY/C7SK/z2UBbq?=
+ =?us-ascii?Q?IisUexT5CtyKf3bqPdhtAhzSoADXUATukPnVSZGuTPyYixbVfrI6usSQiewQ?=
+ =?us-ascii?Q?092MaVZDV0VKs3Ke52i1PeX4dLKJu1+g9+Ku+3Iac+6Wj443AhWtNhZUKwKx?=
+ =?us-ascii?Q?DxRaObTWuWXMLAJAL+TaKC6NlPrV5XL+x9yGv37ADFZ+aOn6GOfcPxWgmlPH?=
+ =?us-ascii?Q?w7lRsC+HqtS0oEOlI2Pe6p3xI1Yt+8WUnYgkEKOlnBYTVXKIyQhVzYBGxF9O?=
+ =?us-ascii?Q?A7lmcF3uv5d+gcS7HdYrz45n5W3iQt1sbqn0bch1IpMiaXuM1DVc/cR/r7cL?=
+ =?us-ascii?Q?0hHq5stRdLcgdhuxf+qDOGz5vTqqvMrRPUvoBI/TSaSxfvdIvxCrRBEJgoir?=
+ =?us-ascii?Q?iMsClndjDHyXlLV+6mb5B875/j/3omdK2lzmPiJ4Gdo/Md0xc5457PcO89+a?=
+ =?us-ascii?Q?wMNaY13lnxfgllaitgp8Z7wd3D3aTAGhT57TVnr8IA/p8xDPSs4gHDK41pKM?=
+ =?us-ascii?Q?7d9xEUmAxb+EcTLn5ISKUwvko+1WXy1wKPRZ2d9ADukIpwcf+xxsw0bQEI/5?=
+ =?us-ascii?Q?lBssukZ4KBPnC29tpBw2BO/PoJtsDs7NxczD4Gytu8sLAsNLs5GE53l/QMq7?=
+ =?us-ascii?Q?ZOBjxntxwRKxriFihZvoNxCVb+pc/ptLBOSa29hvYBO3CrzNLB4UicMN59uq?=
+ =?us-ascii?Q?lrG0FjJGUZf2iRP4t2d9/FEGrsQrvo5Y+k8SRlaxML4Nkd5APLK7xOgiKBLM?=
+ =?us-ascii?Q?0kZTKlFXfHgXedgDzNyQaJo5DIbWGnAv95MoH0FF7wZq0UfDcZ2Bzhb2I2qp?=
+ =?us-ascii?Q?KMhT82FWPg3LMke8EBBjq6sjC0aiTWXxSXw9agxLKruRUvTmEAcpj6bCMsuG?=
+ =?us-ascii?Q?XvJTv71EBMSBjShXHOs=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d416755e-7277-464c-d0ea-08dd5740691f
+X-MS-Exchange-CrossTenant-AuthSource: MW6PR12MB8663.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2025 15:07:11.1529
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: V8SQ4KceAQHQGw2IerIrMzrUHE6MFG1qPmQraDbDZ4Itb0VKhUB/PsEnJkfuNyFl
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4049
 
-On 2/25/25 12:54, Miguel Ojeda wrote:
-> On Tue, Feb 25, 2025 at 11:22 AM Petr Pavlu <petr.pavlu@suse.com> wrote:
->>
->> I'd say the easiest is for the entire series to go through the Rust
->> tree. I'd also propose that any updates go primarily through that tree
->> as well.
->>
->> Makes sense, I think it is useful for all changes to this code to be
->> looked at by both Rust and modules people. To that effect, we could add
->> the following under the MODULES SUPPORT entry:
->> F:      rust/kernel/module_param.rs
->> F:      rust/macros/module.rs
->>
->> My slight worry is that this might suggest the entirety of maintenance
->> is on the modules folks. Fortunately, adding the above and running
->> get_maintainer.pl on rust/kernel/module_param.rs gives me a list of
->> people for both Rust and modules, so this could be ok?
+On Thu, Feb 27, 2025 at 12:32:45PM +0100, Danilo Krummrich wrote:
+> On Wed, Feb 26, 2025 at 07:47:30PM -0400, Jason Gunthorpe wrote:
+> > On Wed, Feb 26, 2025 at 10:31:10PM +0100, Danilo Krummrich wrote:
+> > > Let's take a step back and look again why we have Devres (and Revocable) for
+> > > e.g. pci::Bar.
+> > > 
+> > > The device / driver model requires that device resources are only held by a
+> > > driver, as long as the driver is bound to the device.
+> > > 
+> > > For instance, in C we achieve this by calling
+> > > 
+> > > 	pci_iounmap()
+> > > 	pci_release_region()
+> > > 
+> > > from remove().
+> > > 
+> > > We rely on this, we trust drivers to actually do this.
+> > 
+> > Right, exactly
+> > 
+> > But it is not just PCI bar. There are a *huge* number of kernel APIs
+> > that have built in to them the same sort of requirement - teardown
+> > MUST run with remove, and once done the resource cannot be used by
+> > another thread.
+> > 
+> > Basically most things involving function pointers has this sort of
+> > lifecycle requirement because it is a common process that prevents a
+> > EAF of module unload.
 > 
-> Up to you, of course -- a couple days ago (in the context of the
-> hrtimer thread) I wrote a summary of the usual discussion we have
-> around this (copy-pasting here for convenience):
+> You're still mixing topics, the whole Devres<pci::Bar> thing as about limiting
+> object lifetime to the point where the driver is unbound.
 > 
->     So far, what we have been doing is ask maintainers, first, if they
->     would be willing take the patches themselves -- they are the experts
->     of the subsystem, know what changes are incoming, etc. Some subsystems
->     have done this (e.g. KUnit). That is ideal, because the goal is to
->     scale and allows maintainers to be in full control.
-> 
->     Of course, sometimes maintainers are not fully comfortable doing that,
->     since they may not have the bandwidth, or the setup, or the Rust
->     knowledge. In those cases, we typically ask if they would be willing
->     to have a co-maintainer (i.e. in their entry, e.g. like locking did),
->     or a sub-maintainer (i.e. in a new entry, e.g. like block did), that
->     would take care of the bulk of the work from them.
-> 
->     I think that is a nice middle-ground -- the advantage of doing it like
->     that is that you get the benefits of knowing best what is going on
->     without too much work (hopefully), and it may allow you to get more
->     and more involved over time and confident on what is going on with the
->     Rust callers, typical issues that appear, etc. Plus the sub-maintainer
->     gets to learn more about the subsystem, its timelines, procedures,
->     etc., which you may welcome (if you are looking for new people to get
->     involved).
-> 
->     I think that would be a nice middle-ground. As far as I understand,
->     Andreas would be happy to commit to maintain the Rust side as a
->     sub-maintainer (for instance). He would also need to make sure the
->     tree builds properly with Rust enabled and so on. He already does
->     something similar for Jens. Would that work for you?
-> 
->     You could take the patches directly with his RoBs or Acked-bys, for
->     instance. Or perhaps it makes more sense to take PRs from him (on the
->     Rust code only, of course), to save you more work. Andreas does not
->     send PRs to anyone yet, but I think it would be a good time for him to
->     start learning how to apply patches himself etc.
-> 
->     If not, then the last fallback would be putting it in the Rust tree as
->     a sub-entry or similar.
-> 
->     I hope that clarifies (and thanks whatever you decide!).
-> 
->     https://lore.kernel.org/rust-for-linux/CANiq72mpYoig2Ro76K0E-sUtP31fW+0403zYWd6MumCgFKfTDQ@mail.gmail.com/
-> 
-> Would any of those other options work for you?
+> Shutting down asynchronous execution of things, i.e. workqueues, timers, IOCTLs
+> to prevent unexpected access to the module .text section is a whole different
+> topic.
 
-From what I can see in this series, the bindings required adding
-a number of generic functions to the Rust support code and also most
-discussion revolved around that. I'm worried this might be the case also
-for foreseeable future updates, until more building blocks are in place.
-It then makes me think most changes to this code will need to go through
-the Rust tree for now.
+Again, the standard kernel design pattern is to put these things
+together so that shutdown isolates concurrency which permits free
+without UAF.
 
-On the other hand, if the changes are reasonably limited to mostly
-rust/kernel/module_param.rs and rust/macros/module.rs, then yes, I'd say
-it should be ok to take the patches through the modules tree.
+> In other words, assuming that we properly enforce that there are no async
+> execution paths after remove() or module_exit() (not necessarily the same),
+> we still need to ensure that a pci::Bar object does not outlive remove().
 
-@Luis, Sami, Daniel, please shout if you see any problem with this.
+Yes, you just have to somehow use rust to ensure a call pci_iounmap()
+happens during remove, after the isolation.
 
--- 
-Thanks,
-Petr
+You are already doing it with devm.  It seems to me the only problem
+you have is nobody has invented a way in rust to contract that the devm
+won't run until the threads are isolated.
+
+I don't see this as insolvable, you can have some input argument to
+any API that creates concurrency that also pushes an ordered
+destructor to the struct device lifecycle that ensures it cancels that
+concurrency.
+
+> Device resources are a bit special, since their lifetime must be cap'd at device
+> unbind, *independent* of the object lifetime they reside in. Hence the Devres
+> container.
+
+I'd argue many resources should be limited to device unbind. Memory is
+perhaps the only exception.
+
+> > My fear, that is intensifying as we go through this discussion, is
+> > that rust binding authors have not fully comprehended what the kernel
+> > life cycle model and common design pattern actually is, and have not
+> > fully thought through issues like module unload creating a lifetime
+> > cycle for *function pointers*.
+> 
+> I do *not* see where you take the evidence from to make such a generic
+> statement.
+
+Well, I take the basic insistance that is OK to leak stuff from driver
+scope to module scope is not well designed.
+
+> Especially because there aren't a lot of abstractions upstream yet that fall
+> under this category.
+
+And I am thinking forward to other APIs you will need and how they
+will interact and not feeling good about this direction.
+
+> > The thing is once you have a mechanism to shutdown all the stuff you
+> > don't need the overhead of this revocable checking on the normal
+> > paths. What you need is a way to bring your pci::Bar into a safety
+> > contract that remove will shootdown concurrency and that directly
+> > denies references to pci::Bar, and the same contract will guarentee it
+> > frees pci::Bar memory.
+> 
+> This contract needs to be technically enforced, not by convention as
+> we do in C.
+
+People do amazing things with contracts in rust, why is this case so
+hard?
+
+> Data that is accessed from a work item can't be freed under the
+> workqueue by design in Rust.
+
+What? That's madness, alot of work functions are freeing
+something. They are often the terminal point of an object's lifecycle
+because you often have to allocate memory to launch the work in the
+first place.
+
+Certainly if you restrict workqueues to be very limited then alot of
+their challenging problems disappear :\
+
+Jason
