@@ -1,102 +1,162 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4816D14EC5B;
-	Thu, 27 Feb 2025 16:47:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F291DDC1E;
+	Thu, 27 Feb 2025 16:51:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740674835; cv=none; b=ZOcZBtFmhElx3XeCN39HSBWNpbvq7zZw+CzWTNsAnqV2ieaLGc25N2aaCKmj8zKsRLg6kFBsRPX/rRncLfE/hSZD/7NOswIyDaeIOkj0vv8gNpEKKfIJuWi/5KReZMnEI9HgCVL66GsxcgJ/MhXpRmu+z8wmGxLFFFnToY28oA0=
+	t=1740675078; cv=none; b=Zoah5JEMz3UFOfRvUrbxstDDDdUKsPz+BLDCmCPSxYxiMcglArcvErQmtPA/GcsFdp2fLlBVbnsPif8t0q9n8Q5NKLpYJ69e6kp8DV8lKS5zer5vdUxj8Z2Hc5+WUHj4vgYiSUa6r5NEpHyAjcjigWaa5ymxLuOvWauz/6x8Oo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740674835; c=relaxed/simple;
-	bh=PkXZ8moBOc6RsNmidcc+UGjDgfkiuoVB1RmC6o21XW8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PMe8l1xNbE1F5vsWM54+a+thwRrR2Cf0tARhJz0ceQ/doZg0Xfe2cBqypx1A8g9KDOlsK8+4yrVN21ucDDGRmBtYTAsONMW/RzvAlP7w4ExZJMcMjHj8ciKwMc9BdhKmWEEuKPNlvieDwHO5ufOiITFXoHE+TzeMYKTx1zvMczw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C0Ec7Nbc; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740675078; c=relaxed/simple;
+	bh=Foef4ShNKzgr3xKniRsUqqlY2IEQP/gz/C1x5JBaGnk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n4eBvwVmHFNgR2cg5yZ5vIEVlmE+2Ta6iUMZJ3/AQVfBKy/cpsDlOcD/UihePbQB+VoX/kbqGusPUTPD6PVzQdZkWCSyeeAPBrGcnu6U4eAGodFuYq0ovsbtXGhfnDG/Yd2TCvv3MB/yiS2jzKEF+gh3QtOghGnWlD7clZ3Rpi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eyymJuuT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C0Ec7Nbc"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2fe99d5f1e8so300550a91.1;
-        Thu, 27 Feb 2025 08:47:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740674833; x=1741279633; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=F9jSky1hj2tIhqu9jP7zhhU7JSzIy8xPtEaJx9bRobQ=;
-        b=C0Ec7NbcfHFmwRcEPUFc9KUQ0Fw12Nux7MFlkw9/9cgcRBfgQUV4nTCOIFqhrAVS0+
-         HEmct8sd+spL5dcK5avwtvH4f1Ekb6FIysBplLM65d98XAqY9Eb9c0NeTwOmAbFCO2Ar
-         sDwWZou5xEei4+WJKd9j3+wyFXP4BGjjH4tyUk/t4BFwyph3S5KsDkc6BblmEnVkB1zJ
-         yMK3gx/gfN6Lfb+3ewPt29P3a575v207POGbko9sWNqk9UBLpWyLHLswErBYsu81VgXZ
-         xoj4FYLXGSGep7IP4+4Wk5b2hMfb1Hr/CPqa6NIiwJXKpTU4+wX3gP8UHW/SCvwBElhe
-         tvdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740674833; x=1741279633;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=F9jSky1hj2tIhqu9jP7zhhU7JSzIy8xPtEaJx9bRobQ=;
-        b=AoCWNRGnTH6CEeP0caDN6WbhdAaELAb+krgJejoavnZGTpOEe6P3THtJuhnUc1L/1T
-         ckdzmZD/3o6/khjz0NEaCtA3mVok+cFWbNLQBpclUrGNdwbPXNnzdAwHrgMnsBTkAfP8
-         9uY3NglFiAHkRZKSbsT5LCWpidhiZcRYjaO9Vv66t3UTMKH4xVM4iOoUjoYN+U01/Rsr
-         Ngz4CeL9kUcgSTVivFfdyOEx0Ln1xJUbzr4e0Bzu6MXvXtnzSJeA2zU/VYFLygLzMXp+
-         JEvXQg5n5PnkdUek5CQD2blAxqaQGdgxa4Skqdcb09/5pHnIXHEbIIXN4MzoZYI0/uCV
-         ABDw==
-X-Forwarded-Encrypted: i=1; AJvYcCU9dkNLDVbpjkB+Z43evi4b4N7TQqkIOIoIyr997yKSfxFTl8yQIERscxwAjcX6BhpNISkuSjI0JWYPWrNL@vger.kernel.org, AJvYcCUA3AhAQJAzB61T7dNPSa8EiOYm++ZjNJ6e5CPwc0dLeqI2UaXeG8W4F0SVljsmoCZUU4+t+xVObko=@vger.kernel.org, AJvYcCUE0b2aKbmX2Bv9Pr02XDRVkBxxcsv6xzP+WqJ4yksDRU6evOdqOmnKZ7eBfy8mAHA4Cgzn2A3QsHfrzZ+t258=@vger.kernel.org, AJvYcCVoD5qJ8R3+5negMPajYhVtw2LsrF0l2lPZtdc9gCWwIloRXKxZxd3f2MRlbtfocfWTHbgnZEOctwVi@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0hqH5sSlJvpVp8netDag9U6zhtA+laXTGY+EeGgd+lqGEdeQt
-	lLBNq9LivdpVnfSidgwS0GoqzPxK7jErHbz4G/XtaRmrcYaBOs62yvm+gqBPEQfD9CkwBahichS
-	th+NeiqB2nd9BVYy1bvXCJ/RREy4=
-X-Gm-Gg: ASbGnctyS5CQlD+d58+XwZgdFyPy+jWUhMR1bHpPvUD8ip6UMIUxsM2DJVAOk54uH94
-	E/JcziBOUCsx8AWiYexXJJqamZybkjisL9T5cf3GCJdjBv8vRSSH1uPmUx6pyMOcXcfUHF/J1tK
-	mgWpEIu9U=
-X-Google-Smtp-Source: AGHT+IFajF7dRCPy5k5DPrcc95sWKa3zdcOgFu+u7rZcCg6jcEy1yjm1f49y8tftlSkNgxdbYDUEmJTmwUABm1pFvmQ=
-X-Received: by 2002:a17:90b:4a03:b0:2fe:b1b7:788 with SMTP id
- 98e67ed59e1d1-2feb1b707f8mr1033941a91.3.1740674833558; Thu, 27 Feb 2025
- 08:47:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eyymJuuT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D42C4CEDD;
+	Thu, 27 Feb 2025 16:51:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740675077;
+	bh=Foef4ShNKzgr3xKniRsUqqlY2IEQP/gz/C1x5JBaGnk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eyymJuuTy0iFkxn57bvwlpAliGYLaP0EojiVKVw/ipss2QKxRcdEXY9LcMtx8F/zD
+	 osvHC/0tzn7ptCtsFp7WvVDFVJtTPxS9Pq56o61nmSTQ9wZx3SfrzafQV8Lr5oWYDW
+	 sTS5YHcjjcP5S42xF8IIn9qIIZrF2CWgNU7UPBOJoppaKKGPuA2D1tHxUvRPmwsy82
+	 5gjjU8tZUlsHImpVhpLI9t8LAc6OGZJGrz8DavlU2gV5EOXmOYWc7MfRQ2pd6HU/mS
+	 bJDHFmu7r2CPmHMqwakbc8zF8gTJW2J1GKV/Kdmkv/fAJNkEtblbcROqqrmUoz4ECE
+	 8L2IQ75hAPTiA==
+Date: Thu, 27 Feb 2025 17:51:11 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Joel Fernandes <joelagnelf@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	paulmck@kernel.org
+Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
+ implementation
+Message-ID: <Z8CX__mIlFUFEkIh@cassiopeiae>
+References: <20250225210228.GA1801922@joelnvbox>
+ <20250225225756.GA4959@nvidia.com>
+ <Z75WKSRlUVEqpysJ@cassiopeiae>
+ <20250226004916.GB4959@nvidia.com>
+ <Z75riltJo0WvOsS5@cassiopeiae>
+ <20250226172120.GD28425@nvidia.com>
+ <Z7-IHgcVVS8XBurW@cassiopeiae>
+ <20250226234730.GC39591@nvidia.com>
+ <Z8BNXdf3CgqGYjPV@pollux>
+ <20250227150709.GF39591@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250227030952.2319050-1-alistair@alistair23.me>
- <20250227030952.2319050-10-alistair@alistair23.me> <2025022717-dictate-cortex-5c05@gregkh>
- <CAH5fLgiQAdZMUEBsWS0v1M4xX+1Y5mzE3nBHduzzk+rG0ueskg@mail.gmail.com>
- <2025022752-pureblood-renovator-84a8@gregkh> <CAH5fLghbScOTBnLLRDMdhE4RBhaPfhaqPr=Xivh8VL09wd5XGQ@mail.gmail.com>
- <2025022741-handwoven-game-df08@gregkh>
-In-Reply-To: <2025022741-handwoven-game-df08@gregkh>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 27 Feb 2025 17:47:01 +0100
-X-Gm-Features: AQ5f1JrXLnDZJJpbXLybXz3GUfi862adk1qwXJKlDFQtb9StNutkKGNXSf57pXs
-Message-ID: <CANiq72n4UFUraYeHa6ar3=F61C_UxEJ1rq92aOF_hH9rtjN+Dg@mail.gmail.com>
-Subject: Re: [RFC v2 09/20] PCI/CMA: Expose in sysfs whether devices are authenticated
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Alistair Francis <alistair@alistair23.me>, 
-	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, lukas@wunner.de, 
-	linux-pci@vger.kernel.org, bhelgaas@google.com, Jonathan.Cameron@huawei.com, 
-	rust-for-linux@vger.kernel.org, akpm@linux-foundation.org, 
-	boqun.feng@gmail.com, bjorn3_gh@protonmail.com, wilfred.mallawa@wdc.com, 
-	ojeda@kernel.org, alistair23@gmail.com, a.hindborg@kernel.org, 
-	tmgross@umich.edu, gary@garyguo.net, alex.gaynor@gmail.com, 
-	benno.lossin@proton.me, Alistair Francis <alistair.francis@wdc.com>, 
-	=?UTF-8?Q?Emilio_Cobos_=C3=81lvarez?= <emilio@crisal.io>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250227150709.GF39591@nvidia.com>
 
-On Thu, Feb 27, 2025 at 3:04=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> As this seems like it's going to be a longer-term issue, has anyone
-> thought of how it's going to be handled?  Build time errors when
-> functions change is the key here, no one remembers to manually verify
-> each caller to verify the variables are correct anymore, that would be a
-> big step backwards.
+On Thu, Feb 27, 2025 at 11:07:09AM -0400, Jason Gunthorpe wrote:
+> On Thu, Feb 27, 2025 at 12:32:45PM +0100, Danilo Krummrich wrote:
+> > On Wed, Feb 26, 2025 at 07:47:30PM -0400, Jason Gunthorpe wrote:
+> > > On Wed, Feb 26, 2025 at 10:31:10PM +0100, Danilo Krummrich wrote:
+> > > > Let's take a step back and look again why we have Devres (and Revocable) for
+> > > > e.g. pci::Bar.
+> > > > 
+> > > > The device / driver model requires that device resources are only held by a
+> > > > driver, as long as the driver is bound to the device.
+> > > > 
+> > > > For instance, in C we achieve this by calling
+> > > > 
+> > > > 	pci_iounmap()
+> > > > 	pci_release_region()
+> > > > 
+> > > > from remove().
+> > > > 
+> > > > We rely on this, we trust drivers to actually do this.
+> > > 
+> > > Right, exactly
+> > > 
+> > > But it is not just PCI bar. There are a *huge* number of kernel APIs
+> > > that have built in to them the same sort of requirement - teardown
+> > > MUST run with remove, and once done the resource cannot be used by
+> > > another thread.
+> > > 
+> > > Basically most things involving function pointers has this sort of
+> > > lifecycle requirement because it is a common process that prevents a
+> > > EAF of module unload.
+> > 
+> > You're still mixing topics, the whole Devres<pci::Bar> thing as about limiting
+> > object lifetime to the point where the driver is unbound.
+> > 
+> > Shutting down asynchronous execution of things, i.e. workqueues, timers, IOCTLs
+> > to prevent unexpected access to the module .text section is a whole different
+> > topic.
+> 
+> Again, the standard kernel design pattern is to put these things
+> together so that shutdown isolates concurrency which permits free
+> without UAF.
+> 
+> > In other words, assuming that we properly enforce that there are no async
+> > execution paths after remove() or module_exit() (not necessarily the same),
+> > we still need to ensure that a pci::Bar object does not outlive remove().
+> 
+> Yes, you just have to somehow use rust to ensure a call pci_iounmap()
+> happens during remove, after the isolation.
+> 
+> You are already doing it with devm.  It seems to me the only problem
+> you have is nobody has invented a way in rust to contract that the devm
+> won't run until the threads are isolated.
 
-I can look into it, after other build system things are done.
+You can do that, pci::Driver::probe() returns a Pin<KBox<Self>>. This object is
+dropped when the device is unbound and it runs before the devres callbacks.
 
-I talked to Emilio some months ago about this and he told me Firefox
-solves the problem both ways, so we may be able to do something
-similar.
+Using miscdevice as example, your MiscDeviceRegistration would be a member of
+this object and hence dropped on remove() before the devres callbacks revoke
+device resources.
 
-Cheers,
-Miguel
+> 
+> I don't see this as insolvable, you can have some input argument to
+> any API that creates concurrency that also pushes an ordered
+> destructor to the struct device lifecycle that ensures it cancels that
+> concurrency.
+> 
+> > Device resources are a bit special, since their lifetime must be cap'd at device
+> > unbind, *independent* of the object lifetime they reside in. Hence the Devres
+> > container.
+> 
+> I'd argue many resources should be limited to device unbind. Memory is
+> perhaps the only exception.
+
+There is a difference between should and must. A driver is fully free to bind
+the lifetime of a miscdevice to either to the driver lifetime (object returned
+by probe) or the module lifetime, both can be valid. That's a question of
+semantics.
+
+A device resource though is only allowed to be held by a driver as long as the
+corresponding device is bound to the driver. Hence an API that does not ensure
+that the pci::Bar is actually, forcefully dropped on device unbind is unsound.
+
+So, let me ask you again, how do you ensure that a pci::Bar is dropped on device
+unbind if we hand it out without the Devres container?
+
+> 
+> > > My fear, that is intensifying as we go through this discussion, is
+> > > that rust binding authors have not fully comprehended what the kernel
+> > > life cycle model and common design pattern actually is, and have not
+> > > fully thought through issues like module unload creating a lifetime
+> > > cycle for *function pointers*.
+> > 
+> > I do *not* see where you take the evidence from to make such a generic
+> > statement.
+> 
+> Well, I take the basic insistance that is OK to leak stuff from driver
+> scope to module scope is not well designed.
+> 
+
+Who insists on leaking stuff from driver scope to module scope is OK?
