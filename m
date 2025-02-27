@@ -1,146 +1,290 @@
-Received: from r-passerv.ralfj.de (r-passerv.ralfj.de [109.230.236.95])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716BB20409A;
-	Thu, 27 Feb 2025 18:44:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.230.236.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AFDD21858D;
+	Thu, 27 Feb 2025 19:07:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740681900; cv=none; b=GY4VVioRZLcM/iw708DCbVMJDHM+kbrgSUckHFv+stJQXReV/D++QIw5itWr4ExSEVW/QB6kRIc934wB+Tb9Pd33O9JGXmFXw8/uOpkrxZfQUFquNIVRzal40WwpEijUnMJT11wGNiibWzI1tiG+Gi6gMavtBLtJ9K3k+gQ18RE=
+	t=1740683229; cv=none; b=Mj0mbqiMdCn9sP8YCwlbxX3vwnBq1HxG5eSJtnQQdi69G/Rb8KhJI8Sy/0Xp6YhqsTZY6ImQxC39o8zb2cLWr/ST5PSwnVDw6hF62N4wbqOuLu8oc9kvwbUWRf3BmuHReaqLq5SxKukLbQN3ZUa5ZYhgHnQWuRcGTpAw5GmV61U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740681900; c=relaxed/simple;
-	bh=jPTjTgvjlrxaDcxejfvbSiaPv936H+Y8dBeB7m3EO0M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D4+FUBp4GROuKivEVPtOouIqFQLGt37IUlwXrMkmU8K8IdhEmIh6MyNEWZh9Te6CBLu+CnD4pvbLreWEggNU+zqPDfyBsiDhiWvLmO71bgz7L+x/pWRWQSstkmeFR/Ci6QUcXLIs7UgxcZ5Qq5NAab9f98N5qFzzf1w3wGp9nJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=s4GkiV94; arc=none smtp.client-ip=109.230.236.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ralfj.de
+	s=arc-20240116; t=1740683229; c=relaxed/simple;
+	bh=wJ7LS04maCw8spcI4TrOxqyLwpxqVVvP5R5S2mwqQbM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SRzE9GQe5E5XJZlethSGWVoEq2mpry6snl8GroWiFcYOEOJY2o6OOCt4IRbrN3IHXQAtkzGS3XFSQY0wFOIA2okHndaTMrqGS24Zt6HHnwCnd7zn1wlftZoaHZGFMyN8hyMaGSj5QpLZHLUP0P99ir9z5oOm0fdQQBDyy+FglEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lPKm1jVx; arc=none smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="s4GkiV94"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ralfj.de; s=mail;
-	t=1740681896; bh=jPTjTgvjlrxaDcxejfvbSiaPv936H+Y8dBeB7m3EO0M=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=s4GkiV94SUr13UlmFx0h+q55GTEas139UlMO9uqpC9/ZUfBBZTcvjVbKpiNuH5zg4
-	 Fsl/OnPe+fAWmNngvdLBJVBRQQRq5RIFDZ5J35RIMnvYnw70nyOLTJBSlFBSFNhvj5
-	 iSShteSlWLxZ4toVyL+0tOLF6xH9/pe+DrhQ1iuo=
-Received: from [IPV6:2001:8e0:207e:3500:4ab6:48fe:df57:b084] (2001-8e0-207e-3500-4ab6-48fe-df57-b084.ewm.ftth.ip6.as8758.net [IPv6:2001:8e0:207e:3500:4ab6:48fe:df57:b084])
-	by r-passerv.ralfj.de (Postfix) with ESMTPSA id 870E22052A91;
-	Thu, 27 Feb 2025 19:44:56 +0100 (CET)
-Message-ID: <7d77b05f-393e-48d9-9f3f-31b80a64ae7a@ralfj.de>
-Date: Thu, 27 Feb 2025 19:44:56 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lPKm1jVx"
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-54524740032so1280924e87.3;
+        Thu, 27 Feb 2025 11:07:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740683224; x=1741288024; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9xy3Oj2ldzTgrhOEQY5Rr8+ha+y2IXOarnF1z09Z2lU=;
+        b=lPKm1jVx8yo7uOLho9SHh1n6wKk1jxKX4v9hzPzVEj3/BnoVQesOjJ0BtKj8uIYvtg
+         uAbO7gwvUYuEhlhX0cf9YTaaSLkVnNQtrQwcADUqZDmEcpY7SUZWynmlJCUaxbIFb4ey
+         HcJcrA3SFjrzzREN8USES0TxomaybTCzUfjOS7bFdnADLdTOgC2DT/fTapz0JYOrKSWu
+         67DYIxnFdDphsSaL/w5ag+EMEQdlJbtgZkshrT3MS2kEl0g+DsJmPAaptbVImI8dHTjw
+         k2NY0MhiU2nCw1uul2d0hmmleToI8+zuPYRjSaqjgoHeE5lzG/m6i2D73VcnZRQbDVmR
+         kjLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740683224; x=1741288024;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9xy3Oj2ldzTgrhOEQY5Rr8+ha+y2IXOarnF1z09Z2lU=;
+        b=kZgMj22DQKzbVK/eX4NmlqVoQ3C31COGpapjr52M8vK2H8GYMVPcVmFY7sy8r123PL
+         77nZgkN7ZY1KyMq+RXRpfroVGFhLyi8rvceqNb6y6qnFyuda6+bMT+sHvokfXz6jylCz
+         5o0MLzfNS+l9+EnKtqhGXDt3waPAwG6y8NFHazK+vbXl+Utb3/EijlQHxv0/mWkkspWf
+         KDrZEIUf9BVm/JfwQoGq4V/D6FvDv9ndNYF04Gzf37zUbcUzNpgX6YwAlQoxefy4yk8Q
+         QmYxEik6PYxBimR3rHyMAmIhWMR29Zv/EigCgZHhuGt2Ap9m6FkUDj5PLUCSWjE1+1dB
+         OgWA==
+X-Forwarded-Encrypted: i=1; AJvYcCXVB65KRHrIIXZ6/O5+kedujXAB2c6aZF6xVedsjT+Fegqn7ZD5P+g13klVx2IL3fVvYK4V0PZgy3jFB6U=@vger.kernel.org, AJvYcCXiFLkkI5oODWx7lJ1/qW3+/6DZQ/wsIFn/8gj/USh5owak9vdHfvR9DHhY7VmDwxCuS8lmQ6vc7zj7h0avLoM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFBU4cyHNK6nP00d5IzpBOs4rfHLq5mKhKHz/9MoP2RVAxVpVP
+	G13gSvZ9bEFIoyzgJt/YgImlQGG+hilhIkF7mgIM8AkPN7XzKjkow2TyRRRb7ZxsVBkzomH+S2E
+	EAkw81IuBA1zsFWfgH7be0bQAi4o=
+X-Gm-Gg: ASbGncuL6jBGKQWlVKP+TqkBOXpgu7E8GsqhhI58vzs0soIMsarO0tcaBE7xL30aOVZ
+	+oROHhUBNzF3aX1U16pSjXAGeaEdgpSSmK5UXkYzA1t5vNqHtAXP5RhU4hTprJ9s4txoh73YMeH
+	FdYrFYf55N
+X-Google-Smtp-Source: AGHT+IHUshUoYHkR9uVcI3jDioRWIALbex8qiEz8jjAKgU/6UJe7mUJOpyTCm2OKbQMksLIjSmuA73tf1gj4Os1F0qc=
+X-Received: by 2002:a05:6512:2820:b0:545:5a5:b69f with SMTP id
+ 2adb3069b0e04-5494c107e18mr305357e87.9.1740683224218; Thu, 27 Feb 2025
+ 11:07:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: C aggregate passing (Rust kernel policy)
-To: Linus Torvalds <torvalds@linux-foundation.org>,
- Martin Uecker <uecker@tugraz.at>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Ventura Jack <venturajack85@gmail.com>,
- Kent Overstreet <kent.overstreet@linux.dev>, Gary Guo <gary@garyguo.net>,
- airlied@gmail.com, boqun.feng@gmail.com, david.laight.linux@gmail.com,
- ej@inai.de, gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com,
- ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
- miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
 References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
- <20250222141521.1fe24871@eugeo>
- <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
  <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
- <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
- <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
- <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
- <CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com>
- <5d7363b0-785c-4101-8047-27cb7afb0364@ralfj.de>
- <CAHk-=wh=8sqvB-_TkwRnvL7jVA_xKbzsy9VH-GR93brSxTp60w@mail.gmail.com>
- <ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at>
- <CAHk-=whLSWX=-5-z4Q8x1f_NLrHd0e3afbEwYPkkVSXj=xT-JQ@mail.gmail.com>
- <09e282a9c02fb07ba4fc248f14c0173d9b19179a.camel@tugraz.at>
- <CAHk-=wjqmHD-3QQ_9o4hrkhH57pTs3c1zuU0EdXYW23Vo0KTmQ@mail.gmail.com>
-Content-Language: en-US, de-DE
-From: Ralf Jung <post@ralfj.de>
-In-Reply-To: <CAHk-=wjqmHD-3QQ_9o4hrkhH57pTs3c1zuU0EdXYW23Vo0KTmQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+ <CANiq72mdzUJocjXhPRQEEdgRXsr+TEMt99V5-9R7TjKB7Dtfaw@mail.gmail.com>
+ <lz7hsnvexoywjgdor33mcjrcztxpf7lzvw3khwzd5rifetwrcf@g527ypfkbhp2>
+ <780ff858-4f8e-424f-b40c-b9634407dce3@ralfj.de> <CAFJgqgRN0zwwaNttS_9qnncTDnSA-HU5EgAXFrNHoPQ7U8fUxw@mail.gmail.com>
+ <f3a83d60-3506-4e20-b202-ef2ea99ef4dc@ralfj.de> <CAFJgqgR4Q=uDKNnU=2yo5zoyFOLERG+48bFuk4Dd-c+S6x+N5w@mail.gmail.com>
+ <7edf8624-c9a0-4d8d-a09e-2eac55dc6fc5@ralfj.de> <CAFJgqgS-S3ZbPfYsA-eJmCXHhMrzwaKW1-G+LegKJNqqGm31UQ@mail.gmail.com>
+ <d29ebda1-e6ca-455d-af07-ac1daf84a3d2@ralfj.de>
+In-Reply-To: <d29ebda1-e6ca-455d-af07-ac1daf84a3d2@ralfj.de>
+From: Ventura Jack <venturajack85@gmail.com>
+Date: Thu, 27 Feb 2025 12:06:50 -0700
+X-Gm-Features: AQ5f1JrjxNgL0EUlJ7aAqjswwz9TyAVgr8OSzI_jWIv3Ro6Vgwf5kx2j5898JCg
+Message-ID: <CAFJgqgQ=dJk7Jte-aaB55_CznDEnSVcy+tEh83BwmrMVvOpUgQ@mail.gmail.com>
+Subject: Re: C aggregate passing (Rust kernel policy)
+To: Ralf Jung <post@ralfj.de>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>, 
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	torvalds@linux-foundation.org, airlied@gmail.com, boqun.feng@gmail.com, 
+	david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, 
+	hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Thu, Feb 27, 2025 at 10:58=E2=80=AFAM Ralf Jung <post@ralfj.de> wrote:
+> >> https://godbolt.org/z/rjaWc6EzG
+> >
+> > That example uses a compiler-specific attribute AFAIK, namely
+> >
+> >      __attribute__((noinline))
+> >
+> > When using compiler-specific attributes and options, the
+> > original language is arguably no longer being used, depending
+> > on the attribute. Though a language being inexpressive and
+> > possibly requiring compiler extensions to achieve some goals,
+> > possibly like in this C example, can be a disadvantage in itself.
+>
+> That attribute just exists to make the example small and fit in a single =
+file.
+> If you user multiple translation units, you can achieve the same effect w=
+ithout
+> the attribute. Anyway compilers promise (I hope^^) that that particular
+> attribute has no bearing on whether the code has UB. So, the question of =
+whether
+> the program without the attribute has UB is still a very interesting one.
+>
+> At least clang treats this code as having UB, and one can construct a sim=
+ilar
+> example for gcc. IMO this is not backed by the standard itself, though it=
+ can be
+> considered backed by some defect reports -- but those were for earlier ve=
+rsions
+> of the standard so technically, they do not apply to C23.
 
-> So "safe rust" should generally not be impacted, and you can make the
-> very true argument that safe rust can be optimized more aggressively
-> and migth be faster than unsafe rust.
-> 
-> And I think that should be seen as a feature, and as a basic tenet of
-> safe vs unsafe. A compiler *should* be able to do better when it
-> understands the code fully.
+That is fair. For C++26, I suspect that the behavior will actually
+be officially defined as "erroneous behavior". For C, it is very
+unfortunate if the compilers are more strict than the standard
+in this case.
 
-That's not quite how it works in Rust. One basic tenet of unsafe is that unsafe 
-does not impact program semantics at all. It would be very surprising to most 
-Rust folks if adding or removing or changing the scope of an unsafe block could 
-change what my program does (assuming the program still builds and passes the 
-usual safety checks).
+I wonder why if that is the case here. C and C++ (also before C++26)
+differ on that subject. The differences between C and C++ have
+likely caused bugs and issues for both compilers and users.
+Though the cause could also be something else.
 
-Now, is there an interesting design space for a language where the programmer 
-somehow marks blocks of code where the semantics should be "more careful"? 
-Absolutely, I think that is quite interesting. However, it's also not at all 
-clear to me how that should actually be done, if you try to get down to it and 
-write out the proper precise, ideally even formal, spec. Rust is not exploring 
-that design space, at least not thus far. In fact, it is common in Rust to use 
-`unsafe` to get better performance (e.g., by using a not-bounds-checked array 
-access), and so it would be counter to the goals of those people if we then 
-optimized their code less because it uses `unsafe`.
+I am surprised that the C standard is lax on this point in some
+cases. It is related to values that are or are not trap representations/
+non-value representations, and variables that could or could
+not be registers, as I understand one explanation I found.
 
-There's also the problem that quite a few optimizations rely on "universal 
-properties" -- properties that are true everywhere in the program. If you allow 
-even the smallest exception, that reasoning breaks down. Aliasing rules are an 
-example of that: there's no point in saying "references are subject to strict 
-aliasing requirements in safe code, but in unsafe blocks you are allowed to 
-break that". That would be useless, then we might as well remove the aliasing 
-requirements entirely (for the optimizer; we'd keep the borrow checker of 
-course). The entire point of aliasing requirements is that when I optimize safe 
-code with no unsafe code in sight, I can make assumptions about the code in the 
-rest of the program. If I cannot make those assumptions any more, because some 
-unsafe code somewhere might actually legally break the aliasing rules, then I 
-cannot even optimize safe code any more. (I can still do the always-correct 
-purely local aliasing analysis you mentioned, of course. But I can no longer use 
-the Rust type system to provide any guidance, not even in entirely safe code.)
+> > Rust is more willing to break existing code in projects, causing
+> > previously compiling projects to no longer compile. rustc does this
+> > rarely, but it has happened, also long after Rust 1.0.
+> >
+> >  From last year, 2024.
+> >
+> >      https://internals.rust-lang.org/t/type-inference-breakage-in-1-80-=
+has-not-been-handled-well/21374
+> >          "Rust 1.80 broke builds of almost all versions of the
+> >          very popular time crate (edit: please don't shoot the
+> >          messenger in that GitHub thread!!!)
+> >
+> >          Rust has left only a 4-month old version working.
+> >          That was not enough time for the entire Rust
+> >          ecosystem to update, especially that older
+> >          versions of time were not yanked, and users
+> >          had no advance warning that it will stop working.
+> >
+> >          A crater run found a regression in over 5000 crates,
+> >          and that has just been accepted as okay without
+> >          any further action! This is below the level of stability
+> >          and reliability that Rust should have."
+> >
+> > If C was willing to break code as much as Rust, it would be easier to
+> > clean up C.
+>
+> Is that true? Gcc updates do break code.
 
-Kind regards,
-Ralf
+Surely not as much as Rust, right? From what I hear from users
+of Rust and of C, some Rust developers complain about
+Rust breaking a lot and being unstable, while I instead
+hear complaints about C and C++ being unwilling to break
+compatibility.
 
-> 
->> There would certainly be opposition if this fundamentally
->> diverges from C++ because no compiler framework will seriously
->> consider implementing a completely different memory model
->> for C (or for Rust) than for C++.
-> 
-> Well, if the C++ peoiple end up working on some "safe C" model, I bet
-> they'll face the same issues.
-> 
->> I could also imagine that the problem here is that it is
->> actually very difficult for compilers to give the guarantess
->> you want, because they evolved from compilers
->> doing optimization for single threads and and one would
->> have to fix a lot of issues in the optimizers.  So the
->> actually problem here might be that nobody wants to pay
->> for fixing the compilers.
-> 
-> I actually suspect that most of the work has already been done in practice.
-> 
-> As mentioned, some time ago I checked the whole issue of
-> rematerializing loads, and at least gcc doesn't rematerialize loads
-> (and I just double-checked: bad_for_rematerialization_p() returns true
-> for mem-ops)
-> 
-> I have this memory that people told me that clang similarly
-> 
-> And the C standards committee already made widening stores invalid due
-> to threading issues.
-> 
-> Are there other issues? Sure. But remat of memory loads is at least
-> one issue, and it's one that has been painful for the kernel - not
-> because compilers do it, but because we *fear* compilers doing it so
-> much.
-> 
->             Linus
+Rust does admittedly a lot of the time have tools to
+mitigate it, but Rust sometimes go beyond that.
+C code from 20 years ago can often be compiled
+without modification on a new compiler, that is a common
+experience I hear about. While I do not know if that
+would hold true for Rust code. Though Rust has editions.
+The time crate breaking example above does not
+seem nice.
 
+> > A fear I have is that there may be hidden reliance in
+> > multiple different ways on LLVM, as well as on rustc.
+> > Maybe even very deeply so. The complexity of Rust's
+> > type system and rustc's type system checking makes
+> > me more worried about this point. If there are hidden
+> > elements, they may turn out to be very difficult to fix,
+> > especially if they are discovered to be fundamental.
+> > While having one compiler can be an advantage in
+> > some ways, it can arguably be a disadvantage
+> > in some other ways, as you acknowledge as well
+> > if I understand you correctly.
+>
+> The Rust type system has absolutely nothing to do with LLVM. Those are
+> completely separate parts of the compiler. So I don't see any way that LL=
+VM
+> could possibly influence our type system.
+
+Sorry for the ambiguity, I packed too much different
+information into the same block.
+
+> > You mention ossifying, but the more popular Rust becomes,
+> > the more painful breakage will be, and the less suited
+> > Rust will be as a research language.
+>
+> I do not consider Rust a research language. :)
+
+It reminds me of Scala, in some ways, and some complained
+about Scala having too much of a research and experimental
+focus. I have heard similar complaints about Rust being
+too experimental, and that was part of why they did not
+wish to adopt it in some organizations. On the other hand,
+Amazon Web Services and other companies already
+use Rust extensively. AWS might have more than 300
+Rust developer employed. The more usage and code,
+the more painful breaking changes might be.
+
+> > I hope that any new language at least has its
+> > language developers ensure that they have a type
+> > system that is formalized and proven correct
+> > before that langauge's 1.0 release.
+> > Since fixing a type system later can be difficult or
+> > practically impossible. A complex type system
+> > and complex type checking can be a larger risk in this
+> > regard relative to a simple type system and simple
+> > type checking, especially the more time passes and
+> > the more the language is used and have code
+> > written in it, making it more difficult to fix the language
+> > due to code breakage costing more.
+>
+> Uff, that's a very high bar to pass.^^ I think there's maybe two language=
+s ever
+> that meet this bar? SML and wasm.
+
+You may be right about the bar being too high.
+I would have hoped that it would be easier to achieve
+with modern programming language research and
+advances.
+
+> >>> There are some issues in Rust that I am curious as to
+> >>> your views on. rustc or the Rust language has some type
+> >>> system holes, which still causes problems for rustc and
+> >>> their developers.
+> >>>
+> >>>       https://github.com/lcnr/solver-woes/issues/1
+> >>>       https://github.com/rust-lang/rust/issues/75992
+> >>>
+> >>> Those kinds of issues seem difficult to solve.
+> >>>
+> >>> In your opinion, is it accurate to say that the Rust language
+> >>> developers are working on a new type system for
+> >>> Rust-the-language and a new solver for rustc, and that
+> >>> they are trying to make the new type system and new solver
+> >>> as backwards compatible as possible?
+> >>
+> >> It's not really a new type system. It's a new implementation for the s=
+ame type
+> >> system. But yes there is work on a new "solver" (that I am not involve=
+d in) that
+> >> should finally fix some of the long-standing type system bugs. Specifi=
+cally,
+> >> this is a "trait solver", i.e. it is the component responsible for dea=
+ling with
+> >> trait constraints. Due to some unfortunate corner-case behaviors of th=
+e old,
+> >> organically grown solver, it's very hard to do this in a backwards-com=
+patible
+> >> way, but we have infrastructure for extensive ecosystem-wide testing t=
+o judge
+> >> the consequences of any given potential breaking change and ensure tha=
+t almost
+> >> all existing code keeps working. In fact, Rust 1.84 already started us=
+ing the
+> >> new solver for some things
+> >> (https://blog.rust-lang.org/2025/01/09/Rust-1.84.0.html) -- did you no=
+tice?
+> >> Hopefully not. :)
+> >
+> > If it is not a new type system, why then do they talk about
+> > backwards compatibility for existing Rust projects?
+>
+> If you make a tiny change to a type system, is it a "new type system"? "n=
+ew type
+> system" sounds like "from-scratch redesign". That's not what happens.
+
+I can see your point, but a different type system would be
+different. It may be a matter of definition. In practice, the
+significance and consequences would arguably depend on
+how much backwards compatibility it has, and how many and
+how much existing projects are broken.
+
+So far, it appears to require a lot of work and effort for
+some of the Rust language developers, and my impression
+at a glance is that they have significant expertise, yet have
+worked on it for years.
+
+Best, VJ.
