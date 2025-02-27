@@ -1,208 +1,96 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DDE21E834C
-	for <rust-for-linux@vger.kernel.org>; Thu, 27 Feb 2025 17:02:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740675772; cv=none; b=etXwRbrgIMFNCwCdpJl3KhI/YMxDNAG6OSXRV/7/NFw3tMX/2vIYkS6kaEB7K7wXFEdRdK5xhH4ECPFrrnfV0JqnNWRXD+qi0SAcG16h+mvF4MfcH0MOYHVVYVjEIwE76v0paN0oqUTLe67m5yGetXULNDdiuxaJMnpKXMWHWpo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740675772; c=relaxed/simple;
-	bh=S/CadH3DvJMHRT4OjtgeHq3HpKEISiEOD3rbSMx9ntQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=jYgvoj0Ol3eQyMvyRXA3kVOMkEzElJAamMAh8dQ892opoCMm5ZUTS58caRciJ2fr2MclZBnBqHi7llhB0jDxHxA+1PENuo4EvLV0oES7C1QVWK82ffLgvF4QkvSdUWUnXJFrDWNeONxG9AE6ysQBaujhaWWWxgg4fSEG7Yycdf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RrqwkKI1; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9452F136351;
+	Thu, 27 Feb 2025 17:31:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740677477; cv=pass; b=Fuo6VdumJvj8w6YDNF3yr8LyIFZcgLtEvU8HEU7BFCIL4hcCxUalp79sXDLsxoDtOtzieu0ha9ALZ1L1vDO1kII4nu5FgL8VWYfY4rAppRpZFba0pmr2Y5STzUcHCIVLxkKgUD3Px3frrrr2/dSOTaZ5Cdk/Av/GaHD8yTGb+hs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740677477; c=relaxed/simple;
+	bh=pY0h9Uqj3mrF8jCMF8B0UPDavohCQ9bLCBbrtld9yos=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=HM/4GydM6ZonVA6S4ZuUnJ8hsP/3csIzwjyMPsulgiAM1zLeVHLfnp71VK+N8DVh7Ha5lOXmmT8eEbFN0cbdU9pl8KJajDlTS1RiXfJgzWT6FI4HjHHdBe9M6t5JvoriKjs85F2gu2GoCYQhchE/QBOpMzJSe/O8CP+IRFpMqIo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=JL52TaCD; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RrqwkKI1"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4399a5afc72so6457195e9.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 27 Feb 2025 09:02:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740675769; x=1741280569; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8s0UWUw+NP4XU/nMlgmR6Pxopak35wQY5LWhcc4hBQ8=;
-        b=RrqwkKI1jezpTI/29BINLYaXl8AMXrDnF4tVuP/Ert5SFb4LpIH9ywR+07ILRrqDcV
-         A1kRC8RYgMMeDUxipeoKIso0nA9HLtvn3/DcpT/SYIDNW7iYA75XeIkDGK8QlZM/HC+U
-         W+LH/BwwbKbJSi+tpe1La4SzRAwGDWne8LCxiXa8j6BXyVJv2ghYDRDD8qXGY0UmKfCK
-         CJd6YGmF2DEGNuA0FbONbJga4B83WmsIko5Y7aJe1/HXBJqdYfxRlB98RZXvUXoW5EUo
-         /HEpc+CMXicdnHrgYnCLJOm3eeE6bqWIYl/3fBs8M7fQWh4hwzhxaN2f0Us/pRarzjTG
-         vgng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740675769; x=1741280569;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8s0UWUw+NP4XU/nMlgmR6Pxopak35wQY5LWhcc4hBQ8=;
-        b=jahxOTXBJt/bfz5Z9AlgjJhkvQpH7F1zKpEvQAO+yhi0Wl85hikn0jadUs9+nG4E7T
-         FQb0F2ZsK92GAiUZqNqJHHYbjFfxfwg6r+q9hk8wf3wRh6KrzpzdZmypVeBEI7vQiZRj
-         8S6T2vP1PlQb8nlSZukTclah3mbqltYXaTbWPOgWwe1ESnmua8o3K9ukNaR49JTdIC/F
-         M4F6KoiTzF0BGCOgUbhwxpKk/MYylCzAPy0+GOE9EIVvumflYnnGYTPUM7qT/Nfe3BkS
-         obOXibfuTs7DnmkEkXZdIk2BKnnVOjDOpkVXLyKOef6aVtqkoVgXTX8vHmLFMM13H4VC
-         GEsw==
-X-Forwarded-Encrypted: i=1; AJvYcCXRIS8aPffqw7wz6tXqZ4oeim7xbBoMv4TBns0I1B9ICMbK6Ib4j4HfUcLwR0EjUvbQH1SzOGdhrcZKHzjCJw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7LO4YJbwUQIlgxWpOmZs18KDfWpKHBLAtqasUihSmbp7aGVAe
-	OEXAxcT3VylGRn6n3yFTFWNfsYoCiR545GZsKsl0qqYGYYu4Oz5Goz6OBolHQwBntFTfarr6yDQ
-	5lcpvLrHW+2MHiA==
-X-Google-Smtp-Source: AGHT+IF2Xw7X7IQT2rkcDypOfKFxDqjIrX2qnVlYKcqy8xjIfF21Kp4rgbVw3IFZsGDwNrVp+GAGk1g3IkDcgqA=
-X-Received: from wmrn38.prod.google.com ([2002:a05:600c:5026:b0:439:5529:c5a])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4683:b0:439:8523:36cc with SMTP id 5b1f17b1804b1-43ab07ab212mr130473315e9.11.1740675766999;
- Thu, 27 Feb 2025 09:02:46 -0800 (PST)
-Date: Thu, 27 Feb 2025 17:02:02 +0000
-In-Reply-To: <20250227-export-macro-v1-0-948775fc37aa@google.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="JL52TaCD"
+ARC-Seal: i=1; a=rsa-sha256; t=1740677409; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=FTN4iejmJbD3zVMnol9SB/PeFykB9egs/6XaEr/QRjdTPaUdScVFt6lCZY6KEANYdHHDJy7fCZuRPdBEpKhrEFG7SHykfe5UPS7hwBGtm0xkzcnKbd5SR/flZeOajo7BsHmUaYtj9Oy6dqmuWmfeWKJ/d+BDkF/l/rqtyKNJqSg=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1740677409; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=pY0h9Uqj3mrF8jCMF8B0UPDavohCQ9bLCBbrtld9yos=; 
+	b=OU4vLbh9z0Wy5rSJIPqAAiv0qNUjz4AmXUiLWpQ6fsJ4kSSGuqcfvGLDSTn8l8rsgKSm+TYNAJvdbiFXFpff2EF+3lU9XW0t1n3J8Dt0zKrNbhbPtRxzDCmO/xocviDo06i+l3xHHXTQomiq4gfIwGQ8FnbThMVrM0Ysr0rng5E=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1740677409;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=pY0h9Uqj3mrF8jCMF8B0UPDavohCQ9bLCBbrtld9yos=;
+	b=JL52TaCD/b1D2zQ/WgtmajSca6k2sVDq6Nnt4Hj57q3CcJEGAv4w7b1HwGEUjIJr
+	xVwrhtV/sA5C2hjR/uK6oo5gsYD3G5J5JLwnyLLVnxa42ojnl2h8udtN5mKbNquqzsD
+	VGlODyRoOomK1FPb5kIcGn0UJJHSCdPZqrNCSB/E=
+Received: by mx.zohomail.com with SMTPS id 1740677406210259.24822276471855;
+	Thu, 27 Feb 2025 09:30:06 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250227-export-macro-v1-0-948775fc37aa@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4336; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=S/CadH3DvJMHRT4OjtgeHq3HpKEISiEOD3rbSMx9ntQ=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnwJqrjNOcllCa9cciW+U2KURIxpkWZ2ke2YQw2
- eOs1U8wRVqJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ8CaqwAKCRAEWL7uWMY5
- RrfjEACiQeNf/FN/WO6ae595R5V8X8mlq6tDi2z14jscIkTR6tdD4hB/GYZ8LqguvjmV66eWRr8
- hp365vPCtX8J6i8ip1k1500a0m1MOrFZMdSLEm1OOEQZR1mAK5COY9B8dNWwPGOuiNCWFHxZJgm
- pXdbJCX+hCjLoXE8ffYnDdesNFpiF2PykKFcT3rq5pt3fkgVsztN1UVf/70455og0U2lVlkuA8m
- +jEslSYIm150xzTKA/ZP7cNbG4AxiME4FE8MMHX2PWY/NH46PHbhQK44+wiMmzBjqrrWxRHzll/
- Chfyy+ijKbNNsosJmTFxd0UtSV3Ev4HHtt89WUVb40vynVnOeNcIWdDU5T2m5Fjfc+Coz6XLl78
- 789yncBz0QE4U1IPfMl39G29+j+6O6djWyjsjiFjP0rWjXEAbm0cXxBgTAf5PMttLGfeWugmBXK
- 0i7HI5yY79+iaoyLnrd34l2JGXq7h3PQXTg2fp+BAWUHAN59/PEU6vof9qH2hvyjYY0UF3wtHwn
- +lSCpiVyZGe+hh7xnb8T0+bQhen5styxzN+f3ogFnvWojl3D/FcZbTpc0yVz3OeiFrjEyQ04F9p
- s9YMfmxo31ssqCcXPJm4toHCJ2NVRtdsUusbsQjLc2uzIeCIDUUkTQ+ZQNDhaKV/9+XAm/PJiad fl3aahhNhEiEwig==
-X-Mailer: b4 0.14.1
-Message-ID: <20250227-export-macro-v1-4-948775fc37aa@google.com>
-Subject: [PATCH 4/4] panic_qr: use new #[export] macro
-From: Alice Ryhl <aliceryhl@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>
-Cc: Petr Mladek <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
+Subject: Re: [PATCH v11 0/8] rust: Add IO polling
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20250220070611.214262-1-fujita.tomonori@gmail.com>
+Date: Thu, 27 Feb 2025 14:29:45 -0300
+Cc: linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ netdev@vger.kernel.org,
+ andrew@lunn.ch,
+ hkallweit1@gmail.com,
+ tmgross@umich.edu,
+ ojeda@kernel.org,
+ alex.gaynor@gmail.com,
+ gary@garyguo.net,
+ bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me,
+ a.hindborg@samsung.com,
+ aliceryhl@google.com,
+ anna-maria@linutronix.de,
+ frederic@kernel.org,
+ tglx@linutronix.de,
+ arnd@arndb.de,
+ jstultz@google.com,
+ sboyd@kernel.org,
+ mingo@redhat.com,
+ peterz@infradead.org,
+ juri.lelli@redhat.com,
+ vincent.guittot@linaro.org,
+ dietmar.eggemann@arm.com,
+ rostedt@goodmis.org,
+ bsegall@google.com,
+ mgorman@suse.de,
+ vschneid@redhat.com,
+ tgunders@redhat.com,
+ me@kloenk.dev,
+ david.laight.linux@gmail.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <4647720C-28CA-4E18-AD1E-55844CF078E6@collabora.com>
+References: <20250220070611.214262-1-fujita.tomonori@gmail.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+X-Mailer: Apple Mail (2.3826.300.87.4.3)
+X-ZohoMailClient: External
 
-This validates at compile time that the signatures match what is in the
-header file. It highlights one annoyance with the compile-time check,
-which is that it can only be used with functions marked unsafe.
+Hi Fujita,
 
-If the function is not unsafe, then this error is emitted:
+Would you be interested in working on read_poll_timeout_atomic() as =
+well?
 
-error[E0308]: `if` and `else` have incompatible types
-   --> <linux>/drivers/gpu/drm/drm_panic_qr.rs:987:19
-    |
-986 | #[export]
-    | --------- expected because of this
-987 | pub extern "C" fn drm_panic_qr_max_data_size(version: u8, url_len: usize) -> usize {
-    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected unsafe fn, found safe fn
-    |
-    = note: expected fn item `unsafe extern "C" fn(_, _) -> _ {kernel::bindings::drm_panic_qr_max_data_size}`
-               found fn item `extern "C" fn(_, _) -> _ {drm_panic_qr_max_data_size}`
+There would be a user for that.
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- drivers/gpu/drm/drm_panic.c     |  5 -----
- drivers/gpu/drm/drm_panic_qr.rs | 15 +++++++++++----
- include/drm/drm_panic.h         |  7 +++++++
- rust/bindings/bindings_helper.h |  4 ++++
- 4 files changed, 22 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
-index f128d345b16d..dee5301dd729 100644
---- a/drivers/gpu/drm/drm_panic.c
-+++ b/drivers/gpu/drm/drm_panic.c
-@@ -486,11 +486,6 @@ static void drm_panic_qr_exit(void)
- 	stream.workspace = NULL;
- }
- 
--extern size_t drm_panic_qr_max_data_size(u8 version, size_t url_len);
--
--extern u8 drm_panic_qr_generate(const char *url, u8 *data, size_t data_len, size_t data_size,
--				u8 *tmp, size_t tmp_size);
--
- static int drm_panic_get_qr_code_url(u8 **qr_image)
- {
- 	struct kmsg_dump_iter iter;
-diff --git a/drivers/gpu/drm/drm_panic_qr.rs b/drivers/gpu/drm/drm_panic_qr.rs
-index bcf248f69252..d055655aa0cd 100644
---- a/drivers/gpu/drm/drm_panic_qr.rs
-+++ b/drivers/gpu/drm/drm_panic_qr.rs
-@@ -27,7 +27,10 @@
- //! * <https://github.com/bjguillot/qr>
- 
- use core::cmp;
--use kernel::str::CStr;
-+use kernel::{
-+    prelude::*,
-+    str::CStr,
-+};
- 
- #[derive(Debug, Clone, Copy, PartialEq, Eq, Ord, PartialOrd)]
- struct Version(usize);
-@@ -929,7 +932,7 @@ fn draw_all(&mut self, data: impl Iterator<Item = u8>) {
- /// * `tmp` must be valid for reading and writing for `tmp_size` bytes.
- ///
- /// They must remain valid for the duration of the function call.
--#[no_mangle]
-+#[export]
- pub unsafe extern "C" fn drm_panic_qr_generate(
-     url: *const kernel::ffi::c_char,
-     data: *mut u8,
-@@ -980,8 +983,12 @@ fn draw_all(&mut self, data: impl Iterator<Item = u8>) {
- /// * If `url_len` > 0, remove the 2 segments header/length and also count the
- ///   conversion to numeric segments.
- /// * If `url_len` = 0, only removes 3 bytes for 1 binary segment.
--#[no_mangle]
--pub extern "C" fn drm_panic_qr_max_data_size(version: u8, url_len: usize) -> usize {
-+///
-+/// # Safety
-+///
-+/// Always safe to call.
-+#[export]
-+pub unsafe extern "C" fn drm_panic_qr_max_data_size(version: u8, url_len: usize) -> usize {
-     #[expect(clippy::manual_range_contains)]
-     if version < 1 || version > 40 {
-         return 0;
-diff --git a/include/drm/drm_panic.h b/include/drm/drm_panic.h
-index f4e1fa9ae607..2a1536e0229a 100644
---- a/include/drm/drm_panic.h
-+++ b/include/drm/drm_panic.h
-@@ -163,4 +163,11 @@ static inline void drm_panic_unlock(struct drm_device *dev, unsigned long flags)
- 
- #endif
- 
-+#if defined(CONFIG_DRM_PANIC_SCREEN_QR_CODE)
-+extern size_t drm_panic_qr_max_data_size(u8 version, size_t url_len);
-+
-+extern u8 drm_panic_qr_generate(const char *url, u8 *data, size_t data_len, size_t data_size,
-+				u8 *tmp, size_t tmp_size);
-+#endif
-+
- #endif /* __DRM_PANIC_H__ */
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 55354e4dec14..5345aa93fb8a 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -36,6 +36,10 @@
- #include <linux/workqueue.h>
- #include <trace/events/rust_sample.h>
- 
-+#if defined(CONFIG_DRM_PANIC_SCREEN_QR_CODE)
-+#include <drm/drm_panic.h>
-+#endif
-+
- /* `bindgen` gets confused at certain things. */
- const size_t RUST_CONST_HELPER_ARCH_SLAB_MINALIGN = ARCH_SLAB_MINALIGN;
- const size_t RUST_CONST_HELPER_PAGE_SIZE = PAGE_SIZE;
-
--- 
-2.48.1.658.g4767266eb4-goog
-
+=E2=80=94 Daniel=20=
