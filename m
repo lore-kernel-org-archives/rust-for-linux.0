@@ -1,138 +1,204 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailrelay.tugraz.at (mailrelay.tugraz.at [129.27.2.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01EE41EB5C3;
-	Thu, 27 Feb 2025 06:54:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4431E833E;
+	Thu, 27 Feb 2025 06:57:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.27.2.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740639269; cv=none; b=QFMAeXzmLSYcY3U4vnPoLz43k6M6avn1jkWPUfmS2SuNTCb6jEHoFxed2vWtYefFd7bh+x1K2SWhkALHRcPax9KG9egJ0FiJyP8Zd9sPunsM70xGaczPkxkF2wp5VeifJxpWJxvdyjyHQDjQQK4Gj5UIa3WpwyDI9LQZdKb2CVw=
+	t=1740639428; cv=none; b=u1btpgV7G1YeL6P2KLpBUQulO3yDyENdAn/r4Lke25njoPOvFDfopdXZk2gc71kehIJ0PS3KQWcWlqdGSGDIV/VF0VTMb32UAKCw7xPYgWHNc8fxYMfaePWRIqWUfjzEiubnn1aYf215Q/hnKS0rXq38wm9t6+kSo5+KvSNlN8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740639269; c=relaxed/simple;
-	bh=n0B/1XV3Zb7SGgPpaEn1A2d9Yhckeog7XvRX+HT5X/0=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=XcWDez32xU4wzFronNFuWUsNq8vQtOrF5lO608DeIImir9t4XG8Uwc2ndq1d/XFR0cSu7yzEZEJtR7yZjLuptmqRVa/ipevfWD6yIpJaficNZ6of+4I22Hk/hDp1DJMxfZ0czDrTWGD3rJs3LDz5JpyvGf0u9KUART+l0d0pKpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nRv8q+LV; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740639428; c=relaxed/simple;
+	bh=nmSc/GUKLRnUp0bGH7keGs76rS9T9zwENIZjDs5RBLw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=P8vLQpm0dZDIBnP1IgsyOt+KkeSpr3P/qSS8SOMN+Ax0lDo2F+qmDAL3mOZjYjah87uNflBnh5KKYF0w3z1ryHzjvBuxVmvKAHnqNwqux80wCpp75ScCqfkJusnf0vAEkGXmRH4zkm+Y52PB6/JdwPEIZYruqCd/z7L6Onk3cRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at; spf=pass smtp.mailfrom=tugraz.at; dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b=lynlg9ZH; arc=none smtp.client-ip=129.27.2.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tugraz.at
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tugraz.at
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nRv8q+LV"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2fe848040b1so1277635a91.3;
-        Wed, 26 Feb 2025 22:54:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740639267; x=1741244067; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JgyTSFeHFjA7K6c7bMlzYp5hJ4ivyZJhPS3wek+zZXw=;
-        b=nRv8q+LVDGk8VRS6XEe7Ow5RPLK1Co6iJq17yYnvKDUzYoRD/0ODbJpmM/MPXO2fJK
-         WAA53WnzN3aQsiY6jJhv9Cn2PSw5LMoF5p7BV575CuinpwLjgMIJ8xTQ647HqlxhCwbY
-         D0Z28GQFS1q6sNPWcIZTwj5x9gRgJhhXWd0cDRGFw6gojCnz7tu4x+vGdyAkRXwnc8Q7
-         HJgVwS2X4kcgYG0od5bTw9Ld3PMLQGSt/dfZkA5iPcetvApJSbDgMLx9gxN9aiwndIVA
-         XtXfNAdR7Tkl9mtngbAhNHoPrS5yrpn7ufWczGJtLkHQa6eFRBqKddoTAf9MGp6SGu5I
-         8G9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740639267; x=1741244067;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=JgyTSFeHFjA7K6c7bMlzYp5hJ4ivyZJhPS3wek+zZXw=;
-        b=YBq02jWhmzPKDsXJiL+brbEXxoHOOtaRg5rhUz1+YZaRd68hGcwcFuSm6peLEr1xmE
-         wYhsYPOndH+g5M8xiRefYwMpu2lfrb38z7tfzRXTTEq/NwznRKl33NpB08sj2zYwczSQ
-         LJiyynOHj0Uz1IQyCj0hjVfAMgSdWsIxABvgIeSdNhLKSLZE5t3yHJoa9IGYCc9sEC6D
-         kXWoJyUcXHy9xxeO+CkjtzKWwC2ONOUbZyWldz+ux+FUhkY8VRpGcMikiJKTsuFfLhtk
-         taxo1kSbK/NKpZ9jDnccTTb6JNJS4BNA+o00BzyyP6MtUtVe4KLEPMSIgcDzuiHx7rNn
-         3zvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVHC67iX8wIsVK3CBStpVkiz8bAq2AV3GgD3oZp14OymxB+DYupLM6A7uJ6hFOUvajLxpxWQFLUjjsxGCY=@vger.kernel.org, AJvYcCWBv2R+26dppSfoJatACqbZb/hculNIE/pUWnGt9kfAKAaarPdRm7CUmi8Xz2dkRlbtkj3zg7LMxKpR4NlsG2E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGf7qaxrnTQ1cExm8ZUIHBB9EZlginaeoy3po1O26bkhiwGc+V
-	9cvGSWjxNSq+1nt1HBX1/2ZB7xCllLEeAgg22aLdmFaHcY7iveRh
-X-Gm-Gg: ASbGncsmSXe0zio8hwNYioFD/k5uZdFeAY+P0NavHHvhq1rYqRdoyOV3mjOqOV4SSqM
-	8RcZrIKl8hvcDcbm1aAtmJWu6rrfqOMRdD2s1uNSRgqBDUUW7/94ZxH2cn8msFnTztbqAaJUtRv
-	eGTuvV0TiNuT2tDLwP2FRvh/5HVyxWzffWwn2dAA8mTH6PV7y83oZqCvj2Q0879UC1gsSuShSZa
-	KaDBv0FdpjFusFw7bYCc0UsZxxNwAeKyUuc3pJgFKA4ZQZF+gi7rXfQ/PZ8zjBRjtOQRfsgkZ7r
-	4PrfqRaygm9Vp64CZXM9CJBei6IKyneQrsm4i7Jrbd379HLPzTUmC5NTyO6agMYaAPNzNRWYm9E
-	0jT4yHKU=
-X-Google-Smtp-Source: AGHT+IGjuaF9lCedEwwvhGXZ/MFEnt3SPMlo5RufsTcV9FkuM7vYd2x/lrwZ+ktjsfsepkbI2prS3A==
-X-Received: by 2002:a17:90a:d802:b0:2fe:8c22:48b0 with SMTP id 98e67ed59e1d1-2fe8c22614fmr7028655a91.15.1740639267130;
-        Wed, 26 Feb 2025 22:54:27 -0800 (PST)
-Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-223501f972esm7386905ad.58.2025.02.26.22.54.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Feb 2025 22:54:26 -0800 (PST)
-Date: Thu, 27 Feb 2025 15:54:17 +0900 (JST)
-Message-Id: <20250227.155417.1610168537890385926.fujita.tomonori@gmail.com>
-To: a.hindborg@kernel.org
-Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, x86@kernel.org,
- linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- loongarch@lists.linux.dev, tglx@linutronix.de, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, peterz@infradead.org,
- hpa@zytor.com, paul.walmsley@sifive.com, palmer@dabbelt.com,
- aou@eecs.berkeley.edu, catalin.marinas@arm.com, will@kernel.org,
- chenhuacai@kernel.org, kernel@xen0n.name, tangyouling@loongson.cn,
- hejinyang@loongson.cn, yangtiezhu@loongson.cn, ojeda@kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, benno.lossin@proton.me, aliceryhl@google.com,
- tmgross@umich.edu
-Subject: Re: [PATCH v3 0/5] rust: Add bug/warn abstractions
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <8734g0v6ke.fsf@kernel.org>
-References: <yy_ESUuchCjlaGIJHzCPAcP_d9ucSD0CGXaoZNNkY7BmN5Ch1J8avsA9QpKO5LkTjlGpu99jl8NrFl5NFSQXuw==@protonmail.internalid>
-	<20250213135759.190006-1-fujita.tomonori@gmail.com>
-	<8734g0v6ke.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=tugraz.at header.i=@tugraz.at header.b="lynlg9ZH"
+Received: from vra-173-30.tugraz.at (vra-173-30.tugraz.at [129.27.173.30])
+	by mailrelay.tugraz.at (Postfix) with ESMTPSA id 4Z3MZm0CWTz1JJBS;
+	Thu, 27 Feb 2025 07:56:47 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailrelay.tugraz.at 4Z3MZm0CWTz1JJBS
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tugraz.at;
+	s=mailrelay; t=1740639410;
+	bh=D8QBXAzvQoC+Xb07K7j1VN6BMzujnFc52lhvda6IFIw=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=lynlg9ZH44Ovzhy2q+sNNR/xiRa23CARDp62OJZw4H2QJVlTR1iiG6RKW4ig0laXs
+	 1L1XtaI8+uJRJ86NBpyL3i3Iw1+accZgTWyGwLLAWGk3ITFWCHnmXRpyeKB/8AORam
+	 Ka0+/eYIXg3dOTps51k7FRs363+kw0uMGftS+ud0=
+Message-ID: <2f5a537b895250c40676d122a08d31e23a575b81.camel@tugraz.at>
+Subject: Re: C aggregate passing (Rust kernel policy)
+From: Martin Uecker <uecker@tugraz.at>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Ralf Jung <post@ralfj.de>, "Paul E. McKenney" <paulmck@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Ventura Jack <venturajack85@gmail.com>,
+ Kent Overstreet <kent.overstreet@linux.dev>, Gary Guo <gary@garyguo.net>,
+ airlied@gmail.com,  boqun.feng@gmail.com, david.laight.linux@gmail.com,
+ ej@inai.de,  gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com, 
+ ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
+Date: Thu, 27 Feb 2025 07:56:47 +0100
+In-Reply-To: <CAHk-=wjqmHD-3QQ_9o4hrkhH57pTs3c1zuU0EdXYW23Vo0KTmQ@mail.gmail.com>
+References: 
+	<CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
+	 <20250222141521.1fe24871@eugeo>
+	 <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+	 <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+	 <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
+	 <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
+	 <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
+	 <CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com>
+	 <5d7363b0-785c-4101-8047-27cb7afb0364@ralfj.de>
+	 <CAHk-=wh=8sqvB-_TkwRnvL7jVA_xKbzsy9VH-GR93brSxTp60w@mail.gmail.com>
+	 <ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at>
+	 <CAHk-=whLSWX=-5-z4Q8x1f_NLrHd0e3afbEwYPkkVSXj=xT-JQ@mail.gmail.com>
+	 <09e282a9c02fb07ba4fc248f14c0173d9b19179a.camel@tugraz.at>
+	 <CAHk-=wjqmHD-3QQ_9o4hrkhH57pTs3c1zuU0EdXYW23Vo0KTmQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+X-TUG-Backscatter-control: G/VXY7/6zeyuAY/PU2/0qw
+X-Spam-Scanner: SpamAssassin 3.003001 
+X-Spam-Score-relay: 0.0
+X-Scanned-By: MIMEDefang 2.74 on 129.27.10.116
 
-On Wed, 26 Feb 2025 20:39:45 +0100
-Andreas Hindborg <a.hindborg@kernel.org> wrote:
+Am Mittwoch, dem 26.02.2025 um 21:52 -0800 schrieb Linus Torvalds:
+> On Wed, 26 Feb 2025 at 20:18, Martin Uecker <uecker@tugraz.at> wrote:
+> >=20
+> > This is not really related to "observable" but to visibility
+> > of stores to other threads.
+>=20
+> Yes? What's the difference?
 
-> How does this series compare/overlap with [1] ?
-> 
-> [1] https://lore.kernel.org/all/20241126-pr_once_macros-v4-0-410b8ca9643e@tuta.io/
+Observable is I/O and volatile accesses.  These are things considered
+observable from the outside of a process and the only things an
+optimizer has to preserve. =C2=A0
 
-No overlap. Each solves a different problem. Both are necessary.
+Visibility is related to when stores are visible to other threads of
+the same process. But this is just an internal concept to give
+evaluation of expressions semantics in a multi-threaded=C2=A0
+program when objects are accessed from different threads. But=C2=A0
+the compiler is free to change any aspect of it, as=C2=A0 long as the=C2=A0
+observable behavior stays the same.
 
-This patchset enables Rust code to call C's BUG/WARN properly.
+In practice the difference is not so big for a traditional
+optimizer that only has a limited local view and where
+"another thread" is basically part of the "outside world".
 
-Currently, Rust's BUG() is a simple wrapper for C's BUG()
-(rust/helpers/bug.c). I added BUG() to rnull's init() and got the
-following:
+I personally would have tried to unify=C2=A0this more, but this
+was a long time before I got involved in this.
 
-# insmod /root/rnull_mod.ko
-rnull_mod: Rust null_blk loaded
-------------[ cut here ]------------
-kernel BUG at rust/helpers/bug.c:7!
-Oops: invalid opcode: 0000 [#1] SMP
-CPU: 0 UID: 0 PID: 31 Comm: insmod Not tainted 6.14.0-rc1+ #103
-RIP: 0010:rust_helper_BUG+0x8/0x10
-(snip)
+>=20
+> Threading is a fundamental thing. It didn't *use* to be fundamental,
+> and yes, languages and CPU architectures were designed without taking
+> it into account.
+>=20
+> But a language that was designed this century, wouldn't you agree that
+> threading is not something unusual or odd or should be an
+> after-thought, and something as basic as "observable" should take it
+> into account?
+>=20
+> Also note that "visibility of stores to other threads" also does mean
+> that the loads in those other threads matter.
 
-This is NOT debug information that we expect. The problem is that
-BUG/WARN feature (lib/bug.c) can only be used from assembly.
+I agree that this could have been done better.  This was bolted
+on retrospectively and in a non-optimal way.
+>=20
+> That's why rematerializing loads is wrong - the value in memory may
+> simply not be the same value any more, so a load that is
+> rematerialized is a bug.
 
-This patchset includes only warn() but with bug() implementation on
-top of this patchset, I got:
+I assume that compromises were made very deliberately
+to require only limited changes to compilers designed for=C2=A0
+optimizing single-threaded code. =C2=A0 This could certainly be
+reconsidered.
 
-# insmod /root/rnull_mod.ko
-rnull_mod: Rust null_blk loaded
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 31 at /home/fujita/git/linux-rust/drivers/block/rnull.rs:46 _RNvXCsafUg3oOYix8_5rnullNtB2_13NullBlkModu]
-Modules linked in: rnull_mod(+)
-CPU: 0 UID: 0 PID: 31 Comm: insmod Not tainted 6.14.0-rc1+ #104
-RIP: 0010:_RNvXCsafUg3oOYix8_5rnullNtB2_13NullBlkModuleNtCsaYBeKL739Xz_6kernel13InPlaceModule4init+0x71/0x4f0 [rnull_mod]
+>=20
+> > It sounds you want to see the semantics strengthened in case
+> > of a data race from there being UB to having either the old
+> > or new value being visible to another thread, where at some
+> > point this could change but needs to be consistent for a
+> > single access as expressed in the source code.
+>=20
+> Absolutely.
+>=20
+> And notice that in the non-UB case - ie when you can rely on locking
+> or other uniqueness guarantees - you can generate better code.
+
+A compiler would need to understand that certain objects are
+only accessed when protected somehow.  Currently this is
+assumed for everything.  If you want to strengthen semantics
+for all regular memory accesses, but still allow more optimization
+for certain objects, one would need to express this somehow,
+e.g. that certain memory is protected by specific locks.
+
+>=20
+> So "safe rust" should generally not be impacted, and you can make the
+> very true argument that safe rust can be optimized more aggressively
+> and migth be faster than unsafe rust.
+>=20
+> And I think that should be seen as a feature, and as a basic tenet of
+> safe vs unsafe. A compiler *should* be able to do better when it
+> understands the code fully.
+>=20
+> > There would certainly be opposition if this fundamentally
+> > diverges from C++ because no compiler framework will seriously
+> > consider implementing a completely different memory model
+> > for C (or for Rust) than for C++.
+>=20
+> Well, if the C++ peoiple end up working on some "safe C" model, I bet
+> they'll face the same issues.
+
+I assume they will enforce the use of safe high-level
+interfaces and this will not affect the memory model.
+
+>=20
+> > I could also imagine that the problem here is that it is
+> > actually very difficult for compilers to give the guarantess
+> > you want, because they evolved from compilers
+> > doing optimization for single threads and and one would
+> > have to fix a lot of issues in the optimizers.  So the
+> > actually problem here might be that nobody wants to pay
+> > for fixing the compilers.
+>=20
+> I actually suspect that most of the work has already been done in practic=
+e.
+>=20
+> As mentioned, some time ago I checked the whole issue of
+> rematerializing loads, and at least gcc doesn't rematerialize loads
+> (and I just double-checked: bad_for_rematerialization_p() returns true
+> for mem-ops)
+>=20
+> I have this memory that people told me that clang similarly
+>=20
+> And the C standards committee already made widening stores invalid due
+> to threading issues.
+
+That widening stores are not allowed is a consequence
+of the memory model when only using local optimization.
+There are not explicitely forbidden, and an optimizer that
+could see that it does not affect global observable behavior
+could theoretically then widen a store where this is safe,
+but in practice no compiler can do such things.
+
+>=20
+> Are there other issues? Sure. But remat of memory loads is at least
+> one issue, and it's one that has been painful for the kernel - not
+> because compilers do it, but because we *fear* compilers doing it so
+> much.
+
+I will talk to some compiler people.
+
+Martin
 
 
-The [1] patchset adds an abstraciton for include/linux/once_lite.h,
-'call a function once' feature, with pr_*_once() implementation.
-
-pr_*_once() just calls printk() once. Unlike BUG/WARN, no debug
-information (call place, registers, stack trace, etc).
 
 
-The only connection between two patchset is that WARN_ONCE() can be
-built on top of both like the C side.
+
