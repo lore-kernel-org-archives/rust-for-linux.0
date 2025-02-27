@@ -1,173 +1,138 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E1F21516A
-	for <rust-for-linux@vger.kernel.org>; Thu, 27 Feb 2025 05:52:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01EE41EB5C3;
+	Thu, 27 Feb 2025 06:54:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740635555; cv=none; b=DP3ScUpfF28XismDZFPr1EpMarDGFIqUzygeCu/Y1XlXloY5NnZth19FNbtWw3QeDF9qfNpAYuaMrh48fMQOTi5kLXCRHLGPz6ROAH2FoRjJt6lqThql99aI1El4gAulCwWNRya8TZN3x/rYBqY6XulRH7aB5ZzHwcmOPLZvgYI=
+	t=1740639269; cv=none; b=QFMAeXzmLSYcY3U4vnPoLz43k6M6avn1jkWPUfmS2SuNTCb6jEHoFxed2vWtYefFd7bh+x1K2SWhkALHRcPax9KG9egJ0FiJyP8Zd9sPunsM70xGaczPkxkF2wp5VeifJxpWJxvdyjyHQDjQQK4Gj5UIa3WpwyDI9LQZdKb2CVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740635555; c=relaxed/simple;
-	bh=9BL4zTaSs8TFLGt8qDCuYMxE7mnal2Tr/3pr4sM0MIo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XwnH2HhQOGI4fdOu5LR81VSCBWNf2REhnIsFvzI4o/E4LwIuHvAAQnNaoOZojOfldgYDOg6qmzpW76lz+D1ffad815CYIgjivAWB5ludf95lnLocu2OJKfcFdhPav+mzZDTrM0OM0R8p6xfYjOakrH432CK8ItQ93XRyS8RfLpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Xiuwq82l; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1740639269; c=relaxed/simple;
+	bh=n0B/1XV3Zb7SGgPpaEn1A2d9Yhckeog7XvRX+HT5X/0=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=XcWDez32xU4wzFronNFuWUsNq8vQtOrF5lO608DeIImir9t4XG8Uwc2ndq1d/XFR0cSu7yzEZEJtR7yZjLuptmqRVa/ipevfWD6yIpJaficNZ6of+4I22Hk/hDp1DJMxfZ0czDrTWGD3rJs3LDz5JpyvGf0u9KUART+l0d0pKpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nRv8q+LV; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Xiuwq82l"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-abee50621ecso69525266b.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 26 Feb 2025 21:52:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nRv8q+LV"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2fe848040b1so1277635a91.3;
+        Wed, 26 Feb 2025 22:54:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1740635551; x=1741240351; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=yz1jEtAoGS03tODgTdGrnTdX9a769lSb4ISg5vXSoA0=;
-        b=Xiuwq82lpd8d/2T8nVrNW2O+m+KXpXBTm8/8zX2ezwKjzpD1vDppPEBJ4uOpx6OyHQ
-         NZyJNi4oNpQr74WSaQzHrML9OQYCWrWDrSn3cPccLlv7mWHFncQDuJHlBE8gvV4aagcJ
-         PkLT0KbeixTX4gwe9V7o9OIzml03sJ9sNb9fM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740635551; x=1741240351;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1740639267; x=1741244067; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=yz1jEtAoGS03tODgTdGrnTdX9a769lSb4ISg5vXSoA0=;
-        b=H6+uWP2uoDjASD1GiPt9KM2Vl30Usy4AWTKL8ARdyZKw5A9FIv0Zo3UYNtCj0d4SIK
-         VhcGA+a/57YwK5eMlE8OR0BR5HzeBognI/E3tNsxqIVz35OYelOB2zVbSQ3ualEQxGmP
-         vMMtMuPIBTnCamvXr5LXd4/e6sIlhsn7z5XzQGkT1MAlbkdMqXNuWEIM5NVlvKQ4+iW0
-         xblGixj9CuZrQZfKDCbgugkWyUjUAbQT63plx996XNw2a+Uafg6T55my3kf4B9HP4qFn
-         srh+jCQU+RK6rwYe5ntXWwckSR4Udw+68TZTI+PYhtvLvT09okaJMm99nUIQDlcDKSuK
-         RMYw==
-X-Forwarded-Encrypted: i=1; AJvYcCUJdGQEBi2Y9FD/ARltmWZu/vm3YvHNlExvP6aiuQTgQONQkgL7Tf2jddyhHWCK/AaElFRuC349rt5O1wZbew==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBL1wy7P9wCR3knNuCEM2q7OaBQCRxD32Hg71o+5pkavYs4XtG
-	XUyVTvcF0ufEqfQ2pij+tzsI0FSBSL6IqQmp0+QHMZRysKfcdmWSloBbBSnnM7iqt6yd33sce+v
-	O5yr0JQ==
-X-Gm-Gg: ASbGncsMBxQn7IEzJRWJ++2NyqT0O+vLBxSpxxSL72sxYCglVdWDB5fFWNAJQpxZ7qr
-	DqLSbipA1kFSpilzeZxSgrkmlzFylJA9nm4MkCdEfkkkPNUag6Qu3fqsl8tD6yuBbKuJgV9Bfk/
-	ujtxxcZflCS6tvpoas2hHfD0+y5CyV6Arz+4SbPqQ7ntJA2+TtodU5p5zNyrjzUQyj0r3Of7Sto
-	OjfLkX7/jw0ccntC4v23hAd4K9qedMe2+Wi2YnjJ+mhOzFdFDwHLzFaroh4cVZtVI5apRdikRwg
-	Pk0FA0QbAygKqnHm64W0tg/t2ZMK0TTrYEWpkGOKI7wc9c5cHKrDd3koesqMSbwk0mmKYv08vyc
-	V
-X-Google-Smtp-Source: AGHT+IHpNsHCWd0FxS+RoF+2fgo8u27vI84d22bDNh8a+hzk3jWf3oM5hogWvKFz0hkxKsvP/ECvEQ==
-X-Received: by 2002:a17:906:3087:b0:aba:5f44:8822 with SMTP id a640c23a62f3a-abeeed5b2c3mr718673066b.11.1740635551250;
-        Wed, 26 Feb 2025 21:52:31 -0800 (PST)
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com. [209.85.218.41])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abf0c6f5363sm63812866b.123.2025.02.26.21.52.30
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Feb 2025 21:52:30 -0800 (PST)
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-aaee2c5ee6eso75921966b.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 26 Feb 2025 21:52:30 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCU6i/7ZUn/E3MLDMcoSEPwg7j0i5JrCwVOrVT4sk/xQZP6ChoTMKWd/I2Ojhdr315sl0FjGrsHXkOVDmLSLCg==@vger.kernel.org
-X-Received: by 2002:a17:907:a42:b0:abe:cecc:727 with SMTP id
- a640c23a62f3a-abeeefc9108mr925171166b.53.1740635549770; Wed, 26 Feb 2025
- 21:52:29 -0800 (PST)
+        bh=JgyTSFeHFjA7K6c7bMlzYp5hJ4ivyZJhPS3wek+zZXw=;
+        b=nRv8q+LVDGk8VRS6XEe7Ow5RPLK1Co6iJq17yYnvKDUzYoRD/0ODbJpmM/MPXO2fJK
+         WAA53WnzN3aQsiY6jJhv9Cn2PSw5LMoF5p7BV575CuinpwLjgMIJ8xTQ647HqlxhCwbY
+         D0Z28GQFS1q6sNPWcIZTwj5x9gRgJhhXWd0cDRGFw6gojCnz7tu4x+vGdyAkRXwnc8Q7
+         HJgVwS2X4kcgYG0od5bTw9Ld3PMLQGSt/dfZkA5iPcetvApJSbDgMLx9gxN9aiwndIVA
+         XtXfNAdR7Tkl9mtngbAhNHoPrS5yrpn7ufWczGJtLkHQa6eFRBqKddoTAf9MGp6SGu5I
+         8G9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740639267; x=1741244067;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=JgyTSFeHFjA7K6c7bMlzYp5hJ4ivyZJhPS3wek+zZXw=;
+        b=YBq02jWhmzPKDsXJiL+brbEXxoHOOtaRg5rhUz1+YZaRd68hGcwcFuSm6peLEr1xmE
+         wYhsYPOndH+g5M8xiRefYwMpu2lfrb38z7tfzRXTTEq/NwznRKl33NpB08sj2zYwczSQ
+         LJiyynOHj0Uz1IQyCj0hjVfAMgSdWsIxABvgIeSdNhLKSLZE5t3yHJoa9IGYCc9sEC6D
+         kXWoJyUcXHy9xxeO+CkjtzKWwC2ONOUbZyWldz+ux+FUhkY8VRpGcMikiJKTsuFfLhtk
+         taxo1kSbK/NKpZ9jDnccTTb6JNJS4BNA+o00BzyyP6MtUtVe4KLEPMSIgcDzuiHx7rNn
+         3zvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVHC67iX8wIsVK3CBStpVkiz8bAq2AV3GgD3oZp14OymxB+DYupLM6A7uJ6hFOUvajLxpxWQFLUjjsxGCY=@vger.kernel.org, AJvYcCWBv2R+26dppSfoJatACqbZb/hculNIE/pUWnGt9kfAKAaarPdRm7CUmi8Xz2dkRlbtkj3zg7LMxKpR4NlsG2E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGf7qaxrnTQ1cExm8ZUIHBB9EZlginaeoy3po1O26bkhiwGc+V
+	9cvGSWjxNSq+1nt1HBX1/2ZB7xCllLEeAgg22aLdmFaHcY7iveRh
+X-Gm-Gg: ASbGncsmSXe0zio8hwNYioFD/k5uZdFeAY+P0NavHHvhq1rYqRdoyOV3mjOqOV4SSqM
+	8RcZrIKl8hvcDcbm1aAtmJWu6rrfqOMRdD2s1uNSRgqBDUUW7/94ZxH2cn8msFnTztbqAaJUtRv
+	eGTuvV0TiNuT2tDLwP2FRvh/5HVyxWzffWwn2dAA8mTH6PV7y83oZqCvj2Q0879UC1gsSuShSZa
+	KaDBv0FdpjFusFw7bYCc0UsZxxNwAeKyUuc3pJgFKA4ZQZF+gi7rXfQ/PZ8zjBRjtOQRfsgkZ7r
+	4PrfqRaygm9Vp64CZXM9CJBei6IKyneQrsm4i7Jrbd379HLPzTUmC5NTyO6agMYaAPNzNRWYm9E
+	0jT4yHKU=
+X-Google-Smtp-Source: AGHT+IGjuaF9lCedEwwvhGXZ/MFEnt3SPMlo5RufsTcV9FkuM7vYd2x/lrwZ+ktjsfsepkbI2prS3A==
+X-Received: by 2002:a17:90a:d802:b0:2fe:8c22:48b0 with SMTP id 98e67ed59e1d1-2fe8c22614fmr7028655a91.15.1740639267130;
+        Wed, 26 Feb 2025 22:54:27 -0800 (PST)
+Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-223501f972esm7386905ad.58.2025.02.26.22.54.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Feb 2025 22:54:26 -0800 (PST)
+Date: Thu, 27 Feb 2025 15:54:17 +0900 (JST)
+Message-Id: <20250227.155417.1610168537890385926.fujita.tomonori@gmail.com>
+To: a.hindborg@kernel.org
+Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, x86@kernel.org,
+ linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ loongarch@lists.linux.dev, tglx@linutronix.de, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, peterz@infradead.org,
+ hpa@zytor.com, paul.walmsley@sifive.com, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, catalin.marinas@arm.com, will@kernel.org,
+ chenhuacai@kernel.org, kernel@xen0n.name, tangyouling@loongson.cn,
+ hejinyang@loongson.cn, yangtiezhu@loongson.cn, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, benno.lossin@proton.me, aliceryhl@google.com,
+ tmgross@umich.edu
+Subject: Re: [PATCH v3 0/5] rust: Add bug/warn abstractions
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <8734g0v6ke.fsf@kernel.org>
+References: <yy_ESUuchCjlaGIJHzCPAcP_d9ucSD0CGXaoZNNkY7BmN5Ch1J8avsA9QpKO5LkTjlGpu99jl8NrFl5NFSQXuw==@protonmail.internalid>
+	<20250213135759.190006-1-fujita.tomonori@gmail.com>
+	<8734g0v6ke.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
- <20250222141521.1fe24871@eugeo> <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
- <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
- <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
- <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
- <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
- <CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com>
- <5d7363b0-785c-4101-8047-27cb7afb0364@ralfj.de> <CAHk-=wh=8sqvB-_TkwRnvL7jVA_xKbzsy9VH-GR93brSxTp60w@mail.gmail.com>
- <ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at>
- <CAHk-=whLSWX=-5-z4Q8x1f_NLrHd0e3afbEwYPkkVSXj=xT-JQ@mail.gmail.com> <09e282a9c02fb07ba4fc248f14c0173d9b19179a.camel@tugraz.at>
-In-Reply-To: <09e282a9c02fb07ba4fc248f14c0173d9b19179a.camel@tugraz.at>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Wed, 26 Feb 2025 21:52:13 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wjqmHD-3QQ_9o4hrkhH57pTs3c1zuU0EdXYW23Vo0KTmQ@mail.gmail.com>
-X-Gm-Features: AQ5f1Jp_NrFySgQyMF9RUCoV9O6uCZpLaodGvsiFnQE8IzSzYGK1vSJBzFxb9cE
-Message-ID: <CAHk-=wjqmHD-3QQ_9o4hrkhH57pTs3c1zuU0EdXYW23Vo0KTmQ@mail.gmail.com>
-Subject: Re: C aggregate passing (Rust kernel policy)
-To: Martin Uecker <uecker@tugraz.at>
-Cc: Ralf Jung <post@ralfj.de>, "Paul E. McKenney" <paulmck@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Ventura Jack <venturajack85@gmail.com>, Kent Overstreet <kent.overstreet@linux.dev>, 
-	Gary Guo <gary@garyguo.net>, airlied@gmail.com, boqun.feng@gmail.com, 
-	david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, 
-	hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Wed, 26 Feb 2025 at 20:18, Martin Uecker <uecker@tugraz.at> wrote:
->
-> This is not really related to "observable" but to visibility
-> of stores to other threads.
+On Wed, 26 Feb 2025 20:39:45 +0100
+Andreas Hindborg <a.hindborg@kernel.org> wrote:
 
-Yes? What's the difference?
+> How does this series compare/overlap with [1] ?
+> 
+> [1] https://lore.kernel.org/all/20241126-pr_once_macros-v4-0-410b8ca9643e@tuta.io/
 
-Threading is a fundamental thing. It didn't *use* to be fundamental,
-and yes, languages and CPU architectures were designed without taking
-it into account.
+No overlap. Each solves a different problem. Both are necessary.
 
-But a language that was designed this century, wouldn't you agree that
-threading is not something unusual or odd or should be an
-after-thought, and something as basic as "observable" should take it
-into account?
+This patchset enables Rust code to call C's BUG/WARN properly.
 
-Also note that "visibility of stores to other threads" also does mean
-that the loads in those other threads matter.
+Currently, Rust's BUG() is a simple wrapper for C's BUG()
+(rust/helpers/bug.c). I added BUG() to rnull's init() and got the
+following:
 
-That's why rematerializing loads is wrong - the value in memory may
-simply not be the same value any more, so a load that is
-rematerialized is a bug.
+# insmod /root/rnull_mod.ko
+rnull_mod: Rust null_blk loaded
+------------[ cut here ]------------
+kernel BUG at rust/helpers/bug.c:7!
+Oops: invalid opcode: 0000 [#1] SMP
+CPU: 0 UID: 0 PID: 31 Comm: insmod Not tainted 6.14.0-rc1+ #103
+RIP: 0010:rust_helper_BUG+0x8/0x10
+(snip)
 
-> It sounds you want to see the semantics strengthened in case
-> of a data race from there being UB to having either the old
-> or new value being visible to another thread, where at some
-> point this could change but needs to be consistent for a
-> single access as expressed in the source code.
+This is NOT debug information that we expect. The problem is that
+BUG/WARN feature (lib/bug.c) can only be used from assembly.
 
-Absolutely.
+This patchset includes only warn() but with bug() implementation on
+top of this patchset, I got:
 
-And notice that in the non-UB case - ie when you can rely on locking
-or other uniqueness guarantees - you can generate better code.
+# insmod /root/rnull_mod.ko
+rnull_mod: Rust null_blk loaded
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 31 at /home/fujita/git/linux-rust/drivers/block/rnull.rs:46 _RNvXCsafUg3oOYix8_5rnullNtB2_13NullBlkModu]
+Modules linked in: rnull_mod(+)
+CPU: 0 UID: 0 PID: 31 Comm: insmod Not tainted 6.14.0-rc1+ #104
+RIP: 0010:_RNvXCsafUg3oOYix8_5rnullNtB2_13NullBlkModuleNtCsaYBeKL739Xz_6kernel13InPlaceModule4init+0x71/0x4f0 [rnull_mod]
 
-So "safe rust" should generally not be impacted, and you can make the
-very true argument that safe rust can be optimized more aggressively
-and migth be faster than unsafe rust.
 
-And I think that should be seen as a feature, and as a basic tenet of
-safe vs unsafe. A compiler *should* be able to do better when it
-understands the code fully.
+The [1] patchset adds an abstraciton for include/linux/once_lite.h,
+'call a function once' feature, with pr_*_once() implementation.
 
-> There would certainly be opposition if this fundamentally
-> diverges from C++ because no compiler framework will seriously
-> consider implementing a completely different memory model
-> for C (or for Rust) than for C++.
+pr_*_once() just calls printk() once. Unlike BUG/WARN, no debug
+information (call place, registers, stack trace, etc).
 
-Well, if the C++ peoiple end up working on some "safe C" model, I bet
-they'll face the same issues.
 
-> I could also imagine that the problem here is that it is
-> actually very difficult for compilers to give the guarantess
-> you want, because they evolved from compilers
-> doing optimization for single threads and and one would
-> have to fix a lot of issues in the optimizers.  So the
-> actually problem here might be that nobody wants to pay
-> for fixing the compilers.
-
-I actually suspect that most of the work has already been done in practice.
-
-As mentioned, some time ago I checked the whole issue of
-rematerializing loads, and at least gcc doesn't rematerialize loads
-(and I just double-checked: bad_for_rematerialization_p() returns true
-for mem-ops)
-
-I have this memory that people told me that clang similarly
-
-And the C standards committee already made widening stores invalid due
-to threading issues.
-
-Are there other issues? Sure. But remat of memory loads is at least
-one issue, and it's one that has been painful for the kernel - not
-because compilers do it, but because we *fear* compilers doing it so
-much.
-
-           Linus
+The only connection between two patchset is that WARN_ONCE() can be
+built on top of both like the C side.
