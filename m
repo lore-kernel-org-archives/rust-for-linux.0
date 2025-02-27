@@ -1,214 +1,202 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E30322C35C;
-	Thu, 27 Feb 2025 11:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B353226863;
+	Thu, 27 Feb 2025 11:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740655113; cv=none; b=jbnMy8c45Z92iFnNMy1FWc3BOuv3NOkukFyMlRjeoR4jqiYYceB8KWEhC2js7alwhy58vLuYvqQl3qVu0Zyj2BciJIVU6PYIhUKVrdkXAA/M+hJnj2buM2tDDuNJJGI2aed/vQiYyP7l+Oi4f0ZblsC5/NPJ83EKBQIZCfjYJ5k=
+	t=1740655971; cv=none; b=qwW0bnQnikFZHo6nQCwVu2T27zReQAr5351EPZRQYdijYxnr5KjCrGt/VuOuwio+CHjDXR8ohhI9p4vwxxgnFj5U5b6jwdjrpX2WEoPvezjPltn/kj6d5OjnyqJYa5Nf/jz85clgsJBj3DhqA1jLmWtg9Z5A0alM96FsC/7zAwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740655113; c=relaxed/simple;
-	bh=JXgvvPrYeF0pvduPQJMNtLcDXB27r3C6+JTUA7Dp/OI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=NCyQ6TH/SleDDDyHXrMlbgoBjURJcNI0Wie99xVZPt2rhPy1wTadGPSkX/DHW0GYcBv31IiJIeh9yTi4JdVHNZcfsnunPYHrLZFxnbHTrhIEy7u680gpiIb45n8cR/4xsOuhPRZftnM8Arwiv35DVBjlDkI2VcJe/bKLNJH/n6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F/OI7Ljr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740655971; c=relaxed/simple;
+	bh=Zty7kMcpbAjyKYQmB6FvAoqZJmoDUlOF8/pOq0j6RP0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W241RzelwsGYF9ZebgkoYUzMa/APpo5uRjIIMX9nq3nUJLUIDAl4AZB9H1nu4yn9PHC1neVV7SyM9Evu0ezBVEa/ajcBbKNCAuwZir7+KNDlS11RiPuIm6SvyrVnRN/JQE/th87l9nJ65bjgztSHTLTdOwWxt+EjnKn5Jf9n5zE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fQ4h6bzH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F/OI7Ljr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82C3CC4CEE4;
-	Thu, 27 Feb 2025 11:18:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fQ4h6bzH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C67C4C4CEE4;
+	Thu, 27 Feb 2025 11:32:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740655112;
-	bh=JXgvvPrYeF0pvduPQJMNtLcDXB27r3C6+JTUA7Dp/OI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=F/OI7LjrEZzNm7VvUX1asI6hfhWUistr0YMl3SHX1levzAllzAYOzb48FBSq2bgyG
-	 wPqYj2AOzUK+1qhxOca8fiA+wVIHAV6VcECouBA0SeXnCXt8J8VxbsKQxXHvIjpxSL
-	 qNpJMNAvNT/Hji+Td6QdtZ/D9UBENOiufz7l9MKxmotjJtFukhC5r+wrpfBYFvP4/H
-	 7Oit4OorSas62rBsPMvufIZSKnhbqlUdVjDCpIJ3qfLKL8p1PQNYw/rzLJoTesd4zA
-	 TUVPGYh300UGcKXBdCwDmpLAOs7T7N5+8UjXRg045u5UGRh1sADJqnb+E/ZBJr4ZDq
-	 P/E+WNwegdlWg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Thomas Gleixner" <tglx@linutronix.de>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Anna-Maria Behnsen"
- <anna-maria@linutronix.de>,  "Frederic Weisbecker" <frederic@kernel.org>,
-  "Danilo Krummrich" <dakr@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno
- Lossin" <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,
-  "Trevor Gross" <tmgross@umich.edu>,  "Lyude Paul" <lyude@redhat.com>,
-  "Guangbo Cui" <2407018371@qq.com>,  "Dirk Behme" <dirk.behme@gmail.com>,
-  "Daniel Almeida" <daniel.almeida@collabora.com>,  "Tamir Duberstein"
- <tamird@gmail.com>,  <rust-for-linux@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v9 12/13] rust: hrtimer: add clocksource selection
- through `ClockSource`
-In-Reply-To: <87jz9beor7.ffs@tglx> (Thomas Gleixner's message of "Thu, 27 Feb
-	2025 10:11:08 +0100")
-References: <20250224-hrtimer-v3-v6-12-rc2-v9-0-5bd3bf0ce6cc@kernel.org>
-	<20250224-hrtimer-v3-v6-12-rc2-v9-12-5bd3bf0ce6cc@kernel.org>
-	<6sz8JD2Jq54KZZ3nCKbMpvae2yHUmF2hHEP3qrQlbGY6RrWzS8BN5YxinlIQnIFkGfjAPauTxI8i3sZUhzoPiw==@protonmail.internalid>
-	<87jz9beor7.ffs@tglx>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Thu, 27 Feb 2025 12:18:09 +0100
-Message-ID: <87zfi7prf2.fsf@kernel.org>
+	s=k20201202; t=1740655970;
+	bh=Zty7kMcpbAjyKYQmB6FvAoqZJmoDUlOF8/pOq0j6RP0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fQ4h6bzHi6GSUpTap9SRozMpoyIeIGwusAlV23uF3LBmRLYmGfMl1d3TMotaw1Zip
+	 1oBMrYWqBf5P3ArtGBIO2CRYWmXy/Axtg1Zc4YV0I+S+JhzmiP8uBbrIvJCg5xyIUW
+	 LQ0MYOOa4ig2nmI3JgSwp9YqRgQ/N5O3PAhy2rklq/rs8rmtIs+T3I4nTpx0ViWf3z
+	 e2k4TlA8zM05eQtOfbq6nvUYhtB6SrcDTHYJy8CqWafVxViyeOzRYNR/Zh3+URk4n6
+	 DQs6GaWwO5ZeMvKALQpue7GqmSkCrTpef9lUhkuax1KyPqdxTmJqHtp8sPnizihkk7
+	 /41zvLWBq99yA==
+Date: Thu, 27 Feb 2025 12:32:45 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Joel Fernandes <joelagnelf@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	paulmck@kernel.org
+Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
+ implementation
+Message-ID: <Z8BNXdf3CgqGYjPV@pollux>
+References: <2f062199-8d69-48a2-baa6-abb755479a16@nvidia.com>
+ <Z73rP4secPlUMIoS@cassiopeiae>
+ <20250225210228.GA1801922@joelnvbox>
+ <20250225225756.GA4959@nvidia.com>
+ <Z75WKSRlUVEqpysJ@cassiopeiae>
+ <20250226004916.GB4959@nvidia.com>
+ <Z75riltJo0WvOsS5@cassiopeiae>
+ <20250226172120.GD28425@nvidia.com>
+ <Z7-IHgcVVS8XBurW@cassiopeiae>
+ <20250226234730.GC39591@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250226234730.GC39591@nvidia.com>
 
-"Thomas Gleixner" <tglx@linutronix.de> writes:
+On Wed, Feb 26, 2025 at 07:47:30PM -0400, Jason Gunthorpe wrote:
+> On Wed, Feb 26, 2025 at 10:31:10PM +0100, Danilo Krummrich wrote:
+> > Let's take a step back and look again why we have Devres (and Revocable) for
+> > e.g. pci::Bar.
+> > 
+> > The device / driver model requires that device resources are only held by a
+> > driver, as long as the driver is bound to the device.
+> > 
+> > For instance, in C we achieve this by calling
+> > 
+> > 	pci_iounmap()
+> > 	pci_release_region()
+> > 
+> > from remove().
+> > 
+> > We rely on this, we trust drivers to actually do this.
+> 
+> Right, exactly
+> 
+> But it is not just PCI bar. There are a *huge* number of kernel APIs
+> that have built in to them the same sort of requirement - teardown
+> MUST run with remove, and once done the resource cannot be used by
+> another thread.
+> 
+> Basically most things involving function pointers has this sort of
+> lifecycle requirement because it is a common process that prevents a
+> EAF of module unload.
 
-> On Mon, Feb 24 2025 at 13:03, Andreas Hindborg wrote:
->>
->> +/// The clock source to use for a [`HrTimer`].
->> +pub enum ClockSource {
->
-> ClockSource is a confusing name as 'clocksource' is used in the kernel
-> already for devices providing counters, which can be used for
-> timekeeping.
->
-> Also these clocks are not really hrtimer specific. These CLOCK ids are
-> system wide valid and are used for other purposes obviously internally
-> in timekeeping. hrtimers are built on top of timekeeping, which provides
-> the underlying time.
+You're still mixing topics, the whole Devres<pci::Bar> thing as about limiting
+object lifetime to the point where the driver is unbound.
 
-I see. How about renaming to `ClockId` and moving the type one level up
-to `kernel::time`?
+Shutting down asynchronous execution of things, i.e. workqueues, timers, IOCTLs
+to prevent unexpected access to the module .text section is a whole different
+topic.
 
->
->> +    /// A settable system-wide clock that measures real (i.e., wall-clo=
-ck) time.
->> +    ///
->> +    /// Setting this clock requires appropriate privileges. This clock =
-is
->> +    /// affected by discontinuous jumps in the system time (e.g., if th=
-e system
->> +    /// administrator manually changes the clock), and by frequency adj=
-ustments
->> +    /// performed by NTP and similar applications via adjtime(3), adjti=
-mex(2),
->> +    /// clock_adjtime(2), and ntp_adjtime(3). This clock normally count=
-s the
->> +    /// number of seconds since 1970-01-01 00:00:00 Coordinated Univers=
-al Time
->> +    /// (UTC) except that it ignores leap seconds; near a leap second i=
-t is
->> +    /// typically adjusted by NTP to stay roughly in sync with UTC.
->
-> That's not correct. It depends on the implementation/configuration of
-> NTP. The default is that the leap second is actually applied at the
-> requested time, by setting the clock one second forth or back.
->
-> Though there are NTP configurations/implementations out there which use
-> leap second "smearing" to avoid the jump. They adjust the conversion
-> factors around the leap second event by slowing down or speeding up for
-> a while. That avoids a few common issues, e.g. in data bases.
->
-> But it brings all clocks out of sync with the actual progress of time, wh=
-ich
-> is patently bad for systems which require strict synchronization.
->
-> The problem is that the kernel uses the NTP/PTP frequency adjustment to
-> steer the conversion of all clocks, except CLOCK_MONOTONIC_RAW. The
-> kernel internal base clock is CLOCK_MONOTONIC. The other clocks are
-> derived from that:
->
->         CLOCK_[X] =3D CLOCK_MONOTONIC + offset[X]
+You seem to imply that if we ensure the latter, we don't need to enforce the
+former, but that isn't true.
 
-I see. I lifted the text from `clock_getres(2)` in linux-man [1]. We
-might consider updating that source with the info we collect here.
+In other words, assuming that we properly enforce that there are no async
+execution paths after remove() or module_exit() (not necessarily the same),
+we still need to ensure that a pci::Bar object does not outlive remove().
 
-How about changing the text like so:
+Device resources are a bit special, since their lifetime must be cap'd at device
+unbind, *independent* of the object lifetime they reside in. Hence the Devres
+container.
 
-.. by frequency adjustments performed by NTP ...
+For a memory allocation for instance (e.g. KBox<T>), this is different. If it
+outlives remove(), e.g. because it's part of the Module structure, that's fine.
+It's only important that it's dropped eventually.
 
-to
+> 
+> This is all incredibly subtle and driver writers never seem to
+> understand it properly.. See below for my thoughts on hrtimer bindings
+> having the same EAF issue.
 
-.. by frequency adjustments performed by some implementations of NTP ...
+I don't think it has, see Boqun's reply [1].
 
-?
+> 
+> My fear, that is intensifying as we go through this discussion, is
+> that rust binding authors have not fully comprehended what the kernel
+> life cycle model and common design pattern actually is, and have not
+> fully thought through issues like module unload creating a lifetime
+> cycle for *function pointers*.
 
->
->> +    RealTime,
->> +    /// A monotonically increasing clock.
->> +    ///
->> +    /// A nonsettable system-wide clock that represents monotonic time =
-since=E2=80=94as
->> +    /// described by POSIX=E2=80=94"some unspecified point in the past"=
- On Linux, that
->> +    /// point corresponds to the number of seconds that the system has =
-been
->> +    /// running since it was booted.
->> +    ///
->> +    /// The CLOCK_MONOTONIC clock is not affected by discontinuous jump=
-s in the
->> +    /// system time (e.g., if the system administrator manually changes=
- the
->
-> s/system time/CLOCK_REALTIME/
+I do *not* see where you take the evidence from to make such a generic
+statement.
 
-OK.
+Especially because there aren't a lot of abstractions upstream yet that fall
+under this category.
 
->
->> +    /// clock), but is affected by frequency adjustments. This clock do=
-es not
->> +    /// count time that the system is suspended.
->> +    Monotonic,
->> +    /// A monotonic that ticks while system is suspended.
->> +    ///
->> +    /// A nonsettable system-wide clock that is identical to CLOCK_MONO=
-TONIC,
->> +    /// except that it also includes any time that the system is suspen=
-ded. This
->> +    /// allows applications to get a suspend-aware monotonic clock with=
-out
->> +    /// having to deal with the complications of CLOCK_REALTIME, which =
-may have
->> +    /// discontinuities if the time is changed using settimeofday(2) or=
- similar.
->> +    BootTime,
->> +    /// International Atomic Time.
->> +    ///
->> +    /// A nonsettable system-wide clock derived from wall-clock time but
->> +    /// counting leap seconds. This clock does not experience discontin=
-uities or
->> +    /// frequency adjustments caused by inserting leap seconds as CLOCK=
-_REALTIME
->> +    /// does.
->
-> Only partially correct.
->
-> CLOCK_TAI can be set as CLOCK_TAI is obviously coupled to CLOCK_REALTIME
-> and vice versa.
+If you think that a particular abstraction has a design issue, you're very
+welcome to chime in on the particular mail thread and help improve things.
 
-So it cannot be set directly, but if CLOCK_REALTIME is set, CLOCK_TAI
-will update?
+But implying that no one considers this is not representing reality.
 
-In that case I would add the following paragraph:
+> 
+> This stuff is really hard. C programers rarely understand it. Existing
+> drivers tend to frequenly have these bug classes. Without an obvious
+> easy to use Rust framework to, effectively, revoke function pointers
+> and synchronously destroy objects during remove, I think this will be
+> a recurring problem going forward.
+> 
+> I assume that Rust philsophy should be quite concerned if it does not
+> protect against function pointers becoming asynchronously invalid due
+> to module unload races. That sounds like a safety problem to me??
 
-  This clock is coupled to CLOCK_REALTIME and will be set when
-  CLOCK_REALTIME is set.
+Yes, it would be a safety problem. That's why HrTimer for instance implements
+the corresponding synchronization when dropped.
 
-> Also if the NTP implementation does leap seconds smearing then the
-> adjustment affects CLOCK_TAI as well. See above. That's compensated for
-> by adjusting the TAI offset to be in sync with reality, but during the
-> smear phase the readout is not precise.
+> 
+> > We also trust drivers that they don't access the pointer originally
+> > returned by pci_iomap() after remove().
+> 
+> Yes, I get it, you are trying to use a reference tracking type design
+> pattern when the C API is giving you a fencing design pattern, they
+> are not compatible and it is hard to interwork them.
+> 
+> > Now, let's get back to concurrent code that might still attempt to use the
+> > pci::Bar. Surely, we need mechanisms to shut down all asynchronous execution
+> > paths (e.g. workqueues) once the device is unbound. But that's not the job of
+> > Devres<pci::Bar>. The job of Devres<pci::Bar> is to be robust against misuse.
+> 
+> The thing is once you have a mechanism to shutdown all the stuff you
+> don't need the overhead of this revocable checking on the normal
+> paths. What you need is a way to bring your pci::Bar into a safety
+> contract that remove will shootdown concurrency and that directly
+> denies references to pci::Bar, and the same contract will guarentee it
+> frees pci::Bar memory.
 
-I would add the following paragraph then:
+This contract needs to be technically enforced, not by convention as we do in C.
 
-  However, if NTP adjusts CLOCK_REALTIME by leap second smearing, this
-  clock will not be precise during leap second smearing.
+And with embedding the pci::Bar in Devres, such that it is automatically revoked
+when the device is unbound, we do exactly that.
 
+(Again, we don't do it primarily to protect against some concurrent access, we do
+it to forcefully ensure that a pci::Bar object can not outlive the device /
+driver binding.)
 
+If we don't do that, how else do we do it? How do we prevent a driver from
+keeping the pci::Bar (and hence the memory mapping and memory region reservation
+alive after the device has been unbound?
 
-Best regards,
-Andreas Hindborg
+> > But yes, once people start using workqueues for other modules, we
+> > surely need to extend the abstraction accordingly.
+> 
+> You say that like it will be easy, but it is exactly the same type of
+> lifetime issue as pci_iomap, and that seems to be quite a challenge
+> here???
 
+No, the workqueue implementation can so something similar to what Boqun
+explained for HrTimer [1].
 
-[1] https://web.git.kernel.org/pub/scm/docs/man-pages/man-pages.git/tree/ma=
-n/man2/clock_getres.2?h=3Dman-pages-6.12
+A workqueue lifetime also does not need a hard cap at device unbind, like device
+resources. If it is bound to the module lifetime for instance, that is fine too.
 
+Data that is accessed from a work item can't be freed under the workqueue by
+design in Rust.
+
+[1] https://lore.kernel.org/rust-for-linux/Z7-0pOmWO6r_KeQI@boqun-archlinux/
