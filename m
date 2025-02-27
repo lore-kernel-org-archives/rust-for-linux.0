@@ -1,260 +1,440 @@
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56C41662EF;
-	Thu, 27 Feb 2025 13:06:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB77D22F38C
+	for <rust-for-linux@vger.kernel.org>; Thu, 27 Feb 2025 13:23:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740661593; cv=none; b=T5OkArBB5oZ4aGkO1Si4YXwaDhbEORpCiiEfnAN69cyJTih51aM34gqDHFt4cJ/EfiUYb/q4WkTiAu5f3CD56x46lWNT7NwZ7pBCs+1X3LHzrAnbyrSjTFYoBxSTtza2yT0n9hUKhmlU59z+6m6EnHiyYghXhntljhKg+AIgvbA=
+	t=1740662595; cv=none; b=kPjHRIt5JsI5NqHCoTPAeiQHmOdMCMKcVX1KTI83vOFtEqq6+3i3AY1F+kBp1J8GxBB+nx6fh7+dIfw9u/6nCsaeVDq5rGT6dYPdhsZAULpMBBG9dtWovE87Q+IdsKxXutMgmFFVb9j43IBHqRW4R+jx9PqzgiDEtQJgEB2IFJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740661593; c=relaxed/simple;
-	bh=gehwLQH/F0EbzXWjJA5bmN6veVCSiRGzWa9NpQ7Foho=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KvgQRwb8rigf00VgmVBVsTPjlHpnTWKp+cGWpEF7Kj6vcmPXNbNUF/PMLQTZRds/Vr3I4iKUshcLJ992VYfBiSFXeVAHrYPNTighe4FOkF/IDKZSLqeA8i7nbW8hTv7ZVKH8cHhkLbQXjOiV1y8jjutr+cn7v2pX4GlvRVTIaMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=YQZn4FaJ; arc=none smtp.client-ip=217.70.183.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1740662595; c=relaxed/simple;
+	bh=Efb1yhqV4zYIOKTnZF5G7JuyCcgU9v/kNVgXbrLxcDk=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=N5kXAkolUE+YfTVqK6aYZXqGd1M0FeQGJZ451lLwzQzCUgV4WcSXTGdXriPHa5cr/D9BrikFwyxWvOdEHCwRZMecMz8WMuurClb5mTi1js2Pz58qX6a7JM1lqVAcTWUFl3vHJV/yMpBUIuAV87MeE+gbWBEwfjQU2zriCz6gkMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rVz2X/xm; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="YQZn4FaJ"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 05B2F433D6;
-	Thu, 27 Feb 2025 13:06:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1740661587;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=0jurlLBNXfGd9DqDpI41umHtPOLvrCM/YL4keN35dP4=;
-	b=YQZn4FaJmdglmiMSVbEuKnBrJAFELHRX1nhF48UX+WMCEibHQEd3UdSSticOgQ91WWHjeJ
-	DQ8CpwXxJCTA/0r1BV14ekk2Nk2J1+rT8ztwsjUJK0MEyPcs/7z/a4ksZnzaAUiX2iCRbh
-	oABVymmTy4kWJD/rF+VLV59ijZd1W7skFplXpH1bObyWKY/kYM1Jqt3ZLh3mX8MPGCtF+H
-	WLrjwvPbk1aUA8rSumHJVYuAaZA2+kCzAH+3LDVR7P13iY5+B6tJ1JzkHwHXncspiJIuPw
-	e3F2k1Becmy8iGr7WKAzsgsO8ZOCd18q+M2uOmbNDDHe5g5c+JwJqdAnFDMw4w==
-Message-ID: <7d196a91-220a-41a5-8577-198b436d8440@bootlin.com>
-Date: Thu, 27 Feb 2025 14:06:21 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rVz2X/xm"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43ab456333aso8674335e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 27 Feb 2025 05:23:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1740662591; x=1741267391; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ScvIODhMioXpdAQWUjG4Ar/IdTwtbxdC6jG38Y+sxBU=;
+        b=rVz2X/xmXMeCwzvKB2aM3UKnFaEw0974xfUJA/RCWLF4seYa4IOvwHJKbaspVqgLmk
+         Xb4yoxln66tVMJrdWFyFlzj0ExXvWnjD+9u7VZ8K//f8QLh1HjGXduU6t8rOfCvPU46Z
+         0btGljSaN1RlGG7X+dlEnd75hRTZjzSyArUa11Qe8XOzu3cwDuduluUO+iXmEXaSK8Wj
+         /SfQidACewGsZGY7HxmlJIcJlqZKVk7NgJuEvY3CmBlSGDNQaOCZaEclnsRJkLmxGl6B
+         cmlQLAjNJfkekRahwYqkzjbgfYmz4EglnbG/lpiiaXYyJsjS2JnWKaOw03MFdooznpqt
+         5ohA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740662591; x=1741267391;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ScvIODhMioXpdAQWUjG4Ar/IdTwtbxdC6jG38Y+sxBU=;
+        b=iot8QcgyLBY8ebJ30iITM0uj4Pu5oNnGD+VicmLAeWLKhDsgywyAGkY4srfchMwYTp
+         7TloxGAZ37wM1NCCzOC8bqxGVS/TfOOnHIr0OstfA+yvvsozwngczDpF/GyGBUg+NfRE
+         MVd8rsyWHWErvAKdP983caC6wUOW1XN2OI9+dLoYprUUlXgGcZy5zeySZJthqqAKmRC+
+         LGqxJF539gqozrugRP0pAS5SZrUPkAsd/lcjGkvSlNGb6byBZM38vPg8grvLRquMMZVw
+         6luyA6Cw+HGK8FuJyqpifelyoz8cyQDDXRHZ3Nzfpk34TtTF7YNZp+tMPS37/k0AxPjI
+         sNyw==
+X-Forwarded-Encrypted: i=1; AJvYcCWZQeuaznLID7zJLdDlbO7U6xgl3+0ft8R+jzyxzIGu36Fu+CZXb1B+pxaeP1ZiZzg1GjejHKxBz+Dbb4IYtQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyd9mDe8psJpuk5aqapLD2+V2Vy5cU70MKm7CvObDqwqmyg9qk8
+	iSvLY5FGoADcarkl3SE7k1PJbwwm1PUnRRNgjSTUHHnctwJEOLI8o3j8E9kA+qtwTuSzhNwOjJ9
+	7TTMtagKvTxJ46g==
+X-Google-Smtp-Source: AGHT+IEMEvQ8Up68R5/dRRV4pfxncO3q6iKq/BvOS0GuFO9p+zOQNflD6VgZjiakyJ7gMcGNiROsIZsR6vm74c8=
+X-Received: from wmbjh9.prod.google.com ([2002:a05:600c:a089:b0:439:94f1:365e])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:458e:b0:439:8c9c:6d32 with SMTP id 5b1f17b1804b1-43ab9d4c0c3mr79224805e9.13.1740662591266;
+ Thu, 27 Feb 2025 05:23:11 -0800 (PST)
+Date: Thu, 27 Feb 2025 13:22:31 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/9] Driver core: Add faux bus devices
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, Lyude Paul <lyude@redhat.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>
-Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Lukas Wunner <lukas@wunner.de>,
- Mark Brown <broonie@kernel.org>, =?UTF-8?Q?Ma=C3=ADra_Canal?=
- <mairacanal@riseup.net>, Robin Murphy <robin.murphy@arm.com>,
- Simona Vetter <simona.vetter@ffwll.ch>, Zijun Hu <quic_zijuhu@quicinc.com>,
- linux-usb@vger.kernel.org, rust-for-linux@vger.kernel.org,
- =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>
-References: <2025021023-sandstorm-precise-9f5d@gregkh>
-Content-Language: en-US
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
- 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
-In-Reply-To: <2025021023-sandstorm-precise-9f5d@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekjeehgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpefnohhuihhsucevhhgruhhvvghtuceolhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepudfggeegueffjeffteetteehjefhiedtkedvffettddthedthefhvddvlefgleevnecuffhomhgrihhnpehfrhgvvgguvghskhhtohhprdhorhhgpdhkvghrnhgvlhdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrddtrddvtdgnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepudelpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhihuhguvgesrhgvughhrghtrdgtohhmpdhrtghpt
- hhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvghkshgrnhguvghrrdhlohgsrghkihhnsehinhhtvghlrdgtohhmpdhrtghpthhtoheprghnughrihihrdhshhgvvhgthhgvnhhkoheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopegshhgvlhhgrggrshesghhoohhglhgvrdgtohhm
-X-GND-Sasl: louis.chauvet@bootlin.com
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIABZnwGcC/y2MywqAIBAAfyX2nKAbZvUr0SF0rT30wIUIpH9Po
+ uPAzGQQSkwCQ5Uh0cXCx17A1BX4dd4XUhwKA2q02hinNhYfiuhJxeMU9VvY6sZiDF1vHZT4TBT 5/sbj9Dwv9/tfcWgAAAA=
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=15081; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=Efb1yhqV4zYIOKTnZF5G7JuyCcgU9v/kNVgXbrLxcDk=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnwGcdfjQ67CZ0jZaNq5LQpKCmgZxZ1Afq0HRlh
+ gCE1x+7neCJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ8BnHQAKCRAEWL7uWMY5
+ RuL5D/9UZalGOS9wraC6J++bOFSrBAUvyf31eCiyV8SG0YJGirNJnFU0qOZkv4fwkbAQ82Z0ik+
+ +VX3mKOjHu7UDsEpm1TAf8eycvIe4fsqttMEjOykgfU1ZGSS4kz/O9FPa2kXtJzIfaVCl3l5wK6
+ gB7ievfsaDRdfPlQYCTDDU+w+lQk9yNHM8E+HGwWu6v8mM46e10S1f4SUo56m0N9rLryukdfv8z
+ wyVvoL+nGDB9blQUbl7SWhR8ocZM1y/biSer0ZmFH8mr7lx7SX9uNFwVaHYKBG9TjQBuc56Y4iZ
+ KXfBB8CmR3hqSPhafnwK6pqsPKUOT134QZCBx6Sd23mNodhV0tJoBXAerYd5Tdmem+2myX98voN
+ RDtCwJzLQ88F1RSWOc6ByK2hTSoQpl0/9OtWRAU5ZR1ham9WOySIQeiUPSGD2f9Go60Oyj/kK7L
+ xDS6/7qMPYnhauLcTTtVwiCbYyA0h/MBCBCS9u3hAgTO1esPareFIvwtvoFof9cphKV4nG83eKT
+ UeaWTLlaJxHP2UlFIoAqEpjDMHJ+3QMOl1/5rf9pMfKldZKkvpTQ1DGLryPHQFEimatJTMCea61
+ iQNXoV9NzDw/NG/tKHq2J42zmuCEA57IdRL1AT2cIjqlBSvbfPXk+cCpeaiF1THRi8uK0q2V7AC iq0t1L4Mwe7AWlQ==
+X-Mailer: b4 0.14.1
+Message-ID: <20250227-miscdevice-fops-change-v1-1-c9e9b75d67eb@google.com>
+Subject: [PATCH] rust: miscdevice: change how f_ops vtable is constructed
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Christian Schrefl <chrisi.schrefl@gmail.com>, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
+I was helping someone with writing a new Rust abstraction, and we were
+using the miscdevice abstraction as an example. While doing this, it
+became clear to me that the way I implemented the f_ops vtable is
+confusing to new Rust users, and that the approach used by the block
+abstractions is less confusing.
 
+Thus, update the miscdevice abstractions to use the same approach as
+rust/kernel/block/mq/operations.rs.
 
-Le 10/02/2025 à 13:30, Greg Kroah-Hartman a écrit :
-> For years/decades now, I've been complaining when I see people use
-> platform devices for things that are obviously NOT platform devices.
-> To finally fix this up, here is a "faux bus" that should be used instead
-> of a platform device for these tiny and "fake" devices that people
-> create all over the place.
-> 
-> The api is even simpler than the normal platform device api, just two
-> functions, one to create a device and one to remove it.  When a device
-> is created, if a probe/release callback is offered, they will be called
-> at the proper time in the device's lifecycle.  When finished with the
-> device, just destroy it and all should be good.
-> 
-> This simple api should also hopefully provide for a simple rust binding
-> to it given the simple rules and lifecycle of the pointer passed back
-> from the creation function (i.e. it is alive and valid for as long as
-> you have not called destroy on it.)
-> 
-> I've also converted four different examples of platform device abuse, the
-> dummy regulator driver, the USB phy code, the x86 microcode dvice, and
-> the "regulator" device that wifi uses to load the firmware tables, to
-> use this api.  In all cases, the logic either was identical, or became
-> simpler, than before, a good sign (side note, a bug was fixed in the usb
-> phy code that no one ever noticed before).
-> 
-> Note, unless there are major objections, I'm leaning toward getting
-> patch 1 and 2 of this series merged during this -rc cycle so that all of
-> the individual driver subsystem cleanups can go through those subsystems
-> as needed, as well as allowing the rust developers to create a binding
-> and get that merged easier.  Having patch 1 merged on its own isn't
-> going to cause any changes if no one uses it, so that should be fine.
+Sorry about the large diff. This changes the indentation of a large
+amount of code.
 
-Hi all,
+Reviewed-by: Christian Schrefl <chrisi.schrefl@gmail.com>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ rust/kernel/miscdevice.rs | 297 ++++++++++++++++++++++------------------------
+ 1 file changed, 143 insertions(+), 154 deletions(-)
 
-I have a maybe dumb question regarding the patches 3..9: do they break 
-the UAPI?
+diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
+index e14433b2ab9d..fa9ecc42602a 100644
+--- a/rust/kernel/miscdevice.rs
++++ b/rust/kernel/miscdevice.rs
+@@ -35,7 +35,7 @@ pub const fn into_raw<T: MiscDevice>(self) -> bindings::miscdevice {
+         let mut result: bindings::miscdevice = unsafe { MaybeUninit::zeroed().assume_init() };
+         result.minor = bindings::MISC_DYNAMIC_MINOR as _;
+         result.name = self.name.as_char_ptr();
+-        result.fops = create_vtable::<T>();
++        result.fops = MiscdeviceVTable::<T>::build();
+         result
+     }
+ }
+@@ -160,171 +160,160 @@ fn show_fdinfo(
+     }
+ }
+ 
+-const fn create_vtable<T: MiscDevice>() -> &'static bindings::file_operations {
+-    const fn maybe_fn<T: Copy>(check: bool, func: T) -> Option<T> {
+-        if check {
+-            Some(func)
+-        } else {
+-            None
++/// A vtable for the file operations of a Rust miscdevice.
++struct MiscdeviceVTable<T: MiscDevice>(PhantomData<T>);
++
++impl<T: MiscDevice> MiscdeviceVTable<T> {
++    /// # Safety
++    ///
++    /// `file` and `inode` must be the file and inode for a file that is undergoing initialization.
++    /// The file must be associated with a `MiscDeviceRegistration<T>`.
++    unsafe extern "C" fn open(inode: *mut bindings::inode, raw_file: *mut bindings::file) -> c_int {
++        // SAFETY: The pointers are valid and for a file being opened.
++        let ret = unsafe { bindings::generic_file_open(inode, raw_file) };
++        if ret != 0 {
++            return ret;
+         }
+-    }
+ 
+-    struct VtableHelper<T: MiscDevice> {
+-        _t: PhantomData<T>,
+-    }
+-    impl<T: MiscDevice> VtableHelper<T> {
+-        const VTABLE: bindings::file_operations = bindings::file_operations {
+-            open: Some(fops_open::<T>),
+-            release: Some(fops_release::<T>),
+-            unlocked_ioctl: maybe_fn(T::HAS_IOCTL, fops_ioctl::<T>),
+-            #[cfg(CONFIG_COMPAT)]
+-            compat_ioctl: if T::HAS_COMPAT_IOCTL {
+-                Some(fops_compat_ioctl::<T>)
+-            } else if T::HAS_IOCTL {
+-                Some(bindings::compat_ptr_ioctl)
+-            } else {
+-                None
+-            },
+-            show_fdinfo: maybe_fn(T::HAS_SHOW_FDINFO, fops_show_fdinfo::<T>),
+-            // SAFETY: All zeros is a valid value for `bindings::file_operations`.
+-            ..unsafe { MaybeUninit::zeroed().assume_init() }
+-        };
+-    }
++        // SAFETY: The open call of a file can access the private data.
++        let misc_ptr = unsafe { (*raw_file).private_data };
+ 
+-    &VtableHelper::<T>::VTABLE
+-}
++        // SAFETY: This is a miscdevice, so `misc_open()` set the private data to a pointer to the
++        // associated `struct miscdevice` before calling into this method. Furthermore,
++        // `misc_open()` ensures that the miscdevice can't be unregistered and freed during this
++        // call to `fops_open`.
++        let misc = unsafe { &*misc_ptr.cast::<MiscDeviceRegistration<T>>() };
+ 
+-/// # Safety
+-///
+-/// `file` and `inode` must be the file and inode for a file that is undergoing initialization.
+-/// The file must be associated with a `MiscDeviceRegistration<T>`.
+-unsafe extern "C" fn fops_open<T: MiscDevice>(
+-    inode: *mut bindings::inode,
+-    raw_file: *mut bindings::file,
+-) -> c_int {
+-    // SAFETY: The pointers are valid and for a file being opened.
+-    let ret = unsafe { bindings::generic_file_open(inode, raw_file) };
+-    if ret != 0 {
+-        return ret;
+-    }
++        // SAFETY:
++        // * This underlying file is valid for (much longer than) the duration of `T::open`.
++        // * There is no active fdget_pos region on the file on this thread.
++        let file = unsafe { File::from_raw_file(raw_file) };
+ 
+-    // SAFETY: The open call of a file can access the private data.
+-    let misc_ptr = unsafe { (*raw_file).private_data };
+-
+-    // SAFETY: This is a miscdevice, so `misc_open()` set the private data to a pointer to the
+-    // associated `struct miscdevice` before calling into this method. Furthermore, `misc_open()`
+-    // ensures that the miscdevice can't be unregistered and freed during this call to `fops_open`.
+-    let misc = unsafe { &*misc_ptr.cast::<MiscDeviceRegistration<T>>() };
++        let ptr = match T::open(file, misc) {
++            Ok(ptr) => ptr,
++            Err(err) => return err.to_errno(),
++        };
+ 
+-    // SAFETY:
+-    // * This underlying file is valid for (much longer than) the duration of `T::open`.
+-    // * There is no active fdget_pos region on the file on this thread.
+-    let file = unsafe { File::from_raw_file(raw_file) };
++        // This overwrites the private data with the value specified by the user, changing the type
++        // of this file's private data. All future accesses to the private data is performed by
++        // other fops_* methods in this file, which all correctly cast the private data to the new
++        // type.
++        //
++        // SAFETY: The open call of a file can access the private data.
++        unsafe { (*raw_file).private_data = ptr.into_foreign() };
+ 
+-    let ptr = match T::open(file, misc) {
+-        Ok(ptr) => ptr,
+-        Err(err) => return err.to_errno(),
+-    };
+-
+-    // This overwrites the private data with the value specified by the user, changing the type of
+-    // this file's private data. All future accesses to the private data is performed by other
+-    // fops_* methods in this file, which all correctly cast the private data to the new type.
+-    //
+-    // SAFETY: The open call of a file can access the private data.
+-    unsafe { (*raw_file).private_data = ptr.into_foreign() };
++        0
++    }
+ 
+-    0
+-}
++    /// # Safety
++    ///
++    /// `file` and `inode` must be the file and inode for a file that is being released. The file
++    /// must be associated with a `MiscDeviceRegistration<T>`.
++    unsafe extern "C" fn release(_inode: *mut bindings::inode, file: *mut bindings::file) -> c_int {
++        // SAFETY: The release call of a file owns the private data.
++        let private = unsafe { (*file).private_data };
++        // SAFETY: The release call of a file owns the private data.
++        let ptr = unsafe { <T::Ptr as ForeignOwnable>::from_foreign(private) };
++
++        // SAFETY:
++        // * The file is valid for the duration of this call.
++        // * There is no active fdget_pos region on the file on this thread.
++        T::release(ptr, unsafe { File::from_raw_file(file) });
++
++        0
++    }
+ 
+-/// # Safety
+-///
+-/// `file` and `inode` must be the file and inode for a file that is being released. The file must
+-/// be associated with a `MiscDeviceRegistration<T>`.
+-unsafe extern "C" fn fops_release<T: MiscDevice>(
+-    _inode: *mut bindings::inode,
+-    file: *mut bindings::file,
+-) -> c_int {
+-    // SAFETY: The release call of a file owns the private data.
+-    let private = unsafe { (*file).private_data };
+-    // SAFETY: The release call of a file owns the private data.
+-    let ptr = unsafe { <T::Ptr as ForeignOwnable>::from_foreign(private) };
+-
+-    // SAFETY:
+-    // * The file is valid for the duration of this call.
+-    // * There is no active fdget_pos region on the file on this thread.
+-    T::release(ptr, unsafe { File::from_raw_file(file) });
+-
+-    0
+-}
++    /// # Safety
++    ///
++    /// `file` must be a valid file that is associated with a `MiscDeviceRegistration<T>`.
++    unsafe extern "C" fn ioctl(file: *mut bindings::file, cmd: c_uint, arg: c_ulong) -> c_long {
++        // SAFETY: The ioctl call of a file can access the private data.
++        let private = unsafe { (*file).private_data };
++        // SAFETY: Ioctl calls can borrow the private data of the file.
++        let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
++
++        // SAFETY:
++        // * The file is valid for the duration of this call.
++        // * There is no active fdget_pos region on the file on this thread.
++        let file = unsafe { File::from_raw_file(file) };
++
++        match T::ioctl(device, file, cmd, arg) {
++            Ok(ret) => ret as c_long,
++            Err(err) => err.to_errno() as c_long,
++        }
++    }
+ 
+-/// # Safety
+-///
+-/// `file` must be a valid file that is associated with a `MiscDeviceRegistration<T>`.
+-unsafe extern "C" fn fops_ioctl<T: MiscDevice>(
+-    file: *mut bindings::file,
+-    cmd: c_uint,
+-    arg: c_ulong,
+-) -> c_long {
+-    // SAFETY: The ioctl call of a file can access the private data.
+-    let private = unsafe { (*file).private_data };
+-    // SAFETY: Ioctl calls can borrow the private data of the file.
+-    let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
+-
+-    // SAFETY:
+-    // * The file is valid for the duration of this call.
+-    // * There is no active fdget_pos region on the file on this thread.
+-    let file = unsafe { File::from_raw_file(file) };
+-
+-    match T::ioctl(device, file, cmd, arg) {
+-        Ok(ret) => ret as c_long,
+-        Err(err) => err.to_errno() as c_long,
++    /// # Safety
++    ///
++    /// `file` must be a valid file that is associated with a `MiscDeviceRegistration<T>`.
++    #[cfg(CONFIG_COMPAT)]
++    unsafe extern "C" fn compat_ioctl(
++        file: *mut bindings::file,
++        cmd: c_uint,
++        arg: c_ulong,
++    ) -> c_long {
++        // SAFETY: The compat ioctl call of a file can access the private data.
++        let private = unsafe { (*file).private_data };
++        // SAFETY: Ioctl calls can borrow the private data of the file.
++        let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
++
++        // SAFETY:
++        // * The file is valid for the duration of this call.
++        // * There is no active fdget_pos region on the file on this thread.
++        let file = unsafe { File::from_raw_file(file) };
++
++        match T::compat_ioctl(device, file, cmd, arg) {
++            Ok(ret) => ret as c_long,
++            Err(err) => err.to_errno() as c_long,
++        }
+     }
+-}
+ 
+-/// # Safety
+-///
+-/// `file` must be a valid file that is associated with a `MiscDeviceRegistration<T>`.
+-#[cfg(CONFIG_COMPAT)]
+-unsafe extern "C" fn fops_compat_ioctl<T: MiscDevice>(
+-    file: *mut bindings::file,
+-    cmd: c_uint,
+-    arg: c_ulong,
+-) -> c_long {
+-    // SAFETY: The compat ioctl call of a file can access the private data.
+-    let private = unsafe { (*file).private_data };
+-    // SAFETY: Ioctl calls can borrow the private data of the file.
+-    let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
+-
+-    // SAFETY:
+-    // * The file is valid for the duration of this call.
+-    // * There is no active fdget_pos region on the file on this thread.
+-    let file = unsafe { File::from_raw_file(file) };
+-
+-    match T::compat_ioctl(device, file, cmd, arg) {
+-        Ok(ret) => ret as c_long,
+-        Err(err) => err.to_errno() as c_long,
++    /// # Safety
++    ///
++    /// - `file` must be a valid file that is associated with a `MiscDeviceRegistration<T>`.
++    /// - `seq_file` must be a valid `struct seq_file` that we can write to.
++    unsafe extern "C" fn show_fdinfo(seq_file: *mut bindings::seq_file, file: *mut bindings::file) {
++        // SAFETY: The release call of a file owns the private data.
++        let private = unsafe { (*file).private_data };
++        // SAFETY: Ioctl calls can borrow the private data of the file.
++        let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
++        // SAFETY:
++        // * The file is valid for the duration of this call.
++        // * There is no active fdget_pos region on the file on this thread.
++        let file = unsafe { File::from_raw_file(file) };
++        // SAFETY: The caller ensures that the pointer is valid and exclusive for the duration in
++        // which this method is called.
++        let m = unsafe { SeqFile::from_raw(seq_file) };
++
++        T::show_fdinfo(device, m, file);
+     }
+-}
+ 
+-/// # Safety
+-///
+-/// - `file` must be a valid file that is associated with a `MiscDeviceRegistration<T>`.
+-/// - `seq_file` must be a valid `struct seq_file` that we can write to.
+-unsafe extern "C" fn fops_show_fdinfo<T: MiscDevice>(
+-    seq_file: *mut bindings::seq_file,
+-    file: *mut bindings::file,
+-) {
+-    // SAFETY: The release call of a file owns the private data.
+-    let private = unsafe { (*file).private_data };
+-    // SAFETY: Ioctl calls can borrow the private data of the file.
+-    let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
+-    // SAFETY:
+-    // * The file is valid for the duration of this call.
+-    // * There is no active fdget_pos region on the file on this thread.
+-    let file = unsafe { File::from_raw_file(file) };
+-    // SAFETY: The caller ensures that the pointer is valid and exclusive for the duration in which
+-    // this method is called.
+-    let m = unsafe { SeqFile::from_raw(seq_file) };
+-
+-    T::show_fdinfo(device, m, file);
++    const VTABLE: bindings::file_operations = bindings::file_operations {
++        open: Some(Self::open),
++        release: Some(Self::release),
++        unlocked_ioctl: if T::HAS_IOCTL {
++            Some(Self::ioctl)
++        } else {
++            None
++        },
++        #[cfg(CONFIG_COMPAT)]
++        compat_ioctl: if T::HAS_COMPAT_IOCTL {
++            Some(Self::compat_ioctl)
++        } else if T::HAS_IOCTL {
++            Some(bindings::compat_ptr_ioctl)
++        } else {
++            None
++        },
++        show_fdinfo: if T::HAS_SHOW_FDINFO {
++            Some(Self::show_fdinfo)
++        } else {
++            None
++        },
++        // SAFETY: All zeros is a valid value for `bindings::file_operations`.
++        ..unsafe { MaybeUninit::zeroed().assume_init() }
++    };
++
++    const fn build() -> &'static bindings::file_operations {
++        &Self::VTABLE
++    }
+ }
 
-With a platform device, the drivers appear under /sys/bus/platform, but 
-with faux device, they appear under /sys/bus/faux.
+---
+base-commit: a64dcfb451e254085a7daee5fe51bf22959d52d3
+change-id: 20250117-miscdevice-fops-change-260352fd8957
 
-I ask because I found out that one (see my reply to [2]) of the main drm 
-library expects to find all the devices under pci, usb, platform, virtio 
-and host1x buses [1], so at least for the vgem and vkms driver, this 
-library will be broken (it will not crash, but previously detected 
-devices will suddenly disappear).
-
-I don't know what are the rules for /sys/bus, but changing a device from 
-one bus to another seems to break userspace programs. How should we 
-handle this situation? Should we fix the existing drivers? Or only new 
-drivers should use it?
-
-+CC: José Expósito
-
-Thanks,
-Louis Chauvet
-
-[1]:https://gitlab.freedesktop.org/mesa/drm/-/blob/main/xf86drm.c#L4460-4515
-[2]:https://lore.kernel.org/all/20250218165011.9123-21-jose.exposito89@gmail.com/
-
-> Changes from v4:
->    - really dropped the internal name structure, remanants were left over
->      from the last patch series
->    - added the rust binding patch from Lyude (is this one of the first
->      patch series that adds a new kernel api AND the rust binding at the
->      same time?)
->    - added a parent pointer to the api so the devices can be in the tree
->      if the caller wants them
->    - made probe synchronous to prevent race when using the api (when the
->      create call returns the device is fully ready to go.)  Thanks to
->      testing of the drm driver change to find this issue.
->    - documentation tweaks
->    - #include <linux/container_of.h> finally added to faux.h
-> 
-> 
-> Changes from v3:
->    - Dropped the USB phy porting, turned out to be incorrect, it really
->      did need a platform device
->    - converted more drivers to the faux_device api (tlclk, lis3lv02d,
->      vgem, and vkms)
->    - collected some reviewed-by
->    - lots of minor tweaks of the faux.c api, and documentation based on
->      review, see the changelog in patch 1 for details.
-> 
-> Changes from v2:
->    - lots of cleanups to faux.c based on reviews, see patch 1 for details
->    - actually tested the destroy device path, it worked first try!
->    - added 3 more example drivers
-> 
-> 
-> 
-> Greg Kroah-Hartman (8):
->    driver core: add a faux bus for use when a simple device/bus is needed
->    regulator: dummy: convert to use the faux device interface
->    x86/microcode: move away from using a fake platform device
->    wifi: cfg80211: move away from using a fake platform device
->    tlclk: convert to use faux_device
->    misc: lis3lv02d: convert to use faux_device
->    drm/vgem/vgem_drv convert to use faux_device
->    drm/vkms: convert to use faux_device
-> 
-> Lyude Paul (1):
->    rust/kernel: Add faux device bindings
-> 
->   Documentation/driver-api/infrastructure.rst |   6 +
->   MAINTAINERS                                 |   2 +
->   arch/x86/kernel/cpu/microcode/core.c        |  14 +-
->   drivers/base/Makefile                       |   2 +-
->   drivers/base/base.h                         |   1 +
->   drivers/base/faux.c                         | 232 ++++++++++++++++++++
->   drivers/base/init.c                         |   1 +
->   drivers/char/tlclk.c                        |  32 +--
->   drivers/gpu/drm/vgem/vgem_drv.c             |  30 +--
->   drivers/gpu/drm/vkms/vkms_drv.c             |  28 +--
->   drivers/gpu/drm/vkms/vkms_drv.h             |   4 +-
->   drivers/misc/lis3lv02d/lis3lv02d.c          |  26 +--
->   drivers/misc/lis3lv02d/lis3lv02d.h          |   4 +-
->   drivers/regulator/dummy.c                   |  37 +---
->   include/linux/device/faux.h                 |  69 ++++++
->   net/wireless/reg.c                          |  28 +--
->   rust/bindings/bindings_helper.h             |   1 +
->   rust/kernel/faux.rs                         |  67 ++++++
->   rust/kernel/lib.rs                          |   1 +
->   samples/rust/Kconfig                        |  10 +
->   samples/rust/Makefile                       |   1 +
->   samples/rust/rust_driver_faux.rs            |  29 +++
->   22 files changed, 502 insertions(+), 123 deletions(-)
->   create mode 100644 drivers/base/faux.c
->   create mode 100644 include/linux/device/faux.h
->   create mode 100644 rust/kernel/faux.rs
->   create mode 100644 samples/rust/rust_driver_faux.rs
-> 
-
+Best regards,
 -- 
-Louis Chauvet, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Alice Ryhl <aliceryhl@google.com>
 
