@@ -1,153 +1,96 @@
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798351EF381;
-	Fri, 28 Feb 2025 15:14:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD1C1EF370;
+	Fri, 28 Feb 2025 15:21:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740755665; cv=none; b=ZAslo4Xf8J0GOA/tNVJnYL8b3sysJxQolezsSLtZ0NLrXMkpgsD7YKLNtcvmYDioQuIALXfDbM/OK72HnPziZn8OvrOJDq9vKBBlxvhj4msGQOXGlLivxKOK1Efua/e43SiNB+zwd4c3u0MfNmX5ok99Hs6roh66C8epU+jhkuk=
+	t=1740756117; cv=none; b=o12hUvRgFzmD5I43crYPBAt1Rgl+N0gsN4mpvRJSoWWiDmEt9V7ysrXDJ9NoY0Dg8oIV/I8Kq/u5qk3RAMBO8Fr+31IocTuZ/9H+ukOEytdDrtHvLvXZh+bgBq2ssenK/Dc0bW4bW6Zbbv5rJQGc3tAjWE6uK9+XhBJFCuEZAJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740755665; c=relaxed/simple;
-	bh=DI0hC9zhDvh4I4bhUn5+gweNWh8TFwtPZH7NWOoJHco=;
+	s=arc-20240116; t=1740756117; c=relaxed/simple;
+	bh=7ACmhJ79hYH9IFo3LzuVdaynq3mT8w0d1v9RWvg98Pk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OQ96PTMk3SsWl9OUKJBkoriMjAHXZJ2apBt18YVy05myZAp1TfzT9I7ayxkhSHjB2/6nQ07K0svYF1FM5taz3g6HNtKTvdVJeoxaGbd+N+kB0J7S7Vn+75HfKsHGf2DJYyefL9lje1KZCRfZ7dwHB+qzSHhGnjvbBSD7QohIYhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DSxaWLjj; arc=none smtp.client-ip=209.85.208.171
+	 To:Cc:Content-Type; b=WVthPlbOPz0wW9+K7hDBTxh3J21zZuCCwATAS//2ovS7Y+D7R9K3owJMDI9vgne1FHaNDuFO2qtteBDD7ft2x8qLGCQH8wdw9o107m2Sli6gp4oyEzFFs0kh381mq+EeiOB76cHylf09C64iQ+2S+73NDc0LDoAAtH9MPVz1fic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bZcWiBkF; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DSxaWLjj"
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-307bc125e2eso24529181fa.3;
-        Fri, 28 Feb 2025 07:14:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bZcWiBkF"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-22348051cf7so5412925ad.1;
+        Fri, 28 Feb 2025 07:21:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740755661; x=1741360461; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1740756116; x=1741360916; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=grkPIIqnkl1tYy4u7pVLzybcjKkdicYzst48mzoDrY4=;
-        b=DSxaWLjjpMKCmxLsn7PvZX3syGU1/IKlSQzo1UYJKN8dUd6fnbTbqW1RYIGIEP7/+m
-         o52XP2kIp7FWHaRjCjNTykOD5QmXLrYdDWIxtlTks9vF4AXFjKtxIQsnhLE8hl2hKAVJ
-         WyQOpA7SuW62JeBzfj49cm9IcIS1QExJiuGoS3hJRrcgzjTxAJltsmyUlRnWMT7g60X5
-         HKE/R/VohpI+prDx6xxKCE7CPT1JJkGlT49xL+bFMQM/KOIVM44/w/uhq+5BvzCgvx2j
-         iel0zrgftsR09cMURAVYsSnYdtJEFz2WHfkVpMa6+qJhviargQgTL+CsAQzcq46yFp6n
-         IZvA==
+        bh=7ACmhJ79hYH9IFo3LzuVdaynq3mT8w0d1v9RWvg98Pk=;
+        b=bZcWiBkFlyLIjebJriG0TJ6YMw9yzAllMXa67/skBT4tBmIcC9qpAOyu28xkN84EKP
+         u/Uuti2iT4Q4sJrfCSX0IHo/XdYJ6zEVUQN22Le+hlxT4BRCNgbCGjbns0HRd67Ks5NS
+         ibj6NKqC9cOWIJXDd61IHF3W8BNoPLXTYlfpffTgK8ORhYchG7U0j9MbU+/uwuSkErbK
+         nfZ7agCZ/WWstk8ZD9+mS9UCwBVG3V7TOy/mCGvlJEgXFDNCIA6f8RmCY8iCasyUJfFg
+         frsyFVeGzf+pIBDgKOUM/o7tgAA1m6n+dwatz6SAGHAmz5n4uSRxG4PhUcGRtR+2Tkkb
+         MwCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740755661; x=1741360461;
+        d=1e100.net; s=20230601; t=1740756116; x=1741360916;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=grkPIIqnkl1tYy4u7pVLzybcjKkdicYzst48mzoDrY4=;
-        b=B0K3pdxR0ErFOr+FIwYVeYZywb4+4raM0S+2xjqPofiS2YvtG4UYbw6T+qCjKMxNLy
-         JxWKruQlAicDw65wzuwtRWIdhF2cim51LM9sKhKJhhltJjdtFyopoE0ufvH8/1BAgHbq
-         oYUXQq8MjtfRAUpuydDo+fwqbMOJpX5jM8pYVxVNazfnyGdrDo9E+YABynY2xawbw0+S
-         cAE1IkiKU9BiBD4s6uHGpOPwD+oSFL5bAI2dUCuYvps4q03vlUn+xp2yv+D5W7uDXqyn
-         4gelvXay1K5XyG1Kd50y18WvgvXif97y1s1aarEHOBeynscxX0Kw2wvjBkQlW0lUm05/
-         C8qg==
-X-Forwarded-Encrypted: i=1; AJvYcCUb3lSN9NqOHw3U3dnGvj1OzTESlUwfNgW7Rp/1JoziBXwKiVLaYquoCQQEHBJryE98GKom1eMU96fE7Fc=@vger.kernel.org, AJvYcCXNhRjQTT6aP6OdCIpMJPt7Nhl6ewZ/mTaTAhR8ev0p9sAz0H1VQsdnmSTZ+FVRigQjKcUuaZZ0Hn5mdlK9hFk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyg9qkubYV/OfJHX3+9JfhcUo2lJntsArRUfqz0MOllZv3G05ou
-	9CCx/RuHCmj+h0ND3Ov4h6TokICi65lxq89FIs8dmQCVgUZ+WTttvBKK4zeymIx6vLiFmXA06Nz
-	IjdWT3d0xVJLSrzgWyAxAp/15xDY=
-X-Gm-Gg: ASbGncueoqmYae37hq1/7m0HJ6TOv8TpLKjkGK2CD2EIE4iBRix4xPUD0dZN93icu52
-	hf1GPnePgSPbvk5p/YZLnsnaCx1u4Lards0Qz4W0NmOEz0DW1dL3sBnsHfSLMesMx4z3T/90Wrv
-	pgB8B6HjayjGTSNMaq+mU0XuXkThhrxl/dtT+sKHgn
-X-Google-Smtp-Source: AGHT+IG3PHPW7yEWyg9Nw7TQmjbaY2VbuXr0nAloJvWb506WO/YmCO9PC2FjjLDMuvJBNhfArD3zPEOrkBENci+r6jE=
-X-Received: by 2002:a2e:b60b:0:b0:306:1524:4a65 with SMTP id
- 38308e7fff4ca-30b932435c7mr11345361fa.20.1740755660982; Fri, 28 Feb 2025
- 07:14:20 -0800 (PST)
+        bh=7ACmhJ79hYH9IFo3LzuVdaynq3mT8w0d1v9RWvg98Pk=;
+        b=uj2mhQaiS1Ovp5z7jE/TBj9t3ghWkvxSjhB+kzZNWPk8YDODDij6GgTlnVmNfKIYdo
+         kNipYncWPPKzXiL3ButGpfL8H8WjYSswA1OGwU8jTntmYIByQ+mksvWE2Mk16V8H2DvO
+         F03oUE60U8x3T1TpNsK56ZZu1D65R877Q82OYgEkqFc4emRUJqYH0mQNNu21Hz5UbKla
+         c33990sAwYhN2P/mvfUnYpw2dR/6aiTX016wBj9pFnJure1IQKehNCZMNH5LhVQ2WTwl
+         BShNprnqQ9bXDKzXhbHFlUUTcGtlQJ3a+sjKnIbwYoLWXe3n6JO9k9hQRX/JUBWd8gO1
+         QgeA==
+X-Forwarded-Encrypted: i=1; AJvYcCVRF+Uv0RlqoWXNrPHSYDJeutS5WrisDXUDBAZtsEFeCh9WcfuX0vNio03Ca7YUQs1VppbCpEN8zIV/7y8=@vger.kernel.org, AJvYcCXRO2WQJvn43TgeVQitEdRgNBIjEgHBphPTYR+f02H4DRTuYN+5Gy5niVFFXtbvLJPFHYGUeN9JSO1IZmcpmWk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCA3ZrJqVZ9GghuOrUdMZOutWbUAsdjf7/vSnemW5Oqf5QTaKo
+	QcSMPVevSlnFrym0+keiBc5zC6pNfCw1Oa9giebZ2iYpI8CiYK+n+GrSPAU3NLEUCp8uA4TO0jC
+	X5ekoWc5Br1ibCksflx9ImRXAa+4=
+X-Gm-Gg: ASbGnctfN6iN+6gMLxkQ5X3BoVbz/RkkEDMHcsydyeDLdjCxbSz2h0I1C2wpp8n4kJN
+	uFzUMdiqAGu91wWkupIIqRuu5ZdMFBWTHvOv1YKfm0cBuIxW1uiVzBIOs/vh3jemm79WzwL60ni
+	XIGiiU6X4=
+X-Google-Smtp-Source: AGHT+IE0xocSm5hllgwGR1/fNKAARoouiHtcKZ6V7E50P+V7phTQQVYrrlf4TPAFnN/ZEGTqXUIgXw8bZTtXdyxvZjo=
+X-Received: by 2002:a17:903:183:b0:223:364f:7a5 with SMTP id
+ d9443c01a7336-22369213d54mr21406765ad.11.1740756115602; Fri, 28 Feb 2025
+ 07:21:55 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250228-export-macro-v2-0-569cc7e8926c@google.com> <20250228-export-macro-v2-1-569cc7e8926c@google.com>
-In-Reply-To: <20250228-export-macro-v2-1-569cc7e8926c@google.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Fri, 28 Feb 2025 10:13:44 -0500
-X-Gm-Features: AQ5f1Jqj0UjIh923vMoZYOcwXSYHASRuQN-dYsI28FEvaRmHFLu_NCNyw0Ju9ZI
-Message-ID: <CAJ-ks9nmFDqsBrmxC0nCPQB=OTeKKUucs4AqJSRN4hsGkSPwEg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/5] rust: fix signature of rust_fmt_argument
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Petr Mladek <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Boqun Feng <boqun.feng@gmail.com>, 
+References: <EiaQ-C0o3GMQQpw3jCnXUnNgph2WIJ5-Cm8P5N9OysIlDKYrjHNun5Ol4Q1FfVGw64k6TGCfUVBJK5r0_2eypg==@protonmail.internalid>
+In-Reply-To: <EiaQ-C0o3GMQQpw3jCnXUnNgph2WIJ5-Cm8P5N9OysIlDKYrjHNun5Ol4Q1FfVGw64k6TGCfUVBJK5r0_2eypg==@protonmail.internalid>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 28 Feb 2025 16:21:42 +0100
+X-Gm-Features: AQ5f1JpUZd9TEX2wazFqdL3Wa8n4UksTu_xV86C587GpeNV0TZCu_fE9i5NuHeY
+Message-ID: <CANiq72=q5subtcx=kEmX+Jh_ryB0=P0RtraQM65CcvPWGvnD7g@mail.gmail.com>
+Subject: Re: [PATCH] rust: adding UniqueRefCounted and UniqueRef types
+To: Oliver Mangold <oliver.mangold@pm.me>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
 	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org
+	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 28, 2025 at 7:41=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
-rote:
+On Fri, Feb 28, 2025 at 3:43=E2=80=AFPM Oliver Mangold <oliver.mangold@pm.m=
+e> wrote:
 >
-> Without this change, the rest of this series will emit the following
-> error message:
->
-> error[E0308]: `if` and `else` have incompatible types
->   --> <linux>/rust/kernel/print.rs:22:22
->    |
-> 21 | #[export]
->    | --------- expected because of this
-> 22 | unsafe extern "C" fn rust_fmt_argument(
->    |                      ^^^^^^^^^^^^^^^^^ expected `u8`, found `i8`
->    |
->    =3D note: expected fn item `unsafe extern "C" fn(*mut u8, *mut u8, *mu=
-t c_void) -> *mut u8 {bindings::rust_fmt_argument}`
->               found fn item `unsafe extern "C" fn(*mut i8, *mut i8, *cons=
-t c_void) -> *mut i8 {print::rust_fmt_argument}`
->
-> The error may be different depending on the architecture.
->
-> To fix this, change the void pointer argument to use a const pointer,
-> and change the imports to use crate::ffi instead of core::ffi for
-> integer types.
->
-> Fixes: 787983da7718 ("vsprintf: add new `%pA` format specifier")
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  lib/vsprintf.c       | 2 +-
->  rust/kernel/print.rs | 7 +++----
->  2 files changed, 4 insertions(+), 5 deletions(-)
->
-> diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-> index 56fe96319292..a8ac4c4fffcf 100644
-> --- a/lib/vsprintf.c
-> +++ b/lib/vsprintf.c
-> @@ -2285,7 +2285,7 @@ int __init no_hash_pointers_enable(char *str)
->  early_param("no_hash_pointers", no_hash_pointers_enable);
->
->  /* Used for Rust formatting ('%pA'). */
-> -char *rust_fmt_argument(char *buf, char *end, void *ptr);
-> +char *rust_fmt_argument(char *buf, char *end, const void *ptr);
->
->  /*
->   * Show a '%p' thing.  A kernel extension is that the '%p' is followed
-> diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
-> index b19ee490be58..61ee36c5e5f5 100644
-> --- a/rust/kernel/print.rs
-> +++ b/rust/kernel/print.rs
-> @@ -6,12 +6,11 @@
->  //!
->  //! Reference: <https://docs.kernel.org/core-api/printk-basics.html>
->
-> -use core::{
-> +use crate::{
->      ffi::{c_char, c_void},
-> -    fmt,
-> +    str::RawFormatter,
->  };
-> -
-> -use crate::str::RawFormatter;
-> +use core::fmt;
->
->  // Called from `vsprintf` with format specifier `%pA`.
->  #[expect(clippy::missing_safety_doc)]
->
-> --
-> 2.48.1.711.g2feabab25a-goog
+> This v2 of the patch, addressing the issues raised by Andreas Hindborg.
 
-Reviewed-by: Tamir Duberstein <tamird@gmail.com>
+Hmm... Something went wrong here -- this patch looks broken, e.g. the
+SoB is at the end, the title does not say v2, these replies seem to be
+part of the patch, etc.
+
+(Also, by the way, in case it helps, the message got marked as spam in
+my side for some reason).
+
+> Got it. This version should be okay for rustfmt, clippy and checkpatch :)
+
+Thanks for doing that!
+
+Cheers,
+Miguel
