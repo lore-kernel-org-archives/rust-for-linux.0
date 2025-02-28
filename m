@@ -1,112 +1,543 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F841D554;
-	Fri, 28 Feb 2025 13:17:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B3C1D555
+	for <rust-for-linux@vger.kernel.org>; Fri, 28 Feb 2025 13:25:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740748671; cv=none; b=mIn/1b08d0Z/iuVy1sDlFCS+FVeVLhKBTsmbFgYG7B24N1jYcjRWv7Ezf0PiYxCkjYs4OynP5M2Jo64fsOA96gEbk4ujGcxWd8jn3ZUzHUCxdBwjEj3qIx7+/Bf+/Qf2J4RJw+KSYleMFF42RYLmCoiMrlJe+WP4MwvUDb6BGEM=
+	t=1740749160; cv=none; b=R2Eqr6Mtkqb6qG0L/KGn8aZRb9XdERcXmvHRyQ1yPgS6aFDncmlfYJr2lzo8PhPiJ3nRDhjAUxBuXOGF/+xHoeEZ4dL28BnBN+YcDYPzPUVyOipSwpcUCbvFBjKKxe2xhEqzP4ryEOOVEzYlYEAcTPK37eVfnqv/7LQFSkX6f2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740748671; c=relaxed/simple;
-	bh=4kwXD5+uBWoYczTyDsTYBCu3iLFzX1inUSjlHr4ofaM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IFbVR9hl4X7W4HrMEgIN77rxjkXH6bwUMxCXpCWF98pZ/EUdDPMIzmj3WYL1w2VdWzYFL4RfOg/j5WsfudEXvQxUFaZweTm9kfp+I1uunE/Lb5D4+vQfBIpICbmNreXyWnTh+ptrwgmRMW6TV5WFQqpdulJkGHNj+uzCm6n3s5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iFgB0VHS; arc=none smtp.client-ip=209.85.216.44
+	s=arc-20240116; t=1740749160; c=relaxed/simple;
+	bh=h1gcfXKxYDFuWGauGFyZ/WuO0uocpWz6LqllgGyg64Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r6eE8maLEV6drIG+KE4knFhDOT0Dr2YXuKTFRwUkj0nULzAtu9oxO4m8VYCeVFOPyUMeGW+9v+rpEw+VFYn8t19YcfN5jjnwIaksT+ZImxoIYBCM8eaxz+5iK93+NTxadoPrFrSIvHM2R4abXOv3CEYxpk10tQxjKbAeXEW++rU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JuMwhxT4; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iFgB0VHS"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2f9b8ef4261so542787a91.1;
-        Fri, 28 Feb 2025 05:17:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JuMwhxT4"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-43948021a45so19583095e9.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 28 Feb 2025 05:25:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740748670; x=1741353470; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w4Syx3Qr0yw9AT8a1Fz/z+dGj8bCAVwm0A2wrOX6olA=;
-        b=iFgB0VHSZwiHtykNlX7RSNdGwX3iy1oxIvoDa49EDk1LfX+tn5MUnBoqmPH6kJikHz
-         9vSKyxO+a1nBlJHR4euIOQT9t0cufcEcuAjLwkq7u6G0Wt4JTp6PKhqLokMjj6icEWab
-         fI6wbGufSIVAhRAYduW2O70VClKyUgFJoFue4TPYhKYl3GZ35GEaLq8DHR/swXNqTwDt
-         n+hkk+1FJw1QeutTIdssbjI6wazLGwI2TsAnbFLMCqmxoWHxK6MMksVnk6I9uFusgklh
-         w8pWoVgija9Kvac0VmyrEpS+Tv814c6rB3Hmk8JxGFTw5kT5844tuz28tiRpmkEYRC1u
-         Le3A==
+        d=gmail.com; s=20230601; t=1740749156; x=1741353956; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Avez2xSDYscvxHDuCxg1ie5SK+Du5TC+14a6JKYQZoQ=;
+        b=JuMwhxT431OTepG5Hq74kXSKgShX6eChZ+paUfL/ujad2SQtW2ykU8lWhwD2/bhlmm
+         LK285/WV4JsgsAabDOHna30jfZF2jXKres0qWEBvY9Y2tliceYAwJvZqVDFT4MVveomM
+         MYdsgi2G53SLt7b+nSo+ZEUPw0kdJGDLtSuUrgJTAxpRos+xgRAVKBZ66ytk5SrBgUai
+         Du2ZlXQ53L39A0XCayj9pA7ZwtSu/P+tsy269/l5OQxAAkcrPdzeua+V1haIrVfVN7r+
+         8IxKblao5ZJfGjjUX7jn3pr5LVBwTM11TkcfL3C0NVC1KGxOz/V2mszg2CyLMf4F0nyO
+         nyBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740748670; x=1741353470;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=w4Syx3Qr0yw9AT8a1Fz/z+dGj8bCAVwm0A2wrOX6olA=;
-        b=UYqAO9DZbmNgfho52xuW/n1ioupA71JaLf5jOJ9Y5ndqRozzfvSghyI7/pFRJKejne
-         Msqj4B+oOtH6Bz6Nftji5cztG0r7gxa8AgTRupsBuepuZtfbz1ysUWKkuDzLR8YlZxGf
-         QJhRIf2LCjCsRwxyPYr1NklpZ6BQnyxMgwjjz65s1rkfoXkF+WC98SlME/CkUSjyvgMS
-         M0Sl3gUtRuIgUfSDBA3imzxPGQ23IkTiI2X7IyLY0a36vYpy6+XUrXYZ2W11pUX+ar2J
-         076e7vXoIPeQbdiC7Y6yFovZLB+ZO1NzWbXpYTvcwu72QUubTacjkg7+4aSWml+0XJPK
-         UTNA==
-X-Forwarded-Encrypted: i=1; AJvYcCWDJs9hYWD5E3lacqYbr+ma9IbXOqHizab1TTr8gIaRKTycd1FUH8s4iXqTfRT2ethhnTbkHLpwaAzweqs=@vger.kernel.org, AJvYcCXxFGhDXsWwN+BfD9tQEzaWNYpd8UtEOaI/XB59ZaQfKy1kLOuw172+HNPqIq3vyURz6iv9C7B8wcfoqaUZ68Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1rwJX0bGHnKXl7xWYYpMkvsXCIEXC0sRFWe7kanHIqMzE0nYb
-	HPWQK96U8yxk4v2VyIp6nCWuMlsCdcf9ozr0D9Q82aRvKNKLsJ4JLKSdDLYbmAX7+H+Z3NY/yLC
-	4gcP4LJZgFsKa325ysCPlwFmWr04=
-X-Gm-Gg: ASbGnctB4ESjaK2Noz1NF9cYhuewJ6r6UJ1Wh8hG9OHShBSqd4GJ7EPc9bbOfZ8I7xm
-	vy/QqrgT6u1/s1LmhGGoqhQEIeqaoev1A0AyGsCI/ivrqJDRnGbuyAS86uc3nnLvL5EkdFGEdYO
-	YCWNP/WYE=
-X-Google-Smtp-Source: AGHT+IH0YOf2Q2lg2Q00q/HNLKalLp9gXnNZBBvJbvnROP+JP0IzFtqkPWAYdtkhSgl3ZdGnc+LOreNzDx8beQcDY60=
-X-Received: by 2002:a17:90b:1d02:b0:2fc:25b3:6a7b with SMTP id
- 98e67ed59e1d1-2febabf856bmr2100548a91.6.1740748669911; Fri, 28 Feb 2025
- 05:17:49 -0800 (PST)
+        d=1e100.net; s=20230601; t=1740749156; x=1741353956;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Avez2xSDYscvxHDuCxg1ie5SK+Du5TC+14a6JKYQZoQ=;
+        b=N+eVSjgKLAaYhPJVUF/0aIVne8jGwG7PkS4/XByisNNjMzH8pT9Plpr32XncGovjYP
+         ZwyzgAWdij+E0tY6Aco6elb6S2SYKEI7oMmfHiMFjqxejB0qsyUAz8j1tlsQm2dG+zEL
+         L4HseLhqCsQYWHDRZw5A4AKlng4eSJfNzM3Hbt3FsgbvM6J0QF40FuaKEKXuvrtMSr8a
+         0mO8KRaAZfiBfnBeFct3Oo9mK02JxZVJSjDmUrMg1gfGlghvCf2c7qGusmMMdGLWO3Uj
+         tiKUm8cjcTkvTvR7E25iKsmAUwRXOTJPPilxlxiSPMWd8f3z66vl5UlgHs0siPEP8hSV
+         uqjA==
+X-Forwarded-Encrypted: i=1; AJvYcCVEwiKzRubCsYxQo4fNX50GtVPjw8elj1p/UoGoAL6Cg9JFC0MvJKA71AX5ivGX034TT+1RH0aeH2dw3yE5JQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrX2C3XicMf+C/YECOXJUGXlaaDnaWx0kegoH/T/2LYHgvmTUS
+	kH2qqivMXFDZ0vnyBUdK3Nq+e8k2SgyAVrc+g7UUYd/fK3jPesM/
+X-Gm-Gg: ASbGncuptd56mdHZK6OSPzBTN/JZSKD68RZYTTH9JY1q+Qm5XHgQNRl5sFeJjQRMiLw
+	qH6gtgo9S9ohSUxCYQoHOeY3iNRhcgeMoYbJTiB7EbDWMtSWI3pOsDFZcSLRxgg5TOm1DoorC6w
+	MmbN80/BmZc6PrSJNK3hdnLNvBbSuueXdC8MWJOpCa4JmdWa12VoU5yd/ixDn5xCpht9TjTfUtN
+	xXQOXR5Alj/YAcUnl7ioBkebsYFNPlfRO8B+BaIJyskVd46qi3Hk2xYglETgU4hdVz0qA+nsqbT
+	Rp0wDVu+waMFT3LWYJkDPAaEH4xB3w==
+X-Google-Smtp-Source: AGHT+IEXOmk7Lf8/1TOV4JLKZCY0pyOf/hviH6XR8McmBtNUyGiSj4owC2GIpRlD7jwHApso88yVXA==
+X-Received: by 2002:a05:6000:2a81:b0:390:d62c:ecd8 with SMTP id ffacd0b85a97d-390ec9c24c0mr1793374f8f.29.1740749155653;
+        Fri, 28 Feb 2025 05:25:55 -0800 (PST)
+Received: from fedora.. ([82.67.147.186])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43aba5393e5sm87296865e9.20.2025.02.28.05.25.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Feb 2025 05:25:55 -0800 (PST)
+From: Guillaume Gomez <guillaume1.gomez@gmail.com>
+To: ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org
+Cc: Guillaume Gomez <guillaume1.gomez@gmail.com>
+Subject: [PATCH 1/1] Use new `--output-format=doctest` rustdoc command line flag to improve doctest handling.
+Date: Fri, 28 Feb 2025 14:25:53 +0100
+Message-ID: <20250228132553.880126-1-guillaume1.gomez@gmail.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <jeyp4dToznpiAQYWHAABrEBIHVfxaIf7ntexop3d2AXQgnlytw3J8YFkX8E8EFKc1-USf_fVZqKhEmuNGE3O0w==@protonmail.internalid>
- <SpXhwnZO__ST8sHQ3HQ3ygThOcnmn0x2JlJ_nwJglL87vw5XfQA8sDH6HdkrGgFVycLhPBlCc6-UtEImTvY26A==@protonmail.internalid>
- <87wmdamiik.fsf@kernel.org>
-In-Reply-To: <87wmdamiik.fsf@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 28 Feb 2025 14:17:37 +0100
-X-Gm-Features: AQ5f1JoT8rpCYKZVofZp_80xJtO5Q9WZNNbYRkKhCZhrQ1IILrRAQTpNvVYn3jg
-Message-ID: <CANiq72k_1tmXF+bTAeDfMYz=DOcEwsaS6v3d6NLjLPF-+7hwDA@mail.gmail.com>
-Subject: Re: [PATCH] Rust: Implement a unique reference type URef
- supplementing ARef
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Oliver Mangold <oliver.mangold@pm.me>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Feb 28, 2025 at 12:11=E2=80=AFPM Andreas Hindborg <a.hindborg@kerne=
-l.org> wrote:
->
-> When the trait is unsafe, we need to specify the conditions under which
-> it is safe to implement:
->
-> # Safety
->
-> - Requirement 1
-> - Requirement 2
-> - etc
->
-> See `AlwaysRefCounted` for reference on formatting.
+Before this patch, the code was using very hacky methods in order to retrieve
+doctests, modify them as needed and then concatenate all of them in one file.
 
-I think should be caught by Clippy -- Oliver, please try building with
-`CLIPPY=3D1` (we would like Clippy-clean builds as much as reasonably
-possible), you should be getting something like:
+Now, with this new flag, it instead asks rustdoc to provide the doctests
+code with their associated information such as file path and line number.
+---
+ rust/Makefile                   |   8 +-
+ scripts/json.rs                 | 235 ++++++++++++++++++++++++++++++++
+ scripts/rustdoc_test_builder.rs | 115 ++++++++++------
+ scripts/rustdoc_test_gen.rs     |  17 +--
+ 4 files changed, 323 insertions(+), 52 deletions(-)
+ create mode 100644 scripts/json.rs
 
-    error: docs for unsafe trait missing `# Safety` section
-      --> rust/........rs:23:1
-       |
-    23 | pub unsafe trait A {}
-       | ^^^^^^^^^^^^^^^^^^
-       |
-       =3D help: for further information visit
-https://rust-lang.github.io/rust-clippy/master/index.html#missing_safety_do=
-c
-       =3D note: `-D clippy::missing-safety-doc` implied by `-D warnings`
-       =3D help: to override `-D warnings` add
-`#[allow(clippy::missing_safety_doc)]`
+diff --git a/rust/Makefile b/rust/Makefile
+index ea3849eb7..237ed23f8 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -171,14 +171,14 @@ quiet_cmd_rustdoc_test_kernel = RUSTDOC TK $<
+ 	rm -rf $(objtree)/$(obj)/test/doctests/kernel; \
+ 	mkdir -p $(objtree)/$(obj)/test/doctests/kernel; \
+ 	OBJTREE=$(abspath $(objtree)) \
+-	$(RUSTDOC) --test $(rust_flags) \
++	$(RUSTDOC) --output-format=doctest $(rust_flags) \
+ 		-L$(objtree)/$(obj) --extern ffi --extern kernel \
+ 		--extern build_error --extern macros \
+ 		--extern bindings --extern uapi \
+-		--no-run --crate-name kernel -Zunstable-options \
++		--crate-name kernel -Zunstable-options \
+ 		--sysroot=/dev/null \
+-		--test-builder $(objtree)/scripts/rustdoc_test_builder \
+-		$< $(rustdoc_test_kernel_quiet); \
++		$< $(rustdoc_test_kernel_quiet) > rustdoc.json; \
++	cat rustdoc.json | $(objtree)/scripts/rustdoc_test_builder; \
+ 	$(objtree)/scripts/rustdoc_test_gen
+ 
+ %/doctests_kernel_generated.rs %/doctests_kernel_generated_kunit.c: \
+diff --git a/scripts/json.rs b/scripts/json.rs
+new file mode 100644
+index 000000000..aff24bfd9
+--- /dev/null
++++ b/scripts/json.rs
+@@ -0,0 +1,235 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! JSON parser used to parse rustdoc output when retrieving doctests.
++
++use std::collections::HashMap;
++use std::iter::Peekable;
++use std::str::FromStr;
++
++#[derive(Debug, PartialEq, Eq)]
++pub(crate) enum JsonValue {
++    Object(HashMap<String, JsonValue>),
++    String(String),
++    Number(i32),
++    Bool(bool),
++    Array(Vec<JsonValue>),
++    Null,
++}
++
++fn parse_ident<I: Iterator<Item = char>>(
++    iter: &mut I,
++    output: JsonValue,
++    ident: &str,
++) -> Result<JsonValue, String> {
++    let mut ident_iter = ident.chars().skip(1);
++
++    loop {
++        let i = ident_iter.next();
++        if i.is_none() {
++            return Ok(output);
++        }
++        let c = iter.next();
++        if i != c {
++            if let Some(c) = c {
++                return Err(format!("Unexpected character `{c}` when parsing `{ident}`"));
++            }
++            return Err(format!("Missing character when parsing `{ident}`"));
++        }
++    }
++}
++
++fn parse_string<I: Iterator<Item = char>>(iter: &mut I) -> Result<JsonValue, String> {
++    let mut out = String::new();
++
++    while let Some(c) = iter.next() {
++        match c {
++            '\\' => {
++                let Some(c) = iter.next() else { break };
++                match c {
++                    '"' | '\\' | '/' => out.push(c),
++                    'b' => out.push(char::from(0x8u8)),
++                    'f' => out.push(char::from(0xCu8)),
++                    't' => out.push('\t'),
++                    'r' => out.push('\r'),
++                    'n' => out.push('\n'),
++                    _ => {
++                        // This code doesn't handle codepoints so we put the string content as is.
++                        out.push('\\');
++                        out.push(c);
++                    }
++                }
++            }
++            '"' => {
++                return Ok(JsonValue::String(out));
++            }
++            _ => out.push(c),
++        }
++    }
++    Err(format!("Unclosed JSON string `{out}`"))
++}
++
++fn parse_number<I: Iterator<Item = char>>(
++    iter: &mut Peekable<I>,
++    digit: char,
++) -> Result<JsonValue, String> {
++    let mut nb = String::new();
++
++    nb.push(digit);
++    loop {
++        // We peek next character to prevent taking it from the iterator in case it's a comma.
++        if matches!(iter.peek(), Some(',' | '}' | ']')) {
++            break;
++        }
++        let Some(c) = iter.next() else { break };
++        if c.is_whitespace() {
++            break;
++        } else if !c.is_ascii_digit() {
++            return Err(format!("Error when parsing number `{nb}`: found `{c}`"));
++        }
++        nb.push(c);
++    }
++    i32::from_str(&nb)
++        .map(|nb| JsonValue::Number(nb))
++        .map_err(|error| format!("Invalid number: `{error}`"))
++}
++
++fn parse_array<I: Iterator<Item = char>>(iter: &mut Peekable<I>) -> Result<JsonValue, String> {
++    let mut values = Vec::new();
++
++    'main: loop {
++        let Some(c) = iter.next() else {
++            return Err("Unclosed array".to_string());
++        };
++        if c.is_whitespace() {
++            continue;
++        } else if c == ']' {
++            break;
++        }
++        values.push(parse(iter, c)?);
++        while let Some(c) = iter.next() {
++            if c.is_whitespace() {
++                continue;
++            } else if c == ',' {
++                break;
++            } else if c == ']' {
++                break 'main;
++            } else {
++                return Err(format!("Unexpected `{c}` when parsing array"));
++            }
++        }
++    }
++    Ok(JsonValue::Array(values))
++}
++
++fn parse_object<I: Iterator<Item = char>>(iter: &mut Peekable<I>) -> Result<JsonValue, String> {
++    let mut values = HashMap::new();
++
++    'main: loop {
++        let Some(c) = iter.next() else {
++            return Err("Unclosed object".to_string());
++        };
++        let key;
++        if c.is_whitespace() {
++            continue;
++        } else if c == '"' {
++            let JsonValue::String(k) = parse_string(iter)? else {
++                unreachable!()
++            };
++            key = k;
++        } else if c == '}' {
++            break;
++        } else {
++            return Err(format!("Expected `\"` when parsing Object, found `{c}`"));
++        }
++
++        // We then get the `:` separator.
++        loop {
++            let Some(c) = iter.next() else {
++                return Err(format!("Missing value after key `{key}`"));
++            };
++            if c.is_whitespace() {
++                continue;
++            } else if c == ':' {
++                break;
++            } else {
++                return Err(format!(
++                    "Expected `:` after key, found `{c}` when parsing object"
++                ));
++            }
++        }
++        // Then the value.
++        let value = loop {
++            let Some(c) = iter.next() else {
++                return Err(format!("Missing value after key `{key}`"));
++            };
++            if c.is_whitespace() {
++                continue;
++            } else {
++                break parse(iter, c)?;
++            }
++        };
++
++        if values.contains_key(&key) {
++            return Err(format!("Duplicated key `{key}`"));
++        }
++        values.insert(key, value);
++
++        while let Some(c) = iter.next() {
++            if c.is_whitespace() {
++                continue;
++            } else if c == ',' {
++                break;
++            } else if c == '}' {
++                break 'main;
++            } else {
++                return Err(format!("Unexpected `{c}` when parsing array"));
++            }
++        }
++    }
++    Ok(JsonValue::Object(values))
++}
++
++fn parse<I: Iterator<Item = char>>(iter: &mut Peekable<I>, c: char) -> Result<JsonValue, String> {
++    match c {
++        '{' => parse_object(iter),
++        '"' => parse_string(iter),
++        '[' => parse_array(iter),
++        't' => parse_ident(iter, JsonValue::Bool(true), "true"),
++        'f' => parse_ident(iter, JsonValue::Bool(false), "false"),
++        'n' => parse_ident(iter, JsonValue::Null, "null"),
++        c => {
++            if c.is_ascii_digit() || c == '-' {
++                parse_number(iter, c)
++            } else {
++                Err(format!("Unexpected `{c}` character"))
++            }
++        }
++    }
++}
++
++impl JsonValue {
++    pub(crate) fn parse(input: &str) -> Result<Self, String> {
++        let mut iter = input.chars().peekable();
++        let mut value = None;
++
++        while let Some(c) = iter.next() {
++            if c.is_whitespace() {
++                continue;
++            }
++            value = Some(parse(&mut iter, c)?);
++            break;
++        }
++        while let Some(c) = iter.next() {
++            if c.is_whitespace() {
++                continue;
++            } else {
++                return Err(format!("Unexpected character `{c}` after content"));
++            }
++        }
++        if let Some(value) = value {
++            Ok(value)
++        } else {
++            Err("Empty content".to_string())
++        }
++    }
++}
+diff --git a/scripts/rustdoc_test_builder.rs b/scripts/rustdoc_test_builder.rs
+index e5894652f..9b6bc1c1d 100644
+--- a/scripts/rustdoc_test_builder.rs
++++ b/scripts/rustdoc_test_builder.rs
+@@ -15,58 +15,93 @@
+ //! from that. For the moment, we generate ourselves a new name, `{file}_{number}` instead, in
+ //! the `gen` script (done there since we need to be aware of all the tests in a given file).
+ 
++use std::fs::create_dir_all;
+ use std::io::Read;
+ 
+-fn main() {
+-    let mut stdin = std::io::stdin().lock();
+-    let mut body = String::new();
+-    stdin.read_to_string(&mut body).unwrap();
++use json::JsonValue;
+ 
+-    // Find the generated function name looking for the inner function inside `main()`.
+-    //
+-    // The line we are looking for looks like one of the following:
+-    //
+-    // ```
+-    // fn main() { #[allow(non_snake_case)] fn _doctest_main_rust_kernel_file_rs_28_0() {
+-    // fn main() { #[allow(non_snake_case)] fn _doctest_main_rust_kernel_file_rs_37_0() -> Result<(), impl core::fmt::Debug> {
+-    // ```
+-    //
+-    // It should be unlikely that doctest code matches such lines (when code is formatted properly).
+-    let rustdoc_function_name = body
+-        .lines()
+-        .find_map(|line| {
+-            Some(
+-                line.split_once("fn main() {")?
+-                    .1
+-                    .split_once("fn ")?
+-                    .1
+-                    .split_once("()")?
+-                    .0,
+-            )
+-            .filter(|x| x.chars().all(|c| c.is_alphanumeric() || c == '_'))
+-        })
+-        .expect("No test function found in `rustdoc`'s output.");
++mod json;
+ 
+-    // Qualify `Result` to avoid the collision with our own `Result` coming from the prelude.
+-    let body = body.replace(
+-        &format!("{rustdoc_function_name}() -> Result<(), impl core::fmt::Debug> {{"),
+-        &format!("{rustdoc_function_name}() -> core::result::Result<(), impl core::fmt::Debug> {{"),
+-    );
++fn generate_doctest(file: &str, line: i32, doctest_code: &str) {
++    let file = file
++        .strip_suffix(".rs")
++        .unwrap_or(file)
++        .strip_prefix("../rust/kernel/")
++        .unwrap_or(file)
++        .replace('/', "_");
++    let path = format!("rust/test/doctests/kernel/{file}-{line}.rs");
+ 
++    // We replace the `Result` if needed.
++    let doctest_code = doctest_code.replace(
++        "fn main() { fn _inner() -> Result<",
++        "fn main() { fn _inner() -> core::result::Result<",
++    );
+     // For tests that get generated with `Result`, like above, `rustdoc` generates an `unwrap()` on
+     // the return value to check there were no returned errors. Instead, we use our assert macro
+     // since we want to just fail the test, not panic the kernel.
+     //
+     // We save the result in a variable so that the failed assertion message looks nicer.
+-    let body = body.replace(
+-        &format!("}} {rustdoc_function_name}().unwrap() }}"),
+-        &format!("}} let test_return_value = {rustdoc_function_name}(); assert!(test_return_value.is_ok()); }}"),
++    let doctest_code = doctest_code.replace(
++        "} _inner().unwrap() }",
++        "} let test_return_value = _inner(); assert!(test_return_value.is_ok()); }",
+     );
++    std::fs::write(path, doctest_code.as_bytes()).unwrap();
++}
++
++fn main() {
++    let mut stdin = std::io::stdin().lock();
++    let mut body = String::new();
++    stdin.read_to_string(&mut body).unwrap();
++
++    let JsonValue::Object(rustdoc) = JsonValue::parse(&body).unwrap() else {
++        panic!("Expected an object")
++    };
++    if let Some(JsonValue::Number(format_version)) = rustdoc.get("format_version") {
++        if *format_version != 1 {
++            panic!("unsupported rustdoc format version: {format_version}");
++        }
++    } else {
++        panic!("missing `format_version` field");
++    }
++    let Some(JsonValue::Array(doctests)) = rustdoc.get("doctests") else {
++        panic!("missing `doctests` field");
++    };
++
++    // We ignore the error since it will fail when generating doctests below if the folder doesn't
++    // exist.
++    let _ = create_dir_all("rust/test/doctests/kernel");
+ 
+-    // Figure out a smaller test name based on the generated function name.
+-    let name = rustdoc_function_name.split_once("_rust_kernel_").unwrap().1;
++    let mut nb_generated = 0;
++    for doctest in doctests {
++        let JsonValue::Object(doctest) = doctest else {
++            unreachable!()
++        };
+ 
+-    let path = format!("rust/test/doctests/kernel/{name}");
++        // We check if we need to skip this test by checking it's a rust code and it's not ignored.
++        if let Some(JsonValue::Object(attributes)) = doctest.get("doctest_attributes") {
++            if attributes.get("rust") != Some(&JsonValue::Bool(true)) {
++                continue;
++            } else if let Some(JsonValue::String(ignore)) = attributes.get("ignore") {
++                if ignore != "None" {
++                    continue;
++                }
++            }
++        }
++        if let (
++            Some(JsonValue::String(file)),
++            Some(JsonValue::Number(line)),
++            Some(JsonValue::String(doctest_code)),
++        ) = (
++            doctest.get("file"),
++            doctest.get("line"),
++            doctest.get("doctest_code"),
++        ) {
++            generate_doctest(file, *line, doctest_code);
++            nb_generated += 1;
++        }
++    }
+ 
+-    std::fs::write(path, body.as_bytes()).unwrap();
++    if nb_generated == 0 {
++        panic!("No test function found in `rustdoc`'s output.");
++    }
+ }
+diff --git a/scripts/rustdoc_test_gen.rs b/scripts/rustdoc_test_gen.rs
+index 5ebd42ae4..fd6635bbf 100644
+--- a/scripts/rustdoc_test_gen.rs
++++ b/scripts/rustdoc_test_gen.rs
+@@ -48,7 +48,7 @@
+ fn find_real_path<'a>(srctree: &Path, valid_paths: &'a mut Vec<PathBuf>, file: &str) -> &'a str {
+     valid_paths.clear();
+ 
+-    let potential_components: Vec<&str> = file.strip_suffix("_rs").unwrap().split('_').collect();
++    let potential_components: Vec<&str> = file.split('_').collect();
+ 
+     find_candidates(srctree, valid_paths, Path::new(""), &potential_components);
+     fn find_candidates(
+@@ -87,8 +87,8 @@ fn find_candidates(
+ 
+     assert!(
+         valid_paths.len() > 0,
+-        "No path candidates found. This is likely a bug in the build system, or some files went \
+-        away while compiling."
++        "No path candidates found for `{file}`. This is likely a bug in the build system, or some \
++        files went away while compiling.",
+     );
+ 
+     if valid_paths.len() > 1 {
+@@ -97,8 +97,8 @@ fn find_candidates(
+             eprintln!("    {path:?}");
+         }
+         panic!(
+-            "Several path candidates found, please resolve the ambiguity by renaming a file or \
+-            folder."
++            "Several path candidates found for `{file}`, please resolve the ambiguity by renaming \
++            a file or folder."
+         );
+     }
+ 
+@@ -126,12 +126,13 @@ fn main() {
+     let mut valid_paths: Vec<PathBuf> = Vec::new();
+     let mut real_path: &str = "";
+     for path in paths {
+-        // The `name` follows the `{file}_{line}_{number}` pattern (see description in
++        // The `name` follows the `{file}_{line}` pattern (see description in
+         // `scripts/rustdoc_test_builder.rs`). Discard the `number`.
+         let name = path.file_name().unwrap().to_str().unwrap().to_string();
+ 
+-        // Extract the `file` and the `line`, discarding the `number`.
+-        let (file, line) = name.rsplit_once('_').unwrap().0.rsplit_once('_').unwrap();
++        // Extract the `file` and the `line`, discarding the extension.
++        let (file, line) = name.rsplit_once('-').unwrap();
++        let line = line.split('.').next().unwrap();
+ 
+         // Generate an ID sequence ("test number") for each one in the file.
+         if file == last_file {
+-- 
+2.48.1
 
-Thanks!
-
-Cheers,
-Miguel
