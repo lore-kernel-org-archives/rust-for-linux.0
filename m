@@ -1,157 +1,259 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3842F24A046;
-	Fri, 28 Feb 2025 09:15:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 312C2276D3B
+	for <rust-for-linux@vger.kernel.org>; Fri, 28 Feb 2025 09:16:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740734148; cv=none; b=D7tPKHv7xRbSz7h9evuEFSFQqYkUAo37YE6kl0mYYjTCKOyM4B7e6nqP2EwpH1ampV1xfWmqZGlIgPMdHbaju0mQm2ika6BQbaXJRjcsDQ9ofQNc/dHTFxy2E4A0NR79DuFZO79BUQ5/l5vatI1tD2e4E06/QtVzOHND7If2/qU=
+	t=1740734217; cv=none; b=Gr5HZ/VRe6y8N76NAgTDWiVtKUyUep+ZuuDvXJ+tOB3wmM/9U1cW24ODxVwBpla6rVMjvHeBPhh4UBQBU6bBnSjGl8Fte0vp0P/SWGhQ7vF3PP2sCcYa1J73Sh7jFavvYCBbw61HCg3MyPP0NwNyMBh9g5/0WL6Mt4J8B74KCCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740734148; c=relaxed/simple;
-	bh=XUXziA+nTZDBj2Li7foJzUDDRkHQt+bXPdaAGNeKlqE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TfoZmfDuuKyErNSgkxk/qBhzsAxp5LEyKK4lQgOR2wlcka2cldWoYO/e6X0iaOy7hvod7sh3x2XXWtL3ZfwKDy/scKSdJS2lRABEGe11iPCFdzutA3xbK6L2VIKgM1gNmAitRmAgU8UBPdl4704Nj6abNVmkeFwTQ4ZszcIkfrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=CR5nCp5R; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1740734217; c=relaxed/simple;
+	bh=AWlOSmOkjd2pidHdadSFAsCbtYnK0DbZHNntGIE2OyE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RXfevNHcP+qLxDX4mBl2sV4WctaDOfeSsm8vie2FaTsl35Z2+kNNIv4rZrhJZHaN7kN0pkPTmobiawqvaDdvppAj34afTDUFYoTlFGUMqIRhsLGCw3h0DlsVmE3qz9or2lUzAIyXDQEpyU19CIthSF0jdxGgLWUwFVBPI3NTbP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=38KZo2W+; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="CR5nCp5R"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51S18l30011287;
-	Fri, 28 Feb 2025 09:15:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=zbXmaRcT2XwkeDCQc4Fd1apB2+M2uJ
-	/a3I4PM1YAgw0=; b=CR5nCp5RBt4kqQy37SzzjYHulkurnB3J6loL1dYZQg3Jw1
-	TRY9FbD2yoZUIsQVu6vsPdB5oazypxeGOE/y89LUz6G1yoNa9PUfNPYP2KzLVc0v
-	ZiyzOnQtoPGKdXFSlsTpr8tRUOGIDGYQqLWU6hidsyNQkR1fKOog+hefQ8uMHdrw
-	hFm12FlgrIhjMZ6tdM0hVcKdXERHMr/0MlGFhklKGj2N30F4q1DxvpYkJF4ja58y
-	nX29zfVCJR4mlOQIPg1jSadnA2UY2/yrU5LwwrNca73oF3TbmlhImTtVeLhRyTV4
-	gPAZVh0J2t72Vp2yFxz65407FMZoUhJRHinNpd+g==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45337ahym7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 28 Feb 2025 09:15:17 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51S8xMff016279;
-	Fri, 28 Feb 2025 09:15:16 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45337ahym5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 28 Feb 2025 09:15:16 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51S7xvWL002595;
-	Fri, 28 Feb 2025 09:15:15 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 44yu4k5avf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 28 Feb 2025 09:15:15 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51S9FBd120578658
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 28 Feb 2025 09:15:11 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B3A512004B;
-	Fri, 28 Feb 2025 09:15:11 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B32D720040;
-	Fri, 28 Feb 2025 09:15:10 +0000 (GMT)
-Received: from osiris (unknown [9.171.87.109])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri, 28 Feb 2025 09:15:10 +0000 (GMT)
-Date: Fri, 28 Feb 2025 10:15:09 +0100
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Lyude Paul <lyude@redhat.com>
-Cc: rust-for-linux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
-        Juergen Christ <jchrist@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
-        "moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)" <linux-arm-kernel@lists.infradead.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:S390 ARCHITECTURE" <linux-s390@vger.kernel.org>,
-        "open list:GENERIC INCLUDE/ASM HEADER FILES" <linux-arch@vger.kernel.org>
-Subject: Re: [PATCH v9 2/9] preempt: Introduce __preempt_count_{sub,
- add}_return()
-Message-ID: <20250228091509.8985B18-hca@linux.ibm.com>
-References: <20250227221924.265259-1-lyude@redhat.com>
- <20250227221924.265259-3-lyude@redhat.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="38KZo2W+"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-390cf7458f5so1792536f8f.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 28 Feb 2025 01:16:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1740734213; x=1741339013; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IuaVxyDMUNAScl8FlfdpvhJuNw6W7Sdakow95IhLyZA=;
+        b=38KZo2W+/0y2m15PF+wT4rIiqhOrJzntE+AXlOLrvLG7XwcCIit2P7zUqi/Gu7SP9u
+         LvG7IaqESWN+s1BDC5QEEHyXR4Z6s+aebDdpIcYE0WooLX6yQwufsaxmdhodVRmiGHF0
+         8DYeSl2F3rn+Oc+lV2KnOXUQkQniiqLVwHjKcWEVcSjex5NfuH8459reD0RNy+Ev/tki
+         BhcdyMEpxW3kDr+yZLbrICfmB3b3lweAnD/xMt3B2X0mZQA96rpVEOfc0A2pO34t9m1P
+         vKuNO3Jdj3++fCGj0RLij9i52b2ZlGBWbBft/EtwsRKGhmK7Dd5Lw646GWhEkZEQcdzC
+         mLTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740734213; x=1741339013;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IuaVxyDMUNAScl8FlfdpvhJuNw6W7Sdakow95IhLyZA=;
+        b=UAZsnQxcVBxBQtdaDIFvSkqsXzBZhKmIgc00+yxZSvTQLet6XlxL2bnuwjcXhFVFnf
+         rhy5GWdBGn2DI0Bc7W2obKxljp7X2rJ3MwBmeNr8JaFlA8sX0N01Jro93j5jha/laVPK
+         rBh1q1op7/xK2daXEevZ687b3nh4vmZQOmAn/ZrZAA420k6aoGIfvNtKKElbj3jaQX+W
+         03v0tdM1JpvY3gfj8oDYEoqfnqtCsN6PjfMI+BPblOWxAb3eFASb1L6mFRP5B8VHxv0r
+         uiYBoQRsXJI7gShKLE9ieY0f/p6uRg/PAT+gyf0DhnGvnLzLPmmpvrcX33uCw/6RQiUo
+         jb0w==
+X-Forwarded-Encrypted: i=1; AJvYcCURSGpKk7x5QVqhS9+e20KUdvwXDw5Gji3qqoSguI4Uh2olzzaKmdWEaRw4jxB04dCpQKKBnHZExbqH0ZNEWQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxb89iG4mkDWMr7sMEM9CIbRETyY7gj7bbWPgP1RcPy1wJjh5oN
+	YB+qRH/6/cl2DkOW7VKhel4xtoODiHZXCZe8xj+0zKxHbClkSnxai/e0SIq109z1YxsaubJ5SVh
+	YgcWC8t3DAQqG3wkcrXOQZGz38pC0dNNR2fwk
+X-Gm-Gg: ASbGnctrFMobHCQJ76LR6Y29MXuGaobrfQDMVhB/PuTmgfBXMjFmy94hdPBPVptqHXf
+	56MgTNIJknnWhsXtmFDpGT1bYOrDOfKXg1E5SLHWZTYChOZcfSSgNdSWPIDJ52EGMg5vS1LeoAR
+	Ihr/xd/LyIIwvZdIGc11hxt5jJRLHFPj85kP4V
+X-Google-Smtp-Source: AGHT+IHA+7WQ4XrPhFnhvJlLsJWgnrPPtDSkzDTN2TsB342bp0zRvKBL2EVzg8KQlVU/a2qmXVix250GYRtBuKKagWM=
+X-Received: by 2002:a05:6000:1ac6:b0:38d:cab2:921a with SMTP id
+ ffacd0b85a97d-390ec7c8e9amr2482030f8f.1.1740734213339; Fri, 28 Feb 2025
+ 01:16:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250227221924.265259-3-lyude@redhat.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: PXilDMwrSa6mnq-6V0CgFdcdACh3D8aI
-X-Proofpoint-GUID: uvIo6Uq09NLmGDRrJ19UmGamCa1Xy5fB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-28_02,2025-02-27_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=670
- priorityscore=1501 impostorscore=0 bulkscore=0 malwarescore=0
- suspectscore=0 spamscore=0 mlxscore=0 phishscore=0 clxscore=1011
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2502280064
+References: <20250227101720.1811578-1-bqe@google.com> <Z8CvLBwKeH2gM-2u@thinkpad>
+In-Reply-To: <Z8CvLBwKeH2gM-2u@thinkpad>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 28 Feb 2025 10:16:41 +0100
+X-Gm-Features: AQ5f1JqlWufWTIjvxttjREBttJDPgRPCP0Cava6ZfLFBYkDmZ-wg8Bfgy8yDt7Y
+Message-ID: <CAH5fLggXT70-V8hddtAobfgYyNOjhSYCsjrHoDWff9FZN5Y5-w@mail.gmail.com>
+Subject: Re: [PATCH] rust: add bindings and API for bitmap.h and bitops.h.
+To: Yury Norov <yury.norov@gmail.com>
+Cc: Burak Emir <bqe@google.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 27, 2025 at 05:10:13PM -0500, Lyude Paul wrote:
-> From: Boqun Feng <boqun.feng@gmail.com>
-> 
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> ---
->  arch/arm64/include/asm/preempt.h | 18 ++++++++++++++++++
->  arch/s390/include/asm/preempt.h  | 19 +++++++++++++++++++
->  arch/x86/include/asm/preempt.h   | 10 ++++++++++
->  include/asm-generic/preempt.h    | 14 ++++++++++++++
->  4 files changed, 61 insertions(+)
-...
-> diff --git a/arch/s390/include/asm/preempt.h b/arch/s390/include/asm/preempt.h
-> index 6ccd033acfe52..67a6e265e9fff 100644
-> --- a/arch/s390/include/asm/preempt.h
-> +++ b/arch/s390/include/asm/preempt.h
-> @@ -98,6 +98,25 @@ static __always_inline bool should_resched(int preempt_offset)
->  	return unlikely(READ_ONCE(get_lowcore()->preempt_count) == preempt_offset);
->  }
->  
-> +static __always_inline int __preempt_count_add_return(int val)
-> +{
-> +	/*
-> +	 * With some obscure config options and CONFIG_PROFILE_ALL_BRANCHES
-> +	 * enabled, gcc 12 fails to handle __builtin_constant_p().
-> +	 */
-> +	if (!IS_ENABLED(CONFIG_PROFILE_ALL_BRANCHES)) {
-> +		if (__builtin_constant_p(val) && (val >= -128) && (val <= 127)) {
-> +			return val + __atomic_add_const(val, &get_lowcore()->preempt_count);
-> +		}
-> +	}
-> +	return val + __atomic_add(val, &get_lowcore()->preempt_count);
-> +}
+On Thu, Feb 27, 2025 at 7:30=E2=80=AFPM Yury Norov <yury.norov@gmail.com> w=
+rote:
+>
+> On Thu, Feb 27, 2025 at 10:08:41AM +0000, Burak Emir wrote:
+> > Adds a bitmap and bitops bindings and bitmap Rust API.
+> > These are for porting the approach from commit 15d9da3f818c ("binder:
+> > use bitmap for faster descriptor lookup") to Rust. The functionality
+> > in dbitmap.h makes use of bitmap and bitops.
+> >
+> > The Rust bitmap API provides an abstraction to underlying bitmaps
+> > and bitops operations. For now, we only include methods that are
+> > necessary for reimplementing dbitmap.h. It is straightforward to add
+> > more methods later, as needed. We offer a safe API through
+> > bounds checks which panic if violated.
+> >
+> > This series uses the usize type for sizes and indices into the bitmap,
+> > because Rust generally always uses that type for indices and lengths
+> > and it will be more convenient if the API accepts that type. This means
+> > that we need to perform some casts to/from u32 and usize, since the C
+> > headers use unsigned int instead of size_t/unsigned long for these
+> > numbers in some places.
+> >
+> > Adds F: entries to MAINTAINERS.
+> >
+> > Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> > Signed-off-by: Burak Emir <bqe@google.com>
+> > ---
+> > This series adds a Rust abstraction for bitmap, and binding helpers
+> > for inline methods of bitmap.h bitops.h.
+> >
+> > It depends on [1] and [2] which add bitmap helpers, MAINTAINERS entries
+> > and an abstraction that is part of the bitmaps Rust API.
+> >
+> > Question for Yury: What would you like us to do for the MAINTAINERS
+> > file? For now I just added the new files as F: entries.
+> >
+> > [1] https://lore.kernel.org/all/20250224233938.3158-1-yury.norov@gmail.=
+com/
+> > [2] https://lore.kernel.org/all/cover.1740475625.git.viresh.kumar@linar=
+o.org/
+> >
+> >  MAINTAINERS                     |   4 +
+> >  rust/bindings/bindings_helper.h |   1 +
+> >  rust/helpers/bitmap.c           |   8 ++
+> >  rust/helpers/bitops.c           |  13 +++
+> >  rust/helpers/find.c             |  15 +++
+> >  rust/helpers/helpers.c          |   3 +
+> >  rust/kernel/bitmap.rs           | 182 ++++++++++++++++++++++++++++++++
+> >  rust/kernel/lib.rs              |   1 +
+> >  8 files changed, 227 insertions(+)
+> >  create mode 100644 rust/helpers/bitmap.c
+> >  create mode 100644 rust/helpers/bitops.c
+> >  create mode 100644 rust/helpers/find.c
+> >  create mode 100644 rust/kernel/bitmap.rs
+> >
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 6d6e55d8593b..359f09e8e2c0 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -4033,12 +4033,16 @@ BITMAP API BINDINGS [RUST]
+> >  M:   Yury Norov <yury.norov@gmail.com>
+> >  S:   Maintained
+> >  F:   rust/helpers/cpumask.c
+> > +F:   rust/helpers/find.c
+> > +F:   rust/helpers/bitmap.c
+> > +F:   rust/helpers/bitops.c
+>
+> bitops.c is part of BITOPS API, not the BITMAP one. I think we need a
+> new record for it?
+>
+> >
+> >  BITMAP API [RUST]
+> >  M:   Viresh Kumar <viresh.kumar@linaro.org> (cpumask)
+> >  R:   Yury Norov <yury.norov@gmail.com>
+> >  S:   Maintained
+> >  F:   rust/kernel/cpumask.rs
+> > +F:   rust/kernel/bitmap.rs
+> >
+> >  BITOPS API
+> >  M:   Yury Norov <yury.norov@gmail.com>
+> > diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_h=
+elper.h
+> > index 673b1daa9a58..50416c1a3de9 100644
+> > --- a/rust/bindings/bindings_helper.h
+> > +++ b/rust/bindings/bindings_helper.h
+> > @@ -7,6 +7,7 @@
+> >   */
+> >
+> >  #include <kunit/test.h>
+> > +#include <linux/bitmap.h>
+> >  #include <linux/blk-mq.h>
+> >  #include <linux/blk_types.h>
+> >  #include <linux/blkdev.h>
+> > diff --git a/rust/helpers/bitmap.c b/rust/helpers/bitmap.c
+> > new file mode 100644
+> > index 000000000000..4fa4e4f76110
+> > --- /dev/null
+> > +++ b/rust/helpers/bitmap.c
+> > @@ -0,0 +1,8 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +#include <linux/bitmap.h>
+> > +
+> > +void rust_helper_bitmap_copy(unsigned long *dst, const unsigned long *=
+src, unsigned int nbits)
+> > +{
+> > +     bitmap_copy(dst, src, nbits);
+> > +}
+> > diff --git a/rust/helpers/bitops.c b/rust/helpers/bitops.c
+> > new file mode 100644
+> > index 000000000000..191ef0341fd5
+> > --- /dev/null
+> > +++ b/rust/helpers/bitops.c
+> > @@ -0,0 +1,13 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +#include <linux/bitops.h>
+> > +
+> > +void rust_helper_set_bit(unsigned int nr, volatile unsigned long *addr=
+)
+> > +{
+> > +     set_bit(nr, addr);
+> > +}
+> > +
+> > +void rust_helper_clear_bit(unsigned int nr, volatile unsigned long *ad=
+dr)
+> > +{
+> > +     clear_bit(nr, addr);
+> > +}
+>
+> So you mention that you're rewriting dbitmap, and I took a brief look
+> at drivers/android/dbitmap.h.
+>
+> What I can say is that at least dbitmap_acquire_next_zero_bit() abuses
+> the set_bit() API. It should use non-atomic __set_bit(). If you're
+> going to re-write it, can you review the existing code and make sure
+> you're using the right API in a right way?
 
-This should just be
+Huh, I did not realize the method was atomic. I had assumed it wasn't
+from how Binder is using it.
 
-static __always_inline int __preempt_count_add_return(int val)
-{
-	return val + __atomic_add(val, &get_lowcore()->preempt_count);
-}
+> > diff --git a/rust/helpers/find.c b/rust/helpers/find.c
+> > new file mode 100644
+> > index 000000000000..3841d3f0330f
+> > --- /dev/null
+> > +++ b/rust/helpers/find.c
+> > @@ -0,0 +1,15 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +#include <linux/find.h>
+> > +
+> > +unsigned long rust_helper_find_last_bit(const unsigned long *addr, uns=
+igned long size)
+> > +{
+> > +     return find_last_bit(addr, size);
+> > +}
+> > +
+> > +
+> > +unsigned long rust_helper_find_next_zero_bit(const unsigned long *addr=
+, unsigned long size,
+> > +                              unsigned long offset)
+> > +{
+> > +     return find_next_zero_bit(addr, size, offset);
+> > +}
+>
+> For those two, the find_*_bit() are the wrappers around _find_*_bit()
+> in lib/find_bit.c, with a few exceptions. The reason for having the
+> wrappers is an optimization that improves code generation for small
+> bitmaps.
+>
+> In your case, when you wrap a macro, the optimization becomes impossible,
+> and the macro is unneeded.
+>
+> From technical perspective, the underscored _find_*_bit() functions
+> should be accessible by rust directly. Can you confirm that? If so,
+> maybe just use them and avoid bloating?
 
-since __atomic_add_const() won't return the original value.
+That sounds likely.
 
-Well.. at least it should not, but the way it is currently implemented it
-indeed does sometimes depending on config options - there is room for
-improvement. That's my fault - going to address that.
-
-I couldn't find any cover letter for the whole patch series which describes
-what this is about, and why it is needed.
-It looks like some Rust enablement?
+Alice
