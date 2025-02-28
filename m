@@ -1,186 +1,201 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFBEF25EF9C
-	for <rust-for-linux@vger.kernel.org>; Fri, 28 Feb 2025 10:39:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8306F25D218
+	for <rust-for-linux@vger.kernel.org>; Fri, 28 Feb 2025 10:53:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740739142; cv=none; b=K6LyTNM3VhAMca+K2nhWcY6JnYOB2VdnApyz21rmBHnf4fHd+FbJZtHwhfHe6SZVnukZQhioE0mCpiAdJIr6PrFWaCLK9M+CVEzwaAGfPCGmHRtKyXlNHE3Pn2fP3nvm93ovNoJu306UsFhHQ6byr+2ddcI/xPg4Gz/KmY/SDEI=
+	t=1740739984; cv=none; b=LEo7JNh4wF7nYuT+bxfAd5VLvHBjJUcxKjMteswv3q0d/Fkfa+c687sUf9ilKeIO+3Ca3B0UjcI59GznIFxbNOFhT98o5t3/KwKNjf52KElm9mcavi8J9Wn6d9QMJRm+PC5vKpleNzk62DGqq3GPpb3JOH4u/3TBzj6Q4rQxdUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740739142; c=relaxed/simple;
-	bh=QUNDLB9wIz3SgB5nupTBapjW2yLDITrKMtGbCrusmeI=;
+	s=arc-20240116; t=1740739984; c=relaxed/simple;
+	bh=etzCuJOZIdAqEw0MayW324uOf86sWw2yZObHOVHQCfQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WmArMpTI5rviX+akptc6cjXMubGl/SEyCMc/eoh4UdCH1w9T1PZvxY805OSAzxFP15f+HxMzwAm745Ev2NHD2OBbUJYyyfxl8YuRAMeNxGh5CQZkfnsmD8Gr/7innb0G2ap1WyGtwTNYE/rBPxOfxYwriNC+fLJH/3D0PSSggXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=CMSeZuDJ; arc=none smtp.client-ip=209.85.128.41
+	 Content-Type:Content-Disposition:In-Reply-To; b=UwMWOppKg9H25pLfcE3w6vHYT0TL81nIHam5J8o63K7rdpy5SuaBZ3kEiEdz3P2OXMqVtsdlA65FP8kuWRMfcYLW2j7uk8U64Zrbdlr+fTKEKbLmrqAXTCKwAAQpu37GVmGboxxsUh6ilLOQBd8DM1NyS+Lc0razSPFcGBUQQjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=RUk45548; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="CMSeZuDJ"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-438a3216fc2so18768755e9.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 28 Feb 2025 02:39:00 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="RUk45548"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-438a39e659cso13666505e9.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 28 Feb 2025 02:53:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1740739139; x=1741343939; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:mail-followup-to:message-id:subject:cc:to
-         :from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=oG39+hcRe3mRE9YuhXueuN+tcV1/Sxrh6Deyz13CYHQ=;
-        b=CMSeZuDJALTJrLrDXO1MaSNxV3UC1hTJpYXe1sp9tFdjIbeYFI7Ls5FhMomMcEARe9
-         b25+CK0qxcJFHgPT3EgrzsrqgXuB64t0E82Vasr3nzWOWXs3nql0cb5AZ/8crBpCgMJn
-         mUkYvqVsNepeJiOGZ7RD2NxPp0dAbJfxBtBS0=
+        d=ffwll.ch; s=google; t=1740739981; x=1741344781; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6fGKkYkU92AKIEtoBhTzOtqV6Umxi/0b1IQGfdOiR18=;
+        b=RUk45548NQvW9HA3EkjSKTJaJbuEbCvy+Q+qBiTsh9V+wInO4TI9/ZpIszs689B1x/
+         Js6qiGIW9howt1vAiX4GbBYmzVveMQouY66jaUei4nrSmt7wpP+XgXNAfOzsWFmx1Ohg
+         3Qjg0no4XzOZqdzupT6hL/3YUh0x86p7skZjA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740739139; x=1741343939;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:mail-followup-to:message-id:subject:cc:to
-         :from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oG39+hcRe3mRE9YuhXueuN+tcV1/Sxrh6Deyz13CYHQ=;
-        b=XAQf3nvuhHd9sa4Qg3jNPbllBQUL6lYCBzLKkjVCxOU5GO5SwR5AwIU1O86v7uo0pq
-         vBJVOTrsvGprAjmkv0oy094tHWXhS+zzgfiLkhIWUnNDl2cnbNlEwe1Zv4p0jyYKvtS0
-         YJwoTomt4wOX4Zrc3qRzPhuvGDKQk64kgykbfEDMGgZ8hcS+o0stpgIwdB/uvEo/FYGg
-         gl2zIhJa4VcMJmc86Y8QZlR1h0VjEbcwci9Wm/oQrxWiC4qN/SWtmvbg0OKeSQ6v/5pn
-         CYR7aKnRkkPvHTqG5u3IDbGM3uc6YmE7Ednxv3mc6eIbu3yCW+m/BtlKYPYEnTe9DRA2
-         e/Gw==
-X-Forwarded-Encrypted: i=1; AJvYcCWJ5y/XK8PeJygsEvY9DLA7F59WXcTN2tjIahJFQLxjPIpmerUlBBqitL3Oe0Z1h4vjJ4yNiz+bwauZfW1j8Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMBiuxl7/g2o5tiqtGDffmT7+DeP7hYhVJ2TvXmIzGNFeCpIwh
-	jj13noU/fiukCxVvDEm26avfTBvLOJUhHzWKL4pT+k3ULd74728QuXDmMHzHL78=
-X-Gm-Gg: ASbGncs/hMK9xu4FN7Bl8/a62IHNqUXnPYZJyzHdWfO3Za+Y2SBn38YRPB6AkZoOXip
-	7pdFIeom41nmRIRrlpFGgGq39jNYtQNlcvD6lfMuYGpmeTr4dvWU8JUyOfqxA/OnqU8G5WkHm6s
-	xdowD+W1x3WPIIbiMNhhmG8p8hOfk1+BJc3dHWBaTQv9YRjXTulkfp5fKaORg1NIjgFq/IdtXGl
-	A0JOwM8xma9TbT1wZRirHh+OHOv78wH3nv5l7yIHCP//a0O7J+mmDYUZ7jovWcBZm/edisB0N1x
-	mamsw5t0v5Rn9l07D08JFhQF1xYUVtNfNvswMA==
-X-Google-Smtp-Source: AGHT+IHKtGVsCgsiQqYoRp4tUgxKTTuuX/6KEMlk0ndg4zFgqUK2TcWKSSYGEO9DYxuDiwTWH64tCQ==
-X-Received: by 2002:a5d:64cf:0:b0:38a:8906:6b66 with SMTP id ffacd0b85a97d-390eca2793dmr2679060f8f.38.1740739138696;
-        Fri, 28 Feb 2025 02:38:58 -0800 (PST)
+        d=1e100.net; s=20230601; t=1740739981; x=1741344781;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6fGKkYkU92AKIEtoBhTzOtqV6Umxi/0b1IQGfdOiR18=;
+        b=vEd8JPLksTj+FFplVJYNvKmVlT+rpDCUWvjGMEweqSFNwcnDxqkWIbqmUL3ATXz+Ld
+         YSN1ImPLOjp/cLOChPP6KwF53nYhqVwbCv36EYdtXTVDl8Wf/+3D7EFCiz8Td/0JMQ5C
+         7QwX/gfzHg9DOIg8/VEQ9awSw4SlnNUeKHYLOgkSx/sYupfOGdXMdvA5+5H1dMQZ30eU
+         qlcvEhtP46KPRWtPhwP7s8VZ/aBlyWtbqHcPcxhVO56YwUodjB0yZn2sIXaFpc9VWrep
+         1Nrno8VFZBEvJ7iW3m6vUuD6miiN3WVqrmj4+0lLJBAqDUC+3brSTe6UCKJuAkxPpkeg
+         8s7g==
+X-Forwarded-Encrypted: i=1; AJvYcCUYDzszia5AmPs0MXORCCdu2B9knOhpRhLO53JrU0mTSWRKOhoYIZVbNG2eTJhmA5uLwZXKItS5B7tj87i9uQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvFpS03VgPIZ8dlVuMvvD8Bnw9K+TDOwXSlEAuzGNI5Ld0BNps
+	HPsCc6XaSc0brQo9g2z1guSbUvGOA8W+QdzEy2nlB/wTK77dJoFGnwN/KykMpqA=
+X-Gm-Gg: ASbGncuN7bU9M4i+nsFzRlrDcjwC+y1i4utn778mCK+rwVTGAulNwf2MhKpv8kZPcCD
+	M/0OzKFpjhP+XDFzRSe/lwWBgs1etEhNGPUstFJGpQgdEvVPHb4PkbQ1XObdfR2xpGttergEYvy
+	9ulRLXPZzgHFESD/rWvOUBNZlP4RMdZa+fndlmeab2E7xMVAOhZGxClOR68HXvUQoC6Afsvp1oA
+	Ss5oQHQaUuiqx1UC4/1xyYw406kxlX/qRSkpb4J19HUo8cgmfzbQifjWP4wnWfsu89C0IbvyyMD
+	pQjoTLGm1nYyDUSp0xbhYyb63ASqn2Eps4kN2A==
+X-Google-Smtp-Source: AGHT+IGzMK22OAqSxJRJToDbcyGmm49ADbSw6MIeJDyMnFgiltwXHFIghIXm6aj4rubMHLy1CtzTYg==
+X-Received: by 2002:a05:600c:468e:b0:439:8e3e:b0d6 with SMTP id 5b1f17b1804b1-43ba67045femr23509435e9.13.1740739980068;
+        Fri, 28 Feb 2025 02:53:00 -0800 (PST)
 Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43aba53945bsm84503875e9.23.2025.02.28.02.38.57
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43aba5393e5sm83131255e9.20.2025.02.28.02.52.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Feb 2025 02:38:58 -0800 (PST)
-Date: Fri, 28 Feb 2025 11:38:55 +0100
+        Fri, 28 Feb 2025 02:52:59 -0800 (PST)
+Date: Fri, 28 Feb 2025 11:52:57 +0100
 From: Simona Vetter <simona.vetter@ffwll.ch>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Louis Chauvet <louis.chauvet@bootlin.com>, linux-kernel@vger.kernel.org,
-	Lyude Paul <lyude@redhat.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
+To: John Hubbard <jhubbard@nvidia.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Jason Gunthorpe <jgg@nvidia.com>,
 	Danilo Krummrich <dakr@kernel.org>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Liam Girdwood <lgirdwood@gmail.com>, Lukas Wunner <lukas@wunner.de>,
-	Mark Brown <broonie@kernel.org>,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Zijun Hu <quic_zijuhu@quicinc.com>, linux-usb@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	=?iso-8859-1?Q?Jos=E9_Exp=F3sito?= <jose.exposito89@gmail.com>
-Subject: Re: [PATCH v4 0/9] Driver core: Add faux bus devices
-Message-ID: <Z8GSPwC7hqFFwAVi@phenom.ffwll.local>
-Mail-Followup-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Louis Chauvet <louis.chauvet@bootlin.com>,
-	linux-kernel@vger.kernel.org, Lyude Paul <lyude@redhat.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Ben Skeggs <bskeggs@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	paulmck@kernel.org
+Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
+ implementation
+Message-ID: <Z8GViQzZJVFPxfNd@phenom.ffwll.local>
+Mail-Followup-To: John Hubbard <jhubbard@nvidia.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Danilo Krummrich <dakr@kernel.org>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Liam Girdwood <lgirdwood@gmail.com>, Lukas Wunner <lukas@wunner.de>,
-	Mark Brown <broonie@kernel.org>,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mairacanal@riseup.net>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Zijun Hu <quic_zijuhu@quicinc.com>, linux-usb@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	=?iso-8859-1?Q?Jos=E9_Exp=F3sito?= <jose.exposito89@gmail.com>
-References: <2025021023-sandstorm-precise-9f5d@gregkh>
- <7d196a91-220a-41a5-8577-198b436d8440@bootlin.com>
- <2025022719-papaya-resample-0b59@gregkh>
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Ben Skeggs <bskeggs@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	paulmck@kernel.org
+References: <20250225210228.GA1801922@joelnvbox>
+ <20250225225756.GA4959@nvidia.com>
+ <Z75WKSRlUVEqpysJ@cassiopeiae>
+ <20250226004916.GB4959@nvidia.com>
+ <Z75riltJo0WvOsS5@cassiopeiae>
+ <20250226172120.GD28425@nvidia.com>
+ <Z7-IHgcVVS8XBurW@cassiopeiae>
+ <20250226234730.GC39591@nvidia.com>
+ <2025022644-fleshed-petite-a944@gregkh>
+ <D82UB3V6NZ55.3OEPPW2W8MFZV@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2025022719-papaya-resample-0b59@gregkh>
+In-Reply-To: <D82UB3V6NZ55.3OEPPW2W8MFZV@nvidia.com>
 X-Operating-System: Linux phenom 6.12.11-amd64 
 
-On Thu, Feb 27, 2025 at 07:30:29AM -0800, Greg Kroah-Hartman wrote:
-> On Thu, Feb 27, 2025 at 02:06:21PM +0100, Louis Chauvet wrote:
-> > 
-> > 
-> > Le 10/02/2025 à 13:30, Greg Kroah-Hartman a écrit :
-> > > For years/decades now, I've been complaining when I see people use
-> > > platform devices for things that are obviously NOT platform devices.
-> > > To finally fix this up, here is a "faux bus" that should be used instead
-> > > of a platform device for these tiny and "fake" devices that people
-> > > create all over the place.
-> > > 
-> > > The api is even simpler than the normal platform device api, just two
-> > > functions, one to create a device and one to remove it.  When a device
-> > > is created, if a probe/release callback is offered, they will be called
-> > > at the proper time in the device's lifecycle.  When finished with the
-> > > device, just destroy it and all should be good.
-> > > 
-> > > This simple api should also hopefully provide for a simple rust binding
-> > > to it given the simple rules and lifecycle of the pointer passed back
-> > > from the creation function (i.e. it is alive and valid for as long as
-> > > you have not called destroy on it.)
-> > > 
-> > > I've also converted four different examples of platform device abuse, the
-> > > dummy regulator driver, the USB phy code, the x86 microcode dvice, and
-> > > the "regulator" device that wifi uses to load the firmware tables, to
-> > > use this api.  In all cases, the logic either was identical, or became
-> > > simpler, than before, a good sign (side note, a bug was fixed in the usb
-> > > phy code that no one ever noticed before).
-> > > 
-> > > Note, unless there are major objections, I'm leaning toward getting
-> > > patch 1 and 2 of this series merged during this -rc cycle so that all of
-> > > the individual driver subsystem cleanups can go through those subsystems
-> > > as needed, as well as allowing the rust developers to create a binding
-> > > and get that merged easier.  Having patch 1 merged on its own isn't
-> > > going to cause any changes if no one uses it, so that should be fine.
-> > 
-> > Hi all,
-> > 
-> > I have a maybe dumb question regarding the patches 3..9: do they break the
-> > UAPI?
-> > 
-> > With a platform device, the drivers appear under /sys/bus/platform, but with
-> > faux device, they appear under /sys/bus/faux.
-> > 
-> > I ask because I found out that one (see my reply to [2]) of the main drm
-> > library expects to find all the devices under pci, usb, platform, virtio and
-> > host1x buses [1], so at least for the vgem and vkms driver, this library
-> > will be broken (it will not crash, but previously detected devices will
-> > suddenly disappear).
+On Wed, Feb 26, 2025 at 05:34:01PM -0800, John Hubbard wrote:
+> On Wed Feb 26, 2025 at 5:02 PM PST, Greg KH wrote:
+> > On Wed, Feb 26, 2025 at 07:47:30PM -0400, Jason Gunthorpe wrote:
+> >> The way misc device works you can't unload the module until all the
+> >> FDs are closed and the misc code directly handles races with opening
+> >> new FDs while modules are unloading. It is quite a different scheme
+> >> than discussed in this thread.
+> >
+> > And I would argue that is it the _right_ scheme to be following overall
+> > here.  Removing modules with in-flight devices/drivers is to me is odd,
+> > and only good for developers doing work, not for real systems, right?
 > 
-> Why does a userspace tool want to walk bus types?  Shouldn't it just be
-> iterating over the userspace class type instead?  classes are how
-> devices are exposed to userspace, not through a bus.  That way if there
-> is a new bus type tomorrow (like this one), code will just keep working.
+> Right...I think. I'm not experienced with misc, but I do know that the
+> "run driver code after driver release" is very, very concerning.
 > 
-> What does the tool actually do in the platform device's directory?
+> I'm quite new to drivers/gpu/drm, so this is the first time I've learned
+> about this DRM behavior...
 
-Yeah this should work. In the past, mostly for historical reasons (pci
-enumeration in Xserver due to everything being userspace drivers) this
-wasn't the case. But modern drm drivers should go hunt for a compatible
-drm_driver name, enumerating all drm devices of the right class (legacy
-aka display or render or accel), because that string name is the uapi
-promise for the driver-specific uapi.
+It's really, really complicated, and not well documented. Probably should
+fix that. The issue is that you have at least 4 different lifetimes
+involved here, and people mix them up all the time and get confused. I
+discuss 3 of those here:
 
-Anything that uses generic drm apis like kernel modesetting shouldn't
-care, unless you've managed to hard-code your device path in your config
-somewhere. But almost everything does automatic setup nowadays, at least
-as a fallback.
+https://lists.freedesktop.org/archives/intel-xe/2024-April/034195.html
 
-Plus vgem and vkms are mostly for validation, that stuff we can fix
-without annoying real users. It's kinda like breaking debugfs, which you
-need anyway for running most of the igt testcases.
+The 4th is the lifetime of the module .text section, for which we need
+try_module_get. Now the issue with that is that developers much prefer
+convenience over correctness on this, and routinely complain _very_ loudly
+about "unnecessary" module references. They're not, but to break the cycle
+that Jason points out a bit earlier you need 2 steps:
 
-tldr; I'm not worried, and if something breaks we need and can fix it.
+- Nuke the driver binding manually through sysfs with the unbind files.
+- Nuke all userspace that might beholding files and other resources open.
+- At this point the module refcount should be zero and you can unload it.
+
+Except developers really don't like the manual unbind step, and so we're
+missing try_module_get() in a bunch of places where it really should be.
+
+Now wrt why you can't just solve this all at the subsystem level and
+guarantee that after drm_dev_unplug no code is running in driver callbacks
+anymore:
+
+In really, really simple subsystems like backlight this is doable. In drm
+with arbitrary ioctl this isn't, and you get to make a choice:
+
+- You wait until all driver code finishes, which could be never if there's
+  ioctl that wait for render to complete and don't handle hotunplug
+  correctly. This is a deadlock.
+
+  In my experience this is theorically possible, practically no one gets
+  this right and defacto means that actual hotunplug under load has a good
+  chance of just hanging forever. Which is why drm doesn't do this.
+
+- You make the revoceable critical sections as small as possible, which
+  makes hotunplug much, much less likely do deadlock. But means that after
+  revoking hw access you still have arbitrary driver code running in
+  callbacks, and you need to deal with.
+
+  This is why I like the rust Revocable so much, because it's a normal rcu
+  section, so disallows all sleeping. You might still deadlock on a busy
+  loop waiting for hw without having a timeout. But that's generally
+  fairly easy to spot, and good drivers have macros/helpers for this so
+  that there is always a timeout.
+
+  drm_dev_unplug uses sleepable rcu for practicality reasons and so has a
+  much, much higher chance of deadlocks. Note that strictly speaking
+  drm_device should hold a module reference on the driver, but see above
+  for why we don't have that - developers prefer convenience over
+  correctness in this area.
+
+> > Yes, networking did add that functionality to allow modules to be
+> > unloaded with network connections open, and I'm guessing RDMA followed
+> > that, but really, why?
+> >
+> > What is the requirement that means that you have to do this for function
+> > pointers?  I can understand the disconnect issue between devices and
+> > drivers and open file handles (or sockets), as that is a normal thing,
+> > but not removing code from the system, that is not normal.
+> >
+> 
+> I really hope that this "run after release" is something that Rust for
+> Linux drivers, and in particular, the gpu/nova*, gpu/drm/nova* drivers,
+> can *leave behind*.
+> 
+> DRM may have had ${reasons} for this approach, but this nova effort is
+> rebuilding from the ground up. So we should avoid just blindly following
+> this aspect of the original DRM design.
+
+We can and should definitely try to make this much better. I think we can
+get to full correctness wrt the first 3 lifetime things in rust. I'm not
+sure whether handling module unload/.text lifetime is worth the bother,
+it's probably only going to upset developers if we try. At least that's
+been my experience.
 
 Cheers, Sima
 -- 
