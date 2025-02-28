@@ -1,148 +1,111 @@
-Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E42B1F0998;
-	Fri, 28 Feb 2025 16:55:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E291F09BE;
+	Fri, 28 Feb 2025 17:05:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740761749; cv=none; b=A3z4j80zP0zTUz+QgURT2Jc7W7cKZG+VMEyoZZfW3FQ6bJvhvcpu1SWKj+Ncj10xEuFSJfkbHWGZ5A/+T7T2arVDgp/4li3Z082Vt1LqykX8nhM8jkAMK2a8wfVB4QRuXTn9GqKwAjBTIFBtoZBVCmF1VSiiUQesMI09/vN46u8=
+	t=1740762353; cv=none; b=mBzV3AwykwRCz4lpC3esL9RiDD9EXrwusUz59Wxx8pSQus3IrcAVrLOBLZg/FCmdUv0Zx2OleJxasBCU+aVf/3AlC1Us1/5M2Tgo0esFf0vFUt9Ugha6t5Za4XFb+ux4txF8nKrwhDvDhpMBcz9R8qyiZJV1fcfOKwLj54ja7zY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740761749; c=relaxed/simple;
-	bh=l7KZuIe+/PpHGK1hr6UrivshbMWc8k7QytvCDj/OM0Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BaL9t19prAXb7vQas+zqhWBH3YLwlvz927EeLOOjHzWQT5cIN//OplkhjtSQN649kRr9fQfozX0HPB/fS22RpqzH5OS+o0GKkaVUlKD5UZWQT10GSryviZ+t2EMj/5t1pY0aWW6zc27sPGJoVtGNQknZlFnRDaTmcPAlZm+UJHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HZ0dTKgB; arc=none smtp.client-ip=209.85.160.42
+	s=arc-20240116; t=1740762353; c=relaxed/simple;
+	bh=TNW79YSK3OsEeNu/vaEkL5Qb4FBUwBYlOvorcB5fdTU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uMjqZR867h/bhTRPKIGb3Zb70SvdvlRZyuk/Z+Q5PnHiNk7CdOtJgXaeF3wjKk4tPoEZ+fHzx4PW0EIhajKsh5qIbSzI3dByNTtV30ijJ8dlVtkP2JAKdcQziJj6gZHhwa8Fl59+XgO9a5gI3Bxtndx1b1R69Q/JZS0hUIln2Mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d7k6Q8PS; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HZ0dTKgB"
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-2bcca6aae0bso1585814fac.1;
-        Fri, 28 Feb 2025 08:55:47 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d7k6Q8PS"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4393dc02b78so15869445e9.3;
+        Fri, 28 Feb 2025 09:05:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740761747; x=1741366547; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GEW04ehe3qfLrS+uB2nI+HT5OespyuID5SMO2AaGFxs=;
-        b=HZ0dTKgB6Y09WSdvUDGosMhQvVsUrUu2LRaSFaZLcMiONaVbIXEho8CnnSJ8+vBYqF
-         aNXC/7SD/vqKR+kL8kA20Cbs3IgD9WtZaR0/zOmezRbrvoKPHOOotbRhqMnqvTJYZtV8
-         j1GLlw4I5GaEfokctFvgqlcbKPENq2ZDfxjUQMtOZhf67aOmT9ApV6yTP/m2MUeCgyaQ
-         O08KNPMNdo268Flv8ZX0j+YD2XwtzkbkskVAc9oQwFbrglDp/Zveg89bhidlvgcP3d5G
-         M1Xk+lv++VpcrRt6S7tXs0kB0JWEPvW+QdrTi1ozpcfE0QnrZBexq2htZMzZ24vskx5Q
-         tr1Q==
+        d=gmail.com; s=20230601; t=1740762350; x=1741367150; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=uGOz2Vyc9zMleLzstXLRoTeuJutk5JNx48VhwbfM3EA=;
+        b=d7k6Q8PSeZ/GSIsCqXwOaEZwx+MSW+bFckGWLWXTDLQTdGS9eE83KlsQ3YVgfLyAE3
+         WooQFA3vlI1M1qyjvM6xpvCX9Htc4YOpxw1vw/soxzxAyuqJPbIsudqfCvh5cgQWl4aQ
+         p6USzY75H8ej2w83TT6c7Ou2WGQPw11Dsc4MtOZLB38uusyfiq29UBaICqUNJMU1YuIy
+         KEXiRyIyN5xQdD4M2s+epwCwKQS7NRHkv/JN2G4LvZbh8tFT1I1xBTJOl53ZXRxsFhMr
+         fvzRZB0o6WKJ5s8IFZHepHgzmnQxn0s8aheWXkulgC90HD/5Lnws1lAGrhf2Ti553gZ2
+         H0xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740761747; x=1741366547;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GEW04ehe3qfLrS+uB2nI+HT5OespyuID5SMO2AaGFxs=;
-        b=bpWxvZTrmTTwXPLIgq3wrmpq7rgPWCz3VPPlnP+yJBbvT9P5CL9phBoWeO1Yc6YMUq
-         xevYFp04I+gHHdV/P/WhzBjC7KIOJvbfuHa9Z6MMatoT80iuGxTb/k0jsQ4OxU6Z3dG6
-         Y1nUvyhw8zBQ+UzXSZsBCdT9WEj8zkcMKeyIL9yN2jy6i8a/yKbQzqJtIGq1qp3SdDGT
-         cSO+OVTSeqUWCHObhg376wfcUJU7ySBblkZLUDTZc/yPnNwn5xmBNRsZM5ErO6s9pDuS
-         idL5GAdAI+2StRgPR+NFPzaosWMLOTnAxM6/VIDn2xye2bRcWjYeTz+F/Tzj2RoOYtHG
-         RIKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUY8yr+VPAY/tYz80fxyPGTwLDT1Cb7dCItLvttSHQvU45VZ955Df0evSGKJct8AJ3tmPrcqdJWTUy78jc3iuw=@vger.kernel.org, AJvYcCXwqC6kQNsVgLCWeBxs5tsk0H1b4qMl2YXzPXYw1PykUpXlkx8UymJ5PHDi/JeJlT/xUUvL41uErSzsO7I=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0ocb2bDWodKF62Ydv/MSVu7oaU3YhDnjPCYlaeNQXSzX70JQv
-	hFGKGCu8L9J9H+88G5blKN/onKEvE3n/X4I2VOX2ozS+nuf10EcAmBerB/edMBkBvUFOpa+sKpG
-	FwQi6ZRPND9IEUxRT6Wp17ZoJLxufI3dK1aA=
-X-Gm-Gg: ASbGncsWiBhTEyN26hUYMFahUsmzz0dsfyOVngiRfFF8cRy1yeRSchX2Yj+S6fnnxSu
-	XXMDSyJcEjAuy9H1osodS1l0wwmqDj+FMomo6w8vkTti9oecHn3ngeEqcD/gfdeI6v2MO6Ow0rZ
-	r+Qj4y8Ec=
-X-Google-Smtp-Source: AGHT+IHD4ihvG21m3iZVkr5wRrpw1riQryGYd2M1eN6+ZIwjs1g3PVl9FY3VmGlOwC8zrr8bHf9VDcXZ7P80N0hAhOU=
-X-Received: by 2002:a05:6871:d10d:b0:296:a1fc:91b5 with SMTP id
- 586e51a60fabf-2c178341172mr2590380fac.8.1740761747285; Fri, 28 Feb 2025
- 08:55:47 -0800 (PST)
+        d=1e100.net; s=20230601; t=1740762350; x=1741367150;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uGOz2Vyc9zMleLzstXLRoTeuJutk5JNx48VhwbfM3EA=;
+        b=JW2QK3YGRah8p4Kdhpd6fJJIU2kcxDYHZOlbkg4vIAnjeu+DucOO+fhU6Yq7nOObk6
+         VmhlggCt/LTCkc8ibld+7FNvrL712D4yzJTgLGXDcMv52H6H2uDhLefJjxOjj/arHtXO
+         eNZdR306GwYCXvI1QF2d7W1MPZCTAJOhREDi8fgpLzfKQ7Vx6Meez05QjZC8MFQBatAz
+         eIFVqJs5shtoYknmiyoK9cwOZe+ihXrm194K+OJwRcdk/VYXJoQOD79ei69f/8W6RFlg
+         sDFDLkEOlQkdkL5THnAbTZNt3QM65ZfemLce+0GagjqY/mD++8H0VTwH4cLUwlND/lk+
+         C9SQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV3hts2+lwDa6ljxkOu2zawWkYO8k51fMZXJ6Gciievz79yt11oie9W+0uvopnpI6KZ+huAl0aLnkQD2K4=@vger.kernel.org, AJvYcCWhiq5htnTKpThsoOsogIF0IqoPlKU/E4clhErc21H0cmcfj2YuOaFSmFUA9G0hISh0fToegXNS66QOuGXyNTA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzyPTWcBFZs9Q4RWkzRZBjuE/pqRemOpkXpqU6FXFj1fJ36uY7u
+	O2Kwt/e2vw+MFKzTS0SOONM73fCTy5e+TbfdWFohFnE3j0Kg7OuOpPHkNHne
+X-Gm-Gg: ASbGncthro9HQWkLnwbUP4/ScLkect+YNVSuFW+jL6CWMLEAaWj6ZA09Z989VQREvhB
+	nnIOpreE6KtNC/4quuf2ONxAELprhTV/AXYfTw6+DqYwqaSvyhu/RXaECL+dcac/D3PRdfbcrVM
+	LcxC9VdqMGQ1lycs1r6O9Zk+RpBW609s+CGvMSnlz8dFMqVlY3Gt0WaZe+s/y3jHJq4xGLd4kbX
+	2TXKO8QPeuE6L/+luz4oU4rtEreom1l6SKqdxj0owhPtw4e83HjG9i/Di8XLZd/NpdnbIMA1Nd1
+	QvKdbLcHVAe8bO0XZYcze3GnEfjN0Q==
+X-Google-Smtp-Source: AGHT+IETFuS4lsDWiG19zxA+TORXRJGy+FoK8y/hVYewKpq3ENo43gzsPdsqGRnorNfRSBt99lXnxA==
+X-Received: by 2002:a05:600c:1387:b0:439:91dd:cfa3 with SMTP id 5b1f17b1804b1-43ba6760305mr36262855e9.29.1740762349946;
+        Fri, 28 Feb 2025 09:05:49 -0800 (PST)
+Received: from fedora.. ([82.67.147.186])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43aba53945bsm94990965e9.23.2025.02.28.09.05.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Feb 2025 09:05:49 -0800 (PST)
+From: Guillaume Gomez <guillaume1.gomez@gmail.com>
+To: ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Guillaume Gomez <guillaume1.gomez@gmail.com>
+Subject: [PATCH 1/1] Improve error message in case the original file name from which the doctest was generated from to mention the doctest file path.
+Date: Fri, 28 Feb 2025 18:05:31 +0100
+Message-ID: <20250228170530.950268-2-guillaume1.gomez@gmail.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250228132928.880683-1-guillaume1.gomez@gmail.com>
- <CANiq72mENfqG6iNjgXpq4LVEceZ4174yGhg-RB0MsMxLVed-1A@mail.gmail.com>
- <CAAOQCfSEUnp8U3+6amWCd6+yPrAmPy6gsjJnQdrqmpER5md3kA@mail.gmail.com> <CANiq72=UrE5fv1Ymt-2NRzzKo2xk=tXLwvLaC4fo+vhJC0edNw@mail.gmail.com>
-In-Reply-To: <CANiq72=UrE5fv1Ymt-2NRzzKo2xk=tXLwvLaC4fo+vhJC0edNw@mail.gmail.com>
-From: Guillaume Gomez <guillaume1.gomez@gmail.com>
-Date: Fri, 28 Feb 2025 17:55:36 +0100
-X-Gm-Features: AQ5f1Jpxy4oWYP_PxFMaOJFRlEV0Xrm6sDVxNzXJGf-pe8EGj-XfHX5FIB2Tvmg
-Message-ID: <CAAOQCfSZ=HGWjeN-3fotNJpW35iqzm0A_3rxs=BdpULmLyrs2w@mail.gmail.com>
-Subject: Re: [PATCH 1/1] Use new `--output-format=doctest` rustdoc command
- line flag to improve doctest handling.
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-> That would still force us to have all the "hardcoded knowledge" about
-> the `rustdoc` output (apart from the JSON schema), right?
+In case the conversion fail, it will allow to get directly the file name
+triggering this bug, making the bug fixing process faster.
 
-That reduces it, but doesn't solve the problem completely. The second part
-is more tricky.
+Signed-off-by: Guillaume Gomez <guillaume1.gomez@gmail.com>
+---
+ scripts/rustdoc_test_gen.rs | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-> i.e. my idea was to try to see if we could avoid matching on "strings"
-> as much as possible, and trying to have enough metadata (properly
-> encoded in the JSON somehow), so that we need to avoid searching for
-> e.g. `main()` etc.; and instead generate everything else needed on our
-> side, customized for the kernel case.
+diff --git a/scripts/rustdoc_test_gen.rs b/scripts/rustdoc_test_gen.rs
+index 5ebd42ae4..12115979e 100644
+--- a/scripts/rustdoc_test_gen.rs
++++ b/scripts/rustdoc_test_gen.rs
+@@ -87,8 +87,8 @@ fn find_candidates(
+ 
+     assert!(
+         valid_paths.len() > 0,
+-        "No path candidates found. This is likely a bug in the build system, or some files went \
+-        away while compiling."
++        "No path candidates found for `{file}`. This is likely a bug in the build system, or some \
++        files went away while compiling.",
+     );
+ 
+     if valid_paths.len() > 1 {
+@@ -97,8 +97,8 @@ fn find_candidates(
+             eprintln!("    {path:?}");
+         }
+         panic!(
+-            "Several path candidates found, please resolve the ambiguity by renaming a file or \
+-            folder."
++            "Several path candidates found for `{file}`, please resolve the ambiguity by renaming \
++            a file or folder."
+         );
+     }
+ 
+-- 
+2.48.1
 
-I think in this case, the only issue is that we're calling `_inner().unwrap=
-()`
-right? So we could go around this issue by not generating this code
-directly in the doctest output and instead add a new field:
-
-* return_result_fn_name: Contains the name of the wrapping function
-  returning the `Result` type. If this field is present, it means that the
-  doctest is returning a `Result` and that we need to add in the code:
-  `assert!({return_result_fn_name}.is_ok())`.
-
-But even that is tricky because it's part of another block (`{}`) so the us=
-ers
-would need to add an extra `}` after the call. Anyway, I think it'll need t=
-o
-be discussed more in details in another discussion on how to best
-implement it for both sides.
-
-Le ven. 28 f=C3=A9vr. 2025 =C3=A0 17:48, Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> a =C3=A9crit :
->
-> On Fri, Feb 28, 2025 at 5:32=E2=80=AFPM Guillaume Gomez
-> <guillaume1.gomez@gmail.com> wrote:
-> >
-> > I'll definitely need some help here. I'm not sure current stable alread=
-y
-> > has this change so until then, we'll need a beta/nightly version to run
-> > these tests.
->
-> Yeah, we will need to wait until the "final" version of the flag is in
-> a stable version (the flag would not need to be "stable" itself, nor
-> the compiler released, but yeah, we need to know the version).
->
-> > I opened https://github.com/rust-lang/rust/pull/137807 to resolve
-> > this problem.
->
-> Thanks!
->
-> That would still force us to have all the "hardcoded knowledge" about
-> the `rustdoc` output (apart from the JSON schema), right?
->
-> i.e. my idea was to try to see if we could avoid matching on "strings"
-> as much as possible, and trying to have enough metadata (properly
-> encoded in the JSON somehow), so that we need to avoid searching for
-> e.g. `main()` etc.; and instead generate everything else needed on our
-> side, customized for the kernel case.
->
-> > I don't think `expect` would work in any of the cases in this file. Wha=
-t I suggest
-> > is to add methods on `JsonValue` in a future patch which would allow to=
- reduce
-> > code in this file (and call `expect` too).
->
-> Yeah, sorry, when I saw the `Some(...) ... else panic!` I replied too
-> quickly -- in this case, I don't think it matters to have a custom
-> error for the "wrong JSON type" case as we discussed offline since
-> nobody should be seeing the error to begin with, so it is fine.
->
-> Cheers,
-> Miguel
