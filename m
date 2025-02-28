@@ -1,88 +1,168 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47B01F4C85;
-	Fri, 28 Feb 2025 18:29:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE4971F873B;
+	Fri, 28 Feb 2025 18:34:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740767353; cv=none; b=BHnr5aQ9h7YncIW4YfL0ocjXUTK0MXt9x/+Ch6CH8f7Ee2ueronA2fa/ZAP/CefdiJDoXvaMXHDamFPFtsbNXRmbQTfiAVZDjIK46IZXIunZyWQLb2Tc+Xu7xRPCxZfk++05XyuMWNfHeDFG56qeLXJ6o/WEVqdlLzcFhLFwtjg=
+	t=1740767678; cv=none; b=pxjw0BDIVQaIaNwx8/l+0e7oGDc8U18Fnxketxug198rM1lAkr/N47UUTeonv0KS497HhbOuBis3FkeGCExG8bSnw2TozqHKd+p/EqBKMGrsVMGF4MgD6B+2zov5pzhNRr8aDbdHmb53J5CMo2deuyNj9t9saEotVUr8ksrpFzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740767353; c=relaxed/simple;
-	bh=+vOIjyiiLtVaLNR4TkknfidJzzH1lydetnHTsM3M5Ko=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=JNf7Cd5UsHS4VxAoEIVOSksSi9i2grFb5iN14+qb6kdxy5ZAyttsMIbOYMcatrs1Rq3EyB4pfzsDP+NRRPwgTzBlSgyjXCBuilp2Rh3ZgfP62gSsev5bCJo4tPxwSCUUjjknyOEAIxuJtrknrpQxCoqQ0pr1UNnq6VBm0Z13gtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PNVASr6Q; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740767678; c=relaxed/simple;
+	bh=wZP5dwHjFXIR2Zc7eVavD2zM6CWmbdreeu6wNJalJsQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OtsxtJvds3UoVBaaVQWRtyjrMOJHf323lktgtNALsm6bIJ+gBSCO5iZzh0k2pQnxnSqU6hQ9hkPPtU3d8GdPM9mCPi/le4UGgf7s6g+C4+6aFGZcOdgok9cUUWb2WDEeqfQ614IX3HWW1sKISGvp6/zLz3UWNJjsP5Sf9vU1ifk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cRaidpjF; arc=none smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PNVASr6Q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F09C4CEE2;
-	Fri, 28 Feb 2025 18:29:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740767352;
-	bh=+vOIjyiiLtVaLNR4TkknfidJzzH1lydetnHTsM3M5Ko=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=PNVASr6Q63EkrDf9s+27lNtNmVKtsJzWvv86NgdeCb6HzXpZIGH7FV6FTggPTRUk1
-	 qxevy5676b7NPXxA/pegE7MzsXwamHMpPFS9PkEcCmi78shuQ9Mf3uNCTlswXg0UYQ
-	 O4DU3vNNeM/8zZm87tbreJhZg0eqBeR7arejRYkfPz9deRbR/LOGVCh1dS0vKxTBJm
-	 /kLmNSXaS+BEIk1uwYzpa82PVitMKJEel8GtTYUMNnCP+KsOlKx7pfgolDXsQRpgx8
-	 Jz/OljzlrOMvqX1KE0sIkrSiMSHQAIXpW90M8PpLr2+DmbG3yuRIA0OUKED0RpzzZK
-	 Ak+eCma6zMW6Q==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Oliver Mangold" <oliver.mangold@pm.me>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno
- Lossin" <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,
-  "Trevor Gross" <tmgross@umich.edu>,  <linux-kernel@vger.kernel.org>,
-  <rust-for-linux@vger.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cRaidpjF"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-47210ab1283so35516571cf.1;
+        Fri, 28 Feb 2025 10:34:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740767676; x=1741372476; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rCFqw9auaprjfKRzf7+Y1mLRgmmsiKR+TkaoqiWHMBc=;
+        b=cRaidpjFNVKQsM1WYKWxs8d8wTWaEKFCZkBCGcivJByGF49K5JzysCL5lu7IZosy4c
+         F1op875/DDAvDzkIylVlgqsdBGRjkp8mdU7SlIFBerQBOCejJOOPeNZ+Uo5YQLz51BSm
+         Gy8D8P8cq49wgrKyY13W2uDbx4SeddsFdH0cDnN//vYoeK1is9ogEK0OHLeVPVW+1KjB
+         +cKS7K2H5bZKtsSQUL8oCZjdMCYgynlEUfg1YxY5rZTkA5PvRu76QeEgKYcMy8JpeELN
+         B1JwohJK7hQJMKTUDG6YwCfLD1rHRi0KJc0vIHx7abPEC2vChi/KSbCStIRobuj4Z/XY
+         3H7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740767676; x=1741372476;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rCFqw9auaprjfKRzf7+Y1mLRgmmsiKR+TkaoqiWHMBc=;
+        b=PyOPuy60FvVVlFeuSFh49yunHGD1tabsmT4COI+bNz2hE3F85fVhnS+XRra5/kLMWB
+         SoEst/aj0i2YUzNYoeXBbiS8bGUOsVzMiL+shF3CKhDScLQtnkK0t88JdBUGUAdfFMn8
+         w27r8VyFW1gKlTdjWZTUGt447LdLQYOBiVUcIJFGDDyvZ/k6BJOLyDt/JSqXn8hNIJ90
+         vfbShpD5cxlG1uM9iHjLoyFgZ92wHiouYoPLeTEge4QmlZCNF4GWNvqIU63kaXxKiB05
+         Pnm3l39Y7nheYumFpVkGhbNi9thkMfG73fc42E4tLOIHk2j18/EOqWSSZfZ9DgLjShZR
+         SIxw==
+X-Forwarded-Encrypted: i=1; AJvYcCUEu6WfzEF1gC1XtLIB4Vo30AxBsnEOdH9bHe2IMSq32Vwi0IGx3uhq6C0lFysH6ZPRNOOZV3BNRt8szkE=@vger.kernel.org, AJvYcCUy1HTzRdS/RYneVPrZlnJLwfcFIPMMNTS7QsAK3qmRbsJKfFj2rAVwJ7KTbWnSmemkSzx9MOv2SagLwXgVZFk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNpRZisg2ciL0Sl4Tt/34ceEA/hbfZu3NE80lGrqnbxMe0qBpu
+	ryYbZosFYP8CzlKBLQT7QwtuP/uCuGH7HVFSaIy+8yILjAprrHS5
+X-Gm-Gg: ASbGncv20qPmVB2VSEYjKDtUT8GvF3jpDFCQXQtu+LadsstES1erZThT/5O0n8ArdGC
+	C/8yQ77UNN0mni8LVkff2JrSn96RIPqK4kMLffIiYnwsjITeHs2hNg8h6fSbjEB0rmiHLa66eps
+	XIkFNaDMwef6MZ57cBZjcs0oJ7kb0w9tW1wB7s6gbQhCxaEi83pY5a1LlSwX3JQgneuT/eDZZ38
+	kZzLvqTPUk1G64cp8dMPli79v3aA5iipGpzHBFKicKWcoulnPEEzhq6+UMO3z7CcdJc3MWkG4Fx
+	+/oFq7iqMC14Qwxjc5SWlUEYlF5vpy+MsTwAJZABfAETrVnt+TAjF6U1uHGMHsaciUSJHtvTRRB
+	hw6jvl5nPQDDvMkIH
+X-Google-Smtp-Source: AGHT+IGj0YxFiFBDDT0v4MfFSXaWM+4kzchKYmFHxIBIpXJ1G+JPxmQ1BGzcIDkMywjicWdbGuaEqQ==
+X-Received: by 2002:a05:620a:4727:b0:7c0:b08d:2432 with SMTP id af79cd13be357-7c39c4a555fmr761792185a.8.1740767675719;
+        Fri, 28 Feb 2025 10:34:35 -0800 (PST)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c36fef5a83sm276178985a.31.2025.02.28.10.34.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Feb 2025 10:34:35 -0800 (PST)
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id DABE11200068;
+	Fri, 28 Feb 2025 13:34:34 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Fri, 28 Feb 2025 13:34:34 -0500
+X-ME-Sender: <xms:ugHCZ_-x1-LtgnS0sbhG4lGdfpTrqZrkPRAI00q3NOlfEjWE1ejn8g>
+    <xme:ugHCZ7v_y-DQjb9EcFx-Fdnru_uUHDStIJoCUvWMooBYtg9x6AAEGs7OfoRpyr2mw
+    HwIE1KPhJMqtxORRw>
+X-ME-Received: <xmr:ugHCZ9A8YuDo5Y6ZqkBStDvdoAkOzRSFlA3TVuHnJ7f5fcI4_ev5EPXd2_8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeludduvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
+    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
+    drtghomheqnecuggftrfgrthhtvghrnhephfetvdfgtdeukedvkeeiteeiteejieehvdet
+    heduudejvdektdekfeegvddvhedtnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenuc
+    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhn
+    odhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejje
+    ekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhn
+    rghmvgdpnhgspghrtghpthhtohepuddvpdhmohguvgepshhmthhpohhuthdprhgtphhtth
+    hopeholhhivhgvrhdrmhgrnhhgohhlugesphhmrdhmvgdprhgtphhtthhopegrrdhhihhn
+    uggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvg
+    hlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdp
+    rhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorh
+    hnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopegsvghnnhhordhl
+    ohhsshhinhesphhrohhtohhnrdhmvgdprhgtphhtthhopegrlhhitggvrhihhhhlsehgoh
+    hoghhlvgdrtghomhdprhgtphhtthhopehtmhhgrhhoshhssehumhhitghhrdgvughu
+X-ME-Proxy: <xmx:ugHCZ7cwGoFYk6sozroVZAkzHwD7uBMl0cKDwKVp33xIQ16Oazux1A>
+    <xmx:ugHCZ0Ps4laHNB5taA36w9lYkpbH85favwxLMaCX4VhO7Tb2DEBsiw>
+    <xmx:ugHCZ9lmjUdJze5aUk4cpisvKUkISijl6SCxsPLdP9FarwPNWwO8IA>
+    <xmx:ugHCZ-tRRfL0znolIusuKpJVKG0e94312LHyVR7uZGzR5kAZLcykxQ>
+    <xmx:ugHCZ-vPccaJfhgd0T9pZfjt-NF2lml5TM19fyHeeceN0RLIpJWjv0qo>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 28 Feb 2025 13:34:34 -0500 (EST)
+Date: Fri, 28 Feb 2025 10:33:44 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Oliver Mangold <oliver.mangold@pm.me>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 Subject: Re: [PATCH v2] rust: adding UniqueRefCounted and UniqueRef types
-In-Reply-To: <Z8H6EUy1HqLrzytE@laptop> (Oliver Mangold's message of "Fri, 28
-	Feb 2025 18:01:55 +0000")
-References: <EiaQ-C0o3GMQQpw3jCnXUnNgph2WIJ5-Cm8P5N9OysIlDKYrjHNun5Ol4Q1FfVGw64k6TGCfUVBJK5r0_2eypg==@protonmail.internalid>
-	<MFrukGViddXfhKeURDySTWCDW6Pk8Oo5keozdVg9hehiS3P4FVHKv4d-Fwn87yprBUeyTHcY6T1k9htIhPzc9Q==@protonmail.internalid>
-	<Z8H6EUy1HqLrzytE@laptop>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Fri, 28 Feb 2025 19:29:02 +0100
-Message-ID: <87frjxncsx.fsf@kernel.org>
+Message-ID: <Z8IBiBi6CSRxfxiE@boqun-archlinux>
+References: <I2EuahEO9YG75qdfIlsanLJ9iOfr0OlKJr6nw_cqOG0rVrZUEZGhdfENkLawNCpSqP8uSGMODCeEmsYv6clgYg==@protonmail.internalid>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <I2EuahEO9YG75qdfIlsanLJ9iOfr0OlKJr6nw_cqOG0rVrZUEZGhdfENkLawNCpSqP8uSGMODCeEmsYv6clgYg==@protonmail.internalid>
 
-"Oliver Mangold" <oliver.mangold@pm.me> writes:
+On Fri, Feb 28, 2025 at 06:22:58PM +0000, Oliver Mangold wrote:
+> On 250228 1009, Boqun Feng wrote:
+> > 
+> > Please add the "# Examples" section as I requested:
+> > 
+> > 	https://lore.kernel.org/rust-for-linux/Z8HcHVtPiG-X6ujP@Mac.home/
+> > 
+> > I also would like to know why do you think it's OK to ignore my previous
+> > comment, thanks!
+> > 
+> 
+> I intend to. Don't worry. I totally have it in mind that, this is missing.
+> As said, I will do it in a couple of days. Sorry if the update
+> caused confusion.
+> 
 
-> For usage with block-mq, a variant of ARef
-> which is guaranteed to be unique would be useful.
-> As chances are it is useful in general, This implements it
-> as kernel::types::UniqueRef.
-> The difference between ARef and UniqueRef
-> is basically the same as between Arc and UniqueArc.
+I should appologize as well, after re-reading the email exchange between
+us, I realized I wasn't clear about whether my request was including the
+tests with the patch or not. So it's reasonable you thought a separate
+patch would work.
 
-I would suggest splitting out the use case from the commit message:
+Now as we cleared things, I want to make sure that it's clear that I
+would like to see the patch with examples in it. 
 
-  rust: add `UniqueRef` for `ARef` references
+> I am aware this won't be the final version, but I thought
+> I still post this one correctly formatted, as Miguel requested.
+> 
 
-  Add `UniqeRef` as a variabt of `ARef` that is guaranteed to be unique.
-  This is useful when mutable access to the underlying type is required
-  and we can guarantee uniqueness, and when APIs that would normally take
-  an `ARef` require uniqueness.
+Yes, I figured that's what you planned to do, although it's better if
+you could provide some information between versions, one example would
+be:
 
-  ---
+	https://lore.kernel.org/rust-for-linux/20250227193522.198344-1-lyude@redhat.com/
 
-  Upcomming changes to the rust block device driver API depend on this
-  patch. Please see [1] for a use casel.
+i.e. you can add some description after the "---" line, and that won't
+affect git to apply the patches. Usually people put changes between
+versions, and in this case since you just want to update a version that
+is not the final version, you can add some description about that there
+as well.
 
-  [1] https://github.com/metaspace/linux/blob/41034cb4ea7cd20b981ce320136b6526a9fa9db6/rust/kernel/block/mq/request.rs#L406
+> I assure you, I'm not ignoring your comment and request at all.
+> 
 
+Thanks! Again, sorry for not being clear in previous emails.
 
-The comments after the --- will not got in the commit log, they are a
-message for the review process only.
+Regards,
+Boqun
 
-
-Best regards,
-Andreas Hindborg
-
-
+> Oliver
+> 
