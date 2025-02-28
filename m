@@ -1,47 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480FE276D11;
-	Fri, 28 Feb 2025 01:41:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F2B1805A;
+	Fri, 28 Feb 2025 01:49:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740706864; cv=none; b=PBcZiW8ydf1Dj/idS40O4aePRiQLjxyThbUEyMGWN9qXwgw/Q4d5LV5BG+1X1x5xqfK2oJyD6uOgIJlKy/kQJTohnIc977biy/07t4mC7ccLg4RVMVrUHuSWMfgBWIa8BBRvNsw5jah3oybXnzNVBa5wr3HqYiCzeqbTirSy2QA=
+	t=1740707351; cv=none; b=O3W5nAVCuNeiHpohcAJRxE+9ydmkhOR+QTv5c9Ez7kQ4WPU05JvP5YtmhApunbRDFSs6VZmQqEQtC2jtJKks1iNwhwQXrzqFQ4KT/aGrGT9pQu3jTYrXewBsOZiwX/fXdc0oCvOVjfvnVFKP+j+58t9tb1ipNFch5FXD6qipD4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740706864; c=relaxed/simple;
-	bh=7Ao72ZSN+JGWeghAFVfYDlkSLS7LdTHxr30TmAU4vkE=;
+	s=arc-20240116; t=1740707351; c=relaxed/simple;
+	bh=4f6/W//9xE9AdBnvNcLwO8IKzB0WtJQz8HWVX03MYe8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Llm/sjm8Mfn86U2t+Ia2snHWt0UWzAPYdO+SvabRRTbRSoLJttnFwzi7LPmyYdJu5SkIckVwy+9KPc8Vpg7snIvLu/xD7x8A4nadFGctk0ON1DUMNXqNqwRl6fYH95K3IiXXgMhWeBtyuCieO8K20vUl5XsL5riXYksKbt1cTyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T7pRl/DJ; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=QOuo45yJXvcTY3dJuPk8NA/O7n0wNKnHgXC+PXoJ0Sx28JvcVU5hikJ8BFtgdrU8u8F79VzwcsFPxbLQM6sO75ZOZovMXmeFSJSxn6U0g9Fd44N7eC0bzELK6nIcKjDsHcCAC8YDtLjmZZ515FAnYt7wIxEr2h/UOZXpmaFKcME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fHpSuR97; arc=none smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T7pRl/DJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F866C4CEDD;
-	Fri, 28 Feb 2025 01:41:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1740706863;
-	bh=7Ao72ZSN+JGWeghAFVfYDlkSLS7LdTHxr30TmAU4vkE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=T7pRl/DJsxzZ+ib93e1hwB+ZcGmQj5mXqTI0GIxi5+XlzEApYSXVY23640qOhXeGY
-	 rq0Qj+AMH41PDhmGEVOpmEF45FppD7OSb6Xrcc7BIvb7G9A6sn+9onL4JbeZ7vfSF+
-	 y8L8HwlNFWbr48lq+OW8NbT/jKdWKvfa67N4RSXM=
-Date: Thu, 27 Feb 2025 17:39:53 -0800
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Lukas Wunner <lukas@wunner.de>
-Cc: Alistair Francis <alistair@alistair23.me>, linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	bhelgaas@google.com, Jonathan.Cameron@huawei.com,
-	rust-for-linux@vger.kernel.org, akpm@linux-foundation.org,
-	boqun.feng@gmail.com, bjorn3_gh@protonmail.com,
-	wilfred.mallawa@wdc.com, aliceryhl@google.com, ojeda@kernel.org,
-	alistair23@gmail.com, a.hindborg@kernel.org, tmgross@umich.edu,
-	gary@garyguo.net, alex.gaynor@gmail.com, benno.lossin@proton.me,
-	Alistair Francis <alistair.francis@wdc.com>
-Subject: Re: [RFC v2 09/20] PCI/CMA: Expose in sysfs whether devices are
- authenticated
-Message-ID: <2025022748-flock-verbalize-b66a@gregkh>
-References: <20250227030952.2319050-1-alistair@alistair23.me>
- <20250227030952.2319050-10-alistair@alistair23.me>
- <2025022717-dictate-cortex-5c05@gregkh>
- <Z8DqZlE5ccujbJ80@wunner.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fHpSuR97"
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7c0970e2e79so287124485a.3;
+        Thu, 27 Feb 2025 17:49:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740707348; x=1741312148; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wgnCFalO1rVu1AXO1D06Gc1GDBlEbCjjlOcT3fgeh38=;
+        b=fHpSuR97+2z6lZqrh2LwH04+qrwKG7ZFHTnPqPxKJXd/RgUd70quGQ2hP9PbyM28iw
+         s0yTqU1jiGC2oHeER5MGKUZGITKjJoXCnWXfcGrLQuLUhpHfGOxCRdA6WTaFOl8D7/L3
+         RsenvzcAvqD9DGGGEL27j8vKk7nPbmdTSG15YG5ZQMdHboGQgPET2kxJGELrga+SwRcx
+         NAm0NCRjRvl6C6gXFTtjxCGLASWnvHKmp9AKYiXffjRenlXXwIxUw+poI/it+0Y3XWx+
+         fEJn7hSZLeK0ZSI0JfKyJf94dunntd320iWCWVs6JNCbRVJOgRXOblnzsJVZZRqhfZ4n
+         5iOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740707348; x=1741312148;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wgnCFalO1rVu1AXO1D06Gc1GDBlEbCjjlOcT3fgeh38=;
+        b=qoL2b6nuCWlCxlAnCQ/8bAlTNGOORhlY7ujcQZWtNzGvkbpw+8fPYV+MCw2FToBpQN
+         nrEnRn0B4Mb7n1cG2H4z8HMUBL38uaScmZ26Ji70AcGTJ9YbUxT309RMAlO1scSklV+e
+         /kWVFK2xb1AyzUYgeCFRXinQnL38f+vKNKkFFCbCYC0aKNn3PPz//DDueT5/+lHjG8b+
+         h+4xrsZHHGXPoRhvU1dtsOKBXOzTMPYXuKUdBJsSy/ouep9T0YqWxjNPO5yTOfmeqTPS
+         TlX1AyHNS4HEn7BmbvIrRmmsDSyci9MyjMzlZb0VlTdxmqO11/IF12AS/sU8tR9fQaSS
+         Kd7w==
+X-Forwarded-Encrypted: i=1; AJvYcCUANmBqVna1oZftBHJvnyL0dsi9F0ydPJj0CmHfb9EoOU8FWoyoYc9CDwQGQ2OfH4PuuXPuhNu0Jd+fKddn@vger.kernel.org, AJvYcCUW8Apng9E1wjrW+HJRNVfvfMa+WIXs2IFiRlDcz/8FnRl/P+ZYc1l6shLehh2exod1zWhCy/Mst0fy6Q==@vger.kernel.org, AJvYcCW4z8TGGIT5RK93vBOfrn05Q6uqgfhmigmA/y4M6/rr0K78rpArxzxbJ3RAemHkGmNE1HPkzmWUjZUe@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBc9zRhAFzAq+Q6+o+q4DOiz57fnVQh6wXDQ4QoNG7IslBdDLO
+	dMGFhgqyx0l/Y0GU8WoHfWR8zroe4tatpXYU+kESQFFMvu1wIekV
+X-Gm-Gg: ASbGncv6VvX4Qrcy4nW6jqg8mXT7OfRgacpN/C3izrd7Bki9PIVSubHhpMW+pBKxTUb
+	S7RFj64zEvuEztwQxY61BTumaHfUiFhip0MJJEEatziH4L9DrjXpv17Dc0TQoFUDBvgXHueO8St
+	xWam1zXBm8h37iGHZLFgUw8z0u1rXIz+fU2C+YPhTM8JlxGyMeoH/LQuzsA2czvztLMeD/gohcP
+	dlOx6Z/itl7IjYX0UOgbk1CG1mo+dz6xA+0XegtW9rsZvC1VyhdZeBmXTm4lvIBjKekFWnkbGVb
+	11jprLFX8K/7IyHbzrGpF7XPRPbJ2NRMv36m/dVgSMpwfAerJOoBi6JGttVBoxXqh750sE3T3vV
+	ZVScw21f2FJAea3Rq
+X-Google-Smtp-Source: AGHT+IH+ANmJBVtGY4D/p2Ms1Ijf1z4GnsONbS648U41oA9SZ64R8X5gd2eiXYMgM3MQubjTaAh0dA==
+X-Received: by 2002:a05:620a:410a:b0:7c0:b81f:7af1 with SMTP id af79cd13be357-7c39c4c7052mr216558685a.33.1740707348135;
+        Thu, 27 Feb 2025 17:49:08 -0800 (PST)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c378d9fe2bsm180028885a.88.2025.02.27.17.49.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Feb 2025 17:49:07 -0800 (PST)
+Received: from phl-compute-08.internal (phl-compute-08.phl.internal [10.202.2.48])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 295611200043;
+	Thu, 27 Feb 2025 20:49:07 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-08.internal (MEProxy); Thu, 27 Feb 2025 20:49:07 -0500
+X-ME-Sender: <xms:ExbBZ8MZMzLo6wrs94z19Qna9HA9xNeyrc4pBglvufiqyimFpFKkOg>
+    <xme:ExbBZy9GoWore1KeXe5TixiJYQ5ERVzDbIuOZf2LLKyFkaxkqU0kK_nXAk4E9R8RE
+    cweDv8FBWeYqoq3lg>
+X-ME-Received: <xmr:ExbBZzR0bbi4DNLW6yJmTJhWoxmtNOEUZq42CBvJMgutc1Gz6WTWqp1tog>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekledutdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
+    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
+    drtghomheqnecuggftrfgrthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleel
+    ieevtdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
+    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
+    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedvfedpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtoheplhihuhguvgesrhgvughhrghtrdgtohhmpd
+    hrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdho
+    rhhgpdhrtghpthhtohepthhglhigsehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtoh
+    eptggrthgrlhhinhdrmhgrrhhinhgrshesrghrmhdrtghomhdprhgtphhtthhopeifihhl
+    lheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohephhgtrgeslhhinhhugidrihgsmhdrtg
+    homhdprhgtphhtthhopehgohhrsehlihhnuhigrdhisghmrdgtohhmpdhrtghpthhtohep
+    rghgohhruggvvghvsehlihhnuhigrdhisghmrdgtohhmpdhrtghpthhtohepsghorhhnth
+    hrrggvghgvrheslhhinhhugidrihgsmhdrtghomh
+X-ME-Proxy: <xmx:ExbBZ0ue1Fk-rzeaa9ghPHz3tDImUCTQRhkKbVOvUiILSX2jgeNDTw>
+    <xmx:ExbBZ0eMJnkPghCpEqFTDlnOM67LJC_6Mnc_0ibrAZzsceLutZRZxA>
+    <xmx:ExbBZ40gzJsSPQXSLvJLsE6Zzc8WNwCuOHNca4oa5wTpTUoWQMA2eQ>
+    <xmx:ExbBZ48bwnUBk7F59BtYYCPJSorDpmTbgh3D7Vcm33kxiIe9NRK6Yw>
+    <xmx:ExbBZ78C7frC_qb8BNNJIcxUYMBbt7-KUtM0u9RUa1NHtz6cAFLQYJgy>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 27 Feb 2025 20:49:06 -0500 (EST)
+Date: Thu, 27 Feb 2025 17:49:05 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Lyude Paul <lyude@redhat.com>
+Cc: rust-for-linux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
+	Juergen Christ <jchrist@linux.ibm.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	"moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:S390 ARCHITECTURE" <linux-s390@vger.kernel.org>,
+	"open list:GENERIC INCLUDE/ASM HEADER FILES" <linux-arch@vger.kernel.org>
+Subject: Re: [PATCH v9 2/9] preempt: Introduce __preempt_count_{sub,
+ add}_return()
+Message-ID: <Z8EWEe-zdPzKlOD8@Mac.home>
+References: <20250227221924.265259-1-lyude@redhat.com>
+ <20250227221924.265259-3-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -50,221 +126,152 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z8DqZlE5ccujbJ80@wunner.de>
+In-Reply-To: <20250227221924.265259-3-lyude@redhat.com>
 
-On Thu, Feb 27, 2025 at 11:42:46PM +0100, Lukas Wunner wrote:
-> On Thu, Feb 27, 2025 at 03:16:40AM -0800, Greg KH wrote:
-> > On Thu, Feb 27, 2025 at 01:09:41PM +1000, Alistair Francis wrote:
-> > > The PCI core has just been amended to authenticate CMA-capable devices
-> > > on enumeration and store the result in an "authenticated" bit in struct
-> > > pci_dev->spdm_state.
-> > > 
-> > > Expose the bit to user space through an eponymous sysfs attribute.
-> > > 
-> > > Allow user space to trigger reauthentication (e.g. after it has updated
-> > > the CMA keyring) by writing to the sysfs attribute.
-> > > 
-> > > Implement the attribute in the SPDM library so that other bus types
-> > > besides PCI may take advantage of it.  They just need to add
-> > > spdm_attr_group to the attribute groups of their devices and amend the
-> > > dev_to_spdm_state() helper which retrieves the spdm_state for a given
-> > > device.
-> > > 
-> > > The helper may return an ERR_PTR if it couldn't be determined whether
-> > > SPDM is supported by the device.  The sysfs attribute is visible in that
-> > > case but returns an error on access.  This prevents downgrade attacks
-> > > where an attacker disturbs memory allocation or DOE communication
-> > > in order to create the appearance that SPDM is unsupported.
-> > 
-> > I don't like this "if it's present we still don't know if the device
-> > supports this", as that is not normally the "sysfs way" here.  Why must
-> > it be present in those situations?
+On Thu, Feb 27, 2025 at 05:10:13PM -0500, Lyude Paul wrote:
+> From: Boqun Feng <boqun.feng@gmail.com>
 > 
-> That's explained above.
 
-Not really, you just say "downgrade attacks", which is not something
-that we need to worry about, right?  If so, I think this bit is the
-least of our worries.
+Lyude, please add something similar to below as the changelog in the
+future version.
 
-> Unfortunately there is no (signed) bit in Config Space which tells us
-> whether authentication is supported by a PCI device.  Rather, it is
-> necessary to exchange several messages with the device through a
-> DOE mailbox in config space to determine that.  I'm worried that an
-> attacker deliberately "glitches" those DOE exchanges and thus creates
-> the appearance that the device does not support authentication.
+In order to use preempt_count() to tracking the interrupt disable
+nesting level, __preempt_count_{add,sub}_return() are introduced, as
+their name suggest, these primitives return the new value of the
+preempt_count() after changing it. The following example shows the usage
+of it in local_interrupt_disable():
 
-That's a hardware glitch, and if that happens, then it will show a 0 and
-that's the same as not being present at all, right?  Otherwise you just
-pound on the file to try to see if the glitch was not real?  That's not
-going to go over well.
+	// increase the HARDIRQ_DISABLE bit
+	new_count = __preempt_count_add_return(HARDIRQ_DISABLE_OFFSET);
 
-> Let's say the user's policy is to trust legacy devices which do not
-> support authentication, but require authentication for newer NVMe drives
-> from a certain vendor.  An attacker may manipulate an authentication-capable
-> NVMe drive from that vendor, whereupon it will fail authentication.
-> But the attacker can trick the user into trusting the device by glitching
-> the DOE exchanges.
+	// if it's the first-time increment, then disable the interrupt
+	// at hardware level.
+	if (new_count & HARDIRQ_DISABLE_MASK == HARDIRQ_DISABLE_OFFSET) {
+		local_irq_save(flags);
+		raw_cpu_write(local_interrupt_disable_state.flags, flags);
+	}
 
-Again, are we now claiming that Linux needs to support "hardware
-glitching"?  Is that required somewhere?  I think if the DOE exchanges
-fail, we just trust the device as we have to trust something, right?
+Having these primitives will avoid a read of preempt_count() after
+changing preempt_count() on certain architectures.
 
-> Of course, this is an abnormal situation that users won't encounter
-> unless they're being attacked.  Normally the attribute is only present
-> if authentication is supported.
+
+Regards,
+Boqun
+
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> ---
+>  arch/arm64/include/asm/preempt.h | 18 ++++++++++++++++++
+>  arch/s390/include/asm/preempt.h  | 19 +++++++++++++++++++
+>  arch/x86/include/asm/preempt.h   | 10 ++++++++++
+>  include/asm-generic/preempt.h    | 14 ++++++++++++++
+>  4 files changed, 61 insertions(+)
 > 
-> I disagree with your assessment that we have bigger problems.
-> For security protocols like this we have to be very careful
-> to prevent trivial circumvention.  We cannot just shrug this off
-> as unimportant.
-
-hardware glitching is not trivial.  Let's only worry about that if the
-hardware people somehow require it, and if so, we can push back and say
-"stop making us fix your broken designs" :)
-
-> The "authenticated" attribute tells user space whether the device
-> is authenticated.  User space needs to handle errors anyway when
-> reading the attribute.  Users will get an error if authentication
-> support could not be determined.  Simple.
-
-No, if it's not determined, it shouldn't be present.
-
-> > What is going to happen to suddenly
-> > allow it to come back to be "alive" and working while the device is
-> > still present in the system?
+> diff --git a/arch/arm64/include/asm/preempt.h b/arch/arm64/include/asm/preempt.h
+> index 0159b625cc7f0..49cb886c8e1dd 100644
+> --- a/arch/arm64/include/asm/preempt.h
+> +++ b/arch/arm64/include/asm/preempt.h
+> @@ -56,6 +56,24 @@ static inline void __preempt_count_sub(int val)
+>  	WRITE_ONCE(current_thread_info()->preempt.count, pc);
+>  }
+>  
+> +static inline int __preempt_count_add_return(int val)
+> +{
+> +	u32 pc = READ_ONCE(current_thread_info()->preempt.count);
+> +	pc += val;
+> +	WRITE_ONCE(current_thread_info()->preempt.count, pc);
+> +
+> +	return pc;
+> +}
+> +
+> +static inline int __preempt_count_sub_return(int val)
+> +{
+> +	u32 pc = READ_ONCE(current_thread_info()->preempt.count);
+> +	pc -= val;
+> +	WRITE_ONCE(current_thread_info()->preempt.count, pc);
+> +
+> +	return pc;
+> +}
+> +
+>  static inline bool __preempt_count_dec_and_test(void)
+>  {
+>  	struct thread_info *ti = current_thread_info();
+> diff --git a/arch/s390/include/asm/preempt.h b/arch/s390/include/asm/preempt.h
+> index 6ccd033acfe52..67a6e265e9fff 100644
+> --- a/arch/s390/include/asm/preempt.h
+> +++ b/arch/s390/include/asm/preempt.h
+> @@ -98,6 +98,25 @@ static __always_inline bool should_resched(int preempt_offset)
+>  	return unlikely(READ_ONCE(get_lowcore()->preempt_count) == preempt_offset);
+>  }
+>  
+> +static __always_inline int __preempt_count_add_return(int val)
+> +{
+> +	/*
+> +	 * With some obscure config options and CONFIG_PROFILE_ALL_BRANCHES
+> +	 * enabled, gcc 12 fails to handle __builtin_constant_p().
+> +	 */
+> +	if (!IS_ENABLED(CONFIG_PROFILE_ALL_BRANCHES)) {
+> +		if (__builtin_constant_p(val) && (val >= -128) && (val <= 127)) {
+> +			return val + __atomic_add_const(val, &get_lowcore()->preempt_count);
+> +		}
+> +	}
+> +	return val + __atomic_add(val, &get_lowcore()->preempt_count);
+> +}
+> +
+> +static __always_inline int __preempt_count_sub_return(int val)
+> +{
+> +	return __preempt_count_add_return(-val);
+> +}
+> +
+>  #define init_task_preempt_count(p)	do { } while (0)
+>  /* Deferred to CPU bringup time */
+>  #define init_idle_preempt_count(p, cpu)	do { } while (0)
+> diff --git a/arch/x86/include/asm/preempt.h b/arch/x86/include/asm/preempt.h
+> index 919909d8cb77e..405e60f4e1a77 100644
+> --- a/arch/x86/include/asm/preempt.h
+> +++ b/arch/x86/include/asm/preempt.h
+> @@ -84,6 +84,16 @@ static __always_inline void __preempt_count_sub(int val)
+>  	raw_cpu_add_4(pcpu_hot.preempt_count, -val);
+>  }
+>  
+> +static __always_inline int __preempt_count_add_return(int val)
+> +{
+> +	return raw_cpu_add_return_4(pcpu_hot.preempt_count, val);
+> +}
+> +
+> +static __always_inline int __preempt_count_sub_return(int val)
+> +{
+> +	return raw_cpu_add_return_4(pcpu_hot.preempt_count, -val);
+> +}
+> +
+>  /*
+>   * Because we keep PREEMPT_NEED_RESCHED set when we do _not_ need to reschedule
+>   * a decrement which hits zero means we have no preempt_count and should
+> diff --git a/include/asm-generic/preempt.h b/include/asm-generic/preempt.h
+> index 51f8f3881523a..c8683c046615d 100644
+> --- a/include/asm-generic/preempt.h
+> +++ b/include/asm-generic/preempt.h
+> @@ -59,6 +59,20 @@ static __always_inline void __preempt_count_sub(int val)
+>  	*preempt_count_ptr() -= val;
+>  }
+>  
+> +static __always_inline int __preempt_count_add_return(int val)
+> +{
+> +	*preempt_count_ptr() += val;
+> +
+> +	return *preempt_count_ptr();
+> +}
+> +
+> +static __always_inline int __preempt_count_sub_return(int val)
+> +{
+> +	*preempt_count_ptr() -= val;
+> +
+> +	return *preempt_count_ptr();
+> +}
+> +
+>  static __always_inline bool __preempt_count_dec_and_test(void)
+>  {
+>  	/*
+> -- 
+> 2.48.1
 > 
-> The device needs to be re-enumerated by the PCI core to retry
-> determining its authentication capability.  That's why the
-> sysfs documentation says the user may exercise the "remove"
-> and "rescan" attributes to retry authentication.
-
-But how does it know that?  remove and recan is a huge sledgehammer, and
-an amazing one if it even works on most hardware.  Don't make it part of
-any normal process please.
-
-> > I'd prefer it to be "if the file is there, this is supported by the
-> > device.  If the file is not there, it is not supported", as that makes
-> > things so much simpler for userspace (i.e. you don't want userspace to
-> > have to both test if the file is there AND read all entries just to see
-> > if the kernel knows what is going on or not.)
-> 
-> Huh?  Read all entries?  The attribute contains only 0 or 1!
-> 
-> Or you'll get an error reading it.
-
-It's the error, don't do that.  If an error is going to happen, then
-don't have the file there.  That's the way sysfs works, it's not a
-"let's add all possible files and then make userspace open them all and
-see if an error happens to determine what really is present for this
-device" model.  It's a "if a file is there, that attribute is there and
-we can read it".
-
-> > > Alternatively, authentication success might be signaled to user space
-> > > through a uevent, whereupon it may bind a (blacklisted) driver.
-> > 
-> > How will that happen?
-> 
-> The SPDM library can be amended to signal a uevent when authentication
-> succeeds or fails and user space can then act on it.  I imagine systemd
-> or some other daemon might listen to such events and do interesting things,
-> such as binding a driver once authentication succeeds.
-
-That's a new user/kernel api and should be designed ONLY if you actually
-need it and have a user.  Otherwise let's just wait for later for that.
-
-> Maybe you have better ideas.  Be constructive!  Make suggestions!
-
-Again, have the file there only if this is something that the hardware
-supports.  Don't fail a read just because the hardware does not seem to
-support it, but it might sometime in the future if you just happen to
-unplug/plug it back in.
-
-> > > +		This prevents downgrade attacks where an attacker consumes
-> > > +		memory or disturbs communication in order to create the
-> > > +		appearance that a device does not support authentication.
-> > 
-> > If an attacker can consume kernel memory to cause this to happen you
-> > have bigger problems.  That's not the kernel's issue here at all.
-> > 
-> > And "disable communication" means "we just don't support it as the
-> > device doesn't say it does", so again, why does that matter?
-> 
-> Reacting to potential attacks sure is the kernel's business.
-
-Reacting to real, software attacks is the kernel's business.  Reacting
-to possible hardware issues that are just theoretical is not.
-
-> > > +		The reason why authentication support could not be determined
-> > > +		is apparent from "dmesg".  To re-probe authentication support
-> > > +		of PCI devices, exercise the "remove" and "rescan" attributes.
-> > 
-> > Don't make userspace parse kernel logs for this type of thing.  And
-> > asking userspace to rely on remove and recan is a mess, either show it
-> > works or not.
-> 
-> I'd say looking in dmesg to determine whether the user is being attacked
-> is perfectly fine, as is requiring the user to explicitly act on a
-> potential attack.
-> 
-> 
-> > > --- a/drivers/pci/cma.c
-> > > +++ b/drivers/pci/cma.c
-> > > @@ -171,8 +171,10 @@ void pci_cma_init(struct pci_dev *pdev)
-> > >  {
-> > >  	struct pci_doe_mb *doe;
-> > >  
-> > > -	if (IS_ERR(pci_cma_keyring))
-> > > +	if (IS_ERR(pci_cma_keyring)) {
-> > > +		pdev->spdm_state = ERR_PTR(-ENOTTY);
-> > 
-> > Why ENOTTY?
-> 
-> We use -ENOTTY as return value for unsupported reset methods in the
-> PCI core, see e.g. pcie_reset_flr(), pcie_af_flr(), pci_pm_reset(),
-> pci_parent_bus_reset(), pci_reset_hotplug_slot(), ...
-> 
-> We also use -ENOTTY in pci_bridge_wait_for_secondary_bus() and
-> pci_dev_wait().
-> 
-> It was used here to be consistent with those existing occurrences
-> in the PCI core.
-> 
-> If you'd prefer something else, please make a suggestion.
-
-Ah, didn't realize that was a pci thing, ok, nevermind.
-
-> > > +static ssize_t authenticated_store(struct device *dev,
-> > > +				   struct device_attribute *attr,
-> > > +				   const char *buf, size_t count)
-> > > +{
-> > > +	void *spdm_state = dev_to_spdm_state(dev);
-> > > +	int rc;
-> > > +
-> > > +	if (IS_ERR_OR_NULL(spdm_state))
-> > > +		return PTR_ERR(spdm_state);
-> > > +
-> > > +	if (sysfs_streq(buf, "re")) {
-> > 
-> > I don't like sysfs files that when reading show a binary, but require a
-> > "magic string" to be written to them to have them do something else.
-> > that way lies madness.  What would you do if each sysfs file had a
-> > custom language that you had to look up for each one?  Be consistant
-> > here.  But again, I don't think you need a store function at all, either
-> > the device supports this, or it doesn't.
-> 
-> I'm not sure if you've even read the ABI documentation in full.
-> 
-> The store method is needed to reauthenticate the device,
-> e.g. after a new trusted root certificate was added to the
-> kernel's .cma keyring.
-
-Why not have a different file called "reauthentication" that only allows
-a write to it of a 1/Y/y to do the reauthentication.  sysfs is a "one
-file per thing" interface, not a "parse a command and do something but
-when read from return a different value" interface.
-
-Let's keep it dirt simple please.
-
-thanks,
-
-greg k-h
