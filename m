@@ -1,91 +1,98 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889AC1BE23E
-	for <rust-for-linux@vger.kernel.org>; Fri, 28 Feb 2025 09:08:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7863C24C689
+	for <rust-for-linux@vger.kernel.org>; Fri, 28 Feb 2025 09:10:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740733689; cv=none; b=j/J7w2nbAQv8L3qXHhE0iEUZVqCLfNbgdJkRuJIAXjiIimeKhdk0vmft9YrN42sk5ICA8Ga2oaEEyFk5fxFyLEhwLXU9hUvA/6p3sN9+ciq9jcEhRPr/nrRsjUd/aUDh7w7NNrKsRJU31GHM7OasPGUD419VwCh+AQz6n25bgVo=
+	t=1740733852; cv=none; b=BkPfP9H5lwetRepaAeZZtgHBk6HJaCByuj7LLCFHG/glE8b3/45BeCpl1zm6kKTTjNHvPpxAlHLu6pudn6NkAew4QNXQsjNNLRWNxAeW7H2UPNanF2yb4W98suILOnuHDvwqdLw/hQqTWeB/ev2+CNuMkm3a3wGbh+HXaayLnko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740733689; c=relaxed/simple;
-	bh=B8Nw0Zg5POwoCggGay7I0k6JTFuZ0SJhXyxKpcrWTp4=;
+	s=arc-20240116; t=1740733852; c=relaxed/simple;
+	bh=B+KZR9U+QNu7SUxJ+i8T3VOmdEx/39PbN2GtIhllJPc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=vCRd78rbgLXESSoB1K1q/UNZoH/quEU9Yb78eWTWtz1zQiyvZcOnqNsdzv9GPYt9H6p+ZKNYzwooZwG6EEvV1mlUH1zCk9yruIfuA4zmm4Lg3LzW+JUNexHU7AHqlSNJ5MLMjEXmFYTaYKZV7vOFsOyJDuSZNoi0g06LNvs+T80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2QEyuBrn; arc=none smtp.client-ip=209.85.221.42
+	 To:Cc:Content-Type; b=pXtQPyB/ID6YWRpgButdzpZAdm3Uf46o510sTILfgewG4KKyVa5sdO8lWN9Ve7916u2W6TBdNWgLCJxhityjfv8TzSQfjLzWr2LmYSS7jdBheXrrhUQY/ATNBT6hHGm49iGNwNPoSbvJb5Li6LSVYCA4+nJPWtN10XY56BjPb1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YrdBKK1G; arc=none smtp.client-ip=209.85.221.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2QEyuBrn"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-38a25d4b9d4so1116723f8f.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 28 Feb 2025 01:08:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YrdBKK1G"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-388cae9eb9fso1017477f8f.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 28 Feb 2025 01:10:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740733686; x=1741338486; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1740733848; x=1741338648; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=B8Nw0Zg5POwoCggGay7I0k6JTFuZ0SJhXyxKpcrWTp4=;
-        b=2QEyuBrnSCQAu75DDn2+0WE4quBBci3oPWsUTTG/QtfYsumSE7EuBJeTGNopqoFFxV
-         a72JovdUrDVQfzWoMRn08th66tQcRLkQtss0QeJjMus6HGKhSDuNnUiIjNeYhX5pQNZo
-         7z1lt+acdkwa+KZaSqEotZpePf6O9uZh2RCuVOVdUB9TNX9ncX30JK01C3JYhG2fFxvt
-         eEm12NUbw5xohEocH8l9+DQ+qZyz3r8Xd57W/AX87MgiPUsP8qwoZW/tSh79BGhZmEnz
-         nSPurF7xDrpk5qu6ztD239Y0xWxV2ep/pHtyZzTaLrKkPxRY75pL/wF0m/IAVC7cF/Jl
-         Y94g==
+        bh=B+KZR9U+QNu7SUxJ+i8T3VOmdEx/39PbN2GtIhllJPc=;
+        b=YrdBKK1Gc8taDPwF3BXslAm+4RyH1VD/8Y4MpBK18oEBxGYhAXV32Ixzwr979xnnfI
+         X1XGf3igKoEAUZ5I11awrSNmbn9bMboYqs/4vY2FUouqYIK5LXuc9954EGcBDr4kUCM6
+         6nDnFZ0Ni/nhoP43QfIWAki9ebSSxrz2lxV3yTxi0uvYPNdaYV8dZE9u9bFMzf3yhOtM
+         bJuhBoR2FxtP13b6TuvKo9l5x3yseZ2Lsz9Q8hsudHLRgc1alY9ZJ+OMfNUTfc80/2az
+         Q3reEXuXNt3ed9ugMzBGI4WxzZFZiS6qQn7K8Ds4IzXmvSQJSvAeRCM16zpPDwKkO/a5
+         WbLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740733686; x=1741338486;
+        d=1e100.net; s=20230601; t=1740733848; x=1741338648;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=B8Nw0Zg5POwoCggGay7I0k6JTFuZ0SJhXyxKpcrWTp4=;
-        b=riPobmFdPjepFD8YN/hnfQnNFuif/PMfSVfgOx04AgWoq5xra5WGiL6XlEBEItH7y+
-         nnOmJQeCcsSAQgepisJO9FCfJ2I4XpaKc292wNB0o+rgDC7IW8rHjgHvZD5CAFOeNDGb
-         yh7HhEbJ8q/wYtlOHDcG3uci/TDmQEnw9cid1IhGJtvaQuR6KZ64CY2kYRQhgosv22Cz
-         5qJMcV9Z/oB4gUOMG/POUlu9NkQXCvj7DWAETHOLwDfklSj4XHr17MhsjbMtMddiy9m6
-         Aqv65nrqLgxR3SxxMpX6DOv/E+HRsLJJPD6KIAv/Y52iuKdT5+Ijb3bIUOzGClRkiZzA
-         firw==
-X-Gm-Message-State: AOJu0Yz1csFkEx7KVvm4UTur4Qa+3gvcSYdW2JSUrfmeQBnfSPjAI9qu
-	pDzrPEPXbb9Dace65b6lA/g52NX9JL/MOH4zongwZ8+cGbEZrOETIqe+iey0utwLntT/uoxKYtB
-	w/wA1cBMu3QwVD+80QjL2uYDeR0Trjf8/ZPwF
-X-Gm-Gg: ASbGncuuycg4MCxKja8dFa70DRHz4/Mg1Owt62afVS5WG2XfxRwZtCRRguZ4rqsmVBD
-	arNqpsmRZr2kDzc6pDS5C7i1NxwPpVuA6rbcyRWZuFjRtul1h1CftX44h5Hh4OhR1Rh4Z82SrwV
-	vj9jseOtSo2HCLGgatr6f8W2BU02NUBuSk7e3V
-X-Google-Smtp-Source: AGHT+IE80qC3ASXZ1RmhTrY39qoKGqVIZ7x7t8hAZgq1bGKdO/fbDuqOX/rULKVYWxaD9Nc/GWhFTtikbAUeJs9LE3w=
-X-Received: by 2002:a5d:64c7:0:b0:38d:e61a:bc7 with SMTP id
- ffacd0b85a97d-390eca204fbmr2206828f8f.40.1740733685688; Fri, 28 Feb 2025
- 01:08:05 -0800 (PST)
+        bh=B+KZR9U+QNu7SUxJ+i8T3VOmdEx/39PbN2GtIhllJPc=;
+        b=SaIux6L+dyOaZJWk0jRoITvkDCfjetxqDiyvwzdb5W6ecbYI2Ks3ANKnh0CNqMm7nc
+         JEZrr6SqhzD0W1J2juTAPCOftWtirXV/2caGUMxeQvPC1uIMlDLZHBqYugHN5SRwfftv
+         4t9R2IO2YCu4mDk70mtaZFSo1Fg7Lutzm4dhCNhGHndbBP0iY2wkjreB5ovpVKTPGvE+
+         kTPA+fatyi0eS6Ik2S+cMbGnbBpfWl6T/nq3a3vLCLBQGB7WohEXJG+pF/Kr17bo/M/f
+         8XtTgOgOXlDLggYqnQR3O7A6GLV5FHCLcweFzC5oCg04PEZTxhNowtTuECr6cZq3BnGi
+         cSnA==
+X-Forwarded-Encrypted: i=1; AJvYcCWJV4Hq2sJdisyKci++OR5ddi0TzqBm7i9VY2VR8I3oIiSXa7M/kBx3yN4X8t4eio3WtnRPx37mF5tlgAXrgA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyyua0QGkIom7a5uaEFIeF8TdPnb4X8MRStWtupHvskpZ2K8q2B
+	R+QNlQktwoWFNUBR2eC4P1t4wEGZWf4uT4PQTRhnwdvWSe4vSYUjEA/hu/8ukVHsN+fW+tAWkk/
+	99wumgSfJ3UGx1F4DIn+x1kLNyTF8QJWrswhp
+X-Gm-Gg: ASbGncsaeV0WU0frOlsZUJN2rKWYP7UB8zK2cDhDQF2G6dT8DQc0Aam0mJth9LFmByJ
+	70mf1nNYsf8dRWH5iaf53McvEXqBcAz3n0X+B8NAV1gEoVigOWWrpznYNCnlcyUsTDPfMhAtiDS
+	XGUE14hfLILCDKnnMCYSpbdLOlywizgImU0KxW
+X-Google-Smtp-Source: AGHT+IERGpvzIDS0sWelP51+WNxcT7yjVOKO5ZFHLOo3Y6uovfZdy2A/BnsEEhMwf3nYmys4gVtLG8EpMJrjOz8W398=
+X-Received: by 2002:a05:6000:4029:b0:38f:2726:bc0e with SMTP id
+ ffacd0b85a97d-390eca138d2mr2034057f8f.44.1740733847661; Fri, 28 Feb 2025
+ 01:10:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250227193522.198344-1-lyude@redhat.com>
-In-Reply-To: <20250227193522.198344-1-lyude@redhat.com>
+References: <20250227-module-params-v3-v8-0-ceeee85d9347@kernel.org> <20250227-module-params-v3-v8-2-ceeee85d9347@kernel.org>
+In-Reply-To: <20250227-module-params-v3-v8-2-ceeee85d9347@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 28 Feb 2025 10:07:54 +0100
-X-Gm-Features: AQ5f1JqnoJIDiLqVA7PEKKcyNm4ciCBp4S5KCEfAVq2GSvT2nGYfPum-JBNWBUE
-Message-ID: <CAH5fLghbJL=WVD0WFeRJMddfMQQUe2+xtLtenb-Ok7hSjCWq0A@mail.gmail.com>
-Subject: Re: [PATCH v2] rust/faux: Add missing parent argument to Registration::new()
-To: Lyude Paul <lyude@redhat.com>
-Cc: rust-for-linux@vger.kernel.org, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?TWHDrXJhIENhbmFs?= <mairacanal@riseup.net>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, open list <linux-kernel@vger.kernel.org>
+Date: Fri, 28 Feb 2025 10:10:36 +0100
+X-Gm-Features: AQ5f1JqSvSbT0FH7s_hhnc_jNCyh2EVcbOEFqp5yXZR56yXssuri7XnydNHPcvw
+Message-ID: <CAH5fLghKoWQqOC8jRES_ZdSg_PJHd22bQWngaQ4fRHJPHYLB6Q@mail.gmail.com>
+Subject: Re: [PATCH v8 2/7] rust: str: implement `Index` for `BStr`
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Adam Bratschi-Kaye <ark.email@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, 
+	Daniel Gomez <da.gomez@samsung.com>, Simona Vetter <simona.vetter@ffwll.ch>, 
+	Greg KH <gregkh@linuxfoundation.org>, Fiona Behrens <me@kloenk.dev>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, linux-modules@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 27, 2025 at 8:35=E2=80=AFPM Lyude Paul <lyude@redhat.com> wrote=
-:
+On Thu, Feb 27, 2025 at 3:39=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
+.org> wrote:
 >
-> A little late in the review of the faux device interface, we added the
-> ability to specify a parent device when creating new faux devices - but
-> this never got ported over to the rust bindings. So, let's add the missin=
-g
-> argument now so we don't have to convert other users later down the line.
+> The `Index` implementation on `BStr` was lost when we switched `BStr` fro=
+m
+> a type alias of `[u8]` to a newtype. Add back `Index` by implementing
+> `Index` for `BStr` when `Index` would be implemented for `[u8]`.
 >
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Reviewed-by: Fiona Behrens <me@kloenk.dev>
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
