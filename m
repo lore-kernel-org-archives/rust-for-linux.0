@@ -1,72 +1,72 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD9B25E471;
-	Fri, 28 Feb 2025 13:12:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073B31D555
+	for <rust-for-linux@vger.kernel.org>; Fri, 28 Feb 2025 13:17:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740748365; cv=none; b=qpcjkLw9r3/x3PimjU7bzVr0iTL7D49bE637OqZQmpbKNRF9jWJKQ2E9h6fCReiW2IvjXWfC5RHwhz6cB25G1RGZonOvrKaAF59+cyClq2/SLu9ZIEmOlZp3kYze+Xz4E5g/PoduqQcU43Lj9QQpW7mVZ/8lBYKgNvg9xJ42syw=
+	t=1740748637; cv=none; b=levkqNtafu1WcIoFQ+vU3ShZwo0cz7G0D1PEJKDXLjC/FwP5je/jn6uyVvmd/lb0kQdYWia/ifF+tprECPEpg0foVcnak48N5lDZ5Qo1f95n3xA2ip7+wxxaq5dPgnQdNqgBvkRtpY1vWvKaHBokp0nZztsfPaSX5Q2XQZla2A0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740748365; c=relaxed/simple;
-	bh=nXmtv+J4S7bQAMBAoPK1RMVxgJfj8doXZXp0teFL1AA=;
+	s=arc-20240116; t=1740748637; c=relaxed/simple;
+	bh=EQt/g6AXhlJBrY+vlKuQdxieohPKDQQP1es2fhl6snw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e+ske4DNAZZB1aCve+sp+5UAtW+ap+fB5REWzsBFKeuM1DWj7guZHTUVu1gwZzmmRiDpYCxdEfO/ttdcBK5wzYDcKUdNY0oxHSahTd7I6werMi3lNaD9lccoZktKNa9PEy5AbfTI6F1BdSYSGQZrhw5GUNeo/K1Vti5mBCzXipU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sbz+Cpkq; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=uGq6VgujfFFcO/BipJ9nehIgJjVW00KpEaLPD+3pOAsgwo3Dm8lxUIv/8RGlah10tWKPs1V0TWuoRWNKPUvTMKc5fdq12+3mUEQ/B0yVtQeuHE9uBDGgfSZiKyqbkCtMxfR4K0RhJB8Kl4xXc6nex1L+X6S0bG7DaGX2zMfsQo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zgLNMzOP; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sbz+Cpkq"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2fe8f6a4bfaso545094a91.0;
-        Fri, 28 Feb 2025 05:12:43 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zgLNMzOP"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-390e3b3d432so1452647f8f.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 28 Feb 2025 05:17:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740748363; x=1741353163; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1740748634; x=1741353434; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+lEhshDUI6cMzkH2vuUVTw0jZ5RYXsJu3sUaobJASwM=;
-        b=Sbz+Cpkq5p/7VqQ9V6vx9Vk81BA7ZiMV1q+VdYxtFk/1PB4aDyxwvaouI1crRRLn45
-         LvAO1axu67gjNuDUcLi3jiUVaCJjcp4tiXiKCvtc6OAMGXeuBkKdbnvdif4BO6x+9PmS
-         Tx1ISisO/JaUj6Ulcz62QNBY4M7VFXMOfa4NewTuJo7LZtBOEd4ep2tkGrSmeVERYCIJ
-         +wSEXMceL0DrFDoIum89VLtpEKaEDageliEezPQcP7fxVn0inATCrhkuDkvBxlbZ0Yvx
-         L32m2VjASvQYbjYcg6Gs8/51hy1Q2UICn4Zk6lC+97wmgWAHjGQKYOMwxj/aEuJWGsxd
-         ducg==
+        bh=z74qB8i0rvA9VyRTivjkgYMWcLCNlIOQtcyUnYqz2Kk=;
+        b=zgLNMzOP6l5t94jPVJsxfHmzm0BXMnG5wiVlIfFeQY+lqsF1+U++pKCFAREhYazr9+
+         ZFIYg8ZF12HnPEk+Fy2Uylo1ZXJIda14sN03U8j9u4zzoiOvoBD1Sbazouyrnd5RwbVY
+         86hxvVUzPQ9hXXFiEsm2KbeRWGkadmPgG04nUrhuHaTt9KMsdCAMQR7w6ks4x9Z3hkEO
+         6qNnMGW+zUhhM4mjIkA6cvHTQc5HS7lowzMl81rDxPvlBBD+0qK0MsID/n1I3uqkHCXo
+         hQerMAVtokZLr+PKw0VXnuKQI6SsW+d+KlaMZkO6mYEaZfFQoA6Y39X1LcpIt1pt5JXd
+         AE3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740748363; x=1741353163;
+        d=1e100.net; s=20230601; t=1740748634; x=1741353434;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+lEhshDUI6cMzkH2vuUVTw0jZ5RYXsJu3sUaobJASwM=;
-        b=YG1GzgqUhQ90axpu0R9wSRWqTEV5am9LEspEc03602YbjwbZcTYRmaKQYdRKf0gOPx
-         0qZ6N/WSFO5GWAPCVKUxAlGnhWOUTR2Kv4kRhURyOgDyQaeSS6nAqE60E/o0NQo6IfkY
-         TnW4J8JwDEtdooS4kWtH2Q9kAWQ1it4fI6VlNfQuHRFfIwf06dzNAgUWj+1qZfaC5eaS
-         lkrnSvhTo+3rcb8kOJ0PRlKN0Ta6/69GXdVKar8eOQkEqTScIKljSaASVnXNjwgLpKpF
-         YXjaehDbaOB19n4JnFig7mwvQAY+Xd81I8r6B/mWo7boIDPvwvOCAEhH0yh3s2OF4G4m
-         QvVg==
-X-Forwarded-Encrypted: i=1; AJvYcCW4M5qbb+vjBQpcAk6q7D1yWxh2X/P2qkXevekgH8yfcMG3cXqumJLCjlBWiKF+9FMRYVu4KMa7JVxOQDQ=@vger.kernel.org, AJvYcCXyg5kf/Mk5T5UW9OHwSncfP/REUdL51vF/MhE61rVRRF9VMW6GWc9f8SCTdfgd0pC9wHU0TrsVx6RqgSsZYAc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyl43d/bv1mqmT8nI0hP15QzAMCqBAOzWrpdpX1XIPxUPVNQ/aH
-	EYemodBgMCukBmKEb+5TNBXWRuH7WRKEw7JEIhA1GJqn6wHfJbtLMFqGTnXsHAP6VES0d3BT0BV
-	qb16Pspgk75y/oVPNieBU1Y7c4Rk=
-X-Gm-Gg: ASbGncsa6Km1+Ch88IsWS/C/gK1G835817m3A6qX0j6nhFW5Cdo8Z9FwkIb5bsdm2P0
-	+YW/59KGQzs/cBPcrDD5JWOuwysyyIA/+mQTy2d2F6Z163/w/OubdlD9aJXOAMOk/qwvAbC1fwO
-	r+TaQwJdY=
-X-Google-Smtp-Source: AGHT+IEhS4xLYJxs0tfqZh7dD8ek8r0CNJu2W2YtU4k5T4cl+cb59zgxrobehVGCWco+FGq9vu4kk8irqhSm2Az83bo=
-X-Received: by 2002:a17:90b:4b52:b0:2fe:b77a:2eba with SMTP id
- 98e67ed59e1d1-2febab1b41emr2144826a91.1.1740748363008; Fri, 28 Feb 2025
- 05:12:43 -0800 (PST)
+        bh=z74qB8i0rvA9VyRTivjkgYMWcLCNlIOQtcyUnYqz2Kk=;
+        b=MQXKgJtDgsFHStP9wrObMudBVxf74wIifJkuS345AW7eLdFE52c24tQjh0xVFyoa1d
+         sYWDjDFTjXX1CXfpcJ0227UIbd8KnfWd9/kRa5OE/JGFg6JzqJ04GiKFJpvkJxDRmAmd
+         GTPlQ+8fKjyjMhcQWj9fSXoWIMrw5uffvs/tRwGaJ4dfE5JqQGibzvQBMUgJBbUQuxyQ
+         rLaK0ZENaH4GIeKvy4dN8rj50X54Mn14JjGoVuODatHSZ4oju1PhUNC0Tcf2ISEcUH29
+         vTYs7tLK34LpenWgGvzZpXBThC5sCjpbk2XMSCDiaEI8D6yD1YhMAR9y8FT7MrxvlMUw
+         dMKw==
+X-Forwarded-Encrypted: i=1; AJvYcCUy1DbflUe+hOTjxeBORBCzisMKMaR9P7oEHoHn22lXv2W1JH8VIoIGr0qOybNoMaviMW3MAA3DPJqzOzdAEw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKmKxJrFzGUNgZaM15mFVTTPm6MVEIEK/8Ydjjhp58C4A0Mpz9
+	7j4b/jOJYOwaVhWHBjH+iRF0HC/9rTi+qOPdgwHQ2q0vqdiGNElh6BYG8zQzF4AvZs4Gn9WKv0B
+	a1iZ0U4+fkIHn+V4JdAInhed+gyuzW/NQm6jz
+X-Gm-Gg: ASbGncvaRtCOpwt2kGmNzZYYAKsbBnFiPb1fQgGrVX/twcWkvDG0mXTuLS12jse/YuW
+	4uv3dd220qV7jq+qfrFTGXMh+5CThYjgPmy3/2rfaQ6FbF6jZcWTTR0eZHKEJGdcSk3i4gXQT3G
+	LgEpcpjDvc1trMeNQlEFi7NOCL1pTSbZMSdIBtuw==
+X-Google-Smtp-Source: AGHT+IEWGx/WwYtfUYQZ979bVUDfjNZK1fjqNbS7i6AAh1HtcGFLDExsO/1IMIidMX2d20ad5heqFWsZlYme6TiA82o=
+X-Received: by 2002:a05:6000:18a3:b0:38f:516b:5429 with SMTP id
+ ffacd0b85a97d-390ec7d2722mr3114115f8f.25.1740748634158; Fri, 28 Feb 2025
+ 05:17:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250228-export-macro-v2-0-569cc7e8926c@google.com>
-In-Reply-To: <20250228-export-macro-v2-0-569cc7e8926c@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 28 Feb 2025 14:12:30 +0100
-X-Gm-Features: AQ5f1Jofrhmkb20pE5YuI-Rw9tp0sSCSTCQfns7NlNn-tLweA7S6JcR9oIKl8uQ
-Message-ID: <CANiq72mF46p7f=G8WsnajwZfg--wTNESp7xQEsWUaiumOyfW5w@mail.gmail.com>
+References: <20250228-export-macro-v2-0-569cc7e8926c@google.com> <CANiq72mF46p7f=G8WsnajwZfg--wTNESp7xQEsWUaiumOyfW5w@mail.gmail.com>
+In-Reply-To: <CANiq72mF46p7f=G8WsnajwZfg--wTNESp7xQEsWUaiumOyfW5w@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 28 Feb 2025 14:17:02 +0100
+X-Gm-Features: AQ5f1JrjOiLJdIMtVt0XIg52XCAYwVyxmrWrAy5Rs4benpI1u1UEF0yyTG-Vs2Y
+Message-ID: <CAH5fLgj0CHpUW=-Os4gMqJxyoCAg8izFG9Q47DLt1cOJi9m4tQ@mail.gmail.com>
 Subject: Re: [PATCH v2 0/5] Check Rust signatures at compile time
-To: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
 	Petr Mladek <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
@@ -81,18 +81,23 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 28, 2025 at 1:40=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
+On Fri, Feb 28, 2025 at 2:12=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> This is because cbindgen assumes a
-> cargo-based buildsystem, so it is not compatible with the kernel's build
-> system.
+> On Fri, Feb 28, 2025 at 1:40=E2=80=AFPM Alice Ryhl <aliceryhl@google.com>=
+ wrote:
+> >
+> > This is because cbindgen assumes a
+> > cargo-based buildsystem, so it is not compatible with the kernel's buil=
+d
+> > system.
+>
+> I don't think this is true (checking is already a very good
+> justification, so we don't need this to justify the series):
+>
+>     https://lore.kernel.org/rust-for-linux/CANiq72mHVbnmA_G1Fx3rz06RXA+=
+=3DK5ERoWKjH-UDJ9cKxvKQ1g@mail.gmail.com/
 
-I don't think this is true (checking is already a very good
-justification, so we don't need this to justify the series):
+Huh, I thought for sure it did.
 
-    https://lore.kernel.org/rust-for-linux/CANiq72mHVbnmA_G1Fx3rz06RXA+=3DK=
-5ERoWKjH-UDJ9cKxvKQ1g@mail.gmail.com/
-
-Cheers,
-Miguel
+Alice
