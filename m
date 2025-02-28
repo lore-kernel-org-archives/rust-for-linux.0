@@ -1,55 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1D1267F64;
-	Fri, 28 Feb 2025 10:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC0725BAD0;
+	Fri, 28 Feb 2025 10:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740736893; cv=none; b=qTLhNlxfmWX38NO/exmsFE8my4xO1WZ8Q4aRjyH9XtQBc/3sSbY0Y7n3j/RcegKUhh2XbrUYMw7su0c7NZ98FKQLN39srat0iMalS0rQmfYNVdH2KgPpViYXuwj9OFz3G74bBIE3TuWZoWIaeFUTwFrPeJQwfmQBsAKo/Bb/Wps=
+	t=1740737539; cv=none; b=kIGCS80sChxFsNBegY9VBiNh8fWRzG/onippuruyEJDyQSc7W4zpRyeodNjOMzOC3Ims3EUpqW7Pn+whPh4fQ0ov0YZveqYiNlCU7juaIDzxydJg4Cb+3w7ma4r3I+6emShikP84W4t05Huc0P7Rnj+pVbe0WhE6QR1ya9xw634=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740736893; c=relaxed/simple;
-	bh=3ixW/Qr94W9OYIgrJTGB6BVvyrepGcSodMz6xnfcDhI=;
+	s=arc-20240116; t=1740737539; c=relaxed/simple;
+	bh=5nmhdVmkJjvM0GzyzeQCzlweufADquCQbW0TIn6T4pQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qMXHwg1m1fMpy5BtD2+BJeFbiH/p4CkwTG6NoMaRYdIhRFEt97IwSmxoopcXZ8njV+7ByaYluiVwnhIKcQdFNm6eBDL33ASnIbhp1OjbNagrB4DHcnhtwT68mnnqgHjkgyKupVF+WjuRtYc/8ubHMCsQa5n6uhiUjX/OZmwgvEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AQWr7ab1; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=kNMt7iXjUVlDft/X+Xcn3x+M1wBvX3KGCtjhfYzkClt0CUnxCUm3qR2KzgHLvPVeaJpS6msrvBJ1Y3Yra8JquPXxatjnxmjkg/DBlcffnvTxI+5BECWnBE3cbgbC0EleVu/q8TfCBE+Z5C/lYBlyIMajyoVZ5d8rWu/D99iR6O4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h6pLw8qU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AQWr7ab1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E78FCC4CEE7;
-	Fri, 28 Feb 2025 10:01:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h6pLw8qU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35AC6C4CEE5;
+	Fri, 28 Feb 2025 10:12:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740736892;
-	bh=3ixW/Qr94W9OYIgrJTGB6BVvyrepGcSodMz6xnfcDhI=;
+	s=k20201202; t=1740737539;
+	bh=5nmhdVmkJjvM0GzyzeQCzlweufADquCQbW0TIn6T4pQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AQWr7ab1MbrNOu8p5qRki7wqakEdymxwtsblN5kordtQQZQ8/oT7bD+aVuI6M/tW6
-	 bmN42maG5R/qiq8eXaeWsZs2SCcxUvgnq07FqzQV98B3Cn+Q0+X/kdEd5Xd87zoxWi
-	 /2u6L/6Wz70mu+VxCYidTTtWRTgUDy++HlPbyIB/LjDdAL9BG/VxJyHxYzzhhPLDLa
-	 s0tbPHT+oE9jM/i96a82e61U3F82BQlcuwmmpy8boyGEqutMzzxVLiOVcys8pLhrFB
-	 dmkkldn4VAl6orDK0CoASdhhRT3ta1rv120G9YPLpf5Iqm5anqYD2vvkU4ZTft2dt8
-	 J9lyGZjnWbZDw==
-Date: Fri, 28 Feb 2025 11:01:26 +0100
+	b=h6pLw8qUfvQNslHWoxqE871PS+g//RhNm0OCSFXfJLGLoZlg2fh++rA7JwM6nK0BO
+	 aK95rQ3IJwmaC+JaL1HeeYCMPozOfSUxUPD+Eb7JseclvznzxhUflHDWuq5QpDPxbI
+	 zrf1UFjGnYDygGK1SXrOaqlsYJUssPK91ox5aNq7DmaLRHIbjlvtNS1rEbsus9QIg1
+	 CBjDr7t9c3/Ii4uwlm/gqOqZ+oTPMLKU+QGbmwhtCRlhdvwSqNP1+6aXaY69AiWaN6
+	 X7G2cuoaUSES++DWBy/V2bO2CWE4Zml3gF1aXh2aQfsyltt28Y6l0K8SYjwM1X5Qch
+	 oWoVmCsICHKpw==
+Date: Fri, 28 Feb 2025 11:12:10 +0100
 From: Danilo Krummrich <dakr@kernel.org>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>, aliceryhl@google.com,
-	robin.murphy@arm.com, daniel.almeida@collabora.com,
-	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	linux-kernel@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
-	iommu@lists.linux.dev
-Subject: Re: [PATCH v12 2/3] rust: add dma coherent allocator abstraction.
-Message-ID: <Z8GJduPzVBZ7ugWv@pollux>
-References: <20250224115007.2072043-1-abdiel.janulgue@gmail.com>
- <k3GMnfXzzvUVOgSnuMlEq3eVRyq1qjcf_tDtILRbOwj08EIQpwQ4bGtGhwWufr8lUn-VlHnNjP8FxIA48Jv-Ug==@protonmail.internalid>
- <20250224115007.2072043-3-abdiel.janulgue@gmail.com>
- <87seo3z9qr.fsf@kernel.org>
- <6f154af8-6379-4b1f-9e30-2b99f7f736dd@gmail.com>
- <D83XWBJ9U50G.1BIIYOMMFUIAJ@nvidia.com>
+To: Alistair Popple <apopple@nvidia.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	tmgross@umich.edu, a.hindborg@samsung.com, aliceryhl@google.com,
+	airlied@gmail.com, fujita.tomonori@gmail.com, lina@asahilina.net,
+	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
+	robh@kernel.org, daniel.almeida@collabora.com, saravanak@google.com,
+	dirk.behme@de.bosch.com, j@jannau.net, fabien.parent@linaro.org,
+	chrisi.schrefl@gmail.com, paulmck@kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
+	rcu@vger.kernel.org
+Subject: Re: [PATCH v7 07/16] rust: add `io::{Io, IoRaw}` base types
+Message-ID: <Z8GL-plbtphS62hl@pollux>
+References: <20241219170425.12036-1-dakr@kernel.org>
+ <20241219170425.12036-8-dakr@kernel.org>
+ <g63h5f3zowy375yutftautqhurflahq3o5nmujbr274c5d7u7u@j5cbqi5aba6k>
+ <CANiq72=gZhG8MOCqPi8F0yp3WR1oW77V+MXdLP=RK_R2Jzg-cw@mail.gmail.com>
+ <wnzq3vlgawjdchjck7nzwlzmm5qbmactwlhtj44ak7s7kefphd@m7emgjnmnkjn>
+ <Z72jw3TYJHm7N242@pollux>
+ <nlngenb6udempavyevw62qvdzuo7jr4m5mt4fwvznza347vicl@ynn4c5lojoub>
+ <Z8A4E_AyDlSUT5Bq@pollux>
+ <w2udn7qfzcvncghilcwaz4qc6rv2si3dqpjcs2wrbvits3b44k@parw3mnusbuf>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -58,46 +61,41 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <D83XWBJ9U50G.1BIIYOMMFUIAJ@nvidia.com>
+In-Reply-To: <w2udn7qfzcvncghilcwaz4qc6rv2si3dqpjcs2wrbvits3b44k@parw3mnusbuf>
 
-On Fri, Feb 28, 2025 at 05:35:26PM +0900, Alexandre Courbot wrote:
-> On Tue Feb 25, 2025 at 1:27 AM JST, Abdiel Janulgue wrote:
-> >
-> > On 24/02/2025 16:40, Andreas Hindborg wrote:
-> >> "Abdiel Janulgue" <abdiel.janulgue@gmail.com> writes:
-> >> 
-> >> [...]
-> >> 
-> >>> +/// Inform the kernel about the device's DMA addressing capabilities. This will set the mask for
-> >>> +/// both streaming and coherent APIs together.
-> >>> +pub fn dma_set_mask_and_coherent(dev: &Device, mask: u64) -> i32 {
-> >>> +    // SAFETY: device pointer is guaranteed as valid by invariant on `Device`.
-> >>> +    unsafe { bindings::dma_set_mask_and_coherent(dev.as_raw(), mask) }
-> >>> +}
-> >>> +
-> >>> +/// Same as `dma_set_mask_and_coherent`, but set the mask only for streaming mappings.
-> >>> +pub fn dma_set_mask(dev: &Device, mask: u64) -> i32 {
-> >>> +    // SAFETY: device pointer is guaranteed as valid by invariant on `Device`.
-> >>> +    unsafe { bindings::dma_set_mask(dev.as_raw(), mask) }
-> >>> +}
-> >> 
-> >> Sorry if it was asked before, I am late to the party. But would it make
-> >> sense to put these to functions on `Device` and make them take `&self`.
-> >
-> > Thanks for checking this. The API is about the dma addressing 
-> > capabalities of the device, my thoughts would be to group them with the 
-> > rest of the dma API? But either way, I don't have a strong preference. 
-> > I'll let others comment.
+On Fri, Feb 28, 2025 at 04:29:04PM +1100, Alistair Popple wrote:
+> On Thu, Feb 27, 2025 at 11:01:55AM +0100, Danilo Krummrich wrote:
+> > On Thu, Feb 27, 2025 at 11:25:55AM +1100, Alistair Popple wrote:
 > 
-> FWIW I was about to make the same comment as Andreas. The mask is set on
-> a Device, it should thus be part of its implementation.
+> > > To be honest I don't really understand the utility here because the compile-time
+> > > check can't be a definitive check. You're always going to have to fallback to
+> > > a run-time check because at least for PCI (and likely others) you can't know
+> > > for at compile time if the IO region is big enough or matches the compile-time
+> > > constraint.
+> > 
+> > That's not true, let me explain.
+> > 
+> > When you write a driver, you absolutely have to know the register layout. This
+> > means that you also know what the minimum PCI bar size has to be for your driver
+> > to work. If it would be smaller than what your driver expects, it can't function
+> > anyways. In Rust we make use of this fact.
+> > 
+> > When you map  a PCI bar through `pdev.iomap_region_sized` you pass in a const
+> > generic (`SIZE`) representing the *expected* PCI bar size. This can indeed fail
+> > on run-time, but that's fine, as mentioned, if the bar is smaller than what your
+> > driver expect, it's useless anyways.
+> > 
+> > If the call succeeds, it means that the actual PCI bar size is greater or equal
+> > to `SIZE`. Since `SIZE` is known at compile time all subsequent I/O operations
+> > can be boundary checked against `SIZE` at compile time, which additionally makes
+> > the call infallible. This works for most I/O operations drivers do.
+> 
+> Argh! That's the piece I was missing - that this makes the IO call infallible
+> and thus removes the need to write run-time error handling code. Sadly of course
+> that's not actually true, because I/O operations can always fail for reasons
+> other than what can be checked at compile time (eg. in particular PCI devices
+> can fall off the bus and return all 0xF's). But I guess existing drivers don't
+> really handle those cases either.
 
-Yes, this should be Device methods. Please also add them in a separate commit.
-
-> You can still
-> keep them with the rest of the DMA API in this file by just adding an
-> `impl Device` block here - since Device resides in the same crate, it is
-> allowed.
-
-Eventually, the build system will support to move rust code to the corresponding
-subsystem entires in separate crates.
+We handle this case too by giving out a Devres<pci::Bar> rather than just a
+pci::Bar. The former gets revoked when the device falls off the bus.
