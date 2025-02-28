@@ -1,111 +1,98 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00404690;
-	Fri, 28 Feb 2025 12:46:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD9B25E471;
+	Fri, 28 Feb 2025 13:12:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740746769; cv=none; b=niF/+3hAuC8D+LPu7tHjwNJ8bxGGBJXuPuQc370DSRzA7AFqE7g/wdDhVcgnxRpuqpEHaPbfBQU6t07AIWQFkze47XiVJyq1kvqGPTBtGqGsle0lMf6j+vxyBI/9d2BUgWFe1jSsjKjX3U2UaXKq18xJbkjUQsx9KmRf/+xuTNE=
+	t=1740748365; cv=none; b=qpcjkLw9r3/x3PimjU7bzVr0iTL7D49bE637OqZQmpbKNRF9jWJKQ2E9h6fCReiW2IvjXWfC5RHwhz6cB25G1RGZonOvrKaAF59+cyClq2/SLu9ZIEmOlZp3kYze+Xz4E5g/PoduqQcU43Lj9QQpW7mVZ/8lBYKgNvg9xJ42syw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740746769; c=relaxed/simple;
-	bh=4CzUfTOzdBr2io5qs/wvZvi9xQM74P30+0gBffCsVmo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OYbdzbElrZSlVCP5EmZBOJ0HW2kb3UOxDbR56wSF4RyufPrcYJZF9sEIT0JxoQOzcJTjOY9xKuU+0MNiLBSMf2pJsgOz6xU9Ak+GsWavr2VERywcacAROcwqIXW9XsKxFu+FvEOBMydphAOUI04Uk9BbSMLzZ1XYSyONLQqnYQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QOBr6WgY; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1740748365; c=relaxed/simple;
+	bh=nXmtv+J4S7bQAMBAoPK1RMVxgJfj8doXZXp0teFL1AA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=e+ske4DNAZZB1aCve+sp+5UAtW+ap+fB5REWzsBFKeuM1DWj7guZHTUVu1gwZzmmRiDpYCxdEfO/ttdcBK5wzYDcKUdNY0oxHSahTd7I6werMi3lNaD9lccoZktKNa9PEy5AbfTI6F1BdSYSGQZrhw5GUNeo/K1Vti5mBCzXipU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sbz+Cpkq; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QOBr6WgY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740746764; x=1772282764;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=4CzUfTOzdBr2io5qs/wvZvi9xQM74P30+0gBffCsVmo=;
-  b=QOBr6WgYgtv/q5fHT0r34AN/l0DEoZvRtGQct9B/38g9/AMAFoXjOfSi
-   1RlHsfaLwLru89y9iEpOEkZ2YZ0zQspwmCkNvuWDdsBt3dlMR028cGgVT
-   fLCHmpf00FvvnDS6Y5wkLhqmengD+uqHzQKSop9RRg3ba3cZe4NYAV6jm
-   /Jc6ccg3XvOjrSK3NZCEJzLPERQVF4ASUt/sd/W9T0nqAM++5dgjTq/rH
-   h6BKigEpuFV5J3ss2uhIpfQN6JK0M8PwwbIop/yta2AVbVvabH1i+IluL
-   2LESvPRSXk2vYOsBNkTAO3sRgdUJ4D7LYWJYE9WiWNU3Sm7XPEB3J6XSJ
-   Q==;
-X-CSE-ConnectionGUID: rF/kgQ6bSgqyTHHUhk4rGg==
-X-CSE-MsgGUID: P3KH+ogiR/efCKlDjD3kfA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11359"; a="52317301"
-X-IronPort-AV: E=Sophos;i="6.13,322,1732608000"; 
-   d="scan'208";a="52317301"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2025 04:46:02 -0800
-X-CSE-ConnectionGUID: ajGdwdEZQOOrIPjuHjZ3PA==
-X-CSE-MsgGUID: 5W+i9JMQQYam4vO3lZCOcA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,322,1732608000"; 
-   d="scan'208";a="117364013"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2025 04:45:56 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tnzkW-0000000Fwmo-1iGO;
-	Fri, 28 Feb 2025 14:45:52 +0200
-Date: Fri, 28 Feb 2025 14:45:52 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Petr Mladek <pmladek@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v2 0/5] Check Rust signatures at compile time
-Message-ID: <Z8GwAPDbxpf-WQOM@smile.fi.intel.com>
-References: <20250228-export-macro-v2-0-569cc7e8926c@google.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sbz+Cpkq"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2fe8f6a4bfaso545094a91.0;
+        Fri, 28 Feb 2025 05:12:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740748363; x=1741353163; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+lEhshDUI6cMzkH2vuUVTw0jZ5RYXsJu3sUaobJASwM=;
+        b=Sbz+Cpkq5p/7VqQ9V6vx9Vk81BA7ZiMV1q+VdYxtFk/1PB4aDyxwvaouI1crRRLn45
+         LvAO1axu67gjNuDUcLi3jiUVaCJjcp4tiXiKCvtc6OAMGXeuBkKdbnvdif4BO6x+9PmS
+         Tx1ISisO/JaUj6Ulcz62QNBY4M7VFXMOfa4NewTuJo7LZtBOEd4ep2tkGrSmeVERYCIJ
+         +wSEXMceL0DrFDoIum89VLtpEKaEDageliEezPQcP7fxVn0inATCrhkuDkvBxlbZ0Yvx
+         L32m2VjASvQYbjYcg6Gs8/51hy1Q2UICn4Zk6lC+97wmgWAHjGQKYOMwxj/aEuJWGsxd
+         ducg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740748363; x=1741353163;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+lEhshDUI6cMzkH2vuUVTw0jZ5RYXsJu3sUaobJASwM=;
+        b=YG1GzgqUhQ90axpu0R9wSRWqTEV5am9LEspEc03602YbjwbZcTYRmaKQYdRKf0gOPx
+         0qZ6N/WSFO5GWAPCVKUxAlGnhWOUTR2Kv4kRhURyOgDyQaeSS6nAqE60E/o0NQo6IfkY
+         TnW4J8JwDEtdooS4kWtH2Q9kAWQ1it4fI6VlNfQuHRFfIwf06dzNAgUWj+1qZfaC5eaS
+         lkrnSvhTo+3rcb8kOJ0PRlKN0Ta6/69GXdVKar8eOQkEqTScIKljSaASVnXNjwgLpKpF
+         YXjaehDbaOB19n4JnFig7mwvQAY+Xd81I8r6B/mWo7boIDPvwvOCAEhH0yh3s2OF4G4m
+         QvVg==
+X-Forwarded-Encrypted: i=1; AJvYcCW4M5qbb+vjBQpcAk6q7D1yWxh2X/P2qkXevekgH8yfcMG3cXqumJLCjlBWiKF+9FMRYVu4KMa7JVxOQDQ=@vger.kernel.org, AJvYcCXyg5kf/Mk5T5UW9OHwSncfP/REUdL51vF/MhE61rVRRF9VMW6GWc9f8SCTdfgd0pC9wHU0TrsVx6RqgSsZYAc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyl43d/bv1mqmT8nI0hP15QzAMCqBAOzWrpdpX1XIPxUPVNQ/aH
+	EYemodBgMCukBmKEb+5TNBXWRuH7WRKEw7JEIhA1GJqn6wHfJbtLMFqGTnXsHAP6VES0d3BT0BV
+	qb16Pspgk75y/oVPNieBU1Y7c4Rk=
+X-Gm-Gg: ASbGncsa6Km1+Ch88IsWS/C/gK1G835817m3A6qX0j6nhFW5Cdo8Z9FwkIb5bsdm2P0
+	+YW/59KGQzs/cBPcrDD5JWOuwysyyIA/+mQTy2d2F6Z163/w/OubdlD9aJXOAMOk/qwvAbC1fwO
+	r+TaQwJdY=
+X-Google-Smtp-Source: AGHT+IEhS4xLYJxs0tfqZh7dD8ek8r0CNJu2W2YtU4k5T4cl+cb59zgxrobehVGCWco+FGq9vu4kk8irqhSm2Az83bo=
+X-Received: by 2002:a17:90b:4b52:b0:2fe:b77a:2eba with SMTP id
+ 98e67ed59e1d1-2febab1b41emr2144826a91.1.1740748363008; Fri, 28 Feb 2025
+ 05:12:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20250228-export-macro-v2-0-569cc7e8926c@google.com>
 In-Reply-To: <20250228-export-macro-v2-0-569cc7e8926c@google.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 28 Feb 2025 14:12:30 +0100
+X-Gm-Features: AQ5f1Jofrhmkb20pE5YuI-Rw9tp0sSCSTCQfns7NlNn-tLweA7S6JcR9oIKl8uQ
+Message-ID: <CANiq72mF46p7f=G8WsnajwZfg--wTNESp7xQEsWUaiumOyfW5w@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] Check Rust signatures at compile time
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Petr Mladek <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 28, 2025 at 12:39:29PM +0000, Alice Ryhl wrote:
-> Rust has two different tools for generating function declarations to
-> call across the FFI boundary:
-> 
-> * bindgen. Generates Rust declarations from a C header.
-> * cbindgen. Generates C headers from Rust declarations.
-> 
-> In the kernel, we only use bindgen. This is because cbindgen assumes a
+On Fri, Feb 28, 2025 at 1:40=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> This is because cbindgen assumes a
 > cargo-based buildsystem, so it is not compatible with the kernel's build
-> system. This means that when C code calls a Rust function by name, its
-> signature must be duplicated in both Rust code and a C header, and the
-> signature needs to be kept in sync manually.
-> 
-> To eliminate this manual checking, introduce a new macro that verifies
-> at compile time that the two function declarations use the same
-> signature. The idea is to run the C declaration through bindgen, and
-> then have rustc verify that the function pointers have the same type.
-> 
-> The main commit of this series is "rust: add #[export] macro". Please
-> see its commit message for more details.
+> system.
 
-Thanks for the cover letter, makes much more sense now!
+I don't think this is true (checking is already a very good
+justification, so we don't need this to justify the series):
 
--- 
-With Best Regards,
-Andy Shevchenko
+    https://lore.kernel.org/rust-for-linux/CANiq72mHVbnmA_G1Fx3rz06RXA+=3DK=
+5ERoWKjH-UDJ9cKxvKQ1g@mail.gmail.com/
 
-
+Cheers,
+Miguel
