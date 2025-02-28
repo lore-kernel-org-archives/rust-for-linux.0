@@ -1,544 +1,280 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-10629.protonmail.ch (mail-10629.protonmail.ch [79.135.106.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2C31D555;
-	Fri, 28 Feb 2025 13:29:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC99B26B0A1
+	for <rust-for-linux@vger.kernel.org>; Fri, 28 Feb 2025 14:43:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740749375; cv=none; b=MGWBCzDgSSPdItPPHjPhHRXNUKWZh06Qc4lwJqupW0td1VmGWvhi8BGk1bVQDUntreCrPeDI0wqA4UXxaQXoScZfUgUloqo+9OKDYX7MuUXOzN/za02DviK800+t5o3SAx6x72zRHRiIfIAfGZag8Ey+S5wqqndNjZCShCxIi2k=
+	t=1740753794; cv=none; b=nmlTw0TFqetMlFL6ODriamjfioVM50hKVAHtMRYCtgopaWU1VadrPCT7eJc2aVVfcz4oUl5BC+T5Augdm6sdpUjeSt9gUiZqNIgdOjVn5FCgRwnK2v/mNFz+nLMKmyNNisffTG1WIyCkugxLHpT200Ut4y7p3XDIIBSBVHz2SDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740749375; c=relaxed/simple;
-	bh=h1gcfXKxYDFuWGauGFyZ/WuO0uocpWz6LqllgGyg64Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y5vvAhbrrbZAMOWx147VaF4zCruJdvnsaF5kKToMAli326EkVBRtAhZ3ga4qdNOREic15CYH4jcIGcF4WHjm2Sk4oXGLq8lBRjPyUdo2XjlOJhgcJnQkFAcW3I19Iq4bM3dNWHCkxg28meaJMXBGYIWlEbJq8LdSqouZ2ZAG6fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mZWSdug7; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740753794; c=relaxed/simple;
+	bh=vOb8mY5e1oPlCevVNYovv2LO/QoIRkzMo3eW8b0Anbs=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=elF9OwvuJV9ezT0KkhxKQwbUUUPyuLKK//4gkahln8eSos7xE6ABtL831wCxkQJfix54oqxwuF8yXBskS0BsssMwwpKKkHf0xr7KoPboGqjaV9qtDAZuSMxDzlVobim+f+ea37e3W2+QLc1x1kf4CvRgLyc9L5OIv7mLvjwWMHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=KhslfoJ5; arc=none smtp.client-ip=79.135.106.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mZWSdug7"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4399a1eada3so19544685e9.2;
-        Fri, 28 Feb 2025 05:29:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740749371; x=1741354171; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Avez2xSDYscvxHDuCxg1ie5SK+Du5TC+14a6JKYQZoQ=;
-        b=mZWSdug7C7iY/uUmbcqtfyaOqiOS1wWx3lWZQu8g3nlnVIVArHHFqz6tIcHvEiqImw
-         HZmahGN/qPXLST+r710WgDmEUFdp+HdCBUc6/gnnL/ZAkZGr0kSUPJ5GfvjMcLzNcR6u
-         iX+KWfMbZfw/HMy7jrXlmurOBeq0foiQdd7+zMrJ/IdGx5O8Hvs0iqkBBQDfWTaqe80j
-         fmUXKjOwd0V5lwD9/T1L7OZgcblUNM2otKMkvvGj1BWNpzgdAm+2ZjRT7eKa1kvINd6G
-         +8j2PEGoQGJiDI43YkTXhA/qhUyL7H55KbvPldmUECIg03q1ign61jPLbJnqWBmDJJia
-         skfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740749371; x=1741354171;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Avez2xSDYscvxHDuCxg1ie5SK+Du5TC+14a6JKYQZoQ=;
-        b=asBJTQ7JuG25uP1uC4tBgfdg+SIeIhg44cUaLQo2Y43lo6VdYQFFYu3k0rgzO/fS9w
-         QdrZhi+4qUWoVJvPjqIuY08mEeevGMsmmPDuXusJpm5LIJyC00/9vHS9VvuB9RNK8GmC
-         /9bH/ezmIbSlWuS0HWgReoC+niFksqfrWXoLDHrc3vHgTKNy46tjF0FYGcfvfaj5KaA8
-         MPqUPJ9iLL2KGaMipVLT1wx65kTddHkY/us0YIaVToUR+BvAgC54vIGBgQczrP5U3U1J
-         XqdxUdt+D6ruxPKMNDgZiGXY1nPf6eX1Bq9NZME77NDq6gmHuGNWlQnmSabzjgr+nU4n
-         Serg==
-X-Forwarded-Encrypted: i=1; AJvYcCVoxZTO4E25j3ku7Riue8UlUGvmYMCLbcn1/uhSMS7tUWouoih5KvBPBv3KbmUqIliPgMu85XEoRbiRTGg=@vger.kernel.org, AJvYcCXPczyvF8vjpZoRPZ9FfB8jqWrMwxdlI/2rjlPoEXXKSvtD7ZjahoCO1TPZsyN5Xt9yBYgVQD4g62xZ1ev7nFM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywpc0DjYUa5Ae8rqTlJ3D46GXTuFXt6Y6HOkFdqSFksIIUgKL4W
-	WaE46WF5+q0gCRDYiHzRXkWUX8tBxn2dRoQkxAgEx+TfV2My1ov2lyudSVJr
-X-Gm-Gg: ASbGncvIQnW9v7d4j21Xstp/Hukk2TrSGs1ojaRCNNGLQgVor8SJ8BrWRZiKgQQC1c0
-	j56FyDTXkkNebik1W8JlAj2Fm+k9OFW+9onxO1cO31FPsmzA5VSr2tkerGxeUcpFm4HRk6vfcCm
-	vjl2YvmJJ/RY1L+X3mf8RJBZZtL+6BQFDRlnRPQeHZ/oNitE88V9AvDUOSlus6P24DsRaZx9gaQ
-	R5DC9CRsxcu1mfA5wqOG86HF/g4SIexFddf4Qhoda/mUOLluqnw4J76+b1b29Myr+UWALVoG2Lz
-	cGTwlpjFtEy7KjHAOuMxfDhAXzD1pw==
-X-Google-Smtp-Source: AGHT+IGlY+8f/TJ66ysQmZN61hQQEryPUVbnOuK90G1E8TY4dFR0/Hi1Fwk7z2HQ0W6TjEyL1VD/+Q==
-X-Received: by 2002:a05:6000:1f8c:b0:38f:4fa6:bb24 with SMTP id ffacd0b85a97d-390eca530a8mr2830857f8f.39.1740749371055;
-        Fri, 28 Feb 2025 05:29:31 -0800 (PST)
-Received: from fedora.. ([82.67.147.186])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e485d6dbsm5212693f8f.82.2025.02.28.05.29.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Feb 2025 05:29:30 -0800 (PST)
-From: Guillaume Gomez <guillaume1.gomez@gmail.com>
-To: ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Guillaume Gomez <guillaume1.gomez@gmail.com>
-Subject: [PATCH 1/1] Use new `--output-format=doctest` rustdoc command line flag to improve doctest handling.
-Date: Fri, 28 Feb 2025 14:29:28 +0100
-Message-ID: <20250228132928.880683-1-guillaume1.gomez@gmail.com>
-X-Mailer: git-send-email 2.48.1
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="KhslfoJ5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1740753790; x=1741012990;
+	bh=We5T4M5MDH01il41WtMcKSJUjPlRlnalRiyXh1GYoPo=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
+	 List-Unsubscribe:List-Unsubscribe-Post;
+	b=KhslfoJ5Lvu47HQfrHJj4dJm99ug+Md09FCtxMUDpKImdcnuouWRlYurMi5bju4Ti
+	 ZI+WptRhTyNnQpaGmLc2tWsJksL5ulzgZ5PnavTDYcwb/pxFayQ5eW6Inzz9gmfvPb
+	 +dZToJ4LqZulwDrmiEYpG3xmFNpSnsT0LyEsqCKi2e87rMFW3cUWrwYhxA6OeDpEGv
+	 JNefP11QX2ZlaSi0WMZoLpx/YfpHeSVacOUTK7c9wmjakDiWzIDiBkmah/FnNqzDSn
+	 mywqgOMN1tsqhorOSo6UhUKJLdPyarZ9hOnhlP99ZUlcDaU1hRqiZrOPGRA3U6pbab
+	 jWIDUx0TI0w5Q==
+Date: Fri, 28 Feb 2025 14:43:03 +0000
+To: Andreas Hindborg <a.hindborg@kernel.org>
+From: Oliver Mangold <oliver.mangold@pm.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: [PATCH] rust: adding UniqueRefCounted and UniqueRef types
+Message-ID: <EiaQ-C0o3GMQQpw3jCnXUnNgph2WIJ5-Cm8P5N9OysIlDKYrjHNun5Ol4Q1FfVGw64k6TGCfUVBJK5r0_2eypg==@protonmail.internalid>
+Feedback-ID: 31808448:user:proton
+X-Pm-Message-ID: 138d58d7ca1271ccaa3cc41ce48e8adfff42cf76
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Before this patch, the code was using very hacky methods in order to retrieve
-doctests, modify them as needed and then concatenate all of them in one file.
+Hi,
 
-Now, with this new flag, it instead asks rustdoc to provide the doctests
-code with their associated information such as file path and line number.
+For usage with block-mq, we found that having a variant of ARef
+which is guaranteed to be unique being useful.
+As chances are it is useful in general, I implemented it
+as kernel::types::UniqueRef.
+The difference between ARef and UniqueRef
+is basically the same as between Arc and UniqueArc.
+
+This v2 of the patch, addressing the issues raised by Andreas Hindborg.
+
+On 250228 1417, Miguel Ojeda wrote:
+>=20
+> I think should be caught by Clippy -- Oliver, please try building with
+> `CLIPPY=3D1` (we would like Clippy-clean builds as much as reasonably
+> possible),
+
+Got it. This version should be okay for rustfmt, clippy and checkpatch :)
+
+Best regards,
+
+Oliver
+
 ---
- rust/Makefile                   |   8 +-
- scripts/json.rs                 | 235 ++++++++++++++++++++++++++++++++
- scripts/rustdoc_test_builder.rs | 115 ++++++++++------
- scripts/rustdoc_test_gen.rs     |  17 +--
- 4 files changed, 323 insertions(+), 52 deletions(-)
- create mode 100644 scripts/json.rs
+ rust/kernel/types.rs | 153 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 153 insertions(+)
 
-diff --git a/rust/Makefile b/rust/Makefile
-index ea3849eb7..237ed23f8 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -171,14 +171,14 @@ quiet_cmd_rustdoc_test_kernel = RUSTDOC TK $<
- 	rm -rf $(objtree)/$(obj)/test/doctests/kernel; \
- 	mkdir -p $(objtree)/$(obj)/test/doctests/kernel; \
- 	OBJTREE=$(abspath $(objtree)) \
--	$(RUSTDOC) --test $(rust_flags) \
-+	$(RUSTDOC) --output-format=doctest $(rust_flags) \
- 		-L$(objtree)/$(obj) --extern ffi --extern kernel \
- 		--extern build_error --extern macros \
- 		--extern bindings --extern uapi \
--		--no-run --crate-name kernel -Zunstable-options \
-+		--crate-name kernel -Zunstable-options \
- 		--sysroot=/dev/null \
--		--test-builder $(objtree)/scripts/rustdoc_test_builder \
--		$< $(rustdoc_test_kernel_quiet); \
-+		$< $(rustdoc_test_kernel_quiet) > rustdoc.json; \
-+	cat rustdoc.json | $(objtree)/scripts/rustdoc_test_builder; \
- 	$(objtree)/scripts/rustdoc_test_gen
- 
- %/doctests_kernel_generated.rs %/doctests_kernel_generated_kunit.c: \
-diff --git a/scripts/json.rs b/scripts/json.rs
-new file mode 100644
-index 000000000..aff24bfd9
---- /dev/null
-+++ b/scripts/json.rs
-@@ -0,0 +1,235 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! JSON parser used to parse rustdoc output when retrieving doctests.
-+
-+use std::collections::HashMap;
-+use std::iter::Peekable;
-+use std::str::FromStr;
-+
-+#[derive(Debug, PartialEq, Eq)]
-+pub(crate) enum JsonValue {
-+    Object(HashMap<String, JsonValue>),
-+    String(String),
-+    Number(i32),
-+    Bool(bool),
-+    Array(Vec<JsonValue>),
-+    Null,
-+}
-+
-+fn parse_ident<I: Iterator<Item = char>>(
-+    iter: &mut I,
-+    output: JsonValue,
-+    ident: &str,
-+) -> Result<JsonValue, String> {
-+    let mut ident_iter = ident.chars().skip(1);
-+
-+    loop {
-+        let i = ident_iter.next();
-+        if i.is_none() {
-+            return Ok(output);
-+        }
-+        let c = iter.next();
-+        if i != c {
-+            if let Some(c) = c {
-+                return Err(format!("Unexpected character `{c}` when parsing `{ident}`"));
-+            }
-+            return Err(format!("Missing character when parsing `{ident}`"));
-+        }
-+    }
-+}
-+
-+fn parse_string<I: Iterator<Item = char>>(iter: &mut I) -> Result<JsonValue, String> {
-+    let mut out = String::new();
-+
-+    while let Some(c) = iter.next() {
-+        match c {
-+            '\\' => {
-+                let Some(c) = iter.next() else { break };
-+                match c {
-+                    '"' | '\\' | '/' => out.push(c),
-+                    'b' => out.push(char::from(0x8u8)),
-+                    'f' => out.push(char::from(0xCu8)),
-+                    't' => out.push('\t'),
-+                    'r' => out.push('\r'),
-+                    'n' => out.push('\n'),
-+                    _ => {
-+                        // This code doesn't handle codepoints so we put the string content as is.
-+                        out.push('\\');
-+                        out.push(c);
-+                    }
-+                }
-+            }
-+            '"' => {
-+                return Ok(JsonValue::String(out));
-+            }
-+            _ => out.push(c),
-+        }
-+    }
-+    Err(format!("Unclosed JSON string `{out}`"))
-+}
-+
-+fn parse_number<I: Iterator<Item = char>>(
-+    iter: &mut Peekable<I>,
-+    digit: char,
-+) -> Result<JsonValue, String> {
-+    let mut nb = String::new();
-+
-+    nb.push(digit);
-+    loop {
-+        // We peek next character to prevent taking it from the iterator in case it's a comma.
-+        if matches!(iter.peek(), Some(',' | '}' | ']')) {
-+            break;
-+        }
-+        let Some(c) = iter.next() else { break };
-+        if c.is_whitespace() {
-+            break;
-+        } else if !c.is_ascii_digit() {
-+            return Err(format!("Error when parsing number `{nb}`: found `{c}`"));
-+        }
-+        nb.push(c);
-+    }
-+    i32::from_str(&nb)
-+        .map(|nb| JsonValue::Number(nb))
-+        .map_err(|error| format!("Invalid number: `{error}`"))
-+}
-+
-+fn parse_array<I: Iterator<Item = char>>(iter: &mut Peekable<I>) -> Result<JsonValue, String> {
-+    let mut values = Vec::new();
-+
-+    'main: loop {
-+        let Some(c) = iter.next() else {
-+            return Err("Unclosed array".to_string());
-+        };
-+        if c.is_whitespace() {
-+            continue;
-+        } else if c == ']' {
-+            break;
-+        }
-+        values.push(parse(iter, c)?);
-+        while let Some(c) = iter.next() {
-+            if c.is_whitespace() {
-+                continue;
-+            } else if c == ',' {
-+                break;
-+            } else if c == ']' {
-+                break 'main;
-+            } else {
-+                return Err(format!("Unexpected `{c}` when parsing array"));
-+            }
-+        }
-+    }
-+    Ok(JsonValue::Array(values))
-+}
-+
-+fn parse_object<I: Iterator<Item = char>>(iter: &mut Peekable<I>) -> Result<JsonValue, String> {
-+    let mut values = HashMap::new();
-+
-+    'main: loop {
-+        let Some(c) = iter.next() else {
-+            return Err("Unclosed object".to_string());
-+        };
-+        let key;
-+        if c.is_whitespace() {
-+            continue;
-+        } else if c == '"' {
-+            let JsonValue::String(k) = parse_string(iter)? else {
-+                unreachable!()
-+            };
-+            key = k;
-+        } else if c == '}' {
-+            break;
-+        } else {
-+            return Err(format!("Expected `\"` when parsing Object, found `{c}`"));
-+        }
-+
-+        // We then get the `:` separator.
-+        loop {
-+            let Some(c) = iter.next() else {
-+                return Err(format!("Missing value after key `{key}`"));
-+            };
-+            if c.is_whitespace() {
-+                continue;
-+            } else if c == ':' {
-+                break;
-+            } else {
-+                return Err(format!(
-+                    "Expected `:` after key, found `{c}` when parsing object"
-+                ));
-+            }
-+        }
-+        // Then the value.
-+        let value = loop {
-+            let Some(c) = iter.next() else {
-+                return Err(format!("Missing value after key `{key}`"));
-+            };
-+            if c.is_whitespace() {
-+                continue;
-+            } else {
-+                break parse(iter, c)?;
-+            }
-+        };
-+
-+        if values.contains_key(&key) {
-+            return Err(format!("Duplicated key `{key}`"));
-+        }
-+        values.insert(key, value);
-+
-+        while let Some(c) = iter.next() {
-+            if c.is_whitespace() {
-+                continue;
-+            } else if c == ',' {
-+                break;
-+            } else if c == '}' {
-+                break 'main;
-+            } else {
-+                return Err(format!("Unexpected `{c}` when parsing array"));
-+            }
-+        }
-+    }
-+    Ok(JsonValue::Object(values))
-+}
-+
-+fn parse<I: Iterator<Item = char>>(iter: &mut Peekable<I>, c: char) -> Result<JsonValue, String> {
-+    match c {
-+        '{' => parse_object(iter),
-+        '"' => parse_string(iter),
-+        '[' => parse_array(iter),
-+        't' => parse_ident(iter, JsonValue::Bool(true), "true"),
-+        'f' => parse_ident(iter, JsonValue::Bool(false), "false"),
-+        'n' => parse_ident(iter, JsonValue::Null, "null"),
-+        c => {
-+            if c.is_ascii_digit() || c == '-' {
-+                parse_number(iter, c)
-+            } else {
-+                Err(format!("Unexpected `{c}` character"))
-+            }
-+        }
-+    }
-+}
-+
-+impl JsonValue {
-+    pub(crate) fn parse(input: &str) -> Result<Self, String> {
-+        let mut iter = input.chars().peekable();
-+        let mut value = None;
-+
-+        while let Some(c) = iter.next() {
-+            if c.is_whitespace() {
-+                continue;
-+            }
-+            value = Some(parse(&mut iter, c)?);
-+            break;
-+        }
-+        while let Some(c) = iter.next() {
-+            if c.is_whitespace() {
-+                continue;
-+            } else {
-+                return Err(format!("Unexpected character `{c}` after content"));
-+            }
-+        }
-+        if let Some(value) = value {
-+            Ok(value)
-+        } else {
-+            Err("Empty content".to_string())
-+        }
-+    }
-+}
-diff --git a/scripts/rustdoc_test_builder.rs b/scripts/rustdoc_test_builder.rs
-index e5894652f..9b6bc1c1d 100644
---- a/scripts/rustdoc_test_builder.rs
-+++ b/scripts/rustdoc_test_builder.rs
-@@ -15,58 +15,93 @@
- //! from that. For the moment, we generate ourselves a new name, `{file}_{number}` instead, in
- //! the `gen` script (done there since we need to be aware of all the tests in a given file).
- 
-+use std::fs::create_dir_all;
- use std::io::Read;
- 
--fn main() {
--    let mut stdin = std::io::stdin().lock();
--    let mut body = String::new();
--    stdin.read_to_string(&mut body).unwrap();
-+use json::JsonValue;
- 
--    // Find the generated function name looking for the inner function inside `main()`.
--    //
--    // The line we are looking for looks like one of the following:
--    //
--    // ```
--    // fn main() { #[allow(non_snake_case)] fn _doctest_main_rust_kernel_file_rs_28_0() {
--    // fn main() { #[allow(non_snake_case)] fn _doctest_main_rust_kernel_file_rs_37_0() -> Result<(), impl core::fmt::Debug> {
--    // ```
--    //
--    // It should be unlikely that doctest code matches such lines (when code is formatted properly).
--    let rustdoc_function_name = body
--        .lines()
--        .find_map(|line| {
--            Some(
--                line.split_once("fn main() {")?
--                    .1
--                    .split_once("fn ")?
--                    .1
--                    .split_once("()")?
--                    .0,
--            )
--            .filter(|x| x.chars().all(|c| c.is_alphanumeric() || c == '_'))
--        })
--        .expect("No test function found in `rustdoc`'s output.");
-+mod json;
- 
--    // Qualify `Result` to avoid the collision with our own `Result` coming from the prelude.
--    let body = body.replace(
--        &format!("{rustdoc_function_name}() -> Result<(), impl core::fmt::Debug> {{"),
--        &format!("{rustdoc_function_name}() -> core::result::Result<(), impl core::fmt::Debug> {{"),
--    );
-+fn generate_doctest(file: &str, line: i32, doctest_code: &str) {
-+    let file = file
-+        .strip_suffix(".rs")
-+        .unwrap_or(file)
-+        .strip_prefix("../rust/kernel/")
-+        .unwrap_or(file)
-+        .replace('/', "_");
-+    let path = format!("rust/test/doctests/kernel/{file}-{line}.rs");
- 
-+    // We replace the `Result` if needed.
-+    let doctest_code = doctest_code.replace(
-+        "fn main() { fn _inner() -> Result<",
-+        "fn main() { fn _inner() -> core::result::Result<",
-+    );
-     // For tests that get generated with `Result`, like above, `rustdoc` generates an `unwrap()` on
-     // the return value to check there were no returned errors. Instead, we use our assert macro
-     // since we want to just fail the test, not panic the kernel.
-     //
-     // We save the result in a variable so that the failed assertion message looks nicer.
--    let body = body.replace(
--        &format!("}} {rustdoc_function_name}().unwrap() }}"),
--        &format!("}} let test_return_value = {rustdoc_function_name}(); assert!(test_return_value.is_ok()); }}"),
-+    let doctest_code = doctest_code.replace(
-+        "} _inner().unwrap() }",
-+        "} let test_return_value = _inner(); assert!(test_return_value.is_ok()); }",
-     );
-+    std::fs::write(path, doctest_code.as_bytes()).unwrap();
-+}
-+
-+fn main() {
-+    let mut stdin = std::io::stdin().lock();
-+    let mut body = String::new();
-+    stdin.read_to_string(&mut body).unwrap();
-+
-+    let JsonValue::Object(rustdoc) = JsonValue::parse(&body).unwrap() else {
-+        panic!("Expected an object")
-+    };
-+    if let Some(JsonValue::Number(format_version)) = rustdoc.get("format_version") {
-+        if *format_version != 1 {
-+            panic!("unsupported rustdoc format version: {format_version}");
-+        }
-+    } else {
-+        panic!("missing `format_version` field");
-+    }
-+    let Some(JsonValue::Array(doctests)) = rustdoc.get("doctests") else {
-+        panic!("missing `doctests` field");
-+    };
-+
-+    // We ignore the error since it will fail when generating doctests below if the folder doesn't
-+    // exist.
-+    let _ = create_dir_all("rust/test/doctests/kernel");
- 
--    // Figure out a smaller test name based on the generated function name.
--    let name = rustdoc_function_name.split_once("_rust_kernel_").unwrap().1;
-+    let mut nb_generated = 0;
-+    for doctest in doctests {
-+        let JsonValue::Object(doctest) = doctest else {
-+            unreachable!()
-+        };
- 
--    let path = format!("rust/test/doctests/kernel/{name}");
-+        // We check if we need to skip this test by checking it's a rust code and it's not ignored.
-+        if let Some(JsonValue::Object(attributes)) = doctest.get("doctest_attributes") {
-+            if attributes.get("rust") != Some(&JsonValue::Bool(true)) {
-+                continue;
-+            } else if let Some(JsonValue::String(ignore)) = attributes.get("ignore") {
-+                if ignore != "None" {
-+                    continue;
-+                }
-+            }
-+        }
-+        if let (
-+            Some(JsonValue::String(file)),
-+            Some(JsonValue::Number(line)),
-+            Some(JsonValue::String(doctest_code)),
-+        ) = (
-+            doctest.get("file"),
-+            doctest.get("line"),
-+            doctest.get("doctest_code"),
-+        ) {
-+            generate_doctest(file, *line, doctest_code);
-+            nb_generated += 1;
-+        }
-+    }
- 
--    std::fs::write(path, body.as_bytes()).unwrap();
-+    if nb_generated == 0 {
-+        panic!("No test function found in `rustdoc`'s output.");
-+    }
- }
-diff --git a/scripts/rustdoc_test_gen.rs b/scripts/rustdoc_test_gen.rs
-index 5ebd42ae4..fd6635bbf 100644
---- a/scripts/rustdoc_test_gen.rs
-+++ b/scripts/rustdoc_test_gen.rs
-@@ -48,7 +48,7 @@
- fn find_real_path<'a>(srctree: &Path, valid_paths: &'a mut Vec<PathBuf>, file: &str) -> &'a str {
-     valid_paths.clear();
- 
--    let potential_components: Vec<&str> = file.strip_suffix("_rs").unwrap().split('_').collect();
-+    let potential_components: Vec<&str> = file.split('_').collect();
- 
-     find_candidates(srctree, valid_paths, Path::new(""), &potential_components);
-     fn find_candidates(
-@@ -87,8 +87,8 @@ fn find_candidates(
- 
-     assert!(
-         valid_paths.len() > 0,
--        "No path candidates found. This is likely a bug in the build system, or some files went \
--        away while compiling."
-+        "No path candidates found for `{file}`. This is likely a bug in the build system, or some \
-+        files went away while compiling.",
-     );
- 
-     if valid_paths.len() > 1 {
-@@ -97,8 +97,8 @@ fn find_candidates(
-             eprintln!("    {path:?}");
-         }
-         panic!(
--            "Several path candidates found, please resolve the ambiguity by renaming a file or \
--            folder."
-+            "Several path candidates found for `{file}`, please resolve the ambiguity by renaming \
-+            a file or folder."
-         );
+diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+index 55ddd50e8aaa..72a973d9e1c7 100644
+--- a/rust/kernel/types.rs
++++ b/rust/kernel/types.rs
+@@ -543,6 +543,12 @@ fn from(b: &T) -> Self {
      }
- 
-@@ -126,12 +126,13 @@ fn main() {
-     let mut valid_paths: Vec<PathBuf> = Vec::new();
-     let mut real_path: &str = "";
-     for path in paths {
--        // The `name` follows the `{file}_{line}_{number}` pattern (see description in
-+        // The `name` follows the `{file}_{line}` pattern (see description in
-         // `scripts/rustdoc_test_builder.rs`). Discard the `number`.
-         let name = path.file_name().unwrap().to_str().unwrap().to_string();
- 
--        // Extract the `file` and the `line`, discarding the `number`.
--        let (file, line) = name.rsplit_once('_').unwrap().0.rsplit_once('_').unwrap();
-+        // Extract the `file` and the `line`, discarding the extension.
-+        let (file, line) = name.rsplit_once('-').unwrap();
-+        let line = line.split('.').next().unwrap();
- 
-         // Generate an ID sequence ("test number") for each one in the file.
-         if file == last_file {
--- 
+ }
+=20
++impl<T: UniqueRefCounted> From<UniqueRef<T>> for ARef<T> {
++    fn from(b: UniqueRef<T>) -> Self {
++        UniqueRefCounted::unique_to_shared(b)
++    }
++}
++
+ impl<T: AlwaysRefCounted> Drop for ARef<T> {
+     fn drop(&mut self) {
+         // SAFETY: The type invariants guarantee that the `ARef` owns the =
+reference we're about to
+@@ -551,6 +557,153 @@ fn drop(&mut self) {
+     }
+ }
+=20
++/// Types that are [`AlwaysRefCounted`] and can be safely converted to an =
+[`UniqueRef`]
++///
++/// # Safety
++///
++/// Implementers must ensure that the methods of the trait
++/// change the reference count of the underlying object such that:
++/// - the uniqueness invariant is upheld, i.e. it is not possible
++///   to obtain another reference by any means (other than through the [`U=
+niqueRef`])
++///   until the [`UniqueRef`] is dropped or converted to an [`ARef`].
++/// - [`UniqueRefCounted::dec_ref`] correctly frees the underlying object.
++/// - [`UniqueRefCounted::unique_to_shared`] set the reference count to th=
+e value
++/// - that the returned [`ARef`] expects for an object with a single refer=
+ence
++///   in existence.
++pub unsafe trait UniqueRefCounted: AlwaysRefCounted + Sized {
++    /// Checks if the [`ARef`] is unique and convert it
++    /// to an [`UniqueRef`] it that is that case.
++    /// Otherwise it returns again an [`ARef`] to the same
++    /// underlying object.
++    fn try_shared_to_unique(this: ARef<Self>) -> Result<UniqueRef<Self>, A=
+Ref<Self>>;
++    /// Converts the [`UniqueRef`] into an [`ARef`].
++    fn unique_to_shared(this: UniqueRef<Self>) -> ARef<Self>;
++    /// Decrements the reference count on the object when the [`UniqueRef`=
+] is dropped.
++    ///
++    /// Frees the object when the count reaches zero.
++    ///
++    /// It defaults to [`AlwaysRefCounted::dec_ref`],
++    /// but overriding it may be useful, e.g. in case of non-standard refc=
+ounting
++    /// schemes.
++    ///
++    /// # Safety
++    ///
++    /// The same safety constraints as for [`AlwaysRefCounted::dec_ref`] a=
+pply,
++    /// but as the reference is unique, it can be assumed that the functio=
+n
++    /// will not be called twice. In case the default implementation is no=
+t
++    /// overridden, it has to be ensured that the call to [`AlwaysRefCount=
+ed::dec_ref`]
++    /// can be used for an [`UniqueRef`], too.
++    unsafe fn dec_ref(obj: NonNull<Self>) {
++        // SAFETY: correct by function safety requirements
++        unsafe { AlwaysRefCounted::dec_ref(obj) };
++    }
++}
++
++/// An unique, owned reference to an [`AlwaysRefCounted`] object.
++///
++/// It works the same ways as [`ARef`] but ensures that the reference is u=
+nique
++/// and thus can be dereferenced mutably.
++///
++/// # Invariants
++///
++/// - The pointer stored in `ptr` is non-null and valid for the lifetime o=
+f the [`UniqueRef`]
++///   instance. In particular, the [`UniqueRef`] instance owns an incremen=
+t
++///   on the underlying object's reference count.
++/// - No other references to the underlying object exist while the [`Uniqu=
+eRef`] is live.
++pub struct UniqueRef<T: UniqueRefCounted> {
++    ptr: NonNull<T>,
++    _p: PhantomData<T>,
++}
++
++// SAFETY: It is safe to send `UniqueRef<T>` to another thread
++// when the underlying `T` is `Sync` because
++// it effectively means sharing `&T` (which is safe because `T` is `Sync`)=
+; additionally, it needs
++// `T` to be `Send` because any thread that has an `UniqueRef<T>` may ulti=
+mately access `T` using a
++// mutable reference, for example, when the reference count reaches zero a=
+nd `T` is dropped.
++unsafe impl<T: UniqueRefCounted + Sync + Send> Send for UniqueRef<T> {}
++
++// SAFETY: It is safe to send `&UniqueRef<T>` to another thread when the u=
+nderlying `T` is `Sync`
++// because it effectively means sharing `&T` (which is safe because `T` is=
+ `Sync`); additionally,
++// it needs `T` to be `Send` because any thread that has a `&UniqueRef<T>`=
+ may clone it and get an
++// `UniqueRef<T>` on that thread, so the thread may ultimately access `T`
++// using a mutable reference, for example, when the reference count reache=
+s zero and `T` is dropped.
++unsafe impl<T: UniqueRefCounted + Sync + Send> Sync for UniqueRef<T> {}
++
++impl<T: UniqueRefCounted> UniqueRef<T> {
++    /// Creates a new instance of [`UniqueRef`].
++    ///
++    /// It takes over an increment of the reference count on the underlyin=
+g object.
++    ///
++    /// # Safety
++    ///
++    /// Callers must ensure that the reference count is set to such a valu=
+e
++    /// that a call to [`UniqueRefCounted::dec_ref`] will release the unde=
+rlying object
++    /// in the way which is expected when the last reference is dropped.
++    /// Callers must not use the underlying object anymore --
++    /// it is only safe to do so via the newly created [`UniqueRef`].
++    pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
++        // INVARIANT: The safety requirements guarantee that the new insta=
+nce now owns the
++        // increment on the refcount.
++        Self {
++            ptr,
++            _p: PhantomData,
++        }
++    }
++
++    /// Consumes the [`UniqueRef`], returning a raw pointer.
++    ///
++    /// This function does not change the refcount. After calling this fun=
+ction, the caller is
++    /// responsible for the refcount previously managed by the [`UniqueRef=
+`].
++    pub fn into_raw(me: Self) -> NonNull<T> {
++        ManuallyDrop::new(me).ptr
++    }
++}
++
++impl<T: UniqueRefCounted> Deref for UniqueRef<T> {
++    type Target =3D T;
++
++    fn deref(&self) -> &Self::Target {
++        // SAFETY: The type invariants guarantee that the object is valid.
++        unsafe { self.ptr.as_ref() }
++    }
++}
++
++impl<T: UniqueRefCounted> DerefMut for UniqueRef<T> {
++    fn deref_mut(&mut self) -> &mut Self::Target {
++        // SAFETY: The type invariants guarantee that the object is valid.
++        unsafe { self.ptr.as_mut() }
++    }
++}
++
++impl<T: UniqueRefCounted> From<&T> for UniqueRef<T> {
++    /// Converts the [`UniqueRef`] into an [`ARef`]
++    /// by calling [`UniqueRefCounted::unique_to_shared`] on it.
++    fn from(b: &T) -> Self {
++        b.inc_ref();
++        // SAFETY: We just incremented the refcount above.
++        unsafe { Self::from_raw(NonNull::from(b)) }
++    }
++}
++
++impl<T: UniqueRefCounted> TryFrom<ARef<T>> for UniqueRef<T> {
++    type Error =3D ARef<T>;
++    /// Tries to convert the [`ARef`] to an [`UniqueRef`]
++    /// by calling [`UniqueRefCounted::try_shared_to_unique`].
++    /// In case the [`ARef`] is not unique it returns again an [`ARef`] to=
+ the same
++    /// underlying object.
++    fn try_from(b: ARef<T>) -> Result<UniqueRef<T>, Self::Error> {
++        UniqueRefCounted::try_shared_to_unique(b)
++    }
++}
++
++impl<T: UniqueRefCounted> Drop for UniqueRef<T> {
++    fn drop(&mut self) {
++        // SAFETY: The type invariants guarantee that the [`UniqueRef`] ow=
+ns the reference
++        // we're about to decrement.
++        unsafe { UniqueRefCounted::dec_ref(self.ptr) };
++    }
++}
++
+ /// A sum type that always holds either a value of type `L` or `R`.
+ ///
+ /// # Examples
+--=20
 2.48.1
+
+Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
 
