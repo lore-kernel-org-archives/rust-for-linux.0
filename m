@@ -1,101 +1,101 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B67255E4D
-	for <rust-for-linux@vger.kernel.org>; Fri, 28 Feb 2025 08:47:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46EC91FE451;
+	Fri, 28 Feb 2025 08:49:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740732457; cv=none; b=myRTFeqIj4YXM77NW4XVzsehNyRCLzJlR9s4vh0K6wtV2F972XGqDBPPf5/qsB3qR7A+OJKAxtIvDBmQ0A62sgqy1s9+d4OepNDYAz512m0hc1edRtTxD9wj69xcWq70x7QWWazNuiS7tdaWdQ7rTy1l9o1uNZiZNR7JKdATe38=
+	t=1740732599; cv=none; b=WtlOZqDo5ntxxM/69cRlnRygx5LuXdIo9gPEvOsH4U8pcqit6G8mqRLQM3FAk8ZI0E7cB0HBU751sSY7E/0mwUNR29k6loGnmN653XFTvw2H4fh+Sp5fQd3MaCPu7SUk5j6jv4NhRG8hb8WL7f2r6WcRaxir//lTwDlvhZyLVkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740732457; c=relaxed/simple;
-	bh=1OVn0KFkB01R+Uuw/kKOKy7v+s712lF+9kQIDXUwMBo=;
+	s=arc-20240116; t=1740732599; c=relaxed/simple;
+	bh=OkZ7viSAwThO1HuTRwiMxo7YV5UdLi3crU2EgETs0CE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iwjTXSacHCePmDZLBpcH6qmly5fUS9lEnAJIO1lmJ/Ik01ZpR/3+4xTKkDHeU9zVDvgXTQajhAMz4VT1iOEO4oxP1uPoxkRWCPPmT/CKug0XrvCVnV6TqgInh/XQmkFlmd21zoLEmCH4uOQ+U/qE7kx9GWj1jJfBquALNhli23A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PvHNopjC; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=FQKKZFNrN0qJMOI41UGU8Qn/iLHKS+nbhOukL0GTZ6V/VAeM1zc/zroJS9hXaMZhCpKOGQ2ZoiOjTwzWv2EER76taPYmnLoMhGY/Z7k7h+vFp3Ys3nqnH4+1am8gry0GOn7IpfCL6L0jQ8jL/cUBpbRzq/+092tn1srMA+CeHyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TcpyctfZ; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PvHNopjC"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43948f77f1aso12258825e9.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 28 Feb 2025 00:47:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TcpyctfZ"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2fe5d75ff8cso488221a91.3;
+        Fri, 28 Feb 2025 00:49:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740732454; x=1741337254; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1740732597; x=1741337397; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Kl2IwG7HZDSCHcpQxlhObcRhTNm+twA6A6MmUqt9Yl0=;
-        b=PvHNopjC+wa2RpGw3cu4DvQL6/whJ+WBeFYnAn7pyGAPD1XbKB3+mOdkdHlTENrGHf
-         qRvEzlSEWraNJO7bpDcwYtV2xnAiqymb1VePiSIp/D9y7Ef7wgjQk4jbzQfyFiDQjXYL
-         cRqyzCqJxx7/nOtx5cWpwSUNWKNfeCELNo7WjBp2Blkkw1YruUcoHoQdOqLIgTS/zkId
-         TVLxIEO1k/fd8CALKrHLMlVQgdY1sur5XjcGMomwDLUNdNmubmMVHvELVYH3pSXU6P+s
-         HGcpW0rcOLlFq8o5RPQ4jlY8n8z9BjFbq2Vy7t3njF/TgzcvRK1pV1Sl+D/j1oUfD773
-         HKYA==
+        bh=OkZ7viSAwThO1HuTRwiMxo7YV5UdLi3crU2EgETs0CE=;
+        b=TcpyctfZMSRchhdwqBmPtVTfU9tQ2IZIZJbWpqtK9IsjEiKLXXx9i8l0UeCMnjTPA1
+         m5/6uhWcQYEnbDwNwjxj+ip/F4uQbKLv9M2to9Ki2OH4rVMiUOpnuRjsIUqe9fLLpll5
+         4blvefZfRRZuEblUo3NlaUvs0O5WuwwEyBhT2W99rE9qd/EDMRVxqWcGRB0oMv4u9a9R
+         1BEzQF4kclE+1s12YbInQYUcb970IvTrtVnwwhK+h8nEoUiIXcGTArA1LUzZxiLLu6YG
+         6y3+WitEEK/U1SS8oRzBkdponxeOJMaKrkSaHxpCTh0O+ccyNQaGPgm75I6vHp+gTPXH
+         R/HQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740732454; x=1741337254;
+        d=1e100.net; s=20230601; t=1740732597; x=1741337397;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Kl2IwG7HZDSCHcpQxlhObcRhTNm+twA6A6MmUqt9Yl0=;
-        b=BsIUKxALsZcxzkX0OsHyJM0nFf6PN612buuvAQXhhxPv733HopjHkVpFNqWTVTRJhA
-         /9JadLBXbFowWoj7UoffEN8fYlJKDjs/3clFKkMzbYDvauVJi/iTaasfjff4KiC7QbjW
-         fdEyL/UiW5EtAHp+wswIoW4Tv6bbW+FRjri2zR/HDpc1vjQ7bfxUJFY11zJUcX6uHsUt
-         jviTVHprFR2sECMwnAw2JJ4awgjlT9E0gG1l0jHqJ9PHk+f4PL8nm60qQQ5+AlHSmLc5
-         PlIpcvtc74OBntOyaM4JYnyvNXRozcoRKOrudX3DPzw4c8g8wxy9q2U4pS0Pxh7EUk0M
-         sPBA==
-X-Forwarded-Encrypted: i=1; AJvYcCXcsNEmaDHZe9usfEBUAf6v8NQWneSS3wSRiMHriJi+QDFKFXdcxdu7U2Pt0FGzgQ3alQL0YMGqg94Wf9bI8w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyxKsERqVsofsAzb0ink2poFc/dVVRGcZyNPuyqri/SrPqt0j7y
-	oHcuIqjK43h3Iwua+4J3E9Jf1A7Qhtbh2xzWcCISsH+FBvHRV49dZY0MfAKmbeEQZ988+plSFfu
-	UkY1mYE4FERP6CALHj8W9WzKkwVWPXSScXEUc
-X-Gm-Gg: ASbGnctp0Wl/G794BI/eMEIIE49IcycITgrbmzgV5iExzoNBgrUGpu4U3PXvBMpUArK
-	70uMNEZ4WioEmKwFPBLd93HnTIGwk1GCdEOXL753fveVHavP8nxy+nANGP3caKj7fz2bwLRciZ0
-	cuGlQoDE4hFN24dwJTv7y0Nr3yMAgWafjTmCQM
-X-Google-Smtp-Source: AGHT+IGwcgUW5OnvmV3QPHuKOrrO6Iuoq2TPQDupN4J9DP9Kay+XkSy1sz9g+96PyICWN0k33yRcOLiRB6A5tuChr1M=
-X-Received: by 2002:a05:600c:1c93:b0:439:a1ef:c238 with SMTP id
- 5b1f17b1804b1-43ba6704511mr18768095e9.13.1740732449733; Fri, 28 Feb 2025
- 00:47:29 -0800 (PST)
+        bh=OkZ7viSAwThO1HuTRwiMxo7YV5UdLi3crU2EgETs0CE=;
+        b=m2LNAPOa47YHM4EgK5UDU9wWYgw4PiT2omnoPPXhhVKaWMD47VmMTafrak76616UOI
+         S0mDvChEEa9oTzjuYYkaOeW+LCU0zYnVU6m76oHJzhY5INYT0236klwFSxbpqEYvjldc
+         b6A12RRJQh1q6Ktgx4F0GwW8VeGU2PY/5Z0tVMS4C272UOJDfLsWRLCW44AlJWp7yURX
+         45FP40GhULGytZyQd5PqKVjWZwyVHscfJ+VjLJpOxD603jmjosMf/zyQTp8mD5mt89/Y
+         S9flo7dUyOqH2kNe0E8uZpL7+8Q6wRY6YfOYDMirYP//lO1QTKDC12YhHFEZRaE/ZJt/
+         O+ug==
+X-Forwarded-Encrypted: i=1; AJvYcCVnuMVuo/Q13gkRjfFfyTyeJH6tERlRZmBkkwohNyC/y/Vx6JpS1ii65eLJo5891kze6+0ibGjrPmLssJ+G@vger.kernel.org, AJvYcCVrncKYtrIialFaLTkaF43XvOWi6l1SLgbRQyC57CgscZxEDWZ07FdTIOvpVGUeKkbSv5Ozd5AB4hMx@vger.kernel.org, AJvYcCWfa1iWb5UAg752Uzc1reinICYFEyeD8cWL7qCZOsYM8YxdUIaQqkG+y0S7WEoxKcaJykWi1e8xnQiTXwIsnpM=@vger.kernel.org, AJvYcCXD730TM8vPldVZBK2cse+ehEwUkGR3YayqVOwAUw9xoyfPoPo4Q13BitK4l5f2DC7PksK5AaxmTE0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsAOCl2hXqSev2rGrAoKfwYgL7o9yFDy1Yic2P8TayaFksa2R5
+	bvkSQHmtLZEDw0+puyx/cUr8ylsIYbsRq+WinXhFpwB68VCNZoiASxT9KPJ46KcjFUQsbbMKyVg
+	TOdiK1xZJsocjJCY2N4ZL1d6Ok9I=
+X-Gm-Gg: ASbGncsbudSzaSfecCzfwj+R0wexc9DJztA4LGuy9StJ1CpNXZ2rHspM6bXNHrW5P5B
+	Dw/l5QHcmQN6+lkw6QL4YY6CIBS3KAAPJeOPrCklFkI0B3vnrcLAuOuIgBPb7Clif75JRsJRlBO
+	MCtfNUuc0=
+X-Google-Smtp-Source: AGHT+IF+NOfClpb8U69CQGZooKOQR4Nu2Rj1Fl87Jywmv1/rEuo/WfwllvXTrT8EBnKPwmf2/FPXZ6Bosl0KS72P1KA=
+X-Received: by 2002:a17:90b:1c0e:b0:2fc:25b3:6a91 with SMTP id
+ 98e67ed59e1d1-2febac0576amr1696622a91.5.1740732597434; Fri, 28 Feb 2025
+ 00:49:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250227-export-macro-v1-0-948775fc37aa@google.com> <2025022714-specked-refocus-b701@gregkh>
-In-Reply-To: <2025022714-specked-refocus-b701@gregkh>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 28 Feb 2025 09:47:17 +0100
-X-Gm-Features: AQ5f1JpfAFri8l7nY7vFVmBZQXd_HNmIqbMhkShc48OxhVuvQ8No9II9fNH8noU
-Message-ID: <CAH5fLgiFEUrKRdOPJ7HLaD5GqgOmz8wPNXqvkREksL=C1KmvMg@mail.gmail.com>
-Subject: Re: [PATCH 0/4] Check Rust signatures at compile time
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Petr Mladek <pmladek@suse.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org
+References: <20250227030952.2319050-1-alistair@alistair23.me>
+ <20250227030952.2319050-10-alistair@alistair23.me> <2025022717-dictate-cortex-5c05@gregkh>
+ <CAH5fLgiQAdZMUEBsWS0v1M4xX+1Y5mzE3nBHduzzk+rG0ueskg@mail.gmail.com>
+ <2025022752-pureblood-renovator-84a8@gregkh> <CAH5fLghbScOTBnLLRDMdhE4RBhaPfhaqPr=Xivh8VL09wd5XGQ@mail.gmail.com>
+ <2025022741-handwoven-game-df08@gregkh> <CANiq72n4UFUraYeHa6ar3=F61C_UxEJ1rq92aOF_hH9rtjN+Dg@mail.gmail.com>
+ <2025022731-culprit-pushpin-58e2@gregkh>
+In-Reply-To: <2025022731-culprit-pushpin-58e2@gregkh>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 28 Feb 2025 09:49:43 +0100
+X-Gm-Features: AQ5f1Jrt6fRsN8RCE3WNcebza72iRpvX1psFHMFlrLhwWAJuvkdD55CLaLlLLdg
+Message-ID: <CANiq72kksJSOPzQTx_eGm92Od3qtwhxz13oALXyvueEvubj4kw@mail.gmail.com>
+Subject: Re: [RFC v2 09/20] PCI/CMA: Expose in sysfs whether devices are authenticated
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Alistair Francis <alistair@alistair23.me>, 
+	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, lukas@wunner.de, 
+	linux-pci@vger.kernel.org, bhelgaas@google.com, Jonathan.Cameron@huawei.com, 
+	rust-for-linux@vger.kernel.org, akpm@linux-foundation.org, 
+	boqun.feng@gmail.com, bjorn3_gh@protonmail.com, wilfred.mallawa@wdc.com, 
+	ojeda@kernel.org, alistair23@gmail.com, a.hindborg@kernel.org, 
+	tmgross@umich.edu, gary@garyguo.net, alex.gaynor@gmail.com, 
+	benno.lossin@proton.me, Alistair Francis <alistair.francis@wdc.com>, 
+	=?UTF-8?Q?Emilio_Cobos_=C3=81lvarez?= <emilio@crisal.io>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 27, 2025 at 8:31=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Thu, Feb 27, 2025 at 8:32=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
 >
-> On Thu, Feb 27, 2025 at 05:01:58PM +0000, Alice Ryhl wrote:
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> On Thu, Feb 27, 2025 at 05:47:01PM +0100, Miguel Ojeda wrote:
+> >
+> > I can look into it, after other build system things are done.
 >
-> It's a bit odd to sign off on a 0/X email with no patch or description
-> :)
->
-> Seriously, nice work!  This resolves the issues I had, and it looks like
-> you found a needed fix already where things were not quite defined
-> properly.
->
-> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Looks like Alice already sent a series to do this, so no need.
 
-Greg, did you have any input on the choice of header file in the third patc=
-h?
+Above I meant the having bidirectional bindings as automated as
+possible, which I suspect we could eventually want if Rust keeps
+growing. For the time being checking is more than enough, yeah.
 
-Alice
+Cheers,
+Miguel
