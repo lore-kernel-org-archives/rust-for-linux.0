@@ -1,204 +1,275 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8306F25D218
-	for <rust-for-linux@vger.kernel.org>; Fri, 28 Feb 2025 10:53:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB1026038A;
+	Fri, 28 Feb 2025 11:11:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740739984; cv=none; b=LEo7JNh4wF7nYuT+bxfAd5VLvHBjJUcxKjMteswv3q0d/Fkfa+c687sUf9ilKeIO+3Ca3B0UjcI59GznIFxbNOFhT98o5t3/KwKNjf52KElm9mcavi8J9Wn6d9QMJRm+PC5vKpleNzk62DGqq3GPpb3JOH4u/3TBzj6Q4rQxdUc=
+	t=1740741074; cv=none; b=sAG6ZBEiaU84OtifZWOMHix8TJmEq3+3hS1k2CG98ipZkMqeV6ewa+eJeUjctxJtd8MtTjhDbAixjnduuB3DIwYl8ArURKbLYPUylFvM39wYt2eWMDe88EIfk91fCuzk6eue0U0K0tw14uBJkGGMDvZF9CKy+WJE1G9rqqEvYEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740739984; c=relaxed/simple;
-	bh=etzCuJOZIdAqEw0MayW324uOf86sWw2yZObHOVHQCfQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UwMWOppKg9H25pLfcE3w6vHYT0TL81nIHam5J8o63K7rdpy5SuaBZ3kEiEdz3P2OXMqVtsdlA65FP8kuWRMfcYLW2j7uk8U64Zrbdlr+fTKEKbLmrqAXTCKwAAQpu37GVmGboxxsUh6ilLOQBd8DM1NyS+Lc0razSPFcGBUQQjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=RUk45548; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
+	s=arc-20240116; t=1740741074; c=relaxed/simple;
+	bh=/vDcCubYLhs8N2hcwP3oNF+FZaC3degOyiCIi3m7V0M=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=rPNzE+n1TwXwh+BGN7C+OsCaz7EF/c72MLzWtxSikPazPo49C+nWo+Wp4PpXVmGpKzbDoZOIwDE67QPAxrl/W1bPB+4/KHi78KD/K+hKUeEsT4pBlRnQbJwNM6NvE7/as14CaNdQgSLDVK4y1hulgFEjwmeR/3l7mVt9W8wB2lM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RFKUjfnn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="RUk45548"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-438a39e659cso13666505e9.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 28 Feb 2025 02:53:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1740739981; x=1741344781; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6fGKkYkU92AKIEtoBhTzOtqV6Umxi/0b1IQGfdOiR18=;
-        b=RUk45548NQvW9HA3EkjSKTJaJbuEbCvy+Q+qBiTsh9V+wInO4TI9/ZpIszs689B1x/
-         Js6qiGIW9howt1vAiX4GbBYmzVveMQouY66jaUei4nrSmt7wpP+XgXNAfOzsWFmx1Ohg
-         3Qjg0no4XzOZqdzupT6hL/3YUh0x86p7skZjA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740739981; x=1741344781;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6fGKkYkU92AKIEtoBhTzOtqV6Umxi/0b1IQGfdOiR18=;
-        b=vEd8JPLksTj+FFplVJYNvKmVlT+rpDCUWvjGMEweqSFNwcnDxqkWIbqmUL3ATXz+Ld
-         YSN1ImPLOjp/cLOChPP6KwF53nYhqVwbCv36EYdtXTVDl8Wf/+3D7EFCiz8Td/0JMQ5C
-         7QwX/gfzHg9DOIg8/VEQ9awSw4SlnNUeKHYLOgkSx/sYupfOGdXMdvA5+5H1dMQZ30eU
-         qlcvEhtP46KPRWtPhwP7s8VZ/aBlyWtbqHcPcxhVO56YwUodjB0yZn2sIXaFpc9VWrep
-         1Nrno8VFZBEvJ7iW3m6vUuD6miiN3WVqrmj4+0lLJBAqDUC+3brSTe6UCKJuAkxPpkeg
-         8s7g==
-X-Forwarded-Encrypted: i=1; AJvYcCUYDzszia5AmPs0MXORCCdu2B9knOhpRhLO53JrU0mTSWRKOhoYIZVbNG2eTJhmA5uLwZXKItS5B7tj87i9uQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxvFpS03VgPIZ8dlVuMvvD8Bnw9K+TDOwXSlEAuzGNI5Ld0BNps
-	HPsCc6XaSc0brQo9g2z1guSbUvGOA8W+QdzEy2nlB/wTK77dJoFGnwN/KykMpqA=
-X-Gm-Gg: ASbGncuN7bU9M4i+nsFzRlrDcjwC+y1i4utn778mCK+rwVTGAulNwf2MhKpv8kZPcCD
-	M/0OzKFpjhP+XDFzRSe/lwWBgs1etEhNGPUstFJGpQgdEvVPHb4PkbQ1XObdfR2xpGttergEYvy
-	9ulRLXPZzgHFESD/rWvOUBNZlP4RMdZa+fndlmeab2E7xMVAOhZGxClOR68HXvUQoC6Afsvp1oA
-	Ss5oQHQaUuiqx1UC4/1xyYw406kxlX/qRSkpb4J19HUo8cgmfzbQifjWP4wnWfsu89C0IbvyyMD
-	pQjoTLGm1nYyDUSp0xbhYyb63ASqn2Eps4kN2A==
-X-Google-Smtp-Source: AGHT+IGzMK22OAqSxJRJToDbcyGmm49ADbSw6MIeJDyMnFgiltwXHFIghIXm6aj4rubMHLy1CtzTYg==
-X-Received: by 2002:a05:600c:468e:b0:439:8e3e:b0d6 with SMTP id 5b1f17b1804b1-43ba67045femr23509435e9.13.1740739980068;
-        Fri, 28 Feb 2025 02:53:00 -0800 (PST)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43aba5393e5sm83131255e9.20.2025.02.28.02.52.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Feb 2025 02:52:59 -0800 (PST)
-Date: Fri, 28 Feb 2025 11:52:57 +0100
-From: Simona Vetter <simona.vetter@ffwll.ch>
-To: John Hubbard <jhubbard@nvidia.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Jason Gunthorpe <jgg@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Ben Skeggs <bskeggs@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	paulmck@kernel.org
-Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
- implementation
-Message-ID: <Z8GViQzZJVFPxfNd@phenom.ffwll.local>
-Mail-Followup-To: John Hubbard <jhubbard@nvidia.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Ben Skeggs <bskeggs@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	paulmck@kernel.org
-References: <20250225210228.GA1801922@joelnvbox>
- <20250225225756.GA4959@nvidia.com>
- <Z75WKSRlUVEqpysJ@cassiopeiae>
- <20250226004916.GB4959@nvidia.com>
- <Z75riltJo0WvOsS5@cassiopeiae>
- <20250226172120.GD28425@nvidia.com>
- <Z7-IHgcVVS8XBurW@cassiopeiae>
- <20250226234730.GC39591@nvidia.com>
- <2025022644-fleshed-petite-a944@gregkh>
- <D82UB3V6NZ55.3OEPPW2W8MFZV@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RFKUjfnn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D6A8C4CED6;
+	Fri, 28 Feb 2025 11:11:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740741073;
+	bh=/vDcCubYLhs8N2hcwP3oNF+FZaC3degOyiCIi3m7V0M=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=RFKUjfnnCWKa7g7KIX2wQ3ZOQmfiWg5gIN6jWL46WSTB/MjgGcOH7CDe1qLf+wPob
+	 eBOg+ocilJQ+0HmKcOzf9B0tpiXJM9arLy+YGdsKe47j87wjrMkBMXrPDbpTzolPY3
+	 K/AyeHBQnhdorddQgKiCqmb1SOW2g2111zIhB+qSsFIrs27Pw0IwbYfDsupvyXsd8c
+	 9q/xt0qFyhAcuLBmEdRR0tuPWClAuXJnNGETN6XS0eAZ0y66+/pheMnyl3eO1vIZUc
+	 VOdgwf4jBTanbdkJ/vASYmDyZdC9uRRZwDUOcRR6DCo/uzEJ2JKONq+Tp4f0wnIWUd
+	 M6Q8OLpBktEpQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Oliver Mangold" <oliver.mangold@pm.me>
+Cc: <linux-kernel@vger.kernel.org>,  <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH] Rust: Implement a unique reference type URef
+ supplementing ARef
+In-Reply-To: <SpXhwnZO__ST8sHQ3HQ3ygThOcnmn0x2JlJ_nwJglL87vw5XfQA8sDH6HdkrGgFVycLhPBlCc6-UtEImTvY26A==@protonmail.internalid>
+	(Oliver Mangold's message of "Fri, 21 Feb 2025 08:04:34 +0000")
+References: <jeyp4dToznpiAQYWHAABrEBIHVfxaIf7ntexop3d2AXQgnlytw3J8YFkX8E8EFKc1-USf_fVZqKhEmuNGE3O0w==@protonmail.internalid>
+	<SpXhwnZO__ST8sHQ3HQ3ygThOcnmn0x2JlJ_nwJglL87vw5XfQA8sDH6HdkrGgFVycLhPBlCc6-UtEImTvY26A==@protonmail.internalid>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Fri, 28 Feb 2025 12:10:59 +0100
+Message-ID: <87wmdamiik.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <D82UB3V6NZ55.3OEPPW2W8MFZV@nvidia.com>
-X-Operating-System: Linux phenom 6.12.11-amd64 
+Content-Type: text/plain
 
-On Wed, Feb 26, 2025 at 05:34:01PM -0800, John Hubbard wrote:
-> On Wed Feb 26, 2025 at 5:02 PM PST, Greg KH wrote:
-> > On Wed, Feb 26, 2025 at 07:47:30PM -0400, Jason Gunthorpe wrote:
-> >> The way misc device works you can't unload the module until all the
-> >> FDs are closed and the misc code directly handles races with opening
-> >> new FDs while modules are unloading. It is quite a different scheme
-> >> than discussed in this thread.
-> >
-> > And I would argue that is it the _right_ scheme to be following overall
-> > here.  Removing modules with in-flight devices/drivers is to me is odd,
-> > and only good for developers doing work, not for real systems, right?
-> 
-> Right...I think. I'm not experienced with misc, but I do know that the
-> "run driver code after driver release" is very, very concerning.
-> 
-> I'm quite new to drivers/gpu/drm, so this is the first time I've learned
-> about this DRM behavior...
+Hi Oliver,
 
-It's really, really complicated, and not well documented. Probably should
-fix that. The issue is that you have at least 4 different lifetimes
-involved here, and people mix them up all the time and get confused. I
-discuss 3 of those here:
+"Oliver Mangold" <oliver.mangold@pm.me> writes:
 
-https://lists.freedesktop.org/archives/intel-xe/2024-April/034195.html
+> For usage with block-mq, we found that having a variant of ARef which is guaranteed to be unique is useful. As chances are it is useful in general, I implemented it as kernel::types::URef. The difference between ARef and URef is basically the same as between Arc and UniqueArc.
 
-The 4th is the lifetime of the module .text section, for which we need
-try_module_get. Now the issue with that is that developers much prefer
-convenience over correctness on this, and routinely complain _very_ loudly
-about "unnecessary" module references. They're not, but to break the cycle
-that Jason points out a bit earlier you need 2 steps:
+Wrap at 75 characters please :)
 
-- Nuke the driver binding manually through sysfs with the unbind files.
-- Nuke all userspace that might beholding files and other resources open.
-- At this point the module refcount should be zero and you can unload it.
+>
+> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
+> ---
+>  rust/kernel/block/mq/request.rs | 97 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++------------------------------------
+>  1 file changed, 61 insertions(+), 36 deletions(-)
+>
+> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> index 55ddd50e8aaa..80dc9edef1b9 100644
+> --- a/rust/kernel/types.rs
+> +++ b/rust/kernel/types.rs
+> @@ -543,6 +543,12 @@ fn from(b: &T) -> Self {
+>      }
+>  }
+>
+> +impl<T: UniqueRefCounted> From<URef<T>> for ARef<T> {
+> +    fn from(b: URef<T>) -> Self {
+> +        UniqueRefCounted::unique_to_shared(b)
+> +    }
+> +}
+> +
+>  impl<T: AlwaysRefCounted> Drop for ARef<T> {
+>      fn drop(&mut self) {
+>          // SAFETY: The type invariants guarantee that the `ARef` owns the reference we're about to
+> @@ -551,6 +557,119 @@ fn drop(&mut self) {
+>      }
+>  }
+>
+> +/// Types that are `AlwaysRefCounted` and can be safely converted to an `URef`
+> +///
 
-Except developers really don't like the manual unbind step, and so we're
-missing try_module_get() in a bunch of places where it really should be.
+When the trait is unsafe, we need to specify the conditions under which
+it is safe to implement:
 
-Now wrt why you can't just solve this all at the subsystem level and
-guarantee that after drm_dev_unplug no code is running in driver callbacks
-anymore:
+# Safety
 
-In really, really simple subsystems like backlight this is doable. In drm
-with arbitrary ioctl this isn't, and you get to make a choice:
+- Requirement 1
+- Requirement 2
+- etc
 
-- You wait until all driver code finishes, which could be never if there's
-  ioctl that wait for render to complete and don't handle hotunplug
-  correctly. This is a deadlock.
+See `AlwaysRefCounted` for reference on formatting.
 
-  In my experience this is theorically possible, practically no one gets
-  this right and defacto means that actual hotunplug under load has a good
-  chance of just hanging forever. Which is why drm doesn't do this.
+> +pub unsafe trait UniqueRefCounted: AlwaysRefCounted + Sized {
+> +    /// Checks if the the [ARef] is unique and convert it
+> +    /// to an [URef] it that is that case.
 
-- You make the revoceable critical sections as small as possible, which
-  makes hotunplug much, much less likely do deadlock. But means that after
-  revoking hw access you still have arbitrary driver code running in
-  callbacks, and you need to deal with.
+Please use back ticks for types: [`ARef`], [`URref`]
 
-  This is why I like the rust Revocable so much, because it's a normal rcu
-  section, so disallows all sleeping. You might still deadlock on a busy
-  loop waiting for hw without having a timeout. But that's generally
-  fairly easy to spot, and good drivers have macros/helpers for this so
-  that there is always a timeout.
+> +    /// Otherwise it returns again an [ARef] to the same
+> +    /// underlying object.
+> +    fn try_shared_to_unique(this: ARef<Self>) -> Result<URef<Self>,ARef<Self>>;
+> +    /// Converts the [URef] into an [ARef].
+> +    fn unique_to_shared(this: URef<Self>) -> ARef<Self>;
+> +}
+> +
+> +/// An unique owned reference to an always-reference-counted object.
+> +///
+> +/// It works the same ways as [`ARef`] but ensures that the reference is unique
+> +/// and thus can be dereferenced mutably.
+> +///
+> +/// # Invariants
+> +///
+> +/// The pointer stored in `ptr` is non-null and valid for the lifetime of the [`ARef`] instance. In
+> +/// particular, the [`ARef`] instance owns an increment on the underlying object's reference count.
+> +pub struct URef<T: UniqueRefCounted> {
+> +    ptr: NonNull<T>,
+> +    _p: PhantomData<T>,
+> +}
+> +
+> +// SAFETY: It is safe to send `URef<T>` to another thread when the underlying `T` is `Sync` because
+> +// it effectively means sharing `&T` (which is safe because `T` is `Sync`); additionally, it needs
+> +// `T` to be `Send` because any thread that has an `URef<T>` may ultimately access `T` using a
+> +// mutable reference, for example, when the reference count reaches zero and `T` is dropped.
+> +unsafe impl<T: UniqueRefCounted + Sync + Send> Send for URef<T> {}
+> +
+> +// SAFETY: It is safe to send `&URef<T>` to another thread when the underlying `T` is `Sync`
+> +// because it effectively means sharing `&T` (which is safe because `T` is `Sync`); additionally,
+> +// it needs `T` to be `Send` because any thread that has a `&URef<T>` may clone it and get an
+> +// `URef<T>` on that thread, so the thread may ultimately access `T` using a mutable reference, for
+> +// example, when the reference count reaches zero and `T` is dropped.
+> +unsafe impl<T: UniqueRefCounted + Sync + Send> Sync for URef<T> {}
+> +
+> +impl<T: UniqueRefCounted> URef<T> {
 
-  drm_dev_unplug uses sleepable rcu for practicality reasons and so has a
-  much, much higher chance of deadlocks. Note that strictly speaking
-  drm_device should hold a module reference on the driver, but see above
-  for why we don't have that - developers prefer convenience over
-  correctness in this area.
+I would prefer `UniqueRef`. I know `ARef` has a different naming scheme,
+but I think `UniqueRef` is sufficiently short and significantly more
+descriptive than `URef`.
 
-> > Yes, networking did add that functionality to allow modules to be
-> > unloaded with network connections open, and I'm guessing RDMA followed
-> > that, but really, why?
-> >
-> > What is the requirement that means that you have to do this for function
-> > pointers?  I can understand the disconnect issue between devices and
-> > drivers and open file handles (or sockets), as that is a normal thing,
-> > but not removing code from the system, that is not normal.
-> >
-> 
-> I really hope that this "run after release" is something that Rust for
-> Linux drivers, and in particular, the gpu/nova*, gpu/drm/nova* drivers,
-> can *leave behind*.
-> 
-> DRM may have had ${reasons} for this approach, but this nova effort is
-> rebuilding from the ground up. So we should avoid just blindly following
-> this aspect of the original DRM design.
+> +    /// Creates a new instance of [`URef`].
+> +    ///
+> +    /// It takes over an increment of the reference count on the underlying object.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that the reference count is set to such a value
+> +    /// that a call to AlwaysRefCounted::dec_ref() will release the underlying object
+> +    /// in the way which is expected when the last reference is dropped.
+> +    /// Callers must not use the underlying object anymore --
+> +    /// it is only safe to do so via the newly created [`URef`].
+> +    pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
+> +        // INVARIANT: The safety requirements guarantee that the new instance now owns the
+> +        // increment on the refcount.
+> +        Self {
+> +            ptr,
+> +            _p: PhantomData,
+> +        }
+> +    }
+> +
+> +    /// Consumes the `URef`, returning a raw pointer.
+> +    ///
+> +    /// This function does not change the refcount. After calling this function, the caller is
+> +    /// responsible for the refcount previously managed by the `URef`.
+> +    pub fn into_raw(me: Self) -> NonNull<T> {
+> +        ManuallyDrop::new(me).ptr
+> +    }
+> +}
+> +
+> +impl<T: UniqueRefCounted> Deref for URef<T> {
+> +    type Target = T;
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        // SAFETY: The type invariants guarantee that the object is valid.
+> +        unsafe { self.ptr.as_ref() }
+> +    }
+> +}
+> +
+> +impl<T: UniqueRefCounted> DerefMut for URef<T> {
+> +
+> +    fn deref_mut(&mut self) -> &mut Self::Target {
+> +        // SAFETY: The type invariants guarantee that the object is valid.
+> +        unsafe { self.ptr.as_mut() }
+> +    }
+> +}
+> +
+> +impl<T: UniqueRefCounted> From<&T> for URef<T> {
+> +    /// Converts the [URef] into an [ARef] by calling [UniqueRefCounted::unique_to_shared] on it.
+> +    fn from(b: &T) -> Self {
+> +        b.inc_ref();
+> +        // SAFETY: We just incremented the refcount above.
+> +        unsafe { Self::from_raw(NonNull::from(b)) }
+> +    }
+> +}
+> +
+> +impl<T: UniqueRefCounted> TryFrom<ARef<T>> for URef<T> {
+> +    type Error = ARef<T>;
+> +    /// Tries to convert the [ARef] to an [URef] by calling [UniqueRefCounted::try_shared_to_unique].
+> +    /// In case the [ARef] is not unique it returns again an [ARef] to the same
+> +    /// underlying object.
+> +    fn try_from(b: ARef<T>) -> Result<URef<T>,Self::Error> {
+> +        UniqueRefCounted::try_shared_to_unique(b)
+> +    }
+> +}
+> +
+> +impl<T: UniqueRefCounted> Drop for URef<T> {
+> +    fn drop(&mut self) {
+> +        // SAFETY: The type invariants guarantee that the `URef` owns the reference we're about to
+> +        // decrement.
+> +        unsafe { T::dec_ref(self.ptr) };
+> +    }
+> +}
+> +
+>  /// A sum type that always holds either a value of type `L` or `R`.
+>  ///
+>  /// # Examples
+> ---
 
-We can and should definitely try to make this much better. I think we can
-get to full correctness wrt the first 3 lifetime things in rust. I'm not
-sure whether handling module unload/.text lifetime is worth the bother,
-it's probably only going to upset developers if we try. At least that's
-been my experience.
+For your next version, can you run `make rustfmt`?:
 
-Cheers, Sima
--- 
-Simona Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+
+diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+index 58556d417cae..49903fd0446e 100644
+--- a/rust/kernel/types.rs
++++ b/rust/kernel/types.rs
+@@ -542,13 +542,12 @@ fn drop(&mut self) {
+ }
+ 
+ /// Types that are `AlwaysRefCounted` and can be safely converted to an `URef`
+-///
+ pub unsafe trait UniqueRefCounted: AlwaysRefCounted + Sized {
+     /// Checks if the the [ARef] is unique and convert it
+     /// to an [URef] it that is that case.
+     /// Otherwise it returns again an [ARef] to the same
+     /// underlying object.
+-    fn try_shared_to_unique(this: ARef<Self>) -> Result<URef<Self>,ARef<Self>>;
++    fn try_shared_to_unique(this: ARef<Self>) -> Result<URef<Self>, ARef<Self>>;
+     /// Converts the [URef] into an [ARef].
+     fn unique_to_shared(this: URef<Self>) -> ARef<Self>;
+ }
+@@ -620,7 +619,6 @@ fn deref(&self) -> &Self::Target {
+ }
+ 
+ impl<T: UniqueRefCounted> DerefMut for URef<T> {
+-
+     fn deref_mut(&mut self) -> &mut Self::Target {
+         // SAFETY: The type invariants guarantee that the object is valid.
+         unsafe { self.ptr.as_mut() }
+@@ -638,10 +636,10 @@ fn from(b: &T) -> Self {
+ 
+ impl<T: UniqueRefCounted> TryFrom<ARef<T>> for URef<T> {
+     type Error = ARef<T>;
+-    /// Tries to convert the [ARef] to an [URef] by calling [UniqueRefCounted::try_shared_to_unique].
+-    /// In case the [ARef] is not unique it returns again an [ARef] to the same
+-    /// underlying object.
+-    fn try_from(b: ARef<T>) -> Result<URef<T>,Self::Error> {
++    /// Tries to convert the [ARef] to an [URef] by calling
++    /// [UniqueRefCounted::try_shared_to_unique]. In case the [ARef] is not unique it returns
++    /// again an [ARef] to the same underlying object.
++    fn try_from(b: ARef<T>) -> Result<URef<T>, Self::Error> {
+         UniqueRefCounted::try_shared_to_unique(b)
+     }
+ }
+
+
+Also it would be great if you include your "rust: for fix dec_ref for
+URef<Request>" folded in.
+
+Best regards,
+Andreas Hindborg
+
+
