@@ -1,98 +1,123 @@
-Received: from r-passerv.ralfj.de (r-passerv.ralfj.de [109.230.236.95])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC09276D12;
-	Fri, 28 Feb 2025 07:53:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.230.236.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9916D1C8636
+	for <rust-for-linux@vger.kernel.org>; Fri, 28 Feb 2025 07:56:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740729195; cv=none; b=W1PPEyGC+/cagUrWeJgfQoJdcwiGT1oWDn1HH/wVtMGYdKn+w81Nc/l+r6Y3kRSM8IKd4245MVvPGYcKkDWI0hqnVVdiW58uVKHG4+PJ33chwdB7dQ7sMfYhNClmXdYr5fAruUnj434rNOAhTxgswpzxWTZPnvl/n2nA1+u+G9M=
+	t=1740729419; cv=none; b=PVbj7lALf51QkyTwVn1RwaCHXp/B0dsR3fPhGq5415aDKmyhDQsVSCr61z2hPP7HAMZkguvD60sQYTmUgDlaqgRJiisBlRVysKMxb+tLYW9uVzpyvbnhMp0+/wxS7cd/LeI0xVa5abdqqY/72Tl3meBb2pIiNhZt0tAYPB/zjCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740729195; c=relaxed/simple;
-	bh=PUtZpIADiI6Ujj2mPs39lwBthjJFOnSo983vSigK3gw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Q2FLzUTTpcuY/b8hyTgTBL15F82kpM2u+au/MlIyqgehHcIkebmSckWYkPpU76sCqAaIRTPROOrKEaKcPmUf8YXBF7AJdmbiqC6NzD+KCDk5cGgr/64EjqZpypKPGBpUaD4vRDOsjwXwzhxzgqtNrhS8TPXmytzqW8prz1pJMOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=TmzHf/je; arc=none smtp.client-ip=109.230.236.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ralfj.de
+	s=arc-20240116; t=1740729419; c=relaxed/simple;
+	bh=+EDAJ73DStfMSqA6gAhC1SZrXNktmDUfQj5Ip4QS3bw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Kui8x3CvvUpVij029+Cctk5xDeC2jZch281bBNAfmofp6sIe3OtAvpmUuDE+XnmbcFEpAshg/zm0FwvVxvCxMPOsVmaIWsJhd8ZyHccNuHgUTb4B/Fs7EQnyMIeeLJ/G5k4WLQQRyOSHw3CpoC8ImpEVHNMjte/RjpKWnLxbkhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=q232I1OA; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="TmzHf/je"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ralfj.de; s=mail;
-	t=1740729192; bh=PUtZpIADiI6Ujj2mPs39lwBthjJFOnSo983vSigK3gw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TmzHf/jeSbNeL86dRLzSU79EbpCJtZwt7IMkXWI0zRBF0NyjDo++w0SppZyOE35J9
-	 zaV7Gxe/vLTRc0oillVnzeoyov0DwEpi4x4A1y6aHstGVRFrwcar9frkLfAFCvlp9N
-	 25/5TrRB1bPA56OzzQ0mXUpHfaIRxnw5czd/cc4k=
-Received: from [IPV6:2001:8e0:207e:3500:4ab6:48fe:df57:b084] (2001-8e0-207e-3500-4ab6-48fe-df57-b084.ewm.ftth.ip6.as8758.net [IPv6:2001:8e0:207e:3500:4ab6:48fe:df57:b084])
-	by r-passerv.ralfj.de (Postfix) with ESMTPSA id 0C2712052A86;
-	Fri, 28 Feb 2025 08:53:12 +0100 (CET)
-Message-ID: <2949f6dc-51fe-4a28-b44d-5a38796303e8@ralfj.de>
-Date: Fri, 28 Feb 2025 08:53:11 +0100
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="q232I1OA"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2234daaf269so48235005ad.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 27 Feb 2025 23:56:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1740729417; x=1741334217; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gTz6ofSciL2eXzNdkAhDR+tvNoRg5kiUiLQxdxgVGYk=;
+        b=q232I1OAdXc6xS9vCIzEWo4bqO/3Jo/qW8PLU9vBcqr4WV7QX4welDCFMPov+5VglB
+         jAT2WSvHVcFeDAvIfPyRXViHby9dEPWVUtX5CXMrCEcLGd/vlETl5Cbd0W2gwsYJp8hN
+         nvTu3ct4E/PQXtXIuWNlMTA/oTOKDDYiPJY9KAcLZP9gYpIiMUQo/SiyakGbj9y9tOwo
+         dckSnj3109+0tcuPOOWZzHQJkWPwzhmbhd5p5t2tWp57TFFgYk5tCouGmeefBNVMlZNZ
+         LG/96FGWdOE+quKivoJI3zZ6I1V+SOgqKQUbTiV2yUI+R7dX5jrezJBHSwHl/IviL1eB
+         x/6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740729417; x=1741334217;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gTz6ofSciL2eXzNdkAhDR+tvNoRg5kiUiLQxdxgVGYk=;
+        b=Cn0yxq/V2EmmNoY1DSYrZZ0A5/+QaWcUA6XaBdqSNPkgfztbnxiDsHHBEFdUpgLn03
+         Lz26EeSzmoLIN2vdkHvx/cToGiW/Y7Em5G0QwIvSf2IebIarXJccMOna2ObT2iQX35tM
+         fUoteRLAvBkiHXiLcbohRiagLMtvzvFgT64U0ufH2rcNApVhbTFosr/ntd3inaT4W7xM
+         BT8JHtN/gY/6BGweYbl6kL/Vp9rHEPdWMuToSrdrzjKzikqmkmnzNu5Lh0BaWWXltujS
+         NfyKFItmfN32YSF80PaoU5rTX8co5FSJojJAsx6rHK136FcJqjIHlj3CwZK7y1ut8ceh
+         rBdg==
+X-Forwarded-Encrypted: i=1; AJvYcCXrI1OCn8vJVyJWeo3ttR/LnZuI133l51WITdhw84KuC5Fu7WoC8dV9IexdnZyYCxDNCmSMGVvCK3EW33AC9Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQjnLDxZ9voao8LvfqayNaixLK15HdjbPxeoQ0mBKexHft+9oL
+	BStrnScqDhGSGnIIHww0kErelc3t86gE69Up3m62vK5flFdH2WDPdtcALytxVWg=
+X-Gm-Gg: ASbGncupq4vENKtQKBevjk2Y76+LEjsr/ARF5zVWl0C+Av+IN4mxMa7yFXCXf1KIdXZ
+	O4GSo4OtqsK6Ihan6NEEo+W2x0VLoBK++oa+GXE6QwbAlBkie1x+ndYnLvE32r7jxA9uEnn7Zo6
+	DKZMZRY/9+2UiIPKJuyjNbxLl9tJsb0uCZdXPafR1F2ldarPW8XvsfL/3guDZ3svU1fD7b+8Xl2
+	aRfvBLyMfKGcQs8GSwNeVqBdN3604UVSKJ88+Jfyry2TMSMMr9XfvHWYPn2EWUtDYMNe4YWlo5v
+	l/DbLDNx9fc/YbD1KbVRaIS8Wc4=
+X-Google-Smtp-Source: AGHT+IFGpTJLDvxLtvXLcdS7yjyRf63+ncOkZSbMRmureb3JGoaHRvxlTM1CAaR0IVK73tvTJ4D6CQ==
+X-Received: by 2002:a17:902:d512:b0:223:6254:79b8 with SMTP id d9443c01a7336-2236926f058mr34736085ad.47.1740729416895;
+        Thu, 27 Feb 2025 23:56:56 -0800 (PST)
+Received: from localhost ([122.172.84.15])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2235051ffc0sm27428085ad.226.2025.02.27.23.56.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Feb 2025 23:56:56 -0800 (PST)
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Benno Lossin <benno.lossin@proton.me>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Viresh Kumar <viresh.kumar@linaro.org>
+Cc: linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@redhat.com>,
+	rust-for-linux@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Burak Emir <bqe@google.com>
+Subject: [PATCH V2 0/2] Rust: Add cpumask abstractions
+Date: Fri, 28 Feb 2025 13:26:45 +0530
+Message-Id: <cover.1740726226.git.viresh.kumar@linaro.org>
+X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: C aggregate passing (Rust kernel policy)
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>,
- Martin Uecker <uecker@tugraz.at>, "Paul E. McKenney" <paulmck@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Ventura Jack <venturajack85@gmail.com>,
- Gary Guo <gary@garyguo.net>, airlied@gmail.com, boqun.feng@gmail.com,
- david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org,
- hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev,
- linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com,
- rust-for-linux@vger.kernel.org
-References: <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
- <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
- <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
- <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
- <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
- <CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com>
- <5d7363b0-785c-4101-8047-27cb7afb0364@ralfj.de>
- <CAHk-=wh=8sqvB-_TkwRnvL7jVA_xKbzsy9VH-GR93brSxTp60w@mail.gmail.com>
- <ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at>
- <CAHk-=whLSWX=-5-z4Q8x1f_NLrHd0e3afbEwYPkkVSXj=xT-JQ@mail.gmail.com>
- <m4cbniqfsr5xpb2m7k53e7plc6he5ioyl2efiiftdmzod56usd@htwdppje6re5>
- <CAHk-=whEkEsGHWBMZ17v5=sq1uRe6g-BRHy5xNZK-2JBKRs=_A@mail.gmail.com>
- <0f3bc0e8-5111-4e2f-83b5-36b3aec0cbbd@ralfj.de>
- <CAHk-=wj37zT4Fy+mBFVRKPy=NMKcB6xBzqOuFrW0jOTv8LKozg@mail.gmail.com>
-Content-Language: en-US, de-DE
-From: Ralf Jung <post@ralfj.de>
-In-Reply-To: <CAHk-=wj37zT4Fy+mBFVRKPy=NMKcB6xBzqOuFrW0jOTv8LKozg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi,
+Hello,
 
-On 27.02.25 20:15, Linus Torvalds wrote:
-> On Thu, 27 Feb 2025 at 10:33, Ralf Jung <post@ralfj.de> wrote:
->>
->> The way you do global flags in Rust is like this:
-> 
-> Note that I was really talking mainly about the unsafe cases, an din
-> particular when interfacing with C code.
+This series adds initial cpumask Rust abstractions and adds a new maintenance
+entry for the same.
 
-When Rust code and C code share memory that is concurrently accessed, all 
-accesses to that from the Rust side must be explicitly marked as atomic. A 
-pointer to such a memory should look like `&AtomicBool` in Rust, not `*mut 
-bool`. To my knowledge, the kernel already has appropriate APIs for that. That 
-will then ensure things behave like the AtomicBool example.
+This was earlier sent as part of a larger series [1] and it was suggested to
+send these separately.
 
-Kind regards,
-Ralf
+Depends on: [2].
 
-> 
-> Also, honestly:
-> 
->> FLAG.store(true, Ordering::SeqCst); // or release/acquire/relaxed
-> 
-> I suspect in reality it would be hidden as accessor functions, or
-> people just continue to write things in C.
-> 
-> Yes, I know all about the C++ memory ordering. It's not only a
-> standards mess, it's all very illegible code too.
-> 
->               Linus
+V1->V2:
+- Add Yury's Reviewed-by tag in 2/2.
+
+- Implemented two different structures, Cpumask (corresponds to struct
+  cpumask) and CpumaskBox (corresponds to cpumask_var_t). Thanks Alice for
+  helping out.
+
+--
+Viresh
+
+[1] https://lore.kernel.org/all/cover.1738832118.git.viresh.kumar@linaro.org/
+[2] https://lore.kernel.org/all/20250224233938.3158-1-yury.norov@gmail.com/
+
+Viresh Kumar (2):
+  rust: Add initial cpumask abstractions
+  MAINTAINERS: Add entry for Rust bitmap API
+
+ MAINTAINERS            |   6 ++
+ rust/kernel/cpumask.rs | 209 +++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs     |   1 +
+ 3 files changed, 216 insertions(+)
+ create mode 100644 rust/kernel/cpumask.rs
+
+-- 
+2.31.1.272.g89b43f80a514
 
