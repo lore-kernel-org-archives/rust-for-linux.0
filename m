@@ -1,231 +1,111 @@
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2675A1EF360;
-	Fri, 28 Feb 2025 15:55:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D961EF37E
+	for <rust-for-linux@vger.kernel.org>; Fri, 28 Feb 2025 16:04:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740758133; cv=none; b=B7VbJPw+PPfUoqH71TP8MLrUP0PuC+zYifpz4p44WKTtbhVl9Oe/tNWcnDCxXkNbCyUAlkCnbrlPl9Kojb+lD/1BHv+F99fxUyBvOZelWUV3c0nX+87Wb6i5M1olRFxJ7xujL9kxPZhArfKTTcmk6nlHgcXZgLYX7YAYc6gefdE=
+	t=1740758688; cv=none; b=drEVyrS1glRYlJoksT1/ZTlSBVbLz5goU/jntrvwnSuq/icRHLE0Eurv8H5lsQBCFfZzfxrN1ronw/mIVAW0nCj5H/nmNH6jhYQwjasXDRxfcjS5Mg2A7WdUkzaLA1y+jKwIprK8HDl4t/fWxSLpt5Expe+X6cTV9XTTQEfByok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740758133; c=relaxed/simple;
-	bh=akg3hfMrj8rJseZvQS4QHjk5DvDzbMeTuCXtQ3LNr1M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KAWxUU9W2BczSgKAFm9KfbTf0KnYWJVEJP5K4MsW1NEgBeUE9fzqfUMFpVVbooszgNuxMfxS3axclT7/HOPi+1eUTwYnfFDWwa82KlPBQqJZBax4DRGObbpnbgIZsKjhrUvaiaE+14xHkBHxTeXFmFpdGXoDlDOyT1PqMo16j98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XYrYhf5p; arc=none smtp.client-ip=209.85.208.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740758688; c=relaxed/simple;
+	bh=IUNo5mc+dLtm52biT0C00f2IPi+tS7xsDLgtDYZvw7g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TkmJpXsJVaXnvO8ljGdJ98xE1kcuEsqbfXQFimUyRqoz46NY9diDrYgRl6ii6XkcgNxf7QzFwMjD4CTaD5CJK2EwHeaJqIoYhDs6DjlvXhmG85UM74+VL7FQia/7D3QuqeVy3Q5EyWZ6veJy3MYQ+t8Os0jogTE5pO00U8Lbl+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=X0DGhEpG; arc=none smtp.client-ip=91.218.175.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XYrYhf5p"
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-307bc125e2eso25039641fa.3;
-        Fri, 28 Feb 2025 07:55:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740758129; x=1741362929; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bHn0qaSarOO5nkT/BqsOGpUW4y3+EJjr5cHJDOEs+kg=;
-        b=XYrYhf5pg2IuBS7p5Pno1ffiW2tH6VHdJ8PsVsXvB5ebEJfV/bPXjy7tR/0bwZCnk4
-         aFGn68CVO1uCQkXWy60eLjyGv6FESczL+26dmEPcKaMSyXDm74kwho+KNaKmtDwhRLs6
-         w0qZ60ncu++t8r+UDvSjzJ1uBhmq1GFaKBQKtM0qrYiD7aEFKdlBxmU1/OIISVKQ1AXf
-         xpLCdYM31U87MLheByncD16sY6hOuA0zc99BsC6i+R7MUB5UsqQ9mh+kDzxiRYrfaAmZ
-         dtO0DLo+6TL3TCXjHJlUfdEsU5S7QUDawuE1vQ63PTkNji1CwQ8Lv6fCKMrnFzO/XALX
-         G2fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740758129; x=1741362929;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bHn0qaSarOO5nkT/BqsOGpUW4y3+EJjr5cHJDOEs+kg=;
-        b=Rcee7ykayfwqOvm8SFdhflSDb/hhxq7SFK3pDYT2dBe/0XV0PWmOC9BFJSGPLEnnBf
-         hdDz983m8WVMgcm2acSFvlWb3m6wxA2Xe3vlyt/JwrB882NjRyE9XDljDVMUFTuuCHOm
-         vWhTWHpKxaPFSje+S9bnTTthXVaBOi4MV0gaV50kEPeZkUcN+q6v0wgqB+WWEtVyWXEy
-         GyLY4ANfFU+rybCeprlH7jJywZx15VjstEmEiscMa8G01K9QqYhiPbiEr2TVNmrq5aEi
-         LNX8ijPmroFQeus9SQBtlGbtBp3ytwRT6KIPo3grtJPwPQJ3SeJLdoA8l2TtqKKFK31B
-         OW+w==
-X-Forwarded-Encrypted: i=1; AJvYcCWm9c8T1q/KXCSBxPvocjCSNgayMD0TOubN0628oNTUSCjBP4xZTIInyy7+MextXp61JF4t4TcaotK02ZmzF+A=@vger.kernel.org, AJvYcCXiLAMgg63mpFG2xXqF81BNwpbKUm4nzCfA15Bx3eaPqIussEVQg/q8ogFZ/fqC0KnGjq1zUPZ4PJs3lc8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFdf4oNzBxtNIRsLXhbOGz3Z6Q6sfB0zS1zxHcz1jnE3G+TwGR
-	t9EDAB5OWwoUQC+scn1m7S58o/K/kdtgu2XDNp1R7TbRJLuRrJ8nKJfHDJwH2ZSPJ8TAI5AIniT
-	PYRTSZJtCeWv5obkkQx6zqokS4wI=
-X-Gm-Gg: ASbGncseeFPuU/AUOqlSKII3r041gg5Dh6Yb1/7M1b1hyHMsr6/b+aIBlg9rf24xklx
-	eezRLiN1O4ntAc0GaWt/6yeev/Mu1OHx6haIhLsNmDgvEVXElOy0C6883IxXjLN+XqgS8CaTcjD
-	4coEuV5omLEM95W9TPXOlBl9ZvaaTYRwf4UWItGr6C
-X-Google-Smtp-Source: AGHT+IH4TnWs7AAWR6mSZJGzeTPP/IV0kwlekYfbQHJwIpvtqQS+Igon57DpTKr3TLAm0ffmLUtfQbT9lsn73QyqZdk=
-X-Received: by 2002:a05:651c:555:b0:308:eb34:103a with SMTP id
- 38308e7fff4ca-30b932f6d82mr16293581fa.28.1740758128998; Fri, 28 Feb 2025
- 07:55:28 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="X0DGhEpG"
+Date: Fri, 28 Feb 2025 11:04:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1740758674;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QivQ+TAUEno71bUw9yTt+h23kIoQ6M++FWtpCu3d4/I=;
+	b=X0DGhEpG9yJ9VNOAusZf0Bln9WAQC0lM4Ucsup3Iljkt3+u0oTXdG9b/iSLMG694TLrWmN
+	ddsTTdVXxM6iNHa2pyyP39o46ya+4BGaF5cKtbg4pd+u6sFAi2c6RX/lNIK8+b3I9oATvw
+	Swtf9GAElZ3HT6ofUlI31ommsI86C/g=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Ralf Jung <post@ralfj.de>, David Laight <david.laight.linux@gmail.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Linus Torvalds <torvalds@linux-foundation.org>, 
+	Martin Uecker <uecker@tugraz.at>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Ventura Jack <venturajack85@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, airlied@gmail.com, ej@inai.de, gregkh@linuxfoundation.org, 
+	hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
+Subject: Re: C aggregate passing (Rust kernel policy)
+Message-ID: <vvtxa4jjk2wy7q6wnnxxgidopfd3pzxgntuehsu4skex24x5ml@yejfkrtg5dqc>
+References: <20250226162655.65ba4b51@gandalf.local.home>
+ <CAHk-=wjAcA4KrZ-47WiPd3haQU7rh+i315ApH82d=oZmgBUT_A@mail.gmail.com>
+ <20250226165619.64998576@gandalf.local.home>
+ <20250226171321.714f3b75@gandalf.local.home>
+ <CAHk-=wj8Btsn0zN5jT1nBsUskF8DJoZbMiK81i_wPBk82Z0MGw@mail.gmail.com>
+ <20250226173534.44b42190@gandalf.local.home>
+ <20250227204722.653ce86b@pumpkin>
+ <07acc636-75d9-4e4b-9e99-9a784d88e188@ralfj.de>
+ <fbwwitktndx6vpkyhp5znkxmdfpforylvcmimyewel6mett2cw@i5yxaracpso2>
+ <Z8HaT4X4ikQzAghu@Mac.home>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250228-export-macro-v2-0-569cc7e8926c@google.com> <20250228-export-macro-v2-5-569cc7e8926c@google.com>
-In-Reply-To: <20250228-export-macro-v2-5-569cc7e8926c@google.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Fri, 28 Feb 2025 10:54:53 -0500
-X-Gm-Features: AQ5f1Jr5a2e-MB7tbyFJrVeNND-UBub9gCfxNxl1epYDa4dtBuxZ-xEM_hkDrMo
-Message-ID: <CAJ-ks9k4rZdpL5dDfwMHuiKFdyYdY00YioYxdtsqszpcbhzjHQ@mail.gmail.com>
-Subject: Re: [PATCH v2 5/5] panic_qr: use new #[export] macro
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Petr Mladek <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z8HaT4X4ikQzAghu@Mac.home>
+X-Migadu-Flow: FLOW_OUT
 
-On Fri, Feb 28, 2025 at 7:41=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> This validates at compile time that the signatures match what is in the
-> header file. It highlights one annoyance with the compile-time check,
-> which is that it can only be used with functions marked unsafe.
->
-> If the function is not unsafe, then this error is emitted:
->
-> error[E0308]: `if` and `else` have incompatible types
->    --> <linux>/drivers/gpu/drm/drm_panic_qr.rs:987:19
->     |
-> 986 | #[export]
->     | --------- expected because of this
-> 987 | pub extern "C" fn drm_panic_qr_max_data_size(version: u8, url_len: =
-usize) -> usize {
->     |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected unsafe fn, fo=
-und safe fn
->     |
->     =3D note: expected fn item `unsafe extern "C" fn(_, _) -> _ {kernel::=
-bindings::drm_panic_qr_max_data_size}`
->                found fn item `extern "C" fn(_, _) -> _ {drm_panic_qr_max_=
-data_size}`
->
-> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  drivers/gpu/drm/drm_panic.c     |  5 -----
->  drivers/gpu/drm/drm_panic_qr.rs | 15 +++++++++++----
->  include/drm/drm_panic.h         |  7 +++++++
->  rust/bindings/bindings_helper.h |  4 ++++
->  4 files changed, 22 insertions(+), 9 deletions(-)
->
-> diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
-> index f128d345b16d..dee5301dd729 100644
-> --- a/drivers/gpu/drm/drm_panic.c
-> +++ b/drivers/gpu/drm/drm_panic.c
-> @@ -486,11 +486,6 @@ static void drm_panic_qr_exit(void)
->         stream.workspace =3D NULL;
->  }
->
-> -extern size_t drm_panic_qr_max_data_size(u8 version, size_t url_len);
-> -
-> -extern u8 drm_panic_qr_generate(const char *url, u8 *data, size_t data_l=
-en, size_t data_size,
-> -                               u8 *tmp, size_t tmp_size);
-> -
->  static int drm_panic_get_qr_code_url(u8 **qr_image)
->  {
->         struct kmsg_dump_iter iter;
-> diff --git a/drivers/gpu/drm/drm_panic_qr.rs b/drivers/gpu/drm/drm_panic_=
-qr.rs
-> index bcf248f69252..d055655aa0cd 100644
-> --- a/drivers/gpu/drm/drm_panic_qr.rs
-> +++ b/drivers/gpu/drm/drm_panic_qr.rs
-> @@ -27,7 +27,10 @@
->  //! * <https://github.com/bjguillot/qr>
->
->  use core::cmp;
-> -use kernel::str::CStr;
-> +use kernel::{
-> +    prelude::*,
-> +    str::CStr,
-> +};
->
->  #[derive(Debug, Clone, Copy, PartialEq, Eq, Ord, PartialOrd)]
->  struct Version(usize);
-> @@ -929,7 +932,7 @@ fn draw_all(&mut self, data: impl Iterator<Item =3D u=
-8>) {
->  /// * `tmp` must be valid for reading and writing for `tmp_size` bytes.
->  ///
->  /// They must remain valid for the duration of the function call.
-> -#[no_mangle]
-> +#[export]
->  pub unsafe extern "C" fn drm_panic_qr_generate(
->      url: *const kernel::ffi::c_char,
->      data: *mut u8,
-> @@ -980,8 +983,12 @@ fn draw_all(&mut self, data: impl Iterator<Item =3D =
-u8>) {
->  /// * If `url_len` > 0, remove the 2 segments header/length and also cou=
-nt the
->  ///   conversion to numeric segments.
->  /// * If `url_len` =3D 0, only removes 3 bytes for 1 binary segment.
-> -#[no_mangle]
-> -pub extern "C" fn drm_panic_qr_max_data_size(version: u8, url_len: usize=
-) -> usize {
-> +///
-> +/// # Safety
-> +///
-> +/// Always safe to call.
+On Fri, Feb 28, 2025 at 07:46:23AM -0800, Boqun Feng wrote:
+> On Fri, Feb 28, 2025 at 10:41:12AM -0500, Kent Overstreet wrote:
+> > On Fri, Feb 28, 2025 at 08:44:58AM +0100, Ralf Jung wrote:
+> > > Hi,
+> > > 
+> > > > > I guess you can sum this up to:
+> > > > > 
+> > > > >    The compiler should never assume it's safe to read a global more than the
+> > > > >    code specifies, but if the code reads a global more than once, it's fine
+> > > > >    to cache the multiple reads.
+> > > > > 
+> > > > > Same for writes, but I find WRITE_ONCE() used less often than READ_ONCE().
+> > > > > And when I do use it, it is more to prevent write tearing as you mentioned.
+> > > > 
+> > > > Except that (IIRC) it is actually valid for the compiler to write something
+> > > > entirely unrelated to a memory location before writing the expected value.
+> > > > (eg use it instead of stack for a register spill+reload.)
+> > > > Not gcc doesn't do that - but the standard lets it do it.
+> > > 
+> > > Whether the compiler is permitted to do that depends heavily on what exactly
+> > > the code looks like, so it's hard to discuss this in the abstract.
+> > > If inside some function, *all* writes to a given location are atomic (I
+> > > think that's what you call WRITE_ONCE?), then the compiler is *not* allowed
+> > > to invent any new writes to that memory. The compiler has to assume that
+> > > there might be concurrent reads from other threads, whose behavior could
+> > > change from the extra compiler-introduced writes. The spec (in C, C++, and
+> > > Rust) already works like that.
+> > > 
+> > > OTOH, the moment you do a single non-atomic write (i.e., a regular "*ptr =
+> > > val;" or memcpy or so), that is a signal to the compiler that there cannot
+> > > be any concurrent accesses happening at the moment, and therefore it can
+> > > (and likely will) introduce extra writes to that memory.
+> > 
+> > Is that how it really works?
+> > 
+> > I'd expect the atomic writes to have what we call "compiler barriers"
+> > before and after; IOW, the compiler can do whatever it wants with non
+> 
+> If the atomic writes are relaxed, they shouldn't have "compiler
+> barriers" before or after, e.g. our kernel atomics don't have such
+> compiler barriers. And WRITE_ONCE() is basically relaxed atomic writes.
 
-This should explain why it's marked unsafe, since it's always safe to call.
+Then perhaps we need a better definition of ATOMIC_RELAXED?
 
+I've always taken ATOMIC_RELAXED to mean "may be reordered with accesses
+to other memory locations". What you're describing seems likely to cause
+problems.
 
-> +#[export]
-> +pub unsafe extern "C" fn drm_panic_qr_max_data_size(version: u8, url_len=
-: usize) -> usize {
->      #[expect(clippy::manual_range_contains)]
->      if version < 1 || version > 40 {
->          return 0;
-> diff --git a/include/drm/drm_panic.h b/include/drm/drm_panic.h
-> index f4e1fa9ae607..2a1536e0229a 100644
-> --- a/include/drm/drm_panic.h
-> +++ b/include/drm/drm_panic.h
-> @@ -163,4 +163,11 @@ static inline void drm_panic_unlock(struct drm_devic=
-e *dev, unsigned long flags)
->
->  #endif
->
-> +#if defined(CONFIG_DRM_PANIC_SCREEN_QR_CODE)
-> +extern size_t drm_panic_qr_max_data_size(u8 version, size_t url_len);
-> +
-> +extern u8 drm_panic_qr_generate(const char *url, u8 *data, size_t data_l=
-en, size_t data_size,
-> +                               u8 *tmp, size_t tmp_size);
-> +#endif
-> +
->  #endif /* __DRM_PANIC_H__ */
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
-per.h
-> index 55354e4dec14..5345aa93fb8a 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -36,6 +36,10 @@
->  #include <linux/workqueue.h>
->  #include <trace/events/rust_sample.h>
->
-> +#if defined(CONFIG_DRM_PANIC_SCREEN_QR_CODE)
-> +#include <drm/drm_panic.h>
-> +#endif
-
-Why the guard here?
-
-It'd be nice to have a comment here explaining the atypical need for
-this include.
-
-> +
->  /* `bindgen` gets confused at certain things. */
->  const size_t RUST_CONST_HELPER_ARCH_SLAB_MINALIGN =3D ARCH_SLAB_MINALIGN=
-;
->  const size_t RUST_CONST_HELPER_PAGE_SIZE =3D PAGE_SIZE;
->
-> --
-> 2.48.1.711.g2feabab25a-goog
-
-With Andy's comment about extern addressed:
-
-Reviewed-by: Tamir Duberstein <tamird@gmail.com>
+e.g. if you allocate a struct, memset() it to zero it out, then publish
+it, then do a WRITE_ONCE()...
