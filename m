@@ -1,58 +1,58 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4705271277;
-	Fri, 28 Feb 2025 15:49:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CCBF1EF366;
+	Fri, 28 Feb 2025 15:51:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740757769; cv=none; b=UMqmn5XhnvL6xmuCcFbGNHwBll98RLJHKOuywuxedDn5uRcqVoAzZLFavebOJpWB+GQ5ACUNcuk7G8bbkW/FWyWi1G0mfFpf5RybZWRX1ilcar5isMiIS2YzLojlCIs9uqVOSZefgwzgJqlDJKEEihGQy/4EbCp+6M1HAIA1wwk=
+	t=1740757901; cv=none; b=ESIiBaw4/Oi+EXuctTQ6p5WZdTTlTh3SR1Jn849T4OB9ZYUA3sVWKMsD4hA4XJcGzxTH/4cl04MlviITA34yVT+3OgDgMzDUYO9py1GwKG5ZyBOl1f5Z8wwPtNMJcHlyPDbCD4+3HFh65M6FHNGyQgkxsdztvLf9pOiuTfHQLZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740757769; c=relaxed/simple;
-	bh=qIaJyzNn3jbBWJgu5Zoc5IbQQmzl5S7Xop0lcri8li4=;
+	s=arc-20240116; t=1740757901; c=relaxed/simple;
+	bh=GDE5lRNIEVnG9s48rh5Ph8gdJNwsLWWybgZuFpuFoqM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZTQxJxO3YtV5NUQJLWL302SwRNKn/c0rbAdYF0uJHJ2OlB9Fa11KeYN12pArwY94NIk3cet/Tj0DtXiCY9hReS4KNbuH+RJXeEqQN21X2GsD4u+FyKMABvLey7ZUl4IMAwmxxE6dw/75pr5VLrC7ByEI26qW/q4gk7xU5/CMHxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OY/0EJHz; arc=none smtp.client-ip=209.85.216.42
+	 To:Cc:Content-Type; b=oBYEXXKu9Q0v20fruzQPZIf6vilAvV8LHp7cgAeMdJspr+AGRPsNp9Lw2KT783Sse13dTgKd2yqIQ9vVctNQC/NoLO1/im3Hb0DXeVNW0k0AVaF5dCMuv3+q1ZQ7fs9Kyok7PIVx728D9xb2difJo98ga9bNuEzlhY7QJp0gaWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JfHjsT/R; arc=none smtp.client-ip=209.85.208.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OY/0EJHz"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2feae7e56c6so478516a91.1;
-        Fri, 28 Feb 2025 07:49:27 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JfHjsT/R"
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-30613802a59so25305921fa.0;
+        Fri, 28 Feb 2025 07:51:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740757767; x=1741362567; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1740757897; x=1741362697; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qIaJyzNn3jbBWJgu5Zoc5IbQQmzl5S7Xop0lcri8li4=;
-        b=OY/0EJHzT2UBiw6CT24QQW3dnQjcNG1I7XQPc459h3mYbGVvTLnqOiOxAX2JAN0f90
-         EHQqoLmbu9DWm3DXE7X0Yipvho29obc9JtTRgc5eH0+rCpqmN32Ya/JHeYS8EfwmUDxN
-         Y7EZwg8PvHy1nxEJjMkXMHxUS7Onvrx1RvCLF41oU1cvHN+LRE6L0scDU4/rBLWa1Krq
-         NcBYo+AlHkiaECDtYTKQGcrqlDhE+1VW9LIUeVkA6mXgmltSyORPzxMEubeo4jZcst0h
-         Pt1oGr5LLdN2sWJOv5KRFxeWzo/8sctJHfv8Oy2yvBtvu1JGg71MpNIeDnzmhOusgJP8
-         oegA==
+        bh=GDE5lRNIEVnG9s48rh5Ph8gdJNwsLWWybgZuFpuFoqM=;
+        b=JfHjsT/R8/KVy9K5pUVTUxCFzoIl8OzJFrmLle2UIL/XKXovFD7KXq/4HAz5/PSEZ6
+         /biwiVhKnR6Br3J0K7ej1xakGsNygFrezTES9GdRrpFsB6b3FZgPKvw0XbiUi8ZWckKw
+         LhoXXOYMxcIWc1VdcXrlPNC3iFaV0Jkct7nmjMvB+jjxRC6FpTmAvW9V5iLguN7RvRXg
+         Yaa7zM83RZvymWUlLsfQK6JzX5qHOJnQPIaHiKddVltBYLTcHQLc9Nfwv97XOtww9Xjn
+         rCEUWDcK5F0zqs4IxlpARkVbDLcNh5A5oK/rEyrT0Cr2JnKJyVyKE6NziPQmkltbjahg
+         KxmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740757767; x=1741362567;
+        d=1e100.net; s=20230601; t=1740757897; x=1741362697;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qIaJyzNn3jbBWJgu5Zoc5IbQQmzl5S7Xop0lcri8li4=;
-        b=o3t/kcXkQ1Kv9uNXS89s0618s+dBzvIPcJQLN/pECZp6BUSOtIcVPo+ehc5UQyFa4x
-         UiUTXLDCa57DeI1cWPH2LA83Kp7igJ7J/hy3/4zJJ3XDWwAQWeA5/NUgJlhfM9PUTIpk
-         5GEh66YLBaCuJhEBq8Uwx74JyjD15XOTMOIWULNf+ajZfw/W27WdyIol+7as9dOIIzw0
-         e02VpFlHEbHL39rreDij9NKpF39YTEcTxgkUaMNGVFfN73VkDgmkyAKkpXCaRHh75BU3
-         G+W0FSL2bhbaZJzLNZ3nDm7BQmBiKKKblnOeoRgG6HErb3vJFkTFy63peEllmGXg1cpo
-         FqoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVT0c3iEH7KatBNzCTolyPzZS7bNC7FO0qFIoUlYw1xrQhnYraSiN2jLtAJyPH2mvcSjiI9OqZ6OWbg8Ig=@vger.kernel.org, AJvYcCVtRTY1LPQr2jqZ3mxMkABo5pblYTByafHx1y5zoRPqWxeTKGc3WbQRh8E2vdJ2L2jXBPkOG7ulbhEd4wwyuZA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZ1PmagMbl5ja1HrZ1BUubc80AeT1azA+L+YKctwkldarUXwKt
-	Q/UXpjwrtMg6fd3tIx991Ygd0U+bRzQRdo0D3JD+2yOb9jAZ8dsMjxVV0CYW0a5HPYr1kcbsZNp
-	nopNqQ+XuGfYOkgpcqlN/BU2xsYk=
-X-Gm-Gg: ASbGncuXouWYcuRA8JhbqdFWVsRfJk4TMDAtucuHH5AjpEADLWpYaWTpj04mDTBJhtg
-	vF1YMOYIbjz8O1SXj1FJfJDXRfZl4mAmJSJ6Y6+g8GkiktRPOs34dugXEIe2PbOhedpOvbRCVCu
-	wjkcUsCaM=
-X-Google-Smtp-Source: AGHT+IEPlan+8bNz7Tcm2Cq/sao9mUee5KR4Xt6d2vqL8Zd9pLVI5867TMU38qeZ2/fGLTs3luniV9Zn28xpEj2Q0mM=
-X-Received: by 2002:a17:90b:2251:b0:2fb:f9de:9497 with SMTP id
- 98e67ed59e1d1-2febabf4096mr2463684a91.5.1740757767202; Fri, 28 Feb 2025
- 07:49:27 -0800 (PST)
+        bh=GDE5lRNIEVnG9s48rh5Ph8gdJNwsLWWybgZuFpuFoqM=;
+        b=GKXsRN1KlqSilXEzBC3kgdsF1UEEx9MJnbnfWCNKTEl84h2hXINJvWDFBrDbC5fj6G
+         Y6XRx4bTgz8U71I8ysdNhZ9OY1W/bhAnw1Xop8vgTAwnCYWTMsDnu7HVp9CUyAQcphuw
+         POSfibYW8XxUU495OFeHJ2eaV9TK+zjOqw7mg7eyw6nRVXqai/X7qx2jcpy1TrxfisVh
+         f/0jDvc2QMHDRYA461F3EmVSc7F+cMLa4GuULgcncKlausa80Lzsn/Ue98ewUDAqBk+e
+         5EVzwJoclah+/liXoQkJ5B+7ccnpwJ1hVmshj7d9RF4v/WiOiwNtcCGA0QhbnlpKLMhG
+         i1Dg==
+X-Forwarded-Encrypted: i=1; AJvYcCVeM3zjn2KXIhHYWxEFxbZGeHoXDqIrwdZrgXCgEfBtcdHKXUbIE1O3vke6PVhLU/RFx9asYU/cRfUaMF6i2nc=@vger.kernel.org, AJvYcCW1os3tFXnnieMckuyrMFVd2XBQlKFPt7ULI60Ogiy78OOJrmL6siy1MoYsIPr4+mHQhwXkMHXJOEwvkEI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbbGbn6YFOG290Vlw5I3tfJNT7ORvBZdSnbL/9A1Ei/WdBBlnx
+	6OVZ/314tGG03D2TQowhBf0xwy6Sn0zcST3DnHyE+2m5pu8T3xJbHS+rU1pzLIyh/uxsPV4Y9SA
+	8BhIS6DE26F4JwiBx3lz9/JGD6Ps=
+X-Gm-Gg: ASbGnct9Nh5dqR5E/pzKuXMCEOjdZLJONXsgi6/k88fkrXZVk8Zyys1DGLH2C/K4FJ6
+	KOOsQB1zHQ2/lKvb1OYt5PElq3WIsY0qLVZHC53zLyOradn7qPt46GSUhQoa00BJsfkM5c/t1t3
+	t63Lx2migNrSsvoBjbxaLKU7TLXWz8r/gR0Z1nXnSu
+X-Google-Smtp-Source: AGHT+IE4MbrzRN3Jjm3xDjdLOZWYo8YGI7MexJ7wty7pA3puikvTmSwpKcPsIWgFD3PmvLZKz/wRIf12W7J7nWZ7J0E=
+X-Received: by 2002:a05:651c:198a:b0:30b:a185:47d8 with SMTP id
+ 38308e7fff4ca-30ba18547femr1762441fa.4.1740757897170; Fri, 28 Feb 2025
+ 07:51:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -61,13 +61,14 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250228-export-macro-v2-0-569cc7e8926c@google.com>
  <20250228-export-macro-v2-3-569cc7e8926c@google.com> <CAJ-ks9ng6AqmDynFebR+2_ZEpmvxkUNWdTed2vr0kede0dxcxw@mail.gmail.com>
-In-Reply-To: <CAJ-ks9ng6AqmDynFebR+2_ZEpmvxkUNWdTed2vr0kede0dxcxw@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 28 Feb 2025 16:49:14 +0100
-X-Gm-Features: AQ5f1JrJGmkqnoFHNmTsztUAPIP-5rVyGELe8gsmoak2AeGqALQ9rpCX3yxJr6k
-Message-ID: <CANiq72=UrPX4orjgFKo8LZj0PVsmXkLvQRxrgSwJrY_AfuTfEA@mail.gmail.com>
+ <CANiq72=UrPX4orjgFKo8LZj0PVsmXkLvQRxrgSwJrY_AfuTfEA@mail.gmail.com>
+In-Reply-To: <CANiq72=UrPX4orjgFKo8LZj0PVsmXkLvQRxrgSwJrY_AfuTfEA@mail.gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Fri, 28 Feb 2025 10:51:00 -0500
+X-Gm-Features: AQ5f1JqCHNM2Ls7DXNSXpvAuhyRMc_ktjj0-Cd7tV3SQcTtiaAvIhWYES9_RhAo
+Message-ID: <CAJ-ks9mmDeqaj+G__OkvCcerNvh3WkVDTWfJepNSdrwU7dyRsw@mail.gmail.com>
 Subject: Re: [PATCH v2 3/5] rust: add #[export] macro
-To: Tamir Duberstein <tamird@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc: Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
 	Miguel Ojeda <ojeda@kernel.org>, Petr Mladek <pmladek@suse.com>, 
 	Steven Rostedt <rostedt@goodmis.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
@@ -82,19 +83,22 @@ Cc: Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundatio
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 28, 2025 at 4:41=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
- wrote:
+On Fri, Feb 28, 2025 at 10:49=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> This needs an update given Miguel's comments on the cover letter. I
-> wonder if the code should also justify the choice (over cbindgen).
+> On Fri, Feb 28, 2025 at 4:41=E2=80=AFPM Tamir Duberstein <tamird@gmail.co=
+m> wrote:
+> >
+> > This needs an update given Miguel's comments on the cover letter. I
+> > wonder if the code should also justify the choice (over cbindgen).
+>
+> `cbindgen` is a longer term thing and more complex, assuming we use it
+> in the end, so I think it is fine going with this for the time being
+> -- it is straightforward and a net improvement.
+>
+> Later on, if needed, we can just make `export` a no-op, right?
+>
+> It may also be useful to have the exports "explicitly tagged" this way.
 
-`cbindgen` is a longer term thing and more complex, assuming we use it
-in the end, so I think it is fine going with this for the time being
--- it is straightforward and a net improvement.
-
-Later on, if needed, we can just make `export` a no-op, right?
-
-It may also be useful to have the exports "explicitly tagged" this way.
-
-Cheers,
-Miguel
+Sounds reasonable. I was suggesting that we document the rationale -
+not that we change the decision.
