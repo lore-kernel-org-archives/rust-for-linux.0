@@ -1,105 +1,147 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA01D26A1CD;
-	Fri, 28 Feb 2025 12:27:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C6326AABF
+	for <rust-for-linux@vger.kernel.org>; Fri, 28 Feb 2025 12:40:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740745657; cv=none; b=SbAxwwP/3OYmPfcxsU/cSieQfQEFm8fT+vzlkG+17AY1A2qXsQVwUjPUIKaAwo3pkn25Z5eL4dtrNvrOhpsSWjrojBauggN4MhBNn3nIYJpyTb9uy9HpjRTojayW2B6f+gcNFdQ5rnvyF19SBcTtmsjxTYjf1oA848ioVCrQsoI=
+	t=1740746409; cv=none; b=uF/4KpNMcekeGtrFeAJVK9ZAmbnx8BNu46ulC/xGXFR88b9QJJMaUG7cwNKjoTU/ALjKnGUq4/QE3JDp4eT8hoLyakUtdZJ0NEVUpFhCdQfjyIJtjin9k3FU7SCSlKQP4grr7TkETv/IsygNCG7cUGHem2T7ejHgNHIlZ3lN+84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740745657; c=relaxed/simple;
-	bh=D7zHHQU8x/t+aPG7jNWtRdAX0S65Ib4QP2cl0EV7yWk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OLJrzxYWW3C1SSciC6prq1v1ykIQ81IF5Rf973OxJ/usRMtz186cKZScHeBJw+GIMEvwd1fsBGZDRQlfmMwAOAlTTd6XZLZ4RaXoAW4sYHdnxpSnVN+kPHf2Cgy4tD311iR+zkCQK+n3Yx+Q3bsJIIbYlDeKLljLfK3oMJLxPFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SDqN4Kh8; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1740746409; c=relaxed/simple;
+	bh=f4F5ENySuuzTW13FLThOl99dyKMXA8tvaC3KtUU/46E=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=OXCOCeZ3N87n+OybZ0k1AKrW10zI8nX6TSTLjvH79cDWoCVEyTkfdUX018pC73TTSqdWAU5IlqbSts6CxFIyJVxLoYFArzA7ZuXnHjAIZpRGVPDki2WqhgOuNq+RdoYmKlkfnW3Ylm14kA+eMXTrkZFGzP9SW5XOOqM+XVGOw7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HQphdiLz; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SDqN4Kh8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740745656; x=1772281656;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=D7zHHQU8x/t+aPG7jNWtRdAX0S65Ib4QP2cl0EV7yWk=;
-  b=SDqN4Kh8jZJ2qcQoXhscX6mFag+y5WKgvv+16+bDrAeiOn81M0Yefq3C
-   fKXMC4iMidqDu0pRHelPGt7v8AG32v4bUc998DX9C6S+K74+VbLkASoSE
-   LBUvSIOKoO65cn0vFKoxGolaX2hH2jCZP1JShrQlhr2qlPHa4+/0F4B4E
-   KRv2IBMyzMbwcRbAZotck+xGl/DQzOXCfrXh7xepf//NLMJFf9b5KPLEy
-   pbK7yRk+wLLpwudVTFNs73i1EmUIUVKLuW8mSpw6Nifs5OWLfGhmaK/eb
-   y7Ltf24djhoRqDe6Y41DbCVMr+PG/jfq66VQDtkcRe4gXTESfI7KRwPjH
-   Q==;
-X-CSE-ConnectionGUID: OM/yv+MBTxG+CqRa4ZUcpw==
-X-CSE-MsgGUID: 6x4Sp0V+QF6ql4923I9/zA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="53082887"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
-   d="scan'208";a="53082887"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2025 04:27:35 -0800
-X-CSE-ConnectionGUID: 5e0OC6KWQ4WRvAvDygPQkw==
-X-CSE-MsgGUID: g4+/gMxaQvq+26wuw/LZfQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,322,1732608000"; 
-   d="scan'208";a="122273689"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2025 04:27:29 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tnzSf-0000000FwXh-37W4;
-	Fri, 28 Feb 2025 14:27:25 +0200
-Date: Fri, 28 Feb 2025 14:27:25 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Petr Mladek <pmladek@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Trevor Gross <tmgross@umich.edu>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH 0/4] Check Rust signatures at compile time
-Message-ID: <Z8Grrb80WOf99qoX@smile.fi.intel.com>
-References: <UXTosjUFv_CKOV-K4oqNGBhMEv64tds9NgXWhHEYdCHuKM2qSPFrpBnTqhFGkcbv5_KXYERykIXhn-sYnEeuUg==@protonmail.internalid>
- <20250227-export-macro-v1-0-948775fc37aa@google.com>
- <877c5apmdi.fsf@kernel.org>
- <CAH5fLgiNs-VKEQduL16eymSPnqA0_6aR8WDRYm68SE8FXGDHRw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HQphdiLz"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4394040fea1so10903545e9.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 28 Feb 2025 04:40:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1740746406; x=1741351206; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=7pTdW8PK+uCDfeP8CraTwZfQg74lm/uFIg+fx5O10BM=;
+        b=HQphdiLzNl8sxpzhrx4CXf4xQdNJ5G2LjgOdPMxpWgloc0UV4iUS4vizd1knUM3ukr
+         rT+/2F8WCgN1waRN24og/nSBhC2KICNHsTMiUxP0TEAI36I2ifrDLhj9xGnyxHxu9Odc
+         93xiitYem0pmFxwIzGSNSX73jKbd5R/K5rQ/lPmbYb3++YcWWoqEYao7VSudc8UAagq3
+         9qb8czFLNPTVyf4P1+gtuEqnbsH4ev3S8DQa59WUa4BZa0qMynOzLel+SFEUMBGPwK4/
+         wLqbGjjL+AHDGBzhi2776y51Ayo0kCeeu3jS6sZQwDEjAcS1nOpZ8kKYzt57VgB0nkvZ
+         dnDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740746406; x=1741351206;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7pTdW8PK+uCDfeP8CraTwZfQg74lm/uFIg+fx5O10BM=;
+        b=DOPqOI49wmXIfdwdLBaE8apvtbaHCofy4AXvB61sr3sLSOnMi1NRpPK7PKmhDEULXo
+         qTA5jOAiDn+SJPfh+DXMF3kYyXjNgt7kJFR2QkCqPNOXCI29o43ebBHi+rfRJC3PpLd8
+         6VUWQcQWU1+56Kq8heneohUwBuiCjB1SFTF+NY1xQcoNvksXyko8kWi6LqbG5ZDUB8xi
+         SeReSlchzyWf8SqEq8k3kCaabObO6RgVBiTj0C27zLgMQx8VO/L2d5fj3a6vt9VmuOeh
+         gU/zdFGfSOOfqy/u6jeOXSExk4+XbV6hMc8iNCXS1nCTPTb2+5H+QF8tOtX5kcF7jM/Q
+         sBUg==
+X-Forwarded-Encrypted: i=1; AJvYcCW64GeuJGgE6SiGP5jJmcGwjJqwm53+VE3UOHdcDUhbE/8nVP7cGeoal2nGsVsWwLoMVMOM3DJj7L3JAvW6Zg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwabDgQbqZM8H/fC4YRn77Olgmz99zxE9gpjcN51xlvUxY6Uk3V
+	n0tl4Y8OzYoFrp+w8wI82tcGgUHQwI9Zs1DPw66wS2NFxXmxBIVbjig7DdeVnDHh+t9Tv7k9yYi
+	BvaKcwa+gVByWGA==
+X-Google-Smtp-Source: AGHT+IFEAv6xKo0a0vIbw4/G69A8H8krQW13rE7XRkdpA2cYXMlLXGdQj1+W9BdcKKZjWZpEvcVhucpeSr3CYy8=
+X-Received: from wmbep23.prod.google.com ([2002:a05:600c:8417:b0:439:95b9:9200])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4f51:b0:43b:4829:8067 with SMTP id 5b1f17b1804b1-43b4829817amr51521165e9.6.1740746405761;
+ Fri, 28 Feb 2025 04:40:05 -0800 (PST)
+Date: Fri, 28 Feb 2025 12:39:29 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLgiNs-VKEQduL16eymSPnqA0_6aR8WDRYm68SE8FXGDHRw@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAIGuwWcC/3XMQQ6DIBCF4auYWZcGaC3iqvdoXBAckKQ6BgyxM
+ dy91H2X/0ved0DCGDBB3xwQMYcUaKkhLw3YySweWRhrg+Sy5VIqhvtKcWOzsZGYNkY7wcVj7Cz UyxrRhf3kXkPtKaSN4ufUs/itf6AsGGf63inVOntTxjw9kX/j1dIMQynlC+PMihWpAAAA
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2311; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=f4F5ENySuuzTW13FLThOl99dyKMXA8tvaC3KtUU/46E=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnwa6HYies8d8W+vofsAmaaagCFfM0KznRJPlkQ
+ bljWwLQeAKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ8GuhwAKCRAEWL7uWMY5
+ RsbbD/4k34jEhPxhPU2TpjINZJrCX+hzqaKUEueUixT1oETdYXEbkKIoL+qzDQ8hcm7U0cS+bcK
+ ca1QBfyXm2WUi+hjb69vXRwkN49bhCNcJWxu0/KzCJUgw7tKdNxpG78AKmj8oEH8VXC71ndQ6xw
+ Fj1X2YPlz4Vqc8TgcWbb7Sxveyc5fHwA4OBpjSjJPGa2qizE22QSj/wCLOkvqo/g2mk+GxpjVj0
+ 3GYT/YxqHiGfK2xHslVDc/FZ1DSn74rnnXqNhqn7brcJ+10hK4M7AWqGwYeD6cisJ6f23UgI0bG
+ 3B0FTrGH+E5uWycU8ObgQWz1twUUYcIlNb4ftQe1pCjr1lOOt6f67NN1WIU7n+eUwIposZdwvpf
+ XE4T4/xoaTDRquh0vhq6m7tekwjY20FbAFcSXOvxy7Ezr7Y/GVMEXlPXH4RKH+JoDdQbsiTkvBL
+ 0uSwvvip+e/3MsOfU8gsfSYHOSw6Xc1+Hcf+ZaR7KxvhBzOnigeYi8E73Mht4Z1O6r36puYZBhI
+ Lg3d1TobsqMsGq2SMXqC0L1ZLVMUqzek6+bEOzZfOwffQMY7E8fnT38sfockn/Yl9pchQZdiGDh
+ mcQtARbW4jezVmMEOOqi962yXdzGOACBt8iRewWXLbm5Hg/ofgjxl8Py8lyvNquKktPP0ItoGfw aua1wRpwI0xbyvg==
+X-Mailer: b4 0.14.1
+Message-ID: <20250228-export-macro-v2-0-569cc7e8926c@google.com>
+Subject: [PATCH v2 0/5] Check Rust signatures at compile time
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>
+Cc: Petr Mladek <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, Feb 28, 2025 at 09:46:32AM +0100, Alice Ryhl wrote:
-> On Fri, Feb 28, 2025 at 8:19 AM Andreas Hindborg <a.hindborg@kernel.org> wrote:
-> >
-> > "Alice Ryhl" <aliceryhl@google.com> writes:
-> >
-> > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> >
-> > What is going on with the cover letter of this one?
-> 
-> It's empty.
+Rust has two different tools for generating function declarations to
+call across the FFI boundary:
 
-So, it means nothing to review, sorry.
+* bindgen. Generates Rust declarations from a C header.
+* cbindgen. Generates C headers from Rust declarations.
 
+In the kernel, we only use bindgen. This is because cbindgen assumes a
+cargo-based buildsystem, so it is not compatible with the kernel's build
+system. This means that when C code calls a Rust function by name, its
+signature must be duplicated in both Rust code and a C header, and the
+signature needs to be kept in sync manually.
+
+To eliminate this manual checking, introduce a new macro that verifies
+at compile time that the two function declarations use the same
+signature. The idea is to run the C declaration through bindgen, and
+then have rustc verify that the function pointers have the same type.
+
+The main commit of this series is "rust: add #[export] macro". Please
+see its commit message for more details.
+
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v2:
+- Various improvements to documentation.
+- Split out quote! changes into its own commit.
+- Link to v1: https://lore.kernel.org/r/20250227-export-macro-v1-0-948775fc37aa@google.com
+
+---
+Alice Ryhl (5):
+      rust: fix signature of rust_fmt_argument
+      rust: macros: support additional tokens in quote!
+      rust: add #[export] macro
+      print: use new #[export] macro for rust_fmt_argument
+      panic_qr: use new #[export] macro
+
+ drivers/gpu/drm/drm_panic.c     |  5 -----
+ drivers/gpu/drm/drm_panic_qr.rs | 15 +++++++++++----
+ include/drm/drm_panic.h         |  7 +++++++
+ include/linux/sprintf.h         |  3 +++
+ lib/vsprintf.c                  |  3 ---
+ rust/bindings/bindings_helper.h |  4 ++++
+ rust/kernel/prelude.rs          |  2 +-
+ rust/kernel/print.rs            | 10 +++++-----
+ rust/macros/export.rs           | 28 ++++++++++++++++++++++++++++
+ rust/macros/helpers.rs          | 19 ++++++++++++++++++-
+ rust/macros/lib.rs              | 24 ++++++++++++++++++++++++
+ rust/macros/quote.rs            | 21 +++++++++++++++++++--
+ 12 files changed, 120 insertions(+), 21 deletions(-)
+---
+base-commit: a64dcfb451e254085a7daee5fe51bf22959d52d3
+change-id: 20250227-export-macro-9aa9f1016d8c
+
+Best regards,
 -- 
-With Best Regards,
-Andy Shevchenko
-
+Alice Ryhl <aliceryhl@google.com>
 
