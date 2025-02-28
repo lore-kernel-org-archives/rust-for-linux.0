@@ -1,67 +1,68 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B3C1D555
-	for <rust-for-linux@vger.kernel.org>; Fri, 28 Feb 2025 13:25:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2C31D555;
+	Fri, 28 Feb 2025 13:29:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740749160; cv=none; b=R2Eqr6Mtkqb6qG0L/KGn8aZRb9XdERcXmvHRyQ1yPgS6aFDncmlfYJr2lzo8PhPiJ3nRDhjAUxBuXOGF/+xHoeEZ4dL28BnBN+YcDYPzPUVyOipSwpcUCbvFBjKKxe2xhEqzP4ryEOOVEzYlYEAcTPK37eVfnqv/7LQFSkX6f2o=
+	t=1740749375; cv=none; b=MGWBCzDgSSPdItPPHjPhHRXNUKWZh06Qc4lwJqupW0td1VmGWvhi8BGk1bVQDUntreCrPeDI0wqA4UXxaQXoScZfUgUloqo+9OKDYX7MuUXOzN/za02DviK800+t5o3SAx6x72zRHRiIfIAfGZag8Ey+S5wqqndNjZCShCxIi2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740749160; c=relaxed/simple;
+	s=arc-20240116; t=1740749375; c=relaxed/simple;
 	bh=h1gcfXKxYDFuWGauGFyZ/WuO0uocpWz6LqllgGyg64Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r6eE8maLEV6drIG+KE4knFhDOT0Dr2YXuKTFRwUkj0nULzAtu9oxO4m8VYCeVFOPyUMeGW+9v+rpEw+VFYn8t19YcfN5jjnwIaksT+ZImxoIYBCM8eaxz+5iK93+NTxadoPrFrSIvHM2R4abXOv3CEYxpk10tQxjKbAeXEW++rU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JuMwhxT4; arc=none smtp.client-ip=209.85.128.45
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y5vvAhbrrbZAMOWx147VaF4zCruJdvnsaF5kKToMAli326EkVBRtAhZ3ga4qdNOREic15CYH4jcIGcF4WHjm2Sk4oXGLq8lBRjPyUdo2XjlOJhgcJnQkFAcW3I19Iq4bM3dNWHCkxg28meaJMXBGYIWlEbJq8LdSqouZ2ZAG6fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mZWSdug7; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JuMwhxT4"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-43948021a45so19583095e9.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 28 Feb 2025 05:25:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mZWSdug7"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4399a1eada3so19544685e9.2;
+        Fri, 28 Feb 2025 05:29:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740749156; x=1741353956; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1740749371; x=1741354171; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
         bh=Avez2xSDYscvxHDuCxg1ie5SK+Du5TC+14a6JKYQZoQ=;
-        b=JuMwhxT431OTepG5Hq74kXSKgShX6eChZ+paUfL/ujad2SQtW2ykU8lWhwD2/bhlmm
-         LK285/WV4JsgsAabDOHna30jfZF2jXKres0qWEBvY9Y2tliceYAwJvZqVDFT4MVveomM
-         MYdsgi2G53SLt7b+nSo+ZEUPw0kdJGDLtSuUrgJTAxpRos+xgRAVKBZ66ytk5SrBgUai
-         Du2ZlXQ53L39A0XCayj9pA7ZwtSu/P+tsy269/l5OQxAAkcrPdzeua+V1haIrVfVN7r+
-         8IxKblao5ZJfGjjUX7jn3pr5LVBwTM11TkcfL3C0NVC1KGxOz/V2mszg2CyLMf4F0nyO
-         nyBg==
+        b=mZWSdug7C7iY/uUmbcqtfyaOqiOS1wWx3lWZQu8g3nlnVIVArHHFqz6tIcHvEiqImw
+         HZmahGN/qPXLST+r710WgDmEUFdp+HdCBUc6/gnnL/ZAkZGr0kSUPJ5GfvjMcLzNcR6u
+         iX+KWfMbZfw/HMy7jrXlmurOBeq0foiQdd7+zMrJ/IdGx5O8Hvs0iqkBBQDfWTaqe80j
+         fmUXKjOwd0V5lwD9/T1L7OZgcblUNM2otKMkvvGj1BWNpzgdAm+2ZjRT7eKa1kvINd6G
+         +8j2PEGoQGJiDI43YkTXhA/qhUyL7H55KbvPldmUECIg03q1ign61jPLbJnqWBmDJJia
+         skfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740749156; x=1741353956;
+        d=1e100.net; s=20230601; t=1740749371; x=1741354171;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
         bh=Avez2xSDYscvxHDuCxg1ie5SK+Du5TC+14a6JKYQZoQ=;
-        b=N+eVSjgKLAaYhPJVUF/0aIVne8jGwG7PkS4/XByisNNjMzH8pT9Plpr32XncGovjYP
-         ZwyzgAWdij+E0tY6Aco6elb6S2SYKEI7oMmfHiMFjqxejB0qsyUAz8j1tlsQm2dG+zEL
-         L4HseLhqCsQYWHDRZw5A4AKlng4eSJfNzM3Hbt3FsgbvM6J0QF40FuaKEKXuvrtMSr8a
-         0mO8KRaAZfiBfnBeFct3Oo9mK02JxZVJSjDmUrMg1gfGlghvCf2c7qGusmMMdGLWO3Uj
-         tiKUm8cjcTkvTvR7E25iKsmAUwRXOTJPPilxlxiSPMWd8f3z66vl5UlgHs0siPEP8hSV
-         uqjA==
-X-Forwarded-Encrypted: i=1; AJvYcCVEwiKzRubCsYxQo4fNX50GtVPjw8elj1p/UoGoAL6Cg9JFC0MvJKA71AX5ivGX034TT+1RH0aeH2dw3yE5JQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrX2C3XicMf+C/YECOXJUGXlaaDnaWx0kegoH/T/2LYHgvmTUS
-	kH2qqivMXFDZ0vnyBUdK3Nq+e8k2SgyAVrc+g7UUYd/fK3jPesM/
-X-Gm-Gg: ASbGncuptd56mdHZK6OSPzBTN/JZSKD68RZYTTH9JY1q+Qm5XHgQNRl5sFeJjQRMiLw
-	qH6gtgo9S9ohSUxCYQoHOeY3iNRhcgeMoYbJTiB7EbDWMtSWI3pOsDFZcSLRxgg5TOm1DoorC6w
-	MmbN80/BmZc6PrSJNK3hdnLNvBbSuueXdC8MWJOpCa4JmdWa12VoU5yd/ixDn5xCpht9TjTfUtN
-	xXQOXR5Alj/YAcUnl7ioBkebsYFNPlfRO8B+BaIJyskVd46qi3Hk2xYglETgU4hdVz0qA+nsqbT
-	Rp0wDVu+waMFT3LWYJkDPAaEH4xB3w==
-X-Google-Smtp-Source: AGHT+IEXOmk7Lf8/1TOV4JLKZCY0pyOf/hviH6XR8McmBtNUyGiSj4owC2GIpRlD7jwHApso88yVXA==
-X-Received: by 2002:a05:6000:2a81:b0:390:d62c:ecd8 with SMTP id ffacd0b85a97d-390ec9c24c0mr1793374f8f.29.1740749155653;
-        Fri, 28 Feb 2025 05:25:55 -0800 (PST)
+        b=asBJTQ7JuG25uP1uC4tBgfdg+SIeIhg44cUaLQo2Y43lo6VdYQFFYu3k0rgzO/fS9w
+         QdrZhi+4qUWoVJvPjqIuY08mEeevGMsmmPDuXusJpm5LIJyC00/9vHS9VvuB9RNK8GmC
+         /9bH/ezmIbSlWuS0HWgReoC+niFksqfrWXoLDHrc3vHgTKNy46tjF0FYGcfvfaj5KaA8
+         MPqUPJ9iLL2KGaMipVLT1wx65kTddHkY/us0YIaVToUR+BvAgC54vIGBgQczrP5U3U1J
+         XqdxUdt+D6ruxPKMNDgZiGXY1nPf6eX1Bq9NZME77NDq6gmHuGNWlQnmSabzjgr+nU4n
+         Serg==
+X-Forwarded-Encrypted: i=1; AJvYcCVoxZTO4E25j3ku7Riue8UlUGvmYMCLbcn1/uhSMS7tUWouoih5KvBPBv3KbmUqIliPgMu85XEoRbiRTGg=@vger.kernel.org, AJvYcCXPczyvF8vjpZoRPZ9FfB8jqWrMwxdlI/2rjlPoEXXKSvtD7ZjahoCO1TPZsyN5Xt9yBYgVQD4g62xZ1ev7nFM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywpc0DjYUa5Ae8rqTlJ3D46GXTuFXt6Y6HOkFdqSFksIIUgKL4W
+	WaE46WF5+q0gCRDYiHzRXkWUX8tBxn2dRoQkxAgEx+TfV2My1ov2lyudSVJr
+X-Gm-Gg: ASbGncvIQnW9v7d4j21Xstp/Hukk2TrSGs1ojaRCNNGLQgVor8SJ8BrWRZiKgQQC1c0
+	j56FyDTXkkNebik1W8JlAj2Fm+k9OFW+9onxO1cO31FPsmzA5VSr2tkerGxeUcpFm4HRk6vfcCm
+	vjl2YvmJJ/RY1L+X3mf8RJBZZtL+6BQFDRlnRPQeHZ/oNitE88V9AvDUOSlus6P24DsRaZx9gaQ
+	R5DC9CRsxcu1mfA5wqOG86HF/g4SIexFddf4Qhoda/mUOLluqnw4J76+b1b29Myr+UWALVoG2Lz
+	cGTwlpjFtEy7KjHAOuMxfDhAXzD1pw==
+X-Google-Smtp-Source: AGHT+IGlY+8f/TJ66ysQmZN61hQQEryPUVbnOuK90G1E8TY4dFR0/Hi1Fwk7z2HQ0W6TjEyL1VD/+Q==
+X-Received: by 2002:a05:6000:1f8c:b0:38f:4fa6:bb24 with SMTP id ffacd0b85a97d-390eca530a8mr2830857f8f.39.1740749371055;
+        Fri, 28 Feb 2025 05:29:31 -0800 (PST)
 Received: from fedora.. ([82.67.147.186])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43aba5393e5sm87296865e9.20.2025.02.28.05.25.54
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e485d6dbsm5212693f8f.82.2025.02.28.05.29.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Feb 2025 05:25:55 -0800 (PST)
+        Fri, 28 Feb 2025 05:29:30 -0800 (PST)
 From: Guillaume Gomez <guillaume1.gomez@gmail.com>
 To: ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
 Cc: Guillaume Gomez <guillaume1.gomez@gmail.com>
 Subject: [PATCH 1/1] Use new `--output-format=doctest` rustdoc command line flag to improve doctest handling.
-Date: Fri, 28 Feb 2025 14:25:53 +0100
-Message-ID: <20250228132553.880126-1-guillaume1.gomez@gmail.com>
+Date: Fri, 28 Feb 2025 14:29:28 +0100
+Message-ID: <20250228132928.880683-1-guillaume1.gomez@gmail.com>
 X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
