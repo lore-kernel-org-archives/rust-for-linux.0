@@ -1,92 +1,103 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8FA1C3BE3
-	for <rust-for-linux@vger.kernel.org>; Fri, 28 Feb 2025 11:32:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B3B02528EB;
+	Fri, 28 Feb 2025 12:17:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740742328; cv=none; b=bpBT3o5Ut8ogRn22012CmhfzBYyEuJD+MQihjuzFTlMSHCmMQebGLtQtsEWRebQZQfvh00hLtbDwjW3kyjdFWFbYcJW1V+0cz35AelqJdmYq4hAV/xuMpX79PbDsH7vmDiMctgy3KxQkF6zaHaskRt5FCw+wNIDUxKki3KNmIpw=
+	t=1740745026; cv=none; b=IlcwOr1osxat28xeVnAIqLN/vGSkQGiJIMTsxSArJCgqwBD0l9NcJbqwdVnGJICOcIRn1Qxp6uru/19gXbgPrCWf2oBVmXcOSOu9jNbEWoWPdQe+ZF61C4BnvAw+4efT4I5RXNubHbCZyGVUDYl2Q2csXwPz5aHc3M3ryjBJiKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740742328; c=relaxed/simple;
-	bh=XKAV4/E1+is1J8a/5HPRUiraTYH/wEodr2IoF9LyrXc=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aH39K8Xs8GGQ232699JcOO+ri21Fd4B1zzBRhhKBIvjgHLXteTyIjm2NH1sudsSlpYIeqNS9nTpD3Ua49ymlRWCVr8paIBF7dxyrgvGyRdW7kxgFkTxjBq0LVw8pemARrEGataFjQlkAU9XLZYNzYg1vdzNYWwdo6AaqJW52Y14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=nzweEyOB; arc=none smtp.client-ip=185.70.40.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+	s=arc-20240116; t=1740745026; c=relaxed/simple;
+	bh=Duc3LTiA2wcifNotLp2bQHF2mAJjeJGKFn3hYnPif5s=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=mvLZXUXZb+y4Zv7PeEsZk81yoOX/ceCDV6Da/LzRVh2L5oaSH+wMqBpdPFReiYntLLmRMAA5oDsdS0dB83b9rQzMLmKrDhUMAbMH0wf1BvX6gqGU1Y0aFY8zmsNrw71nvjtHiI0aCUHmolSz/D6iABVS/3xIe5rdwRCPTkPnUqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qd2daEVc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="nzweEyOB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1740742319; x=1741001519;
-	bh=WnuT1lp+dEjui9s8JRMd2CxOSptWUukiYdlX90A/SL8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=nzweEyOB65w0CUoEAmf8Kp9DIVwwyrvkN73tjaoaGx37fVwZHQuTwfVMnOfWZZ83k
-	 LgiuZSMmTGSJpRKtN8JRj72JB6qmII5IA4dk3CgOohhiFeCXR2W+oau5j8Z7gHwAor
-	 BQNl6ap99o5BgskhP4lvv92PeKAKH4L/9II9Of7UhY4kwuhgvhvIi+yZSddVSJ3uF3
-	 ibfAq2CkA0cMJlAqeGVwE/M3vFms1eucY+O+K+SODBlLKLUghtuvqjS3VEb4HaiOt0
-	 5LtQsUuQO4CvDJpcr0/OhaGe1RBjPqXla39/agU2LSTYs+oUNG/B5oQF0F7l1f7uop
-	 v5G+ArcAG7Prw==
-Date: Fri, 28 Feb 2025 11:31:53 +0000
-To: Andreas Hindborg <a.hindborg@kernel.org>
-From: Oliver Mangold <oliver.mangold@pm.me>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] Rust: Implement a unique reference type URef supplementing ARef
-Message-ID: <Z8GepRBy6rQtTqh5@mango>
-In-Reply-To: <87wmdamiik.fsf@kernel.org>
-References: <jeyp4dToznpiAQYWHAABrEBIHVfxaIf7ntexop3d2AXQgnlytw3J8YFkX8E8EFKc1-USf_fVZqKhEmuNGE3O0w==@protonmail.internalid> <SpXhwnZO__ST8sHQ3HQ3ygThOcnmn0x2JlJ_nwJglL87vw5XfQA8sDH6HdkrGgFVycLhPBlCc6-UtEImTvY26A==@protonmail.internalid> <87wmdamiik.fsf@kernel.org>
-Feedback-ID: 31808448:user:proton
-X-Pm-Message-ID: e8b37f6015c1c6870e1d3bc1e0e2a0186c0198ab
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qd2daEVc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B671C4CED6;
+	Fri, 28 Feb 2025 12:17:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740745025;
+	bh=Duc3LTiA2wcifNotLp2bQHF2mAJjeJGKFn3hYnPif5s=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Qd2daEVcdYHgzDyTYv9omT5Uk1DPc4nRmFufArdjPNTnlZ5BawsUPYE4tYQfo1p5f
+	 DxTefvh7SLpf8BDxTyKDN2uxfbFPG8hgxvYNVJ6hcGV9VDUqpaMAYFMJqslzMD58NP
+	 k5m5x3q2xYdGF13UI3rw9bh6Z957WQ7OM8nX4DBIwjlXOsfcfSbt1q1TDsg0itqNgA
+	 Dr27dlJ/Gf085upL+2zdmK+izP5FP3tKKdtOL/9Fsqp3G2DfRQ/WK8ic9GnuCCLqYE
+	 uAPwNe3JMOdmYdV6j0hnUt5BqHAUVWzM6mGX7KxR6BRxTuTGgJtI30sHvmRrB0qPY7
+	 uaNQLMsdEwALQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Oliver Mangold" <oliver.mangold@pm.me>
+Cc: <linux-kernel@vger.kernel.org>,  <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH] Rust: Implement a unique reference type URef
+ supplementing ARef
+In-Reply-To: <Z8GepRBy6rQtTqh5@mango> (Oliver Mangold's message of "Fri, 28
+	Feb 2025 11:31:53 +0000")
+References: <jeyp4dToznpiAQYWHAABrEBIHVfxaIf7ntexop3d2AXQgnlytw3J8YFkX8E8EFKc1-USf_fVZqKhEmuNGE3O0w==@protonmail.internalid>
+	<SpXhwnZO__ST8sHQ3HQ3ygThOcnmn0x2JlJ_nwJglL87vw5XfQA8sDH6HdkrGgFVycLhPBlCc6-UtEImTvY26A==@protonmail.internalid>
+	<87wmdamiik.fsf@kernel.org>
+	<Qk7ZuBkLLBGX2wPuhDmR6Zw50-_saYGW8nOwV2mkMohZkROTgTtm9xOWSPI4rwUxI7Ji6KdWIhEw20diAqA0WQ==@protonmail.internalid>
+	<Z8GepRBy6rQtTqh5@mango>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Fri, 28 Feb 2025 13:16:57 +0100
+Message-ID: <87ldtqmfgm.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On 250228 1210, Andreas Hindborg wrote:
+"Oliver Mangold" <oliver.mangold@pm.me> writes:
 
-Hi Andreas,
+> On 250228 1210, Andreas Hindborg wrote:
+>
+> Hi Andreas,
+>
+>> Wrap at 75 characters please :)
+>
+>> See `AlwaysRefCounted` for reference on formatting.
+>
+>> Please use back ticks for types: [`ARef`], [`URref`]
+>
+>> For your next version, can you run `make rustfmt`?:
+>
+> Sorry for all that. Apparently I need to get used a bit more to how things
+> are supposed to be done here. Please be patient with me for a bit :)
+>
+>> When the trait is unsafe, we need to specify the conditions under which
+>> it is safe to implement:
+>
+> Of course. Sorry, missed that.
+>
+>> I would prefer `UniqueRef`. I know `ARef` has a different naming scheme,
+>> but I think `UniqueRef` is sufficiently short and significantly more
+>> descriptive than `URef`.
+>
+> Ok, will do. Honestly I also prefer UniqueRef.
+>
+>> Also it would be great if you include your "rust: for fix dec_ref for
+>> URef<Request>" folded in.
+>
+> Are your sure? Wouldn't the patches have to be ordered like this?
+>
+>     this patch (mine)
+>     rust: block: change `queue_rq` request type to unique (yours)
+>     rust: block: simplify reference counting scheme (yours)
+>     rust: for fix dec_ref for URef<Request> (mine)
+>
+> IOW, the latter requests depends on the 2 patches of yours, while these depend on this patch. You know what I mean?
 
-> Wrap at 75 characters please :)
+Sorry, yes I meant "rust: allow to override dec_ref() for URef's".
+Either include it in the series or fold it in, whatever makes most
+sense.
 
-> See `AlwaysRefCounted` for reference on formatting.
+The request update can go later.
 
-> Please use back ticks for types: [`ARef`], [`URref`]
-
-> For your next version, can you run `make rustfmt`?:
-
-Sorry for all that. Apparently I need to get used a bit more to how things
-are supposed to be done here. Please be patient with me for a bit :)
-
-> When the trait is unsafe, we need to specify the conditions under which
-> it is safe to implement:
-
-Of course. Sorry, missed that.
-
-> I would prefer `UniqueRef`. I know `ARef` has a different naming scheme,
-> but I think `UniqueRef` is sufficiently short and significantly more
-> descriptive than `URef`.
-
-Ok, will do. Honestly I also prefer UniqueRef.
-
-> Also it would be great if you include your "rust: for fix dec_ref for
-> URef<Request>" folded in.
-
-Are your sure? Wouldn't the patches have to be ordered like this?
-
-    this patch (mine)
-    rust: block: change `queue_rq` request type to unique (yours)
-    rust: block: simplify reference counting scheme (yours)
-    rust: for fix dec_ref for URef<Request> (mine)
-
-IOW, the latter requests depends on the 2 patches of yours, while these dep=
-end on this patch. You know what I mean?
 
 Best regards,
+Andreas Hindborg
 
-Oliver
+
 
