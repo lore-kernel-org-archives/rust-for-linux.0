@@ -1,32 +1,32 @@
 Received: from r-passerv.ralfj.de (r-passerv.ralfj.de [109.230.236.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF501C5F35;
-	Fri, 28 Feb 2025 07:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC09276D12;
+	Fri, 28 Feb 2025 07:53:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.230.236.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740728702; cv=none; b=klDo7LtS8YGNjeFPPxYYIXjsGb7Io5IXfvrEZj57EUPfX6HZh5YzwYc5VRqI4Ela3JZKeFIdYc5d/9I/cJApuGxtrIJ6hB+6KDbbN6vplaZeYSVM6n1OGODO9BR+NeSJUGkby6GCe9U8vtyx8A1jq74/ESqEuM76TpjxFSTnrIE=
+	t=1740729195; cv=none; b=W1PPEyGC+/cagUrWeJgfQoJdcwiGT1oWDn1HH/wVtMGYdKn+w81Nc/l+r6Y3kRSM8IKd4245MVvPGYcKkDWI0hqnVVdiW58uVKHG4+PJ33chwdB7dQ7sMfYhNClmXdYr5fAruUnj434rNOAhTxgswpzxWTZPnvl/n2nA1+u+G9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740728702; c=relaxed/simple;
-	bh=Cqdlf4yoq30t+BX3DuWtax33mta4DCN20XIqO0aqf/k=;
+	s=arc-20240116; t=1740729195; c=relaxed/simple;
+	bh=PUtZpIADiI6Ujj2mPs39lwBthjJFOnSo983vSigK3gw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HYnwwXGwTdeDCUmsA9wN70zAGBlOo415Ga8vYJjYVz2U2JE+ouQ467gVZ5n4wlAHbDEwmuJH7zT1mxNlDV0h74u1p7ooOxKK7ui61x816pVJv10fqvUUKWLdLvITtgc3Tjlm428K6qZDH3A66WEITXxmovGlCakhv+75SkNmi5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=AGXlS+9T; arc=none smtp.client-ip=109.230.236.95
+	 In-Reply-To:Content-Type; b=Q2FLzUTTpcuY/b8hyTgTBL15F82kpM2u+au/MlIyqgehHcIkebmSckWYkPpU76sCqAaIRTPROOrKEaKcPmUf8YXBF7AJdmbiqC6NzD+KCDk5cGgr/64EjqZpypKPGBpUaD4vRDOsjwXwzhxzgqtNrhS8TPXmytzqW8prz1pJMOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=TmzHf/je; arc=none smtp.client-ip=109.230.236.95
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ralfj.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="AGXlS+9T"
+	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="TmzHf/je"
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ralfj.de; s=mail;
-	t=1740728699; bh=Cqdlf4yoq30t+BX3DuWtax33mta4DCN20XIqO0aqf/k=;
+	t=1740729192; bh=PUtZpIADiI6Ujj2mPs39lwBthjJFOnSo983vSigK3gw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=AGXlS+9T2hBJetL2PAoO0+xMCbtPC32Keir+LaWJTyi4EhG4TiVncrKvf9M5nlfHL
-	 5/3LgEorqAyePLoDqQ+a3gKrVxTnW33X9FgW6zypyap562lYgq9uhTXH1vUBKSITXL
-	 NzWgh1x9iiJerDfoT2Nd8b+h5BcYFEQdJ/KjJa7M=
+	b=TmzHf/jeSbNeL86dRLzSU79EbpCJtZwt7IMkXWI0zRBF0NyjDo++w0SppZyOE35J9
+	 zaV7Gxe/vLTRc0oillVnzeoyov0DwEpi4x4A1y6aHstGVRFrwcar9frkLfAFCvlp9N
+	 25/5TrRB1bPA56OzzQ0mXUpHfaIRxnw5czd/cc4k=
 Received: from [IPV6:2001:8e0:207e:3500:4ab6:48fe:df57:b084] (2001-8e0-207e-3500-4ab6-48fe-df57-b084.ewm.ftth.ip6.as8758.net [IPv6:2001:8e0:207e:3500:4ab6:48fe:df57:b084])
-	by r-passerv.ralfj.de (Postfix) with ESMTPSA id 024BD2052A86;
-	Fri, 28 Feb 2025 08:44:58 +0100 (CET)
-Message-ID: <07acc636-75d9-4e4b-9e99-9a784d88e188@ralfj.de>
-Date: Fri, 28 Feb 2025 08:44:58 +0100
+	by r-passerv.ralfj.de (Postfix) with ESMTPSA id 0C2712052A86;
+	Fri, 28 Feb 2025 08:53:12 +0100 (CET)
+Message-ID: <2949f6dc-51fe-4a28-b44d-5a38796303e8@ralfj.de>
+Date: Fri, 28 Feb 2025 08:53:11 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -35,17 +35,17 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: C aggregate passing (Rust kernel policy)
-To: David Laight <david.laight.linux@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>,
  Martin Uecker <uecker@tugraz.at>, "Paul E. McKenney" <paulmck@kernel.org>,
  Alice Ryhl <aliceryhl@google.com>, Ventura Jack <venturajack85@gmail.com>,
- Kent Overstreet <kent.overstreet@linux.dev>, Gary Guo <gary@garyguo.net>,
- airlied@gmail.com, boqun.feng@gmail.com, ej@inai.de,
- gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com,
- ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
- miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
-References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
+ Gary Guo <gary@garyguo.net>, airlied@gmail.com, boqun.feng@gmail.com,
+ david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org,
+ hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev,
+ linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com,
+ rust-for-linux@vger.kernel.org
+References: <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
  <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
  <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
  <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
@@ -54,48 +54,45 @@ References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
  <CAHk-=wh=8sqvB-_TkwRnvL7jVA_xKbzsy9VH-GR93brSxTp60w@mail.gmail.com>
  <ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at>
  <CAHk-=whLSWX=-5-z4Q8x1f_NLrHd0e3afbEwYPkkVSXj=xT-JQ@mail.gmail.com>
- <20250226162655.65ba4b51@gandalf.local.home>
- <CAHk-=wjAcA4KrZ-47WiPd3haQU7rh+i315ApH82d=oZmgBUT_A@mail.gmail.com>
- <20250226165619.64998576@gandalf.local.home>
- <20250226171321.714f3b75@gandalf.local.home>
- <CAHk-=wj8Btsn0zN5jT1nBsUskF8DJoZbMiK81i_wPBk82Z0MGw@mail.gmail.com>
- <20250226173534.44b42190@gandalf.local.home>
- <20250227204722.653ce86b@pumpkin>
+ <m4cbniqfsr5xpb2m7k53e7plc6he5ioyl2efiiftdmzod56usd@htwdppje6re5>
+ <CAHk-=whEkEsGHWBMZ17v5=sq1uRe6g-BRHy5xNZK-2JBKRs=_A@mail.gmail.com>
+ <0f3bc0e8-5111-4e2f-83b5-36b3aec0cbbd@ralfj.de>
+ <CAHk-=wj37zT4Fy+mBFVRKPy=NMKcB6xBzqOuFrW0jOTv8LKozg@mail.gmail.com>
 Content-Language: en-US, de-DE
 From: Ralf Jung <post@ralfj.de>
-In-Reply-To: <20250227204722.653ce86b@pumpkin>
+In-Reply-To: <CAHk-=wj37zT4Fy+mBFVRKPy=NMKcB6xBzqOuFrW0jOTv8LKozg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 Hi,
 
->> I guess you can sum this up to:
+On 27.02.25 20:15, Linus Torvalds wrote:
+> On Thu, 27 Feb 2025 at 10:33, Ralf Jung <post@ralfj.de> wrote:
 >>
->>    The compiler should never assume it's safe to read a global more than the
->>    code specifies, but if the code reads a global more than once, it's fine
->>    to cache the multiple reads.
->>
->> Same for writes, but I find WRITE_ONCE() used less often than READ_ONCE().
->> And when I do use it, it is more to prevent write tearing as you mentioned.
+>> The way you do global flags in Rust is like this:
 > 
-> Except that (IIRC) it is actually valid for the compiler to write something
-> entirely unrelated to a memory location before writing the expected value.
-> (eg use it instead of stack for a register spill+reload.)
-> Not gcc doesn't do that - but the standard lets it do it.
+> Note that I was really talking mainly about the unsafe cases, an din
+> particular when interfacing with C code.
 
-Whether the compiler is permitted to do that depends heavily on what exactly the 
-code looks like, so it's hard to discuss this in the abstract.
-If inside some function, *all* writes to a given location are atomic (I think 
-that's what you call WRITE_ONCE?), then the compiler is *not* allowed to invent 
-any new writes to that memory. The compiler has to assume that there might be 
-concurrent reads from other threads, whose behavior could change from the extra 
-compiler-introduced writes. The spec (in C, C++, and Rust) already works like that.
-
-OTOH, the moment you do a single non-atomic write (i.e., a regular "*ptr = val;" 
-or memcpy or so), that is a signal to the compiler that there cannot be any 
-concurrent accesses happening at the moment, and therefore it can (and likely 
-will) introduce extra writes to that memory.
+When Rust code and C code share memory that is concurrently accessed, all 
+accesses to that from the Rust side must be explicitly marked as atomic. A 
+pointer to such a memory should look like `&AtomicBool` in Rust, not `*mut 
+bool`. To my knowledge, the kernel already has appropriate APIs for that. That 
+will then ensure things behave like the AtomicBool example.
 
 Kind regards,
 Ralf
+
+> 
+> Also, honestly:
+> 
+>> FLAG.store(true, Ordering::SeqCst); // or release/acquire/relaxed
+> 
+> I suspect in reality it would be hidden as accessor functions, or
+> people just continue to write things in C.
+> 
+> Yes, I know all about the C++ memory ordering. It's not only a
+> standards mess, it's all very illegible code too.
+> 
+>               Linus
 
