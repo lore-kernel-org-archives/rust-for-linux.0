@@ -1,57 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F241C548C;
-	Fri, 28 Feb 2025 18:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F3A8277036;
+	Fri, 28 Feb 2025 19:02:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740769127; cv=none; b=a9y88Zk2bJuZF5v6XPpbsFCdRcZ+l2y961kPQRffcblKRn1l1YAdncpuTGlNNXpWsgS60GgoBnNJyT/B230i6lbRLSoj/5Alzmw91ckvKdwqcX/OETaJNisdqie5DzPxToehp8WTQ3EaNqUuwVzwq5FczUr0KEyf4bMF1QKCtSI=
+	t=1740769326; cv=none; b=UHyUJnhjJwCmOah9+N2iQ2U52uuqoKsmVPdqQB/5+QApntPdfyvd10KFa3mqLlDfnt1W7Kx32YjAm1IN7QcpzTZHPzPQ9yJ7vD+B7FV+AoyD5TKC8bdL79eXI1R16CxdJo6YpjPI3cVfH4v+obw8StVYI0zcin8oE1hHq+azXiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740769127; c=relaxed/simple;
-	bh=CIA17vKj86QZVvcuBdGngR2g3nwrDmSjGoJQOl2IIs4=;
+	s=arc-20240116; t=1740769326; c=relaxed/simple;
+	bh=PUoCqXPpUCMbY97368Vkt+ANdYQNlfdQvb4mJC4q8RY=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=MGhZWCEhTGEwvfkd77sMIZymsJbwvG+F5aSQ2iYllsR44GTN/AdnW279FXuJh0BwzwqZUXLx5lGCzBDVWx1bArP74KVHNEoBsj25Izh2DtG6FaVpK8ZVKJ0bNDwxRw/MSuXbmwY5DGiRKeNpqZGFiDfSEtKU28fwCIzu12cFftU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fh564Eqx; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=tdnQtOTBEv4DXJ6PcQPVbeWAxcrspLDLuCY7PFqs4wu5Awo0jXoVC/0zsHRv9sIHIflDSFsL7oJwQ2J9rs1Ez1CuPmLgciPPEW+ghVsQA9qr3DANtvJhEQ3Qbq0orkNCLZw9YGDrMnAheuzcYjQzIRWh9DrJ8zXmRG98nwkPwOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZZGMk6bb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fh564Eqx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82186C4CED6;
-	Fri, 28 Feb 2025 18:58:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZZGMk6bb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCBA2C4CED6;
+	Fri, 28 Feb 2025 19:02:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740769127;
-	bh=CIA17vKj86QZVvcuBdGngR2g3nwrDmSjGoJQOl2IIs4=;
+	s=k20201202; t=1740769326;
+	bh=PUoCqXPpUCMbY97368Vkt+ANdYQNlfdQvb4mJC4q8RY=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Fh564EqxRGkM4ET1BYBiFfp6RT69LGTwBPr/GQ/PAMqX3Y0D2RN+/ad6M4RZL1gGi
-	 5/DSOCyVblBbt7bHCOG0S5g6FYcuHeDOvCdkWdKnx1ZnXvE2vMAaSL9zReGjcS5u8F
-	 s4zl61WKhzRfdn0Y+v5pRIZaP4SbfRL0/NaA/noarNaUCP4GN6uRjB9ZND9LEaRzhQ
-	 /BmP1DcWGYEua/HEb3alrccBqVw+oW4yyr/xDF8BuLXdJ2moQy8aHED3KzfzE7rRPG
-	 4DIkfeMY+SJJh2uBaLG9HhKIjrmxhBbUPHGe8tFIOP7FLqcd6fwuJ5Ygpi53x9OCD+
-	 J79qRh6kVuGMQ==
+	b=ZZGMk6bbfz311eIP6HtAie5stpG839igCX46G2G0EusTFkNudGXPzDrHYOk18eJ7d
+	 kfMmmwdEoXYbeHkxGidzzpG5QsmeObF9SQCI1XP1E8YAAb9IG087r+2Vrr9NEqaPuy
+	 Ks74yRqleRb5jH1N/7p9Q/nOVQfwE29rwolbDu/mky8sut2/8YF5BsobIf4Juco32v
+	 WNdn1m6WzBhddOZvx5WGW08zQIE6l5wDEr6HfUEvwdDF9A0PV6ZQBGyjPhARCSsEGw
+	 HCD9N+FKbYDOoILb5H96ADFJjV2Oi5+0bBHLdPbXLqd5iC/a/1ELJS/goYB8REL2pf
+	 OUFciNAhE7SXw==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,  "Miguel Ojeda"
- <ojeda@kernel.org>,  "Petr Mladek" <pmladek@suse.com>,  "Steven Rostedt"
- <rostedt@goodmis.org>,  "Andy Shevchenko"
- <andriy.shevchenko@linux.intel.com>,  "Rasmus Villemoes"
- <linux@rasmusvillemoes.dk>,  "Sergey Senozhatsky"
- <senozhatsky@chromium.org>,  "Andrew Morton" <akpm@linux-foundation.org>,
-  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,
-  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,  "Benno
- Lossin"
- <benno.lossin@proton.me>,  "Trevor Gross" <tmgross@umich.edu>,  "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>,  "Maxime Ripard"
- <mripard@kernel.org>,  "Thomas Zimmermann" <tzimmermann@suse.de>,  "David
- Airlie" <airlied@gmail.com>,  "Simona Vetter" <simona@ffwll.ch>,
-  <linux-kernel@vger.kernel.org>,  <rust-for-linux@vger.kernel.org>,
-  <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH v2 2/5] rust: macros: support additional tokens in quote!
-In-Reply-To: <20250228-export-macro-v2-2-569cc7e8926c@google.com> (Alice
-	Ryhl's message of "Fri, 28 Feb 2025 12:39:31 +0000")
-References: <20250228-export-macro-v2-0-569cc7e8926c@google.com>
-	<2uURW8_Sq6S8VV2UoJJ6bmoH71NWq1X6b1niImKX2mpjudmVM5tNapWA4OLWXoZ8nmcM--z2XtAdgKiNPx8qQg==@protonmail.internalid>
-	<20250228-export-macro-v2-2-569cc7e8926c@google.com>
+To: "Boqun Feng" <boqun.feng@gmail.com>
+Cc: "Oliver Mangold" <oliver.mangold@pm.me>,  "Miguel Ojeda"
+ <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Benno
+ Lossin" <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,
+  "Trevor Gross" <tmgross@umich.edu>,  <linux-kernel@vger.kernel.org>,
+  <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v2] rust: adding UniqueRefCounted and UniqueRef types
+In-Reply-To: <Z8IBiBi6CSRxfxiE@boqun-archlinux> (Boqun Feng's message of "Fri,
+	28 Feb 2025 10:33:44 -0800")
+References: <I2EuahEO9YG75qdfIlsanLJ9iOfr0OlKJr6nw_cqOG0rVrZUEZGhdfENkLawNCpSqP8uSGMODCeEmsYv6clgYg==@protonmail.internalid>
+	<sOipp6LTmtfq5A37VN_kCA4Kw9zfclZ2HLIMSJYnOdG4ebnuTKUlXIlT4X3GVRLMXFmwT4IwyIA-eqF69yOhSQ==@protonmail.internalid>
+	<Z8IBiBi6CSRxfxiE@boqun-archlinux>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Fri, 28 Feb 2025 19:51:21 +0100
-Message-ID: <874j0dnbrq.fsf@kernel.org>
+Date: Fri, 28 Feb 2025 20:01:55 +0100
+Message-ID: <87senxlwpo.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -60,35 +52,16 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-"Alice Ryhl" <aliceryhl@google.com> writes:
+"Boqun Feng" <boqun.feng@gmail.com> writes:
 
-> This gives the quote! macro support for the following additional tokens:
->
-> * The = token.
-> * The _ token.
-> * Using #my_var with variables of type Ident.
->
-> Additionally, some type annotations are added to allow cases where
-> groups are empty. For example, quote! does support () in the input, but
-> only when it is *not* empty. When it is empty, the compiler cannot infer
-> the item type of `tokens`.
->
-> These additional quote! features are used by a new proc macro that
-> generates code looking like this:
->
-> 	const _: () = {
-> 	    if true {
-> 	        ::kernel::bindings::#name
-> 	    } else {
-> 	        #name
-> 	    };
-> 	};
->
-> where #name has type Ident.
->
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> On Fri, Feb 28, 2025 at 06:22:58PM +0000, Oliver Mangold wrote:
+>> On 250228 1009, Boqun Feng wrote:
+>> >
 
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+Something strange is going on with this thread. Some replies are not
+attached to the patch in my email client. Lore also has some trouble.
+
+What is going on?
 
 
 Best regards,
