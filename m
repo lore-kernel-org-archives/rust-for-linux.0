@@ -1,103 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B3B02528EB;
-	Fri, 28 Feb 2025 12:17:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE9326AAAB;
+	Fri, 28 Feb 2025 12:26:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740745026; cv=none; b=IlcwOr1osxat28xeVnAIqLN/vGSkQGiJIMTsxSArJCgqwBD0l9NcJbqwdVnGJICOcIRn1Qxp6uru/19gXbgPrCWf2oBVmXcOSOu9jNbEWoWPdQe+ZF61C4BnvAw+4efT4I5RXNubHbCZyGVUDYl2Q2csXwPz5aHc3M3ryjBJiKw=
+	t=1740745621; cv=none; b=hcSzHfeQ4MG7Pgym/zbJ24bmUlx1T1DVxOiWWuA1u2WzX+LiEGJV5nNwwubwP2gIZuu010MIco/Su2aCRfK5f7dGtp8Zlt3jjlYZZi3kyOpYcJwlu6TQqnVvK6/Dza8qQ3p/pxWYZPVZICs5LhujejP3scE0oSz9qhkF4tT941k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740745026; c=relaxed/simple;
-	bh=Duc3LTiA2wcifNotLp2bQHF2mAJjeJGKFn3hYnPif5s=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=mvLZXUXZb+y4Zv7PeEsZk81yoOX/ceCDV6Da/LzRVh2L5oaSH+wMqBpdPFReiYntLLmRMAA5oDsdS0dB83b9rQzMLmKrDhUMAbMH0wf1BvX6gqGU1Y0aFY8zmsNrw71nvjtHiI0aCUHmolSz/D6iABVS/3xIe5rdwRCPTkPnUqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qd2daEVc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1740745621; c=relaxed/simple;
+	bh=XTJ5YcY4zwZRIsaVC73ZiUNIWKHOD1EZR96gfev93xY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WRdTII3bVnDysd0m17aIZO6zsA5LtJlw8BHRlhzpk/jcB7g4YRsW7c412U0oQ4XarX4YsBjPUdhyIq1pjEhRVMHxSsAVehBz2aVaTFn/OWs4DnOhCxvDhi8vFmPARQpplcSWsPwZYgaFTaQJdy9MOqvlNOuJ4GpPlbJ3Xr8lQG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fb4WxOI+; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qd2daEVc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B671C4CED6;
-	Fri, 28 Feb 2025 12:17:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740745025;
-	bh=Duc3LTiA2wcifNotLp2bQHF2mAJjeJGKFn3hYnPif5s=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Qd2daEVcdYHgzDyTYv9omT5Uk1DPc4nRmFufArdjPNTnlZ5BawsUPYE4tYQfo1p5f
-	 DxTefvh7SLpf8BDxTyKDN2uxfbFPG8hgxvYNVJ6hcGV9VDUqpaMAYFMJqslzMD58NP
-	 k5m5x3q2xYdGF13UI3rw9bh6Z957WQ7OM8nX4DBIwjlXOsfcfSbt1q1TDsg0itqNgA
-	 Dr27dlJ/Gf085upL+2zdmK+izP5FP3tKKdtOL/9Fsqp3G2DfRQ/WK8ic9GnuCCLqYE
-	 uAPwNe3JMOdmYdV6j0hnUt5BqHAUVWzM6mGX7KxR6BRxTuTGgJtI30sHvmRrB0qPY7
-	 uaNQLMsdEwALQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Oliver Mangold" <oliver.mangold@pm.me>
-Cc: <linux-kernel@vger.kernel.org>,  <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH] Rust: Implement a unique reference type URef
- supplementing ARef
-In-Reply-To: <Z8GepRBy6rQtTqh5@mango> (Oliver Mangold's message of "Fri, 28
-	Feb 2025 11:31:53 +0000")
-References: <jeyp4dToznpiAQYWHAABrEBIHVfxaIf7ntexop3d2AXQgnlytw3J8YFkX8E8EFKc1-USf_fVZqKhEmuNGE3O0w==@protonmail.internalid>
-	<SpXhwnZO__ST8sHQ3HQ3ygThOcnmn0x2JlJ_nwJglL87vw5XfQA8sDH6HdkrGgFVycLhPBlCc6-UtEImTvY26A==@protonmail.internalid>
-	<87wmdamiik.fsf@kernel.org>
-	<Qk7ZuBkLLBGX2wPuhDmR6Zw50-_saYGW8nOwV2mkMohZkROTgTtm9xOWSPI4rwUxI7Ji6KdWIhEw20diAqA0WQ==@protonmail.internalid>
-	<Z8GepRBy6rQtTqh5@mango>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Fri, 28 Feb 2025 13:16:57 +0100
-Message-ID: <87ldtqmfgm.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fb4WxOI+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740745619; x=1772281619;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=XTJ5YcY4zwZRIsaVC73ZiUNIWKHOD1EZR96gfev93xY=;
+  b=fb4WxOI+gnQ3DOypvu3U77fve9hhHO3m/Z63u4eB9I08TaJkAcn+wPcO
+   Fv1zkUOABxk1wrl0BOBEN/aSSiMmKg2PSzWTk751nbr+rZDnSuBnwT0YT
+   /OWv3R+NefBRCxmn9kQbKKvopK6JIVd4szVxCsxkdvdGyXeox+wPy4Cbs
+   pSef2VdQJE/bPy9mkbbcQTwuR827DNcsZyNuyKum4/x3mYZ/z9prflyjo
+   tGtHfuaIJEEinOOQLFGUt2s4BsbxqJeulJ7uIfNjLvUZTyk509hIqEdw2
+   +APrze7MMGWnSkxfICJg4esYonKGkARlaaiS7PgHhveaRLH8XWqOGoJq6
+   A==;
+X-CSE-ConnectionGUID: BOEXlkP2TAy06wXjTIPicQ==
+X-CSE-MsgGUID: CRJLEOkLTjGVORqjrbuzEg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11358"; a="41923250"
+X-IronPort-AV: E=Sophos;i="6.13,322,1732608000"; 
+   d="scan'208";a="41923250"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2025 04:26:58 -0800
+X-CSE-ConnectionGUID: 9xS020aiSyGbIWM9zSPWCw==
+X-CSE-MsgGUID: X4pxYDX/TLi+1cgb9ccxow==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="118245544"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2025 04:26:54 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1tnzS5-0000000FwX6-1aq9;
+	Fri, 28 Feb 2025 14:26:49 +0200
+Date: Fri, 28 Feb 2025 14:26:49 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Petr Mladek <pmladek@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH 0/4] Check Rust signatures at compile time
+Message-ID: <Z8GriWN4C-e3583T@smile.fi.intel.com>
+References: <20250227-export-macro-v1-0-948775fc37aa@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250227-export-macro-v1-0-948775fc37aa@google.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-"Oliver Mangold" <oliver.mangold@pm.me> writes:
+On Thu, Feb 27, 2025 at 05:01:58PM +0000, Alice Ryhl wrote:
 
-> On 250228 1210, Andreas Hindborg wrote:
->
-> Hi Andreas,
->
->> Wrap at 75 characters please :)
->
->> See `AlwaysRefCounted` for reference on formatting.
->
->> Please use back ticks for types: [`ARef`], [`URref`]
->
->> For your next version, can you run `make rustfmt`?:
->
-> Sorry for all that. Apparently I need to get used a bit more to how things
-> are supposed to be done here. Please be patient with me for a bit :)
->
->> When the trait is unsafe, we need to specify the conditions under which
->> it is safe to implement:
->
-> Of course. Sorry, missed that.
->
->> I would prefer `UniqueRef`. I know `ARef` has a different naming scheme,
->> but I think `UniqueRef` is sufficiently short and significantly more
->> descriptive than `URef`.
->
-> Ok, will do. Honestly I also prefer UniqueRef.
->
->> Also it would be great if you include your "rust: for fix dec_ref for
->> URef<Request>" folded in.
->
-> Are your sure? Wouldn't the patches have to be ordered like this?
->
->     this patch (mine)
->     rust: block: change `queue_rq` request type to unique (yours)
->     rust: block: simplify reference counting scheme (yours)
->     rust: for fix dec_ref for URef<Request> (mine)
->
-> IOW, the latter requests depends on the 2 patches of yours, while these depend on this patch. You know what I mean?
+This is unfortunate. What does this mean?
+Can you, please, provide a meaningful cover letter?
 
-Sorry, yes I meant "rust: allow to override dec_ref() for URef's".
-Either include it in the series or fold it in, whatever makes most
-sense.
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-The request update can go later.
-
-
-Best regards,
-Andreas Hindborg
-
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
