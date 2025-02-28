@@ -1,107 +1,130 @@
-Received: from r-passerv.ralfj.de (r-passerv.ralfj.de [109.230.236.95])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D071E105E;
-	Fri, 28 Feb 2025 08:08:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.230.236.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59B7241CB5;
+	Fri, 28 Feb 2025 08:20:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740730086; cv=none; b=JYPBzpgCi+VLMLiat4mWxv9Aaa3VlwTJA+aWkde01nIiceRT/iWxDmk5PGsaAgOc8uxXUs3nXNvTyTLsHu+5GCoMJjUz2OrY3blbrpfozX3tBNxx3zCAz2nXmB4fBNNX2tyEM1amS8wkD/O4KTdOgK/cn7vV3Y2xvxVv64iEEZo=
+	t=1740730821; cv=none; b=VhpMNNPbuqn0U908GKgyUL6lBjXnfzp3/4qPCSxX3RKfayQPSiz4ZCeeYQi2cPPqeJIm7W1XNDQp4QsKuWw8fZTYuMAmAQ32PvPfE38s9jWq9NFmoJCKuNHd7uBREmPS+rNATGyNq4UMEdeJbCu0Z10ZoAjdqJiwh58cKi3gpJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740730086; c=relaxed/simple;
-	bh=Kf6mHkEL85gIyEws5lZxaWedBsN87cXo523g7xgNLnA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FD2P9KJ2Iq5A7oUtJZg1MJl4CTqfDqgKhKilV9mQtDYuxgwoAh/P6nPtbDCmP/PipaTglH0/War6LWJEl1/lsugCEPF0vU1hafYHQqHrPcfa7rIym8+e/RJ/nNYsy/azWiBsDM8x7ql6jaDgs1UpahTZBQ8zDIh50FKD9EDCCw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=Q+fkLti2; arc=none smtp.client-ip=109.230.236.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ralfj.de
+	s=arc-20240116; t=1740730821; c=relaxed/simple;
+	bh=OEgpyMB4mVz6xatqE7RFgUZeG48lXrAMDdUyOzv9uoM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=dzt5vySpp42MzKBX+fyQY2vTMdVYX5/Byqn0mSQD/9gtP7u9CGEg7E/iy8ByDIZYOytgx+tRuYRER4hvn6gZUdplwZO1fFoHi3jri0Qg840EV4PxpV0dOnkeUYQTUEAZTEqGEAwq1nH30UcG1j59B80FsQtvdI2NFdXLpR40m9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bfhi+k5P; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="Q+fkLti2"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ralfj.de; s=mail;
-	t=1740730083; bh=Kf6mHkEL85gIyEws5lZxaWedBsN87cXo523g7xgNLnA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Q+fkLti2A7ioxWs8LjmxnZ/b6C178ZqZJnKlcfVeROTZUsOe0/s9RokbAcs6ZEniG
-	 P6PdVUcFIxYt/mvBFW5qRFQ5RJ3g+08o45VJF2nmTHqteivBrz1evyRCB/Hlv42/dj
-	 wTzdN50pkENNO/7KM2aj7vchJQJZpxJqxZRCK8vA=
-Received: from [IPV6:2001:8e0:207e:3500:4ab6:48fe:df57:b084] (2001-8e0-207e-3500-4ab6-48fe-df57-b084.ewm.ftth.ip6.as8758.net [IPv6:2001:8e0:207e:3500:4ab6:48fe:df57:b084])
-	by r-passerv.ralfj.de (Postfix) with ESMTPSA id 72E7D2052A86;
-	Fri, 28 Feb 2025 09:08:03 +0100 (CET)
-Message-ID: <59c7a1aa-7ff8-4ed1-a83f-5db43094d3a8@ralfj.de>
-Date: Fri, 28 Feb 2025 09:08:03 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bfhi+k5P"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70BCFC4CED6;
+	Fri, 28 Feb 2025 08:20:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740730819;
+	bh=OEgpyMB4mVz6xatqE7RFgUZeG48lXrAMDdUyOzv9uoM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=bfhi+k5PGKHOytnaDgogFOZMKWU/7OkKnKF5XpK9xc3sMCy8q6/MocZmU5zn3yeHd
+	 P5Kq6xcPKMQGEtjUzq/XWfSPzrJbCRLdZkziAosodf+AKzgR1Xcz5MYsIj0HoTL7Hz
+	 gFT8JUGfzxz4EI4CTjNVoISrmdH2UeovZSpVoy2P8dKR698GA8HrBdmsCnX3Bc2RTt
+	 HuXY6Y7LYKOarTLmv/YK2M9bbaJpJRXMWkyAn05Fr7psuZ+edeIMcDMx3Lw8H0U8e8
+	 3nZVIeuQo95PgyQgn7VCgm0xb+UvpA5+a1+qVkA9D1oYT/tmZ3buhInqUzUSNphHkt
+	 xIIf0/3TL36Vg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,  "Miguel Ojeda"
+ <ojeda@kernel.org>,  "Petr Mladek" <pmladek@suse.com>,  "Steven Rostedt"
+ <rostedt@goodmis.org>,  "Andy Shevchenko"
+ <andriy.shevchenko@linux.intel.com>,  "Rasmus Villemoes"
+ <linux@rasmusvillemoes.dk>,  "Sergey Senozhatsky"
+ <senozhatsky@chromium.org>,  "Andrew Morton" <akpm@linux-foundation.org>,
+  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,
+  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,  "Benno
+ Lossin"
+ <benno.lossin@proton.me>,  "Trevor Gross" <tmgross@umich.edu>,  "Maarten
+ Lankhorst" <maarten.lankhorst@linux.intel.com>,  "Maxime Ripard"
+ <mripard@kernel.org>,  "Thomas Zimmermann" <tzimmermann@suse.de>,  "David
+ Airlie" <airlied@gmail.com>,  "Simona Vetter" <simona@ffwll.ch>,
+  <linux-kernel@vger.kernel.org>,  <rust-for-linux@vger.kernel.org>,
+  <dri-devel@lists.freedesktop.org>
+Subject: Re: [PATCH 1/4] rust: fix signature of rust_fmt_argument
+In-Reply-To: <20250227-export-macro-v1-1-948775fc37aa@google.com> (Alice
+	Ryhl's message of "Thu, 27 Feb 2025 17:01:59 +0000")
+References: <20250227-export-macro-v1-0-948775fc37aa@google.com>
+	<qxbD5y-rJZMJDMN1wtODJBCAdNtNdQFsYIDhZUex7KcbPiUvABElh5V8c9EFoAPZ7xQe_L8JS6MzAIqciAb12w==@protonmail.internalid>
+	<20250227-export-macro-v1-1-948775fc37aa@google.com>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Fri, 28 Feb 2025 09:13:25 +0100
+Message-ID: <87v7suo5ay.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: C aggregate passing (Rust kernel policy)
-To: Martin Uecker <uecker@tugraz.at>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Ventura Jack
- <venturajack85@gmail.com>, Kent Overstreet <kent.overstreet@linux.dev>,
- Gary Guo <gary@garyguo.net>, airlied@gmail.com, boqun.feng@gmail.com,
- david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org,
- hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev,
- linux-kernel@vger.kernel.org, miguel.ojeda.sandonis@gmail.com,
- rust-for-linux@vger.kernel.org
-References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
- <20250222141521.1fe24871@eugeo>
- <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
- <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
- <CAHk-=wgq1DvgNVoodk7JKc6BuU1m9UnoN+k=TLtxCAL7xTP=Dg@mail.gmail.com>
- <CAFJgqgSqMO724SQxinNqVGCGc7=ibUvVq-f7Qk1=S3A47Mr-ZQ@mail.gmail.com>
- <CAH5fLgh7Be0Eg=7UipL7PXqeV1Jq-1rpMJRa_sBkeiOgA7W9Cg@mail.gmail.com>
- <CAHk-=wgJQAPaYubnD3YNu8TYCLmmqs89ET4xE8LAe2AVFc_q9A@mail.gmail.com>
- <5d7363b0-785c-4101-8047-27cb7afb0364@ralfj.de>
- <CAHk-=wh=8sqvB-_TkwRnvL7jVA_xKbzsy9VH-GR93brSxTp60w@mail.gmail.com>
- <ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at>
-Content-Language: en-US, de-DE
-From: Ralf Jung <post@ralfj.de>
-In-Reply-To: <ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-Hi,
+"Alice Ryhl" <aliceryhl@google.com> writes:
 
->> The reason? The standards people wanted to describe the memory model
->> not at a "this is what the program does" level, but at the "this is
->> the type system and the syntactic rules" level. So the RCU accesses
->> had to be defined in terms of the type system, but the actual language
->> rules for the RCU accesses are about how the data is then used after
->> the load.
-> 
-> If your point is that this should be phrased in terms of atomic
-> accesses instead of accesses to atomic objects, then I absolutely
-> agree with you.  This is something I tried to get fixed, but it
-> is difficult. The concurrency work mostly happens in WG21
-> and not WG14.
-> 
-> But still, the fundamental definition of the model is in terms
-> of accesses and when those become visible to other threads, and
-> not in terms of syntax and types.
+> Without this change, the rest of this series will emit the following
+> error message:
+>
+> error[E0308]: `if` and `else` have incompatible types
+>   --> <linux>/rust/kernel/print.rs:22:22
+>    |
+> 21 | #[export]
+>    | --------- expected because of this
+> 22 | unsafe extern "C" fn rust_fmt_argument(
+>    |                      ^^^^^^^^^^^^^^^^^ expected `u8`, found `i8`
+>    |
+>    = note: expected fn item `unsafe extern "C" fn(*mut u8, *mut u8, *mut c_void) -> *mut u8 {bindings::rust_fmt_argument}`
+>               found fn item `unsafe extern "C" fn(*mut i8, *mut i8, *const c_void) -> *mut i8 {print::rust_fmt_argument}`
+>
+> The error may be different depending on the architecture.
+>
+> Fixes: 787983da7718 ("vsprintf: add new `%pA` format specifier")
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  lib/vsprintf.c       | 2 +-
+>  rust/kernel/print.rs | 8 ++++----
+>  2 files changed, 5 insertions(+), 5 deletions(-)
+>
+> diff --git a/lib/vsprintf.c b/lib/vsprintf.c
+> index 56fe96319292..a8ac4c4fffcf 100644
+> --- a/lib/vsprintf.c
+> +++ b/lib/vsprintf.c
+> @@ -2285,7 +2285,7 @@ int __init no_hash_pointers_enable(char *str)
+>  early_param("no_hash_pointers", no_hash_pointers_enable);
+>
+>  /* Used for Rust formatting ('%pA'). */
+> -char *rust_fmt_argument(char *buf, char *end, void *ptr);
+> +char *rust_fmt_argument(char *buf, char *end, const void *ptr);
+>
+>  /*
+>   * Show a '%p' thing.  A kernel extension is that the '%p' is followed
+> diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
+> index b19ee490be58..8551631dedf1 100644
+> --- a/rust/kernel/print.rs
+> +++ b/rust/kernel/print.rs
+> @@ -6,13 +6,13 @@
+>  //!
+>  //! Reference: <https://docs.kernel.org/core-api/printk-basics.html>
+>
+> -use core::{
+> +use core::fmt;
+> +
+> +use crate::{
+>      ffi::{c_char, c_void},
+> -    fmt,
+> +    str::RawFormatter,
+>  };
+>
+> -use crate::str::RawFormatter;
+> -
+>  // Called from `vsprintf` with format specifier `%pA`.
+>  #[expect(clippy::missing_safety_doc)]
+>  #[no_mangle]
 
-The underlying C++ memory model is already fully defined in terms of "this is 
-what the program does", and it works in terms of atomic accesses, not atomic 
-objects. The atomic objects are a thin layer that the C++ type system puts on 
-top, and it can be ignored -- that's how we do it in Rust.
+The changes in this last hunk is not mentioned in the commit message.
 
-(From a different email)
-> It sounds you want to see the semantics strengthened in case
-> of a data race from there being UB to having either the old
-> or new value being visible to another thread, where at some
-> point this could change but needs to be consistent for a
-> single access as expressed in the source code.
 
-This would definitely impact optimizations of purely sequential code. Maybe that 
-is a price worth paying, but one of the goals of the C++ model was that if you 
-don't use threads, you shouldn't pay for them. Disallowing rematerialization in 
-entirely sequential code (just one of the likely many consequences of making 
-data races not UB) contradicts that goal. Given that even in highly concurrent 
-programs, most accesses are entirely sequential, it doesn't seem unreasonable to 
-say that the exceptional case needs to be marked in the program (especially if 
-you have a type system which helps ensure that you don't forget to do so).
+Best regards,
+Andreas Hindborg
 
-Kind regards,
-Ralf
 
