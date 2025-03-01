@@ -1,75 +1,82 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6634419993D;
-	Sat,  1 Mar 2025 19:02:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3621E1C5F1E;
+	Sat,  1 Mar 2025 20:20:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740855722; cv=none; b=sMZ4dPscbqvOMM4EY3jmMGOnNuC7BAozIZ7RhaRU4vXD6/yGqxnQ+uqn9PnYujh+5wfZKHawfxWJrX3Xi4ufbF2wu7jv8zOfWODSxd/kTIldbifKVzqib/ZSUJQHq+j46F6lpIqbmfqehCKPPxQB7rzMQkaZcKSik6yDqahqIlA=
+	t=1740860445; cv=none; b=ukx51Uelk5Kbpckr2Qj2yG/A4UIFWnq66fspRQ7VINtggiTP1FUEtliffQaY5yLYTBaj0qfTJh3r33qO6vObfYz5DvDL669WRC3+yo/6ucTCXx/auCK8pC5hk0Ewj09pmEA33v7IAR6JRuc7OS3miCo5vHOnLhFV0QvqBWYRTi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740855722; c=relaxed/simple;
-	bh=lMXy4Mm5N4WPWxUEKOlhMHEGyxhNvffspeCsLxw9/Ns=;
+	s=arc-20240116; t=1740860445; c=relaxed/simple;
+	bh=6vIeTwmtJ1CsQjKzPDtsmgP96gOLvVQrci7HtsL6z3Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MZJmeEmAubjErrjywucxb+dcRwzTPNvKZrKtK4KQMdPFSzJk5pggAJ+auFcmvdV0sz2tZN3e+HMlyL6EcrUMnp9lDNTVceklILVnvHglgRHc0VwZPpYKbENyQHVc1N5lazGwcn5Ii2m5zGyy10IaUA7wQ6QJ28m3HPXrR4WXlOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HJn5bWUI; arc=none smtp.client-ip=198.175.65.12
+	 Content-Type:Content-Disposition:In-Reply-To; b=SiOd53XM3ecL53Pmg3wWupQqjJ2DmYI93Pe+C7v1jvwAF9Mj9AHvfhgVWKMdtso4fcjP6x4Vytt5HLI0druOMsmyV9hKEztI5Pa0DKyNWs6v9aEH0+4JhEfA8R9+ka7fST8myKTw3fgDnPHF//ZJ488LTh7lvrfvDoLshA289ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M6L20/+N; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HJn5bWUI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M6L20/+N"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740855720; x=1772391720;
+  t=1740860444; x=1772396444;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=lMXy4Mm5N4WPWxUEKOlhMHEGyxhNvffspeCsLxw9/Ns=;
-  b=HJn5bWUIaY8A9BFxaX4bxP9u9rMVbTEWuauV9Esfw+vwsBJNYYlCfpwi
-   LgRzZiJ6LHie6ZrtFnog73v6Bc+DbQda26cjtgREqa7AS6HnHLWd3+Puo
-   f8Af7wSYYBKjDXsARD8ddmSHLMH10ZPtoct3l0ei98zRPno2GDSmsnQLu
-   eqFmy9j5SYhXcSgBS/yB0AluseXde9EXOnpYsaoJhGz+OUv57pEYFf43p
-   fSCRVodqEdPXiBdsJJ2R4HaH5cCmZwjRXGmK3D07L1sOt+dr3HVCrlQy1
-   viXFHbcJ4SGAkhtSfJlktJrWDOvWTcGvvFbBKH3RhVlPldzuBZrNiyulH
-   A==;
-X-CSE-ConnectionGUID: AsaeRv/sTGm84E6xLHIquw==
-X-CSE-MsgGUID: IM1OC9kVQDKZHyEE/iHhZQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11360"; a="53154313"
+  bh=6vIeTwmtJ1CsQjKzPDtsmgP96gOLvVQrci7HtsL6z3Y=;
+  b=M6L20/+NEgqFXplxgBStEtGlRn0zLBobN6yc78EudeE90mNCgHBM9MzZ
+   z12FGyPY4sqA++eAy8yiU+ESGef+MbnPQlTdwC3USKCq/OPIHyyOCCr4d
+   g3h9Q/5254tdGhm7RUG2/QWRHWaAIioyMKGs7mHqINmMqyLgDQV4LkApl
+   Bc4p9ZnTUW30q8XjQWQoupXeJGsqvC/faJ4o8tpWITpvzEQCAEpYg/KiR
+   s3YCDg4d/5HwlgWWyy6tAvWDAxaDuyUOGrMY0Jqm/j9OsTAH6TuGHZzPB
+   vr2fVqY++ykyEqdVoaNpapl6Sf28GmWk00dhEuZLG0YtSrpcTOT9ilm+2
+   w==;
+X-CSE-ConnectionGUID: OpK9meZdT6uMTU/z0PlApg==
+X-CSE-MsgGUID: cZelTt5tQAiEkk+Fm0yYCA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11360"; a="42018045"
 X-IronPort-AV: E=Sophos;i="6.13,326,1732608000"; 
-   d="scan'208";a="53154313"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2025 11:01:59 -0800
-X-CSE-ConnectionGUID: slerZluNR+aP4+ASjjT6qQ==
-X-CSE-MsgGUID: apmxOb0fT/OkQwTYM9ch9A==
+   d="scan'208";a="42018045"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2025 12:20:44 -0800
+X-CSE-ConnectionGUID: 7u6lqpU+RrmQYuAah9RXNg==
+X-CSE-MsgGUID: t3rt7YX3TOKeoGdVfb5V+w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.13,326,1732608000"; 
-   d="scan'208";a="117409863"
+   d="scan'208";a="122774739"
 Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
-  by fmviesa006.fm.intel.com with ESMTP; 01 Mar 2025 11:01:54 -0800
+  by fmviesa004.fm.intel.com with ESMTP; 01 Mar 2025 12:20:37 -0800
 Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1toS5L-000Gak-2N;
-	Sat, 01 Mar 2025 19:01:20 +0000
-Date: Sun, 2 Mar 2025 03:00:19 +0800
+	id 1toTK1-000GfL-2p;
+	Sat, 01 Mar 2025 20:20:31 +0000
+Date: Sun, 2 Mar 2025 04:19:49 +0800
 From: kernel test robot <lkp@intel.com>
 To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
 	Thomas Gleixner <tglx@linutronix.de>
 Cc: oe-kbuild-all@lists.linux.dev, Boqun Feng <boqun.feng@gmail.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"(maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT))" <x86@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
-	Juergen Christ <jchrist@linux.ibm.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	"(moderated list:ARM64 PORT (AARCH64 ARCHITECTURE))" <linux-arm-kernel@lists.infradead.org>,
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
-Subject: Re: [PATCH v9 2/9] preempt: Introduce __preempt_count_{sub,
- add}_return()
-Message-ID: <202503020203.USVBw4Bn-lkp@intel.com>
-References: <20250227221924.265259-3-lyude@redhat.com>
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	David Woodhouse <dwmw@amazon.co.uk>, Arnd Bergmann <arnd@arndb.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	NeilBrown <neilb@suse.de>, Zqiang <qiang.zhang1211@gmail.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Caleb Sander Mateos <csander@purestorage.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v9 3/9] irq & spin_lock: Add counted interrupt
+ disabling/enabling
+Message-ID: <202503020344.HCIfRKwM-lkp@intel.com>
+References: <20250227221924.265259-4-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -78,7 +85,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250227221924.265259-3-lyude@redhat.com>
+In-Reply-To: <20250227221924.265259-4-lyude@redhat.com>
 
 Hi Lyude,
 
@@ -88,57 +95,37 @@ kernel test robot noticed the following build errors:
 
 url:    https://github.com/intel-lab-lkp/linux/commits/Lyude-Paul/preempt-Introduce-HARDIRQ_DISABLE_BITS/20250228-062508
 base:   2014c95afecee3e76ca4a56956a936e23283f05b
-patch link:    https://lore.kernel.org/r/20250227221924.265259-3-lyude%40redhat.com
-patch subject: [PATCH v9 2/9] preempt: Introduce __preempt_count_{sub, add}_return()
-config: s390-allyesconfig (https://download.01.org/0day-ci/archive/20250302/202503020203.USVBw4Bn-lkp@intel.com/config)
-compiler: s390-linux-gcc (GCC) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250302/202503020203.USVBw4Bn-lkp@intel.com/reproduce)
+patch link:    https://lore.kernel.org/r/20250227221924.265259-4-lyude%40redhat.com
+patch subject: [PATCH v9 3/9] irq & spin_lock: Add counted interrupt disabling/enabling
+config: sparc-randconfig-001-20250302 (https://download.01.org/0day-ci/archive/20250302/202503020344.HCIfRKwM-lkp@intel.com/config)
+compiler: sparc64-linux-gcc (GCC) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250302/202503020344.HCIfRKwM-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202503020203.USVBw4Bn-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202503020344.HCIfRKwM-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
-   In file included from include/linux/preempt.h:85,
-                    from include/linux/alloc_tag.h:11,
-                    from include/linux/percpu.h:5,
-                    from include/linux/context_tracking_state.h:5,
-                    from include/linux/hardirq.h:5,
-                    from include/linux/kvm_host.h:7,
-                    from arch/s390/kernel/asm-offsets.c:11:
-   arch/s390/include/asm/preempt.h: In function '__preempt_count_add_return':
->> arch/s390/include/asm/preempt.h:109:38: error: void value not ignored as it ought to be
-     109 |                         return val + __atomic_add_const(val, &get_lowcore()->preempt_count);
-         |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   make[3]: *** [scripts/Makefile.build:102: arch/s390/kernel/asm-offsets.s] Error 1
-   make[3]: Target 'prepare' not remade because of errors.
-   make[2]: *** [Makefile:1264: prepare0] Error 2
-   make[2]: Target 'prepare' not remade because of errors.
-   make[1]: *** [Makefile:251: __sub-make] Error 2
-   make[1]: Target 'prepare' not remade because of errors.
-   make: *** [Makefile:251: __sub-make] Error 2
-   make: Target 'prepare' not remade because of errors.
+   kernel/locking/spinlock.c: In function '_raw_spin_lock_irq_disable':
+>> kernel/locking/spinlock.c:178:9: error: implicit declaration of function '__raw_spin_lock_irq_disable'; did you mean '_raw_spin_lock_irq_disable'? [-Wimplicit-function-declaration]
+     178 |         __raw_spin_lock_irq_disable(lock);
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+         |         _raw_spin_lock_irq_disable
 
 
-vim +109 arch/s390/include/asm/preempt.h
+vim +178 kernel/locking/spinlock.c
 
-   100	
-   101	static __always_inline int __preempt_count_add_return(int val)
-   102	{
-   103		/*
-   104		 * With some obscure config options and CONFIG_PROFILE_ALL_BRANCHES
-   105		 * enabled, gcc 12 fails to handle __builtin_constant_p().
-   106		 */
-   107		if (!IS_ENABLED(CONFIG_PROFILE_ALL_BRANCHES)) {
-   108			if (__builtin_constant_p(val) && (val >= -128) && (val <= 127)) {
- > 109				return val + __atomic_add_const(val, &get_lowcore()->preempt_count);
-   110			}
-   111		}
-   112		return val + __atomic_add(val, &get_lowcore()->preempt_count);
-   113	}
-   114	
+   174	
+   175	#ifndef CONFIG_INLINE_SPIN_LOCK_IRQ
+   176	noinline void __lockfunc _raw_spin_lock_irq_disable(raw_spinlock_t *lock)
+   177	{
+ > 178		__raw_spin_lock_irq_disable(lock);
+   179	}
+   180	EXPORT_SYMBOL_GPL(_raw_spin_lock_irq_disable);
+   181	#endif
+   182	
 
 -- 
 0-DAY CI Kernel Test Service
