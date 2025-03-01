@@ -1,136 +1,76 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from sender4-pp-o94.zoho.com (sender4-pp-o94.zoho.com [136.143.188.94])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359AC1E49F
-	for <rust-for-linux@vger.kernel.org>; Sat,  1 Mar 2025 08:06:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740816416; cv=none; b=Q81Xabia9OXkfe6qzzaU4GdnwhEl0aar7mGTvvLqXWes0rV+4OtSse9rl7tIVi3G3/sRicLCk+LTtPijhFFJB+OBypAcPeOhP8yWCYWXtE+pV/ArHpLA7Z2GQH5TGMufCfXpuwwkMEddB7oSz0BQONyMy53RgK7MPGa9RXKNEfU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740816416; c=relaxed/simple;
-	bh=3r254mxjuKQj84109sWWnrjAD/M8nC9Nz12m4EeuFIc=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I4Vf2VvZDUUVMWK7pJ6QJnu51awIQnxnjqiaVgOP3RioUGBQ5XEMzTze8XYKslqkDbIwb1jfQk7feaMYtZhB08zfSRQyXrhdomUaHWcBN1Y0L3f0Ix0etuOq9Ts6tRyvefOmEz74ojUmgUD4+oXBqUcCylz2cColkFY9vBT8Xxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=ChE7ejeC; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C4B23F36F;
+	Sat,  1 Mar 2025 13:23:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.94
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740835385; cv=pass; b=vCvvsx6af7xb6M9wll8oFSISXgNOmCVu+9+KgQF3aVXtdWGj7O05DDcJp5Ydtyb27N71dRIJu94SWL169oY0FWhmZ18P1i2Zg9HveVIYjWaR2n8WfFGtXqpFz8P6mwdB1zp+vtH1PdYBM5gEtmuvi7zAFICUP0v0S/fIU8BKWkM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740835385; c=relaxed/simple;
+	bh=kmbLST3B8l0hqe9GENyoXR0gvr550yOwf3BicKoSaRI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=anp3L7Ijw6kF2h4sZPYwWNzJAUsH5KMw+Lq7ECrMDtBk0sxYNr0NzYikANgFGCUkMo6CDB4MX4qTVA8vudxa8SQg/8pXGJfa6382PFXJAXZkbjZrtMovLVg4JtQtvx4AQVRjPBvADb1eTeM7+GYhrRXvs8E/pK7lF/4+qqBHXVs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com; spf=pass smtp.mailfrom=zohomail.com; dkim=pass (1024-bit key) header.d=zohomail.com header.i=safinaskar@zohomail.com header.b=fBPIVP7j; arc=pass smtp.client-ip=136.143.188.94
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="ChE7ejeC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1740816412; x=1741075612;
-	bh=wiklNvGzAIUWW4/D8G5yXVuV0ECy8wK/4hpkmA5YanY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=ChE7ejeCDP+32OOMQb7Gl2vXE2fo4leTzv50M5BuGpI0xKsP+O+I4zaH+cbau0/hy
-	 gu+bLY7ZXmzVFSJr9OTNdMxMe4mmp+om7HJbxkzlNiN3ZQdt0jERSEJF3IpYa3Qm/d
-	 XQ+qRk4Pi1cBiwoNgKGfZ08/Han7z51zklgXlJAgZsRxOCV158i7R5IRQEQf+LH95D
-	 hnPKo8Jf8OPiBn+F3gfVUrwmpQ8NJvbfoVzm7SmdVoR6SVfMwfBVLFCBi600nVwgLy
-	 +xwXKqAc8E+Ii5T4wASXlSfevOZobvhOJGZtmc7vQXkph3sSf1Jk5t4/9sgFvJ8JPy
-	 JGZ98dvDP8rYw==
-Date: Sat, 01 Mar 2025 08:06:49 +0000
-To: =?utf-8?Q?Beno=C3=AEt_du_Garreau?= <benoit@dugarreau.fr>
-From: Oliver Mangold <oliver.mangold@pm.me>
-Cc: =?utf-8?Q?Beno=C3=AEt_du_Garreau?= <bdgdlm@outlook.com>, Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] rust: adding UniqueRefCounted and UniqueRef types
-Message-ID: <Z8LAFz_Q07qhio-O@laptop>
-In-Reply-To: <20250228234148.7270-1-benoit@dugarreau.fr>
-References: <20250228234148.7270-1-benoit@dugarreau.fr>
-Feedback-ID: 31808448:user:proton
-X-Pm-Message-ID: 5078987e009625416c9502e4650362f3511c930c
+	dkim=pass (1024-bit key) header.d=zohomail.com header.i=safinaskar@zohomail.com header.b="fBPIVP7j"
+ARC-Seal: i=1; a=rsa-sha256; t=1740835359; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=DyGYgAA9r+gh65F1jDw/kd6i10I6ZI7zLXjXapQeoL3h2qCEuW08+I10ZETBUG0p4F8U5u1u6bkzpBU9+m9xGuHmC/sxT1pUiwmMTD6UeHwMTeXnavKeNf7IYiBi8kusqI8dGqh36HXueuOAuPHJ5FEHTjDWkA4UnURGGLXXyK8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1740835359; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=QEcFFAxfF3kvhNHl30onzxCesolmRPddXa5t/GhIDeo=; 
+	b=i1wCLMoaEflVnz3aN4XCVSqvkJzLBDVY2MDQeD8B70YoV5lwF1PvHgaea/pS3mpTYa9bHa1RgvxrVn5e/UBs2SZezhE+vYkTBDaSmp7Sr2sNGmcDLdieC4rErUQDXiHF/NVDqdOrzF9Ry2oRmhUNSN7BSBG72j50crtE16qlfAg=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=zohomail.com;
+	spf=pass  smtp.mailfrom=safinaskar@zohomail.com;
+	dmarc=pass header.from=<safinaskar@zohomail.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1740835359;
+	s=zm2022; d=zohomail.com; i=safinaskar@zohomail.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Feedback-ID:Reply-To;
+	bh=QEcFFAxfF3kvhNHl30onzxCesolmRPddXa5t/GhIDeo=;
+	b=fBPIVP7jnUtgIL+9m++gSejGk+MW12beyjlgMRsnsY+dE/eyLKiCMI/BXbJt1HtT
+	WaPZxey19meiC7oFRvD8klz0sZHU1z8X70GpPG9yIINJKfNuy0iFQyScjbmMkJaksUP
+	yaju1DluJoGPZenbFJLWUhS4Xy0zdxOjVrT+oLCE=
+Received: by mx.zohomail.com with SMTPS id 1740835355747738.2807174501816;
+	Sat, 1 Mar 2025 05:22:35 -0800 (PST)
+From: Askar Safin <safinaskar@zohomail.com>
+To: uecker@tugraz.at,
+	dan.carpenter@linaro.org
+Cc: airlied@gmail.com,
+	boqun.feng@gmail.com,
+	gregkh@linuxfoundation.org,
+	hch@infradead.org,
+	hpa@zytor.com,
+	ksummit@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	miguel.ojeda.sandonis@gmail.com,
+	rust-for-linux@vger.kernel.org,
+	torvalds@linux-foundation.org
+Subject: Re: Rust kernel policy
+Date: Sat,  1 Mar 2025 16:22:29 +0300
+Message-Id: <20250301132229.3115698-1-safinaskar@zohomail.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <61a7e7db786d9549cbe201b153647689cbe12d75.camel@tugraz.at>
+References: <61a7e7db786d9549cbe201b153647689cbe12d75.camel@tugraz.at>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Feedback-ID: rr08011227d3f563c35efbb5d496057d920000f1ec4ce021640ea1b87657279fa549649710fe5cfa1eb332eb:zu080112270ea6dcf8350928bbb567b6af00005e2f2d536712854d902d7af778adf91d6c3919efd38df7dd98:rf0801122ccb5ccc2d4433bfc49c9c7ce20000c2e34ae1f49168ead396ae91ea6985b023a27386bb9cf2fbf0babb6c5a34:ZohoMail
+X-ZohoMailClient: External
 
-On 250301 0041, Beno=C3=AEt du Garreau wrote:
-> From: Beno=C3=AEt du Garreau <bdgdlm@outlook.com>
->=20
-> It would be great for this trait to only have a `is_unique` method, and t=
-hat functions here
-> do the actual work. It would make it easier to implement and would avoid =
-duplicating this
-> work.
-Hi,
+Hi, Martin Uecker and Dan Carpenter.
 
-I see where you are coming from, but there are good reasons for it to be li=
-ke this.
+> No, this absolutely is useful.  This is what UBSan does now
 
-mq::Request (for which this work was initially done) has the surprising pro=
-perty,
-that it is possible to create a reference to it 'out of band'
-(i.e. without deriving it from an existing one) through mq::TagSet::tag_to_=
-rq().
+> BTW: Another option I am investigating it to have UBsan insert traps
+> into the code and then have the compiler emit a warning only when
 
-As this means try_shared_to_unique() to an UniqueRef can race
-with tag_to_rq(), a non-standard reference counting scheme needs to be used
-which can distinguish between 'a single ARef exists' and 'an UniqueRef exis=
-ts',
-and requires the is_unique() check and the necessary modification of the
-reference count in try_shared_to_unique() have to be done
-in one combined atomic operation.
-
-Of course the whole thing could be refactored that both ways work, this one
-and one like you suggest with just a to_unique(). I will think about it
-for a bit, but I'm not sure it is worth the effort.
-
-What probably makes sense is to at least have a default implementation
-for unique_to_shared() which just does a
-ARef::from_raw(UniqueRef::into_raw()) leaving only try_shared_to_unique()
-as mandatory to implemented.
-
-Thoughts?
-> Maybe this could even be a new method on `AlwaysRefCounted`?
->
-I didn't do that intentionally, because I think for many AlwaysRefCounted
-implementors it would be a pain, as they simply use some get() and put()
-methods to inc/dec the refcount which are provided by the C API,
-while the actual refcount stays hidden from them.
->=20
-> I think you meant "no other refcount" or "only references borrowed from t=
-his".
->
-Yes, you are right. Thanks. I will fix that.
->=20
-> `UniqueRef` is essentially a `Box`, so it should have the same `Send`/`Sy=
-nc` implementations. Here
-> I don't see how sending a `UniqueRef<T>` is sharing a `&T`.
->=20
-> Same here: you can only get a `&T` from a `UniqueRef<T>`, definitely not =
-clone it.
->
-I just copy/pasted that from ARef. You might be right, I have to think abou=
-t that when
-my minds is less foggy than right now :)
-> > +
-> > +
-> > +impl<T: UniqueRefCounted> From<&T> for UniqueRef<T> {
-> > +    /// Converts the [`UniqueRef`] into an [`ARef`]
-> > +    /// by calling [`UniqueRefCounted::unique_to_shared`] on it.
-> > +    fn from(b: &T) -> Self {
-> > +        b.inc_ref();
-> > +        // SAFETY: We just incremented the refcount above.
-> > +        unsafe { Self::from_raw(NonNull::from(b)) }
-> > +    }
-> > +}
->=20
-> This is wrong: the reference borrows from a refcount (as per `AlwaysRefCo=
-unted`), and this
-> method increments it once more. It cannot be unique when the function ret=
-urns.
-> Actually the only way such conversion could be written is by cloning `T`,=
- which is probably
-> not what we want.
->=20
-Good catch. That was also an relict of copy-paste which I missed. The metho=
-d should
-just be deleted. I will do that.
-
-Best,
-
-Oliver
-
+Clang sanitizers should not be enabled in production.
+See https://www.openwall.com/lists/oss-security/2016/02/17/9 for details
