@@ -1,48 +1,76 @@
-Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2570A8BF8;
-	Sat,  1 Mar 2025 18:01:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7D81E3761;
+	Sat,  1 Mar 2025 18:49:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740852111; cv=none; b=Tbc+7cbQXv4+NmmjlU5lZhfvsOU1vdf+3GPRqCyGG4DqCWKFlzdAReIXhcSefckVsMwaKu8x8YnYc3WtdCQFS8qs1ljFpejsePly1J6uDP0YmoIAzGRlCoNwRqVp7S3hrUiOvFHHpX7VzFABNfjum9wlY8ZpErq9wIWKbvIgRAg=
+	t=1740854997; cv=none; b=krL81p9d5RrqmXiUCL5lpXle2Ijdm+bmVo1MhtBECtU/QU+bLEIy+ANFbvGBUTc4NbMpxQzAIf0GG1f2OvogLY3n/2rNKQu9485aW9NDiCuWtRE15MuBOUovMms03P8BRA4nXpSdBsHFxjDpUw2+WcMOPgVPeH9k36iVYGzqLCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740852111; c=relaxed/simple;
-	bh=klqCN48Ny/H3BoJ3S0qc0BU0Owh8CJ6llnu/vJfC6BI=;
+	s=arc-20240116; t=1740854997; c=relaxed/simple;
+	bh=D6LK3deQZfKTTW6uwky3ge1mwOLyc/TdhQi0WSPhGbU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S9o8FeIGVgcSpcJWlXIJZJCAS9kuxGYt9nmQxxWGpu9engGSYC+iGhRhBQAF46IQXE6mDqzcN2IOb/0zqOX8DS+fsngSjCoXynw5fcQoknlECpJsQBhbiaA4TdJ8eng+tvMgr1ss79tIm3JqKR3hYp6J65Xy/1IKobMfeMM5FZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.78.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 4A030280C374E;
-	Sat,  1 Mar 2025 19:01:39 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 347955E0BCC; Sat,  1 Mar 2025 19:01:39 +0100 (CET)
-Date: Sat, 1 Mar 2025 19:01:39 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Alistair Francis <alistair@alistair23.me>, linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	bhelgaas@google.com, Jonathan.Cameron@huawei.com,
-	rust-for-linux@vger.kernel.org, akpm@linux-foundation.org,
-	boqun.feng@gmail.com, bjorn3_gh@protonmail.com,
-	wilfred.mallawa@wdc.com, aliceryhl@google.com, ojeda@kernel.org,
-	alistair23@gmail.com, a.hindborg@kernel.org, tmgross@umich.edu,
-	gary@garyguo.net, alex.gaynor@gmail.com, benno.lossin@proton.me,
-	Alistair Francis <alistair.francis@wdc.com>
-Subject: Re: [RFC v2 09/20] PCI/CMA: Expose in sysfs whether devices are
- authenticated
-Message-ID: <Z8NLgxmDbcC9_C3F@wunner.de>
-References: <20250227030952.2319050-1-alistair@alistair23.me>
- <20250227030952.2319050-10-alistair@alistair23.me>
- <2025022717-dictate-cortex-5c05@gregkh>
- <Z8DqZlE5ccujbJ80@wunner.de>
- <2025022748-flock-verbalize-b66a@gregkh>
+	 Content-Type:Content-Disposition:In-Reply-To; b=fbsqGRvB9Pmm+YKiGlciW7zgh+EtK4xx0eVTH9PNw2UVLN2HFriV3FZc+NDYFFjQXQ07poix5rTr5xvxG3bKWOSq6oabJ/Qj8lmoD8EmU5S5DsRRJx6f/f0Pnm/GByKvtZi1STUFc1+3HeGkmGNRttk4Y30CBEOEr6Xfaflu0ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nQ4nOWu7; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nQ4nOWu7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740854997; x=1772390997;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=D6LK3deQZfKTTW6uwky3ge1mwOLyc/TdhQi0WSPhGbU=;
+  b=nQ4nOWu7QUs1M8FeIfDaMwY4BvlWIYecyCQ+XNdQ0fM3Coh195b4XDSv
+   OI51O/cXiQzAwfkFI+z+WWbn0yBUvpMNvwVIM6NYMLR07QOuchgquOpG5
+   jo/Op18IGsFq/oADXQCRIGqsd3zVOZgoJ8KMFE81z1OXLFCqIXODKvmyf
+   PN1FaxRuKXFlbYNoNDS+AzUiSc/Xd4dJ1OICVoZSwHZWIWaA96zZ47ORj
+   OHc60E49kCPSAas1RR0ctWlL2nsny+ePVALDeOgQnL0+iHiW9BSnUpbmt
+   oN5QCS8pM9d2KrnF5LMljfGsthFUnj3qM/wkH1Ba1LOCaZa7L1eymB4sX
+   w==;
+X-CSE-ConnectionGUID: 2GJ7H/ufRlG90zGbo5CS2w==
+X-CSE-MsgGUID: +3aTqtm+QVy2GFK6x/Fw3w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11360"; a="45416201"
+X-IronPort-AV: E=Sophos;i="6.13,325,1732608000"; 
+   d="scan'208";a="45416201"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2025 10:49:56 -0800
+X-CSE-ConnectionGUID: 0kPiMjFwTXa5X7KYVNjm2A==
+X-CSE-MsgGUID: 8TbL827kQYuxjwBtg5CFGg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,325,1732608000"; 
+   d="scan'208";a="122762860"
+Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
+  by fmviesa004.fm.intel.com with ESMTP; 01 Mar 2025 10:49:50 -0800
+Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1toRuG-000GaI-1E;
+	Sat, 01 Mar 2025 18:49:48 +0000
+Date: Sun, 2 Mar 2025 02:49:37 +0800
+From: kernel test robot <lkp@intel.com>
+To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
+	Thomas Gleixner <tglx@linutronix.de>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"(maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT))" <x86@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
+	Juergen Christ <jchrist@linux.ibm.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	"(moderated list:ARM64 PORT (AARCH64 ARCHITECTURE))" <linux-arm-kernel@lists.infradead.org>,
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org
+Subject: Re: [PATCH v9 2/9] preempt: Introduce __preempt_count_{sub,
+ add}_return()
+Message-ID: <202503020258.CSGrY5E6-lkp@intel.com>
+References: <20250227221924.265259-3-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -51,179 +79,157 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2025022748-flock-verbalize-b66a@gregkh>
+In-Reply-To: <20250227221924.265259-3-lyude@redhat.com>
 
-On Thu, Feb 27, 2025 at 05:39:53PM -0800, Greg KH wrote:
-> On Thu, Feb 27, 2025 at 11:42:46PM +0100, Lukas Wunner wrote:
-> > On Thu, Feb 27, 2025 at 03:16:40AM -0800, Greg KH wrote:
-> > > I don't like this "if it's present we still don't know if the device
-> > > supports this", as that is not normally the "sysfs way" here.  Why must
-> > > it be present in those situations?
-> > 
-> > That's explained above.
-> 
-> Not really, you just say "downgrade attacks", which is not something
-> that we need to worry about, right?
+Hi Lyude,
 
-A downgrade attack means duping the victim into believing that only
-a weaker security mode is supported.  E.g. only sha1, but not sha256.
+kernel test robot noticed the following build errors:
 
-In this context, downgrade attack means duping the kernel or user
-into believing that SPDM authentication is unsupported, even though it is.
+[auto build test ERROR on 2014c95afecee3e76ca4a56956a936e23283f05b]
 
-https://en.wikipedia.org/wiki/Downgrade_attack
+url:    https://github.com/intel-lab-lkp/linux/commits/Lyude-Paul/preempt-Introduce-HARDIRQ_DISABLE_BITS/20250228-062508
+base:   2014c95afecee3e76ca4a56956a936e23283f05b
+patch link:    https://lore.kernel.org/r/20250227221924.265259-3-lyude%40redhat.com
+patch subject: [PATCH v9 2/9] preempt: Introduce __preempt_count_{sub, add}_return()
+config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20250302/202503020258.CSGrY5E6-lkp@intel.com/config)
+compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250302/202503020258.CSGrY5E6-lkp@intel.com/reproduce)
 
-That's definitely something we need to be aware of and guard against,
-otherwise what's the point of authenticating in the first place.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202503020258.CSGrY5E6-lkp@intel.com/
 
+All errors (new ones prefixed by >>):
 
-> > Unfortunately there is no (signed) bit in Config Space which tells us
-> > whether authentication is supported by a PCI device.  Rather, it is
-> > necessary to exchange several messages with the device through a
-> > DOE mailbox in config space to determine that.  I'm worried that an
-> > attacker deliberately "glitches" those DOE exchanges and thus creates
-> > the appearance that the device does not support authentication.
-> 
-> That's a hardware glitch, and if that happens, then it will show a 0 and
-> that's the same as not being present at all, right?
-
-No, the "authenticated" attribute is not present in sysfs if authentication
-is unsupported.
-
-The downgrade attack protection comprises exposing the attribute if it
-could not be determined whether authentication is supported or not,
-and returning an error (ENOTTY) on read or write.
-
-User space applications need to check anyway whether read() or write()
-failed for some reason.  E.g. if the device is hot-removed concurrently,
-the read() system call returns ENODEV.  So returning ENOTTY is just
-another error that can occur on access to the attribute.
-
-The idea is that user space typically wants to check whether the attribute
-contains "1", signifying that the device was authenticated successfully.
-Hence a return value of "0" or any error code signifies that the device
-is not authenticated.
-
-And if user space wants to check whether authentication is supported at all,
-it checks for presence of the sysfs attribute.  Hence exposing the attribute
-if support could not be determined is a safety net to not mislead user space
-that the device does not support authentication.
-
-For PCIe, glitching the hardware (the electric signals exchanged with
-the device) is indeed one way to disrupt the DOE and SPDM exchanges.
-
-However the SPDM protocol has not only been adopted by PCIe, but also
-other buses, in particular SCSI and ATA.  And in those cases, glitching
-the SPDM exchanges may be a pure software thing.  (Think iSCSI communication
-with storage devices in a remote rack or data center.)
-
-Damien Le Moal has explicitly requested that the user space ABI for SPDM
-is consistent across buses.  So the downgrade attack protection can be
-taken advantage of by those other buses as well.
-
-
-> > Let's say the user's policy is to trust legacy devices which do not
-> > support authentication, but require authentication for newer NVMe drives
-> > from a certain vendor.  An attacker may manipulate an authentication-capable
-> > NVMe drive from that vendor, whereupon it will fail authentication.
-> > But the attacker can trick the user into trusting the device by glitching
-> > the DOE exchanges.
-> 
-> Again, are we now claiming that Linux needs to support "hardware
-> glitching"?  Is that required somewhere?
-
-Required?  It's simply prudent to protect users from being duped into
-thinking the device doesn't support authentication.
-
-
-> I think if the DOE exchanges
-> fail, we just trust the device as we have to trust something, right?
-
-If the DOE exchanges fail, something fishy is going on.
-Why should we hide that fact from the user?
-
-
-> > The device needs to be re-enumerated by the PCI core to retry
-> > determining its authentication capability.  That's why the
-> > sysfs documentation says the user may exercise the "remove"
-> > and "rescan" attributes to retry authentication.
-> 
-> But how does it know that?
-
-Because reads and writes to the attribute return ENOTTY.
-
-> remove and recan is a huge sledgehammer, and
-> an amazing one if it even works on most hardware.  Don't make it part of
-> any normal process please.
-
-It's not a normal process.  It's manual recovery in case of a
-potential attack.  The user can also choose to unplug the device
-or reboot the machine.  That's arguably a bigger sledgehammer.
-
-
-> It's the error, don't do that.  If an error is going to happen, then
-> don't have the file there.  That's the way sysfs works, it's not a
-> "let's add all possible files and then make userspace open them all and
-> see if an error happens to determine what really is present for this
-> device" model.  It's a "if a file is there, that attribute is there and
-> we can read it".
-
-The point is that if the file isn't there even though the device might
-support authentication, we're creating a false and dangerous illusion.
-This is different from other attributes which don't have that quality.
-
-
-> > > > Alternatively, authentication success might be signaled to user space
-> > > > through a uevent, whereupon it may bind a (blacklisted) driver.
-> > > 
-> > > How will that happen?
-> > 
-> > The SPDM library can be amended to signal a uevent when authentication
-> > succeeds or fails and user space can then act on it.  I imagine systemd
-> > or some other daemon might listen to such events and do interesting things,
-> > such as binding a driver once authentication succeeds.
-> 
-> That's a new user/kernel api and should be designed ONLY if you actually
-> need it and have a user.  Otherwise let's just wait for later for that.
-
-Of course.  Again, the commit message makes suggestions for future
-extensions to justify the change.  Those are just ideas.  Whether
-and how they are implemented remains to be seen.  Signaling a uevent
-on authentication success or failure seems like an obvious idea,
-hence I included it in the commit message.
-
-I fear if I don't include those ideas in the commit message, someone
-will come along and ask "why do you need this at all?", thus putting
-into question the whole set of authentication patches.
+   In file included from arch/s390/kernel/asm-offsets.c:11:
+   In file included from include/linux/kvm_host.h:7:
+   In file included from include/linux/hardirq.h:5:
+   In file included from include/linux/context_tracking_state.h:5:
+   In file included from include/linux/percpu.h:5:
+   In file included from include/linux/alloc_tag.h:11:
+   In file included from include/linux/preempt.h:85:
+>> arch/s390/include/asm/preempt.h:109:15: error: invalid operands to binary expression ('int' and 'void')
+     109 |                         return val + __atomic_add_const(val, &get_lowcore()->preempt_count);
+         |                                ~~~ ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   In file included from arch/s390/kernel/asm-offsets.c:11:
+   In file included from include/linux/kvm_host.h:11:
+   include/linux/signal.h:98:11: warning: array index 3 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
+      98 |                 return (set->sig[3] | set->sig[2] |
+         |                         ^        ~
+   arch/s390/include/asm/signal.h:22:9: note: array 'sig' declared here
+      22 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from arch/s390/kernel/asm-offsets.c:11:
+   In file included from include/linux/kvm_host.h:11:
+   include/linux/signal.h:98:25: warning: array index 2 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
+      98 |                 return (set->sig[3] | set->sig[2] |
+         |                                       ^        ~
+   arch/s390/include/asm/signal.h:22:9: note: array 'sig' declared here
+      22 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from arch/s390/kernel/asm-offsets.c:11:
+   In file included from include/linux/kvm_host.h:11:
+   include/linux/signal.h:99:4: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
+      99 |                         set->sig[1] | set->sig[0]) == 0;
+         |                         ^        ~
+   arch/s390/include/asm/signal.h:22:9: note: array 'sig' declared here
+      22 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from arch/s390/kernel/asm-offsets.c:11:
+   In file included from include/linux/kvm_host.h:11:
+   include/linux/signal.h:101:11: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
+     101 |                 return (set->sig[1] | set->sig[0]) == 0;
+         |                         ^        ~
+   arch/s390/include/asm/signal.h:22:9: note: array 'sig' declared here
+      22 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from arch/s390/kernel/asm-offsets.c:11:
+   In file included from include/linux/kvm_host.h:11:
+   include/linux/signal.h:114:11: warning: array index 3 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
+     114 |                 return  (set1->sig[3] == set2->sig[3]) &&
+         |                          ^         ~
+   arch/s390/include/asm/signal.h:22:9: note: array 'sig' declared here
+      22 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from arch/s390/kernel/asm-offsets.c:11:
+   In file included from include/linux/kvm_host.h:11:
+   include/linux/signal.h:114:27: warning: array index 3 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
+     114 |                 return  (set1->sig[3] == set2->sig[3]) &&
+         |                                          ^         ~
+   arch/s390/include/asm/signal.h:22:9: note: array 'sig' declared here
+      22 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from arch/s390/kernel/asm-offsets.c:11:
+   In file included from include/linux/kvm_host.h:11:
+   include/linux/signal.h:115:5: warning: array index 2 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
+     115 |                         (set1->sig[2] == set2->sig[2]) &&
+         |                          ^         ~
+   arch/s390/include/asm/signal.h:22:9: note: array 'sig' declared here
+      22 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from arch/s390/kernel/asm-offsets.c:11:
+   In file included from include/linux/kvm_host.h:11:
+   include/linux/signal.h:115:21: warning: array index 2 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
+     115 |                         (set1->sig[2] == set2->sig[2]) &&
+         |                                          ^         ~
+   arch/s390/include/asm/signal.h:22:9: note: array 'sig' declared here
+      22 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from arch/s390/kernel/asm-offsets.c:11:
+   In file included from include/linux/kvm_host.h:11:
+   include/linux/signal.h:116:5: warning: array index 1 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
+     116 |                         (set1->sig[1] == set2->sig[1]) &&
+         |                          ^         ~
+   arch/s390/include/asm/signal.h:22:9: note: array 'sig' declared here
+      22 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from arch/s390/kernel/asm-offsets.c:11:
+   In file included from include/linux/kvm_host.h:11:
+   include/linux/signal.h:116:21: warning: array index 1 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
+     116 |                         (set1->sig[1] == set2->sig[1]) &&
+         |                                          ^         ~
+   arch/s390/include/asm/signal.h:22:9: note: array 'sig' declared here
+      22 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from arch/s390/kernel/asm-offsets.c:11:
+   In file included from include/linux/kvm_host.h:11:
+   include/linux/signal.h:119:11: warning: array index 1 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
+     119 |                 return  (set1->sig[1] == set2->sig[1]) &&
+         |                          ^         ~
+   arch/s390/include/asm/signal.h:22:9: note: array 'sig' declared here
+      22 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from arch/s390/kernel/asm-offsets.c:11:
+   In file included from include/linux/kvm_host.h:11:
+   include/linux/signal.h:119:27: warning: array index 1 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
+     119 |                 return  (set1->sig[1] == set2->sig[1]) &&
+         |                                          ^         ~
+   arch/s390/include/asm/signal.h:22:9: note: array 'sig' declared here
+      22 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from arch/s390/kernel/asm-offsets.c:11:
+   In file included from include/linux/kvm_host.h:11:
 
 
-> > > If an attacker can consume kernel memory to cause this to happen you
-> > > have bigger problems.  That's not the kernel's issue here at all.
-> > > 
-> > > And "disable communication" means "we just don't support it as the
-> > > device doesn't say it does", so again, why does that matter?
-> > 
-> > Reacting to potential attacks sure is the kernel's business.
-> 
-> Reacting to real, software attacks is the kernel's business.  Reacting
-> to possible hardware issues that are just theoretical is not.
+vim +109 arch/s390/include/asm/preempt.h
 
-We have fundamental disagreement whether certain attacks need to be taken
-seriously.  Which reminds me of...
+   100	
+   101	static __always_inline int __preempt_count_add_return(int val)
+   102	{
+   103		/*
+   104		 * With some obscure config options and CONFIG_PROFILE_ALL_BRANCHES
+   105		 * enabled, gcc 12 fails to handle __builtin_constant_p().
+   106		 */
+   107		if (!IS_ENABLED(CONFIG_PROFILE_ALL_BRANCHES)) {
+   108			if (__builtin_constant_p(val) && (val >= -128) && (val <= 127)) {
+ > 109				return val + __atomic_add_const(val, &get_lowcore()->preempt_count);
+   110			}
+   111		}
+   112		return val + __atomic_add(val, &get_lowcore()->preempt_count);
+   113	}
+   114	
 
-   "the final topic on the agenda was the corporate attempt at
-    security consciousness raising; a shouting match ensued,
-    in the course of which several and various reputations
-    were sullied, certain paranoid reactions were taken less
-    than seriously, and no great meeting of the minds was met."
-
-   [minutes of the uucp-lovers interest group, 20 April 1983,
-    from "A Quarter Century of UNIX" (1994) page 113]
-    https://wiki.tuhs.org/lib/exe/fetch.php?media=publications:qcu.pdf
-
-Looks like we're just upholding the time honored tradition of
-UNIX security disagreements!
-
-Thanks,
-
-Lukas
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
