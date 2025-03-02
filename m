@@ -1,122 +1,100 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53DD62594;
-	Sun,  2 Mar 2025 12:20:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0170F1E5B9F;
+	Sun,  2 Mar 2025 16:50:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740918002; cv=none; b=UM+Ik6wSltAzJ/BOiCw7r2rIQ3OmrEEDIDhk1O0zMSc8apBPhEngrgPzjFKOiQPfZTn+/2kSNvZUJDclG3XU3DnyDS9yV4PG2SoNJNyHFdvPL9yVPuDOJuM6UWnTKKNe9S5nlTIj2emwsPJZ++jmEO0rkm6JJRU21WRCIvG4pxg=
+	t=1740934228; cv=none; b=LFzvbZrGscVh+5doFeXqHQ6Sv/PcBIiIvlHd/mpfADAsRyTUsftjMZk+7Pu02/sNXIl9tpHbnXlf6CXeqlV6UbWfCiuGlqwLPiAsWR2Rc3yX6sVBHXhuYcUj9nc7mQGPJeXEDMWU5lwG0QcZL2qdlIL3VlF0m5m7BD5vG8SlVs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740918002; c=relaxed/simple;
-	bh=ZrBbCj0ibZn0HW4gHwjyxqJOkO6cqMU6RSDZLyfOTyo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zv1dHJMAsFuyGbpYb0GJVZT+/3CkoF0oEKsfIx8hbzQ0TPGfGZgsLVsl5ERQW/z9RLWjwz4mnbsJRZLwrX42GAfskY2W00cpxWjlqRBnrqxDNm4cay5wyOunpFtjwELAUYAm3SLC92mc8mKjL8dTckaYzMxRttQ54vBcIacjDoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TKETooVz; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740934228; c=relaxed/simple;
+	bh=6niMakNmxQ42IQ7lLQeVf3Z8esUZUgPAraWkiGzNLgU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KUcWm0xGFUCG+tnmmdPNQX8C55D+xTPpil/hte95z/CZAzH1K/XMG212kamr4pk0gxrXoZYfibC/zFSvI6mTayeHw6McJxhRc916Ak20UkBhBp/qAUzHXkvxyiKasVzAM0bkaOVb71cVOYZ/0Gxq7zuKMrXycHtxsc9EzE3eoTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZNeTWvmO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TKETooVz"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43948f77f1aso22760425e9.0;
-        Sun, 02 Mar 2025 04:20:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740917999; x=1741522799; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CgCqjFsdmVPmkwwHKifVvYTCFuUFMQI0XhP4ZU/3jAA=;
-        b=TKETooVz6bWpQIGn66SZibkuJXeIgKJp6O1o1UJ7U+VRetWhG5+4bOOipIPE4Uu9ts
-         +mvKGTCVzh1OSRvNCUYry8kE8zN9KTi6fSGPHqMN/FvdZlSffwkUSxk49GutHo+oXc1k
-         4vbnPzdXDKeFXSXhBt+kRtNdKa3ipYxVqmxIBn1+hZSuAEGKYhkjUrI8/Q4fR/L7+N4v
-         I2jWhZTO50v4caQMWQ410JUkvHQ1Th5AsUbDMZMZ9RWS5iA5EOyEY50YgDeyT/Mw8VXe
-         Qoa1JjQ83fFMn5czUEArdZ4o6dY6jphRWZbg8q0JBFnMkUqdACvJ1C0MECcAwPFwhGR2
-         ItlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740917999; x=1741522799;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CgCqjFsdmVPmkwwHKifVvYTCFuUFMQI0XhP4ZU/3jAA=;
-        b=qxvURNXha+klL3QFSmTPm/VlasiFIhg86K+xX5H/8ZszEHL3XvE4arBVR+QMPJ1b0M
-         Sff/2GhKkrXpATASjWo9JKnXicV3XjHM/oMDPfnWQABAZQt2wYzDVfWBcTYmEDfXPhq4
-         JfgkO6SSioCE4hL/Ib/dx4Ff7XgFllijJgXllCcR0E8UMedEk3S+Hot9L0vgutLjzCFt
-         GeAC529nx4d4z+d98YK2ZBSsrNB4fqTu4ZCo2XPviQot7biU0bbLUWYvwTTU0nJGaZ9c
-         4z/e/yA/nvP2ek/Nao4AZzN2NWQtcpgxwf4nFuei13l+N0+Ct0MBcb814Ah9x0ere6oy
-         KSAA==
-X-Forwarded-Encrypted: i=1; AJvYcCV0y5q7g4RIdYs5LzmMYRM7usSLDvQlj/a72u6Jg7yalSYkUZgQDbFb1Rx4+PvndM3BGsFcG+KXoHdokl0=@vger.kernel.org, AJvYcCVeX+gPYIoI3mGF1qd/byXRxMGNpvITG4qwLmRTTMNUNLbZQZzbkSl3xfwe8IOudqmwDflnl8M4rhRpXnG+/rA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQvCfQ2eN2H6xzvXOyS+Ztn4KNF3mpum/rUaadaGC4sMKDEO5u
-	AiT98QpCpNjzLF+rGBQ4Djl/FnZ7WVRJtYsVF+EMg+uYjdGBCk8/
-X-Gm-Gg: ASbGnctdWQSDoRfC+Ph4UiUOIpTu3Ov2oWGgbPbmnIfoh7ayLrAxN8Eo3w4QBlp2zxp
-	dFhS4FzPR6E/yi7Ax9m+9EnjlASK5xN6pU0xXxPzC6UNhoFKveyaRUsVkEoTCelgRMz3ZtsEzEO
-	QNiQHK0PybDB8lZffWqiDXhgArXX6IQzwM8kbl1wKYbrEh9Dy5jahmYnTTtB9ekZWlxgsnThJot
-	nvsJvcrQqe3g7H4sHJ2gm4B1acXlHBo9CHUDyG7RfkxHFZAOLZRrJyYU7HFT6wnixO4Qh4V8hqy
-	TNOj5TodwK52amiiqO29b8H2PScB6miMPuLvJmdJ1t3ukGqW0K0OcwmpyVuzEIdpCGSAp76TJjl
-	ovh8Q0Tw=
-X-Google-Smtp-Source: AGHT+IH9JKVSqwCY7/dPDG8HlygkblxfEWt0EgMvbXyn+Sth5sEwgJ69CNPda359PKer/OXo7j7gpA==
-X-Received: by 2002:a05:600c:a01:b0:439:9377:fa21 with SMTP id 5b1f17b1804b1-43ba6766be1mr76628105e9.19.1740917999301;
-        Sun, 02 Mar 2025 04:19:59 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bbfb7e280sm7560765e9.8.2025.03.02.04.19.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Mar 2025 04:19:58 -0800 (PST)
-Date: Sun, 2 Mar 2025 12:19:57 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>, James Bottomley
- <James.Bottomley@hansenpartnership.com>, Greg KH
- <gregkh@linuxfoundation.org>, Miguel Ojeda
- <miguel.ojeda.sandonis@gmail.com>, Ventura Jack <venturajack85@gmail.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Alice Ryhl <aliceryhl@google.com>, Linus
- Torvalds <torvalds@linux-foundation.org>, Gary Guo <gary@garyguo.net>,
- airlied@gmail.com, boqun.feng@gmail.com, hch@infradead.org,
- ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, Ralf Jung <post@ralfj.de>, Josh Poimboeuf
- <jpoimboe@redhat.com>
-Subject: Re: C aggregate passing (Rust kernel policy)
-Message-ID: <20250302121957.28f08504@pumpkin>
-In-Reply-To: <20250226124733.10b4b5fa@gandalf.local.home>
-References: <2rrp3fmznibxyg3ocvsfasfnpwfp2skhf4x7ihrnvm72lemykf@lwp2jkdbwqgm>
-	<CAFJgqgS-SMMEE2FktuCUimdGkPWMV3HB2Eg38SiUDQK1U8=rNg@mail.gmail.com>
-	<CANiq72mOp0q1xgAHod1Y_mX86OESzdDsgSghtQCwe6iksNt-sA@mail.gmail.com>
-	<f2bf76553c666178505cb9197659303a39faf7aa.camel@HansenPartnership.com>
-	<2025022611-work-sandal-2759@gregkh>
-	<16127450a24e9df8112a347fe5f6df9c9cca2926.camel@HansenPartnership.com>
-	<20250226110033.53508cbf@gandalf.local.home>
-	<9c443013493f8f380f9c4d51b1eeeb9d29b208a3.camel@HansenPartnership.com>
-	<ylsffirqsrogli5fqlyhklhy6s54ngolvk5hj5fnpn3ceglyii@cgcvtm4ohtra>
-	<20250226115726.27530000@gandalf.local.home>
-	<olxh7iwz5yjuuqwpbzgohrl3dkcurbmzij3o2dbha5mtkr2ipn@wtee4jjj7ope>
-	<20250226124733.10b4b5fa@gandalf.local.home>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZNeTWvmO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6053C4CED6;
+	Sun,  2 Mar 2025 16:50:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740934227;
+	bh=6niMakNmxQ42IQ7lLQeVf3Z8esUZUgPAraWkiGzNLgU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZNeTWvmOBG+e9QTaXxEf/O2mdaTSldTRwrGlX36XLJy907Jvtf3noPrQKUs3enZ5i
+	 lz+e2LmqkIkEMS5tzuScZyo5gvMZmL4rx9YsvrZN6IwpjVpr/RH5YjcH5kWkDbKsan
+	 rd1FDkDXubsTffR1t9UEZgHKNHa2UwVNg5zloVxaivebjcawKR6m/OHrBcqZUAYLoz
+	 AGIuQO700jKig9ZQOGsVhf2TfRgUo29WFfqqWplrHOOt8j12vC8hiTSKUhzOg7bGoT
+	 9mOdzuRo5tSZ4/RgS1lEV2v4yAexdURNENLUbYvQ8hVvSi424wMmGlG9aBae1oPqKE
+	 T9SR+w+rNV3ig==
+Date: Sun, 2 Mar 2025 18:50:22 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Jocelyn Falempe <jfalempe@redhat.com>,
+	Thomas =?iso-8859-1?Q?B=F6hler?= <witcher@wiredspace.de>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	dri-devel@lists.freedesktop.org, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: Re: [PATCH 2/2] drm/panic: fix overindented list items in
+ documentation
+Message-ID: <Z8SMTiWzTDjIwGfO@kernel.org>
+References: <20250301231602.917580-1-ojeda@kernel.org>
+ <20250301231602.917580-2-ojeda@kernel.org>
+ <CANiq72=69XAOapYBurbwsQOEaw2uamZ6ta=DT6cC-om9XK3dvA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72=69XAOapYBurbwsQOEaw2uamZ6ta=DT6cC-om9XK3dvA@mail.gmail.com>
 
-On Wed, 26 Feb 2025 12:47:33 -0500
-Steven Rostedt <rostedt@goodmis.org> wrote:
-
-> On Wed, 26 Feb 2025 12:41:30 -0500
-> Kent Overstreet <kent.overstreet@linux.dev> wrote:
+On Sun, Mar 02, 2025 at 07:54:00AM +0100, Miguel Ojeda wrote:
+> On Sun, Mar 2, 2025 at 12:17 AM Miguel Ojeda <ojeda@kernel.org> wrote:
+> >
+> > Starting with the upcoming Rust 1.86.0 (to be released 2025-04-03),
+> > Clippy warns:
+> >
+> >     error: doc list item overindented
+> >        --> drivers/gpu/drm/drm_panic_qr.rs:914:5
+> >         |
+> >     914 | ///    will be encoded as binary segment, otherwise it will be encoded
+> >         |     ^^^ help: try using `  ` (2 spaces)
+> >         |
+> >         = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#doc_overindented_list_items
+> >
+> > The overindentation is slightly hard to notice, since all the items
+> > start with a backquote that makes it look OK, but it is there.
+> >
+> > Thus fix it.
+> >
+> > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 > 
-> > It's been awhile since I've looked at one, I've been just automatically
-> > switching back to frame pointers for awhile, but - I never saw
-> > inaccurate backtraces, just failure to generate a backtrace - if memory
-> > serves.  
+> Fixes: cb5164ac43d0 ("drm/panic: Add a QR code panic screen")
+> Cc: stable@vger.kernel.org # Needed in 6.12.y and 6.13.y only (Rust is
+> pinned in older LTSs).
+
+(cosmetic) Nit:
+
+I think you could just:
+
+Cc: stable@vger.kernel.org # v6.12+
+
 > 
-> OK, maybe if the bug was bad enough, it couldn't get access to the ORC
-> tables for some reason. Not having a backtrace on crash is not as bad as
-> incorrect back traces, as the former is happening when the system is dieing
-> and live kernel patching doesn't help with that.
+> Cheers,
+> Miguel
+> 
 
-I bet to differ.
-With no backtrace you have absolutely no idea what happened.
-A list of 'code addresses on the stack' (named as such) can be enough
-to determine the call sequence.
-Although to be really helpful you need a hexdump of the actual stack
-and the stack addresses of each 'code address'.
-
-	David
+BR, Jarkko
