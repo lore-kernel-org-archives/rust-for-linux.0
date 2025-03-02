@@ -1,212 +1,101 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678375661;
-	Sun,  2 Mar 2025 17:07:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C0095CB8;
+	Sun,  2 Mar 2025 17:45:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740935268; cv=none; b=fbWUmtrVJzRhcJJ/AWX/Q6BVx0apqS/hfPYHa7ai5zHO7SVAPlISB7Bl3VWXhjDwLWlPjcLiu5p6qCDMwK2BeNQmGdig+7AkmgoqvTf3RmsfRl1lcy+stf597swKCcb6OWxgm9U8Hg6IhPSeJ8HqO/Fd9xABxp7+9x0mu7xK+WU=
+	t=1740937527; cv=none; b=hT5nd4V5tGdbJtw0syrrJM6rd80uuyKEduW7R2418sM8N4/2+h6VoEHXxZ8wSnH1KXZxN1lmHfrTd8oWVUpy44VBHuWHFlFlyfQP1II9JV2pQlkVFO0Af5A56pyCYEXSjFtLM7N6c3GBEllssju5xbxozHvaBazoDalH3es6mo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740935268; c=relaxed/simple;
-	bh=9ZK9nEE+88bbn8BxWZJCEqofWkZwAIwcSU3NiUZjeRc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=khKRSwAgX50AQZTx0poLt7dgZyLEZe+f4zrekIMjCH2phyPr8Tel2kmFpQho4WdUZ3hUsZTqrinNO+8FMgY82+1HjQmsvzCAIW/UQN3ZwpnTaGCDA9H1F7sU1eIbz9aw0hYFMcKb6Wrly4yLzLVilrI+g+mAPmnFAbcoBhESonE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ljKHUN3E; arc=none smtp.client-ip=209.85.218.46
+	s=arc-20240116; t=1740937527; c=relaxed/simple;
+	bh=k3vFqL/xKCk8f4E661+8gVjTKIGeRjDEleSeHCMboHE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=V+Md8ksuovLvtE9EWYlW6RwnKBPozRKyvzCD31yCmKwFj07m4vFTqNEJ5UvqfADTr+0TlcrEY5jdk/ECuSMXEx4WshK4zCK7Qb0gWHGZc3BCPCNNlmcEExiwcSTi/a5ALyHJw+AgHz9aBbeIhW90gLxKWOp67Ys5nEfrfoV5wLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OPdXf0sT; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ljKHUN3E"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-aaec111762bso678974866b.2;
-        Sun, 02 Mar 2025 09:07:46 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OPdXf0sT"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2232aead21aso9508255ad.0;
+        Sun, 02 Mar 2025 09:45:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740935265; x=1741540065; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=hclPygd79ZpX9T3xc/SleAjV4UonSIgrdhTmCTiVktk=;
-        b=ljKHUN3EQnHpPY/RNPAbK+tGlxnAI0cuh3pqQngIG4o21EFqTF2XMJUQnz8f5Rl4ce
-         rZnVbCAhZ3abdpb9ij11x6REsruyCAhxueHVQqEwnrguQujPe3DAhsTEFAkESLRSIlQG
-         D6fbRFh0OQfxNNHlan8aGiJJhoCwtyEUixykpDDA/zpocZhFJMZ1Vep0MygpO1b+ZPoL
-         8XYXh3hf+5ok8nUfIEY7JixzfTaFfY6DUw/UfSi2tikfPOa5TMvcHBjr4w/QMt/6/qrI
-         vCkWg8Lse80NBrsp70SgG1FD0xPP0YaTxCq+Hgh5+RiJQE6W0FCge8IZXLRiWcLcIfSL
-         ZcpQ==
+        d=gmail.com; s=20230601; t=1740937526; x=1741542326; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=k3vFqL/xKCk8f4E661+8gVjTKIGeRjDEleSeHCMboHE=;
+        b=OPdXf0sT7tIjp5FbR0OikGyd3AZxrXf8qqq4gRfaf0poFqtVJzv0vj9pz3f4zFPx32
+         e0ecBO6t0Q0v4n8mLkSrzv8u35xPzaN9U5UdIJaW+aXceRgBbHvUR/dETxnzOv16MVnn
+         X2KoNqbfFyWOtoSb/XY2FzMhufi68TeMpyzziodzRGfb1IJ9hxtTeJLTYWdcM4tqCYaY
+         wLlns7hne3AhwWXEEzubFXwBis0k6jzEzFH5k12BjORyZLAaT/9tKsqBJetyujstQAlp
+         UYyQkS/n5aSXm/NszgITsM1KtWeaBXYR9I1smZ8dVfR8sATHoge1U3HTJagcO8+IhSoy
+         lwyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740935265; x=1741540065;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hclPygd79ZpX9T3xc/SleAjV4UonSIgrdhTmCTiVktk=;
-        b=MU239nXGjveTGwGcjZZAcN8Epttfzot/6zkmyrnOfykFf4eCtGzh4rO9V1pv0+lkoa
-         tg/KOcf6Qo71oGWwz9U6eSXwoLUElrW3xE/SbQQ/tBYyaJbP+Ncywblv2AxFAEARkpps
-         T2Or5hJOgMBPkm41NTIQwFqu2afwABmMiUTLNpaB2xhlciM7HYNsfsptfE7xrFbPPGRJ
-         vdxoYSRoZci2H1W/6fsMHzkZdNGpF65zjOXynJyU8MFF6Rr7xrB244K1m0u5SZYZJoz0
-         uB++6ctMXSTq2wHswOSyZijJ+ddSnfEyLTz16DzqJ/FnZQp3KDrBMktK77dZP9ndrIbm
-         kftA==
-X-Forwarded-Encrypted: i=1; AJvYcCVN+uVIz0zLHvwfIIODTph5TO1YvvaX3p8nTKSh6srkchskVROQ8aRcZETUqG82gq07/iL3ZsAcbSvwmE3+w8Q=@vger.kernel.org, AJvYcCWG3Jyup/LU+l6Y/5QCzbyrGNz5+oxIhVRGuN8buKr25KFciVOncE4p9By4FdZxsG2OVBlUAivzEgQOPCw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwjgtUDXBmPBaQVxM+gdpmsuR+d3z5ITdhte2kj+UjQfbbDDUwB
-	X208pqoeI0eVqV35LLLD/YZhykd+1+u+1gtApS/SY4tI1ql1fJOH
-X-Gm-Gg: ASbGncvQtwkT2IPUbn96s2a7NcqSHGJ96EkYkRdzAFewxcL1KoGDA0yTgsaCbYyMTd5
-	yWdlD8grUYZhzBYNIbZQRIjzB/CpLGPskkDLjT9FNxkQkN79JobwuVydJn4Yhm1jJcXuFm6ASXt
-	O3iGTt0lE9uHlIwKbQJAZRjCJXZiuXhT6HmopJq9DbCPRseD8dezGFGkkq/Gf8nlOI1kR0/wgxZ
-	giOcS6UAFfsLVbzFamQckInJyFZoijOXuGiZ4vFILctGoiRUFzxJVhixvZY6Lsaninb2FM4EEDV
-	GTo8JhMjWfOO3bu0UGW64JBiKONun0gztsy8LbhF6NX4RHnbgDjtO3b9MJznE9wvKjl7TAmxZBf
-	MMTNpYSqet8umbY9Zd0ScfgQqci3uXXnbRSVhWK6iZMsc61/TzGPD5aW/PaTTT3SX6xUfh8+tyF
-	74
-X-Google-Smtp-Source: AGHT+IEmEEaztzHiGUWqOpzzlr3OvI0JM85UImed4RrFbsBSCjZx3aGNuOMfvcpxfqFXpmAORLA0nw==
-X-Received: by 2002:a17:907:3fa4:b0:ab6:d7c5:124 with SMTP id a640c23a62f3a-abf265e8ed2mr1056722666b.43.1740935264569;
-        Sun, 02 Mar 2025 09:07:44 -0800 (PST)
-Received: from ?IPV6:2003:df:bf03:a200:eeb1:4cf6:acf1:a130? (p200300dfbf03a200eeb14cf6acf1a130.dip0.t-ipconnect.de. [2003:df:bf03:a200:eeb1:4cf6:acf1:a130])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abf75481eb4sm94031366b.83.2025.03.02.09.07.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 02 Mar 2025 09:07:44 -0800 (PST)
-Message-ID: <7026deb6-6e35-47f6-9462-0880a5b47509@gmail.com>
-Date: Sun, 2 Mar 2025 18:07:43 +0100
+        d=1e100.net; s=20230601; t=1740937526; x=1741542326;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=k3vFqL/xKCk8f4E661+8gVjTKIGeRjDEleSeHCMboHE=;
+        b=EZQkbq7pKXW5zRsFKDdNoM6J1LIDWhDJWVJQ4s8M3stU2NaPURGSAcM7j3e2GLcmmz
+         35Q0iUnIl1rc3wo3f9VmxSlOIjz6KvDOpcKItddV2QohRYJfjeNDj9IAH+e3wg1QzTSC
+         z6EE5p0b60fyiE9gjH5inq24fvrJfzfngHprObfNt3tM0ZWm7qWebx3s240fQbr3SRZm
+         RDbFNUQkL2eAlPikeh1ZFx2YSDew+EsjWLH912hEsZVpjniZEIqKUaPRQeiKRkYqlMhq
+         JcWYKPfDeXtqgE7Kq9nhsP7VySaCUthlQD2uBb4FpoE4GlHXpk5b9d+3v6NI71akqJPV
+         qeWw==
+X-Forwarded-Encrypted: i=1; AJvYcCVHwMUqjjnZCsLRG+tz4Mky2x4n0kN+Lr3ra4h3gSsXLavVL7omJO9Sfenakttiw6IwqEYMWpPoLj34x5l7XFw=@vger.kernel.org, AJvYcCWtXjVhXaNt5dmB8lkRLBl46DF9a0gfGLVa6TwlYbIBF/3QzpVAi8c2Lf2AR1/Ypif0DZ1vwVjtOt+VchU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZKq0746KRMAc+jilR1vT/a4Vs5S2RU4Me6dZfMFBKxMdM1q1k
+	8IHfm19lfvQE1oo70mVyXzhyhqhC+wLs7LWanIrQPWq6L6UgEELFTIhSqLuG2gtj/N/PLqbZ7I2
+	fJmjt3CsQQgi5aI8rZn4V5U21XBo=
+X-Gm-Gg: ASbGncvSe6bfxTXXMpwyN1BV0Z14ltFYhoh/8mo+MdqyWHUJx2bAKd5hT/NMTtvvpLR
+	Dcq2UmuONOAChl0fy1eh6G+HUY5uLb6ktrkIP0hC/IsgJscD3GY4nlbXr/VrXX6jUaQMHsSVPHM
+	jzIe4wlWy0QxVrO7fIosEtUCldag==
+X-Google-Smtp-Source: AGHT+IEM14oBkasxbrfLuhdlkhBgKZTVdRXsNXBGHPpuX7+iINgsw0kMfQM1BNFq3lNwVS4ywEhQiqhc4ZksgvZKfdc=
+X-Received: by 2002:a17:903:3ba4:b0:223:5e57:44f0 with SMTP id
+ d9443c01a7336-2236925928cmr56864515ad.14.1740937525642; Sun, 02 Mar 2025
+ 09:45:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 6/9] rust: sync: Add SpinLockIrq
-To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
- Waiman Long <longman@redhat.com>, Wedson Almeida Filho <wedsonaf@gmail.com>,
- open list <linux-kernel@vger.kernel.org>
-References: <20250227221924.265259-1-lyude@redhat.com>
- <20250227221924.265259-7-lyude@redhat.com>
-Content-Language: en-US
-From: Dirk Behme <dirk.behme@gmail.com>
-In-Reply-To: <20250227221924.265259-7-lyude@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250301231602.917580-1-ojeda@kernel.org> <20250301231602.917580-2-ojeda@kernel.org>
+ <CANiq72=69XAOapYBurbwsQOEaw2uamZ6ta=DT6cC-om9XK3dvA@mail.gmail.com> <Z8SMTiWzTDjIwGfO@kernel.org>
+In-Reply-To: <Z8SMTiWzTDjIwGfO@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 2 Mar 2025 18:45:13 +0100
+X-Gm-Features: AQ5f1JrCn6sPBiedOcepz2gVBmJgyJO37jSMsKXrpOq7sHIUfZKwiTfBkhdUN48
+Message-ID: <CANiq72nQNFSa0quEwLYMUVw-2CH3FwrV695k-rWfoQn5r0Mo0Q@mail.gmail.com>
+Subject: Re: [PATCH 2/2] drm/panic: fix overindented list items in documentation
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Jocelyn Falempe <jfalempe@redhat.com>, 
+	=?UTF-8?Q?Thomas_B=C3=B6hler?= <witcher@wiredspace.de>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, dri-devel@lists.freedesktop.org, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 27.02.25 23:10, Lyude Paul wrote:
-> A variant of SpinLock that is expected to be used in noirq contexts, so
-> lock() will disable interrupts and unlock() (i.e. `Guard::drop()` will
-> undo the interrupt disable.
-> 
-> [Boqun: Port to use spin_lock_irq_disable() and
-> spin_unlock_irq_enable()]
-> 
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> Co-Developed-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> ---
->  rust/kernel/sync.rs               |   4 +-
->  rust/kernel/sync/lock/spinlock.rs | 141 ++++++++++++++++++++++++++++++
->  2 files changed, 144 insertions(+), 1 deletion(-)
-> 
-...
-> diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
-> index ab2f8d0753116..ac66493f681ce 100644
-> --- a/rust/kernel/sync/lock/spinlock.rs
-> +++ b/rust/kernel/sync/lock/spinlock.rs
-> @@ -139,3 +139,144 @@ unsafe fn assert_is_held(ptr: *mut Self::State) {
->          unsafe { bindings::spin_assert_is_held(ptr) }
->      }
->  }
-> +
-> +/// Creates a [`SpinLockIrq`] initialiser with the given name and a newly-created lock class.
-> +///
-> +/// It uses the name if one is given, otherwise it generates one based on the file name and line
-> +/// number.
-> +#[macro_export]
-> +macro_rules! new_spinlock_irq {
-> +    ($inner:expr $(, $name:literal)? $(,)?) => {
-> +        $crate::sync::SpinLockIrq::new(
-> +            $inner, $crate::optional_name!($($name)?), $crate::static_lock_class!())
-> +    };
-> +}
-> +pub use new_spinlock_irq;
-> +
-> +/// A spinlock that may be acquired when local processor interrupts are disabled.
-> +///
-> +/// This is a version of [`SpinLock`] that can only be used in contexts where interrupts for the
-> +/// local CPU are disabled. It can be acquired in two ways:
-> +///
-> +/// - Using [`lock()`] like any other type of lock, in which case the bindings will ensure that
-> +///   interrupts remain disabled for at least as long as the [`SpinLockIrqGuard`] exists.
+On Sun, Mar 2, 2025 at 5:50=E2=80=AFPM Jarkko Sakkinen <jarkko@kernel.org> =
+wrote:
+>
+> (cosmetic) Nit:
+>
+> I think you could just:
+>
+> Cc: stable@vger.kernel.org # v6.12+
 
-The [`lock_with()`] below states "interrupt state will not be
-touched". Should the [`lock()`] part above mention that the interrupt
-state *is* touched, then? Like in the comment in the example below
-("... e.c.lock();  // interrupts are disabled now")? For example:
+Thanks Jarkko -- I did something similar in the past, but sometimes
+patches got backported too much because they could be applied.
 
-... the bindings will ensure that interrupts are disabled and remain
-disabled ...
+Normally they don't hurt, but I try to be more explicit nowadays so
+that the stable team can decide, and thus I copy-paste that line for
+changes that are related to new compiler cleanups and similar.
 
-?
-
-Dirk
-
-
-> +/// - Using [`lock_with()`] in contexts where a [`LocalInterruptDisabled`] token is present and
-> +///   local processor interrupts are already known to be disabled, in which case the local interrupt
-> +///   state will not be touched. This method should be preferred if a [`LocalInterruptDisabled`]
-> +///   token is present in the scope.
-> +///
-> +/// For more info on spinlocks, see [`SpinLock`]. For more information on interrupts,
-> +/// [see the interrupt module](kernel::interrupt).
-> +///
-> +/// # Examples
-> +///
-> +/// The following example shows how to declare, allocate initialise and access a struct (`Example`)
-> +/// that contains an inner struct (`Inner`) that is protected by a spinlock that requires local
-> +/// processor interrupts to be disabled.
-> +///
-> +/// ```
-> +/// use kernel::sync::{new_spinlock_irq, SpinLockIrq};
-> +///
-> +/// struct Inner {
-> +///     a: u32,
-> +///     b: u32,
-> +/// }
-> +///
-> +/// #[pin_data]
-> +/// struct Example {
-> +///     #[pin]
-> +///     c: SpinLockIrq<Inner>,
-> +///     #[pin]
-> +///     d: SpinLockIrq<Inner>,
-> +/// }
-> +///
-> +/// impl Example {
-> +///     fn new() -> impl PinInit<Self> {
-> +///         pin_init!(Self {
-> +///             c <- new_spinlock_irq!(Inner { a: 0, b: 10 }),
-> +///             d <- new_spinlock_irq!(Inner { a: 20, b: 30 }),
-> +///         })
-> +///     }
-> +/// }
-> +///
-> +/// // Allocate a boxed `Example`
-> +/// let e = KBox::pin_init(Example::new(), GFP_KERNEL)?;
-> +///
-> +/// // Accessing an `Example` from a context where interrupts may not be disabled already.
-> +/// let c_guard = e.c.lock(); // interrupts are disabled now, +1 interrupt disable refcount
-> +/// let d_guard = e.d.lock(); // no interrupt state change, +1 interrupt disable refcount
-> +///
-> +/// assert_eq!(c_guard.a, 0);
-> +/// assert_eq!(c_guard.b, 10);
-> +/// assert_eq!(d_guard.a, 20);
-> +/// assert_eq!(d_guard.b, 30);
-> +///
-> +/// drop(c_guard); // Dropping c_guard will not re-enable interrupts just yet, since d_guard is
-> +///                // still in scope.
-> +/// drop(d_guard); // Last interrupt disable reference dropped here, so interrupts are re-enabled
-> +///                // now
-> +/// # Ok::<(), Error>(())
-> +/// ```
-> +///
-> +/// [`lock()`]: SpinLockIrq::lock
-> +/// [`lock_with()`]: SpinLockIrq::lock_with
-> +pub type SpinLockIrq<T> = super::Lock<T, SpinLockIrqBackend>;
-
+Cheers,
+Miguel
