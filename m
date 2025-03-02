@@ -1,110 +1,159 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out203-205-221-191.mail.qq.com (out203-205-221-191.mail.qq.com [203.205.221.191])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5221DFD86;
-	Sun,  2 Mar 2025 06:54:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38841E1A32
+	for <rust-for-linux@vger.kernel.org>; Sun,  2 Mar 2025 11:58:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740898486; cv=none; b=uuhEPM8UOnQEMUYG3jU49cS3BbgaA6GQpPjVqp+1HrYTVA3494hltlSCfXpAHt4lIZqLn52oVGxDOerxwmsTkNX/JRELF3Jw+yE834iap4fPxP8gkXW7i8cnhHgz/QsL0ICu8/8WpQyHeUeTZH4g6zYPtOhBSsSXtwJCurOdvzU=
+	t=1740916702; cv=none; b=m+i8WmNmlMwpNZC79yjBONlb7he8tNqqiIJAfd7rLcKluyCxPRn8Cxi6m4txstsYPSVs80DRqT02rfEQtyUExLd3Q1vcb9zJjC5qFqVPKS3xZ7JSYm54jV9hwFD1gf54H5gMHqzsD5GvsgPfAtwpjMUWPKg2PjQDKNaaxtQHY8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740898486; c=relaxed/simple;
-	bh=x1sl17MlhyGn7a4DsGY06N7SkedY6GXf5M+vFSktdXQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XjUdg4a+Tb/Z+rsq0KAgjTWVcDQ2qax1DwTilGlj78ABDPcnYN+z3MCTkbhPVOPEbdvGQ4kSbl3z5YCX5NMliaK8xO+8OfF8kaDKqy/XsfCW/uENBLxbhFl2Xj8yt9O3vjRKTImjC1iRLhQWo/mlyk0TYOjoHL0c2wBQBSpkgkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z0/JDpFx; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740916702; c=relaxed/simple;
+	bh=rUSK+MPqWK7JW6t+Kl156HmvY1C0gKinUp6cPdJpfY8=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=jLf8Sg/zNIhpjB+V3yoDMi1gpuZ+Nf4YrVNR+jGKoB5VeIDX9I+B4OuTd/iVt6XEd9MDBc1UzmVdN/ckOe3G347UYgnFKbdAye57Wi7R9Nrg7wR4Y5uQR+Q6CEPo336zuuTp3HZ1ujULKmUqAyx4UZijWVzSe2bemPoDBFAbWUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=dX76dgr9; arc=none smtp.client-ip=203.205.221.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z0/JDpFx"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2fe9fd5e7f8so1003030a91.3;
-        Sat, 01 Mar 2025 22:54:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740898484; x=1741503284; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RH50xcsm3w9EAvFEKvX4IOD4cvYkCw20gTdnoq0oYts=;
-        b=Z0/JDpFxuvesNnazGVGYzs8GXV/lNZTrT0IamI7eJdasXQHp2l5QKhMvfOsH/VPLN7
-         bhvw54f5SfDO6GVH7p+kh5B6GuEb+KbJnkDHAmTXa8tllKNm32qZ3Gi7DOjsEQJg+Qxb
-         INle8gCn1RUO0G1xUG5eejJmwHvpNAbEpgzfU5Mc8Pml7yxJ/B+MjxG7vxzUmO1+nfrd
-         bfNBUIULat9qgOuKWGaEqreqHZgewM0RzC+/ryhmihtpKRwq5S1bUNuQ+wXzUBjx+MIE
-         wztpwax62+dygbChXI7FYAjy1qN+A8LULemrABXFAD4mlvzVmUXQLW0IuKRVZrWOLCZM
-         v5vw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740898484; x=1741503284;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RH50xcsm3w9EAvFEKvX4IOD4cvYkCw20gTdnoq0oYts=;
-        b=NVVJf+l0pj0d+GDZRV4uTcAlfx1nIM6gXGXZvUlXbz+L8YhPsVQ4NwNCnpUvF3uCa5
-         sHPBByzL53SQyhkVuOeeqRdZxpLqKe3sBwIFuSQtMWmTeTHdbZIIGd2qnMgwYfgjZtTT
-         XM9F30XMY16hgBxFFO7AVV5p4EWHk9r7/iyeANQH6tletpkJK2Ji0L7Dxng3SxXJrbpi
-         vJ6NPCdUI2dFFHCwLdGh6cpWyGgzfnTziu5H3eQwgfvgTbUXyhkbpbTXDP4L1wDipZcj
-         XmhwStEfGLdRM9mWxUOJSYkAnV++nGLtw9uIVPOr9oBkmp7tV0A1bkCTQWYLkJYRXkMV
-         ug6w==
-X-Forwarded-Encrypted: i=1; AJvYcCU8yAhUGpQihPI6LrQdNyQQ41X5WYnuzVIzphUkUTZ8aXJq3WA2CzgX1WNPziwQrxpV5vmclttP71g9XQA=@vger.kernel.org, AJvYcCXibmgFSktHYkdmLdZQyfWx1KskSFdHp4AU4DrMg8O0o7zHBNWRbtqxwGhYKci0uRRXaEoPXBq+Eyhftel0QRg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8UWXddf06ZLQS4Bvk7ylYET74ONWsjeQelmropmU74cX1jGNu
-	LPYAl08CnxW4wpqCfJbMOWVc2cOBkt+8VnLNncr0F/B9iTIxf2zLW12HGOpYYi+Ta1va4c2Pp0j
-	K6KC51Suhf1bmQIKszqMvL+ehLfM=
-X-Gm-Gg: ASbGncu5SPLwFJRFrHeS27NNj0+rvimJyxNDpc68kgI3ug4wb4b8HUsCweTC/NgIT4V
-	pSRgl8fcXBcRJ6yYzEPjHxwZrEOqBxaa5s/rFihkAzNMTkNiEyCyBp8K1NxKiMghlNEaIGVNFeG
-	5mtlfHqo2GevCWYSSGgV2TYNuxxA==
-X-Google-Smtp-Source: AGHT+IH/HpdC5c2ntwoUexbl3FGQdhO1VQIGXrZoFJRa7qJpy5glII83KoHTFhfyZpEgHHy3fYGiMf0NHxFD6DEEMQo=
-X-Received: by 2002:a17:90b:1d8a:b0:2ee:6db1:21dc with SMTP id
- 98e67ed59e1d1-2febab2bdf7mr5608814a91.1.1740898482556; Sat, 01 Mar 2025
- 22:54:42 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="dX76dgr9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1740916695; bh=MP9cTQS18F1Nay+dJn0ruW2FP+4xeNvoNS0Kd03Zylk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=dX76dgr9LrYQ1+zSrmW0QR/+CH9kuZVWkW1p6JeswVP+5ybIE3bpKTvKLJ3/PsFb4
+	 8saEKQSn7O3sxgwcm91uIr39fCjRPyVH26EynmrHdAS+W4CA960uZIl98ed3DL4UtU
+	 yLTlQFTQ+MusjupfPvktqD3Eu/H0Oa07a7LaAK4o=
+Received: from jckeep-Lenovo-XiaoXinAir-14IIL-2020.. ([240e:3b1:d00c:8e21:ca33:76fa:6eaa:ba4e])
+	by newxmesmtplogicsvrszc11-0.qq.com (NewEsmtp) with SMTP
+	id CEEA88A1; Sun, 02 Mar 2025 19:51:46 +0800
+X-QQ-mid: xmsmtpt1740916306tzgkvdr02
+Message-ID: <tencent_E9A9DFA5B2C6059DAF39777A40FB86753606@qq.com>
+X-QQ-XMAILINFO: MJf32pulH481pe77k9pFMDKMt8LQXajXPlG3FPBFZ+6X9Gh4bexTU+KoZf1uVP
+	 eCg1IPJA5xFTOpQdvkJRlJr0HcarFPKF3IFP2kFOK75DJ6JxXrzfMGxMElqsO2H0RfEi/rLr9H4m
+	 xdYxfFJ5mTtO+zEhmPLH8wnwiDcZFJi3Xq+8GpAkLEcmEwh+VLlQ107L3Tzt21Cj5HCrTB450XY0
+	 qPxHcGwJGtbKfBjGCyDqj8lga/izpeHTnsr65DFJFzt85eYLGypiiQnFLRV6kaB1VdVV+t2DczBR
+	 3xFQCvHCWS4GXmVFh1jOWpqL/waUKfzqz0LBBeExGpItERE/S3NYIWbkw9SjA3zbWlkrzr+qABTD
+	 KcW1W1uvW/ibuLNcjPRLEGUjPD7KLWSFG+IyBvQpa4E+562vYw1u1nIFockyMYYvAWImXFg3gPwG
+	 ph1pFiiuI/rJ4RDgFgE3g+z7iOuepEJ7M2ls60DO0I3YMhnqU/GoaC8EjNB8Ho8U8PAVoWX42DQl
+	 GE6pMf/qYxF+aHbeHiU5GpAqCfKtj/5SPUPJo7Giu7PKn4NPTYN3eUpGJBYDoKIO2TtfWxB8efNF
+	 +lo9n0fHqGwRxwh245Kff7hrW5La/kLe2TV44No1EqxyWbaQYVzMx5sTnsdnfXN9ycVEmYosSgWH
+	 lj/7szLldexy8FT3hAdrpoBkKwC1ZaiweuOfhlgT3mkDa2gLAAYvaP/Hokxiif9o3yjMQwbGkaF8
+	 Vqon7xl/d7LWshH1XrbmWyd/E0uqI20ChinC4uuu3FYwGbMbq9p0scNiurpKcsWs9XJIIDJ0DF0I
+	 wmCayHc20zJK3GqFQm59pLXVuez7mRDhAEyjUy6Ds+etO4Y7aOpDf89tvgxRiVy81MgdlobjKMHR
+	 GdfMS7JDUydaaH2HbZUM17KS6fVTlHbnWIHnDmk+UiiRVjEgHB1fRq37/mja1GjMyLUKHTqYwGp0
+	 Crd7jglu1cSjnSdoKYbnaZ2ihxi2KJcAy5YJWLuue0/wuzymq3+Q==
+X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
+From: Guangbo Cui <2407018371@qq.com>
+To: lyude@redhat.com
+Cc: a.hindborg@kernel.org,
+	alex.gaynor@gmail.com,
+	aliceryhl@google.com,
+	benno.lossin@proton.me,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	linux-kernel@vger.kernel.org,
+	longman@redhat.com,
+	mingo@redhat.com,
+	ojeda@kernel.org,
+	peterz@infradead.org,
+	rust-for-linux@vger.kernel.org,
+	tglx@linutronix.de,
+	tmgross@umich.edu,
+	wedsonaf@gmail.com,
+	will@kernel.org
+Subject: Re: [PATCH v9 6/9] rust: sync: Add SpinLockIrq
+Date: Sun,  2 Mar 2025 19:51:46 +0800
+X-OQ-MSGID: <20250302115146.59946-1-2407018371@qq.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250227221924.265259-7-lyude@redhat.com>
+References: <20250227221924.265259-7-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250301231602.917580-1-ojeda@kernel.org> <20250301231602.917580-2-ojeda@kernel.org>
-In-Reply-To: <20250301231602.917580-2-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 2 Mar 2025 07:54:00 +0100
-X-Gm-Features: AQ5f1JqlzIC1SFXpGOf9WwRIHGTxmhHtxxGET_lxoSbzWK3HdSahnru-4p4t798
-Message-ID: <CANiq72=69XAOapYBurbwsQOEaw2uamZ6ta=DT6cC-om9XK3dvA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] drm/panic: fix overindented list items in documentation
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>, =?UTF-8?Q?Thomas_B=C3=B6hler?= <witcher@wiredspace.de>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, dri-devel@lists.freedesktop.org, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, Mar 2, 2025 at 12:17=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> Starting with the upcoming Rust 1.86.0 (to be released 2025-04-03),
-> Clippy warns:
->
->     error: doc list item overindented
->        --> drivers/gpu/drm/drm_panic_qr.rs:914:5
->         |
->     914 | ///    will be encoded as binary segment, otherwise it will be =
-encoded
->         |     ^^^ help: try using `  ` (2 spaces)
->         |
->         =3D help: for further information visit https://rust-lang.github.=
-io/rust-clippy/master/index.html#doc_overindented_list_items
->
-> The overindentation is slightly hard to notice, since all the items
-> start with a backquote that makes it look OK, but it is there.
->
-> Thus fix it.
->
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> +/// A kernel `spinlock_t` lock backend that is acquired in interrupt disabled contexts.
+> +pub struct SpinLockIrqBackend;
+> +
+> +/// A [`Guard`] acquired from locking a [`SpinLockIrq`] using [`lock()`].
+> +///
+> +/// This is simply a type alias for a [`Guard`] returned from locking a [`SpinLockIrq`] using
+> +/// [`lock_with()`]. It will unlock the [`SpinLockIrq`] and decrement the local processor's
+> +/// interrupt disablement refcount upon being dropped.
+> +///
+> +/// [`Guard`]: super::Guard
+> +/// [`lock()`]: SpinLockIrq::lock
+> +/// [`lock_with()`]: SpinLockIrq::lock_with
+> +pub type SpinLockIrqGuard<'a, T> = super::Guard<'a, T, SpinLockIrqBackend>;
+> +
+> +// SAFETY: The underlying kernel `spinlock_t` object ensures mutual exclusion. `relock` uses the
+> +// default implementation that always calls the same locking method.
+> +unsafe impl super::Backend for SpinLockIrqBackend {
+> +    type State = bindings::spinlock_t;
+> +    type GuardState = ();
+> +
+> +    unsafe fn init(
+> +        ptr: *mut Self::State,
+> +        name: *const crate::ffi::c_char,
+> +        key: *mut bindings::lock_class_key,
+> +    ) {
+> +        // SAFETY: The safety requirements ensure that `ptr` is valid for writes, and `name` and
+> +        // `key` are valid for read indefinitely.
+> +        unsafe { bindings::__spin_lock_init(ptr, name, key) }
+> +    }
+> +
+> +    unsafe fn lock(ptr: *mut Self::State) -> Self::GuardState {
+> +        // SAFETY: The safety requirements of this function ensure that `ptr` points to valid
+> +        // memory, and that it has been initialised before.
+> +        unsafe { bindings::spin_lock_irq_disable(ptr) }
+> +    }
+> +
+> +    unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardState) {
+> +        // SAFETY: The safety requirements of this function ensure that `ptr` is valid and that the
+> +        // caller is the owner of the spinlock.
+> +        unsafe { bindings::spin_unlock_irq_enable(ptr) }
+> +    }
+> +
+> +    unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState> {
+> +        // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
+> +        let result = unsafe { bindings::spin_trylock_irq_disable(ptr) };
+> +
+> +        if result != 0 {
+> +            Some(())
+> +        } else {
+> +            None
+> +        }
+> +    }
+> +
+> +    unsafe fn assert_is_held(ptr: *mut Self::State) {
+> +        // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
+> +        unsafe { bindings::spin_assert_is_held(ptr) }
+> +    }
+> +}
 
-Fixes: cb5164ac43d0 ("drm/panic: Add a QR code panic screen")
-Cc: stable@vger.kernel.org # Needed in 6.12.y and 6.13.y only (Rust is
-pinned in older LTSs).
+It would be nice to add `SpinLockIrqBackend` to `global_lock`.
 
-Cheers,
-Miguel
+---
+ rust/kernel/sync/lock/global.rs | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/rust/kernel/sync/lock/global.rs b/rust/kernel/sync/lock/global.rs
+index 480ee724e3..60b88f362b 100644
+--- a/rust/kernel/sync/lock/global.rs
++++ b/rust/kernel/sync/lock/global.rs
+@@ -298,4 +298,7 @@ macro_rules! global_lock_inner {
+     (backend SpinLock) => {
+         $crate::sync::lock::spinlock::SpinLockBackend
+     };
++    (backend SpinLockIrq) => {
++        $crate::sync::lock::spinlock::SpinLockIrqBackend
++    };
+ }
+-- 
+
+Best regards,
+Guangbo Cui
+
