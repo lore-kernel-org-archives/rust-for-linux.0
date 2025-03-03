@@ -1,49 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390B684A3E;
-	Mon,  3 Mar 2025 18:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D325D84A3E;
+	Mon,  3 Mar 2025 18:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741026782; cv=none; b=jXwT7NWcuP8vaqdn8hEFwvA/lcxaOMKyDvQ+IfZSAe1imdg9HsGJjyxTSZnTkhL+BgXxi25tdbk140L5E/aJq/Kflvlea1wjATSJwFJ+QaYLb1IfFvqxqtjCX3faW2HiT4XZjLOgkAJdY2YiunskD9W20I9+YYNwkrfp6umJezY=
+	t=1741026890; cv=none; b=bYpHmxQVLyVEAOigl9wQiwyyJGFH+I73OhYETGeTA8MWqaJSNl2ueT4pgx5/Y7sEhH27KaWKG7LVf78A2as50C4ycyfPn74BI88f82WIdvqpjkMeKwFI9A0U3N6T4zkW/rWGRDMBBejZa7MzXRa8wvbSl3pRGb9JJbDxM9b0ViI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741026782; c=relaxed/simple;
-	bh=p+x8Be3tf6PtbwUT0uHQMPM5tK3lELCvuVQXFNOznLA=;
+	s=arc-20240116; t=1741026890; c=relaxed/simple;
+	bh=7s7jVM9qOpuwQGaeWhEQnHDrxdpsE+GXeGxIibk8KiU=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=XwlQ62hHvCvTmqUcbVAbIV0GQq93AyvuKWk5zyBc1WjyZoIEMBeySDk3GdVXy8D6hF6SHdLUd2zKy6BVk4QPDFvjvqo2u4JtwbpjRDGVROiOJYd2pvjt2iSCfEr3ipVUW1qrHEeUv1OBkx2vf9zqaTYjXYq44tUDGBJXB6dNFFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a8PGFLsx; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=lle2U5dgBm3BUtAd1a8Wd44GPLE2RxSuCuZ7CD7701JgcW8WVzg2sC4jyuq1m2P/aC4sllXJfmlz9ycUPLr07xsxkMLpgTuyPmiqL+pWI3JZ9zK5L84hrPSqoQjUw/rIobjT1Vbs7f/jXA6CqONIHILgzs3MfjC9VmIEaW7rzU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mwdN+h3j; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a8PGFLsx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F1D1C4CED6;
-	Mon,  3 Mar 2025 18:32:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mwdN+h3j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C9CC4CED6;
+	Mon,  3 Mar 2025 18:34:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741026781;
-	bh=p+x8Be3tf6PtbwUT0uHQMPM5tK3lELCvuVQXFNOznLA=;
+	s=k20201202; t=1741026890;
+	bh=7s7jVM9qOpuwQGaeWhEQnHDrxdpsE+GXeGxIibk8KiU=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=a8PGFLsx3QKVpj55nYkPhKc4dqlgPVSbMoma/FVi9ndYb3G9qG2xadyrzlkZ3VL6E
-	 eRArliVk1RLWaKOk3vo9WmaqDIzB5o4Am6nVJvoPtgijOvYcc9t+kDrzTCmgWWADtY
-	 P4DDcvCsEnvACwlMHFakvdrX1GJnHT+V3hwUQ4VWshC+SfH97s3LUEL5SVUd23efjH
-	 CrdFhhbFCUQBe6LFAdCcXyBTuy0lL2lHv76iywodGju1SqvKiw/2lyxeUMIJLZ5hHy
-	 eyYghcis1KCrcWQzcl9uQdnnN8uKhvlr9SSf+G2dvq6+a0+1ftfbTWfoausodO5sjp
-	 1P6s7HT5Rkqdg==
+	b=mwdN+h3jVOXsxtJjW8561lCVMOgRyeZqpIlj2yqO1y2vhqovHSEaKkeXTaP3uWOJn
+	 QwDrHk/mLwQxv2x9snbBRzQ3JWGI+gB86yCiXwn502TT0GjtuXPTzJ6j41UAgVLRmj
+	 qvKdHawfa72ppAKQYwVwmhE1C6YeSYBN995KXrIJ4fX6yRLq7D4K+bmZAOO429bhMc
+	 oKoUZiPi1sTX6b0ZUQQ7+7HjAegoLyiOu41+GLd5eReNp7ROpJzpcBjS9hJAu5h7IF
+	 4qn6aX1xaX7GQ6zJqJnyuRW8osva6Bil69mglb7cJpN6dNDMrdNVT7IqMVmO3tt42H
+	 uI+LTwojd2ZlA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Miguel Ojeda" <ojeda@kernel.org>
-Cc: "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
- <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
- =?utf-8?Q?=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
-  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Danilo Krummrich" <dakr@kernel.org>,  <rust-for-linux@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>,  <patches@lists.linux.dev>,
-  <stable@vger.kernel.org>
-Subject: Re: [PATCH] rust: remove leftover mentions of the `alloc` crate
-In-Reply-To: <20250303171030.1081134-1-ojeda@kernel.org> (Miguel Ojeda's
-	message of "Mon, 03 Mar 2025 18:10:30 +0100")
-References: <38Ry6xPAarfPYWB_FZBM_3Jy2Eo-skh5yWoGi-yT33tflksARlQmwDudaXGjQIgMiUgeSK8IPTV16DN5xdiGoQ==@protonmail.internalid>
-	<20250303171030.1081134-1-ojeda@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+Cc: "Paul Moore" <paul@paul-moore.com>,  "James Morris" <jmorris@namei.org>,
+  "Serge E. Hallyn" <serge@hallyn.com>,  "Miguel Ojeda" <ojeda@kernel.org>,
+  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,
+  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,  "Benno
+ Lossin"
+ <benno.lossin@proton.me>,  "Trevor Gross" <tmgross@umich.edu>,
+  <rust-for-linux@vger.kernel.org>,
+  <linux-security-module@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] lsm: rust: mark SecurityCtx methods inline
+In-Reply-To: <20250303-inline-securityctx-v1-1-fb7b9b641fdf@google.com> (Alice
+	Ryhl's message of "Mon, 03 Mar 2025 15:29:58 +0000")
+References: <E5LkGmfU4ReOvkhvA6uG2XmGCOCIzZCskzEqz-4wFULw5YMx_ZNvvqbufIS0Qh__mGfczk1LAuGgSePNUSUJXQ==@protonmail.internalid>
+	<20250303-inline-securityctx-v1-1-fb7b9b641fdf@google.com>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Mon, 03 Mar 2025 19:32:51 +0100
-Message-ID: <87cyeyj770.fsf@kernel.org>
+Date: Mon, 03 Mar 2025 19:34:40 +0100
+Message-ID: <877c56j73z.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -52,16 +52,14 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-"Miguel Ojeda" <ojeda@kernel.org> writes:
+"Alice Ryhl" <aliceryhl@google.com> writes:
 
-> In commit 392e34b6bc22 ("kbuild: rust: remove the `alloc` crate and
-> `GlobalAlloc`") we stopped using the upstream `alloc` crate.
+> I'm seeing Binder generating calls to methods on SecurityCtx such as
+> from_secid and drop without inlining. Since these methods are really
+> simple wrappers around C functions, mark the methods to inline to avoid
+> generating these useless small functions.
 >
-> Thus remove a few leftover mentions treewide.
->
-> Cc: stable@vger.kernel.org # Also to 6.12.y after the `alloc` backport lands
-> Fixes: 392e34b6bc22 ("kbuild: rust: remove the `alloc` crate and `GlobalAlloc`")
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
 
 Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
