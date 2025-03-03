@@ -1,67 +1,107 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C21216E1D
-	for <rust-for-linux@vger.kernel.org>; Mon,  3 Mar 2025 16:34:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C92B1EE7D9
+	for <rust-for-linux@vger.kernel.org>; Mon,  3 Mar 2025 16:52:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741019644; cv=none; b=NfXc5Z6vfpCUCgYSTGWuSJpAWimGfiyyI1ygJfKeQqajruzaq9yTdF2uUu/6aXSLO+2z/9kffiVQLUP9YiKIjfOb7BU9uAqXv2J2V1LROisJ5JGSPvU7knApdts9gpb6lidzAI0GutPwkFhdVoo6UjFvgpNF1LZhA/WynPXvBhU=
+	t=1741020738; cv=none; b=OiQD9mstZotHkjqp13qKzFe+XALi3sbeINk0D8fOl12FyZUwKgKHjeOQkYhmAikloiBx9xdtkNzfyyegB0dHKINz2f3qC+MaBIm9Us+jF0jDq83tk35fYHyFf5VUsanj4Lf46T/3IobU4k/pJECMHt0Zk7LHFTJXnVE62xDQZ1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741019644; c=relaxed/simple;
-	bh=TxFXzhsCXG0uQIgmK+6/Wr/GwZRnOhLDI/uMTiTpLSI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rgt5xG/GANxuF9iQp3ZO1LCqu2vX9JFRFyxK2Xt9yfRD6mpWTpF4frhnuJLdB4td00PkXlUj0PrCnJWs60frnHSukFDd5JNLarc7568ff3mxe8y6hG3coh0PqNiv7UPdeFQM+hThezlN3IrOX1HXaNG/MhjcycodwN4MyWr7KNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=drSCFxB2; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+	s=arc-20240116; t=1741020738; c=relaxed/simple;
+	bh=X9vuxKvJBiI5voDqnbl4lgtxLuulj8GAfFRersEJ2U8=;
+	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=ML9zmvBpHb2F5knyAdwQzFZp47MpV/sJ7rFO6KIdmgN9WInbfjnh8t029J7JYo9EFn5qHqIOJCVD+73FPr1hStvAuVsYmFQc5LkdDQNckTLNseamhdD3UaTrCiHr7DovJoVOkiloI3CATFKwr9TGBPhHwSLAHdDZqju2pbXagoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VU+6aHpI; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="drSCFxB2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1741019641; x=1741278841;
-	bh=TxFXzhsCXG0uQIgmK+6/Wr/GwZRnOhLDI/uMTiTpLSI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=drSCFxB2ZDqHJRh1F9vUGLaESw9pQ+PUFb+T3Jr6o8i61EUCWTTBiZQckCB3ixRMv
-	 swpOX8bwwydQfuRuuheypSfKDQOYJEeUGJbMUfsbMiyRrRwxdSeRMFc1IyfdSbrOTI
-	 NR5pO0T5Vm6WmBQaC5Y4c0DsF6YQxAEZraQFCU+UIpcNbTFHy0huSgP7rLQyvWy/Gj
-	 96obXM5yyD3jCfcPd9sHy4BaCNPJsCX0D5aPQu8xC/+j0yt3fp8Enp4GdtntxwzRJX
-	 qC2V/9/rHZiorvWllXnkty3Nh4wyA1Z9bDIQ26GflSvlUHqo0JMdvpU8qXFFEteeYm
-	 hQFDcc8J5sqbQ==
-Date: Mon, 03 Mar 2025 16:33:56 +0000
-To: Andreas Hindborg <a.hindborg@kernel.org>
-From: Oliver Mangold <oliver.mangold@pm.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3] rust: adding UniqueRefCounted and UniqueRef types
-Message-ID: <Z8XZ8EFEXM-kYelX@laptop>
-In-Reply-To: <87o6yijirw.fsf@kernel.org>
-References: <EiaQ-C0o3GMQQpw3jCnXUnNgph2WIJ5-Cm8P5N9OysIlDKYrjHNun5Ol4Q1FfVGw64k6TGCfUVBJK5r0_2eypg==@protonmail.internalid> <MFrukGViddXfhKeURDySTWCDW6Pk8Oo5keozdVg9hehiS3P4FVHKv4d-Fwn87yprBUeyTHcY6T1k9htIhPzc9Q==@protonmail.internalid> <Z8H6EUy1HqLrzytE@laptop> <87frjxncsx.fsf@kernel.org> <R-XaKS9h55NHdh6RYNYWTGw7oDyauYJhAY72W8DAgJJ73VskOhGPlSZP5DC4teo0EdhbDDtLV0Lnd9MMd-jCBg==@protonmail.internalid> <Z8Wuud2UQX6Yukyr@mango> <87o6yijirw.fsf@kernel.org>
-Feedback-ID: 31808448:user:proton
-X-Pm-Message-ID: 33cf7609a55a21449a800aa97e7cd0b3e026495f
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VU+6aHpI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741020736;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=X9vuxKvJBiI5voDqnbl4lgtxLuulj8GAfFRersEJ2U8=;
+	b=VU+6aHpIrxqqy3pMAJatFHOXSsfeKTxLdo+Y6IIstJGcSy9my9zTWWlp+365pcTodbr6Z9
+	K14vVAdThzL4A3KhrMvXNaqZ1KSHD5Q0P5k6n2LRS9ftxCP6SoRFOOVmJ5iLBh07zBaZK2
+	QvZdi6bfc8xqekqoUeuYY8xIokojh3s=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-630-g8qrTVerO1mwKbDCA_VF1w-1; Mon, 03 Mar 2025 11:52:15 -0500
+X-MC-Unique: g8qrTVerO1mwKbDCA_VF1w-1
+X-Mimecast-MFC-AGG-ID: g8qrTVerO1mwKbDCA_VF1w_1741020734
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-471f3077d39so104587231cf.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 03 Mar 2025 08:52:15 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741020734; x=1741625534;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=X9vuxKvJBiI5voDqnbl4lgtxLuulj8GAfFRersEJ2U8=;
+        b=IRxfFVLGwuA6e0PoJJ73aPsom+J+DbmDmWBAU5DHFNTuShI1SrmOBEmQJakMJUX0Fw
+         SrVEuBfZU+SUuEjaXqWNJSMpTkNPXZIHu5ByiSw0YC5K5QXkdgdqPdR3AHJjRwSjvBbE
+         nLK2s0+DTX8lSJgRT2+sS6tretm0Nd7tVaLeGCla3pfiRXYBkLphRiHeWkB5tl1wuQqj
+         RaWsIQ92lexAbj0xcd5QcGT5jAoCItnzhLkBNY64nVxOG9IyTwrexsa3lIEVCqE/zNOY
+         Waw9hcjivF+I3YjNHkLWJSqS9M8feXbpxBSQRIUgCDck0oBXV3I/HI/4G+HBB8RU1MM0
+         JHPg==
+X-Forwarded-Encrypted: i=1; AJvYcCWURIZr2j1BqbeEAtyogMIg6tFW1nAw1BSK5HWr18wFa3ayFv/z23s0FX8VjcQBBhhqytAOkYM6Z9RbzTsfkQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxovRQc+F06ZYurqzaB482EdyzHHbJoMFARFP5yU1j8Gd26ldU/
+	sN8Uo+is44u6xXTbZg+D7+7lJxoGXXSZ/rQViq0n758zaF1wOHTvg3I67t/zV4Kdv+kCc37Jhqy
+	KmnWUD0OuE5SBIlQD5BESmR1qqcI5E1cwSM0kGwqgyqXzqbLZMjvBt1OrYIQEjoL/
+X-Gm-Gg: ASbGncv0XQilla4GhE1WC90ory2i7CqtWBUpV6Ep1rATq0A+838osJANTdmaI2CzMLm
+	6w8CnC58VI2Umzryz9vWV9zuPPVZYHWV/cooph+v86L7bsgpOoV5Vpq7sL6nRKxueJgbGSx/zzi
+	P06WejvPeqZAT/K39//443c84HAvceNRhgrIiJMQ29AHDYA0ivZJ+nrDkYhMKi72iRScuxewHNx
+	HBxBwnnqsbj9Z2UhgSYBXIzE305TiBbK2eWE5Oo3hkj2c4XqIs6/Eq7t0Dhea7IT7vnmLUJWtzV
+	c4gVmFQQPkIqwH5cPLMuGdEAhoAuIhKyxmUUlqb65MkgNlaw4+xG2wf2zRw=
+X-Received: by 2002:ac8:7d85:0:b0:474:e4bd:240f with SMTP id d75a77b69052e-474e4bd2933mr76620401cf.15.1741020734605;
+        Mon, 03 Mar 2025 08:52:14 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IESSqcVQ5BVQ40j7IqzCcdGGkpDty4sSfwg8hSbBvllBwbMi0l4DwBjqREU0L+0P4dQsuTKlA==
+X-Received: by 2002:ac8:7d85:0:b0:474:e4bd:240f with SMTP id d75a77b69052e-474e4bd2933mr76620091cf.15.1741020734300;
+        Mon, 03 Mar 2025 08:52:14 -0800 (PST)
+Received: from ?IPV6:2601:188:c100:5710:627d:9ff:fe85:9ade? ([2601:188:c100:5710:627d:9ff:fe85:9ade])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-474691a11fdsm60247171cf.15.2025.03.03.08.52.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 03 Mar 2025 08:52:13 -0800 (PST)
+From: Waiman Long <llong@redhat.com>
+X-Google-Original-From: Waiman Long <longman@redhat.com>
+Message-ID: <efe964ad-9b14-48b9-9dab-30f29263191b@redhat.com>
+Date: Mon, 3 Mar 2025 11:52:12 -0500
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [GIT PULL] LOCKDEP and Rust locking changes for v6.15
+To: Peter Zijlstra <peterz@infradead.org>, mingo@redhat.com
+Cc: Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ rust-for-linux@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>
+References: <Z76Uk1d4SHPwVD6n@Mac.home> <Z8IHIYOnI-DMHlC8@boqun-archlinux>
+In-Reply-To: <Z8IHIYOnI-DMHlC8@boqun-archlinux>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: u5S_Bue_GszC1fnIy8lm0kHTWP_Tg6LFyi5xr0re8bQ_1741020734
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 250303 1522, Andreas Hindborg wrote:
->=20
-> This part:
->=20
-> Goes immedieatly after the cut like so:
->
-Hi Andreas,
 
-sorry, again. I misunderstood what 'after the marker' means.
-But as I now tried all orderings, I should get it right from now on :)
+On 2/28/25 1:57 PM, Boqun Feng wrote:
+> On Tue, Feb 25, 2025 at 08:12:03PM -0800, Boqun Feng wrote:
+>> Hi Peter & Ingo,
+>>
+> Ping ;-)
 
-> Again, I'll recommend the use of b4 [1].
->
+Hi Peter, are you going to pull this lockep branch into tip?
 
-Might make sense. I will look into it,
-
-Oliver
+Thanks,
+Longman
 
