@@ -1,306 +1,230 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2041.outbound.protection.outlook.com [40.107.243.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613851D8DEE;
-	Mon,  3 Mar 2025 20:09:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741032591; cv=none; b=Fw57J/KyOLhzuDwJutoFXcxi25m+AC/kLPV67XrhVQzArbhfyZmthgq/j13Vrcsa9JsG7brl1P6fTZ9KjsDbB///t1ptWkiFv0J1FIhyzq+EusR3wKcHSJK4Th7g7mZx5J+z5aJeWZUvrqCPbEhpM73EJ2rQBXKvEYSMF+u87Fs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741032591; c=relaxed/simple;
-	bh=ak0uLAYOdPdOsOHTGiLI6WF/evbmhtkJgkzO+RvCUSI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zb+b2dOTuf8dGMG5zDYd7IswG7JmzTWWcQ4a0BQFOBICFwhIYq9KWp6AGWptSqb6tpCaXBk1h7RilklieJaZiuz2hUnPqhhuUFv0h63ZFbCap7WNIP0UHBNS7oW1tI4XovclTjmgE7/4hsb+rDXisefKruQdsf7Jq6bytQYPE/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZNgahwQW; arc=none smtp.client-ip=209.85.160.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8621EE019;
+	Mon,  3 Mar 2025 21:50:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741038609; cv=fail; b=pItukRrvWBBG4vKhZasbdi/v51YGK/HGhLRNkDzn8IZgCF6J/Pf9IdzXR1TiyFhjz9WNnj5Ne4jj3L1U8Va841qCWpY8QgS5g5cBnTFIOglTZdYdsv9LGT8upl7uNqFD8SLZcfGo8EfJaun/O79iN1BxKoEnJMr4WJDvR2e8o3w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741038609; c=relaxed/simple;
+	bh=a5WM05NbaId5e4u1A7LCBj+olGTI2fXoYA9gqraTnXQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=HomM0ZpckaREsY8GNhAvPknR/SLQeIxAjBfJq8Gzo/fj1dKApc2WzsufIR24b7FmGELM8V2DwdyS3lnknxoxMFZz7upQVVXFp667YSWUAS7bhYdwVpTu5OYNBIWnnnkZK4vCZc5Wq+Af/qbipQM+H/x2U+f0kHvb7rt3bm6G4gc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=MRgBN3Wx; arc=fail smtp.client-ip=40.107.243.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZNgahwQW"
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-471fe5e0a80so45940651cf.1;
-        Mon, 03 Mar 2025 12:09:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741032588; x=1741637388; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=db22fiEi+hGGRsW4Uw3D7Qv3wZB3dOWlWmyWq/YDVS8=;
-        b=ZNgahwQWIxkasdDcP9TyivCD4+6SUwBy+PQPBe9u9zSyjxOfcbx7j/2hX3HkvRNti+
-         XpLHCIQfWS35p+uWDtIIDqkhcJhZqFkoWBy7GcesJfDAyWbAPpN1MIzAIjDNh/2nSuuS
-         i/0yNrSX3Ps4vPbSzr2WUZLYIHwn5w9xF8Evs9Y7ERIswmMRZVnq0LVqkHMW2GyJTZHR
-         Ns5+GLlTE8pcGgNO7gHOqUTasa2gj+wRkizw/9jF+p+l7M4Dk6k4jmBiWH6CU+y4/Ked
-         BRWDr8G5kE9O4N8eJ0P98Ioh2XhfmBssE/IjAunnmzo59qQUzqc1VIfBJwO71QNDtPpn
-         vk3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741032588; x=1741637388;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=db22fiEi+hGGRsW4Uw3D7Qv3wZB3dOWlWmyWq/YDVS8=;
-        b=PZF7kcxWALfLHx6IrLjjukD8kCKCVwJu+rwNadfzdcwMAz8ZqedbNJJbtIpHXGV3qW
-         ziVITkNhz3DAC7zJjPoNGtH92BsyyfSyR03tSJratBm771Nt6h17itKIR9Z6D+smfQMJ
-         uJ4EluAqCK8SsQ/TWU2wjti+pCW/QRrB3TFmgakw8IhKCCnfbFTwrhmAGg4X3OxY5JsU
-         XvmbQS9nw3C2CDrMPb/phOwJheomCMT8X5yV93w8RAgsOA+LgtSq9O3ElTajMX0ijL7S
-         Bj5dBVWgCi+lBVfIthAiNgyQUe+qlYo77WiTWEHuYIEziL4MH55Ul5wOggjGU1kvSnTq
-         d4rA==
-X-Forwarded-Encrypted: i=1; AJvYcCVWW1pjGCP3W2c9is81WfnhvrsQ70mizyrKvw3Gcf61bhrseN8V7DDNz5prcfFbus90GQpOfh93uqFCDt8=@vger.kernel.org, AJvYcCXKNxWdKSH79yc8CTCq0LupTDFJZ4RyrUPbd1vML7efzkUdLO5CSPIRRytXJC+IyJxHXA9UMddXGWA84YxqXN0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxq9x/57MYwI99eNu29FdeuwPGZf4FLyyLz5Fq/s91JO1Ratojo
-	3kWuX1tN3D5sNFvEogE2biS8M+/fY53YHWvO1VUSPvCfPHa75Sna
-X-Gm-Gg: ASbGncuuxJ6mcKAXf/GlX5FBXRFMhJSPOzam/nGNDM89F7oJ3m0IuOkolnkcfQzLJWg
-	wWYrDig6nQ3PPiQrE9OEucpogaXnRxmdc2auosuccj0DSTmlqVMAN5sTXsELnI2EgzcgXbfOaP5
-	oNLpqRsbULTcf5kGhXw2JfDvn9lVdg7pAJ0Hr4xB+07KIBJckICUuhS2dUn1aTvhzlXEd9VjKNL
-	qe8+4/V4+rJdPyMS+kfKNHja6lr/J8BHvGJl6d+e7GdnVrf+jXZn56QNf/FFABEp7xPm/Kpi/rU
-	43wwMXqnpBWPVBCB1fjSW72wIIqIRh7NmGZoF5tYQHnqWx5ES0HiCIZp/divbv6HgX/DKNqDOXG
-	CFlt5/f2ZONMmLVQkVAj9tfT6Ah5gGy3a5eg=
-X-Google-Smtp-Source: AGHT+IEGE3tL8GklgaxBgKCmuvBxSl98F8xYTsuVaIP68aXbDef7LLSQMRDFdPvP3NnT2UnrWW+Ktw==
-X-Received: by 2002:ac8:7fcb:0:b0:472:13f8:a974 with SMTP id d75a77b69052e-474bc0ff398mr193507931cf.41.1741032588072;
-        Mon, 03 Mar 2025 12:09:48 -0800 (PST)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-474efb85808sm12724511cf.38.2025.03.03.12.09.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Mar 2025 12:09:47 -0800 (PST)
-Received: from phl-compute-07.internal (phl-compute-07.phl.internal [10.202.2.47])
-	by mailfauth.phl.internal (Postfix) with ESMTP id CA2B21200069;
-	Mon,  3 Mar 2025 15:09:46 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-07.internal (MEProxy); Mon, 03 Mar 2025 15:09:46 -0500
-X-ME-Sender: <xms:igzGZ6BHVTIavAAf-qxVp9Tb3sKXVHPK2nT33JWA4s4zcqKoJYreIA>
-    <xme:igzGZ0hbHxwLGhUy-G6d_nJy2HJuH723qw3j_mgLQRADpm8Xv4GNhqUZMdThie85V
-    iRBV5KUGSA6k23BfA>
-X-ME-Received: <xmr:igzGZ9nlHLO-dl590YhcRN33K4iXnPvRBTNqIYYfGSknE5A9TGUJBMybO7Y>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddutddttdegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddt
-    tdejnecuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrg
-    hilhdrtghomheqnecuggftrfgrthhtvghrnhepgffhudfhieeggfffleevvedvieettddv
-    veetfeejjeffjefftdefieffgeetgfehnecuffhomhgrihhnpehgihhthhhusgdrtghomh
-    dpiihulhhiphgthhgrthdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgr
-    mhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlh
-    hithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehg
-    mhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvdefpdhmoh
-    guvgepshhmthhpohhuthdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghl
-    rdhorhhgpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtg
-    hpthhtohepuggrnhhivghlrdgrlhhmvghiuggrsegtohhllhgrsghorhgrrdgtohhmpdhr
-    tghpthhtohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtoh
-    eprggsughivghlrdhjrghnuhhlghhuvgesghhmrghilhdrtghomhdprhgtphhtthhopegu
-    rghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhosghinhdrmhhurhhphhihse
-    grrhhmrdgtohhmpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdr
-    khgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:igzGZ4w_vpCqjZEgLzu-3YYDC80mEYkATCCm5BtwEAwJxXK9zuUMlg>
-    <xmx:igzGZ_SabMcg403MF9xDW-r-7c8elq1CwKxZxNzOI9SI1oW1Wgq3Uw>
-    <xmx:igzGZzbOS24mlcxS0ZYffeiNB_iQ0F2iXRQtwVgn0RFX4JkbnLQ4_g>
-    <xmx:igzGZ4Ti8HHrgKkEeB8JIIZOCAZdQXfgM_c1mSDlkL26sr19hmj7eQ>
-    <xmx:igzGZxDXc0HG1fhA41rf8gQR_gSoy-8YafdVh7iCFkSrAm3ygQ-gDpiE>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 3 Mar 2025 15:09:45 -0500 (EST)
-Date: Mon, 3 Mar 2025 12:08:46 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>, dakr@kernel.org,
-	robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	linux-kernel@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
-	iommu@lists.linux.dev, Ralf Jung <post@ralfj.de>,
-	comex <comexk@gmail.com>, lkmm@lists.linux.dev
-Subject: Re: Allow data races on some read/write operations
-Message-ID: <Z8YMTiKS4T9wC4t_@boqun-archlinux>
-References: <6dea7b6a-1534-47e7-94d2-d67417c3d4c1@proton.me>
- <tnwDK3QN_Xr0Yoa3U8HVxS5OqjvxIhgmmO_ifTGJR_EtIzjoxawOHtnbOJ9yChsUWXyFPcU9beIdrgbpfGZI8w==@protonmail.internalid>
- <3202F69F-397E-4BC4-8DD8-E2D4B0AB056F@collabora.com>
- <87bjuil15w.fsf@kernel.org>
- <t4HxdvR7WBX_861hiTXo72jqC9F9oRpIzgA_dD2yhcSuLISEkC-shMfSgllrFPpnkSZXGfRcc47keudMooNiIQ==@protonmail.internalid>
- <CAH5fLgg5MuUu=TX8mMsPf5RcLhMLHSU4Vct=h8rFX6Z7HjPxeA@mail.gmail.com>
- <87ikoqjg1n.fsf@kernel.org>
- <KpWTCfIlcLYFBpSvWPfALJ9VQn5a99_RAvxgMBc1aCrSalPB-qaW9IhXyaDG7HM1AcFPX5chj_Yr7IQp3F7UqA==@protonmail.internalid>
- <CAH5fLgh6ubawHh76wq7JPbcuBCWhm91m7Rc01MVsX-a3C6qaVA@mail.gmail.com>
- <87mse2hrd8.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="MRgBN3Wx"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ugGyputwS3PLZlvX2layQTqq5e6bfjADnwBjpSVDnt6TsI2rBVXtwvX0K6dq62BiGo+mAiuGyyznsYObESum+AfY2hU0/DSS1kaVumPoOeLCD5oYdgplc1jlFzmMON/hSYtHhB1WTZqflxeBN7+UOpf1Qf+TGrD30csYKH59gNh28lFQ+V8pZ4nqI1bdUcHNaBcpDLNDZIIcl3uBF+2gv2memkFXZypapav9XTn5urwC6oAhnJ4SAksWMeBkBBihSy9n+i5NiVvYYENyc8qTEA+hz7WZrU0Da9L9xntR+JgWo6dKw1FltkyEvAMb/LxNQg8eQfxDxLHinMlyk8Xwlg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=R92nYZ1LYQ9FoZg2MFqb2fYXIiDRvRBgWVA9PdKS+SQ=;
+ b=NBGf9xgZee5Qb+qwiKgw6A7/hBCKIvnyMwJ3SPeOgKalHn7aTzLZu4UNt0pgqcSW6bdRaPkDLZ2dBVMX1fRXz0bq/3lomOH0rq6tKP9rR3mqUPMLwofNTaFZ4FiD5Jh+44TgV4OKGL8fmLtF0uMHd21IY6NGxX5sM8kYd+yTuDdF97KOt3XsDKhaEoSAM5+xYTXkq/nmhvaQWhUvwFZ1+sl7rCKF170p4nLSPgwxRZ8TD+SAiDjhTUV46DHYbVc3BEzGp7qswtDBHHxwBRvnIYzM6g8EiM8qzNmAWlvy8cXWO9fbfp+BILZ4gt2CdrZ9h7ujtcega7Mib5qY3ellRA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=R92nYZ1LYQ9FoZg2MFqb2fYXIiDRvRBgWVA9PdKS+SQ=;
+ b=MRgBN3WxzAjvkGHvmbvNp5BDLeULTCS22TDoQCcvf1QpSuEYrCftv0GagMauI9oPT4J4YM0FBbzRJwb6O73stw716RekfwrRqN8HfmOkJlAgYaGZAo37/3IOfi+M8VMMNCDbSdTD4pBQ14gPLcmjCd+7SBamzDxm5jdbav7OaC8HmrF0u/iNkRhuCWndf1Rij/mWnUXp6zHa+sc7dAOrceuNj4ljKe+Ek793YQfQqJ43/jRupl2LuxLZ0GfauO1Y5SKuoCQArNxjZ+94rZrilscNyNmr1FHrG1hkMFD6GwCQl4dGhb4YSqQvbqJoj+WyphbsVBvbGe+B/sHcJiNwYg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by SN7PR12MB6689.namprd12.prod.outlook.com (2603:10b6:806:273::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.20; Mon, 3 Mar
+ 2025 21:50:04 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.8489.025; Mon, 3 Mar 2025
+ 21:50:03 +0000
+Date: Mon, 3 Mar 2025 17:50:02 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	paulmck@kernel.org
+Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
+ implementation
+Message-ID: <20250303215002.GF133783@nvidia.com>
+References: <Z8CCKl_yA74WjpQ1@Mac.home>
+ <20250227161733.GH39591@nvidia.com>
+ <Z8CY7fqbtbO4v1jv@Mac.home>
+ <Z8ChnwPC0UwM8xBe@cassiopeiae>
+ <20250227192321.GA67615@nvidia.com>
+ <Z8DYNszfONdsKZsl@boqun-archlinux>
+ <20250227220013.GQ39591@nvidia.com>
+ <Z8Dp9dM1MxhzuvmR@pollux>
+ <20250228185534.GH39591@nvidia.com>
+ <Z8YEwrBJyLYL6sci@cassiopeiae>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z8YEwrBJyLYL6sci@cassiopeiae>
+X-ClientProxiedBy: BL0PR02CA0053.namprd02.prod.outlook.com
+ (2603:10b6:207:3d::30) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87mse2hrd8.fsf@kernel.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|SN7PR12MB6689:EE_
+X-MS-Office365-Filtering-Correlation-Id: f7282722-181e-4963-b7aa-08dd5a9d5a65
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?s/Kwu47WrWW/7BKVf5kB/p4p7Xy8uJAk0TQKlVw7zCwwOglizr7E3eu95tZh?=
+ =?us-ascii?Q?e5iRvYrKGqpaWostfD8rZ6Ac1MZBcmB40OdP/iEBpiOllV4vVpTLq/Mhr2v9?=
+ =?us-ascii?Q?o3MTqDJOyhLHMD0PWmKAumvhCWzskVuDB5AOjr3oYIp1P63Ce76bqPyYCB+p?=
+ =?us-ascii?Q?JqkPktYshNk2c6q1R7sYodib38KTefRhdrbN0UoZZ3VGiwZJ47GulC8yz7PX?=
+ =?us-ascii?Q?fBcatrj0Ooa9ikJmrt3dgS6E4HALilUXFcnBRPp1D2UWGlOfM0jskhGbebSC?=
+ =?us-ascii?Q?p5YhTjCY8L3j/rD50cFGhObbWtTnxG3Rh4hKRXwjgWLyRbMohrV7BUjhueHI?=
+ =?us-ascii?Q?5YRxPIEFhNJBGSxeY1Km1N4qfDsGfn9eHzSj57zZZmt/QMja8htUaxg9Rf2/?=
+ =?us-ascii?Q?fyrFqFa4vQFdy6ZGQzMGtUPE8vUZzCU+v35Gf3wrt9/mvcVdJ+gmwdlQbNLP?=
+ =?us-ascii?Q?rYanGWL9XXKax+WsaGc6DbYmiPFgqHhQ+InlMKQZwqakQCRxGYyjtWHjMJUO?=
+ =?us-ascii?Q?RxQ29LFvfrAejTFKlodEMcPTJ00xNCX+gjo5NVODchKa4HwZBceHxXmldtr4?=
+ =?us-ascii?Q?M7I83l2rlMVC3bvOIPzLqKLF3E6UB1lDzPWmYFfIPNuBuSoe5FY46rXssVAJ?=
+ =?us-ascii?Q?kbXrdNqv7BFobq1uIdbBJd+x4iQjaudaXP69OR4YRnDFS9mX13VrYjxcyx9Z?=
+ =?us-ascii?Q?EPFzzRVSSDvfnXwGkGr6bUeDqlvV8eH40PI/u5MAWbZPIOORKXGxeNhBE/gy?=
+ =?us-ascii?Q?QQMpFp2DglQxR76OZR6qAwWlnkjjZXVDzxOCCOh8VGxHO9J5F353BfIzhwZH?=
+ =?us-ascii?Q?B2nqtgYM2XC7BbeT7UsJmtAy+9FVqZEElbh763aDTZ8+EBJA0k014DvOko4T?=
+ =?us-ascii?Q?gog2uLD9g0AA+wdCGrWdInQ3JcIKKwonnyQQ3EjAIJ3McEnOJUSqVxoM9+FF?=
+ =?us-ascii?Q?mDd/lVNzKr2TlRzECi3aIK5OAJxLPBQC2K+dTirtL+KNw+oX3pML8pGep7dL?=
+ =?us-ascii?Q?ZjwhD8peMAxP6zFxXllE/EkPZmhKMCdCcA92cjbawt/+FOT3mit9Z/mBma00?=
+ =?us-ascii?Q?/6zJt4lCeiroP4BaeXfZxKGGMBHkwYfDA7UlLgr52Szk1gQZkn1dSWZ9PMsc?=
+ =?us-ascii?Q?pX1UJlJJy9zWBw2ufy9B3NFlFRObQiMDcY+aAv9rzSgSL1+6WrwwGSNIACiu?=
+ =?us-ascii?Q?RjjuNY8lT5War4fe/ikJJewB2zBNtKV2h5SNGY0Soq9Imk5GnAK+TVfgRxua?=
+ =?us-ascii?Q?UZ49E/v50k4IWlbOiRMThPPXHdY4qAeHswZjlyk7yoX1M6sas5bPWOjj//uu?=
+ =?us-ascii?Q?D/0VyEZsow5w58d6EPnUW3LIOibnIQcAIrb7klhlyVmWE4XrU8YfrxVj5bTi?=
+ =?us-ascii?Q?VqgMKtmX+2BfyybANbBvooF1EYFD?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?bOI55/kA3rVTXxD8qvTGbrYgms8rXat2BeGXu37Jhp614KwYJrR8c39dJf3B?=
+ =?us-ascii?Q?8/pMRaZDi2ypdlD/EfaH8h+MS6cus473S06QZIrMikVGE015WjFD7lHm7kAV?=
+ =?us-ascii?Q?Kzd6+ZkBbVoX7Jx4x9mS8vAlH69a7HT+z/BvOV4+lTvF68RdbXIkweeXuio0?=
+ =?us-ascii?Q?lUmmU90AekhGZinoldKF+pzaG8sgydHCI4RFuyIDPbhmFTyo0S/sld7ixP/B?=
+ =?us-ascii?Q?5K1XKcc4H8r0PndUfP12Jrjkt4j+1MFYVLdmQWhFCU6u0KouejzdaWoXHXaF?=
+ =?us-ascii?Q?SS1+ZTEyOH6gtRCkwzx6PMuykwzRRTNV+Thgrf4pUmjO6DPBJiKagUiX6M8f?=
+ =?us-ascii?Q?OXJ5Spbbm21zjStDHvOYJSka/vhu/ytSxcI/1qUx2ywTQj+741bWqa1h6a2O?=
+ =?us-ascii?Q?QClUeIheMKPHQ3sJVk3koSrYiyFaY95r7c5Ho/sE9Vqb/R8O9twsmwJsTT9S?=
+ =?us-ascii?Q?+nOSMZynX+oM9mpqIQ1YSYwoOA7rex4f3gjnELYmAsGFPfm66vu8Ei+wAIL1?=
+ =?us-ascii?Q?Qg43IxpPltU0IRHuzZVvvABJvrWN8K443VHVzX7vy8p8TAVHZtrxRQPeZ5w3?=
+ =?us-ascii?Q?9IRNgnYJvyopPuHA2ZU2fli0GGLv+oMT93dUe1R21g1juTnUJuXGR0Uav0a6?=
+ =?us-ascii?Q?X0xNghzvuTAfa5chRmG8tMwyGqs9SE6enh2w9WVsIsh6YQFY9TngoKRw8vSX?=
+ =?us-ascii?Q?/08QBZJItIm0NsDUod823BsX/Pr9zR+HXCVN2eEVmRX/Bx+jbwZAey3sKS10?=
+ =?us-ascii?Q?3blZPlrs9KT6ms/cvei30hbzcwkFh9C09aThfNPTXJe9mQRXKPQuyv+nF8n5?=
+ =?us-ascii?Q?QUXpIJw5sI74mv1SRirIiGVVydbWWLs5ikq5n+8WixanzgSEkn+8viri7RFn?=
+ =?us-ascii?Q?5WzyGxTorJHRdElgst1B7tTgzgk2/1+lS96/a6KnFStTka1nqSKxNnWFTr+j?=
+ =?us-ascii?Q?ufVcG4uJZB+erfDBA2h9CKBSuzAqdjYpXyFsAa55x2BWd0wL+dLDZDMufYGh?=
+ =?us-ascii?Q?CAcsG+23QiIXd1HmuRQCGu23XKAQieFM6E60b+06l2bn9FwM2/wEsB+d0ih5?=
+ =?us-ascii?Q?HPWXH35+ltrVKJyOCl1BKuafZ+rBzX4SLLJNzo7aUh8i0rULnuqB/60B1dPN?=
+ =?us-ascii?Q?1pYuTmeiLLZ9IXpleI6dbv2INGQSHHF0E1shJWD7E13++ZClpVTwiOu0VkRY?=
+ =?us-ascii?Q?+9xyeimxQVYQ/v4nOtob9d1rBoK7osalLB6+WXHEOpvlsCil9doeerp+Mfaz?=
+ =?us-ascii?Q?9/149Q3BnrxI8H5SIoYPbQjiyg9yUqWVjXtADEsrMZtIUM7QWOjSJnUz1eWj?=
+ =?us-ascii?Q?KDgBE8FqJa1QP8rSfEr160Jm3QqSKj7zuHoqakJkvDjRzw11TkxTBy/GvKHu?=
+ =?us-ascii?Q?uq98mzY3lXHHUH3/bX58PMUtiVD3BgJXo2Nf18O91dTFfAzE9drU9f472bqM?=
+ =?us-ascii?Q?+Istv7mmIv1VWNoK9VepeEGINvKlRx/PmSd2kAkCuS6qntcNNDK4jnH3tGG5?=
+ =?us-ascii?Q?7auPE2jIBj9hvhzQX6lY+CYvOF7jiXsexIGfMzUqGvHvaFDYTZ39UC2XL5V6?=
+ =?us-ascii?Q?7fUlGAC6uKy3ILXfJdk=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f7282722-181e-4963-b7aa-08dd5a9d5a65
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2025 21:50:03.1489
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: x7+KnQwLQfhfE5iewKL3WGGII7LXIFUiB2gx30LN+RgjJAqS0e7QG5UFYGh2rdqf
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6689
 
-On Mon, Mar 03, 2025 at 08:00:03PM +0100, Andreas Hindborg wrote:
+On Mon, Mar 03, 2025 at 08:36:34PM +0100, Danilo Krummrich wrote:
+> > > And yes, for *device resources* it is unsound if we do not ensure that the
+> > > device resource is actually dropped at device unbind.
+> > 
+> > Why not do a runtime validation then?
+> > 
+> > It would be easy to have an atomic counting how many devres objects
+> > are still alive.
 > 
-> [New subject, was: Re: [PATCH v12 2/3] rust: add dma coherent allocator abstraction]
+> (1) It would not be easy at all, if not impossible.
 > 
-> "Alice Ryhl" <aliceryhl@google.com> writes:
+> A Devres object doesn't know whether it's embedded in an Arc<Devres>, nor does
+> it know whether it is embedded in subsequent Arc containers, e.g.
+> Arc<Arc<Devres>>.
+
+You aren't tracking that. If Rust has a problem, implement it in C:
+
+  devm_rsgc_start(struct device *)
+  devm_rsgc_pci_iomap(struct device *,..)
+  devm_rsgc_pci_iounmap(struct device *,..)
+  devm_rsgc_fence(struct device *)
+
+Surely that isn't a problem for bindings?
+
+> > Properly written drives never hit it. Buggy drivers will throw a
+> > warning and otherwise function safely.
 > 
-> > On Mon, Mar 3, 2025 at 4:21 PM Andreas Hindborg <a.hindborg@kernel.org> wrote:
-> >>
-> >> "Alice Ryhl" <aliceryhl@google.com> writes:
-> >>
-> >> > On Mon, Mar 3, 2025 at 2:00 PM Andreas Hindborg <a.hindborg@kernel.org> wrote:
-> >> >>
-> >> >> "Daniel Almeida" <daniel.almeida@collabora.com> writes:
-> >> >>
-> >> >> > Hi Benno,
-> >> >> >
-> >> >>
-> >> >> [...]
-> >> >>
-> >> >> >>> +    /// Writes data to the region starting from `offset`. `offset` is in units of `T`, not the
-> >> >> >>> +    /// number of bytes.
-> >> >> >>> +    ///
-> >> >> >>> +    /// # Examples
-> >> >> >>> +    ///
-> >> >> >>> +    /// ```
-> >> >> >>> +    /// # fn test(alloc: &mut kernel::dma::CoherentAllocation<u8>) -> Result {
-> >> >> >>> +    /// let somedata: [u8; 4] = [0xf; 4];
-> >> >> >>> +    /// let buf: &[u8] = &somedata;
-> >> >> >>> +    /// alloc.write(buf, 0)?;
-> >> >> >>> +    /// # Ok::<(), Error>(()) }
-> >> >> >>> +    /// ```
-> >> >> >>> +    pub fn write(&self, src: &[T], offset: usize) -> Result {
-> >> >> >>> +        let end = offset.checked_add(src.len()).ok_or(EOVERFLOW)?;
-> >> >> >>> +        if end >= self.count {
-> >> >> >>> +            return Err(EINVAL);
-> >> >> >>> +        }
-> >> >> >>> +        // SAFETY:
-> >> >> >>> +        // - The pointer is valid due to type invariant on `CoherentAllocation`
-> >> >> >>> +        // and we've just checked that the range and index is within bounds.
-> >> >> >>> +        // - `offset` can't overflow since it is smaller than `selfcount` and we've checked
-> >> >> >>> +        // that `self.count` won't overflow early in the constructor.
-> >> >> >>> +        unsafe {
-> >> >> >>> +            core::ptr::copy_nonoverlapping(src.as_ptr(), self.cpu_addr.add(offset), src.len())
-> >> >> >>
-> >> >> >> Why are there no concurrent write or read operations on `cpu_addr`?
-> >> >> >
-> >> >> > Sorry, can you rephrase this question?
-> >> >>
-> >> >> This write is suffering the same complications as discussed here [1].
-> >> >> There are multiple issues with this implementation.
-> >> >>
-> >> >> 1) `write` takes a shared reference and thus may be called concurrently.
-> >> >> There is no synchronization, so `copy_nonoverlapping` could be called
-> >> >> concurrently on the same address. The safety requirements for
-> >> >> `copy_nonoverlapping` state that the destination must be valid for
-> >> >> write. Alice claims in [1] that any memory area that experience data
-> >> >> races are not valid for writes. So the safety requirement of
-> >> >> `copy_nonoverlapping` is violated and this call is potential UB.
-> >> >>
-> >> >> 2) The destination of this write is DMA memory. It could be concurrently
-> >> >> modified by hardware, leading to the same issues as 1). Thus the
-> >> >> function cannot be safe if we cannot guarantee hardware will not write
-> >> >> to the region while this function is executing.
-> >> >>
-> >> >> Now, I don't think that these _should_ be issues, but according to our
-> >> >> Rust language experts they _are_.
-> >> >>
-> >> >> I really think that copying data through a raw pointer to or from a
-> >> >> place that experiences data races, should _not_ be UB if the data is not
-> >> >> interpreted in any way, other than moving it.
-> >> >>
-> >> >>
-> >> >> Best regards,
-> >> >> Andreas Hindborg
-> >> >
-> >> > We need to make progress on this series, and it's starting to get late
-> >> > in the cycle. I suggest we:
-> >>
-> >> There is always another cycle.
-> >>
-> >> >
-> >> > 1. Delete as_slice, as_slice_mut, write, and skip_drop.
-> >> > 2. Change field_read/field_write to use a volatile read/write.
-> >>
-> >> Volatile reads/writes that race are OK?
-> >
-> > I will not give a blanket yes to that. If you read their docs, you
-> > will find that they claim to not allow it. But they are the correct
-> > choice for DMA memory, and there's no way in practice to get
-> > miscompilations on memory locations that are only accessed with
-> > volatile operations, and never have references to them created.
-> >
-> > In general, this will fall into the exception that we've been given
-> > from the Rust people. In cases such as this where the Rust language
-> > does not give us the operation we want, do it like you do in C. Since
-> > Rust uses LLVM which does not miscompile the C part of the kernel, it
-> > should not miscompile the Rust part either.
+> Ignoring (1), I think that's exactly the opposite of what we want to achieve.
 > 
-> This exception we got for `core::ptr::{read,write}_volatile`, did we
-> document that somewhere?
-> 
+> This would mean that the Rust abstraction does *not avoid* but *only detect* the
+> problem.
 
-[Cc Ralf, comex and LKMM list]
+It is preventing memory leaks. We would like to prevent memory leaks
+in the kernel. Currently you can't even detect them, so this seems
+like an improvement.
 
-Some related discussions:
+I am using the practical kernel definition for "memory leak" of memory
+outliving remove() rather than the more philisophical rust version
+that memory is someday, eventually, freed.
 
-* https://github.com/rust-lang/unsafe-code-guidelines/issues/476
-* https://github.com/rust-lang/unsafe-code-guidelines/issues/348#issuecomment-1221376388
-  
-  particularly Ralf's comment on comex's message:
+In an environment like the kernel the distinction is important and
+desirable.
 
-  """
-  @comex
+> The practical problem: Buggy drivers could (as you propose) stall the
+> corresponding task forever, never releasing the device resource. 
 
-  > First, keep in mind that you could simply transliterate the C
-  > versions of READ_ONCE/WRITE_ONCE, barriers, etc. directly to Rust,
-  > using ptr::read_volatile/ptr::write_volatile in place of C volatile
-  > loads and stores, and asm! in place of C asm blocks. If you do,
-  > you'll end up with the same LLVM IR instructions (or GCC equivalent
-  > with rustc_codegen_gcc), which will get passed to the same
-  > optimizer, and which ultimately will work or not work to the same
-  > extent as the C versions.
+Should't be never. Rust never leaks memory? It will eventually be
+unstuck when Rust frees the memory in the concurrent context that is
+holding it.
 
-  Indeed I think that is probably the best approach.
-  """
+> Not releasing the device resource may stall subsequent drivers
+> trying to probe the device, or, if the physical memory region has
+> been reassigned to another device, prevent another device from
+> probing. This is *not* what I would call "function safely".
 
-* A LONG thread of the discussion:
+It didn't create a security problem.
 
-  https://rust-lang.zulipchat.com/#narrow/channel/136281-t-opsem/topic/UB.20caused.20by.20races.20on.20.60.7Bread.2Cwrite.7D_volatile.60/near/399343771
+The driver could also write 
 
-In general, the rationale is if Rust code could generate the same LLVM
-IR as C code, then if it's not data race per LKMM, then it's not treated
-as data race in Rust as well. But this is not a "get-out-of-UB" free
-card IMO:
+ while (true)
+    sleep(1)
 
-* If both sides of the racing are Rust code, we should avoid using
-  {read,write}_volatile(), and use proper synchronization.
+In the remove function and achieve all of the above bad things, should
+you try to statically prevent that too? I've written stuff like the
+above in drivers before, it is an easy way to make thing safe when
+working with FDs, so don't think nobody would do that.
 
-* If atomicity is also required, we should use Atomic::from_ptr()
-  instead of {read,write}_volatile().
+So I don't see alot of value in arguing you can close of 1 way to
+achieve something bad and still leave open all sorts of others. At
+least is more philisophical than I prefer to get.
 
-> I feel slightly lost when trying to figure out what fits under this
-> exception and what is UB. I think that fist step to making this more
-> straight forward is having clear documentation.
-> 
+It is better to focus on usability, performance, and bug class
+detection, IMHO.
 
-I agree, and I'm happy to help on this.
-
-> For cases where we need to do the equivalent of `memmove`/`memcpy`, what
-> are is our options?
-> 
-
-Seems we need "volatile" memmove and memcpy in Rust?
-
-> In case we have no options, do you know who would be the right people on
-> the Rust Project side to contact about getting an exception for this
-> case?
-> 
-
-I will say it'll be t-opsem.
-
-Regards,
-Boqun
-
-> 
-> Best regards,
-> Andreas Hindborg
-> 
-> 
+Jason
