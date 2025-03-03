@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC292135B1;
-	Mon,  3 Mar 2025 14:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEEAD20E038;
+	Mon,  3 Mar 2025 14:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741011011; cv=none; b=DOvpjBpV737ZRqoBt7Rvy/wv8DUOstspRQzNoyd/8KsakOMyJIeVD1O+h/5+B5V4VjPVYp03N8tWLa3kja/9Amwpqo7OxrsorS0JLLwFuDynQHU3GtPIf6e0XHiU6ufsTB4Vo/l4VtNSMIFfEhtkvqx1KAS+pGWF/GXygH+8pIE=
+	t=1741011773; cv=none; b=PzS8UOWTAJRRU0AAHwUdqaItF6M/3JLa/2MaX4As6+1f3UJ597Vu0AXRYD7m/xrjivS23OwnJ27X7E4LoojJyyIelVwIjqYPaIRu9J1kgzZuFVxmhkyRhynx58fvfDCemo500fG72x2xjM1n+9PWXIUa6c9YxKMzbYABjptn/jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741011011; c=relaxed/simple;
-	bh=4Y9h9Junw2qorQN9fokN1ASjhbtEC6V0icdZP7DXRU4=;
+	s=arc-20240116; t=1741011773; c=relaxed/simple;
+	bh=0pSso4stqSY8GNGh7LiA8iHnN1/8epjymPS4hvlsWNQ=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=TnBxA9FguTvomXfcfwQCF1frPI/QFvI45k0T+9HHmgr168oUxDFk/457cqJapRjzjvH3caO3EkOAjfpBKi9ksHuUsANzwYPKQLQgzICa8Dc6x+6cMZh9E3zctEx97rah1qQJ5Wq0IcmOWGn6lk53uG9NOiEmBj9doAKb385fpuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TSwX0+eP; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=H3YoJeYWq8aKh8eRz3Wg3ZSM47uc7HfC8n6/G0Canu9UJK9xfuM45Q14ce/eeVSLe20k52UJKtjfzhPCKptIfoRKYfGtcdn57A5okHHkuM13dgeDrFtHagApJwNBoLvk1rvvp9xEuf8z/XgxOfmSsYzs9uVBAsrXk83XqujiwNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MJQqg4wk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TSwX0+eP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD59C4CED6;
-	Mon,  3 Mar 2025 14:10:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MJQqg4wk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B9F8C4CED6;
+	Mon,  3 Mar 2025 14:22:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741011009;
-	bh=4Y9h9Junw2qorQN9fokN1ASjhbtEC6V0icdZP7DXRU4=;
+	s=k20201202; t=1741011772;
+	bh=0pSso4stqSY8GNGh7LiA8iHnN1/8epjymPS4hvlsWNQ=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=TSwX0+eP8YJl/OTJ6QsFkoj29zeXZf0wTJ37LlGamFmF0G5qoK2VMOPais4cYGbAa
-	 bHKhHb5K+cI5pC2bQbYFZErKe6ev/RFyAqivqB3HZ9oGACyWcuDSiuKx8kyd0K6UHx
-	 5kt5SqgvbMj74XWnDtRYPf1MMZEewaCTI3at7gvbHv2BnUKvKZt58wbeLgQt+H1IfF
-	 609jXDfA3aC+eSwQc1SBAxS2LNNiaOR0ncLOwo7TZV0jYLh0wqUebgLHxJx6oaqwg/
-	 bV8UmA1wTBOZiY5DydDqSVOUMms6Y3O9WP3bQ+JSktwUUdwRJUxhCM9YNg7SBSoyIs
-	 41eXT969uouMw==
+	b=MJQqg4wkEM7g/DIqPIoXoN31F+upoOphcaTOlE05GS6cHJjlDeYX8gu7R0RpZpyqY
+	 klbYZ6EgP90OY1yCv8My6sJr3VTmrbqfQrdFmn91dTj5GRnftEsz7YP54R0CJxTMBi
+	 /anxiJkWPG82XwvqVlIG0EYRBu0pX372DsnUgPGMRq/7l6k/mlmXiEdkYJiB2cmnj0
+	 3RsphyadZxaXzkWd2QpQXqF1F43SwoshFd0XCD9xmjfJOvLRwnQmJ8SCS7dWlSRfhp
+	 yyG35aUhy9+hDsTOXwyeVo9SccCMWa2tPDP0NsF4CyxSQ5hR+U6pLyaurFcM71ZSt7
+	 VWc1ECwhdj0/Q==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: "Oliver Mangold" <oliver.mangold@pm.me>
 Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
@@ -35,57 +35,131 @@ Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
  Lossin" <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,
   "Trevor Gross" <tmgross@umich.edu>,  <linux-kernel@vger.kernel.org>,
   <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v2] rust: adding UniqueRefCounted and UniqueRef types
-In-Reply-To: <Z8H6EUy1HqLrzytE@laptop> (Oliver Mangold's message of "Fri, 28
-	Feb 2025 18:01:55 +0000")
+Subject: Re: [PATCH v3] rust: adding UniqueRefCounted and UniqueRef types
+In-Reply-To: <Z8Wuud2UQX6Yukyr@mango> (Oliver Mangold's message of "Mon, 03
+	Mar 2025 13:29:36 +0000")
 References: <EiaQ-C0o3GMQQpw3jCnXUnNgph2WIJ5-Cm8P5N9OysIlDKYrjHNun5Ol4Q1FfVGw64k6TGCfUVBJK5r0_2eypg==@protonmail.internalid>
 	<MFrukGViddXfhKeURDySTWCDW6Pk8Oo5keozdVg9hehiS3P4FVHKv4d-Fwn87yprBUeyTHcY6T1k9htIhPzc9Q==@protonmail.internalid>
-	<Z8H6EUy1HqLrzytE@laptop>
+	<Z8H6EUy1HqLrzytE@laptop> <87frjxncsx.fsf@kernel.org>
+	<R-XaKS9h55NHdh6RYNYWTGw7oDyauYJhAY72W8DAgJJ73VskOhGPlSZP5DC4teo0EdhbDDtLV0Lnd9MMd-jCBg==@protonmail.internalid>
+	<Z8Wuud2UQX6Yukyr@mango>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Mon, 03 Mar 2025 15:09:59 +0100
-Message-ID: <87zfi2jjd4.fsf@kernel.org>
+Date: Mon, 03 Mar 2025 15:22:43 +0100
+Message-ID: <87o6yijirw.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
 "Oliver Mangold" <oliver.mangold@pm.me> writes:
 
-[...]
+> From: Oliver Mangold <oliver.mangold@pm.me>
+> Date: Fri, 21 Feb 2025 08:36:46 +0100
+> Subject: [PATCH] rust: adding UniqueRefCounted and UniqueRef types
+>
+> Add `UniqueRef` as a variant of `ARef` that is guaranteed to be unique.
+> This is useful when mutable access to the underlying type is required
+> and we can guarantee uniqueness, and when APIs that would normally take
+> an `ARef` require uniqueness.
+>
+> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
 
-> +/// Types that are [`AlwaysRefCounted`] and can be safely converted to an [`UniqueRef`]
-> +///
-> +/// # Safety
-> +///
-> +/// Implementers must ensure that the methods of the trait
-> +/// change the reference count of the underlying object such that:
-> +/// - the uniqueness invariant is upheld, i.e. it is not possible
-> +///   to obtain another reference by any means (other than through the [`UniqueRef`])
-> +///   until the [`UniqueRef`] is dropped or converted to an [`ARef`].
-> +/// - [`UniqueRefCounted::dec_ref`] correctly frees the underlying object.
-> +/// - [`UniqueRefCounted::unique_to_shared`] set the reference count to the value
-> +/// - that the returned [`ARef`] expects for an object with a single reference
-> +///   in existence.
-> +pub unsafe trait UniqueRefCounted: AlwaysRefCounted + Sized {
-> +    /// Checks if the [`ARef`] is unique and convert it
-> +    /// to an [`UniqueRef`] it that is that case.
-> +    /// Otherwise it returns again an [`ARef`] to the same
-> +    /// underlying object.
-> +    fn try_shared_to_unique(this: ARef<Self>) -> Result<UniqueRef<Self>, ARef<Self>>;
 
-This could just be `try_into_unique`, since the type of `this` gives the
-rest of the context.
+This part:
 
-> +    /// Converts the [`UniqueRef`] into an [`ARef`].
-> +    fn unique_to_shared(this: UniqueRef<Self>) -> ARef<Self>;
 
-Similarly, this could be `into_shared`.
+    This should address all issues that have been raised with v2:
 
+    - Added a default implementation for unique_to_shared() which does a si=
+mple
+      rewrap of the underlying object.
+    - Added a SimpleUniqueRefCounted trait which requires only to implement
+      is_unique() as Beno=C3=AEt asked for. Maybe the feature is not worth
+      the extra code, though. For me keeping it or removing would be both f=
+ine.
+    - Removed the unsound conversion from &T to UniqueRef, as spotted by Be=
+no=C3=AEt.
+    - Relaxed the requirements for Send and Sync, to be identical to the on=
+es
+      for Box. See comment below.
+    - Added Examples for both UniqueRefCounted and SimpleUniqueRefCounted
+      as asked for by Boqun Feng.
+      For me they compile and run without errors as KUnits.
+    - Changed the commit message like suggested by Andreas.
+
+    @Beno=C3=AEt: I think you are right about Send and Sync.
+    What gave me a bit of a headache is if Send really does not require
+    the underlying object to be Sync, as the refcount itself -
+    which is part of the object - might be touched concurrently in a case
+    like with tag_to_req(), but I think one would not implement
+    something like that without having a synchronized refcount.
+
+    Best regards,
+
+    Oliver
+
+
+Goes immedieatly after the cut like so:
+
+
+    From: Oliver Mangold <oliver.mangold@pm.me>
+    Date: Fri, 21 Feb 2025 08:36:46 +0100
+    Subject: [PATCH] rust: adding UniqueRefCounted and UniqueRef types
+
+    Add `UniqueRef` as a variant of `ARef` that is guaranteed to be unique.
+    This is useful when mutable access to the underlying type is required
+    and we can guarantee uniqueness, and when APIs that would normally take
+    an `ARef` require uniqueness.
+
+    Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
+    ---
+
+
+    This should address all issues that have been raised with v2:
+
+    - Added a default implementation for unique_to_shared() which does a si=
+mple
+      rewrap of the underlying object.
+    - Added a SimpleUniqueRefCounted trait which requires only to implement
+      is_unique() as Beno=C3=AEt asked for. Maybe the feature is not worth
+      the extra code, though. For me keeping it or removing would be both f=
+ine.
+    - Removed the unsound conversion from &T to UniqueRef, as spotted by Be=
+no=C3=AEt.
+    - Relaxed the requirements for Send and Sync, to be identical to the on=
+es
+      for Box. See comment below.
+    - Added Examples for both UniqueRefCounted and SimpleUniqueRefCounted
+      as asked for by Boqun Feng.
+      For me they compile and run without errors as KUnits.
+    - Changed the commit message like suggested by Andreas.
+
+    @Beno=C3=AEt: I think you are right about Send and Sync.
+    What gave me a bit of a headache is if Send really does not require
+    the underlying object to be Sync, as the refcount itself -
+    which is part of the object - might be touched concurrently in a case
+    like with tag_to_req(), but I think one would not implement
+    something like that without having a synchronized refcount.
+
+    Best regards,
+
+    Oliver
+
+    ---
+
+    rust/kernel/types.rs | 315 +++++++++++++++++++++++++++++++++++++++++++
+    1 file changed, 315 insertions(+)
+
+
+Again, I'll recommend the use of b4 [1].
 
 Best regards,
 Andreas Hindborg
 
+
+[1] https://b4.docs.kernel.org/en/latest/contributor/prep.html
 
