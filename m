@@ -1,55 +1,55 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C782E1EE7A5
-	for <rust-for-linux@vger.kernel.org>; Mon,  3 Mar 2025 08:45:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5151EFFBD
+	for <rust-for-linux@vger.kernel.org>; Mon,  3 Mar 2025 08:45:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740991552; cv=none; b=cKV9/28K3aQDVgNsa4a3URRawX8YoXs/RnLA9an1c1FJ7AfCG/sYpTxjOe1uNipDy57Ym7Wgo3BYw3hkyBEQ7uW9uNNUtyurlGnlEPEjqhPgHIpWVBuz/lVb4lIcTw+syouKcxCBapny90pLYqn2ehutSG31U49G/FTaU619rYs=
+	t=1740991554; cv=none; b=ArYxpPKS2PkK/9ow2YtcfkYttFIk6RYxBpixZa0oqdCfOkSZtq55Jlkw3+oS2B0Q0Q2Vrm+d3JHBLDaENOo5+0T+ofnNUj/Ul9mUgI9Y3bLjnpxHoGorEGMF/LU2JMlnobRej6R15PWtSw+5wAmIRfc6elK9bDDd+sr5M8RjbsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740991552; c=relaxed/simple;
-	bh=rXOlJP2KwbZg6HLcbrBJs+P0GV/Go4oAq5PQVguOe0Q=;
+	s=arc-20240116; t=1740991554; c=relaxed/simple;
+	bh=GN9iRw4vP0biBC3qh1br1TYeqEjFY0JaW5FPcfgG69g=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=N3+D8xqymy2U6HNs9rwpHFxEY3l5g9GDGaAQv8Sp4vFFRUZA9oFJBdVvMh7idvAjlMhVDmL1e18TSYRRD1B/3nF2VlcIBBqLIJliVOSLv7tjrFcq62F75+07905qoE0CL6bRo6m47g3XLct4fMsTBp7SVYM2vr7VouWBjgSGwZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Zd3xqMn7; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=Dd5l8XQUbCmPWMHdqrruwLXlU9ZHqFoXNhbP0OE23p28DbIE7+ivTGKizNPsyH9ygWyG+cXJ8fNSegeWlRfX8fm+4Ky3VfOEwU4Iz1sidEerbJYPOquALXqjJVvc+CzoOLnWCNuYrr1T4zPpyBSvmp/eHGGUcyDAFka4C8LlcE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UQjX45Bb; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Zd3xqMn7"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4399a5afcb3so35745045e9.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 03 Mar 2025 00:45:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UQjX45Bb"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43ab456333aso35869625e9.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 03 Mar 2025 00:45:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740991549; x=1741596349; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1740991551; x=1741596351; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Uszf9jNzimaGC7A+MjcMbFfOoksGjtwuorOL4my3lD8=;
-        b=Zd3xqMn7RXIz8sj1odvqq8+CEJsOSoZJLNB2Mk0FOc/AxFdaA9dcBZsR0EkADQFMkl
-         zBGexVf5TILZQrfxMeJ+kqaSG65a29QjrbdUMx79U3PJvJYnSswJDDjZr5lNhhsHFe8b
-         5RaX68lichSToLh+xhpfQnx9h2vBC0QTEP/X04Yk8u1xqVTkqtZRGsb80q5LjSyDiycI
-         /5Lop8+qSjn0lQaJ/ByD7hfVTBv3Usb8KsW01VuXabMGKnQw98kUC2VuQhSWl+6gbmN8
-         dvhiUbflt49sJIkGrtYgLXXp4nP9PODnfUPzTN8LsE6cEIhvLV+ceG4u9Td6KLj528Qq
-         oNTA==
+        bh=Yl6OXiLxc2DNrX6mWydkEen+W3a+U6q5HOC8/Fd7HQw=;
+        b=UQjX45BbmOuzFCwAXHzsrAeP+DcZZ94uw3I8CFSpzW6Nq/RXU0H9rUrG91zqqtos93
+         K6wRZisMj36oWysO7sKlB8iGU6AWoOCfkymZy0TgN9cqbEIzSFCw0nqMxMlFKn8Av7PU
+         3K+mbF4uMs2+RmYnmx0WqrZ+slJbxrlX2hB5u8tM5QQ7XbFD3hh0IjxJaOFzdvzEBF4l
+         BvRfB51Cf+2l0zXZmpibI6qTSw31zMigq+9ir1oO2/egoqS0pmqwrqGB6G4nwXhTWZy8
+         AGxtSRnlUUa8iGgmEuvCDArUYdyhW/TzHMzI11vZcL/geEMWRdPBWAQUsFpiKv12rmwu
+         bgsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740991549; x=1741596349;
+        d=1e100.net; s=20230601; t=1740991551; x=1741596351;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Uszf9jNzimaGC7A+MjcMbFfOoksGjtwuorOL4my3lD8=;
-        b=D5En4OrpAqkqxWHwz9Acq3hnTyDUBXhzv6Da7b5RbUwnPkPXwFThl8hWCoEPdRHDPn
-         1yeLvWa0wnCvJAZg7QPz/qLnoqlUaJFjUIGgqu5awCdc+w4eF+Dh1Fi0yLFm0wip7UFM
-         wq6KCXpVCOW26aIErCwmkNnbU1bX9Y81MQY+zElN3t8iSZjB5xs29r18BVqbkHSPLxNC
-         D94mM/5pF9M3k+rObgUHU5Ppv3Lwyo7XLEsGfOhycqeex8+fxfNwb1e9Ep0rFD3zqJ8C
-         c0e83zFOMmWiz4tm7yjuRN2ph4sz8DkAHWJv9v/MyVO8KwoAHktcZQw/kDaENafuAMN2
-         VcEg==
-X-Forwarded-Encrypted: i=1; AJvYcCWAYmbAvUrnwUmFaQ8ZUJE7VIkW+MfnbvVk4eSt/0dOSVZp6IkoC3w3KKQfcER0z1DOHUrHHGd+Ew2ls1Kgdg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwesGAsS6frBzHcse/g4tEVg0oJN5oqZd5k0+AmZDkvuS0MXaER
-	ekpXtNv3rnMfAXZ90iTco1HkTbyFR5Zhy9A6xc/yQtXlwtL/PLEwcKuuar3gCvkO9A63xpOxXoy
-	DmuZSYTVjal4L1g==
-X-Google-Smtp-Source: AGHT+IECCbQDp007YY5H9TzV4VTf2BNZ8iJKkXWl3w/rGfL/ku4+FSGRABIL2DQ9M+TCDMAM8FaLElccEauucog=
-X-Received: from wmpz20.prod.google.com ([2002:a05:600c:a14:b0:439:80fc:8bce])
+        bh=Yl6OXiLxc2DNrX6mWydkEen+W3a+U6q5HOC8/Fd7HQw=;
+        b=nG8ToAVcDjw1J2nPTUzg7fYGUSLAVTEv+hfvq+nZk5SJqPzdmTQEV2mkSWp0HBBW64
+         L/Zg4tXktQRgyZflLOH1M7N61l6eYio/p9WP9ldOK+K9rSI5FcPCTvXQGwSggjxZ1Dxp
+         oIED66g2BmYgCDLRYp9X+whS63jArEqwPc1+Zw9DvU/zUi8sliG9d+DNlPUQKePXcG8p
+         elXoj5C1gVGpgvyWWXsV14oC3OsuDgTSxO7liRBNcvCQIom5VJmANqYhDvw4z9xxeLC8
+         r+InSHVi8PCHfwgdqVMTNp16NiP6xEigtfmfDDORGIwKT8uFtpyv9sn5yIyDw2QBnXP1
+         tx+A==
+X-Forwarded-Encrypted: i=1; AJvYcCV/PKRk+1DDsRcEJt2fHV07L1ZeuHwJcstcI+paGGn80dZ6kyTS4EIEH2BMKoaUp+1VuCf3v8fQ4rwLTmL5CA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyuh4VwKZalV49JuAtkw8qaHUwdbPqN3ZWM1uoSZVFMLJmbYNVx
+	1D2cB4T/sbbBHJx+iRYTPWmXzvFx6I8SZMI3nGmMK8lqpiJzw2IcjfGWhE47knlGksdzPsjEyd1
+	I0/vJO7nXyKLvZg==
+X-Google-Smtp-Source: AGHT+IHTziRho0PdDiqY+w7INFWExFlSE+JgzgeyQW5xfAW6NBxpwCji0bm/eXLdqeaM8WMzyupzDJI8C6vUsII=
+X-Received: from wmqe20.prod.google.com ([2002:a05:600c:4e54:b0:43b:c7e5:66e0])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3ca8:b0:439:9424:1b70 with SMTP id 5b1f17b1804b1-43ba675caafmr134644415e9.30.1740991549163;
- Mon, 03 Mar 2025 00:45:49 -0800 (PST)
-Date: Mon, 03 Mar 2025 08:45:12 +0000
+ 2002:a05:600c:1990:b0:439:9b80:ca6f with SMTP id 5b1f17b1804b1-43bad205987mr103494675e9.5.1740991551369;
+ Mon, 03 Mar 2025 00:45:51 -0800 (PST)
+Date: Mon, 03 Mar 2025 08:45:13 +0000
 In-Reply-To: <20250303-export-macro-v3-0-41fbad85a27f@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -59,22 +59,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250303-export-macro-v3-0-41fbad85a27f@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2238; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=rXOlJP2KwbZg6HLcbrBJs+P0GV/Go4oAq5PQVguOe0Q=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnxWw0XCXyKCpx73jSQ2riTrt89M1w4DSLnlZ1+
- Cb235TozJGJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ8VsNAAKCRAEWL7uWMY5
- RgRRD/9PrC+8ReqGY3MVcspxlBxm4PzYImTmwadXxvv6K8NDFtqSgszoxEfNsDJXIFFzYRHYa+N
- mJdl98HU7r6JRSNL6VV/+oRKhnoHhYbIAna1gFnE/RYTvvWwyUeyO/3CFv7nowjzYM2AnjxOWtM
- OOmg43zFRY6b/s1XnuR8F/qR30rygGjeSdK7pbE+PygOwoeoXMLh7Yr/UQ0him2uoJXBP0F/4Jt
- NhUEJHPhJV2Uts4nr2e42HpL35fnn8SH+eaBo+nrTG3wXgOEK3ItExaFsD8x6eYCRN9tONisJjH
- xBz+9+5gzepyskX2bOZ0ZhqRPhCSdiZBHxPdJAqs30uzVl7n2MQW5GzBrqu06sCxQ3iY4km60MC
- QkK3CQsguGeSvbMPuYpoIKd+Ld7jxqM27Pe8XJHI2H+nVz+/C5Ps7rZriN2QV4HCqc93vLTtGpB
- bfT33fQo4J5G/ediSmFwtU9NbUEyDlI3/LNY8azVt58TysT3PPWfLU/jtyifkjgDeFs1Tzwlv58
- AoTz7LeIRR8/ZK/Y4q/Nq9NF8+vnZf9gm4eXxu81s7bnfqXUiKc/+UoLzwpoBElajRnbah8+nQ/
- 6A9eT6t+gCWE1hGbbP3vLG1gJgVICGT/4nZEhu8Ujark/AVtP1xoIh0B/sjLHEAQDPC8Rc5IGkh NtML/q9eIA2gOFg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3689; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=GN9iRw4vP0biBC3qh1br1TYeqEjFY0JaW5FPcfgG69g=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnxWw1V7qzGAYepkGLB5056taWAfpA48W2E+6j7
+ 36pkLuCplKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ8VsNQAKCRAEWL7uWMY5
+ Rp0OD/0YxQOPsE7P9lwb5wr1WtaICm79Mv5E1VBseN+IJVPkRaMtI9PZOPMYl2nkkxIthFrBfB5
+ VA9z7R/Ayu59wN8WJG0KaAP+4b6+Hf/7NK4Qja/DBtDxkgk7NBz4suJ1OIfC++krRwnTX1Sja+m
+ W3tz69mVlP+mq3G4KB/KJ2krJ4m7nmpcQLxjnmyKbjhR4J6FQaYv6HOmelCuvKdkWJGFar4mhe4
+ 6JPThxK3D45Jmy5k5LnfYQaRNn1xB6IdprUAVEt85bp4HvqgSjMof/Cvv/+ygRmAHijGM6ikJnG
+ eCQGzRajiTA5q6rWl1HC0EmbVELa4Wl8ytL5rj+N4RJBCCV9+n5SJeXFy0V3D/6VoY6qDbObxj7
+ /y1pjasux7b8tEe3ffOrYqDKK3j+rx6rmzOuYs/Yuv2EnMMCIttl6GuxwQfkKfGXGJrYWrGRTRs
+ iyFHvwo4C8MJEvQaG4P/wGwxyM2aSRD7MJoIh8neJFojUpASlc7g/zA+MfArJlfmeuP6ktX2SKv
+ xSeAIu6RAEVXp2hC7SQJ2jKkt2GQw3RGvWKosp9L1Jl6kjxUUXV8F1wUTtYAcKB5/ovsh9tqORV
+ opNlnGdFoiM4XyttGOBynM7Eq8Aci+A/UPofTC7lxRjHejSQjL98l136YwRA1Mi1eOOV9Bppl5d pjkjLpnriIPhq5Q==
 X-Mailer: b4 0.14.1
-Message-ID: <20250303-export-macro-v3-1-41fbad85a27f@google.com>
-Subject: [PATCH v3 1/5] rust: fix signature of rust_fmt_argument
+Message-ID: <20250303-export-macro-v3-2-41fbad85a27f@google.com>
+Subject: [PATCH v3 2/5] rust: macros: support additional tokens in quote!
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>
 Cc: Petr Mladek <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
@@ -91,68 +91,99 @@ Cc: Petr Mladek <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
 	Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-Without this change, the rest of this series will emit the following
-error message:
+This gives the quote! macro support for the following additional tokens:
 
-error[E0308]: `if` and `else` have incompatible types
-  --> <linux>/rust/kernel/print.rs:22:22
-   |
-21 | #[export]
-   | --------- expected because of this
-22 | unsafe extern "C" fn rust_fmt_argument(
-   |                      ^^^^^^^^^^^^^^^^^ expected `u8`, found `i8`
-   |
-   = note: expected fn item `unsafe extern "C" fn(*mut u8, *mut u8, *mut c_void) -> *mut u8 {bindings::rust_fmt_argument}`
-              found fn item `unsafe extern "C" fn(*mut i8, *mut i8, *const c_void) -> *mut i8 {print::rust_fmt_argument}`
+* The = token.
+* The _ token.
+* The # token. (when not followed by an identifier)
+* Using #my_var with variables of type Ident.
 
-The error may be different depending on the architecture.
+Additionally, some type annotations are added to allow cases where
+groups are empty. For example, quote! does support () in the input, but
+only when it is *not* empty. When it is empty, there are zero `.push`
+calls, so the compiler can't infer the item type and also emits a
+warning about it not needing to be mutable.
 
-To fix this, change the void pointer argument to use a const pointer,
-and change the imports to use crate::ffi instead of core::ffi for
-integer types.
+These additional quote! features are used by a new proc macro that
+generates code looking like this:
 
-Fixes: 787983da7718 ("vsprintf: add new `%pA` format specifier")
+	const _: () = {
+	    if true {
+	        ::kernel::bindings::#name
+	    } else {
+	        #name
+	    };
+	};
+
+where #name has type Ident.
+
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
 Reviewed-by: Tamir Duberstein <tamird@gmail.com>
 Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- lib/vsprintf.c       | 2 +-
- rust/kernel/print.rs | 7 +++----
- 2 files changed, 4 insertions(+), 5 deletions(-)
+ rust/macros/quote.rs | 27 +++++++++++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
 
-diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-index 56fe96319292..a8ac4c4fffcf 100644
---- a/lib/vsprintf.c
-+++ b/lib/vsprintf.c
-@@ -2285,7 +2285,7 @@ int __init no_hash_pointers_enable(char *str)
- early_param("no_hash_pointers", no_hash_pointers_enable);
+diff --git a/rust/macros/quote.rs b/rust/macros/quote.rs
+index 33a199e4f176..31b7ebe504f4 100644
+--- a/rust/macros/quote.rs
++++ b/rust/macros/quote.rs
+@@ -20,6 +20,12 @@ fn to_tokens(&self, tokens: &mut TokenStream) {
+     }
+ }
  
- /* Used for Rust formatting ('%pA'). */
--char *rust_fmt_argument(char *buf, char *end, void *ptr);
-+char *rust_fmt_argument(char *buf, char *end, const void *ptr);
- 
- /*
-  * Show a '%p' thing.  A kernel extension is that the '%p' is followed
-diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
-index b19ee490be58..61ee36c5e5f5 100644
---- a/rust/kernel/print.rs
-+++ b/rust/kernel/print.rs
-@@ -6,12 +6,11 @@
- //!
- //! Reference: <https://docs.kernel.org/core-api/printk-basics.html>
- 
--use core::{
-+use crate::{
-     ffi::{c_char, c_void},
--    fmt,
-+    str::RawFormatter,
- };
--
--use crate::str::RawFormatter;
-+use core::fmt;
- 
- // Called from `vsprintf` with format specifier `%pA`.
- #[expect(clippy::missing_safety_doc)]
++impl ToTokens for proc_macro::Ident {
++    fn to_tokens(&self, tokens: &mut TokenStream) {
++        tokens.extend([TokenTree::from(self.clone())]);
++    }
++}
++
+ impl ToTokens for TokenTree {
+     fn to_tokens(&self, tokens: &mut TokenStream) {
+         tokens.extend([self.clone()]);
+@@ -40,7 +46,7 @@ fn to_tokens(&self, tokens: &mut TokenStream) {
+ /// `quote` crate but provides only just enough functionality needed by the current `macros` crate.
+ macro_rules! quote_spanned {
+     ($span:expr => $($tt:tt)*) => {{
+-        let mut tokens;
++        let mut tokens: ::std::vec::Vec<::proc_macro::TokenTree>;
+         #[allow(clippy::vec_init_then_push)]
+         {
+             tokens = ::std::vec::Vec::new();
+@@ -65,7 +71,8 @@ macro_rules! quote_spanned {
+         quote_spanned!(@proc $v $span $($tt)*);
+     };
+     (@proc $v:ident $span:ident ( $($inner:tt)* ) $($tt:tt)*) => {
+-        let mut tokens = ::std::vec::Vec::new();
++        #[allow(unused_mut)]
++        let mut tokens = ::std::vec::Vec::<::proc_macro::TokenTree>::new();
+         quote_spanned!(@proc tokens $span $($inner)*);
+         $v.push(::proc_macro::TokenTree::Group(::proc_macro::Group::new(
+             ::proc_macro::Delimiter::Parenthesis,
+@@ -136,6 +143,22 @@ macro_rules! quote_spanned {
+         ));
+         quote_spanned!(@proc $v $span $($tt)*);
+     };
++    (@proc $v:ident $span:ident = $($tt:tt)*) => {
++        $v.push(::proc_macro::TokenTree::Punct(
++                ::proc_macro::Punct::new('=', ::proc_macro::Spacing::Alone)
++        ));
++        quote_spanned!(@proc $v $span $($tt)*);
++    };
++    (@proc $v:ident $span:ident # $($tt:tt)*) => {
++        $v.push(::proc_macro::TokenTree::Punct(
++                ::proc_macro::Punct::new('#', ::proc_macro::Spacing::Alone)
++        ));
++        quote_spanned!(@proc $v $span $($tt)*);
++    };
++    (@proc $v:ident $span:ident _ $($tt:tt)*) => {
++        $v.push(::proc_macro::TokenTree::Ident(::proc_macro::Ident::new("_", $span)));
++        quote_spanned!(@proc $v $span $($tt)*);
++    };
+     (@proc $v:ident $span:ident $id:ident $($tt:tt)*) => {
+         $v.push(::proc_macro::TokenTree::Ident(::proc_macro::Ident::new(stringify!($id), $span)));
+         quote_spanned!(@proc $v $span $($tt)*);
 
 -- 
 2.48.1.711.g2feabab25a-goog
