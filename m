@@ -1,122 +1,123 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 796B41EC01D;
-	Mon,  3 Mar 2025 10:16:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C62CE1EF370
+	for <rust-for-linux@vger.kernel.org>; Mon,  3 Mar 2025 10:38:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740996982; cv=none; b=jAkKnDGjceDcfjTckACZrmLetVB52VjYHQTCDPbBXfKCn4OQzLhIdiwnUvoga1OFsJHhbE9HXzG2qFiTrnPmbwrhs3lKW2CJBPyQvhLmCHA3Q49K2yO1Ng2SEA5cGvwJtjmankGZ03biuG9tCtVF2UEu5Go3wwFUDhaYSmw+HMU=
+	t=1740998328; cv=none; b=DgVcJQkRkHbGxdLybokRyLFYEG6r7OWGlwZwkM1JtBvKEL4GSfC85xvddqqCUSciyHJv6bV61BTWnwhAdD0F/E4GbLkSqer3OiyMJkaWvARdQKneDRoBL1QrUqm1wbPXFx5W0Mtd2uFUL+fw6s+Y1L3+rjca2T34cSakMqXn01U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740996982; c=relaxed/simple;
-	bh=1crnv6tKD/1d+tCgGsUba8x63Ta7feECjnTHfKoGLOg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FT4SaZhtCshqquFHGV36jyRhez689RFBSGGLENIjK3vbge7FfQBZngGYJ5ef3W5EFkm+iIQetqf5+Hv57JhUl1MqvXFV17Na/ho15aMiXWD0Zww8Q6G+3Mcgommb+PskqqXps6PlrMsmng6Bd0HUC5pzl8mjYA5E7nbUNMALR+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jAM9N0SL; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1740998328; c=relaxed/simple;
+	bh=jHdrl2AR1Tf2Rsmb2TkZLXZLgSeFFi+xRq/lBgGKUus=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oHA9WoiLWIHh56iH4vaHtMOgqwNQggcGNXWf5zQcFwRIn749hd7ZGfpb6g1ZN5R8cKhXdBehskdh1MZbxRLV0wBuxFF57pnh2xCblL/z24k79uYG9+Z1+7bae+CbYvL9GFKpU73bh6WFkMHD4ZSSM6gQ256Jg6rLaVBaRyVArqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=I0ojQ3dL; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jAM9N0SL"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2fe82430bb4so1152415a91.2;
-        Mon, 03 Mar 2025 02:16:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="I0ojQ3dL"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-abf48293ad0so338337066b.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 03 Mar 2025 02:38:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740996981; x=1741601781; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qhArfDOsbeMK6huD84GwJTmwqFK0bxwYSTSGdYmwOTE=;
-        b=jAM9N0SLvvwTGF12/Hlf0MrLjtIUzjMV4WPDuU5y0TbjVIVLPAwPQAvxsZgtbJR+ue
-         a/JvVg6gfkzoxqV0ncHcuNb9m88lMTHO2GB6ZvlFnxqb7wFVvyq9iajCIWpz7ahSI+3o
-         yfcSV84YfIpH90H0brB7fy/I04Bx5P+AjqVhRjRTgVYW2wdopp0+ycdseWC2Q5SbS7SK
-         6YPogA3HmhGqvSUC4QN263KAMgL1ZHQbrGmufFW/9cxC7c6GQkrBRMH5WwHydFsGeSbY
-         qRtYnbINEeltT556fEJ1H/JMbKq2vJoYEIFwsWMd6HEPz+EPaOqDANIiySN+XgvwBaCd
-         +pIA==
+        d=suse.com; s=google; t=1740998325; x=1741603125; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=WWO2EgXbq+zvviCN6nQ8SuxKO9LcyLd8SMLZLc5FWnc=;
+        b=I0ojQ3dLLFFfUNjcOCY83AcmQ1tAE/aC4jBRqXyaIwcFXvMRT/5zVgzRwAayYNtiGl
+         tAyJ/7VA8K8oSnxUNEWFbI2Af6AE01N37LB1KJlV3j52gffMheFlLTOXSqqPDYrSDo7j
+         4ihwsu1LWaKg8bxdk/w2i/Z9nRbFhrLD+TXacYPgu6bWs8AmaDc97oMQTgYymwKfWqCA
+         PtaxrNB+tZDy9Wl+vkG2fgASbT1TAHlnNqMRTKzm+hCavyaedJ0DeS3u5o1S59IBROBf
+         IIXrpiss1IWkZ8fJUgAlXPDt5bogTnvQ645MJXbazDNi9yhkvCzBQdECIoktFKdBj4bh
+         mKWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740996981; x=1741601781;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qhArfDOsbeMK6huD84GwJTmwqFK0bxwYSTSGdYmwOTE=;
-        b=WTAqHCDbNitCoJP6xCO+lMhaCLbsjmDlAmIfKUI0fQ3JHF4RM5ZcKVTChAvcnw4vw7
-         a9803lID4BV821rc4wAWLykdemWTcQY5NCUqKUxiP7uXpUaSOpaIn1jSQjyY4973uMkI
-         Robt/lH0sLJnDj4nnpTKuBX+yr9hwDYuzyMwFzGUfCmzCsENPQDuDX4fdBsmC26kCzyU
-         RRaRILRR6FYK5txktzMsKxlx8mx7QQ5a4vbAK0+LvuQIxeAsHkxFGlH8gkXjYhacsjpM
-         f7+ryaEwS+LW1dH9oCDVMMd/qGac5ilc/uhiaJBAREJvWcwNOL7oWW72YGqzNBcfmTli
-         cOVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV1PfopNJGrXEaghVc+CbTzc66njjtRslROUL3FEinetLynIa4fAA3YIbzsFoBGXIrEKGKF4tYSXQt3ye3zzIE=@vger.kernel.org, AJvYcCVrUydSTHcSE2HX1ie3NkbdcPrgvdC+2WRGaVl6wEXjehi70qfzKbuDkB8+vFraNtLB/LOs2ZGcqg6r6Ign@vger.kernel.org, AJvYcCWLPQyw5NhgKHoERmgbzHjc4DocUocL8Q09Pp5UpKnc4TJons6xzry/Uw7uq0OTcOmSxOm9NlsS7Fo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyd1v74sFnm+kvymLWzVf+pEyrOAFXSZTzam2XSEwRdFkEIvgoP
-	PKw7Lv6P3hohwndVqDRyPys3+m7pWrcTbmwBChwxLlb2v/3GE9AOSoCgYQFBK6RTA7cXoawEcqS
-	qq2LHpgMzswmH+1RkaN4ULxjEZ04=
-X-Gm-Gg: ASbGncsj2jaH3ub6J81hftumYeUPcAvxb/yFml6Y2F9SUSOLBZvZZxAHzpDJ3WP8rnV
-	GLBa0ydG7LMj8QbRD6nY+hQUxNgaTo3JQumpTOsVaQJjM69wbwEjN3To5XMtOiuwBdLiip21IEb
-	q+mZ84VpDlSHmx5yRAa9/e79HVqQ==
-X-Google-Smtp-Source: AGHT+IFd6Evh1lLa7uoaf+1dsVgglClC/wk+plGG74cKrVQ9AhFjTOqfM89v/lZcl9+c12vXftKm63P37wKAnGf/EkQ=
-X-Received: by 2002:a17:90b:3509:b0:2ee:f59a:94d3 with SMTP id
- 98e67ed59e1d1-2febaa7f72fmr7857029a91.0.1740996980647; Mon, 03 Mar 2025
- 02:16:20 -0800 (PST)
+        d=1e100.net; s=20230601; t=1740998325; x=1741603125;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WWO2EgXbq+zvviCN6nQ8SuxKO9LcyLd8SMLZLc5FWnc=;
+        b=QwSebqWsk3l+e3iywZH0C/EtgoOpl7B6tjOXZYW4V5dsTxDSeWCBU5LKlw9Ih5Tyi4
+         8ujRH77aVMQZxshXoPkgp0fFvF3JBDCor0SYqjcsbKfDVJ07uSc8ikjUk1woPzS7s4es
+         5oEteX6Y5fJJkqTeIobBReiRtRVOEkflU1Me38BD9Bec6UbA84lZ7u1TY2syPVIPQ2R2
+         NMYKd9TxvmVJyQ41U8Np54k+7OYf+p8w0YyCuOYOba14OR02+35g25q6gtMmeKZqZisp
+         jMJOZ85oW/kPUHTaHcmHuctpFcZBkCz+ssfxlGrf7GexGplq+lTdtaxXHOyGqlyDPMMi
+         bI4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWpypjBGE8LRb9dGoz1YOebRaXHFhei4ShIWBISfYxBvhzAWBboU5Lay0DzWeN+4SpOqZYDXcYIfB2po/RvcQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YykoaAXa5eC+Nb7BflgeXORQ6NmN7dqZ8TasOZ7bYObLW0QcILg
+	lWI8ysxBl0Ivl+ENewEVhslSLyQprt/EzO9/KELyXXLKFUPp4KtC9mPBEsl3eAA=
+X-Gm-Gg: ASbGncuXgajtinJdieUD3UokKTz+OTKZ74Z4Ag7siv55zc7tCmaU24sYn9NeBGeRi4G
+	6d6i6gZrAweHUOxWi6dSM+O1ovCE0hjYednm9iLbZnBpY99PkZnUbSxQa71lQIPFymTHLRHtGgQ
+	R6lE7cY0r0BunelLNwIfO/YmwYi6MW16oCn7gpTwfIHDkSoslU85l1DW6ObEVj294Prnd6vAIzW
+	XkdbGmBlnN38S6rwv1tP4wCcYvAkyb42cW2bp0qzBAPSGcPy+V2iwcXFL82jPSfkQsvCWOT3WwC
+	ezfJmmvlb+yJ/r9OLd6QmQec89fgR2jbEeBVdnwM26Zh/rg=
+X-Google-Smtp-Source: AGHT+IEc717PDdGk4gN5GFyTbXEJWA7c/lYSctH5VoUkyx7imqa5/ZkaLkBrdFhlx2/vtXyNY8DZ4A==
+X-Received: by 2002:a17:907:7288:b0:abf:5922:b7a8 with SMTP id a640c23a62f3a-abf5922dccamr1161597766b.41.1740998324968;
+        Mon, 03 Mar 2025 02:38:44 -0800 (PST)
+Received: from pathway.suse.cz ([176.114.240.130])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac052702e83sm131063866b.21.2025.03.03.02.38.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Mar 2025 02:38:44 -0800 (PST)
+Date: Mon, 3 Mar 2025 11:38:42 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Tamir Duberstein <tamird@gmail.com>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v3 1/5] rust: fix signature of rust_fmt_argument
+Message-ID: <Z8WGslnV1i1l822H@pathway.suse.cz>
+References: <20250303-export-macro-v3-0-41fbad85a27f@google.com>
+ <20250303-export-macro-v3-1-41fbad85a27f@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1740995194.git.viresh.kumar@linaro.org> <023e3061cc164087b9079a9f6cb7e9fbf286794e.1740995194.git.viresh.kumar@linaro.org>
-In-Reply-To: <023e3061cc164087b9079a9f6cb7e9fbf286794e.1740995194.git.viresh.kumar@linaro.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 3 Mar 2025 11:16:08 +0100
-X-Gm-Features: AQ5f1JrPhvFkujCyICYZMVdordWbViYwvAuUtcezJzd9bMbekZhoTJOdN871VFg
-Message-ID: <CANiq72kdWzFOZ39EoFNxEAbk4KYgzLi1OAEc1zn8BM07VpXy3g@mail.gmail.com>
-Subject: Re: [PATCH V3 2/2] rust: Add initial clk abstractions
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Russell King <linux@armlinux.org.uk>, linux-clk@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Daniel Almeida <daniel.almeida@collabora.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250303-export-macro-v3-1-41fbad85a27f@google.com>
 
-On Mon, Mar 3, 2025 at 11:00=E2=80=AFAM Viresh Kumar <viresh.kumar@linaro.o=
-rg> wrote:
->
-> +/// Frequency unit.
-> +pub type Hertz =3D crate::ffi::c_ulong;
+On Mon 2025-03-03 08:45:12, Alice Ryhl wrote:
+> Without this change, the rest of this series will emit the following
+> error message:
+> 
+> error[E0308]: `if` and `else` have incompatible types
+>   --> <linux>/rust/kernel/print.rs:22:22
+>    |
+> 21 | #[export]
+>    | --------- expected because of this
+> 22 | unsafe extern "C" fn rust_fmt_argument(
+>    |                      ^^^^^^^^^^^^^^^^^ expected `u8`, found `i8`
+>    |
+>    = note: expected fn item `unsafe extern "C" fn(*mut u8, *mut u8, *mut c_void) -> *mut u8 {bindings::rust_fmt_argument}`
+>               found fn item `unsafe extern "C" fn(*mut i8, *mut i8, *const c_void) -> *mut i8 {print::rust_fmt_argument}`
+> 
+> The error may be different depending on the architecture.
+> 
+> To fix this, change the void pointer argument to use a const pointer,
+> and change the imports to use crate::ffi instead of core::ffi for
+> integer types.
+> 
+> Fixes: 787983da7718 ("vsprintf: add new `%pA` format specifier")
+> Reviewed-by: Tamir Duberstein <tamird@gmail.com>
+> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Do we want this to be an alias or would it make sense to take the
-chance to make this a newtype?
+Acked-by: Petr Mladek <pmladek@suse.com>
 
-> +/// A simple implementation of `struct clk` from the C code.
-
-In general, please try to provide some documentation and/or examples
-where possible/reasonable.
-
-> +    /// Gets clock corresponding to a device and a connection id and ret=
-urns `Clk`.
-
-Please use intra-doc links wherever they may work.
-
-> +    /// Clock enable.
-
-Should these be e.g. "Enable the clock." or similar?
-
-Moreover, I see quite a lot of documentation about some of these
-functions in the C side. I think we should not regress on that. Should
-we link to the C docs, too?
-
-> +    pub fn enable(&self) -> Result<()> {
-
-Can this simply use `Result`?
-
-> +pub mod clk;
-
-Just to double check, do we need any `cfg`? I see some functions exist
-even without e.g. `CONFIG_COMMON_CLK`, but I wanted to ask if you
-tried to build it without it enabled.
-
-Thanks!
-
-Cheers,
-Miguel
+Best Regards,
+Petr
