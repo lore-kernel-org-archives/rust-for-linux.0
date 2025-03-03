@@ -1,112 +1,135 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3CB1F7910
-	for <rust-for-linux@vger.kernel.org>; Mon,  3 Mar 2025 11:15:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519961F791C;
+	Mon,  3 Mar 2025 11:30:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741000550; cv=none; b=nE31q8IJoVsDDLUZkF78WdT/MA3fuXTejoJqbzsQeYfc7hB1mLpDcTFXYzeCuA4ufvTAXrERWN499z5z05GB/iApUq4hzAGJSZSA3q0vHuW3KHQ+bcsJrBJSRrGtsMaiov0jDIQOfpBQSns4oewa++77AJTeZPUUS1+P0Hf56yI=
+	t=1741001415; cv=none; b=LG8jMEMGOrBTFKeEVIzVIxBGu9OTx7ROArMBTHIRKQyycOhTsil/2HeD6HgxLAgUgk1r9Oc8QRkWwnhIVwcVrsyxN/HHau2oSHJY+kwThVviOPnudcwH1wGOK4HbziCh8d9fNVkj+OciXgWRXzpZL2T+Rcne8FLFBg+qP1QIq2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741000550; c=relaxed/simple;
-	bh=5hC/zsYW4m5dWMFoZYSvLKC4QhkY3ONrIAi+2Fa+xC8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uROiogaM+kIzlcPmAg0X6fzDzq16jRYy8GKWwkLBadWGcPuZey8W53FbhueF5wbCT1hBZ3pNenPkzOsH4XuJiJnEA6R8VQORXodrfzKj9bPfKSWKaEJbU2ipoYdN9r8A8+gF558Xa333F0UgE9q+XkdkzmSh5r3jpWSLBn7E9Ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rBu647ZG; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1741001415; c=relaxed/simple;
+	bh=QSfb1tEP+GCrXu68ufVQ5P6AVc/pou71CBN+bmPdXeE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=gZugCqOESqUxw5LDVLjD9jncbwpU5M/IxZoBRvuz02XdSG1EvJwuToOid8zE8ZOmlPIooIP74KyYWnuxwzNIOc0cRUsSt63EVHDQO4NlUlMnY9Ey5+yX6biWU0nSHS/UqDwqnXJUCVS2IaZTQFedU5YRBrsJlh+MQ5NkZJX2uZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uyJRODCf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rBu647ZG"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2238e884f72so22447415ad.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 03 Mar 2025 03:15:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741000548; x=1741605348; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=aSxQXnps0NX3/X724vkMJF3+1qjDBVTjDpo2eD773ZA=;
-        b=rBu647ZGQ7FavGU9hTdt424Qee0DdYiWJLFz8OxjX3rgtONSQVWBqDEuLT54PJzUDq
-         aYOYHab17PUQqk4UM6ydmYm5OmJyE34/vT06aLOQT1JYO1kUCE+NSRZqQB2FnQfH1wGN
-         RmBtErI8OtRov1oMZ3USehptc712n6Wy1TB6Zgd/u9cRk9r/7PweBTQFpvBV7AWaE3/k
-         HL1DU/wwWki276QoPGegs68X03jMioM5Jbg1n88b7xD+adQdncz9QMh4q6tLiOcXsFvL
-         /3Zd2LPHVtgH2wLSkXlfqDHZfzPzE7aoqK14r6ztSWOfX4yh9sVKhGkJGgr9NS0gWKWf
-         KI6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741000548; x=1741605348;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aSxQXnps0NX3/X724vkMJF3+1qjDBVTjDpo2eD773ZA=;
-        b=PcTw6BYOUqV6Ps4grO3s7HBgkcJrJG0hIaJNOIEe/8KABF+H3MkYrzrKaoc8GJBbIy
-         eLk6NLgevPgSRKaSQxGiRkZeBe01/cPafiJRpRrmuiT1UmriVqH2eUOLhPbb0m9a5U7T
-         rqhJObW26a32lH5SPFwu89EniSDsIU6rOvGWjsz1Puxbx14+PFI+LcJ3/v/3jTS7vMSC
-         OpkD6QmFKzt+sjk+ViDk6p9VMKG8FxNLUCs1Z/x147qx4F4Nu2HAOd4SQkhR4+lXJJU0
-         Twm0GYrCHTSftnte+V7k1gil20otZRCBHFsdZPBEguZVnk6AB6ApzP0KrKC6E6t2JVqL
-         HXyw==
-X-Forwarded-Encrypted: i=1; AJvYcCVjOAE99KZA4wDrHBTE8PXgzCrUTRlnpTtC/dSNLRe8LYXwttZ0Yy6OmbarXaoOlgMrhWkaw/ei7kSveaVVrw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxoE2GUnWVX3qsraTcMU1fo9hUz/oRjNtZaxwF+//6+Mwfy2jng
-	OKg/n4/rKBm+paZ6WMQzBBuhFzuZHFTfmr0TY1iKloec7CDyy8MCE3SAO9M+MSU=
-X-Gm-Gg: ASbGncs4isb0afEW2KUzLJpmW9GXwqFTQAUWTvGE6zpxdLnxuYzMOputUETUowefQh4
-	VumBD1h2+2or9WOen2C9X9fBqxJtAsblDbeNGKAsileHFH+SHNNC7+1LcbY0PVMUrYlEcxjHuYP
-	yt/z+sd6IcrPzG8LDZPvPP8f9oUBCD8WJspowcsXrL8cV5MpTZoSWZtLOiywPdqV8DU903G/qAi
-	LlObhpIDnz75rQ55aHAyBdwyCMfw7iEffVvg5qwWqL9TaZKF2NvcM6OCwztQ2AKhFJT/l48VXSp
-	oVS2M1qwCw6MhduKMyQ+C8hXhxzT9X2jrebF/K5peOHtGw==
-X-Google-Smtp-Source: AGHT+IFZbp31fkpQhA+gdP4RfVHPSfPGmjA4KgAfzi0kwaQaY1tDD62JMcHr6vaO69K8iFjA7m+Low==
-X-Received: by 2002:a17:902:f548:b0:21f:4c8b:c514 with SMTP id d9443c01a7336-2236925f2c5mr179305795ad.45.1741000548141;
-        Mon, 03 Mar 2025 03:15:48 -0800 (PST)
-Received: from localhost ([122.172.84.15])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-223501d29cbsm75815325ad.50.2025.03.03.03.15.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Mar 2025 03:15:47 -0800 (PST)
-Date: Mon, 3 Mar 2025 16:45:45 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Alice Ryhl <aliceryhl@google.com>, Greg KH <gregkh@linuxfoundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Russell King <linux@armlinux.org.uk>, linux-clk@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>
-Subject: Re: [PATCH V3 1/2] rust: Add clk helpers
-Message-ID: <20250303111545.ekszepspoghprh7g@vireshk-i7>
-References: <cover.1740995194.git.viresh.kumar@linaro.org>
- <171b6cd811ff4e913880ab33bc11e634f7cdeecb.1740995194.git.viresh.kumar@linaro.org>
- <CAH5fLgjNE7BF7fC6TxO3NjKV1OHXRxZFKn2Bs6fy8h_0zYd1tg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uyJRODCf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81D3DC4CED6;
+	Mon,  3 Mar 2025 11:30:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741001414;
+	bh=QSfb1tEP+GCrXu68ufVQ5P6AVc/pou71CBN+bmPdXeE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=uyJRODCfavQFKwjL4D3k4Oo6IqxlxFb4bNZ+lGS31+PMGDqw64PSES87DnogF8Rcq
+	 2OaBf2L+wW4eDpJfvf5ekwmsX7+lCP1NDFQ37BHIVLIgxOuxYZLp/CbgUbaopZryJu
+	 dugWbrY81yMTB22kqvuHVBEXgZvayBJZA3ofpSCrdPbLyyfshwlbN+W4Jv15Rp8YpK
+	 7p8CeE41XKJ3TaYIQmDb1ixaYJrup5fdwK8GbVzvyJsDigxzuUvB8NzJDeC2EO5orb
+	 /pcrnkIqpauuDZosLnFPgxJl9eX8eax16PCr9sRYpFuJOtvJYNtW9ZabhwOKnRdXW1
+	 o+fsuqdaQ3Fjw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Abdiel Janulgue" <abdiel.janulgue@gmail.com>
+Cc: <aliceryhl@google.com>,  <dakr@kernel.org>,  <robin.murphy@arm.com>,
+  <daniel.almeida@collabora.com>,  <rust-for-linux@vger.kernel.org>,
+  "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Benno
+ Lossin" <benno.lossin@proton.me>,  "Trevor Gross" <tmgross@umich.edu>,
+  "Valentin Obst" <kernel@valentinobst.de>,
+  <linux-kernel@vger.kernel.org>,  "Christoph Hellwig" <hch@lst.de>,
+  "Marek Szyprowski" <m.szyprowski@samsung.com>,  <airlied@redhat.com>,
+  <iommu@lists.linux.dev>
+Subject: Re: [PATCH v12 2/3] rust: add dma coherent allocator abstraction.
+In-Reply-To: <20250224115007.2072043-3-abdiel.janulgue@gmail.com> (Abdiel
+	Janulgue's message of "Mon, 24 Feb 2025 13:49:06 +0200")
+References: <20250224115007.2072043-1-abdiel.janulgue@gmail.com>
+	<k3GMnfXzzvUVOgSnuMlEq3eVRyq1qjcf_tDtILRbOwj08EIQpwQ4bGtGhwWufr8lUn-VlHnNjP8FxIA48Jv-Ug==@protonmail.internalid>
+	<20250224115007.2072043-3-abdiel.janulgue@gmail.com>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Mon, 03 Mar 2025 12:30:01 +0100
+Message-ID: <87h64al5c6.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLgjNE7BF7fC6TxO3NjKV1OHXRxZFKn2Bs6fy8h_0zYd1tg@mail.gmail.com>
+Content-Type: text/plain
 
-On 03-03-25, 11:05, Alice Ryhl wrote:
-> On Mon, Mar 3, 2025 at 11:00 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
-> >
-> > Non-trivial C macros and inlined C functions cannot be used directly
-> > in the Rust code and are used via functions ("helpers") that wrap
-> > those so that they can be called from Rust.
-> >
-> > In order to prepare for adding Rust abstractions for the clock APIs,
-> > add clock helpers required by the Rust implementation.
-> >
-> > Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> > Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-> 
-> Did clk maintainers ask for this to be separate? We normally just add
-> helpers in the commit that need them.
+"Abdiel Janulgue" <abdiel.janulgue@gmail.com> writes:
 
-Greg suggested that earlier:
+> Add a simple dma coherent allocator rust abstraction. Based on
+> Andreas Hindborg's dma abstractions from the rnvme driver, which
+> was also based on earlier work by Wedson Almeida Filho.
+>
+> Nacked-by: Christoph Hellwig <hch@lst.de>
+> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+[...]
 
-https://lore.kernel.org/all/2025010708-commence-exile-0946@gregkh/
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index 0640b7e115be..8f3808c8b7fe 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -13,6 +13,7 @@
+>  #include "build_bug.c"
+>  #include "cred.c"
+>  #include "device.c"
+> +#include "dma.c"
+>  #include "err.c"
+>  #include "fs.c"
+>  #include "io.c"
+> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
+> new file mode 100644
+> index 000000000000..b4dd5d411711
+> --- /dev/null
+> +++ b/rust/kernel/dma.rs
+> @@ -0,0 +1,421 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Direct memory access (DMA).
+> +//!
+> +//! C header: [`include/linux/dma-mapping.h`](srctree/include/linux/dma-mapping.h)
+> +
+> +use crate::{
+> +    bindings, build_assert,
+> +    device::Device,
+> +    error::code::*,
+> +    error::Result,
+> +    transmute::{AsBytes, FromBytes},
+> +    types::ARef,
+> +};
+> +
+> +/// Inform the kernel about the device's DMA addressing capabilities. This will set the mask for
+> +/// both streaming and coherent APIs together.
+> +pub fn dma_set_mask_and_coherent(dev: &Device, mask: u64) -> i32 {
+> +    // SAFETY: device pointer is guaranteed as valid by invariant on `Device`.
+> +    unsafe { bindings::dma_set_mask_and_coherent(dev.as_raw(), mask) }
+> +}
+> +
+> +/// Same as `dma_set_mask_and_coherent`, but set the mask only for streaming mappings.
+> +pub fn dma_set_mask(dev: &Device, mask: u64) -> i32 {
+> +    // SAFETY: device pointer is guaranteed as valid by invariant on `Device`.
+> +    unsafe { bindings::dma_set_mask(dev.as_raw(), mask) }
+> +}
 
--- 
-viresh
+I'm rebasing some of the dma pool code I'm using for NVMe on top of
+these patches, and I notice that these methods in the original code from
+way back (besides being on Device) has these methods return `Result`:
+
+    pub fn dma_set_mask(&self, mask: u64) -> Result {
+        let dev = self.as_raw();
+        let ret = unsafe { bindings::dma_set_mask(dev as _, mask) };
+        if ret != 0 {
+            Err(Error::from_errno(ret))
+        } else {
+            Ok(())
+        }
+    }
+
+Is there a reason for not returning a `Result` in this series?
+
+
+Best regards,
+Andreas Hindborg
+
+
