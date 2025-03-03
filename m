@@ -1,218 +1,149 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ACCE1F0E5F
-	for <rust-for-linux@vger.kernel.org>; Mon,  3 Mar 2025 08:45:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF991F0E2E
+	for <rust-for-linux@vger.kernel.org>; Mon,  3 Mar 2025 08:52:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740991560; cv=none; b=R3C925T1F3vhf5cJyUXG2SKTf46Lprr2V+LIWvpJNGQXp5epDL7FjPW7QwLzQecyEDTIm4uWIsJPAOi1A2eG7jRU9TleWvTzXeEnb6bX4iBitGWCith0lii/cy23SQFV0v2+8LZn7k6PO/BbVANxC5J3CtaM4JAg11U2fHfvkeQ=
+	t=1740991958; cv=none; b=kKiS7DbIT56hC0g0rMwuN9KWwAzPsu8kdzl7xNjcLRqoy1c8LMnZmFDx9BtTVpiB/G6pst3vcj16Ix5vMSYXDwX/PJOgLv0Mud/AkRE1IvyxSZwWS/nUIPq+G/UDsYC/Oz3ahrYrY1Vbm1w0BZZj0qJuLTm3Lv+CbcKkBwQmgIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740991560; c=relaxed/simple;
-	bh=h39madShj1asyLtbf2sfVdBNK2RyKkwe8T8CD9+EWUU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=QjMmw1aNELMWdFR4Rdh8jNvCA1yhmqk6285HPEevb6YmbsP6HHNB7ulbDzoFBl+QFaM6j9fGXeLRSssqQN5INIaDlqdfIEkeQ+25X9RVA89E9ppyVfgZIY8KATlSbgqCykZYHLkeIOHHW4fU5gm2ydzE7r40OWFzrWGbKyER4mM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pRVew8xk; arc=none smtp.client-ip=209.85.128.73
+	s=arc-20240116; t=1740991958; c=relaxed/simple;
+	bh=n0ff1xI1lgmg8Rykovee0x4apm8ykyWD2JrE1dHfyPw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rht7+g9z4BBY5ZxBtBIqNj5Pnu1Mo6LbeaT7315FDle+tvcQ1pwTrgyi0914IV/89bW/QS4Xlm2EMJg9aLIVPordupUTELNBnnpu8i+GLaa7Op+DODeCOHNvAqMtnZGt95k1nQjXU8KYXuiRKX4kOEdokYpXFFwSTRlY+Mn/ppU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=b7w2STaE; arc=none smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pRVew8xk"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4399a5afc72so18150775e9.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 03 Mar 2025 00:45:58 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="b7w2STaE"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-390dd3403fdso3625415f8f.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 03 Mar 2025 00:52:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740991557; x=1741596357; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0DQHcaO0nvqPOcD0xXA6BfduaWtfQQJcuNoquBNRtQM=;
-        b=pRVew8xkZ3dx76UDMEb5V5Ln0Zrn19RnI5UNBN3imF+cdAd3P5dKdKXSD097jduQ1Z
-         hZfQsnVy5qXTmvDUQuSeT+7hm8iab/iHttka6yYU8AvtbdxDjRC7WG4+k/FM9VXhYmRd
-         qg3JW79D2XsRY+IFG1p9KlEAhSA/5Es8qCluW2j1lg/JbPwtYLqaVb3iKxpXeLh6C3Nm
-         kcO29QyghbQouvkyRiEx1nTOW9f+uwTRnmG/0lOUu7kJZXSYcaP6ffAR6+teNa5AwY9v
-         FtL4/CB4/2ZsHeBqN8O5pKm1OSMZVUMFwUL0NXJBE3k5tE+JDzyqm76RKjhTYpR1JkKb
-         6acg==
+        d=google.com; s=20230601; t=1740991955; x=1741596755; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cZedBe7vxwSHNQekhyj5949NlNVonJ7luZ+4oJCMZq0=;
+        b=b7w2STaEee5vPKceONXDZJvCBWg/UKCJpdTtwghOFeDYwQc9/8k5gxR8jSH+QgnV1h
+         h88VwqUn6kXhdjHxAO+7MFlPm8gZOpHMcp30+B8HC2Qu1Dc1fHBwvS0UJ1YtGmVmT8zP
+         LExDFqSmzuRixDyNUyhoezUkgBvpoxRQJn0U3fOf1Fzp3xOWCxQs8fBe9ivMTTy7R+dd
+         Vx9HVidy3MkafrqJxiZi2xvX9O9SHxmmClp1k3lVrPUZB8qKPjfFxR2zmbsV68v4gGC2
+         ViiWHTj6j17PDx23ZPIKJGUPRgqX3yEfbHzHsSk/LcD2NhWOT1EHhhMgq8bXqDU8bZBd
+         w0Rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740991557; x=1741596357;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0DQHcaO0nvqPOcD0xXA6BfduaWtfQQJcuNoquBNRtQM=;
-        b=TcEcVRQqqyrb9ZrCetcGyDdklnQ+j7qeg76hBhtUtIQxDbqS+5pPrSlXee1kNoASij
-         KiGIrwvzO6CJJfsh2IC4/8UxTOkCZHFx3bLtpoEMyZhhIpebxIY9QTE+JFt2+FpMqgdI
-         L4CINDB5gojGLA0+gcbgfmt9mUuFhRudYeMIs8IyaNdEkVXAUGQkFThdD9Wckvew3DUb
-         wMmfib5+J6lN8sL3tFSfHDcilevQRiMmJE8yUFiV15+IxqEaoTqVd1xmYo5/0d57S/fF
-         lY/WHaq2v4dWjJFM/WtZV3/IwoUz2K3XFmTiSHeFZjHG74FavScjX5XjovGquT1a0Ee/
-         iQ9g==
-X-Forwarded-Encrypted: i=1; AJvYcCWqRzksI2Wy0s5tjQ7yY3RA7sL4n5O52crs/HQTpziw4zCTM8pkQGwrwd1JfCHmr8FxjcPmx7NilMQA1zhZcw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZUV7Kh5UnZbAYlffEXpc+8D427eh2uaXklV/c4qHfluONr3Bm
-	Fe+b2rCz47Mn7/wYbm9cGBu6DnBM3eBeszuPkPa3JheSBNRaGf8AHNyfPb697dLzc+Md5xYuqR4
-	07NlrmsNXs3O6zg==
-X-Google-Smtp-Source: AGHT+IEbR3/WcyPiaNNIulZcuIWaKGsu5gY2WjUpjPLpgdJov23gFYjscM1b2KomiFKt1HIexbDsjk8ll3zgBPY=
-X-Received: from wmbay26.prod.google.com ([2002:a05:600c:1e1a:b0:439:80fc:8bb2])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1c25:b0:439:5a37:8157 with SMTP id 5b1f17b1804b1-43ba6774a03mr109919695e9.30.1740991557659;
- Mon, 03 Mar 2025 00:45:57 -0800 (PST)
-Date: Mon, 03 Mar 2025 08:45:16 +0000
-In-Reply-To: <20250303-export-macro-v3-0-41fbad85a27f@google.com>
+        d=1e100.net; s=20230601; t=1740991955; x=1741596755;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cZedBe7vxwSHNQekhyj5949NlNVonJ7luZ+4oJCMZq0=;
+        b=BxnQ1z3ELi6aXUv408kW45KAxDI67CehdqcLwq8U0hsfWEpmqVvIkQ+jZaj1/SYW+l
+         SKj3kZj/er4rRzqJLVyhhIgIQrCQuVl9GOlxSdlBnjYeS2osig6126USHTf6bMRPuTJ6
+         KFtEjC3s9DPT7nG5voFWUeE75tTL7Ow9mBcTLc50xR3MXwBpyF0aM5N+O1psqE8H+Ip0
+         wbJvE9Nm69YvWQqe3RBBxZmKQpc088ouaIeKU4PPzScF8FPJgo2DhbZOy334PqV4dhOG
+         nz2AQaVuVN/Q66WK7luT/kUFmdXmlHxGFFP997wP+K6l8maoPCOYzvvxEuNZqemp6yFj
+         nLLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU2k/sN2cC9Nq/2ZvXl9flnjD9gdb40bYw1QbpEZiGMgcdpwQazRvUiha85ksRUjjs2zqDezzliyCKamMluVg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxzbw8midA5F7UoVS7S1hpf6sMECOH89ewSREtrH89oOR8tLmw6
+	khKkVhAezjHHnuLd1GZ19WdYHqCeJ+TtnhmeNg66Izcw1lEw5kDvYYud0U9tgWsX7vq0WsaIh1K
+	eVeHRKquHzccxSDOorIZS9RoFq6d3A7ij8F2s
+X-Gm-Gg: ASbGncsvSxKbjsBAq5mX7vkp+jtSfAwSQcWgFsSH4GK8uCh/757I61SeVJ/gXPuDYaF
+	gq1vUxr3qSNAvLmX+YXr1EgfwZGUuAp0dCd/l4wpEHuVEbJknKQbaXJ26yMFinC2Jo32bYE8s1r
+	8i1b62mxOK45l4fG2N8F3yM/n1lcTxdN+J6JTD9r2YVj0QVcFYorkb7ikB
+X-Google-Smtp-Source: AGHT+IGPWx+m6XG7095T3v0ZVlAXzNJwhfctSVi2QHnsOIWVW4GZ3S/6Td355pTg0Z+ilOrY+qMqRFrKA4AKwqV4ahA=
+X-Received: by 2002:a05:6000:188b:b0:391:ba6:c069 with SMTP id
+ ffacd0b85a97d-3910ba6c26amr2138123f8f.44.1740991954661; Mon, 03 Mar 2025
+ 00:52:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250303-export-macro-v3-0-41fbad85a27f@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4809; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=h39madShj1asyLtbf2sfVdBNK2RyKkwe8T8CD9+EWUU=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnxWw3pj1BuO7nm85LYW8CAGocu7fhqRw9nvE8r
- O7rU8v0FnuJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ8VsNwAKCRAEWL7uWMY5
- Ru5uEACnfnvDNKGTdfDWkGpV2cmEz+XPIKAv+OAav/nOsh2wf+SfXkLPHDH7ruxHfwIZIgBxSN0
- XNYeBV/QOAcBcfj7kCEnALSOYbYa68MODYU3lWLzoYQGcTKnIvgBpZcQNcIw6XoiTggnSfS4pRN
- twnRo0DybJXquoJRODCF7pPH1zuKCeDtLN4pEBmlSQz4JJr4lm9jHA2UxFUYxzGNmRBYpPxK3sA
- gzDGC1QnvX1VjNHlwTJV9otv6N0zCdO3zdQ/FW0byi7n9wxNs91XO1qcbwOraS/zqXnSJujthF9
- g/DF9vk9C9vtZYhOUPPUdeYjapB4wG9+h8TlKGembKDI4h7zk/XPUxfp6siqoMycq+lGTAEepNz
- +sT9UyQN+jUXepDM2K2FM4AA1cu3hMqJkfDZgI4x49hrXRmBJ1VGEt308d5DPco6Um7EQtheFGc
- 0fNhGeafPpTduaf2Ebi+xrdhZQ2ZBTzGDxRFgRMTOFSANfmum5+BX4ZuThqe9scF5REbMHD65y0
- nvytaWAsv4lSnYIg9wMuWBKn+4uCuI1QWlTyjvLtl4aOcceJFpdKBShLjTO+8UvL6H9CqvjDm0y
- VQ0iys7hDYKZ+bk5RgqB3PZWRsc8fbJlsZUk8pdSqFSdC4ibbPV67kpPGD7QcElJrgJYkllt3no E+HSkBYCbHVjBeQ==
-X-Mailer: b4 0.14.1
-Message-ID: <20250303-export-macro-v3-5-41fbad85a27f@google.com>
-Subject: [PATCH v3 5/5] panic_qr: use new #[export] macro
+MIME-Version: 1.0
+References: <20250228-export-macro-v2-0-569cc7e8926c@google.com>
+ <20250228-export-macro-v2-5-569cc7e8926c@google.com> <CAJ-ks9k4rZdpL5dDfwMHuiKFdyYdY00YioYxdtsqszpcbhzjHQ@mail.gmail.com>
+ <CAH5fLggDgYYk-0HzCjDmmHjV6JkR7WJhmQU-Nhbo4iBGBw1AJw@mail.gmail.com> <CAJ-ks9k2HaeTyGfFSfeJUFWkwc2F2hvTg2m4yEQ+8-AvLS6UZg@mail.gmail.com>
+In-Reply-To: <CAJ-ks9k2HaeTyGfFSfeJUFWkwc2F2hvTg2m4yEQ+8-AvLS6UZg@mail.gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>
-Cc: Petr Mladek <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
+Date: Mon, 3 Mar 2025 09:52:22 +0100
+X-Gm-Features: AQ5f1JqSjZAAlx6Wf7jKinnV6m6qfDAlCxxS5CZwf1LezmrZAHRqRlmJeyImFx8
+Message-ID: <CAH5fLggVOKrWZhR8rEH1ZFbJ4naoAP8Dp=pKpuj0MmsThBuK4g@mail.gmail.com>
+Subject: Re: [PATCH v2 5/5] panic_qr: use new #[export] macro
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Petr Mladek <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
 	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
 	Andrew Morton <akpm@linux-foundation.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Tamir Duberstein <tamird@gmail.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	Alice Ryhl <aliceryhl@google.com>, Simona Vetter <simona.vetter@ffwll.ch>
-Content-Type: text/plain; charset="utf-8"
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This validates at compile time that the signatures match what is in the
-header file. It highlights one annoyance with the compile-time check,
-which is that it can only be used with functions marked unsafe.
+On Fri, Feb 28, 2025 at 6:15=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
+ wrote:
+>
+> On Fri, Feb 28, 2025 at 12:08=E2=80=AFPM Alice Ryhl <aliceryhl@google.com=
+> wrote:
+> >
+> > On Fri, Feb 28, 2025 at 4:55=E2=80=AFPM Tamir Duberstein <tamird@gmail.=
+com> wrote:
+> > >
+> > > On Fri, Feb 28, 2025 at 7:41=E2=80=AFAM Alice Ryhl <aliceryhl@google.=
+com> wrote:
+> > > >
+> > > > @@ -980,8 +983,12 @@ fn draw_all(&mut self, data: impl Iterator<Ite=
+m =3D u8>) {
+> > > >  /// * If `url_len` > 0, remove the 2 segments header/length and al=
+so count the
+> > > >  ///   conversion to numeric segments.
+> > > >  /// * If `url_len` =3D 0, only removes 3 bytes for 1 binary segmen=
+t.
+> > > > -#[no_mangle]
+> > > > -pub extern "C" fn drm_panic_qr_max_data_size(version: u8, url_len:=
+ usize) -> usize {
+> > > > +///
+> > > > +/// # Safety
+> > > > +///
+> > > > +/// Always safe to call.
+> > >
+> > > This should explain why it's marked unsafe, since it's always safe to=
+ call.
+> >
+> > Safety comments generally do not explain rationale for why they are
+> > the way they are. Where would you like me to put it?
+>
+> Safety comments also generally do not say that the function isn't
+> really unsafe (with a notable exception in
+> `samples/rust/rust_print_main.rs` which is similar to this case).
+>
+> Perhaps "This function is marked unsafe because ... but since a safety
+> comment is still required:" would flow nicely into the safety section.
 
-If the function is not unsafe, then this error is emitted:
+I added a comment, but I disagree with this claim. The phrase "Always
+safe to call." is actually quite common for a "# Safety" section, even
+if we have rarely needed it in the kernel specifically.
 
-error[E0308]: `if` and `else` have incompatible types
-   --> <linux>/drivers/gpu/drm/drm_panic_qr.rs:987:19
-    |
-986 | #[export]
-    | --------- expected because of this
-987 | pub extern "C" fn drm_panic_qr_max_data_size(version: u8, url_len: usize) -> usize {
-    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected unsafe fn, found safe fn
-    |
-    = note: expected fn item `unsafe extern "C" fn(_, _) -> _ {kernel::bindings::drm_panic_qr_max_data_size}`
-               found fn item `extern "C" fn(_, _) -> _ {drm_panic_qr_max_data_size}`
+> > > > @@ -36,6 +36,10 @@
+> > > >  #include <linux/workqueue.h>
+> > > >  #include <trace/events/rust_sample.h>
+> > > >
+> > > > +#if defined(CONFIG_DRM_PANIC_SCREEN_QR_CODE)
+> > > > +#include <drm/drm_panic.h>
+> > > > +#endif
+> > >
+> > > Why the guard here?
+> > >
+> > > It'd be nice to have a comment here explaining the atypical need for
+> > > this include.
+> >
+> > It's not necessary. I can drop it.
+>
+> Ok. A comment on the include would still be helpful.
 
-The signature declarations are moved to a header file so it can be
-included in the Rust bindings helper, and the extern keyword is removed
-as it is unnecessary.
+Added.
 
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-Reviewed-by: Tamir Duberstein <tamird@gmail.com>
-Acked-by: Simona Vetter <simona.vetter@ffwll.ch>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- drivers/gpu/drm/drm_panic.c     |  5 -----
- drivers/gpu/drm/drm_panic_qr.rs | 15 +++++++++++----
- include/drm/drm_panic.h         |  7 +++++++
- rust/bindings/bindings_helper.h |  5 +++++
- 4 files changed, 23 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
-index f128d345b16d..dee5301dd729 100644
---- a/drivers/gpu/drm/drm_panic.c
-+++ b/drivers/gpu/drm/drm_panic.c
-@@ -486,11 +486,6 @@ static void drm_panic_qr_exit(void)
- 	stream.workspace = NULL;
- }
- 
--extern size_t drm_panic_qr_max_data_size(u8 version, size_t url_len);
--
--extern u8 drm_panic_qr_generate(const char *url, u8 *data, size_t data_len, size_t data_size,
--				u8 *tmp, size_t tmp_size);
--
- static int drm_panic_get_qr_code_url(u8 **qr_image)
- {
- 	struct kmsg_dump_iter iter;
-diff --git a/drivers/gpu/drm/drm_panic_qr.rs b/drivers/gpu/drm/drm_panic_qr.rs
-index bcf248f69252..906943b02beb 100644
---- a/drivers/gpu/drm/drm_panic_qr.rs
-+++ b/drivers/gpu/drm/drm_panic_qr.rs
-@@ -27,7 +27,10 @@
- //! * <https://github.com/bjguillot/qr>
- 
- use core::cmp;
--use kernel::str::CStr;
-+use kernel::{
-+    prelude::*,
-+    str::CStr,
-+};
- 
- #[derive(Debug, Clone, Copy, PartialEq, Eq, Ord, PartialOrd)]
- struct Version(usize);
-@@ -929,7 +932,7 @@ fn draw_all(&mut self, data: impl Iterator<Item = u8>) {
- /// * `tmp` must be valid for reading and writing for `tmp_size` bytes.
- ///
- /// They must remain valid for the duration of the function call.
--#[no_mangle]
-+#[export]
- pub unsafe extern "C" fn drm_panic_qr_generate(
-     url: *const kernel::ffi::c_char,
-     data: *mut u8,
-@@ -980,8 +983,12 @@ fn draw_all(&mut self, data: impl Iterator<Item = u8>) {
- /// * If `url_len` > 0, remove the 2 segments header/length and also count the
- ///   conversion to numeric segments.
- /// * If `url_len` = 0, only removes 3 bytes for 1 binary segment.
--#[no_mangle]
--pub extern "C" fn drm_panic_qr_max_data_size(version: u8, url_len: usize) -> usize {
-+///
-+/// # Safety
-+///
-+/// Always safe to call.
-+#[export] // required to be unsafe due to this annotation
-+pub unsafe extern "C" fn drm_panic_qr_max_data_size(version: u8, url_len: usize) -> usize {
-     #[expect(clippy::manual_range_contains)]
-     if version < 1 || version > 40 {
-         return 0;
-diff --git a/include/drm/drm_panic.h b/include/drm/drm_panic.h
-index f4e1fa9ae607..ff78d00c3da5 100644
---- a/include/drm/drm_panic.h
-+++ b/include/drm/drm_panic.h
-@@ -163,4 +163,11 @@ static inline void drm_panic_unlock(struct drm_device *dev, unsigned long flags)
- 
- #endif
- 
-+#if defined(CONFIG_DRM_PANIC_SCREEN_QR_CODE)
-+size_t drm_panic_qr_max_data_size(u8 version, size_t url_len);
-+
-+u8 drm_panic_qr_generate(const char *url, u8 *data, size_t data_len, size_t data_size,
-+			 u8 *tmp, size_t tmp_size);
-+#endif
-+
- #endif /* __DRM_PANIC_H__ */
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 55354e4dec14..607e90a682ca 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -36,6 +36,11 @@
- #include <linux/workqueue.h>
- #include <trace/events/rust_sample.h>
- 
-+#if defined(CONFIG_DRM_PANIC_SCREEN_QR_CODE)
-+// Used by #[export] in drivers/gpu/drm/drm_panic_qr.rs
-+#include <drm/drm_panic.h>
-+#endif
-+
- /* `bindgen` gets confused at certain things. */
- const size_t RUST_CONST_HELPER_ARCH_SLAB_MINALIGN = ARCH_SLAB_MINALIGN;
- const size_t RUST_CONST_HELPER_PAGE_SIZE = PAGE_SIZE;
-
--- 
-2.48.1.711.g2feabab25a-goog
-
+Alice
