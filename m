@@ -1,135 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519961F791C;
-	Mon,  3 Mar 2025 11:30:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A0C1F5420
+	for <rust-for-linux@vger.kernel.org>; Mon,  3 Mar 2025 11:33:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741001415; cv=none; b=LG8jMEMGOrBTFKeEVIzVIxBGu9OTx7ROArMBTHIRKQyycOhTsil/2HeD6HgxLAgUgk1r9Oc8QRkWwnhIVwcVrsyxN/HHau2oSHJY+kwThVviOPnudcwH1wGOK4HbziCh8d9fNVkj+OciXgWRXzpZL2T+Rcne8FLFBg+qP1QIq2g=
+	t=1741001584; cv=none; b=pBD0SldvZCL6tpyyDerMBU2Az9eN1v8onl/P4/adRP9YsnrOC5EZQRG7JnEa290iXzjYTX+5Ts/EYfnZ62LIjFn9v73QB9c1tr0Z8R72VAUTlPRe1PmUzHuv3hVxmpvaO8LBVWZg8qbpEkk7GAGqbzpZAt+tdByqf2lyskpzq04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741001415; c=relaxed/simple;
-	bh=QSfb1tEP+GCrXu68ufVQ5P6AVc/pou71CBN+bmPdXeE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=gZugCqOESqUxw5LDVLjD9jncbwpU5M/IxZoBRvuz02XdSG1EvJwuToOid8zE8ZOmlPIooIP74KyYWnuxwzNIOc0cRUsSt63EVHDQO4NlUlMnY9Ey5+yX6biWU0nSHS/UqDwqnXJUCVS2IaZTQFedU5YRBrsJlh+MQ5NkZJX2uZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uyJRODCf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741001584; c=relaxed/simple;
+	bh=Eg353t07fU74ciE+JZ7X5ZJ/CkZ0qqVRNJMc9SKnPtE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IxMSchCZGwhO89PWm3z0QbDEHkJ9GKjRSgTqrCybXaiR5kv70SuF+2JSPlG0murlDDRlJEu+kXDuJt5D9nJDEEZ8qzFb7AEbtlN/mzhYu0N65RJ29FtdLWKlo+THDaIGUWAG37jVr/u1Bt9wJwXGHUYMl4gqfldPWqS0L91OORU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jN9PZGmD; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uyJRODCf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81D3DC4CED6;
-	Mon,  3 Mar 2025 11:30:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741001414;
-	bh=QSfb1tEP+GCrXu68ufVQ5P6AVc/pou71CBN+bmPdXeE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=uyJRODCfavQFKwjL4D3k4Oo6IqxlxFb4bNZ+lGS31+PMGDqw64PSES87DnogF8Rcq
-	 2OaBf2L+wW4eDpJfvf5ekwmsX7+lCP1NDFQ37BHIVLIgxOuxYZLp/CbgUbaopZryJu
-	 dugWbrY81yMTB22kqvuHVBEXgZvayBJZA3ofpSCrdPbLyyfshwlbN+W4Jv15Rp8YpK
-	 7p8CeE41XKJ3TaYIQmDb1ixaYJrup5fdwK8GbVzvyJsDigxzuUvB8NzJDeC2EO5orb
-	 /pcrnkIqpauuDZosLnFPgxJl9eX8eax16PCr9sRYpFuJOtvJYNtW9ZabhwOKnRdXW1
-	 o+fsuqdaQ3Fjw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Abdiel Janulgue" <abdiel.janulgue@gmail.com>
-Cc: <aliceryhl@google.com>,  <dakr@kernel.org>,  <robin.murphy@arm.com>,
-  <daniel.almeida@collabora.com>,  <rust-for-linux@vger.kernel.org>,
-  "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno
- Lossin" <benno.lossin@proton.me>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Valentin Obst" <kernel@valentinobst.de>,
-  <linux-kernel@vger.kernel.org>,  "Christoph Hellwig" <hch@lst.de>,
-  "Marek Szyprowski" <m.szyprowski@samsung.com>,  <airlied@redhat.com>,
-  <iommu@lists.linux.dev>
-Subject: Re: [PATCH v12 2/3] rust: add dma coherent allocator abstraction.
-In-Reply-To: <20250224115007.2072043-3-abdiel.janulgue@gmail.com> (Abdiel
-	Janulgue's message of "Mon, 24 Feb 2025 13:49:06 +0200")
-References: <20250224115007.2072043-1-abdiel.janulgue@gmail.com>
-	<k3GMnfXzzvUVOgSnuMlEq3eVRyq1qjcf_tDtILRbOwj08EIQpwQ4bGtGhwWufr8lUn-VlHnNjP8FxIA48Jv-Ug==@protonmail.internalid>
-	<20250224115007.2072043-3-abdiel.janulgue@gmail.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Mon, 03 Mar 2025 12:30:01 +0100
-Message-ID: <87h64al5c6.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jN9PZGmD"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-22359001f1aso94460615ad.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 03 Mar 2025 03:33:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1741001582; x=1741606382; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ggBt1ChVoFiSdD425pBk+A/EhRbbIsMsC+P9KjmgXww=;
+        b=jN9PZGmD34XZyQ0aAQoBAXBqyUE2VYXcOPzit0fOmSZcrhdOTwisyMByXh2h718B2a
+         OFQrjlhLjGv4CribCXSk0qy/DkE8QN1bT9rQjqkeRn+ILlkgvUQlM/To3SWAWMfIL3ET
+         geF+zdCiTObEUR/rSpQxRyMtoW3k2DLVelGbIss0ivAXGlwXVZDmvuGQqNWRf9/oS5Ud
+         gZg8bIrsg9m5fVD8iz5e7GgQ7hxkvFtO+/hJ7EwKETYRYqlMArvk3LrbFGNyumIxQJ4C
+         3/roB1T+nW/QqGWOG2Hg5lM0Tw54pL/PLFlh+Gwv+/lIL0ZzEi3VnB5AL4zIDto9yZ6O
+         TheQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741001582; x=1741606382;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ggBt1ChVoFiSdD425pBk+A/EhRbbIsMsC+P9KjmgXww=;
+        b=p8I/xrdgf3dwvQ9eZH5uZ05r5o0tYMfOUbKkwSApHRiIZ7gseqr/TEB/ptj36U+JrT
+         ubd1S9HDp0rtvHX3fahISrYm79pYSO37M30mW+S6GR+srh6Obpwwsudq3mU6LVQB2EwW
+         5C0+aD/GzSdPpw1Wm0pjeB+MpYACV1vd+Kszb65AseqL7P2oEVqX8kB1htSV+Kif7hYX
+         Ob+P2I+QOerPh5RyX8zFPp2ZHE3fLIxlexizRel4mSpkbdRH48SBKwN9ooEhErjtULqX
+         XVJ04WAvu3Det5KwIs+1DKqw8nkV8JnfDGjTLAailHFeX/0/coIA+xwqQdSZ4WA7JAJt
+         okyw==
+X-Forwarded-Encrypted: i=1; AJvYcCX3OjGEegNiqx8SlqqyhYoaFitkYq7sGUh5WL4P+YMkkS5/FWO5myqEbzO2K41wwMI9Fpceb808o2R9O1nkRA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgEIKqj0g8XH0PU2nOl95FXi0KONOWZSvvwq/opUN2k9FDv8sR
+	lVc/QWUfwVREi1i8ZRJQ0CW1GcytlRDpbWjt9OOrQUD5i9FqDsPgEHMKhYbA89I=
+X-Gm-Gg: ASbGncv+2TD801eejyV6staweHNrO0z2CxhtfMgAWzBEr0vFa3stNbUTUkQBn91P0Dh
+	JI4mpIfG7EBVNcsKMK6yg+r8X+Kv3cN5zlhVLZUB6NRlnv1hrW5c1eGwr72ASJzXGYGmRLr9cEi
+	tMGFNDS9oHYzohy3okqYPbC1IbbjY3HjUmeCEY4l3aDHuwXpj6uWL7f878IbW5FsUfj/5Uy5e2o
+	rIBey92bBIlnoAgPU0e8kZZsrMbQ1Z4kgWksPjg3iLgJ4KKH/27tr0keB5fTmmofIh5qVhRShBB
+	mTzHiQpRuj5m+kDS+KI5Q/a0MLes/9S+YYZGp/qxt+Zv8Q==
+X-Google-Smtp-Source: AGHT+IGEzZUBy9SLEnvepRViZj5j7Mez0Iog8fNjE+S4BZ1dr1gWZEzqWvwJmEDVC0MakORBpgclaA==
+X-Received: by 2002:a05:6a20:c781:b0:1ee:e2ac:516d with SMTP id adf61e73a8af0-1f2f4e01415mr25639754637.30.1741001582029;
+        Mon, 03 Mar 2025 03:33:02 -0800 (PST)
+Received: from localhost ([122.172.84.15])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-aee90c7e519sm6101068a12.61.2025.03.03.03.33.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Mar 2025 03:33:01 -0800 (PST)
+Date: Mon, 3 Mar 2025 17:02:59 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Russell King <linux@armlinux.org.uk>, linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>
+Subject: Re: [PATCH V3 2/2] rust: Add initial clk abstractions
+Message-ID: <20250303113259.ybl3i6jfc5bwvk6r@vireshk-i7>
+References: <cover.1740995194.git.viresh.kumar@linaro.org>
+ <023e3061cc164087b9079a9f6cb7e9fbf286794e.1740995194.git.viresh.kumar@linaro.org>
+ <CAH5fLggcPo9g7Ep22aUj+5t+zdUQqa96NopZa946nsN649PQ2g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAH5fLggcPo9g7Ep22aUj+5t+zdUQqa96NopZa946nsN649PQ2g@mail.gmail.com>
 
-"Abdiel Janulgue" <abdiel.janulgue@gmail.com> writes:
+On 03-03-25, 11:04, Alice Ryhl wrote:
+> > +/// A simple implementation of optional `Clk`.
+> > +pub struct OptionalClk(Clk);
+> 
+> What is this?
 
-> Add a simple dma coherent allocator rust abstraction. Based on
-> Andreas Hindborg's dma abstractions from the rnvme driver, which
-> was also based on earlier work by Wedson Almeida Filho.
->
-> Nacked-by: Christoph Hellwig <hch@lst.de>
-> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-[...]
+This came up during review of the previous version [1]. A resource (clk in this
+case) can be optional for a driver to work and such drivers call
+clk_get_optional(). Similar APIs are present in other frameworks as well.
 
-> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-> index 0640b7e115be..8f3808c8b7fe 100644
-> --- a/rust/helpers/helpers.c
-> +++ b/rust/helpers/helpers.c
-> @@ -13,6 +13,7 @@
->  #include "build_bug.c"
->  #include "cred.c"
->  #include "device.c"
-> +#include "dma.c"
->  #include "err.c"
->  #include "fs.c"
->  #include "io.c"
-> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-> new file mode 100644
-> index 000000000000..b4dd5d411711
-> --- /dev/null
-> +++ b/rust/kernel/dma.rs
-> @@ -0,0 +1,421 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Direct memory access (DMA).
-> +//!
-> +//! C header: [`include/linux/dma-mapping.h`](srctree/include/linux/dma-mapping.h)
-> +
-> +use crate::{
-> +    bindings, build_assert,
-> +    device::Device,
-> +    error::code::*,
-> +    error::Result,
-> +    transmute::{AsBytes, FromBytes},
-> +    types::ARef,
-> +};
-> +
-> +/// Inform the kernel about the device's DMA addressing capabilities. This will set the mask for
-> +/// both streaming and coherent APIs together.
-> +pub fn dma_set_mask_and_coherent(dev: &Device, mask: u64) -> i32 {
-> +    // SAFETY: device pointer is guaranteed as valid by invariant on `Device`.
-> +    unsafe { bindings::dma_set_mask_and_coherent(dev.as_raw(), mask) }
-> +}
-> +
-> +/// Same as `dma_set_mask_and_coherent`, but set the mask only for streaming mappings.
-> +pub fn dma_set_mask(dev: &Device, mask: u64) -> i32 {
-> +    // SAFETY: device pointer is guaranteed as valid by invariant on `Device`.
-> +    unsafe { bindings::dma_set_mask(dev.as_raw(), mask) }
-> +}
+I was not sure if this should be implemented as a separate method in struct Clk
+itself or like this.
 
-I'm rebasing some of the dma pool code I'm using for NVMe on top of
-these patches, and I notice that these methods in the original code from
-way back (besides being on Device) has these methods return `Result`:
+> > +impl OptionalClk {
+> > +    /// Gets optional clock corresponding to a device and a connection id and returns `Clk`.
+> > +    pub fn get(dev: &Device, name: Option<&CStr>) -> Result<Self> {
+> > +        let con_id = if let Some(name) = name {
+> > +            name.as_ptr() as *const _
+> > +        } else {
+> > +            ptr::null()
+> > +        };
+> > +
+> > +        // SAFETY: It is safe to call `clk_get_optional()` for a valid device pointer.
+> > +        Ok(Self(Clk(from_err_ptr(unsafe {
+> > +            bindings::clk_get_optional(dev.as_raw(), con_id)
+> > +        })?)))
+> > +    }
+> > +}
 
-    pub fn dma_set_mask(&self, mask: u64) -> Result {
-        let dev = self.as_raw();
-        let ret = unsafe { bindings::dma_set_mask(dev as _, mask) };
-        if ret != 0 {
-            Err(Error::from_errno(ret))
-        } else {
-            Ok(())
-        }
-    }
+-- 
+viresh
 
-Is there a reason for not returning a `Result` in this series?
-
-
-Best regards,
-Andreas Hindborg
-
-
+[1] https://lore.kernel.org/all/20250221215931.GA134397-robh@kernel.org/
