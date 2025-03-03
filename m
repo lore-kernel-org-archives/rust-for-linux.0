@@ -1,51 +1,66 @@
-Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E987F1FF5F9;
-	Tue,  4 Mar 2025 11:17:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0DD1F150D;
+	Tue,  4 Mar 2025 11:35:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741087080; cv=none; b=cJtE/5iYit/o2JxDnJk/F+E5Lf30RZnUfmyKYTA/0yusV/UJcVhPdHbfpPqcCpHfaat+PqlKHVFMGg0Ljt2jqgrEuLlB/jcby3XvJJgGndc7xjoHIOPmqk0vrs7vrS+USLCve2Wj6tmKgSI6vGNGk5EuOtWz0lf7UtIN0Bbk1yk=
+	t=1741088112; cv=none; b=rYQWtJmq6AXllTdK5A9igeZ40strM1J8ra0oolQZuKhKRK5Sqlj3jsl9d6V+d7pKAAKKKdalLIgXw0JBXW1Mz/olluYQRfnr1A+cRJylxhvaN9RuRdwGR3IcDYZyjmvIjClKsGUtd6T7819XpirbXV5P1JXIy1SBYw9pXp9Pmaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741087080; c=relaxed/simple;
-	bh=XgYmH0+OJwg4e3U1YtmHRre0O+sLoOFhVcee8+/rJQY=;
+	s=arc-20240116; t=1741088112; c=relaxed/simple;
+	bh=zacHG8fP3D/hmNJCwvqEbGptVGdfYUkGYzxjtuIKA6g=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=R1shytapqWwVJLHX0KPItKwTqwjgJ7e6aBd4LALN6JHiYlyQtRBdUiNMIf5rJBx+HupVsrHl/BqSUvAQRRoCW7yr2vfLYrKNMrMujeqdy3QJhwXEfd4Ol/d90o3XahcwC6R98tAfhpM0URwAFZuzX/Rv1eKlVrIPFFM8ujsOduI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=GeVFSe4M; arc=none smtp.client-ip=49.12.72.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
+	 MIME-Version:Content-Type; b=gTzekS+nWjvGdappSmo3I6LLM4o04xqoQ+5Te/atsGIEDdU9w848OHU/jAixnfS0WiIMtc8UHfk677JaVkHJz8E5I+kJKHJD1KuIfQXxXeUeEWF4k+GERPug3zTG0SsoU/rpK1LtJlBnhqLPrtfGvPkmoFId4fiu94fRPz5SdVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G23jRXAJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="GeVFSe4M"
-From: Fiona Behrens <me@kloenk.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1741087075; bh=yYpiBJkawOAfe3NG34s2NRh6SN3BccAQUsJuyxfuq54=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=GeVFSe4MKE5MAfYHRXw944RUvEBnsSdfM3IghDSwPOeB3vtt7RVSlkabwpz7g+fAB
-	 DryDg2BYfCDEDA1yN9R4+0El0gPil15cr+KF5q6WqMayQmi2gq064aRRztqaxchGEg
-	 +Cr4um4sHjfHynUg9v10rfMbDWQ+zLaFwcLQlpFE=
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Bart Van Assche <bvanassche@acm.org>,  Steven Rostedt
- <rostedt@goodmis.org>,  Jason Gunthorpe <jgg@nvidia.com>,  Kees Cook
- <kees@kernel.org>,  Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-  Christoph Hellwig <hch@infradead.org>,  rust-for-linux
- <rust-for-linux@vger.kernel.org>,  Linus Torvalds
- <torvalds@linux-foundation.org>,  Greg KH <gregkh@linuxfoundation.org>,
-  David Airlie <airlied@gmail.com>,  linux-kernel@vger.kernel.org,
-  ksummit@lists.linux.dev
-Subject: Re: Rust kernel policy
-In-Reply-To: <Z7c3PguDn-sEl3gm@kernel.org> (Jarkko Sakkinen's message of "Thu,
-	20 Feb 2025 16:07:58 +0200")
-References: <Z7SwcnUzjZYfuJ4-@infradead.org>
-	<CANiq72myjaA3Yyw_yyJ+uvUrZQcSLY_jNp65iKH8Y5xGY5tXPQ@mail.gmail.com>
-	<202502191026.8B6FD47A1@keescook>
-	<20250219140821.27fa1e8a@gandalf.local.home>
-	<202502191117.8E1BCD4615@keescook> <20250219202751.GA42073@nvidia.com>
-	<20250219154610.30dc6223@gandalf.local.home>
-	<97841173-1de8-4221-8bf3-3470a5ac98a7@acm.org>
-	<89f2547edcaaba53d9965cab9133d809607330ac.camel@kernel.org>
-	<87pljc6d7s.fsf@kloenk.dev> <Z7c3PguDn-sEl3gm@kernel.org>
-Date: Tue, 04 Mar 2025 12:17:54 +0100
-Message-ID: <m2cyexjb8d.fsf@kloenk.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G23jRXAJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE08C4CEE5;
+	Tue,  4 Mar 2025 11:35:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741088111;
+	bh=zacHG8fP3D/hmNJCwvqEbGptVGdfYUkGYzxjtuIKA6g=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=G23jRXAJseMjDMk7gCnjGQphqADBG0QsFBko1uNacx2aL5PeuaH69LRwemrGugyrU
+	 PN1AkfUmF8PEQ0pxx7wAs6TW2nxCkW/KCV2f2xTqs2O7CSLSoCuS22lIU4EdxTTWQ1
+	 A3jQnJJ/pN6w2FLTdkrQiaW8Ne48HO2C7w/h0jNsciL5FFYe4IVNRLwLesOy6+3BoV
+	 uVNw4VPUCvOFLyFiKrCIPgtC76EB0mRcwAz7i4oR7J0Zf36P9YKPUyPCVnnKaqwuFw
+	 hUkb9qzBy980bHPzexDGjD/55hSav6orbCdvxJeDtsfCPa7Zj2b4AyERCj+3wL7BjN
+	 XY1F+25xsIMEg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>
+Cc: "Alice Ryhl" <aliceryhl@google.com>,  "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>,  "Miguel Ojeda"
+ <miguel.ojeda.sandonis@gmail.com>,  "Miguel Ojeda" <ojeda@kernel.org>,
+  "Matthew Wilcox" <willy@infradead.org>,  "Vlastimil Babka"
+ <vbabka@suse.cz>,  "John Hubbard" <jhubbard@nvidia.com>,  "Andrew Morton"
+ <akpm@linux-foundation.org>,  "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>,  "Arnd Bergmann" <arnd@arndb.de>,  "Jann
+ Horn" <jannh@google.com>,  "Suren Baghdasaryan" <surenb@google.com>,
+  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
+ <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
+ =?utf-8?Q?=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
+  "Trevor Gross" <tmgross@umich.edu>,  <linux-kernel@vger.kernel.org>,
+  <linux-mm@kvack.org>,  <rust-for-linux@vger.kernel.org>,  "Balbir Singh"
+ <balbirs@nvidia.com>,  "Linus Torvalds" <torvalds@linux-foundation.org>
+Subject: Re: [PATCH v14 0/8] Rust support for mm_struct, vm_area_struct, and
+ mmap
+In-Reply-To: <33e64b12-aa07-4e78-933a-b07c37ff1d84@lucifer.local> (Lorenzo
+	Stoakes's message of "Fri, 28 Feb 2025 09:49:02 +0000")
+References: <20250213-vma-v14-0-b29c47ab21f5@google.com>
+	<8130a6d5-a7e5-402b-b05c-2d0703ac1ed2@lucifer.local>
+	<CANiq72nBx3cRTUC9HWVR8K64Jbq3GCVMss5wuABzra3OLhRUQw@mail.gmail.com>
+	<c8e78762-1429-4ab6-9398-ce52370eec08@lucifer.local>
+	<CANiq72mKyvoyk_tgbMKUdzs-sJOoyEH7f1M9ipiET+XYgwCqRw@mail.gmail.com>
+	<2d132129-fdf7-404d-b1f1-8ee87b838dcf@lucifer.local>
+	<b6b5tnaw6vnuib7nzcm7ajszxiptqz3i2hex5yengzbsirztks@l3coijkqwtpb>
+	<CAH5fLgjMC2Q1tjuVtbhMvU-pmEsn1Ai4=AAB3Tm8HTWi7PFHfg@mail.gmail.com>
+	<30ffd737-d0aa-44aa-a647-686e536ac548@lucifer.local>
+	<r3iEw6cWkz3wBoUc9l7we40uuvdTVbQBJU3rWXKQspv1GfvviY_0pYLyFtTJPBP0VeofvKHx8-l0WHFT-OQfcA==@protonmail.internalid>
+	<33e64b12-aa07-4e78-933a-b07c37ff1d84@lucifer.local>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Mon, 03 Mar 2025 20:04:19 +0100
+Message-ID: <87h64ahr64.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -54,110 +69,34 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Jarkko Sakkinen <jarkko@kernel.org> writes:
+"Lorenzo Stoakes" <lorenzo.stoakes@oracle.com> writes:
 
-> On Thu, Feb 20, 2025 at 12:57:11PM +0100, Fiona Behrens wrote:
->> Jarkko Sakkinen <jarkko@kernel.org> writes:
->> 
->> > On Wed, 2025-02-19 at 12:52 -0800, Bart Van Assche wrote:
->> >> On 2/19/25 12:46 PM, Steven Rostedt wrote:
->> >> > I do feel that new drivers written in Rust would help with the
->> >> > vulnerabilities that new drivers usually add to the kernel.
->> >> 
->> >> For driver developers it is easier to learn C than to learn Rust. I'm
->> >> not sure that all driver developers, especially the "drive by"
->> >> developers, have the skills to learn Rust.
->> >
->> > IMHO, Rust is not that difficult to learn but it is difficult to
->> > run.
->> >
->> > One point of difficulty for me still is the QA part, not really the
->> > code. QuickStart discusses on how to install all the shenanigans
->> > with distribution package managers.
->> >
->> > The reality of actual kernel development is that you almost never
->> > compile/run host-to-host, rendering that part of the documentation
->> > in the battlefield next to useless.
->> >
->> > Instead it should have instructions for BuildRoot, Yocto and
->> > perhaps NixOS (via podman). It should really explain this instead
->> > of dnf/apt-get etc.
->> 
->> What do you mean with via podman for NixOS?
+> +cc Linus
 >
-> I sometimes use NixOS to test more complex kernel configurations. See
+> OK since Andrew seems caught up with other things, let's go ahead and propose
+> the entire thing to make life easy.
 >
-> https://social.kernel.org/notice/ArHkwNIVWamGvUzktU
+> Could you send a v15 with any fixes (don't think any are necessary now?) and
+> add a patch to add this to MAINTAINERS in the alphabetical location:
 >
-> I'm planning to use this approach to check if I could use that to
-> build efficiently kernels with Rust.
->
-> I've not been so far successful to do it with BuildRoot, which has
-> zeroed out any possible contributions for rust linux. Writing code
-> is like 5% of kernel development. Edit-compile-run cycle is the
-> 95%.
->
->> I do still have on my ToDo list to build and publish a better nix
->> development shell for kernel with rust enabled, and could also add a
->> section on how to build a NixOS iso in the same nix code.
->> But sadly time is a finite resource and so did not yet got to it.
->
-> Please do ping me if you move forward with this. IMHO, why wouldn't
-> you contribute that straight to the kernel documentation? Right no
-> there are exactly zero approaches in kernel documentation on how
-> test all of this.
+> MEMORY MANAGEMENT [RUST]
+> M:	Alice Ryhl <aliceryhl@google.com>
+> R:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> R:	Liam R. Howlett <Liam.Howlett@oracle.com>
+> L:	linux-mm@kvack.org
+> L:	rust-for-linux@vger.kernel.org
+> S:	Maintained
+> W:	http://www.linux-mm.org
+> T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> S:	Maintained
+> F:	rust/helpers/mm.c
+> F:	rust/kernel/mm.rs
+> F:	rust/kernel/mm/
 
-I do have a new pr open in the nix repo, it still needs some polishing
-and gcc and all that. but it does work for me to build using clang and
-also run kunit.
+Probably a single `S: ` entry would be enough?
 
-https://github.com/Rust-for-Linux/nix/pull/8
 
-Thanks
-Fiona
+Best regards,
+Andreas Hindborg
 
->
-> The best known method I know is to extend this type of example I
-> did year ago:
->
-> #!/usr/bin/env bash
->
-> set -e
->
-> make defconfig
-> scripts/config --set-str CONFIG_INITRAMFS_SOURCE "initramfs.txt"
-> yes '' | make oldconfig
->
-> cat > initramfs.txt << EOF
-> dir /dev 755 0 0
-> nod /dev/console 644 0 0 c 5 1
-> nod /dev/loop0 644 0 0 b 7 0
-> dir /bin 755 1000 1000
-> slink /bin/sh busybox 777 0 0
-> file /bin/busybox initramfs/busybox 755 0 0
-> dir /proc 755 0 0
-> dir /sys 755 0 0
-> dir /mnt 755 0 0
-> file /init initramfs/init.sh 755 0 0
-> EOF
->
-> mkdir initramfs
->
-> curl -sSf https://dl-cdn.alpinelinux.org/alpine/edge/main/x86_64/busybox-static-1.36.1-r25.apk | tar zx --strip-components 1
-> cp busybox.static initramfs/busybox
->
-> cat > initramfs/init.sh << EOF
-> #!/bin/sh
-> mount -t proc none /proc
-> mount -t sysfs none /sys
-> sh
-> EOF
->
-> and then qemu-system-x86_64 -kernel arch/x86/boot/bzImage
->
-> It's sad really.
->
->> 
->> Fiona
->
-> BR, Jarkko
+
