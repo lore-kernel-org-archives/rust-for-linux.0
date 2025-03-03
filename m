@@ -1,145 +1,200 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E97221D83
-	for <rust-for-linux@vger.kernel.org>; Mon,  3 Mar 2025 15:30:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C74214800
+	for <rust-for-linux@vger.kernel.org>; Mon,  3 Mar 2025 15:45:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741015805; cv=none; b=rN2bTgFkCH47XADUjo7Z55DszFbP18VTnvxngAZ6wdRepQAxdMoJSCh076MCSIddB3gSKNwENjI15O3OmfQoizU1ZicvnUhn0nleJi98Z1lV3ZOwuJy687gIF2gM5k1TNbWE5DUCckAMA7Sq4oLhdOV2b3uz1XE+7QxU5heM37Y=
+	t=1741016708; cv=none; b=JvZR9ZstRgRHFnNOUPKwBL1ho8/dDiN5zsKsTUzwz5INQaW8hUYUDtPDMBJSVEBed7+wpjv3K3VDgAoE1XsDAQz+dnX6oBPioJVc+CgO++q7g1bjHGqniWUo5Nz9Vt8/juHfkGMcfa9BUUJJIuYiDccgrIMI2JoYW5H88HV63lM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741015805; c=relaxed/simple;
-	bh=M2BzAH/H8oyYfF05WRy1NP/V+lCHnDVMr1BBQkvQmeA=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=cAiCfVII3bTMJMGhm8p57bwCGAUVb7LBunLgFvm1yVaV7ocpV3viIB6PLjncFW8AhoDqg+A6Dtp2ghscxZS5hbXyy3Z2yLcXpywYYqQDF6VuzNLsLycH1N3smuFxfgkcQidL4Fmwwh529Al+m/1o2fh8g6UFmZaZwf2RjM60Lro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gHuZqElN; arc=none smtp.client-ip=209.85.128.73
+	s=arc-20240116; t=1741016708; c=relaxed/simple;
+	bh=TvEt7HL2f2+ZiPYpZgA9Wv//CyB2sGr83sClfxce/Js=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ciJO+sPUU0vpN8Zd52Ph4peptJcriERWxWEKwB5JYX8aV4uA4vvC0ILQPbhCh7xHUb8nRCc7Rqc8VDYQAvyGSnE7WQbbHYaYOcRr9rfBjqC3dTMwK7eYjA2R7BDvz64QNTyxAtlzdry4r3YZTaMaIQnFRPc8M+oy8uPfO/aZhvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s1zlH7O0; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gHuZqElN"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4398ed35b10so20466285e9.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 03 Mar 2025 07:30:03 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s1zlH7O0"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4394345e4d5so31853875e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 03 Mar 2025 07:45:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741015802; x=1741620602; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=caZM8ulAJLpPxwqARELSVOBypouHfuE96bXivT9t7vI=;
-        b=gHuZqElNk7+B+xzkXR6J4FSFUJ454Kscp/eyGI296JQvgklBd1YQWrFAanAwmGAxtt
-         m/MfWtIyp4kJBue7pbglwnu1zCiKIaihhHVqu+CyPRrn2heBU3gv9vjvHo+gukODO8yZ
-         ue2UrdCUgUahdjP2kDipAH8qaQx4Qzw5ZkezQ7YIU5OssdJ5pcHGCTH+UaiwCfgr5Psl
-         4UXij8+XlQgc51l4gkUoNu43BeAc0I4SV8BtbLivwZdDfPSf6orsg9obS4THxHaFOCY2
-         dNIJcRnikGmNZZFMCbky8kK7BCfbcLQKuwHczUruuihZsstKbbsQp9PfXRXeTM7AxFLU
-         zjew==
+        d=google.com; s=20230601; t=1741016704; x=1741621504; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3kow4xuk+1mNeQ4oexSjSmUNlEIdhe4RIwb0wGDmCC8=;
+        b=s1zlH7O0h915hMWBG4aPJ0ZiB9mvsECjZ+YtIAz5FaT00pxSVz9vLtf4tnOISz7YmK
+         qP2sFtt76VC2xdOkapqpeGY3RDX9ABhuvnD+K8sSpypE6cDyexjy9yajNNgmAfXJ5i2c
+         CvpDFeRW999FXUN6ebuHHw+hA/IIlKZrOvDqN5h2CLee1ZoX+kcA/QjldpIx1Ev2owjy
+         dOrfSrtC/9m2lZ6uN1cBDH8tpTm06ymFFmozowsX/yw7VVHmYQ06CvHGFhxFEQU6KaGD
+         NM8QCoKGeKNzM5Z64x+LzlZdUpaC9avyb3/FOXCtohL/fdisgyv+9rMQ0V/jxKkF1y5v
+         4lBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741015802; x=1741620602;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=caZM8ulAJLpPxwqARELSVOBypouHfuE96bXivT9t7vI=;
-        b=p/oxdTlD8nxzhH5Z9bELR9nH4uorsP8VMw626l/lEGLrN9OrcJVrG+3ZSKUKjK19AE
-         xgqF4vd5SSOzJrq1/lIyqGkEYuZcrfoeJ0TQ23sINa5lh/4WdEpi246k3IfliujBnrdr
-         RnGLLOw+EnJKJIRyqw/WdbtXfs/NPGdUt/+5uTdrAq/WeSHcvCkItjSB6JNvXle/FMQE
-         GVJcv4fSBNj+A+legaG/4v/+MeK3fJs8jcL+ij4bMRFEQZr04upyYLTStJtvAH4QjNoK
-         wsNLg+/3U/LajzlzMCDtKpe5ARUWquVlpNKDYziRFOImqlo5xcnI6IXirBquC2wCTZ1k
-         q27g==
-X-Forwarded-Encrypted: i=1; AJvYcCUEVBF2jIgq775H3mLkYukb7xE+6oF4niLb9+J0YUWfb40TwU2CaHAOcKDXLPPnwpaSMuTAIF93uwLfHEm++A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrdIHlv/imRxo0XqyrdYn90gA/qlOLpLkMB72dC6lmrNg0hW8T
-	ZEvu7bRzDAf68V1+qRFLMRR/i2hLQ5KzYH9uFoo3TYDCa3pbb9UnaZa1igY3PZeFSij/W3ZPBLF
-	I9eNouq+rKewsHw==
-X-Google-Smtp-Source: AGHT+IEvrEmSDERvS2qqB+5i1YhcRepLJer3BcvKxJmllJrG/31CCHIMlY5mLja1zC7sgO1IiESOcYeMbOIdmuM=
-X-Received: from wmsp7.prod.google.com ([2002:a05:600c:1d87:b0:439:88bc:d27d])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3ca8:b0:439:94ef:3766 with SMTP id 5b1f17b1804b1-43ba67606b8mr104598245e9.19.1741015802220;
- Mon, 03 Mar 2025 07:30:02 -0800 (PST)
-Date: Mon, 03 Mar 2025 15:29:58 +0000
+        d=1e100.net; s=20230601; t=1741016704; x=1741621504;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3kow4xuk+1mNeQ4oexSjSmUNlEIdhe4RIwb0wGDmCC8=;
+        b=Ys/juTtLw1rcd/wFjvvLuxZ1jsPUhc7U9EK4L43eTFdiNE3YoDmaOSnMeb+v1YBGo+
+         V4hUasFwzAHPREjYc7oYFpM8tMzgS+OymYHX8GOWCC7RH/BwkNXXfdy1NtBT+DQ2/Umr
+         y2ra6K19TK0Z0IwcYeQFgnuV+ZQ/uQDHq4gQkzLzSHRaIhRlwvQ69c3Yw2rl2v2qbtWu
+         eWjk3vQV920wvoRUjoDs8JTFLsV6c/bz7DZQzATqmqcMq8ZW+0I0/4CbTwelv/rAxd9n
+         Ovwk59VMwq+Je3pzCD07ihUxtdRPAAe0XOqJTwPX4hevAnEhpfMFQchwXj1KgIrkNmrm
+         IJYA==
+X-Forwarded-Encrypted: i=1; AJvYcCWus+89G3EyPWiXSRFUcHbGPH8x6vCT0P0uNjeUtMrdga3WSoVaSBpx6F3q/VvH61hdgxIi6gQLdX9C59FcpQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFF7Q6S5+D+m4FqI9XvaXfaG1j3vSz7XiX5HBNe1P3zHI8RLK2
+	/BghJFk6o/XgZSCigee5Vrmw/HB0u3/xJix1g0ovPUA7j0Hor5cbQNAwp75iSIvdiXvz44SJrVM
+	EveuGffEM6/qhPxY4VXSiIzWGg0chG9MHZJay
+X-Gm-Gg: ASbGncswGuyOOJyf9WsYKqv/XTHVCl2uHNjSLjVpnJrpMarP/zqePthuUKiU0G9M59M
+	H/8rd+5DFHeaz3r33jvw5HTYlJ7Tkn6jpzJPxdMykJpC+kQc90JzTCP8XAVRqPx1sOk93EAuDX9
+	ewtOfK+NS9sg0FPtQNY+ujxQpDo23wgUesUn35A41YnJsUkeFyQ40an4UQ
+X-Google-Smtp-Source: AGHT+IHXXQ7buQBEorS4efQ1j2iNuWmeS1bZKP0/m94hhxiT8OFf6H7yU2EGk9/SwAGsuWxPOOcRN2PU93WYRcIT0a8=
+X-Received: by 2002:a05:6000:270f:b0:390:dfe0:1320 with SMTP id
+ ffacd0b85a97d-390ec9c1bddmr8951802f8f.33.1741016704234; Mon, 03 Mar 2025
+ 07:45:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAPXKxWcC/x3MQQqAIBBA0avIrBPUSKirRAuZxhoIC7UowrsnL
- d/i/xcSRaYEg3gh0sWJ91ChGwG4urCQ5LkajDKdalUrOWwcSCbCM3J+MN/SetTorO11Z6GGRyT P9z8dp1I+BbTQC2QAAAA=
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1936; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=M2BzAH/H8oyYfF05WRy1NP/V+lCHnDVMr1BBQkvQmeA=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnxcr3q4/f1Eh+mVvx+bWb74mJwFEmQclGeaR4H
- 6BrWuXePv2JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ8XK9wAKCRAEWL7uWMY5
- Rg7XEACJZp3zV7TOxcbAhMiyi+QxSwxsKIWm0z5mCiE9+IeVIiRM0mr9KJybwGBBZV6fceHTyNp
- vSNQwqRR1/WawtpXx71vDBrxQP5MbUxLt+b2H4Kk9EwzWacbU6Eevm+w+K5DgoGBaVVWRo+b2Zg
- 5zhx9HCj9GMTYfxU+hBZ/d1atafW/55SrtBEHmU11BdoB1z8U6tcroTNR8IiXBMplyqiffpWE06
- 7c0Yu71HHNE1XF3ZfKLj2rL4TPefriva5oA53IaiAwogzGrDbO3IPiaeovkQz5EUiwh4k0WW3zk
- NXK6vTpRf8uaqm0wnLjLmh400aXX0VhG2Pix6l0pVoz7Ja2ADm334nMpsSVrkXxx1DivW4y41m2
- ic8xg1/6zolmSGUYpkbY1W+ui/MAo/joydXYf5cYMTelD6XSZLQYjQ9DQKwORm5c2BY7KDjAKwH
- fmmP31pv8w4TXNWayRWhNNhOyeRLJkKcjnBUs6wnxzNrIa8RbqHMis0YBz6sGsbVtN+XGc7y/T+
- dqQ5Eh4+cfwj7j4PGGMQjl9/s9IadvAzhZZmiteRiJWXn4duTt57dZ/uR2vCgxwxRgMTzUa/ccj
- uxv3TrbUxPckHCNtGKCB7OP+Q36tKJQhPrIP1/YEa2tsogs3ZIOJ7eq6ZplZZyqR+t50Mvb29AX TAjVN494qVFamCQ==
-X-Mailer: b4 0.14.1
-Message-ID: <20250303-inline-securityctx-v1-1-fb7b9b641fdf@google.com>
-Subject: [PATCH] lsm: rust: mark SecurityCtx methods inline
+MIME-Version: 1.0
+References: <20250224115007.2072043-1-abdiel.janulgue@gmail.com>
+ <20250224115007.2072043-3-abdiel.janulgue@gmail.com> <6dea7b6a-1534-47e7-94d2-d67417c3d4c1@proton.me>
+ <tnwDK3QN_Xr0Yoa3U8HVxS5OqjvxIhgmmO_ifTGJR_EtIzjoxawOHtnbOJ9yChsUWXyFPcU9beIdrgbpfGZI8w==@protonmail.internalid>
+ <3202F69F-397E-4BC4-8DD8-E2D4B0AB056F@collabora.com> <87bjuil15w.fsf@kernel.org>
+ <t4HxdvR7WBX_861hiTXo72jqC9F9oRpIzgA_dD2yhcSuLISEkC-shMfSgllrFPpnkSZXGfRcc47keudMooNiIQ==@protonmail.internalid>
+ <CAH5fLgg5MuUu=TX8mMsPf5RcLhMLHSU4Vct=h8rFX6Z7HjPxeA@mail.gmail.com> <87ikoqjg1n.fsf@kernel.org>
+In-Reply-To: <87ikoqjg1n.fsf@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-To: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	rust-for-linux@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+Date: Mon, 3 Mar 2025 16:44:51 +0100
+X-Gm-Features: AQ5f1JpQwVPMNAtyLQEi5zozvB7zbblDDYl0-W2nDZDSA_G1jc6Lh4mO8DNqPys
+Message-ID: <CAH5fLgh6ubawHh76wq7JPbcuBCWhm91m7Rc01MVsX-a3C6qaVA@mail.gmail.com>
+Subject: Re: [PATCH v12 2/3] rust: add dma coherent allocator abstraction.
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>, dakr@kernel.org, robin.murphy@arm.com, 
+	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Trevor Gross <tmgross@umich.edu>, Valentin Obst <kernel@valentinobst.de>, linux-kernel@vger.kernel.org, 
+	Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com, 
+	iommu@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I'm seeing Binder generating calls to methods on SecurityCtx such as
-from_secid and drop without inlining. Since these methods are really
-simple wrappers around C functions, mark the methods to inline to avoid
-generating these useless small functions.
+On Mon, Mar 3, 2025 at 4:21=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel.=
+org> wrote:
+>
+> "Alice Ryhl" <aliceryhl@google.com> writes:
+>
+> > On Mon, Mar 3, 2025 at 2:00=E2=80=AFPM Andreas Hindborg <a.hindborg@ker=
+nel.org> wrote:
+> >>
+> >> "Daniel Almeida" <daniel.almeida@collabora.com> writes:
+> >>
+> >> > Hi Benno,
+> >> >
+> >>
+> >> [...]
+> >>
+> >> >>> +    /// Writes data to the region starting from `offset`. `offset=
+` is in units of `T`, not the
+> >> >>> +    /// number of bytes.
+> >> >>> +    ///
+> >> >>> +    /// # Examples
+> >> >>> +    ///
+> >> >>> +    /// ```
+> >> >>> +    /// # fn test(alloc: &mut kernel::dma::CoherentAllocation<u8>=
+) -> Result {
+> >> >>> +    /// let somedata: [u8; 4] =3D [0xf; 4];
+> >> >>> +    /// let buf: &[u8] =3D &somedata;
+> >> >>> +    /// alloc.write(buf, 0)?;
+> >> >>> +    /// # Ok::<(), Error>(()) }
+> >> >>> +    /// ```
+> >> >>> +    pub fn write(&self, src: &[T], offset: usize) -> Result {
+> >> >>> +        let end =3D offset.checked_add(src.len()).ok_or(EOVERFLOW=
+)?;
+> >> >>> +        if end >=3D self.count {
+> >> >>> +            return Err(EINVAL);
+> >> >>> +        }
+> >> >>> +        // SAFETY:
+> >> >>> +        // - The pointer is valid due to type invariant on `Coher=
+entAllocation`
+> >> >>> +        // and we've just checked that the range and index is wit=
+hin bounds.
+> >> >>> +        // - `offset` can't overflow since it is smaller than `se=
+lfcount` and we've checked
+> >> >>> +        // that `self.count` won't overflow early in the construc=
+tor.
+> >> >>> +        unsafe {
+> >> >>> +            core::ptr::copy_nonoverlapping(src.as_ptr(), self.cpu=
+_addr.add(offset), src.len())
+> >> >>
+> >> >> Why are there no concurrent write or read operations on `cpu_addr`?
+> >> >
+> >> > Sorry, can you rephrase this question?
+> >>
+> >> This write is suffering the same complications as discussed here [1].
+> >> There are multiple issues with this implementation.
+> >>
+> >> 1) `write` takes a shared reference and thus may be called concurrentl=
+y.
+> >> There is no synchronization, so `copy_nonoverlapping` could be called
+> >> concurrently on the same address. The safety requirements for
+> >> `copy_nonoverlapping` state that the destination must be valid for
+> >> write. Alice claims in [1] that any memory area that experience data
+> >> races are not valid for writes. So the safety requirement of
+> >> `copy_nonoverlapping` is violated and this call is potential UB.
+> >>
+> >> 2) The destination of this write is DMA memory. It could be concurrent=
+ly
+> >> modified by hardware, leading to the same issues as 1). Thus the
+> >> function cannot be safe if we cannot guarantee hardware will not write
+> >> to the region while this function is executing.
+> >>
+> >> Now, I don't think that these _should_ be issues, but according to our
+> >> Rust language experts they _are_.
+> >>
+> >> I really think that copying data through a raw pointer to or from a
+> >> place that experiences data races, should _not_ be UB if the data is n=
+ot
+> >> interpreted in any way, other than moving it.
+> >>
+> >>
+> >> Best regards,
+> >> Andreas Hindborg
+> >
+> > We need to make progress on this series, and it's starting to get late
+> > in the cycle. I suggest we:
+>
+> There is always another cycle.
+>
+> >
+> > 1. Delete as_slice, as_slice_mut, write, and skip_drop.
+> > 2. Change field_read/field_write to use a volatile read/write.
+>
+> Volatile reads/writes that race are OK?
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/kernel/security.rs | 5 +++++
- 1 file changed, 5 insertions(+)
+I will not give a blanket yes to that. If you read their docs, you
+will find that they claim to not allow it. But they are the correct
+choice for DMA memory, and there's no way in practice to get
+miscompilations on memory locations that are only accessed with
+volatile operations, and never have references to them created.
 
-diff --git a/rust/kernel/security.rs b/rust/kernel/security.rs
-index 25d2b1ac3833..243211050526 100644
---- a/rust/kernel/security.rs
-+++ b/rust/kernel/security.rs
-@@ -23,6 +23,7 @@ pub struct SecurityCtx {
- 
- impl SecurityCtx {
-     /// Get the security context given its id.
-+    #[inline]
-     pub fn from_secid(secid: u32) -> Result<Self> {
-         // SAFETY: `struct lsm_context` can be initialized to all zeros.
-         let mut ctx: bindings::lsm_context = unsafe { core::mem::zeroed() };
-@@ -35,16 +36,19 @@ pub fn from_secid(secid: u32) -> Result<Self> {
-     }
- 
-     /// Returns whether the security context is empty.
-+    #[inline]
-     pub fn is_empty(&self) -> bool {
-         self.ctx.len == 0
-     }
- 
-     /// Returns the length of this security context.
-+    #[inline]
-     pub fn len(&self) -> usize {
-         self.ctx.len as usize
-     }
- 
-     /// Returns the bytes for this security context.
-+    #[inline]
-     pub fn as_bytes(&self) -> &[u8] {
-         let ptr = self.ctx.context;
-         if ptr.is_null() {
-@@ -61,6 +65,7 @@ pub fn as_bytes(&self) -> &[u8] {
- }
- 
- impl Drop for SecurityCtx {
-+    #[inline]
-     fn drop(&mut self) {
-         // SAFETY: By the invariant of `Self`, this frees a context that came from a successful
-         // call to `security_secid_to_secctx` and has not yet been destroyed by
+In general, this will fall into the exception that we've been given
+from the Rust people. In cases such as this where the Rust language
+does not give us the operation we want, do it like you do in C. Since
+Rust uses LLVM which does not miscompile the C part of the kernel, it
+should not miscompile the Rust part either.
 
----
-base-commit: a64dcfb451e254085a7daee5fe51bf22959d52d3
-change-id: 20250303-inline-securityctx-6fc1ca669156
+> > This will let us make progress now and sidestep this discussion. The
+> > deleted methods can happen in a follow-up.
+>
+> `item_from_index`, the `dma_read` and `dma_write` macros as well, I would=
+ think?
 
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
+Those are necessary to use field_read/field_write, so I think it's
+fine to keep those.
 
+Alice
