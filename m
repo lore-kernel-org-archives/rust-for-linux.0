@@ -1,168 +1,149 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9192B9AA;
-	Mon,  3 Mar 2025 14:23:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B2218D620;
+	Mon,  3 Mar 2025 15:03:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741011793; cv=none; b=dYAembzq99tRy6yd78ABLHqTwZFTCJN3Slq8PMxALveQ6gJ5n6ZGjZ2CUTBQt5/LBfvTMeDJ3/ZXTYzP0el4YBi6LrROAdNDohzac7kjigD8/NBDV65GWKQbtNfOxY/acUJXy062BxKFAkoEANGaqSU1xTcGal8+B9lCovxmlqo=
+	t=1741014237; cv=none; b=lpnMf2NQqZwvATrAEgKljekDY9heFX7H7VEBW/jdlqQtosXNufinu1F/Cy5hXPaRmOwNwjG+CNgzIottBggNgadDTtKHsJ5TOgmBdv0ki7A37x4UusBXMldgFx5W9mka6DQFjYUcxhbE1zSC0ZEyF+2ZrAimGjxBJJSaWqHSPFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741011793; c=relaxed/simple;
-	bh=pIJkqSLeUyRInezerfpiv4GfUMAC4on8F2v45PH/XM8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Hkrmnv2wTty4lF5Las0hBrLxV9KQLMjroNz07MGAHoldHm8tLHVJRwxD/TEZmXKc/4AJGeDzIJ852exum7JI0Pnt+5c8LF1ObciEzJP2tuvjaROStE1ctariYhkGveD+dZbEiTgYiD4urIryinLMImrzHVYugJ3IBGEvXhe32cQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VRSTMxff; arc=none smtp.client-ip=209.85.221.42
+	s=arc-20240116; t=1741014237; c=relaxed/simple;
+	bh=D+2OjHifyWJer/WkKi39uakZygvjoE6gINPmlEYsVE8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OLvjP7CImlbr1vIaazlj4ijE1g3P9EebjFxAahbOtYrVcENufw7tQUHNkmmT0KCmaWfJY3nWbazV9dkbdFrV+rkiL4pmX+qx9w2EWAKITYVoPXkIy9bD8ZuqCQaLkqI2O7DE6AffqTCPO876GvM1ns6Ey3V7scMT7YqqS4XqSl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FShK3EoR; arc=none smtp.client-ip=209.85.128.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VRSTMxff"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-390eb7c1024so2495428f8f.0;
-        Mon, 03 Mar 2025 06:23:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FShK3EoR"
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-6f768e9be1aso52330097b3.0;
+        Mon, 03 Mar 2025 07:03:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741011789; x=1741616589; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mrGT9P3YIII/ik/a4tG5c1QPCrLv8EWAGnwxrm4FLFI=;
-        b=VRSTMxff2ROwssGOVNjuDr2V8KiFfORhXqAtN7gmF2admZNGJmZRQxWLB+NKMvW8Lv
-         iGb0Wy/wlkdHPlg4SHBpQD9Pgwc3Gq45lAv3y+4k+aRHtSc4OF/vb4HmxvxXyviStFGa
-         wBWDX+S627bmG68FXSIlPYgqO3fgqXsfghkqLwB6Mjnp7LIcHb63HAWZfP5uFltwDkRP
-         eQTwYo6urlJs4TP+YZBIRrpXya+yMMVAJaeznfRhexcdSI8V7gr5NuXl1xkIn3DKi2Il
-         a/aJJfdBKBpb7O5yfKIsk3sVfJEChWpu0+xY8Mr1pm4jKlb8s0Pum/koQ1VstvJtyTsX
-         mJ2g==
+        d=gmail.com; s=20230601; t=1741014234; x=1741619034; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=x+dzQxlm+hznt93iYLJumzN/omtywLYvhZijugcl3wM=;
+        b=FShK3EoRJG1gIEDFoe0UKv77whxEamO2wL22VUSBf4Gi4InDQqt7omBNkXQaX5O4sD
+         /RF3inAkTcviOQDOfHldfMRGD1DdedKCER7PF/++McionyaEcSeLH464y3SBN+lRWYYN
+         9RxRM+dzBgYFqVza8AqEpFLAaTpEpVJp866P7vvdA6QjiWQ6GMt+g6YND8qLnBgyh3RN
+         m5HXwAEaE/phxuUmPL9enIJ+6gA0zZQd2A8GteHKnIBj1iko1uD2MpOrDHBD/M8Uj89O
+         z6oXBAGj1CG/lt5xp5r3EtQyHNpAB4Dfiwhsk8g5V6yK96sdxm9PhozlwOMbQfqqI571
+         bzcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741011789; x=1741616589;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mrGT9P3YIII/ik/a4tG5c1QPCrLv8EWAGnwxrm4FLFI=;
-        b=I/MF44qNxDxymHINaity++AZqRvnT/RUDKUy92zJq9XrE1z0WCke3DQLbSzi78tmS5
-         PSGskcAzSjDjpXfD0YwCXC3EI2i4cT/K59aJgsLQ56/6gRAJb7RaklAGo9xVZ51uBVgj
-         1sClqbffiXK3FSjmJn+rH6HNgOIspskIlKx9Z6HKir+2SdCykNgdNW1pvgRojoEUMP3X
-         bWt8heR6Pz6Wqn78TtIhZXoBz3xuxckCMQqPN2ycoskiXBiMv+K73dOU5/dA9z2B4xTV
-         dD9Sv8DQ/5I2l1G4b3VcASgdQ0eW6dwLN+SDKHVPz4Zsq3JGRx2MRXlNxJ4tR/U68564
-         H+gg==
-X-Forwarded-Encrypted: i=1; AJvYcCWbrm9hM51kPxGeyVDSqGjYjW/LH46nObrX30CTXJG/3U60p50RVT1Bey77PB0fOn+6goIfVqaGYsPuecM=@vger.kernel.org, AJvYcCXJ9eDV0rKwExHycLFbwzrRJsDTvtWrj3jego+NPZvFVLMsWrv6PA5xMSFhyTN4o7dwSb3CRliEEAaQVN1wvjw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0I6gz72TvZJvlzk2/NdE5naA3Rz8thPTOkSQ0NyMxnCfkDipq
-	cAkLnZX4m0DXOhTIUteFwWCFMRfaUrUS4XOyx3DjZEfRY9IZGrUu
-X-Gm-Gg: ASbGncs993kbXlaUipW+1foPjMybYJ+vpERGnWxlx5boxNpNexD0Ovrlq/ZFRyY1kKI
-	5qvLSGZdFF1pqZMvXaPGjLYOvf7c8k2yf4ayq/rckXjyiniM7PRzwI6sdAlCNp2FOKFRjXe6XiS
-	IkFW/KLCpsCqhBcPOlwUPNvns+0pSIyiqffBZHznen1o++/aTyKydXz1hhK1na1cE8QoToDtxlu
-	9qmx+ZGcPcpAhBpoLzF+clpdex8pYYAPi4N3tTBTYrEehPkmzJFDNBPu+9lR18x4ezAN6Hb6Nxl
-	rGFq26/WjTkG+XGPXnA9JAKQwOtVzYP2gWmwimVGVcMn2Y/FTKaO7g4j695mRvCAu+oyBKlckf2
-	cOw0OG0O0kBBl1valPSM/xlAFKoNZMe1xEyFRcpGYDCskgUnAFmsE8LiGKENV3wNXM1xc0om7/8
-	6u
-X-Google-Smtp-Source: AGHT+IHxdKpeKW+iuPDtegTXuf7HTIpCYH3Uf3Vd0h2zHZE7LvI/t8Y5S2/PEiWD4OWu/II3SjRc3g==
-X-Received: by 2002:a5d:5f4c:0:b0:390:fd7c:98be with SMTP id ffacd0b85a97d-390fd7c9b46mr6237286f8f.19.1741011789369;
-        Mon, 03 Mar 2025 06:23:09 -0800 (PST)
-Received: from ?IPV6:2003:df:bf24:2700:73f1:1935:b744:5d51? (p200300dfbf24270073f11935b7445d51.dip0.t-ipconnect.de. [2003:df:bf24:2700:73f1:1935:b744:5d51])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e4795978sm14341725f8f.3.2025.03.03.06.23.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Mar 2025 06:23:09 -0800 (PST)
-Message-ID: <daffef96-7c50-4162-bd93-e7bc20af9ee6@gmail.com>
-Date: Mon, 3 Mar 2025 15:23:08 +0100
+        d=1e100.net; s=20230601; t=1741014234; x=1741619034;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=x+dzQxlm+hznt93iYLJumzN/omtywLYvhZijugcl3wM=;
+        b=CgMy4noXCFqwQgDrxymMdnRWMyX8XlwL5cnzqixTyFpFkmoWSvIzuIGbnwTrpnQEiu
+         dwxbFty6jmDKtxdqK8NLVj9lxAwmklkgiKo5C0B863iBQa092UYPVZgVxCwoz7WtbN4+
+         IIA8sxgkxD7XrW5t2qpwNpqsrUnY6aLlRHVJvCpirs4fqXCeErQUFYeH2oEWTHFSajpR
+         ZNlUkLiQzQEsSKpqO/YP6W5DAY+U1RfQ7OY60gjuWU+1OJd5Wx6eK3yRiGFFoo9yXbRp
+         i4cgxk4pjKDd6aJuN56GpE9VJkXyzWFJU32DUM0YQDZLMdM1T9LxSG+P4FmpZrzcCDbP
+         jELQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWE3mmNjJWemw/2SzmQMxebE0Wm1qP1cQbuO523DBaTCQmP5VoartG3fFfgC4e/cqeVeh0D0heoJDFfim3buZY=@vger.kernel.org, AJvYcCWKqKWEAnftolgPYQEHLXQUpVq+9Lwc3Og0oj0xQeYm4LdA6ysfNwVRkLQAZAfM3KRf80zmOL9EtekWuHU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwIgwkYhx2ZZ0hyrSh7KpKRdNWGrWTa7mHIndHVnEjFO4cw0b0m
+	wiamvyPgOrnJiQMp3bw+A/v8N8VMBpThu4uyH7XU48lU0fJz1klg
+X-Gm-Gg: ASbGnct4e5Zt08vga1V4zVdGWE5s/LpGcHIdHC5pQexO0fHyyMt5SB6X7tiHPRpcDoN
+	kvbC2C6jWScegNiYhC/SzT03YwE0l+fNwUDiekuYqtc2taU4C5Ed+X1AcsuDB40QxA+mUFb/TCf
+	RrhQvaNnKp3wgspeAzgJYYCDpqeXuiMtYg5QGFzVGemHSd0KCCx0xJLpsFiJTFDbHxhczZ31/dl
+	SX+uhSmcLGmgkPB9414HysCxboiHWe4Lto6aImDwy7syAMHtlshzIBvYZEVpLtVbB9e3ec3xRXD
+	FS6Hr8GkA5x/hPMRKBdl5PgxO8zW+aaiNHR/PdVGf9liFSEb0ebl8b7e9GWzaOlQYplz+o611Hx
+	WSHwJ
+X-Google-Smtp-Source: AGHT+IHGiYXy/BjrKAy1qTEMsokZjZvqxm65haT2o9Z0kZqUyVg0LDK8WBbag2g6ZRoQJNTfFSCJ7A==
+X-Received: by 2002:a05:6902:1089:b0:e60:88f9:b081 with SMTP id 3f1490d57ef6-e60b23f8464mr17772239276.17.1741014234375;
+        Mon, 03 Mar 2025 07:03:54 -0800 (PST)
+Received: from localhost (c-73-224-175-84.hsd1.fl.comcast.net. [73.224.175.84])
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e60a3a1fef8sm2978694276.12.2025.03.03.07.03.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Mar 2025 07:03:53 -0800 (PST)
+Date: Mon, 3 Mar 2025 10:03:52 -0500
+From: Yury Norov <yury.norov@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Burak Emir <bqe@google.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: add bindings and API for bitmap.h and bitops.h.
+Message-ID: <Z8XE2H3vGDNiOra7@thinkpad>
+References: <20250303114037.3259804-2-bqe@google.com>
+ <CAH5fLgjPTvXzcSVDWeYN7nLgxMZgeHUbHiDOv4R=uRBG=50UNQ@mail.gmail.com>
+ <CAH5fLgiQkPpMUV0Bvmwd5zUsHy=GHLdoVFjRuAPxpWCbBiD2Jw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 8/9] rust: sync: lock: Add `Backend::BackendInContext`
-To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
- Waiman Long <longman@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- "open list:LOCKING PRIMITIVES" <linux-kernel@vger.kernel.org>
-References: <20250227221924.265259-1-lyude@redhat.com>
- <20250227221924.265259-9-lyude@redhat.com>
-Content-Language: de-AT-frami
-From: Dirk Behme <dirk.behme@gmail.com>
-In-Reply-To: <20250227221924.265259-9-lyude@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAH5fLgiQkPpMUV0Bvmwd5zUsHy=GHLdoVFjRuAPxpWCbBiD2Jw@mail.gmail.com>
 
-On 27.02.25 23:10, Lyude Paul wrote:
-> From: Boqun Feng <boqun.feng@gmail.com>
+On Mon, Mar 03, 2025 at 02:01:44PM +0100, Alice Ryhl wrote:
+> > > +void rust_helper_bitmap_copy(unsigned long *dst, const unsigned long *src, unsigned int nbits)
+> > > +{
+> > > +       bitmap_copy(dst, src, nbits);
+> > > +}
+> >
+> > I was about to say that this could just be a memcpy, but ...
+> >
+> > > +    /// Copy up to `nbits` bits from this bitmap into another.
+> > > +    ///
+> > > +    /// # Panics
+> > > +    ///
+> > > +    /// Panics if `nbits` is too large for this bitmap or destination.
+> > > +    #[inline]
+> > > +    pub fn bitmap_copy(&self, dst: &mut Bitmap, nbits: usize) {
+> > > +        if self.nbits < nbits {
+> > > +            panic_not_in_bounds_le("nbits", self.nbits, nbits);
+> > > +        }
+> > > +        if dst.nbits < nbits {
+> > > +            panic_not_in_bounds_le("nbits", dst.nbits, nbits);
+> > > +        }
+> > > +        // SAFETY: nbits == 0 is supported and access to `self` and `dst` is within bounds.
+> > > +        unsafe { bindings::bitmap_copy(dst.as_mut_ptr(), self.ptr.as_ptr(), nbits as u32) };
+> > > +    }
+> >
+> > ... then I realized that we're probably not using it correctly. I
+> > would expect this to modify the first `nbits` bits in `dst`, leaving
+> > any remaining bits unmodified. However, if nbits is not divisible by
+> > BITS_PER_LONG it might modify some bits it shouldn't.
+> >
+> > That said, Binder needs this only in the case where the sizes are
+> > equal. Perhaps we could rename this to `copy_from_bitmap` with this
+> > signature:
+> > fn copy_from_bitmap(&mut self, src: Bitmap)
 > 
-> `SpinLock`'s backend can be used for `SpinLockIrq`, if the interrupts
-> are disabled. And it actually provides performance gains since
-> interrupts are not needed to be disabled anymore. So add
-> `Backend::BackendInContext` to describe the case where one backend can
-> be used for another. Use the it to implement the `lock_with()` so that
+> Sorry I meant src: &Bitmap here.
 
+Yes, you're right. bitmap_copy() copies the whole bitmap. So if your
+Bitmap already has size, you don't need to pass it explicitly.
+ 
+> Also, we could rewrite it to just call memcpy rather than go through
+> bitmap_copy. Though that requires us to have a Rust version of
+> bitmap_size, which I think it makes sense to avoid using a Rust helper
+> for.
 
-Use the it -> Use it (drop "the")?
+No, you couldn't. I don't want rust bindings to diverge from the main
+kernel. So the rule is simple: if inline wrapper exists only for the
+small_const_nbits() optimization - go ahead and use the outlined
+underscored version. If the wrapper does something else - no matter
+what - it should be wrapped.
 
-
-> `SpinLockIrq` can avoid disabling interrupts by using `SpinLock`'s
-> backend.
+> We could reimplement it by first computing the number of longs and
+> then computing the number of bytes
 > 
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> ---
->  rust/kernel/sync/lock.rs          | 26 ++++++++++++++++++--
->  rust/kernel/sync/lock/mutex.rs    |  1 +
->  rust/kernel/sync/lock/spinlock.rs | 41 +++++++++++++++++++++++++++++++
->  3 files changed, 66 insertions(+), 2 deletions(-)
+> const fn bitmap_size(nbits: usize) -> usize {
+>     nbits.div_ceil(c_ulong::BITS) * size_of::<c_ulong>()
+> }
 > 
-> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-> index e7c1fd028435e..54c77972c83f8 100644
-> --- a/rust/kernel/sync/lock.rs
-> +++ b/rust/kernel/sync/lock.rs
-> @@ -32,10 +32,15 @@
->  ///   is owned, that is, between calls to [`lock`] and [`unlock`].
->  /// - Implementers must also ensure that [`relock`] uses the same locking method as the original
->  ///   lock operation.
-> +/// - Implementers must ensure if [`BackendInContext`] is a [`Backend`], it's safe to acquire lock
-
-
-to acquire the lock (add "the")?
-
-
-> +///   under the [`Context`], the [`State`] of two backends must be the same.
->  ///
->  /// [`lock`]: Backend::lock
->  /// [`unlock`]: Backend::unlock
->  /// [`relock`]: Backend::relock
-> +/// [`BackendInContext`]: Backend::BackendInContext
-> +/// [`Context`]: Backend::Context
-> +/// [`State`]: Backend::State
->  pub unsafe trait Backend {
->      /// The state required by the lock.
->      type State;
-> @@ -49,6 +54,9 @@ pub unsafe trait Backend {
->      /// The context which can be provided to acquire the lock with a different backend.
->      type Context<'a>;
->  
-> +    /// The alternative backend we can use if a [`Context`](Backend::Context) is provided.
-> +    type BackendInContext: Sized;
-> +
->      /// Initialises the lock.
->      ///
->      /// # Safety
-> @@ -170,8 +178,22 @@ pub unsafe fn from_raw<'a>(ptr: *mut B::State) -> &'a Self {
->  impl<T: ?Sized, B: Backend> Lock<T, B> {
->      /// Acquires the lock with the given context and gives the caller access to the data protected
->      /// by it.
-> -    pub fn lock_with<'a>(&'a self, _context: B::Context<'a>) -> Guard<'a, T, B> {
-> -        todo!()
-> +    pub fn lock_with<'a>(&'a self, _context: B::Context<'a>) -> Guard<'a, T, B::BackendInContext>
-> +    where
-> +        B::BackendInContext: Backend,
-> +    {
-> +        // SAFETY: Per the safety guarantee of `Backend`, if `B::BackendIncontext` and `B` should
-> +        // have the same state, therefore the layout of the lock is the same so it's safe the
-
-the -> to (safe to convert)?
-
-Cheers,
-
-Dirk
-
+> Thoughts?
+> 
+> Alice
