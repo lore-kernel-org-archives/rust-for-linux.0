@@ -1,473 +1,223 @@
-Received: from mail-10628.protonmail.ch (mail-10628.protonmail.ch [79.135.106.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F267921147F
-	for <rust-for-linux@vger.kernel.org>; Mon,  3 Mar 2025 13:29:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38CF521148C
+	for <rust-for-linux@vger.kernel.org>; Mon,  3 Mar 2025 13:33:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741008594; cv=none; b=ho/fyHORYNXJJ7kSZhGiu1X4R+VHrPUKCljFhr/id40ODdWTq41QYAuBGqEFhsVYut6MZaAJSkuy49P7WItc20bGlyOZ7J3qmgE4uxvRanLwbpu0tu8EuxvCjwBymgHKDJ+hjfBwV2TB2VGAQpfjpjxFnKRrX1WIrL0KOyd8Gyg=
+	t=1741008835; cv=none; b=WHyNt9jn6aImB5vfbtlMXP25RfF33bSBLFHbDHWRtHllLUmviewa6+ka9Gdny2IooKhbOP3ouadEa/QHEfXPikErugfkvOAGEBhwbDQYtJZsPhs1JFoBuCJqE4h3Jogpdj2pldWCRuZMJFHsOiywUXX2dT55IO48v41F4Rh4U78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741008594; c=relaxed/simple;
-	bh=NrdJo26KQh3b790DFEqFYieh4I/prfzTjrAwF9mSdfU=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eypNzGJxyWH7jqH8PhXDJc4+Td6hrtKj58/HvGSKVaoRR9m/lJEuYSCpHolVAL7jqNf9XeH/suMJEBW+r0kq5AWKg9Q0gx42llTCEJ47/Hv20w8+a0a2hzn2yJznnWpNe7c9oc3+f7JepUGoW0eQyEGs2oKiEYrJ+K/KfwMe3X4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=SgnOldzW; arc=none smtp.client-ip=79.135.106.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+	s=arc-20240116; t=1741008835; c=relaxed/simple;
+	bh=0CT7Dtja27wpKuPK0J3uUyCc6Y5dVR1K8M0npmQguYI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ecznkx8tm/EGJVF1/IVWs47NoAe/G+2sGM6XuAlOiDgHnRysom27kqdhDrzCZL3GCnvXJX+Shum54mH2xQNcBAPWHsdlkMH5V9xBv6ifWts4OQJ2amSW4A5VEIjvdSez5BqerLo4kYHSqieF8P6P0FkANjoc2Yp7NUSILQQFOTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jIDHEwe8; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="SgnOldzW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1741008583; x=1741267783;
-	bh=/XgtVqY4KDWTqVLe9+6g9N6y0aNNsLDXq9cR3/HS/F0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=SgnOldzWbNKU1yM90pkG8sY/kFq/itD9cML6VFODUyYJpSAavFuQAmy2xGJoHDBQE
-	 sjrrZOWJ7JhsHI+iqP97pLuBqnpocejA4+hOswXNpNLXysciHMQ1MAQDDcFfSWCbQD
-	 WOzfufi1FnGhWFEA8kaSDitGsgEZmiPr7eh2Md9Ih5IfYhoE3eDGnjLwnBTi6YKfHP
-	 PaMP8nkVSHoHYQMYYFfCtW3t6MAHVF0abXDAX4f6Sf8UATv5ORCPC+6DuWUBtX6W38
-	 1bfvmMn4eK/Lch+vXbxvf9rncBFli0NyWsY/DP46iKwbc5snfMecg/aEq1DhejhpUN
-	 iO1p9NuS55OSw==
-Date: Mon, 03 Mar 2025 13:29:36 +0000
-To: Andreas Hindborg <a.hindborg@kernel.org>
-From: Oliver Mangold <oliver.mangold@pm.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: [PATCH v3] rust: adding UniqueRefCounted and UniqueRef types
-Message-ID: <Z8Wuud2UQX6Yukyr@mango>
-In-Reply-To: <87frjxncsx.fsf@kernel.org>
-References: <EiaQ-C0o3GMQQpw3jCnXUnNgph2WIJ5-Cm8P5N9OysIlDKYrjHNun5Ol4Q1FfVGw64k6TGCfUVBJK5r0_2eypg==@protonmail.internalid> <MFrukGViddXfhKeURDySTWCDW6Pk8Oo5keozdVg9hehiS3P4FVHKv4d-Fwn87yprBUeyTHcY6T1k9htIhPzc9Q==@protonmail.internalid> <Z8H6EUy1HqLrzytE@laptop> <87frjxncsx.fsf@kernel.org>
-Feedback-ID: 31808448:user:proton
-X-Pm-Message-ID: b04de80b592cf8e8854333dcec18cb6aa8725227
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jIDHEwe8"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-38a25d4b9d4so2694599f8f.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 03 Mar 2025 05:33:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1741008831; x=1741613631; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=98OQ8wvaJ9wtoqY/FnFWTw/2aTBVHaqyurEF1+7THsM=;
+        b=jIDHEwe8LddwPcJpPJ14BYSsjhgEx5uDCa9OesQDIbkqjZ0fY9BoInkPGfMTs4Bz7r
+         mRkuVQ7KtVP/TMHzZyHocJq1K4UzCoGlx9EH0hLlhY/n5vBzj1suMZlupnRnAeKBF/Xe
+         f6OUh4i24JleVcO7L8yTjdRDx1WbLbfsWpvtRwaw1Dej3wx0INwYjWODnMu6GEvFI6D0
+         rI7wLFqwLysDFohAwsBhRLhYCNlj8FoODWBupnFpl+xkHQUOwwv+6sipRqlGz9hG4APA
+         oDCBcSCyNCkr0G/NNZ6bOi2HYHGiFIBbzzvz6uv01pELaHVn0T8LN5x4h/jd2XvGG9Tg
+         mpnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741008831; x=1741613631;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=98OQ8wvaJ9wtoqY/FnFWTw/2aTBVHaqyurEF1+7THsM=;
+        b=HRq5BtcErPn3NxxZhY85oZOBV0aSHEa406qIraEraHv/UlHlxkweC52d6DsoKKzdKV
+         pS1LRNVKo7PvEImzN/FSuM1jBZY39ujTcfz1kRSoLzbS6nHnmQZ5Xy09y4a2ELMiB7I9
+         J0REbVtXfDxl0jLdiuCu7lCt267nPmJhhvvmSzMKBZTlrIr1hr92k9pT15s/B+bL+0k9
+         kWADWR3eH/9jd97qv4Ka9KwFkZTW9yRuKhwmsYDQghT2QMo5tIPkbJ+QJEnyFYPr2RCG
+         ml2icv6XDaA37EG914F+00viItN3LvqhZzhTJd/UwpZIJPQJQbixMTJJZrfK4kU0XILm
+         y3Eg==
+X-Forwarded-Encrypted: i=1; AJvYcCXjHUkxCwQaOYjr12QtnP6P6CG86bk2KvoQbGYrSxX8kTnk/cbY9zAA1oo1StjrpdUVSJoI/xe/y7SErFhATw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyat20EcTDJ6hkMiUNIT4IuZLQeUnJXHVr2bEagdYj1jmZR62PC
+	LaE+QK/Xnu4BhiksB5gUDylS6IxQdmAY8B+I6bH0UJu+R7kTTdOR5PuDBvrefRpVq8ZxXzGorNg
+	ublbyYGeYoMxNyTIR36gzY2NGMqJqY6egnaB4
+X-Gm-Gg: ASbGnct9bfCkXhRHDz/KagrNDfZH0+1Mk0l1cFvGgfPZUnBDJI8+j0apB7yzlcFJZrY
+	PP1Jgy02K0H4AzzrQ37MuNeM/ZDPzcWHD49kTcLdrKqbCz8pQZLvboB2a8WAEE2Yl3/6xpeJvwn
+	1ImBNcWspO3GyzvOzUCwy4T2Q8ygLSgX1YpXJLjI21aGdDIUdBavJBc5a8
+X-Google-Smtp-Source: AGHT+IE8JWpQtarWwp+2hNt/MR6epGuJDDazTrc2gMvmQUZSN/QRsDdQQeOGHqHvxcXWjRP0+QCxyieUoVOMPKqMUFM=
+X-Received: by 2002:a05:6000:1f8a:b0:390:fc83:a070 with SMTP id
+ ffacd0b85a97d-390fc83a160mr6688529f8f.0.1741008831435; Mon, 03 Mar 2025
+ 05:33:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20250213135759.190006-1-fujita.tomonori@gmail.com> <20250213135759.190006-6-fujita.tomonori@gmail.com>
+In-Reply-To: <20250213135759.190006-6-fujita.tomonori@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 3 Mar 2025 14:33:39 +0100
+X-Gm-Features: AQ5f1JoT3yLvXrcqi1UY1px9Dirgxz3oFETPYn_JBDKUcmKVulP6_KvtwihScxI
+Message-ID: <CAH5fLgjX9hh+QRrKggOKr+6p+UwqHSavzu4UXy9iGNL2wSJXtg@mail.gmail.com>
+Subject: Re: [PATCH v3 5/5] rust: Add warn_on and warn_on_once
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	x86@kernel.org, linux-riscv@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev, 
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, peterz@infradead.org, hpa@zytor.com, 
+	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
+	catalin.marinas@arm.com, will@kernel.org, chenhuacai@kernel.org, 
+	kernel@xen0n.name, tangyouling@loongson.cn, hejinyang@loongson.cn, 
+	yangtiezhu@loongson.cn, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@kernel.org, tmgross@umich.edu
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-From 5bdbcd54855fed6ad9ae6bcc53dba3aab2c6c6b1 Mon Sep 17 00:00:00 2001
-From: Oliver Mangold <oliver.mangold@pm.me>
-Date: Fri, 21 Feb 2025 08:36:46 +0100
-Subject: [PATCH] rust: adding UniqueRefCounted and UniqueRef types
+On Thu, Feb 13, 2025 at 3:01=E2=80=AFPM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
+>
+> Add warn_on and warn_on_once macros. Wrapping the C's WARN_* and BUG_*
+> macros doesn't work so this uses the assembly code exported by the C
+> side via ARCH_WARN_ASM macro. Like the static branch code, this
+> generates the assembly code for rust at compile time by using the C
+> preprocessor.
+>
+> file()! macro doesn't work for the Rust inline assembly in the same
+> way as __FILE__ for the C inline assembly. So the code to handle a
+> file name is different from the C assembly code (similar to the
+> arm64/loongarch assembly).
+>
+> Similarly, ARCH_WARN_REACHABLE is also used at compile time to
+> generate the assembly code; objtool's reachable anotation code. Only
+> architectures that use objtool (x86 and loongarch) need it.
+>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> ---
+>  rust/Makefile                                 |   8 ++
+>  rust/kernel/.gitignore                        |   2 +
+>  rust/kernel/bug.rs                            | 100 ++++++++++++++++++
+>  rust/kernel/generated_arch_reachable_asm.rs.S |   7 ++
+>  rust/kernel/generated_arch_warn_asm.rs.S      |   7 ++
+>  rust/kernel/lib.rs                            |   1 +
+>  6 files changed, 125 insertions(+)
+>  create mode 100644 rust/kernel/bug.rs
+>  create mode 100644 rust/kernel/generated_arch_reachable_asm.rs.S
+>  create mode 100644 rust/kernel/generated_arch_warn_asm.rs.S
+>
+> diff --git a/rust/Makefile b/rust/Makefile
+> index 8fcfd60447bc..a295b65c43f3 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -34,6 +34,9 @@ obj-$(CONFIG_RUST_KERNEL_DOCTESTS) +=3D doctests_kernel=
+_generated.o
+>  obj-$(CONFIG_RUST_KERNEL_DOCTESTS) +=3D doctests_kernel_generated_kunit.=
+o
+>
+>  always-$(subst y,$(CONFIG_RUST),$(CONFIG_JUMP_LABEL)) +=3D kernel/genera=
+ted_arch_static_branch_asm.rs
+> +ifndef CONFIG_UML
+> +always-$(subst y,$(CONFIG_RUST),$(CONFIG_BUG)) +=3D kernel/generated_arc=
+h_warn_asm.rs kernel/generated_arch_reachable_asm.rs
+> +endif
+>
+>  # Avoids running `$(RUSTC)` when it may not be available.
+>  ifdef CONFIG_RUST
+> @@ -481,5 +484,10 @@ $(obj)/kernel.o: $(src)/kernel/lib.rs $(obj)/build_e=
+rror.o \
+>  ifdef CONFIG_JUMP_LABEL
+>  $(obj)/kernel.o: $(obj)/kernel/generated_arch_static_branch_asm.rs
+>  endif
+> +ifndef CONFIG_UML
+> +ifdef CONFIG_BUG
+> +$(obj)/kernel.o: $(obj)/kernel/generated_arch_warn_asm.rs $(obj)/kernel/=
+generated_arch_reachable_asm.rs
+> +endif
+> +endif
+>
+>  endif # CONFIG_RUST
+> diff --git a/rust/kernel/.gitignore b/rust/kernel/.gitignore
+> index 6ba39a178f30..f1d7f4225332 100644
+> --- a/rust/kernel/.gitignore
+> +++ b/rust/kernel/.gitignore
+> @@ -1,3 +1,5 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>
+>  /generated_arch_static_branch_asm.rs
+> +/generated_arch_warn_asm.rs
+> +/generated_arch_reachable_asm.rs
+> \ No newline at end of file
+> diff --git a/rust/kernel/bug.rs b/rust/kernel/bug.rs
+> new file mode 100644
+> index 000000000000..7ffd9cb1ad75
+> --- /dev/null
+> +++ b/rust/kernel/bug.rs
+> @@ -0,0 +1,100 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +// Copyright (C) 2024 FUJITA Tomonori
+> +
+> +//! Support for BUG_* and WARN_* functionality.
+> +//!
+> +//! C header: [`include/asm-generic/bug.h`](srctree/include/asm-generic/=
+bug.h)
+> +
+> +#[macro_export]
+> +#[doc(hidden)]
+> +#[cfg(all(CONFIG_BUG, not(CONFIG_UML)))]
+> +macro_rules! warn_flags {
+> +    ($flags:expr) =3D> {
+> +        const FLAGS: u32 =3D $crate::bindings::BUGFLAG_WARNING | $flags;
+> +        // SAFETY: Just an FFI call.
+> +        #[cfg(CONFIG_DEBUG_BUGVERBOSE)]
+> +        unsafe {
+> +            $crate::asm!(concat!(
+> +                "/* {size} */",
+> +                ".pushsection .rodata.str1.1, \"aMS\",@progbits, 1\n",
+> +                "111:\t .string ", "\"", file!(), "\"\n",
+> +                ".popsection\n",
 
-Add `UniqueRef` as a variant of `ARef` that is guaranteed to be unique.
-This is useful when mutable access to the underlying type is required
-and we can guarantee uniqueness, and when APIs that would normally take
-an `ARef` require uniqueness.
+It looks like you're doing this so that you can reference the filename
+with "111b", but could you do this instead:
 
-Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
----
- rust/kernel/types.rs | 315 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 315 insertions(+)
+const _FILE: &[u8] =3D file!().as_bytes();
+// Plus one for nul-terminator.
+static FILE: [u8; 1 + _FILE.len()] =3D {
+    let mut bytes =3D [0; 1 + _FILE.len()];
+    let mut i =3D 0;
+    while i < _FILE.len() {
+        bytes[i] =3D _FILE[i];
+        i +=3D 1;
+    }
+    bytes
+};
 
-diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-index 55ddd50e8aaa..7ea0a266caa5 100644
---- a/rust/kernel/types.rs
-+++ b/rust/kernel/types.rs
-@@ -543,6 +543,12 @@ fn from(b: &T) -> Self {
-     }
- }
-=20
-+impl<T: UniqueRefCounted> From<UniqueRef<T>> for ARef<T> {
-+    fn from(b: UniqueRef<T>) -> Self {
-+        UniqueRefCounted::unique_to_shared(b)
-+    }
-+}
-+
- impl<T: AlwaysRefCounted> Drop for ARef<T> {
-     fn drop(&mut self) {
-         // SAFETY: The type invariants guarantee that the `ARef` owns the =
-reference we're about to
-@@ -551,6 +557,315 @@ fn drop(&mut self) {
-     }
- }
-=20
-+/// Types that are [`AlwaysRefCounted`] and can be safely converted to an =
-[`UniqueRef`]
-+///
-+/// # Safety
-+///
-+/// Implementers must ensure that the methods of the trait
-+/// change the reference count of the underlying object such that:
-+/// - the uniqueness invariant is upheld, i.e. it is not possible
-+///   to obtain another reference by any means (other than through the [`U=
-niqueRef`])
-+///   until the [`UniqueRef`] is dropped or converted to an [`ARef`].
-+/// - [`dec_ref()`](UniqueRefCounted::dec_ref) correctly frees the underly=
-ing object.
-+/// - [`unique_to_shared()`](UniqueRefCounted::unique_to_shared) set the r=
-eference count
-+///   to the value which the returned [`ARef`] expects for an object with =
-a single reference
-+///   in existence. This implies that if [`unique_to_shared()`](UniqueRefC=
-ounted::unique_to_shared)
-+///   is left on the default implementation, which just rewraps the underl=
-ying object,
-+///   the reference count needs not to be
-+///   modified when converting a [`UniqueRef`] to an [`ARef`].
-+///
-+/// # Examples
-+///
-+/// A minimal example implementation of [`AlwaysRefCounted`] and
-+/// [`UniqueRefCounted`] and their usage
-+/// with [`ARef`] and [`UniqueRef`] looks like this:
-+///
-+/// ```
-+/// # #![expect(clippy::disallowed_names)]
-+/// use core::cell::Cell;
-+/// use core::ptr::NonNull;
-+/// use kernel::alloc::{flags, kbox::KBox, AllocError};
-+/// use kernel::types::{
-+///     ARef, AlwaysRefCounted, UniqueRef, UniqueRefCounted,
-+/// };
-+///
-+/// struct Foo {
-+///     refcount: Cell<usize>,
-+/// }
-+///
-+/// impl Foo {
-+///     fn new() -> Result<UniqueRef<Self>, AllocError> {
-+///         // Use a KBox to handle the actual allocation
-+///         let result =3D KBox::new(
-+///             Foo {
-+///                 refcount: Cell::new(1),
-+///             },
-+///             flags::GFP_KERNEL,
-+///         )?;
-+///         // SAFETY: we just allocated the `Foo`, thus it is valid
-+///         Ok(unsafe { UniqueRef::from_raw(NonNull::new(KBox::into_raw(re=
-sult)).unwrap()) })
-+///     }
-+/// }
-+///
-+/// // SAFETY: we increment and decrement correctly and only free the Foo
-+/// // when the refcount reaches zero
-+/// unsafe impl AlwaysRefCounted for Foo {
-+///     fn inc_ref(&self) {
-+///         self.refcount.replace(self.refcount.get() + 1);
-+///     }
-+///     unsafe fn dec_ref(this: NonNull<Self>) {
-+///         // SAFETY: the underlying object is always valid when the func=
-tion is called
-+///         let refcount =3D unsafe { &this.as_ref().refcount };
-+///         let new_refcount =3D refcount.get() - 1;
-+///         if new_refcount =3D=3D 0 {
-+///             // Foo will be dropped when KBox goes out of scope
-+///             // SAFETY: the `Box<Foo>` is still alive as the old refcou=
-nt is 1
-+///             unsafe { KBox::from_raw(this.as_ptr()) };
-+///         } else {
-+///             refcount.replace(new_refcount);
-+///         }
-+///     }
-+/// }
-+/// // SAFETY: we only convert into an `UniqueRef` when the refcount is 1
-+/// unsafe impl UniqueRefCounted for Foo {
-+///     fn try_shared_to_unique(this: ARef<Self>) -> Result<UniqueRef<Self=
->, ARef<Self>> {
-+///         if this.refcount.get() =3D=3D 1 {
-+///             // SAFETY: the `Foo` is still alive as the refcount is 1
-+///             Ok(unsafe { UniqueRef::from_raw(ARef::into_raw(this)) })
-+///         } else {
-+///             Err(this)
-+///         }
-+///     }
-+/// }
-+///
-+/// let foo =3D Foo::new().unwrap();
-+/// let mut foo =3D ARef::from(foo);
-+/// {
-+///     let bar =3D foo.clone();
-+///     assert!(UniqueRef::try_from(bar).is_err());
-+/// }
-+/// assert!(UniqueRef::try_from(foo).is_ok());
-+/// ```
-+pub unsafe trait UniqueRefCounted: AlwaysRefCounted + Sized {
-+    /// Checks if the [`ARef`] is unique and convert it
-+    /// to an [`UniqueRef`] it that is that case.
-+    /// Otherwise it returns again an [`ARef`] to the same
-+    /// underlying object.
-+    fn try_shared_to_unique(this: ARef<Self>) -> Result<UniqueRef<Self>, A=
-Ref<Self>>;
-+    /// Converts the [`UniqueRef`] into an [`ARef`].
-+    fn unique_to_shared(this: UniqueRef<Self>) -> ARef<Self> {
-+        // SAFETY: safe by the conditions on implementing the trait
-+        unsafe { ARef::from_raw(UniqueRef::into_raw(this)) }
-+    }
-+    /// Decrements the reference count on the object when the [`UniqueRef`=
-] is dropped.
-+    ///
-+    /// Frees the object when the count reaches zero.
-+    ///
-+    /// It defaults to [`AlwaysRefCounted::dec_ref`],
-+    /// but overriding it may be useful, e.g. in case of non-standard refc=
-ounting
-+    /// schemes.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The same safety constraints as for [`AlwaysRefCounted::dec_ref`] a=
-pply,
-+    /// but as the reference is unique, it can be assumed that the functio=
-n
-+    /// will not be called twice. In case the default implementation is no=
-t
-+    /// overridden, it has to be ensured that the call to [`AlwaysRefCount=
-ed::dec_ref`]
-+    /// can be used for an [`UniqueRef`], too.
-+    unsafe fn dec_ref(obj: NonNull<Self>) {
-+        // SAFETY: correct by function safety requirements
-+        unsafe { AlwaysRefCounted::dec_ref(obj) };
-+    }
-+}
-+
-+/// This trait allows to implement [`UniqueRefCounted`] in a simplified wa=
-y,
-+/// only requiring to provide an [`is_unique()`](SimpleUniqueRefCounted::i=
-s_unique) method.
-+///
-+/// # Safety
-+///
-+/// - The same safety requirements as for [`UniqueRefCounted`] apply.
-+/// - [`is_unique`](SimpleUniqueRefCounted::is_unique) must only return `t=
-rue`
-+///   in case only one [`ARef`] exists and it is impossible for one to be =
-obtained
-+///   other than by cloning an existing [`ARef`] or converting an [`Unique=
-Ref`] to an [`ARef`].
-+/// - It is safe to convert an unique [`ARef`] into an [`UniqueRef`]
-+///   simply by re-wrapping the underlying object without modifying the re=
-fcount.
-+///
-+/// # Examples
-+///
-+/// A minimal example implementation of [`AlwaysRefCounted`] and
-+/// [`SimpleUniqueRefCounted`] and their usage
-+/// with [`ARef`] and [`UniqueRef`] looks like this:
-+///
-+/// ```
-+/// # #![expect(clippy::disallowed_names)]
-+/// use core::cell::Cell;
-+/// use core::ptr::NonNull;
-+/// use kernel::alloc::{flags, kbox::KBox, AllocError};
-+/// use kernel::types::{
-+///     ARef, AlwaysRefCounted, SimpleUniqueRefCounted, UniqueRef,
-+/// };
-+///
-+/// struct Foo {
-+///     refcount: Cell<usize>,
-+/// }
-+///
-+/// impl Foo {
-+///     fn new() -> Result<UniqueRef<Self>, AllocError> {
-+///         // Use a KBox to handle the actual allocation
-+///         let result =3D KBox::new(
-+///             Foo {
-+///                 refcount: Cell::new(1),
-+///             },
-+///             flags::GFP_KERNEL,
-+///         )?;
-+///         // SAFETY: we just allocated the `Foo`, thus it is valid
-+///         Ok(unsafe { UniqueRef::from_raw(NonNull::new(KBox::into_raw(re=
-sult)).unwrap()) })
-+///     }
-+/// }
-+///
-+/// // SAFETY: we just allocated the `Foo`, thus it is valid
-+/// unsafe impl AlwaysRefCounted for Foo {
-+///     fn inc_ref(&self) {
-+///         self.refcount.replace(self.refcount.get() + 1);
-+///     }
-+///     unsafe fn dec_ref(this: NonNull<Self>) {
-+///         // SAFETY: the underlying object is always valid when the func=
-tion is called
-+///         let refcount =3D unsafe { &this.as_ref().refcount };
-+///         let new_refcount =3D refcount.get() - 1;
-+///         if new_refcount =3D=3D 0 {
-+///             // Foo will be dropped when KBox goes out of scope
-+///             // SAFETY: the `Box<Foo>` is still alive as the old refcou=
-nt is 1
-+///             unsafe { KBox::from_raw(this.as_ptr()) };
-+///         } else {
-+///             refcount.replace(new_refcount);
-+///         }
-+///     }
-+/// }
-+///
-+/// // SAFETY: We check the refcount as required. Races are impossible as =
-the object is not `Sync`.
-+/// unsafe impl SimpleUniqueRefCounted for Foo {
-+///     fn is_unique(&self) -> bool {
-+///         self.refcount.get() =3D=3D 1
-+///     }
-+/// }
-+///
-+/// let foo =3D Foo::new().unwrap();
-+/// let mut foo =3D ARef::from(foo);
-+/// {
-+///     let bar =3D foo.clone();
-+///     assert!(UniqueRef::try_from(bar).is_err());
-+/// }
-+/// assert!(UniqueRef::try_from(foo).is_ok());
-+/// ```
-+pub unsafe trait SimpleUniqueRefCounted: AlwaysRefCounted + Sized {
-+    /// Checks if exactly one [`ARef`] to the object exists.
-+    /// In case the object is [`Sync`] the check needs to be race-free.
-+    fn is_unique(&self) -> bool;
-+}
-+
-+// SAFETY: safe by the requirements on implementation of `[SimpleUniqueRef=
-Counted`]
-+unsafe impl<T: SimpleUniqueRefCounted> UniqueRefCounted for T {
-+    fn try_shared_to_unique(this: ARef<Self>) -> Result<UniqueRef<Self>, A=
-Ref<Self>> {
-+        if this.is_unique() {
-+            // SAFETY: safe by the requirements on implementation of `[Sim=
-pleUniqueRefCounted`]
-+            Ok(unsafe { UniqueRef::from_raw(ARef::into_raw(this)) })
-+        } else {
-+            Err(this)
-+        }
-+    }
-+}
-+
-+/// An unique, owned reference to an [`AlwaysRefCounted`] object.
-+///
-+/// It works the same ways as [`ARef`] but ensures that the reference is u=
-nique
-+/// and thus can be dereferenced mutably.
-+///
-+/// # Invariants
-+///
-+/// - The pointer stored in `ptr` is non-null and valid for the lifetime o=
-f the [`UniqueRef`]
-+///   instance. In particular, the [`UniqueRef`] instance owns an incremen=
-t
-+///   on the underlying object's reference count.
-+/// - No other [`UniqueRef`] or [`ARef`] to the underlying object exist
-+///   while the [`UniqueRef`] is live.
-+pub struct UniqueRef<T: UniqueRefCounted> {
-+    ptr: NonNull<T>,
-+    _p: PhantomData<T>,
-+}
-+
-+// SAFETY: It is safe to send `UniqueRef<T>` to another thread
-+// when the underlying `T` is `Send` because it effectively means a transf=
-er of ownership,
-+// equivalently to sending a `Box<T>`.
-+unsafe impl<T: UniqueRefCounted + Send> Send for UniqueRef<T> {}
-+
-+// SAFETY: It is safe to send `&UniqueRef<T>` to another thread when the u=
-nderlying `T` is `Sync`
-+// because it effectively means sharing `&T` (which is safe because `T` is=
- `Sync`).
-+unsafe impl<T: UniqueRefCounted + Sync> Sync for UniqueRef<T> {}
-+
-+impl<T: UniqueRefCounted> UniqueRef<T> {
-+    /// Creates a new instance of [`UniqueRef`].
-+    ///
-+    /// It takes over an increment of the reference count on the underlyin=
-g object.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Callers must ensure that the reference count is set to such a valu=
-e
-+    /// that a call to [`dec_ref()`](UniqueRefCounted::dec_ref) will relea=
-se the underlying object
-+    /// in the way which is expected when the last reference is dropped.
-+    /// Callers must not use the underlying object anymore --
-+    /// it is only safe to do so via the newly created [`UniqueRef`].
-+    pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
-+        // INVARIANT: The safety requirements guarantee that the new insta=
-nce now owns the
-+        // increment on the refcount.
-+        Self {
-+            ptr,
-+            _p: PhantomData,
-+        }
-+    }
-+
-+    /// Consumes the [`UniqueRef`], returning a raw pointer.
-+    ///
-+    /// This function does not change the refcount. After calling this fun=
-ction, the caller is
-+    /// responsible for the refcount previously managed by the [`UniqueRef=
-`].
-+    pub fn into_raw(me: Self) -> NonNull<T> {
-+        ManuallyDrop::new(me).ptr
-+    }
-+}
-+
-+impl<T: UniqueRefCounted> Deref for UniqueRef<T> {
-+    type Target =3D T;
-+
-+    fn deref(&self) -> &Self::Target {
-+        // SAFETY: The type invariants guarantee that the object is valid.
-+        unsafe { self.ptr.as_ref() }
-+    }
-+}
-+
-+impl<T: UniqueRefCounted> DerefMut for UniqueRef<T> {
-+    fn deref_mut(&mut self) -> &mut Self::Target {
-+        // SAFETY: The type invariants guarantee that the object is valid.
-+        unsafe { self.ptr.as_mut() }
-+    }
-+}
-+
-+impl<T: UniqueRefCounted> TryFrom<ARef<T>> for UniqueRef<T> {
-+    type Error =3D ARef<T>;
-+    /// Tries to convert the [`ARef`] to an [`UniqueRef`]
-+    /// by calling [`try_shared_to_unique()`](UniqueRefCounted::try_shared=
-_to_unique).
-+    /// In case the [`ARef`] is not unique it returns again an [`ARef`] to=
- the same
-+    /// underlying object.
-+    fn try_from(b: ARef<T>) -> Result<UniqueRef<T>, Self::Error> {
-+        UniqueRefCounted::try_shared_to_unique(b)
-+    }
-+}
-+
-+impl<T: UniqueRefCounted> Drop for UniqueRef<T> {
-+    fn drop(&mut self) {
-+        // SAFETY: The type invariants guarantee that the [`UniqueRef`] ow=
-ns the reference
-+        // we're about to decrement.
-+        unsafe { UniqueRefCounted::dec_ref(self.ptr) };
-+    }
-+}
-+
- /// A sum type that always holds either a value of type `L` or `R`.
- ///
- /// # Examples
---=20
+and then use
 
-This should address all issues that have been raised with v2:
+asm!(
+    concat!(
+        "/* {size} */",
+        include!(concat!(env!("OBJTREE"),
+"/rust/kernel/generated_arch_warn_asm.rs")),
+        include!(concat!(env!("OBJTREE"),
+"/rust/kernel/generated_arch_reachable_asm.rs")));
+    file =3D sym FILE,
+    line =3D const line!(),
+    ...
+);
 
-- Added a default implementation for unique_to_shared() which does a simple
-  rewrap of the underlying object.
-- Added a SimpleUniqueRefCounted trait which requires only to implement
-  is_unique() as Beno=C3=AEt asked for. Maybe the feature is not worth
-  the extra code, though. For me keeping it or removing would be both fine.
-- Removed the unsound conversion from &T to UniqueRef, as spotted by Beno=
-=C3=AEt.
-- Relaxed the requirements for Send and Sync, to be identical to the ones
-  for Box. See comment below.
-- Added Examples for both UniqueRefCounted and SimpleUniqueRefCounted
-  as asked for by Boqun Feng.
-  For me they compile and run without errors as KUnits.
-- Changed the commit message like suggested by Andreas.
+with
+::kernel::concat_literals!(ARCH_WARN_ASM("{file}", "{line}",
+"{flags}", "{size}")),
 
-@Beno=C3=AEt: I think you are right about Send and Sync.
-What gave me a bit of a headache is if Send really does not require
-the underlying object to be Sync, as the refcount itself -
-which is part of the object - might be touched concurrently in a case
-like with tag_to_req(), but I think one would not implement
-something like that without having a synchronized refcount.
+That would be a lot simpler to understand than what you are doing.
 
-Best regards,
 
-Oliver
-
+Alice
