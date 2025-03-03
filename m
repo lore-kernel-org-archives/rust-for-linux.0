@@ -1,149 +1,95 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF991F0E2E
-	for <rust-for-linux@vger.kernel.org>; Mon,  3 Mar 2025 08:52:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29D1EC4;
+	Mon,  3 Mar 2025 09:33:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740991958; cv=none; b=kKiS7DbIT56hC0g0rMwuN9KWwAzPsu8kdzl7xNjcLRqoy1c8LMnZmFDx9BtTVpiB/G6pst3vcj16Ix5vMSYXDwX/PJOgLv0Mud/AkRE1IvyxSZwWS/nUIPq+G/UDsYC/Oz3ahrYrY1Vbm1w0BZZj0qJuLTm3Lv+CbcKkBwQmgIc=
+	t=1740994391; cv=none; b=NiPv1PwMB8LpO+QkLoMMgUM1clrRNYC677k2+6Ru9ESBDOZFIJ67FX2LJveO/m64vGhc15hXltOhFT/gzXoqDwcC4tTgFNUf3k+rBxEFQzAmVxcbDNGOKFiwRJuLyhRQwry/BBFBJebHbLro99Fey6JagYHRtQEfdO+YM+BAGK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740991958; c=relaxed/simple;
-	bh=n0ff1xI1lgmg8Rykovee0x4apm8ykyWD2JrE1dHfyPw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rht7+g9z4BBY5ZxBtBIqNj5Pnu1Mo6LbeaT7315FDle+tvcQ1pwTrgyi0914IV/89bW/QS4Xlm2EMJg9aLIVPordupUTELNBnnpu8i+GLaa7Op+DODeCOHNvAqMtnZGt95k1nQjXU8KYXuiRKX4kOEdokYpXFFwSTRlY+Mn/ppU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=b7w2STaE; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1740994391; c=relaxed/simple;
+	bh=uxWb5weZnx4w75c+cNd9geof+3mOOtF83ztdgamkHZc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Bw8nVXWp3rynnNr5wgMScj+rpi0MXrSNlRY6bK6POlCnqDt0iwMlosR4r0uF9O8o3pISRLaP0zNU8wjjVLAlhvV1nnZQ6Qla7gGvpS8Juy0fQeY4lKZWzEErtXZfp5wdlx8lE6U8bUf5EkzWffj8GLaKseVMlNWSFofb2xktZko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zot24OU+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="b7w2STaE"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-390dd3403fdso3625415f8f.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 03 Mar 2025 00:52:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740991955; x=1741596755; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cZedBe7vxwSHNQekhyj5949NlNVonJ7luZ+4oJCMZq0=;
-        b=b7w2STaEee5vPKceONXDZJvCBWg/UKCJpdTtwghOFeDYwQc9/8k5gxR8jSH+QgnV1h
-         h88VwqUn6kXhdjHxAO+7MFlPm8gZOpHMcp30+B8HC2Qu1Dc1fHBwvS0UJ1YtGmVmT8zP
-         LExDFqSmzuRixDyNUyhoezUkgBvpoxRQJn0U3fOf1Fzp3xOWCxQs8fBe9ivMTTy7R+dd
-         Vx9HVidy3MkafrqJxiZi2xvX9O9SHxmmClp1k3lVrPUZB8qKPjfFxR2zmbsV68v4gGC2
-         ViiWHTj6j17PDx23ZPIKJGUPRgqX3yEfbHzHsSk/LcD2NhWOT1EHhhMgq8bXqDU8bZBd
-         w0Rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740991955; x=1741596755;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cZedBe7vxwSHNQekhyj5949NlNVonJ7luZ+4oJCMZq0=;
-        b=BxnQ1z3ELi6aXUv408kW45KAxDI67CehdqcLwq8U0hsfWEpmqVvIkQ+jZaj1/SYW+l
-         SKj3kZj/er4rRzqJLVyhhIgIQrCQuVl9GOlxSdlBnjYeS2osig6126USHTf6bMRPuTJ6
-         KFtEjC3s9DPT7nG5voFWUeE75tTL7Ow9mBcTLc50xR3MXwBpyF0aM5N+O1psqE8H+Ip0
-         wbJvE9Nm69YvWQqe3RBBxZmKQpc088ouaIeKU4PPzScF8FPJgo2DhbZOy334PqV4dhOG
-         nz2AQaVuVN/Q66WK7luT/kUFmdXmlHxGFFP997wP+K6l8maoPCOYzvvxEuNZqemp6yFj
-         nLLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU2k/sN2cC9Nq/2ZvXl9flnjD9gdb40bYw1QbpEZiGMgcdpwQazRvUiha85ksRUjjs2zqDezzliyCKamMluVg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxzbw8midA5F7UoVS7S1hpf6sMECOH89ewSREtrH89oOR8tLmw6
-	khKkVhAezjHHnuLd1GZ19WdYHqCeJ+TtnhmeNg66Izcw1lEw5kDvYYud0U9tgWsX7vq0WsaIh1K
-	eVeHRKquHzccxSDOorIZS9RoFq6d3A7ij8F2s
-X-Gm-Gg: ASbGncsvSxKbjsBAq5mX7vkp+jtSfAwSQcWgFsSH4GK8uCh/757I61SeVJ/gXPuDYaF
-	gq1vUxr3qSNAvLmX+YXr1EgfwZGUuAp0dCd/l4wpEHuVEbJknKQbaXJ26yMFinC2Jo32bYE8s1r
-	8i1b62mxOK45l4fG2N8F3yM/n1lcTxdN+J6JTD9r2YVj0QVcFYorkb7ikB
-X-Google-Smtp-Source: AGHT+IGPWx+m6XG7095T3v0ZVlAXzNJwhfctSVi2QHnsOIWVW4GZ3S/6Td355pTg0Z+ilOrY+qMqRFrKA4AKwqV4ahA=
-X-Received: by 2002:a05:6000:188b:b0:391:ba6:c069 with SMTP id
- ffacd0b85a97d-3910ba6c26amr2138123f8f.44.1740991954661; Mon, 03 Mar 2025
- 00:52:34 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zot24OU+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E6CC4CED6;
+	Mon,  3 Mar 2025 09:33:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740994391;
+	bh=uxWb5weZnx4w75c+cNd9geof+3mOOtF83ztdgamkHZc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Zot24OU+Kr3IVKlNxS8Ms3Pi6PvMwu9DHSIsqRFgjxP7aaO6HBF+zxguPxwkhaO2a
+	 xrdRh9uBrtzK+Ykgl393iwGLK8grS93jXMrw/M0Jj0oWxBTRY58YtHO+mmTaRseX2I
+	 bwx01tB5PVV+suC6VLbWhT09Tqr1VNPpdd3/9dK4QlGfahn05Hh3Kp5xbqtzv3xwhm
+	 O65rL/CJBPtzWDzv1AOWI5Q5YPz+w3dHiYps7UNc3zVcLGycvh5U026fbDNLbGuWdj
+	 Bnj8SfZx8IFw+vKyH2xq2DVorZGK5IOZDXsua4NUVPxKkq4g9T8Y1Rw4H+/nn9pxqK
+	 tcLnUaY4LNqEQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Jocelyn Falempe <jfalempe@redhat.com>,
+	=?UTF-8?q?Thomas=20B=C3=B6hler?= <witcher@wiredspace.de>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: dri-devel@lists.freedesktop.org,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: [PATCH] drm/panic: clean Clippy warning
+Date: Mon,  3 Mar 2025 10:32:42 +0100
+Message-ID: <20250303093242.1011790-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250228-export-macro-v2-0-569cc7e8926c@google.com>
- <20250228-export-macro-v2-5-569cc7e8926c@google.com> <CAJ-ks9k4rZdpL5dDfwMHuiKFdyYdY00YioYxdtsqszpcbhzjHQ@mail.gmail.com>
- <CAH5fLggDgYYk-0HzCjDmmHjV6JkR7WJhmQU-Nhbo4iBGBw1AJw@mail.gmail.com> <CAJ-ks9k2HaeTyGfFSfeJUFWkwc2F2hvTg2m4yEQ+8-AvLS6UZg@mail.gmail.com>
-In-Reply-To: <CAJ-ks9k2HaeTyGfFSfeJUFWkwc2F2hvTg2m4yEQ+8-AvLS6UZg@mail.gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 3 Mar 2025 09:52:22 +0100
-X-Gm-Features: AQ5f1JqSjZAAlx6Wf7jKinnV6m6qfDAlCxxS5CZwf1LezmrZAHRqRlmJeyImFx8
-Message-ID: <CAH5fLggVOKrWZhR8rEH1ZFbJ4naoAP8Dp=pKpuj0MmsThBuK4g@mail.gmail.com>
-Subject: Re: [PATCH v2 5/5] panic_qr: use new #[export] macro
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Petr Mladek <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Feb 28, 2025 at 6:15=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
- wrote:
->
-> On Fri, Feb 28, 2025 at 12:08=E2=80=AFPM Alice Ryhl <aliceryhl@google.com=
-> wrote:
-> >
-> > On Fri, Feb 28, 2025 at 4:55=E2=80=AFPM Tamir Duberstein <tamird@gmail.=
-com> wrote:
-> > >
-> > > On Fri, Feb 28, 2025 at 7:41=E2=80=AFAM Alice Ryhl <aliceryhl@google.=
-com> wrote:
-> > > >
-> > > > @@ -980,8 +983,12 @@ fn draw_all(&mut self, data: impl Iterator<Ite=
-m =3D u8>) {
-> > > >  /// * If `url_len` > 0, remove the 2 segments header/length and al=
-so count the
-> > > >  ///   conversion to numeric segments.
-> > > >  /// * If `url_len` =3D 0, only removes 3 bytes for 1 binary segmen=
-t.
-> > > > -#[no_mangle]
-> > > > -pub extern "C" fn drm_panic_qr_max_data_size(version: u8, url_len:=
- usize) -> usize {
-> > > > +///
-> > > > +/// # Safety
-> > > > +///
-> > > > +/// Always safe to call.
-> > >
-> > > This should explain why it's marked unsafe, since it's always safe to=
- call.
-> >
-> > Safety comments generally do not explain rationale for why they are
-> > the way they are. Where would you like me to put it?
->
-> Safety comments also generally do not say that the function isn't
-> really unsafe (with a notable exception in
-> `samples/rust/rust_print_main.rs` which is similar to this case).
->
-> Perhaps "This function is marked unsafe because ... but since a safety
-> comment is still required:" would flow nicely into the safety section.
+Clippy warns:
 
-I added a comment, but I disagree with this claim. The phrase "Always
-safe to call." is actually quite common for a "# Safety" section, even
-if we have rarely needed it in the kernel specifically.
+    error: manual implementation of an assign operation
+       --> drivers/gpu/drm/drm_panic_qr.rs:418:25
+        |
+    418 |                         self.carry = self.carry % pow;
+        |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: replace it with: `self.carry %= pow`
+        |
+        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#assign_op_pattern
 
-> > > > @@ -36,6 +36,10 @@
-> > > >  #include <linux/workqueue.h>
-> > > >  #include <trace/events/rust_sample.h>
-> > > >
-> > > > +#if defined(CONFIG_DRM_PANIC_SCREEN_QR_CODE)
-> > > > +#include <drm/drm_panic.h>
-> > > > +#endif
-> > >
-> > > Why the guard here?
-> > >
-> > > It'd be nice to have a comment here explaining the atypical need for
-> > > this include.
-> >
-> > It's not necessary. I can drop it.
->
-> Ok. A comment on the include would still be helpful.
+Thus clean it up.
 
-Added.
+Fixes: dbed4a797e00 ("drm/panic: Better binary encoding in QR code")
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ drivers/gpu/drm/drm_panic_qr.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Alice
+diff --git a/drivers/gpu/drm/drm_panic_qr.rs b/drivers/gpu/drm/drm_panic_qr.rs
+index 62cb8a162483..3b0dd59781d4 100644
+--- a/drivers/gpu/drm/drm_panic_qr.rs
++++ b/drivers/gpu/drm/drm_panic_qr.rs
+@@ -415,7 +415,7 @@ fn next(&mut self) -> Option<Self::Item> {
+                         self.carry_len -= out_len;
+                         let pow = u64::pow(10, self.carry_len as u32);
+                         let out = (self.carry / pow) as u16;
+-                        self.carry = self.carry % pow;
++                        self.carry %= pow;
+                         Some((out, NUM_CHARS_BITS[out_len]))
+                     }
+                 }
+
+base-commit: c0eb65494e59d9834af7cbad983629e9017b25a1
+-- 
+2.48.1
+
