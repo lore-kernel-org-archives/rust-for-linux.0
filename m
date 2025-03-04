@@ -1,132 +1,108 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B459156C76;
-	Tue,  4 Mar 2025 20:51:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A3913B58B;
+	Tue,  4 Mar 2025 21:00:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741121469; cv=none; b=GVEOJEC8V8DvhviqgqHOaz28QD2yRMv5qSqnggadeWUdOyV+7H/2NrIdDXDegfQh77BIwryeIBTH3v2Bz5xFaoIp33VCl449ygs7cAcDOTbWR8Km0hl99IhJCA//v8p3sjZXmcisU39yrLdOszu2OrHTF/knmbMCkD4oKhDcqms=
+	t=1741122020; cv=none; b=PArtsiNP1zu1sVn3HdZGxkk4hAz7d8vlsNpxZDsuDEz5hAm7wvQywin/K+69aFSkeuJ063ArtxVtQzJnPcMe1SiDmfMwNQKP793ySlS82vwVhDQR+fJETxTZHMOzy9H9uEa6nub7iQOwrtiP+LmHaf6fypt21Aopl1hO0pnCTak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741121469; c=relaxed/simple;
-	bh=qwR0WM2Lj1dp8M7aE9SPNE8YyQfH/b4OowZFRPmK1Ls=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZkGoCBa8kf0fJ7fSucLvvN8QmwetfngPF345nZ5RtPwlFwsykWwGUcZ3TiT1zzxA5spSbZg5cYvTGnaQ+YccHDwUhB2cDssZ2EiEOqHkc/ZSGt09+3nfqzCT4Q+HVDSy9WgBPPpPgIkrWLxBvT7c71Jg1ZuC3icVgo4FrVeZByA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YmLENvnF; arc=none smtp.client-ip=209.85.214.181
+	s=arc-20240116; t=1741122020; c=relaxed/simple;
+	bh=DkO8vqGaCxhiZ558GYpuGAy5F9fFTFBI+V5glW4tExk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jRsGe2+W3CXHC/+IF01+aOlMa3SjSfWoSyppj1o4QUUQ8RmUD6XXN2IvFvPGZKZOvYlPOHADHrAS+3ekqfBeS95oepJHVPELATKFsSovsNbnenb1zKD7pN+pEhoOE57QQ+9rlL0wkEP1UdJnhPOez95ehrx2ayh1UsVwfkrtcUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L9HrlEgw; arc=none smtp.client-ip=209.85.216.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YmLENvnF"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-219f8263ae0so114271675ad.0;
-        Tue, 04 Mar 2025 12:51:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L9HrlEgw"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2fd02536660so1383939a91.2;
+        Tue, 04 Mar 2025 13:00:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741121467; x=1741726267; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1741122019; x=1741726819; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tkB0vjNaxNWgx7N1eyQZ6caM4Aq/OnMYxZsyx2vyzm8=;
-        b=YmLENvnF7Mq1hMvjb78ZFQDxKA9ZaNIWdIe8jdJwYbj/56du5Mn/9HT36fItxN21AT
-         ZBBjzQYm/Xqb2IyzBDR2asnWVsDgJzgQEcdP7p06Ag0fjQ4oDIdqRU+OxeGJiuITO8vg
-         7q08tVyJ9eIe7IszEupAZ0sF2oCL3lEoX+aw3wDKTlgBQ7p4IPIeAMB/nZH8T2uAGEYP
-         ub2ictYa/7pnYR18pVC1HN3gMiRGB9jXNvRX6OqlJYmSXYnBuUhnonA/iFQbf116aeL+
-         E8ozEhLirRpu3VdI5fX8m+PqM0nPmo4U5L9j/HWxH3wjq5PibAnqhh1jz+eQb+rN+cq1
-         KzqQ==
+        bh=DkO8vqGaCxhiZ558GYpuGAy5F9fFTFBI+V5glW4tExk=;
+        b=L9HrlEgwVuuy/J6oyQD3hsh24xrcSSYcd46nojVZAw0nqF3lpAseVq896k7slhTm4Y
+         0iXPHEsep28e66679W/dtFBzx3H8onQGrbKw53iLsXLzHKKIRb49MYZPurQuSiB8G5B1
+         Q2FYuN9u2/t94pMCR5KOJpOJI/oXja0lNAasXgu339hVUET+aUtX8s9Ci39jph+2TmuD
+         9pJaaRWRh6Ck/NhzlDL58r2nizaVSg8mjlXWDnt5ZjjiPJTAbjTwsmno/YbqiCntOUp2
+         ds0PrrCIaTD53A8o1BIT688ZFq3IjbtLFFfCifp/O4/FG2vZN03FF3iRauqjoTLpLABm
+         ROTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741121467; x=1741726267;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1741122019; x=1741726819;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=tkB0vjNaxNWgx7N1eyQZ6caM4Aq/OnMYxZsyx2vyzm8=;
-        b=F4ZKk+HaUpXsiMnyDAD+prBYqebHLx+IhraC4fcBqAAc0IVIY/QaUyOzhOgGcz/V0n
-         GgFb/jbJkAGT1q9j37WKMQa49fcJVo9t8qRv7QjNQXb5Hkb374M5A7Gu9RXSIC2HMPh8
-         gpcw9IhGN1ltUkle4JidTGJJfgE3fKnkBMjLlPSRU2bpPzp/GQsMiV9fQKYEkmTI/H/R
-         qNHyvK58NrGAHtfrUPHL2XLnZnFlwrlntsC/SuyT6qMgF56mqP5LUHzNa26j9moihJ6v
-         IU/G3IYMx/rRx4KVjGrKNoSDL288h86rW3NdfCAMhZrDIUaM52lAHOxzrM9n14hUaOz9
-         QLww==
-X-Forwarded-Encrypted: i=1; AJvYcCVM/E7CC1QSqxuXPWPLPIlAbG3SfJsnw8PC03xyia41j0/pMrOIcsX7TTlycW36w+QW1cnURAaq9vlly3o71v0=@vger.kernel.org, AJvYcCXwALfaNiSAFXAWUsUE1iTGqOSSdKk9+aTB9YqT2/gav9enMBI4CiEo9WnaCzi68al5fjQiIfqSo2JlZc0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPlMePHkB64hf4NoU1rH3w7e/dnbU3Z3CPIyjJcx17z8398NWf
-	bImKg3h96Yv2PKkPSvCJlhOw8SJaoV+xfDbaPNe3CWXbAYJzg8XX
-X-Gm-Gg: ASbGncsLIWdyGC48klUkhhb/tSHHzsfSt1hVJZ0gCnqxvrPh49aJdy+O0zN2/C0uqQQ
-	28T2qzQUFtU06m1W+h1O6p5LxkX9fLVqmKNyDf2OEb9xUlLPJMPzR36IMQxKXitIy83D6TOAElw
-	lIOu6kmO9SgiQYFEA0qy9+M/ghiUhJ/+F0sfvi0ewWwmq6VVbemE+1ttTuWUFVS+B3PkfQ7QK9J
-	81abwDRPfwLQs6fduVlaPp+wRuWhDeTWAY+uJN0DigpfM3Rfbb6GWIbTtL8mtlz6tWgSHPPR5Lm
-	TfvRaYCFFzZOkY70HRzJ2m/mzYoWmchoKB8TM7XvO0f15U+ky/Vx
-X-Google-Smtp-Source: AGHT+IFonFrcymViMosV0MVEu55WkaauxYs/oFVtTq2FLSiz1UNg0h2tfsPDvqw/CD+97zFlzHPOCw==
-X-Received: by 2002:a05:6a00:170c:b0:736:3184:7fe8 with SMTP id d2e1a72fcca58-73682b54a53mr500511b3a.2.1741121467243;
-        Tue, 04 Mar 2025 12:51:07 -0800 (PST)
-Received: from linuxsimoes.. ([187.120.156.44])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-aee7de1f7a6sm10474886a12.30.2025.03.04.12.51.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Mar 2025 12:51:06 -0800 (PST)
-From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-To: a.hindborg@kernel.org
-Cc: alex.gaynor@gmail.com,
-	aliceryhl@google.com,
-	apw@canonical.com,
-	arnd@arndb.de,
-	aswinunni01@gmail.com,
-	axboe@kernel.dk,
-	benno.lossin@proton.me,
-	bhelgaas@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	dakr@kernel.org,
-	dwaipayanray1@gmail.com,
-	ethan.twardy@gmail.com,
-	fujita.tomonori@gmail.com,
-	gary@garyguo.net,
-	gregkh@linuxfoundation.org,
-	joe@perches.com,
-	linux-kernel@vger.kernel.org,
-	lukas.bulwahn@gmail.com,
-	ojeda@kernel.org,
-	pbonzini@redhat.com,
-	rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu,
-	trintaeoitogc@gmail.com,
-	walmeida@microsoft.com
-Subject: Re: [PATCH V6 2/2] checkpatch: check format of Vec<String> in modules
-Date: Tue,  4 Mar 2025 17:50:54 -0300
-Message-Id: <20250304205054.207285-1-trintaeoitogc@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <87tt89gfe4.fsf@kernel.org>
-References: <87tt89gfe4.fsf@kernel.org>
+        bh=DkO8vqGaCxhiZ558GYpuGAy5F9fFTFBI+V5glW4tExk=;
+        b=FMYyql07bhsiSaviRS2bfw9GXkFBv1XSvOrTvP1M+1cmUeNVfJ9+6k3mOTwtK/WqRW
+         7U/WZVq2v7ABmEa0JiBLLh1ZpwSELI6GkikJb/3OocGQEGbwLPaYV1NW3sHP3RtDN7M7
+         aP1nGoMjZdlXZE8oOEQDRJqASk374Kj8tOeynEau7Ft5dpxSJMeMwKFU2bxHFv89Zwji
+         iCOW6AroHcKlGrW7fo/PEqxKvOIiZGZKfTAufvc8wDCYO0HSJ0yi8hlvpNCJrQxtxHu1
+         qlQQxFCH00x4O9DfE+noDMuGUfwBch8lg/QVDW4lbNbLjLFJFu85plMen/tjVEPVVkBO
+         +oTg==
+X-Forwarded-Encrypted: i=1; AJvYcCW3sEF1IJba2pfksX3mGCcuwZkD1lQnyByhBf/HtqJHw76dT5ceV7YQQfm6kmzwTN/BW13ldC2w1re4OEY=@vger.kernel.org, AJvYcCWPTqkNWJeaadsjMFamvxCMld8Fos6oM1xyHMFFSdkH64ye8+/rQ679hmwafeELc6bEah87GTR93kkmKd1oh1s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0RUR1jCWJWDcP5rdilE/dZZQA0kKpA3B7w1Z8OD/UzTIvMuae
+	Q0bZs1GicgBMP+PcyOjNHdGsQ3V0VsOAZIUPHxs71XiDgzXH/qzBOrYBCKzO+o6xM+wv+MNlDHf
+	5gCmcbkankkqKTPuDCrU77Dl7wdw=
+X-Gm-Gg: ASbGncvOX2kEQlzdLIeHwclckKJCv5dSTx6AVl4z0DnVFlihrTIGr0W7qcQY26FIOGO
+	j+GAjMXOA1L80ulUARYaAXVY7XIrb56g17fXtvwvvWgoRYE1pwBM2yGusdw5IWpph2NLDac4K5e
+	lUBh0HT9QSmREaMEurdR8yrMIZcw==
+X-Google-Smtp-Source: AGHT+IH8msz9C67j2ZJZxakUz8S4LbQG08GAyBfGOl4QHKMO3AEokLocjvxhY/71RydgDc5G7JFtlBFdCMK0D6dvGTg=
+X-Received: by 2002:a17:90b:4f47:b0:2fc:1845:9f68 with SMTP id
+ 98e67ed59e1d1-2ff49836bd5mr390481a91.6.1741122018797; Tue, 04 Mar 2025
+ 13:00:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <87tt89gfe4.fsf@kernel.org> <20250304205054.207285-1-trintaeoitogc@gmail.com>
+In-Reply-To: <20250304205054.207285-1-trintaeoitogc@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 4 Mar 2025 22:00:06 +0100
+X-Gm-Features: AQ5f1JruOVbE14tvT1lMIOeeFc1cC-ef_fCY1TDUk1ktVEqX2fKHKZX-Rl6OICA
+Message-ID: <CANiq72koDba445gMYtC_VEcFk2+O-Xg2-2y6uMyp7onBy=7rcw@mail.gmail.com>
+Subject: Re: [PATCH V6 2/2] checkpatch: check format of Vec<String> in modules
+To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com, 
+	apw@canonical.com, arnd@arndb.de, aswinunni01@gmail.com, axboe@kernel.dk, 
+	benno.lossin@proton.me, bhelgaas@google.com, bjorn3_gh@protonmail.com, 
+	boqun.feng@gmail.com, dakr@kernel.org, dwaipayanray1@gmail.com, 
+	ethan.twardy@gmail.com, fujita.tomonori@gmail.com, gary@garyguo.net, 
+	gregkh@linuxfoundation.org, joe@perches.com, linux-kernel@vger.kernel.org, 
+	lukas.bulwahn@gmail.com, ojeda@kernel.org, pbonzini@redhat.com, 
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu, walmeida@microsoft.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Andreas Hindborg <a.hindborg@kernel.org> wrote:
-> Does what it says on the label. However, indentation is not checked and
-> the following is passing:
-> 
->     authors: [
->         "John Doe",
->               "Foo Bar"
->     ],
-> 
-You is right, maybe is good doing this?
+On Tue, Mar 4, 2025 at 9:51=E2=80=AFPM Guilherme Giacomo Simoes
+<trintaeoitogc@gmail.com> wrote:
+>
+> hostprog like rustfmt?
 
-> Another thing: I'm wondering if we could have a rust hostprog to do
-> this check, rather than a perl script?
-hostprog like rustfmt?
-About this, Daniel Sedlak say:
-"I think we could fight with the code formatting, because when it comes 
-to the rust macros, rustfmt is often very confused and we could end up 
-with variations like:
+No, Andreas means a script written in Rust, rather than a binary that
+comes from the toolchain.
 
-	authors: ["author1", "author2",
-			"author3"]
+I think it could be a good idea (it would be lovely to write the
+checker in Rust -- I also had a checker bot in Python from the old
+days of the old `rust` branch in GitHub), but `checkpatch.pl` doesn't
+need a built kernel, so it would be a disadvantage or at least a
+difference w.r.t. the usual `checkpatch.pl`, and we may not be able to
+call it from `checkpatch.pl`.
 
-or
+> About this, Daniel Sedlak say:
+> "I think we could fight with the code formatting, because when it comes
+> to the rust macros, rustfmt is often very confused and we could end up
+> with variations like:
 
-	authors: [
-		   "author1",
-		   "author2",
-		  ]
-"
+Did you check? i.e. is it something we noticed, or something that
+generally happens but maybe not in this case? Is there a way to
+workaround or disable that (e.g. a `rustfmt` config value)?
 
-Thanks,
-Guilherme
+Thanks!
+
+Cheers,
+Miguel
