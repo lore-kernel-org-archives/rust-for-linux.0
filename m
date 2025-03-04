@@ -1,40 +1,43 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8FDD27933B
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Mar 2025 22:56:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6073E27F4C4
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Mar 2025 22:57:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741129010; cv=none; b=tiocwKzOzpJwp4kzUiWMllhRi1XvDGNXZIp82w/yBR9Tcv/+XsJmWyoOx0O39YbhR1xE9qxEODYT1nyN/lTlgaanndf3GF6oHOWFWiTszw1g9Bc6nfacOaWKuAiNtD4tsyp8uaX5RcBC51YGvSwO/sV+VceFzxxKlX9kSlEwEIM=
+	t=1741129021; cv=none; b=W/PAIGuuVaBP4uE4tmI/ltIfaCRwBEYrubV+/MVQGbY70j1H+XXex0jZ+T7/8siXHWY1/ftn0aKniKEWGzud+j1qqU8O2/4bGrnvejmPrK/19yVF9U+rzc47mY4jkpR06OEhj0nDCo9HSvRvTjFwE/GQ6C5oO9/XFIACpjMVjzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741129010; c=relaxed/simple;
-	bh=Zbk8s5stDGdU0WfESJoufNqsdewmonzn0SMvnQyXLfI=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=sn9qIFX2sptTIHVsqmlewKUTHCc6nhg/7zlMz9WtEnk1jzTauuB4T/69jnbYoE9Lwb6Q4JQv7d4+A9l+7DYJFtfQMcFbYY2LurA6qJruvvSDIjiCS+CStGBsIvPx2W55/787yiAmYPpcDfGxpZi5iAB7TWYDIkJqDiH63PRXnnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=WfTYwrcV; arc=none smtp.client-ip=185.70.43.22
+	s=arc-20240116; t=1741129021; c=relaxed/simple;
+	bh=C6P89FCEKQ7hsnf3HcAy+ET8m/1mUKx+4UNKz3gB5dQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=odSwHBj7ftrcM64eNWYXRgHYwu21z+oQ91FteL9km4VsC4HNaYnwbv/n0QGccp5aIkFi1jJFtHFUwch2QuDpUxf/4AGyuaHMFbKKiI+Kxr4H27pQiP0boXnL1VzcGSvBIvPfGo4CIN34mLLYwGVM7YSmKjkg4bPHPwVHMkLfVro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=UNT5dZyA; arc=none smtp.client-ip=185.70.40.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="WfTYwrcV"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="UNT5dZyA"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1741129006; x=1741388206;
-	bh=aLD3LaAkTLu3OagsrYXiGucXx3/E76G0/vceQRwx7lA=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
-	 List-Unsubscribe:List-Unsubscribe-Post;
-	b=WfTYwrcVpzyO2cNxzhTditH/lmR/5s1yXr4nB+RfO7S2XZhsTORakMPPfVQ5Uh7Ou
-	 iKxF1pxtsuCPigYMoh1aDLYEOPjMqKc3hYsVGRuCNsltnjve8eKdBQxl31lQM1jsAo
-	 jMsuees4hnuPur86LBLLUNsFEbVwkloSrfHc82OiBoF8Kvc2TiZ8AuAz46o3mVczrF
-	 GU2eV+p962tX9lUSyo/mKO1ekeXntPR4YUOOaCuUZpy7vwwP7gtlwlr6JCL9ZOCRYw
-	 1ySKdbLfCyiNJMDWrN46e+6tlppHH2xGfoph7784i/O0R5OllvZVkmj2SNchuyOK56
-	 tU8HDkyrDawWw==
-Date: Tue, 04 Mar 2025 22:56:41 +0000
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+	s=protonmail; t=1741129017; x=1741388217;
+	bh=WCPISGW0WxDW396dH2Up0ucrRhbSpXK6XA4DV86Ew0k=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=UNT5dZyAYs3BZ7OxOTKMXQyRAiCl5tZ5xkWRfjzoNGja8F3Kolazy7+kH0wYBWwOB
+	 8pcYdnjZJcOtAP4AfZhOfkuNgDXINvLjLQvnCOVjUuqpyJS05XnCLmRgl4sHyPRZ2W
+	 uvrdHf/DgkK8K1wU5bHQGksCEpfeB54ovjQ8BlJDjvbcTLPdQpwDJNa2GdQVhaH696
+	 1UdkebQypo2tQLVZLzzCtx54ijc8hbp5rnR/YDW1N4kqfmhTowF0fAC3zVEydVrEon
+	 PuNrnon2f2w9pSJIJKvNjSiq02op8rFx5SK+biso0Ytzyyl7YpMJufPTWTAvdLNtAw
+	 meXp2ABBUrjdw==
+Date: Tue, 04 Mar 2025 22:56:51 +0000
+To: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org
-Subject: [RFC PATCH 0/6] add `syn` versions of pin-init macros
-Message-ID: <20250304225536.2033853-1-benno.lossin@proton.me>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: [RFC PATCH 1/6] rust: pin-init: internal: add syn version of the `Zeroable` derive macro
+Message-ID: <20250304225536.2033853-2-benno.lossin@proton.me>
+In-Reply-To: <20250304225536.2033853-1-benno.lossin@proton.me>
+References: <20250304225536.2033853-1-benno.lossin@proton.me>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 8d5cdee5a6596eee27341b3cb70fd737aa9f0157
+X-Pm-Message-ID: a6eb2719ee7981c4beaecaa3f25a995a035ea555
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -44,54 +47,111 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Change the implementations of all pin-init macros to use `syn` [1]. It
-is a library to make parsing Rust code in proc-macros simple. Since the
-kernel does not yet depend on syn, only the user-space version will
-benefit from this change now. However, we will soon add `syn` as a
-dependency using the new build system. `syn` is used by almost all
-proc-macros in the Rust ecosystem and even by the Rust compiler itself!
+Implement the `Zeroable` derive macro using syn to simplify parsing by
+not going through an additional declarative macro.
 
-There are a lot of benefits to writing proc-macros using `syn`.
-Parsing is a lot more readable and thus maintainable. The benefit in
-simplicity can then be taken advantage of by extending the syntax. I
-plan to support tuple structs soon. Another benefit is the increased
-readability in the errors on malformed macro-input. Currently they are
-very bad, because they come from token-munching declarative macros,
-which are notorious for bad error messages. See the respective commit
-messages for examples.
+The syn version is only enabled in the user-space version and disabled
+in the kernel until syn becomes available there.
 
+Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 ---
-Cheers,
-Benno
-
-[1]: https://crates.io/crates/syn
-
-Benno Lossin (6):
-  rust: pin-init: internal: add syn version of the `Zeroable` derive
-    macro
-  rust: pin-init: internal: add syn version of `pinned_drop` proc macro
-  rust: pin-init: internal: add syn version of the `pin_data` proc macro
-  rust: pin-init: add `?Sized` bounds to traits in `#[pin_data]` macro
-  rust: pin-init: allow doctests to refer to the pin-init crate
-  rust: pin-init: internal: add syn version of `[try_][pin_]init!`
-    macros
-
- rust/pin-init/internal/src/init.rs            | 404 ++++++++++++++++++
- rust/pin-init/internal/src/lib.rs             |  96 ++++-
- rust/pin-init/internal/src/syn_pin_data.rs    | 313 ++++++++++++++
- rust/pin-init/internal/src/syn_pinned_drop.rs |  77 ++++
- rust/pin-init/internal/src/syn_zeroable.rs    |  63 +++
- rust/pin-init/src/__internal.rs               |  62 +++
- rust/pin-init/src/lib.rs                      |  69 +--
- rust/pin-init/src/macros.rs                   |   4 +-
- 8 files changed, 1020 insertions(+), 68 deletions(-)
- create mode 100644 rust/pin-init/internal/src/init.rs
- create mode 100644 rust/pin-init/internal/src/syn_pin_data.rs
- create mode 100644 rust/pin-init/internal/src/syn_pinned_drop.rs
+ rust/pin-init/internal/src/lib.rs          |  5 ++
+ rust/pin-init/internal/src/syn_zeroable.rs | 63 ++++++++++++++++++++++
+ 2 files changed, 68 insertions(+)
  create mode 100644 rust/pin-init/internal/src/syn_zeroable.rs
 
-
-base-commit: 0cdd06928bd97cdbfa7061a52cc91901c84d9b2f
+diff --git a/rust/pin-init/internal/src/lib.rs b/rust/pin-init/internal/src=
+/lib.rs
+index babe5e878550..5019efe22662 100644
+--- a/rust/pin-init/internal/src/lib.rs
++++ b/rust/pin-init/internal/src/lib.rs
+@@ -30,6 +30,11 @@
+ mod helpers;
+ mod pin_data;
+ mod pinned_drop;
++#[cfg(kernel)]
++mod zeroable;
++
++#[cfg(not(kernel))]
++#[path =3D "syn_zeroable.rs"]
+ mod zeroable;
+=20
+ #[proc_macro_attribute]
+diff --git a/rust/pin-init/internal/src/syn_zeroable.rs b/rust/pin-init/int=
+ernal/src/syn_zeroable.rs
+new file mode 100644
+index 000000000000..90ea8fa63c83
+--- /dev/null
++++ b/rust/pin-init/internal/src/syn_zeroable.rs
+@@ -0,0 +1,63 @@
++// SPDX-License-Identifier: Apache-2.0 OR MIT
++
++use proc_macro2::TokenStream;
++use quote::quote;
++use syn::{
++    parse_macro_input, parse_quote, Data, DataStruct, DeriveInput, Error, =
+GenericParam, Result,
++    TypeParam, WherePredicate,
++};
++
++pub(crate) fn derive(input: proc_macro::TokenStream) -> proc_macro::TokenS=
+tream {
++    let raw =3D input.clone().into();
++    do_derive(parse_macro_input!(input as DeriveInput), raw)
++        .unwrap_or_else(|e| e.into_compile_error())
++        .into()
++}
++
++fn do_derive(
++    DeriveInput {
++        ident,
++        mut generics,
++        data,
++        ..
++    }: DeriveInput,
++    raw_input: TokenStream,
++) -> Result<TokenStream> {
++    let Data::Struct(DataStruct { fields, .. }) =3D data else {
++        return Err(Error::new_spanned(
++            raw_input,
++            "`Zeroable` can only be derived for structs.",
++        ));
++    };
++    let field_ty =3D fields.iter().map(|f| &f.ty);
++    let zeroable_bounds =3D generics
++        .params
++        .iter()
++        .filter_map(|p| match p {
++            GenericParam::Type(TypeParam { ident, .. }) =3D> {
++                Some(parse_quote!(#ident: ::pin_init::Zeroable))
++            }
++            _ =3D> None,
++        })
++        .collect::<Vec<WherePredicate>>();
++    generics
++        .make_where_clause()
++        .predicates
++        .extend(zeroable_bounds);
++    let (impl_generics, ty_generics, whr) =3D generics.split_for_impl();
++    Ok(quote! {
++        // SAFETY: Every field type implements `Zeroable` and padding byte=
+s may be zero.
++        #[automatically_derived]
++        unsafe impl #impl_generics ::pin_init::Zeroable for #ident #ty_gen=
+erics
++            #whr
++        {}
++        const _: () =3D {
++            fn assert_zeroable<T: ?::core::marker::Sized + ::pin_init::Zer=
+oable>() {}
++            fn ensure_zeroable #impl_generics ()
++                #whr
++            {
++                #(assert_zeroable::<#field_ty>();)*
++            }
++        };
++    })
++}
 --=20
 2.48.1
 
