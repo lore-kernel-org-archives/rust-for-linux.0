@@ -1,98 +1,113 @@
-Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52AEE13AC1
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Mar 2025 22:04:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847BC1FBEB1
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Mar 2025 22:07:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741125893; cv=none; b=g0dUL/j2fmknO/AfZ3QACdVnNsLs5da+XlWmx+e43d/x/pecoFa1fAwR/ugevBYJUSOIzjOgnpmdU/ivrTyI9jadnOvuXxWjUzJimheqhq5uh/2FW+atcVd1uQZPV4OwFM4gPiKXSAusZCXGOgToeN3MbC7HRKlnK8QgnCvilRk=
+	t=1741126072; cv=none; b=BTtVU4lMbQcH7nw5NLVHaHQQPV4TtZXSfnpwT4KKT+7KdMi79zVSpOlW8h3v2nX0FgDwKGRxsFl6HULuRC75NFRx68rVM1qBDaghpPweilJYjNPEh7YjA4xTS5IPGwPvYH73w4YehNzaw+wYVzpSWay5LBAwJIo4zCJMLowuG28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741125893; c=relaxed/simple;
-	bh=TC4cgMsPXlqLN0bRWCQ3mDHh/XYPnoGk/mZglndqOTk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FcN+0dzaVH8OjVk8WhiOuRaWRvJtW1tVyn6ANrIavMotnrUA8G5lFmNOPlcvXyvYDRGyjVEJICf6Cc4DzrUUfq1ZlVgVEWi5UUaNNf4k4dvDr06/K5FXpj8zvuVjMHE3gK8Y7erVuBwhIoR1+2xOu/cECX/JpFLBjIBS6ZyAUNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=FIz0gpB1; arc=none smtp.client-ip=209.85.219.173
+	s=arc-20240116; t=1741126072; c=relaxed/simple;
+	bh=rYa8UwAmLiF/ruWm+7Ip+yWVFZ1SaMjS81Bt+resw34=;
+	h=Date:Message-ID:MIME-Version:Content-Type:From:To:Cc:Subject:
+	 References:In-Reply-To; b=jW8rJgoaL3A069IJms3tDjvynUQV3LA0QXiWIEPlZvETW6H59W16ZSv4Q8CbX7JsYNouOJ8MYyXIPRasUP0Y+zRcObwKxfpBdYLfnjqGwbwLBtnxkZbQUhN5AlPnHH5XdhV8in26JiJBZuKo3/Q2EFQfQOFGAzmtDitlCGW/rXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=ChvdcD5J; arc=none smtp.client-ip=209.85.160.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="FIz0gpB1"
-Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-e60f212fee7so2080982276.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Mar 2025 14:04:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="ChvdcD5J"
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-474d11c7f1cso14092211cf.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Mar 2025 14:07:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1741125891; x=1741730691; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eGYM825COeY4cDgaQz2uYAo42uyksoN4eaWbp06R+Lo=;
-        b=FIz0gpB1VZEdS8WwBOjNdMMyr0ra1gVjdJLaGGLOJOqK1P54HykCPrGPnazZTfv+I6
-         jY98UEd6KcBBuyHQZ/V7fvyAiUz6HNla7zGGt3rKRv5I9zlHTRklHJatYL0XNQbgF6D1
-         2zOqB+c6QfOOa4gkKfxy2hjAign/DIZxKBrlG0qNWodth8N8M17xzaRYjsQZ7YqaqJPU
-         IuVPT2JMaZqIY1+egY38z1vgv1rK2u5MXM7og7YaveiSODMZp87JksFk+eWVVLvH+MBP
-         i4cTmhM6bjqmh7yHQBfafWu3p/dkanoAhn9r5u4T1RzZLMiyRrILdCGtMZ6FLsjjuAhT
-         sVKw==
+        d=paul-moore.com; s=google; t=1741126069; x=1741730869; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
+         :mime-version:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BKFucnJ0eu2hFoCdtrns3nmxFOzTMWGPnJoCE8LE9lg=;
+        b=ChvdcD5JcW6GT82AZREdI9KJI5wMf9FHldqZCztGGm4XN/xNKrW3hnsfaFifNNI8Nk
+         AND4RdlbUJoLC2IoFeTyDYV3SMdMgx9ZD+G25ygZaX09WbFNBFA8tbDaEuuVOPB1T27/
+         0ZPBJfOU/kdBWwIIpcQ12Z5zj0bn85U3qGw3iL5Jk+OfXiNv+b6+pAxGN7CioqxCOn/s
+         c4keFaTd394WdtGQfq4UEGbvuWQXs94As6WtZk4RGoybM+HV5WynToZX24Sr1mFHRVoM
+         WOCe9xHTrzIIhwk5V2TBkZJKptNQ824nv1ih6ccKKb2tzfn79WNS6/bw+06kNKqMUcZQ
+         Ru0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741125891; x=1741730691;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eGYM825COeY4cDgaQz2uYAo42uyksoN4eaWbp06R+Lo=;
-        b=NZbhBtO0Xv2MpHfRSe8UjPb3GI/uMaN5IIAk7CMHgpNSHjlM+xsRolibqXkTy4UT9T
-         wpdxtkDcBxMTE3fjO5OZYOw9uEiH8bwbKZQdA64q2u8I1qbVxt5bVqZZoTrvgqyGJta6
-         Yi2bZ6bQYqJrM4p2ocqbouLi2HSTWP/4x7boLrp9APhlwllzquBvK83GC/Hu7fUEzHqR
-         CuysM/gLCEV654Qgsox/2deedkJBvTaCJCyYVWv4DIdTnSjv6sxzneK9emnp86dYzZhS
-         rVMcMWebWy3sfOOAntr5VKaz9HGgqaWPQ9HmDHqKIF9VXlx2mpgG397IfHNDP2gICx1H
-         jhsw==
-X-Forwarded-Encrypted: i=1; AJvYcCUz2tNqbExnzQQ0+K3XJm51r+Cd+gfnkhEnc2fnJESvDKO83YkoYefB+1Q6ETDEhbqKXOaLEiCTqUNwHOQKQQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdaRmTIeInpVEWxzp4F5dAWG0v9Ul5Xa4riunxvxqOn3qyz9/m
-	CfMAD1Oqz1eeNVg11LJjNsxJOMxajOCmWZBBU5pNwVj/QZiAVzQQFYhkJxafQfZeHya9n75Wvjl
-	lbBDBASAb0X9BhdXnNNJFs8gWxYurStHIYSWR
-X-Gm-Gg: ASbGnctXx0ltWs7lEuS9omlsii9WMGqpbFGPkK0TK+TPDoYDD7oqLOCB+TtN3zPGH8z
-	7LBoxC6m2DoVDWyzLq9r5/PcEHXnaevrsQ26bsfHLAsDbs2I1Sf7XKpUNfmrcqNJojeeZx3UzyE
-	6WaGU8MkpUYEvegfi576O+f07HxA==
-X-Google-Smtp-Source: AGHT+IFulQ7LgzvyFb3/gdh8eB9ie1deJisxgjmyOD1UvKi+UT64a2qzLysIF+yMVnVpF5MLVUeEs4rDh0zS9aY9ju4=
-X-Received: by 2002:a05:6902:2407:b0:e60:87a0:6216 with SMTP id
- 3f1490d57ef6-e611e1cf5fcmr1341862276.5.1741125891325; Tue, 04 Mar 2025
- 14:04:51 -0800 (PST)
+        d=1e100.net; s=20230601; t=1741126069; x=1741730869;
+        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
+         :mime-version:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=BKFucnJ0eu2hFoCdtrns3nmxFOzTMWGPnJoCE8LE9lg=;
+        b=On3EgHhfeH7JqwTe6Hjkmz0xlRs0FZMbLbc6Z/EFyuhpMM3YgW8QqvZ0iauEQWR9o9
+         +nYyKOw7UqI59zfH7BeTTJ6e+56PwjXNpVUy/CMTirsNACCUkg8KrT6vKQzzJZ2oUDgo
+         Tx0H5xkhTr2527QOqu20V5kdmCcTgvENtDzpQ0LU040n1GUQIBp8dUikFSIBOKuDTc1X
+         BGz9erXhf7eew9Ijb7PtRkMBd7ddwdE8EX1dowEWxjLdvWMD8Q/3aUU+p/GBFHVk/+u7
+         zsuUTuPGgdHk0rv2qI+Y16oI3kILzF1f1CtOv11J3KzOux/3rOFXAPyWbNal7mRCtP6E
+         6qTA==
+X-Forwarded-Encrypted: i=1; AJvYcCU7I9ibmarKITzV9O2GvX3Fd9FBOg2OcQ24auPSWlvfZ+mZu1XNsgJFaiVL1Q3h/XPIzehlkl4HPZKOvrSBwQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxA4UUhxjS/VziL0bvxQoJITG6VPnr3yi+6uT+hErPiuTi6J563
+	evyCWGr0najcPCIg7PHaVfUdC2uIFzjPoKqgFVTJHSx5m7zo95Sh4w+yzI2wJQ==
+X-Gm-Gg: ASbGncsHrRNjtq+FRERyOi0JLU4Ijh1G8BhMbE0bZOpMhstmkbCgHonpIWZZ8Vd7bEH
+	hogZZB/YJoaWLzy3xpWbvfHDOOlzPI/3VzgyZpp/BxHmkK7bhTiJOOlRyrCXmnVIEhL192lwqqO
+	PUVFPTqYIqZDt0KGI6CetCeHUE2T+xCz79VN3PaI+1CNWGb7ur/t0bHZvoU5s6R0gXucAKhjqCl
+	eVtIrBtm1uiVH3ztyx+M1d7qPGOwhwjzRxZJpr1cvJFF/DdeKc499q1CVq5X4VAk6vwl8Iu6eTh
+	OT3F2hHkaGFBwcDFkcpSPOBETt/ltLIHvEUAUh8j2yfB2PnbsKSJvFOieCXHtZRF02qKLhBngBU
+	3T9wQQDEO2dPB8Q==
+X-Google-Smtp-Source: AGHT+IGUzI53OHoAUblYM2qlVQBUsHxaboxVDz0QodPEH5dELjV4Uu9kfywXUTbmN5tYZHwecjh2Aw==
+X-Received: by 2002:a05:622a:cb:b0:471:fc74:100e with SMTP id d75a77b69052e-4750b4682d0mr10512251cf.28.1741126069306;
+        Tue, 04 Mar 2025 14:07:49 -0800 (PST)
+Received: from localhost (pool-71-126-255-178.bstnma.fios.verizon.net. [71.126.255.178])
+        by smtp.gmail.com with UTF8SMTPSA id d75a77b69052e-47472431036sm79332581cf.80.2025.03.04.14.07.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Mar 2025 14:07:48 -0800 (PST)
+Date: Tue, 04 Mar 2025 17:07:48 -0500
+Message-ID: <f52b83c88d715ac3ae989427bcc20030@paul-moore.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250303-inline-securityctx-v1-1-fb7b9b641fdf@google.com>
- <CAHC9VhSo3aGsJVd=a3MTeakgU66oTN86oh5sZE8P4ghSk8Rx2g@mail.gmail.com> <CAH5fLgi6ZFBqtyUuGPbdST-tEzHJ=Wp1khDxQhO_h+bZiFVj8g@mail.gmail.com>
-In-Reply-To: <CAH5fLgi6ZFBqtyUuGPbdST-tEzHJ=Wp1khDxQhO_h+bZiFVj8g@mail.gmail.com>
+MIME-Version: 1.0 
+Content-Type: text/plain; charset=UTF-8 
+Content-Transfer-Encoding: 8bit 
+X-Mailer: pstg-pwork:20250304_1539/pstg-lib:20250304_1539/pstg-pwork:20250304_1539
 From: Paul Moore <paul@paul-moore.com>
-Date: Tue, 4 Mar 2025 17:04:40 -0500
-X-Gm-Features: AQ5f1JqWP2T9LLdIaTLM2jPEYtQYSDndqPtWBU1S0MWmqJHMHH9IUg70OKKJ0Vo
-Message-ID: <CAHC9VhTOug3WGh3MdMQs4VxDW=-q6aP7DF5raDXv40S3iP6euQ@mail.gmail.com>
-Subject: Re: [PATCH] lsm: rust: mark SecurityCtx methods inline
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Alice Ryhl <aliceryhl@google.com>, James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Christian Brauner <brauner@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, "=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org, Christian Brauner <brauner@kernel.org>, Alice Ryhl <aliceryhl@google.com>
+Subject: Re: [PATCH v2] cred: rust: mark Credential methods inline
+References: <20250304-inline-cred-v2-1-7aa54011bcab@google.com>
+In-Reply-To: <20250304-inline-cred-v2-1-7aa54011bcab@google.com>
 
-On Tue, Mar 4, 2025 at 5:37=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> wr=
-ote:
->
-> Regarding the other patch for "Credential", is your tree also the
-> correct place for that? It's a bit unclear to me which tree maintains
-> credentials.
+On Mar  4, 2025 Alice Ryhl <aliceryhl@google.com> wrote:
+> 
+> When you build the kernel using the llvm-19.1.4-rust-1.83.0-x86_64
+> toolchain provided by kernel.org with ARCH=arm64, the following symbols
+> are generated:
+> 
+> $ nm out-linux/vmlinux | grep ' _R'.*Credential | rustfilt
+> ffffffc0808fc540 T <kernel::cred::Credential>::get_secid
+> ffffffc0808fc588 T <kernel::cred::Credential as kernel::types::AlwaysRefCounted>::dec_ref
+> ffffffc0808fc570 T <kernel::cred::Credential as kernel::types::AlwaysRefCounted>::inc_ref
+> 
+> However, these Rust symbols are trivial wrappers around the functions
+> security_cred_getsecid, get_cred, and put_cred respectively. It doesn't
+> make sense to go through a trivial wrapper for these functions, so mark
+> them inline. Also mark other trivial methods inline to prevent similar
+> cases in the future.
+> 
+> After applying this patch, the above command will produce no output.
+> 
+> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+> Reviewed-by: Christian Brauner <brauner@kernel.org>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+> Changes in v2:
+> - Reword commit message.
+> - Link to v1: https://lore.kernel.org/r/20250303-inline-cred-v1-1-b2527beace76@google.com
+> ---
+>  rust/kernel/cred.rs | 5 +++++
+>  1 file changed, 5 insertions(+)
 
-Unfortunately, the cred code seems to be a bit of an orphan with no
-clear mailing list or maintainer listed in the MAINTAINERS file.  I've
-merged cred related patches in the past that have been rotting on the
-mailing lists, and Linus has accepted them; I can do the same here.
+Merged into lsm/dev, thanks everyone!
 
-I'll probably also toss out a RFC patch to volunteer for the cred
-maintainer job, if nothing else having an explicit cred mainainter
-entry should help clarify things for people who want to submit code
-and don't know where.
-
---=20
+--
 paul-moore.com
