@@ -1,99 +1,132 @@
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4653E261578
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Mar 2025 20:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B459156C76;
+	Tue,  4 Mar 2025 20:51:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741121088; cv=none; b=GFFTPTfTMBi5okzKtEVoyxLH/wwX+67s6+pgADWvdD0DpvAVQH339gJsvCMABiKQMhSEmlSEHnGysPPUBWp6t4ikg4lTxGip/r9i0O5l38X2RJMEEUwZA/VWJXGbSFgiumosEo3+kCzFHTgk9KKEgM1XOrl7SetHt4ptSC+gQjQ=
+	t=1741121469; cv=none; b=GVEOJEC8V8DvhviqgqHOaz28QD2yRMv5qSqnggadeWUdOyV+7H/2NrIdDXDegfQh77BIwryeIBTH3v2Bz5xFaoIp33VCl449ygs7cAcDOTbWR8Km0hl99IhJCA//v8p3sjZXmcisU39yrLdOszu2OrHTF/knmbMCkD4oKhDcqms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741121088; c=relaxed/simple;
-	bh=idw9ZvilSuHtkU6iOnnuLXF/HG3irgXsN8QUX4wGQ40=;
-	h=Date:Message-ID:MIME-Version:Content-Type:From:To:Cc:Subject:
-	 References:In-Reply-To; b=b1O107b9/yJ5/Y7jgMXzetQP1i7q4qc2l6eft8oUmIFf1IK8KehlxF0oHHOtaKwnFH6AlzER/IDgM00pj8pIcA04BgC9MBdTqtjWzKAPszol7PF4Q9+io/5ujcCoqPkiUb7ZWxrYHbDUvIwjhOV8UnJyjLvWVixCFKVGsnLZV3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=F4hb/6xW; arc=none smtp.client-ip=209.85.222.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+	s=arc-20240116; t=1741121469; c=relaxed/simple;
+	bh=qwR0WM2Lj1dp8M7aE9SPNE8YyQfH/b4OowZFRPmK1Ls=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=ZkGoCBa8kf0fJ7fSucLvvN8QmwetfngPF345nZ5RtPwlFwsykWwGUcZ3TiT1zzxA5spSbZg5cYvTGnaQ+YccHDwUhB2cDssZ2EiEOqHkc/ZSGt09+3nfqzCT4Q+HVDSy9WgBPPpPgIkrWLxBvT7c71Jg1ZuC3icVgo4FrVeZByA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YmLENvnF; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="F4hb/6xW"
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-7c3d0e90c4eso16076585a.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Mar 2025 12:44:47 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YmLENvnF"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-219f8263ae0so114271675ad.0;
+        Tue, 04 Mar 2025 12:51:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1741121086; x=1741725886; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
-         :mime-version:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wnI/HKF2BJ2DE+F3QNufti1w5M0knTrq3arpcVmTfsg=;
-        b=F4hb/6xWGLhLDHF3UhZOHuErDzYxnhnVmSq9HN6T4P2QJ785XmOa+E0OVe2XuN96ZQ
-         MILoenHIICKuuWHkCMNYV6oeqKBbkq2vp1hFDxTSyRuYH8F493BRqW2nTjnscFuTY60U
-         EPFZoiLtyICZB6kLDiD4wUe8KkqWGyNUzODgyAQsv2TNyUkXy1NZSbFF/WMl7/BUVBV4
-         9jWECoqm/qwkBWPFxv5DsYMXnctANS7ixZzWCCMoPtY/Ql/v91h5/7LsOZC1dpeg90Lr
-         CQD5eOA9axsvz2VLACYozFq+JrgLb4b3+ryO8BVAguCbwBEs7B3fprOvZr4Mxi4K4x42
-         Li8g==
+        d=gmail.com; s=20230601; t=1741121467; x=1741726267; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tkB0vjNaxNWgx7N1eyQZ6caM4Aq/OnMYxZsyx2vyzm8=;
+        b=YmLENvnF7Mq1hMvjb78ZFQDxKA9ZaNIWdIe8jdJwYbj/56du5Mn/9HT36fItxN21AT
+         ZBBjzQYm/Xqb2IyzBDR2asnWVsDgJzgQEcdP7p06Ag0fjQ4oDIdqRU+OxeGJiuITO8vg
+         7q08tVyJ9eIe7IszEupAZ0sF2oCL3lEoX+aw3wDKTlgBQ7p4IPIeAMB/nZH8T2uAGEYP
+         ub2ictYa/7pnYR18pVC1HN3gMiRGB9jXNvRX6OqlJYmSXYnBuUhnonA/iFQbf116aeL+
+         E8ozEhLirRpu3VdI5fX8m+PqM0nPmo4U5L9j/HWxH3wjq5PibAnqhh1jz+eQb+rN+cq1
+         KzqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741121086; x=1741725886;
-        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
-         :mime-version:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=wnI/HKF2BJ2DE+F3QNufti1w5M0knTrq3arpcVmTfsg=;
-        b=CNpwujT0360VNC7tidJwRPahw35SJfHlNeuUYTP6s+p16r8Ss5ePM5sKWKjVIdrBz0
-         Qpvs8ABiLzON381smSIMGmOVYx9MaDu/faERgGcbNMiybJW2RLY3qP/pfuKidS9/+3ek
-         Nmzz3MsKRMPoX5Za1BPg2YiRYA0HbfHGkL1snAj288GcATgdE/2hIoTXrLW9CP3/DMEK
-         pez0F8S8XNTXeLyfIWEK6eCg3qpau+71qsO0g0H28xymMo7qIHgW+ABjUatxU1D1uyzn
-         YsOC4ZS4xntfQWD9BMNfMDakQNUB3xTTOml6NOob06J18q4L6CabzyzCBi0OMhuYWWON
-         acfw==
-X-Forwarded-Encrypted: i=1; AJvYcCUbQO/QOusddQGmyhgYF7Hw+LH4JeBaDtpsq9ZXSf3YXmILqbdjUc+ZpHf+u5hAV09ZIF9x1zCy8mZLCWNdDw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy99aZ//PYx1gVT+1NtcO1HPOcP9eMfLe5nZ0NToES0RmRxYgqj
-	9sIWw2ywdHP4GqBgwDCHSX1EthU3edPlZpfKMinySXSeWjAjx+B95xoFiRLfow==
-X-Gm-Gg: ASbGnctawkl90sGlDyRUuKDU1X1O5kvFQkAgMWbEcGNkbxeoOJuaa7MU1ckB/MWi65g
-	wYivmiQpfD0SvHuGq0k3gC4grTcAyZLE99ipkDQa4AgLoTJH2gk7bXyvyH2QtuRrazTXOBqvQ06
-	kzIR+e9EJLggKtw0sP3NX0lH3dT8cIn0rXACy4fBHT9VNv0UYA6GgFdGQZi+nOJBs6f9IoCPpEm
-	OCk/dG2rUXZW59gjBHz743zKCFMccGatuxKCe5Fj5T9SdKi/lvF8IZkAP/4L3T9a1g/rPhxF4Gr
-	cMnMqMDoHj9lbxaitbtGeK6xo2kl4WHGf4/+P++Do3bM3KrKtHDPOW/zFujI0IbS96jt6oCZBCE
-	6LaavsKAjPur0yg==
-X-Google-Smtp-Source: AGHT+IHS4jLQv2ArJ6GHx3UL9v6MsZDGfjsA8pdO/0HW7TnyapGyetgLLGkaTBXzkDVSJZ7Yu3DODA==
-X-Received: by 2002:a05:620a:2b94:b0:7c3:c9e5:e4ba with SMTP id af79cd13be357-7c3cc37aacbmr691510185a.29.1741121086214;
-        Tue, 04 Mar 2025 12:44:46 -0800 (PST)
-Received: from localhost (pool-71-126-255-178.bstnma.fios.verizon.net. [71.126.255.178])
-        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-7c3d8e51df2sm21617285a.94.2025.03.04.12.44.45
+        d=1e100.net; s=20230601; t=1741121467; x=1741726267;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tkB0vjNaxNWgx7N1eyQZ6caM4Aq/OnMYxZsyx2vyzm8=;
+        b=F4ZKk+HaUpXsiMnyDAD+prBYqebHLx+IhraC4fcBqAAc0IVIY/QaUyOzhOgGcz/V0n
+         GgFb/jbJkAGT1q9j37WKMQa49fcJVo9t8qRv7QjNQXb5Hkb374M5A7Gu9RXSIC2HMPh8
+         gpcw9IhGN1ltUkle4JidTGJJfgE3fKnkBMjLlPSRU2bpPzp/GQsMiV9fQKYEkmTI/H/R
+         qNHyvK58NrGAHtfrUPHL2XLnZnFlwrlntsC/SuyT6qMgF56mqP5LUHzNa26j9moihJ6v
+         IU/G3IYMx/rRx4KVjGrKNoSDL288h86rW3NdfCAMhZrDIUaM52lAHOxzrM9n14hUaOz9
+         QLww==
+X-Forwarded-Encrypted: i=1; AJvYcCVM/E7CC1QSqxuXPWPLPIlAbG3SfJsnw8PC03xyia41j0/pMrOIcsX7TTlycW36w+QW1cnURAaq9vlly3o71v0=@vger.kernel.org, AJvYcCXwALfaNiSAFXAWUsUE1iTGqOSSdKk9+aTB9YqT2/gav9enMBI4CiEo9WnaCzi68al5fjQiIfqSo2JlZc0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPlMePHkB64hf4NoU1rH3w7e/dnbU3Z3CPIyjJcx17z8398NWf
+	bImKg3h96Yv2PKkPSvCJlhOw8SJaoV+xfDbaPNe3CWXbAYJzg8XX
+X-Gm-Gg: ASbGncsLIWdyGC48klUkhhb/tSHHzsfSt1hVJZ0gCnqxvrPh49aJdy+O0zN2/C0uqQQ
+	28T2qzQUFtU06m1W+h1O6p5LxkX9fLVqmKNyDf2OEb9xUlLPJMPzR36IMQxKXitIy83D6TOAElw
+	lIOu6kmO9SgiQYFEA0qy9+M/ghiUhJ/+F0sfvi0ewWwmq6VVbemE+1ttTuWUFVS+B3PkfQ7QK9J
+	81abwDRPfwLQs6fduVlaPp+wRuWhDeTWAY+uJN0DigpfM3Rfbb6GWIbTtL8mtlz6tWgSHPPR5Lm
+	TfvRaYCFFzZOkY70HRzJ2m/mzYoWmchoKB8TM7XvO0f15U+ky/Vx
+X-Google-Smtp-Source: AGHT+IFonFrcymViMosV0MVEu55WkaauxYs/oFVtTq2FLSiz1UNg0h2tfsPDvqw/CD+97zFlzHPOCw==
+X-Received: by 2002:a05:6a00:170c:b0:736:3184:7fe8 with SMTP id d2e1a72fcca58-73682b54a53mr500511b3a.2.1741121467243;
+        Tue, 04 Mar 2025 12:51:07 -0800 (PST)
+Received: from linuxsimoes.. ([187.120.156.44])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-aee7de1f7a6sm10474886a12.30.2025.03.04.12.51.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Mar 2025 12:44:45 -0800 (PST)
-Date: Tue, 04 Mar 2025 15:44:45 -0500
-Message-ID: <c4d75f7666dac40277a9504fe1754f5c@paul-moore.com>
+        Tue, 04 Mar 2025 12:51:06 -0800 (PST)
+From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+To: a.hindborg@kernel.org
+Cc: alex.gaynor@gmail.com,
+	aliceryhl@google.com,
+	apw@canonical.com,
+	arnd@arndb.de,
+	aswinunni01@gmail.com,
+	axboe@kernel.dk,
+	benno.lossin@proton.me,
+	bhelgaas@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	dakr@kernel.org,
+	dwaipayanray1@gmail.com,
+	ethan.twardy@gmail.com,
+	fujita.tomonori@gmail.com,
+	gary@garyguo.net,
+	gregkh@linuxfoundation.org,
+	joe@perches.com,
+	linux-kernel@vger.kernel.org,
+	lukas.bulwahn@gmail.com,
+	ojeda@kernel.org,
+	pbonzini@redhat.com,
+	rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu,
+	trintaeoitogc@gmail.com,
+	walmeida@microsoft.com
+Subject: Re: [PATCH V6 2/2] checkpatch: check format of Vec<String> in modules
+Date: Tue,  4 Mar 2025 17:50:54 -0300
+Message-Id: <20250304205054.207285-1-trintaeoitogc@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <87tt89gfe4.fsf@kernel.org>
+References: <87tt89gfe4.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 
-Content-Type: text/plain; charset=UTF-8 
-Content-Transfer-Encoding: 8bit 
-X-Mailer: pstg-pwork:20250304_1539/pstg-lib:20250304_1539/pstg-pwork:20250304_1539
-From: Paul Moore <paul@paul-moore.com>
-To: Alice Ryhl <aliceryhl@google.com>, Casey Schaufler <casey@schaufler-ca.com>
-Cc: James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, "=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Subject: Re: [PATCH] lsm: rust: reword "destroy" -> "release" in SecurityCtx
-References: <20250304-secctx-reword-release-v1-1-e8e9a7ff85ba@google.com>
-In-Reply-To: <20250304-secctx-reword-release-v1-1-e8e9a7ff85ba@google.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mar  4, 2025 Alice Ryhl <aliceryhl@google.com> wrote:
+Andreas Hindborg <a.hindborg@kernel.org> wrote:
+> Does what it says on the label. However, indentation is not checked and
+> the following is passing:
 > 
-> What happens inside the individual LSMs for a given LSM hook can vary
-> quite a bit, so it is best to use the terminology "release" instead of
-> "destroy" or "free".
+>     authors: [
+>         "John Doe",
+>               "Foo Bar"
+>     ],
 > 
-> Suggested-by: Casey Schaufler <casey@schaufler-ca.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> Acked-by: Casey Schaufler <casey@schaufler-ca.com>
-> Reviewed-by: Fiona Behrens <me@kloenk.dev>
-> ---
-> This patch is based on top of:
-> https://lore.kernel.org/all/20250304-inline-securityctx-v2-1-f110f2c6e7ff@google.com/
-> ---
->  rust/kernel/security.rs | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
+You is right, maybe is good doing this?
 
-Much better, thank you :)  Merged into lsm/dev.
+> Another thing: I'm wondering if we could have a rust hostprog to do
+> this check, rather than a perl script?
+hostprog like rustfmt?
+About this, Daniel Sedlak say:
+"I think we could fight with the code formatting, because when it comes 
+to the rust macros, rustfmt is often very confused and we could end up 
+with variations like:
 
---
-paul-moore.com
+	authors: ["author1", "author2",
+			"author3"]
+
+or
+
+	authors: [
+		   "author1",
+		   "author2",
+		  ]
+"
+
+Thanks,
+Guilherme
