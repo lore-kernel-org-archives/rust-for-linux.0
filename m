@@ -1,98 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from r-passerv.ralfj.de (r-passerv.ralfj.de [109.230.236.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5827209F57;
-	Tue,  4 Mar 2025 17:48:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E833F2E3398;
+	Tue,  4 Mar 2025 18:12:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.230.236.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741110528; cv=none; b=lv5QYyCGbbz9djG/kCzpAZuBIv2mZ9t6RGkMJuTjj8qPd/gpD/tXp4ZBsjO+ZOwxPEW8tTAK9wSZM+WqBavbpj3nzc6olq5jLN7yeFewqfajlIodCZxNQuxG6KK6cCFD1uDogT0ZPijUtM7loLNE6t9t1mmJ55NAvAxTZUaG9qQ=
+	t=1741111957; cv=none; b=rpO/cX5iDYWbYjvLFeIpngBfYcqPsJv8fHaZ+QGz2UrnHgj/umXBMQGrFJxp05/WSlcklmI0yj5pZTeGgoqnMyqzL5/oIrSVfAjxxBtvMuXugGmiEa89XPGX1Gd5FM5qpXNXsNBlU3nad6IQAkkeh1ScQH5rsUJE2A+0WCt8O40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741110528; c=relaxed/simple;
-	bh=ev0z99uVBne2zit/zIk55GPh3D478gskiWyAFFzpyro=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hbqX3wNDV3+qT7251SmRcW5soMCQjlPJGI1Idz5kp9N+VTW5cPWiV8+8TYaBt+ZMJOq+9dEfwUc4ySVOnmd6JTVfiLEMYmg3dVpWj64fkfGNtI2SjAxIbxB7YNTcBYgtcKOTe/5zZ7dgoF4lG5W8FarQAS87md2voZiZydeRm4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kKIm+8gq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741111957; c=relaxed/simple;
+	bh=gaEfcjNd02VLKamKTdYI4yoLbx/SJYRinm1vvENmyuc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=F+jFuyBcNxRuMbRnW9xu8/Siy6We7Qdvf3JrXFD7AQK/OtCL5Xu65pjsxevFfPJzmYSRVXTynU2rvkJe6cgcbovRWi99Vw2nP5lVsJXV8S/FiFMq8u9QAHx4SiIe6xkFiN0MPaCriTPdIjlgd1DcxtxQ5HsHxZonALSRi8TJfIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=OAg29k7P; arc=none smtp.client-ip=109.230.236.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ralfj.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kKIm+8gq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1E5EC4CEE8;
-	Tue,  4 Mar 2025 17:48:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741110527;
-	bh=ev0z99uVBne2zit/zIk55GPh3D478gskiWyAFFzpyro=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kKIm+8gq9l4mHJY8OKVIFmeJ/GiYZBCioty0FDdvxsdnhpVxBIkk49wZL+0BG4Mxt
-	 AwttCLI+rn60QtRHAYr49jixca7pzgi75CHwVeECrGB79otgRZKh55rUC2sshsSKtB
-	 7spgo582vYvzhLQz1qP6OCo/6AYdGpG8xTqT03XH5yZam/aj/4CENDhvLDRmZDyKuP
-	 rOXXaImY8DNCp269awZQEtpCkCocBP1wSBF6gWXSDtU6PaY+bdw+/v7XjaQX8Z0JMF
-	 loz6guSdG3nsC+aDwb/bqBGj47oTPgK7ujyEg0pdsF11czAQHxA8dZwerzqMHwIyFH
-	 Jfyi8DTl/uErQ==
-Date: Tue, 4 Mar 2025 19:48:42 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Fiona Behrens <me@kloenk.dev>
-Cc: Bart Van Assche <bvanassche@acm.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Jason Gunthorpe <jgg@nvidia.com>, Kees Cook <kees@kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	rust-for-linux <rust-for-linux@vger.kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
-	ksummit@lists.linux.dev
-Subject: Re: Rust kernel policy
-Message-ID: <Z8c8-q1jMDm3t-OL@kernel.org>
-References: <202502191026.8B6FD47A1@keescook>
- <20250219140821.27fa1e8a@gandalf.local.home>
- <202502191117.8E1BCD4615@keescook>
- <20250219202751.GA42073@nvidia.com>
- <20250219154610.30dc6223@gandalf.local.home>
- <97841173-1de8-4221-8bf3-3470a5ac98a7@acm.org>
- <89f2547edcaaba53d9965cab9133d809607330ac.camel@kernel.org>
- <87pljc6d7s.fsf@kloenk.dev>
- <Z7c3PguDn-sEl3gm@kernel.org>
- <m2cyexjb8d.fsf@kloenk.dev>
+	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="OAg29k7P"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ralfj.de; s=mail;
+	t=1741111947; bh=gaEfcjNd02VLKamKTdYI4yoLbx/SJYRinm1vvENmyuc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=OAg29k7PJ0rLM9Ey8dTuOSv4q8U4Oy3jDAWREZhTVQcUSs1shR6Ea/9ZD8/IYbvg8
+	 znaT89MvfrLIUt4wpztvkpliMyJtjGEM3pac9lzDUnPZS0iuYqfv++dlzvB2Hy78vM
+	 u5E1QPXvz5D4oUKTLBi2jSaHK16sU/rS5GHWC1ow=
+Received: from [IPV6:2001:67c:10ec:5784:8000::12e7] (2001-67c-10ec-5784-8000--12e7.net6.ethz.ch [IPv6:2001:67c:10ec:5784:8000::12e7])
+	by r-passerv.ralfj.de (Postfix) with ESMTPSA id 52F292052D09;
+	Tue,  4 Mar 2025 19:12:27 +0100 (CET)
+Message-ID: <60c5acd2-df86-4eda-9479-17da7efe13fc@ralfj.de>
+Date: Tue, 4 Mar 2025 19:12:26 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <m2cyexjb8d.fsf@kloenk.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: C aggregate passing (Rust kernel policy)
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: David Laight <david.laight.linux@gmail.com>,
+ Steven Rostedt <rostedt@goodmis.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Martin Uecker <uecker@tugraz.at>, "Paul E. McKenney" <paulmck@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Ventura Jack <venturajack85@gmail.com>,
+ Gary Guo <gary@garyguo.net>, airlied@gmail.com, boqun.feng@gmail.com,
+ ej@inai.de, gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com,
+ ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
+ miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
+References: <ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at>
+ <CAHk-=whLSWX=-5-z4Q8x1f_NLrHd0e3afbEwYPkkVSXj=xT-JQ@mail.gmail.com>
+ <20250226162655.65ba4b51@gandalf.local.home>
+ <CAHk-=wjAcA4KrZ-47WiPd3haQU7rh+i315ApH82d=oZmgBUT_A@mail.gmail.com>
+ <20250226165619.64998576@gandalf.local.home>
+ <20250226171321.714f3b75@gandalf.local.home>
+ <CAHk-=wj8Btsn0zN5jT1nBsUskF8DJoZbMiK81i_wPBk82Z0MGw@mail.gmail.com>
+ <20250226173534.44b42190@gandalf.local.home>
+ <20250227204722.653ce86b@pumpkin>
+ <07acc636-75d9-4e4b-9e99-9a784d88e188@ralfj.de>
+ <fbwwitktndx6vpkyhp5znkxmdfpforylvcmimyewel6mett2cw@i5yxaracpso2>
+Content-Language: en-US, de-DE
+From: Ralf Jung <post@ralfj.de>
+In-Reply-To: <fbwwitktndx6vpkyhp5znkxmdfpforylvcmimyewel6mett2cw@i5yxaracpso2>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Mar 04, 2025 at 12:17:54PM +0100, Fiona Behrens wrote:
-> I do have a new pr open in the nix repo, it still needs some polishing
-> and gcc and all that. but it does work for me to build using clang and
-> also run kunit.
+Hi all,
+
+>> Whether the compiler is permitted to do that depends heavily on what exactly
+>> the code looks like, so it's hard to discuss this in the abstract.
+>> If inside some function, *all* writes to a given location are atomic (I
+>> think that's what you call WRITE_ONCE?), then the compiler is *not* allowed
+>> to invent any new writes to that memory. The compiler has to assume that
+>> there might be concurrent reads from other threads, whose behavior could
+>> change from the extra compiler-introduced writes. The spec (in C, C++, and
+>> Rust) already works like that.
+>>
+>> OTOH, the moment you do a single non-atomic write (i.e., a regular "*ptr =
+>> val;" or memcpy or so), that is a signal to the compiler that there cannot
+>> be any concurrent accesses happening at the moment, and therefore it can
+>> (and likely will) introduce extra writes to that memory.
 > 
-> https://github.com/Rust-for-Linux/nix/pull/8
-
-My scenario has no connection to this. Let me explain.
-
-I needed a system comparable to BuildRoot and Yocto to build images and
-manage complexity of two toolchains. I.e. I use it only as build system
-not as an environment for doing kernel development.
-
-I.e. what I created is
-
-https://gitlab.com/jarkkojs/linux-tpmdd-nixos
-
-which replaces eventually
-
-https://codeberg.org/jarkko/linux-tpmdd-test
-
-What I can do with my environment is essentially along the lines of
-
-1. docker compose up --build
-2. qemu-system-x86_64 -M pc -m 2G -drive if=pflash,format=raw,unit=0,file=output/firmware.fd -drive file=output/tpmdd-nixos.qcow2,if=virtio,format=qcow2 -nographic
-
-I use this in Fedora Linux where I do all my kernel development. This
-is something I plan to update to MAINTAINERS as a test environment.
-
+> Is that how it really works?
 > 
-> Thanks
-> Fiona
-> 
+> I'd expect the atomic writes to have what we call "compiler barriers"
+> before and after; IOW, the compiler can do whatever it wants with non
+> atomic writes, provided it doesn't cross those barriers.
 
-BR, Jarkko
+If you do a non-atomic write, and then an atomic release write, that release 
+write marks communication with another thread. When I said "concurrent accesses 
+[...] at the moment" above, the details of what exactly that means matter a lot: 
+by doing an atomic release write, the "moment" has passed, as now other threads 
+could be observing what happened.
+
+One can get quite far thinking about these things in terms of "barriers" that 
+block the compiler from reordering operations, but that is not actually what 
+happens. The underlying model is based on describing the set of behaviors that a 
+program can have when using particular atomicity orderings (such as release, 
+acquire, relaxed); the compiler is responsible for ensuring that the resulting 
+program only exhibits those behaviors. An approach based on "barriers" is one, 
+but not the only, approach to achieve that: at least in special cases, compilers 
+can and do perform more optimizations. The only thing that matters is that the 
+resulting program still behaves as-if it was executed according to the rules of 
+the language, i.e., the program execution must be captured by the set of 
+behaviors that the atomicity memory model permits. This set of behaviors is, 
+btw, completely portable; this is truly an abstract semantics and not tied to 
+what any particular hardware does.
+
+Now, that's the case for general C++ or Rust. The Linux kernel is special in 
+that its concurrency support predates the official model, so it is written in a 
+different style, commonly referred to as LKMM. I'm not aware of a formal study 
+of that model to the same level of rigor as the C++ model, so for me as a 
+theoretician it is much harder to properly understand what happens there, 
+unfortunately. My understanding is that many LKMM operations can be mapped to 
+equivalent C++ operations (i.e., WRITE_ONCE and READ_ONCE correspond to atomic 
+relaxed loads and stores). However, the LKMM also makes use of dependencies 
+(address and/or data dependencies? I am not sure), and unfortunately those 
+fundamentally clash with even basic compiler optimizations such as GVN/CSE or 
+algebraic simplifications, so it's not at all clear how they can even be used in 
+an optimizing compiler in a formally sound way (i.e., "we could, in principle, 
+mathematically prove that this is correct"). Finding a rigorous way to equip an 
+optimized language such as C, C++, or Rust with concurrency primitives that emit 
+the same efficient assembly code as what the LKMM can produce is, I think, an 
+open problem. Meanwhile, the LKMM seems to work in practice despite those 
+concerns, and that should apply to both C (when compiled with clang) and Rust in 
+the same way -- but when things go wrong, the lack of a rigorous contract will 
+make it harder to determine whether the bug is in the compiler or the kernel. 
+But again, Rust should behave exactly like clang here, so this should not be a 
+new concern. :)
+
+Kind regards,
+Ralf
+
