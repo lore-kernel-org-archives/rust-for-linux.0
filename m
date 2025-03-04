@@ -1,345 +1,173 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6595204087
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Mar 2025 08:53:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC781FC7FD;
+	Tue,  4 Mar 2025 08:59:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741078437; cv=none; b=n45j4V373Jptt46iYb8DoOpf3Lz3qfVBADjWHMQiMEkzbhkAcYpkcXxEikC06JCuUrQZQfenYTTmhUYCwIaaQ2qNkN39kpKA3EAzfJvOnnOPaTDTozPhE4bj8BNLk6J1W4Y2zBQrZ/DaFU8OKEF0KpnNRm5rDTn6Tyk1UEw1VG0=
+	t=1741078743; cv=none; b=t2+W05cPlSUPI0T/glR1sgVtFsgb12OrQfWmSaTkWi3SasIjH+zGushf/OgweBZj2zXpGA9tj0TYWmoQuPc/MDnhFAu+WygKeOou+Zp+1NrxR28HDaU4A92xBAaP/93jNGFohRRtacwyG6JlzOrm0bzh9mrLlkPl7Uj9yajxaD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741078437; c=relaxed/simple;
-	bh=wzgVeH2iZAgK+OV0AmNH5+torfAgfEWzdJZTvzH35RY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mWNAzY7PCgsL94Qubfsem69X+GfDLJE9kdB9m17/PhfvBfNk6a+PxsSnOXOX4QvPXYEPFGCNX3CbLvajXNt+cdwHRpKbeEZPZ/mcKBw1S+7QDZbqXpFcvT605NEpnXEzCiUyJLdmfwDxEKwXNatlwv5TIom2elVMOJb1Oe2hTMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=br+aWbNg; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1741078743; c=relaxed/simple;
+	bh=GRs8DmVV8Q0Rqg68kkllhDnXL0SPxEdTvmczIygoWyY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cYE9weGIW6tjDrypHENa336jkpBFGCcTWwv33JKBqECi9Ij7IiWj67/q7WJh815XKza21kN7GdmcHQlzWZsGzv0/lYjD8T+6rALMuuFru0wsDKu5cceZwMlOH3kSNKHdBlbnpLQIjSvSIRHbHOQ77rb0bI35rQN44o4h9POwS5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jwoBmjc8; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="br+aWbNg"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2feb9078888so8634872a91.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Mar 2025 00:53:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jwoBmjc8"
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-3061513d353so55170081fa.2;
+        Tue, 04 Mar 2025 00:59:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741078435; x=1741683235; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=E0x864LV9vrzBzd/PsD5RrZ/kDJqjI2owc7G6mwEbH0=;
-        b=br+aWbNgaU5TNBEy7LA6bvRYNsXIRj6KMqH6MYZfQsjgOM3TP6M9d0PrOgNzTDdatL
-         4kigRFO0ugoO1PgyB/1Uz7k7GDv9m6YaoYnbS5bYvhbqVT0UbllMn0K5rqz46tn3G/LK
-         tm7hHEVs/zf0XabTvQyBtvwXeAivJLUcRFG7Ep4kbS7qboOZTlhCoRLcM/GsIv4mhsDW
-         I1p4+gEUtnnpYang5mbleu49diq8qSd87Ii8C5zpccUJLD6FmyQ43zEtZRKjtDpq6Idf
-         Kh45B7cvO7cr49xJ2go5s8jFCqKJWQo3VTGiW6DGS0SUfdvnyFNzHA0lI4tpPARi2SRX
-         qqeg==
+        d=gmail.com; s=20230601; t=1741078739; x=1741683539; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=IpLvosOPTODge75ZhJwO92ZOn1A2PUQkW7JVgLvP6v8=;
+        b=jwoBmjc8Dsu5KozbT+haPlx1u/cDTHDvW8NcRh0S8qckDRX7EaCDZynDnZ4IXfmqFF
+         7iunV5ChsNsUTXuM8x32A8XBvET6z5EjbNDaVu40QfWr+9UKzs7yWSBlLsmPi0q9w1PP
+         LFVNmEWDw8eAJPHVfSrmv55mHQvEoK33IfVQT95OnbQ5mdI38PTIgzwlTrDwdENPUf+m
+         /N1ZdvMN9lVxOk5GtM2T0eFluoXSsBfeTq0lLKPm5jZrBt6JsOch7rTrqIus/zw4HAIK
+         43K9sbMcDCRvQfy6CyJ5BeymlmmV5Phts37fk+BkUK6j0vvcQnaw5s9oVl/4X8Jy8KTY
+         B6rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741078435; x=1741683235;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20230601; t=1741078739; x=1741683539;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=E0x864LV9vrzBzd/PsD5RrZ/kDJqjI2owc7G6mwEbH0=;
-        b=eG13Jh5Azy6+kmA1jcZVz6CdG3+1mWe4NJ/vkDFFExyVIb9/dU4hRmjPdiMWU7Zo9t
-         CMjbcVA+QizG3Y3eTVP/hOjs98r++Lvw/rkuWkJ2lfrQ5FMGFGqdarmWFPiApViNq90B
-         lycBpKFlzeYM1KoLoWlvdspoCOV5jTXozRve0blCCIYVo9pNyKqYkvE1SmBjXLDRK4V8
-         Ii95DZFwsFttBhfNSm1R5yvBGo9bnUlLvcEuSRLEi66Yun6Kh3UYulLHFVH5YfBEcqPt
-         hu1Tor7JX09344hL7nEcHEMM8L92lfxi68fUmWkT4bJ50m3H6Ftel66x82nM8i+d9cf3
-         BJWA==
-X-Forwarded-Encrypted: i=1; AJvYcCVXGnbQIPb0cezFMroYJyFkciIxi2QtOnuqopc1VIFjWvyxEgeiErSlPybVrCLfsFYF57MVD7GOd/VsA7VVsQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGeksgrd8a3vI2nbGjksiOgGxOIL7f1xVTNJiTWl7/v4IgZs93
-	n3BgNtJi65Yw3y8ccXCWYjKMhBoO1cNDt16XUzGeAeUnsLVwfMJtwRaPtP5owy8=
-X-Gm-Gg: ASbGncvsWBkpt7RzdMJZaRmKd3wekSI4zi0SNxVC5gT2UoniyoyAGJdMt0/cPsrfrU7
-	3LFLACP8Uyl2sk/2x2+aMlw8yVSgaTntX1ahw2i568dvaemKSqR+LNLdYD3BvH8N9FIr+cw86ds
-	2gteDZ6EQuESC+URfHJBzRyeLIc8FEKvq7pUSrkU5ahOgZBEpHx/1fpE166BcMATyjtlbbrR9SJ
-	fzroJTm78YF6trwpIYlZd6Zw/unV+3eXi1VUY1UUexPmVMf9ZmDoONF+XNUmqUfd9tLc3HRQ1Ft
-	ou4LFapwWBMBPcsuyIUKrbQ5Smbu5ZDUu6RmIg9TeJc6bw==
-X-Google-Smtp-Source: AGHT+IFdFTTfqIOr3puUYW+t+84g8sQqcnrDMvn/JLyondd0YLc+BE2wI//6xrrG8j4UY3K/GoC9Rw==
-X-Received: by 2002:a17:90b:3b85:b0:2f4:434d:c7ed with SMTP id 98e67ed59e1d1-2febab75e0bmr28826018a91.16.1741078434808;
-        Tue, 04 Mar 2025 00:53:54 -0800 (PST)
-Received: from localhost ([122.172.84.15])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fea696e3f0sm10429399a91.37.2025.03.04.00.53.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Mar 2025 00:53:54 -0800 (PST)
-Date: Tue, 4 Mar 2025 14:23:51 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Russell King <linux@armlinux.org.uk>, linux-clk@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>
-Subject: Re: [PATCH V3 2/2] rust: Add initial clk abstractions
-Message-ID: <20250304085351.inrvjgixvxla4yn3@vireshk-i7>
-References: <cover.1740995194.git.viresh.kumar@linaro.org>
- <023e3061cc164087b9079a9f6cb7e9fbf286794e.1740995194.git.viresh.kumar@linaro.org>
- <CANiq72kdWzFOZ39EoFNxEAbk4KYgzLi1OAEc1zn8BM07VpXy3g@mail.gmail.com>
+        bh=IpLvosOPTODge75ZhJwO92ZOn1A2PUQkW7JVgLvP6v8=;
+        b=MQuG65F5fdwt2z3QPjvCpolY5yEYNp/QiNQgIhCdB/k6t/E0ZV99k1GUs/FyQ8Uv6o
+         8FZs7l+Cv9JI2A8JZbMipo8316WP3IUbABOYJRAEdI4zoofIlwe3XgMcUmh8UINd2vdq
+         XslbFqCb9C4Wyk4pccbeT8BXW6CZAGMRHW6DL92dUbqJaD1P+IC/nNPT1D/UQXAcbuSH
+         yqe6WSDcWE13W02Uxa1PSxNU8acqkLyCgjfkCYi+2qmFiwVhLfCBLsiSGeNqIK2fUDO1
+         OFVBCzoVcHZviu60blTV4R23dDL7267Xbyx4pMOhwWBYaw9FTO7ob6Z+43CnQls0dceY
+         mNWw==
+X-Forwarded-Encrypted: i=1; AJvYcCWQj8FtDcgOLiKOpBbD7s+mKufGssraUhdtkwafEJtqr6ZOlOrfRTuHxORGB5eeDDka3KM5RI2PEydpwzw=@vger.kernel.org, AJvYcCX2t1PMPgD11P/x4fvLONmXr/0KnPJQPOidchgDs9xxchHPA+qbSMcsc4x/1ZXl/5ODCpfNhQlfhDsHPYp1Y8A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywp9CONk72bkA3KBZ/Jz/gstlyVL6VSzD0tdhk0MOkwe93V2HHI
+	BNofuNFRFCyI4CoeuDQ9rgzeci8vkD3V3XzSjypVhSteFfVSBbUx
+X-Gm-Gg: ASbGncuiWr5AXApiaOK4fZnW4q8n2Dw5AfHSmMph25QgalNwcwPlW0AliSNjiC9Ykou
+	THdimQjYnT+1WHLcQ9rGHFohQbw9leSXZD/GI8/6gfYIuCPm4EoAaBHyEUNBR1AhgYLNRa/kQ3e
+	vL8NJdhDqYmLPdjzuhRO2kOqb86agTxHuv0kaJxZFgALk9MUmzWRCjhK2NITDW95VMWi7GY8FhZ
+	RnVMR+n0gDX98jbjZsIUoteNE7vgz9V+qTG75z50OjOxAPSvZLPRn3X9hu8lc1dDSBdaLuF7EJL
+	8Zkc9ZN4W0KkiSzIGI2+pRXWNJnvga8hfV7J5dAf0gSeDWsFOpcNVdPRa2ZPPtw2O+R09THkLHt
+	rQLC/L+4a3vUgGmqpD4AE8g==
+X-Google-Smtp-Source: AGHT+IFMgqZCbWR5mRoy9EQCtE3Z96nLi59uYRRUqwLOmodMoMI3drMHKTbl7nN9ffI6EtqpyEJVAQ==
+X-Received: by 2002:a05:651c:210c:b0:30b:c36c:ba9f with SMTP id 38308e7fff4ca-30bc36cbd5dmr20830681fa.14.1741078738757;
+        Tue, 04 Mar 2025 00:58:58 -0800 (PST)
+Received: from [192.168.1.146] (dsl-hkibng22-54f8dc-251.dhcp.inet.fi. [84.248.220.251])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30bc1b1c4fasm4745901fa.18.2025.03.04.00.58.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Mar 2025 00:58:57 -0800 (PST)
+Message-ID: <80f31377-f897-4881-b294-87f13f75acd4@gmail.com>
+Date: Tue, 4 Mar 2025 10:58:56 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72kdWzFOZ39EoFNxEAbk4KYgzLi1OAEc1zn8BM07VpXy3g@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 2/3] rust: add dma coherent allocator abstraction.
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: aliceryhl@google.com, dakr@kernel.org, robin.murphy@arm.com,
+ daniel.almeida@collabora.com, rust-for-linux@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>, Trevor Gross <tmgross@umich.edu>,
+ Valentin Obst <kernel@valentinobst.de>, linux-kernel@vger.kernel.org,
+ Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>,
+ airlied@redhat.com, iommu@lists.linux.dev
+References: <20250224115007.2072043-1-abdiel.janulgue@gmail.com>
+ <k3GMnfXzzvUVOgSnuMlEq3eVRyq1qjcf_tDtILRbOwj08EIQpwQ4bGtGhwWufr8lUn-VlHnNjP8FxIA48Jv-Ug==@protonmail.internalid>
+ <20250224115007.2072043-3-abdiel.janulgue@gmail.com>
+ <87h64al5c6.fsf@kernel.org>
+Content-Language: en-US
+From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+In-Reply-To: <87h64al5c6.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 03-03-25, 11:16, Miguel Ojeda wrote:
-> On Mon, Mar 3, 2025 at 11:00 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
-> >
-> > +/// Frequency unit.
-> > +pub type Hertz = crate::ffi::c_ulong;
+
+
+On 03/03/2025 13:30, Andreas Hindborg wrote:
+> "Abdiel Janulgue" <abdiel.janulgue@gmail.com> writes:
 > 
-> Do we want this to be an alias or would it make sense to take the
-> chance to make this a newtype?
+>> Add a simple dma coherent allocator rust abstraction. Based on
+>> Andreas Hindborg's dma abstractions from the rnvme driver, which
+>> was also based on earlier work by Wedson Almeida Filho.
+>>
+>> Nacked-by: Christoph Hellwig <hch@lst.de>
+>> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+> [...]
+> 
+>> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+>> index 0640b7e115be..8f3808c8b7fe 100644
+>> --- a/rust/helpers/helpers.c
+>> +++ b/rust/helpers/helpers.c
+>> @@ -13,6 +13,7 @@
+>>   #include "build_bug.c"
+>>   #include "cred.c"
+>>   #include "device.c"
+>> +#include "dma.c"
+>>   #include "err.c"
+>>   #include "fs.c"
+>>   #include "io.c"
+>> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
+>> new file mode 100644
+>> index 000000000000..b4dd5d411711
+>> --- /dev/null
+>> +++ b/rust/kernel/dma.rs
+>> @@ -0,0 +1,421 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +
+>> +//! Direct memory access (DMA).
+>> +//!
+>> +//! C header: [`include/linux/dma-mapping.h`](srctree/include/linux/dma-mapping.h)
+>> +
+>> +use crate::{
+>> +    bindings, build_assert,
+>> +    device::Device,
+>> +    error::code::*,
+>> +    error::Result,
+>> +    transmute::{AsBytes, FromBytes},
+>> +    types::ARef,
+>> +};
+>> +
+>> +/// Inform the kernel about the device's DMA addressing capabilities. This will set the mask for
+>> +/// both streaming and coherent APIs together.
+>> +pub fn dma_set_mask_and_coherent(dev: &Device, mask: u64) -> i32 {
+>> +    // SAFETY: device pointer is guaranteed as valid by invariant on `Device`.
+>> +    unsafe { bindings::dma_set_mask_and_coherent(dev.as_raw(), mask) }
+>> +}
+>> +
+>> +/// Same as `dma_set_mask_and_coherent`, but set the mask only for streaming mappings.
+>> +pub fn dma_set_mask(dev: &Device, mask: u64) -> i32 {
+>> +    // SAFETY: device pointer is guaranteed as valid by invariant on `Device`.
+>> +    unsafe { bindings::dma_set_mask(dev.as_raw(), mask) }
+>> +}
+> 
+> I'm rebasing some of the dma pool code I'm using for NVMe on top of
+> these patches, and I notice that these methods in the original code from
+> way back (besides being on Device) has these methods return `Result`:
+> 
+>      pub fn dma_set_mask(&self, mask: u64) -> Result {
+>          let dev = self.as_raw();
+>          let ret = unsafe { bindings::dma_set_mask(dev as _, mask) };
+>          if ret != 0 {
+>              Err(Error::from_errno(ret))
+>          } else {
+>              Ok(())
+>          }
+>      }
+> 
+> Is there a reason for not returning a `Result` in this series?
+> 
 
-I have tried some improvements based on your (and Alice's comments), please see
-if it looks any better now.
+Hi Andreas, the original dma_set_mask function got lost to me for some 
+reason. But yes, this is indeed a better approach!
 
--- 
-viresh
+Regards,
+Abdiel
 
--------------------------8<-------------------------
 
-diff --git a/rust/kernel/clk.rs b/rust/kernel/clk.rs
-new file mode 100644
-index 000000000000..fc3cb0f5f332
---- /dev/null
-+++ b/rust/kernel/clk.rs
-@@ -0,0 +1,232 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Clock abstractions.
-+//!
-+//! C header: [`include/linux/clk.h`](srctree/include/linux/clk.h)
-+//!
-+//! Reference: <https://docs.kernel.org/driver-api/clk.html>
-+
-+use crate::{
-+    bindings,
-+    device::Device,
-+    error::{from_err_ptr, to_result, Result},
-+    ffi::c_ulong,
-+    prelude::*,
-+};
-+
-+use core::{ops::Deref, ptr};
-+
-+/// Frequency unit.
-+#[derive(Copy, Clone, PartialEq, Eq, Debug)]
-+pub struct Hertz(c_ulong);
-+
-+impl Hertz {
-+    /// Creates a new `Hertz` value.
-+    pub fn new(freq: c_ulong) -> Self {
-+        Hertz(freq)
-+    }
-+
-+    /// Returns the frequency in `Hertz`.
-+    pub fn value(self) -> c_ulong {
-+        self.0
-+    }
-+}
-+
-+/// This structure represents the Rust abstraction for a C [`struct clk`].
-+///
-+/// # Invariants
-+///
-+/// A [`Clk`] instance always corresponds to a valid [`struct clk`] created by the C portion of the
-+/// kernel.
-+///
-+/// Instances of this type are reference-counted. Calling `get` ensures that the allocation remains
-+/// valid for the lifetime of the [`Clk`].
-+///
-+/// ## Example
-+///
-+/// The following example demonstrates how to obtain and configure a clock for a device.
-+///
-+/// ```
-+/// use kernel::clk::{Clk, Hertz};
-+/// use kernel::device::Device;
-+/// use kernel::error::Result;
-+///
-+/// fn configure_clk(dev: &Device) -> Result {
-+///     let clk = Clk::get(dev, "apb_clk")?;
-+///
-+///     clk.prepare_enable()?;
-+///
-+///     let expected_rate = Hertz::new(1_000_000_000);
-+///
-+///     if clk.rate() != expected_rate {
-+///         clk.set_rate(expected_rate)?;
-+///     }
-+///
-+///     clk.disable_unprepare();
-+///     Ok(())
-+/// }
-+/// ```
-+///
-+/// [`struct clk`]: https://docs.kernel.org/driver-api/clk.html
-+#[repr(transparent)]
-+pub struct Clk(*mut bindings::clk);
-+
-+impl Clk {
-+    /// Gets `Clk` corresponding to a [`Device`] and a connection id.
-+    pub fn get(dev: &Device, name: Option<&CStr>) -> Result<Self> {
-+        let con_id = if let Some(name) = name {
-+            name.as_ptr() as *const _
-+        } else {
-+            ptr::null()
-+        };
-+
-+        // SAFETY: It is safe to call `clk_get()` for a valid device pointer.
-+        Ok(Self(from_err_ptr(unsafe {
-+            bindings::clk_get(dev.as_raw(), con_id)
-+        })?))
-+    }
-+
-+    /// Obtain the raw `struct clk *`.
-+    #[inline]
-+    pub fn as_raw(&self) -> *mut bindings::clk {
-+        self.0
-+    }
-+
-+    /// Enable the clock.
-+    #[inline]
-+    pub fn enable(&self) -> Result {
-+        // SAFETY: It is safe to call clk APIs of the C code for a clock pointer earlier returned
-+        // by `clk_get()`.
-+        to_result(unsafe { bindings::clk_enable(self.as_raw()) })
-+    }
-+
-+    /// Disable the clock.
-+    #[inline]
-+    pub fn disable(&self) {
-+        // SAFETY: It is safe to call clk APIs of the C code for a clock pointer earlier returned
-+        // by `clk_get()`.
-+        unsafe { bindings::clk_disable(self.as_raw()) };
-+    }
-+
-+    /// Prepare the clock.
-+    #[inline]
-+    pub fn prepare(&self) -> Result {
-+        // SAFETY: It is safe to call clk APIs of the C code for a clock pointer earlier returned
-+        // by `clk_get()`.
-+        to_result(unsafe { bindings::clk_prepare(self.as_raw()) })
-+    }
-+
-+    /// Unprepare the clock.
-+    #[inline]
-+    pub fn unprepare(&self) {
-+        // SAFETY: It is safe to call clk APIs of the C code for a clock pointer earlier returned
-+        // by `clk_get()`.
-+        unsafe { bindings::clk_unprepare(self.as_raw()) };
-+    }
-+
-+    /// Prepare and enable the clock.
-+    #[inline]
-+    pub fn prepare_enable(&self) -> Result {
-+        // SAFETY: It is safe to call clk APIs of the C code for a clock pointer earlier returned
-+        // by `clk_get()`.
-+        to_result(unsafe { bindings::clk_prepare_enable(self.as_raw()) })
-+    }
-+
-+    /// Disable and unprepare the clock.
-+    #[inline]
-+    pub fn disable_unprepare(&self) {
-+        // SAFETY: It is safe to call clk APIs of the C code for a clock pointer earlier returned
-+        // by `clk_get()`.
-+        unsafe { bindings::clk_disable_unprepare(self.as_raw()) };
-+    }
-+
-+    /// Get clock's rate.
-+    #[inline]
-+    pub fn rate(&self) -> Hertz {
-+        // SAFETY: It is safe to call clk APIs of the C code for a clock pointer earlier returned
-+        // by `clk_get()`.
-+        Hertz::new(unsafe { bindings::clk_get_rate(self.as_raw()) })
-+    }
-+
-+    /// Set clock's rate.
-+    #[inline]
-+    pub fn set_rate(&self, rate: Hertz) -> Result {
-+        // SAFETY: It is safe to call clk APIs of the C code for a clock pointer earlier returned
-+        // by `clk_get()`.
-+        to_result(unsafe { bindings::clk_set_rate(self.as_raw(), rate.value()) })
-+    }
-+}
-+
-+impl Drop for Clk {
-+    fn drop(&mut self) {
-+        // SAFETY: It is safe to call clk APIs of the C code for a clock pointer earlier returned
-+        // by `clk_get()`.
-+        unsafe { bindings::clk_put(self.as_raw()) };
-+    }
-+}
-+
-+/// A lightweight wrapper around an optional [`Clk`].
-+///
-+/// An `OptionalClk` represents a [`Clk`] that a driver can function without but may improve
-+/// performance or enable additional features when available.
-+///
-+/// # Invariants
-+///
-+/// An `OptionalClk` instance encapsulates a [`Clk`] with either a valid or `NULL` [`struct clk`] pointer.
-+///
-+/// Instances of this type are reference-counted. Calling `get` ensures that the allocation remains
-+/// valid for the lifetime of the `OptionalClk`.
-+///
-+/// ## Example
-+///
-+/// The following example demonstrates how to obtain and configure an optional clock for a device.
-+/// The code functions correctly whether or not the clock is available.
-+///
-+/// ```
-+/// use kernel::clk::{OptionalClk, Hertz};
-+/// use kernel::device::Device;
-+/// use kernel::error::Result;
-+///
-+/// fn configure_clk(dev: &Device) -> Result {
-+///     let clk = OptionalClk::get(dev, "apb_clk")?;
-+///
-+///     clk.prepare_enable()?;
-+///
-+///     let expected_rate = Hertz::new(1_000_000_000);
-+///
-+///     if clk.rate() != expected_rate {
-+///         clk.set_rate(expected_rate)?;
-+///     }
-+///
-+///     clk.disable_unprepare();
-+///     Ok(())
-+/// }
-+/// ```
-+///
-+/// [`struct clk`]: https://docs.kernel.org/driver-api/clk.html
-+pub struct OptionalClk(Clk);
-+
-+impl OptionalClk {
-+    /// Gets `OptionalClk` corresponding to a [`Device`] and a connection id.
-+    pub fn get(dev: &Device, name: Option<&CStr>) -> Result<Self> {
-+        let con_id = if let Some(name) = name {
-+            name.as_ptr() as *const _
-+        } else {
-+            ptr::null()
-+        };
-+
-+        // SAFETY: It is safe to call `clk_get_optional()` for a valid device pointer.
-+        Ok(Self(Clk(from_err_ptr(unsafe {
-+            bindings::clk_get_optional(dev.as_raw(), con_id)
-+        })?)))
-+    }
-+}
-+
-+// Make `OptionalClk` behave like [`Clk`].
-+impl Deref for OptionalClk {
-+    type Target = Clk;
-+
-+    fn deref(&self) -> &Clk {
-+        &self.0
-+    }
-+}
