@@ -1,90 +1,182 @@
-Received: from xry111.site (xry111.site [89.208.246.23])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E3131F76A8;
-	Tue,  4 Mar 2025 07:49:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.208.246.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAA051FBEA7;
+	Tue,  4 Mar 2025 08:28:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741074578; cv=none; b=Nj/+eJwz1Lm6FcnP/JbnMLXc11DZbMLHHi0+VngbSDwUEFokhiohcvyegMIPNMxVYd4aQWnW3dlzNAUz7prDX9TRL4vke7amzxvMtmCGufOAWMAI/r9MOnRMF9/7XEWAyGk8YhbOIpDnkyqrL6qKJng7taSYZ/pX8vk3Le+jDk4=
+	t=1741076906; cv=none; b=EHdxYnmK0fRdrX3hm9l/e3S1qBYNlOIJj+4buOBUgmcE3EjvoC1/reFXHXnXQj5IBVJpRGwRmz7ihy/nX/tXl7CGYFmaluY4l2Gfk92Eq7SegZqfkV8v4meRvnbP3niuuAOm0dT+Y/jEOC2gtyzM11CtNw64Xbb3opB285CUMfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741074578; c=relaxed/simple;
-	bh=0c/JgpmJ1xTs7JmUkSsvLVns0tnoWAn8saEOOAw9J1U=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UXoLyFm5s6Z9qo0uMUibqoRjClXhymG5VPLMnxPBejzEw5q1/f37v0Wk4lTfjN5lgnhbRsaoaLYqoClqqsrDWwXAEUbEYatV2smqZy6dM/YLvJ5nRjET7T8vMGwIZ7TUldyPLnGZLur9sCWS2x5ClVactluP2GDkRum2T7cyUPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=hihqECuf; arc=none smtp.client-ip=89.208.246.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
+	s=arc-20240116; t=1741076906; c=relaxed/simple;
+	bh=+Xd2Qwr5IaKsyLjb2/QOiSSthlsBv7A9tUADYqtec0k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lV/RbZ6akjnHOByUjSg/MlXKFO1HdzxkczxHksH/jUP7lSfiTrGYdTXzG79PWND6BlyXS/x1W+jHpuSfmXUYxeKAxZkn/Yakw85nQklg6sQ6dX0L4PS/WeaItf3+Dj4ePf/iYLikgt55PYmg7n93hjRu3yvxSls38E7cwLYABK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ccTEj6Q3; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="hihqECuf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xry111.site;
-	s=default; t=1741074568;
-	bh=zIfEwkuAD57F3pZZRAjdPIKbEPJpjqKvEDPzL5jBHrg=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=hihqECuf0P5oDT+4STeTsnZtLmnDYfVQXfuJMdd+ckCsztu+KGwHfcRyf/9XcGORe
-	 SNqLlCFwPSUefVuPIfN0ZwPCSW6pFMqsD2Abw3iflLyQwHW3FnwaYFNAiHdm1TmHj3
-	 j5UW0GlDTiQ77K56nW0HUTpL2arb0ibRKRqxzUCs=
-Received: from [192.168.124.9] (unknown [113.200.174.80])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (secp384r1) server-digest SHA384)
-	(Client did not present a certificate)
-	(Authenticated sender: xry111@xry111.site)
-	by xry111.site (Postfix) with ESMTPSA id 4316865901;
-	Tue,  4 Mar 2025 02:49:25 -0500 (EST)
-Message-ID: <aab657d72a3ee578e5c7a09c6c044e0d5c5add9a.camel@xry111.site>
-Subject: Re: [PATCH] rust: Fix enabling Rust and building with GCC for
- LoongArch
-From: Xi Ruoyao <xry111@xry111.site>
-To: WANG Rui <wangrui@loongson.cn>, Miguel Ojeda <ojeda@kernel.org>, Alex
- Gaynor <alex.gaynor@gmail.com>, Huacai Chen <chenhuacai@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	 <bjorn3_gh@protonmail.com>, Benno
- Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich	 <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, 	loongarch@lists.linux.dev,
- loongson-kernel@lists.loongnix.cn, 	stable@vger.kernel.org
-Date: Tue, 04 Mar 2025 15:49:22 +0800
-In-Reply-To: <20250304073554.20869-1-wangrui@loongson.cn>
-References: <20250304073554.20869-1-wangrui@loongson.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ccTEj6Q3"
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-307bc125e2eso60119471fa.3;
+        Tue, 04 Mar 2025 00:28:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741076903; x=1741681703; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9mX8x9KTPJ/SeOY+OHyZ4DRgvFc341kcnP5lxBsMGds=;
+        b=ccTEj6Q3RtkBBVKRAaYgvRBcx3Ya3aHuaZ4Ml5c9LKX17xIe9MRjO0Fe0+Ii79o1ec
+         1VXdnbB/VCfGUN8Ou/bxwm+Uds3iZzvzPbTASllsDktzuhlYRb5b/ZdA4bCEeHIdF/Rz
+         Y+MT6uieBe8SK8/CPgPMZfbgORBqetkvPNt8M80FX246Magq4r65BP1JWvU2TIyKK7Jg
+         hGvOkQJfyRUEbcsZvr4F1X+OKp+l1WtWRL+TgUgAwM74f1khnePNXEMvYKzOszPuj8sZ
+         0jwmQh3AkymWFDyCNZm4oL2QsW7TZ4rycSvxHIrgYHNZfxyqPpWrrHKX2X6/Kh8QOO2H
+         026w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741076903; x=1741681703;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9mX8x9KTPJ/SeOY+OHyZ4DRgvFc341kcnP5lxBsMGds=;
+        b=eRfxrmEj+7u1uuOWPCBVLOfdCg5Kuth8EOwf9nd8khL0cwIu6pm8qOy/5QYJTTNNhq
+         tV7AkDIKTNwDqUJoKDzgxrW4vjJ7ZOkJnqpb5kfM2QpfdqDxdswM7o7Gim30FYZ80iDX
+         dVgdqyM12YIArvTFE3aIKaGGk/yYyTEr/I5GNJRzARfxfweDO9hWWg21/zPZopIzPDv/
+         p0NynQkkQqwS1XRKUqVK8bwJ8AapLl1Z1QAKSBS1NRvZNVFRH8RieBOfBKkw36/aYued
+         i3ZfabDMez8askpRWKzB+PVI6m4cV7WilVDxdFW8eJxiB77m5uUGW7h8HbY1Y33zUpHb
+         lKCw==
+X-Forwarded-Encrypted: i=1; AJvYcCVvpWWOSxh8eBFp5zMtvQ0eYeGaJ1Wv7p+y5r9YOSjcnrUAce+8XlSd1DDf5rXmfDGY7pSGE0g1txd/rm0=@vger.kernel.org, AJvYcCWbXrCfNWMwAlzl3LKvRpGKClOV2sYm42ItZq+dZIG7jbbwR1Zz8r7y+JRnY+or7k+ZNSjCUTa/IMktNjyPwx8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1GuyXdW2WRA0iGcrX1moIzevejwUx1Al0PDkFG7XiwoTf/jby
+	H4QQXmC3MfBxYeg1M2mldUsausCR3VwPji1V6DvgqUz4tJNDNtDN4+LAQQ==
+X-Gm-Gg: ASbGnctpZ9th73klUUAPcT08h/uCSSEwBQBneFmxQd4i+WiWxmoqtUm2vKCX7cXKiCf
+	JqtdBKOyLcABHAqAXZD40fTGhbV1Y3bWXiPgv//sKF1J19KumN89D2vnCGNbx446g/P8/d3KRqs
+	lHG+wxZFik9/v6cH/Wk2n5781Ppnt+B9bTUcqqRdH/z/w255EDq+tcZT5ZcV4EwBvrbVdH7KaxC
+	yB5zmZbs6zyjtD9eMt2avluQHjizix8LNhxDnx1S8fJcULVV/8wkngoW1/IIRsTOlldVohky9I7
+	f5SYsThIr8tX9UVxjfzjyeDwhal0OOy2MXn+tiUAuh0KDXVZ8DaGaJ63UkRvh+drm2OGFZ3whun
+	jRxb8CaC4DCFIfJNsD4mv+Q==
+X-Google-Smtp-Source: AGHT+IGQXjXy4I7TbIxibMzg0y1cK5xMehOkC/wPiOXepdk9gzG4SYdo2xhPe+ixkrPITWiBjQcj8Q==
+X-Received: by 2002:a2e:bc0f:0:b0:30b:b987:b68d with SMTP id 38308e7fff4ca-30bb987bb51mr20938931fa.8.1741076902435;
+        Tue, 04 Mar 2025 00:28:22 -0800 (PST)
+Received: from [192.168.1.146] (dsl-hkibng22-54f8dc-251.dhcp.inet.fi. [84.248.220.251])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30b86875b76sm16838331fa.91.2025.03.04.00.28.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Mar 2025 00:28:21 -0800 (PST)
+Message-ID: <8d998447-bb4e-4b4b-a2d7-f5cba4b815dc@gmail.com>
+Date: Tue, 4 Mar 2025 10:28:21 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 2/3] rust: add dma coherent allocator abstraction.
+To: Alice Ryhl <aliceryhl@google.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>,
+ Benno Lossin <benno.lossin@proton.me>, dakr@kernel.org,
+ robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Trevor Gross <tmgross@umich.edu>, Valentin Obst <kernel@valentinobst.de>,
+ linux-kernel@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+ iommu@lists.linux.dev
+References: <20250224115007.2072043-1-abdiel.janulgue@gmail.com>
+ <20250224115007.2072043-3-abdiel.janulgue@gmail.com>
+ <6dea7b6a-1534-47e7-94d2-d67417c3d4c1@proton.me>
+ <tnwDK3QN_Xr0Yoa3U8HVxS5OqjvxIhgmmO_ifTGJR_EtIzjoxawOHtnbOJ9yChsUWXyFPcU9beIdrgbpfGZI8w==@protonmail.internalid>
+ <3202F69F-397E-4BC4-8DD8-E2D4B0AB056F@collabora.com>
+ <87bjuil15w.fsf@kernel.org>
+ <CAH5fLgg5MuUu=TX8mMsPf5RcLhMLHSU4Vct=h8rFX6Z7HjPxeA@mail.gmail.com>
+Content-Language: en-US
+From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+In-Reply-To: <CAH5fLgg5MuUu=TX8mMsPf5RcLhMLHSU4Vct=h8rFX6Z7HjPxeA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, 2025-03-04 at 15:35 +0800, WANG Rui wrote:
-> This patch fixes a build issue on LoongArch when Rust is enabled and
-> compiled with GCC by explicitly setting the bindgen target and skipping
-> C flags that Clang doesn't support.
->=20
-> Cc: stable@vger.kernel.org
-> Signed-off-by: WANG Rui <wangrui@loongson.cn>
-> ---
-> =C2=A0rust/Makefile | 4 +++-
-> =C2=A01 file changed, 3 insertions(+), 1 deletion(-)
->=20
-> diff --git a/rust/Makefile b/rust/Makefile
-> index ea3849eb78f6..2c57c624fe7d 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -232,7 +232,8 @@ bindgen_skip_c_flags :=3D -mno-fp-ret-in-387 -mprefer=
-red-stack-boundary=3D% \
-> =C2=A0	-mfunction-return=3Dthunk-extern -mrecord-mcount -mabi=3Dlp64 \
-> =C2=A0	-mindirect-branch-cs-prefix -mstack-protector-guard% -mtraceback=
-=3Dno \
-> =C2=A0	-mno-pointers-to-nested-functions -mno-string \
-> -	-mno-strict-align -mstrict-align \
-> +	-mno-strict-align -mstrict-align -mdirect-extern-access \
-> +	-mexplicit-relocs -mno-check-zero-division \
 
-Hmm I'm wondering if we can just drop -mno-check-zero-division from
-cflags-y: for all GCC releases it's the default at either -O2 or -Os,
-and AFAIK we don't support other optimization levels.
 
---=20
-Xi Ruoyao <xry111@xry111.site>
-School of Aerospace Science and Technology, Xidian University
+On 03/03/2025 15:13, Alice Ryhl wrote:
+> On Mon, Mar 3, 2025 at 2:00 PM Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>>
+>> "Daniel Almeida" <daniel.almeida@collabora.com> writes:
+>>
+>>> Hi Benno,
+>>>
+>>
+>> [...]
+>>
+>>>>> +    /// Writes data to the region starting from `offset`. `offset` is in units of `T`, not the
+>>>>> +    /// number of bytes.
+>>>>> +    ///
+>>>>> +    /// # Examples
+>>>>> +    ///
+>>>>> +    /// ```
+>>>>> +    /// # fn test(alloc: &mut kernel::dma::CoherentAllocation<u8>) -> Result {
+>>>>> +    /// let somedata: [u8; 4] = [0xf; 4];
+>>>>> +    /// let buf: &[u8] = &somedata;
+>>>>> +    /// alloc.write(buf, 0)?;
+>>>>> +    /// # Ok::<(), Error>(()) }
+>>>>> +    /// ```
+>>>>> +    pub fn write(&self, src: &[T], offset: usize) -> Result {
+>>>>> +        let end = offset.checked_add(src.len()).ok_or(EOVERFLOW)?;
+>>>>> +        if end >= self.count {
+>>>>> +            return Err(EINVAL);
+>>>>> +        }
+>>>>> +        // SAFETY:
+>>>>> +        // - The pointer is valid due to type invariant on `CoherentAllocation`
+>>>>> +        // and we've just checked that the range and index is within bounds.
+>>>>> +        // - `offset` can't overflow since it is smaller than `self.count` and we've checked
+>>>>> +        // that `self.count` won't overflow early in the constructor.
+>>>>> +        unsafe {
+>>>>> +            core::ptr::copy_nonoverlapping(src.as_ptr(), self.cpu_addr.add(offset), src.len())
+>>>>
+>>>> Why are there no concurrent write or read operations on `cpu_addr`?
+>>>
+>>> Sorry, can you rephrase this question?
+>>
+>> This write is suffering the same complications as discussed here [1].
+>> There are multiple issues with this implementation.
+>>
+>> 1) `write` takes a shared reference and thus may be called concurrently.
+>> There is no synchronization, so `copy_nonoverlapping` could be called
+>> concurrently on the same address. The safety requirements for
+>> `copy_nonoverlapping` state that the destination must be valid for
+>> write. Alice claims in [1] that any memory area that experience data
+>> races are not valid for writes. So the safety requirement of
+>> `copy_nonoverlapping` is violated and this call is potential UB.
+>>
+>> 2) The destination of this write is DMA memory. It could be concurrently
+>> modified by hardware, leading to the same issues as 1). Thus the
+>> function cannot be safe if we cannot guarantee hardware will not write
+>> to the region while this function is executing.
+>>
+>> Now, I don't think that these _should_ be issues, but according to our
+>> Rust language experts they _are_.
+>>
+>> I really think that copying data through a raw pointer to or from a
+>> place that experiences data races, should _not_ be UB if the data is not
+>> interpreted in any way, other than moving it.
+>>
+>>
+>> Best regards,
+>> Andreas Hindborg
+> 
+> We need to make progress on this series, and it's starting to get late
+> in the cycle. I suggest we:
+> 
+> 1. Delete as_slice, as_slice_mut, write, and skip_drop.
+> 2. Change field_read/field_write to use a volatile read/write.
+> 
+> This will let us make progress now and sidestep this discussion. The
+> deleted methods can happen in a follow-up.
+> 
+> Similarly for the dma mask methods, let's either drop them to a
+> follow-up patch or just put them anywhere and move them later.
+> 
+> Alice
+
+Thanks Alice. Yeah, will follow-up with those other patches and move 
+forward with the basic implementation for now.
+
+Regards,
+Abdiel
