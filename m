@@ -1,136 +1,183 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606E02517BB;
-	Tue,  4 Mar 2025 16:49:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741106943; cv=pass; b=F8mDs2z/uo0ChYHAJycPRyB9lxrCeuvLgl9dGdA6Gt7Gv5nQY7xipxMr6ESmrGTz2pJRiUXbuoSWYwpLg4/0elb1bpQHWUZKSuPg2YTJN0dHMDAia+b3fRCLQEZebKts1jR58EFd6wCWTdX5CH4dRMiaa8WgBO1d/Z1V3K3t5kI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741106943; c=relaxed/simple;
-	bh=4RAoUkuf7ewwJ8cnrWg8tsLrSLar35HtgkvQotfrXug=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=SiLvpzpdQCe4dkbz9vfDcMVUcSQlZdBAPOQ2E1qVHW85WsmQbWSVpZCD/obtP1EmK4nc1QzpqXizAN48oh5IFCua8+GATPaIXKuulglEkwLzEf1qlIQNxnkYzqdiWmA2vk4XssOh3q4HU0MYUV+xpnQklsVTM2synOiQn63tCsc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=aYEeSW6P; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F2620967C;
+	Tue,  4 Mar 2025 17:36:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741109765; cv=none; b=sMXlOQFjkzwrWsZ7cEBuO4QrIwaYlu5OmUmYSJVJ8OOAT0/cFeY6/SlKXl8oVaJLxWIRjUPVsTd/H/GOqap7LQntli6xtVZxraqChqUrTqjj4pJkkNYHNVmm/MBYeuLSU8ifvNRp1qXbuDCSGvoj/gsbenwcLiPT8lqps1Z1X1g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741109765; c=relaxed/simple;
+	bh=9NzHeomlf+Nv1BhOgJmO2czzW6I5BiHvH358DPrPLGY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NUAtfyhESgZZNG3hOENjLOU0GB2AqH7cYOcfhcNAlBbnDDWGiF2d9pdH5TXvv9hb9pSKAJM98S/jDISWDgvQwNBIRoxBOWaBPUQzxNhThKUJ5SB75lpDyBt8ifGP/vjiD0qI6WtS+W50Xm9tk/BOnFO+P6pIL3rKcmyZbmv8xms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PExqiomM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="aYEeSW6P"
-ARC-Seal: i=1; a=rsa-sha256; t=1741106922; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=oD6ujRjG+rsYxCx4iGEyaaiezw/7wmwGdhJZAMizG4U8lFLrUl+m4d/2FWA9Vk55Zzyp6IJzFNBWQLVHxw7S4+aR/s3c4BurtrA+YVdeI814VUvKQffCvVlHGvHNXGaTxsUS5PlPJqubP9dAi0UpLAiK+3QQFuW92qdOjwctNN4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1741106922; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=dwy5+ghU3OdxRxXJ5Gg2zsehsrGVRP88ZDUxKwxlNq8=; 
-	b=GotW3QTbO8u6iESn0fn7Mly94JXRKfTNeqUsQmApfpVfnvxgtNpeF77VZdJs4VAYGfd8jD5nCm+Lx0QLalU2bZNfL2rzWhuwmmE8ss2YFezIgMm7V5u2o3Xzl/XZslXWFRm4DCtKy9Wl5fXqrqLxihh476cy0NRTdnhO7STvhJE=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1741106922;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=dwy5+ghU3OdxRxXJ5Gg2zsehsrGVRP88ZDUxKwxlNq8=;
-	b=aYEeSW6PsY8U0KJa4Sy+jfb6NwH6ByLrAY0Ioui7hBX6296opa/L2UGvo2IVT5el
-	gOObVd4rtiXEvHXe/5vt4ifnwSg8/nHE2KSyuzGdJY18S33/A5m/O9Zd2bDTV9N8QAk
-	GECH72e8TOvsIfEKhBa9HWkNqt6QYVvAZj2KpH6g=
-Received: by mx.zohomail.com with SMTPS id 1741106920056781.2730201045849;
-	Tue, 4 Mar 2025 08:48:40 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PExqiomM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31225C4CEE8;
+	Tue,  4 Mar 2025 17:35:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741109764;
+	bh=9NzHeomlf+Nv1BhOgJmO2czzW6I5BiHvH358DPrPLGY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=PExqiomMamFh2EJ9lGxHd/1D2oolzwvnyCKcOkvuazmzN1Ct5aWwUPk3H080auBcn
+	 ofJLRPqUqs3NyXc+8e8JAy/lPKK/QFIJVrC3zlUG78zfarJJoMTvaK81ykPF7kORle
+	 QmXV5KFrWdHkn4s/S2xdoJiITIhpWrQ+cTS7+0Vs2Q4izGxXKudql4i3m3qe6wJllj
+	 wYdAEjHxVOKISGH1acerLWe4Xm03IfdsM2TJDgONc0zg2OCJbPldWybpG7Goh7uS7c
+	 Oza5S6pUZPVzWj4RPDCx0ukMUOpmIZTXLSpAe1T+OJrkw69Zu/fuI02RbGgKwEMDEp
+	 2G6SUJhXh0bGg==
+From: Danilo Krummrich <dakr@kernel.org>
+To: airlied@gmail.com,
+	simona@ffwll.ch,
+	corbet@lwn.net,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	ajanulgu@redhat.com,
+	lyude@redhat.com,
+	pstanner@redhat.com,
+	zhiw@nvidia.com,
+	cjia@nvidia.com,
+	jhubbard@nvidia.com,
+	bskeggs@nvidia.com,
+	acurrid@nvidia.com
+Cc: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	gregkh@linuxfoundation.org,
+	mcgrof@kernel.org,
+	russ.weight@linux.dev,
+	dri-devel@lists.freedesktop.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	nouveau@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH v5 0/5] Initial Nova Core series
+Date: Tue,  4 Mar 2025 18:34:47 +0100
+Message-ID: <20250304173555.2496-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
-Subject: Re: [PATCH v2] rust: irq: add support for request_irq()
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <87cyewhpxj.fsf@kernel.org>
-Date: Tue, 4 Mar 2025 13:48:30 -0300
-Cc: ojeda@kernel.org,
- alex.gaynor@gmail.com,
- boqun.feng@gmail.com,
- gary@garyguo.net,
- bjorn3_gh@protonmail.com,
- benno.lossin@proton.me,
- tmgross@umich.edu,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- Alice Ryhl <aliceryhl@google.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <BE595E8E-CB77-4E8B-B6EF-215CCAF5580A@collabora.com>
-References: <u-vC1KbeOK3Fd2PClzinb8LmqS_dntOW-pOSmZIFWotCZeTOg30xR_GYUc4oReAKZeuuu7ZaXWzfeTkpGMlr0A==@protonmail.internalid>
- <20250122163932.46697-1-daniel.almeida@collabora.com>
- <87cyewhpxj.fsf@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: Apple Mail (2.3826.300.87.4.3)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi Andreas,
+This is the initial series for the nova-core stub driver.
 
-I will address your other comments later this week, as I=E2=80=99m off =
-for a few days.
+nova-core is intended to serve as a common base for nova-drm (the
+corresponding DRM driver) and the vGPU manager VFIO driver, serving as a
+hard- and firmware abstraction layer for GSP-based NVIDIA GPUs.
 
-> On 4 Mar 2025, at 10:43, Andreas Hindborg <a.hindborg@kernel.org> =
-wrote:
->=20
-> "Daniel Almeida" <daniel.almeida@collabora.com> writes:
->=20
->> Add support for registering IRQ handlers in Rust.
->>=20
->> IRQ handlers are extensively used in drivers when some peripheral =
-wants to
->> obtain the CPU attention. Registering a handler will make the system =
-invoke the
->> passed-in function whenever the chosen IRQ line is triggered.
->>=20
->> Both regular and threaded IRQ handlers are supported through a =
-Handler (or
->> ThreadedHandler) trait that is meant to be implemented by a type =
-that:
->>=20
->> a) provides a function to be run by the system when the IRQ fires =
-and,
->>=20
->> b) holds the shared data (i.e.: `T`) between process and IRQ =
-contexts.
->>=20
->> The requirement that T is Sync derives from the fact that handlers =
-might run
->> concurrently with other processes executing the same driver, creating =
-the
->> potential for data races.
->>=20
->> Ideally, some interior mutability must be in place if T is to be =
-mutated. This
->> should usually be done through the in-flight SpinLockIrq type.
->>=20
->> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
->> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
->> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
->=20
-> What is the base commit to apply this patch to? I am getting some
-> compiler errors when trying it out:
->=20
->   error[E0308]: mismatched types
->     --> =
-/home/aeh/src/linux-rust/linux/rust/kernel/irq/request.rs:240:21
->       |
->   237 |                 bindings::request_irq(
->       |                 --------------------- arguments to this =
-function are incorrect
->   ...
->   240 |                     flags.0,
->       |                     ^^^^^^^ expected `usize`, found `u64`
->       |
->=20
-> [...]
+The Nova project, including nova-core and nova-drm, in the long term,
+is intended to serve as the successor of Nouveau for all GSP-based GPUs.
 
-This patch needs a rebase. I=E2=80=99ve been waiting for Lyude & Boqun
-new SpinLockIrq series, which just came out last week.
+The motivation for both, starting a successor project for Nouveau and
+doing so using the Rust programming language, is documented in detail
+through a previous post on the mailing list [1], an LWN article [2] and a
+talk from LPC '24.
 
-I=E2=80=99ll work on a v3 soon.
+In order to avoid the chicken and egg problem to require a user to
+upstream Rust abstractions, but at the same time require the Rust
+abstractions to implement the driver, nova-core kicks off as a driver
+stub and is subsequently developed upstream.
+
+Besides the driver itself and the corresponding documentation, i.e. guidelines,
+task list, etc., this series also carries a few more patches to more flexibly
+compose firmware path strings for the .modinfo section.
+
+Link: https://lore.kernel.org/dri-devel/Zfsj0_tb-0-tNrJy@cassiopeiae/T/#u [1]
+Link: https://lwn.net/Articles/990736/ [2]
+Link: https://youtu.be/3Igmx28B3BQ?si=sBdSEer4tAPKGpOs [3]
+
+Changes in v5:
+  - change `ModInfoBuilder::push()` to take a `&str` instead of `&[u8]`
+  - drop patch "rust: str: provide const fn as_bytes() for BStr"
+  - embedd `impl TryFrom<u32> for Chipset` in `define_chipset!` (Alexandre)
+  - switch `Chipset::NAMES` from `[&BStr; N]` to `[&str; N]`
+  - introduce `const_bytes_to_str()` helper
+  - move `to_lowercase_bytes()` to util.rs
+
+Changes in v4:
+  - in `regs::Boot0` take a `&Bar0` and let deref coercion do its thing
+    (Alexandre)
+  - add missing firmware path string to the .modinfo section (Greg)
+  - add some infrastructure to compose firmware path strings more flexibly
+
+Changes in v3:
+  - impl TryFrom<u32> for Chipset
+  - add Chipset::arch()
+  - initialize revision from Boot0
+  - in Firmware, eliminate repeating code pattern using a closure (thanks to
+    Alexandre)
+  - use #[expect(dead_code)] for Firmware
+  - Replace some Rust specific rules with links to existing R4L documentation.
+  - Link in R4L submit checklist.
+  - Update task entry "Page abstraction for foreign pages" with Lina's work.
+
+Changes in v2:
+  - Fix module name in Kconfig description. (John)
+  - Expand Kconfig description a bit. (John)
+  - Expand name for PCI BAR0 region.
+  - Do not store / print boot0 raw register value. (John)
+  - Rename CardType to Architecture, rename enum names to represent the
+    architecture name and adjust enum values according to the register
+    definition. (John)
+  - Add an abstraction for register accesses.
+  - Print chipset, architecture and revision.
+  - Load bootloader firmware. (Timur)
+  - Add task "Generic register abstraction".
+  - Change complexity of "Debugfs abstractions".
 
 
+Danilo Krummrich (5):
+  rust: module: add type `LocalModule`
+  rust: firmware: introduce `firmware::ModInfoBuilder`
+  rust: firmware: add `module_firmware!` macro
+  gpu: nova-core: add initial driver stub
+  gpu: nova-core: add initial documentation
+
+ Documentation/gpu/drivers.rst              |   1 +
+ Documentation/gpu/nova/core/guidelines.rst |  24 ++
+ Documentation/gpu/nova/core/todo.rst       | 446 +++++++++++++++++++++
+ Documentation/gpu/nova/guidelines.rst      |  69 ++++
+ Documentation/gpu/nova/index.rst           |  30 ++
+ MAINTAINERS                                |  11 +
+ drivers/gpu/Makefile                       |   1 +
+ drivers/gpu/nova-core/Kconfig              |  14 +
+ drivers/gpu/nova-core/Makefile             |   3 +
+ drivers/gpu/nova-core/driver.rs            |  47 +++
+ drivers/gpu/nova-core/firmware.rs          |  45 +++
+ drivers/gpu/nova-core/gpu.rs               | 199 +++++++++
+ drivers/gpu/nova-core/nova_core.rs         |  20 +
+ drivers/gpu/nova-core/regs.rs              |  55 +++
+ drivers/gpu/nova-core/util.rs              |  21 +
+ drivers/video/Kconfig                      |   1 +
+ rust/kernel/firmware.rs                    | 177 ++++++++
+ rust/macros/module.rs                      |   2 +
+ 18 files changed, 1166 insertions(+)
+ create mode 100644 Documentation/gpu/nova/core/guidelines.rst
+ create mode 100644 Documentation/gpu/nova/core/todo.rst
+ create mode 100644 Documentation/gpu/nova/guidelines.rst
+ create mode 100644 Documentation/gpu/nova/index.rst
+ create mode 100644 drivers/gpu/nova-core/Kconfig
+ create mode 100644 drivers/gpu/nova-core/Makefile
+ create mode 100644 drivers/gpu/nova-core/driver.rs
+ create mode 100644 drivers/gpu/nova-core/firmware.rs
+ create mode 100644 drivers/gpu/nova-core/gpu.rs
+ create mode 100644 drivers/gpu/nova-core/nova_core.rs
+ create mode 100644 drivers/gpu/nova-core/regs.rs
+ create mode 100644 drivers/gpu/nova-core/util.rs
+
+
+base-commit: 99fa936e8e4f117d62f229003c9799686f74cebc
+-- 
+2.48.1
 
