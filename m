@@ -1,134 +1,115 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D821FE463
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Mar 2025 10:32:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051201FECD9
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Mar 2025 10:37:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741084326; cv=none; b=Az5hIlH9y43PmmIXVMioaUBEhok8pDzm6Aaw9cE4jo/ADFfV0btI8u02TT5fFWm4+8mg39E7+GBBNkcl37Il88XrrX5LfYxo8Sdy/Upog1Gu0x6LlsJWuc4OYe1hTyyJEVOfqyFG6F/wspVw5c5JphzqrAjfZN8FmpfYrOL8T4E=
+	t=1741084629; cv=none; b=hzGOgyBkjUjIvFDARpcLqpRh3yod1o1qEGC7cPk5inSI0FAtrEY9bMCptRZVBARZ064wHPv2yosCDHHvB4+CTwHKFoNS0JtYZq9B8im+3vPL5dKvnQVpZ6/t6Gv0xJch/Gdlot4ZJbHeMV8QfEhF4VIUQNzda/Z9nup5A/UWm3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741084326; c=relaxed/simple;
-	bh=2QN4c6t4NTMLZfo84yIUSl8a68B1T7HX28jmEa3K2TQ=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=mIOmnaeEfRrWIsdVfDmMWjRXjyWyUpD/pMpr9MDEe0To+f6XpUgwGBoDu1V4Vfr23xxOYwBaUXJ6vGlhh4q5re5nOW4YddsEW2T9zcI61+PTAClCyI5kKqnxtZmYOteNTiayCzhckamiJxOLFnR5IeCZrQoiUeVffCHPuUOXsJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=K55R1tuo; arc=none smtp.client-ip=209.85.128.74
+	s=arc-20240116; t=1741084629; c=relaxed/simple;
+	bh=Ph7Z/eQgdHPhRHi/cGs92I8dsrsvDBOdjLTZ5ObY0Xw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dko0v6JEZiCyHwUH9g0lHMYWuYXKqqD4F89ZNoDBG0DaDF+3gnQscxpv/eeVuF1XRMXqHT/oyVFLmWmVZRWeyhNW1TkCD/q1jBa1yiSwo1b/er+0sS5LDzeK+r3hK3lmqxxOl0z6swpL4Jn+Nri+lPGtw11QyRNy0K4uL/zjIRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cOZ/Q1ss; arc=none smtp.client-ip=209.85.221.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="K55R1tuo"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43bce8882d4so895985e9.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Mar 2025 02:32:03 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cOZ/Q1ss"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-390df942558so4256471f8f.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Mar 2025 02:37:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741084322; x=1741689122; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=CgBM9qkXPKsz4E4wlMO9VCpTU9cY6MKXXq6pU54rOXU=;
-        b=K55R1tuonZDQuU8sPAcgsuiwDXi4Zc5mvtHHJTMHp7mmzrY1Ia0LXEFgA/Z4eqoqfI
-         yH6SWMy7WNJ8MIIrTRIT6RqBCDHqNch9vnyv29KyFE1NOvdpgDfskdk53CkJdhOFAuak
-         QIZ6Q+7tYkFoa4jzErQI+aW2ZVNaY6aZICCfMGM+KH8MmSIQw8sfESjUvrwIg7LUPoq6
-         xoUPmzr6hWEwvHEvVvOodaG9hRqKbO63jkFLMp6V6XrGraVSSYPuPZ3ohdpNQmI1VkRV
-         R6GGBHGc5Cvvj96SyJM4AMBN+aVJy4hN0D2u5rgpbcOpvkzPxKlbeV6EEAfuFkXlZOPu
-         zJpQ==
+        d=google.com; s=20230601; t=1741084624; x=1741689424; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AnfoXHWbkxpn8CLKu2E2rVl/Oeya0FmkAvYXgZjUPXs=;
+        b=cOZ/Q1ssJvP5NH+A/AgBtKieSCXSv2M4jeXGyim7rZDJ+kGJc7dYtK/M1Ea9C6q504
+         4Lwmha3jPiwBJmA6hC5GXBZLs3MeNdqZK5R4c73qdghfsmwYZZVWtmHzrtzDK4f2EfyY
+         hDFSb6gQs+xT19BeqAs1FXsa+NGhKhnWroL+RU6FQm8Kb/LlQu545FKNUX9WuTX/7pe5
+         H5UtU2kfvvP61ZNlhIVGqpKOigycvecGOKQR3XBBKGgHMaFfxThmp5xSBiu0GMNn6N7S
+         ++N7tC4Rlbhg6UGIHiR2x6yRMe0J544C5kHxEVgcLelRG0uQGLw0gYy2osXiGFl8pd7b
+         gr7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741084322; x=1741689122;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=CgBM9qkXPKsz4E4wlMO9VCpTU9cY6MKXXq6pU54rOXU=;
-        b=pDzoktL95aUT1jqy4Sb78EZPeV7HOnO5LCfY1UN8c3DJnkGyr6mEJegq/bcYcXkg+Q
-         vIejJp0bzSgk1pxoofjmuj+z9x1MAWXB83Avl03aQCBCBt64iznNATPX3z/jpab0lZQz
-         xP1I2iyWGYCZQQDkdB3zo9CC1/q+sWUYspW5M34XcTel4SNdWDJOcIVI+oPj4OtX53mC
-         IsYi/loqhmEH6Dd33ZjFloE2aaH9mVRi6uoO98xT5NWivV7fS6ocV0ziem7VbO7UoJX1
-         TlfEQENYBTRZqjEJ9dvIu/CH6RPsSs+06qJ22XD1ZMpR2120tfWnLGshvsq1jVgdmqtQ
-         F2Ng==
-X-Forwarded-Encrypted: i=1; AJvYcCUslznqN9AO6fE4n5HHJ3Mih7r3r2oZjt3UC3aN6LHCwN7XDOw6FLLoUL+l6NKjq+e41oDsxeo63lgsf2CJmA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzvXAFMBJa+Du8InEuvbs1+8HqZ4c7FiATtgz3Kx+PsR6Y0u3gn
-	Mx5IqjQWAhkDBOHUWn8/KEglntZKmvFClLqA9EcQs1Z669+sTe8DmvAxyemaArWX/fNIPkVTK2C
-	b6cc9DNENm0C8Vg==
-X-Google-Smtp-Source: AGHT+IHhnkbrdCEb0Dq9dBlFWcgEAlaF3SWEtL4WwW/UfW9TbgpU0Jmo6dviPOgNSpapJjyGppCqbmtXhTCpUF4=
-X-Received: from wmrn9.prod.google.com ([2002:a05:600c:5009:b0:43b:c205:3a80])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:35d2:b0:439:9f97:7d67 with SMTP id 5b1f17b1804b1-43ba6704614mr161034505e9.16.1741084322399;
- Tue, 04 Mar 2025 02:32:02 -0800 (PST)
-Date: Tue, 04 Mar 2025 10:31:55 +0000
+        d=1e100.net; s=20230601; t=1741084624; x=1741689424;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AnfoXHWbkxpn8CLKu2E2rVl/Oeya0FmkAvYXgZjUPXs=;
+        b=daTto1FC5b05Gj91YKpM6QP0Wr7tai1sDpZUKIdEm5TAIgO3AOua60WuDuyxo7Ymp1
+         SCC6v2NpToCNuPVuuoUM8Gtc/6RRPmdOWVVybF1G7J5NR6Reniqf+80YkJUUGzVFYV7j
+         kXzpkHohRnJrVI2pl/3opq0jJWDEneGIzhH3DadXqGonh2INNYUm0LZz79mZs9FTMvwv
+         85JxnNbeviDqxeFV6PMz6xG9pPifR8Ed9BUT+uornDsEcK3KRnCAFRHwGI2IYkQ+nLpP
+         Rt4Pu7uYKBke1ElUP2ytnf5rY38ZazaZb3loU18Im+HdpeCAeEWJLenFqZtHQKPCVE2C
+         97ig==
+X-Forwarded-Encrypted: i=1; AJvYcCXjroK5DIO+W7omFm9y7lVxLwOtBAXiewJ2b/WmKCJ79tIlwffoOCPN5uv9DGdjaojGurrpPiQObMy8pDs/Ug==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwiCAOAcnmOrnlvqVAnrj33Gm2x+lI0wPYUBNtElHGZJNmzxuff
+	cBP+AuWWB+mr1FPHNFPSkIJsOGvlWIsWBMt+qWpSTqGTIMgkw+4ePRwG/7lIywhE9xPKMjpl4Ka
+	YBNTtknUylKu8KRlXAtFziZ9vIk6q3MtbTV+u
+X-Gm-Gg: ASbGncsKWjj6QeytY4f++VntD+nXE+kyjL7d6WVGePUNLq8haZZEVRCQR1Os1ubICvN
+	8vXQRNSLZfhAo21hLDsUVk/ktY0K1Q+dThSCEeex2OoRXrk2Yu2y7SaW3Kef5ERW4d0kHYHZ19B
+	NOHP8ZIx/QGh+TRq6Lgth6YQqyp1xIbjWfFs3sN/2MaUrbXaqqLNlntJI=
+X-Google-Smtp-Source: AGHT+IHnZGopTu14rJhQmFHdcWS/CmtUr7Vq5gBSfsQMqLY+ddlQ2k7+IHh8qMlJWxhe9a/q9UgVjpEYak7y23CaNeo=
+X-Received: by 2002:a05:6000:1786:b0:391:1213:9479 with SMTP id
+ ffacd0b85a97d-3911213986fmr4342313f8f.51.1741084624201; Tue, 04 Mar 2025
+ 02:37:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAJrWxmcC/x2M3QpAQBQGX0Xn2tZaf+VV5GKtD6eEzhFK3t3ma
- pqLmYcUwlBqkocEJytva5QsTSjMfp1geIhOzrrS5rYwihCO2wiuTYaIBV5h4CofCqCG7Sm2u2D k+/+23ft+yWVU+GcAAAA=
-X-Change-Id: 20250304-secctx-reword-release-e26ac4ee7e0b
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1902; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=2QN4c6t4NTMLZfo84yIUSl8a68B1T7HX28jmEa3K2TQ=;
- b=owEBbAKT/ZANAwAKAQRYvu5YxjlGAcsmYgBnxtafko7OGAXd/t7elbNMyK4uxuHQQNW0bF0+g
- nsUQs3Bn/OJAjIEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ8bWnwAKCRAEWL7uWMY5
- Rk4jD/dSV7WTYYlnYfVe3c6B0oR98nYlDdQoBdHNQ2vx0mm7svyvl/V5f34wg3Ii6WhooeIl+Q+
- 7rlJICSPkyc5WphLaimQq7j0pvyH1/DZrBGPE/8usHQa1yWgmOG5z2zywauEi2Q0pQijOvgrj40
- uU0cpDJUBSdcVutmI5dsq5MYzvtaZrRibRrnB754JEUSCVLC2H5YpdhNATk2Q46GoGZGASR18It
- DKxVJgKR4K25rktXEdYk1mN4l2OwN0e25Zu3ro7K8ROBh095CXdJXMbuL7VSAfnuoLqkb0aKHES
- 7YYY8cyUvB3V0e5g3UifchYEXc2LyXvhnTZnTJjTofhxQHk3RQqDqdiSFcJmLM75aM3JOSW14Lu
- LxawEUmB3NDPE8NGsfFfLcQJ6cWF3hZb4cybxvuPFUppCZYmlMVDhouLt7lICbS+2vIpQ9Vwi0v
- 7r53cq38ZWZLGs32XDU4vSKVg3xepNIVZgO4WlF29jeLT2T2dsd3N0EWVW1mwn67CuH/Tdi0BJO
- dvN+8/Oe470vPjW0scABmAxmN5Dyzgr3WDKm+8ma0Q2qQ2PAl6DtqyI6wkq872+QAgDZ/XkYHg4
- DmDIk/H+sumfeYHbiviUqFKbWDoa9o43gT1gZ/ICJKBrIHjlduflMhms67ebfZpv8FNpShxgCiy vROkNIl7GiI+3
-X-Mailer: b4 0.14.2
-Message-ID: <20250304-secctx-reword-release-v1-1-e8e9a7ff85ba@google.com>
-Subject: [PATCH] lsm: rust: reword "destroy" -> "release" in SecurityCtx
+MIME-Version: 1.0
+References: <20250303-inline-securityctx-v1-1-fb7b9b641fdf@google.com> <CAHC9VhSo3aGsJVd=a3MTeakgU66oTN86oh5sZE8P4ghSk8Rx2g@mail.gmail.com>
+In-Reply-To: <CAHC9VhSo3aGsJVd=a3MTeakgU66oTN86oh5sZE8P4ghSk8Rx2g@mail.gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-To: Paul Moore <paul@paul-moore.com>, Casey Schaufler <casey@schaufler-ca.com>
+Date: Tue, 4 Mar 2025 11:36:51 +0100
+X-Gm-Features: AQ5f1Jr6vlrRiPYv8T2mmkPxNCUjz2IzWb_BB5bszisP39eJSBbTg3T7YfzmtPY
+Message-ID: <CAH5fLgi6ZFBqtyUuGPbdST-tEzHJ=Wp1khDxQhO_h+bZiFVj8g@mail.gmail.com>
+Subject: Re: [PATCH] lsm: rust: mark SecurityCtx methods inline
+To: Paul Moore <paul@paul-moore.com>
 Cc: James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Miguel Ojeda <ojeda@kernel.org>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	rust-for-linux@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-What happens inside the individual LSMs for a given LSM hook can vary
-quite a bit, so it is best to use the terminology "release" instead of
-"destroy" or "free".
+On Mon, Mar 3, 2025 at 11:55=E2=80=AFPM Paul Moore <paul@paul-moore.com> wr=
+ote:
+>
+> On Mon, Mar 3, 2025 at 10:30=E2=80=AFAM Alice Ryhl <aliceryhl@google.com>=
+ wrote:
+> >
+> > I'm seeing Binder generating calls to methods on SecurityCtx such as
+> > from_secid and drop without inlining. Since these methods are really
+> > simple wrappers around C functions, mark the methods to inline to avoid
+> > generating these useless small functions.
+> >
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> >  rust/kernel/security.rs | 5 +++++
+> >  1 file changed, 5 insertions(+)
+>
+> While this isn't specific to your patch, Casey's comment about "free"
+> vs "release" is something to keep in mind when working on the LSM
+> bindings; what happens inside the individual LSMs for a given LSM hook
+> can vary quite a bit.
+>
+> I also saw a similar Rust patch where a commenter suggested using
+> "impersonal facts" in the commit description and I believe that is a
+> good idea here as well.
+>
+> Beyond those nitpicks, this looks okay to me based on my *extremely*
+> limited Rust knowledge.  With the minor requested changes in place,
+> would you prefer me to take this via the LSM tree, or would you prefer
+> it to go up to Linus via a more Rust-y tree?
 
-Suggested-by: Casey Schaufler <casey@schaufler-ca.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
-This patch is based on top of:
-https://lore.kernel.org/all/20250304-inline-securityctx-v2-1-f110f2c6e7ff@google.com/
----
- rust/kernel/security.rs | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+It would be great if you could take it, thanks!
 
-diff --git a/rust/kernel/security.rs b/rust/kernel/security.rs
-index 24321105052648e150f2875bcfa5ef29f4249516..0c63e9e7e564b7d9d85865e5415dd0464e9a9098 100644
---- a/rust/kernel/security.rs
-+++ b/rust/kernel/security.rs
-@@ -16,7 +16,7 @@
- /// # Invariants
- ///
- /// The `ctx` field corresponds to a valid security context as returned by a successful call to
--/// `security_secid_to_secctx`, that has not yet been destroyed by `security_release_secctx`.
-+/// `security_secid_to_secctx`, that has not yet been released by `security_release_secctx`.
- pub struct SecurityCtx {
-     ctx: bindings::lsm_context,
- }
-@@ -67,9 +67,8 @@ pub fn as_bytes(&self) -> &[u8] {
- impl Drop for SecurityCtx {
-     #[inline]
-     fn drop(&mut self) {
--        // SAFETY: By the invariant of `Self`, this frees a context that came from a successful
--        // call to `security_secid_to_secctx` and has not yet been destroyed by
--        // `security_release_secctx`.
-+        // SAFETY: By the invariant of `Self`, this releases an lsm context that came from a
-+        // successful call to `security_secid_to_secctx` and has not yet been released.
-         unsafe { bindings::security_release_secctx(&mut self.ctx) };
-     }
- }
+Regarding the other patch for "Credential", is your tree also the
+correct place for that? It's a bit unclear to me which tree maintains
+credentials.
 
----
-base-commit: 93f60f16db02f7b52985338f37679095231b6383
-change-id: 20250304-secctx-reword-release-e26ac4ee7e0b
-
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
-
+Alice
