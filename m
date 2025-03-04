@@ -1,120 +1,290 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA4F283C9E
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Mar 2025 15:36:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786F8266F12
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Mar 2025 16:10:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741102583; cv=none; b=f73ZBXVzP99DuOlf8iM2LQSVdp3N3NiZc/7/M0Um+o2ktodLsiZR591FMYJwjubtpuUAWMpXIEaXm3DS2iiMANjgcUvy2bksu6c4z0/iSH4D9stMuPOHj96meM/c1WoWW+As0md6GR40usAxGk4763VA+PyDf/3flirkVa0MeqU=
+	t=1741104653; cv=none; b=pMv+zFGZvtPIgt45SXHpaM0SKx6Yjw/77NzpAp5O103DSSoE8qKqq419C/yps6BU2CjQwzidWe4IOKrdTqgpBgYvGIsHHD3OVR+dNDtcglPOIOxwyLBHxU5s68A2O5e+baX6juPkyg0Qg/b8nHGidSr2I/1YHk2FSufKypRBNjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741102583; c=relaxed/simple;
-	bh=Wq2v8kM/nnvRK7yWNuWZmKYuwktShtrJSe1RPKHvEF0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OZl1xYPK1x7hEXPdKeCcwAY/jbCYquPFNkou2sUTbXBXLJmmxgX/SS62ChASXKwND+6mTO9qVeTSqzU7Wzi4KqwZ+KRKlA9kxkJeDTPHu0y5fpGEuVBrF5bSESYeqURu/f6wOG2kkXzAxVl/XfcmHsJurCswI8hKbEJOOxOsIl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=y81j28FQ; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1741104653; c=relaxed/simple;
+	bh=f/c/msyx1e3vxoDPGJKe0SJqzT6HzDxhGA9qQONgqPY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uoLNBDXHc6IkxQoQgHnLr7arpniaOpSzTA5borkys8BQzqJAAS2c+sMlkVkx9JS619Pw0EWirPDFlIAok0TkxltAG1/WiEgQ94cS96G1LfUSIRmK9dXG7dO8XAq1C3HaccDgnAFi5L0wIlOXhbo0GixbMsjT26L+RK9cut/824w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=h7VZO1a/; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="y81j28FQ"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-438da39bb69so42514805e9.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Mar 2025 07:36:21 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="h7VZO1a/"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-390f69e71c8so2525326f8f.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Mar 2025 08:10:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741102580; x=1741707380; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Wq2v8kM/nnvRK7yWNuWZmKYuwktShtrJSe1RPKHvEF0=;
-        b=y81j28FQuzcgseRVhBJ8UQwUsK5HxT753SS5nI+93gR82NNr8euskDiX0uLOPf1BNv
-         /YDnrKnUBwYdqubOH6kiXOX+2wss9/RHvIZq3DXrjQJ9rFuYcEqxpnFdab9cuZoy5OEo
-         8e77LiL01WQUj+G0j3LDhtVJoNXrwbdFL8G2otkxgyBQlz5xHxm3uORU8hg3XEu1DSgP
-         K7k/uRKfxhw2DdKt/0XiQ40zpLG6KjjuYihL266NBTBoRg3y4R3wd3T4uVtb1VccvcQ8
-         t2EcgS//AQapDfqlZp2zBic83PONp3PtLKXAF+fLFgKxs9lpcrIjM8zHZP8EUQFttcqK
-         z/9g==
+        d=ffwll.ch; s=google; t=1741104649; x=1741709449; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iIy9PeTTsN4YAiA2ClJKxcubBrW079aT6S1+RxVahlY=;
+        b=h7VZO1a/xH/NrWcg39uqEMTPWcGttJPocZJUGcpS0MpqTeC1Sixu5X4RoqWggnfI32
+         i10x6bLCLVUmz0P2cyi9PrbpdkFz4imDleBeUUXWnw8oI5apER4yxw9/Nbt9dEOKSX4y
+         WGkY/lFE9+hUWSdIcRcFfHK8fjnOQjcHMwiDs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741102580; x=1741707380;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Wq2v8kM/nnvRK7yWNuWZmKYuwktShtrJSe1RPKHvEF0=;
-        b=V05mhv6F6fGSzGqvkJBFLEKSZi069WrYOJpaVVOhdkaOP8JH0EQ6sg/yD03xAgNmVY
-         rn+vWa/mVFPBwa/1eX/HA078jNwW0j2J7wKXvIQCwiWDwsVYCtBp9Rp+wPhMYcP0sj5Z
-         Epfvkk3WwOFJAqlbSoO+b/84Q4VDQJM5lMpIgmDyZLTPKi2ZHPyBjlr4nrfuEwM17BFX
-         jCAhYaQNehj/OEkh2dp0e78IKiKS3sIBjqPePSD5FzHJcj/gmC2jSoAbXZQ6hyGI2d8h
-         Nbexi2pu1VLtu+PCydKB1wp1GQ/jhgopd6xdwpzrorm7N5P3xJly9wvaIhLQ8QRLMnhB
-         3YBA==
-X-Forwarded-Encrypted: i=1; AJvYcCVDNNGhYDo3Ijruk97lWrjhfiE1y6shGOUvRhofoG5vs8xlsvfBDc0MYgwpwwddokzeERny1c6yyL/iVbFQAw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJCSGQ2SQBpfePYTRE4GAL2PqimFCXZmZZuXpYJSPYAB5zheOL
-	iVzJgpDAlzS+6yBsSRUUlTXJdrjBI022skDBw1pWsClUXC0R6mmuFbX1SmmTkGqCjO0aLCZOyGY
-	NjH4uvdkBHNvwLw==
-X-Google-Smtp-Source: AGHT+IHijklkBWkk19vuFCTOjS1+4MgEGEoY1h9rIdV0rc5botTxFkn35XXkTi0FIqcmV8v8cbJtmyY8fqzdU7w=
-X-Received: from wmbfj11.prod.google.com ([2002:a05:600c:c8b:b0:43b:cc8b:e6aa])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4f81:b0:439:608b:c4ad with SMTP id 5b1f17b1804b1-43ba66e5ea6mr140003915e9.3.1741102580207;
- Tue, 04 Mar 2025 07:36:20 -0800 (PST)
-Date: Tue, 4 Mar 2025 15:36:18 +0000
-In-Reply-To: <E24A1EA3-DC87-4A33-AD93-1E3B307942E8@collabora.com>
+        d=1e100.net; s=20230601; t=1741104649; x=1741709449;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=iIy9PeTTsN4YAiA2ClJKxcubBrW079aT6S1+RxVahlY=;
+        b=hiDomjFXk/B/dx5ER1kmP8qEN34zug+jSGkr3RSgY9tGxyZHGveB0WoB8ZhMvkmy8j
+         dr1uXxk7xm/77Z7MuF7/O5Lg3tIFJ1X7ZCAkZIvSynIxOIRx7T+YLuoyRuK3O3B8fL79
+         vn2hwWH6QCs+HcCT4JTzY03c8pdFlltss982d4X1x1acrytVhHhGj1A0C/jccOZwwSwA
+         KhPRJmGjCYgZRbyIGidX0RrE5PvfSva5xo8RVsN5sizGihjOx4OtZC33wge7VX/ZyzH2
+         bBZBg3A6rQHLpHokAAi/gOUozlYPJLbikonSr6WcM/qSIXtjpyV9GjV1WFi4AMrBkSRW
+         mAbA==
+X-Forwarded-Encrypted: i=1; AJvYcCV61JfJ0/7r5SOvp+StrQIvxRwArzzBl/Y9M7SQtpvDbO7dVtgLOZ7trBYTQuybi9fAPPv0dTT1go61CDajig==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6PFHSmg7No1PhNhS3A1eTiDBKrBKn+gV19h9jvZ1te5SI59tK
+	ZREQld6zmPkah1K2o/337DV+nyKJmEz4JkQAT1hX+j2rlbPjl3CQ6N33ZE2kolc=
+X-Gm-Gg: ASbGncurUxPQTn4L5C3QtmCId8WRmNPnyo8NNfcUUhQO2PW3IvS3Hq/+HqVQ5YtONbs
+	ymONdBy+64KIxjzGk4w7M8FigZbDTAnf9undkn7mCwtzl94A/J6MDJvmOHfPGN39Ik3Hf6GjQTb
+	jsouLqIc+xULeN8Yn7LVkBfkobzZagnNhdFaABxJZ9eyR22zxQS0BqbPkp9H3lDkS3upwfAj2DO
+	SkU9IOEJcQdZYWpPejxy6UdUOGAhyUnRqJYMehkGCudH2iXCOi/zrR05m2+ScMhSIE6zICi5fgE
+	/rtdnoO87HeSucZao8SEI4wSnoIjQsQZNiIBHu9lUafUQk2gVQe1Hk3f
+X-Google-Smtp-Source: AGHT+IGYstbykxSLckXcDtbIvHnaqvWhbPG4L7oRKtT9m1rH0Ss1kauZrIqVjxI5p2CBcuWK44nyyA==
+X-Received: by 2002:a05:6000:402b:b0:38f:3224:65e5 with SMTP id ffacd0b85a97d-39115605344mr3132563f8f.12.1741104649374;
+        Tue, 04 Mar 2025 08:10:49 -0800 (PST)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e485db82sm17762968f8f.88.2025.03.04.08.10.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Mar 2025 08:10:47 -0800 (PST)
+Date: Tue, 4 Mar 2025 17:10:45 +0100
+From: Simona Vetter <simona.vetter@ffwll.ch>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Ben Skeggs <bskeggs@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	paulmck@kernel.org
+Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
+ implementation
+Message-ID: <Z8cmBWB8rl97-zSG@phenom.ffwll.local>
+Mail-Followup-To: Jason Gunthorpe <jgg@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Ben Skeggs <bskeggs@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	paulmck@kernel.org
+References: <Z75WKSRlUVEqpysJ@cassiopeiae>
+ <20250226004916.GB4959@nvidia.com>
+ <Z75riltJo0WvOsS5@cassiopeiae>
+ <20250226172120.GD28425@nvidia.com>
+ <Z7-IHgcVVS8XBurW@cassiopeiae>
+ <20250226234730.GC39591@nvidia.com>
+ <2025022644-fleshed-petite-a944@gregkh>
+ <D82UB3V6NZ55.3OEPPW2W8MFZV@nvidia.com>
+ <Z8GViQzZJVFPxfNd@phenom.ffwll.local>
+ <20250228184013.GF39591@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250219162517.278362-1-daniel.almeida@collabora.com>
- <CAH5fLgiErvnziU-hSCV6djNq7Q56ZfX9gZudmX7+r06hWoX0Tw@mail.gmail.com> <E24A1EA3-DC87-4A33-AD93-1E3B307942E8@collabora.com>
-Message-ID: <Z8cd8taTQbIJOdsp@google.com>
-Subject: Re: [PATCH] rust: regulator: add a bare minimum regulator abstraction
-From: Alice Ryhl <aliceryhl@google.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: lgirdwood@gmail.com, broonie@kernel.org, sebastian.reichel@collabora.com, 
-	sjoerd.simons@collabora.co.uk, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	a.hindborg@kernel.org, benno.lossin@proton.me, tmgross@umich.edu, 
-	dakr@kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250228184013.GF39591@nvidia.com>
+X-Operating-System: Linux phenom 6.12.11-amd64 
 
-T24gV2VkLCBGZWIgMTksIDIwMjUgYXQgMDI6MTA6MjRQTSAtMDMwMCwgRGFuaWVsIEFsbWVpZGEg
-d3JvdGU6DQo+IEhpIEFsaWNlLA0KDQo+ID4gT24gMTkgRmViIDIwMjUsIGF0IDEzOjI4LCBBbGlj
-ZSBSeWhsIDxhbGljZXJ5aGxAZ29vZ2xlLmNvbT4gd3JvdGU6DQo+ID4NCj4gPiBJIHdvbmRlciBp
-ZiBlbmFibGVkIHZzIGRpc2FibGVkIHNob3VsZCBiZSB0d28gZGlmZmVyZW50IHR5cGVzPw0KPiA+
-DQo+ID4gQWxpY2UNCg0KPiBJIHRob3VnaHQgYWJvdXQgaGF2aW5nIHR3byB0eXBlcyB0b28sIGJ1
-dCBJIHRoaW5rIGl0IGNvbXBsaWNhdGVzIHRoZSAgDQo+IGRlc2lnbi4NCg0KDQo+IGBgYA0KPiBs
-ZXQgZm9vOiBSZWd1bGF0b3IgPSBSZWd1bGF0b3I6OmdldCgvKuKApiovKT87DQo+IGxldCBmb29f
-ZW5hYmxlZDogRW5hYmxlZFJlZ3VsYXRvciA9IGZvby5lbmFibGUoKT86DQo+IGBgYA0KDQo+IExl
-dOKAmXMgZmlyc3QgYWdyZWUgdGhhdCBgUmVndWxhdG9yOjpkcm9wYCBpcyB0aGUgcmlnaHQgcGxh
-Y2UgdG8gaGF2ZSAgDQo+IGByZWd1bGF0b3JfcHV0YCwgc2luY2UNCj4gYFJlZ3VsYXRvcjo6Z2V0
-KClgIGFjcXVpcmVkIHRoZSByZWZlcmVuY2UgaW4gdGhlIGZpcnN0IHBsYWNlLg0KDQo+IFRoaXMg
-bWVhbnMgdGhhdCBub3csIGBFbmFibGVkUmVndWxhdG9yYCBoYXMgdG8gZGVwZW5kIG9uIGBSZWd1
-bGF0b3JgICANCj4gc29tZWhvdyB0byBlbnN1cmUNCj4gYSBwcm9wZXIgZHJvcCBvcmRlci4gT3Ro
-ZXJ3aXNlIHlvdSBtaWdodCBoYXZlIGFuIGVuYWJsZWQgcmVndWxhdG9yIGZvciAgDQo+IHdoaWNo
-IHlvdSBkb27igJl0IG93bg0KPiB0aGUgcmVmY291bnQuIEZ1cnRoZXJtb3JlLCBpZiBSZWd1bGF0
-b3IgZHJvcHMgd2hpbGUgRW5hYmxlZFJlZ3VsYXRvciBpcyAgDQo+IGFsaXZlLCB5b3UgZ2V0IGEg
-c3BsYXQuDQoNCj4gSW4gYSBkcml2ZXIsIHlvdSBub3cgaGF2ZSB0byBzdG9yZSBib3RoIFJlZ3Vs
-YXRvciAtIGZvciB0aGUgcmVmY291bnQgLSAgDQo+IGFuZCBFbmFibGVkUmVndWxhdG9yDQo+IC0g
-YXMgYSB3YXkgdG8gdGVsbCB0aGUgc3lzdGVtIHlvdSBuZWVkIHRoYXQgcmVndWxhdG9yIHRvIGJl
-IGFjdGl2ZS4NCg0KPiBJZiBFbmFibGVkUmVndWxhdG9yIGlzIGEgZ3VhcmQgdHlwZSwgdGhpcyBk
-b2VzbuKAmXQgd29yaywgYXMgaXQgY3JlYXRlcyBhICANCj4gc2VsZi1yZWZlcmVuY2UgLSBvbiB0
-b3ANCj4gb2YgYmVpbmcgZXh0cmVtZWx5IGNsdW5reS4NCg0KWW91IGRlZmluaXRlbHkgZG8gbm90
-IHdhbnQgYSBndWFyZCB0eXBlLg0KDQo+IFlvdSBjYW4gdGhlbiBoYXZlIEVuYWJsZWRSZWd1bGF0
-b3IgY29uc3VtZSBSZWd1bGF0b3IsIGJ1dCB0aGlzIGFzc3VtZXMgIA0KPiB0aGF0IHRoZSByZWd1
-bGF0b3INCj4gd2lsbCBiZSBvbiBhbGwgdGhlIHRpbWUsIHdoaWNoIGlzIG5vdCB0cnVlLiBBIHNp
-bXBsZSBwYXR0ZXJuIG9mDQoNCj4gYGBgDQo+IHJlZ3VsYXRvcl9lbmFibGUoKQ0KPiBkb19mYW5j
-eV9zdHVmZigpDQo+IHJlZ3VsYXRvcl9kaXNhYmxlKCkNCj4gYGBgDQoNCj4gQmVjb21lcyBhIHBh
-aW4gd2hlbiBvbmUgdHlwZSBjb25zdW1lcyB0aGUgb3RoZXI6DQoNCj4gYGBgDQo+IHNlbGYubXlf
-cmVndWxhdG9yLmVuYWJsZSgpIC8vIGVycm9yLCBtb3ZlcyBvdXQgb2YgYCZzZWxmYA0KPiBgYGAN
-Cg0KPiBJIGFtIHN1cmUgd2UgY2FuIGZpbmQgd2F5cyBhcm91bmQgdGhhdCwgYnV0IGEgc2ltcGxl
-IGBib29sYCBoZXJlIHNlZW1zIHRvICANCj4gZml4IHRoaXMgcHJvYmxlbS4NCg0KV2hhdCBJIG1l
-YW50IHRvIHN1Z2dlc3QgaXMgdHdvIHR5cGVzOg0KDQoJcHViIHN0cnVjdCBEaXNhYmxlZFJlZ3Vs
-YXRvciB7DQoJICAgIGlubmVyOiBOb25OdWxsPGJpbmRpbmdzOjpyZWd1bGF0b3I+LA0KCX0NCglw
-dWIgc3RydWN0IEVuYWJsZWRSZWd1bGF0b3Igew0KCSAgICBpbm5lcjogRGlzYWJsZWRSZWd1bGF0
-b3IsDQoJfQ0KDQoJaW1wbCBEcm9wIGZvciBFbmFibGVkUmVndWxhdG9yIHsNCgkgICAgZm4gZHJv
-cCgmbXV0IHNlbGYpIHsNCgkgICAgICAgIHVuc2FmZSB7IGJpbmRpbmdzOjpyZWd1bGF0b3JfZGlz
-YWJsZShzZWxmLmlubmVyLmFzX3B0cigpKSB9Ow0KCQkvLyBEZXN0cnVjdG9yIG9mIERpc2FibGVk
-UmVndWxhdG9yIHJ1bnMgbm93IHNpbmNlIGl0J3MgYQ0KCQkvLyBmaWVsZCBvZiBFbmFibGVkUmVn
-dWxhdG9yLg0KCSAgICB9DQoJfQ0KCWltcGwgRHJvcCBmb3IgRGlzYWJsZWRSZWd1bGF0b3Igew0K
-CSAgICBmbiBkcm9wKCZtdXQgc2VsZikgew0KCSAgICAgICAgdW5zYWZlIHsgYmluZGluZ3M6OnJl
-Z3VsYXRvcl9wdXQoc2VsZi5pbm5lci5hc19wdHIoKSkgfTsNCgkgICAgfQ0KCX0NCg0KVGhpcyBn
-aXZlcyB0aGUgcmlnaHQgYmVoYXZpb3IuIEZvciBkZXZpY2VzIHdoZXJlIHRoZSByZWd1bGF0b3Ig
-aXMgYWx3YXlzDQpnb2luZyB0byBiZSBlbmFibGVkLCB5b3UganVzdCBzdG9yZSBhbiBFbmFibGVk
-UmVndWxhdG9yLiBJZiB5b3UgbmVlZCB0bw0KZHluYW1pY2FsbHkgc3dpdGNoIGJldHdlZW4gdGhl
-bSwgeW91IHN0b3JlIGFuIGVudW0gbGlrZSBCb3F1biBzdWdnZXN0ZWQuDQoNCkFsaWNlDQo=
+On Fri, Feb 28, 2025 at 02:40:13PM -0400, Jason Gunthorpe wrote:
+> On Fri, Feb 28, 2025 at 11:52:57AM +0100, Simona Vetter wrote:
+> 
+> > - Nuke the driver binding manually through sysfs with the unbind files.
+> > - Nuke all userspace that might beholding files and other resources open.
+> > - At this point the module refcount should be zero and you can unload it.
+> > 
+> > Except developers really don't like the manual unbind step, and so we're
+> > missing try_module_get() in a bunch of places where it really should be.
+> 
+> IMHO they are not missing, we just have a general rule that if a
+> cleanup function, required to be called prior to module exit, revokes
+> any .text pointers then you don't need to hold the module refcount.
+> 
+> file_operations doesn't have such a cleanup function which is why it
+> takes the refcount.
+> 
+> hrtimer does have such a function which is why it doesn't take the
+> refcount.
+
+I was talking about a bunch of other places, where it works like
+file_operations, except we don't bother with the module reference count.
+I've seen patches fly by where people "fix" these things because module
+unload is "broken".
+
+> > Now wrt why you can't just solve this all at the subsystem level and
+> > guarantee that after drm_dev_unplug no code is running in driver callbacks
+> > anymore:
+> > 
+> > In really, really simple subsystems like backlight this is doable. In drm
+> > with arbitrary ioctl this isn't, and you get to make a choice:
+> 
+> It is certainly doable, you list the right way to do it right below
+> and RDMA implements that successfully.
+> 
+> The subsytem owns all FDs and proxies all file_opertions to the driver
+> (after improving them :) and that is protected by a rwsem/SRCU that
+> is safe against the removal path setting all driver ops to NULL.
+
+I'm not saying that any of these approaches are bad. For some cases we
+plan to use them in gpu code too even. The above is pretty much the plan
+we have for dma_fence.
+
+> > - You wait until all driver code finishes, which could be never if there's
+> >   ioctl that wait for render to complete and don't handle hotunplug
+> >   correctly. This is a deadlock.
+> 
+> Meh. We waited for all FDs to close for along time. It isn't a
+> "deadlock" it is just a wait on userspace that extends to module
+> unload. Very undesirable yes, but not the end of the world, it can
+> resolve itself if userspace shutsdown.
+> 
+> But, IMHO, the subsystem and driver should shoot down the waits during
+> remove.
+> 
+> Your infinite waits are all interruptable right? :)
+
+So yeah userspace you can shoot down with SIGKILL, assuming really good
+programming. But there's also all the in-kernel operations between various
+work queues and other threads. This can be easily fixed by just rewriting
+the entire thing into a strict message passing paradigm. Unfortunately
+rust has to interop with the current existing mess.
+
+gpu drivers can hog console_lock (yes we're trying to get away from that
+as much as possible), at that point a cavalier attitude of "you can just
+wait" isn't very appreciated.
+
+And once you've made sure that really everything can bail out of you've
+gotten pretty close to reimplementing revocable resources.
+
+> >   In my experience this is theorically possible, practically no one gets
+> >   this right and defacto means that actual hotunplug under load has a good
+> >   chance of just hanging forever. Which is why drm doesn't do this.
+> 
+> See, we didn't have this problem as we don't have infinite waits in
+> driver as part of the API. The API toward the driver is event driven..
+
+Yeah rolling everything over to event passing and message queues would
+sort this out a lot. It's kinda not where we are though.
+
+> I can understand that adding the shootdown logic all over the place
+> would be hard and you'd get it wrong.
+> 
+> But so is half removing the driver while it is doing *anything* and
+> trying to mitigate that with a different kind of hard to do locking
+> fix. *shrug*
+
+The thing is that rust helps you enormously with implementing revocable
+resources and making sure you're not cheating with all the bail-out paths.
+
+It cannot help you with making sure you have interruptible/abortable
+sleeps in all the right places. Yes this is a bit a disappointment, but
+fundamentally rust cannot model negative contexts (unlike strictly
+functional languages like haskell) where certain operations are not
+allowed. But it is much, much better than C at "this could fail, you must
+handle it and not screw up".
+
+In some cases you can plug this gap with runtime validation, like fake
+lockdep contexts behind the might_alloc_gfp() checks and similar tricks
+we're using on the C side too. Given that I'm still struggling with
+weeding out design deadlocks at normal operations. For example runtime pm
+is an absolute disaster on this, and a lot of drivers fail real bad once
+you add lockdep annotations for runtime pm. I'll probably retire before I
+get to doing this for driver unload.
+
+> >   This is why I like the rust Revocable so much, because it's a normal rcu
+> >   section, so disallows all sleeping. You might still deadlock on a busy
+> >   loop waiting for hw without having a timeout. But that's generally
+> >   fairly easy to spot, and good drivers have macros/helpers for this so
+> >   that there is always a timeout.
+> 
+> The Recovable version narrows the critical sections to very small
+> regions, but having critical sections at all is still, IMHO, hacky.
+> 
+> What you should ask Rust to solve for you is the infinite waits! That
+> is the root cause of your problem. Compiler enforces no waits with out
+> a revocation option on DRM callbacks!
+> 
+> Wouldn't that be much better??
+
+It would indeed be nice. I haven't seen that rust unicorn yet though, and
+from my understanding it's just not something rust can give you. Rust
+isn't magic, it's just a tool that can do a few fairly specific things a
+lot better than C. But otherwise it's still the same mess.
+
+> >   drm_dev_unplug uses sleepable rcu for practicality reasons and so has a
+> >   much, much higher chance of deadlocks. Note that strictly speaking
+> >   drm_device should hold a module reference on the driver, but see above
+> >   for why we don't have that - developers prefer convenience over
+> >   correctness in this area.
+> 
+> Doesn't DRM have a module reference because the fops is in the driver
+> and the file core takes the driver module reference during
+> fops_get()/replace_fops() in drm_stub_open()? Or do I misunderstand
+> what that stub is for?
+> 
+> Like, I see a THIS_MODULE in driver->fops == amdgpu_driver_kms_fops ?
+
+Yeah it's there, except only for the userspace references and not for the
+kernel internal ones. Because developers get a bit prickle about adding
+those unfortunately due to "it breaks module unload". Maybe we just should
+add them, at least for rust.
+
+> > We can and should definitely try to make this much better. I think we can
+> > get to full correctness wrt the first 3 lifetime things in rust. I'm not
+> > sure whether handling module unload/.text lifetime is worth the bother,
+> > it's probably only going to upset developers if we try. 
+> 
+> It hurts to read a suggestion we should ignore .text lifetime rules :(
+> DRM can be be like this, but please don't push that mess onto the rest
+> of the world in the common rust bindings or common rust design
+> patterns. Especially after places have invested alot to properly and
+> fully fix these problems without EAF bugs, infinite wait problems or
+> otherwise.
+> 
+> My suggestion is that new DRM rust drivers should have the file
+> operations isolation like RDMA does and a design goal to have
+> revocable sleeps. No EAF issue. You don't have to fix the whole DRM
+> subsystem to get here, just some fairly small work that only new rust
+> drivers would use. Start off on a good foot. <shrug>
+
+You've missed the "it will upset developers part". I've seen people remove
+module references that are needed, to "fix" driver unloading.
+
+The other part is that rust isn't magic, the compiler cannot reasons
+through every possible correct api. Which means that sometimes it forces a
+failure path on you that you know cannot ever happen, but you cannot teach
+the compiler how to prove that. You can side-step that by runtime death in
+rust aka BUG_ON(). Which isn't popular really either.
+
+The third part is that I'm not aware of anything in rust that would
+guarantee that the function pointer and the module reference actually
+belong to each another. Which means another runtime check most likely, and
+hence another thing that shouldn't fail which kinda can now.
+
+Hence my conclusion that maybe it's just not the top priority to get this
+all perfect.
+
+Cheers, Sima
+
+-- 
+Simona Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
