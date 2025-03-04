@@ -1,185 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1861FCFDB;
-	Tue,  4 Mar 2025 09:57:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB518225D6;
+	Tue,  4 Mar 2025 10:09:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741082260; cv=none; b=PSNf3ZKIaIY3fb/LAOyHpx4E7a1PV5/dQdIqTKT1M2V6DTbWQLrDArlmlQqKhMAgOSeDa1nisUTHCrJd5P9TCXf9634pPCAQnSwqNW6yZtPu5qZDwxz7CEIWfwr4D+7pzm/Al8kr7MHyInDbsnQ7l0+lFHrWcWwLQ8ZsBWu5Ss8=
+	t=1741082989; cv=none; b=WIyy9SvY4WRAhuYTvi0aD5ppsy22nkcI5Wzg77/OHgsisX98RopOjqQtsOSEw1HWE/vsF4klvLNWQe1G3uBiiZ2Vx+FAJHFR6sO7RIENIiZ8sERhRsrgFqdRm5+/Psr1m24SaPTgLf3HjFMmaqhCctgm3u4xGBfjdIOiErdTJms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741082260; c=relaxed/simple;
-	bh=JCpnB2cwQ/OfOpNm6zKEPewB/fS1/cePt/IPMtfsJtY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dgesa/ZhXNzwCnWK+/Av+Re1TooLHjO38zaFU7H2CFJOX41p3kOqMAW903R+qVw3pn2u1TYixUP75fpjHOyWSAa+/L4QCW+C9VMqLukqqvj0qLqmlRalm+dWqVTf8K3poCVtEobCXSSHAqgtWAcLONFCUPl6hzss0yiG3LWLQi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wfela3jy; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741082989; c=relaxed/simple;
+	bh=sN22qP9PHuqHBrVUW+81ofUl2waI0KRpIxRfstJLrkY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lgOKAvQuimCiz2nJ1OdSeyf5Vr89WZz8FEefl0/3Rynk4T9hRy5Zw054idimG8vzGCPx96igX1Iv6qYoUhp1IJi5EsnUURgc1ByjCQevFfjYc/aZr2rPShT30c52RefwiigfzH7ThB2Wj+VUtTSWJDiW0RDsAzlxHZQhu6a7Wlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nakDaq8Y; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wfela3jy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5728AC4CEE5;
-	Tue,  4 Mar 2025 09:57:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741082260;
-	bh=JCpnB2cwQ/OfOpNm6zKEPewB/fS1/cePt/IPMtfsJtY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Wfela3jyONID+2sSXqcrsgf1EK+GswngYsCeHlO2XlmUJro+A7BAEnJ6pdhnqGT4m
-	 lJRzGCET/OrxSe8xULTxQvA9ewV/Oa/v4KnzYlRbCzQyV8fDMS9HvnWb+2RCQK40/T
-	 QHYIlKE03ReQ5t+WPYK6+F1owUq9aA3SYuGI9wDFyoL6TMfdaMW4DkvpocuajTKgeG
-	 euEwCTMot9rvCsgaDJ1bwSmRwNqDjplkI294FkRUI1Tge8CBzCvnvgw8pleHNeOKwQ
-	 /+U+d9NzETIVIZ8Ih9v5GLOMBY0okjj1/UZXSgMGOvS+V2ThcNAzP9urv07kTcbMba
-	 rwaepzBp2GfQQ==
-Date: Tue, 4 Mar 2025 10:57:34 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	paulmck@kernel.org
-Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
- implementation
-Message-ID: <Z8bOjiQ3KXw-CkPo@pollux>
-References: <20250227161733.GH39591@nvidia.com>
- <Z8CY7fqbtbO4v1jv@Mac.home>
- <Z8ChnwPC0UwM8xBe@cassiopeiae>
- <20250227192321.GA67615@nvidia.com>
- <Z8DYNszfONdsKZsl@boqun-archlinux>
- <20250227220013.GQ39591@nvidia.com>
- <Z8Dp9dM1MxhzuvmR@pollux>
- <20250228185534.GH39591@nvidia.com>
- <Z8YEwrBJyLYL6sci@cassiopeiae>
- <20250303215002.GF133783@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nakDaq8Y"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2fe82430bb4so1446744a91.2;
+        Tue, 04 Mar 2025 02:09:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741082987; x=1741687787; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ERN7diVe571lVikT49/v2kMDw68tmDpGY4TrvA+K4j0=;
+        b=nakDaq8YG2qtSiRDiuG6Lt1sIR0ypat/sb2HEnZdyAKZGh6T4iIXI0RQCdVeevs1KM
+         gn6nf3FI8pjFA80WR4NPbo5FXtcSVVMB1EbYi+NsEpZuLnRND8OES3iJuGVH/ucRg0s0
+         oWBEvidVF/FQCV2qGedGkrqCduEYrLORep1tIMcxk9rW14+tRHGxpxk+pGNg4VHqIQbo
+         oFyap8cHnvdNvyqRmfLUYTf3Pg6WV1S84cM/xskovRST6LqW+UUeBNs2dUC9YLpYvrb/
+         EyyR/nRvsE6Kn+HvkAK419crGxqLkUO/ct1wMKTVTcTDmgJxJcE6L+ku0aqLJZTxtvdj
+         KByQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741082987; x=1741687787;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ERN7diVe571lVikT49/v2kMDw68tmDpGY4TrvA+K4j0=;
+        b=Bl/KZQ6j9/dlkbpRoDVpBk0/GHhN+odxuW9adyDI9G0SVsyJkufU3v0yHMDKLGa4Qm
+         oz6CTR6rLynbF4T76Sq6meWTJNab32I7GBj3E7itdAZiznVX5D6pO6zh7DOi+oErT1LI
+         iREUSYwQrybEHquV+HCxh/6HmjAogh0p3yrFcA7+u96Uk2l2VLlniMjjjxsmJ2lHe6u6
+         SmYiVf98075VZMYaXUgtmeFD5XT5ek+TEWcct7yzfMwIfDZxHRR28HnUAAgCQnD1s5qE
+         2/uqGD9HzZwbTbiC9MDYq1nMSUiK+LlL0HAXLm0t34Z3GHwUn21i4N6rJiyMso7JbXQk
+         bsAA==
+X-Forwarded-Encrypted: i=1; AJvYcCUF48aPZDpDnbpxX9AhN4fZ4n60zesmgjOAeGXKsq5X5t5lqHQii17auVoSJaukOzuvWmGEzrSRAOUvCLKQRo0=@vger.kernel.org, AJvYcCWUD4DR1GGPHyL2sfXZqmOq6NTL39vLH90aBPq8tXOmD2ODRZggsX5T8Pdt1LGdMaoL88ae/Kgi6fyR6xQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/ewyG/TVYiGp3jbivPzLcS3h0CRzIDeFcRl3OTy41SUz3cVE6
+	z2qH8kxKqk/ZriYvjf1KoZMDhBzMeMkyHOdMB7nZ4TCILKwr9ulQVXXxDLopJSqJ0TcCsYBh7Bl
+	5Ea3sPPI5Z4xGFAHlCkC9+uI1uds=
+X-Gm-Gg: ASbGncsZZ7W2wk4LiD5gQWK2wcssWXsC9CnkSRJaMf3ZsfG9f8MjcMcL0IVUNtlO5vx
+	9LP8ML1RZAJPZelo8dPaGNMHgXcrqVl+L8K8zx0pD5GQQPQ1Rb0qNt/7uBmJPKkIhqyohpRB+kM
+	vJjxFwZJ1niSBaGOpbGJ84V9F/wg==
+X-Google-Smtp-Source: AGHT+IFseN2+z2lYv8glz+eJOuVumErTdOblnU7bMcjpSO7VXdKzX6o3No+XO9527+1TY40dPn08a6YtpsEue9e8lPQ=
+X-Received: by 2002:a17:90b:38d2:b0:2fe:9730:8e42 with SMTP id
+ 98e67ed59e1d1-2febabdee63mr10089868a91.3.1741082986991; Tue, 04 Mar 2025
+ 02:09:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250303215002.GF133783@nvidia.com>
+References: <20250304040450.697235-1-sidong.yang@furiosa.ai> <2025030451-polka-lustfully-1edd@gregkh>
+In-Reply-To: <2025030451-polka-lustfully-1edd@gregkh>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 4 Mar 2025 11:09:33 +0100
+X-Gm-Features: AQ5f1JpmdO2O7KOha9l3o3OBV-Z6_NOKk8RBDswJH7SVQQMJMWrOnvKM9t-A3WU
+Message-ID: <CANiq72mShwVOM5DSSH8hOj4sxx3Xx=pk=SHN5nHWCZEJ+DRoCg@mail.gmail.com>
+Subject: Re: [RFC PATCH] rust: add cdev for rust bindings helper
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Sidong Yang <sidong.yang@furiosa.ai>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 03, 2025 at 05:50:02PM -0400, Jason Gunthorpe wrote:
-> On Mon, Mar 03, 2025 at 08:36:34PM +0100, Danilo Krummrich wrote:
-> > > > And yes, for *device resources* it is unsound if we do not ensure that the
-> > > > device resource is actually dropped at device unbind.
-> > > 
-> > > Why not do a runtime validation then?
-> > > 
-> > > It would be easy to have an atomic counting how many devres objects
-> > > are still alive.
-> > 
-> > (1) It would not be easy at all, if not impossible.
-> > 
-> > A Devres object doesn't know whether it's embedded in an Arc<Devres>, nor does
-> > it know whether it is embedded in subsequent Arc containers, e.g.
-> > Arc<Arc<Devres>>.
-> 
-> You aren't tracking that. If Rust has a problem, implement it in C:
+On Tue, Mar 4, 2025 at 6:42=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org>=
+ wrote:
+>
+> I think you're missing the actual bindings here, right?
+>
+> confused,
 
-Rust does not have a problem here. Arc is implemented as:
+I think this is:
 
-	pub struct Arc<T: ?Sized> {
-	    ptr: NonNull<ArcInner<T>>,
-	    _p: PhantomData<ArcInner<T>>,
-	}
+    https://rust-for-linux.zulipchat.com/#narrow/channel/291565-Help/topic/=
+trying.20to.20implement.20a.20chrdev.20in.20rust/near/503177362
 
-	#[repr(C)]
-	struct ArcInner<T: ?Sized> {
-	    refcount: Opaque<bindings::refcount_t>,
-	    data: T,
-	}
+And, yeah, we don't add headers that have no users, and we don't want
+to promote avoiding to write abstractions either.
 
-Which simply means that 'data' can't access its reference count.
-
-You did identify this as a problem, since you think the correct solution is to
-WARN() if an object is held alive across a certain boundary by previously taken
-references. Where the actual solution (in Rust) would be to design things in a
-way that this isn't possible in the first place.
-
-Let me also point out that the current solution in Rust is perfectly aligned
-with what you typically do in C conceptually.
-
-In C you would call
-
-	devm_request_region()
-	devm_ioremap()
-
-and you would store the resulting pointer in some driver private structure.
-
-This structure may be reference counted and may outlive remove(). However, if
-that's the case it doesn't prevent that the memory region is freed and the
-memory mapping is unmapped by the corresponding devres callbacks.
-
-We're following the exact same semantics in Rust, except that we don't leave the
-driver private structure with an invalid pointer.
-
-In contrast you keep proposing to turn that into some kind of busy loop in
-remove(). If you think that's better, why don't you try to introduce this design
-in C first?
-
-> 
->   devm_rsgc_start(struct device *)
->   devm_rsgc_pci_iomap(struct device *,..)
->   devm_rsgc_pci_iounmap(struct device *,..)
->   devm_rsgc_fence(struct device *)
-> 
-> Surely that isn't a problem for bindings?
-
-Wrapping those functions? Yes, that's not a problem in general.
-
-But obviously I don't know what they're doing, i.e. how is devm_rsgc_pci_iomap()
-different from pcim_iomap()?
-
-I also don't know how you would encode them into an abstraction and how this
-abstraction fits into the device / driver lifecycle.
-
-Neither can I guess that from four function names, nor can I tell you whether
-that results in a safe, sound and reasonable API.
-
-And given that you don't seem to know about at least some Rust fundamentals
-(i.e. how Arc works), I highly doubt that you can predict that either without
-coding it up entirely, can you?
-
-I explained the reasons for going with the current upstream design in detail,
-and I'm happy to explain further if there are more questions.
-
-But, if you just want to change the existing design, this isn't the place.
-Instead, please follow the usual process, i.e. write up some patches, explain
-how they improve the existing code and then we can discuss them.
-
-> > The practical problem: Buggy drivers could (as you propose) stall the
-> > corresponding task forever, never releasing the device resource. 
-> 
-> Should't be never. Rust never leaks memory? It will eventually be
-> unstuck when Rust frees the memory in the concurrent context that is
-> holding it.
-
-We're passing Arc objects as ForeignOwnable to C code. If the C code leaks
-memory, the corresponding memory allocated in Rust leaks too.
-
-For the definition of "safe" in Rust we assume that C code used underneath is
-never buggy, but the reality is different.
-
-> 
-> > Not releasing the device resource may stall subsequent drivers
-> > trying to probe the device, or, if the physical memory region has
-> > been reassigned to another device, prevent another device from
-> > probing. This is *not* what I would call "function safely".
-> 
-> It didn't create a security problem.
-> 
-> The driver could also write 
-> 
->  while (true)
->     sleep(1)
-
-Seriously? Are you really arguing "My potentially infinite loop is not a problem
-because a driver could also write the above"?
-
-> In the remove function and achieve all of the above bad things, should
-> you try to statically prevent that too?
-
-Absolutely.
+Cheers,
+Miguel
