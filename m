@@ -1,65 +1,65 @@
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3EF2620F4
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Mar 2025 20:42:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4653E261578
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Mar 2025 20:44:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741120960; cv=none; b=VNkwodPcsctuNLUicGeUKXT5YW+5yOLuf3GCMp+sF9FoNOWPhx6d8ip7INrjZXLZqx0nbayv3fVhPTeofATcIVM/C7xMDOaJG+rYRCA8syajm80wy4lnZp9o3mAsgZuk33YRewYTKhnZFmEz38wXDqkfKeJDJUTDgZCqPAnwE2Y=
+	t=1741121088; cv=none; b=GFFTPTfTMBi5okzKtEVoyxLH/wwX+67s6+pgADWvdD0DpvAVQH339gJsvCMABiKQMhSEmlSEHnGysPPUBWp6t4ikg4lTxGip/r9i0O5l38X2RJMEEUwZA/VWJXGbSFgiumosEo3+kCzFHTgk9KKEgM1XOrl7SetHt4ptSC+gQjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741120960; c=relaxed/simple;
-	bh=hY3ox+Cv8L/hy1uWd2H+uDH/wZ7y6rjKqKarmY/cer8=;
+	s=arc-20240116; t=1741121088; c=relaxed/simple;
+	bh=idw9ZvilSuHtkU6iOnnuLXF/HG3irgXsN8QUX4wGQ40=;
 	h=Date:Message-ID:MIME-Version:Content-Type:From:To:Cc:Subject:
-	 References:In-Reply-To; b=e3ok1QgII1/lzSh/WH9Iuwb0syx2SxN8CfWQZuUA+zJI/ObmVb9C+vVCQOmCzme61KR50aVQdrPmRh3q0+WkSVBs3eGo/6TpKyI2rRqkyDHotul9Wt9q03fWA+gH9qtYF8tljF9zq+hbPvb/WhGTiiZlMg2DrwBpH3gvUpQBA0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=XGwAZ2uq; arc=none smtp.client-ip=209.85.160.169
+	 References:In-Reply-To; b=b1O107b9/yJ5/Y7jgMXzetQP1i7q4qc2l6eft8oUmIFf1IK8KehlxF0oHHOtaKwnFH6AlzER/IDgM00pj8pIcA04BgC9MBdTqtjWzKAPszol7PF4Q9+io/5ujcCoqPkiUb7ZWxrYHbDUvIwjhOV8UnJyjLvWVixCFKVGsnLZV3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=F4hb/6xW; arc=none smtp.client-ip=209.85.222.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="XGwAZ2uq"
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-475076bf02eso8472451cf.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Mar 2025 12:42:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="F4hb/6xW"
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-7c3d0e90c4eso16076585a.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Mar 2025 12:44:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1741120956; x=1741725756; darn=vger.kernel.org;
+        d=paul-moore.com; s=google; t=1741121086; x=1741725886; darn=vger.kernel.org;
         h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
          :mime-version:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=R1qRuitdwwYSELTXdkDkMV/eQ1X4sgsaSnPBdxYSrvM=;
-        b=XGwAZ2uqxdiAH2xE0p3xo9XIG3BZ8wSwL4Vgycku8YGLHMfJg3Z8BNOk46sxsDRbZ4
-         EWC8F81xDdEDHpkpU0iMF1irO7cdwFqR+8pjY6SuCokEw4/NHXyhH+JPJZnSYop7qJJZ
-         pWGbgQTX+iiX4l67s0kb956n0RDaMMhTon2LJI3NvQjXcxdCNg9Ygb2TZuoWrKG3w5im
-         JK8hJCAGfP7gYWROVGPVInwp+yRyAa+zaBvDBZSFRv1GRNGtHdcnwUyYcMjjBcGuC+HL
-         tkUaJRm9SaALtwiRgFgDpyBcX7FE0fOFFwR4oGxe3a2EkfIM4rzF0+Wp5/6iPdMszJEW
-         w30w==
+        bh=wnI/HKF2BJ2DE+F3QNufti1w5M0knTrq3arpcVmTfsg=;
+        b=F4hb/6xWGLhLDHF3UhZOHuErDzYxnhnVmSq9HN6T4P2QJ785XmOa+E0OVe2XuN96ZQ
+         MILoenHIICKuuWHkCMNYV6oeqKBbkq2vp1hFDxTSyRuYH8F493BRqW2nTjnscFuTY60U
+         EPFZoiLtyICZB6kLDiD4wUe8KkqWGyNUzODgyAQsv2TNyUkXy1NZSbFF/WMl7/BUVBV4
+         9jWECoqm/qwkBWPFxv5DsYMXnctANS7ixZzWCCMoPtY/Ql/v91h5/7LsOZC1dpeg90Lr
+         CQD5eOA9axsvz2VLACYozFq+JrgLb4b3+ryO8BVAguCbwBEs7B3fprOvZr4Mxi4K4x42
+         Li8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741120956; x=1741725756;
+        d=1e100.net; s=20230601; t=1741121086; x=1741725886;
         h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
          :mime-version:message-id:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=R1qRuitdwwYSELTXdkDkMV/eQ1X4sgsaSnPBdxYSrvM=;
-        b=gHq2PNk5JmiA9P9FUmc3BrOo73sXJcxmjHYI23oGmYrBaMpv0Un6sNelqPdXTNa/9j
-         awY5Sayzg/xOE669syEnWmnsUSB7ITVTfuyGbnbovtvidSSVAHBJLJKYi/8V3J6PXgMN
-         A5PhA2QZbCkGcDyFnFsYC9t59hUnVbQBGpaKiFN1esADREkpFw+36venIxlCDGxJnfdq
-         BVZJuit0d6s37zNNv/O6gHoU8f+ly9K5puRoSqZ2WObYEdpmcz5Cm5meN8kHs2I4p4jA
-         htUUq7zGyeYk/Y+VKe4nUoMlUlsfYfXUeS+22plDsBiYX4TRkdw3gjVt3seap3fyRyMJ
-         wFBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWQd5fbUQSHXwxoi+D7yEPV5wJ+Bh89w+PQ2wHFOUVnpXwX/3EcME+QksElV7NdR547se7MeKsxH9ZM21Wr9A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUX8IBfilKwxKbSEmvyIyg7oXi/D7SyVO0T1/vNSZf0a5uR5qW
-	SSKxBXL3aR2itLObslx57EMkMDrCsnsiSFSv1VC5blRDNvAef5fEEG725xRzlQ==
-X-Gm-Gg: ASbGncvGeXsDJYNY+UbfUzE9H2HtJYhZPdlBCfs1fXCxjJssf1hdFsGA2Thz6fCaDAa
-	d5zRx+mbO4ThsVgbEyc3pVm4eTpEiec/95qXsfm3XLZhN2hhldoHolrE9Ma3EIL4mLMvnt7jELc
-	aM/2wiGjoIuFiDOB5T2sojLN1CA6YCz7s8Rcq6X8dSxKvlQ7t+Tesm6mjv99nldFxOWb9tWCaax
-	67tqHVWCRUyIqnw3A7NO5SlA42XG9udWfh5tNEGBdc6/O4lCSC2E8FuqpqiHohg5LbNv8Kx8w5s
-	puZLhBySGTq+3Eq7VC9z+KroZhyYE2rNPa8WRprMOrL2DCE5s6rjtfKtQ6knTG0iQxYUMgndMJT
-	QoJ1tk82NpRDWiQ==
-X-Google-Smtp-Source: AGHT+IGGJzyx/Xq+umUg8sGni4KDBOk9xYnclv58VIy14he0JdzCkkSuM+jn28L4VU0r2ABS6Z+JDw==
-X-Received: by 2002:a05:622a:1a0b:b0:474:f38d:58d0 with SMTP id d75a77b69052e-4750b245031mr8398401cf.3.1741120955860;
-        Tue, 04 Mar 2025 12:42:35 -0800 (PST)
+        bh=wnI/HKF2BJ2DE+F3QNufti1w5M0knTrq3arpcVmTfsg=;
+        b=CNpwujT0360VNC7tidJwRPahw35SJfHlNeuUYTP6s+p16r8Ss5ePM5sKWKjVIdrBz0
+         Qpvs8ABiLzON381smSIMGmOVYx9MaDu/faERgGcbNMiybJW2RLY3qP/pfuKidS9/+3ek
+         Nmzz3MsKRMPoX5Za1BPg2YiRYA0HbfHGkL1snAj288GcATgdE/2hIoTXrLW9CP3/DMEK
+         pez0F8S8XNTXeLyfIWEK6eCg3qpau+71qsO0g0H28xymMo7qIHgW+ABjUatxU1D1uyzn
+         YsOC4ZS4xntfQWD9BMNfMDakQNUB3xTTOml6NOob06J18q4L6CabzyzCBi0OMhuYWWON
+         acfw==
+X-Forwarded-Encrypted: i=1; AJvYcCUbQO/QOusddQGmyhgYF7Hw+LH4JeBaDtpsq9ZXSf3YXmILqbdjUc+ZpHf+u5hAV09ZIF9x1zCy8mZLCWNdDw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy99aZ//PYx1gVT+1NtcO1HPOcP9eMfLe5nZ0NToES0RmRxYgqj
+	9sIWw2ywdHP4GqBgwDCHSX1EthU3edPlZpfKMinySXSeWjAjx+B95xoFiRLfow==
+X-Gm-Gg: ASbGnctawkl90sGlDyRUuKDU1X1O5kvFQkAgMWbEcGNkbxeoOJuaa7MU1ckB/MWi65g
+	wYivmiQpfD0SvHuGq0k3gC4grTcAyZLE99ipkDQa4AgLoTJH2gk7bXyvyH2QtuRrazTXOBqvQ06
+	kzIR+e9EJLggKtw0sP3NX0lH3dT8cIn0rXACy4fBHT9VNv0UYA6GgFdGQZi+nOJBs6f9IoCPpEm
+	OCk/dG2rUXZW59gjBHz743zKCFMccGatuxKCe5Fj5T9SdKi/lvF8IZkAP/4L3T9a1g/rPhxF4Gr
+	cMnMqMDoHj9lbxaitbtGeK6xo2kl4WHGf4/+P++Do3bM3KrKtHDPOW/zFujI0IbS96jt6oCZBCE
+	6LaavsKAjPur0yg==
+X-Google-Smtp-Source: AGHT+IHS4jLQv2ArJ6GHx3UL9v6MsZDGfjsA8pdO/0HW7TnyapGyetgLLGkaTBXzkDVSJZ7Yu3DODA==
+X-Received: by 2002:a05:620a:2b94:b0:7c3:c9e5:e4ba with SMTP id af79cd13be357-7c3cc37aacbmr691510185a.29.1741121086214;
+        Tue, 04 Mar 2025 12:44:46 -0800 (PST)
 Received: from localhost (pool-71-126-255-178.bstnma.fios.verizon.net. [71.126.255.178])
-        by smtp.gmail.com with UTF8SMTPSA id d75a77b69052e-474ff3aa7d8sm12524121cf.30.2025.03.04.12.42.35
+        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-7c3d8e51df2sm21617285a.94.2025.03.04.12.44.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Mar 2025 12:42:35 -0800 (PST)
-Date: Tue, 04 Mar 2025 15:42:35 -0500
-Message-ID: <00f1cac46dcba6dc8e2e602674b55671@paul-moore.com>
+        Tue, 04 Mar 2025 12:44:45 -0800 (PST)
+Date: Tue, 04 Mar 2025 15:44:45 -0500
+Message-ID: <c4d75f7666dac40277a9504fe1754f5c@paul-moore.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -70,45 +70,30 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit 
 X-Mailer: pstg-pwork:20250304_1539/pstg-lib:20250304_1539/pstg-pwork:20250304_1539
 From: Paul Moore <paul@paul-moore.com>
-To: Alice Ryhl <aliceryhl@google.com>, James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, "=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Subject: Re: [PATCH v2] lsm: rust: mark SecurityCtx methods inline
-References: <20250304-inline-securityctx-v2-1-f110f2c6e7ff@google.com>
-In-Reply-To: <20250304-inline-securityctx-v2-1-f110f2c6e7ff@google.com>
+To: Alice Ryhl <aliceryhl@google.com>, Casey Schaufler <casey@schaufler-ca.com>
+Cc: James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, "=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Subject: Re: [PATCH] lsm: rust: reword "destroy" -> "release" in SecurityCtx
+References: <20250304-secctx-reword-release-v1-1-e8e9a7ff85ba@google.com>
+In-Reply-To: <20250304-secctx-reword-release-v1-1-e8e9a7ff85ba@google.com>
 
 On Mar  4, 2025 Alice Ryhl <aliceryhl@google.com> wrote:
 > 
-> When you build the kernel using the llvm-19.1.4-rust-1.83.0-x86_64
-> toolchain provided by kernel.org with ARCH=arm64, the following symbols
-> are generated:
+> What happens inside the individual LSMs for a given LSM hook can vary
+> quite a bit, so it is best to use the terminology "release" instead of
+> "destroy" or "free".
 > 
-> $ nm vmlinux | grep ' _R'.*SecurityCtx | rustfilt
-> ffffffc0808fe8a0 T <kernel::security::SecurityCtx>::from_secid
-> ffffffc0808fe9a4 T <kernel::security::SecurityCtx as core::ops::drop::Drop>::drop
-> 
-> However, these Rust symbols are trivial wrappers around the functions
-> security_secid_to_secctx and security_release_secctx respectively. It
-> doesn't make sense to go through a trivial wrapper for these functions,
-> so mark them inline. Also mark other trivial methods inline to prevent
-> similar cases in the future.
-> 
-> After applying this patch, the above command will produce no output.
-> 
-> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+> Suggested-by: Casey Schaufler <casey@schaufler-ca.com>
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Acked-by: Casey Schaufler <casey@schaufler-ca.com>
 > Reviewed-by: Fiona Behrens <me@kloenk.dev>
 > ---
-> Changes in v2:
-> - Reword commit message.
-> - Link to v1: https://lore.kernel.org/r/20250303-inline-securityctx-v1-1-fb7b9b641fdf@google.com
+> This patch is based on top of:
+> https://lore.kernel.org/all/20250304-inline-securityctx-v2-1-f110f2c6e7ff@google.com/
 > ---
-> I will also reword "destroy"/"free" to "release" as suggested by Casey,
-> but I'll send a separate patch for that change.
-> ---
->  rust/kernel/security.rs | 5 +++++
->  1 file changed, 5 insertions(+)
+>  rust/kernel/security.rs | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
 
-Merged into lsm/dev, thanks everyone!
+Much better, thank you :)  Merged into lsm/dev.
 
 --
 paul-moore.com
