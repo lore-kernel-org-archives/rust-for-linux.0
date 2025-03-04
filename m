@@ -1,53 +1,44 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F3D1FF61B;
-	Tue,  4 Mar 2025 12:16:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3DD91EA7CE;
+	Tue,  4 Mar 2025 12:48:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741090601; cv=none; b=BwhA24m8f+g5uGRyxe/kW0NDVRg+R8ITxeSqKe0wlU7r8wfZI5uZaNHx29/sCGv++xxCqOYa2kfYwtjm0LAGyVwpt4vzUZJ4+EdZiOB+0xmZw8YFH99+fmQ+SXwXG4vVQkMYa+AcxvsOoyZ/otCTtpXUMyg+mMyXqb5PciAtZW0=
+	t=1741092528; cv=none; b=O1plhcutwNZ4eE15ALgnx8VebMHLhT6Wu51USaa3hqkFI4oO5fZXzo+KQhBc20W4FuY+U87x/fQfNrIlMy0kzGFOLTuzP3vQuuehKHtj8HXJrdqRkC2lhR/MC3J9OuQjKLaJwjQ/CURZMzB7znW6iSoWOVpI+FlsEMAc1VJ5qdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741090601; c=relaxed/simple;
-	bh=qU3ZsnpE0cqNktwm1uO7rwCYdRZRijz0VgpjSmIlvP0=;
+	s=arc-20240116; t=1741092528; c=relaxed/simple;
+	bh=ZiVfQxb+nhSNOjRdNK64TLrRUq/REnEgScMI9O0d3kI=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=IIXxoCM/bjQqPy0nbk4+QU8M9eNFrf2LR11FAzAQbnBvrziBQ6EnhMjIL8XxG5nOfS2HyaAkQ0HXq2FW/rVy07wDAOC1+7WTtxpfBtw97WDRvMv2/DjcXxYtmrenSOPIH38ogfDUgi4cv4+M+AezpUEQr22WzPJqsUFs/Tkyed0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TAMGvD3J; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=V1LVF3aB2d0JqgMz0d2EACUKclQe+8eiynllY2afHvTvC3ZRmRzwAIHyMobnKLg2BsjwJMvnsMgF0ORjnv2sc5cG7SmBq3UCfxjHVnF7Zx/8tCxiz5Yg7VjiqqygjiPT203BaApIlmbWITXfkN+7SKV4CK04aG7X6R6ZqGy9AE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=o3PmGT/j; arc=none smtp.client-ip=49.12.72.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TAMGvD3J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46C2BC4CEE5;
-	Tue,  4 Mar 2025 12:16:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741090599;
-	bh=qU3ZsnpE0cqNktwm1uO7rwCYdRZRijz0VgpjSmIlvP0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=TAMGvD3JDlK4YIShOzsJbEtGhpmsc9I+todXFSN5xMipN7pU0Mj2NBoLSOyzInNBr
-	 neFKcTaKpX5q+Pykp2JPGVU9l63u5jC5d1YlFi3t/qBUkyCHRD+R9FyZH2qkjTnOok
-	 5jSno0UphXqgXKg4BaZN9oqOquUY3BNC5FmiWfWhp4qkWwnf0R48ECNs3tUqE09urW
-	 9E0wEpS1tncvgIPQsKoyygtfGjgGoo//20I8wfy6Hh76eMa1EUFGE/ApCAjcEddviz
-	 ytfXZwXNz8lw9j+qrJcPbtyRXdtg3e5JASzcgYH4yfzxB6giA/5zpptj/Tkc0heMED
-	 tC6UGsUQjwSLQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Guilherme Giacomo Simoes" <trintaeoitogc@gmail.com>
-Cc: <alex.gaynor@gmail.com>,  <aliceryhl@google.com>,  <apw@canonical.com>,
-  <arnd@arndb.de>,  <aswinunni01@gmail.com>,  <axboe@kernel.dk>,
-  <benno.lossin@proton.me>,  <bhelgaas@google.com>,
-  <bjorn3_gh@protonmail.com>,  <boqun.feng@gmail.com>,  <dakr@kernel.org>,
-  <dwaipayanray1@gmail.com>,  <ethan.twardy@gmail.com>,
-  <fujita.tomonori@gmail.com>,  <gary@garyguo.net>,
-  <gregkh@linuxfoundation.org>,  <joe@perches.com>,
-  <lukas.bulwahn@gmail.com>,  <ojeda@kernel.org>,  <pbonzini@redhat.com>,
-  <tmgross@umich.edu>,  <walmeida@microsoft.com>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
-  "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-Subject: Re: [PATCH V6 1/2] rust: module: change author to an array
-In-Reply-To: <20250223174205.48404-2-trintaeoitogc@gmail.com> (Guilherme
-	Giacomo Simoes's message of "Sun, 23 Feb 2025 14:42:04 -0300")
-References: <20250223174205.48404-1-trintaeoitogc@gmail.com>
-	<IF24WGLQXlxxpA3KATMen2BraxQvb-w-Qj8K9mFm9PskrK7A6oFrZJVdFJmiIdYYzpj2nI4VYafUxBd-WmeQFw==@protonmail.internalid>
-	<20250223174205.48404-2-trintaeoitogc@gmail.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Tue, 04 Mar 2025 13:09:19 +0100
-Message-ID: <87zfi1gfps.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="o3PmGT/j"
+From: Fiona Behrens <me@kloenk.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
+	t=1741092520; bh=F+g7zVwVOBh8ruof6NeLPIIzEutCEQefGlpLKbd4t+E=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=o3PmGT/jqJCQdV9eCtDOEmJjArZHNdb2aghv900a7ocLltJ8FMSg/hpFh0IewnUwq
+	 UDVYvnrcbPDF4yH8OvVEYZGPNxrCF8pBOBfmI5Z98jIrh9KvIaUy45chy8/Nm37pJB
+	 d8yr1IEymtZgv9wBXHTroPg4qIYN8OeOSxMhW+Nk=
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Paul Moore <paul@paul-moore.com>,  Casey Schaufler
+ <casey@schaufler-ca.com>,  James Morris <jmorris@namei.org>,  "Serge E.
+ Hallyn" <serge@hallyn.com>,  Miguel Ojeda <ojeda@kernel.org>,  Boqun Feng
+ <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6?=
+ =?utf-8?Q?rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>,  Benno Lossin <benno.lossin@proton.me>,
+  Andreas Hindborg <a.hindborg@kernel.org>,  Trevor Gross
+ <tmgross@umich.edu>,  rust-for-linux@vger.kernel.org,
+  linux-security-module@vger.kernel.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] lsm: rust: reword "destroy" -> "release" in SecurityCtx
+In-Reply-To: <20250304-secctx-reword-release-v1-1-e8e9a7ff85ba@google.com>
+	(Alice Ryhl's message of "Tue, 04 Mar 2025 10:31:55 +0000")
+References: <20250304-secctx-reword-release-v1-1-e8e9a7ff85ba@google.com>
+Date: Tue, 04 Mar 2025 13:48:38 +0100
+Message-ID: <m27c55j715.fsf@kloenk.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -56,25 +47,52 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-"Guilherme Giacomo Simoes" <trintaeoitogc@gmail.com> writes:
+Alice Ryhl <aliceryhl@google.com> writes:
 
-> In the module! macro, the author field is currently of type String.
-> Since modules can have multiple authors, this limitation prevents
-> specifying more than one.
-> Change the author field to Option<Vec<String>> to allow creating modules
-> with multiple authors. Additionally, rename the field from author to
-> authors to make it explicit that it can refer to multiple authors.  In
-> modules that use the author field, update its value to an array of
-> strings, and also rename it from author to authors.
+> What happens inside the individual LSMs for a given LSM hook can vary
+> quite a bit, so it is best to use the terminology "release" instead of
+> "destroy" or "free".
 >
-> Suggested-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-> Link: https://github.com/Rust-for-Linux/linux/issues/244
-> Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+> Suggested-by: Casey Schaufler <casey@schaufler-ca.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+Reviewed-by: Fiona Behrens <me@kloenk.dev>
 
-
-Best regards,
-Andreas Hindborg
-
-
+> ---
+> This patch is based on top of:
+> https://lore.kernel.org/all/20250304-inline-securityctx-v2-1-f110f2c6e7ff@google.com/
+> ---
+>  rust/kernel/security.rs | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
+>
+> diff --git a/rust/kernel/security.rs b/rust/kernel/security.rs
+> index 24321105052648e150f2875bcfa5ef29f4249516..0c63e9e7e564b7d9d85865e5415dd0464e9a9098 100644
+> --- a/rust/kernel/security.rs
+> +++ b/rust/kernel/security.rs
+> @@ -16,7 +16,7 @@
+>  /// # Invariants
+>  ///
+>  /// The `ctx` field corresponds to a valid security context as returned by a successful call to
+> -/// `security_secid_to_secctx`, that has not yet been destroyed by `security_release_secctx`.
+> +/// `security_secid_to_secctx`, that has not yet been released by `security_release_secctx`.
+>  pub struct SecurityCtx {
+>      ctx: bindings::lsm_context,
+>  }
+> @@ -67,9 +67,8 @@ pub fn as_bytes(&self) -> &[u8] {
+>  impl Drop for SecurityCtx {
+>      #[inline]
+>      fn drop(&mut self) {
+> -        // SAFETY: By the invariant of `Self`, this frees a context that came from a successful
+> -        // call to `security_secid_to_secctx` and has not yet been destroyed by
+> -        // `security_release_secctx`.
+> +        // SAFETY: By the invariant of `Self`, this releases an lsm context that came from a
+> +        // successful call to `security_secid_to_secctx` and has not yet been released.
+>          unsafe { bindings::security_release_secctx(&mut self.ctx) };
+>      }
+>  }
+>
+> ---
+> base-commit: 93f60f16db02f7b52985338f37679095231b6383
+> change-id: 20250304-secctx-reword-release-e26ac4ee7e0b
+>
+> Best regards,
