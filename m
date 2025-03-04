@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A03A1FFC68;
-	Tue,  4 Mar 2025 11:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AFC41FF61B;
+	Tue,  4 Mar 2025 12:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741089585; cv=none; b=D/k94OBhUusstm0ulZKrd2pesMPab75p9KpRkoe7NwjOhzQ7ANi/7bXUCuo6spyMAU690dku0udS6h4P4vmgMAAVbxEtLV9LXPeYFAwy6VmMRAyY1zZScHezXf7ABW1q4Hm1MlMWqQpaSBmbsWO9MG1XB1xnmWXwLkOLGKmNi2I=
+	t=1741090594; cv=none; b=I/GDazbJGZ+p5UFoTqjnOKpO5TTlgfYVblHReTHa3NQOBNqMvdL9QUQ0FesbBlLhJWxtSyE6sQ9Z4fzjHW3fyylr4mI/cZELhXV0yxuucUvdtiXdTvK8yKWVdoTZsn6mLSKxiIjWtJV7Nyk8fULnpRuTppm8yrrY8nUQ8fQYKxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741089585; c=relaxed/simple;
-	bh=m5bq3Xf/xvV68SMVybU/9ISlIyZAHVSbtdVtn0t/d3g=;
+	s=arc-20240116; t=1741090594; c=relaxed/simple;
+	bh=9JPCPQ9VllTi4dTdR5Ev8ixRZQkQn+UCwS7J79lbP1M=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Lpf/WU9X07wgkv4NAuoUqtC5l2YkiFT8ElIAlv6Rea8zL44i731ia4+BedoyvD5aia6Wgo/z7fJfnCjrxyruTCq67nKCpV2hphUGLGq7Rv38pG9tPx8RSMo+iol6cYbYL0WisXnZWqH/etQidoiWVTo4efwgJuOhOpt1S2R61ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TBVXUo/y; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=WuhvBYIYorY65uAY8AeyueuaOgwIg4uKJoDKAGqnJEulQ65A0yrH6fj2oiADwsjsrQXPv3XKzqmVVQSEQmDQFd5F1K/0y0ZpGUsEs/hRCckr+Zkj8+1bWk6unO9mQajMDBM3Y8d5FvpmNP21/90+O3xMVGkjWnlDYt3uNydWH+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oqsWzjy2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TBVXUo/y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 790D1C4CEE5;
-	Tue,  4 Mar 2025 11:59:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oqsWzjy2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10B24C4CEE5;
+	Tue,  4 Mar 2025 12:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741089584;
-	bh=m5bq3Xf/xvV68SMVybU/9ISlIyZAHVSbtdVtn0t/d3g=;
+	s=k20201202; t=1741090593;
+	bh=9JPCPQ9VllTi4dTdR5Ev8ixRZQkQn+UCwS7J79lbP1M=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=TBVXUo/y1SMGgl9VJVdCQWdPuJUpANtODXJriLe+xWjFkxtSmC4Ye3P5SLtVpMeCs
-	 XbZw74R1ZAwrxyAngwliAcddxiJZvzGlpyskJUgRQZJur+sssdJsfXHIjOqPEo/EhW
-	 VC1vSV77IMoW+vkhQvJH/0w84N/gcj+RFAO1CUqxEZGC2mxNNhNPrgd63pKSe263xm
-	 5aNhKA5+nj9xFiJAKnBQ3Fxc+bmcSKME83HfoCEg5df1mOEmKiV7AIyCh/1s2DKQMZ
-	 6y45YLLdK2t0BboTuWn+IhYtnhw/u7E2rlFd3hn3fwMUUEqJcQn0S6e+JWmnjHvmm8
-	 U1DkbK+4bjVYA==
+	b=oqsWzjy25XiDEpmdL6iJNaamC+7F0cBvEGrKxz1cI3Mk42lL5xim05HPyx9HuA1HS
+	 /CDXzs5aTWkA6xyYV9a3fQBXkR1QlN12fP/7+I8HEEYSkxFLr/R5eoh5+4n54x/+84
+	 qgGCs22pB4FG69ocfp2T3SD871GJX6PZWIOD+Od2hW4UanqYaHlQqK6zyCHlNpIsDy
+	 lqWdRmLiWyNjXyMC98i0ahF1SmGLaTuJ/cxPZb8AhJ32/v++6CfCgLmJbrbdJ0kl8l
+	 hGf47rTuhEDtTUfJUaV7O6uar8Bx1XTDM0lekzYTQFD26Yvyk5cZsmnQXjLFGXXK3C
+	 S8uj2zTkdDhIw==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: "Guilherme Giacomo Simoes" <trintaeoitogc@gmail.com>
 Cc: <alex.gaynor@gmail.com>,  <aliceryhl@google.com>,  <apw@canonical.com>,
@@ -38,14 +38,15 @@ Cc: <alex.gaynor@gmail.com>,  <aliceryhl@google.com>,  <apw@canonical.com>,
   <lukas.bulwahn@gmail.com>,  <ojeda@kernel.org>,  <pbonzini@redhat.com>,
   <tmgross@umich.edu>,  <walmeida@microsoft.com>,
   <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH V6 0/2] author field in module! macro should be a array
-In-Reply-To: <20250223174205.48404-1-trintaeoitogc@gmail.com> (Guilherme
-	Giacomo Simoes's message of "Sun, 23 Feb 2025 14:42:03 -0300")
-References: <GQqgXevDlPrbDVqybjdBe8eWBr-bsr56Nmbydqom2kJLDE2mrH7hfWC0ORBSY3Qz7yaBd3mIoy9TcKjNz96hzA==@protonmail.internalid>
-	<20250223174205.48404-1-trintaeoitogc@gmail.com>
+Subject: Re: [PATCH V6 2/2] checkpatch: check format of Vec<String> in modules
+In-Reply-To: <20250223174205.48404-3-trintaeoitogc@gmail.com> (Guilherme
+	Giacomo Simoes's message of "Sun, 23 Feb 2025 14:42:05 -0300")
+References: <20250223174205.48404-1-trintaeoitogc@gmail.com>
+	<sTx6hWX7CKjlAu5OEpL0eUrR1ipEoN4O81qJP2P051_dYkDZRa_PDcgThPD_yy8047kutZHqeSx4Nf0i2RUAmw==@protonmail.internalid>
+	<20250223174205.48404-3-trintaeoitogc@gmail.com>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Tue, 04 Mar 2025 12:59:34 +0100
-Message-ID: <875xkphuqh.fsf@kernel.org>
+Date: Tue, 04 Mar 2025 13:16:19 +0100
+Message-ID: <87tt89gfe4.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -56,50 +57,28 @@ Content-Type: text/plain
 
 "Guilherme Giacomo Simoes" <trintaeoitogc@gmail.com> writes:
 
-> In the module! macro, the author field is currently of type String.
-> Since modules can have multiple authors, this limitation prevents
-> specifying more than one.
+> Implement a check to ensure that the author, firmware, and alias fields
+> of the module! macro are properly formatted.
 >
-> - Change the author field to Option<Vec<String>> to allow creating
->   modules with multiple authors.
+> * If the array contains more than one value, enforce vertical
+>   formatting.
+> * If the array contains only one value, it may be formatted on a single
+>   line
 >
-> - rename the field from author to authors to make it explicit that it
->   can refer to multiple authors.
->
-> - In modules that use the author field, update its value to an array of
->   strings, and also rename it from author to authors.
->
-> - Change the checkpatch.pl to find poorly formatted arrays in the macro
->   module!
->
-> ---
-> v6 changes
-> - Use consistent style in warn messages
-> - Improved the commit title for checkpatch changes
-> ---
->
-> Guilherme Giacomo Simoes (2):
->   rust: module: change author to an array
->   checkpatch: check format of Vec<String> in modules
->
->  drivers/block/rnull.rs               |  2 +-
->  drivers/net/phy/ax88796b_rust.rs     |  2 +-
->  drivers/net/phy/qt2025.rs            |  2 +-
->  rust/kernel/net/phy.rs               |  4 +--
->  rust/kernel/pci.rs                   |  2 +-
->  rust/kernel/platform.rs              |  2 +-
->  rust/macros/lib.rs                   |  6 ++--
->  rust/macros/module.rs                | 12 ++++----
->  samples/rust/rust_driver_faux.rs     |  2 +-
->  samples/rust/rust_driver_pci.rs      |  2 +-
->  samples/rust/rust_driver_platform.rs |  2 +-
->  samples/rust/rust_minimal.rs         |  2 +-
->  samples/rust/rust_misc_device.rs     |  2 +-
->  samples/rust/rust_print_main.rs      |  2 +-
->  scripts/checkpatch.pl                | 43 ++++++++++++++++++++++++++++
->  15 files changed, 66 insertions(+), 21 deletions(-)
+> Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
 
-What is the base commit for this one?
+Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
+
+Does what it says on the label. However, indentation is not checked and
+the following is passing:
+
+    authors: [
+        "John Doe",
+              "Foo Bar"
+    ],
+
+Another thing: I'm wondering if we could have a rust hostprog to do
+this check, rather than a perl script?
 
 
 Best regards,
