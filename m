@@ -1,134 +1,232 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D41C204696
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Mar 2025 11:51:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741089121; cv=none; b=oSXC97ER7Uk784yvpD8uL3/eCVt7rdfASsKdDM4heCY+vsv5n/Xu7JB6Hx3c39nHBc+7eViqmcHqjj+sRV461VevRALJ+0fIVKyW/kn82qYXBN55MP8rM4PNVde0a7EYYpilpmXv44vRIjVyzS6xHMaSUiQnuhBIsCYXEesiFYA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741089121; c=relaxed/simple;
-	bh=pfYrJhYmXOmoMeg4sKWMdZszxN5nxDKSyeUBka7g/x0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=k008qJoREx9RDTF0oIIH2qbbnMp70z9V8xudvOvGWPetAgpUTURQdQ1fsyG8fosxoiDE9lo+894UZWjKR1taAY6XU1EILHTHe4kTWpC4DWi0txAAAvEjTbYxP7B5xGkZzw8id48F5kpR+nXbDZpwZ8Rzcv6AIDGgo035n5XZdmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Lh82+CRX; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C8D201025;
+	Tue,  4 Mar 2025 11:54:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741089295; cv=fail; b=nrTvK26bGncqhQ4fQ+0Me1g3Ua7fMMQQV+ssLn21Ixzh7y5EmQJCq9dsOp0Ic+aa56SO7vwCu9h+uoJXZGhyQASPBvwjt/8BriUa4E2zayMYLhBli5DRw/6V+6EhHRyB7jvGKmcd8OL/11kV2Tjb6OFLD5bvIm4cJKZengnC70s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741089295; c=relaxed/simple;
+	bh=pk8ZW4IbwJyCddw/bLYphITi/0OUSd82J/PbH0eeRGI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=UbxPIuZqa/1NMJ1R5woS/mqO0KRELAWVJPuwrMLKqv40Wxbb/SWCfs19fpI5k/YGeDKMU273I1W2DbbF+YvqrwxwtxjzDj59CqXPviOGkrU+kcwpyuv/9ukGM5dtF1oc9Hg/Sz2f91ML3cOrGZKn/bxdsezmATwK6zKNkyUtmqs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=EEi//utQ; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=Ljx6sbD/; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Lh82+CRX"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43bcddbe609so4589285e9.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Mar 2025 03:51:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="EEi//utQ";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="Ljx6sbD/"
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5249feo5027981;
+	Tue, 4 Mar 2025 11:53:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2023-11-20; bh=+dYb8zspzaBJdawm0N
+	LHk5RxW2KCEuapR+iQ8bl2oxY=; b=EEi//utQj5oCCJWVaVj0EHfkNpS2AmFp50
+	xbelEX0zM11GY7UrVQyC5fEkfvI+IofdY+GaXQsoeL0AW70nJi8wlKGKmdqWMDBp
+	1ZWrKcRcdvvyrTvrVvXGO7SCPbsx2Es0VBCYtJ6oiO00XgkRuyPJi5ZZLqPvvBmo
+	Uv7qbZRPQSQxS9UAvog/anOhI4q5F9uU1pWqpO8OoGuTkb76fRpdIh9Ri15PDMUC
+	S6uOv5R7icV4sy7lHhKgxAQHLsm7bflJPZjKvTvQcydzrB6OdKLCc3tLPjPKNaa+
+	UlwCEkv4L/alWEJiiiqt9Vkl5QXdnQatrl68+xvODCBV/1cyEVDA==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 453u8wn03q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 04 Mar 2025 11:53:53 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 524BLQTn021947;
+	Tue, 4 Mar 2025 11:53:53 GMT
+Received: from nam02-dm3-obe.outbound.protection.outlook.com (mail-dm3nam02lp2048.outbound.protection.outlook.com [104.47.56.48])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 453rwut38a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 04 Mar 2025 11:53:52 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kxuK3FK0BGnKxMPfit0Bvw+vmFr4asjUKCTkPKIQOMJYxA9UFU0DPiKmEmYxVeaU42rBSSGQzQRw0j+KzoM8JWKPOJ3M1Y5wMPBUZ9fKgZlGEKvLNbp+8XyJwEE9/jJaKDl3+fFBL+uA19FpP5/uqzjyckDghX5q9Ay4w7eh25o9AklCElJI8JygCHSiI7yhPPztKoFTjncqRoC/xCMb/z5G3DmD7L6mejTNZY827bJViZLo/yRCiGIMx725Uqvtlftt0SOMEHmazdK/t4QwMsQYZmzz7AFq4RME2Ra/p6hlCxpkiavEJWpnJyRsU+7RhmLv2VJasFYek9Xq9m141w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+dYb8zspzaBJdawm0NLHk5RxW2KCEuapR+iQ8bl2oxY=;
+ b=DvVVnQVfVbJ1w0SlceX93d/DVDIWQW49AGtrvkyxbBZYlcszfpgQWcpsC1laelitkB5f5Uj68ATpH4PszyCVKCPjzF3wq2Rd967vHRBF5I5DH5W08+txJQT44y9SeN0q3HfmLp4pKfucXQIA5ZMnf4+r+Rq6h7i3xzJd0WPdfKHnF7bkF7hM2TD/VSdZPNxVqf5nI6J5T2QDb2vVyhr56dbRVbRoCQR/Rz3D3Xjz5FVdZaKTxpALHId4NX8kMxg/98IYIDBBB1mV5EHeXU/Wt+//5jBxOmdlkeKJxbq3muoSui28BjIpUn1wICWiyLF7RcaIgshw6S813N7/EPNKmw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741089118; x=1741693918; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4xQ8U/jop7C2IhA5DV1Cut5nWSl9HZJMjEE/uQKJi8g=;
-        b=Lh82+CRXuAlRGF1Pb+RacfGY0iY3pwpvDQtexxwmt8jcZWhr2D2Q4Glh7f4Br/ByqX
-         NHFRSWogtA1amAr6ngosOMfB+CalIL+Zhjq2FTfLB5XnQe2PAtyxZcCDnMWYcnNfXybp
-         4RY8aV6qRd/yTv6xfXB1Ny9PqOaTOPwdtsbIck8ef4sz2ha8yV1S9awHfJAzMM26nY0n
-         1aYKxA7xiIM/H5lEI8r/FBIckw3e9T5WnxzJuL+1H+sVKW+QoFN+LQW53THgkv1nQQQl
-         vf6L0vAUebsgx7uY53IAHOkFYirQieE2QDGZ+uWQzC0tPN/fEhVGNBdrUbHnMb8RGLbd
-         8Z2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741089118; x=1741693918;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4xQ8U/jop7C2IhA5DV1Cut5nWSl9HZJMjEE/uQKJi8g=;
-        b=uXNuw7dlJFGltNhseFadjPAdAhjAUDAe9zKqAapXkG/WYRvsU8yeXRdNwBWdvbqHCj
-         DgxgDBVegMsFT+pLRL/ifGNBekKQtj1fgiNd/6lNgFcbXgwX98wv5L8+JX0Bo5oFnwoE
-         T7MWvCWzWhd473aIMdXPtNJVDQgp16/nYcb3Bex4QdM0wRojLOeGamaPECfUHbj/42PV
-         0hcKkJAcCTZGlcMLbIzcZtLqBA2URhUXlzfd4heK1UJGljn9KkDKDaWYFKpQRYvAB+gg
-         AQAvktGNwn2X0PwTUOxsLU2UC4aEdYZP5ksG7gQ6D99rTYP+QgfynCWzASi+RjuBS1E7
-         Tb1g==
-X-Forwarded-Encrypted: i=1; AJvYcCWBPxybiXKHng+9PJ4aD3vAEs9OQDx96Ygip4NQDnxd5yUnUz0v70KsZDBvvmV+BtfG6FX9nhOXRJd+Y4yMAw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzbPeNJPk613JowP3kqJ2QDXODgWoeoPdqJF1tvQkTdXZk4/4Sx
-	7U22iNj2NMYzXCHR9sSYe38AQmgJexwXMWWH7GAqQ5pje9y1i1vQ7nZl6zpLaoqJmSuM0LLWNW4
-	pWTYUSzLWM+96pg==
-X-Google-Smtp-Source: AGHT+IG2AMKbWFBJdIDE/KQqr7FWEBjtkYhI8RMcgWJbZq3RCOLTY4UH5ylub+jcjaVg9xtq9tEKZxH8Zpsb0+c=
-X-Received: from wmsp7.prod.google.com ([2002:a05:600c:1d87:b0:439:88bc:d27d])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4f88:b0:43b:cac6:afed with SMTP id 5b1f17b1804b1-43bcac6b01amr26242355e9.19.1741089118021;
- Tue, 04 Mar 2025 03:51:58 -0800 (PST)
-Date: Tue, 04 Mar 2025 11:50:00 +0000
-In-Reply-To: <20250304-vma-v15-0-5c641b31980a@google.com>
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+dYb8zspzaBJdawm0NLHk5RxW2KCEuapR+iQ8bl2oxY=;
+ b=Ljx6sbD/7QwMPbwMzC1YTtYOwKIdZ9N/MYErNO8EAnlsjRvcDjoFoDcDDafwUiRboufJeDTB9AadTk96NSO/vUKV8dbXCQXSvK4eCMEoezFWhNji2Pwm8USOSYtNYuaEdmbAFFhgXJPPJXpdprZ0TUeiEgHWCFuVCtuEb1bhbGo=
+Received: from MN2PR10MB4112.namprd10.prod.outlook.com (2603:10b6:208:11e::33)
+ by DS0PR10MB7091.namprd10.prod.outlook.com (2603:10b6:8:14d::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.28; Tue, 4 Mar
+ 2025 11:53:50 +0000
+Received: from MN2PR10MB4112.namprd10.prod.outlook.com
+ ([fe80::3256:3c8c:73a9:5b9c]) by MN2PR10MB4112.namprd10.prod.outlook.com
+ ([fe80::3256:3c8c:73a9:5b9c%7]) with mapi id 15.20.8489.025; Tue, 4 Mar 2025
+ 11:53:50 +0000
+Date: Tue, 4 Mar 2025 11:53:47 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+        Vlastimil Babka <vbabka@suse.cz>, John Hubbard <jhubbard@nvidia.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
+        Balbir Singh <balbirs@nvidia.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH v14 0/8] Rust support for mm_struct, vm_area_struct, and
+ mmap
+Message-ID: <1cb266a8-46b3-49c9-85d0-1487d30b2d4a@lucifer.local>
+References: <CANiq72nBx3cRTUC9HWVR8K64Jbq3GCVMss5wuABzra3OLhRUQw@mail.gmail.com>
+ <c8e78762-1429-4ab6-9398-ce52370eec08@lucifer.local>
+ <CANiq72mKyvoyk_tgbMKUdzs-sJOoyEH7f1M9ipiET+XYgwCqRw@mail.gmail.com>
+ <2d132129-fdf7-404d-b1f1-8ee87b838dcf@lucifer.local>
+ <b6b5tnaw6vnuib7nzcm7ajszxiptqz3i2hex5yengzbsirztks@l3coijkqwtpb>
+ <CAH5fLgjMC2Q1tjuVtbhMvU-pmEsn1Ai4=AAB3Tm8HTWi7PFHfg@mail.gmail.com>
+ <30ffd737-d0aa-44aa-a647-686e536ac548@lucifer.local>
+ <r3iEw6cWkz3wBoUc9l7we40uuvdTVbQBJU3rWXKQspv1GfvviY_0pYLyFtTJPBP0VeofvKHx8-l0WHFT-OQfcA==@protonmail.internalid>
+ <33e64b12-aa07-4e78-933a-b07c37ff1d84@lucifer.local>
+ <87h64ahr64.fsf@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87h64ahr64.fsf@kernel.org>
+X-ClientProxiedBy: LO2P265CA0465.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:a2::21) To MN2PR10MB4112.namprd10.prod.outlook.com
+ (2603:10b6:208:11e::33)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250304-vma-v15-0-5c641b31980a@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1378; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=pfYrJhYmXOmoMeg4sKWMdZszxN5nxDKSyeUBka7g/x0=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnxulI1cTJusWcBTCMCV8E308MKzphWs+XSbM1l
- Hz1AqO5grqJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ8bpSAAKCRAEWL7uWMY5
- RkUdD/9S9VVPwCSO26UGmBZ/OmG3EriY6UTnIBpk5NPvullTUYJY3Zlp/66cdtLbu8WTJOZ9szF
- XQT5s3mUTicmHQZAlsZwsyVIplAmPfNn3p63oOfleS79W8OwjfHtXGNsWp8DHvBvdDvpf7/ukq7
- lzFLV2niaQGAoJiiANGIyc6RYiCKyVEOvgvmU+Okr1f0B3CPFhY1KdGGXWfVLuhl8jrC3JO1Ey4
- FXVkkDLN997uTyiju1T4tt553y3A3FQNf2lG7rOMTImAkyGMUFGYdKdieVySgTAUHKLgjhEihw0
- mIX5VTQeHPctQKzQNuKpdXYQzbmNz0iAg6QNRiuE66wdEavAlrlP8HwyfkfQUPcwHV3l2HDh7+G
- bV/mjic1RKMA0XRIlOhVixB1m3zhn+ESLpcKdYL21xZ+V9LsskTmDOldn9A2HgI+BmLgqUj2JO9
- k89eJj+FlozF6ZKeGtmz8Ho8oUGSiPX4zZP1lkSUKPC4qwLJtKRZXmE1mV8QV/ojeIgwh98PsgZ
- dieETycPZZZ1w3bBgEG27qWiL4XJjML5GSpcZX+jRI2k/fT/Ch6FGWmu1kezWeJpeQn9UV5OoFZ
- +C4B3gRwEl+V5T0OifW6SwxuruC2sQOzyMdFHkj0VehR1/uqazg/zwi7ucgp5iY12K6EDvBITxS Zm7tfasNdodcx5Q==
-X-Mailer: b4 0.14.2
-Message-ID: <20250304-vma-v15-9-5c641b31980a@google.com>
-Subject: [PATCH v15 9/9] mm: rust: add MEMORY MANAGEMENT [RUST]
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett" <Liam.Howlett@Oracle.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>, Suren Baghdasaryan <surenb@google.com>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN2PR10MB4112:EE_|DS0PR10MB7091:EE_
+X-MS-Office365-Filtering-Correlation-Id: c653898d-216b-49c7-87a9-08dd5b133a64
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?eeYHFqU6F9+oNlhHylG4nk3Fb6ipzbfCarnQoUyM39LQHT1C4gaAVpipUjmS?=
+ =?us-ascii?Q?LryJCqU38KxcTbuYB7Eb5a5GElf0WkXnIQlfvkvr6nJcEgufveaVA4lAgYhJ?=
+ =?us-ascii?Q?fyUacXOuethxUhZDtMoheOyBnFid9IEObd7PRPNd2ikNck/bcVUHL8dIQmqm?=
+ =?us-ascii?Q?aufJ+NyGaelJtt3sy6F5B/ajviy3GQvXfEb04qr6/tPsbbhQSs5mmrlz4toM?=
+ =?us-ascii?Q?JSGxHweVJHordAZhdOjhljiE209ti5zj9zbiQrqLf+9sjqbqnqfd9PmIjSyl?=
+ =?us-ascii?Q?2jBS5S+n7uEDSmu0YCosR3yxEo2/U21HDOH+6GcFwbX69y4VusOzZuf1Pton?=
+ =?us-ascii?Q?1B81nzpLKm7DpevqI/l5cltju9LsBxByFW8QWBV6BXjpDcnPfiHpB1IrNVuF?=
+ =?us-ascii?Q?Xrax3ZFF5Sy2c/IuI5wbKKa/R2Ng+Cz3SEsIPjI0OfYfpAuTqtwEtux4TOPq?=
+ =?us-ascii?Q?zSE6T7X1OQZlKfchX+Z2neTuY753+7mbvpyc9FUJYAZit3bSeVFLnL0aInEb?=
+ =?us-ascii?Q?no8y4p0cjkaTv8HC02MFM2Fy2BUIANJ5g02OkCRJlGQLq2ZvWzHcJ9ePYbXL?=
+ =?us-ascii?Q?98UDpfxFpA8efrRCCC1RwjBpbOKSSNAnGF98EFfpPaoO5S9u/EwNzCa3Kjro?=
+ =?us-ascii?Q?HMw+PTQ1vgX/7iisbkQ1cIAgfYQYZK41zLz9uh6DuHNe3VvWCZnDgnhI9fr6?=
+ =?us-ascii?Q?gTdmcSddR//8Z1v6YIlwcB+pZGEKq9upnZNn0f+knk62Mya/mPi6zlsRRd1M?=
+ =?us-ascii?Q?uZezWa5xMgYqrd/r3BFpXSUN/ElCk9L0KQlWFQ/EAw6KfL01iP8nHdMQUBOT?=
+ =?us-ascii?Q?hTQjj3rRVozTBzM5hYnWLQLyLraSNdCRLRdueH4ztLAncxLG50e2VkfwLGez?=
+ =?us-ascii?Q?U9gk7tBYm/ot3xdqm9sAx++RWW6sazLGNQtr48K6mYfFrOTN62n6u7H1lqJ7?=
+ =?us-ascii?Q?3PYAdKuboaSIqXhHTfTY+ilYDHuyua9LgIsPaZv2f9tmuSwmVyGgyGTsEjfR?=
+ =?us-ascii?Q?jHII79/ryNZdDJRbKbvNlCt16GXOhAw+D+zQ+4hvcf8sJVRRHsYuXBoWgAgb?=
+ =?us-ascii?Q?L7g0QgYiPKsAZ7A4gI9863AzbGFB9g7tAKgsOzeCdY6N/axcELafL2lWonyE?=
+ =?us-ascii?Q?c12/ZyDWVd4T9OflWVWt2i0jJ2rDtCp0xA5R0nL/WNrnGyUDLUrhdpewzWcp?=
+ =?us-ascii?Q?HF93EGbhNBBPlHDH+aLU7RBj6nj7YLUSKjKrNwNU0eWCSJVkPfdp7Tfe+udO?=
+ =?us-ascii?Q?wBd8kcilECR1+PGSd/l8opWkPqwzo2VHvqR29ZJrxf5UBfOkf9UBCX7Q0/Mm?=
+ =?us-ascii?Q?2WgLflHxwYLD+MR0tJjtkCA9?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR10MB4112.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?RZr6WapHn2x5QQBB06KKLugq1o0Z/AFwrdfacYvnYSe5jiF1N5q/xu0j7xLj?=
+ =?us-ascii?Q?Yi03ooKzswWushh9YKaM7rbxiKAIQBWOBnBbosTC6Vzg87gv/IxH0pIu3at0?=
+ =?us-ascii?Q?zJBc+JWTV7l58rNRs2stYfg3UiqpT3dtObzgm559rXBW0C8uRankvkCiLfsY?=
+ =?us-ascii?Q?yXbt9G4Sa5ZV+Lqp2iHJu61UBDfFOw4bw61gaQCZJ3iXBZxlZlXPY9zqn8vX?=
+ =?us-ascii?Q?5Eg1NXilY5ZGz2A6qq/2TL2DEG8o0IUqWo9WRhnFlznj3tTjFKEOm69Tzbar?=
+ =?us-ascii?Q?Tc+PdSiCKyONmcho7j/Re8xVQQ9ToTmCsNjh81keC9QpmmVsOEV99EuxG+dM?=
+ =?us-ascii?Q?sXM2rMv4xlwBGKEwTgmet67mp47/wQcaVKy5yG7SNDrsDJULz6CucpgwUBjL?=
+ =?us-ascii?Q?uOx5WoLjX3VWtonic9LwsSQ8EzlkLZCZlTRd4B4zZaDq5QTLXWizFuqSgxJZ?=
+ =?us-ascii?Q?p5MDgfEdMa/dmB3tidhn6YGOBQBKY3ik2czn9OR7qBW5t/L+aKEB0p6CT4fR?=
+ =?us-ascii?Q?xilPZQ+axbQorGCAeW2j1IOfVAHz7fD8fLeQ8IMxU/lhSECufbUUaSLc68Wn?=
+ =?us-ascii?Q?YXABpGh7VQ8ebfv9ZmjKMsLaHiLrPZxKw4X/2Ud5G/0pv5CbFVEv/5Vo47hv?=
+ =?us-ascii?Q?oU6SeHdNagZcJl1FS/j0A8P+tJejOjvE08fPpoaEaMrsXSs9vTrhLWk8VfuZ?=
+ =?us-ascii?Q?8TjXZXlUHerY7GJRbdFsTI0ag7kGgIAFv24gmFr6rfh8r5ty5EV+0XMC+BEi?=
+ =?us-ascii?Q?NRccFjYZx2hyRX4CgqO4avtKsYpYamSrdS+riEzMyLuQcdw2SkznDq2++ETS?=
+ =?us-ascii?Q?Yz9biaLjNsPh+tO3q2cmsG2VVbSsOOtbh/j74B9ZdEBdQQwiqI89TQTuH4ed?=
+ =?us-ascii?Q?iydRgMmV6pVSpjQVgO3P/XMuyupyQYJ/eR12Q9xeXp8O75QLVU5Ekm+/RLa7?=
+ =?us-ascii?Q?GdZPIQpTwWUdmhRTrRSvn8UHGO6d1DT8vYh9/4lxAX2N8XYCrQMkxbOf1u9e?=
+ =?us-ascii?Q?76Ky192spPgcY6cqsZvZWU1S2ycPvrR8a7f+S+wi02NTj6rC8UhI5Y6bvra7?=
+ =?us-ascii?Q?yZQQ/hu/kotRiTXbixZeBaTry7IqElhYrByhcEe3zYmq8xcJD5phWJCYz2WW?=
+ =?us-ascii?Q?aBSAGFYqUF89l1ruPcTdbbHcIOTTnGmiG4CJ3Fzo3TDLZHKTD9Kgk+uz8wAQ?=
+ =?us-ascii?Q?1RyR/ZNYYPv4tcX2bTaWke0C1JvHNogu+szHXqvHXwC4u2NJpBAAKki5DAcD?=
+ =?us-ascii?Q?CdFrPSoqthPWrEIXm6AnWa1M4fN4J+Hdr9zJYsO2ILoxQhlZjSdvN4blpaN2?=
+ =?us-ascii?Q?Cl2D2zI/clFwH5Fgc442CvsOxxg/Qg06GmL+hntpgOrJ1VLsYH9vsFKrqnUq?=
+ =?us-ascii?Q?tUku84sncuxZZiFAU4viVT/UCFYAfukgBkfmeakYFeF9COsd1MuMqCCqdTSw?=
+ =?us-ascii?Q?l5i2x3B69IUX87WxeV8FvNjtngSCQ2q5OPyCLeXbro0PKyxA6kH2Jm2GSk2r?=
+ =?us-ascii?Q?ZZwSZ3Z8tvdSMjIyFQbiesVQsrFUHUXCvjk/3VPgR/XYjVGP+N3qpgJRcnNE?=
+ =?us-ascii?Q?mBwuLW2+cLhmPMJThRGtQGEit5SjgNp+uSEfWxNkaZI8NmqCkBN6x5Tqcwfk?=
+ =?us-ascii?Q?Mw=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	yvE9I1RSXK+D9JIIHAqTrxuk0g2J24i2OQfDtM4xGvR8sT/6Wwwb9MJt5xTYWv0PvjsES+lWjBPeasWTmyb0vev1Ag5nemt7A9emmkzvAKgphsHpMSoNuN0jHY7U/iPa/GFXLDhxGfy8O0hNUcEzHGGSUCS1gG2o8ICs/4RefSWjF70VK/Wx4pWP5f0X8UuopN2LVpCNynnAqLjYNVQN1W4UDxlZpuAddZhA6wR6r9PqQC7IUpUfoAGnXimXhi7+xHVThMVAZVlV0PEeclADZYmwSTnE3DlGIzZX3PjKyH0GVdKUdKbfSe+6HueeYg1TkklvHH4ZtywWd2ITUJF+xdqD/Tu6G0JX1VdxR6CanV/fJ8DYM+M+jS/cGOYjYD9wlWEXx3DDNdb+SQ05zl1rp5va17RfS508rYFy5YSKDNckZo0mrv5QuHIq0aVEIGAnCu/BMJg7/nZbD2xUMwZviEMm3gfyAOmCwoTvCLUxFBKJUg7mpjHkXvZSI3fxA/WZJoInku1G1N6lcBat2CH9mxYpjmUvhobMx305fMwP4nb2xItBN7C2AChh/psXNmCSnr+JDFIASNInOJrCQEOLeUiP0eu3Ux3Sccr/58Mgr6k=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c653898d-216b-49c7-87a9-08dd5b133a64
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR10MB4112.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2025 11:53:50.0401
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Y0VOza7XgZriDaGmLo8A4jN5rY9xSbAqb/PkTWo5REfDC9L5n/WDh1bIwOXLwm200nikvms0JRl9xnFWOBYYs9MHHSYfMwcnBus0oY0WQ7g=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR10MB7091
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-04_05,2025-03-03_04,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
+ bulkscore=0 adultscore=0 suspectscore=0 spamscore=0 phishscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2502100000 definitions=main-2503040099
+X-Proofpoint-ORIG-GUID: 61qC2khcjs0MVRrd89iLvw8uyMXljFBT
+X-Proofpoint-GUID: 61qC2khcjs0MVRrd89iLvw8uyMXljFBT
 
-We have introduced Rust bindings for core mm abstractions as part of
-this series, so add an entry in MAINTAINERS to be explicit about who
-maintains this.
+On Mon, Mar 03, 2025 at 08:04:19PM +0100, Andreas Hindborg wrote:
+> "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com> writes:
+>
+> > +cc Linus
+> >
+> > OK since Andrew seems caught up with other things, let's go ahead and propose
+> > the entire thing to make life easy.
+> >
+> > Could you send a v15 with any fixes (don't think any are necessary now?) and
+> > add a patch to add this to MAINTAINERS in the alphabetical location:
+> >
+> > MEMORY MANAGEMENT [RUST]
+> > M:	Alice Ryhl <aliceryhl@google.com>
+> > R:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > R:	Liam R. Howlett <Liam.Howlett@oracle.com>
+> > L:	linux-mm@kvack.org
+> > L:	rust-for-linux@vger.kernel.org
+> > S:	Maintained
+> > W:	http://www.linux-mm.org
+> > T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> > S:	Maintained
+> > F:	rust/helpers/mm.c
+> > F:	rust/kernel/mm.rs
+> > F:	rust/kernel/mm/
+>
+> Probably a single `S: ` entry would be enough?
 
-Patches are anticipated to be taken through the mm tree as usual with
-other mm code.
+Yeah ack, a copy/pasta mistake there :)
 
-Link: https://rust-for-linux.com/rust-kernel-policy#how-is-rust-introduced-in-a-subsystem
-Link: https://lore.kernel.org/all/33e64b12-aa07-4e78-933a-b07c37ff1d84@lucifer.local/
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- MAINTAINERS | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 25c86f47353de25c88291cc7fd6c4e9bfb12d5c4..3f610b3ab66ed5e502261deb867099fec6e4ab17 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -15196,6 +15196,19 @@ F:	tools/mm/
- F:	tools/testing/selftests/mm/
- N:	include/linux/page[-_]*
- 
-+MEMORY MANAGEMENT [RUST]
-+M:	Alice Ryhl <aliceryhl@google.com>
-+R:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-+R:	Liam R. Howlett <Liam.Howlett@oracle.com>
-+L:	linux-mm@kvack.org
-+L:	rust-for-linux@vger.kernel.org
-+S:	Maintained
-+W:	http://www.linux-mm.org
-+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-+F:	rust/helpers/mm.c
-+F:	rust/kernel/mm.rs
-+F:	rust/kernel/mm/
-+
- MEMORY MAPPING
- M:	Andrew Morton <akpm@linux-foundation.org>
- M:	Liam R. Howlett <Liam.Howlett@oracle.com>
-
--- 
-2.48.1.711.g2feabab25a-goog
-
+>
+>
+> Best regards,
+> Andreas Hindborg
+>
+>
