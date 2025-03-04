@@ -1,150 +1,114 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C925282866;
-	Tue,  4 Mar 2025 20:18:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3EF2620F4
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Mar 2025 20:42:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741119526; cv=none; b=sMG2Boa/2MSZ4HJZQEAXo0hd1HrGx1PCO0IxgX9KXxYRYIIbUjmOmb9zeoP+kyOKk1k2eGrT6MNsDvQJNjEPUzGaAGEYCBpnpE+xpWF4M07PxpRmOoswMWpkmEmCD0GZvjvcT5P77+6cGl0GyOioZj01yLy9Ov3aVPXRXZBxhXA=
+	t=1741120960; cv=none; b=VNkwodPcsctuNLUicGeUKXT5YW+5yOLuf3GCMp+sF9FoNOWPhx6d8ip7INrjZXLZqx0nbayv3fVhPTeofATcIVM/C7xMDOaJG+rYRCA8syajm80wy4lnZp9o3mAsgZuk33YRewYTKhnZFmEz38wXDqkfKeJDJUTDgZCqPAnwE2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741119526; c=relaxed/simple;
-	bh=gh7XHpbhvestM/azgi5si4Oj6DL7TzJx6Da/dbWM0eA=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=ejwEOCMZNci/V70KZ+/gcPAKQ/FO+Y8jFtT+OVfyYVtC9UirsFLNhJ5XtGbgECAo739E43Ni4EwCWbSKeGFSb1akHAwmX71G/wj5DKiPLtV7nbNA7GqvSrrG8iOWdCVoYXYy+nxWWsGxX4HDF5weHmIyoEpXmL2HZQQPpRmka3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KNIIIksu; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1741120960; c=relaxed/simple;
+	bh=hY3ox+Cv8L/hy1uWd2H+uDH/wZ7y6rjKqKarmY/cer8=;
+	h=Date:Message-ID:MIME-Version:Content-Type:From:To:Cc:Subject:
+	 References:In-Reply-To; b=e3ok1QgII1/lzSh/WH9Iuwb0syx2SxN8CfWQZuUA+zJI/ObmVb9C+vVCQOmCzme61KR50aVQdrPmRh3q0+WkSVBs3eGo/6TpKyI2rRqkyDHotul9Wt9q03fWA+gH9qtYF8tljF9zq+hbPvb/WhGTiiZlMg2DrwBpH3gvUpQBA0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=XGwAZ2uq; arc=none smtp.client-ip=209.85.160.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KNIIIksu"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-22356471820so98490695ad.0;
-        Tue, 04 Mar 2025 12:18:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="XGwAZ2uq"
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-475076bf02eso8472451cf.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Mar 2025 12:42:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741119524; x=1741724324; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SMUbl0wCaQRcm05eyFZBGbWJJJSjNxpwjfTPkpDtM9Y=;
-        b=KNIIIksuRXqX1T+8blHiyxtP0hmqdu3fB3T7qwyS2nqUVB4aXSfH6AL67S60UoyxlI
-         9HoySufMhXLgsgla/2YqK+8J/KOTqd+u70zrG+0dGlR+5mLOiLoRzxRQuCSjfzRoaXa7
-         veLbfNzLewmHUb2vsxBPuBv2D59bn3G/iPKBXoPu4NKXafmQmHsHBVYwbnDwKt7SGp3v
-         XeKaflYZp6hBBRZhvP1Sx1buFdF8+lozhWLZXlH4QvXSrYd179ex7JEUhZATigclqM0J
-         fI0uy9cLXPg/b/XV0g/RzHm2rhDhvExW0InNCd6mePlop61ZBgexLDk/H4n60KITycdH
-         y9vw==
+        d=paul-moore.com; s=google; t=1741120956; x=1741725756; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
+         :mime-version:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=R1qRuitdwwYSELTXdkDkMV/eQ1X4sgsaSnPBdxYSrvM=;
+        b=XGwAZ2uqxdiAH2xE0p3xo9XIG3BZ8wSwL4Vgycku8YGLHMfJg3Z8BNOk46sxsDRbZ4
+         EWC8F81xDdEDHpkpU0iMF1irO7cdwFqR+8pjY6SuCokEw4/NHXyhH+JPJZnSYop7qJJZ
+         pWGbgQTX+iiX4l67s0kb956n0RDaMMhTon2LJI3NvQjXcxdCNg9Ygb2TZuoWrKG3w5im
+         JK8hJCAGfP7gYWROVGPVInwp+yRyAa+zaBvDBZSFRv1GRNGtHdcnwUyYcMjjBcGuC+HL
+         tkUaJRm9SaALtwiRgFgDpyBcX7FE0fOFFwR4oGxe3a2EkfIM4rzF0+Wp5/6iPdMszJEW
+         w30w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741119524; x=1741724324;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SMUbl0wCaQRcm05eyFZBGbWJJJSjNxpwjfTPkpDtM9Y=;
-        b=LMCH9Sk9u7s/DKmz/IcP6o2zJwQc7BxfK8ZKhHctixoIT07+62Un6aTlQEZNuNpHGL
-         gPmlJDIdIQWXkG5B8hWRIpwl89/UkqlAoVtJIT7n0JUNlsXUA661thq5SaMRmZ3LL1Th
-         blBzlFmPyeC2ztQ6cgmvk5oEsfRE2QGeCAXn2vpkDOp1UfPq1kFkHJm/9//PnN+Wr0FA
-         Bis5s+0qDeU8tsoijsnBVpgrVRvxwpRGiUs8iQYSbYai4i4QBJmaeAgQEbKbv57dFvR6
-         2WYeyEnogDGec5/SKJLUO8UDt1MqAtaDxnWy8CsLGD+NZo+lNKEspZF/f+85oLU9ECr5
-         9EeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXBv05uyEmLgA7sIkaYc270CVxkZgCGfB1v9A/6xzP4UkvqBdQFC8Cde2ZWMtpGCaEs5InDwQI7153vPYx0U58=@vger.kernel.org, AJvYcCXrjnXPzcwrlXefv8GM/c0neRgEYBxMmH14iOLyaC5qWkNFUwfDMpbdFL3kHE9RWzZ0CgfsPl22tqeF5ng=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+MLtnPB+LOV1XGMZ35ZL/zXFUy3dkQ3HHJEoLtMcTCSQmlsvp
-	CZYhFOEDx2V78wvT5HjzoL1ngJHI93C4AjUkPqglUyfuAA5pI+8I
-X-Gm-Gg: ASbGncvonKwjQwcTQkGwaO9+oXHH+6Veq7Zimhj1ZynidMeE98rkMhGglNpAlLc8bdy
-	+1Ddy/CzhIG/wvQ9yCt1ju2W0yuSHtMBWfxY8eTH9Zz0SNbbpLxLiM8aULMOE7e/1ekRFZBBFSQ
-	ghNcllhjcFsaGS5V1U29FDm0Wh+5vej9WguqVGQ76l80nRmJEsFJTYh12DXo/fV1xTBmFnBAeY2
-	sYhuYJaiyOGz3ihyvPKHWfJsgsLc9TB/QBBV2Gxd3pgcZjpKnhPoaqr4f7uTJEux69DJmkJwDxW
-	NeoADvneOz+c8uAhZw2YCQwYXN/EaTS2xQ6OQuavFXMI97kU1U1ZAdF9ePaJBhCwsvw=
-X-Google-Smtp-Source: AGHT+IGV7ZPNOH3YDDZHf9Sd2eAgkWszz8iLg4/6bG0aWMLHnBpxy5z95jAMTy+wZMioCxWgJXKGfA==
-X-Received: by 2002:a17:903:2348:b0:21f:3e2d:7d2e with SMTP id d9443c01a7336-223f1ca9089mr6210605ad.27.1741119523988;
-        Tue, 04 Mar 2025 12:18:43 -0800 (PST)
-Received: from smtpclient.apple ([2601:645:4300:5ca0:60d5:8b0e:4648:9d9b])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-aee7ddf2b0asm10607980a12.9.2025.03.04.12.18.40
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 04 Mar 2025 12:18:43 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+        d=1e100.net; s=20230601; t=1741120956; x=1741725756;
+        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
+         :mime-version:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=R1qRuitdwwYSELTXdkDkMV/eQ1X4sgsaSnPBdxYSrvM=;
+        b=gHq2PNk5JmiA9P9FUmc3BrOo73sXJcxmjHYI23oGmYrBaMpv0Un6sNelqPdXTNa/9j
+         awY5Sayzg/xOE669syEnWmnsUSB7ITVTfuyGbnbovtvidSSVAHBJLJKYi/8V3J6PXgMN
+         A5PhA2QZbCkGcDyFnFsYC9t59hUnVbQBGpaKiFN1esADREkpFw+36venIxlCDGxJnfdq
+         BVZJuit0d6s37zNNv/O6gHoU8f+ly9K5puRoSqZ2WObYEdpmcz5Cm5meN8kHs2I4p4jA
+         htUUq7zGyeYk/Y+VKe4nUoMlUlsfYfXUeS+22plDsBiYX4TRkdw3gjVt3seap3fyRyMJ
+         wFBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWQd5fbUQSHXwxoi+D7yEPV5wJ+Bh89w+PQ2wHFOUVnpXwX/3EcME+QksElV7NdR547se7MeKsxH9ZM21Wr9A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUX8IBfilKwxKbSEmvyIyg7oXi/D7SyVO0T1/vNSZf0a5uR5qW
+	SSKxBXL3aR2itLObslx57EMkMDrCsnsiSFSv1VC5blRDNvAef5fEEG725xRzlQ==
+X-Gm-Gg: ASbGncvGeXsDJYNY+UbfUzE9H2HtJYhZPdlBCfs1fXCxjJssf1hdFsGA2Thz6fCaDAa
+	d5zRx+mbO4ThsVgbEyc3pVm4eTpEiec/95qXsfm3XLZhN2hhldoHolrE9Ma3EIL4mLMvnt7jELc
+	aM/2wiGjoIuFiDOB5T2sojLN1CA6YCz7s8Rcq6X8dSxKvlQ7t+Tesm6mjv99nldFxOWb9tWCaax
+	67tqHVWCRUyIqnw3A7NO5SlA42XG9udWfh5tNEGBdc6/O4lCSC2E8FuqpqiHohg5LbNv8Kx8w5s
+	puZLhBySGTq+3Eq7VC9z+KroZhyYE2rNPa8WRprMOrL2DCE5s6rjtfKtQ6knTG0iQxYUMgndMJT
+	QoJ1tk82NpRDWiQ==
+X-Google-Smtp-Source: AGHT+IGGJzyx/Xq+umUg8sGni4KDBOk9xYnclv58VIy14he0JdzCkkSuM+jn28L4VU0r2ABS6Z+JDw==
+X-Received: by 2002:a05:622a:1a0b:b0:474:f38d:58d0 with SMTP id d75a77b69052e-4750b245031mr8398401cf.3.1741120955860;
+        Tue, 04 Mar 2025 12:42:35 -0800 (PST)
+Received: from localhost (pool-71-126-255-178.bstnma.fios.verizon.net. [71.126.255.178])
+        by smtp.gmail.com with UTF8SMTPSA id d75a77b69052e-474ff3aa7d8sm12524121cf.30.2025.03.04.12.42.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Mar 2025 12:42:35 -0800 (PST)
+Date: Tue, 04 Mar 2025 15:42:35 -0500
+Message-ID: <00f1cac46dcba6dc8e2e602674b55671@paul-moore.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.400.131.1.6\))
-Subject: Re: Allow data races on some read/write operations
-From: comex <comexk@gmail.com>
-In-Reply-To: <ae8ac31f-c6ad-46ae-80dd-10ec081a16d1@ralfj.de>
-Date: Tue, 4 Mar 2025 12:18:28 -0800
-Cc: Boqun Feng <boqun.feng@gmail.com>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Abdiel Janulgue <abdiel.janulgue@gmail.com>,
- dakr@kernel.org,
- robin.murphy@arm.com,
- rust-for-linux@vger.kernel.org,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Trevor Gross <tmgross@umich.edu>,
- Valentin Obst <kernel@valentinobst.de>,
- linux-kernel@vger.kernel.org,
- Christoph Hellwig <hch@lst.de>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- airlied@redhat.com,
- iommu@lists.linux.dev,
- lkmm@lists.linux.dev
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <88456D33-C5CA-4F4F-990E-8C5F2AF7EAF9@gmail.com>
-References: <6dea7b6a-1534-47e7-94d2-d67417c3d4c1@proton.me>
- <tnwDK3QN_Xr0Yoa3U8HVxS5OqjvxIhgmmO_ifTGJR_EtIzjoxawOHtnbOJ9yChsUWXyFPcU9beIdrgbpfGZI8w==@protonmail.internalid>
- <3202F69F-397E-4BC4-8DD8-E2D4B0AB056F@collabora.com>
- <87bjuil15w.fsf@kernel.org>
- <t4HxdvR7WBX_861hiTXo72jqC9F9oRpIzgA_dD2yhcSuLISEkC-shMfSgllrFPpnkSZXGfRcc47keudMooNiIQ==@protonmail.internalid>
- <CAH5fLgg5MuUu=TX8mMsPf5RcLhMLHSU4Vct=h8rFX6Z7HjPxeA@mail.gmail.com>
- <87ikoqjg1n.fsf@kernel.org>
- <KpWTCfIlcLYFBpSvWPfALJ9VQn5a99_RAvxgMBc1aCrSalPB-qaW9IhXyaDG7HM1AcFPX5chj_Yr7IQp3F7UqA==@protonmail.internalid>
- <CAH5fLgh6ubawHh76wq7JPbcuBCWhm91m7Rc01MVsX-a3C6qaVA@mail.gmail.com>
- <87mse2hrd8.fsf@kernel.org> <Z8YMTiKS4T9wC4t_@boqun-archlinux>
- <ae8ac31f-c6ad-46ae-80dd-10ec081a16d1@ralfj.de>
-To: Ralf Jung <post@ralfj.de>
-X-Mailer: Apple Mail (2.3826.400.131.1.6)
+MIME-Version: 1.0 
+Content-Type: text/plain; charset=UTF-8 
+Content-Transfer-Encoding: 8bit 
+X-Mailer: pstg-pwork:20250304_1539/pstg-lib:20250304_1539/pstg-pwork:20250304_1539
+From: Paul Moore <paul@paul-moore.com>
+To: Alice Ryhl <aliceryhl@google.com>, James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, "=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Subject: Re: [PATCH v2] lsm: rust: mark SecurityCtx methods inline
+References: <20250304-inline-securityctx-v2-1-f110f2c6e7ff@google.com>
+In-Reply-To: <20250304-inline-securityctx-v2-1-f110f2c6e7ff@google.com>
 
+On Mar  4, 2025 Alice Ryhl <aliceryhl@google.com> wrote:
+> 
+> When you build the kernel using the llvm-19.1.4-rust-1.83.0-x86_64
+> toolchain provided by kernel.org with ARCH=arm64, the following symbols
+> are generated:
+> 
+> $ nm vmlinux | grep ' _R'.*SecurityCtx | rustfilt
+> ffffffc0808fe8a0 T <kernel::security::SecurityCtx>::from_secid
+> ffffffc0808fe9a4 T <kernel::security::SecurityCtx as core::ops::drop::Drop>::drop
+> 
+> However, these Rust symbols are trivial wrappers around the functions
+> security_secid_to_secctx and security_release_secctx respectively. It
+> doesn't make sense to go through a trivial wrapper for these functions,
+> so mark them inline. Also mark other trivial methods inline to prevent
+> similar cases in the future.
+> 
+> After applying this patch, the above command will produce no output.
+> 
+> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Reviewed-by: Fiona Behrens <me@kloenk.dev>
+> ---
+> Changes in v2:
+> - Reword commit message.
+> - Link to v1: https://lore.kernel.org/r/20250303-inline-securityctx-v1-1-fb7b9b641fdf@google.com
+> ---
+> I will also reword "destroy"/"free" to "release" as suggested by Casey,
+> but I'll send a separate patch for that change.
+> ---
+>  rust/kernel/security.rs | 5 +++++
+>  1 file changed, 5 insertions(+)
 
-> On Mar 4, 2025, at 11:03=E2=80=AFAM, Ralf Jung <post@ralfj.de> wrote:
->=20
-> Those already exist in Rust, albeit only unstably: =
-<https://doc.rust-lang.org/nightly/std/intrinsics/fn.volatile_copy_memory.=
-html>. However, I am not sure how you'd even generate such a call in C? =
-The standard memcpy function is not doing volatile accesses, to my =
-knowledge.
+Merged into lsm/dev, thanks everyone!
 
-The actual memcpy symbol that exists at runtime is written in assembly, =
-and should be valid to treat as performing volatile accesses.
-
-But both GCC and Clang special-case the memcpy function.  For example, =
-if you call memcpy with a small constant as the size, the optimizer will =
-transform the call into one or more regular loads/stores, which can then =
-be optimized mostly like any other loads/stores (except for opting out =
-of alignment and type-based aliasing assumptions).  Even if the call =
-isn=E2=80=99t transformed, the optimizer will still make assumptions.  =
-LLVM will automatically mark memcpy `nosync`, which makes it undefined =
-behavior if the function =E2=80=9Ccommunicate[s] (synchronize[s]) with =
-another thread=E2=80=9D, including through =E2=80=9Cvolatile =
-accesses=E2=80=9D. [1]
-
-However, these optimizations should rarely trigger misbehavior in =
-practice, so I wouldn=E2=80=99t be surprised if Linux had some code that =
-expected memcpy to act volatile=E2=80=A6
-
-But I=E2=80=99m not familiar enough with the codebase to know whether =
-such code actually exists, or where.
-
-(Incidentally, there is a compiler flag to turn the memcpy =
-special-casing off, -fno-builtin.  I pretty much expected that Linux =
-used it.  But I just checked, and it doesn=E2=80=99t.)
-
-For Rust, I don=E2=80=99t know why we haven=E2=80=99t exposed =
-volatile_copy_memory yet.  All I can find are some years-old discussions =
-with no obvious blockers.  I guess nobody has cared enough.  There is =
-also a somewhat stagnant RFC for *atomic* memcpy. [2]
-
-[1] https://llvm.org/docs/LangRef.html, search for 'nosync'
-[2] https://github.com/rust-lang/rfcs/pull/3301
-
+--
+paul-moore.com
