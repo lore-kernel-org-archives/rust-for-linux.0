@@ -1,107 +1,103 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A89F152E02;
-	Tue,  4 Mar 2025 06:20:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B61D8AD24;
+	Tue,  4 Mar 2025 07:36:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741069217; cv=none; b=eRVGUpmDiZ8zDfw0+Dj31hIySpYVeHavaJV0odGXbUen3aHy+GuZmCMgVFZ+eeXrWxrUsepqDEp0+NWvsVbygsb3EMrIckq0aY52+iHj4c/KqPl37+tr9N/gfHNfaGpEjyCIaINRQrFFEqAZ4ByUrflbdfemIa7XI/x6q6BHV7o=
+	t=1741073776; cv=none; b=FROmnqDnC3Mv/u1RKbUXZTf5Ewkus/iFskDVgJIPiBNhBgT8LGrjxkNvajij4I+i7T6Qoe4/T9CaUp+UvkXZEgecT/AUizJKE/lK6hJJTgzc4JDYiu9/f/hyqMG1p3xubEgiJz0UZ66FmCiF9lEtAGrbS5QE65M/fX+AFscxBd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741069217; c=relaxed/simple;
-	bh=SKTfUxiDVoQrUXmMNuNlIric4cD5/FdL5HKEoC1ByIc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cEHSUSqGmBIERW/mW4adhGIPf1us2OLTg8ZbjdOLE8XZuhq7kvrcn6YUIZA15LfOGe/tf14VcGWKbhm+P0NB1ufVwia03kP5fXvrKNjue8x4nt+EhkgXuDQZ+LOtB4bU2RMhHLEIsniqF8H2TtX55ZOWx5iIqSNOfP21+wa9Py8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FWsOxRny; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FWsOxRny"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741069216; x=1772605216;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=SKTfUxiDVoQrUXmMNuNlIric4cD5/FdL5HKEoC1ByIc=;
-  b=FWsOxRnytkXFDEggYcRMaKrJ3QA9DFcAmh3G1ZQPFU6KFXFumjDKq2AW
-   kA6U/M+UWzjx8VR+/U+OohhpwOreJQxO702nXh5PcuvTXh1tWz48hzqy2
-   a++4F91Ar4ahlSf9O5KQ7eLTfnW3rlsDogXumdGAsSFJ+bU/jHb4F8pfg
-   kD6vIphMaeLT6VZNQPerqqY7NKvzmYg5JfTF+MDau8HdBq2Sis6RrxqEW
-   fyHCnnqITdWTQwlQ1Nx699oucfCRuy/xs8g0vfCOeoiOGo54G3Y4XHRhw
-   hkaDqk38nlU+f/wxp0ZhADFv0xRgvLThOaHYDmJ13d/XoHVoVPmHUFakK
-   A==;
-X-CSE-ConnectionGUID: H/kmhRfxR6CIaRMjhXFBzg==
-X-CSE-MsgGUID: aw6TnQeRRm2SMwgQKK53lg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11362"; a="42164581"
-X-IronPort-AV: E=Sophos;i="6.13,331,1732608000"; 
-   d="scan'208";a="42164581"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2025 22:20:15 -0800
-X-CSE-ConnectionGUID: oofMHzU/Sm6Dh61WCLy3SA==
-X-CSE-MsgGUID: i+lX7EqAQaO6sGJC3ohPkA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,331,1732608000"; 
-   d="scan'208";a="118260140"
-Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
-  by fmviesa007.fm.intel.com with ESMTP; 03 Mar 2025 22:20:13 -0800
-Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tpLdS-000JLK-35;
-	Tue, 04 Mar 2025 06:20:10 +0000
-Date: Tue, 4 Mar 2025 14:19:56 +0800
-From: kernel test robot <lkp@intel.com>
-To: Oliver Mangold <oliver.mangold@pm.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] Rust: Implement a unique reference type URef
- supplementing ARef
-Message-ID: <202503041325.UnOn2m7a-lkp@intel.com>
-References: <SpXhwnZO__ST8sHQ3HQ3ygThOcnmn0x2JlJ_nwJglL87vw5XfQA8sDH6HdkrGgFVycLhPBlCc6-UtEImTvY26A==@protonmail.internalid>
+	s=arc-20240116; t=1741073776; c=relaxed/simple;
+	bh=+arvS/JkffmbPGhBrismVkgnXmugqIQR5d/MKbkIMJQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jisZ0V9nzku5CUaqk8g2Nx4r9AJimJEGjLQOb/ChPpyvFwVzjuL9z+mvDR182lBo7u7EywQp4+AvntnmDGtR73zl1ZUDi19sOi6Hm8B4bS/WmS/uJE2nFc5UaoKx/ImLQYXTgqGmlp/g5M7xBMqGFZC3/R7YKOpUfoKGpBskuOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.120.242])
+	by gateway (Coremail) with SMTP id _____8DxWOFprcZnUuWJAA--.39093S3;
+	Tue, 04 Mar 2025 15:36:09 +0800 (CST)
+Received: from localhost.localdomain (unknown [223.64.120.242])
+	by front1 (Coremail) with SMTP id qMiowMBxn8VcrcZnyS01AA--.1378S2;
+	Tue, 04 Mar 2025 15:36:03 +0800 (CST)
+From: WANG Rui <wangrui@loongson.cn>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Huacai Chen <chenhuacai@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	loongson-kernel@lists.loongnix.cn,
+	WANG Rui <wangrui@loongson.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] rust: Fix enabling Rust and building with GCC for LoongArch
+Date: Tue,  4 Mar 2025 15:35:54 +0800
+Message-ID: <20250304073554.20869-1-wangrui@loongson.cn>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SpXhwnZO__ST8sHQ3HQ3ygThOcnmn0x2JlJ_nwJglL87vw5XfQA8sDH6HdkrGgFVycLhPBlCc6-UtEImTvY26A==@protonmail.internalid>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowMBxn8VcrcZnyS01AA--.1378S2
+X-CM-SenderInfo: pzdqw2txl6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7Zr13Gw43CFyUCryDWr1rGrX_yoW8Wr15pa
+	na9wn7GrWUArWrKw1kAr45Xa129asYg3yDuFy7Jw17KrWFkry7XFZayFZxJrW5CF15Crya
+	gr18CF9FkF4UCwbCm3ZEXasCq-sJn29KB7ZKAUJUUUUD529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUB0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	GcCE3s1ln4kS14v26r126r1DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2
+	x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q6rW5
+	McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr4
+	1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
+	Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
+	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
+	cVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI
+	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v2
+	6r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU2pVbDUUUU
 
-Hi Oliver,
+This patch fixes a build issue on LoongArch when Rust is enabled and
+compiled with GCC by explicitly setting the bindgen target and skipping
+C flags that Clang doesn't support.
 
-kernel test robot noticed the following build warnings:
+Cc: stable@vger.kernel.org
+Signed-off-by: WANG Rui <wangrui@loongson.cn>
+---
+ rust/Makefile | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-[auto build test WARNING on rust/rust-next]
-[also build test WARNING on linus/master v6.14-rc5 next-20250303]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Oliver-Mangold/Rust-Implement-a-unique-reference-type-URef-supplementing-ARef/20250221-160625
-base:   https://github.com/Rust-for-Linux/linux rust-next
-patch link:    https://lore.kernel.org/r/SpXhwnZO__ST8sHQ3HQ3ygThOcnmn0x2JlJ_nwJglL87vw5XfQA8sDH6HdkrGgFVycLhPBlCc6-UtEImTvY26A%3D%3D%40protonmail.internalid
-patch subject: [PATCH] Rust: Implement a unique reference type URef supplementing ARef
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250304/202503041325.UnOn2m7a-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250304/202503041325.UnOn2m7a-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202503041325.UnOn2m7a-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> warning: docs for unsafe trait missing `# Safety` section
-   --> rust/kernel/types.rs:546:1
-   |
-   546 | pub unsafe trait UniqueRefCounted: AlwaysRefCounted + Sized {
-   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-   |
-   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#missing_safety_doc
-   = note: `-W clippy::missing-safety-doc` implied by `-W clippy::all`
-   = help: to override `-W clippy::all` add `#[allow(clippy::missing_safety_doc)]`
-
+diff --git a/rust/Makefile b/rust/Makefile
+index ea3849eb78f6..2c57c624fe7d 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -232,7 +232,8 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
+ 	-mfunction-return=thunk-extern -mrecord-mcount -mabi=lp64 \
+ 	-mindirect-branch-cs-prefix -mstack-protector-guard% -mtraceback=no \
+ 	-mno-pointers-to-nested-functions -mno-string \
+-	-mno-strict-align -mstrict-align \
++	-mno-strict-align -mstrict-align -mdirect-extern-access \
++	-mexplicit-relocs -mno-check-zero-division \
+ 	-fconserve-stack -falign-jumps=% -falign-loops=% \
+ 	-femit-struct-debug-baseonly -fno-ipa-cp-clone -fno-ipa-sra \
+ 	-fno-partial-inlining -fplugin-arg-arm_ssp_per_task_plugin-% \
+@@ -246,6 +247,7 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
+ # Derived from `scripts/Makefile.clang`.
+ BINDGEN_TARGET_x86	:= x86_64-linux-gnu
+ BINDGEN_TARGET_arm64	:= aarch64-linux-gnu
++BINDGEN_TARGET_loongarch	:= loongarch64-linux-gnusf
+ BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
+ 
+ # All warnings are inhibited since GCC builds are very experimental,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.48.1
+
