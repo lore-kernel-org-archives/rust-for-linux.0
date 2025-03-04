@@ -1,43 +1,40 @@
 Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D3E279349;
-	Tue,  4 Mar 2025 22:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8FDD27933B
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Mar 2025 22:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741128996; cv=none; b=W4GeQDsGq0qxfvx6TI6vz2vM8IyJ+uf/UhAli08BpvV6h3eO9o+/NlzsSO3dpnviDiHb1evuozPRkP5WFeaG2+CdQisoFCQNdjLMEKWCY8brgmxj/n39+XTpnrlUd2FJGF6n0gK0xwKh5WeikO0VKgwWGNe47PjtZK9U/oPsoS4=
+	t=1741129010; cv=none; b=tiocwKzOzpJwp4kzUiWMllhRi1XvDGNXZIp82w/yBR9Tcv/+XsJmWyoOx0O39YbhR1xE9qxEODYT1nyN/lTlgaanndf3GF6oHOWFWiTszw1g9Bc6nfacOaWKuAiNtD4tsyp8uaX5RcBC51YGvSwO/sV+VceFzxxKlX9kSlEwEIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741128996; c=relaxed/simple;
-	bh=r5+NIDp2XF4eMwhB/70g3s0n8TuRc4TRKSpPySgRDUo=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AiRkdb1AiQVwYhXRWKMqkav0PsCzWqXBzRsUFr1pFt+MJYbmdmILPjnbhfhWdrK7mKXQK3FsCjdXFbGIm+JSJTYVPJ3S+9bUXl3xe2xjHzw/g8+mZzifboImM6ih0mgHDTHLBNZnPpcXuY2lP5ZA8W/O4ODuy8Mg71QBzakESHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=hTNQS3gu; arc=none smtp.client-ip=185.70.43.22
+	s=arc-20240116; t=1741129010; c=relaxed/simple;
+	bh=Zbk8s5stDGdU0WfESJoufNqsdewmonzn0SMvnQyXLfI=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=sn9qIFX2sptTIHVsqmlewKUTHCc6nhg/7zlMz9WtEnk1jzTauuB4T/69jnbYoE9Lwb6Q4JQv7d4+A9l+7DYJFtfQMcFbYY2LurA6qJruvvSDIjiCS+CStGBsIvPx2W55/787yiAmYPpcDfGxpZi5iAB7TWYDIkJqDiH63PRXnnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=WfTYwrcV; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="hTNQS3gu"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="WfTYwrcV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1741128992; x=1741388192;
-	bh=r5+NIDp2XF4eMwhB/70g3s0n8TuRc4TRKSpPySgRDUo=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=hTNQS3guqlirujrKkdUKhdpz9it3OSQ2h00UoTWu8D9A+q9O6P0Qjr9Uq7ZD0qfrB
-	 AH4oqqLt9044INAjieX/JNiIosk+yfIpI1BW7rfLQrgGUpxcj5/Hf8TgMyYyXDB1CF
-	 gbfq5wjMh0XigkI8+DVgIK4HpZwCGB+loP+c09syRA1t0HafJVwD7MX6kOCxXlKNTD
-	 UwT2JBVjVXKoxkl8fRGoOnc8jl6FMpLyVypdQnlvHAuEWx4AKaBdESFA4l+JVovou0
-	 VtGFePWNVfVuqH2DP2QbrHroYdQseEhm9WDsAvN4gOPQibOfomIkwgbUmN1tU+0dbW
-	 Jzf+z3rPLUKVw==
-Date: Tue, 04 Mar 2025 22:56:27 +0000
+	s=protonmail; t=1741129006; x=1741388206;
+	bh=aLD3LaAkTLu3OagsrYXiGucXx3/E76G0/vceQRwx7lA=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
+	 List-Unsubscribe:List-Unsubscribe-Post;
+	b=WfTYwrcVpzyO2cNxzhTditH/lmR/5s1yXr4nB+RfO7S2XZhsTORakMPPfVQ5Uh7Ou
+	 iKxF1pxtsuCPigYMoh1aDLYEOPjMqKc3hYsVGRuCNsltnjve8eKdBQxl31lQM1jsAo
+	 jMsuees4hnuPur86LBLLUNsFEbVwkloSrfHc82OiBoF8Kvc2TiZ8AuAz46o3mVczrF
+	 GU2eV+p962tX9lUSyo/mKO1ekeXntPR4YUOOaCuUZpy7vwwP7gtlwlr6JCL9ZOCRYw
+	 1ySKdbLfCyiNJMDWrN46e+6tlppHH2xGfoph7784i/O0R5OllvZVkmj2SNchuyOK56
+	 tU8HDkyrDawWw==
+Date: Tue, 04 Mar 2025 22:56:41 +0000
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: [PATCH 22/22] MAINTAINERS: add entry for the `pin-init` crate
-Message-ID: <20250304225245.2033120-23-benno.lossin@proton.me>
-In-Reply-To: <20250304225245.2033120-1-benno.lossin@proton.me>
-References: <20250304225245.2033120-1-benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org
+Subject: [RFC PATCH 0/6] add `syn` versions of pin-init macros
+Message-ID: <20250304225536.2033853-1-benno.lossin@proton.me>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 344408caef3f5c1422addc16dead2ce56178304c
+X-Pm-Message-ID: 8d5cdee5a6596eee27341b3cb70fd737aa9f0157
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,45 +44,55 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Add maintainers entry for the `pin-init` crate.
+Change the implementations of all pin-init macros to use `syn` [1]. It
+is a library to make parsing Rust code in proc-macros simple. Since the
+kernel does not yet depend on syn, only the user-space version will
+benefit from this change now. However, we will soon add `syn` as a
+dependency using the new build system. `syn` is used by almost all
+proc-macros in the Rust ecosystem and even by the Rust compiler itself!
 
-This crate is already being maintained by me, but until now there
-existed two different versions: the version inside of the kernel tree
-and a user-space version at [1]. The previous patches synchronized these
-two versions to reduce the maintenance burden. In order to keep them
-synchronized from now on, separate the maintenance from other Rust code.
+There are a lot of benefits to writing proc-macros using `syn`.
+Parsing is a lot more readable and thus maintainable. The benefit in
+simplicity can then be taken advantage of by extending the syntax. I
+plan to support tuple structs soon. Another benefit is the increased
+readability in the errors on malformed macro-input. Currently they are
+very bad, because they come from token-munching declarative macros,
+which are notorious for bad error messages. See the respective commit
+messages for examples.
 
-Link: https://github.com/Rust-for-Linux/pin-init [1]
-Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 ---
- MAINTAINERS | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+Cheers,
+Benno
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8e0736dc2ee0..ced7fac4dbbe 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20735,6 +20735,19 @@ S:=09Maintained
- F:=09rust/kernel/alloc.rs
- F:=09rust/kernel/alloc/
-=20
-+RUST [PIN-INIT]
-+M:=09Benno Lossin <benno.lossin@proton.me>
-+L:=09rust-for-linux@vger.kernel.org
-+S:=09Maintained
-+W:=09https://rust-for-linux.com/pin-init
-+B:=09https://github.com/Rust-for-Linux/pin-init/issues
-+C:=09zulip://rust-for-linux.zulipchat.com
-+P:=09rust/pin-init/CONTRIBUTING.md
-+T:=09git https://github.com/Rust-for-Linux/linux.git pin-init-next
-+F:=09rust/kernel/init.rs
-+F:=09rust/pin-init/
-+K:=09\bpin-init\b|pin_init\b|PinInit
-+
- RXRPC SOCKETS (AF_RXRPC)
- M:=09David Howells <dhowells@redhat.com>
- M:=09Marc Dionne <marc.dionne@auristor.com>
+[1]: https://crates.io/crates/syn
+
+Benno Lossin (6):
+  rust: pin-init: internal: add syn version of the `Zeroable` derive
+    macro
+  rust: pin-init: internal: add syn version of `pinned_drop` proc macro
+  rust: pin-init: internal: add syn version of the `pin_data` proc macro
+  rust: pin-init: add `?Sized` bounds to traits in `#[pin_data]` macro
+  rust: pin-init: allow doctests to refer to the pin-init crate
+  rust: pin-init: internal: add syn version of `[try_][pin_]init!`
+    macros
+
+ rust/pin-init/internal/src/init.rs            | 404 ++++++++++++++++++
+ rust/pin-init/internal/src/lib.rs             |  96 ++++-
+ rust/pin-init/internal/src/syn_pin_data.rs    | 313 ++++++++++++++
+ rust/pin-init/internal/src/syn_pinned_drop.rs |  77 ++++
+ rust/pin-init/internal/src/syn_zeroable.rs    |  63 +++
+ rust/pin-init/src/__internal.rs               |  62 +++
+ rust/pin-init/src/lib.rs                      |  69 +--
+ rust/pin-init/src/macros.rs                   |   4 +-
+ 8 files changed, 1020 insertions(+), 68 deletions(-)
+ create mode 100644 rust/pin-init/internal/src/init.rs
+ create mode 100644 rust/pin-init/internal/src/syn_pin_data.rs
+ create mode 100644 rust/pin-init/internal/src/syn_pinned_drop.rs
+ create mode 100644 rust/pin-init/internal/src/syn_zeroable.rs
+
+
+base-commit: 0cdd06928bd97cdbfa7061a52cc91901c84d9b2f
 --=20
-2.47.2
+2.48.1
 
 
