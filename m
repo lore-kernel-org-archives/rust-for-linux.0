@@ -1,97 +1,122 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C231513B58B;
-	Tue,  4 Mar 2025 21:01:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0753024EAA8
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Mar 2025 21:57:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741122080; cv=none; b=kOzd7OCS5h/4IOEqqxvNpj/SIFivkvpOopVtvsZWv+tZqNQ3SAxuBRjTMqXd++IKgSclPtrlAcX3QbGWPQrs2JLp/e+fNLBCme4yrYgO/Z/VvacVTj2vTAKPKfRgC6EONUPDxjQXC+15FGAiFuSMNrD0eFaOCJcCHNmbeukMcI4=
+	t=1741125457; cv=none; b=WCvQ7FdODjyCrOH49ivYCFtfp5B2lA65haUVoEL+sMOhcZ8UYgQ6YA37C1eLBciqSBdeBMg0dLYCK+gnSfRiZpJEgp/F/7re3Ni7nKv+II4OkfSc7oIogK+Hd+EHwuEUrm2WM4d86ftJYBZkjHHfGbzxqowj4DCZogTaTpP6kQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741122080; c=relaxed/simple;
-	bh=5Rt7HhMnJR87FIHk+sbfLnVm2bfYWZ0GWvkeiHdnnI4=;
+	s=arc-20240116; t=1741125457; c=relaxed/simple;
+	bh=KzrIAcArmLOe3V1Ys+bs9y+LLe/XSWtbLOyhy2D+VqU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ki5/YAkdvUbaWqsJJXAR4t5X6ppBCR5tAUOGOzv25zAIsJUN7gNhMTQ3Nx9F+jQzxiK+TgwhFn2OSBgP+ly3TgrVIWiBvoRDv8t9+LY0M2+0MKgIaBB8b0JxMk/t7s+jZim+6qqnCAHciG3HdO5mt55rflJPkslF8uOiIYss9vY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J0ZbDbgq; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=VyjI2U8azK8rpxcnPCsMi3YypoWAfHnt3nbjItni04Eb/8XFwWgR+6bKnajx/h4AfxIrIRYzwxNkMWhp80UMJYWWW/bkxMDner+CRLtpRMaT7ZvAgKeFtXZS6VNzu8DbM0oFuObF2mnomN4zJC3a0txseX9pF7my6jwXoHjWJMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=bkaC8UBe; arc=none smtp.client-ip=209.85.219.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J0ZbDbgq"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2fee688b474so705213a91.3;
-        Tue, 04 Mar 2025 13:01:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="bkaC8UBe"
+Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e3c8ae3a3b2so4553815276.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Mar 2025 13:57:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741122078; x=1741726878; darn=vger.kernel.org;
+        d=paul-moore.com; s=google; t=1741125455; x=1741730255; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5Rt7HhMnJR87FIHk+sbfLnVm2bfYWZ0GWvkeiHdnnI4=;
-        b=J0ZbDbgq/2wIATYmrwp1yh3Gb3BER1LJ8k9TiGR2d0Ce1/78Uhf4OcW5XlfTR2juiK
-         ExqJPr72UyxL5NaTmM60q3SiqEGP1TFQeNy3TKbw5OpoxWOHfvRczSxVXxPsWev4D3nR
-         WozfjdZNADevJiRJf7K5s/F7iOC13PNRl+dfMulgJhpijOtWes5Ld0229+Q/FLjoBPpN
-         iC/A7TIK8IFNoSmAJZ/dT5My5mrIzdV1gPMcoZKG7yFOrjC0Mm6WZfy+iJG9zYJPPsxf
-         vf5OMQGg5JolDvhq8DDRbinnCdcMWCaGLfeBQGmLOclsVTyEd7nIcAFDJSXe8pvNBGhk
-         mioA==
+        bh=fsnikvCe3hOdMVeN/xhtWmCodnyXPzUwaCFk12jXD3E=;
+        b=bkaC8UBeyV+6iTNhL7uDElTcS3201kHiMWEc1FMXzAdwMNkWYZLkHnogppVerOK81m
+         KLnoNDjYnE4rxQcyVsT/eXRXn/D9K9f2lviEodsQONjWgzj5v2JuxLYVVynRE4yEOEva
+         oiuRX7Wjl/dQ1+2v3UY7aNVL7emIikrFe161NQ5pDaD+LQ3geLqH1pJEQPmmk3nLa9i3
+         n3gS2N4e0zZr/hU1Z+dbHVEGxsPBoWusQCj0wHXIdcLVjtmmx4kDTdCQKYvUbhCYn9Gr
+         vi7ron7PpGnarKkLs+AQxaMLnckOV+Fey+ahHq0LqKistGoO46PMeaI8rT3IRG1tqE/G
+         lIow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741122078; x=1741726878;
+        d=1e100.net; s=20230601; t=1741125455; x=1741730255;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5Rt7HhMnJR87FIHk+sbfLnVm2bfYWZ0GWvkeiHdnnI4=;
-        b=YHy1eEdCmSwbFen2aD3UzxjPHOhDmpB7WFwL2AHs4oB7diLcX8VfNqUKJkA1scmQJx
-         FmuBc9jNFuF7E+S/glHjLJJYa3dXQJSR/SzKzYdpTlBCb+98sr/t6zmwn1yu01G8u65/
-         AgdAs4I8yMf0lJOvYN4VMpkmHUfYUKUC15ekWH6d46f6bbGaobOipb4NijWNzvdieeqk
-         xSaU83og5QQnLmoEqbrzuVHhhARuiWkkA4W6xSjB09g841H8Iaue0GR1mVKUc6chh6+k
-         Fu50QJJ80aY0X3jyvS01Goev0z+5DN7YWz44ofTopeLQyiM2D6q3zy+DWDnB45zc8zv1
-         phPA==
-X-Forwarded-Encrypted: i=1; AJvYcCXUM2Q9EJfUUAnxEcGiccQmJ2GIvW0N9eexC2LPan+oT3rOkoLkLDiIIZAXDuslU1WyYrDbk/Y0MFyL5vIn1Ho=@vger.kernel.org, AJvYcCXWFgiCY8mQQnsOurQI94fPFvaJvHQbKnMZnW7zpMa60BKOYBzPkH1QkiTSeaAVC+9yydoGCrzREC60Mo4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPvvNJP1AIY+uD7FEDfn05DqD28fFp0qsd0VmZs3sLQceU/tB0
-	hAnoY5MdnO4nIVjA30dREnCsvkjWddPSCSHcV2gdZBAW3rLrbg/1Jxx+yN8TArx+NSpGmZ6kyau
-	AIN0+M5TP6cK2Wjudrxo9tt0QyiU=
-X-Gm-Gg: ASbGnctlcqisZ0FTxtAGqHuv+kf2U/6GfMYbdbkabHAAq5f5o2erxdBeaHZBAX4z8Ol
-	7qLeue4C4FrPid3gBKEeYY0KTR6Ga6gx3n0uOXhDOVZzBPD4Ovm+CprxR522pMYzseBL41Vmc9n
-	mBL01e89rcc1djDBuXf4I4urT30g==
-X-Google-Smtp-Source: AGHT+IHotE/T0X8lzHaRVKUzNHr91tgDUR1NTtwaUOkHawisXlnELgc8m8HPLRWUglWGRhQ0+YiwV/wtCqb0DiC0PBw=
-X-Received: by 2002:a17:90b:4c0b:b0:2fe:957c:1146 with SMTP id
- 98e67ed59e1d1-2ff497c4309mr440110a91.6.1741122077913; Tue, 04 Mar 2025
- 13:01:17 -0800 (PST)
+        bh=fsnikvCe3hOdMVeN/xhtWmCodnyXPzUwaCFk12jXD3E=;
+        b=X619LY+3YWpafhGSwTDLo2Z/pAo06TmZ+717Q1poU4u6IUsGF99wRzr/SpvdFHWLGJ
+         xI55cop26zD+tchsJMl5dL9K8yqT7lJFFzCQePcv64L97bhPn4d/PgDhqdmw+MnqmHzG
+         FKsw6d/ROl9/8hPYF0nlkFX33BYFhB5jvADpfTwtVSrcU3dQDQChY141NKHCx8RF72TS
+         15eqdD+ERAFLcoO9UQyhl6aBaHaq47i0HaJLQzn125WYwk9ds2rLHU67DZuZ5vBBy2Kx
+         dK3d6AF71yfySptOCc4kBM6n9wSD8+IO5hi8jqlP/a5LmR9EwE1C6GuymRoFj/dSuTxU
+         CKFA==
+X-Forwarded-Encrypted: i=1; AJvYcCX1RAhnm7ENmmlPwggmDmdyJpydf4H8wJpHI2yNyr3kvMHwcNsJRNuvmFh9xkUVJ/wYhlwZE/jvNCxgZLPGQg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHBhJtktIe/pq9X4MbrkxLsheZtjVUF3g7MuS8ZG0/Xii7K9WI
+	/MbFgB2vw9LNE4IhBWxBQywlKFCpg3INRj4LWSrSk847h99CTfcqqXzIaaLCjA5RHkRo8vGD0ms
+	CH9t6ncW9NYqgZv8ljZD+pzS3a37ug4g09D1h
+X-Gm-Gg: ASbGncuyIk6+o+bItbYlUk/wrr0ym8kEunV1a1Q0D8r98uvY3cskf6X1iH2p6DTUwhd
+	HKDpzd6nAlhjuuIuSLRDGGxOGKkCoU5UJDzwdeWaqH9FStz/mJiCHE5nq4ztpvSuScqhmBGY95D
+	qB+yqUw54uyO6B+HCwZH6OD7IWJQ==
+X-Google-Smtp-Source: AGHT+IHTuaql6CxX9+oW0vQt7zfON8FgK8oPO4Dgi10jT0f1C5KKKb1wciqXNbcYDDrBoPtRQrQnfcYSdkhYI8GxvnU=
+X-Received: by 2002:a05:6902:100f:b0:e5d:ae04:1e33 with SMTP id
+ 3f1490d57ef6-e611e18dd27mr1373344276.5.1741125454946; Tue, 04 Mar 2025
+ 13:57:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <87tt89gfe4.fsf@kernel.org> <20250304205054.207285-1-trintaeoitogc@gmail.com>
- <CANiq72koDba445gMYtC_VEcFk2+O-Xg2-2y6uMyp7onBy=7rcw@mail.gmail.com>
-In-Reply-To: <CANiq72koDba445gMYtC_VEcFk2+O-Xg2-2y6uMyp7onBy=7rcw@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 4 Mar 2025 22:01:05 +0100
-X-Gm-Features: AQ5f1Jqd9-qXA8BaSLWNNSh-szg_2ed-Qt7ZD7z_Dstq70U1UUlWMvHuq3U8Pok
-Message-ID: <CANiq72kNG7jZf+hZARjyAp-uG=x99CrUKZvJYT_icaF0x0G6iw@mail.gmail.com>
-Subject: Re: [PATCH V6 2/2] checkpatch: check format of Vec<String> in modules
-To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com, 
-	apw@canonical.com, arnd@arndb.de, aswinunni01@gmail.com, axboe@kernel.dk, 
-	benno.lossin@proton.me, bhelgaas@google.com, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, dakr@kernel.org, dwaipayanray1@gmail.com, 
-	ethan.twardy@gmail.com, fujita.tomonori@gmail.com, gary@garyguo.net, 
-	gregkh@linuxfoundation.org, joe@perches.com, linux-kernel@vger.kernel.org, 
-	lukas.bulwahn@gmail.com, ojeda@kernel.org, pbonzini@redhat.com, 
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu, walmeida@microsoft.com
+References: <20250303-inline-securityctx-v1-1-fb7b9b641fdf@google.com>
+ <CAHC9VhSo3aGsJVd=a3MTeakgU66oTN86oh5sZE8P4ghSk8Rx2g@mail.gmail.com> <CANiq72=n_cGmrb6+6CH1AbGePy5dRMMFyzAFv6O1VEp8EgKR8w@mail.gmail.com>
+In-Reply-To: <CANiq72=n_cGmrb6+6CH1AbGePy5dRMMFyzAFv6O1VEp8EgKR8w@mail.gmail.com>
+From: Paul Moore <paul@paul-moore.com>
+Date: Tue, 4 Mar 2025 16:57:24 -0500
+X-Gm-Features: AQ5f1JonifUOcpqfOyjEvG2iJEgbZmlcgciRANX9bY2EJ9_XOLCe5zh-YKF7hu8
+Message-ID: <CAHC9VhT3DqOeYbC+GCQRgH3NNUiOk6Sh=6fzsFaiHk2LEFbi2g@mail.gmail.com>
+Subject: Re: [PATCH] lsm: rust: mark SecurityCtx methods inline
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 4, 2025 at 10:00=E2=80=AFPM Miguel Ojeda
+On Mon, Mar 3, 2025 at 7:04=E2=80=AFPM Miguel Ojeda
 <miguel.ojeda.sandonis@gmail.com> wrote:
+> On Mon, Mar 3, 2025 at 11:55=E2=80=AFPM Paul Moore <paul@paul-moore.com> =
+wrote:
+> >
+> > Beyond those nitpicks, this looks okay to me based on my *extremely*
+> > limited Rust knowledge.  With the minor requested changes in place,
+> > would you prefer me to take this via the LSM tree, or would you prefer
+> > it to go up to Linus via a more Rust-y tree?
 >
-> I think it could be a good idea (it would be lovely to write the
-> checker in Rust -- I also had a checker bot in Python from the old
-> days of the old `rust` branch in GitHub), but `checkpatch.pl` doesn't
-> need a built kernel, so it would be a disadvantage or at least a
-> difference w.r.t. the usual `checkpatch.pl`, and we may not be able to
-> call it from `checkpatch.pl`.
+> In general, if a subsystem is willing to take Rust-related patches
+> through their tree, that is the ideal scenario! So please definitely
+> feel free to pick it up on your side (and thanks!); otherwise, I can
+> pick it up with your Acked-by.
+>
+> Some days ago I wrote a summary of the usual discussion we have around
+> this (copy-pasting here for convenience) ...
 
-By "built kernel", I don't mean an entire kernel, but rather having to
-call `make` in general, i.e. we could have a target to build just the
-script, but still, it is a difference.
+Hi Miguel,
 
-Cheers,
-Miguel
+Thanks.  Yes, I've seen the summary and the recent threads around Rust
+in the Linux kernel.  I don't want to drag all of that up here, but I
+will simply say that from the perspective of the LSM framework we're
+happy to work with the Rust devs to ensure that the LSM framework is
+well supported with Rust bindings.  However, I will add that my own
+Rust related efforts are going to be very limited as my understanding
+of Rust is still frustratingly low; until that improves I'll be
+reliant on others like Alice and you to submit patches for
+discussion/acceptance when there are issues.  Thankfully that has
+proven to work fairly well over the past few months and I would like
+to see that continue.
+
+As far as the mechanics of which tree to merge code, I'll probably
+continue to ask in most cases simply so we are all clear on where the
+patches will land and how they get up to Linus.  From my perspective
+there is no harm in asking, and I *really* want to encourage
+cross-subsystem communication as much as I can; I've been seeing an
+increasing trend towards compartmentalization across subsystems and I
+believe the best way to push back against that is to talk a bit more,
+even if it is just a mundane "my tree or yours?".
+
+--=20
+paul-moore.com
