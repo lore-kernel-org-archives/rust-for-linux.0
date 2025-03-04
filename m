@@ -1,32 +1,32 @@
 Received: from r-passerv.ralfj.de (r-passerv.ralfj.de [109.230.236.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E833F2E3398;
-	Tue,  4 Mar 2025 18:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812F82777F4;
+	Tue,  4 Mar 2025 18:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.230.236.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741111957; cv=none; b=rpO/cX5iDYWbYjvLFeIpngBfYcqPsJv8fHaZ+QGz2UrnHgj/umXBMQGrFJxp05/WSlcklmI0yj5pZTeGgoqnMyqzL5/oIrSVfAjxxBtvMuXugGmiEa89XPGX1Gd5FM5qpXNXsNBlU3nad6IQAkkeh1ScQH5rsUJE2A+0WCt8O40=
+	t=1741112659; cv=none; b=sVo3R/WnML4EPI2fkqz7E45o5eAawCTI4GngeXIothtE0rxnI7NgjOUgh3sI16+Vpl52rKH+RX7MaC6BrufAzsVmkrbLQkGbriy1XXRDtLuYdIaysGMKPrt9+6pdSNFy0fgZy091WB9SFPl8cvLB6+MKAMQvgZSZFyVRvvcvdyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741111957; c=relaxed/simple;
-	bh=gaEfcjNd02VLKamKTdYI4yoLbx/SJYRinm1vvENmyuc=;
+	s=arc-20240116; t=1741112659; c=relaxed/simple;
+	bh=aRrdrLOf2kIT4ORfOYXW5hYLJW9ANt36zFUYL88XoR8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F+jFuyBcNxRuMbRnW9xu8/Siy6We7Qdvf3JrXFD7AQK/OtCL5Xu65pjsxevFfPJzmYSRVXTynU2rvkJe6cgcbovRWi99Vw2nP5lVsJXV8S/FiFMq8u9QAHx4SiIe6xkFiN0MPaCriTPdIjlgd1DcxtxQ5HsHxZonALSRi8TJfIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=OAg29k7P; arc=none smtp.client-ip=109.230.236.95
+	 In-Reply-To:Content-Type; b=FdpxgD0Zh4lo1A3rgCEPXQ0mWWj5vyzwH0GFn82A4HadfVVDJtA3O4YqeEV5Re6/+N9oLF3v3kYPxTmXLNOS8LlliFTXxXbRskLpsMYdxe1hjtHmeEXxkdBvE1ZyM0Z3U4LZSOM5AQnHCJVDF84Yf7h3kCTW+QVzW7CKLKS9wRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=Ek3d5AEn; arc=none smtp.client-ip=109.230.236.95
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ralfj.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="OAg29k7P"
+	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="Ek3d5AEn"
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ralfj.de; s=mail;
-	t=1741111947; bh=gaEfcjNd02VLKamKTdYI4yoLbx/SJYRinm1vvENmyuc=;
+	t=1741112655; bh=aRrdrLOf2kIT4ORfOYXW5hYLJW9ANt36zFUYL88XoR8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OAg29k7PJ0rLM9Ey8dTuOSv4q8U4Oy3jDAWREZhTVQcUSs1shR6Ea/9ZD8/IYbvg8
-	 znaT89MvfrLIUt4wpztvkpliMyJtjGEM3pac9lzDUnPZS0iuYqfv++dlzvB2Hy78vM
-	 u5E1QPXvz5D4oUKTLBi2jSaHK16sU/rS5GHWC1ow=
-Received: from [IPV6:2001:67c:10ec:5784:8000::12e7] (2001-67c-10ec-5784-8000--12e7.net6.ethz.ch [IPv6:2001:67c:10ec:5784:8000::12e7])
-	by r-passerv.ralfj.de (Postfix) with ESMTPSA id 52F292052D09;
-	Tue,  4 Mar 2025 19:12:27 +0100 (CET)
-Message-ID: <60c5acd2-df86-4eda-9479-17da7efe13fc@ralfj.de>
-Date: Tue, 4 Mar 2025 19:12:26 +0100
+	b=Ek3d5AEn9ZSdmiVKJwAt61WVz86wtURGUckvR85lznKbN8jUMpWjLfs6XcphJxd7G
+	 SFfmHuj4a5nAkRdDzaApZtUPBIioqQ0A6Haizinno81NH+IsrmyazjiG1mDRcZcZ/L
+	 lt2IwEQc6eOBeOsGiV4B3SPsNWBbcL3YOtASla6c=
+Received: from [IPV6:2001:67c:10ec:5784:8000::87] (2001-67c-10ec-5784-8000--87.net6.ethz.ch [IPv6:2001:67c:10ec:5784:8000::87])
+	by r-passerv.ralfj.de (Postfix) with ESMTPSA id 84AAD2052D09;
+	Tue,  4 Mar 2025 19:24:15 +0100 (CET)
+Message-ID: <aab4312f-67dc-4fc8-ae5a-59b5933aa220@ralfj.de>
+Date: Tue, 4 Mar 2025 19:24:14 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -35,97 +35,129 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: C aggregate passing (Rust kernel policy)
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: David Laight <david.laight.linux@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Martin Uecker <uecker@tugraz.at>, "Paul E. McKenney" <paulmck@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Ventura Jack <venturajack85@gmail.com>,
- Gary Guo <gary@garyguo.net>, airlied@gmail.com, boqun.feng@gmail.com,
- ej@inai.de, gregkh@linuxfoundation.org, hch@infradead.org, hpa@zytor.com,
- ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
- miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org
-References: <ed7ef66dbde453035117c3f2acb1daefa5bd19eb.camel@tugraz.at>
- <CAHk-=whLSWX=-5-z4Q8x1f_NLrHd0e3afbEwYPkkVSXj=xT-JQ@mail.gmail.com>
- <20250226162655.65ba4b51@gandalf.local.home>
- <CAHk-=wjAcA4KrZ-47WiPd3haQU7rh+i315ApH82d=oZmgBUT_A@mail.gmail.com>
- <20250226165619.64998576@gandalf.local.home>
- <20250226171321.714f3b75@gandalf.local.home>
- <CAHk-=wj8Btsn0zN5jT1nBsUskF8DJoZbMiK81i_wPBk82Z0MGw@mail.gmail.com>
- <20250226173534.44b42190@gandalf.local.home>
- <20250227204722.653ce86b@pumpkin>
- <07acc636-75d9-4e4b-9e99-9a784d88e188@ralfj.de>
- <fbwwitktndx6vpkyhp5znkxmdfpforylvcmimyewel6mett2cw@i5yxaracpso2>
+To: Ventura Jack <venturajack85@gmail.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>,
+ Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Gary Guo <gary@garyguo.net>,
+ torvalds@linux-foundation.org, airlied@gmail.com, boqun.feng@gmail.com,
+ david.laight.linux@gmail.com, ej@inai.de, gregkh@linuxfoundation.org,
+ hch@infradead.org, hpa@zytor.com, ksummit@lists.linux.dev,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+References: <CAFJgqgRygssuSya_HCdswguuj3nDf_sP9y2zq4GGrN1-d7RMRw@mail.gmail.com>
+ <20250222141521.1fe24871@eugeo>
+ <CAFJgqgSG4iZE12Yg6deX3_VYSOLxkm5yr5yu25HxN+y4wPD5bg@mail.gmail.com>
+ <6pwjvkejyw2wjxobu6ffeyolkk2fppuuvyrzqpigchqzhclnhm@v5zhfpmirk2c>
+ <CANiq72mdzUJocjXhPRQEEdgRXsr+TEMt99V5-9R7TjKB7Dtfaw@mail.gmail.com>
+ <lz7hsnvexoywjgdor33mcjrcztxpf7lzvw3khwzd5rifetwrcf@g527ypfkbhp2>
+ <780ff858-4f8e-424f-b40c-b9634407dce3@ralfj.de>
+ <CAFJgqgRN0zwwaNttS_9qnncTDnSA-HU5EgAXFrNHoPQ7U8fUxw@mail.gmail.com>
+ <f3a83d60-3506-4e20-b202-ef2ea99ef4dc@ralfj.de>
+ <CAFJgqgR4Q=uDKNnU=2yo5zoyFOLERG+48bFuk4Dd-c+S6x+N5w@mail.gmail.com>
+ <7edf8624-c9a0-4d8d-a09e-2eac55dc6fc5@ralfj.de>
+ <CAFJgqgS-S3ZbPfYsA-eJmCXHhMrzwaKW1-G+LegKJNqqGm31UQ@mail.gmail.com>
+ <d29ebda1-e6ca-455d-af07-ac1daf84a3d2@ralfj.de>
+ <CAFJgqgQ=dJk7Jte-aaB55_CznDEnSVcy+tEh83BwmrMVvOpUgQ@mail.gmail.com>
+ <651a087b-2311-4f70-a2d3-6d2136d0e849@ralfj.de>
+ <CAFJgqgRFEvsyf9Hej-gccSdC-Ce8DbO5DgHatLoJ-aYi1_ZcyA@mail.gmail.com>
 Content-Language: en-US, de-DE
 From: Ralf Jung <post@ralfj.de>
-In-Reply-To: <fbwwitktndx6vpkyhp5znkxmdfpforylvcmimyewel6mett2cw@i5yxaracpso2>
+In-Reply-To: <CAFJgqgRFEvsyf9Hej-gccSdC-Ce8DbO5DgHatLoJ-aYi1_ZcyA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 Hi all,
 
->> Whether the compiler is permitted to do that depends heavily on what exactly
->> the code looks like, so it's hard to discuss this in the abstract.
->> If inside some function, *all* writes to a given location are atomic (I
->> think that's what you call WRITE_ONCE?), then the compiler is *not* allowed
->> to invent any new writes to that memory. The compiler has to assume that
->> there might be concurrent reads from other threads, whose behavior could
->> change from the extra compiler-introduced writes. The spec (in C, C++, and
->> Rust) already works like that.
+>>> The time crate breaking example above does not
+>>> seem nice.
 >>
->> OTOH, the moment you do a single non-atomic write (i.e., a regular "*ptr =
->> val;" or memcpy or so), that is a signal to the compiler that there cannot
->> be any concurrent accesses happening at the moment, and therefore it can
->> (and likely will) introduce extra writes to that memory.
+>> The time issue is like the biggest such issue we had ever, and indeed that did
+>> not go well. We should have given the ecosystem more time to update to newer
+>> versions of the time crate, which would have largely mitigated the impact of
+>> this. A mistake was made, and a *lot* of internal discussion followed to
+>> minimize the chance of this happening again. I hope you don't take that accident
+>> as being representative of regular Rust development.
 > 
-> Is that how it really works?
+> Was it an accident? I thought the breakage was intentional,
+> and in line with Rust's guarantees on backwards
+> compatibility, since it was related to type inference,
+> and Rust is allowed to do breaking changes for that
+> according to its guarantees as I understand it.
+> Or do you mean that it was an accident that better
+> mitigation was not done in advance, like you describe
+> with giving the ecosystem more time to update?
+
+It was an accident. We have an established process for making such changes while 
+keeping the ecosystem impact to a minimum, but mistakes were made and so the 
+ecosystem impact was beyond what we'd be willing to accept.
+
+The key to understand here that there's a big difference between "we do a 
+breaking change but hardly anyone notices" and "we do a breaking change and 
+everyone hears about it". The accident wasn't that some code broke, the accident 
+was that so much code broke. As you say, we have minor breaking changes fairly 
+regularly, and yet all the examples you presented of people being upset were 
+from this one case where we screwed up. I think that shows that generally, the 
+process works: we can do minor breaking changes without disrupting the 
+ecosystem, and we can generally predict pretty well whether a change will 
+disrupt the ecosystem. (In this case, we actually got the prediction and it was 
+right! It predicted significant ecosystem breakage. But then diffusion of 
+responsibility happened and nobody acted on that data.)
+
+And yes, *technically* that change was permitted as there's an exception in the 
+stability RFC for such type ambiguity changes. However, we're not trying to be 
+"technically right", we're trying to do the right thing for the ecosystem, and 
+the way this went, we clearly didn't do the right thing. If we had just waited 
+another 3 or 4 Rust releases before rolling out this change, the impact would 
+have been a lot smaller, and you likely would never have heard about this.
+
+(I'm saying "we" here since I am, to an extent, representing the Rust project in 
+this discussion. I can't actually speak for the Rust project, so these opinions 
+are my own. I also was not involved in any part of the "time" debacle.)
+
+> Another concern I have is with Rust editions. It is
+> a well defined way of having language "versions",
+> and it does have automated conversion tools,
+> and Rust libraries choose themselves which
+> edition of Rust that they are using, independent
+> of the version of the compiler.
 > 
-> I'd expect the atomic writes to have what we call "compiler barriers"
-> before and after; IOW, the compiler can do whatever it wants with non
-> atomic writes, provided it doesn't cross those barriers.
+> However, there are still some significant changes
+> to the language between editions, and that means
+> that to determine the correctness of Rust code, you
+> must know which edition it is written for.
 
-If you do a non-atomic write, and then an atomic release write, that release 
-write marks communication with another thread. When I said "concurrent accesses 
-[...] at the moment" above, the details of what exactly that means matter a lot: 
-by doing an atomic release write, the "moment" has passed, as now other threads 
-could be observing what happened.
-
-One can get quite far thinking about these things in terms of "barriers" that 
-block the compiler from reordering operations, but that is not actually what 
-happens. The underlying model is based on describing the set of behaviors that a 
-program can have when using particular atomicity orderings (such as release, 
-acquire, relaxed); the compiler is responsible for ensuring that the resulting 
-program only exhibits those behaviors. An approach based on "barriers" is one, 
-but not the only, approach to achieve that: at least in special cases, compilers 
-can and do perform more optimizations. The only thing that matters is that the 
-resulting program still behaves as-if it was executed according to the rules of 
-the language, i.e., the program execution must be captured by the set of 
-behaviors that the atomicity memory model permits. This set of behaviors is, 
-btw, completely portable; this is truly an abstract semantics and not tied to 
-what any particular hardware does.
-
-Now, that's the case for general C++ or Rust. The Linux kernel is special in 
-that its concurrency support predates the official model, so it is written in a 
-different style, commonly referred to as LKMM. I'm not aware of a formal study 
-of that model to the same level of rigor as the C++ model, so for me as a 
-theoretician it is much harder to properly understand what happens there, 
-unfortunately. My understanding is that many LKMM operations can be mapped to 
-equivalent C++ operations (i.e., WRITE_ONCE and READ_ONCE correspond to atomic 
-relaxed loads and stores). However, the LKMM also makes use of dependencies 
-(address and/or data dependencies? I am not sure), and unfortunately those 
-fundamentally clash with even basic compiler optimizations such as GVN/CSE or 
-algebraic simplifications, so it's not at all clear how they can even be used in 
-an optimizing compiler in a formally sound way (i.e., "we could, in principle, 
-mathematically prove that this is correct"). Finding a rigorous way to equip an 
-optimized language such as C, C++, or Rust with concurrency primitives that emit 
-the same efficient assembly code as what the LKMM can produce is, I think, an 
-open problem. Meanwhile, the LKMM seems to work in practice despite those 
-concerns, and that should apply to both C (when compiled with clang) and Rust in 
-the same way -- but when things go wrong, the lack of a rigorous contract will 
-make it harder to determine whether the bug is in the compiler or the kernel. 
-But again, Rust should behave exactly like clang here, so this should not be a 
-new concern. :)
+There exist corner cases where that is true, yes. They are quite rare. Congrats 
+on finding one! But you hardly ever see such examples in practice. As above, 
+it's important to think of these things quantitatively, not qualitatively.
 
 Kind regards,
 Ralf
+
+> 
+> For instance, does this code have a deadlock?
+> 
+>      fn f(value: &RwLock<Option<bool>>) {
+>          if let Some(x) = *value.read().unwrap() {
+>              println!("value is {x}");
+>          } else {
+>              let mut v = value.write().unwrap();
+>              if v.is_none() {
+>                  *v = Some(true);
+>              }
+>          }
+>      }
+> 
+> The answer is that it depends on whether it is
+> interpreted as being in Rust edition 2021 or
+> Rust edition 2024. This is not as such an
+> issue for upgrading, since there are automated
+> conversion tools. But having semantic
+> changes like this means that programmers must
+> be aware of the edition that code is written in, and
+> when applicable, know the different semantics of
+> multiple editions. Rust editions are published every 3
+> years, containing new semantic changes typically.
+> 
+> There are editions Rust 2015, Rust 2018, Rust 2021,
+> Rust 2024.
+> 
+> Best, VJ.
 
