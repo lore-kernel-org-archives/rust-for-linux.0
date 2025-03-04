@@ -1,58 +1,58 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A3913B58B;
-	Tue,  4 Mar 2025 21:00:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C231513B58B;
+	Tue,  4 Mar 2025 21:01:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741122020; cv=none; b=PArtsiNP1zu1sVn3HdZGxkk4hAz7d8vlsNpxZDsuDEz5hAm7wvQywin/K+69aFSkeuJ063ArtxVtQzJnPcMe1SiDmfMwNQKP793ySlS82vwVhDQR+fJETxTZHMOzy9H9uEa6nub7iQOwrtiP+LmHaf6fypt21Aopl1hO0pnCTak=
+	t=1741122080; cv=none; b=kOzd7OCS5h/4IOEqqxvNpj/SIFivkvpOopVtvsZWv+tZqNQ3SAxuBRjTMqXd++IKgSclPtrlAcX3QbGWPQrs2JLp/e+fNLBCme4yrYgO/Z/VvacVTj2vTAKPKfRgC6EONUPDxjQXC+15FGAiFuSMNrD0eFaOCJcCHNmbeukMcI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741122020; c=relaxed/simple;
-	bh=DkO8vqGaCxhiZ558GYpuGAy5F9fFTFBI+V5glW4tExk=;
+	s=arc-20240116; t=1741122080; c=relaxed/simple;
+	bh=5Rt7HhMnJR87FIHk+sbfLnVm2bfYWZ0GWvkeiHdnnI4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jRsGe2+W3CXHC/+IF01+aOlMa3SjSfWoSyppj1o4QUUQ8RmUD6XXN2IvFvPGZKZOvYlPOHADHrAS+3ekqfBeS95oepJHVPELATKFsSovsNbnenb1zKD7pN+pEhoOE57QQ+9rlL0wkEP1UdJnhPOez95ehrx2ayh1UsVwfkrtcUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L9HrlEgw; arc=none smtp.client-ip=209.85.216.54
+	 To:Cc:Content-Type; b=ki5/YAkdvUbaWqsJJXAR4t5X6ppBCR5tAUOGOzv25zAIsJUN7gNhMTQ3Nx9F+jQzxiK+TgwhFn2OSBgP+ly3TgrVIWiBvoRDv8t9+LY0M2+0MKgIaBB8b0JxMk/t7s+jZim+6qqnCAHciG3HdO5mt55rflJPkslF8uOiIYss9vY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J0ZbDbgq; arc=none smtp.client-ip=209.85.216.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L9HrlEgw"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2fd02536660so1383939a91.2;
-        Tue, 04 Mar 2025 13:00:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J0ZbDbgq"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2fee688b474so705213a91.3;
+        Tue, 04 Mar 2025 13:01:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741122019; x=1741726819; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1741122078; x=1741726878; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DkO8vqGaCxhiZ558GYpuGAy5F9fFTFBI+V5glW4tExk=;
-        b=L9HrlEgwVuuy/J6oyQD3hsh24xrcSSYcd46nojVZAw0nqF3lpAseVq896k7slhTm4Y
-         0iXPHEsep28e66679W/dtFBzx3H8onQGrbKw53iLsXLzHKKIRb49MYZPurQuSiB8G5B1
-         Q2FYuN9u2/t94pMCR5KOJpOJI/oXja0lNAasXgu339hVUET+aUtX8s9Ci39jph+2TmuD
-         9pJaaRWRh6Ck/NhzlDL58r2nizaVSg8mjlXWDnt5ZjjiPJTAbjTwsmno/YbqiCntOUp2
-         ds0PrrCIaTD53A8o1BIT688ZFq3IjbtLFFfCifp/O4/FG2vZN03FF3iRauqjoTLpLABm
-         ROTA==
+        bh=5Rt7HhMnJR87FIHk+sbfLnVm2bfYWZ0GWvkeiHdnnI4=;
+        b=J0ZbDbgq/2wIATYmrwp1yh3Gb3BER1LJ8k9TiGR2d0Ce1/78Uhf4OcW5XlfTR2juiK
+         ExqJPr72UyxL5NaTmM60q3SiqEGP1TFQeNy3TKbw5OpoxWOHfvRczSxVXxPsWev4D3nR
+         WozfjdZNADevJiRJf7K5s/F7iOC13PNRl+dfMulgJhpijOtWes5Ld0229+Q/FLjoBPpN
+         iC/A7TIK8IFNoSmAJZ/dT5My5mrIzdV1gPMcoZKG7yFOrjC0Mm6WZfy+iJG9zYJPPsxf
+         vf5OMQGg5JolDvhq8DDRbinnCdcMWCaGLfeBQGmLOclsVTyEd7nIcAFDJSXe8pvNBGhk
+         mioA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741122019; x=1741726819;
+        d=1e100.net; s=20230601; t=1741122078; x=1741726878;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DkO8vqGaCxhiZ558GYpuGAy5F9fFTFBI+V5glW4tExk=;
-        b=FMYyql07bhsiSaviRS2bfw9GXkFBv1XSvOrTvP1M+1cmUeNVfJ9+6k3mOTwtK/WqRW
-         7U/WZVq2v7ABmEa0JiBLLh1ZpwSELI6GkikJb/3OocGQEGbwLPaYV1NW3sHP3RtDN7M7
-         aP1nGoMjZdlXZE8oOEQDRJqASk374Kj8tOeynEau7Ft5dpxSJMeMwKFU2bxHFv89Zwji
-         iCOW6AroHcKlGrW7fo/PEqxKvOIiZGZKfTAufvc8wDCYO0HSJ0yi8hlvpNCJrQxtxHu1
-         qlQQxFCH00x4O9DfE+noDMuGUfwBch8lg/QVDW4lbNbLjLFJFu85plMen/tjVEPVVkBO
-         +oTg==
-X-Forwarded-Encrypted: i=1; AJvYcCW3sEF1IJba2pfksX3mGCcuwZkD1lQnyByhBf/HtqJHw76dT5ceV7YQQfm6kmzwTN/BW13ldC2w1re4OEY=@vger.kernel.org, AJvYcCWPTqkNWJeaadsjMFamvxCMld8Fos6oM1xyHMFFSdkH64ye8+/rQ679hmwafeELc6bEah87GTR93kkmKd1oh1s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0RUR1jCWJWDcP5rdilE/dZZQA0kKpA3B7w1Z8OD/UzTIvMuae
-	Q0bZs1GicgBMP+PcyOjNHdGsQ3V0VsOAZIUPHxs71XiDgzXH/qzBOrYBCKzO+o6xM+wv+MNlDHf
-	5gCmcbkankkqKTPuDCrU77Dl7wdw=
-X-Gm-Gg: ASbGncvOX2kEQlzdLIeHwclckKJCv5dSTx6AVl4z0DnVFlihrTIGr0W7qcQY26FIOGO
-	j+GAjMXOA1L80ulUARYaAXVY7XIrb56g17fXtvwvvWgoRYE1pwBM2yGusdw5IWpph2NLDac4K5e
-	lUBh0HT9QSmREaMEurdR8yrMIZcw==
-X-Google-Smtp-Source: AGHT+IH8msz9C67j2ZJZxakUz8S4LbQG08GAyBfGOl4QHKMO3AEokLocjvxhY/71RydgDc5G7JFtlBFdCMK0D6dvGTg=
-X-Received: by 2002:a17:90b:4f47:b0:2fc:1845:9f68 with SMTP id
- 98e67ed59e1d1-2ff49836bd5mr390481a91.6.1741122018797; Tue, 04 Mar 2025
- 13:00:18 -0800 (PST)
+        bh=5Rt7HhMnJR87FIHk+sbfLnVm2bfYWZ0GWvkeiHdnnI4=;
+        b=YHy1eEdCmSwbFen2aD3UzxjPHOhDmpB7WFwL2AHs4oB7diLcX8VfNqUKJkA1scmQJx
+         FmuBc9jNFuF7E+S/glHjLJJYa3dXQJSR/SzKzYdpTlBCb+98sr/t6zmwn1yu01G8u65/
+         AgdAs4I8yMf0lJOvYN4VMpkmHUfYUKUC15ekWH6d46f6bbGaobOipb4NijWNzvdieeqk
+         xSaU83og5QQnLmoEqbrzuVHhhARuiWkkA4W6xSjB09g841H8Iaue0GR1mVKUc6chh6+k
+         Fu50QJJ80aY0X3jyvS01Goev0z+5DN7YWz44ofTopeLQyiM2D6q3zy+DWDnB45zc8zv1
+         phPA==
+X-Forwarded-Encrypted: i=1; AJvYcCXUM2Q9EJfUUAnxEcGiccQmJ2GIvW0N9eexC2LPan+oT3rOkoLkLDiIIZAXDuslU1WyYrDbk/Y0MFyL5vIn1Ho=@vger.kernel.org, AJvYcCXWFgiCY8mQQnsOurQI94fPFvaJvHQbKnMZnW7zpMa60BKOYBzPkH1QkiTSeaAVC+9yydoGCrzREC60Mo4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPvvNJP1AIY+uD7FEDfn05DqD28fFp0qsd0VmZs3sLQceU/tB0
+	hAnoY5MdnO4nIVjA30dREnCsvkjWddPSCSHcV2gdZBAW3rLrbg/1Jxx+yN8TArx+NSpGmZ6kyau
+	AIN0+M5TP6cK2Wjudrxo9tt0QyiU=
+X-Gm-Gg: ASbGnctlcqisZ0FTxtAGqHuv+kf2U/6GfMYbdbkabHAAq5f5o2erxdBeaHZBAX4z8Ol
+	7qLeue4C4FrPid3gBKEeYY0KTR6Ga6gx3n0uOXhDOVZzBPD4Ovm+CprxR522pMYzseBL41Vmc9n
+	mBL01e89rcc1djDBuXf4I4urT30g==
+X-Google-Smtp-Source: AGHT+IHotE/T0X8lzHaRVKUzNHr91tgDUR1NTtwaUOkHawisXlnELgc8m8HPLRWUglWGRhQ0+YiwV/wtCqb0DiC0PBw=
+X-Received: by 2002:a17:90b:4c0b:b0:2fe:957c:1146 with SMTP id
+ 98e67ed59e1d1-2ff497c4309mr440110a91.6.1741122077913; Tue, 04 Mar 2025
+ 13:01:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -60,11 +60,12 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <87tt89gfe4.fsf@kernel.org> <20250304205054.207285-1-trintaeoitogc@gmail.com>
-In-Reply-To: <20250304205054.207285-1-trintaeoitogc@gmail.com>
+ <CANiq72koDba445gMYtC_VEcFk2+O-Xg2-2y6uMyp7onBy=7rcw@mail.gmail.com>
+In-Reply-To: <CANiq72koDba445gMYtC_VEcFk2+O-Xg2-2y6uMyp7onBy=7rcw@mail.gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 4 Mar 2025 22:00:06 +0100
-X-Gm-Features: AQ5f1JruOVbE14tvT1lMIOeeFc1cC-ef_fCY1TDUk1ktVEqX2fKHKZX-Rl6OICA
-Message-ID: <CANiq72koDba445gMYtC_VEcFk2+O-Xg2-2y6uMyp7onBy=7rcw@mail.gmail.com>
+Date: Tue, 4 Mar 2025 22:01:05 +0100
+X-Gm-Features: AQ5f1Jqd9-qXA8BaSLWNNSh-szg_2ed-Qt7ZD7z_Dstq70U1UUlWMvHuq3U8Pok
+Message-ID: <CANiq72kNG7jZf+hZARjyAp-uG=x99CrUKZvJYT_icaF0x0G6iw@mail.gmail.com>
 Subject: Re: [PATCH V6 2/2] checkpatch: check format of Vec<String> in modules
 To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
 Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com, 
@@ -78,31 +79,19 @@ Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 4, 2025 at 9:51=E2=80=AFPM Guilherme Giacomo Simoes
-<trintaeoitogc@gmail.com> wrote:
+On Tue, Mar 4, 2025 at 10:00=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> hostprog like rustfmt?
+> I think it could be a good idea (it would be lovely to write the
+> checker in Rust -- I also had a checker bot in Python from the old
+> days of the old `rust` branch in GitHub), but `checkpatch.pl` doesn't
+> need a built kernel, so it would be a disadvantage or at least a
+> difference w.r.t. the usual `checkpatch.pl`, and we may not be able to
+> call it from `checkpatch.pl`.
 
-No, Andreas means a script written in Rust, rather than a binary that
-comes from the toolchain.
-
-I think it could be a good idea (it would be lovely to write the
-checker in Rust -- I also had a checker bot in Python from the old
-days of the old `rust` branch in GitHub), but `checkpatch.pl` doesn't
-need a built kernel, so it would be a disadvantage or at least a
-difference w.r.t. the usual `checkpatch.pl`, and we may not be able to
-call it from `checkpatch.pl`.
-
-> About this, Daniel Sedlak say:
-> "I think we could fight with the code formatting, because when it comes
-> to the rust macros, rustfmt is often very confused and we could end up
-> with variations like:
-
-Did you check? i.e. is it something we noticed, or something that
-generally happens but maybe not in this case? Is there a way to
-workaround or disable that (e.g. a `rustfmt` config value)?
-
-Thanks!
+By "built kernel", I don't mean an entire kernel, but rather having to
+call `make` in general, i.e. we could have a target to build just the
+script, but still, it is a difference.
 
 Cheers,
 Miguel
