@@ -1,91 +1,169 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB518225D6;
-	Tue,  4 Mar 2025 10:09:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1CEE1FECCA
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Mar 2025 10:25:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741082989; cv=none; b=WIyy9SvY4WRAhuYTvi0aD5ppsy22nkcI5Wzg77/OHgsisX98RopOjqQtsOSEw1HWE/vsF4klvLNWQe1G3uBiiZ2Vx+FAJHFR6sO7RIENIiZ8sERhRsrgFqdRm5+/Psr1m24SaPTgLf3HjFMmaqhCctgm3u4xGBfjdIOiErdTJms=
+	t=1741083926; cv=none; b=iIQKqGS/ujNrPg30ybznw7zXdNj8J2VQMFdahGiV9+nNCvm4r43VePgohliIxMNacKxRxfQlPz48BznBRvV8e+7cFbHrdKQVH2UD3GZwC32CegXE+VYLFYboGSNEUapXHQLKJmSrF0BwXzRTWhsq6cE/vcdYfrKXyBSJU2BdMsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741082989; c=relaxed/simple;
-	bh=sN22qP9PHuqHBrVUW+81ofUl2waI0KRpIxRfstJLrkY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lgOKAvQuimCiz2nJ1OdSeyf5Vr89WZz8FEefl0/3Rynk4T9hRy5Zw054idimG8vzGCPx96igX1Iv6qYoUhp1IJi5EsnUURgc1ByjCQevFfjYc/aZr2rPShT30c52RefwiigfzH7ThB2Wj+VUtTSWJDiW0RDsAzlxHZQhu6a7Wlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nakDaq8Y; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1741083926; c=relaxed/simple;
+	bh=i6S0L2JiZfziLX3LjJg2a++syB3iBS5cHAjVUvZ1vXg=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=A0YycDCy4gSMWPdCVe6EWkfyCCWfRuXgfH0mgxvoXs7Mryd/aaPCc3H+F+JAjnM4KjoMY1pSKSEufUFXyj2xEA3t6HbdjhPwxzI7Tns05P2jS5ocwgD1tJGQ8g077GJbV36UT2y8uLUgMUmUQISXnJE4C9tYvrfm00PmLOvj4ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dDq3Ioi0; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nakDaq8Y"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2fe82430bb4so1446744a91.2;
-        Tue, 04 Mar 2025 02:09:47 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dDq3Ioi0"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43bcddbe609so3807885e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Mar 2025 02:25:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741082987; x=1741687787; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ERN7diVe571lVikT49/v2kMDw68tmDpGY4TrvA+K4j0=;
-        b=nakDaq8YG2qtSiRDiuG6Lt1sIR0ypat/sb2HEnZdyAKZGh6T4iIXI0RQCdVeevs1KM
-         gn6nf3FI8pjFA80WR4NPbo5FXtcSVVMB1EbYi+NsEpZuLnRND8OES3iJuGVH/ucRg0s0
-         oWBEvidVF/FQCV2qGedGkrqCduEYrLORep1tIMcxk9rW14+tRHGxpxk+pGNg4VHqIQbo
-         oFyap8cHnvdNvyqRmfLUYTf3Pg6WV1S84cM/xskovRST6LqW+UUeBNs2dUC9YLpYvrb/
-         EyyR/nRvsE6Kn+HvkAK419crGxqLkUO/ct1wMKTVTcTDmgJxJcE6L+ku0aqLJZTxtvdj
-         KByQ==
+        d=google.com; s=20230601; t=1741083923; x=1741688723; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=pksM2vN2/PItdZunWojcAj/INip0cwdwB2OzqPSE1xc=;
+        b=dDq3Ioi0mNAcAZuruQtTGDo/BCjKaqY/C4oi08itKPT6uYPgII4wHWSUBFi5DOAJbR
+         69mhbWk0XggbH7xTfw9oU39eugW84NsDrvWCd8yc0m9knOaC9FCKZth0+1FbYJ0oH+uU
+         B/dbUTRAc14jfFEtlkzZNgpQzdtdl46tBBY7onnhgsS9wvLga6fKZNkHFykuHy1ius06
+         gmqrD5A0wqA5ZEG05aGJ+gS1EX1c9S8hRINFAPTkoiJxwO0hUL1oNotwyQfV5EGNKbPj
+         c8wMLeVC4uV4Dqh+u894+x1wFIZtBrn322y+6cS3sLzL1lL1O8HrdiTxBV6HU6VBScIK
+         Neow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741082987; x=1741687787;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ERN7diVe571lVikT49/v2kMDw68tmDpGY4TrvA+K4j0=;
-        b=Bl/KZQ6j9/dlkbpRoDVpBk0/GHhN+odxuW9adyDI9G0SVsyJkufU3v0yHMDKLGa4Qm
-         oz6CTR6rLynbF4T76Sq6meWTJNab32I7GBj3E7itdAZiznVX5D6pO6zh7DOi+oErT1LI
-         iREUSYwQrybEHquV+HCxh/6HmjAogh0p3yrFcA7+u96Uk2l2VLlniMjjjxsmJ2lHe6u6
-         SmYiVf98075VZMYaXUgtmeFD5XT5ek+TEWcct7yzfMwIfDZxHRR28HnUAAgCQnD1s5qE
-         2/uqGD9HzZwbTbiC9MDYq1nMSUiK+LlL0HAXLm0t34Z3GHwUn21i4N6rJiyMso7JbXQk
-         bsAA==
-X-Forwarded-Encrypted: i=1; AJvYcCUF48aPZDpDnbpxX9AhN4fZ4n60zesmgjOAeGXKsq5X5t5lqHQii17auVoSJaukOzuvWmGEzrSRAOUvCLKQRo0=@vger.kernel.org, AJvYcCWUD4DR1GGPHyL2sfXZqmOq6NTL39vLH90aBPq8tXOmD2ODRZggsX5T8Pdt1LGdMaoL88ae/Kgi6fyR6xQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/ewyG/TVYiGp3jbivPzLcS3h0CRzIDeFcRl3OTy41SUz3cVE6
-	z2qH8kxKqk/ZriYvjf1KoZMDhBzMeMkyHOdMB7nZ4TCILKwr9ulQVXXxDLopJSqJ0TcCsYBh7Bl
-	5Ea3sPPI5Z4xGFAHlCkC9+uI1uds=
-X-Gm-Gg: ASbGncsZZ7W2wk4LiD5gQWK2wcssWXsC9CnkSRJaMf3ZsfG9f8MjcMcL0IVUNtlO5vx
-	9LP8ML1RZAJPZelo8dPaGNMHgXcrqVl+L8K8zx0pD5GQQPQ1Rb0qNt/7uBmJPKkIhqyohpRB+kM
-	vJjxFwZJ1niSBaGOpbGJ84V9F/wg==
-X-Google-Smtp-Source: AGHT+IFseN2+z2lYv8glz+eJOuVumErTdOblnU7bMcjpSO7VXdKzX6o3No+XO9527+1TY40dPn08a6YtpsEue9e8lPQ=
-X-Received: by 2002:a17:90b:38d2:b0:2fe:9730:8e42 with SMTP id
- 98e67ed59e1d1-2febabdee63mr10089868a91.3.1741082986991; Tue, 04 Mar 2025
- 02:09:46 -0800 (PST)
+        d=1e100.net; s=20230601; t=1741083923; x=1741688723;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pksM2vN2/PItdZunWojcAj/INip0cwdwB2OzqPSE1xc=;
+        b=dkn9i9oUV8Zkzt9RW20rO7iBllrEH2Z+ih5NxF82FavpgFRCHfxyWcWLnnbxe4kv6c
+         fEMPTHXbiCSq3DtrY2jl8wS2H4PK4pZEba3Aki2zVFvvw76LFz9HFUSwakyC4mb2HJ8T
+         HjwTCR5UeDqvJHy5mXo6OzT7DzkAAXgA0UCA8uk+b+kSWnqjQYBLEI44yM9655kx5Ifu
+         Us+olgXutAS6SYQqXfZdWuCx083Dy8b57Hph5IUvNUDiOnvsfVcVzRVDzk1N+vDmUDLj
+         IewCFLpPWf8cumXTY68o2fld2/HO6Dv4ZlGJnQYhRmXiNTMzzssQmJkKFmyTAtPx9R+F
+         YL+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWxwBv/V8Wm9odIo+EHrLb5FZw4kjJrW51GA7E5nF1AX9D5jlysgbiOQL4s6aVHhwFqmN6gqn2Zc6q3BqqdRg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRf0T3fQDUGKBp2DWavqCSuHqBZc2gp5/EH0Kd3/jGEVf94xiR
+	6IbjhCAPdSSFDL3+wHg4No7kvBhNPjW9B+rcbGgVM+DoOZ6PHO2Y+j3JTWzlNXlbJcR29rU6PS3
+	JLejSQDvSHn5tCw==
+X-Google-Smtp-Source: AGHT+IEZgPZYq2Zew/y+z3cMKYdmhzJO68zot4w0u1Ph8Z3yGgHflr/VsRjy0jl5tuwbt7ekPsDeudZbUWMwpg8=
+X-Received: from wmbbd14.prod.google.com ([2002:a05:600c:1f0e:b0:43b:bec3:e552])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4b17:b0:43b:bfb7:e099 with SMTP id 5b1f17b1804b1-43bbfb7e424mr81024455e9.29.1741083923109;
+ Tue, 04 Mar 2025 02:25:23 -0800 (PST)
+Date: Tue, 04 Mar 2025 10:25:13 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250304040450.697235-1-sidong.yang@furiosa.ai> <2025030451-polka-lustfully-1edd@gregkh>
-In-Reply-To: <2025030451-polka-lustfully-1edd@gregkh>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 4 Mar 2025 11:09:33 +0100
-X-Gm-Features: AQ5f1JpmdO2O7KOha9l3o3OBV-Z6_NOKk8RBDswJH7SVQQMJMWrOnvKM9t-A3WU
-Message-ID: <CANiq72mShwVOM5DSSH8hOj4sxx3Xx=pk=SHN5nHWCZEJ+DRoCg@mail.gmail.com>
-Subject: Re: [RFC PATCH] rust: add cdev for rust bindings helper
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Sidong Yang <sidong.yang@furiosa.ai>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAAnVxmcC/23MQQ7CIBCF4as0s3YM0CDGlfcwXbQw0kkqGDBE0
+ 3D30q5d/i953wqZElOGW7dCosKZY2ihTh3YeQyekF1rUEJp0YseOSwcCG0ih9JJoYW5atIW2uO d6MnfQ3sMrWfOn5h+B17kvv53ikSJk9LKTDRaMpe7j9EvdLbxBUOtdQP4bmf5pwAAAA==
+X-Change-Id: 20250303-inline-cred-1d1050785e5c
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3427; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=i6S0L2JiZfziLX3LjJg2a++syB3iBS5cHAjVUvZ1vXg=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnxtUQ3qKxCQDChwSuI4NqC7eLuQefIzTaHT627
+ UiPixWJBk2JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ8bVEAAKCRAEWL7uWMY5
+ RhqhEACzbBDgODoXt6rYeZ7UMfAZx6R72BcHs0Cv5mGJXwp4uCuv9gt8ee7+0e0nh7i+ppQuZSl
+ 56e495j11wzGZ3Ssbk+OP1C2JIWvyaYfKIxU3dF/RDRNa0zgdxiXJCrrJtzNJ0tDuCymF3FHX0z
+ OejN/DBkgIDB9BOzfZR1QMMH7LpVqkaSt9e2onrY+BjBcSaAaBGg5zo+ahEhgvtfHSYGIy62/WO
+ 9rrKaOBaPRx1d1IOyO/ciYRLzu8oI5QTUTyx/Cl2vb4MBN3EAyaKxREfiOHIw/5Xi7+AYubUpNd
+ Dw/CGpBcuMBJaNyIT83tf63Dx5WrLBS6n4ZwZcFjTy5q9Dpc3Vrx7iQBCdTekRywIDDfbbxnfoc
+ h5T45btjQjfwEBwM8gXkzSrb2m8V868Tu1Xc2WnSYd2bN2MKYK20fL50zY2TIWFq5p9gLCPeIAN
+ evA+I9sDIzj88vu89HWpDXcwwQX8vNkaAA23x1nb0UkWljZDb8Cp8a4J1g9BjsyPG2VKQYg2SLz
+ 4pSPOw7pv3qkDkbGQcvUtgU4WrpAmDpdDf2xAyPpQ1A+RtUJjgbdaYHUAMTUZ/tcEp3rWlGmcaM
+ WYlDywgEL/vi7a/ao4z40/AFcQW8cKla7D6+e/ttEIo5dMkvcp6zBM/W5rRcsZdEdFa/l3r12Ra IzMx5OD8VFTGitw==
+X-Mailer: b4 0.14.2
+Message-ID: <20250304-inline-cred-v2-1-7aa54011bcab@google.com>
+Subject: [PATCH v2] cred: rust: mark Credential methods inline
+From: Alice Ryhl <aliceryhl@google.com>
+To: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Christian Brauner <brauner@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	rust-for-linux@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Christian Brauner <brauner@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Mar 4, 2025 at 6:42=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org>=
- wrote:
->
-> I think you're missing the actual bindings here, right?
->
-> confused,
+When you build the kernel using the llvm-19.1.4-rust-1.83.0-x86_64
+toolchain provided by kernel.org with ARCH=arm64, the following symbols
+are generated:
 
-I think this is:
+$ nm out-linux/vmlinux | grep ' _R'.*Credential | rustfilt
+ffffffc0808fc540 T <kernel::cred::Credential>::get_secid
+ffffffc0808fc588 T <kernel::cred::Credential as kernel::types::AlwaysRefCounted>::dec_ref
+ffffffc0808fc570 T <kernel::cred::Credential as kernel::types::AlwaysRefCounted>::inc_ref
 
-    https://rust-for-linux.zulipchat.com/#narrow/channel/291565-Help/topic/=
-trying.20to.20implement.20a.20chrdev.20in.20rust/near/503177362
+However, these Rust symbols are trivial wrappers around the functions
+security_cred_getsecid, get_cred, and put_cred respectively. It doesn't
+make sense to go through a trivial wrapper for these functions, so mark
+them inline. Also mark other trivial methods inline to prevent similar
+cases in the future.
 
-And, yeah, we don't add headers that have no users, and we don't want
-to promote avoiding to write abstractions either.
+After applying this patch, the above command will produce no output.
 
-Cheers,
-Miguel
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v2:
+- Reword commit message.
+- Link to v1: https://lore.kernel.org/r/20250303-inline-cred-v1-1-b2527beace76@google.com
+---
+ rust/kernel/cred.rs | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/rust/kernel/cred.rs b/rust/kernel/cred.rs
+index 81d67789b16f243e7832ff3b2e5e479a1ab2bf9e..2599f01e8b285f2106aefd27c315ae2aff25293c 100644
+--- a/rust/kernel/cred.rs
++++ b/rust/kernel/cred.rs
+@@ -47,6 +47,7 @@ impl Credential {
+     ///
+     /// The caller must ensure that `ptr` is valid and remains valid for the lifetime of the
+     /// returned [`Credential`] reference.
++    #[inline]
+     pub unsafe fn from_ptr<'a>(ptr: *const bindings::cred) -> &'a Credential {
+         // SAFETY: The safety requirements guarantee the validity of the dereference, while the
+         // `Credential` type being transparent makes the cast ok.
+@@ -54,6 +55,7 @@ pub unsafe fn from_ptr<'a>(ptr: *const bindings::cred) -> &'a Credential {
+     }
+ 
+     /// Get the id for this security context.
++    #[inline]
+     pub fn get_secid(&self) -> u32 {
+         let mut secid = 0;
+         // SAFETY: The invariants of this type ensures that the pointer is valid.
+@@ -62,6 +64,7 @@ pub fn get_secid(&self) -> u32 {
+     }
+ 
+     /// Returns the effective UID of the given credential.
++    #[inline]
+     pub fn euid(&self) -> Kuid {
+         // SAFETY: By the type invariant, we know that `self.0` is valid. Furthermore, the `euid`
+         // field of a credential is never changed after initialization, so there is no potential
+@@ -72,11 +75,13 @@ pub fn euid(&self) -> Kuid {
+ 
+ // SAFETY: The type invariants guarantee that `Credential` is always ref-counted.
+ unsafe impl AlwaysRefCounted for Credential {
++    #[inline]
+     fn inc_ref(&self) {
+         // SAFETY: The existence of a shared reference means that the refcount is nonzero.
+         unsafe { bindings::get_cred(self.0.get()) };
+     }
+ 
++    #[inline]
+     unsafe fn dec_ref(obj: core::ptr::NonNull<Credential>) {
+         // SAFETY: The safety requirements guarantee that the refcount is nonzero. The cast is okay
+         // because `Credential` has the same representation as `struct cred`.
+
+---
+base-commit: a64dcfb451e254085a7daee5fe51bf22959d52d3
+change-id: 20250303-inline-cred-1d1050785e5c
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
