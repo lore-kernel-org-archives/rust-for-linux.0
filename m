@@ -1,44 +1,44 @@
 Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375C820409A;
-	Wed,  5 Mar 2025 09:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2CF202969;
+	Wed,  5 Mar 2025 09:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741166487; cv=none; b=rU0VGHlxfkUwvTgJzGJkPx+jx0dMOO/ZZj+07uxjTBGziWS1tNQn1AaK/fqx0o3eWSyVLjUVvJZ3zjQIDkLoZo/fYtmteRMrwV6NK2r/KZRV9R5QfjamndYhaTO3cqHyRl0MXoHO2ujSnIRGttzfxPfuCjlIImWJXXJxjJzQUJQ=
+	t=1741166631; cv=none; b=f42uECcMoYzH6GIOGTg9muvULWyuFZ2b1bmEk2hHsVrdh9sVM9qHChAHEORSw9aRzQzcC87jw3A3IgZCaLXk3i8R2V21jbvjOFYww0iIZPWLNzoeFmKYXLUCHCKjbOQsagb5oWP3cqebrto2n8zi/kfwe4+QtJUA/deN0DpCaK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741166487; c=relaxed/simple;
-	bh=RzH8f+YEeaAxwcY1AsQ3MVt16XmCZfnfjxAuCrf46Ew=;
+	s=arc-20240116; t=1741166631; c=relaxed/simple;
+	bh=x1UBzECrAxJEfZ7QP7fKlwF81bsgcJvySWzJQULIOYg=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=hEk8MTsbXZjCV9uGW4RW178oX6wHD77gZZZM/C8/FYy9160x9XHMQQ3/XON0Jb81QSRkFvAWCPgbzSADVuOI+BMvb4bNg4ZT2eVpMIdDHCLzVJtHGyIiyJApibLib31zIRpGFGMt7AZOTkhTyYtVQloQjrEBqN1utDyVqo3mpG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=nADFrSc4; arc=none smtp.client-ip=49.12.72.200
+	 MIME-Version:Content-Type; b=i+ibmJZ0up52fWkmbd2Bv6+8k24+iTofzbiweZvSwyKCYcu+pewLfOnfruSHZ4zqhd5jZ67IAZbEQxEPjgJX1l45P6uNaS9qgunQHD7jX9FEW8h4h92B4v/NqbEfhc4HQSKW8wrAOz2iTcLiKFNaRseP0Qv+GekNc0khNiX2e1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=MISrFgcW; arc=none smtp.client-ip=49.12.72.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="nADFrSc4"
+	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="MISrFgcW"
 From: Fiona Behrens <me@kloenk.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1741166484; bh=RzH8f+YEeaAxwcY1AsQ3MVt16XmCZfnfjxAuCrf46Ew=;
+	t=1741166628; bh=x1UBzECrAxJEfZ7QP7fKlwF81bsgcJvySWzJQULIOYg=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=nADFrSc4DBqkBzSXaU5G8VJ7FsNLtSnHiykb4VdkA6XKK6VWgN1/Sn+LXfelkLXCr
-	 fDYwqEJrkqlVri1O2peNySY/jwQtRlGgACgFfsPkgqkFJDcl2dO9CoWR6u30xmhMcd
-	 sqXckrln2gTkqGGkmpase+sKsrYdgi3vgAWtoigY=
+	b=MISrFgcWy1uu7bft5lHIeGnCZJSXDwA7KBfDO7wa6d+PTdowIFPkz7P04HYLtVqcf
+	 Kt4LSfbPaxFgJQwaPXGRwLM2s7y7sRp1o76BaH2htoblD/qLZtGPOqGzHNHvhU3wZt
+	 heMEeNdIlhtUijRXrcqZYk5Jk4Ne8FWMBDeGKS1w=
 To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
-  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,
-  =?utf-8?Q?Bj=C3=B6rn?=
- Roy Baron <bjorn3_gh@protonmail.com>,  Andreas Hindborg
- <a.hindborg@kernel.org>,  Alice Ryhl <aliceryhl@google.com>,  Trevor Gross
- <tmgross@umich.edu>,  Danilo Krummrich <dakr@kernel.org>,
+Cc: Danilo Krummrich <dakr@kernel.org>,  Miguel Ojeda <ojeda@kernel.org>,
+  Alex Gaynor <alex.gaynor@gmail.com>,  Boqun Feng <boqun.feng@gmail.com>,
+  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+  Andreas Hindborg <a.hindborg@kernel.org>,  Alice Ryhl
+ <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,
   rust-for-linux@vger.kernel.org,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 07/22] rust: pin-init: move the default error behavior
- of `try_[pin_]init`
-In-Reply-To: <20250304225245.2033120-8-benno.lossin@proton.me> (Benno Lossin's
-	message of "Tue, 04 Mar 2025 22:54:07 +0000")
+Subject: Re: [PATCH 08/22] rust: pin-init: move `InPlaceInit` and impls of
+ `InPlaceWrite` into the kernel crate
+In-Reply-To: <20250304225245.2033120-9-benno.lossin@proton.me> (Benno Lossin's
+	message of "Tue, 04 Mar 2025 22:54:16 +0000")
 References: <20250304225245.2033120-1-benno.lossin@proton.me>
-	<20250304225245.2033120-8-benno.lossin@proton.me>
-Date: Wed, 05 Mar 2025 10:21:23 +0100
-Message-ID: <m2r03bhlyk.fsf@kloenk.dev>
+	<20250304225245.2033120-9-benno.lossin@proton.me>
+Date: Wed, 05 Mar 2025 10:23:47 +0100
+Message-ID: <m2ldtjhluk.fsf@kloenk.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -49,20 +49,11 @@ Content-Type: text/plain
 
 Benno Lossin <benno.lossin@proton.me> writes:
 
-> Move the ability to just write `try_pin_init!(Foo { a <- a_init })`
-> (note the missing `? Error` at the end) into the kernel crate.
-> Remove this notation from the pin-init crate, since the default when no
-> error is specified is the kernel-internal `Error` type. Instead add two
-> macros in the kernel crate that serve this default and are used instead
-> of the ones from `pin-init`.
->
-> This is done, because the `Error` type that is used as the default is
-> from the kernel crate and it thus prevents making the pin-init crate
-> standalone.
->
-> In order to not cause a build error due to a name overlap, the macros in
-> the pin-init crate are renamed, but this change is reverted in a future
-> commit when it is a standalone crate.
+> In order to make pin-init a standalone crate, move kernel-specific code
+> directly into the kernel crate. This includes the `InPlaceInit<T>`
+> trait, its implementations and the implementations of `InPlaceWrite` for
+> `Arc` and `UniqueArc`. All of these use the kernel's error type which
+> will become unavailable in pin-init.
 >
 > Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 
