@@ -1,131 +1,127 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6AE17B401
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Mar 2025 17:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1FD1A9B2C;
+	Wed,  5 Mar 2025 17:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741195938; cv=none; b=pdRFxABs/Iup9ujqmyqg20sss/vfTlCk+OPQDbdZwQJF65cz8r1+oxoD/hGUu0mmpL7svgGDdzDRICSRiIgUN8sOendAxHqL3wcxb0ykXMvV1dLJTl7kD4OhAcIqQ4jQMOIf09t0SSLHnfhlxplLNxEc7KCKhsLZLyiOn6j80qk=
+	t=1741196071; cv=none; b=ME4QUDWdpIDa9fxMj82enEra+xhc0Vd3jVwKqtFMaFVO6mZlY/bBBIvM/cqy+aZnI3oGel2SMHv4TAAv0Jzg6njXJMeFPE+KY54peGnTm7QOgx6B8nMlI3lqESeFLjTjl2V3vRgHX9IiQmWpXQ1KRIv3MUCTshPFC6rhxydQhHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741195938; c=relaxed/simple;
-	bh=YUt6lHj0zRfqghSI6cSCtOlYAt4wJALD2t5N6ptV2fo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=EyIY1jlOfnSg7IrbvggTBfK/R1BqnY0GWTHMwxe6gBiym2Kxy138ElDWkMHwQTs942kvYK6Uc8iFaWYitdHYmQCPqBJzoF2VaiydW6uBOrg556mfY7B56nWuPtltNGFCwjA8qr9Yetnbo3AuV9hBPnJho7UQZayDxHFIIY9iE0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SnPWqDrk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741196071; c=relaxed/simple;
+	bh=Q7tZdGiz//alVM/39HNaFeqFv5iOuMH45TZOP69sPZI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A0RZe85hrRPVpYzOCppEwKeqsYxkLf8hzxGxzSWro/dnhqofD2tyoDclKC1nvhq1LoZE91FVYVdsTKI5OaEEsTiNAIAzuNYNqBkZOC2NoXbGfSR3sqeVb6BlsjyAYnymtEMaGTsoZN/qYNq3vZTML4Ag1lEk9yJpP9EuGOZp0gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b8slCI8w; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SnPWqDrk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF41AC4CED1;
-	Wed,  5 Mar 2025 17:32:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b8slCI8w"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA5CBC4CED1;
+	Wed,  5 Mar 2025 17:34:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741195937;
-	bh=YUt6lHj0zRfqghSI6cSCtOlYAt4wJALD2t5N6ptV2fo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=SnPWqDrkZv9gyh196BASRZOEiWm+cDQaB/uG/KdtFRfDAsfkLZX35KN24yJNxkxIO
-	 LSP/HfeSLZ93oikIp3piNrHtTp03C6JsR25In2WlSd1GAc0B55mbluV5ZhIkVQZxIQ
-	 pFa1m8KQ7T544D+ib0KEiXWQNUKD8rZYNhwZaE1v55ZGBwESEy7vh6gaXcaFkOjbEp
-	 8RgCB7d6iJyYYQfo5kJmgjDLEh57LrmCSMkT5HUfDy+WpFKo7lXjUm2YzapyCWFCsy
-	 CMFC0Iod0otWS6oHOn3YLPD4n+nAkFjT5kxMWzP7/3stvNAnyRb6bIxPhoR1hX24Nr
-	 FJyNspke5vw4g==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>
-Cc: "Dirk Behme" <dirk.behme@de.bosch.com>,
-  <rust-for-linux@vger.kernel.org>,  <ojeda@kernel.org>,
-  <daniel.almeida@collabora.com>,  "Gary Guo" <gary@garyguo.net>,  "Alice
- Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>
-Subject: Re: [PATCH v3 2/2] rust: types: `Opaque` doc: Add some destructor
- description
-In-Reply-To: <Z8hwGGn9huDjyDWN@tardis> (Boqun Feng's message of "Wed, 05 Mar
-	2025 07:39:04 -0800")
-References: <20250305053438.1532397-1-dirk.behme@de.bosch.com>
-	<hVvs4-cEyMjFMKMMqergIA4OCAIJUIfXQGi2a_uisGZaLJHUWiNtGPNASjjeprDQrtNtasMOfTrRIiYwXE2zgg==@protonmail.internalid>
-	<20250305053438.1532397-2-dirk.behme@de.bosch.com>
-	<871pvbhqap.fsf@kernel.org>
-	<eGDvv6uA00fjuGAgV8uknZos4J9VcrxQ7lk9brRpmdGEGIHYZlxk-ZRsGxXsr-SCZE6IVEuPKs5ko9gukJwo7Q==@protonmail.internalid>
-	<Z8hwGGn9huDjyDWN@tardis>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Wed, 05 Mar 2025 18:32:11 +0100
-Message-ID: <87v7sn759g.fsf@kernel.org>
+	s=k20201202; t=1741196070;
+	bh=Q7tZdGiz//alVM/39HNaFeqFv5iOuMH45TZOP69sPZI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=b8slCI8webvsNko6Qht67wOJqNXeDy9d/AdScjQSNtzDlZ38aJ/3F8uj2Cb8R1scg
+	 AgFvRae2Dtp5v+YOB2y8PzvyFzFm/0/jw4gzk9Eh5TGfcHZc9NXlnrNBDCWuaQk79z
+	 qpqg+gd0Z3nBnAPcgnU+QVs47QLh3JGmtU1AldkqwXBuDahh0ANgP9QHNaTFEQzpEg
+	 KVeHcJzxB+M/pY6bQmloITS+/b37SPTVqfcjqQ+lDzl6P/X63ffHErqpakMy6bTMeq
+	 3lrdfAgQtpeugssSPQS0QybY5Jewvs3hPaPpMw0vA0fOBt1AgBqG0tf9QBZrjE1PKx
+	 kABHWIld3GiQA==
+Date: Wed, 5 Mar 2025 18:34:27 +0100
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>,
+	Dirk Behme <dirk.behme@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v8 00/14] hrtimer Rust API
+Message-ID: <Z8iLIyofy6KGOsq5@localhost.localdomain>
+References: <aIJ0ymzdUceCN05hwJpth4erH5u2SHYzYl52wGeT3uiO9bdk92ZkEmEEq9a9NXsInJYSz9uziwq-1fvdsXoeDA==@protonmail.internalid>
+ <20250218-hrtimer-v3-v6-12-rc2-v8-0-48dedb015eb3@kernel.org>
+ <877c5mci3p.fsf@kernel.org>
+ <5kF-NYTBZbEqnnQud5LKnRXO0lfM0i6I2PoeFrpKDhCYwUuk_bG2Li1T1Nuv82r3VFD8adTcdx7yenXSIfTwmw==@protonmail.internalid>
+ <Z7eYp_vZo5yDVOdI@pavilion.home>
+ <87frk7hera.fsf@kernel.org>
+ <Z7hheOSAuKdhq-1C@pavilion.home>
+ <CANiq72mpYoig2Ro76K0E-sUtP31fW+0403zYWd6MumCgFKfTDQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72mpYoig2Ro76K0E-sUtP31fW+0403zYWd6MumCgFKfTDQ@mail.gmail.com>
 
-"Boqun Feng" <boqun.feng@gmail.com> writes:
+Le Sat, Feb 22, 2025 at 02:04:16PM +0100, Miguel Ojeda a écrit :
+> On Fri, Feb 21, 2025 at 12:20 PM Frederic Weisbecker
+> <frederic@kernel.org> wrote:
+> >
+> > I was thinking the patchset would be better routed towards the Rust tree?
+> >
+> > How do you guys proceed usually with bindings tree maintainance?
+> 
+> So far, what we have been doing is ask maintainers, first, if they
+> would be willing take the patches themselves -- they are the experts
+> of the subsystem, know what changes are incoming, etc. Some subsystems
+> have done this (e.g. KUnit). That is ideal, because the goal is to
+> scale and allows maintainers to be in full control.
+> 
+> Of course, sometimes maintainers are not fully comfortable doing that,
+> since they may not have the bandwidth, or the setup, or the Rust
+> knowledge. In those cases, we typically ask if they would be willing
+> to have a co-maintainer (i.e. in their entry, e.g. like locking did),
+> or a sub-maintainer (i.e. in a new entry, e.g. like block did), that
+> would take care of the bulk of the work from them.
+> 
+> I think that is a nice middle-ground -- the advantage of doing it like
+> that is that you get the benefits of knowing best what is going on
+> without too much work (hopefully), and it may allow you to get more
+> and more involved over time and confident on what is going on with the
+> Rust callers, typical issues that appear, etc. Plus the sub-maintainer
+> gets to learn more about the subsystem, its timelines, procedures,
+> etc., which you may welcome (if you are looking for new people to get
+> involved).
+> 
+> I think that would be a nice middle-ground. As far as I understand,
+> Andreas would be happy to commit to maintain the Rust side as a
+> sub-maintainer (for instance). He would also need to make sure the
+> tree builds properly with Rust enabled and so on. He already does
+> something similar for Jens. Would that work for you?
+> 
+> You could take the patches directly with his RoBs or Acked-bys, for
+> instance. Or perhaps it makes more sense to take PRs from him (on the
+> Rust code only, of course), to save you more work. Andreas does not
+> send PRs to anyone yet, but I think it would be a good time for him to
+> start learning how to apply patches himself etc.
+> 
+> If not, then the last fallback would be putting it in the Rust tree as
+> a sub-entry or similar.
+> 
+> I hope that clarifies (and thanks whatever you decide!).
 
-> On Wed, Mar 05, 2025 at 08:47:42AM +0100, Andreas Hindborg wrote:
->> "Dirk Behme" <dirk.behme@de.bosch.com> writes:
->>
->> > In the discussion [1] some `Opaque` documentation updates have
->> > been proposed. In that discussion it was clarified that `Opaque`
->> > is intended to be used for (partial) uninitialized or changing C
->> > structs. And which consequences this has for using raw pointers
->> > or the destruction. Improve the `Opaque` documentation by adding
->> > these conclusions from that discussion.
->> >
->> > Suggested-by: Daniel Almeida <daniel.almeida@collabora.com>
->> > Link: https://lore.kernel.org/rust-for-linux/F8AB1160-F8CF-412F-8B88-4C79D65B53A1@collabora.com/ [1]
->> > Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
->> >
->> > ---
->> > Changes in v3:
->> >    * Add the "terse" proposals.
->> >    * Move the non-linkage artifact from patch 1/2 to here.
->> >
->> >  rust/kernel/types.rs | 26 +++++++++++++++++++++-----
->> >  1 file changed, 21 insertions(+), 5 deletions(-)
->> >
->> > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
->> > index af30e9c0ebccb..f370cdb48a648 100644
->> > --- a/rust/kernel/types.rs
->> > +++ b/rust/kernel/types.rs
->> > @@ -271,17 +271,33 @@ fn drop(&mut self) {
->> >
->> >  /// Stores an opaque value.
->> >  ///
->> > -/// [`Opaque<T>`] is meant to be used with FFI objects that are never interpreted by Rust code.
->> > +/// [`Opaque<T>`] opts out of the following Rust language invariants for the contained `T`
->> > +/// by using [`UnsafeCell`]:
->> >  ///
->> > -/// It is used to wrap structs from the C side, like for example `Opaque<bindings::mutex>`.
->> > -/// It gets rid of all the usual assumptions that Rust has for a value:
->> > +/// * Initialization invariant - the contained value is allowed to be uninitialized and
->> > +///   contain invalid bit patterns.
->> > +/// * Immutability invariant - [`Opaque<T>`] allows interior mutability.
->> > +/// * Uniqueness invariant - [`Opaque<T>`] allows aliasing of shared references.
->>
->> This last one is wrong (I know it's probably my fault, sorry). It should be:
->>
->>   /// * Uniqueness invariant - [`Opaque<T>`] allows aliasing of **exclusive** references.
->>
->
-> Hmm... are we trying to say "`&mut Opaque<T>` still cannot mean
-> noalias" here? If so I feel the wording might be confusing. I would
-> suggest we don't use "uniqueness" here. Maybe something like:
->
-> * Always aliased invariant - `&mut` [`Opaque<T>`] is not necessarily a
->   unique pointer, and thus the compiler cannot just make aliasing
->   assumptions.
->
-> (I use the wording from UnsafePinned[1], maybe there could be better
-> wording)
->
-> [1]: https://rust-lang.github.io/rfcs/3467-unsafe-pinned.html#summary
+Yes this clarifies a lot, thanks for the detailed options.
+I think it's preferrable that you guys maintain it because you
+are the experts with these Rust bindings and you'll be much
+more flexible committing and pushing to your own tree instead
+of waiting on us lagging to comprehend the content of each
+pull requests.
 
-I like my wording better. It says the same with fewer words, and we have
-a more wordy section below anyway. We could combine:
+Just keep us in Cc so we stay in touch with what's going on.
 
- * Uniqueness invariant - [`Opaque<T>`] allows aliasing of **exclusive**
-   references. That is, `&mut` [`Opaque<T>`] is not necessarily a unique
-   pointer.
+Thanks a lot!
 
-
-How is that?
-
-
-Best regards,
-Andreas Hindborg
-
-
+> 
+> Cheers,
+> Miguel
