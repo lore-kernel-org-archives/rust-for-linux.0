@@ -1,188 +1,128 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A922F24CEDF;
-	Wed,  5 Mar 2025 17:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6AE17B401
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Mar 2025 17:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741195635; cv=none; b=PQwO2En5arLDCEs8EBcgeatsz69rYBSlWj/U+GFDuyV1InfWW7vxu5joHfe4Ls1KVoAhcl57r/lLueOEan5typgXUsLC0YpOvGJucHQ5F9jUm0O/7Lb+n8ixFLXdwwGeghJ1Vxmzvp/Aj/lxQZiXQ1s3OOTKohlVvvMs0c0dpO8=
+	t=1741195938; cv=none; b=pdRFxABs/Iup9ujqmyqg20sss/vfTlCk+OPQDbdZwQJF65cz8r1+oxoD/hGUu0mmpL7svgGDdzDRICSRiIgUN8sOendAxHqL3wcxb0ykXMvV1dLJTl7kD4OhAcIqQ4jQMOIf09t0SSLHnfhlxplLNxEc7KCKhsLZLyiOn6j80qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741195635; c=relaxed/simple;
-	bh=vLkceGu5hYKNQITI1o+vScaHt0sK/onC6UV0cg6UPKM=;
+	s=arc-20240116; t=1741195938; c=relaxed/simple;
+	bh=YUt6lHj0zRfqghSI6cSCtOlYAt4wJALD2t5N6ptV2fo=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Hm5e9cKzMjAiYW+hmF/Rg+8h/KAc3N0bH5QXhsGLKD/jVBmXARNDLS56MJB3p/9tHev9ad7ni5bjDze5devnp0bHryLiav1q9nnINjVtnxrWaFTupVXC5yEzW7j1DiOo447ifuH+j1n04aGxgciUtrPZ7q8Od+/PK9GhxPlR5qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OfFEt9AA; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=EyIY1jlOfnSg7IrbvggTBfK/R1BqnY0GWTHMwxe6gBiym2Kxy138ElDWkMHwQTs942kvYK6Uc8iFaWYitdHYmQCPqBJzoF2VaiydW6uBOrg556mfY7B56nWuPtltNGFCwjA8qr9Yetnbo3AuV9hBPnJho7UQZayDxHFIIY9iE0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SnPWqDrk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OfFEt9AA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6233C4CED1;
-	Wed,  5 Mar 2025 17:27:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SnPWqDrk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF41AC4CED1;
+	Wed,  5 Mar 2025 17:32:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741195635;
-	bh=vLkceGu5hYKNQITI1o+vScaHt0sK/onC6UV0cg6UPKM=;
+	s=k20201202; t=1741195937;
+	bh=YUt6lHj0zRfqghSI6cSCtOlYAt4wJALD2t5N6ptV2fo=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=OfFEt9AAPmZdN36nVnNR/RqRXaui/Bqc1EgsqKT9FEX3hUArvsa3fX8Zt7uh8IZJk
-	 tq3ZQOVFvv/iwI1Vmgg0+ZiVAkoKvxMZYB0byK8igmci42shWzl2hmMiUOFVk7z2VO
-	 Q/1G4SHBABdeMdqBCPSstBtLYHrbkc+0rPxDnIXN4d+c0KiwCD89nridrttlOStPJs
-	 04kqMSRKSTy4lSaMDhP+QE3oxKgH/s004jM8hJ/brpO8QntUfGHFIHZ9slxNIS0vkG
-	 abPV+YcjF0i+0EGmR6G9NiX9IQJRxqQ4cpaqGIl5lt3E2FZFvK43BGRRUSNcv5g75z
-	 gyXDeV496MsaQ==
+	b=SnPWqDrkZv9gyh196BASRZOEiWm+cDQaB/uG/KdtFRfDAsfkLZX35KN24yJNxkxIO
+	 LSP/HfeSLZ93oikIp3piNrHtTp03C6JsR25In2WlSd1GAc0B55mbluV5ZhIkVQZxIQ
+	 pFa1m8KQ7T544D+ib0KEiXWQNUKD8rZYNhwZaE1v55ZGBwESEy7vh6gaXcaFkOjbEp
+	 8RgCB7d6iJyYYQfo5kJmgjDLEh57LrmCSMkT5HUfDy+WpFKo7lXjUm2YzapyCWFCsy
+	 CMFC0Iod0otWS6oHOn3YLPD4n+nAkFjT5kxMWzP7/3stvNAnyRb6bIxPhoR1hX24Nr
+	 FJyNspke5vw4g==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Benno Lossin" <benno.lossin@proton.me>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Alice
- Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Danilo Krummrich" <dakr@kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH 16/22] rust: pin-init: add `std` and `alloc` support
- from the user-space version
-In-Reply-To: <D88FBMCD9J1Z.1SMOBNLK6G6UH@proton.me> (Benno Lossin's message of
-	"Wed, 05 Mar 2025 15:05:28 +0000")
-References: <20250304225245.2033120-1-benno.lossin@proton.me>
-	<qEIYcaF5eMmpiaRI_4rpApjyuiQMjms1LdZhmHXO5l9_HqN32upj8ZVbCnvI3hfDDTJeYT_9N7z3kyvOR-whRg==@protonmail.internalid>
-	<20250304225245.2033120-17-benno.lossin@proton.me>
-	<8734frd5v6.fsf@kernel.org>
-	<cfBHbY6fYqucI2hjDXGCsolI6TkEE4AY7gT8hW-0z0P7BvaCe6dBzLpH9IFHRl5HgrPiBo8rMKGRWlP9M7x85A==@protonmail.internalid>
-	<D88DTO6ZIXMN.26SWTE440RP9K@proton.me> <87wmd38sb2.fsf@kernel.org>
-	<M3hCr1lA6T2tY1uelvZpw6KGYb7MDZo7T4id-iMIFbo5vV2RF2qYj5iKyFC7k-GfL7YDcciSYh86eIckphVYVQ==@protonmail.internalid>
-	<D88FBMCD9J1Z.1SMOBNLK6G6UH@proton.me>
+To: "Boqun Feng" <boqun.feng@gmail.com>
+Cc: "Dirk Behme" <dirk.behme@de.bosch.com>,
+  <rust-for-linux@vger.kernel.org>,  <ojeda@kernel.org>,
+  <daniel.almeida@collabora.com>,  "Gary Guo" <gary@garyguo.net>,  "Alice
+ Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>
+Subject: Re: [PATCH v3 2/2] rust: types: `Opaque` doc: Add some destructor
+ description
+In-Reply-To: <Z8hwGGn9huDjyDWN@tardis> (Boqun Feng's message of "Wed, 05 Mar
+	2025 07:39:04 -0800")
+References: <20250305053438.1532397-1-dirk.behme@de.bosch.com>
+	<hVvs4-cEyMjFMKMMqergIA4OCAIJUIfXQGi2a_uisGZaLJHUWiNtGPNASjjeprDQrtNtasMOfTrRIiYwXE2zgg==@protonmail.internalid>
+	<20250305053438.1532397-2-dirk.behme@de.bosch.com>
+	<871pvbhqap.fsf@kernel.org>
+	<eGDvv6uA00fjuGAgV8uknZos4J9VcrxQ7lk9brRpmdGEGIHYZlxk-ZRsGxXsr-SCZE6IVEuPKs5ko9gukJwo7Q==@protonmail.internalid>
+	<Z8hwGGn9huDjyDWN@tardis>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Wed, 05 Mar 2025 18:27:08 +0100
-Message-ID: <871pvb8k2b.fsf@kernel.org>
+Date: Wed, 05 Mar 2025 18:32:11 +0100
+Message-ID: <87v7sn759g.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-"Benno Lossin" <benno.lossin@proton.me> writes:
+"Boqun Feng" <boqun.feng@gmail.com> writes:
 
-> On Wed Mar 5, 2025 at 3:29 PM CET, Andreas Hindborg wrote:
->> "Benno Lossin" <benno.lossin@proton.me> writes:
->>> On Wed Mar 5, 2025 at 1:22 PM CET, Andreas Hindborg wrote:
->>>> "Benno Lossin" <benno.lossin@proton.me> writes:
->>>>> To synchronize the kernel's version of pin-init with the user-space
->>>>> version, introduce support for `std` and `alloc`. While the kernel us=
-es
->>>>> neither, the user-space version has to support both. Thus include the
->>>>> required `#[cfg]`s and additional code.
->>>>>
->>>>> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
->>>>> ---
->>>>>  rust/pin-init/src/__internal.rs |  27 ++++++
->>>>>  rust/pin-init/src/alloc.rs      | 158 ++++++++++++++++++++++++++++++=
-++
->>>>>  rust/pin-init/src/lib.rs        |  17 ++--
->>>>>  3 files changed, 196 insertions(+), 6 deletions(-)
->>>>>  create mode 100644 rust/pin-init/src/alloc.rs
->>>>>
->>>>> diff --git a/rust/pin-init/src/__internal.rs b/rust/pin-init/src/__in=
-ternal.rs
->>>>> index 74086365a18a..27d4a8619c04 100644
->>>>> --- a/rust/pin-init/src/__internal.rs
->>>>> +++ b/rust/pin-init/src/__internal.rs
->>>>> @@ -186,6 +186,33 @@ pub fn init<E>(self: Pin<&mut Self>, init: impl =
-PinInit<T, E>) -> Result<Pin<&mu
->>>>>      }
->>>>>  }
->>>>>
->>>>> +#[test]
->>>>
->>>> I think the kunit support we have in the pipeline will pick this up?
->>>
->>> Is that support also enabled for crates outside of the `kernel` crate?
->>> I would argue it shouldn't and then this isn't a problem.
+> On Wed, Mar 05, 2025 at 08:47:42AM +0100, Andreas Hindborg wrote:
+>> "Dirk Behme" <dirk.behme@de.bosch.com> writes:
 >>
->> Re conversation about moving pin_init out of the kernel, we should
->> distinguish between vendored crates and crates that is part of the
->> kernel. This one is now vendored and tests are not meant to be run by
->> the kernel build system and infrastructure. Other crates will be
->> different, living in the kernel.
->
-> Yes, but I wouldn't necessarily call this category "vendored"; e.g. we
-> could write a crate that is kernel-only, but doesn't actually have any
-> code that requires kernel infrastructure. How about we call these
-> kernel-agnostic crates? :)
-
-Sounds good to me =F0=9F=91=8D
-
->
->>>>> +fn stack_init_reuse() {
->>>>> +    use ::std::{borrow::ToOwned, println, string::String};
->>>>> +    use core::pin::pin;
->>>>> +
->>>>> +    #[derive(Debug)]
->>>>> +    struct Foo {
->>>>> +        a: usize,
->>>>> +        b: String,
->>>>> +    }
->>>>> +    let mut slot: Pin<&mut StackInit<Foo>> =3D pin!(StackInit::unini=
-t());
->>>>> +    let value: Result<Pin<&mut Foo>, core::convert::Infallible> =3D
->>>>> +        slot.as_mut().init(crate::init!(Foo {
->>>>> +            a: 42,
->>>>> +            b: "Hello".to_owned(),
->>>>> +        }));
->>>>> +    let value =3D value.unwrap();
->>>>> +    println!("{value:?}");
->>>>> +    let value: Result<Pin<&mut Foo>, core::convert::Infallible> =3D
->>>>> +        slot.as_mut().init(crate::init!(Foo {
->>>>> +            a: 24,
->>>>> +            b: "world!".to_owned(),
->>>>> +        }));
->>>>> +    let value =3D value.unwrap();
->>>>> +    println!("{value:?}");
->>>>> +}
->>>>> +
->>>>
->>>> [...]
->>>>
->>>>> diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
->>>>> index 55d8953620f0..1fdca35906a0 100644
->>>>> --- a/rust/pin-init/src/lib.rs
->>>>> +++ b/rust/pin-init/src/lib.rs
->>>>> @@ -204,8 +204,8 @@
->>>>>  //! [structurally pinned fields]:
->>>>>  //!     https://doc.rust-lang.org/std/pin/index.html#pinning-is-stru=
-ctural-for-field
->>>>>  //! [stack]: crate::stack_pin_init
->>>>> -//! [`Arc<T>`]: ../kernel/sync/struct.Arc.html
->>>>> -//! [`Box<T>`]: ../kernel/alloc/struct.KBox.html
->>>>> +//! [`Arc<T>`]: https://doc.rust-lang.org/stable/alloc/sync/struct.A=
-rc.html
->>>>> +//! [`Box<T>`]: https://doc.rust-lang.org/stable/alloc/boxed/struct.=
-Box.html
->>>>
->>>> Now these will render incorrect in the kernel docs, right?
->>>
->>> What do you mean by that? The link will resolve to the std versions of
->>> `Arc` and `Box`. But that is also what this crate will support, as it
->>> doesn't know about the kernel's own alloc.
+>> > In the discussion [1] some `Opaque` documentation updates have
+>> > been proposed. In that discussion it was clarified that `Opaque`
+>> > is intended to be used for (partial) uninitialized or changing C
+>> > structs. And which consequences this has for using raw pointers
+>> > or the destruction. Improve the `Opaque` documentation by adding
+>> > these conclusions from that discussion.
+>> >
+>> > Suggested-by: Daniel Almeida <daniel.almeida@collabora.com>
+>> > Link: https://lore.kernel.org/rust-for-linux/F8AB1160-F8CF-412F-8B88-4C79D65B53A1@collabora.com/ [1]
+>> > Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+>> >
+>> > ---
+>> > Changes in v3:
+>> >    * Add the "terse" proposals.
+>> >    * Move the non-linkage artifact from patch 1/2 to here.
+>> >
+>> >  rust/kernel/types.rs | 26 +++++++++++++++++++++-----
+>> >  1 file changed, 21 insertions(+), 5 deletions(-)
+>> >
+>> > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+>> > index af30e9c0ebccb..f370cdb48a648 100644
+>> > --- a/rust/kernel/types.rs
+>> > +++ b/rust/kernel/types.rs
+>> > @@ -271,17 +271,33 @@ fn drop(&mut self) {
+>> >
+>> >  /// Stores an opaque value.
+>> >  ///
+>> > -/// [`Opaque<T>`] is meant to be used with FFI objects that are never interpreted by Rust code.
+>> > +/// [`Opaque<T>`] opts out of the following Rust language invariants for the contained `T`
+>> > +/// by using [`UnsafeCell`]:
+>> >  ///
+>> > -/// It is used to wrap structs from the C side, like for example `Opaque<bindings::mutex>`.
+>> > -/// It gets rid of all the usual assumptions that Rust has for a value:
+>> > +/// * Initialization invariant - the contained value is allowed to be uninitialized and
+>> > +///   contain invalid bit patterns.
+>> > +/// * Immutability invariant - [`Opaque<T>`] allows interior mutability.
+>> > +/// * Uniqueness invariant - [`Opaque<T>`] allows aliasing of shared references.
 >>
->> I mean that if I render the kernel documentation, go to `pin_init` and
->> click the `Arc<T>` link, I end up in `std`. But I am in the kernel, so
->> not what I would expect.
+>> This last one is wrong (I know it's probably my fault, sorry). It should be:
 >>
->> But I guess there is no easy solution? Being a kernel developer, I would
->> prefer a kernel first approach. Can't have it all, I guess.
+>>   /// * Uniqueness invariant - [`Opaque<T>`] allows aliasing of **exclusive** references.
+>>
 >
-> I could change the link depending on the `kernel` cfg, so
+> Hmm... are we trying to say "`&mut Opaque<T>` still cannot mean
+> noalias" here? If so I feel the wording might be confusing. I would
+> suggest we don't use "uniqueness" here. Maybe something like:
 >
->     #![cfg_attr(kernel, doc =3D "[`Arc<T>`]: https://rust.docs.kernel.org=
-..")]
->     #![cfg_attr(not(kernel), doc =3D "[`Arc<T>`]: https://doc.rust-lang.o=
-rg...")]
+> * Always aliased invariant - `&mut` [`Opaque<T>`] is not necessarily a
+>   unique pointer, and thus the compiler cannot just make aliasing
+>   assumptions.
 >
-> But if anyone visits the documentation on `docs.rs`, then they will get
-> the user-space one... What do you think?
+> (I use the wording from UnsafePinned[1], maybe there could be better
+> wording)
+>
+> [1]: https://rust-lang.github.io/rfcs/3467-unsafe-pinned.html#summary
 
-That would be nice. I think kernel developers would read the docs via
-rust.docs.kernel.org, if they read them online (myself being my only
-reference, so not enough sample size).
+I like my wording better. It says the same with fewer words, and we have
+a more wordy section below anyway. We could combine:
+
+ * Uniqueness invariant - [`Opaque<T>`] allows aliasing of **exclusive**
+   references. That is, `&mut` [`Opaque<T>`] is not necessarily a unique
+   pointer.
+
+
+How is that?
 
 
 Best regards,
