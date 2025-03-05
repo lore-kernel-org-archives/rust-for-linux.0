@@ -1,231 +1,98 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4514E207A20
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Mar 2025 10:36:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306CB21CC4B
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Mar 2025 10:47:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741170988; cv=none; b=NqX61NrCBlmTEZu83FId/yczmg5DSIXFGomIMNBDJho34JdVjh/GJ8SoGJGx+EbjK0Sjv9DC/Te/S2I6z1kFZygZwA2elW/Xej7DeEFW4/79Oz/ZOU1Z6CbZ1PULbGblAlmtQEYag1mvrDf7x9BgOwNxNJ+esBlVi/Nz3JtDNdg=
+	t=1741171648; cv=none; b=bMGnwZ65JzUhjH38c7HIrg1xw6AeBIK6FOMrVdnF2gkfXNGnsHqAA6v4vpRyR2Cu3+aA9IIBfNoj7YipYxW3tPQViBlPUY8258qHxYvIXzO43ikhIxnoUQGNqhs7eWHF4dsMeTbzFDnSKSS1Rkt74mrAKjb8g+H54gIImmP8x/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741170988; c=relaxed/simple;
-	bh=IITPjUf5K6GkczqGdtj2h9Gn0v+t6QxnZUdZm9Ju+nA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=k1H+gz0tcN7bBMS/EYvCLlXX4h9QDnX2e5PZJOUTNxZHOUAx1MeNDKAjT0jWAKSf0CS6Sx6k5cbXocFwWabp94+22zINMzQJkgtk+zb5cG9jsXyErZOoDX5ab+Ztd4JySOcKgFmRKOn3tf/iM7X9P1UGudjNQe00ADK7cN1+gbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y0NyxESs; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1741171648; c=relaxed/simple;
+	bh=RE4HuLtJI4dpis8wSZOIEqNjFD2NNuZOalfgkbWId6E=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XMH56e5jFO0XYZrO6b+KaNStsohXyQRwxlYgSEyICewov+zixa+0/X9qdi+OdSx8X1SHzmMjTTFUknSC43HHeSz6eC4Tss8qaDpDVZ4h1Bc8elgAPKAJnliEGBeKdBr9xj46kHjCes7CUx4brrkzThrhgmtRxqnwUuFhnq8Bjro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=DtKM394V; arc=none smtp.client-ip=185.70.40.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y0NyxESs"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43bd0586b86so7604435e9.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 05 Mar 2025 02:36:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741170984; x=1741775784; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=iwAGkOur7FEFFxYryhuBZi0B3fdJNiM+Y5CHrkG/U3c=;
-        b=Y0NyxESs/G3nRWAENTKk/t3HpSSagzE1cbXVedZsHisKLetB0xonuhSnBjOcUDKaBs
-         yBqrYb8qAKmNPcQT6D18vj92ku12j7Qvepxh1Pd1P4mmS64ZKJowlW17+SwyUwU53BDl
-         /0LZMMrOVJAw4fkY2MjVtTUwv4ZzeE2SCak2LIJ/8xW6Rffu0+fhKaHLND38DqS6UfeP
-         oWpDKrsDfpOesUCKeL4kkYjiOnGaf3Wqz1oOYnicdPLQvsv/WYiVx0e1yfnWQk+TYfy2
-         Mwk9QjEHVBhjz1HOM1k8uCj3VAfTehqCy8rNzkGYKKmoUI2njKE05nyzbEUlihK1H/uQ
-         ljWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741170984; x=1741775784;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iwAGkOur7FEFFxYryhuBZi0B3fdJNiM+Y5CHrkG/U3c=;
-        b=q5hUawEj524TiypvOvrrJhPF+KZEazfVArvqshD0cDGxkNLfJxFX5S0zcr2en1heYG
-         r3BPetHhfZKwAPcp7UEJ/B5M1+Gy3XCkudXfheyp9HGoiauZJpF3s39CQokVI4YohFKy
-         PNw3w7ZfDAbKTqKkaFcbFWNfkNlK0rjuoEUwyJJe1SPYgHwcs2KdSHH36453+K7ucIai
-         ZR5X2ArwKpW9VZQktM1ET5FA0OTbYYhqVBOGoo85TEqfWYIP2hMf3zaVq1GYkla4ecyK
-         VMQUhazdcMhaGR5lio/BuPUn5t9VkqsOR/81ivR41eDgSTR3wbJhskMZdYpznuqxpg4x
-         ++5w==
-X-Forwarded-Encrypted: i=1; AJvYcCVe7qfZyOavPxyM4/xP4dRIkiPbo5gc16zUpDJ17lMndYpePZVeVbPHPeelpObXAVgYnGkNP7jn0Aqh1fETeg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAj+oj6VRfqSCr6htt+uJDo8MRym3Ybut8XN5Lw2aZqLDny7Nu
-	HJ9G38Cn8lxH0Rz5tl6CLoeWOneEx7EUu6OVVgRTQgKT0UWU9a9ivfC6SxkuNdqORygg3e6wOLU
-	tCoEt+niiftp50w==
-X-Google-Smtp-Source: AGHT+IF4p+WGtfI1ypZ1YJkfslZJU6mygbMMyIKJy0w0qOVB2Gh6dAbB+kwJwMv93DtfV/Rfk/Pmmkxz4x/UHTU=
-X-Received: from wmrn38.prod.google.com ([2002:a05:600c:5026:b0:43b:c7b3:c586])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3b17:b0:43b:cf12:2ca1 with SMTP id 5b1f17b1804b1-43bd2969470mr21132275e9.10.1741170984586;
- Wed, 05 Mar 2025 02:36:24 -0800 (PST)
-Date: Wed, 5 Mar 2025 10:36:22 +0000
-In-Reply-To: <20250305.192403.996225631653343672.fujita.tomonori@gmail.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="DtKM394V"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1741171643; x=1741430843;
+	bh=pzYCh+bDp0DzC947Qol5k13XrD/z2IzBet+D9+guhT0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=DtKM394VHgLaJiv0ciab4wG7ErtvZTD/jIKlWFA1aiAUlJleeecN8T6uXJ7mVUKec
+	 5irNs7jnPXezyjnSZ+Txr8qyE6f6BBkUG+KQYm9dtQRlUvg4HKczFOtnlFTD5mfXc1
+	 N62visHO7U9l9zCavOMHGNoKMAua1O7fIkIFjscMT8aQN2ZccnuvFLV/nKAI8LH4et
+	 rISYfOfsjT/gP261hknrGY3HXUiZ86xYo3T3Jv74lnreBJmbBS7jggXC00S5HDqjdq
+	 aFKR7+F/4H0FvfUafL3YhPWk4Zy18f9aGQo6aJTvbZ7DmXN6f1z5VTAq/obzYHkXT3
+	 SIITYn+LjAXyg==
+Date: Wed, 05 Mar 2025 10:47:19 +0000
+To: Andreas Hindborg <a.hindborg@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 07/22] rust: pin-init: move the default error behavior of `try_[pin_]init`
+Message-ID: <D889TYXZRPX1.5WNAFLTJSKKW@proton.me>
+In-Reply-To: <87r03bepo1.fsf@kernel.org>
+References: <20250304225245.2033120-1-benno.lossin@proton.me> <1iRthWaE9p56aGqyNzaY-vh27mX2Tp1thOYCi8oBj6Qn6m6TxlSh-5-Ic4noCVTjVSXzw6GcviNXRtXbg6aw6A==@protonmail.internalid> <20250304225245.2033120-8-benno.lossin@proton.me> <87r03bepo1.fsf@kernel.org>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: ec7f3853d1d8b6b6efb391fd7bf07ffb44e2a37d
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250213135759.190006-1-fujita.tomonori@gmail.com>
- <20250213135759.190006-6-fujita.tomonori@gmail.com> <Z8gOkeJ8o2pMCwGu@google.com>
- <20250305.192403.996225631653343672.fujita.tomonori@gmail.com>
-Message-ID: <Z8gpJsQlkjAQ0EwU@google.com>
-Subject: Re: [PATCH v3 5/5] rust: Add warn_on and warn_on_once
-From: Alice Ryhl <aliceryhl@google.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	x86@kernel.org, linux-riscv@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev, 
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, peterz@infradead.org, hpa@zytor.com, 
-	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
-	catalin.marinas@arm.com, will@kernel.org, chenhuacai@kernel.org, 
-	kernel@xen0n.name, tangyouling@loongson.cn, hejinyang@loongson.cn, 
-	yangtiezhu@loongson.cn, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@kernel.org, tmgross@umich.edu
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 05, 2025 at 07:24:03PM +0900, FUJITA Tomonori wrote:
-> On Wed, 5 Mar 2025 08:42:57 +0000
-> Alice Ryhl <aliceryhl@google.com> wrote:
-> 
-> > On Thu, Feb 13, 2025 at 10:57:59PM +0900, FUJITA Tomonori wrote:
-> >> Add warn_on and warn_on_once macros. Wrapping the C's WARN_* and BUG_*
-> >> macros doesn't work so this uses the assembly code exported by the C
-> >> side via ARCH_WARN_ASM macro. Like the static branch code, this
-> >> generates the assembly code for rust at compile time by using the C
-> >> preprocessor.
-> >> 
-> >> file()! macro doesn't work for the Rust inline assembly in the same
-> >> way as __FILE__ for the C inline assembly. So the code to handle a
-> >> file name is different from the C assembly code (similar to the
-> >> arm64/loongarch assembly).
-> > 
-> > Nit: Should be file!() not file()!.
-> 
-> Ops, thanks.
-> 
-> Actually, the above comment is obsolete. With your solution in the
-> previous mail, I can remove the asm code for the file name. I'll
-> remove the comment.
-> 
-> 
-> >> diff --git a/rust/kernel/.gitignore b/rust/kernel/.gitignore
-> >> index 6ba39a178f30..f1d7f4225332 100644
-> >> --- a/rust/kernel/.gitignore
-> >> +++ b/rust/kernel/.gitignore
-> >> @@ -1,3 +1,5 @@
-> >>  # SPDX-License-Identifier: GPL-2.0
-> >>  
-> >>  /generated_arch_static_branch_asm.rs
-> >> +/generated_arch_warn_asm.rs
-> >> +/generated_arch_reachable_asm.rs
-> >> \ No newline at end of file
-> > 
-> > There should be a newline.
-> 
-> Ah, I'll fix.
-> 
-> >> +++ b/rust/kernel/bug.rs
-> >> @@ -0,0 +1,100 @@
-> >> +// SPDX-License-Identifier: GPL-2.0
-> >> +
-> >> +// Copyright (C) 2024 FUJITA Tomonori
-> > 
-> > 2025?
-> 
-> I'll add.
-> 
-> >> +#[macro_export]
-> >> +#[doc(hidden)]
-> >> +#[cfg(all(CONFIG_BUG, not(CONFIG_UML)))]
-> >> +macro_rules! warn_flags {
-> >> +    ($flags:expr) => {
-> >> +        const FLAGS: u32 = $crate::bindings::BUGFLAG_WARNING | $flags;
-> >> +        // SAFETY: Just an FFI call.
-> >> +        #[cfg(CONFIG_DEBUG_BUGVERBOSE)]
-> >> +        unsafe {
-> >> +            $crate::asm!(concat!(
-> >> +                "/* {size} */",
-> >> +                ".pushsection .rodata.str1.1, \"aMS\",@progbits, 1\n",
-> >> +                "111:\t .string ", "\"", file!(), "\"\n",
-> >> +                ".popsection\n",
-> >> +                include!(concat!(env!("OBJTREE"), "/rust/kernel/generated_arch_warn_asm.rs")),
-> >> +                include!(concat!(env!("OBJTREE"), "/rust/kernel/generated_arch_reachable_asm.rs")));
-> >> +            line = const line!(),
-> >> +            flags = const FLAGS,
-> >> +            size = const ::core::mem::size_of::<$crate::bindings::bug_entry>(),
-> >> +            );
-> >> +        }
-> >> +        // SAFETY: Just an FFI call.
-> >> +        #[cfg(not(CONFIG_DEBUG_BUGVERBOSE))]
-> >> +        unsafe {
-> >> +            $crate::asm!(
-> >> +            concat!(
-> >> +                "/* {size} */",
-> >> +                include!(concat!(env!("OBJTREE"), "/rust/kernel/generated_arch_warn_asm.rs")),
-> >> +                include!(concat!(env!("OBJTREE"), "/rust/kernel/generated_arch_reachable_asm.rs")));
-> >> +            flags = const FLAGS,
-> >> +            size = const ::core::mem::size_of::<$crate::bindings::bug_entry>(),
-> >> +            );
-> >> +        }
-> > 
-> > I generally prefer to have the cfgs on the macro rather in its
-> > expansion. That avoids emitting a lot of code that is not actually used.
-> 
-> You prefer the following?
-> 
-> #[cfg(all(CONFIG_BUG, CONFIG_DEBUG_BUGVERBOSE, not(CONFIG_UML)))]
-> macro_rules! warn_flags {
-> ...
-> }
-> 
-> #[cfg(all(CONFIG_BUG, not(CONFIG_DEBUG_BUGVERBOSE), not(CONFIG_UML)))]
-> macro_rules! warn_flags {
-> ...
-> }
+On Wed Mar 5, 2025 at 11:29 AM CET, Andreas Hindborg wrote:
+> "Benno Lossin" <benno.lossin@proton.me> writes:
+>
+>> Move the ability to just write `try_pin_init!(Foo { a <- a_init })`
+>> (note the missing `? Error` at the end) into the kernel crate.
+>> Remove this notation from the pin-init crate, since the default when no
+>> error is specified is the kernel-internal `Error` type. Instead add two
+>> macros in the kernel crate that serve this default and are used instead
+>> of the ones from `pin-init`.
+>>
+>> This is done, because the `Error` type that is used as the default is
+>> from the kernel crate and it thus prevents making the pin-init crate
+>> standalone.
+>>
+>> In order to not cause a build error due to a name overlap, the macros in
+>> the pin-init crate are renamed, but this change is reverted in a future
+>> commit when it is a standalone crate.
+>>
+>> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+>
+> [...]
+>
+>> diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+>> index dde2e0649790..4123d478c351 100644
+>> --- a/rust/kernel/prelude.rs
+>> +++ b/rust/kernel/prelude.rs
+>> @@ -28,7 +28,8 @@
+>>  pub use super::{dev_alert, dev_crit, dev_dbg, dev_emerg, dev_err, dev_i=
+nfo, dev_notice, dev_warn};
+>>  pub use super::{pr_alert, pr_crit, pr_debug, pr_emerg, pr_err, pr_info,=
+ pr_notice, pr_warn};
+>>
+>> -pub use super::{init, pin_init, try_init, try_pin_init};
+>> +pub use super::{init, pin_init};
+>> +pub use super::{try_init, try_pin_init};
+>
+> Are you trying out a new scheme here - a balance between normalized and
+> line-by-line use declarations? =F0=9F=98=86
 
-In this case it probably reads better as
+Uh no, not intentionally at least. This is an artifact of moving the
+changes between the different patches, the "rust: make pin-init its own
+crate" commit removes the line with `init` and `pin_init`, but keeps the
+one with the `try_` versions. That is because those two will continue to
+live in the `kernel` crate.
 
-#[cfg(all(CONFIG_BUG, not(CONFIG_UML)))]
-#[cfg(CONFIG_DEBUG_BUGVERBOSE)]
-macro_rules! warn_flags {
-...
-}
+---
+Cheers,
+Benno
 
-#[cfg(all(CONFIG_BUG, not(CONFIG_UML)))]
-#[cfg(not(CONFIG_DEBUG_BUGVERBOSE))]
-macro_rules! warn_flags {
-...
-}
-
-but yes.
-
-> >> +#[doc(hidden)]
-> >> +#[macro_export]
-> >> +macro_rules! bugflag_taint {
-> >> +    ($taint:expr) => {
-> >> +        $taint << 8
-> >> +    };
-> >> +}
-> > 
-> > This could just be a const fn.
-> 
-> Yeah, would a const fn be preferable?
-
-Yes, I think a constant or const fn is preferable over a macro whenever
-possible.
-
-> >> +/// Report a warning only once.
-> >> +#[macro_export]
-> >> +macro_rules! warn_on_once {
-> >> +    ($cond:expr) => {
-> >> +        if $cond {
-> >> +            $crate::warn_flags!(
-> >> +                $crate::bindings::BUGFLAG_ONCE
-> >> +                    | $crate::bugflag_taint!($crate::bindings::TAINT_WARN)
-> > 
-> > Or maybe a constant?
-> > 
-> > const WARN_ON_ONCE_FLAGS: u32 = bindings::BUGFLAG_ONCE | (bindings::TAINT_WARN << 8);
-> 
-> Ok, but you prefer "<< 8" than using const fn bugflag_taint()?
-
-I'm also happy with
-const WARN_ON_ONCE_FLAGS: u32 = bindings::BUGFLAG_ONCE | bugflag_taint(bindings::TAINT_WARN);
-
-Up to you.
-
-Alice
