@@ -1,103 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39AE22629F;
-	Wed,  5 Mar 2025 00:17:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A00A2D7BF
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Mar 2025 00:43:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741133871; cv=none; b=feYbZ79R5qaJohx3YKQR2Geg/HDIyoVTPuYwm3PB6EyGz/ErqDjrumOPz3UhNss+dnpCNjrOD/QWAVl/qptIvSvFBo21JSqdc2vG1h2n4fE1T2FzPs81O1eEy0Z+bml6Q/pu6O3g6o0n7onO09XELMdibzS9aHRGlk7yeRn2mNU=
+	t=1741135409; cv=none; b=Tydm1R4RcM824by+OIzrq7FrRShfKPEnTqXoBQIP0bETLgIwMN8btQ8IQ7sVYikK9Tj8cA0mbaaZKy2NldUNiL8T2NFhPGbslL8/3y38eoNXC88Y2BwVoTizTSNU+F1U2tQm95ygcoe+JOfr+Xiw/ykg2ASq985WWdUB4joZMgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741133871; c=relaxed/simple;
-	bh=GCwnNMHtzCFU1wUrFNnbzOpDwp4f92WgfqmKFjh0qtk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SW6zLy1WjTMmhBQSyyJ2YD1bLNe03/RLJQz0wVKeay0yBBFwR1i8PfklrKBOHXLqNlXEuLxNnuYEUbtrCXpuTHBCB7AEBu/NWGuuy6NsGwN8O/ZJY6JLm6DJSkX8G1HqJtMa+y7rRJi9JhOxreIXO2Zlk91VItg507HGOfukZAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OmMNEeWp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741135409; c=relaxed/simple;
+	bh=OKHDmjwimxOhnW7rYl67IZUwnThMZFxl+dKmmw13jnw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Jt7pfrESBwQAiufH83VMGcx3Olk8M+izxNLHNKjCTR3PRFiSQFAIcfhpbFikZumEW8V5sLx9jZbBoHfx6GXoX+cJGBwNzSa+UM0MiX1zjTQfkwyuxNHnk1PxPXlxITzX+NHlVsBssWnQa3uwN3x6tRUZKL3IAvbYbR2Kqnq/DWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=nifRQEjK; arc=none smtp.client-ip=185.70.40.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OmMNEeWp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21EFEC4CEEB;
-	Wed,  5 Mar 2025 00:17:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741133870;
-	bh=GCwnNMHtzCFU1wUrFNnbzOpDwp4f92WgfqmKFjh0qtk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OmMNEeWpwMxhWo9WisWFmyn4hZhObP21OQGDrxdaUvrlJBNNogBAufsQ8C7X8XiRj
-	 QVqWONyKwKUyte/CdwBTR61br5MkgvUynOA0N+zAtSFXt1r0x0vHLS08Zp1nywmNp8
-	 bPbCrjc4YmZ9VX4dd+34qzuFK5uDrZ8qaJvgYvIApyDJVu34mHD4c9M1ynJumVOuu5
-	 IBsk3Pcdhm5B0o3EPCpSbHoUtnVk1teJ9NthRLwPgOprOBbzYjvimoxRUx3QqtB1ef
-	 sEevljJhuvemDMi9TrgWwDYc6p4ikBsFeCZBFyp5DvXObHKz2W6JY5UeMHjq+dr5oo
-	 UpmuAnxG/z84w==
-Date: Wed, 5 Mar 2025 02:17:45 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="nifRQEjK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=3uh6k4mdevdztoqxvfqc4bjqgu.protonmail; t=1741135404; x=1741394604;
+	bh=dIrvwY3gB1CriE8+CIS56SQUkbk7cXnqzrPo4rZ63FU=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=nifRQEjKdHZaMqLLKkLYXVtrVGLLydNHSVkmWmk1aqksYjIU+rB+D4ediv568XcGs
+	 HyjOnHsZT1W2qM+BzGXKtVcs4IHYiwLVSyrOTz6vkY2Ks0QxEoYdK0yY65q4av1xF3
+	 fJZB7W5XGIktXCVhZ5iiZ73iN/86kzKRtiVOXe3l8ibhXFy0gYp8CEVlWW51G6fRO3
+	 L2530YW10zHZpvbsS+4czTg7GTUkHz+DtjofZ6KrLNHml7oH7KPAClYkKLcl6mnodW
+	 5Zdfifn4Jhi4HgsqBmfJ/b00PcKV73Q4VO5+I9bZwLet2s/P1NHiRmWroEUqmDYt9W
+	 frN7+SZUpvO6g==
+Date: Wed, 05 Mar 2025 00:43:18 +0000
+To: Jarkko Sakkinen <jarkko@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 Subject: Re: [PATCH 22/22] MAINTAINERS: add entry for the `pin-init` crate
-Message-ID: <Z8eYKXCl0co-GLaf@kernel.org>
-References: <20250304225245.2033120-1-benno.lossin@proton.me>
- <20250304225245.2033120-23-benno.lossin@proton.me>
+Message-ID: <D87WZI6NPPOG.EJ4OGCTG4O9R@proton.me>
+In-Reply-To: <Z8eYKXCl0co-GLaf@kernel.org>
+References: <20250304225245.2033120-1-benno.lossin@proton.me> <20250304225245.2033120-23-benno.lossin@proton.me> <Z8eYKXCl0co-GLaf@kernel.org>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: a090e1ffc9ea20c64209e66d6bd9d552dfa070e0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250304225245.2033120-23-benno.lossin@proton.me>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 04, 2025 at 10:56:27PM +0000, Benno Lossin wrote:
-> Add maintainers entry for the `pin-init` crate.
-> 
-> This crate is already being maintained by me, but until now there
-> existed two different versions: the version inside of the kernel tree
-> and a user-space version at [1]. The previous patches synchronized these
-> two versions to reduce the maintenance burden. In order to keep them
-> synchronized from now on, separate the maintenance from other Rust code.
-> 
-> Link: https://github.com/Rust-for-Linux/pin-init [1]
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-> ---
->  MAINTAINERS | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 8e0736dc2ee0..ced7fac4dbbe 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -20735,6 +20735,19 @@ S:	Maintained
->  F:	rust/kernel/alloc.rs
->  F:	rust/kernel/alloc/
->  
-> +RUST [PIN-INIT]
+On Wed Mar 5, 2025 at 1:17 AM CET, Jarkko Sakkinen wrote:
+> On Tue, Mar 04, 2025 at 10:56:27PM +0000, Benno Lossin wrote:
+>> Add maintainers entry for the `pin-init` crate.
+>>
+>> This crate is already being maintained by me, but until now there
+>> existed two different versions: the version inside of the kernel tree
+>> and a user-space version at [1]. The previous patches synchronized these
+>> two versions to reduce the maintenance burden. In order to keep them
+>> synchronized from now on, separate the maintenance from other Rust code.
+>>
+>> Link: https://github.com/Rust-for-Linux/pin-init [1]
+>> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+>> ---
+>>  MAINTAINERS | 13 +++++++++++++
+>>  1 file changed, 13 insertions(+)
+>>
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index 8e0736dc2ee0..ced7fac4dbbe 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -20735,6 +20735,19 @@ S:=09Maintained
+>>  F:=09rust/kernel/alloc.rs
+>>  F:=09rust/kernel/alloc/
+>>
+>> +RUST [PIN-INIT]
+>
+> In some subsystems the order is exactly the opposite. E.g.,
+>
+> ASIX PHY DRIVER [RUST]
 
-In some subsystems the order is exactly the opposite. E.g.,
+I think that `RUST [PIN-INIT]` makes sense in this case, since it is a
+core Rust library. In the example you gave above, the `ASIX PHY DRIVER`
+subsystem already exists, so it makes sense to have a rustified version.
+With pin-init, there is no C counterpart. So IMO the only other
+alternative would be just `PIN-INIT`.
 
-ASIX PHY DRIVER [RUST]
+---
+Cheers,
+Benno
 
-> +M:	Benno Lossin <benno.lossin@proton.me>
-> +L:	rust-for-linux@vger.kernel.org
-> +S:	Maintained
-> +W:	https://rust-for-linux.com/pin-init
-> +B:	https://github.com/Rust-for-Linux/pin-init/issues
-> +C:	zulip://rust-for-linux.zulipchat.com
-> +P:	rust/pin-init/CONTRIBUTING.md
-> +T:	git https://github.com/Rust-for-Linux/linux.git pin-init-next
-> +F:	rust/kernel/init.rs
-> +F:	rust/pin-init/
-> +K:	\bpin-init\b|pin_init\b|PinInit
-> +
->  RXRPC SOCKETS (AF_RXRPC)
->  M:	David Howells <dhowells@redhat.com>
->  M:	Marc Dionne <marc.dionne@auristor.com>
-> -- 
-> 2.47.2
-> 
-> 
-> 
+>> +M:=09Benno Lossin <benno.lossin@proton.me>
+>> +L:=09rust-for-linux@vger.kernel.org
+>> +S:=09Maintained
+>> +W:=09https://rust-for-linux.com/pin-init
+>> +B:=09https://github.com/Rust-for-Linux/pin-init/issues
+>> +C:=09zulip://rust-for-linux.zulipchat.com
+>> +P:=09rust/pin-init/CONTRIBUTING.md
+>> +T:=09git https://github.com/Rust-for-Linux/linux.git pin-init-next
+>> +F:=09rust/kernel/init.rs
+>> +F:=09rust/pin-init/
+>> +K:=09\bpin-init\b|pin_init\b|PinInit
+>> +
+>>  RXRPC SOCKETS (AF_RXRPC)
+>>  M:=09David Howells <dhowells@redhat.com>
+>>  M:=09Marc Dionne <marc.dionne@auristor.com>
+>> --
+>> 2.47.2
+>>
+>>
+>>
+>
+> BR, Jarkko
 
-BR, Jarkko
+
