@@ -1,102 +1,156 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1868FC139;
-	Wed,  5 Mar 2025 21:07:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570D41EE7AD
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Mar 2025 21:07:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741208852; cv=none; b=AndgHQ0JMgmTWegLJyo1qrBboQv3gqJFPan/gYgy5s1NWgk3umMrO+KQbL7vu11Ut6lPi4nJvGs3vgLv9PhNWqzT3J8XoExBKYISQDppK/5gEx18fR/fX7zdNkX9LbypDef6SdmVnrSBzc3LUKYRpFt0Oci0XF1o9q+MOBxp/gw=
+	t=1741208878; cv=none; b=hh09nLAc3AWi5enBJVcSlJ87+fzR64+ySXFxz8iCS7OfwVcmFfO0IurT+H8mQUsvgYyDsUUJ1y/W8os3rSDwaJGJERwgJnzKHKS1AdXP2LIxeldiDABA1kzrSZYJHFoYP0nUsFll2IcOl0ZbLrgkIvd1UW8dkURLcLihMpZY6AQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741208852; c=relaxed/simple;
-	bh=ppeUxjaKjmx50Q3bQDc5N6dSfYxyGJbGKWKkwVwTeuI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RdYbxil7VmgO+9MGfmBPrvLpiNzFfMfu+DTXceVp8n20HnyzOsjMCvnSVWqnsjvMtRT4u5PH5y9XvqXsmHLzy4fLgtkDGzSBINpukNTaNWNA/MiGmU5bC/REGVLzA7WssSK+ZgdrTalqMB4o3piD8OHGkRFtJ4Nb45RFyQ/1Wuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QRlRwE++; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1741208878; c=relaxed/simple;
+	bh=27TKBLVqvmk3OjPcYoB4b67c2iTmLEcq1jS2S1mD4+o=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=RKr80hHWKU+VdFPj4LYWVQz1WWsVWhtrVm2FBHsgLsW4SdGem/1knde0wBBHo+DhxzHPXcxWSAvGc46p1fQ1nYmElt/jt503NPOJV1Lf9AAVJQCZVkic9e1o8b+/Mqcx9NnvjrHSN9K1HbKTVnDCxSYb+xYRKueVWh5vDsFN5Gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tLx0wFVY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QRlRwE++"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2ff53b26af2so3460a91.0;
-        Wed, 05 Mar 2025 13:07:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741208850; x=1741813650; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ppeUxjaKjmx50Q3bQDc5N6dSfYxyGJbGKWKkwVwTeuI=;
-        b=QRlRwE++KX6AFIpsF2Fd4sRq0fT21IBTnqFlFtB1sZ+rt7G5wrkz6fQqmf/1mE8D/e
-         yvwTgJBpk7L/t/6DjNiMqHI10NB1nDjj7waK8mhBLo/a4EoojcbwvglZ7FfX5648lWpb
-         hciLaUmRj5Uvb9ycfUL1T0ztLE+MbGe9mIN3XrtkRmXEaeYE9biErwQyXzPIC5mSOiCp
-         Jj6aRKLtM3vGzijw427JBX1hvaf5KjyYTEqdO9dbA++txTlMTA6vxrRZVVPTv4AbE3pg
-         BI0AP6vUBNNZO+nfuNcsbhO8h23svilV6gnNvD486DPGZ2CA3TMkhTRK1mKzHwD+C0R/
-         B+AQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741208850; x=1741813650;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ppeUxjaKjmx50Q3bQDc5N6dSfYxyGJbGKWKkwVwTeuI=;
-        b=PZ7UqJiPj92F6Jc6YOnYxBft7aQD066neyG/yMoZmTZ0JCny0YCSfZF+aL/mpVtsTZ
-         +DPEGth+yNlP2ygbNZpOsMYv1U4KmVQvHae9pDSaxYv0upADrX38DfrYudWL5+sFLYk1
-         ckqyFwmBHFiLSRBWrW1Cu9KDLFiZrpYHtT+AnHYVjMtxW+yLgeE23I1gNNGyx7obG3zr
-         S7jUYzsywnAnlc6VT87uhEm0Ki6wVRxNxPksE7TIIxqRAnZdiCsLUiZEVkp6GGn3ZccW
-         +fxbbq4beFNYz3kI5JLZKmQYit8GpjFqE9I7HkxfNGgiEjJZIZA74WOg+Qu3so//ZXk+
-         Nyzg==
-X-Forwarded-Encrypted: i=1; AJvYcCUOfKYkoi5p8tiOblvSvAcoVO0xMHrr3A14KZCPrOVrKJPlTrliY0AVBu+4FkvJLjCVYDxc1DrJpvI=@vger.kernel.org, AJvYcCUdSruTCks6k1VUINidBJ026fnw1aigniE3eXh6yhLtKiCc9vijTnGErdP0PzoAru6gOjTIKVtar2KxyHcy/j8=@vger.kernel.org, AJvYcCWDWqOPghKdBjBDqwklY75vWbGTw8LdZzXXd17yOMiXwlOOjCQ+6a6xj+cl7hOPw/INaAnHypIZVtDusYDk@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzaCyKNlqd95TtgCKyaWcRLYo1PD3N/VtyTbgy/r6fA0cvNBH+
-	dKMPIIh0LxBdzVuYlgDHuCh1hnAKAe1aYKfYL6SqLkPHEBM0uaQsqV6llHBXzidFT/Jps967wRR
-	tnESyDe7LuYB0wa/xc/JXBM8iDrE=
-X-Gm-Gg: ASbGnct7h+xZCAlryw/ZHJIhTqEdpcIj2ObGXe/uf+j7WZWaJW+NwW1i4cHQwdJYVSk
-	LZrgRpNRfWKjpK/YFGT1exzsUC7DXSmNzvQRb/sOzl33ZgpzIfPxXdlnPb0N7fH6N6smj6T3h3k
-	IAUHzX7LnG0SCMB/IjFkW8VWNk3g==
-X-Google-Smtp-Source: AGHT+IFdCsF1vk5OPN4taJHp2TBXL+JUlxGZBmkkbeifhcezimLuADcrM7P2FojcMB4CukfeYQQYekuvC1Sp9CWZOJY=
-X-Received: by 2002:a17:90b:3504:b0:2ee:6563:20b5 with SMTP id
- 98e67ed59e1d1-2ff49634954mr3085426a91.0.1741208850256; Wed, 05 Mar 2025
- 13:07:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tLx0wFVY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C925FC4CED1;
+	Wed,  5 Mar 2025 21:07:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741208876;
+	bh=27TKBLVqvmk3OjPcYoB4b67c2iTmLEcq1jS2S1mD4+o=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=tLx0wFVYSrlbLu8DOP7OooS00piK0dJ+jlM3xEafgGWefk1qoVf3xv21YOQHqf2mR
+	 0oDkN+BJqH4BjUmxXdBrmXBjDp3TgAzsQuiiUWijhmZzDaDRNo9NRb74Y9dMpeHx7R
+	 kUAFEp4k2hwWWHaJISI3nUoPmokF4I0ztp/0j3JYWpMPDGaY19mqnJQKeZaAvc0XZE
+	 1sGtPPdNUL+XlrDh86sntkiFay/03Ra3UW/xHyGkVVu1PEIFGpTuNkymF9DLksuBnA
+	 xl7BRof/8N+Kgv/8xdkG8aT8Q7TqnOk3p1f3HXKW7BwSFiX+tNF00Ggrxef9ahoIUQ
+	 DNv0qQ7fQERFQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Boqun Feng" <boqun.feng@gmail.com>
+Cc: "Dirk Behme" <dirk.behme@de.bosch.com>,
+  <rust-for-linux@vger.kernel.org>,  <ojeda@kernel.org>,
+  <daniel.almeida@collabora.com>,  "Gary Guo" <gary@garyguo.net>,  "Alice
+ Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>
+Subject: Re: [PATCH v3 2/2] rust: types: `Opaque` doc: Add some destructor
+ description
+In-Reply-To: <Z8icwtIpZ3PO9YcZ@boqun-archlinux> (Boqun Feng's message of "Wed,
+	05 Mar 2025 10:49:38 -0800")
+References: <20250305053438.1532397-1-dirk.behme@de.bosch.com>
+	<hVvs4-cEyMjFMKMMqergIA4OCAIJUIfXQGi2a_uisGZaLJHUWiNtGPNASjjeprDQrtNtasMOfTrRIiYwXE2zgg==@protonmail.internalid>
+	<20250305053438.1532397-2-dirk.behme@de.bosch.com>
+	<871pvbhqap.fsf@kernel.org>
+	<eGDvv6uA00fjuGAgV8uknZos4J9VcrxQ7lk9brRpmdGEGIHYZlxk-ZRsGxXsr-SCZE6IVEuPKs5ko9gukJwo7Q==@protonmail.internalid>
+	<Z8hwGGn9huDjyDWN@tardis> <87v7sn759g.fsf@kernel.org>
+	<n0Uj2Z9c_20rMgNGkpHAbJ2IQS5ueeREBy6NHdwpCp8vg9V5JrRPJbP3xBFssuyDTcN1JUulMK3cwwDu0U0fkQ==@protonmail.internalid>
+	<Z8icwtIpZ3PO9YcZ@boqun-archlinux>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Wed, 05 Mar 2025 22:07:33 +0100
+Message-ID: <87zfhz5gq2.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250304173555.2496-1-dakr@kernel.org> <20250304173555.2496-2-dakr@kernel.org>
-In-Reply-To: <20250304173555.2496-2-dakr@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 5 Mar 2025 22:07:18 +0100
-X-Gm-Features: AQ5f1Jo9uyXmUsRhx9aiXZGx5yBRRudRw6l9QRLBH4aKQdIv0iL_aGAt-0G_uyM
-Message-ID: <CANiq72kr1NU-xs2f8TG3XXG5su4HmZG0TGj6p2vtrzygxTv0TA@mail.gmail.com>
-Subject: Re: [PATCH v5 1/5] rust: module: add type `LocalModule`
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: airlied@gmail.com, simona@ffwll.ch, corbet@lwn.net, 
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, 
-	ajanulgu@redhat.com, lyude@redhat.com, pstanner@redhat.com, zhiw@nvidia.com, 
-	cjia@nvidia.com, jhubbard@nvidia.com, bskeggs@nvidia.com, acurrid@nvidia.com, 
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
-	gregkh@linuxfoundation.org, mcgrof@kernel.org, russ.weight@linux.dev, 
-	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, nouveau@lists.freedesktop.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Tue, Mar 4, 2025 at 6:36=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
-rote:
->
-> The `LocalModule` type is the type of the module created by `module!`,
-> `module_pci_driver!`, `module_platform_driver!`, etc.
->
-> Since the exact type of the module is sometimes generated on the fly by
-> the listed macros, provide an alias.
->
-> This is first used by the `module_firmware!` macro introduced in a
-> subsequent patch.
->
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+"Boqun Feng" <boqun.feng@gmail.com> writes:
 
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
+> On Wed, Mar 05, 2025 at 06:32:11PM +0100, Andreas Hindborg wrote:
+>> "Boqun Feng" <boqun.feng@gmail.com> writes:
+>>
+>> > On Wed, Mar 05, 2025 at 08:47:42AM +0100, Andreas Hindborg wrote:
+>> >> "Dirk Behme" <dirk.behme@de.bosch.com> writes:
+>> >>
+>> >> > In the discussion [1] some `Opaque` documentation updates have
+>> >> > been proposed. In that discussion it was clarified that `Opaque`
+>> >> > is intended to be used for (partial) uninitialized or changing C
+>> >> > structs. And which consequences this has for using raw pointers
+>> >> > or the destruction. Improve the `Opaque` documentation by adding
+>> >> > these conclusions from that discussion.
+>> >> >
+>> >> > Suggested-by: Daniel Almeida <daniel.almeida@collabora.com>
+>> >> > Link: https://lore.kernel.org/rust-for-linux/F8AB1160-F8CF-412F-8B88-4C79D65B53A1@collabora.com/ [1]
+>> >> > Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+>> >> >
+>> >> > ---
+>> >> > Changes in v3:
+>> >> >    * Add the "terse" proposals.
+>> >> >    * Move the non-linkage artifact from patch 1/2 to here.
+>> >> >
+>> >> >  rust/kernel/types.rs | 26 +++++++++++++++++++++-----
+>> >> >  1 file changed, 21 insertions(+), 5 deletions(-)
+>> >> >
+>> >> > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+>> >> > index af30e9c0ebccb..f370cdb48a648 100644
+>> >> > --- a/rust/kernel/types.rs
+>> >> > +++ b/rust/kernel/types.rs
+>> >> > @@ -271,17 +271,33 @@ fn drop(&mut self) {
+>> >> >
+>> >> >  /// Stores an opaque value.
+>> >> >  ///
+>> >> > -/// [`Opaque<T>`] is meant to be used with FFI objects that are never interpreted by Rust code.
+>> >> > +/// [`Opaque<T>`] opts out of the following Rust language invariants for the contained `T`
+>> >> > +/// by using [`UnsafeCell`]:
+>> >> >  ///
+>> >> > -/// It is used to wrap structs from the C side, like for example `Opaque<bindings::mutex>`.
+>> >> > -/// It gets rid of all the usual assumptions that Rust has for a value:
+>> >> > +/// * Initialization invariant - the contained value is allowed to be uninitialized and
+>> >> > +///   contain invalid bit patterns.
+>> >> > +/// * Immutability invariant - [`Opaque<T>`] allows interior mutability.
+>> >> > +/// * Uniqueness invariant - [`Opaque<T>`] allows aliasing of shared references.
+>> >>
+>> >> This last one is wrong (I know it's probably my fault, sorry). It should be:
+>> >>
+>> >>   /// * Uniqueness invariant - [`Opaque<T>`] allows aliasing of **exclusive** references.
+>> >>
+>> >
+>> > Hmm... are we trying to say "`&mut Opaque<T>` still cannot mean
+>> > noalias" here? If so I feel the wording might be confusing. I would
+>> > suggest we don't use "uniqueness" here. Maybe something like:
+>> >
+>> > * Always aliased invariant - `&mut` [`Opaque<T>`] is not necessarily a
+>> >   unique pointer, and thus the compiler cannot just make aliasing
+>> >   assumptions.
+>> >
+>> > (I use the wording from UnsafePinned[1], maybe there could be better
+>> > wording)
+>> >
+>> > [1]: https://rust-lang.github.io/rfcs/3467-unsafe-pinned.html#summary
+>>
+>> I like my wording better. It says the same with fewer words, and we have
+>> a more wordy section below anyway. We could combine:
+>>
+>>  * Uniqueness invariant - [`Opaque<T>`] allows aliasing of **exclusive**
+>>    references. That is, `&mut` [`Opaque<T>`] is not necessarily a unique
+>>    pointer.
+>>
+>>
+>> How is that?
+>>
+>
+> I think my biggest problem is the word "allows", the phrase "allows
+> aliasing" sounds like Opaque<T> provide something *optional*, however,
+> as I understand it, Opaque<T> here just disallows certain optimization
+> from compiler, in other words, programmers want to use `Opaque<T>` to
+> forbid something, hence "allows" may not be the good word to use here?
+>
+> How about:
+>
+>   * Uniqueness invariant - [`Opaque<T>`] disallow alias assumptions
+>     made by compiler on an *exclusive* references.
 
-Cheers,
-Miguel
+I don't object, but I feel like we should be able to define this within
+the context of the Rust language, without going into details about
+compiler internals.
+
+Without `Opaque` it is illegal to have aliased `&mut T`. With `Opaque`,
+it is legal to have aliased `&mut Opaque<T>`. Or at least that is my
+understanding.
+
+
+Best regards,
+Andreas Hindborg
+
+
