@@ -1,103 +1,101 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB7420A5D3;
-	Wed,  5 Mar 2025 23:02:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95E81F7076;
+	Wed,  5 Mar 2025 23:02:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741215743; cv=none; b=fCz9CdQjdYD/3l/I5tVu9Qzn2D8e3SnlK3sBCqIykXQ6wl2ks/qt8+ARstV0kL9w7iEGGmquijxkJttLnNNvunMrelobIZOI6Vfc6RG7ZGS9XVj9WAamTRJpnxAi6B7hQzAh4SqcmM+9HG56PVUA03Ikahm+zZro6mcLE55qxks=
+	t=1741215765; cv=none; b=LLPHlDkcEH8JYVYs5hC2fJwPt1DFd+wI4b95zLiqIx81Rmd/hN2hwyJXcAz4J0r9XvMaz2ZYEM67Sk9+Nm6DuQq0OAesr8qKGRTeBa1heUXJriVXx+kHL53ybVqGqzDAByWrUZZxNd/jDLBOmUIRZwonKEJBjTV/FwJ6AfxWAWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741215743; c=relaxed/simple;
-	bh=CrS8Z2lH5l661WpjSYOQYpm59vMadX9D3uzoIiDzEQ8=;
+	s=arc-20240116; t=1741215765; c=relaxed/simple;
+	bh=Iao+jiYlJurNBU+Jal+YJXayXPoB55IWkVHQUQFmdYA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EaA4nCocdKMgm9y+zTPgmn7KszCXeICFJ7oNWttq14jxtkyxAMyGUj/jFE3Q3nj62sFqXmlMr6KDlgm52VH6t3F7f3bqriE3PKPgEUBek2IVYvILFYnV3NlaDyusxl6j2a9w+ddScMOsP/pn/8/vAsRd9xqa2GToOW2M7/kHFD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MGQFbKaH; arc=none smtp.client-ip=209.85.216.46
+	 To:Cc:Content-Type; b=Rz4uYkZGSOTDUJxw4xs0tookdVUqKxKLCqBPeEaGHmtAv40sl4ePH2WdN5qEVclDRth6v71VvejWBN+fHjId2q5gceTMxKNhWMgjvz5RN2WtQvh+mfykIAaa46PCpkJvSqfZYTOYZfFW3W56bL5/Dypt8FoKjRicgbDPq43HcvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y17ZoXbA; arc=none smtp.client-ip=209.85.208.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MGQFbKaH"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2ff5544af03so23084a91.1;
-        Wed, 05 Mar 2025 15:02:20 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y17ZoXbA"
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-30b8180f111so2351fa.1;
+        Wed, 05 Mar 2025 15:02:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741215740; x=1741820540; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1741215761; x=1741820561; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DU0JYgz8loA5MWXHcsC5YAnENw3ohHfJ8gchwQ4NDqk=;
-        b=MGQFbKaHKVnMQ+iTFVWlPy+IhJBiFAyklnxyzzT0LL0aI0pPizaqvtn0jV0bq0Qp2j
-         QQYdIMbK+5NjeYZrg67wW4Y5uEjaOBowzCJc3+4/9TcL8t1nqQ9N6oSnixRfcBTLei5n
-         SMftv4cOxGtNCuTJTjryQh8HFg/nwoWk9JwS6gSMpoYEXYdeLSyUYS15+U8ZAvy95ECa
-         oiPeM11zXP8Ur+htp0wiG/hYUAopqoR0jGXErm8vQzWUaWpF+Htcek6UB6iHwm4Nn45B
-         1CXEEgxqgEI26439hDlVOZGP7pxDMhvDcBcyuSkNqxSRFjY8yqb/AaYx23MJKPOtofwH
-         meXw==
+        bh=izWOF8CsHky2P/9iHwoyxsx4mkcmRlDtGIMSFLIO56U=;
+        b=Y17ZoXbALpGJUzYo4WxuwGrSxK2RAdiINqlvNmk8gDAL813p8xs8xoLal3fBxoytKD
+         poVXsLgIOYCiGDOP4H885YInbsBetEgp4bSyXu/+Ek7wpTvGb9yMZmSpcCK5u7IsH6Mb
+         Bwv/K7toL006XSH6YKlca5GfXbqrHFPJU92M8x5rbRdDu1tFE4O7fEGLe3NNhpnbmpjo
+         ysn/h7bCWiz8j/kkHWF5tnW4AxUEmoB7V+9XxHMjFe0rTBsGOFQCsMR2tQNihCVyDLzR
+         raExyDwTJ/VkPDH7/szT8rgzI629iFCxJoNench2kl+LgXTNGhUwS1cgVOYK5R4qsy99
+         Pypg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741215740; x=1741820540;
+        d=1e100.net; s=20230601; t=1741215761; x=1741820561;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DU0JYgz8loA5MWXHcsC5YAnENw3ohHfJ8gchwQ4NDqk=;
-        b=YIg42L/zi2mvYBRkiDflv3dHvdFBD9Y5vX3/I2KwO71KADBxdvLLbUBj4gjJro9T2S
-         Wr9cmTN6KKAoV2Mko/BgXiV2/hbGB8tjAAmONmQ/nYf9gitUkdJbL/yOxGTEUrc9b2Fl
-         vBQasu/MmhfkTyBmINaJCUgmbS8fuFQCIe8Bcwwbw9hlyC6TzP6ug5JQj+pSVz9+WZZd
-         YhQYMtgE52zCpEv7UBPFeow2trp8uswh5EGqA5htQx5wgyL2l4vMLY0vApCS6tle4uec
-         Cms3UWGx9vTAHbpCLe0dVVtbnl/wJr2z3F1jzioozVsth7rIAfu+lkl/xQCw/c0TgSzN
-         lTBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUl2lCp8Pe/qDakHbWTsj23EucF4BxOGV91lS4NmDsNupd33VFZLhGIuI9/gwjVsTIiMXuoQVG4P1JvhKE=@vger.kernel.org, AJvYcCWRB1PWwU9GQX2SX6NlY4N6uvr3ilL0aYdVevK1FkFT/SudR7FipR/dmjKfMMJl6IzgwNt1kxsDsIRpQt1MD4w=@vger.kernel.org, AJvYcCXosqGfV5Fim60CmAKQKLobys03foAW1J3GxQ1qptZRqTfAbGa9PxP7cxPK557MFgQPrRGZnOQqJ0nJ@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPUTUbiNTkUQakLoeJC5XQYW+RgsDjbqY2BYJ6Q3pnrzCkP86N
-	8m4Tpp9EpWSmTDlcjZYmz8+Y+MlvRdNQcCgpu+EG8VfSUxjA+frwOx87mdXOL0FfFgyb0k5pf3R
-	w/s7pPbNdoGa9x1iMc3N1g+0Id4o=
-X-Gm-Gg: ASbGncuoSOd8WucLxixcwFa0YfSRFCe4j5n/Z4Pme0WwFQCL6EQQjNcQhmEiVR+lMOs
-	/6SHL3olse6F6lyP1pAdYcru5Ww64dsc9hgF1PuZUlRrQwd1hyOzkfCpKDOLPadXqNczMhzX4ez
-	Kybol7jjoCwhIktGGe4BvFTFucpA==
-X-Google-Smtp-Source: AGHT+IFVBDqZbEwRQ9Ywp34UPpcuUXspouep8Y78Gvm7RN1qbm3xmglctYZE8Nva4ApJBxvQskOIEVu0LMqHKJWkOXI=
-X-Received: by 2002:a17:90b:4b4e:b0:2fc:25b3:6a91 with SMTP id
- 98e67ed59e1d1-2ff497c18e3mr3223253a91.5.1741215739863; Wed, 05 Mar 2025
- 15:02:19 -0800 (PST)
+        bh=izWOF8CsHky2P/9iHwoyxsx4mkcmRlDtGIMSFLIO56U=;
+        b=KUsIMbF+iT3ljaentuL9OqB1AMX1MmsbwArTU87xztsaR9xxyEqwRGBELhHOWwzZ1H
+         qpJr3GdZmF/TSVs7yBmpkNMdEVLhR4mB2tGd2ykI2Dn9vNHc+4fQWzbJ74BZDlE9+xRI
+         huh3pzhfhzlaJkPz9kTC9FM43qsEjIPxpOPD3BEXLUADuf9qEjR3nFcY7FYZwxI8fMtf
+         rKmXRgBx2mmvqLtF+OL3po9WvLNV/z4r243fKGj1/i36LptLNDwwCmj9zq3WgaRLKXJb
+         f0g2SbFahM+GyUqjro+U3rSjfLAbWUZZ0BHP1/+TGuCYEnHCkB+VbSwJuetKdekYHrjj
+         5cSg==
+X-Forwarded-Encrypted: i=1; AJvYcCV/sxGDtMGExsgMdeV/jQTF3d9iK2VzleAZu63RBteR5IaVkokHVOXye4U7E7/DIAkyhG8K/Hyim9fOiiw=@vger.kernel.org, AJvYcCVw899O4/IR4zlNnViG0yE9UwalyBNYY95ROOkTkaZa2NJsP0CKPpgUZmQZBzp1YnSe++7Akrz9@vger.kernel.org, AJvYcCXOYVLCS311pWcGH5tcJRHnMPHWee62cqbtD0oJe/DH2uPMivFZ26DVmnthY9/8d07RKTx9njJeZuhvxt+iSOE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWzr7B5GKViQTjK2Y9HT7mIHP7RCpO/8vFaMMXUZErrApnc0IH
+	BFvFGXKRwquSVTlXWoYJsz69/RiFiwkXZoVDP8DTwwhVHPvBwur6Tb9DUfIdkOsBYUW8fhgnQk0
+	xfRDQU9zlfytRq7Oa6gTTnBsOumw=
+X-Gm-Gg: ASbGncsSPd6g1uNVuuj1HI774aQs+VG0D8wSPU+revkELeuidjO8/xtN7mGF1Y7vfXq
+	l1KRbtgawRHynrKZBkr1Eop5psooC1wPhL41p12Sc2Op2RX/eHrDMi0jIX5vF7hMxD/E5Up3kZH
+	Gu4nn7sh1DL/3EKnTKcuTIUjUkIA==
+X-Google-Smtp-Source: AGHT+IFgtP257f6CJPPlGgp0Mz4N6wXK4lbpecY1MTmq++5kQnP+oXyBJShSGDpA8ViHYOd+XEJ/nd9uaG1NVW6qMNQ=
+X-Received: by 2002:a2e:ad83:0:b0:30b:bdb0:f083 with SMTP id
+ 38308e7fff4ca-30bd7a4f453mr7462081fa.4.1741215760401; Wed, 05 Mar 2025
+ 15:02:40 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250213-aligned-alloc-v7-1-d2a2d0be164b@gmail.com>
-In-Reply-To: <20250213-aligned-alloc-v7-1-d2a2d0be164b@gmail.com>
+References: <20250305132836.2145476-1-benno.lossin@proton.me>
+In-Reply-To: <20250305132836.2145476-1-benno.lossin@proton.me>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 6 Mar 2025 00:02:05 +0100
-X-Gm-Features: AQ5f1JrS4W1LclZjnsUx9LBTl9i9YRM8HAgFLPtAtQHt9lipfjoQYxpBRnKjLf8
-Message-ID: <CANiq72=FhaZrgMTBSTXOQvg8jrAR+pbdUjt2gL2npjBh8881jw@mail.gmail.com>
-Subject: Re: [PATCH v7] rust: alloc: satisfy POSIX alignment requirement
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, DJ Delorie <dj@redhat.com>, 
-	Eric Blake <eblake@redhat.com>, Paul Eggert <eggert@cs.ucla.edu>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-man@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 6 Mar 2025 00:02:21 +0100
+X-Gm-Features: AQ5f1JogUvU_Wn9QEArgNWTh9ZFR7qOXnwwWFHmkzJXKd3bHMMqjcCK2czztXSs
+Message-ID: <CANiq72=LSN3GuhEsnRYY7DrGNBvQevAjvj8q9aoHRHffwMkXiA@mail.gmail.com>
+Subject: Re: [PATCH] rust: init: fix `Zeroable` implementation for
+ `Option<NonNull<T>>` and `Option<KBox<T>>`
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, stable@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 13, 2025 at 12:34=E2=80=AFPM Tamir Duberstein <tamird@gmail.com=
+On Wed, Mar 5, 2025 at 2:29=E2=80=AFPM Benno Lossin <benno.lossin@proton.me=
 > wrote:
 >
-> ISO C's `aligned_alloc` is partially implementation-defined; on some
-> systems it inherits stricter requirements from POSIX's `posix_memalign`.
+> According to [1], `NonNull<T>` and `#[repr(transparent)]` wrapper types
+> such as our custom `KBox<T>` have the null pointer optimization only if
+> `T: Sized`. Thus remove the `Zeroable` implementation for the unsized
+> case.
 >
-> This causes the call added in commit dd09538fb409 ("rust: alloc:
-> implement `Cmalloc` in module allocator_test") to fail on macOS because
-> it doesn't meet the requirements of `posix_memalign`.
->
-> Adjust the call to meet the POSIX requirement and add a comment. This
-> fixes failures in `make rusttest` on macOS.
->
-> Acked-by: Danilo Krummrich <dakr@kernel.org>
-> Fixes: dd09538fb409 ("rust: alloc: implement `Cmalloc` in module allocato=
-r_test")
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> Link: https://doc.rust-lang.org/stable/std/option/index.html#representati=
+on [1]
+> Cc: stable@vger.kernel.org # v6.12+ (a custom patch will be needed for 6.=
+6.y)
+> Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and `init::zeroed`=
+ function")
+> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 
 Applied to `rust-fixes` -- thanks everyone!
 
-    [ Added Cc: stable. - Miguel ]
+    [ Added Closes tag and moved up the Reported-by one. - Miguel ]
 
 Cheers,
 Miguel
