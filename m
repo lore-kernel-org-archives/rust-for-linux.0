@@ -1,95 +1,190 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED91C230999;
-	Wed,  5 Mar 2025 11:08:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3515A214A68;
+	Wed,  5 Mar 2025 11:10:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741172929; cv=none; b=rbbTb4/K5uzNQJJu8JWnpPqpu/8TffsqcBuV5HyUuk0Cd0OQQMmzqLwIep0U/A7MW1+A+m+mecsiv3dkXbFRAfjf1111yDKKWvmv/pa04oOE7w8GNCo3tEN3fwa6/fVRY+ahMRyIfQ09rHLQgspF9UkBDOqs0JiwrV0pXlIf99k=
+	t=1741173010; cv=none; b=TBxDDohKvgdUyPwRtrjXM0geX6fAE/vq0Jj3J55cA5vTR1iwRpD+7Cywiu5NPn1GaGY6mnxzZ7Z+fYnaQ2X5g8nrIgM+VEenDGAtt983gtNDVEOUNMpxDlMRLAgCA49w2QpN1p5qWZvI2ZLLEvgknT3hyt0fwXvcgHwzGwQWASo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741172929; c=relaxed/simple;
-	bh=yWZTTeKxN8nL5RGzPXzNAnHrZZFeb8GWlvbn/9ISyTc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=VqkzYQvVqS8gNIfrROc8GrR8gFVt6nCzU90ksd/RythGbe3LL1NdSaOSJqjK8lmDWzKOo7HK9gb8UTSNlKjjKPKBbUxBSzWuuwhDoFhnmsQCOIIyvToqqnOuLVs5RNSk9gdTvK+K/UWqb8Ct/fap3SDLK4yBYpfDu4+tBK2r0YM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iY4/RHxm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741173010; c=relaxed/simple;
+	bh=p1h54BOh8Q9XBTfcRZnJQ9PmT0Z8qvm1fYbU8PCxoBg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h5YgMkJCiXGh/sqoajeW0sva9obL7c39s5dRBOHrGY1N7v7ppagnIK7JUVJrg9XOKM9vRa/qxXp9MeFpBWQYEjqC8SxxmzIzs3Wdc8fwgkP9ZDw1ouYiXgUGrEqnFSFVG6fZMTaAWvNmNPr6VaFE0OcbpddgCZOc7865eTZ5lx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VmccNY89; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iY4/RHxm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01600C4CEE2;
-	Wed,  5 Mar 2025 11:08:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741172926;
-	bh=yWZTTeKxN8nL5RGzPXzNAnHrZZFeb8GWlvbn/9ISyTc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=iY4/RHxmzZxe19596aKIctSoRv3k8/3LcPome91wEYYjyjEsDgTKTUVIhQs7xEE4i
-	 pjeJbEaBxjdsfPEnYfdHEwTv23uyxEXf0rrl4pDJtffOe6MLvIXhnQqypFOK2jN6z5
-	 N/HPhVC0ASot2NQ6qGg8BybfkuCzegpp+8+i0KkHVQ4vAUOCvB9DMu2Bw3lBCPMY4F
-	 rU7Vs8Y9EoxL58YduU6TAL1GT3Nfl162FkRdaK+7UDS5o06Voo3huArskXi689TzlM
-	 6chDshozHjOBWltjrNTotBnLnq96ykJzhYDCE2iWjSkuiybsilc6F9WOVWMQPnHJeF
-	 e7+n04g09CG+Q==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-Cc: "Guilherme Giacomo Simoes" <trintaeoitogc@gmail.com>,
-  <alex.gaynor@gmail.com>,  <aliceryhl@google.com>,  <apw@canonical.com>,
-  <arnd@arndb.de>,  <aswinunni01@gmail.com>,  <axboe@kernel.dk>,
-  <benno.lossin@proton.me>,  <bhelgaas@google.com>,
-  <bjorn3_gh@protonmail.com>,  <boqun.feng@gmail.com>,  <dakr@kernel.org>,
-  <dwaipayanray1@gmail.com>,  <ethan.twardy@gmail.com>,
-  <fujita.tomonori@gmail.com>,  <gary@garyguo.net>,
-  <gregkh@linuxfoundation.org>,  <joe@perches.com>,
-  <linux-kernel@vger.kernel.org>,  <lukas.bulwahn@gmail.com>,
-  <ojeda@kernel.org>,  <pbonzini@redhat.com>,
-  <rust-for-linux@vger.kernel.org>,  <tmgross@umich.edu>,
-  <walmeida@microsoft.com>
-Subject: Re: [PATCH V6 2/2] checkpatch: check format of Vec<String> in modules
-In-Reply-To: <CANiq72md_orajH_TREr=ng8Y=o3Xkgw-V5oxbX8vYXOE2UDNaQ@mail.gmail.com>
- (Miguel
-	Ojeda's message of "Wed, 05 Mar 2025 12:04:54 +0100")
-References: <87tt89gfe4.fsf@kernel.org>
-	<20250304205054.207285-1-trintaeoitogc@gmail.com>
-	<CANiq72koDba445gMYtC_VEcFk2+O-Xg2-2y6uMyp7onBy=7rcw@mail.gmail.com>
-	<4D_uEoEtgYCzOLuPzhX9Vs7J1uScCFl9I8iUfPXkglvk62R7uBUyCd-_o9rqmINGO1eVIm5gGyfC2_25bhigHQ==@protonmail.internalid>
-	<CANiq72kNG7jZf+hZARjyAp-uG=x99CrUKZvJYT_icaF0x0G6iw@mail.gmail.com>
-	<87v7sngbgx.fsf@kernel.org>
-	<6o6Tt0Lz1YrpxN_GP0E60E9u7KFQOnUnvevc2x_vt_Zb6_96DYHobatt6an_o2JtTjnaTUtTM948nnZ_7QdbSQ==@protonmail.internalid>
-	<CANiq72md_orajH_TREr=ng8Y=o3Xkgw-V5oxbX8vYXOE2UDNaQ@mail.gmail.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Wed, 05 Mar 2025 12:08:30 +0100
-Message-ID: <87ldtjenv5.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VmccNY89"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2feaca4e99cso9862746a91.0;
+        Wed, 05 Mar 2025 03:10:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741173008; x=1741777808; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=iMVkt8VvD9u0w9McePyp8QpG5OxxVEdJnPN4xngSa2I=;
+        b=VmccNY89vD6MDTzcHbNuM6mCkQbZ9rI8uv9fZVvTBwaWRJgmOVeziyIhXQ8f0XM1mE
+         Prczn78qj0Lk2rK5/6VA7rZwvEvAjcUKoXG7mEVuNSP5rtFgcKbaeRtGdsfUxDgSeeUy
+         9bjMBJW/BBvuF0yvyrf8/c3LSTmeMtWHEnacexO+HhVMIfZXqGMJWbodPtrD1SQrnSAO
+         mccncik3AGa61hzfIIBvE2TYSCnEJ1o6uqag3T4IYIlWOlrCVI5hL2BsUWicVi2aau/2
+         ucqfAoaLcjzj0O0S+sLbM9t0GGkp9HhtMRKd7bCqLVWpCZQ7Pr0xHbtYzg/RkYNK88eo
+         qszA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741173008; x=1741777808;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iMVkt8VvD9u0w9McePyp8QpG5OxxVEdJnPN4xngSa2I=;
+        b=NyXSv4l26koyjujc7bRH21qQLe+mfmuHxIYPUFzVgBleyYvIx+3RVIklT+eb3LSpwI
+         CH+daM8rCtAJcl5UzjxzD9g0gfbjiAPmHie3gEmAvCtcy78D2mK5feMhoOA439D8VqHW
+         La7eZfxJ5P00qHHGy9qd8qSQgxma96AcVbgkN9p0ZwSfymXFj0MDuBSsuVwAoj8h12j3
+         2U1fZ0v/v8EUamQhOQGsoHMnSQ4d0/almhGH1CKlqOsMAHKjtm+B6XYbMzNUFPjH5l7J
+         uPpQuxEdVT1goUYdtUMvtc5Lc+zPysgzs66LP+bKyNh8nxE4ZEvNwQePG2gHmabN2K+2
+         4Jkw==
+X-Forwarded-Encrypted: i=1; AJvYcCXZD/l1p8mlxBviQvVK/OUgmVdWChcH2DHLSVYZlI6mPyadv0JSYnOE5i/xRnCWfzBVV28rlUfXRpdyTiwsPg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YylJTET0wWdaZis7cC5AnLJkJiDJ8iTSWrYN6LaW4p3xwY4a2l0
+	1QdR2tWivKmM53LNe35Sb7xQCF8OF5OxEag/JBGbwjerNiQnQ9RcPBTYi4FD
+X-Gm-Gg: ASbGncs0eG9lgRX8paL605W19aNyw3XT/+IF5H6E2Q8czzDI2lx2pwRo5ODrlMGFzVM
+	Osz9byEeQoYsjqtewiHF1MW22HdX7/Qumkl00u4JGQ5U87lxY5gejwHXhN3h2E9cp5r0YI11wMK
+	12Ksj4OS6zA0Q63Vi1fX6pkpQWeC8GZ6V/3q39CJI35FcpCNt3jUOMZQluMBD3VGhoT8SgUMzQ1
+	7Jxh/6qD7jDhKXaIX/FOBuyzThZ/ZF1OnESY3mJV+ChkQsiyb3czbYdLI8k9RcIkmLU7aQNtIFU
+	MPof3x0CJt0m9ddnZMsBBRcHiU/3+E7Cfk2bTd+YzE2LPmUh9XJhKboPzctRJM1afrXPWtUhXwI
+	keV4ZKha2QbvETnSOsieDfw==
+X-Google-Smtp-Source: AGHT+IFluiMV7JrX1O1X/v1UbVS/X37LSME/ig8/X1xAoOdMRtTxpinwMPddXbT0s26nxPYJt9KENA==
+X-Received: by 2002:a17:90a:d2c3:b0:2ff:502e:62d4 with SMTP id 98e67ed59e1d1-2ff502e645cmr1921672a91.32.1741173007728;
+        Wed, 05 Mar 2025 03:10:07 -0800 (PST)
+Received: from mew.. (p4204131-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.160.176.131])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ff4e7737a5sm1060925a91.13.2025.03.05.03.10.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Mar 2025 03:10:07 -0800 (PST)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Cc: x86@kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	loongarch@lists.linux.dev,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	peterz@infradead.org,
+	hpa@zytor.com,
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	chenhuacai@kernel.org,
+	kernel@xen0n.name,
+	tangyouling@loongson.cn,
+	hejinyang@loongson.cn,
+	yangtiezhu@loongson.cn,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu
+Subject: [PATCH v4 0/4] rust: Add bug/warn abstractions
+Date: Wed,  5 Mar 2025 20:08:10 +0900
+Message-ID: <20250305110814.272792-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
+This patchset adds warn_on macro with the bug/warn abstraction that
+utilizes the kernel's BUG/WARN feature via assembly.
 
-> On Wed, Mar 5, 2025 at 8:53=E2=80=AFAM Andreas Hindborg <a.hindborg@kerne=
-l.org> wrote:
->>
->> Right, it needs a bit more tool support than running checkpatch.pl
->> needs. Perhaps we could move it from checkpatch.pl to the rustfmt make
->> target?
->
-> That could perhaps be an option for this case, though not sure if it
-> applies to all cases, i.e. `checkpatch.pl` also checks things that
-> only make sense to check in a patch and also things that are not
-> related to formatting.
->
-> Perhaps we want an entirely separate thing in `tools/` eventually, or
-> even out of the kernel tree, so that it can be easily run as a bot
-> etc. like in the past.
->
-> In any case, landing checks here is fine (as long as Joe et al.
-> agree), they can be moved or removed later if needed.
+Currently, Rust code simply wraps BUG() macro; however the approach
+doesn't provide the proper debug information. For example, I added
+bindings::BUG() to rnull's init method and got the following output:
 
-Absolutely. Just brainstorming at this point.
+# insmod /root/rnull_mod.ko
+rnull_mod: Rust null_blk loaded
+------------[ cut here ]------------
+kernel BUG at rust/helpers/bug.c:7!
+Oops: invalid opcode: 0000 [#1] SMP CPU: 0 UID: 0 PID: 31 Comm: insmod Not tainted 6.14.0-rc1+ #103
+RIP: 0010:rust_helper_BUG+0x8/0x10
+(snip)
+
+The kernel's BUG/WARN feature (lib/bug.c) can only be used from
+assembly. Rust code needs to directly execute the same assembly code
+used on the C side. To avoid duplicating the assembly code, this
+approach follows the same strategy as the static branch code: it
+generates the assembly code for Rust using the C preprocessor at
+compile time.
+
+The 1st to 3th patches export the BUG/WARN assembly code for Rust on
+x86, RISC-V, and ARM64 architecture, with no functional changes on the
+C side. They have already been acked by the maintainers of their
+respective architectures.
+
+The change for LoongArch assembly hasn't been acked yet so the v4
+doesnt' include it. LoongArch still uses the current approach; just
+wrapping C's macro.
+
+UML doesn't use the assembly BUG/WARN feature; just wrapping generic
+BUG/WARN functions implemented in C works.
+
+The last patch adds warn_on implementation on the top of the
+abstraction. To make the patchset easier to review, the remaining
+features such as bug() are not included in this patchset. These
+features will be added after this patchset is merged.
+
+This has been tested on x86, ARM64, and RISC-V (QEMU), with only a
+compile test performed for LoongArch and UML.
+
+v4:
+- added Acked-by tag to the RISC-V and ARM64 asm change
+- simplify the asm code
+- use the cfgs on the macro rather in its expansion
+- use a const fn for bugflag_taint over macro
+- dropped LoongArch assembly change
+- dropped warn_on_once; make the patch easier to review
+v3: https://lore.kernel.org/rust-for-linux/20250213135759.190006-1-fujita.tomonori@gmail.com/
+- rebased on rust-next
+- use ANNOTATE_REACHABLE macro (replaced ASM_REACHABLE)
+- added Acked-by tag to the x86 change
+v2: https://lore.kernel.org/linux-arm-kernel/20241218062009.2402650-1-fujita.tomonori@gmail.com/
+- remove target_arch cfg by using asm comment
+- clean up the changes to loongarch asm
+v1: https://lore.kernel.org/linux-arm-kernel/20241210001802.228725-1-fujita.tomonori@gmail.com/
 
 
-Best regards,
-Andreas Hindborg
+FUJITA Tomonori (4):
+  x86/bug: Add ARCH_WARN_ASM macro for BUG/WARN asm code sharing with
+    Rust
+  riscv/bug: Add ARCH_WARN_ASM macro for BUG/WARN asm code sharing with
+    Rust
+  arm64/bug: Add ARCH_WARN_ASM macro for BUG/WARN asm code sharing with
+    Rust
+  rust: Add warn_on macro
+
+ arch/arm64/include/asm/asm-bug.h              |  33 ++++-
+ arch/riscv/include/asm/bug.h                  |  37 +++---
+ arch/x86/include/asm/bug.h                    |  56 ++++-----
+ rust/Makefile                                 |   8 ++
+ rust/helpers/bug.c                            |   5 +
+ rust/kernel/.gitignore                        |   2 +
+ rust/kernel/bug.rs                            | 113 ++++++++++++++++++
+ rust/kernel/generated_arch_reachable_asm.rs.S |   7 ++
+ rust/kernel/generated_arch_warn_asm.rs.S      |   7 ++
+ rust/kernel/lib.rs                            |   1 +
+ 10 files changed, 222 insertions(+), 47 deletions(-)
+ create mode 100644 rust/kernel/bug.rs
+ create mode 100644 rust/kernel/generated_arch_reachable_asm.rs.S
+ create mode 100644 rust/kernel/generated_arch_warn_asm.rs.S
 
 
+base-commit: beeb78d46249cab8b2b8359a2ce8fa5376b5ad2d
+-- 
+2.43.0
 
