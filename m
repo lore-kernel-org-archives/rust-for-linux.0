@@ -1,43 +1,50 @@
-Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C29204F79;
-	Wed,  5 Mar 2025 09:35:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C0BF1FDE37;
+	Wed,  5 Mar 2025 09:53:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741167353; cv=none; b=BrYuHh6pA0xlgiFIiusJNUOqVF2UEbY2RejhNbGg6aH2UoLOyEaB2gmmh3egUmRia1g5NgeQotIHwYY14HRM0MZpkguTxmLIGppvfmewNuAaFVBym/A56iRiwc5ZIZOZAKMmA59H9fCaSSUBr7NADGRO/bOPxYLEu7zhPRn6gTI=
+	t=1741168384; cv=none; b=OPzMEqvAe69hx0TR4ji5eB1wBb2AQQkp0HGZvFSIw0G6n+LrXFFJT+rGeCtNyHeqd5mfhefBOvJ2rK1LZ6py9znzp9Y44Qo2Nkkduic5O4HlZ6UtmXXmlFJkhurvTz7Od2pb2yMChylmtkVoAyihuz9DRN3nFBb5/SVXz85s264=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741167353; c=relaxed/simple;
-	bh=GHUWpDrry/6boIg5nDt2BPkgd8ZHOrcBFue9Y1erYs0=;
+	s=arc-20240116; t=1741168384; c=relaxed/simple;
+	bh=+elOXc1SBi+STkRDAH/vjJLO0WJhOrFsLCA5uwZhWCg=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=bS/aVYyNFRfsUX9E8Pp6wbb4EZWnFytbLEVnwm94zSvHKfHJ1XUgChh/FuDNY+VtpPDIw7pxehH8TFkyfhUv8Wao3/z6QZ6S7Bs3ajGJQPBY4xU419mEi5KTmSgAQrmcg8fxc9gKP9UnamofqwVyp2lAb8noBNT6bkmIzWze/bY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=p+F7Uy89; arc=none smtp.client-ip=49.12.72.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
+	 MIME-Version:Content-Type; b=rbWHVQe30syuqpptFW3BmslCNi0LVWhDYUet8z68+h5M5GBSgWLT0ui2bXpMTOjgfWNqWwWs8V+G4i+TVC2QZEA+DKde50gACk1uEHTiC89VfH72ZF1zMoekKBQYXvprkv84EMOy4RLiS4KqeEwZw+cq+OkUZYABoqYeVE5HH4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b1H/r7LL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="p+F7Uy89"
-From: Fiona Behrens <me@kloenk.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1741167350; bh=GHUWpDrry/6boIg5nDt2BPkgd8ZHOrcBFue9Y1erYs0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=p+F7Uy89F2eH2vL8a6KoD9ICAzOWuWk+Ve0NFSQrR3byOtAh5W84ZUYIbB0F8FOL6
-	 i0gP03CHZjMEZQj1xcckI9bOawJwt2u6ciU5CZj5h4NfjQf/2jVc3MOeeLZxqeq61v
-	 J/p3DoJ8QUCGoXg1UnicI941Hu/TeBtEy54Zcd8s=
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
-  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,
-  =?utf-8?Q?Bj=C3=B6rn?=
- Roy Baron <bjorn3_gh@protonmail.com>,  Andreas Hindborg
- <a.hindborg@kernel.org>,  Alice Ryhl <aliceryhl@google.com>,  Trevor Gross
- <tmgross@umich.edu>,  Danilo Krummrich <dakr@kernel.org>,
-  rust-for-linux@vger.kernel.org,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 21/22] rust: pin-init: re-enable doctests
-In-Reply-To: <20250304225245.2033120-22-benno.lossin@proton.me> (Benno
-	Lossin's message of "Tue, 04 Mar 2025 22:56:18 +0000")
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b1H/r7LL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18C38C4CEE2;
+	Wed,  5 Mar 2025 09:53:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741168383;
+	bh=+elOXc1SBi+STkRDAH/vjJLO0WJhOrFsLCA5uwZhWCg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=b1H/r7LLzW1PoyfsaQG5cse2Mukc79Tn+/RE11BRRORPI/myFnP3gHXcqW0mnCMEX
+	 22siTS2PARd2YP9bMgPIfT+IGTmPXIl5ywFaovmBgBmoyTTcgI5fgJZjIWB8O/lOqQ
+	 SE6P21ow6kV93bUtPd4mWrLzhsbYZ3AeLJvTQsOCqAXo60N7LJenz60PLXrIozamaS
+	 PpO9+o0EaO/sO8XQZ9pomH/bvpZFVZjti2954CB0LjPqa+sbOHgtbVM9Y6u1PVFLpS
+	 /UWs7OxVlVcUDJwOvjALOsT3V7emDYWhwqrDW1grV8nVbaxg4osfw9KOdKqlUB9Ei1
+	 YgfWhvN/l0Q4w==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Benno Lossin" <benno.lossin@proton.me>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Alice
+ Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
+  "Danilo Krummrich" <dakr@kernel.org>,  <rust-for-linux@vger.kernel.org>,
+  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 04/22] rust: pin-init: move proc-macro documentation
+ into pin-init crate
+In-Reply-To: <20250304225245.2033120-5-benno.lossin@proton.me> (Benno Lossin's
+	message of "Tue, 04 Mar 2025 22:53:36 +0000")
 References: <20250304225245.2033120-1-benno.lossin@proton.me>
-	<20250304225245.2033120-22-benno.lossin@proton.me>
-Date: Wed, 05 Mar 2025 10:35:49 +0100
-Message-ID: <m2zfhzes5m.fsf@kloenk.dev>
+	<PvTMOxu_O9hNZCnpZRlYj2yIiGONO7aZxT7F9mqfOwEMfFnE6ucILMz4aGehSJwWOKtsieqIrh__hd1b5T3z8w==@protonmail.internalid>
+	<20250304225245.2033120-5-benno.lossin@proton.me>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Wed, 05 Mar 2025 10:34:20 +0100
+Message-ID: <878qpjg6sj.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -46,13 +53,20 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Benno Lossin <benno.lossin@proton.me> writes:
+"Benno Lossin" <benno.lossin@proton.me> writes:
 
-> The pin-init crate is now compiled in a standalone fashion, so revert
-> the earlier commit that disabled the doctests in pin-init in order to
-> avoid build errors while transitioning the crate into a standalone
-> version.
->
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+> Move the documentation of proc-macros from pin-init-internal into
+> pin-init. This is because documentation can only reference types from
+> dependencies and pin-init-internal cannot have pin-init as a dependency,
+> as that would be cyclic.
 
-Reviewed-by: Fiona Behrens <me@kloenk.dev>
+`pin_data` et. al. is now re-exported both in `kernel::prelude` and
+`kernel::init`, but I guess that is fine?
+
+When you say "can only reference types", do you mean via links in the text?
+
+
+Best regards,
+Andreas Hindborg
+
+
