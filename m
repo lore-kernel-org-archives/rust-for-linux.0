@@ -1,196 +1,262 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2067.outbound.protection.outlook.com [40.107.20.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40964155A2F
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Mar 2025 05:34:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741152902; cv=fail; b=M6vHcYPI5YpVVYFms+4R8PtRSQ4gkrXZvSDHWZHEEH7O/S4XDyHxRT712ztpRz+lRK1/OVKkJ2oSURmWPbbLGT3a9R4LKE1rqnJMTT/mWfuYjIt0jOdVjnjG8bXF59XgUPHqqC77Gu59nEHWpbJJ3pPYxERbq7gZsTZmNJP1NQk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741152902; c=relaxed/simple;
-	bh=KYFvxuqo3MDQQu4/yKmMr49VHYERetRYoHOtWA40qds=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ITdt5mlsJSrumf3jnn6PFIFETMzkgRmXG4IBu42xgFvMUVxc1Z+EkyygvgTnCOjjbXTcJAj11a6PRGoC8pl2rnRMvt3zsMYKq7CrILjUf52GHCbP4RooKVeBAJ/Uqh5LOvU3De8zCsjBMEvI7hTDGfUgfSdpU2JKLLW5UbwL7mQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=bvIVzokl; arc=fail smtp.client-ip=40.107.20.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 918CD26AD9
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Mar 2025 07:30:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741159841; cv=none; b=nj24JYNzENewQ5CBFkPjjpGx8OO05t224NfhDvdCwvyygheK8HXtdPbqt2qiLQu1J6Vr908dl5IBQ8NPUHDtc23WNNgTh0pOSa866E4Qa2idte7AGxpjo7gsQPS6DBE5WCqwVu8kLLNKjv6CtaNxLunioYaF4VrhaM4nMfEyQEk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741159841; c=relaxed/simple;
+	bh=E9d/ZYRDweWef9J6nm+N37n6i90JPaipsMFkzvOxEHw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cMx6vM9L2gYPnp0kTbjM1AzV39JNr+w6WBOE1wx8nWzdajWAuxMMW9fwg8r2ROwr3rnx0Sye77PxRnDtcl7digCciFB5AGpjUzoxe4/Ap4JO2jQn4otV+vvv7hWszIDjAMbR1iG4ytaGfTJo5UhPei9ogVvuijW6InNOYS4iDPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=jRTO0s8y; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="bvIVzokl"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uPi+JoSsuVFf73FLlPbfup62W6WJWcbIe2bjZBR3kISXRQm6Rzjr/ctvxsRYm0E10Kd+klYeF7LFb6E0m1VfrFtcsTTJji4j4Q1tuzwIB2Zh/VV3/nfd0NdCCpBHY3+iEdYKguhox2TM4UBjU7e8BzxijrxRV11mERD+l8iHMP/eP76I2CSPNtpUk67X5St3kNMQdR41EfGPsZOzAIDwuyPZI3800mQOTQJtYHvkePg4TjSKWGxT0/vTzKUAbs8j/Dybx5jgu8yywmRJoPCy+DAfaNTnxGiGelsT1+9egoPPDt4f6lmciVyOwG9n+q2l4s6EzbN+eBZerr2XO8YaQw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VKYMVcPOss/HU1UHSHnRRcGzTgOzPAfVSOIpXkBZaHs=;
- b=ebZ9uaCnVFyrCAby2//7nd3mT75SZ1bR1S3rUlh9YL2hJxDfz+JacFjq9V+9pZETW39CpZDl4L3CUs9m0antHpUHIJkPPh00TWT4/oz894aJ7ms6pEENh93AJyFapoLcXR7yi2NUZB+fXcUQCnNk82g+vtbRdvJ/3oiH39zvtCUMN3PHoUJlEyX/r2HsFCHGOuraxJbpk+Qa0F/6ESzryg8QK3IGr2UyISKi887DCP12EsFHt1Uor1FAUpuvzLoQdYAUXC3vMMweyPLYJdpWYoArEMkd1KSjIAMSEEc6rar34yWdi8IcQRJhoVVQZ970OG0fMZZS6i9qpPUpyvhj1g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 139.15.153.206) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=de.bosch.com;
- dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VKYMVcPOss/HU1UHSHnRRcGzTgOzPAfVSOIpXkBZaHs=;
- b=bvIVzoklQeD2wpRcKXPfRQlHsYIIveCrGC8jltGXMOSDEVE3f9MmCFBEkxm8h07zpzah3US//6BA150ztKzSrwalV00LbIQDwkgtfoq0AiZ9ODo3lrwqU1TAYGbkTEMnmOCe4Fs2SilUPci4r0pycKra9frs0EKnW3oeeUZSkJFxic5DN7KGEyy2nTuDibJW8DPZPPdjuDcqtN3hrVeNf5RHSlW2wy4jGRLkXfWc1R4fG0impbVM93oCeqrtRfMK9jNqV3DBfvWwlgkPmGPiWk2MGFw+8lPyoQVrl9BjFYsduZKRE4+lfG/R/iuatLvY6V/vEWpX01sxJRjpY6kN4Q==
-Received: from CWLP123CA0038.GBRP123.PROD.OUTLOOK.COM (2603:10a6:401:58::26)
- by AS2PR10MB7712.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:62d::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.17; Wed, 5 Mar
- 2025 05:34:55 +0000
-Received: from AM3PEPF0000A79B.eurprd04.prod.outlook.com
- (2603:10a6:401:58:cafe::b9) by CWLP123CA0038.outlook.office365.com
- (2603:10a6:401:58::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8511.16 via Frontend Transport; Wed,
- 5 Mar 2025 05:34:55 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.206)
- smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=de.bosch.com;
-Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
- 139.15.153.206 as permitted sender) receiver=protection.outlook.com;
- client-ip=139.15.153.206; helo=eop.bosch-org.com; pr=C
-Received: from eop.bosch-org.com (139.15.153.206) by
- AM3PEPF0000A79B.mail.protection.outlook.com (10.167.16.106) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8511.15 via Frontend Transport; Wed, 5 Mar 2025 05:34:55 +0000
-Received: from SI-EXCAS2000.de.bosch.com (10.139.217.201) by eop.bosch-org.com
- (139.15.153.206) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Wed, 5 Mar
- 2025 06:34:48 +0100
-Received: from HI7-C-0001H.de.bosch.com (10.139.217.196) by
- SI-EXCAS2000.de.bosch.com (10.139.217.201) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.43; Wed, 5 Mar 2025 06:34:48 +0100
-From: Dirk Behme <dirk.behme@de.bosch.com>
-To: <rust-for-linux@vger.kernel.org>
-CC: <dirk.behme@de.bosch.com>, <ojeda@kernel.org>,
-	<daniel.almeida@collabora.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
-	<gary@garyguo.net>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
-	<aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-Subject: [PATCH v3 2/2] rust: types: `Opaque` doc: Add some destructor description
-Date: Wed, 5 Mar 2025 06:34:38 +0100
-Message-ID: <20250305053438.1532397-2-dirk.behme@de.bosch.com>
-X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250305053438.1532397-1-dirk.behme@de.bosch.com>
-References: <20250305053438.1532397-1-dirk.behme@de.bosch.com>
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="jRTO0s8y"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-438a39e659cso43586985e9.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Mar 2025 23:30:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google; t=1741159838; x=1741764638; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6eIPjoywVHzslmjO8vs+eTHuxI6qCJTL5FwNFg9NfBw=;
+        b=jRTO0s8yBID2JL6Q4Ibt7Q6zqZv72n+v6fKAaEP9vsvcRdv302j81GRZfFA+NPMhGX
+         NCbYYSbxnZSmPL6VRdHgqgxuIXEvyImCfhQz6hV95IKiyy3FJuRuCTyXxKKDVUqR0OVX
+         JEtEM7smY6vqKMfGmZYjODH5b4UbIDtoltkk0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741159838; x=1741764638;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6eIPjoywVHzslmjO8vs+eTHuxI6qCJTL5FwNFg9NfBw=;
+        b=p2Kuo5qlgQKfWc+njRqv16X+xK6jtvwIJpTTF10cHXAQLjvlD3Rt5BUQKS+owcbGKV
+         XqbSur5kq4uh6gAjGJjsUpVYqu6tS7420j6ZsW/3f21Oxh7Tpg6RfZ9IaQXEN9lJO764
+         MI83/69K7YSsb56nVjaeQnTQLh1uvMTB3TgPnXFtpZPsQBgS7KGIOvCUbflJ7TDfLyJu
+         VdqNv8U7SQcYrrruF+U1dXW1TV2ARJTP9WAWXVcIMvsBLGYfdnZvkVZTzQZV2+jsKOFJ
+         czOPA65a2x+VBwNXtpNY8sLsPMrYfT6n1Jw7dHTh5/PzGhnhRUsL9G0T2p2zHxKh+tUC
+         ijzA==
+X-Forwarded-Encrypted: i=1; AJvYcCWJmScF8MVRxkXR2zGN6HMfgvq+w5rMVDhnUModGatNrZHL9tlTSBTO4p47Kfd2yNyPu86pScq/FheeXfQbnw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBQa6tbf9tSxkhXBUyBJezhyfteQrrfT6qUm4uGRb7tRdT6Jg4
+	j/wLnYHbvKV+DgODa5sRm01p4FRp19jtRWea2piNChc9n/7ebqLCb8pisAebfJA=
+X-Gm-Gg: ASbGnctcgxvbcCPBIz5YcjYGkPN46mLfmg8+Ab5oHzcwHZ0wei2Xl2U+nMPT7ZWWg4h
+	DPlVl0B5zug4Qmub/JoVlJX1CARYhKTlKY3QohWXGHwzqZehA6xTeBOYvkwSvg34AzcRXP0tm96
+	aa9YEZY6o9tRRBePaPQdWAC/NHECUbBWVXHGllRIt01BxggI7N+XB4Nl5BIuBxl9wxmFvRuCF7l
+	E558xWT2CK6DZzqjwDfUmki6zSaQwNBdtT9awUp9mrTS3CbZylQqTj0MpX5SA8XtMeziWtERpXa
+	0RI1Ho2GBj9+9ssUwaCcxLrwYNit+P4HuG7X45WaXyqyoLAj+Ox3GVPu
+X-Google-Smtp-Source: AGHT+IGLEHkW+RyaKKz2KrNndnwh4djhORTNBKpw376Kno8bWHtJQuS7EruIxE2wip3vv6xuWjSI3w==
+X-Received: by 2002:a05:600c:1d0f:b0:43b:d203:da18 with SMTP id 5b1f17b1804b1-43bd295494bmr11723085e9.13.1741159837590;
+        Tue, 04 Mar 2025 23:30:37 -0800 (PST)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bd426cbc2sm8898505e9.4.2025.03.04.23.30.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Mar 2025 23:30:37 -0800 (PST)
+Date: Wed, 5 Mar 2025 08:30:34 +0100
+From: Simona Vetter <simona.vetter@ffwll.ch>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Ben Skeggs <bskeggs@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	paulmck@kernel.org
+Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
+ implementation
+Message-ID: <Z8f9mgD4LUJN_dWw@phenom.ffwll.local>
+Mail-Followup-To: Jason Gunthorpe <jgg@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Ben Skeggs <bskeggs@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	paulmck@kernel.org
+References: <Z75riltJo0WvOsS5@cassiopeiae>
+ <20250226172120.GD28425@nvidia.com>
+ <Z7-IHgcVVS8XBurW@cassiopeiae>
+ <20250226234730.GC39591@nvidia.com>
+ <2025022644-fleshed-petite-a944@gregkh>
+ <D82UB3V6NZ55.3OEPPW2W8MFZV@nvidia.com>
+ <Z8GViQzZJVFPxfNd@phenom.ffwll.local>
+ <20250228184013.GF39591@nvidia.com>
+ <Z8cmBWB8rl97-zSG@phenom.ffwll.local>
+ <20250304164201.GN133783@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM3PEPF0000A79B:EE_|AS2PR10MB7712:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3ef4fa48-3877-42f1-9006-08dd5ba775d7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|376014|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?CAAqFUW099/Z2BX8gcQ3tqY6ulHQn/8D/bnV2JBFu+DQqt238ZVDwcNlWb4f?=
- =?us-ascii?Q?R4TUjQ7/F75Ik/+xsVBSiiTTosDlXRBsvLLAaMC0lq/VUmfVjzvlir+JVszN?=
- =?us-ascii?Q?exuFUad9XC4gvBTzRsSaVrBxYtWQr3YPdfbxSu5ApDIlBNGMCdwqqYWHY/xA?=
- =?us-ascii?Q?FItKcWeuheIlBc6XAFHHV+dKNJWRSAL8Nln1h0HKRebgPKCoLSAryM/5gJD6?=
- =?us-ascii?Q?A3/qZEoKINYDabZTRtEhUGMi2sqse754ROLTjc031IVLo8kWupEgivGNf93L?=
- =?us-ascii?Q?cItDfFphOHkd4RdEI36kKe7GAn9HVbOF1zjMHPVAK73jhufMcGTAijfExeUO?=
- =?us-ascii?Q?w9uBgD2RGyX2CD22qC7Ei8F9ajoK35anQ0Fk/5f00dpUc3zYAfMKcUY2pnMF?=
- =?us-ascii?Q?xVRcx1mTyLaS3Me1jpJZ9UKn+OPUbwDfT+QRNJfZmurIikUsbkcajyz9iVQ7?=
- =?us-ascii?Q?asurUrhAMrR2UBCmzcnjqPA+CM48YIBQTmQhE3sxO+JnzT/l1Rp9jmwUTP1G?=
- =?us-ascii?Q?t9oiWIUIDapL2B/3gsjG+AyF3u0s9VLb6rRVVt+h4J6sd3DPnG+/n6/k3Zh3?=
- =?us-ascii?Q?ZS1LdLoeSgILo0ixQT10yZJYBZAE+cJ7IpzlTmuiJedgwAvTb0mTIsf7gJ7/?=
- =?us-ascii?Q?3fcosA38lnlnUD8LJAWvGAnrEb1xudRJ71J6oxtBALDpdFA2tpUEftmdsSgb?=
- =?us-ascii?Q?rC3QaU7idVE2cLQ04DA7cD5pwoLnVa7OIJ4HDfP3MiD+wp0lYpFQe4sWthm5?=
- =?us-ascii?Q?PeaEEjJDIgs8gclYGar6ultMBd+Zl4Z0LhIkcv+HzFVSh01qODUVUtDQBOdd?=
- =?us-ascii?Q?DP77/FVs5JgAfrGKzlTgKqoZ/lI8+2NvF6ffH57b4iLSNzZjL62mZ7F2+s3b?=
- =?us-ascii?Q?erDWXpwQ1qzrMkcLVDkppb6YAFlvkD/UsOPqX5/izNKgRpiyBwY+PwdZ1RHq?=
- =?us-ascii?Q?7mJ3CAA68JinHGlKf6j5fAflyp1E3sSX7XsE9BZBd+Wc863ZoEvPhU3dj6w/?=
- =?us-ascii?Q?uc1sffn+DYjIOOirQq950Neodo0k603xDF6O74BoGeZrrDu+mdkp0H7igBNI?=
- =?us-ascii?Q?PvMD9vMLjhxIsujgPbHX51UEppM65/ERx3g3nQVpUa7oWcM6b2WH2KEhDpI7?=
- =?us-ascii?Q?O6YH3AyMtEJkj/y8dGEbGGy8Gp1Oe2aVmcEwP9Zcw2LyZ1uOnqfbYQ1wqV2O?=
- =?us-ascii?Q?l2Ylh51ILn63a8Kp6vX1UTyOSc46XmMIUlf+U/blQpogCOufmBTE/zplUVn3?=
- =?us-ascii?Q?cJNJRMIIKd5zOtIdH6ayoRSHL2HlJto6rR13YlRvFyo2P4Y98Fr3It8luSm8?=
- =?us-ascii?Q?gKtZC6ntiWj3FpJ75rLkOWZjAepWm6Ck0sChr5/3LeREH8PcPHfeYONZ9ekj?=
- =?us-ascii?Q?r/8bGNgsVczfcoumd2bk/x8aYpzvlggOtzsHivRQdmvY/utPyY+lgB8GmLFD?=
- =?us-ascii?Q?C659SFmYQ3tC+3OApIFk4y4EhKhMKX1pJ8GQL2yDVpEtIgFZx6oB8RhGWVyO?=
- =?us-ascii?Q?Y3eBESagujuG7E0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014)(13003099007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2025 05:34:55.0580
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3ef4fa48-3877-42f1-9006-08dd5ba775d7
-X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.206];Helo=[eop.bosch-org.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AM3PEPF0000A79B.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR10MB7712
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250304164201.GN133783@nvidia.com>
+X-Operating-System: Linux phenom 6.12.11-amd64 
 
-In the discussion [1] some `Opaque` documentation updates have
-been proposed. In that discussion it was clarified that `Opaque`
-is intended to be used for (partial) uninitialized or changing C
-structs. And which consequences this has for using raw pointers
-or the destruction. Improve the `Opaque` documentation by adding
-these conclusions from that discussion.
+On Tue, Mar 04, 2025 at 12:42:01PM -0400, Jason Gunthorpe wrote:
+> On Tue, Mar 04, 2025 at 05:10:45PM +0100, Simona Vetter wrote:
+> > On Fri, Feb 28, 2025 at 02:40:13PM -0400, Jason Gunthorpe wrote:
+> > > On Fri, Feb 28, 2025 at 11:52:57AM +0100, Simona Vetter wrote:
+> > > 
+> > > > - Nuke the driver binding manually through sysfs with the unbind files.
+> > > > - Nuke all userspace that might beholding files and other resources open.
+> > > > - At this point the module refcount should be zero and you can unload it.
+> > > > 
+> > > > Except developers really don't like the manual unbind step, and so we're
+> > > > missing try_module_get() in a bunch of places where it really should be.
+> > > 
+> > > IMHO they are not missing, we just have a general rule that if a
+> > > cleanup function, required to be called prior to module exit, revokes
+> > > any .text pointers then you don't need to hold the module refcount.
+> > > 
+> > > file_operations doesn't have such a cleanup function which is why it
+> > > takes the refcount.
+> > > 
+> > > hrtimer does have such a function which is why it doesn't take the
+> > > refcount.
+> > 
+> > I was talking about a bunch of other places, where it works like
+> > file_operations, except we don't bother with the module reference count.
+> > I've seen patches fly by where people "fix" these things because module
+> > unload is "broken".
+> 
+> Sure, but there are only two correct API approaches, either you
+> require the user to make a cancel call that sanitizes the module
+> references, or you manage them internally.
+> 
+> Hope and pray isn't an option :)
+> 
+> > gpu drivers can hog console_lock (yes we're trying to get away from that
+> > as much as possible), at that point a cavalier attitude of "you can just
+> > wait" isn't very appreciated.
+> 
+> What are you trying to solve here? If the system is already stuck
+> infinitely on the console lock why is module remove even being
+> considered?
+> 
+> module remove shouldn't be a remedy for a crashed driver...
 
-Suggested-by: Daniel Almeida <daniel.almeida@collabora.com>
-Link: https://lore.kernel.org/rust-for-linux/F8AB1160-F8CF-412F-8B88-4C79D65B53A1@collabora.com/ [1]
-Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+I mean hotunplug here, and trying to make that correct.
 
----
-Changes in v3:
-   * Add the "terse" proposals.
-   * Move the non-linkage artifact from patch 1/2 to here.
+This confusion is is why this is so hard, because there's really two main
+users for all this:
 
- rust/kernel/types.rs | 26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
+- developers who want to quickly test new driver versions without full
+  reboot. They're often preferring convenience over correctness, like with
+  the removal of module refcounting that's strictly needed but means they
+  first have to unbind drivers in sysfs before they can unload the driver.
 
-diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-index af30e9c0ebccb..f370cdb48a648 100644
---- a/rust/kernel/types.rs
-+++ b/rust/kernel/types.rs
-@@ -271,17 +271,33 @@ fn drop(&mut self) {
- 
- /// Stores an opaque value.
- ///
--/// [`Opaque<T>`] is meant to be used with FFI objects that are never interpreted by Rust code.
-+/// [`Opaque<T>`] opts out of the following Rust language invariants for the contained `T`
-+/// by using [`UnsafeCell`]:
- ///
--/// It is used to wrap structs from the C side, like for example `Opaque<bindings::mutex>`.
--/// It gets rid of all the usual assumptions that Rust has for a value:
-+/// * Initialization invariant - the contained value is allowed to be uninitialized and
-+///   contain invalid bit patterns.
-+/// * Immutability invariant - [`Opaque<T>`] allows interior mutability.
-+/// * Uniqueness invariant - [`Opaque<T>`] allows aliasing of shared references.
-+///
-+/// Further, [`Opaque<T>`] is `!Unpin` and will not run the drop method of the contained `T`
-+/// when dropped.
- ///
--/// * The value is allowed to be uninitialized (for example have invalid bit patterns: `3` for a
--///   [`bool`]).
-+/// [`Opaque<T>`] is meant to be used with FFI objects that are never interpreted by Rust code.
-+/// It is used to wrap structs from the C side, like for example `Opaque<bindings::mutex>`.
-+/// This is useful for C structs that are not fully initialized (yet) or might change their
-+/// content from C side at runtime. [`Opaque<T>`] gets rid of all the usual assumptions that
-+/// Rust has for a value of type `T`:
-+///
-+/// * The value is allowed to be uninitialized or invalid (for example have invalid bit patterns:
-+///   `3` for a [`bool`]).
-+/// * By dereferencing a raw pointer to the value you are unsafely asserting that the value is
-+///   valid *right now*.
- /// * The value is allowed to be mutated, when a `&Opaque<T>` exists on the Rust side.
- /// * No uniqueness for mutable references: it is fine to have multiple `&mut Opaque<T>` point to
- ///   the same value.
- /// * The value is not allowed to be shared with other threads (i.e. it is `!Sync`).
-+/// * The destructor of [`Opaque<T>`] does *not* run the destructor of `T`, as `T` may
-+///   be uninitialized, as described above.
- ///
- /// This has to be used for all values that the C side has access to, because it can't be ensured
- /// that the C side is adhering to the usual constraints that Rust needs.
+  Another one is that this use-case prefers that the hw is cleanly shut
+  down, so that you can actually load the new driver from a well-known
+  state. And it's entirely ok if this all fails occasionally, it's just
+  for development and testing.
+
+- hotunplug as an actual use-case. Bugs are not ok. The hw can go away at
+  any moment. And it might happen while you're holding console_lock. You
+  generally do not remove the actual module here, which is why for the
+  actual production use-case getting that part right isn't really
+  required. But getting the lifetimes of all the various
+  structs/objects/resources perfectly right is required.
+
+So the "stuck on console_lock" is the 2nd case, not the first. Module
+unload doesn't even come into play on that one.
+
+> > > But so is half removing the driver while it is doing *anything* and
+> > > trying to mitigate that with a different kind of hard to do locking
+> > > fix. *shrug*
+> > 
+> > The thing is that rust helps you enormously with implementing revocable
+> > resources and making sure you're not cheating with all the bail-out paths.
+> 
+> Assuming a half alive driver with MMIO and interrupts ripped away
+> doesn't lock up.
+
+Rust's drop takes care of that for you. It's not guaranteed, but it's a
+case of "the minimal amount of typing yields correct code", unlike C,
+where that just blows up for sure.
+
+> Assuming all your interrupt triggered sleeps have gained a shootdown
+> mechanism.
+
+Hence why I want revocable to only be rcu, not srcu.
+
+> Assuming all the new extra error paths this creates don't corrupt the
+> internal state of the driver and cause it to lockup.
+
+Yeah this one is a bit scary. Corrupting the state is doable, locking up
+is much less likely I think, it seems to be more leaks that you get if
+rust goes wrong.
+
+> Meh. It doesn't seem like such an obvious win to me. Personally I'm
+> terrified of the idea of a zombie driver half sitting around in a
+> totally untestable configuration working properly..
+
+Yeah agreed. I might really badly regret this all. But I'm not sold that
+switching to message passing design is really going to be better, while
+it's definitely going to be a huge amount of work.
+
+> > It cannot help you with making sure you have interruptible/abortable
+> > sleeps in all the right places. 
+> 
+> :(
+> 
+> > > Like, I see a THIS_MODULE in driver->fops == amdgpu_driver_kms_fops ?
+> > 
+> > Yeah it's there, except only for the userspace references and not for the
+> > kernel internal ones. Because developers get a bit prickle about adding
+> > those unfortunately due to "it breaks module unload". Maybe we just should
+> > add them, at least for rust.
+> 
+> Yeah, I think such obviously wrong things should be pushed back
+> against. We don't want EAF bugs in the kernel, we want security...
+
+Maybe the two different use-cases above help explain why I'm a bit more
+pragmatic here. As long as the hotunplug case does not gain bugs (or gets
+some fixed) I'm fairly lax with hacks for the driver developer use-case of
+reloading modules.
+
+> > You've missed the "it will upset developers part". I've seen people remove
+> > module references that are needed, to "fix" driver unloading.
+> 
+> When done properly the module can be unloaded. Most rdma driver
+> modules are unloadable, live, while FDs are open.
+> 
+> > The third part is that I'm not aware of anything in rust that would
+> > guarantee that the function pointer and the module reference actually
+> > belong to each another. Which means another runtime check most likely, and
+> > hence another thing that shouldn't fail which kinda can now.
+> 
+> I suspect it has to come from the C code API contracts, which leak
+> into the binding design.
+> 
+> If the C API handles module refcounting internally then rust is fine
+> so long as it enforces THIS_MODULE.
+
+You could do contrived stuff and pass function pointers around, so that
+THIS_MODULE doesn't actually match up with the function pointer. Sure it's
+really stupid, but the idea with rust is that for memory safety stuff like
+this, it's not just stupid, but impossible and the compiler will catch
+you. So we need a tad more for rust.
+
+> If the C API requires cancel then rust is fine so long as the binding
+> guarantees cancel before module unload.
+
+Yeah this is again where I think rust needs a bit more, because the
+compiler can't always nicely proof this for you in all the "obvious"
+cases.
+-Sima
 -- 
-2.48.0
-
+Simona Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
