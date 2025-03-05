@@ -1,43 +1,60 @@
-Received: from mail-10629.protonmail.ch (mail-10629.protonmail.ch [79.135.106.29])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E110205515
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Mar 2025 11:06:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED91C230999;
+	Wed,  5 Mar 2025 11:08:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741172765; cv=none; b=LaruEADW8XlRE0jo092QtI8WBabNBU/CYrdm2zG4pJz4zvAFn7tu8WiXsv1ZHltZt0sALH1Z3o2nnNxjdeUHZeCiLC1++z9gzpxWdudyGq2ZCqdB6DmSOAWzpkg47NWcu8eVRTmE06ub6oW/Yoie9IVP6LnOaMAVTd3sl1gUIww=
+	t=1741172929; cv=none; b=rbbTb4/K5uzNQJJu8JWnpPqpu/8TffsqcBuV5HyUuk0Cd0OQQMmzqLwIep0U/A7MW1+A+m+mecsiv3dkXbFRAfjf1111yDKKWvmv/pa04oOE7w8GNCo3tEN3fwa6/fVRY+ahMRyIfQ09rHLQgspF9UkBDOqs0JiwrV0pXlIf99k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741172765; c=relaxed/simple;
-	bh=8BfkhJEiX567lk23hTtlFCn+C7rzGcjUSqBPr5QYbIk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fSN6aIXlmaPP1jFg5cKZNT0e6hnzcwtuXz5ya77AURniK9q9auiH1r6X+WtAx7TCJ9DgHUYSxQVAhDjEpHJTpsiyC3+eZUs4fuGS/2/YGAqqxohgDqnnYEQrSqFZKZ3R3c5SG0PMJP9ibB6f3z7bQrzNw8ipp1GiXGV3Ytzeybo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Y2XR3HLJ; arc=none smtp.client-ip=79.135.106.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1741172929; c=relaxed/simple;
+	bh=yWZTTeKxN8nL5RGzPXzNAnHrZZFeb8GWlvbn/9ISyTc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=VqkzYQvVqS8gNIfrROc8GrR8gFVt6nCzU90ksd/RythGbe3LL1NdSaOSJqjK8lmDWzKOo7HK9gb8UTSNlKjjKPKBbUxBSzWuuwhDoFhnmsQCOIIyvToqqnOuLVs5RNSk9gdTvK+K/UWqb8Ct/fap3SDLK4yBYpfDu4+tBK2r0YM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iY4/RHxm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Y2XR3HLJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1741172762; x=1741431962;
-	bh=8BfkhJEiX567lk23hTtlFCn+C7rzGcjUSqBPr5QYbIk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=Y2XR3HLJZxImjI6VsoA13bF4VG65TMMSQ00iLI1UHnBzgMR9Cr+a9+eXSclEgCDl8
-	 JAiii5dx/TTQ+UtHNepf9jYYXpRhoHt81hZeKLn0FmzMXPYZeVxVd1UXU/WT+VdmXg
-	 XnWM3PE86iHGElqMRH27hXqpryDYRUZzIQkfnWmczaJiFEXSKAkf2/fGqjUzwS4exb
-	 MzdN/5XdPqr3jjeSQ5v8aNV1V7UGweRmJxCpS53WO1OGoKocGjpANmYzpQshklYrvU
-	 OkaCygYgTt7ZlD4nz3E4Fot5nqg0eRnz8hKJRQ3BecpaBjS3R+ifhocrPBrHXF+NWk
-	 GVnxcw0dqLzMA==
-Date: Wed, 05 Mar 2025 11:05:55 +0000
-To: Andreas Hindborg <a.hindborg@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 04/22] rust: pin-init: move proc-macro documentation into pin-init crate
-Message-ID: <D88A875SAHW1.GMXBFL84SI6D@proton.me>
-In-Reply-To: <878qpjg6sj.fsf@kernel.org>
-References: <20250304225245.2033120-1-benno.lossin@proton.me> <PvTMOxu_O9hNZCnpZRlYj2yIiGONO7aZxT7F9mqfOwEMfFnE6ucILMz4aGehSJwWOKtsieqIrh__hd1b5T3z8w==@protonmail.internalid> <20250304225245.2033120-5-benno.lossin@proton.me> <878qpjg6sj.fsf@kernel.org>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 110abc0108e199aa7e9f70b2a80c5a7d5c03e2c2
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iY4/RHxm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01600C4CEE2;
+	Wed,  5 Mar 2025 11:08:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741172926;
+	bh=yWZTTeKxN8nL5RGzPXzNAnHrZZFeb8GWlvbn/9ISyTc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=iY4/RHxmzZxe19596aKIctSoRv3k8/3LcPome91wEYYjyjEsDgTKTUVIhQs7xEE4i
+	 pjeJbEaBxjdsfPEnYfdHEwTv23uyxEXf0rrl4pDJtffOe6MLvIXhnQqypFOK2jN6z5
+	 N/HPhVC0ASot2NQ6qGg8BybfkuCzegpp+8+i0KkHVQ4vAUOCvB9DMu2Bw3lBCPMY4F
+	 rU7Vs8Y9EoxL58YduU6TAL1GT3Nfl162FkRdaK+7UDS5o06Voo3huArskXi689TzlM
+	 6chDshozHjOBWltjrNTotBnLnq96ykJzhYDCE2iWjSkuiybsilc6F9WOVWMQPnHJeF
+	 e7+n04g09CG+Q==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
+Cc: "Guilherme Giacomo Simoes" <trintaeoitogc@gmail.com>,
+  <alex.gaynor@gmail.com>,  <aliceryhl@google.com>,  <apw@canonical.com>,
+  <arnd@arndb.de>,  <aswinunni01@gmail.com>,  <axboe@kernel.dk>,
+  <benno.lossin@proton.me>,  <bhelgaas@google.com>,
+  <bjorn3_gh@protonmail.com>,  <boqun.feng@gmail.com>,  <dakr@kernel.org>,
+  <dwaipayanray1@gmail.com>,  <ethan.twardy@gmail.com>,
+  <fujita.tomonori@gmail.com>,  <gary@garyguo.net>,
+  <gregkh@linuxfoundation.org>,  <joe@perches.com>,
+  <linux-kernel@vger.kernel.org>,  <lukas.bulwahn@gmail.com>,
+  <ojeda@kernel.org>,  <pbonzini@redhat.com>,
+  <rust-for-linux@vger.kernel.org>,  <tmgross@umich.edu>,
+  <walmeida@microsoft.com>
+Subject: Re: [PATCH V6 2/2] checkpatch: check format of Vec<String> in modules
+In-Reply-To: <CANiq72md_orajH_TREr=ng8Y=o3Xkgw-V5oxbX8vYXOE2UDNaQ@mail.gmail.com>
+ (Miguel
+	Ojeda's message of "Wed, 05 Mar 2025 12:04:54 +0100")
+References: <87tt89gfe4.fsf@kernel.org>
+	<20250304205054.207285-1-trintaeoitogc@gmail.com>
+	<CANiq72koDba445gMYtC_VEcFk2+O-Xg2-2y6uMyp7onBy=7rcw@mail.gmail.com>
+	<4D_uEoEtgYCzOLuPzhX9Vs7J1uScCFl9I8iUfPXkglvk62R7uBUyCd-_o9rqmINGO1eVIm5gGyfC2_25bhigHQ==@protonmail.internalid>
+	<CANiq72kNG7jZf+hZARjyAp-uG=x99CrUKZvJYT_icaF0x0G6iw@mail.gmail.com>
+	<87v7sngbgx.fsf@kernel.org>
+	<6o6Tt0Lz1YrpxN_GP0E60E9u7KFQOnUnvevc2x_vt_Zb6_96DYHobatt6an_o2JtTjnaTUtTM948nnZ_7QdbSQ==@protonmail.internalid>
+	<CANiq72md_orajH_TREr=ng8Y=o3Xkgw-V5oxbX8vYXOE2UDNaQ@mail.gmail.com>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Wed, 05 Mar 2025 12:08:30 +0100
+Message-ID: <87ldtjenv5.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,27 +64,32 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed Mar 5, 2025 at 10:34 AM CET, Andreas Hindborg wrote:
-> "Benno Lossin" <benno.lossin@proton.me> writes:
+"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
+
+> On Wed, Mar 5, 2025 at 8:53=E2=80=AFAM Andreas Hindborg <a.hindborg@kerne=
+l.org> wrote:
+>>
+>> Right, it needs a bit more tool support than running checkpatch.pl
+>> needs. Perhaps we could move it from checkpatch.pl to the rustfmt make
+>> target?
 >
->> Move the documentation of proc-macros from pin-init-internal into
->> pin-init. This is because documentation can only reference types from
->> dependencies and pin-init-internal cannot have pin-init as a dependency,
->> as that would be cyclic.
+> That could perhaps be an option for this case, though not sure if it
+> applies to all cases, i.e. `checkpatch.pl` also checks things that
+> only make sense to check in a patch and also things that are not
+> related to formatting.
 >
-> `pin_data` et. al. is now re-exported both in `kernel::prelude` and
-> `kernel::init`, but I guess that is fine?
+> Perhaps we want an entirely separate thing in `tools/` eventually, or
+> even out of the kernel tree, so that it can be easily run as a bot
+> etc. like in the past.
+>
+> In any case, landing checks here is fine (as long as Joe et al.
+> agree), they can be moved or removed later if needed.
 
-Yes, that is fine, later the imports will be resolved such that the
-prelude re-exports the macros from the pin-init crate (so the docs
-should also be rendered there).
+Absolutely. Just brainstorming at this point.
 
-> When you say "can only reference types", do you mean via links in the tex=
-t?
 
-Yes, I mean the doc-links, e.g. [`Zeroable`].
+Best regards,
+Andreas Hindborg
 
----
-Cheers,
-Benno
+
 
