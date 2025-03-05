@@ -1,43 +1,43 @@
-Received: from mail-10631.protonmail.ch (mail-10631.protonmail.ch [79.135.106.31])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F9D224EA94
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Mar 2025 14:47:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B1224EA9D
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Mar 2025 14:56:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741186080; cv=none; b=Djq3chVGg6QZ5IXFZKOl1Rbm6uvw9RMmPT/V9761nxs0M+9m35cv4NggXXegkucJDVxgXd/HMvjQ9qz16vIJtTCKWWqHMoVfLp1Qm0LPkVVxf0FfqUm5Ct1J1+n9b2AUogax/XNq3CBONf1YuDz+jdTNPRSFjfLCNdZ9mjRz4Q0=
+	t=1741186586; cv=none; b=dSTsJIMV5sDSRBRMzYdR6BDSpwnEQaLPOngjuRmgeDTz7lyTNWgx1bkc/NSS3kORqr8FLeiSjyQ7ZFHP1vnJUQ8duj8SdTujPrHVZgDniTuTjq+cRW5TKCsUQEW1jUgyJo0wh3XCwvem7w+QkF2azh3Tb2zfecpaoWIPLlmjiv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741186080; c=relaxed/simple;
-	bh=LOHoKOwaup2T7fgqEZzkw2MRjS/dLi+J9/ocOWwmiKI=;
+	s=arc-20240116; t=1741186586; c=relaxed/simple;
+	bh=eCzs6z/1ZaCc9kZkxUuGSc2H1XvV4MIOgYBJbjL04NU=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G4vCFudL2h4WK4ivKi01pfgMVZm7zPsZd93UOcmx9Ach6TGzXxiymqnSQfdM77g7k36zN43Y2FMbxBPhqUwZDNN/NF/s+S2RAvLoLZNEclB2LVOQK192+SZesco//kqKZ3GAgipwsNOnC0Yhkdbpu+33SfoclywePKz+rtMJv7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=NlatyoR6; arc=none smtp.client-ip=79.135.106.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	 MIME-Version:Content-Type; b=BpEGoAeJXlkitALd4xwl32Y/v7FML1MdRJmv/rlvSd5Lt3oVCiK/wA8Sfi3+utRT8N66ypQ3P/yoS+XLSUiwSh/hHfZcQ5d/m9PMrHY2EAJo4UPn2vT51lNG78sNlrfXGPKhXCTlsUrVbthUVdxlko4O4QuCsmFqHk9zUGJrVOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=RE7qFyrB; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="NlatyoR6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1741186076; x=1741445276;
-	bh=LOHoKOwaup2T7fgqEZzkw2MRjS/dLi+J9/ocOWwmiKI=;
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="RE7qFyrB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1741186582; x=1741445782;
+	bh=lNsOywLr42ifpKIYbHm0FRmw4MVYLujGcEk8RLbJlYg=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=NlatyoR6RfyPMDtYa/Kc/aFiVr3F0FVZS5FCG5A2JuVfDPW1OsVVZ5oXsghSDsdc/
-	 UM8GMNrnV0P2yLBuVHpnS+LS/HX6dbsuJLNLCaja/UcrhSMu3vImzAFkkz+Da+2kdf
-	 2wW0XSsoetx3UFKMMrpQ+/fVPgv5nM7AMMt3t/3004Tfr7hEromeRE3SNWCn1gslLX
-	 Rmdfho+15jsFLq5dq4ESfS6SWlo+9c1aQ5dNJTxqsB3ZXU9IN7gtfB37MezWut9kiX
-	 HRD85o2UKhvo6kp9BAppzCNnj9GEyVGYTFxNcfUyKjoo5PehikCdnAv6494C+g2khn
-	 7AwAmXorsBxWQ==
-Date: Wed, 05 Mar 2025 14:47:50 +0000
-To: Andreas Hindborg <a.hindborg@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 00/22] make pin-init into a standalone crate
-Message-ID: <D88EY34HLQP7.Y6Q7DWM1I40Q@proton.me>
-In-Reply-To: <87r03b8rzc.fsf@kernel.org>
-References: <xn5HRPkxO91lsoIUAwMnnAvQRCAgmw6nzTZX2DsODS0viAvz_g6B8l3dpYNtcL2jBXySi0DQrVi04b6MY8GbMw==@protonmail.internalid> <20250304225245.2033120-1-benno.lossin@proton.me> <87msdza8d5.fsf@kernel.org> <Hlq4P8qcOOmwdtlEQS7tg0FifI_i0ln9dvHP04yyxWteSpGAV2OUnP6ahOqX85eohzXVLSKdBak5guQvYfospg==@protonmail.internalid> <D88DZV6T9WOV.1QM9UZEAB6IL7@proton.me> <87r03b8rzc.fsf@kernel.org>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 59dfe874c8ec9a93942e0e2abd07faafb916a1f0
+	b=RE7qFyrBqjco0UkDuwTf/31sqOEGMwi5fVniTj5VVCpoHVPGUuV1Ow7XlTo0HsFRz
+	 9YSb1M1Cu9NrdEwikTjKKQ+cWX1KxRF4i963UxwecIr3jQooJ/Eh0ELVmVqouqtnZP
+	 1n37eVbq9KLCkaKhYCmZwp84m4DBS7sve7KqlCfebxUbf/ZXOFgvi1jb50iVTiK6ol
+	 tQjOGBdB3eHUtO0iWY4URiOBMMXgkEUgNUpGgiS1Z4vma6QUv2noSoIJJee6JWJQ0z
+	 kdgw9U7aV+PCBGtNtFLt9wBS9UA8MIjlFzvGLzfEuy6qTRRCTOQS3IrLleBBt40+Wd
+	 I4XYbwlUy61aw==
+Date: Wed, 05 Mar 2025 14:56:15 +0000
+To: Alice Ryhl <aliceryhl@google.com>
+From: Oliver Mangold <oliver.mangold@pm.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4] rust: adding UniqueRefCounted and UniqueRef types
+Message-ID: <Z8hmCkeZGPwc5MuU@mango>
+In-Reply-To: <Z8hUIPtE_9P60fAf@google.com>
+References: <20250305-unique-ref-v4-1-a8fdef7b1c2c@pm.me> <Z8hUIPtE_9P60fAf@google.com>
+Feedback-ID: 31808448:user:proton
+X-Pm-Message-ID: 375abdb427c4e02d70ff4548d076416d6c4e46a7
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,67 +47,65 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed Mar 5, 2025 at 3:36 PM CET, Andreas Hindborg wrote:
-> "Benno Lossin" <benno.lossin@proton.me> writes:
+Hi Alice,
+
+On 250305 1339, Alice Ryhl wrote:
+> On Wed, Mar 05, 2025 at 11:31:44AM +0000, Oliver Mangold wrote:
+>=20
+> > +impl<T: UniqueRefCounted> Deref for UniqueRef<T> {
+> > +    type Target =3D T;
+> > +
+> > +    fn deref(&self) -> &Self::Target {
+> > +        // SAFETY: The type invariants guarantee that the object is va=
+lid.
+> > +        unsafe { self.ptr.as_ref() }
+> > +    }
+> > +}
+>=20
+> What stops people from doing this?
+>=20
+> let my_unique: UniqueRef<T> =3D ...;
+> let my_ref: &T =3D &*my_unique;
+> let my_shared: ARef<T> =3D ARef::from(my_ref);
+>=20
+> Now it is no longer unique.
 >
->> On Wed Mar 5, 2025 at 2:56 PM CET, Andreas Hindborg wrote:
->>> Hi Benno,
->>>
->>> "Benno Lossin" <benno.lossin@proton.me> writes:
->>>
->>>> This patch series extracts the pin-init API from the kernel crate and
->>>> turns it into a standalone crate used by the kernel crate. The reasoni=
-ng
->>>> for this change is that the maintenance burden for me is too great
->>>> maintaining two (more and more) diverging versions of the same library=
-.
->>>> At [1] you can find the user-space version of the pin-init library as =
-a
->>>> Rust crate.
->>>
->>> [...]
->>>
->>>
->>> Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
->>
->> Thanks a lot for the quick reviews and testing!
->>
->>> Tested with downstream rnull driver. The driver is 71 patches on top of
->>> this series. It required a handful of trivial changes to patches that
->>> touch pin_init, but everything seems to be working just fine.
->>
->> Do you still have those trivial changes around? I would like to know
->> what kind of changes you had to do. Was it just import adjustments or
->> did you also need other changes?
->
-> I pushed my branch to [1]. I folded most of the changes before I got
-> lazy and put a commit on top, so you have to do a range-diff with
-> v6.14-rc1..rnull-v6.14-rc1.
+Oh, indeed. That's a serious problem. I see 2 options to deal with that:
 
-Thanks! Those changes are what I expected.
+1. remove ARef::From<&T>
 
->> If you find the time, I would greatly appreciate if also you put your
->> rnvme driver on top and test with that.
->
-> I can do that, but I have a few work items to tend to first and I go on
-> PTO next week.
+I checked the users of this, and it looks to me like there is rather
+a limited number and they are easy to fix by replacing the &T with ARef<T>.
+But I assume that wouldn't be welcome as it is intrusive nonetheless
+and of course there is ergonomic value in having the function around.
 
-No worries, I think I will have to spin a new version anyways.
+2. add some new traits so implementers can opt in/out of that function.
 
->>> Reviewing this series made my head spin. It must have taken a
->>> significant effort to compose the series. Thank you for making that
->>> effort!
->>
->> Yeah it wasn't easy to get the two versions on the same page again. The
->> hardest part was to split the changes into self-contained patches and
->> also to ensure nothing breaks between them.
->
-> I checked every commit - nothing broken for me. Very impressive =
-=F0=9F=98=8E
+Basically one would have to pick if one wants to ARef::From<&T> or
+UniqueRef<T> for one's type.
 
-Thanks!
+> > +impl<T: UniqueRefCounted> DerefMut for UniqueRef<T> {
+> > +    fn deref_mut(&mut self) -> &mut Self::Target {
+> > +        // SAFETY: The type invariants guarantee that the object is va=
+lid.
+> > +        unsafe { self.ptr.as_mut() }
+> > +    }
+> > +}
+>=20
+> This DerefMut will make it almost impossible for C types to implement
+> UniqueRefCounted because it is incompatible with pinning. You probably
+> want `T: UniqueRefCounted + Unpin` here.
+>=20
+> For `T: !Unpin` (i.e. almost all C types), you can at most produce an
+> `Pin<&mut Self>`.
 
----
-Cheers,
-Benno
+I think I only understand 70% of that incompatiblity, but I will do a
+bit more reading.
+
+In any case I think I can work around that, but doing as you say,
+and maybe adding an extra method deref_pin() to get a pinned reference.
+
+Best,
+
+Oliver
 
