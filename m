@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA781FDE37;
-	Wed,  5 Mar 2025 09:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2E0205E00;
+	Wed,  5 Mar 2025 09:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741168387; cv=none; b=DAe6rT0nT74ZvRkyuE8PyXh2PSVM30kFnKI4vBRNZ0lLd2lCiOIl9zbp5I/1EXNgy3uKJ57fM/DWOHdVauz/HAtzvIwMRatnfKET7wjx5eVwaiVUdWLYRe73U6oemMbGzAyhl1EpRHHr6FhKttJi2yi/kERi8+EVLXwSdR5u6d8=
+	t=1741168391; cv=none; b=RlyDVTQ7PyGCEgwty0pfO3AYvAcffBRBbLbGG+yQD2/w3Mb+SX17PakF46YB+7/Z2qrb3aUCYD+uA3BLVcAO/P6kyxuI9mIh7Iw2eprzuM2BwsMTjCuWR8oSQ5XU1i21MykcrOilNAyXsjjh/IOLeuGzCJf/0Sn2pguZ1NUjESA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741168387; c=relaxed/simple;
-	bh=15zWYZ5QlI73ZZKI2fE3S+9PVZRK+DccKsphepv/Jis=;
+	s=arc-20240116; t=1741168391; c=relaxed/simple;
+	bh=ORz+k9E937zUXxSM6Mdl+BAqe5cpwM14R43zz4VgLrY=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=O8z9eBRt0ncx20ke1YLtKlnTZExxWJ/OkqAxFgU47mwGHIdoHZrk3LNEhRaOVqm7CgeQyouVNSqJBAdHUHJAJupeUhfwtThy/hikFDGK6Yqj9bJhlROLG3wHPJRaodqEDYvgkgruDgyv285fZ5uSQlQXDua8biWHYizZCk4vof8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FJ0efwiL; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=uRKBD5Un8vmEk5j47p+Fbdd7BHEjsGZ/IIKZPEjl8doYwNPOKhxHEWix7tCsEzUwiv6LgRqyJVEw/atPuSqI9asMCe3T3gPYH2CeCtGaYxAHkFVEqTQz8x6GBcQOMR1rQO5zgW6RvgSwFyysdQM2kUOmYnpdgs4dlWsBcS9bcJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iKB1NeDW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FJ0efwiL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 768CBC4CEE8;
-	Wed,  5 Mar 2025 09:53:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iKB1NeDW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC9CAC4CEE9;
+	Wed,  5 Mar 2025 09:53:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741168387;
-	bh=15zWYZ5QlI73ZZKI2fE3S+9PVZRK+DccKsphepv/Jis=;
+	s=k20201202; t=1741168390;
+	bh=ORz+k9E937zUXxSM6Mdl+BAqe5cpwM14R43zz4VgLrY=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=FJ0efwiLvYqggQhPrEjc17Dwbe6dvnuTqWCyQ1ALsKM2g2afKhs/NwpWrFERSD5eF
-	 HBcgJ2L5SLonsJoMjZ8x9Gfx4c/Wi2hlUD4yx0CKc4UE79P7a6Rh8HeKdgG6w6g9//
-	 h9ShgLWZQjGdL1QtW9FBWq8uLdX1tJuqtdzZJSb+GLfu4qMZmvDpz+iFYEWQ5WzLm8
-	 46dvgNtCAo9UCQZA8VFDbEPScOKToHU4khBg0y7ZP6Tov+eZbBkXW5Mrm2hZo6dXEb
-	 2LPnK0qtVFRlmY6rq2fftADpBWwIGieUY3Cgj56LZHSc4/DouV9H1axill9GMCeMBg
-	 2c+lcph3NvjOA==
+	b=iKB1NeDWNmuScpb3n5W1BaQ8klO8hyfRkGYytMV56R0mYtC7DHOTCx10SN2kLXxwM
+	 ZK6so1KgWXrF/EBqsQdPYdIyFNyU3nYsytmf9vbx/Cqv3RxYi5FHwcpZ8rP9/dS1Se
+	 /IMQl7o9vbrJtv179VkUkinuX46JF4l9E33iYJP+o4o9dqTrfD7mM6oiCDxl/I+r3v
+	 fN93lTd2BQPLrn+YHgCng4m5TzwsMqBR/lxxLggYuLRH6vH8BPanZyEsjDGCAUcfhp
+	 aX1+8b2Z/qWhA145O3IvSXgco/xoHyBnweNEgCSqd5l0xDpuchD30FQDuAbuqh46ut
+	 yJPcq41B045TQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: "Benno Lossin" <benno.lossin@proton.me>
 Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
@@ -33,17 +33,18 @@ Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
  <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
  <bjorn3_gh@protonmail.com>,  "Alice
  Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Danilo Krummrich" <dakr@kernel.org>,  <rust-for-linux@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 01/22] rust: init: disable doctests
-In-Reply-To: <20250304225245.2033120-2-benno.lossin@proton.me> (Benno Lossin's
-	message of "Tue, 04 Mar 2025 22:53:03 +0000")
+  "Danilo Krummrich" <dakr@kernel.org>,  <linux-kernel@vger.kernel.org>,
+  <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH 03/22] rust: add extensions to the pin-init crate and
+ move relevant documentation there
+In-Reply-To: <20250304225245.2033120-4-benno.lossin@proton.me> (Benno Lossin's
+	message of "Tue, 04 Mar 2025 22:53:26 +0000")
 References: <20250304225245.2033120-1-benno.lossin@proton.me>
-	<sIa0gEFObIVkQIOds6BkLjVFyVpGcJ70lKQ6CC6zAjpKS4xGB0hcKqo170yhITiDQfjg7s2CigwRoJfJ2fFvmA==@protonmail.internalid>
-	<20250304225245.2033120-2-benno.lossin@proton.me>
+	<WfFbEdgY77_F8Av10-sYEt67FhgZBBdxKadOSC-iOzAoK2YvI9JSuaOBybuOyZT-nzpRubp2llVQcXbmE_Ffow==@protonmail.internalid>
+	<20250304225245.2033120-4-benno.lossin@proton.me>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Wed, 05 Mar 2025 09:51:20 +0100
-Message-ID: <87plivg8s7.fsf@kernel.org>
+Date: Wed, 05 Mar 2025 10:11:00 +0100
+Message-ID: <87eczbg7vf.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -54,31 +55,15 @@ Content-Type: text/plain
 
 "Benno Lossin" <benno.lossin@proton.me> writes:
 
-> This is the first commit in a series that splits off the pin-init crate
-> from the kernel crate.
+> In preparation of splitting off the pin-init crate from the kernel
+> crate, move all kernel-specific documentation from pin-init back into
+> the kernel crate.
 
-I recently learned that using imperative mode in the commit message is
-preferred [1]. You might want to consider that for next spin.
-
->
-> The build system cannot handle doctests in the kernel crate in files
-> outside of `rust/kernel/`. Since subsequent commits will move files out
-> of that directory, but will still compile them as part of the kernel
-> crate, ignore all doctests in the to-be-moved files.
->
-> The tests will be re-enabled later when the separation into its own
-> crate has been completed, since then the doctests of that new crate will
-> be handled as normal host doctests.
->
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-
-
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+This patch **moves** very few lines. The additions to init.rs seem
+either copied or new additions.
 
 
 Best regards,
 Andreas Hindborg
 
-
-[1] https://docs.kernel.org/process/submitting-patches.html
 
