@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C68F23717D;
-	Wed,  5 Mar 2025 11:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99EF1230BD9;
+	Wed,  5 Mar 2025 11:26:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741173663; cv=none; b=AQbnRmMflZ1m9Pnwo3hohs3JQYdbx7OSjBbT/tXB4FUMe/ZsCjpp8l5KN5Ecaei0iPXJUbzZ31bur1lPeFaEBFY2LNnxAdI0zT8oRvtUw7KGXewq2cf4hjXb1b610abdCBhR4/4g9RLvzIUb3f9qP/G8N+lSdIQ3e+pJDFv7toM=
+	t=1741174019; cv=none; b=DSPQS/liJFbDG5ojn5pmpw+p+DnQLhe9WwaVr8cdc/GglHMz3HL1ZCiLQ2H3ccAF/N3NvT1V8mrGaBfKn+SCyg+NDi7pMQYrZaWemruNRd5gLvMjOoPPaqH1/gK9h1zVTi0DMgMc6HZAkI4LXlhKCAiMkX1PG+mJn0jumEB0Hk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741173663; c=relaxed/simple;
-	bh=vyRxcS57ZvnzwUa+x+EWVuX/n8bdy00KR20m21ZjHlY=;
+	s=arc-20240116; t=1741174019; c=relaxed/simple;
+	bh=FLt3n2UnwaL8j5dWbJnGnF4+8gws9xOWp3kSckS9sEs=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=gIlNBYKJy4UwdSGytBbgLlTPhnM4uVmPvHlLfGuzGWnWOHeoBi8CezKbCotafgPvv0j54rM2aK399zGPXkyPqY10ff0n4eewQxVWmmcWJ6LfswxqpnfchnkfNguHyeuzWxdL1v0i4dMrrf+9dpdtZu68Ibhugg9wRzf7vDrV9P8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oe204XPs; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=tnvLv5/COJGR+0HnRm8ndEr0w4q6BN0ynJeiukB9NJwN9oIwwtIATnaAVKxBwsMU9YKxlmUxCchzc3kWDIVxUiU339/RdWwXm86wUDPri5Og0PQqdHohyh6b4fEnX7/rRCQNY0RTpDOJkuqtr1veJ5/5jtg87mWPjSg40VfIGvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hyhjVzSB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oe204XPs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C39AC4CEE2;
-	Wed,  5 Mar 2025 11:20:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hyhjVzSB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B55AC4CEE2;
+	Wed,  5 Mar 2025 11:26:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741173662;
-	bh=vyRxcS57ZvnzwUa+x+EWVuX/n8bdy00KR20m21ZjHlY=;
+	s=k20201202; t=1741174019;
+	bh=FLt3n2UnwaL8j5dWbJnGnF4+8gws9xOWp3kSckS9sEs=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=oe204XPsQS9p3T+rnJLPN1tCuKZ38FsaFusXLZ8EXRxLJhpF7/2ff/juP/+673PU5
-	 r7BqIYgRSOPmO2vJxXJLjHKkUUndrQjz2W3sKVnkEywZQbGBTXb1Mk4Iym+z9ORTvv
-	 OYuF+Alc6M9Vpg32ct0kNNMLzf9gU9JRJIItWAT7i2oFBrLYVdyX2t7AvNZG8K0AbC
-	 5HjHCYVjsP0o+nzRvZVBNOGVxpds9EGpV4uSqMFmz0YFubVnW6zRX/ARR+ow7WW9ZN
-	 y7m9l0/3Z2WMeAlIcd3/n2eZfyaW1sbkHeXfPOosWdl3gS9XAq8F6W1kKxRKmHDPnT
-	 IihSAujqJ75CA==
+	b=hyhjVzSBZjkLVFiqc12SCL9U3/ffzq0tcmH9B+5S/eUW7QgFlWvDMWzCB/Dwgyuua
+	 BfLr8NnDdXeUKQTcMRFWQJi96myN1Acj4Bur+CqE1trXwzlGEp3fElZkXU6IzqpGqG
+	 zRr42KR5zKdIsdB+JMCFfP2n4DDB2Y0qtOi6rlosM2tdQNMD4RmOfUhEbxbhh4dIKU
+	 7E4JABicDbKngUOywVG6PA6u5Nj/NjKlFzF8FhDXRK5FiypEVeRg5ydqrrIRIscylC
+	 VZzgrZUnKL6bUv9UNdSag0BPmi1CO6BWW1HH8hbik+SX2QtS9ithzneL9uE6rSQROu
+	 4AglAV92D6FKA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: "Benno Lossin" <benno.lossin@proton.me>
 Cc: "Danilo Krummrich" <dakr@kernel.org>,  "Miguel Ojeda"
@@ -35,16 +35,16 @@ Cc: "Danilo Krummrich" <dakr@kernel.org>,  "Miguel Ojeda"
  <bjorn3_gh@protonmail.com>,  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor
  Gross" <tmgross@umich.edu>,  <rust-for-linux@vger.kernel.org>,
   <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 08/22] rust: pin-init: move `InPlaceInit` and impls of
- `InPlaceWrite` into the kernel crate
-In-Reply-To: <20250304225245.2033120-9-benno.lossin@proton.me> (Benno Lossin's
-	message of "Tue, 04 Mar 2025 22:54:16 +0000")
+Subject: Re: [PATCH 09/22] rust: pin-init: move impl `Zeroable` for `Opaque`
+ and `Option<KBox<T>>` into the kernel crate
+In-Reply-To: <20250304225245.2033120-10-benno.lossin@proton.me> (Benno
+	Lossin's message of "Tue, 04 Mar 2025 22:54:23 +0000")
 References: <20250304225245.2033120-1-benno.lossin@proton.me>
-	<iamkKusKoPQ37SKTEy2SbZjH0szdD4f3Zss6AcRF5jAkltpuR9blYqQ3Qc0Vd_gJBwPbefblnClu4okTA-TLLg==@protonmail.internalid>
-	<20250304225245.2033120-9-benno.lossin@proton.me>
+	<msi970CObD4bpxAIjK__fZnRG2q-BXd4FHuA1U1NR80D_dTqSXuQ-0-4R1TS7-7CglN6StcS3Os-IumgWcVLqw==@protonmail.internalid>
+	<20250304225245.2033120-10-benno.lossin@proton.me>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Wed, 05 Mar 2025 12:18:39 +0100
-Message-ID: <87frjrene8.fsf@kernel.org>
+Date: Wed, 05 Mar 2025 12:26:50 +0100
+Message-ID: <87a59zen0l.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -56,38 +56,49 @@ Content-Type: text/plain
 "Benno Lossin" <benno.lossin@proton.me> writes:
 
 > In order to make pin-init a standalone crate, move kernel-specific code
-> directly into the kernel crate. This includes the `InPlaceInit<T>`
-> trait, its implementations and the implementations of `InPlaceWrite` for
-> `Arc` and `UniqueArc`. All of these use the kernel's error type which
-> will become unavailable in pin-init.
+> directly into the kernel crate. Since `Opaque<T>` and `KBox<T>` are part
+> of the kernel, move their `Zeroable` implementation into the kernel
+> crate.
 >
 > Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 > ---
->  rust/kernel/alloc/kbox.rs |   3 +-
->  rust/kernel/init.rs       |  55 +++++++++++++++++
->  rust/kernel/prelude.rs    |   3 +-
->  rust/kernel/sync/arc.rs   |  65 +++++++++++++++++++-
->  rust/pin-init/src/lib.rs  | 125 ++------------------------------------
->  5 files changed, 127 insertions(+), 124 deletions(-)
+>  rust/kernel/alloc/kbox.rs | 8 +++++++-
+>  rust/kernel/types.rs      | 5 ++++-
+>  rust/pin-init/src/lib.rs  | 8 +-------
+>  3 files changed, 12 insertions(+), 9 deletions(-)
 >
+> diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
+> index 39a3ea7542da..9861433559dc 100644
+> --- a/rust/kernel/alloc/kbox.rs
+> +++ b/rust/kernel/alloc/kbox.rs
+> @@ -15,7 +15,7 @@
+>  use core::ptr::NonNull;
+>  use core::result::Result;
+>
+> -use crate::init::{InPlaceWrite, Init, PinInit};
+> +use crate::init::{InPlaceWrite, Init, PinInit, Zeroable};
+>  use crate::init_ext::InPlaceInit;
+>  use crate::types::ForeignOwnable;
+>
+> @@ -100,6 +100,12 @@
+>  /// ```
+>  pub type KVBox<T> = Box<T, super::allocator::KVmalloc>;
+>
+> +// SAFETY: All zeros is equivalent to `None` (option layout optimization guarantee).
+> +//
+> +// In this case we are allowed to use `T: ?Sized`, since all zeros is the `None` variant and there
+> +// is no problem with a VTABLE pointer being null.
+> +unsafe impl<T: ?Sized, A: Allocator> Zeroable for Option<Box<T, A>> {}
 
-[...]
+Could you elaborate the statement related to vtable pointers? How does
+that come into play for `Option<Box<_>>`? Is it for fat pointers to
+trait objects?
 
-> --- a/rust/pin-init/src/lib.rs
-> +++ b/rust/pin-init/src/lib.rs
-> @@ -10,7 +10,7 @@
->  //! To initialize a `struct` with an in-place constructor you will need two things:
->  //! - an in-place constructor,
->  //! - a memory location that can hold your `struct` (this can be the [stack], an [`Arc<T>`],
-> -//!   [`UniqueArc<T>`], [`KBox<T>`] or any other smart pointer that implements [`InPlaceInit`]).
-> +//!   [`KBox<T>`] or any other smart pointer that supports this library).
-
-Would you not want to remove references to `KBox` here as well? Even
-though you don't have to move the impl, I don't imagine `KBox` exist in
-user space?
+Otherwise LGTM.
 
 
 Best regards,
 Andreas Hindborg
+
 
 
