@@ -1,89 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE6917555;
-	Wed,  5 Mar 2025 07:53:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6301E2E3360
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Mar 2025 08:12:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741161216; cv=none; b=uAN66S5cYDSQFd/tmU8tW4CwsRoHYRDqXC7fONhx8kVnrVPpMqOno0lYnNHxYYuaImu81JVaBA7zaP6cQszeqQAzhTwvT8krnfZEref0RIcmpbHqrM7eiSs+2cTA+6FtHsAfYlJpCK99KHjeu6S4Cn5Zf0A0PJZpEaEX789B5aQ=
+	t=1741162367; cv=none; b=IuYJHVG24QhZIaZ1ccx23zG0Yfvely0y9SXnD5WtatM6MVeWxlZaKJSBlAAVrj3qCIqQhlys3Mxx1Dsx5S0S5SzdisR1w/xw0SpYd2SUzU6bJoS8W2WcF+l3Z5yMoHVPawxD+DrvUBORBfWK/rVmDyHEnY4Ie5yY3o8OiUQ1G8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741161216; c=relaxed/simple;
-	bh=UdDuY5iEXlf8q1wJO/ji2TRa9vQXVqeswfiZfCyhuvQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=NsGRkhSdfag8Vp1gMUuiO0uq9nEy4KY5ZvFuItV8+Vmkj3qDuh3O3KIIBcqrg4TCJV5c9YV/FfXGXQsEeRVQwQ1lmiNpQu24zhc718BAyYzo2sBtl95v5/efLEsRNCao0d7zaYS3ek+wM3RJ5HFQ4wGT4W9Wh0TPri3wnJn7suY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lVg3l7GN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741162367; c=relaxed/simple;
+	bh=xRXpkNhg+ohP9mY5AAV2icew2EWw08lraO33A2quezY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=jDPzZ1XQB1BMT5NcTmH6aaIBG5CXc70BpTBwvMf4tYRPBwcKYzuzKthglvLQSzyuEi7WDo3B/eTrU+Gwq/OH6N37vqlJdNS3nPFGgXOPtnQCSknATleRudreX8VYYkysy9BZ6CWGJdCEqeLrlbR4GukB3kgMj8Fk17MzMwquEA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SNXHSjMR; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lVg3l7GN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A44C4CEE2;
-	Wed,  5 Mar 2025 07:53:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741161214;
-	bh=UdDuY5iEXlf8q1wJO/ji2TRa9vQXVqeswfiZfCyhuvQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=lVg3l7GNo1Zb5vn9tfnZoG8447kx9Ux4Z8kV1zkKX2iJYy57cZBcl3Q/GVUxrDlzT
-	 gczUa/Ws4rryTHXP8c7ZYJBYbwN8tEGomUgsiJx+e6Nl/A+3l4Rgl8lmNDsy8dqnkv
-	 ChwuCkPfiL1WAUmJSARhJgI/msxO+tTl2e0l7fN7ngjCE4algzVT6ist1O8ug3Zv8U
-	 OYI+Xhe+XVA3ImJdT3unRSxDsFK5UOlaOso/lB097J+VquzoOTqHn+20wz0OZFi4Ml
-	 pXJ6VGrnJ3NKNpK/lgEmErju78u32qdX81eAaElHL9TbjNjo5FJWNt/G9dXh8SR+7o
-	 TCrI0kXC3ORKw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-Cc: "Guilherme Giacomo Simoes" <trintaeoitogc@gmail.com>,
-  <alex.gaynor@gmail.com>,  <aliceryhl@google.com>,  <apw@canonical.com>,
-  <arnd@arndb.de>,  <aswinunni01@gmail.com>,  <axboe@kernel.dk>,
-  <benno.lossin@proton.me>,  <bhelgaas@google.com>,
-  <bjorn3_gh@protonmail.com>,  <boqun.feng@gmail.com>,  <dakr@kernel.org>,
-  <dwaipayanray1@gmail.com>,  <ethan.twardy@gmail.com>,
-  <fujita.tomonori@gmail.com>,  <gary@garyguo.net>,
-  <gregkh@linuxfoundation.org>,  <joe@perches.com>,
-  <linux-kernel@vger.kernel.org>,  <lukas.bulwahn@gmail.com>,
-  <ojeda@kernel.org>,  <pbonzini@redhat.com>,
-  <rust-for-linux@vger.kernel.org>,  <tmgross@umich.edu>,
-  <walmeida@microsoft.com>
-Subject: Re: [PATCH V6 2/2] checkpatch: check format of Vec<String> in modules
-In-Reply-To: <CANiq72kNG7jZf+hZARjyAp-uG=x99CrUKZvJYT_icaF0x0G6iw@mail.gmail.com>
- (Miguel
-	Ojeda's message of "Tue, 04 Mar 2025 22:01:05 +0100")
-References: <87tt89gfe4.fsf@kernel.org>
-	<20250304205054.207285-1-trintaeoitogc@gmail.com>
-	<CANiq72koDba445gMYtC_VEcFk2+O-Xg2-2y6uMyp7onBy=7rcw@mail.gmail.com>
-	<4D_uEoEtgYCzOLuPzhX9Vs7J1uScCFl9I8iUfPXkglvk62R7uBUyCd-_o9rqmINGO1eVIm5gGyfC2_25bhigHQ==@protonmail.internalid>
-	<CANiq72kNG7jZf+hZARjyAp-uG=x99CrUKZvJYT_icaF0x0G6iw@mail.gmail.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Wed, 05 Mar 2025 08:53:18 +0100
-Message-ID: <87v7sngbgx.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SNXHSjMR"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43bcddbe698so5574055e9.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 05 Mar 2025 00:12:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1741162363; x=1741767163; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vsdDPGRMveuEnRMgemGR+mHgTYTLTWjy2LAEpszAaHs=;
+        b=SNXHSjMRGixGORfcrCiUDdPexQGYveMHGpK+L3X1C/dUmmCIJFxtVqVI5MAXvZMOIa
+         jA6bOTLfQW1JsrcuEyUHFclI8M+11YnR13i1q4hGXo9+7wcr4c0p7RNqkjpyzCrXrw1O
+         RjPUo9DNoQJkGMDSqaV/2sZnLszjschWE2tp0NAHndsk2RPhUD7ueBzcvUlbCdfWcs7c
+         nU5Y8ksgOmpZ+YeUzUcRz3zVwkAz9AUd8D2NqvpuOlXWj5L8j/PXpQaeWmUvsOx5qAKP
+         JuVKklWOTj0FdEfGrMQTyGxJkOloHHSQhfkZLvfyE3xmbKXH52G7Php6rU6ZKnpfr4X/
+         Q7/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741162363; x=1741767163;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vsdDPGRMveuEnRMgemGR+mHgTYTLTWjy2LAEpszAaHs=;
+        b=u9ZW9sBrKvfDQlLUyHyU4N2TpGt6o8IDeB6cUv6tMNNe2UewNuX6W+Mh/AL6R32Duq
+         BxnN0+aRm1fxcrDG12iNbN/9FZl3XZDTEJe4TNjRAUWntDPIzk6zq/lKRVOvpReXew6L
+         D/ZtghPmXgGcmmKE7qBaP3iChDzIBdH+XNF+nXLGcnqx8oB+teg5NbIXuUbqt7i09ioA
+         A9j6vIBErhc8Nsg6wRTP9blGGHUQxPfFaOyvwpsnmkcvQ0yGkoGrykADVYYjayEcLxUG
+         ViDy/gtRNydQoMXmMa1PGQf0I+4bvXTJ0pbHvJ6gxJUHQ1h3VbI83dPvlYC96RePw8wo
+         XIGg==
+X-Gm-Message-State: AOJu0YxZoY9Z4Kcg4AdpZ4c0key0WgJvjihe6GJwjgS3oSqK2f6tZVpI
+	yOycalvMoCu8fOh9qce9oAlIDdQM/0VQcWkO3tWdFJ/HFtAoU0KbBzbvOq3/at9evpMDMT/HV56
+	JQaLxFrflH2+atg==
+X-Google-Smtp-Source: AGHT+IGKsI18YgIBiDGLRjQcyi5Kl2ksd1YvDB1oNMxt6Wgj+mRQwLl/JLvW2jgl0cNAZfk6j3dMw2IG5RyXtU0=
+X-Received: from wmqd4.prod.google.com ([2002:a05:600c:34c4:b0:43b:d46e:7d80])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1d0b:b0:43b:cd12:8c92 with SMTP id 5b1f17b1804b1-43bd2ad7566mr13374225e9.31.1741162363681;
+ Wed, 05 Mar 2025 00:12:43 -0800 (PST)
+Date: Wed, 5 Mar 2025 08:12:40 +0000
+In-Reply-To: <20250305053438.1532397-1-dirk.behme@de.bosch.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20250305053438.1532397-1-dirk.behme@de.bosch.com>
+Message-ID: <Z8gHeIe-1AkhnNgO@google.com>
+Subject: Re: [PATCH v3 1/2] rust: types: `Opaque` doc: Add some intra doc linkage
+From: Alice Ryhl <aliceryhl@google.com>
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, 
+	daniel.almeida@collabora.com, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>
+Content-Type: text/plain; charset="utf-8"
 
-"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
+On Wed, Mar 05, 2025 at 06:34:37AM +0100, Dirk Behme wrote:
+> Add some missing intra doc linkage `[...]`.
+> 
+> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
 
-> On Tue, Mar 4, 2025 at 10:00=E2=80=AFPM Miguel Ojeda
-> <miguel.ojeda.sandonis@gmail.com> wrote:
->>
->> I think it could be a good idea (it would be lovely to write the
->> checker in Rust -- I also had a checker bot in Python from the old
->> days of the old `rust` branch in GitHub), but `checkpatch.pl` doesn't
->> need a built kernel, so it would be a disadvantage or at least a
->> difference w.r.t. the usual `checkpatch.pl`, and we may not be able to
->> call it from `checkpatch.pl`.
->
-> By "built kernel", I don't mean an entire kernel, but rather having to
-> call `make` in general, i.e. we could have a target to build just the
-> script, but still, it is a difference.
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-Right, it needs a bit more tool support than running checkpatch.pl
-needs. Perhaps we could move it from checkpatch.pl to the rustfmt make
-target?
-
-
-Best regards,
-Andreas Hindborg
-
-
-
+>  rust/kernel/types.rs | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> index c3dc798221dbc..af30e9c0ebccb 100644
+> --- a/rust/kernel/types.rs
+> +++ b/rust/kernel/types.rs
+> @@ -271,7 +271,7 @@ fn drop(&mut self) {
+>  
+>  /// Stores an opaque value.
+>  ///
+> -/// `Opaque<T>` is meant to be used with FFI objects that are never interpreted by Rust code.
+> +/// [`Opaque<T>`] is meant to be used with FFI objects that are never interpreted by Rust code.
+>  ///
+>  /// It is used to wrap structs from the C side, like for example `Opaque<bindings::mutex>`.
+>  /// It gets rid of all the usual assumptions that Rust has for a value:
+> @@ -286,7 +286,7 @@ fn drop(&mut self) {
+>  /// This has to be used for all values that the C side has access to, because it can't be ensured
+>  /// that the C side is adhering to the usual constraints that Rust needs.
+>  ///
+> -/// Using `Opaque<T>` allows to continue to use references on the Rust side even for values shared
+> +/// Using [`Opaque<T>`] allows to continue to use references on the Rust side even for values shared
+>  /// with C.
+>  ///
+>  /// # Examples
+> -- 
+> 2.48.0
+> 
