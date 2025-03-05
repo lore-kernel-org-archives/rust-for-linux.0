@@ -1,142 +1,93 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C82455103F
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Mar 2025 12:46:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BBF113633F;
+	Wed,  5 Mar 2025 12:47:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741178785; cv=none; b=JH9pxtvMfK4KKldQwO8ftUlIxj9XlwHho1hHIsSrNg4EEGMwac+7Ku+CFfibUchb/X2QeXApDByWUreGKIPx/rHsHatpMxa6jHv9aqMVemKoH7Jo92JDCOkz4INwI/Za7roiPJCduTVTnIkyqRRyJFqggALiq6hCjG9KbXOyQl4=
+	t=1741178869; cv=none; b=g9Cuf/wjlY0/cbMopc4KWRLbBJ82SU1wL4yhpSAbQUIoX0XRNtH5CSPlJdbIKbOKiU6MYeZnOp7WFPXlPbdEP18dukRfmfVFtwYBXNptxdSAp2/4SeqNMZspW9IglD5QgJIjxTfmams6dpysFFSNdI5Wc4GS3JnNWEgVvuYdZ8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741178785; c=relaxed/simple;
-	bh=wK6AMB2VUEjE6n/TOf2XV8pl43DWE5q4ePIKNGhx12g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SQpHSXiNqlRl0TPFt5oNPEhBc56PyH1wiMBqQ1hj9eKT3UW+YexQ2OLgdVmUA4BcrtU1xSurgKJFR1c5yvAxwiE96/IlBzwZTwNFuEnWzQN64TDk7jYJ6YlqV5yyhUCQXsgsHb/uGlzppUEckkrg97rla5PiMvQzDlvYYc6XufM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PqxRS3B1; arc=none smtp.client-ip=209.85.214.178
+	s=arc-20240116; t=1741178869; c=relaxed/simple;
+	bh=XfXFTTGp1QVFV98VxMX0zwHYNo/nftzqQspqCemC3fk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KKl+qDaYnAmfO1yPyyDrVtELcZ1OJxM4UhSyd/IFZ+fCFGCMjE42jAVsukySZUTAzX+l3L89cMTaw95qI2JxEdgaVH17/+iVrA+goJuIFr3/umSNlamfwWinUk7f0fptw1BfsDnnEpMnYI2Ut5OKUemjvpS1zaISqXWHrSOgLXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PyBpq2w6; arc=none smtp.client-ip=209.85.216.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PqxRS3B1"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-22403cbb47fso2543635ad.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 05 Mar 2025 04:46:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PyBpq2w6"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2fee688b474so861633a91.3;
+        Wed, 05 Mar 2025 04:47:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741178783; x=1741783583; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=I7r+BncRktwfdmA2y25QZkeGeEVipDHryPMw6zT/5To=;
-        b=PqxRS3B1mbyWSgq11Jo1K2mz1/xHoaiNmhu6O+qe6KgJD2I8YFkf6IccS1VZUfMi5l
-         GrIm2oyqPiAFRnHq39AICO1XLchSwJWLxDd4y7OMQahNNy/H1z19wSuH4x6x8R3sjr2M
-         fvOb2Fo9xU8MLfegA0sO3oM2UOSxPPEUL1BR6ZEkR57YlOgsMsFYenHNzJdhAlLE1KAv
-         alAHpkrezx2ao7eiDhUz2MB3KwL8fitp7/1fdscdMFKZ2JIzEc1hV0DqC2hGcKppI/RZ
-         +uZCSLToCfCtSzoxehpy+box+U9N0S3HxD5wxN8/lVUJ1QYbeNAFOg+s5Tl32QPUOIto
-         whQA==
+        d=gmail.com; s=20230601; t=1741178868; x=1741783668; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XfXFTTGp1QVFV98VxMX0zwHYNo/nftzqQspqCemC3fk=;
+        b=PyBpq2w6WoXsptN67xAYeRJya/ycZiDE6I3z/HWCblUWDz7dx169XkQElZPwOdblqE
+         2lU5urN8nmFhmDoBtykq9Bxa/XMWF1WaW3/WcfZD8TCHf/i+qIsRJzEnu+ExEfKzGhaM
+         8vZZgQlMedgO2U0II5Chnkw4iBBoQz6BiBNN7kWxaZUYAptTJe98lVUvmg+skl1gDb7M
+         PCq52au+KYtvDTqZW5i5VYMASpwz/4ekw96QHjpaV7BjZ/bSjoTJEvdV2cwJTDkG5xAC
+         Ne8+Coqbq3iL6dvshm6/ITMzN5bxCtzDTjOVEWVVZ+dVcCoybeJ5ku3Rt2LRku1taUch
+         teVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741178783; x=1741783583;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=I7r+BncRktwfdmA2y25QZkeGeEVipDHryPMw6zT/5To=;
-        b=bpjkOR79XyyV2xPpHpEeO/7TDGwfWh8KqbhK+jLlGne+oDKCcWRsid2RjpRXwwkaXl
-         GDmRvP5qwGNFD2d0ObeQAcGnZ5ynt/nHpmvneFrfd41UxR3hJwOBiPAwbUDPVAsZqs3J
-         ymRrv9GE4TcErS2pBwAQhWW1O+P2OUeBaH8okUY6jz9pmiKQ3a2yCiYJuIVQOfKDVrim
-         Mjl1HgrQwK/TUMWzP2xKS9Af6GJXQ2OjRaNzKm1BgxEGICSn2tMTFlxF5LP6LdLQrITm
-         MPorZb60jJGfkRmAQ3ve7FwCoFaM5o8eDmRkWNX/TWsdlbTyQ8KIHrwm11HjdNZ7WiqM
-         E2Rg==
-X-Forwarded-Encrypted: i=1; AJvYcCVsquVVHkmOtDbG5liqv47WO3st2oADV2NH3V3WyDBmeK7UXmtyxj8a+exwHELlt6x/28RYXFhLvI3WK2nH6Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUpyE5ewgrIxCCUGwqgdUStaa67yZyFjK5HkBJmx2AXXYdgxvt
-	dkVF5IskaDJPVZzMPt4IpSk8PBCkhF2x3nzXkUKL3alFmLL1MPvp
-X-Gm-Gg: ASbGnct5USh8YrJ7eLSw9kiBJ4RhPLqJ7S+jpW4EvAWPrYnrqZjTH5M9nR4QXEzUiFE
-	13nNJo40FV/vmeJf2XcSvBxL5w1VbwJ/4pSP6Rsh4A+wTNNtrcbqyWXdee4HdsIZ0CmCqK6w9CA
-	438xihWH28M1jYTY3laPw+mWU08Gg82DKaoJknvTgyUuAURNfiZ4dPFDTaf2lykIgcRkGhelybN
-	S3P4K+jS21P4dlyaxCbyGaozIv7PIHzO931NK/a+gjmH9oMNcny0wK+3Ba8wZApJF0tPDmcy3Fb
-	XyBwuQkuKhHg/VlpIykzPPJTsEzHKEM0cU2dCpwEr049OnbsxvG34QYBI94hsI8+/fM12Gv9nY/
-	99kIjNNZZV8royHQgeyoV
-X-Google-Smtp-Source: AGHT+IH50wUhLXxS9li7E7BldIEKWa4xoSEpppixmFcEg9VAFjYwazTCIwSeG96rzFL8aW98kT+7OQ==
-X-Received: by 2002:a17:902:fc4b:b0:224:3c6:7865 with SMTP id d9443c01a7336-22403c67a23mr4974885ad.3.1741178782818;
-        Wed, 05 Mar 2025 04:46:22 -0800 (PST)
-Received: from ?IPV6:2804:d57:4e50:a700:f33d:65d1:e22e:109b? ([2804:d57:4e50:a700:f33d:65d1:e22e:109b])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22350524b69sm111651585ad.228.2025.03.05.04.46.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Mar 2025 04:46:22 -0800 (PST)
-Message-ID: <51800499-e91e-48f5-b7ee-08a4d488add3@gmail.com>
-Date: Wed, 5 Mar 2025 09:46:16 -0300
+        d=1e100.net; s=20230601; t=1741178868; x=1741783668;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XfXFTTGp1QVFV98VxMX0zwHYNo/nftzqQspqCemC3fk=;
+        b=hseUyHSoLTtFwv3UCg031EzIVmuS6At82HsjNTODE2ofCQT5UHIbOJJXaLDdKep4mv
+         Q1TpxkcznqEKbnfUfFf5RIcR0r06EThViJbhKUCflqlJMgLDOevx68mdse32ZniceyDu
+         Id1LLVZnt8yRzHXP79prQHc5qePqE1wqPnWzEPQtggDvWn5c6dPLYfly1R5INrUUs2PZ
+         Qz8bLYrWSFuoucoJ4ZFLdTNHi7sNY5lwPYBfZ6N3fDWA6z7JWuquKIiHzdZhH/cNVHh7
+         wQvXfPlWZFFZlwaro7fQRY4ndwsI7IPknzI2HH4Pj5Ks7R6RSrEjm+4pP7WQxTkpaFAw
+         735w==
+X-Forwarded-Encrypted: i=1; AJvYcCVLYIS5L/AjoCMNj0ngdfkjdU6wxOuP/iZ/8c4BQFOsRx8sJceTjX8fQHGXEM5uDxIrSZTD4t3aCi6UZhF7@vger.kernel.org, AJvYcCVwjmTGAkbgZO/UG60lDtCCqWVcB6+6Pe3QyYvKHAQDCsg3mHIi7sh66fLF632kGd/0j+yDbgFwPJnin30=@vger.kernel.org, AJvYcCW9IYVDGXuuNcV3bQEueheMdboGVvqIReR5TsYcodpeIOWUinmWsLjyD2XIgrz+UMtzTh4htPJ/T7cBlcWUSVQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyY54FVg1WAmjivWDEzy1TsceiJq0EWrb5SuWZDoaL/FSRLsP6n
+	3mlqrl5fmp+SzgsdYSNEFfinpbpOocf4jKYWBsGBmaWD5XgaIpKIXMxSfHx6v0eU7MtX218xc96
+	apDkbGdM6fD6lOJohhSvCHOwobUw=
+X-Gm-Gg: ASbGnctgs82nnFy5HLF3jBS++DfCcjLmQKvtQUfbdsYAuXZLuqkY5I/nkuOWum38py2
+	tlHcQSt52EgdmcdtG9kp//w1A73KijCurg7XzAcuiiLRdrtfrbjeXWyXvLbshYwzoBLQq8uS/IN
+	PJnHevMzJNm476Fsz7n7hYxNFBNw==
+X-Google-Smtp-Source: AGHT+IHR6wKMB4APddqt0jTu3j3PDlKIsQUgPx7zctPz/rbSum8GUWLgU6G0Oqw4f3Kok/VN9N6g+KQ774Dx5rxv9H8=
+X-Received: by 2002:a17:90b:4c0b:b0:2fe:957c:1146 with SMTP id
+ 98e67ed59e1d1-2ff497c4309mr2030809a91.6.1741178867659; Wed, 05 Mar 2025
+ 04:47:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: add new macro for common bitwise operations
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- daniel.almeida@collabora.com, rust-for-linux@vger.kernel.org,
- felipe_life@live.com
-References: <20250304-feat-add-bitmask-macro-v1-1-1c2d2bcb476b@gmail.com>
- <2025030439-sharpener-overkill-ada2@gregkh>
-Content-Language: en-US
-From: Filipe Xavier <felipeaggger@gmail.com>
-In-Reply-To: <2025030439-sharpener-overkill-ada2@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250304225245.2033120-1-benno.lossin@proton.me>
+ <jpQp16UCJ00pInqOI-QFULU6-FKl2bBtAlmnxtXWLgXPVb7gy6d727nr7THeyks3ERF5Yqu3R6bikD0OK4mqXA==@protonmail.internalid>
+ <20250304225245.2033120-15-benno.lossin@proton.me> <87h647d6xg.fsf@kernel.org>
+In-Reply-To: <87h647d6xg.fsf@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 5 Mar 2025 13:47:35 +0100
+X-Gm-Features: AQ5f1JrgLZHECIWbeIOwHVWTYGSTQpRk2veZ6sZwRLC6m5QNriP5yQ5LLd3onWQ
+Message-ID: <CANiq72mrxwuRJDQ4D0v4-LpdokDt4eLjfQu_QjvE9s0uBjegiA@mail.gmail.com>
+Subject: Re: [PATCH 14/22] rust: add pin-init crate build infrastructure
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 3/4/25 11:09 AM, Greg KH wrote:
-
-> On Tue, Mar 04, 2025 at 09:55:11AM -0300, Filipe Xavier wrote:
->> We have seen a proliferation of mod_whatever::foo::Flags
->> being defined with essentially the same implementation
->> for bitAnd, bitOr, contains and etc.
->>
->> This macro aims to bring a solution for this,
->> allowing to generate these methods for user-defined structs.
->> With some use cases in KMS and VideoCodecs.
->>
->> Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/We.20really.20need.20a.20common.20.60Flags.60.20type
->> Signed-off-by: Filipe Xavier <felipeaggger@gmail.com>
->> ---
->>   rust/kernel/bitmask.rs | 171 +++++++++++++++++++++++++++++++++++++++++++++++++
->>   rust/kernel/lib.rs     |   2 +
->>   rust/kernel/prelude.rs |   1 +
->>   3 files changed, 174 insertions(+)
->>
->> diff --git a/rust/kernel/bitmask.rs b/rust/kernel/bitmask.rs
->> new file mode 100644
->> index 0000000000000000000000000000000000000000..8d26a541c693a2cb60096059ecb708d895bb3ad1
->> --- /dev/null
->> +++ b/rust/kernel/bitmask.rs
->> @@ -0,0 +1,171 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +
->> +//! Bitmask utilities for working with flags in Rust.
->> +
->> +/// Declares a bitmask type with its corresponding flag type.
->> +///
->> +/// This macro generates:
->> +/// - Implementations of common bitwise operations (`BitOr`, `BitAnd`, etc.).
->> +/// - Utility methods such as `.contains()` to check flags.
->> +///
->> +/// # Examples
->> +///
->> +/// Defining and using a bitmask:
->> +/// ```
->> +/// bitmask!(Permissions, Permission, u32);
-> Nice, but why not use the same api/names that are already in the kernel
-> for this type of functionality in the C .h files?  That way we have
-> consistent names everywhere?
+On Wed, Mar 5, 2025 at 12:59=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
+.org> wrote:
 >
-> thanks,
->
-> greg k-h
+> If it's not too much hassle, why not add them in the kernel as well? I
+> would rather not have to go fetch the user space repo from github, in
+> the event that I ever need to patch pin-init.
 
-Makes sense, my mistake, I didn't know...
-Could you send me the reference of what already exists in the kernel so 
-I can change it?
+If you need to patch it, then you should generally do so upstream --
+this is supposed to be a vendored/sync'd library.
 
 Cheers,
-Filipe
-
+Miguel
