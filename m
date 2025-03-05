@@ -1,72 +1,71 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B031E531
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Mar 2025 13:00:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABF01FCF4F;
+	Wed,  5 Mar 2025 13:08:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741179653; cv=none; b=HtvX4tDLW6i/+TxYV0MFrfrteVjgntxICAIMwuFo6POw1/ugjx4Prloh7LkSyzDXQY6PfFfkqk3pXaTSwUlQax51j7cdHzacW1iQgdKPqX1QNoyYXjh70Agl98MeLxiA/IbIPAy7JBQovh6EzLuu5BPA6t4hp0OXrTglGzjd9ME=
+	t=1741180128; cv=none; b=JVowwGlThV6HUCork+LMmLQji/38wtqTsQiKCO+Wl7Trb1O4tvfMIvPcnn4hSuDUNoZ4glQp/UVDhlfMfFqPEqm3p24ayC3cx2VZ1b6pISWnRxnHWITi7iZAKh929xnzIVAkpBFhNLR3u2ElYVJNJowaUlCQ+oHi+4UdI5mUVkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741179653; c=relaxed/simple;
-	bh=buAfl18cwutAaGqn56IrPYceRXH1ohbCKggs9h9M5+o=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AwdzKghTBPVkAhxdbLFpJh3Hw+gDp9siBpL/3qrucfkE8Zm/EP0c2ZSDs9TI193F8IgM5v74IMD08pPpy72DypEsudZv03j4SbhtbiGWPHdXa8gTA0UOVH/tzPBhXAfI5ot3xmYCp3WCKG1IcYUf1Ak4eXUtQ6uJcwMIM55tEi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=LkYlpps4; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1741180128; c=relaxed/simple;
+	bh=E1opgwS/ce43fl3V2dWSSkVOtGCFbxhC7zLz0/gCWmo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Q5sW6byZORKm5LSUcbOlQ4vMqmm7PO2osADDsgfYH3BL0xh1uM8Rnosc6TmnPtj1OaiFgEGlCBdNkZZckUEPZGBXBxQM1/DQ0McLocGXxETEJZ36ib10mMVo1QEXInb7GPWsMvPxZYYD6OJUL1h86AoV3DKW8Hvj4hohw1C4hm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oJiX8chl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="LkYlpps4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1741179648; x=1741438848;
-	bh=buAfl18cwutAaGqn56IrPYceRXH1ohbCKggs9h9M5+o=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=LkYlpps4VjVxc5S/PujdbAY6Bntkgf7I5CoWCkmouLfhTRzmFu7epNKAcAJqSAINN
-	 maRdWM2/yAFT5RigX+z5UjZzNO04fW0DrpTT32rjBFjClrs18omkvQWqgXd3m6qmZ8
-	 I0VuO7ghb2JtWrMNNeI3gi/816UAbtUC0HHCgxG93rwUrZJhMARHO71XqhuI/lgejh
-	 EuiPtyLOFp73OjhrYX2Pj30tN/OrZRGscQBPr2lTa9JiF6+AReUhHBkIDi6rdVa473
-	 rn/AL0svldPk1Ipb8buyK2EK/1F265/sNsvcop5HZmvzNjfSjC+/6wcaPgsEjeGnK6
-	 FRs/Y/kB5m9mw==
-Date: Wed, 05 Mar 2025 13:00:41 +0000
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Andreas Hindborg <a.hindborg@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org
-Subject: Re: [PATCH 14/22] rust: add pin-init crate build infrastructure
-Message-ID: <D88CO20HCT55.1C84SLGUXA0XH@proton.me>
-In-Reply-To: <CANiq72k=KiYhKr9XHU38==Rx0df4rERyOL1abRG_cDo+4NNa0g@mail.gmail.com>
-References: <20250304225245.2033120-1-benno.lossin@proton.me> <jpQp16UCJ00pInqOI-QFULU6-FKl2bBtAlmnxtXWLgXPVb7gy6d727nr7THeyks3ERF5Yqu3R6bikD0OK4mqXA==@protonmail.internalid> <20250304225245.2033120-15-benno.lossin@proton.me> <87h647d6xg.fsf@kernel.org> <cdfBMmuIl8Wl-KpI-koNDQJOCGBr9z9dOi5fxQvFbgNWQHHw6JtMizaMMbMniNlE841-9b7TdLuZ9Xh_hFsf7w==@protonmail.internalid> <D88BLHENDH8Y.HQUKEXN1XB7C@proton.me> <87ldtjbqw2.fsf@kernel.org> <CANiq72k=KiYhKr9XHU38==Rx0df4rERyOL1abRG_cDo+4NNa0g@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: ec7890daa8d5c024fb19c204703c35dbb21cafbe
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oJiX8chl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32A89C4CEE2;
+	Wed,  5 Mar 2025 13:08:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741180127;
+	bh=E1opgwS/ce43fl3V2dWSSkVOtGCFbxhC7zLz0/gCWmo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=oJiX8chllCwriF4mQmk1is2DUiB20Xfvsf2eVncdYgrfECCmPFQ69Zn6Ne7ieF1rU
+	 BtdDstkzcFWwghQo45fHwkAEvR6yQNSazG7WLfA+6oOKgA2DGwE+UGRv462SjOMK4o
+	 XG8caWQ4ox6JUts7zV6CP3qrFwwTftF0Ln1Lb63jVYzzApXtVByUg4xhZnNYz+Uo4U
+	 grvwMDXCPGd/CD4IEVnCBTIlMRYnYPmCSpXNmQVD5+DsKl7jx6ePZJWlOuE1e5UeBu
+	 Ry3NRRDSBU+GEXRowtZ4TTKHspG6NcrTuvIcyenU3E4Ek9ET2lwd0k6td9jSy6r9VM
+	 sOgmw2j6Ue0Cw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Benno Lossin" <benno.lossin@proton.me>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Alice
+ Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
+  "Danilo Krummrich" <dakr@kernel.org>,  <rust-for-linux@vger.kernel.org>,
+  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 19/22] rust: pin-init: miscellaneous synchronization
+ with the user-space version
+In-Reply-To: <20250304225245.2033120-20-benno.lossin@proton.me> (Benno
+	Lossin's message of "Tue, 04 Mar 2025 22:56:02 +0000")
+References: <20250304225245.2033120-1-benno.lossin@proton.me>
+	<hCdz_iDipWW3ePNJFAKA8_lI64CwhD93gRLKeWrodZzjvVZtpJe7D1J4qDqrLguMWRyBIZ70MHkLlkOSy80XFQ==@protonmail.internalid>
+	<20250304225245.2033120-20-benno.lossin@proton.me>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Wed, 05 Mar 2025 13:57:19 +0100
+Message-ID: <874j07bpow.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Wed Mar 5, 2025 at 1:50 PM CET, Miguel Ojeda wrote:
-> On Wed, Mar 5, 2025 at 1:34=E2=80=AFPM Andreas Hindborg <a.hindborg@kerne=
-l.org> wrote:
->>
->> I _really_ think that the ability to run the tests should be present in
->> the kernel repository. But I also do not want to block this series on it=
-,
->> if it is something that will be easier to achieve with the build system
->> overhaul that is in the pipeline.
+"Benno Lossin" <benno.lossin@proton.me> writes:
+
+> Last differences between the kernel version and the user-space version
+> are removed here.
 >
-> No, that is not the plan. Even with the new build system, this is
-> supposed to be developed upstream as far as I understand, so you will
-> need to run them there anyway.
+> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+> ---
 
-Yes, the plan is that development will happen on GitHub. I will of
-course continue to take patches via the list, but I would prefer if
-people make changes via GitHub PRs, since those run the CI (which also
-includes a lot more tests that I haven't vendored here).
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
 
----
-Cheers,
-Benno
+
+Best regards,
+Andreas Hindborg
+
+
 
