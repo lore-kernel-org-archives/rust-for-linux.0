@@ -1,158 +1,196 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78EFA24889C;
-	Wed,  5 Mar 2025 14:21:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741184463; cv=none; b=bo3DSmDMqhzbDE2JUkxhjj3HxnZXWRNucJSAy8Nkfnydj7T7Ev8xhv/A/jLSm/BZWJjmfGhSDQieVLXYD6SqZ5cVC4mM/giia+E6xUllDFJR9ORIEmAJlr2ed/5UUZtTVBc8AxV+4EzCBNsE1CXel5lYmkPWqz7ZQtkyJv4l4ns=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741184463; c=relaxed/simple;
-	bh=g9ktS8K7rRoujwZfqZdfcH5n9clfO1z5LX6Sxgf2RCs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Tw6mJcmQrqHW67gFLRaN+koJTPlNuG7Ypx84vhwSVj6dVF1RyAgcZ4eRmZ8uT0CspBIc8mz2iIon0GPtl1eKHuKzI/oxUnFI4vVNRXeQnixa/dxSZxUpdza3p23EkQ8PixLi10KAKVhsswa6jqzk5EjfCE+fFmYkkhxsgxmXeIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ipGjJ/CD; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E8424C691;
+	Wed,  5 Mar 2025 14:27:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741184823; cv=pass; b=Vb3LuiTggm4LUZOl6hfWEIf3Lr3lRKtbiVhKXmq5jC7ozfbIlc0gVaak3L6vKyFWmzvAXP8PZSFe1TLnbu3AT7R/Kn6ieMXxNp39QUhCI1UG3DR0loly8wHNzgF5gMMUSnl4vvUBvYkPccGqlvC3484QANTrNGqZ+oyvMtIpQPk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741184823; c=relaxed/simple;
+	bh=/Z9S0QzKDsuLG0+3X3XdL82r5DXrvOFAaAskQNYSId4=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=j5JX+/rj148hUYQNnmTIkCZdtVMmD8hQJ/w5An/hnxRP74gw3nAqKc5RTiWeGiafTYFAJlXD6C9sillsstWnVHcDMPVwNChESA55W/QkaVQ5nH+TvTBa5IF+x3feQqJlWs1W/jwXUWiV1outdqCaUGUPBvScjdEwUrWOvkT6Zy8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=RekStM0K; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ipGjJ/CD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4537C4CED1;
-	Wed,  5 Mar 2025 14:20:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741184462;
-	bh=g9ktS8K7rRoujwZfqZdfcH5n9clfO1z5LX6Sxgf2RCs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=ipGjJ/CDS553s7hCyO5v/E+vJZlgFG9NmHvjPEPf8pwx3dNVMg6flc/QnRXE3B+sh
-	 Xfq2cR8sCeDWINY8+XaAivWuEe1Toa4f1bWbfJGEL6351o1A+bZQV/nrHMguyToUww
-	 Oth2H+nrmhEhcWZD5kner56fcVNsu9vYAorn9n1dFHtuPKeN+sFxWmlyjdk32mVTcw
-	 Boo14ca5igGp7sKnEVJS4vjx72ZiBypv1T+KjVJmbRplXVj82xc9tPw6+g6qAHGE6e
-	 Awgr1VM4GXzX4BzP5/0oQ/b2gTM9VagRP7xgQ3GvxvFOjA5yAwjQo6DCsHNy6Qx7OQ
-	 s4UTUJ8HR9k/w==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Benno Lossin" <benno.lossin@proton.me>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Alice
- Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Danilo Krummrich" <dakr@kernel.org>,  "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>,  "Rafael J. Wysocki" <rafael@kernel.org>,
-  "Peter Zijlstra" <peterz@infradead.org>,  "Ingo Molnar"
- <mingo@redhat.com>,  "Will Deacon" <will@kernel.org>,  "Waiman Long"
- <longman@redhat.com>,  <linux-kernel@vger.kernel.org>,
-  <rust-for-linux@vger.kernel.org>,  <linux-block@vger.kernel.org>
-Subject: Re: [PATCH 15/22] rust: make pin-init its own crate
-In-Reply-To: <D88DIE85YT01.11H51NPNE3HP6@proton.me> (Benno Lossin's message of
-	"Wed, 05 Mar 2025 13:40:19 +0000")
-References: <20250304225245.2033120-1-benno.lossin@proton.me>
-	<LBAOJwgDK3vs6V-k9Olh9PVQ69a3qCaCgLZctAshaNi73epZNKVgY4rKa-81-5us0Tpj3m3U_W3pCHFTKlIbVQ==@protonmail.internalid>
-	<20250304225245.2033120-16-benno.lossin@proton.me>
-	<87bjufd6bj.fsf@kernel.org>
-	<p2Xt1iMJJIRI9ZD65zucf5N-1vUDxFzg2l66bCD-rZNCrBdZwPi8iu9rKdmEUMlh-gEWESr5rEOuejJGRNF4pw==@protonmail.internalid>
-	<D88DIE85YT01.11H51NPNE3HP6@proton.me>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Wed, 05 Mar 2025 15:20:49 +0100
-Message-ID: <8734fra79a.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="RekStM0K"
+ARC-Seal: i=1; a=rsa-sha256; t=1741184778; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=UNe32RR04FyEtxJr78wuwJoPPVIRQJ/9ZZVrbt8MSyvtwmPpfoQlWjDO6l2ibYVqLMdcFelA5vds3leEP0F4NFkbOsjRHu644aLrsSDHwUqcVpCxiBw+TcvbQiSsdvHSKyjUJ8yT5kBIJNwtauWVdquf8RomVTEXIOlT4r6jhjA=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1741184778; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=AdsW+1At4dzqwKDMRG+xhUkB9QjIq0jRnj5pAKgqr7Q=; 
+	b=OXt96sUQvHVTNUyBiyYNSAjazgswZrJYRHmjY537bKwCQcl0w9CKzRYO8t+/3+mybKlS8XOrrCs07zXBl49bjHw/UaNji5pvZOAaPeZFYpFsFLjIrwNGMNFx3iVf0jAhjXGOyu1By8r0WaIxSmTvp25Qh0mFTJcXDH3keQzF110=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1741184778;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=AdsW+1At4dzqwKDMRG+xhUkB9QjIq0jRnj5pAKgqr7Q=;
+	b=RekStM0KWIrf2d7tmLV0YwK/ffv+lYmKJenAW06PEzAbke5LQEb7vHepf7wdPP2M
+	0LQHWJwHa7RIV1CF5IIDXBR5jwGf6ItIj9K5PdOa/rrvdeLJBjPIWKrwnne+CqyK30v
+	qHIWs7N7ed3dkSwT0fr3oZuRjxhJ8KCNhXT8lm/k=
+Received: by mx.zohomail.com with SMTPS id 1741184776075416.8048596435848;
+	Wed, 5 Mar 2025 06:26:16 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
+Subject: Re: Allow data races on some read/write operations
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <25e7e425-ae72-4370-ae95-958882a07df9@ralfj.de>
+Date: Wed, 5 Mar 2025 11:25:58 -0300
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+ comex <comexk@gmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ dakr@kernel.org,
+ robin.murphy@arm.com,
+ rust-for-linux@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Valentin Obst <kernel@valentinobst.de>,
+ linux-kernel@vger.kernel.org,
+ Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ airlied@redhat.com,
+ iommu@lists.linux.dev,
+ lkmm@lists.linux.dev
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <23E19975-0AF5-4223-B05D-4891747B7C15@collabora.com>
+References: <87bjuil15w.fsf@kernel.org>
+ <t4HxdvR7WBX_861hiTXo72jqC9F9oRpIzgA_dD2yhcSuLISEkC-shMfSgllrFPpnkSZXGfRcc47keudMooNiIQ==@protonmail.internalid>
+ <CAH5fLgg5MuUu=TX8mMsPf5RcLhMLHSU4Vct=h8rFX6Z7HjPxeA@mail.gmail.com>
+ <87ikoqjg1n.fsf@kernel.org>
+ <KpWTCfIlcLYFBpSvWPfALJ9VQn5a99_RAvxgMBc1aCrSalPB-qaW9IhXyaDG7HM1AcFPX5chj_Yr7IQp3F7UqA==@protonmail.internalid>
+ <CAH5fLgh6ubawHh76wq7JPbcuBCWhm91m7Rc01MVsX-a3C6qaVA@mail.gmail.com>
+ <87mse2hrd8.fsf@kernel.org> <Z8YMTiKS4T9wC4t_@boqun-archlinux>
+ <ae8ac31f-c6ad-46ae-80dd-10ec081a16d1@ralfj.de>
+ <88456D33-C5CA-4F4F-990E-8C5F2AF7EAF9@gmail.com>
+ <hkhgihg4fjkg7zleqnumuj65dfvmxa5rzawkiafrf4kn5ss6nw@o7kc6xe2bmuj>
+ <25e7e425-ae72-4370-ae95-958882a07df9@ralfj.de>
+To: Ralf Jung <post@ralfj.de>
+X-Mailer: Apple Mail (2.3826.300.87.4.3)
+X-ZohoMailClient: External
 
-"Benno Lossin" <benno.lossin@proton.me> writes:
+Hi Rafl,
 
-> On Wed Mar 5, 2025 at 1:12 PM CET, Andreas Hindborg wrote:
->> "Benno Lossin" <benno.lossin@proton.me> writes:
->>
->>> Rename relative paths inside of the crate to still refer to the same
->>> items, also rename paths inside of the kernel crate and adjust the build
->>> system to build the crate.
->>>
->>> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
->>> ---
->>
->> [...]
->>
->>> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
->>> index 7ff82c82ce0c..8e116e266524 100644
->>> --- a/rust/macros/lib.rs
->>> +++ b/rust/macros/lib.rs
->>> @@ -2,23 +2,20 @@
->>>
->>>  //! Crate for all kernel procedural macros.
->>>
->>> +#![feature(lint_reasons)]
->>
->> Commit message should probably say something about this.
->
-> Done.
->
->>> +
->>>  // When fixdep scans this, it will find this string `CONFIG_RUSTC_VERS=
-ION_TEXT`
->>>  // and thus add a dependency on `include/config/RUSTC_VERSION_TEXT`, w=
-hich is
->>>  // touched by Kconfig when the version string from the compiler change=
-s.
->>>
->>>  #[macro_use]
->>> +#[expect(unused_macros)]
->>>  mod quote;
->>>  mod concat_idents;
->>>  mod helpers;
->>>  mod module;
->>>  mod paste;
->>> -#[path =3D "../pin-init/internal/src/pin_data.rs"]
->>> -mod pin_data;
->>> -#[path =3D "../pin-init/internal/src/pinned_drop.rs"]
->>> -mod pinned_drop;
->>>  mod vtable;
->>> -#[path =3D "../pin-init/internal/src/zeroable.rs"]
->>> -mod zeroable;
->>>
->>>  use proc_macro::TokenStream;
->>>
->>> @@ -374,5 +371,3 @@ pub fn paste(input: TokenStream) -> TokenStream {
->>>      paste::expand(&mut tokens);
->>>      tokens.into_iter().collect()
->>>  }
->>> -
->>> -include!("../pin-init/internal/src/lib.rs");
->>> diff --git a/rust/macros/module.rs b/rust/macros/module.rs
->>> index cdf94f4982df..bdd94c79b0d4 100644
->>> --- a/rust/macros/module.rs
->>> +++ b/rust/macros/module.rs
->>> @@ -236,7 +236,7 @@ impl kernel::ModuleMetadata for {type_} {{
->>>              mod __module_init {{
->>>                  mod __module_init {{
->>>                      use super::super::{type_};
->>> -                    use kernel::init::PinInit;
->>> +                    use pin_init::PinInit;
->>>
->>>                      /// The \"Rust loadable module\" mark.
->>>                      //
->>> diff --git a/rust/macros/quote.rs b/rust/macros/quote.rs
->>> index 33a199e4f176..11d241b85ac3 100644
->>> --- a/rust/macros/quote.rs
->>> +++ b/rust/macros/quote.rs
->>> @@ -2,6 +2,7 @@
->>>
->>>  use proc_macro::{TokenStream, TokenTree};
->>>
->>> +#[allow(dead_code)]
->>
->> #[expect(dead_code)] ?
->
-> `expect` can't be used here, since `quote.rs` is imported in
-> `pin-init/internal/src/lib.rs` and used in that crate. But it is unused
-> in the `macros` crate, hence we need to allow it.
+> On 5 Mar 2025, at 10:10, Ralf Jung <post@ralfj.de> wrote:
+>=20
+> Hi,
+>=20
+> On 05.03.25 04:24, Boqun Feng wrote:
+>> On Tue, Mar 04, 2025 at 12:18:28PM -0800, comex wrote:
+>>>=20
+>>>> On Mar 4, 2025, at 11:03=E2=80=AFAM, Ralf Jung <post@ralfj.de> =
+wrote:
+>>>>=20
+>>>> Those already exist in Rust, albeit only unstably:
+>>>> =
+<https://doc.rust-lang.org/nightly/std/intrinsics/fn.volatile_copy_memory.=
+html>.
+>>>> However, I am not sure how you'd even generate such a call in C? =
+The
+>>>> standard memcpy function is not doing volatile accesses, to my
+>>>> knowledge.
+>>>=20
+>>> The actual memcpy symbol that exists at runtime is written in
+>>> assembly, and should be valid to treat as performing volatile
+>>> accesses.
+>=20
+> memcpy is often written in C... and AFAIK compilers understand what =
+that function does and will, for instance, happily eliminate the call if =
+they can prove that the destination memory is not being read from again. =
+So, it doesn't behave like a volatile access at all.
+>=20
+>>> But both GCC and Clang special-case the memcpy function.  For =
+example,
+>>> if you call memcpy with a small constant as the size, the optimizer
+>>> will transform the call into one or more regular loads/stores, which
+>>> can then be optimized mostly like any other loads/stores (except for
+>>> opting out of alignment and type-based aliasing assumptions).  Even =
+if
+>>> the call isn=E2=80=99t transformed, the optimizer will still make =
+assumptions.
+>>> LLVM will automatically mark memcpy `nosync`, which makes it =
+undefined
+>>> behavior if the function =E2=80=9Ccommunicate[s] (synchronize[s]) =
+with another
+>>> thread=E2=80=9D, including through =E2=80=9Cvolatile accesses=E2=80=9D=
+. [1]
+>=20
+> The question is more,  what do clang and GCC document / guarantee in a =
+stable way regarding memcpy? I have not seen any indication so far that =
+a memcpy call would ever be considered volatile, so we have to treat it =
+like a non-volatile non-atomic operation.
+>=20
+>>> However, these optimizations should rarely trigger misbehavior in
+>>> practice, so I wouldn=E2=80=99t be surprised if Linux had some code =
+that
+>>> expected memcpy to act volatile=E2=80=A6
+>>>=20
+>> Also in this particular case we are discussing [1], it's a memcpy =
+(from
+>> or to) a DMA buffer, which means the device can also read or write =
+the
+>> memory, therefore the content of the memory may be altered outside =
+the
+>> program (the kernel), so we cannot use copy_nonoverlapping() I =
+believe.
+>> [1]: =
+https://lore.kernel.org/rust-for-linux/87bjuil15w.fsf@kernel.org/
+>=20
+> Is there actually a potential for races (with reads by hardware, not =
+other threads) on the memcpy'd memory? Or is this the pattern where you =
+copy some data somewhere and then set a flag in an MMIO register to =
+indicate that the data is ready and the device can start reading it? In =
+the latter case, the actual data copy does not race with anything, so it =
+can be a
 
-Got it =F0=9F=91=8D
+This is device-specific.
 
+e.g.: for video codecs, if you don=E2=80=99t set a bit that starts the =
+decode or
+encode process for the current frame, everything remains as-is, i.e.: =
+untouched
+by the hardware. I can=E2=80=99t vouch for all other devices, and people =
+have
+already chimed in to say this is not necessarily the case for some of =
+them.
 
-Best regards,
-Andreas Hindborg
+> regular non-atomic non-volatile memcpy. The flag write *should* be a =
+release write, and release volatile writes do not exist, so that is a =
+problem, but it's a separate problem from volatile memcpy. One can use a =
+release fence followed by a relaxed write instead. Volatile writes do =
+not currently act like relaxed writes, but you need that anyway for =
+WRITE_ONCE to make sense so it seems fine to rely on that here as well.
+>=20
+> Rust should have atomic volatile accesses, and various ideas have been =
+proposed over the years, but sadly nobody has shown up to try and push =
+this through.
+>=20
+> If the memcpy itself can indeed race, you need an atomic volatile =
+memcpy -- which neither C nor Rust have, though there are proposals for =
+atomic memcpy (and arguably, there should be a way to interact with a =
+device using non-volatile atomics... but anyway in the LKMM, atomics are =
+modeled with volatile, so things are even more entangled than usual ;).
+>=20
+> Kind regards,
+> Ralf
+>=20
 
-
+=E2=80=94 Daniel
 
