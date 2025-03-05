@@ -1,162 +1,218 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E1A19C542;
-	Wed,  5 Mar 2025 18:44:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D0D1C863A
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Mar 2025 18:50:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741200251; cv=none; b=u+BaiVfyVSn48B8CYEA3Fz7xz6sy9QgQhp3VvosB2XfvfPN1UW6bYT6YjU5Yk5BMKCQFwhi+VTU6oGhl/8p2RCsPoYPxNLT5K33HG5p6Cvp/s1lH1W7aLBqF8LEDSB9cy+Ks26AMU7Y8rkseE/g3g8IfZMMh9y05fzWAi3enuso=
+	t=1741200648; cv=none; b=ln3c4uZkAtAYNrIeCPhAyCAt+iBxajJbnDSAM18b2VcpXWFKf4xdv04FOli0z4AjLhRDjqcMSGnuiK9szcfCadmQlqPX7c+DCx4qilv+ty87+S5EFQ27MRaGOLrE4HAjiDDTEl1N7NovO2HG7FcPH93j66IjXlRHlDEUvFU7xUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741200251; c=relaxed/simple;
-	bh=rz2u+yhpHdNdyfyhdEIB4K+V3QkZKS2rxaRVdy6U+Wk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Tr2FM/ix506m/li/w8dTO1BfGV4KiORYtBMeufK2s4Sz6RK0lFdgRr6wC2S8/egsq5otmit4DVbAUmTIggMgeFtunHLW4HDxhrtKkHIsmZ+TE2o4y4TwjbBo+ghPqsryNU8/wDf/Y+IP9T0R878FpFrbMl3+lV16xtMWZku/MjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aZY+F5o7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741200648; c=relaxed/simple;
+	bh=mQt9Rqmij3CQF7N6ySNKJqrP8+a4QSDrp1i2hvVtTCk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bMhy6fyFogfL1V3CBlBI8AJVMgR+Xvt/f/nNhr8SIGnQsY8t6QB4BSAv4rorQphkgN3p9oKp8I4J4vkG1s9b+GA6PCBoaxoQsduMS9JuAHYwpvhBD5F/3WvKTyAfIt8ei3xS1soJvPvF2IwVKzzRKo5jQ//vtS5OFOBYn1uVj+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dfxWRpFY; arc=none smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aZY+F5o7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2388C4CEE8;
-	Wed,  5 Mar 2025 18:44:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741200250;
-	bh=rz2u+yhpHdNdyfyhdEIB4K+V3QkZKS2rxaRVdy6U+Wk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=aZY+F5o7E/PF3JWX0chEfU+AGJe6SukhXGHKUrn+yAXchuGNjIe7ET12TvPHioi8B
-	 /prVxEBWez6yYNfABwn68DiLrBzxvDepqNTxk+ZQTmT2kZArhHxAqkA1xsWbEeNDCQ
-	 JiFkuU/relcHkka1XgtP/53btrQbIIBzWrArUO4YQ3BZt8J5+gX7xnKS0K+xEC+1uf
-	 AMkLtGvjzvfnrQwW+s+1uhDmvnrrwqFmLSrf/pmzOgam1PuHWPo7IkI4JGc7Hlb0mr
-	 lqaP1lh+EBRoxMDxd9Wpeahhp+ydNH0J6+ignuupBPLMw6R3rB1kCJL2HdoorQxCc4
-	 mn8AXwyrjFXjg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Ralf Jung" <post@ralfj.de>
-Cc: "Alice Ryhl" <aliceryhl@google.com>,  "Boqun Feng"
- <boqun.feng@gmail.com>,  "comex" <comexk@gmail.com>,  "Daniel Almeida"
- <daniel.almeida@collabora.com>,  "Benno Lossin" <benno.lossin@proton.me>,
-  "Abdiel Janulgue" <abdiel.janulgue@gmail.com>,  <dakr@kernel.org>,
-  <robin.murphy@arm.com>,  <rust-for-linux@vger.kernel.org>,  "Miguel
- Ojeda" <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Gary
- Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,
-  "Trevor Gross" <tmgross@umich.edu>,  "Valentin Obst"
- <kernel@valentinobst.de>,  <linux-kernel@vger.kernel.org>,  "Christoph
- Hellwig" <hch@lst.de>,  "Marek Szyprowski" <m.szyprowski@samsung.com>,
-  <airlied@redhat.com>,  <iommu@lists.linux.dev>,  <lkmm@lists.linux.dev>
-Subject: Re: Allow data races on some read/write operations
-In-Reply-To: <3aabca39-4658-454a-b0e3-e946e72977e1@ralfj.de> (Ralf Jung's
-	message of "Wed, 05 Mar 2025 14:27:42 +0100")
-References: <87bjuil15w.fsf@kernel.org>
-	<t4HxdvR7WBX_861hiTXo72jqC9F9oRpIzgA_dD2yhcSuLISEkC-shMfSgllrFPpnkSZXGfRcc47keudMooNiIQ==@protonmail.internalid>
-	<CAH5fLgg5MuUu=TX8mMsPf5RcLhMLHSU4Vct=h8rFX6Z7HjPxeA@mail.gmail.com>
-	<87ikoqjg1n.fsf@kernel.org>
-	<KpWTCfIlcLYFBpSvWPfALJ9VQn5a99_RAvxgMBc1aCrSalPB-qaW9IhXyaDG7HM1AcFPX5chj_Yr7IQp3F7UqA==@protonmail.internalid>
-	<CAH5fLgh6ubawHh76wq7JPbcuBCWhm91m7Rc01MVsX-a3C6qaVA@mail.gmail.com>
-	<87mse2hrd8.fsf@kernel.org> <Z8YMTiKS4T9wC4t_@boqun-archlinux>
-	<ae8ac31f-c6ad-46ae-80dd-10ec081a16d1@ralfj.de>
-	<88456D33-C5CA-4F4F-990E-8C5F2AF7EAF9@gmail.com>
-	<hkhgihg4fjkg7zleqnumuj65dfvmxa5rzawkiafrf4kn5ss6nw@o7kc6xe2bmuj>
-	<25e7e425-ae72-4370-ae95-958882a07df9@ralfj.de>
-	<CAH5fLgidPHQzdUORNpNhtRFsKPU1T-0xdn5OSwYYZh3BgOVRQA@mail.gmail.com>
-	<18cmxblLU2QAa4YP25RWCKEnxuonOwWXavYmSsS4C5D40o8RaCkIXo0UDZ2SPnksk5nWYB29Y4zHkjQeOgd4ng==@protonmail.internalid>
-	<3aabca39-4658-454a-b0e3-e946e72977e1@ralfj.de>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Wed, 05 Mar 2025 19:43:59 +0100
-Message-ID: <87eczb71xs.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dfxWRpFY"
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7c081915cf3so923939485a.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 05 Mar 2025 10:50:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741200645; x=1741805445; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hE8aeUm1HAZoT11uP6QOZFS2isTobDRBSeUb4PRdKy4=;
+        b=dfxWRpFYl2gkhzWq94+k5DwHMCZniejZTOOKLAX6RjKsmzMjneGAI9HkkcgLYhnvV6
+         b8nfu63NSx1QMLv09SKbrUDEugoTbIH+FcPKdSWOYeh1p4rr4+9bVGSFDwD4OgpwV9Xd
+         OJoajNXaDY94wprmCV8y9f5dKYiUNiVuI28xGySGPvQtJS11BKua6OctG1brgUileVUi
+         drkOfE3GJS1TzSvnLNbPjIn94GYLFA/K4Gh3r5NbmZZTerLXcDizRrJd9kQf0yaU4j9Q
+         vnJQgrv7ULpxXmdm/cLHA9XsqejL2mE5ajuUcoOI9+lQ5oN8lGXkB0n37MpycyTejOFf
+         9L7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741200645; x=1741805445;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hE8aeUm1HAZoT11uP6QOZFS2isTobDRBSeUb4PRdKy4=;
+        b=UItOthzKLlkS4gfpPNskSyNwQEY6pQcbgrYycy/6C5dRRFter4xe4gfflGltO3uDfE
+         7VSx/1yxVtmuH/i3JwflERo6XvwUSOONL8EfgMCjaaalgXx1wgvvwlhlet7T4d7KT/Wr
+         4kHTD5Ovv4zCULhje2/ubYiNJUTk5iQUZ5PEPRd3DEBujkxFs0QovM6FY4NKaBxgEhDP
+         qcTx77DrH/I13AVi8a1ToXlpqepmHdVx5I8bG/rT0hAcCIGwWK6u/eRpHQTPAaRHKkbU
+         q8uLKdV3x25iR0G5+VfoD+xbPDz9Nb39SnYK/mF7SuEAYhpufsNoQ/f9e/ksn+1x0yNs
+         kukw==
+X-Forwarded-Encrypted: i=1; AJvYcCVGTPy57VxK1UxEkYUhkdzejBfrTUfW7euPF5ol5kRdltbiLplP78beQ5uInmBN8oBOB3kC34OLx/Eydb3p3g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzyUNIQICT86QvfbCAhD35on6alzc9f9ldkfs+TF7gaGW4/NkXO
+	nQVU02e5uXxCfBgMlkLf9B6OtggbtGPD5y2zOOurA5qYaC6vaEvm
+X-Gm-Gg: ASbGncvO+RwUlkPvUk8KF4wKUzqbze1W2D1ctiN2LVjLsDCLOsmDvayiFqqoF8+i5q9
+	dWvI5nnfIriWfK68uSBLoDtegU8pdrvMoJ/4XDQ9KgapBHKR0GRAFPyq5MHLqTqWIqm2LZByTfM
+	MBR3badUYCn5uD1TkfVhVrn0jBRRyFFGVc0D9gt7wGVjvRrfRJ+z77vDE8fScRzMKpuxOfMgOyw
+	XN9ExJROc6CpHaA+5l0MSWlVOQP/1kbiaO3Ekwy1kAyuCi8g+wUzrtvop2A7PJTXfiFyTQyMniz
+	eS34be56rt9eIzCWb8uAEE5QqQfcWMFFosZAnr8jKjbzYLAxPH7I7UMgNpR/5Lx37h27O/pueLx
+	K/1Q+uiMZLofcLZL6IMo8KF+K33xP/77kJiQ=
+X-Google-Smtp-Source: AGHT+IHeQBMUjOeC+guANSVWdiGUEpoj//y6NgU+OIMri74mujecNQAddoUn67eZqZ8gcr+NiiDC9Q==
+X-Received: by 2002:a05:620a:86cd:b0:7c3:d078:133a with SMTP id af79cd13be357-7c3d8eb15f7mr555860985a.35.1741200645239;
+        Wed, 05 Mar 2025 10:50:45 -0800 (PST)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c3b8e25308sm458508785a.51.2025.03.05.10.50.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Mar 2025 10:50:44 -0800 (PST)
+Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 73BE2120007C;
+	Wed,  5 Mar 2025 13:50:44 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-12.internal (MEProxy); Wed, 05 Mar 2025 13:50:44 -0500
+X-ME-Sender: <xms:BJ3IZ7hhITWWrae2QOi1aUV0S-XmSXF0-2fj2oPYr8n-2R_l4xIXYg>
+    <xme:BJ3IZ4AHmIo7fm4OWeTbmCIo2u4s6J5CzX1iG3K85IXi9YtsuuyiH4SLdB13AN5_7
+    q8mNlDJU8gMELshJw>
+X-ME-Received: <xmr:BJ3IZ7GJ2HoPGpXkoYA2FA6o1u0lqt0c6SYNboDeCtv6dfZojMBff5_UMsM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddutdehheelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnegoufhushhpvggtthffohhmrghinhculdegledmnecujfgu
+    rhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcuhf
+    gvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtthgv
+    rhhnpeeiuefhgfdulefhvedtteelffehfffgudejvedtudfhueevfedtteeukeeuvdffgf
+    enucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdhgihhthhhusgdrihhonecuvehluhhs
+    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvsh
+    hmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheeh
+    vddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpd
+    hnsggprhgtphhtthhopeelpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrrdhh
+    ihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepughirhhkrdgsvghhmh
+    gvseguvgdrsghoshgthhdrtghomhdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhu
+    giesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnh
+    gvlhdrohhrghdprhgtphhtthhopegurghnihgvlhdrrghlmhgvihgurgestgholhhlrggs
+    ohhrrgdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtph
+    htthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehtmhhg
+    rhhoshhssehumhhitghhrdgvughupdhrtghpthhtohepsghoqhhunhesfhhigihmvgdrnh
+    grmhgv
+X-ME-Proxy: <xmx:BJ3IZ4QS94sob4lV_JawJl6t2l_YC_RyGhrYnm9NwuVACstfwJhbaA>
+    <xmx:BJ3IZ4w-yVgqCLjlz3zRpOhBWj2N2VmQocB7jqH12T9iLUve0OCuXA>
+    <xmx:BJ3IZ-4F2C3wwoM-LUZPO9RYqLOEbAPqTbkHvsEdFwDdRs3LTkuTxQ>
+    <xmx:BJ3IZ9zrU-hAC8wJG4HjV8v_2eUvs0u1AwUSJjLYN__Otkawuiz5aQ>
+    <xmx:BJ3IZ4jhI5FAnJrPzki5GwKs-o-3niyZNbH2Y_Y4kjiE9T3wv7kRlWzj>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 5 Mar 2025 13:50:43 -0500 (EST)
+Date: Wed, 5 Mar 2025 10:49:38 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Dirk Behme <dirk.behme@de.bosch.com>, rust-for-linux@vger.kernel.org,
+	ojeda@kernel.org, daniel.almeida@collabora.com,
+	Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>
+Subject: Re: [PATCH v3 2/2] rust: types: `Opaque` doc: Add some destructor
+ description
+Message-ID: <Z8icwtIpZ3PO9YcZ@boqun-archlinux>
+References: <20250305053438.1532397-1-dirk.behme@de.bosch.com>
+ <hVvs4-cEyMjFMKMMqergIA4OCAIJUIfXQGi2a_uisGZaLJHUWiNtGPNASjjeprDQrtNtasMOfTrRIiYwXE2zgg==@protonmail.internalid>
+ <20250305053438.1532397-2-dirk.behme@de.bosch.com>
+ <871pvbhqap.fsf@kernel.org>
+ <eGDvv6uA00fjuGAgV8uknZos4J9VcrxQ7lk9brRpmdGEGIHYZlxk-ZRsGxXsr-SCZE6IVEuPKs5ko9gukJwo7Q==@protonmail.internalid>
+ <Z8hwGGn9huDjyDWN@tardis>
+ <87v7sn759g.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87v7sn759g.fsf@kernel.org>
 
-"Ralf Jung" <post@ralfj.de> writes:
+On Wed, Mar 05, 2025 at 06:32:11PM +0100, Andreas Hindborg wrote:
+> "Boqun Feng" <boqun.feng@gmail.com> writes:
+> 
+> > On Wed, Mar 05, 2025 at 08:47:42AM +0100, Andreas Hindborg wrote:
+> >> "Dirk Behme" <dirk.behme@de.bosch.com> writes:
+> >>
+> >> > In the discussion [1] some `Opaque` documentation updates have
+> >> > been proposed. In that discussion it was clarified that `Opaque`
+> >> > is intended to be used for (partial) uninitialized or changing C
+> >> > structs. And which consequences this has for using raw pointers
+> >> > or the destruction. Improve the `Opaque` documentation by adding
+> >> > these conclusions from that discussion.
+> >> >
+> >> > Suggested-by: Daniel Almeida <daniel.almeida@collabora.com>
+> >> > Link: https://lore.kernel.org/rust-for-linux/F8AB1160-F8CF-412F-8B88-4C79D65B53A1@collabora.com/ [1]
+> >> > Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+> >> >
+> >> > ---
+> >> > Changes in v3:
+> >> >    * Add the "terse" proposals.
+> >> >    * Move the non-linkage artifact from patch 1/2 to here.
+> >> >
+> >> >  rust/kernel/types.rs | 26 +++++++++++++++++++++-----
+> >> >  1 file changed, 21 insertions(+), 5 deletions(-)
+> >> >
+> >> > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> >> > index af30e9c0ebccb..f370cdb48a648 100644
+> >> > --- a/rust/kernel/types.rs
+> >> > +++ b/rust/kernel/types.rs
+> >> > @@ -271,17 +271,33 @@ fn drop(&mut self) {
+> >> >
+> >> >  /// Stores an opaque value.
+> >> >  ///
+> >> > -/// [`Opaque<T>`] is meant to be used with FFI objects that are never interpreted by Rust code.
+> >> > +/// [`Opaque<T>`] opts out of the following Rust language invariants for the contained `T`
+> >> > +/// by using [`UnsafeCell`]:
+> >> >  ///
+> >> > -/// It is used to wrap structs from the C side, like for example `Opaque<bindings::mutex>`.
+> >> > -/// It gets rid of all the usual assumptions that Rust has for a value:
+> >> > +/// * Initialization invariant - the contained value is allowed to be uninitialized and
+> >> > +///   contain invalid bit patterns.
+> >> > +/// * Immutability invariant - [`Opaque<T>`] allows interior mutability.
+> >> > +/// * Uniqueness invariant - [`Opaque<T>`] allows aliasing of shared references.
+> >>
+> >> This last one is wrong (I know it's probably my fault, sorry). It should be:
+> >>
+> >>   /// * Uniqueness invariant - [`Opaque<T>`] allows aliasing of **exclusive** references.
+> >>
+> >
+> > Hmm... are we trying to say "`&mut Opaque<T>` still cannot mean
+> > noalias" here? If so I feel the wording might be confusing. I would
+> > suggest we don't use "uniqueness" here. Maybe something like:
+> >
+> > * Always aliased invariant - `&mut` [`Opaque<T>`] is not necessarily a
+> >   unique pointer, and thus the compiler cannot just make aliasing
+> >   assumptions.
+> >
+> > (I use the wording from UnsafePinned[1], maybe there could be better
+> > wording)
+> >
+> > [1]: https://rust-lang.github.io/rfcs/3467-unsafe-pinned.html#summary
+> 
+> I like my wording better. It says the same with fewer words, and we have
+> a more wordy section below anyway. We could combine:
+> 
+>  * Uniqueness invariant - [`Opaque<T>`] allows aliasing of **exclusive**
+>    references. That is, `&mut` [`Opaque<T>`] is not necessarily a unique
+>    pointer.
+> 
+> 
+> How is that?
+> 
 
-> Hi,
->
-> On 05.03.25 14:23, Alice Ryhl wrote:
->> On Wed, Mar 5, 2025 at 2:10=E2=80=AFPM Ralf Jung <post@ralfj.de> wrote:
->>>
->>> Hi,
->>>
->>> On 05.03.25 04:24, Boqun Feng wrote:
->>>> On Tue, Mar 04, 2025 at 12:18:28PM -0800, comex wrote:
->>>>>
->>>>>> On Mar 4, 2025, at 11:03=E2=80=AFAM, Ralf Jung <post@ralfj.de> wrote:
->>>>> However, these optimizations should rarely trigger misbehavior in
->>>>> practice, so I wouldn=E2=80=99t be surprised if Linux had some code t=
-hat
->>>>> expected memcpy to act volatile=E2=80=A6
->>>>>
->>>>
->>>> Also in this particular case we are discussing [1], it's a memcpy (from
->>>> or to) a DMA buffer, which means the device can also read or write the
->>>> memory, therefore the content of the memory may be altered outside the
->>>> program (the kernel), so we cannot use copy_nonoverlapping() I believe.
->>>>
->>>> [1]: https://lore.kernel.org/rust-for-linux/87bjuil15w.fsf@kernel.org/
->>>
->>> Is there actually a potential for races (with reads by hardware, not ot=
-her
->>> threads) on the memcpy'd memory? Or is this the pattern where you copy =
-some data
->>> somewhere and then set a flag in an MMIO register to indicate that the =
-data is
->>> ready and the device can start reading it? In the latter case, the actu=
-al data
->>> copy does not race with anything, so it can be a regular non-atomic non=
--volatile
->>> memcpy. The flag write *should* be a release write, and release volatil=
-e writes
->>> do not exist, so that is a problem, but it's a separate problem from vo=
-latile
->>> memcpy. One can use a release fence followed by a relaxed write instead.
->>> Volatile writes do not currently act like relaxed writes, but you need =
-that
->>> anyway for WRITE_ONCE to make sense so it seems fine to rely on that he=
-re as well.
->>>
->>> Rust should have atomic volatile accesses, and various ideas have been =
-proposed
->>> over the years, but sadly nobody has shown up to try and push this thro=
-ugh.
->>>
->>> If the memcpy itself can indeed race, you need an atomic volatile memcp=
-y --
->>> which neither C nor Rust have, though there are proposals for atomic me=
-mcpy (and
->>> arguably, there should be a way to interact with a device using non-vol=
-atile
->>> atomics... but anyway in the LKMM, atomics are modeled with volatile, s=
-o things
->>> are even more entangled than usual ;).
->>
->> For some kinds of hardware, we might not want to trust the hardware.
->> I.e., there is no race under normal operation, but the hardware could
->> have a bug or be malicious and we might not want that to result in UB.
->> This is pretty similar to syscalls that take a pointer into userspace
->> memory and read it - userspace shouldn't modify that memory during the
->> syscall, but it can and if it does, that should be well-defined.
->> (Though in the case of userspace, the copy happens in asm since it
->> also needs to deal with virtual memory and so on.)
->
-> Wow you are really doing your best to combine all the hard problems at th=
-e same
-> time. ;)
-> Sharing memory with untrusted parties is another tricky issue, and even l=
-eaving
-> aside all the theoretical trouble, practically speaking you'll want to
-> exclusively use atomic accesses to interact with such memory. So doing th=
-is
-> properly requires atomic memcpy. I don't know what that is blocked on, bu=
-t it is
-> good to know that it would help the kernel.
+I think my biggest problem is the word "allows", the phrase "allows
+aliasing" sounds like Opaque<T> provide something *optional*, however,
+as I understand it, Opaque<T> here just disallows certain optimization
+from compiler, in other words, programmers want to use `Opaque<T>` to
+forbid something, hence "allows" may not be the good word to use here?
 
-I am sort of baffled by this, since the C kernel has no such thing and
-has worked fine for a few years. Is it a property of Rust that causes us
-to need atomic memcpy, or is what the C kernel is doing potentially dangero=
-us?
+How about:
 
+  * Uniqueness invariant - [`Opaque<T>`] disallow alias assumptions
+    made by compiler on an *exclusive* references.
 
-Best regards,
-Andreas Hindborg
+Thoughts?
 
+Regards,
+Boqun
+
+> 
+> Best regards,
+> Andreas Hindborg
+> 
+> 
