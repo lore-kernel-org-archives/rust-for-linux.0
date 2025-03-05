@@ -1,43 +1,43 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from mail-10628.protonmail.ch (mail-10628.protonmail.ch [79.135.106.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2432241103;
-	Wed,  5 Mar 2025 12:00:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84DD1233728
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Mar 2025 12:05:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741176017; cv=none; b=Cs70Gn9c52r9tLfdw6L1pHOiRuETPOrGIlsSZAMO81F1BsuNwL9Hyx2US8Cyv67mn0Wl1lEBcD6gQhtx4XpKAhQ/FBJ36AxoaOdd++KTe1q9hCENjzFq8pdyEXqhH1Kt6cGbXME8a7wy6QqgUy55NEp6j/wKwPtm5A1LQ6kiIsQ=
+	t=1741176339; cv=none; b=LFzcuso3kEKCaGVswYWdzFqKWtvpMmIhFzNWp3zZcMphDclTt/xyDWSIMNFrGb4/V8WcoZzBSZWtzXNV1DVU4axC/IxkydpahQjX+2vB9hrBxmg+kIh/AxuVxwptWV6N/hF2B5tCty/ioZl8GTOXxkjLIzdo85Dfclu6xKiPa58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741176017; c=relaxed/simple;
-	bh=2PsUnYxaTfPTsr8aJgtMRdMHhmGNBbPSofiwU8vfTZY=;
+	s=arc-20240116; t=1741176339; c=relaxed/simple;
+	bh=9pybT0/UMgEz4/wJUXE2cHJv2mhc5VAlGwBfHsQcdhA=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LSJKR8RWi9St14gUvrik2ECFP2Lf2Q+9hLUu6Ky5qoy6h4SbrjV5lz05qlL/THBb/X4aqZ6E2apvt0y/cs3+OMjV5kL5URVavZRl25wpPl2TzkVu5a9fRr9pvU7qZms9vjqGCh5PiJMK+QijWfbizBWzr5NpuoeeK8QMXZvHzMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=KZVBeWDB; arc=none smtp.client-ip=185.70.43.22
+	 MIME-Version:Content-Type; b=ZtfbrlnpOlT/8EcUQHrSm+nqraIlV/vC2L1x0pOoB6DNhfgofIpyS537Y7oOgNrPucBilax5neZ4JnUW2TZqH7dpVRkFZ0JfN4kGb3n1bQzYHCxjEre7+W8OBu5qi89L+Uxh7FSGAwv1nkw9oE29hu6XOgTICn/BtXOFVk4Qozk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=KfAZBhIk; arc=none smtp.client-ip=79.135.106.28
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="KZVBeWDB"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="KfAZBhIk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1741176013; x=1741435213;
-	bh=IAGpGwzyWY0pJQIfsptuh5AGHP3a7e2gT1msaPBJI6E=;
+	s=protonmail; t=1741176334; x=1741435534;
+	bh=l3OwM3zQ666uofylTyexnRNIzrNX4/a4VSd9lnoA0s4=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=KZVBeWDBjcqnERPqwQ8lxc/vMSB0HkpVyxEpJ84LMy4HkVxL9jbhgvgiOIqrzlUeM
-	 +Mcex2yLtAoqlz0jUArUhsfGN7BAO/UsRyJbtMOOR9kC0Y07DdJynCZdHnjTuvn3Yt
-	 e4L7NIAS0oN6kpltJ7VoxzntRJ1eQuXhvdCucpO9c18ZEv/StFVzpaAliR1+KIrWqR
-	 VFsP1deQne7+XAkfc1Tea0QOI/t8HyL8yxPsDuF8YBOtaqFJIOnt0BgD2BQPXG1sFS
-	 QaetkFuaxEZzzmpjdoperYg8l+RRWW6qVhpv+cLT2piJ+TSr22W5RWcpaQ2QV71UEH
-	 TkAi5tJAYT2vA==
-Date: Wed, 05 Mar 2025 12:00:06 +0000
+	b=KfAZBhIkHAdtsWMP4u7MfD5ESw+1VGRWCiNJjszAptWoHh8wPMmYvHqP8Ig5zrSN3
+	 CJHjJKhkXwKq9lJMwNPZpIHbW4JUWlTI+uhKgZd8tlzc39RgxoQW/GlKPDhfi6Eoxf
+	 ye8+Z0p0/QaLHdHV7Y3hOstP4kiWnxXM7iw4UwsDAPOmOHNcCVKqLQdnlHp0fPfS1p
+	 ofVBPu76wNk4AP05mWRqdTcZkfu9wBCIziySv3nKTMTyExOTPaV5NTKY4roD7y3TWs
+	 I92GHvuAR8t98pLi3OXdws6l4CVrWNJa722REOaOh41kgX8g+TuT8VFqjK7AWkoDMZ
+	 TntoKgtHUXOYw==
+Date: Wed, 05 Mar 2025 12:05:28 +0000
 To: Andreas Hindborg <a.hindborg@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 12/22] rust: pin-init: remove kernel-crate dependency
-Message-ID: <D88BDOC74W1T.IMRXO8BE868S@proton.me>
-In-Reply-To: <87senrd7eq.fsf@kernel.org>
-References: <20250304225245.2033120-1-benno.lossin@proton.me> <3-KVPpYsvS6jLhJOL7kCLrypBUWO1rtUDTDUTfy8T_iGZObM3CP6YUK_QLHmL_QTivMtd3jfnRbZOGpClk37cQ==@protonmail.internalid> <20250304225245.2033120-13-benno.lossin@proton.me> <87senrd7eq.fsf@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 09/22] rust: pin-init: move impl `Zeroable` for `Opaque` and `Option<KBox<T>>` into the kernel crate
+Message-ID: <D88BHSCKZ8MO.10J627BIF6I97@proton.me>
+In-Reply-To: <87a59zen0l.fsf@kernel.org>
+References: <20250304225245.2033120-1-benno.lossin@proton.me> <msi970CObD4bpxAIjK__fZnRG2q-BXd4FHuA1U1NR80D_dTqSXuQ-0-4R1TS7-7CglN6StcS3Os-IumgWcVLqw==@protonmail.internalid> <20250304225245.2033120-10-benno.lossin@proton.me> <87a59zen0l.fsf@kernel.org>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 79590ef435f6f3fbea9ac9507572f67bd08ba1b7
+X-Pm-Message-ID: 56d0fd40d987fa40038aa6364ee7ae75ae9f27d9
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,65 +47,59 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed Mar 5, 2025 at 12:49 PM CET, Andreas Hindborg wrote:
+On Wed Mar 5, 2025 at 12:26 PM CET, Andreas Hindborg wrote:
 > "Benno Lossin" <benno.lossin@proton.me> writes:
 >
->> In order to make pin-init a standalone crate, remove dependencies on
->> kernel-specific code such as `ScopeGuard` and `KBox`.
->>
->> `ScopeGuard` is only used in the `[pin_]init_array_from_fn` functions
->> and can easily be replaced by a primitive construct.
->>
->> `KBox` is only used for type variance of unsized types and can also
->> easily be replaced.
+>> In order to make pin-init a standalone crate, move kernel-specific code
+>> directly into the kernel crate. Since `Opaque<T>` and `KBox<T>` are part
+>> of the kernel, move their `Zeroable` implementation into the kernel
+>> crate.
 >>
 >> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
->
-> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
->
 >> ---
->>  rust/pin-init/src/__internal.rs |  2 +-
->>  rust/pin-init/src/lib.rs        | 41 +++++++++++----------------------
->>  2 files changed, 15 insertions(+), 28 deletions(-)
+>>  rust/kernel/alloc/kbox.rs | 8 +++++++-
+>>  rust/kernel/types.rs      | 5 ++++-
+>>  rust/pin-init/src/lib.rs  | 8 +-------
+>>  3 files changed, 12 insertions(+), 9 deletions(-)
 >>
->> diff --git a/rust/pin-init/src/__internal.rs b/rust/pin-init/src/__inter=
-nal.rs
->> index 0db800819681..74086365a18a 100644
->> --- a/rust/pin-init/src/__internal.rs
->> +++ b/rust/pin-init/src/__internal.rs
->> @@ -105,7 +105,7 @@ fn make_closure<F, O, E>(self, f: F) -> F
->>      }
->>  }
+>> diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
+>> index 39a3ea7542da..9861433559dc 100644
+>> --- a/rust/kernel/alloc/kbox.rs
+>> +++ b/rust/kernel/alloc/kbox.rs
+>> @@ -15,7 +15,7 @@
+>>  use core::ptr::NonNull;
+>>  use core::result::Result;
 >>
->> -pub struct AllData<T: ?Sized>(PhantomData<fn(KBox<T>) -> KBox<T>>);
->> +pub struct AllData<T: ?Sized>(Invariant<T>);
+>> -use crate::init::{InPlaceWrite, Init, PinInit};
+>> +use crate::init::{InPlaceWrite, Init, PinInit, Zeroable};
+>>  use crate::init_ext::InPlaceInit;
+>>  use crate::types::ForeignOwnable;
+>>
+>> @@ -100,6 +100,12 @@
+>>  /// ```
+>>  pub type KVBox<T> =3D Box<T, super::allocator::KVmalloc>;
+>>
+>> +// SAFETY: All zeros is equivalent to `None` (option layout optimizatio=
+n guarantee).
+>> +//
+>> +// In this case we are allowed to use `T: ?Sized`, since all zeros is t=
+he `None` variant and there
+>> +// is no problem with a VTABLE pointer being null.
+>> +unsafe impl<T: ?Sized, A: Allocator> Zeroable for Option<Box<T, A>> {}
 >
-> Off topic, trying to learn something: You define `Invariant<T>` like so:
->
->   pub(super) type Invariant<T> =3D PhantomData<fn(*mut T) -> *mut T>;
->
-> Consulting the variance table at [1], could you define it as
->
->   pub(super) type Invariant<T> =3D PhantomData<*mut T>;
->
-> or is there another reason for using `fn`?
+> Could you elaborate the statement related to vtable pointers? How does
+> that come into play for `Option<Box<_>>`? Is it for fat pointers to
+> trait objects?
 
-Yes! There is another reason: `Send` and `Sync`, my `Invariant` type
-will always be `Send` and `Sync`, but `PhantomData<*mut T>` is always
-`!Send` and `!Sync`.
-One could argue that an `Invariant<T>` type should impl `Send`/`Sync`
-if and only if `T` does, but for my usage it doesn't matter. If you do
-need to use that, you could use `PhantomData<(fn(*mut T) -> *mut T, T)>`
+Yes it is for fat pointers, if you have a `x: *mut dyn Trait`, then you
+aren't allowed to write all zeroes to `x`, because the VTABLE pointer
+(that is part of the fat pointer) is not allowed to be null.
+
+Now for `Option<Box<_>>`, this doesn't matter, as there if the normal
+pointer part of the fat pointer is all zeroes, then the VTABLE pointer
+part is considered padding bytes, as it's the `None` variant.
 
 ---
 Cheers,
 Benno
-
->
->
-> Best regards,
-> Andreas Hindborg
->
->
-> [1] https://doc.rust-lang.org/nomicon/subtyping.html#variance
 
