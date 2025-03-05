@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1ADD207E00
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Mar 2025 23:08:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299B52080D4
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Mar 2025 23:08:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741216118; cv=none; b=aMwQAWXb24URK2+uwZLpLuPzlSQxnDM39YGl7odoXlR/VZ6U2gDjV0GuTzOik5cv30tePApYDVABwueecPWY7ubnkai+t8nhvxXmE0s11S/wSmPwHzVskvYL+Mk1BK4/2NmTHcoMELOyI+HzfhLLFh5IOSKTEHYbZjClUOBPo+w=
+	t=1741216138; cv=none; b=cnf+8rJpApVMlXK5VCNa06a8plO19LAsR5E1CmdUsnyHXKZh0pzSjWdBbBrSn61DXiu25GbAHcJThy3nGRhVzuOEFr6w9O6fX36JsZ3G9UTG5Mv5/ty0T04mvuYwioDH+68aSlp8iFS/BD+oyCKyLtbML05bolugp3MnNdZGk+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741216118; c=relaxed/simple;
-	bh=8N82Y6ioIhNBCyWulDaTtSb1GAXNS0keJrv6Ehxsebw=;
+	s=arc-20240116; t=1741216138; c=relaxed/simple;
+	bh=iDSCLBL5B3BWxOXgvdiVkZne8iKvTHftbvdtBS+FAMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gLFxIXnYttWn+Su80py+Z++Mlo7+UvTZ5P7JA6qO+XL+Q0RyJktiYeABBS+1YVka7MnqlEnIkeFGZOj+bcwfSbqm4JumgzOZCmd/M4MMwiS11fA0H5hhvAF3TNaPHciqm687n+UoZkGJ9Ff8HcgbXGOzhnisJOeIxjPUN3U5dwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=a6YQfIVv; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=lDtYt3EVPfpYrKKbKXZB+g4xzySFgp8R/7hGg5ysWoCUYcZrf/0oZbVDj1rYY9EhPT4SuU+8Ek/s0oGFuG8VWmHZR6+SW0fOt0MW0rRgZuzoTYw/8r0y1DdgLkAp+EePbWWYmdjfvsnE5S/9e0DVuNV+ktu76qI2lCQuxh7Tmss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TIuOVivx; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="a6YQfIVv"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TIuOVivx"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741216116;
+	s=mimecast20190719; t=1741216133;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2YYipArKfP/H/ebwT6dHqlh88VV98EgX7zofrorIO0I=;
-	b=a6YQfIVv+lN3Z13CEZ5WT3D3XOdZ//zLwWajuGHEZJ59eloGX/RDxepj3pbLe/iff9IVrs
-	TzzF7DR/BauNI5DOiYVWSsn1RUbkG+ZwCTjVzTkPO1WxNGjue2JtQ8LWzwNmtxJFwsG67g
-	WxrbgwqNxuCWf4y3meAIuejXV3SzKo0=
+	bh=lRRGIfbn1O4NQuVIAQdXUxnmr9FtR81ZdEGKL5sWc/Q=;
+	b=TIuOVivxMh36TAknYHCVJNiLCIwCX/sFFlrTR91wlFiWIXyDhh8o4dg+PS+2i0J+P7ZZBv
+	xCUujMIGy60rTAvgvRHMCody5lghriCe18v9cdsFaUc9gt0RdF5VSf3gTP40kpFRfmrCEk
+	wclRRRbOG2MTE96ypzp6qfteAs6sC04=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-64-lGH8R1nMOOuHUE3SfhubMQ-1; Wed,
- 05 Mar 2025 18:08:34 -0500
-X-MC-Unique: lGH8R1nMOOuHUE3SfhubMQ-1
-X-Mimecast-MFC-AGG-ID: lGH8R1nMOOuHUE3SfhubMQ_1741216111
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-59-EymIt6hbNLKfbKEoENAk_A-1; Wed,
+ 05 Mar 2025 18:08:48 -0500
+X-MC-Unique: EymIt6hbNLKfbKEoENAk_A-1
+X-Mimecast-MFC-AGG-ID: EymIt6hbNLKfbKEoENAk_A_1741216126
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B94781801A03;
-	Wed,  5 Mar 2025 23:08:31 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0FE9E1809CA3;
+	Wed,  5 Mar 2025 23:08:46 +0000 (UTC)
 Received: from chopper.redhat.com (unknown [10.22.88.81])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0DC5A300019E;
-	Wed,  5 Mar 2025 23:08:27 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 32191300019E;
+	Wed,  5 Mar 2025 23:08:42 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: dri-devel@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org
@@ -59,10 +59,11 @@ Cc: Danilo Krummrich <dakr@kernel.org>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Trevor Gross <tmgross@umich.edu>,
+	Asahi Lina <lina@asahilina.net>,
 	linux-kernel@vger.kernel.org (open list)
-Subject: [RFC v3 27/33] rust: drm/kms: Add DriverCrtc::atomic_begin() and atomic_flush()
-Date: Wed,  5 Mar 2025 17:59:43 -0500
-Message-ID: <20250305230406.567126-28-lyude@redhat.com>
+Subject: [RFC v3 29/33] rust: drm: Add Device::event_lock()
+Date: Wed,  5 Mar 2025 17:59:45 -0500
+Message-ID: <20250305230406.567126-30-lyude@redhat.com>
 In-Reply-To: <20250305230406.567126-1-lyude@redhat.com>
 References: <20250305230406.567126-1-lyude@redhat.com>
 Precedence: bulk
@@ -74,126 +75,41 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Optional trait methods for implementing the atomic_begin and atomic_flush
-callbacks for a CRTC.
+This is just a crate-private helper to use Lock::from_raw() to provide an
+immutable reference to the DRM event_lock, so that it can be used like a
+normal rust spinlock. We'll need this for adding vblank related bindings.
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 ---
- rust/kernel/drm/kms/crtc.rs | 90 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 88 insertions(+), 2 deletions(-)
+ rust/kernel/drm/device.rs | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/rust/kernel/drm/kms/crtc.rs b/rust/kernel/drm/kms/crtc.rs
-index aaa208b35c3c1..131d10505ba07 100644
---- a/rust/kernel/drm/kms/crtc.rs
-+++ b/rust/kernel/drm/kms/crtc.rs
-@@ -90,8 +90,16 @@ pub trait DriverCrtc: Send + Sync + Sized {
-             mode_set: None,
-             mode_valid: None,
-             mode_fixup: None,
--            atomic_begin: None,
--            atomic_flush: None,
-+            atomic_begin: if Self::HAS_ATOMIC_BEGIN {
-+                Some(atomic_begin_callback::<Self>)
-+            } else {
-+                None
-+            },
-+            atomic_flush: if Self::HAS_ATOMIC_FLUSH {
-+                Some(atomic_flush_callback::<Self>)
-+            } else {
-+                None
-+            },
-             mode_set_nofb: None,
-             mode_set_base: None,
-             mode_set_base_atomic: None,
-@@ -132,6 +140,36 @@ fn atomic_check(
-     ) -> Result {
-         build_error::build_error("This should not be reachable")
+diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
+index cf063de387329..3938ceb044645 100644
+--- a/rust/kernel/drm/device.rs
++++ b/rust/kernel/drm/device.rs
+@@ -11,6 +11,7 @@
+     error::from_err_ptr,
+     error::Result,
+     ffi,
++    sync::*,
+     types::{ARef, AlwaysRefCounted, ForeignOwnable, Opaque},
+ };
+ use core::{marker::PhantomData, ptr::NonNull};
+@@ -154,6 +155,13 @@ pub fn data(&self) -> <T::Data as ForeignOwnable>::Borrowed<'_> {
+         unsafe { <T::Data as ForeignOwnable>::from_foreign(drm.raw_data()) };
      }
-+
-+    /// The optional [`drm_crtc_helper_funcs.atomic_begin`] hook.
-+    ///
-+    /// This hook will be called before a set of [`Plane`] updates are performed for the given
-+    /// [`Crtc`].
-+    ///
-+    /// [`drm_crtc_helper_funcs.atomic_begin`]: srctree/include/drm/drm_modeset_helper_vtables.h
-+    fn atomic_begin(
-+        _crtc: &Crtc<Self>,
-+        _old_state: &CrtcState<Self::State>,
-+        _new_state: CrtcStateMutator<'_, CrtcState<Self::State>>,
-+        _state: &AtomicStateMutator<Self::Driver>,
-+    ) {
-+        build_error::build_error("This should not be reachable")
-+    }
-+
-+    /// The optional [`drm_crtc_helper_funcs.atomic_flush`] hook.
-+    ///
-+    /// This hook will be called after a set of [`Plane`] updates are performed for the given
-+    /// [`Crtc`].
-+    ///
-+    /// [`drm_crtc_helper_funcs.atomic_flush`]: srctree/include/drm/drm_modeset_helper_vtables.h
-+    fn atomic_flush(
-+        _crtc: &Crtc<Self>,
-+        _old_state: &CrtcState<Self::State>,
-+        _new_state: CrtcStateMutator<'_, CrtcState<Self::State>>,
-+        _state: &AtomicStateMutator<Self::Driver>,
-+    ) {
-+        build_error::build_error("This should never be reachable")
-+    }
- }
  
- /// The generated C vtable for a [`DriverCrtc`].
-@@ -918,3 +956,51 @@ fn vtable(&self) -> *const Self::Vtable {
-         Ok(0)
-     })
- }
++    /// Returns a reference to the `event` spinlock
++    #[allow(dead_code)]
++    pub(crate) fn event_lock(&self) -> &SpinLockIrq<()> {
++        // SAFETY: `event_lock` is initialized for as long as `self` is exposed to users
++        unsafe { SpinLockIrq::from_raw(&mut (*self.as_raw()).event_lock) }
++    }
 +
-+unsafe extern "C" fn atomic_begin_callback<T: DriverCrtc>(
-+    crtc: *mut bindings::drm_crtc,
-+    state: *mut bindings::drm_atomic_state,
-+) {
-+    // SAFETY:
-+    // * We're guaranteed `crtc` is of type `Crtc<T>` via type invariants.
-+    // * We're guaranteed by DRM that `crtc` is pointing to a valid initialized state.
-+    let crtc = unsafe { Crtc::from_raw(crtc) };
-+
-+    // SAFETY: We're guaranteed by DRM that `state` points to a valid instance of `drm_atomic_state`
-+    let state = unsafe { AtomicStateMutator::new(NonNull::new_unchecked(state)) };
-+
-+    // SAFETY: We're guaranteed by DRM that both the old and new atomic state are present within
-+    // this `drm_atomic_state`
-+    let (old_state, new_state) = unsafe {
-+        (
-+            state.get_old_crtc_state(crtc).unwrap_unchecked(),
-+            state.get_new_crtc_state(crtc).unwrap_unchecked(),
-+        )
-+    };
-+
-+    T::atomic_begin(crtc, old_state, new_state, &state);
-+}
-+
-+unsafe extern "C" fn atomic_flush_callback<T: DriverCrtc>(
-+    crtc: *mut bindings::drm_crtc,
-+    state: *mut bindings::drm_atomic_state,
-+) {
-+    // SAFETY:
-+    // - We're guaranteed `crtc` is of type `Crtc<T>` via type invariants.
-+    // - We're guaranteed by DRM that `crtc` is pointing to a valid initialized state.
-+    let crtc = unsafe { Crtc::from_raw(crtc) };
-+
-+    // SAFETY: We're guaranteed by DRM that `state` points to a valid instance of `drm_atomic_state`
-+    let state = unsafe { AtomicStateMutator::new(NonNull::new_unchecked(state)) };
-+
-+    // SAFETY: We're in an atomic flush callback, so we know that both the new and old state are
-+    // present
-+    let (old_state, new_state) = unsafe {
-+        (
-+            state.get_old_crtc_state(crtc).unwrap_unchecked(),
-+            state.get_new_crtc_state(crtc).unwrap_unchecked(),
-+        )
-+    };
-+
-+    T::atomic_flush(crtc, old_state, new_state, &state);
-+}
+     pub(crate) const fn has_kms() -> bool {
+         <T::Kms as KmsImplPrivate>::MODE_CONFIG_OPS.is_some()
+     }
 -- 
 2.48.1
 
