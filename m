@@ -1,186 +1,148 @@
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865D2A95C;
-	Wed,  5 Mar 2025 03:24:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B6B2AD2D;
+	Wed,  5 Mar 2025 05:13:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741145060; cv=none; b=Y7uoJZJn4/WAAv47f4vbj3C212hP3+fz7LykBwMYmpJUh4+tUFXwPxdOC3C8FT2dO53jkmFao9Tymww1CtEnhPzXPC4/5fmWCSuTQrwctK0D7qmfYqkJaZGqtT+kWS6t9QCJEuMGPpdVbhGGWvYb2ZGrt1AaoN1A/8Jn0uiaGJc=
+	t=1741151597; cv=none; b=MzbF7LbDaQnsCU31d/4r3cZg331w+r7C8tWGQpF34/VbpP5GQMfvtD4YqzkkVrx1Gke8Nnr7YZmcKnytFCJO5xrwosqjHQw61idbndOKR7M3kGWRUFPqcvBtG7LgTG2Z+R2sYid9EQJYiYDg1Zvlp0DiLS45dcuTam32HmiW/Fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741145060; c=relaxed/simple;
-	bh=IalM6GcSrc2FXSX/2tWDq59g6jT4l3qYVHbrQtNGqOU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BFkLeGEldDjdGw+0S28hZWnu6UkukH+Wt6f3zyGNjzJUudq5Gdzw3lBgnxUpgKBIE43yL2EHHqfF5IOK1HVZZKRuzgEVtDQ4vKe5jZxZyWijy7ydbgmSixxrH7TUaT0W6WID3mIX3EiQl0u/iLVjYckC4KJcZGiuejFG3EsrN6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A0/4pCLM; arc=none smtp.client-ip=209.85.222.179
+	s=arc-20240116; t=1741151597; c=relaxed/simple;
+	bh=q0BhGC6HUxOE4XplZuS/4jndjnSHZQ5oqFPeN6Mlcss=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=TwlVl/yygZ/WKYwcw90ouTkgNOolsigrynEaTSCcmIQvoaUFGPH8ourwYsevzZdNM2I9MSmSfMgMTfeMaHCaBVRW11dsJiFH7ukW2j/ZSseS3f8hEBWYBgLfe1wxcWPTtrL3by/4QovaV9Uo3HjdmD6Am0ph0Ut88kmdz6cda1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gwVVZGY9; arc=none smtp.client-ip=209.85.216.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A0/4pCLM"
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7c3b4c4b409so498723785a.3;
-        Tue, 04 Mar 2025 19:24:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gwVVZGY9"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2f44353649aso10219462a91.0;
+        Tue, 04 Mar 2025 21:13:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741145055; x=1741749855; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=VCYzw7AYHEWhjh2pCKxrHo8DdwWDp+puWkHCQL3OAfM=;
-        b=A0/4pCLMtqKeHHt/gzhCZRLLBnfaIq4gqTgnmvz/L0zI6WTj87LCD8jv/DeX3HFoNk
-         DF8BTqYuwyZ/j/znebjlzFNiBs5dYwVoqFtAQ0K+Ix46mf5VvuefMWwTGletm4IyR2zE
-         HctXgAKXiYJgGgQHQ82NfiukIq0H3tOj5w3c5Ez1JA6DetZ3FheCef8jU6h9ePbiJaOk
-         drgmC1r+v6kDPFYMIsXHs+FI1IBO5sO1zoiBo6DkczfSttIOTeYUMvsPOL9pUAk3/lKk
-         p1pvMNqSa7nXKiZmYbW6rc0pNspEwu3m7GSvt8OR2XYthxB+WVQcax5xpTfgsm0rg0Fc
-         hnsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741145055; x=1741749855;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1741151595; x=1741756395; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=VCYzw7AYHEWhjh2pCKxrHo8DdwWDp+puWkHCQL3OAfM=;
-        b=VGiq4I1mEkVLFL4cF54zFEgBmHGNYey0D5fqK1Z4sjvDlNyIMjF7z4dgVPZCKdV5Xm
-         n6NQ06bKDZ5sPTfZvGNI4S/0wP4vWwEmG32nRy7xzguh6j1JaWXzkDOqcZw5jXxjPggu
-         z1dDgVHty6xO7KfBA36MCnhRydMLE4it5/JuAsLSGt4jdKhDzuqpyxWHC/96hbEWUnch
-         uDa3a2dE6bFvfXhxXpbk/s7xeTB++m7a4OA6xicIGhDT/OPs++Q4dLGDPlitSXQE9lE4
-         xfRYmivojoY7lPl8YypQI3mjJp5NQ5mj0rLaAtDD+Cerz/mT/bvlI+c8Q95pjxlIA/k7
-         eg/A==
-X-Forwarded-Encrypted: i=1; AJvYcCVF9cdAcVDK+YjWefbSulf0Msdq7iCQrpzfWGHABbt8GJcf+kPSi2sa5g0171k3O0gifmPluyCXYkqattQ=@vger.kernel.org, AJvYcCXYAJD4T/f0iZn11dT3G3QFK86S3ikHzi2kIwG0wpFeUhmbpSybj5zi01i2y2g8dbuWhpMM/elWXrswLFqHGTI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyclXd+nrhd1eYpRCiNUd8ES34V8NLfKv86p0sK/fuhAih4CqTr
-	c1nEt5yFmIcP5udLJPvSECsB4dgN/pTBBopaYCRl7QjjmLhQ9meR
-X-Gm-Gg: ASbGncv3/o4Ome8eVaEa3qqZ9S6hzTunYIv/vStVlwxLOo8jWLYlIbMYZ85rYBt6Xsc
-	OvdckIQg1yFSZ3pGSGXlpPy47p0gWvaZpSQ9+Jtcecolm3EpxJ+EDJ1ah2AMObh7VZtEkC9iv0O
-	P/e+cWfJo1uP8nitffaRQ4JP3HgraFPZTjeVcF3YG2vFjYoZYMCxQ8mXabdv0ECS/jVSjAjID5/
-	uMqvPQ8zRiVTSyYJsI7XZpI63UfW2iPzPpQFzZainomq5WZqNS8Q8VffH2ET4jV39tK66JCWXmm
-	jyR+gGuoHB3k/PrnByiMAMQHuY8W/2HzL3ZojHGbdQsTSyPR05TvgDpW7wdNpC/Ei62v3M7Iw2j
-	Wh2J9js5HLfxSULEJ+pZSZOaO0BkIZxClP5U=
-X-Google-Smtp-Source: AGHT+IFkyQ73hd8BMJx+FC6q+VcIyRCQMDhKffer4K2eUcYMOGHylCr7hZHPBGmpGtT4iP9zVL947g==
-X-Received: by 2002:a05:620a:6087:b0:7c0:97d7:27dd with SMTP id af79cd13be357-7c3d8ec7ebdmr335437485a.48.1741145055135;
-        Tue, 04 Mar 2025 19:24:15 -0800 (PST)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c3c3edff13sm291499985a.69.2025.03.04.19.24.14
+        bh=iI2i5cV2QPSlpE280H3wgvcz67NO3pUTtRCcIr6Aq80=;
+        b=gwVVZGY9uyqNpxaOZlvBhysMQezcwYJtmlwWRsSQwpiYbUieCd55RL2tUqOOgQ4AuG
+         moxtV1KdMcczMyWzgmBcWWkoVgg4HuYaojbBf6aQ4rZ6K4B5QkMQ0uinpqWUj3qb9Fho
+         uuRFb4a8AgBri/1RytcJc4/6lVXHysWaZTofqmCVFdVkIG29MKZ0ThwhpI9oMgNpgsEY
+         wWYc+5kOnNw8nOrQxLlFBSdSKiDGICzw8c2odUfGZ1pMgj50w0emjT/hb4g7mO9yQPaN
+         TGASenKHi2kAxNJJQAVwrHIybbcg9IsR7W7vxrWL1G3Bx6H0laEZFdHm0EkWRzyhLqK1
+         MkyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741151595; x=1741756395;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=iI2i5cV2QPSlpE280H3wgvcz67NO3pUTtRCcIr6Aq80=;
+        b=q7NRJ6OQCCP7m5larQbiOMLopZt6AX9YCMmXlqd/3kHJqn4rAli2cBVOyZ3q+/yqSN
+         JE0sX69FJZAKN3902Oz2o7AmEzp3stpkO072thB8LFZlEIGE1PwS8VufBOEEcfypvo8R
+         JhkV6Of1jIBskMGjiG1V6EcYT/N2RbeB2qtaPgCsX/uEMMoVE5v3N8J1mSpiEg7rwqAp
+         0PWYpP3ZyjigqiiA2qE9kBFQlthFrk7bMt1PhcptL4vBm5ApheK62HLOWesNhTZnl3w0
+         cZquTa8VaepPdPFTDw54rx7zZKPexJCRR4sG/RVucRPuIhqgyCUU01uR7+4uWtrO3pvE
+         7iYA==
+X-Forwarded-Encrypted: i=1; AJvYcCWie1eTe2Ppv88KxsBmJGT8mW2LKMS+Op49tKNdfIaM3teU9JI+WLk5G7W+bLndauehWjmiFHmgFT+ob2gQ8Ak=@vger.kernel.org, AJvYcCXkk0tCvm/EN8W4WnPd2fVcFfJf67bOG3Pr1nIeYgRlXdb0f11YHfdWfYmch2p1S0Os5FPHF84wP1tE9pE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWR5k0R7GlVaoRWSdW8x3defuADC9FktKp0zQsR1cWg4aGZzEI
+	QOYosPISrc+jnVSbEVBZAwl2Bh3n56ouEsL3mQ/mGeFfjC1bhyam
+X-Gm-Gg: ASbGnctO7x0BwoJdCetw2TNAHxDelPge7ZeDAfOCFXMCa7JAsG8hyNDnje+ib/ecpVW
+	1meH08PZy+8HREhk5ptVql86gFzFyo/VOBaSQeLbpsQXhPC89rETGB3arNaqIs1WKnJP9TIQWIK
+	nck7x+Ipieu/sZ0UgsUbTiF0PTxNEy6gLHFoyVLJ1L+7H4D1SWRHbCQsZ+s0N5/VlXDTyigjydF
+	C7d4uyxj3vQWcutRgX4w/2mrOY4qvt4DIPGspEVxj8wSs6QYrZvK3Luq015OD+Bayfd16fYsIXT
+	npMd8sIzS2M1XKuSbV2Owar5JuDbS1OwEJIPgJhvhkQIbd3neXcPChtqOPKmD7p6oSTz4yycmhr
+	YXkvG9y78sy3GUy5TpZXBEKyPjdc=
+X-Google-Smtp-Source: AGHT+IFMSQhAQ13isO5dfJNAPGUjk16diS7qR+TcB+buuYoTv6JifWXgE+o5nAJ3u7mlLeqgq39i1g==
+X-Received: by 2002:a17:90b:5688:b0:2ee:bc7b:9237 with SMTP id 98e67ed59e1d1-2ff4979cee1mr3291553a91.27.1741151594826;
+        Tue, 04 Mar 2025 21:13:14 -0800 (PST)
+Received: from localhost (p4204131-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.160.176.131])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ff4e78a991sm380662a91.24.2025.03.04.21.13.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Mar 2025 19:24:14 -0800 (PST)
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 0DC551200074;
-	Tue,  4 Mar 2025 22:24:14 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Tue, 04 Mar 2025 22:24:14 -0500
-X-ME-Sender: <xms:3cPHZxPDh_XhD3GBFoAYAvygkcvXFCcn57YSjIdiUZx01UJKNk2W2Q>
-    <xme:3cPHZz89ixupj5JKX_bBZoIIAORmtaivv-bxCC4OTSp8w8cJNttQUh656XAn3IITF
-    x6vtyrDjIXGafZhrw>
-X-ME-Received: <xmr:3cPHZwQGxOJe9SmxeS21xY5OBvZZ3Zik0482r-TSjEtzNvcs5hPEC9aATA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddutdefjeefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkefstddt
-    tdejnecuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrg
-    hilhdrtghomheqnecuggftrfgrthhtvghrnhephfekvddvtdekgedvgefgveduhfeihfej
-    heffkeefveehffehhfehkeetheeileejnecuffhomhgrihhnpehruhhsthdqlhgrnhhgrd
-    horhhgpdhkvghrnhgvlhdrohhrghdplhhlvhhmrdhorhhgpdhgihhthhhusgdrtghomhen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquh
-    hnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudej
-    jeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrd
-    hnrghmvgdpnhgspghrtghpthhtohepvdefpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopegtohhmvgigkhesghhmrghilhdrtghomhdprhgtphhtthhopehpohhsthesrhgrlh
-    hfjhdruggvpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdp
-    rhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhope
-    gurghnihgvlhdrrghlmhgvihgurgestgholhhlrggsohhrrgdrtghomhdprhgtphhtthho
-    pegsvghnnhhordhlohhsshhinhesphhrohhtohhnrdhmvgdprhgtphhtthhopegrsgguih
-    gvlhdrjhgrnhhulhhguhgvsehgmhgrihhlrdgtohhmpdhrtghpthhtohepuggrkhhrsehk
-    vghrnhgvlhdrohhrghdprhgtphhtthhopehrohgsihhnrdhmuhhrphhhhiesrghrmhdrtg
-    homh
-X-ME-Proxy: <xmx:3cPHZ9uTcfObnarRoojUAy1B_6gP4rES_VkXm8sJwlr1UboBuD-JSQ>
-    <xmx:3sPHZ5d6WiZvDs9uXESVzy4wnfv3ZEHD2c1vVWrS9vx80O3ecyIZiw>
-    <xmx:3sPHZ514xBSASLkKzslb0SuhJGoVZCT8EOi3vDjXTV0-oht4gz3jJA>
-    <xmx:3sPHZ1_6XSVlJL4v7FeTINqX_Csf78PYDrJ2m-IDjBRJLfcR26ud_g>
-    <xmx:3sPHZ0_BOZIPQUysHVDA8plP6TjC8p2sFvHD77OMAoU1956cqb_cnRtZ>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 4 Mar 2025 22:24:12 -0500 (EST)
-Date: Tue, 4 Mar 2025 19:24:11 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: comex <comexk@gmail.com>
-Cc: Ralf Jung <post@ralfj.de>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, dakr@kernel.org, 
-	robin.murphy@arm.com, rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Trevor Gross <tmgross@umich.edu>, 
-	Valentin Obst <kernel@valentinobst.de>, linux-kernel@vger.kernel.org, Christoph Hellwig <hch@lst.de>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com, iommu@lists.linux.dev, lkmm@lists.linux.dev
-Subject: Re: Allow data races on some read/write operations
-Message-ID: <hkhgihg4fjkg7zleqnumuj65dfvmxa5rzawkiafrf4kn5ss6nw@o7kc6xe2bmuj>
-References: <87bjuil15w.fsf@kernel.org>
- <t4HxdvR7WBX_861hiTXo72jqC9F9oRpIzgA_dD2yhcSuLISEkC-shMfSgllrFPpnkSZXGfRcc47keudMooNiIQ==@protonmail.internalid>
- <CAH5fLgg5MuUu=TX8mMsPf5RcLhMLHSU4Vct=h8rFX6Z7HjPxeA@mail.gmail.com>
- <87ikoqjg1n.fsf@kernel.org>
- <KpWTCfIlcLYFBpSvWPfALJ9VQn5a99_RAvxgMBc1aCrSalPB-qaW9IhXyaDG7HM1AcFPX5chj_Yr7IQp3F7UqA==@protonmail.internalid>
- <CAH5fLgh6ubawHh76wq7JPbcuBCWhm91m7Rc01MVsX-a3C6qaVA@mail.gmail.com>
- <87mse2hrd8.fsf@kernel.org>
- <Z8YMTiKS4T9wC4t_@boqun-archlinux>
- <ae8ac31f-c6ad-46ae-80dd-10ec081a16d1@ralfj.de>
- <88456D33-C5CA-4F4F-990E-8C5F2AF7EAF9@gmail.com>
+        Tue, 04 Mar 2025 21:13:14 -0800 (PST)
+Date: Wed, 05 Mar 2025 14:13:07 +0900 (JST)
+Message-Id: <20250305.141307.586794213367343251.fujita.tomonori@gmail.com>
+To: aliceryhl@google.com
+Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, x86@kernel.org,
+ linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ loongarch@lists.linux.dev, tglx@linutronix.de, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, peterz@infradead.org,
+ hpa@zytor.com, paul.walmsley@sifive.com, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, catalin.marinas@arm.com, will@kernel.org,
+ chenhuacai@kernel.org, kernel@xen0n.name, tangyouling@loongson.cn,
+ hejinyang@loongson.cn, yangtiezhu@loongson.cn, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@kernel.org,
+ tmgross@umich.edu
+Subject: Re: [PATCH v3 5/5] rust: Add warn_on and warn_on_once
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CAH5fLgjX9hh+QRrKggOKr+6p+UwqHSavzu4UXy9iGNL2wSJXtg@mail.gmail.com>
+References: <20250213135759.190006-1-fujita.tomonori@gmail.com>
+	<20250213135759.190006-6-fujita.tomonori@gmail.com>
+	<CAH5fLgjX9hh+QRrKggOKr+6p+UwqHSavzu4UXy9iGNL2wSJXtg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <88456D33-C5CA-4F4F-990E-8C5F2AF7EAF9@gmail.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Tue, Mar 04, 2025 at 12:18:28PM -0800, comex wrote:
-> 
-> > On Mar 4, 2025, at 11:03 AM, Ralf Jung <post@ralfj.de> wrote:
-> > 
-> > Those already exist in Rust, albeit only unstably:
-> > <https://doc.rust-lang.org/nightly/std/intrinsics/fn.volatile_copy_memory.html>.
-> > However, I am not sure how you'd even generate such a call in C? The
-> > standard memcpy function is not doing volatile accesses, to my
-> > knowledge.
-> 
-> The actual memcpy symbol that exists at runtime is written in
-> assembly, and should be valid to treat as performing volatile
-> accesses.
-> 
-> But both GCC and Clang special-case the memcpy function.  For example,
-> if you call memcpy with a small constant as the size, the optimizer
-> will transform the call into one or more regular loads/stores, which
-> can then be optimized mostly like any other loads/stores (except for
-> opting out of alignment and type-based aliasing assumptions).  Even if
-> the call isn’t transformed, the optimizer will still make assumptions.
-> LLVM will automatically mark memcpy `nosync`, which makes it undefined
-> behavior if the function “communicate[s] (synchronize[s]) with another
-> thread”, including through “volatile accesses”. [1]
-> 
-> However, these optimizations should rarely trigger misbehavior in
-> practice, so I wouldn’t be surprised if Linux had some code that
-> expected memcpy to act volatile…
-> 
+On Mon, 3 Mar 2025 14:33:39 +0100
+Alice Ryhl <aliceryhl@google.com> wrote:
 
-Also in this particular case we are discussing [1], it's a memcpy (from
-or to) a DMA buffer, which means the device can also read or write the
-memory, therefore the content of the memory may be altered outside the
-program (the kernel), so we cannot use copy_nonoverlapping() I believe.
+>> +#[macro_export]
+>> +#[doc(hidden)]
+>> +#[cfg(all(CONFIG_BUG, not(CONFIG_UML)))]
+>> +macro_rules! warn_flags {
+>> +    ($flags:expr) => {
+>> +        const FLAGS: u32 = $crate::bindings::BUGFLAG_WARNING | $flags;
+>> +        // SAFETY: Just an FFI call.
+>> +        #[cfg(CONFIG_DEBUG_BUGVERBOSE)]
+>> +        unsafe {
+>> +            $crate::asm!(concat!(
+>> +                "/* {size} */",
+>> +                ".pushsection .rodata.str1.1, \"aMS\",@progbits, 1\n",
+>> +                "111:\t .string ", "\"", file!(), "\"\n",
+>> +                ".popsection\n",
+> 
+> It looks like you're doing this so that you can reference the filename
+> with "111b", but could you do this instead:
+> 
+> const _FILE: &[u8] = file!().as_bytes();
+> // Plus one for nul-terminator.
+> static FILE: [u8; 1 + _FILE.len()] = {
+>     let mut bytes = [0; 1 + _FILE.len()];
+>     let mut i = 0;
+>     while i < _FILE.len() {
+>         bytes[i] = _FILE[i];
+>         i += 1;
+>     }
+>     bytes
+> };
 
-[1]: https://lore.kernel.org/rust-for-linux/87bjuil15w.fsf@kernel.org/
+Neat! I will use this in the next version.
 
-Regards,
-Boqun
+> and then use
+> 
+> asm!(
+>     concat!(
+>         "/* {size} */",
+>         include!(concat!(env!("OBJTREE"),
+> "/rust/kernel/generated_arch_warn_asm.rs")),
+>         include!(concat!(env!("OBJTREE"),
+> "/rust/kernel/generated_arch_reachable_asm.rs")));
+>     file = sym FILE,
+>     line = const line!(),
+>     ...
+> );
+> 
+> with
+> ::kernel::concat_literals!(ARCH_WARN_ASM("{file}", "{line}",
+> "{flags}", "{size}")),
+> 
+> That would be a lot simpler to understand than what you are doing.
 
-> But I’m not familiar enough with the codebase to know whether such
-> code actually exists, or where.
-> 
-> (Incidentally, there is a compiler flag to turn the memcpy
-> special-casing off, -fno-builtin.  I pretty much expected that Linux
-> used it.  But I just checked, and it doesn’t.)
-> 
-> For Rust, I don’t know why we haven’t exposed volatile_copy_memory
-> yet.  All I can find are some years-old discussions with no obvious
-> blockers.  I guess nobody has cared enough.  There is also a somewhat
-> stagnant RFC for *atomic* memcpy. [2]
-> 
-> [1] https://llvm.org/docs/LangRef.html, search for 'nosync'
-> [2] https://github.com/rust-lang/rfcs/pull/3301
-> 
+Indeed.
+
+Thanks a lot!
