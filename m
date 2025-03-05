@@ -1,119 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3015A20DD7F;
-	Wed,  5 Mar 2025 11:59:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2432241103;
+	Wed,  5 Mar 2025 12:00:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741175999; cv=none; b=bJomzGPsyMj1woHzfO77cHAfJVQ/PC0EZkCmV7JQqDRJpAHge0dEg3EXMAWBOECP+fEqga91OnXmlqUtcvBp8NodGoQYOTHU3VB3iKmekf+C89fj+AwbXdLnv+VZ/qimhGPBFXogA3yF29BPxhcJGvLEhlIDuIUM7ExQPANqqJc=
+	t=1741176017; cv=none; b=Cs70Gn9c52r9tLfdw6L1pHOiRuETPOrGIlsSZAMO81F1BsuNwL9Hyx2US8Cyv67mn0Wl1lEBcD6gQhtx4XpKAhQ/FBJ36AxoaOdd++KTe1q9hCENjzFq8pdyEXqhH1Kt6cGbXME8a7wy6QqgUy55NEp6j/wKwPtm5A1LQ6kiIsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741175999; c=relaxed/simple;
-	bh=1itfz5Dn/ifmwpBxuvw4a+A/Z8sq2airca0/Wm8mM/o=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=kLzjt4tD/SRHMgnLp9eZIXdxF7fM4D7WYVgYA1w+4X8S/SNzVkL/GEG68HYlk0HXN8KEaChDPRMkzrdmuDsdcfOyRgY4FdGNlT+XXmk9hiuRGS/L0JO51UgqwepaW3JxsMRILo/7SecpCdGqAQckn82bIsIByg/hkRbHj/7IgLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tq8prO7G; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741176017; c=relaxed/simple;
+	bh=2PsUnYxaTfPTsr8aJgtMRdMHhmGNBbPSofiwU8vfTZY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LSJKR8RWi9St14gUvrik2ECFP2Lf2Q+9hLUu6Ky5qoy6h4SbrjV5lz05qlL/THBb/X4aqZ6E2apvt0y/cs3+OMjV5kL5URVavZRl25wpPl2TzkVu5a9fRr9pvU7qZms9vjqGCh5PiJMK+QijWfbizBWzr5NpuoeeK8QMXZvHzMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=KZVBeWDB; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tq8prO7G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15241C4CEE2;
-	Wed,  5 Mar 2025 11:59:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741175998;
-	bh=1itfz5Dn/ifmwpBxuvw4a+A/Z8sq2airca0/Wm8mM/o=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=tq8prO7GuKGKr0n+6VxzhdZcbv6UyEHnV1+2FJLmOkhTzVD+kxJqs4BOa4UTzuHo9
-	 kKUwi/oZJOqJErJMFmzorjEbyW3/GVgXYqHmdUi3g3F5uEJTOUYzXqJeIMgDEzry1J
-	 o7BKjOYLkXMDVQU0/FkHa0m0M3Idkja1NHIBMlrOSsq3X91Oz7VCxHGqiHAV2qywsp
-	 F/Wb1tiEE6awH0XXn7blfbdNp2Vsr+9LR2fWfeq4dh0VrsJmWp6pDbmn2bLvHwv0aF
-	 Tevk4DQ6JkXFGj1ErpKOpMSl9+A15+osehcXGm+GVzpfvGSQS8gTKR/Gm2Gd9DUtI7
-	 2NJhK+KKY8FxQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Benno Lossin" <benno.lossin@proton.me>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Alice
- Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Danilo Krummrich" <dakr@kernel.org>,  "Masahiro Yamada"
- <masahiroy@kernel.org>,  "Nathan Chancellor" <nathan@kernel.org>,
-  "Nicolas Schier" <nicolas@fjasle.eu>,  <linux-kernel@vger.kernel.org>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kbuild@vger.kernel.org>
-Subject: Re: [PATCH 14/22] rust: add pin-init crate build infrastructure
-In-Reply-To: <20250304225245.2033120-15-benno.lossin@proton.me> (Benno
-	Lossin's message of "Tue, 04 Mar 2025 22:55:09 +0000")
-References: <20250304225245.2033120-1-benno.lossin@proton.me>
-	<jpQp16UCJ00pInqOI-QFULU6-FKl2bBtAlmnxtXWLgXPVb7gy6d727nr7THeyks3ERF5Yqu3R6bikD0OK4mqXA==@protonmail.internalid>
-	<20250304225245.2033120-15-benno.lossin@proton.me>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Wed, 05 Mar 2025 12:59:39 +0100
-Message-ID: <87h647d6xg.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="KZVBeWDB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1741176013; x=1741435213;
+	bh=IAGpGwzyWY0pJQIfsptuh5AGHP3a7e2gT1msaPBJI6E=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=KZVBeWDBjcqnERPqwQ8lxc/vMSB0HkpVyxEpJ84LMy4HkVxL9jbhgvgiOIqrzlUeM
+	 +Mcex2yLtAoqlz0jUArUhsfGN7BAO/UsRyJbtMOOR9kC0Y07DdJynCZdHnjTuvn3Yt
+	 e4L7NIAS0oN6kpltJ7VoxzntRJ1eQuXhvdCucpO9c18ZEv/StFVzpaAliR1+KIrWqR
+	 VFsP1deQne7+XAkfc1Tea0QOI/t8HyL8yxPsDuF8YBOtaqFJIOnt0BgD2BQPXG1sFS
+	 QaetkFuaxEZzzmpjdoperYg8l+RRWW6qVhpv+cLT2piJ+TSr22W5RWcpaQ2QV71UEH
+	 TkAi5tJAYT2vA==
+Date: Wed, 05 Mar 2025 12:00:06 +0000
+To: Andreas Hindborg <a.hindborg@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 12/22] rust: pin-init: remove kernel-crate dependency
+Message-ID: <D88BDOC74W1T.IMRXO8BE868S@proton.me>
+In-Reply-To: <87senrd7eq.fsf@kernel.org>
+References: <20250304225245.2033120-1-benno.lossin@proton.me> <3-KVPpYsvS6jLhJOL7kCLrypBUWO1rtUDTDUTfy8T_iGZObM3CP6YUK_QLHmL_QTivMtd3jfnRbZOGpClk37cQ==@protonmail.internalid> <20250304225245.2033120-13-benno.lossin@proton.me> <87senrd7eq.fsf@kernel.org>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 79590ef435f6f3fbea9ac9507572f67bd08ba1b7
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-"Benno Lossin" <benno.lossin@proton.me> writes:
-
-> From: Miguel Ojeda <ojeda@kernel.org>
+On Wed Mar 5, 2025 at 12:49 PM CET, Andreas Hindborg wrote:
+> "Benno Lossin" <benno.lossin@proton.me> writes:
 >
-> Add infrastructure for moving the initialization API to its own crate.
-> Covers all make targets such as `rust-analyzer` and `rustdoc`. The tests
-> of pin-init are not added to `rusttest`, as they are already tested in
-> the user-space repository [1].
+>> In order to make pin-init a standalone crate, remove dependencies on
+>> kernel-specific code such as `ScopeGuard` and `KBox`.
+>>
+>> `ScopeGuard` is only used in the `[pin_]init_array_from_fn` functions
+>> and can easily be replaced by a primitive construct.
+>>
+>> `KBox` is only used for type variance of unsized types and can also
+>> easily be replaced.
+>>
+>> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+>
+> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+>
+>> ---
+>>  rust/pin-init/src/__internal.rs |  2 +-
+>>  rust/pin-init/src/lib.rs        | 41 +++++++++++----------------------
+>>  2 files changed, 15 insertions(+), 28 deletions(-)
+>>
+>> diff --git a/rust/pin-init/src/__internal.rs b/rust/pin-init/src/__inter=
+nal.rs
+>> index 0db800819681..74086365a18a 100644
+>> --- a/rust/pin-init/src/__internal.rs
+>> +++ b/rust/pin-init/src/__internal.rs
+>> @@ -105,7 +105,7 @@ fn make_closure<F, O, E>(self, f: F) -> F
+>>      }
+>>  }
+>>
+>> -pub struct AllData<T: ?Sized>(PhantomData<fn(KBox<T>) -> KBox<T>>);
+>> +pub struct AllData<T: ?Sized>(Invariant<T>);
+>
+> Off topic, trying to learn something: You define `Invariant<T>` like so:
+>
+>   pub(super) type Invariant<T> =3D PhantomData<fn(*mut T) -> *mut T>;
+>
+> Consulting the variance table at [1], could you define it as
+>
+>   pub(super) type Invariant<T> =3D PhantomData<*mut T>;
+>
+> or is there another reason for using `fn`?
 
-If it's not too much hassle, why not add them in the kernel as well? I
-would rather not have to go fetch the user space repo from github, in
-the event that I ever need to patch pin-init.
+Yes! There is another reason: `Send` and `Sync`, my `Invariant` type
+will always be `Send` and `Sync`, but `PhantomData<*mut T>` is always
+`!Send` and `!Sync`.
+One could argue that an `Invariant<T>` type should impl `Send`/`Sync`
+if and only if `T` does, but for my usage it doesn't matter. If you do
+need to use that, you could use `PhantomData<(fn(*mut T) -> *mut T, T)>`
 
+---
+Cheers,
+Benno
 
 >
-> Link: https://github.com/Rust-for-Linux/pin-init [1]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> Co-developed-by: Benno Lossin <benno.lossin@proton.me>
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-> ---
->  rust/Makefile                      | 75 +++++++++++++++++++++++-------
->  rust/pin-init/internal/src/_lib.rs |  3 ++
->  rust/pin-init/internal/src/lib.rs  |  4 ++
->  rust/pin-init/src/_lib.rs          |  5 ++
->  scripts/Makefile.build             |  2 +-
->  scripts/generate_rust_analyzer.py  | 17 ++++++-
->  6 files changed, 86 insertions(+), 20 deletions(-)
->  create mode 100644 rust/pin-init/internal/src/_lib.rs
->  create mode 100644 rust/pin-init/src/_lib.rs
 >
-> diff --git a/rust/Makefile b/rust/Makefile
-> index ea3849eb78f6..90310f0620eb 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-
-[...]
-
-> @@ -110,11 +113,24 @@ rustdoc-compiler_builtins: $(src)/compiler_builtins.rs rustdoc-core FORCE
->  rustdoc-ffi: $(src)/ffi.rs rustdoc-core FORCE
->  	+$(call if_changed,rustdoc)
+> Best regards,
+> Andreas Hindborg
 >
-> -rustdoc-kernel: private rustc_target_flags = --extern ffi \
-> +rustdoc-pin_init_internal: private rustdoc_host = yes
-> +rustdoc-pin_init_internal: private rustc_target_flags = --cfg kernel \
-> +    --extern proc_macro --crate-type proc-macro
-> +rustdoc-pin_init_internal: $(src)/pin-init/internal/src/_lib.rs FORCE
-> +	+$(call if_changed,rustdoc)
-> +
-> +rustdoc-pin_init: private rustdoc_host = yes
-> +rustdoc-pin_init: private rustc_target_flags = --extern pin_init_internal \
-> +    --extern macros --extern alloc --cfg kernel --cfg feature=\"alloc\"
-> +rustdoc-pin_init: $(src)/pin-init/src/_lib.rs rustdoc-pin_init_internal \
-> +    rustdoc-macros FORCE
-> +	+$(call if_changed,rustdoc)
-
-Is it possible to do some code sharing here, such that when we add a
-crate, it's just a matter of putting the path/name on a list somewhere?
-
-
-Best regards,
-Andreas Hindborg
-
+>
+> [1] https://doc.rust-lang.org/nomicon/subtyping.html#variance
 
