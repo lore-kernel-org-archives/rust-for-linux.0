@@ -1,43 +1,43 @@
 Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23F723372D
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Mar 2025 13:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F48824A06E
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Mar 2025 13:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741182030; cv=none; b=V1VL6CP/bhsSvC6viSpWdoM8eLEqHDb2ckSCjTvgyV0Jv1F+cQy26LrscNy9dgFiSaNsDu/M0jv7YxwGVHmV1o5nIwo3p0y4IwtA+11Q0MVjXtV5RLVWafJxercc0JvGocs2sEP4Z/nzQ9QJ5fD4kLzC5HSGM+hWRTtJKUER7WU=
+	t=1741182184; cv=none; b=OwyG80IaF8UDp/KytWqvMJfhIvAPVMmq1LhcDvpuRHiWlxJSmy3Af4Gam9f4qjzK4s/H7UGAnuDf0NfKHcBVlGyNf0dgqvGm5cL7LRvNfxlvTvLIqUeW/Qh+qmLfh1yhk8iT3SBZnB6ZDeAEYm0i2Iwp3vu/pOjXTQlwdslnoDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741182030; c=relaxed/simple;
-	bh=e7TwOMbFJdMvoNvcZfuVrdeGdnthTvDUILUYFsO8VBI=;
+	s=arc-20240116; t=1741182184; c=relaxed/simple;
+	bh=PCw+fsFCg4iMevxCZ3WDBtFP6dh7QpfE1KSQU7/sx0o=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A2X9dAZx3URf6nLbNFp6Jck/tdY8sFfM2ISu5+LSB3sCxwOR3MioELSAtjpNpyQXxAFZOp5dQzgRKz4tQpucL3X1LmRGZYmRi4gBW+BsQvNfFya5i3g55oUpw1APV4F1T8E03ZWg+SYj7u6UiG1nfStxx1nG8hv31HbaIwghIcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=XqpyKo8J; arc=none smtp.client-ip=185.70.40.131
+	 MIME-Version:Content-Type; b=nelxqKYUeauHEQ2Hvs45hz49h7fmiBym8/8kQbE0DfF3Rqhzjiq+Ey/Hqt0VQHExoq/HR37WIhCOO+16K1XznGMJTWBfJZu2Kiug1oyfeRcmCkv9PpAkGx47V9LANLjQbn9L0G0jw2t8NwZ0fv7yvslwLCj89y8v9L1wt1aOv3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=VtkbnWZG; arc=none smtp.client-ip=185.70.40.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="XqpyKo8J"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="VtkbnWZG"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1741182026; x=1741441226;
-	bh=/msXaYvJoXRol2eVFsyCSpVGRa8zIZ7dH7ygPIw/Gi0=;
+	s=islx75xhinebhcqxkzeybsabfi.protonmail; t=1741182181; x=1741441381;
+	bh=PCw+fsFCg4iMevxCZ3WDBtFP6dh7QpfE1KSQU7/sx0o=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=XqpyKo8JRbrIZgKvxFwFPDDt8PMeOd0C40l00ZyDo4UlckLy4MdbyI4dNPLHTPqso
-	 DEHJIvr/zKJYpyYAywHCT1E+EjKj5d92ahqEO/TAns0EgMVaYkhapNI3OOuJSAOkk6
-	 HWp1sjRNDciTwBqJk0IQwY1mffNeR/LrxVMrPn630FUuEVjE98ZpaLDfYyiJz8EBe9
-	 CTOC2+YlXA4m39Dng3/YwLDc+Dsr/2qI6xMi5fe4SES25DtiQGoRo4R+IBNBnhMJYM
-	 feTZLevmHDvoXkDHtIcFUnFeYQ9FMtINYryQJzeru3EhABaPil6g78GJA2zZ/aA6xu
-	 krchaoJuLEimw==
-Date: Wed, 05 Mar 2025 13:40:19 +0000
-To: Andreas Hindborg <a.hindborg@kernel.org>
+	b=VtkbnWZGyDqEYMboWBjvPEvvqvtZp+BX7QOyNE0XKXPYbu2MlEZQugMq4JdIPYi1f
+	 21czmgoO9P6i8ASWaWiBx8/K4881UlkCicx8vL0BB8F/5gdm116QZbPlW1yifOeJqK
+	 3csnHyr/qH77xBjw+Rrgug92SN25PN37Pvg3r62Yluq+cza1/eswLTDI1h+vil7cil
+	 glI8lOgbtSWYFld6norsR2aO0bmypklm8icdsxurTtqy+JU9ujczIgVtr+3MpVWfHq
+	 QnQQY536TEo19ee7DwGzo2DI81vqPUYnExRvuPHj2XMy9Jax2HAzsjR7Yhmdt0esqa
+	 VsHC9hv/ia4ow==
+Date: Wed, 05 Mar 2025 13:42:55 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org
-Subject: Re: [PATCH 15/22] rust: make pin-init its own crate
-Message-ID: <D88DIE85YT01.11H51NPNE3HP6@proton.me>
-In-Reply-To: <87bjufd6bj.fsf@kernel.org>
-References: <20250304225245.2033120-1-benno.lossin@proton.me> <LBAOJwgDK3vs6V-k9Olh9PVQ69a3qCaCgLZctAshaNi73epZNKVgY4rKa-81-5us0Tpj3m3U_W3pCHFTKlIbVQ==@protonmail.internalid> <20250304225245.2033120-16-benno.lossin@proton.me> <87bjufd6bj.fsf@kernel.org>
+Cc: stable@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: init: fix `Zeroable` implementation for `Option<NonNull<T>>` and `Option<KBox<T>>`
+Message-ID: <D88DKEJ9LHA0.3324DAQAUEI9T@proton.me>
+In-Reply-To: <20250305132836.2145476-1-benno.lossin@proton.me>
+References: <20250305132836.2145476-1-benno.lossin@proton.me>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 5a0669a79793708d4be68c804eb6d559404b7c94
+X-Pm-Message-ID: b9f1163ef793328134ca0cf594bc4a3f8403279e
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,91 +47,23 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed Mar 5, 2025 at 1:12 PM CET, Andreas Hindborg wrote:
-> "Benno Lossin" <benno.lossin@proton.me> writes:
+On Wed Mar 5, 2025 at 2:29 PM CET, Benno Lossin wrote:
+> According to [1], `NonNull<T>` and `#[repr(transparent)]` wrapper types
+> such as our custom `KBox<T>` have the null pointer optimization only if
+> `T: Sized`. Thus remove the `Zeroable` implementation for the unsized
+> case.
 >
->> Rename relative paths inside of the crate to still refer to the same
->> items, also rename paths inside of the kernel crate and adjust the build
->> system to build the crate.
->>
->> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
->> ---
->
-> [...]
->
->> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
->> index 7ff82c82ce0c..8e116e266524 100644
->> --- a/rust/macros/lib.rs
->> +++ b/rust/macros/lib.rs
->> @@ -2,23 +2,20 @@
->>
->>  //! Crate for all kernel procedural macros.
->>
->> +#![feature(lint_reasons)]
->
-> Commit message should probably say something about this.
+> Link: https://doc.rust-lang.org/stable/std/option/index.html#representati=
+on [1]
+> Cc: stable@vger.kernel.org # v6.12+ (a custom patch will be needed for 6.=
+6.y)
+> Fixes: 38cde0bd7b67 ("rust: init: add `Zeroable` trait and `init::zeroed`=
+ function")
+> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 
-Done.
+Forgot to add this:
 
->> +
->>  // When fixdep scans this, it will find this string `CONFIG_RUSTC_VERSI=
-ON_TEXT`
->>  // and thus add a dependency on `include/config/RUSTC_VERSION_TEXT`, wh=
-ich is
->>  // touched by Kconfig when the version string from the compiler changes=
-.
->>
->>  #[macro_use]
->> +#[expect(unused_macros)]
->>  mod quote;
->>  mod concat_idents;
->>  mod helpers;
->>  mod module;
->>  mod paste;
->> -#[path =3D "../pin-init/internal/src/pin_data.rs"]
->> -mod pin_data;
->> -#[path =3D "../pin-init/internal/src/pinned_drop.rs"]
->> -mod pinned_drop;
->>  mod vtable;
->> -#[path =3D "../pin-init/internal/src/zeroable.rs"]
->> -mod zeroable;
->>
->>  use proc_macro::TokenStream;
->>
->> @@ -374,5 +371,3 @@ pub fn paste(input: TokenStream) -> TokenStream {
->>      paste::expand(&mut tokens);
->>      tokens.into_iter().collect()
->>  }
->> -
->> -include!("../pin-init/internal/src/lib.rs");
->> diff --git a/rust/macros/module.rs b/rust/macros/module.rs
->> index cdf94f4982df..bdd94c79b0d4 100644
->> --- a/rust/macros/module.rs
->> +++ b/rust/macros/module.rs
->> @@ -236,7 +236,7 @@ impl kernel::ModuleMetadata for {type_} {{
->>              mod __module_init {{
->>                  mod __module_init {{
->>                      use super::super::{type_};
->> -                    use kernel::init::PinInit;
->> +                    use pin_init::PinInit;
->>
->>                      /// The \"Rust loadable module\" mark.
->>                      //
->> diff --git a/rust/macros/quote.rs b/rust/macros/quote.rs
->> index 33a199e4f176..11d241b85ac3 100644
->> --- a/rust/macros/quote.rs
->> +++ b/rust/macros/quote.rs
->> @@ -2,6 +2,7 @@
->>
->>  use proc_macro::{TokenStream, TokenTree};
->>
->> +#[allow(dead_code)]
->
-> #[expect(dead_code)] ?
-
-`expect` can't be used here, since `quote.rs` is imported in
-`pin-init/internal/src/lib.rs` and used in that crate. But it is unused
-in the `macros` crate, hence we need to allow it.
+Reported-by: Alice Ryhl <aliceryhl@google.com>
 
 ---
 Cheers,
