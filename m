@@ -1,52 +1,67 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570D41EE7AD
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Mar 2025 21:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6AFB1FE469;
+	Wed,  5 Mar 2025 21:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741208878; cv=none; b=hh09nLAc3AWi5enBJVcSlJ87+fzR64+ySXFxz8iCS7OfwVcmFfO0IurT+H8mQUsvgYyDsUUJ1y/W8os3rSDwaJGJERwgJnzKHKS1AdXP2LIxeldiDABA1kzrSZYJHFoYP0nUsFll2IcOl0ZbLrgkIvd1UW8dkURLcLihMpZY6AQ=
+	t=1741210012; cv=none; b=UdjOWSKpH/sjN/2KBHSjaZ531NxTiuwNYIWW5jEjiByYf8Eb6Eq1aCfudNUhUFodCjnEZg3DNsVtCO3UvxH/PtMVv7SePg1VAJqHDLHd3ILq7/vgM7mIwiYo99/E94WcXgz7Kf+byuXQwXxHklj/0qJVNVUk70QVW0RdVCQz0is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741208878; c=relaxed/simple;
-	bh=27TKBLVqvmk3OjPcYoB4b67c2iTmLEcq1jS2S1mD4+o=;
+	s=arc-20240116; t=1741210012; c=relaxed/simple;
+	bh=mCVySOkr7YXVjXIB2HwJbECGnpXQPFKjKUezXQs5VPY=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=RKr80hHWKU+VdFPj4LYWVQz1WWsVWhtrVm2FBHsgLsW4SdGem/1knde0wBBHo+DhxzHPXcxWSAvGc46p1fQ1nYmElt/jt503NPOJV1Lf9AAVJQCZVkic9e1o8b+/Mqcx9NnvjrHSN9K1HbKTVnDCxSYb+xYRKueVWh5vDsFN5Gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tLx0wFVY; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=JA3QcCtNYxLLhyByG8APZU3AH4r0PJUGHhSV4F30rc85PxA5ZqA4PNLG75/p/m5DmwEZq/FZWfaalffJCCyakvwHYZKWho6bOmWbvQ68lafN+U5QkPxsn664JkMpzqBy5mBKT5V8UDT5O4c0AioW3IH2Y9eBVXI2W6e4pffqj9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kovSYpc6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tLx0wFVY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C925FC4CED1;
-	Wed,  5 Mar 2025 21:07:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kovSYpc6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5639AC4CED1;
+	Wed,  5 Mar 2025 21:26:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741208876;
-	bh=27TKBLVqvmk3OjPcYoB4b67c2iTmLEcq1jS2S1mD4+o=;
+	s=k20201202; t=1741210011;
+	bh=mCVySOkr7YXVjXIB2HwJbECGnpXQPFKjKUezXQs5VPY=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=tLx0wFVYSrlbLu8DOP7OooS00piK0dJ+jlM3xEafgGWefk1qoVf3xv21YOQHqf2mR
-	 0oDkN+BJqH4BjUmxXdBrmXBjDp3TgAzsQuiiUWijhmZzDaDRNo9NRb74Y9dMpeHx7R
-	 kUAFEp4k2hwWWHaJISI3nUoPmokF4I0ztp/0j3JYWpMPDGaY19mqnJQKeZaAvc0XZE
-	 1sGtPPdNUL+XlrDh86sntkiFay/03Ra3UW/xHyGkVVu1PEIFGpTuNkymF9DLksuBnA
-	 xl7BRof/8N+Kgv/8xdkG8aT8Q7TqnOk3p1f3HXKW7BwSFiX+tNF00Ggrxef9ahoIUQ
-	 DNv0qQ7fQERFQ==
+	b=kovSYpc636KtErlQgI2ZrNJBoQ/pjYkksty4vMPUUMpBGOyxFAPMBz/6FNkHTWoRx
+	 L62czdOmKEJTVno2l7heHrhYrcfcrkjHDRlhX5bmCerH5ugD5wL301q4PwlF0tiFZ0
+	 5DlA96gMAopnFu6YrJqabIu3H1xyarWhBvcthEzJAccKUIuCTkGywBipQ/+syUOWv4
+	 WEILPjO6jURny7wcmoDW90+0+Qe+WijyJGL1zxnecbDSVVDiVh/QlUgYa5WWcxNFFD
+	 zm60kfT4cqPfvWuJiDSbeRfxQAG7Tp6L/ULQzozB0ovV6m32cFp+FU0/eh8zBlHB4W
+	 ht/yd8BZwA7Ow==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>
-Cc: "Dirk Behme" <dirk.behme@de.bosch.com>,
-  <rust-for-linux@vger.kernel.org>,  <ojeda@kernel.org>,
-  <daniel.almeida@collabora.com>,  "Gary Guo" <gary@garyguo.net>,  "Alice
- Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>
-Subject: Re: [PATCH v3 2/2] rust: types: `Opaque` doc: Add some destructor
- description
-In-Reply-To: <Z8icwtIpZ3PO9YcZ@boqun-archlinux> (Boqun Feng's message of "Wed,
-	05 Mar 2025 10:49:38 -0800")
-References: <20250305053438.1532397-1-dirk.behme@de.bosch.com>
-	<hVvs4-cEyMjFMKMMqergIA4OCAIJUIfXQGi2a_uisGZaLJHUWiNtGPNASjjeprDQrtNtasMOfTrRIiYwXE2zgg==@protonmail.internalid>
-	<20250305053438.1532397-2-dirk.behme@de.bosch.com>
-	<871pvbhqap.fsf@kernel.org>
-	<eGDvv6uA00fjuGAgV8uknZos4J9VcrxQ7lk9brRpmdGEGIHYZlxk-ZRsGxXsr-SCZE6IVEuPKs5ko9gukJwo7Q==@protonmail.internalid>
-	<Z8hwGGn9huDjyDWN@tardis> <87v7sn759g.fsf@kernel.org>
-	<n0Uj2Z9c_20rMgNGkpHAbJ2IQS5ueeREBy6NHdwpCp8vg9V5JrRPJbP3xBFssuyDTcN1JUulMK3cwwDu0U0fkQ==@protonmail.internalid>
-	<Z8icwtIpZ3PO9YcZ@boqun-archlinux>
+To: "Ralf Jung" <post@ralfj.de>
+Cc: "Alice Ryhl" <aliceryhl@google.com>,  "Boqun Feng"
+ <boqun.feng@gmail.com>,  "comex" <comexk@gmail.com>,  "Daniel Almeida"
+ <daniel.almeida@collabora.com>,  "Benno Lossin" <benno.lossin@proton.me>,
+  "Abdiel Janulgue" <abdiel.janulgue@gmail.com>,  <dakr@kernel.org>,
+  <robin.murphy@arm.com>,  <rust-for-linux@vger.kernel.org>,  "Miguel
+ Ojeda" <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Gary
+ Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+  "Trevor Gross" <tmgross@umich.edu>,  "Valentin Obst"
+ <kernel@valentinobst.de>,  <linux-kernel@vger.kernel.org>,  "Christoph
+ Hellwig" <hch@lst.de>,  "Marek Szyprowski" <m.szyprowski@samsung.com>,
+  <airlied@redhat.com>,  <iommu@lists.linux.dev>,  <lkmm@lists.linux.dev>
+Subject: Re: Allow data races on some read/write operations
+In-Reply-To: <915eacce-cfd8-4bed-a407-32513e43978f@ralfj.de> (Ralf Jung's
+	message of "Wed, 05 Mar 2025 20:42:05 +0100")
+References: <87bjuil15w.fsf@kernel.org>
+	<t4HxdvR7WBX_861hiTXo72jqC9F9oRpIzgA_dD2yhcSuLISEkC-shMfSgllrFPpnkSZXGfRcc47keudMooNiIQ==@protonmail.internalid>
+	<CAH5fLgg5MuUu=TX8mMsPf5RcLhMLHSU4Vct=h8rFX6Z7HjPxeA@mail.gmail.com>
+	<87ikoqjg1n.fsf@kernel.org>
+	<KpWTCfIlcLYFBpSvWPfALJ9VQn5a99_RAvxgMBc1aCrSalPB-qaW9IhXyaDG7HM1AcFPX5chj_Yr7IQp3F7UqA==@protonmail.internalid>
+	<CAH5fLgh6ubawHh76wq7JPbcuBCWhm91m7Rc01MVsX-a3C6qaVA@mail.gmail.com>
+	<87mse2hrd8.fsf@kernel.org> <Z8YMTiKS4T9wC4t_@boqun-archlinux>
+	<ae8ac31f-c6ad-46ae-80dd-10ec081a16d1@ralfj.de>
+	<88456D33-C5CA-4F4F-990E-8C5F2AF7EAF9@gmail.com>
+	<hkhgihg4fjkg7zleqnumuj65dfvmxa5rzawkiafrf4kn5ss6nw@o7kc6xe2bmuj>
+	<25e7e425-ae72-4370-ae95-958882a07df9@ralfj.de>
+	<CAH5fLgidPHQzdUORNpNhtRFsKPU1T-0xdn5OSwYYZh3BgOVRQA@mail.gmail.com>
+	<18cmxblLU2QAa4YP25RWCKEnxuonOwWXavYmSsS4C5D40o8RaCkIXo0UDZ2SPnksk5nWYB29Y4zHkjQeOgd4ng==@protonmail.internalid>
+	<3aabca39-4658-454a-b0e3-e946e72977e1@ralfj.de> <87eczb71xs.fsf@kernel.org>
+	<M_YejDCAOZ7AX0l8ZZ7Z5EesJicUgsjYJUTm0SzLkhYTAYyXRJFTr4QYZMagG4KX6YdHoT-IPhf8ygjircrs0A==@protonmail.internalid>
+	<915eacce-cfd8-4bed-a407-32513e43978f@ralfj.de>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Wed, 05 Mar 2025 22:07:33 +0100
-Message-ID: <87zfhz5gq2.fsf@kernel.org>
+Date: Wed, 05 Mar 2025 22:26:39 +0100
+Message-ID: <87tt875fu8.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -55,99 +70,61 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-"Boqun Feng" <boqun.feng@gmail.com> writes:
+"Ralf Jung" <post@ralfj.de> writes:
 
-> On Wed, Mar 05, 2025 at 06:32:11PM +0100, Andreas Hindborg wrote:
->> "Boqun Feng" <boqun.feng@gmail.com> writes:
->>
->> > On Wed, Mar 05, 2025 at 08:47:42AM +0100, Andreas Hindborg wrote:
->> >> "Dirk Behme" <dirk.behme@de.bosch.com> writes:
->> >>
->> >> > In the discussion [1] some `Opaque` documentation updates have
->> >> > been proposed. In that discussion it was clarified that `Opaque`
->> >> > is intended to be used for (partial) uninitialized or changing C
->> >> > structs. And which consequences this has for using raw pointers
->> >> > or the destruction. Improve the `Opaque` documentation by adding
->> >> > these conclusions from that discussion.
->> >> >
->> >> > Suggested-by: Daniel Almeida <daniel.almeida@collabora.com>
->> >> > Link: https://lore.kernel.org/rust-for-linux/F8AB1160-F8CF-412F-8B88-4C79D65B53A1@collabora.com/ [1]
->> >> > Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
->> >> >
->> >> > ---
->> >> > Changes in v3:
->> >> >    * Add the "terse" proposals.
->> >> >    * Move the non-linkage artifact from patch 1/2 to here.
->> >> >
->> >> >  rust/kernel/types.rs | 26 +++++++++++++++++++++-----
->> >> >  1 file changed, 21 insertions(+), 5 deletions(-)
->> >> >
->> >> > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
->> >> > index af30e9c0ebccb..f370cdb48a648 100644
->> >> > --- a/rust/kernel/types.rs
->> >> > +++ b/rust/kernel/types.rs
->> >> > @@ -271,17 +271,33 @@ fn drop(&mut self) {
->> >> >
->> >> >  /// Stores an opaque value.
->> >> >  ///
->> >> > -/// [`Opaque<T>`] is meant to be used with FFI objects that are never interpreted by Rust code.
->> >> > +/// [`Opaque<T>`] opts out of the following Rust language invariants for the contained `T`
->> >> > +/// by using [`UnsafeCell`]:
->> >> >  ///
->> >> > -/// It is used to wrap structs from the C side, like for example `Opaque<bindings::mutex>`.
->> >> > -/// It gets rid of all the usual assumptions that Rust has for a value:
->> >> > +/// * Initialization invariant - the contained value is allowed to be uninitialized and
->> >> > +///   contain invalid bit patterns.
->> >> > +/// * Immutability invariant - [`Opaque<T>`] allows interior mutability.
->> >> > +/// * Uniqueness invariant - [`Opaque<T>`] allows aliasing of shared references.
->> >>
->> >> This last one is wrong (I know it's probably my fault, sorry). It should be:
->> >>
->> >>   /// * Uniqueness invariant - [`Opaque<T>`] allows aliasing of **exclusive** references.
->> >>
->> >
->> > Hmm... are we trying to say "`&mut Opaque<T>` still cannot mean
->> > noalias" here? If so I feel the wording might be confusing. I would
->> > suggest we don't use "uniqueness" here. Maybe something like:
->> >
->> > * Always aliased invariant - `&mut` [`Opaque<T>`] is not necessarily a
->> >   unique pointer, and thus the compiler cannot just make aliasing
->> >   assumptions.
->> >
->> > (I use the wording from UnsafePinned[1], maybe there could be better
->> > wording)
->> >
->> > [1]: https://rust-lang.github.io/rfcs/3467-unsafe-pinned.html#summary
->>
->> I like my wording better. It says the same with fewer words, and we have
->> a more wordy section below anyway. We could combine:
->>
->>  * Uniqueness invariant - [`Opaque<T>`] allows aliasing of **exclusive**
->>    references. That is, `&mut` [`Opaque<T>`] is not necessarily a unique
->>    pointer.
->>
->>
->> How is that?
->>
+> Hi all,
 >
-> I think my biggest problem is the word "allows", the phrase "allows
-> aliasing" sounds like Opaque<T> provide something *optional*, however,
-> as I understand it, Opaque<T> here just disallows certain optimization
-> from compiler, in other words, programmers want to use `Opaque<T>` to
-> forbid something, hence "allows" may not be the good word to use here?
+>>>> For some kinds of hardware, we might not want to trust the hardware.
+>>>> I.e., there is no race under normal operation, but the hardware could
+>>>> have a bug or be malicious and we might not want that to result in UB.
+>>>> This is pretty similar to syscalls that take a pointer into userspace
+>>>> memory and read it - userspace shouldn't modify that memory during the
+>>>> syscall, but it can and if it does, that should be well-defined.
+>>>> (Though in the case of userspace, the copy happens in asm since it
+>>>> also needs to deal with virtual memory and so on.)
+>>>
+>>> Wow you are really doing your best to combine all the hard problems at the same
+>>> time. ;)
+>>> Sharing memory with untrusted parties is another tricky issue, and even leaving
+>>> aside all the theoretical trouble, practically speaking you'll want to
+>>> exclusively use atomic accesses to interact with such memory. So doing this
+>>> properly requires atomic memcpy. I don't know what that is blocked on, but it is
+>>> good to know that it would help the kernel.
+>>
+>> I am sort of baffled by this, since the C kernel has no such thing and
+>> has worked fine for a few years. Is it a property of Rust that causes us
+>> to need atomic memcpy, or is what the C kernel is doing potentially dangerous?
 >
-> How about:
->
->   * Uniqueness invariant - [`Opaque<T>`] disallow alias assumptions
->     made by compiler on an *exclusive* references.
+> It's the same in C: a memcpy is a non-atomic access. If something else
+> concurrently mutates the memory you are copying from, or something else
+> concurrently reads/writes the memory you are copying two, that is UB.
+> This is not specific to memcpy; it's the same for regular pointer loads/stores.
+> That's why you need READ_ONCE and WRITE_ONCE to specifically indicate to the
+> compiler that these are special accesses that need to be treated differently.
+> Something similar is needed for memcpy.
 
-I don't object, but I feel like we should be able to define this within
-the context of the Rust language, without going into details about
-compiler internals.
+I'm not a compiler engineer, so I might be wrong about this, but. If I
+do a C `memcpy` from place A to place B where A is experiencing racy
+writes, if I don't interpret the data at place B after the copy
+operation, the rest of my C program is fine and will work as expected. I
+may even later copy the data at place B to place C where C might have
+concurrent reads and/or writes, and the kernel will not experience UB
+because of this. The data may be garbage, but that is fine. I am not
+interpreting the data, or making control flow decisions based on it. I
+am just moving the data.
 
-Without `Opaque` it is illegal to have aliased `&mut T`. With `Opaque`,
-it is legal to have aliased `&mut Opaque<T>`. Or at least that is my
-understanding.
+My understand is: In Rust, this program would be illegal and might
+experience UB in unpredictable ways, not limited to just the data that
+is being moved.
+
+One option I have explored is just calling C memcpy directly, but
+because of LTO, that is no different than doing the operation in Rust.
+
+I don't think I need atomic memcpy, I just need my program not to
+explode if I move some data to or from a place that is experiencing
+concurrent writes without synchronization. Not in general, but for some
+special cases where I promise not to look at the data outside of moving
+it.
 
 
 Best regards,
