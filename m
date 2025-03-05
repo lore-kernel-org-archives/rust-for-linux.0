@@ -1,166 +1,195 @@
-Received: from r-passerv.ralfj.de (r-passerv.ralfj.de [109.230.236.95])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2784A1C84B9;
-	Wed,  5 Mar 2025 22:01:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.230.236.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA254A33;
+	Wed,  5 Mar 2025 22:30:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741212099; cv=none; b=YlXhFHSIOWB80ngrxx2Cdq/KRIJLTTFp8y8X9TqV0NWfXJI+zsDve5r8VIVeSbD88xQLp9bsItoNOY8Dzk77u5vHV0xeFRHKWhrecFcceoZElwfXOtnudAoiq4S+wFL8PFDwCa5Xq+tXo2cktmJY5nVQqV0NuqD4ISSyTqjdWRs=
+	t=1741213846; cv=none; b=HNWhQAaTxnJl6ROx2SC1hFI54ndytizsGFPNY35FufXtlspTzd/Cd/5D3GIkUK6/9eH5UStIWX12qUmIkJ7LLT+yCI8on4iBdtIMtB7UP9VB9pHWZUFCEwv0Az260YRktWyZdhVZIiyykFlUmnJHK0IffUOioWpqVJDgTIPTkKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741212099; c=relaxed/simple;
-	bh=/408JW3/K3EFm7N0Q/95CTFcpD5T/HxnHzWL4JoSqpo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ayQ2xYDuflyGqCnnsStRUcnti7WO4a+dlraFZjrnsSh/elxVoggjEts+Dn7/vuh4137Duzs/Wm5/rLmywBmhXgD1oPrBqYHdkYUVb7eaBMRZE8gdbhoFPXQs6SqicqNT+N/boA/Gy9EytdZMUFk2s97+c+ThTF1FAzrib7IEhkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=CgcToDdR; arc=none smtp.client-ip=109.230.236.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ralfj.de
+	s=arc-20240116; t=1741213846; c=relaxed/simple;
+	bh=EYN/BSLLtdiTg/f7jeJ6J4AoAO07Udklbww6jnmiAaE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=U2drmGUulmUO0UdeoJVOBOXjvwASH9gEGwCrOXwIa61qUMgtb2lzcRvIA1nK6WKpCm3phAGz1HErOmL0YxvvALrI3gDQELfnJWWxDnyT9taG7WbN+tXuYDNfazYRm5X+frcDuD2KJCRaLSO26OfasFKTpBUkcdS+A/KYNYiV70Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=ExIVDq+U; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="CgcToDdR"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ralfj.de; s=mail;
-	t=1741212096; bh=/408JW3/K3EFm7N0Q/95CTFcpD5T/HxnHzWL4JoSqpo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=CgcToDdRavNi2y+nVVolQqjv0K18KtigroOvSW8w2VgTzlij4wiX58JSHj3t7z/Ar
-	 RopwYQJKUDS5RAVyLny+ec25mPtqfzEKCfzc2owr3/kSJoi9Sb7mP7AOXV7H+I4TPg
-	 AQ/mDqumjtkfbRUqQ+56L/08e9XqMF/t9rdx/JJo=
-Received: from [IPV6:2001:8e0:207e:3500:4ab6:48fe:df57:b084] (2001-8e0-207e-3500-4ab6-48fe-df57-b084.ewm.ftth.ip6.as8758.net [IPv6:2001:8e0:207e:3500:4ab6:48fe:df57:b084])
-	by r-passerv.ralfj.de (Postfix) with ESMTPSA id 4106C2052A89;
-	Wed,  5 Mar 2025 23:01:36 +0100 (CET)
-Message-ID: <5141441e-040f-4ba3-8567-91110fa91df0@ralfj.de>
-Date: Wed, 5 Mar 2025 23:01:35 +0100
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ExIVDq+U"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1741213841; x=1741473041;
+	bh=oA5VdBYqAl1FD7XLdd6ED5xak0jGnkmx5w36QBysOHU=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=ExIVDq+Ujn6KsOt67OMC7GxrAMIcWg00nU1tO3l1CRkkMfRDzJfhUvlOnbAFRRdwh
+	 QSIFakcquGfaPU+hFA+dg/eqEL5ljlXh9cxSrJd/gz0cypodCjxiFBhoA+FX/Jji5X
+	 KH9tXlAO+QzhvYchL/eCAymMTqJgYmpyXsPoMOAW7Gr5cGXq/BOJ6ZHwGC4mHfHXmO
+	 BINFIJj8ovd8c3iX/5R20OaEcbzFpvkmE3oMa7zRiD7ziMgat1ysdRpIkc0JjpKlzK
+	 O2U8nk7deejkOq6rODO8bJp9A0ftPXefTmSwnB6yDHUxkwVXMCmui6Z3aid/fg9nM2
+	 5DLkYeCXLmxGw==
+Date: Wed, 05 Mar 2025 22:30:31 +0000
+To: Danilo Krummrich <dakr@kernel.org>, airlied@gmail.com, simona@ffwll.ch, corbet@lwn.net, maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, ajanulgu@redhat.com, lyude@redhat.com, pstanner@redhat.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, bskeggs@nvidia.com, acurrid@nvidia.com
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, gregkh@linuxfoundation.org, mcgrof@kernel.org, russ.weight@linux.dev, dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v5 2/5] rust: firmware: introduce `firmware::ModInfoBuilder`
+Message-ID: <D88OSC9XJXZL.C5HXWFYCG9U6@proton.me>
+In-Reply-To: <20250304173555.2496-3-dakr@kernel.org>
+References: <20250304173555.2496-1-dakr@kernel.org> <20250304173555.2496-3-dakr@kernel.org>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: fc5a88e7746fec47f7de82f7668300d12884367f
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Allow data races on some read/write operations
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, comex <comexk@gmail.com>,
- Alice Ryhl <aliceryhl@google.com>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Abdiel Janulgue <abdiel.janulgue@gmail.com>, dakr@kernel.org,
- robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Trevor Gross <tmgross@umich.edu>,
- Valentin Obst <kernel@valentinobst.de>, linux-kernel@vger.kernel.org,
- Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>,
- airlied@redhat.com, iommu@lists.linux.dev, lkmm@lists.linux.dev
-References: <87bjuil15w.fsf@kernel.org>
- <t4HxdvR7WBX_861hiTXo72jqC9F9oRpIzgA_dD2yhcSuLISEkC-shMfSgllrFPpnkSZXGfRcc47keudMooNiIQ==@protonmail.internalid>
- <CAH5fLgg5MuUu=TX8mMsPf5RcLhMLHSU4Vct=h8rFX6Z7HjPxeA@mail.gmail.com>
- <87ikoqjg1n.fsf@kernel.org>
- <KpWTCfIlcLYFBpSvWPfALJ9VQn5a99_RAvxgMBc1aCrSalPB-qaW9IhXyaDG7HM1AcFPX5chj_Yr7IQp3F7UqA==@protonmail.internalid>
- <CAH5fLgh6ubawHh76wq7JPbcuBCWhm91m7Rc01MVsX-a3C6qaVA@mail.gmail.com>
- <87mse2hrd8.fsf@kernel.org> <Z8YMTiKS4T9wC4t_@boqun-archlinux>
- <ae8ac31f-c6ad-46ae-80dd-10ec081a16d1@ralfj.de>
- <88456D33-C5CA-4F4F-990E-8C5F2AF7EAF9@gmail.com>
- <hkhgihg4fjkg7zleqnumuj65dfvmxa5rzawkiafrf4kn5ss6nw@o7kc6xe2bmuj>
- <9wOjabjsxQUrlTOfcLXOYjYxTroyzIPZCy1xeZsv7IctEqEe-iUaGCL4xKebv01sARjrMfYNkPx4sJLtKLmPXA==@protonmail.internalid>
- <25e7e425-ae72-4370-ae95-958882a07df9@ralfj.de> <87pliv726u.fsf@kernel.org>
-Content-Language: en-US, de-DE
-From: Ralf Jung <post@ralfj.de>
-In-Reply-To: <87pliv726u.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Tue Mar 4, 2025 at 6:34 PM CET, Danilo Krummrich wrote:
+> The `firmware` field of the `module!` only accepts literal strings,
+> which is due to the fact that it is implemented as a proc macro.
+>
+> Some drivers require a lot of firmware files (such as nova-core) and
+> hence benefit from more flexibility composing firmware path strings.
+>
+> The `firmware::ModInfoBuilder` is a helper component to flexibly compose
+> firmware path strings for the .modinfo section in const context.
+>
+> It is meant to be used in combination with `kernel::module_firmware!`,
+> which is introduced in a subsequent patch.
+>
+> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  rust/kernel/firmware.rs | 98 +++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 98 insertions(+)
+>
+> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+> index c5162fdc95ff..6e6972d94597 100644
+> --- a/rust/kernel/firmware.rs
+> +++ b/rust/kernel/firmware.rs
+> @@ -115,3 +115,101 @@ unsafe impl Send for Firmware {}
+>  // SAFETY: `Firmware` only holds a pointer to a C `struct firmware`, ref=
+erences to which are safe to
+>  // be used from any thread.
+>  unsafe impl Sync for Firmware {}
+> +
+> +/// Builder for firmware module info.
+> +///
+> +/// [`ModInfoBuilder`] is a helper component to flexibly compose firmwar=
+e paths strings for the
+> +/// .modinfo section in const context.
+> +///
+> +/// It is meant to be used in combination with [`kernel::module_firmware=
+!`].
+> +///
+> +/// For more details and an example, see [`kernel::module_firmware!`].
+> +pub struct ModInfoBuilder<const N: usize> {
+> +    buf: [u8; N],
+> +    n: usize,
+> +    module_name: &'static CStr,
+> +}
+> +
+> +impl<const N: usize> ModInfoBuilder<N> {
+> +    /// Create an empty builder instance.
+> +    pub const fn new(module_name: &'static CStr) -> Self {
+> +        Self {
+> +            buf: [0; N],
+> +            n: 0,
+> +            module_name,
+> +        }
+> +    }
+> +
+> +    const fn push_internal(mut self, bytes: &[u8]) -> Self {
+> +        let mut j =3D 0;
+> +
+> +        if N =3D=3D 0 {
+> +            self.n +=3D bytes.len();
+> +            return self;
+> +        }
+> +
+> +        while j < bytes.len() {
+> +            if self.n < N {
+> +                self.buf[self.n] =3D bytes[j];
+> +            }
+> +            self.n +=3D 1;
+> +            j +=3D 1;
+> +        }
+> +        self
+> +    }
+> +
+> +    /// Push an additional path component.
+> +    ///
+> +    /// After a new [`ModInfoBuilder`] instance has been created, [`ModI=
+nfoBuilder::prepare`] must
+> +    /// be called before adding path components.
+> +    pub const fn push(self, s: &str) -> Self {
+> +        if N !=3D 0 && self.n =3D=3D 0 {
+> +            crate::build_error!("Must call prepare() before push().");
 
-On 05.03.25 19:38, Andreas Hindborg wrote:
-> "Ralf Jung" <post@ralfj.de> writes:
-> 
->> Hi,
->>
->> On 05.03.25 04:24, Boqun Feng wrote:
->>> On Tue, Mar 04, 2025 at 12:18:28PM -0800, comex wrote:
->>>>
->>>>> On Mar 4, 2025, at 11:03 AM, Ralf Jung <post@ralfj.de> wrote:
->>>>>
->>>>> Those already exist in Rust, albeit only unstably:
->>>>> <https://doc.rust-lang.org/nightly/std/intrinsics/fn.volatile_copy_memory.html>.
->>>>> However, I am not sure how you'd even generate such a call in C? The
->>>>> standard memcpy function is not doing volatile accesses, to my
->>>>> knowledge.
->>>>
->>>> The actual memcpy symbol that exists at runtime is written in
->>>> assembly, and should be valid to treat as performing volatile
->>>> accesses.
->>
->> memcpy is often written in C... and AFAIK compilers understand what that
->> function does and will, for instance, happily eliminate the call if they can
->> prove that the destination memory is not being read from again. So, it doesn't
->> behave like a volatile access at all.
->>
->>>> But both GCC and Clang special-case the memcpy function.  For example,
->>>> if you call memcpy with a small constant as the size, the optimizer
->>>> will transform the call into one or more regular loads/stores, which
->>>> can then be optimized mostly like any other loads/stores (except for
->>>> opting out of alignment and type-based aliasing assumptions).  Even if
->>>> the call isn’t transformed, the optimizer will still make assumptions.
->>>> LLVM will automatically mark memcpy `nosync`, which makes it undefined
->>>> behavior if the function “communicate[s] (synchronize[s]) with another
->>>> thread”, including through “volatile accesses”. [1]
->>
->> The question is more,  what do clang and GCC document / guarantee in a stable
->> way regarding memcpy? I have not seen any indication so far that a memcpy call
->> would ever be considered volatile, so we have to treat it like a non-volatile
->> non-atomic operation.
->>
->>>> However, these optimizations should rarely trigger misbehavior in
->>>> practice, so I wouldn’t be surprised if Linux had some code that
->>>> expected memcpy to act volatile…
->>>>
->>>
->>> Also in this particular case we are discussing [1], it's a memcpy (from
->>> or to) a DMA buffer, which means the device can also read or write the
->>> memory, therefore the content of the memory may be altered outside the
->>> program (the kernel), so we cannot use copy_nonoverlapping() I believe.
->>>
->>> [1]: https://lore.kernel.org/rust-for-linux/87bjuil15w.fsf@kernel.org/
->>
->> Is there actually a potential for races (with reads by hardware, not other
->> threads) on the memcpy'd memory?
-> 
-> There is another use case for this: copying data to/from a page that is
-> mapped into user space. In this case, a user space process can
-> potentially modify the data in the mapped page while we are
-> reading/writing that data. This would be a misbehaved user space
-> process, but it should not be able to cause UB in the kernel anyway.
+This will only prevent the first `prepare` call being missed, right?
 
-Yeah that sounds like *the* prototypical case of sharing memory with an 
-untrusted third party.
+> +        }
+> +
+> +        self.push_internal(s.as_bytes())
+> +    }
+> +
+> +    const fn prepare_module_name(self) -> Self {
+> +        let mut this =3D self;
+> +        let module_name =3D this.module_name;
+> +
+> +        if !this.module_name.is_empty() {
+> +            this =3D this.push_internal(module_name.as_bytes_with_nul())=
+;
+> +
+> +            if N !=3D 0 {
+> +                // Re-use the space taken by the NULL terminator and swa=
+p it with the '.' separator.
+> +                this.buf[this.n - 1] =3D b'.';
+> +            }
+> +        }
+> +
+> +        this.push_internal(b"firmware=3D")
+> +    }
+> +
+> +    /// Prepare for the next module info entry.
+> +    ///
+> +    /// Must be called before [`ModInfoBuilder::push`] can be called.
 
-> 
-> The C kernel just calls memcpy directly for this use case.
-> 
-> For this use case, we do not interpret or make control flow decisions
-> based on the data we read/write. And _if_ user space decides to do
-> concurrent writes to the page, we don't care if the data becomes
-> garbage. We just need the UB to be confined to the data moved from that
-> page, and not leak into the rest of the kernel.
+If you always have to call this before `push`, why not inline it there?
 
-There is no such thing as "confined UB". Well, there is "poison data", which can 
-act a bit like that, but sadly the C standard is extremely ambiguous on that 
-subject and has been for decades despite repeated requests for clarifications, 
-so it is entirely unclear whether and how "poison data" could exist in C. clang, 
-for once, has decided that "poison data" is UB in most situations (including 
-just copying it to / returning it from another function), and this is consistent 
-with some of the messaging of the standards committee. I don't know enough about 
-the internals of gcc to comment on what they do.
+---
+Cheers,
+Benno
 
-Personally, I think that's a mistake; there needs to be some clear way to deal 
-with uninitialized memory (which is the typical example of "poison data").
+> +    pub const fn prepare(self) -> Self {
+> +        self.push_internal(b"\0").prepare_module_name()
+> +    }
+> +
+> +    /// Build the byte array.
+> +    pub const fn build(self) -> [u8; N] {
+> +        // Add the final NULL terminator.
+> +        let this =3D self.push_internal(b"\0");
+> +
+> +        if this.n =3D=3D N {
+> +            this.buf
+> +        } else {
+> +            crate::build_error!("Length mismatch.");
+> +        }
+> +    }
+> +}
+> +
+> +impl ModInfoBuilder<0> {
+> +    /// Return the length of the byte array to build.
+> +    pub const fn build_length(self) -> usize {
+> +        // Compensate for the NULL terminator added by `build`.
+> +        self.n + 1
+> +    }
+> +}
+> --
+> 2.48.1
 
-In Rust we have a fairly clear idea of what our rules should be here, and you 
-can have "poison data" inside the `MaybeUninit` type. However, neither Rust nor 
-C have a way to do reads where data races cause "poison data" rather than UB. 
-See my other email I just sent for the rest of this line of discussion.
-(I'm not used to the sprawling tree of a discussion that is this mailing list, 
-so not sure how to best deal with replies that want to "merge" things said in 
-different emails.)
-
-Kind regards,
-Ralf
 
