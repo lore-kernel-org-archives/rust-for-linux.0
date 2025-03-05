@@ -1,54 +1,55 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFD7567D;
-	Wed,  5 Mar 2025 17:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A922F24CEDF;
+	Wed,  5 Mar 2025 17:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741195505; cv=none; b=Pj/ksdWHrLOezOJBoTcWfRd2n3yxPV2QjmrksYCMla5AhZOZyXWlQe4D3EIoolOU0oN1pEuYiVkbJw++JtMeugKfenTqFPP1L8bxi3kd0Dbt6iX5d7/IzYAj0hwapjxdjGN0p8fJM3LbpLlxTTdczqt0YU2DojsqZZZzUzDyFxw=
+	t=1741195635; cv=none; b=PQwO2En5arLDCEs8EBcgeatsz69rYBSlWj/U+GFDuyV1InfWW7vxu5joHfe4Ls1KVoAhcl57r/lLueOEan5typgXUsLC0YpOvGJucHQ5F9jUm0O/7Lb+n8ixFLXdwwGeghJ1Vxmzvp/Aj/lxQZiXQ1s3OOTKohlVvvMs0c0dpO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741195505; c=relaxed/simple;
-	bh=U18Wfl4pQFaaYNIJzuQEGPdF/5EFkPOj+sQlvfXNzwI=;
+	s=arc-20240116; t=1741195635; c=relaxed/simple;
+	bh=vLkceGu5hYKNQITI1o+vScaHt0sK/onC6UV0cg6UPKM=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=rrNj1DXTFo5sveD268Yzf0L1GHoHOuA5T2KcOIE/2RbZ7ModdvErJ1QNXrBWX/iB8haHBiiToMHxM//9NEl9s1eYQQVuFRzIPIQuTFQJ7IB9tRV7Gmw2KoQW9b3Mu0kSGEOVoLEoPuieQkXj4YGjN3RMg0BvMwFHAshu2ul7oSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=isfr5Yqk; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=Hm5e9cKzMjAiYW+hmF/Rg+8h/KAc3N0bH5QXhsGLKD/jVBmXARNDLS56MJB3p/9tHev9ad7ni5bjDze5devnp0bHryLiav1q9nnINjVtnxrWaFTupVXC5yEzW7j1DiOo447ifuH+j1n04aGxgciUtrPZ7q8Od+/PK9GhxPlR5qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OfFEt9AA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="isfr5Yqk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B992C4CED1;
-	Wed,  5 Mar 2025 17:25:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OfFEt9AA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6233C4CED1;
+	Wed,  5 Mar 2025 17:27:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741195505;
-	bh=U18Wfl4pQFaaYNIJzuQEGPdF/5EFkPOj+sQlvfXNzwI=;
+	s=k20201202; t=1741195635;
+	bh=vLkceGu5hYKNQITI1o+vScaHt0sK/onC6UV0cg6UPKM=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=isfr5YqkrSHxijEbW83wwx73H9aHLvHo8eU+AEzJN9GQOVvjVVjja2/+jVwCaz1T1
-	 4gb8nfkVojSaUqQLS3m/Cz2JuurqyGBx16qNIFiRpqnW4uatm1NJS8gQPUSBKATPFv
-	 MixExuJEHlqWES55sGDYrGGmSTDGyBmQwP8gYaEzGF82riCx3dYrcK56bSFyxwJIwr
-	 PutuH+CccgN4/5yAfYL6nr4JzR3wf/+sbreFPieG/DLXLMxeeM+ejH5j8DvnY2uzuB
-	 7WOT96PrF2aNL7euNM8lx9zCjHZL/H+Y0NDjFsjukUbLHOxnP3MNbtu8MvTVssRKIk
-	 Uoy/Ie5q7Odhg==
+	b=OfFEt9AAPmZdN36nVnNR/RqRXaui/Bqc1EgsqKT9FEX3hUArvsa3fX8Zt7uh8IZJk
+	 tq3ZQOVFvv/iwI1Vmgg0+ZiVAkoKvxMZYB0byK8igmci42shWzl2hmMiUOFVk7z2VO
+	 Q/1G4SHBABdeMdqBCPSstBtLYHrbkc+0rPxDnIXN4d+c0KiwCD89nridrttlOStPJs
+	 04kqMSRKSTy4lSaMDhP+QE3oxKgH/s004jM8hJ/brpO8QntUfGHFIHZ9slxNIS0vkG
+	 abPV+YcjF0i+0EGmR6G9NiX9IQJRxqQ4cpaqGIl5lt3E2FZFvK43BGRRUSNcv5g75z
+	 gyXDeV496MsaQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-Cc: "Oliver Mangold" <oliver.mangold@pm.me>,  "Miguel Ojeda"
- <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
- <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
- =?utf-8?Q?=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
-  "Trevor Gross" <tmgross@umich.edu>,  <rust-for-linux@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4] rust: adding UniqueRefCounted and UniqueRef types
-In-Reply-To: <CAH5fLgirYTV6K2QoH9LLwhHxJzz=h1R0jB4G2kpKQ_pBtBgePg@mail.gmail.com>
- (Alice
-	Ryhl's message of "Wed, 05 Mar 2025 17:02:10 +0100")
-References: <20250305-unique-ref-v4-1-a8fdef7b1c2c@pm.me>
-	<Z8hUIPtE_9P60fAf@google.com> <Z8hmCkeZGPwc5MuU@mango>
-	<mE_To6ll96gFJQD9YKkT-mwa2KCHFCgOaZFxxczeDVJd0hr1rZCKFHD-vHQfm6deCjlUJIu4U-reNMtrwfyT7w==@protonmail.internalid>
-	<CAH5fLgjFBknTmhxQBPUdB-iNMjEkcyuLiu22-Nj-DGB1Gb7NkA@mail.gmail.com>
-	<87ldtj8p2m.fsf@kernel.org>
-	<JPqvzrz3Zy0HgwNoHh2psup7imFItiN_j_VmmjVPBfwJzf040DTvZAwUDjNv1FQiLXFiSAANIxc2IegeKGCJvA==@protonmail.internalid>
-	<CAH5fLgirYTV6K2QoH9LLwhHxJzz=h1R0jB4G2kpKQ_pBtBgePg@mail.gmail.com>
+To: "Benno Lossin" <benno.lossin@proton.me>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Alice
+ Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
+  "Danilo Krummrich" <dakr@kernel.org>,  <linux-kernel@vger.kernel.org>,
+  <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH 16/22] rust: pin-init: add `std` and `alloc` support
+ from the user-space version
+In-Reply-To: <D88FBMCD9J1Z.1SMOBNLK6G6UH@proton.me> (Benno Lossin's message of
+	"Wed, 05 Mar 2025 15:05:28 +0000")
+References: <20250304225245.2033120-1-benno.lossin@proton.me>
+	<qEIYcaF5eMmpiaRI_4rpApjyuiQMjms1LdZhmHXO5l9_HqN32upj8ZVbCnvI3hfDDTJeYT_9N7z3kyvOR-whRg==@protonmail.internalid>
+	<20250304225245.2033120-17-benno.lossin@proton.me>
+	<8734frd5v6.fsf@kernel.org>
+	<cfBHbY6fYqucI2hjDXGCsolI6TkEE4AY7gT8hW-0z0P7BvaCe6dBzLpH9IFHRl5HgrPiBo8rMKGRWlP9M7x85A==@protonmail.internalid>
+	<D88DTO6ZIXMN.26SWTE440RP9K@proton.me> <87wmd38sb2.fsf@kernel.org>
+	<M3hCr1lA6T2tY1uelvZpw6KGYb7MDZo7T4id-iMIFbo5vV2RF2qYj5iKyFC7k-GfL7YDcciSYh86eIckphVYVQ==@protonmail.internalid>
+	<D88FBMCD9J1Z.1SMOBNLK6G6UH@proton.me>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Wed, 05 Mar 2025 18:24:56 +0100
-Message-ID: <875xkn8k5z.fsf@kernel.org>
+Date: Wed, 05 Mar 2025 18:27:08 +0100
+Message-ID: <871pvb8k2b.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -58,69 +59,130 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-"Alice Ryhl" <aliceryhl@google.com> writes:
+"Benno Lossin" <benno.lossin@proton.me> writes:
 
-> On Wed, Mar 5, 2025 at 4:39=E2=80=AFPM Andreas Hindborg <a.hindborg@kerne=
-l.org> wrote:
+> On Wed Mar 5, 2025 at 3:29 PM CET, Andreas Hindborg wrote:
+>> "Benno Lossin" <benno.lossin@proton.me> writes:
+>>> On Wed Mar 5, 2025 at 1:22 PM CET, Andreas Hindborg wrote:
+>>>> "Benno Lossin" <benno.lossin@proton.me> writes:
+>>>>> To synchronize the kernel's version of pin-init with the user-space
+>>>>> version, introduce support for `std` and `alloc`. While the kernel us=
+es
+>>>>> neither, the user-space version has to support both. Thus include the
+>>>>> required `#[cfg]`s and additional code.
+>>>>>
+>>>>> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+>>>>> ---
+>>>>>  rust/pin-init/src/__internal.rs |  27 ++++++
+>>>>>  rust/pin-init/src/alloc.rs      | 158 ++++++++++++++++++++++++++++++=
+++
+>>>>>  rust/pin-init/src/lib.rs        |  17 ++--
+>>>>>  3 files changed, 196 insertions(+), 6 deletions(-)
+>>>>>  create mode 100644 rust/pin-init/src/alloc.rs
+>>>>>
+>>>>> diff --git a/rust/pin-init/src/__internal.rs b/rust/pin-init/src/__in=
+ternal.rs
+>>>>> index 74086365a18a..27d4a8619c04 100644
+>>>>> --- a/rust/pin-init/src/__internal.rs
+>>>>> +++ b/rust/pin-init/src/__internal.rs
+>>>>> @@ -186,6 +186,33 @@ pub fn init<E>(self: Pin<&mut Self>, init: impl =
+PinInit<T, E>) -> Result<Pin<&mu
+>>>>>      }
+>>>>>  }
+>>>>>
+>>>>> +#[test]
+>>>>
+>>>> I think the kunit support we have in the pipeline will pick this up?
+>>>
+>>> Is that support also enabled for crates outside of the `kernel` crate?
+>>> I would argue it shouldn't and then this isn't a problem.
 >>
->> "Alice Ryhl" <aliceryhl@google.com> writes:
->>
->> > On Wed, Mar 5, 2025 at 3:56=E2=80=AFPM Oliver Mangold <oliver.mangold@=
-pm.me> wrote:
->> >>
->> >> Hi Alice,
->> >>
->> >> On 250305 1339, Alice Ryhl wrote:
->> >> > On Wed, Mar 05, 2025 at 11:31:44AM +0000, Oliver Mangold wrote:
->> >> >
->> >> > > +impl<T: UniqueRefCounted> Deref for UniqueRef<T> {
->> >> > > +    type Target =3D T;
->> >> > > +
->> >> > > +    fn deref(&self) -> &Self::Target {
->> >> > > +        // SAFETY: The type invariants guarantee that the object=
- is valid.
->> >> > > +        unsafe { self.ptr.as_ref() }
->> >> > > +    }
->> >> > > +}
->> >> >
->> >> > What stops people from doing this?
->> >> >
->> >> > let my_unique: UniqueRef<T> =3D ...;
->> >> > let my_ref: &T =3D &*my_unique;
->> >> > let my_shared: ARef<T> =3D ARef::from(my_ref);
->> >> >
->> >> > Now it is no longer unique.
->> >> >
->> >> Oh, indeed. That's a serious problem. I see 2 options to deal with th=
-at:
->> >>
->> >> 1. remove ARef::From<&T>
->> >>
->> >> I checked the users of this, and it looks to me like there is rather
->> >> a limited number and they are easy to fix by replacing the &T with AR=
-ef<T>.
->> >> But I assume that wouldn't be welcome as it is intrusive nonetheless
->> >> and of course there is ergonomic value in having the function around.
->> >
->> > Definitely not an option. There are many users of this function that
->> > are in the process of being upstreamed. The ability to go &T ->
->> > ARef<T> is pretty fundamental for ARef.
->>
->> Not having `impl From<&T> for UniqueArc` seems to work out fine.
->>
->> It would be unfortunate if `impl From<&T> for ARef<T>` would prevent us
->> from having a unique version of `ARef`. I would say that is a valid
->> reason to consider removing that impl.
+>> Re conversation about moving pin_init out of the kernel, we should
+>> distinguish between vendored crates and crates that is part of the
+>> kernel. This one is now vendored and tests are not meant to be run by
+>> the kernel build system and infrastructure. Other crates will be
+>> different, living in the kernel.
 >
-> I think the impl is really important. It's required to do things such as:
->
-> let mm =3D ARef::from(&*current!().mm());
->
-> Without the impl (or something equivalent), it's not possible to
-> increment the refcount of the &Mm returned by `current!().mm()`. There
-> are many other examples of this.
+> Yes, but I wouldn't necessarily call this category "vendored"; e.g. we
+> could write a crate that is kernel-only, but doesn't actually have any
+> code that requires kernel infrastructure. How about we call these
+> kernel-agnostic crates? :)
 
-Right. Let's see what we can figure out of other solutions then.
+Sounds good to me =F0=9F=91=8D
+
+>
+>>>>> +fn stack_init_reuse() {
+>>>>> +    use ::std::{borrow::ToOwned, println, string::String};
+>>>>> +    use core::pin::pin;
+>>>>> +
+>>>>> +    #[derive(Debug)]
+>>>>> +    struct Foo {
+>>>>> +        a: usize,
+>>>>> +        b: String,
+>>>>> +    }
+>>>>> +    let mut slot: Pin<&mut StackInit<Foo>> =3D pin!(StackInit::unini=
+t());
+>>>>> +    let value: Result<Pin<&mut Foo>, core::convert::Infallible> =3D
+>>>>> +        slot.as_mut().init(crate::init!(Foo {
+>>>>> +            a: 42,
+>>>>> +            b: "Hello".to_owned(),
+>>>>> +        }));
+>>>>> +    let value =3D value.unwrap();
+>>>>> +    println!("{value:?}");
+>>>>> +    let value: Result<Pin<&mut Foo>, core::convert::Infallible> =3D
+>>>>> +        slot.as_mut().init(crate::init!(Foo {
+>>>>> +            a: 24,
+>>>>> +            b: "world!".to_owned(),
+>>>>> +        }));
+>>>>> +    let value =3D value.unwrap();
+>>>>> +    println!("{value:?}");
+>>>>> +}
+>>>>> +
+>>>>
+>>>> [...]
+>>>>
+>>>>> diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
+>>>>> index 55d8953620f0..1fdca35906a0 100644
+>>>>> --- a/rust/pin-init/src/lib.rs
+>>>>> +++ b/rust/pin-init/src/lib.rs
+>>>>> @@ -204,8 +204,8 @@
+>>>>>  //! [structurally pinned fields]:
+>>>>>  //!     https://doc.rust-lang.org/std/pin/index.html#pinning-is-stru=
+ctural-for-field
+>>>>>  //! [stack]: crate::stack_pin_init
+>>>>> -//! [`Arc<T>`]: ../kernel/sync/struct.Arc.html
+>>>>> -//! [`Box<T>`]: ../kernel/alloc/struct.KBox.html
+>>>>> +//! [`Arc<T>`]: https://doc.rust-lang.org/stable/alloc/sync/struct.A=
+rc.html
+>>>>> +//! [`Box<T>`]: https://doc.rust-lang.org/stable/alloc/boxed/struct.=
+Box.html
+>>>>
+>>>> Now these will render incorrect in the kernel docs, right?
+>>>
+>>> What do you mean by that? The link will resolve to the std versions of
+>>> `Arc` and `Box`. But that is also what this crate will support, as it
+>>> doesn't know about the kernel's own alloc.
+>>
+>> I mean that if I render the kernel documentation, go to `pin_init` and
+>> click the `Arc<T>` link, I end up in `std`. But I am in the kernel, so
+>> not what I would expect.
+>>
+>> But I guess there is no easy solution? Being a kernel developer, I would
+>> prefer a kernel first approach. Can't have it all, I guess.
+>
+> I could change the link depending on the `kernel` cfg, so
+>
+>     #![cfg_attr(kernel, doc =3D "[`Arc<T>`]: https://rust.docs.kernel.org=
+..")]
+>     #![cfg_attr(not(kernel), doc =3D "[`Arc<T>`]: https://doc.rust-lang.o=
+rg...")]
+>
+> But if anyone visits the documentation on `docs.rs`, then they will get
+> the user-space one... What do you think?
+
+That would be nice. I think kernel developers would read the docs via
+rust.docs.kernel.org, if they read them online (myself being my only
+reference, so not enough sample size).
 
 
 Best regards,
