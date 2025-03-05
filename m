@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6FA20C46A
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Mar 2025 23:07:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCAE120ADD5
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Mar 2025 23:07:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741216062; cv=none; b=HUSpQNXW9VI6VWqyhWUFpgr1lQMv97fa/zBf6z8lV62KCFT/rulcS+fnmeKX9PMdjWe3vjwWKAVmgnqKuJIAfrhsf+Hn6TmgCrDSaziyTicEQ8GWCgpJRDGiq/At9frZOUaEAONhEIBkM6FffIcEKk3otZBmtdnGlghr1jtbX1U=
+	t=1741216067; cv=none; b=Xn7S3lX5f22v9A/lS04/+U5JH15haoeQV3oeCaaGVtMkKaHnKQdMsGSbA9WAbTNVX7X91UPAq7lhSPrJyJFSXF+tSqFyXaU/n9GKsOADTpaRD3LdplCUELFkTkiZ2QKuKo77dCEC0MdNrcL99+OtBldxJUgIBSUoXmN0IJc+hLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741216062; c=relaxed/simple;
-	bh=RO7morsVhdWti3RNbDAHomncnUIseu+Uz+5FNxcsq+A=;
+	s=arc-20240116; t=1741216067; c=relaxed/simple;
+	bh=0ZuwPDudrCakJsAqrir16bTSWYDMXS0Di7v5Px72Guk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WmcDkESaFemVU9c7finoZqGjy0P5WthKzNfSAHdQVnj57AxB4rbRO1essLIyISgtcQXj+DeDdgHBwV+tpndOsZFlTWBvYqtzBxORw0mPbBZpA+S/LnHLzRxCQEfCu9vgGZhsd9JPXHLUHaqu4DyqJoehqDjrrQ1H4LPLMCbTodM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eYdGplTg; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=WfidF4myhnTwke0xJgiMWASmy2QG4uTtXGUOmvhpBXVbQEN0Zewf/Y4ZXLnvHu1XZHdLPHHwzJZ5uL9MHcY7OD41PJgJEUwiLEeUUmICkqxMtaFC/RBxqte6UzXg4f38KeY8Ebn7deBAaDXvOGeqlXMBoRUdaHduVtAjvY81i/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Sb9PJRn2; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eYdGplTg"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Sb9PJRn2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741216059;
+	s=mimecast20190719; t=1741216064;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=j/D4SEgwMMDnFfsGfNIexwP9lfVhLyJ7Nk/oo5mITW4=;
-	b=eYdGplTg6VVMWYu4/qadzNpfzBtnnkWh6673giK8nw4hHWhoonEEYWOlVZxnn6gqfLK8FN
-	Ich45VxPD2IaBARVEkSYU4gzmZ/l/ch+c+iJR71hnm7x5teLuqvF74ac2KESHjst3SEOG3
-	QQalCwVW9YX1go5civRLTdca3NPYEtM=
+	bh=3Sa15p0zk9/0E89lqNYU9Y3htAIogxJ6GNdp/TIXh9E=;
+	b=Sb9PJRn2kMALfjF5EwYMsqyFD3acvYL8hbiDJIkH+tLvq4uqIFPi67RKwVu7zIPiMKc4Ep
+	r1Vj65/m9WDoLt/x1LkME9CEFGa3ip57K+6AUu2lex9j+hvlSJJkTKtxdX69sbrSy8oEYF
+	HPss6faIL3vKSyXe0EipFcqS+i66qqs=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-251-oPRhXijONZ-enFPmMxsMWA-1; Wed,
- 05 Mar 2025 18:07:29 -0500
-X-MC-Unique: oPRhXijONZ-enFPmMxsMWA-1
-X-Mimecast-MFC-AGG-ID: oPRhXijONZ-enFPmMxsMWA_1741216046
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-590-gMt0t3KrPU-Esgh-380sOA-1; Wed,
+ 05 Mar 2025 18:07:36 -0500
+X-MC-Unique: gMt0t3KrPU-Esgh-380sOA-1
+X-Mimecast-MFC-AGG-ID: gMt0t3KrPU-Esgh-380sOA_1741216054
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BB960180025B;
-	Wed,  5 Mar 2025 23:07:26 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E452E18001D0;
+	Wed,  5 Mar 2025 23:07:33 +0000 (UTC)
 Received: from chopper.redhat.com (unknown [10.22.88.81])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A13EB30001A1;
-	Wed,  5 Mar 2025 23:07:22 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 802F5300019E;
+	Wed,  5 Mar 2025 23:07:30 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: dri-devel@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org
@@ -60,9 +60,9 @@ Cc: Danilo Krummrich <dakr@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Trevor Gross <tmgross@umich.edu>,
 	linux-kernel@vger.kernel.org (open list)
-Subject: [RFC v3 19/33] rust: drm/kms: Add DriverCrtc::atomic_check()
-Date: Wed,  5 Mar 2025 17:59:35 -0500
-Message-ID: <20250305230406.567126-20-lyude@redhat.com>
+Subject: [RFC v3 20/33] rust: drm/kms: Add DriverPlane::atomic_update()
+Date: Wed,  5 Mar 2025 17:59:36 -0500
+Message-ID: <20250305230406.567126-21-lyude@redhat.com>
 In-Reply-To: <20250305230406.567126-1-lyude@redhat.com>
 References: <20250305230406.567126-1-lyude@redhat.com>
 Precedence: bulk
@@ -74,122 +74,80 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-An optional trait method for implementing a CRTC's atomic state check.
-
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-
----
-V3:
-* Document uses of ManuallyDrop
+A mandatory trait method used for implementing DRM's atomic plane update
+callback.
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 ---
- rust/kernel/drm/kms/atomic.rs |  1 -
- rust/kernel/drm/kms/crtc.rs   | 55 +++++++++++++++++++++++++++++++++--
- 2 files changed, 52 insertions(+), 4 deletions(-)
+ rust/kernel/drm/kms/plane.rs | 45 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 44 insertions(+), 1 deletion(-)
 
-diff --git a/rust/kernel/drm/kms/atomic.rs b/rust/kernel/drm/kms/atomic.rs
-index 3d5c70dbc4274..e0a1b5b860d6f 100644
---- a/rust/kernel/drm/kms/atomic.rs
-+++ b/rust/kernel/drm/kms/atomic.rs
-@@ -274,7 +274,6 @@ impl<T: KmsDriver> AtomicStateComposer<T> {
-     /// # Safety
-     ///
-     /// The caller guarantees that `ptr` points to a valid instance of `drm_atomic_state`.
--    #[allow(dead_code)]
-     pub(crate) unsafe fn new(ptr: NonNull<bindings::drm_atomic_state>) -> Self {
-         // SAFETY: see `AtomicStateMutator::from_raw()`
-         Self(unsafe { AtomicStateMutator::new(ptr) })
-diff --git a/rust/kernel/drm/kms/crtc.rs b/rust/kernel/drm/kms/crtc.rs
-index 3b9c9d97fcf24..50f5b68f4a3fe 100644
---- a/rust/kernel/drm/kms/crtc.rs
-+++ b/rust/kernel/drm/kms/crtc.rs
-@@ -12,7 +12,7 @@
-     alloc::KBox,
-     bindings,
-     drm::device::Device,
--    error::to_result,
-+    error::{from_result, to_result},
-     init::Zeroable,
-     prelude::*,
-     private::Sealed,
-@@ -21,7 +21,7 @@
- use core::{
-     cell::{Cell, UnsafeCell},
-     marker::*,
--    mem,
-+    mem::{self, ManuallyDrop},
-     ops::{Deref, DerefMut},
-     ptr::{addr_of_mut, null, null_mut, NonNull},
- };
-@@ -78,7 +78,11 @@ pub trait DriverCrtc: Send + Sync + Sized {
-         helper_funcs: bindings::drm_crtc_helper_funcs {
-             atomic_disable: None,
-             atomic_enable: None,
--            atomic_check: None,
-+            atomic_check: if Self::HAS_ATOMIC_CHECK {
-+                Some(atomic_check_callback::<Self>)
+diff --git a/rust/kernel/drm/kms/plane.rs b/rust/kernel/drm/kms/plane.rs
+index 4e73c2966ca22..b090aebc35649 100644
+--- a/rust/kernel/drm/kms/plane.rs
++++ b/rust/kernel/drm/kms/plane.rs
+@@ -70,7 +70,11 @@ pub trait DriverPlane: Send + Sync + Sized {
+             begin_fb_access: None,
+             end_fb_access: None,
+             atomic_check: None,
+-            atomic_update: None,
++            atomic_update: if Self::HAS_ATOMIC_UPDATE {
++                Some(atomic_update_callback::<Self>)
 +            } else {
 +                None
 +            },
-             dpms: None,
-             commit: None,
-             prepare: None,
-@@ -113,6 +117,21 @@ pub trait DriverCrtc: Send + Sync + Sized {
+             atomic_enable: None,
+             atomic_disable: None,
+             atomic_async_check: None,
+@@ -98,6 +102,21 @@ pub trait DriverPlane: Send + Sync + Sized {
      ///
-     /// Drivers may use this to instantiate their [`DriverCrtc`] object.
-     fn new(device: &Device<Self::Driver>, args: &Self::Args) -> impl PinInit<Self, Error>;
+     /// Drivers may use this to instantiate their [`DriverPlane`] object.
+     fn new(device: &Device<Self::Driver>, args: Self::Args) -> impl PinInit<Self, Error>;
 +
-+    /// The optional [`drm_crtc_helper_funcs.atomic_check`] hook for this crtc.
++    /// The optional [`drm_plane_helper_funcs.atomic_update`] hook for this plane.
 +    ///
-+    /// Drivers may use this to customize the atomic check phase of their [`Crtc`] objects. The
-+    /// result of this function determines whether the atomic check passed or failed.
++    /// Drivers may use this to customize the atomic update phase of their [`Plane`] objects. If not
++    /// specified, this function is a no-op.
 +    ///
-+    /// [`drm_crtc_helper_funcs.atomic_check`]: srctree/include/drm/drm_modeset_helper_vtables.h
-+    fn atomic_check(
-+        _crtc: &Crtc<Self>,
-+        _old_state: &CrtcState<Self::State>,
-+        _new_state: CrtcStateMutator<'_, CrtcState<Self::State>>,
-+        _state: &AtomicStateComposer<Self::Driver>,
-+    ) -> Result {
++    /// [`drm_plane_helper_funcs.atomic_update`]: srctree/include/drm/drm_modeset_helper_vtables.h
++    fn atomic_update(
++        _plane: &Plane<Self>,
++        _new_state: PlaneStateMutator<'_, PlaneState<Self::State>>,
++        _old_state: &PlaneState<Self::State>,
++        _state: &AtomicStateMutator<Self::Driver>,
++    ) {
 +        build_error::build_error("This should not be reachable")
 +    }
  }
  
- /// The generated C vtable for a [`DriverCrtc`].
-@@ -859,3 +878,33 @@ fn vtable(&self) -> *const Self::Vtable {
-     // SAFETY: DRM takes ownership of the state from here, and will never move it
-     unsafe { bindings::__drm_atomic_helper_crtc_reset(crtc.as_raw(), KBox::into_raw(new).cast()) };
+ /// The generated C vtable for a [`DriverPlane`].
+@@ -931,3 +950,27 @@ fn <D, P>(PlaneStateMutator<'a, OpaquePlaneState<D>>) -> Self
+     // - The cast to `drm_plane_state` is safe via `PlaneState`s type invariants.
+     unsafe { bindings::__drm_atomic_helper_plane_reset(plane, KBox::into_raw(new).cast()) };
  }
 +
-+unsafe extern "C" fn atomic_check_callback<T: DriverCrtc>(
-+    crtc: *mut bindings::drm_crtc,
++unsafe extern "C" fn atomic_update_callback<T: DriverPlane>(
++    plane: *mut bindings::drm_plane,
 +    state: *mut bindings::drm_atomic_state,
-+) -> i32 {
++) {
 +    // SAFETY:
-+    // - We're guaranteed `crtc` is of type `Crtc<T>` via type invariants.
-+    // - We're guaranteed by DRM that `crtc` is pointing to a valid initialized state.
-+    let crtc = unsafe { Crtc::from_raw(crtc) };
++    // - We're guaranteed `plane` is of type `Plane<T>` via type invariants.
++    // - We're guaranteed by DRM that `plane` is pointing to a valid initialized state.
++    let plane = unsafe { Plane::from_raw(plane) };
 +
 +    // SAFETY: DRM guarantees `state` points to a valid `drm_atomic_state`
-+    // We use a ManuallyDrop here to avoid AtomicStateComposer dropping an owned reference we never
-+    // acquired.
-+    let state =
-+        unsafe { ManuallyDrop::new(AtomicStateComposer::new(NonNull::new_unchecked(state))) };
++    let state = unsafe { AtomicStateMutator::new(NonNull::new_unchecked(state)) };
 +
 +    // SAFETY: Since we are in the atomic update callback, we're guaranteed by DRM that both the old
 +    // and new atomic state are present within `state`
 +    let (old_state, new_state) = unsafe {
 +        (
-+            state.get_old_crtc_state(crtc).unwrap_unchecked(),
-+            state.get_new_crtc_state(crtc).unwrap_unchecked(),
++            state.get_old_plane_state(plane).unwrap_unchecked(),
++            state.get_new_plane_state(plane).unwrap_unchecked(),
 +        )
 +    };
 +
-+    from_result(|| {
-+        T::atomic_check(crtc, old_state, new_state, &state)?;
-+        Ok(0)
-+    })
++    T::atomic_update(plane, new_state, old_state, &state);
 +}
 -- 
 2.48.1
