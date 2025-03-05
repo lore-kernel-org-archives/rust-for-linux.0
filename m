@@ -1,66 +1,110 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64AAC25335D;
-	Wed,  5 Mar 2025 19:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827CA253F01;
+	Wed,  5 Mar 2025 20:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741204611; cv=none; b=niysNtmbcrKBrB+iuRYVQ8R6xfkWPUTGmJdbQMdFYj41SNhqJq/LIXdZwNtOZiVyOmVJSTErL00/zSNtKUeBxFxxnjnj3mpKECG5sXV+X7fYAvkB+9T7AhH0XxFN/qLQc4haLFOhF+NDsU4GyNeUQgsgQ/9VirUi1HKU9k7j5NU=
+	t=1741205404; cv=none; b=kvjs5cA6oxYWH8EbP+JOBU9wrb1nRWISjtTzb2UmCdF8ayjfTWyVlSXsPj5Z+yMkbTxe9Ls+w0IoNlj5lmpa+Y45TQqCSe7q6dTtQbkPyBZWNVdKjD/zDTTjA3+r59r8AholyVIrisR7xMQZXJMKz7sdWDW1bCCRWzW55RHpbZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741204611; c=relaxed/simple;
-	bh=tHSKWwl3ha1y5igXyzymqDuF6lQTvM1zbhu3+g/qgJU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NFN9F8rSNZzaKcadnJgim8JismdIHUe97i1uKWtpfyQefn6iVGvknXI/oZWnMhUxCfMGD5RobTX3rhZNHpyGYQP+AU4qboFSSqtuB9hJr6LELeUkNbhz/rYWoSKpOCJ/a43e9OrKZxRB4+PtQ1I3SPmIAqlCyKE2b2lSkuqeH3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tu5QG/9S; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741205404; c=relaxed/simple;
+	bh=MVQzYhdHYMH5Tuq8M5PbpZZQYMj7UeFVNdHr1ME5bo0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=abwvuYuJIrBjx4Jq62c7QY5otJ8RcUst5SjsE/TDmI22FCqZMFj4XccoS6VLUMLBdBOWwGNp2qgd4Fw5qBuwyFLnyJi4Yrpnc60FTg+Ac6nz1efeTOXAcnYBEmk1oLY1S0U5VMVVb0oUAmv9zVdxbeGC66WxfylU9yE74JXIMeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SSrkxgZh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tu5QG/9S"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22DF0C4CED1;
-	Wed,  5 Mar 2025 19:56:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SSrkxgZh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F4AC4CEE8;
+	Wed,  5 Mar 2025 20:10:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741204610;
-	bh=tHSKWwl3ha1y5igXyzymqDuF6lQTvM1zbhu3+g/qgJU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Tu5QG/9SpMYQUa8MRGPA1RC06rAh3B2yWsKvKOW6ZLAIskB5bxCBOtbALANu1yasf
-	 HYl/les0LAJ4JEmz1RjiywpgHYGSdT69S8mndOhTDZG24B5dO8+udH5OKg+3/3sqSl
-	 hen0e7YDXp8E/7WAHKQ3K9xtr3aeUrlCz2Zp0gtrmcuThe7MtC/ZxYOTMqo5kM+VB2
-	 wtls0g3r6q23U4b7/okLTDV2a9EUyJkI58qkBBXIIcI71FZeQr9D8DI9t2ua0ZbKUA
-	 Y6KBe24O6hH8uZ3nGGCUsxRs4Oe6BUoPvSeuzj4+VMWvLqiCcPoi8pWWLkT3c3Q579
-	 ZDdOqcxazc3dw==
-Date: Wed, 5 Mar 2025 20:56:42 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: gregkh@linuxfoundation.org, mcgrof@kernel.org, russ.weight@linux.dev
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	airlied@gmail.com, simona@ffwll.ch, corbet@lwn.net,
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-	tzimmermann@suse.de, ajanulgu@redhat.com, lyude@redhat.com,
-	pstanner@redhat.com, zhiw@nvidia.com, cjia@nvidia.com,
-	jhubbard@nvidia.com, bskeggs@nvidia.com, acurrid@nvidia.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, nouveau@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v5 0/5] Initial Nova Core series
-Message-ID: <Z8isev0gwQJPs7S9@cassiopeiae>
-References: <20250304173555.2496-1-dakr@kernel.org>
+	s=k20201202; t=1741205403;
+	bh=MVQzYhdHYMH5Tuq8M5PbpZZQYMj7UeFVNdHr1ME5bo0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=SSrkxgZhKdVo4V+cb3FZtsIc/LAHvZkDRhMI+tRGyqs9pk5VNVcFNCNj5VilzgWG1
+	 NzXYoG/FxyB5p0benZfrCbfIJeW6GDxMdYijUVIxDx3zi+vqqzF+SUhpEvBP4O6mna
+	 eDlzwB/f0Ohq8hgspy55b1oIHIF5mPQo+XI3hCubBIBCNAXtdOCeHIrWEWC/ZPp7mG
+	 85SfmsYZeH9G667pi1/NzpIEpF1DqRjMKDw/fOCwmHZQob+f1wT3AyJmm4+u75mcss
+	 gEEDGtD5tc42CGe9CULSW/dZ/okawOK1NluQ1QLrhwNcSM/zf2AXfsgbPsk0wLzKFH
+	 UuDlbpF8CMjHg==
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5e535e6739bso6749793a12.1;
+        Wed, 05 Mar 2025 12:10:03 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCX9gCvMBWx7s2UK60dtIL7qOtHcK9/gSTgiq5oANAVbxyN3lcb0P5nyqjfO5WzIqKP+4OVZga/CSbsi5xUVEPM=@vger.kernel.org, AJvYcCXOzn4LOyGxnHibSZNgM9UIKPMsR8CPL45KvKYg9OVHUedoOOYqh4C+fwz1OcJFaBAnHh4fvyJUSmA=@vger.kernel.org, AJvYcCXXP0rqYthMdFPNfQDcK0UwlOOZTR3L5W1ZTMC10rfqs7Isj8Uj42icw7wlrIt1DYyvGspZaV7RUzZm6CgQ@vger.kernel.org
+X-Gm-Message-State: AOJu0YzKp/fM125ZA41YtZg0hLSv34Z3yoRvyw/sfZL9D3AlvjoJhzLN
+	rHlbaS/6vktqhOUiSFiRGK3P3aq78ZHjx+76tVVpnVQbPc0SpYAbPCSB5GvqT47D1BMR2xorViZ
+	haJcjsg77hw6krDNbaBwLdprzCg==
+X-Google-Smtp-Source: AGHT+IE8JkbPtgQEvGcdwu3Oy8kHLnR4vi/qv5XyO2NhqlaLAfUlUjiafyfzsW3zJtBF0d5vjuOf+dRYq75NjTCrqUY=
+X-Received: by 2002:a05:6402:42cb:b0:5de:4b81:d3fd with SMTP id
+ 4fb4d7f45d1cf-5e59f38a96fmr5092348a12.13.1741205402341; Wed, 05 Mar 2025
+ 12:10:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250304173555.2496-1-dakr@kernel.org>
+References: <cover.1740118863.git.viresh.kumar@linaro.org> <a0a1ba4e27c3a0d9e38c677611eb88027e463287.1740118863.git.viresh.kumar@linaro.org>
+ <Z7iGHiQcqa-_AXli@pollux> <4AD8A8F3-EA7E-4FBE-9F0D-58CF7BB09ED5@collabora.com>
+ <Z7iSHR0F2QpiNpMZ@pollux> <aoprvojsnmkbzmmpgx5wxjqtamnr3jyhyqfcqnwhxulp34gn32@aau57u4cotpe>
+ <20250221215931.GA134397-robh@kernel.org> <20250224095945.xjcjwkoqlgcsd2np@vireshk-i7>
+In-Reply-To: <20250224095945.xjcjwkoqlgcsd2np@vireshk-i7>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 5 Mar 2025 14:09:51 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJFeb66pt37wsTB7esCpRD1tpvqP1bvW=Nw8MmP5LvktQ@mail.gmail.com>
+X-Gm-Features: AQ5f1JqvsOjM_L6JzavnVJyGd40bKnZ6_QrvavlB-hVTsrLbruc9kIjQqNkfbcw
+Message-ID: <CAL_JsqJFeb66pt37wsTB7esCpRD1tpvqP1bvW=Nw8MmP5LvktQ@mail.gmail.com>
+Subject: Re: [PATCH V2 2/2] rust: Add basic bindings for clk APIs
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Sebastian Reichel <sebastian.reichel@collabora.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Russell King <linux@armlinux.org.uk>, linux-clk@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 04, 2025 at 06:34:47PM +0100, Danilo Krummrich wrote:
-> Danilo Krummrich (5):
->   rust: module: add type `LocalModule`
->   rust: firmware: introduce `firmware::ModInfoBuilder`
->   rust: firmware: add `module_firmware!` macro
+On Mon, Feb 24, 2025 at 4:00=E2=80=AFAM Viresh Kumar <viresh.kumar@linaro.o=
+rg> wrote:
+>
+> On 21-02-25, 15:59, Rob Herring wrote:
+> > It would be nice to handle the optional case from the start. Otherwise,
+> > driver writers handle optional or not optional themselves. The not
+> > optional case is typically some form of error message duplicated in
+> > every driver.
+> >
+> > Every foo_get() needs foo_get_optional(), so let's figure out the rust
+> > way to handle this once for everyone.
+>
+> Are we talking about adding another field here (like below code) or
+> something else ?
 
-Greg, Luis, Russ, any objections on me taking the two firmware patches through
-the nova tree?
+Either way, but generally I think 2 functions are preferred over 1
+function and flags.
 
->   gpu: nova-core: add initial driver stub
->   gpu: nova-core: add initial documentation
+The harder part here is in C we just return NULL and all subsequent
+functions (e.g. clk_enable()) just return with no error for a NULL
+struct clk. For rust, I think we'd need a dummy Clk returned and then
+handle comparing the passed in reference to the dummy Clk in the rust
+bindings.
+
+>
+> impl Clk {
+>         pub fn get(dev: &Device, name: Option<&CStr>, optional: bool) -> =
+Result<Self> {
+>                 ...
+>
+>                 let clk =3D if optional {
+>                         bindings::clk_get(dev.as_raw(), con_id)
+>                 else {
+>                         bindings::clk_get_optional(dev.as_raw(), con_id)
+>                 };
+>
+>                 Ok(Self(from_err_ptr(clk)?))
+>         }
+> }
+>
+> --
+> viresh
