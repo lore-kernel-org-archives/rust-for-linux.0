@@ -1,213 +1,280 @@
-Received: from mail-10629.protonmail.ch (mail-10629.protonmail.ch [79.135.106.29])
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2058.outbound.protection.outlook.com [40.107.92.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7FC24E4C4
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Mar 2025 15:05:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.29
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741187138; cv=none; b=GOSnRgvSDXJMXLb+ZTmBGR6/MtJRXfDtYw33kDnwBZEqRw6KvEEKR9DMqPWKhwFCAa2m83jK4nKoM2DJvbg6xstYYmnJ8fDdJgyPcD+n2Vz/0/crnH5ckO0CFmY45I2jINQyJTXJ9SQunMaJ+jlNd/HClWw8/oU1FFRCvV9/sng=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741187138; c=relaxed/simple;
-	bh=8RvW8PLSR9hlKJzKdN6TL1CqNsKjMatfYVskUYC14Z4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dF2g6G6+NHcPS54ilZeTwXnnGVU5zBFHn9Mmvgr4/bQNn3U2IXJSPlLEIBH6A52SVUEyKOhSAOh7xLEfSw4UgB6odBCBJNoCQAMyHVyiGNHOnMzmZcw3l2LqyETiMhu2FR88SFxBgFV2ESJkMjlhIaY7ImKD3Sj3AxrmsTQFjoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=YA14R8F1; arc=none smtp.client-ip=79.135.106.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27DE524887F;
+	Wed,  5 Mar 2025 15:10:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.58
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741187419; cv=fail; b=QfN8Aw/FKzLHpT4J2j1DIv3x2lCAlRnjVTROGrGsTdAalqpUvF73RNZIlHCgY2t4FFZ/Q3TqYeDvjS7smyFswR821MoSCPgMUa7hiWor3Po52flGQ8a+VHRikQkmxV/MhlrTQzpHcwzFCSyIQ8DNgdYyrv0R2EbKvhkDtX4zlH0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741187419; c=relaxed/simple;
+	bh=O0Upk5hTTK776s5STflpHnleifTlO83MKuYg3RF6drs=;
+	h=Date:From:To:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=lYQ1HFPHhK2VV6AT2Fzw5z9ef9TGzB8J2o8RkQEatXph/CBYhvqKEh3ZCx02uwjU+o+OQ/OkJGChMuWbkNH6eag6wECoXhVsjNLzYINHeS5qFxfFOnPQhEcdgJD6NmZflWuFQ7nmgQS9CkpMAH19M6wEqdoKOM7OLAyMZ/LDHxc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=sK7Blawe; arc=fail smtp.client-ip=40.107.92.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="YA14R8F1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1741187132; x=1741446332;
-	bh=fJj90wwgiBZuVeTeFzRJ0Mi4XzEcPosSwZ3Yr3bpaWA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=YA14R8F1J9MEFzelKBDYrO/sA0S35YwKvS7JMBVBn7njG/tUhnOpw4dKlYmdmmlcR
-	 rHDbqYMkLiil5zqB4SckpgF2ppSuPV9Y5H7d9zuKnie8u/L1srffKyzpPuv56ZzkBZ
-	 EKPTezlL7xSDy6vVcjBb9ERD48C1sOwgrGk39vbhJqxIv8Og2Lr+bdoYt7Wsj6YVGi
-	 Ixm2lvTnbZ/6xST1TnXuNyLh2O/rwXVw4x6wTMnRuVlYUiyvVW+gnXDmW+5KTAYu63
-	 DFKAJii/4cKNKsxI4+0aLrVWldaaA70fUW2MIp+vGCfhn8bUPCNnvwyxaZucLL7yPR
-	 48R90JWfgiOLA==
-Date: Wed, 05 Mar 2025 15:05:28 +0000
-To: Andreas Hindborg <a.hindborg@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 16/22] rust: pin-init: add `std` and `alloc` support from the user-space version
-Message-ID: <D88FBMCD9J1Z.1SMOBNLK6G6UH@proton.me>
-In-Reply-To: <87wmd38sb2.fsf@kernel.org>
-References: <20250304225245.2033120-1-benno.lossin@proton.me> <qEIYcaF5eMmpiaRI_4rpApjyuiQMjms1LdZhmHXO5l9_HqN32upj8ZVbCnvI3hfDDTJeYT_9N7z3kyvOR-whRg==@protonmail.internalid> <20250304225245.2033120-17-benno.lossin@proton.me> <8734frd5v6.fsf@kernel.org> <cfBHbY6fYqucI2hjDXGCsolI6TkEE4AY7gT8hW-0z0P7BvaCe6dBzLpH9IFHRl5HgrPiBo8rMKGRWlP9M7x85A==@protonmail.internalid> <D88DTO6ZIXMN.26SWTE440RP9K@proton.me> <87wmd38sb2.fsf@kernel.org>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: d91415b88143040a76c6f62f0c173e5d7bd54616
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="sK7Blawe"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Wt9nSFW1ufA5/TjwV5sOpe6Ccc3fJreJWsYpeaF/wLYfTTNsEWiE9e2ueDhjE7zOmcnlK9gT02VGftFIgoaj7box512I/Crg4wehxZ7mInDh13qJtRz6+RIqBZvRufHFyq9pHypf+ArbAbXxQ3L9ni86L1rP82p4GsbrEQfVRM8Wf2Xcb6HVwGkHP6dAP9EM/5bwYlREinsmHxqP7TIZjnVOGkbuY3Cmsf4Vr3IX5I0yR8Hj6n5U209pe795PPJlfkvOMxHO7iBr729fen09c2Q9SewQ+2GBIsI0/GHOTQhin9P/buTQb6MDZ7y+NhO2rx9GjcpTOj6i1rDYYf2BQw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Uuc3R1xDV6o7MXN0f/LPbSZWWEUlbYuYo23+ZxdeM8I=;
+ b=sl3Vfy+MMtWHiqOj8m3hJDqwPOmUAZWZig+A5SrB4jRAdZyeESfb/dL2Nx28vC/UxIqwKFUl+ZasuNmgdR2YkdCu7N+GLqL+4YZBSMk0BYete8f5RLoH+JzAgLXDLN7MJAQFVdu00aPiPZJdWtzxErVatG8QkHqcpBxf9BP0d8unJX3XVR6dXdIjg8LLgUtPB39dQdEQCiw8vTWjJAo/g2T3QoNX6w16lC+//wvimnmNEsJisrQF6G3dJPoGfV10sfQ6jSERplpFrYwvgUONJJ448LBHmybVTnHINJEKm7anvmBolqKYJa8FOy1afZWID1wPuRK9DurRX0ltREs7kg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Uuc3R1xDV6o7MXN0f/LPbSZWWEUlbYuYo23+ZxdeM8I=;
+ b=sK7Blawex/x5adCpYcbtTRfsNfnLsMhBZ5nR3moS6D85XsJ0nymMpYQt+XeSmn+sWARS7M76pRTAfv7gb+8zwYoj1+sZm89zFgdzgCx98YN2mla6hdfhVtdSXuQMTHKZCkr2pCsdqTsqXzK0Z5jm65gA0VtspKhsKeGL6Tuzi9/+KlspXQeo/Wi4466czk1hWpooRb8p283N0eN0rVQGNc63lLOZqWv/LY7jX/NDDgtNKiJNUxAuYMiTnKO8ERAXf1iJuyFswQcVnZ2TtNgrqqGO0wJyAKCv/IwzDCMofEqf3v4ChsuvN4aYW0Fwif1tYGA/l5sKLZaHXGs1XWGTNQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by MN2PR12MB4343.namprd12.prod.outlook.com (2603:10b6:208:26f::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.16; Wed, 5 Mar
+ 2025 15:10:14 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.8511.017; Wed, 5 Mar 2025
+ 15:10:14 +0000
+Date: Wed, 5 Mar 2025 11:10:12 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: John Hubbard <jhubbard@nvidia.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Ben Skeggs <bskeggs@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	paulmck@kernel.org
+Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
+ implementation
+Message-ID: <20250305151012.GW133783@nvidia.com>
+References: <20250226172120.GD28425@nvidia.com>
+ <Z7-IHgcVVS8XBurW@cassiopeiae>
+ <20250226234730.GC39591@nvidia.com>
+ <2025022644-fleshed-petite-a944@gregkh>
+ <D82UB3V6NZ55.3OEPPW2W8MFZV@nvidia.com>
+ <Z8GViQzZJVFPxfNd@phenom.ffwll.local>
+ <20250228184013.GF39591@nvidia.com>
+ <Z8cmBWB8rl97-zSG@phenom.ffwll.local>
+ <20250304164201.GN133783@nvidia.com>
+ <Z8f9mgD4LUJN_dWw@phenom.ffwll.local>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z8f9mgD4LUJN_dWw@phenom.ffwll.local>
+X-ClientProxiedBy: YQXPR0101CA0069.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c00:14::46) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|MN2PR12MB4343:EE_
+X-MS-Office365-Filtering-Correlation-Id: cb65485c-0971-486f-646d-08dd5bf7d49a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ahRNdYd8awZmJg69Vq17X7oz3/Z+vYAqfNRHZEUQzZ/ZBroX2oHEzboKJP6Q?=
+ =?us-ascii?Q?w3mj3pNf1+8JyjYmZXRe3qFP1pzxPAkeWmumDG0jJymlj4TVFwx/nJaUaMjb?=
+ =?us-ascii?Q?CsQyQFlMnv/+ZsT0ipS8f0qD9w3/C33Jx9X+0sfsPFW+6MRkIogBHxVsx1Nd?=
+ =?us-ascii?Q?hZaBq6TVXogSFZDMQrvIrxWy80CIkfxUlEJYLhuxxNbMWjtn0JjfSLnqLDnK?=
+ =?us-ascii?Q?Or1U9L5xZx/tBlh9ukBnCV0mM8/sWVv5LWFm1FbiOCh+ixSAiM0oUouhq94p?=
+ =?us-ascii?Q?VUbqhm017zvJ5N/uhMvaxCRvIJnxQlaC+/C6ILhYwWVZn9WAJcI8dQ3b4izp?=
+ =?us-ascii?Q?yKfoaEXcuqwnq0tB37/U3VB6iAfwtOYwTmgOmbPJD5lw1Yk43hvGYE3uWHTu?=
+ =?us-ascii?Q?dR3TyPqoUJHUYDKTod1yqMEkBXTWgar4h2N8T8XGniVZ0zbjY/YS2XZMBO/v?=
+ =?us-ascii?Q?JTV7JFdW7L03zt8xqeyhUpNI1iEXZJ7gqR0TI/hRSy5buU1XHLiPtvfpp0U7?=
+ =?us-ascii?Q?ws//6+CCa4FBEgwL2g1ZAvjmInou1ZoLdpmPLUhJEpBHwdT1GQJzHo4I2aun?=
+ =?us-ascii?Q?tf35np9QkNC/Nts/JaYLAKeEp6JbS4JQwcpjgl6OBprxF2Wwyf9MAAfwRhhS?=
+ =?us-ascii?Q?1gOqTPmqQO57Y6DNOoHyuOwFT2/7EfV2fZBiO+/DQ5D6cUU6dW1gDqC3Chav?=
+ =?us-ascii?Q?zHygwE7Tpm0f6vKt0NsPt+3jqvUCvRvU5PJjlyJ13n/F6N5s7LYn66dkvzDL?=
+ =?us-ascii?Q?c2mAnH+JddclcwyY2w7K0uPPZW3YffP8YSzd+N5NRTOONmsLJ5q+VVGO9rCY?=
+ =?us-ascii?Q?Xq91w4EcSv3EdskLI6rtSBeoqbDBalozoXpzEm47YApFvEQRxSnRauqQbWAv?=
+ =?us-ascii?Q?9TOkwYpc/Ob+ZktViSXTTePCeYU9oP/vDO3ZaoeDU1tfbW/Rn99FvfXRiI7u?=
+ =?us-ascii?Q?gRWoGU137y0Gh2rO6CHwUazzf2C6X17FQST2eMIwD8PiBzy7bW1Tw+G7LV/H?=
+ =?us-ascii?Q?A5+/Hyif8ypm0gGaX4FLfZxuZAwNIyee06Gi75OftIgHEjUzh61ycolbt/5w?=
+ =?us-ascii?Q?JfkPdb2wc2USkZVf+lmZOUUSAFhTgEr0Vrb6L+JKchpQJIgo1QKvjpaHVsJA?=
+ =?us-ascii?Q?ZR+DWEm1m8troVOFCiyYW0kSwIX0cDoIYXtAWgxSCridCzwVHHIyFgGMpVws?=
+ =?us-ascii?Q?p21U2YX1m8Zada70/ptV2MO49vIyVC1/pDjt1qr49XoM7KzHiwyzdYi9Dxyp?=
+ =?us-ascii?Q?U2k5nSmEFwExJVWd6hDSMTD1uDHXeZqCMXL/f0B5YZXlaBOsbsMW+ILbAVhS?=
+ =?us-ascii?Q?Gr+7DN7z7tQANk2E7BnXYWkzh7COinTj4o0OofjZ9S+2X4M9VkU7lkN/l0I1?=
+ =?us-ascii?Q?ae+O7bW89tzrilJTgCvJHN51WKTPW+sk79DOv86W0WwhQL/yQBFoQKeK1+3Y?=
+ =?us-ascii?Q?9VKr1SNKaXI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?mjK/Mhrz08OmyAGVKSUtLGUwBWpaCI75jb2UEI42vZdGOYV2E8t5QNmAEqo1?=
+ =?us-ascii?Q?6jIRxyAHbSXqYjBQZrIhIIpVv3U5r9bTouVVNAx7/3oT7NmyRzdr7byNzDYJ?=
+ =?us-ascii?Q?agesa3u14WQgMyjqOnGyYy6kvTqoksyNSFATzfXRYyOPmFSppGyPGmw+kKy1?=
+ =?us-ascii?Q?/8qBmPME8Szusvr+CntETAc7AuNfJmaL8xNmYhrNO9C4bgMs+4aDdMq3dXWC?=
+ =?us-ascii?Q?z34mY2knCVH6fabHdBFOfoX6Tt6cuJuOX0HkHI7H1z+Vww0IsZ+vvck4ZXcQ?=
+ =?us-ascii?Q?NQZHOYnv2VQukTHHkg1kOpD/UnCHr//Wd3Yf/g2BpRysEV1Y0UTmVvRD/S0b?=
+ =?us-ascii?Q?GPjiSc/xraBrv1WZ0041SCEPv5jI6yNy8vHBZjFDvlpg9gOYxUj5SVUCbL5e?=
+ =?us-ascii?Q?9Fk6dpNRZvaX/P6X3GHPKvR8M+BbTf9v+T6ZvSJBfY3UaV/DYOzMEJF/ACo6?=
+ =?us-ascii?Q?fCcs7OPOX76rHK2cmJ1mYhM2aseVgKM4jSCb+HhHBRhaxXrdd+J7O+cRL0QI?=
+ =?us-ascii?Q?YD1eqSM52C35XpG8aVl/fqB1SyVZkSocOlG1i0P6skMi/1xi/6UK/j0gCyW3?=
+ =?us-ascii?Q?50T1zNaTMD3U/R3qUsiiDxSbny6Mo8LUasr+l57kN1JqIQIL/5Qnu95cNLTi?=
+ =?us-ascii?Q?Cl8PUbV6CnRM032ol6oDiFkmlykynemfWYQ26g5afQEePj4WyNpvQXpCS/fE?=
+ =?us-ascii?Q?C4Zj+JQXdlJ2GQk5VFX5xWYiY0q3GWFRDONGf+d3PntRV8bOrptN1oBFqfUJ?=
+ =?us-ascii?Q?mkt02pSP+fKbBQuBKLkN0rNp/IEU8YwEmRv02YikVVT2tAx09GKz0ZhN5sZO?=
+ =?us-ascii?Q?vWCZ3AikLSjlKAXzVXYQla2vqWnfMitmjYsmlYGiN468jgji2OcPAkL4/KCT?=
+ =?us-ascii?Q?kcAD9pjs2VHvqCPYQDLxZHoindiFyUBjhuE+x/l2rqCWibpnZ6wz2uWp0KDc?=
+ =?us-ascii?Q?t2kYBq9tqSV3i0tKJr3Y0Pxed+N1o+NTACeVgxlhsGjLiiM25wGJyFYXFGqK?=
+ =?us-ascii?Q?df6H+5zUmXwq2fizC/SyS/UWGX1J6PkUD9EwkPkWkqXGvBROLSMY7bckDuRU?=
+ =?us-ascii?Q?aIwQ/YjH+UXJd0O3fRIeCDwosS13/Lu3dD21BgCE/jCys9LnubSGONftxCBM?=
+ =?us-ascii?Q?GZDmwGoyicPCWXks2viTDTBTA4nn3Sz3PP1jF9zym+ekEMoAPQ0TXLtrv2Ze?=
+ =?us-ascii?Q?ok7ljERg8VVnSYMOsPVT7ElLSSVK1lffHC8IkCccLt1R16BWhJrIpHzFp1Vk?=
+ =?us-ascii?Q?ywNVkXVF5JQoz0g0HuLsNjfp2wnlOhIoYmSlgXUwu3d4jGH8O7Q01HeYLbkK?=
+ =?us-ascii?Q?dNf7iKE0D01TV5/hYVKJrKgZYMbbRfdp3YglHRLB+M4RRuH8pWF8GfyvSCAw?=
+ =?us-ascii?Q?olj7RmfYgoMtze9vT9xN+RAkti9zB+k03NiHApFQvoPyQ6yotkVVjyjhaQe+?=
+ =?us-ascii?Q?WuAb2oo2fd301I0duAgjVjCGOetLZZhzD8bVPvrnI9f3RmyYgGaYVSOssg9r?=
+ =?us-ascii?Q?MFJ0IyrtBwD8qqbiRWElinjkM3XfnMNLYddzhTI38wrBBtysmqiV9xWVbhlp?=
+ =?us-ascii?Q?VVbOtuKJNbP4fXb0M8m+/cswkmXKuGkMPcYNjLWp?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cb65485c-0971-486f-646d-08dd5bf7d49a
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2025 15:10:14.1257
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mKfjhoatsVHTPOxtxG7pPT9iUQ35+7Y6UTALpHP1ym1oCIChaTlgnHttf2h4JGxL
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4343
 
-On Wed Mar 5, 2025 at 3:29 PM CET, Andreas Hindborg wrote:
-> "Benno Lossin" <benno.lossin@proton.me> writes:
->> On Wed Mar 5, 2025 at 1:22 PM CET, Andreas Hindborg wrote:
->>> "Benno Lossin" <benno.lossin@proton.me> writes:
->>>> To synchronize the kernel's version of pin-init with the user-space
->>>> version, introduce support for `std` and `alloc`. While the kernel use=
-s
->>>> neither, the user-space version has to support both. Thus include the
->>>> required `#[cfg]`s and additional code.
->>>>
->>>> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
->>>> ---
->>>>  rust/pin-init/src/__internal.rs |  27 ++++++
->>>>  rust/pin-init/src/alloc.rs      | 158 +++++++++++++++++++++++++++++++=
-+
->>>>  rust/pin-init/src/lib.rs        |  17 ++--
->>>>  3 files changed, 196 insertions(+), 6 deletions(-)
->>>>  create mode 100644 rust/pin-init/src/alloc.rs
->>>>
->>>> diff --git a/rust/pin-init/src/__internal.rs b/rust/pin-init/src/__int=
-ernal.rs
->>>> index 74086365a18a..27d4a8619c04 100644
->>>> --- a/rust/pin-init/src/__internal.rs
->>>> +++ b/rust/pin-init/src/__internal.rs
->>>> @@ -186,6 +186,33 @@ pub fn init<E>(self: Pin<&mut Self>, init: impl P=
-inInit<T, E>) -> Result<Pin<&mu
->>>>      }
->>>>  }
->>>>
->>>> +#[test]
->>>
->>> I think the kunit support we have in the pipeline will pick this up?
->>
->> Is that support also enabled for crates outside of the `kernel` crate?
->> I would argue it shouldn't and then this isn't a problem.
->
-> Re conversation about moving pin_init out of the kernel, we should
-> distinguish between vendored crates and crates that is part of the
-> kernel. This one is now vendored and tests are not meant to be run by
-> the kernel build system and infrastructure. Other crates will be
-> different, living in the kernel.
+On Wed, Mar 05, 2025 at 08:30:34AM +0100, Simona Vetter wrote:
+> - developers who want to quickly test new driver versions without full
+>   reboot. They're often preferring convenience over correctness, like with
+>   the removal of module refcounting that's strictly needed but means they
+>   first have to unbind drivers in sysfs before they can unload the driver.
+> 
+>   Another one is that this use-case prefers that the hw is cleanly shut
+>   down, so that you can actually load the new driver from a well-known
+>   state. And it's entirely ok if this all fails occasionally, it's just
+>   for development and testing.
 
-Yes, but I wouldn't necessarily call this category "vendored"; e.g. we
-could write a crate that is kernel-only, but doesn't actually have any
-code that requires kernel infrastructure. How about we call these
-kernel-agnostic crates? :)
+I've never catered to this because if you do this one:
 
->>>> +fn stack_init_reuse() {
->>>> +    use ::std::{borrow::ToOwned, println, string::String};
->>>> +    use core::pin::pin;
->>>> +
->>>> +    #[derive(Debug)]
->>>> +    struct Foo {
->>>> +        a: usize,
->>>> +        b: String,
->>>> +    }
->>>> +    let mut slot: Pin<&mut StackInit<Foo>> =3D pin!(StackInit::uninit=
-());
->>>> +    let value: Result<Pin<&mut Foo>, core::convert::Infallible> =3D
->>>> +        slot.as_mut().init(crate::init!(Foo {
->>>> +            a: 42,
->>>> +            b: "Hello".to_owned(),
->>>> +        }));
->>>> +    let value =3D value.unwrap();
->>>> +    println!("{value:?}");
->>>> +    let value: Result<Pin<&mut Foo>, core::convert::Infallible> =3D
->>>> +        slot.as_mut().init(crate::init!(Foo {
->>>> +            a: 24,
->>>> +            b: "world!".to_owned(),
->>>> +        }));
->>>> +    let value =3D value.unwrap();
->>>> +    println!("{value:?}");
->>>> +}
->>>> +
->>>
->>> [...]
->>>
->>>> diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
->>>> index 55d8953620f0..1fdca35906a0 100644
->>>> --- a/rust/pin-init/src/lib.rs
->>>> +++ b/rust/pin-init/src/lib.rs
->>>> @@ -204,8 +204,8 @@
->>>>  //! [structurally pinned fields]:
->>>>  //!     https://doc.rust-lang.org/std/pin/index.html#pinning-is-struc=
-tural-for-field
->>>>  //! [stack]: crate::stack_pin_init
->>>> -//! [`Arc<T>`]: ../kernel/sync/struct.Arc.html
->>>> -//! [`Box<T>`]: ../kernel/alloc/struct.KBox.html
->>>> +//! [`Arc<T>`]: https://doc.rust-lang.org/stable/alloc/sync/struct.Ar=
-c.html
->>>> +//! [`Box<T>`]: https://doc.rust-lang.org/stable/alloc/boxed/struct.B=
-ox.html
->>>
->>> Now these will render incorrect in the kernel docs, right?
->>
->> What do you mean by that? The link will resolve to the std versions of
->> `Arc` and `Box`. But that is also what this crate will support, as it
->> doesn't know about the kernel's own alloc.
->
-> I mean that if I render the kernel documentation, go to `pin_init` and
-> click the `Arc<T>` link, I end up in `std`. But I am in the kernel, so
-> not what I would expect.
->
-> But I guess there is no easy solution? Being a kernel developer, I would
-> prefer a kernel first approach. Can't have it all, I guess.
+> - hotunplug as an actual use-case. Bugs are not ok. The hw can go away at
+>   any moment. And it might happen while you're holding console_lock. You
+>   generally do not remove the actual module here, which is why for the
+>   actual production use-case getting that part right isn't really
+>   required. But getting the lifetimes of all the various
+>   structs/objects/resources perfectly right is required.
 
-I could change the link depending on the `kernel` cfg, so
+Fully and properly then developers are happy too..
 
-    #![cfg_attr(kernel, doc =3D "[`Arc<T>`]: https://rust.docs.kernel.org..=
-.")]
-    #![cfg_attr(not(kernel), doc =3D "[`Arc<T>`]: https://doc.rust-lang.org=
-...")]
+And we were always able to do this one..
 
-But if anyone visits the documentation on `docs.rs`, then they will get
-the user-space one... What do you think?
+> So the "stuck on console_lock" is the 2nd case, not the first. Module
+> unload doesn't even come into play on that one.
 
->>>>  //! [`impl PinInit<Foo>`]: PinInit
->>>>  //! [`impl PinInit<T, E>`]: PinInit
->>>>  //! [`impl Init<T, E>`]: Init
->>>> @@ -239,6 +239,11 @@
->>>>  #[doc(hidden)]
->>>>  pub mod macros;
->>>>
->>>> +#[cfg(any(feature =3D "std", feature =3D "alloc"))]
->>>> +mod alloc;
->>>> +#[cfg(any(feature =3D "std", feature =3D "alloc"))]
->>>> +pub use alloc::InPlaceInit;
->>>
->>> Do we really need to have this entire file sitting dead in the kernel
->>> tree? If you are not building the user space version from the kernel
->>> sources, I don't think we need it here. Even when you want to sync
->>> between the two repositories, it should be easy to handle an entire fil=
-e
->>> being not present on one side.
->>
->> I do have a script that does the commit porting, you can find it at [1].
->> So I could easily add that file there. However, I think it also is
->> important that it's easy to remember which files are synchronized and
->> which files aren't. At the moment it's very simple, the synchronized
->> files are:
->> - README.md
->> - CONTRIBUTING.md
->> - src/*
->> - internal/src/*
->> - examples/*
->>
->> If I introduce special cases for files in src, I fear that I might get
->> confused at some point, making a change that shouldn't be done etc.
->>
->> I understand your worry about the dead file, but at the same time, I
->> think it's vital to keep the pattern of synchronized files as simple as
->> possible.
->
-> I don't agree about this one - but I am not the one that has to do the
-> work. I would prefer we don't keep dead user space code in the kernel
-> tree, and I would ask that you consider if you can find a solution for
-> that which works for you. If not, I will live with the dead code.
+I don't see reliable hot unplug if the driver can get stuck on a
+lock :|
 
-I will see if I can come up with a solution.
+> > Assuming all your interrupt triggered sleeps have gained a shootdown
+> > mechanism.
+> 
+> Hence why I want revocable to only be rcu, not srcu.
 
----
-Cheers,
-Benno
+Sorry, I was not clear. You also have to make the PCI interrupt(s)
+revocable. Just like the MMIO it cannot leak past the remove() as a
+matter of driver-model correctness.
 
+So, you end up disabling the interrupt while the driver is still
+running and any sleeps in the driver that are waiting for an interrupt
+still need to be shot down.
+
+Further, I just remembered, (Danilo please notice!) there is another
+related issue here that DMA mappings *may not* outlive remove()
+either. netdev had a bug related to this recently and it was all
+agreed that it is not allowed. The kernel can crash in a couple of
+different ways if you try to do this.
+
+https://lore.kernel.org/lkml/8067f204-1380-4d37-8ffd-007fc6f26738@kernel.org/T/#m0c7dda0fb5981240879c5ca489176987d688844c
+
+ > a device with no driver bound should not be passed to the DMA API,
+ > much less a dead device that's already been removed from its parent
+ > bus.
+
+So now we have a driver design that must have:
+ 1) Revocable MMIO
+ 2) Revocable Interrupts
+ 3) Revocable DMA mappings
+ 4) Revocable HW DMA - the HW MUST stop doing DMA before the DMA API
+    is shut down. Failure is a correctness/UAF/security issue
+
+Somehow the driver has to implement this, not get confused or lock up,
+all while Rust doesn't help you guarentee much of any of the important
+properties related to #2/#3/#4. And worse all this manual recvocable
+stuff is special and unique to hot-unplug. So it will all be untested
+and broken.
+
+Looks really hard to me. *Especially* the wild DMA thing.
+
+This has clearly been missed here as with the current suggestion to
+just revoke MMIO means the driver can't actually go out and shutdown
+it's HW DMA after-the-fact since the MMIO is gone. Thus you are pretty
+much guaranteed to fail #4, by design, which is a serious issue.
+
+I'm sorry it has taken so many emails to reach this, I did know it,
+but didn't put the pieces coherently together till just now :\
+
+Compare that to how RDMA works, where we do a DMA shutdown by
+destroying all the objects just the same as if the user closed a
+FD. The normal destruction paths fence the HW DMA and we end up in
+remove with cleanly shutdown HW and no DMA API open. The core code
+manages all of this. Simple, correct, no buggy hotplug only paths.
+
+> Yeah agreed. I might really badly regret this all. But I'm not sold that
+> switching to message passing design is really going to be better, while
+> it's definitely going to be a huge amount of work.
+
+Yeah, I'd think from where DRM is now continuing trying to address the
+sleeps is more tractable and achievable than a message passing
+redesign..
+
+> > If the C API handles module refcounting internally then rust is fine
+> > so long as it enforces THIS_MODULE.
+> 
+> You could do contrived stuff and pass function pointers around, so that
+> THIS_MODULE doesn't actually match up with the function pointer.
+
+Ah.. I guess rust would have to validate the function pointers and the
+THIS_MODULE are consistent at runtime time before handing them off to
+C to prevent this. Seems like a reasonable thing to put under some
+CONFIG_DEBUG, also seems a bit hard to implement perhaps..
+
+> > If the C API requires cancel then rust is fine so long as the binding
+> > guarantees cancel before module unload.
+> 
+> Yeah this is again where I think rust needs a bit more, because the
+> compiler can't always nicely proof this for you in all the "obvious"
+> cases.
+
+But in the discussion about the hrtimer it was asserted that Rust can :)
+
+I believe it could be, so long as rust bindings are pretty restricted
+and everything rolls up and cancels when things are destroyed. Nothing
+should be able to leak out as a principle of the all the binding
+designs.
+
+Seems like a hard design to enforce across all bindings, eg workqeue
+is already outside of it. Seems like something that should be written
+down in a binding design document..
+
+Jason
