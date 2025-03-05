@@ -1,43 +1,43 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0609156C74;
-	Wed,  5 Mar 2025 14:31:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE0C242911;
+	Wed,  5 Mar 2025 14:34:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741185072; cv=none; b=uL+0XY7oVYOo9mSqiyhiD0bCrQaLMILnesJZqPuViuXwwMYScWYbf0GwjGdOnv0QIk71WJkALFK3rJ+BoJdhBcVokmKaDakjT4SiTYXln1WARHFP2GdMNC3k1zp9E5fOvc7wmSdAmbCicTS9/Jx27ZFEnuyZGsI7w7B0OrIV0To=
+	t=1741185284; cv=none; b=cRCSBZ9KDA8lnTeFQalUdmuvmnL0aFpzqvG9mHkCNJ10bXrogzkxV3IeQyv2zt1ZJIImuQSu5hP3OnKYz8nnsyXKxsoxqIBoPyj95DtC0kjOQ7W4ukPiDVz0WJrR/58hn7ypDLHMJq5piB1CfMJOW+ClI4jJz2P27tTpcbmNvAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741185072; c=relaxed/simple;
-	bh=7b5kFmyuKd4PGTAM6dunYR/UaELMhLi7JdawylXPjZo=;
+	s=arc-20240116; t=1741185284; c=relaxed/simple;
+	bh=+3KZycyRQWg6AONdj6MUvhWQ0yttj5flpyUcA4hxWz8=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hfGcGirLR2E2oR+g7QlwGJLYDZjSLVYBBEqe5N+bTf3u9RpAoU2LBlV2/2HoFzHL2s0ok90Gv+TqCGkFVEGwT75xd8X7s2yDVy1VWvEPoimgo3vF8fDWcvyrXy6aobLcJTPOqbJepbAA9MtYPTmlaZOruW+OETNe4fFni6ZqKDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=AR63w9Ib; arc=none smtp.client-ip=185.70.43.22
+	 MIME-Version:Content-Type; b=dme+TpIWB3Vzx6n9Z+2DVuoqG74oQOoaVV1VS2wc3CwPhrU7tW//Z7RhnunWJWhEBkuWQ75sHBhpD5WLilobeBJ4nbCHO8ZWQne/nvVfK4Z2467jvWUv2NCWUPOnHv2voHP+JEJeQ9jMjR+32HgHTqCp8yTxyUtHXJbCmq8keGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=X+nq+VyV; arc=none smtp.client-ip=185.70.43.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="AR63w9Ib"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="X+nq+VyV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1741185068; x=1741444268;
-	bh=/6JL7Ryq+oLJLabXRnbuuFC76es9XqEv0oiMmPmMiVM=;
+	s=cogdqg55erhcjfmdfg247whv2y.protonmail; t=1741185280; x=1741444480;
+	bh=+3KZycyRQWg6AONdj6MUvhWQ0yttj5flpyUcA4hxWz8=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=AR63w9IbA45n9IcpVqvP/VR8cWbF0xBgSyJa3yTue/R48BtqnLMQLyn5aD4EzBLxD
-	 s+Gp+CBmFtnS2hfF0/4Zyg0XbKrrN7G8XbXTsuwsms32KarZKbfY3dmhm0J7eVcm6m
-	 9bWIh0I1XxHB7+zLa5gbZVLKyPoi8Bu4mOIXBaSPykka6lDrp11vST6FpwDWBA/IpP
-	 fu77qWEKQfRzeZ3Punu7s0Q4SgcR2NhZIiQ5f1u8sa6cVXYufW9ZYYlUFKJsNjc60b
-	 Zuvm9bpLDTMkfPcalyMsqzb7ZUlgdcVCtrF5R70MloZVpRZxmIRba76rA4UfbDuTaG
-	 z0OJVWJDj6Q0Q==
-Date: Wed, 05 Mar 2025 14:31:02 +0000
-To: Andreas Hindborg <a.hindborg@kernel.org>
+	b=X+nq+VyVUTJl6QdqXVEonz5IDPa9VbvjAvmcPlCsjHps5CeP/6HaxVKnCJ7Y4SC9M
+	 zLC/D5VHdBgK1qo/Ne32jj7FjEkYxYJ3cfxWfU3Jz7HwXPzBTG5oOP0x4TtSe4sFA2
+	 vrwSUItLtT0Pxp6RSWiBB1hA8O8cwAYx/+jMVduu8Mv2T09ooDQm7Km3c4lGM5zhSb
+	 Kai3cw9sdqjjbQcEbEL2sQPjCgd3GiT+k5+pRNL+fauHYqiDjuCeoIhOeIoiVFrxZj
+	 /iMYgsKhbmY5ex+74sl2YhcrROOs60341LtJHZ2yLO9/UUV+8IkYhtpe5iZ01TXZ6J
+	 AhusOW/Rp4qFw==
+Date: Wed, 05 Mar 2025 14:34:35 +0000
+To: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 01/22] rust: init: disable doctests
-Message-ID: <D88EL88V6MX5.3LDSTI2SKEPH8@proton.me>
-In-Reply-To: <87h647a7rd.fsf@kernel.org>
-References: <20250304225245.2033120-1-benno.lossin@proton.me> <sIa0gEFObIVkQIOds6BkLjVFyVpGcJ70lKQ6CC6zAjpKS4xGB0hcKqo170yhITiDQfjg7s2CigwRoJfJ2fFvmA==@protonmail.internalid> <20250304225245.2033120-2-benno.lossin@proton.me> <87plivg8s7.fsf@kernel.org> <LACr2ZSOM2qo2DCApO6HPm_ESyWi3a8IxriVkayJJqTsEftAekzbNB1-Jwq2RxlubW_IlnsfB07ylWy_xU_ftw==@protonmail.internalid> <D88CITPM946W.1O2W73CGF7L6G@proton.me> <87h647a7rd.fsf@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org
+Subject: Re: [PATCH 14/22] rust: add pin-init crate build infrastructure
+Message-ID: <D88ENUE2B49N.FGSNLEB107E1@proton.me>
+In-Reply-To: <878qpja7b5.fsf@kernel.org>
+References: <20250304225245.2033120-1-benno.lossin@proton.me> <jpQp16UCJ00pInqOI-QFULU6-FKl2bBtAlmnxtXWLgXPVb7gy6d727nr7THeyks3ERF5Yqu3R6bikD0OK4mqXA==@protonmail.internalid> <20250304225245.2033120-15-benno.lossin@proton.me> <87h647d6xg.fsf@kernel.org> <cdfBMmuIl8Wl-KpI-koNDQJOCGBr9z9dOi5fxQvFbgNWQHHw6JtMizaMMbMniNlE841-9b7TdLuZ9Xh_hFsf7w==@protonmail.internalid> <D88BLHENDH8Y.HQUKEXN1XB7C@proton.me> <87ldtjbqw2.fsf@kernel.org> <okP1iZelIm5t6CfgoFyh0m8LiVEQW3ULUroZHdSQ97ul_BmPr47HBpB3RgHDMtm_2jzF4sTJszuUACsCGBEXcQ==@protonmail.internalid> <CANiq72k=KiYhKr9XHU38==Rx0df4rERyOL1abRG_cDo+4NNa0g@mail.gmail.com> <878qpja7b5.fsf@kernel.org>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: bd215d1a508a0ddbc7cd984220c2a5a64666c4d6
+X-Pm-Message-ID: eb7d669969bb2d542e365fcae0c70997690124b9
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,50 +47,38 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed Mar 5, 2025 at 3:09 PM CET, Andreas Hindborg wrote:
-> "Benno Lossin" <benno.lossin@proton.me> writes:
+On Wed Mar 5, 2025 at 3:19 PM CET, Andreas Hindborg wrote:
+> "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
 >
->> On Wed Mar 5, 2025 at 9:51 AM CET, Andreas Hindborg wrote:
->>> "Benno Lossin" <benno.lossin@proton.me> writes:
+>> On Wed, Mar 5, 2025 at 1:34=E2=80=AFPM Andreas Hindborg <a.hindborg@kern=
+el.org> wrote:
 >>>
->>>> This is the first commit in a series that splits off the pin-init crat=
-e
->>>> from the kernel crate.
->>>
->>> I recently learned that using imperative mode in the commit message is
->>> preferred [1]. You might want to consider that for next spin.
+>>> I _really_ think that the ability to run the tests should be present in
+>>> the kernel repository. But I also do not want to block this series on i=
+t,
+>>> if it is something that will be easier to achieve with the build system
+>>> overhaul that is in the pipeline.
 >>
->> Thanks for pointing that out, any suggestions for this concrete case? I
->> wasn't able to come up with an imperative statement.
+>> No, that is not the plan. Even with the new build system, this is
+>> supposed to be developed upstream as far as I understand, so you will
+>> need to run them there anyway.
+>>
+>> Unless there is a reason we could catch more bugs here, that is.
 >
-> I would drop the first paragraph entirely, since the subject is 01/22
-> and the cover letter provides plenty of context.
+> I guess it would be no different than `syn`. But I think it is a shame
+> that we move something that people could contribute to via the kernel
+> development flow - out of the kernel development flow.
 
-Done.
+You *can* send patches via the list, I will pick them up and run them
+through the GitHub CI.
 
->   The build system cannot handle doctests in the kernel crate in files
->   outside of `rust/kernel/`. Subsequent commits will move files out
->   of that directory, but will still compile them as part of the kernel
->   crate. Thus, ignore all doctests in the to-be-moved files.
->
->   Leave tests disabled until they are separated into their
->   own crate and they stop causing breakage.
->
-> Not sure if it is better? More robot for sure =F0=9F=A4=96
+Patches that arrive via GitHub will also go through the list and people
+can add their tags there.
 
-Thanks!
-
->
-> This part from the original is not correct:?
->
->   since then the doctests of that new crate will be handled as normal
->   host doctests.
->
-> The build system will not run those tests when they are not in the
-> kernel crate?
-
-Yes, that sentence was from an old version when I tried to get them to
-work. Removed it in next version.
+Also I don't think that pin-init will receive a lot of contributions in
+the first place. I do have a lot of changes planned for when we get
+`syn`, but other than that, I don't think it will change a lot in the
+future.
 
 ---
 Cheers,
