@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF19824113C;
-	Wed,  5 Mar 2025 11:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3015A20DD7F;
+	Wed,  5 Mar 2025 11:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741175585; cv=none; b=dFWNSEu28yx6BLrppXHCs9Aw3RsZYQKEuDuP+n3HQvwMmuDzTdjEBuYM4pqOpu7X/VrCGoWGlmPSUFzsJE3K/D+z4K7S3SNmJC4QePZJbJIAvOrWj7nfqgbRC1vDgPulDaQTryKZnHv1YjO7dOpFJt8NDyB0krTlZUQEW4wVfjg=
+	t=1741175999; cv=none; b=bJomzGPsyMj1woHzfO77cHAfJVQ/PC0EZkCmV7JQqDRJpAHge0dEg3EXMAWBOECP+fEqga91OnXmlqUtcvBp8NodGoQYOTHU3VB3iKmekf+C89fj+AwbXdLnv+VZ/qimhGPBFXogA3yF29BPxhcJGvLEhlIDuIUM7ExQPANqqJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741175585; c=relaxed/simple;
-	bh=2GoCmIcV993cxIjEsl1N3trg01ol0+mfVmDuWOICbp4=;
+	s=arc-20240116; t=1741175999; c=relaxed/simple;
+	bh=1itfz5Dn/ifmwpBxuvw4a+A/Z8sq2airca0/Wm8mM/o=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Ipa/mKpWzzjPPbWKJmpcI+tO8zW2PpAoxyXU7SGW3qJ8ol/12u1LiiX6OKHQOn+LdUeCYyof7lYl/P5XoATfndiypzKI8vFsO60dyo3smMMlzVMBI1FvEzlWRYSb3iry4QCFO9/Z7D/k5qLglQ967/bgE3X68HvqqQegKPPEnFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SU2wo6CN; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=kLzjt4tD/SRHMgnLp9eZIXdxF7fM4D7WYVgYA1w+4X8S/SNzVkL/GEG68HYlk0HXN8KEaChDPRMkzrdmuDsdcfOyRgY4FdGNlT+XXmk9hiuRGS/L0JO51UgqwepaW3JxsMRILo/7SecpCdGqAQckn82bIsIByg/hkRbHj/7IgLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tq8prO7G; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SU2wo6CN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3730C4CEE2;
-	Wed,  5 Mar 2025 11:53:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tq8prO7G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15241C4CEE2;
+	Wed,  5 Mar 2025 11:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741175584;
-	bh=2GoCmIcV993cxIjEsl1N3trg01ol0+mfVmDuWOICbp4=;
+	s=k20201202; t=1741175998;
+	bh=1itfz5Dn/ifmwpBxuvw4a+A/Z8sq2airca0/Wm8mM/o=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=SU2wo6CNBiPkasjedW91gzGU8lmZESjAJRhpjn6P+QYvXkbqWjBgk2WQKRInKp5K9
-	 91D9XEK4wbKwIZqW/ipoxB6E0IrEyuFq3ro8yJ5ZVkJ2Vx+b5GpWqQsyTz5EzF0txL
-	 MImBh7P2uOV+f4V8ija4OlsYC1fhtUGbKOIkJDIgYX8jvDNypLx0EG1ukYbRmnHFLY
-	 90ObgdjHhrRX9fZE5vR1c9wX2cJGb72b+MORVdhLgPoEJ9yfJaJ3py/T39Dg3Z+yr9
-	 vAyh79UG3dRVkQKgDAfy70XdCCfZhhdpR1y7IvliCV9yJxgLzrhmHCAOY8RdywJ19R
-	 81tabYygrsBYQ==
+	b=tq8prO7GuKGKr0n+6VxzhdZcbv6UyEHnV1+2FJLmOkhTzVD+kxJqs4BOa4UTzuHo9
+	 kKUwi/oZJOqJErJMFmzorjEbyW3/GVgXYqHmdUi3g3F5uEJTOUYzXqJeIMgDEzry1J
+	 o7BKjOYLkXMDVQU0/FkHa0m0M3Idkja1NHIBMlrOSsq3X91Oz7VCxHGqiHAV2qywsp
+	 F/Wb1tiEE6awH0XXn7blfbdNp2Vsr+9LR2fWfeq4dh0VrsJmWp6pDbmn2bLvHwv0aF
+	 Tevk4DQ6JkXFGj1ErpKOpMSl9+A15+osehcXGm+GVzpfvGSQS8gTKR/Gm2Gd9DUtI7
+	 2NJhK+KKY8FxQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: "Benno Lossin" <benno.lossin@proton.me>
 Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
@@ -33,18 +33,19 @@ Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
  <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
  <bjorn3_gh@protonmail.com>,  "Alice
  Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Danilo Krummrich" <dakr@kernel.org>,  <rust-for-linux@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 13/22] rust: pin-init: change the way the `paste!` macro
- is called
-In-Reply-To: <20250304225245.2033120-14-benno.lossin@proton.me> (Benno
-	Lossin's message of "Tue, 04 Mar 2025 22:55:00 +0000")
+  "Danilo Krummrich" <dakr@kernel.org>,  "Masahiro Yamada"
+ <masahiroy@kernel.org>,  "Nathan Chancellor" <nathan@kernel.org>,
+  "Nicolas Schier" <nicolas@fjasle.eu>,  <linux-kernel@vger.kernel.org>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kbuild@vger.kernel.org>
+Subject: Re: [PATCH 14/22] rust: add pin-init crate build infrastructure
+In-Reply-To: <20250304225245.2033120-15-benno.lossin@proton.me> (Benno
+	Lossin's message of "Tue, 04 Mar 2025 22:55:09 +0000")
 References: <20250304225245.2033120-1-benno.lossin@proton.me>
-	<gnfOo6-8PDd-rRWT6TyvxLWydmpuSbxaEsw5Dyg6BjjEuJXL1mG9q9vKqAshVJo72Kc7xHDV8A1eKGP17ZUXAw==@protonmail.internalid>
-	<20250304225245.2033120-14-benno.lossin@proton.me>
+	<jpQp16UCJ00pInqOI-QFULU6-FKl2bBtAlmnxtXWLgXPVb7gy6d727nr7THeyks3ERF5Yqu3R6bikD0OK4mqXA==@protonmail.internalid>
+	<20250304225245.2033120-15-benno.lossin@proton.me>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Wed, 05 Mar 2025 12:52:55 +0100
-Message-ID: <87msdzd78o.fsf@kernel.org>
+Date: Wed, 05 Mar 2025 12:59:39 +0100
+Message-ID: <87h647d6xg.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -55,15 +56,61 @@ Content-Type: text/plain
 
 "Benno Lossin" <benno.lossin@proton.me> writes:
 
-> Change the paste macro path from `::kernel::macros::paste!` to use
-> `$crate::init::macros::paste!` instead, which links to
-> `::macros::paste!`. This is because the pin-init crate will be a
-> dependency of the kernel, so it itself cannot have the kernel as a
-> dependency.
+> From: Miguel Ojeda <ojeda@kernel.org>
 >
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+> Add infrastructure for moving the initialization API to its own crate.
+> Covers all make targets such as `rust-analyzer` and `rustdoc`. The tests
+> of pin-init are not added to `rusttest`, as they are already tested in
+> the user-space repository [1].
 
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+If it's not too much hassle, why not add them in the kernel as well? I
+would rather not have to go fetch the user space repo from github, in
+the event that I ever need to patch pin-init.
+
+
+>
+> Link: https://github.com/Rust-for-Linux/pin-init [1]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Co-developed-by: Benno Lossin <benno.lossin@proton.me>
+> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+> ---
+>  rust/Makefile                      | 75 +++++++++++++++++++++++-------
+>  rust/pin-init/internal/src/_lib.rs |  3 ++
+>  rust/pin-init/internal/src/lib.rs  |  4 ++
+>  rust/pin-init/src/_lib.rs          |  5 ++
+>  scripts/Makefile.build             |  2 +-
+>  scripts/generate_rust_analyzer.py  | 17 ++++++-
+>  6 files changed, 86 insertions(+), 20 deletions(-)
+>  create mode 100644 rust/pin-init/internal/src/_lib.rs
+>  create mode 100644 rust/pin-init/src/_lib.rs
+>
+> diff --git a/rust/Makefile b/rust/Makefile
+> index ea3849eb78f6..90310f0620eb 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+
+[...]
+
+> @@ -110,11 +113,24 @@ rustdoc-compiler_builtins: $(src)/compiler_builtins.rs rustdoc-core FORCE
+>  rustdoc-ffi: $(src)/ffi.rs rustdoc-core FORCE
+>  	+$(call if_changed,rustdoc)
+>
+> -rustdoc-kernel: private rustc_target_flags = --extern ffi \
+> +rustdoc-pin_init_internal: private rustdoc_host = yes
+> +rustdoc-pin_init_internal: private rustc_target_flags = --cfg kernel \
+> +    --extern proc_macro --crate-type proc-macro
+> +rustdoc-pin_init_internal: $(src)/pin-init/internal/src/_lib.rs FORCE
+> +	+$(call if_changed,rustdoc)
+> +
+> +rustdoc-pin_init: private rustdoc_host = yes
+> +rustdoc-pin_init: private rustc_target_flags = --extern pin_init_internal \
+> +    --extern macros --extern alloc --cfg kernel --cfg feature=\"alloc\"
+> +rustdoc-pin_init: $(src)/pin-init/src/_lib.rs rustdoc-pin_init_internal \
+> +    rustdoc-macros FORCE
+> +	+$(call if_changed,rustdoc)
+
+Is it possible to do some code sharing here, such that when we add a
+crate, it's just a matter of putting the path/name on a list somewhere?
 
 
 Best regards,
