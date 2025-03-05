@@ -1,131 +1,212 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261FD84D02
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Mar 2025 15:14:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019562E3362
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Mar 2025 15:25:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741187665; cv=none; b=ixbwgNgqqs3+VZDduoLRa35w7CJI1h4dXUBF5T7e9nUbk8TXeBTB6DRJBjIvEh7fd03GhPsWbHOwHsFsPShJrThxZH8/bIsf2mcu23VxhgwYtY8EPWqAvt/NAPeYHdf9K1Gp5t/d/H/P7cojNM/YALzhA7j8k1v6ebaCsKX5B94=
+	t=1741188318; cv=none; b=VFkqP4/ApxpXA4o0S1AZJLL1IxzAeeQ4tIER/Hk/4WnzQIKzGyGQ/VcVMvN8vZUQ7fvNniH6UImyKYZm7pRaIZh35N9UBaFzgdlM74XIZYQGifjXDQxdmfLzfuQi8E+KictuHNnYoBcZ0PUMQGkNFsnfFSeVN3LZx7hnq/xTpiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741187665; c=relaxed/simple;
-	bh=u+MmNU5cYsqecXTGaOd49fcR+qNB9ijTR8fhCcnqgkY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=E8EAi86DsoEwK9Yk6modxU6U4yqdUa2jal+MVPzfQSbGyLTITm+m0QrYO3hoxxZbqjS+wXRQQaJD4R3Zkgsogl/ruZUIiGHDYurk3lDYrlXx4i5AnIkHwH8xtoc11aYBJZALL2lL+xRp8XMPp97TUdwAtBTC+52HMdhpuDDongc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q2X6tnJO; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1741188318; c=relaxed/simple;
+	bh=s4G0hNZZuRWgTcmPUy/NnLQSrHqIGsGL1QAhfQasjDw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L3AsKgjwerdKSKSDD+3CtU5Ff6InXSvuCNEH6oQD/NkipMopPp2y2HF/JRxAP5AOeiAl+eCqt876vlhgAcZoAvj8LO3HiiZBYcdUycJe9rACUCY8LEr2ULJHIbHUJ2ezXENySObya9h9mhKpPzt5XqZ2ZCs3MyIbyzZF2NdajHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PGS7T4Gx; arc=none smtp.client-ip=209.85.222.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q2X6tnJO"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43bd732fd27so4813675e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 05 Mar 2025 07:14:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PGS7T4Gx"
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7c3d1b78b93so127301385a.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 05 Mar 2025 07:25:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741187662; x=1741792462; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=USPDd1qR6qH3mxfI/NByy4u8tquEDn6DJ2yFUkVbl7k=;
-        b=q2X6tnJO5pNJ2I5WU+na7HCs79D92reFfLyhqnTIGN0dpF2iyWh1kQLoL8EdqzxZW2
-         kqumBeQExVV53bflOOlO+HQiSfiKfyg2RslSPlmb99B1UbAS4ZtJa2CDE988uCiy9lSx
-         ek2ELzFWClHGGEkMrUhxiakvErTqgJ6QOdY+dOEpv3EZmvxrlFDuKXq1pVRZpMssIcXY
-         EQ3xrCllP2snNl8yydVQKujAihjzLsOxQPayu0B6enpbCqS3B8JwDwUt4mtJwKVC8GQ4
-         Rn0GAlis351PYme4BwIV14e0iRDHPgXu+593vRb2M8k9rLiSOBjGpuXNuWWtMHME6G/4
-         WGog==
+        d=gmail.com; s=20230601; t=1741188314; x=1741793114; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=4UEhnEeXuFB9KX8onjbbjwimaB9Pcxdlj0VOqngd2+E=;
+        b=PGS7T4GxAfq+qx769I3bNTL8wegJmr+EdfXz6f3PbLHGRygWIwf95TK8NWX5b8LISB
+         G6YEK9OC/05AsUYDjUwUcc3jQ9PEHnA1pPdGdgrzsJErQO1WxwZdV4vPY/y4HAU3rpfF
+         EHZsw1zTdGD5HdQEha3JtU9GUOt6QCwnSE7bXdGMjVNejZmDE050eFMYdJIA7R6KzQCs
+         1sYj0zlGUEk23oRb0ao1ZV99f517IfkP+d+e8AZRmQTo774rwLbvM9UBWXOXfCs573Xz
+         A8VVeyeDQfNYy4KiVORoQTjg1UcFJcUKP59rgYXBqpOTl0HitReJzC2JjpOfodRIVCpW
+         sJiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741187662; x=1741792462;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=USPDd1qR6qH3mxfI/NByy4u8tquEDn6DJ2yFUkVbl7k=;
-        b=fd8iff5tJ/ZKbBKJ9us+GkFb1ivpgrOSB7Tum1U6dz/ejgzghLPWwGEBUYJqn9dsdl
-         KQWigLmtYjRkrxrEbQG6l6+oy0ss4jz37vdMB310gOFEnzapZHxZPkZKSxsYx0WWJGfc
-         PSrAIjmCuUNvhd7sKOF1vVl31v4h5emX1uMPRrZ85JgPNgXmj6ImS9vmuGKrx66WZZLh
-         4sx/2DdESzyrAPLpoyV2O8Ic5PwvMMdIKoTnbJ5s6v0dcW5cjzhWpTQdAMKE44SeUdEt
-         sPSgcdim+AFsA+aQtwJ5ZExbeswx0l5m83X0PosRdy/hRuAfy57J6DwHSh9qwDsVLemK
-         EOSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWFEq3Fv5syQS4f6jgG6ajjtIJidAycxs61gKhVA7t5GISowogeq6cQuW6VrLBlV0M8O8hze0/Nqh0FdEhSBw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgHT6VtuLH+GvJPBJ2GUEJxCJ56wh1fFMVRf69OuvaPyp9mJm+
-	GSx3e8rVnbgKHBk0+kqJf5KpLJRRv91CPuoMOCmWmilo9N3XD79PvOpa/9DDJZ/n3NR+AR2U9jB
-	kQGrD/sT/rErp3R0HtvIeT9wPsmbfyBWnrMPz
-X-Gm-Gg: ASbGnctEHdyl73/Cenm+36kNTvalET9hckz8E1PoqCNucMcSYNNkD6IaAo+ZUF0/cZZ
-	O6BoxP5MkvDMUTcmt+tTBDJFq+HNllJHQY5qM/uMgKH1R7canoDVYX77birVpBNWZj39IG05XEa
-	R3o/NRVfhAsd6dQIPtSNP/1fyj117PeOSLUnnhVvCdCPinWwuwlpHMKHSm
-X-Google-Smtp-Source: AGHT+IFqCXmZxfeWdf6AUeawOXjP06fV+krKTSUdJEOiVcttMtOIN51sUxb5euhwgZAPfdDxI7qE9nMbSSez3B280Go=
-X-Received: by 2002:a5d:5f42:0:b0:390:df83:1f5d with SMTP id
- ffacd0b85a97d-3911f7a84fdmr3713711f8f.35.1741187662149; Wed, 05 Mar 2025
- 07:14:22 -0800 (PST)
+        d=1e100.net; s=20230601; t=1741188314; x=1741793114;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4UEhnEeXuFB9KX8onjbbjwimaB9Pcxdlj0VOqngd2+E=;
+        b=p7oQD5+KfVS9LiveUQAO+AlCRxeZA7lPek8EqxiXYqZ7YR2fwWlWE/K7hsaqqRRyu7
+         1Of3j++jIOfCl0VcKDoI3Hb4Ted2Zd003F21iZx9++0m+QCYIdmxxs3K/+47jZ1pV+JY
+         38h9ZS79eKcXg7lyYwAgk+jJIe3oi8CD/jX255iZus1g57iyDlkR5Qa59FMTg5IiPu+k
+         fCzAkOOc9JJw85ntYcNfaEYY/Ika7NFEl93tkc0geuKU/n6NaBf+++ZOyIoiPifBvaSS
+         tkd6XOfmrFdM2JuaovTSKflplBoO+SxBsD6kR91w4IdwepxzjsB4lPE8i0acGAMR4hko
+         4yEg==
+X-Gm-Message-State: AOJu0YzaOqAmpOLSVCHfqG3WcAGSRt9pAToiWbMx1oL5dvFVQnKq/wak
+	wDmCaN1rfYOJg6y5GVYo1/9oYZ0j4CMNcHLpsAr8TGMDxwGtRVo5
+X-Gm-Gg: ASbGncuF6BQ/FXCWiHmrmaMl7FKcZDCQ53q0qa02K/1Xxvt+xluyOUuQS9tapfVGLSO
+	ICP5YB5B0i2RA5XQ49iHaphvs56EpEAyV6N9PtbklD3ZLjty0i54tr526WeWafaPAtEdW7Fs4X6
+	66u/Ep8YH2UuTKRfIa3DeMq6yDzJTosOiiHddsuKB7832IyIKZn2VI30qCbndJGOHNL5lPqeQmF
+	lEEU/qvOxBPf5uyIpzGMnqadzWjDyHCR4aaqyHKvR/EVM7ne5kOlnx9eIVmN44ZPfzF3I+rLszZ
+	g/crsDyf2QazxUQjxDqyZz7ts3BKMjtd12Q5lYlo8mdqhPgIKSDVPfc/3cA37NUP1Oew3LdMqOC
+	6OqVGCyfU6a6SPZKiI/PAEJdNOUbaP06oTTg=
+X-Google-Smtp-Source: AGHT+IHkVyr5przSYVKtx6NKKMpMVJ9p3ARkZUUCI7FikX1BAtjD1u1Nf3dS/3yLSXXqGeiYOW4tjw==
+X-Received: by 2002:a05:620a:8392:b0:7c3:cd78:df31 with SMTP id af79cd13be357-7c3d8e4655cmr507377685a.45.1741188313556;
+        Wed, 05 Mar 2025 07:25:13 -0800 (PST)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c3c0d34fadsm390639585a.12.2025.03.05.07.25.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Mar 2025 07:25:13 -0800 (PST)
+Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id BFCF21200043;
+	Wed,  5 Mar 2025 10:25:12 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Wed, 05 Mar 2025 10:25:12 -0500
+X-ME-Sender: <xms:2GzIZ2GsMwoqLJtil6xHFdLIwmwFkJDtrm4djv0kIRE2H_c5IPDvyQ>
+    <xme:2GzIZ3WnQRQa2Oxu-u8-qe7nM_ANRGjNRfbZ24a6Q8zf5h48RF4-P05aZBhxMV3LF
+    C2z21ViqMrPymzxLg>
+X-ME-Received: <xmr:2GzIZwLDo2kGbHJ7OlnNUdQqU06FtQYqWMrGZoZGG5LBLVJ61hOqt-8pRg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddutdehudejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtqhertddt
+    tddvnecuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrg
+    hilhdrtghomheqnecuggftrfgrthhtvghrnhepgffhudetvdejueetieeijeejtdduhfdv
+    ffdvjeehffdtheevtdeuhfeuheehiefgnecuffhomhgrihhnpehkvghrnhgvlhdrohhrgh
+    enucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhq
+    uhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqud
+    ejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgv
+    rdhnrghmvgdpnhgspghrtghpthhtohepledpmhhouggvpehsmhhtphhouhhtpdhrtghpth
+    htohepughirhhkrdgsvghhmhgvseguvgdrsghoshgthhdrtghomhdprhgtphhtthhopehr
+    uhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtth
+    hopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghnihgvlhdrrghl
+    mhgvihgurgestgholhhlrggsohhrrgdrtghomhdprhgtphhtthhopehgrghrhiesghgrrh
+    ihghhuohdrnhgvthdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdho
+    rhhgpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpth
+    htohepthhmghhrohhsshesuhhmihgthhdrvgguuhdprhgtphhtthhopegsohhquhhnsehf
+    ihigmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:2GzIZwFAqeIWoepzZT5z46xmqnjL84O21KK59s2_QIPOQti2b7oeew>
+    <xmx:2GzIZ8XqwKxEBOwpv_HXW9whK9wmsYPNjNtSFY83qLLogNdFJi7uNg>
+    <xmx:2GzIZzOQk6VJmd9gHzzGPljIGt9JlERSN0TEp6ou30g7Z0WBcBZ8bg>
+    <xmx:2GzIZz3JA69MgVq_WUzz-QWf9onsojFdk-SL8YuKiIF2WJ_DFZg2iQ>
+    <xmx:2GzIZ9VJVl4XEq5N-eEJccnXbkwgvqWlNETa5PsXZT4H6qY-uoRXV1yH>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 5 Mar 2025 10:25:11 -0500 (EST)
+Date: Wed, 5 Mar 2025 07:25:10 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org,
+	daniel.almeida@collabora.com, Gary Guo <gary@garyguo.net>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+Subject: Re: [PATCH v3 2/2] rust: types: `Opaque` doc: Add some destructor
+ description
+Message-ID: <Z8hs1s5Mf1TMedIv@tardis>
+References: <20250305053438.1532397-1-dirk.behme@de.bosch.com>
+ <20250305053438.1532397-2-dirk.behme@de.bosch.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250305-unique-ref-v4-1-a8fdef7b1c2c@pm.me> <Z8hUIPtE_9P60fAf@google.com>
- <Z8hmCkeZGPwc5MuU@mango>
-In-Reply-To: <Z8hmCkeZGPwc5MuU@mango>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 5 Mar 2025 16:13:59 +0100
-X-Gm-Features: AQ5f1JrBXGxw1rKdzyIsN_nlrdaRKvKhTO3oHwvMg3FPvBcmlxl8QNPV-S8hcws
-Message-ID: <CAH5fLgjFBknTmhxQBPUdB-iNMjEkcyuLiu22-Nj-DGB1Gb7NkA@mail.gmail.com>
-Subject: Re: [PATCH v4] rust: adding UniqueRefCounted and UniqueRef types
-To: Oliver Mangold <oliver.mangold@pm.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20250305053438.1532397-2-dirk.behme@de.bosch.com>
 
-On Wed, Mar 5, 2025 at 3:56=E2=80=AFPM Oliver Mangold <oliver.mangold@pm.me=
-> wrote:
->
-> Hi Alice,
->
-> On 250305 1339, Alice Ryhl wrote:
-> > On Wed, Mar 05, 2025 at 11:31:44AM +0000, Oliver Mangold wrote:
-> >
-> > > +impl<T: UniqueRefCounted> Deref for UniqueRef<T> {
-> > > +    type Target =3D T;
-> > > +
-> > > +    fn deref(&self) -> &Self::Target {
-> > > +        // SAFETY: The type invariants guarantee that the object is =
-valid.
-> > > +        unsafe { self.ptr.as_ref() }
-> > > +    }
-> > > +}
-> >
-> > What stops people from doing this?
-> >
-> > let my_unique: UniqueRef<T> =3D ...;
-> > let my_ref: &T =3D &*my_unique;
-> > let my_shared: ARef<T> =3D ARef::from(my_ref);
-> >
-> > Now it is no longer unique.
-> >
-> Oh, indeed. That's a serious problem. I see 2 options to deal with that:
->
-> 1. remove ARef::From<&T>
->
-> I checked the users of this, and it looks to me like there is rather
-> a limited number and they are easy to fix by replacing the &T with ARef<T=
->.
-> But I assume that wouldn't be welcome as it is intrusive nonetheless
-> and of course there is ergonomic value in having the function around.
+On Wed, Mar 05, 2025 at 06:34:38AM +0100, Dirk Behme wrote:
+> In the discussion [1] some `Opaque` documentation updates have
+> been proposed. In that discussion it was clarified that `Opaque`
+> is intended to be used for (partial) uninitialized or changing C
+> structs. And which consequences this has for using raw pointers
+> or the destruction. Improve the `Opaque` documentation by adding
+> these conclusions from that discussion.
+>=20
+> Suggested-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Link: https://lore.kernel.org/rust-for-linux/F8AB1160-F8CF-412F-8B88-4C79=
+D65B53A1@collabora.com/ [1]
+> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+>=20
+> ---
+> Changes in v3:
+>    * Add the "terse" proposals.
+>    * Move the non-linkage artifact from patch 1/2 to here.
+>=20
+>  rust/kernel/types.rs | 26 +++++++++++++++++++++-----
+>  1 file changed, 21 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> index af30e9c0ebccb..f370cdb48a648 100644
+> --- a/rust/kernel/types.rs
+> +++ b/rust/kernel/types.rs
+> @@ -271,17 +271,33 @@ fn drop(&mut self) {
+> =20
+>  /// Stores an opaque value.
+>  ///
+> -/// [`Opaque<T>`] is meant to be used with FFI objects that are never in=
+terpreted by Rust code.
+> +/// [`Opaque<T>`] opts out of the following Rust language invariants for=
+ the contained `T`
+> +/// by using [`UnsafeCell`]:
+>  ///
+> -/// It is used to wrap structs from the C side, like for example `Opaque=
+<bindings::mutex>`.
+> -/// It gets rid of all the usual assumptions that Rust has for a value:
+> +/// * Initialization invariant - the contained value is allowed to be un=
+initialized and
+> +///   contain invalid bit patterns.
+> +/// * Immutability invariant - [`Opaque<T>`] allows interior mutability.
+> +/// * Uniqueness invariant - [`Opaque<T>`] allows aliasing of shared ref=
+erences.
+> +///
+> +/// Further, [`Opaque<T>`] is `!Unpin` and will not run the drop method =
+of the contained `T`
+> +/// when dropped.
 
-Definitely not an option. There are many users of this function that
-are in the process of being upstreamed. The ability to go &T ->
-ARef<T> is pretty fundamental for ARef.
+I would move "will not run the drop method of contained `T` when
+dropped" to the "Initialization invariant" above because they are
+logically related.
 
-> 2. add some new traits so implementers can opt in/out of that function.
->
-> Basically one would have to pick if one wants to ARef::From<&T> or
-> UniqueRef<T> for one's type.
+Regards,
+Boqun
 
-I do think that you essentially need two structs to use this at all -
-one for the shared and one for the unique case. Sounds pretty
-unergonomic.
-
-What is the use-case for these abstractions?
-
-Alice
+>  ///
+> -/// * The value is allowed to be uninitialized (for example have invalid=
+ bit patterns: `3` for a
+> -///   [`bool`]).
+> +/// [`Opaque<T>`] is meant to be used with FFI objects that are never in=
+terpreted by Rust code.
+> +/// It is used to wrap structs from the C side, like for example `Opaque=
+<bindings::mutex>`.
+> +/// This is useful for C structs that are not fully initialized (yet) or=
+ might change their
+> +/// content from C side at runtime. [`Opaque<T>`] gets rid of all the us=
+ual assumptions that
+> +/// Rust has for a value of type `T`:
+> +///
+> +/// * The value is allowed to be uninitialized or invalid (for example h=
+ave invalid bit patterns:
+> +///   `3` for a [`bool`]).
+> +/// * By dereferencing a raw pointer to the value you are unsafely asser=
+ting that the value is
+> +///   valid *right now*.
+>  /// * The value is allowed to be mutated, when a `&Opaque<T>` exists on =
+the Rust side.
+>  /// * No uniqueness for mutable references: it is fine to have multiple =
+`&mut Opaque<T>` point to
+>  ///   the same value.
+>  /// * The value is not allowed to be shared with other threads (i.e. it =
+is `!Sync`).
+> +/// * The destructor of [`Opaque<T>`] does *not* run the destructor of `=
+T`, as `T` may
+> +///   be uninitialized, as described above.
+>  ///
+>  /// This has to be used for all values that the C side has access to, be=
+cause it can't be ensured
+>  /// that the C side is adhering to the usual constraints that Rust needs.
+> --=20
+> 2.48.0
+>=20
