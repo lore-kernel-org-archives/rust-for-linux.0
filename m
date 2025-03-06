@@ -1,96 +1,117 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0640F1F03D2;
-	Thu,  6 Mar 2025 12:57:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4072120B21F;
+	Thu,  6 Mar 2025 13:37:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741265842; cv=none; b=V3dl8kzQhFnUQbCiXonoDQrQSZn/RKvP76SIYh1mmC+sIyPRhVo63GSuloZPQ3+zl6wGtBKa9dXPpUqdkwSrYGjJsQ8LfIoay19XjF9SWXtpMljLAhXzPCATmC1erQf035unI2D2DaGXc2OCHxFZooqxcWtOqDe9YmqA4Q9HZkw=
+	t=1741268234; cv=none; b=Zde+rSm2ghSL2fTgWgVmfc7AHE8J/9+YCq+6UcC6677mHDRWprOD2xFr0EjLDlL+CG7ij+EQ2TE4zpxuMBzbEGZhShDgzQ0MjsszyjO8Efi6ogwev6iCtlCXx5hCwVL+n8ANmkyhoFCXQQV15XzonCJXy3FOviebucbKM4wL1/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741265842; c=relaxed/simple;
-	bh=E39Ml7fCBZbxfVHzjpdOttpEvi9Y8jkd/560+rZTYD0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KOJH+SfDGw6p3gPPLz5Ump5nrd7KpmzZfvNsf5i7QvucZMqKnRQf+iMWl5reeSCCcwQoHZev8xWry52d3jD9mHn0nh70h0eI/5M807+N8TOW6BYUZYyg11lXvYIO50i/ghtoOfrBT91ZWHxgA49713CXG2gppfrrHZn+EvOUQe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gywzQ7Bz; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1741268234; c=relaxed/simple;
+	bh=rzOfApeJGqJEIginki9w8q6sXfd76VZXAbGUG9H1704=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gJCbgqDvpNAji409BJaFarMem1nqVXt31CtjKWYh1mhBsdKS7s+H2Q+VLz3zP9dSp9Bc6r+zVShIEZxYtyMSi5EaySG+vN4ayl3bLwdjcIiZ7u/uPO7WRd0wd2FKR/rPeq5IW+SvRzW6wcGfyIpljAholE1yjnPa4w+RZoSHH7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jcSENJSI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gywzQ7Bz"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2ff66327419so152475a91.1;
-        Thu, 06 Mar 2025 04:57:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741265840; x=1741870640; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=E39Ml7fCBZbxfVHzjpdOttpEvi9Y8jkd/560+rZTYD0=;
-        b=gywzQ7BzXEG0y+Pl+I6agqEzZ0A/mXjA2yG34acdZHs0NNiB3mNzZwX295QzoteXFl
-         OzVKF0qaVYwl/NLscX9Pecq6aIGlBtnyAwrKyZEx+5EUgCEDNrwmmvUUFLuIknqmsUnI
-         2a/V/tmrYv35XcyFtaNInXN8fI73fekwJpMqHFIFd2Z4ihPa8groTkilQLhnAEOWtf9g
-         +Y7assirUvu83RFfuxv7+MqDxB89luGx81LsVFrUZIGppPqySa9gf6uuJh/NuOExxfqc
-         VoGD9/Frxw0+8q6EQLfdQ7ypQdiXGPZTewIJ9iDm7aR5daP3DJB7yV2Q1tn+wo4by6va
-         eeNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741265840; x=1741870640;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=E39Ml7fCBZbxfVHzjpdOttpEvi9Y8jkd/560+rZTYD0=;
-        b=PCCQsIbr9pruWmh8qDEe75wxVIXKqLF8anDgMlklmNQ9JC2qA7PlR/3HnkKq7ZCat1
-         OKxAB7OVJcOjZuU8oq0St2Ia9PSUt0ult6fJo2oX0f16P49/ARm5IJ00UAkochwywY2n
-         PjFvXNMGoRcYk14Vs49vrfc46Zb4fVqPTJRp/VTPpq3LupsSd5OrrskrE6V2pa0ewFUF
-         eCL8fAVXodr6l2mnxRlw77KfvZhX9WdySfgCv422HpwlsECaL8v5S2CSnpwkD4PpFjxn
-         wVef0oMDvjNx946ySlk+Yss7lqzkGV6Y0KglBmDHoVASXbLJs1SXtv+5d7dkPo+HepF0
-         6lMA==
-X-Forwarded-Encrypted: i=1; AJvYcCUbByUnaZ48JWTZyCCb8xtDsApHgT3dgJh7Y2aVc5xw9+q2sDSQmbib3q78okE5Aw5gG3B5jOsw6oU=@vger.kernel.org, AJvYcCVLZNoFVjOaXmaBZcBOB9nZnyASbmPMiKsd17g0XjAOER6N1Qk1n6HKV98vkYac+r71gJ4+Q3twcTcv9vIomJM=@vger.kernel.org, AJvYcCVrZSQE0iZjw4Hg3Yv8XH5ucM2laQPKszoVijBsucuhLCRAJiJsl8BKpN4VIaLNMzXpCOKksLVyh4OBM3b5@vger.kernel.org, AJvYcCWCqYdH5C1JfSQokbuIRguEPrEozEFjlhPBfi+qegr1vjP3wVV4MfgKpxUKulz0llp3HPgeUFVfuwyQVC3b@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqG/igcZkRGVlMp/Ueq+aMvhFodV2I7TjQl7ERMc7Y8pU0k/64
-	ET6OxgAk4aUgFPAtHZkwAKzre7ndNhXtJ++QtH7NErmm0hzwQ+yJzR2wc4n5sqwtxsIS2ZZRrFP
-	AkLn07Kt9/hH8fuYjrQ2I9yZQL1g=
-X-Gm-Gg: ASbGncsaWxGrf3d7qAdHSBfey6PwfPJsNLk1JNh2K22+6axHMLsoMTgLn7mCd2ru+Jb
-	5JNCDVDDue9dcWVT0SjfjIV7Xg8sqAudK/8DI7K9Ybbwt2m1jLssYcZ2kPt+f+Zc8ZMeVnMlxxu
-	OYtfKMZYhMA7NwrisdJVf0ddiPng==
-X-Google-Smtp-Source: AGHT+IEWKk04PIz7Wk8c0F5vZKKvySTmpJETnfri4bCYCQcstfnihMhMTAiUwNPxtpeY7tThxygpdKPz6oh1oX3Y1Zk=
-X-Received: by 2002:a17:90b:17d0:b0:2fb:f9de:9497 with SMTP id
- 98e67ed59e1d1-2ff498223fdmr4702572a91.5.1741265840262; Thu, 06 Mar 2025
- 04:57:20 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jcSENJSI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 055D4C4CEE0;
+	Thu,  6 Mar 2025 13:37:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741268233;
+	bh=rzOfApeJGqJEIginki9w8q6sXfd76VZXAbGUG9H1704=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jcSENJSIiYYYXfIaNQrPD3q/RlbkFjsuCz/86Ht9nIybAKwdxS7mwQu3486e4xtn2
+	 y7qu/duip67qpWqDC9ANkWDW/IrGwZWd02Pn/Ho2oGZ1NNDpsbzy5UdC5c8XCPTPWb
+	 xXc3I1rFmn+CK7quF5Lyr1ezrk1F/CRVOYcHlz1OsZPfizQQO7amLeUCiwonPnaYxn
+	 if9BBJUamC6IllfCuiyaE6pRy5jTkpNCdzTSkPgZji/hrIYeWMlL16alD9vhYrjGWG
+	 6YZUYqnod2TSYRyuTZclS1Xf0YZFy8guRSQ+6IWcsmvMVuzkhLQ9QJ792yRJtHab3+
+	 6sQs28c2df3WQ==
+Date: Thu, 6 Mar 2025 14:37:07 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>, aliceryhl@google.com,
+	robin.murphy@arm.com, daniel.almeida@collabora.com,
+	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Valentin Obst <kernel@valentinobst.de>,
+	open list <linux-kernel@vger.kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+Subject: Re: [PATCH v12 2/3] rust: add dma coherent allocator abstraction.
+Message-ID: <Z8mlAxsszdOH-ow8@cassiopeiae>
+References: <20250224115007.2072043-1-abdiel.janulgue@gmail.com>
+ <20250224115007.2072043-3-abdiel.janulgue@gmail.com>
+ <20250305174118.GA351188@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250210164245.282886-1-ojeda@kernel.org> <CAK7LNAQBFX5q6yyKBJoxMoD5d9SwdKm0c23J4+LpjwA1eh=bZw@mail.gmail.com>
- <CANiq72n=95jgJs17NFAkit5uzxqtO9xij9Um3ybd_RiMCpFrDQ@mail.gmail.com> <CAK7LNAQC5Q5EQjuvMEWS5NAs-pixj3b--rkCHZ=xGQDTHqBBFQ@mail.gmail.com>
-In-Reply-To: <CAK7LNAQC5Q5EQjuvMEWS5NAs-pixj3b--rkCHZ=xGQDTHqBBFQ@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 6 Mar 2025 13:57:06 +0100
-X-Gm-Features: AQ5f1JozzC7HXKLXrrD94nPS6o7fBCrwM6b7SXP64UvI5vEbi8ijBc_ec378rj0
-Message-ID: <CANiq72nYUcGDmDG9Sx1AqgyXfkUWA4B5M3d5PexVfN7JB58Ryg@mail.gmail.com>
-Subject: Re: [PATCH] kbuild: rust: add rustc-min-version support function
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, linux-doc@vger.kernel.org, 
-	moderated for non-subscribers <linux-arm-kernel@lists.infradead.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250305174118.GA351188@nvidia.com>
 
-On Thu, Mar 6, 2025 at 12:37=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.o=
-rg> wrote:
->
-> This has not been picked up by any one in linux-next.
+On Wed, Mar 05, 2025 at 01:41:19PM -0400, Jason Gunthorpe wrote:
+> On Mon, Feb 24, 2025 at 01:49:06PM +0200, Abdiel Janulgue wrote:
+> 
+> > +impl<T: AsBytes + FromBytes> Drop for CoherentAllocation<T> {
+> > +    fn drop(&mut self) {
+> > +        let size = self.count * core::mem::size_of::<T>();
+> > +        // SAFETY: the device, cpu address, and the dma handle is valid due to the
+> > +        // type invariants on `CoherentAllocation`.
+> > +        unsafe {
+> > +            bindings::dma_free_attrs(
+> > +                self.dev.as_raw(),
+> > +                size,
+> > +                self.cpu_addr as _,
+> > +                self.dma_handle,
+> > +                self.dma_attrs.as_raw(),
+> > +            )
+> 
+> I mentioned this in another thread..
+> 
+> There is an additional C API restriction here that the DMA API
+> functions may only be called by a driver after probe() starts and
+> before remove() completes. This applies to dma_free_attrs().
+> 
+> It is not enough that a refcount is held on device.
+> 
+> Otherwise the kernel may crash as the driver core allows resources
+> used by the DMA API to be changed once the driver is removed.
+> 
+> See the related discussion here, with an example of what the crash can
+> look like:
+> 
+> https://lore.kernel.org/lkml/8067f204-1380-4d37-8ffd-007fc6f26738@kernel.org/T/#m0c7dda0fb5981240879c5ca489176987d688844c
+> 
+>  > a device with no driver bound should not be passed to the DMA API,
+>  > much less a dead device that's already been removed from its parent
+>  > bus.
 
-Yeah, I didn't start yet, sorry.
+Thanks for bringing this up!
 
-> I applied this to linux-kbuild now. Thanks.
+I assume that's because of potential iommu mappings, the memory itself should
+not be critical.
 
-Thanks!
+> 
+> My rust is non-existent, but I did not see anything about this
+> point.
 
-Cheers,
-Miguel
+Indeed, this needs to be fixed. It means that a CoherentAllocation also needs to
+be embedded in a Devres container.
+
+> 
+> Also note that any HW configured to do DMA must be halted before the
+> free is allowed otherwise it is a UAF bug. It is worth mentioning that
+> in the documentation.
+
+Agreed, makes sense to document. For embedding the CoherentAllocation into
+Devres this shouldn't be an issue, since a driver must stop operating the device
+in remove() by definition.
