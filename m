@@ -1,124 +1,138 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00662080E9
-	for <rust-for-linux@vger.kernel.org>; Thu,  6 Mar 2025 12:09:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FEC1EDA1F;
+	Thu,  6 Mar 2025 12:33:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741262943; cv=none; b=AU2/AEGDFmLjAlaohm3olWNKYNp5QzjbqEvUTr5xDyxFZh5l+0bL/9DzspuibialVVohA47rhSv4qdlc+spGsIsz0uJpFYJWkAtlwfYiSqd1RPSrFigwSNT3KeLcLYhH+AkMQIxjEkJtTU5jBwP/g+3mFt0+qJMkUzfMhycSduo=
+	t=1741264429; cv=none; b=WTZ4+X564LW3ZaDtqE0eqZUJzX6WIWW7Xrgx7xalUmn85LTW5Rdn15RjM1zdJCSz9v/fslz+fsbOAp18vi/C7/4kTFTxS8OPWgkmpiZlEUHfrfgcNr9DNPENh1LHxJrjrL4rBshabC+4GjSskVe8bP9E9LH29J2JhUuqoa/h9us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741262943; c=relaxed/simple;
-	bh=8gMyGXqU/SBGZF0jBgw5T2jKjTWgikTdAvJL7Z5QQzo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iAo1NiZE9AqmRcvJ/pDv8q1BJPoMNVdPYbzUpvTfii0WTEMXTP5lceGTDxwtXfEy92TG1Ofd96nn5k/mZsEK63kxBbqXRQWAU8Ieqaq+kkCidqOkHsNCbFE+dlqLhWzHBra1jLI6eDGqW4TL0ltxA7o049Hs2Xw3HpibkiLWHtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jcHG9yDC; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1741264429; c=relaxed/simple;
+	bh=P5/bQBujci4UcWFgDKpxgC7L6tOL6QdQ90C1u/6ZuWM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JUf5mF/4Db4jbhLvniyR1vMGKZFCO4Ry7UImS6KYwuSkYTApaseNBfRThqrOzDD1KWehsBVp2GWubi+iwTTzK32Pr8SXdIqrF6yTgMnMkhnanmRcSY55GNbMAbkJw2TW7cNmr8DiOUHsXXxf6zjCOh9Ks88fRbMeyBgNyX4HQhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P1g5NbEl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jcHG9yDC"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4394345e4d5so3167495e9.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 06 Mar 2025 04:09:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741262940; x=1741867740; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GJKmQPf0uQyBP0dHMptwPuPrmOF7WEuR5rgBIZ7vJzY=;
-        b=jcHG9yDCbdOqqC852432BNU+0GTsCG1ethtdVU93Ty3m7IW1CcNo+gLmoQLY9ws14m
-         1p455Zsy8bUAndhX6+xtbgGlPOg92xvjzYFQxwS+U3VTeFshxRiNVUl6iaG+7MNMQrkQ
-         NjUE/wpTA6sg/4mqtOHR9WPl8UkIqFicfXmo4+ikeWfzM22zD7/ZJN1GvxisxKCwdK8d
-         CvwgHLeDsK3+1yO/9V87Xv7T+lLaFSPUrfE81RC//WlcK+XKfrJCZ3twWIfohCPphrYP
-         LrXWnCc5fDrWTz9cdcthr4aNeo1/vAlvn+itPoIWqmqWAXnigWPr3tvH9cZHtij834B7
-         SpLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741262940; x=1741867740;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GJKmQPf0uQyBP0dHMptwPuPrmOF7WEuR5rgBIZ7vJzY=;
-        b=YMKY49W5dnK5sxfe2+q9CiP4NC6Ee0Bcfr6HjmFXrsmWB+bPZdfJRcTUbc1ATmrxyb
-         dwNOk46Z87Aun98HVf0DL82rpFGrXJ12atQOEnjLJrJOGul/on/07UM/B15Dl88HtPRV
-         MZ45/SoAlbU+fBs7gbSv19bzejLeeB9E6UcwhVijTyKOmL26UHNuelZ6dJp9oR6bsMqu
-         NIXOH0By4r0Ob0TuPVNL8iS183/xB5s6kwjS30fOGzLUg7Mr27zD5WmrEXNzAzdxyqhI
-         azUtMDPe54FfdjsNlLKWBiuZlm4gynESASIoznThWU5WDUC4W4lF/ACKiSk/+woap8kg
-         rRhg==
-X-Forwarded-Encrypted: i=1; AJvYcCWbOA+Q8OyPTiuYiKPfhunxNlx5g+/XygQEP2ikeyv5LQ4FHuqtgob+0YcEqNJVOZlVxwdNnrYlKLtYrkhlyA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YylXD/T50eEeG6MxksKKjlrcVdH1vjkkkis210Ss3xhFI5/owwJ
-	6GO6OiyD/bs4tAE+J79YHxTPq0v6hhfgxVteGQE3mZ3EGr87kv2gFzffCX2efCQrAA/3GNXhnYK
-	lH6aGWO6QJr2z3YSpRsthY5tGD/8Dp1CYoFkC
-X-Gm-Gg: ASbGncuLoWUmJXzwjvMX4+Jll4pCQHYfkzdUwMY3OIgfm+aEoXPlwqZBNNDIpmfP6rq
-	qnmxy3KxzB/hXV+fcKQkzMAfeL5wYDPcthHBBTJ8k9UKrmykEEx+67XfZUfqXrcC/TIgl4EEejt
-	/hHURtAkkPH8y1Bc8KurtsyCT3RzlDtiv0l7AWhvonqam+QmFTHULMbg5T
-X-Google-Smtp-Source: AGHT+IH+/3M/U14wpw955BJKhrim9WmmzCgc6th+mDwUTIqQ602Kvkk7v7WDijJkGkstjzFRh3Jy8fCVs9BU8fAj/mE=
-X-Received: by 2002:a05:600c:4f87:b0:43b:c3af:3304 with SMTP id
- 5b1f17b1804b1-43bd29c93e3mr48707005e9.28.1741262940126; Thu, 06 Mar 2025
- 04:09:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P1g5NbEl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24169C4CEE4;
+	Thu,  6 Mar 2025 12:33:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741264428;
+	bh=P5/bQBujci4UcWFgDKpxgC7L6tOL6QdQ90C1u/6ZuWM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=P1g5NbEl7bkSKYa7caiviUHuN6Lyuqm0/Qep0kyaOrJs7oMLo/CdWuOXYMO9ZJp02
+	 8HjTStp7fZPtK3ZhYZzrUaDkBxMUjtXFj+zxBL0SeE6MGjeUWwn+ByCTs33+BWuQPa
+	 hmRup15H4PeRfDBD+a9vitj0bivxiSIuqHLMKBFN+Zak7+kwtz1eIGgOIS/9esC6Ni
+	 o7NEG7xqW2WUC0QNEHPH2q5FHEWB4ZHGNTMLriPau/f89AWycPObq9NXFI5I8WWHMS
+	 s0cl+lnWOAhKCU9hyeOC3ZoW5Iey8aNuzjzMey8thWBe/zkZC9NuATaLG0p3pLCUGy
+	 XWhQuaFAhhVbQ==
+Date: Thu, 6 Mar 2025 13:33:42 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Russell King <linux@armlinux.org.uk>, linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>
+Subject: Re: [PATCH V3 2/2] rust: Add initial clk abstractions
+Message-ID: <Z8mWJox-0IyP1uUo@cassiopeiae>
+References: <cover.1740995194.git.viresh.kumar@linaro.org>
+ <023e3061cc164087b9079a9f6cb7e9fbf286794e.1740995194.git.viresh.kumar@linaro.org>
+ <CANiq72kdWzFOZ39EoFNxEAbk4KYgzLi1OAEc1zn8BM07VpXy3g@mail.gmail.com>
+ <20250304085351.inrvjgixvxla4yn3@vireshk-i7>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <Z8hUIPtE_9P60fAf@google.com> <CAH5fLgjFBknTmhxQBPUdB-iNMjEkcyuLiu22-Nj-DGB1Gb7NkA@mail.gmail.com>
- <87ldtj8p2m.fsf@kernel.org> <JPqvzrz3Zy0HgwNoHh2psup7imFItiN_j_VmmjVPBfwJzf040DTvZAwUDjNv1FQiLXFiSAANIxc2IegeKGCJvA==@protonmail.internalid>
- <CAH5fLgirYTV6K2QoH9LLwhHxJzz=h1R0jB4G2kpKQ_pBtBgePg@mail.gmail.com>
- <875xkn8k5z.fsf@kernel.org> <Z8lsetLbHvn-6cai@google.com> <Z8l1Zt3ibanzBhnX@mango>
- <Z8mHgyNxb6rv6Vhm@google.com> <Z8mPBvL--zUxBpYN@mango>
-In-Reply-To: <Z8mPBvL--zUxBpYN@mango>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 6 Mar 2025 13:08:47 +0100
-X-Gm-Features: AQ5f1JoLaP5Ondt1o6hqOpFvvtrsNPIO2ONwLOTDvGS8y43jDq6e77zIeSzkMCw
-Message-ID: <CAH5fLghbb8zMsJ7y+it3U3pE0xdXfOxGX3kfLQf0kJp=4xZWgA@mail.gmail.com>
-Subject: Re: [PATCH v4] rust: adding UniqueRefCounted and UniqueRef types
-To: Oliver Mangold <oliver.mangold@pm.me>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Trevor Gross <tmgross@umich.edu>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250304085351.inrvjgixvxla4yn3@vireshk-i7>
 
-On Thu, Mar 6, 2025 at 1:03=E2=80=AFPM Oliver Mangold <oliver.mangold@pm.me=
-> wrote:
->
-> On 250306 1131, Alice Ryhl wrote:
-> >
-> > How about this:
-> >
-> > * Rename AlwaysRefCounted to RefCounted.
-> > * Introduce a new AlwaysRefCounted trait with no methods and gate
-> >   `From<&T>` on it. It has RefCounted as a sub-trait.
-> > * Introduce an Ownable trait with an Owned type like in [1].
-> > * Given an Owned<T> where T:RefCounted you can convert from Owned<T> to
-> >   ARef<T>.
-> >
-> > And there needs to be a safety requirement on Ownable or
-> > AlwaysRefCounted which requires that a type cannot implement both
-> > traits. Alternatively, if a type implements both, it needs to be safe t=
-o
-> > have both Owned<T> and ARef<T> references at the same time, which could
-> > make sense for a type that has one "special" reference and many normal
-> > references.
-> >
-> > If you want conversions ARef<T> to Owned<T>, you should add a new trait
-> > TryIntoOwned that's a super-trait of both RefCounted and Owned and has
-> > the `try` method for the conversion.
-> >
-> > Thoughts?
-> >
-> Yes. Sounds good to me. Basically what I had in mind. Only the naming
-> is different.
->
-> I will build an implementation like this and post it as v5.
-> I won't change the names of UniqueRef and UniqueRefCounted for now,
-> but more out of laziness than because of having strong feelings about it.
-> I like UniqueRef a bit better as our focus is on pointing out that
-> it is unique. But if you or other prefers Owned I can change it.
+On Tue, Mar 04, 2025 at 02:23:51PM +0530, Viresh Kumar wrote:
+> +/// This structure represents the Rust abstraction for a C [`struct clk`].
+> +///
+> +/// # Invariants
+> +///
+> +/// A [`Clk`] instance always corresponds to a valid [`struct clk`] created by the C portion of the
+> +/// kernel.
+> +///
+> +/// Instances of this type are reference-counted. Calling `get` ensures that the allocation remains
+> +/// valid for the lifetime of the [`Clk`].
+> +///
+> +/// ## Example
+> +///
+> +/// The following example demonstrates how to obtain and configure a clock for a device.
+> +///
+> +/// ```
+> +/// use kernel::clk::{Clk, Hertz};
+> +/// use kernel::device::Device;
+> +/// use kernel::error::Result;
+> +///
+> +/// fn configure_clk(dev: &Device) -> Result {
+> +///     let clk = Clk::get(dev, "apb_clk")?;
+> +///
+> +///     clk.prepare_enable()?;
+> +///
+> +///     let expected_rate = Hertz::new(1_000_000_000);
+> +///
+> +///     if clk.rate() != expected_rate {
+> +///         clk.set_rate(expected_rate)?;
+> +///     }
+> +///
+> +///     clk.disable_unprepare();
+> +///     Ok(())
+> +/// }
+> +/// ```
+> +///
+> +/// [`struct clk`]: https://docs.kernel.org/driver-api/clk.html
+> +#[repr(transparent)]
+> +pub struct Clk(*mut bindings::clk);
+> +
+> +impl Clk {
+> +    /// Gets `Clk` corresponding to a [`Device`] and a connection id.
+> +    pub fn get(dev: &Device, name: Option<&CStr>) -> Result<Self> {
+> +        let con_id = if let Some(name) = name {
+> +            name.as_ptr() as *const _
+> +        } else {
+> +            ptr::null()
+> +        };
+> +
+> +        // SAFETY: It is safe to call `clk_get()` for a valid device pointer.
+> +        Ok(Self(from_err_ptr(unsafe {
+> +            bindings::clk_get(dev.as_raw(), con_id)
+> +        })?))
+> +    }
+> +
+> +    /// Obtain the raw `struct clk *`.
+> +    #[inline]
+> +    pub fn as_raw(&self) -> *mut bindings::clk {
+> +        self.0
+> +    }
+> +
+> +    /// Enable the clock.
+> +    #[inline]
+> +    pub fn enable(&self) -> Result {
+> +        // SAFETY: It is safe to call clk APIs of the C code for a clock pointer earlier returned
+> +        // by `clk_get()`.
 
-Advantage of the Owned naming is that it also makes sense for types
-that *only* support Owned pointers. The UniqueRef name kind of assumes
-that it's refcounted, but the design I proposed does not have that
-limitation.
+You may want to add an invariant for this, i.e. something along the lines of
+"Clk always holds either a pointer to a valid struct clk or a NULL pointer".
 
-Alice
+In this safety comment you can then say that by the type invariant of Clk
+self.as_raw() is a valid argument for $func.
+
+Not that your type invariant needs the NULL case, since OptionalClk may set Clk
+to hold a NULL pointer.
+
+I still think that a new type MaybeNull<T> would be nice to encapsulate this
+invariant, but we can also wait until we get another use-case for it.
