@@ -1,138 +1,742 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2056.outbound.protection.outlook.com [40.107.220.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FEC1EDA1F;
-	Thu,  6 Mar 2025 12:33:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741264429; cv=none; b=WTZ4+X564LW3ZaDtqE0eqZUJzX6WIWW7Xrgx7xalUmn85LTW5Rdn15RjM1zdJCSz9v/fslz+fsbOAp18vi/C7/4kTFTxS8OPWgkmpiZlEUHfrfgcNr9DNPENh1LHxJrjrL4rBshabC+4GjSskVe8bP9E9LH29J2JhUuqoa/h9us=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741264429; c=relaxed/simple;
-	bh=P5/bQBujci4UcWFgDKpxgC7L6tOL6QdQ90C1u/6ZuWM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JUf5mF/4Db4jbhLvniyR1vMGKZFCO4Ry7UImS6KYwuSkYTApaseNBfRThqrOzDD1KWehsBVp2GWubi+iwTTzK32Pr8SXdIqrF6yTgMnMkhnanmRcSY55GNbMAbkJw2TW7cNmr8DiOUHsXXxf6zjCOh9Ks88fRbMeyBgNyX4HQhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P1g5NbEl; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97EF620D4F0;
+	Thu,  6 Mar 2025 12:38:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.56
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741264714; cv=fail; b=UiRBoV0nHb0vFKJ7CkQuGIBYYUMAP/DFa7+8emrH5GC+41HiAJCjRa75mzlBe0MwS73ssO2nbKN8a9LjRTTgtDoEB9qXkkOtlAxCr273laUlnnR/SXYBiaOLsJIHZeOOAx2Y+jEYI9rhrocik4j+nxugFNGXDRU7AOYLw+utgF8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741264714; c=relaxed/simple;
+	bh=xniX99OtPCwzuYc+Ah4G8j/TaWWvvkx2yhqYpwbIk9o=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=VZwZykJNrECPkj5iHJHeHvUW6tp03UtdmgRGVH5imA9I0FcqL4JES9u3VdN79qFGCGoR0BCFXQWJWmVV3AgddeT6w8cEg8YyqMZwKQfXHceh0SH+WFVS+P5snfVmPySChIvS85yK7iiTOB2PgfJNtxqrBMeOe/Dlyfp3n4YZjCo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=IG2H4Lkp; arc=fail smtp.client-ip=40.107.220.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P1g5NbEl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24169C4CEE4;
-	Thu,  6 Mar 2025 12:33:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741264428;
-	bh=P5/bQBujci4UcWFgDKpxgC7L6tOL6QdQ90C1u/6ZuWM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=P1g5NbEl7bkSKYa7caiviUHuN6Lyuqm0/Qep0kyaOrJs7oMLo/CdWuOXYMO9ZJp02
-	 8HjTStp7fZPtK3ZhYZzrUaDkBxMUjtXFj+zxBL0SeE6MGjeUWwn+ByCTs33+BWuQPa
-	 hmRup15H4PeRfDBD+a9vitj0bivxiSIuqHLMKBFN+Zak7+kwtz1eIGgOIS/9esC6Ni
-	 o7NEG7xqW2WUC0QNEHPH2q5FHEWB4ZHGNTMLriPau/f89AWycPObq9NXFI5I8WWHMS
-	 s0cl+lnWOAhKCU9hyeOC3ZoW5Iey8aNuzjzMey8thWBe/zkZC9NuATaLG0p3pLCUGy
-	 XWhQuaFAhhVbQ==
-Date: Thu, 6 Mar 2025 13:33:42 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Russell King <linux@armlinux.org.uk>, linux-clk@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>
-Subject: Re: [PATCH V3 2/2] rust: Add initial clk abstractions
-Message-ID: <Z8mWJox-0IyP1uUo@cassiopeiae>
-References: <cover.1740995194.git.viresh.kumar@linaro.org>
- <023e3061cc164087b9079a9f6cb7e9fbf286794e.1740995194.git.viresh.kumar@linaro.org>
- <CANiq72kdWzFOZ39EoFNxEAbk4KYgzLi1OAEc1zn8BM07VpXy3g@mail.gmail.com>
- <20250304085351.inrvjgixvxla4yn3@vireshk-i7>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="IG2H4Lkp"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=EgsW+I6O5+rmAKpLODxqIbC75AL20gfNxjVThlQBqMclNiIPwzUsiQB+g6ytlGu+9YiA1BQq47jZl6f7TZWRCcVh69ZlkPzuR5TKOsaCpPlpq7sscrWelEy+x7LyiXzFKnE4ndcB8NllXuE2VuNYVa25g9gwW83g6lf9xcERI3X1iOHZ22MEOawDlyPPIJAfbAPLDmp/kJCpD7sA2sBIFzh3gjhqIwUjw3h/fNSrFvnlFpNmkDFIHqEDh1Z4K0iQ2TknGZRmQa6e97uqi88+jJGapRqowOkboNXgjZ4Im6/7572JH7TNjxzsCpnzFWRG38MGiD9Imqn7XLUdBbDdJg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=B8sGhK7nmYgIa6dsOTzXH+sVoL/UyjWMt0L19S71C28=;
+ b=qCvOiawtxIZCKYHCUojNwYwlg+0BW7Vgw7CrQwVCVRFKGD+gkLq9j5+OEOmT+Jmewpdx1UfSnUUttTW/8ZfRdamsFOXuR2tsdYrN1DT6cw6yjRZQKPJ0CRTnEZICQYsmUhNRZxcnG3KfP/dxed4R+uiphD9rllVgQk3zByute3YibBvgN40n42AO0VmP9DpbhxiICyfRPLFBChNpwJLo5yyG6k8xPBrjqJdH6nFNsYOeXTGGLnaiDV/Afpb41vU4W58IAn84XdYNM/RQ/H7y9jzs8NT78sQwQG26BkYGqdx4pja4S1Z7dJFQOu6z3/Mmtg3j1zIOxloIcNSrFZmTEw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=B8sGhK7nmYgIa6dsOTzXH+sVoL/UyjWMt0L19S71C28=;
+ b=IG2H4LkpJKZ7u80K+rkuMiL0vhf27gSHj3jkYRwec31jHcl7soGwooB7Gi/vtei69BHmQadc0pIfev994OHHCxnhuvNEsfB7wVXjoTExdRfcTZ7Dzx3TtwfjUHa9CAHJh4VuVmm2wow23UTOb2txRh2xi+idJLtABsMaNVtlWFxJiGvmKdEhJP2m7ZJVDKnuSGCnUsq9hOlBuDjOZ9jsh4eFMMlImOeQLHsDbP15xs9QoPkt7aeu80AE3xUSvk2UZPlfAuqEuJoH7GTP8l8s7Ry7a9NnyVvUxHNcrpAqZFjKYrBpXAVzd0ZqV57odinWg7mdp5Trxt+XXxY+3BpfUg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MN2PR12MB3997.namprd12.prod.outlook.com (2603:10b6:208:161::11)
+ by DM4PR12MB6254.namprd12.prod.outlook.com (2603:10b6:8:a5::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.17; Thu, 6 Mar
+ 2025 12:38:28 +0000
+Received: from MN2PR12MB3997.namprd12.prod.outlook.com
+ ([fe80::d161:329:fdd3:e316]) by MN2PR12MB3997.namprd12.prod.outlook.com
+ ([fe80::d161:329:fdd3:e316%6]) with mapi id 15.20.8511.017; Thu, 6 Mar 2025
+ 12:38:28 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 06 Mar 2025 21:38:22 +0900
+Message-Id: <D896TLG23DKY.1SRUB54QZ8THK@nvidia.com>
+Cc: <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <benno.lossin@proton.me>,
+ <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
+ <gregkh@linuxfoundation.org>, <mcgrof@kernel.org>, <russ.weight@linux.dev>,
+ <dri-devel@lists.freedesktop.org>, <linux-doc@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v5 4/5] gpu: nova-core: add initial driver stub
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>, <airlied@gmail.com>,
+ <simona@ffwll.ch>, <corbet@lwn.net>, <maarten.lankhorst@linux.intel.com>,
+ <mripard@kernel.org>, <tzimmermann@suse.de>, <ajanulgu@redhat.com>,
+ <lyude@redhat.com>, <pstanner@redhat.com>, <zhiw@nvidia.com>,
+ <cjia@nvidia.com>, <jhubbard@nvidia.com>, <bskeggs@nvidia.com>,
+ <acurrid@nvidia.com>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <20250304173555.2496-1-dakr@kernel.org>
+ <20250304173555.2496-5-dakr@kernel.org>
+In-Reply-To: <20250304173555.2496-5-dakr@kernel.org>
+X-ClientProxiedBy: TYCP286CA0288.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:3c8::16) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250304085351.inrvjgixvxla4yn3@vireshk-i7>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN2PR12MB3997:EE_|DM4PR12MB6254:EE_
+X-MS-Office365-Filtering-Correlation-Id: 43c3ec75-a20d-4d7f-262e-08dd5cabca81
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|7053199007|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?K2w2dmJQLzdZcWVVNHFISzRGVzNZUDU5ZWJ1WFJ1em5IRkpJbUNiajJPNGhr?=
+ =?utf-8?B?U0hQL2tKbGFISndhRllvZjVINEIxei9GdkZzcFpYUnp2S1Rvdzg5WGhLMFY4?=
+ =?utf-8?B?b0cvWjk3Nnh6T3BHRUhkR2dDMDVJWGxPM3pGQ3dnSU9OQ05obGxLTm5SYVJO?=
+ =?utf-8?B?NERxSW45RUFZanp5bXZnSWFhNEprMFlubWUwYXhWaE1OTXFKRkZ0ZXZkcG5P?=
+ =?utf-8?B?Z3k3S2pvZ3FsQlRyUTY5ekcwaGQyUFozbENidDUzSHUvYTdsZ2pDN1JKTnhk?=
+ =?utf-8?B?M2NtL2RjRTFXWi9hTXdidDNnOU50bHJRQ05pZ2srWldLdVVDOExhSkxsYXo3?=
+ =?utf-8?B?SGhnUFpBdklyd0dhN3hxQWtxTVBnZzdPQ0lEN2k0SjY4RzBJWXRQSTJ4eWdk?=
+ =?utf-8?B?L2JwOVJzRjB4WnA4ak53MWN3RU1FckFoaFhsRXpRWk0xcmZRVTRrVFQvZ28z?=
+ =?utf-8?B?Q0IyS2hja1NJck9zd3MvUHI0dXdSazZxOFd0NnM4KzJFMGhXb2xUUjU1VEZV?=
+ =?utf-8?B?Qk5BSFJLSUE2d3lvMTMwbkhSaVpWOXp5RjBEdXpzZ2lhRXV4SkFjTmUyQWJ0?=
+ =?utf-8?B?L1BYemludFlyeVZzL0loTFFyaVdabTR5K284cExRZmxGdjFrQ1kyUit6MlNW?=
+ =?utf-8?B?dkZIWWpEVTFHaWFocXFZQUV6T2J1TGpvNUUwZU01VUNPSHJUK1hCVnNhNk9s?=
+ =?utf-8?B?ZUlGRkczWGtDd2gwVmZQY1BlYnZPLys0RlUzVml5WFZ4ZjBGOUxxOS81UHNB?=
+ =?utf-8?B?ZDZjRTE2dmJlbnBqUXo3Q0QrdmFEY0Vkb1FMNlgvNkdQendZSDZ2bmxHTUd1?=
+ =?utf-8?B?RUhZOEZUV2c4cEt1c0FobnNvR1Zqb25NQ2xJWU0vZGJHemFydktLenBPYXEz?=
+ =?utf-8?B?MDJRWTBGMDFWQjRHcnVJVzJ2UUF1RlMyRGZvNnRZUVNIK1BzUGl1bnFKalND?=
+ =?utf-8?B?OENYdk9neDhDcG1mWjBtUC9KSDU2a1RJVGxRd2ZEbk04cGtFNG1UQm8yclVQ?=
+ =?utf-8?B?RlNvYTBZVkZIcHlBc09hZzU3TWdpZDFHRURHalBmS0hsWUVPdlpZazVmRmkz?=
+ =?utf-8?B?Qit0U1B6OUdXQlQ3QUp2WHdsM1lmS1BVTzVHRmdPaEV1cW52UG9rZktyTUUr?=
+ =?utf-8?B?TUJzbUxYcjVYTHJVbVNVbDdlbDFSR0N1andoSDVhL0hBY0s0d2Vuck5ha2wv?=
+ =?utf-8?B?UzVWYkpjU0RvZGUxNThmaGdaSTNPSWZUZEZjMTVCait0bzJKdUtjTGJSc3Rs?=
+ =?utf-8?B?T0oyeEhmcFd6K0tWVjZrcTdMWWFHR3hXdFFSOG04MitpbUt6UWZNby9WWTJF?=
+ =?utf-8?B?UWRzT0pRcWQrUXBSaHNleWRHbkM2RlY4WlBHWkl4M3RwNGNvQTBhY2xtYTlj?=
+ =?utf-8?B?Wm1lcERPMGMxc0l2cndTS2M1QXJGcHdNczU4WkErWmorcDBqWGc0bHhmQzMv?=
+ =?utf-8?B?TmN1dlBhRk5WbFJuczZoUnQzanF0VEQ3cnIvLzRjSmZkRFg4WFZvS0RxSWFJ?=
+ =?utf-8?B?S3R1SS9BRlQxV1hHQUltZEV5Y01WVEdZMDJzdDEvQ01aMHJJNWtqemQ1Q2p4?=
+ =?utf-8?B?YzBULzI5OXoxejFzVUhReEF1cGI0cldWRUQ5bHd3b0lrbnphVkxRSWFmSU9K?=
+ =?utf-8?B?RTBQWW43L0VCdXN4TVNqL2dacU04cVNReEVxclA3Ums3SnhxeDZQS0NrbjhP?=
+ =?utf-8?B?dFF5ZTNVY0REQUhweENleFNBK3JlK2xBQlhyRlZFRkpTREo0UFZ3T21ydVpV?=
+ =?utf-8?B?cGxGdnorYTFYWjMrSWlWVWxKYUJlMVVpZWxZWkdtZmlxNUNFYjl3N1RTNzh0?=
+ =?utf-8?B?NVlVdEhBQmtaaHRSVE5YSmV3NHJCeDhpelBVM3lWMlhOZ0NBRUNCUUJWT1VV?=
+ =?utf-8?B?eHZZR09jSWJpNVhRSWxvT2FnbnM1MHVzellyTElMNmVwOWpuK2FwT2I0VG9N?=
+ =?utf-8?Q?UcW0Y4wjeVQ=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB3997.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(7053199007)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RmZ4RjVFeFlPWllDNUlwY1ZSa2ZaMHVoQzAzTVdwbXhHYWhoeGtSNFdQMXZ6?=
+ =?utf-8?B?dHJGTFo1cnZEdkZrZ2Nhb1JEVjRyRkJnTW03RnJUVTZtWlplZVFZYXVvc0t6?=
+ =?utf-8?B?MmJTVjZQYkRWNmxyT2hrVHBNdXoxNVNmcElLUXFHWlIvM1hmbStzUWR5NFJ3?=
+ =?utf-8?B?WWpGQU85RWNiMkt5MjhYRDIzdkl2d1pOdHI5bU1uYmJDWDdIL2JnMXVyRER0?=
+ =?utf-8?B?VzJIMFZiSm8xU01BemVmeWhkSlphVWNsTFBBVk5BSU10aFl3Z3BjRUpQdFh4?=
+ =?utf-8?B?VktPeDQ5WGU3YzBRdUgrbXFqOHlwUHNoejZwenk1KzZvR3Z2VElLckRRZGU5?=
+ =?utf-8?B?dS81c2s4NUhUQ0lBWkdQOGdIeW4zVnQwYlFjM1ZIQkZ5aVBIT3I0OXZCYkU3?=
+ =?utf-8?B?QzVLc3dwUHFtQWhEMHR3WlVYK0dqdlk2NEFZT25vRmtzWEpjSnlmZlJ0R1R6?=
+ =?utf-8?B?ak1RV1VqWVB6eW0zYi9yaDQyaWhYYkFLdFlMOFpMQnhKd0FZNjNZa1BwTVhP?=
+ =?utf-8?B?QVEyQW5xaVdkL25nUCtoaWMxdVY3M2RwV3R5RjNEOVRjSkZxOHljM1VPNmZa?=
+ =?utf-8?B?RUI4R1I4cDRodG8rTXd3U0dYekZ6b09HMWhac0hiRTFwUmhnQy9iSmI1bm1t?=
+ =?utf-8?B?dWlreDUzdWJ0R3NTWVByZEhSU0hjbHJEL0tMcmR6NkVoRFdlWnhEcHpaZEFU?=
+ =?utf-8?B?ODZvQXpEWkxxOW4vMEUzRHNkMktvczRTZk1uS2VuS3NhaXpPL0FLcnRYaTFD?=
+ =?utf-8?B?SjhuQ2pLR3pZV05pM1pGK3o3cXVPME5HL0cxcUdFa2Z4NEZsSnR3R01MbVNG?=
+ =?utf-8?B?V0pUZ3BBOVg5RzVNOTVVTG9EU2MwZnhoRXA5NGRIaEllZTVETTZtb1RDeGo4?=
+ =?utf-8?B?dGxVTTlHejFtL3V4WHJ5K3kreGp4Qm90THdyc1lLSVdFSW9PKzVqaXZ0VGV3?=
+ =?utf-8?B?TWEwaWhlQmtYVVVrQ0NNTkMzZzYzdXdneEt0MzZtWEZmdUpMOTA5d2ZZZWgw?=
+ =?utf-8?B?bTVZZUlHN2xpbnBsb0JyRjNlb3NHSEkwVkJ6UCtqMU1wS3R4ZWIwSFdMUGJu?=
+ =?utf-8?B?SUNUdXhQenAwdHJuUnduMEJYMXpGbWlDa2lqSzFQdHdpNlE2bWMxWWlPWlh2?=
+ =?utf-8?B?eUZVU05tR0FuWnVyQ1dQK2E4MVpKdTBSaVhMbXhacHB5NWZuaHV5T0N2TXll?=
+ =?utf-8?B?dWQ5czZGak11V0lDejNkUnR6MGo2Sjl1ZDBUQjZPbEk4UzhpS1Vzb3Yrd05t?=
+ =?utf-8?B?cDBKY3pnRWJRZ0xMZTV6VDl1QWZqVUZuNlo3Z1ZxZ1JteHp5emhieUZVOGtZ?=
+ =?utf-8?B?QUtCRzhEbzAwRjZkOWc5S0RQMDY0VjlHT1VtUm1QTVpPWmZKdHZML2psWnlq?=
+ =?utf-8?B?SUlHUGNHSXdZOFZacHQ2MERqTzh2VTZ5VUJiNTdNMjFPVVdjR1lnS2xnS1BW?=
+ =?utf-8?B?WHcwYXFJTkhxMS9manF5Qjd0YThXazNZNXdBMGxRU3ZNUFkvWVRjdDgyRmZD?=
+ =?utf-8?B?d2RVRWkvbVVKUWlUNVoybUczd1ptTHo2bmI1ZUpzeVNydS81aFlnWjFkQVVG?=
+ =?utf-8?B?QUVKc3lpY21WbXV1NzZGbVVDMWlMMElWdFEwbDhCSGNTNXRNdzBqUndySzF2?=
+ =?utf-8?B?c2ljRmM5ZU5NWm50b2taWHVSS1JvaGF0cXpLNGwrRlNNTVF1STEwSW1CV25t?=
+ =?utf-8?B?d1ZYVUNObU9FOWw1TWJSaGV4SVhhc2xtU2cwcGZIcG84aW42dlBZSlYrOVhi?=
+ =?utf-8?B?S25VT1ZqMDVOOGJ0NGZrN0VwWFJVSUU1SnBDOG43UC92ZzVMQlV6aitzc0tt?=
+ =?utf-8?B?bWNuTVN4TzdqazNTaEZzMFk5VDZhc2xaNDFiMjlieXMxQkpDVWQwY3gwaGZL?=
+ =?utf-8?B?K0pLUVcrUnB0NERhTDFFZ2NhT3lMcUU3T05pRDJNTngrNDZzZ2lyZWtNZkc0?=
+ =?utf-8?B?Z0J3MHpNV0xJYWQ2R2hxQlJNNUZVY3J5bktWSE0xcHBrU3kwVjZkQWtYc2s3?=
+ =?utf-8?B?U1hBcTVZbGp4YllHM0RKS0FOQktQWU5sNU5veUFCYUMvK3F5cjBIRlpOTmdv?=
+ =?utf-8?B?NmtoOHJOZE9JYzZodWFxYmRqbDRJSFUrNzAvVTNhSGJaV3dKWGRhaThTYWVj?=
+ =?utf-8?Q?duAOz7LPu/O02LVYKjMRjhITF?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 43c3ec75-a20d-4d7f-262e-08dd5cabca81
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2025 12:38:28.1261
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FUGeK6CkrkGAxFSNCT9Ak0whpCl4aV0RGrZ4GG+vRq4xatj6DZ8iV8jwefzTBuZbANO1FR6lQ21pB9Rye8RtWA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6254
 
-On Tue, Mar 04, 2025 at 02:23:51PM +0530, Viresh Kumar wrote:
-> +/// This structure represents the Rust abstraction for a C [`struct clk`].
-> +///
-> +/// # Invariants
-> +///
-> +/// A [`Clk`] instance always corresponds to a valid [`struct clk`] created by the C portion of the
-> +/// kernel.
-> +///
-> +/// Instances of this type are reference-counted. Calling `get` ensures that the allocation remains
-> +/// valid for the lifetime of the [`Clk`].
-> +///
-> +/// ## Example
-> +///
-> +/// The following example demonstrates how to obtain and configure a clock for a device.
-> +///
-> +/// ```
-> +/// use kernel::clk::{Clk, Hertz};
-> +/// use kernel::device::Device;
-> +/// use kernel::error::Result;
-> +///
-> +/// fn configure_clk(dev: &Device) -> Result {
-> +///     let clk = Clk::get(dev, "apb_clk")?;
-> +///
-> +///     clk.prepare_enable()?;
-> +///
-> +///     let expected_rate = Hertz::new(1_000_000_000);
-> +///
-> +///     if clk.rate() != expected_rate {
-> +///         clk.set_rate(expected_rate)?;
-> +///     }
-> +///
-> +///     clk.disable_unprepare();
-> +///     Ok(())
-> +/// }
-> +/// ```
-> +///
-> +/// [`struct clk`]: https://docs.kernel.org/driver-api/clk.html
-> +#[repr(transparent)]
-> +pub struct Clk(*mut bindings::clk);
+Hi Danilo,
+
+On Wed Mar 5, 2025 at 2:34 AM JST, Danilo Krummrich wrote:
+> Add the initial nova-core driver stub.
+>
+> nova-core is intended to serve as a common base for nova-drm (the
+> corresponding DRM driver) and the vGPU manager VFIO driver, serving as a
+> hard- and firmware abstraction layer for GSP-based NVIDIA GPUs.
+>
+> The Nova project, including nova-core and nova-drm, in the long term,
+> is intended to serve as the successor of Nouveau for all GSP-based GPUs.
+>
+> The motivation for both, starting a successor project for Nouveau and
+> doing so using the Rust programming language, is documented in detail
+> through a previous post on the mailing list [1], an LWN article [2] and a
+> talk from LPC '24.
+>
+> In order to avoid the chicken and egg problem to require a user to
+> upstream Rust abstractions, but at the same time require the Rust
+> abstractions to implement the driver, nova-core kicks off as a driver
+> stub and is subsequently developed upstream.
+>
+> Link: https://lore.kernel.org/dri-devel/Zfsj0_tb-0-tNrJy@cassiopeiae/T/#u=
+ [1]
+> Link: https://lwn.net/Articles/990736/ [2]
+> Link: https://youtu.be/3Igmx28B3BQ?si=3DsBdSEer4tAPKGpOs [3]
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+
+A couple of nits inline below, but feel free to add my
+
+Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+
+> ---
+>  MAINTAINERS                        |  10 ++
+>  drivers/gpu/Makefile               |   1 +
+>  drivers/gpu/nova-core/Kconfig      |  14 ++
+>  drivers/gpu/nova-core/Makefile     |   3 +
+>  drivers/gpu/nova-core/driver.rs    |  47 +++++++
+>  drivers/gpu/nova-core/firmware.rs  |  45 +++++++
+>  drivers/gpu/nova-core/gpu.rs       | 199 +++++++++++++++++++++++++++++
+>  drivers/gpu/nova-core/nova_core.rs |  20 +++
+>  drivers/gpu/nova-core/regs.rs      |  55 ++++++++
+>  drivers/gpu/nova-core/util.rs      |  21 +++
+>  drivers/video/Kconfig              |   1 +
+>  11 files changed, 416 insertions(+)
+>  create mode 100644 drivers/gpu/nova-core/Kconfig
+>  create mode 100644 drivers/gpu/nova-core/Makefile
+>  create mode 100644 drivers/gpu/nova-core/driver.rs
+>  create mode 100644 drivers/gpu/nova-core/firmware.rs
+>  create mode 100644 drivers/gpu/nova-core/gpu.rs
+>  create mode 100644 drivers/gpu/nova-core/nova_core.rs
+>  create mode 100644 drivers/gpu/nova-core/regs.rs
+>  create mode 100644 drivers/gpu/nova-core/util.rs
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 8e0736dc2ee0..644817ccaa18 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -7449,6 +7449,16 @@ T:	git https://gitlab.freedesktop.org/drm/nouveau.=
+git
+>  F:	drivers/gpu/drm/nouveau/
+>  F:	include/uapi/drm/nouveau_drm.h
+> =20
+> +CORE DRIVER FOR NVIDIA GPUS [RUST]
+> +M:	Danilo Krummrich <dakr@kernel.org>
+> +L:	nouveau@lists.freedesktop.org
+> +S:	Supported
+> +Q:	https://patchwork.freedesktop.org/project/nouveau/
+> +B:	https://gitlab.freedesktop.org/drm/nova/-/issues
+> +C:	irc://irc.oftc.net/nouveau
+> +T:	git https://gitlab.freedesktop.org/drm/nova.git nova-next
+> +F:	drivers/gpu/nova-core/
 > +
-> +impl Clk {
-> +    /// Gets `Clk` corresponding to a [`Device`] and a connection id.
-> +    pub fn get(dev: &Device, name: Option<&CStr>) -> Result<Self> {
-> +        let con_id = if let Some(name) = name {
-> +            name.as_ptr() as *const _
-> +        } else {
-> +            ptr::null()
+>  DRM DRIVER FOR OLIMEX LCD-OLINUXINO PANELS
+>  M:	Stefan Mavrodiev <stefan@olimex.com>
+>  S:	Maintained
+> diff --git a/drivers/gpu/Makefile b/drivers/gpu/Makefile
+> index 8997f0096545..36a54d456630 100644
+> --- a/drivers/gpu/Makefile
+> +++ b/drivers/gpu/Makefile
+> @@ -5,3 +5,4 @@
+>  obj-y			+=3D host1x/ drm/ vga/
+>  obj-$(CONFIG_IMX_IPUV3_CORE)	+=3D ipu-v3/
+>  obj-$(CONFIG_TRACE_GPU_MEM)		+=3D trace/
+> +obj-$(CONFIG_NOVA_CORE)		+=3D nova-core/
+> diff --git a/drivers/gpu/nova-core/Kconfig b/drivers/gpu/nova-core/Kconfi=
+g
+> new file mode 100644
+> index 000000000000..ad0c06756516
+> --- /dev/null
+> +++ b/drivers/gpu/nova-core/Kconfig
+> @@ -0,0 +1,14 @@
+> +config NOVA_CORE
+> +	tristate "Nova Core GPU driver"
+> +	depends on PCI
+> +	depends on RUST
+> +	depends on RUST_FW_LOADER_ABSTRACTIONS
+> +	default n
+> +	help
+> +	  Choose this if you want to build the Nova Core driver for Nvidia
+> +	  GPUs based on the GPU System Processor (GSP). This is true for Turing
+> +	  and later GPUs.
+> +
+> +	  This driver is work in progress and may not be functional.
+> +
+> +	  If M is selected, the module will be called nova_core.
+> diff --git a/drivers/gpu/nova-core/Makefile b/drivers/gpu/nova-core/Makef=
+ile
+> new file mode 100644
+> index 000000000000..2d78c50126e1
+> --- /dev/null
+> +++ b/drivers/gpu/nova-core/Makefile
+> @@ -0,0 +1,3 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +
+> +obj-$(CONFIG_NOVA_CORE) +=3D nova_core.o
+> diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driv=
+er.rs
+> new file mode 100644
+> index 000000000000..63c19f140fbd
+> --- /dev/null
+> +++ b/drivers/gpu/nova-core/driver.rs
+> @@ -0,0 +1,47 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +use kernel::{bindings, c_str, pci, prelude::*};
+> +
+> +use crate::gpu::Gpu;
+> +
+> +#[pin_data]
+> +pub(crate) struct NovaCore {
+> +    #[pin]
+> +    pub(crate) gpu: Gpu,
+> +}
+> +
+> +const BAR0_SIZE: usize =3D 8;
+> +pub(crate) type Bar0 =3D pci::Bar<BAR0_SIZE>;
+> +
+> +kernel::pci_device_table!(
+> +    PCI_TABLE,
+> +    MODULE_PCI_TABLE,
+> +    <NovaCore as pci::Driver>::IdInfo,
+> +    [(
+> +        pci::DeviceId::from_id(bindings::PCI_VENDOR_ID_NVIDIA, bindings:=
+:PCI_ANY_ID as _),
+> +        ()
+> +    )]
+> +);
+> +
+> +impl pci::Driver for NovaCore {
+> +    type IdInfo =3D ();
+> +    const ID_TABLE: pci::IdTable<Self::IdInfo> =3D &PCI_TABLE;
+> +
+> +    fn probe(pdev: &mut pci::Device, _info: &Self::IdInfo) -> Result<Pin=
+<KBox<Self>>> {
+> +        dev_dbg!(pdev.as_ref(), "Probe Nova Core GPU driver.\n");
+> +
+> +        pdev.enable_device_mem()?;
+> +        pdev.set_master();
+> +
+> +        let bar =3D pdev.iomap_region_sized::<BAR0_SIZE>(0, c_str!("nova=
+-core/bar0"))?;
+> +
+> +        let this =3D KBox::pin_init(
+> +            try_pin_init!(Self {
+> +                gpu <- Gpu::new(pdev, bar)?,
+> +            }),
+> +            GFP_KERNEL,
+> +        )?;
+> +
+> +        Ok(this)
+> +    }
+> +}
+> diff --git a/drivers/gpu/nova-core/firmware.rs b/drivers/gpu/nova-core/fi=
+rmware.rs
+> new file mode 100644
+> index 000000000000..9de1399a2a69
+> --- /dev/null
+> +++ b/drivers/gpu/nova-core/firmware.rs
+> @@ -0,0 +1,45 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +use crate::gpu;
+> +use kernel::firmware;
+> +
+> +pub(crate) struct ModInfoBuilder<const N: usize>(firmware::ModInfoBuilde=
+r<N>);
+> +
+> +impl<const N: usize> ModInfoBuilder<N> {
+> +    const fn make_entry_file(self, chipset: &str, fw: &str) -> Self {
+> +        let version =3D "535.113.01";
+
+This should probably be a constant.
+
+> +
+> +        ModInfoBuilder(
+> +            self.0
+> +                .prepare()
+> +                .push("nvidia/")
+> +                .push(chipset)
+> +                .push("/gsp/")
+> +                .push(fw)
+> +                .push("-")
+> +                .push(version)
+> +                .push(".bin"),
+> +        )
+> +    }
+> +
+> +    const fn make_entry_chipset(self, chipset: &str) -> Self {
+> +        self.make_entry_file(chipset, "booter_load")
+> +            .make_entry_file(chipset, "booter_unload")
+> +            .make_entry_file(chipset, "bootloader")
+> +            .make_entry_file(chipset, "gsp")
+> +    }
+> +
+> +    pub(crate) const fn create(
+> +        module_name: &'static kernel::str::CStr,
+> +    ) -> firmware::ModInfoBuilder<N> {
+> +        let mut this =3D Self(firmware::ModInfoBuilder::new(module_name)=
+);
+> +        let mut i =3D 0;
+> +
+> +        while i < gpu::Chipset::NAMES.len() {
+> +            this =3D this.make_entry_chipset(gpu::Chipset::NAMES[i]);
+> +            i +=3D 1;
+> +        }
+> +
+> +        this.0
+> +    }
+> +}
+> diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
+> new file mode 100644
+> index 000000000000..f57b7efa10f3
+> --- /dev/null
+> +++ b/drivers/gpu/nova-core/gpu.rs
+> @@ -0,0 +1,199 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +use kernel::{
+> +    device, devres::Devres, error::code::*, firmware, fmt, pci, prelude:=
+:*, str::CString,
+> +};
+> +
+> +use crate::driver::Bar0;
+> +use crate::regs;
+> +use crate::util;
+> +use core::fmt;
+> +
+> +macro_rules! define_chipset {
+> +    ({ $($variant:ident =3D $value:expr),* $(,)* }) =3D>
+> +    {
+> +        /// Enum representation of the GPU chipset.
+> +        #[derive(fmt::Debug)]
+> +        pub(crate) enum Chipset {
+> +            $($variant =3D $value),*,
+> +        }
+> +
+> +        impl Chipset {
+> +            pub(crate) const ALL: &'static [Chipset] =3D &[
+> +                $( Chipset::$variant, )*
+> +            ];
+> +
+> +            pub(crate) const NAMES: [&str; Self::ALL.len()] =3D [
+> +                $( util::const_bytes_to_str(
+> +                        util::to_lowercase_bytes::<{ stringify!($variant=
+).len() }>(
+> +                            stringify!($variant)
+> +                        ).as_slice()
+> +                ), )*
+> +            ];
+> +        }
+> +
+> +        // TODO replace with something like derive(FromPrimitive)
+> +        impl TryFrom<u32> for Chipset {
+> +            type Error =3D kernel::error::Error;
+> +
+> +            fn try_from(value: u32) -> Result<Self, Self::Error> {
+> +                match value {
+> +                    $( $value =3D> Ok(Chipset::$variant), )*
+> +                    _ =3D> Err(ENODEV),
+> +                }
+> +            }
+> +        }
+> +    }
+> +}
+> +
+> +define_chipset!({
+> +    // Turing
+> +    TU102 =3D 0x162,
+> +    TU104 =3D 0x164,
+> +    TU106 =3D 0x166,
+> +    TU117 =3D 0x167,
+> +    TU116 =3D 0x168,
+> +    // Ampere
+> +    GA102 =3D 0x172,
+> +    GA103 =3D 0x173,
+> +    GA104 =3D 0x174,
+> +    GA106 =3D 0x176,
+> +    GA107 =3D 0x177,
+> +    // Ada
+> +    AD102 =3D 0x192,
+> +    AD103 =3D 0x193,
+> +    AD104 =3D 0x194,
+> +    AD106 =3D 0x196,
+> +    AD107 =3D 0x197,
+> +});
+> +
+> +impl Chipset {
+> +    pub(crate) fn arch(&self) -> Architecture {
+> +        match self {
+> +            Self::TU102 | Self::TU104 | Self::TU106 | Self::TU117 | Self=
+::TU116 =3D> {
+> +                Architecture::Turing
+> +            }
+> +            Self::GA102 | Self::GA103 | Self::GA104 | Self::GA106 | Self=
+::GA107 =3D> {
+> +                Architecture::Ampere
+> +            }
+> +            Self::AD102 | Self::AD103 | Self::AD104 | Self::AD106 | Self=
+::AD107 =3D> {
+> +                Architecture::Ada
+> +            }
+> +        }
+> +    }
+> +}
+> +
+> +// TODO
+> +//
+> +// The resulting strings are used to generate firmware paths, hence the
+> +// generated strings have to be stable.
+> +//
+> +// Hence, replace with something like strum_macros derive(Display).
+> +//
+> +// For now, redirect to fmt::Debug for convenience.
+> +impl fmt::Display for Chipset {
+> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+> +        write!(f, "{:?}", self)
+> +    }
+> +}
+> +
+> +/// Enum representation of the GPU generation.
+> +#[derive(fmt::Debug)]
+> +pub(crate) enum Architecture {
+> +    Turing,
+> +    Ampere,
+> +    Ada,
+> +}
+> +
+> +pub(crate) struct Revision {
+> +    major: u8,
+> +    minor: u8,
+> +}
+> +
+> +impl Revision {
+> +    fn from_boot0(boot0: regs::Boot0) -> Self {
+> +        Self {
+> +            major: boot0.major_rev(),
+> +            minor: boot0.minor_rev(),
+> +        }
+> +    }
+> +}
+> +
+> +impl fmt::Display for Revision {
+> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+> +        write!(f, "{:x}.{:x}", self.major, self.minor)
+> +    }
+> +}
+> +
+> +/// Structure holding the metadata of the GPU.
+> +pub(crate) struct Spec {
+> +    chipset: Chipset,
+> +    /// The revision of the chipset.
+> +    revision: Revision,
+> +}
+> +
+> +impl Spec {
+> +    fn new(bar: &Devres<Bar0>) -> Result<Spec> {
+> +        let bar =3D bar.try_access().ok_or(ENXIO)?;
+> +        let boot0 =3D regs::Boot0::read(&bar);
+> +
+> +        Ok(Self {
+> +            chipset: boot0.chipset().try_into()?,
+> +            revision: Revision::from_boot0(boot0),
+> +        })
+> +    }
+> +}
+> +
+> +/// Structure encapsulating the firmware blobs required for the GPU to o=
+perate.
+> +#[expect(dead_code)]
+> +pub(crate) struct Firmware {
+> +    booter_load: firmware::Firmware,
+> +    booter_unload: firmware::Firmware,
+> +    bootloader: firmware::Firmware,
+> +    gsp: firmware::Firmware,
+> +}
+> +
+> +impl Firmware {
+> +    fn new(dev: &device::Device, spec: &Spec, ver: &str) -> Result<Firmw=
+are> {
+> +        let mut chip_name =3D CString::try_from_fmt(fmt!("{}", spec.chip=
+set))?;
+> +        chip_name.make_ascii_lowercase();
+> +
+> +        let request =3D |name_| {
+> +            CString::try_from_fmt(fmt!("nvidia/{}/gsp/{}-{}.bin", &*chip=
+_name, name_, ver))
+> +                .and_then(|path| firmware::Firmware::request(&path, dev)=
+)
 > +        };
 > +
-> +        // SAFETY: It is safe to call `clk_get()` for a valid device pointer.
-> +        Ok(Self(from_err_ptr(unsafe {
-> +            bindings::clk_get(dev.as_raw(), con_id)
-> +        })?))
+> +        Ok(Firmware {
+> +            booter_load: request("booter_load")?,
+> +            booter_unload: request("booter_unload")?,
+> +            bootloader: request("bootloader")?,
+> +            gsp: request("gsp")?,
+> +        })
+> +    }
+> +}
+> +
+> +/// Structure holding the resources required to operate the GPU.
+> +#[pin_data]
+> +pub(crate) struct Gpu {
+> +    spec: Spec,
+> +    /// MMIO mapping of PCI BAR 0
+> +    bar: Devres<Bar0>,
+> +    fw: Firmware,
+> +}
+> +
+> +impl Gpu {
+> +    pub(crate) fn new(pdev: &pci::Device, bar: Devres<Bar0>) -> Result<i=
+mpl PinInit<Self>> {
+> +        let spec =3D Spec::new(&bar)?;
+> +        let fw =3D Firmware::new(pdev.as_ref(), &spec, "535.113.01")?;
+> +
+> +        dev_info!(
+> +            pdev.as_ref(),
+> +            "NVIDIA (Chipset: {}, Architecture: {:?}, Revision: {})\n",
+> +            spec.chipset,
+> +            spec.chipset.arch(),
+> +            spec.revision
+> +        );
+> +
+> +        Ok(pin_init!(Self { spec, bar, fw }))
+> +    }
+> +}
+> diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/n=
+ova_core.rs
+> new file mode 100644
+> index 000000000000..a91cd924054b
+> --- /dev/null
+> +++ b/drivers/gpu/nova-core/nova_core.rs
+> @@ -0,0 +1,20 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Nova Core GPU Driver
+> +
+> +mod driver;
+> +mod firmware;
+> +mod gpu;
+> +mod regs;
+> +mod util;
+> +
+> +kernel::module_pci_driver! {
+> +    type: driver::NovaCore,
+> +    name: "NovaCore",
+> +    author: "Danilo Krummrich",
+> +    description: "Nova Core GPU driver",
+> +    license: "GPL v2",
+> +    firmware: [],
+> +}
+> +
+> +kernel::module_firmware!(firmware::ModInfoBuilder);
+> diff --git a/drivers/gpu/nova-core/regs.rs b/drivers/gpu/nova-core/regs.r=
+s
+> new file mode 100644
+> index 000000000000..50aefb150b0b
+> --- /dev/null
+> +++ b/drivers/gpu/nova-core/regs.rs
+> @@ -0,0 +1,55 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +use crate::driver::Bar0;
+> +
+> +// TODO
+> +//
+> +// Create register definitions via generic macros. See task "Generic reg=
+ister
+> +// abstraction" in Documentation/gpu/nova/core/todo.rst.
+> +
+> +const BOOT0_OFFSET: usize =3D 0x00000000;
+> +
+> +// 3:0 - chipset minor revision
+> +const BOOT0_MINOR_REV_SHIFT: u8 =3D 0;
+> +const BOOT0_MINOR_REV_MASK: u32 =3D 0x0000000f;
+> +
+> +// 7:4 - chipset major revision
+> +const BOOT0_MAJOR_REV_SHIFT: u8 =3D 4;
+> +const BOOT0_MAJOR_REV_MASK: u32 =3D 0x000000f0;
+> +
+> +// 23:20 - chipset implementation Identifier (depends on architecture)
+> +const BOOT0_IMPL_SHIFT: u8 =3D 20;
+> +const BOOT0_IMPL_MASK: u32 =3D 0x00f00000;
+> +
+> +// 28:24 - chipset architecture identifier
+> +const BOOT0_ARCH_MASK: u32 =3D 0x1f000000;
+> +
+> +// 28:20 - chipset identifier (virtual register field combining BOOT0_IM=
+PL and
+> +//         BOOT0_ARCH)
+> +const BOOT0_CHIPSET_SHIFT: u8 =3D BOOT0_IMPL_SHIFT;
+> +const BOOT0_CHIPSET_MASK: u32 =3D BOOT0_IMPL_MASK | BOOT0_ARCH_MASK;
+> +
+> +#[derive(Copy, Clone)]
+> +pub(crate) struct Boot0(u32);
+> +
+> +impl Boot0 {
+> +    #[inline]
+> +    pub(crate) fn read(bar: &Bar0) -> Self {
+> +        Self(bar.readl(BOOT0_OFFSET))
 > +    }
 > +
-> +    /// Obtain the raw `struct clk *`.
 > +    #[inline]
-> +    pub fn as_raw(&self) -> *mut bindings::clk {
-> +        self.0
+> +    pub(crate) fn chipset(&self) -> u32 {
+> +        (self.0 & BOOT0_CHIPSET_MASK) >> BOOT0_CHIPSET_SHIFT
 > +    }
 > +
-> +    /// Enable the clock.
 > +    #[inline]
-> +    pub fn enable(&self) -> Result {
-> +        // SAFETY: It is safe to call clk APIs of the C code for a clock pointer earlier returned
-> +        // by `clk_get()`.
+> +    pub(crate) fn minor_rev(&self) -> u8 {
+> +        ((self.0 & BOOT0_MINOR_REV_MASK) >> BOOT0_MINOR_REV_SHIFT) as u8
+> +    }
+> +
+> +    #[inline]
+> +    pub(crate) fn major_rev(&self) -> u8 {
+> +        ((self.0 & BOOT0_MAJOR_REV_MASK) >> BOOT0_MAJOR_REV_SHIFT) as u8
+> +    }
+> +}
+> diff --git a/drivers/gpu/nova-core/util.rs b/drivers/gpu/nova-core/util.r=
+s
+> new file mode 100644
+> index 000000000000..332a64cfc6a9
+> --- /dev/null
+> +++ b/drivers/gpu/nova-core/util.rs
+> @@ -0,0 +1,21 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +pub(crate) const fn to_lowercase_bytes<const N: usize>(s: &str) -> [u8; =
+N] {
+> +    let src =3D s.as_bytes();
+> +    let mut dst =3D [0; N];
+> +    let mut i =3D 0;
+> +
+> +    while i < src.len() && i < N {
+> +        dst[i] =3D (src[i] as char).to_ascii_lowercase() as u8;
+> +        i +=3D 1;
+> +    }
+> +
+> +    dst
+> +}
+> +
+> +pub(crate) const fn const_bytes_to_str(bytes: &[u8]) -> &str {
+> +    match core::str::from_utf8(bytes) {
+> +        Ok(string) =3D> string,
+> +        Err(_) =3D> kernel::build_error!("Bytes are not valid UTF-8."),
+> +    }
+> +}
 
-You may want to add an invariant for this, i.e. something along the lines of
-"Clk always holds either a pointer to a valid struct clk or a NULL pointer".
+I guess these functions could be useful to other drivers and can maybe
+be moved to a string utility module, but this can be done later too.
 
-In this safety comment you can then say that by the type invariant of Clk
-self.as_raw() is a valid argument for $func.
+Thanks!
+Alex.
 
-Not that your type invariant needs the NULL case, since OptionalClk may set Clk
-to hold a NULL pointer.
-
-I still think that a new type MaybeNull<T> would be nice to encapsulate this
-invariant, but we can also wait until we get another use-case for it.
