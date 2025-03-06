@@ -1,140 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED6738DE0;
-	Thu,  6 Mar 2025 15:54:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFB6145A0B;
+	Thu,  6 Mar 2025 16:08:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741276462; cv=none; b=MPElo0sxl2S3J8wkxo9Lkzp1aqf7RlN2n5dwgUONZ/3rr8X4EvLwmZ1lk25feEmDVdBdIaf0WoxcpPoAvr+FFktayz56QvtPnDfyyjgi3wP8WcG3qMejWNh+Erh08ucobSGweOI5XWeJgCa5C5fn9YUXXxq4tfHkgQqeE5voBtI=
+	t=1741277338; cv=none; b=XqUHWkp/aYN8SXpZhG4sQ+h0enWgRDQe7j29hp2P+EBzz0XJjjEwcMqTz9LJvSa87j8eFSQvyzNls/yUtsUHYGfwuVPWCue7gvOOmGNXHOMGkDat2hlOlJbm0BNysVBhKXX4fTWgodYFa/GPrvrlC4oU8lylmye7/D79TKfJYhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741276462; c=relaxed/simple;
-	bh=mVOUoMC1bk4HTH++GmpfTH/JOD2CG3MVZY69+6D4SNY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O3CFalHL2sQ2s9u9cZFXoeqk1grt7qTEbZNvUT5OupkeJA29je4yoGCUlTdLMCzjeMDyVcTzllgfjbFYLBlgHXrS9NTDJL3GLy6xz1JwVhAg+vTOKWsH17wFSXZa5BIkD02TbyyWkG30GbUF76DoZuMGRjIefhpDUhOS4A3Obno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GHTpIO49; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741277338; c=relaxed/simple;
+	bh=6inTVkTcpGwvmg6llHOj2dPDvxgSjLoa3hpVklIUPbs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=EQi4NfuQ/UkUcJnIw6SYAWKxbr9UbzrFybyIss49Szb7b+I4PcNiZwWpPjiC6ABmW7sqnXGfZsauzfL9NV0Tm/O7fNxgC0nFNcS/7BJUr6Aa6mvH0PF56mzviQ3Oj0yaykw3O69P0t26fsepI12GQfMUebt29ko+tz5vUYcdvOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cJ5xiwMU; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GHTpIO49"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B5C4C4CEE4;
-	Thu,  6 Mar 2025 15:54:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741276461;
-	bh=mVOUoMC1bk4HTH++GmpfTH/JOD2CG3MVZY69+6D4SNY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GHTpIO49taIrevs/bg/xVv81jeyXDNxsjmc2g8dKNw0iDMt52tvZuzRSnxesJnQtP
-	 B2RG7DnhIS1EgJGr5s2ByecjoIBOi1sV/U0hHdCUqVE34MwfiLiWtybXHrwcieCvHZ
-	 aurvm/f39VmvDESM1Y+fIW8/kzd/oyGoYZCkQ84182P/TbtMKZzK5+jeNYMs87I0Dx
-	 skiijTuC+/IQJSmMV7idaSwMgtpK1M3l/qMWycTNm/HlI61bnafXyQ8dCfTG9S6v5+
-	 KMh22HAR2KVaUhK/jzbFo1JNeSpSz+GF/nTPcRWxQReIw75SNS36dP9D+woC9XfhHx
-	 a5a12fos4oabQ==
-Date: Thu, 6 Mar 2025 16:54:14 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Simona Vetter <simona.vetter@ffwll.ch>
-Cc: Jason Gunthorpe <jgg@nvidia.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>, aliceryhl@google.com,
-	robin.murphy@arm.com, daniel.almeida@collabora.com,
-	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
-Subject: Re: [PATCH v12 2/3] rust: add dma coherent allocator abstraction.
-Message-ID: <Z8nFJjb30_Wm3cJJ@cassiopeiae>
-References: <20250224115007.2072043-1-abdiel.janulgue@gmail.com>
- <20250224115007.2072043-3-abdiel.janulgue@gmail.com>
- <20250305174118.GA351188@nvidia.com>
- <Z8mlAxsszdOH-ow8@cassiopeiae>
- <Z8m9j3SwWHqaCTXo@phenom.ffwll.local>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cJ5xiwMU"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-22401f4d35aso15849875ad.2;
+        Thu, 06 Mar 2025 08:08:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741277336; x=1741882136; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=E15Ou/Ag38gHJBr4kh5fGeP0yT1X2+13TRGZu8RxeNc=;
+        b=cJ5xiwMUCxVmCU28Og1z/xo4RFgpXiQ1bj1ZqGg0SgydpKExnQJ1sNprFgTlpCn4sz
+         QgHERhR/q/CI2bvB8EARO1FOqYP8+Jh5mzJphNxDrbXZLeztUQhDP/KRfEI1z/flOcoL
+         dusYgNY9qrcBzb7Ni8uYrCbt3B6tkmu5ROXyexGFmS8/bpvbZpFh5ZEKXJrsYMkyf5k+
+         wsBb6Ioo+Yrv39Vq1OnyJiOK61QtnbRoFlIW2wlTGesdoyMFXPiU1Js5X+SFQg7591Yv
+         TAklU+EPnP9otaAzvDaZayblbKNLf5cVMunN79u+8RR92QmbkjpVncaKAmPz6zojVtoR
+         Xmmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741277336; x=1741882136;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=E15Ou/Ag38gHJBr4kh5fGeP0yT1X2+13TRGZu8RxeNc=;
+        b=WFyIYEPedSy6btGJ6dD7k4xU66WWLh2dHk50pvc/QxyFB1J0d8sY7W1RItLUimjpPT
+         82YghiKFmKbYvDYmq8+Gr4Zuofqh+vhlsAFplVfAQLeep0oRe7rM4ZZ/jx/KWHWTwzo7
+         VgG58A4moKZ4cX8p5xLL9rEN72JOuG+TBdOvWBAcjBifu5lbiQpG0kTWY+Eh4nBxYo0c
+         3f8HhRyD3TMazIBFmx47bGQ0IfQDxoDetHx7J6ZHKB6PNRsOF3tOr5nGFvGwtD+akxCb
+         cN1aOdFtvyZI8zDyL85eDm9R8RoXyGWY2p4FeovZVSYoHib2FWRli8jpt0HSaWfR+q8v
+         8/PA==
+X-Forwarded-Encrypted: i=1; AJvYcCWGwqFHBSLkECc0LBmv2Tqyw0IFLR9dMXBdN7SRzcLZ9gHy/V81BQCtBOomDSzGUO357dkWLYXSSXO+D1Y=@vger.kernel.org, AJvYcCXIJm0yw38vapZAKRggUVzjTsY8jThWXEpftCr69kgEHEPWrsiTeeVK1jlkL+4HTpyWaT3TL/mu7YgSrenYHMA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyENTjTL5/m5wFKFkpIx8qvta/MT/8jUAdWDesGFi0Z4iquiuT2
+	GhZPRtnXx4a9KaT38Uyv+kgV7gXXmBnOEFJU/wQWANFugrGUtxQy
+X-Gm-Gg: ASbGnctX5mjR/424eI4MLt97kc35W4CRdjgPNBTO3ZgxySUAHx/UX34USc9/dYWI6EY
+	0RbpwARybgRXf8wXNurHKpCCURHkz5JCcSojP4LFaITkJ7OKM2O8tMEVRIQ74j0A8aJvpsBInw4
+	AxuKOEOYZm/v5XBC2L+S6cmOlEsezmfbrYcLrD9uYgenFqRHrttPBEYeVnB8a9dmZbqerzqjEoN
+	bw+W8KQAt4x0SFn1+Alr9QR4vl0xuRsAYXmeAW/Xhdq1frRKVY6tLKWbpxvM2gt5LzAubxGW8h+
+	a/b27AmORV5jHoaYoxuX1bCW4nbfb5mq8UvL3cJRu/v2HklW8XmI
+X-Google-Smtp-Source: AGHT+IGWtCYPtPKvA9ytZNWDmsaikYLXtYMxsOG12S/GFmGoPi/hKI+9bFGk5HyAWTh506wT+dZJiA==
+X-Received: by 2002:a17:903:244d:b0:223:5ada:88ff with SMTP id d9443c01a7336-223f1c982dbmr145065475ad.24.1741277335621;
+        Thu, 06 Mar 2025 08:08:55 -0800 (PST)
+Received: from linuxsimoes.. ([187.120.156.44])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-224109dd5f8sm14203695ad.52.2025.03.06.08.08.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Mar 2025 08:08:55 -0800 (PST)
+From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: a.hindborg@kernel.org,
+	alex.gaynor@gmail.com,
+	aliceryhl@google.com,
+	apw@canonical.com,
+	arnd@arndb.de,
+	aswinunni01@gmail.com,
+	axboe@kernel.dk,
+	benno.lossin@proton.me,
+	bhelgaas@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	dakr@kernel.org,
+	dwaipayanray1@gmail.com,
+	ethan.twardy@gmail.com,
+	fujita.tomonori@gmail.com,
+	gary@garyguo.net,
+	gregkh@linuxfoundation.org,
+	joe@perches.com,
+	linux-kernel@vger.kernel.org,
+	lukas.bulwahn@gmail.com,
+	ojeda@kernel.org,
+	pbonzini@redhat.com,
+	rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu,
+	trintaeoitogc@gmail.com,
+	walmeida@microsoft.com
+Subject: Re: [PATCH V6 2/2] checkpatch: check format of Vec<String> in modules
+Date: Thu,  6 Mar 2025 13:08:44 -0300
+Message-Id: <20250306160844.269308-1-trintaeoitogc@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CANiq72n=gFWrv9yFmzntaeR+RH5=qeD_uOs6NiW4dHkdaopKKw@mail.gmail.com>
+References: <CANiq72n=gFWrv9yFmzntaeR+RH5=qeD_uOs6NiW4dHkdaopKKw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z8m9j3SwWHqaCTXo@phenom.ffwll.local>
+Content-Transfer-Encoding: 8bit
 
-(For some reason, when replying to this mail, mutt removed Sima from To: and
-instead switched Cc: to To:, hence resending.)
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
+> In any case, without changing the configuration, i.e. the current
+> status, what happens in the different cases? e.g. 1 item, 2 items, 10
+> items...?
+In current config, the formatting seems don't have a effect for arrays. 
+i.e. this array: authors: [ "author_1", "author_2", "author_3", "author_4","author_5","author_6","author_7" ]
+don't is fixed by rustfmt for no format.
 
-On Thu, Mar 06, 2025 at 04:21:51PM +0100, Simona Vetter wrote:
-> On Thu, Mar 06, 2025 at 02:37:07PM +0100, Danilo Krummrich wrote:
-> > On Wed, Mar 05, 2025 at 01:41:19PM -0400, Jason Gunthorpe wrote:
-> > > On Mon, Feb 24, 2025 at 01:49:06PM +0200, Abdiel Janulgue wrote:
-> > > 
-> > > > +impl<T: AsBytes + FromBytes> Drop for CoherentAllocation<T> {
-> > > > +    fn drop(&mut self) {
-> > > > +        let size = self.count * core::mem::size_of::<T>();
-> > > > +        // SAFETY: the device, cpu address, and the dma handle is valid due to the
-> > > > +        // type invariants on `CoherentAllocation`.
-> > > > +        unsafe {
-> > > > +            bindings::dma_free_attrs(
-> > > > +                self.dev.as_raw(),
-> > > > +                size,
-> > > > +                self.cpu_addr as _,
-> > > > +                self.dma_handle,
-> > > > +                self.dma_attrs.as_raw(),
-> > > > +            )
-> > > 
-> > > I mentioned this in another thread..
-> > > 
-> > > There is an additional C API restriction here that the DMA API
-> > > functions may only be called by a driver after probe() starts and
-> > > before remove() completes. This applies to dma_free_attrs().
-> > > 
-> > > It is not enough that a refcount is held on device.
-> > > 
-> > > Otherwise the kernel may crash as the driver core allows resources
-> > > used by the DMA API to be changed once the driver is removed.
-> > > 
-> > > See the related discussion here, with an example of what the crash can
-> > > look like:
-> > > 
-> > > https://lore.kernel.org/lkml/8067f204-1380-4d37-8ffd-007fc6f26738@kernel.org/T/#m0c7dda0fb5981240879c5ca489176987d688844c
-> > > 
-> > >  > a device with no driver bound should not be passed to the DMA API,
-> > >  > much less a dead device that's already been removed from its parent
-> > >  > bus.
-> > 
-> > Thanks for bringing this up!
-> > 
-> > I assume that's because of potential iommu mappings, the memory itself should
-> > not be critical.
-> > 
-> > > 
-> > > My rust is non-existent, but I did not see anything about this
-> > > point.
-> > 
-> > Indeed, this needs to be fixed. It means that a CoherentAllocation also needs to
-> > be embedded in a Devres container.
-> > 
-> > > 
-> > > Also note that any HW configured to do DMA must be halted before the
-> > > free is allowed otherwise it is a UAF bug. It is worth mentioning that
-> > > in the documentation.
-> > 
-> > Agreed, makes sense to document. For embedding the CoherentAllocation into
-> > Devres this shouldn't be an issue, since a driver must stop operating the device
-> > in remove() by definition.
-> 
-> I think for basic driver allocations that you just need to run the device
-> stuffing it all into devres is ok.
-
-What exactly do you mean with that? DMA memory allocations or "normal" memory
-allocations?
-
-The latter should never be in a Devres container. The Devres container should
-only hold things that, for safety reasons, are not allowed to out-live device
-/ driver unbind.
-
-> But for dma mappings at runtime this will be too slow.
-
-What exactly do you mean with "DMA mappings at runtime"? What to you think is
-is slow in this aspect?
+Thanks,
+Guilherme
