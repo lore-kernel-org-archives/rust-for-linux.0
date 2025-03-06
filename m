@@ -1,107 +1,87 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C213420A5D1;
-	Thu,  6 Mar 2025 11:39:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802D1190051
+	for <rust-for-linux@vger.kernel.org>; Thu,  6 Mar 2025 12:03:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741261157; cv=none; b=Hq3VfwJBhb7GnRNv9ZateJyTGmzk64lZGOAIfu/pnW1dxlZKazeiYU6OcvFJiM5CmB6/X0DuMWP8fOt8OhnRWI9cBL8Pj6meiEX1bfWGm0i/QKEfWYISPP9HBwqpiAU3G+gbXXRMiG3Cj125oEzHpYL0BsiY2QWolTLnNy3215o=
+	t=1741262618; cv=none; b=te5fHe7HpJdUlf1V0gx9h7H8ux5ipVdtX86tx9xzzbyd3wbamwwVIrz6frf5CG2p9ZKZ9k+3MDESiLr2KA5dw4dpDRTd82BZ6xqo3R3p4Zk2phoceIkBiXjrEy6DLPp5631grmeX5SeiVPi02mMMOx/YbIonqmIAsG/jGgXsNdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741261157; c=relaxed/simple;
-	bh=DIw3ZNfmKEavYgsFL5k+QNr2/ynyAQxKvjnopLtQelQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CL3M2zSR6JVAx0K4sxOtXVgN8UyOqEtTLCvDz8rF2rJTDWTh31xQtdn8yOve4kGQQYC+js2JkpLY14K9JAx7986UyYQzzmlQV8QdFgMsKZnGhy3u5KxGka0DNIQNQKFh/8Xhdf7RgTf11MG3EGTiPz6thhlAY9gn2RLKFqMEvZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ndz2o95T; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1741262618; c=relaxed/simple;
+	bh=EKN1Aec042lfCLYffY+qogNf06FDM+J+RkLkqOv5eOs=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=I9GOJJxRwPqF970C4/EBnbM1v7s+aDdCxLPGjJN6W5kkZMxi0l4fS2lrB132LO3QEixKat6fjit6HDboD1fnsb4gKIKrdqsHQtSWqal5EOWLQBYnoNS1A5cRkFB5DqztN1VAxEcEu6Wu9kugZg2qsyc7zHlMO3D0XD/mX5E6snE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=f9MpQjXO; arc=none smtp.client-ip=185.70.40.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ndz2o95T"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2ff53b26af2so148391a91.0;
-        Thu, 06 Mar 2025 03:39:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741261155; x=1741865955; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DIw3ZNfmKEavYgsFL5k+QNr2/ynyAQxKvjnopLtQelQ=;
-        b=ndz2o95Tf6zAfp1i8s9OYebJiEZZSnubrefa3lMPQesLB4bBNtkoT72h4uuWVQsYAs
-         LChgh9VdVn1IcToYhuqePom1l1g43GPztjiwKSDyNvDgjNp6fTsrUhkrKO7pSlPJdsz3
-         bIAkE/peHBLD6FYqeIY6YiuJgUWXVJA0KIa5J/yb4RqaRlPqQJtuTbHkPLnM0/RM+BdO
-         I8PxlMMalYHeDLKK8Ybb7c1zzSKed9d0Y7SHTvDpiyPLyIoUL99FEVF59qXBSmO13yQS
-         bOZ9tdRqLgarS8BqV+OA5SzuQI1Z8XjCxRn8JTvqQUrLklL9ZThDqP0Ag8Ac4hNooR7+
-         mciA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741261155; x=1741865955;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DIw3ZNfmKEavYgsFL5k+QNr2/ynyAQxKvjnopLtQelQ=;
-        b=elLDC9+1p9SYCt6SwWfTjqehc+q6UBU4gUgLPzLH38ECTokpfkf8RwxMiQ3Tnv+FPq
-         lHASb8I7i9Sd1A3BZMUoHQkcFP+fJm6NoY6oDwDfuhPjHzjw0LY5pqPByrnXv38cB5C/
-         /Mm/fWZWyxGhK1DC4C2IkQmAlDOw/NB+/rtHHQctSSRFBu63PXDqNBbO/LwL/LNxhzrc
-         mm1+JsxLFVVsS9NI+dIBxpwzt2HJMFT2FKduHZUZQAd98eu/VQV1xUZhh8jRf8iEG/zw
-         u2Q2oKhE4Ni6KjLVa91iwJMbjIxceRFQeTMd5PdxeRPhTPazuIAamR64+DY1whZovhIi
-         Ll2w==
-X-Forwarded-Encrypted: i=1; AJvYcCWzJnRs349+Z2N4hJ4nLukf20EC0YES6OiAiBmh1VX1inAnGx4zStHBURCc/OvxzHwLffIVEScRCdG/dkQ=@vger.kernel.org, AJvYcCX0iQEOZvwpnJdYBKHAtYHJ/wyKOOUC+zXq4ViMza7cHkEUD/G8z2u1LLXDBnxRAMSN9tJpXv9N4M165uRCjcM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwuVsKpyodc/oGFUfhJtDbGF5ZwI3priU4UIXhuSEdZfvHbZMZW
-	l31JXE98Ma7T5jUJ45AvWFZOq6TcadrjPzJnF5gIYfjpqlNBeld+o+LvPxaph9/SE5MiVEbxZzV
-	5TOv/NknWztVqMsb0ZvP1/wBgHgI=
-X-Gm-Gg: ASbGncusalSkIXlTgeO1XOfLWLVbGzzTC3dy1PngGkMJydS2wiH/uPJiystLs3xWGvf
-	ASY0bHockCo7oBg2HX3NKAPygzx0zF6dutfFoXkKzI7RQIsff5ay6GGd/e/2Pw8AMdRFBSMVeUI
-	mzbicg56xu7wacr/Ypqj6WpPQb4A==
-X-Google-Smtp-Source: AGHT+IETc3OTWIDbDkbBtj13nzkDlG4jrI+FbbIMUpzhoE3NNH/d0m+A66/omoTe/ImHZUflDCN9IwVVf/kKQ3yplqM=
-X-Received: by 2002:a17:90b:4d05:b0:2fe:8fa0:e7a1 with SMTP id
- 98e67ed59e1d1-2ff49717553mr4247092a91.2.1741261154896; Thu, 06 Mar 2025
- 03:39:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="f9MpQjXO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1741262608; x=1741521808;
+	bh=E9ndBuSbaPlC91uSyBn2kvl1hGQxUxmwYxtPLheGNC4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=f9MpQjXOr3Ph0OkDMzDvotuaC9dgnPDLFsAPUXktv+R9AOUWzzCOi6iaVanU6Nql2
+	 KOz8YRF85N9LyCdS5diahpOo71BWIs9AECTs7icBikKcwmwc2E4iylJ8Aqp+oZy1yi
+	 Ie61iMmlhI2otCjyQ0mQ4R3jpuOWtY+IiX4BGmJS3NmInx/7BFcKs+plFfeVXYNZXs
+	 AZ+tFPZKaoq0d4SuviQLjbwGys6m/74GmObbwC1PNM6YKYXVm4Zvh23f113N8imb0D
+	 N75okFfK5mAH+HgI4jUp1bu5YJjqJ4kviNmrYo1QfiafUxGQdNw2ey9+LYMEMeNUF5
+	 5irvkmqxL3WTA==
+Date: Thu, 06 Mar 2025 12:03:23 +0000
+To: Alice Ryhl <aliceryhl@google.com>
+From: Oliver Mangold <oliver.mangold@pm.me>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4] rust: adding UniqueRefCounted and UniqueRef types
+Message-ID: <Z8mPBvL--zUxBpYN@mango>
+In-Reply-To: <Z8mHgyNxb6rv6Vhm@google.com>
+References: <Z8hUIPtE_9P60fAf@google.com> <CAH5fLgjFBknTmhxQBPUdB-iNMjEkcyuLiu22-Nj-DGB1Gb7NkA@mail.gmail.com> <87ldtj8p2m.fsf@kernel.org> <JPqvzrz3Zy0HgwNoHh2psup7imFItiN_j_VmmjVPBfwJzf040DTvZAwUDjNv1FQiLXFiSAANIxc2IegeKGCJvA==@protonmail.internalid> <CAH5fLgirYTV6K2QoH9LLwhHxJzz=h1R0jB4G2kpKQ_pBtBgePg@mail.gmail.com> <875xkn8k5z.fsf@kernel.org> <Z8lsetLbHvn-6cai@google.com> <Z8l1Zt3ibanzBhnX@mango> <Z8mHgyNxb6rv6Vhm@google.com>
+Feedback-ID: 31808448:user:proton
+X-Pm-Message-ID: 9457a7d51cc28f552195fcc7feca8b2f81565b22
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANiq72koDba445gMYtC_VEcFk2+O-Xg2-2y6uMyp7onBy=7rcw@mail.gmail.com>
- <20250306015901.241800-1-trintaeoitogc@gmail.com>
-In-Reply-To: <20250306015901.241800-1-trintaeoitogc@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 6 Mar 2025 12:39:02 +0100
-X-Gm-Features: AQ5f1JrT19LxdwelEi_ms3E0EwUNOs1hBDwrCHdoabTj9taDV68gZE71D_mYZhY
-Message-ID: <CANiq72n=gFWrv9yFmzntaeR+RH5=qeD_uOs6NiW4dHkdaopKKw@mail.gmail.com>
-Subject: Re: [PATCH V6 2/2] checkpatch: check format of Vec<String> in modules
-To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com, 
-	apw@canonical.com, arnd@arndb.de, aswinunni01@gmail.com, axboe@kernel.dk, 
-	benno.lossin@proton.me, bhelgaas@google.com, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, dakr@kernel.org, dwaipayanray1@gmail.com, 
-	ethan.twardy@gmail.com, fujita.tomonori@gmail.com, gary@garyguo.net, 
-	gregkh@linuxfoundation.org, joe@perches.com, linux-kernel@vger.kernel.org, 
-	lukas.bulwahn@gmail.com, ojeda@kernel.org, pbonzini@redhat.com, 
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu, walmeida@microsoft.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 6, 2025 at 2:59=E2=80=AFAM Guilherme Giacomo Simoes
-<trintaeoitogc@gmail.com> wrote:
->
-> I don't know if I really understand how this would is do.
+On 250306 1131, Alice Ryhl wrote:
+>=20
+> How about this:
+>=20
+> * Rename AlwaysRefCounted to RefCounted.
+> * Introduce a new AlwaysRefCounted trait with no methods and gate
+>   `From<&T>` on it. It has RefCounted as a sub-trait.
+> * Introduce an Ownable trait with an Owned type like in [1].
+> * Given an Owned<T> where T:RefCounted you can convert from Owned<T> to
+>   ARef<T>.
+>=20
+> And there needs to be a safety requirement on Ownable or
+> AlwaysRefCounted which requires that a type cannot implement both
+> traits. Alternatively, if a type implements both, it needs to be safe to
+> have both Owned<T> and ARef<T> references at the same time, which could
+> make sense for a type that has one "special" reference and many normal
+> references.
+>=20
+> If you want conversions ARef<T> to Owned<T>, you should add a new trait
+> TryIntoOwned that's a super-trait of both RefCounted and Owned and has
+> the `try` method for the conversion.
+>=20
+> Thoughts?
+>=20
+Yes. Sounds good to me. Basically what I had in mind. Only the naming
+is different.
 
-Do not worry about it for this series -- it is something for the future.
+I will build an implementation like this and post it as v5.
+I won't change the names of UniqueRef and UniqueRefCounted for now,
+but more out of laziness than because of having strong feelings about it.
+I like UniqueRef a bit better as our focus is on pointing out that
+it is unique. But if you or other prefers Owned I can change it.
+>=20
+> [1]: https://lore.kernel.org/rust-for-linux/20250202-rust-page-v1-1-e3170=
+d7fe55e@asahilina.net/
 
-> The rustfmt have a array_width parameter [1], but with this, all arrays i=
-n rust
-> code will have the formatting that we set. (In this case, is 1 per line).
+Oh, really very similar.
 
-Yeah, I was thinking more of something like `skip_macro_invocations`
-(but it is unstable) or perhaps one like `format_macro_*` that refers
-to arrays within macros or similar (but I don't think it exists yet).
-I added the former to our wishlist at
-https://github.com/Rust-for-Linux/linux/issues/398, anyway, since I
-suspect it could be useful eventually.
-
-In any case, without changing the configuration, i.e. the current
-status, what happens in the different cases? e.g. 1 item, 2 items, 10
-items...?
-
-Thanks!
-
-Cheers,
-Miguel
