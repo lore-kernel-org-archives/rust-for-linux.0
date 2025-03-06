@@ -1,93 +1,152 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A70020E01D
-	for <rust-for-linux@vger.kernel.org>; Thu,  6 Mar 2025 09:48:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E558920E037;
+	Thu,  6 Mar 2025 09:49:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741254541; cv=none; b=AgkaEV7RWJAKT6RSX14TQL/Ov/A5EBzd7AXtdFB2Q7grw5W4vbkvtpdNM6lT9Id0HLfoMMbqzh1ec4hLDvjwRa9rsT7Ku5gPUsXfjfPamgtoRiJDsb2d2cuHfJVIX0k+KG81ulUTjYmkwBxLGKNyIjRItWAdovC8ZVLshXRSQMk=
+	t=1741254542; cv=none; b=nKCmIBMHVbSUvxFjdltpTYiRlRfyyTxancQOU/UMuXjEJGIjFNu+7IxUzXR1yhGJZ3m7QFdFNWBLpO0Y8kY8MA0F5wiJMCx7nBQRYaBqbtNm2CnHsODkBkkFuQFwVxN2m1gOXbThWgbcwET5mgPNEjqXaBu4/KeiQ0colvAts3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741254541; c=relaxed/simple;
-	bh=nxwiE27qUkNPBhSkfyKtbpFN1GvgBfCIdPUB1ha5eBI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=pkmfbs7fe194xIbQGKximS3vBYi9yUM8mFB1B69ajeX8b3OP2w33aq37/ME4jYxhcjVKwRi4GcADHKqy53/0apkdNtDhqtPGuaXFJ2KpWBmzR5G8dCsuOWrXtqaM2/ySTjGpk/orNeElW09ytFFHvkrbgI0sETy3+QHNzWk3x/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=n9cBwFj9; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1741254542; c=relaxed/simple;
+	bh=+h2ps//W/d4AsThHf884SeSupc3zB2T3LQHMiaaH//8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=PsucuNU0DhCw+wncllLmGZI6zB++1GpPSxp8OZdiCmAIE+2LuPA1+OJW2NLoT1J9L1IEOX3/H42EXSmojTyunq0QOYSHsDdxchXAU+DaErx5ietyzXpZyPGbeutY4NNwmQEnY1Ij5lduNidNRndwTzmoIDyAqe/bTVQ72TfN6mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CIwIdO1W; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="n9cBwFj9"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4388eee7073so8541155e9.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 06 Mar 2025 01:48:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741254538; x=1741859338; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nxwiE27qUkNPBhSkfyKtbpFN1GvgBfCIdPUB1ha5eBI=;
-        b=n9cBwFj9lsHzSlNjLKtT142LdKDLljcg4vJ7TIshc8OQQhpOqAP3LjD2tTZ6uj4HLG
-         5eN/cWY9p/elErAhne/nUM0lMhqFo5932f53k62tM08ei35U0uE/43Tfi6WoehO5nMd+
-         WT4pAFoy4YNfQvPHsHEC6wIWDjB4EcQaXg1J1PxaaIHciIez8YFGuVTiACoGTW8AEZsG
-         DkS7SMFyqB0PNVA6vpX24ZaYNRUrRkP7QSlFeKAYxuUgPATPKZA+tEGfFARvzDpUNouc
-         x5g0PvfeQ6Q/CmMpho8uR3ZSnoy1R4ChrwIwVq5nIHyptu9se5u8X01Bk1UEN3+Agv+d
-         G7Ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741254538; x=1741859338;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nxwiE27qUkNPBhSkfyKtbpFN1GvgBfCIdPUB1ha5eBI=;
-        b=cuUT5X/D/FTLPVRnMtbdz2RdurEvc+toyerA85eiyuKDlblDj3FI9k2XT9QEAQ+IeG
-         nteRKwd7DtBWkGOZp86dhe5bGVAW/1BJxmxgUjrb7kdsUlKKaLy5JFtplK8WbgpvoUfQ
-         /TWKUkpDV+IKcSq/tdQfH7m7a7qGf8BJNnetV8ZSqc8B2H6V5t5d2/GCUL77e4+z/hqy
-         yT3LKcnFqJBUwuXbPGZV08L969LyOkL/IkVDopvppocaMQyCs7fG8POUR1DjoZ6d+Kui
-         eAaNzjf9fimtjP+RkPc+EY9QqPHg67me6wNdqYNeyjWTEapgz1sTA2z1aWoSs71jA8x5
-         8u/w==
-X-Forwarded-Encrypted: i=1; AJvYcCVFNl9sjJqL+fWuB8EBfA358+ULfwoOj34qunM91PNmPNUy7ORsOWzjCPhpdTWYVwnsQ3rdX2lrMJxPg2sLbA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxggmCDAGbTPV22bNZsABD+/nUi1yrfyEdSMpJ2DHxEgkSlryEw
-	Aox4o6HA7yilD9Jwqru+MeOYjLsABJdt2JtrvLdl338rRGPVgcwpTEIGzm5mBOI4PBfa44ja9gk
-	12kXSFIrX9bsz8g==
-X-Google-Smtp-Source: AGHT+IHcxLGTeKieTf5MpR8uUN3kyBhCnfsQJrfWUCJzsJ/+dmd41D08T9ysONrVTL9Ab/MD3OW8mrHYu5zkZKI=
-X-Received: from wmbbh11.prod.google.com ([2002:a05:600c:3d0b:b0:43b:c0cf:b8e2])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4384:b0:439:8490:d1e5 with SMTP id 5b1f17b1804b1-43bdb37b516mr21077795e9.4.1741254537969;
- Thu, 06 Mar 2025 01:48:57 -0800 (PST)
-Date: Thu, 6 Mar 2025 09:48:56 +0000
-In-Reply-To: <87zfhz5gq2.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CIwIdO1W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 007BDC4CEE4;
+	Thu,  6 Mar 2025 09:48:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741254541;
+	bh=+h2ps//W/d4AsThHf884SeSupc3zB2T3LQHMiaaH//8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=CIwIdO1WzFl9GNhrcfa2ixHKiI0eJYRLujuLouXciNORZC9oCeH7sUHSrPXVEflfy
+	 4VPFbJeiUy4lvxvikZ7nWnCsUIBoEwRGE6xJeq9aPTXVwRCAi/QqptWQQpZm9TvLFd
+	 iE580iMWUxALDYEBekq4t4PApLYW/PJZj+P9vrr6ojFAkSYiSty66c8ffSvOCgn2MK
+	 +5/LfWVyPz7D75C1BPLLtyd3EWG8el0SmmFYtfQbgSBmuBY7TkolV9tRhqEo2hfJJj
+	 9t29uY19GisuS5N3F5qKqZoi+dmrXPzLFZ4VQrWeE1uz1vmHduT78h0/3cisdl9wHk
+	 UKejv0+HEmmeQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+Cc: "Oliver Mangold" <oliver.mangold@pm.me>,  "Miguel Ojeda"
+ <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
+ <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
+ =?utf-8?Q?=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
+  "Trevor Gross" <tmgross@umich.edu>,  <rust-for-linux@vger.kernel.org>,
+  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4] rust: adding UniqueRefCounted and UniqueRef types
+In-Reply-To: <Z8lsetLbHvn-6cai@google.com> (Alice Ryhl's message of "Thu, 06
+	Mar 2025 09:35:54 +0000")
+References: <20250305-unique-ref-v4-1-a8fdef7b1c2c@pm.me>
+	<Z8hUIPtE_9P60fAf@google.com> <Z8hmCkeZGPwc5MuU@mango>
+	<mE_To6ll96gFJQD9YKkT-mwa2KCHFCgOaZFxxczeDVJd0hr1rZCKFHD-vHQfm6deCjlUJIu4U-reNMtrwfyT7w==@protonmail.internalid>
+	<CAH5fLgjFBknTmhxQBPUdB-iNMjEkcyuLiu22-Nj-DGB1Gb7NkA@mail.gmail.com>
+	<87ldtj8p2m.fsf@kernel.org>
+	<JPqvzrz3Zy0HgwNoHh2psup7imFItiN_j_VmmjVPBfwJzf040DTvZAwUDjNv1FQiLXFiSAANIxc2IegeKGCJvA==@protonmail.internalid>
+	<CAH5fLgirYTV6K2QoH9LLwhHxJzz=h1R0jB4G2kpKQ_pBtBgePg@mail.gmail.com>
+	<875xkn8k5z.fsf@kernel.org>
+	<SmmHwmQewAgGplUKWvizn35VwbJpn0NsjjrO8FPW-eI44ywd3Xx_k1CZ5OaUHn8mqhm-s6JwhB8YvGQqr4go0A==@protonmail.internalid>
+	<Z8lsetLbHvn-6cai@google.com>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Thu, 06 Mar 2025 10:48:54 +0100
+Message-ID: <87ikom5w1l.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250305053438.1532397-1-dirk.behme@de.bosch.com>
- <hVvs4-cEyMjFMKMMqergIA4OCAIJUIfXQGi2a_uisGZaLJHUWiNtGPNASjjeprDQrtNtasMOfTrRIiYwXE2zgg==@protonmail.internalid>
- <20250305053438.1532397-2-dirk.behme@de.bosch.com> <871pvbhqap.fsf@kernel.org>
- <eGDvv6uA00fjuGAgV8uknZos4J9VcrxQ7lk9brRpmdGEGIHYZlxk-ZRsGxXsr-SCZE6IVEuPKs5ko9gukJwo7Q==@protonmail.internalid>
- <Z8hwGGn9huDjyDWN@tardis> <87v7sn759g.fsf@kernel.org> <n0Uj2Z9c_20rMgNGkpHAbJ2IQS5ueeREBy6NHdwpCp8vg9V5JrRPJbP3xBFssuyDTcN1JUulMK3cwwDu0U0fkQ==@protonmail.internalid>
- <Z8icwtIpZ3PO9YcZ@boqun-archlinux> <87zfhz5gq2.fsf@kernel.org>
-Message-ID: <Z8lviMzPiMzjQIE3@google.com>
-Subject: Re: [PATCH v3 2/2] rust: types: `Opaque` doc: Add some destructor description
-From: Alice Ryhl <aliceryhl@google.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Dirk Behme <dirk.behme@de.bosch.com>, 
-	rust-for-linux@vger.kernel.org, ojeda@kernel.org, 
-	daniel.almeida@collabora.com, Gary Guo <gary@garyguo.net>, 
-	Trevor Gross <tmgross@umich.edu>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 05, 2025 at 10:07:33PM +0100, Andreas Hindborg wrote:
-> Without `Opaque` it is illegal to have aliased `&mut T`. With `Opaque`,
-> it is legal to have aliased `&mut Opaque<T>`. Or at least that is my
-> understanding.
+"Alice Ryhl" <aliceryhl@google.com> writes:
 
-There's a really important wrinckle here. Having multiple aliasing &mut
-Opaque<T> does not trigger immediate UB, but that doesn't mean that such
-mutable references are safe to hand out to end-users of the API. The end
-user could call `swap` on the mutable references, and which would be
-really bad if it uses intrusive linked lists.
+> On Wed, Mar 05, 2025 at 06:24:56PM +0100, Andreas Hindborg wrote:
+>> "Alice Ryhl" <aliceryhl@google.com> writes:
+>>
+>> > On Wed, Mar 5, 2025 at 4:39=E2=80=AFPM Andreas Hindborg <a.hindborg@ke=
+rnel.org> wrote:
+>> >>
+>> >> "Alice Ryhl" <aliceryhl@google.com> writes:
+>> >>
+>> >> > On Wed, Mar 5, 2025 at 3:56=E2=80=AFPM Oliver Mangold <oliver.mango=
+ld@pm.me> wrote:
+>> >> >>
+>> >> >> Hi Alice,
+>> >> >>
+>> >> >> On 250305 1339, Alice Ryhl wrote:
+>> >> >> > On Wed, Mar 05, 2025 at 11:31:44AM +0000, Oliver Mangold wrote:
+>> >> >> >
+>> >> >> > > +impl<T: UniqueRefCounted> Deref for UniqueRef<T> {
+>> >> >> > > +    type Target =3D T;
+>> >> >> > > +
+>> >> >> > > +    fn deref(&self) -> &Self::Target {
+>> >> >> > > +        // SAFETY: The type invariants guarantee that the obj=
+ect is valid.
+>> >> >> > > +        unsafe { self.ptr.as_ref() }
+>> >> >> > > +    }
+>> >> >> > > +}
+>> >> >> >
+>> >> >> > What stops people from doing this?
+>> >> >> >
+>> >> >> > let my_unique: UniqueRef<T> =3D ...;
+>> >> >> > let my_ref: &T =3D &*my_unique;
+>> >> >> > let my_shared: ARef<T> =3D ARef::from(my_ref);
+>> >> >> >
+>> >> >> > Now it is no longer unique.
+>> >> >> >
+>> >> >> Oh, indeed. That's a serious problem. I see 2 options to deal with=
+ that:
+>> >> >>
+>> >> >> 1. remove ARef::From<&T>
+>> >> >>
+>> >> >> I checked the users of this, and it looks to me like there is rath=
+er
+>> >> >> a limited number and they are easy to fix by replacing the &T with=
+ ARef<T>.
+>> >> >> But I assume that wouldn't be welcome as it is intrusive nonethele=
+ss
+>> >> >> and of course there is ergonomic value in having the function arou=
+nd.
+>> >> >
+>> >> > Definitely not an option. There are many users of this function that
+>> >> > are in the process of being upstreamed. The ability to go &T ->
+>> >> > ARef<T> is pretty fundamental for ARef.
+>> >>
+>> >> Not having `impl From<&T> for UniqueArc` seems to work out fine.
+>> >>
+>> >> It would be unfortunate if `impl From<&T> for ARef<T>` would prevent =
+us
+>> >> from having a unique version of `ARef`. I would say that is a valid
+>> >> reason to consider removing that impl.
+>> >
+>> > I think the impl is really important. It's required to do things such =
+as:
+>> >
+>> > let mm =3D ARef::from(&*current!().mm());
+>> >
+>> > Without the impl (or something equivalent), it's not possible to
+>> > increment the refcount of the &Mm returned by `current!().mm()`. There
+>> > are many other examples of this.
+>>
+>> Right. Let's see what we can figure out of other solutions then.
+>
+> Ultimately, if a struct implements AlwaysRefcounted, then you can always
+> increments its refcount. If you want a version of the struct where that
+> is not the case, then you need a different struct that does *not*
+> implement AlwaysRefcounted.
+>
+> I do things like that in the mm_struct series. The VmaNew struct is an
+> example of that.
 
-I.e., you could only safely hand out Pin<&mut Opaque<T>> to the end-user
-of the API.
+Yea, I see your point. I think `AlwaysRefcounted` is just not going to
+work for this use case. We can invent something new that suits our
+needs.
 
-But of course you still need the guarantee. Pin is just a library type,
-and if having a &mut T is immediate UB, then so is having a Pin<&mut T>.
 
-Alice
+Best regards,
+Andreas Hindborg
+
+
+
