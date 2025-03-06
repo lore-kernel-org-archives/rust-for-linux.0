@@ -1,158 +1,190 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112ED2080EE
-	for <rust-for-linux@vger.kernel.org>; Thu,  6 Mar 2025 09:35:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1D6199935
+	for <rust-for-linux@vger.kernel.org>; Thu,  6 Mar 2025 09:42:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741253759; cv=none; b=K7Gbf6OMKBAjEr4yiejUg6RsBRu+dtIr0CX0JNCkwfhtv7PinwwMlkA//1s/S2dQmBjTfyP45TJkld1T+OKXUwbGOnNC96YPs1DSpPhxl4JK66g7ESq3sqOdbRZSkrkabQOp32y6Rjfob+WlSlz7vYVPhOdC1nPhJVWBRjKXKrQ=
+	t=1741254176; cv=none; b=cUK6kAUCqBejKVLn+JPRp2iOqILMBXnY27f/UXsb96M5+OvpI+TD80OwOmOC3RubPiL2xJ/dXVDFX/O1DxMUDyD7kmD1b5YFgFGlNQl+nrs2gM7WNuNGvrDBTIZ85F5g36nr6OR6i9McNiL48zOBOGV6qr3zjZkMpXEkaSRVdTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741253759; c=relaxed/simple;
-	bh=zAfupfnmXgAPKBf7N+VUINqI3bvcjO+DlUy81THOReY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mx+UC+Mvl4G1ejRd3Qdd7McOMLyJ6MAaGzWkDb+b88r2ymJY/YdfSpXxHyW4JRx0rV6ikyZbpQCioKnL4vhwpEQiyQlyQdNwIUSd/yh+a6BOfdCdcjHBQvchsNGApVCh3RY92Njs/EWB8K3a8QH2wJz4iU0MfxlLLS6tqhezmDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RZ6hLYq6; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1741254176; c=relaxed/simple;
+	bh=Fq9SaQI/2OwWEr4YhcIiVOcqvPahsrSawmfqFeBO4iQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=AV8fvq2Nk7sAk0CCw9kd7X1LeB3QVLdG8jOqWNqnqxs+XKaWL5+LCy//VOuxi+NKjycWgtotRr4852k8QEMF10u3p+HLSrd608yfOEJrIO7TFieL+rQa0r/20S2onneCPHysTtsGaFurSyj6c2jB6C1392TaTPKqKTjk8nTJLY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m8vwI+h7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RZ6hLYq6"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4393e89e910so1906805e9.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 06 Mar 2025 01:35:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741253756; x=1741858556; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=80/MuYHXzFOlY04/5DfNbTTbOenEqnxQ83fIcfIWstI=;
-        b=RZ6hLYq6FQnB3CTlZ+3pQYLBpPUkVcwBgmSmq8fiMCuyxHif/0+sGbcS+ZamZIyryQ
-         xtzQwckV1kD8BVGwH4P3UuMQdb/Ik3Y6buuEaYmkSIrPAasHPBdv+1MW8U0+6pQrFust
-         rmdNYQJBXiU2nn/EWFPSg0YrGAZUOuenLkJfYKEIQ3GbCt6rnEYtagR2UGA7Vwy3NMbf
-         5j3EYrIGa2FkJi+epdyRFi0ZMyMWmHnIzoXpUE1LNIrF5hyo0PsgcYqCU3ouqAWgeNiW
-         PIP5YUjd9BuZ4uPqphQV1RgC4/xOxH9301u0epVjnxqKjNDHSzTfxeD/e9Az3+5Z6eGg
-         AbkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741253756; x=1741858556;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=80/MuYHXzFOlY04/5DfNbTTbOenEqnxQ83fIcfIWstI=;
-        b=wPbkd+TV+JZSI8mosXqxCk+9SFCROQvQbDSD+Fra5ZLNcYqSUYg0v2ZZfa82gPzBL5
-         0+hcvh11u6pce4BHIlAVmn9s3eA9tm6fUFywgrVpbEejUCEXuyObBXpBsmWDV2/vRwZs
-         PShv8mmywmsDgCa1NgL5g6fvOAWtbxEJ2hZN5WzAGO0Yke31BwKeudbMt8nBDjh0xyan
-         IGCX/8JWQzfC7f4oGj2gVwQgcQ3DZFB6ntVesFWTc2aKthHiwbwSDAw4muGZxTOdefEo
-         WdpMa25gVENP0f64Dob+pxuoE44Gnei8xCMXlWLZfJh+7+PvcOOU+7xKOCRi8k0K5igF
-         1fZA==
-X-Forwarded-Encrypted: i=1; AJvYcCVYttG77zsVci7uW9rgLhgaYThu3/JFZOYW2aW43tEdskeZEdSd9XP/EZ0QRtHoG9/C2W1rOmbZvZU9LWCrug==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyyKP78NkU+Vab812ReqHe0wWsTg+yb6XkSd5McXtlnTYfHdMor
-	aq+DiHRk2tP4eCWcFg0ROexKt+rDYnYaAOreFQwAIo/tDVl62uZlwEYssMFVMIDb7veYSGusl6a
-	D1i9YFsXyoQULMg==
-X-Google-Smtp-Source: AGHT+IFxl8xciWrl2CQHn8RoJKN3DeV4Zim2lKi3GQnZzsbzv7UugqHqo9gKtYFc9LBV4rU4WNoxZYH203ol5XE=
-X-Received: from wmbek10.prod.google.com ([2002:a05:600c:3eca:b0:43b:c450:ea70])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4ed2:b0:439:a5e6:73ff with SMTP id 5b1f17b1804b1-43bd29d8441mr46790355e9.17.1741253756313;
- Thu, 06 Mar 2025 01:35:56 -0800 (PST)
-Date: Thu, 6 Mar 2025 09:35:54 +0000
-In-Reply-To: <875xkn8k5z.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m8vwI+h7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F8BFC4CEE0;
+	Thu,  6 Mar 2025 09:42:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741254175;
+	bh=Fq9SaQI/2OwWEr4YhcIiVOcqvPahsrSawmfqFeBO4iQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=m8vwI+h7T1Ym/gCpsabcvlO+ydhH/GIaiHmMr18ATW8bnrTRRN0e0zLCm+xzfKDYu
+	 Q6VQ8Gaaclu+5K6gRFIm13/kk5lJqW2VYSmDQQO8tB4Hmijn1nx5jvv9GEf3+i2QKE
+	 6dkQZRMMnQFNo2KJZcpuylsQugY8+CAaqKMvpw3BtOLd8seu2xM5Fsjon5uIyFLIRN
+	 OS5006wc0f1QM4buXUjK5kXLrWdgLwdL5QVRH6JrQV5GS/C6zCSZ84EZ0yXQOS9Whr
+	 wTAtFX91fJ20Z/a4vSt2WzEyMsUZYpxxBB4We+REMUPqL6NUwQyCGL5v15KaguwGCA
+	 kqKhSo7mgMunw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Boqun Feng" <boqun.feng@gmail.com>
+Cc: "Dirk Behme" <dirk.behme@de.bosch.com>,
+  <rust-for-linux@vger.kernel.org>,  <ojeda@kernel.org>,
+  <daniel.almeida@collabora.com>,  "Gary Guo" <gary@garyguo.net>,  "Alice
+ Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>
+Subject: Re: [PATCH v3 2/2] rust: types: `Opaque` doc: Add some destructor
+ description
+In-Reply-To: <Z8k6J-rLXUp9y-o1@tardis> (Boqun Feng's message of "Wed, 05 Mar
+	2025 22:01:11 -0800")
+References: <20250305053438.1532397-1-dirk.behme@de.bosch.com>
+	<hVvs4-cEyMjFMKMMqergIA4OCAIJUIfXQGi2a_uisGZaLJHUWiNtGPNASjjeprDQrtNtasMOfTrRIiYwXE2zgg==@protonmail.internalid>
+	<20250305053438.1532397-2-dirk.behme@de.bosch.com>
+	<871pvbhqap.fsf@kernel.org>
+	<eGDvv6uA00fjuGAgV8uknZos4J9VcrxQ7lk9brRpmdGEGIHYZlxk-ZRsGxXsr-SCZE6IVEuPKs5ko9gukJwo7Q==@protonmail.internalid>
+	<Z8hwGGn9huDjyDWN@tardis> <87v7sn759g.fsf@kernel.org>
+	<n0Uj2Z9c_20rMgNGkpHAbJ2IQS5ueeREBy6NHdwpCp8vg9V5JrRPJbP3xBFssuyDTcN1JUulMK3cwwDu0U0fkQ==@protonmail.internalid>
+	<Z8icwtIpZ3PO9YcZ@boqun-archlinux> <87zfhz5gq2.fsf@kernel.org>
+	<DJwmmXRi4oxEM1aRRHh2SekW5eo0beS5JIfsvphgxDldFDRtXNG_2GDvuV5u5Yxj0Tfi4wau55m44VjbhTTCyw==@protonmail.internalid>
+	<Z8k6J-rLXUp9y-o1@tardis>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Thu, 06 Mar 2025 10:42:47 +0100
+Message-ID: <87o6ye5wbs.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250305-unique-ref-v4-1-a8fdef7b1c2c@pm.me> <Z8hUIPtE_9P60fAf@google.com>
- <Z8hmCkeZGPwc5MuU@mango> <mE_To6ll96gFJQD9YKkT-mwa2KCHFCgOaZFxxczeDVJd0hr1rZCKFHD-vHQfm6deCjlUJIu4U-reNMtrwfyT7w==@protonmail.internalid>
- <CAH5fLgjFBknTmhxQBPUdB-iNMjEkcyuLiu22-Nj-DGB1Gb7NkA@mail.gmail.com>
- <87ldtj8p2m.fsf@kernel.org> <JPqvzrz3Zy0HgwNoHh2psup7imFItiN_j_VmmjVPBfwJzf040DTvZAwUDjNv1FQiLXFiSAANIxc2IegeKGCJvA==@protonmail.internalid>
- <CAH5fLgirYTV6K2QoH9LLwhHxJzz=h1R0jB4G2kpKQ_pBtBgePg@mail.gmail.com> <875xkn8k5z.fsf@kernel.org>
-Message-ID: <Z8lsetLbHvn-6cai@google.com>
-Subject: Re: [PATCH v4] rust: adding UniqueRefCounted and UniqueRef types
-From: Alice Ryhl <aliceryhl@google.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Oliver Mangold <oliver.mangold@pm.me>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Wed, Mar 05, 2025 at 06:24:56PM +0100, Andreas Hindborg wrote:
-> "Alice Ryhl" <aliceryhl@google.com> writes:
->=20
-> > On Wed, Mar 5, 2025 at 4:39=E2=80=AFPM Andreas Hindborg <a.hindborg@ker=
-nel.org> wrote:
-> >>
-> >> "Alice Ryhl" <aliceryhl@google.com> writes:
-> >>
-> >> > On Wed, Mar 5, 2025 at 3:56=E2=80=AFPM Oliver Mangold <oliver.mangol=
-d@pm.me> wrote:
-> >> >>
-> >> >> Hi Alice,
-> >> >>
-> >> >> On 250305 1339, Alice Ryhl wrote:
-> >> >> > On Wed, Mar 05, 2025 at 11:31:44AM +0000, Oliver Mangold wrote:
-> >> >> >
-> >> >> > > +impl<T: UniqueRefCounted> Deref for UniqueRef<T> {
-> >> >> > > +    type Target =3D T;
-> >> >> > > +
-> >> >> > > +    fn deref(&self) -> &Self::Target {
-> >> >> > > +        // SAFETY: The type invariants guarantee that the obje=
-ct is valid.
-> >> >> > > +        unsafe { self.ptr.as_ref() }
-> >> >> > > +    }
-> >> >> > > +}
-> >> >> >
-> >> >> > What stops people from doing this?
-> >> >> >
-> >> >> > let my_unique: UniqueRef<T> =3D ...;
-> >> >> > let my_ref: &T =3D &*my_unique;
-> >> >> > let my_shared: ARef<T> =3D ARef::from(my_ref);
-> >> >> >
-> >> >> > Now it is no longer unique.
-> >> >> >
-> >> >> Oh, indeed. That's a serious problem. I see 2 options to deal with =
-that:
-> >> >>
-> >> >> 1. remove ARef::From<&T>
-> >> >>
-> >> >> I checked the users of this, and it looks to me like there is rathe=
-r
-> >> >> a limited number and they are easy to fix by replacing the &T with =
-ARef<T>.
-> >> >> But I assume that wouldn't be welcome as it is intrusive nonetheles=
-s
-> >> >> and of course there is ergonomic value in having the function aroun=
-d.
-> >> >
-> >> > Definitely not an option. There are many users of this function that
-> >> > are in the process of being upstreamed. The ability to go &T ->
-> >> > ARef<T> is pretty fundamental for ARef.
-> >>
-> >> Not having `impl From<&T> for UniqueArc` seems to work out fine.
-> >>
-> >> It would be unfortunate if `impl From<&T> for ARef<T>` would prevent u=
-s
-> >> from having a unique version of `ARef`. I would say that is a valid
-> >> reason to consider removing that impl.
-> >
-> > I think the impl is really important. It's required to do things such a=
-s:
-> >
-> > let mm =3D ARef::from(&*current!().mm());
-> >
-> > Without the impl (or something equivalent), it's not possible to
-> > increment the refcount of the &Mm returned by `current!().mm()`. There
-> > are many other examples of this.
->=20
-> Right. Let's see what we can figure out of other solutions then.
+"Boqun Feng" <boqun.feng@gmail.com> writes:
 
-Ultimately, if a struct implements AlwaysRefcounted, then you can always
-increments its refcount. If you want a version of the struct where that
-is not the case, then you need a different struct that does *not*
-implement AlwaysRefcounted.
+> On Wed, Mar 05, 2025 at 10:07:33PM +0100, Andreas Hindborg wrote:
+>> "Boqun Feng" <boqun.feng@gmail.com> writes:
+>>
+> [...]
+>> >> >> >  rust/kernel/types.rs | 26 +++++++++++++++++++++-----
+>> >> >> >  1 file changed, 21 insertions(+), 5 deletions(-)
+>> >> >> >
+>> >> >> > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+>> >> >> > index af30e9c0ebccb..f370cdb48a648 100644
+>> >> >> > --- a/rust/kernel/types.rs
+>> >> >> > +++ b/rust/kernel/types.rs
+>> >> >> > @@ -271,17 +271,33 @@ fn drop(&mut self) {
+>> >> >> >
+>> >> >> >  /// Stores an opaque value.
+>> >> >> >  ///
+>> >> >> > -/// [`Opaque<T>`] is meant to be used with FFI objects that are never interpreted by Rust code.
+>> >> >> > +/// [`Opaque<T>`] opts out of the following Rust language invariants for the contained `T`
+>> >> >> > +/// by using [`UnsafeCell`]:
+>> >> >> >  ///
+>> >> >> > -/// It is used to wrap structs from the C side, like for example `Opaque<bindings::mutex>`.
+>> >> >> > -/// It gets rid of all the usual assumptions that Rust has for a value:
+>> >> >> > +/// * Initialization invariant - the contained value is allowed to be uninitialized and
+>> >> >> > +///   contain invalid bit patterns.
+>> >> >> > +/// * Immutability invariant - [`Opaque<T>`] allows interior mutability.
+>> >> >> > +/// * Uniqueness invariant - [`Opaque<T>`] allows aliasing of shared references.
+>> >> >>
+>> >> >> This last one is wrong (I know it's probably my fault, sorry). It should be:
+>> >> >>
+>> >> >>   /// * Uniqueness invariant - [`Opaque<T>`] allows aliasing of **exclusive** references.
+>> >> >>
+>> >> >
+>> >> > Hmm... are we trying to say "`&mut Opaque<T>` still cannot mean
+>> >> > noalias" here? If so I feel the wording might be confusing. I would
+>> >> > suggest we don't use "uniqueness" here. Maybe something like:
+>> >> >
+>> >> > * Always aliased invariant - `&mut` [`Opaque<T>`] is not necessarily a
+>> >> >   unique pointer, and thus the compiler cannot just make aliasing
+>> >> >   assumptions.
+>> >> >
+>> >> > (I use the wording from UnsafePinned[1], maybe there could be better
+>> >> > wording)
+>> >> >
+>> >> > [1]: https://rust-lang.github.io/rfcs/3467-unsafe-pinned.html#summary
+>> >>
+>> >> I like my wording better. It says the same with fewer words, and we have
+>> >> a more wordy section below anyway. We could combine:
+>> >>
+>> >>  * Uniqueness invariant - [`Opaque<T>`] allows aliasing of **exclusive**
+>> >>    references. That is, `&mut` [`Opaque<T>`] is not necessarily a unique
+>> >>    pointer.
+>> >>
+>> >>
+>> >> How is that?
+>> >>
+>> >
+>> > I think my biggest problem is the word "allows", the phrase "allows
+>> > aliasing" sounds like Opaque<T> provide something *optional*, however,
+>> > as I understand it, Opaque<T> here just disallows certain optimization
+>> > from compiler, in other words, programmers want to use `Opaque<T>` to
+>> > forbid something, hence "allows" may not be the good word to use here?
+>> >
+>> > How about:
+>> >
+>> >   * Uniqueness invariant - [`Opaque<T>`] disallow alias assumptions
+>> >     made by compiler on an *exclusive* references.
+>>
+>> I don't object, but I feel like we should be able to define this within
+>> the context of the Rust language, without going into details about
+>> compiler internals.
+>>
+>> Without `Opaque` it is illegal to have aliased `&mut T`. With `Opaque`,
+>> it is legal to have aliased `&mut Opaque<T>`. Or at least that is my
+>> understanding.
+>>
+>
+> Oh, I see. That's why you used "allows", however, allow me to explain
+> why it looks confusing to me. For `&mut T`, we can still have an
+> aliasing pointer (a pointer that points to the same variable as the
+> mutable reference):
+>
+> 	let mut x = ...;
+>
+> 	let mut_ref = &mut x;
+> 	let aliased_ptr = mut_ref as *mut _;
+>
+> it's just that if we dereference the pointer while the `&mut T` exists,
+> it's UB, e.g.
+>
+> 	unsafe { *aliased_ptr = ... };
 
-I do things like that in the mm_struct series. The VmaNew struct is an
-example of that.
+Right.
 
-Alice
+>
+> and `Opaque<T>` allows above to be not a UB (there still are rules like
+> we cannot have data races, violating these rules would still be UB).
+
+Yes.
+
+> So to me "aliasing" can mean "having an aliasing pointer", and that as
+> shown above can be provided by both non-Opaque and Opaque cases. I
+> wonder whether "allow aliased/aliasing accesses" is better than "allow
+> aliasing" here.
+
+Yes, I think that would be better.
+
+I had another thing in mind when I wrote the text, and I am wondering if
+it is incorrect. As far as I know it is normally illegal to have more
+than one `&mut T` to the same `T`, even if no access occur through these
+references.
+
+With `Opaque<T>`, is it still illegal to have two `&mut Opaque<T>` to
+the same `T` in existence? I thought it was not illegal in this case.
+
+At any rate, your wording is probably the most accurate:
+
+  * Uniqueness invariant - [`Opaque<T>`] disallow alias assumptions
+    made by compiler on an *exclusive* references.
+
+Alternatively, if we do not want to refer to compiler assumptions:
+
+  * Uniqueness invariant - [`Opaque<T>`] makes aliasing accesses to the
+    underlying `T` well defined.
+
+
+
+Best regards,
+Andreas Hindborg
+
+
