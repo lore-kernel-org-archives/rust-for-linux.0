@@ -1,126 +1,142 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E27B9BE46;
-	Thu,  6 Mar 2025 01:59:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042A91990AB
+	for <rust-for-linux@vger.kernel.org>; Thu,  6 Mar 2025 04:40:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741226357; cv=none; b=Bklgn1QmUfYbF/YnePwnY7itAFqK0IrXTRPbl7ckaPYp/WFteGdbLUBTTk6jURX4Dc+V3fcyI2XsC+ZqCaCR1OazWbw2vyPzA+vNoxy5Ltt1OC4Fmy6st/VvCnQgVgeHLDJI8OaZ5oUjN9/pngM+riejmSVuoSCARI90+Uab2m8=
+	t=1741236033; cv=none; b=Eg2FCi0ZXDzFQR8s85jhCcqd3sGHIFLA+Y/XtVKZO/EIrh9gUAT/Q2QJtKrqnuFVuGDFN7qL1NLFLTUE1g5jgShhNfDd46+0OoIyXD387+hBCIzpzliUmP01w70UWwclh/aHt57Bz2Q2wTzP6rzUd3m4YeynT+T9lW0m7JX1m34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741226357; c=relaxed/simple;
-	bh=ZYAGVBJMfEUjNiE4J8nxMlWEvkEwAdGZtJwHCRZ/iK0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oWXuaOTX4pVuqDB9XzY2ikjN/uVAle98/xz1VceXDJZ1ZeH7XmGlFKQbXSecu0V8pn3SzrBYEXxB6tIaAUYXHI6H77cu+RDzio+DoFCIUK+ax51aWuIODrA3pCM4q/ct+mNkHzNrgUJb2u4Kwd6HGS2OlrVNoezEHCeaXSSckeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d4e7NjmB; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1741236033; c=relaxed/simple;
+	bh=TNmgYWlFDAMgA64pxjarHkEGTDwxdEKRi2stuvaaK3A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fA7LrfLsfu0tZkrg9gISeN8WRVGxCgQJY95wP2jDhmoraHkoHBncQX2Dd+3TobR5Mfg19h6B/8tmjynn5midTz2d/OARBA76b8wxbn9BeUBEvFr45pPZa2wLmvEJi7mzeJqGl9xGBUqZ/Bg8ExBdixuc9pQvkuv9q0EriaZJN44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zlcOQw16; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d4e7NjmB"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2235189adaeso2720725ad.0;
-        Wed, 05 Mar 2025 17:59:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zlcOQw16"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-223fd89d036so3236755ad.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 05 Mar 2025 20:40:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741226354; x=1741831154; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QYsJK23daKHgIm6j07dlmIybSXF/ZOZ0EpP1y1aEC/0=;
-        b=d4e7NjmBYP95FsDAySQDAZbG69ms+N7RnhQO1ShTNs5rin2epvPAIQE0M3Qqw5QWWQ
-         J59RbCBDoll7+VAA8yTU0sqXREVwxMbz2Jdvra5gosAQZ+daZucPX9wTizlByWFU0XDd
-         Z0EWEgVOOM4443ERJPjNiNSi7Fjfsr3GzeJPGxvkUqK4oFb6Q1hNRTJdkMEfC1jQp+xT
-         o15v2rmwbagsG+kUTxxIBhesfffrKj/oMKX3/FH7G93zHFwJ6gI1YS8gV8rt1e3aft3A
-         om+pFNr2HcOGz8ZwZKbRhXQvSojRzLVBZg08yvS9/IeSVEv2CV//sAhlqO414hVpJ9ks
-         /zIw==
+        d=linaro.org; s=google; t=1741236031; x=1741840831; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y9YP9oXkSaz7kqYoQl3h7VT7PIEJ2wgfc59g3M6xM54=;
+        b=zlcOQw16/QRjGvkg6iYXAaWKqSt4tLJAlqPLBUoJQ1CppdX0sVHh98ZKxxl46UoAh2
+         C4aoLbuhHV3okiB1l6XeVyspWnW8i827mEuJZdiNZsQyUjNXdsBO9ksV1qTxabjXloC+
+         ZzSMCapgEKVaaf8bxgEvw7VGKq0J1CkD017RH320wIwyjSAug6bljJBCjJ9ezAOMWDmc
+         4jOrlb5qzsnmai4WW6XWiDVcyE23aof8rjh6tVf99YMK44PtRjCilKqkB8o42+HGD0qS
+         MTuY/jYQbdRYmbIrnz6dgSlCi7VwUVeYSI5wH5ss69qNehHyJgCcA2rG//uGqvQWazrB
+         PYYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741226354; x=1741831154;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QYsJK23daKHgIm6j07dlmIybSXF/ZOZ0EpP1y1aEC/0=;
-        b=o2x/ixtpLxyVR3q4vjk4MHkxNmbknCy3xKw83XvRnX4G/XyGczwpzqoH+bK28B8htg
-         xHVaYOR4hCOFIwmupScPE4BIoVFbu9vw2XhDdhv1v0lKp0uOJshmkPVRBaoW2oYf7Gyt
-         KMBxw+fPTltFmtTG+Tez3/XyUpZuCTB2y4FIgWhpaL1n6r3v38dyZWP1INIzT3NSjzal
-         jJ15Vi8vS4U8V3JG3SLe3iZaxAJlh9CAkm0T+8RI1gXj3EfiaqlJ7t6iYVSfhXn3qF3x
-         nWKlnsLwI3yanbYmbd5K233HO4lPw+6tKDtR24xNYpqdflQxeQ6mn17o12N+nnHyUdJQ
-         TjXw==
-X-Forwarded-Encrypted: i=1; AJvYcCU7/sj9NHlx/0lMZFk7S0ixKDAXWp8OarkTvbvLsH/yeU4LlAwwXjxX1nlFXNft83jufjeycB8y9RPNXSw=@vger.kernel.org, AJvYcCU9OA3vHwtWdBaIV20KiUoe4c6f12Rja5s0ORUZtW39P93rtBeO/stOVN9Onw+OvcZKxPTshpIEWpOVRfi54sQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynRz+ONLNTjVALJ0pn6igF9TiIX2rRXMGFFoBTR4RwlKIr7Yod
-	el3TL9EJ7xxieMe3j55ekhx3C1R25FZUKawFYwLMRgC9NYS+f7aL
-X-Gm-Gg: ASbGncsv3xI+3A9okux6bTbi4OWOp3eI6SFynRDJUBdfcxM5OyjcfNaQSKLmmWT9zUY
-	rbT+vbxRXNGgVl3uGFKLoyAiXEvh6Vv8VEHywmNTcHsfNk36FMsMtEM5T6J5Isjm0Oa708bdGDX
-	5g2A+O1qOfP1VKTisCfUiqg9cLl/xbWTQkii7j0DJTB8V4BWOIn876c3l05/Cb1xoDAlSuEht9Z
-	BDAOVdN2mLWXAayHGwSododyqzY6N2ebBCKHHmvX9WIedvYz9RoxbQJiVmuVSsc1DGrYVkV8DPL
-	TSt2Hx39Qj3wx/kaXF9fhWBbbgD/Hb7vneq6olAE/HMUg5mqXqgn
-X-Google-Smtp-Source: AGHT+IE+/gyM0vU9hETwsdOynHzppu/S/lzqiPffh2GwcPFmJVHns7NdvfByvMvDHRBCl8nLNqSulQ==
-X-Received: by 2002:a17:902:e74c:b0:223:807f:7f92 with SMTP id d9443c01a7336-2240948d29dmr22486625ad.20.1741226353955;
-        Wed, 05 Mar 2025 17:59:13 -0800 (PST)
-Received: from linuxsimoes.. ([187.120.156.44])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-224109e84desm1040095ad.70.2025.03.05.17.59.07
+        d=1e100.net; s=20230601; t=1741236031; x=1741840831;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Y9YP9oXkSaz7kqYoQl3h7VT7PIEJ2wgfc59g3M6xM54=;
+        b=gT69N9blmR3aVA5QhVEjcK/czmX2WMiPVLLEBJ7oJWWadsaZENdGSpLAfkeMWNxDfZ
+         EyXYcEm1udmXkl0FvLzqb42kBKIk5p1zlin6mZJP+hFFoJ38J4JD4jvmWXPsGNX19myq
+         jdXVzfxJ7bJtgPBcK1/r8bsmLMCM9uZghcNhCsyqxYepyrFL5H9I+mNy7YmVSODXmk/f
+         9OiY1ulJ1K7GuVlO1tALnnQfWdhmW1uk84qkNWBM4/AICq5OjICylZ6jLXrm9DMYeH5v
+         xy6r7/Yg8IoCySlDcjBmvM+Q0I3aXA5wMwymryiuTxoYOARmv8SpQ7V1c2sJpWhkucVP
+         DxFw==
+X-Forwarded-Encrypted: i=1; AJvYcCWrIDtnY3l2IdET6QvU+KSQjL/VEDmHuaZ5FAjJQPKMarpBxRLrJ4jdFNEDS+m++NrUDml6vqbsACl2Xn8lWw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyofsGi6I5UKJr70tABdXRi8AX/38tv4bFN4SlCp9qPnL+l5SfO
+	tRjXIBAQ2+IaWK7n1WiXvKVnArnyzcL3MPlKWWpq2JkS0rcDRArUgNgjCK4dN50=
+X-Gm-Gg: ASbGncu4SFsWV7mZuchr37QZkvBog9JqHqzKPKyNuPox2NkTR4DoP6Ab8fkpw9s1xS2
+	LSJSBO9QcgTlzxC8ky8AgtA6qcZN50PxyGzVpdzIUA6y6lgdm0PElBS2WvNspyFxMinfwB/K+7V
+	2AZfZdsR+cmKsHnrGsOiyg8Q7gzci6aAfcudhEH/acWPj0IfogV9H5mRz08Gv0S6zq9sATMd3S0
+	IVKu5azqbqAxYMIUXPVA1sAzPfAXJB6A3k+gH4z/LTngV4N4J2ZQ9FQvTfnz/dbU4c0GoZT4MtB
+	MlgPILofBXILn2RM5f0o+Y9+kL5ImW7Zr7cNuwZbNiLzgw==
+X-Google-Smtp-Source: AGHT+IG7J6Pxt1P8Fs8iADeUT/+TxuIZLpkhrxazqlARnEVvRjqbFettsput67aKtZ+Lr4L7IRHItg==
+X-Received: by 2002:a17:903:32c2:b0:223:66bc:f1e6 with SMTP id d9443c01a7336-223f1c6afa6mr107513485ad.5.1741236031221;
+        Wed, 05 Mar 2025 20:40:31 -0800 (PST)
+Received: from localhost ([122.172.84.15])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22410a7f75dsm2656285ad.122.2025.03.05.20.40.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Mar 2025 17:59:13 -0800 (PST)
-From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-To: miguel.ojeda.sandonis@gmail.com
-Cc: a.hindborg@kernel.org,
-	alex.gaynor@gmail.com,
-	aliceryhl@google.com,
-	apw@canonical.com,
-	arnd@arndb.de,
-	aswinunni01@gmail.com,
-	axboe@kernel.dk,
-	benno.lossin@proton.me,
-	bhelgaas@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	dakr@kernel.org,
-	dwaipayanray1@gmail.com,
-	ethan.twardy@gmail.com,
-	fujita.tomonori@gmail.com,
-	gary@garyguo.net,
-	gregkh@linuxfoundation.org,
-	joe@perches.com,
-	linux-kernel@vger.kernel.org,
-	lukas.bulwahn@gmail.com,
-	ojeda@kernel.org,
-	pbonzini@redhat.com,
-	rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu,
-	trintaeoitogc@gmail.com,
-	walmeida@microsoft.com
-Subject: Re: [PATCH V6 2/2] checkpatch: check format of Vec<String> in modules
-Date: Wed,  5 Mar 2025 22:59:01 -0300
-Message-Id: <20250306015901.241800-1-trintaeoitogc@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <CANiq72koDba445gMYtC_VEcFk2+O-Xg2-2y6uMyp7onBy=7rcw@mail.gmail.com>
-References: <CANiq72koDba445gMYtC_VEcFk2+O-Xg2-2y6uMyp7onBy=7rcw@mail.gmail.com>
+        Wed, 05 Mar 2025 20:40:30 -0800 (PST)
+Date: Thu, 6 Mar 2025 10:10:28 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Stephen Boyd <sboyd@kernel.org>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Russell King <linux@armlinux.org.uk>, linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>
+Subject: Re: [PATCH V3 2/2] rust: Add initial clk abstractions
+Message-ID: <20250306044028.5d2w4og2juclktqs@vireshk-i7>
+References: <cover.1740995194.git.viresh.kumar@linaro.org>
+ <023e3061cc164087b9079a9f6cb7e9fbf286794e.1740995194.git.viresh.kumar@linaro.org>
+ <CANiq72kdWzFOZ39EoFNxEAbk4KYgzLi1OAEc1zn8BM07VpXy3g@mail.gmail.com>
+ <20250304085351.inrvjgixvxla4yn3@vireshk-i7>
+ <CANiq72=sU1sHvamC5REFPEC1aOVdZw9EKdxOgkUYESTR2yh3iQ@mail.gmail.com>
+ <20250305114659.k5pptszvmusblynm@vireshk-i7>
+ <2c17361891c4eb7edd947e5384cc9741.sboyd@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2c17361891c4eb7edd947e5384cc9741.sboyd@kernel.org>
 
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
-> No, Andreas means a script written in Rust, rather than a binary that
-> comes from the toolchain.
-> 
-> I think it could be a good idea (it would be lovely to write the
-> checker in Rust -- I also had a checker bot in Python from the old
-> days of the old `rust` branch in GitHub), but `checkpatch.pl` doesn't
-> need a built kernel, so it would be a disadvantage or at least a
-> difference w.r.t. the usual `checkpatch.pl`, and we may not be able to
-> call it from `checkpatch.pl`.
-I don't know if I really understand how this would is do.
+On 05-03-25, 14:31, Stephen Boyd wrote:
+> Does this mean that a clk consumer has to keep the Result returned from
+> enable() in scope until they want to disable the clk?
 
-> Did you check? i.e. is it something we noticed, or something that
-> generally happens but maybe not in this case? Is there a way to
-> workaround or disable that (e.g. a `rustfmt` config value)?
-The rustfmt have a array_width parameter [1], but with this, all arrays in rust
-code will have the formatting that we set. (In this case, is 1 per line).
+Yes and no.
 
-If we set the max_width, for limit the width of line, it seens for me, that
-arrays don't are affected.
+> I don't see how
+> that makes sense, because most of the time a consumer will enable a clk
+> during probe and leave it enabled until system suspend or runtime PM
+> suspend time. At that point, they would disable the clk explicitly with
+> disable(), but now they would need to drop a reference to do that?
 
-[1] https://github.com/rust-lang/rustfmt/blob/master/Configurations.md#array_width
+Broadly there are two type of clk users I believe:
 
-Thanks,
-Guilherme
+1. clk is enabled / disabled from same routine:
+
+   In this case the result can be kept in a local variable and the matching
+   cleanup fn will be called at exit.
+
+   fn transfer_data(...) -> Result {
+        let _guard = clk.enable()?;
+
+        ...
+        transfer-data here
+        ...
+        // clk.disable() will be called automatically as soon as _guard goes out
+        // of scope.
+   }
+
+2. clk is enabled / disabled from different routines:
+
+   In this case the caller needs to call dismiss to avoid the automatic freeing
+   of resource. Alternatively the returned value can be stored too somewhere,
+   but I am not sure if it what users will end up doing.
+
+   fn probe(...) -> Result {
+        clk.enable()?.dismiss();
+
+        ...
+   }
+
+   fn remove (...) {
+        clk.disable();
+
+        ...
+   }
+
+-- 
+viresh
