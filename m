@@ -1,167 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1C2179A3;
-	Thu,  6 Mar 2025 01:48:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E27B9BE46;
+	Thu,  6 Mar 2025 01:59:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741225709; cv=none; b=PwcU2QZI2JbnNrDF3gvboL5TfRwD9qL6gD2JV5kvuCW48bNRtfppcnSPFk7OIz7WQXcrQMe19HeowTugoUcaxnIeflpgaCmwkSmPYviXIW2DD1seDrX7rhkj8gxqp4A5YlOGiGwcGkgFnEZBeWnINSVj6wj09t8Ihscd2S7GOsI=
+	t=1741226357; cv=none; b=Bklgn1QmUfYbF/YnePwnY7itAFqK0IrXTRPbl7ckaPYp/WFteGdbLUBTTk6jURX4Dc+V3fcyI2XsC+ZqCaCR1OazWbw2vyPzA+vNoxy5Ltt1OC4Fmy6st/VvCnQgVgeHLDJI8OaZ5oUjN9/pngM+riejmSVuoSCARI90+Uab2m8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741225709; c=relaxed/simple;
-	bh=INgt2WVKj31q2syCqzCQ45mlr1DmXGyw6zo0gKcdDWA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bFA6jxziKOfVHSlOYDUaDItLk4xu9SY/C6k9yP2TQ0FsULzw/PZY2E/4bkUXDVPxfK192p7mXM2s5NH2ohrAimYmVKTpUGUt2RFfYr9BjzZWLUpn+Fct5f4BMmJ2Aa6pUC4LVX9PCcGW3flKKFwv3lQSsJFaczyD+yiVaM3hdm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qh0nO1oD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741226357; c=relaxed/simple;
+	bh=ZYAGVBJMfEUjNiE4J8nxMlWEvkEwAdGZtJwHCRZ/iK0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=oWXuaOTX4pVuqDB9XzY2ikjN/uVAle98/xz1VceXDJZ1ZeH7XmGlFKQbXSecu0V8pn3SzrBYEXxB6tIaAUYXHI6H77cu+RDzio+DoFCIUK+ax51aWuIODrA3pCM4q/ct+mNkHzNrgUJb2u4Kwd6HGS2OlrVNoezEHCeaXSSckeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d4e7NjmB; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qh0nO1oD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E8AFC4CED1;
-	Thu,  6 Mar 2025 01:48:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741225709;
-	bh=INgt2WVKj31q2syCqzCQ45mlr1DmXGyw6zo0gKcdDWA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qh0nO1oDVAS7f/23vg/R5TTIoi6cfB+GEegxzD1CZzxD/GuXZXCakJzh+o8yNEfPm
-	 sfwHZKGrAn3cL2Y0QoGdctOCObO1pDbOhNjULdWibyIqrVjnyFLWQk1NddrmsbVrSu
-	 dy0lMY8p9kwSxpKPg7TyM+Fu6JwNgo8JdA5O/a7/5KA3iepQoeX1FOaAg3IrIY9n5Y
-	 4IggFkLqbgwlDZVlIsgHm1ConOkBB7GJdRRATzAKTdbiRYdl09UqRxmC4Qf3F0DdqQ
-	 kcymirmw96/XP+xNmj7PQUpXvoW+tLl4VB6YphBQDfkik8JTot43mgODavoTMzrtg5
-	 aKqiKiyyd0Zsg==
-Date: Thu, 6 Mar 2025 02:48:20 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: airlied@gmail.com, simona@ffwll.ch, corbet@lwn.net,
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-	tzimmermann@suse.de, ajanulgu@redhat.com, lyude@redhat.com,
-	pstanner@redhat.com, zhiw@nvidia.com, cjia@nvidia.com,
-	jhubbard@nvidia.com, bskeggs@nvidia.com, acurrid@nvidia.com,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
-	aliceryhl@google.com, tmgross@umich.edu, gregkh@linuxfoundation.org,
-	mcgrof@kernel.org, russ.weight@linux.dev,
-	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, nouveau@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v5 2/5] rust: firmware: introduce
- `firmware::ModInfoBuilder`
-Message-ID: <Z8j-5HDl3loFNXSn@pollux>
-References: <20250304173555.2496-1-dakr@kernel.org>
- <20250304173555.2496-3-dakr@kernel.org>
- <D88OSC9XJXZL.C5HXWFYCG9U6@proton.me>
- <Z8jSV5CpZDcXrviY@pollux>
- <D88Q7503C8FF.2TMMBSEMOGKU1@proton.me>
- <Z8jk3qs6nCIJz-39@pollux>
- <D88R7HI1Z6GG.ZOQ9A1VQOR28@proton.me>
- <Z8j6ckpD6JVY4m-p@pollux>
- <D88SQ87X0OHX.1ZD8LM8LKUQ8J@proton.me>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d4e7NjmB"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2235189adaeso2720725ad.0;
+        Wed, 05 Mar 2025 17:59:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741226354; x=1741831154; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QYsJK23daKHgIm6j07dlmIybSXF/ZOZ0EpP1y1aEC/0=;
+        b=d4e7NjmBYP95FsDAySQDAZbG69ms+N7RnhQO1ShTNs5rin2epvPAIQE0M3Qqw5QWWQ
+         J59RbCBDoll7+VAA8yTU0sqXREVwxMbz2Jdvra5gosAQZ+daZucPX9wTizlByWFU0XDd
+         Z0EWEgVOOM4443ERJPjNiNSi7Fjfsr3GzeJPGxvkUqK4oFb6Q1hNRTJdkMEfC1jQp+xT
+         o15v2rmwbagsG+kUTxxIBhesfffrKj/oMKX3/FH7G93zHFwJ6gI1YS8gV8rt1e3aft3A
+         om+pFNr2HcOGz8ZwZKbRhXQvSojRzLVBZg08yvS9/IeSVEv2CV//sAhlqO414hVpJ9ks
+         /zIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741226354; x=1741831154;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QYsJK23daKHgIm6j07dlmIybSXF/ZOZ0EpP1y1aEC/0=;
+        b=o2x/ixtpLxyVR3q4vjk4MHkxNmbknCy3xKw83XvRnX4G/XyGczwpzqoH+bK28B8htg
+         xHVaYOR4hCOFIwmupScPE4BIoVFbu9vw2XhDdhv1v0lKp0uOJshmkPVRBaoW2oYf7Gyt
+         KMBxw+fPTltFmtTG+Tez3/XyUpZuCTB2y4FIgWhpaL1n6r3v38dyZWP1INIzT3NSjzal
+         jJ15Vi8vS4U8V3JG3SLe3iZaxAJlh9CAkm0T+8RI1gXj3EfiaqlJ7t6iYVSfhXn3qF3x
+         nWKlnsLwI3yanbYmbd5K233HO4lPw+6tKDtR24xNYpqdflQxeQ6mn17o12N+nnHyUdJQ
+         TjXw==
+X-Forwarded-Encrypted: i=1; AJvYcCU7/sj9NHlx/0lMZFk7S0ixKDAXWp8OarkTvbvLsH/yeU4LlAwwXjxX1nlFXNft83jufjeycB8y9RPNXSw=@vger.kernel.org, AJvYcCU9OA3vHwtWdBaIV20KiUoe4c6f12Rja5s0ORUZtW39P93rtBeO/stOVN9Onw+OvcZKxPTshpIEWpOVRfi54sQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YynRz+ONLNTjVALJ0pn6igF9TiIX2rRXMGFFoBTR4RwlKIr7Yod
+	el3TL9EJ7xxieMe3j55ekhx3C1R25FZUKawFYwLMRgC9NYS+f7aL
+X-Gm-Gg: ASbGncsv3xI+3A9okux6bTbi4OWOp3eI6SFynRDJUBdfcxM5OyjcfNaQSKLmmWT9zUY
+	rbT+vbxRXNGgVl3uGFKLoyAiXEvh6Vv8VEHywmNTcHsfNk36FMsMtEM5T6J5Isjm0Oa708bdGDX
+	5g2A+O1qOfP1VKTisCfUiqg9cLl/xbWTQkii7j0DJTB8V4BWOIn876c3l05/Cb1xoDAlSuEht9Z
+	BDAOVdN2mLWXAayHGwSododyqzY6N2ebBCKHHmvX9WIedvYz9RoxbQJiVmuVSsc1DGrYVkV8DPL
+	TSt2Hx39Qj3wx/kaXF9fhWBbbgD/Hb7vneq6olAE/HMUg5mqXqgn
+X-Google-Smtp-Source: AGHT+IE+/gyM0vU9hETwsdOynHzppu/S/lzqiPffh2GwcPFmJVHns7NdvfByvMvDHRBCl8nLNqSulQ==
+X-Received: by 2002:a17:902:e74c:b0:223:807f:7f92 with SMTP id d9443c01a7336-2240948d29dmr22486625ad.20.1741226353955;
+        Wed, 05 Mar 2025 17:59:13 -0800 (PST)
+Received: from linuxsimoes.. ([187.120.156.44])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-224109e84desm1040095ad.70.2025.03.05.17.59.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Mar 2025 17:59:13 -0800 (PST)
+From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: a.hindborg@kernel.org,
+	alex.gaynor@gmail.com,
+	aliceryhl@google.com,
+	apw@canonical.com,
+	arnd@arndb.de,
+	aswinunni01@gmail.com,
+	axboe@kernel.dk,
+	benno.lossin@proton.me,
+	bhelgaas@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	dakr@kernel.org,
+	dwaipayanray1@gmail.com,
+	ethan.twardy@gmail.com,
+	fujita.tomonori@gmail.com,
+	gary@garyguo.net,
+	gregkh@linuxfoundation.org,
+	joe@perches.com,
+	linux-kernel@vger.kernel.org,
+	lukas.bulwahn@gmail.com,
+	ojeda@kernel.org,
+	pbonzini@redhat.com,
+	rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu,
+	trintaeoitogc@gmail.com,
+	walmeida@microsoft.com
+Subject: Re: [PATCH V6 2/2] checkpatch: check format of Vec<String> in modules
+Date: Wed,  5 Mar 2025 22:59:01 -0300
+Message-Id: <20250306015901.241800-1-trintaeoitogc@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CANiq72koDba445gMYtC_VEcFk2+O-Xg2-2y6uMyp7onBy=7rcw@mail.gmail.com>
+References: <CANiq72koDba445gMYtC_VEcFk2+O-Xg2-2y6uMyp7onBy=7rcw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <D88SQ87X0OHX.1ZD8LM8LKUQ8J@proton.me>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Mar 06, 2025 at 01:35:52AM +0000, Benno Lossin wrote:
-> On Thu Mar 6, 2025 at 2:29 AM CET, Danilo Krummrich wrote:
-> > On Thu, Mar 06, 2025 at 12:24:21AM +0000, Benno Lossin wrote:
-> >> On Thu Mar 6, 2025 at 12:57 AM CET, Danilo Krummrich wrote:
-> >> > On Wed, Mar 05, 2025 at 11:36:54PM +0000, Benno Lossin wrote:
-> >> >> On Wed Mar 5, 2025 at 11:38 PM CET, Danilo Krummrich wrote:
-> >> >> > On Wed, Mar 05, 2025 at 10:30:31PM +0000, Benno Lossin wrote:
-> >> >> >> On Tue Mar 4, 2025 at 6:34 PM CET, Danilo Krummrich wrote:
-> >> >> >> > +    /// Push an additional path component.
-> >> >> >> > +    ///
-> >> >> >> > +    /// After a new [`ModInfoBuilder`] instance has been created, [`ModInfoBuilder::prepare`] must
-> >> >> >> > +    /// be called before adding path components.
-> >> >> >> > +    pub const fn push(self, s: &str) -> Self {
-> >> >> >> > +        if N != 0 && self.n == 0 {
-> >> >> >> > +            crate::build_error!("Must call prepare() before push().");
-> >> >> >>
-> >> >> >> This will only prevent the first `prepare` call being missed, right?
-> >> >> >
-> >> >> > Correct, unfortunately there's no way to detect subsequent ones.
-> >> >>
-> >> >> Does it make sense to do that one in the constructor?
-> >> >>
-> >> >> (After looking at the example below) Ah maybe you can't do that, since
-> >> >> then you would have two `prepare()` calls for the example below...?
-> >> >
-> >> > Exactly.
-> >> >
-> >> >> >> If you always have to call this before `push`, why not inline it there?
-> >> >> >
-> >> >> > You can push() multiple times to compose the firmware path string (which is the
-> >> >> > whole purpose :).
-> >> >>
-> >> >> Ah I see, I only looked at the example you have in the next patch. All
-> >> >> in all, I think this patch could use some better documentation, since I
-> >> >> had to read a lot of the code to understand what everything is supposed
-> >> >> to do...
-> >> >
-> >> > I can expand the example in module_firmware! to make things a bit more obvious.
-> >> >
-> >> > Otherwise, what information do you think is missing?
-> >>
-> >> Abstractly: what `ModInfoBuilder` *does*, concretely:
-> >> - why the generic constant `N` exists,
-> >
-> > It doesn't really matter to the user, since the user never needs to supply it.
-> > That happens in the module_firmware! macro.
-> >
-> > I agree it not good to not mention anything about it at all, but I wouldn't want
-> > to bother the user with all implemention details.
-> >
-> > We can probably just mention that it's used internally and is supplied by
-> > module_firmware!. (That module_firmware! does that by doing a dry run of the
-> > builder itself, isn't necessary to know for the user I think.)
-> >
-> >> - what `prepare()` does,
-> >
-> > Same here, it's an implementation detail not relevant to the user. All the user
-> > needs to know is that prepare() acts as a separator to be able to supply the
-> > next firmware path.
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
+> No, Andreas means a script written in Rust, rather than a binary that
+> comes from the toolchain.
 > 
-> How about calling it `new_path`/`new_entry` or similar?
+> I think it could be a good idea (it would be lovely to write the
+> checker in Rust -- I also had a checker bot in Python from the old
+> days of the old `rust` branch in GitHub), but `checkpatch.pl` doesn't
+> need a built kernel, so it would be a disadvantage or at least a
+> difference w.r.t. the usual `checkpatch.pl`, and we may not be able to
+> call it from `checkpatch.pl`.
+I don't know if I really understand how this would is do.
 
-Sure, new_entry() sounds good!
+> Did you check? i.e. is it something we noticed, or something that
+> generally happens but maybe not in this case? Is there a way to
+> workaround or disable that (e.g. a `rustfmt` config value)?
+The rustfmt have a array_width parameter [1], but with this, all arrays in rust
+code will have the formatting that we set. (In this case, is 1 per line).
 
-> 
-> >> - what happens with the `module_name` parameter of `new`
-> >
-> > Should probably just mention it's supplied by module_firmware! and used
-> > internally.
-> 
-> IIUC, that's not the case, the `module_firmware!` macro will call the
-> `create` function with the name and you're supposed to just pass it onto
-> the builder.
+If we set the max_width, for limit the width of line, it seens for me, that
+arrays don't are affected.
 
-Yes, but this part is documented by module_firmware!, which I think is the
-correct place.
+[1] https://github.com/rust-lang/rustfmt/blob/master/Configurations.md#array_width
 
-> 
-> >> - answer the question "I want that the builder outputs the string `???`
-> >>   can it do that? If yes, how do I do it?"
-> >
-> > All it does is concatenating multiple &str in const context, which I thought is
-> > clear since there are only push() and prepare() as public methods.
-> >
-> > May it be that your request is more about can we add more hints on the
-> > implementation details rather than user focused documentation?
-> 
-> I am not familiar with MODULE_FIRMWARE in C, and I'd think that someone
-> that uses this API would know what to put into the `.modinfo` section,
-> so like "foo\0bar\0\0baz" (no idea if that makes sense, but just add
-> `firmware` or whatever is needed to make it make sense). And then the
-> question would be how to translate that into the builder.
-> 
-> I wouldn't be able to piece it together without looking at the
-> implementation.
-
-I believe if you come from the perspective of writing a driver, you reach
-module_firmware! first and then the subsequent stuff makes sense.
-
-But I recognize your feedback and will try to make things a bit more obvious by
-expanding the example of module_firmware! and expanding a few comments here and
-there. I also think that s/prepare/new_entry/ will help a lot.
+Thanks,
+Guilherme
