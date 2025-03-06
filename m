@@ -1,53 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4072120B21F;
-	Thu,  6 Mar 2025 13:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CD64C8E;
+	Thu,  6 Mar 2025 13:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741268234; cv=none; b=Zde+rSm2ghSL2fTgWgVmfc7AHE8J/9+YCq+6UcC6677mHDRWprOD2xFr0EjLDlL+CG7ij+EQ2TE4zpxuMBzbEGZhShDgzQ0MjsszyjO8Efi6ogwev6iCtlCXx5hCwVL+n8ANmkyhoFCXQQV15XzonCJXy3FOviebucbKM4wL1/g=
+	t=1741268714; cv=none; b=Hk0ksDtzsLos3iUbH7x0aV9qoZLFlLp46mhiwShu0IiE3UrAaD1/ojNYUqDengtMcXQn4cHNjIQgBnIcBrxObZPQONlJgZqXg2xbNskdr+jcRDopuEqjT94mH8R1B1V4YuYvVq2gqo4h6SDj/mzjXYgDYUDv8boUcrJy3OraMjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741268234; c=relaxed/simple;
-	bh=rzOfApeJGqJEIginki9w8q6sXfd76VZXAbGUG9H1704=;
+	s=arc-20240116; t=1741268714; c=relaxed/simple;
+	bh=W/pLRzzCmKndl4i2cPdDqVunl8ECSHU4worQHHjuI3g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gJCbgqDvpNAji409BJaFarMem1nqVXt31CtjKWYh1mhBsdKS7s+H2Q+VLz3zP9dSp9Bc6r+zVShIEZxYtyMSi5EaySG+vN4ayl3bLwdjcIiZ7u/uPO7WRd0wd2FKR/rPeq5IW+SvRzW6wcGfyIpljAholE1yjnPa4w+RZoSHH7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jcSENJSI; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=LmbozDWphWQKyGPTJrviS9RwGpv+9UPwCGGVYRrLmpnZN3Nflv0gjdsuzWc+M6fyQpEzovV+E36wy5OxBPeXVWm0dAXVXEkkT5dPB4+ic5DRyN7TYa3YZIQMWZJ8Av+K1TODTOrwkUT4alTM86aL/rOv9YzvKaPg2IiYEFWYinc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LL3EFMl8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jcSENJSI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 055D4C4CEE0;
-	Thu,  6 Mar 2025 13:37:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LL3EFMl8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 936EDC4CEE4;
+	Thu,  6 Mar 2025 13:45:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741268233;
-	bh=rzOfApeJGqJEIginki9w8q6sXfd76VZXAbGUG9H1704=;
+	s=k20201202; t=1741268713;
+	bh=W/pLRzzCmKndl4i2cPdDqVunl8ECSHU4worQHHjuI3g=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jcSENJSIiYYYXfIaNQrPD3q/RlbkFjsuCz/86Ht9nIybAKwdxS7mwQu3486e4xtn2
-	 y7qu/duip67qpWqDC9ANkWDW/IrGwZWd02Pn/Ho2oGZ1NNDpsbzy5UdC5c8XCPTPWb
-	 xXc3I1rFmn+CK7quF5Lyr1ezrk1F/CRVOYcHlz1OsZPfizQQO7amLeUCiwonPnaYxn
-	 if9BBJUamC6IllfCuiyaE6pRy5jTkpNCdzTSkPgZji/hrIYeWMlL16alD9vhYrjGWG
-	 6YZUYqnod2TSYRyuTZclS1Xf0YZFy8guRSQ+6IWcsmvMVuzkhLQ9QJ792yRJtHab3+
-	 6sQs28c2df3WQ==
-Date: Thu, 6 Mar 2025 14:37:07 +0100
+	b=LL3EFMl8f/nuP1WsPibX1shS/JHV+dq34WHn35A+4Ni45fh2P+7iyWgA7S6uMv4py
+	 JJAkRCViZogb4z0YWCYUE2Gz9V+p+FBSeo5+hNp4lSjLLbBlmsmqvRtQHlVax1Id5m
+	 aMjf4wvokfguXu59H4gGpryCxEyYimv4ZH58GrmTxjJrK80dCGLDjXsx97MzZ758yi
+	 f6dYBLIO06oExGQh/U2abS+ru99SgT8dCDY6q4q0zeaykGiwAsCPHGFn1nVU6gdrep
+	 RosZ/T5VgXu7VEPaRPWFrhe95rPWZM84sFzHgVAmA9JvDl5kllS88xQzeELCzTfzIe
+	 pqSF9MsJpMVFg==
+Date: Thu, 6 Mar 2025 14:45:05 +0100
 From: Danilo Krummrich <dakr@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>, aliceryhl@google.com,
-	robin.murphy@arm.com, daniel.almeida@collabora.com,
-	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
-Subject: Re: [PATCH v12 2/3] rust: add dma coherent allocator abstraction.
-Message-ID: <Z8mlAxsszdOH-ow8@cassiopeiae>
-References: <20250224115007.2072043-1-abdiel.janulgue@gmail.com>
- <20250224115007.2072043-3-abdiel.janulgue@gmail.com>
- <20250305174118.GA351188@nvidia.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: airlied@gmail.com, simona@ffwll.ch, corbet@lwn.net,
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+	tzimmermann@suse.de, ajanulgu@redhat.com, lyude@redhat.com,
+	pstanner@redhat.com, zhiw@nvidia.com, cjia@nvidia.com,
+	jhubbard@nvidia.com, bskeggs@nvidia.com, acurrid@nvidia.com,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	gregkh@linuxfoundation.org, mcgrof@kernel.org,
+	russ.weight@linux.dev, dri-devel@lists.freedesktop.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v5 5/5] gpu: nova-core: add initial documentation
+Message-ID: <Z8mm4fJQxXMiN5tu@cassiopeiae>
+References: <20250304173555.2496-1-dakr@kernel.org>
+ <20250304173555.2496-6-dakr@kernel.org>
+ <20250306.215638.838863448505767234.fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -56,62 +54,35 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250305174118.GA351188@nvidia.com>
+In-Reply-To: <20250306.215638.838863448505767234.fujita.tomonori@gmail.com>
 
-On Wed, Mar 05, 2025 at 01:41:19PM -0400, Jason Gunthorpe wrote:
-> On Mon, Feb 24, 2025 at 01:49:06PM +0200, Abdiel Janulgue wrote:
+On Thu, Mar 06, 2025 at 09:56:38PM +0900, FUJITA Tomonori wrote:
+> On Tue,  4 Mar 2025 18:34:52 +0100
+> Danilo Krummrich <dakr@kernel.org> wrote:
 > 
-> > +impl<T: AsBytes + FromBytes> Drop for CoherentAllocation<T> {
-> > +    fn drop(&mut self) {
-> > +        let size = self.count * core::mem::size_of::<T>();
-> > +        // SAFETY: the device, cpu address, and the dma handle is valid due to the
-> > +        // type invariants on `CoherentAllocation`.
-> > +        unsafe {
-> > +            bindings::dma_free_attrs(
-> > +                self.dev.as_raw(),
-> > +                size,
-> > +                self.cpu_addr as _,
-> > +                self.dma_handle,
-> > +                self.dma_attrs.as_raw(),
-> > +            )
+> > +Delay / Sleep abstractions
+> > +--------------------------
+> > +
+> > +Rust abstractions for the kernel's delay() and sleep() functions.
+> > +
+> > +There is some ongoing work from FUJITA Tomonori [1], which has not seen any updates
+> > +since Oct. 24.
+> > +
+> > +| Complexity: Beginner
+> > +| Link: https://lore.kernel.org/netdev/20241001112512.4861-2-fujita.tomonori@gmail.com/ [1]
 > 
-> I mentioned this in another thread..
+> I posted v11 last month.
 > 
-> There is an additional C API restriction here that the DMA API
-> functions may only be called by a driver after probe() starts and
-> before remove() completes. This applies to dma_free_attrs().
-> 
-> It is not enough that a refcount is held on device.
-> 
-> Otherwise the kernel may crash as the driver core allows resources
-> used by the DMA API to be changed once the driver is removed.
-> 
-> See the related discussion here, with an example of what the crash can
-> look like:
-> 
-> https://lore.kernel.org/lkml/8067f204-1380-4d37-8ffd-007fc6f26738@kernel.org/T/#m0c7dda0fb5981240879c5ca489176987d688844c
-> 
->  > a device with no driver bound should not be passed to the DMA API,
->  > much less a dead device that's already been removed from its parent
->  > bus.
+> https://lore.kernel.org/netdev/20250220070611.214262-1-fujita.tomonori@gmail.com/
 
-Thanks for bringing this up!
+Thanks for letting me know.
 
-I assume that's because of potential iommu mappings, the memory itself should
-not be critical.
+I think I lost track of this because in v1 the series was named "add delay
+abstraction (sleep functions)" and with v2 it was switched to "rust: Add IO
+polling" and I was searching for subsequent patch series with the "delay"
+keyword.
 
-> 
-> My rust is non-existent, but I did not see anything about this
-> point.
+Anyways, AFAICS you ended up with adding fsleep(). I think nova-core will need
+control over having a busy loop or actually re-schedule.
 
-Indeed, this needs to be fixed. It means that a CoherentAllocation also needs to
-be embedded in a Devres container.
-
-> 
-> Also note that any HW configured to do DMA must be halted before the
-> free is allowed otherwise it is a UAF bug. It is worth mentioning that
-> in the documentation.
-
-Agreed, makes sense to document. For embedding the CoherentAllocation into
-Devres this shouldn't be an issue, since a driver must stop operating the device
-in remove() by definition.
+I will update this entry accordingly.
