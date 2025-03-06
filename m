@@ -1,62 +1,62 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3F8183CB0;
-	Thu,  6 Mar 2025 16:18:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C15140E3C;
+	Thu,  6 Mar 2025 16:32:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741277917; cv=none; b=dUeiqz6+Um3A5b8YcweTLRhkcEwIJOn1eT+HZ9t29hNr3bEAk4GOwJLOp1Phhd83uQ3RrkVTXfFA5WbEs7/YR18m4v1RRJHbHyh7NyfQHPnD0w/ybNR2YcbwEDBCffd9iquEkGdh3zO4Qp91ooo4tt3Sk0+zfKLvVfCnBVlRBK4=
+	t=1741278741; cv=none; b=mqcjduA/CkySmBGoAbpPtfEhk8bR1qRhLFiRjjmIaXqz0mygxdi7Qnxo5ZJTMx8na3vK0LCM6x1Nwv9/7cdBqf/M4XWANxy1SG5AIpmJS9/oL1ObG5ZjTx6eXokRPdd11cTk2rHlvKlwdrxbKuw97CIV+kmIgvna9FFjwCF8eqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741277917; c=relaxed/simple;
-	bh=Y6t1qNw3Kvb+Q5NmdPGHx2xhuIdWInYyhfAWQd9UIJs=;
+	s=arc-20240116; t=1741278741; c=relaxed/simple;
+	bh=Lf0XMvKSXUbA6Xpo6sQO8rExp4s5De0XjYlg4XDhGrY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LuM0y6JmS1n8329K+SfZmidU0sCI/qhSaWXZ4RsKIlrlEkynFbFa5tajx0YaEXsv19HVz387UtPX72Juu9V7UvFmat4m8KCDUM358uaGd1iIaeKop9ACB1LwyjWck/z2b+1FPiB3fLfn7MWvs/UxOgBkexPL96qNOwft7N4iNXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CUYyvWyO; arc=none smtp.client-ip=209.85.214.176
+	 MIME-Version; b=ZiDJ1ZOP9p2Drct/zSDPk4xSdAglrBPgnoXpyJO15sQCRFrFxku5+tkRE3pnntjbFS2A5YkLhHV9T6rYXP6HKNB9m5WZ8B1nG18HDveo/pJ8Dr3jQamoHAayf2zjUpRgmASU8stT9U4N4ZZH40TK7yfbel4sUz1YMiFAI4NRlRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qr20CbOT; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CUYyvWyO"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-22349bb8605so16909835ad.0;
-        Thu, 06 Mar 2025 08:18:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qr20CbOT"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2234e4b079cso16288575ad.1;
+        Thu, 06 Mar 2025 08:32:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741277915; x=1741882715; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1741278738; x=1741883538; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6GVRN00CXHgqx9rFb6IpoKCYiwShZJigsgi/z9IGnRY=;
-        b=CUYyvWyOohC32iekI6CgJmUK0g4WjtDXzOC/nvihSFllcqt/AE9YukIS0ZVK+78n3U
-         oTvb1fWMrGqN9if1xG0TeGaQ+7zzOH3vEK1erQsUHhX9ip0wBLQQtCwoEGJfqsLdVBXz
-         JA0RrhZOBhm0acAYB1c20QfmotbPUrEP64zSlOwrIjPmpav7cm0GAURpoNWdhJh8jriD
-         PnE5xn3oJm+LShH+DPfyh+cbxZ2Awmfpfy2MtXjP9F1A0vjH3yCsptvQHpcSMMY/hUPy
-         /TgZR5nvvmp9ksGrCF2qUIOfhpOPvJYANp0LsH4yTCakZ7kG3sjtKadl3bygw9xHD7Pd
-         hTQw==
+        bh=HHnAvxCvcSxijhneF+GKccoEeCeoIo7WaQZF1lh7FwU=;
+        b=Qr20CbOT7MKYDJPDBiZ50DzdhJuUPwooMnmTXJTWUaZxmQIam7ZRdntcUqeE5IGr9q
+         cNqaFrFVrHlY/egF6sV/p8ez5MOUBv+ayZx3UJyVDIIeQpSsKY8Dtg+/rkhcGvSlSlHO
+         rMgHyMzn8v1Estj49gp0PTxYKIr9ZHTb7k24EIQ20wMIdJxr4rLKXiNx+7i9tMcx/lBH
+         VM8EELqEQXIoGPZZnwUoHsdW49WK6a80/wsf2LTmQLQhQB5DZ0o2R2fnKmmiOgal5sBR
+         jz1ARvPH8tJJQ8TsC5X+/g7L4a7RFAy5L5H1mtY9m1WIuqWtbS3Xlk41JARHFJkgmqjO
+         3p4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741277915; x=1741882715;
+        d=1e100.net; s=20230601; t=1741278738; x=1741883538;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6GVRN00CXHgqx9rFb6IpoKCYiwShZJigsgi/z9IGnRY=;
-        b=lAwq9qoVkWNFkGhl0nuZijoCRwEOpWp6j2cYFEz2jcSL0GbqCIWCAIPuRAXC+EdRPX
-         VFm+KQZ9mMtV3U+uH79pWAqiBEMW7BMdCUVPt24n5X1GU4sFuORTMsCtS8mFV1TjgOdx
-         LIXqDqYtrmXDHGqyVQTqDlCgHzCc7h4ZXf5IfBTwzL+BhRf2gc/GcSuenpVc9WjGxUlV
-         Ry1HxY+H4nwE03BcfqBpN9H/luohx/M4jD5T0sMX6V/oMLg1hc18nd0Dm8EzatQoGXP4
-         bPABD0QvW7XQf7aKXIENOvlVj1GEKLbZ6zd+nwqZXRuW46dzJIFp2UEzSr4l5nI+xqMf
-         hbHw==
-X-Forwarded-Encrypted: i=1; AJvYcCV4mySRSsZSn+uj34QYyb9ZSrIDjsbX/R0uPfX3sJS2slPdMG3XiGZcKU/sjlNQmwSXJxX3UgddXeBhlOo=@vger.kernel.org, AJvYcCWvzowaBEU3ctlhLmHFqVvaWT86+mZaLcmSeEwWw6kII0jyvrKDAiPCYp0eMKB+U7a3ixTynIeX4TrIaHq9n5A=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0Fv6855KWEMHsm+hvBfYaj4hE8eCUeWAQUw+t31lsonx1g+br
-	iXGORanL//BcRzghOywY5sJ72Xu9CRaTJj+xz3dSGEXBdpiaZrcT
-X-Gm-Gg: ASbGncu9x1uqMZffb3l/jAd97WLY1MMd1R3DpYSS6arYuKfDXB8jmZuwHARmC1lG6wR
-	KdhAPdyt9FoH0ddCw2xf5ongZFYKOInC9TDK6wB8xyt1Dwvr4bBmpCIUFP/yYnt3VAn20PSaWB2
-	WeB3IANbG55P6Cq8BmJjo6m2X9X6mnTtYJN+jSv2RvZmxkf9qsJmnAlAVv4gA6Bj83KFuPIv5TH
-	98rR2Xq9AxukJEtJgrohejFSy4c/OcvqHSR07Q3rreyBPU8zuZ7sccDTUk22F3+6V5ra83QBzw8
-	OvJ9M6OtRN7ZnVoT6POgbM5D0ys2PqfLt6qK++u32XL6s+6i0+Mf
-X-Google-Smtp-Source: AGHT+IFyTdKrzScTqL4R6ZpR47GOeEpWked0yL7ByVbMCiLUi/3RphyYFtaItWT/4JzB8oQsR2300g==
-X-Received: by 2002:a05:6a20:7486:b0:1ee:e701:1fab with SMTP id adf61e73a8af0-1f544c88126mr136313637.36.1741277914926;
-        Thu, 06 Mar 2025 08:18:34 -0800 (PST)
+        bh=HHnAvxCvcSxijhneF+GKccoEeCeoIo7WaQZF1lh7FwU=;
+        b=hsO6km29CWCyrZBoqCXRjbmGjS1ZuARMts4JKuD67kUisSQ1P2+kgCOAXXSQ0MFAcg
+         2xEsuTF/PgGGoieetq5jDjeFh4PZYBra+6xD9IuEib87HUkabRQsLlKxDDiGkx2Z2GdW
+         VhyKrI5LLHcdnp4BB2tJBzzmQlvxWCZfveBgtN2EszNvazDR19NcFHOmcWWRCE1T+QwA
+         2JQ6uV+YUtioZDAik1noqsCqfmqF0kbtEttd4gu7LUXQhZHC/HDgqCUpU30jRsCk9lwm
+         41DKjkMxYlOPEaGbB5E7+TS4a5+/850Yte/EH1pujDWAvjUZpInJA4lqD9KmrcHji20q
+         hw/g==
+X-Forwarded-Encrypted: i=1; AJvYcCUGjyNPCj8IvS6tTA95jpajGbLmLUDUnP7ZKNnxbxLlOWbCNVedlS3rl9wi2mTXqOMEGAaLayOxCcQemYo=@vger.kernel.org, AJvYcCUbgK2jfPEoAy1a8V8eT5yKS2i0NK+xH7NeWhlJ9/zeuoKD2TnWDXhvSpnl27DBKYW8WIEg3ZEdsv1hSF0d790=@vger.kernel.org
+X-Gm-Message-State: AOJu0YygcBhlz5YwCQWDjLGcyHZRCk2AW2nwUm+HSnVqoMmKvUinh45d
+	IRGNHtmNYxtohDXcTRdGZr2zWRy20dfl5dd8i3QBJS8BklNT3KhO
+X-Gm-Gg: ASbGncuoo6MH4hdwDjITzBgVtcuf4i4mSPSKPer+b9dE8QxZz5sa5kaEBccTPv9MBc3
+	3V8CS82m7TT8PelEpemr+Pys1FWtEDO51nYiaAr85BwfnWe867qNzl7aGsISY7dnEH30yT6niDF
+	Ch4OQiazlT2wYCtyL0SIlPo2XEblvXAH9cKfn0opAi29hN6Fuo8vuYhwMQuvvK+uSEDsQo9KcGc
+	O91pHdTgy49d/8/t4pjA7cL1FQWZKqXG25sVdDZGk9fqsvuMFJCEZ+jRTcNg75Apb/tQNobX88j
+	JQ0sHSgSbCar4Yb6PyuFeAjlKDF2mnbf548BbYBQXpUDzyTYn/Kw
+X-Google-Smtp-Source: AGHT+IGka22YEu+Doguh/8wGA9A/Jlv9zAqqIE6fiQS3/ovFacDbdxllhUkxT1xEMpKYngIi+sfhAA==
+X-Received: by 2002:a05:6a00:84a:b0:732:2170:b68b with SMTP id d2e1a72fcca58-736829d2708mr12455215b3a.0.1741278737750;
+        Thu, 06 Mar 2025 08:32:17 -0800 (PST)
 Received: from linuxsimoes.. ([187.120.156.44])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af281075ecfsm1435168a12.5.2025.03.06.08.18.27
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-736985388fesm1600033b3a.177.2025.03.06.08.32.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Mar 2025 08:18:34 -0800 (PST)
+        Thu, 06 Mar 2025 08:32:17 -0800 (PST)
 From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
 To: miguel.ojeda.sandonis@gmail.com
 Cc: a.hindborg@kernel.org,
@@ -86,8 +86,8 @@ Cc: a.hindborg@kernel.org,
 	trintaeoitogc@gmail.com,
 	walmeida@microsoft.com
 Subject: Re: [PATCH V6 2/2] checkpatch: check format of Vec<String> in modules
-Date: Thu,  6 Mar 2025 13:18:23 -0300
-Message-Id: <20250306161823.282516-1-trintaeoitogc@gmail.com>
+Date: Thu,  6 Mar 2025 13:32:06 -0300
+Message-Id: <20250306163206.301564-1-trintaeoitogc@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <CANiq72md_orajH_TREr=ng8Y=o3Xkgw-V5oxbX8vYXOE2UDNaQ@mail.gmail.com>
 References: <CANiq72md_orajH_TREr=ng8Y=o3Xkgw-V5oxbX8vYXOE2UDNaQ@mail.gmail.com>
@@ -100,22 +100,48 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
 Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
-> Perhaps we want an entirely separate thing in `tools/` eventually, or
-> even out of the kernel tree, so that it can be easily run as a bot
-> etc. like in the past.
-A out of kernel tree tool, is a good idea for me. But a separated tool in
-`tools/`, don't seems a good ideia for me, because, we have things a lot for do
-in addition on developing our code.
-like: 
-	- make LLVM=1 rusttest
-	- ./tools/testing/kunit/kunit.py run --make_options LLVM=1 --arch x86_64 --kconfig_add CONFIG_RUST=y
-	- ./scripts/checkpatch.pl
-	... and anothers things more.... 
+> In any case, landing checks here is fine (as long as Joe et al.
+> agree), they can be moved or removed later if needed.
+The only thing bad in this check, is when the array is very very big, like:
+    authors: [ 
+        "author_1"
+        "author_2"
+        "author_3"
+        "author_4"
+        "author_5"
+        "author_6"
+        "author_8"        
+		"author_9" 
+        "author_10" 
+        "author_11" 
+        "author_12" 
+        "author_13" 
+        "author_14" 
+        "author_15" 
+        "author_16" 
+        "author_17" 
+    ],
 
-I don't think that this things is uneccessary, but, if we might reduce the work
-of developer, and set he for focus on your code, seem better for me.
 
-This is only my opinion that can be absolutely wrong... 
+if I set a new author_18, the diff will be:
+         "author_15" 
+         "author_16" 
+         "author_17" 
++        "author_18" 
+     ],
+And, in this case, if I make a wrong change, like:
+
+         "author_15" 
+         "author_16" 
+         "author_17" 
++        "author_18" , "author_19"
+     ],
+the checkpatch don't will throw a warning message, because, he don't can
+perceive that he is within of array of author, firmware or alias of module!. 
+
+I couldn't do a better check for this.. 
+
+thoughs? 
 
 Thanks,
 Guilherme
