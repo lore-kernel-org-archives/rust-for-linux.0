@@ -1,202 +1,118 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F1F224AF1;
-	Fri,  7 Mar 2025 16:07:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9E3226D0A;
+	Fri,  7 Mar 2025 16:09:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741363651; cv=none; b=UW26wBHqRiHtgvqa2Vn6kzCxgPkuqxUg/fHRELyfNWmCruXzlgn+C7Knwo7pJsDyNhpZTSifqnLeddO1M0sw8kFuTMKwkidqDEE30gIVuOLNt1k2ftfMSywNFe980NMyhfu/7lw3l1s2I37nyP2G1eoxWRViKqO3BJrlRiXbdFI=
+	t=1741363765; cv=none; b=BrLMil1evTv41FfXfy2y0db1AHqexI62zYSvvWO6SuKNIpJkSkOgDJlCyK6jKyTYjKMzJiNf6pZURIQKwoE8dF46mPSw4dtEV3FLwBW+o47NJrfQueo92L99Sg8sudtk2+S5AWQ8BC2JDDu6ZbrPIpG9qIeE1CioiUgJ4+0Imk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741363651; c=relaxed/simple;
-	bh=hA+AL+YkmFHDqEOTVvDJnon/Dsjcg3uYfNOntsX5TuY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CehwgzWxSJM4lwnTk/ZTCtXKC3/TiXh8UVwBLKKFQy7QI7NBP07zNeuACSki8NDDY0eHpzFP3DSPFnhRj0kox/4bORyVqBldHMLCNPiHYPV7ytZQejg5yjcwxBx7PFNSqX+vir+C7G1vNu4acQrv4JFVzRNouTEnuQYOpz87DMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bXX0Xh++; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1741363765; c=relaxed/simple;
+	bh=OjzgZIrF4I2Usopqifbp/MqmZF5LZWDEmj7w8BfGAOY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DFUGx/uolgfKyTRwlw2Ljr4Y0UcceQVZni+q/vaAuL9HQTQzWlnKEbdJQHRaMA6y4DFslhYScbPH4Zyy9CNDlSj8eC7PzfCmvoOP/Q788/B8IbqxQf0eHtDDMDsbJxdA8+J6aiRBVxOHBMY1bWjq0YW0BKP3hfP36CpC6OieQWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CRixdy6/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bXX0Xh++"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2feb91a25bdso3310081a91.1;
-        Fri, 07 Mar 2025 08:07:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741363649; x=1741968449; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=muSHbuLdeyMAAgXAmJf/8jxjECvkvJugZR3BtpEzTko=;
-        b=bXX0Xh++fqkCwZJ9fjvstyd6bJXUegSTtug6Rzuz3QrXMHRW6lRrzB9iydX05qP0Ka
-         SErcdbXmBcWnxJF8uOmkSEUjpIIfWHsjeJaQ+tf8v2PAKg8MJqQ1Tts5m2XsH6fzBGy8
-         Y4O49+ChZkOoG3m2MH/k2g+z6uIi7yTrCrQ5LCkvZ5AVMLIGXVN1kjmMnVQl++Xs9S6x
-         EhAIjTnBBrsK05/cFzxeNwQ0j9Kax+pTGdEatILPDncyvD4Xz3IxG0MRESgQuyvG+1mg
-         3MvJ3K0tUhNhtrI1zwSfPV6SC50LqgZxQYqgFRAD2zPxzcnCpeUBmVEQgj7Xy+nirfc9
-         AsVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741363649; x=1741968449;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=muSHbuLdeyMAAgXAmJf/8jxjECvkvJugZR3BtpEzTko=;
-        b=vWvro7J2OAi2jwfvpfMoh/EHmrc6eOMVv9GNOdRgdbDcr78KLI2zF1D9xbelfAgfKa
-         wqatOdI504MtuQACEYakaDJURo1NWORswPR1ltszT7uBM69lrdJYtSao0mMuszr7DOxi
-         oNg4e2B8Anj874MaiY6XouE32ADOPBwnp9uv0WzDSkjmWqQh2Hk4f8tE5zr8NpFNHjpq
-         B5OmVsdqxMj6vcY26FjSwbUhqgSP4+DXuIywOX3cx0sCGrqRhcdsYwDGPllumvNTxFoe
-         ElVivz8pQ1o/0qv/gL6X4aEYAwqAYeqMIyGiKO67fIvTEpESgDvOshmuMC8CumufImx4
-         rAbA==
-X-Forwarded-Encrypted: i=1; AJvYcCWfTbqoZ0WsLwlkBlCskgTFS0/CuiwWfw8SL598u28KBll3/WjBhrQ2sXTwcj0r0ZOB66Ylgu6VMMETxYYWHsU=@vger.kernel.org, AJvYcCX/f4bSWjTKtOBjR7bcBYgnIZmbZMMEBZskaUXjetmSOPCHiG22ZF5Db788KyA2Wyr0QIAfiEtsMSrugMI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yws/T/hcoD1Me37abPYMxuLrNuqaxyeUkqEhVNhU8rfx2yWZP0F
-	34y5lGBBkxbM1qzmJWLPgJ/EzYwV4SGmWSi+4A/MTFHXfRDjmy00
-X-Gm-Gg: ASbGncvJNQi8S1ITyRV5nTO7Educ2+ONqMA6Uv7Rv1JLXXReBXYCuA7UzNpYXSzQKxH
-	Desz0x+HHzM3m1rgS5TYLZ+McS9vQzr8lmr5gGlLNpk5FkNQBkus3P3l3xN6em3/f8uPXfunmTG
-	xjoGkW1tuLvX4kz9JoS7ADl0EhQVk2jVZUvt1Ess05PpJ0IoJYZ66iSp/cTrej9QPXPRCbH5MIo
-	nz9K+SkWKqdL68kYbiLj1/0uK7m5WpC4Z6PGPaaA0Qx3g6/senjM7gSlok0JbrmBh58W9pPBB2E
-	ZU9c6vLmADlAwskv8z4RfCkTLCa4k/RPe0XasjTfBbp2ub+fZiz4
-X-Google-Smtp-Source: AGHT+IGbVVmSwsbZ/9unYd5P33Ov3VnOcA7398ApJfdmkFjWzqlBhHbHlXRQjTiV7Gl20J/wA/FuEg==
-X-Received: by 2002:a05:6a21:2d08:b0:1ee:dcd3:80d7 with SMTP id adf61e73a8af0-1f54493353emr7708311637.0.1741363648889;
-        Fri, 07 Mar 2025 08:07:28 -0800 (PST)
-Received: from linuxsimoes.. ([187.120.156.44])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73698514f58sm3508421b3a.133.2025.03.07.08.07.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Mar 2025 08:07:28 -0800 (PST)
-From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-To: a.hindborg@kernel.org,
-	alex.gaynor@gmail.com,
-	aliceryhl@google.com,
-	apw@canonical.com,
-	arnd@arndb.de,
-	aswinunni01@gmail.com,
-	axboe@kernel.dk,
-	benno.lossin@proton.me,
-	bhelgaas@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	dakr@kernel.org,
-	dwaipayanray1@gmail.com,
-	ethan.twardy@gmail.com,
-	fujita.tomonori@gmail.com,
-	gary@garyguo.net,
-	gregkh@linuxfoundation.org,
-	joe@perches.com,
-	lukas.bulwahn@gmail.com,
-	ojeda@kernel.org,
-	pbonzini@redhat.com,
-	tmgross@umich.edu,
-	walmeida@microsoft.com,
-	charmitro@posteo.net
-Cc: trintaeoitogc@gmail.com,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH V8 2/2] checkpatch: check format of Vec<String> in modules
-Date: Fri,  7 Mar 2025 13:06:57 -0300
-Message-Id: <20250307160657.641014-3-trintaeoitogc@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250307160657.641014-1-trintaeoitogc@gmail.com>
-References: <20250307160657.641014-1-trintaeoitogc@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CRixdy6/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A03B6C4CED1;
+	Fri,  7 Mar 2025 16:09:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741363764;
+	bh=OjzgZIrF4I2Usopqifbp/MqmZF5LZWDEmj7w8BfGAOY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CRixdy6/AE5PCxS5J+Ug/OE91n6wpvg3310s9xJb3CIlggDDaMfzy2YA0LLJ+wzMK
+	 KFGtabUqbxPWftAGlrA6QpxjyQWW+ahk8AhjFm0mqplp2aYjzcSOHeSWdGqvdtsjWa
+	 5ZO98/8DZC/a1MawaJ8lzVSvRTbr29iqgiQkGjo0VFQnTY/BpXNb8qpVx5QGEER8Pt
+	 yG8lbMSBb1aU8bOym3nEioEKNrn15zHWOWI3z4OOjRi77OdaB2YFDkZQadiKpc7+cS
+	 LbuzBZ+yjaDP12RjnaSRks4/IMqlBUTruFV5YbHfWu6XnsIkh8gMVS+90lt0FOdFpu
+	 bZ0RF+V5CGFGw==
+Date: Fri, 7 Mar 2025 17:09:17 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>, aliceryhl@google.com,
+	robin.murphy@arm.com, daniel.almeida@collabora.com,
+	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Valentin Obst <kernel@valentinobst.de>,
+	open list <linux-kernel@vger.kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+Subject: Re: [PATCH v12 2/3] rust: add dma coherent allocator abstraction.
+Message-ID: <Z8saLZAylcVp89n_@cassiopeiae>
+References: <20250224115007.2072043-1-abdiel.janulgue@gmail.com>
+ <20250224115007.2072043-3-abdiel.janulgue@gmail.com>
+ <20250305174118.GA351188@nvidia.com>
+ <Z8mlAxsszdOH-ow8@cassiopeiae>
+ <Z8m9j3SwWHqaCTXo@phenom.ffwll.local>
+ <20250306160907.GF354511@nvidia.com>
+ <Z8qzP3CR8Quhp87Z@pollux>
+ <20250307124809.GL354511@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250307124809.GL354511@nvidia.com>
 
-Implement a check to ensure that the author, firmware, and alias fields
-of the module! macro are properly formatted.
+On Fri, Mar 07, 2025 at 08:48:09AM -0400, Jason Gunthorpe wrote:
+> On Fri, Mar 07, 2025 at 09:50:07AM +0100, Danilo Krummrich wrote:
+> > > The actual critical region extends into the HW itself, it is not
+> > > simple to model this with a pure SW construct of bracketing some
+> > > allocation. You need to bracket the *entire lifecycle* of the
+> > > dma_addr_t that has been returned and passed into HW, until the
+> > > dma_addr_t is removed from HW.
+> > 
+> > Devres callbacks run after remove(). It's the drivers job to stop operating the
+> > device latest in remove(). Which means that the design is correct.
+> 
+> It could be the drivers job to unmap the dma as well if you take that
+> logic.
 
-* If the array contains more than one value, enforce vertical
-  formatting.
-* If the array contains only one value, it may be formatted on a single
-  line
+I really don't understand what you want: *You* brought up that the
+CoherentAllocation is not allowed to out-live driver unbind.
 
-Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
----
- scripts/checkpatch.pl | 67 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 67 insertions(+)
+We agreed and provided a way that solves this. But then you point out the
+unsolvable problem of malicious (or wrongly programmed) hardware and use it to
+question why we then even bother solving the problem you just pointed out, that
+is solvable.
 
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 7b28ad331742..7c42c1a0ea6b 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -2775,6 +2775,12 @@ sub process {
- 	$realcnt = 0;
- 	$linenr = 0;
- 	$fixlinenr = -1;
-+
-+	my %array_parse_module;
-+	my $expected_spaces;
-+	my $spaces;
-+	my $herevet_space_add;
-+
- 	foreach my $line (@lines) {
- 		$linenr++;
- 		$fixlinenr++;
-@@ -3567,6 +3573,67 @@ sub process {
- # ignore non-hunk lines and lines being removed
- 		next if (!$hunk_line || $line =~ /^-/);
- 
-+# check if the field is about author, firmware or alias from module! macro and find malformed arrays
-+		my $inline = 0;
-+		my $key = "";
-+		my $add_line = $line =~ /^\+/;
-+
-+		if ($line =~ /\b(authors|alias|firmware)\s*:\s*\[/) {
-+			$inline = 1;
-+			$array_parse_module{$1} = 1;
-+		}
-+
-+		my @keys = keys %array_parse_module;
-+		if (@keys) {
-+			$key = $keys[0];
-+		}
-+
-+		if (!$expected_spaces && (!$add_line && $key && !$inline)) {
-+			if ($line =~ /^([\t ]+)(\s)/) {
-+				$expected_spaces = $1;
-+			}
-+		}
-+
-+		if ($add_line && $key) {
-+			my $herevet = "$here\n" . cat_vet($rawline) . "\n";
-+
-+			my $counter = () = $line =~ /"/g;
-+			my $more_than_one = $counter > 2;
-+			if ($more_than_one) {
-+				WARN("ARRAY_MODULE_MACRO",
-+				     "Prefer each array element on a separate line\n". $herevet);
-+			} elsif ($inline && $line !~ /\]/ && $line !~ /,/ && $line =~ /"/) {
-+				WARN("ARRAY_MODULE_MACRO",
-+				     "Prefer declare ] on the same line\n" . $herevet);
-+			} elsif (!$inline && $line =~ /\]/ && $line =~ /\"/) {
-+				WARN("ARRAY_MODULE_MACRO",
-+				     "Prefer a new line after the last value and before ]\n" . $herevet);
-+			} elsif ($inline && $line =~ /,/ && $line !~ /\]/) {
-+				WARN("ARRAY_MODULE_MACRO",
-+				     "Prefer a new line after [\n" . $herevet);
-+			}
-+
-+			if ($line =~ /^\+\s*([\t ]+)(\S)/) {
-+				$spaces = $1;
-+				$herevet_space_add = $herevet;
-+			}
-+		}
-+
-+		if ($expected_spaces && $spaces) {
-+			if (length($spaces) != length($expected_spaces)) {
-+				WARN("ARRAY_MODULE_MACRO",
-+					 "Prefer a align parameters\n" . $herevet_space_add);
-+			}
-+
-+			$spaces = undef;
-+		}
-+
-+		#END OF ANALYZE FIELD
-+		if ($line =~ /\]/) {
-+			delete $array_parse_module{$key};
-+			$expected_spaces = undef;
-+		}
-+
- #trailing whitespace
- 		if ($line =~ /^\+.*\015/) {
- 			my $herevet = "$here\n" . cat_vet($rawline) . "\n";
--- 
-2.34.1
+So, what do you ask for?
 
+> You still didn't answer the question, what is the critical region of
+> the DevRes for a dma_alloc_coherent() actually going to protect?
+
+Devres, just like in C, ensures that an object can't out-live driver unbind. The
+RCU read side critical section is to revoke access to the then invalid pointer
+of the object.
+
+C leaves you with an invalid pointer, whereas Rust revokes the access to the
+invalid pointer for safety reasons. The pointer is never written to, except for
+on driver unbind, hence RCU.
+
+We discussed all this in other threads already.
+
+> 
+> You also have to urgently fix the synchronize_rcu() repitition of you
+> plan to do this.
+
+I mentioned this a few days ago, and I did not forget it. :-)
+
+> 
+> > Now, you ask for a step further, i.e. make it that we can enforce that a driver
+> > actually stopped the device in remove().
+> 
+> So where do you draw the line on bugs Rust should prevent and bugs
+> Rust requires the programmer to fix?
+
+It should prevent all safety related bug, but the one above is impossible to
+solve, so we have to live with it. But that doesn't mean it's a justification to
+stop preventing bugs we can actually prevent? Do you disagree?
