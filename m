@@ -1,133 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-10631.protonmail.ch (mail-10631.protonmail.ch [79.135.106.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9792022EE5;
-	Fri,  7 Mar 2025 13:27:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9AC1E1DEB
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Mar 2025 13:28:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.31
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741354057; cv=none; b=QOQg8WoR13KznI6XROFVMrklU5EWJ2dOZ7muF1wFof5l4E94Q3vbQ4yEGtSlM1XD/twgbKtEVsNA2AyRuu3CcacrWrI9nCuowV9eNBgWQZWVYqPUYQzOm5DmbN0v0xAP7Pv90qgn/TM3ptG3ZAgg9N4aFDf5ldGzInIHDVf4d+U=
+	t=1741354133; cv=none; b=LJLPIVpwkyGUsfUhfhtcTlZcxQBCEUPj0yEbsTVp3oH6S+COrcDa64+u49yGxHHH+ud6hoUa/4X2tZG5D+c+LH7hAIRVePowVIrM6oYw4QCAoOafSCAGv8pNJhg8bt06lcLzf/MUz5rqmfX+Phj/sartwgB0HQxCtZ461oXO5b8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741354057; c=relaxed/simple;
-	bh=+1BxnVPnlbnWFOP/941TLdbyOO8GpUZPJukzn1Ej/VE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=sNlmMLjPkF7T9WvDAlCSIwiHc8Jp7jrfZhB3KRRCb7eCs73eugGERaCaIY1cINADTxslYs0BqCbSXMsDbV/4fBbeAIN3bliJAybsl2AgkY9EyNc/syfEefWsHy8OiVtgWHbYeG5Uworb/cR5a/wV2bjhVJdeK8qBsAzu6ZedkqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=guCNpJzf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741354133; c=relaxed/simple;
+	bh=ZP4tF3IYTfq5xSiI9AaVT2LKtPF5DFRmrGdG+HiAB4E=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZU1siak1ne0oMb0iM+wQKyWFUHmIBGCAXcbC1UtwKRP0h/ZGeSJP+11V+TmPHsw2FWGDaUOa16oreVQGY64eACMSDldCSdgH+51g5vXFdLnB5GsEuPLDDYq6CswOJvprtJTPPmqNMsDPAy9Oi1QC+UdzyMEHufdGsfbR16VmYHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=ZYYqeHhC; arc=none smtp.client-ip=79.135.106.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="guCNpJzf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B792CC4CED1;
-	Fri,  7 Mar 2025 13:27:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741354057;
-	bh=+1BxnVPnlbnWFOP/941TLdbyOO8GpUZPJukzn1Ej/VE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=guCNpJzfg3ekr8SJ9IRY8SoonhzlS6nHWYm278SjVHI51tLfCrFUXaNYMYnX79jbf
-	 uzG6vDkvKKilibUoGHGDRV/q2XCpg27O5QAjwAy6dHR/4EF2QWaMOpKa3C0Jn77c9H
-	 k5qv8JfwgX+7xFAeeAkSz266ROI1HdmckM392j4bZRF46smEwGreMpI2QeMdp0lh+m
-	 d92q8VErSQUhJYXk104FeRLhAcv/qclUuelYdK6TbUdaCRBgMWzWdViAFLGQXvNIpS
-	 LuW7BpjbGfOHDStUlGxkaPMVTE20NEF3Wjqhyh/3lcuEgFo2zLN5LEZTCI9PKEIIKB
-	 3JRvJ0OkdITGg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Benno Lossin" <benno.lossin@proton.me>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Anna-Maria Behnsen"
- <anna-maria@linutronix.de>,  "Frederic Weisbecker" <frederic@kernel.org>,
-  "Thomas Gleixner" <tglx@linutronix.de>,  "Danilo Krummrich"
- <dakr@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
- <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
- =?utf-8?Q?=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor
- Gross" <tmgross@umich.edu>,  "Lyude Paul" <lyude@redhat.com>,  "Guangbo
- Cui" <2407018371@qq.com>,  "Dirk Behme" <dirk.behme@gmail.com>,  "Daniel
- Almeida" <daniel.almeida@collabora.com>,  "Tamir Duberstein"
- <tamird@gmail.com>,  "Markus Elfring" <Markus.Elfring@web.de>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v10 03/13] rust: hrtimer: implement `HrTimerPointer` for
- `Arc`
-In-Reply-To: <D8A1Z043VPGR.2OBGSBH1ALUL6@proton.me> (Benno Lossin's message of
-	"Fri, 07 Mar 2025 13:03:06 +0000")
-References: <20250307-hrtimer-v3-v6-12-rc2-v10-0-0cf7e9491da4@kernel.org>
-	<20250307-hrtimer-v3-v6-12-rc2-v10-3-0cf7e9491da4@kernel.org>
-	<b-T-Yv_oexMXaKG9kNNfbYz-Qaw1XhJw-VHerSPFp_sIMoztNyAj94_rH-uNYeG-Hc5WANUivDJW9WLmfZZHwA==@protonmail.internalid>
-	<D8A1Z043VPGR.2OBGSBH1ALUL6@proton.me>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Fri, 07 Mar 2025 14:27:28 +0100
-Message-ID: <87senp3r9b.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ZYYqeHhC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=3ci2nq23nzggpoigdqxlpz6ksm.protonmail; t=1741354129; x=1741613329;
+	bh=Pr67z88ZqJT05+daJYJqoFoo2M9hUk/OxmbiH7Ad1eU=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=ZYYqeHhCeJgXZa1yHOjFFGgM6KikKKFjGiSi/0LPxsjoTJIThI6y/JBnezVAFwCot
+	 vDqpIhpfbAJvNt9742uEqNxLO/gYE0udGIVYf+lVshxRBUBEc2a6wd+kNNPOQE9Alo
+	 qpwwTHUacCDWMYKIACudyOV8OlwGVxSH8gR8rMk18WHj64GIQ/0flkHs8457GQvbEm
+	 7r5Vmrug40/bDECQXiHx4g2UeNkFa69M6kXzpdb7A2nVFRckEL/aubWue+jKOl7iZu
+	 fBwDdGE+rfY3fCbV+oabpSSECMOZUinxBOcKN0nRkw5/dCqesYCyxRhw7+fdi69u9Y
+	 CWYeO9+95ECxg==
+Date: Fri, 07 Mar 2025 13:28:42 +0000
+To: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Danilo Krummrich <dakr@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, Markus Elfring <Markus.Elfring@web.de>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v10 13/13] rust: hrtimer: add maintainer entry
+Message-ID: <D8A2IL07RV9S.6RF7B9326WFL@proton.me>
+In-Reply-To: <20250307-hrtimer-v3-v6-12-rc2-v10-13-0cf7e9491da4@kernel.org>
+References: <20250307-hrtimer-v3-v6-12-rc2-v10-0-0cf7e9491da4@kernel.org> <20250307-hrtimer-v3-v6-12-rc2-v10-13-0cf7e9491da4@kernel.org>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 75568d4cf981d5e2b22a0c592d439af24e8f337c
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-"Benno Lossin" <benno.lossin@proton.me> writes:
-
-> On Fri Mar 7, 2025 at 11:11 AM CET, Andreas Hindborg wrote:
->> +impl<T> HrTimerPointer for Arc<T>
->> +where
->> +    T: 'static,
->> +    T: Send + Sync,
->> +    T: HasHrTimer<T>,
->> +    T: for<'a> HrTimerCallback<Pointer<'a> = Self>,
->> +    Arc<T>: for<'a> RawHrTimerCallback<CallbackTarget<'a> = ArcBorrow<'a, T>>,
+On Fri Mar 7, 2025 at 11:11 AM CET, Andreas Hindborg wrote:
+> Add Andreas Hindborg as maintainer for Rust `hrtimer` abstractions. Also
+> add Boqun Feng as reviewer.
 >
-> I don't understand why you need this bound here.
+> Acked-by: Boqun Feng <boqun.feng@gmail.com>
+> Acked-by: Frederic Weisbecker <frederic@kernel.org>
+> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
-This impl is applicable only when `Arc<T> has an implementation of
-`RawTimerCallback` where CallbackTarget<'a> = ArcBorrow<'a, T>. I don't
-want the impl to be available if that is not the case.
+I don't recall adding my reviewed by for this patch (I normally don't
+review MAINTAINERS changes, since there isn't anything to review). And I
+don't find it in lore, how did this end up here?
 
-It's just an additional check.
+---
+Cheers,
+Benno
 
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> ---
+>  MAINTAINERS | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
 >
->> +{
->> +    type TimerHandle = ArcHrTimerHandle<T>;
->> +
->> +    fn start(self, expires: Ktime) -> ArcHrTimerHandle<T> {
->> +        // SAFETY:
->> +        //  - We keep `self` alive by wrapping it in a handle below.
->> +        //  - Since we generate the pointer passed to `start` from a valid
->> +        //    reference, it is a valid pointer.
->> +        unsafe { T::start(Arc::as_ptr(&self), expires) };
->> +        ArcHrTimerHandle { inner: self }
->> +    }
->> +}
->> +
->> +impl<T> RawHrTimerCallback for Arc<T>
->> +where
->> +    T: 'static,
->> +    T: HasHrTimer<T>,
->> +    T: for<'a> HrTimerCallback<Pointer<'a> = Self>,
->> +{
->> +    type CallbackTarget<'a> = ArcBorrow<'a, T>;
->> +
->> +    unsafe extern "C" fn run(ptr: *mut bindings::hrtimer) -> bindings::hrtimer_restart {
->> +        // `HrTimer` is `repr(C)`
->> +        let timer_ptr = ptr.cast::<super::HrTimer<T>>();
->> +
->> +        // SAFETY: By C API contract `ptr` is the pointer we passed when
->> +        // queuing the timer, so it is a `HrTimer<T>` embedded in a `T`.
->> +        let data_ptr = unsafe { T::timer_container_of(timer_ptr) };
->> +
->> +        // SAFETY: `data_ptr` points to the `T` that was used to queue the
->> +        // timer. This `T` is contained in an `Arc`.
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 896a307fa065..ba8e802faabf 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -10355,6 +10355,21 @@ F:=09kernel/time/timer_list.c
+>  F:=09kernel/time/timer_migration.*
+>  F:=09tools/testing/selftests/timers/
 >
-> You're not justifying all safety requirements of `ArcBorrow::from_raw`.
-
-How is this:
-
-        // SAFETY:
-        //  - `data_ptr` is derived form the pointer to the `T` that was used to
-        //    queue the timer.
-        //  - The `ArcTimerHandle` associated with this timer is guaranteed to
-        //    be alive for the duration of the lifetime of `receiver`, so the
-        //    refcount of the underlying `Arc` is guaranteed to be nonzero for
-        //    the duration.
-        //  - We own one refcount in the `ArcTimerHandle` associted with this
-        //    timer, so it is not possible to get a `UniqueArc` to this
-        //    allocation from other `Arc` clones.
-
-
-Best regards,
-Andreas Hindborg
+> +HIGH-RESOLUTION TIMERS [RUST]
+> +M:=09Andreas Hindborg <a.hindborg@kernel.org>
+> +R:=09Boqun Feng <boqun.feng@gmail.com>
+> +R:=09Frederic Weisbecker <frederic@kernel.org>
+> +R:=09Lyude Paul <lyude@redhat.com>
+> +R:=09Thomas Gleixner <tglx@linutronix.de>
+> +R:=09Anna-Maria Behnsen <anna-maria@linutronix.de>
+> +L:=09rust-for-linux@vger.kernel.org
+> +S:=09Supported
+> +W:=09https://rust-for-linux.com
+> +B:=09https://github.com/Rust-for-Linux/linux/issues
+> +T:=09git https://github.com/Rust-for-Linux/linux.git hrtimer-next
+> +F:=09rust/kernel/time/hrtimer.rs
+> +F:=09rust/kernel/time/hrtimer/
+> +
+>  HIGH-SPEED SCC DRIVER FOR AX.25
+>  L:=09linux-hams@vger.kernel.org
+>  S:=09Orphan
+>
+> --
+> 2.47.0
 
 
