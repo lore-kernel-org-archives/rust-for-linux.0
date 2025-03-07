@@ -1,63 +1,63 @@
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE29A2163A8;
-	Fri,  7 Mar 2025 11:08:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5103216E20;
+	Fri,  7 Mar 2025 11:08:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741345729; cv=none; b=SkngRfJnOIyuzIp65fKdJHeY9nAU3pSn+6KKifcoNweg7TIKJPDj5DgQ3g7yrd9ZBC5ntJYypaYDdm/py1Hdw04DAVT8rEhjwduMZrTZL11WzUSMbmzxxNuHuGppuuePBtJKQzqEYRxrwYD+++swOXHiQTVO0A8dCGqEw4Afm+8=
+	t=1741345731; cv=none; b=oLN+gfMPWiHC4REnAeJrb4GhNJdfCaIShU3dE2DOYPGjgYygAX5C5CGdxTUNiPvqaBOoqGvHvxqBHLjx72LVdHVWRaTkMxl5vIfAmNL2WMyL1IpgcArmFMoScNCFoDgAn8iDGCZGHAOWAp80Z5te6r/Tq5dpXfpyMUL9wgfgVSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741345729; c=relaxed/simple;
-	bh=NFKIAidxnRMlrYELYDQT43QLdnHioABterAjD1+vLGg=;
+	s=arc-20240116; t=1741345731; c=relaxed/simple;
+	bh=EXM0h+nNXEzWwA+37YY+ZOrUkAfwYMWN8MLzC5oEIWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GwHFiqco5eKrAaOK0NG0slzBftxU92h1i3guHaDyg3m+14ex7mUlRg+qNIEuG875jKAyCaRQMJpya5mZmsogvX2lTuDEGsutgSrN2p+DN9yShUq3Qvbk21KAxpC8XLnwWd+2115/VogZmwtIsPbHMnpPTMANs65l6uTrNnkxgXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iJOVcQWe; arc=none smtp.client-ip=209.85.167.46
+	 MIME-Version; b=aH425JQx230mGH1IXkzIPjaqA7UBtZPGtzbN5NNq+oMmChKFrDdxbSG4JcS2CXTeDDsMNILrKmMLYwVsidtoiA4sGFlWZYo9NNVumKsZO6wf9NnzbCP3qvpORy3jPFiiL/Gy3kF1q33iLfr0FUGAeWsh2VZsM9JaMFLxoRdHhaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kSEkiGvZ; arc=none smtp.client-ip=209.85.167.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iJOVcQWe"
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-549946c5346so351469e87.2;
-        Fri, 07 Mar 2025 03:08:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kSEkiGvZ"
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5495078cd59so1968828e87.1;
+        Fri, 07 Mar 2025 03:08:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741345724; x=1741950524; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1741345728; x=1741950528; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Bna1rbJPQWibEFwv4J1kDTSY5U7INmYTRZbd16nD/nc=;
-        b=iJOVcQWeSWibvkunksfU1XYIryqmI1QAv5MN2XiSSDQnKm0Mxw9juMuOwi0HREQGrM
-         eIdXQgsLCLalgoRwoRXPdMeeAx3EHk7DZpibxXJHc47Hzu2uOKwhGgp0TSHdn9NIG5P/
-         Tr8F0B771ZfP822UwR+ZVWnyatdaiviLEepM2Ugv0t2IsPGij/AvP68o1OfSoUTFdX9w
-         pTIz9BCjgwKEfZLpthdhowEehOtkkirLrm6z+GAB0LMRE7dgVCAAV3+i5JCeedpLfujy
-         bgh18Vwg1FOQRC8z4hq7Uy4W2IHPjWm2ii3xYnrNRYWLRYIw0J8ffAUJG9zBbGVj49Ih
-         y2UQ==
+        bh=HLJkp6MLOD1BiDeGrlidAjVqoKEfJEO/erWzBeDn7QE=;
+        b=kSEkiGvZP9KF4tYX3b41caa3EJin+bxlzR8s6UiHLY/e/94cKrOHqHvZVu1t/veP4Q
+         j7umQo0z/zQ+UMWxdZd7D1HNVByn1kkYy+ZwE0cCiulJzjLb5l0RNNAJBAD8qq4RGpVJ
+         STLko6aIrPVCzApEYMd/7jIwd2ps13juJII7IiTsa1WfllQrHDDngtYEi/0tqvQmPv4y
+         I1UMJbeJSoDbOsS47275WepqQbHp1D4uWWh+jcDXKTOOZjbg6ZgLQHW6w+EAN7wMNYF/
+         ps1BjSNKK5QusdqI8JnB4L/1+tn1TgO7C3mewvnH1w98cjSBLxbqg0iG9zhRulZxwL0a
+         3Y2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741345724; x=1741950524;
+        d=1e100.net; s=20230601; t=1741345728; x=1741950528;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Bna1rbJPQWibEFwv4J1kDTSY5U7INmYTRZbd16nD/nc=;
-        b=JOmQitW603PNYdh1tvI0Xyjl5OzcHba7Lui9ut7qvqrTp0KUnDO90zuouHTAr1IOkr
-         K/yG/XkMuYeRej79Pyd/nNKOlCd97oUGYzoEfT8EZa49bhdArjk12EDTJno9GSpKNZ4a
-         2UGDNXJ+p0qnehTej8UOro+HPZQJArynFJyRMjR46avvS7Jgq5/gtqrJMgDQyosuQ33D
-         KtZckrC4ixz4tWmqmodTE0/nVMRibRS9EweR93OFX6tukMz2ul0wBnDLNfn+S1n76lM0
-         eq/JjnwjCa3+JGzSnywNLbj1QiiMaRZuIxQUUBwgqBGjgM9RCHtHVNBCpvz4hwU7hb9T
-         6WEw==
-X-Forwarded-Encrypted: i=1; AJvYcCVEAHfIXO2NNZPAIRA9prPT7HNzgrDqm5APzUjPhneAcSr8Z/Ts9TyrLxVSiyfmoJrnkzYXHup+hgLYZCc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6NVR9yRGv0eyKPthTRxqti0CqyBUDiv7qu+w/5AkSGlf+9hUt
-	+r0UasWQ893UaDjrCbPJsPisXjcXtPtHX/CIcCP2K86La4wuYPov3dozhQ==
-X-Gm-Gg: ASbGncuvVPXvcafESsA1AkgBOebVmjESIR7i+DzfHTNP6maALmvUc0IzZA7S+YWM9sy
-	y1BpRxIWf6iruvk6fOn56eI28F0nExitGIyRqhhbLQOJzVnHV7xEHTXFO7aDTBWpXocnykIHu+7
-	1XanLNZp9NPm+IFEatDplaauLm7+OQrYOMYxbGQI4kvQWLR7Eo7gwWqrQ3bBnlwhSghKB52IWwJ
-	YKvrUmkgfvxetLdFsGD9Y4KADLHrG1vtapK9t94W+rYelINPduA0KKiC2VcUqhzJq07ZJL9AsEX
-	6uzUFgj/vhgIBIxcDrLTqlNl2p7J++PdPnoXVOj82XVHlYrAZXs6tzn4OBUt+ACnfvoIzjH04JT
-	+m7tTxDEjTnvDnn2pYNOWEA==
-X-Google-Smtp-Source: AGHT+IHjaZ7I8vrWUm2jSrf2K7izD3GQ+2svxuHCSAb3JqdODUfWFeX8SdZqFx0ZMpsg2ApCZyJSYg==
-X-Received: by 2002:a05:6512:1597:b0:549:8cc8:efed with SMTP id 2adb3069b0e04-54990ebb232mr1066828e87.48.1741345723841;
-        Fri, 07 Mar 2025 03:08:43 -0800 (PST)
+        bh=HLJkp6MLOD1BiDeGrlidAjVqoKEfJEO/erWzBeDn7QE=;
+        b=fWzZoQUw13caAAuAZzEOJtw8p4CImFqO1aMWEMugYEJSoHI7zYAd6+FJlX+xiu/l44
+         wLHylvIBzzeU34pJa8BB1T9xUAU92EIA4s5SzKSAYbsXvBbVMDWgCt5FDSpBiRZu1Sht
+         zjGP2thyDf3kPjcDBKyvayrq+1/KlSJ0G/w36jT/v+R1w+mdH4GGZo9XX280WsP9PBuV
+         kHsO+9Ds00Da7SUuW1TLALeyyR4DL7xgybQxDnVY+/G20SF2uOPMWOIQiD/CNN7as4Cp
+         GXvnrl7zpu4yCixEMnMaL7zaW82P/VoVegtG8L4us/K5IJxkeujdf+P1zhCVpD0xeSdr
+         yhPw==
+X-Forwarded-Encrypted: i=1; AJvYcCWTU0xk/umODhJEWPCgdyTNVxN0HZ8KDmLn9Fez6pihWgYlCB532LQ0BzuOd8KpQ82lx+XclsYeFw4AzzI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCXzbe93s6gsHx4E4JtZNzWLDaEYZPhDdrFs/Z72CIxefI4cBW
+	m07lYEhoqXnqFNYJIyPHAfJKXKm2LxTJ+ogXKWuGNu/WWJpHUOJTs4Wbsg==
+X-Gm-Gg: ASbGnct55uaQEw7v/xEvsBImhooVG/sElIuuEM8vusKE4WesG1c6AFAc9v6PREswA1T
+	Zf3uz8sxuedqZNRlTPd2AOLmcT782YTwf91DPR/SOu68BAme5HJ2hMkLIvosVfXp6WfbtVumaTD
+	SvHGZvar3pEiQ3i1+4m/VRmoVVpDWtUYRQMOSjK/nDQuDVHG0eFVxvU+N1xE2lRPqe5B3ztpFcc
+	QJo/9m1c/Da/wWT1cmOcPhqhuCZQpuVWsN5qG9mvXGbdioPfX+CP/uXDYeIqbmAMqxkDmA/cPA2
+	nuvEdacxkhaK2STGESRQaL83KzN+Tziu2wEPwizewSBcs1BNhIEZP7BuY+tmw4GTAcf60OCgbwc
+	Tb+m3+g5xETwrKalxBtt8xw==
+X-Google-Smtp-Source: AGHT+IGiGpe6CSJJtkufhdPB5iGLtwq4UxbrTZKaH5A1Wg2RvJPmdaO+/Wjn/2beT+7PpJmdLcSDmg==
+X-Received: by 2002:a05:6512:3dab:b0:549:8d2a:880d with SMTP id 2adb3069b0e04-54990e5005fmr900677e87.21.1741345727697;
+        Fri, 07 Mar 2025 03:08:47 -0800 (PST)
 Received: from abj-NUC9VXQNX.. (dsl-hkibng22-54f8dc-251.dhcp.inet.fi. [84.248.220.251])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5498b1c2a08sm448920e87.223.2025.03.07.03.08.42
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5498b1c2a08sm448920e87.223.2025.03.07.03.08.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Mar 2025 03:08:42 -0800 (PST)
+        Fri, 07 Mar 2025 03:08:46 -0800 (PST)
 From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
 To: rust-for-linux@vger.kernel.org,
 	daniel.almeida@collabora.com,
@@ -79,9 +79,9 @@ Cc: Miguel Ojeda <ojeda@kernel.org>,
 	airlied@redhat.com,
 	iommu@lists.linux.dev (open list:DMA MAPPING HELPERS),
 	Abdiel Janulgue <abdiel.janulgue@gmail.com>
-Subject: [PATCH v13 4/7] rust: device: add dma addressing capabilities
-Date: Fri,  7 Mar 2025 13:06:21 +0200
-Message-ID: <20250307110821.1703422-5-abdiel.janulgue@gmail.com>
+Subject: [PATCH v13 6/7] MAINTAINERS: add entry for Rust dma mapping helpers device driver API
+Date: Fri,  7 Mar 2025 13:06:23 +0200
+Message-ID: <20250307110821.1703422-7-abdiel.janulgue@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250307110821.1703422-1-abdiel.janulgue@gmail.com>
 References: <20250307110821.1703422-1-abdiel.janulgue@gmail.com>
@@ -93,94 +93,39 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add functions to set the DMA mask to inform the kernel about the
-device's DMA addressing capabilities.
+Add an entry for the Rust dma mapping helpers abstractions.
 
+Nacked-by: Christoph Hellwig <hch@lst.de>
+Acked-by: Danilo Krummrich <dakr@kernel.org>
+Acked-by: Andreas Hindborg <a.hindborg@kernel.org>
 Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
 ---
- rust/helpers/dma.c     |  8 ++++++++
- rust/helpers/helpers.c |  1 +
- rust/kernel/device.rs  | 29 +++++++++++++++++++++++++++++
- 3 files changed, 38 insertions(+)
- create mode 100644 rust/helpers/dma.c
+ MAINTAINERS | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/rust/helpers/dma.c b/rust/helpers/dma.c
-new file mode 100644
-index 000000000000..8eb482386f93
---- /dev/null
-+++ b/rust/helpers/dma.c
-@@ -0,0 +1,8 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/dma-mapping.h>
-+
-+int rust_helper_dma_set_mask_and_coherent(struct device *dev, u64 mask)
-+{
-+	return dma_set_mask_and_coherent(dev, mask);
-+}
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index 0640b7e115be..8f3808c8b7fe 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -13,6 +13,7 @@
- #include "build_bug.c"
- #include "cred.c"
- #include "device.c"
-+#include "dma.c"
- #include "err.c"
- #include "fs.c"
- #include "io.c"
-diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-index db2d9658ba47..f9d3d4f60ddb 100644
---- a/rust/kernel/device.rs
-+++ b/rust/kernel/device.rs
-@@ -6,10 +6,12 @@
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 12f2d79ce174..72daf5db0242 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -6902,6 +6902,18 @@ F:	include/linux/dma-mapping.h
+ F:	include/linux/swiotlb.h
+ F:	kernel/dma/
  
- use crate::{
-     bindings,
-+    error::Result,
-     str::CStr,
-     types::{ARef, Opaque},
- };
- use core::{fmt, ptr};
-+use kernel::prelude::*;
- 
- #[cfg(CONFIG_PRINTK)]
- use crate::c_str;
-@@ -187,6 +189,33 @@ pub fn property_present(&self, name: &CStr) -> bool {
-         // SAFETY: By the invariant of `CStr`, `name` is null-terminated.
-         unsafe { bindings::device_property_present(self.as_raw().cast_const(), name.as_char_ptr()) }
-     }
++DMA MAPPING HELPERS DEVICE DRIVER API [RUST]
++M:	Abdiel Janulgue <abdiel.janulgue@gmail.com>
++M:	Danilo Krummrich <dakr@kernel.org>
++R:	Daniel Almeida <daniel.almeida@collabora.com>
++R:	Robin Murphy <robin.murphy@arm.com>
++R:	Andreas Hindborg <a.hindborg@kernel.org>
++L:	rust-for-linux@vger.kernel.org
++S:	Supported
++W:	https://rust-for-linux.com
++T:	git https://github.com/Rust-for-Linux/linux.git rust-next
++F:	rust/kernel/dma.rs
 +
-+    /// Inform the kernel about the device's DMA addressing capabilities.
-+    ///
-+    /// Set both the DMA mask and the coherent DMA mask to the same thing.
-+    /// Note that we don't check the return value from the C `dma_set_coherent_mask`
-+    /// as the DMA API guarantees that the coherent DMA mask can be set to
-+    /// the same or smaller than the streaming DMA mask.
-+    pub fn dma_set_mask_and_coherent(&mut self, mask: u64) -> Result {
-+        // SAFETY: device pointer is guaranteed as valid by invariant on `Device`.
-+        let ret = unsafe { bindings::dma_set_mask_and_coherent(self.as_raw(), mask) };
-+        if ret != 0 {
-+            Err(Error::from_errno(ret))
-+        } else {
-+            Ok(())
-+        }
-+    }
-+
-+    /// Same as [`dma_set_mask_and_coherent`], but set the mask only for streaming mappings.
-+    pub fn dma_set_mask(&mut self, mask: u64) -> Result {
-+        // SAFETY: device pointer is guaranteed as valid by invariant on `Device`.
-+        let ret = unsafe { bindings::dma_set_mask(self.as_raw(), mask) };
-+        if ret != 0 {
-+            Err(Error::from_errno(ret))
-+        } else {
-+            Ok(())
-+        }
-+    }
- }
- 
- // SAFETY: Instances of `Device` are always reference-counted.
+ DMA-BUF HEAPS FRAMEWORK
+ M:	Sumit Semwal <sumit.semwal@linaro.org>
+ R:	Benjamin Gaignard <benjamin.gaignard@collabora.com>
 -- 
 2.43.0
 
