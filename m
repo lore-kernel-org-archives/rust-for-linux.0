@@ -1,142 +1,87 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE8F1A3142
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Mar 2025 07:23:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D292718DF65
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Mar 2025 08:22:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741332207; cv=none; b=lNgGQohpq+f1OVp7A60VipoGxPkBFyc4ECa/XAZXwDHVOFqtN5rcffJOV8bLO+kwdsVjDYagXO79AnmFbRESIuu+fY/FvufHLOPy7gB0e+/iTEksa7u9t7Wlg/b5eQTaNktyLLVWLVTEIoZNxI9FSCYMouWxdEmm+bCo5eDzMSI=
+	t=1741335775; cv=none; b=XP7uaNFURTAKbLXNKVEiDPxzthrYJJznFFoaSzR6FzopVrxoVC97L+vg+WlFitBNykK+GlwAtF/67ivdlLSEJ/FOGHK6rlw7VwI8JvnPkQi/M3PAs0XHEhKvPxOHDXSTA6a0U412DSvzG6lqDm22fijRkofODRyRuqN96UZuuZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741332207; c=relaxed/simple;
-	bh=QqafGuAhOIuebi5LncashDc9XDAZ2JG7WWMLwyg4leQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uBa7EFTY/hZouPODTQZ1Nb3alZqfYj0fbco0HRC2JUeJ7TytuDGGR+eJjKk7Ozml9X+617dUp3cmtPkp6c4yrQKK4sou8H4/Qq0aBYCimaPa1cGzAqRVKs7OGnNG5yntRPpccrFfHjJYFMKKS+iTEsghfy2V3cm2Rtv8+qR7gfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Y3vQW+Sa; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1741335775; c=relaxed/simple;
+	bh=b7YL5yffCbBduPLDtVygzJBE/ZQsoAmboOTImBjLtgQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Nlh8KJ+k5XUAFMeK0Rc5cTBE2mBo7JWlJX24DNeFJ/NA+US736MXLRI271GZD3kGluFsrCPopkKxkwepO4Irq3I+zpI3Fqkll71bOfDYdxwZKHjpB6bfTQAqlKTv5gJYNZJA/EjopdjU9ROjxge+DUmi08+Qi4hEavtu8eMDZYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uMpRFHG9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Y3vQW+Sa"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-22398e09e39so26911735ad.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 06 Mar 2025 23:23:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741332205; x=1741937005; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VCjDatYdwCCsM/WfG3Y3BLozY6pEAZzndrpXaKUoI/0=;
-        b=Y3vQW+SaJy/gHv6ZVcpj26Nz/nPLhjopvhJCzdQrwcq2voCbSuX4omSWT8qy7xAoU6
-         waEKUYLL6qLvXMNhc2pgzKAoT3Pa6ysytjhU0y77D7gcixTQlro4lqLgBXFxcLgMxM9X
-         T2/+Vm0Py0Is+em8EOeTL4zwUAeMMX6gSuiBc3VkbCHT/Mbj4NdmlkCPGT3eoDyJyPfg
-         cfI1r7SwWj87rjhLH0ylAMRoxLDdWIzztZ21+ZD/NISMBUfIxxhVgX4ruWHalnguGygF
-         p6d2jb+NkIyF8ibwdYKnfldV8GF71x4Yot1B8DRwm+g9ZAVabve/YWx7RBtZ6ZNYx2gz
-         fH9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741332205; x=1741937005;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VCjDatYdwCCsM/WfG3Y3BLozY6pEAZzndrpXaKUoI/0=;
-        b=QYEFNWO4GOmQMDLJXL98ekS8/88zq+2Cwti7jhy2khp1aE1/pIdgAre4+LWEiZtmmC
-         wznVOPlEVFi1f8A2srZdUGfO45DKJCza/cWV9uit5yrgF3E284egc1tzl16e8E/4pZqd
-         Z0kJUZV35aTSz48n83FMtPQgfafqRYwd/N+SzTLMFy4wNIWbd+xOwLWZ7vQBjVPI2bTS
-         eu+73gMcPOoyHT9RoUWL11OqJZvpDHk7R0slcPxYyS+5VPrbcEFVsdN6pZlOR03Ls/Hh
-         73qYB59SsYd/UQUq6V5MJ3tSwjO5simphZze0p1CNz8Zf9Votlie4jiWlRr/hUCTUlYq
-         Hafg==
-X-Forwarded-Encrypted: i=1; AJvYcCVUTZXCwReP1Z7NtN8K47S2KE9+oMKbe58Q5ZVXc0AbftSBpfU6vk1J2nUBw+kJ4OdqUuNTpHJSZd8lGco6MQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yza5xxSHw8iussxkRnnnr2VJG4sM9eYcBJ8oMwD2F8Z6f45Y1DD
-	s7iw93LpuY66PhAm2qoHAmVrfboD/S5yNGfkGSAhbNQsTPk/qkDyoV+gOizZzcI=
-X-Gm-Gg: ASbGncsqUsRLGNVS20xnvoKE9l4dGCoKUpEWCvSbh/y8fITcg4Vlpg3EhW4pBi88DSY
-	YVM0kKirnnKONFGvOaDtBhHLQd5PTaPnRDYPB6DgRYVO2wA/vA+HsN9bzUIr0g050IscTKCDxdB
-	Mu4MfXO+osnAuM5+647uBOjZ5sylAjBY2Abaw5T0FNgaP0xraUVCQnjXfs5LZY5F6s/qGYKezK0
-	ULmAPWcy/Jp+PE0X3/H1CDSlIRaZfj44yWNdcnRVkK5r+dqrymq9VY+k90+b6y+YAHQHjBGB0QJ
-	G8cEf4yDf0VX20uWZ+/guFPwc9DKIgShVpudMFu2DkOdUQ==
-X-Google-Smtp-Source: AGHT+IGAtNyb2kEEWj4EBD2NQHNijL6RTt39L6X5JPOWRj3HjNXnhSpRkQZgMznJ39lNF6si/KC6VQ==
-X-Received: by 2002:a17:903:192:b0:224:1ec0:8a16 with SMTP id d9443c01a7336-22428a97f21mr36812615ad.21.1741332205491;
-        Thu, 06 Mar 2025 23:23:25 -0800 (PST)
-Received: from localhost ([122.172.84.15])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-224109df225sm23794445ad.47.2025.03.06.23.23.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Mar 2025 23:23:24 -0800 (PST)
-Date: Fri, 7 Mar 2025 12:53:22 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Stephen Boyd <sboyd@kernel.org>
-Cc: Michael Turquette <mturquette@baylibre.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Russell King <linux@armlinux.org.uk>, linux-clk@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>
-Subject: Re: [PATCH V3 2/2] rust: Add initial clk abstractions
-Message-ID: <20250307072322.5w2i7dxtcaani2ok@vireshk-i7>
-References: <cover.1740995194.git.viresh.kumar@linaro.org>
- <023e3061cc164087b9079a9f6cb7e9fbf286794e.1740995194.git.viresh.kumar@linaro.org>
- <CANiq72kdWzFOZ39EoFNxEAbk4KYgzLi1OAEc1zn8BM07VpXy3g@mail.gmail.com>
- <20250304085351.inrvjgixvxla4yn3@vireshk-i7>
- <CANiq72=sU1sHvamC5REFPEC1aOVdZw9EKdxOgkUYESTR2yh3iQ@mail.gmail.com>
- <20250305114659.k5pptszvmusblynm@vireshk-i7>
- <2c17361891c4eb7edd947e5384cc9741.sboyd@kernel.org>
- <20250306044028.5d2w4og2juclktqs@vireshk-i7>
- <1ad3e7e2f8f2fc375b472d7676e47f5d.sboyd@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uMpRFHG9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF235C4CED1;
+	Fri,  7 Mar 2025 08:22:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741335775;
+	bh=b7YL5yffCbBduPLDtVygzJBE/ZQsoAmboOTImBjLtgQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=uMpRFHG91Pws2mqLHktCENJL0gMZQ9aA5zTgrvluVwOIvSqOGytv5v91V++eJhNVs
+	 UdAtuU0flRe3+4zW0FdC0OIqYWYwMCXHz4Z2U6LgIMZ7NDtq2Od18UZOfvjYPdmb/6
+	 H9f3HG8+3NKFO1oQo1HPzu0Tm2hrEYTeT1cDgm4xiK/xvY8ZlFt3pKfBlYWBJ9YmIj
+	 DQf7+1qboHnzXV9jCx3a65Qv2z+HH03RP9aGXwgKp0+bcs24m1z5h3ydViG9loEpdF
+	 MeNVvy2VnYjnY7+lWeshkqsQFXPHntif3Oqt1JrdyoPWf1rHwpyo6szv2QUoRC2eEj
+	 /jEqd3h4OYEyg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+Cc: "Boqun Feng" <boqun.feng@gmail.com>,  "Dirk Behme"
+ <dirk.behme@de.bosch.com>,  <rust-for-linux@vger.kernel.org>,
+  <ojeda@kernel.org>,  <daniel.almeida@collabora.com>,  "Gary Guo"
+ <gary@garyguo.net>,  "Trevor Gross" <tmgross@umich.edu>
+Subject: Re: [PATCH v3 2/2] rust: types: `Opaque` doc: Add some destructor
+ description
+In-Reply-To: <Z8lviMzPiMzjQIE3@google.com> (Alice Ryhl's message of "Thu, 06
+	Mar 2025 09:48:56 +0000")
+References: <20250305053438.1532397-1-dirk.behme@de.bosch.com>
+	<hVvs4-cEyMjFMKMMqergIA4OCAIJUIfXQGi2a_uisGZaLJHUWiNtGPNASjjeprDQrtNtasMOfTrRIiYwXE2zgg==@protonmail.internalid>
+	<20250305053438.1532397-2-dirk.behme@de.bosch.com>
+	<871pvbhqap.fsf@kernel.org>
+	<eGDvv6uA00fjuGAgV8uknZos4J9VcrxQ7lk9brRpmdGEGIHYZlxk-ZRsGxXsr-SCZE6IVEuPKs5ko9gukJwo7Q==@protonmail.internalid>
+	<Z8hwGGn9huDjyDWN@tardis> <87v7sn759g.fsf@kernel.org>
+	<n0Uj2Z9c_20rMgNGkpHAbJ2IQS5ueeREBy6NHdwpCp8vg9V5JrRPJbP3xBFssuyDTcN1JUulMK3cwwDu0U0fkQ==@protonmail.internalid>
+	<Z8icwtIpZ3PO9YcZ@boqun-archlinux> <87zfhz5gq2.fsf@kernel.org>
+	<qqUZq9zoVyrNCibroh1KeNl3DjT08HYa0Qd5UGBQyN-uYa_Q2y7hLLmoMlQA9KaEkfB8YF1lTywfA1Y4KaeKuA==@protonmail.internalid>
+	<Z8lviMzPiMzjQIE3@google.com>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Fri, 07 Mar 2025 09:22:46 +0100
+Message-ID: <87ldth5jxl.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1ad3e7e2f8f2fc375b472d7676e47f5d.sboyd@kernel.org>
+Content-Type: text/plain
 
-On 06-03-25, 12:58, Stephen Boyd wrote:
-> Quoting Viresh Kumar (2025-03-05 20:40:28)
-> > 2. clk is enabled / disabled from different routines:
-> > 
-> >    In this case the caller needs to call dismiss to avoid the automatic freeing
-> >    of resource. Alternatively the returned value can be stored too somewhere,
-> >    but I am not sure if it what users will end up doing.
-> > 
-> >    fn probe(...) -> Result {
-> >         clk.enable()?.dismiss();
-> 
-> Yuck. Can't we tie the lifetime of the clk to the consumer device driver
-> so that when the driver is unbound the clk is dropped
+"Alice Ryhl" <aliceryhl@google.com> writes:
 
-Yes, that is how it would work right now, the driver needs to store the clk
-instance locally. As soon as Clk would be dropped, clk_put() will be called.
+> On Wed, Mar 05, 2025 at 10:07:33PM +0100, Andreas Hindborg wrote:
+>> Without `Opaque` it is illegal to have aliased `&mut T`. With `Opaque`,
+>> it is legal to have aliased `&mut Opaque<T>`. Or at least that is my
+>> understanding.
+>
+> There's a really important wrinckle here. Having multiple aliasing &mut
+> Opaque<T> does not trigger immediate UB, but that doesn't mean that such
+> mutable references are safe to hand out to end-users of the API. The end
+> user could call `swap` on the mutable references, and which would be
+> really bad if it uses intrusive linked lists.
+>
+> I.e., you could only safely hand out Pin<&mut Opaque<T>> to the end-user
+> of the API.
+>
+> But of course you still need the guarantee. Pin is just a library type,
+> and if having a &mut T is immediate UB, then so is having a Pin<&mut T>.
 
-> and it decrements all the enables/prepares and puts the clk with clk_put()?
+Right, this is a really important caveat. Thanks.
 
-Miguel, how do you suggest we do this ?
 
-> A ScopeGuard could probably be used for that on the struct Clk itself,
 
-Not sure if I misunderstood that, but as soon as Clk goes out of scope,
-clk_put() will be called from drop() anyway.
+Best regards,
+Andreas Hindborg
 
-> but we would
-> want to track the enables and prepares in the rust wrapper code until
-> the struct clk can be inspected directly.
 
-So Rust abstraction needs to do some sort of refcounting for this I believe. Not
-sure if we want to do it and if yes, then how.
 
-> The problem is we don't know how a platform may implement the clk API,
-> and CCF hasn't taken over the entire kernel yet so we can't rely on some
-> private API between the CCF and the rust wrapper to know how many
-> clk_disable()s to call, or even rely on clk_put() to do the work for us.
-> Can the rust wrappers depend on CONFIG_COMMON_CLK? If they did then we
-> could have some private API between rust and CCF. We probably don't want
-> rust code to _not_ use COMMON_CLK underneath so we can encourage the
-> last few holdouts to migrate to CCF. I'd lean towards depending on
-> COMMON_CLK for the rust wrappers in this case.
-
-Sure.
-
--- 
-viresh
