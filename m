@@ -1,131 +1,170 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC39E212FBA;
-	Fri,  7 Mar 2025 10:18:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9760B211719
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Mar 2025 10:20:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741342730; cv=none; b=WchP9mNktZlebXEX/P2/z97r6kXJzr6gInjTzq9/ty/1OeGPH0s3yxderG5JuvoYhM+YdVboDKHtYKHoLJXZkB9LZEWQ9w1f8JlBcgx07tPWy3PPfR3ZUeccCfapEOn1ACEk+nthBfaIkRzuGLAmrBv9bYJfm4Nsft2o4GdDHeA=
+	t=1741342813; cv=none; b=ZzYVdqijJ8DXk6wTQR9c2NTN+xqvJ168uRKR1YtTReyEbV6CfkpOoTdz+3xJ66uxA8BBNwJuR8x8cHTQ4Wxd3pB6JV4D3sggBwgioqNdFTanU8yqcUjXZBg6UJlnh/IWPJeHWZmmEEPGjoikAWDglK+pqZmVZcYiF6Dr+x6EqxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741342730; c=relaxed/simple;
-	bh=T6KOOXFxy3UMTrMhhUiOPICGLa/UPKpN1ZCfmB1gDS0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=B+/wBvUSAelmiRHiRuYN792218Rz5vQ9mbd7VB2u1orGGKJ6oU2A5AeH5WieRgR0gilcIi5ap05HAAl+/Zo6l9ckQG0onZ9Hq09VAtM1oilraEtFzzKU2hqWAmsn/JQwmOFo50/wo/w8S2l1fH4XHozv5ZoGjmwWPZVTEcCFd8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dCkKY6zZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741342813; c=relaxed/simple;
+	bh=79LSSp/0eeR8AeePtwzHkpxVlnVAzHXOhFEG9XSuVcw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ywqc19tvRMNK3dZ1VNfCTm6LIJi7zpoHVosSiCqeFPKiz7+U+cEnpwaHh0cJ6Ey+ERcWdGy4fQrvoYxRZ3o/Q35MyPn8YdkSZyJEy32ExzSLZSUGWNIWY7wRhhjmnv7PJE8fCRSo1u9UoW9KH5nSD+wxiROR10bIuGpspcmbSP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=SHIHKVbB; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dCkKY6zZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81BF6C4CED1;
-	Fri,  7 Mar 2025 10:18:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741342730;
-	bh=T6KOOXFxy3UMTrMhhUiOPICGLa/UPKpN1ZCfmB1gDS0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=dCkKY6zZKdL3EW2JvEspVfHI0zRUbHptE4QHhnk0TK5fbGLQCbVZgPi0FG6nxkYIq
-	 hHexP3hZr0aG13kbfhW+Oxw7lT8nsqblAorLabeIf53vedclR6i8CiYOq+U2iKIrBx
-	 W5GmoFlgqW7zR0SsJB9cTxNTqaPh7Q6Gmor6zv30Pkw+xCV1r7OG84aRf5XDCj6hRv
-	 sn2ljxxN/HIQ2h5A36axL2Ksocl1/qhxR5L5KLL0D91cO0n0mb3wilZAhnKtKXVAs+
-	 IGms1rK42tNFCAaDWxpQIc5Kpnmvm6kOrcE+JzyaHriIsUoErPhIITJCWXHGsq1/Jo
-	 cbCIaSRABezEw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Fri, 07 Mar 2025 11:11:50 +0100
-Subject: [PATCH v10 05/13] rust: hrtimer: add `UnsafeHrTimerPointer`
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="SHIHKVbB"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43bd87f7c2eso9375815e9.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 07 Mar 2025 02:20:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google; t=1741342809; x=1741947609; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QZvaNwCaRfuC9eejyQ8YerbsFpOq+0SleVUFJwnjazQ=;
+        b=SHIHKVbBAf1hGILK+nnJtOoLHO+GByOf1fWSM2lWJkmFmVDfJBo8rWVC2MBSfNhfw+
+         phyQk6cRJeoWrZogT1VHcf2otqQEnsCeJ086WMpZzC8TBqaX385l7h2oT6d9/EN9g+6x
+         iUlC9aY67KsFEXtRhQjR4xCpZxBbcqW0pDZf4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741342809; x=1741947609;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QZvaNwCaRfuC9eejyQ8YerbsFpOq+0SleVUFJwnjazQ=;
+        b=qshkFCtmXaAEQucEciyfA8yQBdD6QZ3lz7W8lXEySX7AzVSWYbdJjRM9ixXhCh0vSJ
+         zj8RDI1wg6Q0v7mSTyBqSAZTgnzgwvxLKC7xvZR4GY+8YzsvJFHUi2X3ZGXNbaxOMqod
+         aWqGryHhnfPhgnEi09beulboozfj5WzZODwxu6DSxzypCMJVkJ0Pm8Zznjt2TpQLpUwG
+         /4OHVJXKLH7X73mJc/OHdW0rks0wXnnDbBANaOrJpfVkhpKAMOvoMq+XD19kkYZpfsTq
+         Ufef1IOOCuQmulZUl6ZO/R4NWJZO2Z6ayR6Rbk88XTHKT5S+FrUiI+XQm8F8J0C9pq/V
+         hE9w==
+X-Forwarded-Encrypted: i=1; AJvYcCUf44IJ0PAO5ye5Q3azkpUCnv98DTNWG6Q/W4J5OCJcTaB3wyRJtPT8RSBLVtBpprvOBOhOHEHc4sZ6jbSeLg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzBG7w+HfwNj1uU3118mD3Ygv83eYCvZgo2MSx/xcupabaAAqjY
+	Lot5ROpIrqXVeowThkPrYZkdX6TZx5bOMGc7II8GTX12Fc5uPnZS2/YRSp989Fw=
+X-Gm-Gg: ASbGncvwTkXQ7KO5/NYITMIkZQVPSG+Dq4CJJM6ZjvN2fcqIp4AwA+4aVDb7dkrBqoL
+	9rutETkAHaOl5u86D5IMVsUV19FgA5GU1BpyUm+Sd639EtJNE1Iq81HNZI+86eulBW8PuRFce8n
+	NvocJuI2T/GRcnZ/9VSg7wLS4cc+3smdmsticrbVuwP342L5bmj6TwI0JNMxGf8SDbvfeQWjRyC
+	s99MTQNYIk+9VR9Pjtlm1m7E21T7PiYXtqyyHEhE3y98+XZjnj1x3xXyqqOM+jfznbA6nBPnNIV
+	9ykS+9rFyaGWCae2SM11yptLhfpeW3eM+SkHzXZoq8RsIzvS8ZyPR1BC
+X-Google-Smtp-Source: AGHT+IEPRCaRwwby9REx68urow5tcgId19HYNZtfxn60gWBti42p1dhExwqD/ktCzPXjJr3OxDEBmg==
+X-Received: by 2002:a05:600c:3b92:b0:43b:c7ad:55c2 with SMTP id 5b1f17b1804b1-43c5a5e9853mr18146135e9.6.1741342808680;
+        Fri, 07 Mar 2025 02:20:08 -0800 (PST)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bdd8da097sm47877475e9.17.2025.03.07.02.20.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Mar 2025 02:20:08 -0800 (PST)
+Date: Fri, 7 Mar 2025 11:20:05 +0100
+From: Simona Vetter <simona.vetter@ffwll.ch>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Jason Gunthorpe <jgg@nvidia.com>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>, aliceryhl@google.com,
+	robin.murphy@arm.com, daniel.almeida@collabora.com,
+	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Valentin Obst <kernel@valentinobst.de>,
+	open list <linux-kernel@vger.kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+Subject: Re: [PATCH v12 2/3] rust: add dma coherent allocator abstraction.
+Message-ID: <Z8rIVQV0GYqGUYbh@phenom.ffwll.local>
+Mail-Followup-To: Danilo Krummrich <dakr@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>, aliceryhl@google.com,
+	robin.murphy@arm.com, daniel.almeida@collabora.com,
+	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Valentin Obst <kernel@valentinobst.de>,
+	open list <linux-kernel@vger.kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+References: <20250224115007.2072043-1-abdiel.janulgue@gmail.com>
+ <20250224115007.2072043-3-abdiel.janulgue@gmail.com>
+ <20250305174118.GA351188@nvidia.com>
+ <Z8mlAxsszdOH-ow8@cassiopeiae>
+ <Z8m9j3SwWHqaCTXo@phenom.ffwll.local>
+ <Z8nFJjb30_Wm3cJJ@cassiopeiae>
+ <20250306161818.GG354511@nvidia.com>
+ <Z8nOjV5CoUfq6ogU@cassiopeiae>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250307-hrtimer-v3-v6-12-rc2-v10-5-0cf7e9491da4@kernel.org>
-References: <20250307-hrtimer-v3-v6-12-rc2-v10-0-0cf7e9491da4@kernel.org>
-In-Reply-To: <20250307-hrtimer-v3-v6-12-rc2-v10-0-0cf7e9491da4@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>, 
- Anna-Maria Behnsen <anna-maria@linutronix.de>, 
- Frederic Weisbecker <frederic@kernel.org>, 
- Thomas Gleixner <tglx@linutronix.de>, Danilo Krummrich <dakr@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, 
- Guangbo Cui <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@gmail.com>, Markus Elfring <Markus.Elfring@web.de>, 
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2216; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=T6KOOXFxy3UMTrMhhUiOPICGLa/UPKpN1ZCfmB1gDS0=;
- b=owEBbQKS/ZANAwAIAeG4Gj55KGN3AcsmYgBnysZ6PjYY56f523hO8lLY8ro6ZU08Swet4wfS4
- f4fqsj5VYmJAjMEAAEIAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCZ8rGegAKCRDhuBo+eShj
- d/TrEACyjI6eJpJgbfjTfRV4c5FLe4meutvZUpqmHlEtBKuKxtSXNH6gorXxdXhEnPukJ5z20XO
- 9GAfXe0iErI5MOuxXFDydqhb34DOuxNDRYKzM3O8AnYAbXq9PwH4KkqvcTa6J76uG80pKH15DfX
- 4nqrAwqx7q8IwojNQJ9WnVOYN8kxp9ici3ope9e8940Khf0tINOZLrBjMqQVFWES4O+Vd2Jrvg6
- UdinKVpZZKCoVBcAtSu6OMxWxAijDOFdkoHAGWpuekZ9UPzHiHiEECiR28+6OH/5lHylQvQSdBJ
- Wl5MEpPntlEu6QTwHX8n3y7oaA773AmG9XeS5/m+kAkRrAP9LrcxrkbUXc/oKEEulDs90O4iJAh
- 2NKTB+4vbB0+o3ERIT3FHEz3RjMUmm3dbgxDEPymavSQmJIkEaeQYKAdRaf2WD8q6KoTzKoEYsG
- 2CwlNg29P+Y7ZDspk4mx+tRDUq0rNIBXU+jHLal8gxwTBIuUrisC2zJpkPBmdpZFqVj5+vQxTy7
- V6NIFThhzII2JA4PpQjcesLIkpqrTttoQEPQ5Az6mFRxJpR+K7X+om7Ska0nXcAZ9NhOHPs0M8T
- uEvRS71pOD46jMfMGG6fyz2Q4nKHv2OqtURwJpZ9TFvivz8qMbPDKKhvY3t9ZAuWu6cL2tIgVT+
- roOg7DFC3HhZY2Q==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z8nOjV5CoUfq6ogU@cassiopeiae>
+X-Operating-System: Linux phenom 6.12.11-amd64 
 
-Add a trait to allow unsafely queuing stack allocated timers.
+On Thu, Mar 06, 2025 at 05:34:21PM +0100, Danilo Krummrich wrote:
+> On Thu, Mar 06, 2025 at 12:18:18PM -0400, Jason Gunthorpe wrote:
+> > On Thu, Mar 06, 2025 at 04:54:14PM +0100, Danilo Krummrich wrote:
+> > > (For some reason, when replying to this mail, mutt removed Sima from To: and
+> > > instead switched Cc: to To:, hence resending.)
+> > 
+> > It is normal, Simona's mail client is setup to do that.
+> 
+> Huh! Never noticed that in the past.
+> 
+> > 
+> > > > I think for basic driver allocations that you just need to run the device
+> > > > stuffing it all into devres is ok.
+> > > 
+> > > What exactly do you mean with that? DMA memory allocations or "normal" memory
+> > > allocations?
+> > 
+> > Simona means things like a coherent allocation backing something
+> > allocated once like a global queue for talking to the device.
+> 
+> Yeah, that's what I propose then.
+> 
+> > 
+> > Ie DMA API usage that is not on the performance path.
+> > 
+> > > > But for dma mappings at runtime this will be too slow.
+> > > 
+> > > What exactly do you mean with "DMA mappings at runtime"? What to you think is
+> > > is slow in this aspect?
+> > 
+> > Things like dma_map_sg(), dma_map_page(), etc, etc.
+> > 
+> > You cannot propose to add any runtime overhead to those paths and get
+> > any support from the kernel community. They are performance paths
+> > optimized to be fast.
+> 
+> Oh, I didn't do that. How could I, since I did not knew what was referred
+> to? :-)
+> 
+> Quite the opposite, I fully agree with that.
+> 
+> I think for this we need higher level abstraction (which now that I know what
+> was meant I know Sima proposed already), or maybe provide an API that can
+> consolidate single operations for a single Devres container, etc.
 
-Acked-by: Frederic Weisbecker <frederic@kernel.org>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
- rust/kernel/time/hrtimer.rs | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+Apologies for creating a confusion here, and thanks for Jason for
+explaining what I really meant :-)
 
-diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-index 7317ba4f71c4..1fe25c271e0d 100644
---- a/rust/kernel/time/hrtimer.rs
-+++ b/rust/kernel/time/hrtimer.rs
-@@ -188,6 +188,37 @@ pub trait HrTimerPointer: Sync + Sized {
-     fn start(self, expires: Ktime) -> Self::TimerHandle;
- }
- 
-+/// Unsafe version of [`HrTimerPointer`] for situations where leaking the
-+/// [`HrTimerHandle`] returned by `start` would be unsound. This is the case for
-+/// stack allocated timers.
-+///
-+/// Typical implementers are pinned references such as [`Pin<&T>`].
-+///
-+/// # Safety
-+///
-+/// Implementers of this trait must ensure that instances of types implementing
-+/// [`UnsafeHrTimerPointer`] outlives any associated [`HrTimerPointer::TimerHandle`]
-+/// instances.
-+pub unsafe trait UnsafeHrTimerPointer: Sync + Sized {
-+    /// A handle representing a running timer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// If the timer is running, or if the timer callback is executing when the
-+    /// handle is dropped, the drop method of [`Self::TimerHandle`] must not return
-+    /// until the timer is stopped and the callback has completed.
-+    type TimerHandle: HrTimerHandle;
-+
-+    /// Start the timer after `expires` time units. If the timer was already
-+    /// running, it is restarted at the new expiry time.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Caller promises keep the timer structure alive until the timer is dead.
-+    /// Caller can ensure this by not leaking the returned [`Self::TimerHandle`].
-+    unsafe fn start(self, expires: Ktime) -> Self::TimerHandle;
-+}
-+
- /// Implemented by [`HrTimerPointer`] implementers to give the C timer callback a
- /// function to call.
- // This is split from `HrTimerPointer` to make it easier to specify trait bounds.
+> But that's out of scope for this series.
 
+Yeah I think for coherent allocations we can get away for now by making
+sure you can only get it in safe rust code wrapped in a DevRes. I think
+that's solid enough, everything else is for later.
+-Sima
 -- 
-2.47.0
-
-
+Simona Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
