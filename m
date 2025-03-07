@@ -1,96 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE9221C16A;
-	Fri,  7 Mar 2025 18:02:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3196F23F434;
+	Fri,  7 Mar 2025 18:27:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741370572; cv=none; b=k4BG4tiy3VKMfTOU1ybkgr7i2uBGAx8MPCRBg5nrYsJmfayh0pvx9I4u/lNcsnWkoZLQKeEQzzgDTopNFm6sVBnkuK/cuRTdEgb42iwD0jvPd3cq1KB2uCon9Pk+tI2O2sZO/scRoXRHdd3BRS0htWMxlRpAAlkt79nvzjm8BbI=
+	t=1741372044; cv=none; b=tIHgzv3g9ss1FStEUt6OerKcJWBt/Tr8OOywfsn+fk/MfIh3X20VH4nRTneZWKkyqjfHWRdlfqYbeDd8hWkxemaOXj2u9r2oHJiSqE6VBBri+Hhoaj/cyLroERWk3yFAARxzHx/RGOhbpo9W0WAd0pmwWNqPJjxaSHF2rEhP8+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741370572; c=relaxed/simple;
-	bh=N0zVSCCePeRj851h0DkRdaxrX5UdPXvjK9vF34kZwQI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oa6E3cp0NON5p8s/GG/78OGDNK6ONznlIPBuQpsCWpSSUV3jl05Fad5zpVncZZyMRkGjWd/OKPnF21RKbgplhUZm/yTCD5gCuXr11lIW3/Qnin1DE9ISPOG8zpD9QKKG8cm45XQnKocdErBjJAPK6z7zpFCmiUOWPJdL+O10IjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TtSBlOD6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741372044; c=relaxed/simple;
+	bh=WWPFCKjncMR6X7DZ7Y8D9qVllmrW3P1ooSr3vHJo4s4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HiayZrsHJpZ3huG7csf+cbo39uaIVquH7TUPJWpqlZE5XUNS/0um2oWxbsHH4MDlWDKV7e1wpqnec41qIQlFtwNvgZEzQbI5I8gg5f8RZ2dYdywq2+0gkhV0xiqkvClKAW4tPFQgjwnDk6jX1wPTmNaEQdkQYwabG8wpQEMXZeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JvfnBXg3; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TtSBlOD6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D350FC4CED1;
-	Fri,  7 Mar 2025 18:02:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741370572;
-	bh=N0zVSCCePeRj851h0DkRdaxrX5UdPXvjK9vF34kZwQI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TtSBlOD6sWUZUu4s5LxFWxfQOoDGytZZ5iYN+MWaINwQRwpmNZQDaoxlEEx/qeHKQ
-	 4Velgeq6KXSPgamgmb13NkZg8LTxjPORQKv598BBinKp7QMxcIL/qiBj1b+tZmONyV
-	 zQmAWSxsPYH4U86upMp2yHKmVpqIb2iRgk37cbC8=
-Date: Fri, 7 Mar 2025 19:02:49 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Jason Gunthorpe <jgg@nvidia.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>, aliceryhl@google.com,
-	robin.murphy@arm.com, daniel.almeida@collabora.com,
-	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
-Subject: Re: [PATCH v12 2/3] rust: add dma coherent allocator abstraction.
-Message-ID: <2025030721-synopsis-tubby-3b36@gregkh>
-References: <20250224115007.2072043-3-abdiel.janulgue@gmail.com>
- <20250305174118.GA351188@nvidia.com>
- <Z8mlAxsszdOH-ow8@cassiopeiae>
- <Z8m9j3SwWHqaCTXo@phenom.ffwll.local>
- <20250306160907.GF354511@nvidia.com>
- <Z8qzP3CR8Quhp87Z@pollux>
- <20250307124809.GL354511@nvidia.com>
- <Z8rxm-BHldKqEwyp@phenom.ffwll.local>
- <20250307143821.GM354511@nvidia.com>
- <Z8stJXrDtA5tZB40@cassiopeiae>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JvfnBXg3"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2240ff0bd6eso5720605ad.0;
+        Fri, 07 Mar 2025 10:27:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741372042; x=1741976842; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WWPFCKjncMR6X7DZ7Y8D9qVllmrW3P1ooSr3vHJo4s4=;
+        b=JvfnBXg3Nlk8sgyBjzRSTt95OCBZ4mX1MDF6krwP1oMwnElBvAE3ZmGeLz/IeJ59Ny
+         sWdQz+MMb9FpxS1rrBQ8unFwXWJZWwK8/guOtqBnTfvsHZ9K+G7Tv6Sh9VmbpKtJYhH9
+         rVADVBw/1r+KodPhooBewEvAMaKoFWmHruhGK6UfoMC1K1pQVb3zcPL4n4rOkYzVhxkx
+         snW3mQGp6mPRUevU1hsHHA9DPBUIf5Nxq4iT8w1FSTFqKecLzkQtn6sGYzdXOqL1qKt2
+         NNaCtu6p6dLEdtzEXPl47EfhlVQf/RTU8/aHftzjPkyLvCKzTnc4rKmoWVTv5rRg709H
+         Ccvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741372042; x=1741976842;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WWPFCKjncMR6X7DZ7Y8D9qVllmrW3P1ooSr3vHJo4s4=;
+        b=gpxW2oXEe0CFB/CSZZRn2BnEpf6J+Q3JH1n0WMCDGI0TuZ5HgfHoLJjmK7d2ho9JDO
+         ELncaVmwixoBLgnsJtT3PgWhivtXnYEOjZCcD9oFAvgJ2BhVdXQ17VSWBMxBSgmJ5og1
+         4bQTq8pz0VbklYel8D/2gpbv5FVdj9tPd+NzuCcCdBaVP+4rTiHJeRCQRXTg7+eaeyqR
+         uFsuVPXAFeujALpbIMcEh3hd3xZOgO/dqRd0xHoXCNR3J6JZ1O1l5ux/rYqfiqK7CGFG
+         FWM25OPV/8fW2KNCbQhrdZklx0MJnNTF8mg8YvUHVUBMtrpofCnSM8jGTgmf2BP95CZB
+         BFHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUezbFU2DlCtrIpfrDcYiHmKbwhHd4mtAXzYnuP3FX7IyhM3HQps9s1WvfJPzwewrHfXFquTLplTVgZ@vger.kernel.org, AJvYcCVzxk1MWm7+hebj7ADhiC2g7SGB0qjCCyHvzpnnIwde3aKkyzPZ6o3rLZR4iSmfx2pYxq/WM69dodMa0OiewFg=@vger.kernel.org, AJvYcCWXyr+Mbg0U1qEOadkYJWZCC6M54yZsHiNu+7hwoBHD6eeqk92/mcE20DyoO3kFBhftDFBWQg1+WlZLmt1x@vger.kernel.org, AJvYcCXAPRI/MIOBPEw/xEdjcadtTCdn5E2UljF3AFCJBDn3BQATS0nntvQG5xr/eVAWJNHwG/h9w4ABneUAGkE=@vger.kernel.org, AJvYcCXThV5GeYvXycgzK4AkdTZ8eSlUMxdJEjrb8sRXIhyMRZjCR4UrDQXtOVzrRYGPotsaEwMmWT2h01pczboIf0J1@vger.kernel.org
+X-Gm-Message-State: AOJu0YxL06/ufeUDEK+lapL8+IGH8J2/4XUwutZblDQg3Ujsk17AJ7+b
+	zGSXDHdyOQwukwzXeEOROXiMJjvOoBdtfkFSvUi+1phvtnXF+/NgDo5nGk3WAWYEuQ0nKkHhiBj
+	YJaW2hemSUBEzSciE7FF9nrk5S1Q=
+X-Gm-Gg: ASbGncv24o94PsI3NZX/iA0rwqRRr4v3fh0eh3dG3qv3kqTjBquF7WFFNIXGIEl0agC
+	AMbxtJbkggo3Td4jU+MUTdR+hfQNFwUmOssbdW4ehwCgmsLShYBg7d88OmlYGHJ+ldoD1M/E9JG
+	PXPZLsW+coiNxm5CZLan36rpDvmQ==
+X-Google-Smtp-Source: AGHT+IFzZCN+WDBMLfUjOiNeV6ZDYR/8Xnn0PDTFCTkxoBd3vXIXfne6nV1JEdeDWqb2O84Vu9diIMPLd3gHPA3w1Yc=
+X-Received: by 2002:a17:902:ce05:b0:224:e0e:e08b with SMTP id
+ d9443c01a7336-22541628a67mr56595ad.0.1741372042305; Fri, 07 Mar 2025 10:27:22
+ -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z8stJXrDtA5tZB40@cassiopeiae>
+References: <20250307-ptr-as-ptr-v1-1-582d06514c98@gmail.com> <D8A6YVP8B1UB.38AHIB0LMO85Y@proton.me>
+In-Reply-To: <D8A6YVP8B1UB.38AHIB0LMO85Y@proton.me>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 7 Mar 2025 19:27:09 +0100
+X-Gm-Features: AQ5f1Jr6LEyVKZec63NBPYaXJv92BoX_oGh9bpii21uvzrdOuGLuwIGdVHT-imA
+Message-ID: <CANiq72nW45z7n=38AQF45vpKQxWfrA5pvt2Q5DbjqgYR2ZR09Q@mail.gmail.com>
+Subject: Re: [PATCH] rust: enable `clippy::ptr_as_ptr` lint
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Tamir Duberstein <tamird@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
+	Rae Moar <rmoar@google.com>, Bjorn Helgaas <bhelgaas@google.com>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+	linux-pci@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 07, 2025 at 06:30:13PM +0100, Danilo Krummrich wrote:
-> On Fri, Mar 07, 2025 at 10:38:21AM -0400, Jason Gunthorpe wrote:
-> Devres puts the pci::Bar in a Revocable and sets up the devres callback. Once
-> the devres callback is called the embedded pci::Bar is dropped, which calls
-> pci_iounmap() and pci_release_region().
-> 
-> Subsequently, the access to the pci::Bar for the owner of the Devres<pci::Bar>
-> object is revoked, since the pointer to the memory mapping within the pci::Bar
-> just became invalid.
-> 
-> The latter is the only additional step the Rust abstraction does, in order to
-> not leave drivers with an invalid pointer. However, this additional safety
-> aspect is *not* a change of the driver model itself.
+On Fri, Mar 7, 2025 at 5:58=E2=80=AFPM Benno Lossin <benno.lossin@proton.me=
+> wrote:
+>
+> You link to the `ptr_as_ptr` lint though, is this a typo?
 
-Correct, it's one that the C driver model code wishes it could have :)
+I think Tamir was following the pattern of commit 3fcc23397628 ("rust:
+enable `clippy::ignored_unit_patterns` lint"), which I appreciate! :)
 
-Danilo is totally right here.  There's many things "wrong" with the
-driver model that we have today when dealing with resources that can
-span multiple reference counted devices.  It's always been that way,
-heck the original coding style document warned about that very thing way
-back in the early 2000's!  The rust code here is a step forward in
-making those issues go away, which is a good thing, and should not be
-chastised because somehow it doesn't solve _all_ of our problems.
-
-Let's try this out for now.  If it doesn't work out, great, we'll fix it
-and update the drivers and move on.  It's not like we haven't been doing
-that for the past 30+ years now, nothing different here at all.
-
-thanks,
-
-greg k-h
+Cheers,
+Miguel
