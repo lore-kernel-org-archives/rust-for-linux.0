@@ -1,98 +1,140 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4AB23BD01;
-	Fri,  7 Mar 2025 16:25:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CC921CC7B;
+	Fri,  7 Mar 2025 16:32:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741364705; cv=none; b=FjvadR26XwVhhjIXcqx7MoU2MUb7HZTjkW6j1QPxj6GfbzZQxiATpQzRhZ9POmoBgGPh5K2AyS8Dvz0SZIFG2d9PEpYJM/+VmXzbuee57t1XfLHs5I9vivNTLL4SBZlGbyoE5p15WK6p/WP3A2YEpc83BTgxQBgLOkmvLImibxM=
+	t=1741365170; cv=none; b=Zol9zNNyuzLvbsW51PBy1NMne/3T83GLjf0MusiaqoMe4RBqZ/6v5sN+4wbIUGs0SjqoO1x/k4i97Cx73XsZfe/RafhBgEfg4UHSOf4VLAlpQHvyk/NBR10H+5cSc0ox8EQTqo4U+i61FO7Y4Vm1WhCmJ3bCspaNHUbGVwBXtjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741364705; c=relaxed/simple;
-	bh=UiLD7yBHAJKBTn6IaZwAwe32NIzhtSP4kxkhZS1qJF0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Nx91dfkCqzTg4Ir+OlwYVIlvF/X69GSLwDfhMuAymGzc2c+AlPCA6RBhXK6myakeqTrhidVMNv6SZBldgFcOZfR2AaZw8viXAy1IBnScXIaoo6VAGA/HoShLjrTsS9n9p0Kw+f3Q5sBzQqjCTJiEnOT8KAXzWYKkDKt3+WJC8Fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mxfARFPD; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1741365170; c=relaxed/simple;
+	bh=IYtqKF6RNYuUGwDssKjvbaMKZWh50JK81ILez6ZwBro=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UGV6CdBfYW7XToMk1plXembJZDMrpISdTQ55LiSP04a3jCHnPhGzfT+Hz+vbtt2hCVCROZFBbpbdnActzt6Lwzl6MG1Ao3E+faVoaJ8S51Tf5UWASOVvnuYfVfY2G54DoRz2EFqn/m1FK0EZV9/BrZ4riQHcBemNlPBcarErTk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AmqZXY3e; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mxfARFPD"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-21f8f3bd828so4064925ad.2;
-        Fri, 07 Mar 2025 08:25:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741364703; x=1741969503; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UiLD7yBHAJKBTn6IaZwAwe32NIzhtSP4kxkhZS1qJF0=;
-        b=mxfARFPDVc1fX65g1FLA6bZWcSlriVOZ4TM1otfcja8W473+z/hdFtL7aHtPfUOU0a
-         uemj5z9+PE+Otq9bgBj5zfHnBiTd4d/stUjhLNaoTGOT2/dqezQGjJSjiBYhqDC/LPUo
-         /TDwPNNOfM1VcoFGknOnhAbsNMlWD198Zy0LN1+rbhqV8daQTRk8E4kCy51Lj6YKmbw1
-         eokY8lcs2t9Z5oQrxTIHA8397AwEJlLmrju+yOP2GgkmRR1W1haiYIb3fOy9Z/Ds1VRJ
-         FhjE5ztfXUGABpJUvgU5CHyhHcqIgA2s2NmS8h9kR+oGmZDp+PncsAsodPqsBVhSX/VF
-         tYGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741364703; x=1741969503;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UiLD7yBHAJKBTn6IaZwAwe32NIzhtSP4kxkhZS1qJF0=;
-        b=VAgpmBW+tSzOoANQR4/RkB59BIA3vFYPBuHpddSGe4LD6o15FDOLIx1uV0akeYv1KD
-         PD8DNgkIHMuIqmFyLwQVm3ddedNEBvoGznb6sFYzymNrvA0/7hJ1TWzYsBYSGjzOIcPm
-         p7XiPbIYTPCkeJBVjcmh2npucK/quTIzy01IZ+7E1Yp9wdE5imVWfQMsbtSiJlbu3ylQ
-         KkIZrbAAMFLWiOto1ls4JcKRPZYTgR0IDKnnt0tewSqZJI0c1dV+joBvcVl+5FcLd5H/
-         JGhCdWekRigo2z4StwDg+v01Ak0k8eF/vqIwA2qIQscPRa1XQ3vn8H/apWEF6aqnJYWE
-         Q1vA==
-X-Forwarded-Encrypted: i=1; AJvYcCWTcugs8nb38bDUHI8I8J8BRWosKolqqpng51oNgY4BrU/1+IHoxcdKTJ0dkELx24yGUhmlHxx8K2qi64s=@vger.kernel.org, AJvYcCXxZlFt8CEbwAefOrCXJKVHo4eOye1ujCeW3q5967MwlDwqu52CRiKMRf2+cV85Gv+yfHYavE9ZVOu73oFUfM4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzDoueJ9l0G2dSwPdZqiefPLHVOFDhuJLA4Ro4VYK+6vslL8Kgo
-	82X+ykfANtkBwFHPWznJlPcSUstxGgasxER5bRzUHrWpFcUjFffzQEqnU8toNKnYSY/RSFdbC5Q
-	V85NO8QdxIHb2kp/jXP5y4xKFzJI=
-X-Gm-Gg: ASbGncuX3Al/6T5vPcUv0+4a5i+OO/lJ3yqhKGrxkPGsj4Nhu7Fwr01G4Ej/VFzc1nC
-	owCNGZE/jNyJSv5bXOcOXku7yc+kN4NYjVMVTipZ8ja92LJNesfhmWytQqmVfuynd4HW6g8hrRy
-	lU93PLE3p163YfCSvT+1L3q+RGuw==
-X-Google-Smtp-Source: AGHT+IGzuyx2khrqmQFCRDY1W2460IMmx7kriW6qonWU83eNHoq7OKTDGi/ueoa/0kqUy6eJVU4vHkzvzMaSaBkRh5w=
-X-Received: by 2002:a17:903:22cb:b0:224:706:6d08 with SMTP id
- d9443c01a7336-2243a1a8c3dmr1521965ad.8.1741364702839; Fri, 07 Mar 2025
- 08:25:02 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AmqZXY3e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87472C4CED1;
+	Fri,  7 Mar 2025 16:32:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741365170;
+	bh=IYtqKF6RNYuUGwDssKjvbaMKZWh50JK81ILez6ZwBro=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AmqZXY3eAmBagMUhD/bF9pCoaMAre3597fTvRXSrgx4KDSzpE7OIrhKyPOsl9G1zE
+	 mHIiqQa3IM0TYy7GRM4nhxbbpZEc+CuhqdCQpru3xe08YHQWWiYMMKRsD0YYO0szML
+	 i8ho+W8Xm+/vmKubB9gMO7H3jKK+YCXJwnYSKeDSBMIJJ6gnHj+SeHS0Ia0I4u1Ny2
+	 ONY5aGltXyKbwzcdExuTaaXPyVX5yDfQe1ncNqFXYUSQK15T/tGjgMsASAF2BEL2AH
+	 tO9AbhOVMerxDn7HL3x7O1rzkoAcId7EgyftX2f8uMno4a25bkvjnwHaRE3tiAR4UF
+	 JD7iZDmoKjlww==
+Date: Fri, 7 Mar 2025 17:32:46 +0100
+From: Maxime Ripard <mripard@kernel.org>
+To: Lyude Paul <lyude@redhat.com>
+Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+	Danilo Krummrich <dakr@kernel.org>, mcanal@igalia.com, Alice Ryhl <aliceryhl@google.com>, 
+	Simona Vetter <sima@ffwll.ch>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Asahi Lina <lina@asahilina.net>, open list <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC v3 01/33] rust: drm: Add a small handful of fourcc bindings
+Message-ID: <20250307-hypersonic-beryl-buzzard-d06c5f@houat>
+References: <20250305230406.567126-1-lyude@redhat.com>
+ <20250305230406.567126-2-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <Z8rz9nrY7Yj1Z2hP@google.com> <20250307154341.639752-1-trintaeoitogc@gmail.com>
-In-Reply-To: <20250307154341.639752-1-trintaeoitogc@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 7 Mar 2025 17:24:49 +0100
-X-Gm-Features: AQ5f1Jo8QelYZ4KKLF0a_EY0cI7Lh7m8PaLxO4oDgGsEPFCw_oy1bK-NcDg7AgI
-Message-ID: <CANiq72mWBrHpv9XYcBbVsJkhH9SzM9N4fcL2SqoNQ9X-4GiZbw@mail.gmail.com>
-Subject: Re: [PATCH V7 1/2] rust: module: change author to an array
-To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-Cc: aliceryhl@google.com, a.hindborg@kernel.org, alex.gaynor@gmail.com, 
-	apw@canonical.com, arnd@arndb.de, aswinunni01@gmail.com, axboe@kernel.dk, 
-	benno.lossin@proton.me, bhelgaas@google.com, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, charmitro@posteo.net, dakr@kernel.org, 
-	dwaipayanray1@gmail.com, ethan.twardy@gmail.com, fujita.tomonori@gmail.com, 
-	gary@garyguo.net, gregkh@linuxfoundation.org, joe@perches.com, 
-	linux-kernel@vger.kernel.org, lukas.bulwahn@gmail.com, ojeda@kernel.org, 
-	pbonzini@redhat.com, rust-for-linux@vger.kernel.org, tmgross@umich.edu, 
-	walmeida@microsoft.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="mbognbzweqfbmz6c"
+Content-Disposition: inline
+In-Reply-To: <20250305230406.567126-2-lyude@redhat.com>
+
+
+--mbognbzweqfbmz6c
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [RFC v3 01/33] rust: drm: Add a small handful of fourcc bindings
+MIME-Version: 1.0
 
-On Fri, Mar 7, 2025 at 4:43=E2=80=AFPM Guilherme Giacomo Simoes
-<trintaeoitogc@gmail.com> wrote:
->
-> I'm sorry, I will pick up your tag and send a v8
->
-> Too, I will pick up Charalampos and Andreas tags
+Hi,
 
-In general, if it is the last version, you don't need to pick up tags
--- maintainers will do that for you.
+On Wed, Mar 05, 2025 at 05:59:17PM -0500, Lyude Paul wrote:
+> This adds some very basic rust bindings for fourcc. We only have a single
+> format code added for the moment, but this is enough to get a driver
+> registered.
+>=20
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+>=20
+> ---
+> V3:
+> * Drop FormatList and ModifierList
+>   These aren't actually needed as pointed out by Louis Chauvet
+> * Add a constant for FORMAT_MOD_INVALID
+>   I realized that we actually need this because the format list isn't
+>   terminated with a 0 like I thought, and we can't pick this up
+>   automatically through bindgen
+> * Split out the FormatInfo WIP
+>   We'll want this someday, but not yet.
+>=20
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> ---
+>  rust/kernel/drm/fourcc.rs | 21 +++++++++++++++++++++
+>  rust/kernel/drm/mod.rs    |  1 +
+>  2 files changed, 22 insertions(+)
+>  create mode 100644 rust/kernel/drm/fourcc.rs
+>=20
+> diff --git a/rust/kernel/drm/fourcc.rs b/rust/kernel/drm/fourcc.rs
+> new file mode 100644
+> index 0000000000000..62203478b5955
+> --- /dev/null
+> +++ b/rust/kernel/drm/fourcc.rs
+> @@ -0,0 +1,21 @@
+> +// SPDX-License-Identifier: GPL-2.0 OR MIT
+> +
+> +//! DRM fourcc bindings.
+> +//!
+> +//! C header: [`include/uapi/drm/drm_fourcc.h`](srctree/include/uapi/drm=
+/drm_fourcc.h)
+> +
+> +/// Return a fourcc format code.
+> +const fn fourcc_code(a: u8, b: u8, c: u8, d: u8) -> u32 {
+> +    (a as u32) | (b as u32) << 8 | (c as u32) << 16 | (d as u32) << 24
+> +}
+> +
+> +// TODO: We manually import this because we don't have a reasonable way =
+of getting constants from
+> +// function-like macros in bindgen yet.
+> +#[allow(dead_code)]
+> +pub(crate) const FORMAT_MOD_INVALID: u64 =3D 0xffffffffffffff;
+> +
+> +// TODO: We need to automate importing all of these. For the time being,=
+ just add the single one
+> +// that we need
+> +
+> +/// 32 bpp RGB
+> +pub const XRGB888: u32 =3D fourcc_code(b'X', b'R', b'2', b'4');
 
-i.e. in this case, it would have been fine telling Alice that you
-didn't change anything (if that is the case -- is it?)
+It would be nice to keep the DRM prefix still. Fourccs aren't quite
+standardized and the ones from v4l2 and DRM don't match for the same
+formats.
 
-Thanks!
+The rest looks good to me
 
-Cheers,
-Miguel
+Maxime
+
+--mbognbzweqfbmz6c
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZ8sfrgAKCRDj7w1vZxhR
+xVjHAQD6iHjWhdGUo4ttrAjNAbZcn611frmBg/w0iAIZKE9PaQD/e87kUsZqmpF5
+VaUSzEUHmsQFXkNdEd+Dl4HibbOOEQc=
+=lIqa
+-----END PGP SIGNATURE-----
+
+--mbognbzweqfbmz6c--
