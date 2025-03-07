@@ -1,104 +1,98 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9760B211719
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Mar 2025 10:20:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51BCB20AF69
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Mar 2025 10:28:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741342813; cv=none; b=ZzYVdqijJ8DXk6wTQR9c2NTN+xqvJ168uRKR1YtTReyEbV6CfkpOoTdz+3xJ66uxA8BBNwJuR8x8cHTQ4Wxd3pB6JV4D3sggBwgioqNdFTanU8yqcUjXZBg6UJlnh/IWPJeHWZmmEEPGjoikAWDglK+pqZmVZcYiF6Dr+x6EqxI=
+	t=1741343324; cv=none; b=FdRoz82lihyE0N1jp3tjLk7h9IHGlwE7/wLwun/QS53ke37SqJk2FsTsuyxhbuHUWHzbHQrogWiv3KXEufqw6j4wnomZYPQVK059QoYOlygYGpbnbRkmKyFpNL/YAY/8sek7DUi3Pv+rP4Tql+Oy4vnfovOm4U0Pu/D14Y3TIKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741342813; c=relaxed/simple;
-	bh=79LSSp/0eeR8AeePtwzHkpxVlnVAzHXOhFEG9XSuVcw=;
+	s=arc-20240116; t=1741343324; c=relaxed/simple;
+	bh=zXH71BfDtdTjFlS8jDiAJVkO9AR569+vdz/KAu3ChhQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ywqc19tvRMNK3dZ1VNfCTm6LIJi7zpoHVosSiCqeFPKiz7+U+cEnpwaHh0cJ6Ey+ERcWdGy4fQrvoYxRZ3o/Q35MyPn8YdkSZyJEy32ExzSLZSUGWNIWY7wRhhjmnv7PJE8fCRSo1u9UoW9KH5nSD+wxiROR10bIuGpspcmbSP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=SHIHKVbB; arc=none smtp.client-ip=209.85.128.53
+	 Content-Type:Content-Disposition:In-Reply-To; b=j2BAgvTnTpk/lfaBL/wgql6XGqfffTRFJI6TdvlwqWzg3KMiYAhWMBZOSL5bFl5Kcgvon3Cmdsl3k6Dcf5dTh678PyPKIqS+M9weynpf9SxggZXyZlrf5+CqUoGLHnHsonuad8ZerjFG+tDBKW3Nr+FMJ88Z1Be5frDjS3+zHmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=MHOvxVkk; arc=none smtp.client-ip=209.85.128.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="SHIHKVbB"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43bd87f7c2eso9375815e9.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 07 Mar 2025 02:20:10 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="MHOvxVkk"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43bc30adad5so10158185e9.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 07 Mar 2025 02:28:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1741342809; x=1741947609; darn=vger.kernel.org;
+        d=ffwll.ch; s=google; t=1741343320; x=1741948120; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references
          :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QZvaNwCaRfuC9eejyQ8YerbsFpOq+0SleVUFJwnjazQ=;
-        b=SHIHKVbBAf1hGILK+nnJtOoLHO+GByOf1fWSM2lWJkmFmVDfJBo8rWVC2MBSfNhfw+
-         phyQk6cRJeoWrZogT1VHcf2otqQEnsCeJ086WMpZzC8TBqaX385l7h2oT6d9/EN9g+6x
-         iUlC9aY67KsFEXtRhQjR4xCpZxBbcqW0pDZf4=
+        bh=KLOoQkl6hkv1bWsp3aSpxVd+aCFLRfs2J3JgKPuyRtU=;
+        b=MHOvxVkk5O9JOyyyJFbgy2mPzFT2nnurZgPC/qViaASbu06kEa1bTM5Hl86CwAjX2c
+         a/91unDnmK8S1/P+2ox2luz7RDMeDcPEEQr79aZMbeNvVOLNH8pWVZDed4RD8TJPZZP9
+         iMM1gKLLFNf2fmV4Q/J21LX8oa2b2PGDLgaxI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741342809; x=1741947609;
+        d=1e100.net; s=20230601; t=1741343320; x=1741948120;
         h=in-reply-to:content-disposition:mime-version:references
          :mail-followup-to:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QZvaNwCaRfuC9eejyQ8YerbsFpOq+0SleVUFJwnjazQ=;
-        b=qshkFCtmXaAEQucEciyfA8yQBdD6QZ3lz7W8lXEySX7AzVSWYbdJjRM9ixXhCh0vSJ
-         zj8RDI1wg6Q0v7mSTyBqSAZTgnzgwvxLKC7xvZR4GY+8YzsvJFHUi2X3ZGXNbaxOMqod
-         aWqGryHhnfPhgnEi09beulboozfj5WzZODwxu6DSxzypCMJVkJ0Pm8Zznjt2TpQLpUwG
-         /4OHVJXKLH7X73mJc/OHdW0rks0wXnnDbBANaOrJpfVkhpKAMOvoMq+XD19kkYZpfsTq
-         Ufef1IOOCuQmulZUl6ZO/R4NWJZO2Z6ayR6Rbk88XTHKT5S+FrUiI+XQm8F8J0C9pq/V
-         hE9w==
-X-Forwarded-Encrypted: i=1; AJvYcCUf44IJ0PAO5ye5Q3azkpUCnv98DTNWG6Q/W4J5OCJcTaB3wyRJtPT8RSBLVtBpprvOBOhOHEHc4sZ6jbSeLg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBG7w+HfwNj1uU3118mD3Ygv83eYCvZgo2MSx/xcupabaAAqjY
-	Lot5ROpIrqXVeowThkPrYZkdX6TZx5bOMGc7II8GTX12Fc5uPnZS2/YRSp989Fw=
-X-Gm-Gg: ASbGncvwTkXQ7KO5/NYITMIkZQVPSG+Dq4CJJM6ZjvN2fcqIp4AwA+4aVDb7dkrBqoL
-	9rutETkAHaOl5u86D5IMVsUV19FgA5GU1BpyUm+Sd639EtJNE1Iq81HNZI+86eulBW8PuRFce8n
-	NvocJuI2T/GRcnZ/9VSg7wLS4cc+3smdmsticrbVuwP342L5bmj6TwI0JNMxGf8SDbvfeQWjRyC
-	s99MTQNYIk+9VR9Pjtlm1m7E21T7PiYXtqyyHEhE3y98+XZjnj1x3xXyqqOM+jfznbA6nBPnNIV
-	9ykS+9rFyaGWCae2SM11yptLhfpeW3eM+SkHzXZoq8RsIzvS8ZyPR1BC
-X-Google-Smtp-Source: AGHT+IEPRCaRwwby9REx68urow5tcgId19HYNZtfxn60gWBti42p1dhExwqD/ktCzPXjJr3OxDEBmg==
-X-Received: by 2002:a05:600c:3b92:b0:43b:c7ad:55c2 with SMTP id 5b1f17b1804b1-43c5a5e9853mr18146135e9.6.1741342808680;
-        Fri, 07 Mar 2025 02:20:08 -0800 (PST)
+        bh=KLOoQkl6hkv1bWsp3aSpxVd+aCFLRfs2J3JgKPuyRtU=;
+        b=NXYAhMpuCJADEKhrvYdzkzNYCF5KHEZjH34tze154EIujYUhWba3A2yIkQbQUU6txm
+         WYuxyUrSFTkqL1hLWBADTHXw+52Y4MCCOyWsNTVEfRQkEr/Us1sn09+1nZQwU6i7ZMZE
+         CZAXYi4DCPgF8nUs36WBkFtmpC3tS142jnsL7/L/OAqs0RiQcz9wXp+47O6mgD/qpL1C
+         GoJYagpKZLHvhyOiVU2XR0JXl608EnGYSYqeJLZTfwzdLRB34BQdB8REHXT2mZMlq1nw
+         PIZU1xS9VAtqeaUQlQbHQYfuvy+8t6KVBPvng6q3RD7wkE9yaPxI43rcULI5SzlkZxtg
+         gtRw==
+X-Forwarded-Encrypted: i=1; AJvYcCUyu5vPhmjvOc3yySIgjU4ag+Rta+KO2yOrwso8NwJSjkIE+pNB1Yh9H5CtKhB+2XIlG0oqD6vtYgbZ7mEMIA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzF9opUvmdW8kzJiN8diuFNEU0t5ZLiVJ8bIFdKihgHm2vdDkFU
+	v8ThCUorG3QvtZNEC9oQNbCRAnLAvPdr8HqtiZSUjjwAvJJ0EOBQzMKS5S1xp/U=
+X-Gm-Gg: ASbGncuMgB4q+P9hcutmU/Z+XnDncAlW80xmTN9slDxzzFEK31VZ9Biy1s47TvV/eU4
+	q0MstZVKVyCWWUPz9/ZzCsm3sayYU2KCNIS1XBQiI54qMtbSI1NcbLPv4ka+05V8ZYP8hReEcdt
+	GhnGgqoznLMPIasnxhQTnYk+50cJs/eWyGslUTX8pFs/IYCAUbJ2IEAgDb6wE2d4cOeMv/E3vmH
+	UbsGn/GjX8xMbDPEAH9S4LYrYR7p90FfqzoLn08ZYThXfWHMnFfY2arvVsKn4fevMPRU+32X4Os
+	8emeQjFuxs9/m9yJUWrFmMlNyGCTsC//bsX945s1NYjaQUaZRUxq1QIG
+X-Google-Smtp-Source: AGHT+IEXqPg4ntpIBJrKqJUmhFhVvUeMVHQTUghTZcJWrf+11xUWOEGUbhcEz08DJwh4IgeUGuaIlA==
+X-Received: by 2002:a5d:64c5:0:b0:38f:4b15:32f1 with SMTP id ffacd0b85a97d-39132de3ef7mr1902737f8f.54.1741343320431;
+        Fri, 07 Mar 2025 02:28:40 -0800 (PST)
 Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bdd8da097sm47877475e9.17.2025.03.07.02.20.07
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bdd93cc2esm46469755e9.30.2025.03.07.02.28.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Mar 2025 02:20:08 -0800 (PST)
-Date: Fri, 7 Mar 2025 11:20:05 +0100
+        Fri, 07 Mar 2025 02:28:39 -0800 (PST)
+Date: Fri, 7 Mar 2025 11:28:37 +0100
 From: Simona Vetter <simona.vetter@ffwll.ch>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Jason Gunthorpe <jgg@nvidia.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>, aliceryhl@google.com,
-	robin.murphy@arm.com, daniel.almeida@collabora.com,
-	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
-Subject: Re: [PATCH v12 2/3] rust: add dma coherent allocator abstraction.
-Message-ID: <Z8rIVQV0GYqGUYbh@phenom.ffwll.local>
-Mail-Followup-To: Danilo Krummrich <dakr@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>, aliceryhl@google.com,
-	robin.murphy@arm.com, daniel.almeida@collabora.com,
-	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
-References: <20250224115007.2072043-1-abdiel.janulgue@gmail.com>
- <20250224115007.2072043-3-abdiel.janulgue@gmail.com>
- <20250305174118.GA351188@nvidia.com>
- <Z8mlAxsszdOH-ow8@cassiopeiae>
- <Z8m9j3SwWHqaCTXo@phenom.ffwll.local>
- <Z8nFJjb30_Wm3cJJ@cassiopeiae>
- <20250306161818.GG354511@nvidia.com>
- <Z8nOjV5CoUfq6ogU@cassiopeiae>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Ben Skeggs <bskeggs@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	paulmck@kernel.org
+Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
+ implementation
+Message-ID: <Z8rKVZolu8n6lB1P@phenom.ffwll.local>
+Mail-Followup-To: Jason Gunthorpe <jgg@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Ben Skeggs <bskeggs@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	paulmck@kernel.org
+References: <2025022644-fleshed-petite-a944@gregkh>
+ <D82UB3V6NZ55.3OEPPW2W8MFZV@nvidia.com>
+ <Z8GViQzZJVFPxfNd@phenom.ffwll.local>
+ <20250228184013.GF39591@nvidia.com>
+ <Z8cmBWB8rl97-zSG@phenom.ffwll.local>
+ <20250304164201.GN133783@nvidia.com>
+ <Z8f9mgD4LUJN_dWw@phenom.ffwll.local>
+ <20250305151012.GW133783@nvidia.com>
+ <Z8l8HgZOV7sDWqBh@phenom.ffwll.local>
+ <20250306153236.GE354511@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -107,63 +101,146 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z8nOjV5CoUfq6ogU@cassiopeiae>
+In-Reply-To: <20250306153236.GE354511@nvidia.com>
 X-Operating-System: Linux phenom 6.12.11-amd64 
 
-On Thu, Mar 06, 2025 at 05:34:21PM +0100, Danilo Krummrich wrote:
-> On Thu, Mar 06, 2025 at 12:18:18PM -0400, Jason Gunthorpe wrote:
-> > On Thu, Mar 06, 2025 at 04:54:14PM +0100, Danilo Krummrich wrote:
-> > > (For some reason, when replying to this mail, mutt removed Sima from To: and
-> > > instead switched Cc: to To:, hence resending.)
-> > 
-> > It is normal, Simona's mail client is setup to do that.
-> 
-> Huh! Never noticed that in the past.
-> 
-> > 
-> > > > I think for basic driver allocations that you just need to run the device
-> > > > stuffing it all into devres is ok.
+On Thu, Mar 06, 2025 at 11:32:36AM -0400, Jason Gunthorpe wrote:
+> On Thu, Mar 06, 2025 at 11:42:38AM +0100, Simona Vetter wrote:
+> > > Further, I just remembered, (Danilo please notice!) there is another
+> > > related issue here that DMA mappings *may not* outlive remove()
+> > > either. netdev had a bug related to this recently and it was all
+> > > agreed that it is not allowed. The kernel can crash in a couple of
+> > > different ways if you try to do this.
 > > > 
-> > > What exactly do you mean with that? DMA memory allocations or "normal" memory
-> > > allocations?
+> > > https://lore.kernel.org/lkml/8067f204-1380-4d37-8ffd-007fc6f26738@kernel.org/T/#m0c7dda0fb5981240879c5ca489176987d688844c
 > > 
-> > Simona means things like a coherent allocation backing something
-> > allocated once like a global queue for talking to the device.
+> > Hm for the physical dma I thought disabling pci bust master should put a
+> > stop to all this stuff?
 > 
-> Yeah, that's what I propose then.
+> Not in the general case. Many device classes (eg platform) don't have
+> something like "PCI bus master". It is also not always possible to
+> reset a device, even in PCI.
 > 
-> > 
-> > Ie DMA API usage that is not on the performance path.
-> > 
-> > > > But for dma mappings at runtime this will be too slow.
-> > > 
-> > > What exactly do you mean with "DMA mappings at runtime"? What to you think is
-> > > is slow in this aspect?
-> > 
-> > Things like dma_map_sg(), dma_map_page(), etc, etc.
-> > 
-> > You cannot propose to add any runtime overhead to those paths and get
-> > any support from the kernel community. They are performance paths
-> > optimized to be fast.
+> So the way things work today for module reload relies on the driver
+> duing a full quiet down so that the next driver to attach can safely
+> start up the device. Otherwise the next driver flips PCI bus master
+> back on and immediately UAFs memory through rouge DMA.
 > 
-> Oh, I didn't do that. How could I, since I did not knew what was referred
-> to? :-)
-> 
-> Quite the opposite, I fully agree with that.
-> 
-> I think for this we need higher level abstraction (which now that I know what
-> was meant I know Sima proposed already), or maybe provide an API that can
-> consolidate single operations for a single Devres container, etc.
+> Relying on PCI Bus master also exposes a weakness we battled with in
+> kexec. When the new driver boots up it has to gain control of the
+> device and stop the DMA before flipping "PCI Bus Master" off. Almost
+> no drivers actually do this, and some HW can't even achieve it without
+> PCI reset (which is not always available). Meaning you end up with a
+> likely UAF flow if you rely on this technique.
 
-Apologies for creating a confusion here, and thanks for Jason for
-explaining what I really meant :-)
+Yeah this gets really hairy really fast. We might need some pragmatism
+here of not being able to be better than C.
 
-> But that's out of scope for this series.
+And the entire "load driver after previously the linux driver messed with
+it already" is a very broad issue, from rebinding to module reload to
+kexec. With some hw it's just not possible to do safely, and with a lot
+more hw not reliably due to complexity. E.g. drm/i915/display can take
+over the gpu if outputs are enabled and fully recover hw state into sw
+state. But defacto that only works for configurations the fw/bootloader
+leaves behind, and not in full generality. Plus we don't handle
+misprogrammed hw at all.
 
-Yeah I think for coherent allocations we can get away for now by making
-sure you can only get it in safe rust code wrapped in a DevRes. I think
-that's solid enough, everything else is for later.
--Sima
+> > For the sw lifecycle stuff I honestly didn't know that was an issue, I
+> > guess that needs to be adressed in the dma-api wrappers or rust can blow
+> > up in funny ways. C drivers just walk all mappings and shoot them.
+> 
+> I wonder what people will come up with. DMA API is performance path,
+> people are not going to accept pointless overheads there.
+> 
+> IMHO whatever path the DMA API takes the MMIO design should follow
+> it.
+
+I think this needs to be subsystem specific, since very often there's
+already data structures to track all mappings, and so easy to add a bit of
+glue to nuke them all forcefully. Or at least data structures to track all
+pending requests, and so again we can enforce that we stall for them all
+to finish.
+
+We'll probably end up with rust bindings being a lot more opinionated
+about how a driver should work, which has the risk of going too far into
+the midlayer mistake antipattern. I guess we'll see how that all pans out.
+
+> > The trouble is that for real hotunplug, you need all this anyway. Because
+> > when you physically hotunplug the interrupts will be dead, the mmio will
+> > be gone any momem (not just at the beginnning of an rcu revocable
+> > section), so real hotunplug is worse than what we're trying to do here.
+> 
+> There are two kinds of real hotunplug, the friendly kind that we see
+> in physical PCI where you actually plonk a button on the case and wait
+> for the light to go off. Ie it is interactive and safe with the
+> OS. Very similar to module reloading.
+> 
+> And the hostile kind, like in thunderbolt, where it just goes away and
+> dies.
+> 
+> In the server world, other than nvme, we seem to focus on the friendly
+> kind.
+
+Yeah gpus tend to hang out in external enclosures sometimes, so I'm not
+sure we can ignore the hostile kind.
+
+> > So randomly interrupts not happening is something you need to cope with no
+> > matter what.
+> 
+> Yes
+>  
+> > But for a driver unbind you _do_ have to worry about cleanly shutting down
+> > the hardware. For the above reasons and also in general putting hardware
+> > into a well-known (all off usually) state is better for then reloading a
+> > new driver version and binding that. Except that there's no way to tell
+> > whether your ->remove got called for unbinding or hotunplug.
+> 
+> IMHO it doesn't really matter, the driver has to support the most
+> difficult scenario anyhow. The only practical difference is that the
+> MMIO might return -1 to all reads and the interrupts are dead. If you
+> want to detect a gone PCI device then just do a register read and
+> check for -1, which some drivers like mlx5 are doing as part of their
+> resiliency strategy.
+> 
+> > pci device was physically unplugged or not, and so for developer
+> > convenience most pci drivers go with the "cleanly shut down everything"
+> > approach, which is the wrong thing to do for actual hotunplug.
+> 
+> I wouldn't say it is wrong. It is still the correct thing to do, and
+> following down the normal cleanup paths is a good way to ensure the
+> special case doesn't have bugs. The primary difference is you want to
+> understand the device is dead and stop waiting on it faster. Drivers
+> need to consider these things anyhow if they want resiliency against
+> device crashes, PCI link wobbles and so on that don't involve
+> remove().
+
+Might need to revisit that discussion, but Greg didn't like when we asked
+for a pci helper to check whether the device is physically gone (at least
+per the driver model). Hacking that in drivers is doable, but feels icky.
+
+> Regardless, I think the point is clear that the driver author bears
+> alot of responsibility to sequence this stuff correctly as part of
+> their remove() implementation. The idea that Rust can magically make
+> all this safe against UAF or lockups seems incorrect.
+
+Agreed, it's not pure magic. I do think it can help a lot though, or at
+least I'm hoping.
+
+> > > Ah.. I guess rust would have to validate the function pointers and the
+> > > THIS_MODULE are consistent at runtime time before handing them off to
+> > > C to prevent this. Seems like a reasonable thing to put under some
+> > > CONFIG_DEBUG, also seems a bit hard to implement perhaps..
+> > 
+> > We should know the .text section of a module, so checking whether a
+> > pointer is within that shouldn't be too hard.
+> 
+> It is legal to pass a pointer to a function in a module that this
+> module is linked to as well. We do that sometimes.. Eg a fops having a
+> simple_xx pointer. So you'd need to do some graph analysis.
+
+Hm right, indirect deps are fine too ...
+
+Cheers, Sima
 -- 
 Simona Vetter
 Software Engineer, Intel Corporation
