@@ -1,215 +1,206 @@
-Received: from mail-10629.protonmail.ch (mail-10629.protonmail.ch [79.135.106.29])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0DC722EE5
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Mar 2025 13:15:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5D51E868
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Mar 2025 13:16:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741353337; cv=none; b=dq8BN7WVbxuu/604ULawALWoggp1LraGdWbVxTdMZaU+YsaQfXwXJETfB6xgyOPflK9rCH6S7xDDaaPHizftp5MOHTK4HNQvVplyEqRBDgCcL2HGuxzW007tcPoWl0gWDGIPKKdUU78maBJcxQwiFalRBxaiKhQ3JSkB4amRtu0=
+	t=1741353377; cv=none; b=fCz+iClPeoymNSF3V+31fJhUyRoKsDYJRSfkfh+Ah8XkQk+GTWBmqDU+YejDRvwmfdEAEVpcr9NiExMmLAnThnuSXoJfuaUvbhFDfANPmk32ddnkB6352YOStnKSSe3d7j3gdfgU2WLkg4QTgppK9AdALtTtgRxK5YznZhhNAcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741353337; c=relaxed/simple;
-	bh=YQWL+wmIuVv10+yePp6lxnmndBqngTBnuvjom1L3UKc=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jKF3qg3tuiyqnVxzlVcTySFSCfJMBd4/gRn2hWpvl+ww4rNebWGwyRr0xkwK1rJ6r7tXXiyNiHmMITKNW2gAPSo2SieMIDYg29bubUQyG7PwcgkvAi6vRvbdcXd+Znl83kx/ZSwsUGS2kxnHQDf/LRMFb+NIlzz0v6dJj46Fc/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=B4chkNii; arc=none smtp.client-ip=79.135.106.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1741353377; c=relaxed/simple;
+	bh=hZd3zDcuxytIUObsUdBqQhBZTsjVdEjxbPyYWVGizxs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MDXTN90sIZ9uTh8LF6rWP4lTbbZGkFKU9v2SYTji3lU2i4VBYyUUaTm9pcbYbOkWyapX+hW+w+5LUY1HjN0A9gW9PMWWbXwdlXSBfqcXC4nEtJCBrNdlXRtPCa7DJCYtn55RXGtkzYMkLMMG9EDf5x9G70GCPBGN54ex70E63B4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=IKBfRCS2; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="B4chkNii"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1741353332; x=1741612532;
-	bh=50DcLxnh3wd9fr3mX7Hv6xRCBCAsY1XlFpSZNnOZqPQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=B4chkNiiIo7CDMMNsxdLpI/vaQKWjEBRhxC8Pf6cbtDJn1Cj/Znng8Lv6FzsOVmQQ
-	 bzF6x95v+w+eXNc9n31bUPGynTKSx7aQlvs2UMHFPZTLjFM+Csymgkg9A+2KJoUmPV
-	 s0Zz+iOqp/idzLxGPmVzjMGHCvENf2UiiDi0dkA8kfEXJDfxjNqQU16xHaQTnK4noX
-	 0jVIsYAvKh4C65KG0qMBZJvrsHtAkQ4uOZSR10FKSYfxIxh0rRlTV4ZwMfoeLu+bHf
-	 HeaDq4F+xrIO1SqXXJfcs/ZKzR5xBS5tbmIhYrJ+27FNJKRLPGoD4Ss7SxeN4yhUOZ
-	 LOYtf28/HrJKA==
-Date: Fri, 07 Mar 2025 13:15:26 +0000
-To: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Danilo Krummrich <dakr@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, Markus Elfring <Markus.Elfring@web.de>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v10 08/13] rust: hrtimer: implement `UnsafeHrTimerPointer` for `Pin<&mut T>`
-Message-ID: <D8A28FTNL1BC.3AYZMT4OYF79R@proton.me>
-In-Reply-To: <20250307-hrtimer-v3-v6-12-rc2-v10-8-0cf7e9491da4@kernel.org>
-References: <20250307-hrtimer-v3-v6-12-rc2-v10-0-0cf7e9491da4@kernel.org> <20250307-hrtimer-v3-v6-12-rc2-v10-8-0cf7e9491da4@kernel.org>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 97f84d8619d16470f551c5195984fab40fd3b786
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="IKBfRCS2"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5e058ca6806so3516688a12.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 07 Mar 2025 05:16:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google; t=1741353374; x=1741958174; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=G8f2sytBVf6nQXJURXlsjCA27TJ+V7rR1VMxVWEgKQo=;
+        b=IKBfRCS25RgsaMG+RpWdIleHTlPsb3HpseRv+dFAFIz63jsLJhI2aQsZfXJExGgGzK
+         voPXh1ocK24qkuc5yJVu4HuATJrnwveUVTIkU3uGbELLFpSChXbi/nbOrEWXt5Kagt7K
+         7emXw1fQAd2AM9TYE4Ee8aNKFocpuDHuu95Ek=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741353374; x=1741958174;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=G8f2sytBVf6nQXJURXlsjCA27TJ+V7rR1VMxVWEgKQo=;
+        b=X45RDDsx41srzn/yBO+UCs/2X7V7YQLN9bDNasKjqigzivyG6lTyfqKOXG//wJc9aL
+         DvZO48WG/mje9fn1tWWii/EM7IXwiqn886UntNsAxfAicXMzddb07MU4tilFdBJwNmgN
+         l8G1NPVTGD8xdAvjGhcQVvMnCa4wO1EuIODw61/TtD7IDD0fgGdiX6I5LS2nG/F3GBEs
+         +QhIswMO9fAMtwJNgkIQmoZGUg4uOviJYtj6yvt4Y1J+E2/AjOJzVztr7rRtmff6dZRO
+         2NPqMZPCCBBfBelBJUV3tV1BWewyhjmp0aiF6ZwNvnrBFeNNN0aWjSuLgpeGi29afCFH
+         Z6CA==
+X-Forwarded-Encrypted: i=1; AJvYcCVD+HuPsLN13C9NVreJwnq41TnmkpyIGtiicDR3b7ENWVICT0Kh3CNK0srV3M9t6gh9cGihMfGllenCRMxgpg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YytZ0IiwevKREHu58IQFB7WFBn0ZEWrakMb3wEr+qn3rW+K2Hts
+	NaJ/fVYBXYWilebcsTHkWJ60N8NTihFqHsVTE0xjuvPycdlf2g2xXwoYRaB+HoU=
+X-Gm-Gg: ASbGnctYtEHMOthTjtDVJwSxEtHQAgc7NO0eOLvWx8JJuRMKTGtKKdifqZBtjw2l/sm
+	2vg63vGjWIC1fM7rChn96U6sWf0mPjQlAk39dDUgUXvlx8n+LBshrqEbwpLSlouBHTz88v1ip5J
+	X3SZahjMIAEjHgT/7qm9kQkhUUEOjnMpE6y+GV6Nzs8D7j1eydwUJqkGiQrjOzqHBxlnOlpQFO5
+	4/GcD3vlFkk0O/iHugEMUtAeWVZMu5EY0/xvLlNb92esaWnuVJlVHUxv/ZlK0TGFZ5PClM8Pb7F
+	7c0/8+mlX5VMV7zobS4mKR8sdLOf1Usp/h5JyX3xNx0TjxvWJS9pkpCm
+X-Google-Smtp-Source: AGHT+IEBr6qwJM6+7eURCpwowuxB3sHU4SE5NlnG84DUfQ8ELCKEuO9h6jhEzjJAVdDNsT77fkD+OA==
+X-Received: by 2002:a17:907:1b16:b0:ac2:1c64:b0a with SMTP id a640c23a62f3a-ac252a8827cmr340387366b.14.1741353373823;
+        Fri, 07 Mar 2025 05:16:13 -0800 (PST)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac23988af19sm278685266b.136.2025.03.07.05.16.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Mar 2025 05:16:13 -0800 (PST)
+Date: Fri, 7 Mar 2025 14:16:11 +0100
+From: Simona Vetter <simona.vetter@ffwll.ch>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Danilo Krummrich <dakr@kernel.org>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>, aliceryhl@google.com,
+	robin.murphy@arm.com, daniel.almeida@collabora.com,
+	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Valentin Obst <kernel@valentinobst.de>,
+	open list <linux-kernel@vger.kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+Subject: Re: [PATCH v12 2/3] rust: add dma coherent allocator abstraction.
+Message-ID: <Z8rxm-BHldKqEwyp@phenom.ffwll.local>
+Mail-Followup-To: Jason Gunthorpe <jgg@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>, aliceryhl@google.com,
+	robin.murphy@arm.com, daniel.almeida@collabora.com,
+	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Valentin Obst <kernel@valentinobst.de>,
+	open list <linux-kernel@vger.kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+References: <20250224115007.2072043-1-abdiel.janulgue@gmail.com>
+ <20250224115007.2072043-3-abdiel.janulgue@gmail.com>
+ <20250305174118.GA351188@nvidia.com>
+ <Z8mlAxsszdOH-ow8@cassiopeiae>
+ <Z8m9j3SwWHqaCTXo@phenom.ffwll.local>
+ <20250306160907.GF354511@nvidia.com>
+ <Z8qzP3CR8Quhp87Z@pollux>
+ <20250307124809.GL354511@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250307124809.GL354511@nvidia.com>
+X-Operating-System: Linux phenom 6.12.11-amd64 
 
-On Fri Mar 7, 2025 at 11:11 AM CET, Andreas Hindborg wrote:
-> Allow pinned mutable references to structs that contain a `HrTimer` node =
-to
-> be scheduled with the `hrtimer` subsystem.
->
-> Acked-by: Frederic Weisbecker <frederic@kernel.org>
-> Reviewed-by: Lyude Paul <lyude@redhat.com>
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
->  rust/kernel/time/hrtimer.rs         |   2 +
->  rust/kernel/time/hrtimer/pin_mut.rs | 101 ++++++++++++++++++++++++++++++=
-++++++
->  2 files changed, 103 insertions(+)
->
-> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-> index 2ca56397eade..d2791fd624b7 100644
-> --- a/rust/kernel/time/hrtimer.rs
-> +++ b/rust/kernel/time/hrtimer.rs
-> @@ -441,3 +441,5 @@ unsafe fn timer_container_of(ptr: *mut $crate::time::=
-hrtimer::HrTimer<$timer_typ
->  pub use arc::ArcHrTimerHandle;
->  mod pin;
->  pub use pin::PinHrTimerHandle;
-> +mod pin_mut;
-> +pub use pin_mut::PinMutHrTimerHandle;
-> diff --git a/rust/kernel/time/hrtimer/pin_mut.rs b/rust/kernel/time/hrtim=
-er/pin_mut.rs
-> new file mode 100644
-> index 000000000000..4f4a9e9602d8
-> --- /dev/null
-> +++ b/rust/kernel/time/hrtimer/pin_mut.rs
-> @@ -0,0 +1,101 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +use super::HasHrTimer;
-> +use super::HrTimer;
-> +use super::HrTimerCallback;
-> +use super::HrTimerHandle;
-> +use super::RawHrTimerCallback;
-> +use super::UnsafeHrTimerPointer;
-> +use crate::time::Ktime;
-> +use core::pin::Pin;
-> +
-> +/// A handle for a `Pin<&mut HasHrTimer>`. When the handle exists, the t=
-imer might
-> +/// be running.
-> +pub struct PinMutHrTimerHandle<'a, T>
-> +where
-> +    T: HasHrTimer<T>,
-> +{
-> +    pub(crate) inner: Pin<&'a mut T>,
-> +}
-> +
-> +// SAFETY: We cancel the timer when the handle is dropped. The implement=
-ation of
-> +// the `cancel` method will block if the timer handler is running.
-> +unsafe impl<'a, T> HrTimerHandle for PinMutHrTimerHandle<'a, T>
-> +where
-> +    T: HasHrTimer<T>,
-> +{
-> +    fn cancel(&mut self) -> bool {
-> +        // SAFETY: We are not moving out of `self` or handing out mutabl=
-e
-> +        // references to `self`.
-> +        let self_ptr =3D unsafe { self.inner.as_mut().get_unchecked_mut(=
-) as *mut T };
-> +
-> +        // SAFETY: As we got `self_ptr` from a reference above, it must =
-point to
-> +        // a valid `T`.
-> +        let timer_ptr =3D unsafe { <T as HasHrTimer<T>>::raw_get_timer(s=
-elf_ptr) };
-> +
-> +        // SAFETY: As `timer_ptr` is derived from a reference, it must p=
-oint to
-> +        // a valid and initialized `HrTimer`.
-> +        unsafe { HrTimer::<T>::raw_cancel(timer_ptr) }
-> +    }
-> +}
-> +
-> +impl<'a, T> Drop for PinMutHrTimerHandle<'a, T>
-> +where
-> +    T: HasHrTimer<T>,
-> +{
-> +    fn drop(&mut self) {
-> +        self.cancel();
-> +    }
-> +}
-> +
-> +// SAFETY: We capture the lifetime of `Self` when we create a
-> +// `PinMutHrTimerHandle`, so `Self` will outlive the handle.
-> +unsafe impl<'a, T> UnsafeHrTimerPointer for Pin<&'a mut T>
-> +where
-> +    T: Send + Sync,
-> +    T: HasHrTimer<T>,
-> +    T: HrTimerCallback<Pointer<'a> =3D Self>,
-> +    Pin<&'a mut T>: RawHrTimerCallback<CallbackTarget<'a> =3D Self>,
-> +{
-> +    type TimerHandle =3D PinMutHrTimerHandle<'a, T>;
-> +
-> +    unsafe fn start(self, expires: Ktime) -> Self::TimerHandle {
-> +        // Cast to pointer
-> +        let self_ptr: *const T =3D <Self as core::ops::Deref>::deref(&se=
-lf);
+On Fri, Mar 07, 2025 at 08:48:09AM -0400, Jason Gunthorpe wrote:
+> On Fri, Mar 07, 2025 at 09:50:07AM +0100, Danilo Krummrich wrote:
+> > > Technically it is unsafe and oopsable to call the allocation API as
+> > > well on a device that has no driver. This issue is also ignored in
+> > > these bindings and cannot be solved with revoke.
+> > 
+> > This is correct, and I am well aware of it. I brought this up once when working
+> > on the initial device / driver, devres and I/O abstractions.
+> 
+> Yes it is also incorrect to call any devm function on an unprobed
+> driver.
 
-You cannot go through a shared reference here, since you convert the
-pointer obtained here in the `run` function later back into a mutable
-reference. You will have to use `get_unchecked_mut` or
-`into_inner_unchecked`.
+You can, devm groups nest, and I think by default (might misremember)
+there's 3:
 
-> +
-> +        // SAFETY:
-> +        //  - As we derive `self_ptr` from a reference above, it must po=
-int to a
-> +        //    valid `T`.
-> +        //  - We keep `self` alive by wrapping it in a handle below.
-> +        unsafe { T::start(self_ptr, expires) };
-> +
-> +        PinMutHrTimerHandle { inner: self }
-> +    }
-> +}
-> +
-> +impl<'a, T> RawHrTimerCallback for Pin<&'a mut T>
-> +where
-> +    T: HasHrTimer<T>,
-> +    T: HrTimerCallback<Pointer<'a> =3D Self>,
-> +{
-> +    type CallbackTarget<'b> =3D Self;
-> +
-> +    unsafe extern "C" fn run(ptr: *mut bindings::hrtimer) -> bindings::h=
-rtimer_restart {
-> +        // `HrTimer` is `repr(C)`
-> +        let timer_ptr =3D ptr as *mut HrTimer<T>;
-> +
-> +        // SAFETY: By the safety requirement of this function, `timer_pt=
-r`
-> +        // points to a `HrTimer<T>` contained in an `T`.
-> +        let receiver_ptr =3D unsafe { T::timer_container_of(timer_ptr) }=
-;
-> +
-> +        // SAFETY: By the safety requirement of this function, `timer_pt=
-r`
-> +        // points to a `HrTimer<T>` contained in an `T`.
+- probe/remove i.e. driver bound lifetime
+- up to device_del in case you've called devm outside of a driver being
+  bound.
+- Final kref_put on the device.
 
-Same question here as for the `Pin<&T>` patch.
+For added fun, you can create your own nested groups within this and nuke
+them as needed. component.c does some of that, which is why I regretfully
+know about this stuff.
 
----
-Cheers,
-Benno
+> > It's on my list to make the creation of the Devres container fallible in this
+> > aspect, which would prevent this issue.
+> 
+> I expect that will require new locking.
+> 
+> > > The actual critical region extends into the HW itself, it is not
+> > > simple to model this with a pure SW construct of bracketing some
+> > > allocation. You need to bracket the *entire lifecycle* of the
+> > > dma_addr_t that has been returned and passed into HW, until the
+> > > dma_addr_t is removed from HW.
+> > 
+> > Devres callbacks run after remove(). It's the drivers job to stop operating the
+> > device latest in remove(). Which means that the design is correct.
+> 
+> It could be the drivers job to unmap the dma as well if you take that
+> logic.
+> 
+> You still didn't answer the question, what is the critical region of
+> the DevRes for a dma_alloc_coherent() actually going to protect?
+> 
+> You also have to urgently fix the synchronize_rcu() repitition of you
+> plan to do this.
+> 
+> > Now, you ask for a step further, i.e. make it that we can enforce that a driver
+> > actually stopped the device in remove().
+> 
+> So where do you draw the line on bugs Rust should prevent and bugs
+> Rust requires the programmer to fix?
+> 
+> Allow UAF from forgetting to shutdown DMA, but try to mitigate UAF
+> from failing to call a dma unmap function. It is the *very same*
+> driver bug: incorrect shutdown of DMA activity.
+> 
+> I said this for MMIO, and I say it more strongly here. The correct
+> thing is to throw a warning if the driver has malfunctioned and leaked
+> a DMA Mapping. This indicates a driver bug. Silently fixing the issue
+> does nothing to help driver writers make correct drivers. It may even
+> confuse authors as to what their responsiblities are since so much is
+> handled "magically".
 
-> +        let receiver_ref =3D unsafe { &mut *receiver_ptr };
-> +
-> +        // SAFETY: `receiver_ref` only exists as pinned, so it is safe t=
-o pin it
-> +        // here.
-> +        let receiver_pin =3D unsafe { Pin::new_unchecked(receiver_ref) }=
-;
-> +
-> +        T::run(receiver_pin).into_c()
-> +    }
-> +}
->
-> --
-> 2.47.0
+I think thus far the guideline is that software uaf should be impossible.
+So calling dma_* functions on deleted devices should not be doable (or
+result in runtime failures on the rust side).
 
+I think for the actual hw uaf if you leak dma_addr_t that are unmapped in
+hw device tables that would need to be outside of the scope of what rust
+can prevent. Simply because rust doesn't know about how the hw works.
 
+Wrt magically cleaning up, that is generally the preferred rust approach
+with the Drop trait. But there are special traits where you _must_
+manually clean up an object with a call that consumes its reference, and
+the compiler will fail if you just leak a reference somewhere because it
+knows it's not allowed to automatically drop that object. So both patterns
+are possible, but rust has a very strong preference for the automagic
+approach, unlike C. So there will be somewhat of a style different here in
+what a native-feeling api looks like in C or rust.
+
+> > Having that said, it doesn't need to be an "all or nothing", let's catch the
+> > ones we can actually catch.
+> 
+> Well, that's refreshing. Maybe it would be nice to have an agreed
+> binding design policy on what is wortwhile to catch with runtime
+> overhead and what is not.
+
+Yeah clarifying this stuff is probably a good idea.
+
+Cheers, Sima
+-- 
+Simona Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
