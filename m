@@ -1,92 +1,216 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA7A1E1E15;
-	Fri,  7 Mar 2025 09:22:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7CE1C84B5;
+	Fri,  7 Mar 2025 10:04:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741339346; cv=none; b=RSgEjVy0wnJBRbxTt0m5LPGEf6ZPEyeWIaZ91ouQISGmJhgBtaoAGOkOvMpqN36OygTs40YCMK6hzlA7m0VCMD/9VqbKeH7NLN7NksPsx/+WF1oh0cAQhFORiGu1VTSUCgSqBS278kfeaRWwXsfAg/1NCf8wr6cv4Vz23RsF88w=
+	t=1741341858; cv=none; b=jrbl6sIL/VZpJXCi+W1ByC38GH3WBiNkfxiVCyiZKrdRBOHel14Kt07az2bRlpD0h+0bsIujilhLmbjLkOLWeoDeekB007WBjWr+qhYMuf/EpJfd/oVglciLj7P4jWXnAabLLYBdfc0V6wPAF39mJ1E3S8cTqOWUkZdyJzMenGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741339346; c=relaxed/simple;
-	bh=87Kb5biitOhpG5gMp3bpw5yvhnZmWoZlHADSUNLC8LI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=W9IeMOC43sVtc7KeO3sE9tqsFNSCJHNAcJR/WeDngPC2SvCoS//0TLIQXA4yi5XiYaY/VXe7LaNgYOzaXIf8Cu7F8EDebbQKHKJmOOkU6F9bPASPYFpQ5cTsVXQWSj4i+F5jITa6M5s25cGw2yeDQn6lFAo/qd35b73Hw5cdPv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hn5LpmQ9; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1741341858; c=relaxed/simple;
+	bh=vUYJIpzrPPNsd45VqzFVWUJNCTyAKU0dXIDQudSDGKU=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=j+KbHRlvLW64syfBSxr7w7CDuz4dFsCmYd5SQQOx9+JeM+a0Vy03BlzofGbFaCQCvgXxCtcaC6uSdaRL3Ga7vnBge3bbGLLMYm11tAcadIX0teJVCX+VuuspRsprtK2D6OhkE4h7sJ36iHnwruGpIUl0F6y34TdOFORIz+k3ve0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=L2Wdp+g8; arc=none smtp.client-ip=185.70.40.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hn5LpmQ9"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2ff53b26af2so422797a91.0;
-        Fri, 07 Mar 2025 01:22:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741339344; x=1741944144; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=87Kb5biitOhpG5gMp3bpw5yvhnZmWoZlHADSUNLC8LI=;
-        b=Hn5LpmQ9rN/G1c5jJ0qhokCQyRUVk+PMbSxGj3+JREOqk/KMeryWWi+5QfG7mlMDAt
-         2wPVAMYqbaefKyr41MCZ2i/jql9WLTXyb0rJsg8vGjS6G53I+ZpHLOBakeq/oMOuxxgy
-         8Fhf3BST3SIbDjzNETaDvcUJUL9lrClGUnXAs/ymdSKHGsuSUc0a/TkTwb67uefOLc9R
-         F9fM0U7RZkyfLQSSdt0yESIrUwWYu8lifR08Jv7VjzVxpXAEBWE6RJhU4oOLk+dj9a8t
-         hymbKZ9O+Wy+gI39f1oxXtvlpfy21DsTirvZxX2WggqpSnKEFKy9PgoL/kup34brHydN
-         /17A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741339344; x=1741944144;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=87Kb5biitOhpG5gMp3bpw5yvhnZmWoZlHADSUNLC8LI=;
-        b=eW1y40riy5acZjhNf6qJZ026ffTZMENW4pe9FUW9vckxrZY3ybxTAHsWAlyghyYx6R
-         DRF7DrE7apowffCKf8CM+dQc63ZlbO2o7jZ4ngnQ4PWCShjXYUYlOqFUk9Kaujm7wKXW
-         KFa4cGM0m3x/+WhvcmdEI9AvmWgNw8LtB17orAkqL18v9LjTC9KSHGaMo5JizYKoEn9N
-         n44eIB5H2hLdVfPdmvPus3tS9oahViP19xm0sX7wuUU9ERTTCcZ426pITQjJIAUM4n2p
-         AruUK+YBkiAiNltOFTuFOWNzfOtHgEkkfZifa7oeRk8p8ZtOejrrj2TE7SO7SIT8eB2v
-         5rag==
-X-Forwarded-Encrypted: i=1; AJvYcCWXJclzvzbVcucv417HxgrwDU6Z1cqvVlxihzDSjECPYYbfzqS0PC/2SDPdRkDu2QB4zQYCHZRTWpI9TRTQ0g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCgk9B3ZmAszKl+FjIOVdremiPYlOqQbx2aoK0T+0G2vKSKVkU
-	AODCPcDgkyIvvLKuhgsdohDfzdyydUdoSPHpvRyZBHe5yaTSsgz0m1lukzyl+J5MKoo2B8OBDjT
-	4p7fjwarWGaGDuzE2qk56bATWpCs=
-X-Gm-Gg: ASbGncsapFfYt1lISWzYyi2twpypQDQ5fJh4q/4uUhMMYVDmgbmt3c5A//1275KtC2q
-	9xrJjPpFnltmb166GZnSIT0sMNWeYQtPneCSpOEln0JUtCpaOpF+lTtAJAQgbTG1YazsYtrgiAb
-	M9hD8Ow1h+Wc9gmIPV2pjiDzxG3w==
-X-Google-Smtp-Source: AGHT+IEpu2mBxhDYQudLKRpi7LZHnjwyWrq0RYW0y3YoPrRfNM5pKE+950u744oRgriD/7+EMqn1URCkBNxcQ7BdgbY=
-X-Received: by 2002:a17:90b:1d02:b0:2ee:6563:20b5 with SMTP id
- 98e67ed59e1d1-2ff7cd5b688mr1632156a91.0.1741339344187; Fri, 07 Mar 2025
- 01:22:24 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="L2Wdp+g8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1741341853; x=1741601053;
+	bh=2Zpu6E3/Y16UltqXkAaLIudQV1ASZITnWKAwSutW1Y8=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=L2Wdp+g8AQLlqdlfTxkjFb+QkKuQ8r4HpikKK7oR615X7CAkQCIG0r0+rWJgdawSa
+	 iZ2D9DuOgAwiVdg7S3/o2E1o9jMsQPOu4Re5/m6mR7AJWt9gq8QoaLqVUWnGO3Isf9
+	 /cMlGga2GqW0AyJG+BElasQN7F2wY9uz2rfzNBCRDAz2TZ7zOrR/MVz7DQwiNqPkNj
+	 aSpCFH0OMf+PgH+CtgVdLKeByHLZkvz1EypDSnVRMUMbHUa0vPN1WYSlq0V0miCXFs
+	 ISTSEv8rUHEFyHgtS3PBjtrGzNEnCe/dPE0ib4PizNg5Xcb3hjd45bWZ6Nd2cMEWdJ
+	 bADZod7BjhJ/Q==
+Date: Fri, 07 Mar 2025 10:04:09 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina@asahilina.net>
+From: Oliver Mangold <oliver.mangold@pm.me>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Oliver Mangold <oliver.mangold@pm.me>
+Subject: [PATCH v5 1/4] rust: types: Add Ownable/Owned types
+Message-ID: <20250307-unique-ref-v5-1-bffeb633277e@pm.me>
+In-Reply-To: <20250307-unique-ref-v5-0-bffeb633277e@pm.me>
+References: <20250307-unique-ref-v5-0-bffeb633277e@pm.me>
+Feedback-ID: 31808448:user:proton
+X-Pm-Message-ID: 2fb0fc540ab07853945857e8c687b233bec6e4ac
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250306211716.51120-1-jarkko@kernel.org>
-In-Reply-To: <20250306211716.51120-1-jarkko@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 7 Mar 2025 10:22:10 +0100
-X-Gm-Features: AQ5f1JrwqZzYVuixzkbOtIQU9YA20cODrXv2HTiEUfXbth4mGH6OWpn6XFaX5z0
-Message-ID: <CANiq72kfo1zSsLc5TWr3wS3t2e5OK_hnECGMpAv-7ezyBsnPig@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: TPM DEVICE DRIVER: linux-tpmdd-nixos
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	Fiona Behrens <me@kloenk.dev>, Tamir Duberstein <tamird@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 6, 2025 at 10:17=E2=80=AFPM Jarkko Sakkinen <jarkko@kernel.org>=
- wrote:
->
-> This is my new testing tree for my kernel tree. It will over time replace
-> my previous BuildRoot based testing tree (but not just yet).
+From: Asahi Lina <lina@asahilina.net>
 
-Thanks for Cc'ing! I assume this is related to your subsystem and that
-it will go through there.
+By analogy to AlwaysRefCounted and ARef, an Ownable type is a (typically
+C FFI) type that *may* be owned by Rust, but need not be. Unlike
+AlwaysRefCounted, this mechanism expects the reference to be unique
+within Rust, and does not allow cloning.
 
-Cc'ing Fiona as well since she was interested in Nix and Tamir who
-does macOS; so they may be interested.
+Conceptually, this is similar to a KBox<T>, except that it delegates
+resource management to the T instead of using a generic allocator.
 
-Cheers,
-Miguel
+Signed-off-by: Asahi Lina <lina@asahilina.net>
+---
+ rust/kernel/types.rs | 110 +++++++++++++++++++++++++++++++++++++++++++++++=
+++++
+ 1 file changed, 110 insertions(+)
+
+diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+index 55ddd50e8aaa075ac33d5f1088a7f72df05f74f4..0cae5ba6607f0a86d2f0e3494f9=
+56f6daad78067 100644
+--- a/rust/kernel/types.rs
++++ b/rust/kernel/types.rs
+@@ -551,6 +551,116 @@ fn drop(&mut self) {
+     }
+ }
+=20
++/// Types that may be owned by Rust code or borrowed, but have a lifetime =
+managed by C code.
++///
++/// It allows such types to define their own custom destructor function to=
+ be called when
++/// a Rust-owned reference is dropped.
++///
++/// This is usually implemented by wrappers to existing structures on the =
+C side of the code.
++///
++/// # Safety
++///
++/// Implementers must ensure that any objects borrowed directly as `&T` st=
+ay alive for the duration
++/// of the lifetime, and that any objects owned by Rust as `Owned<T>`) sta=
+y alive while that owned
++/// reference exists, until the [`Ownable::release()`] trait method is cal=
+led.
++pub unsafe trait Ownable {
++    /// Releases the object (frees it or returns it to foreign ownership).
++    ///
++    /// # Safety
++    ///
++    /// Callers must ensure that the object is no longer referenced after =
+this call.
++    unsafe fn release(this: NonNull<Self>);
++}
++
++/// A subtrait of Ownable that asserts that an `Owned<T>` Rust reference i=
+s not only unique
++/// within Rust and keeps the `T` alive, but also guarantees that the C co=
+de follows the
++/// usual mutable reference requirements. That is, the kernel will never m=
+utate the
++/// `T` (excluding internal mutability that follows the usual rules) while=
+ Rust owns it.
++///
++/// When this type is implemented for an [`Ownable`] type, it allows `Owne=
+d<T>` to be
++/// dereferenced into a &mut T.
++///
++/// # Safety
++///
++/// Implementers must ensure that the kernel never mutates the underlying =
+type while
++/// Rust owns it.
++pub unsafe trait OwnableMut: Ownable {}
++
++/// An owned reference to an ownable kernel object.
++///
++/// The object is automatically freed or released when an instance of [`Ow=
+ned`] is
++/// dropped.
++///
++/// # Invariants
++///
++/// The pointer stored in `ptr` is non-null and valid for the lifetime of =
+the [`Owned`] instance.
++pub struct Owned<T: Ownable> {
++    ptr: NonNull<T>,
++    _p: PhantomData<T>,
++}
++
++// SAFETY: It is safe to send `Owned<T>` to another thread when the underl=
+ying `T` is `Send` because
++// it effectively means sending a unique `&mut T` pointer (which is safe b=
+ecause `T` is `Send`).
++unsafe impl<T: Ownable + Send> Send for Owned<T> {}
++
++// SAFETY: It is safe to send `&Owned<T>` to another thread when the under=
+lying `T` is `Sync`
++// because it effectively means sharing `&T` (which is safe because `T` is=
+ `Sync`).
++unsafe impl<T: Ownable + Sync> Sync for Owned<T> {}
++
++impl<T: Ownable> Owned<T> {
++    /// Creates a new instance of [`Owned`].
++    ///
++    /// It takes over ownership of the underlying object.
++    ///
++    /// # Safety
++    ///
++    /// Callers must ensure that the underlying object is acquired and can=
+ be considered owned by
++    /// Rust.
++    pub(crate) unsafe fn from_raw(ptr: NonNull<T>) -> Self {
++        // INVARIANT: The safety requirements guarantee that the new insta=
+nce now owns the
++        // reference.
++        Self {
++            ptr,
++            _p: PhantomData,
++        }
++    }
++
++    /// Consumes the `Owned`, returning a raw pointer.
++    ///
++    /// This function does not actually relinquish ownership of the object=
+.
++    /// After calling this function, the caller is responsible for ownersh=
+ip previously managed
++    /// by the `Owned`.
++    #[allow(dead_code)]
++    pub(crate) fn into_raw(me: Self) -> NonNull<T> {
++        ManuallyDrop::new(me).ptr
++    }
++}
++
++impl<T: Ownable> Deref for Owned<T> {
++    type Target =3D T;
++
++    fn deref(&self) -> &Self::Target {
++        // SAFETY: The type invariants guarantee that the object is valid.
++        unsafe { self.ptr.as_ref() }
++    }
++}
++
++impl<T: Ownable + OwnableMut> DerefMut for Owned<T> {
++    fn deref_mut(&mut self) -> &mut Self::Target {
++        // SAFETY: The type invariants guarantee that the object is valid,
++        // and that we can safely return a mutable reference to it.
++        unsafe { self.ptr.as_mut() }
++    }
++}
++
++impl<T: Ownable> Drop for Owned<T> {
++    fn drop(&mut self) {
++        // SAFETY: The type invariants guarantee that the `Owned` owns the=
+ object we're about to
++        // release.
++        unsafe { T::release(self.ptr) };
++    }
++}
++
+ /// A sum type that always holds either a value of type `L` or `R`.
+ ///
+ /// # Examples
+
+--=20
+2.48.1
+
+
