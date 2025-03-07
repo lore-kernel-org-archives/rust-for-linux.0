@@ -1,390 +1,302 @@
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD0325A2AA;
-	Fri,  7 Mar 2025 23:29:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741390184; cv=none; b=QbU5mchX4iY+Sts6Iv30F0kgXL00IukQ7e0Jnhf2drUKRIAQTMEO/MUbuAQS6aQAdtTm0d8geSVbBbLjVpf5K3G/i3arSjIBRGZKq0FqD8+Su1eDcqLPgTvoJhrSgxsNUoiQG30esy73BSO6I3tpNVkezWoouxuTaIWthfuJW2U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741390184; c=relaxed/simple;
-	bh=4T6JiUrprXIHYAAwo9JH+u1tRa+hCt1edvmkZjmco9s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p0TNlMG4njAqRcV2xV0AS+xdkTaVDnfTTM7yujY7GITPgGvxY5TWHE4cidgEdztC1AN16N59olPI002E1O/GbqDXjnMmRBmJfQIChJ5y07WnWpmaot7074h+yA1wZzfLkQvB9X6hoRZawi7tZ/0QrgPmxQJf6300Kh0+DTH4ohs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lntV4bw+; arc=none smtp.client-ip=209.85.219.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FD32139D3;
+	Fri,  7 Mar 2025 23:37:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741390682; cv=fail; b=mJAu0fGdPfsrJJ9rWUEbnooPiPUfN5I/HOrCbFkxSQkueKhZK033UCE8OJuuFd/z9pU9xxc3YU2qwOONDZ5ftV39vZw27WB53QssfjW4HMcJYHfQUP/9bnzoIPjmq0Noel7IDY3IpEE9ZJmBe9KTIFEpzeeFm/FsmMrzbDMzAT0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741390682; c=relaxed/simple;
+	bh=suzLrkRyhRmhyNosmkewQPiSKgUNCby7i8bp8ju30D4=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=q5Om4s8yVA7CFX6w4TvgYXveoC1vWBi0naYEuGGlHBb2cKgIKf0yZ9D9BQAQ+mfNYlX9S9SI6988H/MgVdZNYqPi++daAuuHl3d3aT6dIk6t9L9WOSYIGijR6HPGJIY31wsYkE7waQrO3g4vIAJh1P7exrZTQfTRe8CMOv8Ebzg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LNZZA4C0; arc=fail smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lntV4bw+"
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-6e8f6970326so17846056d6.0;
-        Fri, 07 Mar 2025 15:29:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741390181; x=1741994981; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=APp1sd7jGBSg/u5pTAADDBD+S92qNVZmi8A5p35ed74=;
-        b=lntV4bw+Yu/4saIo9Lvnj7S5b7NgQfMyKKqaSfTZ/wbI19oF7/wSXHdhpc2jz4h7Kx
-         VWI/EUdRVNfdlGANsjqDPGRbiSVNOn8wPXHOBpBFtovbgcM6jkOPHUj7vjKO332G2YCC
-         v2hyYf7eaZt3W0vJ9ekCC/8h7ZXj2gRyH21FoY76khOzvxqVnSjZcuY57XzqGSxVN1DT
-         GT1bYKaIuTqoNyNr32ReIIjrgbq0xEfQPL1YKIAKkpa316/djrxFyZzkApdSw17+x0Zp
-         JZvDwvEbc6HfRioyFGUs4P4agPdwoiJa80ZmhqwAo10Gr2qEjtreQkRN2cifzMZN0SnU
-         EJyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741390181; x=1741994981;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=APp1sd7jGBSg/u5pTAADDBD+S92qNVZmi8A5p35ed74=;
-        b=nZA8hQ0pX9W0WNO0cJHaK85HjcXKfoNR8ABkL2hcYSxtTmvlAHoh7gDQhlLLnDI2ci
-         5j1xkRERrBxbPkjC1RSf2jLJlXXza3eDdke3aD0jvIBbNfdI2cVpHUrI4HiDI7Rc+VXX
-         N4wgxeWb+OQBO64KBp5yFM+VvMzaZf7/ZBYP0sxpuorWYBdn4T18FCSnLhH/Cz5JF/Aj
-         pm0bqUBbu+841Uc04ETef+/1Fp3oPSScSVdXrOyA/hc7YuAsNdWLt3W7GSxaOMhynSrt
-         IprZ5yn3cAXInGqcw2/0xOv+MyBfm265Bb44ONkWyeseoOwDtKPHUd4KPJ7upppO+APB
-         v3wg==
-X-Forwarded-Encrypted: i=1; AJvYcCUwPBIf43EAo7SenRZpYkH4GwnCF+RDoiBfbo+TWkesljyzi/rp3BzsbnG3qvAzHWpENkuLQzcFvrp3jzs=@vger.kernel.org, AJvYcCVQGH9bNxbjcJFXMkSBDTe3J4WCfl/Acw0vQ/iCoA+LMtlSuRSw+XVUeU82awtTTl+9R7RD/WG51RrbMtPjVsA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzwd5fbWXuEdvrJL9u0+KBtlEzVh65Q7Rgdt2JGg0+VWuRPoKBp
-	fAU/ov+CBCobNdmPB2E9/QDdPZVMcVlerGK94dBu8cDucq3gVixQ
-X-Gm-Gg: ASbGncsnAghYJFOfvYJk6JqClESF58FXzHz4RFQrAQq3Gr45GJIGO1K6VvJt9HCRFbq
-	5uwNvzgyIS8YiYnc7huJljA2RAUPQYXrngEuVptCbdMgKKDxr3dbwl1pi3fdd2pLbaa1ql2M+M0
-	iUJYCBv9qXsDabr3QV/s/vlqmqO9grFNvr66I2wAHkAC1zlsRX/6rrWcSbA7qXvzyEj8uhJSKx8
-	YSoHl3/0BLQ/cgqbNgJsXHUcsALbdX9j1wbaowAYIFRybpUmDijdj6A1Yr1Soa08l1vH9G9SRWJ
-	4YqQWEniOGzq1lfau1H16py5/WhxM5aiDEvtngPYnNk97ksO+R40GJGMsHjAGX+wzWg1trB6lMr
-	KtmuMokFzh4VAzHgLoDakiy4QpLBCS+NolTI=
-X-Google-Smtp-Source: AGHT+IHcYE8/LLj0kiFeVLR9T+AdpRWKX6nUtKgMM2ov/QeiBydpmcduyzzTOanK37zj/UgZu6cPpg==
-X-Received: by 2002:ad4:5cae:0:b0:6e8:ebfa:42f9 with SMTP id 6a1803df08f44-6e9005f79admr72055636d6.16.1741390181043;
-        Fri, 07 Mar 2025 15:29:41 -0800 (PST)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e8f707c4b5sm24771966d6.1.2025.03.07.15.29.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Mar 2025 15:29:40 -0800 (PST)
-Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 1EF7A120006A;
-	Fri,  7 Mar 2025 18:29:40 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Fri, 07 Mar 2025 18:29:40 -0500
-X-ME-Sender: <xms:ZIHLZzDy_doWn2gcNiuPCWUfwSj67AE81_MFqFGxmGMg0ikAhjKJtQ>
-    <xme:ZIHLZ5ha7ZF91FfMpd_933UGTixSOnzoj8oBiYIKlDiPUmcnQ8bU7I5pHam63suZX
-    s_OFWavhGBa8ku1fA>
-X-ME-Received: <xmr:ZIHLZ-l69KwG7Y3OONaFefObl7E7qkY0PoorRTFweRHF6W7iVl7dNfgcYr8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduudduleekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhgggfestdekredtredt
-    tdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
-    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeekteetjeegudeikedujeefvddvtdeigfei
-    ffffleejfeeiheeiffefvdeffffgteenucffohhmrghinhepghhithhhuhgsrdgtohhmpd
-    hkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgr
-    ihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqd
-    eiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhl
-    rdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvdegpdhmohguvgepsh
-    hmthhpohhuthdprhgtphhtthhopehmihhnghhosehkvghrnhgvlhdrohhrghdprhgtphht
-    thhopehpvghtvghriiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopeifihhllh
-    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhonhhgmhgrnhesrhgvughhrghtrdgt
-    ohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrd
-    horhhgpdhrtghpthhtoheplhgvvhihmhhithgthhgvlhhltdesghhmrghilhdrtghomhdp
-    rhgtphhtthhopegsvghnnhhordhlohhsshhinhesphhrohhtohhnrdhmvgdprhgtphhtth
-    hopegsohhquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtthhopehojhgvuggr
-    sehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:ZIHLZ1wXNewFLVUfBtpXxtc4pKxKpgYHW6IrYvDQAvaaVgKxeCHfOw>
-    <xmx:ZIHLZ4Req9LXhsEZ1PEHFJu1hkTNWADdBh3Kw_en5Sm3amJLRYYVCw>
-    <xmx:ZIHLZ4ZyeMRZuFQYTgJ3DUlQlBL_hkpoU5CO4lOa5PkhIJoAoa9wMg>
-    <xmx:ZIHLZ5S4UhiPyntxikWk2PTeyi04KTQOIin1PbqI9x0tJa46qgWphQ>
-    <xmx:ZIHLZ-BbLjb3Qop0xqRejr8HdR50IhOWLAj_3pZYqH4JNBGxto9kmU3h>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 7 Mar 2025 18:29:39 -0500 (EST)
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Ingo Molnar <mingo@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>
-Cc: Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	Mitchell Levy <levymitchell0@gmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Ingo Molnar <mingo@redhat.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Lyude Paul <lyude@redhat.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Konstantin Andrikopoulos <kernel@mandragore.io>,
-	Roland Xu <mu001999@outlook.com>,
-	rust-for-linux@vger.kernel.org (open list:RUST)
-Subject: [PATCH locking 11/11] rust: lockdep: Use Pin for all LockClassKey usages
-Date: Fri,  7 Mar 2025 15:27:01 -0800
-Message-ID: <20250307232717.1759087-12-boqun.feng@gmail.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250307232717.1759087-1-boqun.feng@gmail.com>
-References: <Z76Uk1d4SHPwVD6n@Mac.home>
- <20250307232717.1759087-1-boqun.feng@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LNZZA4C0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741390680; x=1772926680;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=suzLrkRyhRmhyNosmkewQPiSKgUNCby7i8bp8ju30D4=;
+  b=LNZZA4C0O6aPpD3jl6/UPx/408MRhG3qNwDw+7+p7Q8Rjgf1JZBoJIHt
+   SloP0YJ637C9yKii/6Mu6kZTO8s1goz1qgJNTHmHyYGDZtIhawTksmpeK
+   FvOQ9ZPD0xJT221QKD8zaBj6yCv4b1AitN+4ruUXZmf0py0rjxZAauaa0
+   eD13+xOBu6Z0k7wGQYLbumlevCWGO35Ks8dA5+lH/r7i7yczyKgvz48rY
+   FJTNNhQnH8OTB0D0g1ur3r6NgoPM3nMWKNaJBaVfKipsrOLOws/MVQZJx
+   /OVEUpXdAt/w+RJ6UGOPW/E/kRXXC4pUqP3FeBUl36cqWf8DPLqKNNU0+
+   w==;
+X-CSE-ConnectionGUID: X3/dAR/ERMmcdIBvRJc5Vg==
+X-CSE-MsgGUID: NU7u3oXtRK2lE6i2+dIaPA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11366"; a="53088123"
+X-IronPort-AV: E=Sophos;i="6.14,230,1736841600"; 
+   d="scan'208";a="53088123"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 15:37:59 -0800
+X-CSE-ConnectionGUID: Fa33Wc0wQqqM+5tMsTI9kA==
+X-CSE-MsgGUID: gDLWgML5R9Cnq82Z4bDfGA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,230,1736841600"; 
+   d="scan'208";a="124375004"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by orviesa003.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 07 Mar 2025 15:37:59 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Fri, 7 Mar 2025 15:37:58 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Fri, 7 Mar 2025 15:37:58 -0800
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (104.47.74.48) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Fri, 7 Mar 2025 15:37:57 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gpuBnf+cH7gzMLPkMiAPItewmc39T9Ru3D7wijAPL7CBNbfsL4Aod0tmFrZ5Hfn+c7UPVrVYzhm+oysKntalntqOso/k38EqWNrXY4tI5U5GZed06WOsae3zOuKSkvjuN4kvctRR1RtwOtHjey7M/WMC/fMWbcP9DUNWNNNsD6R/tWo2JpJM3n/r2Z8NfrQ2Eq4ZwR/+no15i7HThY7dAii4fcl3KSRcqCG8we2Jjas3V+8EyeVAkBoOEmztX0kMX0n26T2wxTyohWSf/PUT6iifD4ixmLFP/uRn2m7pU00LjJK6IIGzavDsuOMLd1JNgh3yce78GCqLwJkmrXUY0w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QwCguXgi+K7YMjCqBUu/Mjb0B9e4XD7VJKSOSCCtHjM=;
+ b=BWzCfA/dm575e4ZmEC8CqbXjnf+TfU9VQMLPGpXXlkQof50Xu5skpT/3RACeh83RTWameZAPYib/ZrRgyjcAmzEameivgzThTpf4m/ULnXNZlc3mQCm/2RxF4NJFMT+bk9ar3Pb5qqe/ETrDR5kFIVmDnwdVvRTQQRA7IZZGt5ZRlxuOwgnT2mtKMn5oxyOKhUzXiPK5udrAkgJyH3jILxmbVvzp4qvY1I3mceKDAMWFcj8/x7WmYBzV9HFA0+K9n5bqS4e0d4FiqoFvTOVNhbjFo8xTsWIuxhZmgmTCct7QY45q1sHoTYPaDKR1XkDHY+D4H9jcRLbmGe4yOtuKMw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by DM4PR11MB6551.namprd11.prod.outlook.com (2603:10b6:8:b9::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.17; Fri, 7 Mar
+ 2025 23:37:40 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8%4]) with mapi id 15.20.8511.017; Fri, 7 Mar 2025
+ 23:37:40 +0000
+Date: Fri, 7 Mar 2025 15:37:37 -0800
+From: Dan Williams <dan.j.williams@intel.com>
+To: Alistair Francis <alistair23@gmail.com>, Dan Williams
+	<dan.j.williams@intel.com>
+CC: Greg KH <gregkh@linuxfoundation.org>, Miguel Ojeda
+	<miguel.ojeda.sandonis@gmail.com>, Alice Ryhl <aliceryhl@google.com>,
+	Alistair Francis <alistair@alistair23.me>, <linux-cxl@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <lukas@wunner.de>,
+	<linux-pci@vger.kernel.org>, <bhelgaas@google.com>,
+	<Jonathan.Cameron@huawei.com>, <rust-for-linux@vger.kernel.org>,
+	<akpm@linux-foundation.org>, <boqun.feng@gmail.com>,
+	<bjorn3_gh@protonmail.com>, <wilfred.mallawa@wdc.com>, <ojeda@kernel.org>,
+	<a.hindborg@kernel.org>, <tmgross@umich.edu>, <gary@garyguo.net>,
+	<alex.gaynor@gmail.com>, <benno.lossin@proton.me>, Alistair Francis
+	<alistair.francis@wdc.com>
+Subject: Re: [RFC v2 09/20] PCI/CMA: Expose in sysfs whether devices are
+ authenticated
+Message-ID: <67cb834117c15_24b6429474@dwillia2-xfh.jf.intel.com.notmuch>
+References: <20250227030952.2319050-1-alistair@alistair23.me>
+ <20250227030952.2319050-10-alistair@alistair23.me>
+ <2025022717-dictate-cortex-5c05@gregkh>
+ <CAH5fLgiQAdZMUEBsWS0v1M4xX+1Y5mzE3nBHduzzk+rG0ueskg@mail.gmail.com>
+ <2025022752-pureblood-renovator-84a8@gregkh>
+ <CANiq72kS8=1R-0yoGP5wwNT2XKSwofjfvXMk2qLZkO9z_QQzXg@mail.gmail.com>
+ <2025022749-gummy-survivor-c03a@gregkh>
+ <CAKmqyKNei==TWCFASFvBC48g_DsFwncmO=KYH_i9JrpFmeRu+w@mail.gmail.com>
+ <67c8abffd2deb_1a7f294d5@dwillia2-xfh.jf.intel.com.notmuch>
+ <CAKmqyKORk5n_b2DUDfCVmttE4T+S-LQvcp0NoQD_O7D-csdEvA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKmqyKORk5n_b2DUDfCVmttE4T+S-LQvcp0NoQD_O7D-csdEvA@mail.gmail.com>
+X-ClientProxiedBy: MW4PR04CA0363.namprd04.prod.outlook.com
+ (2603:10b6:303:81::8) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|DM4PR11MB6551:EE_
+X-MS-Office365-Filtering-Correlation-Id: e33b651c-0b20-4e23-28d8-08dd5dd10cf0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?bEJIdENWc2FwbnJYeG9FSmdlekszRTJzcXAxdDhDZTZQN3lDRGt2Q0IyRlJQ?=
+ =?utf-8?B?VWRxbmJCZVJmTDc4YnBhU0t3d3FlYk9RNjk1SWV5d3NxeW1xckw0Rk9kNlJT?=
+ =?utf-8?B?T056MnJNS2VpUDM0SkV3czVnU3h3b0Z5VW9Fb3V1Zi9HU2JRMVQwaUY0Nno1?=
+ =?utf-8?B?bC82aXVNSVMva25NalZXSm0wVVlseDY2aXNQYkZEYllmZWtYR3QwcGI5TmRa?=
+ =?utf-8?B?Q2NjNm56Sm82bG0vRWxnWTM1RXdaRWZ2YUJJTm00QlloSkxQemkralBNTndr?=
+ =?utf-8?B?MCtkSXRtYzNvMVZISVZRdE1lUXBTNkt6a0lLZjNheG1sZEtWUWhBSy9Rb3JD?=
+ =?utf-8?B?RWgwcGdUdDNaN0xOMnRhOTNFbGsyT3hibkJoL1VUSFdrcE9oTzEya3YxTzlW?=
+ =?utf-8?B?NlVSalZtNlB2ZFljTW1PeE91TU5PcHA4TjVVdjhQbXVHQ2NjMktzak9ZNTNR?=
+ =?utf-8?B?dU5PM1dtcWV5QVJHMzIwYXJ6SEwxUjZ0djVTU1JiWFZOQUJTNlNONkdWbTZR?=
+ =?utf-8?B?azQyTFEzdThTemZzQk9rRkE4TDdLbkg4SHhweHI3RUhFMGVaLzJQVStGWXEy?=
+ =?utf-8?B?YXRVTHdsMDloK0tjRVY5MEVXOUEvOFVEQlU0YzlXeXR3UVp6TFRvNzBzSkVk?=
+ =?utf-8?B?dEtSNzhxWkZiQ2hSLzkrVUlraXN6d1NCR2pUeEpicUhJWFp0aThILzQ5TmhE?=
+ =?utf-8?B?VFZFd01vMEFPYlJ0MnlBbGQ4dU1jMW5xZG1kZUVFUGhQckcxaGJsS01qcHlq?=
+ =?utf-8?B?dmNmbUU0cUkzL2hLcVhsSEJBSHkrNXFQU1RrdHhSRDBTZ21NL3l0dUZ2SHgw?=
+ =?utf-8?B?NWdORWtGaGpyaUs5THZ5ay9lZnBST1NnYzNqZVNQQUZ1SHBIMjRaWTQ0Q1JH?=
+ =?utf-8?B?UzZRdnhjaXN5TUlnYmZvNVBoZTI2NVhNYUxQSjV2QnhkajNjdktDci9nS0RW?=
+ =?utf-8?B?cFpuSGdMK2daTkNZeUFMR0k0QlhtcWFqRjRNZzBBVHV3N0Zrd3lCZGRiUmFV?=
+ =?utf-8?B?SkpXYUROVm8xcUV0clVDQllMWEJNVEFGV1VvNGZmeG5EdHhPSzBhWUFaZ285?=
+ =?utf-8?B?cVJ5NkFUTjJhSXBjbHhJbmY4MHFKUUd2MG5LdytVVVE4cElhZWlJaUhzVG52?=
+ =?utf-8?B?SUdtUlNOYXY5NlZMOWRzN2JhM21Ec2sxaUpUaHJqdkhhMXpGUlhDMS9HVGts?=
+ =?utf-8?B?U2pIb0ExcjA2QWRaWlBDdGFmMXRHdkRFc3ptcGVzMG1kZHJXd0NYeVo5eWZX?=
+ =?utf-8?B?TWRCMktqRVNQNFRJOVBBbDFoYkRFRTJGck45MkxsK3ovbVd4UDBEL3dnMFVT?=
+ =?utf-8?B?OXVPd3BsUzlidnpIU3AzQzVVR0VzcCt2Qmh4a3N0aHgzVmd0RmtXMXpBQk1m?=
+ =?utf-8?B?QWFqQ2lqQ2VPdzJkY01uK0JPNjhzdVA0bk44UG9ETjFidlRQcEJ2VGZ1RklG?=
+ =?utf-8?B?UTN4MFkyZHJrQmgyd0w2TDZzSFRPRnlXdkFsZVFRY3BmZEIvcW1pR2J2MEhY?=
+ =?utf-8?B?MTJjbGlzY3ZGNTFwaUtucEcrNmxobncvOHo2MU83am01Wm03RWhkemtQNjBo?=
+ =?utf-8?B?TTVzUi9DM05KSStRQURKdnVCdkpqRldhN0tXUXBpQ0trSWNvcGhrRFRmSFV2?=
+ =?utf-8?B?ckN1S1g3TUJSUmdWSThSMHpwWjVqZ21qdG1FOGpQNjFpVlZPcWVubzhIYXFZ?=
+ =?utf-8?B?YXNVSjkybzJ1QlkyM3JXQ3NPTUVscDRwSS8yNnAzQWVuWGpHZ1YxMFNYODlE?=
+ =?utf-8?B?YmVXUDlKNXRDM285T3FsSWRMWWY4UkVHdG9UNEFaS3lTelVLeUtNYVFHajg0?=
+ =?utf-8?B?NU1aYlJUb3NDSEVCZW5YNkxjd0ZiYjZhZGwwaDlKYW9DY3dsSWw1dmMwSW9a?=
+ =?utf-8?Q?jPnlCy4P99e6f?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QUtlWll3MjBYdGJNR3dpekJKMzlIazZTQjcvVjBIR3RZL09hb2ZzUzFKb1dF?=
+ =?utf-8?B?NFNtVUpobnJDRnNQWjhsUTlkQzl2ejFjcW92ZmhubGgrUlZUVjZBWEtCSnVW?=
+ =?utf-8?B?UWlUeUQyOUNUbzlwRHV2TlNRc1lTNjV5d00wVTZBSVM1ZzAzOUFVLzZXWnVu?=
+ =?utf-8?B?THJpTmNmY2F6d2tXc3htVzYxdXl3K25hUXErT3NrVzlycXVlSjFCVkQwMlNG?=
+ =?utf-8?B?TlR3cHBKOFErdEZZYlkrTXV4c3Zic1JHdU14SkYwZ2R1MmJLeDc0R3poVVNv?=
+ =?utf-8?B?dk1QeTlNVGg1dGVhY0VmY2NwNU9pSXF2QVlpeEFpQzBubk15TVp2blY0VzNB?=
+ =?utf-8?B?byt2S2JPVDJHdXFKNnZvcHJnSEllQ0VjOTNHMTFvbklpVFZMYm94WEpUbWlG?=
+ =?utf-8?B?eGZGYUhPdE1ObEQybFU1V09iNjN4YTR3MUtNZVkyalU1U1hCMys3SUM1NjAw?=
+ =?utf-8?B?MWlUcHlVeGNia0hLaUpaY1pNS2ZwK001aDh0eWJwbFhjUHVQRWhLNW41WXJK?=
+ =?utf-8?B?Y283R0w2dXd4VHhWMFk5cmtaYm9qSS95WHpENTRQQ1k0VnFoZTJhdXNwTnBl?=
+ =?utf-8?B?b1JaSE5Zdi9uODJqZng0Slorei9XVUo1NFBaRDZ1MmtQREdPQStjL1FoQlY4?=
+ =?utf-8?B?Q1BuODJyVnowcEZ1dnVTTWs0dm5aRGg1cnY5N3lQUDZWTnZMNVJEUENPMnVU?=
+ =?utf-8?B?Z0VRNGFKbnd5eE9YOWhYbjFvSmZRakVhZUxYZ1NyRUNRd0sxNm1URkZGeTc0?=
+ =?utf-8?B?Z0hOM3pTWlJEeG9DS0tqS1hKZ2VBYlhCY2tDditDSUt6b1U5cDhoMTJZd2s0?=
+ =?utf-8?B?WmJqSXJseitnT3pheUFzajI5RlVLb2FabE1Vd2FlN3FMcGJudnE5Zk9JS2RS?=
+ =?utf-8?B?MWJOOHZZa2pvZ0tjU1phdUNObmcvdU1ZYkltWDVLT2Y4K2ZNSkFhc2Uvd3JL?=
+ =?utf-8?B?V0dMbm5EazZZNTcwSWl0QWlER090d3lHOVJza1lRdUY3U0h0bXZLS2pwRXNK?=
+ =?utf-8?B?QzYyMjJZZVdsUVBZbHhDRVU1MTZ2OUUrSG85a3JhVXMzVHpwb290djZHenU3?=
+ =?utf-8?B?QjRNSnp0K0grdVgxcyswUUVkNXJHRDkvUm52eGRMd210RzNJOGVjMmFyVzdx?=
+ =?utf-8?B?ZU93VzdhWTlLOEV2NHcrYUZaV3JQWXN6bExFOXVLdHdXSHpUaGZYMk9KRlFU?=
+ =?utf-8?B?WTR3UVJGTi93WmJYN1pudXpjRHI0LytkblNQSXlnSDl5RmJRZWNmS1ZCNjFu?=
+ =?utf-8?B?WFhNWmRsOSt6b2V5aThKQUMwWC9KM1g0VHIzZEVWNUNqYzFtR3Z3SXo1b2tB?=
+ =?utf-8?B?THErYjJJYlp3UnNxVWhlSXp0UFJjbTlVeEI4NnBORGtFKzNidlptYVJld2Ra?=
+ =?utf-8?B?eGE3aitYTHZqT3hxaTFwVjVkeW1BSkozclJDSzJKZVdkZEduMWNSbHpRbVo0?=
+ =?utf-8?B?NnkvcUUySFlXY3FSaHNHK05Uc28xMURGRURieDNUamtaS2VrR3UyMG84V1Bl?=
+ =?utf-8?B?c2JMT1diQ1A2K2Jmc2JKbFowdmtqR21nQ0lFYUlrUnpXaHArUjNKd0VQRi9t?=
+ =?utf-8?B?dENsSTJOWk9aclRLcU9vSWZLaTNrajdiWHRabFVOVlVjQ3VtYkQ1anBDTXI0?=
+ =?utf-8?B?eU1nSXFxWjJMaWxoei9EaHQ5Y0h4dmh1S3lXaWFUbDNwYjMrZ0tud01wdTFq?=
+ =?utf-8?B?dkdVUWxIS2ZPa1NxWjRpeGNRd1VSYlpRc2s1Mjh3cEtPM2RUUkJMWWo0WWhL?=
+ =?utf-8?B?UGxaMXc2R2lUUVVucGlXMkVwNGJVQUVOcy8zWTJTQ3lGWGsvdDVJVlRpTk5x?=
+ =?utf-8?B?MElQY09SMTZTTVFMNm1lVjFkUjBabSttcnNuMFozWkorclFjdWUraWRub0dT?=
+ =?utf-8?B?eGdLRVg2M29hdklxSUprZzl0RmxoSC9WY0pGWmN6Ny8yRk5ranlHRC9XTVRq?=
+ =?utf-8?B?OUVQYk9CQXYvbkxHdmpDWTYvZGEvMTZxc20yaFdwb2x0eGFyb3VwNmI2ait6?=
+ =?utf-8?B?OFR5YkxHZlJ0U290Njl1YWRhUVFSTDV0ZSt1cEswdWUybWpITUc2emJkd1VD?=
+ =?utf-8?B?YVM1bk4vYm9iUFRlbkJRQnpBNlNMd1BVMXNUK3pqTm1obm1LZUtEdE5rSVRP?=
+ =?utf-8?B?YlBEZ2ZWeU5lcW11YWs2eG1aem81SVVnMUtqbXFKMnlqSFlNbkdKb3oyWHhm?=
+ =?utf-8?B?ZUE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: e33b651c-0b20-4e23-28d8-08dd5dd10cf0
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2025 23:37:40.4710
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: DDVytBM9k3MuXZKzeHOS6T8PU+yrDvFAIZwSfP1LeWYYjJ2C3bvM+JFRjcNAcU5CNYIhTOBUIzpcnq81TuHVBUIADNV6xWSgteBjiL41U2M=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6551
+X-OriginatorOrg: intel.com
 
-From: Mitchell Levy <levymitchell0@gmail.com>
+Alistair Francis wrote:
+> On Thu, Mar 6, 2025 at 5:55 AM Dan Williams <dan.j.williams@intel.com> wrote:
+> >
+> > Alistair Francis wrote:
+> > > On Fri, Feb 28, 2025 at 5:33 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+> > > >
+> > > > On Thu, Feb 27, 2025 at 05:45:02PM +0100, Miguel Ojeda wrote:
+> > > > > On Thu, Feb 27, 2025 at 1:01 PM Greg KH <gregkh@linuxfoundation.org> wrote:
+> > > > > >
+> > > > > > Sorry, you are right, it does, and of course it happens (otherwise how
+> > > > > > would bindings work), but for small functions like this, how is the C
+> > > > > > code kept in sync with the rust side?  Where is the .h file that C
+> > > > > > should include?
+> > >
+> > > This I can address with something like Alice mentioned earlier to
+> > > ensure the C and Rust functions stay in sync.
+> > >
+> > > > >
+> > > > > What you were probably remembering is that it still needs to be
+> > > > > justified, i.e. we don't want to generally/freely start replacing
+> > > > > "individual functions" and doing FFI both ways everywhere, i.e. the
+> > > > > goal is to build safe abstractions wherever possible.
+> > > >
+> > > > Ah, ok, that's what I was remembering.
+> > > >
+> > > > Anyway, the "pass a void blob from C into rust" that this patch is doing
+> > > > feels really odd to me, and hard to verify it is "safe" at a simple
+> > > > glance.
+> > >
+> > > I agree, it's a bit odd. Ideally I would like to use a sysfs binding,
+> > > but there isn't one today.
+> > >
+> > > I had a quick look and a Rust sysfs binding implementation seems like
+> > > a lot of work, which I wasn't convinced I wanted to invest in for this
+> > > series. This is only a single sysfs attribute and I didn't want to
+> > > slow down this series on a whole sysfs Rust implementation.
+> > >
+> > > If this approach isn't ok for now, I will just drop the sysfs changes
+> > > from the series so the SPDM implementation doesn't stall on sysfs
+> > > changes. Then come back to the sysfs attributes in the future.
+> >
+> > This highlights a concern I have about what this means for ongoing
+> > collaboration between this native PCI device-authentication (CMA)
+> > enabling and the platform TEE Security Manager (TSM) based
+> > device-security enabling.
+> >
+> > First, I think Rust for a security protocol like SPDM makes a lot of
+> > sense. However, I have also been anticipating overlap between the ABIs
+> > for conveying security collateral like measurements, transcripts, nonces
+> > etc between PCI CMA and PCI TSM. I.e. potential opportunities to
+> > refactor SPDM core helpers for reuse. A language barrier and an ABI
+> > barrier (missing Rust integrations for sysfs and netlink ABIs that were
+> > discussed at Plumbers) limits that potential collaboration.
+> 
+> I see your concern, but I'm not sure it's as bad as you think.
+> 
+> We will need to expose the Rust code to C no matter what. The CMA,
+> NVMe, SATA and SAS is all C code, so the Rust library will have a nice
+> C style ABI to allow those subsystems to call the code.
 
-Reintroduce dynamically-allocated LockClassKeys such that they are
-automatically (de)registered. Require that all usages of LockClassKeys
-ensure that they are Pin'd.
+That indeed alleviates a significant amount of the concern. I.e.
+multiple planned C users makes it less likely that the needs of yet one
+more C user, PCI TSM, get buried deep in the Rust implementation.
 
-Currently, only `'static` LockClassKeys are supported, so Pin is
-redundant. However, it is intended that dynamically-allocated
-LockClassKeys will eventually be supported, so using Pin from the outset
-will make that change simpler.
+> The sysfs issue is mostly because I am trying to write as much of the
+> sysfs code in Rust, but there aren't bindings yet.
+> 
+> So if we want to re-use code (such as measurements, transcripts or
+> nonces) we just need to expose a C style function in Rust which can
+> then can then be used.
 
-Closes: https://github.com/Rust-for-Linux/linux/issues/1102
-Suggested-by: Benno Lossin <benno.lossin@proton.me>
-Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://lore.kernel.org/r/20250207-rust-lockdep-v4-2-7a50a7e88656@gmail.com
----
- rust/helpers/helpers.c          |  1 +
- rust/helpers/sync.c             | 13 ++++++++
- rust/kernel/sync.rs             | 57 +++++++++++++++++++++++++++++++--
- rust/kernel/sync/condvar.rs     |  5 ++-
- rust/kernel/sync/lock.rs        |  4 +--
- rust/kernel/sync/lock/global.rs |  5 +--
- rust/kernel/sync/poll.rs        |  2 +-
- rust/kernel/workqueue.rs        |  2 +-
- 8 files changed, 77 insertions(+), 12 deletions(-)
- create mode 100644 rust/helpers/sync.c
+Makes sense.
 
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index 0640b7e115be..4c1a10a419cf 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -30,6 +30,7 @@
- #include "signal.c"
- #include "slab.c"
- #include "spinlock.c"
-+#include "sync.c"
- #include "task.c"
- #include "uaccess.c"
- #include "vmalloc.c"
-diff --git a/rust/helpers/sync.c b/rust/helpers/sync.c
-new file mode 100644
-index 000000000000..ff7e68b48810
---- /dev/null
-+++ b/rust/helpers/sync.c
-@@ -0,0 +1,13 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/lockdep.h>
-+
-+void rust_helper_lockdep_register_key(struct lock_class_key *k)
-+{
-+	lockdep_register_key(k);
-+}
-+
-+void rust_helper_lockdep_unregister_key(struct lock_class_key *k)
-+{
-+	lockdep_unregister_key(k);
-+}
-diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-index 16eab9138b2b..4104bc26471a 100644
---- a/rust/kernel/sync.rs
-+++ b/rust/kernel/sync.rs
-@@ -5,6 +5,8 @@
- //! This module contains the kernel APIs related to synchronisation that have been ported or
- //! wrapped for usage by Rust code in the kernel.
- 
-+use crate::pin_init;
-+use crate::prelude::*;
- use crate::types::Opaque;
- 
- mod arc;
-@@ -23,15 +25,64 @@
- 
- /// Represents a lockdep class. It's a wrapper around C's `lock_class_key`.
- #[repr(transparent)]
--pub struct LockClassKey(Opaque<bindings::lock_class_key>);
-+#[pin_data(PinnedDrop)]
-+pub struct LockClassKey {
-+    #[pin]
-+    inner: Opaque<bindings::lock_class_key>,
-+}
- 
- // SAFETY: `bindings::lock_class_key` is designed to be used concurrently from multiple threads and
- // provides its own synchronization.
- unsafe impl Sync for LockClassKey {}
- 
- impl LockClassKey {
-+    /// Initializes a dynamically allocated lock class key. In the common case of using a
-+    /// statically allocated lock class key, the static_lock_class! macro should be used instead.
-+    ///
-+    /// # Example
-+    /// ```
-+    /// # use kernel::{c_str, stack_pin_init};
-+    /// # use kernel::alloc::KBox;
-+    /// # use kernel::types::ForeignOwnable;
-+    /// # use kernel::sync::{LockClassKey, SpinLock};
-+    ///
-+    /// let key = KBox::pin_init(LockClassKey::new_dynamic(), GFP_KERNEL)?;
-+    /// let key_ptr = key.into_foreign();
-+    ///
-+    /// {
-+    ///     stack_pin_init!(let num: SpinLock<u32> = SpinLock::new(
-+    ///         0,
-+    ///         c_str!("my_spinlock"),
-+    ///         // SAFETY: `key_ptr` is returned by the above `into_foreign()`, whose
-+    ///         // `from_foreign()` has not yet been called.
-+    ///         unsafe { <Pin<KBox<LockClassKey>> as ForeignOwnable>::borrow(key_ptr) }
-+    ///     ));
-+    /// }
-+    ///
-+    /// // SAFETY: We dropped `num`, the only use of the key, so the result of the previous
-+    /// // `borrow` has also been dropped. Thus, it's safe to use from_foreign.
-+    /// unsafe { drop(<Pin<KBox<LockClassKey>> as ForeignOwnable>::from_foreign(key_ptr)) };
-+    ///
-+    /// # Ok::<(), Error>(())
-+    /// ```
-+    pub fn new_dynamic() -> impl PinInit<Self> {
-+        pin_init!(Self {
-+            // SAFETY: lockdep_register_key expects an uninitialized block of memory
-+            inner <- Opaque::ffi_init(|slot| unsafe { bindings::lockdep_register_key(slot) })
-+        })
-+    }
-+
-     pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
--        self.0.get()
-+        self.inner.get()
-+    }
-+}
-+
-+#[pinned_drop]
-+impl PinnedDrop for LockClassKey {
-+    fn drop(self: Pin<&mut Self>) {
-+        // SAFETY: self.as_ptr was registered with lockdep and self is pinned, so the address
-+        // hasn't changed. Thus, it's safe to pass to unregister.
-+        unsafe { bindings::lockdep_unregister_key(self.as_ptr()) }
-     }
- }
- 
-@@ -44,7 +95,7 @@ macro_rules! static_lock_class {
-             // SAFETY: lockdep expects uninitialized memory when it's handed a statically allocated
-             // lock_class_key
-             unsafe { ::core::mem::MaybeUninit::uninit().assume_init() };
--        &CLASS
-+        $crate::prelude::Pin::static_ref(&CLASS)
-     }};
- }
- 
-diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
-index 5c1e546a26c3..fbf68ada582f 100644
---- a/rust/kernel/sync/condvar.rs
-+++ b/rust/kernel/sync/condvar.rs
-@@ -17,8 +17,7 @@
-     time::Jiffies,
-     types::Opaque,
- };
--use core::marker::PhantomPinned;
--use core::ptr;
-+use core::{marker::PhantomPinned, pin::Pin, ptr};
- use macros::pin_data;
- 
- /// Creates a [`CondVar`] initialiser with the given name and a newly-created lock class.
-@@ -103,7 +102,7 @@ unsafe impl Sync for CondVar {}
- 
- impl CondVar {
-     /// Constructs a new condvar initialiser.
--    pub fn new(name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self> {
-+    pub fn new(name: &'static CStr, key: Pin<&'static LockClassKey>) -> impl PinInit<Self> {
-         pin_init!(Self {
-             _pin: PhantomPinned,
-             // SAFETY: `slot` is valid while the closure is called and both `name` and `key` have
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index f53e87d04cd2..360a10a9216d 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -12,7 +12,7 @@
-     str::CStr,
-     types::{NotThreadSafe, Opaque, ScopeGuard},
- };
--use core::{cell::UnsafeCell, marker::PhantomPinned};
-+use core::{cell::UnsafeCell, marker::PhantomPinned, pin::Pin};
- use macros::pin_data;
- 
- pub mod mutex;
-@@ -129,7 +129,7 @@ unsafe impl<T: ?Sized + Send, B: Backend> Sync for Lock<T, B> {}
- 
- impl<T, B: Backend> Lock<T, B> {
-     /// Constructs a new lock initialiser.
--    pub fn new(t: T, name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self> {
-+    pub fn new(t: T, name: &'static CStr, key: Pin<&'static LockClassKey>) -> impl PinInit<Self> {
-         pin_init!(Self {
-             data: UnsafeCell::new(t),
-             _pin: PhantomPinned,
-diff --git a/rust/kernel/sync/lock/global.rs b/rust/kernel/sync/lock/global.rs
-index 480ee724e3cc..d65f94b5caf2 100644
---- a/rust/kernel/sync/lock/global.rs
-+++ b/rust/kernel/sync/lock/global.rs
-@@ -13,6 +13,7 @@
- use core::{
-     cell::UnsafeCell,
-     marker::{PhantomData, PhantomPinned},
-+    pin::Pin,
- };
- 
- /// Trait implemented for marker types for global locks.
-@@ -26,7 +27,7 @@ pub trait GlobalLockBackend {
-     /// The backend used for this global lock.
-     type Backend: Backend + 'static;
-     /// The class for this global lock.
--    fn get_lock_class() -> &'static LockClassKey;
-+    fn get_lock_class() -> Pin<&'static LockClassKey>;
- }
- 
- /// Type used for global locks.
-@@ -270,7 +271,7 @@ impl $crate::sync::lock::GlobalLockBackend for $name {
-             type Item = $valuety;
-             type Backend = $crate::global_lock_inner!(backend $kind);
- 
--            fn get_lock_class() -> &'static $crate::sync::LockClassKey {
-+            fn get_lock_class() -> Pin<&'static $crate::sync::LockClassKey> {
-                 $crate::static_lock_class!()
-             }
-         }
-diff --git a/rust/kernel/sync/poll.rs b/rust/kernel/sync/poll.rs
-index d5f17153b424..c4934f82d68b 100644
---- a/rust/kernel/sync/poll.rs
-+++ b/rust/kernel/sync/poll.rs
-@@ -89,7 +89,7 @@ pub struct PollCondVar {
- 
- impl PollCondVar {
-     /// Constructs a new condvar initialiser.
--    pub fn new(name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self> {
-+    pub fn new(name: &'static CStr, key: Pin<&'static LockClassKey>) -> impl PinInit<Self> {
-         pin_init!(Self {
-             inner <- CondVar::new(name, key),
-         })
-diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index 0cd100d2aefb..6b6f3ad08951 100644
---- a/rust/kernel/workqueue.rs
-+++ b/rust/kernel/workqueue.rs
-@@ -369,7 +369,7 @@ unsafe impl<T: ?Sized, const ID: u64> Sync for Work<T, ID> {}
- impl<T: ?Sized, const ID: u64> Work<T, ID> {
-     /// Creates a new instance of [`Work`].
-     #[inline]
--    pub fn new(name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self>
-+    pub fn new(name: &'static CStr, key: Pin<&'static LockClassKey>) -> impl PinInit<Self>
-     where
-         T: WorkItem<ID>,
-     {
--- 
-2.47.1
+> > Now if you told me the C SPDM work will continue and the Rust SPDM
+> > implementation will follow in behind until this space settles down in a
+> > year or so, great. I am not sure it works the other way, drop the C
+> 
+> That was kind of my original plan (see the first RFC), but maintaining
+> both, with at least one being out of tree, will be a huge pain and
+> prone to breakage.
+> 
+> Also I suspect the Rust implementation will struggle to keep up if the
+> C version is merged (and hence has more people looking at it) compared
+> to just me working on the Rust code.
 
+The practical questions that come to mind are:
+
+   Do we have time?:
+   I.e. How long can we continue to develop both out of tree? Presumably,
+   until the device ecosystem matures, when is that?
+
+   Are all users served by Rust SPDM?:
+   Once the device ecosystem matures can all architectures and
+   distributions get their needs met with a Rust dependency?
