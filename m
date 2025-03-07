@@ -1,118 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9E3226D0A;
-	Fri,  7 Mar 2025 16:09:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4AB23BD01;
+	Fri,  7 Mar 2025 16:25:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741363765; cv=none; b=BrLMil1evTv41FfXfy2y0db1AHqexI62zYSvvWO6SuKNIpJkSkOgDJlCyK6jKyTYjKMzJiNf6pZURIQKwoE8dF46mPSw4dtEV3FLwBW+o47NJrfQueo92L99Sg8sudtk2+S5AWQ8BC2JDDu6ZbrPIpG9qIeE1CioiUgJ4+0Imk8=
+	t=1741364705; cv=none; b=FjvadR26XwVhhjIXcqx7MoU2MUb7HZTjkW6j1QPxj6GfbzZQxiATpQzRhZ9POmoBgGPh5K2AyS8Dvz0SZIFG2d9PEpYJM/+VmXzbuee57t1XfLHs5I9vivNTLL4SBZlGbyoE5p15WK6p/WP3A2YEpc83BTgxQBgLOkmvLImibxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741363765; c=relaxed/simple;
-	bh=OjzgZIrF4I2Usopqifbp/MqmZF5LZWDEmj7w8BfGAOY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DFUGx/uolgfKyTRwlw2Ljr4Y0UcceQVZni+q/vaAuL9HQTQzWlnKEbdJQHRaMA6y4DFslhYScbPH4Zyy9CNDlSj8eC7PzfCmvoOP/Q788/B8IbqxQf0eHtDDMDsbJxdA8+J6aiRBVxOHBMY1bWjq0YW0BKP3hfP36CpC6OieQWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CRixdy6/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741364705; c=relaxed/simple;
+	bh=UiLD7yBHAJKBTn6IaZwAwe32NIzhtSP4kxkhZS1qJF0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Nx91dfkCqzTg4Ir+OlwYVIlvF/X69GSLwDfhMuAymGzc2c+AlPCA6RBhXK6myakeqTrhidVMNv6SZBldgFcOZfR2AaZw8viXAy1IBnScXIaoo6VAGA/HoShLjrTsS9n9p0Kw+f3Q5sBzQqjCTJiEnOT8KAXzWYKkDKt3+WJC8Fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mxfARFPD; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CRixdy6/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A03B6C4CED1;
-	Fri,  7 Mar 2025 16:09:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741363764;
-	bh=OjzgZIrF4I2Usopqifbp/MqmZF5LZWDEmj7w8BfGAOY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CRixdy6/AE5PCxS5J+Ug/OE91n6wpvg3310s9xJb3CIlggDDaMfzy2YA0LLJ+wzMK
-	 KFGtabUqbxPWftAGlrA6QpxjyQWW+ahk8AhjFm0mqplp2aYjzcSOHeSWdGqvdtsjWa
-	 5ZO98/8DZC/a1MawaJ8lzVSvRTbr29iqgiQkGjo0VFQnTY/BpXNb8qpVx5QGEER8Pt
-	 yG8lbMSBb1aU8bOym3nEioEKNrn15zHWOWI3z4OOjRi77OdaB2YFDkZQadiKpc7+cS
-	 LbuzBZ+yjaDP12RjnaSRks4/IMqlBUTruFV5YbHfWu6XnsIkh8gMVS+90lt0FOdFpu
-	 bZ0RF+V5CGFGw==
-Date: Fri, 7 Mar 2025 17:09:17 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>, aliceryhl@google.com,
-	robin.murphy@arm.com, daniel.almeida@collabora.com,
-	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
-Subject: Re: [PATCH v12 2/3] rust: add dma coherent allocator abstraction.
-Message-ID: <Z8saLZAylcVp89n_@cassiopeiae>
-References: <20250224115007.2072043-1-abdiel.janulgue@gmail.com>
- <20250224115007.2072043-3-abdiel.janulgue@gmail.com>
- <20250305174118.GA351188@nvidia.com>
- <Z8mlAxsszdOH-ow8@cassiopeiae>
- <Z8m9j3SwWHqaCTXo@phenom.ffwll.local>
- <20250306160907.GF354511@nvidia.com>
- <Z8qzP3CR8Quhp87Z@pollux>
- <20250307124809.GL354511@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mxfARFPD"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-21f8f3bd828so4064925ad.2;
+        Fri, 07 Mar 2025 08:25:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741364703; x=1741969503; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UiLD7yBHAJKBTn6IaZwAwe32NIzhtSP4kxkhZS1qJF0=;
+        b=mxfARFPDVc1fX65g1FLA6bZWcSlriVOZ4TM1otfcja8W473+z/hdFtL7aHtPfUOU0a
+         uemj5z9+PE+Otq9bgBj5zfHnBiTd4d/stUjhLNaoTGOT2/dqezQGjJSjiBYhqDC/LPUo
+         /TDwPNNOfM1VcoFGknOnhAbsNMlWD198Zy0LN1+rbhqV8daQTRk8E4kCy51Lj6YKmbw1
+         eokY8lcs2t9Z5oQrxTIHA8397AwEJlLmrju+yOP2GgkmRR1W1haiYIb3fOy9Z/Ds1VRJ
+         FhjE5ztfXUGABpJUvgU5CHyhHcqIgA2s2NmS8h9kR+oGmZDp+PncsAsodPqsBVhSX/VF
+         tYGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741364703; x=1741969503;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UiLD7yBHAJKBTn6IaZwAwe32NIzhtSP4kxkhZS1qJF0=;
+        b=VAgpmBW+tSzOoANQR4/RkB59BIA3vFYPBuHpddSGe4LD6o15FDOLIx1uV0akeYv1KD
+         PD8DNgkIHMuIqmFyLwQVm3ddedNEBvoGznb6sFYzymNrvA0/7hJ1TWzYsBYSGjzOIcPm
+         p7XiPbIYTPCkeJBVjcmh2npucK/quTIzy01IZ+7E1Yp9wdE5imVWfQMsbtSiJlbu3ylQ
+         KkIZrbAAMFLWiOto1ls4JcKRPZYTgR0IDKnnt0tewSqZJI0c1dV+joBvcVl+5FcLd5H/
+         JGhCdWekRigo2z4StwDg+v01Ak0k8eF/vqIwA2qIQscPRa1XQ3vn8H/apWEF6aqnJYWE
+         Q1vA==
+X-Forwarded-Encrypted: i=1; AJvYcCWTcugs8nb38bDUHI8I8J8BRWosKolqqpng51oNgY4BrU/1+IHoxcdKTJ0dkELx24yGUhmlHxx8K2qi64s=@vger.kernel.org, AJvYcCXxZlFt8CEbwAefOrCXJKVHo4eOye1ujCeW3q5967MwlDwqu52CRiKMRf2+cV85Gv+yfHYavE9ZVOu73oFUfM4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDoueJ9l0G2dSwPdZqiefPLHVOFDhuJLA4Ro4VYK+6vslL8Kgo
+	82X+ykfANtkBwFHPWznJlPcSUstxGgasxER5bRzUHrWpFcUjFffzQEqnU8toNKnYSY/RSFdbC5Q
+	V85NO8QdxIHb2kp/jXP5y4xKFzJI=
+X-Gm-Gg: ASbGncuX3Al/6T5vPcUv0+4a5i+OO/lJ3yqhKGrxkPGsj4Nhu7Fwr01G4Ej/VFzc1nC
+	owCNGZE/jNyJSv5bXOcOXku7yc+kN4NYjVMVTipZ8ja92LJNesfhmWytQqmVfuynd4HW6g8hrRy
+	lU93PLE3p163YfCSvT+1L3q+RGuw==
+X-Google-Smtp-Source: AGHT+IGzuyx2khrqmQFCRDY1W2460IMmx7kriW6qonWU83eNHoq7OKTDGi/ueoa/0kqUy6eJVU4vHkzvzMaSaBkRh5w=
+X-Received: by 2002:a17:903:22cb:b0:224:706:6d08 with SMTP id
+ d9443c01a7336-2243a1a8c3dmr1521965ad.8.1741364702839; Fri, 07 Mar 2025
+ 08:25:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250307124809.GL354511@nvidia.com>
+References: <Z8rz9nrY7Yj1Z2hP@google.com> <20250307154341.639752-1-trintaeoitogc@gmail.com>
+In-Reply-To: <20250307154341.639752-1-trintaeoitogc@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 7 Mar 2025 17:24:49 +0100
+X-Gm-Features: AQ5f1Jo8QelYZ4KKLF0a_EY0cI7Lh7m8PaLxO4oDgGsEPFCw_oy1bK-NcDg7AgI
+Message-ID: <CANiq72mWBrHpv9XYcBbVsJkhH9SzM9N4fcL2SqoNQ9X-4GiZbw@mail.gmail.com>
+Subject: Re: [PATCH V7 1/2] rust: module: change author to an array
+To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+Cc: aliceryhl@google.com, a.hindborg@kernel.org, alex.gaynor@gmail.com, 
+	apw@canonical.com, arnd@arndb.de, aswinunni01@gmail.com, axboe@kernel.dk, 
+	benno.lossin@proton.me, bhelgaas@google.com, bjorn3_gh@protonmail.com, 
+	boqun.feng@gmail.com, charmitro@posteo.net, dakr@kernel.org, 
+	dwaipayanray1@gmail.com, ethan.twardy@gmail.com, fujita.tomonori@gmail.com, 
+	gary@garyguo.net, gregkh@linuxfoundation.org, joe@perches.com, 
+	linux-kernel@vger.kernel.org, lukas.bulwahn@gmail.com, ojeda@kernel.org, 
+	pbonzini@redhat.com, rust-for-linux@vger.kernel.org, tmgross@umich.edu, 
+	walmeida@microsoft.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 07, 2025 at 08:48:09AM -0400, Jason Gunthorpe wrote:
-> On Fri, Mar 07, 2025 at 09:50:07AM +0100, Danilo Krummrich wrote:
-> > > The actual critical region extends into the HW itself, it is not
-> > > simple to model this with a pure SW construct of bracketing some
-> > > allocation. You need to bracket the *entire lifecycle* of the
-> > > dma_addr_t that has been returned and passed into HW, until the
-> > > dma_addr_t is removed from HW.
-> > 
-> > Devres callbacks run after remove(). It's the drivers job to stop operating the
-> > device latest in remove(). Which means that the design is correct.
-> 
-> It could be the drivers job to unmap the dma as well if you take that
-> logic.
+On Fri, Mar 7, 2025 at 4:43=E2=80=AFPM Guilherme Giacomo Simoes
+<trintaeoitogc@gmail.com> wrote:
+>
+> I'm sorry, I will pick up your tag and send a v8
+>
+> Too, I will pick up Charalampos and Andreas tags
 
-I really don't understand what you want: *You* brought up that the
-CoherentAllocation is not allowed to out-live driver unbind.
+In general, if it is the last version, you don't need to pick up tags
+-- maintainers will do that for you.
 
-We agreed and provided a way that solves this. But then you point out the
-unsolvable problem of malicious (or wrongly programmed) hardware and use it to
-question why we then even bother solving the problem you just pointed out, that
-is solvable.
+i.e. in this case, it would have been fine telling Alice that you
+didn't change anything (if that is the case -- is it?)
 
-So, what do you ask for?
+Thanks!
 
-> You still didn't answer the question, what is the critical region of
-> the DevRes for a dma_alloc_coherent() actually going to protect?
-
-Devres, just like in C, ensures that an object can't out-live driver unbind. The
-RCU read side critical section is to revoke access to the then invalid pointer
-of the object.
-
-C leaves you with an invalid pointer, whereas Rust revokes the access to the
-invalid pointer for safety reasons. The pointer is never written to, except for
-on driver unbind, hence RCU.
-
-We discussed all this in other threads already.
-
-> 
-> You also have to urgently fix the synchronize_rcu() repitition of you
-> plan to do this.
-
-I mentioned this a few days ago, and I did not forget it. :-)
-
-> 
-> > Now, you ask for a step further, i.e. make it that we can enforce that a driver
-> > actually stopped the device in remove().
-> 
-> So where do you draw the line on bugs Rust should prevent and bugs
-> Rust requires the programmer to fix?
-
-It should prevent all safety related bug, but the one above is impossible to
-solve, so we have to live with it. But that doesn't mean it's a justification to
-stop preventing bugs we can actually prevent? Do you disagree?
+Cheers,
+Miguel
