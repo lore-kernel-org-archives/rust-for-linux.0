@@ -1,92 +1,145 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-10629.protonmail.ch (mail-10629.protonmail.ch [79.135.106.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64E721A445
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Mar 2025 13:28:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CD0EBE
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Mar 2025 13:36:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741354138; cv=none; b=h1JlB0xEBzw0L/y81yGUBa16f1q7/2L8N/uv6O/QegL8ORouq4jtKW9V9c3cDaJXIQ1rqshYPh8UtqINZqKLwVC7BWo0XcJ/ik9y5/zxC0FkkxHgVBzK90bS6G44Ta3rJcT6O+p9kDe7fGaDQf8jpdbaa3Oqffc6QfrfMEiBkvU=
+	t=1741354571; cv=none; b=LutxOJFcD5a4h/qbJZmSkcnMsUHtz0D3mvvRU5ZfMElY/A+Bb7kbfqBRqG7SeX3p8tLUhAO5RaXU5oRDpVDmlEuAEQPT9eoanl9yAr5thgpaA4c10tkP8JFUWEF7bJBpafkRj2f10UJaE4d1kcWzemoVhS4znrot8qHdig8ne5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741354138; c=relaxed/simple;
-	bh=YxCQ6kdR5adGsv15vzWEQPTTfgV97hpbZ9PIyFx+sRM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=JF1iLEmLehh+cmA1Z50pd2Dn6DatfPbJgptIcZqBhpJSn2SR5Q9whi7PeF/mITC3GYw+2IJfgKq2r9HpT7+DElYYQM/UY8QA6KxgQ9TeKmN8nLqbJ18uYrTQ10ZkKBBJf4oUqKWtvt+7SZwSRQot8bCda/rcBqAq0CXEwQnBNHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ikoIT6YU; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1741354571; c=relaxed/simple;
+	bh=F6uVQQTg/GPMCJj3N1q6FQSFXPVccU7anjpvAebuj6E=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jiY/wpHfHPw6yRX4xqPwJK53wxA7h++2wzUhbNF1LYeWTfCMikrJFj9s3b6PbjNZeWxZRBJQqidOL+KzGDW0cg0fSI4aK/nY1LMh9HfIS0o/zbrvOQCIo81uQjCJvck0iVmm/A1+dNEsN2KSQ/pJOJqzKLo7QzIPgHxAwEjUWzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Lmx2LGQ6; arc=none smtp.client-ip=79.135.106.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ikoIT6YU"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43947979ce8so7642665e9.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 07 Mar 2025 05:28:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741354135; x=1741958935; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DaSUYCv28u5kM27Jf2rZMXFL3A073ykDib5L3uUcYRk=;
-        b=ikoIT6YUPFfyybGFctagFbVhR7xT96eGjw+jSgkqkW2piPgZWXwdNZxSTaj8sHpz/s
-         pklU/QZTOCeV7pUgmu8Q7cE8rckQ1Wpoc1mJD5HPo/d4gXPhFB5SKDJNcWtcHd/RZLzv
-         AtaIHI6Ns86AQLXMGqk02vSv89NjZqQ6mUkkKbrg/43WBekv/MeKKeWKREwE2v4ZbTT5
-         Edq4cSrQb8qsqMo3u+/DGAbThJvu/qRxk/X7SLcBT80/tXkC2fD7of0w/N3h7bn6z8PU
-         3vpp0SPXdcf6DqxYMDTsb159zLQnkY+dMzWuX3yN2eh10jpGpFFfSUh4uhM6DnZcNRlY
-         vbxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741354135; x=1741958935;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DaSUYCv28u5kM27Jf2rZMXFL3A073ykDib5L3uUcYRk=;
-        b=PtM/hX6fS93jTUn0zXtgaESD0dzP5sAgiU4hZCuyXZ35/u2pk4kySFFwgipI97nBq7
-         ueW/zXi1Xnyr4kBGhT12+zohAv5BTvW6Ludgyv+B97EPSuJJI4xowyHfa+wyBmO2qg6B
-         mh+M2cQRblT0N6iP/4LKaraLcy5RlfhFm0f1KYE39e30lYzCdxNjY8kGoobUf22om0JZ
-         tktiM3Qm/1vpAmtIowAdWFz5r668T/rnSJ8aD+2/HiyNqmLSutY84bluENPq6Mno/SA+
-         XGdLia5IbWyiTCnGqnlzSraA8+5sZq8ccuaOAo3eQUZoOhQgi7ODlUNX3/QC6kH7YyME
-         /0tw==
-X-Forwarded-Encrypted: i=1; AJvYcCUExD6vFPfPFgm2/TO3kkdXukjAlv4I4eOW2oc7Is/gneDlbAig44zhuEqmgE2b6wU5Pdk8YGcs13oqTw2muw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWgIJi6LakGoLO3mFqiecqNc8Bgw45wRWZyuVqY+I3cjm+Da9+
-	PEz/3uwn4wGJzHHYKrLJCc0jf+uuPtQ0qse4tniqiLNMs17kwdGGK04q3i9d2B8ldmNEmFoqCdr
-	JvoJL301oLUGdgA==
-X-Google-Smtp-Source: AGHT+IG4ECHvdmwgPyIQSaZ5+HPi/7aWLq7hvACfAUu4RqLYTA8eHahYvXtXtAibsfCtBioGyCBfjrr/9J4MUYw=
-X-Received: from wmsp16.prod.google.com ([2002:a05:600c:1d90:b0:43b:c59f:5eb4])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:198f:b0:434:f131:1e64 with SMTP id 5b1f17b1804b1-43c5a6009a6mr21557375e9.9.1741354135323;
- Fri, 07 Mar 2025 05:28:55 -0800 (PST)
-Date: Fri, 7 Mar 2025 13:28:53 +0000
-In-Reply-To: <CANiq72mYfhuRWkjomb1vOMMPOaxvdS6qjfVLAwxUw6ecdqyh2A@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Lmx2LGQ6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1741354567; x=1741613767;
+	bh=WMdWKpGLI1R6XKTpe2LuhfE8N9RSdBk03KBc2gXHbzQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=Lmx2LGQ6dMF0N1W8SRj2DkMiEgUuAIjBHhxEY1KHOnchNCpCH9t1b2WL1CjL6SmqA
+	 Zz6vRbFl423zuY0RIXRdgQOpGEmJ1f2YeT+k2vEU+zNH/UxO4lVDI9LFs0N4qtW0KH
+	 uVMiaq7rF+wke0k9Bb0RtRHSVoN3+Kjjq4SvJj5nGz2/cBjmdksF7x7lxXRVcH8d0Z
+	 Ziy8hyTjGItGBkAnacwwDfc4g3pL0jiJfmNW3+mvuPqidyK8iPzdOguSJ9S/2aTCDP
+	 d7VWTdQyrRDzZRLCHikaz1jHhJ2X5hAO29LDpBHPWFqI8Fl0fyqoJOV10aflFJrurT
+	 D1sa5nNUE0+hg==
+Date: Fri, 07 Mar 2025 13:36:00 +0000
+To: Andreas Hindborg <a.hindborg@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, Markus Elfring <Markus.Elfring@web.de>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v10 03/13] rust: hrtimer: implement `HrTimerPointer` for `Arc`
+Message-ID: <D8A2O5QBXCRI.18W3W0EDI3UXZ@proton.me>
+In-Reply-To: <87senp3r9b.fsf@kernel.org>
+References: <20250307-hrtimer-v3-v6-12-rc2-v10-0-0cf7e9491da4@kernel.org> <20250307-hrtimer-v3-v6-12-rc2-v10-3-0cf7e9491da4@kernel.org> <b-T-Yv_oexMXaKG9kNNfbYz-Qaw1XhJw-VHerSPFp_sIMoztNyAj94_rH-uNYeG-Hc5WANUivDJW9WLmfZZHwA==@protonmail.internalid> <D8A1Z043VPGR.2OBGSBH1ALUL6@proton.me> <87senp3r9b.fsf@kernel.org>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: a31afa1d5c64e2ce0e65e7ee2eb2795b8e6533f1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250307-unique-ref-v5-0-bffeb633277e@pm.me> <20250307-unique-ref-v5-4-bffeb633277e@pm.me>
- <CANiq72mYfhuRWkjomb1vOMMPOaxvdS6qjfVLAwxUw6ecdqyh2A@mail.gmail.com>
-Message-ID: <Z8r0lVu1iwc9GG2t@google.com>
-Subject: Re: [PATCH v5 4/4] rust: adding OwnableRefCounted and SimpleOwnableRefCounted
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Oliver Mangold <oliver.mangold@pm.me>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 07, 2025 at 02:16:32PM +0100, Miguel Ojeda wrote:
-> > +// TODO: enable this when compiler supports it (>=1.85)
-> > +// #[diagnostic::do_not_recommend]
-> 
-> I think (untested) we could conditionally enable this already and
-> remove the `TODO` with something like:
-> 
->     config RUSTC_HAS_DO_NOT_RECOMMEND
->         def_bool RUSTC_VERSION >= 108500
-> 
->     #[cfg_attr(CONFIG_RUSTC_HAS_DO_NOT_RECOMMEND, diagnostic::do_not_recommend)]
+On Fri Mar 7, 2025 at 2:27 PM CET, Andreas Hindborg wrote:
+> "Benno Lossin" <benno.lossin@proton.me> writes:
+>
+>> On Fri Mar 7, 2025 at 11:11 AM CET, Andreas Hindborg wrote:
+>>> +impl<T> HrTimerPointer for Arc<T>
+>>> +where
+>>> +    T: 'static,
+>>> +    T: Send + Sync,
+>>> +    T: HasHrTimer<T>,
+>>> +    T: for<'a> HrTimerCallback<Pointer<'a> =3D Self>,
+>>> +    Arc<T>: for<'a> RawHrTimerCallback<CallbackTarget<'a> =3D ArcBorro=
+w<'a, T>>,
+>>
+>> I don't understand why you need this bound here.
+>
+> This impl is applicable only when `Arc<T> has an implementation of
+> `RawTimerCallback` where CallbackTarget<'a> =3D ArcBorrow<'a, T>. I don't
+> want the impl to be available if that is not the case.
 
-It's only a warning on older compilers. We could just add this in
-lib.rs:
+The impl below has less strict other bounds than this one, so this bound
+doesn't change anything.
 
-#![allow(unknown_or_malformed_diagnostic_attributes)]
+> It's just an additional check.
 
-Alice
+To me it's just additional noise.
+
+>>> +{
+>>> +    type TimerHandle =3D ArcHrTimerHandle<T>;
+>>> +
+>>> +    fn start(self, expires: Ktime) -> ArcHrTimerHandle<T> {
+>>> +        // SAFETY:
+>>> +        //  - We keep `self` alive by wrapping it in a handle below.
+>>> +        //  - Since we generate the pointer passed to `start` from a v=
+alid
+>>> +        //    reference, it is a valid pointer.
+>>> +        unsafe { T::start(Arc::as_ptr(&self), expires) };
+>>> +        ArcHrTimerHandle { inner: self }
+>>> +    }
+>>> +}
+>>> +
+>>> +impl<T> RawHrTimerCallback for Arc<T>
+>>> +where
+>>> +    T: 'static,
+>>> +    T: HasHrTimer<T>,
+>>> +    T: for<'a> HrTimerCallback<Pointer<'a> =3D Self>,
+>>> +{
+>>> +    type CallbackTarget<'a> =3D ArcBorrow<'a, T>;
+>>> +
+>>> +    unsafe extern "C" fn run(ptr: *mut bindings::hrtimer) -> bindings:=
+:hrtimer_restart {
+>>> +        // `HrTimer` is `repr(C)`
+>>> +        let timer_ptr =3D ptr.cast::<super::HrTimer<T>>();
+>>> +
+>>> +        // SAFETY: By C API contract `ptr` is the pointer we passed wh=
+en
+>>> +        // queuing the timer, so it is a `HrTimer<T>` embedded in a `T=
+`.
+>>> +        let data_ptr =3D unsafe { T::timer_container_of(timer_ptr) };
+>>> +
+>>> +        // SAFETY: `data_ptr` points to the `T` that was used to queue=
+ the
+>>> +        // timer. This `T` is contained in an `Arc`.
+>>
+>> You're not justifying all safety requirements of `ArcBorrow::from_raw`.
+>
+> How is this:
+>
+>         // SAFETY:
+>         //  - `data_ptr` is derived form the pointer to the `T` that was =
+used to
+>         //    queue the timer.
+>         //  - The `ArcTimerHandle` associated with this timer is guarante=
+ed to
+>         //    be alive for the duration of the lifetime of `receiver`, so=
+ the
+
+There is no `receiver` in this context?
+
+Is the reason for the handle staying alive that when it is dropped, it
+calls `cancel` and that waits until the callback finishes? If so, did
+you write that down somewhere here?
+
+>         //    refcount of the underlying `Arc` is guaranteed to be nonzer=
+o for
+>         //    the duration.
+>         //  - We own one refcount in the `ArcTimerHandle` associted with =
+this
+>         //    timer, so it is not possible to get a `UniqueArc` to this
+>         //    allocation from other `Arc` clones.
+
+Otherwise this sounds good.
+
+---
+Cheers,
+Benno
+
