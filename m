@@ -1,195 +1,142 @@
-Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3095B28FF;
-	Fri,  7 Mar 2025 01:04:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE8F1A3142
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Mar 2025 07:23:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741309492; cv=none; b=f4/0rBMk4PX4xev9b2jdc+oB2DSbUpmh4F7BwdrOJwGa+i7jblr1NVDw+VBHbG42ZxOP70BbGJOCVpXjVrVt6ElJHYronf84KgDeJYe22bnGBxEUdfVLAQcT1AdLH+55fmnjssbGbZUC4aM8gVBBR9cryyEHsmXanYpqJVL2V40=
+	t=1741332207; cv=none; b=lNgGQohpq+f1OVp7A60VipoGxPkBFyc4ECa/XAZXwDHVOFqtN5rcffJOV8bLO+kwdsVjDYagXO79AnmFbRESIuu+fY/FvufHLOPy7gB0e+/iTEksa7u9t7Wlg/b5eQTaNktyLLVWLVTEIoZNxI9FSCYMouWxdEmm+bCo5eDzMSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741309492; c=relaxed/simple;
-	bh=oDrfQqiYXqiLn0JVeuGrsRgK5P6HmYH2KIyp8Qky3l8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cHNTmahksGO40wc4iEY7oN5Nuh4GeIoJue7XxX5aKhU4mqO5FSC2s6klgFxMitY65Dpg0l8hgG69M865hBUEmVAYSbGbOF+3V8+7z1iwPvgOjEZBlHy/3vvqR6qqO9Wq2orIhwgj5GH0Q/IhHrQUY352ErnbOw4KGJHJGqHT9jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sv3S7TzU; arc=none smtp.client-ip=209.85.221.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1741332207; c=relaxed/simple;
+	bh=QqafGuAhOIuebi5LncashDc9XDAZ2JG7WWMLwyg4leQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uBa7EFTY/hZouPODTQZ1Nb3alZqfYj0fbco0HRC2JUeJ7TytuDGGR+eJjKk7Ozml9X+617dUp3cmtPkp6c4yrQKK4sou8H4/Qq0aBYCimaPa1cGzAqRVKs7OGnNG5yntRPpccrFfHjJYFMKKS+iTEsghfy2V3cm2Rtv8+qR7gfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Y3vQW+Sa; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sv3S7TzU"
-Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-523dc3649edso384670e0c.0;
-        Thu, 06 Mar 2025 17:04:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Y3vQW+Sa"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-22398e09e39so26911735ad.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 06 Mar 2025 23:23:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741309490; x=1741914290; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FpgNsP0RsTTpLOpERJI2CJLUOC16l+9Hasgl+r3eevc=;
-        b=Sv3S7TzUlpMolCGk33QawcMxtKNbctN5ntahHoTZupguBRmyKStq7LoZt2QxG1WEZA
-         NGJaiqQh1MKp0x+U3F4m9H1klNathg/GU87K1+V2h+lDOzmRabfFiMoZg7ZcQo2hyW4b
-         a+ifR8SauPKW+g4FiuqNFCMUMmojZklMw4edDwWFyhoAapScO4OUw2u1ADS6KV7FHG0Y
-         I0jDTiDqIluyfjW+4dH86UAYdfeZAj+bLSJvJy4+25BRq6UYvMeUul3jltd+8s/oaGLS
-         K5JRIkhFeQCFPmJAttLDA0LBXmMVq+4jTvORlOXWXJiKJTRMvKlde2DSwo3KA1Vzgl3n
-         l8kA==
+        d=linaro.org; s=google; t=1741332205; x=1741937005; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=VCjDatYdwCCsM/WfG3Y3BLozY6pEAZzndrpXaKUoI/0=;
+        b=Y3vQW+SaJy/gHv6ZVcpj26Nz/nPLhjopvhJCzdQrwcq2voCbSuX4omSWT8qy7xAoU6
+         waEKUYLL6qLvXMNhc2pgzKAoT3Pa6ysytjhU0y77D7gcixTQlro4lqLgBXFxcLgMxM9X
+         T2/+Vm0Py0Is+em8EOeTL4zwUAeMMX6gSuiBc3VkbCHT/Mbj4NdmlkCPGT3eoDyJyPfg
+         cfI1r7SwWj87rjhLH0ylAMRoxLDdWIzztZ21+ZD/NISMBUfIxxhVgX4ruWHalnguGygF
+         p6d2jb+NkIyF8ibwdYKnfldV8GF71x4Yot1B8DRwm+g9ZAVabve/YWx7RBtZ6ZNYx2gz
+         fH9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741309490; x=1741914290;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FpgNsP0RsTTpLOpERJI2CJLUOC16l+9Hasgl+r3eevc=;
-        b=F4J2APvnxDvSyYhMX3xITMYmz1cjh911J0ZDMV/1NKqicactEOr7/J2hcdCh4LVKVH
-         iI4hudq7TKlbEG2EI4GnFAZQmV8zA5ANNbQ6/a/6UjC4Qsn+ZevXf+BDF1840bOYH/N/
-         EiEh3ntJE5gjBV6dRjMsHaf7FnmtD2FU8gYM6SAWUHvEvdq154DLQqVa4NWeSLyiIa8l
-         HpbWbNlqzCJNbgvZU9361Nqe7PG1I7cvJb7GuIVLKfwQ93M/z4czv8MAOeStJOGKVxoR
-         3eiVKKYhFTWCdf4Y5Os9HQmjuW4Okg1SV+E7pHNZeGPmHuXZN33MLKK/8O6XDexSxBG+
-         ecWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVjy5NiK5L1+GU5rR9LcgfUuI3O4RrvPe/DrRfu57wlzhIjAA4I42QonR40y6yye9qnNvPI+WxFx342+Q8lmBY=@vger.kernel.org, AJvYcCWHKZjFHCU8NpzAJX5o5SU/l2ipoMn+GKHBKHSaHa7Iu6pkx6HCjT+qvMFmCIHahdGgoK9oSxhxr5s=@vger.kernel.org, AJvYcCWpA/gxY1lwtlvkg2ip3hBjUJoM9kYs+Xtkhgu+jgOH5DKiUGcxsBetcFnFPRubIO1oepoCgOcesdvU@vger.kernel.org, AJvYcCXUW3ZC70C60UtKOCgrRtK2fBrIVWhDN4Gub7/ad4lWNOk9kI3IVguXcPYy9Mp7vDMN8i+u4bxDer68P2mB@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNTKgKKdUg5IxP/sm4mhXq3lOkMWUPpRGtMYjgiXrM0qkktRkR
-	hUo0z46vPWIUJ4anDcLuGeei7i1zrVtbdtXSFGoRRxHy3i+H2Y0CUJlHAGuhd05Qzd7QLmjKL1Z
-	/tYUgIzAy6E9hcTktp44eDP9K2es=
-X-Gm-Gg: ASbGncvWtN2BiuzHsGqFzYKKfYklVna+AJ5oT1oUOhHLoNSihWV2+1tuR+tfd8TubQB
-	C0RcSgBClojC521uWTmMGHYzT3md+3D2fkdD6B6H2AlWoJ1A0YTqJsd3c6rMDSM+nuUzW6MjsLD
-	kRQSjlu478ZZaMpTyD+bxgloA9FODQs5BugmYLWHwFFoX62kMq9lW6JCeJ
-X-Google-Smtp-Source: AGHT+IGbwmafUFC0g3M/wodTSstZb8EnCAH6b9gBxI+jfvUYZxWjuOY7Y5eVL2Cn7rIG2fpCOUE53vdi5hXO2D0kVEU=
-X-Received: by 2002:a05:6122:c86:b0:520:6773:e5bf with SMTP id
- 71dfb90a1353d-523e3ff02fcmr1565400e0c.1.1741309489887; Thu, 06 Mar 2025
- 17:04:49 -0800 (PST)
+        d=1e100.net; s=20230601; t=1741332205; x=1741937005;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VCjDatYdwCCsM/WfG3Y3BLozY6pEAZzndrpXaKUoI/0=;
+        b=QYEFNWO4GOmQMDLJXL98ekS8/88zq+2Cwti7jhy2khp1aE1/pIdgAre4+LWEiZtmmC
+         wznVOPlEVFi1f8A2srZdUGfO45DKJCza/cWV9uit5yrgF3E284egc1tzl16e8E/4pZqd
+         Z0kJUZV35aTSz48n83FMtPQgfafqRYwd/N+SzTLMFy4wNIWbd+xOwLWZ7vQBjVPI2bTS
+         eu+73gMcPOoyHT9RoUWL11OqJZvpDHk7R0slcPxYyS+5VPrbcEFVsdN6pZlOR03Ls/Hh
+         73qYB59SsYd/UQUq6V5MJ3tSwjO5simphZze0p1CNz8Zf9Votlie4jiWlRr/hUCTUlYq
+         Hafg==
+X-Forwarded-Encrypted: i=1; AJvYcCVUTZXCwReP1Z7NtN8K47S2KE9+oMKbe58Q5ZVXc0AbftSBpfU6vk1J2nUBw+kJ4OdqUuNTpHJSZd8lGco6MQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yza5xxSHw8iussxkRnnnr2VJG4sM9eYcBJ8oMwD2F8Z6f45Y1DD
+	s7iw93LpuY66PhAm2qoHAmVrfboD/S5yNGfkGSAhbNQsTPk/qkDyoV+gOizZzcI=
+X-Gm-Gg: ASbGncsqUsRLGNVS20xnvoKE9l4dGCoKUpEWCvSbh/y8fITcg4Vlpg3EhW4pBi88DSY
+	YVM0kKirnnKONFGvOaDtBhHLQd5PTaPnRDYPB6DgRYVO2wA/vA+HsN9bzUIr0g050IscTKCDxdB
+	Mu4MfXO+osnAuM5+647uBOjZ5sylAjBY2Abaw5T0FNgaP0xraUVCQnjXfs5LZY5F6s/qGYKezK0
+	ULmAPWcy/Jp+PE0X3/H1CDSlIRaZfj44yWNdcnRVkK5r+dqrymq9VY+k90+b6y+YAHQHjBGB0QJ
+	G8cEf4yDf0VX20uWZ+/guFPwc9DKIgShVpudMFu2DkOdUQ==
+X-Google-Smtp-Source: AGHT+IGAtNyb2kEEWj4EBD2NQHNijL6RTt39L6X5JPOWRj3HjNXnhSpRkQZgMznJ39lNF6si/KC6VQ==
+X-Received: by 2002:a17:903:192:b0:224:1ec0:8a16 with SMTP id d9443c01a7336-22428a97f21mr36812615ad.21.1741332205491;
+        Thu, 06 Mar 2025 23:23:25 -0800 (PST)
+Received: from localhost ([122.172.84.15])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-224109df225sm23794445ad.47.2025.03.06.23.23.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Mar 2025 23:23:24 -0800 (PST)
+Date: Fri, 7 Mar 2025 12:53:22 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Stephen Boyd <sboyd@kernel.org>
+Cc: Michael Turquette <mturquette@baylibre.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Russell King <linux@armlinux.org.uk>, linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>
+Subject: Re: [PATCH V3 2/2] rust: Add initial clk abstractions
+Message-ID: <20250307072322.5w2i7dxtcaani2ok@vireshk-i7>
+References: <cover.1740995194.git.viresh.kumar@linaro.org>
+ <023e3061cc164087b9079a9f6cb7e9fbf286794e.1740995194.git.viresh.kumar@linaro.org>
+ <CANiq72kdWzFOZ39EoFNxEAbk4KYgzLi1OAEc1zn8BM07VpXy3g@mail.gmail.com>
+ <20250304085351.inrvjgixvxla4yn3@vireshk-i7>
+ <CANiq72=sU1sHvamC5REFPEC1aOVdZw9EKdxOgkUYESTR2yh3iQ@mail.gmail.com>
+ <20250305114659.k5pptszvmusblynm@vireshk-i7>
+ <2c17361891c4eb7edd947e5384cc9741.sboyd@kernel.org>
+ <20250306044028.5d2w4og2juclktqs@vireshk-i7>
+ <1ad3e7e2f8f2fc375b472d7676e47f5d.sboyd@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250227030952.2319050-1-alistair@alistair23.me>
- <20250227030952.2319050-10-alistair@alistair23.me> <2025022717-dictate-cortex-5c05@gregkh>
- <CAH5fLgiQAdZMUEBsWS0v1M4xX+1Y5mzE3nBHduzzk+rG0ueskg@mail.gmail.com>
- <2025022752-pureblood-renovator-84a8@gregkh> <CANiq72kS8=1R-0yoGP5wwNT2XKSwofjfvXMk2qLZkO9z_QQzXg@mail.gmail.com>
- <2025022749-gummy-survivor-c03a@gregkh> <CAKmqyKNei==TWCFASFvBC48g_DsFwncmO=KYH_i9JrpFmeRu+w@mail.gmail.com>
- <67c8abffd2deb_1a7f294d5@dwillia2-xfh.jf.intel.com.notmuch>
-In-Reply-To: <67c8abffd2deb_1a7f294d5@dwillia2-xfh.jf.intel.com.notmuch>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 7 Mar 2025 11:04:23 +1000
-X-Gm-Features: AQ5f1JqcTJhjy1IWJHBHvzqfhRy4UX4pT0bM7wOi79bttO_uR-yCHqTUQrbxBnM
-Message-ID: <CAKmqyKORk5n_b2DUDfCVmttE4T+S-LQvcp0NoQD_O7D-csdEvA@mail.gmail.com>
-Subject: Re: [RFC v2 09/20] PCI/CMA: Expose in sysfs whether devices are authenticated
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Alistair Francis <alistair@alistair23.me>, linux-cxl@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, lukas@wunner.de, linux-pci@vger.kernel.org, 
-	bhelgaas@google.com, Jonathan.Cameron@huawei.com, 
-	rust-for-linux@vger.kernel.org, akpm@linux-foundation.org, 
-	boqun.feng@gmail.com, bjorn3_gh@protonmail.com, wilfred.mallawa@wdc.com, 
-	ojeda@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, gary@garyguo.net, 
-	alex.gaynor@gmail.com, benno.lossin@proton.me, 
-	Alistair Francis <alistair.francis@wdc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1ad3e7e2f8f2fc375b472d7676e47f5d.sboyd@kernel.org>
 
-On Thu, Mar 6, 2025 at 5:55=E2=80=AFAM Dan Williams <dan.j.williams@intel.c=
-om> wrote:
->
-> Alistair Francis wrote:
-> > On Fri, Feb 28, 2025 at 5:33=E2=80=AFAM Greg KH <gregkh@linuxfoundation=
-.org> wrote:
-> > >
-> > > On Thu, Feb 27, 2025 at 05:45:02PM +0100, Miguel Ojeda wrote:
-> > > > On Thu, Feb 27, 2025 at 1:01=E2=80=AFPM Greg KH <gregkh@linuxfounda=
-tion.org> wrote:
-> > > > >
-> > > > > Sorry, you are right, it does, and of course it happens (otherwis=
-e how
-> > > > > would bindings work), but for small functions like this, how is t=
-he C
-> > > > > code kept in sync with the rust side?  Where is the .h file that =
-C
-> > > > > should include?
-> >
-> > This I can address with something like Alice mentioned earlier to
-> > ensure the C and Rust functions stay in sync.
-> >
-> > > >
-> > > > What you were probably remembering is that it still needs to be
-> > > > justified, i.e. we don't want to generally/freely start replacing
-> > > > "individual functions" and doing FFI both ways everywhere, i.e. the
-> > > > goal is to build safe abstractions wherever possible.
-> > >
-> > > Ah, ok, that's what I was remembering.
-> > >
-> > > Anyway, the "pass a void blob from C into rust" that this patch is do=
-ing
-> > > feels really odd to me, and hard to verify it is "safe" at a simple
-> > > glance.
-> >
-> > I agree, it's a bit odd. Ideally I would like to use a sysfs binding,
-> > but there isn't one today.
-> >
-> > I had a quick look and a Rust sysfs binding implementation seems like
-> > a lot of work, which I wasn't convinced I wanted to invest in for this
-> > series. This is only a single sysfs attribute and I didn't want to
-> > slow down this series on a whole sysfs Rust implementation.
-> >
-> > If this approach isn't ok for now, I will just drop the sysfs changes
-> > from the series so the SPDM implementation doesn't stall on sysfs
-> > changes. Then come back to the sysfs attributes in the future.
->
-> This highlights a concern I have about what this means for ongoing
-> collaboration between this native PCI device-authentication (CMA)
-> enabling and the platform TEE Security Manager (TSM) based
-> device-security enabling.
->
-> First, I think Rust for a security protocol like SPDM makes a lot of
-> sense. However, I have also been anticipating overlap between the ABIs
-> for conveying security collateral like measurements, transcripts, nonces
-> etc between PCI CMA and PCI TSM. I.e. potential opportunities to
-> refactor SPDM core helpers for reuse. A language barrier and an ABI
-> barrier (missing Rust integrations for sysfs and netlink ABIs that were
-> discussed at Plumbers) limits that potential collaboration.
+On 06-03-25, 12:58, Stephen Boyd wrote:
+> Quoting Viresh Kumar (2025-03-05 20:40:28)
+> > 2. clk is enabled / disabled from different routines:
+> > 
+> >    In this case the caller needs to call dismiss to avoid the automatic freeing
+> >    of resource. Alternatively the returned value can be stored too somewhere,
+> >    but I am not sure if it what users will end up doing.
+> > 
+> >    fn probe(...) -> Result {
+> >         clk.enable()?.dismiss();
+> 
+> Yuck. Can't we tie the lifetime of the clk to the consumer device driver
+> so that when the driver is unbound the clk is dropped
 
-I see your concern, but I'm not sure it's as bad as you think.
+Yes, that is how it would work right now, the driver needs to store the clk
+instance locally. As soon as Clk would be dropped, clk_put() will be called.
 
-We will need to expose the Rust code to C no matter what. The CMA,
-NVMe, SATA and SAS is all C code, so the Rust library will have a nice
-C style ABI to allow those subsystems to call the code.
+> and it decrements all the enables/prepares and puts the clk with clk_put()?
 
-The sysfs issue is mostly because I am trying to write as much of the
-sysfs code in Rust, but there aren't bindings yet.
+Miguel, how do you suggest we do this ?
 
-So if we want to re-use code (such as measurements, transcripts or
-nonces) we just need to expose a C style function in Rust which can
-then can then be used.
+> A ScopeGuard could probably be used for that on the struct Clk itself,
 
-So I don't think this really limits code re-use. Obviously there might
-need to be some refactoring to share the code, but that will be true
-of C or Rust code.
+Not sure if I misunderstood that, but as soon as Clk goes out of scope,
+clk_put() will be called from drop() anyway.
 
->
-> Now if you told me the C SPDM work will continue and the Rust SPDM
-> implementation will follow in behind until this space settles down in a
-> year or so, great. I am not sure it works the other way, drop the C
+> but we would
+> want to track the enables and prepares in the rust wrapper code until
+> the struct clk can be inspected directly.
 
-That was kind of my original plan (see the first RFC), but maintaining
-both, with at least one being out of tree, will be a huge pain and
-prone to breakage.
+So Rust abstraction needs to do some sort of refcounting for this I believe. Not
+sure if we want to do it and if yes, then how.
 
-Also I suspect the Rust implementation will struggle to keep up if the
-C version is merged (and hence has more people looking at it) compared
-to just me working on the Rust code.
+> The problem is we don't know how a platform may implement the clk API,
+> and CCF hasn't taken over the entire kernel yet so we can't rely on some
+> private API between the CCF and the rust wrapper to know how many
+> clk_disable()s to call, or even rely on clk_put() to do the work for us.
+> Can the rust wrappers depend on CONFIG_COMMON_CLK? If they did then we
+> could have some private API between rust and CCF. We probably don't want
+> rust code to _not_ use COMMON_CLK underneath so we can encourage the
+> last few holdouts to migrate to CCF. I'd lean towards depending on
+> COMMON_CLK for the rust wrappers in this case.
 
-> side, when the Rust side is not ready / able to invest in some ABI
-> integrations that C consumers need.
->
-> Otherwise this thread seems to be suggesting that people like me need to
-> accelerate nascent cross C / Rust refactoring skills, or lean on Rust
-> folks to care about that refactoring work.
+Sure.
 
-I'm happy to help maintain the C / Rust code and help refactor as
-required. The current ABI to this library is all "C style" Rust to
-keep it simple and easily compatible with the out of tree C SPDM
-implementation and callers of the code.
-
-So hopefully it doesn't require much Rust knowledge to refactor the ABI.
-
-This is the type of feedback that I wanted to get though. Before this
-goes too far is it something that is going to be accepted upstream?
-
-Alistair
+-- 
+viresh
