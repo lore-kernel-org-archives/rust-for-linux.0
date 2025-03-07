@@ -1,63 +1,200 @@
-Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FBE20F068
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Mar 2025 13:04:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.77.79.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A08192B77
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Mar 2025 13:09:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741352660; cv=none; b=CmPd+x/a+BhK9HTtUAbsyuuiDbzRcsbgh7p3Rl5ztKC0df6u0To3U9RzGh3Aib4xhPEzZVPjiiPvlg3StT8ZjzK+eP9GiwgHY+qwP7qs23F0S0Mid8UoPDasA4QKq6siTaRipyNiaoC21mPUzYGnZ78zuYKZQ0duheZ8mcHJ43A=
+	t=1741352958; cv=none; b=o9v5p9eccYDRCYyZBMyJY7MJ6xQqcHfoUWE89ubbb3CryJqXyunFbuXjI2xGpvsoXR2BkvcodYQqv5vXWzPntuBSAWuo6/wc92Pxeru60fWVjMfpFEczfnsvMS3a9q78v/COTfci6qh6hFRv87KF3qcl3sDHwde+TOulF6sLLAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741352660; c=relaxed/simple;
-	bh=O3znw3OW7PfvT2i8qnYHvMTfqKEg0jBN/R90NfP1mzg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b8FKNgpfcd/sqsATV4v5h+OJMbxylQOEDKwdyq7L6xAwBaw/dbD5xnO7h5D/y6E0ZiDrjFiMtwMhi2x7pMNaYnk3yMafvvGjaStPo1nfzvNdmHvBVVxmKb0VHX/YoBefjnBxcrU0i5l7ar+begsMg70DGGjEUY+SoZdzKEFXEYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Pre9mGPW; arc=none smtp.client-ip=51.77.79.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1741352958; c=relaxed/simple;
+	bh=b/c+EwYUHehXR7B1azTRJ4LvPuPfsGVQQ98vVvUU8KI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MHqxYJoP/pQNijBAABcB1yweqtDFdJMfsRbmzWHqwMChx7Hx7zE0ioBZyqW85gzkMM3SwplrRag0kc3jSunuWStohNVkkvjvZIDmlkz8o7edKfAmBGbZks/1QDrDHVPqkzwz6OnwR2KEPiPF1HV+Pw7eOxckLsLqPYSiUT3g2WI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=hDdyBC3G; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Pre9mGPW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1741352643; x=1741611843;
-	bh=O3znw3OW7PfvT2i8qnYHvMTfqKEg0jBN/R90NfP1mzg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=Pre9mGPW6jXzh5kewqv1ghkYS61s4+MJiGm6fYjSo7CfxcKYPyXqNxBjDLQJrUj7m
-	 fKrIYI+Qf2rfiu8EnbKkHjK7aY28ZT4CfafEhXnbvt/kTfMJ49YAHUVDTJwTy5kBC+
-	 dUOEiTSY+cEEO+3IozcS/HJSK6UHGwo8QG/T8uNn+YZlwM1VLZDUqhCkI1aTNcJwyA
-	 z3EyTJ3hhm3T/8IbQJ/QaCuh+EICCyecCfjp+o3a1v8fszmiadRJbTigKlQDbIeOfg
-	 SjsKFh2tqWt9Od9IDujsBbewYakoaWWQ3ktTDOjqEHJOpBfEpERBdUN5pf6Bu2qj2Y
-	 Zq7FR95U1YEkQ==
-Date: Fri, 07 Mar 2025 13:03:56 +0000
-To: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Danilo Krummrich <dakr@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, Markus Elfring <Markus.Elfring@web.de>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v10 04/13] rust: hrtimer: allow timer restart from timer handler
-Message-ID: <D8A1ZMOY432V.2L7MRU9C1OU5K@proton.me>
-In-Reply-To: <20250307-hrtimer-v3-v6-12-rc2-v10-4-0cf7e9491da4@kernel.org>
-References: <20250307-hrtimer-v3-v6-12-rc2-v10-0-0cf7e9491da4@kernel.org> <20250307-hrtimer-v3-v6-12-rc2-v10-4-0cf7e9491da4@kernel.org>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: aeefb518fd1d19f06e6cd8491e3ddb433fb5eaba
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="hDdyBC3G"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-391342fc0b5so897444f8f.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 07 Mar 2025 05:09:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google; t=1741352955; x=1741957755; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fLXbK1kB32hdkos1OXYsIkc5qxoXTv1ZW+nI08u1/9M=;
+        b=hDdyBC3GnngCcTiqKIWlXvHtJr6oFMxs0w7+XF9Ej962ECGzRbyN4x9sQD7SSXxtHi
+         oHYpG5VwYhYOQsMH/RcYHaGz9+n2hXavCj++w8mlr6kqc2Y62MtmW/A4DmXnIJAaA0Rx
+         IcH3T+JtiWhwlYeSIBSnskR11qjY5xQ+rtZ9s=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741352955; x=1741957755;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fLXbK1kB32hdkos1OXYsIkc5qxoXTv1ZW+nI08u1/9M=;
+        b=Hzlu1Z+QBydgKPDmRl4T1QznKnOa+6U+Q8+nkLkYgksAppgIcCO9y3Lh0kYfd37Eb9
+         3mdjLG1yZvPbdFRXyAcAnsB75JHwetJ7jRlo1uE5caZ2vwvhZqTDjY+VN0azMxkW/Cv7
+         zZhhtNUE1EMCktF6a2gcLZ3gZGdHZxhrdjt+V22zg3ZCZrpKJUOuzp5RPzLlR2EJjNw6
+         wjpW8KCGdxMbDauQjUe6W7mXuKRI5sG5F6wxM5VPOyq2ex7cHPlzyEsKJnoDTa9+Ky8c
+         xKiNK34tUHbNkuXkgt5yyPdq6ub5DiPxdlnIdQB4g7g+RN0TTvXw4oVO8v72gt9PD/lZ
+         4MgA==
+X-Forwarded-Encrypted: i=1; AJvYcCXaMNRRGEXEHFL9Pu4f6osORm8TTmMGIAItMggdyJFkvcqmOTGmr/Km0CVlk0y0dDJYGwxb1UczGpFkKaHGjQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvzPhiZ6nHsHF+Yml1iJtio0iDAcJ7N2+xkPrynekIcR6K75mv
+	xj2tyxVWv/gLBENGad51pup7/gdVXc5sYwCxKTM2UPswxESpFFyYVt2J6F6uXPs=
+X-Gm-Gg: ASbGncvtlktnz63E8SLAeArHwQsUDFW4E9w8SN7dCpwl+hLXQwd+y0RWDwLBECvk90U
+	N7m1Mjz2OFX5RXK4QbolQz4cg3UWqhj0SkzlMWe/GS6lyQxj5C6iDY3hE3KWjUr8JRXxRNk14YD
+	1kM82enHcCjWmNb8Pp4UqRtVWuxQWDn1oWctS1grUDZmBidsRF87ZspvNpSj8uG8DwjUkGA3QuM
+	cw8uErwMmqBioN9pqMAE2aRawKNNIMPPlk1rigiTI/SiNuCs81AqTKWa4OddrcYQ7Kp+0Qwr9Y6
+	G+uogrOVrlS//U0zukX+IY2DN1aksku7i7QyT18sWNqDfVpaVkFFceTw
+X-Google-Smtp-Source: AGHT+IGXKnB7QtBKk8gCa+TlzYNbGzQEnm9bXI6Rnch3Ew5gX/H5UMUN/1g1KPRfZAkAjvrureRPLg==
+X-Received: by 2002:a5d:6c63:0:b0:390:f0f3:138a with SMTP id ffacd0b85a97d-39132d5b4bfmr3104340f8f.27.1741352954934;
+        Fri, 07 Mar 2025 05:09:14 -0800 (PST)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912bfdfcb8sm5384143f8f.33.2025.03.07.05.09.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Mar 2025 05:09:14 -0800 (PST)
+Date: Fri, 7 Mar 2025 14:09:12 +0100
+From: Simona Vetter <simona.vetter@ffwll.ch>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Ben Skeggs <bskeggs@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	paulmck@kernel.org
+Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
+ implementation
+Message-ID: <Z8rv-DQuGdxye28N@phenom.ffwll.local>
+Mail-Followup-To: Jason Gunthorpe <jgg@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Ben Skeggs <bskeggs@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	paulmck@kernel.org
+References: <Z8GViQzZJVFPxfNd@phenom.ffwll.local>
+ <20250228184013.GF39591@nvidia.com>
+ <Z8cmBWB8rl97-zSG@phenom.ffwll.local>
+ <20250304164201.GN133783@nvidia.com>
+ <Z8f9mgD4LUJN_dWw@phenom.ffwll.local>
+ <20250305151012.GW133783@nvidia.com>
+ <Z8l8HgZOV7sDWqBh@phenom.ffwll.local>
+ <20250306153236.GE354511@nvidia.com>
+ <Z8rKVZolu8n6lB1P@phenom.ffwll.local>
+ <20250307123255.GK354511@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250307123255.GK354511@nvidia.com>
+X-Operating-System: Linux phenom 6.12.11-amd64 
 
-On Fri Mar 7, 2025 at 11:11 AM CET, Andreas Hindborg wrote:
-> Allow timer handlers to report that they want a timer to be restarted aft=
-er
-> the timer handler has finished executing.
->
-> Acked-by: Frederic Weisbecker <frederic@kernel.org>
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+On Fri, Mar 07, 2025 at 08:32:55AM -0400, Jason Gunthorpe wrote:
+> On Fri, Mar 07, 2025 at 11:28:37AM +0100, Simona Vetter wrote:
+> 
+> > > I wouldn't say it is wrong. It is still the correct thing to do, and
+> > > following down the normal cleanup paths is a good way to ensure the
+> > > special case doesn't have bugs. The primary difference is you want to
+> > > understand the device is dead and stop waiting on it faster. Drivers
+> > > need to consider these things anyhow if they want resiliency against
+> > > device crashes, PCI link wobbles and so on that don't involve
+> > > remove().
+> > 
+> > Might need to revisit that discussion, but Greg didn't like when we asked
+> > for a pci helper to check whether the device is physically gone (at least
+> > per the driver model). Hacking that in drivers is doable, but feels
+> > icky.
+> 
+> I think Greg is right here, the driver model has less knowledge than
+> the driver if the device is alive.
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Maybe I misremember, but iirc he was fairly fundamentally opposed to
+trying to guess whether the hw is gone or not in the ->remove callback.
+But maybe that's more from the usb world, where all the hotremove race
+conditions are handled in the subsystem and you only have to deal with
+errno from calling into usb functions and unwind. So much, much easier
+situation.
 
----
-Cheers,
-Benno
+> The resiliency/fast-failure issue is not just isolated to having
+> observed a proper hot-unplug, but there are many classes of failure
+> that cause the device HW to malfunction that a robust driver can
+> detect and recover from. mlx5 attempts to do this for instance.
+> 
+> It turns out when you deploy clusters with 800,000 NICs in them there
+> are weird HW fails constantly and you have to be resilient on the SW
+> side and try to recover from them when possible.
+> 
+> So I'd say checking for a -1 read return on PCI is a sufficient
+> technique for the driver to use to understand if it's device is still
+> present. mlx5 devices further have an interactive register operation
+> "health check" that proves the device and it's PCI path is alive.
+> 
+> Failing health checks trigger recovery, which shoot downs sleeps,
+> cleanly destroys stuff, resets the device, and starts running
+> again. IIRC this is actually done with a rdma hot unplug/plug sequence
+> autonomously executed inside the driver.
+> 
+> A driver can do a health check immediately in remove() and make a
+> decision if the device is alive or not to speed up removal in the
+> hostile hot unplug case.
 
+Hm ... I guess when you get an all -1 read you check with a specific
+register to make sure it's not a false positive? Since for some registers
+that's a valid value.
+
+But yeah maybe this approach is more solid. The current C approach we have
+with an srcu revoceable section is definitely a least worse attempt from a
+very, very bad starting point.
+
+I think maybe we should also have two levels here:
+
+- Ideal driver design, probably what you've outlined above. This will need
+  some hw/driver specific thought to get the optimal design most likely.
+  This part is probably more bus and subsystem specific best practices
+  documentation than things we enforce with the rust abstractions.
+
+- The "at least we don't blow up with memory safety issues" bare minimum
+  that the rust abstractions should guarantee. So revocable and friends.
+
+And I think the latter safety fallback does not prevent you from doing the
+full fancy design, e.g. for revocable resources that only happens after
+your explicitly-coded ->remove() callback has finished. Which means you
+still have full access to the hw like anywhere else.
+
+Does this sounds like a possible conclusion of this thread, or do we need
+to keep digging?
+
+Also now that I look at this problem as a two-level issue, I think drm is
+actually a lot better than what I explained. If you clean up driver state
+properly in ->remove (or as stack automatic cleanup functions that run
+before all the mmio/irq/whatever stuff disappears), then we are largely
+there already with being able to fully quiescent driver state enough to
+make sure no new requests can sneak in. As an example
+drm_atomic_helper_shutdown does a full kernel modesetting commit across
+all resources, which guarantees that all preceeding in-flight commits have
+finished (or timed out, we should probably be a bit smarter on this so the
+timeouts are shorter when the hw is gone for good). And if you do that
+after drm_dev_unplug then nothing new should have been able to sneak in I
+think, at least conceptually. In practice we might have a bunch of funny
+races that are worth plugging I guess.
+
+Cheers, Sima
+-- 
+Simona Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
