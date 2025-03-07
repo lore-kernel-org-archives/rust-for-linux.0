@@ -1,94 +1,133 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B17120E00D
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Mar 2025 13:26:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9792022EE5;
+	Fri,  7 Mar 2025 13:27:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741353981; cv=none; b=CJlJUocoZv7AReQmexF0q4c4ziuHJKc90rHNHpCAtE2bvPNzq46lF/0j8gLzp1O4fWVZZdIc4I89L72l//vs+yu93duXT7GnS/p2Wz8SrMdoxPOjXz6rBA4hSxLj1u+enpWiTj02lcBOlXamKQpJIcoDVSGB6AQmLW85/K5Isjw=
+	t=1741354057; cv=none; b=QOQg8WoR13KznI6XROFVMrklU5EWJ2dOZ7muF1wFof5l4E94Q3vbQ4yEGtSlM1XD/twgbKtEVsNA2AyRuu3CcacrWrI9nCuowV9eNBgWQZWVYqPUYQzOm5DmbN0v0xAP7Pv90qgn/TM3ptG3ZAgg9N4aFDf5ldGzInIHDVf4d+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741353981; c=relaxed/simple;
-	bh=i/Nd47neKspIbrpCGTysdhYwJN/jpzlkct1vJ8I0ugw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Pyv05sSe7UGKXe3f2LuLXeBFafS/6umsxjNh11VM717cIa7HwnfPoC0Yq1/7vviokatBvBq9WPbCNV9+yrO1/Z7KlXJn9wdnUK+ORqjWp2o3Yedex3vzPIBzufByzpCHGkqgjDdY+qxsDsWht4oAlE0YswGf0lBSqeHUSXFmTbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lMDNUjQH; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1741354057; c=relaxed/simple;
+	bh=+1BxnVPnlbnWFOP/941TLdbyOO8GpUZPJukzn1Ej/VE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=sNlmMLjPkF7T9WvDAlCSIwiHc8Jp7jrfZhB3KRRCb7eCs73eugGERaCaIY1cINADTxslYs0BqCbSXMsDbV/4fBbeAIN3bliJAybsl2AgkY9EyNc/syfEefWsHy8OiVtgWHbYeG5Uworb/cR5a/wV2bjhVJdeK8qBsAzu6ZedkqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=guCNpJzf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lMDNUjQH"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43ce245c5acso634475e9.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 07 Mar 2025 05:26:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741353978; x=1741958778; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=sK8tKr89R3hEy8Nz4X9L555xpgSDTxpTa0yPlA5H/0k=;
-        b=lMDNUjQH/kpEAmmjdYvFYDqkRbM1NIrQlcR5+e5MqHsQljPYfXE3MkRYx/ISzTy5+v
-         vmpWGlpyfdkKwZSlwO+CISTc/NcXSixYw5s9G8cU/BDH9a9toYOk2NxOQLXcGroP9sc0
-         fy/1bx/3cvjMD7X0dTMeM+0dnNsDPiP7XCwW8qv/1JfT0RTVj/MJ22sg71nBUM93V4sy
-         dxZfl2BRnDOyJTQW6RsZ4uxhZgqOJYpqIrfPVHVXh9LKpcbKOEa+7AaF2owx/l0ELvfd
-         pScMDbLPPO8XOCk0VF7/4x4EFsrqfX5Bk6RhyG1lLpFlMc9CW4LwDNvHBhE4tGjLC+mZ
-         e7uA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741353978; x=1741958778;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sK8tKr89R3hEy8Nz4X9L555xpgSDTxpTa0yPlA5H/0k=;
-        b=miqNbzM1m4AiFLgBSU04BDc0ystpV46ANqe2dIBP+1w+MXr1Ck8OUu4bavmV8HrWKS
-         RD2/dnrF/cvR6ebZtgERlZNneUnj2K//rRHtCOBnQZ1iRtC0iDH4VJnwZ6XKjCQc57oe
-         l08XlxCGebtwa1Jovh0nAmhhgZwUH1XfTGPgRaptIGdtlrql6Atk9/pcCsBQ4P8raVZD
-         EBoHMW6nf7olDzCG2jpSrsJ24aU4to5SvAMyLAYEUVWMlOaxljMGhmqfiEq1VtuysosX
-         QboOciV4Lz3G9FlicSG7r319OdGaEEAfxcs8ljS6UNmYIvBt6O3La1b131x14JIbKzgt
-         Jj7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUlP0ABHLKHhJfUi1AUOyAo1OrjzZOu20ex7dvnCpfUObg5dXWZri0N6TMk+You5htipuYbyaFF/HRZXF+sOw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzE0faC3IEoZZMjF6S/5kdq64brXlEzRPLyxhFB5CCNNN4CvUNU
-	7YlvuE5GVX0DwHMUJ0z9BqtQ8smOE+2n7xCdYxaW7WIiW6b/kLOlxDY9MvhBtK0Rope2kyPCdUw
-	VwwYlhMG+BW85tw==
-X-Google-Smtp-Source: AGHT+IHD2hPdViwRHmZBv75Fs8RZCsKFOeBeHbYroGDlwM5dRIq4MeJ+VqXbFaA1Sy6Oi5WcvmL7+mxRBt3lsKs=
-X-Received: from wmbfl19.prod.google.com ([2002:a05:600c:b93:b0:43b:cfc3:aabb])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4750:b0:439:9828:c434 with SMTP id 5b1f17b1804b1-43c60ae9832mr21207035e9.20.1741353977854;
- Fri, 07 Mar 2025 05:26:17 -0800 (PST)
-Date: Fri, 7 Mar 2025 13:26:14 +0000
-In-Reply-To: <20250307131401.638820-2-trintaeoitogc@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="guCNpJzf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B792CC4CED1;
+	Fri,  7 Mar 2025 13:27:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741354057;
+	bh=+1BxnVPnlbnWFOP/941TLdbyOO8GpUZPJukzn1Ej/VE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=guCNpJzfg3ekr8SJ9IRY8SoonhzlS6nHWYm278SjVHI51tLfCrFUXaNYMYnX79jbf
+	 uzG6vDkvKKilibUoGHGDRV/q2XCpg27O5QAjwAy6dHR/4EF2QWaMOpKa3C0Jn77c9H
+	 k5qv8JfwgX+7xFAeeAkSz266ROI1HdmckM392j4bZRF46smEwGreMpI2QeMdp0lh+m
+	 d92q8VErSQUhJYXk104FeRLhAcv/qclUuelYdK6TbUdaCRBgMWzWdViAFLGQXvNIpS
+	 LuW7BpjbGfOHDStUlGxkaPMVTE20NEF3Wjqhyh/3lcuEgFo2zLN5LEZTCI9PKEIIKB
+	 3JRvJ0OkdITGg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Benno Lossin" <benno.lossin@proton.me>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Anna-Maria Behnsen"
+ <anna-maria@linutronix.de>,  "Frederic Weisbecker" <frederic@kernel.org>,
+  "Thomas Gleixner" <tglx@linutronix.de>,  "Danilo Krummrich"
+ <dakr@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
+ <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
+ =?utf-8?Q?=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor
+ Gross" <tmgross@umich.edu>,  "Lyude Paul" <lyude@redhat.com>,  "Guangbo
+ Cui" <2407018371@qq.com>,  "Dirk Behme" <dirk.behme@gmail.com>,  "Daniel
+ Almeida" <daniel.almeida@collabora.com>,  "Tamir Duberstein"
+ <tamird@gmail.com>,  "Markus Elfring" <Markus.Elfring@web.de>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v10 03/13] rust: hrtimer: implement `HrTimerPointer` for
+ `Arc`
+In-Reply-To: <D8A1Z043VPGR.2OBGSBH1ALUL6@proton.me> (Benno Lossin's message of
+	"Fri, 07 Mar 2025 13:03:06 +0000")
+References: <20250307-hrtimer-v3-v6-12-rc2-v10-0-0cf7e9491da4@kernel.org>
+	<20250307-hrtimer-v3-v6-12-rc2-v10-3-0cf7e9491da4@kernel.org>
+	<b-T-Yv_oexMXaKG9kNNfbYz-Qaw1XhJw-VHerSPFp_sIMoztNyAj94_rH-uNYeG-Hc5WANUivDJW9WLmfZZHwA==@protonmail.internalid>
+	<D8A1Z043VPGR.2OBGSBH1ALUL6@proton.me>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Fri, 07 Mar 2025 14:27:28 +0100
+Message-ID: <87senp3r9b.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250307131401.638820-1-trintaeoitogc@gmail.com> <20250307131401.638820-2-trintaeoitogc@gmail.com>
-Message-ID: <Z8rz9nrY7Yj1Z2hP@google.com>
-Subject: Re: [PATCH V7 1/2] rust: module: change author to an array
-From: Alice Ryhl <aliceryhl@google.com>
-To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, apw@canonical.com, 
-	arnd@arndb.de, aswinunni01@gmail.com, axboe@kernel.dk, benno.lossin@proton.me, 
-	bhelgaas@google.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
-	dakr@kernel.org, dwaipayanray1@gmail.com, ethan.twardy@gmail.com, 
-	fujita.tomonori@gmail.com, gary@garyguo.net, gregkh@linuxfoundation.org, 
-	joe@perches.com, lukas.bulwahn@gmail.com, ojeda@kernel.org, 
-	pbonzini@redhat.com, tmgross@umich.edu, walmeida@microsoft.com, 
-	charmitro@posteo.net, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Fri, Mar 07, 2025 at 10:14:00AM -0300, Guilherme Giacomo Simoes wrote:
-> In the module! macro, the author field is currently of type String.
-> Since modules can have multiple authors, this limitation prevents
-> specifying more than one.
-> Change the author field to Option<Vec<String>> to allow creating modules
-> with multiple authors. Additionally, rename the field from author to
-> authors to make it explicit that it can refer to multiple authors.  In
-> modules that use the author field, update its value to an array of
-> strings, and also rename it from author to authors.
-> 
-> Suggested-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-> Link: https://github.com/Rust-for-Linux/linux/issues/244
-> Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+"Benno Lossin" <benno.lossin@proton.me> writes:
 
-I believe I reviewed this on the previous version. Did you forget to
-pick up my tag, or did you change something in this patch that requires
-a re-review?
+> On Fri Mar 7, 2025 at 11:11 AM CET, Andreas Hindborg wrote:
+>> +impl<T> HrTimerPointer for Arc<T>
+>> +where
+>> +    T: 'static,
+>> +    T: Send + Sync,
+>> +    T: HasHrTimer<T>,
+>> +    T: for<'a> HrTimerCallback<Pointer<'a> = Self>,
+>> +    Arc<T>: for<'a> RawHrTimerCallback<CallbackTarget<'a> = ArcBorrow<'a, T>>,
+>
+> I don't understand why you need this bound here.
 
-Alice
+This impl is applicable only when `Arc<T> has an implementation of
+`RawTimerCallback` where CallbackTarget<'a> = ArcBorrow<'a, T>. I don't
+want the impl to be available if that is not the case.
+
+It's just an additional check.
+
+>
+>> +{
+>> +    type TimerHandle = ArcHrTimerHandle<T>;
+>> +
+>> +    fn start(self, expires: Ktime) -> ArcHrTimerHandle<T> {
+>> +        // SAFETY:
+>> +        //  - We keep `self` alive by wrapping it in a handle below.
+>> +        //  - Since we generate the pointer passed to `start` from a valid
+>> +        //    reference, it is a valid pointer.
+>> +        unsafe { T::start(Arc::as_ptr(&self), expires) };
+>> +        ArcHrTimerHandle { inner: self }
+>> +    }
+>> +}
+>> +
+>> +impl<T> RawHrTimerCallback for Arc<T>
+>> +where
+>> +    T: 'static,
+>> +    T: HasHrTimer<T>,
+>> +    T: for<'a> HrTimerCallback<Pointer<'a> = Self>,
+>> +{
+>> +    type CallbackTarget<'a> = ArcBorrow<'a, T>;
+>> +
+>> +    unsafe extern "C" fn run(ptr: *mut bindings::hrtimer) -> bindings::hrtimer_restart {
+>> +        // `HrTimer` is `repr(C)`
+>> +        let timer_ptr = ptr.cast::<super::HrTimer<T>>();
+>> +
+>> +        // SAFETY: By C API contract `ptr` is the pointer we passed when
+>> +        // queuing the timer, so it is a `HrTimer<T>` embedded in a `T`.
+>> +        let data_ptr = unsafe { T::timer_container_of(timer_ptr) };
+>> +
+>> +        // SAFETY: `data_ptr` points to the `T` that was used to queue the
+>> +        // timer. This `T` is contained in an `Arc`.
+>
+> You're not justifying all safety requirements of `ArcBorrow::from_raw`.
+
+How is this:
+
+        // SAFETY:
+        //  - `data_ptr` is derived form the pointer to the `T` that was used to
+        //    queue the timer.
+        //  - The `ArcTimerHandle` associated with this timer is guaranteed to
+        //    be alive for the duration of the lifetime of `receiver`, so the
+        //    refcount of the underlying `Arc` is guaranteed to be nonzero for
+        //    the duration.
+        //  - We own one refcount in the `ArcTimerHandle` associted with this
+        //    timer, so it is not possible to get a `UniqueArc` to this
+        //    allocation from other `Arc` clones.
+
+
+Best regards,
+Andreas Hindborg
+
+
