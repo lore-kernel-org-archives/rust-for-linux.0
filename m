@@ -1,72 +1,72 @@
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A44F259498;
-	Fri,  7 Mar 2025 23:28:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BDA225BAC8;
+	Fri,  7 Mar 2025 23:29:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741390114; cv=none; b=UyvaC342cbuSep0I5FupXL/MpZjSpAq2ZB/R7df0tYO+5dWHAnvgIaiktQE2b6lRpkhiq8Dw6LufGvSZAvgI0WQocVNLAxf5Rax/3ecilbmVU6GMo2AWu7cLG+yFpry7bNfHkUHtwSkGsjBn3ckExJAjVqBUZuSP654Bix4a6Z4=
+	t=1741390150; cv=none; b=phf7sAvWkWfAGBS4TIvfVhEhEbjRq4Mkt7ZY7QYY3PXBkoY33mQhsmXDZSUI/4H6oa+19Wub5QO71MO0XBLVhZSo0+PvGXTLoPbvNxV8OFpj8brOMpVvsIgCXbhl8BIJ1V3y5ipOTKfc9rROQZrLimEJx9eC0s3109CSKT+KMKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741390114; c=relaxed/simple;
-	bh=jEhBkZo52HWmfzIFIG4+10NzNIICT1wwexEgxCTK2Bk=;
+	s=arc-20240116; t=1741390150; c=relaxed/simple;
+	bh=nl25mqOSxDqiYyUcE43CHVQwdknuB5u30lCgt3g9Sh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ckxmqwc0kV8chBnQ5J2sJkreQzAE6MEHPSUyyJz4oyoAAkewg5/0Pu23yO4/jtbLbSVbBX77WTIXj5QPT+nnVXCowm0XmVrk5bO58gWyvgKrxTkqGJIfDCQb+Hsd3g7b9qf0MlCojzcJEsGPWQy5ZzS9cn1ysCvb/vZ3mzpJvzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eKL1ojrp; arc=none smtp.client-ip=209.85.219.45
+	 MIME-Version; b=Uqv8tNK3G4Vcoen0+tsxrIT7SPp85sZLl8u05JW8uWJUWu+/UNe0QPQaKHF7s7ggrhXFIefIwm3mgGq0p3qM5QazSH9pW8fFKHeTPCbRTwLSYLD6MUbQ3W3WYw0LpuPc+WLKpSRzNmRD/lW4dEhbd66QP/LrIY4/eOV++YuW3Yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FMrxsTJz; arc=none smtp.client-ip=209.85.219.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eKL1ojrp"
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-6e8fb8ad525so18975106d6.3;
-        Fri, 07 Mar 2025 15:28:31 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FMrxsTJz"
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6dcd4f1aaccso36752476d6.2;
+        Fri, 07 Mar 2025 15:29:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741390110; x=1741994910; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1741390147; x=1741994947; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=cagYFPBuc1gFFptIWVE+jBCNUlwRXwa3KtuVxW66haM=;
-        b=eKL1ojrpOZhmG8vq1qzexlTwLYhV1l3PxYoVCThXQIjl0CRdQn95aRdFZ2Brda9jjW
-         SkKjwXptxAMsKu0gn0LMj6GLEHlKDjGgHGuE2rN7LbS3XevXy8v1O/9NOCV7ct7yYd68
-         dVEY/UjfR+zatOyq/t/OT6a2b0j9QGzwExf0yUZ+fNjY6wIvm7rnSB5fLqZ/GnFesiCR
-         GdJvAy9VhcEUZPyBd1bxLaPgk8x7iJw2ur4kO3wZnn169uU7I2JvRxs256h8D51PD7+D
-         dAZz0Rp7YxaWXfttV8h6GNRSVtcGCxpnE3mrWaYQg5p+H5H5T4i7iCCmW/SRtHgJAT1Z
-         Odvg==
+        bh=bLQdfjh9zsl19tiH0Lw1EUrOmo9Rg9QbErOXRQYmnV0=;
+        b=FMrxsTJzCo5c/QO6FRIN+NjPP0Uwozaj7ivjLMFvkisGOTYw/bDQP0TaNd4LPbpsoi
+         JrSF7GpnpjRKdTIL1JslfJ8IQ0U+pfgpquxp1n6/PlYQ+Ui8r9/RwH4k0TTPPuhXGag9
+         XCXbBJfBqqeKj+RuTLmOw69/sduChsIhqMwnOyUo7L32kMqb+nzNATxBNDrYLdUpFH3G
+         kuCYTx+1eqkIHEXddy/DD/gsdrlT5Tij6ylpwvqgv730PjHztmyIYmT4CxXYh/UeCAGn
+         J1iW3LzhNHiBE4kAonDA+2kcBVkOCrzTmawkC8uBwdALfl/obsAbeDzYXRfsgmj+kAan
+         jm3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741390110; x=1741994910;
+        d=1e100.net; s=20230601; t=1741390147; x=1741994947;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:feedback-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=cagYFPBuc1gFFptIWVE+jBCNUlwRXwa3KtuVxW66haM=;
-        b=gIoRK0FarzH7v+YFLCrq3oS5rOpuYbfY7T/0F13e6AbE6W43T8deDYTpwJxCA4wZo2
-         MyTNRNNhI7Rfwj3vlkrsl4GFlBpiwFs18ZSeD1LHps0t4hgUYjFIAaTzCvnZS469E83T
-         AxkQ51jlmOnmUDqypOiUsdR3I6CHzdkQrDg7w0FeFaiHL7x77MIpN3l38rdJhKcK6wwl
-         0bvLMJ8D3mfyC2oJmdv9ZTe6eaEqyTx9Inu2kwcd/y3qo+6sqg6QQGvMGlmE2bpNkgX4
-         WnPysJ4IBU1c8Pg9+aGesAms53MuqueTtG9qUdQgxtT6BR8rW4bjtdYY0v3jj8pwW2WV
-         FcvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVMUS48zp5wNXMIwWTX8CQBdEXsW+f23l4AvzbDw7w2v5MGAguWPvy4us1dNOx8sy5SJ9HWDNiPceLfArc=@vger.kernel.org, AJvYcCXJAyiPk4sRmwccCkIdgIaIcAYmQ1VIpG/1LUJ1YCqRNXJ8Pl1J2xEEP3MSiMYbFs3jKZzWJuBDf6X8SUB+Hi8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwR1Yu/+Io91409rZ4rN0A+dwyDLx9bMZLZU3YhptqIfDRE393U
-	jGK8RfV+Jt8WDH/HZZusxORAz3W6KIB1r50vcluaf8d3WB41YjkW
-X-Gm-Gg: ASbGncvLv74OD/3nj2rykCvI/r1p/AfxrDyYWya8QTu7zsoctz181u2tHMGnod+fiMU
-	XeUyb4zs6CrqIFG5Ei6MFgyXdKMju4evcWe3ijec4tQ/dfVlfyFz7MMsxfI+T/YcH9d1sny1lEz
-	ECHzxhRHIC2W/lm9J7B7vC/d6UWnrTmBq7AJF49e9zlXBSUDmbmOE7wl7XFPiuhAGLtC7MacYDs
-	BjhP4ZY33XPapkjZSbByucbjyfswah1e/TrZ81dnBXclkjZu2yjKv2f1NRnvu3hLF7NWnPedhVX
-	qCxQ9coKlVlwEFtwMcUo/2qc56o206cr0/zd95LWPd29RYmY3rQWaqjvWJ//Og7slUKP37X0BQg
-	8LawU7Wm8zSD+grIFC12i+//vn932A8EBNQE=
-X-Google-Smtp-Source: AGHT+IFw0P86UbgQ02WPOSx8uxArdpOUWxMPUJ07cDAjcZ8JIfwxGwSbuwH4Wcl0OCabjWiBvknuOA==
-X-Received: by 2002:ad4:5ce8:0:b0:6e6:68d6:3932 with SMTP id 6a1803df08f44-6e900693f6amr58038346d6.40.1741390110148;
-        Fri, 07 Mar 2025 15:28:30 -0800 (PST)
+        bh=bLQdfjh9zsl19tiH0Lw1EUrOmo9Rg9QbErOXRQYmnV0=;
+        b=M0IkQgyrteiNn0oOrmulTZLLm8vlqfED3VsAJG/uMWsbypXW5/b1eQ3kPNlho4ZLH9
+         5QkQAx2u9lbAGdhgXDOtyoA1rDmdqNCHQ438YTeswRhsK5ojRI1TeSBEfl3lDMYb1NzJ
+         k8yTFwFpURr7QFsQYoZPzJgZwOyEOgVfcSYTjF9H2Hbkp3hnOy/hTOb5UJJ2jnzhWNwM
+         ihif3P4eKdHDVVbgpcO4PTNKgpHtP0wbip5DHs7/9xmx92Y6XOdy33arjNH/TuI5KgHz
+         5/L7SGQ0wYOgb4XhsxLqrZ46bfefIPTyqn6qB1UeahdwcMhOxHE2BCuj1fuAYgfc1ZQY
+         QLKw==
+X-Forwarded-Encrypted: i=1; AJvYcCUuWTWLRaJWCFVzSp/u1xoDGp0dHB1qERvAB5/0ro+cw3qrJCzY+QwZFaBFWdzUmWiN4yNIdD0ZeXO3k1ULHQs=@vger.kernel.org, AJvYcCV+3Je3tkf+GXIed7fKXnM7CGbqalDQoanKQnN2mD9Uo6FMYNbF5gRLaU+k2C4icE8evuHP50uo/z/ZMEg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKdaKjDJhJSY2muSoCoi06UKPcQqeuVT9xWTQ3+TwTHVrnQjYH
+	D+Mv4I3vV6lEwx2fldfoQUxkvCf6wZaq67W4vwIymRMfbLp5VSYN
+X-Gm-Gg: ASbGncuJ727CHbnfL4KlyltJth6NO22iaLCHRE4HJspJPlxE4nocFyNENLfkCcIAcFE
+	GfNk7c6P9uchN+YgjpPlQmDpTCNEh+2stxNVsBeEppqMrP0g0mh/dNmYZA4weN5WMQ3Qzq68hxk
+	oJngIq6myMl8r3B6Q6ZXjferaDZAY2gzVr4U3sXWdQAjXP3A/2OnKF2mEQXD4VqEUww8subymX3
+	OUfmv27DeGMCXVg5+VCUAE1Ub8WQStDZ3FMtKR2oT31AICa1V1KV/xNSNpnaX9PWaFSRkvAzqIO
+	mN6yHwoNKg+z6bDzvoTzwsebcQERlP6nIDboZMXmFw8BylAP21uJ7TaXEkvoE7Q7sPoM1DqrVkJ
+	9CSlTZ+duUKXHDKPdCJJpra7R8eycyCQwEHM=
+X-Google-Smtp-Source: AGHT+IGkHwsbUOOaEjNaBUuQ4z6z/Udf2U+2u0ei1UzbhAqrpyOYvd2Rgzfu4BsSO6u23VxJbRKXww==
+X-Received: by 2002:a05:6214:2622:b0:6d8:8466:d205 with SMTP id 6a1803df08f44-6e9006049c1mr51710416d6.6.1741390146944;
+        Fri, 07 Mar 2025 15:29:06 -0800 (PST)
 Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e8f715b6c1sm24652376d6.83.2025.03.07.15.28.29
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e8f715b718sm24714966d6.91.2025.03.07.15.29.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Mar 2025 15:28:29 -0800 (PST)
-Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 3290F120006A;
-	Fri,  7 Mar 2025 18:28:29 -0500 (EST)
+        Fri, 07 Mar 2025 15:29:06 -0800 (PST)
+Received: from phl-compute-07.internal (phl-compute-07.phl.internal [10.202.2.47])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 1E642120006A;
+	Fri,  7 Mar 2025 18:29:06 -0500 (EST)
 Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Fri, 07 Mar 2025 18:28:29 -0500
-X-ME-Sender: <xms:HYHLZ6w7PJuV36mNq3cERftzGPA1M2D4UTgxF2HdmEDg6P60-3EHXw>
-    <xme:HYHLZ2QMyKjcipHgMEUwEGMuZ2ryBkABbQ0h205E_05ufX6vDfylAo22r04zzM-is
-    RwwnceemPRjCJ7FoQ>
-X-ME-Received: <xmr:HYHLZ8V237Nhyvz0y6zOIYbqaAwYzaa6TkClFgfmB-voAhVH7wOr45JuFSM>
+  by phl-compute-07.internal (MEProxy); Fri, 07 Mar 2025 18:29:06 -0500
+X-ME-Sender: <xms:QoHLZ22eU41Qon6F2EKAoh-a1CnZwpjfpG60OQSbQSGPYFzj-tAyPA>
+    <xme:QoHLZ5F-YicAq9rK71BlMPISxQQIDewoeLkppa6_YOWcH58YaCH4_nErxc-0u8ey1
+    uODW6bIAl13AKHpCQ>
+X-ME-Received: <xmr:QoHLZ-6BsqVKajCOPDBOjIXng3RmFJlE2BJGK-hHnUx_b54mW6oF4X-t8Jw>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduudduleekucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
     pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
@@ -74,47 +74,50 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduudduleekucetufdote
     tdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
     hlrdgtohhmqeenucggtffrrghtthgvrhhnpefghfffvefhhfdvgfejgfekvdelgfekgeev
     ueehlefhiedvgeffjefgteeugfehieenucffohhmrghinhepkhgvrhhnvghlrdhorhhgne
-    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhu
+    cuvehluhhsthgvrhfuihiivgepudenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhu
     nhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqdduje
     ejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdr
-    nhgrmhgvpdhnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhhtpdhrtghpth
+    nhgrmhgvpdhnsggprhgtphhtthhopedujedpmhhouggvpehsmhhtphhouhhtpdhrtghpth
     htohepmhhinhhgoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgvthgvrhiisehi
     nhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepfihilhhlsehkvghrnhgvlhdrohhrgh
     dprhgtphhtthhopehlohhnghhmrghnsehrvgguhhgrthdrtghomhdprhgtphhtthhopehl
     ihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhope
-    gsohhquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtthhopehojhgvuggrsehk
-    vghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrd
-    gtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvght
-X-ME-Proxy: <xmx:HYHLZwj8WfOnBEhH6Yuvsa-HU8SPDgYZs70RAoecWIfgnqezJqpyxw>
-    <xmx:HYHLZ8BDY_kADWX-Drd7YUQqZ4Pdv78LwelmCnCWAZwBRYuJuyxLBQ>
-    <xmx:HYHLZxL1CNRAPYljwFksDKW_HtSprfuUhQ_wba2IZpytxobsSuS8rg>
-    <xmx:HYHLZzAWNE-UDS3OJOXOUGp1QQo0Ft1Ku7wmEDmXO0xU4bVNzIk-EQ>
-    <xmx:HYHLZ0xfDaLLjR7ZJB2p8bF4kuMfTQ2niF6gjwhLUhgO6n-iYy1eMC4Z>
+    grlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehmvgeskhhlohgv
+    nhhkrdguvghvpdhrtghpthhtohepsghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmpd
+    hrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgtohhm
+X-ME-Proxy: <xmx:QoHLZ32SCF7k4pRwlTXIxPOpCglRGova4V3K7y5pJtJzcazfXrVeHA>
+    <xmx:QoHLZ5FxwmrOwQQjY5VMKb_Rl1f3ltjCRL49Asx8iwjtjpv7imGDWg>
+    <xmx:QoHLZw89ZReeKpe8SwM4OPsT3INs0A8jW5G-upCela6IqBFwzHgV-g>
+    <xmx:QoHLZ-kKaKn-8Bg2jihwofDbfXQu7K3xq4l0skvRlhYBdcA68_di6Q>
+    <xmx:QoHLZxHIlsDp-sVG_Zi-TNKJ5mkvExt1-k0GYn9o3fugi5rrcISxQhHw>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 7 Mar 2025 18:28:28 -0500 (EST)
+ 7 Mar 2025 18:29:05 -0500 (EST)
 From: Boqun Feng <boqun.feng@gmail.com>
 To: Ingo Molnar <mingo@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>
 Cc: Will Deacon <will@kernel.org>,
 	Waiman Long <longman@redhat.com>,
 	linux-kernel@vger.kernel.org,
+	Alice Ryhl <aliceryhl@google.com>,
+	Fiona Behrens <me@kloenk.dev>,
 	Boqun Feng <boqun.feng@gmail.com>,
+	Ingo Molnar <mingo@redhat.com>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org (open list:RUST:Keyword:\b(?i:rust)\b)
-Subject: [PATCH locking 00/11] LOCKDEP and Rust locking changes for v6.15
-Date: Fri,  7 Mar 2025 15:26:50 -0800
-Message-ID: <20250307232717.1759087-1-boqun.feng@gmail.com>
+	rust-for-linux@vger.kernel.org (open list:RUST)
+Subject: [PATCH locking 07/11] rust: sync: Add accessor for the lock behind a given guard
+Date: Fri,  7 Mar 2025 15:26:57 -0800
+Message-ID: <20250307232717.1759087-8-boqun.feng@gmail.com>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <Z76Uk1d4SHPwVD6n@Mac.home>
+In-Reply-To: <20250307232717.1759087-1-boqun.feng@gmail.com>
 References: <Z76Uk1d4SHPwVD6n@Mac.home>
+ <20250307232717.1759087-1-boqun.feng@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -123,59 +126,43 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi Ingo & Peter,
+From: Alice Ryhl <aliceryhl@google.com>
 
-As discussed, I'm resending the pull request for lockdep and Rust
-locking for v6.15 in the format of email patches. I dropped one patch
-and will postpone it for v6.16 because of a bug [1], and I think the fix
-[2] needs more reviews.
+In order to assert a particular `Guard` is associated with a particular
+`Lock`, add an accessor to obtain a reference to the underlying `Lock`
+of a `Guard`.
 
-[1]: https://lore.kernel.org/lkml/20250306122413.GBZ8mT7Z61Tmgnh5Y9@fat_crate.local/
-[2]: https://lore.kernel.org/lkml/Z8t8imzJVhWyDvhC@boqun-archlinux/
+Binder needs this assertion to ensure unsafe list operations are done
+with the correct lock held.
 
-Regards,
-Boqun
+[Boqun: Capitalize the title and reword the commit log]
 
-Alice Ryhl (2):
-  rust: sync: Add accessor for the lock behind a given guard
-  rust: sync: condvar: Add wait_interruptible_freezable()
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Fiona Behrens <me@kloenk.dev>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Link: https://lore.kernel.org/r/20250205-guard-get-lock-v2-1-ba32a8c1d5b7@google.com
+---
+ rust/kernel/sync/lock.rs | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-Boqun Feng (1):
-  rust: sync: lock: Add an example for Guard::lock_ref()
-
-Mitchell Levy (2):
-  rust: lockdep: Remove support for dynamically allocated LockClassKeys
-  rust: lockdep: Use Pin for all LockClassKey usages
-
-Randy Dunlap (1):
-  locking/rtmutex: Use struct keyword in kernel-doc comment
-
-Waiman Long (5):
-  locking/semaphore: Use wake_q to wake up processes outside lock
-    critical section
-  locking/lock_events: Add locking events for rtmutex slow paths
-  locking/lock_events: Add locking events for lockdep
-  locking/lockdep: Disable KASAN instrumentation of lockdep.c
-  locking/lockdep: Add kasan_check_byte() check in lock_acquire()
-
- kernel/locking/Makefile           |  3 +-
- kernel/locking/lock_events_list.h | 28 ++++++++++++++
- kernel/locking/lockdep.c          | 17 ++++++++-
- kernel/locking/rtmutex.c          | 29 +++++++++++---
- kernel/locking/rtmutex_common.h   |  4 +-
- kernel/locking/semaphore.c        | 13 +++++--
- rust/helpers/helpers.c            |  1 +
- rust/helpers/sync.c               | 13 +++++++
- rust/kernel/sync.rs               | 63 ++++++++++++++++++++++++++-----
- rust/kernel/sync/condvar.rs       | 28 ++++++++++++--
- rust/kernel/sync/lock.rs          | 35 +++++++++++++++--
- rust/kernel/sync/lock/global.rs   |  5 ++-
- rust/kernel/sync/poll.rs          |  2 +-
- rust/kernel/task.rs               |  2 +
- rust/kernel/workqueue.rs          |  2 +-
- 15 files changed, 211 insertions(+), 34 deletions(-)
- create mode 100644 rust/helpers/sync.c
-
+diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+index eb80048e0110..8e7e6d5f61e4 100644
+--- a/rust/kernel/sync/lock.rs
++++ b/rust/kernel/sync/lock.rs
+@@ -199,7 +199,12 @@ pub struct Guard<'a, T: ?Sized, B: Backend> {
+ // SAFETY: `Guard` is sync when the data protected by the lock is also sync.
+ unsafe impl<T: Sync + ?Sized, B: Backend> Sync for Guard<'_, T, B> {}
+ 
+-impl<T: ?Sized, B: Backend> Guard<'_, T, B> {
++impl<'a, T: ?Sized, B: Backend> Guard<'a, T, B> {
++    /// Returns the lock that this guard originates from.
++    pub fn lock_ref(&self) -> &'a Lock<T, B> {
++        self.lock
++    }
++
+     pub(crate) fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
+         // SAFETY: The caller owns the lock, so it is safe to unlock it.
+         unsafe { B::unlock(self.lock.state.get(), &self.state) };
 -- 
 2.47.1
 
