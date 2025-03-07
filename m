@@ -1,385 +1,210 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2D320E02A;
-	Fri,  7 Mar 2025 10:04:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDFD316DED0;
+	Fri,  7 Mar 2025 10:17:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741341885; cv=none; b=eKsvFSORBxxCYDOTI570P1R46hrY8920M9K2p+0kLImkzhotpX6CMHnFf1MI61K3kK5ixFzhJkeulQFzQQHSqt2JREf/L8O+512nm8fZ44uPW0nDR+9BqLgYvbatWwkcr5gJaNe4m/LhaxXD7LO+Qqbf5s6LmX9IiAN048rNAmg=
+	t=1741342662; cv=none; b=RnS4LU9RP1g/Esc3WnGzZbTa6NinTIwEFzWeV4Wfno6dsNCTzIZ73wqnZvwn9soUPTpC323BohdYu/U7EZDXafcP/zUMYH6VZvMwwbXUfZNJYY9k0/cwANUOZSpjoCasClvUxUTwzQnGbLFtmydMqLrUhXmjBk/aKTTC6v28hXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741341885; c=relaxed/simple;
-	bh=kRTzWQygEG5Ns1HqePZuYB9UCZNysEaq22FudaRwL6E=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uIAr6sPpkYs4tjupfeMA8NbHYwO22HGnz+RJNJYffffStlCvBYt09wXFcAMiKNGhDmEPW8j8eg4Se0bDktZdT6YhDCziuvgs+z5q9Pctlhr3VHK8+lP9Uf/npEErNxJkTDb9BXz/chMWkpGX+IFobTnpN/GPXzeQnSqENqdAmm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=IQz4K2r2; arc=none smtp.client-ip=185.70.40.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+	s=arc-20240116; t=1741342662; c=relaxed/simple;
+	bh=1Vq1rpCX8kQrR4gFhW87Me9AbRSCjpBro5aw8HsYISE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=UNqXfntDppgLUB9Q7JW2Z4zwVbgBRQ5LLVZTUIYMW/wIJqYK0O1yhNv46PNYhdA84+38BQwy7NTtM7+ZUQQhTEzu5PA+E7kyquARQ3MPO6YhSKrNuom4RCodtZXA2Uc+0+HEPnpo+0hhFPz7AHQclOD49CVM1L18WE/W7K6TIKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BOdXl3SP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="IQz4K2r2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1741341879; x=1741601079;
-	bh=0soWOnUPmUJEv0zAHpPwiKg0s8n+VOyuLKHVFYcokyE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=IQz4K2r28VKvG9K7I/UzGpHlywImDu7CPJstCYDBNvKvOcYDLcyFDiyTab35Fkw9A
-	 wCdiZYgnsvazRfjAS9DtbkMs/X4Z7+O2KHXnZppxSfVg2SebducnZ/S+H/PDBMz7F3
-	 VpaMunKa7lzPSx99VbaFZyOLT/r4BMsXH34A+oJmqaokFIgywhyQ+bz9JEYWDBkymq
-	 gFN7b2zsbtNq/7iOON6K2jWebKZcmzvjs/IvD5sOtLqC/LJrfAUDTqoKBOOR7PdddK
-	 FMsl4gZzK5M168OKAi/lGrEfBRebhxO4icNYrIiCcWUSUVy7xx/u3D/mvijp11t0tu
-	 9vtdNJrspX3jQ==
-Date: Fri, 07 Mar 2025 10:04:33 +0000
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina@asahilina.net>
-From: Oliver Mangold <oliver.mangold@pm.me>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Oliver Mangold <oliver.mangold@pm.me>
-Subject: [PATCH v5 4/4] rust: adding OwnableRefCounted and SimpleOwnableRefCounted
-Message-ID: <20250307-unique-ref-v5-4-bffeb633277e@pm.me>
-In-Reply-To: <20250307-unique-ref-v5-0-bffeb633277e@pm.me>
-References: <20250307-unique-ref-v5-0-bffeb633277e@pm.me>
-Feedback-ID: 31808448:user:proton
-X-Pm-Message-ID: 4909219767ac13eea0b39a877baa4bf244193cca
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BOdXl3SP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81AE2C4CED1;
+	Fri,  7 Mar 2025 10:17:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741342660;
+	bh=1Vq1rpCX8kQrR4gFhW87Me9AbRSCjpBro5aw8HsYISE=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=BOdXl3SPSi3KuFviQcHoWlndch6XoyelxBIrANN0Yprxu8PwytyI+WO8ss7vdULAv
+	 EbRSAHgPyTrQyrT/08GKkqU/NmnG01n6Y2m6oa9zzwUbNpjqfVIX1ObX2RrysVfsM5
+	 NV9Ph9MQaLz9TGvKc1dpwS1ro6FvUO+9Kup2f2ERcdGBpMqNKiSxbSeBmBmECXxJ8c
+	 DHX3LQAo6rDk5whYSjEmgqK6m3T6ea9f2SnuoSNnj0au9WYlGenSEcPvToiY6x4uOa
+	 7hTpnszU3dqol12nWOvneAsSWE4q1h49J/H/+N/JB8e9Vhi1cFXZiAu3k/64CxhSuu
+	 6CSLwITjEasXA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Fri, 07 Mar 2025 11:11:48 +0100
+Subject: [PATCH v10 03/13] rust: hrtimer: implement `HrTimerPointer` for
+ `Arc`
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250307-hrtimer-v3-v6-12-rc2-v10-3-0cf7e9491da4@kernel.org>
+References: <20250307-hrtimer-v3-v6-12-rc2-v10-0-0cf7e9491da4@kernel.org>
+In-Reply-To: <20250307-hrtimer-v3-v6-12-rc2-v10-0-0cf7e9491da4@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>, 
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+ Frederic Weisbecker <frederic@kernel.org>, 
+ Thomas Gleixner <tglx@linutronix.de>, Danilo Krummrich <dakr@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, 
+ Guangbo Cui <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@gmail.com>, Markus Elfring <Markus.Elfring@web.de>, 
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4405; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=1Vq1rpCX8kQrR4gFhW87Me9AbRSCjpBro5aw8HsYISE=;
+ b=owEBbQKS/ZANAwAIAeG4Gj55KGN3AcsmYgBnysZ4ZiCmJizeyd9VlTBCqDq0v74Wjyl5L6Nte
+ WEpFgy2FQWJAjMEAAEIAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCZ8rGeAAKCRDhuBo+eShj
+ d176EAC92okuQDZSk1XM7+G38udeqBTDvkqmdMdhkB266PMkaSfIz9Iz2bxZ6PAXnnZTt1IKuBA
+ IqGZ6I5Gy8LWLxWom6gwmXsRJ2zazZ1WwSkGtJrGYsD2AiA0Pc3+y5c7PsbQv/2r4UUo7+lcFwW
+ 8DkIWS2DGZsglM9uCp05zVVXpX1RJSLciHgBE1TI+UIHyU8pRjOqUGHHX+m4Sszv9ZRlEYgzWuu
+ ugQAiVFrWKZsE5NMbfFaEeecfuHHSNTH/lLCg5w/Nsz97pU/pdyFY1weHHJQdYKbJEwuEXlndSV
+ rATv5xqzZAVuRTKgcisdbxIJeP7OM0apvIEW4W0pcKXkmKLQiAz2/KmU6u07g9uF3GoRLkj446Y
+ a8XMqBnwWkewEsyGh3JZfebXILgM5SwvtxFDUved5TIOYRln4bfAdmiJrcyLCt2jQQCyVCvmTw2
+ oascio9OeCCSW66kBdTfuhb1UXALNKKYbyTtJPzhhMtahcgrZxg72EayNfdJtIEBIQkIe6ZOfp4
+ qjOUTP8lx68JqmBxN/hzkE1E6gcT7lgyhd99OmNcs3oG5UMBnNX4fdaGacvR16mB2d5wD3b1hDm
+ g8CgzNRjlCPt+4DApHIBNmN6fUBd+qt/5CkCwPWzDUGpo+gBy1oI7gFWkqsuuEjxoTovV8RHA8E
+ X9zAnASZAEBwQ7A==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-Types implementing one of these traits
-can safely convert between an ARef<T> and an Owned<T>.
+Allow the use of intrusive `hrtimer` fields in structs that are managed by
+an `Arc` by implementing `HrTimerPointer` and `RawTimerCallbck` for `Arc`.
 
-Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
+Acked-by: Frederic Weisbecker <frederic@kernel.org>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/types.rs | 268 +++++++++++++++++++++++++++++++++++++++++++++++=
-++++
- 1 file changed, 268 insertions(+)
+ rust/kernel/time/hrtimer.rs     |  4 +-
+ rust/kernel/time/hrtimer/arc.rs | 94 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 97 insertions(+), 1 deletion(-)
 
-diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-index e6f3308f931d90718d405443c3034a216388e0af..0acf95d322b6a213728916f0c7f=
-4095aa3f0e0f0 100644
---- a/rust/kernel/types.rs
-+++ b/rust/kernel/types.rs
-@@ -552,6 +552,12 @@ fn from(b: &T) -> Self {
+diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
+index 7d7d490f8b6f..bb46602a7749 100644
+--- a/rust/kernel/time/hrtimer.rs
++++ b/rust/kernel/time/hrtimer.rs
+@@ -150,7 +150,6 @@ unsafe fn raw_get(this: *const Self) -> *mut bindings::hrtimer {
+     /// # Safety
+     ///
+     /// `this` must point to a valid `Self`.
+-    #[allow(dead_code)]
+     pub(crate) unsafe fn raw_cancel(this: *const Self) -> bool {
+         // SAFETY: `this` points to an allocation of at least `HrTimer` size.
+         let c_timer_ptr = unsafe { HrTimer::raw_get(this) };
+@@ -357,3 +356,6 @@ unsafe fn timer_container_of(ptr: *mut $crate::time::hrtimer::HrTimer<$timer_typ
+         }
      }
  }
-=20
-+impl<T: OwnableRefCounted> From<Owned<T>> for ARef<T> {
-+    fn from(b: Owned<T>) -> Self {
-+        T::into_shared(b)
++
++mod arc;
++pub use arc::ArcHrTimerHandle;
+diff --git a/rust/kernel/time/hrtimer/arc.rs b/rust/kernel/time/hrtimer/arc.rs
+new file mode 100644
+index 000000000000..5c916489fc13
+--- /dev/null
++++ b/rust/kernel/time/hrtimer/arc.rs
+@@ -0,0 +1,94 @@
++// SPDX-License-Identifier: GPL-2.0
++
++use super::HasHrTimer;
++use super::HrTimer;
++use super::HrTimerCallback;
++use super::HrTimerHandle;
++use super::HrTimerPointer;
++use super::RawHrTimerCallback;
++use crate::sync::Arc;
++use crate::sync::ArcBorrow;
++use crate::time::Ktime;
++
++/// A handle for an `Arc<HasHrTimer<T>>` returned by a call to
++/// [`HrTimerPointer::start`].
++pub struct ArcHrTimerHandle<T>
++where
++    T: HasHrTimer<T>,
++{
++    pub(crate) inner: Arc<T>,
++}
++
++// SAFETY: We implement drop below, and we cancel the timer in the drop
++// implementation.
++unsafe impl<T> HrTimerHandle for ArcHrTimerHandle<T>
++where
++    T: HasHrTimer<T>,
++{
++    fn cancel(&mut self) -> bool {
++        let self_ptr = Arc::as_ptr(&self.inner);
++
++        // SAFETY: As we obtained `self_ptr` from a valid reference above, it
++        // must point to a valid `T`.
++        let timer_ptr = unsafe { <T as HasHrTimer<T>>::raw_get_timer(self_ptr) };
++
++        // SAFETY: As `timer_ptr` points into `T` and `T` is valid, `timer_ptr`
++        // must point to a valid `HrTimer` instance.
++        unsafe { HrTimer::<T>::raw_cancel(timer_ptr) }
 +    }
 +}
 +
- impl<T: RefCounted> Drop for ARef<T> {
-     fn drop(&mut self) {
-         // SAFETY: The type invariants guarantee that the `ARef` owns the =
-reference
-@@ -669,6 +675,268 @@ fn drop(&mut self) {
-     }
- }
-=20
-+/// A trait for objects that can be wrapped in either one of the reference=
- types
-+/// [`Owned`] and [`ARef`].
-+///
-+/// # Safety
-+///
-+/// - The same safety requirements as for [`Ownable`] and [`RefCounted`] a=
-pply.
-+/// - the uniqueness invariant of [`Owned`] is upheld until dropped.
-+/// - [`try_from_shared()`](OwnableRefCounted::into_shared) only returns a=
-n
-+///   [`Owned`] if exactly one [`ARef`] exists.
-+/// - [`into_shared()`](OwnableRefCounted::into_shared) set the reference =
-count
-+///   to the value which the returned [`ARef`] expects for an object with =
-a single reference
-+///   in existence. This implies that if [`into_shared()`](OwnableRefCount=
-ed::into_shared)
-+///   is left on the default implementation, which just rewraps the underl=
-ying object,
-+///   the reference count needs not to be modified when converting a [`Own=
-ed`] to an [`ARef`].
-+///
-+/// # Examples
-+///
-+/// A minimal example implementation of [`OwnableRefCounted`],
-+/// [`Ownable`] and its usage with [`ARef`] and [`Owned`] looks like this:
-+///
-+/// ```
-+/// # #![expect(clippy::disallowed_names)]
-+/// use core::cell::Cell;
-+/// use core::ptr::NonNull;
-+/// use kernel::alloc::{flags, kbox::KBox, AllocError};
-+/// use kernel::types::{
-+///     ARef, RefCounted, Owned, Ownable, OwnableRefCounted,
-+/// };
-+///
-+/// struct Foo {
-+///     refcount: Cell<usize>,
-+/// }
-+///
-+/// impl Foo {
-+///     fn new() -> Result<Owned<Self>, AllocError> {
-+///         // Use a KBox to handle the actual allocation
-+///         let result =3D KBox::new(
-+///             Foo {
-+///                 refcount: Cell::new(1),
-+///             },
-+///             flags::GFP_KERNEL,
-+///         )?;
-+///         // SAFETY: we just allocated the `Foo`, thus it is valid
-+///         Ok(unsafe { Owned::from_raw(NonNull::new(KBox::into_raw(result=
-)).unwrap()) })
-+///     }
-+/// }
-+///
-+/// // SAFETY: we increment and decrement correctly and only free the `Foo=
-`
-+/// // when the refcount reaches zero
-+/// unsafe impl RefCounted for Foo {
-+///     fn inc_ref(&self) {
-+///         self.refcount.replace(self.refcount.get() + 1);
-+///     }
-+///     unsafe fn dec_ref(this: NonNull<Self>) {
-+///         // SAFETY: the underlying object is always valid when the func=
-tion is called
-+///         let refcount =3D unsafe { &this.as_ref().refcount };
-+///         let new_refcount =3D refcount.get() - 1;
-+///         if new_refcount =3D=3D 0 {
-+///             // Foo will be dropped when KBox goes out of scope
-+///             // SAFETY: the `Box<Foo>` is still alive as the old refcou=
-nt is 1
-+///             unsafe { KBox::from_raw(this.as_ptr()) };
-+///         } else {
-+///             refcount.replace(new_refcount);
-+///         }
-+///     }
-+/// }
-+///
-+/// // SAFETY: we only convert into an `Owned` when the refcount is 1
-+/// unsafe impl OwnableRefCounted for Foo {
-+///     fn try_from_shared(this: ARef<Self>) -> Result<Owned<Self>, ARef<S=
-elf>> {
-+///         if this.refcount.get() =3D=3D 1 {
-+///             // SAFETY: the `Foo` is still alive as the refcount is 1
-+///             Ok(unsafe { Owned::from_raw(ARef::into_raw(this)) })
-+///         } else {
-+///             Err(this)
-+///         }
-+///     }
-+/// }
-+///
-+/// // SAFETY: we are not `AlwaysRefCounted`
-+/// unsafe impl Ownable for Foo {
-+///     unsafe fn release(this: NonNull<Self>) {
-+///         // SAFETY: using `dec_ref()` from `RefCounted` to release is o=
-kay,
-+///         // as the refcount is always 1 for an `Owned<Foo>`
-+///         unsafe{ Foo::dec_ref(this) };
-+///     }
-+/// }
-+///
-+/// let foo =3D Foo::new().unwrap();
-+/// let mut foo =3D ARef::from(foo);
-+/// {
-+///     let bar =3D foo.clone();
-+///     assert!(Owned::try_from(bar).is_err());
-+/// }
-+/// assert!(Owned::try_from(foo).is_ok());
-+/// ```
-+pub unsafe trait OwnableRefCounted: RefCounted + Ownable + Sized {
-+    /// Checks if the [`ARef`] is unique and convert it
-+    /// to an [`Owned`] it that is that case.
-+    /// Otherwise it returns again an [`ARef`] to the same
-+    /// underlying object.
-+    fn try_from_shared(this: ARef<Self>) -> Result<Owned<Self>, ARef<Self>=
->;
-+    /// Converts the [`Owned`] into an [`ARef`].
-+    fn into_shared(this: Owned<Self>) -> ARef<Self> {
-+        // SAFETY: safe by the conditions on implementing the trait
-+        unsafe { ARef::from_raw(Owned::into_raw(this)) }
++impl<T> Drop for ArcHrTimerHandle<T>
++where
++    T: HasHrTimer<T>,
++{
++    fn drop(&mut self) {
++        self.cancel();
 +    }
 +}
 +
-+/// This trait allows to implement all of [`Ownable`], [`RefCounted`] and
-+/// [`OwnableRefCounted`] together in a simplified way,
-+/// only requiring to provide the methods [`inc_ref()`](SimpleOwnableRefCo=
-unted::inc_ref),
-+/// [`dec_ref()`](SimpleOwnableRefCounted::dec_ref),
-+/// and [`is_unique()`](SimpleOwnableRefCounted::is_unique).
-+///
-+/// For non-standard cases where conversion between [`Ownable`] and [`RefC=
-ounted`] needs
-+/// or [`Ownable::release()`] and [`RefCounted::dec_ref()`] cannot be the =
-same method,
-+/// [`Ownable`], [`RefCounted`] and [`OwnableRefCounted`] should be implem=
-ented manually.
-+///
-+/// # Safety
-+///
-+/// - The same safety requirements as for [`Ownable`] and [`RefCounted`] a=
-pply.
-+/// - [`is_unique`](SimpleOwnableRefCounted::is_unique) must only return `=
-true`
-+///   in case only one [`ARef`] exists and it is impossible for one to be =
-obtained
-+///   other than by cloning an existing [`ARef`] or converting an [`Owned`=
-] to an [`ARef`].
-+/// - It is safe to convert an unique [`ARef`] into an [`Owned`]
-+///   simply by re-wrapping the underlying object without modifying the re=
-fcount.
-+///
-+/// # Examples
-+///
-+/// A minimal example implementation of [`SimpleOwnableRefCounted`]
-+/// and its usage with [`ARef`] and [`Owned`] looks like this:
-+///
-+/// ```
-+/// # #![expect(clippy::disallowed_names)]
-+/// use core::cell::Cell;
-+/// use core::ptr::NonNull;
-+/// use kernel::alloc::{flags, kbox::KBox, AllocError};
-+/// use kernel::types::{
-+///     ARef, SimpleOwnableRefCounted, Owned,
-+/// };
-+///
-+/// struct Foo {
-+///     refcount: Cell<usize>,
-+/// }
-+///
-+/// impl Foo {
-+///     fn new() -> Result<Owned<Self>, AllocError> {
-+///         // Use a KBox to handle the actual allocation
-+///         let result =3D KBox::new(
-+///             Foo {
-+///                 refcount: Cell::new(1),
-+///             },
-+///             flags::GFP_KERNEL,
-+///         )?;
-+///         // SAFETY: we just allocated the `Foo`, thus it is valid
-+///         Ok(unsafe { Owned::from_raw(NonNull::new(KBox::into_raw(result=
-)).unwrap()) })
-+///     }
-+/// }
-+///
-+/// // SAFETY: we implement the trait correctly by ensuring
-+/// // - the `Foo` is only dropped then the refcount is zero
-+/// // - `is_unique()` only returns `true` when the refcount is 1
-+/// unsafe impl SimpleOwnableRefCounted for Foo {
-+///     fn inc_ref(&self) {
-+///         self.refcount.replace(self.refcount.get() + 1);
-+///     }
-+///     unsafe fn dec_ref(this: NonNull<Self>) {
-+///         // SAFETY: the underlying object is always valid when the func=
-tion is called
-+///         let refcount =3D unsafe { &this.as_ref().refcount };
-+///         let new_refcount =3D refcount.get() - 1;
-+///         if new_refcount =3D=3D 0 {
-+///             // Foo will be dropped when KBox goes out of scope
-+///             // SAFETY: the `Box<Foo>` is still alive as the old refcou=
-nt is 1
-+///             unsafe { KBox::from_raw(this.as_ptr()) };
-+///         } else {
-+///             refcount.replace(new_refcount);
-+///         }
-+///     }
-+///     fn is_unique(&self) -> bool {
-+///         self.refcount.get() =3D=3D 1
-+///     }
-+/// }
-+///
-+/// let foo =3D Foo::new().unwrap();
-+/// let mut foo =3D ARef::from(foo);
-+/// {
-+///     let bar =3D foo.clone();
-+///     assert!(Owned::try_from(bar).is_err());
-+/// }
-+/// assert!(Owned::try_from(foo).is_ok());
-+/// ```
-+pub unsafe trait SimpleOwnableRefCounted {
-+    /// Checks if exactly one [`ARef`] to the object exists.
-+    /// In case the object is [`Sync`] the check needs to be race-free.
-+    fn is_unique(&self) -> bool;
-+    /// Increments the reference count on the object.
-+    fn inc_ref(&self);
++impl<T> HrTimerPointer for Arc<T>
++where
++    T: 'static,
++    T: Send + Sync,
++    T: HasHrTimer<T>,
++    T: for<'a> HrTimerCallback<Pointer<'a> = Self>,
++    Arc<T>: for<'a> RawHrTimerCallback<CallbackTarget<'a> = ArcBorrow<'a, T>>,
++{
++    type TimerHandle = ArcHrTimerHandle<T>;
 +
-+    /// Decrements the reference count on the object
-+    /// when the [`SimpleOwnableRefCounted`] is dropped.
-+    ///
-+    /// Frees the object when the count reaches zero.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The safety constraints for [`RefCounted::dec_ref`] and
-+    /// [`Ownable::release`] both apply to this method, as it will be used
-+    /// to implement both of these traits.
-+    unsafe fn dec_ref(obj: NonNull<Self>);
-+}
-+
-+// TODO: enable this when compiler supports it (>=3D1.85)
-+// #[diagnostic::do_not_recommend]
-+// SAFETY: safe by the requirements on implementation of [`SimpleOwnableRe=
-fCounted`]
-+unsafe impl<T: SimpleOwnableRefCounted> OwnableRefCounted for T {
-+    fn try_from_shared(this: ARef<Self>) -> Result<Owned<Self>, ARef<Self>=
-> {
-+        if T::is_unique(&*this) {
-+            // SAFETY: safe by the requirements on implementation of [`Sim=
-pleOwnable`]
-+            Ok(unsafe { Owned::from_raw(ARef::into_raw(this)) })
-+        } else {
-+            Err(this)
-+        }
++    fn start(self, expires: Ktime) -> ArcHrTimerHandle<T> {
++        // SAFETY:
++        //  - We keep `self` alive by wrapping it in a handle below.
++        //  - Since we generate the pointer passed to `start` from a valid
++        //    reference, it is a valid pointer.
++        unsafe { T::start(Arc::as_ptr(&self), expires) };
++        ArcHrTimerHandle { inner: self }
 +    }
 +}
 +
-+// TODO: enable this when compiler supports it (>=3D1.85)
-+// #[diagnostic::do_not_recommend]
-+// SAFETY: safe by the requirements on implementation of [`SimpleOwnableRe=
-fCounted`]
-+unsafe impl<T: SimpleOwnableRefCounted> Ownable for T {
-+    unsafe fn release(this: NonNull<Self>) {
-+        // SAFETY: safe by the requirements on implementation
-+        // of [`SimpleOwnableRefCounted::dec_ref()`]
-+        unsafe { SimpleOwnableRefCounted::dec_ref(this) };
++impl<T> RawHrTimerCallback for Arc<T>
++where
++    T: 'static,
++    T: HasHrTimer<T>,
++    T: for<'a> HrTimerCallback<Pointer<'a> = Self>,
++{
++    type CallbackTarget<'a> = ArcBorrow<'a, T>;
++
++    unsafe extern "C" fn run(ptr: *mut bindings::hrtimer) -> bindings::hrtimer_restart {
++        // `HrTimer` is `repr(C)`
++        let timer_ptr = ptr.cast::<super::HrTimer<T>>();
++
++        // SAFETY: By C API contract `ptr` is the pointer we passed when
++        // queuing the timer, so it is a `HrTimer<T>` embedded in a `T`.
++        let data_ptr = unsafe { T::timer_container_of(timer_ptr) };
++
++        // SAFETY: `data_ptr` points to the `T` that was used to queue the
++        // timer. This `T` is contained in an `Arc`.
++        let receiver = unsafe { ArcBorrow::from_raw(data_ptr) };
++
++        T::run(receiver);
++
++        bindings::hrtimer_restart_HRTIMER_NORESTART
 +    }
 +}
-+
-+// TODO: enable this when compiler supports it (>=3D1.85)
-+// #[diagnostic::do_not_recommend]
-+// SAFETY: safe by the requirements on implementation of [`SimpleOwnableRe=
-fCounted`]
-+unsafe impl<T: SimpleOwnableRefCounted> RefCounted for T {
-+    fn inc_ref(&self) {
-+        SimpleOwnableRefCounted::inc_ref(self);
-+    }
-+    unsafe fn dec_ref(this: NonNull<Self>) {
-+        // SAFETY: safe by the requirements on implementation
-+        // of [`SimpleOwnableRefCounted::dec_ref()`]
-+        unsafe { SimpleOwnableRefCounted::dec_ref(this) };
-+    }
-+}
-+
-+impl<T: OwnableRefCounted> TryFrom<ARef<T>> for Owned<T> {
-+    type Error =3D ARef<T>;
-+    /// Tries to convert the [`ARef`] to an [`Owned`]
-+    /// by calling [`try_from_shared()`](OwnableRefCounted::try_from_share=
-d).
-+    /// In case the [`ARef`] is not unique it returns again an [`ARef`] to=
- the same
-+    /// underlying object.
-+    fn try_from(b: ARef<T>) -> Result<Owned<T>, Self::Error> {
-+        T::try_from_shared(b)
-+    }
-+}
-+
- /// A sum type that always holds either a value of type `L` or `R`.
- ///
- /// # Examples
 
---=20
-2.48.1
+-- 
+2.47.0
 
 
