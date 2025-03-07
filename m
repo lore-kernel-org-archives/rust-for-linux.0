@@ -1,247 +1,151 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51BCB20AF69
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Mar 2025 10:28:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30FC2066F9;
+	Fri,  7 Mar 2025 10:57:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741343324; cv=none; b=FdRoz82lihyE0N1jp3tjLk7h9IHGlwE7/wLwun/QS53ke37SqJk2FsTsuyxhbuHUWHzbHQrogWiv3KXEufqw6j4wnomZYPQVK059QoYOlygYGpbnbRkmKyFpNL/YAY/8sek7DUi3Pv+rP4Tql+Oy4vnfovOm4U0Pu/D14Y3TIKs=
+	t=1741345020; cv=none; b=jK8qEQ7zGvReHPb38EwS8a7TGRor+QJ1i3vapdyVKN6u4iZSjnItCrLGvFONu8yzusuNwljO8OdfYrIYGA1BEVZvwQZz+ExGZ6GZwRHsGAdGMGPr7YQU7CLP+q2EtXi/aaoMI1uomVBf0DI7XL9IwZwB07tur4RjykOYGcDlCsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741343324; c=relaxed/simple;
-	bh=zXH71BfDtdTjFlS8jDiAJVkO9AR569+vdz/KAu3ChhQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j2BAgvTnTpk/lfaBL/wgql6XGqfffTRFJI6TdvlwqWzg3KMiYAhWMBZOSL5bFl5Kcgvon3Cmdsl3k6Dcf5dTh678PyPKIqS+M9weynpf9SxggZXyZlrf5+CqUoGLHnHsonuad8ZerjFG+tDBKW3Nr+FMJ88Z1Be5frDjS3+zHmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=MHOvxVkk; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
+	s=arc-20240116; t=1741345020; c=relaxed/simple;
+	bh=0V66XMCNY3Rp+V6nGtFEXJXDKx3PA76ITGZT1ijnM5g=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=tHJHAeYUhFzO37NrchakWpfnjC9E00ZMaERoaaeGq6iONan+N9XIc+EJtRZMT5gKKN6Jbmlxc22U1f2eN1sNSD5I0MabQngFpOThI36nwjGmYKut43J/w98/5GFgqvI/GiQwyo9dPUFWFx677ogis+DL7K7LLi5zx9+2bUUv65M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SUy70o7p; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="MHOvxVkk"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43bc30adad5so10158185e9.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 07 Mar 2025 02:28:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1741343320; x=1741948120; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KLOoQkl6hkv1bWsp3aSpxVd+aCFLRfs2J3JgKPuyRtU=;
-        b=MHOvxVkk5O9JOyyyJFbgy2mPzFT2nnurZgPC/qViaASbu06kEa1bTM5Hl86CwAjX2c
-         a/91unDnmK8S1/P+2ox2luz7RDMeDcPEEQr79aZMbeNvVOLNH8pWVZDed4RD8TJPZZP9
-         iMM1gKLLFNf2fmV4Q/J21LX8oa2b2PGDLgaxI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741343320; x=1741948120;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KLOoQkl6hkv1bWsp3aSpxVd+aCFLRfs2J3JgKPuyRtU=;
-        b=NXYAhMpuCJADEKhrvYdzkzNYCF5KHEZjH34tze154EIujYUhWba3A2yIkQbQUU6txm
-         WYuxyUrSFTkqL1hLWBADTHXw+52Y4MCCOyWsNTVEfRQkEr/Us1sn09+1nZQwU6i7ZMZE
-         CZAXYi4DCPgF8nUs36WBkFtmpC3tS142jnsL7/L/OAqs0RiQcz9wXp+47O6mgD/qpL1C
-         GoJYagpKZLHvhyOiVU2XR0JXl608EnGYSYqeJLZTfwzdLRB34BQdB8REHXT2mZMlq1nw
-         PIZU1xS9VAtqeaUQlQbHQYfuvy+8t6KVBPvng6q3RD7wkE9yaPxI43rcULI5SzlkZxtg
-         gtRw==
-X-Forwarded-Encrypted: i=1; AJvYcCUyu5vPhmjvOc3yySIgjU4ag+Rta+KO2yOrwso8NwJSjkIE+pNB1Yh9H5CtKhB+2XIlG0oqD6vtYgbZ7mEMIA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzF9opUvmdW8kzJiN8diuFNEU0t5ZLiVJ8bIFdKihgHm2vdDkFU
-	v8ThCUorG3QvtZNEC9oQNbCRAnLAvPdr8HqtiZSUjjwAvJJ0EOBQzMKS5S1xp/U=
-X-Gm-Gg: ASbGncuMgB4q+P9hcutmU/Z+XnDncAlW80xmTN9slDxzzFEK31VZ9Biy1s47TvV/eU4
-	q0MstZVKVyCWWUPz9/ZzCsm3sayYU2KCNIS1XBQiI54qMtbSI1NcbLPv4ka+05V8ZYP8hReEcdt
-	GhnGgqoznLMPIasnxhQTnYk+50cJs/eWyGslUTX8pFs/IYCAUbJ2IEAgDb6wE2d4cOeMv/E3vmH
-	UbsGn/GjX8xMbDPEAH9S4LYrYR7p90FfqzoLn08ZYThXfWHMnFfY2arvVsKn4fevMPRU+32X4Os
-	8emeQjFuxs9/m9yJUWrFmMlNyGCTsC//bsX945s1NYjaQUaZRUxq1QIG
-X-Google-Smtp-Source: AGHT+IEXqPg4ntpIBJrKqJUmhFhVvUeMVHQTUghTZcJWrf+11xUWOEGUbhcEz08DJwh4IgeUGuaIlA==
-X-Received: by 2002:a5d:64c5:0:b0:38f:4b15:32f1 with SMTP id ffacd0b85a97d-39132de3ef7mr1902737f8f.54.1741343320431;
-        Fri, 07 Mar 2025 02:28:40 -0800 (PST)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bdd93cc2esm46469755e9.30.2025.03.07.02.28.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Mar 2025 02:28:39 -0800 (PST)
-Date: Fri, 7 Mar 2025 11:28:37 +0100
-From: Simona Vetter <simona.vetter@ffwll.ch>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: John Hubbard <jhubbard@nvidia.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Ben Skeggs <bskeggs@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	paulmck@kernel.org
-Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
- implementation
-Message-ID: <Z8rKVZolu8n6lB1P@phenom.ffwll.local>
-Mail-Followup-To: Jason Gunthorpe <jgg@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Ben Skeggs <bskeggs@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	paulmck@kernel.org
-References: <2025022644-fleshed-petite-a944@gregkh>
- <D82UB3V6NZ55.3OEPPW2W8MFZV@nvidia.com>
- <Z8GViQzZJVFPxfNd@phenom.ffwll.local>
- <20250228184013.GF39591@nvidia.com>
- <Z8cmBWB8rl97-zSG@phenom.ffwll.local>
- <20250304164201.GN133783@nvidia.com>
- <Z8f9mgD4LUJN_dWw@phenom.ffwll.local>
- <20250305151012.GW133783@nvidia.com>
- <Z8l8HgZOV7sDWqBh@phenom.ffwll.local>
- <20250306153236.GE354511@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SUy70o7p"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CBCEC4CED1;
+	Fri,  7 Mar 2025 10:56:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741345020;
+	bh=0V66XMCNY3Rp+V6nGtFEXJXDKx3PA76ITGZT1ijnM5g=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=SUy70o7p1xUnsuCGm9oll4ND/8P7tO4PJmi7z590o3FnoKl1coJseoLv0RzZY0yHj
+	 ciuvO/amoE+6cK0w0mqS95Q0/peThCKxFUwOyA0Ghs6Feaxwr4UsM2TM4KlnV42J6B
+	 ai2s2/DprbPzTBvPbuOp/J1I9mRm26iZwGKVTRu4LfGpWz3ZwEsg5twi1vYVh9+tE2
+	 MEnEMeoTkKSIjlpG0XAaCLQpQszfCJZ8KLPp1RF4PZayz5tZkuDTbTFXKhcd4GjahE
+	 IxPy2UEHUww9XlVniBtxgTe/qn2WRaq7NImjs+AQSTwPs3MPmsYZWNv0q/zc0oTogW
+	 IByNNnCE74+og==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Tamir Duberstein" <tamird@gmail.com>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Benno
+ Lossin" <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,
+  "Trevor Gross" <tmgross@umich.edu>,  "Boris-Chengbiao Zhou"
+ <bobo1239@web.de>,  "Fiona Behrens" <me@kloenk.dev>,  "Kees Cook"
+ <kees@kernel.org>,  <rust-for-linux@vger.kernel.org>,
+  <linux-kernel@vger.kernel.org>,  "Chayim Refael Friedman"
+ <chayimfr@gmail.com>
+Subject: Re: [PATCH v3] scripts: generate_rust_analyzer.py: add missing
+ macros deps
+In-Reply-To: <20250210-rust-analyzer-macros-core-dep-v3-1-45eb4836f218@gmail.com>
+ (Tamir
+	Duberstein's message of "Mon, 10 Feb 2025 12:03:24 -0500")
+References: <6-mv8ahCblqal1f_T1RcVPPPb6QEedsAXlhmcyCNC-lnvAj1USOInn0YNogItuEdy_KthnPdFDElN1F6A9ncwA==@protonmail.internalid>
+	<20250210-rust-analyzer-macros-core-dep-v3-1-45eb4836f218@gmail.com>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Fri, 07 Mar 2025 11:56:45 +0100
+Message-ID: <874j055csy.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250306153236.GE354511@nvidia.com>
-X-Operating-System: Linux phenom 6.12.11-amd64 
+Content-Type: text/plain
 
-On Thu, Mar 06, 2025 at 11:32:36AM -0400, Jason Gunthorpe wrote:
-> On Thu, Mar 06, 2025 at 11:42:38AM +0100, Simona Vetter wrote:
-> > > Further, I just remembered, (Danilo please notice!) there is another
-> > > related issue here that DMA mappings *may not* outlive remove()
-> > > either. netdev had a bug related to this recently and it was all
-> > > agreed that it is not allowed. The kernel can crash in a couple of
-> > > different ways if you try to do this.
-> > > 
-> > > https://lore.kernel.org/lkml/8067f204-1380-4d37-8ffd-007fc6f26738@kernel.org/T/#m0c7dda0fb5981240879c5ca489176987d688844c
-> > 
-> > Hm for the physical dma I thought disabling pci bust master should put a
-> > stop to all this stuff?
-> 
-> Not in the general case. Many device classes (eg platform) don't have
-> something like "PCI bus master". It is also not always possible to
-> reset a device, even in PCI.
-> 
-> So the way things work today for module reload relies on the driver
-> duing a full quiet down so that the next driver to attach can safely
-> start up the device. Otherwise the next driver flips PCI bus master
-> back on and immediately UAFs memory through rouge DMA.
-> 
-> Relying on PCI Bus master also exposes a weakness we battled with in
-> kexec. When the new driver boots up it has to gain control of the
-> device and stop the DMA before flipping "PCI Bus Master" off. Almost
-> no drivers actually do this, and some HW can't even achieve it without
-> PCI reset (which is not always available). Meaning you end up with a
-> likely UAF flow if you rely on this technique.
+"Tamir Duberstein" <tamird@gmail.com> writes:
 
-Yeah this gets really hairy really fast. We might need some pragmatism
-here of not being able to be better than C.
+> The macros crate has depended on std and proc_macro since its
+> introduction in commit 1fbde52bde73 ("rust: add `macros` crate"). These
+> dependencies were omitted from commit 8c4555ccc55c ("scripts: add
+> `generate_rust_analyzer.py`") resulting in missing go-to-definition and
+> autocomplete, and false-positive warnings emitted from rust-analyzer
+> such as:
+>
+>   [{
+>   	"resource": "/Users/tamird/src/linux/rust/macros/module.rs",
+>   	"owner": "_generated_diagnostic_collection_name_#1",
+>   	"code": {
+>   		"value": "non_snake_case",
+>   		"target": {
+>   			"$mid": 1,
+>   			"path": "/rustc/",
+>   			"scheme": "https",
+>   			"authority": "doc.rust-lang.org",
+>   			"query": "search=non_snake_case"
+>   		}
+>   	},
+>   	"severity": 4,
+>   	"message": "Variable `None` should have snake_case name, e.g. `none`",
+>   	"source": "rust-analyzer",
+>   	"startLineNumber": 123,
+>   	"startColumn": 17,
+>   	"endLineNumber": 123,
+>   	"endColumn": 21
+>   }]
+>
+> Add the missing dependencies to improve the developer experience.
+>
+> Fixes: 8c4555ccc55c ("scripts: add `generate_rust_analyzer.py`")
+> Reviewed-by: Fiona Behrens <me@kloenk.dev>
+> Suggested-by: Chayim Refael Friedman <chayimfr@gmail.com>
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> ---
+> Changes in v3:
+> - Avoid shuffling compilter_builtins; it is not needed for RA support.
+> - Align more closely with the long-term solution:
+>   https://lore.kernel.org/all/20250209-rust-analyzer-host-v1-0-a2286a2a2fa3@gmail.com/.
+> - Link to v2: https://lore.kernel.org/r/20250209-rust-analyzer-macros-core-dep-v2-1-897338344d16@gmail.com
+>
+> Changes in v2:
+> - Change macros deps from [core] to [std, proc_macro], improving
+>   autocomplete and go-to-definition.
+> - Remove Wedson Almeida Filho <wedsonaf@google.com> from cc; email
+>   bounced.
+> - Link to v1: https://lore.kernel.org/r/20250209-rust-analyzer-macros-core-dep-v1-1-5ebeb3eb60a9@gmail.com
+> ---
+>  scripts/generate_rust_analyzer.py | 30 +++++++++++++++++++++---------
+>  1 file changed, 21 insertions(+), 9 deletions(-)
+>
+> diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+> index aa8ea1a4dbe5..1394baa5ee9e 100755
+> --- a/scripts/generate_rust_analyzer.py
+> +++ b/scripts/generate_rust_analyzer.py
+> @@ -57,14 +57,26 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
+>          crates_indexes[display_name] = len(crates)
+>          crates.append(crate)
+>
+> -    # First, the ones in `rust/` since they are a bit special.
+> -    append_crate(
+> -        "core",
+> -        sysroot_src / "core" / "src" / "lib.rs",
+> -        [],
+> -        cfg=crates_cfgs.get("core", []),
+> -        is_workspace_member=False,
+> -    )
+> +    def append_sysroot_crate(
+> +        display_name,
+> +        deps,
+> +        cfg=[],
+> +    ):
+> +        return append_crate(
 
-And the entire "load driver after previously the linux driver messed with
-it already" is a very broad issue, from rebinding to module reload to
-kexec. With some hw it's just not possible to do safely, and with a lot
-more hw not reliably due to complexity. E.g. drm/i915/display can take
-over the gpu if outputs are enabled and fully recover hw state into sw
-state. But defacto that only works for configurations the fw/bootloader
-leaves behind, and not in full generality. Plus we don't handle
-misprogrammed hw at all.
+Why the `return` here?
 
-> > For the sw lifecycle stuff I honestly didn't know that was an issue, I
-> > guess that needs to be adressed in the dma-api wrappers or rust can blow
-> > up in funny ways. C drivers just walk all mappings and shoot them.
-> 
-> I wonder what people will come up with. DMA API is performance path,
-> people are not going to accept pointless overheads there.
-> 
-> IMHO whatever path the DMA API takes the MMIO design should follow
-> it.
+Otherwise looks good to me.
 
-I think this needs to be subsystem specific, since very often there's
-already data structures to track all mappings, and so easy to add a bit of
-glue to nuke them all forcefully. Or at least data structures to track all
-pending requests, and so again we can enforce that we stall for them all
-to finish.
+I never had any errors as described above, but I can confirm that go to
+definition in `macros` for items in `proc_macro` work with this patch
+applied. It does not work prior to applying the patch.
 
-We'll probably end up with rust bindings being a lot more opinionated
-about how a driver should work, which has the risk of going too far into
-the midlayer mistake antipattern. I guess we'll see how that all pans out.
 
-> > The trouble is that for real hotunplug, you need all this anyway. Because
-> > when you physically hotunplug the interrupts will be dead, the mmio will
-> > be gone any momem (not just at the beginnning of an rcu revocable
-> > section), so real hotunplug is worse than what we're trying to do here.
-> 
-> There are two kinds of real hotunplug, the friendly kind that we see
-> in physical PCI where you actually plonk a button on the case and wait
-> for the light to go off. Ie it is interactive and safe with the
-> OS. Very similar to module reloading.
-> 
-> And the hostile kind, like in thunderbolt, where it just goes away and
-> dies.
-> 
-> In the server world, other than nvme, we seem to focus on the friendly
-> kind.
+Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-Yeah gpus tend to hang out in external enclosures sometimes, so I'm not
-sure we can ignore the hostile kind.
 
-> > So randomly interrupts not happening is something you need to cope with no
-> > matter what.
-> 
-> Yes
->  
-> > But for a driver unbind you _do_ have to worry about cleanly shutting down
-> > the hardware. For the above reasons and also in general putting hardware
-> > into a well-known (all off usually) state is better for then reloading a
-> > new driver version and binding that. Except that there's no way to tell
-> > whether your ->remove got called for unbinding or hotunplug.
-> 
-> IMHO it doesn't really matter, the driver has to support the most
-> difficult scenario anyhow. The only practical difference is that the
-> MMIO might return -1 to all reads and the interrupts are dead. If you
-> want to detect a gone PCI device then just do a register read and
-> check for -1, which some drivers like mlx5 are doing as part of their
-> resiliency strategy.
-> 
-> > pci device was physically unplugged or not, and so for developer
-> > convenience most pci drivers go with the "cleanly shut down everything"
-> > approach, which is the wrong thing to do for actual hotunplug.
-> 
-> I wouldn't say it is wrong. It is still the correct thing to do, and
-> following down the normal cleanup paths is a good way to ensure the
-> special case doesn't have bugs. The primary difference is you want to
-> understand the device is dead and stop waiting on it faster. Drivers
-> need to consider these things anyhow if they want resiliency against
-> device crashes, PCI link wobbles and so on that don't involve
-> remove().
+Best regards,
+Andreas Hindborg
 
-Might need to revisit that discussion, but Greg didn't like when we asked
-for a pci helper to check whether the device is physically gone (at least
-per the driver model). Hacking that in drivers is doable, but feels icky.
 
-> Regardless, I think the point is clear that the driver author bears
-> alot of responsibility to sequence this stuff correctly as part of
-> their remove() implementation. The idea that Rust can magically make
-> all this safe against UAF or lockups seems incorrect.
-
-Agreed, it's not pure magic. I do think it can help a lot though, or at
-least I'm hoping.
-
-> > > Ah.. I guess rust would have to validate the function pointers and the
-> > > THIS_MODULE are consistent at runtime time before handing them off to
-> > > C to prevent this. Seems like a reasonable thing to put under some
-> > > CONFIG_DEBUG, also seems a bit hard to implement perhaps..
-> > 
-> > We should know the .text section of a module, so checking whether a
-> > pointer is within that shouldn't be too hard.
-> 
-> It is legal to pass a pointer to a function in a module that this
-> module is linked to as well. We do that sometimes.. Eg a fops having a
-> simple_xx pointer. So you'd need to do some graph analysis.
-
-Hm right, indirect deps are fine too ...
-
-Cheers, Sima
--- 
-Simona Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
