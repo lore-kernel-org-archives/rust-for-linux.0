@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACAFD2561BC;
-	Fri,  7 Mar 2025 20:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B23B183CB0;
+	Fri,  7 Mar 2025 20:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741378411; cv=none; b=LvcXfVC/Fvv9qH5V/SEZ1KEIEEG7x6Ha9jaDjuAkum99U02rmjaMnXb+avJ+Rhmd3cN7yOcS9emDBgJHeYvERV3ucWSo3/IrEIskQEXfhWLgvHIJCwCQa86q7BN2vzgsG1Gw3H6fhGZjL01FdtOJEQ8mSgQsl1cY9zZ6NJeAUkw=
+	t=1741380042; cv=none; b=IJqDGjSDfQ9IT4GjHW6FXSd9E0UDdqes7w2PJuGrux/t+t1vn10Q6+I/HJ23dAEPwjznRmDf6g3Drh+lCbOGJfZBk/sUKGCncxkK9BFFx0GVV0MLmlS8nH2h6ytqpbelVqcNa+ON/1//MuG7p3drSYcVcXz1mExOKM1rQFs/hoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741378411; c=relaxed/simple;
-	bh=jL7DgXRTAIxdsq7tMW4vNI8UHMSejygWFWiH2zOE9K0=;
+	s=arc-20240116; t=1741380042; c=relaxed/simple;
+	bh=EVxChS+74swYadRrkHg1iNrCXtQarsnTlJJNN+38/gU=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=g0zEQpbJeVHkR6sA9SeBIINHDaFbPNCKH2nD8/vgYC4IYjODyf4+tUIiNPUVmo3FYwPUwnyGBBbFCFk/aOArNhhhFdsuM3tNrz7K9972aotvifpiKEOS9jnNAITUMSKsrZ93pUrnRDKzXXwGfIRbKGoThy7Ha2Gyz5ip+8FR2X4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h1E40Tt+; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=nY+hVY0xdKj49/+vd0OrWvmuptqkhYNqz0YsNNY9NEqoYqNmIWQDsqC6cVCz2AK4UioJfv+KmfUzOvv0fjeAbZeBkE2ajEwqmD1rBQxFxE/HIlIXbvoIGe5I2KrRw4bBxSfddwvWEtUEic5XT87muGQ01WdtVgiT+3feAY0rMrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QjAEZBeN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h1E40Tt+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E55F1C4CED1;
-	Fri,  7 Mar 2025 20:13:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QjAEZBeN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE97CC4CED1;
+	Fri,  7 Mar 2025 20:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741378411;
-	bh=jL7DgXRTAIxdsq7tMW4vNI8UHMSejygWFWiH2zOE9K0=;
+	s=k20201202; t=1741380042;
+	bh=EVxChS+74swYadRrkHg1iNrCXtQarsnTlJJNN+38/gU=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=h1E40Tt+pIMu5++zslxPZ29o+au/acKWXLM/y6n4n1FueDX/ZfXd1eNDYC8uaISX8
-	 2UGh3YKC+GHPNLWLzOlGHzobyPUjxWe7JrNrYeQ+Ua4vYwbWh7nNZQPhFCky7jN96W
-	 p6emh55NBl6FxEW9sDrz9+EQOsI4+QBl/QElW+VrVmHSY/SYRlet0LuxSKwQ2MFDm9
-	 AJAwY3JDQboJN3n4BL4RBao0H4KUkQQTj7Mj3wW5PAneZAaWeC/M4P55dZMDpFLGJn
-	 12kVDYgolDaS/zdFzJ4NUH6oFHgO6Mph7NmqicvaAEClGsJKYdImlutVNsPJqxGImk
-	 9J8laLKf7HeVA==
+	b=QjAEZBeNLkVr4V628qfMuGWLsQSE/m9kEDOICsGpltkgQCC3t0kqVfyeHSREQt52K
+	 hWwIn21kTYPa31ChCJP/wa8a6pgPUAVOO/zm96qdowu0efHGrDthMPMjGUIQ4uS8gv
+	 SjOGbYKqc292K4+ADYBhmuIKcEDrvLjxcRJaMyznuixseEvDyq4YGAkruJEHRhUgL9
+	 7N/7YaEPM1+pUea/CkZB5WWv0S8UTi530TfEIzvAGth8yUAD++IcgInA26zWq6k5dl
+	 3k7Q720K9yvJUNv6Y7nA++ACQuj2/5pvR4K4P9ih8egiz1x53lJSHxo5DUN4hdRZML
+	 D9+8Qz4Il+usA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: "Abdiel Janulgue" <abdiel.janulgue@gmail.com>
 Cc: <rust-for-linux@vger.kernel.org>,  <daniel.almeida@collabora.com>,
@@ -39,15 +39,15 @@ Cc: <rust-for-linux@vger.kernel.org>,  <daniel.almeida@collabora.com>,
   <linux-kernel@vger.kernel.org>,  "Christoph Hellwig" <hch@lst.de>,
   "Marek Szyprowski" <m.szyprowski@samsung.com>,  <airlied@redhat.com>,
   <iommu@lists.linux.dev>
-Subject: Re: [PATCH v13 4/7] rust: device: add dma addressing capabilities
-In-Reply-To: <20250307110821.1703422-5-abdiel.janulgue@gmail.com> (Abdiel
-	Janulgue's message of "Fri, 07 Mar 2025 13:06:21 +0200")
+Subject: Re: [PATCH v13 2/7] rust: add dma coherent allocator abstraction.
+In-Reply-To: <20250307110821.1703422-3-abdiel.janulgue@gmail.com> (Abdiel
+	Janulgue's message of "Fri, 07 Mar 2025 13:06:19 +0200")
 References: <20250307110821.1703422-1-abdiel.janulgue@gmail.com>
-	<nxaaNW1XIbhf7dSf8aRLVF5Se-0maF6BhX8GaUXlsOL-QOste8OMQxtmhYe_BYI6FYFEMeHEzy1s4OEy7PdGKw==@protonmail.internalid>
-	<20250307110821.1703422-5-abdiel.janulgue@gmail.com>
+	<ON3xPFZKwDe669Eic3fleeCuj2PZ8YyJQY9XrhmZgeKr3QzeQaObo4o4af-hJmU9RCrKn6zui34cF4M3P4bSAw==@protonmail.internalid>
+	<20250307110821.1703422-3-abdiel.janulgue@gmail.com>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Fri, 07 Mar 2025 21:12:38 +0100
-Message-ID: <877c5038i1.fsf@kernel.org>
+Date: Fri, 07 Mar 2025 21:40:30 +0100
+Message-ID: <871pv8377l.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -58,98 +58,60 @@ Content-Type: text/plain
 
 "Abdiel Janulgue" <abdiel.janulgue@gmail.com> writes:
 
-> Add functions to set the DMA mask to inform the kernel about the
-> device's DMA addressing capabilities.
+> Add a simple dma coherent allocator rust abstraction. Based on
+> Andreas Hindborg's dma abstractions from the rnvme driver, which
+> was also based on earlier work by Wedson Almeida Filho.
+>
+> A CoherentAllocation is wrapped in Devres which basically guarantees
+> that a driver can't make a CoherentAllocation out-live driver unbind.
+> This is needed, since DMA allocations potentially also result in
+> programming of the IOMMU. IOMMU mappings are device resources and
+> hence the device / driver lifecycle needs to be enforced.
 >
 > Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
 > ---
->  rust/helpers/dma.c     |  8 ++++++++
->  rust/helpers/helpers.c |  1 +
->  rust/kernel/device.rs  | 29 +++++++++++++++++++++++++++++
->  3 files changed, 38 insertions(+)
->  create mode 100644 rust/helpers/dma.c
->
-> diff --git a/rust/helpers/dma.c b/rust/helpers/dma.c
-> new file mode 100644
-> index 000000000000..8eb482386f93
-> --- /dev/null
-> +++ b/rust/helpers/dma.c
-> @@ -0,0 +1,8 @@
-> +// SPDX-License-Identifier: GPL-2.0
 > +
-> +#include <linux/dma-mapping.h>
-> +
-> +int rust_helper_dma_set_mask_and_coherent(struct device *dev, u64 mask)
-> +{
-> +	return dma_set_mask_and_coherent(dev, mask);
-> +}
-> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-> index 0640b7e115be..8f3808c8b7fe 100644
-> --- a/rust/helpers/helpers.c
-> +++ b/rust/helpers/helpers.c
-> @@ -13,6 +13,7 @@
->  #include "build_bug.c"
->  #include "cred.c"
->  #include "device.c"
-> +#include "dma.c"
->  #include "err.c"
->  #include "fs.c"
->  #include "io.c"
-> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-> index db2d9658ba47..f9d3d4f60ddb 100644
-> --- a/rust/kernel/device.rs
-> +++ b/rust/kernel/device.rs
-> @@ -6,10 +6,12 @@
->
->  use crate::{
->      bindings,
-> +    error::Result,
->      str::CStr,
->      types::{ARef, Opaque},
->  };
->  use core::{fmt, ptr};
-> +use kernel::prelude::*;
->
->  #[cfg(CONFIG_PRINTK)]
->  use crate::c_str;
-> @@ -187,6 +189,33 @@ pub fn property_present(&self, name: &CStr) -> bool {
->          // SAFETY: By the invariant of `CStr`, `name` is null-terminated.
->          unsafe { bindings::device_property_present(self.as_raw().cast_const(), name.as_char_ptr()) }
->      }
-> +
-> +    /// Inform the kernel about the device's DMA addressing capabilities.
+> +    /// Reads the value of `field` and ensures that its type is [`FromBytes`].
 > +    ///
-> +    /// Set both the DMA mask and the coherent DMA mask to the same thing.
-> +    /// Note that we don't check the return value from the C `dma_set_coherent_mask`
-> +    /// as the DMA API guarantees that the coherent DMA mask can be set to
-> +    /// the same or smaller than the streaming DMA mask.
-> +    pub fn dma_set_mask_and_coherent(&mut self, mask: u64) -> Result {
-> +        // SAFETY: device pointer is guaranteed as valid by invariant on `Device`.
-> +        let ret = unsafe { bindings::dma_set_mask_and_coherent(self.as_raw(), mask) };
-> +        if ret != 0 {
-> +            Err(Error::from_errno(ret))
-> +        } else {
-> +            Ok(())
-> +        }
-> +    }
+> +    /// # Safety
+> +    ///
+> +    /// This must be called from the [`dma_read`] macro which ensures that the `field` pointer is
+> +    /// validated beforehand.
+> +    ///
+> +    /// Public but hidden since it should only be used from [`dma_read`] macro.
+> +    #[doc(hidden)]
+> +    pub unsafe fn field_read<F: FromBytes>(&self, field: *const F) -> F {
+> +        // SAFETY: By the safety requirements field is valid.
+> +        unsafe { field.read_volatile() }
 
-I think we can use `Error::from_errno` here (and below). As far as I can
-tell, these C functions return negative on error.
+From the docs of `read_volatile`:
 
-> +
-> +    /// Same as [`dma_set_mask_and_coherent`], but set the mask only for streaming mappings.
-> +    pub fn dma_set_mask(&mut self, mask: u64) -> Result {
-> +        // SAFETY: device pointer is guaranteed as valid by invariant on `Device`.
-> +        let ret = unsafe { bindings::dma_set_mask(self.as_raw(), mask) };
-> +        if ret != 0 {
-> +            Err(Error::from_errno(ret))
-> +        } else {
-> +            Ok(())
-> +        }
-> +    }
->  }
->
->  // SAFETY: Instances of `Device` are always reference-counted.
+   Just like in C, whether an operation is volatile has no bearing
+   whatsoever on questions involving concurrent access from multiple
+   threads. Volatile accesses behave exactly like non-atomic accesses in
+   that regard. In particular, a race between a read_volatile and any
+   write operation to the same location is undefined behavior.
+
+So the safety requirement is not sufficient. Alice responded to my
+question on v12:
+
+   > Volatile reads/writes that race are OK?
+
+   I will not give a blanket yes to that. If you read their docs, you
+   will find that they claim to not allow it. But they are the correct
+   choice for DMA memory, and there's no way in practice to get
+   miscompilations on memory locations that are only accessed with
+   volatile operations, and never have references to them created.
+
+   In general, this will fall into the exception that we've been given
+   from the Rust people. In cases such as this where the Rust language
+   does not give us the operation we want, do it like you do in C. Since
+   Rust uses LLVM which does not miscompile the C part of the kernel, it
+   should not miscompile the Rust part either.
+
+Since we have an exception for the safety requirements in the
+documentation, we should make that clear in the safety comment at the
+call site.
 
 
 Best regards,
