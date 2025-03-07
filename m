@@ -1,217 +1,105 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C82F202F9A
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Mar 2025 09:05:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1796DC2E0;
+	Fri,  7 Mar 2025 09:10:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741338311; cv=none; b=ST0VIaIGy4wKvJ7s1m31m4eCGo6HLpFfIRpPmVPSGbjLsEyGw3PPWNMcesHsUKhHPpVNYSKkf/LYpfAy4dUjgCJoPBdWBPKUIOd8T3O2of/VsGd+WEWKI555wkfH1bAF9FHzysyRgKFPzbIVtxC9xTRW9MtQXHxrVL4K2CDaNjY=
+	t=1741338609; cv=none; b=LcJPMA+AyLXcTLWJ1bVvwcRc1RrxyVSzgk3NoZHVjyDeoaU/JlHEggfGtf8vx1We/U1TvDPMcZHVJZfIq/gjpKYz+CTE9Cda0rCRqlQy+iGP9lAo/OTz+4ROlzeol/sdA6iqDbVV87vIKdm6bdJKOpsmlrUDA6wMB5e4KZfJgL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741338311; c=relaxed/simple;
-	bh=sIgpg5Z+kT4ZxmXKrwRqNpariABEca6JU6hGPKgiICg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=E0JwSoN/eFd2WxMhcBCnsTEiXa+pZkEm054t4cq4DUGghZAUUuYR+pK7CzY0XW9zgshhlmuGEO6byekS1cmhJwAeeQc91PUkqcWyHXLySz3lEe/bwWufC7lKGp2VC/+m8D3ibDYq3IWtavLF6W/ZrJmxw9ZnBeCBkfFshGWfEBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s73t25w8; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com
+	s=arc-20240116; t=1741338609; c=relaxed/simple;
+	bh=U2FVI4xcxSsKvXkcx9/dl4qkBmci0IUrmk9oTZ/O+w8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=GjBylyjRBg8Za4cwXIdzRdMM1DOQW1CErcoi3VLpsLRaU6P+K4dG1i4vxb9PH3UkYwLNqEqVM3347w0mDofxinsBVnMOefjctZuzEiy+BwJn53l4iNmpXefVFpNuAZTz4rYNqLZ6fQGVcNhBOrCEdJrpHhIMbPAhyKPBA9KGSEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O1H9mq/8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s73t25w8"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2ff78bd3026so1828958a91.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 07 Mar 2025 01:05:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741338308; x=1741943108; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zRuk23B1HYGUDb1k19WG8K3aurYaMSpuYJ0SBDb3Nis=;
-        b=s73t25w8ILowIGPNhtVATVkiv6a1IqrQug3t+eZAkgSMoU+3IWHx/U8+1CY0+JHVmt
-         62V1eBTK1ffjiguIhObFhG2Q5XLmvPnP2xNbNce23Fkdk6lSKzF+m2k2vBHtVdlzC0ml
-         yShcae8msH1WBXMZHgWUrLwH/+IhEIHqzUPMBnXa7MauK7y89GnG1zV4CPQS7rrmhFV1
-         0hh8RHu7ptgJkyVW0kZRWA/f1hOcf/qB95vPGxJvsNBrZDXHk4l/Ht+MHEZ5NweVGXwL
-         qBKSMrKAYU5SJEITdlprifqJKl+7XRUoJgRfJEHHv3KgyQX4HRSbih8DmumcW634J9ri
-         PNIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741338308; x=1741943108;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=zRuk23B1HYGUDb1k19WG8K3aurYaMSpuYJ0SBDb3Nis=;
-        b=g1Z4pu4Rr80o/F2MadmimtwMipMkBFS37WsND3kujACWQ1SdBsjqTsKEtc6XexF+Z5
-         46r59GcPgN2cIvEi14CQUKuJumC/JiTnURea7q4Ud8dHi1vVSG8mZKrAnmh6iJ8N+GIv
-         ASz+9tIAhNPIljtJ5Mj2RpA3j966PUtGtawmOyC9osSD36MpJ1ehuSXW4Uv56am38Eb9
-         a1eWaXQd5IycBSGdwKsnxSX5bm02/uxBuXzOcye3NGqnx/enLX+VgimiDPN6z199A+Vh
-         RMue446dnO4flQZKRVnOU0IpmbHkVyQD2szFVUdieJmx7WkAxhWXdctwEbt9+rnqV72m
-         KC8A==
-X-Forwarded-Encrypted: i=1; AJvYcCXpjgnoQNaUvwhhS6hMgQsNYNrNICrbCzmjXOKDw09/kCoZC4BYBmlF+z6B8ibmEOso+2p7yEKfcPWqKelVYQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxj7tFXMsxoh6fwum3nVKGCslJ9DWPMlzatG/i04CAffFriIUqX
-	uIL3uw+l1fxzgbI0ZL3mqmFcybogizD0BXQSbaVoek8qOnwlPG9yopbTz2I2S2lEdhiRpM8JctP
-	cAPeygKuijQ==
-X-Google-Smtp-Source: AGHT+IEMh2qJqItWBdivwZ20S1IgBdnlDDo2ThbaF/uKAWdN2IAz2GUfOQGkeHgejgR3WFapaEocrzpWeyAa/Q==
-X-Received: from pfie21.prod.google.com ([2002:a62:ee15:0:b0:732:6425:de9a])
- (user=davidgow job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:a11f:b0:1f2:f1a8:fbc8 with SMTP id adf61e73a8af0-1f544ad7265mr5374068637.2.1741338308594;
- Fri, 07 Mar 2025 01:05:08 -0800 (PST)
-Date: Fri,  7 Mar 2025 17:00:58 +0800
-In-Reply-To: <20250307090103.918788-1-davidgow@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O1H9mq/8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB02C4CED1;
+	Fri,  7 Mar 2025 09:10:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741338605;
+	bh=U2FVI4xcxSsKvXkcx9/dl4qkBmci0IUrmk9oTZ/O+w8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=O1H9mq/8tvM+Ds6qKS0v/C/qqPtXjJ6L1QWWyENJTr2lzQiePR3dz3OUmrB6R4T1R
+	 HLlgEOci4Z1u8GhpXEYlv2WSoj6H3L8nqMRbsFUzOv8t0O/RViM3wfNIiZywr+bahh
+	 hFiImzQyka6omCZoWQ1naMG869n5R0AEUMB/iPU2Y3mdfzR9W0mihRfLn6dkdYtNFr
+	 IRJJ1bpSv28WQsxO16HSx1J96N4buKYSn24kGmxiGEv0P0XzMM7bFThw9JedF2etMq
+	 XYyv8NuCCVMFms+HfzTQXs8MXaF+e/wDWZPf8+PZe8AObcXCovoZBAoWCnaumsHCzm
+	 lSHeDDfdz9I1w==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Tamir Duberstein" <tamird@gmail.com>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Anna-Maria Behnsen"
+ <anna-maria@linutronix.de>,  "Frederic Weisbecker" <frederic@kernel.org>,
+  "Thomas Gleixner" <tglx@linutronix.de>,  "Danilo Krummrich"
+ <dakr@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
+ <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
+ =?utf-8?Q?=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
+  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
+  "Lyude Paul" <lyude@redhat.com>,  "Guangbo Cui" <2407018371@qq.com>,
+  "Dirk Behme" <dirk.behme@gmail.com>,  "Daniel Almeida"
+ <daniel.almeida@collabora.com>,  <rust-for-linux@vger.kernel.org>,
+  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v9 01/13] rust: hrtimer: introduce hrtimer support
+In-Reply-To: <CAJ-ks9mozekrYvwFTJ4qKj3cpDa37+gUKefiZ1OscU9mP3NjuQ@mail.gmail.com>
+ (Tamir
+	Duberstein's message of "Wed, 26 Feb 2025 10:29:34 -0500")
+References: <20250224-hrtimer-v3-v6-12-rc2-v9-0-5bd3bf0ce6cc@kernel.org>
+	<20250224-hrtimer-v3-v6-12-rc2-v9-1-5bd3bf0ce6cc@kernel.org>
+	<q5sIYQbnCqKmdnZZy-eaKvSUY7O5pOy2-QzwWwCo9VoormFcKS6RS3OVIIby-Pf5PDpTRh67txem3sXQKSB1JQ==@protonmail.internalid>
+	<CAJ-ks9nj8+fXM_oo0LJo4O6Q=skFRcHwz8TLxw-yB3QTcDF9GA@mail.gmail.com>
+	<87cyf6xv7g.fsf@kernel.org>
+	<Wy3wqzRK5qG3GyHC7oEg3NR3tv9-Uv7m_tmgKZTHNEU6aZX5hxrIXLudLfzQvuZNvIz1Av2fKzH5eTvomny1Vg==@protonmail.internalid>
+	<CAJ-ks9=PR-Laj37NqG5s_TbKddONWxp4-Cf3C57AMk9z92mfDQ@mail.gmail.com>
+	<87r03lvnx4.fsf@kernel.org>
+	<RWZWPbf2ND3HRx_kFFVnjBngQMWjrmbidBCzyJr58iQsksyu5SpJVfCiEjf7WYWFOz6eWib5Q9j23QmbSqXyEQ==@protonmail.internalid>
+	<CAJ-ks9mCvGJoeLhkGHLU-7Q-=g_4XHfX4DBX9w=ZcP4jpWXsPQ@mail.gmail.com>
+	<87eczludtp.fsf@kernel.org>
+	<5Rw5FzjGNleoSZMNFRziOKrYHsHzxXJoSmBTH0VXvx7vSLojQvEN5iSvf7HYuQjNUp8ehIxfLvm3U_6r2YZxXQ==@protonmail.internalid>
+	<CAJ-ks9mozekrYvwFTJ4qKj3cpDa37+gUKefiZ1OscU9mP3NjuQ@mail.gmail.com>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Fri, 07 Mar 2025 10:09:52 +0100
+Message-ID: <87a59x5hr3.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250307090103.918788-1-davidgow@google.com>
-X-Mailer: git-send-email 2.49.0.rc0.332.g42c0ae87b1-goog
-Message-ID: <20250307090103.918788-4-davidgow@google.com>
-Subject: [PATCH v8 3/3] rust: kunit: allow to know if we are in a test
-From: David Gow <davidgow@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>, 
-	"=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?=" <jose.exposito89@gmail.com>, Rae Moar <rmoar@google.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, Benno Lossin <benno.lossin@proton.me>, 
-	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Matt Gilbride <mattgilbride@google.com>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	Tamir Duberstein <tamird@gmail.com>
-Cc: kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	David Gow <davidgow@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-From: Jos=C3=A9 Exp=C3=B3sito <jose.exposito89@gmail.com>
+"Tamir Duberstein" <tamird@gmail.com> writes:
 
-In some cases, we need to call test-only code from outside the test
-case, for example, to mock a function or a module.
+> On Wed, Feb 26, 2025 at 6:48=E2=80=AFAM Andreas Hindborg <a.hindborg@kern=
+el.org> wrote:
+>>
+>> "Tamir Duberstein" <tamird@gmail.com> writes:
+>>
+>> > Sorry, I meant HasHrTimer and HrTimerPointer rather than HrTimer and
+>> > HrTimerPointer.
+>>
+>> `HasHrTimer` is named so because it is meant to be implemented by types
+>> that contain a field of type `HrTimer`.
+>>
+>> `HrTimerPointer` is meant to be implemented by pointer types that point
+>> to types that implement `HasHrTimer`.
+>>
+>> They are different, and the naming reflect that.
+>>
+>> I will not rename `HasHrTimer` to `ContainsHrTimer`, because the rest of
+>> the rust kernel uses the `HasFoo` naming scheme.
+>
+> The Has prefix makes sense in HasHrTimer. Shouldn't the name
+> HrTimerPointer also contain "Has"? HasHrTimerPointer would be
+> confusing, but perhaps PointerToHasHrTimer? It's a mouthful to be
+> sure.
 
-In order to check whether we are in a test or not, we need to test if
-`CONFIG_KUNIT` is set.
-Unfortunately, we cannot rely only on this condition because:
-- a test could be running in another thread,
-- some distros compile KUnit in production kernels, so checking at runtime
-  that `current->kunit_test !=3D NULL` is required.
+I get your point, but I really think that `HasHrTimer` and
+`HrTimerPointer` is pretty good. Names _can_ get too long.
 
-Forturately, KUnit provides an optimised check in
-`kunit_get_current_test()`, which checks CONFIG_KUNIT, a global static
-key, and then the current thread's running KUnit test.
 
-Add a safe wrapper function around this to know whether or not we are in
-a KUnit test and examples showing how to mock a function and a module.
+Best regards,
+Andreas Hindborg
 
-Signed-off-by: Jos=C3=A9 Exp=C3=B3sito <jose.exposito89@gmail.com>
-Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Co-developed-by: David Gow <davidgow@google.com>
-Signed-off-by: David Gow <davidgow@google.com>
----
-
-Changes since v7:
-https://lore.kernel.org/rust-for-linux/20250214074051.1619256-4-davidgow@go=
-ogle.com/
-- Remove the second example, which shadowed a function in order to mock
-  it, as it was (a) unclear that it is only useful for code in the same
-  file as the test, and (b) didn't use in_kunit_test(), which would've
-  made it more useful (but still limited). The first example should be
-  good enough to point people in the right direction for now. (Thanks,
-  Tamir)
-
-Changes since v6:
-https://lore.kernel.org/rust-for-linux/20250214074051.1619256-4-davidgow@go=
-ogle.com/
-- Doc comments now have a useful link. (Thanks, Tamir!)
-- A small tidy-up to limit unsafe usage. (Thanks, Tamir!)
-
-Changes since v5:
-https://lore.kernel.org/all/20241213081035.2069066-4-davidgow@google.com/
-- Greatly improved documentation, which is both clearer and better
-  matches the rustdoc norm. (Thanks, Miguel)
-- The examples and safety comments are also both more idiomatic an
-  cleaner. (Thanks, Miguel)
-- More things sit appropriately behind CONFIG_KUNIT (Thanks, Miguel)
-
-Changes since v4:
-https://lore.kernel.org/linux-kselftest/20241101064505.3820737-4-davidgow@g=
-oogle.com/
-- Rebased against 6.13-rc1
-- Fix some missing safety comments, and remove some unneeded 'unsafe'
-  blocks. (Thanks Boqun)
-
-Changes since v3:
-https://lore.kernel.org/linux-kselftest/20241030045719.3085147-8-davidgow@g=
-oogle.com/
-- The example test has been updated to no longer use assert_eq!() with
-  a constant bool argument (fixes a clippy warning).
-
-No changes since v2:
-https://lore.kernel.org/linux-kselftest/20241029092422.2884505-4-davidgow@g=
-oogle.com/
-
-Changes since v1:
-https://lore.kernel.org/lkml/20230720-rustbind-v1-3-c80db349e3b5@google.com=
-/
-- Rebased on top of rust-next.
-- Use the `kunit_get_current_test()` C function, which wasn't previously
-  available, instead of rolling our own.
-- (Thanks also to Boqun for suggesting a nicer way of implementing this,
-  which I tried, but the `kunit_get_current_test()` version obsoleted.)
----
- rust/kernel/kunit.rs | 36 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
-
-diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
-index 97e99b52e4a9..7388fa831b8e 100644
---- a/rust/kernel/kunit.rs
-+++ b/rust/kernel/kunit.rs
-@@ -288,11 +288,47 @@ macro_rules! kunit_unsafe_test_suite {
-     };
- }
-=20
-+/// Returns whether we are currently running a KUnit test.
-+///
-+/// In some cases, you need to call test-only code from outside the test c=
-ase, for example, to
-+/// create a function mock. This function allows to change behavior depend=
-ing on whether we are
-+/// currently running a KUnit test or not.
-+///
-+/// # Examples
-+///
-+/// This example shows how a function can be mocked to return a well-known=
- value while testing:
-+///
-+/// ```
-+/// # use kernel::kunit::in_kunit_test;
-+/// fn fn_mock_example(n: i32) -> i32 {
-+///     if in_kunit_test() {
-+///         return 100;
-+///     }
-+///
-+///     n + 1
-+/// }
-+///
-+/// let mock_res =3D fn_mock_example(5);
-+/// assert_eq!(mock_res, 100);
-+/// ```
-+pub fn in_kunit_test() -> bool {
-+    // SAFETY: `kunit_get_current_test()` is always safe to call (it has f=
-allbacks for
-+    // when KUnit is not enabled).
-+    !unsafe { bindings::kunit_get_current_test() }.is_null()
-+}
-+
- #[kunit_tests(rust_kernel_kunit)]
- mod tests {
-+    use super::*;
-+
-     #[test]
-     fn rust_test_kunit_example_test() {
-         #![expect(clippy::eq_op)]
-         assert_eq!(1 + 1, 2);
-     }
-+
-+    #[test]
-+    fn rust_test_kunit_in_kunit_test() {
-+        assert!(in_kunit_test());
-+    }
- }
---=20
-2.49.0.rc0.332.g42c0ae87b1-goog
 
