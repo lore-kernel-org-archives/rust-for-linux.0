@@ -1,63 +1,94 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0E339ACC;
-	Fri,  7 Mar 2025 13:23:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B17120E00D
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Mar 2025 13:26:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741353803; cv=none; b=XG/g7aMiJANcPBSSDcG9Y9YNGYH2FdTbBFOYJaZZcEIPXZJLVLNE4dBUUumM8Jl6BaqmEokp1eECYZoX2cJscRRmCZ8d+r+2/HRXtDLVuGTaCavScTw3l319i5RILfSWDHQfuoBwcLCiXIzx6Sp33PUGXJ718yyRiDrNSTE2oUU=
+	t=1741353981; cv=none; b=CJlJUocoZv7AReQmexF0q4c4ziuHJKc90rHNHpCAtE2bvPNzq46lF/0j8gLzp1O4fWVZZdIc4I89L72l//vs+yu93duXT7GnS/p2Wz8SrMdoxPOjXz6rBA4hSxLj1u+enpWiTj02lcBOlXamKQpJIcoDVSGB6AQmLW85/K5Isjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741353803; c=relaxed/simple;
-	bh=4WxMkD6CWyChQWUEG9Os74cWrdBRR9i/mnauP29FhQA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vFMcIbufijHHrtnvVsqUvWCXbdWc1Q1GaSY3V2020O6kDusLDSGTsCrvRHLZSDCB/lzzgmOn2DH4He5AnRrOyfPICitA8QevysvznIeB6ZBOmGETyLD13Jq1KTDezS0puaJHR65ak70b/jzVp1SBfGVaTzCRC2xqCUfiKhEBxjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=OVtHNwYT; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1741353981; c=relaxed/simple;
+	bh=i/Nd47neKspIbrpCGTysdhYwJN/jpzlkct1vJ8I0ugw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Pyv05sSe7UGKXe3f2LuLXeBFafS/6umsxjNh11VM717cIa7HwnfPoC0Yq1/7vviokatBvBq9WPbCNV9+yrO1/Z7KlXJn9wdnUK+ORqjWp2o3Yedex3vzPIBzufByzpCHGkqgjDdY+qxsDsWht4oAlE0YswGf0lBSqeHUSXFmTbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lMDNUjQH; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="OVtHNwYT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1741353800; x=1741613000;
-	bh=4WxMkD6CWyChQWUEG9Os74cWrdBRR9i/mnauP29FhQA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=OVtHNwYTOnfPsM5SvBMF8K8nqWh2pTMDquHO8MEK+SNTE2q4odDI5WQ/Q6G7shTp1
-	 GZGJy4/xHWlZto/RLuWVxkRzQgMePqqwOy6sSgNmslLN24gIkkn/tb6eeTVgPt8hcX
-	 AaAMRVVqp/7nSpL+pv2g0RAE808bO3JyQvk8yX+/Oj7+/j9Sx8qDa6E+VsXq0nbRxQ
-	 kAs2JSAMCgkSmbmz7ll/LmcnzMtG1GjsTbc/x/nPPAl1L16YSzNSCLcfq52zwXubfl
-	 kCKHb8xiRJU6Jo0ljgsKhK+UI6O91fWgF1a8xE1d3HK7vK7bWi25xA6i7Hyz+B7z3+
-	 HOzxvD2TWce/w==
-Date: Fri, 07 Mar 2025 13:23:15 +0000
-To: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Danilo Krummrich <dakr@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, Markus Elfring <Markus.Elfring@web.de>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v10 12/13] rust: hrtimer: add clocksource selection through `ClockId`
-Message-ID: <D8A2EFIWWJI6.YSGD4KNNDYFX@proton.me>
-In-Reply-To: <20250307-hrtimer-v3-v6-12-rc2-v10-12-0cf7e9491da4@kernel.org>
-References: <20250307-hrtimer-v3-v6-12-rc2-v10-0-0cf7e9491da4@kernel.org> <20250307-hrtimer-v3-v6-12-rc2-v10-12-0cf7e9491da4@kernel.org>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 2b7d2f67b764e6bff4b81e640caa986fcc2b35ef
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lMDNUjQH"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43ce245c5acso634475e9.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 07 Mar 2025 05:26:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1741353978; x=1741958778; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=sK8tKr89R3hEy8Nz4X9L555xpgSDTxpTa0yPlA5H/0k=;
+        b=lMDNUjQH/kpEAmmjdYvFYDqkRbM1NIrQlcR5+e5MqHsQljPYfXE3MkRYx/ISzTy5+v
+         vmpWGlpyfdkKwZSlwO+CISTc/NcXSixYw5s9G8cU/BDH9a9toYOk2NxOQLXcGroP9sc0
+         fy/1bx/3cvjMD7X0dTMeM+0dnNsDPiP7XCwW8qv/1JfT0RTVj/MJ22sg71nBUM93V4sy
+         dxZfl2BRnDOyJTQW6RsZ4uxhZgqOJYpqIrfPVHVXh9LKpcbKOEa+7AaF2owx/l0ELvfd
+         pScMDbLPPO8XOCk0VF7/4x4EFsrqfX5Bk6RhyG1lLpFlMc9CW4LwDNvHBhE4tGjLC+mZ
+         e7uA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741353978; x=1741958778;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sK8tKr89R3hEy8Nz4X9L555xpgSDTxpTa0yPlA5H/0k=;
+        b=miqNbzM1m4AiFLgBSU04BDc0ystpV46ANqe2dIBP+1w+MXr1Ck8OUu4bavmV8HrWKS
+         RD2/dnrF/cvR6ebZtgERlZNneUnj2K//rRHtCOBnQZ1iRtC0iDH4VJnwZ6XKjCQc57oe
+         l08XlxCGebtwa1Jovh0nAmhhgZwUH1XfTGPgRaptIGdtlrql6Atk9/pcCsBQ4P8raVZD
+         EBoHMW6nf7olDzCG2jpSrsJ24aU4to5SvAMyLAYEUVWMlOaxljMGhmqfiEq1VtuysosX
+         QboOciV4Lz3G9FlicSG7r319OdGaEEAfxcs8ljS6UNmYIvBt6O3La1b131x14JIbKzgt
+         Jj7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUlP0ABHLKHhJfUi1AUOyAo1OrjzZOu20ex7dvnCpfUObg5dXWZri0N6TMk+You5htipuYbyaFF/HRZXF+sOw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzE0faC3IEoZZMjF6S/5kdq64brXlEzRPLyxhFB5CCNNN4CvUNU
+	7YlvuE5GVX0DwHMUJ0z9BqtQ8smOE+2n7xCdYxaW7WIiW6b/kLOlxDY9MvhBtK0Rope2kyPCdUw
+	VwwYlhMG+BW85tw==
+X-Google-Smtp-Source: AGHT+IHD2hPdViwRHmZBv75Fs8RZCsKFOeBeHbYroGDlwM5dRIq4MeJ+VqXbFaA1Sy6Oi5WcvmL7+mxRBt3lsKs=
+X-Received: from wmbfl19.prod.google.com ([2002:a05:600c:b93:b0:43b:cfc3:aabb])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4750:b0:439:9828:c434 with SMTP id 5b1f17b1804b1-43c60ae9832mr21207035e9.20.1741353977854;
+ Fri, 07 Mar 2025 05:26:17 -0800 (PST)
+Date: Fri, 7 Mar 2025 13:26:14 +0000
+In-Reply-To: <20250307131401.638820-2-trintaeoitogc@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20250307131401.638820-1-trintaeoitogc@gmail.com> <20250307131401.638820-2-trintaeoitogc@gmail.com>
+Message-ID: <Z8rz9nrY7Yj1Z2hP@google.com>
+Subject: Re: [PATCH V7 1/2] rust: module: change author to an array
+From: Alice Ryhl <aliceryhl@google.com>
+To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, apw@canonical.com, 
+	arnd@arndb.de, aswinunni01@gmail.com, axboe@kernel.dk, benno.lossin@proton.me, 
+	bhelgaas@google.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
+	dakr@kernel.org, dwaipayanray1@gmail.com, ethan.twardy@gmail.com, 
+	fujita.tomonori@gmail.com, gary@garyguo.net, gregkh@linuxfoundation.org, 
+	joe@perches.com, lukas.bulwahn@gmail.com, ojeda@kernel.org, 
+	pbonzini@redhat.com, tmgross@umich.edu, walmeida@microsoft.com, 
+	charmitro@posteo.net, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Fri Mar 7, 2025 at 11:11 AM CET, Andreas Hindborg wrote:
-> Allow selecting a clock source for timers by passing a `ClockId`
-> variant to `HrTimer::new`.
->
-> Acked-by: Frederic Weisbecker <frederic@kernel.org>
-> Reviewed-by: Lyude Paul <lyude@redhat.com>
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+On Fri, Mar 07, 2025 at 10:14:00AM -0300, Guilherme Giacomo Simoes wrote:
+> In the module! macro, the author field is currently of type String.
+> Since modules can have multiple authors, this limitation prevents
+> specifying more than one.
+> Change the author field to Option<Vec<String>> to allow creating modules
+> with multiple authors. Additionally, rename the field from author to
+> authors to make it explicit that it can refer to multiple authors.  In
+> modules that use the author field, update its value to an array of
+> strings, and also rename it from author to authors.
+> 
+> Suggested-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+> Link: https://github.com/Rust-for-Linux/linux/issues/244
+> Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+I believe I reviewed this on the previous version. Did you forget to
+pick up my tag, or did you change something in this patch that requires
+a re-review?
 
----
-Cheers,
-Benno
-
+Alice
