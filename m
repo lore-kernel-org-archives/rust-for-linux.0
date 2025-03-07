@@ -1,43 +1,43 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF74521ADB7
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Mar 2025 13:49:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6020621ADC4
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Mar 2025 13:51:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741355394; cv=none; b=aaBHzQfw/C2rFQVN9ed/RAjNmHzpnh/bAI8889SJ1wQLXxN+dTtEXtGFh7sggbijToHhRmLWkD7/kLZS3mdZIP8ANdTSud/AiKEEErcxmLRNT7Io1HbwVHXawunhDtNSIOc37/LRG0POJVxQ4YgF4DThDIaEX+GpUCyFX/GETeg=
+	t=1741355469; cv=none; b=gfJ4nMLxWFidXQrP17887F945au7qgZJR4unYRVU+KBqfuCrT8LadDTqNIxWXhkB4Mkwl1XwE/2xoR0uGzRNeoJQxlnSBj5dMtuSTPYk680lq4Gy+vm+lrP4ihSuFxOK0Jugk1TYUPMC/keAfgbMb8h4qyyPlLiJVXGEM4/ioSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741355394; c=relaxed/simple;
-	bh=yW9/4dLSersMO4DNHldQci8zupCYVd7u26yzS3h3m0o=;
+	s=arc-20240116; t=1741355469; c=relaxed/simple;
+	bh=yvJGPy1VFx0K6jKPXutCOnVSEUIflxIglSHngdnZmic=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CQ0UXrrqbvViHo7zU6D50Q3L8lXyioJDtLU9nApLQ/YC1Se4lugVQa8zmAxFM6Uek5AeAbXZF3BiinT38F+nsqQOYDU4n0EEHsxMrQOYVJUXE8igROkQjKZK7hEgXgCTS5oGJUhL8ZfxvVr2J5makUcYtaCZFzKJDlvl23JQGfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=mWBD89Ur; arc=none smtp.client-ip=185.70.40.133
+	 MIME-Version:Content-Type; b=tAJwhV05jcX+k8XzCszAJu3LRwPsFjEWXRWjtJPdbsCE0Qx3EbnU3FHBZ3kbNr6AaEmRAKM2x4vzuBXKqvId0j3cY/JSMBxC5vb2a6IVwnCx/VjALFdWpDrROFTJTshK5emM9hF0FuH0j1wIF+I1g2a0Kuueov3JT1bkt48It1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=bWKpYtaL; arc=none smtp.client-ip=185.70.40.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="mWBD89Ur"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="bWKpYtaL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=6fptnopq2ffptbx2q4fbd7bngq.protonmail; t=1741355389; x=1741614589;
-	bh=EEYoYNAuUuPoPs1W8X1jIbMyhvVpA6cLe6iGvpj1uPg=;
+	s=ng65oqhcvbczrlbale3hstnoua.protonmail; t=1741355466; x=1741614666;
+	bh=tElGIhgf67HZvxIrD/1jG0VGn45wzGBOfP+OypacSoI=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=mWBD89UrSunFxSSed9piHZRVnTVTQbSfHGj68T4nj05bbQwvR4DgIxFkpHzZ/J6Zt
-	 Q1kHAQezzzYRAFj6jIH+35y9OadKXgOuHlSefrTqaS9YfNxMWMge7w3fXunyCjD1yR
-	 90sIhMEiMhSHMyQv4KJUjHXihlyonOYxW6ZYYwKwjoI1LsCJaVU6ZePMpLR4Ez+sRy
-	 dO07ivR/bO690AQwCmNLOmVxjEP54qsiauNBQ9SyhFw7aYmrSJnuIDnD3/CRtY6ZiH
-	 ke30h7hELhG3moZxZR+uFvWWTO5Ig1MoOeCpfDdiZDPTzjte18xw82Zu7DCBeuRAzY
-	 hBX0mCFcydjBA==
-Date: Fri, 07 Mar 2025 13:49:43 +0000
-To: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Danilo Krummrich <dakr@kernel.org>
+	b=bWKpYtaLOS0cuUusKzEF0DYrNOt3VY7fPZC96UtaMNUh6X/NjaTtCGum/W7TPV2CN
+	 w1pO3DASrvTDy/7l8488XC4Wa8radCDXOB1cpV3TDSDiZH+HMUVF9SSQXSUsRRi62P
+	 n1L9UHc/2tcW3d5cMJa/N/2orJNr1RsABZP1YBYxGu78UpEYdISS7aSMtCD58AMSSk
+	 rSbrKd9Jltp/UYNO1znSoBlf8MrVwbC3syTjRhccw2hK7nx/wc4qWp4a9geWtvr15X
+	 hJbEtvBNf887EEf4AtekdvTiTfwEkFZSIBQNuZ0jhkJHCUkpwBNldM0SuFIbvbwjae
+	 QgmS4mRa7Ra5Q==
+Date: Fri, 07 Mar 2025 13:51:01 +0000
+To: Andreas Hindborg <a.hindborg@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, Markus Elfring <Markus.Elfring@web.de>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v10 08/13] rust: hrtimer: implement `UnsafeHrTimerPointer` for `Pin<&mut T>`
-Message-ID: <D8A2YP4GF2XL.2MN17TTXW6GM1@proton.me>
-In-Reply-To: <20250307-hrtimer-v3-v6-12-rc2-v10-8-0cf7e9491da4@kernel.org>
-References: <20250307-hrtimer-v3-v6-12-rc2-v10-0-0cf7e9491da4@kernel.org> <20250307-hrtimer-v3-v6-12-rc2-v10-8-0cf7e9491da4@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, Markus Elfring <Markus.Elfring@web.de>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v10 07/13] rust: hrtimer: implement `UnsafeHrTimerPointer` for `Pin<&T>`
+Message-ID: <D8A2ZPH3TSGK.IZ41SSRCL37@proton.me>
+In-Reply-To: <87msdx3qsg.fsf@kernel.org>
+References: <20250307-hrtimer-v3-v6-12-rc2-v10-0-0cf7e9491da4@kernel.org> <20250307-hrtimer-v3-v6-12-rc2-v10-7-0cf7e9491da4@kernel.org> <6-QyjoxR_6TYuJVEXwdFAZrhFz52ZDU_4-r64epTLFpOAMc3jM_REWS-v_7TzdcgYmq1j74UmTnhYW5HdT98bQ==@protonmail.internalid> <D8A25UNDIJHK.216EX6YG4EJ6E@proton.me> <87msdx3qsg.fsf@kernel.org>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 1f35bcd8df090977494af4ce67698d317ace72b0
+X-Pm-Message-ID: 97d428098d5b074b9a1647e0d6fec250d09e913c
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,62 +47,54 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri Mar 7, 2025 at 11:11 AM CET, Andreas Hindborg wrote:
-> Allow pinned mutable references to structs that contain a `HrTimer` node =
-to
-> be scheduled with the `hrtimer` subsystem.
+On Fri Mar 7, 2025 at 2:37 PM CET, Andreas Hindborg wrote:
+> "Benno Lossin" <benno.lossin@proton.me> writes:
+>> On Fri Mar 7, 2025 at 11:11 AM CET, Andreas Hindborg wrote:
+>>> +impl<'a, T> RawHrTimerCallback for Pin<&'a T>
+>>> +where
+>>> +    T: HasHrTimer<T>,
+>>> +    T: HrTimerCallback<Pointer<'a> =3D Self>,
+>>> +{
+>>> +    type CallbackTarget<'b> =3D Self;
+>>> +
+>>> +    unsafe extern "C" fn run(ptr: *mut bindings::hrtimer) -> bindings:=
+:hrtimer_restart {
+>>> +        // `HrTimer` is `repr(C)`
+>>> +        let timer_ptr =3D ptr as *mut HrTimer<T>;
+>>> +
+>>> +        // SAFETY: By the safety requirement of this function, `timer_=
+ptr`
+>>> +        // points to a `HrTimer<T>` contained in an `T`.
+>>> +        let receiver_ptr =3D unsafe { T::timer_container_of(timer_ptr)=
+ };
+>>> +
+>>> +        // SAFETY: By the safety requirement of this function, `timer_=
+ptr`
+>>> +        // points to a `HrTimer<T>` contained in an `T`.
+>>
+>> This justification seems wrong it talks about `HrTimer<T>`, but here we
+>> have a `*const T`... Also see [1] (I am mainly interested in your
+>> justification for the lifetime).
+>>
+>> [1]: https://doc.rust-lang.org/std/ptr/index.html#pointer-to-reference-c=
+onversion
 >
-> Acked-by: Frederic Weisbecker <frederic@kernel.org>
-> Reviewed-by: Lyude Paul <lyude@redhat.com>
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
->  rust/kernel/time/hrtimer.rs         |   2 +
->  rust/kernel/time/hrtimer/pin_mut.rs | 101 ++++++++++++++++++++++++++++++=
-++++++
->  2 files changed, 103 insertions(+)
+> How is this:
 >
-> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-> index 2ca56397eade..d2791fd624b7 100644
-> --- a/rust/kernel/time/hrtimer.rs
-> +++ b/rust/kernel/time/hrtimer.rs
-> @@ -441,3 +441,5 @@ unsafe fn timer_container_of(ptr: *mut $crate::time::=
-hrtimer::HrTimer<$timer_typ
->  pub use arc::ArcHrTimerHandle;
->  mod pin;
->  pub use pin::PinHrTimerHandle;
-> +mod pin_mut;
-> +pub use pin_mut::PinMutHrTimerHandle;
-> diff --git a/rust/kernel/time/hrtimer/pin_mut.rs b/rust/kernel/time/hrtim=
-er/pin_mut.rs
-> new file mode 100644
-> index 000000000000..4f4a9e9602d8
-> --- /dev/null
-> +++ b/rust/kernel/time/hrtimer/pin_mut.rs
-> @@ -0,0 +1,101 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +use super::HasHrTimer;
-> +use super::HrTimer;
-> +use super::HrTimerCallback;
-> +use super::HrTimerHandle;
-> +use super::RawHrTimerCallback;
-> +use super::UnsafeHrTimerPointer;
-> +use crate::time::Ktime;
-> +use core::pin::Pin;
-> +
-> +/// A handle for a `Pin<&mut HasHrTimer>`. When the handle exists, the t=
-imer might
-> +/// be running.
-> +pub struct PinMutHrTimerHandle<'a, T>
-> +where
-> +    T: HasHrTimer<T>,
-> +{
-> +    pub(crate) inner: Pin<&'a mut T>,
+>         // SAFETY:
+>         //  - By the safety requirement of this function, `timer_ptr`
+>         //    points to a `HrTimer<T>` contained in an `T`.
+>         //  - The `PinHrTimerHandle` associated with this timer is guaran=
+teed to
+>         //    be alive until this method returns. As the handle borrows f=
+rom
+>         //    `T`, `T` is also guaranteed to be alive for the duration of=
+ this
+>         //    function.
 
-I just noticed, if `T: Unpin`, this is unsound in combination with you
-creating another `Pin<&mut T>` reference below for the callback, since
-then we have two `&mut T` pointing to the same value. So you should
-store a raw pointer instead.
+Sounds good, if you can also explain (probably somewhere else, as every
+`RawHrTimerCallback` implementer will rely on this) why the handle lives
+for the duration of the callback.
 
 ---
 Cheers,
