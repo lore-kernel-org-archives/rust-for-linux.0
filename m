@@ -1,95 +1,136 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE4421ADC1;
-	Fri,  7 Mar 2025 13:53:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27BAC21ABA4;
+	Fri,  7 Mar 2025 14:00:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741355625; cv=none; b=Aj3SeS7ZjtT/sCB3Ns0ieVuWmqvo6CgpLHjyt9mM8F5/w7via6cPB7tOYV7xZAeOUtdgxPH72YwLFZc4eYcylHPRN4n7FbaxewfN9Wwu2hUk8XtvuXU6uxG/TMeX/nrrygnETRq10tS14v0ivfDPaOkLYKLtfrtH4XeUQEP1ypw=
+	t=1741356014; cv=none; b=T8LBSRGktI28B16R78MdZa5gEmgv9nEarTEhSTNxWKLPsK8wz3dVvVWgsHDUot8d+fk1DoEOXUNS/yrJwyVYB2SnyvBsumjBIHmzCV80h+Xlrm3/Mu1kEgFfYg1YevBseejjjN1o+1qXDKCU43bYPiiS8cTKupfpwp40Fi7skwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741355625; c=relaxed/simple;
-	bh=ICxiMibbj7/tKhMbuP5/fz3kSyF+kvyKF+wZm6FMOLk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ahn7JAZouC1tpiGPpJB2zD5tsDCrIvChYgLU1o8feNQESUIG39im4ZWDXaX+S2u6rQBzVjhapjU9i5wcNTojoUmXkIrPdrTYC3y5smE2d8MDWYmwJuCsuKXNdKfrwlKIX/pwN1iFGKQDPoYeeaEmxpk5xtWRnezJuBz0+WRTu5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y6RPpifQ; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1741356014; c=relaxed/simple;
+	bh=MU+C8WbcetcKkddPtvMu8XaFGjwcxIw90GFaJbuu6iU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iXE+D6rr0rwLOtTsGCXw8lR8pqnPVpiI6p12SsQZSxCtzoQsJMAthvA0kAuzPtWFddrtuuA5lsXRQbYR+7mVursPwNVuW2M4XUXejOwPRvogb5/PbkKe5+Xg0aU6kxRDKdryDtUJsc3WG7IWd1yUYlcutrfApN9rGtMzBIhv5ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fzFiMSof; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y6RPpifQ"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2ff7255b8c6so347778a91.0;
-        Fri, 07 Mar 2025 05:53:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741355623; x=1741960423; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ICxiMibbj7/tKhMbuP5/fz3kSyF+kvyKF+wZm6FMOLk=;
-        b=Y6RPpifQFCJeoqs1lc+ka/LdW2wir3vqRuqwv5UYeBakI7h5a3etCPO2aYl/v+WXml
-         Dy39dL8BsQV+jGgI1kvSFN45KeiVuWVXaRN/8LuIImfpHHQ95AmUrd3T7ZLebRbhxFRa
-         LZkU5HY/8wouvYeYFlrveePxN6QJ4WHcugU4K0s6tVJcXCo3dvSJOtwpDeNssaLp+tdn
-         6nAM1dyn67QSoqgT5miMFZyL/XMFa0hOeN8Bt4/DyRlZRtGKpuFQCDgoRYy4XwcIt623
-         ipAf6ePU14BTeXBOdu7AhHPWh/tRQjyJpFXAOmrDmVsExloN4Zr+Vh9ceLqvtVHvJ4df
-         0mnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741355623; x=1741960423;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ICxiMibbj7/tKhMbuP5/fz3kSyF+kvyKF+wZm6FMOLk=;
-        b=LpGHO+t8wFKu3VmN39sRYZqwnTWc0leu7Kp+AmXBNdTFM9QweB3K9XcWwUaT+B269n
-         dhTKmbHTtnTFZ+f2R6aKDCflcM5U2j2YOJiTHOWYiujTpuvttBI453hHFeyo9ZrRSmEp
-         b3E6akYXPHNyvm+UKnO/fiFqmfr9faWx7M+QeHq33bcMLpIBKFqz2De64rF9jQlMT+Cb
-         zGsXUH9UCaJB2VpFqXWXgYS6Wx2OhzdlLyJSaJC66sPjhy2WdWNkkrRc0IOz3htZqtCR
-         p3yuuCtlhqlqGM2qi6gLP77hvxbrP6BPgvFz4znZPh+h06VBL1b7DdOyzGRY2fCsmq7Q
-         nFZw==
-X-Forwarded-Encrypted: i=1; AJvYcCVOaH17jMNBkXoQUcn1ga8Xus257VT5jIWucFpr1Fi9VKrWpfXHElxG2cMf9M+A/V8MaNGO9Qo06qY6fCY=@vger.kernel.org, AJvYcCXnnTUsQQVFMoYhb/rcgArE/GqO8rPWLaLFKLB59Btsf0mm3pedkiYZUg1wTJ3Pw/EB18xuCiZJrXAwlaYP1wY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAI8O4JwFiURmQX9mLsy58bGzmJNXaSjR4eiqMZsvbUIiyUv5m
-	2hKEmCaHtDRU3qmQZEpUKVm+iPGCluxkdyf2wq0GRK2DmVDsmNtu8jcuubLCA6uUZEnMfTKUObN
-	iFgaQKZ6WrZbzq96aARtE2WbBsF4=
-X-Gm-Gg: ASbGncvri/MY8JhX9oLwEmS2xvau9JOi1t5eSTo/IMAzXgkJfpXWrhsF56rWPOZr4X9
-	UW9n547bd0XybELANS94pOU/2wE2S6FWalej4lPpIBCq7aFONTS+nldLBPovQPmjt0UmHGTgL5R
-	O64Fg1DV6lSeVrAI/SBj2HWtTnow==
-X-Google-Smtp-Source: AGHT+IFQbcKjUi2+xJZx4EkN+BspY5NHugd3fzYVMpj+dJXJ3xySIPBfObitihnepytnRmP5lK+vkym6p1cjkBcfvvY=
-X-Received: by 2002:a17:90b:3ec9:b0:2fe:b972:a2c3 with SMTP id
- 98e67ed59e1d1-2ff7cd6f5bemr2128991a91.0.1741355623295; Fri, 07 Mar 2025
- 05:53:43 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fzFiMSof"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1DC0C4CED1;
+	Fri,  7 Mar 2025 14:00:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1741356013;
+	bh=MU+C8WbcetcKkddPtvMu8XaFGjwcxIw90GFaJbuu6iU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fzFiMSof2btrCftHqZlPnCqV4m8aPjlsYpYVE4kM2KWMwlfZErFmROsc/m1CNRawK
+	 sz/IaKUDxRYmVvRkNGh9ZQV6kjwTZTg1UP/znLOqw5g3WOljGOYwUlz7Nc0ENu2GAq
+	 mDevphihXfBNLZZnDLk6xJQjJcMEd5+t1JiT/MOk=
+Date: Fri, 7 Mar 2025 15:00:09 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>, Danilo Krummrich <dakr@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Ben Skeggs <bskeggs@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	paulmck@kernel.org
+Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
+ implementation
+Message-ID: <2025030753-celtic-quarry-1799@gregkh>
+References: <Z8GViQzZJVFPxfNd@phenom.ffwll.local>
+ <20250228184013.GF39591@nvidia.com>
+ <Z8cmBWB8rl97-zSG@phenom.ffwll.local>
+ <20250304164201.GN133783@nvidia.com>
+ <Z8f9mgD4LUJN_dWw@phenom.ffwll.local>
+ <20250305151012.GW133783@nvidia.com>
+ <Z8l8HgZOV7sDWqBh@phenom.ffwll.local>
+ <20250306153236.GE354511@nvidia.com>
+ <Z8rKVZolu8n6lB1P@phenom.ffwll.local>
+ <20250307123255.GK354511@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250307-unique-ref-v5-0-bffeb633277e@pm.me> <20250307-unique-ref-v5-4-bffeb633277e@pm.me>
- <CANiq72mYfhuRWkjomb1vOMMPOaxvdS6qjfVLAwxUw6ecdqyh2A@mail.gmail.com> <Z8r0lVu1iwc9GG2t@google.com>
-In-Reply-To: <Z8r0lVu1iwc9GG2t@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 7 Mar 2025 14:53:30 +0100
-X-Gm-Features: AQ5f1JoQTL9Pdvi4rbt5tbARnPPsHx1yP0hj_YtrcqnCuu_AF579F4IENsrqsfE
-Message-ID: <CANiq72ktwWOEBFB=y7xun-CDurwsSRe2_PE6RqGS4OhEyPGFkQ@mail.gmail.com>
-Subject: Re: [PATCH v5 4/4] rust: adding OwnableRefCounted and SimpleOwnableRefCounted
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Oliver Mangold <oliver.mangold@pm.me>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250307123255.GK354511@nvidia.com>
 
-On Fri, Mar 7, 2025 at 2:28=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> wr=
-ote:
->
-> It's only a warning on older compilers. We could just add this in
-> lib.rs:
->
-> #![allow(unknown_or_malformed_diagnostic_attributes)]
+On Fri, Mar 07, 2025 at 08:32:55AM -0400, Jason Gunthorpe wrote:
+> On Fri, Mar 07, 2025 at 11:28:37AM +0100, Simona Vetter wrote:
+> 
+> > > I wouldn't say it is wrong. It is still the correct thing to do, and
+> > > following down the normal cleanup paths is a good way to ensure the
+> > > special case doesn't have bugs. The primary difference is you want to
+> > > understand the device is dead and stop waiting on it faster. Drivers
+> > > need to consider these things anyhow if they want resiliency against
+> > > device crashes, PCI link wobbles and so on that don't involve
+> > > remove().
+> > 
+> > Might need to revisit that discussion, but Greg didn't like when we asked
+> > for a pci helper to check whether the device is physically gone (at least
+> > per the driver model). Hacking that in drivers is doable, but feels
+> > icky.
+> 
+> I think Greg is right here, the driver model has less knowledge than
+> the driver if the device is alive.
 
-That is OK too, though we would lose the check for typos until we
-upgrade the minimum.
+That's not why I don't want this.  Think about this sequence:
+	if (!device_is_gone(dev)) {
+		// do something
+	}
+right after you check it, the value can change.  So all you really can
+check for is:
+	if (device_is_gone(dev)) {
+		// clean up
+	}
+which is going to be racy as well, because you should already be
+handling this if you care about it because the device could be gone but
+not yet told the driver core / bus yet.
 
-Hmm... Since we have nowadays the way to create those conditions
-easily, I think it is fine to do it conditionally.
+So this type of check can't really work, which is why I don't want
+people to even consider it.
 
-Cheers,
-Miguel
+> The resiliency/fast-failure issue is not just isolated to having
+> observed a proper hot-unplug, but there are many classes of failure
+> that cause the device HW to malfunction that a robust driver can
+> detect and recover from. mlx5 attempts to do this for instance.
+> 
+> It turns out when you deploy clusters with 800,000 NICs in them there
+> are weird HW fails constantly and you have to be resilient on the SW
+> side and try to recover from them when possible.
+> 
+> So I'd say checking for a -1 read return on PCI is a sufficient
+> technique for the driver to use to understand if it's device is still
+> present. mlx5 devices further have an interactive register operation
+> "health check" that proves the device and it's PCI path is alive.
+
+The -1 read is what PCI says will happen if the device is gone, so all
+drivers have to do this if they care about it.  USB does something
+different, as does all other busses.  So this is a very driver/bus
+specific thing as you say.
+
+> Failing health checks trigger recovery, which shoot downs sleeps,
+> cleanly destroys stuff, resets the device, and starts running
+> again. IIRC this is actually done with a rdma hot unplug/plug sequence
+> autonomously executed inside the driver.
+> 
+> A driver can do a health check immediately in remove() and make a
+> decision if the device is alive or not to speed up removal in the
+> hostile hot unplug case.
+
+Agreed.
+
+But really, all these gyrations just to attempt to make it easier for
+driver developers, the smallest number of people who will ever interact
+with the device in the world, just to prevent rebooting, seems not
+really all that important.
+
+Handle the real cases, like you are are saying here, and then all should
+be ok.
+
+thanks,
+
+greg k-h
