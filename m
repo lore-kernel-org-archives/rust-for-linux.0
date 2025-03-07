@@ -1,80 +1,77 @@
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2069.outbound.protection.outlook.com [40.107.95.69])
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2059.outbound.protection.outlook.com [40.107.244.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827721922EF;
-	Fri,  7 Mar 2025 14:38:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4678BE5;
+	Fri,  7 Mar 2025 14:46:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.59
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741358309; cv=fail; b=kFOd9CWnr/3ooP02UbMalzM8SQ9JpzLFqjqxMttDdQWRNAU+Cxf3cphqnBxWrxCTZyOOLXcDHFxc2QnwrEqTJdOlpVb2WYmxV3c+renRggL5dutZKP6sWSLO1e4+NplG5DhWQqU8p7N+y2cQUX06d2BS2F2EfKEIg5EybFVN1lU=
+	t=1741358797; cv=fail; b=X7yR175Td+LHJrh95R4SXbISM/9SB4MolVzsL5DFMOVyQKdAJ8olpQwD/R8jLZ42EOy34G76LWjtJ2C7ISsvB/fFlCrVFNeYT1rCfSPyGXUfCrkuhInxtd4b8Vba16hzOLFIqKXflzgeS6aiIKplsYB4zdaehtVw1l3sJJhSe7o=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741358309; c=relaxed/simple;
-	bh=7boOK63B//bfDxDbP5liuAv8+I1QTYZ5oiMOUOgHjuE=;
-	h=Date:From:To:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Dc4XQPJJbX2ablCDk2CgD9HEUQJcic02zJTYsxlTrgepJw7tttbV98SfkLM/ntDl3smFNGpIsPGPR6KQxwrp3utM9H8RSQtZ4NQcsLDk/b597xj2BfA4evkK459QDjJC7q16z+0GblQyR64DHQrt2uFLYjWzYkDmqVGIXzkTDFA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ZWueO7YU; arc=fail smtp.client-ip=40.107.95.69
+	s=arc-20240116; t=1741358797; c=relaxed/simple;
+	bh=W9Xl9YADgUwYPTqyln+iLhlwaBS1OZ9jG/hpHCd+wC4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=chBC3NodIJGiwf9lGvGQJYd+puV/lNEUsygChkz3rX5EV/N+ka5cziJe9sqofleT4dgmuPlOdQrhqbuuV5+o4I7MsfxgdeyMmPrgv7ycCVTe0Usiz7uTW7n8zAgGm7LuiQ/gZQsqNvWnwCf5XOKDRXdV8PMgiRaJmt8bQ/nWNTg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=dcFIt+Ix; arc=fail smtp.client-ip=40.107.244.59
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ZWueO7YU"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="dcFIt+Ix"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RjeYZiGY+7go5ag7PHoFfzF3umrCm1yw0MNcBYPpZAJsCrEIMVdMVTfzuVl2t/fHrj9DAW1T3XMDwMS4KVRb5Q+/Xe+LgJDTJfJk+XslnZFU8HvTYfBcfpdlyHDdW0PKoEsa+E4ES+gmOPimUT8XBlprbrc/4oSJC1RFig/Hl66LmTchHgXU/utIqsORVs8pfQ7sh8ggFrcrjR1EF44tdJ0daeNVTci/sSyWPjacv17UHs3i7FzUdujfdhg/u/6CIxD6/laBaTsQqzX6X8ea33odRBrSoabL+2N2OFykohuOPXi+vw9Nffzd1eV1uLz7nFRDcqeQfjE5vhp0UnLAnw==
+ b=M2t+YmiWJZ7hIoDFKNs1BolPpS6T6BvXiSHUqTw9tsCvXrpms4G6IVqq3LdBoxMdOCvq3uiIqhDdjx+J+nX+1Ag2t+fYHOvwzI9LTljI6Ia4xpluEdksFTSa3IABR61poP5FX3m/u/5i6vdvqSbjyk/l9Nv6FYOUWIE+bgr0JJoou8lDI6dHP/4CHMIHH2k3r+keoPlOCG7mAcX65xlZriqy8G+yQuvybg4xokY1oEI7I94jZ8qIMVbVIzUeTohbDLlnVMb2Yzl6IuA1+VufTTkpUYWvaBX4xnaDp2/BPZxUs9koEXp1ocFAJSUUURHUsVwG1eMJbFOwitynXkhlmQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GS2bkoJ8TXD9vtMxvdy/yp+c7brG8Ft/HLEycrCaQB8=;
- b=My7TcsnFfN6e1Xy7Z+loONnGeMIU2PcA/TTP4pmjVUetYHKrRA20VfmEVu3RpdyZQJg1jpPzU4phoH1o42QJUZ3XLyktYWH4VNoQnyv9Al8HBsQ1uVHqFfgqIdnCbWpOVGw7ZA7ou/yGKBxskL+exsTROo/+SZOBqVC5G2gmh0nSBB5SI0UskYDhr3mw9TPk9DIRXzcUBhTK5W9lB/0xR3BKDFwUDDe65TFhGL4DE5Ts4tReDRf3NIJWrQl7cVQUANcQTMk+FImq5gQCZVDA31LlNYLxWbaa2+2cJNi4CTmzMcJvunQuXWyFcbGcChmL1fQjDzJfgMmuq9PqgW3Wvg==
+ bh=tQENKdsut2bHSOrlytb0frE4DyA3JlJFlvtCt1CIGok=;
+ b=AhnXQQ1PbecX3ChunIV58kBeXYUa7mPNv822DGl6ZbKQW5lrfWAZc+2P1N8J4uaopQg/qhy6wOByr0TUoKWkpAIxJo4/VO1G9O9tpHGG1+8VK+MBbtZdVZyagKRKFj+3CaaXmRn7NiQm+00b4XlkIsP75FJv8hl7VnqJQGJE5/7IlhPsl7J/tyvYikxQXpBVUrmEu+dmwb4qAy5Qilo7PAOo4n6C0VPcHDAewDQO34iBZQwnplpER53gSB1afWYXvv1GONaW9XKw3hIfUY2y42YnJwB15guenfmNLiKXYsDPVE+br6bib/c0z0AARvBUiO3NgmNdstPZ2V+ouDI6GA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GS2bkoJ8TXD9vtMxvdy/yp+c7brG8Ft/HLEycrCaQB8=;
- b=ZWueO7YUPsmvfLFrJ3fkpXQ45FqktHDqhTs7NNivgL0yh8zY4C6BRWoVvBu++10sEt+N28vBuI0sXx096KRx0+OT3VnB4bHtBlbFzPBToNlfJY66DzrVer7SHuDGjQCTCoGVRi1EyaJYTvtcMhbqfmzplWWleWtf879/gEDckQvm18M6E3hKjBjVsodFwoxrglYENMZr6JscVC9CXAgjFSFWOzCv+YM2IJAcahGB2UDedB14X+CATACaj7/Tbt30YPSTBAX4cbo/Phpo6L+3aeo4oebxhi1FEfJ9w3ZhJvlpp7FFE+OQF1oXDdMNipgRfIsFW7Zz4VZXYsfR8gZpdA==
+ bh=tQENKdsut2bHSOrlytb0frE4DyA3JlJFlvtCt1CIGok=;
+ b=dcFIt+IxXcu+ZIsq2qBGmUTZC178P5VVn5pNaqCFzYeAxREmxxZ0BTKdz4DPgadRwAlbn89d68xv0fQVmLEVBxnYEr8xReArzehKeLhIvQswsOBvOwslgZ3lwZFqNzCy0oMcviE1YzlwwFPjLGeVZFbLGsdw8jC1W1EJBdoa10SjfgbDRWjIyiHAls8pQj/wwKm2aYBAcEWHuiBJIBhts/uSlNJiRJ39UsyAnSiVF/yOTwGAnMAPucasNkMFj8yrPZd+xap0RM9ivxRv/U3PR95jj1csj7OzinLad9pfGg182emmCNy0UTJ5mA3EpPFd2mGWDN1rVBTtjBeFA72pYg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from MW6PR12MB8663.namprd12.prod.outlook.com (2603:10b6:303:240::9)
- by DM6PR12MB4236.namprd12.prod.outlook.com (2603:10b6:5:212::14) with
+ by DS0PR12MB8501.namprd12.prod.outlook.com (2603:10b6:8:15d::6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.19; Fri, 7 Mar
- 2025 14:38:23 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.22; Fri, 7 Mar
+ 2025 14:46:31 +0000
 Received: from MW6PR12MB8663.namprd12.prod.outlook.com
  ([fe80::594:5be3:34d:77f]) by MW6PR12MB8663.namprd12.prod.outlook.com
  ([fe80::594:5be3:34d:77f%2]) with mapi id 15.20.8511.017; Fri, 7 Mar 2025
- 14:38:23 +0000
-Date: Fri, 7 Mar 2025 10:38:21 -0400
+ 14:46:30 +0000
+Date: Fri, 7 Mar 2025 10:46:29 -0400
 From: Jason Gunthorpe <jgg@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>, aliceryhl@google.com,
-	robin.murphy@arm.com, daniel.almeida@collabora.com,
-	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
-Subject: Re: [PATCH v12 2/3] rust: add dma coherent allocator abstraction.
-Message-ID: <20250307143821.GM354511@nvidia.com>
-References: <20250224115007.2072043-1-abdiel.janulgue@gmail.com>
- <20250224115007.2072043-3-abdiel.janulgue@gmail.com>
- <20250305174118.GA351188@nvidia.com>
- <Z8mlAxsszdOH-ow8@cassiopeiae>
- <Z8m9j3SwWHqaCTXo@phenom.ffwll.local>
- <20250306160907.GF354511@nvidia.com>
- <Z8qzP3CR8Quhp87Z@pollux>
- <20250307124809.GL354511@nvidia.com>
- <Z8rxm-BHldKqEwyp@phenom.ffwll.local>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: John Hubbard <jhubbard@nvidia.com>, Danilo Krummrich <dakr@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Ben Skeggs <bskeggs@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	paulmck@kernel.org
+Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
+ implementation
+Message-ID: <20250307144629.GN354511@nvidia.com>
+References: <20250228184013.GF39591@nvidia.com>
+ <Z8cmBWB8rl97-zSG@phenom.ffwll.local>
+ <20250304164201.GN133783@nvidia.com>
+ <Z8f9mgD4LUJN_dWw@phenom.ffwll.local>
+ <20250305151012.GW133783@nvidia.com>
+ <Z8l8HgZOV7sDWqBh@phenom.ffwll.local>
+ <20250306153236.GE354511@nvidia.com>
+ <Z8rKVZolu8n6lB1P@phenom.ffwll.local>
+ <20250307123255.GK354511@nvidia.com>
+ <2025030753-celtic-quarry-1799@gregkh>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z8rxm-BHldKqEwyp@phenom.ffwll.local>
-X-ClientProxiedBy: BL1PR13CA0235.namprd13.prod.outlook.com
- (2603:10b6:208:2bf::30) To MW6PR12MB8663.namprd12.prod.outlook.com
+In-Reply-To: <2025030753-celtic-quarry-1799@gregkh>
+X-ClientProxiedBy: MN2PR17CA0036.namprd17.prod.outlook.com
+ (2603:10b6:208:15e::49) To MW6PR12MB8663.namprd12.prod.outlook.com
  (2603:10b6:303:240::9)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -83,175 +80,117 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW6PR12MB8663:EE_|DM6PR12MB4236:EE_
-X-MS-Office365-Filtering-Correlation-Id: c99425d8-870f-4d93-bcd7-08dd5d85b68f
+X-MS-TrafficTypeDiagnostic: MW6PR12MB8663:EE_|DS0PR12MB8501:EE_
+X-MS-Office365-Filtering-Correlation-Id: e1148b3e-acd6-4bb8-fe45-08dd5d86d8f6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|921020;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?FkGQWX5mesuMe7cznmWgAlrqonpiKSLGuhN3+1ZGAx5QHSS5NVozIcNpRv7U?=
- =?us-ascii?Q?mX3WIrWDUPRNc1V+kJyRuDPAY4A30F7GkzuCoOkqkaj51NNcR5kGPEA/Sm/i?=
- =?us-ascii?Q?13jHmAXGAtt4oa9rbhloGRwJX9YWR7y5NACAZqbk4TSfnUhCPNGyMEoQ+xT6?=
- =?us-ascii?Q?WNfrQvfAsky/JTfWT3FKvDjvSbZL/c4uVKABfOPOSEiXPgJikVKwjKGoZDXS?=
- =?us-ascii?Q?B3+Dq8oY6DxncpC0N3g7qJUwprrB08rW6GwoDSDvIGV+RRpqbCTfOCxdZ3kO?=
- =?us-ascii?Q?YTXkkvwZvN3iVA6imwOiuJHBqFNMEW3PvHVcLAX4bmYPmgTkvZnam2iMEqIv?=
- =?us-ascii?Q?82g45haWYXTSSZv0NlKj3Lh+9q4UWrFw1t6276Ok77PrnlwHiWNZjsb+FE7/?=
- =?us-ascii?Q?DZaru/G0I5dY/jmm3kkkn+ztjFUwrheIFUHKvkDERPqxXWCRljxhvrfQA/zQ?=
- =?us-ascii?Q?l1NtJsZJQr2SfLDR5+2gzKt7HWdonFmSHN2OzG5WaIy45iZMqpBuAFmoHZdq?=
- =?us-ascii?Q?tn0F/xGa1C2j3oN95qcTbyAEIeldXJKoT5/qx4rfkVUYt8hAK19VxXg0/x13?=
- =?us-ascii?Q?21+KeyKwKBe/zyhykL01tv0xcUmTfx8zZFARl2A4Dg9PkbKKcYXCFaJOa7pg?=
- =?us-ascii?Q?dlLRj5THq2Dgz8pfp1o/AqVw9DDJ/ghOZRxThhEh7Y4ScBRamYVzZvQquoYR?=
- =?us-ascii?Q?x76vuDlBAgEJ4r9JWxw3jRdG/zqAUbzZ0d2V/mC74HYlw9LRNHdGwFPWAwrx?=
- =?us-ascii?Q?YPOx3G5eJLRx+XMliE0FRhoKuwuUmk63i+T3UTiiWQYoaNlcwaT8jBZBLG6h?=
- =?us-ascii?Q?fn6p9MVMtg9wkB7B41daq+wTyEgw/CCA1mTA/u7e70leuioAykH+2CE98bV2?=
- =?us-ascii?Q?5HXK8r4aLWp9Z1uRHHLd6RHZpzcDrSogdtx9g+HFAksZYSNHJtmOfnR/g0F0?=
- =?us-ascii?Q?H0bYI8x1tP8Y3JKaoYIQVHa9iq/M1HmynXJNmWnrmIgNTKCoC7Dl3q+LU5QB?=
- =?us-ascii?Q?b2ZOz5FCb5lZP7thYv0brOjlo6uCgOu7cwUs2VmNB/yZjG+YRsQKCC40Wq7b?=
- =?us-ascii?Q?n8kK94DQqcwolAY3DL2N+O8AbGgFDnuL35kkMgHtIxwcdqykGDepYE8E8ZPs?=
- =?us-ascii?Q?Qt6+siRZfhbsbUk95E7mgmKsUq8fn/rD4kiGe9GxCnNXqXM2HyNF7QBVTLtQ?=
- =?us-ascii?Q?X4YSQPX+Thm2Mu10qtkbRLT9ml6lTsYsyCEzK1dUT+XRXXKMPYkGnKcoY3vd?=
- =?us-ascii?Q?Q7MXBjVRHmk6hrO/eykxBe8AgCGikX2kH870vXyTWVbIyq9ZWKCnwdutEnJt?=
- =?us-ascii?Q?YoS7IJ5bnZnkM7tirigwqUtAujQ/CizK9LfybZ8RHNyxOVOH7sxGCLBJF1Nc?=
- =?us-ascii?Q?2QHNk2FVZKma/z0bM+LxT77/HnTifhA9khwPiPpbimUc5WV4Sq2he+Yt94m5?=
- =?us-ascii?Q?KDqo29i/22g=3D?=
+	=?us-ascii?Q?sBboMNELjfEg2hkDwQKCf0xK+6djszXE+ERqtpPEQ0r0B/J+3Q3eU4tCPxje?=
+ =?us-ascii?Q?XUMMZM4FPb2VoDB78oTbNaIkEDMuAPAnW5mEttRMHs4THGNwvCojY+QfBxiy?=
+ =?us-ascii?Q?C8HrlZtLiXpZSCL7MAKUkFMh3n8IlZsvCnekhug76NcGdHUPSyQkn9pok1tP?=
+ =?us-ascii?Q?C79K8gJ+QNgteEsaGP7nfDPGM7STAWy8d6vJL442ukoQYgJNMxvq2LXyamxm?=
+ =?us-ascii?Q?6gXKk123We2dMJRu1DEH74ALhETK2gW7p1uUhh0vdGjaVwkfMB9Yj6AeaNbj?=
+ =?us-ascii?Q?a3nYQ+zL2iducwQJcNcZSQfcJzexnRY/coyJx4qKNXcoQnuyDNm22y+l3LVW?=
+ =?us-ascii?Q?kyqk+XfcxVhPCFko6S23WgZvXk4YfjvEvWm/uTem12fKXh/ADcEQXmsNI4Q+?=
+ =?us-ascii?Q?9Fh2WrMEEn1vRi6iSBWyibIfmSyUfaqWyyWnlr9VNJsQ+4+Cz0V0cQDJaLfs?=
+ =?us-ascii?Q?YoHrS1365SUGBcKqd+b9IHh/oW8rIedWlYN44sHcJnHsa5F637DFzxMHTnQw?=
+ =?us-ascii?Q?XfhUtYBcx0RhvhEbrvXzM+5RsYbqEiHc5zp/gcJjOrqSBoagBV6ZUw5oVVgy?=
+ =?us-ascii?Q?Mq8nGo+3kXGZOs1BwmM+dsHlpOvBB+b7jYHTg2JqwhkzXNnnYERgqzNU3oUR?=
+ =?us-ascii?Q?zC0Jb9vtg0c1hQc1L482IycyywDSZ5cjGil34AQsdVR62Y+M2WqpOPPGvdVC?=
+ =?us-ascii?Q?C0Rnj0pskdcgdnrINi1M5WVIupZTuKBi79s2T7o/MlXXOjw95RXGRM2flGmp?=
+ =?us-ascii?Q?Z/WUoLMVO/ndrwyh9D+3SNZ3MXTNE3N+s6RPRfdsl397knrhfFuWqGhcuOE3?=
+ =?us-ascii?Q?kPpHxM3OWZqWt9z8P1t0f3OAVPwBCs6iKhnZJYSmBOohKN711aYOzWF+zFUd?=
+ =?us-ascii?Q?sX8G2yCjbibb70n+44Hq29OIwxW5PuvD5e9mQQSxb9mk3U5QsPYvWpYJNilX?=
+ =?us-ascii?Q?a+K+elsW+YigmQDC3U4YVHikP1Iw0IUtaDZKtpFZ/HnoHksRuj7zrGD41zKa?=
+ =?us-ascii?Q?oRI67W51AmGAoYdqYCY31fMZH234BXg/kHA1Rr18BLdz9NY9YtjNGV3zxvrF?=
+ =?us-ascii?Q?IgnNzhrqTmmzjvsDWN4aDPEhezYnhTIZLtb37jodsKK4BGGaY8HBn5lBmksr?=
+ =?us-ascii?Q?WrpGNvIDuLEY4Q7k23FFEuaAUZ42se74ZkfiSPMgPaOtMKKjkFLcxSCBM0XU?=
+ =?us-ascii?Q?k9+EeqjxaatFSe8MbQ1Y/cQW/75nqaT5Ltbg7AYoEta4hPl8takvex0mg2Fu?=
+ =?us-ascii?Q?+r6WxPqpM3bR3r0+4/Anm+67c32TSy2YUBl8ozBKH3UsOq7jGEOmdeV6KYX5?=
+ =?us-ascii?Q?To/RdxesMiihvBOygyqL8P61KCudSQEaM+r/Vfkd3HYTZluZP2EcSV27AN7Z?=
+ =?us-ascii?Q?qSg00qnWYX/2gRwyevxw8LEjQiPf?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW6PR12MB8663.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(921020);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW6PR12MB8663.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?WDoA6dn90ndygdP3YKx7TeQO/CRADg3arGHr6ngt4AHybDNqSBKJZyKQAeBe?=
- =?us-ascii?Q?eN18lY9FcHojpEyQKu75CqEHzQ2YcH5jZJil0L+RVuG4gw6HYUqtL+4bimDx?=
- =?us-ascii?Q?M1eEU3OJaaN96WTCRytQKzszUuian+sYTVbxALt2jnRWh8YfxAXq22Cr+HkS?=
- =?us-ascii?Q?qcX3IVGNo243SNyfFhEx+5GGkSjVpiNKwsvjqFgCgT1M3hDg/iX9bnZ17xvJ?=
- =?us-ascii?Q?1+UwmYG/is1Bn9pn1SR/dKijQwdVl50Ruev/4qAa19SF/Nfs5eqnlL6ifK/C?=
- =?us-ascii?Q?iwvfUbBwNpA6Cyjk9Q5WRC58I60ug+lAGYfVQnxiHb7NdyY1pQZgIrvvq4EX?=
- =?us-ascii?Q?oMWSYx0G6HHOKkIyjp8ccsJU1NbsG7ViDQiBcrviQfOas6G31WwHL97Hlt1M?=
- =?us-ascii?Q?ZJNra/c1Hm5pak3mRS1MmneYsZcVOKcCS6Tnfj62xm5x0oMt7HMKHDPTk1YG?=
- =?us-ascii?Q?zZP8nlThL9vHMNBqw5xEyY90d3fsa1vsFApsf9CHkD8dkSNSR4h5p60ejPv/?=
- =?us-ascii?Q?W/k2Etc4Cg/4/3SFIAn/Ic1BQVwCmYOMoPbprnwBH/2kZr/kTJXx2hQqAZN8?=
- =?us-ascii?Q?oOHSg8pi3OaC0dxPZzlCkZwrCVhrLqXOWNuRB2x8xrDg6R16SU4yd/f8yoaN?=
- =?us-ascii?Q?J5j8cL4yVDZ7R41DjKvHuPdFBSz1nFrQmmtZ9c/2v86aseAQGcGSpA3eB5/+?=
- =?us-ascii?Q?xQtb8w+pZI0oluyyqjY6k043Hnq/Fky4EZwpHPe/I3yS+snkdV95DuCe5Izn?=
- =?us-ascii?Q?TCyVGFWRcfORmIxuaoOHZiv+lf1dVQOomE2zbouE4QuPb5phREYJLqH6InOu?=
- =?us-ascii?Q?GIm62iMhYDue35L2sZNVNQ+xJIrWdaCLwv/m8luiVk7ai5SglS36q18xTdzE?=
- =?us-ascii?Q?hD3d5MECeCtUMt0qNkr9eMvoClJDqt2IqsKfkSI7abQm81xir/lA51ghl3XL?=
- =?us-ascii?Q?93pxg9JgJnyBD+/Jr91I65+BVNA7Hp1tZthgd3yaTrGQtqYybNt0d4DKB0GQ?=
- =?us-ascii?Q?98pqP55+/JYZPVGKCtTc2Trem1i4yVsaz2GoomZtwXqRJGc3PL4XXQmbhlrQ?=
- =?us-ascii?Q?WJBzi33cNH18N34cEhYNIXchaT9VnLDftS3eesocKJKDCqPmEuzk2VM6EaxD?=
- =?us-ascii?Q?O5RqUWFVeYmR6fgVHuDu3Vgm0CTzWw8wWGszKgyuxkFngb4gqUDciZpAV18E?=
- =?us-ascii?Q?UGiMsyPiHBi4Fk1nb6OT2NOhs1LBuDlRiS/R9VsyZ2SlNy8uYEbpZrxBbkKC?=
- =?us-ascii?Q?zsLc2oiTha2932Gipy7R+KbE6HTF2CK2MdQBnjgm4qIc4liPyoPOhZk9cxMn?=
- =?us-ascii?Q?gClCxG1EiVb1jBGxLeOP6sSghbaCTKSJqSu3yzYBRiPwkUefdgXBm6U/cTZS?=
- =?us-ascii?Q?jA3e/N3D+KSvIsJsnid8fUbjRJHV5mgsbKR0YOxwtgEVRSQbvXsoe9Ko6feu?=
- =?us-ascii?Q?FV3iEarhy9igLZpLAUVoXso7/8qFNaqOa6e4fcFvKEtU4bEBcCAIyMhUy8Aw?=
- =?us-ascii?Q?x4oWfKsSxmNuToKzBSCisZFUWcsDKX1KKuCqnsynAsNXRluOIum1dEBnRghE?=
- =?us-ascii?Q?mCSyfMWQmsZwWgyLHnc=3D?=
+	=?us-ascii?Q?d11at41mOhwyrbEhY6WtH2WEvESFAhDJWB3MV/hGXD/CocsjQVJXrgWYaG+n?=
+ =?us-ascii?Q?vkwSibA7nkQdhz3Nzqe7ODRP5G+QUIxA8U+YPy2aLU2PNqjmZJmoNInKTUsV?=
+ =?us-ascii?Q?G9aCkeK0ralst7N33mAlM9UkwKwulBqcb3AE6U8S6G+CIqRelf1yRy+xG2y6?=
+ =?us-ascii?Q?HJt2NWW8fpbn1LosQ7vxb8L5qU8mWE6qOTORn0iHc8fUxUwBigncHkRlZheb?=
+ =?us-ascii?Q?boTLSGoCAXkh+TOM9Kif2aa9gRIFJDJHhnbAkfIw2ia+wjEMjKlEXWu16N6M?=
+ =?us-ascii?Q?nveAHuY08aYR/wTpiZj3gm6Rvq8JWxb3/ZAaATsJZOFv6EvJX4mny1I0tC63?=
+ =?us-ascii?Q?TZc/fUg5oChC9keXH4nj2QfSyresb0tDraTGy4ySiy0+rnsn0kuhptdH2vdb?=
+ =?us-ascii?Q?eoXpqp8Q0Fay8R9xXqYsTLukOrGfQ9NnWAAhxVuNofDRjtPNqBoawGHIVmFR?=
+ =?us-ascii?Q?1pc8SO1ogbbDoPpb6wdRH18VK1paY2gi0Rdc6lqEif6rc09p3Q00U+VqrOlb?=
+ =?us-ascii?Q?D08Zmvfw+Rx4V5BMkuqY4maB6Xly29iEV0hYhkRfdray5mBhaRFaauD+Te0G?=
+ =?us-ascii?Q?LiN51YOw1yqtlo+1qUyxDH47U0N4dXXZIzUjhsIQpv6rNc5Vp2mIpWVvsR3w?=
+ =?us-ascii?Q?4/uDsvEWNon2xEoAtHS+GeVB4zm80vRes7bKC+Pla+bVE071fiTX7Od45cGb?=
+ =?us-ascii?Q?k5aT9N5MEgUbu3nj8IjH5KZ/bHge0n6CqgmSU/nvLC+DIXgsPizKD1/nBVET?=
+ =?us-ascii?Q?r77Z0Nx/76o8q0wkXpmPPgVxvRUvp4Nk7l42RWI7MfI915774dqFnjo2TUdZ?=
+ =?us-ascii?Q?APyVlcYzPT4fA00PFGnN/e5plKipBrv2njNEl8e7yAoyPugPhOFvCnF/QjAN?=
+ =?us-ascii?Q?scJ30ScxOSOeDk4w//dDK62UPlI/wM/DMnM+19iVpAjDb5Ff2dAQdxGtxOH+?=
+ =?us-ascii?Q?Zisv94cKdUPr9Lo3c35Rgz3SBrCobnfE4G3Ci/aR0enOr41sSDt5qd4JxfrR?=
+ =?us-ascii?Q?vSXw2eqT9oJkcvrjs6F1kfRVj7Q0TP6duAb7C/kMmJPvENL9vY7rXOgVTbAS?=
+ =?us-ascii?Q?S3bmUp1/o2TnSfrc+1FUHORytPYizcxvKYhBTTzt2e+EjA4nPiOkeE8au1rF?=
+ =?us-ascii?Q?+XHTmOW2FQDy5HUoVl6KcvGe67tWGUMbyYXi1FVun+8+c94P9X37S5Zn77da?=
+ =?us-ascii?Q?zLpUGZrWIfZnSrM4D8lyvINXNpdBEj1BZ68BuAYThT+scHZssawsdQcucsU3?=
+ =?us-ascii?Q?eDjDq9PacQAV7+3fep+EkrolYpA+ZEqknzMV1IzA2i/lBFzceyX0nOeuC73Q?=
+ =?us-ascii?Q?LbxZnipKhozEi03a/9pgDA/zP0OCAMGdBlJxmG94R689cQirPzNDAARjgwaD?=
+ =?us-ascii?Q?APzsnix8pdpr9XmYnBWkAbL7r9HX6Kyr5JaA3h5LLd5tBHFQZfyURP5L+NMg?=
+ =?us-ascii?Q?zFa3wpdzWdIggL0CSAQr4y/GdrJJ3lR1cfZBrRIllgta2EfQsiq9afxt+ZNX?=
+ =?us-ascii?Q?B5nMATGJz6433aO80M7EEsKKWFcPI8Xb+QBM4wEU38O/iZ0OjQ6E9Vxx05El?=
+ =?us-ascii?Q?psCf0oiOwWCHwXLOdmdz89JNHHTo9SMEdZFZmAkr?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c99425d8-870f-4d93-bcd7-08dd5d85b68f
+X-MS-Exchange-CrossTenant-Network-Message-Id: e1148b3e-acd6-4bb8-fe45-08dd5d86d8f6
 X-MS-Exchange-CrossTenant-AuthSource: MW6PR12MB8663.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2025 14:38:23.2999
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2025 14:46:30.5710
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 29jUJVqMCoCRnk5Tp171nYPCP1EnUJE/kb2jwnsl8TYCfzVLrxz8UZ2mSwECk9Bk
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4236
+X-MS-Exchange-CrossTenant-UserPrincipalName: wa2aY7FcZbMASx7ZlQ93FIgMB2YTEiUorrv/A03wUVL002qptrqoDxIlVJ2xkXeP
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8501
 
-On Fri, Mar 07, 2025 at 02:16:11PM +0100, Simona Vetter wrote:
-> On Fri, Mar 07, 2025 at 08:48:09AM -0400, Jason Gunthorpe wrote:
-> > On Fri, Mar 07, 2025 at 09:50:07AM +0100, Danilo Krummrich wrote:
-> > > > Technically it is unsafe and oopsable to call the allocation API as
-> > > > well on a device that has no driver. This issue is also ignored in
-> > > > these bindings and cannot be solved with revoke.
-> > > 
-> > > This is correct, and I am well aware of it. I brought this up once when working
-> > > on the initial device / driver, devres and I/O abstractions.
+On Fri, Mar 07, 2025 at 03:00:09PM +0100, Greg KH wrote:
+> On Fri, Mar 07, 2025 at 08:32:55AM -0400, Jason Gunthorpe wrote:
+> > On Fri, Mar 07, 2025 at 11:28:37AM +0100, Simona Vetter wrote:
 > > 
-> > Yes it is also incorrect to call any devm function on an unprobed
-> > driver.
+> > > > I wouldn't say it is wrong. It is still the correct thing to do, and
+> > > > following down the normal cleanup paths is a good way to ensure the
+> > > > special case doesn't have bugs. The primary difference is you want to
+> > > > understand the device is dead and stop waiting on it faster. Drivers
+> > > > need to consider these things anyhow if they want resiliency against
+> > > > device crashes, PCI link wobbles and so on that don't involve
+> > > > remove().
+> > > 
+> > > Might need to revisit that discussion, but Greg didn't like when we asked
+> > > for a pci helper to check whether the device is physically gone (at least
+> > > per the driver model). Hacking that in drivers is doable, but feels
+> > > icky.
+> > 
+> > I think Greg is right here, the driver model has less knowledge than
+> > the driver if the device is alive.
 > 
-> You can, devm groups nest, and I think by default (might misremember)
-> there's 3:
+> That's not why I don't want this.  Think about this sequence:
+> 	if (!device_is_gone(dev)) {
+> 		// do something
+> 	}
+> right after you check it, the value can change. 
 
-This isn't about groups and the group nesting, it is about what
-devres_release_all() does and when it is called. Yes it is called in
-all of these places:
+Oh, I imagined this would latch off. For instance if you hotunplug a
+PCI struct device then that struct device will be destroyed
+eventually. If in the meantime a PCI device is re-discovered at the
+same BDF it would have to wait until the prior one is sufficiently
+destroyed before creating a new struct device and getting plugged in.
 
-> - probe/remove i.e. driver bound lifetime
-> - up to device_del in case you've called devm outside of a driver being
->   bound.
-> - Final kref_put on the device.
+> Handle the real cases, like you are are saying here, and then all should
+> be ok.
 
-However, AFAICT it always wipes out everything. You don't get to pick
-which of the above scopes your devm is associated with.
-
-IIRC there are two different use cases at play here:
- - struct devices that are expected to use drivers
- - struct devices that are known to never use drivers
-
-devm can serve both, but with different rules and lifecycle. Remember
-if a driver is attached and probe fails (eg even with EPROBE_DEFER)
-then devres_release_all() is called and *all* the resources are
-gone. It would be functionally wrong to attach non-driver resources to
-the devm in this case since they would not reliably exist across the
-device liftetime.
-
-However, if a driver is never bound then the device owner can use devm
-over the device's own lifecycle ending in either device_del on a
-success path or possibly kref_put on pre-add failure paths.
-
-From a rust perspective I think it should focus only on driver bound
-cases.
-
-> > I said this for MMIO, and I say it more strongly here. The correct
-> > thing is to throw a warning if the driver has malfunctioned and leaked
-> > a DMA Mapping. This indicates a driver bug. Silently fixing the issue
-> > does nothing to help driver writers make correct drivers. It may even
-> > confuse authors as to what their responsiblities are since so much is
-> > handled "magically".
-> 
-> I think thus far the guideline is that software uaf should be impossible.
-> So calling dma_* functions on deleted devices should not be doable (or
-> result in runtime failures on the rust side).
-
-I'm not advocating for UAF, I am arguing about what the correct
-response is to a driver leaking a HW linked resource like DMA past
-remove. I think it should trigger a runtime error, and maybe a sleep
-wait to prevent UAF, not be silently partially "fixed".
-
-The goal is to help people write correct drivers, and correct dirvers
-should be written in a style where the map the DMA, program the HW,
-deprogram the HW and then unmap the DMA is clearly written.
-
-Requiring that pattern be explicitly written in code so that the lack
-of language provided safety has clear markers and expectations so it
-can be reviewed and audited.
-
-> I think for the actual hw uaf if you leak dma_addr_t that are unmapped in
-> hw device tables that would need to be outside of the scope of what rust
-> can prevent. Simply because rust doesn't know about how the hw works.
-
-I accept that, but I think you need to force this issue into the face
-of the driver writers and demand they deal with it.
-
-Silently partially-fixing the leak of dma mappings is far too quiet
-and encourging of dangerous driver design.
-
-> knows it's not allowed to automatically drop that object. So both patterns
-> are possible, but rust has a very strong preference for the automagic
-> approach, unlike C. So there will be somewhat of a style different here in
-> what a native-feeling api looks like in C or rust.
-
-I don't think it is simple "style difference" :( This Rust direction
-is radically transforming how the driver lifecycle model of the kernel
-works with almost no review from any kernel experts.
-
-Certainly I object to it. I think others will too if they understood
-what was going on here.
-
-Write a position paper in Documentation/ on how you imagine lifecycle
-will work with Rust driver bindings and get some acks from experienced
-people??
+Yes, if you handle physical device unplug, PCI device unplug, and PCI
+device failure recovery then you cover all the actual production use
+cases. That is already so comprehesive and hard that driver writers
+will be overjoyed with the result anyhow :)
 
 Jason
