@@ -1,199 +1,577 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2080.outbound.protection.outlook.com [40.107.237.80])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6EA14A4F9;
-	Fri,  7 Mar 2025 12:33:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.80
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741350783; cv=fail; b=AmCfOieHSq1AZcskIAjSkLgtC3hK2QrnwnDbFjI9+fziC9pVI2i2iJlNptnmxXHB7F7I7bdVA9I3ibdETbZF+/EDIjIGgzT7elgeu/+KGgT09mDNmvcP4qLTAK39v1itS0kbl7THuFNgJLH00zKf+3RaW+z2S34Y8f+ptir7k0g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741350783; c=relaxed/simple;
-	bh=0qAlm+anaQ/0v92DAxLr1mwKt5KrvES7QsWqKXW2k1o=;
-	h=Date:From:To:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=c5Vs2xGnAywmwz/UWKkveAiWcmS/zM0gBh7PlT9AHSrqstThoaNmwSruQRfw64VdAC7T0TgDoN/x/3TTDDtvqT/dYQIN+fIpxROgu/P8BIzkO6zoZ4JVYGpbZiS3I8yoR4XR+joqDDmv+qZ4RKYldUBO3kzFO6T4smfVRCGnH48=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=lPeFiW15; arc=fail smtp.client-ip=40.107.237.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4CA219316;
+	Fri,  7 Mar 2025 12:43:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741351415; cv=none; b=ctXoZKkDQoWVQ9Ru0f803EZEbjs9VE1gcK2VaV4AhrOeiu8wjSLKTqSSNT9oRh7mK+nhccO+oeqA802Tn22w85DSwUr3PjxJkX8GoBhGuxQ4OcvoozTEvez+TvQrJij6vqpIGN9r/nELqejs+WR6+Ogz1R2zIQnxEvFew6V9XKs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741351415; c=relaxed/simple;
+	bh=i7Sd/IexCJ/8cx3UsTc10kPl1K7+vLdPTwfUHg6rkXA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RKAo23alTsb6MgpMMYbBrUN2TWCEFaL8owSPgsRPPcxLYIdlj5m0lyg/BjOXhSZvL27PewRhWFdWk6wQghcu+HdJczt4BrslXrS+AzrZ8PUtOGfWaL9W9+8y0NdDs6o5YKhV/IRwYwOFSZ4s6hg+0IHQpgkAt3TBucAfj6ZXq1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=FROA8mr9; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="lPeFiW15"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=syXqGrrS/uKpE430lwtDIs56TSkhuR0avotvC8f8bo62k8L3kIZalLI6bB+agB20SR4J8Ej+91A6yQQAOVcDRwEf00VDLKY/oCdb1IPb+0RIcT54wjp7NzTT/73TdWn9FH/n9/lKIG5f8IFGRcLpSIWWAM9CMC2VA1ccQbXyiTH75Rr7KYw2Y+GtiVKGguj/pAbD36XM02QvZCrpaOpMu2djV/2A9OEYCBuXa7SLLHAiGmROXyPHjoYwNlBzgwFjLYO3N6As8Ojh/Z2UrvCeFvWkF3vWtb46wFSWii9OoyxpRUQjlJ8eY/RP0XZrPrcD/pWxI/1t/xBzNSuFh1bkqw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PLvAiD0JhA+JB6QAtcfODrDKZ+dYHKv4DhAZlXdNivI=;
- b=rOudph8qf87ZaDwBWHwFpNds4e3G+FT/o8igFDWJP4jFwKBP75WeXhONErlzI8bRUx1SnyUv8xp8ixqMNMLlnZAu3tk092HbE6XT+IOfB0Ho8PHreFKNvCRgs6qN40aSzLQIJXr8OdbkihhtLnvof+mBzVwr4WLAkM2bEa6RNX7/E3HADNqjLnr5jo7Bbu2wyM5OaT1OfjG3pHIOgUYd0LsRocDu1BqOJ45PoAuo6fw7hqbg75xxXdpXRh4VpNheeRFrV+2ajroQ7SMGKAaVaAjywyzTs6lYjCXGCpeotMeykupl/c5+R7/+ZSbXiM1jZHQlHazDqtXXc9YD/ImpoQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PLvAiD0JhA+JB6QAtcfODrDKZ+dYHKv4DhAZlXdNivI=;
- b=lPeFiW1594AvEs8KWVmEKsTGWwY5b9YkRYQ3UL9sZRgg35O4xfBwwoup1DV3b4NJtYkP1v1L517LA3VDFzNw9KIvihvCIycwkWh2v6xB6mRA09SQtHKivZf4zXBZNF0tkmj78P0+/jQoXAK5EyAoV+5mLjHSEXAh0ky9/0kD3l2Eeta67J/jLXVQMdF0RixN4x0/Y0S4GZEdk2sUpBzHp34rejvxUm5GHkBAi/gQXt2CyNd1gev/kFfmHz1G5Xf2E1MvLbijva7unEAmuRdJZ8uG8s3sJB3LDV/suzsKogIKIQeC7mIlOePRl+uu2PY+CFB8R8EcLcjiBxWEPDy5NQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MW6PR12MB8663.namprd12.prod.outlook.com (2603:10b6:303:240::9)
- by DS7PR12MB6288.namprd12.prod.outlook.com (2603:10b6:8:93::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8511.17; Fri, 7 Mar 2025 12:32:57 +0000
-Received: from MW6PR12MB8663.namprd12.prod.outlook.com
- ([fe80::594:5be3:34d:77f]) by MW6PR12MB8663.namprd12.prod.outlook.com
- ([fe80::594:5be3:34d:77f%2]) with mapi id 15.20.8511.017; Fri, 7 Mar 2025
- 12:32:57 +0000
-Date: Fri, 7 Mar 2025 08:32:55 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: John Hubbard <jhubbard@nvidia.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Ben Skeggs <bskeggs@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	paulmck@kernel.org
-Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
- implementation
-Message-ID: <20250307123255.GK354511@nvidia.com>
-References: <D82UB3V6NZ55.3OEPPW2W8MFZV@nvidia.com>
- <Z8GViQzZJVFPxfNd@phenom.ffwll.local>
- <20250228184013.GF39591@nvidia.com>
- <Z8cmBWB8rl97-zSG@phenom.ffwll.local>
- <20250304164201.GN133783@nvidia.com>
- <Z8f9mgD4LUJN_dWw@phenom.ffwll.local>
- <20250305151012.GW133783@nvidia.com>
- <Z8l8HgZOV7sDWqBh@phenom.ffwll.local>
- <20250306153236.GE354511@nvidia.com>
- <Z8rKVZolu8n6lB1P@phenom.ffwll.local>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z8rKVZolu8n6lB1P@phenom.ffwll.local>
-X-ClientProxiedBy: BL1PR13CA0274.namprd13.prod.outlook.com
- (2603:10b6:208:2bc::9) To MW6PR12MB8663.namprd12.prod.outlook.com
- (2603:10b6:303:240::9)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="FROA8mr9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1741351404; x=1741610604;
+	bh=RjJiyaGxRHXxlEa/8DxSIVsHSFPet/v8eDHYm9wD3VY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=FROA8mr9y8qT2iOrg/UvAV6GD5Xv8OmAMluZcn6bj4cS+RjWumjn2lVGx8aamg4He
+	 nP1W4y+/+9cBI/71+pJLEfSz5+/H3BhBi+ZPWPgJLPbdXWQpqFLlFoWut6s7jALfUL
+	 szpwXp6rXgKI6M9RRcTyk/O/tVO1928rJhXccPe9tOJMrPQFjTxPCbGf+COXLvHstU
+	 N19dHNVaV4RW0qOdRJ6rngAwzpGFeAi7HEqBsa/m4NboA52jVtqv5OnZx8eM6Pzyf+
+	 H7gUWxq6YPE5h+pJB8OZDTQAivJ6J+ZKNVLcyc7MiMywPT7jzx+4CvTjt4HFU1S/HM
+	 9injDWf6erkeg==
+Date: Fri, 07 Mar 2025 12:43:18 +0000
+To: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Danilo Krummrich <dakr@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, Markus Elfring <Markus.Elfring@web.de>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v10 01/13] rust: hrtimer: introduce hrtimer support
+Message-ID: <D8A1JVVYBHY5.13BB8V796A7RR@proton.me>
+In-Reply-To: <20250307-hrtimer-v3-v6-12-rc2-v10-1-0cf7e9491da4@kernel.org>
+References: <20250307-hrtimer-v3-v6-12-rc2-v10-0-0cf7e9491da4@kernel.org> <20250307-hrtimer-v3-v6-12-rc2-v10-1-0cf7e9491da4@kernel.org>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 34424600773bb8b01a1a77c481c0000781a1051d
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW6PR12MB8663:EE_|DS7PR12MB6288:EE_
-X-MS-Office365-Filtering-Correlation-Id: 152382b4-fda9-4412-6998-08dd5d743092
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Kf+RVKuR0mNmFCkGA9+mQOLTK/OoFrh1tLA4A8fyXfxm0+ckLSmOQbe5M8u5?=
- =?us-ascii?Q?Lq0673j3p1PEls+f+KeWWREV9sYS5g6RNrdLGtM9wR0fxk0jtMwBklxb63td?=
- =?us-ascii?Q?idkU1S5rScRG+WjT5RuFECln75kElRVUl94kmBXpMrv17HlChPF5Q9UCaqqR?=
- =?us-ascii?Q?DAuiN6I/svbOGFoskFhvSAIg9GYN1PHZr954jY5ggXyHQbQCaeg3By3DII/Q?=
- =?us-ascii?Q?/TSn209DogLblWeKtacv0uXRUqSOj6OQdiN+JiSF7piYPpE352bUkKusa3FG?=
- =?us-ascii?Q?5vgeYj1gZAUXQJFx9Pat/N0ro2E3aZfV5vMceJLuwoZ1VGTYVclEQl3Xn9qC?=
- =?us-ascii?Q?uLlONXKNnl3LP4PtT9zeaJ1avGGr23FegTTnlpKwh5XjH0/xFm+8gww7AZIx?=
- =?us-ascii?Q?noWJLitADaz1c8sAuA3U8mSFSmyUTjOW6T9RWuDlQL83zM8GIwtefDqkm3OB?=
- =?us-ascii?Q?eypsQDeY2Ie1IHMa3sKbH7ZTlz+7cY+abZNOasoKGGRSIZN9g6TKXMBb4EqL?=
- =?us-ascii?Q?p3ZbmSUJUxFTvteNCMOq92QaBnah2Qgsfz6jPU3XgW/PIxus+ewS8yGKsLif?=
- =?us-ascii?Q?CWTSbB1LZ2VN9JhfUA8yIW34UAyKrkB/tkSUExY5Rdj34QhP0LGXv3ld0in6?=
- =?us-ascii?Q?hi7NjhEmrYTN9Vxhie+GP8Jp7t+pbZobNVa6AcZiiLNzfLJaWRsefdYs3JJC?=
- =?us-ascii?Q?CGc1GYkwB5xZXYJnJ5nTo4bdx6C6kLk4kZ7sKqLeLmK/lBNoIBnhupd+V+fU?=
- =?us-ascii?Q?YkeKZsRyVOt8Fp8zevKHnb1rPRgGOnqUtk3J83LQdfqOQw4EMfU0ITBdEyKc?=
- =?us-ascii?Q?StUzmDGa0Hsg0R9hPDVYK3dDEEG6ZNSdWaM7wqqlGkmJqDNC5ww9W3BEzTba?=
- =?us-ascii?Q?bq/RXYjhTkG0wQxboRgO3s24bmmytfLhizATmulXKvndvjKLOFldNzBqUqQd?=
- =?us-ascii?Q?I5queVYCHBhVVegjLHK/yIOosgQ/K0t8gYXcbfYRytpHXxVEUy5qmHVHkrMI?=
- =?us-ascii?Q?CTToLOO3DC0pbu5A2PohS9Osa8KTMjqv0VkrUah6NkJxFvD+wskRfUUYEcyB?=
- =?us-ascii?Q?8RTb7ReFh0PL2ReIqz2jSyNhZbrYkHIl1Q0GiGD0540FMjmr3xV16I/RuoUq?=
- =?us-ascii?Q?Yjb8Gkn26L6ksPdk4u73PIYdbWpHgaZcFsNpJa5fySCk+UGDM4R5SNcvA4+H?=
- =?us-ascii?Q?QCBEnSdzbTKIbEhomp0utThM1iStSwEJdfM/y0U3xXt1jo044bqyb4XHalMF?=
- =?us-ascii?Q?Z4rLgq17imODOzGJxnuCyuFJqzIBuuNuDZQZjTgpWdD8UcYqJABXHcg6u3cA?=
- =?us-ascii?Q?5MfTVwTBcAyefr1j6RMW+FuX9GByxIDijpiiVVuL1kEaDVYUOjqateGEtQfg?=
- =?us-ascii?Q?jjwwlchdHV+Q2uGUyjzP6XZi3LfpBWswr4vfKPiFHlgypQAejYjrmCMdO01T?=
- =?us-ascii?Q?Msu7xRTm4OE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW6PR12MB8663.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?yvMhjiT6++/ExQyCEHIeDH0BRwhTKa9Azya8O0Tt8AFZPFgUmuQLYEM2NERC?=
- =?us-ascii?Q?oA2j6hliR8pVMJ/eGfc92OVulao4Vbf99wDUVgVuHBMda5H2Fr/kJXB5zHpu?=
- =?us-ascii?Q?XAjMG8c2MfOXlSJfoypp4JYK3ZfQ4uD5/Hlaa/NlriWT6+zWPO6MWeRIzH5N?=
- =?us-ascii?Q?8REjLU5Epv2y8O5IEhrLeAcruom7jMOBPlc0xwku+De6pDLfMrC+9OmwFSQZ?=
- =?us-ascii?Q?txDAShus/FL3J9JzjQGKfG0ZJs6kXazqYH9Ylww6mEbU700T/Q/CNAIvW+te?=
- =?us-ascii?Q?xUklcO87f0S5o+XRl3xyStA/UGlqRMuvZ5VO5ssKsqbQOomgmcvn33WtGbpp?=
- =?us-ascii?Q?ipnO+PIDEe61GK78KET47O3ujZSOm/0AKaTeeRexIUzV/84nQbblJnFpCgMK?=
- =?us-ascii?Q?ni3TmSrkbabgGW9Fuk9COQEQlfFJM+lkxcJll2qiN52cRpssCu3bStNIoEUe?=
- =?us-ascii?Q?fB29kqdtpHzTAS7PsK40mldcSJke81RIH4s2dnItDK3UV4NA7qhvxabBimKX?=
- =?us-ascii?Q?hU9L8ibgKJbWgVK5PdwilrlxXuxZAoematRGy9fJ3RnOv10/cMq89/56/3pu?=
- =?us-ascii?Q?rYFi8bslteSpNcf3WVFu0YVDE//Ai+yM/DwgF6zbktK3F6Lqzd+8riiGZT5L?=
- =?us-ascii?Q?MHYU0qBApnsXXMreQuUTlE+STEBCZyZAEQlYc1Bbwov8zgy/0YhBH/TBICbL?=
- =?us-ascii?Q?Ey/TA+EF2sL4qdE3/GeeFcOUNwdsOxoqAmlkPodKSQiNrVIF9KM/BEPBunwM?=
- =?us-ascii?Q?LB56Bv/k6rH7ToJEO6JPy/gYvQIygH9ssB5dMIUphFrbRrQ5NazFXm+ShD5h?=
- =?us-ascii?Q?Hr2imsVQoborHKmuxXFGh78e00lhkxmAJnErL7i50/dGdEn5/WmZumFrfiKQ?=
- =?us-ascii?Q?eUC+o2MRdq6tWCgDx9XlhiZRH+QLi/v1/uSdrsR//lLiBGaarzmxcvmq9gKZ?=
- =?us-ascii?Q?fuLLkIhMHBpHJSEdMdZr1hvnxwHQV2336uqVjTeIoqvU0eMZJmfp6z1wT1vx?=
- =?us-ascii?Q?RcceUYY12yvebzFMmQkJF13KLo+lu6ellJyiAir+yCEbGixqaafAS0hTAdhQ?=
- =?us-ascii?Q?IGxaoexix1pbs30VY9siC2DTAkTToTHRSoLqX9DgRFsHGdn0gdtIrCyVq+wF?=
- =?us-ascii?Q?KmEPiNr5HFd3ABs9qWGzbEqsKTayTKlBxHWCKAg93faART3euL2o/gavU4j3?=
- =?us-ascii?Q?yGtPvKmhWQtbHfkhNpDR2DkX8Y5+zJ+N50p/QHE3Pmh77IHzY0xOXCNa9gsM?=
- =?us-ascii?Q?H2hiVzTqZ1ZXurA05ysk2YXB4n+6+yS281uhYAeacKQw8yXWaiaGUV7faBd8?=
- =?us-ascii?Q?ZhzKDavLpaUD0LSujr/4RljozD0c2iOg8/fQvW+P+vxMbRv31jv+nhkGoyTn?=
- =?us-ascii?Q?Yn6+NSNwUstSUMYAbx24m1/PNf7u3SWGpt0B/2/Sb0wDCX3tT3gE1lldNBH+?=
- =?us-ascii?Q?YW3yq3pAKcdN7xJuXLQgjRDFmX7BNlb752W8BF7hNlfDIz9EvGIxHZTHWVKD?=
- =?us-ascii?Q?XG3neKCJ62+gcRzXM1n9j6WG0c9tXpfDjGS8UjcHipAIBPoqUmju3PyKNxPx?=
- =?us-ascii?Q?L3sg8vStSXTj+ysYXAIbSWdcGqiWt7XNHmjH7a6d?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 152382b4-fda9-4412-6998-08dd5d743092
-X-MS-Exchange-CrossTenant-AuthSource: MW6PR12MB8663.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2025 12:32:57.0314
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iJoqvDFTuuJ3YjYWB38mSAwxbqgdhDV3bycoJ42f9qcXksELnmNOCm4JKFXAAeZs
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6288
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 07, 2025 at 11:28:37AM +0100, Simona Vetter wrote:
+On Fri Mar 7, 2025 at 11:11 AM CET, Andreas Hindborg wrote:
+> Add support for intrusive use of the hrtimer system. For now,
+> only add support for embedding one timer per Rust struct.
+>
+> The hrtimer Rust API is based on the intrusive style pattern introduced b=
+y
+> the Rust workqueue API.
+>
+> Acked-by: Frederic Weisbecker <frederic@kernel.org>
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-> > I wouldn't say it is wrong. It is still the correct thing to do, and
-> > following down the normal cleanup paths is a good way to ensure the
-> > special case doesn't have bugs. The primary difference is you want to
-> > understand the device is dead and stop waiting on it faster. Drivers
-> > need to consider these things anyhow if they want resiliency against
-> > device crashes, PCI link wobbles and so on that don't involve
-> > remove().
-> 
-> Might need to revisit that discussion, but Greg didn't like when we asked
-> for a pci helper to check whether the device is physically gone (at least
-> per the driver model). Hacking that in drivers is doable, but feels
-> icky.
+Some smaller changes below, with those fixed:
 
-I think Greg is right here, the driver model has less knowledge than
-the driver if the device is alive.
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
-The resiliency/fast-failure issue is not just isolated to having
-observed a proper hot-unplug, but there are many classes of failure
-that cause the device HW to malfunction that a robust driver can
-detect and recover from. mlx5 attempts to do this for instance.
+> ---
+>  rust/kernel/time.rs         |   2 +
+>  rust/kernel/time/hrtimer.rs | 359 ++++++++++++++++++++++++++++++++++++++=
+++++++
+>  2 files changed, 361 insertions(+)
+>
+> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+> index 379c0f5772e5..fab1dadfa589 100644
+> --- a/rust/kernel/time.rs
+> +++ b/rust/kernel/time.rs
+> @@ -8,6 +8,8 @@
+>  //! C header: [`include/linux/jiffies.h`](srctree/include/linux/jiffies.=
+h).
+>  //! C header: [`include/linux/ktime.h`](srctree/include/linux/ktime.h).
+>
+> +pub mod hrtimer;
+> +
+>  /// The number of nanoseconds per millisecond.
+>  pub const NSEC_PER_MSEC: i64 =3D bindings::NSEC_PER_MSEC as i64;
+>
+> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
+> new file mode 100644
+> index 000000000000..7d7d490f8b6f
+> --- /dev/null
+> +++ b/rust/kernel/time/hrtimer.rs
+> @@ -0,0 +1,359 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Intrusive high resolution timers.
+> +//!
+> +//! Allows running timer callbacks without doing allocations at the time=
+ of
+> +//! starting the timer. For now, only one timer per type is allowed.
+> +//!
+> +//! # Vocabulary
+> +//!
+> +//! States:
+> +//!
+> +//! - Stopped: initialized but not started, or cancelled, or not restart=
+ed.
+> +//! - Started: initialized and started or restarted.
+> +//! - Running: executing the callback.
+> +//!
+> +//! Operations:
+> +//!
+> +//! * Start
+> +//! * Cancel
+> +//! * Restart
+> +//!
+> +//! Events:
+> +//!
+> +//! * Expire
+> +//!
+> +//! ## State Diagram
+> +//!
+> +//! ```text
+> +//!                                                   Return NoRestart
+> +//!                       +---------------------------------------------=
+------------------------+
+> +//!                       |                                             =
+                        |
+> +//!                       |                                             =
+                        |
+> +//!                       |                                             =
+                        |
+> +//!                       |                                         Retu=
+rn Restart              |
+> +//!                       |                                      +------=
+------------------+     |
+> +//!                       |                                      |      =
+                  |     |
+> +//!                       |                                      |      =
+                  |     |
+> +//!                       v                                      v      =
+                  |     |
+> +//!           +-----------------+      Start      +------------------+  =
+         +--------+-----+--+
+> +//!           |                 +---------------->|                  |  =
+         |                 |
+> +//! Init      |                 |                 |                  |  =
+Expire   |                 |
+> +//! --------->|    Stopped      |                 |      Started     +--=
+-------->|     Running     |
+> +//!           |                 |     Cancel      |                  |  =
+         |                 |
+> +//!           |                 |<----------------+                  |  =
+         |                 |
+> +//!           +-----------------+                 +---------------+--+  =
+         +-----------------+
+> +//!                                                     ^         |
+> +//!                                                     |         |
+> +//!                                                     +---------+
+> +//!                                                      Restart
+> +//! ```
+> +//!
+> +//!
+> +//! A timer is initialized in the **stopped** state. A stopped timer can=
+ be
+> +//! **started** by the `start` operation, with an **expiry** time. After=
+ the
+> +//! `start` operation, the timer is in the **started** state. When the t=
+imer
+> +//! **expires**, the timer enters the **running** state and the handler =
+is
+> +//! executed. After the handler has returned, the timer may enter the
+> +//! **started* or **stopped** state, depending on the return value of th=
+e
+> +//! handler. A timer in the **started** or **running** state may be **ca=
+nceled**
+> +//! by the `cancel` operation. A timer that is cancelled enters the **st=
+opped**
+> +//! state.
 
-It turns out when you deploy clusters with 800,000 NICs in them there
-are weird HW fails constantly and you have to be resilient on the SW
-side and try to recover from them when possible.
+This looks very nice, thanks!
 
-So I'd say checking for a -1 read return on PCI is a sufficient
-technique for the driver to use to understand if it's device is still
-present. mlx5 devices further have an interactive register operation
-"health check" that proves the device and it's PCI path is alive.
+> +//!
+> +//! A `cancel` or `restart` operation on a timer in the **running** stat=
+e takes
+> +//! effect after the handler has returned and the timer has transitioned
+> +//! out of the **running** state.
+> +//!
+> +//! A `restart` operation on a timer in the **stopped** state is equival=
+ent to a
+> +//! `start` operation.
+> +
+> +use crate::{init::PinInit, prelude::*, time::Ktime, types::Opaque};
+> +use core::marker::PhantomData;
+> +
+> +/// A timer backed by a C `struct hrtimer`.
+> +///
+> +/// # Invariants
+> +///
+> +/// * `self.timer` is initialized by `bindings::hrtimer_setup`.
+> +#[pin_data]
+> +#[repr(C)]
+> +pub struct HrTimer<T> {
+> +    #[pin]
+> +    timer: Opaque<bindings::hrtimer>,
+> +    _t: PhantomData<T>,
+> +}
+> +
+> +// SAFETY: Ownership of an `HrTimer` can be moved to other threads and
+> +// used/dropped from there.
+> +unsafe impl<T> Send for HrTimer<T> {}
+> +
+> +// SAFETY: Timer operations are locked on the C side, so it is safe to o=
+perate
+> +// on a timer from multiple threads.
+> +unsafe impl<T> Sync for HrTimer<T> {}
+> +
+> +impl<T> HrTimer<T> {
+> +    /// Return an initializer for a new timer instance.
+> +    pub fn new() -> impl PinInit<Self>
+> +    where
+> +        T: HrTimerCallback,
+> +    {
+> +        pin_init!(Self {
+> +            // INVARIANT: We initialize `timer` with `hrtimer_setup` bel=
+ow.
+> +            timer <- Opaque::ffi_init(move |place: *mut bindings::hrtime=
+r| {
+> +                // SAFETY: By design of `pin_init!`, `place` is a pointe=
+r to a
+> +                // live allocation. hrtimer_setup will initialize `place=
+` and
+> +                // does not require `place` to be initialized prior to t=
+he call.
+> +                unsafe {
+> +                    bindings::hrtimer_setup(
+> +                        place,
+> +                        Some(T::Pointer::run),
+> +                        bindings::CLOCK_MONOTONIC as i32,
+> +                        bindings::hrtimer_mode_HRTIMER_MODE_REL,
+> +                    );
+> +                }
+> +            }),
+> +            _t: PhantomData,
+> +        })
+> +    }
+> +
+> +    /// Get a pointer to the contained `bindings::hrtimer`.
+> +    ///
+> +    /// This function is useful to get access to the value without creat=
+ing
+> +    /// intermediate references.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `this` must point to a live allocation of at least the size of `=
+Self`.
+> +    unsafe fn raw_get(this: *const Self) -> *mut bindings::hrtimer {
+> +        // SAFETY: The field projection to `timer` does not go out of bo=
+unds,
+> +        // because the caller of this function promises that `this` poin=
+ts to an
+> +        // allocation of at least the size of `Self`.
+> +        unsafe { Opaque::raw_get(core::ptr::addr_of!((*this).timer)) }
+> +    }
+> +
+> +    /// Cancel an initialized and potentially running timer.
+> +    ///
+> +    /// If the timer handler is running, this function will block until =
+the
+> +    /// handler returns.
+> +    ///
+> +    /// Note that the timer might be started by a concurrent start opera=
+tion. If
+> +    /// so, the timer might not be in the **stopped** state when this fu=
+nction
+> +    /// returns.
+> +    ///
+> +    /// Users of the `HrTimer` API would not usually call this method di=
+rectly.
+> +    /// Instead they would use the safe [`HrTimerHandle::cancel`] on the=
+ handle
+> +    /// returned when the timer was started.
+> +    ///
+> +    /// This function is useful to get access to the value without creat=
+ing
+> +    /// intermediate references.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `this` must point to a valid `Self`.
+> +    #[allow(dead_code)]
+> +    pub(crate) unsafe fn raw_cancel(this: *const Self) -> bool {
+> +        // SAFETY: `this` points to an allocation of at least `HrTimer` =
+size.
+> +        let c_timer_ptr =3D unsafe { HrTimer::raw_get(this) };
+> +
+> +        // If the handler is running, this will wait for the handler to =
+return
+> +        // before returning.
+> +        // SAFETY: `c_timer_ptr` is initialized and valid. Synchronizati=
+on is
+> +        // handled on the C side.
+> +        unsafe { bindings::hrtimer_cancel(c_timer_ptr) !=3D 0 }
+> +    }
+> +}
+> +
+> +/// Implemented by pointer types that point to structs that contain a [`=
+HrTimer`].
+> +///
+> +/// `Self` must be [`Sync`] because it is passed to timer callbacks in a=
+nother
+> +/// thread of execution (hard or soft interrupt context).
+> +///
+> +/// Starting a timer returns a [`HrTimerHandle`] that can be used to man=
+ipulate
+> +/// the timer. Note that it is OK to call the start function repeatedly,=
+ and
+> +/// that more than one [`HrTimerHandle`] associated with a [`HrTimerPoin=
+ter`] may
+> +/// exist. A timer can be manipulated through any of the handles, and a =
+handle
+> +/// may represent a cancelled timer.
+> +pub trait HrTimerPointer: Sync + Sized {
+> +    /// A handle representing a started or restarted timer.
+> +    ///
+> +    /// If the timer is running or if the timer callback is executing wh=
+en the
+> +    /// handle is dropped, the drop method of [`HrTimerHandle`] should n=
+ot return
+> +    /// until the timer is stopped and the callback has completed.
+> +    ///
+> +    /// Note: When implementing this trait, consider that it is not unsa=
+fe to
+> +    /// leak the handle.
+> +    type TimerHandle: HrTimerHandle;
+> +
+> +    /// Start the timer with expiry after `expires` time units. If the t=
+imer was
+> +    /// already running, it is restarted with the new expiry time.
+> +    fn start(self, expires: Ktime) -> Self::TimerHandle;
+> +}
+> +
+> +/// Implemented by [`HrTimerPointer`] implementers to give the C timer c=
+allback a
+> +/// function to call.
+> +// This is split from `HrTimerPointer` to make it easier to specify trai=
+t bounds.
+> +pub trait RawHrTimerCallback {
+> +    /// This type is passed to [`HrTimerCallback::run`]. It may be a bor=
+row of
+> +    /// [`Self::CallbackTarget`], or it may be `Self::CallbackTarget` if=
+ the
 
-Failing health checks trigger recovery, which shoot downs sleeps,
-cleanly destroys stuff, resets the device, and starts running
-again. IIRC this is actually done with a rdma hot unplug/plug sequence
-autonomously executed inside the driver.
+This part of the docs no longer makes sense. You probably mean to say
+`Self` instead, right?
 
-A driver can do a health check immediately in remove() and make a
-decision if the device is alive or not to speed up removal in the
-hostile hot unplug case.
+> +    /// implementation can guarantee correct access (exclusive or shared
+> +    /// depending on the type) to the target during timer handler execut=
+ion.
+> +    type CallbackTarget<'a>;
+> +
+> +    /// Callback to be called from C when timer fires.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Only to be called by C code in the `hrtimer` subsystem. `this` m=
+ust point
+> +    /// to the `bindings::hrtimer` structure that was used to start the =
+timer.
+> +    unsafe extern "C" fn run(this: *mut bindings::hrtimer) -> bindings::=
+hrtimer_restart;
+> +}
+> +
+> +/// Implemented by structs that can be the target of a timer callback.
+> +pub trait HrTimerCallback {
+> +    /// The type whose [`RawHrTimerCallback::run`] method will be invoke=
+d when
+> +    /// the timer expires.
+> +    type Pointer<'a>: RawHrTimerCallback;
+> +
+> +    /// Called by the timer logic when the timer fires.
+> +    fn run(this: <Self::Pointer<'_> as RawHrTimerCallback>::CallbackTarg=
+et<'_>)
+> +    where
+> +        Self: Sized;
+> +}
+> +
+> +/// A handle representing a potentially running timer.
+> +///
+> +/// More than one handle representing the same timer might exist.
+> +///
+> +/// # Safety
+> +///
+> +/// When dropped, the timer represented by this handle must be cancelled=
+, if it
+> +/// is running. If the timer handler is running when the handle is dropp=
+ed, the
+> +/// drop method must wait for the handler to return before returning.
+> +///
+> +/// Note: One way to satisfy the safety requirement is to call `Self::ca=
+ncel` in
+> +/// the drop implementation for `Self.`
+> +pub unsafe trait HrTimerHandle {
+> +    /// Cancel the timer. If the timer is in the running state, block ti=
+ll the
+> +    /// handler has returned.
+> +    ///
+> +    /// Note that the timer might be started by a concurrent start opera=
+tion. If
+> +    /// so, the timer might not be in the **stopped** state when this fu=
+nction
+> +    /// returns.
+> +    ///
+> +    fn cancel(&mut self) -> bool;
+> +}
+> +
+> +/// Implemented by structs that contain timer nodes.
+> +///
+> +/// Clients of the timer API would usually safely implement this trait b=
+y using
+> +/// the [`crate::impl_has_hr_timer`] macro.
+> +///
+> +/// # Safety
+> +///
+> +/// Implementers of this trait must ensure that the implementer has a [`=
+HrTimer`]
+> +/// field at the offset specified by `OFFSET` and that all trait methods=
+ are
+> +/// implemented according to their documentation.
+> +///
+> +/// [`impl_has_timer`]: crate::impl_has_timer
 
-Jason
+This link is unused.
+
+> +pub unsafe trait HasHrTimer<T> {
+> +    /// Return a pointer to the [`HrTimer`] within `Self`.
+> +    ///
+> +    /// This function is useful to get access to the value without creat=
+ing
+> +    /// intermediate references.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `this` must point to a valid struct of type `Self`.
+
+I don't think that this is the correct requirement. The pointer `this`
+must be valid (i.e. dereferenceable), but the value that we're pointing
+at doesn't have to be valid, right?
+
+Same below.
+
+> +    unsafe fn raw_get_timer(this: *const Self) -> *const HrTimer<T>;
+> +
+> +    /// Return a pointer to the struct that is containing the [`HrTimer`=
+] pointed
+> +    /// to by `ptr`.
+> +    ///
+> +    /// This function is useful to get access to the value without creat=
+ing
+> +    /// intermediate references.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `ptr` must point to a [`HrTimer<T>`] field in a struct of type `=
+Self`.
+> +    unsafe fn timer_container_of(ptr: *mut HrTimer<T>) -> *mut Self
+> +    where
+> +        Self: Sized;
+> +
+> +    /// Get pointer to the contained `bindings::hrtimer` struct.
+> +    ///
+> +    /// This function is useful to get access to the value without creat=
+ing
+> +    /// intermediate references.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `this` must point to a valid `Self`.
+> +    unsafe fn c_timer_ptr(this: *const Self) -> *const bindings::hrtimer=
+ {
+> +        // SAFETY: `this` is a valid pointer to a `Self`.
+> +        let timer_ptr =3D unsafe { Self::raw_get_timer(this) };
+> +
+> +        // SAFETY: timer_ptr points to an allocation of at least `HrTime=
+r` size.
+> +        unsafe { HrTimer::raw_get(timer_ptr) }
+> +    }
+> +
+> +    /// Start the timer contained in the `Self` pointed to by `self_ptr`=
+. If
+> +    /// it is already running it is removed and inserted.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// - `this` must point to a valid `Self`.
+
+Here the requirement is correct, since you need that for
+`hrtimer_start_range_ns`.
+
+> +    /// - Caller must ensure that `self` lives until the timer fires or =
+is
+
+There is no `self`, do you mean the value living behind `this`?
+
+> +    ///   canceled.
+> +    unsafe fn start(this: *const Self, expires: Ktime) {
+> +        // SAFETY: By function safety requirement, `this`is a valid `Sel=
+f`.
+> +        unsafe {
+> +            bindings::hrtimer_start_range_ns(
+> +                Self::c_timer_ptr(this).cast_mut(),
+> +                expires.to_ns(),
+> +                0,
+> +                bindings::hrtimer_mode_HRTIMER_MODE_REL,
+> +            );
+> +        }
+> +    }
+> +}
+> +
+> +/// Use to implement the [`HasHrTimer<T>`] trait.
+> +///
+> +/// See [`module`] documentation for an example.
+> +///
+> +/// [`module`]: crate::time::hrtimer
+> +#[macro_export]
+> +macro_rules! impl_has_hr_timer {
+> +    (
+> +        impl$({$($generics:tt)*})?
+> +            HasHrTimer<$timer_type:ty>
+> +            for $self:ty
+> +        { self.$field:ident }
+> +        $($rest:tt)*
+> +    ) =3D> {
+> +        // SAFETY: This implementation of `raw_get_timer` only compiles =
+if the
+> +        // field has the right type.
+> +        unsafe impl$(<$($generics)*>)? $crate::time::hrtimer::HasHrTimer=
+<$timer_type> for $self {
+> +
+> +            #[inline]
+> +            unsafe fn raw_get_timer(this: *const Self) ->
+> +                *const $crate::time::hrtimer::HrTimer<$timer_type>
+> +            {
+> +                // SAFETY: The caller promises that the pointer is not d=
+angling.
+> +                unsafe {
+> +                    ::core::ptr::addr_of!((*this).$field)
+> +                }
+> +            }
+> +
+> +            #[inline]
+> +            unsafe fn timer_container_of(ptr: *mut $crate::time::hrtimer=
+::HrTimer<$timer_type>) ->
+> +                *mut Self
+
+This formatting looks a bit weird, (macro formatting is annoying, I
+know).
+
+---
+Cheers,
+Benno
+
+> +            {
+> +                // SAFETY: As per the safety requirement of this functio=
+n, `ptr`
+> +                // is pointing inside a `$timer_type`.
+> +                unsafe {
+> +                    ::kernel::container_of!(ptr, $timer_type, $field).ca=
+st_mut()
+> +                }
+> +            }
+> +        }
+> +    }
+> +}
+>
+> --
+> 2.47.0
+
+
