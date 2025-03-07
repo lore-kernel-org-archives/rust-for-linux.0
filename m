@@ -1,132 +1,238 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632531C8625;
-	Fri,  7 Mar 2025 08:50:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08331AA1F6
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Mar 2025 09:01:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741337414; cv=none; b=CcyRt/iCS7JQyuY2tmHz/2Nfg3zzNeMfBPo5abh/rVzz/J/q952rDXGRdgGpAflCUeqtxls52DsRtjjn5T4O4Yt3ikG5f5dbkVmv94ltjq383YiFZhyDu9CeMdQ6lncFAyQ174e5cx7yANSr086+n1AB35Y3TOG1KYfKBUDqloo=
+	t=1741338072; cv=none; b=ZN2wMt0j2kJtU8CVJdh4AC/W64KfMbm0ylqPHrdHmIHkmyfye5ofvW3ko7QeBOnIdp2png3ZL2pFO2ltMvJQbXdfX3ooUolB1R0fXJBgyvNKO1YcESETJlxzxbSbMVwTVE9zMmdgsW0l5n+NzcTxoTVr0nlYfMD8eF2pvsfbZpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741337414; c=relaxed/simple;
-	bh=awBu8u0irBnMyQWo3G8Lqu6cbt03nNzUk9SYRlTFHVU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HFeQnmdOQ5R+CF7ja3gAJMA1Wg2Pp/6FkdRaIVtyCdg0iXIZN6LmeIBU/O6n0VqiwPz2G2NjFHdV6G7qsZEHlDMGF6DNy4+jRjgzfrpDvTIk24skq0ufIrRWBHjkP1NKJt0ISr6kXi9j5oI2ygmEk+2IRIcRn5vZ4NOPYia2U4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sd+zPDhw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741338072; c=relaxed/simple;
+	bh=iMdbXayB5JUNNSJLawifPMxoZ1VpVma6vxkKpv+va+Y=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=E01tsVLQ08n8NYLfLFpdxcwZgAW9yfPprE7Xkpo8CVhNYX696HI6dQyJCBzFdnCIhOQkSxQA0YJwh12onSFTKcyfFlJg4OlrnKdeiXbZnUqq3+4fgTN1gEZKr44165AvtKQwFw6fBBtAx+7stZDHwyil/OsX+DDeHwt7WopUCnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mKZCWrZ1; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sd+zPDhw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDCB4C4CED1;
-	Fri,  7 Mar 2025 08:50:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741337413;
-	bh=awBu8u0irBnMyQWo3G8Lqu6cbt03nNzUk9SYRlTFHVU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sd+zPDhw1aZKbdRbD1EG4J8udHHsuXcq/IzEo4Mp52aEwVnMO/XxLerKPkyea93OA
-	 HgQg2bpqh7guLply4h53oV0XUZiKoLqFJfdJjCNpz7LFypTOQO6OFRIca19WPcyQo2
-	 oOPdEJZyjJBxt2pse2OqfLLYQvQg3opZBbOCooceYNC2kEnAJ7cVhHS0IAsrpGEfhU
-	 aMYVFvrRHIlerrugB9xibmWO1ti+WWqAjRnNREj4rTQcZgjKNL82dh6UpqLmQRcA3/
-	 ykBWHby4Y6H2cnguivH1ayZbbRt8AFP83g1BRpq7XSof1yUyKmdVpOoL1fGZT32Kj9
-	 2lmnJ7Y0EdUgQ==
-Date: Fri, 7 Mar 2025 09:50:07 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>, aliceryhl@google.com,
-	robin.murphy@arm.com, daniel.almeida@collabora.com,
-	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
-Subject: Re: [PATCH v12 2/3] rust: add dma coherent allocator abstraction.
-Message-ID: <Z8qzP3CR8Quhp87Z@pollux>
-References: <20250224115007.2072043-1-abdiel.janulgue@gmail.com>
- <20250224115007.2072043-3-abdiel.janulgue@gmail.com>
- <20250305174118.GA351188@nvidia.com>
- <Z8mlAxsszdOH-ow8@cassiopeiae>
- <Z8m9j3SwWHqaCTXo@phenom.ffwll.local>
- <20250306160907.GF354511@nvidia.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mKZCWrZ1"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2ff55176edcso3148333a91.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 07 Mar 2025 01:01:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1741338070; x=1741942870; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=W9oLkDdyozH7DFIHltTjhNH2lFWEIt3IiiUaK9MXB3o=;
+        b=mKZCWrZ1Q7Tag1tOgb4Rig42NM8mF1sBJp4Z6iZV6cGeb7viurAlwDPUBkNQ9fMbI9
+         WlClCzSj+2sYVi3lSNdHbyLbld+cIe+9aUKaK0DDbUGWCubaJv/yL4gqpZWrDHOr9z8S
+         43DiZFe6RcV2VqlxSl22i1BeLOgcdBneXkNE0JSMEzswEceOzUc6TTlWEJ5EUArrfOuT
+         XcaKbNyA/v66nVfEAYzRtPSjPz80+jntTZbVLnobqXJ7AnE0ry+wCNGqho+g2XsqtQmU
+         MKO4UCXKT7n2tDZakSSIbrcdGXrtYO+Ej3oXKgUHMz//WfStX0cjxqoqYFQUslkEF3L+
+         ui4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741338070; x=1741942870;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=W9oLkDdyozH7DFIHltTjhNH2lFWEIt3IiiUaK9MXB3o=;
+        b=BLsulY5nOfFNQcgb+6mRbch+l4NWf4zt16u1qTU16N+CRxQ/KUIemaX+afx48D1UJs
+         +2iLJ8MLhO2pcRMPbYHKEdzNmRcOcjzImD2YfQNoE99ziUXyxjVz7gjrGQUeY+u0RV0s
+         9/tOI4PUuzyLWEwsrGPvKZGWoPmEJvR29UMwKgdSB6V0wC6KicKTQaeNhS6+SDBVXCCF
+         PYVLUo0wRqoyw/QLGjXQ7rSiiTnF+KfxlhQDBXx/86dqFsWYBg5BPq+98Ay0IVo8F334
+         jbihqOfZRm9UvAAHQIu2VuIStNsp689xDEnrrHQaC/tudvTp+vbms4t3oBFxnOFsP4A/
+         dKtA==
+X-Forwarded-Encrypted: i=1; AJvYcCUe0BPewZpJL7Z9zsx2h1chwrRyP976sNtUDD/C8cTPZ7ZANZMx2j1/YZVK2nDcujfa+/Fkje/ChTknehT7YQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyReE/rjMKlHtGdBBwzouPhrwDw1+mCRclkTmXWKlg4NFS1bo9D
+	60ox+e5EHH75WsVHje8w56zfCZqOFlVprQICeOOiayQspB3FQ7BG3gMes9dZLOrjxsaj4Ckly3I
+	Slq/5KbP4aw==
+X-Google-Smtp-Source: AGHT+IFl5djYlOHwjsH1jSH3vMvR+qCWMY+8vL27eV6cPylbpxewB7NvBKJd+RxaSKmr6cMghF87lYBWXmdemg==
+X-Received: from pjbnd10.prod.google.com ([2002:a17:90b:4cca:b0:2ea:29de:af10])
+ (user=davidgow job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:3883:b0:2fe:d766:ad8e with SMTP id 98e67ed59e1d1-2ff7ce74e92mr3974028a91.4.1741338070117;
+ Fri, 07 Mar 2025 01:01:10 -0800 (PST)
+Date: Fri,  7 Mar 2025 17:00:55 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250306160907.GF354511@nvidia.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.49.0.rc0.332.g42c0ae87b1-goog
+Message-ID: <20250307090103.918788-1-davidgow@google.com>
+Subject: [PATCH v8 0/3] rust: kunit: Support KUnit tests with a user-space
+ like syntax
+From: David Gow <davidgow@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, 
+	"=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?=" <jose.exposito89@gmail.com>, Rae Moar <rmoar@google.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, Benno Lossin <benno.lossin@proton.me>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Matt Gilbride <mattgilbride@google.com>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	Tamir Duberstein <tamird@gmail.com>
+Cc: David Gow <davidgow@google.com>, kunit-dev@googlegroups.com, 
+	linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 06, 2025 at 12:09:07PM -0400, Jason Gunthorpe wrote:
-> On Thu, Mar 06, 2025 at 04:21:51PM +0100, Simona Vetter wrote:
-> > > >  > a device with no driver bound should not be passed to the DMA API,
-> > > >  > much less a dead device that's already been removed from its parent
-> > > >  > bus.
-> > > 
-> > > Thanks for bringing this up!
-> > > 
-> > > I assume that's because of potential iommu mappings, the memory itself should
-> > > not be critical.
-> 
-> There is a lot of state tied to the struct device lifecycle that the
-> DMA API and iommu implicitly manages. It is not just iommu mappings.
-> 
-> It is incorrect to view the struct device as a simple refcount object
-> where holding the refcount means it is alive and safe to use. There
-> are three broad substates (No Driver, Driver Attached, Zombie) that
-> the struct device can be in that are relevant.
-> 
-> Technically it is unsafe and oopsable to call the allocation API as
-> well on a device that has no driver. This issue is also ignored in
-> these bindings and cannot be solved with revoke.
+Hi all,
 
-This is correct, and I am well aware of it. I brought this up once when working
-on the initial device / driver, devres and I/O abstractions.
+This is v8 of the Rust/KUnit integration patch. I think all of the
+suggestions have at least been responded to (even if there are a few I'm
+leaving as either future projects or matters of taste). Hopefully this
+is good-to-go for 6.15, so we can start using it concurrently with
+making any additional improvements we may wish.
 
-It's on my list to make the creation of the Devres container fallible in this
-aspect, which would prevent this issue.
+This series was originally written by Jos=C3=A9 Exp=C3=B3sito, and has been
+modified and updated by Matt Gilbride, Miguel Ojeda, and myself. The
+original version can be found here:
+https://github.com/Rust-for-Linux/linux/pull/950
 
-For now it's probably not too critical; we never hand out device references
-before probe(). The only source of error is when a driver tries to create new
-device resources after the device has been unbound.
+Add support for writing KUnit tests in Rust. While Rust doctests are
+already converted to KUnit tests and run, they're really better suited
+for examples, rather than as first-class unit tests.
 
-> IOW I do not belive you can create bindings here that are truely safe
-> without also teaching rust to understand the concept of a scope
-> guaranteed to be within a probed driver's lifetime.
-> 
-> > > > Also note that any HW configured to do DMA must be halted before the
-> > > > free is allowed otherwise it is a UAF bug. It is worth mentioning that
-> > > > in the documentation.
-> > > 
-> > > Agreed, makes sense to document. For embedding the CoherentAllocation into
-> > > Devres this shouldn't be an issue, since a driver must stop operating the device
-> > > in remove() by definition.
-> >
-> > I think for basic driver allocations that you just need to run the device
-> > stuffing it all into devres is ok. 
-> 
-> What exactly will this revokable critical region protect?
-> 
-> The actual critical region extends into the HW itself, it is not
-> simple to model this with a pure SW construct of bracketing some
-> allocation. You need to bracket the *entire lifecycle* of the
-> dma_addr_t that has been returned and passed into HW, until the
-> dma_addr_t is removed from HW.
+This series implements a series of direct Rust bindings for KUnit tests,
+as well as a new macro which allows KUnit tests to be written using a
+close variant of normal Rust unit test syntax. The only change required
+is replacing '#[cfg(test)]' with '#[kunit_tests(kunit_test_suite_name)]'
 
-Devres callbacks run after remove(). It's the drivers job to stop operating the
-device latest in remove(). Which means that the design is correct.
+An example test would look like:
+	#[kunit_tests(rust_kernel_hid_driver)]
+	mod tests {
+	    use super::*;
+	    use crate::{c_str, driver, hid, prelude::*};
+	    use core::ptr;
 
-Now, you ask for a step further, i.e. make it that we can enforce that a driver
-actually stopped the device in remove().
+	    struct SimpleTestDriver;
+	    impl Driver for SimpleTestDriver {
+	        type Data =3D ();
+	    }
 
-But that's just impossible, because obviously no one else than the driver knows
-the semantics of the devicei; it's the whole purpose of the driver. So, this is
-one of the exceptions where just have to trust the driver doing the correct
-thing.
+	    #[test]
+	    fn rust_test_hid_driver_adapter() {
+	        let mut hid =3D bindings::hid_driver::default();
+	        let name =3D c_str!("SimpleTestDriver");
+	        static MODULE: ThisModule =3D unsafe { ThisModule::from_ptr(ptr::n=
+ull_mut()) };
 
-Having that said, it doesn't need to be an "all or nothing", let's catch the
-ones we can actually catch.
+        	let res =3D unsafe {
+	            <hid::Adapter<SimpleTestDriver> as driver::DriverOps>::registe=
+r(&mut hid, name, &MODULE)
+	        };
+	        assert_eq!(res, Err(ENODEV)); // The mock returns -19
+	    }
+	}
+
+
+Please give this a go, and make sure I haven't broken it! There's almost
+certainly a lot of improvements which can be made -- and there's a fair
+case to be made for replacing some of this with generated C code which
+can use the C macros -- but this is hopefully an adequate implementation
+for now, and the interface can (with luck) remain the same even if the
+implementation changes.
+
+A few small notable missing features:
+- Attributes (like the speed of a test) are hardcoded to the default
+  value.
+- Similarly, the module name attribute is hardcoded to NULL. In C, we
+  use the KBUILD_MODNAME macro, but I couldn't find a way to use this
+  from Rust which wasn't more ugly than just disabling it.
+- Assertions are not automatically rewritten to use KUnit assertions.
+
+---
+
+Changes since v7:
+https://lore.kernel.org/rust-for-linux/20250214074051.1619256-1-davidgow@go=
+ogle.com/
+- Reworked the SAFETY comment for addr_of_mut! use with statics in
+  kunit_unsafe_test_suite!() (again)
+- Removed the second mocking example, which was causing confusion.
+  The first example of in_kunit_test() should be clear enough.
+
+Changes since v6:
+https://lore.kernel.org/rust-for-linux/20250214074051.1619256-1-davidgow@go=
+ogle.com/
+- Fixed an [allow(unused_unsafe)] which ended up in patch 2 instead of
+  patch 1. (Thanks, Tamir!)
+- Doc comments now have several useful links. (Thanks, Tamir!)
+- Fix a potential compile error under macos. (Thanks, Tamir!)
+- Several small tidy-ups to limit unsafe usage. (Thanks, Tamir!)
+
+Changes since v5:
+https://lore.kernel.org/all/20241213081035.2069066-1-davidgow@google.com/
+- Rebased against 6.14-rc1
+- Fixed a bunch of warnings / clippy lints introduced in Rust 1.83 and
+  1.84.
+- No longer needs static_mut_refs / const_mut_refs, and is much cleaned
+  up as a result. (Thanks, Miguel)
+- Major documentation and example fixes. (Thanks, Miguel)
+
+Changes since v4:
+https://lore.kernel.org/linux-kselftest/20241101064505.3820737-1-davidgow@g=
+oogle.com/
+- Rebased against 6.13-rc1
+- Allowed an unused_unsafe warning after the behaviour of addr_of_mut!()
+  changed in Rust 1.82. (Thanks Boqun, Miguel)
+- "Expect" that the sample assert_eq!(1+1, 2) produces a clippy warning
+  due to a redundant assertion. (Thanks Boqun, Miguel)
+- Fix some missing safety comments, and remove some unneeded 'unsafe'
+  blocks. (Thanks Boqun)
+- Fix a couple of minor rustfmt issues which were triggering checkpatch
+  warnings.
+
+Changes since v3:
+https://lore.kernel.org/linux-kselftest/20241030045719.3085147-2-davidgow@g=
+oogle.com/T/
+- The kunit_unsafe_test_suite!() macro now panic!s if the suite name is
+  too long, triggering a compile error. (Thanks, Alice!)
+- The #[kunit_tests()] macro now preserves span information, so
+  errors can be better reported. (Thanks, Boqun!)
+- The example tests have been updated to no longer use assert_eq!() with
+  a constant bool argument (which triggered a clippy warning now we
+  have the span info).
+
+Changes since v2:
+https://lore.kernel.org/linux-kselftest/20241029092422.2884505-1-davidgow@g=
+oogle.com/T/
+- Include missing rust/macros/kunit.rs file from v2. (Thanks Boqun!)
+- The kunit_unsafe_test_suite!() macro will truncate the name of the
+  suite if it is too long. (Thanks Alice!)
+- The proc macro now emits an error if the suite name is too long.
+- We no longer needlessly use UnsafeCell<> in
+  kunit_unsafe_test_suite!(). (Thanks Alice!)
+
+Changes since v1:
+https://lore.kernel.org/lkml/20230720-rustbind-v1-0-c80db349e3b5@google.com=
+/T/
+- Rebase on top of the latest rust-next (commit 718c4069896c)
+- Make kunit_case a const fn, rather than a macro (Thanks Boqun)
+- As a result, the null terminator is now created with
+  kernel::kunit::kunit_case_null()
+- Use the C kunit_get_current_test() function to implement
+  in_kunit_test(), rather than re-implementing it (less efficiently)
+  ourselves.
+
+Changes since the GitHub PR:
+- Rebased on top of kselftest/kunit
+- Add const_mut_refs feature
+  This may conflict with https://lore.kernel.org/lkml/20230503090708.252431=
+0-6-nmi@metaspace.dk/
+- Add rust/macros/kunit.rs to the KUnit MAINTAINERS entry
+
+---
+
+Jos=C3=A9 Exp=C3=B3sito (3):
+  rust: kunit: add KUnit case and suite macros
+  rust: macros: add macro to easily run KUnit tests
+  rust: kunit: allow to know if we are in a test
+
+ MAINTAINERS          |   1 +
+ rust/kernel/kunit.rs | 171 +++++++++++++++++++++++++++++++++++++++++++
+ rust/macros/kunit.rs | 161 ++++++++++++++++++++++++++++++++++++++++
+ rust/macros/lib.rs   |  29 ++++++++
+ 4 files changed, 362 insertions(+)
+ create mode 100644 rust/macros/kunit.rs
+
+--=20
+2.49.0.rc0.332.g42c0ae87b1-goog
+
