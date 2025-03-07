@@ -1,280 +1,195 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75223847B
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Mar 2025 00:01:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3095B28FF;
+	Fri,  7 Mar 2025 01:04:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741305694; cv=none; b=vB96KjNq67V4QB7890rK+vy3BXrJ92d2Zae1alP2xnoRACS2ENrOx9iT0511uQ7kYy47kgipMo+1w6NUBlx5LLNMeuaDrODd19Glh4t0gxZQORBqCQ4bfR5REy3+Lii7K10MhCmlgIldeBuFw1gujGnn8pjet6nQcDLhbRHV68k=
+	t=1741309492; cv=none; b=f4/0rBMk4PX4xev9b2jdc+oB2DSbUpmh4F7BwdrOJwGa+i7jblr1NVDw+VBHbG42ZxOP70BbGJOCVpXjVrVt6ElJHYronf84KgDeJYe22bnGBxEUdfVLAQcT1AdLH+55fmnjssbGbZUC4aM8gVBBR9cryyEHsmXanYpqJVL2V40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741305694; c=relaxed/simple;
-	bh=Pi1AAX8k15caN6QA8JY82zl5bbVvjN700PEWndcmB0c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GA9n0ybyI3xfPNenNwKBE66agahsbgX25yrIYGe4L9TckmaF4XP2oJi2RHCz4tnYtMRL8VOEmb+LdhCsZaBqANvN9vL2g42Mcirf7UTs1+nUcr+YoGR8UIeCW1x3AFin4S5ZXYWiYT+rnkxnyF1ajrebKQYKN36PoWRhUs00PMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l5ZCEwyz; arc=none smtp.client-ip=209.85.222.172
+	s=arc-20240116; t=1741309492; c=relaxed/simple;
+	bh=oDrfQqiYXqiLn0JVeuGrsRgK5P6HmYH2KIyp8Qky3l8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cHNTmahksGO40wc4iEY7oN5Nuh4GeIoJue7XxX5aKhU4mqO5FSC2s6klgFxMitY65Dpg0l8hgG69M865hBUEmVAYSbGbOF+3V8+7z1iwPvgOjEZBlHy/3vvqR6qqO9Wq2orIhwgj5GH0Q/IhHrQUY352ErnbOw4KGJHJGqHT9jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sv3S7TzU; arc=none smtp.client-ip=209.85.221.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l5ZCEwyz"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7c04df48a5bso120685485a.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 06 Mar 2025 16:01:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sv3S7TzU"
+Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-523dc3649edso384670e0c.0;
+        Thu, 06 Mar 2025 17:04:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741305691; x=1741910491; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1741309490; x=1741914290; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0EChL4MhIvN0vOv+OyV9ty9Bp3e4mVGVuzwxHmc0N4I=;
-        b=l5ZCEwyzFShE9CYIpLpdHIQihy2GE+I7Bal05Dk/L0ErEuCCUiaX3OXLU83bwx57SB
-         oKPgVw0bhCfdDzLMKH4CE61uQFlktNHzU5Ir7zZNCkKu1d3UzSKLwj1ypX8rHttUIGO4
-         /rGzLG2Yg+t3GsD9P4Reu8TPQdh2TvhaAkHYA1IZbbceURje0Vwc+OSP6XzHBZUrW69j
-         1igafY5UFDi6tvIVnw1Aij2S39o1QRHH1cdou8rmNBtqFV+fWRSaAH5uijJvJoDbB3uG
-         5EyCAzwWY4ociHDwjIZsG5pWKpnfqnM2O9LlmYNPCDJe2uiTYk4uwTPTwZdKud4BtO4A
-         A/5w==
+        bh=FpgNsP0RsTTpLOpERJI2CJLUOC16l+9Hasgl+r3eevc=;
+        b=Sv3S7TzUlpMolCGk33QawcMxtKNbctN5ntahHoTZupguBRmyKStq7LoZt2QxG1WEZA
+         NGJaiqQh1MKp0x+U3F4m9H1klNathg/GU87K1+V2h+lDOzmRabfFiMoZg7ZcQo2hyW4b
+         a+ifR8SauPKW+g4FiuqNFCMUMmojZklMw4edDwWFyhoAapScO4OUw2u1ADS6KV7FHG0Y
+         I0jDTiDqIluyfjW+4dH86UAYdfeZAj+bLSJvJy4+25BRq6UYvMeUul3jltd+8s/oaGLS
+         K5JRIkhFeQCFPmJAttLDA0LBXmMVq+4jTvORlOXWXJiKJTRMvKlde2DSwo3KA1Vzgl3n
+         l8kA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741305691; x=1741910491;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1741309490; x=1741914290;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=0EChL4MhIvN0vOv+OyV9ty9Bp3e4mVGVuzwxHmc0N4I=;
-        b=c4iNipfDhRomWnfOY43aXwI3LPEOTxy+dKbiQMEVfwiuvrY0s8vDT+JQ+hDF4lIESk
-         rMK02F0PesbP1vXAA/ViGmK3GL82NWj27he4X5lMaoyUgWjypbDa4CdGSgYcghJvJiek
-         qVa3kdOVPmTLEQm5Ro2Vw5hE0A+pZk2qRTxC1QL9d9AySvHgHINP3Cko3RA1/xuBt3rS
-         sG2r78pyhbOLLq/J8Rbjs4jU+fRy38RvK4twy17UrOysg44Yu0101SSD9eLh3PK9gEGu
-         EOMB8ns5XZcXAexLIg5hEvpD+/ItcxqDJQf+thfc7EXAEcHhdNiNVSPFwUTikSF29enS
-         144Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXnjdb/VQzFBP+UvuWcKV62rWA977zsGORhkMhq2Rvy8dW5/fJspKMXyyZv9yrAJaA/CB4gFn871CS5Z7CCGw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1gcCm4jwNxb0bjqflIYLAUhOEgeAEyEr6uJSuYNQBpG0Linpq
-	tAK0uwLkS7mAW1QDQAWH4L/rY5AHzaJK7fSgQQgqK/L0FeFxeUGw
-X-Gm-Gg: ASbGncuIk9oV5LqKjKiyLyZ28CxOY0hLzQIsHmYWXnUNnSdqQj4DItKrL16kfoNuAvS
-	36eFo4EznoyDAkl87P6Spf96tigQ2ZfHvyJCEizzrNSfD35ZCQd3U18mvjbiNAIvY6f5alGzicR
-	91qBhQ2dwniFHuXzH4i36ufZjJildqTSPQPiuPpKTsQUssagA5ozOyskubZ8tBQbhBlLA22F0rT
-	7k+EekQVzXdgmXe21cQu3zJSjUHHfy/lDzbxBsPYp5qMSMRmBVvm3xPQuuzD/If/zTspo1+Va1/
-	JsAfQngtE4gIj8373rR0LzPJWbNpVMQA+D5YUaRLiEUj2JRfpAkFdEuoLAuTrYpP/SnwhamwRYz
-	+SxS32zGniSgUOH3VYXfj8WTTsmKAu6R/zUc=
-X-Google-Smtp-Source: AGHT+IE/WlT5dXja4GJMqoGovVSbnDapWOx1zVMMtDj204nUqdIFHYfkCEaqSq4i9XbfqtQrKEytHw==
-X-Received: by 2002:a05:620a:6084:b0:7c0:b0d4:e133 with SMTP id af79cd13be357-7c4e6104de2mr244494885a.25.1741305691170;
-        Thu, 06 Mar 2025 16:01:31 -0800 (PST)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c3e533a0b1sm156763785a.10.2025.03.06.16.01.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Mar 2025 16:01:30 -0800 (PST)
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 28E941200043;
-	Thu,  6 Mar 2025 19:01:30 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Thu, 06 Mar 2025 19:01:30 -0500
-X-ME-Sender: <xms:WjfKZzHv5bE34RcD4kC4i8YniC8sX9aOe0YYCFKaJy7_woF_xN585w>
-    <xme:WjfKZwX67prsJUxrGEfnym3dviOcAZt3MRPhsOIl3kw1udaWAcHAiG6KU-MCDBQRC
-    0g3NsW3Kn2MuNa2qw>
-X-ME-Received: <xmr:WjfKZ1JKXXb-d_RPJahCeoi3Agf6FOHQ9gVSL7FVanR-KNBH_qn19YVm7YU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddutdeludegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnegoufhushhpvggtthffohhmrghinhculdegledmnecujfgu
-    rhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcuhf
-    gvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtthgv
-    rhhnpeekjefgudefhfeigffghfdtheeggfdtuddvkeejleffheeufeffteetvefgfeeuje
-    enucffohhmrghinhepghhithhhuhgsrdhiohenucevlhhushhtvghrufhiiigvpedtnecu
-    rfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrsh
-    honhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghn
-    gheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepud
-    dtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegsvghnnhhordhlohhsshhinhes
-    phhrohhtohhnrdhmvgdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrd
-    horhhgpdhrtghpthhtohepughirhhkrdgsvghhmhgvseguvgdrsghoshgthhdrtghomhdp
-    rhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdroh
-    hrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegu
-    rghnihgvlhdrrghlmhgvihgurgestgholhhlrggsohhrrgdrtghomhdprhgtphhtthhope
-    hgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegrlhhitggvrhihhhhlsehg
-    ohhoghhlvgdrtghomhdprhgtphhtthhopehtmhhgrhhoshhssehumhhitghhrdgvughu
-X-ME-Proxy: <xmx:WjfKZxG9-RppdYQ_OQ6UBPOTRbgBlq10ModQnZY9UEsaaNU2Ro0XjQ>
-    <xmx:WjfKZ5WKIiIA_zmJSuNfsQTWDxH-Q10s9w8tFx1KqpWacmiQkW530g>
-    <xmx:WjfKZ8N7eQm-S0yxKdaFU9xLR7g3jT7zRzPWhw7HieZ6kEuJIjntCQ>
-    <xmx:WjfKZ411TNL0QxanHH1athbCGu9QdTKMGapI9yMuGycVwcpf54_hkA>
-    <xmx:WjfKZ-WH1-hh35hfAzzYbTMVALog4pwOdlsqZbEZbGji4kMh2Y9guAMI>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 6 Mar 2025 19:01:29 -0500 (EST)
-Date: Thu, 6 Mar 2025 16:00:20 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>,
-	Dirk Behme <dirk.behme@de.bosch.com>,
-	rust-for-linux@vger.kernel.org, ojeda@kernel.org,
-	daniel.almeida@collabora.com, Gary Guo <gary@garyguo.net>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-Subject: Re: [PATCH v3 2/2] rust: types: `Opaque` doc: Add some destructor
- description
-Message-ID: <Z8o3FMfUh-qoeaQf@boqun-archlinux>
-References: <20250305053438.1532397-1-dirk.behme@de.bosch.com>
- <Z8hwGGn9huDjyDWN@tardis>
- <87v7sn759g.fsf@kernel.org>
- <n0Uj2Z9c_20rMgNGkpHAbJ2IQS5ueeREBy6NHdwpCp8vg9V5JrRPJbP3xBFssuyDTcN1JUulMK3cwwDu0U0fkQ==@protonmail.internalid>
- <Z8icwtIpZ3PO9YcZ@boqun-archlinux>
- <87zfhz5gq2.fsf@kernel.org>
- <DJwmmXRi4oxEM1aRRHh2SekW5eo0beS5JIfsvphgxDldFDRtXNG_2GDvuV5u5Yxj0Tfi4wau55m44VjbhTTCyw==@protonmail.internalid>
- <Z8k6J-rLXUp9y-o1@tardis>
- <87o6ye5wbs.fsf@kernel.org>
- <D894EPDF6Q5H.38KZS9M7T6HEI@proton.me>
+        bh=FpgNsP0RsTTpLOpERJI2CJLUOC16l+9Hasgl+r3eevc=;
+        b=F4J2APvnxDvSyYhMX3xITMYmz1cjh911J0ZDMV/1NKqicactEOr7/J2hcdCh4LVKVH
+         iI4hudq7TKlbEG2EI4GnFAZQmV8zA5ANNbQ6/a/6UjC4Qsn+ZevXf+BDF1840bOYH/N/
+         EiEh3ntJE5gjBV6dRjMsHaf7FnmtD2FU8gYM6SAWUHvEvdq154DLQqVa4NWeSLyiIa8l
+         HpbWbNlqzCJNbgvZU9361Nqe7PG1I7cvJb7GuIVLKfwQ93M/z4czv8MAOeStJOGKVxoR
+         3eiVKKYhFTWCdf4Y5Os9HQmjuW4Okg1SV+E7pHNZeGPmHuXZN33MLKK/8O6XDexSxBG+
+         ecWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVjy5NiK5L1+GU5rR9LcgfUuI3O4RrvPe/DrRfu57wlzhIjAA4I42QonR40y6yye9qnNvPI+WxFx342+Q8lmBY=@vger.kernel.org, AJvYcCWHKZjFHCU8NpzAJX5o5SU/l2ipoMn+GKHBKHSaHa7Iu6pkx6HCjT+qvMFmCIHahdGgoK9oSxhxr5s=@vger.kernel.org, AJvYcCWpA/gxY1lwtlvkg2ip3hBjUJoM9kYs+Xtkhgu+jgOH5DKiUGcxsBetcFnFPRubIO1oepoCgOcesdvU@vger.kernel.org, AJvYcCXUW3ZC70C60UtKOCgrRtK2fBrIVWhDN4Gub7/ad4lWNOk9kI3IVguXcPYy9Mp7vDMN8i+u4bxDer68P2mB@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNTKgKKdUg5IxP/sm4mhXq3lOkMWUPpRGtMYjgiXrM0qkktRkR
+	hUo0z46vPWIUJ4anDcLuGeei7i1zrVtbdtXSFGoRRxHy3i+H2Y0CUJlHAGuhd05Qzd7QLmjKL1Z
+	/tYUgIzAy6E9hcTktp44eDP9K2es=
+X-Gm-Gg: ASbGncvWtN2BiuzHsGqFzYKKfYklVna+AJ5oT1oUOhHLoNSihWV2+1tuR+tfd8TubQB
+	C0RcSgBClojC521uWTmMGHYzT3md+3D2fkdD6B6H2AlWoJ1A0YTqJsd3c6rMDSM+nuUzW6MjsLD
+	kRQSjlu478ZZaMpTyD+bxgloA9FODQs5BugmYLWHwFFoX62kMq9lW6JCeJ
+X-Google-Smtp-Source: AGHT+IGbwmafUFC0g3M/wodTSstZb8EnCAH6b9gBxI+jfvUYZxWjuOY7Y5eVL2Cn7rIG2fpCOUE53vdi5hXO2D0kVEU=
+X-Received: by 2002:a05:6122:c86:b0:520:6773:e5bf with SMTP id
+ 71dfb90a1353d-523e3ff02fcmr1565400e0c.1.1741309489887; Thu, 06 Mar 2025
+ 17:04:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <D894EPDF6Q5H.38KZS9M7T6HEI@proton.me>
+References: <20250227030952.2319050-1-alistair@alistair23.me>
+ <20250227030952.2319050-10-alistair@alistair23.me> <2025022717-dictate-cortex-5c05@gregkh>
+ <CAH5fLgiQAdZMUEBsWS0v1M4xX+1Y5mzE3nBHduzzk+rG0ueskg@mail.gmail.com>
+ <2025022752-pureblood-renovator-84a8@gregkh> <CANiq72kS8=1R-0yoGP5wwNT2XKSwofjfvXMk2qLZkO9z_QQzXg@mail.gmail.com>
+ <2025022749-gummy-survivor-c03a@gregkh> <CAKmqyKNei==TWCFASFvBC48g_DsFwncmO=KYH_i9JrpFmeRu+w@mail.gmail.com>
+ <67c8abffd2deb_1a7f294d5@dwillia2-xfh.jf.intel.com.notmuch>
+In-Reply-To: <67c8abffd2deb_1a7f294d5@dwillia2-xfh.jf.intel.com.notmuch>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Fri, 7 Mar 2025 11:04:23 +1000
+X-Gm-Features: AQ5f1JqcTJhjy1IWJHBHvzqfhRy4UX4pT0bM7wOi79bttO_uR-yCHqTUQrbxBnM
+Message-ID: <CAKmqyKORk5n_b2DUDfCVmttE4T+S-LQvcp0NoQD_O7D-csdEvA@mail.gmail.com>
+Subject: Re: [RFC v2 09/20] PCI/CMA: Expose in sysfs whether devices are authenticated
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, 
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Alistair Francis <alistair@alistair23.me>, linux-cxl@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, lukas@wunner.de, linux-pci@vger.kernel.org, 
+	bhelgaas@google.com, Jonathan.Cameron@huawei.com, 
+	rust-for-linux@vger.kernel.org, akpm@linux-foundation.org, 
+	boqun.feng@gmail.com, bjorn3_gh@protonmail.com, wilfred.mallawa@wdc.com, 
+	ojeda@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, gary@garyguo.net, 
+	alex.gaynor@gmail.com, benno.lossin@proton.me, 
+	Alistair Francis <alistair.francis@wdc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 06, 2025 at 10:45:00AM +0000, Benno Lossin wrote:
-> On Thu Mar 6, 2025 at 10:42 AM CET, Andreas Hindborg wrote:
-> > "Boqun Feng" <boqun.feng@gmail.com> writes:
+On Thu, Mar 6, 2025 at 5:55=E2=80=AFAM Dan Williams <dan.j.williams@intel.c=
+om> wrote:
+>
+> Alistair Francis wrote:
+> > On Fri, Feb 28, 2025 at 5:33=E2=80=AFAM Greg KH <gregkh@linuxfoundation=
+.org> wrote:
+> > >
+> > > On Thu, Feb 27, 2025 at 05:45:02PM +0100, Miguel Ojeda wrote:
+> > > > On Thu, Feb 27, 2025 at 1:01=E2=80=AFPM Greg KH <gregkh@linuxfounda=
+tion.org> wrote:
+> > > > >
+> > > > > Sorry, you are right, it does, and of course it happens (otherwis=
+e how
+> > > > > would bindings work), but for small functions like this, how is t=
+he C
+> > > > > code kept in sync with the rust side?  Where is the .h file that =
+C
+> > > > > should include?
 > >
-> >> On Wed, Mar 05, 2025 at 10:07:33PM +0100, Andreas Hindborg wrote:
-> >>> "Boqun Feng" <boqun.feng@gmail.com> writes:
-> >>>
-> >> [...]
-> >>> >> >> >  rust/kernel/types.rs | 26 +++++++++++++++++++++-----
-> >>> >> >> >  1 file changed, 21 insertions(+), 5 deletions(-)
-> >>> >> >> >
-> >>> >> >> > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> >>> >> >> > index af30e9c0ebccb..f370cdb48a648 100644
-> >>> >> >> > --- a/rust/kernel/types.rs
-> >>> >> >> > +++ b/rust/kernel/types.rs
-> >>> >> >> > @@ -271,17 +271,33 @@ fn drop(&mut self) {
-> >>> >> >> >
-> >>> >> >> >  /// Stores an opaque value.
-> >>> >> >> >  ///
-> >>> >> >> > -/// [`Opaque<T>`] is meant to be used with FFI objects that are never interpreted by Rust code.
-> >>> >> >> > +/// [`Opaque<T>`] opts out of the following Rust language invariants for the contained `T`
-> >>> >> >> > +/// by using [`UnsafeCell`]:
-> >>> >> >> >  ///
-> >>> >> >> > -/// It is used to wrap structs from the C side, like for example `Opaque<bindings::mutex>`.
-> >>> >> >> > -/// It gets rid of all the usual assumptions that Rust has for a value:
-> >>> >> >> > +/// * Initialization invariant - the contained value is allowed to be uninitialized and
-> >>> >> >> > +///   contain invalid bit patterns.
-> >>> >> >> > +/// * Immutability invariant - [`Opaque<T>`] allows interior mutability.
-> >>> >> >> > +/// * Uniqueness invariant - [`Opaque<T>`] allows aliasing of shared references.
-> >>> >> >>
-> >>> >> >> This last one is wrong (I know it's probably my fault, sorry). It should be:
-> >>> >> >>
-> >>> >> >>   /// * Uniqueness invariant - [`Opaque<T>`] allows aliasing of **exclusive** references.
-> >>> >> >>
-> >>> >> >
-> >>> >> > Hmm... are we trying to say "`&mut Opaque<T>` still cannot mean
-> >>> >> > noalias" here? If so I feel the wording might be confusing. I would
-> >>> >> > suggest we don't use "uniqueness" here. Maybe something like:
-> >>> >> >
-> >>> >> > * Always aliased invariant - `&mut` [`Opaque<T>`] is not necessarily a
-> >>> >> >   unique pointer, and thus the compiler cannot just make aliasing
-> >>> >> >   assumptions.
-> >>> >> >
-> >>> >> > (I use the wording from UnsafePinned[1], maybe there could be better
-> >>> >> > wording)
-> >>> >> >
-> >>> >> > [1]: https://rust-lang.github.io/rfcs/3467-unsafe-pinned.html#summary
-> >>> >>
-> >>> >> I like my wording better. It says the same with fewer words, and we have
-> >>> >> a more wordy section below anyway. We could combine:
-> >>> >>
-> >>> >>  * Uniqueness invariant - [`Opaque<T>`] allows aliasing of **exclusive**
-> >>> >>    references. That is, `&mut` [`Opaque<T>`] is not necessarily a unique
-> >>> >>    pointer.
-> >>> >>
-> >>> >>
-> >>> >> How is that?
-> >>> >>
-> >>> >
-> >>> > I think my biggest problem is the word "allows", the phrase "allows
-> >>> > aliasing" sounds like Opaque<T> provide something *optional*, however,
-> >>> > as I understand it, Opaque<T> here just disallows certain optimization
-> >>> > from compiler, in other words, programmers want to use `Opaque<T>` to
-> >>> > forbid something, hence "allows" may not be the good word to use here?
-> >>> >
-> >>> > How about:
-> >>> >
-> >>> >   * Uniqueness invariant - [`Opaque<T>`] disallow alias assumptions
-> >>> >     made by compiler on an *exclusive* references.
-> >>>
-> >>> I don't object, but I feel like we should be able to define this within
-> >>> the context of the Rust language, without going into details about
-> >>> compiler internals.
-> >>>
-> >>> Without `Opaque` it is illegal to have aliased `&mut T`. With `Opaque`,
-> >>> it is legal to have aliased `&mut Opaque<T>`. Or at least that is my
-> >>> understanding.
-> >>>
-> >>
-> >> Oh, I see. That's why you used "allows", however, allow me to explain
-> >> why it looks confusing to me. For `&mut T`, we can still have an
-> >> aliasing pointer (a pointer that points to the same variable as the
-> >> mutable reference):
-> >>
-> >> 	let mut x = ...;
-> >>
-> >> 	let mut_ref = &mut x;
-> >> 	let aliased_ptr = mut_ref as *mut _;
-> >>
-> >> it's just that if we dereference the pointer while the `&mut T` exists,
-> >> it's UB, e.g.
-> >>
-> >> 	unsafe { *aliased_ptr = ... };
+> > This I can address with something like Alice mentioned earlier to
+> > ensure the C and Rust functions stay in sync.
 > >
-> > Right.
+> > > >
+> > > > What you were probably remembering is that it still needs to be
+> > > > justified, i.e. we don't want to generally/freely start replacing
+> > > > "individual functions" and doing FFI both ways everywhere, i.e. the
+> > > > goal is to build safe abstractions wherever possible.
+> > >
+> > > Ah, ok, that's what I was remembering.
+> > >
+> > > Anyway, the "pass a void blob from C into rust" that this patch is do=
+ing
+> > > feels really odd to me, and hard to verify it is "safe" at a simple
+> > > glance.
 > >
-> >>
-> >> and `Opaque<T>` allows above to be not a UB (there still are rules like
-> >> we cannot have data races, violating these rules would still be UB).
+> > I agree, it's a bit odd. Ideally I would like to use a sysfs binding,
+> > but there isn't one today.
 > >
-> > Yes.
+> > I had a quick look and a Rust sysfs binding implementation seems like
+> > a lot of work, which I wasn't convinced I wanted to invest in for this
+> > series. This is only a single sysfs attribute and I didn't want to
+> > slow down this series on a whole sysfs Rust implementation.
 > >
-> >> So to me "aliasing" can mean "having an aliasing pointer", and that as
-> >> shown above can be provided by both non-Opaque and Opaque cases. I
-> >> wonder whether "allow aliased/aliasing accesses" is better than "allow
-> >> aliasing" here.
-> 
-> I disagree, to me "aliasing pointer" means having two pointers that
-> point to the same value and that you can use in an interleaved fashion
-> for writes and reads.
-> 
-> > Yes, I think that would be better.
-> >
-> > I had another thing in mind when I wrote the text, and I am wondering if
-> > it is incorrect. As far as I know it is normally illegal to have more
-> > than one `&mut T` to the same `T`, even if no access occur through these
-> > references.
-> 
-> The rules aren't completely set and IIRC you *can* create multiple
-> references as long as the value they point to is not read or written to
-> while they exist. But I wouldn't bet anything on that...
-> 
-> > With `Opaque<T>`, is it still illegal to have two `&mut Opaque<T>` to
-> > the same `T` in existence? I thought it was not illegal in this case.
-> 
-> Yes it is legal to have multiple `&mut Opaque<T>` pointing to the same
-> value (and writing/reading through the `get` method or directly by
-> having another `Opaque<T>` value).
-> 
-> > At any rate, your wording is probably the most accurate:
-> >
-> >   * Uniqueness invariant - [`Opaque<T>`] disallow alias assumptions
-> >     made by compiler on an *exclusive* references.
-> >
-> > Alternatively, if we do not want to refer to compiler assumptions:
-> >
-> >   * Uniqueness invariant - [`Opaque<T>`] makes aliasing accesses to the
-> >     underlying `T` well defined.
-> 
-> This wording doesn't sound right to me, since it's still illegal to have
-> multiple `&mut T` that point to a value inside of an `Opaque<T>`.
-> 
+> > If this approach isn't ok for now, I will just drop the sysfs changes
+> > from the series so the SPDM implementation doesn't stall on sysfs
+> > changes. Then come back to the sysfs attributes in the future.
+>
+> This highlights a concern I have about what this means for ongoing
+> collaboration between this native PCI device-authentication (CMA)
+> enabling and the platform TEE Security Manager (TSM) based
+> device-security enabling.
+>
+> First, I think Rust for a security protocol like SPDM makes a lot of
+> sense. However, I have also been anticipating overlap between the ABIs
+> for conveying security collateral like measurements, transcripts, nonces
+> etc between PCI CMA and PCI TSM. I.e. potential opportunities to
+> refactor SPDM core helpers for reuse. A language barrier and an ABI
+> barrier (missing Rust integrations for sysfs and netlink ABIs that were
+> discussed at Plumbers) limits that potential collaboration.
 
-Which wording proposed so far would sound right to you? Or you have a
-proposal that could describe this rigorously?
+I see your concern, but I'm not sure it's as bad as you think.
 
-Regards,
-Boqun
+We will need to expose the Rust code to C no matter what. The CMA,
+NVMe, SATA and SAS is all C code, so the Rust library will have a nice
+C style ABI to allow those subsystems to call the code.
 
-> ---
-> Cheers,
-> Benno
-> 
+The sysfs issue is mostly because I am trying to write as much of the
+sysfs code in Rust, but there aren't bindings yet.
+
+So if we want to re-use code (such as measurements, transcripts or
+nonces) we just need to expose a C style function in Rust which can
+then can then be used.
+
+So I don't think this really limits code re-use. Obviously there might
+need to be some refactoring to share the code, but that will be true
+of C or Rust code.
+
+>
+> Now if you told me the C SPDM work will continue and the Rust SPDM
+> implementation will follow in behind until this space settles down in a
+> year or so, great. I am not sure it works the other way, drop the C
+
+That was kind of my original plan (see the first RFC), but maintaining
+both, with at least one being out of tree, will be a huge pain and
+prone to breakage.
+
+Also I suspect the Rust implementation will struggle to keep up if the
+C version is merged (and hence has more people looking at it) compared
+to just me working on the Rust code.
+
+> side, when the Rust side is not ready / able to invest in some ABI
+> integrations that C consumers need.
+>
+> Otherwise this thread seems to be suggesting that people like me need to
+> accelerate nascent cross C / Rust refactoring skills, or lean on Rust
+> folks to care about that refactoring work.
+
+I'm happy to help maintain the C / Rust code and help refactor as
+required. The current ABI to this library is all "C style" Rust to
+keep it simple and easily compatible with the out of tree C SPDM
+implementation and callers of the code.
+
+So hopefully it doesn't require much Rust knowledge to refactor the ABI.
+
+This is the type of feedback that I wanted to get though. Before this
+goes too far is it something that is going to be accepted upstream?
+
+Alistair
