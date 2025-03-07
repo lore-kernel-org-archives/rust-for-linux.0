@@ -1,168 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-10628.protonmail.ch (mail-10628.protonmail.ch [79.135.106.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30BA0EBE;
-	Fri,  7 Mar 2025 13:41:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D05CA2581
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Mar 2025 13:46:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741354886; cv=none; b=blCvKniWXGsCxngxDQzxvHtSuYyTpLwPvfBGD4oynERYEpNmQQWwaShyZdujnDlJB8zZGtpzoWUEiiBMqP2fy9KqlBx7OSDY7gAbePn7rDvbL3QwYM8s8Iz/uY7hvMjbaM0UcrhTQYu38PcvOlSLW/FlAS16555hvQGykQ8HY3o=
+	t=1741355199; cv=none; b=crZ1A0wcozgWG7lDO8LH2tXLCJCGmTbsxTtC2azjORztA2UdRc9qt8oH5r+JCJnvV9xXFDPOoxD0ISPWPNHj6lsUeiSk+e6anY/4GlcffzbOB5MgPRyTCrcOuvcSWrrNqnz6S6/Dm3QXLnukRwnHaqY81IUEIP7F4UKaotISnSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741354886; c=relaxed/simple;
-	bh=3EzXdILJsICpLU/Y0kJ7QJgaNvnAuFSYFmWDvaMIGzY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=uFKyl4wlTu6QqqhmGirprj+IufuYBZsLCUVTT7kL/1bMDHMY47fgy9nu0RO5JM7K4aJRdvKLe7GjgATohT7XUdocEAwJ+cFg2SBD13hUtLHv0He9Octfr8184MUfP5ZGtOORSNTQbGLVNz0/u4vtZ+/yaKKJEYgsBpj+Hzv5WfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V42A9jRa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741355199; c=relaxed/simple;
+	bh=He23/8mZZeZEGBeQVNebcLJi23Qj3PgN+QnWnUERjPc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=O6SqzrQ25EpO2KZm76vWH0lNQq1nTZ1Gg8ebRrfvb0MwTledlLyPqTcN95YxJwo04sQdiMeUDok8qnmQQMLVEbjaGkI6LIWkNAUAT31hgvrMWatGXSFptVaoNBsSbBaf6jiPTxqPiIcE1CdOOPzD/C0qlQP15ZqQRNscoIFoJRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=l/9GMcG7; arc=none smtp.client-ip=79.135.106.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V42A9jRa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46142C4CED1;
-	Fri,  7 Mar 2025 13:41:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741354885;
-	bh=3EzXdILJsICpLU/Y0kJ7QJgaNvnAuFSYFmWDvaMIGzY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=V42A9jRaCOCFU45fyv8wdIRw3IVYxtmnAd2XnPVzGfelB21HblQs/U5wXFI2FR2Fy
-	 OjbnagTU1J+rtO+Rh9Hfbc7WzMj4iU0Zyv/RuhyDY0PecD6lJKMSVmpjYl+IKSPspS
-	 BHtjQMSgVoT7VSmMlCAQYAwwcAd4akGD7t+wRuAvRsnaSMFY6SyNj0QsIEROvuSl+T
-	 qLpZpQo1dNCC/0F3VOBtEFl4lvmK84KCDuLCQJPhFyzHBenu5ZwnqgePoy25yr60mU
-	 Mf7eCJL1fqo2WvXfBUhoXgZHKnQalw22gVRdJKTSBtMt6by/Apuk5kU3D0FW0pzQJG
-	 o6H7IvHRyFCvA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Benno Lossin" <benno.lossin@proton.me>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Anna-Maria Behnsen"
- <anna-maria@linutronix.de>,  "Frederic Weisbecker" <frederic@kernel.org>,
-  "Thomas Gleixner" <tglx@linutronix.de>,  "Danilo Krummrich"
- <dakr@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
- <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
- =?utf-8?Q?=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor
- Gross" <tmgross@umich.edu>,  "Lyude Paul" <lyude@redhat.com>,  "Guangbo
- Cui" <2407018371@qq.com>,  "Dirk Behme" <dirk.behme@gmail.com>,  "Daniel
- Almeida" <daniel.almeida@collabora.com>,  "Tamir Duberstein"
- <tamird@gmail.com>,  "Markus Elfring" <Markus.Elfring@web.de>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v10 08/13] rust: hrtimer: implement
- `UnsafeHrTimerPointer` for `Pin<&mut T>`
-In-Reply-To: <D8A28FTNL1BC.3AYZMT4OYF79R@proton.me> (Benno Lossin's message of
-	"Fri, 07 Mar 2025 13:15:26 +0000")
-References: <20250307-hrtimer-v3-v6-12-rc2-v10-0-0cf7e9491da4@kernel.org>
-	<20250307-hrtimer-v3-v6-12-rc2-v10-8-0cf7e9491da4@kernel.org>
-	<8DuLea9f4Ue0LzzIRrjOfpa8OtL_cLObGjZhfPZnw8crCU8ISWZmIC5SVYntldK27JAR_SUGpYXFspN-OigYRQ==@protonmail.internalid>
-	<D8A28FTNL1BC.3AYZMT4OYF79R@proton.me>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Fri, 07 Mar 2025 14:41:15 +0100
-Message-ID: <87h6453qmc.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="l/9GMcG7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=nyswv2o3x5g4lhoo7wghgi26uy.protonmail; t=1741355195; x=1741614395;
+	bh=jQOVrGU7Or9HJAB8PZjksGhwjMOslJNvzzwPKN5EXj4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=l/9GMcG7xVztXmqp2bjBwegVt4l82BHiyt1UxiJ8uC/SHt8y9qBKFLhBDdoX+CxjB
+	 UWWlRbbR7vxQmsPQvZ3WHHInFP4udAH5z2a82dv2JKN7vxnxmbZT+Nc2V5Ehbh8Cl2
+	 drOiK8K9rhBg9K3lNtFVUdqLdKEAEEuxmgNYjeiKb9/k6yuNCCrGkMDa3SkV3joeVq
+	 6S5ElN4dy4eq1j7ZlLd/QqrcnmPcil4gTdzBdUbDM1svALAP/cG3uVv4NxsMBt/NbH
+	 j9L8ox94HWi2RN3ugufMcIAh1Y16aAC9Uligt4006HMtoV1s8r2FzQt5iRGJMmnBwd
+	 2cwOOMieIJEqg==
+Date: Fri, 07 Mar 2025 13:46:32 +0000
+To: Andreas Hindborg <a.hindborg@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, Markus Elfring <Markus.Elfring@web.de>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v10 01/13] rust: hrtimer: introduce hrtimer support
+Message-ID: <D8A2W9JIGFX3.20YC7NQRET0XG@proton.me>
+In-Reply-To: <87y0xh3s1u.fsf@kernel.org>
+References: <20250307-hrtimer-v3-v6-12-rc2-v10-0-0cf7e9491da4@kernel.org> <20250307-hrtimer-v3-v6-12-rc2-v10-1-0cf7e9491da4@kernel.org> <BdAxp1BNMXx919FqV2Yamyjr3d4pUGCHU8GhvKZG6scY5etznAwQeuf1ISWLu2lm9XHt2qC9kJUnlSSENhODuA==@protonmail.internalid> <D8A1JVVYBHY5.13BB8V796A7RR@proton.me> <87y0xh3s1u.fsf@kernel.org>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 91620299353540043126fb36575ac411fd18f213
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-"Benno Lossin" <benno.lossin@proton.me> writes:
-
-> On Fri Mar 7, 2025 at 11:11 AM CET, Andreas Hindborg wrote:
->> Allow pinned mutable references to structs that contain a `HrTimer` node to
->> be scheduled with the `hrtimer` subsystem.
+On Fri Mar 7, 2025 at 2:10 PM CET, Andreas Hindborg wrote:
+> "Benno Lossin" <benno.lossin@proton.me> writes:
+>> On Fri Mar 7, 2025 at 11:11 AM CET, Andreas Hindborg wrote:
+>>> +/// Use to implement the [`HasHrTimer<T>`] trait.
+>>> +///
+>>> +/// See [`module`] documentation for an example.
+>>> +///
+>>> +/// [`module`]: crate::time::hrtimer
+>>> +#[macro_export]
+>>> +macro_rules! impl_has_hr_timer {
+>>> +    (
+>>> +        impl$({$($generics:tt)*})?
+>>> +            HasHrTimer<$timer_type:ty>
+>>> +            for $self:ty
+>>> +        { self.$field:ident }
+>>> +        $($rest:tt)*
+>>> +    ) =3D> {
+>>> +        // SAFETY: This implementation of `raw_get_timer` only compile=
+s if the
+>>> +        // field has the right type.
+>>> +        unsafe impl$(<$($generics)*>)? $crate::time::hrtimer::HasHrTim=
+er<$timer_type> for $self {
+>>> +
+>>> +            #[inline]
+>>> +            unsafe fn raw_get_timer(this: *const Self) ->
+>>> +                *const $crate::time::hrtimer::HrTimer<$timer_type>
+>>> +            {
+>>> +                // SAFETY: The caller promises that the pointer is not=
+ dangling.
+>>> +                unsafe {
+>>> +                    ::core::ptr::addr_of!((*this).$field)
+>>> +                }
+>>> +            }
+>>> +
+>>> +            #[inline]
+>>> +            unsafe fn timer_container_of(ptr: *mut $crate::time::hrtim=
+er::HrTimer<$timer_type>) ->
+>>> +                *mut Self
 >>
->> Acked-by: Frederic Weisbecker <frederic@kernel.org>
->> Reviewed-by: Lyude Paul <lyude@redhat.com>
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->> ---
->>  rust/kernel/time/hrtimer.rs         |   2 +
->>  rust/kernel/time/hrtimer/pin_mut.rs | 101 ++++++++++++++++++++++++++++++++++++
->>  2 files changed, 103 insertions(+)
->>
->> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
->> index 2ca56397eade..d2791fd624b7 100644
->> --- a/rust/kernel/time/hrtimer.rs
->> +++ b/rust/kernel/time/hrtimer.rs
->> @@ -441,3 +441,5 @@ unsafe fn timer_container_of(ptr: *mut $crate::time::hrtimer::HrTimer<$timer_typ
->>  pub use arc::ArcHrTimerHandle;
->>  mod pin;
->>  pub use pin::PinHrTimerHandle;
->> +mod pin_mut;
->> +pub use pin_mut::PinMutHrTimerHandle;
->> diff --git a/rust/kernel/time/hrtimer/pin_mut.rs b/rust/kernel/time/hrtimer/pin_mut.rs
->> new file mode 100644
->> index 000000000000..4f4a9e9602d8
->> --- /dev/null
->> +++ b/rust/kernel/time/hrtimer/pin_mut.rs
->> @@ -0,0 +1,101 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +
->> +use super::HasHrTimer;
->> +use super::HrTimer;
->> +use super::HrTimerCallback;
->> +use super::HrTimerHandle;
->> +use super::RawHrTimerCallback;
->> +use super::UnsafeHrTimerPointer;
->> +use crate::time::Ktime;
->> +use core::pin::Pin;
->> +
->> +/// A handle for a `Pin<&mut HasHrTimer>`. When the handle exists, the timer might
->> +/// be running.
->> +pub struct PinMutHrTimerHandle<'a, T>
->> +where
->> +    T: HasHrTimer<T>,
->> +{
->> +    pub(crate) inner: Pin<&'a mut T>,
->> +}
->> +
->> +// SAFETY: We cancel the timer when the handle is dropped. The implementation of
->> +// the `cancel` method will block if the timer handler is running.
->> +unsafe impl<'a, T> HrTimerHandle for PinMutHrTimerHandle<'a, T>
->> +where
->> +    T: HasHrTimer<T>,
->> +{
->> +    fn cancel(&mut self) -> bool {
->> +        // SAFETY: We are not moving out of `self` or handing out mutable
->> +        // references to `self`.
->> +        let self_ptr = unsafe { self.inner.as_mut().get_unchecked_mut() as *mut T };
->> +
->> +        // SAFETY: As we got `self_ptr` from a reference above, it must point to
->> +        // a valid `T`.
->> +        let timer_ptr = unsafe { <T as HasHrTimer<T>>::raw_get_timer(self_ptr) };
->> +
->> +        // SAFETY: As `timer_ptr` is derived from a reference, it must point to
->> +        // a valid and initialized `HrTimer`.
->> +        unsafe { HrTimer::<T>::raw_cancel(timer_ptr) }
->> +    }
->> +}
->> +
->> +impl<'a, T> Drop for PinMutHrTimerHandle<'a, T>
->> +where
->> +    T: HasHrTimer<T>,
->> +{
->> +    fn drop(&mut self) {
->> +        self.cancel();
->> +    }
->> +}
->> +
->> +// SAFETY: We capture the lifetime of `Self` when we create a
->> +// `PinMutHrTimerHandle`, so `Self` will outlive the handle.
->> +unsafe impl<'a, T> UnsafeHrTimerPointer for Pin<&'a mut T>
->> +where
->> +    T: Send + Sync,
->> +    T: HasHrTimer<T>,
->> +    T: HrTimerCallback<Pointer<'a> = Self>,
->> +    Pin<&'a mut T>: RawHrTimerCallback<CallbackTarget<'a> = Self>,
->> +{
->> +    type TimerHandle = PinMutHrTimerHandle<'a, T>;
->> +
->> +    unsafe fn start(self, expires: Ktime) -> Self::TimerHandle {
->> +        // Cast to pointer
->> +        let self_ptr: *const T = <Self as core::ops::Deref>::deref(&self);
+>> This formatting looks a bit weird, (macro formatting is annoying, I
+>> know).
 >
-> You cannot go through a shared reference here, since you convert the
-> pointer obtained here in the `run` function later back into a mutable
-> reference. You will have to use `get_unchecked_mut` or
-> `into_inner_unchecked`.
+> How would you change it?
 
-Thanks, will fix.
+Just use `rustfmt` (copy the macro arm, replace all `$` with `_` in
+names and remove repetitions, `rustfmt` and then revert. You're lucky,
+since you only have one repetition that doesn't cause the line to go
+over the 100 column threshold):
 
+        // SAFETY: This implementation of `raw_get_timer` only compiles if =
+the
+        // field has the right type.
+        unsafe impl$(<$($generics)*>)? $crate::time::hrtimer::HasHrTimer<$t=
+imer_type> for $self {
 
-Best regards,
-Andreas Hindborg
+            #[inline]
+            unsafe fn raw_get_timer(
+                this: *const Self,
+            ) -> *const $crate::time::hrtimer::HrTimer<$timer_type> {
+                // SAFETY: The caller promises that the pointer is not dang=
+ling.
+                unsafe { ::core::ptr::addr_of!((*this).$field) }
+            }
 
+            #[inline]
+            unsafe fn timer_container_of(
+                ptr: *mut $crate::time::hrtimer::HrTimer<$timer_type>,
+            ) -> *mut Self {
+                // SAFETY: As per the safety requirement of this function, =
+`ptr`
+                // is pointing inside a `$timer_type`.
+                unsafe { ::kernel::container_of!(ptr, $timer_type, $field).=
+cast_mut() }
+            }
+        }
+
+---
+Cheers,
+Benno
 
