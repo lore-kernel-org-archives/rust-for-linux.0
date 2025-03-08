@@ -1,81 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2217E0E4;
-	Sat,  8 Mar 2025 16:43:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346C01E51FB
+	for <rust-for-linux@vger.kernel.org>; Sat,  8 Mar 2025 16:49:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741452207; cv=none; b=hWJl1tdRLVddpd44hiDcggkMv0tx5XQ3A/XLaK1rwwqkXWUqPosXXqquOI3xn2nbYL2Xr/sUycQ8Pw8IsdzL1D8ltdIkuotVh0wNasHWSIRdxOHYnxOddILv6hgM/DUjPyiS8kCRVz1G4ZCfpgSfcgVCd9+h4JiGksHFmK2aYoA=
+	t=1741452573; cv=none; b=mTIAI73sfwBFbMao7PIqoT6Aqcol/lH6O8Z/SAkRvjs2bKlufKrbDZkxSoui9BeyCwSTTlpw8hs1U8MToP8Qm9Q+4iJlJPP8WtvqImE9CdLlodpHHnQnKSk54dkq0/YvI3U8uv6Ngi2HaXiHG0zOpgmoThSIXpsZB+aa+lI/LW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741452207; c=relaxed/simple;
-	bh=giXjfla1IUB80vCiBZBA4tDUia2ogWeR+zO5AzfF78s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AkkvRcVt5ZhcR+jmunvzeSV8fCLU59rbOkxJOJ8u6erS1XYUBjCV9hCcg0BsXkbc5X/HtGWXHoCoo/4xxcF1CLGbeLP0f/Dxb2srDa4PBo3hnBN5thnUI8K8z7imxJBEFAzpuayU9exbs0fJOam2ggytIaSxB63EjwJejxuabMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=duKuCkEc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741452573; c=relaxed/simple;
+	bh=NMBRHjyiUf4fqRzIW1+eJkuyhDfwTkf1Nmf3eaTS+us=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=gjlw8wTJEsksoZgbycBCDWv7s0RUFVzROlRNA15KmOLI7xq/+PQatNFEXNki6/3SkSXsl89apddYFDKms5/6jH0G6+j7/PDk0r+0kdX9pLj7WzL/rMWlHeh2FLspgnFrm1kCEnXyg7DHI+RzSEuPHRGhnjBlpqHf0TXWxA1Se4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=DamSJZ8a; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="duKuCkEc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C53D2C4CEE0;
-	Sat,  8 Mar 2025 16:43:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741452206;
-	bh=giXjfla1IUB80vCiBZBA4tDUia2ogWeR+zO5AzfF78s=;
-	h=From:To:Cc:Subject:Date:From;
-	b=duKuCkEcowvy002FIXu9V+JBtDM12ZOgGND6SkEpSWuRsJTQliU5pDts3zMH9UGb0
-	 MSiiV1EsH/CGSESA2AaXMKl2TVDwWmDSj9iQXGiN6yn0b7eOxBeCqfDMTXBDFxBX8F
-	 Mhw35q92osqMnsUTb25oteaVApbhbAfP3qerWAERoBmXX7nVog3RwzTRxmLyzeCyug
-	 /tNwNCStm8/qOlsA3FCvoYHzE/VyoVZf99dPsY0o4IkYEffFgQtWbYEsqMqyowHuYc
-	 oNq3BlBYUj8+EiDlQWtw+F0lGsFuyY8z6hYRI3fIBwhnjv5jxqlWIpXU1yvKm7d0pv
-	 1irCwFFw0rekQ==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev
-Subject: [PATCH] MAINTAINERS: rust: add tree field for RUST [ALLOC]
-Date: Sat,  8 Mar 2025 17:42:58 +0100
-Message-ID: <20250308164258.811040-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="DamSJZ8a"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 3333A24002A
+	for <rust-for-linux@vger.kernel.org>; Sat,  8 Mar 2025 17:49:28 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1741452568; bh=NMBRHjyiUf4fqRzIW1+eJkuyhDfwTkf1Nmf3eaTS+us=;
+	h=From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:To:Cc:From;
+	b=DamSJZ8ahaaBF8tvy/5dEWM6mGA3QgyRPRMdeOiA7aqkA6ZJH38zj9L0zNsIq8G8q
+	 Ood1pT80gs6ofSnbZxgTWyDFl/kK8+vVCTq9v1XKu/Gga9aj/vDX6JWHDHkF77M8X3
+	 90nQ8PH0cGKN+TdcC8ILZ4cN79nOP0SfDTySit5J4YV8R1BppfJoTC22FDbWUfkCl5
+	 p+3voL1JNl1AgOrx4MMnPBZ0XnjmQuwNYGkISfux2GpmTNQAu6ivQBaxdsbbw1mj/h
+	 F7tqx4/o5JacWqREONeUjxqSds/c1kTUtPB8lXkK0i+L0A7yspVhKp8OwCDtr7RV+F
+	 qWwicU3iNysZg==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4Z98JQ3Hy1z9rxF;
+	Sat,  8 Mar 2025 17:49:26 +0100 (CET)
+From: Panagiotis Foliadis <pfoliadis@posteo.net>
+Date: Sat, 08 Mar 2025 16:49:05 +0000
+Subject: [PATCH] rust: task: fix `SAFETY` comment for Task::wake_up
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250308-comment-fix-v1-1-4bba709fd36d@posteo.net>
+X-B4-Tracking: v=1; b=H4sIAAB1zGcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDYwML3eT83NzUvBLdtMwKXSPTFAPLtDTD5OQkUyWgjoKiVKAw2LTo2Np
+ aAPQ0Tl1dAAAA
+X-Change-ID: 20250308-comment-fix-25d09ff1ccb5
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Christian Brauner <brauner@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Panagiotis Foliadis <pfoliadis@posteo.net>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1741452566; l=1255;
+ i=pfoliadis@posteo.net; s=20250308; h=from:subject:message-id;
+ bh=NMBRHjyiUf4fqRzIW1+eJkuyhDfwTkf1Nmf3eaTS+us=;
+ b=8fZQbC42Yqv8+b3HLQN4MZtx/9vCG23pX4ZSUxtpYvpEeGzS1VKZGJU3oKflpnqBElgyKyhvu
+ P9mAMgkQzfOD75kqSls1A5wWWtPalhR904r51rADEEdL87PrBb9TBHi
+X-Developer-Key: i=pfoliadis@posteo.net; a=ed25519;
+ pk=/8ch2dv3mwtZ5ygYwiG7ldc/132K6XmLkAZDmIe0aQw=
 
-In the Rust subsystem we are starting to add new subentries which will
-have their own trees. Those trees will be part of linux-next and will
-be sent as PRs to be merged into rust-next.
+The `SAFETY` comment inside the `wake_up` function references
+erroneously the `signal_pending` function instead of the
+`wake_up_process` which is actually called. Fix the comment
+to reference the correct function.
 
-Thus do the same for the existing subentry we already have: RUST [ALLOC].
-
-Cc: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: fe95f58320e6 ("rust: task: adjust safety comments in Task methods")
+Signed-off-by: Panagiotis Foliadis <pfoliadis@posteo.net>
 ---
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+ rust/kernel/task.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8e0736dc2ee0..1ddc313abbdd 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20732,6 +20732,7 @@ RUST [ALLOC]
- M:	Danilo Krummrich <dakr@kernel.org>
- L:	rust-for-linux@vger.kernel.org
- S:	Maintained
-+T:	git https://github.com/Rust-for-Linux/linux.git alloc-next
- F:	rust/kernel/alloc.rs
- F:	rust/kernel/alloc/
+diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+index 07bc22a7645c0c7d792a0a163dd55b8ff0fe5f92..38da555a2bdbb71d698c671ad1a7a337e50c6600 100644
+--- a/rust/kernel/task.rs
++++ b/rust/kernel/task.rs
+@@ -320,7 +320,7 @@ pub fn tgid_nr_ns(&self, pidns: Option<&PidNamespace>) -> Pid {
  
+     /// Wakes up the task.
+     pub fn wake_up(&self) {
+-        // SAFETY: It's always safe to call `signal_pending` on a valid task, even if the task
++        // SAFETY: It's always safe to call `wake_up_process` on a valid task, even if the task
+         // running.
+         unsafe { bindings::wake_up_process(self.as_ptr()) };
+     }
 
-base-commit: 7eb172143d5508b4da468ed59ee857c6e5e01da6
+---
+base-commit: 2a520073e74fbb956b5564818fc5529dcc7e9f0e
+change-id: 20250308-comment-fix-25d09ff1ccb5
+
+Best regards,
 -- 
-2.48.1
+Panagiotis Foliadis <pfoliadis@posteo.net>
 
