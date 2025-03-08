@@ -1,40 +1,43 @@
-Received: from mail-10631.protonmail.ch (mail-10631.protonmail.ch [79.135.106.31])
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0E61AA1E4
-	for <rust-for-linux@vger.kernel.org>; Sat,  8 Mar 2025 11:04:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A82C1B21B8;
+	Sat,  8 Mar 2025 11:04:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741431850; cv=none; b=NpxcYb4yqE9w2jAgPW8qULku4pWSG8wsP4+28BM91J+xHZo9HPzGYyHNX7KnM5SuumiLXeN2j49lmzVe/pK4uhov7VLceCSuinoxuWYiWXs17qs77rLLuDF36ypAGKMGrAd88fFrxiDaxABs3AkyiywGsNbBFiXjtj4iMr9NMLQ=
+	t=1741431853; cv=none; b=bqalr1CUt2k7xjWYW+KF1cqEf7A2MrDYI3KbhOIkl9CcP0e9ARBqxn8X7Ppw1DaYwztZiwbtYzILgIGTHlMmd0Oo8cqNOsE5/mORg7Sa/NYfumGzgWESjpDGW13LEJIvBBNQ5DA5gmK1isCUP1c3ovkzsWMpcpOyxO7bDK0hNkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741431850; c=relaxed/simple;
-	bh=CJD2dqWXDaFVsBQB1VPqeWQ+MxpeTrCMVmGFxzS10SE=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=oRXp/5XYmzTS1UcoXC8Q0bsxLhF1/5n6CVnAdfshnvvHyXaVpOUkuMcDROHscmLijTHDA6Y1T4uJzm5tCTDYarnKKAdx1lqfLGBB288uLfA+GqhPVUJ27f8IhYDq6GJx6xESItbrg1nrbIfu45qJXZbpY2htE7PxnW+8ADtLOlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=A0SRSoX9; arc=none smtp.client-ip=79.135.106.31
+	s=arc-20240116; t=1741431853; c=relaxed/simple;
+	bh=p8PhLZ+7mERZU+6NlqRNMcHPwKXHBR+0h5C+DqSjmYw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gEgaSmlnSehk3vYR5qvdnCA9ec30T9Jgj2PtxGYEo+CuwvSkL97+jDflPL2uano3HGVxcuFLkwtHyIAZPGxt02EuxJpQ0B5jeQlwllI7y2CmJ8oQ+28Iv9om7m6TJL9hWDZlnzfUS8bta6iThci6LV+jCHsHQUVVAonWbmo+09s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=ldOnfA2Q; arc=none smtp.client-ip=185.70.40.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="A0SRSoX9"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ldOnfA2Q"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1741431833; x=1741691033;
-	bh=1//zOOJuLueDI91ZcF76R3Uf9XL5tX/qTVN1zucEa0A=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
-	 List-Unsubscribe:List-Unsubscribe-Post;
-	b=A0SRSoX9DP/ReZsTk+xxAktdS86US7HFnO3udp3GmwuhCoMVN1nH0B9vy1oTRNnyP
-	 pp/hADckiyO56lV5RPES2fOq80IhJ7uKB4zolY2doBFr9ZXmiVgA1TsG1Dvd+BBQ/S
-	 lj+GRREyqRYWTEer5dGhu4YeoeXOuaeUlS9x1GVtHkFFV+TcxT1ZYsXLGQzaDIqjMf
-	 92vd0OfNVbfbHYWv9w+TY+Ir/HaYTSrfWB/PCo1L3/3jSoTupRRVgfrxVP2jAx+wL0
-	 BuNIV7P/s68BxEnkf0VuwjD2HGNUD6pM675BdYNsi2h41DOgsp3qhypV7YfteWQEkT
-	 v6WGpq3rwkkSA==
-Date: Sat, 08 Mar 2025 11:03:46 +0000
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+	s=protonmail; t=1741431849; x=1741691049;
+	bh=wrc7dAMq4/lYVNenkoKdjjCIkKvIznXuj/iO5UKDIr4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=ldOnfA2QK22kNSlrCDlxlaqQYvpx4uq1mQNJvjnQ2yw+XgtsQT8x9DgyjtmTyw7Ct
+	 ohbGQdlM6pFQhEU9MQKwhOFvTQ0OUd5T0bOvL0ItR8uH+qS6lHgNqQ9hEGwrnSYZlr
+	 dzXbjdvrf5DQqgy+7gFQpjleL057fET2JTUpFyGgFzrykMw9wqBl1DZbnUls2lAF/s
+	 3GVRCJ3hsFFbyLrxwBZBbjZP9iF2rKfWzqFyLBNF471si/ccZSd8WzGxspjJnpJeZs
+	 ViPTvq9qbTKqgTB4N39b2iFnXwjI7hxNVGJHPCltn5Woky8LSCk54mX0dOii21WbOx
+	 9ywnJvdD4rZ4Q==
+Date: Sat, 08 Mar 2025 11:04:07 +0000
+To: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org
-Subject: [PATCH v2 00/22] make pin-init into a standalone crate
-Message-ID: <20250308110339.2997091-1-benno.lossin@proton.me>
+Cc: Fiona Behrens <me@kloenk.dev>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: [PATCH v2 03/22] rust: add extensions to the pin-init crate and move relevant documentation there
+Message-ID: <20250308110339.2997091-4-benno.lossin@proton.me>
+In-Reply-To: <20250308110339.2997091-1-benno.lossin@proton.me>
+References: <20250308110339.2997091-1-benno.lossin@proton.me>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: ee65d6315614856af9855836ee24db3ad033460b
+X-Pm-Message-ID: 63fbfc773db8d6a8b7f0d450616ff290069b4d19
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -44,181 +47,247 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-This patch series extracts the pin-init API from the kernel crate and
-turns it into a standalone crate used by the kernel crate. The reasoning
-for this change is that the maintenance burden for me is too great
-maintaining two (more and more) diverging versions of the same library.
-At [1] you can find the user-space version of the pin-init library as a
-Rust crate.
+In preparation of splitting off the pin-init crate from the kernel
+crate, move all kernel-specific documentation from pin-init back into
+the kernel crate.
 
-The reason for the difference between the two versions is that the
-kernel does not use the `std` and `alloc` standard libraries as almost
-every other user-space Rust crate does. This not only prevents the
-kernel version from implementing features for the `Arc` type from
-`alloc`, but also from any `std` types appearing in the documentation.
-Additionally, the documentation text is different in several places as
-it explicitly mentions the kernel's `Opaque<T>` type.
+Also include an example from the user-space version [1] adapted to the
+kernel.
 
-There are also minor changes in code that occurred due to the same
-reason as the documentation changes or due to the non-optimal setup for
-synchronizing changes between the two versions (the process it fully
-manual, as no diffs can be ported between the two). For example, the
-`try_[pin_]init!` macros in the kernel default to the kernel's own
-`Error` type. The user-space version does not have such defaulting
-behavior.
+The new `init.rs` file will also be populated by kernel-specific
+extensions to the pin-init crate by the next commits.
 
-Since there are other projects outside of the kernel that have begun
-using pin-init, the only sensible solution to this problem is to
-synchronize both versions and then develop them simultaneously, ensuring
-perpetual diff-compatibility. I have even had people contribute code on
-github.
-
-Additionally, I want to do some big changes to the pin-init library
-internals. For example, porting the proc-macros over to `syn`. We will
-probably get support for this later this year in the kernel and I want
-to be ready to be able to make that switch as soon as possible. This is
-because non-syn proc-macros are just pure hell and the current
-implementation is a frankenstein-monster of a mix of declarative macros
-and proc-macros that I'd rather replace by using `syn`. I already wrote
-the code for that transition and will be submitting an RFC based on this
-series shortly.
-
-For these reasons, this patch series extracts all code of the pin-init
-API and moves it into a new directory, making it its own crate. Since
-the user-space version has some functional differences, these are also
-introduced by this series. But in situations where the kernel has
-special requirements, extensions to the pin-init crate are reintroduced
-in/moved back into the kernel crate. To allow the dream of
-diff-compatibility to be true, this series also introduces code files
-from the user-space version.
-
-`pin-init` is licensed under APACHE 2.0 OR MIT and almost all code that
-is moved already was present with that license. There is a small license
-change in patch #2, you can find the explanation in the commit message.
-
-With this change also comes an entry in the MAINTAINERS file, since I
-have to synchronize all changes with the user-space version and vice
-versa.
-
-For this series I would really appreciate some Tested-by's, by users of
-the pin-init library within the kernel in order to ensure that I have
-not broken anything.
-
-Special thanks to Miguel for helping me a lot with getting the series
-ready!
-
-[1]: https://github.com/Rust-for-Linux/pin-init
-
+Link: https://github.com/Rust-for-Linux/pin-init/blob/c1417c64c71229f0fd444=
+d75e88f33e3c547c829/src/lib.rs#L161 [1]
+Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+Reviewed-by: Fiona Behrens <me@kloenk.dev>
+Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
-Cheers,
-Benno
+ rust/kernel/init.rs      | 135 +++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs       |   3 +
+ rust/pin-init/src/lib.rs |  14 ----
+ 3 files changed, 138 insertions(+), 14 deletions(-)
+ create mode 100644 rust/kernel/init.rs
 
-Changelog:
-* v1 -> v2:
-Link to v1: https://lore.kernel.org/rust-for-linux/20250304225245.2033120-1=
--benno.lossin@proton.me/
-  - reword commit messages
-  - change all occurrences of `Mutex` to `CMutex` in patch #5
-  - avoid churn in patch #7 by removing changed lines that will be
-    changed in #15 anyways
-  - change documentation based on the `kernel` cfg, pointing to the
-    kernel's `Arc` and `Box` (the user-space version continues to point
-    to the std lib versions)
-  - explain the reason for using `fn(*mut T) -> *mut T` in `Invariant`
-  - fix typo in `README.md`
-
-Benno Lossin (21):
-  rust: init: disable doctests
-  rust: move pin-init API into its own directory
-  rust: add extensions to the pin-init crate and move relevant
-    documentation there
-  rust: pin-init: move proc-macro documentation into pin-init crate
-  rust: pin-init: change examples to the user-space version
-  rust: pin-init: call `try_[pin_]init!` from `[pin_]init!` instead of
-    `__init_internal!`
-  rust: pin-init: move the default error behavior of `try_[pin_]init`
-  rust: pin-init: move `InPlaceInit` and impls of `InPlaceWrite` into
-    the kernel crate
-  rust: pin-init: move impl `Zeroable` for `Opaque` and
-    `Option<KBox<T>>` into the kernel crate
-  rust: add `ZeroableOption` and implement it instead of `Zeroable` for
-    `Option<Box<T, A>>`
-  rust: pin-init: fix documentation links
-  rust: pin-init: remove kernel-crate dependency
-  rust: pin-init: change the way the `paste!` macro is called
-  rust: make pin-init its own crate
-  rust: pin-init: add `std` and `alloc` support from the user-space
-    version
-  rust: pin-init: synchronize documentation with the user-space version
-  rust: pin-init: internal: synchronize with user-space version
-  rust: pin-init: miscellaneous synchronization with the user-space
-    version
-  rust: pin-init: add miscellaneous files from the user-space version
-  rust: pin-init: re-enable doctests
-  MAINTAINERS: add entry for the `pin-init` crate
-
-Miguel Ojeda (1):
-  rust: add pin-init crate build infrastructure
-
- MAINTAINERS                                   |   13 +
- rust/Makefile                                 |   75 +-
- rust/kernel/alloc/kbox.rs                     |    9 +-
- rust/kernel/block/mq/tag_set.rs               |    5 +-
- rust/kernel/driver.rs                         |    6 +-
- rust/kernel/init.rs                           | 1450 ++--------------
- rust/kernel/lib.rs                            |    6 +-
- rust/kernel/list.rs                           |    2 +-
- rust/kernel/prelude.rs                        |    8 +-
- rust/kernel/sync/arc.rs                       |   68 +-
- rust/kernel/sync/condvar.rs                   |    6 +-
- rust/kernel/sync/lock.rs                      |    4 +-
- rust/kernel/sync/lock/mutex.rs                |    2 +-
- rust/kernel/sync/lock/spinlock.rs             |    2 +-
- rust/kernel/types.rs                          |   13 +-
- rust/macros/helpers.rs                        |  148 +-
- rust/macros/lib.rs                            |  127 +-
- rust/macros/module.rs                         |    2 +-
- rust/macros/quote.rs                          |    1 +
- rust/pin-init/CONTRIBUTING.md                 |   72 +
- rust/pin-init/README.md                       |  228 +++
- rust/pin-init/examples/big_struct_in_place.rs |   39 +
- rust/pin-init/examples/error.rs               |   27 +
- rust/pin-init/examples/linked_list.rs         |  161 ++
- rust/pin-init/examples/mutex.rs               |  209 +++
- rust/pin-init/examples/pthread_mutex.rs       |  178 ++
- rust/pin-init/examples/static_init.rs         |  122 ++
- rust/pin-init/internal/src/helpers.rs         |  152 ++
- rust/pin-init/internal/src/lib.rs             |   48 +
- .../internal/src}/pin_data.rs                 |    7 +-
- .../internal/src}/pinned_drop.rs              |    7 +-
- .../internal/src}/zeroable.rs                 |   11 +-
- .../init =3D> pin-init/src}/__internal.rs       |   46 +-
- rust/pin-init/src/alloc.rs                    |  158 ++
- rust/pin-init/src/lib.rs                      | 1486 +++++++++++++++++
- rust/{kernel/init =3D> pin-init/src}/macros.rs  |  129 +-
- scripts/Makefile.build                        |    2 +-
- scripts/generate_rust_analyzer.py             |   17 +-
- 38 files changed, 3343 insertions(+), 1703 deletions(-)
- create mode 100644 rust/pin-init/CONTRIBUTING.md
- create mode 100644 rust/pin-init/README.md
- create mode 100644 rust/pin-init/examples/big_struct_in_place.rs
- create mode 100644 rust/pin-init/examples/error.rs
- create mode 100644 rust/pin-init/examples/linked_list.rs
- create mode 100644 rust/pin-init/examples/mutex.rs
- create mode 100644 rust/pin-init/examples/pthread_mutex.rs
- create mode 100644 rust/pin-init/examples/static_init.rs
- create mode 100644 rust/pin-init/internal/src/helpers.rs
- create mode 100644 rust/pin-init/internal/src/lib.rs
- rename rust/{macros =3D> pin-init/internal/src}/pin_data.rs (97%)
- rename rust/{macros =3D> pin-init/internal/src}/pinned_drop.rs (92%)
- rename rust/{macros =3D> pin-init/internal/src}/zeroable.rs (88%)
- rename rust/{kernel/init =3D> pin-init/src}/__internal.rs (84%)
- create mode 100644 rust/pin-init/src/alloc.rs
- create mode 100644 rust/pin-init/src/lib.rs
- rename rust/{kernel/init =3D> pin-init/src}/macros.rs (92%)
-
-
-base-commit: 7eb172143d5508b4da468ed59ee857c6e5e01da6
+diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+new file mode 100644
+index 000000000000..322dfd9ec347
+--- /dev/null
++++ b/rust/kernel/init.rs
+@@ -0,0 +1,135 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Extensions to the [`pin-init`] crate.
++//!
++//! Most `struct`s from the [`sync`] module need to be pinned, because the=
+y contain self-referential
++//! `struct`s from C. [Pinning][pinning] is Rust's way of ensuring data do=
+es not move.
++//!
++//! The [`pin-init`] crate is the way such structs are initialized on the =
+Rust side. Please refer
++//! to its documentation to better understand how to use it. Additionally,=
+ there are many examples
++//! throughout the kernel, such as the types from the [`sync`] module. And=
+ the ones presented
++//! below.
++//!
++//! [`sync`]: crate::sync
++//! [pinning]: https://doc.rust-lang.org/std/pin/index.html
++//! [`pin-init`]: https://rust.docs.kernel.org/pin_init/
++//!
++//! # [`Opaque<T>`]
++//!
++//! For the special case where initializing a field is a single FFI-functi=
+on call that cannot fail,
++//! there exist the helper function [`Opaque::ffi_init`]. This function in=
+itialize a single
++//! [`Opaque<T>`] field by just delegating to the supplied closure. You ca=
+n use these in
++//! combination with [`pin_init!`].
++//!
++//! [`Opaque<T>`]: crate::types::Opaque
++//! [`Opaque::ffi_init`]: crate::types::Opaque::ffi_init
++//! [`pin_init!`]: crate::pin_init
++//!
++//! # Examples
++//!
++//! ## General Examples
++//!
++//! ```rust,ignore
++//! # #![allow(clippy::disallowed_names)]
++//! use kernel::types::Opaque;
++//! use pin_init::pin_init_from_closure;
++//!
++//! // assume we have some `raw_foo` type in C:
++//! #[repr(C)]
++//! struct RawFoo([u8; 16]);
++//! extern {
++//!     fn init_foo(_: *mut RawFoo);
++//! }
++//!
++//! #[pin_data]
++//! struct Foo {
++//!     #[pin]
++//!     raw: Opaque<RawFoo>,
++//! }
++//!
++//! impl Foo {
++//!     fn setup(self: Pin<&mut Self>) {
++//!         pr_info!("Setting up foo");
++//!     }
++//! }
++//!
++//! let foo =3D pin_init!(Foo {
++//!     raw <- unsafe {
++//!         Opaque::ffi_init(|s| {
++//!             // note that this cannot fail.
++//!             init_foo(s);
++//!         })
++//!     },
++//! }).pin_chain(|foo| {
++//!     foo.setup();
++//!     Ok(())
++//! });
++//! ```
++//!
++//! ```rust,ignore
++//! # #![allow(unreachable_pub, clippy::disallowed_names)]
++//! use kernel::{prelude::*, types::Opaque};
++//! use core::{ptr::addr_of_mut, marker::PhantomPinned, pin::Pin};
++//! # mod bindings {
++//! #     #![allow(non_camel_case_types)]
++//! #     pub struct foo;
++//! #     pub unsafe fn init_foo(_ptr: *mut foo) {}
++//! #     pub unsafe fn destroy_foo(_ptr: *mut foo) {}
++//! #     pub unsafe fn enable_foo(_ptr: *mut foo, _flags: u32) -> i32 { 0=
+ }
++//! # }
++//! # // `Error::from_errno` is `pub(crate)` in the `kernel` crate, thus p=
+rovide a workaround.
++//! # trait FromErrno {
++//! #     fn from_errno(errno: core::ffi::c_int) -> Error {
++//! #         // Dummy error that can be constructed outside the `kernel` =
+crate.
++//! #         Error::from(core::fmt::Error)
++//! #     }
++//! # }
++//! # impl FromErrno for Error {}
++//! /// # Invariants
++//! ///
++//! /// `foo` is always initialized
++//! #[pin_data(PinnedDrop)]
++//! pub struct RawFoo {
++//!     #[pin]
++//!     foo: Opaque<bindings::foo>,
++//!     #[pin]
++//!     _p: PhantomPinned,
++//! }
++//!
++//! impl RawFoo {
++//!     pub fn new(flags: u32) -> impl PinInit<Self, Error> {
++//!         // SAFETY:
++//!         // - when the closure returns `Ok(())`, then it has successful=
+ly initialized and
++//!         //   enabled `foo`,
++//!         // - when it returns `Err(e)`, then it has cleaned up before
++//!         unsafe {
++//!             pin_init::pin_init_from_closure(move |slot: *mut Self| {
++//!                 // `slot` contains uninit memory, avoid creating a ref=
+erence.
++//!                 let foo =3D addr_of_mut!((*slot).foo);
++//!
++//!                 // Initialize the `foo`
++//!                 bindings::init_foo(Opaque::raw_get(foo));
++//!
++//!                 // Try to enable it.
++//!                 let err =3D bindings::enable_foo(Opaque::raw_get(foo),=
+ flags);
++//!                 if err !=3D 0 {
++//!                     // Enabling has failed, first clean up the foo and=
+ then return the error.
++//!                     bindings::destroy_foo(Opaque::raw_get(foo));
++//!                     return Err(Error::from_errno(err));
++//!                 }
++//!
++//!                 // All fields of `RawFoo` have been initialized, since=
+ `_p` is a ZST.
++//!                 Ok(())
++//!             })
++//!         }
++//!     }
++//! }
++//!
++//! #[pinned_drop]
++//! impl PinnedDrop for RawFoo {
++//!     fn drop(self: Pin<&mut Self>) {
++//!         // SAFETY: Since `foo` is initialized, destroying is safe.
++//!         unsafe { bindings::destroy_foo(self.foo.get()) };
++//!     }
++//! }
++//! ```
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index c1b781371ba3..e3933f3dfc0b 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -52,6 +52,9 @@
+ pub mod fs;
+ #[path =3D "../pin-init/src/lib.rs"]
+ pub mod init;
++// momentarily use the name `init_ext` and set the path manually
++#[path =3D "init.rs"]
++pub mod init_ext;
+ pub mod io;
+ pub mod ioctl;
+ pub mod jump_label;
+diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
+index aa8df0595585..0307a08ccee9 100644
+--- a/rust/pin-init/src/lib.rs
++++ b/rust/pin-init/src/lib.rs
+@@ -5,9 +5,6 @@
+ //! It also allows in-place initialization of big `struct`s that would oth=
+erwise produce a stack
+ //! overflow.
+ //!
+-//! Most `struct`s from the [`sync`] module need to be pinned, because the=
+y contain self-referential
+-//! `struct`s from C. [Pinning][pinning] is Rust's way of ensuring data do=
+es not move.
+-//!
+ //! # Overview
+ //!
+ //! To initialize a `struct` with an in-place constructor you will need tw=
+o things:
+@@ -188,15 +185,6 @@
+ //! }
+ //! ```
+ //!
+-//! For the special case where initializing a field is a single FFI-functi=
+on call that cannot fail,
+-//! there exist the helper function [`Opaque::ffi_init`]. This function in=
+itialize a single
+-//! [`Opaque`] field by just delegating to the supplied closure. You can u=
+se these in combination
+-//! with [`pin_init!`].
+-//!
+-//! For more information on how to use [`pin_init_from_closure()`], take a=
+ look at the uses inside
+-//! the `kernel` crate. The [`sync`] module is a good starting point.
+-//!
+-//! [`sync`]: kernel::sync
+ //! [pinning]: https://doc.rust-lang.org/std/pin/index.html
+ //! [structurally pinned fields]:
+ //!     https://doc.rust-lang.org/std/pin/index.html#pinning-is-structural=
+-for-field
+@@ -205,8 +193,6 @@
+ //! [`impl PinInit<Foo>`]: PinInit
+ //! [`impl PinInit<T, E>`]: PinInit
+ //! [`impl Init<T, E>`]: Init
+-//! [`Opaque`]: kernel::types::Opaque
+-//! [`Opaque::ffi_init`]: kernel::types::Opaque::ffi_init
+ //! [`pin_data`]: ::macros::pin_data
+ //! [`pin_init!`]: crate::pin_init!
+=20
 --=20
 2.47.2
 
