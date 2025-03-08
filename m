@@ -1,165 +1,107 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24531EEE6;
-	Sat,  8 Mar 2025 02:04:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741399443; cv=pass; b=u7emeP+OgUT7J+qKf6ApVGeKKCQX52IyMY/Q3vNPSZzTtaseEqzRe3ojlXOvl7yKZGgV9gpGwvBR9JZgAr7FXtM6Rwi3n4f1prBpHUV/rqYWQ1HJwUnWY609qJYTYRsg4EL+mCZbQoLOKD32pZr4O1M2u6zOKQYRMz/t0/YeKOA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741399443; c=relaxed/simple;
-	bh=fzqf8d40kMRV0B/31d4SpvqNTOm3LnawNTjCZEW2sLU=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=W0JfCCdz/INlDW6nDDPCFPHXGdwgt0XJKa/KNqzO26OBhyY5MW/Isc5Qtn+3Xj2o6HQRsigxLjyrFOVd+8mNPjxZpkm6zu7RK4UILwY6mmNiq/H8jhYtvWR2B00j+sAI2MbbX36oRbq1Y1sgseKZcT6EerSP+6WwaIVtcFDA+44=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=bbOw0k9R; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBCDDDD2
+	for <rust-for-linux@vger.kernel.org>; Sat,  8 Mar 2025 04:45:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741409140; cv=none; b=N+GHhoNmMAM2zDQ4xD9iNGsHuCjcVv8e5w29Beo6tQNJCD5fMrg2dS0Y4VndyH54i6gRAzVwm0fI5rhWIN7utVcYdH5H3tJLmsNyEkpvOM1TTA1vgGYtph20ryq+Y9Fl9y6m8DkVe6U5Y+q3WN6NzsBoDIbjYJMHHrbbfatpRFw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741409140; c=relaxed/simple;
+	bh=IBudWUl2ls7LmiDiAu2Ky9IlWjBqIH29xpz1lgqBSjY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jmVgCZmkzGmGzaG6NIWwh6MLRwK1AMqgbJkJfJYc2VyjjziOtGXr0AKmkSkAGzb5bh93QEHgPZpfyxpPMi575/G4fJ0d8pNzUxZ4klhPURKKb+Z7+1GMzRakffUWrhcVS39dvpkGI0HheI76BhUP/WpNozxPmhOsIMXXIzOz/Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=erhez8J+; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="bbOw0k9R"
-ARC-Seal: i=1; a=rsa-sha256; t=1741399413; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=giiBA+A+LzQ4rixA9S/EDVikE44XlsdZtBZETAkxthSRSaqTa8veggBhjaEumNaNhqVSumFIYu9krh9v0yelcOLDliFXWanjOUpsLkj02ppCrQQLN7qGB1X9DsBPEGdQRhdOGMbZaAPFpOKneCz6yfiLCpN2eU9PXjVe41TW2Bo=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1741399413; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=U5tvOevFekjKfogKK5n5IOeLUWZYMhAuBRM0LtrpGac=; 
-	b=ikDTmD2jYCohWzz7++a81be47ZYr0U+3Z/QlfWIw56F7/7JjVIy3p2SJDRGai+S/oVNrVgXrlSX9GCY/PeI400AdWjLSm6VCVgXVsLOUf3ZaIL56+d2U1CBIyTjIdSORcioYhAlJ+8phPXFM/ssaBWGsetXQYVK6hz1gCdW2TkU=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1741399413;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=U5tvOevFekjKfogKK5n5IOeLUWZYMhAuBRM0LtrpGac=;
-	b=bbOw0k9RLgAZYFzlJYOqf0M3lDnvpHCUPNYKYs2kXme6TAPJ1lrWz+XH4/4iIqgv
-	O1IrlLlOH23rKttiTj9fLlgLMs9PsOiXAZ9UFnaJ0YJbAAvYvUWalfZzsM0i2mOC0RI
-	h99D8cxjkT7lcverGcVT0SMhojJakI0V20f+LEDY=
-Received: by mx.zohomail.com with SMTPS id 1741399412188433.2847528501791;
-	Fri, 7 Mar 2025 18:03:32 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="erhez8J+"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2239aa5da08so41943125ad.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 07 Mar 2025 20:45:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741409138; x=1742013938; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jGhcUqpeqUdHNZz/ZiPVeAeXjUxpJvkCkjVpTh10fZM=;
+        b=erhez8J+SwvLxtUMVGtrqrdtfYp/PpB8vIDNmLmiulD0EA49mm2z6ha9njPhFKdwoa
+         afQJncZoxWIrZ5zYsuhpMMINkHJ8A0VUGVHCP3ndl+slMgyNYaOWmUTe+mm5rPiiy2sR
+         yEq4Snw8vGYVKwIcOtxBUPHX6yu4SfFWbsLxVI80jbEUOnxbWsgw7j2VJBU0rb3OmhJM
+         yYKRdZl+jeIBQM5/cuKm+bydhMA3E7xHj82x6V5CR9+KdhP7wWTKyGLonuPcJm0cImoA
+         8sfYbVif1DgAndOfWgqRgGfau4pCBIAEXEp69WaDD6Z1U81nIktWQisXEhNQw0IghT/K
+         2Wfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741409138; x=1742013938;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jGhcUqpeqUdHNZz/ZiPVeAeXjUxpJvkCkjVpTh10fZM=;
+        b=XZHwXSZxr+lDAn8YGvzFlwkSbK61tdSQyq1G9RXQBjoS3ufKHPO9+ID5UacUI9dh6x
+         SYf5aBQbz/JKvR1XehGhAUK9K5sWbBQoOoKLYZ30qPjTkaYTWlCH5lKzTYD+AhOYYKcp
+         T8SLn3GDZnMKn7mZ5S2xi6dOclQ0JeNcqbhKLsWZseVzGD7vq4lNUUjbtFdruG6opzAV
+         mBF+V9votqtoOq8kVGt7X1yT99gnMyUMIsxr/G/Q7VruEG22HwI1xot7t4PadO1o8JFg
+         EprHVLJdTUJoPbOYaEZTSvhwZdcnLjqox24VE5mySDpFXWNJdjoczByx4nhEHO5d5oHK
+         4XxQ==
+X-Gm-Message-State: AOJu0YwQ1W+po/TY5Khowm+Bkbd3dpvc3EOuYgrUJTknsnTsrtPQbdZQ
+	jYN+MrbzVpXjyS74sCXVfbHvOfSA9/d+dG3YuSzkBm8s1M6sylP+
+X-Gm-Gg: ASbGncscZcWXkR6YFEXl5PVgxZWbdO3/AOvrMVi0f4I4AjrXotMOjd5VU/4jhzaPzYf
+	Bfu0M4B+8ZFGU7n3Gov0B6kqShOCehisZlDBl9qmlJaToWLBLBnUWh8Lq24xLa0zvCVxJVMR2/G
+	CtMALyrYV5uK+XRyuDS7IoUUz7MVhyUPLHA7u15QmiiK/K9XQTRVBqmkOVyZRsB+oteUG8vMxrt
+	68N+vw0+/Jbfk3OTpRFUBVnqAyp7NHyZFY3g8D6DuPW338yzoKLFJFYrbh2rdaARggun3VXSHlH
+	+wf7no9SyrHitxBpu6UTsAgR17kPj6wka902uhJTwS32+mkI4fk521NJU9RVzaF3DDD1+0TRIAk
+	DHEPXXp9HOM/XtgA5aNUWFg==
+X-Google-Smtp-Source: AGHT+IFr2SlV0nkQoO9/beCahp1QzpbjlackkE48H203igvhmZOTd/eCE9q4xJ2PzGkXBDdhHdkfFQ==
+X-Received: by 2002:a17:902:ce87:b0:21f:5cd8:c67 with SMTP id d9443c01a7336-22428ab58d8mr96470795ad.31.1741409138569;
+        Fri, 07 Mar 2025 20:45:38 -0800 (PST)
+Received: from mew.. (p4204131-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.160.176.131])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22410a8209esm39026265ad.129.2025.03.07.20.45.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Mar 2025 20:45:38 -0800 (PST)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: ojeda@kernel.org,
+	alex.gaynor@gmail.com
+Cc: rust-for-linux@vger.kernel.org,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu
+Subject: [PATCH v1] rust: module: place cleanup_module() in .exit.text section
+Date: Sat,  8 Mar 2025 13:45:06 +0900
+Message-ID: <20250308044506.14458-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.400.131.1.6\))
-Subject: Re: [PATCH V3 2/2] rust: Add initial clk abstractions
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250304085351.inrvjgixvxla4yn3@vireshk-i7>
-Date: Fri, 7 Mar 2025 23:03:15 -0300
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Michael Turquette <mturquette@baylibre.com>,
- Stephen Boyd <sboyd@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Russell King <linux@armlinux.org.uk>,
- linux-clk@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- Vincent Guittot <vincent.guittot@linaro.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <DC3B4FA6-5938-49CE-A75C-D354562593B3@collabora.com>
-References: <cover.1740995194.git.viresh.kumar@linaro.org>
- <023e3061cc164087b9079a9f6cb7e9fbf286794e.1740995194.git.viresh.kumar@linaro.org>
- <CANiq72kdWzFOZ39EoFNxEAbk4KYgzLi1OAEc1zn8BM07VpXy3g@mail.gmail.com>
- <20250304085351.inrvjgixvxla4yn3@vireshk-i7>
-To: Viresh Kumar <viresh.kumar@linaro.org>
-X-Mailer: Apple Mail (2.3826.400.131.1.6)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi Viresh,
+Place cleanup_module() in .exit.text section. Currently,
+cleanup_module() is likely placed in the .text section. It's
+inconsistent with the layout of C modules, where cleanup_module() is
+placed in .exit.text.
 
-> On 4 Mar 2025, at 05:53, Viresh Kumar <viresh.kumar@linaro.org> wrote:
->=20
-> On 03-03-25, 11:16, Miguel Ojeda wrote:
->> On Mon, Mar 3, 2025 at 11:00=E2=80=AFAM Viresh Kumar =
-<viresh.kumar@linaro.org> wrote:
->>>=20
->>> +/// Frequency unit.
->>> +pub type Hertz =3D crate::ffi::c_ulong;
->>=20
->> Do we want this to be an alias or would it make sense to take the
->> chance to make this a newtype?
->=20
-> I have tried some improvements based on your (and Alice's comments), =
-please see
-> if it looks any better now.
->=20
-> --=20
-> viresh
->=20
-> -------------------------8<-------------------------
->=20
-> diff --git a/rust/kernel/clk.rs b/rust/kernel/clk.rs
-> new file mode 100644
-> index 000000000000..fc3cb0f5f332
-> --- /dev/null
-> +++ b/rust/kernel/clk.rs
-> @@ -0,0 +1,232 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Clock abstractions.
-> +//!
-> +//! C header: [`include/linux/clk.h`](srctree/include/linux/clk.h)
-> +//!
-> +//! Reference: <https://docs.kernel.org/driver-api/clk.html>
-> +
-> +use crate::{
-> +    bindings,
-> +    device::Device,
-> +    error::{from_err_ptr, to_result, Result},
-> +    ffi::c_ulong,
-> +    prelude::*,
-> +};
-> +
-> +use core::{ops::Deref, ptr};
-> +
-> +/// Frequency unit.
-> +#[derive(Copy, Clone, PartialEq, Eq, Debug)]
-> +pub struct Hertz(c_ulong);
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+---
+ rust/macros/module.rs | 1 +
+ 1 file changed, 1 insertion(+)
 
-Maybe make self.0 pub too?
+diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+index cdf94f4982df..36daa149a691 100644
+--- a/rust/macros/module.rs
++++ b/rust/macros/module.rs
+@@ -275,6 +275,7 @@ mod __module_init {{
+                     #[cfg(MODULE)]
+                     #[doc(hidden)]
+                     #[no_mangle]
++                    #[link_section = \".exit.text\"]
+                     pub extern \"C\" fn cleanup_module() {{
+                         // SAFETY:
+                         // - This function is inaccessible to the outside due to the double
 
-> +
-> +impl Hertz {
-> +    /// Creates a new `Hertz` value.
-> +    pub fn new(freq: c_ulong) -> Self {
-> +        Hertz(freq)
+base-commit: 6ad64bf91728502fe8a4d1419c0a3e4fd323f503
+-- 
+2.43.0
 
-I don=E2=80=99t think we need a `new` function.  IMHO, the only thing =
-that matters is
-that the name Hertz shows up in the calling code, i.e.:
-
-```
-fn foo() {
-    let clk =3D =E2=80=A6;
-    let some_val =3D =E2=80=A6;
-    clk.set_rate(Hertz(some_val)); // Ok: crystal clear this is Hertz
-}
-```
-
-A  impl From<Hertz> for c_ulong would also be helpful, so that we =
-don=E2=80=99t have to
-manually define all the arithmetic operations on this.
-
-```
-fn foo() {
-    let clk =3D =E2=80=A6;
-    let double =3D u32::from(clk.rate()) * 2;
-    clk.set_rate(Hertz(double)); // Ok: crystal clear this is Hertz
-}
-```
-
-I need more time to look at the rest of the patch, so feel free to carry =
-on with the
-feedback from others. Sorry for the delay!
-
-=E2=80=94 Daniel=
