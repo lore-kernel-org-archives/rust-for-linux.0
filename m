@@ -1,91 +1,81 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8071EB5F5;
-	Sat,  8 Mar 2025 11:05:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2217E0E4;
+	Sat,  8 Mar 2025 16:43:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741431946; cv=none; b=uAvZrd6JEVX08H6FWbwBjx4Ds5Y4LMq6IkFOh+7+KTr9mvculr1+n8BGtwSdsWisnwZ2rRW1h/RH83rueGEpK+qxEECwgg56Hz59nngHE5d66sQUhtbcNzrfyGEelAwmDFgYbf+6kTSmn6SXwaS5P9ZyRotJMbZdBjIyBtAdEF8=
+	t=1741452207; cv=none; b=hWJl1tdRLVddpd44hiDcggkMv0tx5XQ3A/XLaK1rwwqkXWUqPosXXqquOI3xn2nbYL2Xr/sUycQ8Pw8IsdzL1D8ltdIkuotVh0wNasHWSIRdxOHYnxOddILv6hgM/DUjPyiS8kCRVz1G4ZCfpgSfcgVCd9+h4JiGksHFmK2aYoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741431946; c=relaxed/simple;
-	bh=r5+NIDp2XF4eMwhB/70g3s0n8TuRc4TRKSpPySgRDUo=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PJt7AZqI+Uvv++omMywqmCJbW+bkHohl2fTMxbtTbijY+qVYSYMfkSzScjUX4OoAJUt7PyuUu1hcoDKsO1zGPXv/Hs1XkievXHUYyilWhSDcxlNVaXhocdVXUwxVs6y93fjRfeOUfntVA4bJ9iv+ylzsITGT3SmbXtF8BdGlZAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=ZzFyBRMe; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1741452207; c=relaxed/simple;
+	bh=giXjfla1IUB80vCiBZBA4tDUia2ogWeR+zO5AzfF78s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AkkvRcVt5ZhcR+jmunvzeSV8fCLU59rbOkxJOJ8u6erS1XYUBjCV9hCcg0BsXkbc5X/HtGWXHoCoo/4xxcF1CLGbeLP0f/Dxb2srDa4PBo3hnBN5thnUI8K8z7imxJBEFAzpuayU9exbs0fJOam2ggytIaSxB63EjwJejxuabMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=duKuCkEc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ZzFyBRMe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1741431942; x=1741691142;
-	bh=r5+NIDp2XF4eMwhB/70g3s0n8TuRc4TRKSpPySgRDUo=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=ZzFyBRMelHpk6HnnU9zY2n36G9bpjkZePBnVUEhUqobmAEbsEWCmkMKrO+IKR6xt4
-	 msCXgisq3k+Jta4xG04z61qvJYq2ZXnAfsrePLsalZcge8YjDKXCMU2cVXoPpqCGQo
-	 yAHC0bPIsHYsXIE1QlMt5F/jiYrbMMDFfH589G/3sWgMp5iZo1rbIaPYV6+zTvpx0+
-	 UIxiy9647ti+hI97jEHHiRa7fblAGKfUktgdgqMugREKg2qITnH5Nf63MLxiMmF41i
-	 8oheHu6jtCyzzTYkS1h+QZr0wt2HUIqn0EHqvrzo/5HEM/15N+iy1Fy83wobSW6TKh
-	 GPfsvfDbQj6Xw==
-Date: Sat, 08 Mar 2025 11:05:39 +0000
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: [PATCH v2 22/22] MAINTAINERS: add entry for the `pin-init` crate
-Message-ID: <20250308110339.2997091-23-benno.lossin@proton.me>
-In-Reply-To: <20250308110339.2997091-1-benno.lossin@proton.me>
-References: <20250308110339.2997091-1-benno.lossin@proton.me>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 998cc5c1787eabe84b45a746df8538c804016087
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="duKuCkEc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C53D2C4CEE0;
+	Sat,  8 Mar 2025 16:43:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741452206;
+	bh=giXjfla1IUB80vCiBZBA4tDUia2ogWeR+zO5AzfF78s=;
+	h=From:To:Cc:Subject:Date:From;
+	b=duKuCkEcowvy002FIXu9V+JBtDM12ZOgGND6SkEpSWuRsJTQliU5pDts3zMH9UGb0
+	 MSiiV1EsH/CGSESA2AaXMKl2TVDwWmDSj9iQXGiN6yn0b7eOxBeCqfDMTXBDFxBX8F
+	 Mhw35q92osqMnsUTb25oteaVApbhbAfP3qerWAERoBmXX7nVog3RwzTRxmLyzeCyug
+	 /tNwNCStm8/qOlsA3FCvoYHzE/VyoVZf99dPsY0o4IkYEffFgQtWbYEsqMqyowHuYc
+	 oNq3BlBYUj8+EiDlQWtw+F0lGsFuyY8z6hYRI3fIBwhnjv5jxqlWIpXU1yvKm7d0pv
+	 1irCwFFw0rekQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: [PATCH] MAINTAINERS: rust: add tree field for RUST [ALLOC]
+Date: Sat,  8 Mar 2025 17:42:58 +0100
+Message-ID: <20250308164258.811040-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Add maintainers entry for the `pin-init` crate.
+In the Rust subsystem we are starting to add new subentries which will
+have their own trees. Those trees will be part of linux-next and will
+be sent as PRs to be merged into rust-next.
 
-This crate is already being maintained by me, but until now there
-existed two different versions: the version inside of the kernel tree
-and a user-space version at [1]. The previous patches synchronized these
-two versions to reduce the maintenance burden. In order to keep them
-synchronized from now on, separate the maintenance from other Rust code.
+Thus do the same for the existing subentry we already have: RUST [ALLOC].
 
-Link: https://github.com/Rust-for-Linux/pin-init [1]
-Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- MAINTAINERS | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 8e0736dc2ee0..ced7fac4dbbe 100644
+index 8e0736dc2ee0..1ddc313abbdd 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -20735,6 +20735,19 @@ S:=09Maintained
- F:=09rust/kernel/alloc.rs
- F:=09rust/kernel/alloc/
-=20
-+RUST [PIN-INIT]
-+M:=09Benno Lossin <benno.lossin@proton.me>
-+L:=09rust-for-linux@vger.kernel.org
-+S:=09Maintained
-+W:=09https://rust-for-linux.com/pin-init
-+B:=09https://github.com/Rust-for-Linux/pin-init/issues
-+C:=09zulip://rust-for-linux.zulipchat.com
-+P:=09rust/pin-init/CONTRIBUTING.md
-+T:=09git https://github.com/Rust-for-Linux/linux.git pin-init-next
-+F:=09rust/kernel/init.rs
-+F:=09rust/pin-init/
-+K:=09\bpin-init\b|pin_init\b|PinInit
-+
- RXRPC SOCKETS (AF_RXRPC)
- M:=09David Howells <dhowells@redhat.com>
- M:=09Marc Dionne <marc.dionne@auristor.com>
---=20
-2.47.2
+@@ -20732,6 +20732,7 @@ RUST [ALLOC]
+ M:	Danilo Krummrich <dakr@kernel.org>
+ L:	rust-for-linux@vger.kernel.org
+ S:	Maintained
++T:	git https://github.com/Rust-for-Linux/linux.git alloc-next
+ F:	rust/kernel/alloc.rs
+ F:	rust/kernel/alloc/
+ 
 
+base-commit: 7eb172143d5508b4da468ed59ee857c6e5e01da6
+-- 
+2.48.1
 
