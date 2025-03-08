@@ -1,98 +1,75 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346C01E51FB
-	for <rust-for-linux@vger.kernel.org>; Sat,  8 Mar 2025 16:49:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0E454A35
+	for <rust-for-linux@vger.kernel.org>; Sat,  8 Mar 2025 16:56:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741452573; cv=none; b=mTIAI73sfwBFbMao7PIqoT6Aqcol/lH6O8Z/SAkRvjs2bKlufKrbDZkxSoui9BeyCwSTTlpw8hs1U8MToP8Qm9Q+4iJlJPP8WtvqImE9CdLlodpHHnQnKSk54dkq0/YvI3U8uv6Ngi2HaXiHG0zOpgmoThSIXpsZB+aa+lI/LW0=
+	t=1741452980; cv=none; b=GNNbS0UpN9/seebh0Ea+t4EhIPjpF8vagQ/YAWU05SYI5ZOKMJCbjIkAjkIlclmVnY4zaJnOHrOUEbpAqama/6ihpaoXiKNg4ddP3w+Hd3EfI7AAY3HwIb0/Sw6R1WiLKMqRrxwEmI6OwmO2yNmnJRlKp3SFoHWELStvvzMYWKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741452573; c=relaxed/simple;
-	bh=NMBRHjyiUf4fqRzIW1+eJkuyhDfwTkf1Nmf3eaTS+us=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=gjlw8wTJEsksoZgbycBCDWv7s0RUFVzROlRNA15KmOLI7xq/+PQatNFEXNki6/3SkSXsl89apddYFDKms5/6jH0G6+j7/PDk0r+0kdX9pLj7WzL/rMWlHeh2FLspgnFrm1kCEnXyg7DHI+RzSEuPHRGhnjBlpqHf0TXWxA1Se4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=DamSJZ8a; arc=none smtp.client-ip=185.67.36.65
+	s=arc-20240116; t=1741452980; c=relaxed/simple;
+	bh=eSuxg2xuBFkjSqo6vPYUms50Awq/A17AtOYbqoQmGbY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=BDSutylq5ERQfZjLdVhv2IAT2eDrzD7fg/sDWjHnMP8tw16a1BQn+pFxZIA+wyfQSn8zDU3XpVTn4m/Hp5RMKtl3eOqeX21h2C9pI8xo6Y0E0b6r4UnpHiQ926AQHZuWO5ZkpxitnhEJmObsKfXpgmUp/sPGHw1J4vHVx389Zxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=lZ+/Olul; arc=none smtp.client-ip=185.67.36.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="DamSJZ8a"
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="lZ+/Olul"
 Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 3333A24002A
-	for <rust-for-linux@vger.kernel.org>; Sat,  8 Mar 2025 17:49:28 +0100 (CET)
+	by mout02.posteo.de (Postfix) with ESMTPS id B74A9240106
+	for <rust-for-linux@vger.kernel.org>; Sat,  8 Mar 2025 17:56:16 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1741452568; bh=NMBRHjyiUf4fqRzIW1+eJkuyhDfwTkf1Nmf3eaTS+us=;
-	h=From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:To:Cc:From;
-	b=DamSJZ8ahaaBF8tvy/5dEWM6mGA3QgyRPRMdeOiA7aqkA6ZJH38zj9L0zNsIq8G8q
-	 Ood1pT80gs6ofSnbZxgTWyDFl/kK8+vVCTq9v1XKu/Gga9aj/vDX6JWHDHkF77M8X3
-	 90nQ8PH0cGKN+TdcC8ILZ4cN79nOP0SfDTySit5J4YV8R1BppfJoTC22FDbWUfkCl5
-	 p+3voL1JNl1AgOrx4MMnPBZ0XnjmQuwNYGkISfux2GpmTNQAu6ivQBaxdsbbw1mj/h
-	 F7tqx4/o5JacWqREONeUjxqSds/c1kTUtPB8lXkK0i+L0A7yspVhKp8OwCDtr7RV+F
-	 qWwicU3iNysZg==
+	t=1741452976; bh=eSuxg2xuBFkjSqo6vPYUms50Awq/A17AtOYbqoQmGbY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 From;
+	b=lZ+/OlulyCasYzJ6uzRMxf6Et3b/eucrxXcqwD9H+QGtn1l9SRnIEOnCrGmfc7xTk
+	 bpn7pdL30glloIo3OYa31fV4pSWzvUp7nExa/mcZRphs5YByFYh09fFifQH7Kx9r+J
+	 8SyOgMFrqgvNptiw+Rn7HIh4qXq6SUPfliCnG7zLfS9LjZJlbydwdRBsOBFReIvYYw
+	 jFfZJvpHzGr+8Bi2StZsajdmIbQDSKZqHaepzwt5gwrx3wJAtd74s79jHAaRy+9tzc
+	 LfzT6OWpwhHYcCexwBJanpVj6q3OvnwrxDEhbo/hCV+VJTb5QxtLCmMOGyEiZh+net
+	 SwNaGv3kPOZ3A==
 Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4Z98JQ3Hy1z9rxF;
-	Sat,  8 Mar 2025 17:49:26 +0100 (CET)
-From: Panagiotis Foliadis <pfoliadis@posteo.net>
-Date: Sat, 08 Mar 2025 16:49:05 +0000
-Subject: [PATCH] rust: task: fix `SAFETY` comment for Task::wake_up
+	by submission (posteo.de) with ESMTPSA id 4Z98SG4tMZz6tw2;
+	Sat,  8 Mar 2025 17:56:14 +0100 (CET)
+From: Charalampos Mitrodimas <charmitro@posteo.net>
+To: Panagiotis Foliadis <pfoliadis@posteo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
+  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,
+  =?utf-8?Q?Bj=C3=B6rn?=
+ Roy Baron <bjorn3_gh@protonmail.com>,  Benno Lossin
+ <benno.lossin@proton.me>,  Andreas Hindborg <a.hindborg@kernel.org>,
+  Alice Ryhl <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,
+  Christian Brauner <brauner@kernel.org>,  rust-for-linux@vger.kernel.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: task: fix `SAFETY` comment for Task::wake_up
+In-Reply-To: <20250308-comment-fix-v1-1-4bba709fd36d@posteo.net>
+References: <20250308-comment-fix-v1-1-4bba709fd36d@posteo.net>
+Date: Sat, 08 Mar 2025 16:56:13 +0000
+Message-ID: <m27c4zfolu.fsf@posteo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250308-comment-fix-v1-1-4bba709fd36d@posteo.net>
-X-B4-Tracking: v=1; b=H4sIAAB1zGcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDYwML3eT83NzUvBLdtMwKXSPTFAPLtDTD5OQkUyWgjoKiVKAw2LTo2Np
- aAPQ0Tl1dAAAA
-X-Change-ID: 20250308-comment-fix-25d09ff1ccb5
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Christian Brauner <brauner@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Panagiotis Foliadis <pfoliadis@posteo.net>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1741452566; l=1255;
- i=pfoliadis@posteo.net; s=20250308; h=from:subject:message-id;
- bh=NMBRHjyiUf4fqRzIW1+eJkuyhDfwTkf1Nmf3eaTS+us=;
- b=8fZQbC42Yqv8+b3HLQN4MZtx/9vCG23pX4ZSUxtpYvpEeGzS1VKZGJU3oKflpnqBElgyKyhvu
- P9mAMgkQzfOD75kqSls1A5wWWtPalhR904r51rADEEdL87PrBb9TBHi
-X-Developer-Key: i=pfoliadis@posteo.net; a=ed25519;
- pk=/8ch2dv3mwtZ5ygYwiG7ldc/132K6XmLkAZDmIe0aQw=
+Content-Type: text/plain
 
-The `SAFETY` comment inside the `wake_up` function references
-erroneously the `signal_pending` function instead of the
-`wake_up_process` which is actually called. Fix the comment
-to reference the correct function.
+Panagiotis Foliadis <pfoliadis@posteo.net> writes:
 
-Fixes: fe95f58320e6 ("rust: task: adjust safety comments in Task methods")
-Signed-off-by: Panagiotis Foliadis <pfoliadis@posteo.net>
----
- rust/kernel/task.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> The `SAFETY` comment inside the `wake_up` function references
+> erroneously the `signal_pending` function instead of the
+> `wake_up_process` which is actually called. Fix the comment
+> to reference the correct function.
+>
+> Fixes: fe95f58320e6 ("rust: task: adjust safety comments in Task methods")
+> Signed-off-by: Panagiotis Foliadis <pfoliadis@posteo.net>
+> ---
+>  rust/kernel/task.rs | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-index 07bc22a7645c0c7d792a0a163dd55b8ff0fe5f92..38da555a2bdbb71d698c671ad1a7a337e50c6600 100644
---- a/rust/kernel/task.rs
-+++ b/rust/kernel/task.rs
-@@ -320,7 +320,7 @@ pub fn tgid_nr_ns(&self, pidns: Option<&PidNamespace>) -> Pid {
- 
-     /// Wakes up the task.
-     pub fn wake_up(&self) {
--        // SAFETY: It's always safe to call `signal_pending` on a valid task, even if the task
-+        // SAFETY: It's always safe to call `wake_up_process` on a valid task, even if the task
-         // running.
-         unsafe { bindings::wake_up_process(self.as_ptr()) };
-     }
+You can add,
+Reviewed-by: Charalampos Mitrodimas <charmitro@posteo.net>
 
----
-base-commit: 2a520073e74fbb956b5564818fc5529dcc7e9f0e
-change-id: 20250308-comment-fix-25d09ff1ccb5
-
-Best regards,
--- 
-Panagiotis Foliadis <pfoliadis@posteo.net>
-
+--
+C. Mitrodimas
