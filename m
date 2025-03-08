@@ -1,113 +1,311 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF823196
-	for <rust-for-linux@vger.kernel.org>; Sat,  8 Mar 2025 05:39:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3693BE4F
+	for <rust-for-linux@vger.kernel.org>; Sat,  8 Mar 2025 11:03:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741412397; cv=none; b=rGX/OSYt4xPKyqZUzn+4iDk9g97DlvpCh/8JdxBuXLLBd8e6nd4zID1Fz1DbBokZDykMy/qxdkQB/FA+mjRipBlxF75TdknJI4xPIXbuXJxTm4I8awEEK1Y0ZVrn5XRM2Dq03rMkxm+7ERQtS/KEJXlKMuMBi93yh9emUw12ZuI=
+	t=1741431838; cv=none; b=lFcgGbGCyL5GHSM7cClZC3vhA1XMv0cNTWIN23GQLEJ3OIMPy9hbnIImjT5IY18QGpynzsu+YYOeYWzrWhfhnD7buKSzmepr+LvKIEnqVmNcDHYfKeWsXEfb6kK9dJ0mtQKkHloTo1ouAd3tLaEmjEj4xue1wl4byVp7jzVi/kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741412397; c=relaxed/simple;
-	bh=PucasF6SmJQU0DSxH8aw5+AP82JRAYkhKWrpgThe3sw=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=mjG1wZR33SUYtFPBaTsLm2pPe2W+4gxiOLq721QjMxUBP9LEfiRVYpHU1QnbJR/cf0ttOPoVitFzs0BznOh2Kznb7xxKVQFsV/W3gkHkYXazXFEeBlfw3yCO5j8YfppgcOxnjW8k12LQB5f94VWZ4hldvoQfPU5rWpHv1VOBR74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NcTEVWmL; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1741431838; c=relaxed/simple;
+	bh=aUNCJpwhjsn8h9QBooCEqCRolZSpf270gAdlSqEICoE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ds5IwMJL7m3DZEk0TsrzB9vWNiIMC/297zSj7cgQOgycLTz/QLElWD7ZQDkSbgOTHmfjBbHKNnrMLH7I4hbER0Z2pMP4s9XVciLB0sa6C4Y7OcTGFw4pMVx2LlShyhEFzvEPKN1Ud6FYo7vndJ7TYVR78rHGd7Do37amzT52cD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=QwfRIDRq; arc=none smtp.client-ip=185.70.40.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NcTEVWmL"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-223594b3c6dso47541645ad.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 07 Mar 2025 21:39:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741412394; x=1742017194; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Z60QZvehPoSypFg/FPBuZBF1D7Cx8sowOm+f1+IpOps=;
-        b=NcTEVWmLHcBNdp4aNaadv6lV8sVY7pObFCRbmm+UfTVujO7ny0QF35Og5IgwELNnJh
-         KNcw5uaxoYTWwKzFtgjJ8zJa82i/EI5L1GgDroxQFQV5CKUJTJ21ckwlYZElAXE0JzGo
-         z/3igV5bxSyuxX4MwcFPSjLJWBui0y+pEudEoOKPRvNaseymenOBr1Xn2fEYnBKpcJRJ
-         l52iJ0BRsJKJsGfOJ8vrGBODBj0ND18CtXhx3wMdR49n97TiVTPfd/hjM+z33oopNfKH
-         jF1/BmozKanYNv0qQDZJl3nrb2xHM/e1cCof7CfcNWvgsUWlXZikwtG/54vP3WpyEbku
-         w7DA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741412394; x=1742017194;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Z60QZvehPoSypFg/FPBuZBF1D7Cx8sowOm+f1+IpOps=;
-        b=b2qZpHL6/vGh/UpUURgJgf5HuPGtP4mxbcXZqOmP4qtnccETK3mIbE15Abdsk7BNtX
-         1huEA2QXklnr1KqZK7exSqIDbXZ6wj8hSJgAe2ge38UBfHko/uA9ez3g6f0Aq+ZivK6s
-         C66it+YVWjt4onx0lpOTobt3FFGHn6AHmJmUlfwTuiYue13f25Pd631lCN6F3xuvSVDz
-         lfs+bv8VZhH7CMXpXhAoibthXx4Kx3iGoCzDA0i1ZcfAB2bo54wt6FCcGqQgaK0+qiq0
-         gIt4lLvjbpWRT/YJ+q7mLuttLn7G5e6EeXNZ4XpA60ZMn0B1SxS2yeaHgwkRJBqE+hI1
-         MiVg==
-X-Forwarded-Encrypted: i=1; AJvYcCXh3BLlH2+Sn4oTz5td6oyIKAiqBoKb6ZcJhPQnJT07u3pbBlnWwTgyVA+SU+eGofUjiI7l0BV6+R5uBj8c1Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwP3I1JFaXnK257TWAKpib32NLOXbZqOn48OrjTmde4p6VOZEkc
-	F2M6xIaptmAgYYCTUEwQlBEyqwQbcoADJv0htHPVY02tyF1k0Cxu
-X-Gm-Gg: ASbGncvQ2PYsWjrVF5+BKPr6tWiKVgAlnDWxv788KPJ6SNq8RtymR3RkpvlfFiqAepI
-	nqJvt/xdcCvdWGuYDupW0vDF0HXbzzfB2L9yfJjHmD4UmON2bcVvO5dmu3WvKhO9Q7ZVq813ejr
-	K62BJR/VTqzWYxz23yhC7MJdt4K8yETxO0i+puMYOYAFbSuLVyYZqNqAi2xxRxiDQgVuX9/Q2iP
-	727Jpa8qwB0MDkeJwFWew1ruHhu7jcM59Z5O8hJVnjNfS5CphahsTGJYKHxHQIQJdQaFuJRgwlb
-	qrr9/YqSYcic/KLCY00xTEutw4Wu13PyuFtOiqlb3tezafvkOcty3FUQQYowM4PVm1vdUDSqHbR
-	b3XLQjNflMOCfv8Qv6vdln3QsRo4bYSCIXzPqrA==
-X-Google-Smtp-Source: AGHT+IGlJTd2oNiT+t9Tr/j/a7qQFeaw1jEgqgb5dVPCfkraoN4SrRXl7XlIejH/mpkEO9E1/Q81Dg==
-X-Received: by 2002:a17:902:ce87:b0:21f:5cd8:c67 with SMTP id d9443c01a7336-22428ab58d8mr98760725ad.31.1741412393911;
-        Fri, 07 Mar 2025 21:39:53 -0800 (PST)
-Received: from localhost (p4204131-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.160.176.131])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-224109ddd8dsm39791575ad.7.2025.03.07.21.39.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Mar 2025 21:39:53 -0800 (PST)
-Date: Sat, 08 Mar 2025 14:39:37 +0900 (JST)
-Message-Id: <20250308.143937.716322981738491898.fujita.tomonori@gmail.com>
-To: boqun.feng@gmail.com
-Cc: fujita.tomonori@gmail.com, ojeda@kernel.org, alex.gaynor@gmail.com,
- rust-for-linux@vger.kernel.org, gary@garyguo.net,
- bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@kernel.org,
- aliceryhl@google.com, tmgross@umich.edu
-Subject: Re: [PATCH v1] rust: module: place cleanup_module() in .exit.text
- section
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <Z8vWbxp7BS3fKd5f@Mac.home>
-References: <20250308044506.14458-1-fujita.tomonori@gmail.com>
-	<Z8vWbxp7BS3fKd5f@Mac.home>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="QwfRIDRq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1741431833; x=1741691033;
+	bh=eqPfz6eKU6ZIdgA0Z2vFtOPAZqMLvv98PhGEm6nhdog=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=QwfRIDRq0xr6+E6TjyNHMuwUqueqJMkHxeZBIgZ/SyPNN+mo5jmN4YAIdqVo0AZUt
+	 zyp4hpy3TKjLSa4Xr4ck/41uzYjt9jj2YF5Tyr++O+wfccbkXuQMyXp9rxJuFnMhci
+	 4jp2vSzxktKFnDbdGJDoKtoZKEKaVxrZbzJvOtOKrfiPFzIIda0vV4rRdormGkh5r4
+	 EtWCLnuOQnGoVk7rV5Bp62OZrefkq4IoJ2Jb0ZNwr6CvNmh35M+6IGARRVdWsmJUyb
+	 QLSPnTbqJeR7q76mgC5TmV1ILyAbG6J/o+wgzGEwkVkMTSv739C4+s1w6bwuDMFjDe
+	 ERhMI4SV90Jsg==
+Date: Sat, 08 Mar 2025 11:03:51 +0000
+To: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Fiona Behrens <me@kloenk.dev>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2 01/22] rust: init: disable doctests
+Message-ID: <20250308110339.2997091-2-benno.lossin@proton.me>
+In-Reply-To: <20250308110339.2997091-1-benno.lossin@proton.me>
+References: <20250308110339.2997091-1-benno.lossin@proton.me>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: b515976f04c95b1c126773ad6a3ada163a9479e1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 7 Mar 2025 21:32:31 -0800
-Boqun Feng <boqun.feng@gmail.com> wrote:
+The build system cannot handle doctests in the kernel crate in files
+outside of `rust/kernel/`. Subsequent commits will move files out of
+that directory, but will still compile them as part of the kernel crate.
+Thus ignore all doctests in the to-be-moved files.
 
-> On Sat, Mar 08, 2025 at 01:45:06PM +0900, FUJITA Tomonori wrote:
->> Place cleanup_module() in .exit.text section. Currently,
->> cleanup_module() is likely placed in the .text section. It's
-> 
-> Do you mind compiling a module and using readelf or other tools to show
-> which section the symbol cleanup_module() is? Putting that information
-> in the changelog would be nice, and it also shows the actual effect of
-> your patch. Thanks!
+Leave tests disabled until they are separated into their own crate and
+they stop causing breakage.
 
-Of course!
+Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+Reviewed-by: Fiona Behrens <me@kloenk.dev>
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+ rust/kernel/init.rs | 40 ++++++++++++++++++++--------------------
+ rust/macros/lib.rs  |  8 ++++----
+ 2 files changed, 24 insertions(+), 24 deletions(-)
 
-o layout of C module example
+diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+index 7fd1ea8265a5..aa8df0595585 100644
+--- a/rust/kernel/init.rs
++++ b/rust/kernel/init.rs
+@@ -34,7 +34,7 @@
+ //! [`pin_init!`]. The syntax is almost the same as normal `struct` initia=
+lizers. The difference is
+ //! that you need to write `<-` instead of `:` for fields that you want to=
+ initialize in-place.
+ //!
+-//! ```rust
++//! ```rust,ignore
+ //! # #![expect(clippy::disallowed_names)]
+ //! use kernel::sync::{new_mutex, Mutex};
+ //! # use core::pin::Pin;
+@@ -54,7 +54,7 @@
+ //! `foo` now is of the type [`impl PinInit<Foo>`]. We can now use any sma=
+rt pointer that we like
+ //! (or just the stack) to actually initialize a `Foo`:
+ //!
+-//! ```rust
++//! ```rust,ignore
+ //! # #![expect(clippy::disallowed_names)]
+ //! # use kernel::sync::{new_mutex, Mutex};
+ //! # use core::pin::Pin;
+@@ -78,7 +78,7 @@
+ //! Many types from the kernel supply a function/macro that returns an ini=
+tializer, because the
+ //! above method only works for types where you can access the fields.
+ //!
+-//! ```rust
++//! ```rust,ignore
+ //! # use kernel::sync::{new_mutex, Arc, Mutex};
+ //! let mtx: Result<Arc<Mutex<usize>>> =3D
+ //!     Arc::pin_init(new_mutex!(42, "example::mtx"), GFP_KERNEL);
+@@ -86,7 +86,7 @@
+ //!
+ //! To declare an init macro/function you just return an [`impl PinInit<T,=
+ E>`]:
+ //!
+-//! ```rust
++//! ```rust,ignore
+ //! # use kernel::{sync::Mutex, new_mutex, init::PinInit, try_pin_init};
+ //! #[pin_data]
+ //! struct DriverData {
+@@ -119,7 +119,7 @@
+ //! - you may assume that `slot` will stay pinned even after the closure r=
+eturns until `drop` of
+ //!   `slot` gets called.
+ //!
+-//! ```rust
++//! ```rust,ignore
+ //! # #![expect(unreachable_pub, clippy::disallowed_names)]
+ //! use kernel::{init, types::Opaque};
+ //! use core::{ptr::addr_of_mut, marker::PhantomPinned, pin::Pin};
+@@ -236,7 +236,7 @@
+ ///
+ /// # Examples
+ ///
+-/// ```rust
++/// ```rust,ignore
+ /// # #![expect(clippy::disallowed_names)]
+ /// # use kernel::{init, macros::pin_data, pin_init, stack_pin_init, init:=
+:*, sync::Mutex, new_mutex};
+ /// # use core::pin::Pin;
+@@ -382,7 +382,7 @@ macro_rules! stack_try_pin_init {
+ ///
+ /// The syntax is almost identical to that of a normal `struct` initialize=
+r:
+ ///
+-/// ```rust
++/// ```rust,ignore
+ /// # use kernel::{init, pin_init, macros::pin_data, init::*};
+ /// # use core::pin::Pin;
+ /// #[pin_data]
+@@ -426,7 +426,7 @@ macro_rules! stack_try_pin_init {
+ ///
+ /// To create an initializer function, simply declare it like this:
+ ///
+-/// ```rust
++/// ```rust,ignore
+ /// # use kernel::{init, pin_init, init::*};
+ /// # use core::pin::Pin;
+ /// # #[pin_data]
+@@ -452,7 +452,7 @@ macro_rules! stack_try_pin_init {
+ ///
+ /// Users of `Foo` can now create it like this:
+ ///
+-/// ```rust
++/// ```rust,ignore
+ /// # #![expect(clippy::disallowed_names)]
+ /// # use kernel::{init, pin_init, macros::pin_data, init::*};
+ /// # use core::pin::Pin;
+@@ -480,7 +480,7 @@ macro_rules! stack_try_pin_init {
+ ///
+ /// They can also easily embed it into their own `struct`s:
+ ///
+-/// ```rust
++/// ```rust,ignore
+ /// # use kernel::{init, pin_init, macros::pin_data, init::*};
+ /// # use core::pin::Pin;
+ /// # #[pin_data]
+@@ -539,7 +539,7 @@ macro_rules! stack_try_pin_init {
+ ///
+ /// For instance:
+ ///
+-/// ```rust
++/// ```rust,ignore
+ /// # use kernel::{macros::{Zeroable, pin_data}, pin_init};
+ /// # use core::{ptr::addr_of_mut, marker::PhantomPinned};
+ /// #[pin_data]
+@@ -602,7 +602,7 @@ macro_rules! pin_init {
+ ///
+ /// # Examples
+ ///
+-/// ```rust
++/// ```rust,ignore
+ /// use kernel::{init::{self, PinInit}, error::Error};
+ /// #[pin_data]
+ /// struct BigBuf {
+@@ -705,7 +705,7 @@ macro_rules! init {
+ ///
+ /// # Examples
+ ///
+-/// ```rust
++/// ```rust,ignore
+ /// use kernel::{alloc::KBox, init::{PinInit, zeroed}, error::Error};
+ /// struct BigBuf {
+ ///     big: KBox<[u8; 1024 * 1024 * 1024]>,
+@@ -761,7 +761,7 @@ macro_rules! try_init {
+ /// # Example
+ ///
+ /// This will succeed:
+-/// ```
++/// ```ignore
+ /// use kernel::assert_pinned;
+ /// #[pin_data]
+ /// struct MyStruct {
+@@ -787,7 +787,7 @@ macro_rules! try_init {
+ /// Some uses of the macro may trigger the `can't use generic parameters f=
+rom outer item` error. To
+ /// work around this, you may pass the `inline` parameter to the macro. Th=
+e `inline` parameter can
+ /// only be used when the macro is invoked from a function body.
+-/// ```
++/// ```ignore
+ /// use kernel::assert_pinned;
+ /// #[pin_data]
+ /// struct Foo<T> {
+@@ -865,7 +865,7 @@ pub unsafe trait PinInit<T: ?Sized, E =3D Infallible>: =
+Sized {
+     ///
+     /// # Examples
+     ///
+-    /// ```rust
++    /// ```rust,ignore
+     /// # #![expect(clippy::disallowed_names)]
+     /// use kernel::{types::Opaque, init::pin_init_from_closure};
+     /// #[repr(C)]
+@@ -977,7 +977,7 @@ pub unsafe trait Init<T: ?Sized, E =3D Infallible>: Pin=
+Init<T, E> {
+     ///
+     /// # Examples
+     ///
+-    /// ```rust
++    /// ```rust,ignore
+     /// # #![expect(clippy::disallowed_names)]
+     /// use kernel::{types::Opaque, init::{self, init_from_closure}};
+     /// struct Foo {
+@@ -1089,7 +1089,7 @@ pub fn uninit<T, E>() -> impl Init<MaybeUninit<T>, E>=
+ {
+ ///
+ /// # Examples
+ ///
+-/// ```rust
++/// ```rust,ignore
+ /// use kernel::{alloc::KBox, error::Error, init::init_array_from_fn};
+ /// let array: KBox<[usize; 1_000]> =3D
+ ///     KBox::init::<Error>(init_array_from_fn(|i| i), GFP_KERNEL)?;
+@@ -1134,7 +1134,7 @@ pub fn init_array_from_fn<I, const N: usize, T, E>(
+ ///
+ /// # Examples
+ ///
+-/// ```rust
++/// ```rust,ignore
+ /// use kernel::{sync::{Arc, Mutex}, init::pin_init_array_from_fn, new_mut=
+ex};
+ /// let array: Arc<[Mutex<usize>; 1_000]> =3D
+ ///     Arc::pin_init(pin_init_array_from_fn(|i| new_mutex!(i)), GFP_KERNE=
+L)?;
+@@ -1323,7 +1323,7 @@ fn write_pin_init<E>(mut self, init: impl PinInit<T, =
+E>) -> Result<Pin<Self::Ini
+ ///
+ /// Use [`pinned_drop`] to implement this trait safely:
+ ///
+-/// ```rust
++/// ```rust,ignore
+ /// # use kernel::sync::Mutex;
+ /// use kernel::macros::pinned_drop;
+ /// use core::pin::Pin;
+diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+index d61bc6a56425..60a0226bad42 100644
+--- a/rust/macros/lib.rs
++++ b/rust/macros/lib.rs
+@@ -248,7 +248,7 @@ pub fn concat_idents(ts: TokenStream) -> TokenStream {
+ ///
+ /// # Examples
+ ///
+-/// ```
++/// ```ignore
+ /// # #![feature(lint_reasons)]
+ /// # use kernel::prelude::*;
+ /// # use std::{sync::Mutex, process::Command};
+@@ -261,7 +261,7 @@ pub fn concat_idents(ts: TokenStream) -> TokenStream {
+ /// }
+ /// ```
+ ///
+-/// ```
++/// ```ignore
+ /// # #![feature(lint_reasons)]
+ /// # use kernel::prelude::*;
+ /// # use std::{sync::Mutex, process::Command};
+@@ -302,7 +302,7 @@ pub fn pin_data(inner: TokenStream, item: TokenStream) =
+-> TokenStream {
+ ///
+ /// # Examples
+ ///
+-/// ```
++/// ```ignore
+ /// # #![feature(lint_reasons)]
+ /// # use kernel::prelude::*;
+ /// # use macros::{pin_data, pinned_drop};
+@@ -478,7 +478,7 @@ pub fn paste(input: TokenStream) -> TokenStream {
+ ///
+ /// # Examples
+ ///
+-/// ```
++/// ```ignore
+ /// use kernel::macros::Zeroable;
+ ///
+ /// #[derive(Zeroable)]
+--=20
+2.47.2
 
-$ objdump -t ~/build/x86/drivers/block/loop.o|grep clean
-0000000000000000 l     O .exit.data	0000000000000008 __UNIQUE_ID___addressable_cleanup_module412
-0000000000000000 g     F .exit.text	000000000000009c cleanup_module
 
-o layout of Rust module example without this patch
-
-$ objdump -t ~/build/x86/samples/rust/rust_minimal.o|grep clean
-00000000000002b0 g     F .text	00000000000000c6 cleanup_module
-0000000000000000 g     O .exit.data	0000000000000008 _RNvNtNtCskuib3KEDsuT_12rust_minimal13___module_init13___module_init40___UNIQUE_ID___addressable_cleanup_module
-
-o layout of Rust module example with this patch
-
-$ objdump -t ~/build/x86/samples/rust/rust_minimal.o|grep clean
-0000000000000000 g     F .exit.text	00000000000000c6 cleanup_module
-0000000000000000 g     O .exit.data	0000000000000008 _RNvNtNtCskuib3KEDsuT_12rust_minimal13___module_init13___module_init40___UNIQUE_ID___addressable_cleanup_module
