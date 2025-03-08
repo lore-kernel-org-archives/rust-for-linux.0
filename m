@@ -1,114 +1,165 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 552877482;
-	Sat,  8 Mar 2025 00:40:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741394434; cv=none; b=S6dsBMOQy9XarXKMhuRWy8weYpNZkxTMSXLThI4vtWoI0CDd/dVn9/UXMtgiTe+Xg0PaZilCtVTBCIpJ3xmgtNhareTiYwqm23AniNyumJY+nHQCMHmyNYnL3n/LLkoFzALNR/gmUl5QruUVjniwiaTt4Z+UAEg0D0tQooP9mJE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741394434; c=relaxed/simple;
-	bh=kt+JCm+8BOZiygO6UteY2W7IJhPNVbKC6fyeCRhPqy0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SRQWtfOGMMSSMy24J8E8QIntBxVf+3bg+O9TZaPOFXyuV0QIT4kg7VLgjnT3BAvLZa+Y+GrQypbnXPS0ltn4l7h0ZrV5TUXa8hbT/Qz49QDh8ZzTg0bUpl2JKm5rjhCUy7ACoLBNaKzLL5ooNlc1Qm6UdRT/Lvnk8Euubg7J/PQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mJL9f+DF; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24531EEE6;
+	Sat,  8 Mar 2025 02:04:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741399443; cv=pass; b=u7emeP+OgUT7J+qKf6ApVGeKKCQX52IyMY/Q3vNPSZzTtaseEqzRe3ojlXOvl7yKZGgV9gpGwvBR9JZgAr7FXtM6Rwi3n4f1prBpHUV/rqYWQ1HJwUnWY609qJYTYRsg4EL+mCZbQoLOKD32pZr4O1M2u6zOKQYRMz/t0/YeKOA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741399443; c=relaxed/simple;
+	bh=fzqf8d40kMRV0B/31d4SpvqNTOm3LnawNTjCZEW2sLU=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=W0JfCCdz/INlDW6nDDPCFPHXGdwgt0XJKa/KNqzO26OBhyY5MW/Isc5Qtn+3Xj2o6HQRsigxLjyrFOVd+8mNPjxZpkm6zu7RK4UILwY6mmNiq/H8jhYtvWR2B00j+sAI2MbbX36oRbq1Y1sgseKZcT6EerSP+6WwaIVtcFDA+44=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=bbOw0k9R; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mJL9f+DF"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2243803b776so19994635ad.0;
-        Fri, 07 Mar 2025 16:40:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741394432; x=1741999232; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZRQ6v/k8DpVkHkERpfwwUWy2zkLZRvPHoToTH5G6TDE=;
-        b=mJL9f+DFu4LZttNi/HqVTxdWtrkHpPBTPyc5JwpYx7WcwMajyiht5H5uwmgKy4g+pI
-         trET8LlzVkwp09TqtrlxRxA+Avd89v+hqsfPRA5IJMVkodejpjHMG61EeUZZqc9BJ0Z8
-         fvzMWBg+Pt6cdqJcb++Mc4obMlniCg9ScN+QUzjJpXPcEkGptqDaPVX3lcXE6Sb/E8LT
-         A13mc7Az6KFvQaenwlPUHFADzmIRxQJDRYc+OLiRn6H23bMJaugPUcCZNgZU95z1+2oz
-         xE4kzy+VlzYAj5bgQSQScZK5/hKrskvylioTXH/KZCx3nk6+sQFPt0WbKrk7ET0kTNpB
-         Mjlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741394432; x=1741999232;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZRQ6v/k8DpVkHkERpfwwUWy2zkLZRvPHoToTH5G6TDE=;
-        b=N49bYCDwQd/RJhX+s4Xsn5+YozuZPD1ymxMaj0eNqKlNcVx20Ubu4Ddz2vaIjw7VY9
-         PZYMlYuu6WDAkImFBVPnOtTb7AQF9/NkYgjjppnWejGSVdFNnEpOqAdcyPsa9RlvtzTM
-         xTMmwMhJbBR6Uc5ihkExyfvIbOmt8IwRvXNHUT28e+Bx0mJp1OR1ICcj55j2EP0dZD8+
-         caXuqyp39mpdd0nHMcEr25kWYrMaBZntJ8sFRUW+P9MrSjetJWm5ap+T8CxF8bSnOdp1
-         ho0WURgArZns3B7SE4cooNyiuJtYEmFfcoUVqmcg3pG4SOoGR120mvVoX4/wT5AWQeCj
-         1OfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWFeXKMuGO24eL8/7SaixGl6jQpoYZTlcz1lLzWcRyN1c7loFjHCKE1bHcJQtfDuwA2PerNALjjDD161Hs=@vger.kernel.org, AJvYcCWFeh4skjaPmm+Bs2FKvClPTAT6nc2Q/54/POc8D+cEAksr0t/GAqa31aeB5Z5lVJjjYCVd7mZYmBwOV7WaWNg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyOrn7UnHVJwdbR6pCGMSilnz09CAsjJ/FjcJVVW2nWwblavRLq
-	bjJ/ISxiHXfyztUCBDHhxX/E7QyByRt+qdqCF0xt8RKcDL/adv6r
-X-Gm-Gg: ASbGncvjZR/ega/3Nk3myTC5FRyvqC3hbwI85ro0TE2r4KZ4pKE9y7iGjyfUkp3wV2c
-	dAHWwF4XLhisBmqikPwjwTaU8uNhAQ68D7xw6REttRN7XPujOXbmHgk3K9S3kISk2Ofr9UR6J1e
-	znEb5jq/B2AhfxtWdAyOl/KO/LG0QFn7tdpMNzpv2m0KbdVmk4NrSf4NggZTdIxIDZIyP9RR8W0
-	V1UwdUvqkzBAY98ylAzUK6CWT5NvWR6Lecy9mRjXhfW/GUr1wtrqHkkfQz+97zMQikedxZTYoB1
-	VLsqhXw8yld0uPH6KXVjHfnWfBkiUjcJIfk23Dka3BGrRUV30mZK
-X-Google-Smtp-Source: AGHT+IFgmSNYV5rsySuMDMWpg9hgb/exgHmxSmtu68SfGY+rRFmaSLERbV5REM8iPDlVHcG31yn6RQ==
-X-Received: by 2002:a17:903:192:b0:21f:35fd:1b6c with SMTP id d9443c01a7336-22428ad1c13mr79381015ad.45.1741394432390;
-        Fri, 07 Mar 2025 16:40:32 -0800 (PST)
-Received: from linuxsimoes.. ([187.120.156.44])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-736ade82020sm2121120b3a.17.2025.03.07.16.40.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Mar 2025 16:40:32 -0800 (PST)
-From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-To: miguel.ojeda.sandonis@gmail.com
-Cc: a.hindborg@kernel.org,
-	alex.gaynor@gmail.com,
-	aliceryhl@google.com,
-	apw@canonical.com,
-	arnd@arndb.de,
-	aswinunni01@gmail.com,
-	axboe@kernel.dk,
-	benno.lossin@proton.me,
-	bhelgaas@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	charmitro@posteo.net,
-	dakr@kernel.org,
-	dwaipayanray1@gmail.com,
-	ethan.twardy@gmail.com,
-	fujita.tomonori@gmail.com,
-	gary@garyguo.net,
-	gregkh@linuxfoundation.org,
-	joe@perches.com,
-	linux-kernel@vger.kernel.org,
-	lukas.bulwahn@gmail.com,
-	ojeda@kernel.org,
-	pbonzini@redhat.com,
-	rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu,
-	trintaeoitogc@gmail.com,
-	walmeida@microsoft.com
-Subject: Re: [PATCH V7 1/2] rust: module: change author to an array
-Date: Fri,  7 Mar 2025 21:40:19 -0300
-Message-Id: <20250308004019.655958-1-trintaeoitogc@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <CANiq72mWBrHpv9XYcBbVsJkhH9SzM9N4fcL2SqoNQ9X-4GiZbw@mail.gmail.com>
-References: <CANiq72mWBrHpv9XYcBbVsJkhH9SzM9N4fcL2SqoNQ9X-4GiZbw@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="bbOw0k9R"
+ARC-Seal: i=1; a=rsa-sha256; t=1741399413; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=giiBA+A+LzQ4rixA9S/EDVikE44XlsdZtBZETAkxthSRSaqTa8veggBhjaEumNaNhqVSumFIYu9krh9v0yelcOLDliFXWanjOUpsLkj02ppCrQQLN7qGB1X9DsBPEGdQRhdOGMbZaAPFpOKneCz6yfiLCpN2eU9PXjVe41TW2Bo=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1741399413; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=U5tvOevFekjKfogKK5n5IOeLUWZYMhAuBRM0LtrpGac=; 
+	b=ikDTmD2jYCohWzz7++a81be47ZYr0U+3Z/QlfWIw56F7/7JjVIy3p2SJDRGai+S/oVNrVgXrlSX9GCY/PeI400AdWjLSm6VCVgXVsLOUf3ZaIL56+d2U1CBIyTjIdSORcioYhAlJ+8phPXFM/ssaBWGsetXQYVK6hz1gCdW2TkU=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1741399413;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=U5tvOevFekjKfogKK5n5IOeLUWZYMhAuBRM0LtrpGac=;
+	b=bbOw0k9RLgAZYFzlJYOqf0M3lDnvpHCUPNYKYs2kXme6TAPJ1lrWz+XH4/4iIqgv
+	O1IrlLlOH23rKttiTj9fLlgLMs9PsOiXAZ9UFnaJ0YJbAAvYvUWalfZzsM0i2mOC0RI
+	h99D8cxjkT7lcverGcVT0SMhojJakI0V20f+LEDY=
+Received: by mx.zohomail.com with SMTPS id 1741399412188433.2847528501791;
+	Fri, 7 Mar 2025 18:03:32 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.400.131.1.6\))
+Subject: Re: [PATCH V3 2/2] rust: Add initial clk abstractions
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20250304085351.inrvjgixvxla4yn3@vireshk-i7>
+Date: Fri, 7 Mar 2025 23:03:15 -0300
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Michael Turquette <mturquette@baylibre.com>,
+ Stephen Boyd <sboyd@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Russell King <linux@armlinux.org.uk>,
+ linux-clk@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ Vincent Guittot <vincent.guittot@linaro.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <DC3B4FA6-5938-49CE-A75C-D354562593B3@collabora.com>
+References: <cover.1740995194.git.viresh.kumar@linaro.org>
+ <023e3061cc164087b9079a9f6cb7e9fbf286794e.1740995194.git.viresh.kumar@linaro.org>
+ <CANiq72kdWzFOZ39EoFNxEAbk4KYgzLi1OAEc1zn8BM07VpXy3g@mail.gmail.com>
+ <20250304085351.inrvjgixvxla4yn3@vireshk-i7>
+To: Viresh Kumar <viresh.kumar@linaro.org>
+X-Mailer: Apple Mail (2.3826.400.131.1.6)
+X-ZohoMailClient: External
 
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
-> In general, if it is the last version, you don't need to pick up tags
-> -- maintainers will do that for you.
-> 
-> i.e. in this case, it would have been fine telling Alice that you
-> didn't change anything (if that is the case -- is it?)
-Yes, this is the case, didn't change anything in this V8 in the rust side
-Well, now I already add the reviewers tag, I think that is not a problmem here,
-right?
+Hi Viresh,
 
-Thanks,
-Guilherme
+> On 4 Mar 2025, at 05:53, Viresh Kumar <viresh.kumar@linaro.org> wrote:
+>=20
+> On 03-03-25, 11:16, Miguel Ojeda wrote:
+>> On Mon, Mar 3, 2025 at 11:00=E2=80=AFAM Viresh Kumar =
+<viresh.kumar@linaro.org> wrote:
+>>>=20
+>>> +/// Frequency unit.
+>>> +pub type Hertz =3D crate::ffi::c_ulong;
+>>=20
+>> Do we want this to be an alias or would it make sense to take the
+>> chance to make this a newtype?
+>=20
+> I have tried some improvements based on your (and Alice's comments), =
+please see
+> if it looks any better now.
+>=20
+> --=20
+> viresh
+>=20
+> -------------------------8<-------------------------
+>=20
+> diff --git a/rust/kernel/clk.rs b/rust/kernel/clk.rs
+> new file mode 100644
+> index 000000000000..fc3cb0f5f332
+> --- /dev/null
+> +++ b/rust/kernel/clk.rs
+> @@ -0,0 +1,232 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Clock abstractions.
+> +//!
+> +//! C header: [`include/linux/clk.h`](srctree/include/linux/clk.h)
+> +//!
+> +//! Reference: <https://docs.kernel.org/driver-api/clk.html>
+> +
+> +use crate::{
+> +    bindings,
+> +    device::Device,
+> +    error::{from_err_ptr, to_result, Result},
+> +    ffi::c_ulong,
+> +    prelude::*,
+> +};
+> +
+> +use core::{ops::Deref, ptr};
+> +
+> +/// Frequency unit.
+> +#[derive(Copy, Clone, PartialEq, Eq, Debug)]
+> +pub struct Hertz(c_ulong);
+
+Maybe make self.0 pub too?
+
+> +
+> +impl Hertz {
+> +    /// Creates a new `Hertz` value.
+> +    pub fn new(freq: c_ulong) -> Self {
+> +        Hertz(freq)
+
+I don=E2=80=99t think we need a `new` function.  IMHO, the only thing =
+that matters is
+that the name Hertz shows up in the calling code, i.e.:
+
+```
+fn foo() {
+    let clk =3D =E2=80=A6;
+    let some_val =3D =E2=80=A6;
+    clk.set_rate(Hertz(some_val)); // Ok: crystal clear this is Hertz
+}
+```
+
+A  impl From<Hertz> for c_ulong would also be helpful, so that we =
+don=E2=80=99t have to
+manually define all the arithmetic operations on this.
+
+```
+fn foo() {
+    let clk =3D =E2=80=A6;
+    let double =3D u32::from(clk.rate()) * 2;
+    clk.set_rate(Hertz(double)); // Ok: crystal clear this is Hertz
+}
+```
+
+I need more time to look at the rest of the patch, so feel free to carry =
+on with the
+feedback from others. Sorry for the delay!
+
+=E2=80=94 Daniel=
