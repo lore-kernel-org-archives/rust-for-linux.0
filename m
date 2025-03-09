@@ -1,94 +1,142 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA057218AD6;
-	Sun,  9 Mar 2025 19:51:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A76218C011;
+	Sun,  9 Mar 2025 20:47:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741549866; cv=none; b=X1LLTpMePssyzYYIptl1xfucp8JpZHRUf7/g9rTIicJUt6MF2Lw/V98njU2GI5ve5cCkzS/Uk2jvKdl9864HqsibFaEd79PGePlTS+1kcoO3AMm/kr5y0z4RNzowjlOEPRq6Ilsn9vBlbfVvS9gOHGXKuIBSegmXaMV0NoTYzLw=
+	t=1741553269; cv=none; b=mIIfZ7o8tUB6r7l1A0Sw+q2c/Y8hR6uss3scijrTbRKIqgnruCAMm0n6hA88eFhCt4Fgb/JB5Nq1zHs+hLjp3MD7I8Aa09+jNEStEbC2sq/wf908GBCOrpX2TEOnvy5wj1hCoybTJ6L8XstqlFf9r24N8w//QvfEu/yksrCSK8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741549866; c=relaxed/simple;
-	bh=dzyVokZIpDqiotKHrpU8Dw2U/v6X92xZQXOd24xBzNU=;
+	s=arc-20240116; t=1741553269; c=relaxed/simple;
+	bh=IIdeN1kpFUETW+hkKD26O5zuLSVodU5nvIQlOtSKnJM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CRxETNpOKuwPdTN0lcUqiWF2g2K2Zu43GLILEy9rGs7ZCMbInJtzKp0wPHRWdzEijZi3lyTKEi4CWKXmdSWh+fQDGNDrpZSsHYozi9DUxwx9VOGN3GeDtg7HclH3y/k/cdiqB83kArf5zhn5CVO6ZKU6IiH1nJYum8sG2Hv0Eqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TGxoYFV1; arc=none smtp.client-ip=209.85.216.43
+	 To:Cc:Content-Type; b=RttEumjKWjOgC+29E+fOrWFlO+/6jatfDxICSwE9By1I439ti+QzgarmzL/U/TtAtOA/SeNYcNILq1nDb+IpBvEeCbPuLpbwuYgJH6fiXFgLDD3pt21eNgKIBjDwu7U4jw0ZrDES9M4RP2fp6EpbuAkP3e4HWSr9SaczfiWyrTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cylriMDo; arc=none smtp.client-ip=209.85.216.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TGxoYFV1"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2ff6ce72844so896750a91.2;
-        Sun, 09 Mar 2025 12:51:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cylriMDo"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2ff7cf59a8fso757308a91.3;
+        Sun, 09 Mar 2025 13:47:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741549864; x=1742154664; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1741553267; x=1742158067; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dzyVokZIpDqiotKHrpU8Dw2U/v6X92xZQXOd24xBzNU=;
-        b=TGxoYFV16etpuUChScwsIxAON3KPVfuWBfSTbJ572dSPYDRKMWVvINqoiaN+GW9Dlh
-         66Fc4uNHDFMetGvOLwC30gstV+3qYSU1UW9AYzrnsXkqFHpxyIou+ecdQp34n+pnTHyi
-         mU1R6MzsUgA417cduxEqDhW4xw4/CZNG3sAw7ykp113noD+MVM6wDvmCUKGAKK/k1Nfg
-         iGvFYfmHWsRUPpgtnoDrDCET9BQhdymcQjy6nXOPv8a5j/FGz/gQHfWdXVaR5GfgBS7p
-         FwYmEMoQQg+nUnFVpo9Uow3xItgeMDghmxcD58ZgD4JuzO4LWBXovpaQHL62BETVHfAG
-         tgeg==
+        bh=K44Z7DuR2sJPBt/x+nc+HSqeieqPDVCAVsmBItqywyE=;
+        b=cylriMDo4X2BI4ndZmdZ+1xjK/bdwxDo71O/BKCLkbbbZC++nakGSR7IP+UyL4OYif
+         mWMg2Ta0Pg38xUiRTfPPoV/6Bamxq9HIek4LPpDcQNhl3Ao0nrgYLg0sUrUZ0RhmEwGX
+         sbl6X+ese3QMBgKgjZYPGZGLje664f22ItXNV6Z/KUcMlFrbnHW7U6v2XV/XKjsHXDPe
+         7GDe1jiBmdnbFMMZ7aRte1UQbVBelsUVy3pNnz+QDwtxLo/x8E59gXvh7sIc+uoFqoHU
+         v1nSs2v2M2mSbOJ8EJnOaU1SbKZAD404cdMDIFILUMnb/n2NzrUJWWRZrNjKaamc66Rz
+         +oWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741549864; x=1742154664;
+        d=1e100.net; s=20230601; t=1741553267; x=1742158067;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=dzyVokZIpDqiotKHrpU8Dw2U/v6X92xZQXOd24xBzNU=;
-        b=cj+Y1GIikMHs/xL+L/VReaGRfOQDqfmhulZtRXr2Xkwjb/AKx1by6x6mX5/31J9Sfz
-         h7yRJOZv2DXte8RAi1Vvr2Y36k8ChThghRCcASpYg0QLbnGitbSnIhsNUIMouhP9Wtn6
-         HZ2hjSfc645X7zUbZL8IiThdwgyqJq/EJolS2Ude6nI5H9mte1htX8Jdilj9MMHPSjuD
-         VctreyyI9xre/aypJRmy/Hu6vO+jO0xqTcqhkrOK3LsOGFtNDQCCOtDengczdI+v+OLa
-         ZLfaOXbwvLDZxVUPHI+Qd3/zSayKHuneXGYCH9iothl6BhCBteitiuYVt9sLHa9MGEQ5
-         7pyw==
-X-Forwarded-Encrypted: i=1; AJvYcCVVp6zN4M5AM2qXDyfOUnqpVEBFtUzfYJ9+Ey57JB+IcgMzHIcZsiHBX+acJiBiKw30UP5Aw5Ox5lrlP8/Or/s=@vger.kernel.org, AJvYcCX2o1f2aWHHHnp1l9s+R+wQ/VCKELNMYqUW3aAhWsAlQFficBuC38VqUceLX+zMjLoCr4FvdprsoRcEso0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+7Z7HjjUrPLozIPqfpF8ypfMQR/NFfIUUZb+zAJSAUDqNPXYL
-	8D3xOjpNvXwc3BGrSGjLh/MqvzZ+AFQG1G3ZBA5XW1CRjLwQYa4jm0KZ/VqWfrXUyG6p4ESap4K
-	sYxhwDEs8A15mzpRiJJZMJsmvrR8=
-X-Gm-Gg: ASbGncvqQhFFm7FO5mNFoz4Agtnwu7SuODBFC62+gNwG1Z/JJ6jhmcLv6gvO//2Q7fy
-	3XP+lAYTMurySTaCaifnpcHWdHNDKaeRYYWpAPS3y//ZFwrsd5wpdgvKurTb3WJ/kSzCZFpbuT/
-	YV4SSgeKLf5OH89m607rZnKKdYbtKXivPkqT/M
-X-Google-Smtp-Source: AGHT+IHGCe9s2WblTrFMgpH8Di+4cRVJg4iC6xm/DMHz20ImOgtpVp9OzKQEgou6f82JbNw9B8+VEacVtEr6D7BHyc4=
-X-Received: by 2002:a17:90b:1b0c:b0:2ff:7970:d2b6 with SMTP id
- 98e67ed59e1d1-300a5788588mr4066553a91.5.1741549864193; Sun, 09 Mar 2025
- 12:51:04 -0700 (PDT)
+        bh=K44Z7DuR2sJPBt/x+nc+HSqeieqPDVCAVsmBItqywyE=;
+        b=fXpicDkMD50zoctY1jBtlnREqvDz2sjh7eNEpeupy6gN6MXAnp/1+MU/NefWCt6kRL
+         JbpiuUy4/+SsPNjfmhfCn+ZGQLOLSbjl554vCTb3dEwAo4V6GB6shgReMus81+NNmaef
+         fyUUEK1hFRBVXHsea12FBoywnako+JnhURmGdQ7AFOKYgxWBrELAwWB5P9c3EfsS8F2R
+         ss3Cq0jtgR1jgjuOPWdKWCfiN8BLbNPidUYaQzEiIlEihklUkQgwczQSqQ7fPmTki6fc
+         Clx/axgli/rOs4E9fdJRpGVbY52P5+dyYSseA6DaWd3KikaiGeIL9FuzrTBje7BTM1m+
+         GokA==
+X-Forwarded-Encrypted: i=1; AJvYcCURmS7pr3RND8sZKSxLB3fKk42ZgR30Tp4KMNGGZO7z63XNvIUH7DHZIyEyDcgUZmAfBJPNH7ix7fo2eWY=@vger.kernel.org, AJvYcCWjfcEBFLi59PwYCyQjRC/1ZTQw/wDzmO5GAdASxvm5aAspUlN1hgCHIk/WXxo/SRnpcj+PHBEX98eMBQUmv2s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhkiqKTls3h2mQz+YuUXuMAbIC4jrl3aRgDiXCFyfiYNh6SVW3
+	fBS3POEQqJuxX7ZsHSBi1COM13O+c6/2s5qAIIG2vFKiLDgMyCurZSXMPw+96E2ja19HojnYyzc
+	MdpeQrjIApTEppY+AN+fDORHOFIM=
+X-Gm-Gg: ASbGnct1ecKa5UtG1MG9Sm1UYt976T5/lIe6Decdg96Gc+jbpPkSoEP/C8hUYIgExSS
+	wYuWB5AstU6VPOydYjDG5r9qEQw1ZSh/2LTEEbX9Om4CC74V0LgHsGAHe78b1lmYA32JaLgkHGB
+	A1XoSVqrRQ/ggTW9UklgEUxE3d7g==
+X-Google-Smtp-Source: AGHT+IE9m6d05Vs3kBPf9WYfP6L9f9fGtqqjKeiTF3mJO+jV/KfWSyEpQ19ctMp3X/RZ+Dum29WiMpFS6K4cpfS2gjk=
+X-Received: by 2002:a17:90b:4c42:b0:2ff:78dd:2875 with SMTP id
+ 98e67ed59e1d1-300a57877a8mr3929049a91.5.1741553267456; Sun, 09 Mar 2025
+ 13:47:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250308164258.811040-1-ojeda@kernel.org>
-In-Reply-To: <20250308164258.811040-1-ojeda@kernel.org>
+References: <20250303-export-macro-v3-0-41fbad85a27f@google.com>
+In-Reply-To: <20250303-export-macro-v3-0-41fbad85a27f@google.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 9 Mar 2025 20:50:51 +0100
-X-Gm-Features: AQ5f1Jp1Zj_Zln5b8Z8a8RBt1caexSZN8jo1ccd2tN0YFf2udtob6FXxDOKD408
-Message-ID: <CANiq72me1J36RdY8_hYhOcMCF9qJH31HnE1Wwboqdz5UbNHN9g@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: rust: add tree field for RUST [ALLOC]
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+Date: Sun, 9 Mar 2025 21:47:35 +0100
+X-Gm-Features: AQ5f1Jr2HZqZdaFpyMuYK5NFXHysFVDHD5Dul0EsJZjAk3dtFTlU_uTpx7nkwUI
+Message-ID: <CANiq72kY+h9jsFbVBq2_Z4YDUyPCSWuFX0Q5hUyfxsraNV-C4Q@mail.gmail.com>
+Subject: Re: [PATCH v3 0/5] Check Rust signatures at compile time
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Petr Mladek <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+	Trevor Gross <tmgross@umich.edu>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Tamir Duberstein <tamird@gmail.com>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, Simona Vetter <simona.vetter@ffwll.ch>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Mar 8, 2025 at 5:43=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wrot=
-e:
+On Mon, Mar 3, 2025 at 9:45=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> wr=
+ote:
 >
-> In the Rust subsystem we are starting to add new subentries which will
-> have their own trees. Those trees will be part of linux-next and will
-> be sent as PRs to be merged into rust-next.
+> Rust has two different tools for generating function declarations to
+> call across the FFI boundary:
 >
-> Thus do the same for the existing subentry we already have: RUST [ALLOC].
+> * bindgen. Generates Rust declarations from a C header.
+> * cbindgen. Generates C headers from Rust declarations.
 >
-> Cc: Danilo Krummrich <dakr@kernel.org>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> However, we only use bindgen in the kernel. This means that when C code
+> calls a Rust function by name, its signature must be duplicated in both
+> Rust code and a C header, and the signature needs to be kept in sync
+> manually.
+>
+> Introducing cbindgen as a mandatory dependency to build the kernel would
+> be a rather complex and large change, so we do not consider that at this
+> time. Instead, to eliminate this manual checking, introduce a new macro
+> that verifies at compile time that the two function declarations use the
+> same signature. The idea is to run the C declaration through bindgen,
+> and then have rustc verify that the function pointers have the same
+> type.
+>
+> The signature must still be written twice, but at least you can no
+> longer get it wrong. If the signatures don't match, you will get errors
+> that look like this:
+>
+> error[E0308]: `if` and `else` have incompatible types
+>   --> <linux>/rust/kernel/print.rs:22:22
+>    |
+> 21 | #[export]
+>    | --------- expected because of this
+> 22 | unsafe extern "C" fn rust_fmt_argument(
+>    |                      ^^^^^^^^^^^^^^^^^ expected `u8`, found `i8`
+>    |
+>    =3D note: expected fn item `unsafe extern "C" fn(*mut u8, *mut u8, *mu=
+t c_void) -> *mut u8 {bindings::rust_fmt_argument}`
+>               found fn item `unsafe extern "C" fn(*mut i8, *mut i8, *cons=
+t c_void) -> *mut i8 {print::rust_fmt_argument}`
+>
+> It is unfortunate that the error message starts out by saying "`if` and
+> `else` have incompatible types", but I believe the rest of the error
+> message is reasonably clear and not too confusing.
+>
+> The main commit of this series is "rust: add #[export] macro".
+>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
 Applied to `rust-next` -- thanks everyone!
+
+    [ Removed period as requested by Andy. - Miguel ]
+
+    [ Fixed `rustfmt`. Moved on top the unsafe requirement comment to follo=
+w
+      the usual style, and slightly reworded it for clarity. Formatted
+      bindings helper comment. - Miguel ]
 
 Cheers,
 Miguel
