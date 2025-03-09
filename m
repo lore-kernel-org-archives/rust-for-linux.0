@@ -1,97 +1,94 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CAF216E3A
-	for <rust-for-linux@vger.kernel.org>; Sun,  9 Mar 2025 19:49:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA057218AD6;
+	Sun,  9 Mar 2025 19:51:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741549772; cv=none; b=BOhA+KsqNqr5TTcrPyuev2ZXYPwTQAsscRwUNbPoS6M7E2Y8TtH+FgQM/pZSlf+1EvO/bBf/PapydZfqibaWJaae5cEku2ecF1Vf3xz2m1hAbOTAWTZaxIYhzbmOEoUEk3rqgf+16Xn5BMmf1KgIKVLOxcVf5HlUexLZmK8D/U0=
+	t=1741549866; cv=none; b=X1LLTpMePssyzYYIptl1xfucp8JpZHRUf7/g9rTIicJUt6MF2Lw/V98njU2GI5ve5cCkzS/Uk2jvKdl9864HqsibFaEd79PGePlTS+1kcoO3AMm/kr5y0z4RNzowjlOEPRq6Ilsn9vBlbfVvS9gOHGXKuIBSegmXaMV0NoTYzLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741549772; c=relaxed/simple;
-	bh=8GwCHxeJW0x16QY6dp4QQYxT7748v6idGfn8r31wpXo=;
+	s=arc-20240116; t=1741549866; c=relaxed/simple;
+	bh=dzyVokZIpDqiotKHrpU8Dw2U/v6X92xZQXOd24xBzNU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XKWZv2FpsSx5pzDKQ99Qi/Eg2wn/a14SXuk+pq3ratW25jId2rQNyVZexKMLuhL6TA00f3Kw8Y4yRSt8x/LiMVXHyr6r5aipkS/0hEfoIK9cbERB3n7ywhamCAq3UOJ5emV4gIR5Y0EEe/WGJy1Wsw0TG8Gm0NVQeUC+nqSuYL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VIkY+XTV; arc=none smtp.client-ip=209.85.216.54
+	 To:Cc:Content-Type; b=CRxETNpOKuwPdTN0lcUqiWF2g2K2Zu43GLILEy9rGs7ZCMbInJtzKp0wPHRWdzEijZi3lyTKEi4CWKXmdSWh+fQDGNDrpZSsHYozi9DUxwx9VOGN3GeDtg7HclH3y/k/cdiqB83kArf5zhn5CVO6ZKU6IiH1nJYum8sG2Hv0Eqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TGxoYFV1; arc=none smtp.client-ip=209.85.216.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VIkY+XTV"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2ff53b26af2so1032419a91.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 09 Mar 2025 12:49:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TGxoYFV1"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2ff6ce72844so896750a91.2;
+        Sun, 09 Mar 2025 12:51:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741549770; x=1742154570; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1741549864; x=1742154664; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YosOPeOWn15ZMllYXpF7xfRTRClXTvqkgVW/uGMYeJU=;
-        b=VIkY+XTV3YEH9/5KPc/6JaigRDFMcDe0k6wKRe1mIBFJvrLq/7x9Qvyez34odh0cOj
-         LVJjheaauiE1lLffsbwoSCwNwEFy4jGJ6FRqegY7Wg8yzgG0ryW5O1esXzukr3P1lXA2
-         3s6slG0yDxb3nAUZRlffiS+i9M6pgWErMedRBfqpbapolv4cxykiHioepaNq9fL0PK5k
-         fe0f/4pxQFUkwvYraoEa3QFAZPveSREf0HyHi0XnolgPu8CPQLXlUaY11/Vtn4pFLDYM
-         QFHJbJce14ZeJriHlVYp1HklKdy4QM9UZVUr+ctRIpyoi/vfAKknkJqMLl0b7av1ZxoV
-         B32A==
+        bh=dzyVokZIpDqiotKHrpU8Dw2U/v6X92xZQXOd24xBzNU=;
+        b=TGxoYFV16etpuUChScwsIxAON3KPVfuWBfSTbJ572dSPYDRKMWVvINqoiaN+GW9Dlh
+         66Fc4uNHDFMetGvOLwC30gstV+3qYSU1UW9AYzrnsXkqFHpxyIou+ecdQp34n+pnTHyi
+         mU1R6MzsUgA417cduxEqDhW4xw4/CZNG3sAw7ykp113noD+MVM6wDvmCUKGAKK/k1Nfg
+         iGvFYfmHWsRUPpgtnoDrDCET9BQhdymcQjy6nXOPv8a5j/FGz/gQHfWdXVaR5GfgBS7p
+         FwYmEMoQQg+nUnFVpo9Uow3xItgeMDghmxcD58ZgD4JuzO4LWBXovpaQHL62BETVHfAG
+         tgeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741549770; x=1742154570;
+        d=1e100.net; s=20230601; t=1741549864; x=1742154664;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YosOPeOWn15ZMllYXpF7xfRTRClXTvqkgVW/uGMYeJU=;
-        b=Y2e2ftQmM4WF4kwcCZ52287jctC73LtKsXXeG2V+Ys5YGVK0OSgvOFnvptaep5kaqF
-         uVHdpvi4zYCFner/ijexWA941DlGY1wKUGcabxOT8Hat5Vg1eKUGViY6jHfoG3tFhOOL
-         Pf4jRRQ0QvjZsxYf3IoGHrj3ZsGElQL+y3Ulo9/emnfzxf63FiXC4xD1evalUQlZf5s0
-         2taKetTEGUOAQt9Yv73R24hEk44C8k+ZsZec144pECx/6TBHaMj8cNDQ5MlghuQanKR/
-         nUxFSUGW665k4ZbGY5Vk8hpxo3DsM8La1bOhykBVSUTvNjoTPuEG+UMdT4fkUzi4iuOd
-         yMKg==
-X-Forwarded-Encrypted: i=1; AJvYcCXhYFQolhgFCfy+FCVDNH+OfEQOjUBImXAi/Som/25snNgx6wCs6W6RCE51BNNv+uy7IYDb5QO2MT/rE8Nh/g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHEvnKMCJ0++l7YgG0sUf3xjxx0VfSwBoarmt85Tp2aWYxsdna
-	lyWv0L/Oy+j8QOIk3ZyEWvPcwYW7wUEa/25dQFpLm88JldTe3h/9r//gN/2zsdh/qMVm6eeVi+U
-	TKRVdIGvELnVwGAJskyuTPShQpyY=
-X-Gm-Gg: ASbGncuRNWUZfb530U4FR3dnjIEg7Qpv4FwT7hZovWAXvTBPm/Q/okUHwoA4fEAJ/qw
-	CWWGBNE4QtDKxIDhnoUZJCMUxKsVPUXDE1cghNp4DBryi67++FSz2DlEtlImdkjb6seQR7RjVpD
-	MYnv+N2Z49U+D/LN/izmJnwvXi2A==
-X-Google-Smtp-Source: AGHT+IHyGa+G0ULRmiHvKjMUjL98a1mr1lb54BucaQI4aE1ALiMHJI/5OJtRDHeIAIdOr1lTDWOByJJgJuOsUfcwV7o=
-X-Received: by 2002:a17:903:40ce:b0:221:7854:7618 with SMTP id
- d9443c01a7336-22541efb708mr36018525ad.8.1741549770254; Sun, 09 Mar 2025
- 12:49:30 -0700 (PDT)
+        bh=dzyVokZIpDqiotKHrpU8Dw2U/v6X92xZQXOd24xBzNU=;
+        b=cj+Y1GIikMHs/xL+L/VReaGRfOQDqfmhulZtRXr2Xkwjb/AKx1by6x6mX5/31J9Sfz
+         h7yRJOZv2DXte8RAi1Vvr2Y36k8ChThghRCcASpYg0QLbnGitbSnIhsNUIMouhP9Wtn6
+         HZ2hjSfc645X7zUbZL8IiThdwgyqJq/EJolS2Ude6nI5H9mte1htX8Jdilj9MMHPSjuD
+         VctreyyI9xre/aypJRmy/Hu6vO+jO0xqTcqhkrOK3LsOGFtNDQCCOtDengczdI+v+OLa
+         ZLfaOXbwvLDZxVUPHI+Qd3/zSayKHuneXGYCH9iothl6BhCBteitiuYVt9sLHa9MGEQ5
+         7pyw==
+X-Forwarded-Encrypted: i=1; AJvYcCVVp6zN4M5AM2qXDyfOUnqpVEBFtUzfYJ9+Ey57JB+IcgMzHIcZsiHBX+acJiBiKw30UP5Aw5Ox5lrlP8/Or/s=@vger.kernel.org, AJvYcCX2o1f2aWHHHnp1l9s+R+wQ/VCKELNMYqUW3aAhWsAlQFficBuC38VqUceLX+zMjLoCr4FvdprsoRcEso0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+7Z7HjjUrPLozIPqfpF8ypfMQR/NFfIUUZb+zAJSAUDqNPXYL
+	8D3xOjpNvXwc3BGrSGjLh/MqvzZ+AFQG1G3ZBA5XW1CRjLwQYa4jm0KZ/VqWfrXUyG6p4ESap4K
+	sYxhwDEs8A15mzpRiJJZMJsmvrR8=
+X-Gm-Gg: ASbGncvqQhFFm7FO5mNFoz4Agtnwu7SuODBFC62+gNwG1Z/JJ6jhmcLv6gvO//2Q7fy
+	3XP+lAYTMurySTaCaifnpcHWdHNDKaeRYYWpAPS3y//ZFwrsd5wpdgvKurTb3WJ/kSzCZFpbuT/
+	YV4SSgeKLf5OH89m607rZnKKdYbtKXivPkqT/M
+X-Google-Smtp-Source: AGHT+IHGCe9s2WblTrFMgpH8Di+4cRVJg4iC6xm/DMHz20ImOgtpVp9OzKQEgou6f82JbNw9B8+VEacVtEr6D7BHyc4=
+X-Received: by 2002:a17:90b:1b0c:b0:2ff:7970:d2b6 with SMTP id
+ 98e67ed59e1d1-300a5788588mr4066553a91.5.1741549864193; Sun, 09 Mar 2025
+ 12:51:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250207142437.112435-1-borys.tyran@protonmail.com>
-In-Reply-To: <20250207142437.112435-1-borys.tyran@protonmail.com>
+References: <20250308164258.811040-1-ojeda@kernel.org>
+In-Reply-To: <20250308164258.811040-1-ojeda@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 9 Mar 2025 20:49:17 +0100
-X-Gm-Features: AQ5f1JqcVH5VZHnq6bAPzPo-RAINKDnTcmiBO2Kzb_Fjzr4rRiRRjKnJh1rlDsY
-Message-ID: <CANiq72m2VmgsK3ecrUPNk93_gwrC1oc4eFu1QzcR6cAtngRnFg@mail.gmail.com>
-Subject: Re: [PATCH] rust: docs: clean lifetimes markup
-To: Borys Tyran <borys.tyran@protonmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+Date: Sun, 9 Mar 2025 20:50:51 +0100
+X-Gm-Features: AQ5f1Jp1Zj_Zln5b8Z8a8RBt1caexSZN8jo1ccd2tN0YFf2udtob6FXxDOKD408
+Message-ID: <CANiq72me1J36RdY8_hYhOcMCF9qJH31HnE1Wwboqdz5UbNHN9g@mail.gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: rust: add tree field for RUST [ALLOC]
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Danilo Krummrich <dakr@kernel.org>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 7, 2025 at 3:25=E2=80=AFPM Borys Tyran <borys.tyran@protonmail.=
-com> wrote:
+On Sat, Mar 8, 2025 at 5:43=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wrot=
+e:
 >
-> Clean lifetimes markup e.g:
+> In the Rust subsystem we are starting to add new subentries which will
+> have their own trees. Those trees will be part of linux-next and will
+> be sent as PRs to be merged into rust-next.
 >
-> - /// ... 'a ... -> /// ... `'a` ...
+> Thus do the same for the existing subentry we already have: RUST [ALLOC].
 >
-> This will make lifetimes display as code span with Markdown and make it
-> more consistent with rest of the docs.
->
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1138
-> Signed-off-by: Borys Tyran <borys.tyran@protonmail.com>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Applied to `rust-next` -- thanks!
-
-    [ Reworded and changed Closes tag to Link. - Miguel ]
+Applied to `rust-next` -- thanks everyone!
 
 Cheers,
 Miguel
