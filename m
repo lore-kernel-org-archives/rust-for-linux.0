@@ -1,194 +1,157 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C89B39FCE
-	for <rust-for-linux@vger.kernel.org>; Sat,  8 Mar 2025 18:30:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462542F37;
+	Sun,  9 Mar 2025 03:42:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741458656; cv=none; b=k5vzb9Spagj115X/hRrhLXCLgkHP4epB3/Rhzc2dDmI3QZj9G0pQ7pQKBD1jAJSUOIiF91OgrIbIOfPuVBOkUwS0IRGdmvEppd/dNcQ4Fyck1C6EK91HRipekBefmwEsGu2Lvu7Z/xYGfbfB3dG3VwedXAPLHsf1sTFto7EHMY8=
+	t=1741491769; cv=none; b=RGDKysNUVwmA6k4krEblGTy+q3C63ogtqPZySQPrGC08kWiVDJr0VLSOlD+jEkpMipIv5wFIxQiMT4YPyJGMcuChec4r5fHhyHnz87qiZ4p7E58JShTGEyM51Ulm8rU/VFYIvzrpxawaNqJDSdsckLOaa807KxOsYdm3C6JS12E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741458656; c=relaxed/simple;
-	bh=uegV6SzNrvzv8Lu72cW1Lqhek1OERJI0RNLRHc22BCI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=O4We+3HzZ/5jooxh7Mpr3MhiZ2ipMkwVkOXF+vZNwnL061ezvLVv6E9eg/6a7+luSj1oZcLjyc1fTYS4vu4K0y4lEeNDLdDHw/hMbF8/r1X9+j5LXdYIFvfQtwzWYHrYVhfWC3OKbj/KecmLq8XftsLMQQAmtSr6H81YOfAHbW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=GWLeJhO1; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sedlak.dev
+	s=arc-20240116; t=1741491769; c=relaxed/simple;
+	bh=lx6NB+qDtz9P3ipI8WEAT2l+BpRs5XenWiRE/I9mXHU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JpFicCTqgKCJ8UjqyGQkaecboKZGuKNRqNrDGZUrd2XN+zpk96wA26cXi9KRPabE5+FpDqnAsfbnZzXzpSn2qzfFMu+myacn1YBXHG1AagaqDX0E8ThZHv1hJmq4lCkt8MQeP4Xz4z/gVt01TsHCCjd5ZZUC+iQybzahnRx4yno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RgB7Esf4; arc=none smtp.client-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="GWLeJhO1"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ac0b6e8d96cso409804666b.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 08 Mar 2025 10:30:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RgB7Esf4"
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-47521c604efso51821151cf.0;
+        Sat, 08 Mar 2025 19:42:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1741458651; x=1742063451; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=OYzCwEg8iZQ/2MVSbV7YyAM5WpMPKmd4xSEbITKoHKU=;
-        b=GWLeJhO1NO+d8aE7JzLMHeqWtMyO/0BdjVaUwc6IwLxWSwGO+3tz1fvIEGaiRDu/LE
-         hE/0066M0Viz1V0CErutPwK03NyPWo/Shh1uw3P1maHystIHRz0FtvUpOuO9hZCIycu+
-         ZmdXiaixtf0FKPV9FhpHUvqlkIHpw7bUO9mfKexvUSqXWEt6JqYDmrtKyolVvlB8BMa7
-         2pH4Bm3PQ6nqTHsZ2ifNG3G6VbMXudjqpwHVc47dY+m8Mm2PPDtGqmuycsdEfRH3ESUD
-         B1p0bNBNb+Rzm3ETbFKfA6nq73y/nxqyIKKJq5+NT3VEe7FS3f/AdMmE1hRcj5uxuxlf
-         Z40Q==
+        d=gmail.com; s=20230601; t=1741491767; x=1742096567; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0yp0HF8hebKGm850Xmgb0c7EhESLBd+xQ9hWzxDmF5w=;
+        b=RgB7Esf4o9OP3OF3q/z00AmoB/tsdh6aPADjAEPTB8np/2xZ9dOc5m9iNXSJR5LRuw
+         Nxh0oPoj8HF77fURZuVeXwV3Qi0DMEoS5a7njgvexUEMOVJB5uFeK5EZgfEjZydBfqXK
+         C9UolLtsmgh0VCqHSA5X9zHGHmaH2wfWrLfNp6isJFaYA6wjEo3e/fqwU62e3hQyBGp6
+         N0H0AkEsi8oCSby8l4rNQyeFUVp80Wyc69GI9RvaEiS0ucPLGVtyiBFhbISWEsfpq2lk
+         yUaf+1g+PXcTh72gdutD+/ev7VQBc055R+Qw2TSj9ZiTFS51I9fliBi6RDExucaEWgcB
+         Ar9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741458651; x=1742063451;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OYzCwEg8iZQ/2MVSbV7YyAM5WpMPKmd4xSEbITKoHKU=;
-        b=wW7F7nOZ4jKwWH01DuV2iqp+t9KT3Lt1kez9my391dKo/ubC6kPTvzPNe0nWprEJI5
-         EwS9Gc6qATFjbo+8/xYLqJkyb0jf65mzUaQNbuOXTNJ4NX+OWl0VLl82uB9hPLFgEbrp
-         PTEnvrLlarEjsBTSMthZ0wVZpK2SR6+0BBFmOc6ctlMiEmy6b3GIzo65VVTXH+h69wY2
-         UbRc5u3nQbf4Z6oDgb0NWI4bgIr/TSOq+DNRUZH3i2KwX6vT+C4UoK7a+jdunh3jD+S0
-         9qzcfFGrrGR+od5AmePrnjasQaMjpMvgoIPqC18033VBZR+ZU+1t3Ucsrt5L3xNT+yR/
-         D3kg==
-X-Gm-Message-State: AOJu0YyEgkLMfPjt3DJaSF5Bb84Nb9lPhDg4YlL1NwfDpQvEy+VRKoOa
-	wpLIWEqVfJNFB1ytV27smzwiAvZT9EA2VeUcOYrU3wGbyr/eyVbXSRjq2lMRA+s=
-X-Gm-Gg: ASbGncvKcGkl30fGmmmchtOi0caOrZmeqFYrss4dehOYaNRcr6KhzHyFmrgCkxfRzYM
-	hw/6AD/sOz723Air1gWzMdsSk0MoL4eXfnq0Kx1w38XRMpt1JWn2r/lkx0yqyveJtnGH8fqfcWO
-	xkGU9q6GOjpb9tmX1CRRevuJNYLDY4AYKSmwNoQYDMUjEG01SnxEqEN1PaUo1X/+JjPq2+YBLsg
-	kGLl68NhMVJxk8KyRxysIB0mpg56eKJ/23j6wfY7YoWJqBxQBhytUBfRilG3+R3n/zr9jayOz4I
-	dni90chEe5oF0iRTp7oHUuwLdFSvlgGgeu5OZxcFx2ksgi7KnSmg1qFpdkjILWupOETwrHib
-X-Google-Smtp-Source: AGHT+IFpvqrtMcNxEKdZ9ZCMtzR7eszu134IcdgZnLa27XaORcUskX6N4V3lxdQs799jBVuIH8FSzQ==
-X-Received: by 2002:a17:906:68cc:b0:ac2:66ff:878 with SMTP id a640c23a62f3a-ac266ff0c24mr562524366b.50.1741458649864;
-        Sat, 08 Mar 2025 10:30:49 -0800 (PST)
-Received: from [192.168.1.15] (89-24-188-1.customers.tmcz.cz. [89.24.188.1])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac27bd0ea5asm104546766b.4.2025.03.08.10.30.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 08 Mar 2025 10:30:49 -0800 (PST)
-Message-ID: <d2fe8cfc-df97-4947-bcbc-7d43b5c24ecc@sedlak.dev>
-Date: Sat, 8 Mar 2025 19:30:47 +0100
+        d=1e100.net; s=20230601; t=1741491767; x=1742096567;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0yp0HF8hebKGm850Xmgb0c7EhESLBd+xQ9hWzxDmF5w=;
+        b=Ijioz47daAqEeNJ5sf/4JjDIz1I6p0W6BcSOfiIiKDv0YoCJnuI1i3KrIx5NwD+rZI
+         MOR1SSEUvDL8nPp7r8+LL9XyaN0V4WLc2xDaKgyvLv21Pnmb8vL82sgJ97TBbjIJGHcn
+         RGmgJiljEtDK9OIkkmmXswb7xhbeE5yz2Ey0imQAA5selt6m+4rylHy7DvF3GhB0IrH7
+         Ei3JAhbcZ4jvhpwd7LKMpytht8EPyCWjLSEKhaUC2VaPfY732jVkKId4IW5BLRlwa/Fj
+         V2pWmVDllBcG+CdbC8nSK8leeS/kCnMQ7zMIDipXesCC/F0I40NZy23veSpLfG8N90ks
+         1iyg==
+X-Forwarded-Encrypted: i=1; AJvYcCViXTER9AhheBeDOdBG2v5k2BXBEd/WImM7x0J2ov+bbHDPMq942YBCulmDTwYqBKKFOdJHt7G8egBfdy0=@vger.kernel.org, AJvYcCXv3ixGuI35jru7C5JmSXycBT/FEcYhw0ithoWcgEhHaxDzKykyZeQmB/Ka1Udc24sF06xJR7wVJnrJZJkrYis=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrJCQCnaF5/T9lj8GIr47FgIm1ZAjeJW79XWAcQWr7Se3ShOPj
+	5M96mWScy9obuxsbI7IDODvdwc8trKSdsM+CkAv1OV3B+h4FlpWX
+X-Gm-Gg: ASbGncteBklgfppoewUgEHU1R6PP7+wPO7exGES4ZA6FYtHQ4vPutINq3TX1fJFltly
+	BHyMm1MkxB5N4TjWUvue1x5QJrBEI/xhbP0Rk8yHKXkvtfR0JiWHDJMpZiPRDQ1wjk5dSLE+6hc
+	VRQ4UKehbcCKvjML4Dsb0GBwmvYmuxyh/wnPPPGPsjDDZ3s3Krlr2O1cf4K2eWbwTfdVMiiYQOn
+	m8JLwyhq6yma1hg0dPoquhSkecVb+iNaNlVT8ZmuGvPYBRTMJzFW9d3vedyloo96camwZpukuUu
+	enK1wafTgFHtNIp+P+v+mJJCqm6xOhoL7/bnuKxbRApemBjvBmroP2Dpx4rQ2HEkosg7xgQCNn6
+	DTJXlXtLAKLU0blUugLQUv3swCbmzUkDxd+k=
+X-Google-Smtp-Source: AGHT+IHyGX6at8VhNa8ZE2qK+ILoyuTNdjSx26AdZovpMYwfd74OOMttVlZ+pNy0Z6dl0JtuCEX7lA==
+X-Received: by 2002:ac8:5a84:0:b0:474:fa6e:ff3a with SMTP id d75a77b69052e-47618af90c1mr125991401cf.49.1741491767057;
+        Sat, 08 Mar 2025 19:42:47 -0800 (PST)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4766efce08asm9739451cf.15.2025.03.08.19.42.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 08 Mar 2025 19:42:45 -0800 (PST)
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 516811200068;
+	Sat,  8 Mar 2025 22:42:45 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Sat, 08 Mar 2025 22:42:45 -0500
+X-ME-Sender: <xms:NQ7NZ22bvaIdXGcxt9Xk2XrztDfpjDVIlyzywdWe0zxuTCgamVLt2Q>
+    <xme:NQ7NZ5E30bo7JXsrsJgET7ze1QUuzSli5kVpA72stpIVhmWDCnC2q6rTJhrrLtyu1
+    RlrXutiKrXbwKD2dg>
+X-ME-Received: <xmr:NQ7NZ-5GDXJZUVGXzsb3416YPGDcArRyBhUsRXzWMsaA7CJG9EAIQUvT>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduudehfeelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
+    vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
+    hlrdgtohhmqeenucggtffrrghtthgvrhhnpefftdeihfeigedtvdeuueffieetvedtgeej
+    uefhhffgudfgfeeggfeftdeigeehvdenucffohhmrghinhepghhithhhuhgsrdgtohhmne
+    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhu
+    nhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqdduje
+    ejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdr
+    nhgrmhgvpdhnsggprhgtphhtthhopedufedpmhhouggvpehsmhhtphhouhhtpdhrtghpth
+    htohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgih
+    nhhorhesghhmrghilhdrtghomhdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorh
+    hgpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghj
+    ohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtohepsggvnhhnoh
+    drlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtoheprgdrhhhinhgusghorhhg
+    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvg
+    drtghomhdprhgtphhtthhopehtmhhgrhhoshhssehumhhitghhrdgvughu
+X-ME-Proxy: <xmx:NQ7NZ31zrImLUXfw8YrxaYYuMcmQJbNYNVdaAekA2ExwcowVDfBcZg>
+    <xmx:NQ7NZ5E-r6fToaCMfAEskr_uYe8tQeaMSywbER4yiHlazoZX1E5vEg>
+    <xmx:NQ7NZw-GZsSRSW-8fBnsG43KGPv7qpoCGiL7ZxIyjsfP5KOw4seWhw>
+    <xmx:NQ7NZ-kfisaGKRm8bx5az3elPKC0dU1ruXLCtdJRG8HNiX3VVd5esA>
+    <xmx:NQ7NZxG59yIYZYJu9vEdphcH7CMFUgc3uOTNFM7CW2GFw-FF1loFR14h>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 8 Mar 2025 22:42:44 -0500 (EST)
+Date: Sat, 8 Mar 2025 19:42:43 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Danilo Krummrich <dakr@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: Re: [PATCH] MAINTAINERS: rust: add tree field for RUST [ALLOC]
+Message-ID: <Z80OM7vrg3ZrJGL1@Mac.home>
+References: <20250308164258.811040-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V7 2/2] checkpatch: check format of Vec<String> in modules
-To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>,
- a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com,
- apw@canonical.com, arnd@arndb.de, aswinunni01@gmail.com, axboe@kernel.dk,
- benno.lossin@proton.me, bhelgaas@google.com, bjorn3_gh@protonmail.com,
- boqun.feng@gmail.com, dakr@kernel.org, dwaipayanray1@gmail.com,
- ethan.twardy@gmail.com, fujita.tomonori@gmail.com, gary@garyguo.net,
- gregkh@linuxfoundation.org, joe@perches.com, lukas.bulwahn@gmail.com,
- ojeda@kernel.org, pbonzini@redhat.com, tmgross@umich.edu,
- walmeida@microsoft.com, charmitro@posteo.net
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250307131401.638820-1-trintaeoitogc@gmail.com>
- <20250307131401.638820-3-trintaeoitogc@gmail.com>
-Content-Language: en-US
-From: Daniel Sedlak <daniel@sedlak.dev>
-In-Reply-To: <20250307131401.638820-3-trintaeoitogc@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250308164258.811040-1-ojeda@kernel.org>
 
-
-
-On 3/7/25 2:14 PM, Guilherme Giacomo Simoes wrote:
-> Implement a check to ensure that the author, firmware, and alias fields
-> of the module! macro are properly formatted.
+On Sat, Mar 08, 2025 at 05:42:58PM +0100, Miguel Ojeda wrote:
+> In the Rust subsystem we are starting to add new subentries which will
+> have their own trees. Those trees will be part of linux-next and will
+> be sent as PRs to be merged into rust-next.
 > 
-> * If the array contains more than one value, enforce vertical
->    formatting.
-> * If the array contains only one value, it may be formatted on a single
->    line
+> Thus do the same for the existing subentry we already have: RUST [ALLOC].
 > 
-> Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+
+FWIW,
+
+Acked-by: Boqun Feng <boqun.feng@gmail.com>
+
+Regards,
+Boqun
+
 > ---
->   scripts/checkpatch.pl | 67 +++++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 67 insertions(+)
+>  MAINTAINERS | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-> index 7b28ad331742..7c42c1a0ea6b 100755
-> --- a/scripts/checkpatch.pl
-> +++ b/scripts/checkpatch.pl
-> @@ -2775,6 +2775,12 @@ sub process {
->   	$realcnt = 0;
->   	$linenr = 0;
->   	$fixlinenr = -1;
-> +
-> +	my %array_parse_module;
-> +	my $expected_spaces;
-> +	my $spaces;
-> +	my $herevet_space_add;
-> +
->   	foreach my $line (@lines) {
->   		$linenr++;
->   		$fixlinenr++;
-> @@ -3567,6 +3573,67 @@ sub process {
->   # ignore non-hunk lines and lines being removed
->   		next if (!$hunk_line || $line =~ /^-/);
->   
-> +# check if the field is about author, firmware or alias from module! macro and find malformed arrays
-> +		my $inline = 0;
-> +		my $key = "";
-> +		my $add_line = $line =~ /^\+/;
-> +
-> +		if ($line =~ /\b(authors|alias|firmware)\s*:\s*\[/) {
-> +			$inline = 1;
-> +			$array_parse_module{$1} = 1;
-> +		}
-> +
-> +		my @keys = keys %array_parse_module;
-> +		if (@keys) {
-> +			$key = $keys[0];
-> +		}
-> +
-> +		if (!$expected_spaces && (!$add_line && $key && !$inline)) {
-> +			if ($line =~ /^([\t ]+)(\s)/) {
-> +				$expected_spaces = $1;
-> +			}
-> +		}
-> +
-> +		if ($add_line && $key) {
-> +			my $herevet = "$here\n" . cat_vet($rawline) . "\n";
-> +
-> +			my $counter = () = $line =~ /"/g;
-> +			my $more_than_one = $counter > 2;
-> +			if ($more_than_one) {
-> +				WARN("ARRAY_MODULE_MACRO",
-> +				     "Prefer each array element on a separate line\n". $herevet);
-> +			} elsif ($inline && $line !~ /\]/ && $line !~ /,/ && $line =~ /"/) {
-> +				WARN("ARRAY_MODULE_MACRO",
-> +				     "Prefer declare ] on the same line\n" . $herevet);
-
-Small grammar nit. "Prefer to declare…"
-
-> +			} elsif (!$inline && $line =~ /\]/ && $line =~ /\"/) {
-> +				WARN("ARRAY_MODULE_MACRO",
-> +				     "Prefer a new line after the last value and before ]\n" . $herevet);
-> +			} elsif ($inline && $line =~ /,/ && $line !~ /\]/) {
-> +				WARN("ARRAY_MODULE_MACRO",
-> +				     "Prefer a new line after [\n" . $herevet);
-> +			}
-> +
-> +			if ($line =~ /^\+\s*([\t ]+)(\S)/) {
-> +				$spaces = $1;
-> +				$herevet_space_add = $herevet;
-> +			}
-> +		}
-> +
-> +		if ($expected_spaces && $spaces) {
-> +			if (length($spaces) != length($expected_spaces)) {
-> +				WARN("ARRAY_MODULE_MACRO",
-> +					 "Prefer a align parameters\n" . $herevet_space_add);
-
-Small grammar nit. Shouldn't this be rather: "Prefer to align 
-parameters" or "Prefer aligned parameters"?
-
-> +			}
-> +
-> +			$spaces = undef;
-> +		}
-> +
-> +		#END OF ANALYZE FIELD
-> +		if ($line =~ /\]/) {
-> +			delete $array_parse_module{$key};
-> +			$expected_spaces = undef;
-> +		}
-> +
->   #trailing whitespace
->   		if ($line =~ /^\+.*\015/) {
->   			my $herevet = "$here\n" . cat_vet($rawline) . "\n";
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 8e0736dc2ee0..1ddc313abbdd 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -20732,6 +20732,7 @@ RUST [ALLOC]
+>  M:	Danilo Krummrich <dakr@kernel.org>
+>  L:	rust-for-linux@vger.kernel.org
+>  S:	Maintained
+> +T:	git https://github.com/Rust-for-Linux/linux.git alloc-next
+>  F:	rust/kernel/alloc.rs
+>  F:	rust/kernel/alloc/
+>  
+> 
+> base-commit: 7eb172143d5508b4da468ed59ee857c6e5e01da6
+> -- 
+> 2.48.1
+> 
