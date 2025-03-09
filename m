@@ -1,59 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 165AF1FB3;
-	Sun,  9 Mar 2025 18:40:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A791EF36B;
+	Sun,  9 Mar 2025 19:44:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741545633; cv=none; b=oSUl2o0LmmA/zWRH/Yvd7xzRdkLspDZSiRGcL3duAWl/QpxHga6tPQjszN157Ig0jlM4ttnX1iRsyirA6VdRlmt6mdI7fPw7lGY+wOO9rj688Hi5X0l/BB9xpztFCoOIa5WMUkYfbDYMFCT3uYYbq1gIv6IGIrLrqA0ao3QtvU0=
+	t=1741549449; cv=none; b=tjgbzIs7CBepnURJSBMpEB59tsh8V1XQ2VdmXJl9+exFXbmHLK1HjX6zKWiObzP/09InSar0tFkTtFI+9vdQH1XVOYo2sR28hGXmsqukp+u66MnBUum/mm6KWUixZjPNu9YUg2vK9otWyduyssmxD4nk4puiGOwWGU5oGGC/TDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741545633; c=relaxed/simple;
-	bh=wxAdK4cesWjR2yjL5pnLFSlTuVjdMgVxI0GcMjaQjAM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FpD8WBbPk6w8o9kYD6EtXrRSvmPxkgYpNde3hCrOTH++kfQexOGViPwQBQKWT6jv/7v6q3BqGNUNp5eI9heYZ7WnEhe9Lf+qJ2EG74ARzALPqgtPr22WoGZ4OJ4eQvtyGfIib6nBWTpuViM3q04u1nDq2Z5SYNi9rfEZByL2BSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fou6gAfH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741549449; c=relaxed/simple;
+	bh=cPQCmsYr2PzipMe6z22fZFkIXFoEDcH2N0IJnkDAk7I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=unUj9+xhfv5HEW+GXWeong1LBOQ9xgDtSoBQ2eXqWmenRy5OGHjvsAWaK5KmNtWJpQ2gyoC4Tmgc3JVdUp8tUxYbKGxQsnZgUQMyVJDUvjQHUTHZQWJGF9LMI+w1wheNaWtXlE4QiYhN1XAebfrKFACKvhczCdE5dIJrfy75ydc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HVhlJey3; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fou6gAfH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2EC8C4CEEC;
-	Sun,  9 Mar 2025 18:40:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741545632;
-	bh=wxAdK4cesWjR2yjL5pnLFSlTuVjdMgVxI0GcMjaQjAM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Fou6gAfHQJ/gv2gkxO3GKSNmNnTelGd0UGlZ0La4k5xj7+GaGkNbLcrT+lss2BKig
-	 MC+nG+PWVvPMBrjyPwYpI4FOg+iC4AtZ9/61nFacfOq0jPVxS1b9FJ7V4333QNGJcP
-	 JpWpPp6jkI6CUcNuDON/pAwUeFh76rcGpKynltJm/lso0kRYrf0NbQ6mmoNzi4IOiT
-	 c+he/4n6ZPXoL5xdXLQxBMOpdlbnJmd+7MfhnVctCnABWbvEatqaIe/bTgaOWIQ9AA
-	 ZRwMoZjSnV0rlLKFR9TeuhMEHYmNvXCSxVSD3efx3w7BxWuQyMfxnRxYj9Gf9jgkVP
-	 3gDNAzSDnvjsw==
-Date: Sun, 9 Mar 2025 19:40:24 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: airlied@gmail.com, simona@ffwll.ch, corbet@lwn.net,
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-	tzimmermann@suse.de, ajanulgu@redhat.com, lyude@redhat.com,
-	pstanner@redhat.com, zhiw@nvidia.com, cjia@nvidia.com,
-	jhubbard@nvidia.com, bskeggs@nvidia.com, acurrid@nvidia.com
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	gregkh@linuxfoundation.org, mcgrof@kernel.org,
-	russ.weight@linux.dev, dri-devel@lists.freedesktop.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v6 0/5] Initial Nova Core series
-Message-ID: <Z83gmL38o8BsQKUi@cassiopeiae>
-References: <20250306222336.23482-1-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HVhlJey3"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2ff62f9b6e4so992187a91.0;
+        Sun, 09 Mar 2025 12:44:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741549447; x=1742154247; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cPQCmsYr2PzipMe6z22fZFkIXFoEDcH2N0IJnkDAk7I=;
+        b=HVhlJey36WYDY+shES65ydlT7XlrhoB1e0rEPDTD+e8/qf6OgxxqO/Tp3Ekj+ubhc8
+         0RjMnl0wSf3MCF9TKdvk2iCDyfeaVNwcEmK3cC9MZ4qm1U0iZn4SwdFmsxFY3BRPfjIi
+         4aYt1H1a4ytjKkjH9EmwSK3VNlHlz+oohb6H7f9P6pKMMOO+u3c11SK8OtPFlvNykonM
+         fHOCNAa+g6oK+J9eY+u8XwcfNsa3WoNhqTZRRtJdovncP3fwWdEPf5VSaar6SJg3vHEi
+         X7GCUJBi/v0y0BrWleEKGLQtNEdwhIIRj2dTZolkaJL6l4I4AcJyuL3J9/BGdSVokHjk
+         m/3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741549447; x=1742154247;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cPQCmsYr2PzipMe6z22fZFkIXFoEDcH2N0IJnkDAk7I=;
+        b=qU0IOx02xoL5WX2NBKbWAPe65L2BTokfxalCdjdVGdjYDHHty/xzLaBzVN7jdl8TrE
+         9DsfEMmeW35bvivAz63qGGec6s/BwiL/RGaNeKZCbiEprtBbCublAm0qwzvVebmBq7zF
+         kvbV0k+nLoS2kgpdxpp/zHqEcxOuwbBxwNdLLsKz4qE4cJa80Yl3twbdHtO7QIJGSQWP
+         RHte6alvAj34kCGOLQFg7CrkdwUWI4hECnmhiawMRiY/5i6tKyFkqmXUTMaGX6a0qyLl
+         Bk6e70Slo9oGDPB/tXb4IUmFhepuOzERLdYcoNlxrh5spAH4/DhzDZGdW2Y6p+xcACgJ
+         5SAw==
+X-Forwarded-Encrypted: i=1; AJvYcCUgSPQLFLo8lJpPc492tHhkiniXXhBAkWISn04U11kVKd7dEUFtpC9vzFqJnrqvD2r3YTcTxog9H14Egzxs2l8=@vger.kernel.org, AJvYcCVbp3ao6ks2nz0lXHOF6g08r8SJHho+TvxEqe2ULq4Q9p3HroBkriJxOICB8Rh3ZB9iLnne9RGr4ha1Y4U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUGMN/JoGO+X1iK1rA6ajcG2VMw4edUxLC6z5dq5dHbRp3GI4e
+	nb2VDbZdkikpHb0jWul0MDwYshGYxsNlxoJA8UKa9H77ldYkQ8FI31ZtGuwjYqnHtrfa6CG4mR3
+	UJ1XBigmaEFTc9GImnAC5EfBreok=
+X-Gm-Gg: ASbGncuJws7CXw4HLHFGldl/N3czkwqXlVXQiXvYr9KL95jjz1pLsMhkrjAU7GVl+q/
+	8s/75SPHi7k+h2dN2lsccOlCxk+O33qvMBNdyll/hs/AaOysDerqM6y2LSAodVlP0vCJtsFNttQ
+	BQDMBR0mKiTB9apV8xTd6/CWPA4A==
+X-Google-Smtp-Source: AGHT+IEMc4kBT97Jfzxo5YsrypzNB9u7BtESDdjeS9ngtC7b8j/ybOgQTqQF7M/R/EzqFCxACzFfUgRXd6RAc/LZO9g=
+X-Received: by 2002:a17:90b:4c42:b0:2ff:78dd:2875 with SMTP id
+ 98e67ed59e1d1-300a57877a8mr3860566a91.5.1741549447386; Sun, 09 Mar 2025
+ 12:44:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250306222336.23482-1-dakr@kernel.org>
+References: <20250210-cursor-between-v7-0-36f0215181ed@google.com>
+In-Reply-To: <20250210-cursor-between-v7-0-36f0215181ed@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 9 Mar 2025 20:43:54 +0100
+X-Gm-Features: AQ5f1JqgsI6yQkAem1iAPMXfe34pY7vHQKjlO59Yy1AZAbfA0rDC2Z9Pn7eatk4
+Message-ID: <CANiq72nnEB4ZBUzwpw+dH7fQsjNCn++cZM5Rirweadwy0LZwyA@mail.gmail.com>
+Subject: Re: [PATCH v7 0/2] Make the Rust linked list cursor point between elements
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 06, 2025 at 11:23:26PM +0100, Danilo Krummrich wrote:
-> This is the initial series for the nova-core stub driver.
+On Mon, Feb 10, 2025 at 10:54=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
+wrote:
+>
+> Please see the commit message of the last patch for more details and
+> motivation.
+>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Applied to nova-next, thanks!
+Applied to `rust-next` -- thanks everyone!
+
+Cheers,
+Miguel
