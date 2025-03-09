@@ -1,117 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935EC16B3B7;
-	Sun,  9 Mar 2025 21:49:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C8A1EF368;
+	Sun,  9 Mar 2025 21:55:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741556950; cv=none; b=jBThs6jM6Z9XdgBnX+WsR5hqKulQleIxN6i7DXOK/V54fij4YsT5wB6K6xXKFPVXgE1HQCWtAMAHLEDHtqX2XvuEETQ+JzoENYdHVbMJZrfxLCNnTNkmM0m2wmrKsEU0H1oJdrOFROuIoW+wNkvC3G7eJTXTKHjH6C+21P8VpK4=
+	t=1741557349; cv=none; b=p7enB36y9GCdqjpmS0laPx2Y3mu/5GdHPhnBtESzUG2bNuz2JX8MKfBbMa8x0V0nYCiSrOhjG8w5Be3pbDW8AUxTls5eZLi5lpF+92rb1mVCUE1LnTZpSAEYx19/b+t++EmQfNKeGhxp9WVJd67ZAP/cmhIctvcDwVCtpsr0ynI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741556950; c=relaxed/simple;
-	bh=E1l/O9YZeI+myHOBN9lIwYaG7N6QrE+xuS3xGAhnwmY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JYHuYrjGccLpvw+Zo8pfX6x5sOKqrBKR/DSYAOS6lUwKKX6PYTo6bsD3XGNWVThEqPuh3o8eluOw+sbEGs5m5HKiLUR4uwj0FPnhyeGivbpaFlw/uhMkxGlqMFknO3u2wk1VWSauMyqRdnsssWN8VkG0dit4StgMMmzVTDidN0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EMXNBvO6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741557349; c=relaxed/simple;
+	bh=GTq6UEu3Li4X7ErToPMFMwx2eg5l8CAxQ+gMdiZqzhs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FLAdfkGdwnSEnEuvKZQnzK0nlUF3ToEsoTSuhWjQvZMODimoO+rp+d5FtjfKrPqwTERszA1l7nsm4MBNiAB+x4EN3kk69PaCGtQQuh5JuU6kwCoFqHpoyAVf7qvM8kg0HTL/RZ+DtmljyRxNpbhxriyzWgdDMrEph7quq4ktW54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N8sSJttE; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EMXNBvO6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8DA9C4CEE3;
-	Sun,  9 Mar 2025 21:49:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741556950;
-	bh=E1l/O9YZeI+myHOBN9lIwYaG7N6QrE+xuS3xGAhnwmY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EMXNBvO6eQo4v+yaUwdbcjFiJEWSJDeE6HvpYnIj3cpQV80nQjRYrOhRvff7p3q0U
-	 uQ9dp/4jPKDFufj/k60sBXc0VHa68TZBCZGQi2KtYrjylDuzEy2MmOL/oUwhRlEh6Z
-	 WL5qKMp46NZwWrNL7LF1V2HcuQm/SUdBy+dmZzlR6XglMF2/etknYFd7sYg7REyJet
-	 k7tGC6Usnsyd+oKDCan1gAo2m25xFp1KNjS4jZdiO1zV0+Q1RFfIcN9dBLiGiCMxbG
-	 bEU8uLMrKEJ/e242bYcDzmy3Y+3ADwUYOGv1UexexS71A3OLY0NpArxy4qTuThkqp7
-	 EFqJga69iSyAg==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: aliceryhl@google.com
-Cc: a.hindborg@kernel.org,
-	alex.gaynor@gmail.com,
-	benno.lossin@proton.me,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	lina@asahilina.net,
-	linux-kernel@vger.kernel.org,
-	miguel.ojeda.sandonis@gmail.com,
-	ojeda@kernel.org,
-	oliver.mangold@pm.me,
-	rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu,
-	patches@lists.linux.dev
-Subject: [PATCH] rust: kbuild: provide `RUSTC_HAS_DO_NOT_RECOMMEND` symbol
-Date: Sun,  9 Mar 2025 22:48:57 +0100
-Message-ID: <20250309214857.1559606-1-ojeda@kernel.org>
-In-Reply-To: <Z8sXqXgfhHbNpG6B@google.com>
-References: <Z8sXqXgfhHbNpG6B@google.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N8sSJttE"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2ff7255b8c6so909853a91.0;
+        Sun, 09 Mar 2025 14:55:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741557346; x=1742162146; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GTq6UEu3Li4X7ErToPMFMwx2eg5l8CAxQ+gMdiZqzhs=;
+        b=N8sSJttEWmVStN+dnBiVjmQC5kOJ7zL+TGxUNJdgcqVxv6QBlyfwpsGjyT0re2h29q
+         I/22JkMxd7U9dX9tLAdyBORWXx9ZsMHdvJDYZkKZMu9Rity88lbBQK3uxLOuNup15bvW
+         dhA8FLJky7IRQ5s25nTShKn3GYcYVKjAWNSauk7M21XKmE9Nla5jD0YSDzSzcf4QNzaN
+         2URnXvNHIcfhlCesVFFVSp/JCflcUgwi50AJDHBcdw3PC+zRAdFvZQ6tMw9QyievtVTe
+         yijoami0/LqoVivcTQl2AAqoTIFVCWow7FHWtQsxpEYfZ/bSJy/jOrN8WyNHXAY8C8p7
+         XU8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741557346; x=1742162146;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GTq6UEu3Li4X7ErToPMFMwx2eg5l8CAxQ+gMdiZqzhs=;
+        b=OBKdy8zXOdHXM21Tqw37lHt+mkUu8Q6ikl5cesZJyvXUV8nqcPWLUbNhjfsfo7EWpE
+         5riAI+EM2thW4Qlr0ti+NPllYd94lLLk5eTrC7lWNkweQ+IYVbtji/X3MjmqZs3oavOl
+         C6qMtIGWPngmDDn7H6uJvrpgpSr1tKHeiFoJMO7M8OPd+KOTdKHLBk8NxFVtMSvM/tfx
+         0rHUXRc2QtRyULu2lnUdRom92UPnPnNM1i++BMXxGaWluKKlHUcpK48fopcWV11a1paf
+         qiEHwrr9RDqKvrlfPjStbxiz3J5TnJYvMoHYK4HWkoasmnzPkGOIRe9pg1uO+3TLACnP
+         muqA==
+X-Forwarded-Encrypted: i=1; AJvYcCU20kp6m+v0s2nlfaGJOlZtGb9TNDs0yoxAACiwKb3s+xqJYjdSmSV+Rkb+t7M3aCjzH1hzw38y1Gcsu2E=@vger.kernel.org, AJvYcCUn+sMgSKgPfekQgoQG0lgPKw8pS/7Ajws/EafWraG30nOyKE44bpELapkugfcmsoCOo7mBzL8VjgI5xxXJsHE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5b/vMxCBgGy3RIz+VB+ngJFYeKwsQUda036fYHivvHDMeUS3V
+	/crtdVYK56tEeJPzFuqE0Ep2YzWTwSuPc4RuwQQ9NZWs8MhiLRs0qxbs4dQHt/nE6MEUjjgMz6u
+	CiHp737+FjtL6aNtveK1tuzGJevc=
+X-Gm-Gg: ASbGnctyDV4bIg1li/G7TuMwOehh6fziJTNZwHGDNZkvq9JA29dNdw4VMz/P8YSjPUg
+	zKLcOsZXoEDRCZCI7KXBNbIZGHsRe3OeuFMgNuB4dsNKcERGHEE1ZPa182uc/cEUoa9nYq8pkqQ
+	tIRPtNZGRh1VS00W+taqNgBCTs3w==
+X-Google-Smtp-Source: AGHT+IHXlAJPVtOg05iMzwq+BMigf1lmxizD3DaJUYSB9U80GIORpHkKG2bK6XK7N00HhDagNjnQiESufq7xg5WfLB4=
+X-Received: by 2002:a17:90b:38c1:b0:2ff:6ac2:c5ae with SMTP id
+ 98e67ed59e1d1-300a2b6b6f4mr4206702a91.1.1741557345730; Sun, 09 Mar 2025
+ 14:55:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <Z8sXqXgfhHbNpG6B@google.com> <20250309214857.1559606-1-ojeda@kernel.org>
+In-Reply-To: <20250309214857.1559606-1-ojeda@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 9 Mar 2025 22:55:33 +0100
+X-Gm-Features: AQ5f1JplJ2sdLw88CGdK_039ODMPr-eVmC66w8cRjSL3sCK1VExgIqPYi5hdaQg
+Message-ID: <CANiq72nfdTDdk2TFJXMtdM5fpRQPkn38FEqQkNH1+xB45L99QA@mail.gmail.com>
+Subject: Re: [PATCH] rust: kbuild: provide `RUSTC_HAS_DO_NOT_RECOMMEND` symbol
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: aliceryhl@google.com, a.hindborg@kernel.org, alex.gaynor@gmail.com, 
+	benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, lina@asahilina.net, linux-kernel@vger.kernel.org, 
+	oliver.mangold@pm.me, rust-for-linux@vger.kernel.org, tmgross@umich.edu, 
+	patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Rust 1.85.0 (current stable version) stabilized [1]
-`#[diagnostic::do_not_recommend]` [2].
+On Sun, Mar 9, 2025 at 10:49=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
+>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-In order to use it across all supported Rust versions, introduce a new
-Kconfig symbol for it.
+s/kbuild: // in the title, sorry.
 
-This allows to perform conditional compilation based on it, e.g. on the
-use site to enable the attribute:
-
-    #[cfg_attr(RUSTC_HAS_DO_NOT_RECOMMEND, diagnostic::do_not_recommend)]
-    impl A for i32 {}
-
-An alternative would have been to `allow` the following warning:
-
-    #![allow(unknown_or_malformed_diagnostic_attributes)]
-
-However, that would lose the checking for typos across all versions,
-which we do not want to lose.
-
-One can also use the Kconfig symbol to allow the warning in older
-compilers instead, to avoid repeating the `cfg_attr` line above in all
-use sites:
-
-    #![cfg_attr(
-        not(RUSTC_HAS_DO_NOT_RECOMMEND),
-        expect(unknown_or_malformed_diagnostic_attributes)
-    )]
-
-That still loses the checking for typos in older versions, but we still
-keep it in newer ones, thus we should still catch mistakes eventually.
-
-In this case we can promote it to `expect` as shown above, so that we do
-not forget to remove these lines if we stop using the attribute somewhere.
-
-Link: https://github.com/rust-lang/rust/pull/132056 [1]
-Link: https://doc.rust-lang.org/reference/attributes/diagnostics.html#the-diagnosticdo_not_recommend-attribute [2]
-Link: https://lore.kernel.org/rust-for-linux/CANiq72mYfhuRWkjomb1vOMMPOaxvdS6qjfVLAwxUw6ecdqyh2A@mail.gmail.com/
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
- init/Kconfig | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/init/Kconfig b/init/Kconfig
-index d0d021b3fa3b..213b4cc9310a 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -132,6 +132,9 @@ config CC_HAS_COUNTED_BY
- config RUSTC_HAS_COERCE_POINTEE
- 	def_bool RUSTC_VERSION >= 108400
-
-+config RUSTC_HAS_DO_NOT_RECOMMEND
-+	def_bool RUSTC_VERSION >= 108500
-+
- config PAHOLE_VERSION
- 	int
- 	default $(shell,$(srctree)/scripts/pahole-version.sh $(PAHOLE))
-
-base-commit: 7eb172143d5508b4da468ed59ee857c6e5e01da6
---
-2.48.1
+Cheers,
+Miguel
