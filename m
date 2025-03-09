@@ -1,65 +1,62 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31F1F4F1;
-	Sun,  9 Mar 2025 17:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DF21EEE0;
+	Sun,  9 Mar 2025 17:57:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741542440; cv=none; b=FM/wFHEBJmrkPRWXb+WLFxvWXTEUErWhq0yFxiIf3g3iIu/auvpCAS9He52GIBloulNN/mb+s9oYEMO++qel+VkOl07gLXqY37Es0RRbsb7BbZse2p7sKONK7GDbXUSTVPnIcD0LhVr0E0YFjEvdci6DHZMzr0TaeZKjKx4J3JA=
+	t=1741543048; cv=none; b=StFF7095cRrhulXJ2Kx61NTM4LGXuy7rKGeKlnXcF5evk2jtxNjB1R9SGHSvYZTmsWvU1wHdQ4V3ALD1F7F2zBNuXbez7Mu15SM2K++oTVRzLtdXCC0Bnm/zrlLk9Qeco8I9onJTrZCu8ChuH4wR55QFxQQ9zHQpvL7F/5nyWBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741542440; c=relaxed/simple;
-	bh=HfqB+ra69dPFuR3ZyPW+9h+o/dVuinOJtECSahu2qbk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bwLtMLnRnXmXrI28KYp4OYBIXtSKwSjOK0n/JmJI8+AM/4Tyr0RIpti4nEKC7fdGUnl/whqEOktivagoesCvfOLl2bWcJv30bYxRb+0+i0NOTDEGOh8oo00A6u/hTJVMz+US2YF5xqYvREmG7U9GnQh6pVSVpSJyBL+c/O6k4ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U4gtr/9v; arc=none smtp.client-ip=209.85.214.174
+	s=arc-20240116; t=1741543048; c=relaxed/simple;
+	bh=P6RYCX5vDxQaVyNclccQmSzPHLOErBFGlbABG10FJ94=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=l+7T1b/GS4Awc6MDWSOD+Jf5E+hyU6H2q6mngqhWirty9zkdsR+vPAZM5DdrDAclvk9J6W0p/u0dMHkXJMFBC0TVrxxn3/OWBt2jLdfuC6sEb9GmwVf3RZ7G/ROhel5OJwAD5IoBmu824Q/tRfDJv0Cd9dBFCOcCj2acEGM2QZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZW4wc6BL; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U4gtr/9v"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-225477548e1so15582865ad.0;
-        Sun, 09 Mar 2025 10:47:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZW4wc6BL"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-22113560c57so63753705ad.2;
+        Sun, 09 Mar 2025 10:57:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741542437; x=1742147237; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JW0Ijt8WDfro2KH1U/Yil1BXF8JyA3zRUqtElft2AgE=;
-        b=U4gtr/9v5kgj3cdMEhvRn6bDnaEXP9lrwBRQB56kuJeoSY4BX4Wj/BQYtE+5PDm9Gv
-         5q4b5brOoe+sJNtQXp68AOcYj8P1mRTJHgO1ZaLfpBRDcjmMfTQyL4z6lb90TiG/179w
-         x++secvU+5aQhhSY/hsFlncVA91v/IImZ4WGXShpYO8d7qNJX9Iz4CKVVkCBmCtb8Y7g
-         1ZIq/uXjpnhF7Cg91Qie/y5daWvrpMup1iFwodN3ja7rO09RHwBMeXj9V0tvlMC2k9em
-         qlFRNPWM0kl+7rajVMFO5DoiWp3hrYX10ZSyOqLGoeCn9M495bSnNsgQVJvDugwAPT/q
-         JbiA==
+        d=gmail.com; s=20230601; t=1741543045; x=1742147845; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ws0MKDUBHCsCNPohrAs17OMDxN3A3VdvFRaXSo6ysoo=;
+        b=ZW4wc6BLaJLfa0V/3wHYt2sqkvdaqvZND43k3OA+vOH1u2Qw0/pKiaAnUiqOQKVjF2
+         g7PgTP50N00FS3tA/dZ8egBe5gresJyC2qAsPgbmp0mlKas3WYEOi7vmg2i+nIQZVPce
+         HwXYs0ElaHpmiR755ZRWoKK49/14sD3LA5umYn36UTb708PrL0xkHcdB4RFxNmMEtkuw
+         H99WsN+0UbRmbYZTJuFijnFRIPJ0ss0vW8OllFTc/yAvTuW9KEIly94g/Uv7ucPpf3fE
+         LTiGfzOWggd6CQ4gGThz85h0d1w+SderuTSSKrCK2Gvfpmnqaj13eOq46woTKPwX83Do
+         pjkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741542437; x=1742147237;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JW0Ijt8WDfro2KH1U/Yil1BXF8JyA3zRUqtElft2AgE=;
-        b=jC9UedmHiq3d9S1i3j8kjsdiCCWRuj9Vrc39fKvbu8rUodybA5E1XGmlOTPy+R9Bgz
-         lEBV0kZ5H6A/XrfsFD0BqAOz2Cua8cNGDH4wPC+HgRj0YXaI0qXzHlZ8txWg0KKKUEGB
-         mibVINChwiKfresgoD4Lu7FCPaed7Ha+nXEvb3pBXpMstlHSNymzmRsFZmFnj+EINQ2L
-         OVSrG9uKBXKsQBdr1XYcIWpH8VcqD114orvJdV6WaDieYLKDouyCY18jYJXiFhIma+Dm
-         ETSxeL4kHv1B02/Ygk/R2bkJB+daXOh+zIAUncqO/WJToAKfO828QTaSFrCCse8M+Fbu
-         svug==
-X-Forwarded-Encrypted: i=1; AJvYcCU/nzZ9fuq/EAwhzsuz8bs7QNrNYUXqCgFniVlYPPnIIDQFXpawumchKypoirow5btpowcoSxO5Wswapz6mIOo=@vger.kernel.org, AJvYcCW3wn4pPLXNxm/yUee1Nn13bMfoJz0M/IMoul0TdplW7DnfzcgLMcdk+4OPQ4j5+s1BGjJ10Ka10GjkK5E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwU/suzOLoPjrsMiwIJLKckbfx3YH2wtmpibO9Greb88vUHhjmz
-	ly7JIaviYSM/4pMz5crOJVRLmfKi6UBz9QkUvxUI6Ze5WR6xnoEp
-X-Gm-Gg: ASbGncvdhNxEjaT+CbGW9E7quIQ26ikSghD9nAkWLvHyARaIXNh0X1IET/sTnV9Dd+j
-	Pn3TmJsgRHH/Jh+TtekPMYpmJYfw9g0uCWiIBe52rNVBy9tPN1H9wJ1AClgQImFEcFTc5qXEyiF
-	wBQKl24MrpeznjGgyFDtnwDrkPVnWgUOLxRg3W+JCloZmuyN+gWjcXaijdBCu62HjHu8yxPFWKB
-	hazVOyaftjY2W2gWUnh0hwOrKjxb2abCosm7ebaW4OUaMAMXsnIcVsUNC0gbtVKLv23nW/cy6fh
-	jMblXeElKFkV45QrgmOF18/Q68aGfSB0bAyUTjEngR70RDhAjw6a
-X-Google-Smtp-Source: AGHT+IHxEAcPqGX8pdSGz4HO3VaYjHB80YV0+hGS1utKqObvUBBpG8rAuDg49C1i9Tu/LjKgKu460A==
-X-Received: by 2002:a05:6a00:2d90:b0:736:a694:1a0c with SMTP id d2e1a72fcca58-736aab1677bmr17551539b3a.21.1741542436821;
-        Sun, 09 Mar 2025 10:47:16 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1741543045; x=1742147845;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ws0MKDUBHCsCNPohrAs17OMDxN3A3VdvFRaXSo6ysoo=;
+        b=HboGclf1oEqcaD0ocpkv/tj/91oJ87IMbcoRk7AEqtdCK264q2b4/cDxR0qdt+UdKZ
+         +AMr5NtLtuRmuDxC8g1vzD83QwO/sVhtH1BCoS3vt9uEH5h+nmmIlGyigYdA8VuoaU2t
+         1y56A8CbP7k7EbcDzpyVgcCGYNOsmRnCtBhKNqdMsY0o4sPX10RSJQCi3XZpKb9mou2e
+         lPYoudV/pyHM/bsZATZIJzeWCNsa6FSWlOd7Q61vWnKbCdSMKQ/8dpSIoSTo2mBUf8Jx
+         0hUvMVrqDwGEp3ZXAJEuhbLjVO2AVp32YifJllcQdmD7LcRpqebXEXekBuppnEUdvPyu
+         u+Wg==
+X-Forwarded-Encrypted: i=1; AJvYcCVtw8qSTvCmH7BIbUlQZXo3xSpoFqsCb1tBnHDaBIoWSMA0IB7fC4+GTox6qakKw68Bb6QdH2b19VWuhkg=@vger.kernel.org, AJvYcCWiKU1Dzb1PbjcsfNFBOxOsSW00kIbZuJ/7In8VFSvrt9ml/YFEm4lr1o2rJb05m/3ooZJJ9dn+Iec7JtjJfZE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YygS1a4S8HeSp7NvMZ8A0fS4ylljDTOD+mMvN32F9Dq7xZM72Qk
+	/IwnYcOInU8CfTI4fP0LwQ5q6bWatOJzWTAwUl3XLvaXd/lrJ7vv
+X-Gm-Gg: ASbGnct0HwaXjOb7BFqVdMDpxLMV0V+63lVUrP00Lh85p94OwX7UfjUdgiqNJTlWh3z
+	uHjQRUn2Qot2MD/YAV0DEgeUj8Pj9FLD94GZW2nOWuRKnBosWFMQy1LOcr63DcKya1YlVaxfbwn
+	SsvKffH9f0ATY8FPOYHcU4P3aR8I/sE6D0p9kZo6uRtoBlDj2v0+2jYswnV6LIBWMdgSZZ6NiCW
+	2x8YyKDIRZMWtPLyX6mZI5D0ceuC4+Ts4A8QsCofOBldlMwfyaluJazMqKcREjTrUrEYckyPWxT
+	hZtmldlsyxjBQA+MpjRkluofvxvVL6FSh53VuYpkfzsMlpNhEDLf
+X-Google-Smtp-Source: AGHT+IEhJkRYc3xY2G1Ox4pZ+l4SKeXyWOd7DpqhERFIMPHQ1OecGIzx6z4YA+lmvOLI2Hw8WQ0NyA==
+X-Received: by 2002:a17:902:eb81:b0:224:1935:d9a3 with SMTP id d9443c01a7336-2242888ab01mr191144485ad.21.1741543045434;
+        Sun, 09 Mar 2025 10:57:25 -0700 (PDT)
 Received: from linuxsimoes.. ([187.120.156.44])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-736bd615191sm3210335b3a.128.2025.03.09.10.47.09
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-224109e944csm62675505ad.74.2025.03.09.10.57.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Mar 2025 10:47:16 -0700 (PDT)
+        Sun, 09 Mar 2025 10:57:25 -0700 (PDT)
 From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-To: daniel@sedlak.dev
-Cc: a.hindborg@kernel.org,
+To: a.hindborg@kernel.org,
 	alex.gaynor@gmail.com,
 	aliceryhl@google.com,
 	apw@canonical.com,
@@ -70,7 +67,6 @@ Cc: a.hindborg@kernel.org,
 	bhelgaas@google.com,
 	bjorn3_gh@protonmail.com,
 	boqun.feng@gmail.com,
-	charmitro@posteo.net,
 	dakr@kernel.org,
 	dwaipayanray1@gmail.com,
 	ethan.twardy@gmail.com,
@@ -78,36 +74,69 @@ Cc: a.hindborg@kernel.org,
 	gary@garyguo.net,
 	gregkh@linuxfoundation.org,
 	joe@perches.com,
-	linux-kernel@vger.kernel.org,
 	lukas.bulwahn@gmail.com,
 	ojeda@kernel.org,
 	pbonzini@redhat.com,
-	rust-for-linux@vger.kernel.org,
 	tmgross@umich.edu,
-	trintaeoitogc@gmail.com,
-	walmeida@microsoft.com
-Subject: Re: [PATCH V7 2/2] checkpatch: check format of Vec<String> in modules
-Date: Sun,  9 Mar 2025 14:47:02 -0300
-Message-Id: <20250309174702.844914-1-trintaeoitogc@gmail.com>
+	walmeida@microsoft.com,
+	charmitro@posteo.net
+Cc: trintaeoitogc@gmail.com,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH V9 0/2] author field in module! macro should be a array
+Date: Sun,  9 Mar 2025 14:57:10 -0300
+Message-Id: <20250309175712.845622-1-trintaeoitogc@gmail.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <d2fe8cfc-df97-4947-bcbc-7d43b5c24ecc@sedlak.dev>
-References: <d2fe8cfc-df97-4947-bcbc-7d43b5c24ecc@sedlak.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Daniel Sedlak <daniel@sedlak.dev> wrote:
-> ThanksSmall grammar nit. "Prefer to declare…"
-Okay, I will fix this and send a v9
+In the module! macro, the author field is currently of type String.
+Since modules can have multiple authors, this limitation prevents
+specifying more than one.
 
-> Small grammar nit. Shouldn't this be rather: "Prefer to align 
-> parameters" or "Prefer aligned parameters"?
-"Prefere aligned parameters" seems better to me
+- Change the author field to Option<Vec<String>> to allow creating
+  modules with multiple authors.
 
-Thanks,
-Guilherme
+- rename the field from author to authors to make it explicit that it
+  can refer to multiple authors.
+
+- In modules that use the author field, update its value to an array of
+  strings, and also rename it from author to authors.
+
+- Change the checkpatch.pl to find poorly formatted arrays in the macro
+  module!
+
+---
+v9 changes
+- Improved english grammar.
+---
+
+Guilherme Giacomo Simoes (2):
+  rust: module: change author to an array
+  checkpatch: check format of Vec<String> in modules
+
+ drivers/block/rnull.rs               |  2 +-
+ drivers/net/phy/ax88796b_rust.rs     |  2 +-
+ drivers/net/phy/qt2025.rs            |  2 +-
+ rust/kernel/net/phy.rs               |  4 +-
+ rust/kernel/pci.rs                   |  2 +-
+ rust/kernel/platform.rs              |  2 +-
+ rust/macros/lib.rs                   |  6 +--
+ rust/macros/module.rs                | 12 ++---
+ samples/rust/rust_driver_faux.rs     |  2 +-
+ samples/rust/rust_driver_pci.rs      |  2 +-
+ samples/rust/rust_driver_platform.rs |  2 +-
+ samples/rust/rust_minimal.rs         |  2 +-
+ samples/rust/rust_misc_device.rs     |  2 +-
+ samples/rust/rust_print_main.rs      |  2 +-
+ scripts/checkpatch.pl                | 67 ++++++++++++++++++++++++++++
+ 15 files changed, 90 insertions(+), 21 deletions(-)
+
+-- 
+2.34.1
+
