@@ -1,45 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E294A0C;
-	Sun,  9 Mar 2025 18:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 165AF1FB3;
+	Sun,  9 Mar 2025 18:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741543608; cv=none; b=pJobhv1eJJEnL3h8vzwRatBKy3m5DbARejZ2S/cOv/ldUIFnZgz0qU8VwsmVzYbKof1ecVgLdLU2UbYzjVutrESTM4yuk4xrvbUBbasHxHWq0ThOUbNkyMgCbCdJbCef7VAu6tiBnSySheNkuvPOtburzmBLiq24BWQYglG2In4=
+	t=1741545633; cv=none; b=oSUl2o0LmmA/zWRH/Yvd7xzRdkLspDZSiRGcL3duAWl/QpxHga6tPQjszN157Ig0jlM4ttnX1iRsyirA6VdRlmt6mdI7fPw7lGY+wOO9rj688Hi5X0l/BB9xpztFCoOIa5WMUkYfbDYMFCT3uYYbq1gIv6IGIrLrqA0ao3QtvU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741543608; c=relaxed/simple;
-	bh=IcBptB44Pp2GCp+DT+lWCvzQ7EZtuHKGjKG0M0du4Q4=;
+	s=arc-20240116; t=1741545633; c=relaxed/simple;
+	bh=wxAdK4cesWjR2yjL5pnLFSlTuVjdMgVxI0GcMjaQjAM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KTArxSuuTA0MXzZu9AlVzXERi/+hGefc6gvQ/R+sh7P2KveEtCfchAbW2tgPOyP915mP+6W1Mdp+ZzbxEqPNFRgoobPgzsl68Ckn+pr3JRXJlBadqenVdPeMPLwZ1BKmA0puwgB+TqRDTdaaU0CzXJ5MAbPb2qLHHH4ls9tq6IU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KPKXnHPS; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=FpD8WBbPk6w8o9kYD6EtXrRSvmPxkgYpNde3hCrOTH++kfQexOGViPwQBQKWT6jv/7v6q3BqGNUNp5eI9heYZ7WnEhe9Lf+qJ2EG74ARzALPqgtPr22WoGZ4OJ4eQvtyGfIib6nBWTpuViM3q04u1nDq2Z5SYNi9rfEZByL2BSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fou6gAfH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KPKXnHPS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15DFFC4CEE3;
-	Sun,  9 Mar 2025 18:06:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fou6gAfH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2EC8C4CEEC;
+	Sun,  9 Mar 2025 18:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741543607;
-	bh=IcBptB44Pp2GCp+DT+lWCvzQ7EZtuHKGjKG0M0du4Q4=;
+	s=k20201202; t=1741545632;
+	bh=wxAdK4cesWjR2yjL5pnLFSlTuVjdMgVxI0GcMjaQjAM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KPKXnHPSYV8MZZUueeRB7MF9nZHHkXIrs8ADSDGSbG2dIoGT5V0ePUff7/60AkhG4
-	 yE5Hap+Q1T6dWlqLtvpUsn3hkR7gdfoRwZNI+VuqCaLlTpBPxXBNkcxyxO/yghq7Zf
-	 k8llb7le44tFiTCL4rC8erXymQCsfjw3V9DkMVMlR9gniT6pr5b076z9fb3qHgNWnX
-	 0lR31zhvh0SGref7vZDHE70NGz/IU1AgmdM0Pp+bdqH7nn6lrTqgx+fepKlJxLShxd
-	 wxoMvEfq3weyvmVN7Ct/OApDkZf+xDzdbChtDYQSAOFG7aC9/yl52Tyu55JU5fZW/s
-	 CYZ8druUXqprw==
-Date: Sun, 9 Mar 2025 19:06:42 +0100
+	b=Fou6gAfHQJ/gv2gkxO3GKSNmNnTelGd0UGlZ0La4k5xj7+GaGkNbLcrT+lss2BKig
+	 MC+nG+PWVvPMBrjyPwYpI4FOg+iC4AtZ9/61nFacfOq0jPVxS1b9FJ7V4333QNGJcP
+	 JpWpPp6jkI6CUcNuDON/pAwUeFh76rcGpKynltJm/lso0kRYrf0NbQ6mmoNzi4IOiT
+	 c+he/4n6ZPXoL5xdXLQxBMOpdlbnJmd+7MfhnVctCnABWbvEatqaIe/bTgaOWIQ9AA
+	 ZRwMoZjSnV0rlLKFR9TeuhMEHYmNvXCSxVSD3efx3w7BxWuQyMfxnRxYj9Gf9jgkVP
+	 3gDNAzSDnvjsw==
+Date: Sun, 9 Mar 2025 19:40:24 +0100
 From: Danilo Krummrich <dakr@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev
-Subject: Re: [PATCH] MAINTAINERS: rust: add tree field for RUST [ALLOC]
-Message-ID: <Z83YsnKdB7eYiXDs@pollux.localdomain>
-References: <20250308164258.811040-1-ojeda@kernel.org>
+To: airlied@gmail.com, simona@ffwll.ch, corbet@lwn.net,
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+	tzimmermann@suse.de, ajanulgu@redhat.com, lyude@redhat.com,
+	pstanner@redhat.com, zhiw@nvidia.com, cjia@nvidia.com,
+	jhubbard@nvidia.com, bskeggs@nvidia.com, acurrid@nvidia.com
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	gregkh@linuxfoundation.org, mcgrof@kernel.org,
+	russ.weight@linux.dev, dri-devel@lists.freedesktop.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v6 0/5] Initial Nova Core series
+Message-ID: <Z83gmL38o8BsQKUi@cassiopeiae>
+References: <20250306222336.23482-1-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,16 +51,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250308164258.811040-1-ojeda@kernel.org>
+In-Reply-To: <20250306222336.23482-1-dakr@kernel.org>
 
-On Sat, Mar 08, 2025 at 05:42:58PM +0100, Miguel Ojeda wrote:
-> In the Rust subsystem we are starting to add new subentries which will
-> have their own trees. Those trees will be part of linux-next and will
-> be sent as PRs to be merged into rust-next.
-> 
-> Thus do the same for the existing subentry we already have: RUST [ALLOC].
-> 
-> Cc: Danilo Krummrich <dakr@kernel.org>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+On Thu, Mar 06, 2025 at 11:23:26PM +0100, Danilo Krummrich wrote:
+> This is the initial series for the nova-core stub driver.
 
-Acked-by: Danilo Krummrich <dakr@kernel.org>
+Applied to nova-next, thanks!
