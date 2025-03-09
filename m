@@ -1,43 +1,43 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from mail-10631.protonmail.ch (mail-10631.protonmail.ch [79.135.106.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057191C5D44;
-	Sun,  9 Mar 2025 10:46:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0941CAA98;
+	Sun,  9 Mar 2025 10:48:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.31
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741517199; cv=none; b=X4Ub5pWaEhM7afC4La1diHJB+yaJnS/VJ3mcwZvo7eYzaeLtRC86CTp+m+NMdkLXDpvfPXMuUeTjwRKIctlsc0jbCDwQ5CacqFuqQJ89R480DU4wMC+YKlRAREhtvPlXaxDwe/Z2ho9MgssfJq66YDWEPA1pZskpxryBSpZOAYU=
+	t=1741517311; cv=none; b=NOhUMCD2G1X0en6a0MtUMzT/+k5SBQinzeySqlvvPVWsZRiOBjlgxDFzG/TeWMvWE8jTpPvLKFahh0wk407CkTGUIBP8aUT9ynE8X9RWxCeuqjBQ54///t4+hlpNGJibnHdX2G/xymj+cMBpKk7uLcZ2uHIRziMkjFnh/IZXutA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741517199; c=relaxed/simple;
-	bh=K9bwZnbaYdHSuSAVeV0+hTESIYX1CxBK0FUvducPYZc=;
+	s=arc-20240116; t=1741517311; c=relaxed/simple;
+	bh=TjZmsSHVn2SQaXWQ8Iww7+RL5TcnsYTFLjZk+aCqfro=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JHmqsENGLhdgoZHOF/uQlcrPY1mDqfsG/hHHA8Xi24WATHdraJBPaSaokdiTrkMLzuKDVt4ADTqNNCsE1rPVTl/OqMc9WGU4G5UlrjuJHTChyjLQNpgPLfYBUW6DdHUkmtjKh/J5hpcGKZ8ZD551mnMhbQq6rK4OOa1wSQ1VRR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=BFJcg3i0; arc=none smtp.client-ip=185.70.43.22
+	 MIME-Version:Content-Type; b=nPcL9I+1PHYUl7yLGCeHFC9tUrO3Ddtax5ID7Ul5fAN6AdPKhtQm0UaBOeMA10gCHO5+6r7MmxE2WAk12Ht7Z06u2Gf24Lp26XKtXmfrwMamaL4SIjKn7gr7CnKiPDJZE/O89k9Xcy6Tyl+fH+PKeAwJrzW86JkU/hyR8ZrjicQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Nq+vRrzm; arc=none smtp.client-ip=79.135.106.31
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="BFJcg3i0"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Nq+vRrzm"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=mf7c7zjixvfpfdegtz3lis33je.protonmail; t=1741517194; x=1741776394;
-	bh=5xhYrjSTqoAtpk/MmRkmGqw7guw56xwxoOH7W3SVX2w=;
+	s=protonmail; t=1741517306; x=1741776506;
+	bh=onuREebFVAgubtnf0xzHhQjePAlGKksLg0sZJIHSe2k=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=BFJcg3i0E2kuIx3svhplMxSu7NtvjIC8aN0P3PtOg77zRJUbLMX5ga+UmGubXAM1q
-	 qr8uu5uaUKK0nffNT8SMUdO+OtftUFTCl1t5j4/La5NL/bY4QFWed4eLxH/5Z0q4e0
-	 A7MUnmPMFHcUKUataeEnoptcT/DDIMpHwSCrJAm/NgCpi+6G5amB3Qt0mXsApoYC9c
-	 ei4RaZvdkF6nriq5nArGT+Npn2eqKUIR6QPadtj9lxhYkj/95Tx8dCJQ4G272dRGoZ
-	 5XUwS6dzHCIouYv3xoqtWus532+S6pig84VuRbGNMVdG6genFkkb71ORSgVotvrM8q
-	 AbKv8mY7fNbFQ==
-Date: Sun, 09 Mar 2025 10:46:27 +0000
+	b=Nq+vRrzmSYbN67fo8nG+S4xwnmoZWxabsmSV2shfUTAsjBgYCh7dFeqTkksz3CRHo
+	 z5A/sSHDdoSYBlffpKpZyO17VfWiK5pcEi6q/72dEOo9DzBJ1y6M7+b0oIeseFJc/+
+	 JU34FVGgITf+kptigttGUemYp3ZCxudcPpP/pQvtLpxSNTsnJg0nWNbQ3hXsr7bhRP
+	 rbKIwiuIJbhNTpnl7/tpTLS+zHdv82txDL7Mb70PDgnDmlPhnZ3MF2k53itdGJ6OaW
+	 F3a1ZIX6HexQCs35+RuyBXmMMtl9Xo+QjEiB0xl0iTSZbWmyhDv7WWq0NaF1ZCDU0M
+	 fAFenup7rduMQ==
+Date: Sun, 09 Mar 2025 10:48:17 +0000
 To: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Danilo Krummrich <dakr@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, Guangbo Cui <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, Markus Elfring <Markus.Elfring@web.de>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v11 10/13] rust: hrtimer: implement `HrTimerPointer` for `Pin<Box<T>>`
-Message-ID: <D8BOBGBX8X4S.1L3PO31142PE@proton.me>
-In-Reply-To: <20250307-hrtimer-v3-v6-12-rc2-v11-10-7934aefd6993@kernel.org>
-References: <20250307-hrtimer-v3-v6-12-rc2-v11-0-7934aefd6993@kernel.org> <20250307-hrtimer-v3-v6-12-rc2-v11-10-7934aefd6993@kernel.org>
+Subject: Re: [PATCH v11 03/13] rust: hrtimer: implement `HrTimerPointer` for `Arc`
+Message-ID: <D8BOCUZJCEVI.3JD6KJK3UTCKX@proton.me>
+In-Reply-To: <20250307-hrtimer-v3-v6-12-rc2-v11-3-7934aefd6993@kernel.org>
+References: <20250307-hrtimer-v3-v6-12-rc2-v11-0-7934aefd6993@kernel.org> <20250307-hrtimer-v3-v6-12-rc2-v11-3-7934aefd6993@kernel.org>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: d07c69c4a717b2b7ba69da8b7987bb6618b20b39
+X-Pm-Message-ID: d7874bcbc129a3e3c118a19be8ed3c2630d93df1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,7 +48,10 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
 On Fri Mar 7, 2025 at 10:38 PM CET, Andreas Hindborg wrote:
-> Allow `Pin<Box<T>>` to be the target of a timer callback.
+> Allow the use of intrusive `hrtimer` fields in structs that are managed b=
+y
+> an `Arc` by implementing `HrTimerPointer` and `RawTimerCallbck` for `Arc`=
+.
 >
 > Acked-by: Frederic Weisbecker <frederic@kernel.org>
 > Reviewed-by: Lyude Paul <lyude@redhat.com>
@@ -63,8 +66,8 @@ Cheers,
 Benno
 
 > ---
->  rust/kernel/time/hrtimer.rs      |   3 +
->  rust/kernel/time/hrtimer/tbox.rs | 118 +++++++++++++++++++++++++++++++++=
+>  rust/kernel/time/hrtimer.rs     |   4 +-
+>  rust/kernel/time/hrtimer/arc.rs | 102 ++++++++++++++++++++++++++++++++++=
 ++++++
->  2 files changed, 121 insertions(+)
+>  2 files changed, 105 insertions(+), 1 deletion(-)
 
