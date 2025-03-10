@@ -1,92 +1,88 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D391227563
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 09:44:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777212253E1
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 09:50:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741599886; cv=none; b=EWeaFvvyLZHczRzWhiJJ32uBCXoc/TF56xXn1QfZOXoLRgUZV+jOAyc7fcyX3ixUYN6Lt+PpNIWblr0EkZJYkYFxBBYtJQrabzrGChVR6ZhPp5CL/Q3dCrvf7oYvrKM5IE/VLGMrQHZ7dxvLE+/gKLfPQAP+e3vzP2h+EZv21HY=
+	t=1741600208; cv=none; b=BSz4wp4kTvPnEX2SUU5oaWiGgXuwPjb4r21LegRpuhvx+WIkhK735X/bcuDLI3z87cnqz/gHtNl824wdlCpW0xN8EIK3Pig9/1iENXQDuABH/UV85bAmgljw5dRQQiiF//qXeAv12zsuND4n2UBhXaN5NiXGn3CqEE8munYsciU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741599886; c=relaxed/simple;
-	bh=gBsxJraH2VccxGdfoYatDUg8xaTF55kYrM6BAJWMFNw=;
+	s=arc-20240116; t=1741600208; c=relaxed/simple;
+	bh=li9maBtZYH0WSwQ7I4Sx8a2w/PrJcS0hZ8B1pMYw794=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=VNfKzfZ5PsDFTqnpysATiyXZn1eGIrZp6HgzVqLD8u8ZjBfYwTwnC5NSv8ClCOYZxsS25cRh8K1rmfzcAfXW0nwubmDYtncX5u/XPSmF+jk7msBln+QiRRIy1Y8on5WlPv1JaQFbhrd6Ht2OmpkZHml+NjtllsMKzKvhNoqHjlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CIZHb+w6; arc=none smtp.client-ip=209.85.221.74
+	 To:Cc:Content-Type; b=XJYuMCH7Dlwqd9rNt/myeysIqR8IepA0I2Dv6zLcZjYpvQFyFq/i1QVADra57CECr4aw/lr3rsa5vCjPpLv81u1YqRbVEJzRKltRg3m1Ea/e5ZzZIjC9o4lbei/L2pm0NJRPf1xjHvlPJ3GGFwnO0ggHOFaIY2oMkTN1Me0CcR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BsKuJzZg; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CIZHb+w6"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3913b2d355fso514162f8f.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 02:44:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BsKuJzZg"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43cf5196c25so4090625e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 02:50:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741599883; x=1742204683; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1741600205; x=1742205005; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=K4uT7Aj9nf7d2IT7mRwWlJl8JB3gxTUY+mQiV67L5Z8=;
-        b=CIZHb+w6frU1eCTidgr9HQGGBMxs4svzTLld6UP12T1m9O5zv6QK0dUt+gSPPMpAlg
-         wJXeXaO3Zqv+ulTKBtZ47p2u5wSer1WttrHpkARWGB1f8Tj2QsTolKYse4D3nf4YBwTG
-         xncSeImfZ7uKE2wA3f3BLsm2rSFoxM5FR6oSuFbK+Zbi5kh5GEwA2GFUyEsZIPxS/Mny
-         VqZcFzJT8lR70SPI0jiNYVeweytT6z3y4Obly8an9NzSas5kowcoJ2vtCOQhD5fHJnVJ
-         CxgoaSkXgtyrXtbgjGzsbaXVRUR7IyTqKNMO0eUFeoLN+GTsm3Em/dUhyUbXcq/U4gTi
-         8vGQ==
+        bh=zayc4ME8ub10z847YBIo2OSP/R7y2OfUd/FH2hrf0YE=;
+        b=BsKuJzZgNkMN0gd1ldRnao7dettc3eGf/7vIIodjJYuAbZG7YPu9881ujBtpDvHaWl
+         PycahbH5cEMd7VP+CXIBku3jnPe4vQrHML8r8AjUe0tNxPYd6G2knFp1tdYpwODjYdSw
+         DtrnZA1AG7pgpZ2E3T+5H9sT0v02/W4CR4N55PmrJZZQiXDiFQW8I4XUl7M6m1bHxP3l
+         uRLg1Ss8N9vPuspEilaBC1lcdYKm5yAMqZbU6rE+2PiO5IPemGbZ7++Z7I2gHaW03e9V
+         TOxCUbigJgGdpkVe2qcAuEjy0Szz1TXkuxYwPFwTEqLoRsMsC6XYMM9kLPIEeXgFAy6C
+         gU7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741599883; x=1742204683;
+        d=1e100.net; s=20230601; t=1741600205; x=1742205005;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=K4uT7Aj9nf7d2IT7mRwWlJl8JB3gxTUY+mQiV67L5Z8=;
-        b=cKtWdmAKLmgpOR1teu+OrAMUFkKaKXIOBizkeGR1yxpS4ugnkagmC5Tzm0aLqM+Qmo
-         e9RUjE05kaOewkYXRRGBPoCAmBj2abwxfDmQ16WoI7RbzyEq/qsSAjFDpbl7hi29wJbK
-         cJLdd45vU4AfTyEFnwXsY4CgExXQPXo6LqvACYuDq/9scEleDVHewaBPUI1/MM7bwyqr
-         RXmyLOTfmAinUMZUgKgPJMBLbj3S7p+sHv6pzPvY1lOOsL20B2tOgAWJW6CbC9sIF+Sn
-         iKcTIDLX1UIvUFWWxOKa1/5PtQV93CVUJ5y4dBIXiXDwnxfNPYiCjrw4Hc/QBW8Z3PBm
-         OIsA==
-X-Forwarded-Encrypted: i=1; AJvYcCWeU+6HIPFHZ88TpaQx+0X7T3q2lHXw0LYFZGvHDVL1ooBj/HwPU5VLD0tRMFicMdcNTJSXrXRQngcn3b52UA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw787VXWIzt/r+W6AixUTiODMR7F92Lcyom3FKOMzrFON4EC/jk
-	tKSsb6KzMzkqMtwvF0M8J8rR3K2tjSVv5dewYovXHnVj7Gzn8XkQDqc2vYiq+/qrea4X3L+epxL
-	0SP2KXqsxxPjChg==
-X-Google-Smtp-Source: AGHT+IGVyxro7AL58g4XR8fKVbaaI1TWX7wPwMNwsGLr+PpgDItcCn2Z27WVF1wmJWCgCt0fQ+bi8w9hZQvKDuI=
-X-Received: from wmbay19.prod.google.com ([2002:a05:600c:1e13:b0:43c:f27f:e9f2])
+        bh=zayc4ME8ub10z847YBIo2OSP/R7y2OfUd/FH2hrf0YE=;
+        b=G1SRw5eBNTyQ5OWjd9H//c3INhJ1UuhAG2KJzv5uFeQn/hiGF14Zy0f11gsWg+qwMJ
+         iFGFZNalRJqs7Hm05BZ35DhL5wdcyp/t/HunMlzzMTxdd3b0pG+1D7bW7mr2JDw5j4VP
+         dts1FG5ppv0G0KCSEuy+u/O5EK3lt8F7EsPR7kN8LYE5l04RjlvtXz/8pouFVZoekwoz
+         S7YD8RVK6nmjeAGcNCjuvSQkWvLGV+y5qqPRgjKtUErpiL98jY9dGWFmdVHbNZvYhhXe
+         waXbQHk+DesqojqtuZ/seP1bWRzoGneB7TTqFTeXQKiGNotgEVugpJjzVO0XCVLTlvJC
+         +EpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUeYimCVq/fzXHtg7hQ167eYWTzH/qqwnOyX4hMM7tQX8aMqLzGLg3fFY+V4xEymp5J8W1p+3WnQlQNDlS4fQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YywjZ9cpmiOW58krrC1xpMnzmgYvpLzdHZQKD16rZHO+S7a65WA
+	npQTDhY4TsZKcZ8/ugU+Wmu3Rze38D9rZvyn3mBl55+4CEhHXsO02GpKdQ5KREgq0nQ1iciQf4J
+	I/QN+U4UaMivQtA==
+X-Google-Smtp-Source: AGHT+IFh6zDOg5JSQ5hBks5Kv2fA7ferdFCU+xaQli8NpPVCQgSZ8GXEKmfHPKiJ2GFqReRUcUZjB4F9g1Vim14=
+X-Received: from wmgg17.prod.google.com ([2002:a05:600d:11:b0:43b:c336:7b29])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a5d:598c:0:b0:391:3bdb:af5d with SMTP id ffacd0b85a97d-3913bdbb534mr4193539f8f.28.1741599882976;
- Mon, 10 Mar 2025 02:44:42 -0700 (PDT)
-Date: Mon, 10 Mar 2025 09:44:41 +0000
-In-Reply-To: <20250310073040.423383-2-richard120310@gmail.com>
+ 2002:a05:600c:474c:b0:434:fb65:ebbb with SMTP id 5b1f17b1804b1-43c5a6116f2mr81052195e9.17.1741600205067;
+ Mon, 10 Mar 2025 02:50:05 -0700 (PDT)
+Date: Mon, 10 Mar 2025 09:50:02 +0000
+In-Reply-To: <20250310-unique-ref-v6-1-1ff53558617e@pm.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250310073040.423383-1-richard120310@gmail.com> <20250310073040.423383-2-richard120310@gmail.com>
-Message-ID: <Z860iWGtaEFMD2hj@google.com>
-Subject: Re: [RFC PATCH 1/2] rust: list: Implement normal initializer for ListLinks
+References: <20250310-unique-ref-v6-0-1ff53558617e@pm.me> <20250310-unique-ref-v6-1-1ff53558617e@pm.me>
+Message-ID: <Z861yk1hRZUtLtLp@google.com>
+Subject: Re: [PATCH v6 1/5] rust: types: Add Ownable/Owned types
 From: Alice Ryhl <aliceryhl@google.com>
-To: I Hsin Cheng <richard120310@gmail.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
-	a.hindborg@kernel.org, tmgross@umich.edu, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, skhan@linuxfoundation.org, 
-	linux-kernel-mentees@lists.linux.dev, jserv@ccns.ncku.edu.tw
+To: Oliver Mangold <oliver.mangold@pm.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, Mar 10, 2025 at 03:30:39PM +0800, I Hsin Cheng wrote:
-> Currently ListLinks only supports to create an initializer through
-> "new()", which will need further initialization because the return type
-> of "new()" is "impl Pininit<Self>". Not even "ListLinksSlefPtr" use the
-> method to create a new instance of "ListLinks".
+On Mon, Mar 10, 2025 at 08:49:43AM +0000, Oliver Mangold wrote:
+> From: Asahi Lina <lina@asahilina.net>
 > 
-> Implement a normal method to create a new instance of type "ListLinks".
-> This may be redundant as long as there exist a convenient and proper way
-> to deal with "ListLinks::new()".
+> By analogy to AlwaysRefCounted and ARef, an Ownable type is a (typically
+> C FFI) type that *may* be owned by Rust, but need not be. Unlike
+> AlwaysRefCounted, this mechanism expects the reference to be unique
+> within Rust, and does not allow cloning.
 > 
-> For now it's introduce for the simplicity of examples in the following
-> patches.
+> Conceptually, this is similar to a KBox<T>, except that it delegates
+> resource management to the T instead of using a generic allocator.
 > 
-> Signed-off-by: I Hsin Cheng <richard120310@gmail.com>
+> Signed-off-by: Asahi Lina <lina@asahilina.net>
 
-This change is not good. The ListLinks type has an invariant about when
-the pointers are null. The existing constructor argues that the
-invariant is satisfied because pin-init initializers can't be used in an
-existing Arc. Why is that satisfied here?
+You can't send a patch by others without adding your own SoB.
 
 Alice
