@@ -1,157 +1,92 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25739225407
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 09:40:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D391227563
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 09:44:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741599625; cv=none; b=hK+9unPWFWoAKiuw4zD03x/lHRqimiXO1B78e4hTp3d43JqOlmHWLa15K+p/02TWmjInljeM/Z3W2MW3CUfQ0WlfoHxht8vitffHjhFtoRpFG6cW9nxAiit6AKVpCCEg7XIrDVbrETSnl1PV70MmEsffmRe6kwltYZXisCBvyZw=
+	t=1741599886; cv=none; b=EWeaFvvyLZHczRzWhiJJ32uBCXoc/TF56xXn1QfZOXoLRgUZV+jOAyc7fcyX3ixUYN6Lt+PpNIWblr0EkZJYkYFxBBYtJQrabzrGChVR6ZhPp5CL/Q3dCrvf7oYvrKM5IE/VLGMrQHZ7dxvLE+/gKLfPQAP+e3vzP2h+EZv21HY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741599625; c=relaxed/simple;
-	bh=+0wn6CEZBMks82wBoIPLAtnrHTCR+LvgWxO/drTJy2c=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=oBIP0EgiMs3lj3wCa37ePj0BbPLja6GuxWaGCC7xgo0Q32E3PW+pQAHoUu8szKzf9g2ne8Y4dFJbH1QBWHepaQsuCOMDyKdYeI9vqNUISOVNfMQPYRPrvUy5H4ft8xzdoT4VAJULD2n8v99U8L0B1vMjTnxQmTlh08rKKOqLXqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=acHqHB3P; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
+	s=arc-20240116; t=1741599886; c=relaxed/simple;
+	bh=gBsxJraH2VccxGdfoYatDUg8xaTF55kYrM6BAJWMFNw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=VNfKzfZ5PsDFTqnpysATiyXZn1eGIrZp6HgzVqLD8u8ZjBfYwTwnC5NSv8ClCOYZxsS25cRh8K1rmfzcAfXW0nwubmDYtncX5u/XPSmF+jk7msBln+QiRRIy1Y8on5WlPv1JaQFbhrd6Ht2OmpkZHml+NjtllsMKzKvhNoqHjlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CIZHb+w6; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="acHqHB3P"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 320CF240104
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 10:40:21 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1741599621; bh=+0wn6CEZBMks82wBoIPLAtnrHTCR+LvgWxO/drTJy2c=;
-	h=From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:To:Cc:From;
-	b=acHqHB3PqIUHedWzc4t5NGeKJY0IqfetmBlFL5uwB5NYW0zEeV4qDA2FGcvWfkdJ5
-	 jh1t9kRvTDGXEye9ry/i9jGKsa2kIfi3UY1xRr/r5m6o3GFoFYsCo7holBijeYK3ku
-	 8l85ZUeKnCkqU+GxMIrVmwINlzE7M7zU0Cdu04kbJHzJLdgqKTG1vE4/r75N2/OXME
-	 qFieguV7pPlpt0xq5/iSNslYb8knSctaoBxJ8AeE9Uu4GI4eDAfxdrZBAjNyZfK4Y+
-	 D2FjzYhxvG/KrRAXP2G64pFsNCnMXMmsFonP9Zrwb92BdCUDtkXBATdB5MwRGaCp/f
-	 NcnNIJS3NrDCw==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4ZBBhK6GQdz9rxM;
-	Mon, 10 Mar 2025 10:40:17 +0100 (CET)
-From: Panagiotis Foliadis <pfoliadis@posteo.net>
-Date: Mon, 10 Mar 2025 09:39:15 +0000
-Subject: [PATCH] rust: task: mark Task methods inline
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CIZHb+w6"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3913b2d355fso514162f8f.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 02:44:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1741599883; x=1742204683; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=K4uT7Aj9nf7d2IT7mRwWlJl8JB3gxTUY+mQiV67L5Z8=;
+        b=CIZHb+w6frU1eCTidgr9HQGGBMxs4svzTLld6UP12T1m9O5zv6QK0dUt+gSPPMpAlg
+         wJXeXaO3Zqv+ulTKBtZ47p2u5wSer1WttrHpkARWGB1f8Tj2QsTolKYse4D3nf4YBwTG
+         xncSeImfZ7uKE2wA3f3BLsm2rSFoxM5FR6oSuFbK+Zbi5kh5GEwA2GFUyEsZIPxS/Mny
+         VqZcFzJT8lR70SPI0jiNYVeweytT6z3y4Obly8an9NzSas5kowcoJ2vtCOQhD5fHJnVJ
+         CxgoaSkXgtyrXtbgjGzsbaXVRUR7IyTqKNMO0eUFeoLN+GTsm3Em/dUhyUbXcq/U4gTi
+         8vGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741599883; x=1742204683;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=K4uT7Aj9nf7d2IT7mRwWlJl8JB3gxTUY+mQiV67L5Z8=;
+        b=cKtWdmAKLmgpOR1teu+OrAMUFkKaKXIOBizkeGR1yxpS4ugnkagmC5Tzm0aLqM+Qmo
+         e9RUjE05kaOewkYXRRGBPoCAmBj2abwxfDmQ16WoI7RbzyEq/qsSAjFDpbl7hi29wJbK
+         cJLdd45vU4AfTyEFnwXsY4CgExXQPXo6LqvACYuDq/9scEleDVHewaBPUI1/MM7bwyqr
+         RXmyLOTfmAinUMZUgKgPJMBLbj3S7p+sHv6pzPvY1lOOsL20B2tOgAWJW6CbC9sIF+Sn
+         iKcTIDLX1UIvUFWWxOKa1/5PtQV93CVUJ5y4dBIXiXDwnxfNPYiCjrw4Hc/QBW8Z3PBm
+         OIsA==
+X-Forwarded-Encrypted: i=1; AJvYcCWeU+6HIPFHZ88TpaQx+0X7T3q2lHXw0LYFZGvHDVL1ooBj/HwPU5VLD0tRMFicMdcNTJSXrXRQngcn3b52UA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw787VXWIzt/r+W6AixUTiODMR7F92Lcyom3FKOMzrFON4EC/jk
+	tKSsb6KzMzkqMtwvF0M8J8rR3K2tjSVv5dewYovXHnVj7Gzn8XkQDqc2vYiq+/qrea4X3L+epxL
+	0SP2KXqsxxPjChg==
+X-Google-Smtp-Source: AGHT+IGVyxro7AL58g4XR8fKVbaaI1TWX7wPwMNwsGLr+PpgDItcCn2Z27WVF1wmJWCgCt0fQ+bi8w9hZQvKDuI=
+X-Received: from wmbay19.prod.google.com ([2002:a05:600c:1e13:b0:43c:f27f:e9f2])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a5d:598c:0:b0:391:3bdb:af5d with SMTP id ffacd0b85a97d-3913bdbb534mr4193539f8f.28.1741599882976;
+ Mon, 10 Mar 2025 02:44:42 -0700 (PDT)
+Date: Mon, 10 Mar 2025 09:44:41 +0000
+In-Reply-To: <20250310073040.423383-2-richard120310@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <20250310073040.423383-1-richard120310@gmail.com> <20250310073040.423383-2-richard120310@gmail.com>
+Message-ID: <Z860iWGtaEFMD2hj@google.com>
+Subject: Re: [RFC PATCH 1/2] rust: list: Implement normal initializer for ListLinks
+From: Alice Ryhl <aliceryhl@google.com>
+To: I Hsin Cheng <richard120310@gmail.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
+	a.hindborg@kernel.org, tmgross@umich.edu, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, skhan@linuxfoundation.org, 
+	linux-kernel-mentees@lists.linux.dev, jserv@ccns.ncku.edu.tw
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250310-inline-c-wrappers-v1-1-d726415e6332@posteo.net>
-X-B4-Tracking: v=1; b=H4sIAEKzzmcC/x3MQQqAIBBA0avErBtQI5KuEi1EpxoIkxEqEO+et
- HyL/wtkEqYMc1dA6ObMV2zQfQf+cHEn5NAMRplRDcoix5MjocdHXEokGYOzA3ntjZsmaF0S2vj
- 9n8ta6wevQw8GYwAAAA==
-X-Change-ID: 20250308-inline-c-wrappers-da83ec1c2a77
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Nathan Chancellor <nathan@kernel.org>, 
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- llvm@lists.linux.dev, Panagiotis Foliadis <pfoliadis@posteo.net>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1741599617; l=3618;
- i=pfoliadis@posteo.net; s=20250308; h=from:subject:message-id;
- bh=+0wn6CEZBMks82wBoIPLAtnrHTCR+LvgWxO/drTJy2c=;
- b=va5T3sB7VN1Q9VHEsh3uaHTGU4mG5/H7vyeKhbV9ow08fFutaBADQBRBBoxI25knuJk/WSbvd
- lcQNwKQCGwqD1x0sQrVwXOE8i3+IRZRxnESvJFR88YHq6gC+SrYXHQa
-X-Developer-Key: i=pfoliadis@posteo.net; a=ed25519;
- pk=/8ch2dv3mwtZ5ygYwiG7ldc/132K6XmLkAZDmIe0aQw=
 
-When you build the kernel using the llvm-18.1.3-rust-1.85.0-x86_64
-toolchain provided by kernel.org, the following symbols are generated:
+On Mon, Mar 10, 2025 at 03:30:39PM +0800, I Hsin Cheng wrote:
+> Currently ListLinks only supports to create an initializer through
+> "new()", which will need further initialization because the return type
+> of "new()" is "impl Pininit<Self>". Not even "ListLinksSlefPtr" use the
+> method to create a new instance of "ListLinks".
+> 
+> Implement a normal method to create a new instance of type "ListLinks".
+> This may be redundant as long as there exist a convenient and proper way
+> to deal with "ListLinks::new()".
+> 
+> For now it's introduce for the simplicity of examples in the following
+> patches.
+> 
+> Signed-off-by: I Hsin Cheng <richard120310@gmail.com>
 
-$ nm vmlinux | grep ' _R'.*Task | rustfilt
-ffffffff817b2d30 T <kernel::task::Task>::get_pid_ns
-ffffffff817b2d50 T <kernel::task::Task>::tgid_nr_ns
-ffffffff817b2c90 T <kernel::task::Task>::current_pid_ns
-ffffffff817b2d00 T <kernel::task::Task>::signal_pending
-ffffffff817b2cc0 T <kernel::task::Task>::uid
-ffffffff817b2ce0 T <kernel::task::Task>::euid
-ffffffff817b2c70 T <kernel::task::Task>::current
-ffffffff817b2d70 T <kernel::task::Task>::wake_up
-ffffffff817b2db0 T <kernel::task::Task as kernel::types::AlwaysRefCounted>::dec_ref
-ffffffff817b2d90 T <kernel::task::Task as kernel::types::AlwaysRefCounted>::inc_ref
+This change is not good. The ListLinks type has an invariant about when
+the pointers are null. The existing constructor argues that the
+invariant is satisfied because pin-init initializers can't be used in an
+existing Arc. Why is that satisfied here?
 
-Most of these Rust symbols are trivial wrappers around the C functions
-signal_pending, uid, euid, wake_up, dec_ref and inc_ref.It doesn't
-make sense to go through a trivial wrapper for these functions, so
-mark them inline.
-
-After applying this patch, the above command will produce this output:
-
-ffff8000805aa004 T <kernel::task::Task>::get_pid_ns
-ffff8000805aa01c T <kernel::task::Task>::tgid_nr_ns
-ffff8000805a9fe8 T <kernel::task::Task>::current_pid_ns
-ffff8000805a9fd0 T <kernel::task::Task>::current
-
-Signed-off-by: Panagiotis Foliadis <pfoliadis@posteo.net>
-Link: https://github.com/Rust-for-Linux/linux/issues/1145
----
- rust/kernel/task.rs | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-index 07bc22a7645c0c7d792a0a163dd55b8ff0fe5f92..996d7c96e48689a5752817f9ca196c021865291d 100644
---- a/rust/kernel/task.rs
-+++ b/rust/kernel/task.rs
-@@ -273,18 +273,21 @@ pub fn pid(&self) -> Pid {
-     }
- 
-     /// Returns the UID of the given task.
-+    #[inline]
-     pub fn uid(&self) -> Kuid {
-         // SAFETY: It's always safe to call `task_uid` on a valid task.
-         Kuid::from_raw(unsafe { bindings::task_uid(self.as_ptr()) })
-     }
- 
-     /// Returns the effective UID of the given task.
-+    #[inline]
-     pub fn euid(&self) -> Kuid {
-         // SAFETY: It's always safe to call `task_euid` on a valid task.
-         Kuid::from_raw(unsafe { bindings::task_euid(self.as_ptr()) })
-     }
- 
-     /// Determines whether the given task has pending signals.
-+    #[inline]
-     pub fn signal_pending(&self) -> bool {
-         // SAFETY: It's always safe to call `signal_pending` on a valid task.
-         unsafe { bindings::signal_pending(self.as_ptr()) != 0 }
-@@ -319,6 +322,7 @@ pub fn tgid_nr_ns(&self, pidns: Option<&PidNamespace>) -> Pid {
-     }
- 
-     /// Wakes up the task.
-+    #[inline]
-     pub fn wake_up(&self) {
-         // SAFETY: It's always safe to call `signal_pending` on a valid task, even if the task
-         // running.
-@@ -328,11 +332,13 @@ pub fn wake_up(&self) {
- 
- // SAFETY: The type invariants guarantee that `Task` is always refcounted.
- unsafe impl crate::types::AlwaysRefCounted for Task {
-+    #[inline]
-     fn inc_ref(&self) {
-         // SAFETY: The existence of a shared reference means that the refcount is nonzero.
-         unsafe { bindings::get_task_struct(self.as_ptr()) };
-     }
- 
-+    #[inline]
-     unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
-         // SAFETY: The safety requirements guarantee that the refcount is nonzero.
-         unsafe { bindings::put_task_struct(obj.cast().as_ptr()) }
-
----
-base-commit: 7f0e9ee5e44887272627d0fcde0b19a675daf597
-change-id: 20250308-inline-c-wrappers-da83ec1c2a77
-
-Best regards,
--- 
-Panagiotis Foliadis <pfoliadis@posteo.net>
-
+Alice
