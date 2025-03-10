@@ -1,136 +1,114 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0D5221576
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 11:44:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744A02236F6;
+	Mon, 10 Mar 2025 11:54:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741607068; cv=none; b=K2NyMIxT5wen2sVEwTORkjU5gHQY+yn0L/3Xr8DfqGikziuCPlVfcUqpQ7tPIlpv/FtThjqj6dQ5GpXTVDkB4tqxXPmd6m9iJmdaIf8S3Et4q1SzFETWY7uyjuoB8nmyCBiuEJ/fML2CX82sJC4895tfITJg/HcDCAH6z71MNyA=
+	t=1741607652; cv=none; b=Aqg3Cg5zxajCFpOQ4Z7ZUVDvnSQFwJ5xG5Iq/6VR8ux44GlvoSNQtmn2HE7vZPgJbva95i8pW+ZF4CxIH3VJUCyra+HPg2n9hm+kfGS3kWuSZ2Uqz7wBDM5mgIQzD1+bTwFTUVYciUg51GYiTWV2kG53EH5xuapWGm3QTB3MNYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741607068; c=relaxed/simple;
-	bh=0IrI9FdaopGtKLOIXX1VUbBx9Fs7ebXPM1YkORinNVg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HxFDSEKxbKlRK7YfrQYDlaYdiNTHMaw56+YzxIwEjM3AxjgkP+LOeSP/8y0brIXdij1X7vlw9UUw/lIB4+LTTVL8T/v8Tlm6OZ0ea2jk1A5vAfxM3JUvG722zMIDlfRGVcTtfnFpvbWk4z1hzAep/IBgVzk5QTaX4r4iYU5GiwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ssDbcpOK; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1741607652; c=relaxed/simple;
+	bh=WQAyS+wvSGevd5h6mHVr6QduwOkpHnCnqNsLAbkqwYA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=ehawGsdCwruSt4EM1F2Fz+bsZsV6EoB13QQPbVevsf0QSDXx4KVelCKxsw7tMLiCvhf8gLICmnsDOgbP2z4MgFhqUkAhSkFXz28Y3cztIvdYTG7DJgiqVyBY5KW1w3tqNSHbYsk714EmiAazeiMVDUH1DXnEJbD2AxO8C7rTYZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iEhkx2Ic; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ssDbcpOK"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-39127512371so2256919f8f.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 04:44:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iEhkx2Ic"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2ff784dc055so5077696a91.1;
+        Mon, 10 Mar 2025 04:54:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741607065; x=1742211865; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1741607651; x=1742212451; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0IrI9FdaopGtKLOIXX1VUbBx9Fs7ebXPM1YkORinNVg=;
-        b=ssDbcpOKw2Svsx5osKAkflwtEvh16vn5iXyIJXZQ3a+pKrhXiy9Nfng5y71PgM32g7
-         6fyGLNEgOY4hyXXqvu+K5Y3y1cdU+vQR6AeHyKiJCXrAk25UTYlesg+PijcCya4k7O5/
-         PFjgswoosbYnaHd7u7IdrN83BUozlNbgFV/EdvoVDRzYVOzScjPiZARz8VyJoLwz+XtX
-         uyyUVN5rGPqn/ZuiN73GwdZ4OoXbwGqE8TrqpFvUWYUDN5GwgiLvNM+C6QlzSuSndE3k
-         /GdNrqxmECAXwQd3rohn/Cw/K7RmwPkQcQuj+WmZUun0NXevagXy4AKA45jIx3gIGPm0
-         /TJA==
+        bh=RZh5UHX0Yh9smQvLpBtmhqIcELJRC6+5nK4g8sWfxdQ=;
+        b=iEhkx2Ic3ITxx5eb28oHg5ICCz3FFvLB3ygtP1iiQ0dBuzo4SVRtJzOtQ45ae6Jued
+         D6cV4gn/cqPWn0AJAvm3Ils+OqffOqkw/ssZEBXhy2/zfy5IxJ8Q8ObjM8unr5OXx3Hm
+         +1FMEBzIyVPY8wUkwJn1R/0mIuO+FTz1lQJ+XPOEJZl7kJYz83pJgJ7lDRMEaWCDyrkX
+         dL/JE2A5Okml9st7NDJuwrvGcShUb48aoAKsyA2tiiYMeF+RiuNzYOuMKiS6qfWyi7Bb
+         hEaeduf7kNAJELwjM4Y8SLQrdr9ilJ2hFf8kRi+MH849LJy5k9EGypsNWz770hJF15Wt
+         9NfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741607065; x=1742211865;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1741607651; x=1742212451;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=0IrI9FdaopGtKLOIXX1VUbBx9Fs7ebXPM1YkORinNVg=;
-        b=PNn1cpaiJyE1ocaqen/ztb6rsPTwTmvjHjcKozt0oWmNsxrHoLYbFs+RQBSiOKmsuB
-         0BIgr9SS96veKoDkyUWhvtWsuGM4hK/ZTTlQHIQbpXxGwZDC5RR5RkpTwtle4m+rzDIX
-         kjumYRX3iEazrXcTBprFMHpBQZSyeFjPGUzknC0Rchn7cC3hSxi8e8wsnqaydeed34RL
-         gpkqu29YoO4RleCS1eQb/k2m11TLzYoOBXgCDqhNedPwceY+/GZ4l6lgFgVIEKmQmGvm
-         no/IXjtd8wGh9gIeIccegmXK12Silah55Yzsz9YZ9Q1XmO4JAJFUs3pTZ6na2jJCWFC8
-         cQRg==
-X-Forwarded-Encrypted: i=1; AJvYcCVEacQjaMB994XjuDVd8Zcsfc2XPOkIPxQ6KRtaUtPtjohBcllV70DzVICqru+ZsOl9fqxI/p2c8ploYx/Hvw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPOeCzQVyOlHt5IQ9hq42pkrYZaHl8MDnJbhZGwSl2P0RHaGYF
-	McymKoV0INx3btzEl5QJcLQqjhdExpAlhhbj1GlPR0CUOIJ9IROf6n/UcZ2u8bA9AaLp0I53APr
-	dYrJtrJWzNoSvskA+1iJaZaYgnTSw900zYH+P
-X-Gm-Gg: ASbGncvpJBOJ39zncazJjQmZAiepc4YkX6f8ipxUXqfkvsGyBz+voLBNtDyW7VBo+m/
-	DPdimrMs4CJ5Jbl/M2CFRmpKp+zFnUJf/cv8gC9KB9dXG+mrHeEg4oaQhTjS4tBZzVqjdAdRrsb
-	hv8rH3SDXmQauKM/VDtxw5fpst7DKBtCDS1YmPCe0+d3675myweeqt6w==
-X-Google-Smtp-Source: AGHT+IE7B1UYHeaXlm+Rs1PUlDtw0KdbyXU2RKfDQAGpxGR6ZJC6Lkc9/sArkb3lz0K5BFbuAd57jS8ndRkY2yPVbGI=
-X-Received: by 2002:a05:6000:1849:b0:391:3fd2:610f with SMTP id
- ffacd0b85a97d-3913fd26306mr4676571f8f.13.1741607064635; Mon, 10 Mar 2025
- 04:44:24 -0700 (PDT)
+        bh=RZh5UHX0Yh9smQvLpBtmhqIcELJRC6+5nK4g8sWfxdQ=;
+        b=mvQcJ4XKI0ZDTy1wd0fCD0H23TIEb2QO4etZRPt/0WnALWoC0favU2VnQWlVn01LRW
+         Qf2E64e3cYZeoy+EAZ/Fzk++qF47I6mQsqW0txSNJKJAMX4I2J3tkt6JuX6lPEHnZH7L
+         eK2rh+IeRssSR5Ij+2/kWXHLPCXzumGH+tRlZAsOa2nUuTXh8GKbcUL9/2oIV2lA89RC
+         G6iQfyBfeiyfdVIiaVICaDaHWsYQQWuuFVgV1gmRnuWr5oc7Rv5dNm6Y4RQGcznbguGY
+         RDyFi+oogx4U107ugjV36tVnDtNbtKDGUQ/76D/npb78/rNfLVAeDdVoX/Vpr8PMRUD9
+         L/eQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUNcsRkxGfUqWV2sLvv1SpII/G2nBjY2Z03VQ46Yemjn3wFlrRO18T7VX9DAbL4P3pSbTYsy6EPCYVOTvU=@vger.kernel.org, AJvYcCVHxIbRa52XDc4RR0/1tBVwPrBMo+Mt3b3kPAIjdT8FmzTuYItBut3zIzRY2k58HhHcU3gwh4n2CN+3vDYAv7s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw75xHZht44IwqdBseovXZcR/7YVtQvcCTjU2tC6pXFJbsncobc
+	ToXyox8Q8KYEGvQvJW51Vj5gvmbZmKjxmrnbmhA7r8jtvBs9j6sf
+X-Gm-Gg: ASbGncvb4AAZsUrBNR67iFP67Fj0muxURrooem6Nw8uOd/Y5kXIKUtP0mJdVT3X5rxe
+	0rRXyz5jXYIvkx7MKbQz57eKLdYEw2mmXN6pRYx87vPg2pZuztukl1Mv4nyFwgeyHwd2VL1G/JZ
+	yd5RI+ZRetF3dqML+/4Vlv/Ce8UMiR0fxy+MmcAMo8noGwNd8kZfKTOkfGx6eyWfZDhyz6QkOqD
+	kuGSiC6fBwqt1qbSTtor8LRnnT1YBs1AkGZ4+znAczp2LrDQ3MDcfeSJqZevwghPOWk47J+VO/R
+	R0KJk+Ld48guG/OiU6wwoGeNii5m7+Lunu0g12VBSIUiUx3Rx0ISR3cnk7TCSzs=
+X-Google-Smtp-Source: AGHT+IGOrbeqtV8cfu0Kg9gzfwrryMLkxz2zTMBjj6MQlo9KZf8HbYsCypifsqFi+/SStYmRrgSKaQ==
+X-Received: by 2002:a17:90a:ec87:b0:2f5:88bb:118 with SMTP id 98e67ed59e1d1-2ff7cef6771mr17940024a91.22.1741607650521;
+        Mon, 10 Mar 2025 04:54:10 -0700 (PDT)
+Received: from linuxsimoes.. ([187.120.156.44])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ff4e7ffe18sm9678820a91.31.2025.03.10.04.54.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Mar 2025 04:54:10 -0700 (PDT)
+From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: a.hindborg@kernel.org,
+	alex.gaynor@gmail.com,
+	aliceryhl@google.com,
+	apw@canonical.com,
+	arnd@arndb.de,
+	aswinunni01@gmail.com,
+	axboe@kernel.dk,
+	benno.lossin@proton.me,
+	bhelgaas@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	charmitro@posteo.net,
+	dakr@kernel.org,
+	dwaipayanray1@gmail.com,
+	ethan.twardy@gmail.com,
+	fujita.tomonori@gmail.com,
+	gary@garyguo.net,
+	gregkh@linuxfoundation.org,
+	joe@perches.com,
+	linux-kernel@vger.kernel.org,
+	lukas.bulwahn@gmail.com,
+	ojeda@kernel.org,
+	pbonzini@redhat.com,
+	rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu,
+	trintaeoitogc@gmail.com,
+	walmeida@microsoft.com
+Subject: Re: [PATCH V7 1/2] rust: module: change author to an array
+Date: Mon, 10 Mar 2025 08:53:58 -0300
+Message-Id: <20250310115358.854053-1-trintaeoitogc@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CANiq72m1NW7UVYD8+bt2bYivb++pR+7_2P9NooAcLX4zjKWkHQ@mail.gmail.com>
+References: <CANiq72m1NW7UVYD8+bt2bYivb++pR+7_2P9NooAcLX4zjKWkHQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250310073040.423383-1-richard120310@gmail.com>
- <20250310073040.423383-2-richard120310@gmail.com> <Z860iWGtaEFMD2hj@google.com>
- <Z87JpNJU5gxN0YgS@vaxr-BM6660-BM6360>
-In-Reply-To: <Z87JpNJU5gxN0YgS@vaxr-BM6660-BM6360>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 10 Mar 2025 12:44:12 +0100
-X-Gm-Features: AQ5f1JpNF9ypxpEOLJQP_OHzmzJH77QM5OOCwzuX8EZKFBAaIB9z1lOqXLa0UJA
-Message-ID: <CAH5fLgiUj7R4SvKYT3HGxqSDnjs4T6EKB91bX1JFe-a9a=fHsg@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/2] rust: list: Implement normal initializer for ListLinks
-To: I Hsin Cheng <richard120310@gmail.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
-	a.hindborg@kernel.org, tmgross@umich.edu, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, skhan@linuxfoundation.org, 
-	linux-kernel-mentees@lists.linux.dev, jserv@ccns.ncku.edu.tw
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 10, 2025 at 12:14=E2=80=AFPM I Hsin Cheng <richard120310@gmail.=
-com> wrote:
->
-> On Mon, Mar 10, 2025 at 09:44:41AM +0000, Alice Ryhl wrote:
-> > On Mon, Mar 10, 2025 at 03:30:39PM +0800, I Hsin Cheng wrote:
-> > > Currently ListLinks only supports to create an initializer through
-> > > "new()", which will need further initialization because the return ty=
-pe
-> > > of "new()" is "impl Pininit<Self>". Not even "ListLinksSlefPtr" use t=
-he
-> > > method to create a new instance of "ListLinks".
-> > >
-> > > Implement a normal method to create a new instance of type "ListLinks=
-".
-> > > This may be redundant as long as there exist a convenient and proper =
-way
-> > > to deal with "ListLinks::new()".
-> > >
-> > > For now it's introduce for the simplicity of examples in the followin=
-g
-> > > patches.
-> > >
-> > > Signed-off-by: I Hsin Cheng <richard120310@gmail.com>
-> >
-> > This change is not good. The ListLinks type has an invariant about when
-> > the pointers are null. The existing constructor argues that the
-> > invariant is satisfied because pin-init initializers can't be used in a=
-n
-> > existing Arc. Why is that satisfied here?
-> >
-> > Alice
->
-> Hi Alice,
->
-> Thanks for your kindly review. Indeed , I was trying to find a way to
-> cope with "ListLinks::new()", wondering if there's any macros like
-> "ListLinks::try_pin_init!()" to help us deal with "impl PinInit", so I
-> try to send a RFC patch for it.
->
-> Sorry I overlooked "commit 52ae96f"[1], it demonstrate a good way to
-> handle the basic structure for "List", I'll fix the patch and send a v2
-> as soon as possible.
->
-> Still I would love to ask why don't we provide "ListLinks::pin_init" or
-> "ListLinks::try_pin_init" to support for the pin-init initializer
-> returned by "ListLink::new()" ? Maybe there're special reasons behind
-> the pin-init initializer here ? I would love to learn if that's
-> possible.
->
-> I tried "Kbox::pint_init" but it
-> wouldn't give variable of type "ListLinks".
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
+> Please also avoid sending new versions for very small tweaks or very
+> frequently, since it gets confusing, e.g. I had in my queue to reply
+> to this message, which is v7 but v9 is already in the list... :)
+> 
+> Generally, you should wait a week, or at least a couple days, between
+> revisions (there are exceptions, of course, but this is not an urgent
+> series).
+Hm, ok. I will wait more in the next time.
 
-Please see the examples from:
-https://lore.kernel.org/rust-for-linux/20250210-cursor-between-v7-2-36f0215=
-181ed@google.com/
-
-Alice
+Thanks,
+Guilherme
