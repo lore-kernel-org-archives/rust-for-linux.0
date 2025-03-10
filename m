@@ -1,93 +1,120 @@
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FF4E545;
-	Mon, 10 Mar 2025 07:53:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DEBA224238
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 08:47:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741593241; cv=none; b=QjFPaRCtRrHHbQG3bbAyclJh2L5cz5K12e54k5v8Nijayo2+sgDa2paHmaK3faSlZPRVPyvsHKneA0G4Pr4+J1I6RNSbcwu20gayw9QKkvtlaWEDhgb3cQ56x04kC4Iwpzm+XMo1bCrALKQyk4BEVwjgZTZ8GcE6ZTd3ibik1Sc=
+	t=1741596463; cv=none; b=ZKndVrPDubnnL3i8rbKkXDKIOgI0KcWY/hYvkcTOoerduKZNlX6wpZG/MljOpd6cFwYN960v1e0YnOkH6Cwa4uhmiG4dcBEUSaP/abrLreEYKNtynclMbhdLnGxJsxrnR2fpICPRYaplcG0Ff3l9unoJJ4D+Q8qTXm57Oi+mgfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741593241; c=relaxed/simple;
-	bh=UHUBbUuVVoKH0VquUmZL9sgGtO4+cUuhpr1niZO/DL4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=a/XEBIqsXRdm9u/6A8SWbu2MrDOU3KTjoJyl1YAKIpnAW6wvE4cHKyjAylQInIda3mU8VWL3xofoi8r1GiEDVJwTK+18BKax0EEydpvpZhESQqCuy/+LRh6Hh6nXllyRUW/EC2x02BTttvZUu6+STIyQWjBxdp3/drL8u4qfkoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com; spf=pass smtp.mailfrom=perches.com; arc=none smtp.client-ip=216.40.44.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perches.com
-Received: from omf12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 17937140AAD;
-	Mon, 10 Mar 2025 06:36:55 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf12.hostedemail.com (Postfix) with ESMTPA id 148FF1B;
-	Mon, 10 Mar 2025 06:36:39 +0000 (UTC)
-Message-ID: <8f8c79c5f1c5508defdd4a4c020c2c8e60b95afb.camel@perches.com>
-Subject: Re: [PATCH V9 2/2] checkpatch: check format of Vec<String> in
- modules
-From: Joe Perches <joe@perches.com>
-To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>,
- a.hindborg@kernel.org, 	alex.gaynor@gmail.com, aliceryhl@google.com,
- apw@canonical.com, arnd@arndb.de, 	aswinunni01@gmail.com, axboe@kernel.dk,
- benno.lossin@proton.me, 	bhelgaas@google.com, bjorn3_gh@protonmail.com,
- boqun.feng@gmail.com, 	dakr@kernel.org, dwaipayanray1@gmail.com,
- ethan.twardy@gmail.com, 	fujita.tomonori@gmail.com, gary@garyguo.net,
- gregkh@linuxfoundation.org, 	lukas.bulwahn@gmail.com, ojeda@kernel.org,
- pbonzini@redhat.com, tmgross@umich.edu, 	walmeida@microsoft.com,
- charmitro@posteo.net
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sun, 09 Mar 2025 23:36:20 -0700
-In-Reply-To: <20250309175712.845622-3-trintaeoitogc@gmail.com>
-References: <20250309175712.845622-1-trintaeoitogc@gmail.com>
-	 <20250309175712.845622-3-trintaeoitogc@gmail.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1741596463; c=relaxed/simple;
+	bh=9n63M6cGbaQkIaHcgWry9bP+ZAoZDm95prcdWNr1ukM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=SztYVGI5qAgbHf9wAkNZyQJOCXSeASBfSkA7Wd46oQf/Edta4emJH/Z5dCaXiGL97/whu3fpw6ZpjsugoTXn9fik0TAqf98JHa0URrHwQ9aWR9z5M/KJrcNIclrMvd4nBnz3mPiMk7LACVF7cZvBLSFAM71IySV/LXijapob25c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=AmWBRWo1; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="AmWBRWo1"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id E934C240107
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 09:47:33 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1741596453; bh=9n63M6cGbaQkIaHcgWry9bP+ZAoZDm95prcdWNr1ukM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 From;
+	b=AmWBRWo1ARXcEJPmhCi1bGD/1pVa1mX3xuWWoWrFeIa/BiUgk1nzqs+jEn76Lbtt3
+	 kGUQCnvV1W3NiOn4or3gM34B/oF9okji48f2IEtEtALqdZ/u/EFHMGwAAF6y3yxUP/
+	 c2omEaiSoqvlVCOB9rO79lDWEJuLRNyCLKcgRpBJCW2Y8dQ/ZquwXwSdKJTn2mHGLs
+	 5jEJEAjySCJF5BZkOzOxO1l3gab+vmAxsI1BcR3QmKcJacic2dzrEKjqgjE8iflVmH
+	 BnxDdIXWwhuxhTCAa5JD3f1s+ulcLD4Ac3S5j1Os6P7aoIXFEcwdDY4QxDdmV3+U/j
+	 3rODYWzzfI0JA==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4ZB9WQ523pz9rxc;
+	Mon, 10 Mar 2025 09:47:30 +0100 (CET)
+From: Charalampos Mitrodimas <charmitro@posteo.net>
+To: Ethan Carter Edwards <ethan@ethancedwards.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,  "Rafael J. Wysocki"
+ <rafael@kernel.org>,  Danilo Krummrich <dakr@kernel.org>,  Miguel Ojeda
+ <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,  Boqun Feng
+ <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6?=
+ =?utf-8?Q?rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  Benno Lossin <benno.lossin@proton.me>,
+  Andreas Hindborg <a.hindborg@kernel.org>,  Alice Ryhl
+ <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,  Nathan
+ Chancellor <nathan@kernel.org>,  Nick Desaulniers
+ <nick.desaulniers+lkml@gmail.com>,  Bill Wendling <morbo@google.com>,
+  Justin Stitt <justinstitt@google.com>,  rust-for-linux@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  llvm@lists.linux.dev
+Subject: Re: [PATCH] rust/kernel/faux: mark Registration methods inline
+In-Reply-To: <20250309-faux-inline-v1-1-c1b692862433@ethancedwards.com> (Ethan
+	Carter Edwards's message of "Sun, 09 Mar 2025 22:14:36 -0400")
+References: <20250309-faux-inline-v1-1-c1b692862433@ethancedwards.com>
+Date: Mon, 10 Mar 2025 08:47:29 +0000
+Message-ID: <m27c4x2rxa.fsf@posteo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Stat-Signature: p9cph1jeswnj9w9nxbh4c7roihn4nrjs
-X-Rspamd-Server: rspamout01
-X-Rspamd-Queue-Id: 148FF1B
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX18w88ZBJJCoObOr4Bc2nSFO4NwYZH97oNs=
-X-HE-Tag: 1741588599-993698
-X-HE-Meta: U2FsdGVkX1+/5wl5cfPQIH0Sr4/zmoFqjKsaQ13RYnEL4VZHhMWRRgf+k+4cRc90b+lUmmpH48H5c7xPf7Rq3EdNbx0hp8Ym6R/9yMaYh+ryKqHt+ZmnWiwG/XCIp9baHMKEmBaxXKk1YbCIN/Dvy1QmbzXIhIIJndC9ky4aQGyNJbZ0CVw7T5FQjY2CxXAs+VgJdkklp1oN1PxFQk7ZlMnmYPlLs0ewlpS72xBnC8RoVNtzonO/fHxoVIGJP5mgGQKKai4SOYGj/vuI2AKRInypatn5mAAtdguToeP8lXGGx9pwF338iT8SsuzlVeRz
+Content-Type: text/plain
 
-On Sun, 2025-03-09 at 14:57 -0300, Guilherme Giacomo Simoes wrote:
-> Implement a check to ensure that the author, firmware, and alias fields
-> of the module! macro are properly formatted.
->=20
-> * If the array contains more than one value, enforce vertical
->   formatting.
-> * If the array contains only one value, it may be formatted on a single
->   line
+Ethan Carter Edwards <ethan@ethancedwards.com> writes:
 
-What happens if the patch contains more than one module?
+> When building the kernel on Arch Linux using on x86_64 with tools:
+> $ rustc --version
+> rustc 1.84.0 (9fc6b4312 2025-01-07)
+> $ cargo --version
+> cargo 1.84.0 (66221abde 2024-11-19)
 
-> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-[]
-> +# check if the field is about author, firmware or alias from module! mac=
-ro and find malformed arrays
-> +		my $inline =3D 0;
-> +		my $key =3D "";
-> +		my $add_line =3D $line =3D~ /^\+/;
-> +
-> +		if ($line =3D~ /\b(authors|alias|firmware)\s*:\s*\[/) {
+Hi Ethan,
 
-?
+I think stating your Cargo version is unnecessary, we don't use cargo
+(atleast not anymore).
 
-> +		if ($expected_spaces && $spaces) {
-> +			if (length($spaces) !=3D length($expected_spaces)) {
-
-spaces contains both spaces and tabs.
-Why not test the strings rather than the length?
-Otherwise tab-space is the same length as space-tab.
-
-> +				WARN("ARRAY_MODULE_MACRO",
-> +					 "Prefer aligned parameters\n" . $herevet_space_add);
-
-Alignment to open parenthesis please.
-
-Why is herevet_space_add more useful than herevet?
-
+> $ clang --version
+> clang version 19.1.7
+> Target: x86_64-pc-linux-gnu
+>
+> The following symbols are generated:
+> $ nm vmlinux | rg ' _R' | rustfilt | rg faux
+> ffffffff81959ae0 T <kernel::faux::Registration>::new
+> ffffffff81959b40 T <kernel::faux::Registration as core::ops::drop::Drop>::drop
+>
+> However, these Rust symbols are wrappers around bindings in the C faux
+> code. Inlining these functions removes the middle-man wrapper function
+> After applying this patch, the above function signatures disappear.
+>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1145
+> Signed-off-by: Ethan Carter Edwards <ethan@ethancedwards.com>
+> ---
+>  rust/kernel/faux.rs | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/rust/kernel/faux.rs b/rust/kernel/faux.rs
+> index 5acc0c02d451f6d5a26b837d509374d508f26368..5fdd85ea64398130066d38e42f7c7485673f290c 100644
+> --- a/rust/kernel/faux.rs
+> +++ b/rust/kernel/faux.rs
+> @@ -24,6 +24,7 @@
+>  
+>  impl Registration {
+>      /// Create and register a new faux device with the given name.
+> +    #[inline]
+>      pub fn new(name: &CStr) -> Result<Self> {
+>          // SAFETY:
+>          // - `name` is copied by this function into its own storage
+> @@ -50,6 +51,7 @@ fn as_ref(&self) -> &device::Device {
+>  }
+>  
+>  impl Drop for Registration {
+> +    #[inline]
+>      fn drop(&mut self) {
+>          // SAFETY: `self.0` is a valid registered faux_device via our type invariants.
+>          unsafe { bindings::faux_device_destroy(self.as_raw()) }
+>
+> ---
+> base-commit: fc2f191f850d9a2fb1b78c51d49076e60fb42c49
+> change-id: 20250309-faux-inline-6c8eead1bcd0
+>
+> Best regards,
