@@ -1,65 +1,65 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777212253E1
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 09:50:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8533C2248A8
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 09:50:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741600208; cv=none; b=BSz4wp4kTvPnEX2SUU5oaWiGgXuwPjb4r21LegRpuhvx+WIkhK735X/bcuDLI3z87cnqz/gHtNl824wdlCpW0xN8EIK3Pig9/1iENXQDuABH/UV85bAmgljw5dRQQiiF//qXeAv12zsuND4n2UBhXaN5NiXGn3CqEE8munYsciU=
+	t=1741600246; cv=none; b=UwPAVSfYZTh0/C+0+kZMG4OdTjk56pNHxlNDmtBe1/tCOqjhaDSPAxzkqgL1y+IscyzTuM+QGLXFK3KNxl4JIJNES99Tx8oXlN87FsSl2X/pl+xpx/vJwu3QTUgC7a1EzFZJB4M/2f7btsoXc8Ya2DOdTL7IoAPOCNg7txVgAGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741600208; c=relaxed/simple;
-	bh=li9maBtZYH0WSwQ7I4Sx8a2w/PrJcS0hZ8B1pMYw794=;
+	s=arc-20240116; t=1741600246; c=relaxed/simple;
+	bh=TOgB3PbgApKpM9HteeeXMis/Iog1yG/ceAJzbz4WSC4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=XJYuMCH7Dlwqd9rNt/myeysIqR8IepA0I2Dv6zLcZjYpvQFyFq/i1QVADra57CECr4aw/lr3rsa5vCjPpLv81u1YqRbVEJzRKltRg3m1Ea/e5ZzZIjC9o4lbei/L2pm0NJRPf1xjHvlPJ3GGFwnO0ggHOFaIY2oMkTN1Me0CcR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BsKuJzZg; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=spj33whs6W3cA+zqTNPwGOPBf9zc4H7JAZwld5t9eKvZm2hbPYiSbqLEHl6215W0ig+Fx3PvAs9Y1ZAumrxCaTAaoJMZPJUvaKnGI7DeHHHioQLJF+9r5VYyMDzfnt/9/fT4dZv7m7VWj4vLaaSnegFWZy3MfeSxgtFXLKF9Big=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vlrbDqiV; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BsKuJzZg"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43cf5196c25so4090625e9.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 02:50:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vlrbDqiV"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3912fe32b08so1937466f8f.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 02:50:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741600205; x=1742205005; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1741600243; x=1742205043; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zayc4ME8ub10z847YBIo2OSP/R7y2OfUd/FH2hrf0YE=;
-        b=BsKuJzZgNkMN0gd1ldRnao7dettc3eGf/7vIIodjJYuAbZG7YPu9881ujBtpDvHaWl
-         PycahbH5cEMd7VP+CXIBku3jnPe4vQrHML8r8AjUe0tNxPYd6G2knFp1tdYpwODjYdSw
-         DtrnZA1AG7pgpZ2E3T+5H9sT0v02/W4CR4N55PmrJZZQiXDiFQW8I4XUl7M6m1bHxP3l
-         uRLg1Ss8N9vPuspEilaBC1lcdYKm5yAMqZbU6rE+2PiO5IPemGbZ7++Z7I2gHaW03e9V
-         TOxCUbigJgGdpkVe2qcAuEjy0Szz1TXkuxYwPFwTEqLoRsMsC6XYMM9kLPIEeXgFAy6C
-         gU7Q==
+        bh=B/nswyrml7wVD0q8mwmURLpx4kqpdNOs0AJ+kP0PTJw=;
+        b=vlrbDqiVYW3MmqExT26JT1/9PZ7o+RPBKODTYkC3x3b/9vM9X2d2MWRq2KGZs2aAT/
+         Y+RKk4ymLAzJUc9XwU0Bw3P9uT0OMrUeFr+IFMoo9Aish5Ww8hRSi3AASo+6cYnOcAal
+         mX1VWM2Os0Q4tx0OuIVRdC7A6vQVrdmJ6oCq2BFFnJywMOSzRMdC+nZ8E3jNs9sXEcmd
+         FCaqoD1WDbVwA24Cd/8YouSXkzO8WH8ceEFaBLMjlV/KNjwF5c9mruSplM4lGCbSYzir
+         QRkRSHZ0NfN2xnbCIrHeCSqzk2rYlSW1lE9kd9h2YFoivD5egapZaabpJm7gLPnMiCXL
+         ERgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741600205; x=1742205005;
+        d=1e100.net; s=20230601; t=1741600243; x=1742205043;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zayc4ME8ub10z847YBIo2OSP/R7y2OfUd/FH2hrf0YE=;
-        b=G1SRw5eBNTyQ5OWjd9H//c3INhJ1UuhAG2KJzv5uFeQn/hiGF14Zy0f11gsWg+qwMJ
-         iFGFZNalRJqs7Hm05BZ35DhL5wdcyp/t/HunMlzzMTxdd3b0pG+1D7bW7mr2JDw5j4VP
-         dts1FG5ppv0G0KCSEuy+u/O5EK3lt8F7EsPR7kN8LYE5l04RjlvtXz/8pouFVZoekwoz
-         S7YD8RVK6nmjeAGcNCjuvSQkWvLGV+y5qqPRgjKtUErpiL98jY9dGWFmdVHbNZvYhhXe
-         waXbQHk+DesqojqtuZ/seP1bWRzoGneB7TTqFTeXQKiGNotgEVugpJjzVO0XCVLTlvJC
-         +EpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUeYimCVq/fzXHtg7hQ167eYWTzH/qqwnOyX4hMM7tQX8aMqLzGLg3fFY+V4xEymp5J8W1p+3WnQlQNDlS4fQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YywjZ9cpmiOW58krrC1xpMnzmgYvpLzdHZQKD16rZHO+S7a65WA
-	npQTDhY4TsZKcZ8/ugU+Wmu3Rze38D9rZvyn3mBl55+4CEhHXsO02GpKdQ5KREgq0nQ1iciQf4J
-	I/QN+U4UaMivQtA==
-X-Google-Smtp-Source: AGHT+IFh6zDOg5JSQ5hBks5Kv2fA7ferdFCU+xaQli8NpPVCQgSZ8GXEKmfHPKiJ2GFqReRUcUZjB4F9g1Vim14=
-X-Received: from wmgg17.prod.google.com ([2002:a05:600d:11:b0:43b:c336:7b29])
+        bh=B/nswyrml7wVD0q8mwmURLpx4kqpdNOs0AJ+kP0PTJw=;
+        b=mRB4UBktjmPHmqU2Al7jShMP5rMwIwTZdLmjnyQS8y/frOfKfTo9OwkljahlTaePis
+         9wzCDZla9PaMT4plibG8QEk98l+t7y4yoU5Y/jH6643DmFi1ngGthic6RUJPCFkH/Sgx
+         WoARb6vbOq6GrNvgFy7RkemSeUycwmjj6u4UYzYLQoDTlS7Qo5E453jjVPjcy9ei/TYe
+         Gp2kDvIwEBZg3/1+49+rSyqINd/MrtwBJqu0Ps65evT2q2I6OfO0ZD/H4JjljNV6oNqx
+         v9NpuIAAUJCoP+P/wa7txjLKsJ/DU2cgrrrgJB/3wiadonsL+fS3UbxbjV9oSraStH0X
+         i9TA==
+X-Forwarded-Encrypted: i=1; AJvYcCUZ3mhMdqsgU6arA1YOlUGeP8jPjvTx1yfj6wm8ImpsBADFrvH4rxu5TBigRIPkNL1k0v5DgjQJjEKtquIMWQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSQ+yeL/h+l5ZKHK4tuLoeG6vzGeZk9WFm5rlpGdawXvWbcsgQ
+	W6d6F6xlOK94aPlCqZZS6bkDtWC6RnhU65Zw3TkDVJ0t86DmsUQH4bkhLzvdfWGOMW7UCsTkrFQ
+	CSHoiZ/3ejQ1fhQ==
+X-Google-Smtp-Source: AGHT+IEvw9gbRnYCa4DZNWLBplx0pkmchJgqVCESliNTCd+NA5Dn2Rk7SdB8yqxlQJfnZPEWxsK6Dn9tPfTSqLU=
+X-Received: from wrbby18.prod.google.com ([2002:a05:6000:992:b0:391:3790:eb02])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:474c:b0:434:fb65:ebbb with SMTP id 5b1f17b1804b1-43c5a6116f2mr81052195e9.17.1741600205067;
- Mon, 10 Mar 2025 02:50:05 -0700 (PDT)
-Date: Mon, 10 Mar 2025 09:50:02 +0000
-In-Reply-To: <20250310-unique-ref-v6-1-1ff53558617e@pm.me>
+ 2002:a5d:5888:0:b0:391:4835:d888 with SMTP id ffacd0b85a97d-3914835d9a6mr2535901f8f.42.1741600242967;
+ Mon, 10 Mar 2025 02:50:42 -0700 (PDT)
+Date: Mon, 10 Mar 2025 09:50:41 +0000
+In-Reply-To: <20250310-unique-ref-v6-2-1ff53558617e@pm.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250310-unique-ref-v6-0-1ff53558617e@pm.me> <20250310-unique-ref-v6-1-1ff53558617e@pm.me>
-Message-ID: <Z861yk1hRZUtLtLp@google.com>
-Subject: Re: [PATCH v6 1/5] rust: types: Add Ownable/Owned types
+References: <20250310-unique-ref-v6-0-1ff53558617e@pm.me> <20250310-unique-ref-v6-2-1ff53558617e@pm.me>
+Message-ID: <Z8618XEgG1yNvppk@google.com>
+Subject: Re: [PATCH v6 2/5] rust: make Owned::into_raw() and Owned::from_raw() public
 From: Alice Ryhl <aliceryhl@google.com>
 To: Oliver Mangold <oliver.mangold@pm.me>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -70,19 +70,14 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, Mar 10, 2025 at 08:49:43AM +0000, Oliver Mangold wrote:
-> From: Asahi Lina <lina@asahilina.net>
+On Mon, Mar 10, 2025 at 08:49:50AM +0000, Oliver Mangold wrote:
+> It might be necessary to be used from some drivers containing C code like,
+> e.g. binder. It basically is needed for every implementation of an Ownable
+> outside of the kernel crate. Also the examples for OwnableRefCounted need
+> it.
 > 
-> By analogy to AlwaysRefCounted and ARef, an Ownable type is a (typically
-> C FFI) type that *may* be owned by Rust, but need not be. Unlike
-> AlwaysRefCounted, this mechanism expects the reference to be unique
-> within Rust, and does not allow cloning.
-> 
-> Conceptually, this is similar to a KBox<T>, except that it delegates
-> resource management to the T instead of using a generic allocator.
-> 
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
+> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
 
-You can't send a patch by others without adding your own SoB.
+I would probably just fold this into the previous patch.
 
 Alice
