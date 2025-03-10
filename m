@@ -1,91 +1,157 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057E12206A4
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 09:23:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25739225407
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 09:40:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741598634; cv=none; b=YVlEzPtNVyhbjMVI3VZBkqed4Yb4Ep9dnZ/FVh1jMIYTGgfRr68fphucF7lmetfz6ILucHxL4Jnq6zk1fwjeR69rsIneMERNayrdfOZhlvhFLh05Q5w5b16S7r3v0paFwxeAiTHLP5vD8QLCd7d/0tPYAH+xRIePzoVGuRLhk0g=
+	t=1741599625; cv=none; b=hK+9unPWFWoAKiuw4zD03x/lHRqimiXO1B78e4hTp3d43JqOlmHWLa15K+p/02TWmjInljeM/Z3W2MW3CUfQ0WlfoHxht8vitffHjhFtoRpFG6cW9nxAiit6AKVpCCEg7XIrDVbrETSnl1PV70MmEsffmRe6kwltYZXisCBvyZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741598634; c=relaxed/simple;
-	bh=NEZwdAcp8NlpW00clPwspaKYfG6ub3nrSf1XaFem7RY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LT+gTGlcdFCOS60SDfBVhQMPvKRcHsN/kk7Tw/ZqqtTlQDFVenMNVcStOSIf/kPGFonupceO5N3nwKzoeLUv90zL84p33mb8Uk+3BvCFJYVor+T+x+V/u3IJxGCUli4O/OP1JmqxUBsNgfUrjv01n8pdHhIT6/8xfReBaq66cTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mb9pilgW; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1741599625; c=relaxed/simple;
+	bh=+0wn6CEZBMks82wBoIPLAtnrHTCR+LvgWxO/drTJy2c=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=oBIP0EgiMs3lj3wCa37ePj0BbPLja6GuxWaGCC7xgo0Q32E3PW+pQAHoUu8szKzf9g2ne8Y4dFJbH1QBWHepaQsuCOMDyKdYeI9vqNUISOVNfMQPYRPrvUy5H4ft8xzdoT4VAJULD2n8v99U8L0B1vMjTnxQmTlh08rKKOqLXqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=acHqHB3P; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mb9pilgW"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43cf3168b87so4142325e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 02:23:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741598631; x=1742203431; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=v0Ey6YaeoGfhw7Uky6jLzAk41/zVhd3SqiNOIt/MFXw=;
-        b=mb9pilgWs2SmHHSTcHGNpCYvg2a36DTtF8ICyOJWhOeAS9AAqE/URWawfKX4au8WLA
-         9Knff1atYRGxZo6WbacAI5dqIKWwLGkbqrTgN5kibWSUM8Z/zb79dq3Uku5v1EDsBM1M
-         YyPRy1++KHs2Sk+j/NJB9mQSeFqh/nX8PK6xBCOzgtxQqQqMRzutf7GsKll+Abzcbhaa
-         rsnZim8fBd75RIsCpYxa2wm37tzAvqdRrgiX6ZSNLx9x/xtKdga60m5nSzBYTSZcmw3n
-         lXHhQXiRa5DppCSjQR6m5g/YrF3x5wgtnUEGATkyIprpuNDTtHtXQZMnEeS5kQDyPW6q
-         689Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741598631; x=1742203431;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=v0Ey6YaeoGfhw7Uky6jLzAk41/zVhd3SqiNOIt/MFXw=;
-        b=ZNeZwGn66W0UjA0F4nsXzYBLL39YTglM6SLxHv8jqsW9OcMce4xjC7OO2YHmMKF2Aw
-         vbyO23QRjXHdFcEtMih6eRbTpx/9s1iK0uL/WO5kpn3wXSTKgLxmQfZ2suQMaZWQoDP+
-         jFhJrqP2+nMggc93slHA2POCwRC3APKo+PZQ7phziRU2SVUlLNo+kiNlh6E0qFpZtSK8
-         qFrNjSwbyEdO/R/IArwfVF+WSRUMQ5aZItunWc5oZA7/GYIkJ6+rzfq0yW8wqlP4ArUx
-         KG/TVbrKm3eSslY7CuDLotce/kauFj2MrpnFm6y2fNJPQ8bm/i25Ky0vZ0gmwe7qAWLg
-         r1RA==
-X-Forwarded-Encrypted: i=1; AJvYcCUNjpofNLFrTaJ2AvJkv4jhy4g5UAE87xxPnRNmJNycLWPm6tLInkyWHxpi3mKnxdeRzDoJC8I+SNFJK2Dzew==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzsm5U9IIpf8QaWEKy/r3foi/aLY6MLnU75mlOVs7DergyOmdg5
-	xNpm6zV+O9BxkfLdVfbxxQdVLJx6VIVD8Y1XEd+1DtHyhiHMesDBIEBugD5Y+j7Yvu3ACSW9nSO
-	tLzR7xH+IXORk1Q==
-X-Google-Smtp-Source: AGHT+IFEp2UnHtcUmo45Bf247g24s/1cJE8+nXgglrMw+cHeJ5tpiviDxAGlDax67viBnDjPJP3vk0eAlr8/sB8=
-X-Received: from wmbfm24.prod.google.com ([2002:a05:600c:c18:b0:43c:fae1:812a])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4fc8:b0:43c:e9f7:d6a3 with SMTP id 5b1f17b1804b1-43ce9f7da7emr48713545e9.13.1741598631433;
- Mon, 10 Mar 2025 02:23:51 -0700 (PDT)
-Date: Mon, 10 Mar 2025 09:23:49 +0000
-In-Reply-To: <202503091916.QousmtcY-lkp@intel.com>
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="acHqHB3P"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id 320CF240104
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 10:40:21 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1741599621; bh=+0wn6CEZBMks82wBoIPLAtnrHTCR+LvgWxO/drTJy2c=;
+	h=From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:To:Cc:From;
+	b=acHqHB3PqIUHedWzc4t5NGeKJY0IqfetmBlFL5uwB5NYW0zEeV4qDA2FGcvWfkdJ5
+	 jh1t9kRvTDGXEye9ry/i9jGKsa2kIfi3UY1xRr/r5m6o3GFoFYsCo7holBijeYK3ku
+	 8l85ZUeKnCkqU+GxMIrVmwINlzE7M7zU0Cdu04kbJHzJLdgqKTG1vE4/r75N2/OXME
+	 qFieguV7pPlpt0xq5/iSNslYb8knSctaoBxJ8AeE9Uu4GI4eDAfxdrZBAjNyZfK4Y+
+	 D2FjzYhxvG/KrRAXP2G64pFsNCnMXMmsFonP9Zrwb92BdCUDtkXBATdB5MwRGaCp/f
+	 NcnNIJS3NrDCw==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4ZBBhK6GQdz9rxM;
+	Mon, 10 Mar 2025 10:40:17 +0100 (CET)
+From: Panagiotis Foliadis <pfoliadis@posteo.net>
+Date: Mon, 10 Mar 2025 09:39:15 +0000
+Subject: [PATCH] rust: task: mark Task methods inline
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250304-vma-v15-5-5c641b31980a@google.com> <202503091916.QousmtcY-lkp@intel.com>
-Message-ID: <Z86vpQBMYuonWsM_@google.com>
-Subject: Re: [PATCH v15 5/9] mm: rust: add mmput_async support
-From: Alice Ryhl <aliceryhl@google.com>
-To: kernel test robot <lkp@intel.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, John Hubbard <jhubbard@nvidia.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>, Suren Baghdasaryan <surenb@google.com>, 
-	oe-kbuild-all@lists.linux.dev, 
-	Linux Memory Management List <linux-mm@kvack.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250310-inline-c-wrappers-v1-1-d726415e6332@posteo.net>
+X-B4-Tracking: v=1; b=H4sIAEKzzmcC/x3MQQqAIBBA0avErBtQI5KuEi1EpxoIkxEqEO+et
+ HyL/wtkEqYMc1dA6ObMV2zQfQf+cHEn5NAMRplRDcoix5MjocdHXEokGYOzA3ntjZsmaF0S2vj
+ 9n8ta6wevQw8GYwAAAA==
+X-Change-ID: 20250308-inline-c-wrappers-da83ec1c2a77
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Nathan Chancellor <nathan@kernel.org>, 
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ llvm@lists.linux.dev, Panagiotis Foliadis <pfoliadis@posteo.net>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1741599617; l=3618;
+ i=pfoliadis@posteo.net; s=20250308; h=from:subject:message-id;
+ bh=+0wn6CEZBMks82wBoIPLAtnrHTCR+LvgWxO/drTJy2c=;
+ b=va5T3sB7VN1Q9VHEsh3uaHTGU4mG5/H7vyeKhbV9ow08fFutaBADQBRBBoxI25knuJk/WSbvd
+ lcQNwKQCGwqD1x0sQrVwXOE8i3+IRZRxnESvJFR88YHq6gC+SrYXHQa
+X-Developer-Key: i=pfoliadis@posteo.net; a=ed25519;
+ pk=/8ch2dv3mwtZ5ygYwiG7ldc/132K6XmLkAZDmIe0aQw=
 
-On Sun, Mar 09, 2025 at 07:37:54PM +0800, kernel test robot wrote:
-> >> error[E0425]: cannot find function `mmput_async` in crate `bindings`
->    --> rust/kernel/mm.rs:143:28
->        |
->    143 |         unsafe { bindings::mmput_async(obj.cast().as_ptr()) };
->        |                            ^^^^^^^^^^^ not found in `bindings`
+When you build the kernel using the llvm-18.1.3-rust-1.85.0-x86_64
+toolchain provided by kernel.org, the following symbols are generated:
 
-It looks like the mmput_async function doesn't exist at all when
-CONFIG_MMU is disabled?
+$ nm vmlinux | grep ' _R'.*Task | rustfilt
+ffffffff817b2d30 T <kernel::task::Task>::get_pid_ns
+ffffffff817b2d50 T <kernel::task::Task>::tgid_nr_ns
+ffffffff817b2c90 T <kernel::task::Task>::current_pid_ns
+ffffffff817b2d00 T <kernel::task::Task>::signal_pending
+ffffffff817b2cc0 T <kernel::task::Task>::uid
+ffffffff817b2ce0 T <kernel::task::Task>::euid
+ffffffff817b2c70 T <kernel::task::Task>::current
+ffffffff817b2d70 T <kernel::task::Task>::wake_up
+ffffffff817b2db0 T <kernel::task::Task as kernel::types::AlwaysRefCounted>::dec_ref
+ffffffff817b2d90 T <kernel::task::Task as kernel::types::AlwaysRefCounted>::inc_ref
 
-I guess I can just make the MmWithUserAsync type not exist at all when
-CONFIG_MMU is disabled to mirror that, but it seems a bit weird.
+Most of these Rust symbols are trivial wrappers around the C functions
+signal_pending, uid, euid, wake_up, dec_ref and inc_ref.It doesn't
+make sense to go through a trivial wrapper for these functions, so
+mark them inline.
 
-Alice
+After applying this patch, the above command will produce this output:
+
+ffff8000805aa004 T <kernel::task::Task>::get_pid_ns
+ffff8000805aa01c T <kernel::task::Task>::tgid_nr_ns
+ffff8000805a9fe8 T <kernel::task::Task>::current_pid_ns
+ffff8000805a9fd0 T <kernel::task::Task>::current
+
+Signed-off-by: Panagiotis Foliadis <pfoliadis@posteo.net>
+Link: https://github.com/Rust-for-Linux/linux/issues/1145
+---
+ rust/kernel/task.rs | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+index 07bc22a7645c0c7d792a0a163dd55b8ff0fe5f92..996d7c96e48689a5752817f9ca196c021865291d 100644
+--- a/rust/kernel/task.rs
++++ b/rust/kernel/task.rs
+@@ -273,18 +273,21 @@ pub fn pid(&self) -> Pid {
+     }
+ 
+     /// Returns the UID of the given task.
++    #[inline]
+     pub fn uid(&self) -> Kuid {
+         // SAFETY: It's always safe to call `task_uid` on a valid task.
+         Kuid::from_raw(unsafe { bindings::task_uid(self.as_ptr()) })
+     }
+ 
+     /// Returns the effective UID of the given task.
++    #[inline]
+     pub fn euid(&self) -> Kuid {
+         // SAFETY: It's always safe to call `task_euid` on a valid task.
+         Kuid::from_raw(unsafe { bindings::task_euid(self.as_ptr()) })
+     }
+ 
+     /// Determines whether the given task has pending signals.
++    #[inline]
+     pub fn signal_pending(&self) -> bool {
+         // SAFETY: It's always safe to call `signal_pending` on a valid task.
+         unsafe { bindings::signal_pending(self.as_ptr()) != 0 }
+@@ -319,6 +322,7 @@ pub fn tgid_nr_ns(&self, pidns: Option<&PidNamespace>) -> Pid {
+     }
+ 
+     /// Wakes up the task.
++    #[inline]
+     pub fn wake_up(&self) {
+         // SAFETY: It's always safe to call `signal_pending` on a valid task, even if the task
+         // running.
+@@ -328,11 +332,13 @@ pub fn wake_up(&self) {
+ 
+ // SAFETY: The type invariants guarantee that `Task` is always refcounted.
+ unsafe impl crate::types::AlwaysRefCounted for Task {
++    #[inline]
+     fn inc_ref(&self) {
+         // SAFETY: The existence of a shared reference means that the refcount is nonzero.
+         unsafe { bindings::get_task_struct(self.as_ptr()) };
+     }
+ 
++    #[inline]
+     unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
+         // SAFETY: The safety requirements guarantee that the refcount is nonzero.
+         unsafe { bindings::put_task_struct(obj.cast().as_ptr()) }
+
+---
+base-commit: 7f0e9ee5e44887272627d0fcde0b19a675daf597
+change-id: 20250308-inline-c-wrappers-da83ec1c2a77
+
+Best regards,
+-- 
+Panagiotis Foliadis <pfoliadis@posteo.net>
+
