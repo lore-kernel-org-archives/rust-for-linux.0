@@ -1,168 +1,275 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F66E231A2B;
-	Mon, 10 Mar 2025 16:53:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D4923372F;
+	Mon, 10 Mar 2025 17:05:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741625605; cv=none; b=X8DP/XGlKW23kpQikU7CohZ6LfDVN1M0I3GBba/QsaNlcY8V0IS6gwMxYt++9LLlRCqp7UYto1xk1JePcfik4XdSh773Mn6lQ2hvvLCZDiubZh7TlyUqp/EXqckHu1Hy1bOhPfckdlH7or3F37MbrsqprSOxnaB6s1Wk8hy1Uts=
+	t=1741626361; cv=none; b=HR8RHPsB2+vyle/LLju8b1Jbts0FK7A8OPc+snLjfMoyvBVi7Zv3CGuzngucirRs6Sb6UkWdHuVXhx70sRmMjAdu35JjpwWUISg9TtRJHCXY89WiRdCHlwl9bjXcrFeFtb8CiqAGPhB8er6Ar0JgMDZq1ECaVnIW/zBHWxPPs0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741625605; c=relaxed/simple;
-	bh=AyfR641cdKCZy6W0n6TlmM4KyPqA41GREqbdpaC3pjg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=R2bVtH9TC7097ptvdh2QHxqcVOZAwMz6iv26istW+vFpq4dVU2pus7ieMdVmcuv9dVXTePdPuiG+TA/QBQdWQmv+IR6/TwYfPM8utQbnYNh5W+0V5kVYrQJUVGuP70VQulXMKA1qL5BEFpnCV06gG6Em9D7dfBSCFnSKZbDQPpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xgq+b2QE; arc=none smtp.client-ip=209.85.216.43
+	s=arc-20240116; t=1741626361; c=relaxed/simple;
+	bh=91q7NMk8uri5KV8t6pWftFXoW89JfcrovnYLvltLncI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bMVcJQU5V6FP4UICttSoZbumNTDQyekF9o3/LdDcc8cpp+GqxSF2/4F2v8dsKMIlf4Cd2Pacpx5MDRcl/owWtI2X6URZzSiF8JtjQiUugCogLgiPFGrA9VXvThbz9mMzJUkeHzUY1WahlBz1B3CQa7yxsqKiT9FwqgDnH5ERo9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fRXAY5Ro; arc=none smtp.client-ip=209.85.219.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xgq+b2QE"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2ff7cf59a8fso972627a91.3;
-        Mon, 10 Mar 2025 09:53:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fRXAY5Ro"
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-6e8f916e75fso41919196d6.1;
+        Mon, 10 Mar 2025 10:05:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741625603; x=1742230403; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1741626359; x=1742231159; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MGWCx+SP2CEwzo/yDt6/toEmCVnke5ZqmE53jF+Pnaw=;
-        b=Xgq+b2QEz7XsPyKSWLgfS/XebKnyR5OqAm1O3i/VIPlscetSBaWoV5PPXtk5m+NX95
-         KOptRjHaWx+Vz8RYjvy8q2xGRs6tOMgQE5+SGuxDN4vsvIFUI4+UYu1p3zbDRGLDdHdV
-         9pxt6UzDTVgR+QF2Oea+UZdYFR/zk5hU4xQVeE/H0kk5LutjuntGFKEZNcWOAbcPLnHw
-         HggvO022Wr0hED0LxjbQl5sDtfKuVF1hWjGqZ/pofmmXEFeCmT5nIKNwlKUj0pc7FtAn
-         7z+w5ZXMjbKout8ilJ6RlRTnoUIaSPNCOmkvf+hBCTMW/9DLchC/05JqqNKGFjUu4b81
-         vtrg==
+        bh=6YjPz+bVLCcTmJE1Ge9L4Pvb1TVvc1pioSYKZdiC8gw=;
+        b=fRXAY5RoMUuRWJoMWVBfcEmSxvxkjR37UrTXpj0W8B1tVs3TTVgot0PRKTbIeq3nOe
+         ONDqEEclAlcIDofKxPPBRyGOBb2Pgnt3x09cxH/D3JZ5eibWz28/YQWs6d5kBO3dbk/a
+         FhxnpGNa5fFwV1QYtd/4QXjip9eLVuXjDdCdjOgfu2TArUgDDmUJfVdTGEqhKZWifBK+
+         3W8bV3V3ReXsg63XzSrnvzd0ZvXi23+/5OHFhwwcLXC2uRchzmkb/KF+wCFDeEnKpjOV
+         Sy8CNlOlKSfl7LX/EhGIt++t3epznxW1Qn9dhi6yOnp7D4/r1UmeX/M27ZkV8BMXiSDY
+         5u7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741625603; x=1742230403;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1741626359; x=1742231159;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=MGWCx+SP2CEwzo/yDt6/toEmCVnke5ZqmE53jF+Pnaw=;
-        b=YyPHCCHaXQK/BU7L03cG3MnON9nO5mEpHVFuHG0BziU6jnYP234f4/fP2bL80qkx5g
-         7aK3kcMNFrEn96BkbH2ymK8K784/Cug4mIG50ImrB3iOsGBjaIBctjE5n8JXIIcSf80G
-         G3uxwWAFVIRZRg0ku6TDpLjneJt6DKdSdpM2iRTgg/h9VoYENXNS04ZFSq8ahoccK2tf
-         FCgk7UuHNqMuFztcCRo6jpLO9V8ATCygmGPEU9fCrDM1egyzWsHaU7nFEthASfRpY316
-         TNR63+Hs5d7fV0suDydAkRpqFKH8lZ1VhZUyfTLZ1qRp51L3Sxg9KOP0x56CGX41Ui+o
-         t+MA==
-X-Forwarded-Encrypted: i=1; AJvYcCWhURlpKF8zw4y+GWPn/52g6oFaw0Rh/mS+bOfQtBFnXpA+tFzp2gEDJql1P+aPugY0VJjt2Dg+zGoRPka/lUk=@vger.kernel.org, AJvYcCXpDZtqC84arwmiqxvHZT+y788w8VWjEv1ywDkMoju+C7RKVFxd75Rm4djzEn7xI8RT9H+ipXUPVBvWPQA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPPqrbX2yw6kcrSyDmvEz7KyuthjL4fQ9LH0xtfl3x6e/xE+/a
-	yGUDIuQgmdANx42RdzXjhPvZ2O1IgVEwcB+iolFRwJ0MB5v1dHZZ1tc/lgwbj6kHuWTJ/PGE4nC
-	ZExnPWFsVqoj2oLw4FASqhfjdHbQ=
-X-Gm-Gg: ASbGncuFzZIx8vB/7rRZ32As5nf9VI7hDu/RoFv+3i7btxP1Wo6i5AesbtjZ3fHR1gg
-	ln4hOx7mFGLqniV4bjB/T+GVyyFAOLFEE/XfOaHVvOn8fmgqe4vy5cPgYRqsOCZ2VKQhyBQNGrd
-	MOLOyN36wGVplkTfXNSuKllT+daw==
-X-Google-Smtp-Source: AGHT+IEYPLWSokqycAlJYDknETMKQnZPApe3+mtQKMISpbNvpmAarVnfXC69vQZ7iPcoM2dsavEQ/18114ggROUq/0s=
-X-Received: by 2002:a17:90b:224d:b0:2ff:4e90:3c47 with SMTP id
- 98e67ed59e1d1-300ff897fd9mr235938a91.4.1741625603212; Mon, 10 Mar 2025
- 09:53:23 -0700 (PDT)
+        bh=6YjPz+bVLCcTmJE1Ge9L4Pvb1TVvc1pioSYKZdiC8gw=;
+        b=l+asD+G9vPBPrgxxRwZMrXbAkXeCmT8Lrcq7C8EhKhoEo7y6l+toUtdJinbPOh7CpW
+         n7Hif4jKjSX+8EL0hIur9dVwfTKRl7xx21svMJCWDTjUdwnaaqCVQwEYsPjysfK6O1j5
+         o88TSD5cz24mfpyMvqE7tBs6oeAQgOzWq61qo4A2yjBIRycT7/e9a+xcQpFsI6Wlt5HX
+         Aj88G7+FvH2KWWXYd2eOvxqAqdhsEF55GDfKr2FVmR6XqkKWdcCh0nhF/ZIJppur1Xpj
+         r2KRlFynqrLeETJLiKvnxWTn8NFAGG8ApiQFXXGaSAN9C333Uc4d+oRG6OVRhcvG3RrF
+         VlAA==
+X-Forwarded-Encrypted: i=1; AJvYcCU7Ikd0G1RU/1j9Q19G0m742XkiZgmFg96z5OfnNqqzOWCJbzuQ+AiHx2Z+Bgn0efzhiBAg8rvW4XpG69HMSwI=@vger.kernel.org, AJvYcCUWTrsuaJYcQBrwhcf50vYqWpEMc6R1FS4SZdCwloI/uIM1oZhnsUNuqNzWdrU/Cj3cvV3kO/HOXZ+iLwI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YweT/x+ILZZUZzQS0Pu2yh6dqpv6HWPMt71zvkllZm/zqlnm50Q
+	LwY3gFZTGvXm60qvJStcZ1nBL75XSjQCdQPq44FCIXJ95prtK9Oh
+X-Gm-Gg: ASbGncsSHStZHDCLBzjboZLNTwh1T7ug8vjAF1C/PkVkxhC2M20w1YOPIO5VKP0wHdr
+	ZDtXS0lOv9ZE2iKqWx3xlqGqFQh94urPJzprzEwyPAcaEr9nw8sqmBLskqXkVNYbeEE1GKbXL7c
+	K5OJS8fNT4fgqw3MjFHmh7OHbXPCK4+7BqZ8qdmHfkF8TMoJZCmGWuT8HwsPtkLRnvJkyTJK8mc
+	nZZHeZ56Y0CzYhRs/AfPQrfuG0o947a03mHcWazwC0uWfpxvhGxa9YUsjVt3vyBkz4Yejef0S2m
+	wxEFSlT0QBL5t+zC39QkhvOo2KUwlwHJgQk4cKZyGBLOnvULB/rjHm78MpRLVUbvJjw7Ku8Jrdm
+	PlFFJTlpBDw1xNYuuQAwoDzM9cYc4U0p8M1A=
+X-Google-Smtp-Source: AGHT+IGfjnzon5Mgvw3rfejDPpoaCqfsd04YDbzFhH4EmdNGePT1mNBnj/o3zU1GocqKLhaT01X5WA==
+X-Received: by 2002:a05:6214:1c45:b0:6e4:2479:d59b with SMTP id 6a1803df08f44-6ea51f159d0mr4027596d6.16.1741626358349;
+        Mon, 10 Mar 2025 10:05:58 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e8f70915ebsm59997406d6.49.2025.03.10.10.05.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Mar 2025 10:05:57 -0700 (PDT)
+Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 797F41200043;
+	Mon, 10 Mar 2025 13:05:57 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Mon, 10 Mar 2025 13:05:57 -0400
+X-ME-Sender: <xms:9RvPZxP0pvA5fItaHqWNUpAbpQmTfhdIKVu84BgoFtkVbGLUrhO80g>
+    <xme:9RvPZz8a2TkXE6q_2Cndj81aENZ_CzJU_jVXY87ZatUvM2zBqsK-5gZldquQxovxR
+    Jm-AO1ccO17PxDD2w>
+X-ME-Received: <xmr:9RvPZwQfeXqzdyOIM6tcU9riO7bQ7klvzYJsrCnZI3hYFy5hOVL21MoSOBw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduudelledtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
+    vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
+    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeeigedujeffgefgudevkeeuleehvdduvddv
+    udekjeejudefuefhkefguefhgfetgfenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpd
+    hpthhrrdgrshenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhr
+    ohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvge
+    ehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhm
+    sehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudefpdhmohguvgepshhmthhpoh
+    huthdprhgtphhtthhopeholhhivhgvrhdrmhgrnhhgohhlugesphhmrdhmvgdprhgtphht
+    thhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhi
+    hnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhn
+    vghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpd
+    hrtghpthhtohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthht
+    oheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitg
+    gvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehtmhhgrhhoshhssehumhhi
+    tghhrdgvughu
+X-ME-Proxy: <xmx:9RvPZ9s4A0xsKee5heR_UzkfJv1JqY4pOnrdvXrNm6vXXBU16ZFvaw>
+    <xmx:9RvPZ5e7m9Kyyt6R0t89UgWZhghvviYooGkG4XtBmIAJBPkJrA_i1A>
+    <xmx:9RvPZ50l8_hFPvFcGxjdRjJH2hy5ZyvSVpyflpfrh0HB-fdkiiQ7Yw>
+    <xmx:9RvPZ1-jq7gQJiJuqqbiqVRkwpMRHAxbuR6tRpAMDTsJEYImgYNVlg>
+    <xmx:9RvPZ0-2INwwf_-NUKHdrVyzR_YAbfyiXeCU1XNq31FihB3TygB0uL81>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 10 Mar 2025 13:05:56 -0400 (EDT)
+Date: Mon, 10 Mar 2025 10:04:37 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Oliver Mangold <oliver.mangold@pm.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 1/4] rust: types: Add Ownable/Owned types
+Message-ID: <Z88bpe59bnXmfVyw@boqun-archlinux>
+References: <20250310-unique-ref-v7-0-4caddb78aa05@pm.me>
+ <20250310-unique-ref-v7-1-4caddb78aa05@pm.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250310161947.1767855-2-bqe@google.com>
-In-Reply-To: <20250310161947.1767855-2-bqe@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 10 Mar 2025 17:53:10 +0100
-X-Gm-Features: AQ5f1JqSAgmpt3Iw0rHmDnmkw3gQAiO5-r-omP0lH1MAV1e7rN4oiPAdku5NFKY
-Message-ID: <CANiq72=uBYDBn2CS9OW-+S0=rCZEJFdrcBAk8yBQdNB+0Yjq=A@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: add bindings and API for bitmap.h and bitops.h.
-To: Burak Emir <bqe@google.com>
-Cc: Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250310-unique-ref-v7-1-4caddb78aa05@pm.me>
 
-Hi Burak,
+On Mon, Mar 10, 2025 at 10:57:24AM +0000, Oliver Mangold wrote:
+> From: Asahi Lina <lina@asahilina.net>
+> 
+> By analogy to AlwaysRefCounted and ARef, an Ownable type is a (typically
+> C FFI) type that *may* be owned by Rust, but need not be. Unlike
+> AlwaysRefCounted, this mechanism expects the reference to be unique
+> within Rust, and does not allow cloning.
+> 
+> Conceptually, this is similar to a KBox<T>, except that it delegates
+> resource management to the T instead of using a generic allocator.
+> 
+> Link: https://lore.kernel.org/all/20250202-rust-page-v1-1-e3170d7fe55e@asahilina.net/
+> Signed-off-by: Asahi Lina <lina@asahilina.net>
+> Co-developed-by: Oliver Mangold <oliver.mangold@pm.me>
+> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
+> ---
+>  rust/kernel/types.rs | 109 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 109 insertions(+)
+> 
+> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> index 55ddd50e8aaa075ac33d5f1088a7f72df05f74f4..e0ce3646a4d3b70c069322a9b0f25c00265a2af8 100644
+> --- a/rust/kernel/types.rs
+> +++ b/rust/kernel/types.rs
+> @@ -551,6 +551,115 @@ fn drop(&mut self) {
+>      }
+>  }
+>  
+> +/// Types that may be owned by Rust code or borrowed, but have a lifetime managed by C code.
+> +///
+> +/// It allows such types to define their own custom destructor function to be called when
+> +/// a Rust-owned reference is dropped.
+> +///
+> +/// This is usually implemented by wrappers to existing structures on the C side of the code.
+> +///
+> +/// # Safety
+> +///
+> +/// Implementers must ensure that any objects borrowed directly as `&T` stay alive for the duration
+> +/// of the lifetime, and that any objects owned by Rust as `Owned<T>`) stay alive while that owned
 
-Some quick notes...
+Missing an open parenthesis?
 
-On Mon, Mar 10, 2025 at 5:20=E2=80=AFPM Burak Emir <bqe@google.com> wrote:
->
-> +void rust_helper_bitmap_copy_and_extend(unsigned long *dst, const unsign=
-ed long *src, unsigned int count, unsigned int size)
-> +{
-> +       bitmap_copy_and_extend(dst, src, count, size);
+> +/// reference exists, until the [`Ownable::release()`] trait method is called.
+> +pub unsafe trait Ownable {
+> +    /// Releases the object (frees it or returns it to foreign ownership).
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that the object is no longer referenced after this call.
+> +    unsafe fn release(this: NonNull<Self>);
 > +}
-
-Please use the same parameter names as the real one, i.e. `to` and `from`.
-
-> +/// Wraps underlying C bitmap structure.
-
-I am not sure I would say it "structure" here, i.e. it seems like it
-actually wraps a C `struct bitmap`.
-
-In general, we also try to mention the "wraps ..." (if it actually did
-so) in a second paragraph, rather than doing so in the title.
-
+> +
+> +/// A subtrait of Ownable that asserts that an `Owned<T>` Rust reference is not only unique
+> +/// within Rust and keeps the `T` alive, but also guarantees that the C code follows the
+> +/// usual mutable reference requirements. That is, the kernel will never mutate the
+> +/// `T` (excluding internal mutability that follows the usual rules) while Rust owns it.
+> +///
+> +/// When this type is implemented for an [`Ownable`] type, it allows `Owned<T>` to be
+> +/// dereferenced into a &mut T.
+> +///
+> +/// # Safety
+> +///
+> +/// Implementers must ensure that the kernel never mutates the underlying type while
+> +/// Rust owns it.
+> +pub unsafe trait OwnableMut: Ownable {}
+> +
+> +/// An owned reference to an ownable kernel object.
+> +///
+> +/// The object is automatically freed or released when an instance of [`Owned`] is
+> +/// dropped.
+> +///
 > +/// # Invariants
 > +///
-> +/// * `ptr` is obtained from a successful call to `bitmap_zalloc` and
-
-Also, you may remove the bullet list -- we currently do not enforce
-that it is always a bullet list (though we may in the future).
-
-> +    /// Pointer to an array of unsigned long.
-
-`unsigned long`
-
-> +    ptr: NonNull<usize>,
-> +    /// How many bits this bitmap stores. Must be < 2^32.
-
-Should the "Must be" be part of the invariants above?
-
-> +        // SAFETY: `self.ptr` was returned by bitmap_zalloc.
-
-"the C `bitmap_zalloc`"
-
-> +impl Bitmap {
-> +    /// Constructs a new [`Bitmap`].
+> +/// The pointer stored in `ptr` is non-null and valid for the lifetime of the [`Owned`] instance.
+> +pub struct Owned<T: Ownable> {
+> +    ptr: NonNull<T>,
+> +    _p: PhantomData<T>,
+> +}
+> +
+> +// SAFETY: It is safe to send `Owned<T>` to another thread when the underlying `T` is `Send` because
+> +// it effectively means sending a unique `&mut T` pointer (which is safe because `T` is `Send`).
+> +unsafe impl<T: Ownable + Send> Send for Owned<T> {}
+> +
+> +// SAFETY: It is safe to send `&Owned<T>` to another thread when the underlying `T` is `Sync`
+> +// because it effectively means sharing `&T` (which is safe because `T` is `Sync`).
+> +unsafe impl<T: Ownable + Sync> Sync for Owned<T> {}
+> +
+> +impl<T: Ownable> Owned<T> {
+> +    /// Creates a new instance of [`Owned`].
 > +    ///
-> +    /// Fails with AllocError if `nbits` is greater than or equal to 2^3=
-2,
-
-Intra-doc links where possible: [`AllocError`].
-
-> +    /// # Example
-
-We use plurals even if there is a single example (like for the invariants).
-
-> +    /// ```
-> +    /// # use kernel::bitmap::Bitmap;
+> +    /// It takes over ownership of the underlying object.
 > +    ///
-> +    /// fn new_bitmap() -> Bitmap {
-> +    ///   Bitmap::new(128, GFP_KERNEL).unwrap()
-> +    /// }
-> +    /// ```
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that the underlying object is acquired and can be considered owned by
+> +    /// Rust.
+> +    pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
+> +        // INVARIANT: The safety requirements guarantee that the new instance now owns the
+> +        // reference.
+> +        Self {
+> +            ptr,
+> +            _p: PhantomData,
+> +        }
+> +    }
+> +
+> +    /// Consumes the `Owned`, returning a raw pointer.
+> +    ///
+> +    /// This function does not actually relinquish ownership of the object.
+> +    /// After calling this function, the caller is responsible for ownership previously managed
+> +    /// by the `Owned`.
+> +    pub fn into_raw(me: Self) -> NonNull<T> {
+> +        ManuallyDrop::new(me).ptr
+> +    }
+> +}
+> +
+> +impl<T: Ownable> Deref for Owned<T> {
+> +    type Target = T;
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        // SAFETY: The type invariants guarantee that the object is valid.
+> +        unsafe { self.ptr.as_ref() }
+> +    }
+> +}
+> +
+> +impl<T: Ownable + OwnableMut> DerefMut for Owned<T> {
 
-Is there a reason why this example cannot be run? i.e. to not have it
-wrapped in a function.
+Given OwnableMut is a sub-trait of Ownable, do you still need the
+"Ownable + " here?
 
-Also, please use the `?` operator if possible -- we try to write
-examples as "real code", so we try to avoid `unwrap()` etc.
+Regards,
+Boqun
 
-> +            Ok(Bitmap { ptr, nbits })
-
-When we have invariants, we use an `// INVARIANT: ...` comment (please
-grep for similar cases to see how it is usually done).
-
-> +    /// Returns how many bits this bitmap holds.
-
-We should have examples (which double as tests) for these.
-
-One alternative, that may be simpler to showcase how the type works,
-is to write a longer example in the documentation of the type itself.
-
-> +        // SAFETY: nbits =3D=3D 0 is supported and access is within boun=
-ds.
-
-Markdown wherever possible, e.g. `nbits =3D=3D 0` (also other instance).
-
-Thanks!
-
-Cheers,
-Miguel
+> +    fn deref_mut(&mut self) -> &mut Self::Target {
+> +        // SAFETY: The type invariants guarantee that the object is valid,
+> +        // and that we can safely return a mutable reference to it.
+> +        unsafe { self.ptr.as_mut() }
+> +    }
+> +}
+> +
+> +impl<T: Ownable> Drop for Owned<T> {
+> +    fn drop(&mut self) {
+> +        // SAFETY: The type invariants guarantee that the `Owned` owns the object we're about to
+> +        // release.
+> +        unsafe { T::release(self.ptr) };
+> +    }
+> +}
+> +
+>  /// A sum type that always holds either a value of type `L` or `R`.
+>  ///
+>  /// # Examples
+> 
+> -- 
+> 2.48.1
+> 
+> 
