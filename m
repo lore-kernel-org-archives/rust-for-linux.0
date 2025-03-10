@@ -1,97 +1,169 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDBD722D799;
-	Mon, 10 Mar 2025 15:42:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9402922AE52
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 16:09:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741621360; cv=none; b=S4sURLdC3wMteXQWMYPklbHxYykJ4UcsdK67hAsfJZzp5QR+YmPrySHRYZBIjVlHcd1opkAiW2h2K5Y4ErMdB23IYkZbGD4iWuB/K2pS5m7m98Xw8qp3d3L3syt9XuqESFmlKkpFCLvDFAocDPeuezMrihSbNicphKqpCAm1IxE=
+	t=1741622957; cv=none; b=RZP/Yq+Z/11cB/r1YM0C4sFsGzdyJOyHv0yFft5OJkYkcdLtv+RdsxNzy/wjasnQBbijPkE2XNkdN9dR8B0vxkjoz0Tv7wshfRSykBUcPr/QbMkX3nsbP7S4AB6w6FCRilvT6kGLEkHo7QZQVRQbNm5GmxIh479NAag2yQyeSxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741621360; c=relaxed/simple;
-	bh=qdA0drcwFLwwSV3mNb/W7MGu278YIA5YhwwxXwbO+Fo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WN/FSjf8JT87UsxuzdqK+NISwAZfuRXDv9igBhBApyI1dDCk0Oit9Uwj+inKEPKu9zZhLA474zGtkG0ej2MHWSs1nbpSbBoUVLCyPs+zmZyLEjoKAP5vrIFI2XqEOQBbBJ+EA4s/HiJwoipW+huiTP6B40OM4toJRdwfEnnSNRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LkyjCcZz; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1741622957; c=relaxed/simple;
+	bh=D4Vb33RNqJrJxqz1esDLVLlIZGIk1xCNfU2hCUsdZEA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nOllGInJUv8M1B8DEJmCTgMRy2th2UeRNQ7yzgLHiGf3mUHctcXGa8/wbgbHViccpuMmbmoWdrkc8XcD5mbdFU+APjNRm8SWr/2PTXNe2W9kXUhDdylE6ec1HGaO6ugzgXD3OtBymrBR+I5w19IkFU6rSpBsd9Ux4bZAPNsCujc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=oSf6XTIW; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LkyjCcZz"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2ff5f2c5924so1260538a91.2;
-        Mon, 10 Mar 2025 08:42:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741621358; x=1742226158; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qdA0drcwFLwwSV3mNb/W7MGu278YIA5YhwwxXwbO+Fo=;
-        b=LkyjCcZzKBdS6tliS07/Ekog9V6sAbgNthtID4ltzjqPd07pRR8xCgHyY8J3/PUPmM
-         SiawF84w8tmpGMBgmU5ADb52QFSBLlVG7AgNIQBcNz92YNwTWIzdn0dGcrQvDhVx3+ir
-         Ui0VrTumKAwshtmkjoTyMj/LHaEGcQcaBCEN9IKD45xzZCu3yTu+T+rY8rMrGgKgzfob
-         RguSO6txXSc3elr2OIY9NiZ45CeiJyPd2u2O30Q6TZVxzoUG2/bD6ikc4i0XDPecBJzB
-         /ohFr9nlyff8LyP7d4fGrnch7GmMAx7VPl9BsKXFNbZBJ5mybrZ01jc7xdlfCDsJRyzU
-         w/dA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741621358; x=1742226158;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qdA0drcwFLwwSV3mNb/W7MGu278YIA5YhwwxXwbO+Fo=;
-        b=X60kU320aQt8BUBkdkcn8f2JzA3AICJiSOD/A7fcj6K5ztplGmIyT7o21CjTTwRPWo
-         xkVbGx3pSfjo2C6mtbWLIYZILke5TRj9kYLrltyMXdlr6HmnwyRL+A6O7YyLwWT8fhEC
-         zfwcynXwzTsTFenF9wqFGNIph/esPOmDdWBfTqIN0bM7w6F3lNhyJHjv8TvK6UqAx7Sg
-         Om2N6NBE/m7UVzhjYZYyS0fzv1rEzofdTNxPB1M/RDHZYcQql6k9KkqgIdwkYw9TK3iY
-         JNfmKtk/e4i+GVHVaWW4F0lDOXbgyRtM/L+KRcW4zZe4Nf1qi6oXOylq49TSYNzjbjQO
-         BKxA==
-X-Forwarded-Encrypted: i=1; AJvYcCUQemqxGse+93IB23KLGx2H3CHDmuAgSigxrNevbYy8heI5QAcQPEkwQusTLzC8XuiEOwdn+FNayT8qfsN7f1Q=@vger.kernel.org, AJvYcCVkVwrl1Q7Th5bk1Qq2+MprRG7KUx8bh+bJ+3Q3mTo2IRJ/MTMuCaec7KehpHeLvJxmaq8ibTNRg5WfCso=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9Tc500kqinNZOvkvBBBemB7cTcWJ0Mc4qeyC9fix5CJLoPqc1
-	Zead/wPz9H2461kRyX42k2PeJ896RvPGrPx+s78AA3yXCdCNWS5H7zRSgO7qzjp9jt3G+Ar4jEc
-	B4AtawbQNUSjN/CdDW9YHe3NLr48=
-X-Gm-Gg: ASbGnct/f4e6VUagwHz44WEWaS0MmuQRobvAdhrZLzVW5b3H7lI1B56eQePEp9gfBSd
-	bN2dUpNIN8TPheBxmMM+03+buSZOeEbNkcfi8aFm1BTkGDpOFOopagXNPegqG8RWuagCR6R45Ho
-	l/rCKeVK/No81xjGbvVcQGgqrU5oAKpZec9SwP
-X-Google-Smtp-Source: AGHT+IHgyI6LM60Sviubb6OsgzHCEo3BYwGjZZODYsxr6JAyhyetUsXoIJlTwKyjQknCrc1H+CjHowhxk7Dr0MB4jI8=
-X-Received: by 2002:a17:90b:4d0b:b0:2fe:8fa0:e7a1 with SMTP id
- 98e67ed59e1d1-300ff720794mr137208a91.2.1741621357869; Mon, 10 Mar 2025
- 08:42:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="oSf6XTIW"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id ED4B1240028
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 17:09:13 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1741622953; bh=D4Vb33RNqJrJxqz1esDLVLlIZGIk1xCNfU2hCUsdZEA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:Content-Type:
+	 Content-Transfer-Encoding:From;
+	b=oSf6XTIWaf3kcYQPaXMyBvlku3naljwgcKCOjL5MTN4HmVbS5lbHjF/GKS48lQQr2
+	 PQ2IfKNhDK4jgdtVSg87waMP0yJY0TTtZHsWObWvgzub2koRmXtfOX1Q2RuSD6ZNAH
+	 slqAAmiBvgwIo6CR+7O1ysgyY1099U8LOFLJMI7LdOag7lwq2OLFB4bp2wJc870EXd
+	 b9o4x83uoPOxzfslQWoCea50q4BhyjDaqV+rvV+/C2cjVyHFs7YBXnoI6Xsw7dO0yr
+	 G+Hx4Q28I39qEATaSViavXZGuO5smlGIH/q73/1+uA473TOBdA5mUzYq+w9UCNacv2
+	 pChMtSUKN5xOQ==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4ZBMK161dtz6tvZ;
+	Mon, 10 Mar 2025 17:09:09 +0100 (CET)
+Message-ID: <87725b0d-42e9-4273-a51f-90c82aad2254@posteo.net>
+Date: Mon, 10 Mar 2025 16:09:09 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250310-unique-ref-v7-0-4caddb78aa05@pm.me>
-In-Reply-To: <20250310-unique-ref-v7-0-4caddb78aa05@pm.me>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 10 Mar 2025 16:42:25 +0100
-X-Gm-Features: AQ5f1Jofu__TASjGaa7wmERfTha01g1CwoeE70h5sDKLhFKXkEtlsWn5Ev9A_EA
-Message-ID: <CANiq72mR66wn5T7WYCzyyan5dEQDQAyBvtzC381jfWgC6R8K9Q@mail.gmail.com>
-Subject: Re: [PATCH v7 0/4] New trait OwnableRefCounted for ARef<->Owned conversion.
-To: Oliver Mangold <oliver.mangold@pm.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] rust: task: mark Task methods inline
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ llvm@lists.linux.dev
+References: <20250310-inline-c-wrappers-v1-1-d726415e6332@posteo.net>
+ <CAH5fLgi1YOP9gbXEmYfBtjWeMaqsYpNrrC1fd2rGABCKWYVcbg@mail.gmail.com>
+Content-Language: en-US
+From: Panagiotis Foliadis <pfoliadis@posteo.net>
+In-Reply-To: <CAH5fLgi1YOP9gbXEmYfBtjWeMaqsYpNrrC1fd2rGABCKWYVcbg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 10, 2025 at 11:57=E2=80=AFAM Oliver Mangold <oliver.mangold@pm.=
-me> wrote:
+
+
+On 10/3/25 12:23, Alice Ryhl wrote:
+> On Mon, Mar 10, 2025 at 10:40 AM Panagiotis Foliadis
+> <pfoliadis@posteo.net> wrote:
+>> When you build the kernel using the llvm-18.1.3-rust-1.85.0-x86_64
+>> toolchain provided by kernel.org, the following symbols are generated:
+>>
+>> $ nm vmlinux | grep ' _R'.*Task | rustfilt
+>> ffffffff817b2d30 T <kernel::task::Task>::get_pid_ns
+>> ffffffff817b2d50 T <kernel::task::Task>::tgid_nr_ns
+>> ffffffff817b2c90 T <kernel::task::Task>::current_pid_ns
+>> ffffffff817b2d00 T <kernel::task::Task>::signal_pending
+>> ffffffff817b2cc0 T <kernel::task::Task>::uid
+>> ffffffff817b2ce0 T <kernel::task::Task>::euid
+>> ffffffff817b2c70 T <kernel::task::Task>::current
+>> ffffffff817b2d70 T <kernel::task::Task>::wake_up
+>> ffffffff817b2db0 T <kernel::task::Task as kernel::types::AlwaysRefCounted>::dec_ref
+>> ffffffff817b2d90 T <kernel::task::Task as kernel::types::AlwaysRefCounted>::inc_ref
+>>
+>> Most of these Rust symbols are trivial wrappers around the C functions
+>> signal_pending, uid, euid, wake_up, dec_ref and inc_ref.It doesn't
+>> make sense to go through a trivial wrapper for these functions, so
+>> mark them inline.
+> There's no C function called dec_ref or inc_ref? Please use the C
+> function names instead of the Rust ones.
 >
-> - Squash patch to make Owned::from_raw/into_raw public into parent
+>> After applying this patch, the above command will produce this output:
+>>
+>> ffff8000805aa004 T <kernel::task::Task>::get_pid_ns
+>> ffff8000805aa01c T <kernel::task::Task>::tgid_nr_ns
+>> ffff8000805a9fe8 T <kernel::task::Task>::current_pid_ns
+>> ffff8000805a9fd0 T <kernel::task::Task>::current
+> I think it'd be nice with an explanation of why you did not mark these
+> #[inline].
 
-In this case, given the changes are minimal (and assuming you didn't
-discuss it with Lina), I would have personally used the [ ] notation
-to explain the change from the original patch, and that's it, rather
-than a Co-developed-by tag -- but do not worry about it :)
+Since the issue focuses on the functions that are trivial wrappers around
+c and `do nothing that call a C function` I thought i would leave this out
+since there is some other functionality (albeit sometimes minimal) other
+that being just a c-wrapper.
 
-Also, in general, please wait at least a couple of days or ideally a
-week between versions (unless it is urgent etc.). Otherwise, it can
-get confusing for reviewers and so on.
+>
+>> Signed-off-by: Panagiotis Foliadis <pfoliadis@posteo.net>
+>> Link: https://github.com/Rust-for-Linux/linux/issues/1145
+> The SoB usually goes at the bottom of the tags.
+>
+>>   rust/kernel/task.rs | 6 ++++++
+>>   1 file changed, 6 insertions(+)
+>>
+>> diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+>> index 07bc22a7645c0c7d792a0a163dd55b8ff0fe5f92..996d7c96e48689a5752817f9ca196c021865291d 100644
+>> --- a/rust/kernel/task.rs
+>> +++ b/rust/kernel/task.rs
+>> @@ -273,18 +273,21 @@ pub fn pid(&self) -> Pid {
+>>       }
+>>
+>>       /// Returns the UID of the given task.
+>> +    #[inline]
+>>       pub fn uid(&self) -> Kuid {
+>>           // SAFETY: It's always safe to call `task_uid` on a valid task.
+>>           Kuid::from_raw(unsafe { bindings::task_uid(self.as_ptr()) })
+>>       }
+>>
+>>       /// Returns the effective UID of the given task.
+>> +    #[inline]
+>>       pub fn euid(&self) -> Kuid {
+>>           // SAFETY: It's always safe to call `task_euid` on a valid task.
+>>           Kuid::from_raw(unsafe { bindings::task_euid(self.as_ptr()) })
+>>       }
+>>
+>>       /// Determines whether the given task has pending signals.
+>> +    #[inline]
+>>       pub fn signal_pending(&self) -> bool {
+>>           // SAFETY: It's always safe to call `signal_pending` on a valid task.
+>>           unsafe { bindings::signal_pending(self.as_ptr()) != 0 }
+>> @@ -319,6 +322,7 @@ pub fn tgid_nr_ns(&self, pidns: Option<&PidNamespace>) -> Pid {
+>>       }
+>>
+>>       /// Wakes up the task.
+>> +    #[inline]
+>>       pub fn wake_up(&self) {
+>>           // SAFETY: It's always safe to call `signal_pending` on a valid task, even if the task
+>>           // running.
+>> @@ -328,11 +332,13 @@ pub fn wake_up(&self) {
+>>
+>>   // SAFETY: The type invariants guarantee that `Task` is always refcounted.
+>>   unsafe impl crate::types::AlwaysRefCounted for Task {
+>> +    #[inline]
+>>       fn inc_ref(&self) {
+>>           // SAFETY: The existence of a shared reference means that the refcount is nonzero.
+>>           unsafe { bindings::get_task_struct(self.as_ptr()) };
+>>       }
+>>
+>> +    #[inline]
+>>       unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
+>>           // SAFETY: The safety requirements guarantee that the refcount is nonzero.
+>>           unsafe { bindings::put_task_struct(obj.cast().as_ptr()) }
+>>
+>> ---
+>> base-commit: 7f0e9ee5e44887272627d0fcde0b19a675daf597
+>> change-id: 20250308-inline-c-wrappers-da83ec1c2a77
+>>
+>> Best regards,
+>> --
+>> Panagiotis Foliadis <pfoliadis@posteo.net>
+>>
 
-Thanks!
-
-Cheers,
-Miguel
