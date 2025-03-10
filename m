@@ -1,120 +1,114 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DEBA224238
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 08:47:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70EAE35965;
+	Mon, 10 Mar 2025 08:49:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741596463; cv=none; b=ZKndVrPDubnnL3i8rbKkXDKIOgI0KcWY/hYvkcTOoerduKZNlX6wpZG/MljOpd6cFwYN960v1e0YnOkH6Cwa4uhmiG4dcBEUSaP/abrLreEYKNtynclMbhdLnGxJsxrnR2fpICPRYaplcG0Ff3l9unoJJ4D+Q8qTXm57Oi+mgfw=
+	t=1741596587; cv=none; b=aifxku16aeY8eydbT06CfxKMOJomauKF63Yg/gLId08Q74umgqoycifDSNsrqqpfp826mIK47altU0xseYb7IeMcgtX8QzPed4r/z9RuTIHEjyH2pNoavPjI+B1I/xXBdlYXqoACbm6uey5AOMwd4AeNzb5yWYLy/8DfVrodGeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741596463; c=relaxed/simple;
-	bh=9n63M6cGbaQkIaHcgWry9bP+ZAoZDm95prcdWNr1ukM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=SztYVGI5qAgbHf9wAkNZyQJOCXSeASBfSkA7Wd46oQf/Edta4emJH/Z5dCaXiGL97/whu3fpw6ZpjsugoTXn9fik0TAqf98JHa0URrHwQ9aWR9z5M/KJrcNIclrMvd4nBnz3mPiMk7LACVF7cZvBLSFAM71IySV/LXijapob25c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=AmWBRWo1; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
+	s=arc-20240116; t=1741596587; c=relaxed/simple;
+	bh=gqM3NoEeAZm6/VzvYFvJOiBl1ItaG8rw5z+rKyEHlqw=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=W/bunRaaf5w15jJaucO/5EW8kysGlWieX0I+YGbUPCfvGns5YervsZgNpiEhOsDvEJDoRwnCe5Io2m/32JbDacyljCGKYunsTPhtVzRsWyo01zC7sfyZWjc7xMRtRoOHHdfNZMQ2ujgo27HN+11AnVp5/T/vIsSJ5AJlbn4A03E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=D4g8k9Xj; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="AmWBRWo1"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id E934C240107
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 09:47:33 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1741596453; bh=9n63M6cGbaQkIaHcgWry9bP+ZAoZDm95prcdWNr1ukM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
-	 From;
-	b=AmWBRWo1ARXcEJPmhCi1bGD/1pVa1mX3xuWWoWrFeIa/BiUgk1nzqs+jEn76Lbtt3
-	 kGUQCnvV1W3NiOn4or3gM34B/oF9okji48f2IEtEtALqdZ/u/EFHMGwAAF6y3yxUP/
-	 c2omEaiSoqvlVCOB9rO79lDWEJuLRNyCLKcgRpBJCW2Y8dQ/ZquwXwSdKJTn2mHGLs
-	 5jEJEAjySCJF5BZkOzOxO1l3gab+vmAxsI1BcR3QmKcJacic2dzrEKjqgjE8iflVmH
-	 BnxDdIXWwhuxhTCAa5JD3f1s+ulcLD4Ac3S5j1Os6P7aoIXFEcwdDY4QxDdmV3+U/j
-	 3rODYWzzfI0JA==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4ZB9WQ523pz9rxc;
-	Mon, 10 Mar 2025 09:47:30 +0100 (CET)
-From: Charalampos Mitrodimas <charmitro@posteo.net>
-To: Ethan Carter Edwards <ethan@ethancedwards.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,  "Rafael J. Wysocki"
- <rafael@kernel.org>,  Danilo Krummrich <dakr@kernel.org>,  Miguel Ojeda
- <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,  Boqun Feng
- <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6?=
- =?utf-8?Q?rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  Benno Lossin <benno.lossin@proton.me>,
-  Andreas Hindborg <a.hindborg@kernel.org>,  Alice Ryhl
- <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,  Nathan
- Chancellor <nathan@kernel.org>,  Nick Desaulniers
- <nick.desaulniers+lkml@gmail.com>,  Bill Wendling <morbo@google.com>,
-  Justin Stitt <justinstitt@google.com>,  rust-for-linux@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  llvm@lists.linux.dev
-Subject: Re: [PATCH] rust/kernel/faux: mark Registration methods inline
-In-Reply-To: <20250309-faux-inline-v1-1-c1b692862433@ethancedwards.com> (Ethan
-	Carter Edwards's message of "Sun, 09 Mar 2025 22:14:36 -0400")
-References: <20250309-faux-inline-v1-1-c1b692862433@ethancedwards.com>
-Date: Mon, 10 Mar 2025 08:47:29 +0000
-Message-ID: <m27c4x2rxa.fsf@posteo.net>
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="D4g8k9Xj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1741596583; x=1741855783;
+	bh=UYCu4LxmRD0Ub2TOub8oliHnzSoyOyvtTpbtXxWhWQc=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
+	 List-Unsubscribe:List-Unsubscribe-Post;
+	b=D4g8k9Xj/zBzpMYEWFef0kDFNzpw6pBWICxoUCWuWXPa7D9CxYgVRLe0GrEpKiLS7
+	 qWPJ44wRK+0fM1vDMiujSYEFz/V9q4NScRTpajtxGBg1bgyEmUwYIMNQhFYkYAoW8Q
+	 vTg+jt8z6T8ifZhYdv6HTynKTXarqDDgI8DI7Nw9WaYMhM0PpJ274qRq+w0vMAdYp7
+	 oF1HKaJqaNCqbfkKksIYzWba76ReoMFRbvQn5A32TS4L5fZ5J0+BgUTDNTwufZ9hIq
+	 W44RpYWqopoLkREXgFx3jSLr1/q2xYCpw3Ao8XS0/P2NHSZljYVv9JZThBWqVr5JcD
+	 makno0fTjl/yQ==
+Date: Mon, 10 Mar 2025 08:49:36 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina@asahilina.net>
+From: Oliver Mangold <oliver.mangold@pm.me>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Oliver Mangold <oliver.mangold@pm.me>
+Subject: [PATCH v6 0/5] New trait OwnableRefCounted for ARef<->Owned conversion.
+Message-ID: <20250310-unique-ref-v6-0-1ff53558617e@pm.me>
+Feedback-ID: 31808448:user:proton
+X-Pm-Message-ID: ea42df7de3f3ec312828a66d278f093500440502
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Ethan Carter Edwards <ethan@ethancedwards.com> writes:
+This allows to convert between ARef<T> and Owned<T> by
+implementing the new trait OwnedRefCounted.
 
-> When building the kernel on Arch Linux using on x86_64 with tools:
-> $ rustc --version
-> rustc 1.84.0 (9fc6b4312 2025-01-07)
-> $ cargo --version
-> cargo 1.84.0 (66221abde 2024-11-19)
+This way we will have a shared/unique reference counting scheme
+for types with built-in refcounts in analogy to Arc/UniqueArc.
 
-Hi Ethan,
+Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
+---
+Changes in v6:
+- Changed comments/formatting as suggested by Miguel Ojeda
+- Included and used new config flag RUSTC_HAS_DO_NOT_RECOMMEND,
+  thus no changes to types.rs will be needed when the attribute
+  becomes available.
+- Fixed commit message for Owned patch.
+- Link to v5: https://lore.kernel.org/r/20250307-unique-ref-v5-0-bffeb63327=
+7e@pm.me
 
-I think stating your Cargo version is unnecessary, we don't use cargo
-(atleast not anymore).
+Changes in v5:
+- Rebase the whole thing on top of the Ownable/Owned traits by Asahi Lina.
+- Rename AlwaysRefCounted to RefCounted and make AlwaysRefCounted a
+  marker trait instead to allow to obtain an ARef<T> from an &T,
+  which (as Alice pointed out) is unsound when combined with UniqueRef/Owne=
+d.
+- Change the Trait design and naming to implement this feature,
+  UniqueRef/UniqueRefCounted is dropped in favor of Ownable/Owned and
+  OwnableRefCounted is used to provide the functions to convert
+  between Owned and ARef.
+- Link to v4: https://lore.kernel.org/r/20250305-unique-ref-v4-1-a8fdef7b1c=
+2c@pm.me
 
-> $ clang --version
-> clang version 19.1.7
-> Target: x86_64-pc-linux-gnu
->
-> The following symbols are generated:
-> $ nm vmlinux | rg ' _R' | rustfilt | rg faux
-> ffffffff81959ae0 T <kernel::faux::Registration>::new
-> ffffffff81959b40 T <kernel::faux::Registration as core::ops::drop::Drop>::drop
->
-> However, these Rust symbols are wrappers around bindings in the C faux
-> code. Inlining these functions removes the middle-man wrapper function
-> After applying this patch, the above function signatures disappear.
->
-> Link: https://github.com/Rust-for-Linux/linux/issues/1145
-> Signed-off-by: Ethan Carter Edwards <ethan@ethancedwards.com>
-> ---
->  rust/kernel/faux.rs | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/rust/kernel/faux.rs b/rust/kernel/faux.rs
-> index 5acc0c02d451f6d5a26b837d509374d508f26368..5fdd85ea64398130066d38e42f7c7485673f290c 100644
-> --- a/rust/kernel/faux.rs
-> +++ b/rust/kernel/faux.rs
-> @@ -24,6 +24,7 @@
->  
->  impl Registration {
->      /// Create and register a new faux device with the given name.
-> +    #[inline]
->      pub fn new(name: &CStr) -> Result<Self> {
->          // SAFETY:
->          // - `name` is copied by this function into its own storage
-> @@ -50,6 +51,7 @@ fn as_ref(&self) -> &device::Device {
->  }
->  
->  impl Drop for Registration {
-> +    #[inline]
->      fn drop(&mut self) {
->          // SAFETY: `self.0` is a valid registered faux_device via our type invariants.
->          unsafe { bindings::faux_device_destroy(self.as_raw()) }
->
-> ---
-> base-commit: fc2f191f850d9a2fb1b78c51d49076e60fb42c49
-> change-id: 20250309-faux-inline-6c8eead1bcd0
->
-> Best regards,
+Changes in v4:
+- Just a minor change in naming by request from Andreas Hindborg,
+  try_shared_to_unique() -> try_from_shared(),
+  unique_to_shared() -> into_shared(),
+  which is more in line with standard Rust naming conventions.
+- Link to v3: https://lore.kernel.org/r/Z8Wuud2UQX6Yukyr@mango
+
+---
+Asahi Lina (1):
+      rust: types: Add Ownable/Owned types
+
+Miguel Ojeda (1):
+      rust: kbuild: provide `RUSTC_HAS_DO_NOT_RECOMMEND` symbol
+
+Oliver Mangold (3):
+      rust: make Owned::into_raw() and Owned::from_raw() public
+      rust: rename AlwaysRefCounted to RefCounted
+      rust: adding OwnableRefCounted and SimpleOwnableRefCounted
+
+ init/Kconfig                    |   3 +
+ rust/kernel/block/mq/request.rs |  10 +-
+ rust/kernel/cred.rs             |   8 +-
+ rust/kernel/device.rs           |   8 +-
+ rust/kernel/fs/file.rs          |  10 +-
+ rust/kernel/pid_namespace.rs    |   8 +-
+ rust/kernel/task.rs             |   6 +-
+ rust/kernel/types.rs            | 429 ++++++++++++++++++++++++++++++++++++=
+++--
+ 8 files changed, 451 insertions(+), 31 deletions(-)
+---
+base-commit: 4b2ee22fe32ea9b255926effbb6f26450607c391
+change-id: 20250305-unique-ref-29fcd675f9e9
+
+Best regards,
+--=20
+Oliver Mangold <oliver.mangold@pm.me>
+
+
