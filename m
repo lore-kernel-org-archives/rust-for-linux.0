@@ -1,88 +1,99 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D974229B1F
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 14:25:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8428185935;
+	Mon, 10 Mar 2025 14:45:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741616720; cv=none; b=oWsYS3agSECllPHsuRbqm75+3ty3xoaZB1Dqy8z76mBT36/29w+gNrOYgoxDDL61I8b4s8QHFXN3dvAVA43NdqHSr+m8wTJeNZof7a6ddrVJy+i33wX/trJ3fZixA1la+2YX3DHf1oIfv1PxdshYXYVR4JARJOvOXm4emY1lN8Y=
+	t=1741617918; cv=none; b=JvzUtdfTAgDKLH84r6fY4ZpBZwqG44pSwykUkkB0GBxi8VeCa1gkSf++5pWFQHy+WVzmwj0fAWZxcTuVvy/GFORW/9zqdRJEo4+vX0Y+3tXJcPAA9fVQqyVkBVmAK84whhhiHVTZue2jOBlkpTVydDUKXFyhhrVoZAqKyTLkInk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741616720; c=relaxed/simple;
-	bh=t0CGtGU/RXSiXxcNeDxGhMlfhHaYbDatZfthEgfMIlM=;
+	s=arc-20240116; t=1741617918; c=relaxed/simple;
+	bh=gW8z6VuVGnqPIy1b10ZKo6rOVlMZz58aYMYu5AfNd/A=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tYsowmFcxsaF/64nD6UdbLPtvc9k0J4eFDfyUZbnSXjB0DYH3vGnCpLGZi4Y4+WI3vIeR+x7Ztm1irDyq8GeUdqgEVDc+otYiAH3l+YX01YCBQr2YNZ8Sf/h5qj93Do20RpKH8Dc2wh083os9EpyvXQ+7a5njP5O5QGTJqXB4ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bLsp43fJ; arc=none smtp.client-ip=209.85.216.42
+	 To:Cc:Content-Type; b=uhoc9SG314fYKbJSwpTmYqQ+7WTbx74qPL/TpefkZHHAiIXeiqD+/peCN3E8WKutHpSNakTdbBrOrnmt4g93fYoqhTZAXRNg7O33BDDv6ynHpfsY4nxNlKeZIhBdA8tcJt/Yeu84HTJQAdiaP7bx6iBSsc2M8iR0keFPn4VDTgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LpEp7Axu; arc=none smtp.client-ip=209.85.216.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bLsp43fJ"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2ff611f2ed1so1162331a91.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 07:25:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LpEp7Axu"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2ff5f2c5924so1240576a91.2;
+        Mon, 10 Mar 2025 07:45:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741616718; x=1742221518; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1741617915; x=1742222715; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RRcuUCwJflcquDeYRTCyjJlblVLgcKD5WfvT7iJAqiA=;
-        b=bLsp43fJIcnyESuf4Z8BriksNZ6K/w+ds+6pq/yDk1P+/VaMb/Dapu0CAIQl2fQiR6
-         HqdzbxS4WwgGD4wa/DOR9IzfGy8R04LYodEXFrVKlMkxfiXHAp/zn4o0mthCYkfGAu0J
-         rtYCyhkmi4l2Hev770Oed4oqhFLUep+W7OtnMmICKSKhG4mRTIRCcmtniZbEMyjQYco3
-         T7cX8j34tJFMV86KySiCAr/ptViFSor9k3eak21nZ30cVODybYlNLrgVG+Re3nfh9/ne
-         5iKhBMvWfEVMmHLRSKtyrLKb7PHLxZdHETgdW/MowOtZdkNnwvXFHx/O5U/1+aRn895V
-         FLMQ==
+        bh=gW8z6VuVGnqPIy1b10ZKo6rOVlMZz58aYMYu5AfNd/A=;
+        b=LpEp7AxuII4GWA5bcdxHTttq3t5ZZpTxtNMQOFwbGRCLMzbyt8AfZH8p4OQk33GkPQ
+         quVuh5HPrjP0fwbW9CDU2oq5gsw6OkOIxnAPp5/6PZCj6lrF9RGJIFoNtNDawV8eRRAM
+         jMsBK5oZfkPA9XGBGl5vNF66RdN3L0I6iM54mTOFpKf1x+Wmtepc1phJBMPDjyYuGKFx
+         D6r8H70Mh3jmMhq7rMpsFWuDRCPjYv93S73DGcwYSlMxSHhV8PeY11wblEQw8AKQP+A6
+         GcpNgXVeoJAvJ3aA5m13NPVyAdncfjZBaXjOWqQAgPHD0I6ZBbxGGBvG9UU9LITr11yi
+         pPMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741616718; x=1742221518;
+        d=1e100.net; s=20230601; t=1741617915; x=1742222715;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=RRcuUCwJflcquDeYRTCyjJlblVLgcKD5WfvT7iJAqiA=;
-        b=ey5FYaLQpC+4K9Xo2Hr/WF4LCTAnJIquzKjzXSUzVi9rSWlZnK8JzAY9FwZGPH8yia
-         /hz7+oZNKr5CNMPg/KyIPcaW0eHK93LsuencPfTfa7Sqj9dvzK/GKkWMOuOXm510vLGL
-         j8ZpFRFHtzjFiabEhAgtx65OdAwqL2LOmfmDJWBQujAp99EHH86DV5WNcOtZ4PzzK2iL
-         UK3Risu9nv3aYiTfXzsviQuNwBhDli5PHvB8QNVvIcFfwL/7CQzdR1+t0YsYqrd+tWW/
-         A8FtO4qjQov2iXkx1hAoLBVg8y8U1IQl2jhzZv5+E2+FM4Uyq3W0y71GR6dhcqyRmMUi
-         h8bQ==
-X-Gm-Message-State: AOJu0Yy9AxCeQE2WsdV2NwPCqt3/TUFQr7j6yfiaIpp9Py8e3E66WQLB
-	EE2HieR2/F4hCJl39OKRLhwjlUHeJnj8kLXUls4KogeC8q/L5PM6rolaNk6wexugmPKy2O5w+cP
-	0kCbGfw7mNa3bJuvL/zNpEsqF9HY=
-X-Gm-Gg: ASbGncsOYg/T7wA33lh7wx0WWhnyexgPBpsBhh3XJOF5rWn1GyBHr1Lrg/Eh2gPFfNF
-	FLTXHmBFJhaRdyobOPDvmz+wstE3ziv2S4TuKeqtN0h98dHQk5zFAU5kRWEQ60Xn3a9ffEyBmfg
-	IfPri5GNFwOoSOHfa0sLQLgLoSqw==
-X-Google-Smtp-Source: AGHT+IHm26PgADBUKLhloGmnijeeBQSPdeYKL4IB1nM7i1Kqh4ikDelr9izas35Tlnk0sbYcXpsRbnyUki1ccUyd8iI=
-X-Received: by 2002:a17:90b:4a4f:b0:2fe:b2ea:30f0 with SMTP id
- 98e67ed59e1d1-300a575a10cmr5662153a91.4.1741616718291; Mon, 10 Mar 2025
- 07:25:18 -0700 (PDT)
+        bh=gW8z6VuVGnqPIy1b10ZKo6rOVlMZz58aYMYu5AfNd/A=;
+        b=Z2W3ZxRyZ+nRUITI1rUY62qfYsXhEQBulNh4WmO4BT1qrqSr2l5VUJKbaSXAFOt96f
+         0npSmW6pOwq8ImmTO91OLmSPAGy3xXI5cY97bUM3JgJEiw5UivUIgngsLQBvWBa0wri3
+         glv1Q+gkvDyYsiOWFQjbbJdYEa/qENjrix3mLw9Ovp+ZTSVCuKtnOUwlVsPiCdHeb29/
+         UUSb2gTvixmPNIVJv8hNgEqwnCu4dKfu1fJJcx5pzjdFy2lmYYd6KQsi1Q0nCIE/QkXq
+         OHmaPpBdOPOCZ41NCxpJn6gBdrkrs6VxS+I/LdWr7vBwHmvbo/65YdG+2d4YoBDGoV3B
+         PSSw==
+X-Forwarded-Encrypted: i=1; AJvYcCVxSDW0BqW2DxZj64gbXsO2M+iY44QcOKaOVJZbj4tquFwcH/T9fIUGVjq0afT8s7+HRdOsrjY00iPK5uQ=@vger.kernel.org, AJvYcCWSAOvbL3ddRw4CU/afqTLL9Tizv2jhzbP7JjFHScButJZPYAYlKYNTqp+YuGBNwQ4l0ytuyawFjkOJdyeEE5g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2nrlsBF5+aaQ6KPIlLhlYGtQDlrJwXZAIVlxBDPQ+l/9N7pEl
+	Y4sQy+sjBpZpKvKQFHNOOSkTJBEB6VKbLbTEi6NYk7hbs6ZPN3B+4fMIeDYGj0tRpTqy3MbV1yk
+	ObkqNz2WvmlMIEO1E09yynk8z5vE=
+X-Gm-Gg: ASbGncuQVbYANp7/ZmgBh6w3JA97pfQFb4pNn8c26MrpRU7OPBZqguwcJljyuksQ8ZS
+	DpU2an6wGfILJuB750JZn9bDmZPN5HvLDtYbn7P38AiPFmM+A7viKEwVxiiIlNttdEIOmavMQIY
+	PUOmaMypujDX/5UsbixIUxXZ32BPB1G6Pee7rV
+X-Google-Smtp-Source: AGHT+IGFBrCXa0nfH6q3KU/d6EVjPEAYQctUGGrFOQVO/LubB0zYyYAGq4Qv4EuO5b6mIZ2fYbTZgO5CinWJRcgvDxE=
+X-Received: by 2002:a17:90b:388b:b0:2fa:6055:17e7 with SMTP id
+ 98e67ed59e1d1-300ff94ba4fmr18872a91.8.1741617914779; Mon, 10 Mar 2025
+ 07:45:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250305053438.1532397-1-dirk.behme@de.bosch.com>
-In-Reply-To: <20250305053438.1532397-1-dirk.behme@de.bosch.com>
+References: <20250304-vma-v15-5-5c641b31980a@google.com> <202503091916.QousmtcY-lkp@intel.com>
+ <Z86vpQBMYuonWsM_@google.com> <f8da228a-fbc9-413c-8fbe-cfbf074a3053@lucifer.local>
+In-Reply-To: <f8da228a-fbc9-413c-8fbe-cfbf074a3053@lucifer.local>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 10 Mar 2025 15:25:05 +0100
-X-Gm-Features: AQ5f1JrI74C84LJso0F0CyNstcMS9k40I-8PKT7xwzbMUHrwZHQKxNMrZm9G9H4
-Message-ID: <CANiq72nePg15KyeHdF5v-Phj116_iB15X6tP1g0amWN5eD4ebg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] rust: types: `Opaque` doc: Add some intra doc linkage
-To: Dirk Behme <dirk.behme@de.bosch.com>
-Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, 
-	daniel.almeida@collabora.com, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+Date: Mon, 10 Mar 2025 15:45:01 +0100
+X-Gm-Features: AQ5f1Jo-KFcVKueX0g67j4CnRVm7aFG8zzgraUS9Fb3LDQnYzo1Ea90XXPPdoKc
+Message-ID: <CANiq72kAY8hfN_RW-=h-gmFQbq=0DDSQ=ZQr+M3KhJgnsW6n5Q@mail.gmail.com>
+Subject: Re: [PATCH v15 5/9] mm: rust: add mmput_async support
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, kernel test robot <lkp@intel.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@suse.cz>, John Hubbard <jhubbard@nvidia.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>, Suren Baghdasaryan <surenb@google.com>, 
+	oe-kbuild-all@lists.linux.dev, 
+	Linux Memory Management List <linux-mm@kvack.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 5, 2025 at 6:35=E2=80=AFAM Dirk Behme <dirk.behme@de.bosch.com>=
- wrote:
+On Mon, Mar 10, 2025 at 3:20=E2=80=AFPM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
 >
-> Add some missing intra doc linkage `[...]`.
->
-> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+> Yeah, !CONFIG_MMU is a constant source of headaches and pain :/ is there =
+a
+> way to just require CONFIG_MMU for the rust bits? As far as I'm concerned
+> !CONFIG_MMU is a relic... (not everybody agrees of course :>)
 
-Applied (this one only) to `rust-next` -- thanks everyone!
-
-    [ Reworded. - Miguel ]
+I guess you could simply limit `CONFIG_RUST` to it, but yeah, I guess
+it depends on how many people you estimate would like to mix both, and
+the bandwidth/patience available to support it.
 
 Cheers,
 Miguel
