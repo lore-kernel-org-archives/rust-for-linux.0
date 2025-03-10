@@ -1,63 +1,61 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE71221735;
-	Mon, 10 Mar 2025 07:31:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0971D432D;
+	Mon, 10 Mar 2025 07:39:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741591864; cv=none; b=rqADE/alEt2+sIH4+g8K62vTOMmoEnw+VVRvQw11sPhZwSLvh2XJ6vc0EIouwzLtNdUuVA/Re3r1tBDJJ5JYNhE+y+YKFxnpsojcgyRt8k2cDXrpeklpN1aLyFiRbsjDD0SzsX3PGiRiHBCI7+4vGnBQ0Qc9c9E4N7cjrNMsGEw=
+	t=1741592341; cv=none; b=DPYIMly0k2tD9AOYT2Sk3eYNDKRAH+vaOsLypCS2Ad+rVIhjcRKoGHgGfpGvZFLlRpDDk5TJe9I2VYNS9tPvHWqAY1WCeu4xofRsQwW1t+dmtVEFxoUGvxbQd5gSwaZRS63/qGEnIGXFC5mZG2yCcnAGmUBs7LFfZbtiDz7HwDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741591864; c=relaxed/simple;
-	bh=Zu63HHkaNmeHO+nk8MSfP7JWXnAppM72Ccgnmk4GrTs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=domwyWDjd2w+ED9s9/U0dxw8AWyWEv13fSGgTmCwahUjjfEcjIcgnkMYZW9bdb3uhuJ9k9UxZkXrKgH9l6cdTI9We208F7F7RuQiOa3NvXDxOQ5uAemYiBLxULA4yLIaUdctIPPczPk7s+1l29x5w8ZopRdzERIoC5J9TsI7rQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e7JHCoib; arc=none smtp.client-ip=209.85.214.177
+	s=arc-20240116; t=1741592341; c=relaxed/simple;
+	bh=fCU1Sx5+YSnEqYbZchw3WrT1XD+n4gHGxDYXlcM+BsE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Be705bqzjmFE9z+mroYTWnk+jaLR71kdnYtm6gDH9ONrYMkX7CzASSC2qFzo4ip+5K9UPTkmj3HDpCIfIvIZwOBdilL4zcuQA3Hh5k5eOErPoKS/rCYsBKlKx8WXAK9z7s/agGh0aK8LwwP5bebvRubj1QJNsiJniaWuncXD6aE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BgBY9/PA; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e7JHCoib"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-223f4c06e9fso63584375ad.1;
-        Mon, 10 Mar 2025 00:31:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BgBY9/PA"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-22334203781so87553495ad.0;
+        Mon, 10 Mar 2025 00:39:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741591863; x=1742196663; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pKmv+q9cPJk5vyRVGZkQzjZQAXXzEnVw5/P1XfmlNVQ=;
-        b=e7JHCoibHkvrKl4eTavvbUFHULiPeZ3gGxStlKfg+NTIXyfoUhvaMnjJ33JMFaFsm7
-         qqzA+VNHB9MWtLsoTH6gJW6yZjMSSciv4H7lfc1eNCPINPjuOKPLGR30TAAImaZQoE+J
-         BHU9VbJOniwB7WcnjtIFSJTD1WgSzOGVKEUe8ftqEnJji3uGhlL0dCRrqg7YecfGWZIr
-         g6iYXaR0MoYrBmqWgGguk4L8MIfBHPz1uHQReL2pnP5EPwQKqr05+iEhCoy8cRAuIsFu
-         fzdvHrhdsIzbqln1psPeH7ei0TeBJ+3dwyoWOknxtFJuNH82gUVIeLxZZylDsVYuTifb
-         XbZQ==
+        d=gmail.com; s=20230601; t=1741592339; x=1742197139; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZHaWEsIHkAJUrYIbd6YYFQ+RiGXu+yZ2V3PNN6+Sztw=;
+        b=BgBY9/PA/iio9iMCknSIXv08SwX1qWMy1s0BnH8bOWgKnURnuxj62dxFsLop0doJA9
+         o+ITpmuM/yLSA4HW74ZQ+pi4tvYPcFgCXBGM0EbwopEk9bvWQBO5/LjJ/3+hRvVPFbxs
+         /Q55NIYy8xtHIdqhYA8ZnUyccKZjIMosCl8kxTChqiuxOGY39YxgDEztPnLCUwO6ZlWm
+         BeIOuGWpXoTd2MZmti/ZFje0Dtgz3euQ7qUXsbc6tsHANE0DVM/QzgjSqTmzT/eZxupA
+         YFrqNhD3V8sJlMAeKvJecGHvRiyCsjYl09VnkrYQaIyHWPJI61Upuo5vaAMl75EXde3F
+         L2AQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741591863; x=1742196663;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pKmv+q9cPJk5vyRVGZkQzjZQAXXzEnVw5/P1XfmlNVQ=;
-        b=iB1bfYu++ncmw6LPuYLTKuN/KAn1Z5dSIYpuVoxyYbwsvUyUdWQFtJ9ZFRpC0PUog7
-         T/q+Jz8z99VzG7LuU6DNXm2yfgoNXiq7qdBghWNzpaxdvvTy7qr5ktnosyF6mgOun68+
-         /wI2XZsmoWKp058odP8uOxrYVfLwphaksPwuEfL3908QyhO+67BPp0Kd+Iv147xNIL1e
-         4znRdoB7p+HbjDFrY+op7xSnmyIGqirOD0QR1QzUcNHBz8rq7oWSvzME0IVRDNerhVuQ
-         Y/GMapRcwzP89bCWjkSZ2HX206TD6LVUv9L5aRM4Zl0gwci9ADs4pg6m5nZ1zCl26z6+
-         TQRg==
-X-Forwarded-Encrypted: i=1; AJvYcCU/uocl+kR8CfN5TBm7nUC618bn0hs+qI30OBSrJL84YsVS2mIxNitfewjIaGwChj8Epv6RW1yrFuHv8XQ=@vger.kernel.org, AJvYcCUkIDZQSgIc3luwHq4PPd4AVcKXj04LkfQTc2jlTwqmzx5IGoXNZmPqeRB1+KT65Ikk5U3E9G/kh/KJUj0LnbM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzP7KI/ZqUbljZQjtvotUiyGjB51feaXpRsd3sLR7Jm+3NccVxg
-	r1dIxjGL0FHjRf/h8iX0wKfBKAHZUycFtpquNDyfj+SPkpiI4hQV
-X-Gm-Gg: ASbGncvMgmSChtz3Sfa3NeLJQp+015bryC5DsKsra+y9KZA910gWKSLGtnJlznKGFev
-	7mxlxDD1yyvgraqzocvIRo17QcCwCAsm7r8+hM0g9WeWVzxBDFzSXj6dRVvrGUs4C59s82wNc3n
-	IasJEaH8KpcFn/4Ovkl5Me8d6z+Sph7dk7vcGQT7SZlxQuRmq07Q1PtdnieYrQkTeEO89HvKpKj
-	pl87ImGjrw1aOnOWfEIY2pENIB8T0aZ3Ff95h+c2XeqgS35wahauniTs3YUTZo2FjIWAJDMWmL2
-	//ZvdaGbCt1fjUNZHUKLfyMOm8uRb3xak91NGZE63KOnsIA7TupoIpQzJzCPMNAm1c1FjmAVAg=
+        d=1e100.net; s=20230601; t=1741592339; x=1742197139;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZHaWEsIHkAJUrYIbd6YYFQ+RiGXu+yZ2V3PNN6+Sztw=;
+        b=oQVeF9QbseI60XAln1tzujneWqZT6eQHrpLFPuwcHo7dX6TZ/T4GJOMHf4HVCEaxk3
+         9g0KnPXrGh3Ap5+Nfa9OMorU4ndbtk0BsXWcp0TKXE/tFOR9t0Hm+/b++67jofWNZn9m
+         Ofi52M0fpbGs2O5oFCEQqxFydjry5tShPs/VBi+Ff6yixfLIy+LwzD0HTCfYiUvmTe3H
+         r0QOGQ8bx8EozrsuwLiMHqE4NoXlxbmMVRtwUluoy1jH9lGUzeri6tX8MyHS9lMiUb20
+         zLQjRy56pOm2WC/FdPegp8Jo8qNcFaShvQSzDxt1fTDg2qsEjhBKLRDu604GoUHTrz2P
+         sbBw==
+X-Forwarded-Encrypted: i=1; AJvYcCUPep8wdAbiDrOsG2L22trOtz5P/TUnkdp4DgKnzLJ71/lLM7c0+Te1wPDo2938MQJI5dZH85uBbXWiLX4=@vger.kernel.org, AJvYcCWhIH2f8dzshKDzjoqfpnn4KjOPMVD59Yo5u2/1erulPMlnvAV7hW2C72M0yL4UPGt0Yx81+dNrC2BIjfSJ2kU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBd3zQnLonyI2p4EuHvExdr5+eoHhaXReQUCDSvX8HBk8Rd8Dz
+	CmyxuFBGn7CPo2a/mUxbxLQv7uxOpwzPizWo1jHQ7eNuFXu7oL3/
+X-Gm-Gg: ASbGncsYa73o+vKUHeJK/dtmlxsqxoyXUnKo2OoPMpZxb8p8euwSsHCxWRBNWTCUsC8
+	KbYjHkxaukG+1ONT+HTOPTjJHcD8llLP1GJCJBkWDF3Pwwgp901sBwo7hTo96MiJFkTfXokjExh
+	FlAECTQrz5cTfw2YvxniCP+sLrleYVpfd41poFrKE10aci+3uJVYHSs+fMDPfMpV5HKdoEke/tM
+	WGnNxD+sLuvs5IvjZhaylS4v0kX7zHa1btuhbJ4Wdxvvdmjeeo99iWGLkM9GD3AIiYTENlOVtwi
+	FnUyQFjgJ9AvukxTy0m8MVGmiseTS4IbWEGUvCKWt7qjdxKl2Vj3a45oI4DbYJteQPx+x4YZ3g=
 	=
-X-Google-Smtp-Source: AGHT+IEIZYO16EUwy5bWYTfuapkyReziPRqQOHrEE8d66FtEMAZjuctqsCd8Be6/ecyitm/MYSDiYA==
-X-Received: by 2002:a17:902:db0b:b0:221:89e6:ccb6 with SMTP id d9443c01a7336-2246454cf0fmr145304815ad.25.1741591862631;
-        Mon, 10 Mar 2025 00:31:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFVo8LtjGiQbWI+3c2Cx6tD5XyGHqdiZkLi/zzbU3mW+ugZdMZ9j3iYsC8oE3r0nOHQUXUBdQ==
+X-Received: by 2002:a05:6a00:c87:b0:736:491b:5370 with SMTP id d2e1a72fcca58-736bc0d040cmr13850411b3a.10.1741592339525;
+        Mon, 10 Mar 2025 00:38:59 -0700 (PDT)
 Received: from vaxr-ASUSPRO-D840MB-M840MB.. ([2001:288:7001:2703:7ad0:37c7:5275:4b0])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22410a7f773sm70840715ad.117.2025.03.10.00.30.59
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73698450244sm7620234b3a.80.2025.03.10.00.38.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Mar 2025 00:31:02 -0700 (PDT)
+        Mon, 10 Mar 2025 00:38:58 -0700 (PDT)
 From: I Hsin Cheng <richard120310@gmail.com>
 To: ojeda@kernel.org
 Cc: alex.gaynor@gmail.com,
@@ -74,12 +72,10 @@ Cc: alex.gaynor@gmail.com,
 	linux-kernel-mentees@lists.linux.dev,
 	jserv@ccns.ncku.edu.tw,
 	I Hsin Cheng <richard120310@gmail.com>
-Subject: [RFC PATCH 2/2] rust: list: Add examples for linked list
-Date: Mon, 10 Mar 2025 15:30:40 +0800
-Message-ID: <20250310073040.423383-3-richard120310@gmail.com>
+Subject: [PATCH] rust: list: Use "List::is_empty()" to perform checking when possible
+Date: Mon, 10 Mar 2025 15:38:52 +0800
+Message-ID: <20250310073853.427954-1-richard120310@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250310073040.423383-1-richard120310@gmail.com>
-References: <20250310073040.423383-1-richard120310@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -88,121 +84,65 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add basic examples for the structure "List". They also serve as the unit
-tests for basic list methods. A simple "struct MyData" is used here to
-serve as the data to form the list, the members are trivial and naive
-for the simplicity of examples.
+"List::is_empty()" provides a straight forward convention to check
+whether a given "List" is empty or not. There're numerous places in the
+current implementation still use "self.first.is_null()" to perform the
+equivalent check, replace them with "List::is_empty()".
 
-The trait "ListArcSafe<ID>" isn't tracked here, dicussions are needed to
-see whether a tracker is necessary.
-
-Link: https://github.com/Rust-for-Linux/linux/issues/1121
 Signed-off-by: I Hsin Cheng <richard120310@gmail.com>
 ---
- rust/kernel/list.rs | 90 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 90 insertions(+)
+ rust/kernel/list.rs | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/rust/kernel/list.rs b/rust/kernel/list.rs
-index 57d75ca16434..d1954c403f67 100644
+index fb93330f4af4..8f3919bd3f99 100644
 --- a/rust/kernel/list.rs
 +++ b/rust/kernel/list.rs
-@@ -35,6 +35,96 @@
- /// * All prev/next pointers in `ListLinks` fields of items in the list are valid and form a cycle.
- /// * For every item in the list, the list owns the associated [`ListArc`] reference and has
- ///   exclusive access to the `ListLinks` field.
-+///
-+/// # Examples
-+///
-+/// ```
-+/// use kernel::list::*;
-+///
-+/// struct MyData { value: i32, link: ListLinks<0> };
-+///
-+/// impl_list_arc_safe! {
-+///     impl ListArcSafe<0> for MyData { untracked; }
-+/// }
-+/// impl_has_list_links! {
-+///     impl HasListLinks<0> for MyData { self.link }
-+/// }
-+/// impl_list_item! {
-+///     impl ListItem<0> for MyData { using ListLinks; }
-+/// }
-+///
-+/// let mut my_list = List::<MyData, 0>::new();
-+///
-+/// // The list should be empty at the moment.
-+/// assert!(my_list.is_empty());
-+///
-+/// let item_1 = ListArc::<MyData, 0>::new(
-+///     MyData {
-+///         value: 10,
-+///         link: ListLinks::<0>::new_link(),
-+///     }, GFP_KERNEL
-+/// ).unwrap();
-+///
-+/// let item_2 = ListArc::<MyData, 0>::new(
-+///     MyData {
-+///         value: 20,
-+///         link: ListLinks::<0>::new_link(),
-+///     }, GFP_KERNEL
-+/// ).unwrap();
-+///
-+/// let item_3 = ListArc::<MyData, 0>::new(
-+///     MyData {
-+///         value: 30,
-+///         link: ListLinks::<0>::new_link(),
-+///     }, GFP_KERNEL
-+/// ).unwrap();
-+///
-+/// // Append the nodes using push_back()
-+/// my_list.push_back(item_1);
-+/// my_list.push_back(item_2);
-+/// my_list.push_back(item_3);
-+///
-+/// // Verify the length of the list.
-+/// assert_eq!(my_list.iter().count(), 3);
-+///
-+/// // Iterater over the list and verify
-+/// // the nodes were inserted correctly.
-+/// let mut counter = 10;
-+/// for item in my_list.iter() {
-+///     assert_eq!(item.value, counter);
-+///     counter += 10;
-+/// }
-+///
-+/// // Pop the items out from the list and
-+/// // verify their content.
-+/// let item_3 = my_list.pop_back().unwrap();
-+/// let item_1 = my_list.pop_front().unwrap();
-+/// let item_2 = my_list.pop_front().unwrap();
-+/// assert_eq!(item_1.value, 10);
-+/// assert_eq!(item_2.value, 20);
-+/// assert_eq!(item_3.value, 30);
-+/// assert!(my_list.is_empty());
-+///
-+/// // Append the nodes using push_front()
-+/// my_list.push_front(item_1);
-+/// my_list.push_front(item_2);
-+/// my_list.push_front(item_3);
-+/// assert_eq!(my_list.iter().count(), 3);
-+///
-+/// // Use Cursor to verify the nodes were
-+/// // inserted correctly.
-+///
-+/// let mut cursor = my_list.cursor_front().unwrap();
-+/// assert_eq!(cursor.current().value, 30);
-+/// cursor = cursor.next().unwrap();
-+/// assert_eq!(cursor.current().value, 20);
-+/// cursor = cursor.next().unwrap();
-+/// assert_eq!(cursor.current().value, 10);
-+/// assert!(cursor.next().is_none());
-+///
-+/// # Ok::<(), Error>(())
-+/// ```
-+///
- pub struct List<T: ?Sized + ListItem<ID>, const ID: u64 = 0> {
-     first: *mut ListLinksFields,
-     _ty: PhantomData<ListArc<T, ID>>,
+@@ -259,7 +259,7 @@ pub fn push_back(&mut self, item: ListArc<T, ID>) {
+         // SAFETY: We have not yet called `post_remove`, so `list_links` is still valid.
+         let item = unsafe { ListLinks::fields(list_links) };
+ 
+-        if self.first.is_null() {
++        if self.is_empty() {
+             self.first = item;
+             // SAFETY: The caller just gave us ownership of these fields.
+             // INVARIANT: A linked list with one item should be cyclic.
+@@ -299,7 +299,7 @@ pub fn push_front(&mut self, item: ListArc<T, ID>) {
+         // SAFETY: We have not yet called `post_remove`, so `list_links` is still valid.
+         let item = unsafe { ListLinks::fields(list_links) };
+ 
+-        if self.first.is_null() {
++        if self.is_empty() {
+             // SAFETY: The caller just gave us ownership of these fields.
+             // INVARIANT: A linked list with one item should be cyclic.
+             unsafe {
+@@ -325,7 +325,7 @@ pub fn push_front(&mut self, item: ListArc<T, ID>) {
+ 
+     /// Removes the last item from this list.
+     pub fn pop_back(&mut self) -> Option<ListArc<T, ID>> {
+-        if self.first.is_null() {
++        if self.is_empty() {
+             return None;
+         }
+ 
+@@ -337,7 +337,7 @@ pub fn pop_back(&mut self) -> Option<ListArc<T, ID>> {
+ 
+     /// Removes the first item from this list.
+     pub fn pop_front(&mut self) -> Option<ListArc<T, ID>> {
+-        if self.first.is_null() {
++        if self.is_empty() {
+             return None;
+         }
+ 
+@@ -493,7 +493,7 @@ pub fn push_all_back(&mut self, other: &mut List<T, ID>) {
+     ///
+     /// If the list is empty, this returns `None`.
+     pub fn cursor_front(&mut self) -> Option<Cursor<'_, T, ID>> {
+-        if self.first.is_null() {
++        if self.is_empty() {
+             None
+         } else {
+             Some(Cursor {
 -- 
 2.43.0
 
