@@ -1,40 +1,43 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+Received: from mail-10628.protonmail.ch (mail-10628.protonmail.ch [79.135.106.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 803A6227E91
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 10:57:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163AC22A1C0
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 10:57:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741604247; cv=none; b=XI7gkqYg1z9Z8chzpdK2LyT3fCFGmYFJh83Jl6uCM5hlVDFWNg6F0OJGJqEuirD1/LqF13UAFg7/TrrEDmgJqhKt7p3/70ByharMmC0Px2QyikNcKc/Ud7QAI65Jeoes5mT2gXKQz2NKAsjw9lw8y/kCC0ri2GcIEkRVivEPj08=
+	t=1741604256; cv=none; b=oJwiBxBFNxg7I91mOZ4ew5HF1RecIVVHgZh4f1xufWodKAMGU040VAXmz/PK+YuOy5VbuSeUj6FUsuD4ly+2f0Z73rSMFAzOMKQ4IJDyFdMU4Tl1P7+oPHEFuFYZ46LhdtXDNaAsW6eTgqLk8j9hcdJyyPtrvoGIu2K49lQnkZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741604247; c=relaxed/simple;
-	bh=61A/V3lwSclZiCJInLxEmepbN95X1sJN7svSDJK7DL8=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=kFelJZ77pvWZ63yqagpmE4U9zPDxCj2WYU7ZL7KC0tkH5GweK5dGrmGv/MrD1G1iDBbyTr9YuL1EtHJcRaTt8gG+hMgNx4BsRaT3B/3IaQ/gOzpLVizDEvtc4zs2ilArpELb3hHsyfEqwMfc8bE6sKbdta3u8aLiR1+n0+ZLOuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=OkhwnAdV; arc=none smtp.client-ip=185.70.40.133
+	s=arc-20240116; t=1741604256; c=relaxed/simple;
+	bh=G4g8+U+HLV4Gx1vaKDqvgQtTExOBv2TMnZblyvutss0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IjKGDJMWx6pEpiQQjkFFlAyTi323OxoU/61K1Kf9YGePRcpLM6Te3/MulyqFXL4JTbFUM0CwjZe5HmBkfhQk++xVJxm3CLSf19RIz+wJxqwEY+clGtGpnA8t94rXRiLF1jupmT8YftEFZ/tghKvfyjFHNEc9tYWO7KFGoOjYVvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=knASrLgj; arc=none smtp.client-ip=79.135.106.28
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="OkhwnAdV"
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="knASrLgj"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1741604241; x=1741863441;
-	bh=hLncp8wa6eofNjWes0vCOaYEUoMimwk7wJagoEBWPLQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
-	 List-Unsubscribe:List-Unsubscribe-Post;
-	b=OkhwnAdVH6mxIe70vbXH9uMKzaakcvCGlkmAMw0oF7uC2onBQvfXlnuSTeekZZB1Z
-	 0Iriaz7UublqKawcfI9Pwra9Y0Z+NK9glPT9URoXAoHGhZUFVKOoCWJph76DHARziG
-	 3Q2AsrC3YFiX2UybB6div6lQSAO+LbeGNeU+ta63C54lW085778t4Sn1RruR4KNDtJ
-	 nkNcSrTHTVHF8ox+TqrrMA5tYQjiG2lSWs1M2+ZTBff1Gt4rtIMFvmi4hemsk0yaZe
-	 UnqS3VZt/fgtejUXVTbq8KQv0Pn5i3I1WLLF0XNfWXorI+jDn+jlrgT+tbzqgcDiBt
-	 O9YwJCHfVr4kw==
-Date: Mon, 10 Mar 2025 10:57:15 +0000
+	s=protonmail3; t=1741604251; x=1741863451;
+	bh=lqhztZytrydlxEcGl7cfjWRcRjfcWBDgUsWbhxkDSEI=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=knASrLgj1v8ROp3wXvA26lKrUi+NziM5cDZGRFksM8MQg1BhHL3PblArEbIYWxc/X
+	 +06FMgKiDFiW2v93uy/H6ciJ10JruwFguhpSd/8P0g/AD9hr1ROXmEzw8Nkyr33Udn
+	 NGyg5+4l7mmiJE6vqgEeiMGo12xIpoQIhrBN9eGNRxkOqsa6ulU5pytq7Sk4+BwSJ6
+	 7FnVPwFHb25esTjh89l5rlZtoEPdLliATwGN9ytFyTXmWC2tcpRwcrAgdjT5gavKap
+	 1gh+tM8d1t4sNTQkgwENyi87iA0O+WzCHoSb3b92eqLi20GKLxZMCvNTIrvca+kOoP
+	 Z8SRQcMBnKfew==
+Date: Mon, 10 Mar 2025 10:57:24 +0000
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina@asahilina.net>
 From: Oliver Mangold <oliver.mangold@pm.me>
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Oliver Mangold <oliver.mangold@pm.me>
-Subject: [PATCH v7 0/4] New trait OwnableRefCounted for ARef<->Owned conversion.
-Message-ID: <20250310-unique-ref-v7-0-4caddb78aa05@pm.me>
+Subject: [PATCH v7 1/4] rust: types: Add Ownable/Owned types
+Message-ID: <20250310-unique-ref-v7-1-4caddb78aa05@pm.me>
+In-Reply-To: <20250310-unique-ref-v7-0-4caddb78aa05@pm.me>
+References: <20250310-unique-ref-v7-0-4caddb78aa05@pm.me>
 Feedback-ID: 31808448:user:proton
-X-Pm-Message-ID: c678b95834604c22f58371b93567e473988925a5
+X-Pm-Message-ID: dc6aa8198b4e735e3bc33238a886717b525866ae
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -44,76 +47,173 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-This allows to convert between ARef<T> and Owned<T> by
-implementing the new trait OwnedRefCounted.
+From: Asahi Lina <lina@asahilina.net>
 
-This way we will have a shared/unique reference counting scheme
-for types with built-in refcounts in analogy to Arc/UniqueArc.
+By analogy to AlwaysRefCounted and ARef, an Ownable type is a (typically
+C FFI) type that *may* be owned by Rust, but need not be. Unlike
+AlwaysRefCounted, this mechanism expects the reference to be unique
+within Rust, and does not allow cloning.
 
+Conceptually, this is similar to a KBox<T>, except that it delegates
+resource management to the T instead of using a generic allocator.
+
+Link: https://lore.kernel.org/all/20250202-rust-page-v1-1-e3170d7fe55e@asah=
+ilina.net/
+Signed-off-by: Asahi Lina <lina@asahilina.net>
+Co-developed-by: Oliver Mangold <oliver.mangold@pm.me>
 Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
 ---
-Changes in v7:
-- Squash patch to make Owned::from_raw/into_raw public into parent
-- Added Signed-off-by to other people's commits
-- Link to v6: https://lore.kernel.org/r/20250310-unique-ref-v6-0-1ff5355861=
-7e@pm.me
+ rust/kernel/types.rs | 109 +++++++++++++++++++++++++++++++++++++++++++++++=
+++++
+ 1 file changed, 109 insertions(+)
 
-Changes in v6:
-- Changed comments/formatting as suggested by Miguel Ojeda
-- Included and used new config flag RUSTC_HAS_DO_NOT_RECOMMEND,
-  thus no changes to types.rs will be needed when the attribute
-  becomes available.
-- Fixed commit message for Owned patch.
-- Link to v5: https://lore.kernel.org/r/20250307-unique-ref-v5-0-bffeb63327=
-7e@pm.me
+diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+index 55ddd50e8aaa075ac33d5f1088a7f72df05f74f4..e0ce3646a4d3b70c069322a9b0f=
+25c00265a2af8 100644
+--- a/rust/kernel/types.rs
++++ b/rust/kernel/types.rs
+@@ -551,6 +551,115 @@ fn drop(&mut self) {
+     }
+ }
+=20
++/// Types that may be owned by Rust code or borrowed, but have a lifetime =
+managed by C code.
++///
++/// It allows such types to define their own custom destructor function to=
+ be called when
++/// a Rust-owned reference is dropped.
++///
++/// This is usually implemented by wrappers to existing structures on the =
+C side of the code.
++///
++/// # Safety
++///
++/// Implementers must ensure that any objects borrowed directly as `&T` st=
+ay alive for the duration
++/// of the lifetime, and that any objects owned by Rust as `Owned<T>`) sta=
+y alive while that owned
++/// reference exists, until the [`Ownable::release()`] trait method is cal=
+led.
++pub unsafe trait Ownable {
++    /// Releases the object (frees it or returns it to foreign ownership).
++    ///
++    /// # Safety
++    ///
++    /// Callers must ensure that the object is no longer referenced after =
+this call.
++    unsafe fn release(this: NonNull<Self>);
++}
++
++/// A subtrait of Ownable that asserts that an `Owned<T>` Rust reference i=
+s not only unique
++/// within Rust and keeps the `T` alive, but also guarantees that the C co=
+de follows the
++/// usual mutable reference requirements. That is, the kernel will never m=
+utate the
++/// `T` (excluding internal mutability that follows the usual rules) while=
+ Rust owns it.
++///
++/// When this type is implemented for an [`Ownable`] type, it allows `Owne=
+d<T>` to be
++/// dereferenced into a &mut T.
++///
++/// # Safety
++///
++/// Implementers must ensure that the kernel never mutates the underlying =
+type while
++/// Rust owns it.
++pub unsafe trait OwnableMut: Ownable {}
++
++/// An owned reference to an ownable kernel object.
++///
++/// The object is automatically freed or released when an instance of [`Ow=
+ned`] is
++/// dropped.
++///
++/// # Invariants
++///
++/// The pointer stored in `ptr` is non-null and valid for the lifetime of =
+the [`Owned`] instance.
++pub struct Owned<T: Ownable> {
++    ptr: NonNull<T>,
++    _p: PhantomData<T>,
++}
++
++// SAFETY: It is safe to send `Owned<T>` to another thread when the underl=
+ying `T` is `Send` because
++// it effectively means sending a unique `&mut T` pointer (which is safe b=
+ecause `T` is `Send`).
++unsafe impl<T: Ownable + Send> Send for Owned<T> {}
++
++// SAFETY: It is safe to send `&Owned<T>` to another thread when the under=
+lying `T` is `Sync`
++// because it effectively means sharing `&T` (which is safe because `T` is=
+ `Sync`).
++unsafe impl<T: Ownable + Sync> Sync for Owned<T> {}
++
++impl<T: Ownable> Owned<T> {
++    /// Creates a new instance of [`Owned`].
++    ///
++    /// It takes over ownership of the underlying object.
++    ///
++    /// # Safety
++    ///
++    /// Callers must ensure that the underlying object is acquired and can=
+ be considered owned by
++    /// Rust.
++    pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
++        // INVARIANT: The safety requirements guarantee that the new insta=
+nce now owns the
++        // reference.
++        Self {
++            ptr,
++            _p: PhantomData,
++        }
++    }
++
++    /// Consumes the `Owned`, returning a raw pointer.
++    ///
++    /// This function does not actually relinquish ownership of the object=
+.
++    /// After calling this function, the caller is responsible for ownersh=
+ip previously managed
++    /// by the `Owned`.
++    pub fn into_raw(me: Self) -> NonNull<T> {
++        ManuallyDrop::new(me).ptr
++    }
++}
++
++impl<T: Ownable> Deref for Owned<T> {
++    type Target =3D T;
++
++    fn deref(&self) -> &Self::Target {
++        // SAFETY: The type invariants guarantee that the object is valid.
++        unsafe { self.ptr.as_ref() }
++    }
++}
++
++impl<T: Ownable + OwnableMut> DerefMut for Owned<T> {
++    fn deref_mut(&mut self) -> &mut Self::Target {
++        // SAFETY: The type invariants guarantee that the object is valid,
++        // and that we can safely return a mutable reference to it.
++        unsafe { self.ptr.as_mut() }
++    }
++}
++
++impl<T: Ownable> Drop for Owned<T> {
++    fn drop(&mut self) {
++        // SAFETY: The type invariants guarantee that the `Owned` owns the=
+ object we're about to
++        // release.
++        unsafe { T::release(self.ptr) };
++    }
++}
++
+ /// A sum type that always holds either a value of type `L` or `R`.
+ ///
+ /// # Examples
 
-Changes in v5:
-- Rebase the whole thing on top of the Ownable/Owned traits by Asahi Lina.
-- Rename AlwaysRefCounted to RefCounted and make AlwaysRefCounted a
-  marker trait instead to allow to obtain an ARef<T> from an &T,
-  which (as Alice pointed out) is unsound when combined with UniqueRef/Owne=
-d.
-- Change the Trait design and naming to implement this feature,
-  UniqueRef/UniqueRefCounted is dropped in favor of Ownable/Owned and
-  OwnableRefCounted is used to provide the functions to convert
-  between Owned and ARef.
-- Link to v4: https://lore.kernel.org/r/20250305-unique-ref-v4-1-a8fdef7b1c=
-2c@pm.me
-
-Changes in v4:
-- Just a minor change in naming by request from Andreas Hindborg,
-  try_shared_to_unique() -> try_from_shared(),
-  unique_to_shared() -> into_shared(),
-  which is more in line with standard Rust naming conventions.
-- Link to v3: https://lore.kernel.org/r/Z8Wuud2UQX6Yukyr@mango
-
----
-Asahi Lina (1):
-      rust: types: Add Ownable/Owned types
-
-Miguel Ojeda (1):
-      rust: kbuild: provide `RUSTC_HAS_DO_NOT_RECOMMEND` symbol
-
-Oliver Mangold (2):
-      rust: rename AlwaysRefCounted to RefCounted
-      rust: adding OwnableRefCounted and SimpleOwnableRefCounted
-
- init/Kconfig                    |   3 +
- rust/kernel/block/mq/request.rs |  10 +-
- rust/kernel/cred.rs             |   8 +-
- rust/kernel/device.rs           |   8 +-
- rust/kernel/fs/file.rs          |  10 +-
- rust/kernel/pid_namespace.rs    |   8 +-
- rust/kernel/task.rs             |   6 +-
- rust/kernel/types.rs            | 429 ++++++++++++++++++++++++++++++++++++=
-++--
- 8 files changed, 451 insertions(+), 31 deletions(-)
----
-base-commit: 4b2ee22fe32ea9b255926effbb6f26450607c391
-change-id: 20250305-unique-ref-29fcd675f9e9
-
-Best regards,
 --=20
-Oliver Mangold <oliver.mangold@pm.me>
+2.48.1
 
 
