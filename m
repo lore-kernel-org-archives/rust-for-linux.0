@@ -1,83 +1,143 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8533C2248A8
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 09:50:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4142F2236F6
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 09:59:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741600246; cv=none; b=UwPAVSfYZTh0/C+0+kZMG4OdTjk56pNHxlNDmtBe1/tCOqjhaDSPAxzkqgL1y+IscyzTuM+QGLXFK3KNxl4JIJNES99Tx8oXlN87FsSl2X/pl+xpx/vJwu3QTUgC7a1EzFZJB4M/2f7btsoXc8Ya2DOdTL7IoAPOCNg7txVgAGc=
+	t=1741600798; cv=none; b=mGEzuqtRqhW1AzCZEf7n72i2JyJr+bqv1q6WoiN6S/7RDI9nDqMY+ej9h85knwwa1GbHPRq2ccTe/7KJCJbczDjDgzydwHZgAfn+ZHoAymQJoEZ231b5XJpIlA/No2nC9t+uTiGIp7+GHzhn56zpYnlXlNpI2rQbC2F+bFzu8ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741600246; c=relaxed/simple;
-	bh=TOgB3PbgApKpM9HteeeXMis/Iog1yG/ceAJzbz4WSC4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=spj33whs6W3cA+zqTNPwGOPBf9zc4H7JAZwld5t9eKvZm2hbPYiSbqLEHl6215W0ig+Fx3PvAs9Y1ZAumrxCaTAaoJMZPJUvaKnGI7DeHHHioQLJF+9r5VYyMDzfnt/9/fT4dZv7m7VWj4vLaaSnegFWZy3MfeSxgtFXLKF9Big=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vlrbDqiV; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1741600798; c=relaxed/simple;
+	bh=V/WiqkuxA4YwLXvuQpcmscx/6nwwjOByTFAnW3PVYWE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uHtHRtt3HkIydKtRDTcTuTnQIbFXvlhBSosKb8hT1PCOj1mIFnIF+UZ/A3B8iUHJLxiFix3Ej1rVdDWQXq0S+wAvMEyHdvIwzZibiJ3cK+ZwZycbgbfZnIAxtu26O4IbKFVS1GhOdXCBuxjNs+Jz02+TLYU7svcVyT+8xRFy2rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RZ2RO//6; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vlrbDqiV"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3912fe32b08so1937466f8f.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 02:50:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741600243; x=1742205043; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=B/nswyrml7wVD0q8mwmURLpx4kqpdNOs0AJ+kP0PTJw=;
-        b=vlrbDqiVYW3MmqExT26JT1/9PZ7o+RPBKODTYkC3x3b/9vM9X2d2MWRq2KGZs2aAT/
-         Y+RKk4ymLAzJUc9XwU0Bw3P9uT0OMrUeFr+IFMoo9Aish5Ww8hRSi3AASo+6cYnOcAal
-         mX1VWM2Os0Q4tx0OuIVRdC7A6vQVrdmJ6oCq2BFFnJywMOSzRMdC+nZ8E3jNs9sXEcmd
-         FCaqoD1WDbVwA24Cd/8YouSXkzO8WH8ceEFaBLMjlV/KNjwF5c9mruSplM4lGCbSYzir
-         QRkRSHZ0NfN2xnbCIrHeCSqzk2rYlSW1lE9kd9h2YFoivD5egapZaabpJm7gLPnMiCXL
-         ERgg==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RZ2RO//6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741600796;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AQ+pSa8sIsuU2xtscwDYe98bcGEdRUw/0m+Fk+VSrb8=;
+	b=RZ2RO//6RxQogMA7wAoYUgNmZb8FWUcNzFWqnqozw8PmUg6DF8aubLv5bwDy2BczAxBt7S
+	m/Dfp0LiRXTzZ5pJoWscdSGSoK0271mi1r2029jCstZIEnwDx7/o2WCeR5lTtLxM+2lwnK
+	nDol/79+OfO+PTzJxCGG6Nl6Hoasuz0=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-442-tE2Qxh2bNrCbekI9dJ72iw-1; Mon, 10 Mar 2025 05:59:55 -0400
+X-MC-Unique: tE2Qxh2bNrCbekI9dJ72iw-1
+X-Mimecast-MFC-AGG-ID: tE2Qxh2bNrCbekI9dJ72iw_1741600794
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-43cfd9b833bso1484195e9.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 02:59:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741600243; x=1742205043;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=B/nswyrml7wVD0q8mwmURLpx4kqpdNOs0AJ+kP0PTJw=;
-        b=mRB4UBktjmPHmqU2Al7jShMP5rMwIwTZdLmjnyQS8y/frOfKfTo9OwkljahlTaePis
-         9wzCDZla9PaMT4plibG8QEk98l+t7y4yoU5Y/jH6643DmFi1ngGthic6RUJPCFkH/Sgx
-         WoARb6vbOq6GrNvgFy7RkemSeUycwmjj6u4UYzYLQoDTlS7Qo5E453jjVPjcy9ei/TYe
-         Gp2kDvIwEBZg3/1+49+rSyqINd/MrtwBJqu0Ps65evT2q2I6OfO0ZD/H4JjljNV6oNqx
-         v9NpuIAAUJCoP+P/wa7txjLKsJ/DU2cgrrrgJB/3wiadonsL+fS3UbxbjV9oSraStH0X
-         i9TA==
-X-Forwarded-Encrypted: i=1; AJvYcCUZ3mhMdqsgU6arA1YOlUGeP8jPjvTx1yfj6wm8ImpsBADFrvH4rxu5TBigRIPkNL1k0v5DgjQJjEKtquIMWQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSQ+yeL/h+l5ZKHK4tuLoeG6vzGeZk9WFm5rlpGdawXvWbcsgQ
-	W6d6F6xlOK94aPlCqZZS6bkDtWC6RnhU65Zw3TkDVJ0t86DmsUQH4bkhLzvdfWGOMW7UCsTkrFQ
-	CSHoiZ/3ejQ1fhQ==
-X-Google-Smtp-Source: AGHT+IEvw9gbRnYCa4DZNWLBplx0pkmchJgqVCESliNTCd+NA5Dn2Rk7SdB8yqxlQJfnZPEWxsK6Dn9tPfTSqLU=
-X-Received: from wrbby18.prod.google.com ([2002:a05:6000:992:b0:391:3790:eb02])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a5d:5888:0:b0:391:4835:d888 with SMTP id ffacd0b85a97d-3914835d9a6mr2535901f8f.42.1741600242967;
- Mon, 10 Mar 2025 02:50:42 -0700 (PDT)
-Date: Mon, 10 Mar 2025 09:50:41 +0000
-In-Reply-To: <20250310-unique-ref-v6-2-1ff53558617e@pm.me>
+        d=1e100.net; s=20230601; t=1741600794; x=1742205594;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=AQ+pSa8sIsuU2xtscwDYe98bcGEdRUw/0m+Fk+VSrb8=;
+        b=KRHBQLmT0TzXQIi57A9c9DPw12pFv6ADZu3i0n9CvxH05RAAdAnV94v6KInDNUz1B6
+         qJ5EAJyWTAuHi8Bh4+fuIfeI0HmX5M0qwSb5cevICOpeSMxVn6UttY9HMSUQf2N+L7Mt
+         cbtfClRGRKihOlqu5DYLswp0u0D9UR6LfPXYuQzI7dAqW/HxPdVBwCDNW/7vO0IcxYV2
+         eYpbaLAE8qteOUO9F1xVOw3OBujldcP2etYlsIT0mp+rnz9Vase6H60trYAyPWDYddAJ
+         X2JBA4+ijJDEwyxFtQAbEj5/gV676GgG9DxCZY+CseOUT4Oh9F3QpVBvxVAQicpCDtPA
+         KTcA==
+X-Forwarded-Encrypted: i=1; AJvYcCWwrUPuspNjuCMFoNjMbV6gzZ37rP3HnpdC1zwBCwO8OE4WkUoLL38yvl74/kO5j9VHywNxEiDdmAvRq/QvsQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxaUQGo9KCPVUCESfLRTOeMuZeQYA7tMtHdLPVx+oEfh0htodL6
+	9Vf7wDSt1C7+Bz+ht4Sokc3LOBpJC1y8ENlLY13s2EWIfUyUu6W6GoWQPpGtc5wgytYhuLNA/ve
+	LPKVtfxNp3MmI6h627BaneRO5PxUjGqFTeWhiaKvODcESPz0gZx5y1qKBX+8aw5EN
+X-Gm-Gg: ASbGncvjDmVWE2AgmCw2yPETrvGUivgENcQDtsk3UYBkoeVUlk7DVBqU9PG399mIKQc
+	vveclPenIfHy2LN0q5qOF7pHpxTiN8fjJjCMvUS0Qpmz2x3PZZF+eiDQYWA+I6oT0pe1VuVkYNM
+	vuSSy1KHwI3ptWz/yMgmXc5dLLMgVYQS7bLvTiLT1Jap3301Yl/K+qbi+gHuVj9c8w3wKObJho3
+	kPacWoFivqM9OVMaSLsmwSSI6h/C2QlOgGZWY1KZZXzFOE9zr57CIYAccemkO9YPNAULIZ/4Kdq
+	KbGFcQGAIGQuC+e6UUMeVJ0ZduyUGr4Td9Mg9oxaYLfUM8yMaWJHrPA=
+X-Received: by 2002:a05:6000:184b:b0:38f:23c4:208c with SMTP id ffacd0b85a97d-3913af2e472mr5013405f8f.18.1741600793708;
+        Mon, 10 Mar 2025 02:59:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGX9wDZkgqzcXWNadk7lA63fXqzI59Xv6gjXmdznaOhUQyAtcnnGk1X47jRovjSDv9uACyJBg==
+X-Received: by 2002:a05:6000:184b:b0:38f:23c4:208c with SMTP id ffacd0b85a97d-3913af2e472mr5013370f8f.18.1741600793351;
+        Mon, 10 Mar 2025 02:59:53 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:c:37e0:ced3:55bd:f454:e722? ([2a01:e0a:c:37e0:ced3:55bd:f454:e722])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912bfdfa52sm14018794f8f.21.2025.03.10.02.59.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Mar 2025 02:59:52 -0700 (PDT)
+Message-ID: <ca830ba6-5e02-446e-87d8-4e120c357312@redhat.com>
+Date: Mon, 10 Mar 2025 10:59:51 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250310-unique-ref-v6-0-1ff53558617e@pm.me> <20250310-unique-ref-v6-2-1ff53558617e@pm.me>
-Message-ID: <Z8618XEgG1yNvppk@google.com>
-Subject: Re: [PATCH v6 2/5] rust: make Owned::into_raw() and Owned::from_raw() public
-From: Alice Ryhl <aliceryhl@google.com>
-To: Oliver Mangold <oliver.mangold@pm.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/panic: clean Clippy warning
+To: Miguel Ojeda <ojeda@kernel.org>, =?UTF-8?Q?Thomas_B=C3=B6hler?=
+ <witcher@wiredspace.de>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Alex Gaynor <alex.gaynor@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, patches@lists.linux.dev
+References: <20250303093242.1011790-1-ojeda@kernel.org>
+From: Jocelyn Falempe <jfalempe@redhat.com>
+In-Reply-To: <20250303093242.1011790-1-ojeda@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: VkhzKzMZx5DgNGH1DoqgC4e7hn_-1kSaTuTES2wMKrk_1741600794
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US, fr
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Mar 10, 2025 at 08:49:50AM +0000, Oliver Mangold wrote:
-> It might be necessary to be used from some drivers containing C code like,
-> e.g. binder. It basically is needed for every implementation of an Ownable
-> outside of the kernel crate. Also the examples for OwnableRefCounted need
-> it.
+On 03/03/2025 10:32, Miguel Ojeda wrote:
+> Clippy warns:
 > 
-> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
+>      error: manual implementation of an assign operation
+>         --> drivers/gpu/drm/drm_panic_qr.rs:418:25
+>          |
+>      418 |                         self.carry = self.carry % pow;
+>          |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: replace it with: `self.carry %= pow`
+>          |
+>          = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#assign_op_pattern
+> 
+> Thus clean it up.
 
-I would probably just fold this into the previous patch.
+Applied to drm-misc-next (because dbed4a797e00 is only present in this 
+branch).
 
-Alice
+Thanks for your contribution.
+
+-- 
+
+Jocelyn
+
+> 
+> Fixes: dbed4a797e00 ("drm/panic: Better binary encoding in QR code")
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+>   drivers/gpu/drm/drm_panic_qr.rs | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/drm_panic_qr.rs b/drivers/gpu/drm/drm_panic_qr.rs
+> index 62cb8a162483..3b0dd59781d4 100644
+> --- a/drivers/gpu/drm/drm_panic_qr.rs
+> +++ b/drivers/gpu/drm/drm_panic_qr.rs
+> @@ -415,7 +415,7 @@ fn next(&mut self) -> Option<Self::Item> {
+>                           self.carry_len -= out_len;
+>                           let pow = u64::pow(10, self.carry_len as u32);
+>                           let out = (self.carry / pow) as u16;
+> -                        self.carry = self.carry % pow;
+> +                        self.carry %= pow;
+>                           Some((out, NUM_CHARS_BITS[out_len]))
+>                       }
+>                   }
+> 
+> base-commit: c0eb65494e59d9834af7cbad983629e9017b25a1
+
