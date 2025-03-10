@@ -1,84 +1,91 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08A0816F841
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 09:15:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057E12206A4
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 09:23:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741598153; cv=none; b=V8M6RKh+l4yR6k1xt8kS9n0G0mqQqIrZsCyr+KOeYZsJYBDTNa2DFir07qoc7kcqvYrOcesemHZhMgatmtg/dpP3D+LXh3ozHkgWGcM7hTO8hUrE5A8i7l4EEvyv0d4n4RXg3id+Ug+t5ZmJoVqFPokEKJCbJVqNTpLVLKutBb0=
+	t=1741598634; cv=none; b=YVlEzPtNVyhbjMVI3VZBkqed4Yb4Ep9dnZ/FVh1jMIYTGgfRr68fphucF7lmetfz6ILucHxL4Jnq6zk1fwjeR69rsIneMERNayrdfOZhlvhFLh05Q5w5b16S7r3v0paFwxeAiTHLP5vD8QLCd7d/0tPYAH+xRIePzoVGuRLhk0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741598153; c=relaxed/simple;
-	bh=KjSoU6/mBbGahQ04HV4jjvNKb9ObDoSCk+0lV+80R4w=;
+	s=arc-20240116; t=1741598634; c=relaxed/simple;
+	bh=NEZwdAcp8NlpW00clPwspaKYfG6ub3nrSf1XaFem7RY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=fRwN7MsA+V9dWenR/U+wHPGk6KkBEuht5Z89jDtWGeSMJR44U/PGplnM2cq42l6Oqstv1C0gn8nD3Pq1x9KQc8PwqWWzqQ+eVAxI4AVp7cf66w+awKIzdzb9ZXHzLTHF8uE3GWbRlTL8gZsFLujdVisSECLJOmCkGhNYifh6hL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1hc1VQ9+; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=LT+gTGlcdFCOS60SDfBVhQMPvKRcHsN/kk7Tw/ZqqtTlQDFVenMNVcStOSIf/kPGFonupceO5N3nwKzoeLUv90zL84p33mb8Uk+3BvCFJYVor+T+x+V/u3IJxGCUli4O/OP1JmqxUBsNgfUrjv01n8pdHhIT6/8xfReBaq66cTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mb9pilgW; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1hc1VQ9+"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4394c489babso18279005e9.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 02:15:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mb9pilgW"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43cf3168b87so4142325e9.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 10 Mar 2025 02:23:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741598150; x=1742202950; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1741598631; x=1742203431; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jC9dwmLMGrJONvWdmLchB8OrIEYq2jjVi0+jpdkBizI=;
-        b=1hc1VQ9+HImo9HXOoLOaEZ4Z2hS7xQpfWafecn9cL21vx40Ck9OzJp9L5FOQIrNG7+
-         Shn3OySkR1iHegJt9I79hQOs5Tdli+sbiV1+kGUHsI4shJMBld0GIzWo94AGW0GpJ6AL
-         LRVwpcp3WPjNUSK9lg5jjZ7VI2hOsaKpxVqViVQedrR3fBnIrpkMANaITQdWmgx4E+LX
-         MRvJENo1oOjVngr+W8afvO9mIZXAsCPXpaAo2VSAubvaSD4M9FwhaP9HEfOf94zh09Jl
-         32ivivoo2QhiK2MaJqDYLp9YPVyQ5UfQVYTatoEFi3ztVBKS7TfmAFcvSK9qT2KYnGEc
-         P6EA==
+        bh=v0Ey6YaeoGfhw7Uky6jLzAk41/zVhd3SqiNOIt/MFXw=;
+        b=mb9pilgWs2SmHHSTcHGNpCYvg2a36DTtF8ICyOJWhOeAS9AAqE/URWawfKX4au8WLA
+         9Knff1atYRGxZo6WbacAI5dqIKWwLGkbqrTgN5kibWSUM8Z/zb79dq3Uku5v1EDsBM1M
+         YyPRy1++KHs2Sk+j/NJB9mQSeFqh/nX8PK6xBCOzgtxQqQqMRzutf7GsKll+Abzcbhaa
+         rsnZim8fBd75RIsCpYxa2wm37tzAvqdRrgiX6ZSNLx9x/xtKdga60m5nSzBYTSZcmw3n
+         lXHhQXiRa5DppCSjQR6m5g/YrF3x5wgtnUEGATkyIprpuNDTtHtXQZMnEeS5kQDyPW6q
+         689Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741598150; x=1742202950;
+        d=1e100.net; s=20230601; t=1741598631; x=1742203431;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jC9dwmLMGrJONvWdmLchB8OrIEYq2jjVi0+jpdkBizI=;
-        b=FHcjZOAEOC3D81ObJDUdwbqsNW3MhnAECn3TYKEgzkGqnVh8401gP6bNjqh/qYS5L6
-         gebPO9M/cNeMvNfRnDyebgH1GC5MwLxOg1mXsEpMGuh0t9kR/0FVpkCtKvjcNq2B81fk
-         zKvSvLCoK3ZzkEegTSV88UprJv5+MamycEDvOVf6MC1Ge3bcl46gB58hSVRmDWnSgtPf
-         lTpTvBAS5zbWInZ2Y4AILutiIeszOLVwUkIZKFh9D1tvVl3cD7sk07+5yNalx51xrTlm
-         OLRJhX0G9tFYsaFC3/+VoT96jhMoKxnDHQyG/2wtYT5OCLWGwMAcL58QWSI5WOoH4x1M
-         bMiA==
-X-Forwarded-Encrypted: i=1; AJvYcCUn9saKMq+a0xsSZ1iUDi6wvDI6uUMl+iyclAJFtm5JSjSjkO7vHltshtwM+TBIi6sBXbEhUOXwX3cs7PFPFw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJT3+8Vk6zNMfMS+PGu3ff/N4qzjos2sMV56xckM8HG0x3GQoQ
-	x3H3gAOo03tEDkLjaZq9r4nO8gE4Zb/w7zaQJYNVJRWgl64lXNTHuRxj8KnVbA3UY+UjiTmAkmv
-	7gx3UKOyKL8a11w==
-X-Google-Smtp-Source: AGHT+IFld+YMbPi6vF1aQtVy8e1i98OzUQUBy9QMXqfEE1Pf4Daw9v+O6rr7flwQQrudHMtNoS+bOOx/1S6RKQs=
-X-Received: from wmqa4.prod.google.com ([2002:a05:600c:3484:b0:43c:fc61:959c])
+        bh=v0Ey6YaeoGfhw7Uky6jLzAk41/zVhd3SqiNOIt/MFXw=;
+        b=ZNeZwGn66W0UjA0F4nsXzYBLL39YTglM6SLxHv8jqsW9OcMce4xjC7OO2YHmMKF2Aw
+         vbyO23QRjXHdFcEtMih6eRbTpx/9s1iK0uL/WO5kpn3wXSTKgLxmQfZ2suQMaZWQoDP+
+         jFhJrqP2+nMggc93slHA2POCwRC3APKo+PZQ7phziRU2SVUlLNo+kiNlh6E0qFpZtSK8
+         qFrNjSwbyEdO/R/IArwfVF+WSRUMQ5aZItunWc5oZA7/GYIkJ6+rzfq0yW8wqlP4ArUx
+         KG/TVbrKm3eSslY7CuDLotce/kauFj2MrpnFm6y2fNJPQ8bm/i25Ky0vZ0gmwe7qAWLg
+         r1RA==
+X-Forwarded-Encrypted: i=1; AJvYcCUNjpofNLFrTaJ2AvJkv4jhy4g5UAE87xxPnRNmJNycLWPm6tLInkyWHxpi3mKnxdeRzDoJC8I+SNFJK2Dzew==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzsm5U9IIpf8QaWEKy/r3foi/aLY6MLnU75mlOVs7DergyOmdg5
+	xNpm6zV+O9BxkfLdVfbxxQdVLJx6VIVD8Y1XEd+1DtHyhiHMesDBIEBugD5Y+j7Yvu3ACSW9nSO
+	tLzR7xH+IXORk1Q==
+X-Google-Smtp-Source: AGHT+IFEp2UnHtcUmo45Bf247g24s/1cJE8+nXgglrMw+cHeJ5tpiviDxAGlDax67viBnDjPJP3vk0eAlr8/sB8=
+X-Received: from wmbfm24.prod.google.com ([2002:a05:600c:c18:b0:43c:fae1:812a])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4fc1:b0:43b:cd0d:9466 with SMTP id 5b1f17b1804b1-43c601d9251mr66339335e9.9.1741598150298;
- Mon, 10 Mar 2025 02:15:50 -0700 (PDT)
-Date: Mon, 10 Mar 2025 09:15:47 +0000
-In-Reply-To: <20250308-comment-fix-v1-1-4bba709fd36d@posteo.net>
+ 2002:a05:600c:4fc8:b0:43c:e9f7:d6a3 with SMTP id 5b1f17b1804b1-43ce9f7da7emr48713545e9.13.1741598631433;
+ Mon, 10 Mar 2025 02:23:51 -0700 (PDT)
+Date: Mon, 10 Mar 2025 09:23:49 +0000
+In-Reply-To: <202503091916.QousmtcY-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250308-comment-fix-v1-1-4bba709fd36d@posteo.net>
-Message-ID: <Z86tw6ugdwfJCTnu@google.com>
-Subject: Re: [PATCH] rust: task: fix `SAFETY` comment for Task::wake_up
+References: <20250304-vma-v15-5-5c641b31980a@google.com> <202503091916.QousmtcY-lkp@intel.com>
+Message-ID: <Z86vpQBMYuonWsM_@google.com>
+Subject: Re: [PATCH v15 5/9] mm: rust: add mmput_async support
 From: Alice Ryhl <aliceryhl@google.com>
-To: Panagiotis Foliadis <pfoliadis@posteo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+To: kernel test robot <lkp@intel.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, John Hubbard <jhubbard@nvidia.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>, Suren Baghdasaryan <surenb@google.com>, 
+	oe-kbuild-all@lists.linux.dev, 
+	Linux Memory Management List <linux-mm@kvack.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Christian Brauner <brauner@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Sat, Mar 08, 2025 at 04:49:05PM +0000, Panagiotis Foliadis wrote:
-> The `SAFETY` comment inside the `wake_up` function references
-> erroneously the `signal_pending` function instead of the
-> `wake_up_process` which is actually called. Fix the comment
-> to reference the correct function.
-> 
-> Fixes: fe95f58320e6 ("rust: task: adjust safety comments in Task methods")
-> Signed-off-by: Panagiotis Foliadis <pfoliadis@posteo.net>
+On Sun, Mar 09, 2025 at 07:37:54PM +0800, kernel test robot wrote:
+> >> error[E0425]: cannot find function `mmput_async` in crate `bindings`
+>    --> rust/kernel/mm.rs:143:28
+>        |
+>    143 |         unsafe { bindings::mmput_async(obj.cast().as_ptr()) };
+>        |                            ^^^^^^^^^^^ not found in `bindings`
 
-Thanks.
+It looks like the mmput_async function doesn't exist at all when
+CONFIG_MMU is disabled?
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+I guess I can just make the MmWithUserAsync type not exist at all when
+CONFIG_MMU is disabled to mirror that, but it seems a bit weird.
+
+Alice
