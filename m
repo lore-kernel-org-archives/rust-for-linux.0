@@ -1,176 +1,194 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100D025DAF8
-	for <rust-for-linux@vger.kernel.org>; Tue, 11 Mar 2025 14:26:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A137F1925AF;
+	Tue, 11 Mar 2025 14:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741703172; cv=none; b=NVXM+ToWSmiNXKUnPRKt7drB7NJfkdCck3ote8BuC9j3HQcL3T6Uacl80XIxJgnUz1NQ3AkkHKmbVcH/1OY1eGxjh/TvywX6MUcttw2jUvpdUM9gSF/9LJFGsfBrRUfs/GBj1nRajvsKjApi44IDCcLLIJppouxJ1t198MEJ/JM=
+	t=1741703597; cv=none; b=fN5ZMfdJao5G/UDKGqwaxGsDPUTE+6WAfqaikvwMzuNhavJKwSxy1Mn28z7t40ww4F9qpPLw4a4980I1oILC5S/r4iznHw047LM+thrQeiwk8m5PYFUbC83gCNT8r4PONw0wp4MLhU1LrilZn6X78rpOvLFpD4UsKrN6ow17lww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741703172; c=relaxed/simple;
-	bh=XKU9cRKvgp0kixzFl7aIj/zQ08YPYBtJF12+lpAONHA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=t3r08L2k7gu2BOMOH/kCsTivnJJxp2xe1zo9C621UVz/K2eNHI9ymnsQ1RbkGxIaPq1LQiWoXNUqSMSPTexlqlh4HKsAxWiWrBzhCDfynw3p8AQw8KZLeCe+5OJ1fcidtPyPGq1NSHCOtBjDNgGVjxOMQqYa1MCmbR6Hh15JTKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4f6FNPus; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1741703597; c=relaxed/simple;
+	bh=HdnCgmb2taCXgdDthxDkPSxyzIEd7qc+UeCPOJqtH9U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZTHHAhI0DsqVHe26sAzfC7nVZcia2YV3TCKqmwROZvsrh0FDfwor3/EphQgWZiLOxLJjOOBPTZN/wsMbL2SLuiAfHeSx6LAPpvfUF8M+evQ1FUprGpFgYS0Y8GL+rU/Ps1bXh1QVPtTc1F51EPHVy4dnLEc1xl06Rgst9AVmqkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nIkSDHg6; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4f6FNPus"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43935e09897so38564245e9.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 11 Mar 2025 07:26:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nIkSDHg6"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2235189adaeso95146255ad.0;
+        Tue, 11 Mar 2025 07:33:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741703169; x=1742307969; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DQkOm0HuLjqgJ/hyLLb+0wyoHUwdib0o04dd3QzbZVE=;
-        b=4f6FNPusmUKksfcApkEJM5V/VifHAifeFXamG8VD5ereZTP2WafqRHGzTXAljwA873
-         TjoVpkxojd6iXoXcm1O4bxse3p37aeJ9PqpeOXjpQDU74ZiDamEn5lITUZAQFB0YKb+h
-         IJoAAaWs0F/pItdji0bgnjwphkNmwND3eLgCQm//pKW5YW8B58I8YQyfUX35o2hXMBq0
-         gBOT7mr0bNPDgojXwjqLY4zRe9/rsR2BCK6BDqxvA80sDnVok+AIpbPp4fTRpvXil5Vv
-         1gkTd8PkYG4X6cnU4cw0mZPPZzmCR2cEwOPJ4o8Xpofi17Oe9kRAZ21NUABZklP3ej5M
-         HsOg==
+        d=gmail.com; s=20230601; t=1741703595; x=1742308395; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7IrnrFSjoSHcIPHm0oCpypuhfZ/F8/I+NOHsDs/8fXA=;
+        b=nIkSDHg6VXdZI7CzMQqkgn0PLT205SWtkrbu6tGSk7RaYZGSWvDotZ3Z0ae9sXQRUn
+         LuKMsMCMj8XNIsF/kK0el9DYHRCog6m/04Dd7P8g6zUcSU4br7tSJiI0pWJjC3VRgHO0
+         MyDwrbOTQxSL4QJEG0ROpHYbeicuQtwzdFzWwT0Y3JK58Lwwr6EdViK/sKHvls5Zjg4m
+         8TH42Kq2zr9lasp288vV2p8YI2D+jR9lKWnl2aQXYlzFM4teaZodanKI4jnUm60EXeJ0
+         TKnZYTbBGHV4vhpvR/Nn4M+QEgV9Tmc3CRRB44acS/R23w6p1iybfZ7cJqRa/Ok33V6A
+         rxRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741703169; x=1742307969;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DQkOm0HuLjqgJ/hyLLb+0wyoHUwdib0o04dd3QzbZVE=;
-        b=h3Du40n3/Bwqg3Zsn8pOtW+7k9saLx4ZaNLc3Bw+ao8UjfLVt9FArPdrif6HFLgQy5
-         8Qu7OnJZzhqPlKUDx683Z8X3xJCWaJwc6KJDBtpjl6c2zvsRLixz9GkRic3C5DObr5QI
-         Scux3+eW3uq3PXQXLjqfde9Wm1BbxtahHP/dYrd1fhtr9dhC6u/n4vbQaCeS6sRVHkCI
-         jF+s9ojpm2nQEbhO+s7+B6jODYRtI/NSphwhEyOw2yNJs9N8i2XY0sMpwbKTyKtna+i2
-         xXmcunP2USbtEiD7Fr1bUgppEQhoheGMwtDZMhVA8V/e+gRnm916+f7pTrU7MQriEdHe
-         Ox2A==
-X-Forwarded-Encrypted: i=1; AJvYcCXKzgBHCXZZ0YItvPLvEtxuUm/3ADpBK4ol6PDLlHdn19IRkePW5joYCOK4bpBdJNufw/ImU9r+zDjmtPw3yA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwP4n2Jz7WsdKmWZN9JzRs4ZPRrdT08wvhE4KDZSp0+Cwug9rS+
-	nBzrtXGsw7mBb8CVcHMp+LthOkeQxLbzJGspXiaNKHtHF63ZfE39gkjHsWUEVYKhp8Sow7scRYJ
-	PHtHXsW7A1zEa9A==
-X-Google-Smtp-Source: AGHT+IEKcctCw7ZE8Dhz7OmLcHjMnkf+lSBoaUGhJ5HarQK2WExcbUIVOji5s7/eIioXjPE5fNGcYR4TJw8MjYw=
-X-Received: from wmbeq13.prod.google.com ([2002:a05:600c:848d:b0:43c:eb09:3790])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:45d1:b0:439:6118:c188 with SMTP id 5b1f17b1804b1-43c5a62a276mr121343725e9.19.1741703169365;
- Tue, 11 Mar 2025 07:26:09 -0700 (PDT)
-Date: Tue, 11 Mar 2025 14:25:16 +0000
-In-Reply-To: <20250311-iov-iter-v1-0-f6c9134ea824@google.com>
+        d=1e100.net; s=20230601; t=1741703595; x=1742308395;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7IrnrFSjoSHcIPHm0oCpypuhfZ/F8/I+NOHsDs/8fXA=;
+        b=G2zmumFRxj42/EsvvdbQsQpbQDH1/pnxmkkp3ynhuher0wjHxj3fy3tUKodDQNVBHn
+         WatHIvwdOHjYrhVPru+a2dLstFhE6imEucJy9c1sEEaQLxAc42XqVeiyxUvfBCMOzofO
+         Emf906uM7hQJk0WrWlvz9jrGVnfpIZxe4D9oAwqLfa8l1c3qGgbo2siKkqN7KWdDdRMx
+         k4M5D1qPpuFZqc/GC6JdlR06lWBoTABW8W//N0ZbCJstjyg/67vbycG6FOLw/yAMHMN7
+         g8oEBhRhf23mnRkiRIcKIcWT2IZpn5zZibpFqNsjgMrOX3B0OBGxrqC4SjAsyJLnxdsN
+         P+Mg==
+X-Forwarded-Encrypted: i=1; AJvYcCUXoR4H51MfnTnH15WoALP+YJwU/t95ZCTKWbC8HSNtKYCg0lt5HP3+xx4xo6FRHXCYKgLkKJf7bR/WOi8=@vger.kernel.org, AJvYcCX+B03cUW1rxRYDki0U8cDYEqFnT1x6ate8VfEV08Nn3YV6O61f03LmSe/reqNpXwDYGTNE6qAVkTd5/JZAfgY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrbYs5Mh4Y5m/qqxQlBMfQMAAZhM7fvSL8hiSdeSlqA4sbESTz
+	6MwHh4ZhTLTFzB2hQz6srR0wiNmdBoaQ8ezjMHuMxoXmINW1dC9Q
+X-Gm-Gg: ASbGnctNTsmUwTJo1khwstSyRtvfvo6Mp+azIkk83wS2RmOlChNOfeoexZfZeSh/UnJ
+	sgx02ftaF/y42acL6sWDr+cgMLfLNGz0Z9BKTUUe4vV0hqExfomyis4TC0gdPsEipxwzXZqQw0t
+	Cr339qkcE0sn3sxG9uCqCn6wO5ZQpl4jbK+M4VTNbmf3KOAg8g5uESa/Mq5jn5e5EJF9DJZB2AZ
+	P10NHwrj6OxJlu1hZy0mC3Ke9MbQEPaKChhI1Us3tTRY/h4y/yyqfSXM+etN8JylOevmEojCOCv
+	Rn5/20O2yIYzbsZXtv/ZNquUmCOY4tnZjej47mHud0qge0r+ppeI7FB7e8BVX7ydK8gj
+X-Google-Smtp-Source: AGHT+IGpzpjnJ8S/CWjBEu/WHcV7Hie4ZZ+quYOqn+gTcaDZzj7EtvugVrKwdF4U+eKa3nYVrjWu0w==
+X-Received: by 2002:a17:902:f541:b0:21f:6ce8:29df with SMTP id d9443c01a7336-22593d3fe0dmr42037295ad.3.1741703593258;
+        Tue, 11 Mar 2025 07:33:13 -0700 (PDT)
+Received: from localhost (maglev-oncall.nvidia.com. [216.228.125.128])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22410aa4be4sm98009605ad.216.2025.03.11.07.33.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Mar 2025 07:33:12 -0700 (PDT)
+Date: Tue, 11 Mar 2025 10:33:10 -0400
+From: Yury Norov <yury.norov@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Burak Emir <bqe@google.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] rust: add bindings and API for bitmap.h and bitops.h.
+Message-ID: <Z9BJpq_qoECimNua@thinkpad>
+References: <20250310161947.1767855-2-bqe@google.com>
+ <Z88rhn5nVbd4-JSE@thinkpad>
+ <Z9ALU7XVPt8JKKFR@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250311-iov-iter-v1-0-f6c9134ea824@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3169; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=njR+x/nscsCHeUCgj3YO2aDLhcwxUN+kX/SqnNjxafY=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBn0Ef0QAFWkXYX3kchm9jUoi8bW0gXnTRM5w+9N
- ik63DSHu1qJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ9BH9AAKCRAEWL7uWMY5
- RptKD/9PcaUl3LQFRl7WMAEGoq02tV5SSw12s5SdnBTHJOb9SR4peV7vPWrl0pNjX/ViKyTUuvG
- s0Wr8dNK+ufhYjhCIeE4YYPPLOjUVMvHBiLgr5kDY6N70SX5EUBsaLcYvm0wo0I8hi6UUzAZ+Nd
- g0tGzOrxETkPiRvEDVAOvQ8szLJ8szou4Xkcr+9WDn0bmtBlpgxzqw+HIhBZAvC3hY8TGsq32DI
- NLfY5XuQbuEErBJCyMj8TrgZQMSLbpEGmRF3lkwJfsX8ilxuWvqvSIjJG7vxfPLpd+1aGZYK+EM
- YyHy8/SAS/Q0Y26SfLdvcS8SB/veQxc83xwNhEs/uFPzS355E8Cv4U9OPK+jkSZm3Zwlhtj5cvP
- Q/BYVk/L6hD4KXT1cjalpO+pLeaTy3rWQ6sK0db4n0UI29UoM821M9ZZk67/FIp0hOulNbr2u2g
- ynJaG4MyIyXkjeiuXBhJfbMiCgTcQTSyjhS0mGmr9gWAybPHQK/lWhWRDiNzvkk8VMAnAR8eavf
- BwkryPISFR9W0uRT13z349A7ho7F1I6Lif4GdjQXUBlEyldBJOoRH7/rQ/SX48M503PRZShN6Hf
- vPHBKdU1Sea0+jf8v33Eyum5KoE+pfA3pK2+UE2F867ES3qQk7Sc9GGysYvZ+QE0Jef5NGwZ916 JykYp+2ruMMGwTA==
-X-Mailer: b4 0.14.2
-Message-ID: <20250311-iov-iter-v1-5-f6c9134ea824@google.com>
-Subject: [PATCH 5/5] samples: rust_misc_device: Expand the sample to support
- read()ing from userspace
-From: Alice Ryhl <aliceryhl@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Matthew Maurer <mmaurer@google.com>, Lee Jones <lee@kernel.org>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z9ALU7XVPt8JKKFR@google.com>
 
-From: Lee Jones <lee@kernel.org>
+On Tue, Mar 11, 2025 at 10:07:15AM +0000, Alice Ryhl wrote:
+> On Mon, Mar 10, 2025 at 02:12:22PM -0400, Yury Norov wrote:
+> > On Mon, Mar 10, 2025 at 04:19:46PM +0000, Burak Emir wrote:
+> > > Adds a Rust bitmap API and necessary bitmap and bitops bindings.
+> > > These are for porting the approach from commit 15d9da3f818c ("binder:
+> > > use bitmap for faster descriptor lookup") to Rust. The functionality
+> > > in dbitmap.h makes use of bitmap and bitops.
+> > 
+> > Please add it in the same series that converts dbitmap to rust. This
+> > all is a dead code otherwise, right?
+> 
+> Rust Binder is not upstream yet. We are upstreaming its dependencies
+> before the driver itself, so there will be dead code no matter what. The
+> number of dependencies is so large that it's completely impractical to
+> land them together with the driver.
 
-A userland application can now operate on the char device with read() in
-order to consume a locally held buffer.  Memory for the buffer is to be
-provisioned and the buffer populated in its subsequently provided
-write() counterpart.
-
-Signed-off-by: Lee Jones <lee@kernel.org>
-Co-developed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- samples/rust/rust_misc_device.rs | 37 +++++++++++++++++++++++++++++++++++--
- 1 file changed, 35 insertions(+), 2 deletions(-)
-
-diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_device.rs
-index 40ad7266c2252e5c0b4e91e501ef9ada2eda3b16..6405713fc8ff69659799f30710074487ea3bb14e 100644
---- a/samples/rust/rust_misc_device.rs
-+++ b/samples/rust/rust_misc_device.rs
-@@ -101,7 +101,9 @@
-     device::Device,
-     fs::File,
-     ioctl::{_IO, _IOC_SIZE, _IOR, _IOW},
--    miscdevice::{MiscDevice, MiscDeviceOptions, MiscDeviceRegistration},
-+    iov::{IovIterDest, IovIterSource},
-+    kvec,
-+    miscdevice::{Kiocb, MiscDevice, MiscDeviceOptions, MiscDeviceRegistration},
-     new_mutex,
-     prelude::*,
-     sync::Mutex,
-@@ -143,6 +145,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
+I don't ask to upstream all at once. But at least dbitmaps is less
+than 200 LOCs in C. Together with a test that demonstrates how you're
+using it, it would be enough.
  
- struct Inner {
-     value: i32,
-+    buffer: KVec<u8>,
- }
- 
- #[pin_data(PinnedDrop)]
-@@ -164,7 +167,10 @@ fn open(_file: &File, misc: &MiscDeviceRegistration<Self>) -> Result<Pin<KBox<Se
-         KBox::try_pin_init(
-             try_pin_init! {
-                 RustMiscDevice {
--                    inner <- new_mutex!( Inner{ value: 0_i32 } ),
-+                    inner <- new_mutex!(Inner {
-+                        value: 0_i32,
-+                        buffer: kvec![],
-+                    }),
-                     dev: dev,
-                 }
-             },
-@@ -172,6 +178,33 @@ fn open(_file: &File, misc: &MiscDeviceRegistration<Self>) -> Result<Pin<KBox<Se
-         )
-     }
- 
-+    fn read_iter(mut kiocb: Kiocb<'_, Self::Ptr>, iov: &mut IovIterDest<'_>) -> Result<usize> {
-+        let me = kiocb.private_data();
-+        dev_info!(me.dev, "Reading from Rust Misc Device Sample\n");
-+
-+        let inner = me.inner.lock();
-+        // Read the buffer contents, taking the file position into account.
-+        let read = iov.simple_read_from_buffer(kiocb.ki_pos_mut(), &inner.buffer)?;
-+
-+        Ok(read)
-+    }
-+
-+    fn write_iter(mut kiocb: Kiocb<'_, Self::Ptr>, iov: &mut IovIterSource<'_>) -> Result<usize> {
-+        let me = kiocb.private_data();
-+        dev_info!(me.dev, "Writing to Rust Misc Device Sample\n");
-+
-+        let mut inner = me.inner.lock();
-+
-+        // Replace buffer contents.
-+        inner.buffer.clear();
-+        let len = iov.copy_from_iter_vec(&mut inner.buffer, GFP_KERNEL)?;
-+
-+        // Set position to zero so that future `read` calls will see the new contents.
-+        *kiocb.ki_pos_mut() = 0;
-+
-+        Ok(len)
-+    }
-+
-     fn ioctl(me: Pin<&RustMiscDevice>, _file: &File, cmd: u32, arg: usize) -> Result<isize> {
-         dev_info!(me.dev, "IOCTLing Rust Misc Device Sample\n");
- 
+> We can include a patch that includes the wrapper data structure that
+> Rust Binder builds on top of bitmap. We can also include a link to the
+> Rust Binder change that makes Binder start using this code.
+>
+> > > +            let ptr = unsafe { bindings::bitmap_zalloc(nbits_u32, flags.as_raw()) };
+> > > +            // Zero-size allocation is ok and yields a dangling pointer.
+> > 
+> > Zero-sized allocation makes no sense, and usually is a sign of a bug.
+> > What for you explicitly allow it?
+> 
+> I do think that it makes sense to allow a bitmap of size zero. We allow
+> bitmaps of any other length. Why should that length be special?
+> 
+> Of course, I guess it might make sense to not call `bitmap_zalloc` when
+> calling `new(0)`? But kmalloc does seem to allow them.
 
--- 
-2.49.0.rc0.332.g42c0ae87b1-goog
+Without looking at the code it's "I think vs you think". 
 
+> > > +    /// Copies all bits from `src` and sets any remaining bits to zero.
+> > > +    ///
+> > > +    /// # Panics
+> > > +    ///
+> > > +    /// Panics if `src.nbits` has more bits than this bitmap.
+> > > +    #[inline]
+> > > +    pub fn copy_from_bitmap_and_extend(&mut self, src: &Bitmap) {
+> > > +        if self.nbits < src.nbits {
+> > > +            panic_not_in_bounds_le("src.nbits", self.nbits, src.nbits);
+> > 
+> > The _lt usually stands for 'less than', or '<'. And _le is 'less than or
+> > equal', or '<='. But in your code you do exactly opposite. Is that on
+> > purpose?
+> > 
+> > Also, you can make it similar to BUG_ON() semantics, so that it will
+> > be a single line of code, not 3:
+> > 
+> >         RUST_PANIC("Copy: out of bonds", self.nbits < src.nbits);
+> > 
+> > And to that extend, panic message should be available to all rust
+> > subsystems, just like BUG_ON().
+> 
+> We could use
+> assert!(src.nbits <= self.nbits, "Copy: out of bounds.");
+> 
+> but using these explicit function calls would generate less code and
+> avoid duplicating the error messages.
+
+What I see is that you generate more code - 3 lines vs 1.
+
+Do you have any numbers supporting your statement? Can you show how
+exactly the messages are duplicated when using assert()? Can this
+assert() be fixed to avoid duplication?
+
+> Also, we should add #[track_caller] to these methods so that the line
+> number in the panic message is taken from the caller rather than this
+> file.
+> 
+> > > +        }
+> > > +    }
+> > > +
+> > > +    /// Finds the next zero bit, searching up to `nbits` bits, with offset `offset`.
+> > > +    ///
+> > > +    /// # Panics
+> > > +    ///
+> > > +    /// Panics if `nbits` is too large for this bitmap.
+> > > +    #[inline]
+> > > +    pub fn find_next_zero_bit_upto_offset(&self, nbits: usize, offset: usize) -> usize {
+> > > +        if self.nbits < nbits {
+> > > +            panic_not_in_bounds_le("nbits", self.nbits, nbits);
+> > > +        }
+> > > +        // SAFETY: nbits == 0 and out-of-bounds offset is supported, and access is within bounds.
+> > 
+> > find_bit() functions are all safe against nbits == 0 or
+> > offset >= nbits. If you add those panics for hardening reasons - it's
+> > OK. If you add them to make your code safer - you don't need them. The
+> > C version is already safe.
+> 
+> Ah, that's nice! I do think it's still good to have them for hardening
+> reasons. Passing an out-of-bouds offset is a bug.
+
+Ironically, you don't test the offset for safety.
+
+Whether it's a bug or not - depends on algorithm you're implementing. 
+Check how for_each_set_bitrange() works. For it, offset >= nbits is
+expected, at last iteration. It's completely safe, although out-of-range.
+
+Thanks,
+Yury
