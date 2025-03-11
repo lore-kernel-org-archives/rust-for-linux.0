@@ -1,186 +1,106 @@
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41563229B01;
-	Tue, 11 Mar 2025 21:40:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D6222425F;
+	Tue, 11 Mar 2025 22:00:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741729259; cv=none; b=TRpQ/79Y+7QZg25419yBHEgD9AmHS7Cef5+KFoiWVytd5dgqtSBmCBbVyYMqGxcu3L6WP42PbaTQVcmy7i5EePRxR9CYvaJDXTri6DVCViUiTTSIA4mO6M/fRhrjEknHeQhq0+H/dI9WVizXGwO6IWlON+wpLTKACMiGMI/OEBo=
+	t=1741730448; cv=none; b=NexZX1aXzu3BFIPXB52/zapbgFSlDmCPHOuMsGn6BGt/7E9aC3ja5jBlVNahGtxlYSQ77/msBCNLLkRIgZCJ55ZDraAo8jkCHUL7SWWF7gOftMODcf6vGLrxcBYTL20VMPcwFhZX2ViAcqUK3jMPCXW+BLjV8sEUjXD+Ypuq9SE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741729259; c=relaxed/simple;
-	bh=mBCt5DVViGyr6F53dITbXU3RR+SpY0NSXUE/e52XkOE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ThxPayxwjZYJjO+pLfXK8rb15QSR6xAHu5Q8mlhPYA222g1hejMYClzY+eeABtvsW5WIXYIIQSc4ofhFbEI5xMJ5Of/hhEEE2IRP5hiloWGRy7tiLixFu0KmSrxP7vIB23nEuV0/MNkk4XxHuuxIuVdwSKUvG1APYlSXLr3gf4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VBx/PxEY; arc=none smtp.client-ip=209.85.222.182
+	s=arc-20240116; t=1741730448; c=relaxed/simple;
+	bh=Rneh6RCXI7eVbgvGNv8c52GLdcTmVoxm9gAf3PKEjuM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sbXzzRj5XO0hH3karzpDBu7ZzODWFI6XFZB/LC7yj2WL7EGzf9jRBCyigJ6am9+XW/8CBIZ/pxXvYfxIzlo93DKK3HggUWc1qiYuRGCWhcb+baRMFbpUq7Vxs1zV8ldvIDZY4XtRIDADXcTYbxlH2vIHcPQG3eDfv8E51E/7jTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nIHeJ4+T; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VBx/PxEY"
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-7c554d7dc2aso387531285a.3;
-        Tue, 11 Mar 2025 14:40:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nIHeJ4+T"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2ff66327419so1563711a91.1;
+        Tue, 11 Mar 2025 15:00:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741729257; x=1742334057; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1741730445; x=1742335245; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GPL9VhcAgHullg/5Xk9/yS9RHHTCQXF4RVuf70Be3R8=;
-        b=VBx/PxEYVFYtWPeM1TA/7ELC4XeSozdMEugWcH8ZYE0B2kYLwJpOPtMaUlsaYHyk76
-         Q6OydZdiFd2P6ILf8HatCOpvXgCVJEYpTWfr0szo06zMya6VSKv83YEc6ue49yEuJtqB
-         wjW77CKRZqIdOZQMfxxSdcWzia6A2oj9i7MGjj6CkDLv9ZJ9ijbB0Tywv8XlxDBLwSZk
-         aBHFzKjCG+mdmbac/mDnJA3zydRmZC8U7u87XSX9qMHHETqq7ZlhXEOhZtDcbKHKJL3s
-         MPzf+z2AAlPoNMjH47LtpL08ZQKdJ8XT4qc0KBhuT8C6LxNTWdVMNiglBelz/QtBUuFs
-         Jndw==
+        bh=Rneh6RCXI7eVbgvGNv8c52GLdcTmVoxm9gAf3PKEjuM=;
+        b=nIHeJ4+TWZ3xwAula3pYJZmFPAqRYqx9f60FqYO8UNNTRLwXTMU7A67vB3LDrByMwH
+         SIuM3P+YzG4vY2xOWM73kVZfq2gHh+kEZbLDOHBgpqYNYMiTiurNuqyZHUveF7n0ohD9
+         SRBgA2dhQJH2RkY73lthBxMlOH2OiLCpy7hr3r0dZne2ganSP6Qdzf0FF9TDsWj1V4zf
+         GECnCUd24RP7uu4S7WXazUCE8xx9TNE9w378s90zCFPtkhLTjg1+S4miDFkr7UQJwO10
+         /dG6vNcYrBf3Y8LjmnzljcTgg8abPDNGTFJ/GSPIJkSfI8kpFZTpVSdIKrMJ4u3iHmz4
+         22yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741729257; x=1742334057;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1741730445; x=1742335245;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=GPL9VhcAgHullg/5Xk9/yS9RHHTCQXF4RVuf70Be3R8=;
-        b=KzoX+ZqWK5ZqNaKoMDYWKu5B59ye0dBkSuN+iVLamHGoQlR1jmVmpLjcRBeEIHyrsM
-         hv6jJwXJAZ5SWzdo9CN2W2T/+eLCrR7++LSoNuCwZxqpQ1QrxTt/WXpJiNGm8tvNda4B
-         hXo3Q2rwqNG7Z9XkatL/lubKY8U3M6m9D3KaT1Ep0uwgYYKXNsME+Ge23N4i/kmtdcNC
-         0JB+68JhrEtgkr5DNhxGWBqwNRgawsjW3SW3gcemQfZoOLiH8LG7QdvjqhJG2SkAcBN2
-         0Z3ijk6NtQYUL/q2+GINns97Q9HcCj6D+hkfeDnoXJ7LfSPEr/ZnOQss6qPI46woz9Lr
-         d5gA==
-X-Forwarded-Encrypted: i=1; AJvYcCWz1mMaz4+FczN9N19ftwr4U5qs3t7DY+ocMwiiUdcKUQtClulYhEkVi7I56L4DAt2x/jW4MGyptIK8h4QJ3eU=@vger.kernel.org, AJvYcCXWtJphXJS5pmqAzg+DbYorYBeg9qamfrnISt3inGAT2/hmxdM+xUYmuVdRplc5c7QAiRqf8wyODy5Z+1s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzhue60QfztYsMQhmLZ/pFPnZP8ml6fEXbMMuyeuVu87fdcU3T3
-	9BE1mj5oyH278o4ny7mt4EV3gRWh+z0p9oKCoZm+oQF4Sae5skp6Sdez1Q==
-X-Gm-Gg: ASbGncva0Uh08nTr76x/COA+whx0QugcHEFAATU00Vwkb6BEwtOb5yVNiEVGa6q51+B
-	NjU02+oZKlwdxXs7CMFlOq5sRRO2Xo/GlSf7FWYa3GdqZGFqPyJQXx70YqkP5KoKSMsvNdarvV5
-	lUKcuwbm0MavCsfes/PiQTNXQqKWHCDlMrdVVjiHSb+qrPgPCoaOn1lsYg+Mfm7Y1ymX3VzFvcc
-	PV446WZxmIpJm03I9ua2JsHrm9PT+mB+xfFN5DfyRm6s9S0oS9JMQ01yI/ZDRPOISaNe1z+HGdA
-	fFXM2G6hgmx6ucbTK4+reN+mPBhKCFU/OR/8peL/QnsM2ZiAqDNReb49IDT+wy/1E/2h+IizLMh
-	xl5XikGIJePvFP0mAL2yIdQHg3PImIoUs/o4=
-X-Google-Smtp-Source: AGHT+IH7sWpdFXJE2oF/yEeiqNpVVm8YnEgrqfufAMXAENIUzZfwvQSPn5c0TBE01Wz9/GFbrekLog==
-X-Received: by 2002:a05:620a:8018:b0:7c5:4c49:769c with SMTP id af79cd13be357-7c54c4981f5mr1840233285a.6.1741729257063;
-        Tue, 11 Mar 2025 14:40:57 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e8f71727d1sm76488426d6.117.2025.03.11.14.40.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Mar 2025 14:40:56 -0700 (PDT)
-Received: from phl-compute-07.internal (phl-compute-07.phl.internal [10.202.2.47])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 09AE61200043;
-	Tue, 11 Mar 2025 17:40:56 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-07.internal (MEProxy); Tue, 11 Mar 2025 17:40:56 -0400
-X-ME-Sender: <xms:563QZyIRNHwSUL2t0WWB-c18Nb4s-U9N9oVjzWkktLwVMXmBbHl3zQ>
-    <xme:563QZ6Lz3TgvYHEiu5B9ZVcoQ4bB2GsaPZPP97EoL0Z-rjTzB2RmnrPlhV8JMkLd5
-    J4EM4NxWekNQp0nfQ>
-X-ME-Received: <xmr:563QZyugHKxY2pz09g3oFLz7Pqu63Or_WwIoN77C7bXB-oiNsiJ1pKrNbKk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduvdefvdelucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
-    vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
-    hlrdgtohhmqeenucggtffrrghtthgvrhhnpefhtedvgfdtueekvdekieetieetjeeihedv
-    teehuddujedvkedtkeefgedvvdehtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgne
-    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhu
-    nhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqdduje
-    ejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdr
-    nhgrmhgvpdhnsggprhgtphhtthhopedvtddpmhhouggvpehsmhhtphhouhhtpdhrtghpth
-    htohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtoheprggs
-    ughivghlrdhjrghnuhhlghhuvgesghhmrghilhdrtghomhdprhgtphhtthhopehruhhsth
-    dqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegu
-    rghnihgvlhdrrghlmhgvihgurgestgholhhlrggsohhrrgdrtghomhdprhgtphhtthhope
-    gurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhosghinhdrmhhurhhphhih
-    segrrhhmrdgtohhmpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtoh
-    hmpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghl
-    vgigrdhgrgihnhhorhesghhmrghilhdrtghomh
-X-ME-Proxy: <xmx:563QZ3ZAnjYSrDtnbxhuQ_vRTe1DGIxPxzgKdnrvtkPrzcfg6k8JYQ>
-    <xmx:563QZ5Y6V2w4ScQOD-GFDIoXh3Cm_hXcfyoOdQsPgNRlTGkkYdF3_w>
-    <xmx:563QZzBS9RbtZPnScNLKm4HW7Kla_OYa_nbxV0uCYVTyaDmCwOiycg>
-    <xmx:563QZ_avKAXo8diV-k_gcc8iZeBNYFbtMCObLdtJlKID-g-SS1b5gw>
-    <xmx:563QZ5q84lN5eZ203ZovN5f0b4J3BNPd16YvTKRmfWjU91zsA5_jPtTx>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 11 Mar 2025 17:40:55 -0400 (EDT)
-Date: Tue, 11 Mar 2025 14:39:32 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	rust-for-linux@vger.kernel.org, daniel.almeida@collabora.com,
-	dakr@kernel.org, robin.murphy@arm.com, aliceryhl@google.com,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
-Subject: Re: [PATCH v14 02/11] rust: add dma coherent allocator abstraction.
-Message-ID: <Z9CtlJTrWchPKuIJ@boqun-archlinux>
-References: <20250311174930.2348813-1-abdiel.janulgue@gmail.com>
- <20250311174930.2348813-3-abdiel.janulgue@gmail.com>
- <Z9B9CNRatBtyAO8Q@boqun-archlinux>
- <D8DRCM2FOEBN.3IVEVKW9A65AL@proton.me>
+        bh=Rneh6RCXI7eVbgvGNv8c52GLdcTmVoxm9gAf3PKEjuM=;
+        b=kFGcGaVORENbnUF78It85ybGHmi14H5LWQ77LzWZc0p+N5kmn2XvwJwLmNLAwL0cT6
+         AQPLgr2h6iKDOfbhJ3jp4clazzn33s9MpIk938Q+5Btgjdxb2v6YPyejKeGkUIfcZ45R
+         p4F+Muxg9msrI7K+3UGoh2bxg31/COSpTCBD4GAWDwxr6nDOQQsI8vH4ewLq9aF8hHqw
+         PnsGiPrqW25f0LGFOozu0QGm2etxdqqq5aSiXrR3QXS3alKg4dI6dzbrgsDg+L6uTgKt
+         sb3AoHdjRJuxbw6tjCE2WYTmcVsFr+E4rxVs9ij6QJwx/yJFnGBM5wuqrCEShzhU7/oY
+         URNw==
+X-Forwarded-Encrypted: i=1; AJvYcCW4wnVthjik+2lJ+HCn54oFBKUCQl2joxrcz4GA4noe0niDZSRxUs/iu4ZeINhJ97KWGKe2AYE/tIaTq7o=@vger.kernel.org, AJvYcCWvgMRGFbCg9CLhsjZxoB91OOL0VFgMKL/jqSX7pqsYblJEn0CP4u+ovQTUemSZBXAlNmrYh5rHVdhQp86Wx6Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYIOGF2bxeebKkZ7Yoja84gN8juE9A/f9LSeAkzT9vwuEPELHw
+	lQz1Mg9KShSmSQ2XOqlmqiyy/SZ2LC2Pg3i0EbZXVt0DLJ1fgaS0U5+jz2O88s0tFONbWKDn2pZ
+	FqoAppzzTpjQcXCBgwylCrXG64cs=
+X-Gm-Gg: ASbGnctty9CIwvxGcCgjlxDpjWffWT5lS6ywEM1MT5cyhZW+h3Ik4xKvCOLN1r+G2d8
+	YSBk9K2Q7hkFjOEazogvapMZjnVDpcjrwnITg/lAcj9lKc/44I1hi/bm/3K/EWNuWETl9+OKulv
+	teUxbr+dk0fgwgAOOCcNAVWCFh7g==
+X-Google-Smtp-Source: AGHT+IFlE5YIuDYHDZa8nRrelvV0jwCZ3acNZPl6icSJLZ4XBzWjtq64xn2dz9xNntqHG3w1fsEMNU5ZWTgvbA1wEXY=
+X-Received: by 2002:a17:90b:4d8d:b0:2fe:91d0:f781 with SMTP id
+ 98e67ed59e1d1-300ff724478mr2471430a91.2.1741730444778; Tue, 11 Mar 2025
+ 15:00:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <D8DRCM2FOEBN.3IVEVKW9A65AL@proton.me>
+References: <20250210-rust-analyzer-bindings-include-v2-0-23dff845edc3@gmail.com>
+ <20250210-rust-analyzer-bindings-include-v2-1-23dff845edc3@gmail.com>
+In-Reply-To: <20250210-rust-analyzer-bindings-include-v2-1-23dff845edc3@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 11 Mar 2025 23:00:32 +0100
+X-Gm-Features: AQ5f1JpFBu3sU8smtONUMJaWsoYZFqlOwNk8Ue4Zygb6CVCM0-PD6CRvhECF73I
+Message-ID: <CANiq72=YhXGKLuEfvK5XnAsc0sbuf4FBRt_GnzmrZoW_L-S-ow@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] scripts: generate_rust_analyzer.py: add missing include_dirs
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Kees Cook <kees@kernel.org>, 
+	Fiona Behrens <me@kloenk.dev>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Asahi Lina <lina@asahilina.net>, 
+	Boris-Chengbiao Zhou <bobo1239@web.de>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 11, 2025 at 09:34:19PM +0000, Benno Lossin wrote:
-> On Tue Mar 11, 2025 at 7:12 PM CET, Boqun Feng wrote:
-> > On Tue, Mar 11, 2025 at 07:47:58PM +0200, Abdiel Janulgue wrote:
-> > [...]
-> >> +    /// Reads the value of `field` and ensures that its type is [`FromBytes`].
-> >> +    ///
-> >> +    /// # Safety
-> >> +    ///
-> >> +    /// This must be called from the [`dma_read`] macro which ensures that the `field` pointer is
-> >> +    /// validated beforehand.
-> >> +    ///
-> >> +    /// Public but hidden since it should only be used from [`dma_read`] macro.
-> >> +    #[doc(hidden)]
-> >> +    pub unsafe fn field_read<F: FromBytes>(&self, field: *const F) -> F {
-> >> +        // SAFETY: By the safety requirements field is valid.
-> >> +        unsafe { field.read_volatile() }
-> >
-> > I agree with Andreas that we should document the exception of usage on
-> > {read,write}_volatile() here. How about:
-> >
-> > When dealing with a potential race from a hardware or code outside
-> > kernel (e.g. user-space program), we need that read and write on a valid
-> > memory are not UBs. Currently {read,write}_volatile() are used for this,
-> 
-> I would use the singular `UB` here and below.
-> 
-> > and the rationale behind is that they should generate the same code as
-> > READ_ONCE() and WRITE_ONCE() which kernel already relies on to avoid UBs
-> 
-> s/kernel/the kernel/
-> 
-> > on data races. Note that the usage of {read,write}_volatile() is limited
-> > to this particular case, they cannot be used to emit the UBs caused by
-> 
-> s/emit/prevent/
-> 
+On Mon, Feb 10, 2025 at 7:04=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
+ wrote:
+>
+> Commit 8c4555ccc55c ("scripts: add `generate_rust_analyzer.py`")
+> specified OBJTREE for the bindings crate, and `source.include_dirs` for
+> the kernel crate, likely in an attempt to support out-of-source builds
+> for those crates where the generated files reside in `objtree` rather
+> than `srctree`. This was insufficient because both bits of configuration
+> are required for each crate; the result is that rust-analyzer is unable
+> to resolve generated files for either crate in an out-of-source build.
 
-These above all looks reasonable to me.
+Originally we were not using `OBJTREE` in the `kernel` crate, but we
+did pass it anyway, so conceptually it could have been there. So I am
+not sure if it counts as a fix for that commit, but it shouldn't hurt
+even if backported.
 
-> > racing between two kernel functions nor do they provide atomicity.
-> >
-> > Thoughts? One problem is that I don't know where to put this document
-> > :-( Any suggestion?
-> 
-> I am a bit out of the loop on this one, but why not put into the safety
-> comment? I.e. explicitly state that this is *not* sound as per the usual
-> rules and it is a special exception?
-> 
+Regarding `include_dirs`, it started in `kernel` before being in
+mainline because we included the bindings there (i.e. there was not
+`bindings` crate), but it should have been probably moved when it was
+split. Nowadays, I guess we still need it for
+`generated_arch_static_branch_asm.rs`, or is it something else that
+needs it? I assume it shouldn't hurt, in any case, so it looks OK.
 
-We may end up with multiple uses of {read,write}_volatile(), and IIUC,
-Andreas wanted [1] some clear documentation on this. Also if we have
-some document it'll be easier to sync with Rust language people on the
-"rules" we following in the kernel.
-
-[1]: https://lore.kernel.org/lkml/87mse2hrd8.fsf@kernel.org/
-
-Regards,
-Boqun
+Cheers,
+Miguel
