@@ -1,77 +1,73 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99B51CAA87;
-	Tue, 11 Mar 2025 20:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE09222572;
+	Tue, 11 Mar 2025 20:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741724222; cv=none; b=dwkzVym+G/icputAlySaZOrDmhIjSkuehGpXTNSmLEJupWrXl6qf2fEE0NIufFT0D87z2ma5ecH1Jdj6+0Z/anObDhBMycA0BcVKA8JKiIaD27juSQ1dy+PHJPRjoa4LS1/zB+vFoyWbsKKg5BlLc8aLL0pt16hEfClfoNiUSTM=
+	t=1741724423; cv=none; b=ETEJayGg7+781RmnsvKKL1Zz15yeiQWo8nY75+l8WQ/W1J5V0oqCoTCB7onEwFRj4aCkE1TI3cZOOTUGhGNe6+C6Ap+H79d5pM8ZZBx6AHioLw+77xT2Sok4dR4FQ2YQSgeYmdHQTdGAxmCp4GsGFkfipZtuyQ+BjMhz/m0WR3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741724222; c=relaxed/simple;
-	bh=ehF+drNnVLkBktFXnJxEAKFECGmy24S4q/x4ANwyDZU=;
+	s=arc-20240116; t=1741724423; c=relaxed/simple;
+	bh=gaFQwOmMlxED9qfG2DcTfEvoKt9vKeHVKBWq+pt+Yxc=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=IMKkBxNILvxzVQ1FmQIfZrNxhSQrimiW8J/FGUhgt3vCbjlhDfwjTkge6qx4xNU3sfSOpXYTrzYxdDqvCFVLt6hxSWNq6giqTpS38jmRlNNvKasAxgQIA8UnNVzYao5dkOrGZNWDC9a9mqJyHn+L3sfODrqsvKOEm+0IWxBAiYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ma5E20SQ; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=Ap/PKFfbTExwXwS2LoDTHdjG5RQHn0xZcVGCywcm+5TxaedKTjyfEBKHi9PztrsiFdbSrCudko7m+FvtIjvZHuIVforLyJmYLBliikwC+AwVGfb0TJSs9AKovv4iW082gQzg41trimkadC5wmgfoJNmzDv2eU950+t09tAk8aYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qqih84gO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ma5E20SQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D70C4CEE9;
-	Tue, 11 Mar 2025 20:16:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qqih84gO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9550AC4CEE9;
+	Tue, 11 Mar 2025 20:20:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741724222;
-	bh=ehF+drNnVLkBktFXnJxEAKFECGmy24S4q/x4ANwyDZU=;
+	s=k20201202; t=1741724422;
+	bh=gaFQwOmMlxED9qfG2DcTfEvoKt9vKeHVKBWq+pt+Yxc=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Ma5E20SQJJ3tOZ8xo8nJ8EXnyqYhzLiFFD+tVN4HTRPXHGXddhD5RFVU+woCA+8xx
-	 NoovgsN1R8BaV1M/hjTPqhOHQu4KLRwn1kZTlUUb/d/5Vxz4QIjrWFgK+5uLgtaPtY
-	 oRXwEWfHG9MP3O9vki46vr5QrI0+ZfqPwaP9/8SuJPW4d3SXIKn7zrqpKTmJqW7jxN
-	 h6lEgIalg86b1Fp1QvbyuHmELtBwnrPsMloYQR6lnIF7WXBzEXFTEG357kHCfmsUr4
-	 qMyN8zcRgVngcY4cjICA2E2QBz9pCjBprAvWPxIyWbvMPDtGTCX66m1Eokn3wbwrLN
-	 2h7KouvYi6fVQ==
+	b=qqih84gOhTQlMXcSWpL3D5+gis7CHqCCzPMgKb2wMp4rrFqhAdtE0YIAOZoGslv1D
+	 Wt+EXZhNsknpqu2e2bygN/KWW38aDS0juSc0VM/3PyOdX8V1VA/5eZa5C4ldjreeQo
+	 pxou8ZW8vhoNYntuM6FGr+F2xDwDD9a+gStr4c425FQm1Iw/5HaDVnhsYoFURxl7zC
+	 h/bFElw1szpn6to4CGF0uhMMk5K8ry4AgcXMb4szaHD5dAnSVgjX7CLPdTZKSmDQ7b
+	 Ncra90w45zNlTSX/35inXTGdIZFUPv971bBEMICzQfC6ECxOVf7r2HVXsz2UJhH+zo
+	 JPmIrO34CWlsw==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-  rust-for-linux@vger.kernel.org,  daniel.almeida@collabora.com,
-  dakr@kernel.org,  robin.murphy@arm.com,  aliceryhl@google.com,  Miguel
- Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,  Boqun
- Feng <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj?=
- =?utf-8?Q?=C3=B6rn?= Roy
- Baron <bjorn3_gh@protonmail.com>,  Benno Lossin <benno.lossin@proton.me>,
-  Trevor Gross <tmgross@umich.edu>,  Valentin Obst
- <kernel@valentinobst.de>,  linux-kernel@vger.kernel.org,  Christoph
- Hellwig <hch@lst.de>,  Marek Szyprowski <m.szyprowski@samsung.com>,
-  airlied@redhat.com,  iommu@lists.linux.dev
-Subject: Re: [PATCH v13 4/7] rust: device: add dma addressing capabilities
-In-Reply-To: <CANiq72njoQbMrBioohDQaUHixLa4u+1PKpQCoDPWTw0X5EhmAw@mail.gmail.com>
- (Miguel
-	Ojeda's message of "Tue, 11 Mar 2025 19:35:48 +0100")
-References: <20250307110821.1703422-1-abdiel.janulgue@gmail.com>
-	<nxaaNW1XIbhf7dSf8aRLVF5Se-0maF6BhX8GaUXlsOL-QOste8OMQxtmhYe_BYI6FYFEMeHEzy1s4OEy7PdGKw==@protonmail.internalid>
-	<20250307110821.1703422-5-abdiel.janulgue@gmail.com>
-	<877c5038i1.fsf@kernel.org>
- <902d6f21-a6c9-4776-9e55-26f089acd0da@gmail.com>
-	<CANiq72njoQbMrBioohDQaUHixLa4u+1PKpQCoDPWTw0X5EhmAw@mail.gmail.com>
+To: "Miguel Ojeda" <ojeda@kernel.org>
+Cc: "Anna-Maria Behnsen" <anna-maria@linutronix.de>,  "Frederic Weisbecker"
+ <frederic@kernel.org>,  "Thomas Gleixner" <tglx@linutronix.de>,  "Danilo
+ Krummrich" <dakr@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,
+  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,
+  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,  "Benno
+ Lossin"
+ <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor
+ Gross" <tmgross@umich.edu>,  "Lyude Paul" <lyude@redhat.com>,  "Guangbo
+ Cui" <2407018371@qq.com>,  "Dirk Behme" <dirk.behme@gmail.com>,  "Daniel
+ Almeida" <daniel.almeida@collabora.com>,  "Tamir Duberstein"
+ <tamird@gmail.com>,  "Markus Elfring" <Markus.Elfring@web.de>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v12 00/13] hrtimer Rust API
+In-Reply-To: <20250309-hrtimer-v3-v6-12-rc2-v12-0-73586e2bd5f1@kernel.org>
+	(Andreas Hindborg's message of "Sun, 09 Mar 2025 16:18:51 +0100")
+References: <-Nl1GhL2X0kcAMrBu5I5y3g9tbYapE9MEn1yUYhCYWUSVmztyp-eC4IsSxeCm4oVUJiLEFuqRQfZ2v_eQa61xw==@protonmail.internalid>
+	<20250309-hrtimer-v3-v6-12-rc2-v12-0-73586e2bd5f1@kernel.org>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Tue, 11 Mar 2025 21:16:33 +0100
-Message-ID: <871pv3l3vi.fsf@kernel.org>
+Date: Tue, 11 Mar 2025 21:19:37 +0100
+Message-ID: <87v7sfjp5y.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> writes:
+"Andreas Hindborg" <a.hindborg@kernel.org> writes:
 
-> On Tue, Mar 11, 2025 at 6:45=E2=80=AFPM Abdiel Janulgue
-> <abdiel.janulgue@gmail.com> wrote:
->>
->> This already uses `Error::from_errno`?
+> Add support for using the `hrtimer` subsystem from Rust code.
 >
-> Maybe Andreas meant `to_result`?
+> Add support for timer mode and clock source configuration during timer
+> initialization. Do not add examples and functionality to execute closures at
+> timer expiration , as these depend on either atomics [3] or `SpinLockIrq` [4],
+> which are still being worked on.
 
-Yes, sorry. It includes the if/else, but it tests for ret < 0. But I
-think that is fine here.
+[...]
+
+Applied to `hrtimer-next` -- thanks everyone!
 
 
 Best regards,
