@@ -1,125 +1,104 @@
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC3D256C90
-	for <rust-for-linux@vger.kernel.org>; Tue, 11 Mar 2025 12:46:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563C235973;
+	Tue, 11 Mar 2025 13:08:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741697215; cv=none; b=lp5/KFS29Qu6t7GaCGoF5YmUTbrNu4InqBeAb45r+h+mcevT1dSiLwM5LWNxleoX4ASb0uPRikWCgCIKvcR4pXmZjFRJAULOSBtJMhWt1mHHGrS+CoJXC8xEDolekp+E4lEk724CvQKm6Wa+DKtqFM+0CXBpEgPoI8G7wEbaE+0=
+	t=1741698514; cv=none; b=IqYSN81AqRcOpCoN1K0P9MPtwevJFyC0AHlwl9iiwqPou6A1wuLSSdgihbtR660tQaMRtnan/G0s874GR3ZouaBb0iTglXbFT0XIIDeahVyDdNKgM8jrvm3sJYL32bbt3oFdVwMeE/h7Dlrql9GpNlELfbdngCaxDS6wQex3Z5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741697215; c=relaxed/simple;
-	bh=hIuzAPv8x7HdhF3kOYgKUE08BcmIV4Tk3xoim98ixEQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sqqkZfVjqTndpTn8cBTz/vbpW0hG9mf+vqrnrfAQxdcFOtNQ2SRoraa8g7afnjgJqHJDM+4FnDSVG6S/2x5YFzUWTA4E2Kt/YCONs84ITETYo/RXQ3k9tQIPzY0QIB+EtoYvzGgQhv8/uAUBGjipOtFPSacM7YmwT5qCuzNF3rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosenzweig.io; spf=pass smtp.mailfrom=rosenzweig.io; dkim=pass (2048-bit key) header.d=rosenzweig.io header.i=@rosenzweig.io header.b=iOqEUJgv; arc=none smtp.client-ip=95.215.58.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosenzweig.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosenzweig.io
+	s=arc-20240116; t=1741698514; c=relaxed/simple;
+	bh=ck/zlJNE5eU83nztFEGSZ4ENuEUd6qotY8RuqJUlojk=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ROVZHjYgvqHZUCtrETjKhlMeYQY9owEuEN2AHy5uBqnoPizmMRHu3OGTBW9++50FiyH77bLEXIMtyN/bzgifF43sEaOq5yEBE5Eca7S5FiGm4LYDssBuzxByDao1S8iEGD3bYN9frw1x/uBEOq2EOR5b0FEMgn9NYU1I7iFJscY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=bvmEz73A; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rosenzweig.io header.i=@rosenzweig.io header.b="iOqEUJgv"
-Date: Tue, 11 Mar 2025 08:46:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosenzweig.io;
-	s=key1; t=1741697201;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mOG0CEw3FP2FlG0epn5X7Xw21NWLyIUELyR5vBonHPk=;
-	b=iOqEUJgvADrMU0rIWuG0Ruc7Rtt8IZl+4o95HtRzhUdZyQGFZ1JqrK6ZYGRItGhaB/i6vx
-	SUKlcXNM56cjtmk6uLgcFTxRSu13CBv7gM8RK/UHtKCdvpIuuoCKgOg2ZyE5WaPzY26G76
-	uyHRVJJ+1DwdlUYaed7Wflte4dOcoRNxcMzYlo6FIlE42eXoaGrJVauc3xcB5jmYo5XCcD
-	BUXc+bXEclIcJh9ZSiUkawPEsyTzJaoUtop39EGchJ3EqbnbnlWjQvuj3E3YGsIrgGFuaL
-	uZv6bDGFaxw6XdeG2kdrdBdFkuQ7+IJDK/zThbDQLqxqGNj8xUbEJQw7INmUrA==
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Alyssa Rosenzweig <alyssa@rosenzweig.io>
-To: Rob Clark <robdclark@gmail.com>
-Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Faith Ekstrand <faith.ekstrand@collabora.com>,
-	Janne Grunau <j@jannau.net>, Sven Peter <sven@svenpeter.dev>,
-	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
-	asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-doc@vger.kernel.org, Asahi Lina <lina@asahilina.net>
-Subject: Re: [PATCH] drm: Add UAPI for the Asahi driver
-Message-ID: <Z9Awpj5Avh0rx_fq@blossom>
-References: <20250310-agx-uapi-v1-1-86c80905004e@rosenzweig.io>
- <CAF6AEGukrBzwwdDWX5jUXDKqj7+kn7LBRy6NocE4=bw1D9WjcQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="bvmEz73A"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1741698503; x=1741957703;
+	bh=blWTqaPziEQ/pUrrx4UHOMKEPZD4HIZJgcQ2dw8xfZQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=bvmEz73A4uNLFvcDdB/Xf4bNFipqifYoxkaBO4jTO0Rjf2gt2XI4K/I/VBbtCF/wn
+	 6NYcVbYN4scD5WY6kOtA7/yH8rXx8eOdp9Hi7YEM5xlr59G/WzD8TYjP9KIzvfZqY5
+	 XbqxJh0HAY/WO4FgWAEA4pzxaqkuyHilWZVtq4JXbQ5hLx2JzKlLyRrWuS4jrRcIHP
+	 cFAFO5+RuGuD5AU7qMXjbNLLZ84AurNtodZBRfJyc0BFb/LhaJuLeUGvSh06F6ER9T
+	 6KXp/xSboTLqtaLLIgyRsMtZ1vCQW1JhTTW21PYUgj/VeVyLUWSljxepU0qGmhFf67
+	 /TKIb21Xfj/dQ==
+Date: Tue, 11 Mar 2025 13:08:19 +0000
+To: Tamir Duberstein <tamird@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, linux-pci@vger.kernel.org, linux-block@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 4/5] rust: enable `clippy::as_ptr_cast_mut` lint
+Message-ID: <D8DGL6WY04GZ.207MFVQMKY35G@proton.me>
+In-Reply-To: <20250309-ptr-as-ptr-v2-4-25d60ad922b7@gmail.com>
+References: <20250309-ptr-as-ptr-v2-0-25d60ad922b7@gmail.com> <20250309-ptr-as-ptr-v2-4-25d60ad922b7@gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: f8bf13b601952848b958efec8bb21301139d199a
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAF6AEGukrBzwwdDWX5jUXDKqj7+kn7LBRy6NocE4=bw1D9WjcQ@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-> > +/**
-> > + * struct drm_asahi_gem_bind - Arguments passed to
-> > + * DRM_IOCTL_ASAHI_GEM_BIND
-> > + */
-> > +struct drm_asahi_gem_bind {
-> > +       /** @op: Bind operation (enum drm_asahi_bind_op) */
-> > +       __u32 op;
-> > +
-> > +       /** @flags: One or more of ASAHI_BIND_* (BIND only) */
-> > +       __u32 flags;
-> > +
-> > +       /** @handle: GEM object to bind/unbind (BIND or UNBIND_ALL) */
-> > +       __u32 handle;
-> > +
-> > +       /** @vm_id: The ID of the VM to operate on */
-> > +       __u32 vm_id;
-> > +
-> > +       /** @offset: Offset into the object (BIND only) */
-> > +       __u64 offset;
-> > +
-> > +       /**
-> > +        * @range: Number of bytes to bind/unbind to addr (BIND or UNBIND only)
-> > +        */
-> > +       __u64 range;
-> > +
-> > +       /** @addr: Address to bind to (BIND or UNBIND only) */
-> > +       __u64 addr;
-> > +};
-> 
-> No in/out syncobj/fences?  This seems to diverge from xe/nouveau/panthor..
+On Sun Mar 9, 2025 at 5:00 PM CET, Tamir Duberstein wrote:
+> In Rust 1.66.0, Clippy introduced the `as_ptr_cast_mut` lint [1]:
+>
+>> Since `as_ptr` takes a `&self`, the pointer won=E2=80=99t have write
+>> permissions unless interior mutability is used, making it unlikely
+>> that having it as a mutable pointer is correct.
+>
+> There is only one affected callsite, and the change amounts to replacing
+> `as _` with `.cast_mut().cast()`. This doesn't change the semantics, but
+> is more descriptive of what's going on.
+>
+> Apply this change and enable the lint -- no functional change intended.
+>
+> Link: https://rust-lang.github.io/rust-clippy/master/index.html#as_ptr_ca=
+st_mut [1]
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-Async vm_bind is useful mainly as an optimization, it's not (as far as I
-know) required for correctness - you can always wait/signal from a
-userspace submit thread with sync vm_bind. It's my understanding (from
-when I chatted with Faith about this when bringing up sparse) that this
-is how sparse was implemented historically and maybe still is on
-Windows?
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
-> > +/**
-> > + * enum drm_asahi_sync_type - Sync item type
-> > + */
-> > +enum drm_asahi_sync_type {
-> > +       /** @DRM_ASAHI_SYNC_SYNCOBJ: Binary sync object */
-> > +       DRM_ASAHI_SYNC_SYNCOBJ = 0,
-> > +
-> > +       /** @DRM_ASAHI_SYNC_TIMELINE_SYNCOBJ: Timeline sync object */
-> > +       DRM_ASAHI_SYNC_TIMELINE_SYNCOBJ = 1,
-> > +};
-> 
-> IMHO it would still be worthwhile to also support fence fd's, since it
-> would avoid a couple extra ioctls to convert btwn fence fds and
-> syncobj for virtgpu native context..
+---
+Cheers,
+Benno
 
-Ditto for this as an optimization. Both of these can be added in a
-straightforward backwards-compat way later, so I'm inclined to not add
-any extra functionality beyond what we already have (and know works),
-rather than commit prematurely to new features and risk getting
-something wrong.
+> ---
+>  Makefile              | 1 +
+>  rust/kernel/devres.rs | 2 +-
+>  2 files changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/Makefile b/Makefile
+> index c62bae2b107b..bb15b86182a3 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -477,6 +477,7 @@ export rust_common_flags :=3D --edition=3D2021 \
+>  =09=09=09    -Wrust_2018_idioms \
+>  =09=09=09    -Wunreachable_pub \
+>  =09=09=09    -Wclippy::all \
+> +=09=09=09    -Wclippy::as_ptr_cast_mut \
+>  =09=09=09    -Wclippy::ignored_unit_patterns \
+>  =09=09=09    -Wclippy::mut_mut \
+>  =09=09=09    -Wclippy::needless_bitwise_bool \
+> diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+> index 3a9d998ec371..598001157293 100644
+> --- a/rust/kernel/devres.rs
+> +++ b/rust/kernel/devres.rs
+> @@ -143,7 +143,7 @@ fn remove_action(this: &Arc<Self>) {
+>              bindings::devm_remove_action_nowarn(
+>                  this.dev.as_raw(),
+>                  Some(this.callback),
+> -                this.as_ptr() as _,
+> +                this.as_ptr().cast_mut().cast(),
+>              )
+>          };
+> =20
 
-(and then it means more rust bindings...)
+
