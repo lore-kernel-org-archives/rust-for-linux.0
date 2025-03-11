@@ -1,77 +1,160 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE09222572;
-	Tue, 11 Mar 2025 20:20:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D07A264A87;
+	Tue, 11 Mar 2025 20:44:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741724423; cv=none; b=ETEJayGg7+781RmnsvKKL1Zz15yeiQWo8nY75+l8WQ/W1J5V0oqCoTCB7onEwFRj4aCkE1TI3cZOOTUGhGNe6+C6Ap+H79d5pM8ZZBx6AHioLw+77xT2Sok4dR4FQ2YQSgeYmdHQTdGAxmCp4GsGFkfipZtuyQ+BjMhz/m0WR3s=
+	t=1741725891; cv=none; b=U37ixX+125PrXaDpBlLpY/5xmU4L+dqED2B/jDs5YbA8Alr1DoBP9UDE840WrxI2gGxMN25pbwKSzKKZfBT4w89obKsnSZLPK/jM37j43+IFNXmYQdtbNjdB0a9jnBt9g2Ua8Kf/yDRB8D1vY3K26LHpuHmmDoDsKK991opebt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741724423; c=relaxed/simple;
-	bh=gaFQwOmMlxED9qfG2DcTfEvoKt9vKeHVKBWq+pt+Yxc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Ap/PKFfbTExwXwS2LoDTHdjG5RQHn0xZcVGCywcm+5TxaedKTjyfEBKHi9PztrsiFdbSrCudko7m+FvtIjvZHuIVforLyJmYLBliikwC+AwVGfb0TJSs9AKovv4iW082gQzg41trimkadC5wmgfoJNmzDv2eU950+t09tAk8aYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qqih84gO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741725891; c=relaxed/simple;
+	bh=5L8IANelHOxBjXBUu5dZfDsUSMGYSsqPKkO9bJkFzr8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qCS8iCyku0YWT6kxQWAofvvlQ1oaAiCi0+KXeuasagAYXSIXs3EN3/yIlEf0EgStKC0M6T2rEaDCqhiW8sr6sngk7Zhthcs3OBIIp3Bog7AmrpxDju7qLd7Q3tNAk9CyI3aM9xcfgltsFENMEb42JO5LeBlEOpVo2gSrcdDo6qE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cMS6SPfj; arc=none smtp.client-ip=209.85.208.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qqih84gO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9550AC4CEE9;
-	Tue, 11 Mar 2025 20:20:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741724422;
-	bh=gaFQwOmMlxED9qfG2DcTfEvoKt9vKeHVKBWq+pt+Yxc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=qqih84gOhTQlMXcSWpL3D5+gis7CHqCCzPMgKb2wMp4rrFqhAdtE0YIAOZoGslv1D
-	 Wt+EXZhNsknpqu2e2bygN/KWW38aDS0juSc0VM/3PyOdX8V1VA/5eZa5C4ldjreeQo
-	 pxou8ZW8vhoNYntuM6FGr+F2xDwDD9a+gStr4c425FQm1Iw/5HaDVnhsYoFURxl7zC
-	 h/bFElw1szpn6to4CGF0uhMMk5K8ry4AgcXMb4szaHD5dAnSVgjX7CLPdTZKSmDQ7b
-	 Ncra90w45zNlTSX/35inXTGdIZFUPv971bBEMICzQfC6ECxOVf7r2HVXsz2UJhH+zo
-	 JPmIrO34CWlsw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Miguel Ojeda" <ojeda@kernel.org>
-Cc: "Anna-Maria Behnsen" <anna-maria@linutronix.de>,  "Frederic Weisbecker"
- <frederic@kernel.org>,  "Thomas Gleixner" <tglx@linutronix.de>,  "Danilo
- Krummrich" <dakr@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,
-  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,
-  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,  "Benno
- Lossin"
- <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor
- Gross" <tmgross@umich.edu>,  "Lyude Paul" <lyude@redhat.com>,  "Guangbo
- Cui" <2407018371@qq.com>,  "Dirk Behme" <dirk.behme@gmail.com>,  "Daniel
- Almeida" <daniel.almeida@collabora.com>,  "Tamir Duberstein"
- <tamird@gmail.com>,  "Markus Elfring" <Markus.Elfring@web.de>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v12 00/13] hrtimer Rust API
-In-Reply-To: <20250309-hrtimer-v3-v6-12-rc2-v12-0-73586e2bd5f1@kernel.org>
-	(Andreas Hindborg's message of "Sun, 09 Mar 2025 16:18:51 +0100")
-References: <-Nl1GhL2X0kcAMrBu5I5y3g9tbYapE9MEn1yUYhCYWUSVmztyp-eC4IsSxeCm4oVUJiLEFuqRQfZ2v_eQa61xw==@protonmail.internalid>
-	<20250309-hrtimer-v3-v6-12-rc2-v12-0-73586e2bd5f1@kernel.org>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Tue, 11 Mar 2025 21:19:37 +0100
-Message-ID: <87v7sfjp5y.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cMS6SPfj"
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-30c2d427194so5683591fa.0;
+        Tue, 11 Mar 2025 13:44:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741725888; x=1742330688; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=duEJ7EHRSllGfBF79uawWV3Uy3v+U7kXTNnhgt38XQo=;
+        b=cMS6SPfjoUR38JgDMJ0mS9Qxo/56jkZiDRRvdll9jVI3T9wvqsL2fc0kJAsfsnl1/T
+         Q5lhbRrvatBj1NTno8p3NPXgBTH8ZQ5f08Zz8XIfozlUYA1A0manhu24iGTsMFepJwsW
+         KEQAe4x6Yf0CFe+vFFHs5j+1oI7q9b8kF2oLY2I3Rpq6dS6hfFXviqlc/82wOFITViki
+         J9VZmUNkPM64CV7yHdYYKn9xVsvWRyEDz5kWVykMMFL39qq6MxlpasJH+WkWLwUZgXg5
+         R5uWF+4qzXqYooBnHHwdKDbTmu8Dw8UJj4YfosVu7AkGnvoPAIOz1QfBVqhMvznGihH1
+         iDlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741725888; x=1742330688;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=duEJ7EHRSllGfBF79uawWV3Uy3v+U7kXTNnhgt38XQo=;
+        b=ku1UAiWGDF60YwIr491Al1LIIRZ67GANACDI477G+edvNpN5hWQamOi6Wl69VCdt/x
+         odV1DXuiwgSg+UtXMa3KrdMAonR8vd/zRhJYG/Gl21dETkngnso+McUwqCoiEJRUZPEi
+         p+GMlMGvW6ZCMrDw6FaFlKd3zfTaexBSIr8fxOhCf9MJCsqTWa7qzVSiBEqMOyk/q7CH
+         gtVaA2r/1qjFEkHKxTRjCyETXwL8jNWLpFkwFQyDrmZh36VmTa4MExOkvO/Hn+A+wzj9
+         pxcTv0X96mxG1SmsTifQaCWNtpj1hE2/mSkKgrkCa2eqI43x5Xjzu2TVkSeoIcDwQLLN
+         +iJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU7+LohHNDG+QrVUV1/uKl3fWiHsztEZzkBoom9oYKZT8lWupwRWNr+/Zma0UKve6ekf/I0DOvnyeFgZ+g=@vger.kernel.org, AJvYcCWAcxUQGgypgzKn/KDWsyn1SUCkOWyuErWCGZXOTtrQTNXTT9mSnVXL3RcF3rg17nbyLUsiaaijGzDVeJtr@vger.kernel.org, AJvYcCWk3AhSB69arKHr7XzmR/BiGIYT0BNfVSEkr1dB7ZidywodNe/nfrLccLs9pPIXaF/sBB3SiXmu+g5z@vger.kernel.org, AJvYcCX2fyPls5/6eqIQxhtenZPF6xgu51IBmYoX1luByMeZ+U9qbO1uofZwGCxKYxF/Xg3ZzC2OE5SWndA250n/1d0=@vger.kernel.org, AJvYcCXLGB7ZlV9ippezhYYaDhQcXK4HnDWkEHjM44uwUcs2durRqPqL8jpKeAaG+OH9RgRNSZXazY1g5RkcfBGjrtk9@vger.kernel.org
+X-Gm-Message-State: AOJu0YwqWRN5PCAKlY41NoYTejbWpt0qkhbKK87HaL5gVkiD0KQLzbXM
+	XjA3aRKQzqyrgfgfRrlzwgoZPCKGp6UBYQCOnvRslhNSEel+fbGZaT0BX1rL9m7V3T0UngI7/pc
+	p1C+Kt9uR3yQQVyQRcuqkTROqSfI=
+X-Gm-Gg: ASbGnctXMEoB841mzhX3k7VeeO59JVb6D/liq0XFxZ0IyHhC+LIltkBF3nU3gz43Zye
+	eUNnISuK8yoCPi6hgBuZiD/YmSlTgah/zCCiOPvd/1ZQUCDfXJovSBSmDBrd3+Dw/1kfUEXbHo3
+	cln8FNIZMfOglhZA0mQnTLJgK48/LIJMKQDygmXWWFCiMseeCBVHjLMFcNalaO
+X-Google-Smtp-Source: AGHT+IG+EedxjC46NaiJ6woC0q3jeU1QYfuO+EC67MspCOQYOYTyXma/NtrOrk8P1gqUOUHGpPUfHHEJRfzzFrm3JYU=
+X-Received: by 2002:a2e:7a0a:0:b0:30b:f52d:148f with SMTP id
+ 38308e7fff4ca-30c20696d86mr19501461fa.18.1741725887429; Tue, 11 Mar 2025
+ 13:44:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20250307-ptr-as-ptr-v1-1-582d06514c98@gmail.com> <202503120332.YTCpFEvv-lkp@intel.com>
+In-Reply-To: <202503120332.YTCpFEvv-lkp@intel.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Tue, 11 Mar 2025 16:44:11 -0400
+X-Gm-Features: AQ5f1Jrp6VrC5oCAzv7mIYSclKLK180WdY1BUpfSs2ZfWgyDm-P9M5sBgjdaKuA
+Message-ID: <CAJ-ks9mkbs9KG5D5yETvOJfeqyzTts1gVZyNAogbxjXbwOreZg@mail.gmail.com>
+Subject: Re: [PATCH] rust: enable `clippy::ptr_as_ptr` lint
+To: kernel test robot <lkp@intel.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
+	Bjorn Helgaas <helgaas@kernel.org>, oe-kbuild-all@lists.linux.dev, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, linux-pci@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-"Andreas Hindborg" <a.hindborg@kernel.org> writes:
-
-> Add support for using the `hrtimer` subsystem from Rust code.
+On Tue, Mar 11, 2025 at 3:22=E2=80=AFPM kernel test robot <lkp@intel.com> w=
+rote:
 >
-> Add support for timer mode and clock source configuration during timer
-> initialization. Do not add examples and functionality to execute closures at
-> timer expiration , as these depend on either atomics [3] or `SpinLockIrq` [4],
-> which are still being worked on.
+> Hi Tamir,
+>
+> kernel test robot noticed the following build warnings:
+>
+> [auto build test WARNING on ff64846bee0e7e3e7bc9363ebad3bab42dd27e24]
+>
+> url:    https://github.com/intel-lab-lkp/linux/commits/Tamir-Duberstein/r=
+ust-enable-clippy-ptr_as_ptr-lint/20250308-004557
+> base:   ff64846bee0e7e3e7bc9363ebad3bab42dd27e24
+> patch link:    https://lore.kernel.org/r/20250307-ptr-as-ptr-v1-1-582d065=
+14c98%40gmail.com
+> patch subject: [PATCH] rust: enable `clippy::ptr_as_ptr` lint
+> config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/202=
+50312/202503120332.YTCpFEvv-lkp@intel.com/config)
+> compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b=
+5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
+ve/20250312/202503120332.YTCpFEvv-lkp@intel.com/reproduce)
+>
+> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
+ion of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202503120332.YTCpFEvv-lkp=
+@intel.com/
+>
+> All warnings (new ones prefixed by >>):
+>
+> >> warning: `as` casting between raw pointers without changing its mutabi=
+lity
+>    --> rust/kernel/firmware.rs:64:35
+>    |
+>    64 |         let ret =3D unsafe { func.0(pfw as _, name.as_char_ptr(),=
+ dev.as_raw()) };
+>    |                                   ^^^^^^^^ help: try `pointer::cast`=
+, a safer alternative: `pfw.cast()`
+>    |
+>    =3D help: for further information visit https://rust-lang.github.io/ru=
+st-clippy/master/index.html#ptr_as_ptr
+>    =3D note: requested on the command line with `-W clippy::ptr-as-ptr`
+>
+> --
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests/wiki
 
-[...]
+Indeed missed this one because I wasn't building with
+CONFIG_RUST_FW_LOADER_ABSTRACTIONS. Fixed in v3 by:
 
-Applied to `hrtimer-next` -- thanks everyone!
+diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+index c5162fdc95ff..74df815d2f4e 100644
+--- a/rust/kernel/firmware.rs
++++ b/rust/kernel/firmware.rs
+@@ -58,10 +58,11 @@ impl Firmware {
+     fn request_internal(name: &CStr, dev: &Device, func: FwFunc) ->
+Result<Self> {
+         let mut fw: *mut bindings::firmware =3D core::ptr::null_mut();
+         let pfw: *mut *mut bindings::firmware =3D &mut fw;
++        let pfw: *mut *const bindings::firmware =3D pfw.cast();
 
+         // SAFETY: `pfw` is a valid pointer to a NULL initialized
+`bindings::firmware` pointer.
+         // `name` and `dev` are valid as by their type invariants.
+-        let ret =3D unsafe { func.0(pfw as _, name.as_char_ptr(),
+dev.as_raw()) };
++        let ret =3D unsafe { func.0(pfw, name.as_char_ptr(), dev.as_raw())=
+ };
+         if ret !=3D 0 {
+             return Err(Error::from_errno(ret));
+         }
 
-Best regards,
-Andreas Hindborg
-
-
-
+By the way, it would be great if the email also included the rustc version =
+used.
