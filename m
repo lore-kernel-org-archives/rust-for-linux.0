@@ -1,124 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8952505AE;
-	Tue, 11 Mar 2025 11:05:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D64253B5D;
+	Tue, 11 Mar 2025 11:25:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741691112; cv=none; b=oCCYHnsEG3lQdMEbiWiGpMWcsGwMVZxRlL/CROwbUED2lmIVf0UW5JKQZjsCcUWbnBhEt3GOAkWWEHKDGt7oSxVtBaxC4YWQCRBNyD+fT9CZCB4tj+oX20rSBCF4Iv2sK83BbzWUuIG06HUfoExijNWtO4D2H7TK8LTrZVOUPdY=
+	t=1741692325; cv=none; b=c+BJXon8KH/v+2oOrh4WM+2ZmpODhG/Dz3O6V77Vj7Gc+Lyl/Ux7Ufg29FdMU4lj4oS63vpOi+noBcnBnd+HADth8tSls324Ir+k2h+PegX5g6GDohVhsN/y32kav1Ws08ch98GAAXHpK8yACxIS8aIZLwxOPHsB8HIJGufJ47s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741691112; c=relaxed/simple;
-	bh=BiHmDYOuzUjfVhezNhiaK4e3WiBwtSghS5TMbOSMbhY=;
+	s=arc-20240116; t=1741692325; c=relaxed/simple;
+	bh=uZ7Z+RehYAPUxpL5pUcapSesQqtDYnmhf5cqsLhYGO4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HImlfDD4zX3R6xx+axSacBjMTB79MfGlungXAeQ5da3lpZ1V6O+tn8DBMvXhqdf0PcC4LonCVUKG1xVho4sWwP4LreGSWKo+yOfGJug/Qb5NC3G0rIGpQFrtEOFZs1gg2xYyXyB7Iea+2TFCvVHz4q1XS6cGd7EhS5kA8THUm34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BUpJzpgv; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=qiB47tEROw/ZHmQIfhHqtIyefK6eFMv3435a9nPWdKMd9txr0oyIaYaKSmA6wVBuMdFwMsv+tbDiRsKMInYk2t3N5aIQYf0qj57WSXuLfFztI4UrWP54+MwWbdO9MF0uMHHnNxDaCJlMXDW5mJizsDYjpYrBUBXh2kmvz884j88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UnCvqARG; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BUpJzpgv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B129C4CEE9;
-	Tue, 11 Mar 2025 11:05:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741691112;
-	bh=BiHmDYOuzUjfVhezNhiaK4e3WiBwtSghS5TMbOSMbhY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=BUpJzpgvO46/fHm0lQGpknJzkyRXqNRP9L8armM4SyU2ePvn0SjzecH4SuJK3qLjJ
-	 /C16bBN0A5zza7lLivOxkkVMpEgSDVblkn4KDwjWHrR70viR99+ot+OVC8dqdagknQ
-	 sia+/1UiwzdKuaMedHQrKFPWncnxfB/PPwOtSkX0snCtePRnwCBeV/bHVTNpl7GfnE
-	 ZiUjFujNFuAAAoUpVqpgKlx4e45fm0pQ5OTgx8k0tTVoyUKsSFbmSxWsM+jcklJ6Ra
-	 WF53BiyQQNemWxu9CIJDNnk9L7sJJAp5hhpi3elWnZ/mdNEjmivcoCPXT3MyLwjZwc
-	 ggcFkav+N3Heg==
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-30797730cbdso56279831fa.3;
-        Tue, 11 Mar 2025 04:05:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVg/Fj8yDMp3ftVHw/ATWyMw/ZAJ/nCErf2oHRhJoz1hzA8fVE9sYz+SUsd1TH9vJ+C1VxbOs4Td29uBiOi@vger.kernel.org, AJvYcCWHHy2hOhsbn/bWjdKY7YPoODQGm2Jm/lDyheAfjGv36OF3Ho16+y2Lh/8IBY5OEa6mdcEeSOPYr1dx6dI=@vger.kernel.org, AJvYcCX8k3j9Os/Vy0xuyHdTJa1u7IMrblZRvOkufZUvz+/P07WnneoqCMh8jMP7sSuA7awP3kr/lVDcFtMi/NBcSrQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwvNX/maDENFrC8HmVWu8DtJlxOD+hAu8h2Z9a4ze7+BKrgYjCF
-	qbWtFsSEZDImJCR2GYB7eWt3sGb2C6YxG8UUj5xw9Ef1F2A/zN+gR/2MwzDmoKXc+aOXCVmguNi
-	yw1y9EtoETx8oMguS7wpUM3j0BHI=
-X-Google-Smtp-Source: AGHT+IGOFIDfX9MZ/eIx+BRhPpz5HIYVrm/mXus767BMsorp4XqzU7zW79c2E/z3oT1nJUc5A5tpgawcytKkW1A431I=
-X-Received: by 2002:a05:6512:224f:b0:545:1e2d:6b73 with SMTP id
- 2adb3069b0e04-54990e5d317mr5302820e87.13.1741691110968; Tue, 11 Mar 2025
- 04:05:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UnCvqARG"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-22409402574so11109055ad.1;
+        Tue, 11 Mar 2025 04:25:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741692323; x=1742297123; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uZ7Z+RehYAPUxpL5pUcapSesQqtDYnmhf5cqsLhYGO4=;
+        b=UnCvqARGYsyj6g5rm+NroaRgICgwVFmXARLnIGuewyzRTZqWLgVMetJXN8opQyQsKC
+         J2WpH3u8mP1O4omrAnXE19f9US1YlWhe11gUWPUah+jmmWFU8eovElPmEzPYnlH1XbZ3
+         948ypr+Nai7me7TPqUOS4q8ubwdJGv5JwtkJyFn73eyqpgZNb3b2DPkEli7K1TWF5SKw
+         hdQo8Jwnn+YbEnqN08lzC6afFwNW6xszE73T557vnD+EP4KEvTkX0DB72AWRN9omsLpa
+         tbpFM84BqQ9M+8oim6kcdnNJZ5+cufiuwmMe+r7eMCAedll3SUaQm7l9hC55tofj6knL
+         vr+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741692323; x=1742297123;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uZ7Z+RehYAPUxpL5pUcapSesQqtDYnmhf5cqsLhYGO4=;
+        b=AmMNryF9b90WjKH1nItiRo6MTlKs3hzBum4kEppCGarrj/pUlM0nt6FoPWQKBgdXXJ
+         D8AU+4T81cKzlCAXTrZXIk2pQWEuHBMd3FtTRhulpLQD/X2Vh7YLg/OpZ6x2dG1hvNq6
+         msRIAF1G1MExE8VBxPIi0vketfrrDfXuPK/rXsf5cOUkmIhmD0TyA075PadtnN2nkr7A
+         JEBO3KvX/wqVcZfjwX5PBrO1p/EwjSbE7RG7DeVufwBVZp8ZLbsOj98Zf8KKTQZJsKa6
+         MY/kgCMEKfvT7PQznFr9gqA98JA68Wal46R6FqC36cfr27J2FJ8RZMKWMVFo08pAYrAL
+         PUYA==
+X-Forwarded-Encrypted: i=1; AJvYcCUdOyHAaByHDK4YKvF+4Pp4f0PgJy/vHBomP5R7oINK9V3wj1LWeL9k1gzzydQVsemyv9fzJWjs2iiFKUk=@vger.kernel.org, AJvYcCUqBiGwnqgk9bvwytL1J/8AipcCRDkR+1usp2i37/cMdliT9bX8as1CwYvw0SUEX+RjvpQgvYOaPpJoi9mtvfk=@vger.kernel.org, AJvYcCV++9E0jlTr2GixSflyyxR3uE6LpIEgWB/MmeB9UFln7khcieodJOZA9JHViKY6TAI1vuVd3V2ZCaxO1o2E@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywc7yUe0fX8vpehEI9Gltx9/qBV2UFVQ9YbZGMuCF3F23Gofwh2
+	nDJ23gi63xh6JGVmR8hF5ZZoHhPs/R7iYT455ZqHIf++gvlihJIi6Fjhvgg2I1L5c05yZ98Q5UF
+	26aBqUa45GfNNnYV4eG5pBbQQA3g=
+X-Gm-Gg: ASbGncvhNZVlnxi0snJtk51phY8SUxcYvkHImsA5880AfYdif6vLgPZd3idtj/KDFlc
+	RMhbQfPptPQCvQlnyRChJ5XSR5ptq+qPcuX6d/1UBM3m9xhNVdJzdr4j0Y1VpRUVObfF0Az7ghm
+	8w/nx9C2rSyj+jTB0MvggAwd9N4g==
+X-Google-Smtp-Source: AGHT+IFerWSSRnD9v86YeC/80CVF/PDb0ihirl1213NdB/dcv5ANfOwY/e+8Y9lVWiGeMvAc9tn8g0ooXf5XvUlUiWQ=
+X-Received: by 2002:a17:902:d48d:b0:220:e98e:4f17 with SMTP id
+ d9443c01a7336-22541ea9638mr71862085ad.2.1741692322799; Tue, 11 Mar 2025
+ 04:25:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250219-rust-path-remap-v2-1-8ce2c10d4d66@weissschuh.net>
-In-Reply-To: <20250219-rust-path-remap-v2-1-8ce2c10d4d66@weissschuh.net>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 11 Mar 2025 20:04:34 +0900
-X-Gmail-Original-Message-ID: <CAK7LNASvSShHcf-gL52cF0PGYOx=nJvvbfeGjPVtpEa+t78Kew@mail.gmail.com>
-X-Gm-Features: AQ5f1Jr91UjOmYq0vXb1xyKqplM7uLhxpXEIt_A2xO8VqfT5Gc9ntPiiMiy5pso
-Message-ID: <CAK7LNASvSShHcf-gL52cF0PGYOx=nJvvbfeGjPVtpEa+t78Kew@mail.gmail.com>
-Subject: Re: [PATCH v2] kbuild, rust: use -fremap-path-prefix to make paths relative
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+References: <20250210-rust-path-remap-v1-1-021c48188df1@weissschuh.net>
+ <CANiq72mcpVL1YXyDFi-PrbQ2Uh0WUA_VNqLZaOeqQnpY5HnX8Q@mail.gmail.com> <CAK7LNATKK4bZCY7izDdEzNcUu60wjH57TK8ESM50QhUG2a4bRw@mail.gmail.com>
+In-Reply-To: <CAK7LNATKK4bZCY7izDdEzNcUu60wjH57TK8ESM50QhUG2a4bRw@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 11 Mar 2025 12:25:10 +0100
+X-Gm-Features: AQ5f1JpdJuaCqSDi_HshZJxMo3vvlLqCilD4cHL1BkIjDHJ8ZAF5-Ex-MPIJtas
+Message-ID: <CANiq72n9Wo6Mf7sVfm2akqiKknGNeTegiMesNtHzbHhWS4iQTQ@mail.gmail.com>
+Subject: Re: [PATCH] kbuild, rust: use -fremap-path-prefix to make paths relative
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
+	Ben Hutchings <ben@decadent.org.uk>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
 	Danilo Krummrich <dakr@kernel.org>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Urgau <urgau@numericable.fr>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 20, 2025 at 6:22=E2=80=AFAM Thomas Wei=C3=9Fschuh <linux@weisss=
-chuh.net> wrote:
+On Tue, Mar 11, 2025 at 12:04=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.=
+org> wrote:
 >
-> Remap source path prefixes in all output, including compiler
-> diagnostics, debug information, macro expansions, etc.
-> This removes a few absolute paths from the binary and also makes it
-> possible to use core::panic::Location properly.
+> GCC manual mentions the below about the -fdebug-prefix-map=3Dold=3Dnew
 >
-> Equivalent to the same configuration done for C sources in
-> commit 1d3730f0012f ("kbuild: support -fmacro-prefix-map for external mod=
-ules")
-> and commit a73619a845d5 ("kbuild: use -fmacro-prefix-map to make __FILE__=
- a relative path").
+> "It can also be used to change an absolute path to
+> a relative path by using . for new.
+> This can give more reproducible builds, which are location
+> independent, but may require an extra command to tell GDB
+> where to find the source files."
 >
-> Link: https://doc.rust-lang.org/rustc/command-line-arguments.html#--remap=
--path-prefix-remap-source-names-in-output
-> Acked-by: Miguel Ojeda <ojeda@kernel.org>
-> Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
-> ---
-> Changes in v2:
-> - Drop the usage of $(call rustc-option)
-> - Link to v1: https://lore.kernel.org/r/20250210-rust-path-remap-v1-1-021=
-c48188df1@weissschuh.net
-> ---
+> I guess "the extra command" might be a bit annoying.
 
-Applied to linux-kbuild.
-Thanks.
+Ah, so you mean that could be reason for not doing it for the debug
+case -- I see, thanks!
 
-
->  Makefile | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/Makefile b/Makefile
-> index 9e0d63d9d94b90672f91929e5e148e5a0c346cb6..9ed2222fafd4fa37a367b87a5=
-c681936368318e7 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -1068,6 +1068,7 @@ endif
->  # change __FILE__ to the relative path to the source directory
->  ifdef building_out_of_srctree
->  KBUILD_CPPFLAGS +=3D $(call cc-option,-fmacro-prefix-map=3D$(srcroot)/=
-=3D)
-> +KBUILD_RUSTFLAGS +=3D --remap-path-prefix=3D$(srcroot)/=3D
->  endif
->
->  # include additional Makefiles when needed
->
-> ---
-> base-commit: beeb78d46249cab8b2b8359a2ce8fa5376b5ad2d
-> change-id: 20250210-rust-path-remap-e97cec71e61a
->
-> Best regards,
-> --
-> Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
->
-
-
---=20
-Best Regards
-Masahiro Yamada
+Cheers,
+Miguel
