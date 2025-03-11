@@ -1,119 +1,189 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16AAF25C70F;
-	Tue, 11 Mar 2025 14:40:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668D125DD0F
+	for <rust-for-linux@vger.kernel.org>; Tue, 11 Mar 2025 15:06:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741704058; cv=none; b=p+N0GpkYhlWJ2CI7bt6kJSl0EEYzFrePSuxxdKcv5GVgF32aL+EjhTUpG4C1NI4lS/YoI1WqMFQ1K4hwvOqAKrftt+ppRYi928PmZ4AkLhK68mDfFuTLjVd/PbYxldL3sZe+m4EH9AMb0BBWoWv0CBJD6ajoy92OlmstffXCJK8=
+	t=1741705570; cv=none; b=NVRN/OWJYYK+0Hj9KQkH+CJQgkf7UGu+QUMu2DKYj1WBRXymWJGU17Lof3K3H8nV9b8wlX2486uLCmrIJhnHTDqC0Vj9A4NvXk6tw7fKUmAE4SM9jh7I5IAvtO7wLivWXghHgwD7/NHY/b5w8w8Q2zolo/P7UnWN5f7F3OQhpQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741704058; c=relaxed/simple;
-	bh=Tpt83+gXb7HOqzKNAOY3oeFPiR8tf68C5Ztj6otWbOg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jG3BntR84YaiN8UF51i3sei6vPooDbnBJ0B1vajLSKqOHdpLhhyzku6aOBGt2NFU28DQCkoKi8dTtb1CRSjyai1XhtJFVOb2+nTHGfFBJ9yeNJyDpANg286hhppzvfm5YcVbjrM2tJINlgalEH2FtL5v0WZ9avvIuX29/ICY+xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vry1M+yC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741705570; c=relaxed/simple;
+	bh=dBpq38Olwd6UC4G9g5bmtnBJf5Al41dz5nsCXr3LqKA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=GczFeqAxdUnmrlPKldHCCq+sED7KYCzYRBphlUAPL6dRJ7iti2GB02jtNuF0ET1kJy2gjOlrgy+D1/wT2e/TJuxX+RwL6bNuhuVqTcF2MEIWzEEPlPe7x9TMZ2yGl4bg8FETyJYppw7sP1LzXC9pmr44q6resn0y7B0fXaKBX4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=IPV75y03; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vry1M+yC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95A40C4CEEA;
-	Tue, 11 Mar 2025 14:40:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741704057;
-	bh=Tpt83+gXb7HOqzKNAOY3oeFPiR8tf68C5Ztj6otWbOg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Vry1M+yCaX08QI4CJhnozlvQo4q2qEMkXUS5WyZwVCWhomuN9efAIYL3oZ+OnjuMB
-	 3mkEN7mxWWzV99JfCa33eWxla/BsufF4Y2H3fzfFVXjQ3rseV+9EcperCxdqCJA8ug
-	 SpD7GNOktl77BrF/YQeobPnJ/UnEG4eUECwm6NbGw/m7rbIHgBRy5oHz/8DSZuRL6E
-	 cTNr13DNtPCv7D5/i0Qf4nUog+Bss9xPciOG+SwD1GCiPmQc7wA8UmDcb3DFvzahec
-	 cCE+Jxsd/M1NomXtJm0Bf1IT6qyVkYSY/YgVUDbnp9l+alj7KF5MSvRLPs042uNj/2
-	 gjdVrPlbA+b7g==
-Date: Tue, 11 Mar 2025 15:40:51 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Matthew Maurer <mmaurer@google.com>, Lee Jones <lee@kernel.org>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 4/5] rust: alloc: add Vec::clear
-Message-ID: <Z9BLc7P2FKiJAo2p@cassiopeiae>
-References: <20250311-iov-iter-v1-0-f6c9134ea824@google.com>
- <20250311-iov-iter-v1-4-f6c9134ea824@google.com>
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="IPV75y03"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id D22E4240029
+	for <rust-for-linux@vger.kernel.org>; Tue, 11 Mar 2025 16:06:00 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1741705560; bh=dBpq38Olwd6UC4G9g5bmtnBJf5Al41dz5nsCXr3LqKA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:To:Cc:From;
+	b=IPV75y03a34OPW+o2BUW0CLcADmpHj7q/nQbDyqcx5qYeSXHPblPFps4zwGIBiKIu
+	 vWAkQNxpAIL4OyE8lRUVlq+tfr2YV3YFod4ojAb2FBY0Vt6eav9Vy7jyNn4YNd/fAD
+	 5WVWHNEs1bIp8pPZkw11y8XlPxkVp3iOvx2lxHoX105/B+GaghNAwv9qso0TxkVo2D
+	 LpunkZGkX90WQJs7kg8FAkPlczzWkmRntfCa4fydsKmlli1siNRexqTZKj04n69Box
+	 5ACQBVQaufycufsGZSoPF6komegnDkP5aoFhaIu+ZreO6vjJxySm0zYVInkWARl28u
+	 Hbx1tYMSYzqCg==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4ZBxsf1Rfrz6tsg;
+	Tue, 11 Mar 2025 16:05:58 +0100 (CET)
+From: Panagiotis Foliadis <pfoliadis@posteo.net>
+Date: Tue, 11 Mar 2025 15:05:52 +0000
+Subject: [PATCH v2] rust: task: mark Task methods inline
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250311-iov-iter-v1-4-f6c9134ea824@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250311-inline-c-wrappers-v2-1-72c99d35ff33@posteo.net>
+X-B4-Tracking: v=1; b=H4sIAE9R0GcC/22NywrCMBBFf6XM2pE8bFNc+R/SRUhHOyBJSEJVS
+ v7dWFy6PAfuuRtkSkwZzt0GiVbOHHwDdejALdbfCXluDEqoXmgxIvsHe0KHz2RjpJRxtqMmJ52
+ yxkDbxUQ3fu3N69R44VxCeu8Xq/zaX02KP7VVosTZqOEkexq0VpcYcqFw9FRgqrV+AMTtd46zA
+ AAA
+X-Change-ID: 20250308-inline-c-wrappers-da83ec1c2a77
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Nathan Chancellor <nathan@kernel.org>, 
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ llvm@lists.linux.dev, Panagiotis Foliadis <pfoliadis@posteo.net>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1741705558; l=5016;
+ i=pfoliadis@posteo.net; s=20250308; h=from:subject:message-id;
+ bh=dBpq38Olwd6UC4G9g5bmtnBJf5Al41dz5nsCXr3LqKA=;
+ b=LGrVbOOSqFl3D8TT/zQpc1ma8J474qsuoVrLOZb+D++yUmimnXrNuJgl1OQs3is+hFTfDfgj4
+ ls3gW4q3aJ0AtZVv9ZPs5stmo3ex8c4zPLxC7UCOn3hmVYQ3s2PgfE2
+X-Developer-Key: i=pfoliadis@posteo.net; a=ed25519;
+ pk=/8ch2dv3mwtZ5ygYwiG7ldc/132K6XmLkAZDmIe0aQw=
 
-On Tue, Mar 11, 2025 at 02:25:15PM +0000, Alice Ryhl wrote:
-> Our custom Vec type is missing the stdlib method `clear`, thus add it.
-> It will be used in the miscdevice sample.
-> 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/kernel/alloc/kvec.rs | 27 +++++++++++++++++++++++++++
->  1 file changed, 27 insertions(+)
-> 
-> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> index ae9d072741cedbb34bed0be0c20cc75472aa53be..2d213ede2873cef87116a5527e8e24008c970a58 100644
-> --- a/rust/kernel/alloc/kvec.rs
-> +++ b/rust/kernel/alloc/kvec.rs
-> @@ -395,6 +395,33 @@ pub fn into_raw_parts(self) -> (*mut T, usize, usize) {
->          (ptr, len, capacity)
->      }
->  
-> +    /// Clears the vector, removing all values.
-> +    ///
-> +    /// Note that this method has no effect on the allocated capacity
-> +    /// of the vector.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// let mut v = kernel::kvec![1, 2, 3]?;
-> +    ///
-> +    /// v.clear();
-> +    ///
-> +    /// assert!(v.is_empty());
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
-> +    #[inline]
-> +    pub fn clear(&mut self) {
-> +        let elems: *mut [T] = self.as_mut_slice();
-> +
-> +        // INVARIANT: This call changes the number of elements to zero.
-> +        self.len = 0;
+When you build the kernel using the llvm-18.1.3-rust-1.85.0-x86_64
+toolchain provided by kernel.org, the following symbols are generated:
 
-Please use self.set_len() instead, such that we have to cover all safety
-requirements enforced by self.set_len().
+$ nm vmlinux | grep ' _R'.*Task | rustfilt
+ffffffff817b2d30 T <kernel::task::Task>::get_pid_ns
+ffffffff817b2d50 T <kernel::task::Task>::tgid_nr_ns
+ffffffff817b2c90 T <kernel::task::Task>::current_pid_ns
+ffffffff817b2d00 T <kernel::task::Task>::signal_pending
+ffffffff817b2cc0 T <kernel::task::Task>::uid
+ffffffff817b2ce0 T <kernel::task::Task>::euid
+ffffffff817b2c70 T <kernel::task::Task>::current
+ffffffff817b2d70 T <kernel::task::Task>::wake_up
+ffffffff817b2db0 T <kernel::task::Task as kernel::types::AlwaysRefCounted>::dec_ref
+ffffffff817b2d90 T <kernel::task::Task as kernel::types::AlwaysRefCounted>::inc_ref
 
-With that,
+These Rust symbols are trivial wrappers around the C functions
+get_pid_ns, task_tgid_nr_ns, task_active_pid_ns, signal_pending, uid,
+euid, get_current, wake_up, get_task_struct and put_task_struct.It
+doesn't make sense to go through a trivial wrapper for these
+functions, so mark them inline.
 
-	Acked-by: Danilo Krummrich <dakr@kernel.org> # for char-misc
+After applying this patch, the above command will produce no output.
 
-in case you want to take it through the char-misc tree.
+Link: https://github.com/Rust-for-Linux/linux/issues/1145
+Signed-off-by: Panagiotis Foliadis <pfoliadis@posteo.net>
+---
+Changes in v2:
+- Added `#[inline] to all the remaining functions of task.rs file
+- Link to v1: https://lore.kernel.org/r/20250310-inline-c-wrappers-v1-1-d726415e6332@posteo.net
+---
+ rust/kernel/task.rs | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-Ironically, self.set_len() lacks your invariant comment and corresponding safety
-requirement, I will send a patch to fix this up, unless you want to. :-)
+diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+index 07bc22a7645c0c7d792a0a163dd55b8ff0fe5f92..66b845a83acf3a57a59d281d11fcfb9107a214a8 100644
+--- a/rust/kernel/task.rs
++++ b/rust/kernel/task.rs
+@@ -132,6 +132,7 @@ pub fn current_raw() -> *mut bindings::task_struct {
+     /// # Safety
+     ///
+     /// Callers must ensure that the returned object doesn't outlive the current task/thread.
++    #[inline]
+     pub unsafe fn current() -> impl Deref<Target = Task> {
+         struct TaskRef<'a> {
+             task: &'a Task,
+@@ -166,6 +167,7 @@ fn deref(&self) -> &Self::Target {
+     /// # Safety
+     ///
+     /// Callers must ensure that the returned object doesn't outlive the current task/thread.
++    #[inline]
+     pub unsafe fn current_pid_ns() -> impl Deref<Target = PidNamespace> {
+         struct PidNamespaceRef<'a> {
+             task: &'a PidNamespace,
+@@ -273,24 +275,28 @@ pub fn pid(&self) -> Pid {
+     }
+ 
+     /// Returns the UID of the given task.
++    #[inline]
+     pub fn uid(&self) -> Kuid {
+         // SAFETY: It's always safe to call `task_uid` on a valid task.
+         Kuid::from_raw(unsafe { bindings::task_uid(self.as_ptr()) })
+     }
+ 
+     /// Returns the effective UID of the given task.
++    #[inline]
+     pub fn euid(&self) -> Kuid {
+         // SAFETY: It's always safe to call `task_euid` on a valid task.
+         Kuid::from_raw(unsafe { bindings::task_euid(self.as_ptr()) })
+     }
+ 
+     /// Determines whether the given task has pending signals.
++    #[inline]
+     pub fn signal_pending(&self) -> bool {
+         // SAFETY: It's always safe to call `signal_pending` on a valid task.
+         unsafe { bindings::signal_pending(self.as_ptr()) != 0 }
+     }
+ 
+     /// Returns task's pid namespace with elevated reference count
++    #[inline]
+     pub fn get_pid_ns(&self) -> Option<ARef<PidNamespace>> {
+         // SAFETY: By the type invariant, we know that `self.0` is valid.
+         let ptr = unsafe { bindings::task_get_pid_ns(self.as_ptr()) };
+@@ -306,6 +312,7 @@ pub fn get_pid_ns(&self) -> Option<ARef<PidNamespace>> {
+ 
+     /// Returns the given task's pid in the provided pid namespace.
+     #[doc(alias = "task_tgid_nr_ns")]
++    #[inline]
+     pub fn tgid_nr_ns(&self, pidns: Option<&PidNamespace>) -> Pid {
+         let pidns = match pidns {
+             Some(pidns) => pidns.as_ptr(),
+@@ -319,6 +326,7 @@ pub fn tgid_nr_ns(&self, pidns: Option<&PidNamespace>) -> Pid {
+     }
+ 
+     /// Wakes up the task.
++    #[inline]
+     pub fn wake_up(&self) {
+         // SAFETY: It's always safe to call `signal_pending` on a valid task, even if the task
+         // running.
+@@ -328,11 +336,13 @@ pub fn wake_up(&self) {
+ 
+ // SAFETY: The type invariants guarantee that `Task` is always refcounted.
+ unsafe impl crate::types::AlwaysRefCounted for Task {
++    #[inline]
+     fn inc_ref(&self) {
+         // SAFETY: The existence of a shared reference means that the refcount is nonzero.
+         unsafe { bindings::get_task_struct(self.as_ptr()) };
+     }
+ 
++    #[inline]
+     unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
+         // SAFETY: The safety requirements guarantee that the refcount is nonzero.
+         unsafe { bindings::put_task_struct(obj.cast().as_ptr()) }
 
-> +
-> +        // SAFETY: The values being dropped are valid values of type `T` by the type invariants.
-> +        // It's okay to invalidate them as we just changed the length to zero.
-> +        unsafe { ptr::drop_in_place(elems) };
-> +    }
-> +
->      /// Ensures that the capacity exceeds the length by at least `additional` elements.
->      ///
->      /// # Examples
-> 
-> -- 
-> 2.49.0.rc0.332.g42c0ae87b1-goog
-> 
+---
+base-commit: 7f0e9ee5e44887272627d0fcde0b19a675daf597
+change-id: 20250308-inline-c-wrappers-da83ec1c2a77
+
+Best regards,
+-- 
+Panagiotis Foliadis <pfoliadis@posteo.net>
+
