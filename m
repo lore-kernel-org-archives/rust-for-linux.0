@@ -1,204 +1,175 @@
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21BD5264A84;
-	Tue, 11 Mar 2025 17:50:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4AE325D8E8;
+	Tue, 11 Mar 2025 18:13:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741715410; cv=none; b=sFjOVDCROVwtLJzc3Vs8WX3xRDe1XqhJo/ox4wH0czd1C4AN5I9VEMxJM70yRIUSHNc2RD/tWV47QMjz5PWfrRvLu5K+9SScWrnDhVeIdFgMjxUbEMdRKGbiuWjN3vEfnjfiE/9mp+hpAgi4zFdwjrV8GbiakqzNn61kl8pYv1A=
+	t=1741716832; cv=none; b=D75GGUs7mQ2B2zInEpakgL3pQAbxYD73V3pTnA/Ru+/oZtqPITPI1I0+kUCOPXNdfW2qX6QeOOJKtxk7AgAxebtxIsAyWlCoPoE/wU62m4Xz3UPGZKiFScuhRNyltqOhRd4fcV4zIfKdQXSFyCQ8IQ426Kyfx+6lXD+x60kwIPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741715410; c=relaxed/simple;
-	bh=964LyMRqlPXEPxt4dRUtburkX8rzYyxtJ+Zd6YPN9n8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S7k+3lynup3Xfa5gu6qWnb7Clj1jSPJyn2pajLNMdMx0A4LS/gsTjpV8aWsy1POEjQo1eBjkxZcBAQ7AiJ4f6G3lH3pY/RrzFfeXUdZXRT07PcTa+eXG6LJX1h3pcHCcvv0g6JkLZ28/+7Ow9jj4gYwhdD/5sQOSzja6VkA7yN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QwoAgrlS; arc=none smtp.client-ip=209.85.167.46
+	s=arc-20240116; t=1741716832; c=relaxed/simple;
+	bh=9m9qnAFjRPZmuEIFsmWAz+dfmmyZZkKzpyFeZwHGM8M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AwjK5mP7C42BzRG+Go2mZ+S5/gJT/Rer4F1G4tdpOgpsHRoKdwfCxwlpICNUJYjZMbEhKCtmMK7CUeZIcO7CbVM/TW1uSiKDrpGbqpRSMK+ULSnrl2en8siqYJon2DBQfmiiPDmKwoI49A9JDeafF/O82AOGd8RMM67e0bDn34o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b6fT48+n; arc=none smtp.client-ip=209.85.222.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QwoAgrlS"
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5498d2a8b89so5813146e87.1;
-        Tue, 11 Mar 2025 10:50:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b6fT48+n"
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7c24ae82de4so640330885a.1;
+        Tue, 11 Mar 2025 11:13:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741715407; x=1742320207; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1741716830; x=1742321630; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Uyciabioh/RTBRWZFgAXOHCv2udpm7yTbk+rfqYhebY=;
-        b=QwoAgrlS0hZTDzA4IQrgJBKr/u1qc8yDiUQtyDY5M0PkyMipQJ5i/541MRi2YKRYJk
-         /MfSK7pQnaIZg1+qV97GYGUbJoKNlHUDiRNYJx9NHIkLmv9yie9u/doFJpKAKlqpmQee
-         /rQFygLrk2mAg+QuaP87rQspajvigs181oF/UBdI0lo8wJrUJDMKVU5grF1QR89vJr5Q
-         DzFOYpduUToa7VlQTjPG4Iz3Ptk941Aqx+vy8vCvtK0rUwf6dAjJIU6lLO1WfbZZJwDX
-         kuWWebeQn/X6p8wFW/CZJf/ETst2xtSN1fU6Lk7SOU/Ovntjulgc+aaBoEW6YF6RFrNh
-         RayA==
+        bh=lDEhMmQUxmOxo689QhSb5GTtdGxxmyO1TdT2sutKhIU=;
+        b=b6fT48+n5ajBu7vdj9IHQOYAQGMqc+iCWks03ks/5x75h27qIyaZqpew1MSiBC2SSI
+         YfTovbrNX5Y35arEdVH2oyAwK3NPQhUeKUEYOR+Y38iQRVTeFpYyhCCEykFQSwv48Pau
+         2t9rMbfGBltKyYuKxF73uSUxnrSg+qZlTyEa3iB+pjKtseUn7HPQhzZxI6zN0cgS2Uq+
+         vXWSz4B4rlAxKC9I5lpFSMN1nf7BDo8Fx8MNGdXqIcRJeP0PWKM+J42bXB8jRcokEbUM
+         DHIV2YgF16CFXecfq0bHwOobKL7kf4bh6LwPiJYXvknA2+SjRhNB/8YkklNMCoLwmxFV
+         5TzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741715407; x=1742320207;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1741716830; x=1742321630;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Uyciabioh/RTBRWZFgAXOHCv2udpm7yTbk+rfqYhebY=;
-        b=JnBarR6RM+cjHlwMoBiM/wjho8yA+9SmwFE1hraPZvvbcWG2P+eH7vWxbSOVCBiEjN
-         I36rfx9tctEQ/dwY4N64/omENQTkq0rcAh6LVxgKLmMg1T87OMQJgnmZxVVCR7SczZfP
-         gwHfksY/SL6AiWFn1iFBmdHU/B52woomVaxGCpR6InAjrUfaM43VlKMAFiEwxr0bfUlw
-         g/+PDpNAOFmff49KX2KLbiGmXfJLR3fW+SWlltToV7IrbzOHg2EC+12/5bGAIU5+6Bkw
-         pXtNdfM5xLjEFj762PUUMwZLBx1ApzGBVsf2QAi5K0rUBKc7sl9v0E8mrbyHVK3Q9ITp
-         k46w==
-X-Forwarded-Encrypted: i=1; AJvYcCVjgYctFh+1FQOR5jezPRFqbUzKUligcRq5j2M4RpGgXoNloOXzznUfpYIDodJ0M5Ht7oD0wboG3bhCj8Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYigqN6UwFxlfG/aDzmKbTyK4WiAbwNHLJmDHgKKso6WZGwHuV
-	3l8akpbMJJ5GRLuEE/mXOxNlUnKnhrw+lFz6f+5oe8SPQXPlO4Bw/ZyrnQ==
-X-Gm-Gg: ASbGnct9ncA6RnzI8buOgq/1lVJmF2TbvsyiVIiVhb5Pf71FsT61D0Ok9ASQX/3+Mrh
-	4/z4ZEbrIWUQGgtGT10ZKxaX7GBxSpVhBFKemM+sXbT/c15TwrwHB5PQLh/zaJMIsa2+ohaOoRz
-	Hibuc1NQU0FBpNCbnEHyQ/TZYCmQKHGnn1jq8et1HBCxwujj3Ygu0hJMyFRoL26Q/nxgUV1Dd3V
-	cSSjxSm9zhkbOdPhrHcmyIJh2SCC8U8TZT6Sa2YLsFUSm8e9tjyNk36/tgVawRFH4X5T4JOPFos
-	etxpJF72NRRAr1l+n94dSL1VF1mcNkNFFzpixTU5/icJf3w+PmYNOUBWzyQS4ZneN9NUnqeUkwk
-	3+SBRQZMAO/XygTVOK3WeLw==
-X-Google-Smtp-Source: AGHT+IEJad4gl+z0QS4ewlzZ4karifVvk4Su2qy2hDsPEF00+XFLaO/pmT6m2hKmYpP7qT9AMIlM2A==
-X-Received: by 2002:a05:6512:2393:b0:545:2950:5360 with SMTP id 2adb3069b0e04-54990e5e2a1mr6250883e87.22.1741715406926;
-        Tue, 11 Mar 2025 10:50:06 -0700 (PDT)
-Received: from abj-NUC9VXQNX.. (dsl-hkibng22-54f8dc-251.dhcp.inet.fi. [84.248.220.251])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5498ae4465fsm1921728e87.26.2025.03.11.10.50.05
+        bh=lDEhMmQUxmOxo689QhSb5GTtdGxxmyO1TdT2sutKhIU=;
+        b=XyYuuyH6m0KTNBXegXufuHasMdypHsgGwAV16lRNWHKuHTkVmBzxQkH+Td5G1Jh0vU
+         UL6mTQ2aw/x8RVNdFDC/m5BGbpNxKbvmwnv7VHtzFDncdYgf1Je1WwIdwAOqjCIisyVi
+         HhTaIaIT+/kyNCEym+QHLp6wYqi5ttZTQDS5pOvA0ffzixWJ/hG3TNovBhpVcGhbD04Y
+         pkcshkHjJK7jzeUk0G+0cDrWZRHEcuFJlYdRt2dYBH5vOH3218W2XhJak8SVYHKe7Gx8
+         Z9j6tlCbJe7V4aEnpxtRKnMe0geJMviqcHyyD/J586JUqBxtFszObxitqoa+Rg7x9TXo
+         OUgg==
+X-Forwarded-Encrypted: i=1; AJvYcCU3I7L3GpQ6OD/VSj98i7e70zOXfqtP/pyO85JuQQ83qMub79gYZugA9V9Thv9Pxd5k6l1Bip1tPuPEP3Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7m3WhSGAMJxkdloqzr1OUICDO0Nwu4keHoLPXPPulBR+sKCqk
+	XLrFXkGbQTBfir8UzpSfjr0MrI3RV9eM8+tyTTJZojQx8xumPlM2
+X-Gm-Gg: ASbGncuR0Kiyqxd95JMfl5s3kOG8acBmc+2o8s0ncI3Grv7NBeTD2Hxfwky7QyE4Vwa
+	OLxWdPre5SIEQasiJteLn73Bwp1oiSRJX6+AfkRmNI5phLZOEuDMKOj/+rAbiDxcZzMBZR3/bWW
+	flKtRHfYfA18Dw6692WZ+A0xzciPYh2URlwUBQ+Q+2VUacIiRkdTK88F0m1FC4zuxanpL8k0T/6
+	TJ5Y1vFRhzWy3icIKwN/NAOOSBzfcjTb6LuiSsVC+6cA+F1lDeT1hijhLzNfhwePuFHr9T4UI1P
+	1LYAS53+WXhA9iQLpMMYlT8kJWTwtwzcSDswJz8rRHFse87XFfBBX218HbSjbSXhs7G5G1uNWA6
+	plpdyYJ2n5OX8jYRoZpdNWPNYTvVdbAFL22g=
+X-Google-Smtp-Source: AGHT+IGV5qUTHMkgjUEPn2/eKhIVvHOorUKXCES2+LeLdAqsZ2U/IXaPlqtaVS6mO9jhfs6UoSNQZA==
+X-Received: by 2002:a05:620a:24c5:b0:7c5:5ebc:392f with SMTP id af79cd13be357-7c55ebc39a6mr561247785a.0.1741716829592;
+        Tue, 11 Mar 2025 11:13:49 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c55b4ab89esm231025685a.17.2025.03.11.11.13.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Mar 2025 10:50:05 -0700 (PDT)
-From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-To: rust-for-linux@vger.kernel.org,
-	daniel.almeida@collabora.com,
-	dakr@kernel.org,
-	robin.murphy@arm.com,
-	aliceryhl@google.com
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+        Tue, 11 Mar 2025 11:13:49 -0700 (PDT)
+Received: from phl-compute-07.internal (phl-compute-07.phl.internal [10.202.2.47])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 55633120006E;
+	Tue, 11 Mar 2025 14:13:48 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-07.internal (MEProxy); Tue, 11 Mar 2025 14:13:48 -0400
+X-ME-Sender: <xms:XH3QZ6R6dlme6g7Si5SkgC8t4r6U4nUwYNlVmZLBGT66fXLYZIGnVg>
+    <xme:XH3QZ_yrxxibrMYWi29hxXWQxENgZ6Q7SDQc3kwBgfDE6Isq6Qip8r0Yppb8QT9gy
+    0xmddFzDon9EDAzyg>
+X-ME-Received: <xmr:XH3QZ336OP3qiqC1URlPz1CqrIMayero0mrcd2EfAHDYRmyY-PNEFpAq3hE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduvddvledvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
+    vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
+    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhfel
+    leeivedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
+    grmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgr
+    lhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppe
+    hgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvddtpdhm
+    ohguvgepshhmthhpohhuthdprhgtphhtthhopegrsgguihgvlhdrjhgrnhhulhhguhgvse
+    hgmhgrihhlrdgtohhmpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgv
+    rhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrnhhivghlrdgrlhhmvghiuggrse
+    gtohhllhgrsghorhgrrdgtohhmpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhr
+    ghdprhgtphhtthhopehrohgsihhnrdhmuhhrphhhhiesrghrmhdrtghomhdprhgtphhtth
+    hopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehojhgvuggr
+    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrih
+    hlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvght
+X-ME-Proxy: <xmx:XH3QZ2BhbphbYZK7sD9DZqF2ODhUZ5dJU0uI_WxbwrlR54Cur3j96Q>
+    <xmx:XH3QZzh6P1MioxmPF4eQk3IQV1yBy1F8Swe-dFJ2SF9xhbmzI_sWSA>
+    <xmx:XH3QZyr2Wzbxs6MH3Zgzfpf9V2VdL0e7NZgy8P_fDl504ETVY9Lyvw>
+    <xmx:XH3QZ2gdp5GF4QtBYta1qj1aY85Jd9HHhbn69y69ysm8lsUVn3DuLg>
+    <xmx:XH3QZyTCI30w-PDqu9Wk4GpK6UAVgeiVtbArRsWdU9ER4cw_2m6VYV_k>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 11 Mar 2025 14:13:47 -0400 (EDT)
+Date: Tue, 11 Mar 2025 11:12:24 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, daniel.almeida@collabora.com,
+	dakr@kernel.org, robin.murphy@arm.com, aliceryhl@google.com,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Trevor Gross <tmgross@umich.edu>,
 	Valentin Obst <kernel@valentinobst.de>,
-	linux-kernel@vger.kernel.org (open list),
+	open list <linux-kernel@vger.kernel.org>,
 	Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	airlied@redhat.com,
-	iommu@lists.linux.dev (open list:DMA MAPPING HELPERS),
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>
-Subject: [PATCH v14 11/11] rust: dma: add as_slice/write functions for CoherentAllocation
-Date: Tue, 11 Mar 2025 19:48:07 +0200
-Message-ID: <20250311174930.2348813-12-abdiel.janulgue@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250311174930.2348813-1-abdiel.janulgue@gmail.com>
+	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+Subject: Re: [PATCH v14 02/11] rust: add dma coherent allocator abstraction.
+Message-ID: <Z9B9CNRatBtyAO8Q@boqun-archlinux>
 References: <20250311174930.2348813-1-abdiel.janulgue@gmail.com>
+ <20250311174930.2348813-3-abdiel.janulgue@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250311174930.2348813-3-abdiel.janulgue@gmail.com>
 
-Add unsafe accessors for the region for reading or writing large
-blocks of data.
+On Tue, Mar 11, 2025 at 07:47:58PM +0200, Abdiel Janulgue wrote:
+[...]
+> +    /// Reads the value of `field` and ensures that its type is [`FromBytes`].
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// This must be called from the [`dma_read`] macro which ensures that the `field` pointer is
+> +    /// validated beforehand.
+> +    ///
+> +    /// Public but hidden since it should only be used from [`dma_read`] macro.
+> +    #[doc(hidden)]
+> +    pub unsafe fn field_read<F: FromBytes>(&self, field: *const F) -> F {
+> +        // SAFETY: By the safety requirements field is valid.
+> +        unsafe { field.read_volatile() }
 
-Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
----
- rust/kernel/dma.rs | 87 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 87 insertions(+)
+I agree with Andreas that we should document the exception of usage on
+{read,write}_volatile() here. How about:
 
-diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-index d0c6569cfc70..514fbb27c607 100644
---- a/rust/kernel/dma.rs
-+++ b/rust/kernel/dma.rs
-@@ -253,6 +253,93 @@ pub fn dma_handle(&self) -> bindings::dma_addr_t {
-         self.dma_handle
-     }
- 
-+    /// Returns the data from the region starting from `offset` as a slice.
-+    /// `offset` and `count` are in units of `T`, not the number of bytes.
-+    ///
-+    /// Due to the safety requirements of slice, the caller should consider that the region could
-+    /// be modified by the device at anytime. For ringbuffer type of r/w access or use-cases where
-+    /// the pointer to the live data is needed, `start_ptr()` or `start_ptr_mut()` could be
-+    /// used instead.
-+    ///
-+    /// # Safety
-+    ///
-+    /// * Callers must ensure that no hardware operations that involve the buffer are currently
-+    ///   taking place while the returned slice is live.
-+    /// * Callers must ensure that this call does not race with a write to the same region while
-+    ///   while the returned slice is live.
-+    pub unsafe fn as_slice(&self, offset: usize, count: usize) -> Result<&[T]> {
-+        let end = offset.checked_add(count).ok_or(EOVERFLOW)?;
-+        if end >= self.count {
-+            return Err(EINVAL);
-+        }
-+        // SAFETY:
-+        // - The pointer is valid due to type invariant on `CoherentAllocation`,
-+        // we've just checked that the range and index is within bounds. The immutability of the
-+        // of data is also guaranteed by the safety requirements of the function.
-+        // - `offset` can't overflow since it is smaller than `self.count` and we've checked
-+        // that `self.count` won't overflow early in the constructor.
-+        Ok(unsafe { core::slice::from_raw_parts(self.cpu_addr.add(offset), count) })
-+    }
-+
-+    /// Performs the same functionality as [`CoherentAllocation::as_slice`], except that a mutable
-+    /// slice is returned.
-+    ///
-+    /// # Safety
-+    ///
-+    /// * Callers must ensure that no hardware operations that involve the buffer are currently
-+    ///   taking place while the returned slice is live.
-+    /// * Callers must ensure that this call does not race with a read or write to the same region
-+    ///   while the returned slice is live.
-+    pub unsafe fn as_slice_mut(&self, offset: usize, count: usize) -> Result<&mut [T]> {
-+        let end = offset.checked_add(count).ok_or(EOVERFLOW)?;
-+        if end >= self.count {
-+            return Err(EINVAL);
-+        }
-+        // SAFETY:
-+        // - The pointer is valid due to type invariant on `CoherentAllocation`,
-+        // we've just checked that the range and index is within bounds. The immutability of the
-+        // of data is also guaranteed by the safety requirements of the function.
-+        // - `offset` can't overflow since it is smaller than `self.count` and we've checked
-+        // that `self.count` won't overflow early in the constructor.
-+        Ok(unsafe { core::slice::from_raw_parts_mut(self.cpu_addr.add(offset), count) })
-+    }
-+
-+    /// Writes data to the region starting from `offset`. `offset` is in units of `T`, not the
-+    /// number of bytes.
-+    ///
-+    /// # Safety
-+    ///
-+    /// * Callers must ensure that no hardware operations that involve the buffer overlaps with
-+    ///   this write.
-+    /// * Callers must ensure that this call does not race with a read or write to the same region
-+    ///   that overlaps with this write.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # fn test(alloc: &mut kernel::dma::CoherentAllocation<u8>) -> Result {
-+    /// let somedata: [u8; 4] = [0xf; 4];
-+    /// let buf: &[u8] = &somedata;
-+    /// // SAFETY: No hw operation on the device and no other r/w access to the region at this point.
-+    /// unsafe { alloc.write(buf, 0)?; }
-+    /// # Ok::<(), Error>(()) }
-+    /// ```
-+    pub unsafe fn write(&self, src: &[T], offset: usize) -> Result {
-+        let end = offset.checked_add(src.len()).ok_or(EOVERFLOW)?;
-+        if end >= self.count {
-+            return Err(EINVAL);
-+        }
-+        // SAFETY:
-+        // - The pointer is valid due to type invariant on `CoherentAllocation`
-+        // and we've just checked that the range and index is within bounds.
-+        // - `offset` can't overflow since it is smaller than `self.count` and we've checked
-+        // that `self.count` won't overflow early in the constructor.
-+        unsafe {
-+            core::ptr::copy_nonoverlapping(src.as_ptr(), self.cpu_addr.add(offset), src.len())
-+        };
-+        Ok(())
-+    }
-+
-     /// Returns a pointer to an element from the region with bounds checking. `offset` is in
-     /// units of `T`, not the number of bytes.
-     ///
--- 
-2.43.0
+When dealing with a potential race from a hardware or code outside
+kernel (e.g. user-space program), we need that read and write on a valid
+memory are not UBs. Currently {read,write}_volatile() are used for this,
+and the rationale behind is that they should generate the same code as
+READ_ONCE() and WRITE_ONCE() which kernel already relies on to avoid UBs
+on data races. Note that the usage of {read,write}_volatile() is limited
+to this particular case, they cannot be used to emit the UBs caused by
+racing between two kernel functions nor do they provide atomicity.
 
+Thoughts? One problem is that I don't know where to put this document
+:-( Any suggestion?
+
+Regards,
+Boqun
+
+> +    }
+> +
+> +    /// Writes a value to `field` and ensures that its type is [`AsBytes`].
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// This must be called from the [`dma_write`] macro which ensures that the `field` pointer is
+> +    /// validated beforehand.
+> +    ///
+> +    /// Public but hidden since it should only be used from [`dma_write`] macro.
+> +    #[doc(hidden)]
+> +    pub unsafe fn field_write<F: AsBytes>(&self, field: *mut F, val: F) {
+> +        // SAFETY: By the safety requirements field is valid.
+> +        unsafe { field.write_volatile(val) }
+> +    }
+> +}
+[...]
