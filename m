@@ -1,199 +1,217 @@
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A611262D11;
-	Tue, 11 Mar 2025 17:45:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50FA71D5ADC;
+	Tue, 11 Mar 2025 17:49:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741715124; cv=none; b=kW7Nc/h8nkzaItKoPDKDoT6UgaDjXbLXpcKCZtZROf6H7fniOIsbwGlRYOYaU1HMZuLUuy1DZzs2Ufsxf4j2n5eIOTq8XfyrdnE4/No6HykPRpQMn1cY19kV4sYWOl5O6B7r4OKnMWdT4zYJ3c1pcXbNcX5y9bGY76n15toNFEU=
+	t=1741715388; cv=none; b=Jfjj8pzf50/LITH5mV6eRsuNAh/0oHKLce+IHEC+YCK0gNcsqL4h4j+bu7MHfpobbJeqkBk2zpOgKPG8r6SOzvqvN5z1MLR9FM/KwTTN/Y6sGCfJOMAfBIySnBOdjd0FUrCGtWH/1zSmh5ew2ki4x3Ul0wazUvOFVwQ7Rydbf1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741715124; c=relaxed/simple;
-	bh=l0VXxLyHqQ03BojE4ii06LhUjI+hhzdC8CIFLnCEcf8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VMnxH3204GXXax/4s0ZQYmMWLCruxEXKXjkt+DiQexZziMidEeeXIKxJiKXLuyGiLLScGaRpfCzXmgJVbY6cKN4RLxhccCeAfjreJUIi3B3egsKR0CDToomRhdTHLECtvT/X9wjOLqYGGdJubR1W+W+MU1orOOTqWfEY5kKshIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hy+FYqGs; arc=none smtp.client-ip=209.85.208.179
+	s=arc-20240116; t=1741715388; c=relaxed/simple;
+	bh=I/BvJlbiSjp/Z5twciQAUeTVGh/qMdT3NWIHULDCFYw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=e6Qh1ZUDXJQsgbkJpE42Y8bxT9ExXz4nUUQ2cpyTA+67S7mqOi7HN82BpOOOqH2ScNXDj1bdr2DaSyIiaSz73ELQiWtH8SmoQ5A1RaixqXityALd9svISjshHnL4rSh6TX85SBQJ5CM3xGKQ7zd2mask0olmPrXhZXnEvKp6Ia0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aAdQETR1; arc=none smtp.client-ip=209.85.167.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hy+FYqGs"
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-307d1ab59c6so61597361fa.1;
-        Tue, 11 Mar 2025 10:45:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aAdQETR1"
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-549b116321aso282622e87.3;
+        Tue, 11 Mar 2025 10:49:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741715121; x=1742319921; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=asnNU19ygcsN2CKrHdfOexyM1HK98rMZqPH+Eazq5VA=;
-        b=hy+FYqGsfUKjY2ZkFG5llaXOO7sE4eXtVSnRiwp3BwM5zUXQBaa84k/IeAuRx+x8ml
-         BlWnGg3i1/fvNXjrlgsInpPSwL3Czf5b1JTSn11TgcskX5QnNyb49jPScReHyzpzIEh6
-         JhRepdQZpQJcXJVh7emEIT3cz0sh/mvPEI6v1AlIKTx3Sxn4MT3Uw0AyZzHyhI4MKxtE
-         2DCQYxU+tXIxbni1AIaHsdg3yW+dXAGrXuX+Hm24aI4E02CioMoTuAJPGC1DENg0h4UR
-         IXFFRqPg9eMvybBzZVYYwFWM+k/INb2ccGj9dL0yTRhQR3jVjPMJkziwzTQ/sPTwE+/x
-         VBYA==
+        d=gmail.com; s=20230601; t=1741715384; x=1742320184; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=p+hnZybhDJXzPARLCusLi3xFhuAqO5UGHgXR0BOcXKg=;
+        b=aAdQETR1HzhAiNwN/tKAZvjh6Xnos68OmiainlSF4elyMyfm2QYEVg3DNpT/FjjdUP
+         KnAsF/G4N5IZFf93Xg3s5lgmS8sB/VyX7th7kumw1qdUqZfsK+Gu92o9bNI6I3mDCyNF
+         VD9izJ4cgX6qA7EqS2ge6IluF0s23mQUnpbzXjgMRd3JTOpK8ThmSQtz57Qa5wGjdqwy
+         kLdr6yLwPMWZFYKq+M+WOm8BiJ6AXtfLbsAd/cE6llFT5zJ0TmSjkwiN9uMiswWGtR0J
+         PrIH4lII4IwciC2bjthZhSoFtu0h1wlQskP5DLOzT0NOItneFeACYts6BQfoU5amloQB
+         4TBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741715121; x=1742319921;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=asnNU19ygcsN2CKrHdfOexyM1HK98rMZqPH+Eazq5VA=;
-        b=VwXccTfTv7rSrgKd/VDd8/GUgp61pNS9+yiIJXlNIjlgiQWRvjiBlVVbGoz4DqIrbH
-         CzydEsOYjuaoHzz6qELxRYzGgffbJr0JBzn4hJoKImDZ70c2GNuuDPx+OL5+C7XfMSwI
-         7O1zkozNYyy4WhD+Mrt8iEy0f7nIUmWIpAZKXuuclk0MLaqmRjtqxswYbEGErI9l/JHk
-         U98GzNX74+yDq3YtJg3dQCVtITAmEawMaMoJjYc3Z7QU3DDC9IgkF/4ZdlY3gmS2XoQZ
-         nIqFvzF/Fb/KnntFtwadmJum+vwmERf731zkYVjX5gtgxhmNyZnJt6HBC6SRvCWizB8T
-         H1cw==
-X-Forwarded-Encrypted: i=1; AJvYcCX7S+eTjvjS1xN36F1rnYS9ZurabwRAb7zPzvP0r9jY5+RCWj3gAW24cgLzMPGk7NEI3eluJVhZPZPIqjE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwxFOflYzVlNQf0NXY69ccYErM9HuIj5yyMkm3I7hvhhrs8lVsR
-	dIG5TCESnCOI0bncQ65enMw43osbjbN+90aMMo0d/CzbHZoT1v1t
-X-Gm-Gg: ASbGncuIAkWtkZdZjnpXUiVqDgXfvlwWvNuwT/yKm41sL+Jgf+NfGFP3jLwEHeecU4N
-	yabGep+GnAYNwRPGq6IljReBeFA5p3GLXscU2fPBkncT66SisK3Q/EW82xdzvR5rYLqjK0w3euY
-	gsOLFNmNSYDGGgYlZHJnKI5uMOydWG6s7gRBPrWxqOZ1eUhcT7dpEtpSUF2+iKb3SG/fseXgtYG
-	lYNvYSrxBeghYN3r5N0LB+DonzzowQlrmywKGY+rOxxUYyhsf88scFmMIOIrhJQvY9SwA56POY6
-	A1OIJNPSw2jqd7ghkxHJzJluulZF1Voe47cFmkmBSa04DaCIffcs/tGUJz8C3BlCCdCoc4J2ZW2
-	j+qZDEMwn0nz2RF6aghrh7A==
-X-Google-Smtp-Source: AGHT+IFxj2Dayu+wbOQKzrV5wxiY2G9Z04wHC3RtTdBJTzM8av5dhGJypQXyOqhWF4kFSnReXrQF/w==
-X-Received: by 2002:a2e:bc27:0:b0:30b:b184:a904 with SMTP id 38308e7fff4ca-30bf44edde3mr71880861fa.4.1741715120287;
-        Tue, 11 Mar 2025 10:45:20 -0700 (PDT)
-Received: from [192.168.1.146] (dsl-hkibng22-54f8dc-251.dhcp.inet.fi. [84.248.220.251])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30c011d2830sm14276651fa.80.2025.03.11.10.45.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Mar 2025 10:45:19 -0700 (PDT)
-Message-ID: <902d6f21-a6c9-4776-9e55-26f089acd0da@gmail.com>
-Date: Tue, 11 Mar 2025 19:45:18 +0200
+        d=1e100.net; s=20230601; t=1741715384; x=1742320184;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=p+hnZybhDJXzPARLCusLi3xFhuAqO5UGHgXR0BOcXKg=;
+        b=W2TncJ1ZOks9a4i6y315PvnjOokt1qB60kb9lq1krDp/B+tKsCymScMJX/ijZ45x1Y
+         z1xKixP+hfMTQ0AGwa9DP+LEm1GF37yx6MNzcG12AzbvKeKWvJauivr6LpdAq5Z8HnNB
+         8p2yuxJsnV8Dt3KU6UeBSl73h21rNXEsOhKzC/qftubdJ7IyQQsY2Jy2H7mpdQLYCGMi
+         ca/RNzToN1LS42rs8g/8tpofsvUJTeJ7rYIo6LWwgyQWDr1YiF8+l7FWzLIWF/qbiDmm
+         yUdRBT8+OS3neebHzX3cktFtFScr10xkuuJ2exVWN8EN0gr+nk6ynvXEQZ9NV/Vl9R01
+         UY3A==
+X-Forwarded-Encrypted: i=1; AJvYcCVKS+wsvDjBSvNcMxKXOWAq1yvxrQn6SQ6c30SuMZgxiFFqawfcf90T0JQa5lRUpxIpjqgJ3psEK6qjFVs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwiMrUCupVOLvBpSDjX5mcT+o73LHecRIRChs1lptdRN67YxXIq
+	d08C47VwDat7bARDZWnrUF5Ws8aW442Hm4SRjjWRSRD2R6BqvQ5hiTJbfg==
+X-Gm-Gg: ASbGncsl/mq1WyWM04smQ2sZBNixNAzdijHc3G1k5NzfI1FXoQn2x8hASDewlFdcLJO
+	af4GERfst/33vUHtCCxAXK/p3u0h6pxQKvVBzKJY3bc7aioEsOY1tAnT+CiYkvKz1rNI/inoBgv
+	01DRFReMeqGC4LVUv0U54KDmPtEhmjW+ACE33zCBUSaZCsKa0p+aCf7dsUMIcOSJ0G77VaPWmxM
+	f+M2MEXbKzCyKiHgVunZ+wt+Mw5Tb1kbrke73hmjkvKHybEyfrm4XtPC2TKKW8oehkwCI79Mg+J
+	ZWNhCPfMH2M+QpEGDrLBvA2AnD4WhCLKjc1AYf72EGqG0/rqgIcTtHpxruqJdxco5rZ3pm3Tekk
+	Na0zxm0d/PtbPSnY+CrKYWA==
+X-Google-Smtp-Source: AGHT+IFI/hQPt1n5nvgipTFuRCv9TVmIV3SNFe4AnB8TBzlGpWb6YhsoaMIPZt9q7+lC/MQhZZbrtQ==
+X-Received: by 2002:a05:6512:1112:b0:549:7c64:3bc0 with SMTP id 2adb3069b0e04-54990e64227mr5404132e87.29.1741715384139;
+        Tue, 11 Mar 2025 10:49:44 -0700 (PDT)
+Received: from abj-NUC9VXQNX.. (dsl-hkibng22-54f8dc-251.dhcp.inet.fi. [84.248.220.251])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5498ae4465fsm1921728e87.26.2025.03.11.10.49.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Mar 2025 10:49:42 -0700 (PDT)
+From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+To: rust-for-linux@vger.kernel.org,
+	daniel.almeida@collabora.com,
+	dakr@kernel.org,
+	robin.murphy@arm.com,
+	aliceryhl@google.com
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Valentin Obst <kernel@valentinobst.de>,
+	linux-kernel@vger.kernel.org (open list),
+	Christoph Hellwig <hch@lst.de>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	airlied@redhat.com,
+	iommu@lists.linux.dev (open list:DMA MAPPING HELPERS),
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Subject: [PATCH v14 00/11] rust: add dma coherent allocator abstraction
+Date: Tue, 11 Mar 2025 19:47:56 +0200
+Message-ID: <20250311174930.2348813-1-abdiel.janulgue@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 4/7] rust: device: add dma addressing capabilities
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, daniel.almeida@collabora.com,
- dakr@kernel.org, robin.murphy@arm.com, aliceryhl@google.com,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>, Trevor Gross <tmgross@umich.edu>,
- Valentin Obst <kernel@valentinobst.de>, linux-kernel@vger.kernel.org,
- Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>,
- airlied@redhat.com, iommu@lists.linux.dev
-References: <20250307110821.1703422-1-abdiel.janulgue@gmail.com>
- <nxaaNW1XIbhf7dSf8aRLVF5Se-0maF6BhX8GaUXlsOL-QOste8OMQxtmhYe_BYI6FYFEMeHEzy1s4OEy7PdGKw==@protonmail.internalid>
- <20250307110821.1703422-5-abdiel.janulgue@gmail.com>
- <877c5038i1.fsf@kernel.org>
-Content-Language: en-US
-From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-In-Reply-To: <877c5038i1.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi,
+This series adds the rust bindings for the dma coherent allocator which
+is needed for nova-core[0].
 
-On 07/03/2025 22:12, Andreas Hindborg wrote:
-> "Abdiel Janulgue" <abdiel.janulgue@gmail.com> writes:
-> 
->> Add functions to set the DMA mask to inform the kernel about the
->> device's DMA addressing capabilities.
->>
->> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
->> ---
->>   rust/helpers/dma.c     |  8 ++++++++
->>   rust/helpers/helpers.c |  1 +
->>   rust/kernel/device.rs  | 29 +++++++++++++++++++++++++++++
->>   3 files changed, 38 insertions(+)
->>   create mode 100644 rust/helpers/dma.c
->>
->> diff --git a/rust/helpers/dma.c b/rust/helpers/dma.c
->> new file mode 100644
->> index 000000000000..8eb482386f93
->> --- /dev/null
->> +++ b/rust/helpers/dma.c
->> @@ -0,0 +1,8 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +
->> +#include <linux/dma-mapping.h>
->> +
->> +int rust_helper_dma_set_mask_and_coherent(struct device *dev, u64 mask)
->> +{
->> +	return dma_set_mask_and_coherent(dev, mask);
->> +}
->> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
->> index 0640b7e115be..8f3808c8b7fe 100644
->> --- a/rust/helpers/helpers.c
->> +++ b/rust/helpers/helpers.c
->> @@ -13,6 +13,7 @@
->>   #include "build_bug.c"
->>   #include "cred.c"
->>   #include "device.c"
->> +#include "dma.c"
->>   #include "err.c"
->>   #include "fs.c"
->>   #include "io.c"
->> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
->> index db2d9658ba47..f9d3d4f60ddb 100644
->> --- a/rust/kernel/device.rs
->> +++ b/rust/kernel/device.rs
->> @@ -6,10 +6,12 @@
->>
->>   use crate::{
->>       bindings,
->> +    error::Result,
->>       str::CStr,
->>       types::{ARef, Opaque},
->>   };
->>   use core::{fmt, ptr};
->> +use kernel::prelude::*;
->>
->>   #[cfg(CONFIG_PRINTK)]
->>   use crate::c_str;
->> @@ -187,6 +189,33 @@ pub fn property_present(&self, name: &CStr) -> bool {
->>           // SAFETY: By the invariant of `CStr`, `name` is null-terminated.
->>           unsafe { bindings::device_property_present(self.as_raw().cast_const(), name.as_char_ptr()) }
->>       }
->> +
->> +    /// Inform the kernel about the device's DMA addressing capabilities.
->> +    ///
->> +    /// Set both the DMA mask and the coherent DMA mask to the same thing.
->> +    /// Note that we don't check the return value from the C `dma_set_coherent_mask`
->> +    /// as the DMA API guarantees that the coherent DMA mask can be set to
->> +    /// the same or smaller than the streaming DMA mask.
->> +    pub fn dma_set_mask_and_coherent(&mut self, mask: u64) -> Result {
->> +        // SAFETY: device pointer is guaranteed as valid by invariant on `Device`.
->> +        let ret = unsafe { bindings::dma_set_mask_and_coherent(self.as_raw(), mask) };
->> +        if ret != 0 {
->> +            Err(Error::from_errno(ret))
->> +        } else {
->> +            Ok(())
->> +        }
->> +    }
-> 
-> I think we can use `Error::from_errno` here (and below). As far as I can
-> tell, these C functions return negative on error.
+For v14, mark for TODO the solution for revoking the device resources of a
+`CoherentAllocation`, but not the entire `CoherentAllocation` including
+the allocated memory itself.
 
-This already uses `Error::from_errno`?
+This is tested on a Nvidia GA104 GPU device using PoC code which parses
+and loads the GSP firmware via DMA.
 
-Thanks!
+Changes since v13:
+- Remove Devres wrapper, document correct solution for proper resource
+  deallocation as TODO, add patches from Danilo to properly add DMA
+  addressing capabilities for the device which requires a new trait
+  that defines the DMA specific methods of devices. (Danilo)
+- Link to v13: https://lore.kernel.org/lkml/20250307110821.1703422-1-abdiel.janulgue@gmail.com/
 
-> 
->> +
->> +    /// Same as [`dma_set_mask_and_coherent`], but set the mask only for streaming mappings.
->> +    pub fn dma_set_mask(&mut self, mask: u64) -> Result {
->> +        // SAFETY: device pointer is guaranteed as valid by invariant on `Device`.
->> +        let ret = unsafe { bindings::dma_set_mask(self.as_raw(), mask) };
->> +        if ret != 0 {
->> +            Err(Error::from_errno(ret))
->> +        } else {
->> +            Ok(())
->> +        }
->> +    }
->>   }
->>
->>   // SAFETY: Instances of `Device` are always reference-counted.
-> 
-> 
-> Best regards,
-> Andreas Hindborg
-> 
-> 
+Changes since v12:
+- Move out the contentious functions: as_slice, as_slice_mut, and write
+  for later discussion as a separate patch. Make write unsafe as well.
+  Remove skip_drop, use volatile r/w for field_read and field_write
+  (Alice Ryhl, et al.).
+- Documentation improvements, use markdown for intra-doc links
+  (Miguel Ojeda).
+- Move dma addressing capabilities to a separate patch within device.rs
+  (Andreas Hindborg).
+- Add a simple driver to excercise the basics of the api (Danilo).
+
+Changes since v11:
+- Ensure robust handling for potential pointer arithmetic overflows
+  in bounds checking (Petr Tesařík).
+- Add dma mask helpers (Daniel Almeida).
+- Clarification in the safety aspects of the as_slice/as_slice_mut API,
+  Use ManuallyDrop trait as a replacement for into_parts(),
+  Add dma_read!/dma_write! helper macros (Alice Ryhl).
+
+Changes since v10:
+- rename read() to as_slice() (Boqun Feng)
+- Do a bitwise copy of ARef<Device> in into_parts() when returning the
+  device reference (Alice Ryhl).
+
+Changes since v9:
+- Use ARef<Device> in the constructor arguments, docs clarification avoid
+  manually dropping the refcount for the device in into_parts(), use
+  add() instead of wrapping_add() in the pointer arithmetic for performance
+  (Alice Ryhl).
+
+Changes since v8:
+- Add MAINTAINERS entry
+- Fix build issues due to switch from core::ffi to crate:ffi in bindgen.
+- Ensure the wrapped attribute is non-pub in struct Attrs, declare it 
+  #[repr(transparent)] as well (Daniel Sedlak)
+
+Changes since v7:
+- Remove cpu_buf() and cpu_buf_mut() as exporting a r/w interface via
+  a slice is undefined behaviour due to slice's requirement that the
+  underlying pointer should not be modified (Alice Ryhl, Robin Murphy).
+- Reintroduce r/w helpers instead which includes proper safety
+  invariants (Daniel Almeida).
+
+Changes since v6:
+- Include the dma_attrs in the constructor, use alloc::Flags as inpiration
+
+Changes since v5:
+- Remove unnecessary lifetime annotation when returning the CPU buffer.
+
+Changes since v4:
+- Documentation and example fixes, use Markdown formatting (Miguel Ojeda).
+- Discard read()/write() helpers to remove bound on Copy and fix overhead
+  (Daniel Almeida).
+- Improve error-handling in the constructor block (Andreas Hindborg).
+
+Changes since v3:
+- Reject ZST types by checking the type size in the constructor in
+  addition to requiring FromBytes/AsBytes traits for the type (Alice Ryhl).
+
+Changes since v2:
+- Fixed missing header for generating the bindings.
+
+Changes since v1:
+- Fix missing info in commit log where EOVERFLOW is used.
+- Restrict the dma coherent allocator to numeric types for now for valid
+  behaviour (Daniel Almeida).
+- Build slice dynamically.
+
+[0] https://lore.kernel.org/lkml/20250131220432.17717-1-dakr@kernel.org/
+[1] https://lore.kernel.org/lkml/20250305174118.GA351188@nvidia.com/
+
+Abdiel Janulgue (5):
+  rust: error: Add EOVERFLOW
+  rust: add dma coherent allocator abstraction.
+  samples: rust: add Rust dma test sample driver
+  MAINTAINERS: add entry for Rust dma mapping helpers device driver API
+  rust: dma: add as_slice/write functions for CoherentAllocation
+
+Danilo Krummrich (6):
+  rust: dma: implement `dma::Device` trait
+  rust: dma: add dma addressing capabilities
+  rust: pci: implement the `dma::Device` trait
+  rust: platform: implement the `dma::Device` trait
+  rust: dma: use `dma::Device` in `CoherentAllocation`
+  rust: samples: dma: set DMA mask
+
+ MAINTAINERS                     |  13 +
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers/dma.c              |   8 +
+ rust/helpers/helpers.c          |   1 +
+ rust/kernel/dma.rs              | 503 ++++++++++++++++++++++++++++++++
+ rust/kernel/error.rs            |   1 +
+ rust/kernel/lib.rs              |   1 +
+ rust/kernel/pci.rs              |   2 +
+ rust/kernel/platform.rs         |   2 +
+ samples/rust/Kconfig            |  11 +
+ samples/rust/Makefile           |   1 +
+ samples/rust/rust_dma.rs        | 104 +++++++
+ 12 files changed, 648 insertions(+)
+ create mode 100644 rust/helpers/dma.c
+ create mode 100644 rust/kernel/dma.rs
+ create mode 100644 samples/rust/rust_dma.rs
+
+
+base-commit: ab2ebb7bc9d9af2f50b0ad54deb65e1d0b01bc70
+-- 
+2.43.0
 
