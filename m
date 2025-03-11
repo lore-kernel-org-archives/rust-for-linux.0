@@ -1,160 +1,154 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3559F9CB
-	for <rust-for-linux@vger.kernel.org>; Tue, 11 Mar 2025 10:07:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF30D22FF42
+	for <rust-for-linux@vger.kernel.org>; Tue, 11 Mar 2025 10:14:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741687640; cv=none; b=kR+8+IhqTgi2IRMasbK49AtcFH+94LK0KLLTSs/hHsru7szAoCE/B5L8p0df2twvtR0LfaLDCSSdQCz0U/1vxkeRlApc2RnlFA3QbOep7wq3oLsanIhox6Up/eWSfOfuvyFYcJp3IldsEh2DrOfi4GERi1QQ0rII3UIzSDuBypA=
+	t=1741688044; cv=none; b=mHuU9FDY9sRmfZ2n1ebkE6v0WXR1REsKC4ODI6Df7sPPupWGayX7YGspo6U3/ICGljTBlDdf8buKdeS55/8uetfgtzxbVQhr60S+XFg3qBEGx6s/M0qtonGlFNh/dE+gjNI9C5qErd7TzFYuFiJvKMqh0DHnN8oOg8cSHXWNPpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741687640; c=relaxed/simple;
-	bh=ks/m4Dg9e0LsX5W+24SIh9BwJqlTaUJ+OARn0HBP7Yw=;
+	s=arc-20240116; t=1741688044; c=relaxed/simple;
+	bh=794aUF8aT5RtUCA1W8S8mWuIs9X87hy//ZVZ105DGrM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=oOwq4p+vFt4mcLM2YRSLG4xfp+MfBzgv9mIPMhyLB3agqYL/V88/oaCU5B5LP7nIDgChjG+6GrSYBirDp9WNv0PQ2aE6MViH0sRTWVelEGEyDOdsxHbD7Mjn9xjLa6P/rwPlP5MLHLhpJBOqjCCSwqP0we4VwRvqJnLqMkEKe7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vHMgUjq/; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=KUb2UUA3HQAiB1VLDC0J2bBwUXLTleAyEolO5RkUssxID5v6s4fSP7itKKvtrT4xNcOTkCENi8eF86l5s3wkSGiZR4LEd0V8H75XBqfEqK0pT2je9H0RWbj6aU7r+6H6BNXIES5BKRqLQIVFyMKCMUuM6MIHFXhVg3+3Pncns9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=j/EfJZHY; arc=none smtp.client-ip=209.85.221.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vHMgUjq/"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43bc97e6360so26101215e9.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 11 Mar 2025 03:07:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="j/EfJZHY"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-39130f02631so2034687f8f.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 11 Mar 2025 03:14:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741687637; x=1742292437; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6gKIm9f9CvLqznwxBzrfnGnuGny9X8dBk6FhNmJ3B9Q=;
-        b=vHMgUjq/ssU1zIaLt1vOipk+B7sHPXhE17iQFWczzaFqVJ/j0wqhc5KnqkAae2mooI
-         wcHM9Wmf2GmY+Z/tFvDvkdmwGVf6Vep7qNyimmyZokE6QyNDaGGjk2Xbrc3OUzXagWOh
-         X5TIbKEW0jZIwucLSAjxkqBf0zeIVI2r5aVD9tLpNZW2E74Tyv14p21nWwUbmMEQJkpd
-         RE1WZmGSWfHulrSI2nEmOUo2devSWHQDr+Lo6E9o/G1R+LN6SXHutCKLgqPbinxcoVm1
-         DKVMR1GtO/yS8RRoDsdsYfoa6LSQy6CHKh2H7IwAMP82Uk6nVIC3dd4Yn+uORzAbEetv
-         G+jw==
+        d=google.com; s=20230601; t=1741688041; x=1742292841; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=76XLIKmBPGbPkpHodLQEwOqQeh98tsdwIlAdA3e7Be0=;
+        b=j/EfJZHYrO85cljGKP8q0Rv/LOzNl/aiJ8NSUFmMtOckGDx0r6Uqtd3/XUK9ReyE+0
+         ULW6MjyFI7nhGZeZpj6RPczNfDA5OTGQ5OcW4OfIu+1WwRBfvWKZjU5ay01YtueGSr6d
+         O1sAHWPv6v2tClDWzkLxfxeOPqJnFb4PRv8Y+YFFEPpPRij/xgCbUOari+fp4otQwzK+
+         Vs69LwFH5rgQXp+7ZO2qaVNvJ2qRKF/FWBQifcxedNJCriazXEHhLcudjU9/6IF3DJUh
+         YaG2I8+cMtNZKhf3ThQ7r8Me1bwinnkeq3nFXDcS3kikH7pnCYu6sZnt4YY9IOHb/tMv
+         iNGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741687637; x=1742292437;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6gKIm9f9CvLqznwxBzrfnGnuGny9X8dBk6FhNmJ3B9Q=;
-        b=pjhOyA8lhoBqLqofMp5TauW1sw5mIQHGuCLsmbnSTorFmuL0P9m9sBt94Zg+znsdzb
-         ebyhXxtT5hjaOj39Vxw8q76X6GWa7k5PnchM9gubvDRf65uiVQikXHL+F8Uqp85EJced
-         t/sk3/teAkS/zec7weHP8vDxLELwSrsAlt1/yQXV/0YC5WYpiu3NrAVepJCeiEd4Guyv
-         +nKHcOPf6mC7N7rzq8wdQFm/IzzHB1tlJz3jvzipaiPZw530Z5TyRTY+waoAjf3LrylR
-         gODaX/IGlbmZYdWFmF3Xbtbgw9OrRx3IxQ2OFP0pfzCUgOE4ltHsJwy8quFgit+vfTcf
-         leCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXU/CGi1Wk95leBUedZb4XjYf8/X4xfgdHUcZ9TCAvfE11rh7iG0qK6RJDuOiBajYbd5zhxZfhoEMt6XNLt/g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCWQGHW8EnHwJxI7OAc5qo4vYfT+Qiz6GfZN1SOvRY3IBelCfg
-	AdGwXhLoypyQweVxPhVTnNTw1i990Gbcvz7W+4ThGk+YOudhzxwOtTYluZRCeXvUciC75NrcdY6
-	pXd+jsIqMQWBxDw==
-X-Google-Smtp-Source: AGHT+IHm3IFgyjHliXGRSyHcjqv5KSX/xVFX6JhRSVcGMyAOulpQHr5iOaqTDRsQTZV+1DDQGv83dxho+R9CegY=
-X-Received: from wmgg5.prod.google.com ([2002:a05:600d:5:b0:43b:bd03:5d2])
+        d=1e100.net; s=20230601; t=1741688041; x=1742292841;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=76XLIKmBPGbPkpHodLQEwOqQeh98tsdwIlAdA3e7Be0=;
+        b=NvjSV6XBYXku9QJkO9sSA1L5CBwHD0NEvlt4jTGDWoJ2zr8NRhF01ja/CfBklv3s+Y
+         AtbhRTJQF0SPzKPSxYA63OHzWqKZV12jGKMMr/TdcVC4L4Y+5hfRuoa92I4Q1XY+maTq
+         lQKzE2402TdPFchTLD+notrDPHMIkMkdAYeG/SZ749rjzdmIo56nycNT2grQK3n0rz2r
+         KqcOwTBZHA5g9VqyESSobg+aUYc90dCYdMA4nPBzx974Ec0aWgHbg5BDRleSBRgLzP5f
+         YudPqFRM2Gks1uLH5HhbCL9N3tmzzi88ovueBedTgaVz+V78nyFZRMu4NOG8NCix+ueY
+         KpJg==
+X-Forwarded-Encrypted: i=1; AJvYcCVmK2mrYm/W/UQK3u9ky3J0SltNRXz+mtdYk5eLvTiWj2pJrAR3qb1v6SBxBeaXpzYOqw0h7BzjByuZpf7PBg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyq2r1nucE5e7Mr98ISD7XebDLEEhhiVsKlTqIJEkNZZFa6qPgG
+	GnBA9SN2AhC1niUkpBXAX27OfodNNsNQaEb/gAwAZzrGPigLluzjiL8umj5GBaY98Xu6TZPZURw
+	6Au0OKk2w/pbW2g==
+X-Google-Smtp-Source: AGHT+IFJVzLeFx7L0yyWjDJgVw/RWiflq5x78L5FY3pE8LtKm0n7pMwPUKo8oJWv4kX2v6gGp6/XzcFbeRoqDl4=
+X-Received: from wmbep27.prod.google.com ([2002:a05:600c:841b:b0:43c:fe99:2bc5])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:5120:b0:43c:f85d:1245 with SMTP id 5b1f17b1804b1-43cf85d1427mr68893195e9.17.1741687637311;
- Tue, 11 Mar 2025 03:07:17 -0700 (PDT)
-Date: Tue, 11 Mar 2025 10:07:15 +0000
-In-Reply-To: <Z88rhn5nVbd4-JSE@thinkpad>
+ 2002:a5d:5983:0:b0:38d:b325:471f with SMTP id ffacd0b85a97d-392641bd0fcmr3471236f8f.15.1741688041067;
+ Tue, 11 Mar 2025 03:14:01 -0700 (PDT)
+Date: Tue, 11 Mar 2025 10:13:59 +0000
+In-Reply-To: <CAJ-ks9nR9AcqK8WfHDshG4h+K9PzEa8Lwr3odn99r34y=zzWgA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250310161947.1767855-2-bqe@google.com> <Z88rhn5nVbd4-JSE@thinkpad>
-Message-ID: <Z9ALU7XVPt8JKKFR@google.com>
+References: <20250310161947.1767855-2-bqe@google.com> <CAJ-ks9nR9AcqK8WfHDshG4h+K9PzEa8Lwr3odn99r34y=zzWgA@mail.gmail.com>
+Message-ID: <Z9AM57PG08UuijDB@google.com>
 Subject: Re: [PATCH v3] rust: add bindings and API for bitmap.h and bitops.h.
 From: Alice Ryhl <aliceryhl@google.com>
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Burak Emir <bqe@google.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Burak Emir <bqe@google.com>, Yury Norov <yury.norov@gmail.com>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
 	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 10, 2025 at 02:12:22PM -0400, Yury Norov wrote:
-> On Mon, Mar 10, 2025 at 04:19:46PM +0000, Burak Emir wrote:
-> > Adds a Rust bitmap API and necessary bitmap and bitops bindings.
-> > These are for porting the approach from commit 15d9da3f818c ("binder:
-> > use bitmap for faster descriptor lookup") to Rust. The functionality
-> > in dbitmap.h makes use of bitmap and bitops.
-> 
-> Please add it in the same series that converts dbitmap to rust. This
-> all is a dead code otherwise, right?
+On Mon, Mar 10, 2025 at 12:44:59PM -0400, Tamir Duberstein wrote:
+> Hi Burak, some comments inline. Hopefully I haven't missed important
+> context from previous versions.
+>=20
+> On Mon, Mar 10, 2025 at 12:21=E2=80=AFPM Burak Emir <bqe@google.com> wrot=
+e:
+> > +/// # Invariants
+> > +///
+> > +/// * `ptr` is obtained from a successful call to `bitmap_zalloc` and
+> > +///   holds the address of an initialized array of unsigned long
+> > +///   that is large enough to hold `nbits` bits.
+> > +pub struct Bitmap {
+> > +    /// Pointer to an array of unsigned long.
+> > +    ptr: NonNull<usize>,
+> > +    /// How many bits this bitmap stores. Must be < 2^32.
+> > +    nbits: usize,
+>=20
+> How come this isn't held as u32? There's a lot of conversion to u32
+> sprinkled around.
 
-Rust Binder is not upstream yet. We are upstreaming its dependencies
-before the driver itself, so there will be dead code no matter what. The
-number of dependencies is so large that it's completely impractical to
-land them together with the driver.
+Then we would need conversions to usize in other places. I think the
+right choice of type in the public API here is usize, but the underlying
+C API uses int in various places.
 
-We can include a patch that includes the wrapper data structure that
-Rust Binder builds on top of bitmap. We can also include a link to the
-Rust Binder change that makes Binder start using this code.
+> > +#[cold]
+> > +fn panic_not_in_bounds_lt(arg: &'static str, len: usize, val: usize) -=
+> ! {
+> > +    panic!("{arg} must be less than length {len}, was {val}");
+> > +}
+>=20
+> Have you considered using build_error or returning an error?
 
-> > +            let ptr = unsafe { bindings::bitmap_zalloc(nbits_u32, flags.as_raw()) };
-> > +            // Zero-size allocation is ok and yields a dangling pointer.
-> 
-> Zero-sized allocation makes no sense, and usually is a sign of a bug.
-> What for you explicitly allow it?
+I think using build error for these is a bad idea. It's a hack that Rust
+doesn't support well, and the optimizer will not always be able to prove
+that the integer is in bounds.
 
-I do think that it makes sense to allow a bitmap of size zero. We allow
-bitmaps of any other length. Why should that length be special?
-
-Of course, I guess it might make sense to not call `bitmap_zalloc` when
-calling `new(0)`? But kmalloc does seem to allow them.
-
-> > +    /// Copies all bits from `src` and sets any remaining bits to zero.
+> > +    /// Constructs a new [`Bitmap`].
 > > +    ///
-> > +    /// # Panics
+> > +    /// Fails with AllocError if `nbits` is greater than or equal to 2=
+^32,
+> > +    /// or when the bitmap could not be allocated.
 > > +    ///
-> > +    /// Panics if `src.nbits` has more bits than this bitmap.
+> > +    /// # Example
+> > +    ///
+> > +    /// ```
+> > +    /// # use kernel::bitmap::Bitmap;
+> > +    ///
+> > +    /// fn new_bitmap() -> Bitmap {
+> > +    ///   Bitmap::new(128, GFP_KERNEL).unwrap()
+> > +    /// }
+> > +    /// ```
 > > +    #[inline]
-> > +    pub fn copy_from_bitmap_and_extend(&mut self, src: &Bitmap) {
-> > +        if self.nbits < src.nbits {
-> > +            panic_not_in_bounds_le("src.nbits", self.nbits, src.nbits);
-> 
-> The _lt usually stands for 'less than', or '<'. And _le is 'less than or
-> equal', or '<='. But in your code you do exactly opposite. Is that on
-> purpose?
-> 
-> Also, you can make it similar to BUG_ON() semantics, so that it will
-> be a single line of code, not 3:
-> 
->         RUST_PANIC("Copy: out of bonds", self.nbits < src.nbits);
-> 
-> And to that extend, panic message should be available to all rust
-> subsystems, just like BUG_ON().
-
-We could use
-assert!(src.nbits <= self.nbits, "Copy: out of bounds.");
-
-but using these explicit function calls would generate less code and
-avoid duplicating the error messages.
-
-Also, we should add #[track_caller] to these methods so that the line
-number in the panic message is taken from the caller rather than this
-file.
-
+> > +    pub fn new(nbits: usize, flags: Flags) -> Result<Self, AllocError>=
+ {
+> > +        if let Ok(nbits_u32) =3D u32::try_from(nbits) {
+> > +            // SAFETY: nbits =3D=3D 0 is permitted and nbits fits in u=
+32.
+> > +            let ptr =3D unsafe { bindings::bitmap_zalloc(nbits_u32, fl=
+ags.as_raw()) };
+> > +            // Zero-size allocation is ok and yields a dangling pointe=
+r.
+> > +            let ptr =3D NonNull::new(ptr).ok_or(AllocError)?;
+> > +            Ok(Bitmap { ptr, nbits })
+> > +        } else {
+> > +            Err(AllocError)
 > > +        }
 > > +    }
-> > +
-> > +    /// Finds the next zero bit, searching up to `nbits` bits, with offset `offset`.
-> > +    ///
-> > +    /// # Panics
-> > +    ///
-> > +    /// Panics if `nbits` is too large for this bitmap.
-> > +    #[inline]
-> > +    pub fn find_next_zero_bit_upto_offset(&self, nbits: usize, offset: usize) -> usize {
-> > +        if self.nbits < nbits {
-> > +            panic_not_in_bounds_le("nbits", self.nbits, nbits);
-> > +        }
-> > +        // SAFETY: nbits == 0 and out-of-bounds offset is supported, and access is within bounds.
-> 
-> find_bit() functions are all safe against nbits == 0 or
-> offset >= nbits. If you add those panics for hardening reasons - it's
-> OK. If you add them to make your code safer - you don't need them. The
-> C version is already safe.
+>=20
+> Similar question to above: why return an error here but panic in the sett=
+ers?
 
-Ah, that's nice! I do think it's still good to have them for hardening
-reasons. Passing an out-of-bouds offset is a bug.
+Out of memory is something the caller must handle. There's no way for
+the caller to avoid it.
+
+Out of bounds is a bug in the caller. The caller can avoid it by not
+passing too large indices.
 
 Alice
