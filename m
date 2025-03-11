@@ -1,99 +1,117 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D1A263F3B;
-	Tue, 11 Mar 2025 19:20:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41540263C88;
+	Tue, 11 Mar 2025 19:22:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741720819; cv=none; b=QvlowFgbEKneVMdYD3I7+8ifYwxD5lLhK0uGdGNDihN49zKM6jFL0O6qA0+o41Q6OM+Y6roh0kKqGiNpIZVvLhYjpLCOUYyJu2zk8fqnugwBY2kr4uualvBlqrByfVJ96tCcs/i9S4uxMfgkHBoBxmzdff9P8E9vKZqvXtg+vnQ=
+	t=1741720977; cv=none; b=ff7qcIlit3KsgxGuqFiinpu3LKWmx8dZK6GV8FYVGAQVcoq7uREgcwVFiCnJJR2PnACiZ1QR0UAdWpIEG3PyD0hNu0HYSjvTLP1Rbfx2U1B3fH9e10O85+IMK6FycsJ6XQusIoaWc1nEGZoam/RDGb+4wxxye+ZD4X9ddF/AG0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741720819; c=relaxed/simple;
-	bh=RCdZS8dk2ZS37SbH0ZeGYxVd6QvMyepLaIm0iG2+ZIc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gt/0rlEA9IVZeNexAEYMdDmv7OoY4Nygg+V2VE1aeI/Qvd7EBwxPM5EQd618vAS9dZPzw+fUod5AkHugg2YmKgfyYNacBrwPbry2QolMopAUsj28ezCDOtwiFUPUwkWYzNWlNkbsA/MBfgW3kZsvxVvt/I6BrLMzoGKs3NfQGl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k2OIfwp4; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1741720977; c=relaxed/simple;
+	bh=5BQSyaBQxUFZeErA3U7SLVLmiRtJYGd9Vyqr3I7dCeE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rHCVk2dag3JlkbIiRuWu0OsmtL3YUji8T8JcedvY5dR3xPGCcp75L3D3vMB7pVtxr/GtxmVC1/8EKXXRXybulEnz+DuTdHndbIHiD32IUslFujaAoHtvhsJfYX8cMwRitb/0z2mtRYTHQX41BL1nPi6Me6eYR/jM9Q8qrG8TYF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P1vFLHq4; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k2OIfwp4"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-22409402574so12568975ad.1;
-        Tue, 11 Mar 2025 12:20:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741720816; x=1742325616; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PljsenAcEFDHEJkpAalMEEK4jdo+wNjGX1LHExZIY/w=;
-        b=k2OIfwp4rRDw4eS1ZdMh146ILhDVy0M8SXzQ1NxkMX1QaHnYH36DFuLd+D5d+6MGog
-         BsLB0Ob2Gl2qrkXTp1m/nAQwbv1KjQH5FjZDzcwg5WNlbgMHj7VkMV2LfU+bqDyTnzMY
-         jXFklKL/2XW2gVmZ/BT9E1O7vZIU0GBh3LRSdNp5GUcmyw0fqNkte2eCCQVjOvLkzdgG
-         ij0aZ5kDV1ezCmpEwkx7g20UvbuLKfLPk+lVOQXuzDZDN/iAZ1HU9ZIWtgdbuA2q5KSm
-         Xoy5zvath4uLZnq2hXVcnPLuGOBO7VwJ7Df9ZaCl4HXGPFKwXlADRZ/dIrQfyrPpDDuz
-         n+kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741720816; x=1742325616;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PljsenAcEFDHEJkpAalMEEK4jdo+wNjGX1LHExZIY/w=;
-        b=Xo8lfBuDjH9tDF563skZ0Liy+C9WhI2zmi8M1s2Png5N/IA05ND8+jhXxshKRzy3qG
-         pqJHniyuetswSb+yus39V4j5HF2E9+H7oUo2dawRCduKxTmpsF6u3W0xwELT5Pc5lemP
-         cUdRZcc7U5VLtRSMjIwaiV9FYkoJBiRg881A9QXBc+cTrDl4p9RV3QpLukprprZiK0vb
-         lIWr4WD29gekLGrUEpoQz49wqjD82e2jwzZlUK/m0AxEzNCmgk4MghHSb0OIfd7HP4Nq
-         B0gCt1fmfghxjB00LH2N3NxFFBLFdpPH+IIR3d9cDxGLPK7UDCaKtpR5eZjxqJNWWa2t
-         lUIg==
-X-Forwarded-Encrypted: i=1; AJvYcCUG30F2GDtK3Uk8IdHcIK3rY0q965zyvKOpNuS1b/uH68Nwy2MFo9puHaCRyYpBdcIBg776+PPv9toShUXhHjA=@vger.kernel.org, AJvYcCWgfGVp7bzjWZHGvh5sjFysyNaNzFKDe96rzpaoj+9FIy1/2kM4rPBYO62EBpO6WkQujKKONtJtfAkSQQs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxiSgalzBGVaxK4tuSZkWwO1pMYP3Ri+8SwtX+MMcNcuW229i07
-	1uUhkPoKT4d7QAELl3h4Z7F6OClgB4FE9wOTO8Cx1tpwJWTQY/n63bPVfzemclVpSFH0S7TewtG
-	Bm1B8lDK1OTrTFRbFPyX561AiZjo=
-X-Gm-Gg: ASbGnctibp3NZ0zO7/S9WxC5kdzdURxW0NwZxhC/AiSzy32BiwT7L59fTnfj9H6uot5
-	YVhooll2mSTEwywn8LBceoPx3R4Zb2D8iHmJ2K+rcDkl/3f+vPp4DQ7ayv85oNiBl94PHtCzHqS
-	V99Q8qfbeS6vk6ABPbhN055G1hRA==
-X-Google-Smtp-Source: AGHT+IGQS8UGOWNAAVvfaUP3e/l9yfURS1SXg5tRn5KGnCD9O/0FuG5wPHsaGtvF2X1f6DI6BcB0MJxXvQVsX5R2gXU=
-X-Received: by 2002:a17:903:1663:b0:224:88c:9255 with SMTP id
- d9443c01a7336-22541eaa011mr84413755ad.3.1741720816110; Tue, 11 Mar 2025
- 12:20:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P1vFLHq4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741720976; x=1773256976;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5BQSyaBQxUFZeErA3U7SLVLmiRtJYGd9Vyqr3I7dCeE=;
+  b=P1vFLHq44APE7p052VDH4TvOR3gYwmVmcM23o0rOaYG4EqF+/7wj/XHh
+   NatotfSapM6rr9N4hHfYvNzI1DY1DNZfRPWHNxaGV1WL6JuGX0DWELAcG
+   tgteJyczSp8gp+E/77fXNCBAriWE8hMwwxwc8W3I99uK4fbza6U1dMzqL
+   F/qh4H7kO4OL6db89KnkAJmnExmN3SX41TU2hNpGvRLRcl3IFaSYE+/Ix
+   1uXJTjWCTT2ZPit1QWxpLaH+MWFUvsNQgnf0dt2ejD3LTseJS2ENsAW5u
+   sVB0OTBpxlvVPfqexEpJ0/W4oy7F6TBLypIGKPyjMTeNwn+y/REwf1I8w
+   w==;
+X-CSE-ConnectionGUID: jcbTnxD2TfGl3Xm6pRhF2g==
+X-CSE-MsgGUID: Gex8OomZQAmIKWSI248Muw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11370"; a="68140538"
+X-IronPort-AV: E=Sophos;i="6.14,239,1736841600"; 
+   d="scan'208";a="68140538"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2025 12:22:55 -0700
+X-CSE-ConnectionGUID: NenFRhsnSMyQfY/xGuDGFQ==
+X-CSE-MsgGUID: YFmv9pF4TY2TRKohK66sOw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,239,1736841600"; 
+   d="scan'208";a="120913249"
+Received: from lkp-server02.sh.intel.com (HELO a4747d147074) ([10.239.97.151])
+  by orviesa007.jf.intel.com with ESMTP; 11 Mar 2025 12:22:49 -0700
+Received: from kbuild by a4747d147074 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ts5Bf-0007m8-0w;
+	Tue, 11 Mar 2025 19:22:47 +0000
+Date: Wed, 12 Mar 2025 03:22:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: Tamir Duberstein <tamird@gmail.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>,
+	Bjorn Helgaas <helgaas@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
+	linux-pci@vger.kernel.org, Tamir Duberstein <tamird@gmail.com>
+Subject: Re: [PATCH] rust: enable `clippy::ptr_as_ptr` lint
+Message-ID: <202503120332.YTCpFEvv-lkp@intel.com>
+References: <20250307-ptr-as-ptr-v1-1-582d06514c98@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250108-rust-btf-lto-incompat-v1-1-60243ff6d820@google.com>
-In-Reply-To: <20250108-rust-btf-lto-incompat-v1-1-60243ff6d820@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 11 Mar 2025 20:20:03 +0100
-X-Gm-Features: AQ5f1JpWmNGeYdDCCXf5f08zEALR7P-JnpHC48aAm0TSpWoYRKskvESvqMmcoME
-Message-ID: <CANiq72=q9z1O-OfSy9BHhzB+nAngQ+j79ps7OAEq+0Yzz4sHcw@mail.gmail.com>
-Subject: Re: [PATCH] rust: Disallow BTF generation with Rust + LTO
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Matthias Maennich <maennich@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250307-ptr-as-ptr-v1-1-582d06514c98@gmail.com>
 
-On Thu, Jan 9, 2025 at 12:35=E2=80=AFAM Matthew Maurer <mmaurer@google.com>=
- wrote:
->
-> The kernel cannot currently self-parse BTF containing Rust debug
-> information. pahole uses the language of the CU to determine whether to
-> filter out debug information when generating the BTF. When LTO is
-> enabled, Rust code can cross CU boundaries, resulting in Rust debug
-> information in CUs labeled as C. This results in a system which cannot
-> parse its own BTF.
->
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
+Hi Tamir,
 
-Applied to `rust-fixes` -- thanks everyone!
+kernel test robot noticed the following build warnings:
 
-    Cc: stable@vger.kernel.org
-    Fixes: c1177979af9c ("btf, scripts: Exclude Rust CUs with pahole")
+[auto build test WARNING on ff64846bee0e7e3e7bc9363ebad3bab42dd27e24]
 
-If someone disagrees with those tags, please let me know.
+url:    https://github.com/intel-lab-lkp/linux/commits/Tamir-Duberstein/rust-enable-clippy-ptr_as_ptr-lint/20250308-004557
+base:   ff64846bee0e7e3e7bc9363ebad3bab42dd27e24
+patch link:    https://lore.kernel.org/r/20250307-ptr-as-ptr-v1-1-582d06514c98%40gmail.com
+patch subject: [PATCH] rust: enable `clippy::ptr_as_ptr` lint
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250312/202503120332.YTCpFEvv-lkp@intel.com/config)
+compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250312/202503120332.YTCpFEvv-lkp@intel.com/reproduce)
 
-Cheers,
-Miguel
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202503120332.YTCpFEvv-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> warning: `as` casting between raw pointers without changing its mutability
+   --> rust/kernel/firmware.rs:64:35
+   |
+   64 |         let ret = unsafe { func.0(pfw as _, name.as_char_ptr(), dev.as_raw()) };
+   |                                   ^^^^^^^^ help: try `pointer::cast`, a safer alternative: `pfw.cast()`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#ptr_as_ptr
+   = note: requested on the command line with `-W clippy::ptr-as-ptr`
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
