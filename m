@@ -1,71 +1,73 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-10631.protonmail.ch (mail-10631.protonmail.ch [79.135.106.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CEFD79CD;
-	Wed, 12 Mar 2025 07:15:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F231A23A571
+	for <rust-for-linux@vger.kernel.org>; Wed, 12 Mar 2025 09:19:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.31
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741763742; cv=none; b=jMuV7v/dnIVZcc91BT86/izo57/s0pcM3G2cKUeyQ5bgOon2XgMRPpnmt4UJ8kD13jar/1X2hyTXzRA8/sDUYvvagiDmZkY+jUr0I4mqE3Aheyozl84RbbT2PRDe6qP9MIyygHyTQUWZckzO+RWZn8xZzPDbUWTYwYSnO9gGLIc=
+	t=1741771177; cv=none; b=H3uix5S1FmYaDqsmxSpAVZ0RJc+4+yQvHgBmWr0Q1gaPAlX4Sqcmpv8MZrTBW3r2xmIBvLfFwscawrDJMl20bNY9EhRWt6lNLlWoXXoAd3vn9V7dJTov0G+o/yhMYMnKlXlbSfjjQ9wRoeD3ylnAFda50KK5/MrvyaMZP0knqoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741763742; c=relaxed/simple;
-	bh=WPUZ5YogoyL5v/apNB+U1bNVQ5rIXUbcwsGSk6MLPwQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cr5QrDhKZrW6COtWsS/9wdPJn+0SqSHsoXC7FftTNzCA0Kxqe1NJ6QnmHX6FFPgUzpjQOSrCDbUmSiRsLFcMGGs5FloxtEKwFxfxyqruq3ncYGHrWhjiiSCQLp+ClMyceRdhB9ef92Uwe9zO5Bcg2EZ4mZ+O5JwSLCXtcjIvWiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BcUZxhg6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741771177; c=relaxed/simple;
+	bh=oBwEQFoOy8pOpeJ66KbTKgHr7VFOe1vin9j72U5w3HM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=F+WXBgiyX+VO1AAghf/4ctz+LXCTZRGugdWOVNWjXTBwdIHjsx8+cL1rxSnyiwIxe2wfj182iY0TrnmFC01MfL16o2TKpIWIEYs1OhdCL+1T3HcVXT/+U3b+Ejyv+ro4F3+KGyJq0kRnHkNFGb4QwrtrKvJWqSraeZSKTMIrffg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=Wxk06aPJ; arc=none smtp.client-ip=79.135.106.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BcUZxhg6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 105C8C4CEE3;
-	Wed, 12 Mar 2025 07:15:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741763741;
-	bh=WPUZ5YogoyL5v/apNB+U1bNVQ5rIXUbcwsGSk6MLPwQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BcUZxhg6xSCnKeahLlxJ/cZ/A6ACxZMyc+/F0PRbn5JPx8vSQKMmTxW6ixZdB4fNT
-	 Fb3hKrNIRtbjfv4rm9udefnLyRUi/BOHzR2eC3GMNthGH6PAFYpw0PPCidsudbRu96
-	 xOJIZ9StSG/edVc+W68888VUOzeFnmCFBpowOZ1Q=
-Date: Wed, 12 Mar 2025 08:14:24 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, airlied@gmail.com, acourbot@nvidia.com,
-	jhubbard@nvidia.com, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 0/4] Auxiliary bus Rust abstractions
-Message-ID: <2025031228-saline-preset-ba9b@gregkh>
-References: <20250312002741.453350-1-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="Wxk06aPJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1741771172; x=1742030372;
+	bh=oBwEQFoOy8pOpeJ66KbTKgHr7VFOe1vin9j72U5w3HM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=Wxk06aPJC5cwC/KqcFNSguUqEo1fWtKJ28lendn5eccilWaeg/Z4ZFbky3AL4vP8B
+	 xY+FoAImNxGgee7UqLSJ9/eYNdZZUqome5i5Z3Qw4bYQASAhCYacWofWhux+QiOEzH
+	 9BY8taYAdnzr+6fofg/e2DcNn0t8wHnWAWf6eZHnMziMpESPoDv+AcL6KA1ObLvsWl
+	 MmXCtdpNnVlheXjlK4lo6MXVpANkRMw7MJAMBsDp6q9o+/iiCEG2xtp3sm7s+tIWrv
+	 ynWn2mCSEt3tAyHcQH1eDHBUD9g1tN+ByG8+8jsnJg3zFHpVDQex3syVrHX78Ag7mk
+	 9oikuojQnQ1gg==
+Date: Wed, 12 Mar 2025 09:19:27 +0000
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+From: Oliver Mangold <oliver.mangold@pm.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 0/4] New trait OwnableRefCounted for ARef<->Owned conversion.
+Message-ID: <Z9FRm8qkLRbdXq1F@mango>
+In-Reply-To: <CANiq72mR66wn5T7WYCzyyan5dEQDQAyBvtzC381jfWgC6R8K9Q@mail.gmail.com>
+References: <20250310-unique-ref-v7-0-4caddb78aa05@pm.me> <CANiq72mR66wn5T7WYCzyyan5dEQDQAyBvtzC381jfWgC6R8K9Q@mail.gmail.com>
+Feedback-ID: 31808448:user:proton
+X-Pm-Message-ID: e8545f65ffc08a44b4e27e3f3091440b49be41b5
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250312002741.453350-1-dakr@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 12, 2025 at 01:19:06AM +0100, Danilo Krummrich wrote:
-> This series adds Rust abstractions for the auxiliary bus.
-> 
-> It implements the required abstractions to write auxiliary drivers and create
-> auxiliary device registrations. A driver sample illustrates how the
-> corresponding abstractions work.
-> 
-> The auxiliary abstractions are required for the Nova driver project, in order to
-> connect nova-core with the nova-drm driver.
+On 250310 1642, Miguel Ojeda wrote:
+> On Mon, Mar 10, 2025 at 11:57=E2=80=AFAM Oliver Mangold <oliver.mangold@p=
+m.me> wrote:
+> >
+> > - Squash patch to make Owned::from_raw/into_raw public into parent
+>=20
+> In this case, given the changes are minimal (and assuming you didn't
+> discuss it with Lina), I would have personally used the [ ] notation
+> to explain the change from the original patch, and that's it, rather
+> than a Co-developed-by tag -- but do not worry about it :)
 
-Nice!
+Sure, I would agree. I was mostly wondering about how the format for that
+looks. You say [ ] notation. Could you maybe give an example for that?
 
-> This patch series depends on [1] (taken through the nova tree for v6.15); a
-> branch containing the patches, including the dependency can be found in [2].
-> 
-> [1] https://lore.kernel.org/rust-for-linux/20250306222336.23482-2-dakr@kernel.org/
-> [2] https://web.git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=rust/auxiliary
+> Also, in general, please wait at least a couple of days or ideally a
+> week between versions (unless it is urgent etc.). Otherwise, it can
+> get confusing for reviewers and so on.
 
-Do you want this to wait until that lands in 6.15-rc1 or do you want to
-take this now through the nova tree?  Either is fine with me.
+Ok, sorry. New to this, you know.
 
-thanks,
+Best regards,
 
-greg k-h
+Oliver
+
