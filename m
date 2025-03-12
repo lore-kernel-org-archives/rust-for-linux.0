@@ -1,97 +1,100 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F181F03EB;
-	Wed, 12 Mar 2025 11:48:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E7D22A4DA;
+	Wed, 12 Mar 2025 12:02:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741780118; cv=none; b=pE2lFxH+XB99EZ0k28IxmoLed0gkWWFbDmwbq9q+uw/HP3qwPBfa5WG0jZJgT0/cDzhyXAZw1lQA8zk7WeKtpJcFK0DVdf1edtrL+VCw0J2zl9P6ckXMqd0G1g0v6+aQNPN37HleS+WdlLDlMA4VWSesmi5mpp/wK/Citc0sw6A=
+	t=1741780942; cv=none; b=qHcmexeTmKx+WD3Te/87p5/df0u7cBX/H5yNdGWrMDFzv6TjHrw/bkZ4hfaAjpD1IwHlZ+mv02idn1V8RKxz4OZH3iWMQaWY3jxI9UFUA0XTQdVVoJdi/SZ6KnbvaZCKlaZATciT0ETuwPIF7xhTP4RtuhbQpMs0FuXiKoXp1L8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741780118; c=relaxed/simple;
-	bh=Kgod/bkChKNvWAk+utLk+E9WE0pDt83VbwpFUw6HAuE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JSqEzuGvu5iJ+Z7aZmMlIhhtxjrc6s18I1QdxNpMqGRJ5Xbpsxys1aggLCrpQRmX/twmpfU3Hy0Fq2HhO3yBt+S/0e4rUbRmO6r4C8o4Xp8VE7FXD6Oa5C06XgnfspC3JovVca1T8xRECJh1Er5YBk6YCKwfeGUlAoKGph7LmOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=nPrFlKfH; arc=none smtp.client-ip=185.70.40.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1741780942; c=relaxed/simple;
+	bh=ATa3xySnj85T5UcDgcGGMpppOrNds9NaMUi5KTORJG8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UHRiyx+XVmjx/Uz+cVR4uWut0uSxItT5rYWEZ81SgvVVkJqAuENQ7pd1b80U4KmAfcOtjv/WuIw7GS3XUeftrJ2tY6JoqhQX5PA0hkPEXa92hsCjl3mbbEVQUdwl9RlLJgIyx9bQSRduJq6GLM1mOVv3Grk5P/sajzWxei9ZrSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YjJndnNv; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="nPrFlKfH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1741780114; x=1742039314;
-	bh=HInmDeSxbbW0+Qq88H4iBiYbF79g8W/WWDbF6VHeAnE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=nPrFlKfHATsp9T9XYxvfhNsagwXXy+2jJvTVHdrStntAMCzUqFQqNof/O597kmGeU
-	 avH7WI62wCyIcvjr9xtcQEnMsv+7x4JS91X+60k2zSoSacvqBwxAV19Ykzh5J1T3wu
-	 WN+qrlPwzvb6OPqxBW6YaaXqtLhry2iPFfYZP4lcyIPxTITHKf4uRB7X9qZgLa7Qg2
-	 2skcNSbDjzix9MEk/Aug5xNzOczueEI/hceBgAnXrTMELQlv9DlvuuL6f2CzuwJPJ0
-	 V+NCr4PDkxhv9BNmRSTuve4N3WN321mwixa/bga36uByrRbFr1Z3Vl7fNr5hMc0Dtk
-	 gsPf+JcPZ2M3w==
-Date: Wed, 12 Mar 2025 11:48:30 +0000
-To: I Hsin Cheng <richard120310@gmail.com>, rostedt@goodmis.org
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org, joel@joelfernandes.org, josh@joshtriplett.org, boqun.feng@gmail.com, urezki@gmail.com, mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com, qiang.zhang1211@gmail.com, ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, rcu@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, skhan@linuxfoundation.org, jserv@ccns.ncku.edu.tw
-Subject: Re: [PATCH] rust: sync: rcu: Mark Guard methods as inline
-Message-ID: <D8E9IKGUUUJZ.2797G3WP1GVA3@proton.me>
-In-Reply-To: <20250312101723.149135-1-richard120310@gmail.com>
-References: <20250312101723.149135-1-richard120310@gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 6a5dbfa6befa34639ff2342d1efe2bf27311fbc5
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YjJndnNv"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2ff73032ac0so1586215a91.3;
+        Wed, 12 Mar 2025 05:02:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741780940; x=1742385740; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AT3S+j6SwhoQKWNr9mtUuUMyusD4z6Ah9Q+D7/JZzrg=;
+        b=YjJndnNvPH+BdCCzJDwNy4M+qu1/HsaAhzHPFUAaKyDQ4RRpid6VxiOmBK8VFSBhwq
+         WyilohZg3dvI72QJWSKLfPxQAPAbApng5yPggK8fwxnoN7PeVPcCDL7cYGbPuoikbjmF
+         QFiKGOGry3cWXEC/m+mQ9JS/cdBcoylgKt0J3KuX3Eq7TryFpIRGU9CqLXg1QAGHOUQU
+         BzgZq8eGdD8C273+YNAi94AdTxYVZRAGkUFr2v8Vd2jwSz2g3FNirAiVgPGeOGRZkkfQ
+         RZgmAj/hdU0qE+TAp2C5Hh2N0LyLO/GMX8AD/WMBFCPepTEjYpLgEPfHcpKpe29gPjUG
+         UDLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741780940; x=1742385740;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AT3S+j6SwhoQKWNr9mtUuUMyusD4z6Ah9Q+D7/JZzrg=;
+        b=JENK3CtU3OByXjTGcMmrhrbl5XFq5/byouSM3Ol63HOf4SlKtE/Sgg5RKrRXOUGpYW
+         1e7gfg6Ei94cVNJ35XgD9SBIWWzVv/FwHkhWuOXBgYo9MHx2xqsHzfS6CmCb4DmWs2wy
+         98+Wwm5C5FJl1S+f2eM3rNkS9NWvwUlvbGoDj3M2L+8sIQEsCIBIqidGpEpsd2MuGACH
+         RnOmE8+pKKu87ey0D0TbGBJ+EQkGkGS6veC000aPvW473EG9tYExS0Vc/zvKnVewjlIN
+         doqrUkmvyZypQxlOxNlod8VeUsoGbr+JwroBwXueILabBe7xWGTxTeJKps0rxdkgXT01
+         br7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU2y+4+tXyKkc2MljlHU3oiRFc3a/d/UA/+Vfnu6qLnrHbu9EBYpB88EMkCr/lqojZmlpSBioOAZQfJ7RtpXDE=@vger.kernel.org, AJvYcCUhAmkGEt85GlQ8pyRw/YwLpdCBLKojWGWToOUHSJrRH0wJM6ziwUAHpeW1IleAQe9F9hnY8ucBvoBfAQE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3U9JoWiEGhdwKuvu1VrooNWjguzzghL84J5O49kSIFfHuxDb5
+	HF1d9dHIx73G6WCAhDk6C3CqBFI8x9+kJTYBlOivn2BELrTRXQqJNM2CbAUaqsZ6YjDb/DvrAMX
+	al8Ig03808LrSb5UsfISmh92qx/c=
+X-Gm-Gg: ASbGncu3unaBR2EhE+fqzTA7P0+Ma/5Vsy8gMClIM/nDMdcdi5cvLgpNNtqVUXW2oVy
+	tzIcrOw49RgJ+jzGSpn47CmZSo9xpC82CMjUtbPR8I11LXuEezg5V96ZRnWRQbeTY8rEh9Ykw6c
+	f1sJM7IToXcQgCS0TM14JuU1zwXg==
+X-Google-Smtp-Source: AGHT+IHCXpJ2Yf/RqM7nJ1FdwE6TfXizVUpqWwF1TVQN/kkogccSLh2QawX+Ao2vrx2La1MuzwPmuyzjkUWW68UQdrc=
+X-Received: by 2002:a17:90b:4c51:b0:2ff:5540:bb48 with SMTP id
+ 98e67ed59e1d1-300ff94c15dmr3668556a91.8.1741780940570; Wed, 12 Mar 2025
+ 05:02:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20250310-unique-ref-v7-0-4caddb78aa05@pm.me> <CANiq72mR66wn5T7WYCzyyan5dEQDQAyBvtzC381jfWgC6R8K9Q@mail.gmail.com>
+ <Z9FRm8qkLRbdXq1F@mango>
+In-Reply-To: <Z9FRm8qkLRbdXq1F@mango>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 12 Mar 2025 13:02:08 +0100
+X-Gm-Features: AQ5f1JoSUm2QS0MA1rEOMY5cyr9dYiGos2dndcAYtOceYYuJL0KKsgjocjx5y7A
+Message-ID: <CANiq72=KNfsxKqn_aRRLQ+zXc1hRPQrU+iBFk_qQ66LcfsV=2Q@mail.gmail.com>
+Subject: Re: [PATCH v7 0/4] New trait OwnableRefCounted for ARef<->Owned conversion.
+To: Oliver Mangold <oliver.mangold@pm.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed Mar 12, 2025 at 11:17 AM CET, I Hsin Cheng wrote:
-> Currenyly the implementation of "Guard" methods are basically wrappers
-> around rcu's function within kernel. Building the kernel with llvm
-> 18.1.8 on x86_64 machine will generate the following symbols:
+On Wed, Mar 12, 2025 at 10:19=E2=80=AFAM Oliver Mangold <oliver.mangold@pm.=
+me> wrote:
 >
-> $ nm vmlinux | grep ' _R'.*Guard | rustfilt
-> ffffffff817b6c90 T <kernel::sync::rcu::Guard>::new
-> ffffffff817b6cb0 T <kernel::sync::rcu::Guard>::unlock
-> ffffffff817b6cd0 T <kernel::sync::rcu::Guard as core::ops::drop::Drop>::d=
-rop
-> ffffffff817b6c90 T <kernel::sync::rcu::Guard as core::default::Default>::=
-default
->
-> These Rust symbols are basically wrappers around functions
-> "rcu_read_lock" and "rcu_read_unlock". Marking them as inline can
-> reduce the generation of these symbols, and saves the size of code
-> generation for 100 bytes.
->
-> $ ./scripts/bloat-o-meter vmlinux_old vmlinux_new
-> add/remove: 0/8 grow/shrink: 0/0 up/down: 0/-100 (-100)
-> Function                                     old     new   delta
-> _RNvXs_NtNtCsaYBeKL739Xz_6kernel4sync3rcuNtB4_5GuardNtNtCsdaXADs8PRFB_4co=
-re7default7Default7default       9       -      -9
-> _RNvXs0_NtNtCsaYBeKL739Xz_6kernel4sync3rcuNtB5_5GuardNtNtNtCsdaXADs8PRFB_=
-4core3ops4drop4Drop4drop       9       -      -9
-> _RNvMNtNtCsaYBeKL739Xz_6kernel4sync3rcuNtB2_5Guard6unlock       9       -=
-      -9
-> _RNvMNtNtCsaYBeKL739Xz_6kernel4sync3rcuNtB2_5Guard3new       9       -   =
-   -9
-> __pfx__RNvXs_NtNtCsaYBeKL739Xz_6kernel4sync3rcuNtB4_5GuardNtNtCsdaXADs8PR=
-FB_4core7default7Default7default      16       -     -16
-> __pfx__RNvXs0_NtNtCsaYBeKL739Xz_6kernel4sync3rcuNtB5_5GuardNtNtNtCsdaXADs=
-8PRFB_4core3ops4drop4Drop4drop      16       -     -16
-> __pfx__RNvMNtNtCsaYBeKL739Xz_6kernel4sync3rcuNtB2_5Guard6unlock      16  =
-     -     -16
-> __pfx__RNvMNtNtCsaYBeKL739Xz_6kernel4sync3rcuNtB2_5Guard3new      16     =
-  -     -16
-> Total: Before=3D23385830, After=3D23385730, chg -0.00%
->
-> Link: https://github.com/Rust-for-Linux/linux/issues/1145
-> Signed-off-by: I Hsin Cheng <richard120310@gmail.com>
+> Sure, I would agree. I was mostly wondering about how the format for that
+> looks. You say [ ] notation. Could you maybe give an example for that?
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+It is something typically only maintainers/patch handlers need to do,
+but you can find instances grepping the Git log. For instance, we
+could do:
 
----
+    Signed-off-by: Asahi Lina ...
+    [ you: what changed ]
+    Signed-off-by: Oliver Mangold ...
+
+> Ok, sorry. New to this, you know.
+
+No need to apologize, it is all fine! :)
+
 Cheers,
-Benno
-
+Miguel
