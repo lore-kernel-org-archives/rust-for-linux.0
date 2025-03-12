@@ -1,143 +1,166 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18E123C376;
-	Wed, 12 Mar 2025 09:57:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35AB31E7C03;
+	Wed, 12 Mar 2025 10:17:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741773476; cv=none; b=QTW0/KKp4p/3SNWpcxWcEwdMwIiI6ZtvyGHOSZQ2bKi5PoJUJO26buoJ/NbqRH0vBKlGeZ2eaGFwKlzjmY2NRekQqDtIkltlQIIvIXAgL86czsZpgZsP4doZUlTQ9oSlsjpSrGb9HtLor6aXhkG9KXrmZBFDkZ4JIE9Gz4JdV8w=
+	t=1741774657; cv=none; b=uGVFsHdG7VH8fWCe32EkMBWDAteLInMrVllUJ38Bp3PNGHPwc+kBKhU/3za5aaBDDCy3dWWSV9CKsT+CflF8BPGi4ZOqZ31v06ixL4t8uStCzDk+BqBM3Dr9Eq0dCsTMSdDghct6n5qCS3RUDZTOUZXcpLigIPxzPBZ9sb9N1tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741773476; c=relaxed/simple;
-	bh=WPKZgWXS6TO2Pkm4H5Q0EXYryaAnMa+J46vPcty7+I8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gy2AZeSBKAr3zu/Vw9YlFRbeZAf80NCwYY/htgnKzNHOZvkUtvtyNPAHy/8QhwNAhosq580hxRVrmFF2PJrKKzcko+0LGDlxlA21IbmeoZanFK4B+QeHd8YgU4zkScxo6NNlvjnu6lGLIcIFH8OCTBjJHQCx3RBmsfVHONRjMfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hN7zTksC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741774657; c=relaxed/simple;
+	bh=khIVvvPM63SZripAQJxgge0us1XyV4NC6idslFxchxQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nMbir5pEAJ7eSf6rDi4/ec/hKBesDt66RLaiiQztcNnEngU3BN7ILTasyyEF5sRjbhn9ZRRxHg5V7CDzCPxYSceSqzJmXGiKatZX8zHYhksJPa+bvdOIjsnLG5K8b5bNKPLgcDikk8h3aeWC8/VmuBB005FSRb5io1QyRlOwWuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iTIl3s0X; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hN7zTksC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EDA9C4CEE3;
-	Wed, 12 Mar 2025 09:57:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741773476;
-	bh=WPKZgWXS6TO2Pkm4H5Q0EXYryaAnMa+J46vPcty7+I8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hN7zTksClow5IIOcuncjzOHxvDCtnmKmgDHs1uD6jDzBa7Nktfiy0aQmjWsV3EfnE
-	 i7326JV1MpsxmC9oOU/pJ8oBd71VDSuzWdlme346oxXzL2Z5xjraNYgt9cbalogv7d
-	 tmPZLDXBwbhE0NzN7OQbfBKelb/McZfXyt6IM358SnCe9+qgz3vq2pFJ/hZH2YyGVT
-	 z0cKbLH/JlEH4Y8CDxSnBMAgO4d9u0pmEG012L0iXk9CHq7ZkHLAN8c/dS7CpdpAQi
-	 1Pw7oUN/8TAt71zzbvPLFBEtypIpOCinURBvBMm2ZwrIWVR5+qGjRevOUDd66KeisW
-	 nJicsFd95j5uA==
-Date: Wed, 12 Mar 2025 10:57:49 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	rust-for-linux@vger.kernel.org, daniel.almeida@collabora.com,
-	robin.murphy@arm.com, aliceryhl@google.com,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
-Subject: Re: [PATCH v14 06/11] rust: dma: add dma addressing capabilities
-Message-ID: <Z9FanUCUZAuBgQwk@cassiopeiae>
-References: <20250311174930.2348813-1-abdiel.janulgue@gmail.com>
- <20250311174930.2348813-7-abdiel.janulgue@gmail.com>
- <D8DZ2XP3AI2Z.76W9FKGRNM92@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iTIl3s0X"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-224191d92e4so113729005ad.3;
+        Wed, 12 Mar 2025 03:17:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741774655; x=1742379455; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=j8K+cYY8a18S9R6p3y1Avimn06H8Fj9HbvffhzxH0lg=;
+        b=iTIl3s0XQO8eV47WJbhwVGK9iw2V6pYpz7MrMV8oMNvVxAqbDcZmErhU/A+F3wQD6M
+         SDZYKQ1GMUy7alCwLwlaeZLhEtuLgTlPPFokS24T0qpciNYeSp0R71wr9wo5/BUfuzlx
+         ZYOIfyQbMBcFE4Lp+NeH7zm8C2tW91ZTbxI1nj6NiVE1cw/lpUj4mYinwofzepaub81r
+         1gSgMyMfzHbnp2DC+8pFQkx+O9iA6uzo5QJzxfrxFW8BFLlaflExLvd1vjuOUD0UICEp
+         h8zeJXOV2jYmz5LJ54fsbuRXFv0mY7Q5OECRYrYi5AExmC5B43cKeXWxCz+4tHpolMHr
+         0lrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741774655; x=1742379455;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=j8K+cYY8a18S9R6p3y1Avimn06H8Fj9HbvffhzxH0lg=;
+        b=KnSKsk7IL9cOaO02fP7EW9W/RsY5PBjcOGrkJNlBno03lQihbFA6PCx+NPbZHqvoNj
+         8eMAkSqhdUwYqw9kn58hwczkgaR8RARWi/AI9eIc79x9YgyO5BSLxQ/Myy9gBgzOpEh3
+         v8oE82qxX/s0ELE2eCbVboS9KIJPj+KMIEnK3h3JhHh0mXnEbiFyylvGku/53SBWRi2w
+         /LJk/vjPktMBAxQYt4441Ptz6CoqREPxtCZ8IY2S9++NjMtjME//Z1ZVfDNGOfAYpeM9
+         VBk3ReAclmehnYQyw6nkdF5gDpZk6Fw90h0vGo+yZ4eH4EBIWyXomSPiE+QJHFLycycF
+         IzJg==
+X-Forwarded-Encrypted: i=1; AJvYcCX0yV8gdyo3YT/4M2C+zpr7xuXGGz7o0om2zMStllw+rlkyq+paUBFDY2gYt25esy+9M2yjpKyBFWLg2abTG2w=@vger.kernel.org, AJvYcCXRP1OMt61esYDSM80f2eEUmPb30ViKUlQKVM2Z1iSGVUPbWbF+ziTqn3NV+oyG1MR9SuKi@vger.kernel.org, AJvYcCXn4AOtjW1dBkMZnF749mN451CxlFVgY/dve8wdsJeNaI/J1TQpXp0Ij4y87wA1XzhVV/xGZL8iYV1iQpo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8ypbEdKj/5XIyhaSRfFCkXJsvE4o1Bypd2oY21/6tXhdUdMOH
+	OHTu943B6zyPhqq1RFkQvmMdtKFKvpzBtJy5X5tfEJ8PPjUPqngP
+X-Gm-Gg: ASbGncvmuh5mB0DLsx56jebndepatdgB5z2Y2XkN9ttyzqbM7yTTvDSOzS0ehT5eNCK
+	jgU6LT0SwlcDOnZuPVJ9L6kWlsGeONE50R08MDK4JINIIkzvvJ57K6tW/UETxK1OOxF9V2qyZ1I
+	ioC47eB1ZN/ziPBHAyNY6mwC9PI1HWrcOl3HtICL1UzkW/2M8EKjefYvTdjGbOt2rhZeB6VAzUj
+	jO5vxCyXQa2XArAhy82rZygbI3E5ZTYHxtSqNynJtEEn4iyVUMzAW1ZKtBNK+ffwVBt1rrpP653
+	NkAVeVmqx3hVGDG5xCSImGURVAav+C/QjfyMSp6HX913XCwT9pFlBYR1LF7GYS7YXIgL/PzVFdE
+	=
+X-Google-Smtp-Source: AGHT+IFpBE7U7iik0fYQ+M+FGBImQq+8odhk1PWelYdIWPjOg2tdExe6wfLmeOD159AI/ZuDSx+GUw==
+X-Received: by 2002:a05:6a00:1703:b0:736:a682:deb8 with SMTP id d2e1a72fcca58-736aa9e54edmr36025132b3a.8.1741774655310;
+        Wed, 12 Mar 2025 03:17:35 -0700 (PDT)
+Received: from vaxr-ASUSPRO-D840MB-M840MB.. ([2001:288:7001:2703:6099:fcdd:8775:d642])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-736c8e06336sm7398569b3a.58.2025.03.12.03.17.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Mar 2025 03:17:34 -0700 (PDT)
+From: I Hsin Cheng <richard120310@gmail.com>
+To: rostedt@goodmis.org
+Cc: paulmck@kernel.org,
+	frederic@kernel.org,
+	neeraj.upadhyay@kernel.org,
+	joel@joelfernandes.org,
+	josh@joshtriplett.org,
+	boqun.feng@gmail.com,
+	urezki@gmail.com,
+	mathieu.desnoyers@efficios.com,
+	jiangshanlai@gmail.com,
+	qiang.zhang1211@gmail.com,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	rcu@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	skhan@linuxfoundation.org,
+	jserv@ccns.ncku.edu.tw,
+	I Hsin Cheng <richard120310@gmail.com>
+Subject: [PATCH] rust: sync: rcu: Mark Guard methods as inline
+Date: Wed, 12 Mar 2025 18:17:23 +0800
+Message-ID: <20250312101723.149135-1-richard120310@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <D8DZ2XP3AI2Z.76W9FKGRNM92@nvidia.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Mar 12, 2025 at 12:37:45PM +0900, Alexandre Courbot wrote:
-> On Wed Mar 12, 2025 at 2:48 AM JST, Abdiel Janulgue wrote:
-> > @@ -18,7 +18,35 @@
-> >  /// The [`Device`] trait should be implemented by bus specific device representations, where the
-> >  /// underlying bus has potential support for DMA, such as [`crate::pci::Device`] or
-> >  /// [crate::platform::Device].
-> > -pub trait Device: AsRef<device::Device> {}
-> > +pub trait Device: AsRef<device::Device> {
-> > +    /// Inform the kernel about the device's DMA addressing capabilities.
-> > +    ///
-> > +    /// Set both the DMA mask and the coherent DMA mask to the same value.
-> > +    ///
-> > +    /// Note that we don't check the return value from the C `dma_set_coherent_mask` as the DMA API
-> > +    /// guarantees that the coherent DMA mask can be set to the same or smaller than the streaming
-> > +    /// DMA mask.
-> > +    fn dma_set_mask_and_coherent(&mut self, mask: u64) -> Result {
-> > +        // SAFETY: By the type invariant of `device::Device`, `self.as_ref().as_raw()` is valid.
-> > +        let ret = unsafe { bindings::dma_set_mask_and_coherent(self.as_ref().as_raw(), mask) };
-> > +        if ret != 0 {
-> > +            Err(Error::from_errno(ret))
-> > +        } else {
-> > +            Ok(())
-> > +        }
-> > +    }
-> > +
-> > +    /// Same as [`Self::dma_set_mask_and_coherent`], but set the mask only for streaming mappings.
-> > +    fn dma_set_mask(&mut self, mask: u64) -> Result {
-> > +        // SAFETY: By the type invariant of `device::Device`, `self.as_ref().as_raw()` is valid.
-> > +        let ret = unsafe { bindings::dma_set_mask(self.as_ref().as_raw(), mask) };
-> > +        if ret != 0 {
-> > +            Err(Error::from_errno(ret))
-> > +        } else {
-> > +            Ok(())
-> > +        }
-> > +    }
-> > +}
-> 
-> I'm not quite sure why this trait is needed.
-> 
-> The default implementations of the methods are not overridden in this
-> patchset and I don't see any scenario where they would need to be. Why
-> not do it the simple way by just adding an implementation block for
-> device::Device?
-> 
-> This also introduces a `&dyn Device` trait object as parameter to the
-> coherent allocation methods - not a big deal, but still inelegant IMHO.
+Currenyly the implementation of "Guard" methods are basically wrappers
+around rcu's function within kernel. Building the kernel with llvm
+18.1.8 on x86_64 machine will generate the following symbols:
 
-There are mainly two reasons:
+$ nm vmlinux | grep ' _R'.*Guard | rustfilt
+ffffffff817b6c90 T <kernel::sync::rcu::Guard>::new
+ffffffff817b6cb0 T <kernel::sync::rcu::Guard>::unlock
+ffffffff817b6cd0 T <kernel::sync::rcu::Guard as core::ops::drop::Drop>::drop
+ffffffff817b6c90 T <kernel::sync::rcu::Guard as core::default::Default>::default
 
-(1) The dma_set_mask() function famility modifies the underlying struct device
-    without a lock. Therefore, we'd need a mutable reference to the
-    device::Device. However, we can't give out a mutable reference to a
-    device::Device, since it'd be prone to mem::swap().
+These Rust symbols are basically wrappers around functions
+"rcu_read_lock" and "rcu_read_unlock". Marking them as inline can
+reduce the generation of these symbols, and saves the size of code
+generation for 100 bytes.
 
-    Besides that - and I think that's even more important - we can't claim for a
-    generic device::Device in general, that we own it to an extend that we can
-    modify unprotected fields.
+$ ./scripts/bloat-o-meter vmlinux_old vmlinux_new
+add/remove: 0/8 grow/shrink: 0/0 up/down: 0/-100 (-100)
+Function                                     old     new   delta
+_RNvXs_NtNtCsaYBeKL739Xz_6kernel4sync3rcuNtB4_5GuardNtNtCsdaXADs8PRFB_4core7default7Default7default       9       -      -9
+_RNvXs0_NtNtCsaYBeKL739Xz_6kernel4sync3rcuNtB5_5GuardNtNtNtCsdaXADs8PRFB_4core3ops4drop4Drop4drop       9       -      -9
+_RNvMNtNtCsaYBeKL739Xz_6kernel4sync3rcuNtB2_5Guard6unlock       9       -      -9
+_RNvMNtNtCsaYBeKL739Xz_6kernel4sync3rcuNtB2_5Guard3new       9       -      -9
+__pfx__RNvXs_NtNtCsaYBeKL739Xz_6kernel4sync3rcuNtB4_5GuardNtNtCsdaXADs8PRFB_4core7default7Default7default      16       -     -16
+__pfx__RNvXs0_NtNtCsaYBeKL739Xz_6kernel4sync3rcuNtB5_5GuardNtNtNtCsdaXADs8PRFB_4core3ops4drop4Drop4drop      16       -     -16
+__pfx__RNvMNtNtCsaYBeKL739Xz_6kernel4sync3rcuNtB2_5Guard6unlock      16       -     -16
+__pfx__RNvMNtNtCsaYBeKL739Xz_6kernel4sync3rcuNtB2_5Guard3new      16       -     -16
+Total: Before=23385830, After=23385730, chg -0.00%
 
-    However, we can claim this for bus specific devices in probe()[1]. Hence the
-    trait, such that the DMA mask functions can be easily derived by bus
-    specific devices.
-
-(2) Setting a DMA mask only makes sense for devices that sit on a (potentially)
-    DMA capable bus. Having this trait implemented for only the applicable
-    device types prevents setting the DMA mask and allocating DMA memory for the
-    wrong device.
-
-    This isn't necessary for safety reasons, but I think it's still nice to
-    catch.
-
+Link: https://github.com/Rust-for-Linux/linux/issues/1145
+Signed-off-by: I Hsin Cheng <richard120310@gmail.com>
 ---
+ rust/kernel/sync/rcu.rs | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-[1] Gotcha with bus specific devices.
+diff --git a/rust/kernel/sync/rcu.rs b/rust/kernel/sync/rcu.rs
+index b51d9150ffe2..26df2a6cb09f 100644
+--- a/rust/kernel/sync/rcu.rs
++++ b/rust/kernel/sync/rcu.rs
+@@ -17,6 +17,7 @@
+ 
+ impl Guard {
+     /// Acquires the RCU read side lock and returns a guard.
++    #[inline]
+     pub fn new() -> Self {
+         // SAFETY: An FFI call with no additional requirements.
+         unsafe { bindings::rcu_read_lock() };
+@@ -25,16 +26,19 @@ pub fn new() -> Self {
+     }
+ 
+     /// Explicitly releases the RCU read side lock.
++    #[inline]
+     pub fn unlock(self) {}
+ }
+ 
+ impl Default for Guard {
++    #[inline]
+     fn default() -> Self {
+         Self::new()
+     }
+ }
+ 
+ impl Drop for Guard {
++    #[inline]
+     fn drop(&mut self) {
+         // SAFETY: By the type invariants, the RCU read side is locked, so it is ok to unlock it.
+         unsafe { bindings::rcu_read_unlock() };
+-- 
+2.43.0
 
-Currently bus specific devices are implemented as Device<ARef<device::Device>>.
-
-This was a bad idea and is on my list to fix. As convinient as it is, it is
-unsound, since this means that driver can always derive a mutable reference to a
-bus specific device.
-
-I think that the upcoming Ownable stuff would be a good solution, but maybe I
-should wait any longer and fix it right away without Ownable.
