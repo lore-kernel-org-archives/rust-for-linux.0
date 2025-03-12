@@ -1,28 +1,28 @@
 Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D00136A;
-	Wed, 12 Mar 2025 19:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26AD31DE894;
+	Wed, 12 Mar 2025 19:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741806135; cv=none; b=iUHekO4nJZz2n7ghplze4e811i9tPliShdFVToB7ON2RsxJPBG7VMiFIV+uQfBC198FmT3XJ5Wl9lTymAyn/2P69Jvj6ScBMMc6eTlIZgrb5ocNrQ+UpofbDLd9v9/c7CLk7SoXKUmRvq7ddfE/8ZQXElkGh8gm4eQ6Ww1VhGbI=
+	t=1741806260; cv=none; b=I4MUVyZzsWpD5bSI4LTcs4zAdN7NjJ30RUUyT2+uWNM8ugwfSZl7F3B1WF9tdy3zR4x1gczvWOm5GgdXS07kD7xEULifISiQddjO2TvWmA/8imP81qHJYMGmmyY2qGkdY8jMha3sjl4W1RTLLrjVmmy/RmxJAWv8H3SvYKkUlcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741806135; c=relaxed/simple;
-	bh=KW6iKJ7xNhx+CJQLQSYGA8zO0QnahR4/cFe5+W3k4PM=;
+	s=arc-20240116; t=1741806260; c=relaxed/simple;
+	bh=Zk8i5HmfvNJKk8brm4RepmOhkuxCW4tk5l1A+9IAx6c=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=tAgEjwSETKhAg+8ZO/lDVM+JcRmDU9dw4uVymBXS9aILPKL8v+CVPc5huYQkWiue0lCXM8tZm8BPWT4tJdnAE7eiQnSXM/87jpzvUPlOvEZSPclchWw9FZb3TSZTeui0pkUY9IBKf3EZ3vmO+BtssbNc2eyUYASOvPwge8ljwwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=mH1Hvzg5; arc=none smtp.client-ip=49.12.72.200
+	 MIME-Version:Content-Type; b=Svhhvng7KO9NF+j8gT+CJTYCAK/u6EY5ctQVIkDOLa5s8fxwUPMjLkvGUa/ujNyfbof3iK+w8LVf2UN1h2ULEgDIOq5LzdGjgQuzWHcbi/MYJz/VqQYowNeTlVUH55sbvRrOdb6HWQqdB0mDNlCLFG22kTSbFSufA/H+bQYjQxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=q5hB89+5; arc=none smtp.client-ip=49.12.72.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="mH1Hvzg5"
+	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="q5hB89+5"
 From: Fiona Behrens <me@kloenk.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1741806131; bh=pcLic5GLSWXOPc5J6CdJ7jU9KVJV/KKijiJAWVQGXjA=;
+	t=1741806256; bh=N8wuEU6COjQxVv+sgO6yxuYIPBjg4GnzWyiG0P5tB9c=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=mH1Hvzg5mdtYuCJtHCyqBZzRalNazZ1eddi75SQk9fYbrI907Wy0w1KowTfCGr9LU
-	 /LX5aWopUtwuMorDsd6WojwZ/zvWdhuBCwmAvshVRRoarfMiupYtaJ47Q6gamz9mVR
-	 JWoqXIq7tXW505/4jmaVZsxwZzLwBVuB5L6q22z0=
+	b=q5hB89+5fkPVmY9OCT2xOeCxUBn4o8DeqqphLMFGaorJjjXlteg02ptft3qw6eAgW
+	 DfAwnk9qJtI5JNCFt162u0p5iCouKOK5+5Cdxt/rdvCLGlgmcsuNa7jYsDpCa5DTI4
+	 O/pR2qtvsATk4wXFCfxjfELUh7ZA367QzE/etyAc=
 To: Tamir Duberstein <tamird@gmail.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
   Boqun Feng <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,
@@ -34,14 +34,14 @@ Cc: Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
  <bobo1239@web.de>,  Kees Cook <kees@kernel.org>,
   rust-for-linux@vger.kernel.org,  linux-kernel@vger.kernel.org,  Lukas
  Wirth <lukas.wirth@ferrous-systems.com>
-Subject: Re: [PATCH v2 3/7] scripts: generate_rust_analyzer.py: add trailing
- comma
-In-Reply-To: <20250311-rust-analyzer-host-v2-3-30220e116511@gmail.com> (Tamir
-	Duberstein's message of "Tue, 11 Mar 2025 21:17:24 -0400")
+Subject: Re: [PATCH v2 5/7] scripts: generate_rust_analyzer.py: use
+ str(pathlib.Path)
+In-Reply-To: <20250311-rust-analyzer-host-v2-5-30220e116511@gmail.com> (Tamir
+	Duberstein's message of "Tue, 11 Mar 2025 21:17:26 -0400")
 References: <20250311-rust-analyzer-host-v2-0-30220e116511@gmail.com>
-	<20250311-rust-analyzer-host-v2-3-30220e116511@gmail.com>
-Date: Wed, 12 Mar 2025 20:02:10 +0100
-Message-ID: <m2msdqyswd.fsf@kloenk.dev>
+	<20250311-rust-analyzer-host-v2-5-30220e116511@gmail.com>
+Date: Wed, 12 Mar 2025 20:04:15 +0100
+Message-ID: <m2h63yyssw.fsf@kloenk.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -52,14 +52,9 @@ Content-Type: text/plain
 
 Tamir Duberstein <tamird@gmail.com> writes:
 
-> Add missing trailing comma on multi-line function call as suggested by
-> PEP-8:
->
->> The pattern is to put each value (etc.) on a line by itself, always
->> adding a trailing comma, and add the close parenthesis/bracket/brace
->> on the next line.
->
-> This change was made by a code formatting tool.
+> Use the `/` operator on `pathlib.Path` rather than directly crafting a
+> string. This is consistent with all other path manipulation in this
+> script.
 >
 > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
@@ -70,15 +65,14 @@ Reviewed-by: Fiona Behrens <me@kloenk.dev>
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 >
 > diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-> index 5913934ecb5a..7e78b926e61f 100755
+> index c73ea8d116a4..1bb185ae2e87 100755
 > --- a/scripts/generate_rust_analyzer.py
 > +++ b/scripts/generate_rust_analyzer.py
-> @@ -165,7 +165,7 @@ def main():
->  
->      logging.basicConfig(
->          format="[%(asctime)s] [%(levelname)s] %(message)s",
-> -        level=logging.INFO if args.verbose else logging.WARNING
-> +        level=logging.INFO if args.verbose else logging.WARNING,
->      )
->  
->      # Making sure that the `sysroot` and `sysroot_src` belong to the same toolchain.
+> @@ -109,7 +109,7 @@ def generate_crates(
+>          crate: ProcMacroCrate = {
+>              **crates[-1],
+>              "is_proc_macro": True,
+> -            "proc_macro_dylib_path": f"{objtree}/rust/{proc_macro_dylib_name}",
+> +            "proc_macro_dylib_path": str(objtree / "rust" / proc_macro_dylib_name),
+>          }
+>          crates[-1] = crate
