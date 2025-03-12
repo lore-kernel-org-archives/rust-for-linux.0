@@ -1,133 +1,104 @@
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8390D13774D;
-	Wed, 12 Mar 2025 01:17:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF102D600;
+	Wed, 12 Mar 2025 01:56:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741742280; cv=none; b=ioIoKZkN8r6ZpectdmY635R3PdbPP40VWMAABHqvmRTZ0BKf6bslP11HnoGWVUA9GZvcH2ia2ZJqdOKAugpSTgACvkpDFP+qI/etE8DRAKg/N32uz5/hh509c+Mkkzzz9Crp18Zi90JmMPwE5gC9lY3mkdWJEYAbgopv91KajUU=
+	t=1741744601; cv=none; b=ld0eX1dkXUOlZSXkXm7oIDBHFbO4srfuEhEYSKeU28bf8TvnjUj6vkOPio/a5eyPhQ417d6DPsVl7XpyMOKRc9l/LQG3fUz4iP7qwZCBtxGEmsVsrsH4ZzcY1nQeO7n0Xw09YXVZXswMN5i/Nm7flgOcnWQuif59a9mcvf+V//w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741742280; c=relaxed/simple;
-	bh=oFLZb+2f3dEKqc3Dj426FJzCsxLtRW2V3ml2C8sU7JU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=p2fErlE+v+p/r7ydVzdq8JVAFpX9bIDynKISft5aPvOmCOufNT3Zqf9d5RjuoiCk+0YVDLXO34QWE6tnNdhPZanCatbrRKMqfi3m3Ihn7zkArg+nSrVVmpY5UM+PFO3SR1xY6etW2rgtEarnNDeQKx+zpw3YoOhgUwlKFxDAAVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R+tlLYmk; arc=none smtp.client-ip=209.85.222.175
+	s=arc-20240116; t=1741744601; c=relaxed/simple;
+	bh=i8z2Xb9lFxcMgAI2K80UrHzxA3FJTlfeKI/zXvLiMok=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GJqqzhxzq4192V58HDui+O8GTWRxdcp2rJaTgtLu2c9O4AweQsthKuuBA2EvVSBnxlg015/c7Z+GB6W8bxYyAW5vXG8OcQD02DyQ7AI3E0eSC6NBOgn8EGbkV3OvqzJv2TRVAuQ0jWIC0+kMG6oxh6e5g0G7EUwwLAnPUPLcaQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fugaGWXC; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R+tlLYmk"
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-7c0892e4b19so619787585a.3;
-        Tue, 11 Mar 2025 18:17:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fugaGWXC"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2fd02536660so1599712a91.2;
+        Tue, 11 Mar 2025 18:56:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741742277; x=1742347077; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GLcgzo5xr/0iG5n3K7ZIKYHwTAs6P/saBSWm6jDBLCw=;
-        b=R+tlLYmkfZ8HvEQSGYinJnaHbj/fQvALto27bzaXSvd1lyDrbbMslr3dpaQx00GPfW
-         uRs5c+IiaQV6grsQ2t7gx87QwNNUpx2wKynwSkx2Thep5uPqZX9FA++L8cLAvvooc+Ht
-         guDt5XwN4g5+UBglYQqIeKoi6+/x1/x2fPzY++z9kHERQ5lrnBD8ELkRaU0eF9Y3Zt9a
-         7BoAcvB46FC5Ho2ZeUF77lMSBRegYO2CIrM9qOpodQA0+HQNlyT2OTuFb5tNT0fsyngP
-         pfQ5IHoZiFpK4lOUbgohsKA1LpQMHsdGSMoKOg29j/CwlUgKv2kVeJ/kEbpHl2S8KyQv
-         2H8w==
+        d=gmail.com; s=20230601; t=1741744600; x=1742349400; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hhWzg/d0ytpwp9W4Azext2ZzMQHgy1fZGnKhTFyW2CU=;
+        b=fugaGWXCNnRcR4mgC7K4mHNWQy+SVcA4cjg1JaECSPourlW09YG2/IE/0zNO1FaoHg
+         zZlzu2XPSND6jSQxv+DZ3fErXAJNJlDVdu4KI33uDYYuWOT5AKTXmxax0SSjQYMVhzYa
+         PVWu9+VULH024oksJv6pwTv0RjB1EhQXWbc52UkajdRbvMksat95Hohw5xbnxtuavWds
+         tVhMF46O9nhtoTzwStupHYUXfnMDLaRro3EvjCu7vNGdJT7o4OzhTS5VDF8pe7X63TsU
+         YGtLG19loogMDALn4IOi9l9dSFaayR97DAwM36KxFpU99QjKZEoBkkbH1t3981Ya/Pzt
+         Yaow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741742277; x=1742347077;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1741744600; x=1742349400;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=GLcgzo5xr/0iG5n3K7ZIKYHwTAs6P/saBSWm6jDBLCw=;
-        b=v9h3af8fflVOQrIAWhq+4MRTmlVayGwgz4/eWtq3AkbpoEuX4FGBpZaek36cL8BFDn
-         +XzZNRm8FoHLp/pwFYmS8p2K6kd/8VqfxWQIv+9LnMYlfiVpRmcKauVb68UryZna58Jr
-         n+3SQvL/9GqmIWiDtpdreFuTKrFXAW+2CWuQqLY7b+PmBsqgXDW01JMnH/8CKjDFSueE
-         WFaDXGLzPhgzEwSRqIEJ85wRQoeLJf4e599JlQTiruk9VGWMGuBMSnp5AgIMZzX/DLqF
-         PPWwozi2uBcU82gdtpR5oX7cuucp8rfCWxVYzGBi1pgheu1WNKIjVLkJQaSaMFUSxU+H
-         oEug==
-X-Forwarded-Encrypted: i=1; AJvYcCXAzniarLVva1tj8b4T3sa0oKSCgyfIYtIPRC9rtfATpMPYmiyUZ+kDEfHUigzu854PhcKarPxRkIm+mvw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxyzt+WRmP4Mg/McjHcqpTqbPs1K3PTncZy6GZgJThRoB9PCibC
-	JJz64WDR7Avr87SJP4B3tHR8042AmmCLDe9vX0qnEWhid7BEMSUp
-X-Gm-Gg: ASbGncsXesF4ChF58dNBI8wKQwkZjGRU2ZE7ke/06vQl44Q7USmRvBI4OfK9kUo/Mvu
-	8ejq7givtpOe8OiSmQz2QMumE6KVo32XwoM7E3mID2hkNPFmRpDFHFL0Ph9CcjV5zlURrZNy6M5
-	9/SeLx3N+rgLvpUjAUhDM9/P9wmpLh1RM4Lsite991lyL0jEmPZx1ZCH+vWuidyPAQ8R2PgWiEi
-	kPZ6cW44D5c8iu8zBavYe7wft3I0XG32H/wEi7hX7Xro7OexMvacos9XVoN9+cWKTA+f/TIjs09
-	wQTqzpGpMYBSCqZDwedHG6GmyM213o99da/WvDQXCSMWgFiKTQvreWgvJJRE4dhU5J/K
-X-Google-Smtp-Source: AGHT+IELfR2KgODTKut+cF9OaKi/VD7QJ0DCl+UiguwJeYOxo4OQjvdKvFS5kKpmgA9CKnTebm0SfQ==
-X-Received: by 2002:ad4:458c:0:b0:6ea:d393:962c with SMTP id 6a1803df08f44-6ead3939845mr213926d6.30.1741742277490;
-        Tue, 11 Mar 2025 18:17:57 -0700 (PDT)
-Received: from tamird-mac.local ([2600:4041:5be7:7c00:2017:ee95:21ab:177f])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e8f70915ebsm78599976d6.49.2025.03.11.18.17.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Mar 2025 18:17:56 -0700 (PDT)
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Tue, 11 Mar 2025 21:17:28 -0400
-Subject: [PATCH v2 7/7] scripts: generate_rust_analyzer.py: define host
- crates
+        bh=hhWzg/d0ytpwp9W4Azext2ZzMQHgy1fZGnKhTFyW2CU=;
+        b=YsqWGaHBQYBGjNmdOqHHtvTKEUsyPFV7fIw6GLTHW/hHXUXF84yiFCu+eN1zo+nWbz
+         12+4OJ709IqexlgvdsrqEJMR/0Vldv+2qost6cOWVGJ734bU6MjEG8Sxs+nM48/gu3UZ
+         UnXWRaXloBX57CzGb3wGbI57kZDUaOaYXJ4Tpw1IELSKAahtk8Q0di4OZrDNk1k0LZS2
+         AZBCONKTy/T8jEV45KDh2O7ejK5TwwQre4MvGVj0GvgSf6YlRwkc+C0GaS2PHRl0DMK8
+         2AGvQB/CQzsAuY6wjSwBLI+3VKaJeVJTDzIucJW5Bh2N4AZDdIBeOSGnGDJU+JoIdPDf
+         EuAw==
+X-Forwarded-Encrypted: i=1; AJvYcCUvqiXDEMpFgzBAmMwSTQmkbJsTrYrD0YEMk/MWpp0urphtsHym6mcNG3m9JvNGlf8+LpNFBtJPVJT6A7Y=@vger.kernel.org, AJvYcCXCPhjlBxBRKqD5tzh4RiqB6mO1r/5+sLNg6+s/dEoAL92Q8ZcPnPmp7Sw9EXZ4i7NNgCpZcrLgTuxfjPnzhP4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUFvaO01LgQ/7Ibv3rajdFI8KjzUmLP38KkXNKNZkcOVLCa715
+	hyVpR0BrnfwNoXoVYLtDiFgldcovF8WC9nIw6mDtWUsY844wQB5dUibMwXpHsJB89mjQ+ZOTfy7
+	7b7HnCjTHBe99f/L8kzzOVy2Eps0=
+X-Gm-Gg: ASbGncsQnKq0FgSBUjJHbtCKav1mXoQvHApOdZc07/m0a5Z8V73WadAYImstHvQytpW
+	G5hrbpry/svz8x7U2XSpYm9u3XHh42LDz4VQZNFezaDpyk8ZqF1tljW7Yd0cAOdXe388Zy0848M
+	5TB+jJ+VJyL17Af/dFPg5/H6Elf06msS/6FYVI
+X-Google-Smtp-Source: AGHT+IH2TOWzUeGxG1/VvM5umB2zQLllV6LRmfHEFJ6bEJKnEcBXB5BqfvcaUtU8PlHUHYAax8MNb/fMhf3PDUmziAs=
+X-Received: by 2002:a17:90b:1809:b0:2fe:b972:a2c3 with SMTP id
+ 98e67ed59e1d1-300ff380aaemr2857882a91.0.1741744599798; Tue, 11 Mar 2025
+ 18:56:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250311-rust-analyzer-host-v2-7-30220e116511@gmail.com>
-References: <20250311-rust-analyzer-host-v2-0-30220e116511@gmail.com>
-In-Reply-To: <20250311-rust-analyzer-host-v2-0-30220e116511@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Boris-Chengbiao Zhou <bobo1239@web.de>, Kees Cook <kees@kernel.org>, 
- Fiona Behrens <me@kloenk.dev>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Lukas Wirth <lukas.wirth@ferrous-systems.com>, 
- Tamir Duberstein <tamird@gmail.com>
-X-Mailer: b4 0.15-dev
+References: <010001958798b97c-4da7647e-d0bc-4f81-9132-ad24353139cb-000000@email.amazonses.com>
+In-Reply-To: <010001958798b97c-4da7647e-d0bc-4f81-9132-ad24353139cb-000000@email.amazonses.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 12 Mar 2025 02:56:26 +0100
+X-Gm-Features: AQ5f1JqsRDOX4s34-mUC-bMUKfIpM7ebb8PdNYncW_1xsWSlQpvBaseM_USJnec
+Message-ID: <CANiq72mV=160jejuTO8jmsOszrkbXX0UAa1dvZ0VSyKaWcLqBg@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: uaccess: mark UserSliceReader methods inline
+To: Antonio Hickey <contact@antoniohickey.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Define host crates used by the `macros` crate separately from target
-crates, now that we can uniquely identify crates with the same name.
+On Wed, Mar 12, 2025 at 12:44=E2=80=AFAM Antonio Hickey
+<contact@antoniohickey.com> wrote:
+>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1145
+> Suggested-by: https://github.com/Rust-for-Linux/linux/issues/1145
 
-This avoids rust-analyzer thinking the host `core` crate has our target
-configs applied to it.
+The Suggested-by tag is meant to explain who suggested it, rather than
+duplicate the link -- please see:
 
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://lore.kernel.org/all/CANiq72mw83RmLYeFFoJW6mUUygoyiA_f1ievSC2pmBESsQew+w@mail.gmail.com/
-Signed-off-by: Tamir Duberstein <tamird@gmail.com>
----
- scripts/generate_rust_analyzer.py | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+    https://docs.kernel.org/process/submitting-patches.html#using-reported-=
+by-tested-by-reviewed-by-suggested-by-and-fixes
 
-diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index e1002867735b..4832a4901c94 100755
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -128,10 +128,12 @@ def generate_crates(
-     # NB: sysroot crates reexport items from one another so setting up our transitive dependencies
-     # here is important for ensuring that rust-analyzer can resolve symbols. The sources of truth
-     # for this dependency graph are `(sysroot_src / crate / "Cargo.toml" for crate in crates)`.
-+    host_core = append_sysroot_crate("core", [])
-+    host_alloc = append_sysroot_crate("alloc", [host_core])
-+    host_std = append_sysroot_crate("std", [host_alloc, host_core])
-+    host_proc_macro = append_sysroot_crate("proc_macro", [host_core, host_std])
-+
-     core = append_sysroot_crate("core", [], cfg=crates_cfgs.get("core", []))
--    alloc = append_sysroot_crate("alloc", [core])
--    std = append_sysroot_crate("std", [alloc, core])
--    proc_macro = append_sysroot_crate("proc_macro", [core, std])
- 
-     compiler_builtins = append_crate(
-         "compiler_builtins",
-@@ -142,7 +144,7 @@ def generate_crates(
-     macros = append_proc_macro_crate(
-         "macros",
-         srctree / "rust" / "macros" / "lib.rs",
--        [std, proc_macro],
-+        [host_std, host_proc_macro],
-     )
- 
-     build_error = append_crate(
+(I typically also put the Link after the tag, if the link is meant to
+show the original suggestion, just like the documentation requests for
+the Reported-by/Closes pair)
 
--- 
-2.48.1
+In any case, there is no need to re-send a v3 just for this, you can
+wait to see if there is any feedback.
 
+Thanks for the patch!
+
+Cheers,
+Miguel
