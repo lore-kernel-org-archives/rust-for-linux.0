@@ -1,43 +1,43 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1532673BD
-	for <rust-for-linux@vger.kernel.org>; Thu, 13 Mar 2025 10:52:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F9E265CA7
+	for <rust-for-linux@vger.kernel.org>; Thu, 13 Mar 2025 10:56:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741863164; cv=none; b=i/SZGEq+vVI0YLuedm/JWiuxRt7WE/bwPvMs77BLxlUvEZdgnbQItsHb2mWlyyN8q+Pxtdjd2p7xX6OIm0n1CLu89Ravmk9ygLKJvt140L387OoTxzitkDJ2DXyf6ozk9I3+MOmPfS47Wk2VZ6M0O57xNQ4mK6aA8pKSfWWIeVw=
+	t=1741863398; cv=none; b=br0EsMpAI0I/S8UhtlQDlp3EVLF5g+1vO3JI93ryVBGDgWrLujhoeSoGlLTA+2w71l9Je/44VU6c16DonIBxlO7QdCnk46xfzeI/rXFwr3PwKlkJZL5e6cDvBx4w7rDMKdAYlsWAwfr5Qr/rzFCK+sQ9dCTTadWpJxqG4OATKLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741863164; c=relaxed/simple;
-	bh=SMlqtJQIiBvNiW3snRb9OrOG9IbLmh4UpJ3FD32ol0M=;
+	s=arc-20240116; t=1741863398; c=relaxed/simple;
+	bh=PEW9uDGEU8ys1IZjXzYmhExffAw/eLwERo5YnnluYs8=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cxrAfZez7uBDmxaAlnrYEj4QHzDpm6r9wF97uI6yXV3iKaa5FJh3FRi9B4PE2a+1V1V88wKFx0rP1+BURfm9VH+ueR7E5YVf7iv5H3zQrB42psoqJJTpFRJcd+sWcejrMolFBSC52AM9/z+/+Y26JjeLn78+w3BCZvLVbltdAhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=LLa0YVkw; arc=none smtp.client-ip=185.70.40.134
+	 MIME-Version:Content-Type; b=DNjo8nTCduCOzED7aCgazZwNT/aYlnmd+bgJ5TgwdUr6tAoVg0Ht08J+57bcTtQPmT18vwH85q4ctexHbUKNSdugUnyS52IJUkbNWRmue7Ips+ZaR8GvYs63qoXNMPWk2atjrsfMI84369Ef4ZJzUSLwQ9+8+q6r8nFRR31Ky3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=levgGoQ7; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="LLa0YVkw"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="levgGoQ7"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1741863159; x=1742122359;
-	bh=nrPlHJ4v3ZNQyWRzzyvVL0yvd3474f+tE2cEaFpBUMc=;
+	s=protonmail; t=1741863394; x=1742122594;
+	bh=2hNBX660GcO26GbhJqxD2G5sHgt7JHgGFhDKGFxxWVs=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=LLa0YVkw1QPQBaWerRKSFuw44p4w9BNebJawbPTyYmk+m/eqTTp6mH6ZsEkoCWAKM
-	 p7L1HSsnuH426EK4CUDpNHiP8c7E8CSy6cbF3/EurzqzMTY1wsWyOphAEY0L/YB6To
-	 HzbibgfXQ5Xay1oCZJokm6NAff2RXO2MvI0sCUr9BqwsTLEsjRGKlkzrtWUrevx9Fx
-	 FVgJL2CA8qv/prTcGZVrfoAOukHO9BzW5EOimneUZb1hmKjFdvJYpRMZzCyakEq1Dc
-	 D7KHL+JIvuarPqIkC6aF0BTjsxUhKCLihTqhy4ESlFgAYDXbezegec8bzy5u0mzd1k
-	 Z2HLf20vXOFnw==
-Date: Thu, 13 Mar 2025 10:52:34 +0000
-To: Danilo Krummrich <dakr@kernel.org>
+	b=levgGoQ7QaX8bsnVbFboKjk/eLHe5Dr4uFY6zC/XXaLVO99RIVMU299qGekU3tWwN
+	 gwwf/+870OpqqmHNd3NwFrTZAQMggbUnxBNkiaIMgrSdqE+KcAZqP0Q9zeSWthXw2u
+	 4BJ/EhgO4UTHdERZ0ZZB016X44XVrKWdQ0GTnsOqwTNpep/Sa4qvpaVKdJlVvNsqSH
+	 qra+2HAoNuOKvfWNpW8mj9A3zr0/SURw3PJQOXQh/C8QK/w+4b8yWfK+r3daCfEKOa
+	 N32YJumNcKr6n/FpZHm0wqzTIiuHb20s1prrMcKtboFHTb0aD4VyxjZ++NkEfmJWPT
+	 wWl9RUStbvL8Q==
+Date: Thu, 13 Mar 2025 10:56:30 +0000
+To: Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 2/4] rust: device: implement device context marker
-Message-ID: <D8F2YBFHCTFL.3TH1E0TB11EHU@proton.me>
-In-Reply-To: <Z9K2PJEoymuhamT-@pollux>
-References: <20250313021550.133041-1-dakr@kernel.org> <20250313021550.133041-3-dakr@kernel.org> <D8F2GQ4WYT7Z.172Z7R7V8BIGR@proton.me> <Z9K2PJEoymuhamT-@pollux>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Lee Jones <lee@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] samples: rust_misc_device: fix markup in top-level docs
+Message-ID: <D8F31D220PWN.AJV57JVJZYXY@proton.me>
+In-Reply-To: <20250313-rust_misc_device_tld-v1-1-a519bced9a6d@google.com>
+References: <20250313-rust_misc_device_tld-v1-1-a519bced9a6d@google.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: b297e6af7bf959966f08e2f649a842decb9c2b32
+X-Pm-Message-ID: 160c2b85675c8be54b8ac9c0eacd88a9f2ecdb51
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,47 +47,30 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu Mar 13, 2025 at 11:41 AM CET, Danilo Krummrich wrote:
-> On Thu, Mar 13, 2025 at 10:29:35AM +0000, Benno Lossin wrote:
->> On Thu Mar 13, 2025 at 3:13 AM CET, Danilo Krummrich wrote:
->> > +/// Marker trait for the context of a bus specific device.
->> > +///
->> > +/// Some functions of a bus specific device should only be called fro=
-m a certain context, i.e. bus
->> > +/// callbacks, such as `probe()`.
->> > +///
->> > +/// This is the marker trait for structures representing the context =
-of a bus specific device.
->> > +pub trait DeviceContext {}
->>=20
->> I would make this trait sealed. ie:
->>=20
->>     pub trait DeviceContext: private::Sealed {}
->>    =20
->>     mod private {
->>         pub trait Sealed {}
->>=20
->>         impl Sealed for super::Core {}
->>         impl Sealed for super::Normal {}
->>     }
->>=20
->> Since currently a user can create a custom context (it will be useless,
->> but then I think it still is better to give them a compile error).
+On Thu Mar 13, 2025 at 9:52 AM CET, Alice Ryhl wrote:
+> The meaning of /// is to document the thing that comes after it, so
+> currently the example is documentation for the `use core::pin::Pin;`
+> statement. To write top-level docs (and have them rendered as such in
+> the html by rustdoc), use //! instead.
 >
-> That is intentional, some busses have bus specific callbacks, hence we ma=
-y want
-> a bus specific context at some point.
+> This does not change the contents of the docs at all. The only change is
+> changing /// to //!.
+>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Then it's even better we went with the generics vs using mutable
-references :)
+Good catch! I think this should have a fixes tag:
 
-> However, we can always change visibility as needed, so I'm fine making it=
- sealed
-> for now.
+    Fixes: 8d9b095b8f89 ("samples: rust_misc_device: Provide an example C p=
+rogram to exercise functionality")
 
-Couldn't you just add them here? Then sealing wouldn't be a problem.
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
 ---
 Cheers,
 Benno
+
+> ---
+>  samples/rust/rust_misc_device.rs | 181 ++++++++++++++++++++-------------=
+------
+>  1 file changed, 91 insertions(+), 90 deletions(-)
 
