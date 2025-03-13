@@ -1,28 +1,28 @@
 Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 191E51D7984;
-	Thu, 13 Mar 2025 11:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D487B1E8325;
+	Thu, 13 Mar 2025 11:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741864980; cv=none; b=M3ackeZ5Jq6o1UIqdggZQl8QBuqf95gWsFGhYfvl5qCXiFUA8DC1bK8ihkucm/yzyvvOZeFBORbBsBbRLqKZcV8OX5eTDvRbEYDMuc3YsYKF7rkCB0Gke6xENe9h8D/hBUN1qjgn6sUHfZnoxKUbSPzwj9yz6vC10tEYBJ7JTus=
+	t=1741865077; cv=none; b=ogvD8KJKIXGFIv1lZ9hoqz+70YMrX5sjqfJQPOiAn4PG4oXpHY/Lgemjpcw/3ncnGzqB/laYlvJS6zmj501nJUSQe9Ed9+8VjdHBrILsyuPjeQHrqAYM8dHMK6vTwUIvB0NZ3IcTEFq0E+Nz4q1IKOUF5Hi220cgmV700joT6bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741864980; c=relaxed/simple;
-	bh=XY+iNNACdBsMNypqI8/Hgwk7dDdT2rxt/fpEeetk9SM=;
+	s=arc-20240116; t=1741865077; c=relaxed/simple;
+	bh=M8MfpkzBK+QuuBiw77xJtMZAqV2FLi/iPiXKGGpQVz0=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=eipe9riwkZTJ4PO2nX2sxTbjsEAzDDDq2aH+hr+0NJVqtQ27K3ByjdfYaRQj63JGhdo53EOImoxkz8jAG/U3gZHI3LhjLd38Cs4OzvLe0wwqDppacUNEpeXjr1D5ULa5tIsV+fUhJljN+JfPZaesl5IV3i+geSCP3IUgYKQ+oDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=CrSw37as; arc=none smtp.client-ip=49.12.72.200
+	 MIME-Version:Content-Type; b=NXsyfEX9kaxFZgk6KViiEhRuunbLbn8EiTCZ3JoIz/nSLRNuhfKjRBolsS1Dev13tptaaj6b6myFr8mhdnFxmuKpfGI95Po20xVIiNbPdsRRumB1RD5mgdFTsjhZsu8rlE6An+mc57obXw6YQwI4R9atWDW0zbVjnRvIbJXLMbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=o9XOb28U; arc=none smtp.client-ip=49.12.72.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="CrSw37as"
+	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="o9XOb28U"
 From: Fiona Behrens <me@kloenk.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1741864973; bh=jSXSMSPF0QFuoZukFVRkPbDl46MFQbzURRYuYJ5wXt4=;
+	t=1741865073; bh=358kCQRfQ9nI7dbrHfqIs5um/4vIyZLgVmCBk3AJWaM=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=CrSw37asf6/iFodL/wjtvKlMgUKSF9zkaUaxcsP6zHkmrGE1+J/OBGPKbkHYn+U1m
-	 2Tc2m5mSDjDd2sIf3EvmzDobOXUNsijIwCfX6OxspfQsmaJ2WoNAd+1WB3f7AD8xDr
-	 7WUJC9B6pMdMc2RKIoAD1LzJ5qgkj8hV/xy4NLmg=
+	b=o9XOb28UmexJTluixcW9c8DHfE+30BBLV+S2O6Xr3vNkr/6/yk7Fks8oV+LqPrr8W
+	 jke8ZgCWw/X16HNB9RpwB0v0QY+Tpat0/rZJkNnIkEAeYc3hGbo3LbHgVvn9I37j61
+	 H6otCVy60OcaGDZFt9aeehPe/zMjG4HNMIdfdzEs=
 To: Benno Lossin <benno.lossin@proton.me>
 Cc: Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
   Boqun Feng <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,
@@ -31,14 +31,14 @@ Cc: Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
  <a.hindborg@kernel.org>,  Alice Ryhl <aliceryhl@google.com>,  Trevor Gross
  <tmgross@umich.edu>,  rust-for-linux@vger.kernel.org,
   linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 18/22] rust: pin-init: internal: synchronize with
- user-space version
-In-Reply-To: <20250308110339.2997091-19-benno.lossin@proton.me> (Benno
-	Lossin's message of "Sat, 08 Mar 2025 11:05:22 +0000")
+Subject: Re: [PATCH v2 19/22] rust: pin-init: miscellaneous synchronization
+ with the user-space version
+In-Reply-To: <20250308110339.2997091-20-benno.lossin@proton.me> (Benno
+	Lossin's message of "Sat, 08 Mar 2025 11:05:27 +0000")
 References: <20250308110339.2997091-1-benno.lossin@proton.me>
-	<20250308110339.2997091-19-benno.lossin@proton.me>
-Date: Thu, 13 Mar 2025 12:22:52 +0100
-Message-ID: <m2tt7xxjhv.fsf@kloenk.dev>
+	<20250308110339.2997091-20-benno.lossin@proton.me>
+Date: Thu, 13 Mar 2025 12:24:33 +0100
+Message-ID: <m2o6y5xjf2.fsf@kloenk.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -49,127 +49,77 @@ Content-Type: text/plain
 
 Benno Lossin <benno.lossin@proton.me> writes:
 
-> Synchronize the internal macros crate with the user-space version that
-> uses the quote crate [1] instead of a custom `quote!` macro. The imports
-> in the different version are achieved using `cfg` on the kernel config
-> value. This cfg is always set in the kernel and never set in the
+> Remove the last differences between the kernel version and the
 > user-space version.
 >
-> Since the quote crate requires the proc_macro2 crate, imports also need
-> to be adjusted and `.into()` calls have to be inserted.
->
-> Link: https://crates.io/crates/quote [1]
 > Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 > Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
 > Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-Reviewed-by: Fiona Behrens <me@Kloenk.dev>
+Reviewed-by: Fiona Behrens <me@kloenk.dev>
 
 > ---
->  rust/pin-init/internal/src/helpers.rs     |  3 +++
->  rust/pin-init/internal/src/lib.rs         | 16 +++++++++++++---
->  rust/pin-init/internal/src/pin_data.rs    |  3 +++
->  rust/pin-init/internal/src/pinned_drop.rs |  3 +++
->  rust/pin-init/internal/src/zeroable.rs    |  3 +++
->  5 files changed, 25 insertions(+), 3 deletions(-)
+>  rust/pin-init/internal/src/lib.rs | 5 ++---
+>  rust/pin-init/src/__internal.rs   | 2 +-
+>  rust/pin-init/src/lib.rs          | 2 --
+>  3 files changed, 3 insertions(+), 6 deletions(-)
 >
-> diff --git a/rust/pin-init/internal/src/helpers.rs b/rust/pin-init/internal/src/helpers.rs
-> index 78521ba19d0b..236f989a50f2 100644
-> --- a/rust/pin-init/internal/src/helpers.rs
-> +++ b/rust/pin-init/internal/src/helpers.rs
-> @@ -1,5 +1,8 @@
->  // SPDX-License-Identifier: Apache-2.0 OR MIT
->  
-> +#[cfg(not(kernel))]
-> +use proc_macro2 as proc_macro;
-> +
->  use proc_macro::{TokenStream, TokenTree};
->  
->  /// Parsed generics.
 > diff --git a/rust/pin-init/internal/src/lib.rs b/rust/pin-init/internal/src/lib.rs
-> index c201b8a53915..30e145f80bc0 100644
+> index 30e145f80bc0..babe5e878550 100644
 > --- a/rust/pin-init/internal/src/lib.rs
 > +++ b/rust/pin-init/internal/src/lib.rs
-> @@ -7,6 +7,13 @@
->  //! `pin-init` proc macros.
->  
->  #![cfg_attr(not(RUSTC_LINT_REASONS_IS_STABLE), feature(lint_reasons))]
-> +// Allow `.into()` to convert
-> +// - `proc_macro2::TokenStream` into `proc_macro::TokenStream` in the user-space version.
-> +// - `proc_macro::TokenStream` into `proc_macro::TokenStream` in the kernel version.
-> +//   Clippy warns on this conversion, but it's required by the user-space version.
-> +//
-> +// Remove once we have `proc_macro2` in the kernel.
-> +#![allow(clippy::useless_conversion)]
+> @@ -14,6 +14,8 @@
+>  //
+>  // Remove once we have `proc_macro2` in the kernel.
+>  #![allow(clippy::useless_conversion)]
+> +// Documentation is done in the pin-init crate instead.
+> +#![allow(missing_docs)]
 >  
 >  use proc_macro::TokenStream;
 >  
-> @@ -14,6 +21,9 @@
->  #[path = "../../../macros/quote.rs"]
->  #[macro_use]
->  mod quote;
-> +#[cfg(not(kernel))]
-> +#[macro_use]
-> +extern crate quote;
+> @@ -30,19 +32,16 @@
+>  mod pinned_drop;
+>  mod zeroable;
 >  
->  mod helpers;
->  mod pin_data;
-> @@ -23,17 +33,17 @@
->  #[allow(missing_docs)]
+> -#[allow(missing_docs)]
 >  #[proc_macro_attribute]
 >  pub fn pin_data(inner: TokenStream, item: TokenStream) -> TokenStream {
-> -    pin_data::pin_data(inner, item)
-> +    pin_data::pin_data(inner.into(), item.into()).into()
+>      pin_data::pin_data(inner.into(), item.into()).into()
 >  }
 >  
->  #[allow(missing_docs)]
+> -#[allow(missing_docs)]
 >  #[proc_macro_attribute]
 >  pub fn pinned_drop(args: TokenStream, input: TokenStream) -> TokenStream {
-> -    pinned_drop::pinned_drop(args, input)
-> +    pinned_drop::pinned_drop(args.into(), input.into()).into()
+>      pinned_drop::pinned_drop(args.into(), input.into()).into()
 >  }
 >  
->  #[allow(missing_docs)]
+> -#[allow(missing_docs)]
 >  #[proc_macro_derive(Zeroable)]
 >  pub fn derive_zeroable(input: TokenStream) -> TokenStream {
-> -    zeroable::derive(input)
-> +    zeroable::derive(input.into()).into()
->  }
-> diff --git a/rust/pin-init/internal/src/pin_data.rs b/rust/pin-init/internal/src/pin_data.rs
-> index 9b974498f4a8..87d4a7eb1d35 100644
-> --- a/rust/pin-init/internal/src/pin_data.rs
-> +++ b/rust/pin-init/internal/src/pin_data.rs
-> @@ -1,5 +1,8 @@
->  // SPDX-License-Identifier: Apache-2.0 OR MIT
+>      zeroable::derive(input.into()).into()
+> diff --git a/rust/pin-init/src/__internal.rs b/rust/pin-init/src/__internal.rs
+> index 7f7744d48575..557b5948cddc 100644
+> --- a/rust/pin-init/src/__internal.rs
+> +++ b/rust/pin-init/src/__internal.rs
+> @@ -14,7 +14,7 @@
+>  ///
+>  /// [nomicon]: https://doc.rust-lang.org/nomicon/subtyping.html
+>  /// [this table]: https://doc.rust-lang.org/nomicon/phantom-data.html#table-of-phantomdata-patterns
+> -pub(super) type Invariant<T> = PhantomData<fn(*mut T) -> *mut T>;
+> +pub(crate) type Invariant<T> = PhantomData<fn(*mut T) -> *mut T>;
 >  
-> +#[cfg(not(kernel))]
-> +use proc_macro2 as proc_macro;
-> +
->  use crate::helpers::{parse_generics, Generics};
->  use proc_macro::{Group, Punct, Spacing, TokenStream, TokenTree};
+>  /// Module-internal type implementing `PinInit` and `Init`.
+>  ///
+> diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
+> index a00288133ae3..45880ffa81bb 100644
+> --- a/rust/pin-init/src/lib.rs
+> +++ b/rust/pin-init/src/lib.rs
+> @@ -349,8 +349,6 @@
+>  ///     }
+>  /// }
+>  /// ```
+> -///
+> -/// [`pin_init!`]: crate::pin_init
+>  pub use ::pin_init_internal::pin_data;
 >  
-> diff --git a/rust/pin-init/internal/src/pinned_drop.rs b/rust/pin-init/internal/src/pinned_drop.rs
-> index 386f52f73c06..c824dd8b436d 100644
-> --- a/rust/pin-init/internal/src/pinned_drop.rs
-> +++ b/rust/pin-init/internal/src/pinned_drop.rs
-> @@ -1,5 +1,8 @@
->  // SPDX-License-Identifier: Apache-2.0 OR MIT
->  
-> +#[cfg(not(kernel))]
-> +use proc_macro2 as proc_macro;
-> +
->  use proc_macro::{TokenStream, TokenTree};
->  
->  pub(crate) fn pinned_drop(_args: TokenStream, input: TokenStream) -> TokenStream {
-> diff --git a/rust/pin-init/internal/src/zeroable.rs b/rust/pin-init/internal/src/zeroable.rs
-> index 0cf6732f27dc..acc94008c152 100644
-> --- a/rust/pin-init/internal/src/zeroable.rs
-> +++ b/rust/pin-init/internal/src/zeroable.rs
-> @@ -1,5 +1,8 @@
->  // SPDX-License-Identifier: GPL-2.0
->  
-> +#[cfg(not(kernel))]
-> +use proc_macro2 as proc_macro;
-> +
->  use crate::helpers::{parse_generics, Generics};
->  use proc_macro::{TokenStream, TokenTree};
+>  /// Used to implement `PinnedDrop` safely.
