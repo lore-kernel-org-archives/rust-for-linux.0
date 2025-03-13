@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71BF9267F4F;
-	Thu, 13 Mar 2025 14:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3541726138E;
+	Thu, 13 Mar 2025 14:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741875961; cv=none; b=s9lajWk6qfCB2pJeTbmNbWxY9RFFQT814SL+84H+EAupmTli3zOe5FnKaWcz4H6/R3ZH0is/LPl7hTj/FX1jkPSnHQlsk4Otk4RKQMJH6llOwdzo7MZaXuE9GRqzCIa6by8EBiZn5K0nlkK+6Ur/kUu9OMCuGQ35xNWtp90GuPo=
+	t=1741876142; cv=none; b=OZbu/Kp+xXjwIsnmEo4uT1UmYDf+g8uAB6XuvKaRemkNtBroVlkpc3LjXESy/afQQEijs6fqALeGhDB2gOAzUxGV4sRW6wgUs2Mdck3m5J0LAzyG25XLyWElfztNY/s+Z2NrSmx4K0bqK/blJFszkntbbjX6wjzM2M7QvuBEYls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741875961; c=relaxed/simple;
-	bh=CZx6TwMA0NCh5fjlQFkDkBD0jjZYUy/h1Qs71+ifFJ8=;
+	s=arc-20240116; t=1741876142; c=relaxed/simple;
+	bh=fCokpUlBnQf/exMCVGCrqUeBZAxKhgoIWf+mFn08ScA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mqYlGYm39DDmXniTpqGFcDL5AFJWY7CjfOpgPmxZ3KLBDqAiiPyQa46RWvreDZ1Dm5vIX7isEH1TZisMoWHq85tn+N5YyLff4HnLAerJc/nCxO831Srco1aTnAs6v9S3kp4mldBPnU+I/ff4lLnn/Q+blfcRmQA2W53SWrdm8CQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Egk/Df7Q; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=T0iKRlL9pT1bIWqEGfY0upCAXTYfWINaxw+TlffmGbbb8Zj5/tkL+jNCyXO5ZbxQbqVQav5Y+rV0KJRScidNslciuR8r4xGiCdnFr+jgLPTMdL4DMyxeq1CX2L7kcT7A5rGiKwlcBNjYQP10kIaOFcb1bPMRBXnAC7wCL+Nveyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VCWl4GO8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Egk/Df7Q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10B8BC4CEDD;
-	Thu, 13 Mar 2025 14:25:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VCWl4GO8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D1EEC4CEDD;
+	Thu, 13 Mar 2025 14:28:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741875960;
-	bh=CZx6TwMA0NCh5fjlQFkDkBD0jjZYUy/h1Qs71+ifFJ8=;
+	s=k20201202; t=1741876141;
+	bh=fCokpUlBnQf/exMCVGCrqUeBZAxKhgoIWf+mFn08ScA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Egk/Df7QgTF4jkaGx8zGZQ9I6MBHi8FpKUeBCjhX1EEYiVwPcoPxBqcctA+UEjCZn
-	 nG0cI2wLCDQ8wCrfpZiEVT3BJ2dEzwmJ0iuZPgtwpOyPsHFNliagzvdAhTRSH3SyxQ
-	 VyQI+fdeul9I4cHBjHW/h8PI4jKHEvXeIGl5ZT+gcrVUjOgUBXTpvdnaPCO54vNan0
-	 3CVuUM6nrO+6eS+x96Pm/hQ53rGeGMGd9AhR97s5IFFyTw4QOfe2VuIZUd7fDOiFCF
-	 L65p25TegzwUG5VpUvqneiC03UBeVcuUREtLUBfVi2ERT/VxCgwLpM8S8jytkGlpSZ
-	 FA389rd5x/NZQ==
-Date: Thu, 13 Mar 2025 15:25:55 +0100
+	b=VCWl4GO8Gdlr9G1aOm5fU1pp3VbqdLWK1M0W1QBeeUob/O/rgpQxPE6kOoon/voAl
+	 sGDbx5tBqoaGXvtFg1AuMrNJ/mEm4DBPK9qzhZjJbeCWDx5GgvYXGQALpkKA1nRPu4
+	 iVMAJrF5Xsf3SalLbjHA6MPDmIsMLl5Bx50OkLjMtt8VJ8iBeHm6IZ8fdCcgkx8fjH
+	 9Jwn7QH9TqHHCpHUWefl+XCvqXQWxjiD89G7/W60zldnYIptTvBMYhIshZvIA9siGm
+	 Z5T+n/QWcvcUQHgjuKYxhOlp7UvS8JEdJmH+p6SdfMnjgDIlHDH/siOtTZFbBXlUdF
+	 8kmgN6bEf6qhA==
+Date: Thu, 13 Mar 2025 15:28:55 +0100
 From: Danilo Krummrich <dakr@kernel.org>
 To: Benno Lossin <benno.lossin@proton.me>
 Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
@@ -35,11 +35,12 @@ Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
 	aliceryhl@google.com, tmgross@umich.edu,
 	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 3/4] rust: pci: fix unrestricted &mut pci::Device
-Message-ID: <Z9Lq8xyTbIzfPhRX@pollux>
+Subject: Re: [PATCH 4/4] rust: platform: fix unrestricted &mut
+ platform::Device
+Message-ID: <Z9Lrp2fC4b22QkPj@pollux>
 References: <20250313021550.133041-1-dakr@kernel.org>
- <20250313021550.133041-4-dakr@kernel.org>
- <D8F2S8YNYGZP.3JQKC7ZMRAB2C@proton.me>
+ <20250313021550.133041-5-dakr@kernel.org>
+ <D8F2WCIXO6RQ.3OQHU95WZFB61@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,11 +49,11 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <D8F2S8YNYGZP.3JQKC7ZMRAB2C@proton.me>
+In-Reply-To: <D8F2WCIXO6RQ.3OQHU95WZFB61@proton.me>
 
-On Thu, Mar 13, 2025 at 10:44:38AM +0000, Benno Lossin wrote:
+On Thu, Mar 13, 2025 at 10:49:59AM +0000, Benno Lossin wrote:
 > On Thu Mar 13, 2025 at 3:13 AM CET, Danilo Krummrich wrote:
-> > As by now, pci::Device is implemented as:
+> > As by now, platform::Device is implemented as:
 > >
 > > 	#[derive(Clone)]
 > > 	pub struct Device(ARef<device::Device>);
@@ -61,102 +62,49 @@ On Thu, Mar 13, 2025 at 10:44:38AM +0000, Benno Lossin wrote:
 > > device methods that require a mutable reference concurrently at any
 > > point of time.
 > 
-> Which methods take mutable references? The `set_master` method you
-> mentioned also took a shared reference before this patch.
+> Similar to the other patch, I didn't find any methods taking `&mut self`
+> but I might have missed them.
 
-Yeah, that's basically a bug that I never fixed (until now), since making it
-take a mutable reference would not have changed anything in terms of
-accessibility.
+`platform::Device` does not have any yet. But we still need the pattern. Once we
+land the `dma::Device` trait, we'll need:
+
+	impl dma::Device for platform::Device<Core> {}
+
+to derive the DMA methods.
+
+Besides that, I want bus device implementations to be consistent.
 
 > 
-> > Instead define pci::Device as
+> > Instead define platform::Device as
 > >
 > > 	pub struct Device<Ctx: DeviceContext = Normal>(
-> > 		Opaque<bindings::pci_dev>,
+> > 		Opaque<bindings::platform_dev>,
 > > 		PhantomData<Ctx>,
 > > 	);
 > >
 > > and manually implement the AlwaysRefCounted trait.
 > >
 > > With this we can implement methods that should only be called from
-> > bus callbacks (such as probe()) for pci::Device<Core>. Consequently, we
-> > make this type accessible in bus callbacks only.
+> > bus callbacks (such as probe()) for platform::Device<Core>. Consequently,
+> > we make this type accessible in bus callbacks only.
 > >
 > > Arbitrary references taken by the driver are still of type
-> > ARef<pci::Device> and hence don't provide access to methods that are
+> > ARef<platform::Device> and hence don't provide access to methods that are
 > > reserved for bus callbacks.
 > >
-> > Fixes: 1bd8b6b2c5d3 ("rust: pci: add basic PCI device / driver abstractions")
+> > Fixes: 683a63befc73 ("rust: platform: add basic platform device / driver abstractions")
 > > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 > 
-> Two small nits below, but it already looks good:
+> The same two nits from patch #3 also apply.
 > 
 > Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 > 
+> ---
+> Cheers,
+> Benno
+> 
 > > ---
-> >  drivers/gpu/nova-core/driver.rs |   4 +-
-> >  rust/kernel/pci.rs              | 126 ++++++++++++++++++++------------
-> >  samples/rust/rust_driver_pci.rs |   8 +-
-> >  3 files changed, 85 insertions(+), 53 deletions(-)
-> >
+> >  rust/kernel/platform.rs              | 93 ++++++++++++++++++----------
+> >  samples/rust/rust_driver_platform.rs | 16 +++--
+> >  2 files changed, 74 insertions(+), 35 deletions(-)
 > 
-> > @@ -351,20 +361,8 @@ fn deref(&self) -> &Self::Target {
-> >  }
-> >  
-> >  impl Device {
-> 
-> One alternative to implementing `Deref` below would be to change this to
-> `impl<Ctx: DeviceContext> Device<Ctx>`. But then one would lose the
-> ability to just do `&pdev` to get a `Device` from a `Device<Core>`... So
-> I think the deref way is better. Just wanted to mention this in case
-> someone re-uses this pattern.
-> 
-> > -    /// Create a PCI Device instance from an existing `device::Device`.
-> > -    ///
-> > -    /// # Safety
-> > -    ///
-> > -    /// `dev` must be an `ARef<device::Device>` whose underlying `bindings::device` is a member of
-> > -    /// a `bindings::pci_dev`.
-> > -    pub unsafe fn from_dev(dev: ARef<device::Device>) -> Self {
-> > -        Self(dev)
-> > -    }
-> > -
-> >      fn as_raw(&self) -> *mut bindings::pci_dev {
-> > -        // SAFETY: By the type invariant `self.0.as_raw` is a pointer to the `struct device`
-> > -        // embedded in `struct pci_dev`.
-> > -        unsafe { container_of!(self.0.as_raw(), bindings::pci_dev, dev) as _ }
-> > +        self.0.get()
-> >      }
-> >  
-> >      /// Returns the PCI vendor ID.
-> 
-> >  impl AsRef<device::Device> for Device {
-> >      fn as_ref(&self) -> &device::Device {
-> > -        &self.0
-> > +        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a pointer to a valid
-> > +        // `struct pci_dev`.
-> > +        let dev = unsafe { addr_of_mut!((*self.as_raw()).dev) };
-> > +
-> > +        // SAFETY: `dev` points to a valid `struct device`.
-> > +        unsafe { device::Device::as_ref(dev) }
-> 
-> Why not use `&**self` instead (ie go through the `Deref` impl)?
-
-`&**self` gives us a `Device` (i.e. `pci::Device`), not a `device::Device`.
-
-> 
-> > @@ -77,7 +77,7 @@ fn probe(pdev: &mut pci::Device, info: &Self::IdInfo) -> Result<Pin<KBox<Self>>>
-> >  
-> >          let drvdata = KBox::new(
-> >              Self {
-> > -                pdev: pdev.clone(),
-> > +                pdev: (&**pdev).into(),
-> 
-> It might be possible to do:
-> 
->     impl From<&pci::Device<Core>> for ARef<pci::Device> { ... }
-> 
-> Then this line could become `pdev: pdev.into()`.
-
-Yeah, having to write `&**pdev` was bothering me too, and I actually tried what
-you suggest, but it didn't compile -- I'll double check.
