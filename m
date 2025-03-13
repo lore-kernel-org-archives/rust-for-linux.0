@@ -1,46 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874C6153801;
-	Thu, 13 Mar 2025 17:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B42826A0A4;
+	Thu, 13 Mar 2025 17:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741885542; cv=none; b=gkbMVpAJoPym3XmPKWqJvi++R6bXr33kkynBLxAhPr7E9xMn0DA5U4IfoluGWRWXS5z5zXMas+TT5k6NuMz/qbDbF7DlmvQDAh746610kb3AVi0RVfCutOQyW5rrCA1iLyDXtvOgvWC3loyD1wV8iZwZvWLTjyBQJ4YVgDyOvkI=
+	t=1741886049; cv=none; b=aeRMrbXjWPxZJYXbxkQ6okSlHYDPwjKDFwP5KnarYmZbxafJz2JjkiL2VrHSS7AixXCfyFSowtXz4jE3XjcU9FN8Qn7MLoARVqnQwhIpQZ+vDZF38pyOgn8zaPjTXAgad/SNn0RKcxuwdFf1XjyrXpFZy+jjZKRTU6lQjc7uRIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741885542; c=relaxed/simple;
-	bh=wSphIq0AwTEWBRgbSG567LFZ6ToB/bMmr7vLR5oQ/M4=;
+	s=arc-20240116; t=1741886049; c=relaxed/simple;
+	bh=Ekfk4xszr9V+zTVnqnMwGYkIAsjM6mXFoc1R6nnM4TA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B6V669rcHBZ1Kjr9WKTNA7/k3awctwqqyiqKVJX6La1Yoxf3JCKPjFTB/a7ubSk3Tzxflh2RElJfyU2DzW4YBBLQG8BCoLgznwKyphmmnuTd/HqyKMJq9GGa8VqcJ9+n2IlpKYrz9zkWVUFmCm1w57m1w3nQfZZIk84xUrKUqcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S7k4GJAo; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=O3OlisFZlFGam4RHR7X4lA08Ui2egmn+lsBexbog7L/MWIWYOVZB3nrdP79Gq63gDhxyuyHJiCPofj7VHnlRUb01WRA9AMUrIxcwvgydL62s1jeiXqLhQAXP/yETzw5eSSbs7t8SP56dWTae/K1vnm4w2RLTVnDNEfCyueAjJXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o/71C3Ab; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S7k4GJAo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D799DC4CEEA;
-	Thu, 13 Mar 2025 17:05:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o/71C3Ab"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 535E6C4CEDD;
+	Thu, 13 Mar 2025 17:14:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741885542;
-	bh=wSphIq0AwTEWBRgbSG567LFZ6ToB/bMmr7vLR5oQ/M4=;
+	s=k20201202; t=1741886048;
+	bh=Ekfk4xszr9V+zTVnqnMwGYkIAsjM6mXFoc1R6nnM4TA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=S7k4GJAoPfz8p6m8k15CyINZ1RDSnmgYRX4QysV3ngHMrg253s/TCBOgWSc/NFHx6
-	 Vjbj8UZ0xHq0ZCkO4MTQpWlekrA+gOQTdY2AOdTTV8HmYHElWW/fkbrJymQ25nX9IA
-	 and5y78HC0ObvHvoRZS4PNVzDauqbkCm5sLF+sSGe/YGJgWKB6hHBTpOrmhj+IBuzy
-	 qQ1Wa+SanwYTm5XWPRNL6RYIVS7plBRtAzrWKWj5qVDnp5pieIGrlasQrkLwLJWEzZ
-	 XgaydvJeF3FXPEtLMtF6f9Etr75KzsQLpOy+O4cvsuucsg5upfxSrOmHJkg1alkLBv
-	 z5Kq7xsYP/ARw==
-Date: Thu, 13 Mar 2025 18:05:36 +0100
-From: Benjamin Tissoires <bentiss@kernel.org>
-To: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-input@vger.kernel.org, dri-devel@lists.freedesktop.org, Jiri Kosina <jikos@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-Subject: Re: [PATCH RFC 3/3] rust: hid: demo the core abstractions for probe
- and remove
-Message-ID: <m2cm4c4m7teaca3tog774tl25ynngicg4eav4i7xiqyrxsqwju@leh5og5d6uba>
-References: <20250313160220.6410-2-sergeantsagara@protonmail.com>
- <20250313160220.6410-6-sergeantsagara@protonmail.com>
+	b=o/71C3Abrdv+HXUXPYmLLfwl+/yM287fYQrzfIzp30fiSGJSlTf/FrCpOVKISMjzd
+	 iSrIe3W+ivQ2aQ4chwXfTY8Pye1mhxCcnZyPl6C+IuYuGg0wNDPHa7BLnvKpNrVaKg
+	 wCnmNYoMGNh8GaZ4CHSfUDAdcInLqqm30IqjZnbUEunS7dr9CNctOjl0V6wi7MTO+V
+	 KZG74+IlVhQ2IARTkpZ65puzE0st25cqtJojxOuC2e4OYah2+/gcvwV0Bzyvz/5iDs
+	 W8xDAD12dvVGGNjyad3rbTEbaqgyISQh7HId7RsaNdfodrlGO9cEwsSDH+YzihedZp
+	 f+3yHT17qtQNA==
+Date: Thu, 13 Mar 2025 18:14:03 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH RFC] rust: add macros to define registers layout
+Message-ID: <Z9MSW4VAjqWd4NmY@pollux>
+References: <20250313-registers-v1-1-8d498537e8b2@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -49,85 +47,104 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250313160220.6410-6-sergeantsagara@protonmail.com>
+In-Reply-To: <20250313-registers-v1-1-8d498537e8b2@nvidia.com>
 
-On Mar 13 2025, Rahul Rameshbabu wrote:
-> This is a very basic "hello, world!" implementation to illustrate that the
-> probe and remove callbacks are working as expected. I chose an arbitrary
-> device I had on hand for populating in the HID device id table.
+Hi Alex,
 
-Nice to see this live :)
+Thanks for working on a generic solution for this! Few comments below.
 
-Though as I mentioned in the previous patch, I'd prefer having one full
-driver in a single patch and one separate patch with the skeleton in the
-docs.
+On Thu, Mar 13, 2025 at 11:48:25PM +0900, Alexandre Courbot wrote:
+> Add two macros, reg_def!() and reg_def_rel!(), that define a given
+> register's layout and provide accessors for absolute or relative
+> offsets, respectively.
+> 
+> The following example (taken from the rustdoc) helps understanding how
+> they are used:
+> 
+>     reg_def!(Boot0@0x00000100, "Basic revision information about the chip";
 
-Do you have any meaningful processing that needs to be done in the
-report fixup or in the .raw_event or .event callbacks?
+Should we call the macro just `register!`?
 
-It would be much more interesting to show how this works together on a
-minimalistic driver.
+>         3:0     minor_rev => as u8, "minor revision of the chip";
+>         7:4     major_rev => as u8, "major revision of the chip";
+>         28:20   chipset => try_into Chipset, "chipset model"
 
-FWIW, the driver in itself, though incomplete, looks familiar, which is
-a good thing: we've got a probe and a remove. This is common with all
-the other HID drivers, so it's not a brand new thing.
+I think we probably need an argument indicating whether the register field is
+{RW, RO, WO}, such that we can generate the corresponding accessors / set the
+corresponding masks.
 
-I wonder however how and if we could enforce the remove() to be
-automated by the binding or rust, to not have to deal with resource
-leaking. Because the removal part, especially on failure, is the hardest
-part.
+>     );
+> 
+> This defines a `Boot0` type which can be read or written from offset
+> `0x100` of an `Io` region. It is composed of 3 fields, for instance
+> `minor_rev` is made of the 4 less significant bits of the register. Each
+> field can be accessed and modified using helper methods:
+> 
+>     // Read from offset `0x100`.
+>     let boot0 = Boot0.read(&bar);
+>     pr_info!("chip revision: {}.{}", boot0.major_rev(), boot0.minor_rev());
+> 
+>     // `Chipset::try_from` will be called with the value of the field and
+>     // returns an error if the value is invalid.
+>     let chipset = boot0.chipset()?;
+> 
+>     // Update some fields and write the value back.
+>     boot0.set_major_rev(3).set_minor_rev(10).write(&bar);
+> 
+> Fields are made accessible using one of the following strategies:
+> 
+> - `as <type>` simply casts the field value to the requested type.
+> - `as_bit <type>` turns the field into a boolean and calls
+>   <type>::from()` with the obtained value. To be used with single-bit
+>   fields.
+> - `into <type>` calls `<type>::from()` on the value of the field. It is
+>   expected to handle all the possible values for the bit range selected.
+> - `try_into <type>` calls `<type>::try_from()` on the value of the field
+>   and returns its result.
 
-Cheers,
-Benjamin
+I like that, including the conversion seems pretty convenient.
 
 > 
->   [  +0.012968] monitor_control: Probing HID device vendor: 2389 product: 29204 using Rust!
->   [  +0.000108] monitor_control: Removing HID device vendor: 2389 product: 29204 using Rust!
+> The documentation strings are optional. If present, they will be added
+> to the type or the field getter and setter methods they are attached to.
 > 
-> Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 > ---
->  drivers/hid/hid_monitor_control.rs | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
+> I have written these initially for the nova-core driver, then it has
+> been suggested that they might be useful outside of it as well, so here
+> goes.
+
+Feel free to add my Suggested-by. You can also refer to the corresponding task
+in our nova-core task list.
+
 > 
-> diff --git a/drivers/hid/hid_monitor_control.rs b/drivers/hid/hid_monitor_control.rs
-> index 18afd69a56d5..aeb6e4058a6b 100644
-> --- a/drivers/hid/hid_monitor_control.rs
-> +++ b/drivers/hid/hid_monitor_control.rs
-> @@ -8,17 +8,22 @@
->      Driver,
->  };
->  
-> +const USB_VENDOR_ID_NVIDIA: u32 = 0x0955;
-> +const USB_DEVICE_ID_NVIDIA_THUNDERSTRIKE_CONTROLLER: u32 = 0x7214;
-> +
->  struct HidMonitorControl;
->  
->  #[vtable]
->  impl Driver for HidMonitorControl {
->      fn probe(dev: &mut hid::Device, id: &hid::DeviceId) -> Result<()> {
->          /* TODO implement */
-> +        pr_info!("Probing HID device vendor: {} product: {} using Rust!\n", id.vendor(), id.product());
->          Ok(())
->      }
->  
->      fn remove(dev: &mut hid::Device) {
->          /* TODO implement */
-> +        pr_info!("Removing HID device vendor: {} product: {} using Rust!\n", dev.vendor(), dev.product());
->      }
->  }
->  
-> @@ -26,8 +31,8 @@ fn remove(dev: &mut hid::Device) {
->      driver: HidMonitorControl,
->      id_table: [
->          kernel::usb_device! {
-> -            vendor: /* TODO fill in */,
-> -            product: /* TODO fill in */,
-> +            vendor: USB_VENDOR_ID_NVIDIA,
-> +            product: USB_DEVICE_ID_NVIDIA_THUNDERSTRIKE_CONTROLLER,
->          },
->      ],
->      name: "monitor_control",
-> -- 
-> 2.47.2
+> This is my first serious attempt at writing Rust macros and I am sure
+> there is a lot that is wrong with them, but I'd like to get early
+> feedback and see whether this is actually something we want for the
+> kernel in general.
 > 
+> The following in particular needs to be improved, suggestions are
+> welcome:
 > 
+> - Inner types other than `u32` need to be supported - this can probably
+>   just be an extra parameter of the macro.
+
+Can't we figure this out from the bit mask in the macro?
+
+> - The syntax can certainly be improved. I've tried to some with
+>   something that makes the register layout obvious, while fitting within
+>   the expectations of the Rust macro parser, but my lack of experience
+>   certainly shows here.
+
+Did you consider proc macros for more flexibility?
+
+> - We probably need an option to make some fields or whole registers
+>   read-only.
+
+Ah, I see, you thought of this already.
+
+> - The I/O offset and read/write methods should be optional, so the
+>   layout part can be used for things that are not registers.
+
+I guess you think of shared memory? For DMA we already have the dma_read! and
+dma_write! macros that may fit in.
