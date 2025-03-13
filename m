@@ -1,76 +1,149 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F9E265CA7
-	for <rust-for-linux@vger.kernel.org>; Thu, 13 Mar 2025 10:56:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8335C1D7984;
+	Thu, 13 Mar 2025 11:16:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741863398; cv=none; b=br0EsMpAI0I/S8UhtlQDlp3EVLF5g+1vO3JI93ryVBGDgWrLujhoeSoGlLTA+2w71l9Je/44VU6c16DonIBxlO7QdCnk46xfzeI/rXFwr3PwKlkJZL5e6cDvBx4w7rDMKdAYlsWAwfr5Qr/rzFCK+sQ9dCTTadWpJxqG4OATKLI=
+	t=1741864607; cv=none; b=FpoMRckuPLl9mRuOTFubxKZc4opxO7+npzLW7vyY98IHaViwPgU/xrcCvZtzFRa996voWGrl4AoKDtuO4+abRFnV4hsNXXYkLswShCzFlwjVR5mW4FO3i879bDk0yfh/zOw5MpT10KpS+CjgwN7JcNKNcFRVAI3YJUxkWpBj38c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741863398; c=relaxed/simple;
-	bh=PEW9uDGEU8ys1IZjXzYmhExffAw/eLwERo5YnnluYs8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DNjo8nTCduCOzED7aCgazZwNT/aYlnmd+bgJ5TgwdUr6tAoVg0Ht08J+57bcTtQPmT18vwH85q4ctexHbUKNSdugUnyS52IJUkbNWRmue7Ips+ZaR8GvYs63qoXNMPWk2atjrsfMI84369Ef4ZJzUSLwQ9+8+q6r8nFRR31Ky3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=levgGoQ7; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1741864607; c=relaxed/simple;
+	bh=AhTgMZNp4D2is04ByAJUqKTuWT82jhpRXpZRSKPmoxE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=EyCfWxuVNcfdAbck14dnLaMhjfX25TzYMNksupRyxxr6c7KphrHHzIH3BtzBC2cZzh/tWXXKwAuTrTGHzXAg1xsBai3JGX1LAmj11fhINmNCgRuOKEzV2sx58GvXpTRBS2o+DzdRseWf4iZg6wV4xWvaCrtteQSXDa8ofJYV7KA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=fU+//4vS; arc=none smtp.client-ip=49.12.72.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="levgGoQ7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1741863394; x=1742122594;
-	bh=2hNBX660GcO26GbhJqxD2G5sHgt7JHgGFhDKGFxxWVs=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=levgGoQ7QaX8bsnVbFboKjk/eLHe5Dr4uFY6zC/XXaLVO99RIVMU299qGekU3tWwN
-	 gwwf/+870OpqqmHNd3NwFrTZAQMggbUnxBNkiaIMgrSdqE+KcAZqP0Q9zeSWthXw2u
-	 4BJ/EhgO4UTHdERZ0ZZB016X44XVrKWdQ0GTnsOqwTNpep/Sa4qvpaVKdJlVvNsqSH
-	 qra+2HAoNuOKvfWNpW8mj9A3zr0/SURw3PJQOXQh/C8QK/w+4b8yWfK+r3daCfEKOa
-	 N32YJumNcKr6n/FpZHm0wqzTIiuHb20s1prrMcKtboFHTb0aD4VyxjZ++NkEfmJWPT
-	 wWl9RUStbvL8Q==
-Date: Thu, 13 Mar 2025 10:56:30 +0000
-To: Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Lee Jones <lee@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] samples: rust_misc_device: fix markup in top-level docs
-Message-ID: <D8F31D220PWN.AJV57JVJZYXY@proton.me>
-In-Reply-To: <20250313-rust_misc_device_tld-v1-1-a519bced9a6d@google.com>
-References: <20250313-rust_misc_device_tld-v1-1-a519bced9a6d@google.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 160c2b85675c8be54b8ac9c0eacd88a9f2ecdb51
+	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="fU+//4vS"
+From: Fiona Behrens <me@kloenk.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
+	t=1741864597; bh=60ZND3jJQUMY3L36GWenEamlL5JvgMG9LnAmaBbzKyQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=fU+//4vScitbpQMWN8/BnpKcAA5hiWm/YxRf1cwfo3DGCME7+q7s42LUp/xItfxW7
+	 RCWGwt//xeQuDYeZEiNHLhF431ZJJ9Lx2VnLRQkjxjN4drVOldk5i+yffDfXJTamIY
+	 o0I1ha6VjzwuvI6b1W7bS+b7xK9xlr6u9szKI/3o=
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Danilo Krummrich <dakr@kernel.org>,  Miguel Ojeda <ojeda@kernel.org>,
+  Alex Gaynor <alex.gaynor@gmail.com>,  Boqun Feng <boqun.feng@gmail.com>,
+  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+  Andreas Hindborg <a.hindborg@kernel.org>,  Alice Ryhl
+ <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,
+  rust-for-linux@vger.kernel.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 09/22] rust: pin-init: move impl `Zeroable` for
+ `Opaque` and `Option<KBox<T>>` into the kernel crate
+In-Reply-To: <20250308110339.2997091-10-benno.lossin@proton.me> (Benno
+	Lossin's message of "Sat, 08 Mar 2025 11:04:38 +0000")
+References: <20250308110339.2997091-1-benno.lossin@proton.me>
+	<20250308110339.2997091-10-benno.lossin@proton.me>
+Date: Thu, 13 Mar 2025 12:16:36 +0100
+Message-ID: <m2zfhpxjsb.fsf@kloenk.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Thu Mar 13, 2025 at 9:52 AM CET, Alice Ryhl wrote:
-> The meaning of /// is to document the thing that comes after it, so
-> currently the example is documentation for the `use core::pin::Pin;`
-> statement. To write top-level docs (and have them rendered as such in
-> the html by rustdoc), use //! instead.
+Benno Lossin <benno.lossin@proton.me> writes:
+
+> In order to make pin-init a standalone crate, move kernel-specific code
+> directly into the kernel crate. Since `Opaque<T>` and `KBox<T>` are part
+> of the kernel, move their `Zeroable` implementation into the kernel
+> crate.
 >
-> This does not change the contents of the docs at all. The only change is
-> changing /// to //!.
->
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+> Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-Good catch! I think this should have a fixes tag:
-
-    Fixes: 8d9b095b8f89 ("samples: rust_misc_device: Provide an example C p=
-rogram to exercise functionality")
-
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
----
-Cheers,
-Benno
+Reviewed-by: Fiona Behrens <me@kloenk.dev>
 
 > ---
->  samples/rust/rust_misc_device.rs | 181 ++++++++++++++++++++-------------=
-------
->  1 file changed, 91 insertions(+), 90 deletions(-)
-
+>  rust/kernel/alloc/kbox.rs | 8 +++++++-
+>  rust/kernel/types.rs      | 5 ++++-
+>  rust/pin-init/src/lib.rs  | 8 +-------
+>  3 files changed, 12 insertions(+), 9 deletions(-)
+>
+> diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
+> index 39a3ea7542da..9861433559dc 100644
+> --- a/rust/kernel/alloc/kbox.rs
+> +++ b/rust/kernel/alloc/kbox.rs
+> @@ -15,7 +15,7 @@
+>  use core::ptr::NonNull;
+>  use core::result::Result;
+>  
+> -use crate::init::{InPlaceWrite, Init, PinInit};
+> +use crate::init::{InPlaceWrite, Init, PinInit, Zeroable};
+>  use crate::init_ext::InPlaceInit;
+>  use crate::types::ForeignOwnable;
+>  
+> @@ -100,6 +100,12 @@
+>  /// ```
+>  pub type KVBox<T> = Box<T, super::allocator::KVmalloc>;
+>  
+> +// SAFETY: All zeros is equivalent to `None` (option layout optimization guarantee).
+> +//
+> +// In this case we are allowed to use `T: ?Sized`, since all zeros is the `None` variant and there
+> +// is no problem with a VTABLE pointer being null.
+> +unsafe impl<T: ?Sized, A: Allocator> Zeroable for Option<Box<T, A>> {}
+> +
+>  // SAFETY: `Box` is `Send` if `T` is `Send` because the `Box` owns a `T`.
+>  unsafe impl<T, A> Send for Box<T, A>
+>  where
+> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> index 2bbaab83b9d6..9f75bd3866e8 100644
+> --- a/rust/kernel/types.rs
+> +++ b/rust/kernel/types.rs
+> @@ -2,7 +2,7 @@
+>  
+>  //! Kernel types.
+>  
+> -use crate::init::{self, PinInit};
+> +use crate::init::{self, PinInit, Zeroable};
+>  use core::{
+>      cell::UnsafeCell,
+>      marker::{PhantomData, PhantomPinned},
+> @@ -309,6 +309,9 @@ pub struct Opaque<T> {
+>      _pin: PhantomPinned,
+>  }
+>  
+> +// SAFETY: `Opaque<T>` allows the inner value to be any bit pattern, including all zeros.
+> +unsafe impl<T> Zeroable for Opaque<T> {}
+> +
+>  impl<T> Opaque<T> {
+>      /// Creates a new opaque value.
+>      pub const fn new(value: T) -> Self {
+> diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
+> index f88465e0bb76..aad6486d33fc 100644
+> --- a/rust/pin-init/src/lib.rs
+> +++ b/rust/pin-init/src/lib.rs
+> @@ -211,10 +211,7 @@
+>  //! [`pin_data`]: ::macros::pin_data
+>  //! [`pin_init!`]: crate::pin_init!
+>  
+> -use crate::{
+> -    alloc::KBox,
+> -    types::{Opaque, ScopeGuard},
+> -};
+> +use crate::{alloc::KBox, types::ScopeGuard};
+>  use core::{
+>      cell::UnsafeCell,
+>      convert::Infallible,
+> @@ -1342,8 +1339,6 @@ macro_rules! impl_zeroable {
+>  
+>      // SAFETY: Type is allowed to take any value, including all zeros.
+>      {<T>} MaybeUninit<T>,
+> -    // SAFETY: Type is allowed to take any value, including all zeros.
+> -    {<T>} Opaque<T>,
+>  
+>      // SAFETY: `T: Zeroable` and `UnsafeCell` is `repr(transparent)`.
+>      {<T: ?Sized + Zeroable>} UnsafeCell<T>,
+> @@ -1358,7 +1353,6 @@ macro_rules! impl_zeroable {
+>      //
+>      // In this case we are allowed to use `T: ?Sized`, since all zeros is the `None` variant.
+>      {<T: ?Sized>} Option<NonNull<T>>,
+> -    {<T: ?Sized>} Option<KBox<T>>,
+>  
+>      // SAFETY: `null` pointer is valid.
+>      //
