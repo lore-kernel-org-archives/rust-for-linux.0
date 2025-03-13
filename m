@@ -1,98 +1,44 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A0D269811
-	for <rust-for-linux@vger.kernel.org>; Thu, 13 Mar 2025 14:32:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88393267F46;
+	Thu, 13 Mar 2025 14:37:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741876342; cv=none; b=UT5Fx2udVROoacQOXxAUDw6e+IbOe5Z+LzObwl/6jyDo5UCKKbvg7IK5gsEdCy0swIAYQsRwfWRcmjLw+fkhL55O6Wi75QUBM6o476+/bTpTGyBn3vnYqB6FqpstK+yFMXKhdT+dkNOjDpDcgCBVk4xFcOJkLyU8aah8j+UC7bc=
+	t=1741876649; cv=none; b=bWgHfrQb6uqUBo76sA2A+1JYBtbrNg6DfksmnXot91BG70g3Eyu4D8ZyFDAD6lg+jVrTF5qWuNy/ezLXgUlHw5y3A7fC01EYpCE9+vymP+AdxLhLTAaCejdW9JQPHNYSrpdpY/keVETHBeFm38y7TxLe5vaucriavqQJgaOn8JI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741876342; c=relaxed/simple;
-	bh=/yrqr/kP1EJR9t5LJP6eSDqwNOvaQpO0TbRbpzschK0=;
+	s=arc-20240116; t=1741876649; c=relaxed/simple;
+	bh=LhFMU6K6jQihr1xX62MfXoMmTy9dTr3t2WHAnyeflgI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=elN26G9T8SGz6h5HApcM03MDw3Pcvgbysw2hJVXj4xO6P2SOcyjiuZRSiaXrCA2IkJ9lx9kd4ASUqZwri65lEq29fHJbGDUwZDlyIh6Lu+8UaPNkEko6kKsSLegh2QpGhrHCdreM++z3LjVqEh7Y5P+B2iwzqYjSIbLA4nCMeGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=E935mYfq; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=DHaP0wSJDVL0ygt/M4YVddCQGfqtfWs7WIgDvYwbbJYd3LixNwjQFA5wHiXTdiysgQpuDv49pOH23rduJxCm++TsmtFAe9xTegTjBs2z0SK4BDOaTLy+SM+1JrlAuKTVAUYgU/w0iuR25Bw/9VwMDY+2Sx0mVdxdC66mIowlGMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LnfMx7e/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="E935mYfq"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3913958ebf2so844475f8f.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 13 Mar 2025 07:32:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1741876337; x=1742481137; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qmJEZa8bhP51f5WeMX8gVU0QSf/9tpQBkqyv3+FpHNc=;
-        b=E935mYfqFbvgA5YWSOjjr7GKTPwzlBBCidu4CB2841mhxVHhgcN8l/FylbB2PZX71i
-         6cqHOIToP2bRRvWX6zWHmcg5bMaZ7XHfMfC/AhR/5p3EwtdLG4kHffoXWbRlieYYm/Gt
-         0uHIP/wrRufjjZtXfF9fcXmjXAlhRTU7XnJKw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741876337; x=1742481137;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qmJEZa8bhP51f5WeMX8gVU0QSf/9tpQBkqyv3+FpHNc=;
-        b=YC3Bs4w/Cytd/tw6hYSQV5RHUpSXTuc2QrK0Au3czq7QKyCi5j8280ARqH2a7A1goq
-         hZ8zGh+jH5uQGp6zqZeRBYHCJvwUJSrdrVmIqHc2arH+zJLuoEYNZcX0kHstTInfbPTU
-         a/+e++4vgvQx+3twrUotbLhdb0SMnCfSZb/YC6tyt0bQFHSJ0wqViSdnsd5ex8ugaAZe
-         WNI1OT/FMdcTBjm42iE/BF2e2XRhIthOjIwCSRCQ04oojHOPaU2yFcZL2LPiYqR+MCGD
-         /qYA/9jCGklki0hcpLkEf4j0FxhxDpsrmKnG/U9nc1je0KSg/df+idN+RjSUNWDQoZJ9
-         qvGg==
-X-Forwarded-Encrypted: i=1; AJvYcCV4hjOpxFa9sYBKLnkPFEYgjNr4KjtTihLXm6JPfmUzrf33xRpsCQtZWQc/lKgioVm4Ggn2xxqh9H3e8uP8yA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YydqG5Uz8JOUKtqDCJwf42u6mYXXPoveUOON4LnWm1letnP6gN0
-	f1ksnAB0xBhXvUxLxMnLgxg9kNgSHwd9EX/wdk+e3Naz7irkyvHcJtd9rNeGOF8=
-X-Gm-Gg: ASbGncs3mw/x7TmEVzsVZTwOGiJnIFvhPOEFIbR/83fyzM/JpCBxIYF8s2zcFW3JTXr
-	tIRrwdxwWzeohVoUW/BN+bRDje16lsGefZg/FPBL54QWXK0aqo3EpKf90EpEmoR9OAOgwiiCJeB
-	2OiNc6VL/pUS2RhoYfWzewCI6r5MsrwgIdLQ7NXiZIFgmC2+21DXh0zqPw7HsmFyzsa6f4cwD2M
-	0FqF+JaIfa/pLh/wmZaM2/Tg6q6D09knnXd6zQVwXNd6jD70VihvWA2rEsKv0VO37w2gMCKS35Q
-	GYAXKPAP+5rshSj5/w/VjJCgaaEkfZnTTydBiR205TU5HBj5shFy84i5
-X-Google-Smtp-Source: AGHT+IHONUiodfS/fWexcjBKJ56cHcP98PgHHjaNe3WzTXhC4/in7mzoTQfPI07gJnTJ+29TnXggtg==
-X-Received: by 2002:a05:6000:2109:b0:391:2a9a:478c with SMTP id ffacd0b85a97d-39264693887mr8443406f8f.23.1741876337388;
-        Thu, 13 Mar 2025 07:32:17 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-395c83b6b70sm2338337f8f.30.2025.03.13.07.32.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Mar 2025 07:32:16 -0700 (PDT)
-Date: Thu, 13 Mar 2025 15:32:14 +0100
-From: Simona Vetter <simona.vetter@ffwll.ch>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: John Hubbard <jhubbard@nvidia.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Ben Skeggs <bskeggs@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	paulmck@kernel.org
-Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
- implementation
-Message-ID: <Z9LsbhzjI-P3-edQ@phenom.ffwll.local>
-Mail-Followup-To: Jason Gunthorpe <jgg@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Ben Skeggs <bskeggs@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	paulmck@kernel.org
-References: <Z8cmBWB8rl97-zSG@phenom.ffwll.local>
- <20250304164201.GN133783@nvidia.com>
- <Z8f9mgD4LUJN_dWw@phenom.ffwll.local>
- <20250305151012.GW133783@nvidia.com>
- <Z8l8HgZOV7sDWqBh@phenom.ffwll.local>
- <20250306153236.GE354511@nvidia.com>
- <Z8rKVZolu8n6lB1P@phenom.ffwll.local>
- <20250307123255.GK354511@nvidia.com>
- <Z8rv-DQuGdxye28N@phenom.ffwll.local>
- <20250307145557.GO354511@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LnfMx7e/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7289BC4CEEA;
+	Thu, 13 Mar 2025 14:37:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741876649;
+	bh=LhFMU6K6jQihr1xX62MfXoMmTy9dTr3t2WHAnyeflgI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LnfMx7e/Vy0pmVhTtC4kVHNB7nOpLFnTz5tZpq5x3X0hcFojJVrubvEAcKyfNsWcb
+	 1o2LgujMWRoo56m4lkgzgU1fSYXRe6lLndUtT/xx4zyjhkF3gkM1tneA99mwrcNT0Z
+	 yexApPbWx+0iNePTIOJP3pQQDQ/hQlCtFRT4sAyRI7+JSp/dBpN49CG87IIsWE2PgO
+	 TPzcYvdCX2D+s2WXGaUR5cPRM0zWf5T3FJESE/1ZyFQgHzOaAQfwx6eyA9olspu+ND
+	 lRQxzVQ5b+eGJyDsUjMgBnZOe25U5ZpwQABgZQvWPOhz/JS2eWJwJukA1e1EowBkRA
+	 yzWca552DlJxw==
+Date: Thu, 13 Mar 2025 15:37:23 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust/revocable: add try_with() convenience method
+Message-ID: <Z9Lto6tbWS0kR6gK@pollux>
+References: <20250313-try_with-v1-1-adcae7ed98a9@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -101,88 +47,115 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250307145557.GO354511@nvidia.com>
-X-Operating-System: Linux phenom 6.12.11-amd64 
+In-Reply-To: <20250313-try_with-v1-1-adcae7ed98a9@nvidia.com>
 
-On Fri, Mar 07, 2025 at 10:55:57AM -0400, Jason Gunthorpe wrote:
-> On Fri, Mar 07, 2025 at 02:09:12PM +0100, Simona Vetter wrote:
-> 
-> > > A driver can do a health check immediately in remove() and make a
-> > > decision if the device is alive or not to speed up removal in the
-> > > hostile hot unplug case.
-> > 
-> > Hm ... I guess when you get an all -1 read you check with a specific
-> > register to make sure it's not a false positive? Since for some registers
-> > that's a valid value.
-> 
-> Yes. mlx5 has HW designed to support this, but I imagine on most
-> devices you could find an ID register or something that won't be -1.
-> 
-> > - The "at least we don't blow up with memory safety issues" bare minimum
-> >   that the rust abstractions should guarantee. So revocable and friends.
-> 
-> I still really dislike recovable because it imposes a cost that is
-> unnecessary.
-> 
-> > And I think the latter safety fallback does not prevent you from doing the
-> > full fancy design, e.g. for revocable resources that only happens after
-> > your explicitly-coded ->remove() callback has finished. Which means you
-> > still have full access to the hw like anywhere else.
-> 
-> Yes, if you use rust bindings with something like RDMA then I would
-> expect that by the time remove is done everything is cleaned up and
-> all the revokable stuff was useless and never used.
-> 
-> This is why I dislike revoke so much. It is adding a bunch of garbage
-> all over the place that is *never used* if the driver is working
-> correctly.
-> 
-> I believe it is much better to runtime check that the driver is
-> correct and not burden the API design with this.
+Hi Alex,
 
-You can do that with for example runtime proofs. R4l has that with
-Mutex from one structure protecting other structures (like in a tree). But
-since the compiler can't prove those you trade in the possibility that you
-will hit a runtime BUG if things don't line up.
+Thanks for looking into this!
 
-So subsystems that ensure that driver callbacks never run concurrently
-with a revocation could guarantee that revocable resources are always
-present.
-
-> Giving people these features will only encourage them to write wrong
-> drivers.
-
-So I think you can still achieve that building on top of revocable and a
-few more abstractions that are internally unsafe. Or are you thinking of
-different runtime checks?
-
-> This is not even a new idea, devm introduces automatic lifetime into
-> the kernel and I've sat in presentations about how devm has all sorts
-> of bug classes because of misuse. :\
-
-Yeah automatic lifetime is great, until people mix up things with
-different lifetimes, then it all goes wrong.
-
-> > Does this sounds like a possible conclusion of this thread, or do we need
-> > to keep digging?
+On Thu, Mar 13, 2025 at 09:40:59PM +0900, Alexandre Courbot wrote:
+> Revocable::try_access() returns a guard through which the wrapped object
+> can be accessed. Code that can sleep is not allowed while the guard is
+> held ; thus, it is common that the caller will explicitly need to drop
+> it before running sleepable code, e.g:
 > 
-> IDK, I think this should be socialized more. It is important as it
-> effects all drivers here out, and it is radically different to how the
-> kernel works today.
+>     let b = bar.try_access()?;
+>     let reg = b.readl(...);
 > 
-> > Also now that I look at this problem as a two-level issue, I think drm is
-> > actually a lot better than what I explained. If you clean up driver state
-> > properly in ->remove (or as stack automatic cleanup functions that run
-> > before all the mmio/irq/whatever stuff disappears), then we are largely
-> > there already with being able to fully quiescent driver state enough to
-> > make sure no new requests can sneak in. 
+>     // Don't forget this or things could go wrong!
+>     drop(b);
 > 
-> That is the typical subsystem design!
+>     something_that_might_sleep();
+> 
+>     let b = bar.try_access()?;
+>     let reg2 = b.readl(...);
 
-Yeah maybe we're not that far really. But I'm still not clear how to do
-an entirely revoke-less world.
--Sima
--- 
-Simona Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Ideally, we get klint to protect us against those kind of mistakes too.
+
+> This is arguably error-prone. try_with() and try_with_ok() provides an
+> arguably safer alternative, by taking a closure that is run while the
+> guard is held, and by dropping the guard automatically after the closure
+> completes. This way, code can be organized more clearly around the
+> critical sections and the risk is forgetting to release the guard when
+> needed is considerably reduced:
+> 
+>     let reg = bar.try_with_ok(|b| b.readl(...))?;
+> 
+>     something_that_might_sleep();
+> 
+>     let reg2 = bar.try_with_ok(|b| b.readl(...))?;
+
+However, that's much more convenient and a great improvement.
+
+Feel free to add
+
+	Acked-by: Danilo Krummrich <dakr@kernel.org>
+
+> 
+> Unlike try_access() which returns an Option, try_with() and
+> try_with_ok() return Err(ENXIO) if the object cannot be acquired. The
+> Option returned by try_access() is typically converted to an error in
+> practice, so this saves one step for the caller.
+> 
+> try_with() requires the callback itself to return a Result that is
+> passed to the caller. try_with_ok() accepts a callback that never fails.
+> 
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+
+Since I proposed something like that in one of the nova threads (and in Zulip),
+feel free to also add
+
+	Suggested-by: Danilo Krummrich <dakr@kernel.org>
+
+> ---
+> This is a feature I found useful to have while writing Nova driver code
+> that accessed registers alongside other operations. I would find myself
+> quite confused about whether the guard was held or dropped at a given
+> point of the code, and it felt like walking through a minefield ; this
+> pattern makes things safer and easier to read IMHO.
+> ---
+>  rust/kernel/revocable.rs | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
+> 
+> diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
+> index 1e5a9d25c21b279b01f90b02997492aa4880d84f..0157b20373b5b2892cb618b46958bfe095e428b6 100644
+> --- a/rust/kernel/revocable.rs
+> +++ b/rust/kernel/revocable.rs
+> @@ -105,6 +105,28 @@ pub fn try_access(&self) -> Option<RevocableGuard<'_, T>> {
+>          }
+>      }
+>  
+> +    /// Tries to access the wrapped object and run the closure `f` on it with the guard held.
+> +    ///
+> +    /// This is a convenience method to run short non-sleepable code blocks while ensuring the
+> +    /// guard is dropped afterwards. [`Self::try_access`] carries the risk that the caller
+> +    /// will forget to explicitly drop that returned guard before calling sleepable code ; this
+> +    /// method adds an extra safety to make sure it doesn't happen.
+> +    ///
+> +    /// Returns `Err(ENXIO)` if the wrapped object has been revoked, or the result of `f` after it
+> +    /// has been run.
+> +    pub fn try_with<R, F: Fn(&T) -> Result<R>>(&self, f: F) -> Result<R> {
+> +        self.try_access().ok_or(ENXIO).and_then(|t| f(&*t))
+> +    }
+> +
+> +    /// Tries to access the wrapped object and run the closure `f` on it with the guard held.
+> +    ///
+> +    /// This is the same as [`Self::try_with`], with the exception that `f` is expected to
+> +    /// always succeed and thus does not need to return a `Result`. Thus the only error case is if
+> +    /// the wrapped object has been revoked.
+> +    pub fn try_with_ok<R, F: Fn(&T) -> R>(&self, f: F) -> Result<R> {
+> +        self.try_with(|t| Ok(f(t)))
+> +    }
+> +
+>      /// Tries to access the revocable wrapped object.
+>      ///
+>      /// Returns `None` if the object has been revoked and is therefore no longer accessible.
+> 
+> ---
+> base-commit: 4d872d51bc9d7b899c1f61534e3dbde72613f627
+> change-id: 20250313-try_with-cc9f91dd3b60
+> 
+> Best regards,
+> -- 
+> Alexandre Courbot <acourbot@nvidia.com>
+> 
