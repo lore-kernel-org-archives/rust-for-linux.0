@@ -1,302 +1,95 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1028C262D39
-	for <rust-for-linux@vger.kernel.org>; Thu, 13 Mar 2025 08:52:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA841EFF95;
+	Thu, 13 Mar 2025 09:52:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741855980; cv=none; b=ZQS6eciPZMDe6aqgtTxO29FRp3q6Ho5dEWhL/1RRWB1cbsG9oNHV/uivfnPys5U/O3c44IRzceygLdcUtyotp4RNxiJRredGm3v5NaNWzEJNKOX6yvhRpWYisOnjuRzOCd+hGwZxhFlS3u+kd4IppJ6P+BPShNyI5iFOD8tzZig=
+	t=1741859531; cv=none; b=fnNVyAO6bc0iEenZGizdthL513SebK69TtVXrPEHexv645/rcb6efqoeDAdoSqFYHd6MiXLi4ExcWIHFmdnUXfxf0h8ymm6v101YGJaTDsHLm5U6cQk/xjWYhkQa5+RMtZSaCz0zgXDMMxXZQhCKzGVG1nZo3MtdcADWub5bnVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741855980; c=relaxed/simple;
-	bh=B60cmvatsBTV+TadNyiteqdRIJr0Vh6J8NTfO7bcc3c=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=OU1VnmIEb5VSR/hNReUV4V+UZE9xhrWrc+lZsX/lgJxGVwMuGejZZV/Z8E+uv0W1haQHTmznsQvJggMCqtjy34XkQwwG5YWPr2XAukMrOegECJxElxUKuicO5VuzPrGQhwJTLz5f5sHdV1pr80GNfK5rVk1NFyEurrHaPoXdB60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=svniIdmr; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1741859531; c=relaxed/simple;
+	bh=RImN1egxLchm1OT4LIp3YQNEJIdkxcWAKbh1WlvMwro=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O0MXeqU8p1t+PtjKBW92JvRZSBwLmALFRhw/9QeZHUuab77DVO8yBYIf9RGxGVNbqpENmrVXQ3bpza+Y/SiTjTePRhRIgas+gwqC825/1S3HeyFciP8mXCA2htcSg7K30RvTnFLb/jX3hv8rBfxZc94ex5Qhc4i26J1cldh2n3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=USXOlYhG; arc=none smtp.client-ip=91.218.175.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="svniIdmr"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43941ad86d4so3190175e9.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 13 Mar 2025 01:52:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741855976; x=1742460776; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=oGmBak50vxMWviTu0tMlQwgGYOz3feUzTuxbm0LlmKU=;
-        b=svniIdmrZsB1xNRtpIJlNT72vjNWhPSR97nvpg4yN3S8QVyFrp6L121yWUkRer7tGK
-         lFAYWcdmaUCf4xq6b7TnKAJme39FEPEq04kh3ZHVpW/LuWSm5rueUh86kxLW3MSROP7k
-         8xJ4kFh2RZwUvQcgL6KUVo+4tz201M6PfVRa5saOCNC/uwAYU3aawvxwfFpzgM5K3GNa
-         7SaxCRabi4IVkyIuvHMXHLc1XBGqndSqtYpSeLxfxFO9e1YBITQov47RbPx6QkvpYLzU
-         baoM17Uu5mrY0zxtIc62MIKquazCZkcYKBQqUa9QxG/C7S+xnLnQDFBkGm+gxfC4jV5N
-         U6Lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741855976; x=1742460776;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=oGmBak50vxMWviTu0tMlQwgGYOz3feUzTuxbm0LlmKU=;
-        b=nrI/RkBomuTLW0b4FiEok5Br3PATEDEVnE337a+k2FXg4M15z0iAYqCLgIJ/ZFNyvp
-         az12CeNrXGPpgTlW//Zqqk/4I0wQxNhuIuWHOIY4csANTQbEY7Dnywe3S2gZv4ifD77d
-         c6UMN1pBAcTB4nhD7FBdcQU96dOSkRRxPFc++Z+RvoCJmsNyQnJBoRQPDcqfyZtq993o
-         1tjd3XsyStL+FsfO3wHUiN3fUH5dFf5D2bExUJ24bQgfhoGd722H8KNEUVKZXKxDxYfW
-         F+OrL7PlnPrbQ2uZ4NCP1bbkb8xRS3IvBIMyCFApwsjPN+rBwNI/8Rnhe87L3d/vPkL6
-         NIyA==
-X-Forwarded-Encrypted: i=1; AJvYcCVkDrVZnHH/2R3U+QLQWcYBx6+3uNpJ9IXEM/vh56CEHVazAe1eMo0X+zySMrAH8yA7K1FwG8/AxZzSWJ8HQA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YztBGRVTy1yVzuWRwebldqZmztsd8BIAGkGOTFoCZQ+7acUzy8x
-	9Z0ycbyecYE0T+4gIsby4LInQ1eSU5Ou3bf6RBdI32J7WjMMEcL0BSdd3hiWsN0nrfnkka1lg10
-	OQF2ZBH6iMu/hUw==
-X-Google-Smtp-Source: AGHT+IFMlxgAbcZlB8BaJfKWUuaxRImNIAzPdA+jl808PsvZy09gOtzLzfDaycyQqQF3tBUSrM+uadh9GZE1ffg=
-X-Received: from wmbgx9.prod.google.com ([2002:a05:600c:8589:b0:43d:10b:2c42])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3155:b0:43d:172:50b1 with SMTP id 5b1f17b1804b1-43d017258e1mr100973925e9.29.1741855976230;
- Thu, 13 Mar 2025 01:52:56 -0700 (PDT)
-Date: Thu, 13 Mar 2025 08:52:44 +0000
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="USXOlYhG"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1741859525;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=TM8qKG71XU2PpI8GcJlKeLnN9Dz9qQxF9PPdUnLxAQ4=;
+	b=USXOlYhG8LNwCtDKk+I7M2S0G3tn39sxx2ppKNtg3HxS5AfvC49bqJNgf/iDT/zluxuTTx
+	/eZnn2FotMOW13djKC7p5kBVr6ww1kO3zWsbo7T1psBnxZPUMjUTlKigrlUIPKSNhnpj72
+	W+K04HUgkMnwRJtXvrgJGozCnk2o+UQ=
+From: Kunwu Chan <kunwu.chan@linux.dev>
+To: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	nathan@kernel.org,
+	nick.desaulniers+lkml@gmail.com,
+	morbo@google.com,
+	justinstitt@google.com
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev,
+	Kunwu Chan <kunwu.chan@hotmail.com>,
+	Grace Deng <Grace.Deng006@Gmail.com>
+Subject: [PATCH] rust: optimize rust symbol generation for SeqFile
+Date: Thu, 13 Mar 2025 17:51:19 +0800
+Message-ID: <20250313095120.820334-1-kunwu.chan@linux.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIANyc0mcC/x2M0QpAMBRAf0X32WobRn5FWtoubjHaRUr+3fJ46
- pzzAGMkZGizByJexLSFBCrPwM1DmFCQTwxa6koWSot48mFXYmd90h3aY/GiqCtfusagkQZSukc c6f63Xf++H30S//pmAAAA
-X-Change-Id: 20250312-rust_misc_device_tld-375d4c86e606
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6510; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=B60cmvatsBTV+TadNyiteqdRIJr0Vh6J8NTfO7bcc3c=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBn0pzdpia0z/18cRRU/hozqzA1OFwdC0vtxoTVP
- ITCWBI05U6JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ9Kc3QAKCRAEWL7uWMY5
- RgK2D/48SEVoR7kp7wF5nyJozyctYc3vIiigedhKo7Ouu0T+m2tJz2lLL2kOQ199Vk0aN0kbMfX
- OQ3lwtt1XMbJo2YbWwcbMD5sro48UWPNtXFKn1CBUgMlYDeEYgpWqyHfZEPwmJfycq1vCbpFkHm
- j/VrOxJIUK9r7DcHkS8m6TV7lQ4xqrZx893kC1T5n+gnlI9gk9CR5VcwFCi713AiHH1kqHiUej/
- By5CW2BHGQegzYkK4XPP2tHsoCUUlGSxVUO4RSGaocLKjFhrK2wHdHM8v94wlTyRi3hgUic1Ygr
- 8ZbiP3DJUij+4i84x2tfK01Z0uk6+9v5ab13NFKLAgtBeWvS3JTGJ++O1aefd3AMS3IXRgHVrk5
- igczULn5RNiKGZ+WrjiSdPew0eysw3iaB5rbamc/+sf+LsDCjRd+QgUTYeEdj4wvGfQPy0TQbhS
- dHhB9SbwX2MYyKkAigO2mMnB5dO0TCaOJPqseVYZSL8/GAwlr+O0SwPHkA3jB/7saKiPmYkcuWR
- sI0F4L5QxxckcL2eOPx1Aavf7wqUUrEsJ+uRdQhSN56Gi2Ds8ltSc4dKgU8QvFtqY1gjLtzaXIK
- roPzt8fYLgDCoN2GlglJJOyn25T7JU7D1DmbM7vhUzXEKlMulCLbxPCkQTraFFzh/7rUJL6hiJ1 URm5vPBj+TU3zzA==
-X-Mailer: b4 0.14.2
-Message-ID: <20250313-rust_misc_device_tld-v1-1-a519bced9a6d@google.com>
-Subject: [PATCH] samples: rust_misc_device: fix markup in top-level docs
-From: Alice Ryhl <aliceryhl@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Lee Jones <lee@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-The meaning of /// is to document the thing that comes after it, so
-currently the example is documentation for the `use core::pin::Pin;`
-statement. To write top-level docs (and have them rendered as such in
-the html by rustdoc), use //! instead.
+From: Kunwu Chan <kunwu.chan@hotmail.com>
 
-This does not change the contents of the docs at all. The only change is
-changing /// to //!.
+When build the kernel using the llvm-18.1.3-rust-1.85.0-x86_64
+with ARCH=arm64, the following symbols are generated:
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+$nm vmlinux | grep ' _R'.*SeqFile | rustfilt
+ffff8000805b78ac T <kernel::seq_file::SeqFile>::call_printf
+
+This Rust symbol is trivial wrappers around the C functions seq_printf.
+It doesn't make sense to go through a trivial wrapper for its functions,
+so mark it inline.
+
+After doing so, the above symbol will not in output.
+
+Signed-off-by: Kunwu Chan <kunwu.chan@hotmail.com>
+Co-developed-by: Grace Deng <Grace.Deng006@Gmail.com>
+Signed-off-by: Grace Deng <Grace.Deng006@Gmail.com>
 ---
- samples/rust/rust_misc_device.rs | 181 ++++++++++++++++++++-------------------
- 1 file changed, 91 insertions(+), 90 deletions(-)
+ rust/kernel/seq_file.rs | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_device.rs
-index 40ad7266c2252e5c0b4e91e501ef9ada2eda3b16..17ae59979dd05d3e240966e598e5ce0cbf10ef18 100644
---- a/samples/rust/rust_misc_device.rs
-+++ b/samples/rust/rust_misc_device.rs
-@@ -3,97 +3,98 @@
- // Copyright (C) 2024 Google LLC.
+diff --git a/rust/kernel/seq_file.rs b/rust/kernel/seq_file.rs
+index 04947c672979..efc4dd09850a 100644
+--- a/rust/kernel/seq_file.rs
++++ b/rust/kernel/seq_file.rs
+@@ -30,6 +30,7 @@ pub unsafe fn from_raw<'a>(ptr: *mut bindings::seq_file) -> &'a SeqFile {
+     }
  
- //! Rust misc device sample.
-+//!
-+//! Below is an example userspace C program that exercises this sample's functionality.
-+//!
-+//! ```c
-+//! #include <stdio.h>
-+//! #include <stdlib.h>
-+//! #include <errno.h>
-+//! #include <fcntl.h>
-+//! #include <unistd.h>
-+//! #include <sys/ioctl.h>
-+//!
-+//! #define RUST_MISC_DEV_FAIL _IO('|', 0)
-+//! #define RUST_MISC_DEV_HELLO _IO('|', 0x80)
-+//! #define RUST_MISC_DEV_GET_VALUE _IOR('|', 0x81, int)
-+//! #define RUST_MISC_DEV_SET_VALUE _IOW('|', 0x82, int)
-+//!
-+//! int main() {
-+//!   int value, new_value;
-+//!   int fd, ret;
-+//!
-+//!   // Open the device file
-+//!   printf("Opening /dev/rust-misc-device for reading and writing\n");
-+//!   fd = open("/dev/rust-misc-device", O_RDWR);
-+//!   if (fd < 0) {
-+//!     perror("open");
-+//!     return errno;
-+//!   }
-+//!
-+//!   // Make call into driver to say "hello"
-+//!   printf("Calling Hello\n");
-+//!   ret = ioctl(fd, RUST_MISC_DEV_HELLO, NULL);
-+//!   if (ret < 0) {
-+//!     perror("ioctl: Failed to call into Hello");
-+//!     close(fd);
-+//!     return errno;
-+//!   }
-+//!
-+//!   // Get initial value
-+//!   printf("Fetching initial value\n");
-+//!   ret = ioctl(fd, RUST_MISC_DEV_GET_VALUE, &value);
-+//!   if (ret < 0) {
-+//!     perror("ioctl: Failed to fetch the initial value");
-+//!     close(fd);
-+//!     return errno;
-+//!   }
-+//!
-+//!   value++;
-+//!
-+//!   // Set value to something different
-+//!   printf("Submitting new value (%d)\n", value);
-+//!   ret = ioctl(fd, RUST_MISC_DEV_SET_VALUE, &value);
-+//!   if (ret < 0) {
-+//!     perror("ioctl: Failed to submit new value");
-+//!     close(fd);
-+//!     return errno;
-+//!   }
-+//!
-+//!   // Ensure new value was applied
-+//!   printf("Fetching new value\n");
-+//!   ret = ioctl(fd, RUST_MISC_DEV_GET_VALUE, &new_value);
-+//!   if (ret < 0) {
-+//!     perror("ioctl: Failed to fetch the new value");
-+//!     close(fd);
-+//!     return errno;
-+//!   }
-+//!
-+//!   if (value != new_value) {
-+//!     printf("Failed: Committed and retrieved values are different (%d - %d)\n", value, new_value);
-+//!     close(fd);
-+//!     return -1;
-+//!   }
-+//!
-+//!   // Call the unsuccessful ioctl
-+//!   printf("Attempting to call in to an non-existent IOCTL\n");
-+//!   ret = ioctl(fd, RUST_MISC_DEV_FAIL, NULL);
-+//!   if (ret < 0) {
-+//!     perror("ioctl: Succeeded to fail - this was expected");
-+//!   } else {
-+//!     printf("ioctl: Failed to fail\n");
-+//!     close(fd);
-+//!     return -1;
-+//!   }
-+//!
-+//!   // Close the device file
-+//!   printf("Closing /dev/rust-misc-device\n");
-+//!   close(fd);
-+//!
-+//!   printf("Success\n");
-+//!   return 0;
-+//! }
-+//! ```
- 
--/// Below is an example userspace C program that exercises this sample's functionality.
--///
--/// ```c
--/// #include <stdio.h>
--/// #include <stdlib.h>
--/// #include <errno.h>
--/// #include <fcntl.h>
--/// #include <unistd.h>
--/// #include <sys/ioctl.h>
--///
--/// #define RUST_MISC_DEV_FAIL _IO('|', 0)
--/// #define RUST_MISC_DEV_HELLO _IO('|', 0x80)
--/// #define RUST_MISC_DEV_GET_VALUE _IOR('|', 0x81, int)
--/// #define RUST_MISC_DEV_SET_VALUE _IOW('|', 0x82, int)
--///
--/// int main() {
--///   int value, new_value;
--///   int fd, ret;
--///
--///   // Open the device file
--///   printf("Opening /dev/rust-misc-device for reading and writing\n");
--///   fd = open("/dev/rust-misc-device", O_RDWR);
--///   if (fd < 0) {
--///     perror("open");
--///     return errno;
--///   }
--///
--///   // Make call into driver to say "hello"
--///   printf("Calling Hello\n");
--///   ret = ioctl(fd, RUST_MISC_DEV_HELLO, NULL);
--///   if (ret < 0) {
--///     perror("ioctl: Failed to call into Hello");
--///     close(fd);
--///     return errno;
--///   }
--///
--///   // Get initial value
--///   printf("Fetching initial value\n");
--///   ret = ioctl(fd, RUST_MISC_DEV_GET_VALUE, &value);
--///   if (ret < 0) {
--///     perror("ioctl: Failed to fetch the initial value");
--///     close(fd);
--///     return errno;
--///   }
--///
--///   value++;
--///
--///   // Set value to something different
--///   printf("Submitting new value (%d)\n", value);
--///   ret = ioctl(fd, RUST_MISC_DEV_SET_VALUE, &value);
--///   if (ret < 0) {
--///     perror("ioctl: Failed to submit new value");
--///     close(fd);
--///     return errno;
--///   }
--///
--///   // Ensure new value was applied
--///   printf("Fetching new value\n");
--///   ret = ioctl(fd, RUST_MISC_DEV_GET_VALUE, &new_value);
--///   if (ret < 0) {
--///     perror("ioctl: Failed to fetch the new value");
--///     close(fd);
--///     return errno;
--///   }
--///
--///   if (value != new_value) {
--///     printf("Failed: Committed and retrieved values are different (%d - %d)\n", value, new_value);
--///     close(fd);
--///     return -1;
--///   }
--///
--///   // Call the unsuccessful ioctl
--///   printf("Attempting to call in to an non-existent IOCTL\n");
--///   ret = ioctl(fd, RUST_MISC_DEV_FAIL, NULL);
--///   if (ret < 0) {
--///     perror("ioctl: Succeeded to fail - this was expected");
--///   } else {
--///     printf("ioctl: Failed to fail\n");
--///     close(fd);
--///     return -1;
--///   }
--///
--///   // Close the device file
--///   printf("Closing /dev/rust-misc-device\n");
--///   close(fd);
--///
--///   printf("Success\n");
--///   return 0;
--/// }
--/// ```
- use core::pin::Pin;
- 
- use kernel::{
-
----
-base-commit: 7eb172143d5508b4da468ed59ee857c6e5e01da6
-change-id: 20250312-rust_misc_device_tld-375d4c86e606
-
-Best regards,
+     /// Used by the [`seq_print`] macro.
++    #[inline]
+     pub fn call_printf(&self, args: core::fmt::Arguments<'_>) {
+         // SAFETY: Passing a void pointer to `Arguments` is valid for `%pA`.
+         unsafe {
 -- 
-Alice Ryhl <aliceryhl@google.com>
+2.43.0
 
