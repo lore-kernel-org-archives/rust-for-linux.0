@@ -1,161 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88393267F46;
-	Thu, 13 Mar 2025 14:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CAF262BE
+	for <rust-for-linux@vger.kernel.org>; Thu, 13 Mar 2025 14:41:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.51.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741876649; cv=none; b=bWgHfrQb6uqUBo76sA2A+1JYBtbrNg6DfksmnXot91BG70g3Eyu4D8ZyFDAD6lg+jVrTF5qWuNy/ezLXgUlHw5y3A7fC01EYpCE9+vymP+AdxLhLTAaCejdW9JQPHNYSrpdpY/keVETHBeFm38y7TxLe5vaucriavqQJgaOn8JI=
+	t=1741876901; cv=none; b=IhIkNfOt5PvAPSz7ZzMBEgeoTv3hIdr1sjpHhKXGnAWUJmPJBFaD0Sg781CuLOI8uT3Eg5JJHXxUAPSvkjF+enUlB/QQgnQjen862/lxxXjyTUPzIxZhwzBYfX3QgRntUVjHYTvUWs8OiypQG7avO3GmFg0e9HRUNQmCpSOaaUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741876649; c=relaxed/simple;
-	bh=LhFMU6K6jQihr1xX62MfXoMmTy9dTr3t2WHAnyeflgI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DHaP0wSJDVL0ygt/M4YVddCQGfqtfWs7WIgDvYwbbJYd3LixNwjQFA5wHiXTdiysgQpuDv49pOH23rduJxCm++TsmtFAe9xTegTjBs2z0SK4BDOaTLy+SM+1JrlAuKTVAUYgU/w0iuR25Bw/9VwMDY+2Sx0mVdxdC66mIowlGMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LnfMx7e/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741876901; c=relaxed/simple;
+	bh=9RV0gMVD17FtNzOFTr3x4pnTW9Ug+Ma/wZ2K3NEkm0g=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HmMSN5cE0EeV75kUIumPNDZZcvT7dp+ql2nljCsRa8S3RBHLIXCla4fZzIFNlLH+SndSPqGr5Bd3TOBU7G1CrwPIEOxtIRghw93NQNE0RH4JchElBdYmONut7qsqKqIR7TzgjLlk+7gSH+l8iOF3oYthDP7yAT/6WDo5jq5VOf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=BUvwPGI9; arc=none smtp.client-ip=188.165.51.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LnfMx7e/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7289BC4CEEA;
-	Thu, 13 Mar 2025 14:37:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741876649;
-	bh=LhFMU6K6jQihr1xX62MfXoMmTy9dTr3t2WHAnyeflgI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LnfMx7e/Vy0pmVhTtC4kVHNB7nOpLFnTz5tZpq5x3X0hcFojJVrubvEAcKyfNsWcb
-	 1o2LgujMWRoo56m4lkgzgU1fSYXRe6lLndUtT/xx4zyjhkF3gkM1tneA99mwrcNT0Z
-	 yexApPbWx+0iNePTIOJP3pQQDQ/hQlCtFRT4sAyRI7+JSp/dBpN49CG87IIsWE2PgO
-	 TPzcYvdCX2D+s2WXGaUR5cPRM0zWf5T3FJESE/1ZyFQgHzOaAQfwx6eyA9olspu+ND
-	 lRQxzVQ5b+eGJyDsUjMgBnZOe25U5ZpwQABgZQvWPOhz/JS2eWJwJukA1e1EowBkRA
-	 yzWca552DlJxw==
-Date: Thu, 13 Mar 2025 15:37:23 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust/revocable: add try_with() convenience method
-Message-ID: <Z9Lto6tbWS0kR6gK@pollux>
-References: <20250313-try_with-v1-1-adcae7ed98a9@nvidia.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="BUvwPGI9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1741876884; x=1742136084;
+	bh=9RV0gMVD17FtNzOFTr3x4pnTW9Ug+Ma/wZ2K3NEkm0g=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=BUvwPGI9bUkHaNo2kJl9oAInmgAVAVb+75G258HwNqPaEIOkyWT0Ug/oTycIIsRxy
+	 XWWyL5mdpM79oKyLEqiO88q3WJxpS+WkJQJoP4tGBQ1bcbtPvSRXfBHoVyEtagBczs
+	 o+sru8rQjpumpc8huDokzCXAJwRSD/TnQHW7kTfbLuvdpdASXxs6WvVwVdMNr8jVdl
+	 /PKdEzSZqXLoPlrgEUCMgdrgD5mvXF3RnEPyEs4RKhNOrstCcZRnabqd+d14Xuk3xN
+	 2hoIdVV9MAiCERliIK833lDOTp3uMp6cgrdczYmK1yyqSWmKXTa7ndbntva0PfGvss
+	 oxReRjb3RPeFg==
+Date: Thu, 13 Mar 2025 14:41:20 +0000
+To: Danilo Krummrich <dakr@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 4/4] rust: platform: fix unrestricted &mut platform::Device
+Message-ID: <D8F7TGXIVOSZ.26D6CBL91D9U@proton.me>
+In-Reply-To: <Z9Lrp2fC4b22QkPj@pollux>
+References: <20250313021550.133041-1-dakr@kernel.org> <20250313021550.133041-5-dakr@kernel.org> <D8F2WCIXO6RQ.3OQHU95WZFB61@proton.me> <Z9Lrp2fC4b22QkPj@pollux>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 3c9d992c7bb034eba69ffa64ac3478ab728a2f00
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250313-try_with-v1-1-adcae7ed98a9@nvidia.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Alex,
+On Thu Mar 13, 2025 at 3:28 PM CET, Danilo Krummrich wrote:
+> On Thu, Mar 13, 2025 at 10:49:59AM +0000, Benno Lossin wrote:
+>> On Thu Mar 13, 2025 at 3:13 AM CET, Danilo Krummrich wrote:
+>> > As by now, platform::Device is implemented as:
+>> >
+>> > =09#[derive(Clone)]
+>> > =09pub struct Device(ARef<device::Device>);
+>> >
+>> > This may be convenient, but has the implication that drivers can call
+>> > device methods that require a mutable reference concurrently at any
+>> > point of time.
+>>=20
+>> Similar to the other patch, I didn't find any methods taking `&mut self`
+>> but I might have missed them.
+>
+> `platform::Device` does not have any yet. But we still need the pattern. =
+Once we
+> land the `dma::Device` trait, we'll need:
+>
+> =09impl dma::Device for platform::Device<Core> {}
+>
+> to derive the DMA methods.
+>
+> Besides that, I want bus device implementations to be consistent.
 
-Thanks for looking into this!
+Yeah I think we should have this patch, just was confused by the commit
+message.
 
-On Thu, Mar 13, 2025 at 09:40:59PM +0900, Alexandre Courbot wrote:
-> Revocable::try_access() returns a guard through which the wrapped object
-> can be accessed. Code that can sleep is not allowed while the guard is
-> held ; thus, it is common that the caller will explicitly need to drop
-> it before running sleepable code, e.g:
-> 
->     let b = bar.try_access()?;
->     let reg = b.readl(...);
-> 
->     // Don't forget this or things could go wrong!
->     drop(b);
-> 
->     something_that_might_sleep();
-> 
->     let b = bar.try_access()?;
->     let reg2 = b.readl(...);
+---
+Cheers,
+Benno
 
-Ideally, we get klint to protect us against those kind of mistakes too.
-
-> This is arguably error-prone. try_with() and try_with_ok() provides an
-> arguably safer alternative, by taking a closure that is run while the
-> guard is held, and by dropping the guard automatically after the closure
-> completes. This way, code can be organized more clearly around the
-> critical sections and the risk is forgetting to release the guard when
-> needed is considerably reduced:
-> 
->     let reg = bar.try_with_ok(|b| b.readl(...))?;
-> 
->     something_that_might_sleep();
-> 
->     let reg2 = bar.try_with_ok(|b| b.readl(...))?;
-
-However, that's much more convenient and a great improvement.
-
-Feel free to add
-
-	Acked-by: Danilo Krummrich <dakr@kernel.org>
-
-> 
-> Unlike try_access() which returns an Option, try_with() and
-> try_with_ok() return Err(ENXIO) if the object cannot be acquired. The
-> Option returned by try_access() is typically converted to an error in
-> practice, so this saves one step for the caller.
-> 
-> try_with() requires the callback itself to return a Result that is
-> passed to the caller. try_with_ok() accepts a callback that never fails.
-> 
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-
-Since I proposed something like that in one of the nova threads (and in Zulip),
-feel free to also add
-
-	Suggested-by: Danilo Krummrich <dakr@kernel.org>
-
-> ---
-> This is a feature I found useful to have while writing Nova driver code
-> that accessed registers alongside other operations. I would find myself
-> quite confused about whether the guard was held or dropped at a given
-> point of the code, and it felt like walking through a minefield ; this
-> pattern makes things safer and easier to read IMHO.
-> ---
->  rust/kernel/revocable.rs | 22 ++++++++++++++++++++++
->  1 file changed, 22 insertions(+)
-> 
-> diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
-> index 1e5a9d25c21b279b01f90b02997492aa4880d84f..0157b20373b5b2892cb618b46958bfe095e428b6 100644
-> --- a/rust/kernel/revocable.rs
-> +++ b/rust/kernel/revocable.rs
-> @@ -105,6 +105,28 @@ pub fn try_access(&self) -> Option<RevocableGuard<'_, T>> {
->          }
->      }
->  
-> +    /// Tries to access the wrapped object and run the closure `f` on it with the guard held.
-> +    ///
-> +    /// This is a convenience method to run short non-sleepable code blocks while ensuring the
-> +    /// guard is dropped afterwards. [`Self::try_access`] carries the risk that the caller
-> +    /// will forget to explicitly drop that returned guard before calling sleepable code ; this
-> +    /// method adds an extra safety to make sure it doesn't happen.
-> +    ///
-> +    /// Returns `Err(ENXIO)` if the wrapped object has been revoked, or the result of `f` after it
-> +    /// has been run.
-> +    pub fn try_with<R, F: Fn(&T) -> Result<R>>(&self, f: F) -> Result<R> {
-> +        self.try_access().ok_or(ENXIO).and_then(|t| f(&*t))
-> +    }
-> +
-> +    /// Tries to access the wrapped object and run the closure `f` on it with the guard held.
-> +    ///
-> +    /// This is the same as [`Self::try_with`], with the exception that `f` is expected to
-> +    /// always succeed and thus does not need to return a `Result`. Thus the only error case is if
-> +    /// the wrapped object has been revoked.
-> +    pub fn try_with_ok<R, F: Fn(&T) -> R>(&self, f: F) -> Result<R> {
-> +        self.try_with(|t| Ok(f(t)))
-> +    }
-> +
->      /// Tries to access the revocable wrapped object.
->      ///
->      /// Returns `None` if the object has been revoked and is therefore no longer accessible.
-> 
-> ---
-> base-commit: 4d872d51bc9d7b899c1f61534e3dbde72613f627
-> change-id: 20250313-try_with-cc9f91dd3b60
-> 
-> Best regards,
-> -- 
-> Alexandre Courbot <acourbot@nvidia.com>
-> 
