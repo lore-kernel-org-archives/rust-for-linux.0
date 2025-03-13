@@ -1,120 +1,63 @@
-Received: from mail-10631.protonmail.ch (mail-10631.protonmail.ch [79.135.106.31])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D15E26138E
-	for <rust-for-linux@vger.kernel.org>; Thu, 13 Mar 2025 14:19:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E680267B6A;
+	Thu, 13 Mar 2025 14:21:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741875601; cv=none; b=ST471HSFbeMyeQprRKlu24rxWwi7pGNTDxzUFM6glbcvIoMI0mgnBufPYRkOO8yK2pM5p2j8oI1oycY7qvF/Y+7ZNn9nePDO3XXsKWw2+jriSOhyqBCKLuogkuHKYQDEChxapsyAFGcIdc/jXPqqrnm1UEdCf58JWVPvr/ow3Bs=
+	t=1741875661; cv=none; b=m4Ro2ggTMuMSWua+G9UoLIm30OQGRQQgMzWn7q85Xe7RjBcviNaDqye0omIpy0UaaCjQEPydKkF0nHLUuL1a876QvNJ11mN2kHYo3vX8pX+0IsFhm+ePCgGqlNVD+NQmNtEogvl23SEPZbIFEppHzat9Wl5R625iTCgcpOwb9Vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741875601; c=relaxed/simple;
-	bh=Q2lgocfnOAjX7JytasmyzbbZo0yCTSp5iyaOzyn7N+g=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LteVO5K2FWyq/pnlFbSWw1K2P4m1RDpKMONFQT7ptWrfZ5vTWT9PpcM+4O7JCqlYuqUhfBwlIKaay2unQGTOLDIaHwhYPZGV6eHej1QUDs3QWc5aluYvWPsxgpVIWJ/Pc0rRX3kPs/oKqxwdC4blgSChOUGPC9SX8w+TbUxG0uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=DMX36sRr; arc=none smtp.client-ip=79.135.106.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1741875661; c=relaxed/simple;
+	bh=qtijRb/izivAQPCwNvhHbxLAbtlLCtOwMFmoiy22DC0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MN+7z7Tribme3FCIpuW9FHb/wT0POT65QjsUL3WZDH7ga5DfMA3YRDqrFpHWEUGGXrJ4Q6gAyuRwq/huibEh372n+AGY3Rp0y6zg3BxwXVyoCHivbTx1CnjpfwdyM8PsgbRwVgU/u4hYmS2wpJ62C5twdyXnXvimK0cAnIOXUvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jx6ptHGX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="DMX36sRr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1741875597; x=1742134797;
-	bh=Dnw04njDbwVRNnEXV5HlTTNcN497/TbBtBGKqQc5NgQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=DMX36sRroSnPjQ+BM9wDhmrZUA4XJBdzKmYbnor0ebmlOmmyejgi6JdgVzaVsdm4b
-	 RebLrrofg7bKjmlDJ80g4fE8o1zs61Ep68l1u78zH1u5QeRPXnSrw/5v0E8bS1jXzm
-	 qs73VsYtcobmSPFb7gnM0FqaFtWZfr1Calf/wyyIAYVOvWPr0NScW6ncf4dGfxeHGD
-	 8zGkCjC5x/Ij9+4ZViJ3Jb5tZqZZR1Jdrbn//TUCcASXutIM+2rh3Gz6IQwkjgW0X0
-	 dR72Y0pHnLZegrPP5D/RuI+asHr4NZ2qAzLK/hHFIL+f4Nn+TqlT9/RGDwGc6x7gk0
-	 xinMxMPZKdJig==
-Date: Thu, 13 Mar 2025 14:19:53 +0000
-To: Alexandre Courbot <acourbot@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, Danilo Krummrich <dakr@kernel.org>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust/revocable: add try_with() convenience method
-Message-ID: <D8F7D2RPRVAO.2EF39MZXM6FPR@proton.me>
-In-Reply-To: <20250313-try_with-v1-1-adcae7ed98a9@nvidia.com>
-References: <20250313-try_with-v1-1-adcae7ed98a9@nvidia.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 97f2069102048a141ea95a42830e1f0b98aea16f
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jx6ptHGX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6B96C4CEEF;
+	Thu, 13 Mar 2025 14:20:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741875660;
+	bh=qtijRb/izivAQPCwNvhHbxLAbtlLCtOwMFmoiy22DC0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Jx6ptHGXuW5/1vWrLGJbDxVL8Y9eCv7p7M7LJlzsXYLsaa66QnhI5pPokqsgvMBsm
+	 SeICjYSi5BIe+9WaGoeJWq5/g1QqsWkX43M3ic6sOwloNy1GCdoCl8wPCUNv0TNHau
+	 WQ6Ghk80FDNh+WrAu0CG8i+zAcafQQpwOyW+RCCgBJAgj3NEI9qwAgedAuDZ2n/5/V
+	 jMiJXMACWr/3lHfZfaSviii0rE70iPWl/adq53vx9la2eWy+1FWZYamDC7bHLujCYg
+	 6gLqSKI/FBcawlWzWjrlnabfEJH3HPv60JJ+66qPv8nEbEuQxWkkndZWkC5RXrLL2W
+	 mszw31zQBg4uw==
+Date: Thu, 13 Mar 2025 15:20:55 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
+	aliceryhl@google.com, tmgross@umich.edu,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 2/4] rust: device: implement device context marker
+Message-ID: <Z9Lpx9K7ThuEqGEM@pollux>
+References: <20250313021550.133041-1-dakr@kernel.org>
+ <20250313021550.133041-3-dakr@kernel.org>
+ <D8F2GQ4WYT7Z.172Z7R7V8BIGR@proton.me>
+ <Z9K2PJEoymuhamT-@pollux>
+ <D8F2YBFHCTFL.3TH1E0TB11EHU@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <D8F2YBFHCTFL.3TH1E0TB11EHU@proton.me>
 
-On Thu Mar 13, 2025 at 1:40 PM CET, Alexandre Courbot wrote:
-> diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
-> index 1e5a9d25c21b279b01f90b02997492aa4880d84f..0157b20373b5b2892cb618b46=
-958bfe095e428b6 100644
-> --- a/rust/kernel/revocable.rs
-> +++ b/rust/kernel/revocable.rs
-> @@ -105,6 +105,28 @@ pub fn try_access(&self) -> Option<RevocableGuard<'_=
-, T>> {
->          }
->      }
-> =20
-> +    /// Tries to access the wrapped object and run the closure `f` on it=
- with the guard held.
-> +    ///
-> +    /// This is a convenience method to run short non-sleepable code blo=
-cks while ensuring the
-> +    /// guard is dropped afterwards. [`Self::try_access`] carries the ri=
-sk that the caller
-> +    /// will forget to explicitly drop that returned guard before callin=
-g sleepable code ; this
+On Thu, Mar 13, 2025 at 10:52:34AM +0000, Benno Lossin wrote:
+> On Thu Mar 13, 2025 at 11:41 AM CET, Danilo Krummrich wrote:
+> 
+> > However, we can always change visibility as needed, so I'm fine making it sealed
+> > for now.
+> 
+> Couldn't you just add them here? Then sealing wouldn't be a problem.
 
-Space after `;`?
-
-> +    /// method adds an extra safety to make sure it doesn't happen.
-
-To be clear, you still can call a sleeping function form within the
-closure and have the same issue, but I agree that that should not happen
-accidentally (or at least not as often).
-
-> +    ///
-> +    /// Returns `Err(ENXIO)` if the wrapped object has been revoked, or =
-the result of `f` after it
-> +    /// has been run.
-> +    pub fn try_with<R, F: Fn(&T) -> Result<R>>(&self, f: F) -> Result<R>=
- {
-
-This (and below) can be a `FnOnce(&T) -> Result<R>`.
-
-Would it make sense to not use `Result` here and continue with `Option`?
-
----
-Cheers,
-Benno
-
-> +        self.try_access().ok_or(ENXIO).and_then(|t| f(&*t))
-> +    }
-> +
-> +    /// Tries to access the wrapped object and run the closure `f` on it=
- with the guard held.
-> +    ///
-> +    /// This is the same as [`Self::try_with`], with the exception that =
-`f` is expected to
-> +    /// always succeed and thus does not need to return a `Result`. Thus=
- the only error case is if
-> +    /// the wrapped object has been revoked.
-> +    pub fn try_with_ok<R, F: Fn(&T) -> R>(&self, f: F) -> Result<R> {
-> +        self.try_with(|t| Ok(f(t)))
-> +    }
-> +
->      /// Tries to access the revocable wrapped object.
->      ///
->      /// Returns `None` if the object has been revoked and is therefore n=
-o longer accessible.
->
-> ---
-> base-commit: 4d872d51bc9d7b899c1f61534e3dbde72613f627
-> change-id: 20250313-try_with-cc9f91dd3b60
->
-> Best regards,
-
-
+Yes, but I wouldn't want bus specific stuff to reside in device.rs.
