@@ -1,55 +1,58 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from a8-87.smtp-out.amazonses.com (a8-87.smtp-out.amazonses.com [54.240.8.87])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F17D86337;
-	Thu, 13 Mar 2025 02:25:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2295747F;
+	Thu, 13 Mar 2025 02:51:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.240.8.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741832722; cv=none; b=DXWV6DTSDUyibzFP2JL8vB6vDp7MShKOjQ86o5Cw5z2viQ+5lzYJFVsVVBcYwXUmW2QDoO7XUT2Pc+QqOqiPJiHKcfVZ1uRySZT43CWK/g/vqpRqgcRcTSTNW6xxzTa8pqHgnNf4oVrslh9D4o5kQLo7BDxZLtHy8Q4cwlpPnJk=
+	t=1741834287; cv=none; b=CnA+LuDZM4FEmrl71IVUpVpvPgefQXh46WlSsGcc0lK3f/WhRo+MRwi8OpeJCdmIJrx2pOWTRQNJLf5Dp8PFvMkog0lOtc+zm7XD890K63qL5WBGd8L8OV7lQ/ag3SJv0PbUR+t+0ngbyjq9Bo+8rO06e9UkqqEfuNFq/EqvAiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741832722; c=relaxed/simple;
-	bh=7ZHcfwmXglPcdBnoQum2qB39BlKwc7b+WZDqmaPQyQo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iBsMFmIbzhPizivhcMlaJLMjWNH2Oj0NiO9txkUivlZ5Fg6RT0bWT2th+bjK+ejQxatVBRkSn3m6H3I+EDn9zjocFNLfIt8kK+T5VUUdXGm+h5G06rRXSmUfMWVTy9fk/fbg9A/dFe97npQ+oo4ogCrQ7RokHhUPtCe2TkOL5os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JMlPLUxG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741834287; c=relaxed/simple;
+	bh=UnwpjRGOjwu3BdNKqP31+73T3IgQvef5578x4eacuG0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=didfTgK+W/QeVuMYPnkl4GTV/BhC8T1X0dilJwkxvrMF6FHaqwdrXSIst03JghVDHs97MLYqy4j0Oy4qgru1a8jlSAx+eH7bIQdC7mzfRPJgWl63Nnmpl/i2KwA+FRSeSCc6XwOYs+6zY1u8n/xVUKpOAYm2rrd0CuZXEDPtvPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antoniohickey.com; spf=pass smtp.mailfrom=amazonses.com; dkim=pass (2048-bit key) header.d=antoniohickey.com header.i=@antoniohickey.com header.b=zck9GqNx; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=M/I5Zlm4; arc=none smtp.client-ip=54.240.8.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antoniohickey.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazonses.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JMlPLUxG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9129BC4CEF1;
-	Thu, 13 Mar 2025 02:25:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741832721;
-	bh=7ZHcfwmXglPcdBnoQum2qB39BlKwc7b+WZDqmaPQyQo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JMlPLUxG8NyJYz8YJhrVbA+eEw/VIsZZoPCpbCNR+OzML5QDi6DG0krQT8J7Y0ad6
-	 AEd1kEWSmZ2cvGxs5wKDIyUwm6HUqdopd6Gq9D+WC2jhwoW7eWp/qcY+2QGUEhu/Az
-	 VNdOL0BGoL2JHwNU6syzx96/ndbSkV151f7MijaD8jAqLDyrIVF1aSPW6bmXfIfx8w
-	 mbGYXFa1o4cgb3T9dp8PO+0XJl+Hm/juIzCNbAfgm3TIVIfYxD4fLHf/u2XS7oK0eR
-	 KSazG0kLaMYlRYjCgU3NfAAOC1oWbfH7/gIBXf7X5rE4TTDz2zZ8XknPysYguL8UhC
-	 8cwszwD8UST8w==
-From: Danilo Krummrich <dakr@kernel.org>
-To: gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	airlied@gmail.com,
-	acourbot@nvidia.com,
-	jhubbard@nvidia.com
-Cc: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v2 4/4] samples: rust: add Rust auxiliary driver sample
-Date: Thu, 13 Mar 2025 03:23:53 +0100
-Message-ID: <20250313022454.147118-5-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=antoniohickey.com header.i=@antoniohickey.com header.b="zck9GqNx";
+	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="M/I5Zlm4"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=cgcwyxycg75iw36cao5ku2ksreqpjkvc; d=antoniohickey.com;
+	t=1741834284;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Transfer-Encoding;
+	bh=UnwpjRGOjwu3BdNKqP31+73T3IgQvef5578x4eacuG0=;
+	b=zck9GqNx3MjL3Kr4w7RipkctzPb2N0SW0OxjHUJoUlJ7aCn2WUxAFlBICfqunWYq
+	JjI/eGnyjU6A5kWVsu2fN5ivSKysxYhhk2JEK4Fz7Ipy6Yl+eoFvhsteusHJYZMtebH
+	NR/G/mmI09NOtd8koB+sGw5BNbmkdn4YE4f4ljzUwFHMr0PtHt0G2iniyoRQxRg5Qbr
+	aiHcFopeC3J/0r1ofNloHpbUtJi6nekuz/t6dmk0gq/o8Wh9aHZcEPRrcLnp0E05gtY
+	D2i2NmqJj7BNFRJmshks1e0P2mDLRvFe2tg7dPW42hpZQRMk8GfrpN5D+l5CNhDm8mh
+	TZeddcB6JQ==
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=6gbrjpgwjskckoa6a5zn6fwqkn67xbtw; d=amazonses.com; t=1741834284;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Feedback-ID;
+	bh=UnwpjRGOjwu3BdNKqP31+73T3IgQvef5578x4eacuG0=;
+	b=M/I5Zlm4IY+PtMzrnvVBSMshNtbJNl3wm+gBxEFh7F3yF5hD9CQIlMkAch+vueny
+	AWaJS+Bflc1KxdpwVwlJsEEVxtPSmVPYPHK2gjsFRWY+0jI0ZdylOlbvT/a8qOww2ua
+	ZrMHwv8UK2b9Mo/jshXaWLXUentWg2p8eWhS68F0=
+From: Antonio Hickey <contact@antoniohickey.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>
+Cc: Antonio Hickey <contact@antoniohickey.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev
+Subject: [PATCH] rust: uaccess: mark UserSliceWriter method inline
+Date: Thu, 13 Mar 2025 02:51:24 +0000
+Message-ID: <010001958d69ed91-0ccd9e4f-cd18-4451-a982-426b951d2e0c-000000@email.amazonses.com>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250313022454.147118-1-dakr@kernel.org>
-References: <20250313022454.147118-1-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,174 +60,41 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Feedback-ID: ::1.us-east-1.3SHHfi5Rh4c+NdtIv+pxNWeqDT0J3zAhYZLMebdhE9o=:AmazonSES
+X-SES-Outgoing: 2025.03.13-54.240.8.87
 
-Add a sample Rust auxiliary driver based on a PCI driver for QEMU's
-"pci-testdev" device.
+When you build the kernel using the llvm-19.1.4-rust-1.83.0-x86_64
+toolchain provided by kernel.org with ARCH=x86_64, the following symbol
+is generated:
 
-The PCI driver only registers an auxiliary device, in order to make the
-corresponding auxiliary driver probe.
+$nm vmlinux | grep ' _R' | rustfilt | rg UserSliceWriter
+ffffffff817c3390 T <kernel::uaccess::UserSliceWriter>::write_slice
 
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+However, this Rust symbol is a trivial wrapper around the function
+copy_from_user. It doesn't make sense to go through a trivial wrapper
+for this function, so mark it inline.
+
+After applying this patch, the above command will produce no output.
+
+Suggested-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://github.com/Rust-for-Linux/linux/issues/1145
+Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
 ---
- MAINTAINERS                           |  1 +
- samples/rust/Kconfig                  | 12 ++++
- samples/rust/Makefile                 |  1 +
- samples/rust/rust_driver_auxiliary.rs | 99 +++++++++++++++++++++++++++
- 4 files changed, 113 insertions(+)
- create mode 100644 samples/rust/rust_driver_auxiliary.rs
+ rust/kernel/uaccess.rs | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 0a737b28cdfa..6ec20e4f715d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7121,6 +7121,7 @@ F:	rust/kernel/devres.rs
- F:	rust/kernel/driver.rs
- F:	rust/kernel/faux.rs
- F:	rust/kernel/platform.rs
-+F:	samples/rust/rust_driver_auxiliary.rs
- F:	samples/rust/rust_driver_platform.rs
- F:	samples/rust/rust_driver_faux.rs
- 
-diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-index 3b6eae84b297..413216da1b70 100644
---- a/samples/rust/Kconfig
-+++ b/samples/rust/Kconfig
-@@ -71,6 +71,18 @@ config SAMPLE_RUST_DRIVER_FAUX
- 
- 	  If unsure, say N.
- 
-+config SAMPLE_RUST_DRIVER_AUXILIARY
-+	tristate "Auxiliary Driver"
-+	depends on AUXILIARY_BUS
-+	depends on PCI
-+	help
-+	  This option builds the Rust auxiliary driver sample.
-+
-+	  To compile this as a module, choose M here:
-+	  the module will be called rust_driver_auxiliary.
-+
-+	  If unsure, say N.
-+
- config SAMPLE_RUST_HOSTPROGS
- 	bool "Host programs"
- 	help
-diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-index 0dbc6d90f1ef..30a8809d0a15 100644
---- a/samples/rust/Makefile
-+++ b/samples/rust/Makefile
-@@ -7,6 +7,7 @@ obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_PCI)		+= rust_driver_pci.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+= rust_driver_platform.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_FAUX)		+= rust_driver_faux.o
-+obj-$(CONFIG_SAMPLE_RUST_DRIVER_AUXILIARY)	+= rust_driver_auxiliary.o
- 
- rust_print-y := rust_print_main.o rust_print_events.o
- 
-diff --git a/samples/rust/rust_driver_auxiliary.rs b/samples/rust/rust_driver_auxiliary.rs
-new file mode 100644
-index 000000000000..416af6210e10
---- /dev/null
-+++ b/samples/rust/rust_driver_auxiliary.rs
-@@ -0,0 +1,99 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Rust auxiliary driver sample (based on a PCI driver for QEMU's `pci-testdev`).
-+//!
-+//! To make this driver probe, QEMU must be run with `-device pci-testdev`.
-+
-+use kernel::{
-+    auxiliary, bindings, c_str, device::Core, driver, error::Error, init, pci, prelude::*,
-+    str::CStr, InPlaceModule,
-+};
-+
-+const MODULE_NAME: &CStr = <LocalModule as kernel::ModuleMetadata>::NAME;
-+const AUXILIARY_NAME: &CStr = c_str!("auxiliary");
-+
-+struct AuxiliaryDriver;
-+
-+kernel::auxiliary_device_table!(
-+    AUX_TABLE,
-+    MODULE_AUX_TABLE,
-+    <AuxiliaryDriver as auxiliary::Driver>::IdInfo,
-+    [(auxiliary::DeviceId::new(MODULE_NAME, AUXILIARY_NAME), ())]
-+);
-+
-+impl auxiliary::Driver for AuxiliaryDriver {
-+    type IdInfo = ();
-+
-+    const ID_TABLE: auxiliary::IdTable<Self::IdInfo> = &AUX_TABLE;
-+
-+    fn probe(adev: &auxiliary::Device<Core>, _info: &Self::IdInfo) -> Result<Pin<KBox<Self>>> {
-+        dev_info!(
-+            adev.as_ref(),
-+            "Probing auxiliary driver for auxiliary device with id={}\n",
-+            adev.id()
-+        );
-+
-+        let this = KBox::new(Self, GFP_KERNEL)?;
-+
-+        Ok(this.into())
-+    }
-+}
-+
-+struct PciDriver {
-+    _reg: [auxiliary::Registration; 2],
-+}
-+
-+kernel::pci_device_table!(
-+    PCI_TABLE,
-+    MODULE_PCI_TABLE,
-+    <PciDriver as pci::Driver>::IdInfo,
-+    [(
-+        pci::DeviceId::from_id(bindings::PCI_VENDOR_ID_REDHAT, 0x5),
-+        ()
-+    )]
-+);
-+
-+impl pci::Driver for PciDriver {
-+    type IdInfo = ();
-+
-+    const ID_TABLE: pci::IdTable<Self::IdInfo> = &PCI_TABLE;
-+
-+    fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> Result<Pin<KBox<Self>>> {
-+        let this = KBox::new(
-+            Self {
-+                _reg: [
-+                    auxiliary::Registration::new(pdev.as_ref(), AUXILIARY_NAME, 0, MODULE_NAME)?,
-+                    auxiliary::Registration::new(pdev.as_ref(), AUXILIARY_NAME, 1, MODULE_NAME)?,
-+                ],
-+            },
-+            GFP_KERNEL,
-+        )?;
-+
-+        Ok(this.into())
-+    }
-+}
-+
-+#[pin_data]
-+struct SampleModule {
-+    #[pin]
-+    _pci_driver: driver::Registration<pci::Adapter<PciDriver>>,
-+    #[pin]
-+    _aux_driver: driver::Registration<auxiliary::Adapter<AuxiliaryDriver>>,
-+}
-+
-+impl InPlaceModule for SampleModule {
-+    fn init(module: &'static kernel::ThisModule) -> impl init::PinInit<Self, Error> {
-+        try_pin_init!(Self {
-+            _pci_driver <- driver::Registration::new(MODULE_NAME, module),
-+            _aux_driver <- driver::Registration::new(MODULE_NAME, module),
-+        })
-+    }
-+}
-+
-+module! {
-+    type: SampleModule,
-+    name: "rust_driver_auxiliary",
-+    author: "Danilo Krummrich",
-+    description: "Rust auxiliary driver",
-+    license: "GPL v2",
-+}
+diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
+index 719b0a48ff55..c33ff33d4da2 100644
+--- a/rust/kernel/uaccess.rs
++++ b/rust/kernel/uaccess.rs
+@@ -322,6 +322,7 @@ pub fn is_empty(&self) -> bool {
+     /// Fails with [`EFAULT`] if the write happens on a bad address, or if the write goes out of
+     /// bounds of this [`UserSliceWriter`]. This call may modify the associated userspace slice even
+     /// if it returns an error.
++    #[inline]
+     pub fn write_slice(&mut self, data: &[u8]) -> Result {
+         let len = data.len();
+         let data_ptr = data.as_ptr().cast::<c_void>();
 -- 
 2.48.1
 
