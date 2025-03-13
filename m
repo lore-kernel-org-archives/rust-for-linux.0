@@ -1,108 +1,129 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C3526989E
-	for <rust-for-linux@vger.kernel.org>; Thu, 13 Mar 2025 16:04:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D36944F;
+	Thu, 13 Mar 2025 16:31:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741881849; cv=none; b=OD3qXox4QGy2XgNgQz5B7t1fuTxCfTLjAsoN7BkW4afZfD/wX0wmVBB3dgYQKeHc+NbMAqeTDEXiPN351Jv+LKTY+Daqu6K3AAXnCo82kk1cPKmZ4myww6pEnh6WAV1mfV9sInZBMmGh40CgQevHHFepYfUNVmGSsqIUtO8s2HU=
+	t=1741883519; cv=none; b=ovu9xVDJdagMaXAJ+y3cD+iqBBNxo+wzlk7K+9L0LjUSdsL69ifyInnxQdaTz3+GK8b80jqGOYvg4+pRggRlFBfjmkLKguvBsDGXC0y+ITHd2KEDKHqlu+VcH86jWoki2Kc4Y9ame6+PNUV2WlvQP4I66Qi6Rkn5yZJOwLp3ik8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741881849; c=relaxed/simple;
-	bh=hBSfzFoCyQ5JKu6HvTphQSCiNduazkjE8VhN+ka+iv4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NgkFmMhiRmMjfmI/XTtS1HMtCmE6C0RzCURCfP2LQd/FVH9PHaUA4FNfdgBHYU+WGBP9pwH505kPKQbIn9GtGay8++bonIJzH7vY99bD3wHTNTPrFFq0woIMZ/d6yQham17CBgq8s1mfDXRrr3SKW5btKYNkSMyWFHy6RhyOZgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=OdoSv+Fs; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1741883519; c=relaxed/simple;
+	bh=D1wJYQ4E1c6EX9Y7XAzWUJGTuFgvctcFIgyy0djnxcY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AicGiqp4rYpisxL0LMNXTBHBNFjd2cNtsafdULJ2J8D3V4arycJAE/AU/QWQEnGIx15kAtkB6zx9hX5Abjx1UYjS/OPmtfAOU5Jf+DzqlMs6wSnnV47DpVv+kR5c8vR9TSJ0cKJe/1s1RBoT7KF/P8EMGX6iqh37C/+Z5TvQWR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pfUdbEav; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="OdoSv+Fs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1741881845; x=1742141045;
-	bh=zJzfYxqTGkpvxERVV5xc7MvB+YJR4f+zoVmRta1ZEMc=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=OdoSv+FsaUzHNvgKe8WkVvrVYmpgRJUbIw/9WlM2oG8d+T+VpA/us+gkkYvVptNnO
-	 mTJ+gkIiQ3QRtGFb1QmFTYp8i+fO1czeq8VB6YSt944F1ItXw5bvdpluoNL5ZkHB88
-	 /Q9AyULSgoc6oi3OH0LvxzFn8GnjYAO26b6WrRTed2iw20yIK+Be+p3XABQY3nsHjR
-	 4nqzW9a2V11V+ewo5fw3Ay2tRam5qC/URzDixgkJhyxmwtiTNwxwfIquqOE8EzjWzr
-	 bjTYn/vPG+LZX8PP+WXYnVJcFmYyuD2t+NKHZBeluSH2rwljPBaDhmVIbXvN5rhBqO
-	 w6TQEEPDBvW6w==
-Date: Thu, 13 Mar 2025 16:04:00 +0000
-To: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-input@vger.kernel.org, dri-devel@lists.freedesktop.org
-From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Cc: Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Subject: [PATCH RFC 3/3] rust: hid: demo the core abstractions for probe and remove
-Message-ID: <20250313160220.6410-6-sergeantsagara@protonmail.com>
-In-Reply-To: <20250313160220.6410-2-sergeantsagara@protonmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pfUdbEav"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2901BC4CEEB;
+	Thu, 13 Mar 2025 16:31:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741883519;
+	bh=D1wJYQ4E1c6EX9Y7XAzWUJGTuFgvctcFIgyy0djnxcY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pfUdbEavUcaxItWtO14JhEGoMOStRWraM6Cg5fbkwenfkqVFwHwVSaAG7rwvG4c4I
+	 h1v/NqSIluz2CpaxKqgI1v8hl8/C8sucDxg8/g4ViLwNzYoB6tx06JVfQfZWQGbeDo
+	 rLDVY6dkNG46MKi5/Nf/oDuKgCFvLEiT67KGzZ6PEyxKLEm7lh2VWEFVTewNMqdvoN
+	 v3UISxZiz1yJF3+vEDqNXvJyNE2BrT1kFLiqIE6goUGS7lPwVYGcTW3uFrqW3yI/Dm
+	 nmexUvJE8NoHEznGvOdvTEFXz6tPZDOXaDq6QrA4gcD+o23kAWeXsatMvI+TAVhD3s
+	 vjSOLWhiNJL2Q==
+Date: Thu, 13 Mar 2025 17:31:53 +0100
+From: Benjamin Tissoires <bentiss@kernel.org>
+To: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-input@vger.kernel.org, dri-devel@lists.freedesktop.org, Jiri Kosina <jikos@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH RFC 0/3] Initial work for Rust abstraction for HID device
+ driver development
+Message-ID: <f6rizzlygznuebh22psrdkzfki7jfjzfaamuolobvpbgxoxjoi@gfu2eyzrm5wl>
 References: <20250313160220.6410-2-sergeantsagara@protonmail.com>
-Feedback-ID: 26003777:user:proton
-X-Pm-Message-ID: b638180c65cc3d8ba015ced71bcec205a97bd6d0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250313160220.6410-2-sergeantsagara@protonmail.com>
 
-This is a very basic "hello, world!" implementation to illustrate that the
-probe and remove callbacks are working as expected. I chose an arbitrary
-device I had on hand for populating in the HID device id table.
+Hi,
 
-  [  +0.012968] monitor_control: Probing HID device vendor: 2389 product: 2=
-9204 using Rust!
-  [  +0.000108] monitor_control: Removing HID device vendor: 2389 product: =
-29204 using Rust!
+[quick reply because I am completely under the water for the next 2
+weeks]
 
-Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
----
- drivers/hid/hid_monitor_control.rs | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+On Mar 13 2025, Rahul Rameshbabu wrote:
+> Hello,
+> 
+> I am a hobbyist developer who has been working on a project to create a new Rust
+> HID device driver and the needed core abstractions for writing more HID device
+> drivers in Rust. My goal is to support the USB Monitor Control Class needed for
+> functionality such as backlight control for monitors like the Apple Studio
+> Display and Apple Pro Display XDR. A new backlight API will be required to
+> support multiple backlight instances and will be mapped per DRM connector. The
+> current backlight API is designed around the assumption of only a single
+> internal panel being present. I am currently working on making this new API for
+> DRM in parallel to my work on the HID side of the stack for supporting these
+> displays.
 
-diff --git a/drivers/hid/hid_monitor_control.rs b/drivers/hid/hid_monitor_c=
-ontrol.rs
-index 18afd69a56d5..aeb6e4058a6b 100644
---- a/drivers/hid/hid_monitor_control.rs
-+++ b/drivers/hid/hid_monitor_control.rs
-@@ -8,17 +8,22 @@
-     Driver,
- };
-=20
-+const USB_VENDOR_ID_NVIDIA: u32 =3D 0x0955;
-+const USB_DEVICE_ID_NVIDIA_THUNDERSTRIKE_CONTROLLER: u32 =3D 0x7214;
-+
- struct HidMonitorControl;
-=20
- #[vtable]
- impl Driver for HidMonitorControl {
-     fn probe(dev: &mut hid::Device, id: &hid::DeviceId) -> Result<()> {
-         /* TODO implement */
-+        pr_info!("Probing HID device vendor: {} product: {} using Rust!\n"=
-, id.vendor(), id.product());
-         Ok(())
-     }
-=20
-     fn remove(dev: &mut hid::Device) {
-         /* TODO implement */
-+        pr_info!("Removing HID device vendor: {} product: {} using Rust!\n=
-", dev.vendor(), dev.product());
-     }
- }
-=20
-@@ -26,8 +31,8 @@ fn remove(dev: &mut hid::Device) {
-     driver: HidMonitorControl,
-     id_table: [
-         kernel::usb_device! {
--            vendor: /* TODO fill in */,
--            product: /* TODO fill in */,
-+            vendor: USB_VENDOR_ID_NVIDIA,
-+            product: USB_DEVICE_ID_NVIDIA_THUNDERSTRIKE_CONTROLLER,
-         },
-     ],
-     name: "monitor_control",
---=20
-2.47.2
+Thanks a lot for this work, though I wonder if your goal is not too big,
+too far from the HID point of view. HID is simple, and there is only a
+few bindings that you would need to be able to make "simple" HID
+drivers.
 
+My assumption would be to introduce the binding with a functional but
+small driver (like one that just changes the report descriptor, or does
+a sime raw event processing). Then we can look at integrating with the
+DRM interface.
 
+Though it's up to you to decide how you want to play ;)
+
+> 
+>   https://binary-eater.github.io/tags/usb-monitor-control/
+> 
+> Julius Zint had attempted to do so a year ago with a C HID driver but was gated
+> by the lack of an appropriate backlight API for external displays. I asked him
+> for permission to do the work need in Rust and plan to accredit him for the HID
+> report handling for backlight in the USB Monitor Control Class standard.
+> 
+>   https://lore.kernel.org/lkml/f95da7ff-06dd-2c0e-d563-7e5ad61c3bcc@redhat.com/
+> 
+> I was hoping to get initial feedback on this work to make sure I am on the right
+> path for making a Rust HID abstraction that would be acceptable upstream. The
+> patches compile with WERROR being disabled. This is necessary since Rust treats
+> missing documentation comments as warnings (which is a good thing). I also need
+> to go in and add more SAFETY comments.
+
+K, I'll give you my opinion in the patches as the HID co-maintainer. I
+do have a very little rust experience, but this is my first in kernel,
+so I hope the more experience rust people here will chime in as well.
+
+Cheers,
+Benjamin
+
+> 
+> Thanks,
+> Rahul Rameshbabu
+> 
+> Rahul Rameshbabu (3):
+>   rust: core abstractions for HID drivers
+>   rust: hid: USB Monitor Control Class driver
+>   rust: hid: demo the core abstractions for probe and remove
+> 
+>  drivers/hid/Kconfig                |  16 ++
+>  drivers/hid/Makefile               |   1 +
+>  drivers/hid/hid_monitor_control.rs |  42 +++++
+>  rust/bindings/bindings_helper.h    |   1 +
+>  rust/kernel/hid.rs                 | 245 +++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs                 |   2 +
+>  6 files changed, 307 insertions(+)
+>  create mode 100644 drivers/hid/hid_monitor_control.rs
+>  create mode 100644 rust/kernel/hid.rs
+> 
+> -- 
+> 2.47.2
+> 
+> 
