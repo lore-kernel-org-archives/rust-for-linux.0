@@ -1,117 +1,82 @@
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98F213B5A0
-	for <rust-for-linux@vger.kernel.org>; Thu, 13 Mar 2025 08:46:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4D22620E4
+	for <rust-for-linux@vger.kernel.org>; Thu, 13 Mar 2025 08:51:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741855579; cv=none; b=PdwoXTCH+IYvQKpqv+onyIexnA+RvPG4g4AMAZ3m87Zk2ic0Wcct+qM07KqEQ/ky2H+R/dDougkafIhiJVZdLAOOPGDVOqT62OcwV5smG26UwgeMt1cEIDEfPvyY7mg9KQGs/0V1c/+3SCT5A7SYLmMmD1KcnyTIFbQAY2ppTWI=
+	t=1741855881; cv=none; b=uj/l052Mi5NXb1m03CtxlLY/2G6u+bQu4LQJfkVANHU2JRDF4Vem0pFiTwP7RPN8/LO12Bd7IEQoLc9A8jxAFpTde8wTc2ytACFHQ33ZYXe2qPlSbBG8Oi26xQotERLuwQxX2hN4/0B0XyQtRtI6Ck5JI31evP2hHCkddE3TVZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741855579; c=relaxed/simple;
-	bh=fq6ekP8eUxjdXANo/WduXK/rQgvhx776zl5jczANHmw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uCEkF2zzXHN5lJ/kuJpS9aal8WOGTHNKS2wQF6kTCNZP737/85Wcbmte6rW2c+nkcyrAbh+ky+EXtzpkulLVDQBpYowu78Zk4hwejq1Ar+kz5hUeq5A9bZ4DGvyiDiJMsFzn4VhXahX7Oxwy1aG1OL8Az+LDCLhsN3/d6/eps2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=WciwiNyG; arc=none smtp.client-ip=91.218.175.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1741855881; c=relaxed/simple;
+	bh=fgep6nm3VTiNPFBIpkJTHVkLiIgi804k7tW0VYVRhgg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=HOvFu9cZt8cidNJoNiGWVEer1imiPECSRsBP0dD364ET4c2qVgobceF+rnWqwTBeM5Kp4YVJmHY8WX8OFdxQP3xdPHMgWYyFsGR3KPdsg9wQ0kXVrF3C1+UJmJIlypnMOsf0jLe4Flt5EqAUNaRgr6yubB/HCzW09fQiMC3QJzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=dAmceuPX; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="WciwiNyG"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1741855573;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=3RZVs3JN10EHFOTt3fszpgtp+DbwIIZsS1/By/a7Fow=;
-	b=WciwiNyGA6z5mcJyiULh3LKXXDPuJlOeeASqPiBNoLM6HWNdstKiphch+an7hcUmEn/6Fy
-	vuL7ku0bVGXXTdau+KmZVdbUu07Y1lHz72FoAjfVagDKiyNVGfi45WMPSxqssMyQMQOgTp
-	GdNVVa5w79sR43/k0SnWC9f+ZdNszMU=
-From: Kunwu Chan <kunwu.chan@linux.dev>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	nathan@kernel.org,
-	nick.desaulniers+lkml@gmail.com,
-	morbo@google.com,
-	justinstitt@google.com
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev,
-	Kunwu Chan <kunwu.chan@hotmail.com>,
-	Grace Deng <Grace.Deng006@Gmail.com>
-Subject: [PATCH] rust: file: optimize rust symbol generation for FileDescriptorReservation
-Date: Thu, 13 Mar 2025 16:45:25 +0800
-Message-ID: <20250313084525.773620-1-kunwu.chan@linux.dev>
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="dAmceuPX"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 13A1C24002A
+	for <rust-for-linux@vger.kernel.org>; Thu, 13 Mar 2025 09:51:12 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1741855872; bh=fgep6nm3VTiNPFBIpkJTHVkLiIgi804k7tW0VYVRhgg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 From;
+	b=dAmceuPXGzYmkyQtxQ0DKexexE7KFvaFeD5FSPOLJYkvx/a+CIonXm5lhgV3BTcV2
+	 eiyeMQRay6K6+RTX95vUYOJvAyqS2Y6fr6NYIgdAsCEkTu7Jkk5ab9/IOZKpWibIEc
+	 5zeGpn2X5Wj0laqL5ZNbHtNA+l7dAKIy5bmsdd0ZmJ8QzM4OvTRgdKXtItUkWS6M/a
+	 uU7ThZOOv2BpfNilOHXIi6mhqdd2U4g1/KvPtXBzODVJzde1YRFyz/en7AyOZnU93/
+	 XxWGryDh1ez+JPH01jIs3/UCGJlb5P2rhQgWxA4Wv2ZEIH964mTQetRniabBmM/bZk
+	 6lesnrmYRkGBw==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4ZD1SF28SDz9rxT;
+	Thu, 13 Mar 2025 09:51:09 +0100 (CET)
+From: Charalampos Mitrodimas <charmitro@posteo.net>
+To: Antonio Hickey <contact@antoniohickey.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
+  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,
+  =?utf-8?Q?Bj=C3=B6rn?=
+ Roy Baron <bjorn3_gh@protonmail.com>,  Benno Lossin
+ <benno.lossin@proton.me>,  Andreas Hindborg <a.hindborg@kernel.org>,
+  Alice Ryhl <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,
+  Danilo Krummrich <dakr@kernel.org>,  Benno Lossin
+ <y86-dev@protonmai.com>,  rust-for-linux@vger.kernel.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] rust: enable `raw_ref_op` feature
+In-Reply-To: <010001958dfeacb5-9039aaab-6114-494a-9f1d-f13982091169-000000@email.amazonses.com>
+	(Antonio Hickey's message of "Thu, 13 Mar 2025 05:33:52 +0000")
+References: <20250313053340.405979-1-contact@antoniohickey.com>
+	<010001958dfeacb5-9039aaab-6114-494a-9f1d-f13982091169-000000@email.amazonses.com>
+Date: Thu, 13 Mar 2025 08:51:08 +0000
+Message-ID: <m234fhco03.fsf@Mac.home>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain
 
-From: Kunwu Chan <kunwu.chan@hotmail.com>
+Antonio Hickey <contact@antoniohickey.com> writes:
 
-When build the kernel using the llvm-18.1.3-rust-1.85.0-x86_64
-with ARCH=arm64, the following symbols are generated:
+> Since Rust 1.82.0 the `raw_ref_op` feature is stable.
+>
+> By enabling this feature we can use `&raw place` and `&raw mut place`
+> instead of using `addr_of!(place)` and `addr_of_mut!(place)` macros.
+>
+> This will allow us to reduce macro complexity, and improve consistency
+> with existing reference syntax as `&raw`, `&raw mut` is very similar to
+> `&`, `&mut` making it fit more naturally with other existing code.
+>
+> Suggested-by: Benno Lossin <y86-dev@protonmai.com>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1148
+> Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
 
-$ nm vmlinux | grep ' _R'.*FileDescriptorReservation | rustfilt
-ffff8000805b6ef0 T <kernel::fs::file::FileDescriptorReservation>
-						::fd_install
-ffff8000805b6e60 T <kernel::fs::file::FileDescriptorReservation>
-						::get_unused_fd_flags
-ffff8000805b6f08 T <kernel::fs::file::FileDescriptorReservation
-					 as core::ops::drop::Drop>::drop
+Hi Antonio,
 
-These Rust symbols are trivial wrappers around the C functions
-fd_install, put_unused_fd and put_task_struct.It
-doesn't make sense to go through a trivial wrapper for these
-functions, so mark them inline.
+Maybe we want a cover letter for this patchset? "--cover-letter" if
+you're using "git send-email".
 
-After doing so, the above symbol will not in output.
-
-Signed-off-by: Kunwu Chan <kunwu.chan@hotmail.com>
-Co-developed-by: Grace Deng <Grace.Deng006@Gmail.com>
-Signed-off-by: Grace Deng <Grace.Deng006@Gmail.com>
----
- rust/kernel/fs/file.rs | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/rust/kernel/fs/file.rs b/rust/kernel/fs/file.rs
-index e03dbe14d62a..3dda2bfca1a6 100644
---- a/rust/kernel/fs/file.rs
-+++ b/rust/kernel/fs/file.rs
-@@ -392,6 +392,7 @@ pub struct FileDescriptorReservation {
- 
- impl FileDescriptorReservation {
-     /// Creates a new file descriptor reservation.
-+    #[inline]
-     pub fn get_unused_fd_flags(flags: u32) -> Result<Self> {
-         // SAFETY: FFI call, there are no safety requirements on `flags`.
-         let fd: i32 = unsafe { bindings::get_unused_fd_flags(flags) };
-@@ -413,6 +414,7 @@ pub fn reserved_fd(&self) -> u32 {
-     ///
-     /// The previously reserved file descriptor is bound to `file`. This method consumes the
-     /// [`FileDescriptorReservation`], so it will not be usable after this call.
-+    #[inline]
-     pub fn fd_install(self, file: ARef<File>) {
-         // SAFETY: `self.fd` was previously returned by `get_unused_fd_flags`. We have not yet used
-         // the fd, so it is still valid, and `current` still refers to the same task, as this type
-@@ -433,6 +435,7 @@ pub fn fd_install(self, file: ARef<File>) {
- }
- 
- impl Drop for FileDescriptorReservation {
-+    #[inline]
-     fn drop(&mut self) {
-         // SAFETY: By the type invariants of this type, `self.fd` was previously returned by
-         // `get_unused_fd_flags`. We have not yet used the fd, so it is still valid, and `current`
--- 
-2.43.0
-
+--
+C. Mitrodimas
