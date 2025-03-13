@@ -1,109 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FF61F0E44;
-	Thu, 13 Mar 2025 19:25:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147781F2B90;
+	Thu, 13 Mar 2025 19:41:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741893929; cv=none; b=Z1IaYOCzdgDx8ZuuzD1ow2itLvSBSNKfjUCq5K7LG369DqsXkEgiFJf087DhUZSwaGfKEu9JpDU4b6MT5o55dqunTMDjBLi8+WU1hGYMk8xyysEtqYZDqzxUc7cgTWuNu4HeJabzwJYrL8GqQ4JfkCgGHtlXNXrAXiE1kiF3Mfg=
+	t=1741894879; cv=none; b=GRR0pEHDzUs+aZEihxcpQ3JukvfwFQIJcoZD8nTgePL0/ebYI+5rrRdLWNFHctvv/Q8VGGy+ubOXv5+8rwB01yyeEBL/Zj0FNVqxfdNcqjKXPH6rkFjS2G04BdRdfY8axpm3AnQIQuNUhvlnG1zqQvW9sh52Up0OKqZkhryN7Ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741893929; c=relaxed/simple;
-	bh=yxiAMWFPSVAofz831CA+K4Hh79wA9YHNplBeSyna3TM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jMJLntX9mj6WMqgb6UCORWkABJPS9lsx7TJKQHciCy+56CSZltykU8GBO0XjDQeH7LRng7cHS1XPAhlppy+N0lKc50usuafYzDDwCs/Q/2DtQrrif9TnzNtDQkMR8/h53g6VkZUoMCxAKbI3mKlCTa1ovJFKC0zdMbje0SORyio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KPJgOpe9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741894879; c=relaxed/simple;
+	bh=WUH2ocflO1cNKNmhbkDZJYgN2wbCaTQAVsBuQZ+M57g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l5d5vgYtZGcNhXAbk4IZ+DblXpopktAwql7iEH80AME/Q+J5bETqMDdQ6ie7w7z1o4F/8LKM1/T+7kfEBLwJ0j7iFAIvNCOrDNt4ZIScFMKhm3McOCPLPz9BM2Fa9LZ1X8FXJ67D5ZOm/cn4O+FF5WNO1OAK+mtQA2Sk9aWt+nU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MAyhe5lB; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KPJgOpe9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12817C4CEDD;
-	Thu, 13 Mar 2025 19:25:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741893929;
-	bh=yxiAMWFPSVAofz831CA+K4Hh79wA9YHNplBeSyna3TM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KPJgOpe93pLPceyqMGiheFfbp+8h9RCPRT1sy0A6eTFck7MJM8YVW/dm47Vt7LJ7D
-	 o61fnfxLahhuA2lQ6XEn1+/j+htEcIE6ogBd+oFTra2i3a3yVMV04qU5uF0a27F+8c
-	 QYe0CwLtEiUzZk3CTt6GxYHpnF0x7AR0DFtyELubR45UH2l9jAStPp0gTCZYzZX9w5
-	 2h8UeX2LA/gLbbw9GGqtHbp2rILwgOR6ahamIxjJC/X5j8GNJo48izljnAjRV6fVJ+
-	 ocxCAbtlieMNXdUGuHLawvqLOEN7Z02MYk0s06+znzM7IbdJSTpB5APzJVkiVC3KEz
-	 xO0hpFWh2Z0zQ==
-Date: Thu, 13 Mar 2025 20:25:23 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-input@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-Subject: Re: [PATCH RFC 1/3] rust: core abstractions for HID drivers
-Message-ID: <Z9MxI0u2yCfSzTvD@cassiopeiae>
-References: <20250313160220.6410-2-sergeantsagara@protonmail.com>
- <20250313160220.6410-4-sergeantsagara@protonmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MAyhe5lB"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5e5e1a38c1aso1688152a12.2;
+        Thu, 13 Mar 2025 12:41:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741894876; x=1742499676; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FXEzxEd8+oNnzMOAtWoRdYumhlynnfDozmjfwkSl2KA=;
+        b=MAyhe5lB55KauvkpIW17ZW5VLS9mjTjg+rfwtDww0VZ5ORu+z+bJ0h10PVruk3CMwj
+         kfXMamr1J2V6RZNr3b1WXyYyTdI4an3RcvCm7mY+F+l+iDTYdQdweXLjtweLGeoZ+VLO
+         414O1YUsP2db+So9s5DGeIR8TYuBZns9PExvRZfY9ldcuxl7RBA5duaYNiGanrSyhvFP
+         HOAemBDr1aVvtz1muI6ybc8hEFOO1WqTw8Jkh2XTjgHqrMwyszX5q7XVnA433e+Tr7kD
+         jmqgORXUT1JMtwJkus4Q+yXxtns1JKaJBeNpAyNF0VUOlJ12v70pc+UHbEdNWRQGAa6t
+         NnjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741894876; x=1742499676;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FXEzxEd8+oNnzMOAtWoRdYumhlynnfDozmjfwkSl2KA=;
+        b=ekqVkKmVc2AySKwffkSiQHyTxMtdih1hkHNvk+Ghs1P21s15mp2HODHXkTjhX1I77Y
+         hgvHStMeJvVPf9ic10W3+xJbDV9KDJMtVXosbIhBPPab39pWZWtBzHY45mre9xDk9ikG
+         Ov3pM8A8U/D6bI8EARj6We6bJbdRX0/PDG0l9joDSW2ZmIKttC2mupJ+5Fnxa7rC8xMZ
+         Pp3cp9VKCcVWTc4DLh4xAwDFM0PETCOzHRxMpFlk+hOpIb+JzPs7NpHZvt/ciZ51FlR4
+         SZ/yX4MHQiujgxx1/mUYnd76VppX0EC5jkaRn1BWWQc9dlRQLcGkzMnxVtMnvAkDcbBO
+         nvIw==
+X-Forwarded-Encrypted: i=1; AJvYcCUBioa0wGptYbcq6UDvVGYhtZVPdHP5Bjte8nK2eGL9ZGkwnYGlTInEOUWn8wlIkHTLYKVgjXMMXGD7izw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDK67GXNR/OR/jrIeDb1fDDqZpkvhGLYuQjyoK0bM9ZKdvIBgU
+	60BmQqmKTuhUBzssFMurt4nkrMSltEt9O4c+StWgbPPsp1p7WEL5
+X-Gm-Gg: ASbGncuhUC2Qt288YhyDouVIpbe6PsDybkpFEyyx+a3aZ7AtkZ2UVCgXalvNnJQqAXN
+	w1UkOFVqGFtG/1ey3guM8pcl7J1wGrwaQsmdLKk8rQMYeF0XSi1gWcDbhVKUPZK3FDHpx96ob3W
+	BpMwUEkA1oT/oBBsCIAOrubMWSQH+OmWI8LEMnakyn7H+vBIWsvnJijo0pbsBCLa9CPggjyQ6a1
+	nThS0jQ5BOoQt/kZstbjaBdjQux+FQJ7yZofZgYkApON6qvmnal2iHvvUGn6vo6tjwdRTRE+hdN
+	d4xApeKWNVR7fDq7H8QS5LlskRXqcvAGd1zAeSTEWWBck1UBG9aSa9SbxA==
+X-Google-Smtp-Source: AGHT+IGVbzc4ZfepwBe4lwL/vFzF6ib86XY2NgsOo+OqcPI5LcBFDNIpsOtJiAgTucImNxYYSmd+dg==
+X-Received: by 2002:a05:6402:348d:b0:5e0:49e4:2180 with SMTP id 4fb4d7f45d1cf-5e87c45f948mr637025a12.25.1741894875982;
+        Thu, 13 Mar 2025 12:41:15 -0700 (PDT)
+Received: from ?IPV6:2001:871:22a:99c5::1ad1? ([2001:871:22a:99c5::1ad1])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e816afdfd0sm1072154a12.75.2025.03.13.12.41.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 13 Mar 2025 12:41:15 -0700 (PDT)
+Message-ID: <9a516b5f-8509-4643-9c54-26caadc42348@gmail.com>
+Date: Thu, 13 Mar 2025 20:41:13 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250313160220.6410-4-sergeantsagara@protonmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] rust: task: mark Task methods inline
+To: Panagiotis Foliadis <pfoliadis@posteo.net>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ llvm@lists.linux.dev
+References: <20250311-inline-c-wrappers-v2-1-72c99d35ff33@posteo.net>
+Content-Language: en-US, de-DE
+From: Christian Schrefl <chrisi.schrefl@gmail.com>
+In-Reply-To: <20250311-inline-c-wrappers-v2-1-72c99d35ff33@posteo.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Mar 13, 2025 at 04:03:35PM +0000, Rahul Rameshbabu wrote:
-> These abstractions enable the development of HID drivers in Rust by binding
-> with the HID core C API. They provide Rust types that map to the
-> equivalents in C. In this initial draft, only hid_device and hid_device_id
-> are provided direct Rust type equivalents. hid_driver is specially wrapped
-> with a custom Driver type. The module_hid_driver! macro provides analogous
-> functionality to its C equivalent.
+On 11.03.25 4:05 PM, Panagiotis Foliadis wrote:
+> When you build the kernel using the llvm-18.1.3-rust-1.85.0-x86_64
+> toolchain provided by kernel.org, the following symbols are generated:
 > 
-> Future work for these abstractions would include more bindings for common
-> HID-related types, such as hid_field, hid_report_enum, and hid_report.
-> Providing Rust equivalents to useful core HID functions will also be
-> necessary for HID driver development in Rust.
+> $ nm vmlinux | grep ' _R'.*Task | rustfilt
+> ffffffff817b2d30 T <kernel::task::Task>::get_pid_ns
+> ffffffff817b2d50 T <kernel::task::Task>::tgid_nr_ns
+> ffffffff817b2c90 T <kernel::task::Task>::current_pid_ns
+> ffffffff817b2d00 T <kernel::task::Task>::signal_pending
+> ffffffff817b2cc0 T <kernel::task::Task>::uid
+> ffffffff817b2ce0 T <kernel::task::Task>::euid
+> ffffffff817b2c70 T <kernel::task::Task>::current
+> ffffffff817b2d70 T <kernel::task::Task>::wake_up
+> ffffffff817b2db0 T <kernel::task::Task as kernel::types::AlwaysRefCounted>::dec_ref
+> ffffffff817b2d90 T <kernel::task::Task as kernel::types::AlwaysRefCounted>::inc_ref
 > 
-> Some concerns with this initial draft
->   - The need for a DeviceId and DeviceIdShallow type.
->     + DeviceIdShallow is used to guarantee the safety requirement for the
->       Sync trait.
->   - The create_hid_driver call in the module_hid_driver! macro does not use
->     Pin semantics for passing the ID_TABLE. I could not get Pin semantics
->     to work in a const fn. I get a feeling this might be safe but need help
->     reviewing this.
-
-For a lot of things in this patch we have common infrastructure, please see
-rust/kernel/{device.rs, driver.rs, device_id.rs}. I think you should make use of
-the common infrastructure that solves the corresponding problems already.
-
-It provides generic infrastructure for handling device IDs, a generalized
-Registration type, based on InPlaceModule with a common module_driver!
-implementation for busses to implement their corresponding module macro, etc.
-
-There are two busses upstream, which are based on this infrastructure:
-rust/kernel/{pci.rs, platform.rs}.
-
-There is a patch series that improves soundness of those two bus abstractions
-[1], which should be taken into consideration too. Even though your
-implementation isn't prone to the addressed issue, it would be good to align
-things accordingly.
-
-There is a third bus abstraction (auxiliary) on the mailing list [2], which
-already implements the mentioned improvements, which you can use as canonical
-example too.
-
-[1] https://lore.kernel.org/rust-for-linux/20250313021550.133041-1-dakr@kernel.org/
-[2] https://lore.kernel.org/rust-for-linux/20250313022454.147118-1-dakr@kernel.org/
-
-> Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+> These Rust symbols are trivial wrappers around the C functions
+> get_pid_ns, task_tgid_nr_ns, task_active_pid_ns, signal_pending, uid,
+> euid, get_current, wake_up, get_task_struct and put_task_struct.It
+> doesn't make sense to go through a trivial wrapper for these
+> functions, so mark them inline.
+> 
+> After applying this patch, the above command will produce no output.
+> 
+> Link: https://github.com/Rust-for-Linux/linux/issues/1145
+> Signed-off-by: Panagiotis Foliadis <pfoliadis@posteo.net>
 > ---
->  drivers/hid/Kconfig             |   8 ++
->  rust/bindings/bindings_helper.h |   1 +
->  rust/kernel/hid.rs              | 245 ++++++++++++++++++++++++++++++++
->  rust/kernel/lib.rs              |   2 +
->  4 files changed, 256 insertions(+)
->  create mode 100644 rust/kernel/hid.rs
+
+Reviewed-by: Christian Schrefl <chrisi.schrefl@gmail.com>
+
+Cheers
+Christian
