@@ -1,95 +1,88 @@
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA841EFF95;
-	Thu, 13 Mar 2025 09:52:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2071D54FE
+	for <rust-for-linux@vger.kernel.org>; Thu, 13 Mar 2025 10:21:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741859531; cv=none; b=fnNVyAO6bc0iEenZGizdthL513SebK69TtVXrPEHexv645/rcb6efqoeDAdoSqFYHd6MiXLi4ExcWIHFmdnUXfxf0h8ymm6v101YGJaTDsHLm5U6cQk/xjWYhkQa5+RMtZSaCz0zgXDMMxXZQhCKzGVG1nZo3MtdcADWub5bnVU=
+	t=1741861288; cv=none; b=DnQqot1reJUVc4zWpSCbibz9MrS+bI/zJe0bAhqqmOvw1AFThuvSkw0YzKoHw8He4ttNlN8jvL6QqBfJHzLiId19+XPqgvFDAAwlmFFNU4pwcjAYeUVvsBOIk7TzCwqFVvPW0imumCdw0lZN1/uPOTLYv/1WRBh3xlp6/2MdinQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741859531; c=relaxed/simple;
-	bh=RImN1egxLchm1OT4LIp3YQNEJIdkxcWAKbh1WlvMwro=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O0MXeqU8p1t+PtjKBW92JvRZSBwLmALFRhw/9QeZHUuab77DVO8yBYIf9RGxGVNbqpENmrVXQ3bpza+Y/SiTjTePRhRIgas+gwqC825/1S3HeyFciP8mXCA2htcSg7K30RvTnFLb/jX3hv8rBfxZc94ex5Qhc4i26J1cldh2n3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=USXOlYhG; arc=none smtp.client-ip=91.218.175.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1741861288; c=relaxed/simple;
+	bh=cfebVLUHNUezFRL9YCM9hxV/pp652rwNYdE3gxbbonM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=U4Nt3AemMB94p9wZnpt340s1/GzX0RS9JWqxk8wW9vwoseQslrxaYLy3dbtTNIMeu0VoU6GsfNfPB3v202lTOGtYTxOJ/AjBx64Nvrc22jUoQrxtP4+amhAgoMbAA/DDgSsUGTUBFyvvuQWfkmOO8iVicsvqac7cgP6lGQo/JYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=chRVdD5c; arc=none smtp.client-ip=185.70.40.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="USXOlYhG"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1741859525;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=TM8qKG71XU2PpI8GcJlKeLnN9Dz9qQxF9PPdUnLxAQ4=;
-	b=USXOlYhG8LNwCtDKk+I7M2S0G3tn39sxx2ppKNtg3HxS5AfvC49bqJNgf/iDT/zluxuTTx
-	/eZnn2FotMOW13djKC7p5kBVr6ww1kO3zWsbo7T1psBnxZPUMjUTlKigrlUIPKSNhnpj72
-	W+K04HUgkMnwRJtXvrgJGozCnk2o+UQ=
-From: Kunwu Chan <kunwu.chan@linux.dev>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	nathan@kernel.org,
-	nick.desaulniers+lkml@gmail.com,
-	morbo@google.com,
-	justinstitt@google.com
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev,
-	Kunwu Chan <kunwu.chan@hotmail.com>,
-	Grace Deng <Grace.Deng006@Gmail.com>
-Subject: [PATCH] rust: optimize rust symbol generation for SeqFile
-Date: Thu, 13 Mar 2025 17:51:19 +0800
-Message-ID: <20250313095120.820334-1-kunwu.chan@linux.dev>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="chRVdD5c"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=xdvi7iawbva2dofelbrkhjtklu.protonmail; t=1741861283; x=1742120483;
+	bh=oSHmWh3vAbBN7vdlEzmuzXiqy2c6RHhX3Wjngq/DT6w=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=chRVdD5cD5bMyhhzC7qUlj1mgmQaBNY2avdn/wyhbmYM6pGc9Jm2uH373MKcXtSAs
+	 19YHh2ecQb40Kz7MGBM7EMCbz8Vz95hSkbdPq7l6KGmeXy4wmm5fzM3wZibATHGxZ+
+	 ZvFoeTD9BP96vW4XGKYT6aycnhmSTugSELsEp/W7BkIq7HDzGN1v+mb40fPXkah5Hl
+	 Q4GhI63BKUYqIONJyZUx73wZ4IdFKiCqoYb1VVbbn05tswo0XlTIcS7gld4QWMae+B
+	 b6w3Iw9bGyrJKvktt4mfJnWNkG9yqi4KPca5HMw86GAnrVXLjXjHEAdcPm9QCvC1V2
+	 iZJC8m6NDfLHQ==
+Date: Thu, 13 Mar 2025 10:21:18 +0000
+To: Danilo Krummrich <dakr@kernel.org>, gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 1/4] rust: pci: use to_result() in enable_device_mem()
+Message-ID: <D8F2AE364QC3.11HU88HZQCS43@proton.me>
+In-Reply-To: <20250313021550.133041-2-dakr@kernel.org>
+References: <20250313021550.133041-1-dakr@kernel.org> <20250313021550.133041-2-dakr@kernel.org>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: cd9fd983219177ffe633db16d80de1f2dce5082b
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Kunwu Chan <kunwu.chan@hotmail.com>
+On Thu Mar 13, 2025 at 3:13 AM CET, Danilo Krummrich wrote:
+> Simplify enable_device_mem() by using to_result() to handle the return
+> value of the corresponding FFI call.
+>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-When build the kernel using the llvm-18.1.3-rust-1.85.0-x86_64
-with ARCH=arm64, the following symbols are generated:
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
-$nm vmlinux | grep ' _R'.*SeqFile | rustfilt
-ffff8000805b78ac T <kernel::seq_file::SeqFile>::call_printf
-
-This Rust symbol is trivial wrappers around the C functions seq_printf.
-It doesn't make sense to go through a trivial wrapper for its functions,
-so mark it inline.
-
-After doing so, the above symbol will not in output.
-
-Signed-off-by: Kunwu Chan <kunwu.chan@hotmail.com>
-Co-developed-by: Grace Deng <Grace.Deng006@Gmail.com>
-Signed-off-by: Grace Deng <Grace.Deng006@Gmail.com>
 ---
- rust/kernel/seq_file.rs | 1 +
- 1 file changed, 1 insertion(+)
+Cheers,
+Benno
 
-diff --git a/rust/kernel/seq_file.rs b/rust/kernel/seq_file.rs
-index 04947c672979..efc4dd09850a 100644
---- a/rust/kernel/seq_file.rs
-+++ b/rust/kernel/seq_file.rs
-@@ -30,6 +30,7 @@ pub unsafe fn from_raw<'a>(ptr: *mut bindings::seq_file) -> &'a SeqFile {
-     }
- 
-     /// Used by the [`seq_print`] macro.
-+    #[inline]
-     pub fn call_printf(&self, args: core::fmt::Arguments<'_>) {
-         // SAFETY: Passing a void pointer to `Arguments` is valid for `%pA`.
-         unsafe {
--- 
-2.43.0
+> ---
+>  rust/kernel/pci.rs | 7 +------
+>  1 file changed, 1 insertion(+), 6 deletions(-)
+>
+> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+> index 4c98b5b9aa1e..386484dcf36e 100644
+> --- a/rust/kernel/pci.rs
+> +++ b/rust/kernel/pci.rs
+> @@ -382,12 +382,7 @@ pub fn device_id(&self) -> u16 {
+>      /// Enable memory resources for this device.
+>      pub fn enable_device_mem(&self) -> Result {
+>          // SAFETY: `self.as_raw` is guaranteed to be a pointer to a vali=
+d `struct pci_dev`.
+> -        let ret =3D unsafe { bindings::pci_enable_device_mem(self.as_raw=
+()) };
+> -        if ret !=3D 0 {
+> -            Err(Error::from_errno(ret))
+> -        } else {
+> -            Ok(())
+> -        }
+> +        to_result(unsafe { bindings::pci_enable_device_mem(self.as_raw()=
+) })
+>      }
+> =20
+>      /// Enable bus-mastering for this device.
+
 
